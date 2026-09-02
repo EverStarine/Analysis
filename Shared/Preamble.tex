@@ -1,0 +1,199 @@
+% 《分析学》三卷共用的基础排版与语义宏。
+% 各卷主文件须先定义 \BookTitle、\BookVolumeName 和 \BookDraftDate。
+\newcommand{\BookAuthor}{R. EverStarine}
+
+\usepackage[a4paper,inner=28mm,outer=24mm,top=27mm,bottom=28mm,
+  headheight=16pt,headsep=8mm,footskip=12mm]{geometry}
+
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage{amsthm}
+\usepackage{unicode-math}
+\setmainfont{texgyrepagella-regular.otf}[
+  BoldFont=texgyrepagella-bold.otf,
+  ItalicFont=texgyrepagella-italic.otf,
+  BoldItalicFont=texgyrepagella-bolditalic.otf
+]
+\setsansfont{texgyreheros-regular.otf}[
+  BoldFont=texgyreheros-bold.otf,
+  ItalicFont=texgyreheros-italic.otf,
+  BoldItalicFont=texgyreheros-bolditalic.otf
+]
+\setmonofont{lmmonolt10-regular.otf}[
+  BoldFont=lmmonolt10-bold.otf,
+  ItalicFont=lmmonolt10-oblique.otf,
+  BoldItalicFont=lmmonolt10-boldoblique.otf
+]
+\setmathfont{texgyrepagella-math.otf}
+
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage[most]{tcolorbox}
+\usepackage{tikz-cd}
+\usepackage{csquotes}
+\usepackage{etoolbox}
+\usepackage{xparse}
+\usepackage[noautomatic]{imakeidx}
+
+\definecolor{AnalysisBlue}{HTML}{244A64}
+\definecolor{AnalysisBlueLight}{HTML}{EEF4F7}
+\definecolor{AnalysisGray}{HTML}{4F5962}
+\definecolor{AnalysisGrayLight}{HTML}{F4F5F6}
+
+\ctexset{
+  part = {
+    format = \centering\Huge\bfseries\color{AnalysisBlue},
+    name = {第,编},
+    number = \chinese{part},
+    aftername = \quad,
+    beforeskip = 0pt,
+    afterskip = 2.5\baselineskip,
+    pagestyle = empty
+  },
+  chapter = {
+    format = \raggedright\Huge\bfseries\color{AnalysisBlue},
+    name = {第,章},
+    number = \chinese{chapter},
+    aftername = \quad,
+    beforeskip = 0pt,
+    afterskip = 30pt,
+    pagestyle = plain
+  },
+  section = {
+    format = \Large\bfseries\color{AnalysisBlue},
+    beforeskip = 2.4ex plus .6ex minus .2ex,
+    afterskip = 1.1ex plus .2ex
+  },
+  subsection = {
+    format = \large\bfseries\color{AnalysisGray},
+    beforeskip = 2ex plus .4ex minus .2ex,
+    afterskip = .8ex plus .2ex
+  }
+}
+
+\setlength{\parindent}{2em}
+\setlength{\parskip}{0pt}
+\linespread{1.18}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{2}
+\allowdisplaybreaks[2]
+\emergencystretch=2em
+\clubpenalty=10000
+\widowpenalty=10000
+\displaywidowpenalty=10000
+
+\setlist[itemize]{leftmargin=2.2em,itemsep=.35ex,topsep=.6ex}
+\setlist[enumerate]{leftmargin=2.5em,itemsep=.35ex,topsep=.6ex,font=\normalfont}
+\setlist[description]{leftmargin=2.5em,labelindent=0pt,itemsep=.35ex,topsep=.6ex}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE]{\small\color{AnalysisGray}\thepage\quad\leftmark}
+\fancyhead[RO]{\small\color{AnalysisGray}\rightmark\quad\thepage}
+\renewcommand{\headrulewidth}{0.35pt}
+% 保留数学标题的原始大小写，避免 book 类的 \MakeUppercase
+% 与 unicode-math 命令在页眉标记中发生冲突。
+\renewcommand{\chaptermark}[1]{\markboth{\thechapter\quad #1}{}}
+\renewcommand{\sectionmark}[1]{\markright{\thesection\quad #1}}
+\fancypagestyle{plain}{
+  \fancyhf{}
+  \fancyfoot[C]{\small\color{AnalysisGray}\thepage}
+  \renewcommand{\headrulewidth}{0pt}
+}
+
+\newtheoremstyle{analysisplain}
+  {1.2ex}{1.2ex}{\itshape}{}
+  {\color{AnalysisBlue}\bfseries}{.}{0.6em}{}
+\newtheoremstyle{analysisdefinition}
+  {1.2ex}{1.2ex}{\normalfont}{}
+  {\color{AnalysisBlue}\bfseries}{.}{0.6em}{}
+\newtheoremstyle{analysisremark}
+  {1.0ex}{1.0ex}{\normalfont}{}
+  {\color{AnalysisGray}\bfseries}{.}{0.6em}{}
+
+\theoremstyle{analysisplain}
+\newtheorem{theorem}{定理}[chapter]
+\newtheorem{lemma}[theorem]{引理}
+\newtheorem{proposition}[theorem]{命题}
+\newtheorem{corollary}[theorem]{推论}
+
+\theoremstyle{analysisdefinition}
+\newtheorem{definition}[theorem]{定义}
+\newtheorem{example}[theorem]{例}
+\newtheorem{exercise}{习题}[chapter]
+
+\theoremstyle{analysisremark}
+\newtheorem{remark}[theorem]{注}
+\renewcommand{\proofname}{证明}
+
+\newtcolorbox{learninggoals}{
+  enhanced,breakable,colback=AnalysisBlueLight,colframe=AnalysisBlue,
+  boxrule=.45pt,arc=1mm,left=1.2mm,right=1.2mm,top=1mm,bottom=1mm,
+  title=本章目标,fonttitle=\bfseries
+}
+\newtcolorbox{chapterguide}{
+  enhanced,breakable,colback=AnalysisGrayLight,colframe=AnalysisGray,
+  boxrule=.35pt,arc=1mm,left=1.2mm,right=1.2mm,top=1mm,bottom=1mm,
+  title=阅读提示,fonttitle=\bfseries
+}
+\NewDocumentEnvironment{chapterabstract}{}
+  {\begin{quote}\small\color{AnalysisGray}}
+  {\end{quote}}
+
+\makeindex[name=chinese,title=中文索引,columns=2,intoc,options=-q]
+\makeindex[name=foreign,title=外文索引,columns=2,intoc,options=-q]
+\makeindex[name=symbols,title=符号索引,columns=2,intoc,options=-q]
+
+\NewDocumentCommand{\term}{O{}mo}{%
+  \textbf{\textup{#2}}%
+  \IfNoValueF{#3}{\textnormal{（\textit{#3}）}}%
+  \ifstrempty{#1}{\index[chinese]{#2}}{\index[chinese]{#1@#2}}%
+  \IfNoValueF{#3}{\index[foreign]{#3}}%
+}
+\NewDocumentCommand{\termidx}{O{}m}{%
+  \ifstrempty{#1}{\index[chinese]{#2}}{\index[chinese]{#1@#2}}%
+}
+\NewDocumentCommand{\foreignidx}{O{}m}{%
+  \ifstrempty{#1}{\index[foreign]{#2}}{\index[foreign]{#1@#2}}%
+}
+\NewDocumentCommand{\symidx}{mm}{\index[symbols]{#1@#2}}
+
+\usepackage[unicode,colorlinks=true,linkcolor=AnalysisBlue,
+  citecolor=AnalysisBlue,urlcolor=AnalysisBlue,pdfborder={0 0 0}]{hyperref}
+\usepackage{bookmark}
+\usepackage[nameinlink,noabbrev]{cleveref}
+
+\crefname{chapter}{章}{章}
+\crefname{section}{节}{节}
+\crefname{theorem}{定理}{定理}
+\crefname{lemma}{引理}{引理}
+\crefname{proposition}{命题}{命题}
+\crefname{corollary}{推论}{推论}
+\crefname{definition}{定义}{定义}
+\crefname{example}{例}{例}
+\crefname{exercise}{习题}{习题}
+\crefname{equation}{式}{式}
+
+\newcommand{\MakeBookTitle}{%
+  \begin{titlepage}
+    \centering
+    \vspace*{2.2cm}
+    {\Large\sffamily\color{AnalysisGray} 分析学\par}
+    \vspace{1.3cm}
+    {\fontsize{28}{36}\selectfont\bfseries\color{AnalysisBlue}\BookTitle\par}
+    \vspace{0.8cm}
+    {\Large\sffamily\BookVolumeName\par}
+    \vfill
+    {\large \BookAuthor\ 编写\par}
+    \vspace{0.5cm}
+    {\normalsize\BookDraftDate\par}
+    \vspace*{1.8cm}
+  \end{titlepage}
+}
