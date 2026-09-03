@@ -12,15 +12,17 @@ R. EverStarine 编写的三卷本分析学教材项目。全书依照 [计划纲
 
 ## 编译
 
-使用 XeLaTeX，在相应卷目录中编译该卷主文件，例如：
+使用 XeLaTeX，在相应卷目录中编译该卷主文件。辅助文件统一写入根目录的 `tmp/build/BookN/`，例如：
 
 ```powershell
 cd Book1
-xelatex Book1.tex
-xelatex Book1.tex
+New-Item -ItemType Directory -Force ..\tmp\build\Book1 | Out-Null
+xelatex -output-directory=..\tmp\build\Book1 Book1.tex
+xelatex -output-directory=..\tmp\build\Book1 Book1.tex
+Copy-Item ..\tmp\build\Book1\Book1.pdf ..\Book1.pdf
 ```
 
-建议把辅助文件输出到临时构建目录，只将最终的三份 PDF 放在项目根目录。
+其他两卷相应替换卷号。项目根目录只保留最终的三份 PDF。
 
 ## 编辑规范
 
@@ -29,6 +31,8 @@ xelatex Book1.tex
 - [术语规范](术语规范.md)
 - [写作规范](写作规范.md)
 - [工作流程说明](工作流程说明.md)
+- [审核进度](审核进度.md)
+- [跨卷引用表](跨卷引用表.md)
 
 ## 权利说明
 
