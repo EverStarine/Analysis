@@ -1,8 +1,78 @@
 % !TeX root = ../../Book1.tex
 \chapter{集合系、可测空间与可测映射}
 \label{b1:ch:01}
+% 本章摘要（不计入编号）
+\begin{chapterabstract}
+本章建立测度论的语言基础。我们先比较几类在补集、并和交之下稳定的集合系，再说明如何从少量集合或映射反像生成所需的 \(\sigma\)-代数。随后给出 \(\pi\)-\(\lambda\) 定理与单调类定理这两种“先在生成元上验证、再推广到全体可测集”的工具，最后把这些结构组织成可测空间与可测映射。
+\end{chapterabstract}
+
+% 本章目标（不计入编号）
+\begin{learninggoals}
+\begin{itemize}
+  \item 区分集合环、集合代数与 \(\sigma\)-代数，并能验证基本闭性；
+  \item 能写出由集合族或映射族生成的最小 \(\sigma\)-代数；
+  \item 能在恰当的生成类上使用 \(\pi\)-\(\lambda\) 定理和单调类定理；
+  \item 能判定基本映射的可测性，并理解乘积可测结构的生成方式。
+\end{itemize}
+\end{learninggoals}
+
+\begin{chapterguide}
+阅读本章时应始终分清两个层次：集合系的闭性是集合论陈述，而可测性是“反像属于指定集合系”的陈述。第 \ref{b1:sec:0103} 节的两种推广定理会在后续的测度唯一性、积分等式和条件期望中反复出现。
+\end{chapterguide}
 
 \input{Part01/Chapter01/Section0101/Section0101}
 \input{Part01/Chapter01/Section0102/Section0102}
 \input{Part01/Chapter01/Section0103/Section0103}
 \input{Part01/Chapter01/Section0104/Section0104}
+% 本章小结（不计入编号）
+\begin{chaptersummary}
+集合环、集合代数和 \(\sigma\)-代数逐步加强了对集合运算的封闭性；其中 \(\sigma\)-代数是处理可数操作的基本对象。给定集合族 \(\mathcal E\)，交遍所有包含它的 \(\sigma\)-代数所得的 \(\sigma(\mathcal E)\) 是唯一的最小可测结构；给定映射族时，取其可测集合反像的生成结构便得到初始 \(\sigma\)-代数。
+
+\(\pi\)-\(\lambda\) 定理和单调类定理说明：当目标性质形成合适的 \(\lambda\)-系统或单调类时，只需在生成元上核验即可。可测映射以反像保持可测性为定义，复合、限制和配对均与这一观点相容；欧氏空间上的 Borel \(\sigma\)-代数又使连续映射自动成为可测映射。
+\end{chaptersummary}
+
+% 习题（不计入编号）
+\section*{习题}
+
+\begin{exercise}
+\label{b1:ex:01}
+设 \(\mathcal R\) 是 \(X\) 上的集合环。证明：对任意 \(A_1,\ldots,A_n\in\mathcal R\)，集合 \(\bigcap_{k=1}^{n}A_k\) 与 \(\bigtriangleup_{k=1}^{n}A_k\) 都属于 \(\mathcal R\)。
+\end{exercise}
+\begin{solution}
+由 \cref{b1:prop:ring-closure}，集合环对有限交和二元对称差封闭。对 \(n\) 作归纳即可；归纳步只需把前 \(n-1\) 个集合得到的结果分别与 \(A_n\) 再作一次交或对称差。
+\end{solution}
+
+\begin{exercise}
+\label{b1:ex:02}
+设 \(X\) 为不可数集合，\(\mathcal C\) 为所有可数子集及其补集组成的集合族。证明 \(\mathcal C\) 是 \(\sigma\)-代数，并证明
+\[
+\sigma\bigl(\{\{x\}:x\in X\}\bigr)=\mathcal C.
+\]
+\end{exercise}
+\begin{solution}
+可数集的补集属于 \(\mathcal C\)，余可数集的补集可数；可数个可数集之并仍可数，而只要并中有一个余可数集，该并便余可数。因此 \(\mathcal C\) 是 \(\sigma\)-代数。它包含全部单点集，故生成的 \(\sigma\)-代数包含于 \(\mathcal C\)。反过来，每个可数集是可数个单点集的并，其补集再由补运算得到，故 \(\mathcal C\) 包含于该生成的 \(\sigma\)-代数。
+\end{solution}
+
+\begin{exercise}
+\label{b1:ex:03}
+设 \(\mathcal D\) 是 \(\mathbb R\) 上的 \(\lambda\)-系统，且对每个 \(t\in\mathbb R\) 都有 \((-\infty,t]\in\mathcal D\)。证明 \(\mathcal B(\mathbb R)\subseteq\mathcal D\)。
+\end{exercise}
+\begin{solution}
+闭半直线族对有限交封闭，因而是 \(\pi\)-系统。它生成 \(\mathcal B(\mathbb R)\)：例如开半直线可由递增的闭半直线并出，开区间再由两个开半直线及补运算得到。现在对该 \(\pi\)-系统应用 \cref{b1:thm:pi-lambda} 即得结论。
+\end{solution}
+
+\begin{exercise}
+\label{b1:ex:04}
+设 \(A\subseteq X\)，并把 \(\{0,1\}\) 赋予离散 \(\sigma\)-代数。证明示性函数 \(\mathbf 1_A:X\to\{0,1\}\) 可测，当且仅当 \(A\) 属于 \(X\) 上给定的 \(\sigma\)-代数。
+\end{exercise}
+\begin{solution}
+若 \(\mathbf 1_A\) 可测，则 \(A=\mathbf 1_A^{-1}(\{1\})\) 可测。反之，离散 \(\sigma\)-代数的任一集合是 \(\varnothing,\{0\},\{1\},\{0,1\}\) 之一，其反像分别为 \(\varnothing,A^{\mathrm c},A,X\)，均可测。
+\end{solution}
+
+\begin{exercise}
+\label{b1:ex:05}
+设 \(f,g:(X,\mathcal A)\to\mathbb R\) 都是 Borel 可测映射。证明 \(\max\{f,g\}\) 与 \(\min\{f,g\}\) 都是 Borel 可测映射。
+\end{exercise}
+\begin{solution}
+由 \cref{b1:prop:pair-measurable}，映射 \(x\mapsto(f(x),g(x))\) 到 \(\mathbb R^2\) 的映射可测。函数 \((u,v)\mapsto\max\{u,v\}\) 与 \((u,v)\mapsto\min\{u,v\}\) 连续，故由 \cref{b1:prop:continuous-borel} 可测；再用复合可测性即可。
+\end{solution}

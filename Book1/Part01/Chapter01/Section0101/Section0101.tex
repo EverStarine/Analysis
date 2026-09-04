@@ -2,18 +2,133 @@
 \section{集合系}
 \label{b1:sec:0101}
 
-% TODO: 撰写本节正文。
+测度并不对任意子集都有意义；在开始定义测度之前，必须先指定哪些集合允许被讨论。设 \(X\) 是一个非空集合，\(\mathcal P(X)\) 是 \(X\) 的幂集。以下的集合系都视为 \(\mathcal P(X)\) 的子集，且所有补集均相对于 \(X\) 而言。
 
 \subsection{集合环}
 \label{b1:subsec:010101}
 
+\begin{definition}
+\label{b1:def:set-ring}
+\term[jihehuan]{集合环}[ring of sets] 是集合族 \(\mathcal R\subseteq\mathcal P(X)\)，满足对任意 \(A,B\in\mathcal R\)，
+\[
+A\setminus B\in\mathcal R,
+\qquad
+A\cup B\in\mathcal R.
+\]
+\end{definition}
+
+这里不要求 \(X\) 自身属于 \(\mathcal R\)。这个区别在处理只关注“有界部分”的长度、面积或体积时很有用。
+
+\begin{proposition}
+\label{b1:prop:ring-closure}
+若 \(\mathcal R\) 是集合环，则 \(\varnothing\in\mathcal R\)，并且 \(\mathcal R\) 对有限交、有限并、相对补和对称差封闭。
+\end{proposition}
+\begin{proof}
+取任意 \(A\in\mathcal R\)，由 \(A\setminus A=\varnothing\) 得 \(\varnothing\in\mathcal R\)。又有
+\[
+A\cap B=A\setminus(A\setminus B),
+\qquad
+A\mathbin{\triangle}B=(A\setminus B)\cup(B\setminus A).
+\]
+右端均可由定义中的两种运算得到，故二元交和对称差属于 \(\mathcal R\)。有限情形由归纳法推出。
+\end{proof}
+
+\begin{remark}
+\label{b1:rem:set-rings}
+\textbf{例。} \(\mathcal P(X)\) 是集合环。\(X\) 的全体有限子集也构成集合环。另一个重要例子是 \(\mathbb R\) 中有限个半开区间 \([a,b)\) 的不交并（连同空集）所成的集合族：两个这样的集合之差仍能拆成有限个半开区间的不交并。
+\end{remark}
+
 \subsection{集合代数}
 \label{b1:subsec:010102}
+
+\begin{definition}
+\label{b1:def:set-algebra}
+\term[jihedaishu]{集合代数}[algebra of sets] 是集合族 \(\mathcal A\subseteq\mathcal P(X)\)，满足 \(X\in\mathcal A\)，且对任意 \(A,B\in\mathcal A\)，
+\[
+A^{\mathrm c}\in\mathcal A,
+\qquad
+A\cup B\in\mathcal A.
+\]
+\end{definition}
+
+由 De Morgan 公式，集合代数也对有限交封闭。它可以等价地理解为“含有全集的集合环”。
+
+\begin{proposition}
+\label{b1:prop:algebra-ring}
+集合族 \(\mathcal A\) 是集合代数，当且仅当它是含 \(X\) 的集合环。
+\end{proposition}
+\begin{proof}
+若 \(\mathcal A\) 是集合代数，则 \(A\setminus B=A\cap B^{\mathrm c}\) 属于 \(\mathcal A\)，所以它是集合环。反之，若 \(\mathcal A\) 是集合环且 \(X\in\mathcal A\)，则
+\[
+A^{\mathrm c}=X\setminus A\in\mathcal A,
+\]
+再结合集合环对并的封闭性，便得到集合代数的定义。
+\end{proof}
+
+\begin{remark}
+\label{b1:rem:finite-cofinite-algebra}
+\textbf{例。} 若 \(X\) 是无限集合，则所有有限子集及其补集构成集合代数，称为有限--余有限集合代数。它已经能区分每个单点，却一般还不能容纳可数并，因此通常不是 \(\sigma\)-代数。
+\end{remark}
 
 \subsection{\texorpdfstring{\(\sigma\)}{σ}-代数}
 \label{b1:subsec:010103}
 
+\begin{definition}
+\label{b1:def:sigma-algebra}
+\term[sigma-daishu]{\(\sigma\)-代数}[sigma-algebra] 是集合族 \(\mathcal F\subseteq\mathcal P(X)\)，满足：
+\begin{enumerate}
+  \item \(X\in\mathcal F\)；
+  \item 若 \(A\in\mathcal F\)，则 \(A^{\mathrm c}\in\mathcal F\)；
+  \item 若 \(A_1,A_2,\ldots\in\mathcal F\)，则 \(\bigcup_{n=1}^{\infty}A_n\in\mathcal F\)。
+\end{enumerate}
+\end{definition}
+
+记号 \(\sigma\) 提醒我们这里允许可数次并。以后若 \(X\) 上给定的 \(\sigma\)-代数是 \(\mathcal F\)，就把 \((X,\mathcal F)\) 称为一个可测空间；\(\mathcal F\) 中的集合称为可测集。
+
+\begin{proposition}
+\label{b1:prop:sigma-closure}
+每个 \(\sigma\)-代数都是集合代数。特别地，若 \(A_1,A_2,\ldots\in\mathcal F\)，则
+\[
+\bigcap_{n=1}^{\infty}A_n\in\mathcal F,
+\qquad
+\varnothing\in\mathcal F.
+\]
+\end{proposition}
+\begin{proof}
+有限并是可数并的特殊情形，只需在尾部重复空集即可。由 De Morgan 公式，
+\[
+\bigcap_{n=1}^{\infty}A_n
+=\left(\bigcup_{n=1}^{\infty}A_n^{\mathrm c}\right)^{\mathrm c},
+\]
+右端属于 \(\mathcal F\)。空集由 \(\varnothing=X^{\mathrm c}\) 得到。于是 \(\mathcal F\) 满足 \cref{b1:def:set-algebra}。
+\end{proof}
+
+上面命题中的第二个显示式只是在强调空集也可由闭性得到；更常用的结论是：\(\sigma\)-代数对可数交也封闭。集合环、集合代数和 \(\sigma\)-代数之间的关系可概括为
+\[
+\sigma\text{-代数}\ \Longrightarrow\ \text{集合代数}\ \Longrightarrow\ \text{集合环}.
+\]
+
 \subsection{集合系的基本运算}
 \label{b1:subsec:010104}
 
+两个集合族可取交、并或包含关系；但要注意，这些运算未必保留 \(\sigma\)-代数结构。特别地，若 \(\{\mathcal F_i:i\in I\}\) 是同一 \(X\) 上的一族 \(\sigma\)-代数，则 \(\bigcap_{i\in I}\mathcal F_i\) 仍是 \(\sigma\)-代数，而一般的并 \(\bigcup_{i\in I}\mathcal F_i\) 则不是。
 
+\begin{proposition}
+\label{b1:prop:intersection-sigma}
+任意一族 \(X\) 上的 \(\sigma\)-代数的交仍为 \(X\) 上的 \(\sigma\)-代数。
+\end{proposition}
+\begin{proof}
+令 \(\mathcal F=\bigcap_{i\in I}\mathcal F_i\)。全集 \(X\) 属于每个 \(\mathcal F_i\)，故属于 \(\mathcal F\)。若 \(A\in\mathcal F\)，则 \(A\in\mathcal F_i\) 对每个 \(i\) 成立，所以 \(A^{\mathrm c}\in\mathcal F_i\) 对每个 \(i\) 成立；于是 \(A^{\mathrm c}\in\mathcal F\)。可数并的情形完全相同。
+\end{proof}
+
+\begin{remark}
+\label{b1:rem:union-not-sigma}
+\textbf{例。}
+令 \(X=\{1,2,3\}\)，
+\[
+\mathcal F_1=\{\varnothing,\{1\},\{2,3\},X\},
+\qquad
+\mathcal F_2=\{\varnothing,\{2\},\{1,3\},X\}.
+\]
+二者都是 \(\sigma\)-代数，但 \(\mathcal F_1\cup\mathcal F_2\) 不含 \(\{1\}\cup\{2\}=\{1,2\}\)，故不是 \(\sigma\)-代数。下一节的“生成”正是把一个普通集合族补全为最小 \(\sigma\)-代数的办法。
+\end{remark}

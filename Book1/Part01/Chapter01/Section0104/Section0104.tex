@@ -2,18 +2,143 @@
 \section{可测空间与可测映射}
 \label{b1:sec:0104}
 
-% TODO: 撰写本节正文。
+集合系本身只说明哪些子集被允许讨论；映射则使不同集合上的可测信息能够传递。本节的定义完全由反像给出，这也是它在复合与乘积下表现良好的根本原因。
 
 \subsection{可测空间}
 \label{b1:subsec:010401}
 
+\begin{definition}
+\label{b1:def:measurable-space}
+由集合 \(X\) 与其上的 \(\sigma\)-代数 \(\mathcal A\) 组成的二元组 \((X,\mathcal A)\) 称为\term[kekongjiank]{可测空间}[measurable space]。其中 \(\mathcal A\) 的成员称为 \((X,\mathcal A)\) 的可测集。
+\end{definition}
+
+同一个底集配上不同的 \(\sigma\)-代数会得到不同的可测空间；因此可测性从来不是某个集合或函数脱离结构后的绝对属性。
+
+\begin{definition}
+\label{b1:def:trace-sigma}
+若 \(E\in\mathcal A\)，则 \(E\) 上的\term[zongji]{迹 \(\sigma\)-代数}[trace sigma-algebra] 定义为
+\[
+\mathcal A|_E=\{A\cap E:A\in\mathcal A\}.
+\]
+\end{definition}
+
+\begin{proposition}
+\label{b1:prop:trace-sigma}
+\(\mathcal A|_E\) 是 \(E\) 上的 \(\sigma\)-代数。自然嵌入
+\[
+\iota:(E,\mathcal A|_E)\longrightarrow(X,\mathcal A),
+\qquad
+\iota(x)=x,
+\]
+是可测映射。
+\end{proposition}
+\begin{proof}
+\(E=X\cap E\) 属于 \(\mathcal A|_E\)。若 \(A\cap E\in\mathcal A|_E\)，它在 \(E\) 中的补集为 \(A^{\mathrm c}\cap E\)；可数并也可逐项与 \(E\) 相交，故 \(\mathcal A|_E\) 是 \(\sigma\)-代数。对 \(A\in\mathcal A\)，有 \(\iota^{-1}(A)=A\cap E\in\mathcal A|_E\)，故嵌入可测。
+\end{proof}
+
 \subsection{可测映射}
 \label{b1:subsec:010402}
+
+\begin{definition}
+\label{b1:def:measurable-map}
+设 \((X,\mathcal A)\)、\((Y,\mathcal B)\) 是可测空间。映射 \(f:X\to Y\) 称为\term[kekongying]{可测映射}[measurable map]，若
+\[
+f^{-1}(B)\in\mathcal A
+\qquad
+\text{对每个 }B\in\mathcal B\text{ 成立}.
+\]
+\end{definition}
+
+定义只检验目标空间中的可测集。它可以等价地表述为：\(\mathcal A\) 至少包含 \(f\) 诱导的初始 \(\sigma\)-代数 \(\sigma(f)\)。
+
+\begin{proposition}
+\label{b1:prop:composition-measurable}
+若 \(f:(X,\mathcal A)\to(Y,\mathcal B)\) 和 \(g:(Y,\mathcal B)\to(Z,\mathcal C)\) 都可测，则 \(g\circ f:(X,\mathcal A)\to(Z,\mathcal C)\) 可测。
+\end{proposition}
+\begin{proof}
+对任意 \(C\in\mathcal C\)，\(g^{-1}(C)\in\mathcal B\)，进而
+\[
+(g\circ f)^{-1}(C)=f^{-1}\bigl(g^{-1}(C)\bigr)\in\mathcal A.
+\]
+\end{proof}
+
+\begin{proposition}
+\label{b1:prop:indicator-measurable}
+若 \(A\in\mathcal A\)，则示性函数 \(\mathbf 1_A:(X,\mathcal A)\to(\mathbb R,\mathcal B(\mathbb R))\) 可测。
+\end{proposition}
+\begin{proof}
+对任意 Borel 集 \(B\)，\(\mathbf 1_A^{-1}(B)\) 只能是 \(\varnothing,A,A^{\mathrm c},X\) 之一，故属于 \(\mathcal A\)。
+\end{proof}
 
 \subsection{Borel 可测映射}
 \label{b1:subsec:010403}
 
+若 \(S,T\) 都是拓扑空间，我们通常把它们分别赋予 Borel \(\sigma\)-代数。此时 \((S,\mathcal B(S))\to(T,\mathcal B(T))\) 的可测映射称为\term[borel-kekong]{Borel 可测映射}[Borel measurable map]。
+
+\begin{proposition}
+\label{b1:prop:continuous-borel}
+连续映射 \(f:S\to T\) 一定是 Borel 可测映射。
+\end{proposition}
+\begin{proof}
+令
+\[
+\mathcal D=\{B\subseteq T:f^{-1}(B)\in\mathcal B(S)\}.
+\]
+反像与补、可数并可交换，因此 \(\mathcal D\) 是 \(T\) 上的 \(\sigma\)-代数。连续性保证每个开集 \(U\subseteq T\) 的反像 \(f^{-1}(U)\) 为开集，故 \(\mathcal D\) 包含所有开集。由 \cref{b1:prop:generated-minimal}，\(\mathcal B(T)\subseteq\mathcal D\)。
+\end{proof}
+
+连续性是充分条件而非必要条件。例如任一可数集的示性函数在 \(\mathbb R\) 上 Borel 可测，却通常在该集合的边界点不连续。
+
 \subsection{乘积可测结构初步}
 \label{b1:subsec:010404}
 
+\begin{definition}
+\label{b1:def:product-sigma}
+设 \((X,\mathcal A)\)、\((Y,\mathcal B)\) 是可测空间。\(X\times Y\) 上由全部矩形 \(A\times B\)（\(A\in\mathcal A,B\in\mathcal B\)）生成的 \(\sigma\)-代数
+\[
+\mathcal A\otimes\mathcal B
+=\sigma\bigl(\{A\times B:A\in\mathcal A,\ B\in\mathcal B\}\bigr)
+\]
+称为\term[chengji-sigma]{乘积 \(\sigma\)-代数}[product sigma-algebra]。
+\end{definition}
 
+\begin{proposition}
+\label{b1:prop:pair-measurable}
+坐标投影
+\[
+\pi_X:(X\times Y,\mathcal A\otimes\mathcal B)\to(X,\mathcal A),
+\qquad
+\pi_Y:(X\times Y,\mathcal A\otimes\mathcal B)\to(Y,\mathcal B)
+\]
+都可测。进一步，若 \(f:(Z,\mathcal C)\to(X,\mathcal A)\)、\(g:(Z,\mathcal C)\to(Y,\mathcal B)\)，则配对映射
+\[
+(f,g):Z\to X\times Y,
+\qquad
+z\mapsto(f(z),g(z))
+\]
+可测，当且仅当 \(f\) 与 \(g\) 都可测。
+\end{proposition}
+\begin{proof}
+对 \(A\in\mathcal A\)，\(\pi_X^{-1}(A)=A\times Y\in\mathcal A\otimes\mathcal B\)；另一投影同理。若 \(f,g\) 可测，则集合族
+\[
+\mathcal D=\{E\subseteq X\times Y:(f,g)^{-1}(E)\in\mathcal C\}
+\]
+是一个 \(\sigma\)-代数，且它包含每个生成矩形，因为
+\[
+(f,g)^{-1}(A\times B)=f^{-1}(A)\cap g^{-1}(B).
+\]
+所以 \(\mathcal A\otimes\mathcal B\subseteq\mathcal D\)，配对可测。反向结论由 \(\pi_X\circ(f,g)=f\)、\(\pi_Y\circ(f,g)=g\) 及 \cref{b1:prop:composition-measurable} 得到。
+\end{proof}
+
+\begin{proposition}
+\label{b1:prop:euclidean-product-borel}
+对任意正整数 \(d\)，
+\[
+\mathcal B(\mathbb R^d)
+=\underbrace{\mathcal B(\mathbb R)\otimes\cdots\otimes\mathcal B(\mathbb R)}_{d\text{ 个因子}}.
+\]
+因此，\(f=(f_1,\ldots,f_d):(X,\mathcal A)\to\mathbb R^d\) Borel 可测，当且仅当每个分量 \(f_j\) Borel 可测。
+\end{proposition}
+\begin{proof}
+每个坐标投影都连续，故其对 Borel 集的反像为 Borel 集；从而每个 Borel 矩形都属于左端，右端包含于左端。反过来，有理端点开长方体构成 \(\mathbb R^d\) 的可数拓扑基，并且每个这样的长方体属于右端；因而左端包含于右端。分量判别于是由 \cref{b1:prop:pair-measurable} 对有限次乘积的迭代直接得到。
+\end{proof}

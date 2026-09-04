@@ -113,7 +113,9 @@
 \renewcommand{\headrulewidth}{0.35pt}
 % 保留数学标题的原始大小写，避免 book 类的 \MakeUppercase
 % 与 unicode-math 命令在页眉标记中发生冲突。
-\renewcommand{\chaptermark}[1]{\markboth{#1}{}}
+% 偶数页页眉显示“章序＋章标题”（如“第一章 集合系、可测空间与可测映射”）；
+% 附录章的章序由 \CTEXthechapter 按卷附录编号（如 A1）给出。
+\renewcommand{\chaptermark}[1]{\markboth{\CTEXthechapter#1}{}}
 \renewcommand{\sectionmark}[1]{\markright{\thesection\quad #1}}
 \fancypagestyle{plain}{
   \fancyhf{}
@@ -206,21 +208,14 @@
   \null
   \clearpage
 }
+% “附录”只作为书签与目录中的编级节点存在，不排可见的编题页：
+% 第一个附录章直接自奇数页开始，PDF 书签中仍保留“附录”顶层节点。
 \NewDocumentCommand{\BookAppendixPart}{m}{%
   \cleardoublepage
-  \bookmarksetup{startatroot}%
-  \begingroup
-  \def\AnalysisPartLabel{#1}%
-  \pretocmd{\@endpart}{%
-    \addcontentsline{toc}{part}{附录}%
-    \label{\AnalysisPartLabel}}{}%
-    {\PackageError{analysis}{无法建立附录编目录项}{%
-      请检查当前文档类的 \string\@endpart 定义。}}%
-  \part*{附录}%
-  \endgroup
-  \thispagestyle{empty}%
-  \null
-  \clearpage
+  \pdfbookmark[0]{附录}{AnalysisAppendixRoot}%
+  \addcontentsline{toc}{part}{附录}%
+  \phantomsection
+  \label{#1}%
 }
 \makeatother
 
@@ -256,6 +251,12 @@
   enhanced,breakable,colback=AnalysisBlueLight,colframe=AnalysisBlue,
   boxrule=.45pt,arc=1mm,left=1.2mm,right=1.2mm,top=1mm,bottom=1mm,
   title=本章小结,fonttitle=\bfseries
+}
+% 仅用于尚待高阶数学复核的核心断言；成稿前必须处理或移除。
+\newtcolorbox{coreverification}{
+  enhanced,breakable,colback=yellow!10,colframe=orange!85!black,
+  boxrule=.55pt,arc=1mm,left=1.2mm,right=1.2mm,top=1mm,bottom=1mm,
+  title=待 Sol Ultra 复核,fonttitle=\bfseries
 }
 \NewDocumentEnvironment{chapterabstract}{}
   {\begin{quote}\small\color{AnalysisGray}}
@@ -314,6 +315,9 @@
 \crefname{algorithm}{算法}{算法}
 
 \newcommand{\MakeBookTitle}{%
+  % 书名页在 PDF 侧栏中作为顶级“封面”入口；不为其另设纸面标题。
+  \bookmarksetup{startatroot}%
+  \pdfbookmark[0]{封面}{AnalysisCover}%
   \begin{titlepage}
     \centering
     \vspace*{2.2cm}
@@ -329,3 +333,21 @@
     \vspace*{1.8cm}
   \end{titlepage}
 }
+
+% 目录也应有独立的顶级 PDF 书签。使用公共命令避免三卷分别遗漏。
+\newcommand{\MakeBookContents}{%
+  \cleardoublepage
+  \bookmarksetup{startatroot}%
+  \pdfbookmark[0]{目录}{AnalysisContents}%
+  \tableofcontents
+}
+
+% 无编号章（序言、目录、编导读、后记、参考文献、索引等）同样写入页眉标记，
+% 使后续偶数页页眉显示该单元标题。置于 hyperref 之后，保证保留 hyperref 的章锚点。
+\makeatletter
+\let\Analysis@orig@schapter\@schapter
+\def\@schapter#1{%
+  \markboth{#1}{}%
+  \Analysis@orig@schapter{#1}%
+}
+\makeatother
