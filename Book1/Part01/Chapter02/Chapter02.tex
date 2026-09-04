@@ -27,6 +27,8 @@
 \text{Carathéodory 可测域上的完备测度}.
 \]
 阅读时应始终标明集合属于半环、集合环、生成的 \(\sigma\)-代数还是幂集；许多看似短小的错误都来自定义域混用。第一章的 \(\pi\)-\(\lambda\) 定理只在唯一性证明中使用，其余核心步骤均在本章内完成。
+
+本章最容易混淆的不是某个公式，而是同一个集合函数在不同定义域中扮演的角色。读每个构造时，可以在页边依次记下“起始集合族、函数的定义域、所得外测度、Carathéodory 可测域、最终延拓域”；到唯一性定理处，再补上 \(\sigma\)-有限性究竟用于哪一步。
 \end{chapterguide}
 
 \input{Part01/Chapter02/Section0201}
@@ -290,54 +292,75 @@ p^*(E)=
 \label{b1:ex:0211}
 设 \((X,\mathcal A,\mu)\) 是测度空间，\(E\in\mathcal A\)。对每个 \(B\in\mathcal A|_E\)，证明
 \[
-\mu_E(B)=(\mu|_E)(B),
+\mu_E(B)=(\mu\llcorner E)(B),
 \]
 并对每个 \(A\in\mathcal A\) 证明
 \[
-\mu_E(A\cap E)=(\mu|_E)(A).
+\mu_E(A\cap E)=(\mu\llcorner E)(A).
 \]
-解释为什么这两个等式并不表示 \((E,\mathcal A|_E,\mu_E)\) 与 \((X,\mathcal A,\mu|_E)\) 是同一个测度空间。
+解释为什么这两个等式并不表示 \((E,\mathcal A|_E,\mu_E)\) 与 \((X,\mathcal A,\mu\llcorner E)\) 是同一个测度空间。
 \end{exercise}
 \begin{solution}
 因为 \(B\subseteq E\) 且 \(B\in\mathcal A|_E\subseteq\mathcal A\)，由两个定义直接得到
 \[
-(\mu|_E)(B)=\mu(B\cap E)=\mu(B)=\mu_E(B).
+(\mu\llcorner E)(B)=\mu(B\cap E)=\mu(B)=\mu_E(B).
 \]
 类似地，对 \(A\in\mathcal A\)，集合 \(A\cap E\) 属于 \(\mathcal A|_E\)，所以
 \[
 \mu_E(A\cap E)
 =\mu(A\cap E)
-=(\mu|_E)(A).
+=(\mu\llcorner E)(A).
 \]
-然而，\(\mu_E\) 的底集是 \(E\)，定义域是 \(\mathcal A|_E\)；\(\mu|_E\) 的底集仍是 \(X\)，定义域仍是 \(\mathcal A\)。例如 \(X\setminus E\) 在后一个空间中仍是可测集且限制测度为零，却根本不是前一个空间的子集。两者携带相同的 \(E\) 内质量信息，但不是同一个测度空间。
+然而，\(\mu_E\) 的底集是 \(E\)，定义域是 \(\mathcal A|_E\)；\(\mu\llcorner E\) 的底集仍是 \(X\)，定义域仍是 \(\mathcal A\)。例如 \(X\setminus E\) 在后一个空间中仍是可测集且限制测度为零，却根本不是前一个空间的子集。两者在 \(E\) 内的可测子集上取相同数值，但不是同一个测度空间。
 \end{solution}
 
 \begin{exercise}
 \label{b1:ex:0212}
-设 \(\mathcal S\) 是 \(X\) 上的半环，并令
+设 \(\mathcal S\) 是 \(X\) 上的半环，\(p\) 是 \(\mathcal S\) 上的前测度。若
 \[
-\mathcal R(\mathcal S)
-=\left\{\bigsqcup_{k=1}^{m}S_k:m\geq0,\ S_k\in\mathcal S\right\}.
+S\subseteq\bigcup_{n=1}^{\infty}S_n,
+\qquad S,S_n\in\mathcal S,
 \]
-不直接引用 \cref{b1:thm:semiring-extension} 的最小性结论，证明 \(\mathcal R(\mathcal S)\) 是包含 \(\mathcal S\) 的最小集合环，并由此推出
+证明半环覆盖估计
 \[
-\sigma(\mathcal S)=\sigma(\mathcal R(\mathcal S)).
+p(S)\leq\sum_{n=1}^{\infty}p(S_n).
 \]
+分别给出两种证明：
+\begin{enumerate}
+  \item 利用 \cref{b1:thm:semiring-extension} 中 \(\widetilde p\) 在 \(\mathcal R(\mathcal S)\) 上的延拓；
+  \item 不经过延拓，直接利用半环的有限不交分解。
+\end{enumerate}
 \end{exercise}
 \begin{solution}
-\(\mathcal R(\mathcal S)\) 是集合环的证明与正文相同：半环的交仍在半环中，差可以有限不交分解；把这些分解分配到两个有限不交并上，就得到差的有限不交分解，再由
+先使用延拓。令
 \[
-R\cup T=R\mathbin{\dot\cup}(T\setminus R)
+R_1=S\cap S_1,
+\qquad
+R_n=(S\cap S_n)\setminus\bigcup_{k<n}S_k
+\quad(n\geq2).
 \]
-得到有限并封闭。取 \(m=1\) 可知 \(\mathcal S\subseteq\mathcal R(\mathcal S)\)。
-
-若 \(\mathcal Q\) 是任意包含 \(\mathcal S\) 的集合环，则 \(\mathcal Q\) 对有限并封闭，故每个有限不交并 \(\bigsqcup_{k=1}^{m}S_k\) 都属于 \(\mathcal Q\)。所以
+集合 \(R_n\) 都属于 \(\mathcal R(\mathcal S)\)，两两不交，满足 \(R_n\subseteq S_n\)，并且由覆盖条件有 \(S=\bigsqcup_nR_n\)。\(\widetilde p\) 在集合环上单调，故其前测度性质给出
 \[
-\mathcal R(\mathcal S)\subseteq\mathcal Q,
+p(S)=\widetilde p(S)
+=\sum_n\widetilde p(R_n)
+\leq\sum_n\widetilde p(S_n)
+=\sum_n p(S_n).
 \]
-这就证明了最小性。
 
-由 \(\mathcal S\subseteq\mathcal R(\mathcal S)\) 得
-\(\sigma(\mathcal S)\subseteq\sigma(\mathcal R(\mathcal S))\)。反过来，\(\mathcal R(\mathcal S)\) 的每个成员都是有限个 \(\mathcal S\) 中集合的并，因而属于 \(\sigma(\mathcal S)\)；于是
-\(\sigma(\mathcal R(\mathcal S))\subseteq\sigma(\mathcal S)\)。两边相等。
+再给出直接证明。反复使用半环的差集分解性质，可将每个“本轮新覆盖的部分”写成有限不交并
+\[
+\left(S\cap S_n\right)\setminus\bigcup_{k<n}S_k
+=\bigsqcup_{j=1}^{m_n}D_{n,j},
+\qquad D_{n,j}\in\mathcal S.
+\]
+所有 \(D_{n,j}\) 两两不交，且其并为 \(S\)。把双指标族枚举成一个序列，由半环前测度的定义，
+\[
+p(S)=\sum_{n=1}^{\infty}\sum_{j=1}^{m_n}p(D_{n,j}).
+\]
+
+对固定的 \(n\)，有限个 \(D_{n,j}\) 两两不交且都包含于 \(S_n\)。再把余集 \(S_n\setminus\bigsqcup_jD_{n,j}\) 作有限不交分解，并使用有限可加性，便得
+\[
+\sum_{j=1}^{m_n}p(D_{n,j})\leq p(S_n).
+\]
+对 \(n\) 求和即得所需估计。
 \end{solution}

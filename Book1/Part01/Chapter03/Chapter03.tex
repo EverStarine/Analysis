@@ -28,6 +28,8 @@
 \end{gathered}
 \]
 第一次阅读时不宜跳过 \cref{b1:thm:rectangle-premeasure}：如果只验证有限分割可加，后面的测度延拓仍缺少一个实质步骤。正则性一节则要特别留意无穷测度集合；等式 \(\infty=\infty\) 本身不给出误差小于 \(\varepsilon\) 的逼近。
+
+Elias M. Stein 与 Rami Shakarchi 的《Real Analysis: Measure Theory, Integration, and Hilbert Spaces》\cite{Stein2005Real}适合伴随本章理解 Lebesgue 测度的几何直觉。初读可只对照长方体构造和正则逼近两处；其余证明仍沿本章的“前测度—延拓—几何性质”主线推进，以免在不同构造之间反复切换。
 \end{chapterguide}
 
 \input{Part01/Chapter03/Section0301}
@@ -39,7 +41,7 @@
 \begin{chaptersummary}
 本章完成了从欧氏几何体积到完备测度的整条构造链。半开长方体构成半环；有限网格给出有限可加性，紧集的有限子覆盖把它提升为可数可加性。由半环延拓得到的覆盖外测度在长方体上恰等于体积，其 Carathéodory 可测集组成 \(\mathcal L^d\)，限制后的测度记为 \(m\)。Borel \(\sigma\)-代数包含于 \(\mathcal L^d\)，而 \(\mathcal L^d\) 正是限制测度 \(m|_{\mathcal B(\mathbb R^d)}\) 的完备化。
 
-外正则性从覆盖定义而来，内正则性则由有界截断和对补集的外逼近推出。局部化到有界盒子后，这些结论同样能处理无穷测度集合。初等矩阵对长方体覆盖的作用给出平移不变性、剪切不变性和单坐标伸缩公式；高斯消元再把它们组合成可逆情形的公式
+外正则性从覆盖定义而来，内正则性则由有界截断和对补集的外逼近推出。局部化到有界盒子后，这些结论同样能处理无穷测度集合。平移通过直接搬运长方体覆盖给出平移不变性；初等线性变换的覆盖估计给出剪切不变性和单坐标伸缩公式，高斯消元再把这些结果组合成可逆线性变换的行列式公式
 \[
 m(TE)=\lvert\det T\rvert m(E).
 \]
@@ -103,18 +105,42 @@ E\mathbin{\triangle}R\subseteq G\setminus K.
 \end{solution}
 
 \begin{exercise}\label{b1:ex:0305}
-设 \(E\in\mathcal L^d\)。证明存在一个 \(F_\sigma\) 集 \(F\) 和一个 \(G_\delta\) 集 \(B\)，使
+设 \(E\in\mathcal L^d\) 且 \(m(E)<\infty\)。证明 Lebesgue 测度关于平移在对称差意义下连续：
 \[
-F\subseteq E\subseteq B,
-\quad m(E\setminus F)=m(B\setminus E)=0.
+\lim_{\lVert h\rVert\to0}m\bigl((E+h)\mathbin{\triangle}E\bigr)=0.
 \]
 \end{exercise}
 \begin{solution}
-由 \cref{b1:thm:borel-approximation} 的证明，对每个 \(n\) 可取开集 \(G_n\supseteq E\)，使 \(m(G_n\setminus E)<2^{-n}\)。于是 \(B=\bigcap_nG_n\) 是 \(G_\delta\) 集，且
+给定 \(\varepsilon>0\)。由 \cref{b1:prop:open-compact-sandwich}，可取紧集 \(K\) 与开集 \(G\)，使
 \[
-m(B\setminus E)\leq m(G_n\setminus E)<2^{-n}
+K\subseteq E\subseteq G,
+\qquad
+m(G\setminus K)<\frac{\varepsilon}{4}.
 \]
-对每个 \(n\) 都成立，故该测度为零。将同一结论应用于 \(E^{\mathrm c}\)，得到一个 \(G_\delta\) 集 \(C\supseteq E^{\mathrm c}\)，使 \(m(C\setminus E^{\mathrm c})=0\)。令 \(F=C^{\mathrm c}\)，则 \(F\) 是 \(F_\sigma\) 集，且 \(F\subseteq E\)、\(m(E\setminus F)=0\)。
+由紧性以及 \(G\) 的开性，存在 \(\delta>0\)，使 \(\lVert h\rVert<\delta\) 时同时有 \(K+h\subseteq G\) 与 \(K-h\subseteq G\)。于是
+\[
+(K+h)\setminus K\subseteq G\setminus K,
+\qquad
+K\setminus(K+h)\subseteq(G\setminus K)+h,
+\]
+从而由平移不变性，
+\[
+m\bigl(K\mathbin{\triangle}(K+h)\bigr)
+\leq 2m(G\setminus K).
+\]
+再用对称差的三角包含关系，
+\[
+E\mathbin{\triangle}(E+h)
+\subseteq(E\setminus K)
+\cup\bigl(K\mathbin{\triangle}(K+h)\bigr)
+\cup\bigl((E\setminus K)+h\bigr).
+\]
+由于 \(E\setminus K\subseteq G\setminus K\)，可数次可加性和平移不变性给出
+\[
+m\bigl(E\mathbin{\triangle}(E+h)\bigr)
+\leq4m(G\setminus K)<\varepsilon.
+\]
+这就证明了所述极限。
 \end{solution}
 
 \begin{exercise}\label{b1:ex:0306}
@@ -185,16 +211,37 @@ m^*(\Gamma_{f,N})
 \end{solution}
 
 \begin{exercise}\label{b1:ex:0309}
-令 \(V\) 为 \cref{b1:thm:vitali} 中选出的 Vitali 集。证明 \(V\) 的每个 Lebesgue 可测子集都具有测度零，并推出
-\[
-\sup\{m(A):A\subseteq V,\ A\in\mathcal L^1\}=0,
-\quad m^*(V)>0.
-\]
+设 \(E\in\mathcal L^1\) 且 \(m(E)>0\)。证明 \(E\) 含有一个非 Lebesgue 可测子集。
 \end{exercise}
 \begin{solution}
-若可测集 \(A\subseteq V\) 满足 \(m(A)>0\)，则 \(A+q\)（\(q\in\mathbb Q\cap[-1,1]\)）两两不交且测度均为 \(m(A)\)。它们的并包含于 \([-1,2]\)，但可数可加性会使该并具有无穷测度，矛盾。因此每个这样的 \(A\) 都零测，左式成立。
+由于 \(E\cap[-N,N]\uparrow E\)，从下连续性给出某个 \(N\geq1\)，使
+\[
+E_0=E\cap[-N,N],
+\qquad
+m(E_0)>0.
+\]
+在 \(E_0\) 上仍以 \(x\sim y\) 表示 \(x-y\in\mathbb Q\)。由选择公理，从每个等价类中选取一个代表，并把代表元集合记为 \(W\subseteq E_0\)；再令 \(D=\mathbb Q\cap[-2N,2N]\)。若
+\[
+w+q=w'+q',
+\qquad
+w,w'\in W,
+\quad q,q'\in D,
+\]
+则 \(w-w'=q'-q\in\mathbb Q\)，所以 \(w,w'\) 属于同一等价类。代表元的唯一性给出 \(w=w'\)，继而 \(q=q'\)；故平移族 \((W+q)_{q\in D}\) 两两不交。
 
-另一方面，若 \(m^*(V)=0\)，则 \(V\) 可测；Vitali 构造中的覆盖 \([0,1]\subseteq\bigcup_q(V+q)\) 随即给出 \(1\leq0\)，矛盾。因此 \(m^*(V)>0\)。
+任取 \(x\in E_0\)，设 \(w\in W\) 是其等价类的代表。于是
+\[
+q=x-w\in\mathbb Q,
+\qquad
+|q|\leq2N,
+\]
+所以 \(q\in D\) 且 \(x\in W+q\)。又因 \(W\subseteq[-N,N]\) 与 \(D\subseteq[-2N,2N]\)，有
+\[
+E_0\subseteq\bigcup_{q\in D}(W+q)
+\subseteq[-3N,3N].
+\]
+
+若 \(W\) 可测，记 \(\alpha=m(W)\)。当 \(\alpha=0\) 时，上述可数并测度为零，与它包含正测度集 \(E_0\) 矛盾；当 \(\alpha>0\) 时，两两不交性和可数可加性使该并具有无穷测度，又与它包含于有限测度区间 \([-3N,3N]\) 矛盾。因此 \(W\) 不可测，而 \(W\subseteq E\)。
 \end{solution}
 
 \begin{exercise}\label{b1:ex:0310}

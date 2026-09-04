@@ -18,6 +18,7 @@ R. EverStarine 编写的三卷本分析学教材项目。全书依照 [计划纲
 cd Book1
 New-Item -ItemType Directory -Force ..\tmp\build\Book1 | Out-Null
 xelatex -output-directory=..\tmp\build\Book1 Book1.tex
+biber --output-directory=..\tmp\build\Book1 ..\tmp\build\Book1\Book1
 Push-Location ..\tmp\build\Book1
 makeindex -q chinese.idx
 makeindex -q foreign.idx
@@ -28,7 +29,7 @@ xelatex -output-directory=..\tmp\build\Book1 Book1.tex
 Copy-Item ..\tmp\build\Book1\Book1.pdf ..\Book1.pdf
 ```
 
-首轮 XeLaTeX 收集索引条目，三次 `makeindex` 分别生成中文、外文和符号索引，随后两轮 XeLaTeX 排入索引并稳定目录、交叉引用与书签。其他两卷相应替换卷号；尚无索引条目的卷可以暂不执行相应的 `makeindex` 命令。项目根目录只保留最终的三份 PDF。
+首轮 XeLaTeX 收集引文与索引条目，Biber 生成本卷实际引用的参考文献，三次 `makeindex` 分别生成中文、外文和符号索引，随后两轮 XeLaTeX 排入书目和索引，并稳定目录、交叉引用与书签。其他两卷相应替换卷号；尚无引文或索引条目的卷可以暂不执行相应的 Biber 或 `makeindex` 命令。项目根目录只保留最终的三份 PDF。
 
 ## 编辑规范
 
