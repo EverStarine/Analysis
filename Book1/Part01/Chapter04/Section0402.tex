@@ -2,24 +2,242 @@
 \section{极限运算}
 \label{b1:sec:0402}
 
-% TODO: 撰写本节正文。
+有限次代数运算只需要有限交并，可测性因而能够直接保持。函数列的极限则把问题推进到可数次运算：每个点处的上确界、下确界和尾部振荡，都要翻译成可数个水平集的并与交。本节完成这条翻译，并区分处处收敛与几乎处处收敛；后一种收敛能否自动给出可测极限，取决于测度空间是否完备。
 
 \subsection{上确界与下确界}
 \label{b1:subsec:040201}
 
-待填充。
+设 \((f_n)_{n\geq1}\) 是 \(X\) 上的扩展实值函数列。逐点定义
+\[
+\left(\sup_{n\geq1}f_n\right)(x)
+=\sup_{n\geq1}f_n(x),
+\quad
+\left(\inf_{n\geq1}f_n\right)(x)
+=\inf_{n\geq1}f_n(x).
+\]
+右端在 \(\overline{\mathbb R}\) 中总有意义，并允许取 \(\pm\infty\)。
+
+\begin{theorem}
+\label{b1:thm:countable-sup-inf-measurable}
+若每个 \(f_n:X\rightarrow\overline{\mathbb R}\) 都可测，则
+\[
+\sup_{n\geq1}f_n,
+\quad
+\inf_{n\geq1}f_n
+\]
+都是扩展实值可测函数。
+\end{theorem}
+\begin{proof}
+记 \(u=\sup_nf_n\)。对每个 \(a\in\mathbb R\)，逐点上确界的定义给出
+\[
+\{u>a\}=\bigcup_{n=1}^{\infty}\{f_n>a\}.
+\]
+右端是可测集的可数并，所以 \(u\) 可测。类似地，若 \(v=\inf_nf_n\)，则
+\[
+\{v<a\}=\bigcup_{n=1}^{\infty}\{f_n<a\}.
+\]
+由 \cref{b1:prop:extended-real-thresholds} 的严格下水平集判别，\(v\) 可测。
+\end{proof}
+
+有限最大值
+\[
+u_N=\max\{f_1,\ldots,f_N\}
+\]
+组成递增函数列，并且 \(u_N(x)\uparrow\sup_nf_n(x)\)。类似地，有限最小值
+\(v_N=\min\{f_1,\ldots,f_N\}\) 递减到 \(\inf_nf_n\)。所以可数上下确界也可以看成有限格运算的逐步极限；这个观察在实际计算中常比直接操作无限族更方便。若指标集只是任意可数集，先作一次枚举即可，结论并不依赖枚举顺序。
+
+这里的可数性不可删去。在 \((\mathbb R,\mathcal L^1)\) 上，令 \(V\subseteq\mathbb R\) 为 \cref{b1:thm:vitali} 中的不可测集，并对每个 \(t\in V\) 取可测函数 \(f_t=\mathbf 1_{\{t\}}\)。单点可测，所以每个 \(f_t\) 都可测；但
+\[
+\sup_{t\in V}f_t=\mathbf 1_V
+\]
+不可测。失败的原因正是 \(\sigma\)-代数只要求对可数并封闭，而不要求对任意并封闭。
 
 \subsection{\texorpdfstring{\(\limsup\)}{limsup}、\texorpdfstring{\(\liminf\)}{liminf}}
 \label{b1:subsec:040202}
 
-待填充。
+当函数列不收敛时，尾部的上界与下界仍能记录其最终振荡范围。
 
-\subsection{点态极限}
+\begin{definition}
+\label{b1:def:function-limsup-liminf}
+对扩展实值函数列 \((f_n)\)，定义逐点的\term[shangjixian]{上极限}[limit superior]与\term[xiajixian]{下极限}[limit inferior]为
+\[
+\limsup_{n\to\infty}f_n
+=\inf_{N\geq1}\sup_{n\geq N}f_n,
+\quad
+\liminf_{n\to\infty}f_n
+=\sup_{N\geq1}\inf_{n\geq N}f_n.
+\]
+\symidx{\(\limsup_{n\to\infty}f_n\)：函数列的上极限}
+\symidx{\(\liminf_{n\to\infty}f_n\)：函数列的下极限}
+\end{definition}
+
+令
+\(u_N=\sup_{n\geq N}f_n\)、\(\ell_N=\inf_{n\geq N}f_n\)。随着 \(N\) 增大，可供取上下确界的尾部变小，故 \(u_N\) 递减而 \(\ell_N\) 递增。因而上极限是尾部上确界的递减极限，下极限是尾部下确界的递增极限。
+
+\begin{proposition}
+\label{b1:prop:limsup-liminf-measurable}
+若每个 \(f_n:X\rightarrow\overline{\mathbb R}\) 都可测，则
+\(\limsup_nf_n\) 与 \(\liminf_nf_n\) 都可测，并且逐点满足
+\[
+\liminf_{n\to\infty}f_n
+\leq
+\limsup_{n\to\infty}f_n.
+\]
+对固定的 \(x\in X\)，数列 \((f_n(x))\) 在 \(\overline{\mathbb R}\) 中收敛，当且仅当上下极限相等；相等时共同值就是其极限。
+\end{proposition}
+\begin{proof}
+每个尾部上确界 \(u_N\) 和尾部下确界 \(\ell_N\) 都由 \cref{b1:thm:countable-sup-inf-measurable} 可测。再次应用该定理，\(\inf_Nu_N\) 与 \(\sup_N\ell_N\) 可测。对每个 \(N\) 都有 \(\ell_N\leq u_N\)；取 \(N\to\infty\) 得到上下极限不等式。
+
+固定一点并暂时省略 \(x\)。若 \(f_n\to L\in\mathbb R\)，则给定 \(\varepsilon>0\)，从某一项起有
+\(L-\varepsilon/2<f_n<L+\varepsilon/2\)。因此，相应的尾部满足
+\[
+L-\varepsilon<\ell_N\leq u_N<L+\varepsilon,
+\]
+从而上下极限都等于 \(L\)。当 \(L=+\infty\) 时，对每个 \(M\in\mathbb R\)，数列最终大于 \(M\)，故 \(\ell_N\to+\infty\)；\(L=-\infty\) 同理。
+
+反过来，若共同值为有限数 \(L\)，则对任意 \(\varepsilon>0\)，可取 \(N_1,N_2\)，使
+\[
+u_{N_1}<L+\varepsilon,
+\quad
+\ell_{N_2}>L-\varepsilon.
+\]
+当 \(n\geq\max\{N_1,N_2\}\) 时便有
+\(L-\varepsilon<f_n<L+\varepsilon\)，所以 \(f_n\to L\)。若共同值为 \(+\infty\)，则 \(\ell_N\uparrow+\infty\)，故数列最终超过任意实数 \(M\)；这正是收敛到 \(+\infty\)。共同值为 \(-\infty\) 时使用 \(u_N\downarrow-\infty\)。
+\end{proof}
+
+上下极限不受有限多个首项影响，因为从足够大的 \(N\) 起，相应尾部已经删去这些首项。它们也分别控制数列的聚点：若上极限为有限数 \(L\)，则任意 \(\varepsilon>0\) 下，只有有限多项能超过 \(L+\varepsilon\)，而又有无穷多项大于 \(L-\varepsilon\)。第一点来自某个尾部上确界小于 \(L+\varepsilon\)；第二点若失败，则某个尾部上确界至多为 \(L-\varepsilon\)。两者都直接使用尾部上确界递减到 \(L\)。下极限有对称的描述。
+
+例如常值于 \((-1)^n\) 的函数列满足
+\(\liminf_nf_n=-1\)、\(\limsup_nf_n=1\)，所以它在每一点都不收敛。上极限的阈值还可以直接写成
+\[
+\left\{\limsup_nf_n>a\right\}
+=\bigcup_{\substack{q\in\mathbb Q\\q>a}}
+\bigcap_{N=1}^{\infty}\bigcup_{n\geq N}\{f_n>q\}.
+\]
+内侧的交并表示“\(f_n>q\) 发生无穷多次”；外层再选取严格位于 \(a\) 与上极限之间的有理数，避免把 \(\limsup f_n=a\) 的边界误收进来。
+
+\begin{corollary}
+\label{b1:cor:monotone-function-limit}
+若扩展实值可测函数列满足 \(f_n\leq f_{n+1}\)，则它逐点收敛于可测函数 \(\sup_nf_n\)。若满足 \(f_n\geq f_{n+1}\)，则它逐点收敛于可测函数 \(\inf_nf_n\)。
+\end{corollary}
+\begin{proof}
+在递增情形，对固定的 \(x\)，数列 \((f_n(x))\) 的每个尾部与原数列有同一上确界，而第 \(N\) 个尾部的下确界为 \(f_N(x)\)。所以
+\[
+\limsup_nf_n(x)=\sup_nf_n(x)
+=\liminf_nf_n(x).
+\]
+由 \cref{b1:prop:limsup-liminf-measurable}，数列收敛到该上确界；极限的可测性来自 \cref{b1:thm:countable-sup-inf-measurable}。递减情形交换上、下确界即可。
+\end{proof}
+
+记号 \(f_n\uparrow f\) 表示 \(f_n(x)\leq f_{n+1}(x)\) 对每个 \(x\) 成立，并且 \(f_n(x)\to f(x)\)；\(f_n\downarrow f\) 作对称解释。单有递增性时，极限依然存在于 \(\overline{\mathbb R}\)，但可能等于 \(+\infty\)。例如常值函数 \(f_n\equiv n\) 递增到 \(+\infty\)，并不收敛于任何实值函数。
+
+\subsection{逐点极限}
 \label{b1:subsec:040203}
 
-待填充。
+\begin{definition}
+\label{b1:def:pointwise-convergence}
+设 \(Y=\overline{\mathbb R}\) 或 \(\mathbb C\)，并设 \(f_n,f:X\rightarrow Y\)。若对每个 \(x\in X\)，数列 \((f_n(x))\) 都在 \(Y\) 中收敛到 \(f(x)\)，则称 \((f_n)\) \term[zhudian-shoulian]{逐点收敛}[pointwise convergence]于 \(f\)，记为 \(f_n\to f\)（逐点）。
+\end{definition}
+
+\begin{proposition}
+\label{b1:prop:pointwise-limit-measurable}
+扩展实值可测函数列的逐点极限仍是扩展实值可测函数；复值可测函数列的逐点极限仍是复值可测函数。
+\end{proposition}
+\begin{proof}
+先设 \(f_n:X\rightarrow\overline{\mathbb R}\) 可测且逐点收敛于 \(f\)。由 \cref{b1:prop:limsup-liminf-measurable}，
+\[
+f=\limsup_{n\to\infty}f_n
+=\liminf_{n\to\infty}f_n
+\]
+可测。若 \(f_n\) 为复值函数，则逐点收敛等价于其实部、虚部分别逐点收敛。函数 \(\operatorname{Re}f_n\)、\(\operatorname{Im}f_n\) 可测，实值情形给出 \(\operatorname{Re}f\)、\(\operatorname{Im}f\) 可测，再用 \cref{b1:prop:complex-components-measurable} 即知 \(f\) 可测。
+\end{proof}
+
+逐点极限保持可测性，却不保持连续性。在 \([0,1]\) 上取 \(f_n(x)=x^n\)，每个 \(f_n\) 连续，而逐点极限为
+\[
+f(x)=
+\begin{cases}
+0,&0\leq x<1,\\
+1,&x=1.
+\end{cases}
+\]
+这个极限在 \(1\) 处不连续，但仍 Borel 可测。可测性只要求反像经受可数集合运算；它不控制邻近点的函数值是否接近。
+
+上下极限还说明函数列在哪些点收敛。令
+\[
+C=\left\{\,x\mid\liminf_nf_n(x)=\limsup_nf_n(x)\,\right\}.
+\]
+对两个扩展实值可测函数 \(u,v\)，\cref{b1:prop:measurable-comparison-sets} 的证明给出
+\[
+\{u<v\}
+=\bigcup_{q\in\mathbb Q}\bigl(\{u<q\}\cap\{v>q\}\bigr),
+\]
+所以比较集合 \(\{u<v\}\) 可测。由于下极限不超过上极限，\(X\setminus C\) 正是二者严格不等的集合，故 \(C\in\mathcal A\)。因此可测函数列的逐点收敛点集本身总是可测。
+
+复值函数列的收敛点集同样可测。由于 \(\mathbb C\) 完备，Cauchy 判别给出
+\[
+\bigcap_{k=1}^{\infty}
+\bigcup_{N=1}^{\infty}
+\bigcap_{m,n\geq N}
+\{\,|f_m-f_n|<1/k\,\}.
+\]
+每个差与模长都可测，所以式中集合可测；它恰由那些使数列 \((f_n(x))\) 在 \(\mathbb C\) 中收敛的点组成。这里必须使用目标空间的完备性：在不完备的度量空间中，Cauchy 并不保证极限仍落在该空间内。
+
+若只知道 \((f_n)\) 在子集 \(E\subseteq X\) 上逐点收敛，则应先说明 \(E\) 所带的可测结构。由 \cref{b1:prop:measurable-restriction}，无论 \(E\) 本身是否属于 \(\mathcal A\)，每个限制函数 \(f_n|_E\) 都对迹 \(\sigma\)-代数 \(\mathcal A|_E\) 可测，故其逐点极限在 \(E\) 上可测；这并不自动规定极限在 \(X\setminus E\) 上的取值。若 \(E\in\mathcal A\)，可以在可测补集上补一个常值，再用 \cref{b1:lem:measurable-pasting} 把极限扩张到整个 \(X\)。当 \(E\) 不可测时，这个分片论证不能使用。
 
 \subsection{几乎处处性质}
 \label{b1:subsec:040204}
 
-待填充。
+\begin{definition}
+\label{b1:def:almost-everywhere}
+设 \((X,\mathcal A,\mu)\) 是测度空间。若存在 \(Z\in\mathcal A\) 满足 \(\mu(Z)=0\)，并且性质 \(P(x)\) 对每个 \(x\in X\setminus Z\) 成立，则称 \(P\) 在 \(X\) 上\term[jihuchuchu]{几乎处处}[almost everywhere]成立。函数 \(f,g\) 几乎处处相等记为 \(f=g\ \mathrm{a.e.}\)；函数列在 \(X\setminus Z\) 上逐点收敛于 \(f\) 时，称它几乎处处收敛于 \(f\)。
+\symidx{\(\mathrm{a.e.}\)：几乎处处}
+\end{definition}
+
+定义要求例外点集包含在某个可测零集内，并不预先要求所有失败点组成的集合可测。若失败集合本身可测，这一条件当然等价于它的测度为零。使用“包含于零集”的表述，恰好把完备测度空间和不完备测度空间的差别保留下来。
+
+\begin{proposition}
+\label{b1:prop:countable-ae-properties}
+可数多个几乎处处成立的性质可以在同一个满测度集合上同时成立。特别地，几乎处处相等是任意同值域函数之间的等价关系；若同一列扩展实值函数或复值函数分别几乎处处收敛于 \(f\) 和 \(g\)，则 \(f=g\) 几乎处处。
+\end{proposition}
+\begin{proof}
+设第 \(n\) 个性质在可测零集 \(Z_n\) 外成立。由测度的可数次可加性，
+\[
+\mu\left(\bigcup_{n=1}^{\infty}Z_n\right)
+\leq\sum_{n=1}^{\infty}\mu(Z_n)=0.
+\]
+所以在同一个零集 \(\bigcup_nZ_n\) 外，全部性质同时成立。自反性与对称性不需要额外论证；传递性把 \(f=g\) 和 \(g=h\) 的两个例外零集合并，故几乎处处相等是等价关系。若 \(f_n\to f\) 与 \(f_n\to g\) 分别在零集 \(Z_1,Z_2\) 外成立，则在 \(X\setminus(Z_1\cup Z_2)\) 上，同一个数列有两个极限；目标空间中的极限唯一，故 \(f=g\) 于该集合。
+\end{proof}
+
+可数性在这里同样重要。不可数多个零集的并可能有正测度，甚至等于整个空间，例如
+\([0,1]=\bigcup_{x\in[0,1]}\{x\}\)。因此，从“对每个参数，某性质几乎处处成立”推出“几乎处处对所有参数成立”时，必须检查参数是否可数，或另有能够统一控制例外集的论证。
+
+\begin{theorem}
+\label{b1:thm:complete-null-modification}
+设 \((X,\mathcal A,\mu)\) 是完备测度空间。若扩展实值可测函数 \(f\) 与任意函数 \(g:X\rightarrow\overline{\mathbb R}\) 几乎处处相等，则 \(g\) 可测。同一结论对复值函数成立。
+\end{theorem}
+\begin{proof}
+取可测零集 \(Z\)，使 \(f=g\) 于 \(X\setminus Z\)。对每个 \(a\in\mathbb R\)，有分解
+\[
+\{g>a\}
+=\bigl(\{f>a\}\setminus Z\bigr)
+\cup\bigl(\{g>a\}\cap Z\bigr).
+\]
+第一项可测。第二项虽然由任意函数 \(g\) 决定，却是零集 \(Z\) 的子集；完备性保证它也属于 \(\mathcal A\)。因此每个 \(\{g>a\}\) 可测，\cref{b1:prop:extended-real-thresholds} 给出 \(g\) 可测。
+
+若 \(f,g\) 为复值函数，则其实部几乎处处相等，虚部也几乎处处相等。把刚证明的实值结论分别用于两个分量，再由 \cref{b1:prop:complex-components-measurable} 得到 \(g\) 可测。
+\end{proof}
+
+定理的作用不只是确认一个函数是否可测。它还说明，在完备空间上研究几乎处处等价类时，可以自由选择零集上的代表值：把无穷值改成零、把未指定点补成常数，或使两个版本在某个零集上一致，都不会离开可测函数类。这里允许的是零集内部的任意修改；若修改集合只有“小测度”但不为零，则不能把修改前后的函数视为几乎处处相等。
+
+\begin{corollary}
+\label{b1:cor:ae-limit-measurable}
+在完备测度空间上，扩展实值或复值可测函数列的几乎处处极限可测。
+\end{corollary}
+\begin{proof}
+先设 \(f_n\) 为扩展实值函数，并且 \(f_n\to f\) 于某个可测零集 \(Z\) 的补集。函数
+\(h=\limsup_nf_n\) 由 \cref{b1:prop:limsup-liminf-measurable} 可测，并且 \(h=f\) 于 \(X\setminus Z\)。由 \cref{b1:thm:complete-null-modification}，\(f\) 可测。复值情形分别考察实部与虚部；它们在 \(X\setminus Z\) 上逐点收敛于 \(\operatorname{Re}f\) 与 \(\operatorname{Im}f\)，应用实值结论后再用 \cref{b1:prop:complex-components-measurable}。
+\end{proof}
+
+完备性确实不可省略。给 \([0,1]\) 配备 Borel \(\sigma\)-代数和限制后的 Lebesgue 测度；这个测度空间不完备。沿用 \cref{b1:prop:borel-implies-lebesgue-function} 证明中的非 Borel 集 \(N\subseteq C\)，令 \(f_n\equiv0\)，并令 \(g=\mathbf 1_N\)。函数列 \((f_n)\) 处处可测，并且在 Borel 零集 \(C\) 之外逐点收敛于 \(g\)，所以 \(f_n\to g\) 几乎处处；但 \(g^{-1}((1/2,3/2))=N\) 不是 Borel 集，故 \(g\) 不可测。同一个例子也说明，在不完备空间中，任意改变可测函数在零集上的取值可能破坏可测性。
+
+若把这个 Borel 测度空间完备化，\(N\) 以及所有 Borel 零集的子集都会进入新的 \(\sigma\)-代数，反例中的 \(g\) 随即变为可测。可见需要补充的不是新的极限定理，而是源空间对零测子集的封闭性。

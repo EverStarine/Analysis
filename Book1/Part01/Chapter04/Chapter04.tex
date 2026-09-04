@@ -1,27 +1,255 @@
 % !TeX root = ../../Book1.tex
 \chapter{可测函数与可测逼近}
 \label{b1:ch:04}
-% 本章摘要（不计入编号）
+
 \begin{chapterabstract}
-待填充。
+集合的可测性只回答哪些区域可以赋予测度；积分理论还需要判断函数是否与这些区域相容。本章从 \hyperref[b1:ch:01]{第一章} 的一般可测映射出发，建立实值、扩展实值和复值函数的可测性判别，证明可测性在代数运算、可数上下确界和逐点极限下保持。随后用二进量化和截断把扩展实值可测函数逼近为实值简单函数列。若 \(E\subseteq\mathbb R^d\) 可测、\(m(E)<\infty\)，且函数在 \(E\) 上几乎处处有限，Lusin 定理说明：对任意 \(\varepsilon>0\)，可以在 \(E\) 内找到紧集 \(K\)，使 \(m(E\setminus K)<\varepsilon\) 且限制函数在 \(K\) 上连续。Egoroff 定理则在一般有限测度空间中，把几乎处处收敛化为删去任意小测度集合后的一致收敛。
 \end{chapterabstract}
 
-% 本章目标（不计入编号）
 \begin{learninggoals}
-待填充。
+\begin{itemize}
+  \item \label{b1:item:0400-goal-1}能用阈值集判断扩展实值函数的可测性，并能处理复值函数、复合函数与合法的代数运算；
+  \item \label{b1:item:0400-goal-2}能证明可数上确界、下确界、上极限、下极限及逐点极限保持可测性，并指出可数性不可删；
+  \item \label{b1:item:0400-goal-3}能写出非负可测函数的显式单调简单函数逼近，并正确使用正部、负部和值域截断；
+  \item \label{b1:item:0400-goal-4}能区分“几乎处处相等”“在大紧集上连续”与“几乎处处连续”，并说明完备性在零测集修改中的作用；
+  \item \label{b1:item:0400-goal-5}能复原 Lusin 定理和 Egoroff 定理的证明，准确标出有限测度、几乎处处有限与正则性假设的使用位置。
+\end{itemize}
 \end{learninggoals}
+
+\begin{chapterguide}
+本章调用前三章的三组工具。\hyperref[b1:ch:01]{第一章}已经给出可测映射、生成元判别、复合、示性函数和实值阈值判别，本章只把这些工具扩展到积分所需的函数类；\hyperref[b1:ch:02]{第二章}的测度连续性控制递减坏集；\hyperref[b1:ch:03]{第三章}的完备性与正则性负责处理零测例外和紧集逼近。内部路线是
+\[
+\text{可测性判别}
+\longrightarrow \text{极限封闭性}
+\longrightarrow \text{简单函数与截断}
+\longrightarrow
+\begin{cases}
+\text{Lusin 的大集连续性},\\
+\text{Egoroff 的大集一致性}.
+\end{cases}
+\]
+其中 \hyperref[b1:sec:0403]{第~\ref*{b1:sec:0403}~节}是 \hyperref[b1:ch:05]{第五章}定义积分的直接接口。Lusin 定理在本书中先于 Egoroff 定理，因此其证明直接使用值域分割、尾集控制、测度连续性和内正则性，不预借后一结果。
+\end{chapterguide}
 
 \input{Part01/Chapter04/Section0401}
 \input{Part01/Chapter04/Section0402}
 \input{Part01/Chapter04/Section0403}
 \input{Part01/Chapter04/Section0404}
 \input{Part01/Chapter04/Section0405}
-% 本章小结（不计入编号）
+
 \begin{chaptersummary}
-待填充。
+实值或扩展实值函数的可测性可以由半直线阈值集检验，复值函数的可测性则等价于实部和虚部可测。借助乘积映射与连续运算，有限的和、积、最大值及最小值都保持可测；扩展实值运算若可能出现 \(\infty-\infty\) 或 \(0\cdot\infty\)，必须先排除未定义点。可数上确界和下确界仍可测，因而上极限、下极限和存在的逐点极限也可测。完备测度空间还允许在零测集上任意修改可测函数；在非完备空间中，这一结论会失败。
+
+非负可测函数可以由一列逐点递增的非负简单函数从下逼近。显式的二进构造同时控制量化误差和函数高度；正部、负部把一般扩展实值函数分解成两个非负分量，截断 \(T_Mf\) 则把无界问题化为有界问题。于是，简单函数负责离散化函数值，截断负责限制极端值，空间局部化负责把问题压到有限测度区域。
+
+在有限测度条件下，Lusin 定理把几乎处处有限的可测函数限制为大紧集上的连续函数，Egoroff 定理把几乎处处收敛的可测函数列限制为大可测集上的一致收敛。两者都只改变一个任意小测度的集合，却不声称原函数全局连续或原序列全局一致收敛；无限测度空间中的反例说明，有限测度假设不是证明上的便利条件。
 \end{chaptersummary}
 
-% 习题（不计入编号）
-\section*{习题}
+\BookExercises
 
-待填充。
+\begin{exercise}\label{b1:ex:0401}
+设 \((A_n)_{n\geq1}\) 是可测空间 \((X,\mathcal A)\) 的一个可数可测覆盖。对每个 \(n\)，函数
+\(f_n:(A_n,\mathcal A|_{A_n})\rightarrow\overline{\mathbb R}\) 可测，并且
+\[
+f_n=f_m\quad\text{在 }A_n\cap A_m\text{ 上成立}.
+\]
+证明公式 \(f(x)=f_n(x)\)（\(x\in A_n\)）给出了良定义的可测函数 \(f:X\rightarrow\overline{\mathbb R}\)。
+\end{exercise}
+\begin{solution}
+相容条件保证同一点无论选取哪个包含它的 \(A_n\)，所得函数值都相同，故 \(f\) 良定义。令
+\[
+B_1=A_1,
+\quad
+B_n=A_n\setminus\bigcup_{k<n}A_k\quad(n\geq2).
+\]
+这些集合可测、两两不交，且其并为 \(X\)。每个限制
+\(f_n|_{B_n}\) 可测；相容性又说明，\(f\) 在 \(B_n\) 上恰等于
+\(f_n|_{B_n}\)。对可测分割应用 \cref{b1:lem:measurable-pasting}，便知 \(f\) 可测。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:0402}
+设 \((f_n)_{n\geq1}\) 是一列非负可测函数。对每个 \(k\)，把
+\cref{b1:thm:nonnegative-simple-approximation} 的第 \(k\) 级二进公式分别应用于
+\(f_1,\ldots,f_k\)，所得简单函数记为 \(\varphi_{1,k},\ldots,\varphi_{k,k}\)。证明可以令
+\[
+s_k=\max_{1\leq j\leq k}\varphi_{j,k},
+\]
+从而得到一列非负简单函数 \(s_k\uparrow\sup_{n\geq1}f_n\)。
+\end{exercise}
+\begin{solution}
+同一级有限多个简单函数的最大值仍是简单函数，故 \(s_k\) 非负且简单。显式二进公式对逼近层级单调，所以当 \(j\leq k\) 时
+\(\varphi_{j,k}\leq\varphi_{j,k+1}\)；第 \(k+1\) 项还在最大值中增加了一个候选函数。因此
+\[
+s_k\leq s_{k+1}\leq\sup_{n\geq1}f_n.
+\]
+反过来，固定 \(j\)。当 \(k\geq j\) 时有
+\(s_k\geq\varphi_{j,k}\)，而
+\(\varphi_{j,k}\uparrow f_j\)。于是
+\[
+\lim_{k\to\infty}s_k\geq f_j
+\]
+对每个 \(j\) 成立。取 \(j\) 的上确界并结合前面的上界，得到
+\(s_k\uparrow\sup_jf_j\)。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:0403}
+设 \(f:\mathbb R^d\rightarrow\overline{\mathbb R}\) Lebesgue 可测。证明存在 Borel 可测函数
+\(g:\mathbb R^d\rightarrow\overline{\mathbb R}\)，使 \(f=g\) 几乎处处。
+\end{exercise}
+\begin{solution}
+由 \cref{b1:cor:simple-pointwise-characterization}，可取实值简单函数 \(s_n\to f\) 逐点成立。把 \(s_n\) 的规范表示写成
+\[
+s_n=\sum_{j=1}^{N_n}a_{n,j}\mathbf 1_{E_{n,j}}.
+\]
+由 \cref{b1:thm:borel-approximation}，对每个 \(E_{n,j}\) 可取 Borel 集 \(B_{n,j}\)，使
+\(E_{n,j}\mathbin{\triangle}B_{n,j}\) 为零测集。令
+\(t_n=\sum_ja_{n,j}\mathbf 1_{B_{n,j}}\)，则 \(t_n\) Borel 可测，而且 \(t_n=s_n\) 在一个零测集外成立。所有这些例外集的可数并仍为零测集，所以在其补集上 \(t_n\to f\)。定义
+\[
+g=\limsup_{n\to\infty}t_n.
+\]
+函数 \(g\) Borel 可测，并在上述补集上等于 \(f\)，即为所求 Borel 代表。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:0404}
+设 \((X,\mathcal A,\mu)\) 不一定完备，扩展实值或复值可测函数列 \((f_n)\) 几乎处处收敛于同值域函数 \(f\)。证明总存在一个可测函数 \(g\)，使 \(f=g\) 几乎处处；再说明为何在完备空间中可以进一步断定给定的 \(f\) 本身可测。
+\end{exercise}
+\begin{solution}
+对扩展实值函数令
+\[
+g=\limsup_{n\to\infty}f_n.
+\]
+由极限运算的可测性，\(g\) 可测；在 \((f_n)\) 收敛于 \(f\) 的点，上极限等于普通极限，所以 \(g=f\) 几乎处处。
+
+若 \((f_n)\) 为复值函数列，令 \(C\) 为它的逐点收敛点集。第 \ref{b1:subsec:040203} 小节的 Cauchy 判别已经说明 \(C\in\mathcal A\)。在 \(C\) 上令
+\[
+g(x)=\lim_{n\to\infty}f_n(x),
+\]
+在 \(X\setminus C\) 上令 \(g(x)=0\)。限制函数 \(f_n|_C\) 的逐点极限在 \(C\) 上可测，再由 \cref{b1:lem:measurable-pasting}，\(g\) 在 \(X\) 上可测。几乎处处收敛保证 \(X\setminus C\) 是零测集，且 \(g=f\) 几乎处处。
+
+若空间完备，则可测函数 \(g\) 在一个可测零集上任意修改后仍可测；既然 \(f=g\) 几乎处处，\cref{b1:thm:complete-null-modification} 便给出 \(f\) 可测。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:0405}
+在 \((0,1]\) 上令 \(f(x)=x^{-1}\)，并对它写出
+\cref{b1:thm:nonnegative-simple-approximation} 中的 \(\varphi_n\)。证明 \(\varphi_n\uparrow f\) 逐点成立，但收敛不一致。
+\end{exercise}
+\begin{solution}
+把定理中的水平集与 \(f(x)=x^{-1}\) 代入即可得到
+\[
+\varphi_n(x)=
+\begin{cases}
+2^{-n}\lfloor2^n/x\rfloor,&x>1/n,\\
+n,&0<x\leq1/n.
+\end{cases}
+\]
+在分界点 \(x=1/n\) 两个表达式都给出 \(n\)。固定 \(x\)。当 \(n>1/x\) 时，\(x>1/n\)，于是
+\[
+0\leq \frac1x-\varphi_n(x)<2^{-n};
+\]
+故 \(\varphi_n(x)\to x^{-1}\)。再核对单调性：若 \(x\leq1/(n+1)\)，则
+\(\varphi_n(x)=n<n+1=\varphi_{n+1}(x)\)；若
+\(1/(n+1)<x\leq1/n\)，则 \(n\leq x^{-1}<n+1\)，从而
+\(\varphi_n(x)=n\leq\varphi_{n+1}(x)\)；若 \(x>1/n\)，则
+\[
+\varphi_n(x)=2^{-n}\lfloor2^n/x\rfloor
+\leq2^{-n-1}\lfloor2^{n+1}/x\rfloor
+=\varphi_{n+1}(x).
+\]
+因此 \(\varphi_n\uparrow f\) 逐点成立。另一方面，对每个固定 \(n\)，当 \(x\downarrow0\) 时
+\[
+f(x)-\varphi_n(x)=x^{-1}-n\longrightarrow\infty.
+\]
+所以 \(\sup_{0<x\leq1}|f(x)-\varphi_n(x)|=\infty\)，不可能一致收敛。这说明非负简单逼近的有界情形加强不能推广到无界函数。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:0406}
+设 \((X,\mathcal A,\mu)\) 是测度空间，\(E\in\mathcal A\)、\(\mu(E)<\infty\)，且 \(f:E\rightarrow\overline{\mathbb R}\) 可测。证明下列条件等价：
+\begin{equivalences}
+  \item \label{b1:item:0406-1}\(f\) 几乎处处有限；
+  \item \label{b1:item:0406-2}\(\mu(\{|f|>M\})\to0\) 当 \(M\to\infty\)；
+  \item \label{b1:item:0406-3}对每个 \(\eta>0\)，
+  \[
+  \mu\bigl(\{|T_Mf-f|>\eta\}\bigr)\longrightarrow0.
+  \]
+\end{equivalences}
+\end{exercise}
+\begin{solution}
+由 \cref{b1:prop:truncation-properties}，
+\itemref{b1:item:0406-1}推出\itemref{b1:item:0406-2}。又因
+\[
+\{|T_Mf-f|>\eta\}
+\subseteq\{|f|>M\},
+\]
+故\itemref{b1:item:0406-2}推出\itemref{b1:item:0406-3}。最后，集合
+\(N=\{|f|=\infty\}\) 包含于每个
+\(\{|T_Mf-f|>1\}\)；若\itemref{b1:item:0406-3}成立，则
+\(\mu(N)=0\)，所以\itemref{b1:item:0406-1}成立。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:0407}
+设 \(E\subseteq\mathbb R^d\) 可测且 \(m(E)<\infty\)，函数列
+\((f_j)_{j\geq1}\) 中每个 \(f_j:E\rightarrow\mathbb R\) 都可测。证明对每个 \(\varepsilon>0\)，存在同一个紧集 \(K\subseteq E\)，使
+\[
+m(E\setminus K)<\varepsilon
+\]
+且每个限制函数 \(f_j|_K\) 都连续。
+\end{exercise}
+\begin{solution}
+对第 \(j\) 个函数应用 Lusin 定理，并把误差预算取为
+\(\varepsilon2^{-j-1}\)，得到紧集 \(K_j\subseteq E\)，使
+\[
+m(E\setminus K_j)<\varepsilon2^{-j-1}
+\]
+且 \(f_j|_{K_j}\) 连续。令
+\(K=\bigcap_{j=1}^{\infty}K_j\)。它是紧集 \(K_1\) 的闭子集，因而紧，并且
+\[
+m(E\setminus K)
+\leq\sum_{j=1}^{\infty}m(E\setminus K_j)
+<\frac{\varepsilon}{2}<\varepsilon.
+\]
+限制一个连续函数到更小的子集仍连续；由于 \(K\subseteq K_j\) 对每个 \(j\) 成立，所有 \(f_j|_K\) 都连续。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:0408}
+在 \([0,1]\) 上令
+\(f_n=\mathbf 1_{(0,1/n)}\)。证明 \(f_n\to0\) 处处成立但不一致收敛。对给定的 \(\varepsilon>0\)，显式写出一个紧集 \(K\subseteq[0,1]\)，使
+\(m([0,1]\setminus K)<\varepsilon\) 且 \(f_n\to0\) 在 \(K\) 上一致收敛。
+\end{exercise}
+\begin{solution}
+点 \(x=0\) 不属于任何 \((0,1/n)\)；若 \(x>0\)，则当
+\(n>1/x\) 时也有 \(x\notin(0,1/n)\)。所以 \(f_n(x)\to0\) 对每个 \(x\) 成立。另一方面，每个区间 \((0,1/n)\) 非空，故
+\[
+\sup_{x\in[0,1]}|f_n(x)|=1,
+\]
+收敛不一致。取 \(0<\delta<\min\{1,\varepsilon\}\)，并令
+\(K=\{0\}\cup[\delta,1]\)。这是紧集，补集测度为
+\(\delta<\varepsilon\)。当 \(n>1/\delta\) 时，\((0,1/n)\cap K=\varnothing\)，因而 \(f_n|_K\equiv0\)；收敛在 \(K\) 上甚至从某一项起恒等成立。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:0409}
+设测度空间 \((X,\mathcal A,\mu)\) 是 \(\sigma\)-有限的，\(f_n,f:X\rightarrow\mathbb R\)（或均取值于 \(\mathbb C\)）为可测函数，并且
+\(f_n\to f\) 几乎处处。证明存在递增可测集列
+\[
+E_1\subseteq E_2\subseteq\cdots,
+\quad
+\mu(E_j)<\infty,
+\quad
+\bigcup_{j=1}^{\infty}E_j=X,
+\]
+使得给定 \(\varepsilon>0\) 后，可以为每个 \(j\) 取
+\(A_j\subseteq E_j\)、\(\mu(A_j)<\varepsilon2^{-j}\)，且
+\(f_n\to f\) 在 \(E_j\setminus A_j\) 上一致。解释为什么这只给出逐层的一致收敛，而不保证在
+\(X\setminus\bigcup_jA_j\) 上全局一致收敛。
+\end{exercise}
+\begin{solution}
+由 \(\sigma\)-有限性，可取有限测度可测集 \((F_j)\) 覆盖
+\(X\)。令 \(E_j=\bigcup_{k=1}^{j}F_k\)，便得到题设的递增有限测度穷竭。把 Egoroff 定理的几乎处处版本应用于每个 \(E_j\)，并使用误差预算
+\(\varepsilon2^{-j}\)，即可得到所需的 \(A_j\)。此外
+\[
+\mu\left(\bigcup_{j=1}^{\infty}A_j\right)
+\leq\sum_{j=1}^{\infty}\varepsilon2^{-j}
+=\varepsilon.
+\]
+然而，第 \(j\) 层的一致收敛指标可以依赖于 \(j\)。给定误差尺度后，这些指标未必对 \(j\) 有共同上界；对所有层取并便不能得到一个同时控制整个
+\(X\setminus\bigcup_jA_j\) 的指标。实直线上的平移指示函数反例正体现了这种指标向无穷远逃逸的现象。
+\end{solution}

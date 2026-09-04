@@ -2,19 +2,352 @@
 \section{Egoroff 定理}
 \label{b1:sec:0405}
 
-% TODO: 撰写本节正文。
+逐点收敛允许收敛开始的时刻随空间点改变，一致收敛则要求同一个时刻对所有点有效。两者通常相差很远。有限测度使这种差距可以集中到任意小的例外集上：舍去该集合以后，逐点收敛能够提升为一致收敛。
 
-\subsection{点态与一致收敛}
+\subsection{逐点与一致收敛}
 \label{b1:subsec:040501}
 
-待填充。
+\cref{b1:def:pointwise-convergence} 已经定义逐点收敛。对实值或复值函数列，它表示：对每个 \(x\in E\) 和每个 \(\eta>0\)，都存在可以依赖于 \(x\) 与 \(\eta\) 的整数 \(N=N(x,\eta)\)，使
+\[
+n\geq N
+\quad\Longrightarrow\quad
+|f_n(x)-f(x)|<\eta,
+\]
+也就是先固定空间点，再考察相应的数列。
+
+\begin{definition}
+\label{b1:def:uniform-convergence}
+设 \(E\) 是集合，\(f_n,f:E\rightarrow\mathbb R\) 或
+\(f_n,f:E\rightarrow\mathbb C\)。
+如果对每个 \(\eta>0\)，存在只依赖于 \(\eta\) 的整数
+\(N=N(\eta)\)，使
+\[
+n\geq N,\ x\in E
+\quad\Longrightarrow\quad
+|f_n(x)-f(x)|<\eta,
+\]
+就称 \(f_n\) 在 \(E\) 上\term[yizhi-shoulian]{一致收敛}[uniform convergence]于 \(f\)。
+\end{definition}
+
+两个定义的差别在量词次序。逐点收敛先固定 \(x\)，再选择 \(N\)；一致收敛先选择 \(N\)，这个 \(N\) 随后要适用于每个 \(x\)。当 \(E\ne\varnothing\) 时，后一条件等价于
+\[
+\sup_{x\in E}|f_n(x)-f(x)|\longrightarrow0,
+\]
+其中上确界允许暂时取 \(+\infty\)。一致收敛必然推出逐点收敛，反命题一般不成立。
+
+例如在 \(E=[0,1]\) 上令 \(f_n(x)=x^n\)。它逐点收敛于函数
+\[
+f(x)=
+\begin{cases}
+0,&0\leq x<1,\\
+1,&x=1.
+\end{cases}
+\]
+然而
+\[
+\sup_{x\in[0,1]}|f_n(x)-f(x)|=1
+\]
+对每个 \(n\) 都成立，因为 \(x^n\) 在 \(x<1\) 时可以任意接近
+\(1\)。所以收敛不一致。这个例子也说明，连续函数的逐点极限可以不连续。
+
+\begin{proposition}
+\label{b1:prop:uniform-limit-continuous}
+若 \(E\subseteq\mathbb R^d\)，每个 \(f_n:E\rightarrow\mathbb R\) 都相对于 \(E\) 连续，且 \(f_n\to f\) 一致收敛，则 \(f\) 相对于 \(E\) 连续。复值函数同样成立。
+\end{proposition}
+\begin{proof}
+固定 \(x\in E\) 与 \(\eta>0\)。由一致收敛，可取 \(N\)，使
+\[
+|f_N(y)-f(y)|<\frac{\eta}{3}
+\quad(y\in E).
+\]
+由 \(f_N\) 在 \(x\) 处连续，存在 \(\delta>0\)，使得
+\(y\in E\)、\(|x-y|<\delta\) 时
+\[
+|f_N(y)-f_N(x)|<\frac{\eta}{3}.
+\]
+于是
+\begin{align*}
+|f(y)-f(x)|
+&\leq |f(y)-f_N(y)|+|f_N(y)-f_N(x)|+|f_N(x)-f(x)|\\
+&<\eta.
+\end{align*}
+这正是 \(f\) 在 \(x\) 处相对于 \(E\) 的连续性。
+\end{proof}
+
+一致收敛也可以不预先知道极限而加以判定。
+
+\begin{proposition}
+\label{b1:prop:uniform-cauchy-criterion}
+函数列 \(f_n:E\rightarrow\mathbb R\) 或 \(\mathbb C\) 一致收敛，当且仅当它满足\term[yizhi-cauchy-tiaojian]{一致 Cauchy 条件}[uniform Cauchy condition]：对每个 \(\eta>0\)，存在 \(N\)，使得
+\[
+m,n\geq N,\ x\in E
+\quad\Longrightarrow\quad
+|f_m(x)-f_n(x)|<\eta.
+\]
+\end{proposition}
+\begin{proof}
+若 \(f_n\to f\) 一致，取 \(N\) 使
+\(|f_n(x)-f(x)|<\eta/2\) 对所有 \(n\geq N\)、\(x\in E\) 成立。三角不等式立即给出一致 Cauchy 条件。
+
+反过来，设该条件成立。固定 \(x\in E\) 后，数列
+\((f_n(x))\) 是 \(\mathbb R\) 或 \(\mathbb C\) 中的 Cauchy 列，由完备性收敛到某个值，记为 \(f(x)\)。给定 \(\eta>0\)，在一致 Cauchy 条件中把误差取为 \(\eta/2\)，得到 \(N\)。若 \(m\geq N\)，则对所有 \(n\geq N\) 和 \(x\in E\) 都有
+\[
+|f_m(x)-f_n(x)|<\frac{\eta}{2}.
+\]
+固定 \(m,x\) 并令 \(n\to\infty\)，得到
+\[
+|f_m(x)-f(x)|\leq\frac{\eta}{2}<\eta.
+\]
+同一个 \(N\) 对所有 \(x\) 有效，故 \(f_n\to f\) 一致收敛。
+\end{proof}
+
+逐点收敛缺少的正是这种统一尾部控制。在 \(x^n\) 的例子中，每个
+\(x<1\) 都有自己的收敛速度；当 \(x\) 越靠近 \(1\)，使 \(x^n\) 变小所需的 \(n\) 越大，因而不存在适用于整个区间的指标。
 
 \subsection{几乎一致收敛}
 \label{b1:subsec:040502}
 
-待填充。
+\begin{definition}
+\label{b1:def:almost-uniform-convergence}
+设 \((X,\mathcal A,\mu)\) 是测度空间，\(E\in\mathcal A\)，并设
+\(f_n,f:E\rightarrow\mathbb R\) 或 \(\mathbb C\) 可测。如果对每个
+\(\varepsilon>0\)，都存在可测集 \(A\subseteq E\)，使
+\[
+\mu(A)<\varepsilon
+\]
+并且 \(f_n\to f\) 在 \(E\setminus A\) 上一致收敛，就称
+\(f_n\) 在 \(E\) 上\term[jihu-yizhi-shoulian]{几乎一致收敛}[almost uniform convergence]于 \(f\)。
+\end{definition}
 
-\subsection{Egoroff 定理}
+例外集 \(A\) 可以随 \(\varepsilon\) 改变。定义要求的是在整个
+\(E\setminus A\) 上统一选择收敛指标，而不是对其中每个点分别选择。用上确界写，这个要求是
+\[
+\sup_{x\in E\setminus A}|f_n(x)-f(x)|
+\longrightarrow0.
+\]
+若原收敛已经一致，可取 \(A=\varnothing\)，所以一致收敛蕴含几乎一致收敛。
+
+把所有量词写出，几乎一致收敛的次序是
+\[
+\text{对每个 }\varepsilon>0\text{，存在 }A,\ \mu(A)<\varepsilon;
+\quad
+\text{对每个 }\eta>0\text{，存在 }N;
+\quad
+\text{对所有 }n\geq N,\ x\in E\setminus A.
+\]
+相比之下，几乎处处收敛只在开头删去一个零测集，随后逐点收敛所需的
+\(N\) 仍可依赖于 \(x\)。Egoroff 定理的内容不是把例外集从正测度改成零测度，而是在有限测度条件下交换“选取 \(N\)”与“选取 \(x\)”的先后。
+
+前面的 \(x^n\) 已经给出一个不一致而几乎一致的例子。给定
+\(\varepsilon>0\)，取
+\[
+0<\delta<\min\{1,\varepsilon\},
+\quad
+A=(1-\delta,1].
+\]
+集合 \(A\) 的测度为 \(\delta<\varepsilon\)，而在
+\(E\setminus A=[0,1-\delta]\) 上，极限函数恒为零，并且
+\[
+\sup_{x\in[0,1-\delta]}|f_n(x)-f(x)|
+\leq(1-\delta)^n\longrightarrow0.
+\]
+例外集删去了收敛速度最慢、不断向端点 \(1\) 靠近的区域。
+
+这里不能把正测度但任意小的 \(A\) 换成一个固定零测集。事实上，若
+\(N\subseteq[0,1]\) 为零测集，那么对每个 \(a<1\)，区间
+\((a,1)\setminus N\) 都非空。即使把端点 \(1\) 放入 \(N\)，仍有
+\[
+\sup_{x\in[0,1]\setminus N}|x^n-f(x)|=1.
+\]
+所以 \(x^n\to f\) 不会在任何删去零测集后的定义域上一致收敛。几乎一致收敛允许例外集依精度改变，并允许它有正但任意小的测度。
+
+另一个例子把例外集的作用显示得更直接。在 \(E=[0,1]\) 上令
+\[
+g_n=\mathbf 1_{[0,1/n]},
+\quad
+g=\mathbf 1_{\{0\}}.
+\]
+函数列逐点收敛，但不一致收敛，因为对每个 \(n\) 都能在
+\((0,1/n]\) 中找到误差为 \(1\) 的点。给定 \(\varepsilon>0\)，取
+\(0<\delta<\min\{1,\varepsilon\}\) 并删去 \(A=(0,\delta)\)。只要
+\(n>\delta^{-1}\)，就在
+\([0,1]\setminus A=\{0\}\cup[\delta,1]\) 上有 \(g_n=g\)。这里收敛甚至从某一项起完全相等。
+
+\begin{proposition}
+\label{b1:prop:almost-uniform-implies-ae}
+在任意测度空间中，几乎一致收敛蕴含几乎处处收敛。
+\end{proposition}
+\begin{proof}
+对每个 \(r\geq1\)，由几乎一致收敛取可测集
+\(A_r\subseteq E\)，使 \(\mu(A_r)<2^{-r}\)，且
+\(f_n\to f\) 在 \(E\setminus A_r\) 上一致收敛。令
+\[
+N=\bigcap_{r=1}^{\infty}A_r.
+\]
+对每个 \(r\)，都有 \(\mu(N)\leq\mu(A_r)<2^{-r}\)，故
+\(\mu(N)=0\)。若 \(x\in E\setminus N\)，则至少存在一个 \(r\)，使
+\(x\notin A_r\)；在 \(E\setminus A_r\) 上的一致收敛特别给出
+\(f_n(x)\to f(x)\)。所以收敛在 \(E\setminus N\) 上逐点成立。
+\end{proof}
+
+这个方向不需要 \(\mu(E)<\infty\)。反向推理要把每个误差尺度下收敛过慢的点装进小集合，有限测度由此进入证明。
+
+\subsection{Egoroff 定理的证明}
 \label{b1:subsec:040503}
 
-待填充。
+\term*[egoroff-dingli]{Egoroff 定理}[Egoroff theorem]把逐点收敛中的无穷多个点依赖指标集中到一个小例外集。先固定误差尺度，再控制从某一项起仍然违反该尺度的点。
+
+\begin{theorem}
+\label{b1:thm:egoroff}
+设 \((X,\mathcal A,\mu)\) 是测度空间，\(E\in\mathcal A\) 且
+\(\mu(E)<\infty\)。设可测函数
+\(f_n,f:E\rightarrow\mathbb R\) 或 \(\mathbb C\) 在 \(E\) 上满足
+\(f_n(x)\to f(x)\)。则 \(f_n\to f\) 在 \(E\) 上几乎一致收敛。
+\end{theorem}
+\begin{proof}
+固定 \(\varepsilon>0\)。对整数 \(r,N\geq1\)，令
+\[
+B_{r,N}
+=\bigcup_{n=N}^{\infty}
+\{\,x\in E\mid |f_n(x)-f(x)|\geq r^{-1}\,\}.
+\]
+函数均可测，所以每个 \(B_{r,N}\) 可测。固定 \(r\) 后，集合列
+\((B_{r,N})_N\) 随 \(N\) 递减。逐点收敛说明
+\[
+\bigcap_{N=1}^{\infty}B_{r,N}=\varnothing.
+\]
+一个点若属于这个交集，就会对每个 \(N\) 找到某个 \(n\geq N\)，使误差至少为 \(r^{-1}\)，这与该点处的收敛矛盾。
+
+可测性在此处不能省略：它保证每一个误差集以及可数并
+\(B_{r,N}\) 都可测，因而能够比较其测度并使用从上连续性。
+
+又因 \(B_{r,1}\subseteq E\) 且 \(\mu(E)<\infty\)，测度的从上连续性给出
+\[
+\mu(B_{r,N})\longrightarrow0
+\quad(N\to\infty).
+\]
+也可以改看好点集合
+\[
+G_{r,N}=E\setminus B_{r,N}
+=\bigcap_{n=N}^{\infty}
+\{\,x\in E\mid |f_n(x)-f(x)|<r^{-1}\,\}.
+\]
+对固定的 \(r\)，这些集合随 \(N\) 递增并覆盖 \(E\)。有限测度允许把
+\(\mu(G_{r,N})\uparrow\mu(E)\) 改写成
+\(\mu(E\setminus G_{r,N})\downarrow0\)。后一种写法就是坏点集合的估计。
+因此可以为每个 \(r\) 选取整数 \(N_r\)，使
+\[
+\mu(B_{r,N_r})<\varepsilon2^{-r-1}.
+\]
+把所有误差尺度下的坏点放在一起，令
+\[
+A=\bigcup_{r=1}^{\infty}B_{r,N_r}.
+\]
+于是 \(A\subseteq E\) 可测，并且
+\[
+\mu(A)
+\leq\sum_{r=1}^{\infty}\mu(B_{r,N_r})
+\leq\frac{\varepsilon}{2}<\varepsilon.
+\]
+
+若 \(x\in E\setminus A\)，则对每个 \(r\) 都有
+\(x\notin B_{r,N_r}\)。按照 \(B_{r,N_r}\) 的定义，只要
+\(n\geq N_r\)，就有
+\[
+|f_n(x)-f(x)|<r^{-1}.
+\]
+这个 \(N_r\) 与 \(x\) 无关。给定 \(\eta>0\)，选择 \(r\) 使
+\(r^{-1}<\eta\)，便知对所有 \(n\geq N_r\) 和所有
+\(x\in E\setminus A\)，都有
+\[
+|f_n(x)-f(x)|<\eta.
+\]
+所以 \(f_n\to f\) 在 \(E\setminus A\) 上一致收敛。
+\end{proof}
+
+若只假设每个 \(f_n\) 可测，极限函数 \(f\) 的可测性也会由逐点极限保持可测性得到；定理把它列入假设，是为了让所有误差集合的可测性在陈述中直接可见。整个证明没有使用 \(X\) 上的拓扑，也不要求函数连续。与 Lusin 定理不同，Egoroff 定理是纯测度论结论。
+
+证明可以直接按量词阅读。逐点收敛为每个 \(x\) 和每个精度
+\(r^{-1}\) 提供一个依赖于 \(x\) 的起始位置；集合 \(B_{r,N}\) 记录起始位置晚于 \(N\) 的点。有限测度使这类点的测度随 \(N\) 趋于零。选出的 \(N_r\) 只依赖精度 \(r^{-1}\)，删除所有 \(B_{r,N_r}\) 后，便恢复了一致收敛所需的量词次序。
+
+定理只要求 \(\mu(E)<\infty\)，不要求 \(E\) 有界、闭或紧。例如欧氏空间中可以取一个向无穷处延伸但总测度有限的可测集；只要它的测度有限，同一坏点集合论证仍然成立。紧集只在后面的 Lebesgue 正则性加强版中出现。
+
+结合 \cref{b1:prop:almost-uniform-implies-ae} 可知，在
+\(\mu(E)<\infty\) 时，几乎处处收敛与几乎一致收敛等价。前者允许先舍去一个零测集，后者则要求每个给定的正误差预算都留下一个一致收敛的大集合。下面把零测例外并入 Egoroff 定理。
+
+\begin{corollary}[几乎处处版本]
+\label{b1:cor:egoroff-ae}
+设 \(\mu(E)<\infty\)，可测函数
+\(f_n,f:E\rightarrow\mathbb R\) 或 \(\mathbb C\) 满足
+\(f_n\to f\) 几乎处处。则 \(f_n\to f\) 几乎一致。
+\end{corollary}
+\begin{proof}
+取可测零测集 \(N\subseteq E\)，使收敛在 \(E\setminus N\) 上逐点成立。给定 \(\varepsilon>0\)，把
+\cref{b1:thm:egoroff} 应用于有限测度集 \(E\setminus N\)，得到可测集 \(A_0\subseteq E\setminus N\)，满足
+\(\mu(A_0)<\varepsilon\)，且收敛在
+\((E\setminus N)\setminus A_0\) 上一致。令 \(A=N\cup A_0\)。由于
+\(\mu(N)=0\)，有 \(\mu(A)<\varepsilon\)，而
+\[
+E\setminus A=(E\setminus N)\setminus A_0,
+\]
+结论成立。
+\end{proof}
+
+同一结论适用于几乎处处有限的扩展实值函数列。若每个
+\(f_n:E\rightarrow\overline{\mathbb R}\) 及极限 \(f\) 都几乎处处有限，并且
+\(f_n\to f\) 几乎处处，那么先删去收敛失败的零测集，再删去
+\[
+\{\,|f|=\infty\,\}
+\cup\bigcup_{n=1}^{\infty}\{\,|f_n|=\infty\,\}.
+\]
+这是零测集的可数并。余下集合上所有函数均为实值，可以使用上述推论。“几乎处处有限”这一条件使通常的绝对值误差在保留下来的集合上有定义。
+
+在欧氏空间中还可把一致收敛集合取得紧一些。
+
+\begin{corollary}
+\label{b1:cor:egoroff-compact}
+设 \(E\in\mathcal L^d\)、\(m(E)<\infty\)，且可测函数
+\(f_n,f:E\rightarrow\mathbb R\) 或 \(\mathbb C\) 几乎处处收敛。则对每个
+\(\varepsilon>0\)，存在紧集 \(K\subseteq E\)，使
+\(m(E\setminus K)<\varepsilon\)，并且 \(f_n\to f\) 在 \(K\) 上一致收敛。
+\end{corollary}
+\begin{proof}
+先由 \cref{b1:cor:egoroff-ae} 取可测集 \(A\subseteq E\)，使
+\(m(A)<\varepsilon/2\)，且收敛在 \(F=E\setminus A\) 上一致。由内正则性在 \(F\) 中取紧集 \(K\)，使
+\(m(F\setminus K)<\varepsilon/2\)。由于
+\[
+E\setminus K=A\sqcup(F\setminus K),
+\]
+所以 \(m(E\setminus K)<\varepsilon\)，而一致收敛在子集
+\(K\subseteq F\) 上仍然成立。
+\end{proof}
+
+若上述推论中的每个 \(f_n\) 都相对于 \(E\) 连续，则限制
+\(f_n|_K\) 在 \(K\) 上连续。结合
+\cref{b1:prop:uniform-limit-continuous}，可知极限 \(f|_K\) 也连续。这个结论常用于已有连续逼近列的场合；它与上一节 Lusin 定理的直接证明相容，但不能反过来充当那一证明，因为构造连续逼近列本身还需要额外论证。
+
+有限测度假设不能删除。令 \(E=\mathbb R\)，并取
+\[
+f_n=\mathbf 1_{[n,n+1)},
+\quad
+f=0.
+\]
+对每个固定的 \(x\in\mathbb R\)，只有有限多个区间 \([n,n+1)\) 能含
+\(x\)，所以 \(f_n(x)\to0\)。但若可测集 \(A\subseteq\mathbb R\) 满足
+\(m(A)<1/2\)，那么对每个 \(n\) 都有
+\[
+m\bigl([n,n+1)\setminus A\bigr)
+\geq1-m(A)>\frac12.
+\]
+故 \([n,n+1)\setminus A\) 非空，并且
+\[
+\sup_{x\in\mathbb R\setminus A}|f_n(x)|=1
+\quad(n\geq1).
+\]
+收敛在 \(\mathbb R\setminus A\) 上不一致，因此也不几乎一致。在定理的证明中，有限测度正是用来从
+\(B_{r,N}\downarrow\varnothing\) 推出 \(\mu(B_{r,N})\to0\)；本例在
+\(r=2\) 时有 \(B_{2,N}=[N,\infty)\)，其测度始终为无穷。
+
+无穷测度空间上的局部结论仍然成立。若
+\(E=\bigcup_{j=1}^{\infty}E_j\)，其中 \(E_j\uparrow E\) 且
+\(\mu(E_j)<\infty\)，则可在每个 \(E_j\) 上分别使用 Egoroff 定理。不过，所得一致收敛指标通常依赖于 \(j\)，不能拼成整个 \(E\) 上的一致收敛；移动区间的例子正表明这种局部结论不能自动升级为全局结论。

@@ -2,19 +2,276 @@
 \section{Lusin 定理}
 \label{b1:sec:0404}
 
-% TODO: 撰写本节正文。
+连续函数一定可测，可测函数却可能处处不连续。二者之间仍有一种测度意义下的联系：若只要求函数在定义域的一个大子集上连续，那么几乎处处有限的可测函数总能满足要求。这里的“大”是指舍去部分的测度可以任意小；所得连续性则是限制函数在子集的相对拓扑中的连续性。
 
 \subsection{可测函数与连续函数}
 \label{b1:subsec:040401}
 
-待填充。
+设 \(E\subseteq\mathbb R^d\)、\(K\subseteq E\)，并设 \(f:E\rightarrow\mathbb R\)。把 \(K\) 看成带有欧氏空间相对拓扑的空间。如果限制
+\(f|_K:K\rightarrow\mathbb R\) 连续，就说 \(f\) 在 \(K\) 上\term[xiangdui-lianxu]{相对连续}[relative continuity]。换成量词，这表示对每个 \(x\in K\) 和每个 \(\eta>0\)，存在 \(\delta>0\)，使得
+\[
+ y\in K,\ |x-y|<\delta
+ \quad\Longrightarrow\quad
+ |f(y)-f(x)|<\eta.
+\]
 
-\subsection{Lusin 定理}
+这里的 \(y\) 只能在 \(K\) 中趋近 \(x\)。定义域 \(E\setminus K\) 中的点即使任意接近 \(x\)，也不参与 \(f|_K\) 的连续性检验。相对连续弱于原函数在 \(E\) 中各点处的连续；若 \(K\) 不是 \(E\) 的相对邻域，二者尤其不能混为一谈。
+
+由于欧氏空间是度量空间，这一定义也可用序列检验：对任意
+\(x\in K\) 和任意满足 \(x_\nu\in K\)、\(x_\nu\to x\) 的序列，都有
+\(f(x_\nu)\to f(x)\)。若把条件 \(x_\nu\in K\) 擅自换成
+\(x_\nu\in E\)，检验的已经是原函数在 \(x\) 处的连续性。
+
+\begin{proposition}
+\label{b1:prop:relative-continuity-implies-measurability}
+设 \(E\in\mathcal L^d\)。若 \(f:E\rightarrow\mathbb R\) 相对于 \(E\) 连续，则 \(f\) 是 Lebesgue 可测函数。复值函数也有相同结论。
+\end{proposition}
+\begin{proof}
+对任意开集 \(V\subseteq\mathbb R\)，连续性说明 \(f^{-1}(V)\) 是 \(E\) 中的相对开集，因而存在开集 \(G\subseteq\mathbb R^d\)，使
+\[
+f^{-1}(V)=E\cap G.
+\]
+集合 \(E\) Lebesgue 可测，开集 \(G\) 是 Borel 集，所以
+\(E\cap G\in\mathcal L^d\)。开集生成 \(\mathbb R\) 的 Borel
+\(\sigma\)-代数，故 \(f\) 可测。对复值函数，把 \(\mathbb C\) 识别为
+\(\mathbb R^2\)，同一论证仍然适用。
+\end{proof}
+
+反命题不成立；可测性只要求开集的反像可测，并不要求这些反像在 \(E\) 中开。先看只取有限多个值的情形，可以直接看出测度正则性如何制造相对连续性。
+
+\begin{proposition}
+\label{b1:prop:simple-function-lusin}
+设 \(E\in\mathcal L^d\)、\(m(E)<\infty\)，并设
+\(s:E\rightarrow\mathbb R\) 是简单函数。对每个 \(\varepsilon>0\)，都存在紧集
+\(K\subseteq E\)，使 \(m(E\setminus K)<\varepsilon\)，而且 \(s|_K\) 局部常值，因而连续。
+\end{proposition}
+\begin{proof}
+若 \(E=\varnothing\)，取 \(K=\varnothing\) 即可。以下设 \(E\ne\varnothing\)，并把 \(s\) 的规范表示写成
+\[
+s=\sum_{j=1}^{N}a_j\mathbf 1_{A_j},
+\]
+其中 \(A_1,\ldots,A_N\) 是 \(E\) 的可测分割。对每个 \(j\)，由内正则性选取紧集 \(K_j\subseteq A_j\)，使
+\[
+m(A_j\setminus K_j)<\frac{\varepsilon}{N}.
+\]
+令 \(K=\bigcup_{j=1}^{N}K_j\)。它是紧集，并且
+\[
+m(E\setminus K)
+=\sum_{j=1}^{N}m(A_j\setminus K_j)<\varepsilon.
+\]
+
+其中非空的 \(K_j\) 两两不交。若至多只有一个非空，则 \(s|_K\) 为常值函数；否则，这些紧集中任意两个之间的距离为正，而它们的数目有限。因此每个 \(x\in K_j\) 在 \(K\) 中都有一个邻域只与 \(K_j\) 相交。函数 \(s\) 在这个邻域上恒等于 \(a_j\)，故 \(s|_K\) 局部常值。
+\end{proof}
+
+对示性函数 \(s=\mathbf 1_A\)，这个构造尤其直观。分别从
+\(E\cap A\) 与 \(E\setminus A\) 中取损失很小的紧集 \(K_1,K_0\)，再令
+\(K=K_0\cup K_1\)。两个紧集之间有正距离；在 \(K\) 的相对拓扑中，它们既闭又开，示性函数分别恒为 \(0\) 与 \(1\)。原来可能十分复杂的边界被包含在舍去的部分中。
+
+这个命题没有要求简单函数的水平集本身闭合。内正则性从每个水平集内部留下一个紧片，有限性则保证不同紧片之间有正距离。对一般可测函数，需要在越来越细的值域分割上重复这一步，再留下同时属于各级紧片的点。\term*[lusin-dingli]{Lusin 定理}[Lusin theorem]给出准确结论。
+
+\subsection{Lusin 定理的证明}
 \label{b1:subsec:040402}
 
-待填充。
+\begin{theorem}
+\label{b1:thm:lusin}
+设 \(E\in\mathcal L^d\)、\(m(E)<\infty\)，并设扩展实值函数
+\(f:E\rightarrow\overline{\mathbb R}\) 可测且几乎处处有限。则对每个
+\(\varepsilon>0\)，存在紧集 \(K\subseteq E\)，使
+\[
+m(E\setminus K)<\varepsilon,
+\]
+并且 \(f\) 在 \(K\) 上取有限值，限制 \(f|_K:K\rightarrow\mathbb R\) 连续；而且 \(f|_K\) 一致连续。
+\end{theorem}
+\begin{proof}
+固定 \(\varepsilon>0\)，并对每个整数 \(n\geq1\) 置
+\[
+\eta_n=\varepsilon 2^{-n-1}.
+\]
+为了先控制函数值，令
+\[
+H_M=E\cap\{\,|f|>M\,\}.
+\]
+当整数 \(M\) 递增时，\(H_M\) 递减到
+\[
+N_\infty=E\cap\{\,|f|=\infty\,\}.
+\]
+集合 \(N_\infty\) 为零测集，而 \(m(H_1)\leq m(E)<\infty\)，所以测度的从上连续性给出
+\[
+m(H_M)\longrightarrow m(N_\infty)=0.
+\]
+这也是 \cref{b1:prop:truncation-properties} 中的值域截断估计。现在可以选取整数 \(M_n\geq1\)，使
+\[
+m\bigl(E\cap\{\,|f|>M_n\,\}\bigr)<\frac{\eta_n}{2}.
+\]
+
+把闭区间 \([-M_n,M_n]\) 分成有限个两两不交的 Borel 区间
+\(I_{n,1},\ldots,I_{n,N_n}\)，并使每个区间的直径不超过
+\(2^{-n}\)。具体地，可以等分 \([-M_n,M_n]\)，把除最后一个以外的各段取成左闭右开，最后一段取闭区间。令
+\[
+A_{n,j}
+=\{\,x\in E\mid f(x)\in I_{n,j}\,\}
+\quad(1\leq j\leq N_n).
+\]
+这些集合可测、两两不交，其并为
+\(E\cap\{\,|f|\leq M_n\,\}\)。每个 \(A_{n,j}\) 都有有限测度。由
+\cref{b1:thm:inner-regular}，可在其中选取紧集
+\(C_{n,j}\subseteq A_{n,j}\)，满足
+\[
+m(A_{n,j}\setminus C_{n,j})
+<\frac{\eta_n}{2N_n}.
+\]
+令
+\[
+K_n=\bigcup_{j=1}^{N_n}C_{n,j}.
+\]
+这是有限个紧集的并，因而紧；并且
+\begin{align*}
+m(E\setminus K_n)
+&\leq m\bigl(E\cap\{\,|f|>M_n\,\}\bigr)
+  +\sum_{j=1}^{N_n}m(A_{n,j}\setminus C_{n,j}) \\
+&<\eta_n.
+\end{align*}
+
+现在取所有精度共同保留的集合
+\[
+K=\bigcap_{n=1}^{\infty}K_n.
+\]
+集合 \(K\) 是紧集，因为它是紧集 \(K_1\) 的闭子集。又因
+\(K\subseteq E\)，且
+\[
+E\setminus K
+=\bigcup_{n=1}^{\infty}(E\setminus K_n),
+\]
+测度的可数次可加性给出
+\[
+m(E\setminus K)
+\leq\sum_{n=1}^{\infty}m(E\setminus K_n)
+\leq\sum_{n=1}^{\infty}\eta_n
+=\frac{\varepsilon}{2}<\varepsilon.
+\]
+此外 \(K\subseteq K_1\subseteq\{\,|f|\leq M_1\,\}\)，所以 \(f\) 在 \(K\) 上有限。
+
+这里各个 \(K_n\) 不必嵌套。取交仍保持紧性，而补集变成各级误差的可数并；选择可求和的 \(\eta_n\) 正是为了控制这个并。若只保留某一个 \(K_n\)，只能得到函数值在每个紧片上的振幅不超过 \(2^{-n}\)，还不能推出任意精度下的连续性。
+
+若 \(K=\varnothing\)，连续性结论平凡。以下设 \(K\ne\varnothing\)，并固定 \(n\)。集合
+\(C_{n,1},\ldots,C_{n,N_n}\) 中的非空者是有限个两两不交的紧集，任意两个之间的距离为正。若其中至少两个非空，令
+\[
+\delta_n
+=\frac12\min\{\,\operatorname{dist}(C_{n,i},C_{n,j})\mid
+  i\ne j,\ C_{n,i}\ne\varnothing,\ C_{n,j}\ne\varnothing\,\}>0;
+\]
+若至多一个非空，则取 \(\delta_n=1\)。当 \(x,y\in K\) 且
+\(|x-y|<\delta_n\) 时，二者作为 \(K_n\) 中的点必落在同一个
+\(C_{n,j}\) 中，否则它们的距离至少为 \(2\delta_n\)。相应的函数值同属区间 \(I_{n,j}\)，故
+\[
+|f(x)-f(y)|
+\leq\operatorname{diam}(I_{n,j})
+\leq2^{-n}.
+\]
+给定 \(\eta>0\)，取 \(n\) 使 \(2^{-n}<\eta\)，上述 \(\delta_n\) 便对所有 \(x,y\in K\) 同时有效。这证明了 \(f|_K\) 的一致连续性。
+\end{proof}
+
+因为 \(K\subseteq E\) 且 \(m(E)<\infty\)，测度估计也可写成
+\[
+m(K)>m(E)-\varepsilon.
+\]
+定理所给的 \(K\) 是欧氏空间中的紧集，不只是 \(E\) 中的相对闭集。因此，即使
+\(E\) 本身不闭或无界，保留下来的部分仍同时有测度控制与紧性。若
+\(m(E)<\varepsilon\)，空集已经满足结论；有实质内容的是误差远小于
+\(m(E)\) 的情形。
+
+证明中的每一级只处理有限个值域区间。内正则性把相应的可测水平集缩成紧集；同一级中不同紧片之间的正距离，使函数在这一精度下不会突然跳入另一个值域区间。最后的可数交让所有精度同时成立。这里没有把函数列的逐点收敛提升为一致收敛，因而不使用下一节的 Egoroff 定理。
+
+\cref{b1:thm:nonnegative-simple-approximation} 已经把非负可测函数写成简单函数的逐点极限，但仅把
+\cref{b1:prop:simple-function-lusin} 分别用于每个简单函数还不够。各次所得紧集若没有共同控制，取交可能损失过多测度；即使每个近似函数在自己的紧集上连续，逐点极限也未必连续。上面的证明同时安排了可求和的测度预算与趋于零的值域网格，正是为了补上这两个环节。
+
+\begin{corollary}
+\label{b1:cor:lusin-complex}
+若 \(E\in\mathcal L^d\)、\(m(E)<\infty\)，且 \(f:E\rightarrow\mathbb C\) 可测，则对每个 \(\varepsilon>0\)，存在紧集 \(K\subseteq E\)，使
+\(m(E\setminus K)<\varepsilon\) 且 \(f|_K\) 连续。
+\end{corollary}
+\begin{proof}
+分别把 \cref{b1:thm:lusin} 应用于 \(\operatorname{Re}f\) 与
+\(\operatorname{Im}f\)，误差各取 \(\varepsilon/2\)，得到紧集
+\(K_1,K_2\subseteq E\)。令 \(K=K_1\cap K_2\)，则
+\[
+m(E\setminus K)
+\leq m(E\setminus K_1)+m(E\setminus K_2)
+<\varepsilon.
+\]
+实部与虚部在 \(K\) 上都连续，所以 \(f|_K\) 连续。
+\end{proof}
+
+同样的坐标论证适用于取值于任意有限维欧氏空间的可测函数。对可测函数
+\[
+  f=(f^1,\ldots,f^q):E\longrightarrow\mathbb R^q,
+\]
+依次为每个坐标保留误差小于
+\(\varepsilon/q\) 的紧集，再取有限交即可。有限维在这里使坐标数有限；一般度量值函数的版本需要改用值域中的可数细网覆盖，不能只说“逐坐标证明”。
+
+Lusin 定理同时使用了拓扑与测度。值域区间控制函数振幅，紧集之间的距离提供相对连续性，Lebesgue 测度的内正则性则控制删去部分的大小。因此它不是任意有限测度空间上的纯测度结论；若定义域没有拓扑，“限制后连续”本身便没有意义。对带拓扑的更一般测度空间，通常要以相应的内正则性假设代替
+\cref{b1:thm:inner-regular}。
+
+定理的两个限制各有明确作用。若
+\[
+N_\infty=\{\,x\in E\mid |f(x)|=\infty\,\}
+\]
+具有正测度，那么任何使 \(f|_K\) 为实值函数的集合 \(K\) 都避开
+\(N_\infty\)，从而
+\[
+m(E\setminus K)\geq m(N_\infty).
+\]
+误差不可能任意小。因此，“几乎处处有限”是实值连续结论所必需的。
+
+例如在 \(E=[0,1]\) 上令 \(f=+\infty\) 于 \([0,1/2]\)，并令
+\(f=0\) 于 \((1/2,1]\)。这个扩展实值函数可测，但凡
+\(f|_K\) 取实值，便有 \(K\cap[0,1/2]=\varnothing\)，从而
+\(m(E\setminus K)\geq1/2\)。若不要求限制函数为实值，而把
+\(\overline{\mathbb R}\) 另赋拓扑再谈连续，得到的是另一种定理，不是这里的结论。
+
+有限测度则是大紧集结论所必需的。以 \(E=\mathbb R^d\) 和常值函数
+\(f=0\) 为例，每个紧集 \(K\subseteq E\) 的测度都有限，故
+\(m(E\setminus K)=\infty\)。无穷测度定义域上仍可把定理用于
+\(E\cap[-R,R]^d\)，得到逐个有界区域内的结论；不能据此得到一个与整个 \(E\) 只差任意小测度的紧集。
+
+函数本身无界并不妨碍定理。以 \(E=(0,1]\) 上的 \(f(x)=x^{-1}\) 为例，给定 \(\varepsilon>0\)，取
+\(0<a<\min\{1,\varepsilon\}\)，则 \(K=[a,1]\subseteq E\) 紧，
+\(m(E\setminus K)=a<\varepsilon\)，并且 \(f|_K\) 连续。一般证明中的
+\(M_n\) 所做的也是这种值域尾部控制，只是可测函数的高值集合未必是区间。
 
 \subsection{“几乎连续性”}
 \label{b1:subsec:040403}
 
-待填充。
+Lusin 定理常被口头概括为“可测函数几乎连续”。这句话只应理解为：给定任意小的测度预算，可以找到一个依赖于该预算的大紧集，使限制函数连续。它不表示原函数的不连续点集为零测集。
+
+更形式地，记
+\[
+D_E(f)
+=\{\,x\in E\mid f\text{ 在定义域 }E\text{ 中的 }x\text{ 处不连续}\,\}.
+\]
+Lusin 定理没有断言 \(m(D_E(f))=0\)。它甚至没有直接给出
+\(D_E(f)\subseteq E\setminus K\)：点 \(x\in K\) 处的限制函数可以连续，而原函数仍可能沿着 \(E\setminus K\) 中趋于 \(x\) 的点不连续。
+
+令 \(E=[0,1]\)，并考虑\term*[dirichlet-hanshu]{Dirichlet 函数}[Dirichlet function]
+\[
+f=\mathbf 1_{\mathbb Q\cap[0,1]}.
+\]
+集合 \(\mathbb Q\cap[0,1]\) 可数，因而是零测 Borel 集；由
+\cref{b1:prop:indicator-measurable}，函数 \(f\) 可测。另一方面，每个点在 \(E\) 中的任意相对邻域都同时含有有理数与无理数，函数值在 \(0\) 与 \(1\) 之间跳动。因此 \(f:E\rightarrow\mathbb R\) 在 \(E\) 的每一点都不连续，其不连续点集就是整个 \([0,1]\)，测度为 \(1\)。
+
+这并不违背 Lusin 定理。集合 \(E\setminus\mathbb Q\) 可测且测度为
+\(1\)。由内正则性，对每个 \(\varepsilon>0\) 都能取紧集
+\(K\subseteq E\setminus\mathbb Q\)，使
+\[
+m\bigl((E\setminus\mathbb Q)\setminus K\bigr)<\varepsilon.
+\]
+于是 \(m(E\setminus K)<\varepsilon\)，而 \(f|_K=0\)，当然连续。原函数在 \(x\in K\) 处的连续性仍会考察 \(E\) 中趋于 \(x\) 的有理点；限制函数的连续性只考察 \(K\) 中的点。所谓“几乎连续”描述的是删去小集合以后得到的相对连续性，不是原定义域上逐点连续性的几乎处处成立。
+
+紧集 \(K\) 也确实需要随误差预算改变。对这个 Dirichlet 函数，不存在测度为 \(1\) 且使限制连续的紧集。若
+\(K\subseteq[0,1]\) 紧且 \(m(K)=1\)，则相对开集
+\([0,1]\setminus K\) 的测度为零；非空相对开集含有一个非退化区间，测度为正，故只能有 \(K=[0,1]\)。但原函数在整个区间上并不连续。Lusin 定理提供任意接近满测度的紧集，不保证误差恰为零。
+
+“舍去小集合”也不同于“在零测集上修改函数值”。例如
+\(g=\mathbf 1_{[0,1/2]}\) 在 \([0,1]\) 上可测，并且只有 \(1/2\) 是不连续点；但是不存在与 \(g\) 几乎处处相等的连续函数
+\(h:[0,1]\rightarrow\mathbb R\)。否则，\(h=g\) 的点在 \((0,1/2)\) 与
+\((1/2,1)\) 中分别稠密，连续性迫使 \(h\) 在前一区间恒为 \(1\)、在后一区间恒为 \(0\)，这与 \(h\) 在 \(1/2\) 处连续矛盾。Lusin 定理始终保留原函数，只把连续性检验限制到选出的紧集上。
