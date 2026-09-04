@@ -2,18 +2,95 @@
 \section{测度的基本构造}
 \label{b1:sec:0202}
 
-% TODO: 撰写本节正文。
+已有测度常需适配新的观察范围：只考察某个可测集内的质量、把底集缩小，或把零测集的全部子集也纳入可测集合。以下构造都保持可数可加性。
 
 \subsection{测度的限制}
 \label{b1:subsec:020201}
 
+\begin{definition}
+\label{b1:def:restriction-measure}
+若 \(E\in\mathcal A\)，则 \(\mu\) 到 \(E\) 的\term[xianzhi-cedu]{限制测度}[restricted measure] 定义为
+\[
+(\mu|_E)(A)=\mu(A\cap E),
+\qquad A\in\mathcal A.
+\]
+\end{definition}
+
+\begin{proposition}
+\label{b1:prop:restriction-measure}
+\(\mu|_E\) 是 \((X,\mathcal A)\) 上的测度；并且 \((\mu|_E)(X)=\mu(E)\)。
+\end{proposition}
+\begin{proof}
+空集的限制仍为空集。若 \(A_n\) 两两不交，则 \(A_n\cap E\) 也两两不交，且
+\[
+\left(\bigcup_nA_n\right)\cap E=\bigcup_n(A_n\cap E).
+\]
+对右端使用 \(\mu\) 的可数可加性即可。
+\end{proof}
+
+在概率论中，限制测度对应只保留事件 \(E\) 上的质量；若再除以 \(\mu(E)\)（且 \(0<\mu(E)<\infty\)），便得到归一化后的条件概率的基本形式。
+
 \subsection{子空间测度}
 \label{b1:subsec:020202}
+
+把底集从 \(X\) 改为可测子集 \(E\) 时，上一章定义的迹 \(\sigma\)-代数 \(\mathcal A|_E\) 给出自然的可测结构。
+
+\begin{definition}
+\label{b1:def:subspace-measure}
+对 \(E\in\mathcal A\)，定义 \(E\) 上的\term[zijiank-cedu]{子空间测度}[subspace measure]
+\[
+\mu_E(A\cap E)=\mu(A\cap E),
+\qquad A\in\mathcal A.
+\]
+\end{definition}
+
+\begin{proposition}
+\label{b1:prop:subspace-measure}
+\(\mu_E\) 的定义与表示 \(A\cap E\) 的选择无关，并且它是可测空间 \((E,\mathcal A|_E)\) 上的测度。
+\end{proposition}
+\begin{proof}
+若 \(A\cap E=B\cap E\)，则二者作为 \(E\) 的子集相等，故 \(\mu(A\cap E)=\mu(B\cap E)\)。对 \(\mathcal A|_E\) 中两两不交的集合列，选取其在 \(\mathcal A\) 中的代表元后，直接对相交于 \(E\) 的集合应用 \(\mu\) 的可数可加性。
+\end{proof}
+
+\(\mu_E\) 与 \(\mu|_E\) 记录同一数值信息，但前者的底集是 \(E\)，后者的底集仍是 \(X\)。在后续讨论子空间、支撑和局部积分时，这个区分不可省略。
 
 \subsection{完备测度}
 \label{b1:subsec:020203}
 
+\begin{definition}
+\label{b1:def:complete-measure}
+测度空间 \((X,\mathcal A,\mu)\) 称为\term[wanbei-cedu]{完备的}[complete]，若每当 \(N\in\mathcal A\)、\(\mu(N)=0\) 且 \(E\subseteq N\) 时，总有 \(E\in\mathcal A\)。
+\end{definition}
+
+可测集的零测子集未必在原来的 \(\sigma\)-代数中。例如 \(\mathbb R\) 上的 Borel \(\sigma\)-代数与 Lebesgue 测度并不完备：某些 Cantor 集零测子集不是 Borel 集。完备化正是把这类集合系统地补入。
+
 \subsection{测度的完备化}
 \label{b1:subsec:020204}
 
+\begin{definition}
+\label{b1:def:completion}
+令
+\[
+\mathcal N_\mu
+=\{N\subseteq Z:Z\in\mathcal A,\ \mu(Z)=0\}.
+\]
+\(\mu\) 的\term[wanbeihua]{完备化}[completion] 定义在集合族
+\[
+\overline{\mathcal A}
+=\{A\cup N:A\in\mathcal A,\ N\in\mathcal N_\mu\}
+\]
+上，并规定
+\[
+\overline\mu(A\cup N)=\mu(A).
+\]
+\end{definition}
 
+\begin{theorem}
+\label{b1:thm:completion-measure}
+\(\overline{\mathcal A}\) 是 \(X\) 上的 \(\sigma\)-代数，\(\overline\mu\) 定义良好且为完备测度；它在 \(\mathcal A\) 上与 \(\mu\) 一致。
+\end{theorem}
+\begin{proof}
+若 \(A\cup N=B\cup M\)，其中 \(N,M\) 均包含在可测零集内，则 \(A\setminus B\subseteq M\)、\(B\setminus A\subseteq N\)。由单调性，\(\mu(A\setminus B)=\mu(B\setminus A)=0\)，再把 \(A,B\) 分为交与差的互不相交部分，得到 \(\mu(A)=\mu(B)\)，故定义良好。
+
+对补集和可数并，将每个零测误差项合并到一个可测零集内，可验证 \(\overline{\mathcal A}\) 是 \(\sigma\)-代数；同样的分解把可数可加性还原为 \(\mu\) 的可数可加性。任意 \(\overline\mu\)-零测集都包含于某个 \(\mu\)-零测的可测集，故其任意子集已按定义属于 \(\overline{\mathcal A}\)。
+\end{proof}

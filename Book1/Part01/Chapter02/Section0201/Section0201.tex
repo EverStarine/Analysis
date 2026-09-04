@@ -2,21 +2,133 @@
 \section{测度}
 \label{b1:sec:0201}
 
-% TODO: 撰写本节正文。
+长度、面积和概率都有一个共同特征：互不重叠的部分应当相加，而把集合逐渐增大时其大小不应减小。测度把这两个要求抽象为适用于任意可测空间的公理。
 
 \subsection{测度的定义}
 \label{b1:subsec:020101}
 
+\begin{definition}
+\label{b1:def:measure}
+设 \((X,\mathcal A)\) 是可测空间。映射
+\[
+\mu:\mathcal A\longrightarrow[0,\infty]
+\]
+若满足 \(\mu(\varnothing)=0\)，并且对任意两两不交的可测集列 \((A_n)_{n\geq1}\) 有
+\[
+\mu\left(\bigcup_{n=1}^{\infty}A_n\right)
+=\sum_{n=1}^{\infty}\mu(A_n),
+\]
+则称为 \(\mathcal A\) 上的\term[cedu]{测度}[measure]。
+\end{definition}
+
+值域允许 \(\infty\)，这使无界空间上的长度或体积可以在同一框架中处理。默认约定 \(0\cdot\infty=0\)，但表达式 \(\infty-\infty\) 没有定义，使用差公式时必须格外注意。
+
+\begin{proposition}
+\label{b1:prop:measure-monotonicity}
+若 \(\mu\) 是测度，\(A,B\in\mathcal A\)，且 \(A\subseteq B\)，则 \(\mu(A)\leq\mu(B)\)。若另有 \(\mu(A)<\infty\)，则
+\[
+\mu(B\setminus A)=\mu(B)-\mu(A).
+\]
+\end{proposition}
+\begin{proof}
+将 \(B\) 写为不交并 \(B=A\mathbin{\dot\cup}(B\setminus A)\)，并对这个有限不交并应用可数可加性。第一式由 \(\mu(B\setminus A)\geq0\) 得到；第二式在 \(\mu(A)\) 有限时可移项。
+\end{proof}
+
+\begin{remark}
+\label{b1:rem:standard-measures}
+\textbf{例。} 若 \(X\) 是集合，\(\mathcal A=\mathcal P(X)\)，则 \(\mu(A)=\#A\) 定义了\term[jishu-cedu]{计数测度}[counting measure]，其中无限集合的基数按本处约定记为 \(\infty\)。若 \(X\) 是有限集合且 \(w(x)\geq0\)，则 \(\mu(A)=\sum_{x\in A}w(x)\) 是加权计数测度。
+\end{remark}
+
 \subsection{可数可加性}
 \label{b1:subsec:020102}
+
+可数可加性包含有限可加性，也给出对一般并集的两个常用估计。
+
+\begin{proposition}
+\label{b1:prop:measure-subadditivity}
+对任意可测集列 \((A_n)_{n\geq1}\)，
+\[
+\mu\left(\bigcup_{n=1}^{\infty}A_n\right)
+\leq\sum_{n=1}^{\infty}\mu(A_n).
+\]
+若 \(A_1,\ldots,A_m\) 两两不交，则 \(\mu(\bigcup_{k=1}^{m}A_k)=\sum_{k=1}^{m}\mu(A_k)\)。
+\end{proposition}
+\begin{proof}
+令 \(B_1=A_1\)，并对 \(n\geq2\) 令
+\[
+B_n=A_n\setminus\bigcup_{k=1}^{n-1}A_k.
+\]
+则 \(B_n\subseteq A_n\)，各 \(B_n\) 两两不交，且 \(\bigcup_nB_n=\bigcup_nA_n\)。由单调性与可数可加性，
+\[
+\mu\left(\bigcup_nA_n\right)
+=\sum_n\mu(B_n)
+\leq\sum_n\mu(A_n).
+\]
+有限不交并只需把其余项取为空集。
+\end{proof}
+
+\begin{proposition}
+\label{b1:prop:measure-inclusion-exclusion}
+若 \(A,B\in\mathcal A\) 且至少一个集合具有有限测度，则
+\[
+\mu(A\cup B)+\mu(A\cap B)=\mu(A)+\mu(B).
+\]
+\end{proposition}
+\begin{proof}
+把 \(A\cup B\) 分解为 \(A\) 与 \(B\setminus A\) 的不交并，再把 \(B\) 分解为 \(A\cap B\) 与 \(B\setminus A\) 的不交并。有限性条件保证减去共同项时不出现未定义表达式。
+\end{proof}
 
 \subsection{从下连续性与从上连续性}
 \label{b1:subsec:020103}
 
+\begin{theorem}
+\label{b1:thm:measure-continuity}
+设 \((A_n)\) 是可测集列。
+\begin{enumerate}
+  \item 若 \(A_n\uparrow A\)，则 \(\mu(A_n)\uparrow\mu(A)\)；
+  \item 若 \(A_n\downarrow A\)，且 \(\mu(A_1)<\infty\)，则 \(\mu(A_n)\downarrow\mu(A)\)。
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+对递增情形，令 \(B_1=A_1\)，\(B_n=A_n\setminus A_{n-1}\)（\(n\geq2\)）。则 \(B_n\) 两两不交，且 \(A_n=\bigcup_{k\leq n}B_k\)、\(A=\bigcup_{k\geq1}B_k\)。可数可加性给出
+\[
+\mu(A)=\sum_{k=1}^{\infty}\mu(B_k)
+=\lim_{n\to\infty}\sum_{k=1}^{n}\mu(B_k)
+=\lim_{n\to\infty}\mu(A_n).
+\]
+对递减情形，集合 \(A_1\setminus A_n\) 递增到 \(A_1\setminus A\)。对其应用第一部分，再用 \(\mu(A_1)<\infty\) 的差公式，便得到第二部分。
+\end{proof}
+
+从上连续性的有限性条件不可删去。例如在 \(\mathbb R\) 的 Lebesgue 测度下，\(A_n=[n,\infty)\) 递减到空集，但 \(\mu(A_n)=\infty\) 对所有 \(n\) 成立。
+
 \subsection{有限测度与概率测度}
 \label{b1:subsec:020104}
+
+\begin{definition}
+\label{b1:def:finite-probability-measure}
+若 \(\mu(X)<\infty\)，则称 \(\mu\) 为\term[youxian-cedu]{有限测度}[finite measure]。若 \(\mu(X)=1\)，则称 \(\mu\) 为\term[gailv-cedu]{概率测度}[probability measure]，并把 \((X,\mathcal A,\mu)\) 称为概率空间。
+\end{definition}
+
+概率测度只是总质量归一化为 \(1\) 的有限测度。于是对每个 \(A\in\mathcal A\)，
+\[
+0\leq\mu(A)\leq1,
+\qquad
+\mu(A^{\mathrm c})=1-\mu(A).
+\]
+有限测度的优点是，\cref{b1:thm:measure-continuity} 的从上连续性可以对任意递减可测集列直接使用。
 
 \subsection{\texorpdfstring{\(\sigma\)}{σ}-有限测度}
 \label{b1:subsec:020105}
 
+\begin{definition}
+\label{b1:def:sigma-finite-measure}
+若存在可测集列 \((X_n)_{n\geq1}\)，使
+\[
+X=\bigcup_{n=1}^{\infty}X_n,
+\qquad
+\mu(X_n)<\infty\quad(n\geq1),
+\]
+则称 \(\mu\) 为\term[sigma-youxian]{\(\sigma\)-有限测度}[sigma-finite measure]。
+\end{definition}
 
+每个有限测度都是 \(\sigma\)-有限的，但反向不成立。Lebesgue 测度在 \(\mathbb R^d\) 上是 \(\sigma\)-有限的，因为可用有限体积立方体覆盖全空间；计数测度在可数集合上也 \(\sigma\)-有限。这个条件将在本章末尾的延拓唯一性定理中发挥作用。

@@ -2,18 +2,118 @@
 \section{外测度}
 \label{b1:sec:0203}
 
-% TODO: 撰写本节正文。
+测度的定义域预先限定为一个 \(\sigma\)-代数，而构造这个 \(\sigma\)-代数往往正是困难所在。外测度采取相反的顺序：先给每个子集一个覆盖代价，再由这个代价决定哪些集合应当可测。
 
 \subsection{外测度的定义}
 \label{b1:subsec:020301}
 
+\begin{definition}
+\label{b1:def:outer-measure}
+定义在 \(\mathcal P(X)\) 上的函数
+\[
+\mu^*:\mathcal P(X)\longrightarrow[0,\infty]
+\]
+若满足：
+\begin{enumerate}
+  \item \(\mu^*(\varnothing)=0\)；
+  \item \(A\subseteq B\) 时 \(\mu^*(A)\leq\mu^*(B)\)；
+  \item 对任意子集列 \((A_n)_{n\geq1}\)，
+  \[
+  \mu^*\left(\bigcup_{n=1}^{\infty}A_n\right)
+  \leq\sum_{n=1}^{\infty}\mu^*(A_n),
+  \]
+\end{enumerate}
+则称 \(\mu^*\) 为 \(X\) 上的\term[waicedu]{外测度}[outer measure]。
+\end{definition}
+
+第三条只要求次可加性；它在幂集上已足够强，却不保证能对任意不交并取等号。后面的 Carathéodory 条件正是恢复可加性的筛子。
+
+\begin{proposition}
+\label{b1:prop:covering-outer-measure}
+设 \(\mathcal C\subseteq\mathcal P(X)\) 是覆盖族，\(c:\mathcal C\to[0,\infty]\) 是代价函数，并假定 \(X\) 可被 \(\mathcal C\) 中可数个集合覆盖。定义
+\[
+\mu^*(E)
+=\inf\left\{\sum_{n=1}^{\infty}c(C_n):
+E\subseteq\bigcup_{n=1}^{\infty}C_n,\ C_n\in\mathcal C\right\}.
+\]
+则 \(\mu^*\) 是外测度。
+\end{proposition}
+\begin{proof}
+空集可由空列覆盖，故其外测度为 \(0\)。单调性来自“覆盖较大集合的任一列也覆盖较小集合”。对每个 \(E_k\) 选一列覆盖，使代价不超过 \(\mu^*(E_k)+\varepsilon2^{-k}\)，再把全部覆盖列合并，得到
+\[
+\mu^*\left(\bigcup_kE_k\right)
+\leq\sum_k\mu^*(E_k)+\varepsilon.
+\]
+令 \(\varepsilon\downarrow0\) 即得可数次可加性。
+\end{proof}
+
+这条覆盖公式是 Lebesgue 外测度和一般延拓外测度的共同原型。
+
 \subsection{Carathéodory 可测性}
 \label{b1:subsec:020302}
+
+\begin{definition}
+\label{b1:def:caratheodory-measurable}
+设 \(\mu^*\) 是 \(X\) 上的外测度。集合 \(E\subseteq X\) 称为\term[caratheodory-kekong]{Carathéodory 可测的}[Caratheodory measurable]，若对每个 \(A\subseteq X\) 都有
+\[
+\mu^*(A)
+=\mu^*(A\cap E)+\mu^*(A\setminus E).
+\]
+\end{definition}
+
+由次可加性，右端总是不小于左端；因此此条件真正要求的是反向不等式。它表示集合 \(E\) 能把任意集合 \(A\) 切为两部分，而外测度没有损失也没有重复计算。
+
+\begin{proposition}
+\label{b1:prop:caratheodory-basic}
+若 \(E\) 是 Carathéodory 可测集，则 \(E^{\mathrm c}\) 也是；若 \(E,F\) 都是 Carathéodory 可测集，则 \(E\cap F\) 也是。
+\end{proposition}
+\begin{proof}
+补集结论只需交换 \(A\cap E\) 与 \(A\setminus E\)。对交集，先以 \(E\) 切分 \(A\)，再分别以 \(F\) 切分 \(A\cap E\) 和 \(A\setminus E\)。相加后，涉及 \(E\cap F\) 的项给出所需等式；其余项非负，因此可推出反向不等式。
+\end{proof}
 
 \subsection{Carathéodory 可测集}
 \label{b1:subsec:020303}
 
+\begin{theorem}
+\label{b1:thm:caratheodory}
+设 \(\mu^*\) 是 \(X\) 上的外测度，记
+\[
+\mathcal M_{\mu^*}
+=\{E\subseteq X:E\text{ 满足 \cref{b1:def:caratheodory-measurable}}\}.
+\]
+则 \(\mathcal M_{\mu^*}\) 是 \(X\) 上的 \(\sigma\)-代数，且 \(\mu^*|_{\mathcal M_{\mu^*}}\) 是完备测度。
+\end{theorem}
+\begin{proofsketch}
+\cref{b1:prop:caratheodory-basic} 给出补与有限交封闭。对两两不交的可测集列 \((E_n)\)，反复应用切分等式可得到每个 \(N\) 的有限版本
+\[
+\mu^*(A)\geq
+\sum_{n=1}^{N}\mu^*(A\cap E_n)
++\mu^*\left(A\setminus\bigcup_{n=1}^{N}E_n\right).
+\]
+令 \(N\to\infty\)，再结合外测度的次可加性，便得到 \(\bigcup_nE_n\) 仍可测。于是 \(\mathcal M_{\mu^*}\) 是 \(\sigma\)-代数。
+
+当 \(E_n\) 两两不交且均可测时，对 \(A=\bigcup_nE_n\) 使用同一有限版本并令 \(N\to\infty\)，可得 \(\mu^*(\bigcup_nE_n)=\sum_n\mu^*(E_n)\)。最后，若 \(N\in\mathcal M_{\mu^*}\) 且 \(\mu^*(N)=0\)，则任意 \(E\subseteq N\) 由单调性也有 \(\mu^*(E)=0\)，并直接满足切分等式，故完备性成立。
+\end{proofsketch}
+
+定理的力量在于：不必事先猜测可测集族。给定任一外测度，Carathéodory 条件自动产生最大的、使其成为测度的自然 \(\sigma\)-代数。
+
 \subsection{外测度限制为测度}
 \label{b1:subsec:020304}
 
+将 \cref{b1:thm:caratheodory} 的结论写成构造步骤，便得到
+\[
+\mu^*
+\quad\longmapsto\quad
+\bigl(X,\mathcal M_{\mu^*},\mu^*|_{\mathcal M_{\mu^*}}\bigr).
+\]
+右端是完备测度空间。这里“限制”不是把外测度限制到某个底集，而是把它的定义域从全部子集限制到 Carathéodory 可测集。
 
+\begin{remark}
+\label{b1:rem:outer-measure-null}
+\textbf{零测集。} \(\mu^*(N)=0\) 的集合 \(N\) 总属于 \(\mathcal M_{\mu^*}\)。事实上，对任意 \(A\subseteq X\)，次可加性和单调性给出
+\[
+\mu^*(A)\leq\mu^*(A\cap N)+\mu^*(A\setminus N)
+\leq0+\mu^*(A).
+\]
+这也解释了为什么由外测度得到的测度天然完备。
+\end{remark}
