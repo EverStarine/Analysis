@@ -8,6 +8,7 @@
 \usepackage{amsmath}
 \usepackage{mathtools}
 \usepackage{amsthm}
+\usepackage{aliascnt}
 \usepackage{unicode-math}
 \setmainfont{texgyrepagella-regular.otf}[
   BoldFont=texgyrepagella-bold.otf,
@@ -117,11 +118,34 @@
 % 附录章的章序由 \CTEXthechapter 按卷附录编号（如 A1）给出。
 \renewcommand{\chaptermark}[1]{\markboth{\CTEXthechapter#1}{}}
 \renewcommand{\sectionmark}[1]{\markright{\thesection\quad #1}}
+% 章末习题不编号，但进入习题页后应覆盖上一节留下的奇数页页眉。
+\newcommand{\BookExercises}{%
+  \section*{习题}%
+  \markright{习题}%
+}
 \fancypagestyle{plain}{
   \fancyhf{}
   \fancyfoot[C]{\small\color{AnalysisGray}\thepage}
   \renewcommand{\headrulewidth}{0pt}
 }
+
+\usepackage[unicode,colorlinks=true,linkcolor=AnalysisBlue,
+  citecolor=AnalysisBlue,urlcolor=AnalysisBlue,pdfborder={0 0 0}]{hyperref}
+\usepackage{bookmark}
+\usepackage[nameinlink,noabbrev]{cleveref}
+
+% CTeX 2.5.10 的标题前缀宏带一个参数，而 TeX Live 2025 中 cleveref
+% 仍按普通前缀宏展开它们，会把节号写成含 \endcsname 的损坏元数据。
+% 改为恒等包装后，CTeX 传入的标题编号保持不变，\ref 与 \cref 均可正常工作。
+\makeatletter
+\def\p@part#1{#1}
+\def\p@chapter#1{#1}
+\def\p@section#1{#1}
+\def\p@subsection#1{#1}
+\def\p@subsubsection#1{#1}
+\def\p@paragraph#1{#1}
+\def\p@subparagraph#1{#1}
+\makeatother
 
 \newtheoremstyle{analysisplain}
   {1.2ex}{1.2ex}{\itshape}{}
@@ -135,13 +159,6 @@
 
 \theoremstyle{analysisplain}
 \newtheorem{theorem}{定理}[section]
-\newtheorem{lemma}[theorem]{引理}
-\newtheorem{proposition}[theorem]{命题}
-\newtheorem{corollary}[theorem]{推论}
-\newtheorem{claim}[theorem]{断言}
-\newtheorem{conjecture}[theorem]{猜想}
-\newtheorem{openproblem}[theorem]{开放问题}
-
 % 正文默认按“章.节.流水号”编号；未分节的附录省略中间的 0。
 \renewcommand{\thetheorem}{%
   \ifnum\value{section}=0
@@ -150,14 +167,36 @@
     \thesection.\arabic{theorem}%
   \fi
 }
+\newaliascnt{lemma}{theorem}
+\newtheorem{lemma}[lemma]{引理}
+\aliascntresetthe{lemma}
+\newaliascnt{proposition}{theorem}
+\newtheorem{proposition}[proposition]{命题}
+\aliascntresetthe{proposition}
+\newaliascnt{corollary}{theorem}
+\newtheorem{corollary}[corollary]{推论}
+\aliascntresetthe{corollary}
+\newaliascnt{claim}{theorem}
+\newtheorem{claim}[claim]{断言}
+\aliascntresetthe{claim}
+\newaliascnt{conjecture}{theorem}
+\newtheorem{conjecture}[conjecture]{猜想}
+\aliascntresetthe{conjecture}
+\newaliascnt{openproblem}{theorem}
+\newtheorem{openproblem}[openproblem]{开放问题}
+\aliascntresetthe{openproblem}
 
 \theoremstyle{analysisdefinition}
-\newtheorem{definition}[theorem]{定义}
+\newaliascnt{definition}{theorem}
+\newtheorem{definition}[definition]{定义}
+\aliascntresetthe{definition}
 % 习题按章单独编号，不占用定理类环境的流水号。
 \newtheorem{exercise}{习题}[chapter]
 
 \theoremstyle{analysisremark}
-\newtheorem{remark}[theorem]{注记}
+\newaliascnt{remark}{theorem}
+\newtheorem{remark}[remark]{注记}
+\aliascntresetthe{remark}
 \renewcommand{\proofname}{证明}
 \newenvironment{solution}
   {\begin{proof}[解]}
@@ -293,11 +332,6 @@
 % 一般强调与术语粗体分离。
 \NewDocumentCommand{\keypoint}{m}{\CJKunderdot{#1}}
 \NewDocumentCommand{\foreignkeypoint}{m}{\underline{\textup{#1}}}
-
-\usepackage[unicode,colorlinks=true,linkcolor=AnalysisBlue,
-  citecolor=AnalysisBlue,urlcolor=AnalysisBlue,pdfborder={0 0 0}]{hyperref}
-\usepackage{bookmark}
-\usepackage[nameinlink,noabbrev]{cleveref}
 
 \crefname{chapter}{章}{章}
 \crefname{part}{编}{编}
