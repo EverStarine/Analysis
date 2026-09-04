@@ -153,7 +153,8 @@
 
 \theoremstyle{analysisdefinition}
 \newtheorem{definition}[theorem]{定义}
-\newtheorem{exercise}[theorem]{习题}
+% 习题按章单独编号，不占用定理类环境的流水号。
+\newtheorem{exercise}{习题}[chapter]
 
 \theoremstyle{analysisremark}
 \newtheorem{remark}[theorem]{注记}
@@ -266,11 +267,14 @@
 \makeindex[name=foreign,title=外文索引,columns=2,intoc,options=-q]
 \makeindex[name=symbols,title=符号索引,columns=2,intoc,options=-q]
 
-\NewDocumentCommand{\term}{O{}mo}{%
-  \emph{#2}%
-  \IfNoValueF{#3}{ (\textup{#3})}%
-  \ifstrempty{#1}{\index[chinese]{#2}}{\index[chinese]{#1@#2}}%
-  \IfNoValueF{#3}{\index[foreign]{#3}}%
+% 普通形式显示原文；星号形式仅在正文隐藏原文，两种形式都登记中外文索引。
+\NewDocumentCommand{\term}{s O{} m o}{%
+  \textbf{\textup{#3}}%
+  \IfBooleanF{#1}{%
+    \IfNoValueF{#4}{\textnormal{（\textup{#4}）}}%
+  }%
+  \ifstrempty{#2}{\index[chinese]{#3}}{\index[chinese]{#2@#3}}%
+  \IfNoValueF{#4}{\index[foreign]{#4}}%
 }
 \NewDocumentCommand{\termidx}{O{}m}{%
   \ifstrempty{#1}{\index[chinese]{#2}}{\index[chinese]{#1@#2}}%
@@ -286,7 +290,7 @@
   \index[symbols]{\AnalysisSymbolSortKey@#1}%
 }
 
-% 一般强调与术语斜体分离。
+% 一般强调与术语粗体分离。
 \NewDocumentCommand{\keypoint}{m}{\CJKunderdot{#1}}
 \NewDocumentCommand{\foreignkeypoint}{m}{\underline{\textup{#1}}}
 
