@@ -18,11 +18,17 @@ R. EverStarine 编写的三卷本分析学教材项目。全书依照 [计划纲
 cd Book1
 New-Item -ItemType Directory -Force ..\tmp\build\Book1 | Out-Null
 xelatex -output-directory=..\tmp\build\Book1 Book1.tex
+Push-Location ..\tmp\build\Book1
+makeindex -q chinese.idx
+makeindex -q foreign.idx
+makeindex -q symbols.idx
+Pop-Location
+xelatex -output-directory=..\tmp\build\Book1 Book1.tex
 xelatex -output-directory=..\tmp\build\Book1 Book1.tex
 Copy-Item ..\tmp\build\Book1\Book1.pdf ..\Book1.pdf
 ```
 
-其他两卷相应替换卷号。项目根目录只保留最终的三份 PDF。
+首轮 XeLaTeX 收集索引条目，三次 `makeindex` 分别生成中文、外文和符号索引，随后两轮 XeLaTeX 排入索引并稳定目录、交叉引用与书签。其他两卷相应替换卷号；尚无索引条目的卷可以暂不执行相应的 `makeindex` 命令。项目根目录只保留最终的三份 PDF。
 
 ## 编辑规范
 
