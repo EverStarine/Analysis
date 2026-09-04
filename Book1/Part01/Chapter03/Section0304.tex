@@ -1,0 +1,212 @@
+% !TeX root = ../../Book1.tex
+\section{欧氏变换下的行为}
+\label{b1:sec:0304}
+
+Lebesgue 测度由坐标长方体构造，但最后的答案不应依赖坐标原点或正交标架。本节从覆盖定义出发验证这一点。平移直接搬运覆盖；一般线性变换则分解成坐标置换、反射、单坐标伸缩与\term[jianqie]{剪切}[shear]。剪切是其中唯一不把长方体送成长方体的步骤，需要单独作覆盖估计。
+
+\subsection{平移不变性}
+\label{b1:subsec:030401}
+
+对 \(a\in\mathbb R^d\)，记 \(\tau_a(x)=x+a\)。
+
+\begin{theorem}
+\label{b1:thm:translation-invariance}
+对任意 \(A\subseteq\mathbb R^d\) 与 \(a\in\mathbb R^d\)，
+\[
+m^*(A+a)=m^*(A).
+\]
+若 \(E\in\mathcal L^d\)，则 \(E+a\in\mathcal L^d\)，且
+\[
+m(E+a)=m(E).
+\]
+\end{theorem}
+\begin{proof}
+若 \((Q_n)\) 覆盖 \(A\)，则 \((Q_n+a)\) 覆盖 \(A+a\)，而每个 \(Q_n+a\) 仍是半开长方体并满足
+\(\operatorname{vol}(Q_n+a)=\operatorname{vol}(Q_n)\)。对全部覆盖取下确界，得到
+\[
+m^*(A+a)\leq m^*(A).
+\]
+把同一结论应用于集合 \(A+a\) 和向量 \(-a\)，得到反向不等式。
+
+再设 \(E\) 可测，并任取 \(A\subseteq\mathbb R^d\)。将 Carathéodory 等式应用于 \(A-a\) 与 \(E\)，再使用刚证明的外测度平移不变性，得到
+\begin{align*}
+m^*(A)
+&=m^*(A-a)\\
+&=m^*((A-a)\cap E)+m^*((A-a)\setminus E)\\
+&=m^*(A\cap(E+a))+m^*(A\setminus(E+a)).
+\end{align*}
+故 \(E+a\) 可测。对它使用外测度等式即得 \(m(E+a)=m(E)\)。
+\end{proof}
+
+平移不变性给出一个简单但重要的归一化：任意长为 \(b-a\) 的区间都与 \((0,b-a]\) 有相同测度，位置不参与长度计算。
+
+\subsection{正交变换不变性}
+\label{b1:subsec:030402}
+
+先处理坐标超平面。这个零测结论既解决反射后的端点问题，也将在奇异线性映射处使用。
+
+\begin{lemma}
+\label{b1:lem:coordinate-hyperplane-null}
+每个坐标超平面
+\[
+H_i=\{\,x\in\mathbb R^d:x_i=0\,\}
+\]
+都是零测集。
+\end{lemma}
+\begin{proof}
+对 \(N\geq1\) 与 \(\delta,\eta>0\)，集合 \(H_i\cap[-N,N]^d\) 包含于一个第 \(i\) 条边长度为 \(2\delta\)、其余边长度为 \(2N+\eta\) 的半开长方体，故
+\[
+m^*(H_i\cap[-N,N]^d)
+\leq 2\delta(2N+\eta)^{d-1}.
+\]
+先令 \(\eta\downarrow0\)，再令 \(\delta\downarrow0\)，得到这部分外测度为零。再由
+\(H_i=\bigcup_N(H_i\cap[-N,N]^d)\) 与可数次可加性，得到 \(m^*(H_i)=0\)。
+\end{proof}
+
+\begin{lemma}
+\label{b1:lem:elementary-linear-maps}
+设 \(A\subseteq\mathbb R^d\)。初等线性映射对外测度有如下作用：
+\begin{enumerate}
+  \item \label{b1:item:0304-elementary-1}坐标置换与单坐标反射保持 \(m^*(A)\)；
+  \item \label{b1:item:0304-elementary-2}若 \(S_{ij,t}\) 是剪切
+  \[
+  S_{ij,t}(x)_i=x_i+t x_j,
+  \quad S_{ij,t}(x)_k=x_k\quad(k\ne i),
+  \]
+  其中 \(i\ne j\)，则 \(m^*(S_{ij,t}A)=m^*(A)\)；
+  \item \label{b1:item:0304-elementary-3}若 \(D_{i,c}\) 只把第 \(i\) 个坐标乘以 \(c>0\)，则
+  \[
+  m^*(D_{i,c}A)=c\,m^*(A).
+  \]
+\end{enumerate}
+这些映射及其逆映射都把 Lebesgue 可测集送到 Lebesgue 可测集。
+\end{lemma}
+\begin{proof}
+坐标置换把半开长方体送到同体积的半开长方体，因此搬运覆盖即可得到外测度不变。单坐标反射把区间 \((a_i,b_i]\) 送到 \([-b_i,-a_i)\)。后者与同长度的标准半开区间 \((-b_i,-a_i]\) 只差至多两个端点，所以反射后的长方体与一个同体积半开长方体只差有限个平移后的坐标超平面。由 \cref{b1:thm:translation-invariance} 与 \cref{b1:lem:coordinate-hyperplane-null}，这些超平面都是零测集，二者外测度相同。把任意长方体覆盖逐项反射，再对反射自身应用同一论证，便得到\itemref{b1:item:0304-elementary-1}。
+
+下面证明剪切情形。写
+\[
+Q=\prod_{k=1}^{d}(a_k,b_k],
+\quad \ell_k=b_k-a_k.
+\]
+把第 \(j\) 个坐标区间等分成 \(N\) 段，便把 \(Q\) 分成 \(N\) 个两两不交的薄长方体。对每个薄长方体，第 \(j\) 个坐标的振幅为 \(\ell_j/N\)，所以剪切后第 \(i\) 个坐标的振幅至多
+\[
+\ell_i+\frac{|t|\ell_j}{N};
+\]
+其余坐标振幅不变。把端点略微外扩后，每个像都可由一个半开长方体覆盖；外扩误差可任意小。因此
+\begin{align*}
+m^*(S_{ij,t}Q)
+&\leq N\left(\ell_i+\frac{|t|\ell_j}{N}\right)
+\frac{\ell_j}{N}
+\prod_{k\ne i,j}\ell_k\\
+&=\operatorname{vol}(Q)
++\frac{|t|\ell_j^2}{N}\prod_{k\ne i,j}\ell_k.
+\end{align*}
+令 \(N\to\infty\)，得到
+\(m^*(S_{ij,t}Q)\leq\operatorname{vol}(Q)\)。若 \((Q_n)\) 覆盖 \(A\)，则 \((S_{ij,t}Q_n)\) 覆盖 \(S_{ij,t}A\)；利用刚才对每一项的估计以及外测度的可数次可加性，得到
+\[
+m^*(S_{ij,t}A)\leq\sum_n\operatorname{vol}(Q_n).
+\]
+对覆盖取下确界可得 \(m^*(S_{ij,t}A)\leq m^*(A)\)。逆映射是 \(S_{ij,-t}\)，对它应用同一不等式便得到反向不等式，从而证明\itemref{b1:item:0304-elementary-2}。
+
+最后，\(D_{i,c}\) 把每个半开长方体送到半开长方体，并把体积乘以 \(c\)。搬运覆盖给出
+\(m^*(D_{i,c}A)\leq c\,m^*(A)\)。再对 \(D_{i,c}^{-1}=D_{i,c^{-1}}\) 使用同一不等式，得到反向不等式，故\itemref{b1:item:0304-elementary-3}成立。
+
+剩下验证可测性。上述每个映射 \(F\) 都是双射，并满足
+\[
+m^*(F A)=\gamma m^*(A)
+\]
+对所有 \(A\) 成立，其中 \(0<\gamma<\infty\)。若 \(E\in\mathcal L^d\)，则对任意 \(A\subseteq\mathbb R^d\)，
+\begin{align*}
+m^*(A)
+&=\gamma m^*(F^{-1}A)\\
+&=\gamma m^*(F^{-1}A\cap E)
++\gamma m^*(F^{-1}A\setminus E)\\
+&=m^*(A\cap FE)+m^*(A\setminus FE).
+\end{align*}
+所以 \(FE\) 可测；对逆映射同理。
+\end{proof}
+
+\begin{theorem}
+\label{b1:thm:orthogonal-invariance}
+若 \(U:\mathbb R^d\to\mathbb R^d\) 是正交变换，则对每个 \(A\subseteq\mathbb R^d\)，
+\[
+m^*(UA)=m^*(A).
+\]
+特别地，若 \(E\in\mathcal L^d\)，则 \(UE\in\mathcal L^d\) 且 \(m(UE)=m(E)\)。
+\end{theorem}
+\begin{proof}
+高斯消元表明，每个可逆矩阵都可写成有限个初等矩阵的乘积：交换两个坐标、把一个坐标乘以非零常数，或把一个坐标的倍数加到另一个坐标。负的坐标倍乘可再分成反射与正倍乘。由 \cref{b1:lem:elementary-linear-maps}，相应外测度因子分别为 \(1\)、正倍乘常数的绝对值和 \(1\)。这些因子的乘积等于矩阵行列式的绝对值，因为每个初等矩阵的因子正是其行列式绝对值。
+
+对正交矩阵 \(U\)，有 \(|\det U|=1\)，故把分解中的外测度因子相乘可得
+\(m^*(UA)=m^*(A)\)。每个初等映射均保持 Lebesgue 可测性，其有限复合也保持；因而可测集的结论成立。
+\end{proof}
+
+一般旋转把坐标长方体送到斜放的平行多面体，像集不再是坐标长方体，因而不能直接搬运原来的长方体覆盖。上述证明依靠剪切覆盖估计和矩阵的初等分解填补了这一环节。
+
+\subsection{伸缩}
+\label{b1:subsec:030403}
+
+\begin{proposition}
+\label{b1:prop:scaling}
+对 \(r\in\mathbb R\) 与任意 \(A\subseteq\mathbb R^d\)，有
+\[
+m^*(rA)=|r|^d m^*(A).
+\]
+当 \(r=0\) 且 \(m^*(A)=\infty\) 时，右端约定为 \(0\cdot\infty=0\)。若 \(E\) Lebesgue 可测，则 \(rE\) 也 Lebesgue 可测。
+\end{proposition}
+\begin{proof}
+若 \(r>0\)，映射 \(x\mapsto rx\) 是依次把全部 \(d\) 个坐标乘以 \(r\)，故 \cref{b1:lem:elementary-linear-maps} 给出因子 \(r^d\)。若 \(r<0\)，再复合所有坐标上的反射，外测度不再改变，因此因子为 \(|r|^d\)。这些映射可逆，并由同一引理保持可测性。
+
+若 \(r=0\)，则 \(rA\) 为空集或单点，两者都是零测集；右端采用所述约定后同样为零。此时像集自动可测。
+\end{proof}
+
+例如半径为 \(r>0\) 的球 \(B(0,r)=rB(0,1)\) 满足
+\[
+m(B(0,r))=r^d m(B(0,1)).
+\]
+本章尚不需要计算常数 \(m(B(0,1))\)；重要的是维数 \(d\) 决定了伸缩指数。
+
+\subsection{线性变换与行列式}
+\label{b1:subsec:030404}
+
+先处理奇异线性映射的像空间。
+
+\begin{proposition}
+\label{b1:prop:proper-subspace-null}
+\(\mathbb R^d\) 的每个真线性子空间都是 Lebesgue 零测集；因此它的任意子集也 Lebesgue 可测且测度为零。
+\end{proposition}
+\begin{proof}
+设 \(L\) 为真线性子空间。把 \(L\) 的一组规范正交基扩充为 \(\mathbb R^d\) 的规范正交基；相应的正交变换 \(U\) 把 \(L\) 送入某个坐标超平面。由 \cref{b1:thm:orthogonal-invariance} 与 \cref{b1:lem:coordinate-hyperplane-null}，
+\[
+m^*(L)=m^*(UL)=0.
+\]
+最后使用 \cref{b1:prop:null-subsets}。
+\end{proof}
+
+\begin{theorem}
+\label{b1:thm:linear-change}
+设 \(T:\mathbb R^d\to\mathbb R^d\) 为线性映射。对每个 \(A\subseteq\mathbb R^d\)，
+\[
+m^*(TA)=|\det T|\,m^*(A),
+\]
+其中在 \(T\) 奇异且 \(m^*(A)=\infty\) 时约定 \(0\cdot\infty=0\)。若 \(E\in\mathcal L^d\)，则 \(TE\in\mathcal L^d\)，并且
+\[
+m(TE)=|\det T|\,m(E).
+\]
+\end{theorem}
+\begin{proof}
+先设 \(T\) 可逆。按 \cref{b1:thm:orthogonal-invariance} 证明中使用的高斯消元分解，\(T\) 是有限个坐标置换、反射、正的单坐标伸缩与剪切的复合。\cref{b1:lem:elementary-linear-maps} 对任意子集给出了每一步的外测度因子；将它们相乘，所得因子就是相应初等矩阵行列式绝对值的乘积，也就是 \(|\det T|\)。因此
+\[
+m^*(TA)=|\det T|m^*(A).
+\]
+每一步及其逆都保持可测性，故 \(T\) 与 \(T^{-1}\) 也保持可测性。对可测集限制上述等式，便得到测度公式。
+
+再设 \(T\) 奇异。其值域 \(\operatorname{ran}T\) 是真线性子空间，而
+\[
+TA\subseteq\operatorname{ran}T.
+\]
+由 \cref{b1:prop:proper-subspace-null}，集合 \(TA\) 对任意 \(A\) 都可测且测度为零。由于 \(\det T=0\)，采用 \(0\cdot\infty=0\) 的约定后，外测度公式与测度公式都成立。
+\end{proof}
+
+行列式公式同时包含三种信息：\(|\det T|=1\) 的变换保持体积；\(|\det T|>1\) 或小于 \(1\) 时体积按固定比例放大或缩小；\(\det T=0\) 时满维体积完全塌缩为零。绝对值不可省略，因为改变定向不应产生负体积。

@@ -1,0 +1,329 @@
+% !TeX root = ../../Book1.tex
+\section{测度延拓}
+\label{b1:sec:0204}
+
+在实际构造中，我们通常只会给区间或长方体等基本集合指定大小。这些基本集合未必组成 \(\sigma\)-代数，却往往组成集合环或半环。本节要把局部数据沿着一条完整链条推进：先核验前测度对可数覆盖的估计，再由覆盖生成外测度，证明基本集合满足 Carathéodory 条件，最后把测度限制到所生成的 \(\sigma\)-代数。存在性之外，还要说明唯一性为何需要 \(\sigma\)-有限性。
+
+\subsection{前测度}
+\label{b1:subsec:020401}
+
+\begin{definition}
+\label{b1:def:premeasure}
+设 \(\mathcal R\) 是 \(X\) 上的集合环或集合代数。函数
+\[
+p:\mathcal R\longrightarrow[0,\infty]
+\]
+称为\term[qian-cedu]{前测度}[premeasure]，若 \(p(\varnothing)=0\)，并且每当 \((A_n)_{n\geq1}\subseteq\mathcal R\) 两两不交且 \(\bigcup_nA_n\in\mathcal R\) 时，都有
+\[
+p\left(\bigcup_{n=1}^{\infty}A_n\right)
+=\sum_{n=1}^{\infty}p(A_n).
+\]
+\end{definition}
+
+前测度与测度使用同一条可数可加性，只是定义域还不是 \(\sigma\)-代数。条件中必须要求并集仍属于 \(\mathcal R\)，否则等式左端没有定义。有限可加性可通过补入空集得到；若 \(A,B\in\mathcal R\) 且 \(A\subseteq B\)，则
+\[
+p(B)=p(A)+p(B\setminus A),
+\]
+所以前测度也具有单调性。
+
+延拓证明需要把“互不相交的并”推广到“一列集合覆盖另一个集合”。这一步不能只写成前测度的可数次可加性，因为覆盖的并集未必属于集合环。
+
+\begin{lemma}
+\label{b1:lem:premeasure-cover}
+设 \(p\) 是集合环 \(\mathcal R\) 上的前测度。若 \(A,A_n\in\mathcal R\) 且
+\[
+A\subseteq\bigcup_{n=1}^{\infty}A_n,
+\]
+则
+\[
+p(A)\leq\sum_{n=1}^{\infty}p(A_n).
+\]
+\end{lemma}
+\begin{proof}
+令
+\[
+B_1=A\cap A_1,
+\quad
+B_n=A\cap\left(A_n\setminus\bigcup_{k=1}^{n-1}A_k\right)\quad(n\geq2).
+\]
+集合环对有限并、差和交封闭，所以每个 \(B_n\) 都属于 \(\mathcal R\)。它们两两不交，并且覆盖条件保证
+\[
+A=\bigcup_{n=1}^{\infty}B_n.
+\]
+这里并集 \(A\) 属于 \(\mathcal R\)，故可以使用前测度的可数可加性。再由 \(B_n\subseteq A_n\) 和单调性，
+\[
+p(A)=\sum_np(B_n)\leq\sum_np(A_n).
+\]
+\end{proof}
+
+\begin{definition}
+\label{b1:def:extension-measure}
+若 \(\mu\) 是 \(\sigma(\mathcal R)\) 上的测度，并且
+\[
+\mu(A)=p(A)\quad(A\in\mathcal R),
+\]
+则称 \(\mu\) 是 \(p\) 到 \(\sigma(\mathcal R)\) 的一个\term[yantuo-cedu]{测度延拓}[measure extension]。
+\end{definition}
+
+这里的目标定义域明确是 \(\sigma(\mathcal R)\)。Carathéodory 构造还会给出一个可能更大的完备可测域，但那是延拓后的进一步扩张，不能与上述定义域混为一谈。
+
+\subsection{Carathéodory 延拓定理}
+\label{b1:subsec:020402}
+
+用 \(\mathcal R\) 中集合覆盖任意子集，并把前测度之和作为覆盖代价，得到
+\[
+p^*(E)
+=\inf\left\{
+\sum_{n=1}^{\infty}p(A_n):
+E\subseteq\bigcup_{n=1}^{\infty}A_n,\ A_n\in\mathcal R
+\right\}.
+\]
+因为 \(\varnothing\in\mathcal R\) 且 \(p(\varnothing)=0\)，这正是 \cref{b1:prop:covering-outer-measure} 的情形。即使 \(\mathcal R\) 不能以可数个集合覆盖 \(X\)，公式也仍有意义：没有可数 \(\mathcal R\)-覆盖的集合取得值 \(\infty\)。
+
+\begin{theorem}
+\label{b1:thm:caratheodory-extension}
+设 \(p\) 是集合环或集合代数 \(\mathcal R\) 上的前测度，并以上式定义 \(p^*\)。则：
+\begin{enumerate}
+  \item\label{b1:item:extension-outer} \(p^*\) 是 \(X\) 上的外测度；
+  \item\label{b1:item:extension-ring-measurable} \(\mathcal R\subseteq\mathcal M_{p^*}\)；
+  \item\label{b1:item:extension-agrees} 对每个 \(A\in\mathcal R\)，有 \(p^*(A)=p(A)\)。
+\end{enumerate}
+特别地，
+\[
+\mu_{\mathrm C}=p^*|_{\sigma(\mathcal R)}
+\]
+是 \(p\) 到 \(\sigma(\mathcal R)\) 的测度延拓；而 \(p^*|_{\mathcal M_{p^*}}\) 是定义在可能更大可测域上的完备测度延拓。
+\end{theorem}
+\begin{proof}
+第\itemref{b1:item:extension-outer}项直接来自 \cref{b1:prop:covering-outer-measure}。
+
+为证明第\itemref{b1:item:extension-ring-measurable}项，固定 \(A\in\mathcal R\) 与 \(E\subseteq X\)。对任意 \(\mathcal R\)-覆盖
+\[
+E\subseteq\bigcup_{n=1}^{\infty}A_n,
+\]
+集合 \(A_n\cap A\) 与 \(A_n\setminus A\) 都属于 \(\mathcal R\)，分别覆盖 \(E\cap A\) 与 \(E\setminus A\)。有限可加性给出
+\[
+p(A_n)=p(A_n\cap A)+p(A_n\setminus A).
+\]
+因此
+\begin{align*}
+p^*(E\cap A)+p^*(E\setminus A)
+&\leq\sum_np(A_n\cap A)+\sum_np(A_n\setminus A)\\
+&=\sum_np(A_n).
+\end{align*}
+对所有覆盖取下确界，得到
+\[
+p^*(E\cap A)+p^*(E\setminus A)\leq p^*(E).
+\]
+若不存在覆盖，则右端为 \(\infty\)，不等式仍成立。反向不等式由外测度的可数次可加性给出，所以 \(A\) 满足 Carathéodory 条件。
+
+最后证明第\itemref{b1:item:extension-agrees}项。用单个集合 \(A\) 覆盖自身，再以空集补足序列，可得 \(p^*(A)\leq p(A)\)。反过来，对任意覆盖 \(A\subseteq\bigcup_nA_n\)，\cref{b1:lem:premeasure-cover} 给出
+\[
+p(A)\leq\sum_np(A_n).
+\]
+对所有覆盖取下确界，得到 \(p(A)\leq p^*(A)\)，故二者相等。
+
+由于 \(\mathcal M_{p^*}\) 是包含 \(\mathcal R\) 的 \(\sigma\)-代数，必有
+\[
+\sigma(\mathcal R)\subseteq\mathcal M_{p^*}.
+\]
+由 \cref{b1:thm:caratheodory}，\(p^*\) 在 \(\mathcal M_{p^*}\) 上是测度；将它进一步限制到 \(\sigma(\mathcal R)\)，并结合第\itemref{b1:item:extension-agrees}项，就得到所需的 \(\mu_{\mathrm C}\)。
+\end{proof}
+
+这段证明中有三处定义域转换：前测度 \(p\) 定义在 \(\mathcal R\)，外测度 \(p^*\) 定义在 \(\mathcal P(X)\)，所得延拓 \(\mu_{\mathrm C}\) 定义在 \(\sigma(\mathcal R)\)。把三者都写成同一个字母，容易掩盖“哪一步已经具有可数可加性”以及“哪一个集合可以代入函数”。
+
+\subsection{\texorpdfstring{\(\sigma\)}{σ}-有限条件下的唯一性}
+\label{b1:subsec:020403}
+
+存在性不需要有限性。唯一性则先在有限质量区域上利用补集差公式，再通过递增覆盖回到整个空间。
+
+\begin{theorem}
+\label{b1:thm:sigma-finite-uniqueness}
+设 \(p\) 是集合环或集合代数 \(\mathcal R\) 上的 \(\sigma\)-有限前测度，即存在 \(R_n\in\mathcal R\)，使
+\[
+X=\bigcup_{n=1}^{\infty}R_n,
+\quad
+p(R_n)<\infty\quad(n\geq1).
+\]
+若 \(\mu,\nu\) 都是 \(p\) 到 \(\sigma(\mathcal R)\) 的测度延拓，则 \(\mu=\nu\)。
+\end{theorem}
+\begin{proof}
+把 \(R_n\) 换成 \(X_n=R_1\cup\cdots\cup R_n\)。集合环对有限并封闭，故 \(X_n\in\mathcal R\)；将 \(R_1,\ldots,R_n\) 按首次出现的位置不交化，再用有限可加性与单调性，得到
+\[
+p(X_n)\leq\sum_{k=1}^{n}p(R_k)<\infty.
+\]
+而且 \(X_n\uparrow X\)。
+
+固定 \(n\)，定义
+\[
+\mathcal D_n
+=\{E\in\sigma(\mathcal R):\mu(E\cap X_n)=\nu(E\cap X_n)\}.
+\]
+我们逐项核验 \(\mathcal D_n\) 是 \(\lambda\)-系统。首先，
+\[
+\mu(X\cap X_n)=\mu(X_n)=p(X_n)=\nu(X_n)=\nu(X\cap X_n),
+\]
+所以 \(X\in\mathcal D_n\)。若 \(A,B\in\mathcal D_n\) 且 \(A\subseteq B\)，则 \(A\cap X_n\subseteq B\cap X_n\)，并且两者的测度都不超过 \(p(X_n)<\infty\)。差公式合法，并给出
+\begin{align*}
+\mu((B\setminus A)\cap X_n)
+&=\mu(B\cap X_n)-\mu(A\cap X_n)\\
+&=\nu(B\cap X_n)-\nu(A\cap X_n)\\
+&=\nu((B\setminus A)\cap X_n).
+\end{align*}
+故 \(B\setminus A\in\mathcal D_n\)。若 \((E_j)\subseteq\mathcal D_n\) 两两不交，则 \((E_j\cap X_n)\) 也两两不交，由两个延拓的可数可加性，
+\begin{align*}
+\mu\left(\left(\bigcup_jE_j\right)\cap X_n\right)
+&=\sum_j\mu(E_j\cap X_n)\\
+&=\sum_j\nu(E_j\cap X_n)
+=\nu\left(\left(\bigcup_jE_j\right)\cap X_n\right).
+\end{align*}
+所以 \(\bigcup_jE_j\in\mathcal D_n\)。
+
+集合环 \(\mathcal R\) 对有限交封闭，因而是 \(\pi\)-系统。对任意 \(A\in\mathcal R\)，还有 \(A\cap X_n\in\mathcal R\)，于是
+\[
+\mu(A\cap X_n)=p(A\cap X_n)=\nu(A\cap X_n).
+\]
+这说明 \(\mathcal R\subseteq\mathcal D_n\)。由 \(\pi\)-\(\lambda\) 定理，
+\[
+\mathcal D_n=\sigma(\mathcal R).
+\]
+
+现在取任意 \(E\in\sigma(\mathcal R)\)。对每个 \(n\)，已有
+\[
+\mu(E\cap X_n)=\nu(E\cap X_n).
+\]
+又因 \(E\cap X_n\uparrow E\)，两边分别使用从下连续性，得到
+\[
+\mu(E)=\lim_n\mu(E\cap X_n)
+=\lim_n\nu(E\cap X_n)=\nu(E).
+\]
+\end{proof}
+
+没有 \(\sigma\)-有限性时，唯一性确实会失败。设 \(X\) 是不可数集合，\(\mathcal R\) 是所有有限子集组成的集合环，并令 \(p(A)=0\)。这个前测度不是 \(\sigma\)-有限的，因为可数个有限集不能覆盖 \(X\)。它所生成的 \(\sigma\)-代数是
+\[
+\mathcal C=\{E\subseteq X:E\text{ 可数或 }E^{\mathrm c}\text{ 可数}\}.
+\]
+在 \(\mathcal C\) 上，零测度
+\[
+\mu_0(E)=0
+\]
+和集合函数
+\[
+\mu_1(E)=
+\begin{cases}
+0,&E\text{ 可数},\\
+\infty,&E^{\mathrm c}\text{ 可数}
+\end{cases}
+\]
+都是测度，也都在有限集上等于 \(p\)，但 \(\mu_0(X)=0\) 而 \(\mu_1(X)=\infty\)。具体地，若一列不交集合中有一个余可数集，其余集合都包含在它的可数补集中；若没有余可数集，则整列都是可数集，它们的并仍可数。这就核验了 \(\mu_1\) 的可数可加性。这个例子表明，没有 \(\sigma\)-有限性时确实可能出现多个延拓。
+
+\subsection{Hahn--Kolmogorov 定理}
+\label{b1:subsec:020404}
+
+本书用“Carathéodory 延拓定理”强调外测度与可测性筛选的构造过程，并把存在性、唯一性合并后的表述称为 \term[hahn-kolmogorov]{Hahn--Kolmogorov 定理}[Hahn--Kolmogorov theorem]。
+
+\begin{theorem}
+\label{b1:thm:hahn-kolmogorov}
+集合环或集合代数上的每个前测度，都至少有一个到所生成 \(\sigma\)-代数的测度延拓；若该前测度 \(\sigma\)-有限，则这个延拓唯一。
+\end{theorem}
+\begin{proof}
+存在性由 \cref{b1:thm:caratheodory-extension} 给出；在 \(\sigma\)-有限条件下，唯一性由 \cref{b1:thm:sigma-finite-uniqueness} 给出。
+\end{proof}
+
+本书引用 Hahn--Kolmogorov 定理时，默认使用“存在性加 \(\sigma\)-有限条件下唯一性”的合并表述；只需调用外测度构造时，则明确引用 Carathéodory 延拓定理。无论采用哪个名称，都要写清前测度的定义域与延拓的目标域。
+
+\subsection{从半环、环和代数构造测度}
+\label{b1:subsec:020405}
+
+区间和长方体通常不组成集合环：两个长方体的差未必还是一个长方体，却能分成有限个长方体。这正是半环的作用。
+
+\begin{definition}
+\label{b1:def:semiring}
+集合族 \(\mathcal S\subseteq\mathcal P(X)\) 称为\term[banhuan]{半环}[semiring]，若：
+\begin{enumerate}
+  \item\label{b1:item:semiring-empty} \(\varnothing\in\mathcal S\)；
+  \item\label{b1:item:semiring-intersection} \(\mathcal S\) 对有限交封闭；
+  \item\label{b1:item:semiring-difference} 对任意 \(A,B\in\mathcal S\)，差集 \(A\setminus B\) 可以写成有限个两两不交的 \(\mathcal S\) 中集合之并。
+\end{enumerate}
+\end{definition}
+
+例如，\(\mathbb R\) 上的空集与有界半开区间 \([a,b)\) 组成半环。两个半开区间的交仍是同类集合，而一个区间减去另一个区间至多留下两个半开区间。
+
+\begin{definition}
+\label{b1:def:semiring-premeasure}
+设 \(\mathcal S\) 是半环。函数 \(p:\mathcal S\to[0,\infty]\) 称为 \(\mathcal S\) 上的前测度，若 \(p(\varnothing)=0\)，并且每当 \((S_n)_{n\geq1}\subseteq\mathcal S\) 两两不交、其并 \(S=\bigcup_nS_n\) 仍属于 \(\mathcal S\) 时，都有
+\[
+p(S)=\sum_{n=1}^{\infty}p(S_n).
+\]
+\end{definition}
+
+这个定义明确了在半环上能够合法写出的可数可加性。有限情形同样包含在内。令
+\[
+\mathcal R(\mathcal S)
+=\left\{\bigsqcup_{k=1}^{m}S_k:m\geq0,\ S_k\in\mathcal S\right\},
+\]
+其中 \(m=0\) 表示空集。
+
+\begin{theorem}
+\label{b1:thm:semiring-extension}
+设 \(\mathcal S\) 是半环，\(p\) 是 \(\mathcal S\) 上的前测度。则 \(\mathcal R(\mathcal S)\) 是集合环，而且公式
+\[
+\widetilde p\left(\bigsqcup_{k=1}^{m}S_k\right)
+=\sum_{k=1}^{m}p(S_k)
+\]
+定义了 \(\mathcal R(\mathcal S)\) 上唯一的前测度延拓 \(\widetilde p\)。因此 \(\widetilde p\) 至少有一个到 \(\sigma(\mathcal S)=\sigma(\mathcal R(\mathcal S))\) 的测度延拓；若 \(X\) 可由可数个有限 \(p\)-值的 \(\mathcal S\) 中集合覆盖，则该测度延拓唯一。
+\end{theorem}
+\begin{proof}
+先说明 \(\mathcal R(\mathcal S)\) 是集合环。两个有限不交并的交可以分配为有限个交集，而这些交集仍属于 \(\mathcal S\)。从一个半环集合中减去另一个半环集合，按定义可作有限不交分解；依次减去有限多个半环集合，仍得到有限个半环集合的不交并。因此 \(R,T\in\mathcal R(\mathcal S)\) 时，\(R\setminus T\in\mathcal R(\mathcal S)\)。再用
+\[
+R\cup T=R\mathbin{\dot\cup}(T\setminus R)
+\]
+可知它对有限并封闭，故为集合环。
+
+接着证明 \(\widetilde p\) 定义良好。设同一集合有两个有限不交表示
+\[
+R=\bigsqcup_{i=1}^{m}S_i
+=\bigsqcup_{j=1}^{\ell}T_j.
+\]
+对每个 \(i\)，集合 \((S_i\cap T_j)_{1\leq j\leq\ell}\) 两两不交且并为 \(S_i\)。半环上的有限可加性给出
+\[
+p(S_i)=\sum_{j=1}^{\ell}p(S_i\cap T_j).
+\]
+同理，
+\[
+p(T_j)=\sum_{i=1}^{m}p(S_i\cap T_j).
+\]
+将这些非负项求和并交换两个有限求和次序，得到
+\[
+\sum_{i=1}^{m}p(S_i)
+=\sum_{i,j}p(S_i\cap T_j)
+=\sum_{j=1}^{\ell}p(T_j).
+\]
+所以定义与不交表示无关。把单个集合看作只有一项的不交并，可知它在 \(\mathcal S\) 上等于 \(p\)；而任何延拓 \(p\) 的有限可加函数都必须在有限不交并上取上述值，故唯一。
+
+最后核验可数可加性。设 \(R,R_n\in\mathcal R(\mathcal S)\)，集合 \(R_n\) 两两不交且 \(R=\bigsqcup_nR_n\)。选取不交表示
+\[
+R=\bigsqcup_{i=1}^{m}S_i,
+\quad
+R_n=\bigsqcup_{j=1}^{k_n}T_{n,j}.
+\]
+对固定的 \(i\)，集合族 \((S_i\cap T_{n,j})_{n,j}\) 两两不交，其并为 \(S_i\)，故半环上前测度的可数可加性给出
+\[
+p(S_i)=\sum_{n=1}^{\infty}\sum_{j=1}^{k_n}p(S_i\cap T_{n,j}).
+\]
+另一方面，对每个 \(n,j\)，有限可加性给出
+\[
+p(T_{n,j})=\sum_{i=1}^{m}p(S_i\cap T_{n,j}).
+\]
+所有项非负，可以重排求和，于是
+\begin{align*}
+\widetilde p(R)
+&=\sum_{i=1}^{m}p(S_i)\\
+&=\sum_{n=1}^{\infty}\sum_{j=1}^{k_n}\sum_{i=1}^{m}p(S_i\cap T_{n,j})\\
+&=\sum_{n=1}^{\infty}\sum_{j=1}^{k_n}p(T_{n,j})
+=\sum_{n=1}^{\infty}\widetilde p(R_n).
+\end{align*}
+所以 \(\widetilde p\) 是集合环上的前测度。现在应用 \cref{b1:thm:hahn-kolmogorov} 即得存在性。若 \(X=\bigcup_nS_n\) 且 \(p(S_n)<\infty\)，则这些 \(S_n\) 也属于 \(\mathcal R(\mathcal S)\)，说明 \(\widetilde p\) 是 \(\sigma\)-有限的，唯一性随之成立。
+\end{proof}
+
+由此，常见构造并不需要在每一层重新发明测度：先在半环上核验几何大小的可数可加性，再唯一地通过有限不交并扩到集合环，最后用 Carathéodory 构造延拓到生成的 \(\sigma\)-代数。第三章将以半开长方体及其体积为原始数据，完成 Lebesgue 测度的具体构造。

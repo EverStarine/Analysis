@@ -1,51 +1,172 @@
 % !TeX root = ../../Book1.tex
 \chapter{Lebesgue 测度}
 \label{b1:ch:03}
-% 本章摘要（不计入编号）
+
 \begin{chapterabstract}
-本章在 \(\mathbb R^d\) 上构造 Lebesgue 测度，并说明它如何把长度、面积和体积统一为同一对象。核心步骤是以长方体覆盖定义外测度、用 Carathéodory 条件得到可测集，再证明这一测度具有正则性及欧氏变换下的自然不变性。
+本章在 \(\mathbb R^d\) 上从长方体的体积出发构造 Lebesgue 测度。构造的实质不在于写出一个覆盖下确界，而在于证明长方体体积确实是半环上的前测度，并核实由此得到的外测度保留原有体积。随后我们辨明 Borel 可测集、Lebesgue 可测集与零测集之间的关系，建立外正则性、内正则性和 Borel 逼近，最后从覆盖定义直接推出平移、正交变换、伸缩及一般线性变换下的测度公式。选读的一节用 Vitali 集说明：完备性虽然补进了所有零测集的子集，却不可能使 \(\mathbb R^d\) 的每个子集都可测。
 \end{chapterabstract}
 
-% 本章目标（不计入编号）
 \begin{learninggoals}
 \begin{itemize}
-  \item 能用可数长方体覆盖写出 Lebesgue 外测度的定义；
-  \item 能说明 Borel 集、零测集与 Lebesgue \(\sigma\)-代数之间的关系；
-  \item 能使用外正则性、内正则性和 Borel 逼近；
-  \item 能陈述平移、正交变换与线性变换下的测度公式。
+  \item \label{b1:item:0300-goal-1}能证明半开长方体构成半环，体积函数满足可数可加性，并据此合法构造 Lebesgue 外测度；
+  \item \label{b1:item:0300-goal-2}能区分 Borel 集、Lebesgue 可测集和零测集，并能处理 Cantor 集、稠密零测集等边界例子；
+  \item \label{b1:item:0300-goal-3}能在有限与无限测度两种情形下正确使用外正则性、内正则性及 Borel 逼近；
+  \item \label{b1:item:0300-goal-4}能从覆盖估计验证初等线性变换下外测度的变化，并由矩阵分解推出行列式公式；
+  \item \label{b1:item:0300-goal-5}能指出 Vitali 构造中可数可加性、平移不变性、区间测度和代表元选取分别出现在哪里。
 \end{itemize}
 \end{learninggoals}
 
 \begin{chapterguide}
-第三章把第二章的抽象延拓机制落实到欧氏空间。读者可先把 \(d=1\) 时的区间长度作为直观模型；证明中真正起作用的是可数覆盖、可数基和 \(\sigma\)-有限性，而不是一维的特殊图形。
+本章依赖第二章的外测度、Carathéodory 可测性和半环延拓定理。内部路线是
+\[
+\begin{gathered}
+\text{长方体体积}
+\longrightarrow \text{半环前测度}
+\longrightarrow \text{Lebesgue 外测度}\\
+\longrightarrow \text{可测性与正则性}
+\longrightarrow \text{欧氏变换下的行为}.
+\end{gathered}
+\]
+第一次阅读时不宜跳过 \cref{b1:thm:rectangle-premeasure}：如果只验证有限分割可加，后面的测度延拓仍缺少一个实质步骤。正则性一节则要特别留意无穷测度集合；等式 \(\infty=\infty\) 本身不给出误差小于 \(\varepsilon\) 的逼近。
 \end{chapterguide}
-\input{Part01/Chapter03/Section0301/Section0301}
-\input{Part01/Chapter03/Section0302/Section0302}
-\input{Part01/Chapter03/Section0303/Section0303}
-\input{Part01/Chapter03/Section0304/Section0304}
-\input{Part01/Chapter03/Section0305/Section0305}
-% 本章小结（不计入编号）
+
+\input{Part01/Chapter03/Section0301}
+\input{Part01/Chapter03/Section0302}
+\input{Part01/Chapter03/Section0303}
+\input{Part01/Chapter03/Section0304}
+\input{Part01/Chapter03/Section0305}
+
 \begin{chaptersummary}
-Lebesgue 外测度以可数长方体覆盖的总体积下确界定义。Carathéodory 条件给出 Lebesgue \(\sigma\)-代数与完备的 Lebesgue 测度；它是 Borel 测度的完备化。外、内正则性分别允许用开集和紧集逼近可测集，平移、正交与线性变换则按行列式刻画体积的变化。
+本章完成了从欧氏几何体积到完备测度的整条构造链。半开长方体构成半环；有限网格给出有限可加性，紧集的有限子覆盖把它提升为可数可加性。由半环延拓得到的覆盖外测度在长方体上恰等于体积，其 Carathéodory 可测集组成 \(\mathcal L^d\)，限制后的测度记为 \(m\)。Borel \(\sigma\)-代数包含于 \(\mathcal L^d\)，而 \(\mathcal L^d\) 正是限制测度 \(m|_{\mathcal B(\mathbb R^d)}\) 的完备化。
+
+外正则性从覆盖定义而来，内正则性则由有界截断和对补集的外逼近推出。局部化到有界盒子后，这些结论同样能处理无穷测度集合。初等矩阵对长方体覆盖的作用给出平移不变性、剪切不变性和单坐标伸缩公式；高斯消元再把它们组合成
+\[
+m(TE)=\lvert\det T\rvert m(E).
+\]
+当 \(T\) 奇异时，像落在零测的真子空间中，此式按 \(0\cdot\infty=0\) 理解。Vitali 集最后说明，可数可加、平移不变并且赋予区间通常长度的测度，不能定义在实直线的全部子集上。
 \end{chaptersummary}
 
-% 习题（不计入编号）
 \section*{习题}
+
 \begin{exercise}\label{b1:ex:0301}
-证明任意可数子集 \(D\subseteq\mathbb R^d\) 都是 Lebesgue 零测集。
+设 \(Q=\prod_{j=1}^d(a_j,b_j]\)。证明 \(\partial Q\) 是零测集，并由此证明把任意若干坐标区间的端点改成开端点或闭端点，不会改变所得长方体的测度。
 \end{exercise}
 \begin{solution}
-逐点用体积小于 \(\varepsilon2^{-n}\) 的立方体覆盖，合并后得到总覆盖体积小于 \(\varepsilon\)。令 \(\varepsilon\downarrow0\)。
+边界 \(\partial Q\) 包含于有限个坐标超平面
+\[
+\{\,x:x_j=a_j\,\},\quad \{\,x:x_j=b_j\,\}
+\quad (1\leq j\leq d).
+\]
+由 \cref{b1:prop:proper-subspace-null}，每个这样的超平面都是零测集，故它们的有限并也是零测集。改变端点只会增删 \(\partial Q\) 的子集；Lebesgue 测度完备，因而改变后的集合仍可测，并与 \(Q\) 有相同测度。
 \end{solution}
+
 \begin{exercise}\label{b1:ex:0302}
-设 \(E\in\mathcal L^d\)、\(a\in\mathbb R^d\)。用 \cref{b1:thm:translation-invariance} 证明 \(m(E-a)=m(E)\)。
+给定 \(\varepsilon>0\)，在 \([0,1]\) 中构造一个稠密开集 \(G\)，使 \(m(G)<\varepsilon\)。进而给出一个正测度、无内点的闭集。
 \end{exercise}
 \begin{solution}
-将平移不变性应用于集合 \(E-a\) 和向量 \(a\)，即可得到 \(m(E)=m((E-a)+a)=m(E-a)\)。
+枚举 \(\mathbb Q\cap[0,1]=\{q_n:n\geq1\}\)，并令
+\[
+G=[0,1]\cap\bigcup_{n=1}^{\infty}
+\left(q_n-\varepsilon2^{-n-2},q_n+\varepsilon2^{-n-2}\right).
+\]
+集合 \(G\) 在子空间 \([0,1]\) 中开且稠密，并且由可数次可加性
+\[
+m(G)\leq\sum_{n=1}^{\infty}\varepsilon2^{-n-1}<\varepsilon.
+\]
+其补集 \(F=[0,1]\setminus G\) 闭且没有内点，同时
+\(m(F)=1-m(G)>1-\varepsilon\)。取 \(0<\varepsilon<1\) 即得所求正测度例子。
 \end{solution}
+
 \begin{exercise}\label{b1:ex:0303}
-若 \(E\in\mathcal L^d\) 且 \(m(E)<\infty\)，证明对每个 \(\varepsilon>0\) 存在紧集 \(K\) 与开集 \(G\)，使 \(K\subseteq E\subseteq G\) 且 \(m(G\setminus K)<\varepsilon\)。
+设 \(0<\rho<1/2\)。从 \([0,1]\) 开始，每一步在每个保留下来的区间中保留左右两个长度为原来 \(\rho\) 倍的闭子区间。证明极限集合 \(C_\rho\) 不可数且为零测集。
 \end{exercise}
 \begin{solution}
-分别使用 \cref{b1:thm:inner-regular} 和 \cref{b1:thm:outer-regular}，使 \(m(E\setminus K)<\varepsilon/2\)、\(m(G\setminus E)<\varepsilon/2\)，再以不交并相加。
+第 \(n\) 步留下 \(2^n\) 个长度为 \(\rho^n\) 的闭区间，故
+\[
+m(C_\rho)\leq 2^n\rho^n=(2\rho)^n.
+\]
+令 \(n\to\infty\) 得 \(m(C_\rho)=0\)。另一方面，每个无限序列 \((\omega_n)\in\{0,1\}^{\mathbb N}\) 唯一指定逐层选择左区间或右区间所得的一点；两个不同序列在第一次选择不同处落入两个不交区间，因此得到不同的点。于是 \(\{0,1\}^{\mathbb N}\) 单射到 \(C_\rho\)，后者不可数。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:0304}
+设 \(E\in\mathcal L^d\) 且 \(m(E)<\infty\)。证明对每个 \(\varepsilon>0\)，存在半开长方体的有限并 \(R\)，使
+\[
+m(E\mathbin{\triangle}R)<\varepsilon.
+\]
+\end{exercise}
+\begin{solution}
+由 \cref{b1:prop:open-compact-sandwich}，可取紧集 \(K\) 与开集 \(G\)，使 \(K\subseteq E\subseteq G\) 且 \(m(G\setminus K)<\varepsilon\)。对每个 \(x\in K\)，取一个含 \(x\) 且闭包包含于 \(G\) 的足够小半开长方体。紧性给出有限子覆盖，其并记为 \(R\)。于是 \(K\subseteq R\subseteq G\)，从而
+\[
+E\mathbin{\triangle}R\subseteq G\setminus K.
+\]
+有限个半开长方体的并属于它们生成的集合环，故可测，结论由单调性得到。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:0305}
+设 \(E\in\mathcal L^d\)。证明存在一个 \(F_\sigma\) 集 \(F\) 和一个 \(G_\delta\) 集 \(B\)，使
+\[
+F\subseteq E\subseteq B,
+\quad m(E\setminus F)=m(B\setminus E)=0.
+\]
+\end{exercise}
+\begin{solution}
+由 \cref{b1:thm:borel-approximation} 的证明，对每个 \(n\) 可取开集 \(G_n\supseteq E\)，使 \(m(G_n\setminus E)<2^{-n}\)。于是 \(B=\bigcap_nG_n\) 是 \(G_\delta\) 集，且
+\[
+m(B\setminus E)\leq m(G_n\setminus E)<2^{-n}
+\]
+对每个 \(n\) 都成立，故该测度为零。将同一结论应用于 \(E^{\mathrm c}\)，得到一个 \(G_\delta\) 集 \(C\supseteq E^{\mathrm c}\)，使 \(m(C\setminus E^{\mathrm c})=0\)。令 \(F=C^{\mathrm c}\)，则 \(F\) 是 \(F_\sigma\) 集，且 \(F\subseteq E\)、\(m(E\setminus F)=0\)。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:0306}
+设 \(A\subseteq\mathbb R^d\) 是零测集。证明 \(A\times\mathbb R^k\subseteq\mathbb R^{d+k}\) 是零测集。
+\end{exercise}
+\begin{solution}
+只需对每个整数 \(N\geq1\) 证明 \(A\times[-N,N]^k\) 零测，再对 \(N\) 取可数并。给定 \(\varepsilon>0\)，用长方体 \(Q_n\subseteq\mathbb R^d\) 覆盖 \(A\)，使
+\[
+\sum_n\operatorname{vol}_d(Q_n)<\frac{\varepsilon}{(2N+1)^k}.
+\]
+则 \(Q_n\times(-N-1,N]^k\) 覆盖 \(A\times[-N,N]^k\)，且总体积小于 \(\varepsilon\)。令 \(\varepsilon\downarrow0\) 即得结论。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:0307}
+设 \(A(x)=Tx+a\) 是仿射映射。证明对每个 Lebesgue 可测集 \(E\)，集合 \(A(E)\) 可测，并且
+\[
+m(A(E))=\lvert\det T\rvert m(E),
+\]
+其中当 \(T\) 奇异且 \(m(E)=\infty\) 时，右端按 \(0\cdot\infty=0\) 理解。
+\end{exercise}
+\begin{solution}
+由 \cref{b1:thm:linear-change}，集合 \(T(E)\) 可测且 \(m(T(E))=\lvert\det T\rvert m(E)\)。再由 \cref{b1:thm:translation-invariance}，平移 \(T(E)+a\) 可测且不改变测度。两式合并即得结论。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:0308}
+设 \(d\geq2\)，\(f:\mathbb R^{d-1}\to\mathbb R\)。若存在常数 \(L\geq0\)，使任意 \(x,y\in\mathbb R^{d-1}\) 都满足
+\[
+|f(x)-f(y)|\leq L|x-y|,
+\]
+就称 \(f\) 为\term[lipschitz-hanshu]{Lipschitz 函数}[Lipschitz function]。仅用长方体覆盖证明其图像
+\[
+\Gamma_f=\{\,(x,f(x)):x\in\mathbb R^{d-1}\,\}
+\]
+是 \(\mathbb R^d\) 中的零测集。
+\end{exercise}
+\begin{solution}
+先固定 \(N\)，只考虑 \(x\in[-N,N]^{d-1}\)。把该盒子分成边长至多 \(\delta\) 的有限个小立方体。若 \(L\) 是 \(f\) 的 Lipschitz 常数，则在每个小立方体上 \(f\) 的振幅至多 \(L\sqrt{d-1}\,\delta\)。相应图像因而可放进一个底边边长至多 \(\delta\)、竖直边长至多 \(L\sqrt{d-1}\,\delta+\eta\) 的长方体。小立方体数不超过 \(C_N\delta^{-(d-1)}\)，所以这些长方体的总体积不超过
+\[
+C_N\left(L\sqrt{d-1}\,\delta+\eta\right).
+\]
+对每个 \(\delta\) 先把 \(\eta\) 取得足够小，再令 \(\delta\downarrow0\)，可知这部分图像外测度为零。最后对 \(N\in\mathbb N\) 取可数并。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:0309}
+令 \(V\) 为 \cref{b1:thm:vitali} 中选出的 Vitali 集。证明 \(V\) 的每个 Lebesgue 可测子集都具有测度零，并推出
+\[
+\sup\{m(A):A\subseteq V,\ A\in\mathcal L^1\}=0,
+\quad m^*(V)>0.
+\]
+\end{exercise}
+\begin{solution}
+若可测集 \(A\subseteq V\) 满足 \(m(A)>0\)，则 \(A+q\)（\(q\in\mathbb Q\cap[-1,1]\)）两两不交且测度均为 \(m(A)\)。它们的并包含于 \([-1,2]\)，但可数可加性会使该并具有无穷测度，矛盾。因此每个这样的 \(A\) 都零测，左式成立。
+
+另一方面，若 \(m^*(V)=0\)，则 \(V\) 可测；Vitali 构造中的覆盖 \([0,1]\subseteq\bigcup_q(V+q)\) 随即给出 \(1\leq0\)，矛盾。因此 \(m^*(V)>0\)。
 \end{solution}

@@ -1,0 +1,79 @@
+% !TeX root = ../../Book1.tex
+\OptionalSection{不可测集合}{b1:sec:0305}
+
+本节是选读内容。前面已经把 Lebesgue 测度在 Borel \(\sigma\)-代数上的限制完备化，但“完备”只表示零测集的任意子集可测，并不表示 \(\mathbb R^d\) 的任意子集可测。Vitali 构造说明，若还要求测度可数可加、平移不变，并赋予区间通常的长度，那么不可测集合必然出现。
+
+\subsection{Vitali 集}
+\label{b1:subsec:030501}
+
+在 \([0,1]\) 上定义关系
+\[
+x\sim y
+\quad\Longleftrightarrow\quad
+x-y\in\mathbb Q.
+\]
+这是等价关系：自反性与对称性直接来自 \(0\in\mathbb Q\) 和有理数对取负封闭；传递性来自有理数对加法封闭。每个等价类是 \((x+\mathbb Q)\cap[0,1]\)，因而可数；但等价类的总数不可数，否则 \([0,1]\) 会成为可数个可数集的并。
+
+从每个等价类中选取一个代表元，并把全体代表元组成的集合记为 \(V\)。这样的代表元集合称为\term[vitali-ji]{Vitali 集}[Vitali set]。
+
+\begin{theorem}
+\label{b1:thm:vitali}
+上述集合 \(V\subseteq[0,1]\) 不是 Lebesgue 可测集。因此实直线存在非 Lebesgue 可测子集。
+\end{theorem}
+\begin{proof}
+记 \(D=\mathbb Q\cap[-1,1]\)。先证明平移族 \(\{V+q:q\in D\}\) 两两不交。若
+\[
+v+q=w+r,
+\quad v,w\in V,\quad q,r\in D,
+\]
+则 \(v-w=r-q\in\mathbb Q\)，所以 \(v\sim w\)。集合 \(V\) 在每个等价类中只取一个代表，故 \(v=w\)，继而 \(q=r\)。
+
+再核对覆盖和边界。给定 \(x\in[0,1]\)，其等价类的代表元 \(v\in V\) 满足
+\(q=x-v\in\mathbb Q\cap[-1,1]=D\)，所以 \(x\in V+q\)。另一方面，\(V\subseteq[0,1]\) 且 \(q\in[-1,1]\)，故
+\[
+[0,1]
+\subseteq\bigcup_{q\in D}(V+q)
+\subseteq[-1,2].
+\]
+区间端点是零测集，因而
+\(m([0,1])=1\) 且 \(m([-1,2])=3\)。
+
+假设 \(V\) 可测。由平移不变性，每个 \(V+q\) 都可测，并具有同一个测度 \(\alpha=m(V)\)。又因 \(V\subseteq[0,1]\)，有 \(0\leq\alpha\leq1\)。枚举可数集 \(D=\{q_n:n\geq1\}\)，利用两两不交性和可数可加性可得
+\[
+m\left(\bigcup_{q\in D}(V+q)\right)
+=\sum_{n=1}^{\infty}m(V+q_n)
+=\sum_{n=1}^{\infty}\alpha.
+\]
+若 \(\alpha=0\)，右端为零，与该并包含 \([0,1]\) 矛盾；若 \(\alpha>0\)，右端为无穷，与该并包含于有限测度区间 \([-1,2]\) 矛盾。两种可能都被排除，所以 \(V\) 不可测。
+\end{proof}
+
+代表元的唯一性保证有理平移彼此不交，平移不变性使这些平移集等测度，可数可加性计算它们的并；区间具有有限正测度，因而共同测度为零和为正两种可能都导致矛盾。
+
+\subsection{选择公理的作用}
+\label{b1:subsec:030502}
+
+Vitali 集的定义要求对商集 \([0,1]/\!\sim\) 中的每个等价类同时选取一个元素。这一步使用\term[xuanze-gongli]{选择公理}[axiom of choice]；在本书默认的 ZFC 公理体系中，它保证这个代表元集合存在。上述构造并不给出依次写下所有代表元的算法。
+
+选择公理只负责保证代表元集合 \(V\) 存在，之后的测度论矛盾只使用平移不变性、可数可加性与区间测度。由此构造的不可测集也说明，积分理论必须先指定可测集合族。
+
+\subsection{完备性与不可测性}
+\label{b1:subsec:030503}
+
+完备性与“处处有定义”之间存在容易混淆的界线。若 \(N\) 为零测集，则每个 \(A\subseteq N\) 都可测；这是因为任意测试集被 \(A\) 切分后，两部分的外测度不可能超过原测试集与零误差之和。Vitali 集却不能藏在零测集中。
+
+\begin{proposition}
+\label{b1:prop:vitali-inner-outer}
+Vitali 集 \(V\) 满足以下两条性质：
+\begin{enumerate}
+  \item \label{b1:item:0305-vitali-1}每个 Lebesgue 可测子集 \(A\subseteq V\) 都有 \(m(A)=0\)；
+  \item \label{b1:item:0305-vitali-2}其外测度满足 \(m^*(V)>0\)。
+\end{enumerate}
+因此不能通过给 \(V\) 增删一个零测集而把它变成 Borel 集。
+\end{proposition}
+\begin{proof}
+若可测集 \(A\subseteq V\) 满足 \(m(A)>0\)，则上一证明中的不交性同样适用于 \(A+q\)（\(q\in D\)）。这些集合都具有测度 \(m(A)>0\)，其可数并却包含于 \([-1,2]\)。可数可加性迫使该并测度为无穷，与 \(m([-1,2])=3\) 矛盾。这证明\itemref{b1:item:0305-vitali-1}。
+
+若 \(m^*(V)=0\)，则由 \cref{b1:prop:null-subsets}，集合 \(V\) 本身可测，与 \cref{b1:thm:vitali} 矛盾，故\itemref{b1:item:0305-vitali-2}成立。最后，若 \(V\mathbin{\triangle}B\) 包含于某个 Borel 零集，其中 \(B\) 为 Borel 集，则 \cref{b1:thm:lebesgue-completion-borel} 会推出 \(V\in\mathcal L^1\)，再次矛盾。
+\end{proof}
+
+所以，Lebesgue 完备化只填补 Borel 零集内部的空隙。它允许在零测集上修改函数而仍保留可测性，却不能把任意集合都纳入测度的定义域。

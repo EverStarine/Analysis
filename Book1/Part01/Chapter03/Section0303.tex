@@ -1,0 +1,159 @@
+% !TeX root = ../../Book1.tex
+\section{正则性}
+\label{b1:sec:0303}
+
+Lebesgue 可测集可能由任意零测子集修正而来，外观并不一定规则。正则性却保证：就测度而言，开集、闭集与紧集已经足以逼近任意可测集。外逼近直接继承自覆盖定义；内逼近则要先局部化到有限测度盒子，再对补集使用外逼近。
+
+\subsection{外正则性}
+\label{b1:subsec:030301}
+
+\begin{theorem}
+\label{b1:thm:outer-regular}
+Lebesgue 测度具有\term[wai-zhengzexing]{外正则性}[outer regularity]：对每个 \(E\in\mathcal L^d\)，
+\[
+m(E)=\inf\{\,m(G):E\subseteq G,\ G\text{ 开}\,\}.
+\]
+而且对每个 \(\varepsilon>0\)，即使 \(m(E)=\infty\)，也存在开集 \(G\supseteq E\)，使
+\[
+m(G\setminus E)<\varepsilon.
+\]
+\end{theorem}
+\begin{proof}
+下确界等式已由 \cref{b1:prop:open-cover-approximation} 对任意子集证明。若 \(m(E)<\infty\)，同一命题给出开集 \(G\supseteq E\)，使
+\(m(G)<m(E)+\varepsilon\)。由于 \(E\) 可测且测度有限，
+\[
+m(G)=m(E)+m(G\setminus E),
+\]
+所以 \(m(G\setminus E)<\varepsilon\)。
+
+现在设 \(m(E)=\infty\)。把 \(E\) 写成有限测度可测集的不交并。例如令
+\[
+A_1=E\cap[-1,1]^d,
+\quad
+A_k=E\cap\left([-k,k]^d\setminus[-k+1,k-1]^d\right)
+\quad(k\geq2).
+\]
+对每个 \(k\)，由有限测度情形可取开集 \(G_k\supseteq A_k\)，使
+\[
+m(G_k\setminus A_k)<\varepsilon2^{-k}.
+\]
+令 \(G=\bigcup_kG_k\)。于是 \(G\) 开且包含 \(E\)，并且
+\[
+G\setminus E
+\subseteq\bigcup_k(G_k\setminus A_k).
+\]
+由可数次可加性，\(m(G\setminus E)<\varepsilon\)。因此误差式对无穷测度集合也成立。
+\end{proof}
+
+若 \(m(E)=\infty\)，所有开超集同样具有无穷测度，所以下确界等式本身是退化的。此时逼近信息体现在差集估计 \(m(G\setminus E)<\varepsilon\) 中；这个估计来自刚才的有界分片。
+
+\subsection{内正则性}
+\label{b1:subsec:030302}
+
+\begin{theorem}
+\label{b1:thm:inner-regular}
+Lebesgue 测度具有\term[nei-zhengzexing]{内正则性}[inner regularity]：对每个 \(E\in\mathcal L^d\)，包括 \(m(E)=\infty\) 的情形，都有
+\[
+m(E)=\sup\{\,m(K):K\subseteq E,\ K\text{ 紧}\,\}.
+\]
+若 \(m(E)<\infty\)，则对每个 \(\varepsilon>0\) 可取紧集 \(K\subseteq E\)，使
+\[
+m(E\setminus K)<\varepsilon.
+\]
+\end{theorem}
+\begin{proof}
+先设 \(E\) 测度有限。由测度的从下连续性，
+\[
+E\cap[-n,n]^d\uparrow E,
+\quad
+m(E\cap[-n,n]^d)\uparrow m(E).
+\]
+因此可取 \(n\)，使
+\[
+m\bigl(E\setminus[-n,n]^d\bigr)<\frac{\varepsilon}{2}.
+\]
+令 \(C=[-n,n]^d\) 与 \(F=C\setminus E\)。集合 \(F\) 可测且具有有限测度。由 \cref{b1:thm:outer-regular}，存在开集 \(U\supseteq F\)，使
+\[
+m(U\setminus F)<\frac{\varepsilon}{2}.
+\]
+集合 \(K=C\setminus U\) 是紧集，并且 \(K\subseteq C\cap E\)。此外
+\[
+E\setminus K
+\subseteq
+\bigl(E\setminus C\bigr)\cup(U\setminus F),
+\]
+故 \(m(E\setminus K)<\varepsilon\)。这证明了有限测度情形的误差式，也给出相应的上确界等式。
+
+再设 \(m(E)=\infty\)。仍有
+\(m(E\cap[-n,n]^d)\uparrow\infty\)。给定 \(M>0\)，先取 \(n\) 使
+\(m(E\cap[-n,n]^d)>M+1\)，再把已经证明的有限测度情形应用于 \(E\cap[-n,n]^d\)，得到紧集 \(K\subseteq E\cap[-n,n]^d\)，满足
+\[
+m(K)>m(E\cap[-n,n]^d)-1>M.
+\]
+因此所有包含于 \(E\) 的紧集的测度上确界为无穷，恰等于 \(m(E)\)。
+\end{proof}
+
+有限性只在差集误差式中不可缺少。若 \(m(E)=\infty\)，任何紧集 \(K\) 都有有限测度，因而 \(m(E\setminus K)=\infty\)；此时正确的说法是可在 \(E\) 内找到测度任意大的紧集，而不是找到与 \(E\) 相差有限小误差的单个紧集。
+
+\subsection{开集与紧集逼近}
+\label{b1:subsec:030303}
+
+\begin{proposition}
+\label{b1:prop:open-compact-sandwich}
+若 \(E\in\mathcal L^d\) 且 \(m(E)<\infty\)，则对每个 \(\varepsilon>0\)，存在紧集 \(K\) 与开集 \(G\)，使
+\[
+K\subseteq E\subseteq G,
+\quad
+m(G\setminus K)<\varepsilon.
+\]
+\end{proposition}
+\begin{proof}
+由内正则性取紧集 \(K\subseteq E\)，使 \(m(E\setminus K)<\varepsilon/2\)；由外正则性取开集 \(G\supseteq E\)，使 \(m(G\setminus E)<\varepsilon/2\)。两个差集不交，且
+\[
+G\setminus K=(G\setminus E)\sqcup(E\setminus K).
+\]
+可数可加性给出所需估计。
+\end{proof}
+
+这条夹逼把测度问题转化为拓扑问题。例如要证明一个关于有限测度集的性质，只要该性质对紧集成立、在开集中可稳定扩张，并且对小测度误差不敏感，往往就能先在 \(K\) 上证明，再通过 \(K\subseteq E\subseteq G\) 传回 \(E\)。后续的简单函数逼近、Lusin 定理和积分的平移连续性都会使用这一思路。
+
+需要注意，\(m(E)<\infty\) 不能从夹逼结论中删除。若 \(E=\mathbb R^d\)，每个紧集 \(K\) 都有有限测度，而每个含 \(E\) 的开集只能是 \(\mathbb R^d\)，故 \(m(G\setminus K)=\infty\)。无穷测度情形应先在 \([-n,n]^d\) 中局部化。
+
+\subsection{可测集的 Borel 逼近}
+\label{b1:subsec:030304}
+
+开集的可数交称为\term[g-delta-ji]{\(G_\delta\) 集}[G-delta set]，闭集的可数并称为\term[f-sigma-ji]{\(F_\sigma\) 集}[F-sigma set]。这两类集合都是 Borel 集。
+
+\begin{theorem}
+\label{b1:thm:borel-approximation}
+对每个 \(E\in\mathcal L^d\)，存在 \(G_\delta\) 集 \(B\) 与 \(F_\sigma\) 集 \(F\)，使
+\[
+F\subseteq E\subseteq B,
+\quad
+m(E\setminus F)=m(B\setminus E)=0.
+\]
+特别地，存在 Borel 集 \(C\) 使
+\[
+m(E\mathbin{\triangle}C)=0.
+\]
+\end{theorem}
+\begin{proof}
+对每个 \(n\geq1\)，由 \cref{b1:thm:outer-regular} 取开集 \(G_n\supseteq E\)，使
+\[
+m(G_n\setminus E)<2^{-n}.
+\]
+令 \(B=\bigcap_nG_n\)。这是 \(G_\delta\) 集，且 \(E\subseteq B\)。对每个 \(n\)，
+\[
+B\setminus E\subseteq G_n\setminus E,
+\]
+故 \(m(B\setminus E)\leq2^{-n}\)。令 \(n\to\infty\)，得到 \(m(B\setminus E)=0\)。这个论证没有用 \(m(E)<\infty\)，因为外正则性的差集版本已经处理了无穷测度。
+
+将刚才的结论应用于 \(E^{\mathrm c}\)，得到一个 \(G_\delta\) 集 \(D\supseteq E^{\mathrm c}\)，使
+\(m(D\setminus E^{\mathrm c})=0\)。令 \(F=D^{\mathrm c}\)，则 \(F\) 是 \(F_\sigma\) 集且包含于 \(E\)，并且
+\[
+E\setminus F=D\setminus E^{\mathrm c}
+\]
+为零测集。取 \(C=B\) 即得最后的对称差结论。
+\end{proof}
+
+\cref{b1:thm:lebesgue-completion-borel} 给出 Borel 代表，上述定理进一步控制代表的位置：外侧代表可取为 \(G_\delta\) 集，内侧代表可取为 \(F_\sigma\) 集。因此，Lebesgue 可测集虽然未必是 Borel 集，但在忽略零测误差后总能由这两类 Borel 集夹逼。

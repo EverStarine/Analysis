@@ -1,0 +1,148 @@
+% !TeX root = ../../Book1.tex
+\section{Lebesgue 可测集}
+\label{b1:sec:0302}
+
+外测度已经能给每个子集指定外部大小，却一般不满足可数可加性。Carathéodory 条件从所有子集中筛出那些能够把任意测试集准确切成内外两部分的集合；在这些集合上，外测度才成为真正的测度。
+
+\subsection{Carathéodory 可测性}
+\label{b1:subsec:030201}
+
+\begin{definition}
+\label{b1:def:lebesgue-measurable}
+集合 \(E\subseteq\mathbb R^d\) 称为\term[lebesgue-keceji]{Lebesgue 可测集}[Lebesgue measurable set]，若对任意 \(A\subseteq\mathbb R^d\)，
+\[
+m^*(A)=m^*(A\cap E)+m^*(A\setminus E).
+\]
+全体 Lebesgue 可测集组成的 \(\sigma\)-代数记为 \(\mathcal L^d\)，而
+\[
+m=m^*|_{\mathcal L^d}
+\]
+称为 \(\mathbb R^d\) 上的\term[lebesgue-cedu]{Lebesgue 测度}[Lebesgue measure]。
+\end{definition}
+
+外测度的次可加性总给出上式中的“\(\leq\)”方向，所以可测性的内容是反向不等式：集合 \(E\) 不会因切割测试集而制造额外的外测度。由 \cref{b1:thm:caratheodory}，\(\mathcal L^d\) 是 \(\sigma\)-代数，\(m\) 是其上的完备测度。这里的完备性是外测度构造的结论，并非事后增加的约定。
+
+\cref{b1:prop:rectangle-outer-measure} 已证明半开长方体可测。由此，它们的有限并、差、可数并和可数交都可测。以下各类熟悉集合将沿这条封闭性链进入 \(\mathcal L^d\)。
+
+\subsection{Borel 集的可测性}
+\label{b1:subsec:030202}
+
+\begin{theorem}
+\label{b1:thm:borel-lebesgue}
+有包含关系
+\[
+\mathcal B(\mathbb R^d)\subseteq\mathcal L^d.
+\]
+特别地，所有开集、闭集以及连续映射对 Borel 集的原像都是 Lebesgue 可测集。
+\end{theorem}
+\begin{proof}
+由 \cref{b1:prop:open-dyadic-decomposition}，每个开集都是可数个半开长方体之并，因而属于 \(\mathcal L^d\)。Borel \(\sigma\)-代数是包含全部开集的最小 \(\sigma\)-代数，而 \(\mathcal L^d\) 已经是含全部开集的 \(\sigma\)-代数，所以前者包含于后者。闭集是开集的补集，也可测。
+
+若 \(f:\mathbb R^d\to\mathbb R^k\) 连续，则开集的原像为开集。集合族
+\[
+\{\,B\subseteq\mathbb R^k:f^{-1}(B)\in\mathcal B(\mathbb R^d)\,\}
+\]
+是包含全部开集的 \(\sigma\)-代数，故包含 \(\mathcal B(\mathbb R^k)\)。因此每个 Borel 集的原像是 Borel 集，进而 Lebesgue 可测。
+\end{proof}
+
+连续映射的 Borel 原像仍是 Borel 集；连续映射的 Borel 像却未必是 Borel 集，因而不能沿用上述原像判别来处理像集。一般像集问题需要额外结构，线性映射的像将在第 \ref{b1:sec:0304} 节直接处理。
+
+\subsection{零测集}
+\label{b1:subsec:030203}
+
+\begin{definition}
+\label{b1:def:lebesgue-null}
+若 \(N\subseteq\mathbb R^d\) 满足 \(m^*(N)=0\)，则称 \(N\) 为\term[lingceji]{Lebesgue 零测集}[Lebesgue null set]。
+\end{definition}
+
+\begin{proposition}
+\label{b1:prop:null-subsets}
+每个零测集及其任意子集都属于 \(\mathcal L^d\)，并且测度为零。零测集的可数并仍是零测集。
+\end{proposition}
+\begin{proof}
+若 \(E\subseteq N\) 且 \(m^*(N)=0\)，则单调性给出 \(m^*(E)=0\)。由 \cref{b1:thm:caratheodory} 及其完备性结论，外测度为零的集合满足 Carathéodory 条件，故 \(E\in\mathcal L^d\) 且 \(m(E)=0\)。若 \(N_k\) 都零测，则外测度的可数次可加性给出
+\[
+m^*\left(\bigcup_kN_k\right)
+\leq\sum_km^*(N_k)=0.
+\]
+\end{proof}
+
+单点 \(\{x\}\) 可放入边长为 \(\delta\) 的立方体中，故其外测度不超过 \(\delta^d\)；令 \(\delta\downarrow0\)，得到 \(m(\{x\})=0\)。于是每个可数集都是零测集。特别地，\(\mathbb Q^d\) 在 \(\mathbb R^d\) 中稠密却零测。这说明“稠密”描述集合在每个开集中的出现，而“零测”描述可用多小的总体积覆盖，两者并不冲突。
+
+零测集也不必可数。以下经典例子同时提醒我们：基数、拓扑大小和测度大小是三种不同的尺度。
+
+\begin{proposition}
+\label{b1:prop:cantor-null}
+\term[cantor-ji]{三分 Cantor 集}[ternary Cantor set] \(C\subseteq[0,1]\) 不可数、闭且无内点，但 \(m(C)=0\)。
+\end{proposition}
+\begin{proof}
+令 \(C_n\) 为删去前 \(n\) 轮中间三分之一后留下的集合。它是 \(2^n\) 个长度为 \(3^{-n}\) 的闭区间之并，并且 \(C\subseteq C_n\)。闭区间与同长度的半开区间只差端点，端点组成有限零测集，所以
+\[
+m(C)\leq m(C_n)=2^n3^{-n}=\left(\frac23\right)^n.
+\]
+令 \(n\to\infty\)，得到 \(m(C)=0\)。每个点 \(x\in C\) 可用一个只含数字 \(0,2\) 的三进展开表示。映射
+\[
+(\varepsilon_n)_{n\geq1}\longmapsto
+\sum_{n=1}^{\infty}\frac{2\varepsilon_n}{3^n},
+\quad \varepsilon_n\in\{0,1\},
+\]
+把二元序列映入 \(C\)。若两个序列首次在第 \(r\) 位不同，不妨设该位分别为 \(1\) 与 \(0\)，则两个像之差至少为
+\[
+\frac{2}{3^r}-\sum_{n=r+1}^{\infty}\frac{2}{3^n}
+=\frac{1}{3^r}>0.
+\]
+所以该映射是单射；二元序列全体不可数，故 \(C\) 不可数。集合 \(C\) 是闭集，因为它是递减闭集列 \((C_n)\) 的交；任意区间在足够深的一轮都会遇到被删去的中间区间，故 \(C\) 没有内点。
+\end{proof}
+
+反过来，空内点并不推出零测。例如 \([0,1]\setminus\mathbb Q\) 没有内点，却与 \([0,1]\) 只差一个可数集，因而测度为 \(1\)。这里“没有内点”是由于每个开区间都含有有理数。
+
+\subsection{Lebesgue \texorpdfstring{\(\sigma\)}{σ}-代数}
+\label{b1:subsec:030204}
+
+Borel 集来自拓扑上的可数操作；Lebesgue 可测集还允许在零测集内部任意改动。下一定理精确说明这就是两者的全部差别。
+
+\begin{theorem}
+\label{b1:thm:lebesgue-completion-borel}
+\(\mathcal L^d\) 是限制测度 \(m|_{\mathcal B(\mathbb R^d)}\) 的完备化。等价地，
+\[
+\mathcal L^d
+=\left\{\,E\subseteq\mathbb R^d:
+\begin{array}{l}
+\text{存在 }B,Z\in\mathcal B(\mathbb R^d),\ m(Z)=0,\\
+E\mathbin{\triangle}B\subseteq Z
+\end{array}
+\right\}.
+\]
+\end{theorem}
+\begin{proof}
+先设 \(E\in\mathcal L^d\)。令
+\[
+E_k=E\cap[-k,k]^d.
+\]
+集合 \(E_k\) 测度有限。对每个 \(k,n\geq1\)，由 \cref{b1:prop:open-cover-approximation} 可取开集 \(G_{k,n}\supseteq E_k\)，使
+\[
+m(G_{k,n})<m(E_k)+2^{-n}.
+\]
+由于 \(E_k\) 可测且测度有限，
+\[
+m(G_{k,n}\setminus E_k)
+=m(G_{k,n})-m(E_k)<2^{-n}.
+\]
+令 \(B_k=\bigcap_{n=1}^{\infty}G_{k,n}\)。这是包含 \(E_k\) 的 Borel 集，而且
+\[
+m(B_k\setminus E_k)\leq 2^{-n}
+\]
+对每个 \(n\) 成立，故 \(m(B_k\setminus E_k)=0\)。再令 \(B=\bigcup_kB_k\)，则 \(B\) 是 Borel 集、\(E\subseteq B\)，并且
+\[
+B\setminus E\subseteq\bigcup_k(B_k\setminus E_k)
+\]
+为零测集。
+
+还要把这个零测差集放进 Borel 零集，才能得到完备化的标准表述。记 \(N=B\setminus E\)。对每个 \(n\)，再次由覆盖定义取开集 \(H_n\supseteq N\)，使 \(m(H_n)<2^{-n}\)。于是
+\(Z=\bigcap_nH_n\) 是 Borel 零集且包含 \(N=E\mathbin{\triangle}B\)。这证明了从左到右的包含。
+
+反过来，设 \(B,Z\) 是定理中的 Borel 集。由 \cref{b1:thm:borel-lebesgue}，二者都 Lebesgue 可测；由完备性，\(Z\) 的任意子集也可测。因为 \(E\mathbin{\triangle}B\subseteq Z\)，集合 \(E\) 可由 \(B\) 增删两个 \(Z\) 的子集得到，故 \(E\in\mathcal L^d\)。这也说明 \(\mathcal L^d\) 恰是限制测度 \(m|_{\mathcal B(\mathbb R^d)}\) 的完备化。
+\end{proof}
+
+无穷测度时不能直接使用
+\(m(G)<m(E)+\varepsilon\) 这一有限误差式，因此证明先用 \([-k,k]^d\) 局部化，再合并各个有限测度部分。这个局部化方法将在正则性证明中再次使用。

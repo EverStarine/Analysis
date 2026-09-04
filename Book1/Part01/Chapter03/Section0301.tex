@@ -1,0 +1,242 @@
+% !TeX root = ../../Book1.tex
+\section{欧氏空间中的外测度}
+\label{b1:sec:0301}
+
+本节固定整数 \(d\geq1\)。直观上，长度、面积和体积都应当先在长方体上确定，再通过覆盖推广到任意集合。困难在于第二步只会产生外测度；要保证它在原来的长方体上没有改变数值，必须先证明体积函数满足可数可加性。
+
+\subsection{长度、面积与体积}
+\label{b1:subsec:030101}
+
+记 \(\mathscr Q_d\) 为 \(\varnothing\) 与所有有界半开长方体
+\[
+Q=\prod_{j=1}^{d}(a_j,b_j],
+\quad -\infty<a_j<b_j<\infty
+\]
+组成的集合族。
+
+\begin{definition}
+\label{b1:def:rectangle-volume}
+定义 \(\varnothing\) 的体积为零；对上述非空长方体 \(Q\)，定义其\term[tiji]{体积}[volume]为
+\[
+\operatorname{vol}(Q)=\prod_{j=1}^{d}(b_j-a_j).
+\]
+\end{definition}
+
+当 \(d=1,2,3\) 时，这分别给出通常的长度、面积和体积。采用半开端点不是几何上的偏好，而是为了让相邻长方体能够无重叠地拼接。例如
+\((a,c]=(a,b]\sqcup(b,c]\)。最终我们会证明边界为零测集，届时开闭端点的差别将消失。
+
+\begin{lemma}
+\label{b1:lem:rectangle-grid}
+集合族 \(\mathscr Q_d\) 是半环。更具体地，有限个半开长方体的全部坐标端点会把它们的并细分成有限个两两不交的半开长方体；在该共同细分上有下列结论：
+\begin{enumerate}
+  \item \label{b1:item:0301-grid-1}若 \(Q_1,\ldots,Q_N\) 两两不交且都包含于 \(Q\)，则
+  \[
+  \sum_{n=1}^{N}\operatorname{vol}(Q_n)\leq\operatorname{vol}(Q);
+  \]
+  \item \label{b1:item:0301-grid-2}若 \(Q\subseteq\bigcup_{n=1}^{N}Q_n\)，则
+  \[
+  \operatorname{vol}(Q)\leq\sum_{n=1}^{N}\operatorname{vol}(Q_n).
+  \]
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+两个半开长方体的交仍是半开长方体或空集。对 \(Q\setminus R\)，在每个坐标上加入 \(R\) 的端点，把 \(Q\) 切成有限网格；删去落在 \(R\) 内的网格块后，余下部分是有限个两两不交的 \(\mathscr Q_d\) 中集合之并。因此 \(\mathscr Q_d\) 是半环。
+
+对有限族同时作上述网格细分。每个原长方体都是若干网格块之并，而且一个网格块的体积是各坐标边长之积。反复使用有限分配律，可知一个长方体的体积等于组成它的网格块体积之和。在\itemref{b1:item:0301-grid-1}中，所有 \(Q_n\) 所含的网格块彼此不同，并且都来自 \(Q\)，所以它们的体积和不超过 \(Q\) 的体积。在\itemref{b1:item:0301-grid-2}中，\(Q\) 的每个网格块至少被某个 \(Q_n\) 包含；把每个网格块指派给其中一个这样的 \(Q_n\)，再分别使用有限可加性，便得到所需不等式。
+\end{proof}
+
+为了把有限网格论证用于可数覆盖，还需要紧性提供有限子覆盖。
+
+\begin{lemma}
+\label{b1:lem:compact-rectangle-cover}
+设闭长方体 \(K=\prod_{j=1}^d[\alpha_j,\beta_j]\) 被有限个开长方体 \(O_1,\ldots,O_N\) 覆盖。则
+\[
+\prod_{j=1}^{d}(\beta_j-\alpha_j)
+\leq\sum_{n=1}^{N}\operatorname{vol}(O_n).
+\]
+这里开长方体的体积仍定义为各边长之积。
+\end{lemma}
+\begin{proof}
+对每个 \(x\in K\)，选取一个含 \(x\) 的 \(O_{n(x)}\)，再取 \(\rho_x>0\)，使 \(B(x,2\rho_x)\subseteq O_{n(x)}\)。紧性给出有限个球 \(B(x_s,\rho_{x_s})\) 覆盖 \(K\)。令 \(\rho\) 为这些半径的最小值，并在各坐标方向把 \([\alpha_j,\beta_j]\) 分割得足够细，使每个闭网格盒的直径小于 \(\rho\)。若闭网格盒 \(C\) 与某个 \(B(x_s,\rho_{x_s})\) 相交，则对交点 \(y\) 和任意 \(z\in C\)，
+\[
+\lvert z-x_s\rvert
+\leq \lvert z-y\rvert+\lvert y-x_s\rvert
+<\rho+\rho_{x_s}\leq2\rho_{x_s}.
+\]
+因此 \(C\subseteq O_{n(x_s)}\)。
+
+给每个闭网格盒配上由同一组分点确定的半开网格盒，并把它指派给一个包含其闭包的 \(O_n\)。这些半开盒两两不交；各边长度的有限分配律说明，它们的体积和恰为 \(K\) 的体积。对固定的 \(n\)，所指派盒子的闭包之并是 \(O_n\) 中的紧集，因而可放进一个满足 \(R_n\subseteq O_n\) 的半开长方体 \(R_n\)。由 \cref{b1:lem:rectangle-grid} 的\itemref{b1:item:0301-grid-1}，指派给 \(O_n\) 的小盒体积和不超过 \(\operatorname{vol}(R_n)<\operatorname{vol}(O_n)\)。对所有实际收到小盒的 \(n\) 求和，即得结论。
+\end{proof}
+
+\begin{theorem}
+\label{b1:thm:rectangle-premeasure}
+体积函数在半环 \(\mathscr Q_d\) 上可数可加：若 \(Q,Q_n\in\mathscr Q_d\)、各 \(Q_n\) 两两不交且
+\[
+Q=\bigsqcup_{n=1}^{\infty}Q_n,
+\]
+则
+\[
+\operatorname{vol}(Q)=\sum_{n=1}^{\infty}\operatorname{vol}(Q_n).
+\]
+因而体积是 \(\mathscr Q_d\) 上的前测度。
+\end{theorem}
+\begin{proof}
+对每个 \(N\)，有限并 \(\bigsqcup_{n=1}^{N}Q_n\) 包含于 \(Q\)。由 \cref{b1:lem:rectangle-grid}，
+\[
+\sum_{n=1}^{N}\operatorname{vol}(Q_n)\leq\operatorname{vol}(Q).
+\]
+令 \(N\to\infty\)，得到级数和不超过 \(\operatorname{vol}(Q)\)。
+
+反向设 \(Q=\prod_j(a_j,b_j]\) 非空，并固定 \(\varepsilon>0\)。若右端级数为无穷，所需不等式自动成立，故只考虑其为有限的情形。取足够小的 \(\delta>0\)，使闭长方体
+\[
+K_\delta=\prod_{j=1}^{d}[a_j+\delta,b_j]
+\]
+非空且
+\[
+\operatorname{vol}(K_\delta)>\operatorname{vol}(Q)-\varepsilon.
+\]
+将每个 \(Q_n\) 的各边向外略微扩张，可得到开长方体 \(O_n\supseteq Q_n\)，并使
+\[
+\operatorname{vol}(O_n)
+<\operatorname{vol}(Q_n)+\varepsilon2^{-n}.
+\]
+这些开长方体覆盖紧集 \(K_\delta\)，故其中有限多个已经覆盖 \(K_\delta\)。由 \cref{b1:lem:compact-rectangle-cover}，
+\[
+\operatorname{vol}(Q)-\varepsilon
+<\operatorname{vol}(K_\delta)
+\leq\sum_{n=1}^{\infty}\operatorname{vol}(O_n)
+<\sum_{n=1}^{\infty}\operatorname{vol}(Q_n)+\varepsilon.
+\]
+令 \(\varepsilon\downarrow0\) 即得反向不等式。空集情形由定义成立。
+\end{proof}
+
+这一步说明，体积并非只有有限可加性。证明中“向内缩进—向外扩张—取有限子覆盖”的三步，正是从有限几何过渡到可数测度的技术桥梁。
+
+\subsection{Lebesgue 外测度}
+\label{b1:subsec:030102}
+
+\begin{definition}
+\label{b1:def:lebesgue-outer-measure}
+对任意 \(E\subseteq\mathbb R^d\)，定义\term[lebesgue-waicedu]{Lebesgue 外测度}[Lebesgue outer measure]
+\[
+m^*(E)
+=\inf\left\{
+\sum_{n=1}^{\infty}\operatorname{vol}(Q_n):
+E\subseteq\bigcup_{n=1}^{\infty}Q_n,\quad
+Q_n\in\mathscr Q_d
+\right\}.
+\]
+空集可由恒为空集的序列覆盖，所以 \(m^*(\varnothing)=0\)。
+\end{definition}
+
+定义允许覆盖互相重叠，也允许覆盖代价为无穷。取下确界之后，覆盖的位置、尺度和重叠方式都被优化，只留下集合无法再压低的外部大小。
+
+\begin{proposition}
+\label{b1:prop:lebesgue-outer-measure}
+函数 \(m^*:\mathcal P(\mathbb R^d)\to[0,\infty]\) 是外测度。
+\end{proposition}
+\begin{proof}
+对每个 \(Q\in\mathscr Q_d\) 取代价 \(c(Q)=\operatorname{vol}(Q)\)。空集属于 \(\mathscr Q_d\) 且代价为零，\(\mathscr Q_d\) 又覆盖整个 \(\mathbb R^d\)。因此 \cref{b1:prop:covering-outer-measure} 可直接应用，得到空集取零值、单调性和可数次可加性。
+\end{proof}
+
+\begin{proposition}
+\label{b1:prop:rectangle-outer-measure}
+每个 \(Q\in\mathscr Q_d\) 都是 \(m^*\)-可测集，并且
+\[
+m^*(Q)=\operatorname{vol}(Q).
+\]
+\end{proposition}
+\begin{proof}
+由 \cref{b1:thm:rectangle-premeasure} 与 \cref{b1:thm:semiring-extension}，体积先扩张为 \(\mathscr Q_d\) 所生成集合环上的前测度。环中每个集合都是有限个两两不交的 \(\mathscr Q_d\) 中集合之并；把环元素覆盖逐项拆开，不会改变总代价。因此，从该环前测度构造出的覆盖外测度，恰是 \cref{b1:def:lebesgue-outer-measure} 中的 \(m^*\)。
+
+现在应用 \cref{b1:thm:caratheodory-extension}：原半环中的长方体属于 Carathéodory 可测集，而且延拓在它们上保留原前测度的数值。这正给出两个结论。
+\end{proof}
+
+例如在实直线上，\(m^*((a,b])=b-a\)。单点 \(\{x\}\) 可被长度任意小的区间覆盖，故外测度为零；于是开、闭或半开区间只相差至多两个零测点，它们最终都有相同长度。
+
+\subsection{长方体与立方体覆盖}
+\label{b1:subsec:030103}
+
+\begin{proposition}
+\label{b1:prop:cube-cover}
+在 \cref{b1:def:lebesgue-outer-measure} 中，把覆盖集限制为半开立方体不会改变 \(m^*\)。进一步，还可以只使用边长为 \(2^{-k}\)（\(k\in\mathbb Z\)）的半开\term[erjin-lifangti]{二进立方体}[dyadic cube]，并允许覆盖总代价增加任意给定的正误差。
+\end{proposition}
+\begin{proof}
+立方体本来就是长方体，所以限制覆盖族所得的下确界不会小于 \(m^*\)。反过来，设
+\(Q=\prod_j(a_j,b_j]\) 且给定 \(\eta>0\)。取足够小的二进边长 \(h=2^{-k}\)，并收集所有与 \(Q\) 相交的网格立方体
+\[
+\prod_{j=1}^{d}(h\nu_j,h(\nu_j+1)],
+\quad \nu\in\mathbb Z^d.
+\]
+这样的立方体只有有限个且覆盖 \(Q\)。它们两两不交，其并包含于
+\[
+\prod_{j=1}^{d}(a_j-h,b_j+h],
+\]
+所以由 \cref{b1:lem:rectangle-grid}，它们的总体积不超过
+\[
+\prod_{j=1}^{d}(b_j-a_j+2h).
+\]
+当 \(h\downarrow0\) 时，该量趋于 \(\operatorname{vol}(Q)\)，故可使总体积小于 \(\operatorname{vol}(Q)+\eta\)。
+
+现在从一个长方体覆盖 \((Q_n)\) 出发，对第 \(n\) 个长方体使用误差 \(\eta2^{-n}\) 作上述替换。所得可数个二进立方体仍覆盖原集合，总代价至多增加 \(\eta\)。先对原覆盖取下确界，再令 \(\eta\downarrow0\)，得到反向不等式。
+\end{proof}
+
+二进立方体的好处不仅是形状统一。固定尺度时它们构成 \(\mathbb R^d\) 的一个分割；两个不同尺度的二进立方体若相交，则较小者包含于较大者。这种嵌套结构将在覆盖定理和最大函数中再次出现。
+
+\subsection{开集的测度}
+\label{b1:subsec:030104}
+
+开集可以拆成没有重叠的基本块。为避免 \(G=\mathbb R^d\) 时不存在最大的任意尺度立方体，下面只使用边长不超过 \(1\) 的二进立方体。
+
+\begin{proposition}
+\label{b1:prop:open-dyadic-decomposition}
+每个开集 \(G\subseteq\mathbb R^d\) 都可写成至多可数个两两不交的半开二进立方体之并：
+\[
+G=\bigsqcup_{n=1}^{\infty}Q_n.
+\]
+因此 \(G\) 是 \(m^*\)-可测集，并且
+\[
+m^*(G)=\sum_{n=1}^{\infty}\operatorname{vol}(Q_n).
+\]
+有限或空的分解按通常方式理解。
+\end{proposition}
+\begin{proof}
+考虑所有边长为 \(2^{-k}\)、\(k\geq0\)，且包含于 \(G\) 的二进立方体。约定 \(\operatorname{dist}(x,\varnothing)=\infty\)。于是对任意 \(x\in G\)，距离 \(\operatorname{dist}(x,G^{\mathrm c})\) 为正；当 \(k\) 足够大时，含 \(x\) 的唯一尺度 \(2^{-k}\) 二进立方体直径小于该距离，因而包含于 \(G\)。在含 \(x\) 且包含于 \(G\) 的这些立方体中，取尺度最粗的一个。由于 \(k\) 取非负整数，最粗尺度确实存在。
+
+收集所有这样得到的极大立方体。二进立方体相交时必有一个包含于另一个，所以两个不同的极大立方体只能不交。它们覆盖 \(G\)，而全部二进立方体的集合可数，故得到所需分解。每个 \(Q_n\) 由 \cref{b1:prop:rectangle-outer-measure} 可测，故其可数并 \(G\) 也可测；限制测度的可数可加性给出最后的等式。
+\end{proof}
+
+例如非空开集一定具有正测度：它含有一个正边长立方体。另一方面，开集可能具有有限或无穷测度，也可能由无穷多个互相远离的小立方体组成；上述分解对这些情形一并适用。
+
+\begin{proposition}
+\label{b1:prop:open-cover-approximation}
+对任意 \(E\subseteq\mathbb R^d\)，有
+\[
+m^*(E)=\inf\{\,m^*(G):E\subseteq G,\ G\text{ 开}\,\}.
+\]
+若 \(m^*(E)<\infty\)，则对每个 \(\varepsilon>0\) 可取开集 \(G\supseteq E\)，使
+\[
+m^*(G)<m^*(E)+\varepsilon.
+\]
+若 \(m^*(E)=\infty\)，则每个开超集 \(G\supseteq E\) 都满足 \(m^*(G)=\infty\)；此时不另写严格小于 \(m^*(E)+\varepsilon\) 的式子。
+\end{proposition}
+\begin{proof}
+设 \(m^*(E)<\infty\)。先取半开长方体覆盖 \((Q_n)\)，使
+\[
+\sum_n\operatorname{vol}(Q_n)<m^*(E)+\frac{\varepsilon}{2}.
+\]
+再把 \(Q_n\) 的各边略微向外扩张成开长方体 \(O_n\supseteq Q_n\)，并使
+\[
+\operatorname{vol}(O_n)
+<\operatorname{vol}(Q_n)+\varepsilon2^{-n-1}.
+\]
+开集 \(G=\bigcup_nO_n\) 包含 \(E\)，并由外测度的可数次可加性满足
+\[
+m^*(G)
+\leq\sum_n\operatorname{vol}(O_n)
+<m^*(E)+\varepsilon.
+\]
+另一方面，任意 \(G\supseteq E\) 都由单调性满足 \(m^*(E)\leq m^*(G)\)，故下确界等式成立。
+
+若 \(m^*(E)=\infty\)，则同一单调性迫使每个开超集的外测度为无穷，所以下确界仍为无穷。这里不能把 \(\infty+\varepsilon\) 当作有限误差估计来使用。
+\end{proof}

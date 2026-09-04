@@ -1,0 +1,222 @@
+% !TeX root = ../../Book1.tex
+\section{生成的 \texorpdfstring{\(\sigma\)}{σ}-代数}
+\label{b1:sec:0102}
+
+直接列出一个 \(\sigma\)-代数的全部成员通常既困难又没有必要。在实际问题中，我们往往只知道哪些基本集合必须被纳入，例如直线上的区间、乘积空间中的矩形，或若干映射的反像。其余集合应由补与可数并被迫产生。本节把这种“只加入必需集合”的最小化思想写成精确定义。
+
+\subsection{由集合族生成的 \texorpdfstring{\(\sigma\)}{σ}-代数}
+\label{b1:subsec:010201}
+
+\begin{definition}
+\label{b1:def:generated-sigma}
+设 \(\mathcal E\subseteq\mathcal P(X)\)。由 \(\mathcal E\) \term[shengcheng]{生成的 \(\sigma\)-代数}[generated sigma-algebra] 定义为
+\[
+\sigma(\mathcal E)
+=\bigcap\{\,\mathcal F:\mathcal F\text{ 是 }X\text{ 上的 \(\sigma\)-代数，且 }\mathcal E\subseteq\mathcal F\,\}.
+\]
+集合族 \(\mathcal E\) 称为 \(\sigma(\mathcal E)\) 的一个\term[shengchengzu]{生成族}[generating family]。
+\end{definition}
+
+定义式右端所交的集合族非空，因为幂集 \(\mathcal P(X)\) 总是包含 \(\mathcal E\) 的 \(\sigma\)-代数。由 \cref{b1:prop:intersection-sigma}，这个交本身仍是 \(\sigma\)-代数，所以定义确实给出了所需对象。
+
+\begin{proposition}
+\label{b1:prop:generated-minimal}
+\(\sigma(\mathcal E)\) 是包含 \(\mathcal E\) 的唯一最小 \(\sigma\)-代数。也就是说，它包含 \(\mathcal E\)，并且对任一 \(X\) 上的 \(\sigma\)-代数 \(\mathcal F\)，
+\[
+\mathcal E\subseteq\mathcal F
+\quad\Longrightarrow\quad
+\sigma(\mathcal E)\subseteq\mathcal F.
+\]
+\end{proposition}
+\begin{proof}
+定义式中参与求交的每个 \(\sigma\)-代数都包含 \(\mathcal E\)，故它们的交也包含 \(\mathcal E\)。若 \(\mathcal F\) 是任意一个包含 \(\mathcal E\) 的 \(\sigma\)-代数，它就是该交中的一个成员，因而
+\(
+\sigma(\mathcal E)\subseteq\mathcal F
+\)。这给出最小性。若有两个对象都满足这一最小性，它们彼此包含，故相等。
+\end{proof}
+
+生成运算有几条常用而容易混淆的规则。它们允许我们更换生成族，而不必尝试逐个描述生成后的全部集合。
+
+\begin{proposition}
+\label{b1:prop:generated-rules}
+设 \(\mathcal E,\mathcal G\subseteq\mathcal P(X)\)，则：
+\begin{enumerate}
+  \item \label{b1:item:generated-rules-1}
+  若 \(\mathcal E\subseteq\mathcal G\)，则 \(\sigma(\mathcal E)\subseteq\sigma(\mathcal G)\)；
+  \item \label{b1:item:generated-rules-2}
+  \(\sigma(\sigma(\mathcal E))=\sigma(\mathcal E)\)；
+  \item \label{b1:item:generated-rules-3}
+  若 \(\mathcal E\subseteq\sigma(\mathcal G)\) 且 \(\mathcal G\subseteq\sigma(\mathcal E)\)，则 \(\sigma(\mathcal E)=\sigma(\mathcal G)\)。
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+若 \(\mathcal E\subseteq\mathcal G\)，则 \(\sigma(\mathcal G)\) 是一个包含 \(\mathcal E\) 的 \(\sigma\)-代数，由最小性得到第一条。由于 \(\sigma(\mathcal E)\) 已是 \(\sigma\)-代数，对它再作生成不会增加新集合，第二条成立。第三条分别使用第一条与第二条：
+\[
+\sigma(\mathcal E)
+\subseteq\sigma(\sigma(\mathcal G))
+=\sigma(\mathcal G),
+\]
+交换 \(\mathcal E\) 与 \(\mathcal G\) 后得到反向包含。
+\end{proof}
+
+最简单的非平凡例子是单个集合 \(A\subseteq X\)。若 \(A\) 既非空集也非全集，则
+\[
+\sigma(\{A\})=\{\varnothing,A,A^{\mathrm c},X\}.
+\]
+更一般地，有限个集合 \(A_1,\ldots,A_n\) 会把 \(X\) 切成至多 \(2^n\) 个互不相交的部分：每一部分都从 \(A_j\) 与 \(A_j^{\mathrm c}\) 中各选一个再取交。生成的 \(\sigma\)-代数恰好由这些非空部分的任意并组成。这个有限模型提示了生成的含义：生成元记录若干“是或否”的问题，生成的 \(\sigma\)-代数则包含仅凭这些答案能够区分的全部集合。
+
+必须注意，\(\sigma(\mathcal E)\) 一般不能通过有限多次补与并得到。即使 \(\mathcal E\) 很简单，可数运算仍可能产生无限层次；生成定义给出的首先是最小性，而不是一张可执行的有限运算清单。第 \ref{b1:sec:0103} 节将给出更有效的比较方法。
+
+\subsection{初始 \texorpdfstring{\(\sigma\)}{σ}-代数}
+\label{b1:subsec:010202}
+
+设对每个 \(i\in I\)，映射 \(f_i:X\to Y_i\) 的目标集合 \(Y_i\) 上已经给定 \(\sigma\)-代数 \(\mathcal B_i\)。若想让 \(X\) 上的结构能够识别条件 \(f_i(x)\in B\) 是否成立，就必须把反像 \(f_i^{-1}(B)\) 纳入其中。由这些反像生成的最小结构有一个专门名称。
+
+\begin{definition}
+\label{b1:def:initial-sigma}
+映射族 \(\{f_i:i\in I\}\) 诱导的\term[chushi]{初始 \(\sigma\)-代数}[initial sigma-algebra] 是
+\[
+\sigma(f_i:i\in I)
+=\sigma\bigl(\{\,f_i^{-1}(B):i\in I,\ B\in\mathcal B_i\,\}\bigr).
+\]
+\end{definition}
+
+第 \ref{b1:sec:0104} 节将把“所有上述反像都属于源空间的 \(\sigma\)-代数”称为映射 \(f_i\) 的可测性。这里的定义本身只使用已经建立的反像与生成运算，不依赖这一术语。
+
+\begin{proposition}
+\label{b1:prop:initial-minimal}
+初始 \(\sigma\)-代数是 \(X\) 上具有下述性质的最小 \(\sigma\)-代数 \(\mathcal A\)：对每个 \(i\in I\) 及每个 \(B\in\mathcal B_i\)，均有
+\[
+f_i^{-1}(B)\in\mathcal A.
+\]
+\end{proposition}
+\begin{proof}
+定义中的每个反像都属于 \(\sigma(f_i:i\in I)\)，所以这一 \(\sigma\)-代数具有所述性质。反之，若 \(\mathcal A\) 具有该性质，它便包含定义中的整个生成族；由 \cref{b1:prop:generated-minimal}，
+\(
+\sigma(f_i:i\in I)\subseteq\mathcal A
+\)。
+\end{proof}
+
+例如，对集合 \(A\subseteq X\)，定义它的\term[shixing-hanshu]{示性函数}[indicator function]
+\[
+\mathbf 1_A(x)=
+\begin{cases}
+1,&x\in A,\\
+0,&x\notin A.
+\end{cases}
+\]
+令 \(f=\mathbf 1_A:X\to\{0,1\}\)，并在 \(\{0,1\}\) 上取幂集作为 \(\sigma\)-代数。若 \(A\) 非平凡，则
+\[
+\sigma(f)=\{\varnothing,A,A^{\mathrm c},X\}.
+\]
+函数 \(f\) 只能回答“点是否属于 \(A\)”这一个问题，初始 \(\sigma\)-代数也恰好只保留这一信息。若加入更多函数，生成的结构可能变细；这与 \cref{b1:prop:generated-rules} 的单调性一致。
+
+\subsection{可数生成性}
+\label{b1:subsec:010203}
+
+一个 \(\sigma\)-代数可能包含不可数多个集合，却仍可由可数多个基本集合完全确定。若待验证性质所对应的集合族具有足以从生成元推广到 \(\sigma\)-代数的闭性，核验工作便可先缩减到一张可枚举的生成元清单。
+
+\begin{definition}
+\label{b1:def:countably-generated}
+若存在至多可数的集合族 \(\mathcal E\) 使 \(\mathcal F=\sigma(\mathcal E)\)，则称 \(\sigma\)-代数 \(\mathcal F\) 是\term[keshushengcheng]{可数生成的}[countably generated]。
+\end{definition}
+
+“可数生成”不等于“只有可数多个成员”。例如，只要 \(X\) 含有可数个互不相同的点 \(x_n\)，由单点集 \(\{x_n\}\) 生成的 \(\sigma\)-代数就包含它们的每一个子族之并，通常已经有不可数多个成员。可数性约束的是生成信息，而不是生成结果的基数。
+
+\begin{proposition}
+\label{b1:prop:initial-countably-generated}
+设指标集 \(I\) 至多可数，并且每个 \(\mathcal B_i\) 都可数生成，则初始 \(\sigma\)-代数 \(\sigma(f_i:i\in I)\) 也可数生成。
+\end{proposition}
+\begin{proof}
+对每个 \(i\in I\)，选取一个至多可数的生成族 \(\mathcal E_i\)，使 \(\mathcal B_i=\sigma(\mathcal E_i)\)。令
+\[
+\mathcal G
+=\sigma\bigl(\{\,f_i^{-1}(E):i\in I,\ E\in\mathcal E_i\,\}\bigr).
+\]
+由于可数个可数集之并仍至多可数，\(\mathcal G\) 可数生成。对固定的 \(i\)，考虑
+\[
+\mathcal D_i
+=\{\,B\subseteq Y_i:f_i^{-1}(B)\in\mathcal G\,\}.
+\]
+由 \cref{b1:prop:preimage-operations}，\(\mathcal D_i\) 是 \(Y_i\) 上的 \(\sigma\)-代数；按 \(\mathcal G\) 的定义，它包含 \(\mathcal E_i\)。因此
+\(
+\mathcal B_i=\sigma(\mathcal E_i)\subseteq\mathcal D_i
+\)，即每个 \(B\in\mathcal B_i\) 的反像都属于 \(\mathcal G\)。由初始结构的最小性，
+\(
+\sigma(f_i:i\in I)\subseteq\mathcal G
+\)。反向包含直接来自两边生成族的包含关系，故二者相等。
+\end{proof}
+
+指标集可数这一条件不能无故删去。不可数多个映射可能分别带来彼此不同的新反像集合，而这些集合未必能压缩成可数生成族。命题的真正内容是：每个目标只需可数份测试，再对至多可数个目标汇总，所得测试仍然可枚举。
+
+\subsection{Borel \texorpdfstring{\(\sigma\)}{σ}-代数}
+\label{b1:subsec:010204}
+
+拓扑和测度论关心同一个底集，却使用不同的封闭运算。拓扑对任意并和有限交封闭；\(\sigma\)-代数对补和可数并封闭。把拓扑中的开集作为生成元，就得到连接二者的标准可测结构。
+
+\begin{definition}
+\label{b1:def:borel-sigma}
+设 \((S,\tau)\) 是拓扑空间。由全部开集生成的 \(\sigma\)-代数
+\[
+\mathcal B(S)=\sigma(\tau)
+\]
+称为 \(S\) 上的 \term[borel]{Borel \(\sigma\)-代数}[Borel sigma-algebra]；其中的集合称为\term[borel-ji]{Borel 集}[Borel set]。
+\end{definition}
+
+闭集是开集的补，因而都是 Borel 集；开集的可数交、闭集的可数并也都是 Borel 集。Borel 集远不止这些最初几层，但在证明某个集合是 Borel 集时，通常只需展示它如何由已知 Borel 集经过可数运算得到。
+
+\begin{proposition}
+\label{b1:prop:countable-base-borel}
+若拓扑空间 \(S\) 有可数拓扑基 \(\mathcal U=\{U_1,U_2,\ldots\}\)，则
+\[
+\mathcal B(S)=\sigma(\mathcal U).
+\]
+特别地，\(\mathcal B(S)\) 可数生成。
+\end{proposition}
+\begin{proof}
+每个基元素都是开集，所以 \(\sigma(\mathcal U)\subseteq\mathcal B(S)\)。反过来，任一开集 \(G\) 等于所有满足 \(U_n\subseteq G\) 的基元素之并。由于 \(\mathcal U\) 可数，这个并至多可数，故 \(G\in\sigma(\mathcal U)\)。于是 \(\sigma(\mathcal U)\) 包含全部开集；再由生成结构的最小性得到反向包含。
+\end{proof}
+
+\begin{theorem}
+\label{b1:thm:borel-rational-base}
+实直线上的 Borel \(\sigma\)-代数满足
+\[
+\mathcal B(\mathbb R)
+=\sigma\bigl(\{\,(a,b):a,b\in\mathbb Q,\ a<b\,\}\bigr)
+=\sigma\bigl(\{\,(-\infty,q):q\in\mathbb Q\,\}\bigr).
+\]
+\end{theorem}
+\begin{proof}
+有理端点开区间构成 \(\mathbb R\) 的可数拓扑基。对任意开集 \(G\) 和任意 \(x\in G\)，可以在 \(x\) 两侧选取有理数 \(a<b\)，使 \(x\in(a,b)\subseteq G\)。因此第一个等式由 \cref{b1:prop:countable-base-borel} 得到。
+
+记有理开半直线生成的 \(\sigma\)-代数为 \(\mathcal G\)。每个 \(( -\infty,q)\) 都是开集，故 \(\mathcal G\subseteq\mathcal B(\mathbb R)\)。若 \(a<b\) 为有理数，则
+\[
+(-\infty,a]
+=\bigcap_{\substack{q\in\mathbb Q\\q>a}}(-\infty,q),
+\quad
+(a,b)=(-\infty,b)\setminus(-\infty,a].
+\]
+第一个交可数，因为有理数集可数。因此每个有理端点开区间都属于 \(\mathcal G\)，第一个等式遂给出 \(\mathcal B(\mathbb R)\subseteq\mathcal G\)。
+\end{proof}
+
+同一论证表明，\(\mathbb R^d\) 的 Borel \(\sigma\)-代数由有理端点开矩形生成，因为这些矩形构成可数拓扑基。第 \ref{b1:sec:0104} 节将利用这一事实识别欧氏空间的乘积结构。
+
+\begin{proposition}
+\label{b1:prop:real-initial-countable}
+若 \(f:X\to\mathbb R\)，则相对于目标空间 \((\mathbb R,\mathcal B(\mathbb R))\) 有
+\[
+\sigma(f)
+=\sigma\bigl(\{\,f^{-1}(( -\infty,q)):q\in\mathbb Q\,\}\bigr).
+\]
+因此，由单个实值函数诱导的初始 \(\sigma\)-代数可数生成。
+\end{proposition}
+\begin{proof}
+右端的每个生成元都出现在 \(\sigma(f)\) 的定义中，所以右端包含于左端。反过来，把右端记为 \(\mathcal G\)，并令
+\[
+\mathcal D
+=\{\,B\subseteq\mathbb R:f^{-1}(B)\in\mathcal G\,\}.
+\]
+由 \cref{b1:prop:preimage-operations}，\(\mathcal D\) 是 \(\mathbb R\) 上的 \(\sigma\)-代数；它包含每个有理开半直线。由 \cref{b1:thm:borel-rational-base}，\(\mathcal B(\mathbb R)\subseteq\mathcal D\)。所以每个 Borel 集的反像都属于 \(\mathcal G\)，进而 \(\sigma(f)\subseteq\mathcal G\)。
+\end{proof}
+
+这个证明展示了一种以后会反复使用的“生成元判别”：先把具有目标性质的集合收集成一个 \(\sigma\)-代数，再检查它包含生成族。第 \ref{b1:sec:0103} 节将把这一策略推广到闭性更弱、因而更容易验证的集合类。

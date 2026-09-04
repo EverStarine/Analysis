@@ -1,78 +1,264 @@
 % !TeX root = ../../Book1.tex
 \chapter{集合系、可测空间与可测映射}
 \label{b1:ch:01}
-% 本章摘要（不计入编号）
+
 \begin{chapterabstract}
-本章建立测度论的语言基础。我们先比较几类在补集、并和交之下稳定的集合系，再说明如何从少量集合或映射反像生成所需的 \(\sigma\)-代数。随后给出 \(\pi\)-\(\lambda\) 定理与单调类定理这两种“先在生成元上验证、再推广到全体可测集”的工具，最后把这些结构组织成可测空间与可测映射。
+测度论不能从“给每个子集指定大小”直接开始：极限会带来可数并与可数交，而这些运算未必保留原先考虑的集合。本章先建立允许可数运算的集合语言，再说明如何从区间、矩形或映射反像等少量数据生成最小的可测结构。随后证明 \(\pi\)-\(\lambda\) 定理和单调类定理，把生成元上的验证推广到完整的 \(\sigma\)-代数；最后定义可测空间、可测映射、迹结构与乘积结构。整章只使用集合论、映射与初等拓扑，不预先调用测度或积分。
 \end{chapterabstract}
 
-% 本章目标（不计入编号）
 \begin{learninggoals}
 \begin{itemize}
-  \item 区分集合环、集合代数与 \(\sigma\)-代数，并能验证基本闭性；
-  \item 能写出由集合族或映射族生成的最小 \(\sigma\)-代数；
-  \item 能在恰当的生成类上使用 \(\pi\)-\(\lambda\) 定理和单调类定理；
-  \item 能判定基本映射的可测性，并理解乘积可测结构的生成方式。
+  \item \label{b1:item:ch01-goal-1}
+  区分集合环、集合代数与 \(\sigma\)-代数，能判断有限闭性与可数闭性的差别；
+  \item \label{b1:item:ch01-goal-2}
+  掌握集合列的上、下极限，并能核验反像与各种集合运算相容；
+  \item \label{b1:item:ch01-goal-3}
+  能使用最小性比较不同生成族，理解初始 \(\sigma\)-代数和可数生成性；
+  \item \label{b1:item:ch01-goal-4}
+  能完整复述 \(\pi\)-\(\lambda\) 定理与单调类定理中两次闭性推广的逻辑；
+  \item \label{b1:item:ch01-goal-5}
+  能通过生成元、实值阈值和坐标分量判定映射的可测性；
+  \item \label{b1:item:ch01-goal-6}
+  理解迹 \(\sigma\)-代数不要求所取子集原先可测，并掌握乘积结构的最小性。
 \end{itemize}
 \end{learninggoals}
 
 \begin{chapterguide}
-阅读本章时应始终分清两个层次：集合系的闭性是集合论陈述，而可测性是“反像属于指定集合系”的陈述。第 \ref{b1:sec:0103} 节的两种推广定理会在后续的测度唯一性、积分等式和条件期望中反复出现。
+本章只以基本集合运算、映射反像和实直线的通常拓扑为先修内容。第 \ref{b1:sec:0101} 节建立封闭性语言，第 \ref{b1:sec:0102} 节回答如何从生成元构造结构；这两节是后半章的前提。第 \ref{b1:sec:0103} 节给出两种核心推广原理，证明中的“先固定一个变量，再固定另一个变量”应重点掌握。第 \ref{b1:sec:0104} 节把前述工具用于映射、限制与乘积。首次阅读不应跳过第 \ref{b1:sec:0103} 节的证明，因为下一章的测度延拓与唯一性将直接复用其中的闭性论证。
 \end{chapterguide}
 
-\input{Part01/Chapter01/Section0101/Section0101}
-\input{Part01/Chapter01/Section0102/Section0102}
-\input{Part01/Chapter01/Section0103/Section0103}
-\input{Part01/Chapter01/Section0104/Section0104}
-% 本章小结（不计入编号）
-\begin{chaptersummary}
-集合环、集合代数和 \(\sigma\)-代数逐步加强了对集合运算的封闭性；其中 \(\sigma\)-代数是处理可数操作的基本对象。给定集合族 \(\mathcal E\)，交遍所有包含它的 \(\sigma\)-代数所得的 \(\sigma(\mathcal E)\) 是唯一的最小可测结构；给定映射族时，取其可测集合反像的生成结构便得到初始 \(\sigma\)-代数。
+\input{Part01/Chapter01/Section0101}
+\input{Part01/Chapter01/Section0102}
+\input{Part01/Chapter01/Section0103}
+\input{Part01/Chapter01/Section0104}
 
-\(\pi\)-\(\lambda\) 定理和单调类定理说明：当目标性质形成合适的 \(\lambda\)-系统或单调类时，只需在生成元上核验即可。可测映射以反像保持可测性为定义，复合、限制和配对均与这一观点相容；欧氏空间上的 Borel \(\sigma\)-代数又使连续映射自动成为可测映射。
+\begin{chaptersummary}
+集合环容许有限切割与拼接；集合代数再要求全集和补集；\(\sigma\)-代数则进一步容许可数并，因而也容许可数交、集合列的上极限与下极限。三者的区别不在名称，而在它们能够安全承受哪些极限操作。反像与补、交、并严格交换，这是本章各种映射构造的共同基础。
+
+由集合族 \(\mathcal E\) 生成的 \(\sigma\)-代数 \(\sigma(\mathcal E)\) 是包含 \(\mathcal E\) 的最小可测结构。初始 \(\sigma\)-代数把基本数据写成映射反像；可数生成性则表明，一个含有大量集合的结构仍可能由可枚举的测试完全决定。具有可数拓扑基的空间，其 Borel \(\sigma\)-代数可数生成；在实直线上，只需使用有理端点区间或有理开半直线。
+
+\(\pi\)-\(\lambda\) 定理把 \(\pi\)-系统提供的有限交闭性与 \(\lambda\)-系统提供的嵌套差、不交可数并闭性结合起来，最终恢复整个生成 \(\sigma\)-代数。单调类定理从集合代数出发，只依靠递增并与递减交也能得到同一结构；函数型版本再把示性函数上的结论推广到有界可测函数。这些定理的共同方法不是“在所有可测集上逐个验证”，而是构造满足目标性质的集合类并核对它的闭性。
+
+可测映射由目标可测集的反像定义。若目标结构已有生成族，只需检验生成元；对实值函数，只需检验集合 \(\{f<q\}\)（\(q\in\mathbb Q\)）。迹 \(\sigma\)-代数把结构限制到任意子集，乘积 \(\sigma\)-代数则是使坐标投影可测的最小结构。在欧氏空间中，乘积 Borel 结构与通常拓扑产生的 Borel 结构一致，因此向量值映射的可测性可以逐分量判定。
 \end{chaptersummary}
 
-% 习题（不计入编号）
 \section*{习题}
 
 \begin{exercise}
 \label{b1:ex:01}
-设 \(\mathcal R\) 是 \(X\) 上的集合环。证明：对任意 \(A_1,\ldots,A_n\in\mathcal R\)，集合 \(\bigcap_{k=1}^{n}A_k\) 与 \(\bigtriangleup_{k=1}^{n}A_k\) 都属于 \(\mathcal R\)。
+完成三类集合系的基本辨析。
+\begin{enumerate}
+  \item \label{b1:item:ex01-1}
+  设 \(\mathcal R\) 是 \(X\) 上的集合环。证明对任意 \(A_1,\ldots,A_n\in\mathcal R\)，集合 \(\bigcap_{k=1}^{n}A_k\) 与 \(\bigtriangleup_{k=1}^{n}A_k\) 都属于 \(\mathcal R\)。
+  \item \label{b1:item:ex01-2}
+  分别构造“不是集合代数的集合环”和“不是 \(\sigma\)-代数的集合代数”。
+\end{enumerate}
 \end{exercise}
 \begin{solution}
-由 \cref{b1:prop:ring-closure}，集合环对有限交和二元对称差封闭。对 \(n\) 作归纳即可；归纳步只需把前 \(n-1\) 个集合得到的结果分别与 \(A_n\) 再作一次交或对称差。
+对第一问，\cref{b1:prop:ring-closure} 已给出二元交与二元对称差的封闭性。假设前 \(n-1\) 个集合的交属于 \(\mathcal R\)，再与 \(A_n\) 相交即可完成交运算的归纳；对称差同理，因为
+\(
+(A_1\mathbin{\triangle}\cdots\mathbin{\triangle} A_{n-1})\mathbin{\triangle} A_n
+\)
+仍是一次二元对称差。
+
+对第二问，取 \(X=\mathbb N\)。全体有限子集组成集合环，但不含 \(X\)，所以不是集合代数。全体有限集与余有限集组成集合代数；然而每个单点集 \(\{2n\}\) 都属于它，而
+\(
+\bigcup_{n=1}^{\infty}\{2n\}
+\)
+是偶数集，既非有限集也非余有限集。因此这个集合代数不是 \(\sigma\)-代数。
 \end{solution}
 
 \begin{exercise}
 \label{b1:ex:02}
 设 \(X\) 为不可数集合，\(\mathcal C\) 为所有可数子集及其补集组成的集合族。证明 \(\mathcal C\) 是 \(\sigma\)-代数，并证明
 \[
-\sigma\bigl(\{\{x\}:x\in X\}\bigr)=\mathcal C.
+\sigma\bigl(\{\,\{x\}:x\in X\,\}\bigr)=\mathcal C.
 \]
+再说明不可数假设在“可数集”和“余可数集”两类互不混同这一点上有何作用。
 \end{exercise}
 \begin{solution}
-可数集的补集属于 \(\mathcal C\)，余可数集的补集可数；可数个可数集之并仍可数，而只要并中有一个余可数集，该并便余可数。因此 \(\mathcal C\) 是 \(\sigma\)-代数。它包含全部单点集，故生成的 \(\sigma\)-代数包含于 \(\mathcal C\)。反过来，每个可数集是可数个单点集的并，其补集再由补运算得到，故 \(\mathcal C\) 包含于该生成的 \(\sigma\)-代数。
+全集的补集为空集，故 \(X\in\mathcal C\)；可数集的补集余可数，余可数集的补集可数，所以 \(\mathcal C\) 对补封闭。设 \(C_n\in\mathcal C\)。若每个 \(C_n\) 都可数，则 \(\bigcup_nC_n\) 可数。若某个 \(C_m\) 余可数，则
+\[
+X\setminus\bigcup_{n=1}^{\infty}C_n
+\subseteq X\setminus C_m,
+\]
+右端可数，故该并余可数。因此 \(\mathcal C\) 是 \(\sigma\)-代数。
+
+它包含全部单点集，故
+\(
+\sigma(\{\{x\}:x\in X\})\subseteq\mathcal C
+\)。反过来，每个可数集是至多可数个单点集的并，因而属于左端；再取补就得到全部余可数集。两边相等。
+
+当 \(X\) 不可数时，一个集合不可能同时可数且余可数，因为否则 \(X\) 是两个可数集的并。这个假设让两类集合形成真正的二分；上述 \(\sigma\)-代数证明本身在 \(X\) 可数时仍能进行，但此时每个子集都可数，\(\mathcal C\) 退化为 \(\mathcal P(X)\)。
 \end{solution}
 
 \begin{exercise}
 \label{b1:ex:03}
-设 \(\mathcal D\) 是 \(\mathbb R\) 上的 \(\lambda\)-系统，且对每个 \(t\in\mathbb R\) 都有 \((-\infty,t]\in\mathcal D\)。证明 \(\mathcal B(\mathbb R)\subseteq\mathcal D\)。
+设 \(A_1,\ldots,A_n\subseteq X\)。对 \(\varepsilon=(\varepsilon_1,\ldots,\varepsilon_n)\in\{0,1\}^n\)，约定
+\[
+A_j^{(1)}=A_j,
+\quad
+A_j^{(0)}=A_j^{\mathrm c},
+\quad
+C_{\varepsilon}=\bigcap_{j=1}^{n}A_j^{(\varepsilon_j)}.
+\]
+证明所有非空的 \(C_{\varepsilon}\) 构成 \(X\) 的一个有限分割，并证明
+\[
+\sigma(A_1,\ldots,A_n)
+=\{\,\text{这些非空 }C_{\varepsilon}\text{ 的任意并}\,\}.
+\]
+这里 \(\sigma(A_1,\ldots,A_n)\) 表示 \(\sigma(\{A_1,\ldots,A_n\})\)。
 \end{exercise}
 \begin{solution}
-闭半直线族对有限交封闭，因而是 \(\pi\)-系统。它生成 \(\mathcal B(\mathbb R)\)：例如开半直线可由递增的闭半直线并出，开区间再由两个开半直线及补运算得到。现在对该 \(\pi\)-系统应用 \cref{b1:thm:pi-lambda} 即得结论。
+对任意 \(x\in X\)，令 \(\varepsilon_j=1\) 当且仅当 \(x\in A_j\)，便有 \(x\in C_{\varepsilon}\)，所以这些集合覆盖 \(X\)。若 \(\varepsilon\neq\delta\)，存在 \(j\) 使 \(\varepsilon_j\neq\delta_j\)；此时一个交集要求点属于 \(A_j\)，另一个要求点属于 \(A_j^{\mathrm c}\)，故二者不交。
+
+每个 \(C_{\varepsilon}\) 由生成元及其补集作有限交得到，所以属于 \(\sigma(A_1,\ldots,A_n)\)。非空块至多 \(2^n\) 个，它们的任意并实际上是有限并，因而也属于该 \(\sigma\)-代数。反过来，所有块的任意并组成一个 \(\sigma\)-代数：取补只是在有限分割中选择其余块，可数并也只是把被选择的块汇总。每个 \(A_j\) 恰是所有满足 \(\varepsilon_j=1\) 的块之并，所以该 \(\sigma\)-代数包含全部生成元。由最小性，两边相等。
 \end{solution}
 
 \begin{exercise}
 \label{b1:ex:04}
-设 \(A\subseteq X\)，并把 \(\{0,1\}\) 赋予离散 \(\sigma\)-代数。证明示性函数 \(\mathbf 1_A:X\to\{0,1\}\) 可测，当且仅当 \(A\) 属于 \(X\) 上给定的 \(\sigma\)-代数。
+设 \(\mathcal D\) 是 \(\mathbb R\) 上的 \(\lambda\)-系统，并且对每个 \(q\in\mathbb Q\) 都有 \(( -\infty,q]\in\mathcal D\)。证明
+\[
+\mathcal B(\mathbb R)\subseteq\mathcal D.
+\]
 \end{exercise}
 \begin{solution}
-若 \(\mathbf 1_A\) 可测，则 \(A=\mathbf 1_A^{-1}(\{1\})\) 可测。反之，离散 \(\sigma\)-代数的任一集合是 \(\varnothing,\{0\},\{1\},\{0,1\}\) 之一，其反像分别为 \(\varnothing,A^{\mathrm c},A,X\)，均可测。
+令
+\(
+\mathcal P=\{( -\infty,q]:q\in\mathbb Q\}
+\)。两个成员之交等于端点较小的成员，所以 \(\mathcal P\) 是 \(\pi\)-系统。由 \(\pi\)-\(\lambda\) 定理，\(\sigma(\mathcal P)\subseteq\mathcal D\)。
+
+还需识别 \(\sigma(\mathcal P)\)。对 \(q\in\mathbb Q\)，
+\[
+( -\infty,q)
+=\bigcup_{\substack{r\in\mathbb Q\\r<q}}( -\infty,r],
+\]
+所以所有有理开半直线都属于 \(\sigma(\mathcal P)\)。由 \cref{b1:thm:borel-rational-base}，\(\mathcal B(\mathbb R)\subseteq\sigma(\mathcal P)\)。反向包含来自每个闭半直线都是 Borel 集，故实际上 \(\sigma(\mathcal P)=\mathcal B(\mathbb R)\)，所求包含成立。
 \end{solution}
 
 \begin{exercise}
 \label{b1:ex:05}
-设 \(f,g:(X,\mathcal A)\to\mathbb R\) 都是 Borel 可测映射。证明 \(\max\{f,g\}\) 与 \(\min\{f,g\}\) 都是 Borel 可测映射。
+令 \(X=\{1,2,3,4\}\)，并设
+\[
+\mathcal D
+=\{\varnothing,X,\{1,2\},\{3,4\},\{1,3\},\{2,4\}\}.
+\]
+逐条验证 \(\mathcal D\) 是 \(\lambda\)-系统但不是 \(\sigma\)-代数。再令 \(Y=\{1,2\}\)，说明包含 \(\{1\}\) 的最小单调类不等于 \(\sigma(\{\{1\}\})\)，并指出这为何不与单调类定理矛盾。
 \end{exercise}
 \begin{solution}
-由 \cref{b1:prop:pair-measurable}，映射 \(x\mapsto(f(x),g(x))\) 到 \(\mathbb R^2\) 的映射可测。函数 \((u,v)\mapsto\max\{u,v\}\) 与 \((u,v)\mapsto\min\{u,v\}\) 连续，故由 \cref{b1:prop:continuous-borel} 可测；再用复合可测性即可。
+集合 \(X\) 在 \(\mathcal D\) 中，且六个成员按
+\[
+\varnothing^{\mathrm c}=X,
+\quad
+\{1,2\}^{\mathrm c}=\{3,4\},
+\quad
+\{1,3\}^{\mathrm c}=\{2,4\}
+\]
+两两配对。若 \(A\subseteq B\) 且 \(A,B\in\mathcal D\)，则必有 \(A=\varnothing\)、\(B=X\) 或 \(A=B\)；相应差集分别为 \(B\)、\(A^{\mathrm c}\) 或 \(\varnothing\)，仍在 \(\mathcal D\) 中。两两不交的非空非全集成员只有上述互补对，其并为 \(X\)。所以 \(\mathcal D\) 是 \(\lambda\)-系统。但
+\(
+\{1,2\}\cap\{1,3\}=\{1\}\notin\mathcal D
+\)，故它不是 \(\sigma\)-代数。
+
+在有限集合 \(Y\) 上，成员全为 \(\{1\}\) 的单调集合列只能是常值列，所以单元素集合族 \(\{\{1\}\}\) 本身已经是单调类。于是它就是包含 \(\{1\}\) 的最小单调类。另一方面，
+\[
+\sigma(\{\{1\}\})
+=\{\varnothing,\{1\},\{2\},Y\}.
+\]
+单调类定理要求起始集合族是集合代数，而 \(\{\{1\}\}\) 不是集合代数，因此没有矛盾。
+\end{solution}
+
+\begin{exercise}
+\label{b1:ex:06}
+设 \(\mathcal A\) 是 \(X\) 上的集合代数，\(\mathcal V\) 是全体从 \((X,\sigma(\mathcal A))\) 到 \((\mathbb R,\mathcal B(\mathbb R))\) 的有界可测函数组成的向量空间。设 \(L,K:\mathcal V\to\mathbb R\) 是线性映射，并且各自具有下述单调连续性：若 \(0\leq f_n\uparrow f\)，则
+\[
+L(f_n)\longrightarrow L(f),
+\quad
+K(f_n)\longrightarrow K(f).
+\]
+若 \(L(\mathbf 1_A)=K(\mathbf 1_A)\) 对每个 \(A\in\mathcal A\) 成立，证明 \(L(f)=K(f)\) 对每个 \(f\in\mathcal V\) 成立。
+\end{exercise}
+\begin{solution}
+令
+\[
+\mathcal H=\{\,f\in\mathcal V:L(f)=K(f)\,\}.
+\]
+由 \(L,K\) 的线性，\(\mathcal H\) 是实向量空间。题设给出 \(\mathbf 1_A\in\mathcal H\) 对每个 \(A\in\mathcal A\) 成立。若 \(0\leq f_n\uparrow f\) 且每个 \(f_n\in\mathcal H\)，则
+\[
+L(f)=\lim_{n\to\infty}L(f_n)
+=\lim_{n\to\infty}K(f_n)=K(f),
+\]
+所以 \(f\in\mathcal H\)。\(\mathcal H\) 满足 \cref{b1:thm:functional-monotone-class} 的全部条件，因而包含每个从 \((X,\sigma(\mathcal A))\) 到 \((\mathbb R,\mathcal B(\mathbb R))\) 的有界可测函数，即 \(\mathcal H=\mathcal V\)。
+\end{solution}
+
+\begin{exercise}
+\label{b1:ex:07}
+设 \((X,\mathcal A)\) 是可测空间，\(F\subseteq E\subseteq X\)。
+\begin{enumerate}
+  \item \label{b1:item:ex07-1}
+  证明 \((\mathcal A|_E)|_F=\mathcal A|_F\)。
+  \item \label{b1:item:ex07-2}
+  若 \(E\in\mathcal A\)，证明
+  \[
+  \mathcal A|_E=\{\,A\in\mathcal A:A\subseteq E\,\}.
+  \]
+  构造一个 \(E\notin\mathcal A\) 的例子，使右端不再等于 \(\mathcal A|_E\)。
+  \item \label{b1:item:ex07-3}
+  若 \(f:(X,\mathcal A)\to(Y,\mathcal B)\) 可测，直接由定义证明 \(f|_F:(F,\mathcal A|_F)\to(Y,\mathcal B)\) 可测。
+\end{enumerate}
+\end{exercise}
+\begin{solution}
+第一问中，
+\[
+(\mathcal A|_E)|_F
+=\{\,(A\cap E)\cap F:A\in\mathcal A\,\}
+=\{\,A\cap F:A\in\mathcal A\,\}
+=\mathcal A|_F,
+\]
+其中使用了 \(F\subseteq E\)。
+
+若 \(E\in\mathcal A\)，则每个 \(A\cap E\) 同时属于 \(\mathcal A\) 且包含于 \(E\)，所以左端包含于右端；若 \(B\in\mathcal A\) 且 \(B\subseteq E\)，则 \(B=B\cap E\in\mathcal A|_E\)，故反向包含成立。若 \(X=\{1,2\}\)、\(\mathcal A=\{\varnothing,X\}\)、\(E=\{1\}\)，则
+\(
+\mathcal A|_E=\{\varnothing,E\}
+\)，而 \(\{A\in\mathcal A:A\subseteq E\}=\{\varnothing\}\)，两者不等。
+
+对第三问，任取 \(B\in\mathcal B\)。由于 \(f\) 可测，\(f^{-1}(B)\in\mathcal A\)，从而
+\[
+(f|_F)^{-1}(B)
+=f^{-1}(B)\cap F
+\in\mathcal A|_F.
+\]
+这正是限制映射的可测性。
+\end{solution}
+
+\begin{exercise}
+\label{b1:ex:08}
+设 \(f,g:(X,\mathcal A)\to\mathbb R\) 都是 Borel 可测映射。
+\begin{enumerate}
+  \item \label{b1:item:ex08-1}
+  证明 \((f,g):X\to\mathbb R^2\) Borel 可测。
+  \item \label{b1:item:ex08-2}
+  证明 \(\max\{f,g\}\)、\(\min\{f,g\}\) 与 \(f-g\) 都 Borel 可测。
+  \item \label{b1:item:ex08-3}
+  证明 \(\{\,x\in X:f(x)<g(x)\,\}\in\mathcal A\)。
+\end{enumerate}
+\end{exercise}
+\begin{solution}
+由 \cref{b1:prop:euclidean-product-borel}，\(\mathbb R^2\) 的 Borel 结构就是两个实直线 Borel 结构的乘积；再由 \cref{b1:prop:pair-measurable}，两个分量可测推出 \((f,g)\) 可测。
+
+函数
+\[
+(u,v)\longmapsto\max\{u,v\},
+\quad
+(u,v)\longmapsto\min\{u,v\},
+\quad
+(u,v)\longmapsto u-v
+\]
+在 \(\mathbb R^2\) 上连续，因而 Borel 可测。分别与 \((f,g)\) 复合，并使用复合可测性，便得到第二问。
+
+由第二问，\(h=f-g\) 可测。阈值判别给出
+\[
+\{\,x:f(x)<g(x)\,\}
+=\{\,x:h(x)<0\,\}
+\in\mathcal A.
+\]
 \end{solution}

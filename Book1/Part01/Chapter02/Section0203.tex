@@ -1,0 +1,252 @@
+% !TeX root = ../../Book1.tex
+\section{外测度}
+\label{b1:sec:0203}
+
+测度的定义预先要求一个 \(\sigma\)-代数，但在几何构造中，哪些集合可测往往不是事先知道的。外测度把顺序倒过来：先允许测量 \(X\) 的每个子集，代价是暂时只要求可数次可加性；随后再筛出那些能够把任意测试集合无损切开的集合。这个筛选同时给出可测集族和真正的测度。
+
+\subsection{外测度的定义}
+\label{b1:subsec:020301}
+
+\begin{definition}
+\label{b1:def:outer-measure}
+定义在 \(\mathcal P(X)\) 上的函数
+\[
+\mu^*:\mathcal P(X)\longrightarrow[0,\infty]
+\]
+若满足：
+\begin{enumerate}
+  \item\label{b1:item:outer-empty} \(\mu^*(\varnothing)=0\)；
+  \item\label{b1:item:outer-monotone} 当 \(A\subseteq B\) 时，\(\mu^*(A)\leq\mu^*(B)\)；
+  \item\label{b1:item:outer-subadditive} 对任意子集列 \((A_n)_{n\geq1}\)，
+  \[
+  \mu^*\left(\bigcup_{n=1}^{\infty}A_n\right)
+  \leq\sum_{n=1}^{\infty}\mu^*(A_n),
+  \]
+\end{enumerate}
+则称 \(\mu^*\) 为 \(X\) 上的\term[waicedu]{外测度}[outer measure]。
+\end{definition}
+
+外测度虽然定义在所有子集上，却不要求不交并取等号。一个极端而有用的有限模型是
+\[
+\mu^*(E)=
+\begin{cases}
+0,&E=\varnothing,\\
+1,&E\neq\varnothing.
+\end{cases}
+\]
+它在任意非空集合 \(X\) 上都是外测度。若 \(X\) 至少有两个点，两个不交单点集的并的外测度是 \(1\)，而两项外测度之和是 \(2\)。因此，“定义在幂集上”不表示它已经是幂集上的测度。
+
+最常见的外测度来自覆盖。下面的表述明确允许用空集填充有限覆盖；若某个集合没有可数覆盖，则相应下确界按约定为 \(\infty\)。
+
+\begin{proposition}
+\label{b1:prop:covering-outer-measure}
+设 \(\mathcal C\subseteq\mathcal P(X)\) 满足 \(\varnothing\in\mathcal C\)，并设代价函数
+\[
+c:\mathcal C\longrightarrow[0,\infty]
+\]
+满足 \(c(\varnothing)=0\)。对每个 \(E\subseteq X\)，定义
+\[
+\mu^*(E)
+=\inf\left\{\sum_{n=1}^{\infty}c(C_n):
+E\subseteq\bigcup_{n=1}^{\infty}C_n,\ C_n\in\mathcal C\right\},
+\]
+其中若花括号中的集合为空，则下确界为 \(\infty\)。那么 \(\mu^*\) 是外测度。
+\end{proposition}
+\begin{proof}
+把每个 \(C_n\) 都取为空集，便得到空集的一个总代价为 \(0\) 的覆盖；非负性于是给出 \(\mu^*(\varnothing)=0\)。若 \(E\subseteq F\)，则每个覆盖 \(F\) 的可数列也覆盖 \(E\)，所以 \(\mu^*(E)\leq\mu^*(F)\)。
+
+只剩可数次可加性。给定子集列 \((E_k)\)。若 \(\sum_k\mu^*(E_k)=\infty\)，所需不等式自动成立。设该和有限，并固定 \(\varepsilon>0\)。此时每个 \(\mu^*(E_k)\) 都有限，因此可为每个 \(k\) 选择覆盖 \((C_{k,j})_{j\geq1}\)，使
+\[
+E_k\subseteq\bigcup_{j=1}^{\infty}C_{k,j},
+\quad
+\sum_{j=1}^{\infty}c(C_{k,j})
+\leq\mu^*(E_k)+\varepsilon2^{-k}.
+\]
+双重可数族 \((C_{k,j})_{k,j\geq1}\) 可以排成一个序列，并覆盖 \(\bigcup_kE_k\)。故
+\[
+\mu^*\left(\bigcup_kE_k\right)
+\leq\sum_{k,j}c(C_{k,j})
+\leq\sum_k\mu^*(E_k)+\varepsilon.
+\]
+令 \(\varepsilon\downarrow0\)，即得结论。
+\end{proof}
+
+覆盖族不必覆盖整个 \(X\)：无法覆盖的集合只会得到外测度 \(\infty\)。要求 \(\varnothing\in\mathcal C\) 且代价为零，则确保空集条件，并让有限覆盖可以补成可数列。这两个小约定将在延拓定理中避免边界漏洞。
+
+\subsection{Carathéodory 可测性}
+\label{b1:subsec:020302}
+
+可数次可加性总给出
+\[
+\mu^*(A)
+\leq\mu^*(A\cap E)+\mu^*(A\setminus E).
+\]
+若反向不等式也成立，说明用 \(E\) 切开 \(A\) 不会增加覆盖代价。
+
+\begin{definition}
+\label{b1:def:caratheodory-measurable}
+设 \(\mu^*\) 是 \(X\) 上的外测度。若集合 \(E\subseteq X\) 对每个 \(A\subseteq X\) 都满足
+\[
+\mu^*(A)
+=\mu^*(A\cap E)+\mu^*(A\setminus E).
+\]
+则称 \(E\) 为\term[caratheodory-keceji]{Carathéodory 可测集}[Carathéodory measurable set]。
+\end{definition}
+
+定义要求对所有测试集 \(A\) 成立，而不只要求对 \(A=X\) 成立。前面那个“非空集外测度恒为 \(1\)”的例子清楚地展示了这一点：若 \(\varnothing\neq E\neq X\)，取 \(A=X\) 就得到 \(1\neq1+1\)，所以只有 \(\varnothing\) 与 \(X\) 可测。
+
+\begin{proposition}
+\label{b1:prop:caratheodory-basic}
+空集是 Carathéodory 可测的；若 \(E\) 可测，则 \(E^{\mathrm c}\) 可测；若 \(E,F\) 都可测，则 \(E\cap F\) 可测。因此 Carathéodory 可测集对有限并、有限交和差集封闭。
+\end{proposition}
+\begin{proof}
+空集条件直接来自
+\[
+\mu^*(A)=\mu^*(A\cap\varnothing)+\mu^*(A\setminus\varnothing).
+\]
+把 \(E\) 换成 \(E^{\mathrm c}\) 只会交换切分等式右边的两项，所以可测性对补集封闭。
+
+设 \(E,F\) 可测，并固定 \(A\subseteq X\)。先用 \(E\) 切分 \(A\)，再分别用 \(F\) 切分所得的两部分，得到
+\begin{align*}
+\mu^*(A)
+={}&\mu^*(A\cap E\cap F)
++\mu^*((A\cap E)\setminus F)\\
+&+\mu^*((A\setminus E)\cap F)
++\mu^*((A\setminus E)\setminus F).
+\end{align*}
+后三个集合的并恰为 \(A\setminus(E\cap F)\)。由可数次可加性，
+\[
+\mu^*(A)
+\geq\mu^*(A\cap E\cap F)+\mu^*(A\setminus(E\cap F)).
+\]
+反向不等式由外测度的可数次可加性给出，故 \(E\cap F\) 可测。有限并和差集再由补与交封闭得到。
+\end{proof}
+
+\subsection{Carathéodory 可测集}
+\label{b1:subsec:020303}
+
+有限封闭性尚不足以得到 \(\sigma\)-代数。关键步骤是反复使用切分等式，把一个测试集合依次切过两两不交的可测集列，再令有限切分次数趋于无穷。
+
+\begin{theorem}
+\label{b1:thm:caratheodory}
+设 \(\mu^*\) 是 \(X\) 上的外测度，记
+\[
+\mathcal M_{\mu^*}
+=\{E\subseteq X:E\text{ 满足 \cref{b1:def:caratheodory-measurable}}\}.
+\]
+则 \(\mathcal M_{\mu^*}\) 是 \(X\) 上的 \(\sigma\)-代数，并且 \(\mu^*|_{\mathcal M_{\mu^*}}\) 是完备测度。
+\end{theorem}
+\begin{proof}
+由 \cref{b1:prop:caratheodory-basic}，\(\mathcal M_{\mu^*}\) 对有限集合运算封闭。先证明它对两两不交的可数并封闭。设 \((E_n)_{n\geq1}\subseteq\mathcal M_{\mu^*}\) 两两不交，令
+\[
+F_N=\bigcup_{n=1}^{N}E_n,
+\quad
+E=\bigcup_{n=1}^{\infty}E_n.
+\]
+对任意 \(A\subseteq X\)，依次用 \(E_1,\ldots,E_N\) 切分，并利用它们互不相交，可由归纳得到
+\[
+\mu^*(A)
+=\sum_{n=1}^{N}\mu^*(A\cap E_n)
++\mu^*(A\setminus F_N).
+\]
+因为 \(A\setminus E\subseteq A\setminus F_N\)，单调性给出
+\[
+\mu^*(A)
+\geq\sum_{n=1}^{N}\mu^*(A\cap E_n)
++\mu^*(A\setminus E).
+\]
+令 \(N\to\infty\)，再由可数次可加性使用
+\[
+\mu^*(A\cap E)
+\leq\sum_{n=1}^{\infty}\mu^*(A\cap E_n),
+\]
+可得
+\[
+\mu^*(A)
+\geq\mu^*(A\cap E)+\mu^*(A\setminus E).
+\]
+另一方向正是外测度的可数次可加性，所以 \(E\in\mathcal M_{\mu^*}\)。
+
+对一般可测集列 \((G_n)\)，令
+\[
+E_1=G_1,
+\quad
+E_n=G_n\setminus\bigcup_{k=1}^{n-1}G_k\quad(n\geq2).
+\]
+由有限集合运算封闭，各 \(E_n\) 可测；它们两两不交，并且 \(\bigcup_nE_n=\bigcup_nG_n\)。故 \(\mathcal M_{\mu^*}\) 对可数并封闭。结合补集封闭，它是 \(\sigma\)-代数。
+
+下面证明 \(\mu^*\) 在该 \(\sigma\)-代数上可数可加。仍设 \((E_n)\) 两两不交且可测，令 \(E=\bigcup_nE_n\)。外测度的可数次可加性给出
+\[
+\mu^*(E)\leq\sum_{n=1}^{\infty}\mu^*(E_n).
+\]
+另一方面，在前面的有限切分公式中取 \(A=E\)，并舍去非负的余项，得到
+\[
+\mu^*(E)\geq\sum_{n=1}^{N}\mu^*(E_n)
+\]
+对每个 \(N\) 都成立。令 \(N\to\infty\)，便得到反向不等式。空集条件已经包含在外测度公理中，所以限制后的函数是测度。
+
+最后证明完备性。设 \(Z\in\mathcal M_{\mu^*}\) 且 \(\mu^*(Z)=0\)，并取任意 \(N\subseteq Z\)。对每个 \(A\subseteq X\)，单调性给出 \(\mu^*(A\cap N)=0\)，而 \(A\setminus N\subseteq A\) 给出
+\[
+\mu^*(A\cap N)+\mu^*(A\setminus N)\leq\mu^*(A).
+\]
+反向不等式来自可数次可加性，故 \(N\) 满足 Carathéodory 条件。于是所有可测零集的子集都可测，\(\mu^*|_{\mathcal M_{\mu^*}}\) 是完备测度。
+\end{proof}
+
+这个可测域由外测度内在决定，适合用来构造测度；但它一般不具有“所有可加定义域中最大者”的性质。单看外测度在某个 \(\sigma\)-代数上可加，也不能反推出其中每个集合都满足对所有测试集的 Carathéodory 切分等式。
+
+\subsection{外测度在可测域上的限制}
+\label{b1:subsec:020304}
+
+Carathéodory 构造可以简记为
+\[
+\mu^*
+\longmapsto
+\bigl(X,\mathcal M_{\mu^*},\mu^*|_{\mathcal M_{\mu^*}}\bigr).
+\]
+这里限制的是定义域，而不是底集。所有外测度零集都会被纳入这个定义域：若 \(\mu^*(N)=0\)，则上一证明已经说明 \(N\in\mathcal M_{\mu^*}\)。这正是所得测度自动完备的原因。
+
+这个过程也能从一个已有测度出发。设 \((X,\mathcal A,\mu)\) 是测度空间，对任意 \(E\subseteq X\) 定义
+\[
+\mu^{\mathrm o}(E)
+=\inf\{\mu(A):E\subseteq A,\ A\in\mathcal A\}.
+\]
+因为 \(X\in\mathcal A\)，取下确界的集合总非空。空集条件和单调性直接成立。再取任意集合列 \((E_n)\)。若 \(\sum_n\mu^{\mathrm o}(E_n)=\infty\)，可数次可加不等式没有内容；否则，对每个 \(n\) 选取可测超集 \(A_n\supseteq E_n\)，使
+\[
+\mu(A_n)\leq\mu^{\mathrm o}(E_n)+\varepsilon2^{-n}.
+\]
+于是 \(\bigcup_nA_n\) 是 \(\bigcup_nE_n\) 的可测超集，由 \(\mu\) 的可数次可加性，
+\[
+\mu^{\mathrm o}\left(\bigcup_nE_n\right)
+\leq\mu\left(\bigcup_nA_n\right)
+\leq\sum_n\mu(A_n)
+\leq\sum_n\mu^{\mathrm o}(E_n)+\varepsilon.
+\]
+令 \(\varepsilon\downarrow0\)，便得到可数次可加性。因此 \(\mu^{\mathrm o}\) 是外测度。
+
+\begin{proposition}
+\label{b1:prop:measure-induced-outer}
+对上述外测度 \(\mu^{\mathrm o}\)，有
+\[
+\mathcal A\subseteq\mathcal M_{\mu^{\mathrm o}},
+\quad
+\mu^{\mathrm o}(A)=\mu(A)\quad(A\in\mathcal A).
+\]
+因此 Carathéodory 构造至少恢复原来的测度，并可能把其定义域扩张。
+\end{proposition}
+\begin{proof}
+若 \(A\in\mathcal A\)，用 \(A\) 自身作可测超集得到 \(\mu^{\mathrm o}(A)\leq\mu(A)\)；任何包含 \(A\) 的可测集都由单调性具有不小于 \(\mu(A)\) 的测度，所以等号成立。
+
+固定 \(E\in\mathcal A\) 与 \(B\subseteq X\)。对每个可测超集 \(C\supseteq B\)，有不交分解
+\[
+C=(C\cap E)\mathbin{\dot\cup}(C\setminus E).
+\]
+其中两部分分别覆盖 \(B\cap E\) 与 \(B\setminus E\)，故
+\[
+\mu(C)
+=\mu(C\cap E)+\mu(C\setminus E)
+\geq\mu^{\mathrm o}(B\cap E)+\mu^{\mathrm o}(B\setminus E).
+\]
+对所有 \(C\) 取下确界，得到 Carathéodory 条件中所需的反向不等式；另一方向由可数次可加性成立。因此 \(E\in\mathcal M_{\mu^{\mathrm o}}\)。
+\end{proof}
+
+下一节将把这个思想用于尚未成为测度的集合函数：先在集合环上给出前测度，再以覆盖生成外测度。Carathéodory 定理正是把覆盖数据转化为测度的中间桥梁。

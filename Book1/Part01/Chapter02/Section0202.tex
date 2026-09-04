@@ -1,0 +1,193 @@
+% !TeX root = ../../Book1.tex
+\section{测度的基本构造}
+\label{b1:sec:0202}
+
+一个测度给定以后，常见的新测度不必从头构造。我们可以只保留某个可测区域内的质量，可以把该区域本身改作底集，也可以把所有零测集的子集补入可测结构。本节逐一完成这些操作，并特别核验完备化中的良定义问题。
+
+\subsection{测度的限制}
+\label{b1:subsec:020201}
+
+\begin{definition}
+\label{b1:def:restriction-measure}
+设 \((X,\mathcal A,\mu)\) 是测度空间，\(E\in\mathcal A\)。\(\mu\) 到 \(E\) 的\term[xianzhi-cedu]{限制测度}[restricted measure] 是 \((X,\mathcal A)\) 上的集合函数
+\[
+(\mu|_E)(A)=\mu(A\cap E),
+\quad A\in\mathcal A.
+\]
+\end{definition}
+
+注意，限制测度的底集仍是 \(X\)。它只是忽略了 \(E\) 以外的质量：若 \(A\cap E=\varnothing\)，则 \((\mu|_E)(A)=0\)。
+
+\begin{proposition}
+\label{b1:prop:restriction-measure}
+集合函数 \(\mu|_E\) 是 \((X,\mathcal A)\) 上的测度，并且
+\[
+(\mu|_E)(X)=\mu(E).
+\]
+\end{proposition}
+\begin{proof}
+首先，\((\mu|_E)(\varnothing)=0\)。若 \((A_n)\) 是两两不交的可测集列，则 \((A_n\cap E)\) 仍两两不交，而且
+\[
+\left(\bigcup_{n=1}^{\infty}A_n\right)\cap E
+=\bigcup_{n=1}^{\infty}(A_n\cap E).
+\]
+因此
+\[
+(\mu|_E)\left(\bigcup_nA_n\right)
+=\sum_n\mu(A_n\cap E)
+=\sum_n(\mu|_E)(A_n).
+\]
+最后，\((\mu|_E)(X)=\mu(X\cap E)=\mu(E)\)。
+\end{proof}
+
+若 \(0<\mu(E)<\infty\)，还可以把限制测度归一化为
+\[
+P_E(A)=\frac{\mu(A\cap E)}{\mu(E)}.
+\]
+这是概率测度。若原测度 \(\mu=P\) 本来就是概率测度，上式便是条件概率 \(P(A\mid E)\)；对一般有限测度，它只是归一化后的限制测度。
+
+\subsection{子空间测度}
+\label{b1:subsec:020202}
+
+限制测度仍把 \(X\) 当作底集。有时我们希望真正只在 \(E\) 内工作，这就要同时改变可测空间。
+
+\begin{definition}
+\label{b1:def:subspace-measure}
+设 \(E\in\mathcal A\)，并令
+\[
+\mathcal A|_E=\{A\cap E:A\in\mathcal A\}.
+\]
+在可测空间 \((E,\mathcal A|_E)\) 上定义\term[zijian-cedu]{子空间测度}[subspace measure]
+\[
+\mu_E(B)=\mu(B),
+\quad B\in\mathcal A|_E.
+\]
+\end{definition}
+
+因为 \(E\) 本身可测，所以 \(B=A\cap E\) 仍属于 \(\mathcal A\)，右端确有意义。也可以写成 \(\mu_E(A\cap E)=\mu(A\cap E)\)；这一写法与代表元 \(A\) 的选择无关，因为右端实际测量的是同一个集合 \(A\cap E\)。
+
+\begin{proposition}
+\label{b1:prop:subspace-measure}
+\(\mu_E\) 是可测空间 \((E,\mathcal A|_E)\) 上的测度。它与 \(\mu|_E\) 具有相同的非零质量信息，但二者的底集分别为 \(E\) 与 \(X\)。
+\end{proposition}
+\begin{proof}
+迹集合族 \(\mathcal A|_E\) 是 \(E\) 上的 \(\sigma\)-代数。若 \((B_n)\) 是其中两两不交的集合列，则每个 \(B_n\) 都是 \(X\) 中的可测集，故
+\[
+\mu_E\left(\bigcup_nB_n\right)
+=\mu\left(\bigcup_nB_n\right)
+=\sum_n\mu(B_n)
+=\sum_n\mu_E(B_n).
+\]
+空集条件同样由 \(\mu(\varnothing)=0\) 得到。
+\end{proof}
+
+这一区分在局部论证中很重要。例如，在 \((E,\mathcal A|_E,\mu_E)\) 中整个空间的测度是 \(\mu(E)\)；在 \((X,\mathcal A,\mu|_E)\) 中，集合 \(X\setminus E\) 仍然存在，只是其限制测度为零。
+
+\subsection{完备测度}
+\label{b1:subsec:020203}
+
+原来的 \(\sigma\)-代数未必包含零测集的任意子集；但若把这些子集纳入定义域，单调性又会迫使它们取零值。完备性要求可测结构与这一数值事实相容。
+
+\begin{definition}
+\label{b1:def:complete-measure}
+测度空间 \((X,\mathcal A,\mu)\) 称为\term[wanbei-cedu-kongjian]{完备测度空间}[complete measure space]，若每当 \(Z\in\mathcal A\)、\(\mu(Z)=0\) 且 \(N\subseteq Z\) 时，总有 \(N\in\mathcal A\)。
+\end{definition}
+
+不完备现象在很小的空间中已经出现。设 \(X=\{0,1\}\)，\(\mathcal A=\{\varnothing,X\}\)，并令 \(\mu(\varnothing)=\mu(X)=0\)。这是一个测度，但单点集 \(\{0\}\subseteq X\) 不可测，所以该测度不完备。这个例子说明，完备性是“可测结构是否已经包含全部零测误差”的问题，而不是数值函数是否满足可数可加性的问题。
+
+\subsection{测度的完备化}
+\label{b1:subsec:020204}
+
+记所有包含在可测零集中的集合为
+\[
+\mathcal N_\mu
+=\{N\subseteq X:\text{存在 }Z\in\mathcal A\text{ 使 }N\subseteq Z\text{ 且 }\mu(Z)=0\}.
+\]
+这些集合未必属于 \(\mathcal A\)，但它们对可测集合造成的增删不应改变测度。
+
+\begin{definition}
+\label{b1:def:completion}
+令
+\[
+\overline{\mathcal A}
+=\{A\mathbin{\triangle}N:A\in\mathcal A,\ N\in\mathcal N_\mu\},
+\]
+其中 \(\triangle\) 表示对称差。对 \(E=A\mathbin{\triangle}N\in\overline{\mathcal A}\)，规定
+\[
+\overline\mu(E)=\mu(A).
+\]
+集合族 \(\overline{\mathcal A}\) 及其上的函数 \(\overline\mu\) 称为 \((\mathcal A,\mu)\) 的\term[wanbeihua]{完备化}[completion]。
+\end{definition}
+
+定义中的可测集合 \(A\) 并不唯一，所以首先要证明数值 \(\overline\mu(E)\) 与表示无关；还要证明可数集合运算不会累积出非零误差。下面的证明把这两个隐含步骤都展开。
+
+\begin{theorem}
+\label{b1:thm:completion-measure}
+集合族 \(\overline{\mathcal A}\) 是 \(X\) 上包含 \(\mathcal A\) 的 \(\sigma\)-代数，\(\overline\mu\) 定义良好并且是完备测度；对每个 \(A\in\mathcal A\)，有 \(\overline\mu(A)=\mu(A)\)。
+\end{theorem}
+\begin{proof}
+先证定义良好。设
+\[
+E=A\mathbin{\triangle}N=B\mathbin{\triangle}M,
+\]
+其中 \(A,B\in\mathcal A\)，并且 \(N\subseteq Z\)、\(M\subseteq W\)，这里 \(Z,W\in\mathcal A\) 且 \(\mu(Z)=\mu(W)=0\)。由对称差的三角关系，
+\[
+A\mathbin{\triangle}B
+\subseteq (A\mathbin{\triangle}E)\cup(E\mathbin{\triangle}B)
+\subseteq Z\cup W.
+\]
+因而可测集 \(A\setminus B\) 与 \(B\setminus A\) 都是零测集。把 \(A\) 和 \(B\) 分别写成它们的交与差的不交并，得到
+\[
+\mu(A)=\mu(A\cap B)=\mu(B).
+\]
+所以 \(\overline\mu(E)\) 不依赖表示。
+
+接着证明 \(\overline{\mathcal A}\) 是 \(\sigma\)-代数。集合 \(\varnothing=\varnothing\mathbin{\triangle}\varnothing\) 属于其中。若 \(E=A\mathbin{\triangle}N\)，则
+\[
+E^{\mathrm c}=A^{\mathrm c}\mathbin{\triangle}N,
+\]
+故它对补集封闭。若 \(E_n=A_n\mathbin{\triangle}N_n\)，并选择可测零集 \(Z_n\supseteq N_n\)，则
+\[
+\left(\bigcup_nE_n\right)\mathbin{\triangle}
+\left(\bigcup_nA_n\right)
+\subseteq\bigcup_n(E_n\mathbin{\triangle}A_n)
+\subseteq\bigcup_nZ_n.
+\]
+右端是可测零集，因此 \(\bigcup_nE_n\in\overline{\mathcal A}\)。
+
+还需核验可数可加性。设 \((E_n)\) 是 \(\overline{\mathcal A}\) 中两两不交的集合列，取 \(A_n\in\mathcal A\)，使 \(E_n\mathbin{\triangle}A_n\) 包含在某个可测零集 \(Z_n\) 中。令
+\[
+B_1=A_1,
+\quad
+B_n=A_n\setminus\bigcup_{k=1}^{n-1}A_k\quad(n\geq2).
+\]
+集合 \(B_n\) 可测且两两不交。由于 \(E_n\cap E_k=\varnothing\)，每个交集 \(A_n\cap A_k\) 都包含在 \(Z_n\cup Z_k\) 中；因此 \(A_n\setminus B_n\) 是零测集，\(\mu(B_n)=\mu(A_n)\)。此外，\(\bigcup_nE_n\) 与 \(\bigcup_nB_n\) 的对称差包含在可数个上述零测集之并中。由定义良好与 \(\mu\) 的可数可加性，
+\[
+\overline\mu\left(\bigcup_nE_n\right)
+=\mu\left(\bigcup_nB_n\right)
+=\sum_n\mu(B_n)
+=\sum_n\overline\mu(E_n).
+\]
+
+最后证明完备性。若 \(E\in\overline{\mathcal A}\) 且 \(\overline\mu(E)=0\)，取表示 \(E=A\mathbin{\triangle}N\)，其中 \(N\subseteq Z\)、\(\mu(Z)=0\)。此时 \(\mu(A)=0\)，并且 \(E\subseteq A\cup Z\)，而 \(A\cup Z\) 是可测零集。对任意 \(F\subseteq E\)，有 \(F=\varnothing\mathbin{\triangle}F\) 且 \(F\in\mathcal N_\mu\)，故 \(F\in\overline{\mathcal A}\) 且 \(\overline\mu(F)=0\)。这就证明了完备性。取 \(N=\varnothing\) 还表明 \(\overline\mu\) 在 \(\mathcal A\) 上等于 \(\mu\)。
+\end{proof}
+
+完备化还有一个最小性性质：它只加入完备性强迫我们加入的集合。
+
+\begin{proposition}
+\label{b1:prop:completion-minimal}
+设 \((X,\mathcal B,\nu)\) 是完备测度空间，\(\mathcal A\subseteq\mathcal B\)，且 \(\nu|_{\mathcal A}=\mu\)。则
+\[
+\overline{\mathcal A}\subseteq\mathcal B,
+\quad
+\nu|_{\overline{\mathcal A}}=\overline\mu.
+\]
+\end{proposition}
+\begin{proof}
+若 \(N\in\mathcal N_\mu\)，则存在 \(Z\in\mathcal A\) 使 \(N\subseteq Z\) 且 \(\nu(Z)=\mu(Z)=0\)。由 \(\nu\) 的完备性，\(N\in\mathcal B\) 且 \(\nu(N)=0\)。所以每个 \(A\mathbin{\triangle}N\) 都属于 \(\mathcal B\)，并且它与 \(A\) 只相差一个 \(\nu\)-零测集，从而
+\[
+\nu(A\mathbin{\triangle}N)=\nu(A)=\mu(A)=\overline\mu(A\mathbin{\triangle}N).
+\]
+\end{proof}
+
+因此，限制与子空间是对已有质量作局部化，完备化则是对可测结构作最小扩张。下一节的外测度构造会自动产生完备测度，这两个观点将在 Carathéodory 理论中汇合。

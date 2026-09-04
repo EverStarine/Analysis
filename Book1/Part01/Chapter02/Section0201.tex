@@ -1,0 +1,212 @@
+% !TeX root = ../../Book1.tex
+\section{测度}
+\label{b1:sec:0201}
+
+长度、面积、质量和概率来自不同问题，却遵守同一条相加原则：若干部分互不重叠时，整体的大小应等于各部分大小之和。只要求有限个部分相加还不够。例如把一个区间分成可数个小区间、把一个事件分成可数种互斥结果时，必须控制无限分割。测度以可数可加性为公理，把这些情形放在同一框架中。
+
+\subsection{测度的定义}
+\label{b1:subsec:020101}
+
+\begin{definition}
+\label{b1:def:measure}
+设 \((X,\mathcal A)\) 是可测空间。映射
+\[
+\mu:\mathcal A\longrightarrow[0,\infty]
+\]
+若满足 \(\mu(\varnothing)=0\)，并且对任意两两不交的可测集列 \((A_n)_{n\geq1}\) 有
+\[
+\mu\left(\bigcup_{n=1}^{\infty}A_n\right)
+=\sum_{n=1}^{\infty}\mu(A_n),
+\]
+其中第二个条件称为\term[keshu-kekejiaxing]{可数可加性}[countable additivity]，
+则称为 \(\mathcal A\) 上的\term[cedu]{测度}[measure]，并把 \((X,\mathcal A,\mu)\) 称为\term[cedu-kongjian]{测度空间}[measure space]。
+\end{definition}
+
+值域允许出现 \(\infty\)。这不是技术上的宽松，而是为了让无界空间的长度、无限集合的计数等自然对象仍是测度。扩展非负实数的加法没有歧义，但 \(\infty-\infty\) 没有定义；凡是把测度等式改写成差公式，都要检查被减去的量是否有限。
+
+先看三个可以直接核验的模型。任意可测空间上都有零测度 \(\mu(A)=0\)。若 \(\mathcal A=\mathcal P(X)\)，则
+\[
+\mu(A)=\#A
+\]
+给出\term[jishu-cedu]{计数测度}[counting measure]，这里把所有无限集合的值统一记为 \(\infty\)。固定一点 \(x_0\in X\) 后，公式
+\[
+\delta_{x_0}(A)=
+\begin{cases}
+1,&x_0\in A,\\
+0,&x_0\notin A
+\end{cases}
+\]
+给出集中在 \(x_0\) 的\term[dian-zhiliang]{点质量}[point mass]。更一般地，若 \(X\) 至多可数，并为每个 \(x\in X\) 指定权重 \(w(x)\geq0\)，则
+\[
+\mu(A)=\sum_{x\in A}w(x)
+\]
+是幂集上的测度。由于各项非负，这个和可理解为所有有限部分和的上确界，因而不依赖枚举顺序。
+
+\begin{proposition}
+\label{b1:prop:measure-monotonicity}
+设 \(\mu\) 是 \((X,\mathcal A)\) 上的测度，\(A,B\in\mathcal A\)，且 \(A\subseteq B\)。则
+\[
+\mu(A)\leq\mu(B).
+\]
+若另有 \(\mu(A)<\infty\)，则
+\[
+\mu(B\setminus A)=\mu(B)-\mu(A).
+\]
+\end{proposition}
+\begin{proof}
+集合 \(B\) 有不交分解
+\[
+B=A\mathbin{\dot\cup}(B\setminus A).
+\]
+在可数可加性中令其余各项为空集，便得到
+\[
+\mu(B)=\mu(A)+\mu(B\setminus A).
+\]
+第一条结论来自 \(\mu(B\setminus A)\geq0\)。当 \(\mu(A)<\infty\) 时，上式可以合法移项，得到差公式。
+\end{proof}
+
+这段证明也说明，测度首先是有限可加的。反过来，有限可加性不能代替定义中的可数可加性：在 \(\mathbb N\) 上令每个有限集的“大小”为 \(0\)，令每个余有限集的“大小”为 \(1\)，就在有限集与余有限集组成的代数上得到有限可加函数；但把 \(\mathbb N\) 分成单点集后，可数可加性会要求 \(1=\sum_n0\)，因而失败。
+
+\subsection{可数可加性}
+\label{b1:subsec:020102}
+
+实际使用中，集合往往彼此重叠。把重叠部分按首次出现的位置分配出去，就能把可数可加性转化为\term[keshu-ci-kekejiaxing]{可数次可加性}[countable subadditivity]。
+
+\begin{proposition}
+\label{b1:prop:measure-subadditivity}
+对任意可测集列 \((A_n)_{n\geq1}\)，有
+\[
+\mu\left(\bigcup_{n=1}^{\infty}A_n\right)
+\leq\sum_{n=1}^{\infty}\mu(A_n).
+\]
+若 \(A_1,\ldots,A_m\) 两两不交，则
+\[
+\mu\left(\bigcup_{k=1}^{m}A_k\right)=\sum_{k=1}^{m}\mu(A_k).
+\]
+\end{proposition}
+\begin{proof}
+令 \(B_1=A_1\)，并对 \(n\geq2\) 令
+\[
+B_n=A_n\setminus\bigcup_{k=1}^{n-1}A_k.
+\]
+各集合 \(B_n\) 两两不交，满足 \(B_n\subseteq A_n\)，并且
+\[
+\bigcup_{n=1}^{\infty}B_n=\bigcup_{n=1}^{\infty}A_n.
+\]
+由可数可加性和单调性，
+\[
+\mu\left(\bigcup_nA_n\right)
+=\sum_n\mu(B_n)
+\leq\sum_n\mu(A_n).
+\]
+有限不交并的等式可在定义中把其余集合取为空集得到。
+\end{proof}
+
+\begin{proposition}
+\label{b1:prop:measure-inclusion-exclusion}
+对任意 \(A,B\in\mathcal A\)，有
+\[
+\mu(A\cup B)+\mu(A\cap B)=\mu(A)+\mu(B).
+\]
+这里的等式在扩展非负实数中理解；它没有使用 \(\infty-\infty\)。
+\end{proposition}
+\begin{proof}
+由两个不交分解
+\[
+A\cup B=A\mathbin{\dot\cup}(B\setminus A),
+\quad
+B=(A\cap B)\mathbin{\dot\cup}(B\setminus A),
+\]
+可得
+\[
+\mu(A\cup B)+\mu(A\cap B)
+=\mu(A)+\mu(B\setminus A)+\mu(A\cap B)
+=\mu(A)+\mu(B).
+\]
+整个推导只用非负量的加法，所以即使两边都为 \(\infty\) 也成立。
+\end{proof}
+
+例如，对事件 \(A,B\) 而言，这个等式说明把 \(\mu(A)\) 与 \(\mu(B)\) 直接相加会把交集计算两次。对三个以上集合也可以继续分解，但在本书中通常直接使用可数次可加性，而不展开冗长的容斥公式。
+
+\subsection{从下连续性与从上连续性}
+\label{b1:subsec:020103}
+
+可数可加性还控制单调集合列的极限，相应性质称为\term[congxia-lianxuxing]{从下连续性}[continuity from below]与\term[congshang-lianxuxing]{从上连续性}[continuity from above]。这里 \(A_n\uparrow A\) 表示 \(A_n\subseteq A_{n+1}\) 且 \(A=\bigcup_nA_n\)；类似地，\(A_n\downarrow A\) 表示 \(A_{n+1}\subseteq A_n\) 且 \(A=\bigcap_nA_n\)。
+
+\begin{theorem}
+\label{b1:thm:measure-continuity}
+设 \((A_n)\) 是可测集列。
+\begin{enumerate}
+  \item\label{b1:item:measure-continuity-below} 若 \(A_n\uparrow A\)，则 \(\mu(A_n)\uparrow\mu(A)\)；
+  \item\label{b1:item:measure-continuity-above} 若 \(A_n\downarrow A\)，且 \(\mu(A_1)<\infty\)，则 \(\mu(A_n)\downarrow\mu(A)\)。
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+对\itemref{b1:item:measure-continuity-below}，令 \(B_1=A_1\)，并对 \(n\geq2\) 令 \(B_n=A_n\setminus A_{n-1}\)。集合 \(B_n\) 两两不交，而且
+\[
+A_n=\bigcup_{k=1}^{n}B_k,
+\quad
+A=\bigcup_{k=1}^{\infty}B_k.
+\]
+因此
+\[
+\mu(A_n)=\sum_{k=1}^{n}\mu(B_k)
+\longrightarrow
+\sum_{k=1}^{\infty}\mu(B_k)=\mu(A).
+\]
+
+对\itemref{b1:item:measure-continuity-above}，集合 \(A_1\setminus A_n\) 递增到 \(A_1\setminus A\)。由第一部分，
+\[
+\mu(A_1\setminus A_n)\longrightarrow\mu(A_1\setminus A).
+\]
+由于 \(\mu(A_1)<\infty\)，差公式给出
+\[
+\mu(A_n)=\mu(A_1)-\mu(A_1\setminus A_n)
+\longrightarrow
+\mu(A_1)-\mu(A_1\setminus A)=\mu(A).
+\]
+\end{proof}
+
+从上连续性的有限性条件确实不可删去。在 \(\mathbb R\) 的计数测度下，令 \(A_n=\{n,n+1,n+2,\ldots\}\)。这些集合递减到空集，但每个 \(A_n\) 的测度都是 \(\infty\)，并不收敛到 \(0\)。失败的原因正是证明中会遇到 \(\infty-\infty\)。
+
+一个常用的等价表述是：若 \(A_n\downarrow\varnothing\) 且某个 \(A_n\) 具有有限测度，则 \(\mu(A_n)\downarrow0\)。在核验一个有限可加函数是否真正可数可加时，这种“空交极限”形式尤其方便，本章习题将给出相应判据。
+
+\subsection{有限测度与概率测度}
+\label{b1:subsec:020104}
+
+\begin{definition}
+\label{b1:def:finite-probability-measure}
+若 \(\mu(X)<\infty\)，则称 \(\mu\) 为\term[youxian-cedu]{有限测度}[finite measure]。若 \(\mu(X)=1\)，则称 \(\mu\) 为\term[gailv-cedu]{概率测度}[probability measure]，并把 \((X,\mathcal A,\mu)\) 称为\term[gailv-kongjian]{概率空间}[probability space]。
+\end{definition}
+
+有限且非零的测度可以归一化：若 \(0<\mu(X)<\infty\)，则
+\[
+P(A)=\frac{\mu(A)}{\mu(X)}
+\]
+是概率测度。反过来，概率测度只是总质量已经归一化为 \(1\) 的有限测度，所以
+\[
+0\leq P(A)\leq1,
+\quad
+P(A^{\mathrm c})=1-P(A).
+\]
+在有限测度空间中，\cref{b1:thm:measure-continuity} 的从上连续性可用于任意递减可测集列；这正是有限性在极限论证中的主要便利。
+
+\subsection{\texorpdfstring{\(\sigma\)}{σ}-有限测度}
+\label{b1:subsec:020105}
+
+许多自然空间的总测度为无穷，但可以分成可数个有限质量的区域。此时，有限测度上的论证往往能够逐块完成，再用从下连续性拼回整个空间。
+
+\begin{definition}
+\label{b1:def:sigma-finite-measure}
+若存在可测集列 \((X_n)_{n\geq1}\)，使
+\[
+X=\bigcup_{n=1}^{\infty}X_n,
+\quad
+\mu(X_n)<\infty\quad(n\geq1),
+\]
+则称 \(\mu\) 为\term[sigma-youxian]{\(\sigma\)-有限测度}[sigma-finite measure]。
+\end{definition}
+
+覆盖中的集合可以改成递增集合而不失有限性：把 \(X_n\) 换成 \(X_1\cup\cdots\cup X_n\) 即可。每个有限测度都是 \(\sigma\)-有限的；计数测度在可数集合上也是 \(\sigma\)-有限的，因为可用有限集递增覆盖。计数测度在不可数集合上则不是 \(\sigma\)-有限的：有限测度集只能是有限集，而可数个有限集的并仍然可数。
+
+\(\sigma\)-有限性并不把总质量变成有限，而是提供一种可数的有限质量局部化。第 \ref{b1:subsec:020403} 小节将看到，它恰好允许我们把有限测度情形的唯一性论证逐块推广到整个空间；没有这一条件，延拓可能不唯一。

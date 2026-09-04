@@ -1,0 +1,209 @@
+% !TeX root = ../../Book1.tex
+\section{集合系}
+\label{b1:sec:0101}
+
+长度可以先在区间上定义，面积可以先在长方形上定义，但极限过程很快会产生远比区间和长方形复杂的集合。若想让“把集合拆开再求和”与“用可数个简单集合逼近”成为合法操作，就必须预先规定一族对相应集合运算封闭的集合。本节比较三种常用的封闭层次，并把以后反复使用的集合列运算整理出来。
+
+设 \(X\) 是一个非空集合，\(\mathcal P(X)\) 表示 \(X\) 的幂集。以下各集合系都是 \(\mathcal P(X)\) 的子集；未特别说明时，补集均相对于 \(X\) 而言。
+
+\subsection{集合环}
+\label{b1:subsec:010101}
+
+若一族集合要容许有限次切割与拼接，它至少应当对差和并封闭。这正是集合环所表达的要求。
+
+\begin{definition}
+\label{b1:def:set-ring}
+\term[jihehuan]{集合环}[ring of sets] 是非空集合族 \(\mathcal R\subseteq\mathcal P(X)\)，满足对任意 \(A,B\in\mathcal R\)，
+\[
+A\setminus B\in\mathcal R,
+\quad
+A\cup B\in\mathcal R.
+\]
+\end{definition}
+
+定义不要求全集 \(X\) 属于 \(\mathcal R\)。例如，在无界空间上只讨论有限个有界区间的并时，整个空间未必是允许的集合；集合环恰好能够保留这种“局部”性质。
+
+\begin{proposition}
+\label{b1:prop:ring-closure}
+若 \(\mathcal R\) 是集合环，则 \(\varnothing\in\mathcal R\)，并且 \(\mathcal R\) 对正整数个集合的交、任意有限并、相对补和对称差封闭。
+\end{proposition}
+\begin{proof}
+取 \(A\in\mathcal R\)。由 \(A\setminus A=\varnothing\) 得 \(\varnothing\in\mathcal R\)。对任意 \(A,B\in\mathcal R\)，差运算的封闭性给出 \(A\setminus B\in\mathcal R\)，再次作差便有
+\[
+A\cap B=A\setminus(A\setminus B)\in\mathcal R.
+\]
+而
+\[
+A\mathbin{\triangle}B
+=(A\setminus B)\cup(B\setminus A)
+\]
+也属于 \(\mathcal R\)。二元并已包含在定义中；对集合个数作归纳，就得到有限交与有限并的封闭性。
+\end{proof}
+
+两个例子说明“环”为什么不等同于幂集。第一，\(X\) 的全体有限子集构成集合环；当 \(X\) 无限时，它不含全集。第二，实直线上有限个有界半开区间 \([a,b)\) 的不交并（连同空集）构成集合环：把两个这样的集合的全部端点排成有限序列后，它们的并与差仍可写成有限个半开区间的不交并。这个例子将在下一章成为长度的自然定义域。
+
+集合环只保证有限运算。若 \(X=\mathbb N\)，全体有限子集组成的集合环包含每个单点集，但这些单点集的可数并是 \(X\)，不再属于该环。因此，不能从“含有每个 \(A_n\)”推断“含有 \(\bigcup_nA_n\)”。
+
+\subsection{集合代数}
+\label{b1:subsec:010102}
+
+当讨论范围固定为整个 \(X\) 时，允许的集合通常也应当连同其补集一起出现。向集合环加入全集，便得到集合代数。
+
+\begin{definition}
+\label{b1:def:set-algebra}
+\term[jihedaishu]{集合代数}[algebra of sets] 是集合族 \(\mathcal A\subseteq\mathcal P(X)\)，满足 \(X\in\mathcal A\)，且对任意 \(A,B\in\mathcal A\)，
+\[
+A^{\mathrm c}\in\mathcal A,
+\quad
+A\cup B\in\mathcal A.
+\]
+\end{definition}
+
+由 De Morgan 公式，集合代数也对有限交封闭。下面的等价刻画说明，集合代数与集合环之间只差“是否含有全集”这一项。
+
+\begin{proposition}
+\label{b1:prop:algebra-ring}
+集合族 \(\mathcal A\) 是集合代数，当且仅当它是含 \(X\) 的集合环。
+\end{proposition}
+\begin{proof}
+若 \(\mathcal A\) 是集合代数，则
+\[
+A\setminus B=A\cap B^{\mathrm c}
+=\left(A^{\mathrm c}\cup B\right)^{\mathrm c}\in\mathcal A,
+\]
+所以 \(\mathcal A\) 对差封闭；它本来就对并封闭，因而是集合环。
+
+反之，若 \(\mathcal A\) 是集合环且 \(X\in\mathcal A\)，则对 \(A\in\mathcal A\) 有
+\[
+A^{\mathrm c}=X\setminus A\in\mathcal A.
+\]
+再结合集合环对并的封闭性，便得到集合代数的全部条件。
+\end{proof}
+
+若 \(X\) 是无限集合，则全体有限子集及其补集组成一个集合代数，称为有限--余有限集合代数。它比有限子集环多了全集与余有限集，但一般仍不对可数并封闭。例如在 \(X=\mathbb N\) 中，每个偶数单点集都在这个代数里，而它们的并既非有限集，也非余有限集。这同时表明，从集合环到集合代数、再到下一小节的 \(\sigma\)-代数，两次加强都可能是严格的。
+
+\subsection{\texorpdfstring{\(\sigma\)}{σ}-代数}
+\label{b1:subsec:010103}
+
+分析中的逼近通常要进行可数多步。若允许的集合只对有限并封闭，取极限时就可能离开原有集合系。\(\sigma\)-代数正是把有限封闭提升到可数封闭所得的结构。
+
+\begin{definition}
+\label{b1:def:sigma-algebra}
+\term[sigma-daishu]{\(\sigma\)-代数}[sigma-algebra] 是集合族 \(\mathcal F\subseteq\mathcal P(X)\)，满足：
+\begin{enumerate}
+  \item \label{b1:item:sigma-algebra-1}
+  \(X\in\mathcal F\)；
+  \item \label{b1:item:sigma-algebra-2}
+  若 \(A\in\mathcal F\)，则 \(A^{\mathrm c}\in\mathcal F\)；
+  \item \label{b1:item:sigma-algebra-3}
+  若 \(A_1,A_2,\ldots\in\mathcal F\)，则 \(\bigcup_{n=1}^{\infty}A_n\in\mathcal F\)。
+\end{enumerate}
+\end{definition}
+
+字母 \(\sigma\) 提醒我们第三条允许的是可数次并，而不是任意并。这一限制至关重要：可数运算足以容纳数列极限，却仍能保留有用的结构；若要求任意并封闭并同时要求补集封闭，在含有所有单点集时往往会直接得到整个幂集。
+
+\begin{proposition}
+\label{b1:prop:sigma-closure}
+每个 \(\sigma\)-代数都是集合代数，并且对可数交封闭；从 \(\mathcal F\) 中的一个集合删去 \(\mathcal F\) 中可数多个集合的并后，所得集合仍属于 \(\mathcal F\)。具体地，若 \(A,A_1,A_2,\ldots\in\mathcal F\)，则
+\[
+\bigcap_{n=1}^{\infty}A_n\in\mathcal F,
+\quad
+A\setminus\bigcup_{n=1}^{\infty}A_n\in\mathcal F.
+\]
+\end{proposition}
+\begin{proof}
+由 \cref{b1:def:sigma-algebra} 的前两条，\(\varnothing=X^{\mathrm c}\in\mathcal F\)。把有限列的尾部补成空集，可知 \(\mathcal F\) 对有限并封闭。由 De Morgan 公式，
+\[
+\bigcap_{n=1}^{\infty}A_n
+=\left(\bigcup_{n=1}^{\infty}A_n^{\mathrm c}\right)^{\mathrm c}\in\mathcal F.
+\]
+最后，
+\[
+A\setminus\bigcup_{n=1}^{\infty}A_n
+=A\cap\bigcap_{n=1}^{\infty}A_n^{\mathrm c}\in\mathcal F.
+\]
+因此 \(\mathcal F\) 满足集合代数的条件，并具有所述更强闭性。
+\end{proof}
+
+集合列还有两种在分析中十分常见的极限。定义
+\[
+\liminf_{n\to\infty}A_n
+=\bigcup_{n=1}^{\infty}\bigcap_{k=n}^{\infty}A_k,
+\quad
+\limsup_{n\to\infty}A_n
+=\bigcap_{n=1}^{\infty}\bigcup_{k=n}^{\infty}A_k.
+\]
+一个点属于下极限，当且仅当它从某一项起始终属于 \(A_n\)；它属于上极限，当且仅当它属于无穷多个 \(A_n\)。所以总有
+\[
+\liminf_{n\to\infty}A_n
+\subseteq
+\limsup_{n\to\infty}A_n.
+\]
+若二者相等，就把公共集合记为 \(\lim_{n\to\infty}A_n\)。由 \cref{b1:prop:sigma-closure}，当每个 \(A_n\in\mathcal F\) 时，上、下极限也属于 \(\mathcal F\)。这正是 \(\sigma\)-代数适合处理集合逼近的第一个迹象。
+
+三类集合系之间的关系是
+\[
+\sigma\text{-代数}
+\quad\Longrightarrow\quad
+\text{集合代数}
+\quad\Longrightarrow\quad
+\text{集合环},
+\]
+而前面的有限子集例和有限--余有限例说明逆向蕴含均不成立。
+
+\subsection{集合系的基本运算}
+\label{b1:subsec:010104}
+
+构造新集合系时，交运算比并运算可靠。其原因是：某个集合若属于每一个给定的 \(\sigma\)-代数，那么对它作补或与同类集合作可数并，结果仍同时属于每一个 \(\sigma\)-代数。
+
+\begin{proposition}
+\label{b1:prop:intersection-sigma}
+任意非空族 \(X\) 上的 \(\sigma\)-代数的交仍为 \(X\) 上的 \(\sigma\)-代数。
+\end{proposition}
+\begin{proof}
+设 \(\{\mathcal F_i:i\in I\}\) 是一族 \(\sigma\)-代数，并令
+\[
+\mathcal F=\bigcap_{i\in I}\mathcal F_i.
+\]
+全集 \(X\) 属于每个 \(\mathcal F_i\)，故属于 \(\mathcal F\)。若 \(A\in\mathcal F\)，则对每个 \(i\in I\) 都有 \(A\in\mathcal F_i\)，从而 \(A^{\mathrm c}\in\mathcal F_i\)；于是 \(A^{\mathrm c}\in\mathcal F\)。若每个 \(A_n\in\mathcal F\)，则对每个 \(i\in I\)，可数并 \(\bigcup_nA_n\) 都属于 \(\mathcal F_i\)，因而属于它们的交。三条公理均成立。
+\end{proof}
+
+并运算没有这一性质。令 \(X=\{1,2,3\}\)，并取
+\[
+\mathcal F_1=\{\varnothing,\{1\},\{2,3\},X\},
+\quad
+\mathcal F_2=\{\varnothing,\{2\},\{1,3\},X\}.
+\]
+二者都是 \(\sigma\)-代数，但 \(\mathcal F_1\cup\mathcal F_2\) 不含 \(\{1\}\cup\{2\}=\{1,2\}\)，所以不是 \(\sigma\)-代数。下一节的生成构造不是简单取并，而是取所有可能上界的交；这恰好利用了 \cref{b1:prop:intersection-sigma}。
+
+最后记录反像运算。它是可测映射定义能够正常工作的集合论原因。
+
+\begin{proposition}
+\label{b1:prop:preimage-operations}
+设 \(f:X\to Y\) 是任意映射。对 \(B,B_1,B_2,\ldots\subseteq Y\)，有
+\[
+f^{-1}(B^{\mathrm c})
+=\left(f^{-1}(B)\right)^{\mathrm c},
+\quad
+f^{-1}\left(\bigcup_{n=1}^{\infty}B_n\right)
+=\bigcup_{n=1}^{\infty}f^{-1}(B_n),
+\]
+以及
+\[
+f^{-1}\left(\bigcap_{n=1}^{\infty}B_n\right)
+=\bigcap_{n=1}^{\infty}f^{-1}(B_n).
+\]
+因而，若 \(\mathcal B\) 是 \(Y\) 上的 \(\sigma\)-代数，则
+\[
+f^{-1}(\mathcal B)
+=\{f^{-1}(B):B\in\mathcal B\}
+\]
+是 \(X\) 上的 \(\sigma\)-代数。
+\end{proposition}
+\begin{proof}
+对任意 \(x\in X\)，逐一展开“\(x\) 属于等式左端”的含义，便得到前三个等式。例如，\(x\in f^{-1}(B^{\mathrm c})\) 当且仅当 \(f(x)\notin B\)，这又当且仅当 \(x\notin f^{-1}(B)\)。
+
+由于 \(f^{-1}(Y)=X\)，反像族含有 \(X\)；前三个等式又分别给出补集与可数并的封闭性，故该反像族是 \(\sigma\)-代数。
+\end{proof}
+
+这里不能把反像随意换成像。一般映射的像虽与并运算交换，却未必与补或交交换。例如常值映射可能把两个不交集合送到同一个点。以后所有可测性判别都使用反像，正是为了保留本命题中的完整运算规则。
