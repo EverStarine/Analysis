@@ -2,19 +2,128 @@
 \section{弱-*拓扑}
 \label{b1:sec:0902}
 
-% TODO: 撰写本节正文。
+% 来源：Fremlin2016Measure，第2卷附录2A5I(g)，附录第27页，实际阅读作者公开PDF。
+% 弱-*与弱拓扑的有限测试解释据此改写；l1对偶、坐标判别与尾部示性序列在此完整推导。
+当向量本身就是泛函时，有一种更直接的测试办法：给定一个输入，观察泛函在该输入上的值。这样的测试只使用原空间的向量，而不使用对偶空间上的全部连续线性泛函，因而产生了另一种拓扑。弱拓扑与弱-*拓扑的区别，首先是允许使用的测试族不同。
 
 \subsection{对偶空间上的弱-*拓扑}
 \label{b1:subsec:090201}
 
-待填充。
+\begin{definition}\label{b1:def:weak-star-topology}
+设 \(X\) 为赋范空间。对 \(f\in X^*\)、有限集 \(E\subset X\) 与 \(\varepsilon>0\)，令
+\[
+ V(f;E,\varepsilon)
+ =\{\,g\in X^*\mid |g(x)-f(x)|<\varepsilon\text{ 对每个 }x\in E\,\}.
+\]
+以这些集合为邻域基的拓扑称为 \(X^*\) 上的\term[ruo-xing-tuopu]{弱-*拓扑}[weak-* topology]，记为 \(\sigma(X^*,X)\)。
+\end{definition}
+\symidx{\(\sigma(X^*,X)\)：对偶空间相对于原空间的弱-*拓扑}
+
+与\cref{b1:prop:weak-topology-properties}中的有限测试论证完全相同，这些集合组成开邻域基，而 \(\sigma(X^*,X)\) 是使所有求值映射
+\[
+ X^*\longrightarrow\mathbb K,\quad f\longmapsto f(x)\quad(x\in X)
+\]
+连续的最弱拓扑。若 \(f\ne g\)，总有一个 \(x\in X\) 使 \(f(x)\ne g(x)\)，故两个小求值邻域可将它们分开，弱-*拓扑也是 Hausdorff 的。估计 \(|(g-f)(x)|\leq\|g-f\|\,\|x\|\) 又说明范数拓扑不弱于弱-*拓扑。这些事实都不要求 \(X\) 完备。
+
+记号中保留 \(X\) 十分重要。这里不是任意给 \(X^*\) 降低一个拓扑，而是明确规定只用来自 \(X\) 的求值泛函作为测试。Fremlin 的《Measure Theory》\cite{Fremlin2016Measure}第 2 卷附录 2A5I 把弱拓扑与弱-*拓扑放在同一框架下讨论，适合用来对照这两种测试族；下面则用序列空间把区别具体化。
 
 \subsection{弱-*收敛}
 \label{b1:subsec:090202}
 
-待填充。
+\begin{definition}\label{b1:def:weak-star-convergence}
+若 \((f_n)\subset X^*\) 满足 \(f_n(x)\to f(x)\) 对每个 \(x\in X\) 都成立，则称它\term[ruo-xing-shoulian]{弱-*收敛}[weak-* convergence]于 \(f\)，记为 \(f_n\overset{*}{\rightharpoonup}f\)。
+\end{definition}
+\symidx{\(f_n\overset{*}{\rightharpoonup}f\)：泛函序列的弱-*收敛}
+
+这就是泛函的逐点收敛。有限多个输入对应的起始指标取最大值，便得到序列在弱-*拓扑中的收敛；网也有同样的逐点判别，只须把最大值换成有限个指标的共同上界。以下有界性命题则仍明确针对序列。
+
+\begin{proposition}\label{b1:prop:weak-star-sequence-bounded}
+若 \(X\) 是 Banach 空间，且 \(f_n\overset{*}{\rightharpoonup}f\) 于 \(X^*\)，则 \(\sup_n\|f_n\|<\infty\)。
+\end{proposition}
+\begin{proof}
+对每个 \(x\in X\)，收敛的标量列 \((f_n(x))\) 有界。把 \(f_n\) 看成从 Banach 空间 \(X\) 到 \(\mathbb K\) 的有界线性算子，\cref{b1:thm:uniform-boundedness}直接给出结论。
+\end{proof}
+
+这里的一致有界原理作用在 \(X\) 上，而\cref{b1:prop:weak-sequence-bounded}中作用在自动完备的 \(X^*\) 上，故两条命题的假设不同。\cref{b1:subsec:080302}中的例子恰好说明完备性不能直接删去：在赋予一致范数的 \(c_{00}\) 上，令 \(f_n(x)=nx_n\)。每个固定输入只有有限个非零坐标，所以 \(f_n(x)\) 最终等于零，即 \(f_n\overset{*}{\rightharpoonup}0\)；但 \(\|f_n\|=n\)。对偶空间 \(c_{00}^*\) 本身完备，并不能补上定义域的这个缺口。
+
+为了把弱-*收敛写成常见的坐标条件，我们先确定一个具体对偶空间。
+
+\begin{proposition}\label{b1:prop:l1-dual}
+对 \(u\in\ell^\infty\)，公式
+\[
+ F_u(a)=\sum_{k=1}^{\infty}a_ku_k\quad(a\in\ell^1)
+\]
+定义 \((\ell^1)^*\) 中的元素。映射 \(u\mapsto F_u\) 是 \(\ell^\infty\) 到 \((\ell^1)^*\) 的线性等距满射。
+\end{proposition}
+\begin{proof}
+绝对收敛性和估计 \(|F_u(a)|\leq\|u\|_\infty\|a\|_1\) 给出 \(\|F_u\|\leq\|u\|_\infty\)。逐个代入单位坐标向量 \(e_k\)，得到 \(\|F_u\|\geq|u_k|\)，取上确界即有范数相等。
+
+反过来，给定 \(F\in(\ell^1)^*\)，令 \(u_k=F(e_k)\)，则 \(|u_k|\leq\|F\|\)，所以 \(u\in\ell^\infty\)。对 \(a\in\ell^1\)，其有限坐标截断 \(a^{(N)}\) 在 \(\ell^1\) 范数下趋于 \(a\)，故
+\[
+ F(a)=\lim_{N\to\infty}F(a^{(N)})
+ =\lim_{N\to\infty}\sum_{k=1}^N a_ku_k=F_u(a).
+\]
+各坐标 \(u_k\) 已由 \(F(e_k)\) 唯一确定，因而表示唯一。
+\end{proof}
+
+上述配对在实、复情形下都不插入共轭；这样，\(a\mapsto F_u(a)\) 与 \(u\mapsto F_u\) 都是线性的。它不同于 Hilbert 空间的内积表示约定。
+
+\begin{corollary}\label{b1:cor:linfty-weak-star-coordinate}
+在识别 \(\ell^\infty=(\ell^1)^*\) 后，序列 \((u^{(n)})\) 弱-*收敛于 \(u\)，当且仅当
+\[
+ \sup_n\|u^{(n)}\|_\infty<\infty,
+ \quad u_k^{(n)}\longrightarrow u_k\quad\text{对每个 }k.
+\]
+\end{corollary}
+\begin{proof}
+弱-*收敛时，用 \(e_k\in\ell^1\) 测试便得到坐标收敛。又因 \(\ell^1\) 由\cref{b1:ex:08-c0-dual}等距于完备空间 \(c_0^*\)，它是 Banach 空间，故\cref{b1:prop:weak-star-sequence-bounded}给出统一界。
+
+反过来，设上述统一界为 \(M\)。坐标极限满足 \(|u_k|\leq M\)，所以 \(u\in\ell^\infty\)。对任意 \(a\in\ell^1\)，分成前 \(N\) 项与尾部可得
+\[
+ \left|\sum_{k=1}^{\infty}a_k(u_k^{(n)}-u_k)\right|
+ \leq\sum_{k=1}^N|a_k|\,|u_k^{(n)}-u_k|
+      +2M\sum_{k>N}|a_k|.
+\]
+先选 \(N\) 使尾部任意小，再由有限个坐标的收敛使首项任意小，即得到每个 \(a\) 对应的求值收敛。
+\end{proof}
+
+有限个坐标测试本身看不到尾部；统一范数界与测试序列的绝对可和性一起，才把尾部误差控制住。这个先截断再取极限的步骤，也解释了为什么不能只凭坐标收敛就断言弱-*收敛。
 
 \subsection{弱拓扑与弱-*拓扑的区别}
 \label{b1:subsec:090203}
 
-待填充。
+把 \(X^*\) 当作赋范空间，它自己的弱拓扑是 \(\sigma(X^*,X^{**})\)，允许使用所有 \(\Phi\in X^{**}\) 测试；弱-*拓扑 \(\sigma(X^*,X)\) 只允许其中形如 \(J_Xx\) 的测试。因此在 \(X^*\) 上有
+\[
+ \text{范数拓扑}\ \supseteq\ \sigma(X^*,X^{**})
+ \ \supseteq\ \sigma(X^*,X).
+\]
+这里的包含表示开集族的包含，相应地，范数收敛蕴含弱收敛，弱收敛蕴含弱-*收敛。如果 \(J_X(X)=X^{**}\)，后两种拓扑便相同；一般情况下，缺少的测试确实可能改变收敛性。
+
+自然嵌入本身还有一个拓扑性质，后面把原空间放进二次对偶时会反复使用。
+
+\begin{proposition}\label{b1:prop:canonical-weak-embedding}
+自然嵌入 \(J_X\) 把 \((X,\sigma(X,X^*))\) 同胚地映到 \(X^{**}\) 中的像 \(J_X(X)\)，其中像空间采用 \(X^{**}\) 上弱-*拓扑 \(\sigma(X^{**},X^*)\) 的子空间拓扑。
+\end{proposition}
+\begin{proof}
+\(J_X\) 是单射。\(X^{**}\) 中以 \(J_Xx\) 为中心、由有限个 \(f_1,\ldots,f_m\in X^*\) 给出的弱-*基本邻域，在 \(J_X\) 下的反像由
+\[
+ |(J_Xy-J_Xx)(f_j)|=|f_j(y-x)|<\varepsilon
+ \quad(1\leq j\leq m)
+\]
+刻画。这恰好是 \(X\) 的基本弱邻域，且所有基本弱邻域都如此得到。因此 \(J_X\) 及其在像上的逆映射都连续。
+\end{proof}
+
+来看一个弱-*收敛却不弱收敛的序列。在实空间 \(\ell^\infty=(\ell^1)^*\) 中，令
+\[
+ u_k^{(n)}=\mathbf1_{\{k\geq n\}}.
+\]
+它的范数恒等于 \(1\)，每个固定坐标都最终变成零，所以由\cref{b1:cor:linfty-weak-star-coordinate}有 \(u^{(n)}\overset{*}{\rightharpoonup}0\)。另一方面，\cref{b1:ex:08-positive-limit}构造了 \(L\in(\ell^\infty)^*\)，它在每个收敛的实序列上等于通常极限。对每个固定 \(n\)，序列 \((u_k^{(n)})_{k\geq1}\) 的通常极限为 \(1\)，因此 \(L(u^{(n)})=1\)。这个合法的弱测试不趋于零，故 \((u^{(n)})\) 不弱收敛于零。它也不可能弱收敛于别的向量，因为弱收敛蕴含弱-*收敛，而弱-*极限唯一。
+
+这里使用尾部示性序列是有意的：单位坐标向量 \(e_n\) 在 \(\ell^\infty\) 中反而弱收敛于零。事实上，对任意 \(L\in(\ell^\infty)^*\)，在每个有限和中选择模为 \(1\) 的标量 \(\alpha_k\)，使 \(\alpha_kL(e_k)=|L(e_k)|\)，便有
+\[
+ \sum_{k=1}^N|L(e_k)|
+ =L\left(\sum_{k=1}^N\alpha_ke_k\right)\leq\|L\|.
+\]
+故 \(L(e_n)\to0\)。相同的坐标外观并不足以判断弱收敛，必须看清所处的空间及它允许的全部泛函。
+
+弱-*拓扑保留逐点测试，却舍去了一部分弱测试。下一节将说明，这种舍弃换来一个重要的紧致性结论；使用那个结论时，既要记住原空间是谁，也不能把一般拓扑的紧致性预先当作子列收敛性。

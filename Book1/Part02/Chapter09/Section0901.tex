@@ -2,24 +2,132 @@
 \section{弱拓扑}
 \label{b1:sec:0901}
 
-% TODO: 撰写本节正文。
+% 来源：Fremlin2016Measure，第2卷附录2A，2A5B、2A5D、2A5I，附录第24--27页。
+% 实际阅读作者公开分章PDF；将半范数生成拓扑改写成有限测试邻域。
+% 弱列的有界性、c0例子及网的闭包判别在此补出证明，不归称为原书的原有陈述。
+范数收敛要求误差向量本身变小。由上一章的对偶范数公式，这也等于要求单位球内所有连续线性泛函读出的误差一致变小。然而，在许多极限问题中，我们只能对每个固定泛函分别证明收敛。弱拓扑就是为这种较少的控制量建立的拓扑。本节中 \(X\) 总是标量域 \(\mathbb K=\mathbb R\) 或 \(\mathbb C\) 上的赋范空间，暂不要求完备。
 
 \subsection{弱拓扑}
 \label{b1:subsec:090101}
 
-待填充。
+\begin{definition}\label{b1:def:weak-topology}
+对 \(x\in X\)、有限集 \(F\subset X^*\) 及 \(\varepsilon>0\)，令
+\[
+ U(x;F,\varepsilon)
+ =\{\,y\in X\mid |f(y-x)|<\varepsilon\text{ 对每个 }f\in F\,\}.
+\]
+以这些集合为邻域基得到的拓扑称为 \(X\) 的\term[ruo-tuopu]{弱拓扑}[weak topology]，记为 \(\sigma(X,X^*)\)。具体说，集合 \(O\subset X\) 弱开，是指每个 \(x\in O\) 都有某个 \(U(x;F,\varepsilon)\subset O\)。
+\end{definition}
+\symidx{\(\sigma(X,X^*)\)：赋范空间的弱拓扑}
+
+一个弱邻域只列出有限项测试，但测试泛函可以因邻域而异。取 \(F=\varnothing\) 时约定 \(U(x;F,\varepsilon)=X\)。不同测试使用不同的正误差容许量也给出同一拓扑：把有限个容许量取最小值，即可找到上述形式的更小邻域。
+
+\begin{proposition}\label{b1:prop:weak-topology-properties}
+弱拓扑是使所有 \(f\in X^*\) 连续的最弱拓扑；它是 Hausdorff 拓扑，且不强于范数拓扑。
+\end{proposition}
+\begin{proof}
+先验证邻域定义。有限个同心基本邻域的交包含把测试集合合并、误差取最小值得到的基本邻域。若 \(y\in U(x;F,\varepsilon)\) 且 \(F\ne\varnothing\)，取
+\[
+ 0<\delta<\min_{f\in F}\bigl(\varepsilon-|f(y-x)|\bigr),
+\]
+三角不等式给出 \(U(y;F,\delta)\subset U(x;F,\varepsilon)\)。空测试集合的情形显然。因此这些集合确实构成所定义拓扑的开邻域基。
+
+固定 \(f\in X^*\)，条件 \(|f(y)-f(x)|<\varepsilon\) 本身就是一个基本邻域条件，故 \(f\) 弱连续。反过来，任何使全部 \(f\) 连续的拓扑，都使这些标量开球反像的有限交开，从而包含弱拓扑。这证明最弱性。
+
+若 \(x\ne y\)，由\cref{b1:cor:norming-functional}可取 \(f\in X^*\) 使 \(d=|f(x-y)|>0\)。邻域 \(U(x;\{f\},d/3)\) 与 \(U(y;\{f\},d/3)\) 不相交，否则三角不等式会给出 \(d<2d/3\)。最后，有限个估计
+\[
+ |f(y-x)|\leq\|f\|\,\|y-x\|
+\]
+保证每个基本弱邻域都包含同心的范数开球，故每个弱开集也是范数开集。
+\end{proof}
+
+加法与数乘在弱拓扑下连续：用任意 \(f\in X^*\) 测试后，它们分别变成标量的加法和数乘；有限项测试的误差可以同时控制。弱连续的线性泛函仍恰好是 \(X^*\)，因为弱连续蕴含范数连续，而反向包含已经由定义保证。
+
+有限维时，选一组基，其坐标泛函均连续；有限个坐标同时变小，就由\cref{b1:prop:finite-dimensional-norms}中的估计迫使范数变小，所以弱拓扑与范数拓扑相同。无穷维时则严格不同。给定有限集 \(F=\{f_1,\ldots,f_m\}\)，线性映射 \(z\mapsto(f_1(z),\ldots,f_m(z))\) 不可能从无穷维空间单射到 \(\mathbb K^m\)，故有非零 \(v\in\bigcap_{f\in F}\ker f\)。整条直线 \(x+\mathbb Rv\) 都包含在 \(U(x;F,\varepsilon)\) 内。因此每个弱邻域都在范数下无界，范数开单位球不可能弱开。
 
 \subsection{弱收敛}
 \label{b1:subsec:090102}
 
-待填充。
+\begin{definition}\label{b1:def:weak-convergence}
+序列 \((x_n)\subset X\) 称为\term[ruo-shoulian]{弱收敛}[weak convergence]于 \(x\in X\)，记为 \(x_n\rightharpoonup x\)，若
+\[
+ f(x_n)\longrightarrow f(x)\quad\text{对每个 }f\in X^*.
+\]
+\end{definition}
+\symidx{\(x_n\rightharpoonup x\)：序列的弱收敛}
+
+这正是序列在弱拓扑下的收敛。逐个泛函收敛时，对一个基本邻域中的有限个泛函分别选取起始指标，再取最大值，序列便最终落入该邻域；反向结论只需使用单个泛函的邻域。弱极限由 Hausdorff 性唯一确定。若 \(T\in\mathcal B(X,Y)\)，则 \(x_n\rightharpoonup x\) 蕴含 \(Tx_n\rightharpoonup Tx\)，因为对任意 \(g\in Y^*\)，复合 \(gT\) 属于 \(X^*\)。
+
+逐项测试的收敛并不直接给出一个对全部测试统一的误差估计，却仍会给出原序列的范数界。
+
+\begin{proposition}\label{b1:prop:weak-sequence-bounded}
+若序列 \((x_n)\subset X\) 满足：对每个 \(f\in X^*\)，标量列 \((f(x_n))\) 有界，则 \(\sup_n\|x_n\|<\infty\)。特别地，每个弱收敛列都在范数下有界。这里不要求 \(X\) 完备。
+\end{proposition}
+\begin{proof}
+把 \(x_n\) 看成 \(X^*\) 上的泛函 \(J_Xx_n\)，其中 \((J_Xx_n)(f)=f(x_n)\)。由\cref{b1:prop:canonical-embedding}，\(\|J_Xx_n\|=\|x_n\|\)。又由\cref{b1:thm:operator-space-complete}，\(X^*\) 总是 Banach 空间。题设正是算子族 \(\{J_Xx_n\}\) 在 \(X^*\) 上逐点有界，故\cref{b1:thm:uniform-boundedness}给出 \(\sup_n\|J_Xx_n\|<\infty\)。
+\end{proof}
+
+本书讨论弱收敛时，首先讨论上述序列。不过，一般拓扑中的闭包和紧致性不能未经证明就用序列代替。为保留必要的区别，我们现在引入一种允许更一般指标的收敛。
+
+\begin{definition}\label{b1:def:net}
+非空偏序集 \(D\) 称为\term[youxiang-ji]{有向集}[directed set]，若任意两个元素都有共同的上界。以 \(D\) 为指标集的点族 \((x_d)_{d\in D}\) 称为\term[wang]{网}[net]。在拓扑空间中，称 \(x_d\to x\)，若对 \(x\) 的每个邻域 \(V\)，都存在 \(d_0\in D\)，使 \(d\geq d_0\) 时 \(x_d\in V\)。
+\end{definition}
+
+自然数的通常次序是一个有向集，所以序列是网的特例。有向性保证有限多个起始指标有共同上界；因此，网在弱拓扑中收敛仍等价于对每个 \(f\in X^*\) 都有 \(f(x_d)\to f(x)\)。
+
+\begin{proposition}\label{b1:prop:net-closure}
+设 \(A\) 是拓扑空间 \(Z\) 的子集。点 \(x\) 属于 \(A\) 的闭包，当且仅当存在一个取值于 \(A\) 的网收敛到 \(x\)。
+\end{proposition}
+\begin{proof}
+若有这样的网，\(x\) 的每个邻域都包含网中的点，因而与 \(A\) 相交。反过来，若 \(x\in\overline A\)，令 \(D\) 为 \(x\) 的全部开邻域，按反包含关系排序，即 \(U\leq V\) 表示 \(V\subset U\)。两邻域的交是共同上界，所以 \(D\) 有向。对每个 \(U\in D\) 选取 \(a_U\in A\cap U\)。给定 \(x\) 的开邻域 \(V\)，当 \(U\geq V\) 时有 \(a_U\in U\subset V\)，故 \(a_U\to x\)。
+\end{proof}
+
+度量空间中可以只取半径 \(1/n\) 的球，由此得到闭包的序列判别。弱拓扑未必有这样的可数邻域基，所以上述命题一般必须保留网。还应注意：收敛网的一个起始部分未必有限，不能照搬“收敛序列有界”的论证，把\cref{b1:prop:weak-sequence-bounded}擅自改成关于所有弱收敛网的断言。
 
 \subsection{弱 Cauchy 序列}
 \label{b1:subsec:090103}
 
-待填充。
+\begin{definition}\label{b1:def:weak-cauchy}
+若对每个 \(f\in X^*\)，标量列 \((f(x_n))\) 都是 Cauchy 列，则称 \((x_n)\) 为\term[ruo-cauchy-xulie]{弱 Cauchy 序列}[weakly Cauchy sequence]。
+\end{definition}
+
+弱收敛列必为弱 Cauchy 序列。反过来，标量域完备保证每个测试都产生一个极限，但这些极限能否同时由 \(X\) 中的同一个向量产生，是另一个问题。先由\cref{b1:prop:weak-sequence-bounded}取 \(M=\sup_n\|x_n\|<\infty\)，再定义
+\[
+ \Lambda(f)=\lim_{n\to\infty}f(x_n)\quad(f\in X^*).
+\]
+标量极限与线性组合交换，且 \(|\Lambda(f)|\leq M\|f\|\)，故 \(\Lambda\in X^{**}\)。原序列在 \(X\) 中弱收敛，当且仅当这个泛函可写成 \(J_Xx\)。这说明障碍并非标量极限不存在，而是极限可能无法在原空间中表示。
+
+即使 \(X\) 是 Banach 空间，也可能出现这一障碍。取配备一致范数的 \(c_0\)，并令
+\[
+ s_n=(\underbrace{1,\ldots,1}_{n\text{ 项}},0,0,\ldots).
+\]
+由\cref{b1:ex:08-c0-dual}，每个 \(f\in c_0^*\) 唯一写成 \(f(x)=\sum_{k\geq1}a_kx_k\)，其中 \(a\in\ell^1\)。于是
+\[
+ f(s_n)=\sum_{k=1}^n a_k\longrightarrow\sum_{k=1}^{\infty}a_k,
+\]
+所以 \((s_n)\) 弱 Cauchy。若它弱收敛于 \(x\in c_0\)，逐个使用坐标泛函就得到 \(x_k=1\) 对所有 \(k\) 成立，与 \(x\in c_0\) 矛盾。范数完备性只保证范数 Cauchy 列的极限，不保证这里的较弱条件。
 
 \subsection{范数收敛与弱收敛}
 \label{b1:subsec:090104}
 
-待填充。
+由 \(|f(x_n-x)|\leq\|f\|\,\|x_n-x\|\)，范数收敛必然蕴含弱收敛；为突出区别，范数收敛也称为\term[qiang-shoulian]{强收敛}[strong convergence]。无穷维空间中，反向蕴含一般失败，而且失败可以发生在最熟悉的 Hilbert 空间里。
+
+设 \((e_n)\) 是 Hilbert 空间 \(H\) 中的正交规范列。对任意 \(h\in H\)，由\cref{b1:prop:bessel-inequality}有
+\[
+ \sum_{n=1}^{\infty}|\langle e_n,h\rangle|^2\leq\|h\|^2,
+\]
+因此 \(\langle e_n,h\rangle\to0\)。再由\cref{b1:thm:hilbert-riesz}，全部连续线性泛函都能如此表示，所以 \(e_n\rightharpoonup0\)，但 \(\|e_n\|=1\)。弱收敛允许向量的方向不断改变，使任何一个固定测试最终都看不到它，而并未要求向量长度消失。
+
+\begin{proposition}\label{b1:prop:hilbert-weak-norm-convergence}
+在 Hilbert 空间中，\(x_n\to x\) 强收敛，当且仅当 \(x_n\rightharpoonup x\) 且 \(\|x_n\|\to\|x\|\)。
+\end{proposition}
+\begin{proof}
+正向结论由前述估计及范数的连续性成立。反过来，弱收敛给出 \(\langle x_n,x\rangle\to\langle x,x\rangle\)，故
+\[
+ \|x_n-x\|^2
+ =\|x_n\|^2+\|x\|^2-2\operatorname{Re}\langle x_n,x\rangle
+ \longrightarrow0.
+\]
+\end{proof}
+
+这个结论利用了内积恒等式，不能无条件推广到一般赋范空间。在 \(c_0\) 中取 \(y_n=e_1+e_n\)（\(n\geq2\)）。仍用 \(c_0^*=\ell^1\) 的表示，因为 \(a_n\to0\)，有 \(f_a(y_n)=a_1+a_n\to a_1=f_a(e_1)\)，故 \(y_n\rightharpoonup e_1\)。尽管 \(\|y_n\|_\infty=\|e_1\|_\infty=1\)，距离 \(\|y_n-e_1\|_\infty\) 始终等于 \(1\)。因此，弱收敛、范数有界和范数值的收敛是应当分别核对的三件事。

@@ -2,29 +2,264 @@
 \section{凸性与弱下半连续性}
 \label{b1:sec:0905}
 
-% TODO: 撰写本节正文。
+上一节保证了反身空间中的有界序列可以抽取弱收敛子列。但在极值问题中，找到弱极限还不够：极限必须满足原来的约束，目标泛函的值也必须受到控制。凸性在这两个问题上都有作用。它使范数闭集保持弱闭，又使一大类范数下半连续泛函保持弱下半连续。以下先从凸集的闭包入手，再把集合的结论用于泛函。
 
 \subsection{凸集}
 \label{b1:subsec:090501}
 
-待填充。
+回顾第八章的约定，集合 \(C\) 凸是指它包含任意两点间的线段；在复空间中，线段的参数仍取实数。反复运用这个条件可知，若 \(x_1,\ldots,x_m\in C\)，则
+\[
+  \sum_{j=1}^{m}\lambda_jx_j\in C,
+  \quad \lambda_j\geq0,\quad \sum_{j=1}^{m}\lambda_j=1.
+\]
+这样的和称为这些点的\term[tu-zuhe]{凸组合}[convex combination]。与线性组合不同，凸组合不允许负系数，且系数之和固定为一。
+
+上述有限点结论可以归纳证明。若 \(\lambda_m=1\)，和就是 \(x_m\)；若 \(\lambda_m<1\)，则先对前 \(m-1\) 个点使用归一化系数 \(\lambda_j/(1-\lambda_m)\)，得到 \(z\in C\)，原来的和便等于 \((1-\lambda_m)z+\lambda_mx_m\)。因此，两点间的线段条件已经包含所有有限平均的稳定性。
+
+\begin{definition}[凸包与闭凸包]
+\label{b1:def:convex-hull}
+集合 \(A\subset X\) 的\term[tubao]{凸包}[convex hull]记为 \(\operatorname{co}A\)，是 \(A\) 中有限多个点的所有凸组合组成的集合，约定 \(\operatorname{co}\varnothing=\varnothing\)。它的范数闭包称为 \(A\) 的\term[bi-tubao]{闭凸包}[closed convex hull]。
+\end{definition}
+
+凸包确实是包含 \(A\) 的最小凸集。它包含 \(A\)；两个有限凸组合再取凸组合，仍是原来有限多个点的凸组合，所以它是凸的；任何包含 \(A\) 的凸集又必须包含所有这些组合。范数闭包也保持凸性：若 \(x_n,y_n\in C\) 分别依范数趋于 \(x,y\)，则对固定 \(t\in[0,1]\)，
+\[
+  (1-t)x_n+ty_n\longrightarrow(1-t)x+ty.
+\]
+因此，闭凸包是包含 \(A\) 的最小范数闭凸集。这些基本事实也可参见 Fremlin 对凸集与凸包的整理\cite[第2卷，2A5E]{Fremlin2016Measure}。
+
+例如，两个不同点 \(u,v\) 的凸包只是线段 \([u,v]\)，而不包括整条仿射直线。接下来使用凸包时，目的是对已知向量作受控的平均，并不需要它们张成的整个线性空间。
 
 \subsection{闭凸集的弱闭性}
 \label{b1:subsec:090502}
 
-待填充。
+弱拓扑比范数拓扑粗，故一般集合的弱闭包可能更大。凸集却有特殊之处：连续线性泛函能够把集外的点与整个闭凸集分开。这个几何事实正好能构造出排除该凸集的弱邻域。
+
+\begin{theorem}[凸集的两种闭包]
+\label{b1:thm:convex-weak-closure}
+设 \(X\) 是赋范空间，\(C\subset X\) 凸。则 \(C\) 范数闭当且仅当 \(C\) 弱闭。进一步，以 \(\overline A^{\,\|\cdot\|}\) 和 \(\overline A^{\,w}\) 分别表示范数闭包与弱闭包，有
+\[
+  \overline C^{\,\|\cdot\|}=\overline C^{\,w}.
+\]
+\end{theorem}
+
+\begin{proof}
+弱闭集必范数闭，因为弱开集都是范数开集。反过来，设 \(C\) 非空、范数闭且凸。对任意 \(x_0\notin C\)，由\cref{b1:thm:geometric-hahn-banach}，存在 \(f\in X^*\) 及 \(\alpha\in\mathbb R\)，使
+\[
+  \sup_{z\in C}\operatorname{Re}f(z)
+  \leq\alpha<\operatorname{Re}f(x_0).
+\]
+集合 \(\{x:\operatorname{Re}f(x)>\alpha\}\) 是 \(x_0\) 的弱开邻域，且与 \(C\) 不交。因此 \(X\setminus C\) 弱开，\(C\) 弱闭。空集的情形显然成立。
+
+对任意凸集 \(C\)，它的范数闭包仍然凸，由刚证的结论也是弱闭集。因此 \(\overline C^{\,w}\subset\overline C^{\,\|\cdot\|}\)。反向包含对所有集合都成立，因为弱拓扑较粗。
+\end{proof}
+
+这里无需假设 \(X\) 完备。真正起作用的是凸分离；Fremlin 在更一般的局部凸空间中也以分离定理说明这一点\cite[第4卷，4A4Eb、4A4Ed]{Fremlin2016Measure}。由此还能把弱收敛转化为一种范数逼近，不过必须允许作凸组合。
+
+\term*[mazur-yinli]{Mazur 引理}[Mazur's lemma]给出精确的结论。
+
+\begin{theorem}[Mazur 引理]
+\label{b1:thm:mazur}
+若赋范空间 \(X\) 中的序列 \(x_n\rightharpoonup x\)，则对每个 \(n\) 可以选取 \(N_n\geq n\) 及非负数 \(\lambda_{n,k}\)，使
+\[
+  \sum_{k=n}^{N_n}\lambda_{n,k}=1,
+  \quad y_n=\sum_{k=n}^{N_n}\lambda_{n,k}x_k,
+  \quad \|y_n-x\|<\frac1n.
+\]
+换言之，\(x\) 可以由每个尾部的凸组合依范数逼近。
+\end{theorem}
+
+\begin{proof}
+固定 \(n\)。由弱收敛，\(x\) 的每个弱邻域都包含某个 \(x_k\)，其中 \(k\geq n\)，因而 \(x\) 属于 \(\{x_k:k\geq n\}\) 的弱闭包，更属于其凸包的弱闭包。对这个凸包应用\cref{b1:thm:convex-weak-closure}，便知 \(x\) 属于它的范数闭包。于是存在距离 \(x\) 小于 \(1/n\) 的有限凸组合。补入系数为零的项即可写成上述形式。
+\end{proof}
+
+以 \(\ell^2\) 中的标准单位向量 \(e_n\) 为例。由 Hilbert 空间的 Riesz 表示，每个连续线性泛函在 \(e_n\) 上的值趋于零，故 \(e_n\rightharpoonup0\)，但 \(\|e_n\|=1\)。它没有范数收敛于零的子列，尾部平均却满足
+\[
+  \left\|\frac1n\sum_{k=n}^{2n-1}e_k\right\|=\frac1{\sqrt n}
+  \longrightarrow0.
+\]
+因此，Mazur 引理提供的是凸组合，而不是强收敛子列。
 
 \subsection{范数的弱下半连续性}
 \label{b1:subsec:090503}
 
-待填充。
+极小值问题不要求泛函值沿极限保持相等。若极限点的值比逼近序列更小，反而有利；需要排除的是取极限时向上跳跃。
+
+\begin{definition}[下半连续性]
+\label{b1:def:lower-semicontinuity}
+设 \(Y\) 是拓扑空间，\(J:Y\to(-\infty,+\infty]\)。若对每个 \(a\in\mathbb R\)，\term[zishui-pingji]{子水平集}[sublevel set]
+\[
+  \{y\in Y:J(y)\leq a\}
+\]
+都是闭集，则称 \(J\) 具有\term[xiaban-lianxuxing]{下半连续性}[lower semicontinuity]。在赋范空间上，相对于范数拓扑与弱拓扑的下半连续性分别称为强下半连续性与\term[ruo-xiaban-lianxuxing]{弱下半连续性}[weak lower semicontinuity]。
+\end{definition}
+
+这个定义等价于 \(\{y:J(y)>a\}\) 对所有实数 \(a\) 都开。特别地，若 \(J\) 下半连续且 \(y_n\to y\)，则
+\begin{equation}
+\label{b1:eq:lsc-sequence}
+  J(y)\leq\liminf_{n\to\infty}J(y_n).
+\end{equation}
+事实上，对任意 \(a<J(y)\)，上述开集是 \(y\) 的邻域，故最终 \(J(y_n)>a\)；让 \(a\) 趋近 \(J(y)\) 即得结论，包括 \(J(y)=+\infty\) 的情形。
+
+在度量空间中，序列条件也能反过来推出下半连续性。若某个子水平集不闭，取其闭包中不属于它的点 \(y\)，并在每个半径 \(1/n\) 的球内取该子水平集中的点 \(y_n\)。此时 \(y_n\to y\)，但 \(J(y_n)\leq a<J(y)\)，与\eqref{b1:eq:lsc-sequence}矛盾。这就给出了强下半连续性的序列判别。对于一般弱拓扑，不能未经证明便把这个序列判别当成定义：上述逆推依赖于度量空间的球邻域基。以下仍用子水平集的弱闭性证明弱下半连续性，而只在取弱收敛子列时使用其必然成立的序列不等式。一般拓扑下的相应性质可参见\cite[第4卷，4A2Bd]{Fremlin2016Measure}。
+
+\begin{proposition}[范数的弱下半连续性]
+\label{b1:prop:norm-weak-lsc}
+赋范空间 \(X\) 的范数是弱下半连续函数。因而若 \(x_n\rightharpoonup x\)，则
+\[
+  \|x\|\leq\liminf_{n\to\infty}\|x_n\|.
+\]
+\end{proposition}
+
+\begin{proof}
+由\cref{b1:cor:norming-functional}，
+\[
+  \|x\|=\sup_{\substack{f\in X^*\\\|f\|\leq1}}|f(x)|.
+\]
+对 \(r\geq0\)，相应子水平集可写为
+\[
+  \{x:\|x\|\leq r\}
+  =\bigcap_{\substack{f\in X^*\\\|f\|\leq1}}
+    \{x:|f(x)|\leq r\}.
+\]
+每个 \(f\) 弱连续，右侧各集合弱闭，其交也弱闭；当 \(r<0\) 时子水平集为空。序列不等式于是来自\eqref{b1:eq:lsc-sequence}。
+\end{proof}
+
+注意，范数的弱下半连续性并不等于弱连续性。上面的 \(e_n\rightharpoonup0\) 正说明范数可以从恒为一降到零。
 
 \subsection{凸泛函的弱下半连续性}
 \label{b1:subsec:090504}
 
-待填充。
+为了把约束也纳入泛函，我们允许它取 \(+\infty\)，但不允许取 \(-\infty\)。约定 \(J:X\to(-\infty,+\infty]\) 不恒等于 \(+\infty\)，即其\term[youxiao-dingyiyu]{有效定义域}[effective domain]
+\[
+  \operatorname{dom}J=\{x\in X:J(x)<+\infty\}
+\]
+非空。
+
+\begin{definition}[凸泛函与严格凸泛函]
+\label{b1:def:convex-functional}
+若对所有 \(x,y\in X\) 及 \(0<t<1\)，有
+\[
+  J((1-t)x+ty)\leq(1-t)J(x)+tJ(y),
+\]
+则称 \(J\) 为\term[tu-fanhan]{凸泛函}[convex functional]。若当 \(x,y\in\operatorname{dom}J\) 且 \(x\ne y\) 时总为严格不等式，则称其为\term[yange-tu-fanhan]{严格凸泛函}[strictly convex functional]。
+\end{definition}
+
+取 \(0<t<1\) 避免了端点处 \(0\cdot(+\infty)\) 的约定。凸泛函的有效定义域是凸集，每个子水平集也是凸集：若两点的值均不超过 \(a\)，其凸组合的值便不超过 \((1-t)a+ta=a\)。因此，集合的闭性定理可以直接用于泛函。
+
+这些性质还可以用一个集合统一表示：在 \(X\times\mathbb R\) 中令
+\[
+  G_J=\{(x,r):J(x)\leq r\}.
+\]
+\(J\) 凸当且仅当 \(G_J\) 凸。一个方向由凸不等式直接给出；另一个方向，对 \(J(x),J(y)\) 都有限的点，把 \((x,J(x))\) 与 \((y,J(y))\) 作凸组合即可。若其中一个值为无穷，凸不等式本来就成立。
+
+相对于 \(X\) 上的指定拓扑与 \(\mathbb R\) 的通常拓扑，\(J\) 下半连续也等价于 \(G_J\) 闭。若 \(J\) 下半连续而 \(r<J(x)\)，选择 \(r<a<J(x)\)，则
+\[
+  \{y:J(y)>a\}\times(-\infty,a)
+\]
+是 \((x,r)\) 的开邻域，并且避开 \(G_J\)，故其补集开。反之，若 \(G_J\) 闭，则固定 \(a\) 后，连续映射 \(x\mapsto(x,a)\) 下的逆像 \(\{x:J(x)\leq a\}\) 闭。这样看来，凸性与下半连续性分别表达了同一个集合的凸性与闭性。不过下面的证明只需处理子水平集，不必另行研究乘积空间。
+
+\begin{theorem}[凸泛函的两种下半连续性]
+\label{b1:thm:convex-weak-lsc}
+赋范空间上的凸泛函 \(J:X\to(-\infty,+\infty]\) 强下半连续当且仅当弱下半连续。
+\end{theorem}
+
+\begin{proof}
+若 \(J\) 强下半连续，则每个子水平集范数闭，又因凸性而由\cref{b1:thm:convex-weak-closure}知其弱闭。这正是弱下半连续性的定义。反之，弱闭集必范数闭，所以弱下半连续总蕴含强下半连续，这个方向甚至不需要凸性。
+\end{proof}
+
+一个常用的做法是给非空约束集 \(C\) 配上泛函
+\[
+  \iota_C(x)=
+  \begin{cases}
+    0,&x\in C,\\
+    +\infty,&x\notin C.
+  \end{cases}
+\]
+它与测度论中的特征函数不同：集外的值是 \(+\infty\)。当 \(C\) 凸时 \(\iota_C\) 凸；当 \(C\) 范数闭时 \(\iota_C\) 强下半连续，因为其子水平集只有空集和 \(C\)。因此，闭凸约束可以用弱下半连续泛函表达。把能量 \(J\) 在 \(C\) 上最小化，也就等同于把 \(J+\iota_C\) 在全空间上最小化。
+
+凸性不能仅凭范数连续性替代。函数 \(J(x)=-\|x\|^2\) 在 \(\ell^2\) 上范数连续，但对 \(e_n\rightharpoonup0\)，有
+\[
+  J(0)=0>-1=\liminf_{n\to\infty}J(e_n),
+\]
+所以它并不弱下半连续。
 
 \subsection{变分法中的意义}
 \label{b1:subsec:090505}
 
-待填充。
+现在考虑
+\[
+  m=\inf_{x\in C}J(x).
+\]
+求解这一问题的第一步通常不是猜出满足某个方程的向量，而是选取使能量趋于 \(m\) 的序列，再设法保留它的极限。由此得到的存在性证明称为\term[bianfen-zhijiefa]{变分直接法}[direct method in the calculus of variations]。
+
+\begin{theorem}[变分直接法]
+\label{b1:thm:direct-method}
+设 \(X\) 是反身 Banach 空间，\(C\subset X\) 非空且弱闭。设 \(J:C\to(-\infty,+\infty]\) 在 \(C\) 上有下界、至少在一点取有限值，并相对于 \(C\) 的弱子空间拓扑下半连续。再设 \(J\) 满足增长条件
+\begin{equation}
+\label{b1:eq:direct-method-growth}
+  J(x)\longrightarrow+\infty
+  \quad\text{当 }x\in C,\ \|x\|\longrightarrow\infty.
+\end{equation}
+则存在 \(u\in C\)，使 \(J(u)=\inf_{x\in C}J(x)\)。若另有 \(C\) 凸且 \(J\) 严格凸，则此极小点唯一。
+\end{theorem}
+
+\begin{proof}
+由下界和有限值假设，\(m=\inf_CJ\) 是实数。对每个 \(n\)，选取 \(x_n\in C\)，使
+\[
+  m\leq J(x_n)<m+\frac1n.
+\]
+增长条件等价于每个有限子水平集都有界：对给定 \(a\in\mathbb R\)，存在 \(R\)，使 \(x\in C\) 且 \(\|x\|>R\) 时 \(J(x)>a\)。取 \(a=m+1\)，便知 \((x_n)\) 有界。
+
+由\cref{b1:thm:reflexive-weak-subsequence}，存在子列 \(x_{n_k}\rightharpoonup u\)。由于 \(C\) 弱闭，\(u\in C\)；由于 \(J\) 弱下半连续，
+\[
+  J(u)\leq\liminf_{k\to\infty}J(x_{n_k})=m.
+\]
+而 \(m\) 是下确界，所以 \(J(u)=m\)。
+
+若 \(u,v\) 是两个不同的极小点，且 \(C\) 凸、\(J\) 严格凸，则 \((u+v)/2\in C\)，且
+\[
+  J\left(\frac{u+v}{2}\right)
+  <\frac{J(u)+J(v)}2=m,
+\]
+与下确界的定义矛盾。
+\end{proof}
+
+证明实际上只需要某个 \(a>m\) 对应的子水平集有界，因为极小化序列最终落在其中。下界假设则确保 \(m\ne-\infty\)，不能在选取 \(m+1/n\) 时悄悄省掉。反身性负责提供弱收敛子列，弱闭约束负责保留可行性，下半连续性负责比较能量；增长条件的作用只是把极小化序列限制在有界区域内。
+
+以 Hilbert 空间 \(H\) 为例，给定 \(\ell\in H^*\) 及非空闭凸集 \(C\)，考虑能量
+\[
+  E(x)=\frac12\|x\|^2-\operatorname{Re}\ell(x),
+  \quad x\in C.
+\]
+它是范数连续的，并满足
+\[
+  E((1-t)x+ty)
+  =(1-t)E(x)+tE(y)-\frac{t(1-t)}2\|x-y\|^2,
+\]
+故严格凸。由\cref{b1:thm:convex-weak-lsc}，\(E\) 弱下半连续。又有
+\[
+  E(x)\geq\frac12\|x\|^2-\|\ell\|\|x\|
+  =\frac12(\|x\|-\|\ell\|)^2-\frac12\|\ell\|^2,
+\]
+所以它有下界，并满足\eqref{b1:eq:direct-method-growth}。由\cref{b1:cor:hilbert-reflexive}，\(H\) 反身；由闭凸集的弱闭性和直接法，\(E\) 在 \(C\) 上有唯一极小点。
+
+这一结论也能与第八章的投影问题直接对应。写 \(\ell(x)=\langle x,h\rangle\)，则
+\[
+  E(x)=\frac12\|x-h\|^2-\frac12\|h\|^2.
+\]
+故极小点就是 \(h\) 在 \(C\) 中的最近点，与\cref{b1:thm:hilbert-convex-minimum}一致。直接法不必预先解出这个点；它先由空间结构与能量性质保证点的存在，随后才可研究其特征方程或近似计算。
+
+具体地，对极小点 \(u\) 和任意 \(v\in C\)，凸性保证 \(u+t(v-u)\in C\)。展开能量差得
+\[
+  0\leq E(u+t(v-u))-E(u)
+  =t\operatorname{Re}\langle u-h,v-u\rangle
+    +\frac{t^2}{2}\|v-u\|^2.
+\]
+除以 \(t>0\) 再令 \(t\downarrow0\)，得到
+\[
+  \operatorname{Re}\langle u-h,v-u\rangle\geq0
+  \quad(v\in C).
+\]
+反过来，这个不等式与能量差公式在 \(t=1\) 时的表达一起，又能推出 \(E(v)\geq E(u)\)。所以它是极小点的充要条件。无约束时可以取 \(v=h\)，从而得到 \(u=h\)；一般凸约束只允许沿留在 \(C\) 内的方向变化，得到的便是不等式而非任意方向上的等式。
+
+即使在一维，若缺少限制极小化序列的条件，结论也可能失败。在 \(C=\mathbb R\) 上，\(J(t)=e^{-t}\) 连续、严格凸且下界为零，却没有极小点：能量趋于零的序列必向正无穷远离。若约束本身不闭，也有另一种失败方式：\(J(t)=t^2\) 在 \(C=(0,+\infty)\) 上满足上述增长条件，却只能在不属于 \(C\) 的边界点达到下确界。它们分别说明，控制序列的位置与保留极限点的约束是存在性证明中不同的要求。
