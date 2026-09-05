@@ -2,24 +2,307 @@
 \section{Radon 测度的微分}
 \label{b1:sec:1403}
 
-% TODO: 撰写本节正文。
+% 实际读取：Fremlin2016Measure，作者官方 chap47.tex，472D--E 完整正文。
+% 472D 的有理阈值、开集逼近和 Radon 细覆盖路线在本节完整改写；
+% 原书的完备 Radon 约定在这里改为本书的 Borel 版本，坏集可测性另作说明。
+% 472E 的一般 Radon 球比值估计只作方法对照，本节不把它作为未证前提。
+% 奇异部分用13.2细覆盖直接证明；局部有限分解由第6章sigma有限RN定理构造。
 
-\subsection{Radon–Nikodym 导数的点态表示}
+Lebesgue 微分定理以体积作为分母。若质量集中在曲线、稀疏集合或原子上，
+相对于体积的平均不能描述这种质量自身的局部行为。
+本节同时允许分子和分母为任意 Radon 测度，证明小球质量之比仍能恢复绝对连续部分的密度。
+决定这一结论的几何工具是上一章的 Radon 细覆盖，而不是球体积的缩放公式。
+
+\subsection{Radon--Nikodym 导数的点态表示}
 \label{b1:subsec:140301}
 
-待填充。
+以下 \(\mu,\nu\) 都是 \(\mathbb R^d\) 上的正 Radon 测度，沿用第\ref{b1:sec:1102}节的 Borel 约定。
+局部有限性保证每个有界闭球的质量有限；用 \(\overline B(0,n)\) 穷竭全空间，又知这两个测度都为 \(\sigma\)-有限。
+由\cref{b1:prop:radon-outer-regularity}，它们在每个 Borel 集上也具有开外正则性。
+这些性质不要求总质量有限。
+
+记 \(S_\mu=\operatorname{supp}\mu\)。第\ref{b1:sec:1401}节已经说明
+\(\mu(\mathbb R^d\setminus S_\mu)=0\)，并且在 \(x\in S_\mu\)、\(r>0\) 时有
+\[
+ 0<\mu\bigl(\overline B(x,r)\bigr)<\infty.
+\]
+因此本节所有相对于 \(\mu\) 的微分极限，首先在 \(S_\mu\) 上取闭球比值；
+其外无需为 \(0/0\) 规定数值，也不影响任何 \(\mu\)-几乎处处结论。
+记号 \(D_\mu\nu\) 及其上、下极限沿用\cref{b1:def:relative-density}。
+本节不假设 \(\mu\bigl(\partial B(x,r)\bigr)=0\)。
+
+先补齐总质量可能无穷时所需的分解。
+第\ref{b1:sec:0604}节的符号测度版本采用有限质量约定，不能不加说明就直接用于这里的 \(\nu\)。
+
+\begin{proposition}[Lebesgue 分解，局部有限情形]\label{b1:prop:radon-lebesgue-decomposition}
+存在非负 Borel 函数 \(f\in L^1_{\mathrm{loc}}(\mu)\) 及正 Radon 测度 \(\nu_s\)，使
+\[
+ \nu=f\mu+\nu_s,\quad \nu_s\perp\mu.
+\]
+其中 \(L^1_{\mathrm{loc}}(\mu)\) 指绝对值在每个紧集上可积。
+密度 \(f\) 在 \(\mu\)-几乎处处相等的意义下唯一，\(\nu_s\) 唯一。
+测度 \(\nu_a=f\mu\) 也是 Radon 测度。
+\end{proposition}
+\begin{proof}
+令 \(\lambda=\mu+\nu\)。它是 \(\sigma\)-有限测度，故\cref{b1:thm:radon-nikodym}给出
+\[
+ \mu=p\lambda,\quad \nu=q\lambda,\quad p,q\geq0.
+\]
+因为 \(\lambda=(p+q)\lambda\)，密度唯一性给出 \(p+q=1\) 几乎处处。
+修改一个 \(\lambda\)-零测 Borel 集上的值后，可使 \(p,q\) 处处非负且 \(p+q=1\)。
+令
+\[
+ Z=\{\,x:p(x)=0\,\},\quad
+ f(x)=
+ \begin{cases}
+ q(x)/p(x),&p(x)>0,\\
+ 0,&p(x)=0,
+ \end{cases}
+ \quad \nu_s(E)=\nu(E\cap Z).
+\]
+于是 \(\mu(Z)=\int_Zp\,\mathrm d\lambda=0\)，所以 \(\nu_s\perp\mu\)。
+由\cref{b1:prop:density-change-integral}，对任意 Borel 集 \(E\) 有
+\[
+ \int_E f\,\mathrm d\mu
+ =\int_E fp\,\mathrm d\lambda
+ =\int_{E\setminus Z}q\,\mathrm d\lambda
+ =\nu(E\setminus Z).
+\]
+这给出所需分解，且对紧集 \(K\)，有 \(\int_K f\,\mathrm d\mu\leq\nu(K)<\infty\)。
+
+两个分量都不超过 \(\nu\)，因而局部有限。
+若 \(\tau\leq\nu\)，对任意 Borel 集 \(E\) 及正整数 \(n\)，
+在 \(E\cap\overline B(0,n)\) 内取紧集 \(K\)，使遗漏的 \(\nu\)-质量任意小，
+则遗漏的 \(\tau\)-质量也任意小。
+先逼近这一有界部分，再令 \(n\to\infty\)，即得 \(\tau\) 的紧内正则性。
+应用于 \(\nu_a,\nu_s\)，便知二者都是 Radon 测度。
+
+若还有 \(\nu=g\mu+\sigma\)，其中 \(\sigma\perp\mu\)，
+取一个 \(\mu\)-零测 Borel 集 \(N\)，同时承载 \(\nu_s\) 与 \(\sigma\)。
+在 \(\mathbb R^d\setminus N\) 上，\(f\mu=g\mu\)，密度唯一性给出 \(f=g\) 几乎处处。
+而两个奇异分量在 \(N\) 上都等于 \(\nu\) 的限制，在 \(N\) 外都为零，故也相等。
+这一论证没有对无穷总质量作减法。
+\end{proof}
+
+分解给出了一个积分意义的对象 \(f\)。本节的目标是证明
+\[
+ D_\mu\nu(x)=f(x)\quad\text{对 }\mu\text{-几乎处处的 }x.
+\]
+为此须分别处理 \(f\mu\) 的平均与 \(\nu_s\) 的比值；
+前一项恢复密度，后一项在分母测度所见的几乎所有点消失。
 
 \subsection{绝对连续部分}
 \label{b1:subsec:140302}
 
-待填充。
+下面采用 Fremlin 的《Measure Theory》\cite[472D]{Fremlin2016Measure}中
+\term*[besicovitch-midu]{Besicovitch 密度定理}[Besicovitch density theorem]的证明路线。
+它用细覆盖把局部平均过大的球合并成一项积分估计，适用于一般 Radon 测度。
+
+\begin{theorem}[Besicovitch 密度]\label{b1:thm:radon-function-differentiation}
+设 \(h\colon\mathbb R^d\to\mathbb K\) 为 Borel 函数，\(\mathbb K=\mathbb R\) 或 \(\mathbb C\)，
+且 \(h\in L^1_{\mathrm{loc}}(\mu)\)。则对 \(\mu\)-几乎处处的 \(x\in S_\mu\)，有
+\begin{equation}\label{b1:eq:radon-function-average}
+ \lim_{r\downarrow0}
+ \frac1{\mu\bigl(\overline B(x,r)\bigr)}
+ \int_{\overline B(x,r)}h(y)\,\mathrm d\mu(y)=h(x),
+\end{equation}
+并且
+\begin{equation}\label{b1:eq:radon-function-oscillation}
+ \lim_{r\downarrow0}
+ \frac1{\mu\bigl(\overline B(x,r)\bigr)}
+ \int_{\overline B(x,r)}|h(y)-h(x)|\,\mathrm d\mu(y)=0.
+\end{equation}
+\end{theorem}
+\begin{proof}
+先设 \(h\) 为实值函数。记闭球平均为
+\[
+ A_rh(x)=\frac{\int_{\overline B(x,r)}h\,\mathrm d\mu}
+                    {\mu\bigl(\overline B(x,r)\bigr)}
+ \quad(x\in S_\mu).
+\]
+说明接下来所用坏集的可测性。
+若 \(g\geq0\) 局部可积，则 \(g\mathbf1_{\overline B(0,n)}\mu\) 是有限 Radon 测度，
+这由第\ref{b1:subsec:110204}小节的可积密度结论得到。
+用这些限制穷竭可知 \(g\mu\) 局部有限且紧内正则，因而也是 Radon 测度。
+分别取 \(g=h^+,h^-\)，\cref{b1:prop:relative-density-borel}的固定半径可测性便给出 \(A_rh\) 的 Borel 可测性。
+在半径 \(r_j\downarrow r>0\) 时，闭球递减到 \(\overline B(x,r)\)，
+局部可积性和有限测度下的连续性给出 \(A_{r_j}h(x)\to A_rh(x)\)。
+因此在 \(0<r<1/k\) 内取平均的上确界或下确界时，可以只取有理半径。
+相应的上、下极限都是 Borel 函数。
+
+固定正整数 \(n\) 和有理数 \(a<b\)，令
+\[
+ E=\left\{\,x\in S_\mu\cap B(0,n):
+ h(x)\leq a,\ \limsup_{r\downarrow0}A_rh(x)>b\,\right\}.
+\]
+这是有界 Borel 集，故 \(\mu(E)<\infty\)。给定 \(\varepsilon>0\)，
+由\cref{b1:prop:integral-absolute-continuity}，可选 \(0<\eta<\varepsilon\)，使
+\[
+ F\subseteq B(0,n),\quad\mu(F)<\eta
+ \quad\Longrightarrow\quad\int_F|h|\,\mathrm d\mu<\varepsilon.
+\]
+再由外正则性选开集 \(G\)，使
+\[
+ E\subseteq G\subseteq B(0,n),\quad\mu(G\setminus E)<\eta.
+\]
+对每个 \(x\in E\)，有任意小的中心闭球 \(B\subseteq G\)，满足
+\(\int_Bh\,\mathrm d\mu>b\mu(B)\)。
+将\cref{b1:cor:radon-vitali-covering}用于这些球，选得至多可数的两两不交闭球 \((B_j)\)，
+使其并 \(H\) 满足 \(\mu(E\setminus H)=0\)。
+因为 \(H\subseteq G\)，有 \(\mu(H\setminus E)<\eta\) 及
+\(\int_{H\setminus E}|h|\,\mathrm d\mu<\varepsilon\)。
+于是，不论 \(b\) 的正负，都有
+\[
+ \begin{aligned}
+ b\mu(E)
+ &\leq b\mu(H)+|b|\varepsilon
+ =\sum_jb\mu(B_j)+|b|\varepsilon\\
+ &\leq\sum_j\int_{B_j}h\,\mathrm d\mu+|b|\varepsilon
+ =\int_Hh\,\mathrm d\mu+|b|\varepsilon\\
+ &\leq\int_Eh\,\mathrm d\mu+(1+|b|)\varepsilon
+ \leq a\mu(E)+(1+|b|)\varepsilon.
+ \end{aligned}
+\]
+所有积分都在 \(B(0,n)\) 内，故有符号求和中没有无穷减无穷的问题。
+令 \(\varepsilon\downarrow0\)，得到 \((b-a)\mu(E)=0\)，从而 \(\mu(E)=0\)。
+对可数个 \(n,a,b\) 取并，便得
+\[
+ \limsup_{r\downarrow0}A_rh(x)\leq h(x)
+ \quad\text{对 }\mu\text{-几乎处处的 }x.
+\]
+对 \(-h\) 应用同一结论，得到下极限不小于 \(h(x)\)，故\eqref{b1:eq:radon-function-average}成立。
+复值情形分别对实部与虚部应用此结论，再取两个满测集的交即可。
+
+最后证明绝对偏差的结论。
+在 \(\mathbb R\) 情形取 \(Q=\mathbb Q\)，在 \(\mathbb C\) 情形取 \(Q=\mathbb Q+i\mathbb Q\)。
+对每个 \(q\in Q\)，函数 \(g_q(y)=|h(y)-q|\) 局部可积。
+由刚证得的平均公式及 \(Q\) 的可数性，有同一个满测集 \(D\subseteq S_\mu\)，使
+\[
+ \lim_{r\downarrow0}A_rg_q(x)=|h(x)-q|
+ \quad(x\in D,\ q\in Q).
+\]
+固定 \(x\in D\) 及 \(\varepsilon>0\)，取 \(q\in Q\) 使 \(|h(x)-q|<\varepsilon\)。
+当 \(r\) 充分小时，\(A_rg_q(x)<|h(x)-q|+\varepsilon\)，所以
+\[
+ \frac{\int_{\overline B(x,r)}|h(y)-h(x)|\,\mathrm d\mu(y)}
+      {\mu\bigl(\overline B(x,r)\bigr)}
+ \leq A_rg_q(x)+|q-h(x)|<3\varepsilon.
+\]
+令 \(\varepsilon\downarrow0\)，得到\eqref{b1:eq:radon-function-oscillation}。
+\end{proof}
+
+特别地，若 \(\nu\ll\mu\)，则上一小节的分解没有奇异分量，
+\(\nu=f\mu\) 的局部质量比在 \(\mu\)-几乎处处收敛到 \(f\)。
+密度只需局部可积，不需要连续、有界或相对于 Lebesgue 测度可积。
+若改用 \(\mu\) 的完备化，可先取几乎处处相等的 Borel 代表；
+零测集上修改函数既不改变球上的积分，也只改变零测集上的点值。
 
 \subsection{奇异部分}
 \label{b1:subsec:140303}
 
-待填充。
+奇异测度未必只有点质量，承载它的零测集也可能稠密。
+因此不能把证明简化成“几乎每一点的小球都避开奇异支集”。
+所需的是球内奇异质量相对于分母质量趋于零，而不是最终完全没有奇异质量。
+
+\begin{theorem}\label{b1:thm:radon-singular-differentiation}
+若 \(\sigma\) 为 \(\mathbb R^d\) 上的正 Radon 测度且 \(\sigma\perp\mu\)，则
+\[
+ \lim_{r\downarrow0}
+ \frac{\sigma\bigl(\overline B(x,r)\bigr)}
+      {\mu\bigl(\overline B(x,r)\bigr)}=0
+ \quad\text{对 }\mu\text{-几乎处处的 }x\in S_\mu.
+\]
+\end{theorem}
+\begin{proof}
+取 Borel 集 \(N\)，使 \(\mu(N)=0\)、\(\sigma(\mathbb R^d\setminus N)=0\)。
+固定 \(t>0\) 和正整数 \(n\)，令
+\[
+ E=\{\,x\in(S_\mu\setminus N)\cap B(0,n):
+              \overline D_\mu\sigma(x)>t\,\}.
+\]
+由\cref{b1:prop:relative-density-borel}，这是有界 Borel 集，而且 \(\sigma(E)=0\)。
+给定 \(\varepsilon>0\)，外正则性给出开集 \(G\supseteq E\)，使 \(\sigma(G)<\varepsilon\)。
+每个 \(x\in E\) 都有任意小的中心闭球 \(B\subseteq G\)，满足 \(\sigma(B)>t\mu(B)\)。
+由\cref{b1:cor:radon-vitali-covering}，可选取这种球的可数不交族 \((B_j)\)，使其并在 \(\mu\)-意义下覆盖 \(E\)。
+因此
+\[
+ t\mu(E)\leq t\sum_j\mu(B_j)
+ \leq\sum_j\sigma(B_j)
+ \leq\sigma(G)<\varepsilon.
+\]
+令 \(\varepsilon\downarrow0\)，得到 \(\mu(E)=0\)。
+再对正整数 \(n\) 及正有理数 \(t\) 取可数并，便知上极限在 \(S_\mu\setminus N\) 上几乎处处为零。
+比值非负，故极限也为零。
+\end{proof}
+
+若改用 \(\sigma\) 来选取“几乎处处”的点，结论的方向恰好相反。
+由奇异性的对称性，把前一定理中的 \(\mu,\sigma\) 互换，得到
+\[
+ \lim_{r\downarrow0}
+ \frac{\mu\bigl(\overline B(x,r)\bigr)}
+      {\sigma\bigl(\overline B(x,r)\bigr)}=0
+ \quad\text{对 }\sigma\text{-几乎处处的 }x\in S_\sigma.
+\]
+这里的分母始终为正。因而在这些点，把正数除以零规定为 \(+\infty\) 后，反向比值满足
+\[
+ \frac{\sigma\bigl(\overline B(x,r)\bigr)}
+      {\mu\bigl(\overline B(x,r)\bigr)}\longrightarrow+\infty.
+\]
+具体地，对任意 \(M>0\)，当 \(r\) 足够小时，前一个比值小于 \(1/M\)；
+若 \(\mu\) 的球质量为正，就取倒数，若它为零，反向比值已经是 \(+\infty\)。
+这一扩展约定只用于 \(S_\sigma\) 上的反向结论，不为 \(0/0\) 赋值。
 
 \subsection{Lebesgue 分解的微分解释}
 \label{b1:subsec:140304}
 
-待填充。
+现在把两项局部结论合并。
+
+\begin{theorem}[Radon 测度的微分]\label{b1:thm:radon-measure-differentiation}
+设 \(\mu,\nu\) 为 \(\mathbb R^d\) 上的正 Radon 测度，
+\(\nu=\nu_a+\nu_s=f\mu+\nu_s\) 为\cref{b1:prop:radon-lebesgue-decomposition}中的分解。
+则在 \(\mu\)-几乎处处的点，测度导数存在且有限，并满足
+\[
+ D_\mu\nu(x)
+ =\lim_{r\downarrow0}
+  \frac{\nu\bigl(\overline B(x,r)\bigr)}
+       {\mu\bigl(\overline B(x,r)\bigr)}
+ =\frac{\mathrm d\nu_a}{\mathrm d\mu}(x)=f(x).
+\]
+对 \(\nu_s\)-几乎处处的 \(x\)，同一比值在正数除以零取 \(+\infty\) 的约定下趋于 \(+\infty\)。
+\end{theorem}
+\begin{proof}
+在 \(S_\mu\) 上，把球质量相加并除以正分母，得到
+\[
+ \frac{\nu\bigl(\overline B(x,r)\bigr)}
+      {\mu\bigl(\overline B(x,r)\bigr)}
+ =\frac{\int_{\overline B(x,r)}f\,\mathrm d\mu}
+       {\mu\bigl(\overline B(x,r)\bigr)}
+ +\frac{\nu_s\bigl(\overline B(x,r)\bigr)}
+       {\mu\bigl(\overline B(x,r)\bigr)}.
+\]
+由\cref{b1:thm:radon-function-differentiation}，第一项几乎处处趋于 \(f(x)\)；
+由\cref{b1:thm:radon-singular-differentiation}，第二项几乎处处趋于零。
+取这两个满测集的交，再用 \(f\) 的局部可积性，即得第一个结论及极限有限性。
+最后，上一小节已证 \(\nu_s\) 与 \(\mu\) 的反向比值在 \(\nu_s\)-几乎处处趋于无穷，
+而 \(\nu\geq\nu_s\)，故 \(\nu\) 的相同比值也趋于无穷。
+\end{proof}
+
+例如在实线上取 \(\mu=m\)、\(\nu=m+\delta_0\)。当 \(x\ne0\) 时，足够小的闭区间不含原点，
+故比值最终等于 \(1\)；在原点则有
+\[
+ \frac{\nu([-r,r])}{m([-r,r])}=1+\frac1{2r}\longrightarrow+\infty.
+\]
+于是 \(D_m\nu=1\) 在 \(m\)-几乎处处成立，但 \(\nu\) 并不绝对连续于 \(m\)。
+单凭一个几乎处处有限的测度导数，不能断言奇异分量不存在。
+正确的积分恢复公式是
+\[
+ \nu_a(E)=\int_E D_\mu\nu\,\mathrm d\mu,
+\]
+其中把导数未定义的 \(\mu\)-零测集上的值任意补成零。
+右侧恢复的是绝对连续部分，不是自动恢复整个 \(\nu\)。
+
+本节也说明了第\ref{b1:sec:1402}节结论中哪些内容依赖于 Lebesgue 测度，哪些不依赖。
+有限维欧氏球的覆盖几何，足以保证任意 Radon 测度下的平均恢复与绝对偏差消失；
+体积缩放律不是这一推广的前提。
+至于在每个点选取怎样的函数代表，以及这些平均极限如何描述局部振荡，
+下一节将在 Lebesgue 测度的背景下进一步讨论。

@@ -2,24 +2,195 @@
 \section{近似极限与近似连续性}
 \label{b1:sec:1405}
 
-% TODO: 撰写本节正文。
+通常极限要求足够靠近目标点的所有函数值都接近同一个数。对可测函数，这个要求往往太强：即使只在稠密零测集上修改函数，也可能破坏每一点的通常连续性。密度提供了另一种局部判据。允许例外点存在，但要求它们在缩小球中所占的比例趋于零，便得到本节的近似极限。
+
+以下 \(\Omega\subseteq\mathbb R^d\) 为开集，\(m\) 为 Lebesgue 测度，函数取值于 \(\mathbb R^k\)，其中 \(k\geq1\)。实值、复值函数分别包含在 \(k=1,2\) 的情形中；符号 \(|\cdot|\) 表示相应的欧氏范数。本节只讨论有限值近似极限。
 
 \subsection{近似极限}
 \label{b1:subsec:140501}
 
-待填充。
+\begin{definition}
+\label{b1:def:approximate-limit}
+设 \(f:\Omega\rightarrow\mathbb R^k\) 为可测函数，\(x\in\Omega\)，\(a\in\mathbb R^k\)。若对每个 \(\varepsilon>0\)，都有
+\[
+\lim_{r\downarrow0}
+\frac{m\bigl(\{\,y\in\overline B(x,r)\mid |f(y)-a|>\varepsilon\,\}\bigr)}
+{m\bigl(\overline B(x,r)\bigr)}=0,
+\]
+其中只取包含于 \(\Omega\) 的小球，则称 \(a\) 是 \(f\) 在 \(x\) 处的\term[jinsi-jixian]{近似极限}[approximate limit]，记作
+\[
+\operatorname*{ap\,lim}_{y\to x}f(y)=a.
+\]
+\symidx{\(\operatorname*{ap\,lim}_{y\to x}f(y)\)：近似极限}
+\end{definition}
+
+定义只限制误差超过给定精度的点所占的比例，不控制这些点上的误差究竟有多大。把其中的 \(>\varepsilon\) 换成 \(\geq\varepsilon\) 得到同一个定义：后者的例外集包含于前者以 \(\varepsilon/2\) 为阈值的例外集。由于单点为零测集，近似极限与 \(f(x)\) 本身的取值无关。更一般地，若 \(f=g\) 几乎处处，则二者在每个点具有相同的近似极限，只要其中一个存在。
+
+\begin{proposition}
+\label{b1:prop:approximate-limit-properties}
+有限近似极限至多有一个。通常的穿孔极限若存在，则它也是近似极限。此外，若 \(f\) 在 \(x\) 处的近似极限为 \(a\)，且 \(\Phi:\mathbb R^k\rightarrow\mathbb R^\ell\) 连续，则 \(\Phi\circ f\) 在 \(x\) 处的近似极限为 \(\Phi(a)\)。
+\end{proposition}
+\begin{proof}
+若不同的 \(a,b\) 都是近似极限，取 \(\varepsilon=|a-b|/3\)。两集合
+\(\{\,|f-a|\leq\varepsilon\,\}\) 与 \(\{\,|f-b|\leq\varepsilon\,\}\) 不交，否则三角不等式会给出 \(|a-b|\leq2\varepsilon\)。但它们在 \(x\) 处的密度都为 \(1\)，在足够小的球中各自占据超过 \(3/4\) 的体积，不可能互不相交。这证明唯一性。
+
+若通常极限为 \(a\)，则对给定 \(\varepsilon\)，足够小的穿孔球内根本没有误差超过 \(\varepsilon\) 的点；加回中心点也不改变体积，所以近似极限仍为 \(a\)。最后，由 \(\Phi\) 在 \(a\) 的连续性，给定 \(\varepsilon>0\) 可取 \(\delta>0\)，使 \(|z-a|<\delta\) 蕴涵 \(|\Phi(z)-\Phi(a)|<\varepsilon\)。于是
+\[
+\{\,y\mid |\Phi\bigl(f(y)\bigr)-\Phi(a)|>\varepsilon\,\}
+\subseteq\{\,y\mid |f(y)-a|\geq\delta\,\}.
+\]
+右边在 \(x\) 处的密度为零，结论随之成立。
+\end{proof}
+
+还可以把每个精度下的例外集合并成一次选择，使近似极限成为一个大集合上的通常极限。
+
+\begin{proposition}
+\label{b1:prop:approximate-limit-density-one}
+下列两个条件等价：\(\operatorname*{ap\,lim}_{y\to x}f(y)=a\)；存在可测集 \(E\subseteq\Omega\)，使 \(x\) 是 \(E\) 的密度点，且
+\[
+\lim_{\substack{y\to x\\y\in E\setminus\{x\}}}f(y)=a.
+\]
+可以要求 \(x\in E\)，但极限仍取穿孔形式。
+\end{proposition}
+\begin{proof}
+先设近似极限存在。令 \(F_n=\{\,y\in\Omega\mid |f(y)-a|>1/n\,\}\)。可依次选取 \(r_n>0\)，使 \(r_{n+1}<r_n/2\)、\(\overline B(x,r_1)\subseteq\Omega\)，并且
+\[
+m\bigl(F_n\cap\overline B(x,r)\bigr)
+\leq2^{-n}m\bigl(\overline B(x,r)\bigr)
+\quad(0<r\leq r_n).
+\]
+在第 \(n\) 个环带中只删去第 \(n\) 级坏点，置
+\[
+F=\bigcup_{n=1}^{\infty}
+\Bigl[F_n\cap\bigl(\overline B(x,r_n)\setminus\overline B(x,r_{n+1})\bigr)\Bigr],
+\quad E=\Omega\setminus F.
+\]
+若 \(r_{N+1}<r\leq r_N\)，则 \(F\cap\overline B(x,r)\) 只涉及下标 \(n\geq N\) 的环带。在下标 \(n\) 的一项中，以 \(\min\{r,r_n\}\) 为半径使用上述估计，再用球体积的单调性，得到
+\[
+\frac{m\bigl(F\cap\overline B(x,r)\bigr)}{m\bigl(\overline B(x,r)\bigr)}
+\leq\sum_{n\geq N}2^{-n}=2^{1-N}.
+\]
+故 \(F\) 在 \(x\) 处的密度为零，\(E\) 的密度为 \(1\)。若 \(y\in E\) 位于第 \(n\) 个环带，则 \(|f(y)-a|\leq1/n\)。当这样的 \(y\ne x\) 趋于 \(x\) 时，其环带下标趋于无穷，从而得到所需的通常极限。中心点未被删除，所以 \(x\in E\)。
+
+反过来，若上述 \(E\) 存在，则对每个 \(\varepsilon>0\)，足够小的球中误差超过 \(\varepsilon\) 的点只能落在 \(E^{\mathrm c}\cup\{x\}\) 内。这个集合在 \(x\) 处的密度为零，因此 \(a\) 是近似极限。
+\end{proof}
+
+这里的大集合依赖于点 \(x\) 和函数 \(f\)。命题并不提供一个固定集合，使函数在其中所有点都具有通常极限。
 
 \subsection{近似连续性}
 \label{b1:subsec:140502}
 
-待填充。
+\begin{definition}
+\label{b1:def:approximate-continuity}
+设 \(f:\Omega\rightarrow\mathbb R^k\) 可测，\(x\in\Omega\)。若 \(\operatorname*{ap\,lim}_{y\to x}f(y)=f(x)\)，则称 \(f\) 在 \(x\) 处\term[jinsi-lianxu]{近似连续}[approximately continuous]。
+\end{definition}
+
+通常连续蕴涵近似连续，反向却不成立。以 \(f=\mathbf1_{\mathbb Q}\) 为例，它在实线每一点的近似极限都是 \(0\)，所以在每个无理点近似连续，在每个有理点不近似连续；但它在通常意义下处处不连续。近似极限不受零测修改影响，而近似连续还要与当前点的实际函数值比较，这两句话不能混为一谈。
+
+% 实读来源：Fremlin2016Measure，卷2，261D(c)--(d)，章26印刷 pp.5--6，作者官网 chap26.pdf。
+% 改编：把原书实值函数的有理区间证明改成 R^k 的可数半开方格；不要求 L1_loc，不借助尚未建立的近似微分结果。
+\begin{theorem}
+\label{b1:thm:measurable-approximately-continuous}
+每个有限值可测函数 \(f:\Omega\rightarrow\mathbb R^k\) 都几乎处处近似连续。
+\end{theorem}
+\begin{proof}
+对每个正整数 \(n\)，把值域分为边长 \(1/n\) 的可数个半开方格
+\[
+C_{n,z}=\prod_{i=1}^k[z_i/n,(z_i+1)/n),
+\quad z\in\mathbb Z^k,
+\]
+并令 \(E_{n,z}=f^{-1}(C_{n,z})\)。这些集合可测，且固定 \(n\) 时它们的并为 \(\Omega\)。由\cref{b1:thm:lebesgue-density}，每个 \(E_{n,z}\) 中不是其密度点的点组成零测集。对所有 \(n,z\) 取这些例外集的可数并，仍得到一个零测集 \(N\)。
+
+固定 \(x\in\Omega\setminus N\)。给定 \(\varepsilon>0\)，取 \(n\) 使 \(\sqrt{k}/n<\varepsilon\)，再取唯一的 \(z\) 使 \(f(x)\in C_{n,z}\)。对每个 \(y\in E_{n,z}\)，都有 \(|f(y)-f(x)|\leq\sqrt{k}/n<\varepsilon\)。而 \(x\) 是 \(E_{n,z}\) 的密度点，故 \(\{\,y\mid |f(y)-f(x)|>\varepsilon\,\}\) 在 \(x\) 处的密度为零。由于 \(\varepsilon\) 任意，\(f\) 在 \(x\) 处近似连续。
+\end{proof}
+
+可数的值域划分使所有精度共用同一个零测例外集。这里没有可积性假设；函数即使在某些紧集上不可积，论证仍然适用。若扩展实值函数只是几乎处处有限，先在取无穷值的零测集上赋予有限值，再应用定理即可；在未改值的点上，近似连续性的结论不变。这个证明也可与 Fremlin 的《Measure Theory》\cite[261D]{Fremlin2016Measure}中的可数值域切分对照。
+
+\begin{proposition}
+\label{b1:prop:lebesgue-point-approximately-continuous}
+设 \(f:\Omega\rightarrow\mathbb R^k\) 局部可积，即 \(|f|\) 在每个紧子集上可积。若 \(x\) 是它的 Lebesgue 点，其中平均振荡以欧氏范数计算，则 \(f\) 在 \(x\) 处近似连续。
+\end{proposition}
+\begin{proof}
+对任意 \(\varepsilon>0\)，直接比较被积函数便有
+\[
+\frac{m\bigl(\{\,y\in\overline B(x,r)\mid |f(y)-f(x)|>\varepsilon\,\}\bigr)}
+{m\bigl(\overline B(x,r)\bigr)}
+\leq\frac{1}{\varepsilon\,m\bigl(\overline B(x,r)\bigr)}
+\int_{\overline B(x,r)}|f(y)-f(x)|\,\mathrm dy.
+\]
+右边在 \(r\downarrow0\) 时趋于零，所以满足近似连续的定义。
+\end{proof}
+
+反向即使对可积函数也不成立。下面把尖峰压进比例越来越小的区间，同时保留它们的积分质量。对 \(n\geq2\)，令
+% 下列二进尖峰独立构造并直接计算；汪林《实分析中的反例》2013版第9章第37题目录是同类问题的正式中文定位，未读取或转写该书解答。
+\[
+I_n=(2^{-n},2^{-n}+2^{-2n}),
+\quad
+S=\bigcup_{n=2}^{\infty}I_n,
+\quad
+f=\sum_{n=2}^{\infty}2^n\mathbf1_{I_n}.
+\]
+区间两两不交，原点不在其中，故 \(f(0)=0\)。每个尖峰的积分为 \(2^{-n}\)，因此
+\[
+\int_{\mathbb R}f\,\mathrm dm=\sum_{n=2}^{\infty}2^{-n}<\infty.
+\]
+若 \(2^{-(N+1)}<r\leq2^{-N}\)，则 \([-r,r]\) 内只可能出现下标 \(n\geq N+1\) 的区间，所以
+\[
+\frac{m\bigl(S\cap[-r,r]\bigr)}{2r}
+\leq\frac{\sum_{n\geq N+1}2^{-2n}}{2r}
+\leq\frac{2^{-N}}{3}
+\longrightarrow0.
+\]
+因而 \(S\) 在原点的密度为零。任意误差阈值下的坏点都包含于 \(S\)，所以 \(f\) 在原点近似连续。另一方面，取 \(R_n=2^{-n}+2^{-2n}\)，则 \([-R_n,R_n]\) 包含整个 \(I_n\)，从而
+\[
+\frac{1}{2R_n}\int_{-R_n}^{R_n}|f(y)-f(0)|\,\mathrm dy
+\geq\frac{2^{-n}}{2R_n}
+=\frac{1}{2(1+2^{-n})}
+\longrightarrow\frac12.
+\]
+原点不是 Lebesgue 点。近似连续只让大误差出现得稀少，Lebesgue 点还要求这些误差的平均总量趋于零。这类边界问题也可作为进一步训练：汪林的《实分析中的反例》\cite[第九章，第37--38项]{Wang2013Counterexamples}专门列出近似连续点、Lebesgue 点及积分导数之间的区别；上面的尖峰已在本书中独立构造并计算，不要求读者先读该书的解答。
 
 \subsection{密度拓扑的直观}
 \label{b1:subsec:140503}
 
-待填充。
+通常的邻域条件是在点的周围放入一个小开球。密度条件则允许球中有孔洞，只要孔洞所占的比例趋于零。\term[midu-tuopu]{密度拓扑}[density topology]就是把后一种局部尺度作为拓扑依据的做法。本小节只说明这一图景和已经能够验证的局部规则，不建立完整的拓扑公理。
+
+若可测集 \(E,F\) 都以 \(x\) 为密度点，则 \(E\cap F\) 也如此，因为
+\[
+\frac{m\bigl(\overline B(x,r)\setminus(E\cap F)\bigr)}{m\bigl(\overline B(x,r)\bigr)}
+\leq
+\frac{m\bigl(\overline B(x,r)\setminus E\bigr)}{m\bigl(\overline B(x,r)\bigr)}
++\frac{m\bigl(\overline B(x,r)\setminus F\bigr)}{m\bigl(\overline B(x,r)\bigr)}
+\longrightarrow0.
+\]
+包含一个这样的集合的可测集，在 \(x\) 处仍有密度 \(1\)。这些规则与邻域的有限交、向上封闭相似。通常开集在自己的每一点都满足密度条件，而 \(\mathbb R\setminus\mathbb Q\) 也在自己的每一点满足它，尽管这个集合没有通常的内点。
+
+近似连续可以用这一语言重新描述：对每个 \(\varepsilon>0\)，集合
+\[
+\{\,y\in\Omega\mid |f(y)-f(x)|<\varepsilon\,\}
+\]
+都以 \(x\) 为密度点。这个说法由定义中把误差阈值减半即可得到。它要求值域小邻域的原像在测度意义下占满当前点的周围，而不要求该原像包含通常开球。
+
+若要从这幅图景走到完整拓扑，还必须证明任意族“在自身每点密度为 \(1\)”的可测集合，其并仍然可测。\(\sigma\)-代数只对可数并封闭，不能把这一步当作定义的直接后果。本章后面的应用不依赖这项拓扑构造；需要进一步研究时，可阅读 Fremlin 的《Measure Theory》\cite[414P]{Fremlin2016Measure}，那里借助测度的完备性和本性上确界处理任意并。
+
+% 实读来源：Fremlin2016Measure，卷4，414P，章41印刷 p.47，作者官网 chap41.pdf；
+% 已读其任意并论证。本节有意只介绍逐点密度邻域，不引入未证明的测度代数或声称已验证全部拓扑公理。
 
 \subsection{近似微分的预告}
 \label{b1:subsec:140504}
 
-待填充。
+近似连续比较函数值与一个常数。若先减去一个线性函数，再把误差除以距离，就得到与通常微分平行的概念。
+
+\begin{definition}
+\label{b1:def:approximate-differential}
+设 \(f:\Omega\rightarrow\mathbb R^k\) 可测，\(x\in\Omega\)。若存在一个线性映射 \(A:\mathbb R^d\rightarrow\mathbb R^k\)，使
+\[
+\operatorname*{ap\,lim}_{y\to x}
+\frac{|f(y)-f(x)-A(y-x)|}{|y-x|}=0,
+\]
+其中误差商只在 \(y\ne x\) 处定义，则称 \(f\) 在 \(x\) 处\term[jinsi-kewei]{近似可微}[approximately differentiable]，称 \(A\) 为它在该点的\term[jinsi-weifen]{近似微分}[approximate differential]。
+\end{definition}
+
+通常可微一定近似可微，因为通常趋于零的误差商也近似趋于零。近似微分仍然只能有一个：若 \(A_1,A_2\) 都满足条件，则三角不等式说明 \(|(A_1-A_2)h|/|h|\) 在 \(h\to0\) 时近似趋于零。假如线性映射 \(L=A_1-A_2\) 非零，取单位向量 \(v\) 使 \(Lv\ne0\)。由连续性，可取包含于 \(B(0,1)\) 的小球 \(B(v/2,\eta)\) 和常数 \(c>0\)，使 \(|Lz|/|z|>c\) 在该小球上成立。由齐次性，这个不等式也在 \(rB(v/2,\eta)\) 上成立；后者在 \(B(0,r)\) 中占据固定的体积比例 \(\eta^d>0\)，与近似极限为零矛盾。因此 \(L=0\)。
+
+近似可微也不要求通常连续。例如 \(\mathbf1_{\mathbb Q}\) 在任意无理点的近似微分为零：以零映射作线性部分时，误差商只可能在有理点非零，这些点仍为零测集；但通常连续性依旧失败。至于怎样的函数类几乎处处近似可微，以及所得线性映射怎样与弱导数联系，需要比密度点更强的工具。本章只在此说明定义，不由可测函数几乎处处近似连续推断它们几乎处处近似可微。

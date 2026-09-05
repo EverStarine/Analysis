@@ -2,24 +2,164 @@
 \section{Lebesgue 点}
 \label{b1:sec:1404}
 
-% TODO: 撰写本节正文。
+微分定理给出了几乎处处的结论，但在后续应用中，往往需要固定一个点，再判断不同的局部观察方式是否都能恢复同一个值。为此应把良好的点态性质单独命名，并分清哪些性质依赖选定的代表、哪些只依赖积分等价类。本节从平均绝对偏差出发，引入 Lebesgue 点与精确代表，再讨论含点集合及积分核的恢复性质。
 
 \subsection{Lebesgue 点定理}
 \label{b1:subsec:140401}
 
-待填充。
+\begin{definition}\label{b1:def:lebesgue-point}
+设 \(f\in L^1_{\mathrm{loc}}(\Omega)\)，并指定一个有限值可测代表。若 \(x\in\Omega\) 满足
+\[
+ \lim_{r\downarrow0}\frac1{\omega_dr^d}
+        \int_{B(x,r)}|f(y)-f(x)|\,\mathrm dy=0,
+\]
+则称 \(x\) 为这个代表的一个\term[lebesgue-dian]{Lebesgue 点}[Lebesgue point]。
+\end{definition}
+
+\begin{theorem}[Lebesgue 点]\label{b1:thm:lebesgue-point}
+局部可积函数的几乎每个点都是 Lebesgue 点。在每个 Lebesgue 点，球平均均趋于指定的函数值。
+\end{theorem}
+\begin{proof}
+第一句正是\cref{b1:thm:lp-lebesgue-differentiation}取 \(p=1\) 的结论。第二句由
+\[
+ |A_rf(x)-f(x)|\leq A_r|f-f(x)|(x)
+\]
+直接得到。
+\end{proof}
+
+这个定义比“球平均有极限”更强。第\ref{b1:sec:1402}节的奇函数跳跃例子，在原点有平均极限 \(0\)，却不满足平均绝对偏差趋零。反过来，Lebesgue 点也不必是普通连续点：在实直线上取 \(f=\mathbf1_{\mathbb Q}\)。所有球积分均为零，因而每个无理点都是这个代表的 Lebesgue 点，然而 \(f\) 处处不连续。每个有理点的平均绝对偏差等于 \(1\)，所以不是这个代表的 Lebesgue 点。
+
+还可以暂不指定中心值。若存在标量 \(a\)，使
+\begin{equation}\label{b1:eq:strong-lebesgue-value}
+ \lim_{r\downarrow0}\frac1{\omega_dr^d}\int_{B(x,r)}|f(y)-a|\,\mathrm dy=0,
+\end{equation}
+则这样的 \(a\) 唯一。事实上，若 \(a,b\) 都满足条件，在每个球的归一化平均中使用 \(|a-b|\leq|f-a|+|f-b|\)，再令 \(r\downarrow0\)，便得到 \(a=b\)。条件\eqref{b1:eq:strong-lebesgue-value}不因在零测集上改动 \(f\) 而变化；“该值恰好等于指定的 \(f(x)\)”才会受单个点值影响。
 
 \subsection{精确代表}
 \label{b1:subsec:140402}
 
-待填充。
+\begin{definition}\label{b1:def:precise-representative}
+对 \(f\in L^1_{\mathrm{loc}}(\Omega)\)，令
+\[
+ G_f=\{\,x\in\Omega:\lim_{r\downarrow0}A_rf(x)
+                    \text{ 存在且为有限标量}\,\}.
+\]
+定义其\term[jingque-daibiao]{精确代表}[precise representative]为
+\[
+ f^*(x)=
+ \begin{cases}
+ \displaystyle\lim_{r\downarrow0}A_rf(x),&x\in G_f,\\
+ 0,&x\notin G_f.
+ \end{cases}
+\]
+\end{definition}
+\symidx{\(f^*\)：由球平均确定的精确代表}
+
+在异常点取 \(0\) 是本书的约定，不是平均恢复出的值。有些文献只在极限存在处定义精确代表；比较逐点陈述时要先对齐这一范围。
+
+\begin{proposition}\label{b1:prop:precise-representative}
+函数 \(f^*\) 是 Borel 可测的，与 \(f\) 几乎处处相等，而且只依赖 \(f\) 的积分等价类。若 \(f=g\) 几乎处处，则 \(f^*=g^*\) 在每个点都相等，并有 \((f^*)^*=f^*\) 处处成立。
+\end{proposition}
+\begin{proof}
+固定半径的平均在允许的中心区域连续。由关于半径的连续性，\(G_f\) 可用正有理半径上的 Cauchy 条件描述：对每个正整数 \(k\)，存在 \(n\)，使所有充分小于 \(1/n\) 的允许有理半径 \(q,q'\) 都满足 \(|A_qf(x)-A_{q'}f(x)|<1/k\)。此处也可用 \(\leq1/k\)，再调整 \(k\)。这是可数个 Borel 条件的交并，因此 \(G_f\) 为 Borel 集。空间 \(\mathbb C\) 或 \(\mathbb R\) 的完备性保证 Cauchy 条件给出有限极限，而半径连续性把它扩展到所有实数半径。
+
+把 \(A_{1/n}f\) 在半径不允许的中心处延为零，可得一列 Borel 函数。对每个固定 \(x\in\Omega\)，当 \(n\) 充分大时该半径均允许；在 \(G_f\) 上，这列函数趋于 \(f^*\)。在 \(G_f^c\) 上取零因而给出 Borel 函数。微分定理说明 \(f^*=f\) 几乎处处。
+
+若 \(f=g\) 几乎处处，每一个球上的积分都相同，所以 \(G_f=G_g\)，两个精确代表处处相等。再令 \(g=f^*\)，利用已经证明的几乎处处相等性，得到幂等关系。
+\end{proof}
+
+上一定义用的是通常平均，并未把 \(G_f\) 中每个点都变成 Lebesgue 点。跳跃奇函数的例子仍在 \(G_f\) 中，却不能通过重新指定原点值消除平均绝对偏差。若某点具有\eqref{b1:eq:strong-lebesgue-value}中的强平均值 \(a\)，则积分三角不等式先给出 \(A_rf(x)\to a\)，于是 \(f^*(x)=a\)；又因 \(f^*=f\) 几乎处处，这个点确实是 \(f^*\) 的 Lebesgue 点。一般异常点则不能作同样断言。
+
+对示性函数，上述区分有一个直观形式。若 \(E\) 在 \(x\) 处密度为 \(\theta\)，则 \((\mathbf1_E)^*(x)=\theta\)。但当 \(0<\theta<1\) 时，
+\[
+ \lim_{r\downarrow0}A_r|\mathbf1_E-\theta|(x)
+ =\theta(1-\theta)+(1-\theta)\theta
+ =2\theta(1-\theta)>0.
+\]
+因此这个“中间比例”是球平均给出的数值，却不是强平均意义的点值。
 
 \subsection{局部平均}
 \label{b1:subsec:140403}
 
-待填充。
+\begin{proposition}\label{b1:prop:lebesgue-controlled-sets}
+设 \(x\) 为 \(f\in L^1_{\mathrm{loc}}(\Omega)\) 的一个 Lebesgue 点。设 \(E_j\) 为正测度可测集，并且存在 \(r_j\downarrow0\) 和固定 \(A<\infty\)，使
+\[
+ E_j\subseteq B(x,r_j)\subseteq\Omega,\quad
+ m_d\bigl(B(x,r_j)\bigr)\leq A,m_d(E_j).
+\]
+则
+\[
+ \frac1{m_d(E_j)}\int_{E_j}|f(y)-f(x)|\,\mathrm dy\longrightarrow0,
+ \quad
+ \frac1{m_d(E_j)}\int_{E_j}f(y)\,\mathrm dy\longrightarrow f(x).
+\]
+\end{proposition}
+\begin{proof}
+第一式的左端不超过 \(A A_{r_j}|f-f(x)|(x)\)，后者由 Lebesgue 点的定义趋零。第二式再用积分三角不等式即可。
+\end{proof}
+
+若 \(E_j=B(a_j,s_j)\) 仅要求含 \(x\)，也可以用 \(r_j=2s_j\) 与 \(A=2^d\) 应用此命题。因而 Lebesgue 点处不仅中心球，而且全部趋小的含点球都恢复同一个值。中心立方体或具有统一体积比较的其他形状也如此。这里不必先为每种形状另删一组零测集：一个 Lebesgue 点同时适用于所有满足比较条件的集合。
+
+上述论证也适用于带权的径向平均。
+
+\begin{proposition}\label{b1:prop:approx-identity-lebesgue-point}
+设 \(K\geq0\)、\(\int K=1\)，且 \(K\) 有径向非增代表。令 \(K_t(y)=t^{-d}K(y/t)\)。若 \(f\in L^p(\mathbb R^d)\)、\(1\leq p\leq\infty\)，则在 \(f\) 的每个 Lebesgue 点 \(x\)，
+\[
+ \lim_{t\downarrow0}K_t*f(x)=f(x).
+\]
+若 \(K\) 具有紧支集，\(f\) 只需在 \(x\) 附近局部可积，此时结论对充分小的 \(t\) 成立。
+\end{proposition}
+\begin{proof}
+固定 Lebesgue 点 \(x\)，令 \(a=f(x)\)，并定义
+\[
+ F(r)=\frac1{\omega_dr^d}\int_{B(0,r)}|f(x-y)-a|\,\mathrm dy.
+\]
+已有 \(F(r)\to0\)。在全空间 \(L^p\) 假设下，还有 \(\sup_{r>0}F(r)<\infty\)。小半径时这由趋零性保证；固定 \(\delta>0\) 后，当 \(r\geq\delta\)、\(p<\infty\) 时，Hölder 不等式给出
+\[
+ F(r)\leq(\omega_dr^d)^{-1/p}\|f\|_p+|a|;
+\]
+\(p=\infty\) 时则直接受 \(\|f\|_\infty+|a|\) 控制。
+
+写 \(K(z)=k(|z|)\)。对每个 \(s>0\)，其上水平集 \(E_s=\{K>s\}\) 在忽略零测球面后为中心球，记其半径为 \(R_s\)；空集或零测集的贡献均取零。\(K\) 可积保证 \(R_s<\infty\)，且
+\[
+ \int_0^\infty m_d(E_s)\,\mathrm ds=1.
+\]
+作代换 \(y=tz\)，再用 Tonelli 定理，得到
+\[
+ \begin{aligned}
+ |K_t*f(x)-a|
+ &\leq\int K(z)|f(x-tz)-a|\,\mathrm dz\\
+ &=\int_0^\infty m_d(E_s)F(tR_s)\,\mathrm ds.
+ \end{aligned}
+\]
+对每个有效的 \(s\)，\(F(tR_s)\to0\)，且有前述统一界。以 \(m_d(E_s)\,\mathrm ds\) 为有限测度应用控制收敛定理，就得到所求极限；同一估计也保证各卷积在该点绝对存在。
+
+若 \(K\) 紧支集，则所有 \(R_s\) 有共同上界 \(R\)。对充分小的 \(t\)，只需使用 \(0<r\leq tR\) 内的 \(F(r)\)，积分误差不超过 \(\sup_{0<r\leq tR}F(r)\)，由趋零性直接得到结论。这时不需要任何远处的可积性。
+\end{proof}
+
+此证明给出整个连续参数族的极限，且例外点由函数的 Lebesgue 点条件一次确定，不依赖核的具体选择。对支集无界的核，远处增长仍需受控；不能仅凭核的积分集中，就把任意局部可积函数也放进同一全空间卷积结论。
 
 \subsection{\texorpdfstring{\(L^p\)}{Lp} 函数的 Lebesgue 点}
 \label{b1:subsec:140404}
 
-待填充。
+对 \(f\in L^p_{\mathrm{loc}}\)，可以要求某点满足更强的 \(p\) 次平均偏差条件。\cref{b1:thm:lp-lebesgue-differentiation}保证有限 \(p\) 下这种条件几乎处处成立。在一个固定点，若 \(1\leq q\leq p<\infty\)，归一化球测度上的 Hölder 不等式给出
+\[
+ \bigl(A_r|f-f(x)|^q(x)\bigr)^{1/q}
+ \leq\bigl(A_r|f-f(x)|^p(x)\bigr)^{1/p}.
+\]
+因此高次偏差控制低次偏差。反向涉及小区域上的高峰，不能由一次平均误差趋零推出；本章习题将给出相应构造。
+
+若 \(f\) 在 \(x\) 的某个邻域内本质有界，且 \(a\) 是其强平均值，则 \(|a|\) 不超过该邻域的本质界。设此界为 \(B\)，便有
+\[
+ |f-a|^p\leq(2B)^{p-1}|f-a|\quad(p\geq1)
+\]
+几乎处处成立；\(B=0\) 时直接处理。因此一次偏差在这种局部有界情形下确实控制每个有限次偏差。然而任何有限次平均都允许在很小的集合上保留跳跃，仍不同于本质上确界意义的局部一致逼近。
+
+Lebesgue 点对于连续的标量运算也具有稳定性。例如若 \(\Phi\) 为 Lipschitz 函数，常数为 \(L\)，则
+\[
+ A_r|\Phi(f)-\Phi(f(x))|(x)
+ \leq L A_r|f-f(x)|(x).
+\]
+所以取绝对值、实部、虚部和有界截断都保持 Lebesgue 点。乘积不是全局 Lipschitz 运算，需要局部有界性或适当的 Hölder 幂次配合；只知道两个函数各自的一次偏差趋零，不能直接把两者相乘。
+
+至此，几乎处处的点值已经可以由积分等价类确定，但只在正确的平均意义下成立。下一节将进一步放宽“附近的值接近中心值”的要求：允许坏点存在，只要求它们在缩小的球中所占比例趋零。这得到近似连续性，它与 Lebesgue 点相联系，却不控制坏点上函数的幅值。

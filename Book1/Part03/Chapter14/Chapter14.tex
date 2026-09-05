@@ -3,12 +3,14 @@
 \label{b1:ch:14}
 % 本章摘要（不计入编号）
 \begin{chapterabstract}
-待填充。
+Radon--Nikodym 定理用积分等式给出密度，却没有直接说明怎样在一个点附近计算它。本章把空间中的小球引入这一问题：先比较球内质量与体积，再把分母换成任意 Radon 测度。覆盖定理与极大不等式保证这些局部比值几乎处处收敛，并解释为何它们恢复的是绝对连续部分，而不能自动找回整个奇异测度。
+
+对局部可积函数，微分定理进一步给出 Lebesgue 点：不仅平均值恢复函数值，平均绝对偏差也趋于零。围绕这一性质，我们讨论积分等价类的精确代表、改变观察集合或积分核后的恢复结果，以及只控制坏点比例的近似连续性。通常平均、强平均值与近似极限之间的区别，是本章需要始终保留的一条界线。
 \end{chapterabstract}
 
 % 本章目标（不计入编号）
 \begin{learninggoals}
-待填充。
+读完本章，应能核对球比值的定义域与可测性，说明开球、闭球和几乎处处的基准测度；能用极大估计把连续函数的结论延拓到局部可积函数，并在任意 Radon 测度下完成绝对连续与奇异两部分的微分论证；能区分特定代表的点值与由积分确定的值，判断什么时候可以更换局部平均的形状或核；最后，能通过例子说明近似连续性为何弱于 Lebesgue 点性质。本章只预告近似微分，不提前假定一般可测函数具有几乎处处的线性近似。
 \end{learninggoals}
 
 \input{Part03/Chapter14/Section1401}
@@ -18,10 +20,411 @@
 \input{Part03/Chapter14/Section1405}
 % 本章小结（不计入编号）
 \begin{chaptersummary}
-待填充。
+测度的微分把积分意义的密度转化为小球质量比，但这个转化有明确的取点基准：绝对连续密度在分母测度的几乎所有点恢复，奇异部分在那里消失；在奇异测度自己的几乎所有点，反向比例则显露出与基准测度不同的集中方式。因此，一个几乎处处有限的导数不等于没有奇异质量。
+
+对于函数，Lebesgue 点控制平均误差的总量，精确代表从积分等价类选取点值，近似连续性则只控制大误差所占的比例。零测修改、跳跃与细小高峰分别说明这些概念不能混用。覆盖几何已经使一般欧氏 Radon 测度的微分成为可能；下一章将改变衡量集合大小的维数尺度，研究 Hausdorff 测度与维数，而不再只与环境体积比较。
 \end{chaptersummary}
 
 
 \BookExercises
 
-待填充。
+% 八题均为自拟，以下注释只记录前置工具与题目目的，不冒称参考书原题。
+% 正文来源对照：Fremlin2016Measure 472D（已实际读取）的一般Radon微分；
+% Cantor测度使用本书0603已构造的数字映射，不预借第16章或未读书中的证明。
+
+\begin{exercise}\label{b1:ex:14-one-sided-primitive}
+设 \(f\in L^1((a,b))\)，并令
+\[
+ F(x)=\int_a^x f(t)\,\mathrm dt\quad(a\leq x\leq b).
+\]
+\begin{enumerate}
+\item\label{b1:item:14-asymmetric-average}
+若 \(x\in(a,b)\) 是 \(f\) 的 Lebesgue 点，
+\(\alpha_r,\beta_r\geq0\)、\(\alpha_r+\beta_r>0\)，且 \(\alpha_r,\beta_r\to0\)，证明
+\[
+ \frac1{\alpha_r+\beta_r}
+ \int_{x-\alpha_r}^{x+\beta_r}f(t)\,\mathrm dt\longrightarrow f(x).
+\]
+这里不要求 \(\alpha_r/\beta_r\) 有正的上下界，允许一端恒为零。
+\item\label{b1:item:14-primitive-derivative}
+证明 \(F\) 在 \([a,b]\) 上连续，并且在 \(f\) 的每个内部 Lebesgue 点都有 \(F'(x)=f(x)\)。
+从而 \(F'=f\) 在 \((a,b)\) 上几乎处处成立。
+\end{enumerate}
+\end{exercise}
+% 来源：自拟；把本章Lebesgue点的绝对偏差与第五章积分绝对连续性结合。
+% 不预先使用“绝对连续函数必可微”或第16章微积分基本定理。
+\begin{solution}
+令 \(R_r=\max\{\alpha_r,\beta_r\}\)。所积分的区间包含在 \([x-R_r,x+R_r]\) 中，
+且 \(R_r\leq\alpha_r+\beta_r\)。因此
+\[
+ \begin{aligned}
+ \left|\frac1{\alpha_r+\beta_r}
+       \int_{x-\alpha_r}^{x+\beta_r}f(t)\,\mathrm dt-f(x)\right|
+ &\leq\frac1{\alpha_r+\beta_r}
+       \int_{x-R_r}^{x+R_r}|f(t)-f(x)|\,\mathrm dt\\
+ &\leq2\,\frac1{2R_r}
+       \int_{x-R_r}^{x+R_r}|f(t)-f(x)|\,\mathrm dt
+ \longrightarrow0.
+ \end{aligned}
+\]
+这是一个一维特性：包含 \(x\) 的区间即使两端极不对称，长度仍能控制其到 \(x\) 的最远距离。
+
+当 \(x<y\) 时，
+\[
+ |F(y)-F(x)|\leq\int_x^y|f(t)|\,\mathrm dt.
+\]
+由\cref{b1:prop:integral-absolute-continuity}，右侧随 \(y-x\to0\) 一致趋于零，
+故 \(F\) 连续，包括两个端点。
+若 \(x\) 是内部 Lebesgue 点，则 \(h>0\) 时的差商是 \([x,x+h]\) 上的平均，
+\(h<0\) 时的差商是 \([x+h,x]\) 上的平均。
+第一问分别给出两侧极限均为 \(f(x)\)，所以 \(F'(x)=f(x)\)。
+最后应用\cref{b1:thm:lebesgue-point}即可得到几乎处处结论。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:14-cantor-function}
+令 \(\rho_C\) 为第\ref{b1:subsec:060303}小节用二进数字构造的 Cantor 概率测度，定义
+\[
+ F_C(x)=\rho_C\bigl((-\infty,x]\bigr)\quad(x\in\mathbb R).
+\]
+\begin{enumerate}
+\item\label{b1:item:14-cantor-continuity}
+证明 \(F_C\) 连续、单调不减，且 \(F_C(0)=0\)、\(F_C(1)=1\)。
+进一步，令 \(\gamma=\log2/\log3\)，证明
+\[
+ |F_C(y)-F_C(x)|\leq4|y-x|^\gamma
+ \quad(x,y\in\mathbb R).
+\]
+\item\label{b1:item:14-cantor-derivative}
+证明 \(F_C'=0\) 在 Lebesgue 几乎处处成立，
+但不存在 \(g\in L^1((0,1))\) 使 \(F_C(x)=\int_0^xg(t)\,\mathrm dt\) 对全部 \(x\in[0,1]\) 成立。
+\end{enumerate}
+函数 \(F_C|_{[0,1]}\) 称为\term[cantor-hanshu]{Cantor 函数}[Cantor function]。
+\end{exercise}
+% 来源：自拟；0603的数字映射给每个第n层Cantor基本区间质量2^{-n}。
+% 从该已证测度构造分布函数，并与上一题的L1原函数比较；不调用BV理论。
+\begin{solution}
+单调性来自半直线的包含关系。
+由第\ref{b1:subsec:060303}小节，\(\rho_C\) 无原子且全部质量在三分 Cantor 集 \(C\) 上。
+测度从上、从下连续性分别给出
+\[
+ \lim_{y\downarrow x}F_C(y)=F_C(x),\quad
+ \lim_{y\uparrow x}F_C(y)=\rho_C\bigl(( -\infty,x)\bigr)=F_C(x),
+\]
+所以 \(F_C\) 连续。端点值也由 \(\rho_C(C)=1\) 与 \(\rho_C(\{0\})=0\) 得到。
+
+固定前 \(n\) 位三进数字，就确定一个长度 \(3^{-n}\) 的第 \(n\) 层基本闭区间。
+在构造 \(\rho_C\) 的映射中，这等价于固定原像的前 \(n\) 位二进数字，
+其原像为长度 \(2^{-n}\) 的二进半开区间，端点的编码差别不影响质量。
+因此每个基本区间的 \(\rho_C\)-质量为 \(2^{-n}\)。
+这些区间彼此之间的间隙至少为 \(3^{-n}\)，
+故一个长度不超过 \(3^{-n}\) 的区间至多与两个基本区间有交。
+若 \(0<y-x<1\)，取 \(n\geq0\)，使
+\[
+ 3^{-(n+1)}<y-x\leq3^{-n}.
+\]
+于是
+\[
+ 0\leq F_C(y)-F_C(x)
+ =\rho_C\bigl((x,y]\bigr)
+ \leq2\cdot2^{-n}
+ <4|y-x|^\gamma.
+\]
+若 \(y-x\geq1\)，总质量不超过 \(1\) 已给出所需估计；交换 \(x,y\) 可处理另一种次序。
+
+当 \(x\notin C\) 时，由 \(C\) 闭，可取一个不交于 \(C\) 的邻域。
+测度在该邻域为零，\(F_C\) 因而在其中为常数，所以 \(F_C'(x)=0\)。
+由于 \(m(C)=0\)，导数几乎处处为零。
+假如存在题述 \(g\)，\cref{b1:ex:14-one-sided-primitive}给出 \(F_C'=g\) 几乎处处，
+于是 \(g=0\) 几乎处处。这会推出 \(F_C(1)=0\)，与 \(F_C(1)=1\) 矛盾。
+连续性、单调性以及几乎处处存在的导数，尚不足以保证由导数积分恢复原函数。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:14-representative-null-change}
+设 \(u\colon\mathbb R^d\to\mathbb R\) 连续，\(N\) 为 Lebesgue 零测集，
+\(f=u\) 于 \(\mathbb R^d\setminus N\)，而在 \(N\) 上任意指定有限值。
+\begin{enumerate}
+\item\label{b1:item:14-representative-unique-value}
+证明对每个 \(x\)，恰有一个数 \(a\) 满足
+\[
+ \lim_{r\downarrow0}\frac1{m\bigl(B(x,r)\bigr)}
+       \int_{B(x,r)}|f(y)-a|\,\mathrm dy=0,
+\]
+且该数为 \(u(x)\)。据此求出 \(f\) 的 Lebesgue 点集及\cref{b1:def:precise-representative}中的精确代表。
+\item\label{b1:item:14-representative-unbounded}
+构造一个有限值 Borel 函数 \(f\)，使它在每个非空开集中都无界，
+但其精确代表处处为零，且几乎每一点都是 \(f\) 的 Lebesgue 点。
+\end{enumerate}
+\end{exercise}
+% 来源：自拟；区分平均定义的唯一值、指定代表的点值与通常连续性。
+% 第二问把普通的可数集改值例增强为处处局部无界，避免只复述正文的零测修改规则。
+\begin{solution}
+由于 Lebesgue 测度完备，\(f\) 可测且与 \(u\) 具有相同的局部积分。
+连续性给出
+\[
+ \frac1{m\bigl(B(x,r)\bigr)}\int_{B(x,r)}|f(y)-u(x)|\,\mathrm dy
+ =\frac1{m\bigl(B(x,r)\bigr)}\int_{B(x,r)}|u(y)-u(x)|\,\mathrm dy
+ \longrightarrow0.
+\]
+若 \(a\) 也满足题述极限，三角不等式给出
+\[
+ |a-u(x)|
+ \leq\frac1{m\bigl(B(x,r)\bigr)}\int_{B(x,r)}|a-f(y)|\,\mathrm dy
+ +\frac1{m\bigl(B(x,r)\bigr)}\int_{B(x,r)}|f(y)-u(x)|\,\mathrm dy.
+\]
+令 \(r\downarrow0\)，得 \(a=u(x)\)。
+因此 \(x\) 是指定代表 \(f\) 的 Lebesgue 点，当且仅当 \(f(x)=u(x)\)。
+另一方面，\(f\) 的球平均在每一点都趋于 \(u(x)\)，故其精确代表处处等于 \(u\)。
+
+第二问中，设 \(e_1\) 为第一坐标向量，并取
+\[
+ D_k=\mathbb Q^d+k\sqrt2\,e_1\quad(k\geq1).
+\]
+每个 \(D_k\) 可数且稠密。若 \(D_k\cap D_l\ne\varnothing\)，
+第一坐标会给出 \((k-l)\sqrt2\in\mathbb Q\)，所以 \(k=l\)；这些集合两两不交。
+令 \(f=k\) 于 \(D_k\)，其余点取 \(0\)。
+它是有限值 Borel 函数，非零点集 \(D=\bigcup_kD_k\) 可数，因而 \(f=0\) 几乎处处。
+任意非空开集都与每个 \(D_k\) 相交，所以 \(f\) 在其中无界，特别地处处不连续。
+将第一问用于 \(u=0\)，可知其精确代表处处为零，Lebesgue 点集恰为 \(\mathbb R^d\setminus D\)。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:14-products-at-lebesgue-points}
+设 \(1<p,q<\infty\)、\(1/p+1/q=1\)，
+\(f\in L^p_{\mathrm{loc}}(\mathbb R^d)\)、\(g\in L^q_{\mathrm{loc}}(\mathbb R^d)\)。
+\begin{enumerate}
+\item\label{b1:item:14-product-holder-point}
+若在一点 \(x\) 有
+\[
+ \begin{aligned}
+ \frac1{m\bigl(B(x,r)\bigr)}\int_{B(x,r)}|f(y)-f(x)|^p\,\mathrm dy&\longrightarrow0,\\
+ \frac1{m\bigl(B(x,r)\bigr)}\int_{B(x,r)}|g(y)-g(x)|^q\,\mathrm dy&\longrightarrow0,
+ \end{aligned}
+\]
+证明 \(x\) 是乘积 \(fg\) 的 Lebesgue 点。
+\item\label{b1:item:14-product-failure}
+构造实线上非负函数 \(h\in L^2(\mathbb R)\)，使 \(h(0)=0\)、\(0\) 是 \(h\) 的 Lebesgue 点，
+但不是 \(h^2\) 的 Lebesgue 点。由此说明“两个函数都有同一个 Lebesgue 点”不足以保证乘积也有该 Lebesgue 点，
+即使乘积已经局部可积。
+\end{enumerate}
+\end{exercise}
+% 来源：自拟；第一问用第10章Hölder/Minkowski，第二问采用显式尖峰。
+% 反例同时区分L1平均偏差与L2平均偏差，不误把逐点的L1性质提升为Lp性质。
+\begin{solution}
+对球 \(B=B(x,r)\)，把 \(m(B)^{-1}m|_B\) 视为概率测度。
+由 \(fg-f(x)g(x)=(f-f(x))g+f(x)(g-g(x))\) 及 Hölder 不等式，
+\[
+ \begin{aligned}
+ \frac1{m(B)}\int_B|fg-f(x)g(x)|
+ &\leq
+ \left(\frac1{m(B)}\int_B|f-f(x)|^p\right)^{1/p}
+ \left(\frac1{m(B)}\int_B|g|^q\right)^{1/q}\\
+ &\quad+|f(x)|\left(\frac1{m(B)}\int_B|g-g(x)|^q\right)^{1/q}.
+ \end{aligned}
+\]
+Minkowski 不等式还给出
+\[
+ \left(\frac1{m(B)}\int_B|g|^q\right)^{1/q}
+ \leq|g(x)|+
+ \left(\frac1{m(B)}\int_B|g-g(x)|^q\right)^{1/q},
+\]
+故这一因子保持有界，前一式右侧趋于零。局部可积性 \(fg\in L^1_{\mathrm{loc}}\) 也由 Hölder 不等式得到。
+
+第二问取两两不交区间及函数
+\[
+ I_n=(2^{-n},2^{-n}+2^{-3n}),\quad
+ h=\sum_{n=2}^{\infty}2^n\mathbf1_{I_n}.
+\]
+于是 \(h(0)=0\)，且
+\[
+ \int_{\mathbb R}h^2=\sum_{n=2}^{\infty}2^{2n}2^{-3n}
+ =\sum_{n=2}^{\infty}2^{-n}<\infty.
+\]
+当 \(2^{-(N+1)}<r\leq2^{-N}\) 时，\((-r,r)\) 只能与指标 \(n\geq N+1\) 的区间有正测度交集。
+因此
+\[
+ \frac1{2r}\int_{-r}^rh
+ \leq\frac1{2r}\sum_{n=N+1}^{\infty}2^{-2n}
+ \leq\frac13\,2^{-N}\longrightarrow0.
+\]
+故 \(0\) 是 \(h\) 的 Lebesgue 点。
+但取 \(r_n=2^{-n}+2^{-3n}\)，整个 \(I_n\) 都落在 \((-r_n,r_n)\) 内，从而
+\[
+ \frac1{2r_n}\int_{-r_n}^{r_n}|h(t)^2-h(0)^2|\,\mathrm dt
+ \geq\frac{2^{-n}}{2(2^{-n}+2^{-3n})}
+ \longrightarrow\frac12.
+\]
+所以 \(0\) 不是 \(h^2\) 的 Lebesgue 点。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:14-finite-p-endpoint}
+令
+\[
+ J_n=(2^{-n},2^{-n}+2^{-2n-2})\quad(n\geq2),\quad
+ E=\bigcup_{n=2}^{\infty}J_n,\quad f=\mathbf1_E.
+\]
+证明对每个有限 \(p\geq1\)，都有
+\[
+ \lim_{r\downarrow0}\frac1{2r}\int_{-r}^r|f(t)-f(0)|^p\,\mathrm dt=0,
+\]
+但是对每个 \(r>0\)，都有
+\[
+ \operatorname*{ess\,sup}_{|t|<r}|f(t)-f(0)|=1.
+\]
+进一步说明，即使 \(f\in L^\infty\)，全部有限幂次的平均偏差结论也不推出本质一致意义的局部收敛。
+\end{exercise}
+% 来源：自拟；有界示性函数的稀薄区间例检验p=∞端点，不重复正文的有限p证明。
+\begin{solution}
+由于 \(0\notin E\)，\(f(0)=0\)，且 \(|f|^p=\mathbf1_E\) 对每个 \(p>0\) 都成立。
+若 \(2^{-(N+1)}<r\leq2^{-N}\)，则只有 \(n\geq N+1\) 的区间可能在 \((-r,r)\) 内贡献正长度，故
+\[
+ m\bigl(E\cap(-r,r)\bigr)
+ \leq\sum_{n=N+1}^{\infty}2^{-2n-2}
+ =\frac1{12}\,2^{-2N}.
+\]
+除以 \(2r>2^{-N}\)，得到平均值不超过 \(2^{-N}/12\)，趋于零。
+这个估计与有限指数 \(p\) 无关。
+
+另一方面，对任意 \(r>0\)，可取充分大的 \(n\)，使整个 \(J_n\subset(-r,r)\)。
+在这个正长度区间上 \(f=1\)，所以本质上确界至少为 \(1\)；又因 \(0\leq f\leq1\)，它恰为 \(1\)。
+有限幂次的平均允许高度为 \(1\) 的偏差占据越来越小的相对体积，而本质上确界不会忽略正测度的尖峰。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:14-affine-lebesgue-points}
+设 \(T(x)=Ax+b\)，其中 \(A\) 为可逆实 \(d\times d\) 矩阵，\(b\in\mathbb R^d\)，
+并设 \(f\in L^1_{\mathrm{loc}}(\mathbb R^d)\)。
+\begin{enumerate}
+\item\label{b1:item:14-affine-invariance}
+证明 \(f\circ T\) 局部可积，并且 \(x\) 是 \(f\circ T\) 的 Lebesgue 点，当且仅当 \(T(x)\) 是 \(f\) 的 Lebesgue 点。
+特别地，说明平移如何改变 Lebesgue 点集。
+\item\label{b1:item:14-singular-pullback}
+设 \(L\colon\mathbb R\to\mathbb R^2\)、\(L(t)=(t,0)\)。
+构造两个在二维 Lebesgue 几乎处处相等的 Borel 函数 \(f,g\)，
+使 \(f\circ L\) 与 \(g\circ L\) 在每一点都不相等。
+解释为何非可逆映射的复合不能无条件定义在 Lebesgue 几乎处处等价类上。
+\end{enumerate}
+\end{exercise}
+% 来源：自拟；第7章线性换元与本章局部平均结合；奇异线性映射一问检查零集逆像。
+\begin{solution}
+若 \(K\subset\mathbb R^d\) 紧，线性换元给出
+\[
+ \int_K|f\bigl(T(z)\bigr)|\,\mathrm dz
+ =\frac1{|\det A|}\int_{T(K)}|f(y)|\,\mathrm dy<\infty,
+\]
+因为 \(T(K)\) 紧，故 \(f\circ T\) 局部可积。
+令 \(y_0=T(x)\)，并取 \(c=\|A\|>0\)，使 \(|Av|\leq c|v|\)。
+由 \(T(B(x,r))\subseteq B(y_0,cr)\)，有
+\[
+ \begin{aligned}
+ &\frac1{m\bigl(B(x,r)\bigr)}
+    \int_{B(x,r)}|f\bigl(T(z)\bigr)-f(y_0)|\,\mathrm dz\\
+ &\quad\leq
+ \frac1{|\det A|\,m\bigl(B(x,r)\bigr)}
+    \int_{B(y_0,cr)}|f(y)-f(y_0)|\,\mathrm dy\\
+ &\quad=
+ \frac{c^d}{|\det A|}\,
+ \frac1{m\bigl(B(y_0,cr)\bigr)}
+    \int_{B(y_0,cr)}|f(y)-f(y_0)|\,\mathrm dy.
+ \end{aligned}
+\]
+若 \(y_0\) 是 \(f\) 的 Lebesgue 点，右侧趋于零，便得一个方向。
+对 \(T^{-1}\) 与函数 \(f\circ T\) 使用相同论证，得到反向。
+所以 Lebesgue 点集按 \(T^{-1}\) 变换；当 \(T(x)=x+b\) 时，它平移为原点集减去 \(b\)。
+
+第二问取 \(f=\mathbf1_{\mathbb R\times\{0\}}\)、\(g=0\)。
+横轴是二维零测集，所以 \(f=g\) 几乎处处。
+但 \(f\circ L=1\)、\(g\circ L=0\) 在整条实线上成立。
+这里一个二维零测集的逆像是整个定义域，而不再是一维零测集。
+因此在没有相应零集逆像条件时，复合的结果取决于所选代表。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:14-degenerate-rectangles}
+在 \(\mathbb R^2\) 中令
+\[
+ E=\{\,(x,y):|x|<1,\ |y|<x^2\,\},\quad f=\mathbf1_E,
+ \quad R_r=[-r,r]\times[-r^2,r^2]\quad(0<r<1).
+\]
+证明原点是 \(f\) 的 Lebesgue 点且 \(f(0,0)=0\)，但是
+\[
+ \frac1{m_2(R_r)}\int_{R_r}f\,\mathrm dm_2=\frac13
+ \quad(0<r<1).
+\]
+结合\cref{b1:prop:lebesgue-controlled-sets}，指出这些集合虽然以原点为中心且直径趋于零，却缺少了哪一项控制。
+\end{exercise}
+% 来源：自拟；尖区面积由第7章Tonelli直接计算；该反例留在习题，不复述正文示例。
+\begin{solution}
+由定义，原点不在 \(E\)。当 \(0<r<1\) 时，球内的横坐标满足 \(|x|<r\)，故
+\[
+ m_2\bigl(E\cap B(0,r)\bigr)
+ \leq\int_{-r}^r2x^2\,\mathrm dx=\frac43r^3.
+\]
+球面积为 \(\pi r^2\)，所以 \(f\) 在球内的绝对偏差平均不超过 \(4r/(3\pi)\)，趋于零。
+于是原点是值为零的 Lebesgue 点。
+
+在 \(R_r\) 内，对每个 \(|x|<r\) 都有 \(x^2\leq r^2\)，
+因而 \(E\) 的纵向截面仍有完整长度 \(2x^2\)。所以
+\[
+ \int_{R_r}f\,\mathrm dm_2=\int_{-r}^r2x^2\,\mathrm dx=\frac43r^3,
+ \quad m_2(R_r)=4r^3,
+\]
+相除得到 \(1/3\)。
+矩形的长短边之比为 \(1/r\)，趋于无穷；包含它的中心球半径可取 \(\sqrt{r^2+r^4}\)。
+对应的体积比为
+\[
+ \frac{m_2(R_r)}{m_2\bigl(B(0,\sqrt{r^2+r^4})\bigr)}
+ =\frac{4r}{\pi(1+r^2)}\longrightarrow0.
+\]
+因此不存在一个正的常数，统一从下控制矩形体积与外接球体积之比。
+细长矩形把越来越大比例的自身面积放在球内的稀薄部分上，球平均结论便不能传递过去。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:14-accumulating-atoms}
+在实线上定义
+\[
+ \mu=\sum_{n=1}^{\infty}2^{-n}\delta_{2^{-n}},\quad
+ \nu=\sum_{k=1}^{\infty}2^{-2k}\delta_{2^{-2k}}.
+\]
+\begin{enumerate}
+\item\label{b1:item:14-atoms-radon}
+证明 \(\mu,\nu\) 都是有限 Radon 测度，\(\nu\ll\mu\)，并给出一个 Borel 密度 \(h\)，使 \(\nu=h\mu\)。
+求出 \(\operatorname{supp}\mu\)。
+\item\label{b1:item:14-atoms-derivative}
+在每个原子 \(2^{-n}\) 处计算 \(D_\mu\nu\)。再证明，虽然 \(0\in\operatorname{supp}\mu\)，
+但 \(D_\mu\nu(0)\) 不存在。
+解释这为何不与\cref{b1:thm:radon-measure-differentiation}矛盾。
+\end{enumerate}
+\end{exercise}
+% 来源：自拟；几何级数精确计算一个支集内的例外点，区分“支集上处处”和“测度几乎处处”。
+\begin{solution}
+两者总质量分别为 \(1\) 与 \(1/3\)，且 \(0\leq\nu\leq\mu\)。
+它们的可数可加性来自非负级数换序。
+对任意 Borel 集，只保留前 \(N\) 个原子，得到包含于该集的有限点集；
+遗漏质量至多为 \(\sum_{n>N}2^{-n}\)，趋于零。
+有限点集紧，故这两个测度紧内正则，且总质量有限保证局部有限，所以都是 Radon 测度。
+取
+\[
+ h=\mathbf1_{\{\,2^{-2k}:k\geq1\,\}},
+\]
+即可逐项验证 \(\nu=h\mu\)，从而 \(\nu\ll\mu\)。
+每个原子都在支集中；原点的任意邻域也包含尾部原子并具有正质量。
+而集合 \(S=\{0\}\cup\{\,2^{-n}:n\geq1\,\}\) 闭，其外每一点都有不含原子的邻域。
+因此 \(\operatorname{supp}\mu=S\)。
+
+固定 \(n\)，当 \(r\) 小于该原子与其他原子之间距离的一半时，
+\(\overline B(2^{-n},r)\) 只含这个原子。
+所以球比值最终恒等于 \(1\)（\(n\) 偶数）或 \(0\)（\(n\) 奇数），恰为 \(h(2^{-n})\)。
+
+在原点取 \(r_N=2^{-N}\)。此时
+\[
+ \mu([-r_N,r_N])=\sum_{n=N}^{\infty}2^{-n}=2^{1-N},
+\]
+而分子的求和只保留偶数指标，因而
+\[
+ \frac{\nu([-r_N,r_N])}{\mu([-r_N,r_N])}
+ =\begin{cases}
+ 2/3,&N\text{ 偶数},\\
+ 1/3,&N\text{ 奇数}.
+ \end{cases}
+\]
+两个子列的极限不同，故 \(D_\mu\nu(0)\) 不存在。
+但 \(\mu(\{0\})=0\)，而全部正质量原子处的公式都成立，故这只是定理所允许的零测例外。
+原点属于支集，只保证每个球的分母为正，并不保证该点的微分极限存在。
+\end{solution}

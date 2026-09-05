@@ -2,19 +2,227 @@
 \section{密度与测度比}
 \label{b1:sec:1401}
 
-% TODO: 撰写本节正文。
+导数用越来越小的增量描述局部变化。对测度而言，可以把增量换成围绕一点缩小的球，再比较球中的质量与体积。若测度原本由函数积分得到，这个比值应当恢复函数的局部值；若质量集中在体积为零的集合上，同一个比值则可能趋于无穷，或者在几乎所有点都看不见这部分质量。
+
+本节先定义这些比值，说明它们何时有意义，以及哪些结论只需测度连续性便能得到。几乎处处存在极限是后面两节的任务。集合密度的初步例子可对照 Axler 的《Measure, Integration \& Real Analysis》\cite[4.22--4.24]{Axler2020Measure}；相对于一般 Radon 测度的球平均及支集条件，可结合 Fremlin 的《Measure Theory》\cite[472D--E]{Fremlin2016Measure}阅读。后者用闭球，本章的测度比也采用这一约定。
 
 \subsection{上、下密度}
 \label{b1:subsec:140101}
 
-待填充。
+本节固定在 \(\mathbb R^d\) 上讨论，\(m\) 表示 Lebesgue 测度。由伸缩性质，正半径球的体积有限且为正。对 Radon 测度 \(\nu\)，有界闭球的质量也有限，因此下面每个固定半径的比值都是非负实数；趋于零尺度时的极限却可以为无穷。
+
+% 实读来源：Axler2020Measure，4.22--4.24，印刷 pp.112--113；
+% Simon1983Lectures，§3 开头及 Remark 3.1，印刷 p.10。
+% 改编：本节先采用环境维数的 Lebesgue 体积归一化，不提前引入 Hausdorff 测度；集合例子与振荡环带计算独立展开。
+\begin{definition}
+\label{b1:def:measure-densities}
+设 \(\nu\) 是 \(\mathbb R^d\) 上的正 Radon 测度。对每个 \(x\in\mathbb R^d\)，把
+\[
+\underline D_m\nu(x)
+=\liminf_{r\downarrow0}
+\frac{\nu\bigl(\overline B(x,r)\bigr)}{m\bigl(\overline B(x,r)\bigr)},
+\quad
+\overline D_m\nu(x)
+=\limsup_{r\downarrow0}
+\frac{\nu\bigl(\overline B(x,r)\bigr)}{m\bigl(\overline B(x,r)\bigr)}
+\]
+分别称为 \(\nu\) 在 \(x\) 处相对于 Lebesgue 测度的\term[xia-midu]{下密度}[lower density]与\term[shang-midu]{上密度}[upper density]。若二者相等，则把共同值记作 \(D_m\nu(x)\)，称为密度，允许其值为 \(+\infty\)。
+\end{definition}
+
+上、下密度记录的并非沿某一条预选半径序列的极限。例如，对比值函数 \(a(r)\)，有
+\[
+\limsup_{r\downarrow0}a(r)
+=\inf_{\delta>0}\sup_{0<r<\delta}a(r),
+\quad
+\liminf_{r\downarrow0}a(r)
+=\sup_{\delta>0}\inf_{0<r<\delta}a(r).
+\]
+只计算 \(r=2^{-n}\) 上的值，一般还不足以确定任意半径趋零时的行为。
+
+\begin{definition}
+\label{b1:def:density-point}
+设 \(E\subseteq\mathbb R^d\) 为 Lebesgue 可测集。在上一定义中取 \(\nu=m\llcorner E\)，得到
+\[
+\begin{aligned}
+\underline\theta(E,x)
+&=\liminf_{r\downarrow0}
+\frac{m\bigl(E\cap\overline B(x,r)\bigr)}{m\bigl(\overline B(x,r)\bigr)},\\
+\overline\theta(E,x)
+&=\limsup_{r\downarrow0}
+\frac{m\bigl(E\cap\overline B(x,r)\bigr)}{m\bigl(\overline B(x,r)\bigr)}.
+\end{aligned}
+\]
+若两者相等，则把共同值记作 \(\theta(E,x)\)。若 \(\theta(E,x)=1\)，则称 \(x\) 是 \(E\) 的一个\term[midu-dian]{密度点}[density point]。
+\symidx{\(\theta(E,x)\)：集合在一点的密度}
+\end{definition}
+
+集合的上、下密度都在 \([0,1]\) 内，并且补集交换上、下极限：
+\[
+\underline\theta(E^{\mathrm c},x)=1-\overline\theta(E,x),
+\quad
+\overline\theta(E^{\mathrm c},x)=1-\underline\theta(E,x).
+\]
+这些等式来自每个球中 \(E\) 与其补集的质量之和等于整个球的质量。若 \(m(E\mathbin{\triangle} F)=0\)，则 \(E\) 与 \(F\) 在每个球中的质量相同，所以它们在每一点的上、下密度都相同，而不只是几乎处处相同。
+
+内点一定是密度点，因为足够小的闭球全在集合内；若 \(x\notin\overline E\)，则足够小的球与 \(E\) 不交，密度为零。反过来，密度点不必是内点，甚至不必属于原集合。例如 \(\mathbb R^d\setminus\{0\}\) 在原点的密度仍为 \(1\)。集合 \(\mathbb Q^d\) 的闭包是整个空间，但它在每一点的密度都为零。这些例子说明密度忽略零测修改，而通常的内点与闭包会被零测修改改变。
+
+边界点也可能具有严格介于 \(0\) 与 \(1\) 之间的密度。取半空间 \(H=\{\,x\in\mathbb R^d\mid x_d>0\,\}\)。在边界上一点 \(x\) 处，关于超平面的反射把球的两半互换；由\cref{b1:lem:coordinate-hyperplane-null}及反射不变性，分界超平面为零测集，两半球体积相等。因此 \(\theta(H,x)=1/2\)。
+
+还可以让密度完全没有极限。令 \(r_n=2^{-2^n}\)，并取
+\[
+E=\bigcup_{k=0}^{\infty}
+\{\,x\in\mathbb R^d\mid r_{2k+1}<|x|<r_{2k}\,\}.
+\]
+这是一串交替保留与删去的同心环带。记 \(a(r)\) 为 \(E\) 在原点半径 \(r\) 球中的体积比例。球面的零测性与伸缩公式给出
+\[
+a(r_{2k})\geq1-\left(\frac{r_{2k+1}}{r_{2k}}\right)^d,
+\quad
+a(r_{2k+1})\leq\left(\frac{r_{2k+2}}{r_{2k+1}}\right)^d.
+\]
+由于 \(r_{n+1}/r_n=2^{-2^n}\longrightarrow0\)，第一列比例趋于 \(1\)，第二列趋于 \(0\)。结合 \(0\leq a(r)\leq1\)，可知 \(\overline\theta(E,0)=1\)、\(\underline\theta(E,0)=0\)。
+
+这些都是逐点计算，尚未限制异常点集的大小。\cref{b1:thm:lebesgue-density}将证明：对任意 Lebesgue 可测集 \(E\)，几乎每个属于 \(E\) 的点都是密度点，而在补集内密度几乎处处为零。该结论将在下一节从积分的微分定理推出，这里不把它作为已知性质使用。中文伴读可参看那汤松的《实变函数论》第5版中译本\cite[第九章第6节]{Natanson2010RealChinese}，该书以“稠密点、近似连续”为这一话题的节名；本书使用“密度点”，将它与拓扑意义下的稠密性分开。
 
 \subsection{密度比}
 \label{b1:subsec:140102}
 
-待填充。
+若测度集中在曲线或离散点上，Lebesgue 体积未必是合适的基准。改用另一个测度 \(\mu\) 后，首先要处理分母可能为零的问题。
+
+\begin{definition}
+\label{b1:def:measure-support}
+设 \(\mu\) 为 \(\mathbb R^d\) 上的正 Radon 测度。集合
+\[
+\operatorname{supp}\mu
+=\{\,x\in\mathbb R^d\mid \mu\bigl(B(x,r)\bigr)>0\ \forall r>0\,\}
+\]
+称为\term[cedu-zhiji]{测度的支集}[support of a measure]。
+\symidx{\(\operatorname{supp}\mu\)：测度的支集}
+\end{definition}
+
+支集是闭集，其补集为零测集。事实上，若 \(\mu\bigl(B(x,r)\bigr)=0\)，则 \(B(x,r/2)\) 中每一点都有一个零测开球邻域，因而都不在支集中，所以支集的补集开。再取欧氏空间的一个可数开球基。每个不在支集中的点都落在某个包含于零测开球的基元素内；所有这样的基元素组成可数族，测度均为零，并覆盖支集的补集。可数次可加性便给出
+\[
+\mu\bigl(\mathbb R^d\setminus\operatorname{supp}\mu\bigr)=0.
+\]
+这里使用了欧氏空间的第二可数性，不能仅凭不可数个零测开集的并就作出零测结论。
+
+给定两个正 Radon 测度 \(\mu,\nu\)，对 \(x\in\operatorname{supp}\mu\) 定义球上的质量比
+\[
+Q_r^{\mu,\nu}(x)
+=\frac{\nu\bigl(\overline B(x,r)\bigr)}{\mu\bigl(\overline B(x,r)\bigr)},
+\quad r>0.
+\]
+由于闭球包含同中心开球，分母严格为正；由于闭球紧，分子与分母都有限。在支集外不指定这个比值，避免把 \(0/0\) 当成某个固定值来掩盖定义域。测度 \(\mu=0\) 的情形下支集为空，与此约定一致。
+
+\begin{proposition}
+\label{b1:prop:open-closed-density-ratio}
+固定 \(x\in\operatorname{supp}\mu\)。在质量比中把闭球换成开球，不改变 \(r\downarrow0\) 时的上极限或下极限。这不要求任何球面为 \(\mu\)-零集或 \(\nu\)-零集。
+\end{proposition}
+\begin{proof}
+对每个固定的 \(r>0\)，从 \(s>r\) 递减到 \(r\) 时，开球 \(B(x,s)\) 递减到 \(\overline B(x,r)\)。两测度在一个较大的闭球上都有限，因此测度从上连续性给出
+\[
+\frac{\nu\bigl(B(x,s)\bigr)}{\mu\bigl(B(x,s)\bigr)}
+\longrightarrow Q_r^{\mu,\nu}(x).
+\]
+从 \(t<r\) 递增到 \(r\) 时，闭球 \(\overline B(x,t)\) 递增到 \(B(x,r)\)，同样有
+\[
+Q_t^{\mu,\nu}(x)
+\longrightarrow
+\frac{\nu\bigl(B(x,r)\bigr)}{\mu\bigl(B(x,r)\bigr)}.
+\]
+两次取商的极限都有严格正的极限分母。给定 \(\delta>0\)，当 \(r<\delta\) 时，上述逼近半径也可全取小于 \(\delta\)。所以两类比值在 \(0<r<\delta\) 上具有相同的上确界与下确界。再令 \(\delta\downarrow0\) 即得结论。
+\end{proof}
+
+固定半径的开球与闭球可能有不同质量；命题比较的是全部小半径组成的极限过程。对于原子恰好落在球面上的测度，这个区别不能略去。
 
 \subsection{测度相对于测度的导数}
 \label{b1:subsec:140103}
 
-待填充。
+\begin{definition}
+\label{b1:def:relative-density}
+设 \(\mu,\nu\) 为正 Radon 测度。对 \(x\in\operatorname{supp}\mu\)，定义
+\[
+\underline D_\mu\nu(x)=\liminf_{r\downarrow0}Q_r^{\mu,\nu}(x),
+\quad
+\overline D_\mu\nu(x)=\limsup_{r\downarrow0}Q_r^{\mu,\nu}(x).
+\]
+它们分别是 \(\nu\) 相对于 \(\mu\) 的下密度与上密度。若二者相等，则把共同值记作 \(D_\mu\nu(x)\)，称为 \(\nu\) 相对于 \(\mu\) 在 \(x\) 处的\term[cedu-daoshu]{测度导数}[derivative of a measure]，允许取值 \(+\infty\)。
+\symidx{\(\underline D_\mu\nu\)：测度比的下密度}
+\symidx{\(\overline D_\mu\nu\)：测度比的上密度}
+\symidx{\(D_\mu\nu\)：测度相对于测度的导数}
+\end{definition}
+
+当 \(\mu=m\) 时，这就回到第一小节的密度。这里的导数由空间中的小球定义，暂时还不是第\ref{b1:sec:0604}节中由积分等式确定的 Radon--Nikodym 导数。将二者联系起来，既要证明球比值几乎处处收敛，也要辨别奇异部分在极限中的表现。
+
+% 实读来源：Fremlin2016Measure，卷4，472D--E 及习题 472Xd、472Yg，
+% tmp/ch13-fremlin47.tex。只用作支集、可测性问题和测度比值识别的来源定位；
+% 下列有理半径约化、开闭球比较、连续点与原子计算均在正文独立证明，不提前调用 472D 的结论。
+\begin{proposition}
+\label{b1:prop:relative-density-borel}
+在 \(\operatorname{supp}\mu\) 上，固定半径的质量比 \(Q_r^{\mu,\nu}\) 是 Borel 可测函数。上、下密度也是扩展实值 Borel 可测函数；它们的定义中可把半径限制为正有理数。导数存在的点集以及导数存在且有限的点集均为 Borel 集，导数在这些定义域上 Borel 可测。
+\end{proposition}
+\begin{proof}
+先看任意正 Radon 测度 \(\lambda\) 的球质量。若 \(x_n\to x\)，则对每个 \(\varepsilon>0\)，当 \(n\) 足够大时有
+\(\overline B(x_n,r)\subseteq\overline B(x,r+\varepsilon)\)。于是
+\[
+\limsup_{n\to\infty}\lambda\bigl(\overline B(x_n,r)\bigr)
+\leq\lambda\bigl(\overline B(x,r+\varepsilon)\bigr).
+\]
+让 \(\varepsilon\downarrow0\)，由较大闭球测度有限及从上连续性，右边趋于 \(\lambda\bigl(\overline B(x,r)\bigr)\)。因此固定半径的球质量是上半连续函数，特别是 Borel 可测的。取 \(\lambda=\mu,\nu\)，再在支集上对严格正的分母取商，得到 \(Q_r^{\mu,\nu}\) 的可测性。
+
+固定 \(x\) 与 \(r>0\)，取有理数 \(q_j\downarrow r\)。两测度从上连续性给出
+\(Q_{q_j}^{\mu,\nu}(x)\to Q_r^{\mu,\nu}(x)\)。若 \(r<1/n\)，可以令所有 \(q_j<1/n\)，所以在每个小半径区间上，有理半径给出相同的上确界与下确界。因此
+\[
+\begin{aligned}
+\overline D_\mu\nu
+&=\inf_{n\geq1}\sup_{\substack{q\in\mathbb Q\\0<q<1/n}}Q_q^{\mu,\nu},\\
+\underline D_\mu\nu
+&=\sup_{n\geq1}\inf_{\substack{q\in\mathbb Q\\0<q<1/n}}Q_q^{\mu,\nu}.
+\end{aligned}
+\]
+右边都是可数次上下确界，故为 Borel 函数。导数存在的点集是两者相等之处：其补集可写为
+\[
+\bigcup_{a\in\mathbb Q}
+\{\,x\in\operatorname{supp}\mu\mid
+\underline D_\mu\nu(x)<a<\overline D_\mu\nu(x)\,\},
+\]
+因而可测；再与 \(\{\overline D_\mu\nu<\infty\}\) 相交便得到有限导数的定义域。在导数存在处，它等于上密度的限制，所以同样可测。
+\end{proof}
+
+最直接的恢复公式发生在密度函数连续的点上。
+
+\begin{proposition}
+\label{b1:prop:continuous-density-recovery}
+设 \(\nu=f\mu\) 是正 Radon 测度，其中 \(f\) 非负可测。若 \(x\in\operatorname{supp}\mu\)，且所选代表 \(f\) 在 \(x\) 连续并取有限值，则
+\[
+D_\mu\nu(x)=f(x).
+\]
+\end{proposition}
+\begin{proof}
+给定 \(\varepsilon>0\)，由连续性可取 \(\delta>0\)，使 \(|f(y)-f(x)|<\varepsilon\) 对所有 \(|y-x|<\delta\) 成立。当 \(0<r<\delta\) 时，
+\[
+\begin{aligned}
+\left|Q_r^{\mu,\nu}(x)-f(x)\right|
+&\leq\frac{1}{\mu\bigl(\overline B(x,r)\bigr)}
+\int_{\overline B(x,r)}|f(y)-f(x)|\,\mathrm d\mu(y)\\
+&\leq\varepsilon.
+\end{aligned}
+\]
+令 \(r\downarrow0\) 即得结论。
+\end{proof}
+
+这个论证不需要 \(\mu\) 与 Lebesgue 测度有什么关系，只需要球中分母为正，以及 \(f\) 在目标点的连续性。后面的微分定理要把连续性替换为可积性，并相应地把“该点成立”换成“几乎处处成立”。
+
+\begin{proposition}
+\label{b1:prop:atomic-density-ratio}
+若 \(\mu(\{x\})>0\)，则
+\[
+D_\mu\nu(x)=\frac{\nu(\{x\})}{\mu(\{x\})}.
+\]
+\end{proposition}
+\begin{proof}
+当 \(r\downarrow0\) 时，闭球 \(\overline B(x,r)\) 递减到 \(\{x\}\)。两测度在一个固定闭球上有限，所以球的质量分别趋于 \(\nu(\{x\})\) 与 \(\mu(\{x\})\)。后者严格为正，故可以直接取商的极限。
+\end{proof}
+
+例如，取 \(\mu=\delta_0+m\)、\(\nu=2\delta_0+3m\)。在原点，测度导数为 \(2\)；在任意 \(x\ne0\) 处，足够小的球避开原点，质量比恒为 \(3\)。此例中的原点不是可任意修改的 \(\mu\)-零测点，因而密度函数在原点的值也由测度决定。
+
+另一方面，若分母为 \(m\)、分子为 \(\delta_0\)，则原点处的比值为 \(1/m\bigl(\overline B(0,r)\bigr)\)，趋于 \(+\infty\)；在其他点处，小球质量最终为零。因此 \(D_m\delta_0\) 在 \(m\)-几乎处处等于零。把 \(\delta_0\) 换成 \(2\delta_0\)，甚至会得到处处相同的扩展实值导数，而两测度并不相等。这说明测度比的极限不能未经条件地代回积分，宣称它恢复整个原测度。\cref{b1:sec:1403}将用 Lebesgue 分解精确说明它恢复哪一部分。

@@ -2,24 +2,129 @@
 \section{Lebesgue 微分定理}
 \label{b1:sec:1402}
 
-% TODO: 撰写本节正文。
+一个函数的积分不受零测集上的改动影响，所以不可能由积分恢复任意指定的每一个点值。合理的问题是：局部平均能否在几乎处处恢复某个可测代表？对连续函数，这由连续性直接保证；对局部可积函数，需要将连续逼近的整体误差转换成平均的逐点误差。上一章的极大不等式正是这一步所需的控制。
+
+本节采用连续稠密类与极大估计的路线，可对照 Axler 的《Measure, Integration \& Real Analysis》\cite[4.10]{Axler2020Measure}。先证明通常平均的微分，再把它加强为绝对偏差的平均趋零。两者不能只凭积分符号相似就视为同一陈述。
 
 \subsection{局部平均}
 \label{b1:subsec:140201}
 
-待填充。
+设 \(\Omega\subseteq\mathbb R^d\) 开，\(f\in L^1_{\mathrm{loc}}(\Omega)\)。在 \(B(x,r)\) 的闭包包含于 \(\Omega\) 时，记
+\[
+ A_rf(x)=\frac1{\omega_dr^d}\int_{B(x,r)}f(y)\,\mathrm dy.
+\]
+\symidx{\(A_rf\)：中心球上的积分平均}
+这里的 \(f\) 可以取实值或复值。球面为 Lebesgue 零测集，故平均与上一节的闭球密度约定相容。
+
+对每个固定 \(r>0\)，\(A_rf\) 在允许的中心区域连续。证明与\cref{b1:prop:maximal-elementary}相同：中心平移时，球的示性函数在一个零测球面之外收敛，被积函数则由一个固定紧集上的 \(|f|\) 控制。对固定 \(x\)，\(r\mapsto A_rf(x)\) 也连续：若 \(r_n\to r>0\)，球的示性函数仍几乎处处收敛，分母也趋于一个正数。
+
+因此，对 \(x\) 处所有小半径取上、下极限，可以只使用正有理半径。比如，选定一个处处有限的可测代表后，
+\[
+ \mathcal E f(x)=\limsup_{r\downarrow0}|A_rf(x)-f(x)|
+\]
+是可测函数。具体地，它可以写为对 \(n\) 取下确界、再对所有允许的 \(q\in\mathbb Q\cap(0,1/n)\) 取上确界；在不允许的中心处把相应的非负项延为零即可。每个内层都是可数上确界，且每个 \(x\in\Omega\) 都有充分小的允许半径。这一可测性说明避免了对不可数个半径分别选取例外零测集。
+
+通常平均的收敛允许抵消。在实直线上，\(f(y)=\mathbf1_{(0,\infty)}(y)-\mathbf1_{(-\infty,0)}(y)\)，并取 \(f(0)=0\)，则 \(A_rf(0)=0\) 对所有 \(r\) 成立，但
+\[
+ \frac1{2r}\int_{-r}^r|f(y)-f(0)|\,\mathrm dy=1.
+\]
+所以“平均趋于点值”和“平均绝对偏差趋零”有不同的逐点含义。
 
 \subsection{极大函数方法}
 \label{b1:subsec:140202}
 
-待填充。
+先在整个 \(\mathbb R^d\) 上设 \(f\in L^1\)。任取 \(g\in C_c(\mathbb R^d)\)，对每个半径都有
+\[
+ |A_rf(x)-f(x)|
+ \leq A_r|f-g|(x)+|A_rg(x)-g(x)|+|g(x)-f(x)|.
+\]
+连续性使中间一项随 \(r\downarrow0\) 趋零，而第一项对所有 \(r\) 同时受 \(M(f-g)(x)\) 控制。因此
+\begin{equation}\label{b1:eq:differentiation-maximal-error}
+ \mathcal E f(x)\leq M(f-g)(x)+|f(x)-g(x)|.
+\end{equation}
+对 \(t>0\)，由 Hardy--Littlewood 弱型估计和 Chebyshev 不等式，得到
+\begin{equation}\label{b1:eq:differentiation-exceptional-estimate}
+ m_d\bigl(\{\mathcal E f>2t\}\bigr)
+ \leq\frac{5^d+1}{t}\|f-g\|_1.
+\end{equation}
+
+这个估计没有要求 \(f-g\) 逐点一致小，也没有要求 \(M(f-g)\) 可积。它只要求大值位置的测度受 \(L^1\) 误差控制。左端已经包含任意小的全部尺度，并且不依赖所选的 \(g\)；这才允许用稠密性把右端送到零。
+
+若对每个半径单独估计 \(A_r(f-g)\)，再说这些误差都很小，仍缺少统一半径的论证。另一方面，也不能直接对 \(r\downarrow0\) 套用控制收敛定理：归一化的球核越来越高，并没有一个显然可积的共同控制函数。极大估计处理的恰好是这两种直接论证留下的缺口。
 
 \subsection{Lebesgue 微分定理}
 \label{b1:subsec:140203}
 
-待填充。
+\term*[lebesgue-weifen-dingli]{Lebesgue 微分定理}[Lebesgue differentiation theorem]说明，局部可积性已经足以保证通常平均在几乎处处恢复函数。其结论涉及固定可测代表，但任何两个代表得到的结论只会在一个零测集上不同。
+
+% 实读来源：Axler2020Measure，4.10，印刷pp.108--109。
+% 改编：全尺度有理半径约化、欧氏d维弱型控制、开集紧耗尽和复值版本均明确展开。
+\begin{theorem}[Lebesgue 微分]\label{b1:thm:lebesgue-differentiation}
+设 \(\Omega\subseteq\mathbb R^d\) 开，\(f\in L^1_{\mathrm{loc}}(\Omega)\)。则对几乎每个 \(x\in\Omega\)，
+\[
+ \lim_{r\downarrow0}\frac1{\omega_dr^d}\int_{B(x,r)}f(y)\,\mathrm dy=f(x).
+\]
+\end{theorem}
+\begin{proof}
+先设 \(\Omega=\mathbb R^d\)、\(f\in L^1\)。由\cref{b1:prop:lp-continuous-dense}，存在 \(g_j\in C_c\) 使 \(\|f-g_j\|_1\to0\)。将其代入\eqref{b1:eq:differentiation-exceptional-estimate}，可知对每个 \(t>0\)，\(m_d(\{\mathcal E f>2t\})=0\)。取 \(t=1/k\) 并作可数并，得到 \(\mathcal E f=0\) 几乎处处，即所求极限。
+
+一般开集上，令
+\[
+ K_n=\{\,x\in\Omega:|x|\leq n,\quad
+               \operatorname{dist}(x,\Omega^c)\geq1/n\,\}.
+\]
+约定到空集的距离为 \(\infty\)。\(K_n\) 紧，且 \(\Omega=\bigcup_nK_n\)。若 \(K_n\ne\varnothing\)，令 \(\rho_n=1/(3n)\)，并设
+\[
+ H_n=\{\,y:\operatorname{dist}(y,K_n)\leq\rho_n\,\}.
+\]
+它是包含于 \(\Omega\) 的紧集。把 \(f\mathbf1_{H_n}\) 延为整个空间上的零函数，记为 \(f_n\)，则 \(f_n\in L^1(\mathbb R^d)\)。对 \(x\in K_n\)、\(0<r<\rho_n\)，有 \(A_rf_n(x)=A_rf(x)\)，且 \(f_n(x)=f(x)\)。已证情形因而在 \(K_n\) 的一个零测集之外给出结论。最后对这些零测集作可数并，覆盖整个 \(\Omega\)。空的 \(K_n\) 不需处理。
+\end{proof}
+
+\begin{corollary}[Lebesgue 密度]\label{b1:thm:lebesgue-density}
+若 \(E\subseteq\mathbb R^d\) 为 Lebesgue 可测集，则
+\[
+ \lim_{r\downarrow0}\frac{m_d\bigl(E\cap B(x,r)\bigr)}{\omega_dr^d}
+ =\mathbf1_E(x)
+\]
+对几乎每个 \(x\in\mathbb R^d\) 成立。特别地，记 \(E^{(1)}\) 为 \(E\) 的所有密度点，则 \(m_d(E\mathbin{\triangle} E^{(1)})=0\)。
+\end{corollary}
+\begin{proof}
+示性函数 \(\mathbf1_E\) 总是局部可积，无须假设 \(m_d(E)<\infty\)。将它代入微分定理即得第一式。由上一节密度函数的可测性，\(E^{(1)}\) 可测；第一式又说明 \(E\setminus E^{(1)}\) 与 \(E^{(1)}\setminus E\) 都是零测集。
+\end{proof}
+
+密度点无需是内点。一个正测度、内点为空的闭集仍在几乎每个自身点具有密度 \(1\)；第三章的正测度 Cantor 型集合便属此类。定理也没有说每个边界点密度均为 \(0\) 或 \(1\)：半空间的边界点密度为 \(1/2\)，而上一节的环带例子甚至没有密度极限。它限制的是这些异常行为能够占据的 Lebesgue 测度。
 
 \subsection{\texorpdfstring{\(L^p_{\mathrm{loc}}\)}{Lp} 版本}
 \label{b1:subsec:140204}
 
-待填充。
+通常平均的极限还可以加强。关键是同时微分一个可数的辅助函数族，再利用值域中的稠密点逼近待恢复的数值。
+
+\begin{theorem}[Lebesgue 微分，\texorpdfstring{\(L^p_{\mathrm{loc}}\)}{Lp loc} 偏差形式]\label{b1:thm:lp-lebesgue-differentiation}
+设 \(1\leq p<\infty\)、\(f\in L^p_{\mathrm{loc}}(\Omega)\)。则对几乎每个 \(x\in\Omega\)，
+\[
+ \lim_{r\downarrow0}\frac1{\omega_dr^d}
+          \int_{B(x,r)}|f(y)-f(x)|^p\,\mathrm dy=0.
+\]
+\end{theorem}
+\begin{proof}
+在标量域中取可数稠密集 \(D\)：实情形取 \(\mathbb Q\)，复情形取 \(\mathbb Q+i\mathbb Q\)。对每个 \(a\in D\)，函数 \(h_a=|f-a|^p\) 局部可积，因为
+\[
+ |f-a|^p\leq2^{p-1}\bigl(|f|^p+|a|^p\bigr).
+\]
+微分定理给出 \(A_rh_a(x)\to h_a(x)\) 几乎处处。删去关于可数个 \(a\) 的全部例外集，以及 \(f\) 不取有限值的零测集。固定余下的 \(x\)，在球上的归一化概率测度下应用 Minkowski 不等式，得到
+\[
+ \bigl(A_r|f-f(x)|^p(x)\bigr)^{1/p}
+ \leq\bigl(A_r|f-a|^p(x)\bigr)^{1/p}+|a-f(x)|.
+\]
+对 \(r\downarrow0\) 取上极限，右端趋于 \(2|a-f(x)|\)。由 \(D\) 稠密，这个数可以任意小，故左端趋零。取 \(p\) 次幂得到结论。
+\end{proof}
+
+当 \(p=1\) 时，得到平均绝对偏差趋零，强于只知道 \(A_rf(x)\to f(x)\)。这也是下一节定义 Lebesgue 点的依据。当 \(p>1\) 时，Hölder 不等式说明 \(p\) 次偏差趋零蕴含一次偏差趋零，反向对某个指定点则未必成立。
+
+还有一种不同的 \(L^p\) 陈述：对每个紧集 \(K\subseteq\Omega\)，
+\begin{equation}\label{b1:eq:local-average-lp-convergence}
+ \|A_rf-f\|_{L^p(K)}\longrightarrow0\quad(r\downarrow0).
+\end{equation}
+这同样对 \(1\leq p<\infty\) 成立。取 \(K\) 的一个仍在 \(\Omega\) 内的紧邻域 \(H\)，把 \(f\mathbf1_H\) 延为零。对充分小的 \(r\)，其球平均在 \(K\) 上与 \(A_rf\) 一致；而全空间的平均是核 \(\mathbf1_{B(0,1)}/\omega_d\) 生成的卷积逼近，故由\cref{b1:prop:approximate-identity-lp}得到\eqref{b1:eq:local-average-lp-convergence}。
+
+点态偏差极限与局部范数收敛涉及不同的量词。前者固定中心再缩小球，后者在一整块中心区域上积分误差。对 \(p=1\) 的后者不能直接拿 \(Mf\) 作可积控制，因为上一章已看到极大算子并不在 \(L^1\) 上强型有界。对于 \(L^\infty_{\mathrm{loc}}\) 函数，一次乃至每个有限次幂的偏差仍几乎处处趋零，但不能据此断言局部本质上确界的偏差趋零。
