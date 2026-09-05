@@ -126,13 +126,17 @@
 % 保留数学标题的原始大小写，避免 book 类的 \MakeUppercase
 % 与 unicode-math 命令在页眉标记中发生冲突。
 % 偶数页页眉显示“章序＋章标题”（如“第一章 集合系、可测空间与可测映射”）；
+% 章序与章标题之间以 \quad 分隔，间距与奇数页节眉“节号＋节标题”之间一致；
 % 附录章的章序由 \CTEXthechapter 按卷附录编号（如 A1）给出。
-\renewcommand{\chaptermark}[1]{\markboth{\CTEXthechapter#1}{}}
+\renewcommand{\chaptermark}[1]{\markboth{\CTEXthechapter\quad #1}{}}
 \renewcommand{\sectionmark}[1]{\markright{\thesection\quad #1}}
-% 章末习题不编号，但进入习题页后应覆盖上一节留下的奇数页页眉。
+% 章末习题不编号，但进入习题页后应覆盖上一节留下的奇数页页眉；
+% 同时写入目录项。PDF 书签由 hyperref 对 \section*{习题} 自动生成，
+% 不再另行 \pdfbookmark，避免“习题”下再嵌套一个“习题”。
 \newcommand{\BookExercises}{%
   \section*{习题}%
   \markright{习题}%
+  \addcontentsline{toc}{section}{习题}%
 }
 \fancypagestyle{plain}{
   \fancyhf{}
@@ -261,11 +265,15 @@
 }
 % “附录”只作为书签与目录中的编级节点存在，不排可见的编题页：
 % 第一个附录章直接自奇数页开始，PDF 书签中仍保留“附录”顶层节点。
+% startatroot 使根级书签与书后顶层节点分离；phantomsection 须先于
+% addcontentsline，目录中的“附录”行才能获得独立锚点而非沿用前一节的
+% section*.N。根级“附录”书签连同其子章由 addcontentsline 的 part 行自动
+% 建立，不得再手写 \pdfbookmark（实测会产生重复的“附录”节点）。
 \NewDocumentCommand{\BookAppendixPart}{m}{%
   \cleardoublepage
-  \pdfbookmark[0]{附录}{AnalysisAppendixRoot}%
-  \addcontentsline{toc}{part}{附录}%
+  \bookmarksetup{startatroot}%
   \phantomsection
+  \addcontentsline{toc}{part}{附录}%
   \label{#1}%
 }
 \makeatother
@@ -370,9 +378,9 @@
   \begin{titlepage}
     \centering
     \vspace*{2.2cm}
-    {\Large\sffamily\color{AnalysisGray} 分析学\par}
+    {\fontsize{36}{46}\selectfont\sffamily 分析学\par}
     \vspace{0.7cm}
-    {\Large\sffamily\BookVolumeName\par}
+    {\Large\sffamily\color{AnalysisGray}\BookVolumeName\par}
     \vspace{1.0cm}
     {\fontsize{24}{32}\selectfont\bfseries\color{AnalysisBlue}\BookTitle\par}
     \vfill
@@ -399,4 +407,13 @@
   \markboth{#1}{}%
   \Analysis@orig@schapter{#1}%
 }
+% 目录按层级着色：编为黑色、小节为深灰；章与节保持默认链接蓝。
+\pretocmd{\l@part}{\hypersetup{linkcolor=black}}{}{%
+  \PackageWarning{analysis}{无法为目录编条目着色}}
+\pretocmd{\l@chapter}{\hypersetup{linkcolor=AnalysisBlue}}{}{%
+  \PackageWarning{analysis}{无法为目录章条目着色}}
+\pretocmd{\l@section}{\hypersetup{linkcolor=AnalysisBlue}}{}{%
+  \PackageWarning{analysis}{无法为目录节条目着色}}
+\pretocmd{\l@subsection}{\hypersetup{linkcolor=AnalysisGray}}{}{%
+  \PackageWarning{analysis}{无法为目录小节条目着色}}
 \makeatother

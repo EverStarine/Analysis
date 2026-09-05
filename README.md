@@ -12,24 +12,37 @@ R. EverStarine 编写的三卷本分析学教材项目。全书依照 [计划纲
 
 ## 编译
 
-使用 XeLaTeX，在相应卷目录中编译该卷主文件。辅助文件统一写入根目录的 `tmp/build/BookN/`，例如：
+使用 XeLaTeX，在相应卷目录中编译该卷主文件。辅助文件统一写入根目录的 `tmp/build/BookN/`。以下 PowerShell 示例从项目根目录执行；索引样式先解析为绝对路径，切换构建目录后仍能正确找到：
 
 ```powershell
-cd Book1
-New-Item -ItemType Directory -Force ..\tmp\build\Book1 | Out-Null
-xelatex -output-directory=..\tmp\build\Book1 Book1.tex
-biber --output-directory=..\tmp\build\Book1 ..\tmp\build\Book1\Book1
-Push-Location ..\tmp\build\Book1
-makeindex -q chinese.idx
-makeindex -q foreign.idx
-makeindex -q symbols.idx
-Pop-Location
-xelatex -output-directory=..\tmp\build\Book1 Book1.tex
-xelatex -output-directory=..\tmp\build\Book1 Book1.tex
-Copy-Item ..\tmp\build\Book1\Book1.pdf ..\Book1.pdf
+$analysisIndexStyle = (Resolve-Path -LiteralPath './Shared/analysis.ist' -ErrorAction Stop).Path
+Push-Location -LiteralPath './Book1' -ErrorAction Stop
+try {
+    New-Item -ItemType Directory -Force '../tmp/build/Book1' -ErrorAction Stop | Out-Null
+    xelatex -interaction=nonstopmode -halt-on-error '--output-directory=../tmp/build/Book1' Book1.tex
+    if ($LASTEXITCODE -ne 0) { throw '首轮 XeLaTeX 失败。' }
+    biber '--output-directory=../tmp/build/Book1' '../tmp/build/Book1/Book1'
+    if ($LASTEXITCODE -ne 0) { throw 'Biber 失败。' }
+    Push-Location -LiteralPath '../tmp/build/Book1' -ErrorAction Stop
+    try {
+        foreach ($analysisIndex in @('chinese', 'foreign', 'symbols')) {
+            makeindex -q -s $analysisIndexStyle "$analysisIndex.idx"
+            if ($LASTEXITCODE -ne 0) { throw "索引处理失败：$analysisIndex" }
+        }
+    } finally {
+        Pop-Location
+    }
+    foreach ($analysisPass in 1..2) {
+        xelatex -interaction=nonstopmode -halt-on-error '--output-directory=../tmp/build/Book1' Book1.tex
+        if ($LASTEXITCODE -ne 0) { throw "后续第 $analysisPass 轮 XeLaTeX 失败。" }
+    }
+    Copy-Item -LiteralPath '../tmp/build/Book1/Book1.pdf' -Destination '../Book1.pdf' -ErrorAction Stop
+} finally {
+    Pop-Location
+}
 ```
 
-首轮 XeLaTeX 收集引文与索引条目，Biber 生成本卷实际引用的参考文献，三次 `makeindex` 分别生成中文、外文和符号索引，随后两轮 XeLaTeX 排入书目和索引，并稳定目录、交叉引用与书签。其他两卷相应替换卷号；尚无引文或索引条目的卷可以暂不执行相应的 Biber 或 `makeindex` 命令。项目根目录只保留最终的三份 PDF。
+首轮 XeLaTeX 收集引文与索引条目，Biber 生成本卷实际引用的参考文献，循环中的三次 `makeindex` 分别处理一个 `.idx`，并以 `-s` 载入右对齐样式；不可省略样式或将三个索引名并入一次调用。随后两轮 XeLaTeX 排入书目和索引，并稳定目录、交叉引用与书签。任一步骤失败都会中止，不用旧构建结果覆盖成品。其他两卷相应替换卷号；尚无引文或索引条目的卷可以暂不执行相应的 Biber 或 `makeindex` 命令。项目根目录只保留最终的三份 PDF。
 
 ## 编辑规范
 
