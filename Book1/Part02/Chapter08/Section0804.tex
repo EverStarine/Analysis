@@ -2,24 +2,373 @@
 \section{Hilbert 空间}
 \label{b1:sec:0804}
 
-% TODO: 撰写本节正文。
+% 来源：Axler2020Measure，§8A--C，印刷212--254页，已读本地正式全文。
+% 内积与L2的接入采用§8A习题18的无Holder路线；完备性按§7B pp.204--205改写为p=2，补公共可测零集。
+% 投影、Riesz表示和一般正交展开据8.28、8.37、8.47、8.57--8.75重组；伴随构造另据§10A p.281。
+% 证明义务：第一变量线性；L2不依赖第10章；凸性导出最小化序列Cauchy；复Riesz共轭线性；不可数系的可数支撑。
+
+一般范数只能测量距离，不能保证最近点存在，也不保证最近点唯一。内积提供的正交分解使这两个问题有了共同的解法：先从距离最小化中找出垂直方向，再用垂直方向表示线性泛函。随后，正交基把这一几何结构转化为平方可求和的坐标。本节由内积定义建立 \(L^2\) 的完备性，再讨论投影与表示；所有测度空间都沿用第一编的可测性约定。
 
 \subsection{内积空间}
 \label{b1:subsec:080401}
 
-待填充。
+\begin{definition}\label{b1:def:inner-product}
+设 \(H\) 是 \(\mathbb K\) 上的向量空间，其中 \(\mathbb K=\mathbb R\) 或 \(\mathbb C\)。一个\term[neiji]{内积}[inner product]是映射 \(\langle\cdot,\cdot\rangle:H\times H\rightarrow\mathbb K\)，满足
+\[
+\langle ax+by,z\rangle=a\langle x,z\rangle+b\langle y,z\rangle,
+\quad
+\langle x,y\rangle=\overline{\langle y,x\rangle},
+\]
+并且 \(\langle x,x\rangle\geq0\)，等号当且仅当 \(x=0\)。配备内积的空间称为\term[neiji-kongjian]{内积空间}[inner product space]。记 \(\|x\|=\sqrt{\langle x,x\rangle}\)。
+\end{definition}
+\symidx{\(\langle x,y\rangle\)：对第一变量线性的内积}
+
+本书固定内积对第一变量线性。因此第二变量满足 \(\langle x,ay+bz\rangle=\overline a\langle x,y\rangle+\overline b\langle x,z\rangle\)；实空间中可略去共轭。标准例子是 \(\mathbb K^n\) 上的 \(\langle x,y\rangle=\sum_{j=1}^nx_j\overline{y_j}\)。下面证明定义中的 \(\|\cdot\|\) 确实是范数。
+
+\term*[cauchy-schwarz]{Cauchy--Schwarz 不等式}[Cauchy--Schwarz inequality]把内积与这个范数联系起来。
+
+\begin{proposition}[Cauchy--Schwarz]\label{b1:prop:inner-product-norm}
+对任意 \(x,y\in H\)，有 \(|\langle x,y\rangle|\leq\|x\|\|y\|\)，等号当且仅当 \(x,y\) 线性相关。内积给出的 \(\|\cdot\|\) 是范数，并满足\term[pingxing-sibianxing-hengdengshi]{平行四边形恒等式}[parallelogram identity]：
+\begin{equation}\label{b1:eq:parallelogram}
+\|x+y\|^2+\|x-y\|^2=2\|x\|^2+2\|y\|^2.
+\end{equation}
+\end{proposition}
+\begin{proof}
+当 \(y\ne0\) 时，展开平方得到
+\[
+0\leq\left\|x-\dfrac{\langle x,y\rangle}{\|y\|^2}y\right\|^2
+=\|x\|^2-\dfrac{|\langle x,y\rangle|^2}{\|y\|^2}.
+\]
+这既给出不等式，也说明等号恰好对应 \(x\) 为 \(y\) 的倍数；\(y=0\) 时两边都是零。正定性来自内积定义，齐次性来自 \(\langle ax,ax\rangle=|a|^2\langle x,x\rangle\)。又有
+\[
+\|x+y\|^2
+=\|x\|^2+2\operatorname{Re}\langle x,y\rangle+\|y\|^2
+\leq\left(\|x\|+\|y\|\right)^2,
+\]
+故三角不等式成立。分别展开 \(\|x+y\|^2\) 与 \(\|x-y\|^2\)，交叉项相消即得\eqref{b1:eq:parallelogram}。
+\end{proof}
+
+平行四边形恒等式是内积范数的限制。例如 \(\mathbb R^2\) 的最大值范数在 \(x=(1,0)\)、\(y=(0,1)\) 处使等式两边分别为 \(2\) 和 \(4\)，所以这个范数不来自内积。另一个以后常用的后果是内积的连续性：若 \(x_n\to x\)、\(y_n\to y\)，则
+\[
+|\langle x_n,y_n\rangle-\langle x,y\rangle|
+\leq\|x_n-x\|\|y_n\|+\|x\|\|y_n-y\|\longrightarrow0.
+\]
+这里收敛列 \((y_n)\) 的有界性保证第一项也趋于零。
+
+内积还可以由范数恢复。实空间中，\(4\langle x,y\rangle=\|x+y\|^2-\|x-y\|^2\)；复空间中则有\term[jihua-hengdengshi]{极化恒等式}[polarization identity]：
+\[
+4\langle x,y\rangle
+=\|x+y\|^2-\|x-y\|^2
++i\left(\|x+iy\|^2-\|x-iy\|^2\right).
+\]
+这由平方范数展开得出：前两个平方之差是 \(4\operatorname{Re}\langle x,y\rangle\)，括号内之差是 \(4\operatorname{Im}\langle x,y\rangle\)。因此给定一个确实来自内积的范数后，内积不能再任意选取；复公式中的符号也与第一变量线性的约定一致。
+
+\begin{definition}\label{b1:def:hilbert-space}
+内积所给范数完备的内积空间称为\term[hilbert-kongjian]{Hilbert 空间}[Hilbert space]。
+\end{definition}
+
+Hilbert 空间的闭线性子空间配备限制内积后仍是 Hilbert 空间：其中的 Cauchy 列先在原空间中收敛，闭性再把极限留在子空间内。这一观察允许以后在正交补上继续使用本节的结果。
+
+函数空间中的正定性需要先处理零测集。对任意测度空间 \((X,\mathcal A,\mu)\)，记 \(L^2(\mu)\) 为满足 \(\int_X|f|^2\,\mathrm d\mu<\infty\) 的可测 \(\mathbb K\)-值函数按几乎处处相等所取的等价类空间，并约定
+\[
+\langle f,g\rangle=\int_Xf\overline g\,\mathrm d\mu,
+\quad
+\|f\|_2=\left(\int_X|f|^2\,\mathrm d\mu\right)^{1/2}.
+\]
+\symidx{\(L^2(\mu)\)：平方可积函数的几乎处处等价类空间}
+\symidx{\(\lVert f\rVert_2\)：平方积分范数}
+仍用函数记号表示等价类，但写逐点公式时均选取可测代表。若从允许无穷值的实函数出发，平方积分有限保证无穷值只出现在可测零集上；将该集合上的值统一改成零即可。
+
+\begin{theorem}[\(L^2\) 的完备性]\label{b1:thm:l2-hilbert}
+上述内积使 \(L^2(\mu)\) 成为 Hilbert 空间。这里不要求 \(\mu\) 完备或 \(\sigma\)-有限。
+\end{theorem}
+\begin{proof}
+先说明内积与线性运算有定义。由
+\[
+|f+g|^2\leq2|f|^2+2|g|^2,
+\quad
+2|f\overline g|\leq|f|^2+|g|^2,
+\]
+平方可积函数对加法封闭，且 \(f\overline g\) 可积；数乘的封闭性由积分的齐次性给出。更换可测代表不改变这些积分或所得等价类。积分的线性与共轭运算给出内积的代数性质；\cref{b1:prop:integral-markov}说明平方积分为零恰好表示零等价类，故正定性也成立。
+
+于是可应用\cref{b1:prop:inner-product-norm}。特别地，把 Cauchy--Schwarz 不等式用于 \(|f|,|g|\)，得到
+\[
+\int_X|fg|\,\mathrm d\mu\leq\|f\|_2\|g\|_2,
+\quad
+\|f+g\|_2\leq\|f\|_2+\|g\|_2.
+\]
+第二个估计就是平方积分范数的三角不等式；这里的论证没有使用尚待建立的一般指数不等式。
+
+设 \((f_n)\) 是 \(L^2\) 中的 Cauchy 列，选取各项的处处有限可测代表。取严格递增的下标列 \((n_k)\)，使 \(\|f_{n_{k+1}}-f_{n_k}\|_2\leq2^{-k}\)。令
+\[
+g_N=\sum_{k=1}^N|f_{n_{k+1}}-f_{n_k}|,
+\quad
+g=\lim_{N\to\infty}g_N.
+\]
+三角不等式给出 \(\|g_N\|_2\leq\sum_{k=1}^N2^{-k}\leq1\)。由于 \(g_N^2\uparrow g^2\)，\cref{b1:thm:monotone-convergence}给出 \(\int_Xg^2\,\mathrm d\mu\leq1\)，故可测集合 \(N_0=\{g=\infty\}\) 是零集。在 \(X\setminus N_0\) 上，级数
+\[
+f_{n_1}+\sum_{k=1}^{\infty}\left(f_{n_{k+1}}-f_{n_k}\right)
+\]
+绝对收敛。把其和记为 \(f\)，并在 \(N_0\) 上统一置零。这是可测函数，且在零集外有 \(|f|\leq|f_{n_1}|+g\)，从而 \(f\in L^2\)。这一构造只在一个可测零集上取固定值，不需要测度完备。
+
+对固定 \(k\)，子列逐点收敛于 \(f\) 几乎处处。由\cref{b1:thm:fatou}与有限和的三角不等式，
+\[
+\|f-f_{n_k}\|_2^2
+\leq\liminf_{j\to\infty}\|f_{n_j}-f_{n_k}\|_2^2
+\leq\left(\sum_{r=k}^{\infty}2^{-r}\right)^2.
+\]
+因此子列在范数中趋于 \(f\)。给定 \(\varepsilon>0\)，先使原列尾部任意两项的距离小于 \(\varepsilon/2\)，再在该尾部选取与 \(f\) 的距离小于 \(\varepsilon/2\) 的子列项；三角不等式便给出整列收敛。若更换最初各项的可测代表，所有变化包含在一个可数并成的可测零集内，所得极限仍代表同一等价类。
+\end{proof}
+
+在 \(\mathbb N\) 上取计数测度，便得到 Hilbert 空间
+\[
+\ell^2=\left\{\,(a_n)_{n\geq1}:\sum_{n=1}^{\infty}|a_n|^2<\infty\,\right\},
+\quad
+\langle a,b\rangle=\sum_{n=1}^{\infty}a_n\overline{b_n}.
+\]
+\symidx{\(\ell^2\)：平方可求和序列空间}
+其中只有有限个非零坐标的子空间 \(c_{00}\) 并不完备：序列 \((1,1/2,\ldots,1/n,0,\ldots)\) 是 Cauchy 列，却在 \(\ell^2\) 中趋于不属于 \(c_{00}\) 的向量 \((1/k)_{k\geq1}\)。所以有内积与内积范数完备是两个不同要求。
+
+在 Lebesgue 测度的 \(L^2([0,1])\) 中，单个点的值不是等价类的属性。即使把讨论暂时限制在连续函数上，点值也未必受平方积分范数控制：令 \(f_n(t)=\max\{1-nt,0\}\)，则 \(f_n(0)=1\)，而 \(\|f_n\|_2^2=1/(3n)\to0\)。所以在这个范数下，取 \(0\) 处函数值的线性泛函不连续。这与一致范数下的情形不同。
 
 \subsection{正交投影}
 \label{b1:subsec:080402}
 
-待填充。
+对于最小二乘问题，首先要找的是距离给定向量最近的允许对象。无限维空间的闭有界集一般不紧，不能直接从最小化序列中抽取收敛子列；Hilbert 空间的平行四边形恒等式提供了另一条路。
+
+\begin{theorem}[闭凸集上的最小点]\label{b1:thm:hilbert-convex-minimum}
+设 \(C\) 是 Hilbert 空间 \(H\) 中的非空闭凸集。对每个 \(x\in H\)，存在唯一的 \(p\in C\) 使
+\[
+\|x-p\|=\inf_{z\in C}\|x-z\|.
+\]
+该点也由条件 \(\operatorname{Re}\langle x-p,z-p\rangle\leq0\)（\(z\in C\)）刻画。
+\end{theorem}
+\begin{proof}
+记右侧下确界为 \(d\)，取 \(p_n\in C\) 使 \(\|x-p_n\|\to d\)。凸性保证 \((p_n+p_m)/2\in C\)。由\eqref{b1:eq:parallelogram}，
+\[
+\begin{aligned}
+\|p_n-p_m\|^2
+&=2\|x-p_n\|^2+2\|x-p_m\|^2
+-4\left\|x-\dfrac{p_n+p_m}{2}\right\|^2\\
+&\leq2\|x-p_n\|^2+2\|x-p_m\|^2-4d^2\longrightarrow0.
+\end{aligned}
+\]
+故 \((p_n)\) 是 Cauchy 列。完备性给出极限 \(p\in H\)，闭性保证 \(p\in C\)，范数连续性给出 \(\|x-p\|=d\)。若 \(p,q\) 都达到距离 \(d\)，把它们代入同一不等式，便有 \(\|p-q\|^2\leq0\)，从而唯一。
+
+对 \(z\in C\) 及 \(0<t\leq1\)，最小性与凸性给出
+\[
+0\leq\|x-p-t(z-p)\|^2-\|x-p\|^2
+=-2t\operatorname{Re}\langle x-p,z-p\rangle+t^2\|z-p\|^2.
+\]
+除以 \(t\) 再令 \(t\downarrow0\)，得到所述条件。反过来，该条件代入上式的 \(t=1\) 情形便给出 \(\|x-z\|\geq\|x-p\|\)。
+\end{proof}
+
+把 \(x\) 的最小点记为 \(P_Cx\)。最小点对输入的变化是稳定的：若 \(p=P_Cx\)、\(q=P_Cy\)，将变分条件分别用于 \((x,p,q)\) 和 \((y,q,p)\)，得到
+\[
+\operatorname{Re}\langle x-p,p-q\rangle\geq0,
+\quad
+\operatorname{Re}\langle y-q,p-q\rangle\leq0.
+\]
+两式相减给出 \(\|p-q\|^2\leq\operatorname{Re}\langle x-y,p-q\rangle\leq\|x-y\|\|p-q\|\)，故 \(\|P_Cx-P_Cy\|\leq\|x-y\|\)。这里不声称 \(P_C\) 线性；例如到实区间 \([-1,1]\) 的最近点映射在区间外截成端点，就不是线性映射。
+
+称满足 \(\langle x,y\rangle=0\) 的两个向量\term[zhengjiao]{正交}[orthogonal]，记作 \(x\perp y\)。对集合 \(A\subseteq H\)，其\term[zhengjiao-bu]{正交补}[orthogonal complement]定义为
+\[
+A^\perp=\{\,h\in H:\langle h,a\rangle=0\ \ (a\in A)\,\}.
+\]
+\symidx{\(A^\perp\)：集合的正交补}
+线性与内积连续性表明 \(A^\perp\) 是闭子空间：线性组合仍与各个 \(a\) 正交，范数极限也保留这些等式。
+
+\begin{theorem}[Hilbert 空间投影]\label{b1:thm:hilbert-projection}
+设 \(M\) 是 \(H\) 的闭线性子空间。每个 \(x\in H\) 有唯一分解
+\[
+x=P_Mx+(x-P_Mx),
+\quad P_Mx\in M,
+\quad x-P_Mx\in M^\perp.
+\]
+其中 \(P_Mx\) 是 \(M\) 中距离 \(x\) 最近的点，映射 \(P_M\) 称为到 \(M\) 上的\term[zhengjiao-touying]{正交投影}[orthogonal projection]。它是有界线性算子，满足 \(P_M^2=P_M\)、\(\|P_Mx\|\leq\|x\|\)，且
+\[
+H=M\oplus M^\perp,
+\quad (M^\perp)^\perp=M.
+\]
+\end{theorem}
+\symidx{\(P_M\)：到闭子空间上的正交投影}
+\begin{proof}
+由\cref{b1:thm:hilbert-convex-minimum}取最小点 \(p\)。对 \(u\in M\)，分别令 \(z=p+u,p-u\)，变分条件给出 \(\operatorname{Re}\langle x-p,u\rangle=0\)；复空间再用 \(iu\)，得到虚部也为零。因此 \(x-p\in M^\perp\)。若另有 \(x=m+h\)，其中 \(m\in M\)、\(h\in M^\perp\)，则两分解相减所得向量属于 \(M\cap M^\perp=\{0\}\)，故分解唯一。
+
+两个分解的线性组合仍把 \(ax+by\) 写为 \(M\) 中的 \(aP_Mx+bP_My\) 与 \(M^\perp\) 中一项之和，唯一性便给出 \(P_M\) 的线性。对 \(m\in M\)，分解为 \(m+0\)，故 \(P_Mm=m\) 且 \(P_M^2=P_M\)。由正交性，
+\[
+\|x\|^2=\|P_Mx\|^2+\|x-P_Mx\|^2,
+\]
+因而 \(\|P_M\|\leq1\)。当 \(M\ne\{0\}\) 时，在 \(M\) 内取单位向量可知范数恰好为 \(1\)。最后，若 \(x\in(M^\perp)^\perp\)，在分解中记 \(h=x-P_Mx\)，则 \(0=\langle x,h\rangle=\|h\|^2\)，故 \(x\in M\)；反向包含由正交性的对称性给出。
+\end{proof}
+
+在 \(L^2([0,1])\) 中取常数函数组成的子空间 \(M\)。由于 \(\|1\|_2=1\)，到该直线的投影为 \(P_Mf=(\int_0^1f(t)\,\mathrm dt)1\)。例如 \(f(t)=t\) 的最佳常数近似为 \(1/2\)，并有
+\[
+\int_0^1|t-a|^2\,\mathrm dt=\dfrac1{12}+\left|a-\dfrac12\right|^2.
+\]
+另一方面，去掉闭性后，\(\ell^2\) 中的 \(c_{00}\) 到向量 \((1/k)\) 的距离为零，却没有最小点；去掉凸性后，实直线中的闭集 \(\{-1,1\}\) 到 \(0\) 有两个最小点。
+
+投影也给出一种具体的线性延拓。若 \(M\) 是 \(H\) 的闭子空间，\(Y\) 是赋范空间，且 \(A\in\mathcal B(M,Y)\)，则 \(\widetilde A=AP_M\) 定义在整个 \(H\) 上，在 \(M\) 上与 \(A\) 相同，并满足 \(\|\widetilde A\|\leq\|A\|\)。反过来，把 \(\widetilde A\) 限制到 \(M\) 的单位球上即得 \(\|A\|\leq\|\widetilde A\|\)，故两者范数相等。这里值域可以不止是一维；能作这种延拓的原因是定义域具有正交投影，而不是每个赋范空间都允许把向量值算子保范延拓。
 
 \subsection{Riesz 表示定理}
 \label{b1:subsec:080403}
 
-待填充。
+固定 \(h\in H\)，映射 \(x\mapsto\langle x,h\rangle\) 是连续线性泛函。\term*[riesz-biaoshi-hilbert]{Riesz 表示定理}[Riesz representation theorem]断言 Hilbert 空间中的每个连续线性泛函都以这种方式产生；表示向量由泛函的核所决定。
+
+\begin{theorem}[Hilbert 空间的 Riesz 表示]\label{b1:thm:hilbert-riesz}
+对实或复 Hilbert 空间 \(H\) 上的每个 \(\ell\in H^*\)，存在唯一 \(h\in H\) 满足 \(\ell(x)=\langle x,h\rangle\)（\(x\in H\)），且 \(\|\ell\|=\|h\|\)。
+\end{theorem}
+\begin{proof}
+当 \(\ell=0\) 时取 \(h=0\)。否则取 \(u\) 使 \(\ell(u)=1\)。连续性保证 \(M=\ker\ell\) 闭。令 \(v=u-P_Mu\)，则 \(v\in M^\perp\)，且 \(\ell(v)=1\)，特别地 \(v\ne0\)。对任意 \(x\)，向量 \(x-\ell(x)v\) 属于 \(M\)，于是
+\[
+\langle x,v\rangle=\ell(x)\|v\|^2.
+\]
+取 \(h=v/\|v\|^2\) 就得到所需表示。若 \(h_1,h_2\) 都给出该表示，则 \(\langle x,h_1-h_2\rangle=0\) 对所有 \(x\) 成立；取 \(x=h_1-h_2\) 可知两者相等。
+
+Cauchy--Schwarz 不等式给出 \(\|\ell\|\leq\|h\|\)。当 \(h\ne0\) 时，取单位向量 \(x=h/\|h\|\)，便有 \(|\ell(x)|=\|h\|\)，故范数相等；零向量情形亦成立。
+\end{proof}
+
+实空间中，映射 \(h\mapsto\langle\cdot,h\rangle\) 是线性等距满射；复空间中它却是共轭线性的，因为第二变量的系数要取共轭。因而“\(H\) 与 \(H^*\) 自然识别”在复情形下必须带上这一约定。特别地，对任意测度 \(\mu\)，每个 \(L^2(\mu)\) 上的连续线性泛函都唯一写成 \(f\mapsto\int_Xf\overline h\,\mathrm d\mu\)，其中 \(h\in L^2(\mu)\)；不需要额外的 \(\sigma\)-有限性假设。
+
+若空间不完备，表示向量可能落在空间之外。在 \(c_{00}\) 上取从 \(\ell^2\) 限制而来的内积，令 \(\ell(x)=\sum_{n\geq1}x_n/n\)。每个输入只涉及有限和，有限维 Cauchy--Schwarz 不等式给出
+\[
+|\ell(x)|\leq\left(\sum_{n=1}^{\infty}\dfrac1{n^2}\right)^{1/2}\|x\|_2,
+\]
+故它连续。假如存在 \(h\in c_{00}\) 表示该泛函，依次代入各个单位坐标向量就会强制 \(\overline{h_n}=1/n\) 对所有 \(n\) 成立，与有限支撑矛盾。在完备空间 \(\ell^2\) 中，这个障碍消失，表示向量正是 \((1/n)\)。
+
+表示定理还可以逐个处理算子的输出测试向量，得到谱理论所需的\term[bansui-suanzi]{伴随算子}[adjoint operator]。%
+\footnote{孙炯等《泛函分析》第二版\cite{Sun2018Fanhan}第 5.3 节称为
+“共轭算子”\termidx[gonge-suanzi]{共轭算子}。本节专指由 Hilbert 内积定义的伴随，
+其值域是原 Hilbert 空间；后面在 Banach 对偶空间上定义的算子须另辨清定义域和值域。}
+
+\begin{proposition}\label{b1:prop:hilbert-adjoint}
+设 \(H,K\) 是同一标量域上的 Hilbert 空间，\(T\in\mathcal B(H,K)\)。存在唯一 \(T^*\in\mathcal B(K,H)\) 使
+\[
+\langle Tx,y\rangle_K=\langle x,T^*y\rangle_H
+\quad(x\in H,\ y\in K).
+\]
+它满足 \(\|T^*\|=\|T\|\) 与 \((T^*)^*=T\)。这里 \(T^*\) 表示 Hilbert 空间上的伴随。
+\end{proposition}
+\symidx{\(T^*\)：Hilbert 空间上有界线性算子的伴随}
+\begin{proof}
+固定 \(y\in K\)，则 \(x\mapsto\langle Tx,y\rangle_K\) 是范数不超过 \(\|T\|\|y\|\) 的线性泛函。由\cref{b1:thm:hilbert-riesz}，它由唯一向量 \(T^*y\) 表示，且 \(\|T^*y\|\leq\|T\|\|y\|\)。对 \(a,b\in\mathbb K\)，有
+\[
+\langle x,T^*(ay+bz)\rangle
+=\overline a\langle Tx,y\rangle+\overline b\langle Tx,z\rangle
+=\langle x,aT^*y+bT^*z\rangle.
+\]
+表示的唯一性给出 \(T^*\) 的线性，前面的估计给出其有界性及 \(\|T^*\|\leq\|T\|\)。反向估计来自
+\[
+\|Tx\|=\sup_{\|y\|\leq1}|\langle Tx,y\rangle|
+\leq\|T^*\|\|x\|;
+\]
+上确界等式由 Cauchy--Schwarz 不等式及 \(Tx\ne0\) 时取 \(y=Tx/\|Tx\|\) 得到。最后对伴随等式取共轭，便有 \(\langle T^*y,x\rangle=\langle y,Tx\rangle\)，唯一性给出 \((T^*)^*=T\)。
+\end{proof}
+
+例如有界可测函数 \(b\) 在 \(L^2(\mu)\) 上定义乘法算子 \(M_bf=bf\)。积分直接给出 \(\langle M_bf,g\rangle=\langle f,M_{\overline b}g\rangle\)，故 \(M_b^*=M_{\overline b}\)。复共轭在这里决定伴随算子的具体形式，不能因为实值例子中它消失就省略。
 
 \subsection{正交系与正交基}
 \label{b1:subsec:080404}
 
-待填充。
+有限维空间中，正交坐标同时计算向量和长度。无限维情形还要决定无穷求和的意义，并检查坐标是否遗漏了整个子空间。Axler 的《Measure, Integration \& Real Analysis》\cite{Axler2020Measure}第 8C 节把正交展开与最佳逼近并行讨论，适合与本小节对读；以下不预设空间可分。
+
+\begin{definition}\label{b1:def:orthonormal-system}
+一族两两正交的非零向量称为\term[zhengjiao-xi]{正交系}[orthogonal system]；若每个向量的范数均为 \(1\)，则称为\term[biaozhun-zhengjiao-xi]{标准正交系}[orthonormal system]。标准正交系 \((e_\alpha)_{\alpha\in I}\) 若满足
+\[
+\overline{\operatorname{span}\{e_\alpha:\alpha\in I\}}=H,
+\]
+则称为 \(H\) 的\term[biaozhun-zhengjiao-ji]{标准正交基}[orthonormal basis]。这里的张成空间只含有限线性组合，再对它取范数闭包。%
+\footnote{程其襄等《实变函数与泛函分析基础》第四版\cite{Cheng2019ShibianFanhan}%
+第 9 章第 3 节使用“规范正交系”\termidx[guifan-zhengjiao-xi]{规范正交系}；
+孙炯等《泛函分析》第二版\cite{Sun2018Fanhan}第 3.4.3 小节使用“标准正交基”。
+本书采用“标准正交系／基”，单位长度条件不能省略。}
+\end{definition}
+
+对任意非负数族，约定 \(\sum_{\alpha\in I}a_\alpha\) 是其有限部分和的上确界。这使下面的\term*[bessel]{Bessel 不等式}[Bessel's inequality]也适用于不可数指标集。
+
+\begin{proposition}[Bessel]\label{b1:prop:bessel-inequality}
+若 \((e_\alpha)_{\alpha\in I}\) 是标准正交系，则每个 \(x\in H\) 满足
+\[
+\sum_{\alpha\in I}|\langle x,e_\alpha\rangle|^2\leq\|x\|^2.
+\]
+其中非零系数至多有可数个。
+\end{proposition}
+\begin{proof}
+对有限集 \(F\subseteq I\)，令 \(s_F=\sum_{\alpha\in F}\langle x,e_\alpha\rangle e_\alpha\)。标准正交关系给出 \(x-s_F\) 与每个 \(e_\alpha\)（\(\alpha\in F\)）正交，因此
+\[
+\|x\|^2=\|x-s_F\|^2+\|s_F\|^2,
+\quad
+\|s_F\|^2=\sum_{\alpha\in F}|\langle x,e_\alpha\rangle|^2.
+\]
+取有限部分和的上确界即得不等式。对每个正整数 \(n\)，系数模长至少为 \(1/n\) 的指标只有有限个，否则可选足够大的有限集使平方和超过 \(\|x\|^2\)。非零指标集包含在这些有限集的可数并中。
+\end{proof}
+
+向量族的和 \(\sum_{\alpha\in I}x_\alpha=s\) 则按如下意义理解：对每个 \(\varepsilon>0\)，存在有限集 \(F_0\subseteq I\)，使任意包含 \(F_0\) 的有限集 \(F\) 都满足 \(\|s-\sum_{\alpha\in F}x_\alpha\|<\varepsilon\)。这是对有限部分和的要求，不需要给不可数集规定一个枚举次序。
+
+\begin{theorem}[正交展开与 Parseval 恒等式]\label{b1:thm:orthonormal-expansion}
+设 \((e_\alpha)_{\alpha\in I}\) 是标准正交系，\(M\) 为其闭线性张成空间。则每个 \(x\in H\) 满足
+\[
+P_Mx=\sum_{\alpha\in I}\langle x,e_\alpha\rangle e_\alpha,
+\quad
+\|x-P_Mx\|^2=\|x\|^2-\sum_{\alpha\in I}|\langle x,e_\alpha\rangle|^2.
+\]
+以下条件等价：
+\begin{equivalences}
+  \item\label{b1:item:orthonormal-total} 该标准正交系是 \(H\) 的标准正交基；
+  \item\label{b1:item:orthonormal-zero-complement} 与所有 \(e_\alpha\) 正交的向量只有零向量；
+  \item\label{b1:item:orthonormal-parseval} 每个 \(x\in H\) 都满足\term*[parseval-hengdengshi]{Parseval 恒等式}[Parseval's identity]，即 \(\|x\|^2=\sum_{\alpha\in I}|\langle x,e_\alpha\rangle|^2\)。
+\end{equivalences}
+这些条件成立时，\(x=\sum_{\alpha\in I}\langle x,e_\alpha\rangle e_\alpha\)，收敛均为范数收敛。
+\end{theorem}
+\begin{proof}
+记 \(c_\alpha=\langle x,e_\alpha\rangle\)。Bessel 不等式使非零系数至多可数且平方可求和。若有无限多个，将它们列为 \((c_{\alpha_j})\)；相应部分和 \(s_n\) 满足
+\[
+\|s_m-s_n\|^2=\sum_{j=n+1}^{m}|c_{\alpha_j}|^2\longrightarrow0
+\quad(m>n\to\infty).
+\]
+完备性给出 \(s_n\to s\in M\)，并且 \(\|s\|^2=\sum_{\alpha\in I}|c_\alpha|^2\)。对于任意含前 \(n\) 个非零指标的有限集 \(F\)，取足够大的 \(m\) 包含 \(F\) 中所有非零指标，再令 \(m\to\infty\)，得到
+\[
+\left\|s-\sum_{\alpha\in F}c_\alpha e_\alpha\right\|^2
+=\sum_{\alpha\notin F}|c_\alpha|^2
+\leq\sum_{j>n}|c_{\alpha_j}|^2.
+\]
+这证明了所规定的无序收敛，也说明极限不依赖枚举。有限或没有非零系数时直接取有限和或零即可。
+
+内积连续性给出 \(\langle s,e_\alpha\rangle=c_\alpha\)，所以 \(x-s\) 与所有有限线性组合及其范数极限正交，即 \(x-s\in M^\perp\)。由\cref{b1:thm:hilbert-projection}，\(s=P_Mx\)，正交分解的平方范数等式给出余项公式。
+
+第一项等价于 \(M=H\)。第二项等价于 \(M^\perp=\{0\}\)，由投影分解又等价于 \(M=H\)。余项公式表明第三项等价于每个 \(x\) 都属于 \(M\)。因此三项等价，展开式也随之成立。
+\end{proof}
+
+对标准正交基，两向量的内积也可以由坐标计算：
+\[
+\langle x,y\rangle
+=\sum_{\alpha\in I}\langle x,e_\alpha\rangle\overline{\langle y,e_\alpha\rangle}.
+\]
+有限部分和的内积具有这个形式，随后由内积连续性取极限即可。标量级数绝对收敛，因为对任意有限指标集，坐标绝对值乘积的和由有限维 Cauchy--Schwarz 不等式控制在 \(\|x\|\|y\|\) 以内。若只有标准正交系，坐标则可能遗漏分量：\(\ell^2\) 中所有偶数坐标方向构成标准正交系，但第一单位向量的全部相应系数都为零。
+
+正交展开还给出具体的最小二乘计算。在实空间 \(L^2([0,1])\) 中，\(e_0(t)=1\) 与 \(e_1(t)=\sqrt{12}(t-1/2)\) 构成一次多项式空间的标准正交基。对 \(f(t)=t^2\)，直接积分得
+\[
+\langle f,e_0\rangle=\dfrac13,
+\quad
+\langle f,e_1\rangle=\dfrac1{\sqrt{12}},
+\quad
+P_Mf(t)=t-\dfrac16.
+\]
+余项公式给出最小平方误差 \(1/5-1/9-1/12=1/180\)。因此投影并不只是存在性结论：一旦找出允许子空间的标准正交基，最佳近似及其误差就由有限个内积决定。
+
+\begin{theorem}[标准正交基的存在]\label{b1:thm:orthonormal-basis-existence}
+每个 Hilbert 空间都有标准正交基；其中任意给定的标准正交系都能扩充为标准正交基。
+\end{theorem}
+\begin{proof}
+把包含给定标准正交系的所有标准正交子集按包含关系排序。任一链的并仍是标准正交集：并集中任意两个向量都属于链中某个共同成员，故保留正交关系与单位长度。空链也有给定集合这个上界。由 Zorn 引理存在极大者 \(E\)。若 \(E^\perp\) 含非零向量 \(u\)，则加入 \(u/\|u\|\) 就得到更大的标准正交集，矛盾。因此 \(E^\perp=\{0\}\)，由\cref{b1:thm:orthonormal-expansion}知 \(E\) 是标准正交基。初始集合取空集便得存在性；\(H=\{0\}\) 时空集本身就是所需基。
+\end{proof}
+
+在可分空间中，取可数稠密集 \(\{x_n:n\geq1\}\)。处理 \(x_n\) 时，设已保留的标准正交向量为 \(e_1,\ldots,e_r\)，令
+\[
+v_n=x_n-\sum_{j=1}^r\langle x_n,e_j\rangle e_j.
+\]
+若 \(v_n=0\) 就略过；否则加入 \(v_n/\|v_n\|\)。内积计算表明新方向与旧方向正交，而已处理的每个 \(x_n\) 都属于已保留向量的线性张成。因而最后得到的有限或可数标准正交系的闭线性张成包含稠密集，必为整个空间。这就是\term[gram-schmidt-zhengjiaohua]{Gram--Schmidt 正交化}[Gram--Schmidt orthogonalization]，它不替代上面对不可分空间的论证。
+
+例如在任意集合 \(I\) 的幂集上取计数测度，所得 \(L^2\) 记为 \(\ell^2(I)\)，各单点示性函数构成标准正交基：与它们全部正交的函数每个坐标都为零。若 \(I\) 不可数，这些单位向量两两距离为 \(\sqrt2\)，以它们为中心、半径 \(1/3\) 的开球两两不交，可数稠密集不可能同时与所有这些球相交，故空间不可分。
+
+标准正交基的“基”允许范数极限，不是只允许有限展开的代数基。对 \(L^2\) 而言，展开等式也只是等价类之间的平方积分收敛，并不自动给出逐点收敛。这两个区别决定了下一节中谱展开的准确含义。

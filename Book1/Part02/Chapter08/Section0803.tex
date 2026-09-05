@@ -2,24 +2,263 @@
 \section{Banach 空间基本原理}
 \label{b1:sec:0803}
 
-% TODO: 撰写本节正文。
+完备性不仅保证一个预先给定的 Cauchy 列有极限，还能把逐点信息变为对整个单位球的控制。本节的三个线性算子原理都依靠这一点：一致有界原理处理一族算子的大小，开映射定理处理方程的求解，闭图像定理则把连续性的检验转化为极限关系的检验。Axler 的《Measure, Integration \& Real Analysis》\cite[第 6E 节]{Axler2020Measure}将它们放在同一条证明链上；以下保留这条主线，并展开开映射证明中从近似解到精确解的步骤。
 
-\subsection{Baire 类定理}
+% 来源：Axler2020Measure，第 6E 节，印刷 pp.184--192。
+% Baire：6.76 与习题 8；一致有界：6.86 与习题 17；
+% 开映射及逆映射：6.81--6.83；乘积空间与闭图像：6.84--6.85。
+% 调整：先证一致有界；闭球半径取几何级数；补全逐次逼近与定义域边界。
+
+\subsection{Baire 纲定理}
 \label{b1:subsec:080301}
 
-待填充。
+稠密开集未必很大到能包含某个固定半径的球，但它会与每个非空开球相交。对可数多个稠密开集，这种局部选择可以连成一个收敛过程。
+
+\begin{definition}
+\label{b1:def:category-of-sets}
+设 \(M\) 是度量空间。若 \(A\subset M\) 的闭包没有内点，称 \(A\) 在 \(M\) 中\term[wuchu-choumi]{无处稠密}[nowhere dense]；可数个无处稠密集的并称为\term[diyi-gang-ji]{第一纲集}[set of first category]。这里的闭包和内部都相对于 \(M\) 而言。
+\end{definition}
+
+\term*[baire-gang-dingli]{Baire 纲定理}[Baire category theorem]说明，一个非空完备度量空间不可能在自身中是第一纲集。证明时使用下面更便于构造的形式。
+
+\begin{theorem}[Baire 纲]
+\label{b1:thm:baire}
+设 \(M\) 是非空完备度量空间，\(G_1,G_2,\ldots\) 是 \(M\) 中的稠密开集，则 \(\bigcap_{n=1}^{\infty}G_n\) 在 \(M\) 中稠密。特别地，若 \(M=\bigcup_{n=1}^{\infty}F_n\)，其中各 \(F_n\) 闭，则至少一个 \(F_n\) 有非空内部。
+\end{theorem}
+
+\begin{proof}
+任取非空开集 \(U\subset M\)。由稠密性可选 \(x_1\in U\cap G_1\)，再由开性选 \(0<r_1<2^{-1}\)，使闭球
+\[
+ K_1=\overline B(x_1,r_1)\subset U\cap G_1.
+\]
+若已选 \(x_n,r_n\)，就在非空开集 \(B(x_n,r_n)\cap G_{n+1}\) 中选 \(x_{n+1}\)，并取 \(0<r_{n+1}<2^{-n-1}\)，使
+\[
+ K_{n+1}=\overline B(x_{n+1},r_{n+1})
+ \subset B(x_n,r_n)\cap G_{n+1}\subset K_n.
+\]
+当 \(k\ge n\) 时，\(x_k\in K_n\)；因而 \(k,l\ge n\) 时有 \(d(x_k,x_l)\le 2r_n<2^{1-n}\)。完备性给出 \(x_n\to x\in M\)。每个 \(K_n\) 都闭且包含点列的一条尾部，故 \(x\in K_n\) 对所有 \(n\) 成立，从而 \(x\in U\cap\bigcap_nG_n\)。由于 \(U\) 任意，交集稠密。
+
+若闭集 \(F_n\) 全都没有内点，则 \(M\setminus F_n\) 都是稠密开集，它们的交非空，与 \(M=\bigcup_nF_n\) 矛盾。若 \(M\) 是可数个无处稠密集的并，把各集合换成闭包也会得到这样的矛盾。
+\end{proof}
+
+构造中把闭球放进下一个开集，是不可省略的安排。开集允许我们在其中选取更小的球，闭球则保证极限不会离开已经完成的选择。仅有递减开集和趋零的直径是不够的，例如 \(\mathbb R\) 中的开区间 \((0,1/n)\) 递减，交却为空；证明并未使用闭球的紧致性。
+
+在 \(\mathbb Q\) 自身的度量拓扑中，每个单点集都闭且没有内点，而 \(\mathbb Q\) 是这些单点集的可数并。这表明完备性不能删除。也不能把“无处稠密”理解成不依赖所在空间的性质：单点空间在自身中有非空内部，虽然它作为 \(\mathbb R\) 的子集没有内点。
+
+另一方面，无理数集不能写成 \(\mathbb R\) 中可数个闭集的并。否则设 \(\mathbb R\setminus\mathbb Q=\bigcup_nF_n\) 且各 \(F_n\) 闭，因为每个开区间都有有理数，\(F_n\) 都没有内点；再把有理数逐个加入，就把 \(\mathbb R\) 写成了可数个无内点闭集的并，与定理矛盾。开集、闭集和可数运算的次序，因此不能任意交换。
 
 \subsection{一致有界原理}
 \label{b1:subsec:080302}
 
-待填充。
+设一族连续线性算子作用在同一空间上。对每个固定向量，它们的值都有界，并不从定义上保证这些界能与向量的选择无关。\term[yizhi-youjie-yuanli]{一致有界原理}[principle of uniform boundedness]提供了这个结论，所需的完备性只在定义域一侧。%
+\footnote{又称 Banach--Steinhaus 定理\termidx[banach-steinhaus]{Banach--Steinhaus 定理}%
+\foreignidx{Banach--Steinhaus theorem}，见许全华等《泛函分析讲义》%
+\cite{Xu2017Fanhan}第 6.2 节；“共鸣定理”\termidx[gongming-dingli]{共鸣定理}%
+也是通行名称，孙炯等《泛函分析》第二版\cite{Sun2018Fanhan}第 4.3 节在“一致有界原则”
+之下使用“共鸣定理的应用”这一标题。}
+
+\begin{theorem}[Banach--Steinhaus，一致有界]
+\label{b1:thm:uniform-boundedness}
+设 \(X\) 是 Banach 空间，\(Y\) 是赋范空间，\(\mathcal T\) 是一族从 \(X\) 到 \(Y\) 的有界线性算子。若对每个 \(x\in X\) 都有
+\[
+ \sup_{T\in\mathcal T}\|Tx\|<\infty,
+\]
+则存在 \(C<\infty\)，使所有 \(T\in\mathcal T\) 都满足 \(\|T\|\le C\)。
+\end{theorem}
+
+\begin{proof}
+空族的结论无需证明。令
+\[
+ E_n=\{x\in X:\|Tx\|\le n\text{ 对所有 }T\in\mathcal T\}.
+\]
+各算子连续，故 \(E_n\) 是闭集；逐点有界性给出 \(X=\bigcup_{n\ge1}E_n\)。由\cref{b1:thm:baire}，存在 \(N\)、\(x_0\) 和 \(r>0\)，使 \(B(x_0,r)\subset E_N\)。对任意 \(\|z\|\le1\)，点 \(x_0+(r/2)z\) 与 \(x_0\) 都在 \(E_N\) 中，因此
+\[
+ \frac r2\|Tz\|
+ \le \|T(x_0+(r/2)z)\|+\|Tx_0\|\le 2N.
+\]
+对 \(z\) 取上确界，得到 \(\|T\|\le4N/r\)，这个界与 \(T\) 无关。
+\end{proof}
+
+\begin{corollary}[有界线性算子的逐点极限]
+\label{b1:cor:pointwise-operator-limit}
+设 \(X\) 为 Banach 空间，\(Y\) 为赋范空间，\(T_n:X\to Y\) 是有界线性算子。若对每个 \(x\in X\)，\(T_nx\) 都在 \(Y\) 中收敛，则
+\[
+ Tx=\lim_{n\to\infty}T_nx
+\]
+定义一个有界线性算子，并且 \(\|T\|\le\liminf_{n\to\infty}\|T_n\|<\infty\)。
+\end{corollary}
+
+\begin{proof}
+每个收敛列 \((T_nx)\) 都有界，故一致有界原理给出 \(\sup_n\|T_n\|<\infty\)。对标量 \(a,b\) 及 \(x,z\in X\)，在 \(T_n(ax+bz)=aT_nx+bT_nz\) 中取极限，得到 \(T\) 的线性。又有
+\[
+ \|Tx\|=\lim_n\|T_nx\|
+ \le\bigl(\liminf_n\|T_n\|\bigr)\|x\|,
+\]
+所以 \(T\) 有界并满足所述估计。
+\end{proof}
+
+这里已假定极限属于 \(Y\)；若仅知道 \((T_nx)\) 是 Cauchy 列，则还需要 \(Y\) 完备，才能保证这个定义有意义。逐点收敛也只断言每个固定向量上的收敛，不能把它改写成算子范数收敛。
+
+在 \(C([0,1])\) 上定义 \(S_nf=f(1/n)-f(0)\)。每个连续函数在 \(0\) 处连续，所以对每个固定 \(f\)，\(S_nf\to0\)。然而 \(\|S_n\|=2\)：上界由三角不等式得到，而函数
+\[
+ f_n(t)=
+ \begin{cases}
+  2nt-1,&0\le t\le1/n,\\
+  1,&1/n\le t\le1
+ \end{cases}
+\]
+连续、范数为 \(1\)，并满足 \(S_nf_n=2\)。这里使上界达到的测试函数依赖 \(n\)；逐点收敛不能控制这种随算子一起改变的向量。
+
+应用中往往只能先在一类容易计算的向量上求极限。若这类向量稠密，统一的算子界就能把结论传到整个空间。
+
+\begin{corollary}[从稠密子空间推广收敛]
+\label{b1:cor:operator-convergence-dense-subspace}
+设 \(X\) 是赋范空间，\(Y\) 是 Banach 空间，\(D\) 是 \(X\) 的稠密线性子空间。设 \(T_n:X\to Y\) 有界线性，\(\sup_n\|T_n\|\le C<\infty\)，且 \(T_nz\) 对每个 \(z\in D\) 都收敛，则 \(T_nx\) 对每个 \(x\in X\) 都收敛，并定义一个范数不超过 \(C\) 的线性算子。
+\end{corollary}
+
+\begin{proof}
+给定 \(x\in X\) 和 \(\varepsilon>0\)，由稠密性选 \(z\in D\) 使 \(\|x-z\|<\varepsilon/(4(C+1))\)。当 \(n,m\) 足够大时，\(\|T_nz-T_mz\|<\varepsilon/2\)，于是
+\[
+ \|T_nx-T_mx\|
+ \le 2C\|x-z\|+\|T_nz-T_mz\|<\varepsilon.
+\]
+因此 \((T_nx)\) 是 Cauchy 列，且由 \(Y\) 完备在 \(Y\) 中收敛。极限保持线性等式和不等式 \(\|T_nx\|\le C\|x\|\)，结论随之成立。
+\end{proof}
+
+这里已经把统一范数界作为假设，所以不再要求 \(X\) 完备。反过来，逐点有界性不能在任意赋范空间上产生统一界；下面的例子说明一致有界原理中定义域的完备性确实起作用。
+
+令 \(c_{00}\) 为只有有限个非零项的标量序列空间，赋予范数 \(\|x\|_\infty=\sup_k|x_k|\)。在其上定义 \(T_nx=nx_n\)，则每个 \(T_n\) 都连续，且 \(\|T_n\|=n\)：上界来自 \(|nx_n|\le n\|x\|_\infty\)，等号由第 \(n\) 个单位向量达到。然而对每个固定 \(x\in c_{00}\)，\(T_nx\) 最终为零。因此逐点有界性成立而算子范数无界。这个空间确实不完备：序列 \((1,1/2,\ldots,1/m,0,\ldots)\) 是一致范数下的 Cauchy 列，其逐坐标极限不在 \(c_{00}\) 中。
 
 \subsection{开映射定理}
 \label{b1:subsec:080303}
 
-待填充。
+连续性保证原像保持开集；像是否保持开集，是另一件事。对线性满射，\term[kai-yingshe-dingli]{开映射定理}[open mapping theorem]还给出定量信息：充分小的右端项可以由范数受控的原像产生。
+
+\begin{theorem}[开映射]
+\label{b1:thm:open-mapping}
+设 \(X,Y\) 是 Banach 空间，\(T:X\to Y\) 是有界线性满射，则 \(T\) 把 \(X\) 的开集映为 \(Y\) 的开集。具体地，存在 \(\delta>0\)，使
+\[
+ B_Y(0,\delta/2)\subset T(B_X(0,1)).
+\]
+\end{theorem}
+
+\begin{proof}
+若 \(Y=\{0\}\)，结论直接成立。以下记 \(B=B_X(0,1)\)。满射性给出
+\[
+ Y=\bigcup_{n\ge1}T(nB)
+   =\bigcup_{n\ge1}\overline{T(nB)}.
+\]
+由\cref{b1:thm:baire}，某个 \(\overline{T(nB)}\) 含有开球 \(B_Y(y_0,r)\)。若 \(\|y\|<r\)，则 \(y_0+y\) 与 \(y_0\) 都可由 \(T(nB)\) 中的点逼近；把这两列近似值相减，就得到 \(y\in\overline{T(2nB)}\)。缩放后，取 \(\delta=r/(2n)\)，便有
+\[
+ B_Y(0,\delta)\subset\overline{T(B)}.
+\]
+此处只得到像的闭包，尚不能据此断言 \(T\) 是开映射。
+
+固定 \(\|y\|<\delta/2\)。由上式缩放得
+\(B_Y(0,\delta/2)\subset\overline{T(\tfrac12B)}\)，故可选 \(\|x_1\|<2^{-1}\)，使 \(\|y-Tx_1\|<\delta2^{-2}\)。依次进行：若已选 \(x_1,\ldots,x_{k-1}\)，余项
+\[
+ y_{k-1}=y-\sum_{j=1}^{k-1}Tx_j
+\]
+满足 \(\|y_{k-1}\|<\delta2^{-k}\)，就利用
+\(B_Y(0,\delta2^{-k})\subset\overline{T(2^{-k}B)}\)，选 \(\|x_k\|<2^{-k}\)，使 \(\|y_{k-1}-Tx_k\|<\delta2^{-k-1}\)。因此 \(\sum_k\|x_k\|<1\)，其部分和是 Cauchy 列，由 \(X\) 的完备性收敛到某个 \(x\in B\)。又因 \(T\) 连续且余项趋于零，\(Tx=y\)。这就证明了真正的像球包含关系。
+
+最后，若 \(U\subset X\) 开且 \(x\in U\)，选 \(\varepsilon>0\) 使 \(x+\varepsilon B\subset U\)。线性性给出
+\[
+ Tx+B_Y(0,\varepsilon\delta/2)
+ \subset T(x+\varepsilon B)\subset T(U).
+\]
+每个 \(Tx\in T(U)\) 都是内点，故 \(T(U)\) 开。
+\end{proof}
+
+证明中两处完备性承担不同任务：\(Y\) 的完备性用于找到闭包中的球，\(X\) 的完备性用于把逐次近似的原像求和。一般的满射只保证原像存在；这里还保证能够选到范数足够小的原像。
+
+\begin{corollary}[有界逆]
+\label{b1:cor:bounded-inverse}
+设 \(X,Y\) 是 Banach 空间，\(T:X\to Y\) 是有界线性双射，则 \(T^{-1}:Y\to X\) 也是有界线性算子。
+\end{corollary}
+
+\begin{proof}
+唯一原像与 \(T\) 的线性性给出
+\(T^{-1}(ay+bz)=aT^{-1}y+bT^{-1}z\)。开映射定理提供 \(\delta>0\) 及上述像球包含关系。若 \(a>2\|y\|/\delta\)，则 \(y/a\in T(B)\)，从而 \(\|T^{-1}y\|<a\)。令 \(a\) 递减到 \(2\|y\|/\delta\)，即得 \(\|T^{-1}y\|\le(2/\delta)\|y\|\)。
+\end{proof}
+
+这个推论称为\term[youjie-ni-dingli]{有界逆定理}[bounded inverse theorem]。例如，同一向量空间上的两个范数都使它完备，且 \(\|x\|_2\le C\|x\|_1\)，则恒等映射从第一种范数空间到第二种是有界双射；其逆有界，便得到反向不等式 \(\|x\|_1\le C'\|x\|_2\)。这时单向估计已经足以推出范数等价。
+
+对于唯一可解的线性方程 \(Tx=y\)，有界逆还说明解对数据稳定：右端项从 \(y\) 变成 \(y+h\) 时，解的变化不超过 \(\|T^{-1}\|\|h\|\)。没有单射性时，开映射定理仍保证每个小的右端项有一个小的原像，但不指定如何在多个原像之间作一致选择；证明中的逐次逼近也没有自动给出一个线性的右逆。
 
 \subsection{闭图像定理}
 \label{b1:subsec:080304}
 
-待填充。
+实际定义的算子未必立即带有范数估计，却可能容易验证：自变量与函数值同时收敛时，极限仍满足原来的关系。\term[bi-tuxiang-dingli]{闭图像定理}[closed graph theorem]把这种检验变成有界性，但要求算子定义在整个 Banach 空间上。
+
+\begin{definition}
+\label{b1:def:closed-operator}
+设 \(D\) 是赋范空间 \(X\) 的线性子空间，\(T:D\to Y\) 线性。若其图像
+\[
+ G(T)=\{(x,Tx):x\in D\}
+\]
+在 \(X\times Y\) 中闭，称 \(T\) 为\term[bi-suanzi]{闭算子}[closed operator]。乘积空间取范数 \(\|(x,y)\|=\|x\|+\|y\|\)；在此范数下收敛等价于两个分量分别收敛。
+\end{definition}
+
+\begin{theorem}[闭图像]
+\label{b1:thm:closed-graph}
+设 \(X,Y\) 都是 Banach 空间，\(T:X\to Y\) 是定义在整个 \(X\) 上的线性映射，则 \(T\) 有界当且仅当 \(G(T)\) 在 \(X\times Y\) 中闭。
+\end{theorem}
+
+\begin{proof}
+若 \(T\) 有界，且 \((x_n,Tx_n)\to(x,y)\)，则连续性给出 \(Tx_n\to Tx\)。极限唯一性说明 \(y=Tx\)，故图像闭。
+
+反之，先注意 \(X\times Y\) 完备：其中的 Cauchy 列在两个分量上都为 Cauchy 列，分别取极限即可得到乘积范数下的极限。因而闭线性子空间 \(G(T)\) 也完备；这是\cref{b1:prop:closed-subspace-complete}的应用。考虑投影
+\[
+ P:G(T)\longrightarrow X,\quad P(x,Tx)=x.
+\]
+它线性且 \(\|P(x,Tx)\|\le\|(x,Tx)\|\)。因为 \(T\) 在整个 \(X\) 上有定义，\(P\) 满射；因为 \(T\) 是单值映射，\(P\) 单射。由\cref{b1:cor:bounded-inverse}，\(P^{-1}\) 有界，于是存在 \(C\) 使
+\[
+ \|Tx\|\le\|(x,Tx)\|=\|P^{-1}x\|\le C\|x\|.
+\]
+这正是所需的有界性。
+\end{proof}
+
+闭图像条件只检验那些 \(x_n\) 与 \(Tx_n\) 都收敛的情形，并不预先断言每个收敛的 \((x_n)\) 都有收敛的像列。这使它比直接证明连续性容易使用；完整定义域则保证证明中的投影确实是满射。
+
+\begin{corollary}[函数空间的完备范数比较]
+\label{b1:cor:function-space-banach-norms}
+设 \(S\) 为集合，\(V\) 是 \(S\) 上标量值函数组成的线性空间，范数 \(\|\cdot\|_1,\|\cdot\|_2\) 都使 \(V\) 成为 Banach 空间。若这两种范数中的收敛都蕴含逐点收敛，则两种范数等价。
+\end{corollary}
+
+\begin{proof}
+考虑恒等映射 \(I:(V,\|\cdot\|_1)\to(V,\|\cdot\|_2)\)。若 \(f_n\to f\) 关于第一种范数成立，而 \(If_n\to g\) 关于第二种范数成立，则对每一点 \(t\)，\(f_n(t)\) 同时趋于 \(f(t)\) 和 \(g(t)\)。故 \(f=g\)，即 \(I\) 的图像闭。闭图像定理给出 \(I\) 有界，有界逆定理再给出反向估计，故两种范数等价。
+\end{proof}
+
+在这个应用中，无需预先猜出两种范数之间的常数；函数值的唯一极限把两种收敛方式联系起来，完备性再提供定量估计。下一例则说明，如果去掉完备性，或把算子限制在真子空间上，这个过程会在哪里中断。
+
+回到\cref{b1:subsec:080102}中的求导例子。在 \(X=Y=C([0,1])\) 上取一致范数，令 \(D=C^1([0,1])\)，并定义 \(Af=f'\)。这是闭算子。事实上，若 \(f_n\in D\)、\(f_n\to f\) 且 \(f_n'\to g\) 都一致收敛，则
+\[
+ f_n(t)-f_n(0)=\int_0^t f_n'(s)\,\mathrm ds
+\]
+可取极限，因为积分误差不超过 \(\|f_n'-g\|_\infty\)。于是
+\(f(t)-f(0)=\int_0^t g(s)\,\mathrm ds\)，而 \(g\) 连续，微积分基本定理给出 \(f\in D\) 且 \(Af=g\)。
+
+但 \(A\) 并不关于一致范数有界：取 \(f_n(t)=\sin(nt)/n\)，则 \(\|f_n\|_\infty\le1/n\)，而 \(\|Af_n\|_\infty=1\)。这不违背闭图像定理，因为 \(D\ne X\)。若把 \(D\) 自身看作定义域，则缺少的假设改成了完备性：\(g_n(t)=\sqrt{(t-\tfrac12)^2+1/n}\) 在一致范数下趋于 \(|t-\tfrac12|\)，极限不属于 \(D\)。这也说明使用定理前必须同时核对空间的范数与算子的定义域。
+
+闭算子仍提供了一种自然的完备空间结构。
+
+\begin{definition}
+\label{b1:def:graph-norm}
+设 \(D\subset X\) 为线性子空间，\(T:D\to Y\) 线性。在 \(D\) 上定义\term[tuxiang-fanshu]{图像范数}[graph norm]
+\[
+ \|x\|_T=\|x\|_X+\|Tx\|_Y.
+\]
+\symidx{\(\lVert x\rVert_T\)：图像范数}
+\end{definition}
+
+\begin{proposition}
+\label{b1:prop:closed-operator-graph-norm}
+若 \(X,Y\) 是 Banach 空间，\(T:D\subset X\to Y\) 是闭算子，则 \(D\) 关于图像范数是 Banach 空间。
+\end{proposition}
+
+\begin{proof}
+正定性来自 \(\|x\|_X\)，齐次性和三角不等式来自 \(T\) 的线性与两个空间的范数公理，故图像范数确为范数。若 \((x_n)\) 关于此范数为 Cauchy 列，则 \(x_n\to x\in X\)、\(Tx_n\to y\in Y\)；图像闭保证 \(x\in D\) 且 \(Tx=y\)，于是 \(\|x_n-x\|_T\to0\)。
+\end{proof}
+
+特别地，上一例中的 \(C^1([0,1])\) 赋予 \(\|f\|_\infty+\|f'\|_\infty\) 后成为 Banach 空间。后面同时控制函数与导数时，也会沿用这种把两部分信息纳入同一个范数的做法。

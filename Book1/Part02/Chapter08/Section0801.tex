@@ -2,24 +2,214 @@
 \section{赋范空间}
 \label{b1:sec:0801}
 
-% TODO: 撰写本节正文。
+% 来源：Axler2020Measure，6A，印刷第147--154页；6C，第163--171页。
+% 有限维范数等价展开6D习题4--9（第182页）的坐标紧性路线；
+% 算子空间完备性据6.47，级数判别据6.41；例子重新组织并补足证明。
+第一编已经遇到两种把函数或测度看成整体的距离：一致距离控制每一点的误差，全变差距离控制每个可测集上的误差。两者都与加法、数乘相容。本节抽取这些距离共同的线性结构，并区分两个问题：映射能否稳定地传递误差，以及空间是否容纳所有 Cauchy 列的极限。以下统一以 \(\mathbb K\) 表示 \(\mathbb R\) 或 \(\mathbb C\)，同一线性映射的定义域和值域取相同的标量域。
 
 \subsection{范数与等价范数}
 \label{b1:subsec:080101}
 
-待填充。
+\begin{definition}\label{b1:def:normed-space}
+设 \(X\) 是 \(\mathbb K\) 上的向量空间。映射 \(\|\cdot\|:X\rightarrow[0,\infty)\) 称为\term[fanshu]{范数}[norm]，若对 \(x,y\in X\)、\(a\in\mathbb K\) 有
+\[
+\|x\|=0\Longleftrightarrow x=0,
+\quad \|ax\|=|a|\|x\|,
+\quad \|x+y\|\leq\|x\|+\|y\|.
+\]
+配备范数的向量空间称为\term[fufan-kongjian]{赋范空间}[normed space]。%
+\footnote{也称赋范线性空间\termidx[fufan-xianxing-kongjian]{赋范线性空间}，
+如程其襄等《实变函数与泛函分析基础》第四版\cite{Cheng2019ShibianFanhan}第 7 章第 8 节。
+两种名称都要求底层空间具有线性结构。}
+\end{definition}
+\symidx{\(\lVert x\rVert\)：向量的范数}
+
+范数给出距离 \(d(x,y)=\|x-y\|\)：正定性、对称性分别来自前两条公理，三角不等式来自 \(x-z=(x-y)+(y-z)\)。以后赋范空间中的开集、闭集和连续性均相对于这个距离。记
+\[
+B_X(x,r)=\{\,y\in X\mid\|y-x\|<r\,\}.
+\]
+收敛 \(x_n\to x\) 指 \(\|x_n-x\|\to0\)。由三角不等式交换 \(x,y\) 可得
+\[
+\bigl|\|x\|-\|y\|\bigr|\leq\|x-y\|,
+\]
+所以范数本身连续；加法连续，而数乘的连续性可从
+\(\|a_nx_n-ax\|\leq|a_n|\|x_n-x\|+|a_n-a|\|x\|\) 得到。
+
+在 \(\mathbb K^d\) 上，\(\|x\|_1=\sum_{j=1}^d|x_j|\) 与 \(\|x\|_\infty=\max_j|x_j|\) 都是范数：正定性和齐次性逐坐标成立，三角不等式分别对标量三角不等式求和、取最大值得到。二者满足
+\[
+\|x\|_\infty\leq\|x\|_1\leq d\|x\|_\infty.
+\]
+虽然单位球形状不同，它们给出相同的收敛概念。
+
+\begin{definition}\label{b1:def:equivalent-norms}
+同一向量空间上的两个范数 \(\|\cdot\|_a\)、\(\|\cdot\|_b\) 称为\term[dengjia-fanshu]{等价范数}[equivalent norms]，若存在常数 \(c,C>0\)，使
+\[
+c\|x\|_a\leq\|x\|_b\leq C\|x\|_a
+\quad(x\in X).
+\]
+\end{definition}
+
+等价范数有相同的开集，因为一类开球总包含以同一点为中心的另一类充分小的开球。反过来，若两种范数给出相同的开集，就有某个 \(\delta>0\) 使 \(\|x\|_a<\delta\) 推出 \(\|x\|_b<1\)。对非零 \(x\) 将此用于 \(\delta x/(2\|x\|_a)\)，得到 \(\|x\|_b\leq2\|x\|_a/\delta\)；交换两范数再得反向估计。
+
+\begin{proposition}\label{b1:prop:finite-dimensional-norms}
+有限维向量空间上的任意两个范数等价。
+\end{proposition}
+\begin{proof}
+零维时无须证明。设 \(e_1,\ldots,e_d\) 是一组基，并令
+\(q(\sum_ja_je_j)=\max_j|a_j|\)。对任一范数有
+\[
+\left\|\sum_{j=1}^da_je_j\right\|
+\leq\sum_{j=1}^d|a_j|\|e_j\|
+\leq Cq\left(\sum_{j=1}^da_je_j\right),
+\quad C=\sum_{j=1}^d\|e_j\|.
+\]
+结合反三角不等式，映射 \((a_1,\ldots,a_d)\mapsto\|\sum_ja_je_j\|\) 对坐标最大值距离连续。集合 \(\{\,a\in\mathbb K^d\mid\max_j|a_j|=1\,\}\) 在有限维欧氏空间中紧，且该连续函数在其上处处为正，故有正的最小值 \(c\)。齐次性给出 \(cq(x)\leq\|x\|\)。每个范数都与 \(q\) 等价，两两等价随之成立。
+\end{proof}
+
+有限维是实质条件。在 \(C([0,1])\) 上，\(\|f\|_\infty=\max|f|\) 与 \(\|f\|_1=\int_0^1|f|\) 都是范数；后一式的正定性来自连续非零函数在某个小区间上绝对值有正下界。但对 \(f_n(t)=t^n\)，有 \(\|f_n\|_\infty=1\)、\(\|f_n\|_1=1/(n+1)\)，故两范数不等价。讨论函数空间时，不能只给出底层向量空间而省略所用的范数。
 
 \subsection{连续线性映射}
 \label{b1:subsec:080102}
 
-待填充。
+线性映射 \(T:X\rightarrow Y\) 满足 \(T(ax+by)=aTx+bTy\)。与一般映射不同，它在一点附近的行为决定了整个空间中的误差传播。
+
+\begin{proposition}\label{b1:prop:bounded-linear-equivalence}
+对赋范空间之间的线性映射 \(T:X\rightarrow Y\)，下列条件等价：
+\begin{equivalences}
+\item\label{b1:item:linear-continuous} \(T\) 在 \(X\) 上连续；
+\item\label{b1:item:linear-continuous-zero} \(T\) 在零点连续；
+\item\label{b1:item:linear-bound} 存在 \(M\geq0\)，使 \(\|Tx\|_Y\leq M\|x\|_X\) 对每个 \(x\in X\) 成立。
+\end{equivalences}
+\end{proposition}
+\begin{proof}
+第一项包含第二项。若 \(T\) 在零点连续，取 \(\delta>0\)，使 \(\|u\|_X<\delta\) 时 \(\|Tu\|_Y<1\)。对 \(x\ne0\)，代入 \(u=\delta x/(2\|x\|_X)\) 得 \(\|Tx\|_Y\leq2\|x\|_X/\delta\)；零向量也满足这一估计。最后，第三项给出
+\[
+\|Tx-Ty\|_Y\leq M\|x-y\|_X,
+\]
+这同时保证所有点上的连续性。
+\end{proof}
+
+满足第三项的映射称为\term[youjie-xianxing-yingshe]{有界线性映射}[bounded linear map]。“有界”指单位球的像有界，或等价地把每个有界集映成有界集；它不要求整个值域有界。非零线性映射的值域包含 \(\{\,tTx\mid t\in\mathbb R\,\}\)，因而不可能整体有界。
+
+若 \(X\) 有限维，则每个线性映射 \(T:X\rightarrow Y\) 都连续。沿用前述坐标范数，
+\[
+\|Tx\|_Y\leq\sum_j|a_j|\|Te_j\|_Y
+\leq q(x)\sum_j\|Te_j\|_Y,
+\]
+再用范数等价即可。无穷维时，求导给出直接的反例：给 \(C^1([0,1])\) 和 \(C([0,1])\) 都赋一致范数，则 \(Df=f'\) 线性，但 \(f_n(t)=\sin(nt)/n\) 一致趋于零，\(\|Df_n\|_\infty=1\)，所以 \(D\) 不连续。若改用 \(\|f\|_\infty+\|f'\|_\infty\) 衡量定义域，求导立即变成有界算子。
 
 \subsection{算子范数}
 \label{b1:subsec:080103}
 
-待填充。
+\begin{definition}\label{b1:def:operator-norm}
+全体有界线性映射 \(X\rightarrow Y\) 组成的空间记为 \(\mathcal B(X,Y)\)。其\term[suanzi-fanshu]{算子范数}[operator norm]定义为
+\[
+\|T\|=\sup_{\|x\|_X\leq1}\|Tx\|_Y.
+\]
+\end{definition}
+\symidx{\(\mathcal B(X,Y)\)：有界线性映射空间}
+\symidx{\(\lVert T\rVert\)：算子范数}
+
+由齐次性，\(\|Tx\|_Y\leq\|T\|\|x\|_X\)，而任何能代替右端 \(\|T\|\) 的常数都不小于上述上确界。故算子范数就是最小的全局误差放大常数。当 \(X\ne\{0\}\) 时还有
+\[
+\|T\|=\sup_{x\ne0}\dfrac{\|Tx\|_Y}{\|x\|_X}
+=\sup_{\|x\|_X=1}\|Tx\|_Y.
+\]
+零空间情形仍使用闭单位球定义，此时 \(\|T\|=0\)，不对空的单位球面取上确界。
+
+\begin{proposition}\label{b1:prop:operator-norm-properties}
+逐点相加、数乘使 \(\mathcal B(X,Y)\) 成为赋范空间。若 \(T\in\mathcal B(X,Y)\)、\(S\in\mathcal B(Y,Z)\)，则
+\[
+\|ST\|\leq\|S\|\|T\|.
+\]
+\end{proposition}
+\begin{proof}
+对 \(\|x\|_X\leq1\)，有
+\(\|(T_1+T_2)x\|_Y\leq\|T_1\|+\|T_2\|\)。取上确界得到三角不等式，也证明和仍有界。齐次性由 \(\|aTx\|_Y=|a|\|Tx\|_Y\) 给出；范数为零迫使每个 \(Tx\) 为零。最后，\(\|STx\|_Z\leq\|S\|\|T\|\|x\|_X\)，再对单位球取上确界即可。
+\end{proof}
+
+例如，对 \(a\in C([0,1])\)，乘法算子 \(M_af=af\) 满足 \(\|M_af\|_\infty\leq\|a\|_\infty\|f\|_\infty\)。取常值函数 \(f=1\) 又得到反向估计，故 \(\|M_a\|=\|a\|_\infty\)。这种“先作统一估计，再找测试向量”的方法将在对偶空间中反复使用。
 
 \subsection{Banach 空间}
 \label{b1:subsec:080104}
 
-待填充。
+\begin{definition}\label{b1:def:banach-space}
+赋范空间 \(X\) 中的序列 \((x_n)\) 称为\term*[cauchy-lie]{Cauchy 列}[Cauchy sequence]，若对每个 \(\varepsilon>0\)，存在 \(N\)，使 \(n,m\geq N\) 时 \(\|x_n-x_m\|<\varepsilon\)。若每个这样的序列都收敛于 \(X\) 内的元素，则称 \(X\) 为\term[banach-kongjian]{Banach 空间}[Banach space]。
+\end{definition}
+
+这里的要求正是\cref{b1:thm:signed-measures-complete}中已经使用的完备性。每个收敛列都是 Cauchy 列，因为 \(\|x_n-x_m\|\leq\|x_n-x\|+\|x_m-x\|\)；每个 Cauchy 列有界，因为从某项起所有项都处于一个固定半径的球内，而此前只有有限项。等价范数具有相同的 Cauchy 列与极限，因而也具有相同的完备性。
+
+\begin{proposition}\label{b1:prop:closed-subspace-complete}
+赋范空间中的完备线性子空间是闭的；Banach 空间的闭线性子空间是 Banach 空间。有限维赋范空间完备，因此任意赋范空间的有限维子空间都闭。
+\end{proposition}
+\begin{proof}
+设完备子空间 \(M\) 中的序列在外部空间收敛于 \(x\)。它是 Cauchy 列，故在 \(M\) 中收敛于某个 \(y\)；由 \(\|x-y\|\leq\|x-x_n\|+\|x_n-y\|\) 得 \(x=y\in M\)。若一点在 \(M\) 的闭包中，可从半径 \(1/n\) 的球中选取这样的逼近列，故 \(M\) 闭。反过来，闭子空间中的 Cauchy 列先由外部完备性取得极限，再由闭性确保极限留在子空间内。
+
+有限维时，坐标最大值范数下的 Cauchy 列逐坐标收敛，并因坐标数有限而在该范数下收敛。由\cref{b1:prop:finite-dimensional-norms}可换成任一范数。有限维子空间的闭性遂由第一条结论得到。
+\end{proof}
+
+\begin{proposition}\label{b1:prop:bounded-functions-complete}
+对非空集合 \(S\)，全体有界函数 \(S\rightarrow\mathbb K\) 组成的空间 \(b(S)\)，关于范数 \(\|f\|_\infty=\sup_{s\in S}|f(s)|\) 完备。
+\end{proposition}
+\begin{proof}
+这个公式的正定性、齐次性和三角不等式分别由标量的对应性质得到。设 \((f_n)\) 是 Cauchy 列。固定 \(s\)，数列 \((f_n(s))\) 为标量 Cauchy 列，令其极限为 \(f(s)\)。给定 \(\varepsilon>0\)，取 \(N\) 使 \(n,m\geq N\) 时 \(\|f_n-f_m\|_\infty<\varepsilon\)。逐点令 \(m\to\infty\)，得到 \(|f_n(s)-f(s)|\leq\varepsilon\)，其中 \(N\) 不依赖于 \(s\)。特别地，\(f\) 被有界函数 \(|f_N|+\varepsilon\) 控制，故 \(f\in b(S)\)；再对 \(s\) 取上确界，得到范数收敛。
+\end{proof}
+
+\begin{corollary}\label{b1:cor:continuous-functions-complete}
+设 \(K\) 是非空紧致度量空间。连续函数空间 \(C(K)\) 关于一致范数是 Banach 空间。
+\end{corollary}
+\begin{proof}
+紧性使每个连续函数有界，故 \(C(K)\subseteq b(K)\)。若 \(f_n\to f\) 一致，固定 \(x\in K\) 与 \(\varepsilon>0\)，先取 \(n\) 使 \(\|f_n-f\|_\infty<\varepsilon/3\)，再利用 \(f_n\) 在 \(x\) 处连续，取邻域使 \(|f_n(y)-f_n(x)|<\varepsilon/3\)。三角不等式给出 \(|f(y)-f(x)|<\varepsilon\)。因此 \(C(K)\) 在 \(b(K)\) 中闭，结论来自前两个命题。
+\end{proof}
+
+完备性不意味着闭单位球紧。在 \(C([0,1])\) 中，取两两不交的小闭区间
+\(I_n=[2^{-n},2^{-n}+2^{-n-2}]\)，并取连续的三角形函数 \(h_n\)，使它在 \(I_n\) 的中点为 \(1\)，在两端及区间外为 \(0\)，两段分别线性。每个 \(h_n\) 的一致范数为 \(1\)，但 \(n\ne m\) 时 \(\|h_n-h_m\|_\infty=1\)。因此这列函数没有 Cauchy 子列，更没有收敛子列。有限维闭有界集的紧性不能仅凭完备性推广到函数空间。
+
+取 \(S=\mathbb N\) 得到有界序列空间 \(\ell^\infty\)。其中有限支撑序列组成的子空间 \(c_{00}\) 不完备：序列
+\[
+x^{(n)}=(2^{-1},2^{-2},\ldots,2^{-n},0,0,\ldots)
+\]
+在一致范数下为 Cauchy 列，但每个可能的极限都必须逐坐标等于 \((2^{-j})_{j\geq1}\)，而这个序列不属于 \(c_{00}\)。
+\symidx{\(\ell^\infty\)：有界标量序列空间}
+\symidx{\(c_{00}\)：有限支撑标量序列空间}
+
+\begin{theorem}\label{b1:thm:operator-space-complete}
+若 \(X\) 是赋范空间、\(Y\) 是 Banach 空间，则 \(\mathcal B(X,Y)\) 是 Banach 空间。
+\end{theorem}
+\begin{proof}
+设 \((T_n)\) 关于算子范数为 Cauchy 列。估计
+\[
+\|T_nx-T_mx\|_Y\leq\|T_n-T_m\|\|x\|_X
+\]
+说明对每个 \(x\in X\)，序列 \((T_nx)\) 在 \(Y\) 中有极限，记为 \(Tx\)。在 \(T_n(ax+by)=aT_nx+bT_ny\) 中取极限，得到 \(T\) 线性。又因 \(M=\sup_n\|T_n\|<\infty\)，取极限得到 \(\|Tx\|_Y\leq M\|x\|_X\)，故 \(T\in\mathcal B(X,Y)\)。
+
+给定 \(\varepsilon>0\)，选取 Cauchy 条件的 \(N\)。固定 \(n\geq N\) 并令 \(m\to\infty\)，上述估计变为 \(\|(T_n-T)x\|_Y\leq\varepsilon\|x\|_X\)。对单位球取上确界即得 \(\|T_n-T\|\leq\varepsilon\)。证明只在值域 \(Y\) 中取极限，没有使用 \(X\) 的完备性。
+\end{proof}
+
+\begin{proposition}\label{b1:prop:continuous-extension-closure}
+设 \(M\) 是赋范空间 \(X\) 的线性子空间，\(Y\) 是 Banach 空间。每个 \(T\in\mathcal B(M,Y)\) 都有唯一的连续线性延拓 \(\overline T:\overline M\rightarrow Y\)，并且 \(\|\overline T\|=\|T\|\)。
+\end{proposition}
+\begin{proof}
+对 \(x\in\overline M\)，取 \(x_n\in M\) 使 \(x_n\to x\)。估计 \(\|Tx_n-Tx_m\|\leq\|T\|\|x_n-x_m\|\) 说明 \((Tx_n)\) 是 Cauchy 列，故可令 \(\overline Tx=\lim_nTx_n\)。若另有 \(y_n\in M\) 趋于同一点，则
+\[
+\|Tx_n-Ty_n\|\leq\|T\|\bigl(\|x_n-x\|+\|y_n-x\|\bigr)\longrightarrow0,
+\]
+所以定义与逼近列无关。对两个向量分别选逼近列，并对其线性组合取极限，得到 \(\overline T\) 线性。由 \(\|Tx_n\|\leq\|T\|\|x_n\|\) 取极限，得 \(\|\overline Tx\|\leq\|T\|\|x\|\)；限制回 \(M\) 则得范数等号。任一连续延拓在 \(x\) 处的值都必须是 \(\lim_nTx_n\)，故延拓唯一。
+\end{proof}
+
+这里的延拓由极限唯一决定，但只能到达原定义域的闭包。若目标是整个 \(X\)，而 \(M\) 又不稠密，就没有逼近列可供使用。下一节将针对标量值映射，给出越过这一限制的方法；那个延拓一般不再唯一。
+
+\begin{proposition}\label{b1:prop:banach-series-criterion}
+赋范空间 \(X\) 完备，当且仅当每个满足 \(\sum_{n=1}^\infty\|u_n\|<\infty\) 的级数 \(\sum_{n=1}^\infty u_n\) 都在 \(X\) 中收敛；这里级数收敛指部分和有范数极限。
+\end{proposition}
+\begin{proof}
+若 \(X\) 完备，部分和之差的范数被 \(\sum\|u_n\|\) 的相应尾和控制，所以部分和为 Cauchy 列，因而收敛。
+
+反过来，设上述级数条件成立，且 \((x_n)\) 是 Cauchy 列。递归选择严格递增的指标 \(n_k\)，使 \(n,m\geq n_k\) 时 \(\|x_n-x_m\|\leq2^{-k}\)。于是
+\[
+\sum_{k=1}^\infty\|x_{n_{k+1}}-x_{n_k}\|<\infty.
+\]
+由假设，该差分级数收敛；其部分和为 \(x_{n_{k+1}}-x_{n_1}\)，故子列 \((x_{n_k})\) 收敛于某个 \(x\in X\)。对 \(n\geq n_k\)，有 \(\|x_n-x\|\leq2^{-k}+\|x_{n_k}-x\|\)，从而整个序列也收敛于 \(x\)。
+\end{proof}
+
+这一判别把完备性转化成可求和误差的累积控制；后面的开映射论证将用它把逐次近似拼成真正的原像。关于完备性、算子范数和线性泛函的连续叙述，可参阅 Sheldon Axler 的《Measure, Integration \& Real Analysis》\cite{Axler2020Measure}第 6C--6D 节。

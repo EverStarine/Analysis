@@ -1,24 +1,332 @@
 % !TeX root = ../../Book1.tex
 \OptionalSection{紧算子与紧自伴谱理论}{b1:sec:0805}
 
-% TODO: 撰写本节正文。
+有限维自伴矩阵可以选取一组标准正交特征向量，使矩阵化为实对角形。
+无穷维空间中的有界自伴算子未必有特征向量，更不能直接套用这一结论。
+本节增加紧性假设，证明非零特征值仍能给出完整的正交分解；
+末尾再把这一分解用于区间上的一个边值问题。
+这里的谱定理只涉及紧自伴算子的特征展开，不以一般算子谱理论为前提。
+
+关于紧算子的基本运算和紧自伴谱定理，可伴读 Axler 的%
+《Measure, Integration \& Real Analysis》\cite{Axler2020Measure}第 10C、10D 节。
+下面直接用二次型构造一个绝对值最大的特征值，再对正交补作同样的分析。
+这条证明路线只需要本章已经建立的 Hilbert 空间理论。
+% 来源：Axler2020Measure，10C pp.312--316、10D pp.326--331。
+% 证明义务：算子范数极限的紧性；极值特征向量的存在；
+% 非零谱的可数性及有限重数；不可分核空间；Green 算子的单射性与特征函数完备性。
 
 \subsection{紧算子}
 \label{b1:subsec:080501}
 
-待填充。
+考虑单位球中的一列向量。如果算子作用以后总能从像中取出一个收敛子列，
+那么许多有限维极限论证便有机会继续使用。紧算子把这一要求应用于所有有界列。
+
+\begin{definition}[紧算子]
+\label{b1:def:compact-operator}
+设 \(X,Y\) 为赋范空间。线性算子 \(T:X\to Y\) 称为%
+\term[jin-suanzi]{紧算子}[compact operator]，如果对 \(X\) 中每个有界列 \((x_n)\)，
+像列 \((Tx_n)\) 都有在 \(Y\) 中收敛的子列。%
+\footnote{程其襄等《实变函数与泛函分析基础》第四版\cite{Cheng2019ShibianFanhan}%
+第 11 章使用“全连续算子”\termidx[quanlianxu-suanzi]{全连续算子}。
+本节固定使用“紧算子”及上述有界列定义；遇到以弱收敛列或非线性映射表述的
+“全连续”时，仍须核对其定义，不能仅凭名称直接互换。}
+\end{definition}
+
+这个定义已经蕴含有界性：若 \(T\) 在单位球上无界，可以选取%
+\(\|x_n\|\leq1\) 而 \(\|Tx_n\|\geq n\)，与定义矛盾。
+值域有限维的线性算子称为\term[youxianzhi-suanzi]{有限秩算子}[finite-rank operator]。
+有界的有限秩算子是紧算子，因为其像落在有限维子空间内，
+而有限维空间的有界列有收敛子列。有限秩本身不能代替有界性：
+一个不连续线性泛函的值域也只有一维。
+
+\begin{proposition}[紧算子的运算]
+\label{b1:prop:compact-operator-calculus}
+紧算子的线性组合仍为紧算子。紧算子与有界线性算子在任一侧作有意义的复合，
+所得算子仍为紧算子。若 \(Y\) 是 Banach 空间，且紧算子列%
+\(T_n:X\to Y\) 在算子范数下收敛于 \(T\)，则 \(T\) 紧。
+\end{proposition}
+
+\begin{proof}
+对有界列先取子列使第一个紧算子的像收敛，再从中取子列使第二个像收敛，
+便得到线性组合的结论。右侧的有界算子把有界列送到有界列；
+左侧的有界算子保持已经得到的极限，故两种复合都紧。
+
+设 \(\|T_n-T\|\to0\)，且 \(\|x_j\|\leq M\)。
+逐次取子列，使 \(T_1x_j,T_2x_j,\ldots\) 依次收敛，再取对角子列 \((x_{j_k})\)。
+对每个固定的 \(n\)，\((T_nx_{j_k})_k\) 都是 Cauchy 列，而
+\[
+ \|Tx_{j_k}-Tx_{j_l}\|
+ \leq 2M\|T-T_n\|+\|T_nx_{j_k}-T_nx_{j_l}\|.
+\]
+先取 \(n\) 使第一项小，再取 \(k,l\) 使第二项小。
+由 \(Y\) 完备，\((Tx_{j_k})\) 收敛，故 \(T\) 紧。
+\end{proof}
+
+值域的完备性在最后一步发挥作用；只得到 Cauchy 子列还不能代替定义中的收敛子列。
+这个命题也给出一种常用的紧性证明方法：用有限秩算子在算子范数下逼近。
+本节使用的积分算子都可这样处理，但这里并未断言任意 Banach 空间上的紧算子
+都能作这种逼近。
+
+设 \((a_n)\) 为有界标量列，在 \(\ell^2\) 上定义 \(D_ax=(a_nx_n)_n\)。
+有 \(\|D_a\|=\sup_n|a_n|\)，并且 \(D_a\) 紧当且仅当 \(a_n\to0\)。
+事实上，截断到前 \(N\) 个坐标得到有限秩算子 \(D_a^{(N)}\)，且
+\[
+ \|D_a-D_a^{(N)}\|=\sup_{n>N}|a_n|.
+\]
+若 \(a_n\not\to0\)，则存在 \(\varepsilon>0\) 及无穷多个指标满足%
+\(|a_n|\geq\varepsilon\)。相应的单位向量 \(e_n\) 的像两两距离至少为%
+\(\sqrt2\,\varepsilon\)，没有收敛子列。
+特别地，无穷维 Hilbert 空间上的恒等算子不紧：任取一列标准正交向量即可作同样的反证。
 
 \subsection{紧自伴算子}
 \label{b1:subsec:080502}
 
-待填充。
+\begin{definition}[自伴算子]
+\label{b1:def:self-adjoint-operator}
+Hilbert 空间 \(H\) 上的有界线性算子 \(T\) 称为%
+\term[zi-ban-suanzi]{自伴算子}[self-adjoint operator]，如果 \(T=T^*\)。%
+\footnote{孙炯等《泛函分析》第二版\cite{Sun2018Fanhan}第 5.4 节使用
+“自共轭”\termidx[zi-gonge-suanzi]{自共轭算子}这一名称。
+这里讨论定义在整个 Hilbert 空间上的有界算子；对一般无界算子，
+不能只检查形式上的内积等式而省略定义域条件。}%
+按照本章内积对第一变量线性的约定，这等价于
+\[
+ \langle Tx,y\rangle=\langle x,Ty\rangle\quad(x,y\in H).
+\]
+\end{definition}
+
+于是 \(\langle Tx,x\rangle\) 总为实数。
+若 \(Tx=\lambda x\) 且 \(x\ne0\)，则
+\(\lambda\|x\|^2=\langle Tx,x\rangle\)，所以特征值 \(\lambda\) 为实数。
+若 \(Ty=\mu y\) 且 \(\lambda\ne\mu\)，自伴性又给出%
+\((\lambda-\mu)\langle x,y\rangle=0\)，故不同特征值的特征空间相互正交。
+
+自伴性还不足以保证特征向量存在。例如在 \(L^2(0,1)\) 上令 \(Sf(x)=xf(x)\)，
+由前节的乘法算子计算可知 \(S\) 有界且自伴。
+若 \(Sf=\lambda f\)，则 \(f\) 只能在集合 \(\{x:x=\lambda\}\) 上非零；
+这个集合的测度为零，故 \(f\) 是零等价类。因此 \(S\) 没有特征值。
+
+还有一个与有限维情形同样重要的事实。若子空间 \(M\) 在 \(T\) 下不变，
+则 \(M^\perp\) 也在 \(T\) 下不变：对 \(y\in M^\perp\)、\(x\in M\)，有%
+\(\langle Ty,x\rangle=\langle y,Tx\rangle=0\)。
+当 \(M\) 闭时，\(T\) 在 \(M^\perp\) 上的限制仍是自伴算子；若原算子紧，这个限制也紧。
+因而在找到一些特征向量以后，可以继续研究它们张成的闭子空间的正交补。
+首先必须证明：只要限制算子非零，就确实还有特征向量可找。
+
+\begin{lemma}[模最大的特征值]
+\label{b1:lem:compact-self-adjoint-extreme}
+非零紧自伴算子 \(T:H\to H\) 至少有一个特征值 \(\lambda\) 满足%
+\(|\lambda|=\|T\|\)。
+\end{lemma}
+
+\begin{proof}
+记 \(q(x)=\langle Tx,x\rangle\)，以及%
+\(m=\sup_{\|x\|=1}|q(x)|\)。先证明 \(m=\|T\|\)。
+显然 \(m\leq\|T\|\)。对单位向量 \(x,y\)，利用自伴性和实部的极化关系，
+\[
+ 4\operatorname{Re}\langle Tx,y\rangle=q(x+y)-q(x-y),
+\]
+从而
+\[
+ |\operatorname{Re}\langle Tx,y\rangle|
+ \leq \frac m4\bigl(\|x+y\|^2+\|x-y\|^2\bigr)=m.
+\]
+若 \(Tx\ne0\)，取 \(y=Tx/\|Tx\|\)，左边就是 \(\|Tx\|\)，故 \(\|T\|\leq m\)。
+
+取单位向量列，使 \(|q(x_n)|\to\|T\|\)。取子列后，可以设%
+\(q(x_n)\to\lambda\)，其中 \(\lambda=\|T\|\) 或 \(-\|T\|\)。
+由于 \(\lambda\) 为实数，
+\[
+ \|Tx_n-\lambda x_n\|^2
+ =\|Tx_n\|^2-2\lambda q(x_n)+\lambda^2
+ \leq2\|T\|^2-2\lambda q(x_n)\longrightarrow0.
+\]
+紧性给出子列 \(Tx_{n_k}\to v\)。因 \(\lambda\ne0\)，上式又给出%
+\(x_{n_k}\to x=v/\lambda\)。于是 \(\|x\|=1\)，且由连续性 \(Tx=\lambda x\)。
+\end{proof}
+
+证明中最大值不是事先假设存在的。先用上确界得到近似特征向量，
+再用紧性把近似向量变成真正的特征向量，这正是无限维论证需要补上的一步。
 
 \subsection{谱定理}
 \label{b1:subsec:080503}
 
-待填充。
+\begin{theorem}[紧自伴谱定理]
+\label{b1:thm:compact-self-adjoint-spectral}
+设 \(T:H\to H\) 是紧自伴算子。存在有限个或可数个标准正交向量 \(e_n\)，
+以及相应的非零实特征值 \(\lambda_n\)，使
+\[
+ H=\ker T\oplus\overline{\operatorname{span}}\{e_n\},\quad
+ Tx=\sum_n\lambda_n\langle x,e_n\rangle e_n.
+\]
+每个非零特征值只有有限重数；若向量列为无穷列，则 \(\lambda_n\to0\)。
+级数在 \(H\) 的范数下收敛，而且有限秩算子
+\[
+ T_Nx=\sum_{n=1}^N\lambda_n\langle x,e_n\rangle e_n
+\]
+满足 \(\|T-T_N\|=\sup_{n>N}|\lambda_n|\to0\)。
+有限列情形中，各个和只遍历实际存在的指标，空尾部的上确界按零处理；
+\(T=0\) 时取空列。
+\end{theorem}
+
+\begin{proof}
+固定 \(\varepsilon>0\)。属于绝对值至少为 \(\varepsilon\) 的特征值的标准正交向量
+不可能有无穷多个，因为它们的像两两距离至少为 \(\sqrt2\,\varepsilon\)，违反紧性。
+特别地，每个非零特征空间都有限维；对每个正整数 \(k\)，绝对值至少为 \(1/k\)
+的非零特征值只有有限个。因此所有非零特征值组成至多可数集。
+在各非零特征空间中选取有限标准正交基，合起来记为 \(\{e_n\}\)。
+不同特征空间的正交性保证这仍是标准正交系。若它无穷，则对任意%
+\(\varepsilon>0\)，至多有限个 \(\lambda_n\) 满足 \(|\lambda_n|\geq\varepsilon\)，
+所以 \(\lambda_n\to0\)。
+
+令 \(M=\overline{\operatorname{span}}\{e_n\}\)。
+由 \(T\) 连续，\(M\) 在 \(T\) 下不变；因此 \(M^\perp\) 也不变。
+若 \(T|_{M^\perp}\ne0\)，则由\cref{b1:lem:compact-self-adjoint-extreme}，
+在 \(M^\perp\) 中存在一个非零特征值的特征向量。
+但它属于前面已经全部收入 \(M\) 的某个特征空间，矛盾。
+于是 \(M^\perp\subseteq\ker T\)。反过来，若 \(Tx=0\)，则
+\[
+ 0=\langle Tx,e_n\rangle=\langle x,Te_n\rangle
+   =\lambda_n\langle x,e_n\rangle
+\]
+对每个 \(n\) 成立，故 \(x\in M^\perp\)。这证明 \(M^\perp=\ker T\)。
+
+将 \(x\) 按此正交直和分解，并应用\cref{b1:thm:orthonormal-expansion}，
+再用 \(T\) 的连续性，就得到所述展开。
+最后由正交性，
+\[
+ \|(T-T_N)x\|^2
+ =\sum_{n>N}|\lambda_n|^2|\langle x,e_n\rangle|^2
+ \leq\bigl(\sup_{n>N}|\lambda_n|\bigr)^2\|x\|^2.
+\]
+逐个取 \(x=e_n\)，\(n>N\)，又得到反向的范数下界，故余项范数等式成立。
+\end{proof}
+
+定理没有假定 \(H\) 可分。非零特征值对应的部分确实可分，
+但 \(\ker T\) 可以不可分；不能由紧性推出整个空间存在可数标准正交基。
+如果愿意把核空间也写成坐标形式，可以在其中另选标准正交基，并赋予特征值零。
+
+在复 Hilbert 空间中，通常把使 \(T-zI\) 不可逆的复数 \(z\) 组成的集合称为算子的%
+\term[pu]{谱}[spectrum]，记为 \(\sigma(T)\)。
+\symidx{\(\sigma(T)\)：有界算子的谱}
+这里可逆指存在定义在全空间上的有界逆。
+上一定理立即说明：对于紧自伴 \(T\)，每个非零谱点都是特征值。
+事实上，若 \(z\ne0\) 且不等于任何 \(\lambda_n\)，则 \(\lambda_n\to0\)
+保证它到这些数的距离为正。在分解 \(x=x_0+\sum_n c_ne_n\) 上，
+\[
+ (T-zI)^{-1}x=-\frac{x_0}{z}+\sum_n\frac{c_n}{\lambda_n-z}e_n
+\]
+定义了有界的双侧逆。在无穷维空间中，零必在谱内：
+否则 \(I=T^{-1}T\) 将是紧算子。
+但零未必是特征值，这一点不可与有限维矩阵混同。
+
+在 \(\ell^2\) 上令 \(Te_n=n^{-1}e_n\)。这个算子紧、自伴而且单射，
+所以零不是特征值，但由上述论证零在谱内。
+向量 \(y=(1/n)_n\) 属于 \(\ell^2\)，却不属于 \(T\) 的值域：
+唯一可能的原像是并不属于 \(\ell^2\) 的常数列 \((1)_n\)。
+另一方面，\(y\) 的有限截断都在值域内，并趋于 \(y\)。
+因此值域不闭。逆映射虽能在值域上定义，却不有界，因为%
+\(\|e_n\|/\|Te_n\|=n\)。谱展开中的小特征值，正好刻画了反求原像时误差被放大的原因。
 
 \subsection{Sturm–Liouville 理论的泛函分析背景}
 \label{b1:subsec:080504}
 
-待填充。
+考虑最简单的 Dirichlet 边值问题
+\[
+ -u''=f\quad(0<x<1),\quad u(0)=u(1)=0.
+\]
+先不把求导当作全空间上的有界算子，而是研究它的解算子。
+定义
+\[
+ K(x,y)=\min(x,y)-xy,\quad
+ (Gf)(x)=\int_0^1K(x,y)f(y)\,dy.
+\]
+这个核称为本问题的\term[green-hanshu]{Green 函数}[Green function]。
+下文在 \(L^2(0,1)\) 上研究 \(G\)；这个空间的完备性已由%
+\cref{b1:thm:l2-hilbert}建立，不需提前引用一般 \(L^p\) 理论。
+
+\begin{proposition}[Dirichlet 问题的 Green 算子]
+\label{b1:prop:dirichlet-green}
+算子 \(G:L^2(0,1)\to L^2(0,1)\) 紧、自伴、单射，且%
+\(\langle Gf,f\rangle\geq0\)。
+若 \(f\) 连续，则 \(u=Gf\) 是上述边值问题唯一的经典解。
+\end{proposition}
+
+\begin{proof}
+对任意平方可积核 \(L\)，Cauchy--Schwarz 不等式给出
+\[
+ \left\|\int_0^1L(\,\cdot\,,y)f(y)\,dy\right\|_2
+ \leq \|L\|_{L^2((0,1)^2)}\|f\|_2.
+\]
+这既证明 \(G\) 有界，也估计了用另一个核替代 \(K\) 所产生的算子范数误差。
+将单位正方形细分为网格，在每个小矩形内用一个取值代替 \(K\)。
+由 \(K\) 一致连续，所得阶梯核 \(K_N\) 一致收敛于 \(K\)。
+每个 \(K_N\) 是有限个形如 \(c\,\mathbf1_A(x)\mathbf1_B(y)\) 的函数之和，
+故其积分算子有限秩。上述估计和\cref{b1:prop:compact-operator-calculus}证明 \(G\) 紧。
+由 \(K(x,y)=K(y,x)\) 为实数，Fubini 定理给出%
+\(\langle Gf,g\rangle=\langle f,Gg\rangle\)。
+换序合法，因为 \(f,g\in L^1(0,1)\)，且 \(K\) 有界。
+
+为同时证明非负性和单射性，注意恒等式
+\[
+ K(x,y)=\int_0^1(\mathbf1_{\{t<x\}}-x)(\mathbf1_{\{t<y\}}-y)\,dt.
+\]
+再次应用 Fubini 定理，可得
+\[
+ \langle Gf,f\rangle=\int_0^1|Af(t)|^2\,dt,\quad
+ Af(t)=\int_t^1 f(y)\,dy-\int_0^1y f(y)\,dy.
+\]
+因此二次型非负。若 \(Gf=0\)，则 \(Af=0\) 几乎处处。
+而 \(|Af(t)-Af(s)|\leq\|f\|_2|t-s|^{1/2}\)，故 \(Af\) 连续，因而处处为零。
+这说明 \(f\) 在每个区间上的积分均为零。
+为从这里得到 \(f=0\) 几乎处处，令 \(\nu(E)=\int_E f\,dy\)。
+这是有限复测度；由于 \(\nu((0,1))=0\)，满足 \(\nu(E)=0\) 的 Borel 集构成
+包含所有区间的 Dynkin 系。由 \(\pi\)--\(\lambda\) 定理，\(\nu\) 在所有 Borel 集上为零。
+Lebesgue 可测集与 Borel 集至多相差零测集，所以同样有 \(\int_E f=0\)。
+分别取实部和虚部的正、负水平集，就得到 \(f=0\) 几乎处处。
+
+最后，若 \(f\) 连续，将积分在 \(y=x\) 处分开：
+\[
+ u(x)=(1-x)\int_0^x y f(y)\,dy
+       +x\int_x^1(1-y)f(y)\,dy.
+\]
+由初等微积分直接求导得 \(u''=-f\)，端点值均为零。
+任意两个经典解之差的二阶导数为零，因而是仿射函数；
+再由两个端点值为零，差只能为零。
+\end{proof}
+
+现在可以把抽象谱定理转化为一个熟悉的具体结论，而且不会预先假设正弦系完备。
+
+\begin{corollary}[区间上的正弦展开]
+\label{b1:cor:dirichlet-sine-basis}
+函数 \(e_n(x)=\sqrt2\sin(n\pi x)\)，\(n\geq1\)，组成 \(L^2(0,1)\) 的标准正交基，
+且 \(Ge_n=(n\pi)^{-2}e_n\)。对每个 \(f\in L^2(0,1)\)，
+\[
+ Gf=\sum_{n=1}^{\infty}
+       \frac{\langle f,e_n\rangle}{(n\pi)^2}e_n
+\]
+在 \(L^2\) 范数下成立。
+\end{corollary}
+
+\begin{proof}
+若 \(Gf=\lambda f\)、\(f\ne0\)、\(\lambda\ne0\)，则由非负性知 \(\lambda>0\)。
+连续核的积分 \(Gf\) 是连续函数：核关于 \(x\) 的一致连续性与%
+\(f\in L^1\) 保证其连续性。因此可为 \(f=\lambda^{-1}Gf\) 选取连续代表元。
+再用\cref{b1:prop:dirichlet-green}的经典解结论，得到
+\[
+ -f''=\lambda^{-1}f,\quad f(0)=f(1)=0.
+\]
+解这个常系数微分方程可知，非零解存在当且仅当%
+\(\lambda=(n\pi)^{-2}\)，其解空间由 \(\sin(n\pi x)\) 张成。
+反过来，利用经典边值问题的唯一性，每个 \(e_n\) 确是所列特征值的特征函数。
+直接积分给出 \(\|e_n\|_2=1\)；不同特征值的特征函数相互正交。
+由于 \(G\) 单射，紧自伴谱定理中的核空间为零，故这些函数张成的闭子空间就是全部%
+\(L^2(0,1)\)。谱定理也同时给出 \(Gf\) 的展开。
+\end{proof}
+
+这个例子显示了 Sturm--Liouville 理论的一条基本路径：先解边值问题，
+证明解算子紧且自伴，再用谱分解寻找特征函数。
+本节只处理常系数、有限区间和齐次 Dirichlet 条件这一模型。
+一般系数、奇异端点和无界算子的定义域都需要另外讨论，
+不能把上述证明中的连续核和经典求导步骤不加检查地搬过去。
+但即使在这个最简单的情形，紧性、投影、正交展开与积分换序已经共同参与了论证。

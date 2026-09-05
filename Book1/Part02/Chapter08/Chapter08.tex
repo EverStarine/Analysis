@@ -1,15 +1,50 @@
 % !TeX root = ../../Book1.tex
 \chapter{Banach 空间与 Hilbert 空间}
 \label{b1:ch:08}
-% 本章摘要（不计入编号）
+% 资料组：Axler2020Measure §§6A、6C--E、7B、8A--C、10A、10C--D，已读相关全文。
+% 中文伴读及名称核验：Cheng2019ShibianFanhan、Xu2017Fanhan、Sun2018Fanhan，限官方目录。
+% 证明义务：保范延拓的实/复接合；凸分离；Baire到精确原像；
+% 任意测度L2完备性；复内积的线性方向；不可分正交展开；紧自伴谱分解和Green模型。
 \begin{chapterabstract}
-待填充。
+把函数组成一个向量空间以后，积分、求导和求解方程都可以看成作用在空间之间的映射。
+范数衡量误差，完备性保证逐次逼近的结果仍在空间中，线性结构则让局部估计控制整体行为。
+本章建立 Banach 空间的延拓、分离与三个基本算子原理，再研究 Hilbert 空间中特有的
+最近点、正交分解和泛函表示。选读部分把紧自伴算子分解成特征方向，
+并通过一个边值问题说明这些抽象结论怎样产生具体的函数展开。
 \end{chapterabstract}
 
 % 本章目标（不计入编号）
 \begin{learninggoals}
-待填充。
+\begin{itemize}
+\item\label{b1:item:08-goal-norm}区分代数线性与连续线性，能计算算子范数，并核对定义域、值域各自的完备性。
+\item\label{b1:item:08-goal-dual}掌握 Hahn--Banach 延拓及凸分离，理解连续泛函怎样区分向量并恢复范数。
+\item\label{b1:item:08-goal-principles}能根据已知信息选择一致有界、开映射或闭图像定理，并说明证明中完备性的作用。
+\item\label{b1:item:08-goal-hilbert}以 \(L^2\) 为模型，使用投影与 Riesz 表示处理最小二乘和线性泛函，正确理解无穷正交展开。
+\item\label{b1:item:08-goal-spectral}在选读部分理解紧性如何提供特征向量，以及小特征值、非闭值域与边值问题的联系。
+\end{itemize}
 \end{learninggoals}
+
+本章假定读者熟悉有限维线性代数、度量空间的开闭集和紧性，
+以及初等微积分。前面的测度与积分理论用于构造 \(L^2\)、
+证明它的完备性和处理积分算子；抽象 Banach 空间的前三节则不依赖积分的具体形式。
+Hahn--Banach 定理的一般延拓和不可分 Hilbert 空间中正交基的存在使用 Zorn 引理，
+文中会明确指出使用位置，不把这种选择步骤写成有限次构造。
+
+第一次阅读宜先把第\ref{b1:sec:0801}节的例子算清，再沿第\ref{b1:sec:0802}节
+“一维泛函—延拓—分离—对偶范数”的顺序阅读。
+第\ref{b1:sec:0803}节的三个基本原理用途不同，不应只记成一组定理名称；
+其中从像的闭包到真正原像的逐次逼近值得单独复算。
+第\ref{b1:sec:0804}节是后续函数空间理论的主要准备，
+其 \(L^2\) 完备性证明放在这里，以避免依赖尚未建立的一般 \(L^p\) 理论。
+第\ref{b1:sec:0805}节可在第一次阅读时暂缓，但它提供了从抽象空间回到微分方程的完整例子。
+
+主线伴读可用 Sheldon Axler 的《Measure, Integration \& Real Analysis》%
+\cite{Axler2020Measure}第 6、8 章；其中以测度论引入函数空间的安排与本书衔接紧密。
+希望配合中文教材阅读的读者，可参阅程其襄等《实变函数与泛函分析基础》第四版%
+\cite{Cheng2019ShibianFanhan}第 7--11 章，或许全华、马涛、尹智的《泛函分析讲义》%
+\cite{Xu2017Fanhan}第 3--8 章。前者把实变函数与泛函分析放在同一本书中，
+后者将 Hahn--Banach 的分析形式和几何形式分开安排，便于比较两种用途。
+这些教材的个别名称不同，正文首次引入处会列出已核实的异名及所在章节。
 
 \input{Part02/Chapter08/Section0801}
 \input{Part02/Chapter08/Section0802}
@@ -18,10 +53,249 @@
 \input{Part02/Chapter08/Section0805}
 % 本章小结（不计入编号）
 \begin{chaptersummary}
-待填充。
+范数、完备性和线性结构承担不同的任务。算子范数把连续性转化成误差估计，
+完备性使可求和的误差能够累积成真正的极限；有限维范数等价和闭有界集紧致，
+则不能无条件搬到函数空间中。
+
+Hahn--Banach 定理先保证泛函可以保范延拓，再由凸集的 Minkowski 泛函导出分离。
+它使对偶范数准确恢复每个向量的长度，却不保证延拓唯一。
+Baire 纲定理提供另一种存在性机制：把可数覆盖中的局部信息转为一致控制。
+一致有界、开映射和闭图像定理分别据此处理算子族、求解稳定性和连续性检验。
+
+Hilbert 空间的内积增加了正交几何。最近点由平行四边形恒等式得到，
+投影又导出 Riesz 表示和正交展开。一般正交基可以不可数，
+但每个向量至多具有可数个非零坐标；函数展开的范数收敛也不等于逐点收敛。
+紧自伴谱定理进一步把算子本身作有限秩逼近，Green 算子的例子则把这种逼近
+落实为正弦特征函数。下一章将研究较弱的收敛方式，
+以应对有界列在原范数下通常没有收敛子列这一困难。
 \end{chaptersummary}
 
 
 \BookExercises
 
-待填充。
+% 下列题目按本章证明工具综合组织，非逐字摘录；
+% 背景定位：Axler2020Measure 6C--E（完备性、延拓、对偶、算子原理）、
+% 8B--C（投影与正交坐标）、10C--D（紧算子和谱分解）。
+% 商空间、极限泛函和Volterra为经典训练主题，补完整定义与解答；
+% Green共振题为本章边值模型的继续推导。均不要求未写章节的结果。
+
+\begin{exercise}\label{b1:ex:08-quotient-dual}
+设 \(M\) 是 Banach 空间 \(X\) 的闭线性子空间。在商空间 \(X/M\) 上定义
+\[
+ \|x+M\|_q=\inf_{m\in M}\|x+m\|.
+\]
+证明这是使 \(X/M\) 完备的范数。若 \(Qx=x+M\)，证明%
+\(\varphi\mapsto\varphi\circ Q\) 将 \((X/M)^*\) 线性等距地映满
+\[
+ M^\circ=\{f\in X^*:f|_M=0\}.
+\]
+最后证明 \(\operatorname{dist}(x,M)=\sup\{|f(x)|:f\in M^\circ,\ \|f\|\leq1\}\)。
+\end{exercise}
+\begin{solution}
+更换代表只使下确界中的 \(m\) 平移，故公式良定义。
+齐次性由变量代换得到；为证三角不等式，分别选取距离下确界不到%
+\(\varepsilon\) 的两个代表，相加并令 \(\varepsilon\downarrow0\)。
+商范数为零等价于 \(x\in\overline M=M\)，故正定性成立。
+
+设 \((u_n)\) 在商范数下为 Cauchy 列，取子列使%
+\(\|u_{n_{k+1}}-u_{n_k}\|_q<2^{-k-1}\)。
+按下确界的定义，选 \(z_k\in X\) 满足%
+\(Qz_k=u_{n_{k+1}}-u_{n_k}\)、\(\|z_k\|<2^{-k}\)。
+再取 \(Qz_0=u_{n_1}\)。由 \(X\) 完备，\(z=z_0+\sum_kz_k\) 存在。
+因为 \(\|Qx\|_q\leq\|x\|\)，有 \(u_{n_k}\to Qz\)，
+Cauchy 条件和三角不等式遂使整个 \((u_n)\) 趋于同一极限。
+
+若 \(f=\varphi Q\)，则 \(f|_M=0\)，且 \(\|f\|\leq\|\varphi\|\)。
+对任一商元素 \(u\)，选代表 \(x\) 使 \(\|x\|<\|u\|_q+\varepsilon\)，得到%
+\(|\varphi(u)|=|f(x)|\leq\|f\|(\|u\|_q+\varepsilon)\)；
+令 \(\varepsilon\downarrow0\) 得反向范数估计。
+反过来，若 \(f|_M=0\)，公式 \(\varphi(x+M)=f(x)\) 良定义且线性，
+同一估计证明它连续并保持范数。最后在商空间中对 \(Qx\) 使用%
+\cref{b1:cor:norming-functional}，再通过这个等距对应拉回泛函，即得距离公式。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:08-c0-dual}
+令 \(c_0\) 为趋于零的标量序列空间，取一致范数；
+令 \(\ell^1=\{a:\sum_n|a_n|<\infty\}\)，取范数 \(\|a\|_1=\sum_n|a_n|\)。
+证明 \(c_0\) 是 Banach 空间，每个 \(F\in c_0^*\) 都唯一表示为
+\[
+ F(x)=\sum_{n=1}^\infty a_nx_n,\quad a\in\ell^1,
+\]
+且 \(\|F\|=\|a\|_1\)。
+\end{exercise}
+\symidx{\(c_0\)：趋于零的标量序列空间}
+\symidx{\(\ell^1\)：绝对可求和的标量序列空间}
+\begin{solution}
+若 \(x^{(j)}\to x\) 一致且各 \(x^{(j)}\in c_0\)，给定 \(\varepsilon>0\)，
+先选 \(j\) 使一致误差小于 \(\varepsilon/2\)，再使 \(x^{(j)}\) 的尾部小于%
+\(\varepsilon/2\)，便得 \(x_n\to0\)。所以 \(c_0\) 在 Banach 空间 \(\ell^\infty\) 中闭，
+从而完备。
+
+给定 \(F\)，令 \(a_n=F(e_n)\)。对任意 \(N\)，在前 \(N\) 个坐标上取%
+\(x_n=\overline{a_n}/|a_n|\)（当 \(a_n=0\) 时取零），其余坐标取零。
+所得 \(x\in c_0\)、\(\|x\|_\infty\leq1\)，且%
+\(\sum_{n=1}^N|a_n|=F(x)\leq\|F\|\)。
+故 \(a\in\ell^1\)。每个 \(x\in c_0\) 的有限截断都在一致范数下趋于 \(x\)，
+连续性给出所述级数表示，系数则由各 \(e_n\) 唯一决定。
+反过来，任意 \(a\in\ell^1\) 产生绝对收敛级数，并有%
+\(|F(x)|\leq\|a\|_1\|x\|_\infty\)。
+前面的有限支撑测试向量又给出 \(\|F\|\geq\sum_{n=1}^N|a_n|\)，
+令 \(N\to\infty\) 即得范数等号。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:08-positive-limit}
+在实序列空间 \(\ell^\infty\) 中，令 \(c\) 为收敛序列子空间。
+证明存在 \(L\in(\ell^\infty)^*\)，使 \(Lx=\lim_nx_n\) 对所有 \(x\in c\) 成立，
+且 \(\|L\|=1\)。证明任意这样的保范延拓都满足%
+\(x_n\geq0\) 对所有 \(n\) 成立时 \(Lx\geq0\)，并满足
+\[
+ \liminf_nx_n\leq Lx\leq\limsup_nx_n.
+\]
+再证明这种延拓不唯一。题目不要求延拓具有移位不变性。
+\end{exercise}
+\begin{solution}
+极限泛函在 \(c\) 上线性且范数为一，由 Hahn--Banach 定理取得 \(L\)。
+记 \(\mathbf1=(1,1,\ldots)\)，则 \(L\mathbf1=1\)。
+若 \(0\leq x_n\leq M\)，则 \(\|M\mathbf1-x\|_\infty\leq M\)，故
+\[
+ M-Lx=L(M\mathbf1-x)\leq M,
+\]
+从而 \(Lx\geq0\)。这也给出单调性。
+有限支撑序列的极限为零，故修改有限个坐标不改变 \(Lx\)。
+将 \(x\) 的前 \(N-1\) 项改为任一尾部取值，所得序列的每个坐标都介于%
+\(\inf_{n\geq N}x_n\) 与 \(\sup_{n\geq N}x_n\) 之间。
+单调性和常数序列的取值得到同样的 \(Lx\) 上下界，再令 \(N\to\infty\) 即可。
+
+固定一个这样的 \(L\)，令
+\[
+ L_{\mathrm{even}}x=L((x_{2n})_n),\quad
+ L_{\mathrm{odd}}x=L((x_{2n-1})_n).
+\]
+两者都线性，范数至多为一，又在 \(\mathbf1\) 上取一，故范数恰为一；
+它们都延拓普通极限。但在 \(x_n=(-1)^n\) 上，取值分别为 \(1\) 和 \(-1\)，
+所以延拓不唯一。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:08-positive-cone-projection}
+在实 Hilbert 空间 \(L^2(\mu)\) 中，令%
+\(C=\{g:g\geq0\text{ 几乎处处}\}\)。
+证明 \(C\) 非空、闭、凸，且到 \(C\) 的最近点为%
+\(P_Cf=f^+=\max(f,0)\)。直接证明 \(\|f^+-g^+\|_2\leq\|f-g\|_2\)。
+如果空间含有一个非零非负函数，说明 \(P_C\) 不是线性映射。
+\end{exercise}
+\begin{solution}
+零函数属于 \(C\)，凸组合保持非负，故 \(C\) 非空且凸。
+实数函数 \(t\mapsto\max(t,0)\) 是 \(1\)-Lipschitz 的，
+逐点应用再积分就得到所需范数不等式。
+同样，负部映射也为 \(1\)-Lipschitz；若 \(g_n\in C\) 且 \(g_n\to g\)，
+则 \(\|g^-\|_2\leq\|g-g_n\|_2\to0\)，故 \(g\in C\)，这证明闭性。
+
+对实数 \(a\) 和任意 \(b\geq0\)，有 \(|a-a^+|\leq|a-b|\)；
+因此 \(f^+\in C\)，且对 \(g\in C\)，积分给出%
+\(\|f-f^+\|_2\leq\|f-g\|_2\)。由闭凸集最小点的唯一性，它就是 \(P_Cf\)。
+若 \(h\geq0\)、\(h\ne0\)，则 \(P_Ch=h\) 而 \(P_C(-h)=0\)，不满足线性映射的奇性。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:08-strong-finite-rank}
+在 \(\ell^2\) 上令 \(P_Nx=(x_1,\ldots,x_N,0,\ldots)\)。
+证明每个 \(P_N\) 都有限秩且紧，对每个 \(x\) 都有 \(P_Nx\to x\)，
+但 \(\|P_N-I\|=1\)。再证明：若 \(K\subset\ell^2\) 是范数紧集，则
+\[
+ \sup_{x\in K}\|P_Nx-x\|\longrightarrow0.
+\]
+说明为什么后一结论仍不蕴含算子范数收敛。
+\end{exercise}
+\begin{solution}
+前两项由坐标截断和平方可求和性得到。
+尾部平方和不超过 \(\|x\|_2^2\)，故 \(\|I-P_N\|\leq1\)；
+取 \(x=e_{N+1}\) 取得等号。
+
+给定 \(\varepsilon>0\)，由紧性取有限个 \(x^{(1)},\ldots,x^{(r)}\in K\)，
+使以它们为中心、半径 \(\varepsilon/2\) 的球覆盖 \(K\)。
+对这些有限个向量，选同一 \(N_0\)，使 \(N\geq N_0\) 时%
+\(\|(I-P_N)x^{(j)}\|<\varepsilon/2\)。
+任取 \(x\in K\)，选择相应中心并利用 \(\|I-P_N\|\leq1\)，就有
+\[
+ \|(I-P_N)x\|
+ \leq\|x-x^{(j)}\|+\|(I-P_N)x^{(j)}\|<\varepsilon.
+\]
+算子范数要求在整个单位球上一致控制；无穷维 Hilbert 空间的闭单位球不紧，
+所以紧集上一致收敛不能用于那个集合。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:08-compact-closed-range}
+设 \(H,K\) 是 Hilbert 空间，\(T:H\to K\) 紧。
+证明 \(T(H)\) 闭，当且仅当 \(T\) 有限秩。此处不要求 \(T\) 自伴。
+\end{exercise}
+\begin{solution}
+有限维子空间闭，故只须证明反方向。
+因 \(T\) 连续，其核闭。令 \(M=(\ker T)^\perp\)；
+正交分解说明 \(S=T|_M:M\to T(H)\) 为有界线性双射。
+若值域闭，则两空间都是 Banach 空间，由有界逆定理 \(S^{-1}\) 有界。
+限制算子 \(S\) 紧，因而 \(I_M=S^{-1}S\) 紧。
+若 \(M\) 无穷维，可递归选取一列标准正交向量，它们没有收敛子列，
+与恒等算子紧矛盾。因此 \(M\) 有限维，且 \(T(H)=T(M)\) 也有限维。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:08-volterra}
+在 \(L^2(0,1)\) 上定义%
+\((Vf)(x)=\int_0^x f(y)\,dy\)。
+证明 \(V\) 紧，并求 \(V^*\)；证明 \(V+V^*\) 的值域是常数函数空间。
+最后证明 \(V\) 没有任何特征值，说明这一结论为什么不与紧自伴谱定理矛盾。
+\end{exercise}
+\begin{solution}
+核为 \(\mathbf1_{\{y<x\}}\)。
+把单位正方形等分为 \(N^2\) 个小方格，在不与对角线相交的方格上保留核值，
+在对角线方格内改为零。所得核为矩形阶梯函数，其误差只位于总面积 \(1/N\)
+的方格内，故核的 \(L^2\) 误差至多为 \(N^{-1/2}\)。
+由\cref{b1:prop:dirichlet-green}证明中的核估计，
+相应有限秩算子在算子范数下逼近 \(V\)，故 \(V\) 紧。
+Fubini 定理给出
+\[
+ (V^*g)(y)=\int_y^1g(x)\,dx,\quad
+ (V+V^*)f=\left(\int_0^1f\right)\mathbf1.
+\]
+常数函数 \(\mathbf1\) 的积分为一，故该值域恰为常数函数空间。
+
+函数 \(Vf\) 连续，因为其增量绝对值至多为%
+\(\|f\|_2|x-z|^{1/2}\)。
+若 \(Vf=0\) 几乎处处，连续性使它处处为零，于是 \(f\) 在每个区间上的积分为零。
+按\cref{b1:prop:dirichlet-green}中有限复测度的生成类论证，\(f=0\) 几乎处处。
+所以零不是特征值。若 \(Vf=\lambda f\)，\(\lambda\ne0\)，
+则可先取 \(f=\lambda^{-1}Vf\) 的连续代表，再由初等微积分得到%
+\(\lambda f'=f\)、\(f(0)=0\)。函数 \(e^{-x/\lambda}f(x)\) 的导数为零，
+故 \(f=0\)，也没有非零特征值。
+此算子不自伴：\(V\mathbf1=x\) 而 \(V^*\mathbf1=1-x\)。
+紧性自身并不能提供紧自伴谱定理中的特征向量。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:08-green-resonance}
+令 \(G\) 为\cref{b1:prop:dirichlet-green}的算子，\(\alpha\in\mathbb R\)。
+利用正弦基，求解 \(L^2(0,1)\) 中的方程%
+\((I-\alpha G)u=f\)。
+分别讨论 \(\alpha\notin\{(n\pi)^2:n\geq1\}\) 和%
+\(\alpha=(k\pi)^2\)；在后一情形给出可解条件及全部解。
+\end{exercise}
+\begin{solution}
+记 \(e_n=\sqrt2\sin(n\pi x)\)、\(f_n=\langle f,e_n\rangle\)。
+对方程逐个取坐标，得到
+\[
+ \left(1-\frac{\alpha}{(n\pi)^2}\right)u_n=f_n.
+\]
+若所有系数非零，它们趋于一，故存在 \(\delta>0\) 使所有系数的绝对值至少为%
+\(\delta\)。于是
+\[
+ u=\sum_{n=1}^\infty\frac{f_n}{1-\alpha/(n\pi)^2}e_n
+\]
+在 \(L^2\) 中收敛，并满足 \(\|u\|_2\leq\delta^{-1}\|f\|_2\)。
+坐标计算及正弦基的完备性证明它是唯一解。
+
+若 \(\alpha=(k\pi)^2\)，第 \(k\) 个方程要求 \(f_k=0\)，
+这是必要条件。其余系数仍远离零，所以当 \(f_k=0\) 时，全部解恰为
+\[
+ u=c\,e_k+\sum_{n\ne k}
+       \frac{f_n}{1-k^2/n^2}e_n,\quad c\in\mathbb K.
+\]
+这也证明条件充分。自由项来自齐次方程的非零解，
+而可解条件要求数据与那个方向正交；它们是同一个特征值在求解问题中的两种表现。
+\end{solution}
