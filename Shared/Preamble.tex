@@ -25,16 +25,10 @@
   ItalicFont=lmmonolt10-oblique.otf,
   BoldItalicFont=lmmonolt10-boldoblique.otf
 ]
-% 正文行内数学与标题保持原来的 Pagella Math；仅独立公式使用默认数学字体。
-\setmathfont{texgyrepagella-math.otf}
-\setmathfont{latinmodern-math.otf}[version=analysisdisplay]
-% 新数学版本须显式继承文本字母表；unicode-math 只自动配置 normal/bold。
-\SetMathAlphabet{\mathrm}{analysisdisplay}{TU}{\rmdefault}{\mddefault}{\updefault}
-\SetMathAlphabet{\mathit}{analysisdisplay}{TU}{\rmdefault}{\mddefault}{\itdefault}
-\SetMathAlphabet{\mathbf}{analysisdisplay}{TU}{\rmdefault}{\bfdefault}{\updefault}
-\SetMathAlphabet{\mathsf}{analysisdisplay}{TU}{\sfdefault}{\mddefault}{\updefault}
-\SetMathAlphabet{\mathtt}{analysisdisplay}{TU}{\ttdefault}{\mddefault}{\updefault}
-\mathversion{normal}
+% 行内、行间及标题内公式均使用 unicode-math 默认 Latin Modern Math。
+% 公式之外的正文西文仍由 setmainfont 使用 Pagella；黑板粗体单独采用 AMS。
+\let\mathbb\relax
+\DeclareMathAlphabet{\mathbb}{U}{msb}{m}{n}
 
 \usepackage{microtype}
 \usepackage{xcolor}
@@ -64,12 +58,6 @@
 % 访问日期保留在书目库供内部核验，成品参考文献不显示 visited on。
 \renewbibmacro*{url+urldate}{\usebibmacro{url}}
 \usepackage{etoolbox}
-% 在环境自身的分组内、进入数学模式前切换；结束环境时自动恢复行内字体。
-% amsmath 将 \[...\] 实现为 equation*，aligned/cases 等内部环境继承外层。
-\newcommand{\AnalysisSetDisplayMathFont}[1]{%
-  \AtBeginEnvironment{#1}{\ifmmode\else\mathversion{analysisdisplay}\fi}%
-}
-\forcsvlist{\AnalysisSetDisplayMathFont}{equation,equation*,align,align*,alignat,alignat*,gather,gather*,multline,multline*,flalign,flalign*,displaymath}
 \usepackage{xparse}
 \usepackage[noautomatic]{imakeidx}
 

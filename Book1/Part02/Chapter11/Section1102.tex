@@ -2,24 +2,192 @@
 \section{Radon 测度}
 \label{b1:sec:1102}
 
-% TODO: 撰写本节正文。
+第\ref{b1:ch:03}章已经用紧集和开集逼近 Lebesgue 可测集。
+本节把这种逼近与欧氏空间的坐标分开，直接作为测度和拓扑之间的相容条件。
+所需区别有两个：测度是否在每个局部区域内有限，以及可测集的质量能否由其中的紧集探测出来。
 
 \subsection{局部有限 Borel 测度}
 \label{b1:subsec:110201}
 
-待填充。
+\begin{definition}\label{b1:def:locally-finite-borel}
+设 \(\mu\) 是 \(\mathcal B(X)\) 上的正测度。若每个点都有开邻域 \(U\)，使
+\(\mu(U)<\infty\)，则称 \(\mu\) \term[jubu-youxian-cedu]{局部有限}[locally finite]。
+这里始终把 Borel 测度理解为以 \(\mathcal B(X)\) 为定义域的测度，不默认完备化。
+\end{definition}
+
+\begin{proposition}\label{b1:prop:lch-compact-finite}
+在局部紧 Hausdorff 空间上，Borel 测度局部有限，当且仅当每个紧集的测度有限。
+\end{proposition}
+\begin{proof}
+局部有限时，用有限测度开邻域覆盖一个紧集，取有限子覆盖并使用次可加性即可。
+反过来，每个点有一个紧邻域，其内部就是所需的有限测度开邻域。
+\end{proof}
+
+因此，每个 \(f\in C_c(X)\) 都对局部有限测度可积，因为
+\[
+ \int_X|f|\,\mathrm d\mu
+ \leq\|f\|_\infty\mu(\operatorname{supp}f)<\infty.
+\]
+局部有限不等于总质量有限：\(\mathbb R^d\) 上的 Lebesgue 测度是最基本的例子。
+它也不等于 \(\sigma\)-有限：不可数离散空间上的计数测度局部有限，
+但可数个有限测度集合只能覆盖可数个点。
+只有空间本身 \(\sigma\)-紧时，前一命题才会自动给出测度的 \(\sigma\)-有限性。
 
 \subsection{内正则性}
 \label{b1:subsec:110202}
 
-待填充。
+\begin{definition}\label{b1:def:radon-measure}
+设 \(\mu\) 为局部有限 Borel 测度。若对每个 Borel 集 \(E\) 都有
+\[
+ \mu(E)=\sup\{\,\mu(K):K\subset E,\ K\text{ 紧}\,\},
+\]
+则称 \(\mu\) 为\term[radon-cedu]{Radon 测度}[Radon measure]。
+上式所规定的性质称为关于紧集的\term[nei-zhengze-xing]{内正则性}[inner regularity]。
+当 \(\mu(E)=\infty\) 时，上式指 \(E\) 中紧集的测度没有有限上界，而不是要求一个紧集已有无穷测度。
+\end{definition}
+
+本书采用 Borel 测度版本的 Radon 约定，不把完备性列入定义。
+Fremlin 的《Measure Theory》\cite[411B、411H及第411节注释]{Fremlin2016Measure}
+讨论了几种相邻约定；其中正式定义还要求完备性等条件。
+在比较书中的定理时，应先检查定义域和正则性的范围，再判断结论是否相同。
+Lebesgue 测度限制在 Borel 集上是本定义的例子，通常的完备 Lebesgue 测度则是它的完备化。
+
+Dirac 点质量 \(\delta_x\) 是 Radon 测度：含 \(x\) 的集合有紧子集 \(\{x\}\)，
+不含 \(x\) 的集合质量为零。离散空间中的紧集恰为有限集，
+故在任意离散空间上，按各点非负有限权重求和所得的测度也是 Radon 测度；
+无穷和解释为所有有限部分和的上确界。
+这些例子不要求测度有关于 Lebesgue 测度的密度。Radon 性描述的是逼近方式，不是绝对连续性。
+
+内正则性对有限质量集合给出可以直接使用的误差估计：
+若 \(\mu(E)<\infty\)，则给定 \(\varepsilon>0\)，可选紧集 \(K\subset E\) 使
+\(\mu(E\setminus K)<\varepsilon\)。若质量无穷，则可以先指定任意 \(M>0\)，
+再取 \(K\subset E\) 使 \(\mu(K)>M\)。这两种用法分别服务于误差控制和发散判别。
 
 \subsection{外正则性}
 \label{b1:subsec:110203}
 
-待填充。
+\begin{definition}\label{b1:def:outer-regular-borel}
+若 Borel 测度 \(\mu\) 在 Borel 集 \(E\) 上满足
+\[
+ \mu(E)=\inf\{\,\mu(U):E\subset U,\ U\text{ 开}\,\},
+\]
+则称它在 \(E\) 上\term[wai-zhengze-xing]{外正则}[outer regular]。
+若一个 Borel 测度在所有 Borel 集上同时具有紧内正则性和开外正则性，
+则称其为\term[zhengze-borel-cedu]{正则 Borel 测度}[regular Borel measure]。
+\end{definition}
+
+中文教材中的“正则 Borel 测度”可见许全华等《泛函分析讲义》%
+\cite[第10章]{Xu2017Fanhan}。本书在此明确采用两个方向均对所有 Borel 集成立的约定；
+若某个版本只要求开集内正则，则须保留它原有的范围，不能只凭“正则”二字互换定义。
+
+\begin{proposition}\label{b1:prop:radon-outer-regularity}
+设 \(\mu\) 为 \(X\) 上的 Radon 测度，则下列结论成立。
+\begin{enumerate}
+\item\label{b1:item:radon-outer-compact}每个紧集都可由开集从外逼近。
+\item\label{b1:item:radon-outer-local}若 \(E\) 为包含在某个紧集内的 Borel 集，则 \(\mu\) 在 \(E\) 上外正则。
+\item\label{b1:item:radon-outer-finite}若 \(\mu(X)<\infty\)，或 \(X\) 为 \(\sigma\)-紧，则 \(\mu\) 是正则 Borel 测度。
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+给定紧集 \(K\)，取包含它的相对紧开集 \(W\)，于是 \(\mu(W)<\infty\)。
+由 \(W\setminus K\) 的内正则性，取紧集 \(L\subset W\setminus K\)，使
+\(\mu\bigl((W\setminus K)\setminus L\bigr)<\varepsilon\)。
+开集 \(W\setminus L\) 包含 \(K\)，且多出的测度小于 \(\varepsilon\)，得到第一项。
+
+现在设 \(E\subset K\)。对 \(W\setminus E\) 重复上述做法，得到紧集
+\(L\subset W\setminus E\)，使开集 \(G=W\setminus L\) 包含 \(E\)，且
+\(\mu(G\setminus E)<\varepsilon\)。这证明第二项。
+
+若 \(\mu(X)<\infty\)，直接对 \(X\setminus E\) 使用内正则性，取紧集
+\(L\subset X\setminus E\) 使 \(\mu\bigl((X\setminus E)\setminus L\bigr)<\varepsilon\)，
+则 \(X\setminus L\) 就是所需开集。
+若 \(X\) 为 \(\sigma\)-紧，取紧穷竭 \((K_n)\)。由第二项，对 \(E\cap K_n\)
+取开集 \(G_n\supset E\cap K_n\)，使
+\(\mu\bigl(G_n\setminus(E\cap K_n)\bigr)<\varepsilon2^{-n}\)。
+于是 \(G=\bigcup_nG_n\) 开且包含 \(E\)，并有
+\[
+ \mu(G\setminus E)
+ \leq\sum_{n=1}^\infty\mu\bigl(G_n\setminus(E\cap K_n)\bigr)<\varepsilon.
+\]
+有限测度 \(E\) 的外正则性由此得到；无穷测度 \(E\) 的任意开超集也有无穷测度。
+\end{proof}
+
+不能把最后一项中的条件全部去掉。取不可数离散空间 \(I\)，令 \(X=I\times\mathbb R\)，
+并对 Borel 集 \(E\) 定义
+\[
+ \mu(E)=\sum_{i\in I}m(E_i),\quad E_i=\{\,t:(i,t)\in E\,\},
+\]
+其中 \(m\) 是直线上的 Borel Lebesgue 测度，和仍解释为有限部分和的上确界。
+这定义了测度：非负的可数求和与有限部分和上确界可以互换，因而互不相交 Borel 集的可数可加性
+由各截面上的可数可加性得到。每条纤维上的有界开区间都有有限测度，所以它局部有限。
+任意紧集只与有限条纤维相交，因为纤维本身形成一个开覆盖。
+反过来，先取有限条纤维，再在每条纤维内用 Lebesgue 内正则性取紧集，
+便能使所得紧集的测度逼近任何给定的有限部分和。因此 \(\mu\) 是 Radon 测度。
+
+闭集 \(N=I\times\{0\}\) 的测度为零，但每个包含它的开集在每条纤维中都包含非空开区间。
+不可数个严格正数的和为无穷：若其和有限，则对每个正整数 \(n\)，大于 \(1/n\) 的项只能有有限个，
+所有正项便至多可数。故此处任意开超集的测度都是无穷，\(N\) 不满足外正则性。
+这也说明“\(\mu(E)<\infty\)”不能代替命题中的“\(\mu(X)<\infty\)”。
+后面的表示构造会先产生一个外正则版本，再作紧内正则化，正是为了兼顾一般空间的这一边界。
 
 \subsection{Radon 测度的基本性质}
 \label{b1:subsec:110204}
 
-待填充。
+测度与连续测试之间的第一座桥，是对开集的逼近公式。
+
+\begin{proposition}\label{b1:prop:radon-open-test}
+若 \(\mu\) 为 Radon 测度，\(U\subset X\) 开，则
+\[
+ \mu(U)=\sup\left\{\,\int_X h\,\mathrm d\mu:
+ h\in C_c(X;\mathbb R),\ 0\leq h\leq1,\ \operatorname{supp}h\subset U\,\right\}.
+\]
+对紧集 \(K\)，还有
+\[
+ \mu(K)=\inf\left\{\,\int_X h\,\mathrm d\mu:
+ h\in C_c(X;\mathbb R),\ h\geq0,\ h|_K\geq1\,\right\}.
+\]
+\end{proposition}
+\begin{proof}
+第一式右侧不超过 \(\mu(U)\)。若 \(K\subset U\) 紧，用截断引理取 \(h=1\) 于 \(K\)，
+则该上确界至少为 \(\mu(K)\)。对 \(K\) 取上确界，再用内正则性即可，包括 \(\mu(U)=\infty\) 的情况。
+第二式右侧不小于 \(\mu(K)\)。紧集的外正则性给出开集 \(U\supset K\)，使
+\(\mu(U)<\mu(K)+\varepsilon\)，再取支集包含于 \(U\) 的截断函数，就得到反向估计。
+\end{proof}
+
+这两式分别用连续函数从下测试开集、从上测试紧集。
+下一节将反转这一过程：先给出所有连续测试的数值，然后以第一式作为开集测度的定义。
+在进行构造前，再把上一章的稠密性推广到这里的拓扑背景。
+
+\begin{proposition}\label{b1:prop:radon-cc-dense-lp}
+若 \(\mu\) 为 Radon 测度，\(1\leq p<\infty\)，则 \(C_c(X)\) 的像在 \(L^p(\mu)\) 中稠密。
+此处既可使用 Borel 测度，也可使用它的完备化。
+\end{proposition}
+\begin{proof}
+由第\ref{b1:sec:1002}节的简单函数逼近，只须处理有限测度 Borel 集 \(E\) 的示性函数。
+给定 \(\eta>0\)，内正则性给出紧集 \(K\subset E\)，使 \(\mu(E\setminus K)<\eta\)。
+再用紧集的外正则性取开集 \(U\supset K\)，使 \(\mu(U\setminus K)<\eta\)，
+并用截断引理取 \(0\leq h\leq1\)，使 \(h=1\) 于 \(K\)、\(\operatorname{supp}h\subset U\)。
+函数 \(\mathbf1_E-h\) 在 \(K\) 上为零，其非零点包含在
+\((E\setminus K)\cup(U\setminus K)\) 内，故
+\[
+ \|\mathbf1_E-h\|_p^p\leq\mu(E\setminus K)+\mu(U\setminus K)<2\eta.
+\]
+对有限个示性函数分别作逼近，再用 Minkowski 不等式，便得到简单函数的逼近。
+若使用完备化，每个可测集都与一个 Borel 集只差零测集，所以 \(L^p\) 等价类不增加新的障碍。
+\end{proof}
+
+这里没有要求 \(E\) 自身外正则。先把 \(E\) 从内缩到紧集，再只在这个紧集外安排过渡，
+已经足以控制 \(L^p\) 误差。有限 \(p\) 的积分范数允许舍去小测度部分，
+而 \(p=\infty\) 仍受上一章中跳跃函数的反例限制。
+
+Radon 性还有一个方便的稳定性质。若正 Borel 测度 \(\nu\leq\mu\) 且 \(\mu\) 是有限 Radon 测度，
+则 \(\nu\) 也是有限 Radon 测度：对 \(E\) 选 \(K\subset E\)，有
+\(\nu(E\setminus K)\leq\mu(E\setminus K)\)，右侧可任意小。
+若 \(g\geq0\) 为 \(\mu\)-可积 Borel 函数，则 \(g\mu\) 同样是有限 Radon 测度。
+为此先取 \(M\) 使 \(\int_{\{g>M\}}g\,\mathrm d\mu<\varepsilon\)，
+再用 \(\mu\) 的内正则性逼近所需的有限测度部分；若 \(\mu\) 不有限，
+可先把 \(g\) 限制在 \(\{1/n\leq g\leq n\}\) 上，这些集合由可积性具有有限测度。
+具体地，对 Borel 集 \(E\) 取 \(n\) 使该限制损失的积分小于 \(\varepsilon\)，
+再在其与 \(E\) 的交中取紧集 \(K\)，使遗漏的 \(\mu\)-测度小于 \(\varepsilon/n\)，
+于是 \(\int_{E\setminus K}g\,\mathrm d\mu<2\varepsilon\)。
+这些稳定性将用于符号测度和复测度的表示。

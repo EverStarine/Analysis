@@ -2,24 +2,204 @@
 \section{局部紧 Hausdorff 空间}
 \label{b1:sec:1101}
 
-% TODO: 撰写本节正文。
+在欧氏空间上，距离函数和有界闭集为连续逼近提供了方便。换到一般拓扑空间后，
+距离未必存在，有界也未必有意义。本章保留真正需要的条件：每个点附近都有一块紧的区域，
+而不同点可以用不相交的开集分开。由这两个条件仍能构造连续截断函数。
+
+\begin{definition}\label{b1:def:lch-space}
+设 \(X\) 为 Hausdorff 空间。若每个点都有一个紧邻域，即存在紧集 \(N\) 使该点属于
+\(N\) 的内部，则称 \(X\) 为\term[jubu-jin-kongjian]{局部紧空间}[locally compact space]。
+若一个集合的闭包紧，则称它\term[xiangdui-jin]{相对紧}[relatively compact]。
+以下各节除另行说明外，\(X\) 始终为局部紧 Hausdorff 空间。
+\end{definition}
+
+欧氏空间、欧氏空间的开子集、紧 Hausdorff 空间和离散空间均满足这一条件。
+这里不预设可度量、第二可数或 \(\sigma\)-紧；需要可数穷竭时会另加假设。
 
 \subsection{\texorpdfstring{\(C_c(X)\)}{Cc(X)}}
 \label{b1:subsec:110101}
 
-待填充。
+沿用第\ref{b1:sec:1002}节的支集记号，令
+\[
+ C_c(X;\mathbb K)=\{\,f\in C(X;\mathbb K):\operatorname{supp}f\text{ 为紧集}\,\},
+ \quad \mathbb K=\mathbb R\text{ 或 }\mathbb C.
+\]
+标量域明确时简写为 \(C_c(X)\)。其中的函数在整个空间上有界；
+有限个紧集的并仍紧，故此集合对加法和数乘封闭，也对逐点乘法封闭。
+不过，在一致范数下它通常不是完备空间。
+\symidx{\(C_c(X)\)：局部紧空间上的连续紧支集函数空间}
+
+先建立后文反复使用的连续截断。它同时说明 \(C_c(X)\) 足以辨认点和开集。
+
+\begin{lemma}\label{b1:lem:lch-shrink}
+若 \(x\in U\subset X\) 且 \(U\) 开，则存在开集 \(V\)，使
+\(x\in V\subset\overline V\subset U\)，并且 \(\overline V\) 紧。
+若将点 \(x\) 换为紧集 \(K\subset U\)，也可使 \(K\subset V\)。
+\end{lemma}
+\begin{proof}
+取 \(x\) 的紧邻域 \(N\)。集合 \(N\setminus U\) 紧，且不含 \(x\)。
+对其中每一点 \(y\)，由 Hausdorff 性选择分别包含 \(x,y\) 的不相交开集
+\(A_y,B_y\)。有限个 \(B_y\) 已覆盖 \(N\setminus U\)。
+把相应的 \(A_y\) 相交，再与 \(\operatorname{int}N\) 相交，得到开邻域 \(V\)。
+其闭包包含在 \(N\) 内，并且与那些 \(B_y\) 不交，故 \(\overline V\subset U\)。
+闭包是紧集 \(N\) 的闭子集，因而紧。若 \(N\setminus U\) 为空，直接用
+\(\operatorname{int}N\) 即可。对紧集 \(K\)，逐点取这样的开邻域，再取有限子覆盖的并。
+\end{proof}
+
+\begin{lemma}[Urysohn，紧支集形式]\label{b1:lem:lch-cutoff}
+若 \(K\subset U\subset X\)，其中 \(K\) 紧、\(U\) 开，则存在 \(h\in C_c(X;\mathbb R)\)，满足
+\[
+ 0\leq h\leq1,\quad h|_K=1,\quad \operatorname{supp}h\subset U.
+\]
+\end{lemma}
+\begin{proof}
+先说明所需的拓扑分离构造。紧 Hausdorff 空间 \(L\) 中，不相交闭集 \(A,B\)
+可以用不相交开集分开。事实上，对固定 \(a\in A\)，用 Hausdorff 性及 \(B\) 的紧性，
+可得到包含 \(a\) 的开集 \(P_a\) 和包含整个 \(B\) 的开集 \(Q_a\)，使两者不交。
+再用 \(A\) 的紧性，取有限个 \(P_a\) 的并及相应 \(Q_a\) 的交即可。
+特别地，若闭集 \(A\) 包含在开集 \(G\) 中，可找到开集 \(H\)，使
+\(A\subset H\subset\overline H\subset G\)。
+
+利用最后这个缩小性质，可以在 \(L\) 上构造分离 \(A,B\) 的连续函数。
+设 \(D\) 是 \([0,1]\) 中的二进有理数，先令 \(G_1=L\setminus B\)，
+选择 \(A\subset G_0\subset\overline{G_0}\subset G_1\)。
+逐层在每对已经相邻的指标之间插入开集，便得到
+\(\overline{G_r}\subset G_s\) 对所有 \(r<s\) 成立的开集族。
+令
+\[
+ u(x)=\inf\{\,r\in D:x\in G_r\,\},
+\]
+并约定空集的下确界在这里取为 \(1\)。于是 \(u=0\) 于 \(A\)，\(u=1\) 于 \(B\)。
+对 \(0<a<1\)，有
+\[
+ \{u<a\}=\bigcup_{r<a}G_r,
+ \quad
+ \{u>a\}=\bigcup_{r>a}\bigl(L\setminus\overline{G_r}\bigr).
+\]
+两式由嵌套关系直接得到，端点的原像同样处理，故 \(u\) 连续。
+
+现在回到 \(X\)。由前一引理选开集 \(V,W\)，使
+\[
+ K\subset V\subset\overline V\subset W\subset\overline W\subset U,
+\]
+且 \(L=\overline W\) 紧。在紧空间 \(L\) 中对闭集 \(K\) 与 \(L\setminus V\)
+使用上述构造，得到连续函数 \(h=1-u\)。将它在 \(X\setminus L\) 上补成零。
+它在 \(L\setminus V\) 上已经为零，而 \(\overline V\subset\operatorname{int}L\)，
+故补零后在边界处仍连续。其支集包含在紧集 \(\overline V\subset U\) 中。
+\end{proof}
+
+这就是本章采用的\term*[urysohn-yinli]{Urysohn 引理}[Urysohn's lemma]。
+若 \(x\ne y\)，取不含 \(y\) 的开邻域并令 \(K=\{x\}\)，即可得到
+\(h(x)=1,h(y)=0\)。若 \(x\in U\)，还可使 \(\{h>1/2\}\subset U\)。
+因此连续紧支集函数既能区别点，也能在指定开集内部留下一个连续的局部标记。
 
 \subsection{\texorpdfstring{\(C_0(X)\)}{C0(X)}}
 \label{b1:subsec:110102}
 
-待填充。
+\begin{definition}\label{b1:def:c0-space}
+设 \(f\in C(X;\mathbb K)\)。若对每个 \(\varepsilon>0\)，集合
+\(\{\,x:|f(x)|\geq\varepsilon\,\}\) 都紧，则称 \(f\) 在无穷远处消失。
+这些函数组成的空间记为 \(C_0(X;\mathbb K)\)，简记 \(C_0(X)\)，赋予范数
+\(\|f\|_\infty=\sup_{x\in X}|f(x)|\)。
+\end{definition}
+\symidx{\(C_0(X)\)：在无穷远处消失的连续函数空间}
+
+“无穷远处”在这里不是某个指定的点，也不要求 \(X\) 有距离。
+它的意思是：给定误差后，可以舍去一个紧集，此后函数的绝对值始终小于该误差。
+这样的函数必有界，因为在 \(\{|f|\geq1\}\) 上由紧性有界，在其余部分又小于 \(1\)。
+若 \(X\) 紧，则 \(C_c(X)=C_0(X)=C(X)\)；若 \(X\) 非紧，常函数 \(1\) 不属于 \(C_0(X)\)。
+
+\begin{proposition}\label{b1:prop:cc-dense-c0}
+空间 \(C_0(X)\) 在一致范数下是 Banach 空间，且 \(C_c(X)\) 在其中稠密。
+\end{proposition}
+\begin{proof}
+有界连续函数空间 \(C_b(X)\) 完备：一致 Cauchy 列逐点有极限，Cauchy 估计使收敛一致，
+而一致极限连续。若 \(f_n\in C_0(X)\) 且 \(f_n\to f\) 一致，给定 \(\varepsilon>0\)，
+选择 \(n\) 使 \(\|f-f_n\|_\infty<\varepsilon/2\)。则
+\[
+ \{\,|f|\geq\varepsilon\,\}
+ \subset\{\,|f_n|\geq\varepsilon/2\,\}.
+\]
+左侧闭，右侧紧，故左侧紧；这证明 \(C_0(X)\) 是闭子空间。
+
+对 \(f\in C_0(X)\)，令 \(K=\{|f|\geq\varepsilon\}\)，由截断引理取
+\(0\leq h\leq1\)，使 \(h\in C_c(X)\) 且 \(h|_K=1\)。
+函数 \(hf\) 属于 \(C_c(X)\)，在 \(K\) 上与 \(f\) 相等，在其余部分满足
+\(|f-hf|\leq|f|<\varepsilon\)。于是 \(\|f-hf\|_\infty\leq\varepsilon\)。
+\end{proof}
+
+在 \(\mathbb R\) 上，\(f(x)=e^{-|x|}\) 属于 \(C_0\) 而不属于 \(C_c\)。
+取等于 \(1\) 于 \([-n,n]\)、等于零于 \(\mathbb R\setminus(-n-1,n+1)\) 的连续截断 \(h_n\)，
+便有 \(\|f-h_nf\|_\infty\leq e^{-n}\)。这个例子同时给出 \(C_c\) 不完备的一个 Cauchy 列。
+表示有界泛函时，先在 \(C_c\) 上得到积分，再通过这里的稠密性延拓到 \(C_0\)，
+就不必把无穷远处的尾部另行放进测度构造。
 
 \subsection{支集}
 \label{b1:subsec:110103}
 
-待填充。
+连续函数的支集是 \(\operatorname{supp}f=\overline{\{x:f(x)\ne0\}}\)，
+而不只是非零点的集合。闭包不能省略。例如 \(f(x)=\max(1-|x|,0)\) 的非零集为
+\((-1,1)\)，支集却为 \([-1,1]\)。在局部论证中，条件
+\(\operatorname{supp}f\subset U\) 比“\(f\) 在 \(X\setminus U\) 上为零”更强：
+后一个条件还允许支集碰到 \(U\) 的边界。
+
+支集满足
+\[
+ \operatorname{supp}(f+g)\subset\operatorname{supp}f\cup\operatorname{supp}g,
+ \quad
+ \operatorname{supp}(fg)\subset\operatorname{supp}f\cap\operatorname{supp}g.
+\]
+第一个包含关系可以是严格的，例如 \(g=-f\)；第二个关系使乘以截断函数成为限制支集的工具。
+给定紧集 \(K\)，记 \(C_K(X)=\{f\in C(X):\operatorname{supp}f\subset K\}\)。
+它在一致范数下完备，因为一致极限仍在 \(X\setminus K\) 上为零。
+\symidx{\(C_K(X)\)：支集包含在固定紧集内的连续函数空间}
+
+还须区别连续函数的支集和 \(L^p\) 等价类的零集约定。
+本章的连续测试函数是逐点定义的对象，不先按某个测度取商；
+同一个函数将在尚待构造的不同测度下积分。
+例如点质量 \(\delta_0\) 的测试值是 \(f(0)\)，不能用 Lebesgue 几乎处处相等的任意代表元代替它。
 
 \subsection{局部紧性}
 \label{b1:subsec:110104}
 
-待填充。
+紧性把任意开覆盖化为有限开覆盖，连续截断则把这有限覆盖转成函数的分解。
+下面只需紧集附近的有限版本，不需要假设整个空间有局部有限的单位分解。
+许全华等《泛函分析讲义》\cite[第10.1节]{Xu2017Fanhan}以“连续划分”为题介绍这一类工具；
+这里使用的有限构造如下。
+
+\begin{lemma}\label{b1:lem:cc-finite-decomposition}
+设 \(f\in C_c(X;\mathbb R)\)、\(f\geq0\)，且开集 \(U_1,\ldots,U_m\) 覆盖
+\(\operatorname{supp}f\)。则存在 \(f_j\in C_c(X;\mathbb R)\)，使
+\[
+ f=\sum_{j=1}^m f_j,\quad 0\leq f_j\leq f,
+ \quad\operatorname{supp}f_j\subset U_j.
+\]
+\end{lemma}
+\begin{proof}
+记 \(K=\operatorname{supp}f\)。对每个 \(x\in K\)，选一个包含它的 \(U_j\)，
+再由缩小引理选开邻域 \(V_x\)，使 \(\overline{V_x}\) 紧且包含于该 \(U_j\)。
+有限个 \(V_x\) 覆盖 \(K\)。按对应的 \(j\) 分组，把每组的闭包相并为紧集 \(K_j\subset U_j\)。
+由截断引理选 \(h_j\in C_c(X)\)，使 \(0\leq h_j\leq1\)、\(h_j=1\) 于 \(K_j\)，
+支集包含于 \(U_j\)；空组取零。置 \(s=\sum_jh_j\)，则 \(s\geq1\) 于 \(K\)。
+在 \(s>0\) 处令 \(f_j=fh_j/s\)，在 \(s=0\) 处令 \(f_j=0\)。
+后者附近若 \(s<1\)，便不在 \(K\) 中，因而 \(f\) 恒为零；这保证补零后连续。
+支集包含在 \(K\cap\operatorname{supp}h_j\) 中，其余各式由定义得到。
+\end{proof}
+
+若 \(X\) 还为 \(\sigma\)-紧，即可写成可数个紧集的并，则可选紧集列 \(K_n\)，满足
+\[
+ K_n\subset\operatorname{int}K_{n+1},\quad X=\bigcup_{n=1}^\infty K_n.
+\]
+具体地，从任一紧覆盖 \((L_n)\) 出发，依次对 \(K_n\cup L_{n+1}\) 使用缩小引理，
+取包含它的相对紧开集并取闭包，便得到上述列。
+于是每个紧集都包含在某个 \(K_n\) 内，证明只需对开覆盖
+\((\operatorname{int}K_n)\) 取有限子覆盖。
+第二可数的局部紧空间自动 \(\sigma\)-紧：相对紧开集构成开覆盖，第二可数性使它有可数子覆盖。
+最后这一步可从一个可数基中，为每个包含在覆盖成员内的基元素选择一个相应成员来实现。
+
+局部紧性也有清楚的适用边界。无限维 Hilbert 空间的闭单位球含一列标准正交向量，
+任意两项距离为 \(\sqrt2\)，所以不紧。平移和伸缩说明其中任何点都没有紧邻域。
+事实上，若连续函数 \(f\) 在某点不为零，则一个足够小的闭球包含在
+\(\{|f|\geq\varepsilon\}\) 中；这排除了该集合紧的可能性。
+因此这样的空间上 \(C_0\) 甚至只有零函数。下一章讨论一般完备可分度量空间上的概率测度时，
+需要改用有界连续函数，不能不加区别地沿用 \(C_c\) 测试。

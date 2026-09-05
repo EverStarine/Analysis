@@ -2,19 +2,224 @@
 \section{正线性泛函}
 \label{b1:sec:1103}
 
-% TODO: 撰写本节正文。
+积分把函数的逐点次序变成实数的次序：非负函数的积分非负。本节反过来问，若只知道一个线性泛函具有这种性质，能否从它恢复测度？答案中的关键条件是正性，而不是关于整个 \(C_c(X)\) 的统一范数估计。正性先在每个紧集上给出控制，再借助连续截断把控制转化为集合的质量。
+
+以下 \(X\) 为局部紧 Hausdorff 空间，\(\mathbb K=\mathbb R\) 或 \(\mathbb C\)。记 \(C_c^+(X)\) 为 \(C_c(X;\mathbb R)\) 中的非负函数全体。
 
 \subsection{\texorpdfstring{\(C_c(X)\)}{Cc(X)} 上的正泛函}
 \label{b1:subsec:110301}
 
-待填充。
+\begin{definition}\label{b1:def:positive-functional}
+给定线性泛函 \(\Lambda:C_c(X;\mathbb K)\rightarrow\mathbb K\)，若对每个 \(f\in C_c^+(X)\) 都有 \(\Lambda(f)\in[0,\infty)\)，则称 \(\Lambda\) 为\term[zheng-xianxing-fanhan]{正线性泛函}[positive linear functional]，简称正泛函。
+\end{definition}
+
+例如，若 \(x_1,\ldots,x_N\in X\) 且 \(a_1,\ldots,a_N\geq0\)，则 \(\Lambda(f)=\sum_{j=1}^N a_jf(x_j)\) 是正泛函。更一般地，对局部有限 Borel 测度积分便给出正泛函：紧支集函数有界，支集又有有限测度，故积分一定有限。表示问题所要证明的是，每个正泛函都能写成后一种形式，并且可以要求表示测度满足前一节的紧内正则性。
+
+先记录正性的两个直接后果。对实函数 \(u=u^+-u^-\)，两个正负部分仍在 \(C_c^+(X)\) 中，所以 \(\Lambda(u)\) 是实数；若 \(u\leq v\)，则 \(\Lambda(u)\leq\Lambda(v)\)。实、复两种情形还统一满足
+\begin{equation}\label{b1:eq:positive-functional-modulus}
+ \bigl|\Lambda(f)\bigr|\leq\Lambda\bigl(|f|\bigr).
+\end{equation}
+当 \(\Lambda(f)\ne0\) 时，取模为 \(1\) 的标量 \(a\)，使 \(a\Lambda(f)=|\Lambda(f)|\)。实情形只需 \(a=1\) 或 \(-1\)；复情形中，由实函数的像为实数及复线性可得
+\[
+ \bigl|\Lambda(f)\bigr|
+ =\operatorname{Re}\bigl(a\Lambda(f)\bigr)
+ =\Lambda\bigl(\operatorname{Re}(af)\bigr)
+ \leq\Lambda\bigl(|f|\bigr).
+\]
+若 \(\Lambda(f)=0\)，结论由正性直接成立。这也说明，构造测度时只处理非负实函数已经足够，最后再用线性恢复一般函数。
 
 \subsection{局部有界性}
 \label{b1:subsec:110302}
 
-待填充。
+\begin{lemma}\label{b1:lem:positive-functional-local-bound}
+设 \(\Lambda\) 为正泛函。对每个紧集 \(K\subseteq X\)，存在有限常数 \(C_K\geq0\)，使所有满足 \(\operatorname{supp}f\subseteq K\) 的 \(f\in C_c(X)\) 都有
+\[
+ \bigl|\Lambda(f)\bigr|\leq C_K\|f\|_\infty.
+\]
+因而，在支集均包含于同一紧集的函数族上，一致收敛可以通过 \(\Lambda\)。
+\end{lemma}
+\begin{proof}
+由\cref{b1:lem:lch-cutoff}取 \(h\in C_c^+(X)\)，使 \(h=1\) 于 \(K\)。对上述 \(f\)，有 \(|f|\leq\|f\|_\infty h\)，于是
+\[
+ \bigl|\Lambda(f)\bigr|
+ \leq\Lambda\bigl(|f|\bigr)
+ \leq\|f\|_\infty\Lambda(h).
+\]
+取 \(C_K=\Lambda(h)\) 即得估计。再将它用于 \(f_n-f\)，便得到所述连续性。
+\end{proof}
+
+这项局部估计还蕴含一个单调连续性结论。若 \(f_n\in C_c^+(X)\) 且 \(f_n\downarrow0\)，则所有支集均包含在 \(K=\operatorname{supp}f_1\) 中。对任意 \(\varepsilon>0\)，紧集中的闭集 \(\{x\in K:f_n(x)\geq\varepsilon\}\) 递减且交为空，故其中某一个已经为空。因此 \(f_n\) 一致趋于零，局部估计给出 \(\Lambda(f_n)\downarrow0\)。这里用到的是紧性，而不是测度论的单调收敛定理；测度尚待构造。
+
+局部估计通常不能换成一个与 \(K\) 无关的常数。在 \(C_c(\mathbb R)\) 上取 Lebesgue 积分泛函，并取 \(0\leq h_n\leq1\)、在 \([-n,n]\) 上等于 \(1\) 的连续紧支集函数，则 \(\|h_n\|_\infty=1\)，而 \(\Lambda(h_n)\geq2n\)。所以这个正泛函关于一致范数无界。只有在 \(X\) 紧时，常数函数 \(1\) 本身才属于 \(C_c(X)\)，此时上述证明才直接给出全局界 \(\Lambda(1)\)。
 
 \subsection{支集与正则性}
 \label{b1:subsec:110303}
 
-待填充。
+恢复测度的第一步是在开集上定义候选值。若连续函数只在开集 \(U\) 内活动，且取值不超过 \(1\)，它的泛函值不应超过 \(U\) 的质量。因此令
+\[
+ \mathcal T(U)=\{\,h\in C_c^+(X):0\leq h\leq1,
+                       \ \operatorname{supp}h\subseteq U\,\},
+ \quad
+ a(U)=\sup_{h\in\mathcal T(U)}\Lambda(h).
+\]
+这里允许 \(a(U)=\infty\)，但 \(0\in\mathcal T(U)\)，所以上确界总有意义。
+
+% 实读来源：Fremlin, Measure Theory, vol.4, 436J，印刷 pp.47--48，
+% 官方 https://www1.essex.ac.uk/maths/people/fremlin/chap43.pdf；
+% 416E--F，印刷 pp.67--69，及 416 notes，印刷 p.81，
+% 官方 https://www1.essex.ac.uk/maths/people/fremlin/chap41.pdf。
+% 436J用于核实任意LCH上的定理范围；其证明经Riesz格，并非下文的外测度路线。
+% 下文独立展开开集候选值、外测度与紧内正则化，不逐句翻译原文。
+% Fremlin采用完备且局部确定的Radon约定；本书只取全部Borel集紧内正则的版本。
+一般局部紧空间上的表示定理可参读 D.~H. Fremlin 的《Measure Theory》\cite[第 436J 节]{Fremlin2016Measure}。以下直接从开集候选值构造测度。构造中将暂时出现一个外正则测度 \(\mu_0\)，随后还要作紧内正则化；在未假设 \(\sigma\)-紧的一般空间上，这一步不能省略。
+
+\begin{lemma}\label{b1:lem:positive-functional-open-content}
+上述开集函数 \(a\) 单调，满足 \(a(\varnothing)=0\)，并对任意开集列 \((U_n)\) 有
+\[
+ a\biggl(\bigcup_{n=1}^{\infty}U_n\biggr)
+ \leq\sum_{n=1}^{\infty}a(U_n).
+\]
+若 \(U,V\) 是不相交的开集，则 \(a(U\cup V)=a(U)+a(V)\)。若 \(U\) 相对紧，则 \(a(U)<\infty\)。
+\end{lemma}
+\begin{proof}
+单调性与空集等式直接来自定义。给定 \(h\in\mathcal T\bigl(\bigcup_nU_n\bigr)\)，其紧支集被有限个 \(U_n\) 覆盖。由\cref{b1:lem:cc-finite-decomposition}，可将 \(h\) 写成相应有限个非负连续紧支集函数之和，每一项不超过 \(h\)，且支集包含在对应开集中。因此 \(\Lambda(h)\leq\sum_na(U_n)\)；对 \(h\) 取上确界即得次可加性。
+
+若 \(U\cap V=\varnothing\)，则对任意 \(h\in\mathcal T(U)\)、\(g\in\mathcal T(V)\)，两函数不会在同一点同时非零，故 \(h+g\in\mathcal T(U\cup V)\)。于是 \(a(U\cup V)\geq\Lambda(h)+\Lambda(g)\)。分别取上确界，再结合次可加性，得到等式；即使一个上确界为无穷，任取大的有限泛函值也得到同一结论。
+
+若 \(\overline U\) 紧，取 \(h_0\in C_c^+(X)\) 在 \(\overline U\) 上等于 \(1\)。每个 \(h\in\mathcal T(U)\) 都满足 \(h\leq h_0\)，所以 \(a(U)\leq\Lambda(h_0)<\infty\)。
+\end{proof}
+
+下一步将开集的候选值延伸到所有子集。证明中先求出紧集的质量，再用紧集分离检验 Borel 可测性；这避免了在没有距离函数时误用度量外测度的判据。
+
+\begin{lemma}\label{b1:lem:positive-functional-outer-measure}
+对任意 \(A\subseteq X\)，令
+\[
+ \mu_0^*(A)=\inf\{\,a(U):A\subseteq U,\ U\text{ 开}\,\}.
+\]
+则 \(\mu_0^*\) 是外测度，所有 Borel 集都对它可测。其 Borel 限制 \(\mu_0\) 局部有限且外正则，并且对开集 \(U\) 和紧集 \(K\) 分别有
+\begin{align}
+ \mu_0(U)&=a(U)=\sup\{\,\mu_0(K):K\subseteq U,\ K\text{ 紧}\,\},
+ \label{b1:eq:positive-functional-open-inner}\\
+ \mu_0(K)&=\inf\{\,\Lambda(h):h\in C_c^+(X),\ h\geq1\text{ 于 }K\,\}.
+ \label{b1:eq:positive-functional-compact-price}
+\end{align}
+此外，每个有限 \(\mu_0\) 测度的 Borel 集都能从内部用紧集逼近。
+\end{lemma}
+\begin{proof}
+首先，\(\mu_0^*(\varnothing)=0\)，且 \(\mu_0^*\) 单调。为证可数次可加性，只需考虑 \(\sum_n\mu_0^*(A_n)<\infty\) 的情形。给定 \(\varepsilon>0\)，逐个选择开集 \(U_n\supseteq A_n\)，使 \(a(U_n)<\mu_0^*(A_n)+\varepsilon2^{-n}\)。由前一引理，
+\[
+ \mu_0^*\biggl(\bigcup_n A_n\biggr)
+ \leq a\biggl(\bigcup_n U_n\biggr)
+ \leq\sum_n\mu_0^*(A_n)+\varepsilon.
+\]
+令 \(\varepsilon\downarrow0\)，得到外测度性质。开集的单调性还立即给出 \(\mu_0^*(U)=a(U)\)。
+
+暂时不预设紧集可测，将\eqref{b1:eq:positive-functional-compact-price}右端记为 \(c(K)\)。连续截断保证 \(c(K)<\infty\)。对每个开集 \(U\supseteq K\)，可取 \(h\in\mathcal T(U)\) 在 \(K\) 上等于 \(1\)，故 \(c(K)\leq a(U)\)，进而 \(c(K)\leq\mu_0^*(K)\)。反之，若 \(h\in C_c^+(X)\) 在 \(K\) 上至少为 \(1\)，则对 \(0<t<1\)，开集 \(U_t=\{h>t\}\) 包含 \(K\)。任取 \(v\in\mathcal T(U_t)\)，有 \(tv\leq h\)，从而
+\[
+ \mu_0^*(K)\leq a(U_t)\leq t^{-1}\Lambda(h).
+\]
+先令 \(t\uparrow1\)，再对 \(h\) 取下确界，得到 \(\mu_0^*(K)=c(K)\)。特别地，若 \(0\leq v\leq1\) 且 \(\operatorname{supp}v\subseteq K\)，则 \(v\leq h\) 对每个上述 \(h\) 成立，所以
+\begin{equation}\label{b1:eq:positive-functional-compact-test}
+ \Lambda(v)\leq\mu_0^*(K).
+\end{equation}
+给定 \(v\in\mathcal T(U)\)，将此式用于 \(K=\operatorname{supp}v\subseteq U\)，再取上确界，便得到
+\[
+ a(U)=\sup\{\,\mu_0^*(K):K\subseteq U,\ K\text{ 紧}\,\}.
+\]
+其中反向不等式仅用外测度的单调性。
+
+现在检验闭集的 Carath\'eodory 可测性。设 \(F\) 闭，\(A\subseteq X\)。次可加性已经给出所需等式的一个方向；另一个方向在 \(\mu_0^*(A)=\infty\) 时自动成立。因此设 \(\mu_0^*(A)<\infty\)，并选开集 \(U\supseteq A\)，使 \(a(U)<\mu_0^*(A)+\varepsilon\)。由于 \(U\setminus F\) 开，由刚证明的紧内逼近可取紧集 \(K\subseteq U\setminus F\)，满足
+\[
+ a(U\setminus F)<\mu_0^*(K)+\varepsilon.
+\]
+再由\cref{b1:lem:lch-shrink}取开集 \(V\)，使 \(K\subseteq V\subseteq\overline V\subseteq U\setminus F\) 且 \(\overline V\) 紧；若 \(K=\varnothing\)，可取 \(V=\varnothing\)。开集 \(V\) 与 \(U\setminus\overline V\) 不交，而 \(A\cap F\subseteq U\setminus\overline V\)，故
+\begin{align*}
+ \mu_0^*(A\cap F)+\mu_0^*(A\setminus F)
+ &\leq a(U\setminus\overline V)+a(U\setminus F)\\
+ &\leq a(U\setminus\overline V)+\mu_0^*(K)+\varepsilon\\
+ &\leq a(U\setminus\overline V)+a(V)+\varepsilon\\
+ &\leq a(U)+\varepsilon
+ <\mu_0^*(A)+2\varepsilon.
+\end{align*}
+令 \(\varepsilon\downarrow0\)，得到可测性。闭集生成 Borel \(\sigma\)-代数，由\cref{b1:thm:caratheodory}，\(\mu_0^*\) 在 Borel 集上限制为测度 \(\mu_0\)。每个点都有相对紧的开邻域，前一引理说明这种邻域有有限测度，故 \(\mu_0\) 局部有限。其外正则性来自定义，开集与紧集的两个公式也随之成立。
+
+最后设 \(A\) 为 Borel 集且 \(\mu_0(A)<\infty\)。给定 \(\varepsilon>0\)，由外正则性选有限测度开集 \(U\supseteq A\)，使 \(\mu_0(U\setminus A)<\varepsilon\)。再由开集的紧内正则性选紧集 \(K\subseteq U\)，使 \(\mu_0(U\setminus K)<\varepsilon\)。对 Borel 集 \(U\setminus A\) 再用外正则性，取开集 \(G\supseteq U\setminus A\)，使 \(\mu_0(G)<2\varepsilon\)。于是 \(C=K\setminus G\) 是包含在 \(A\) 中的紧集，且
+\[
+ \mu_0(A\setminus C)
+ \leq\mu_0(U\setminus K)+\mu_0(G)<3\varepsilon.
+\]
+这证明了有限测度 Borel 集的紧内正则性。
+\end{proof}
+
+目前只证明了 \(\mu_0\) 在开集及有限测度 Borel 集上紧内正则。若一个无限测度 Borel 集没有可数的有限测度覆盖，不能据此直接宣称它也紧内正则。下面用紧集上的限制重新定义测度，补足这一点。
+
+\begin{theorem}[Riesz--Markov，测度构造]\label{b1:thm:positive-radon-construction}
+每个正线性泛函 \(\Lambda:C_c(X;\mathbb K)\rightarrow\mathbb K\) 都由一个正 Radon 测度 \(\mu\) 表示，即
+\[
+ \Lambda(f)=\int_X f\,\mathrm d\mu
+ \quad\bigl(f\in C_c(X;\mathbb K)\bigr).
+\]
+此测度在开集上满足 \(\mu(U)=a(U)\)，在紧集上满足\eqref{b1:eq:positive-functional-compact-price}中以 \(\mu\) 代替 \(\mu_0\) 的公式。
+\end{theorem}
+\begin{proof}
+对每个 Borel 集 \(A\)，定义
+\[
+ \mu(A)=\sup\{\,\mu_0(A\cap K):K\subseteq X,\ K\text{ 紧}\,\}.
+\]
+先证明这确实是测度。若 \(A_n\) 两两不交，则
+\[
+ \mu\biggl(\bigcup_n A_n\biggr)
+ =\sup_{K\text{ 紧}}\sum_n\mu_0(A_n\cap K)
+ \leq\sum_n\mu(A_n).
+\]
+反之，固定 \(N\) 及紧集 \(K_1,\ldots,K_N\)，其并 \(K\) 仍紧，所以
+\[
+ \mu\biggl(\bigcup_n A_n\biggr)
+ \geq\sum_{n=1}^N\mu_0(A_n\cap K)
+ \geq\sum_{n=1}^N\mu_0(A_n\cap K_n).
+\]
+分别对每个 \(K_n\) 取上确界，再令 \(N\uparrow\infty\)，得到反向不等式。结合 \(\mu(\varnothing)=0\)，可知 \(\mu\) 是 Borel 测度。
+
+若 Borel 集 \(A\) 包含在某个紧集 \(K_0\) 中，则定义中取 \(K=K_0\) 即得 \(\mu(A)=\mu_0(A)\)。特别地，两测度在紧集上相同。对开集 \(U\)，一方面 \(\mu(U)\leq\mu_0(U)\)，另一方面由\eqref{b1:eq:positive-functional-open-inner}，
+\[
+ \mu(U)\geq\sup_{K\subseteq U,\ K\text{ 紧}}\mu_0(K)=\mu_0(U),
+\]
+故它们也在开集上相同，\(\mu\) 因而局部有限。对一般 Borel 集 \(A\) 及紧集 \(K\)，集合 \(A\cap K\) 有有限 \(\mu_0\) 测度，前一引理给出
+\[
+ \mu_0(A\cap K)
+ =\sup\{\,\mu_0(C):C\subseteq A\cap K,\ C\text{ 紧}\,\}.
+\]
+再对 \(K\) 取上确界，并使用紧集上两测度相同，可得
+\[
+ \mu(A)=\sup\{\,\mu(C):C\subseteq A,\ C\text{ 紧}\,\}.
+\]
+因此 \(\mu\) 满足本书的 Radon 测度定义。
+
+余下证明积分等式。先设 \(f\in C_c^+(X)\)，令 \(K=\operatorname{supp}f\)、\(M=\|f\|_\infty\)。当 \(M=0\) 时无须证明，以下设 \(M>0\)。给定正整数 \(n\)，令 \(\delta=M/n\)，并对 \(1\leq j\leq n\) 置 \(U_j=\{f>j\delta\}\)。若分别取 \(h_j\in\mathcal T(U_j)\)，则逐点有 \(\delta\sum_{j=1}^n h_j\leq f\)。由正性，分别对有限个 \(h_j\) 取上确界，得到
+\[
+ \delta\sum_{j=1}^n\mu_0(U_j)\leq\Lambda(f).
+\]
+简单函数 \(s=\delta\sum_{j=1}^n\mathbf1_{U_j}\) 满足 \(0\leq f-s\leq\delta\mathbf1_K\)，故
+\begin{equation}\label{b1:eq:positive-functional-integral-lower}
+ \int_X f\,\mathrm d\mu_0-\delta\mu_0(K)\leq\Lambda(f).
+\end{equation}
+
+为得到另一方向，将 \(f\) 分解为连续的薄层
+\[
+ v_j=\min\bigl\{\delta,(f-j\delta)^+\bigr\},
+ \quad 0\leq j\leq n-1,
+ \quad f=\sum_{j=0}^{n-1}v_j.
+\]
+其中 \(\operatorname{supp}v_0\subseteq K\)，而当 \(j\geq1\) 时，\(\operatorname{supp}v_j\subseteq K_j=\{f\geq j\delta\}\)；后者是包含在 \(K\) 中的紧集。将\eqref{b1:eq:positive-functional-compact-test}用于 \(v_j/\delta\)，得到
+\[
+ \Lambda(f)\leq\delta\mu_0(K)
+                 +\delta\sum_{j=1}^{n-1}\mu_0(K_j).
+\]
+右端是简单函数 \(\delta\mathbf1_K+\delta\sum_{j=1}^{n-1}\mathbf1_{K_j}\) 的积分，而这个函数不超过 \(f+\delta\mathbf1_K\)。因此
+\[
+ \Lambda(f)\leq\int_X f\,\mathrm d\mu_0+\delta\mu_0(K).
+\]
+与\eqref{b1:eq:positive-functional-integral-lower}合并，再令 \(n\rightarrow\infty\)，便有 \(\Lambda(f)=\int_X f\,\mathrm d\mu_0\)。由于 \(\mu\) 与 \(\mu_0\) 在紧集 \(K\) 的所有 Borel 子集上相同，这一积分也等于 \(\int_X f\,\mathrm d\mu\)。最后将实函数分成正负部分、复函数分成实虚部分，利用线性即得一般情形；这些部分仍有紧支集，所有积分均有限。
+\end{proof}
+
+构造中的两个测度承担不同的任务：\(\mu_0\) 由开集从外部逼近而来，\(\mu\) 则在全部 Borel 集上由紧集从内部逼近。它们在开集、紧集及紧集内的 Borel 子集上相同，因而连续紧支集函数的积分无法将它们区分；但在一般局部紧空间上，不能由此推出两者处处相同。本书选择紧内正则的 \(\mu\) 作为表示测度。下一节将证明，在这一约定下表示确实唯一，并讨论定义域换成 \(C_0(X)\) 后的一致范数对偶。

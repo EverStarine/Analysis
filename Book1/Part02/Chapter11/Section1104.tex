@@ -2,24 +2,229 @@
 \section{Riesz–Markov 表示定理}
 \label{b1:sec:1104}
 
-% TODO: 撰写本节正文。
+上一节从正泛函构造了测度。本节先说明为什么表示唯一，再把正性换成一致范数下的有界性。后一步并不是对构造中的不等号作形式修改：一般泛函会发生抵消，须先分出正的部分，最后用全变差记录实际的大小。
+
+以下始终设 \(X\) 为局部紧 Hausdorff 空间，\(\mathbb K=\mathbb R\) 或 \(\mathbb C\)。Radon 测度沿用本章的 Borel 约定，不额外要求完备或全局外正则。D.~H. Fremlin 的《Measure Theory》\cite[第 416F、436J--K、437I 节]{Fremlin2016Measure}分别讨论了这一 Borel 约定与完备版本的联系、正泛函表示，以及实连续函数空间的对偶；下面的复值推广直接使用第\ref{b1:ch:06}章的全变差与极分解。
+
+% 实读来源：Fremlin 官方 chap41.pdf，411B/F/H、416E/F，印刷 pp.3--5、67--69；
+% chap43.pdf，436I--K、437I(a)，印刷 pp.47--48、59。
+% 采用本书的紧内正则Borel约定，不直接搬用Fremlin的完备、局部确定约定。
+% 正泛函存在性由1103的外测度构造与紧内正则化给出；
+% 下文自行展开实泛函正负分解、复数合成及相位的连续逼近，不调用Banach格理论。
 
 \subsection{正泛函版本}
 \label{b1:subsec:110401}
 
-待填充。
+将构造结果与唯一性合在一起，便得到\term*[riesz-markov-biaoshi]{Riesz--Markov 表示定理}[Riesz--Markov representation theorem]。
+
+\begin{theorem}[Riesz--Markov：正泛函版本]\label{b1:thm:riesz-markov-positive}
+设 \(\Lambda:C_c(X;\mathbb K)\rightarrow\mathbb K\) 是正线性泛函。则存在唯一的正 Radon 测度 \(\mu\)，使
+\[
+ \Lambda(f)=\int_X f\,\mathrm d\mu
+ \quad\bigl(f\in C_c(X;\mathbb K)\bigr).
+\]
+此处不要求 \(\Lambda\) 关于全空间的一致范数有界，也不要求 \(\mu(X)<\infty\)。
+\end{theorem}
+\begin{proof}
+存在性是\cref{b1:thm:positive-radon-construction}。若 \(\mu,\eta\) 都给出上述积分，则由\cref{b1:prop:radon-open-test}，它们在每个开集上相等。
+
+还须从测试函数回到所有 Borel 集，不能在没有可数有限测度覆盖时直接套用有限测度的唯一性定理。同一命题的紧集公式给出
+\[
+ \mu(K)=\inf\{\,\Lambda(h)\mid h\in C_c(X;\mathbb R),\ h\geq0,\ h|_K\geq1\,\}
+ =\eta(K).
+\]
+因此两测度在每个紧集上相等。最后对任意 Borel 集从内部取紧集上确界，得到 \(\mu=\eta\)。
+\end{proof}
+
+这里的局部条件不能换成一个统一常数，上一节的 Lebesgue 积分例子已经说明这一点。
+
+把定义域扩大到 \(C_0(X)\) 后，正性反而自动给出有界性。
+
+\begin{corollary}[Riesz--Markov：正 \(C_0\) 泛函]\label{b1:cor:positive-c0-representation}
+每个正线性泛函 \(\Lambda:C_0(X;\mathbb K)\rightarrow\mathbb K\) 都有界，并由唯一的有限正 Radon 测度表示。其范数为
+\[
+ \|\Lambda\|=\mu(X)
+ =\sup\{\,\Lambda(h)\mid h\in C_c(X;\mathbb R),\ 0\leq h\leq1\,\}.
+\]
+\end{corollary}
+\begin{proof}
+正泛函对实函数取实值，并满足 \(|\Lambda(f)|\leq\Lambda(|f|)\)。实情形由 \(-|f|\leq f\leq|f|\) 得到；复情形选取单位复数 \(c\)，使 \(c\Lambda(f)=|\Lambda(f)|\)，再对 \(\operatorname{Re}(cf)\leq|f|\) 使用正性。
+
+假若 \(\Lambda\) 无界，可以对每个 \(n\geq1\) 选取非负 \(h_n\in C_0(X)\)，使
+\[
+ \|h_n\|_\infty\leq2^{-n},\quad \Lambda(h_n)\geq1.
+\]
+这里先在单位球中取泛函值任意大的函数，再取绝对值并缩放。由\cref{b1:prop:cc-dense-c0}中的完备性，级数 \(h=\sum_nh_n\) 一致收敛，且其和仍属于 \(C_0(X)\)。由于 \(h\geq\sum_{n=1}^Nh_n\)，正性给出 \(\Lambda(h)\geq N\)，这与 \(\Lambda(h)\) 是有限数矛盾。
+
+将 \(\Lambda\) 限制到 \(C_c(X)\)，由前一定理得到 \(\mu\)。开集测试公式用于 \(X\) 本身，给出 \(\mu(X)\leq\|\Lambda\|<\infty\)。于是积分定义了 \(C_0(X)\) 上的有界泛函，范数至多为 \(\mu(X)\)。由\cref{b1:prop:cc-dense-c0}，它与 \(\Lambda\) 在稠密子空间上一致，故处处一致。合并两个范数估计及开集测试公式，即得全部等式。唯一性仍由 \(C_c(X)\) 上的唯一性得到。
+\end{proof}
 
 \subsection{有界泛函版本}
 \label{b1:subsec:110402}
 
-待填充。
+先处理实泛函。关键是连续函数的最小值仍连续，从而一个受 \(f+g\) 控制的非负函数，能够分成分别受 \(f\)、\(g\) 控制的两部分。
+
+\begin{lemma}\label{b1:lem:c0-functional-positive-parts}
+设 \(L:C_0(X;\mathbb R)\rightarrow\mathbb R\) 是有界线性泛函。则存在有界正线性泛函 \(L^+,L^-\)，满足 \(L=L^+-L^-\)。对于 \(f\geq0\)，可取
+\[
+ L^+(f)=\sup\{\,L(g)\mid g\in C_0(X;\mathbb R),\ 0\leq g\leq f\,\},
+ \quad L^-(f)=L^+(f)-L(f).
+\]
+\end{lemma}
+\begin{proof}
+先把右端的上确界记为 \(P(f)\)。候选集合含零，且
+\[
+ 0\leq P(f)\leq\|L\|\cdot\|f\|_\infty.
+\]
+若 \(f_1,f_2\geq0\)，把任意两个候选函数相加，便得
+\(P(f_1+f_2)\geq P(f_1)+P(f_2)\)；这里可先分别选取距各自上确界小于 \(\varepsilon\) 的函数，再令 \(\varepsilon\) 趋零。反过来，对 \(0\leq g\leq f_1+f_2\)，置
+\[
+ g_1=\min\{g,f_1\},\quad g_2=g-g_1.
+\]
+两函数均属于 \(C_0(X)\)，且 \(0\leq g_i\leq f_i\)，所以
+\(L(g)\leq P(f_1)+P(f_2)\)。对 \(g\) 取上确界，得到 \(P\) 的可加性。对正数作缩放也给出 \(P(af)=aP(f)\)，零倍数的情形直接成立。
+
+对一般实函数 \(f=a-b\)，其中 \(a,b\in C_0(X)\) 非负，定义
+\(L^+(f)=P(a)-P(b)\)。若另有 \(f=c-d\)，则 \(a+d=b+c\)，由 \(P\) 的可加性知此定义与分解无关。把两个这样的差相加、作实数倍，便得到 \(L^+\) 的实线性。它为正泛函，而且
+\[
+ |L^+(f)|\leq L^+(|f|)=P(|f|)
+ \leq\|L\|\cdot\|f\|_\infty.
+\]
+定义 \(L^-=L^+-L\)。因为 \(f\) 本身是 \(P(f)\) 的候选，\(L^-(f)\geq0\) 对 \(f\geq0\) 成立；两有界泛函之差仍有界，故结论成立。
+\end{proof}
+
+对于一般测度，正负部是集合上的分解；这里先在函数的正锥上作分解，才能使用已经建立的正泛函表示。所得测度是否还具有 Radon 性，也必须单独说明。
+
+\begin{definition}\label{b1:def:finite-signed-complex-radon}
+设 \(\nu\) 是 \(\mathcal B(X)\) 上的符号测度或复测度。若全变差 \(|\nu|\) 是有限正 Radon 测度，则分别称 \(\nu\) 为\term[youxian-radon-fuhao-cedu]{有限 Radon 符号测度}[finite signed Radon measure]或\term[youxian-radon-fu-cedu]{有限 Radon 复测度}[finite complex Radon measure]。
+\end{definition}
+
+\begin{proposition}\label{b1:prop:bounded-c0-measure-existence}
+每个 \(\Lambda\in C_0(X;\mathbb K)^*\) 都由一个有限 Radon 符号测度或复测度 \(\nu\) 表示：
+\[
+ \Lambda(f)=\int_X f\,\mathrm d\nu
+ \quad\bigl(f\in C_0(X;\mathbb K)\bigr).
+\]
+\end{proposition}
+\begin{proof}
+在实情形中，对前一引理的 \(L^+,L^-\) 应用\cref{b1:cor:positive-c0-representation}，得到有限正 Radon 测度 \(\mu_+,\mu_-\)。令 \(\nu=\mu_+-\mu_-\)，即得到所需积分等式。
+
+在复情形中，先只对实函数 \(f\) 定义
+\[
+ A(f)=\operatorname{Re}\Lambda(f),\quad
+ B(f)=\operatorname{Im}\Lambda(f).
+\]
+它们是有界实线性泛函，分别由实情形得到符号测度 \(\alpha,\beta\)。令 \(\nu=\alpha+i\beta\)。对 \(f=g+ih\)，其中 \(g,h\) 实值，复线性性给出
+\[
+ \Lambda(f)=A(g)-B(h)+i\bigl(B(g)+A(h)\bigr)
+ =\int_X f\,\mathrm d(\alpha+i\beta).
+\]
+这也明确了本书采用的线性配对：积分中不对 \(f\) 或 \(\nu\) 加共轭。
+
+最后核对正则性。上述实构造给出 \(|\nu|\leq\mu_++\mu_-\)；复构造中，则用组成 \(\alpha,\beta\) 的四个有限正 Radon 测度之和控制 \(|\nu|\)。这些控制来自第\ref{b1:ch:06}章的全变差分割公式。有限个有限正 Radon 测度之和 \(\lambda\) 仍为 Radon 测度：对每个 Borel 集分别取紧集逼近，再取这些紧集的有限并即可。
+
+更一般地，若正测度 \(\rho\leq\lambda\)，则对 Borel 集 \(E\) 和 \(\varepsilon>0\)，可取紧集 \(K\subseteq E\)，使 \(\lambda(E\setminus K)<\varepsilon\)，从而
+\[
+ 0\leq\rho(E)-\rho(K)=\rho(E\setminus K)<\varepsilon.
+\]
+所以 \(\rho\) 也紧内正则，并且有限。用于 \(\rho=|\nu|\)，便说明这里构造的 \(\nu\) 确实属于定义中的测度类别。
+\end{proof}
 
 \subsection{\texorpdfstring{\(C_0(X)^*\)}{C0(X)*}}
 \label{b1:subsec:110403}
 
-待填充。
+记全体上述有限 Radon 测度组成的空间为 \(\mathcal M(X;\mathbb K)\)，赋予全变差范数
+\[
+ \|\nu\|_{\mathrm{TV}}=|\nu|(X).
+\]
+\symidx{\(\mathcal M(X;\mathbb K)\)：有限 Radon 符号测度或复测度空间}
+这确实是一个线性空间。全变差的三角不等式和齐次性给出
+\[
+ |a\nu+b\eta|\leq|a|\cdot|\nu|+|b|\cdot|\eta|,
+\]
+右端是有限 Radon 测度，因而前一证明中的支配论证也适用于任意线性组合。
+
+\begin{theorem}[Riesz--Markov：有界泛函版本]\label{b1:thm:riesz-markov-c0}
+映射
+\[
+ T:\mathcal M(X;\mathbb K)\longrightarrow C_0(X;\mathbb K)^*,
+ \quad (T\nu)(f)=\int_X f\,\mathrm d\nu
+\]
+是线性等距同构。特别地，表示测度唯一，并且
+\[
+ \|\nu\|_{\mathrm{TV}}
+ =\sup_{\substack{f\in C_0(X;\mathbb K)\\ \|f\|_\infty\leq1}}
+       \left|\int_Xf\,\mathrm d\nu\right|
+ =\sup_{\substack{f\in C_c(X;\mathbb K)\\ \|f\|_\infty\leq1}}
+       \left|\int_Xf\,\mathrm d\nu\right|.
+\]
+\end{theorem}
+\begin{proof}
+积分三角不等式给出
+\[
+ |(T\nu)(f)|\leq\int_X|f|\,\mathrm d|\nu|
+ \leq\|f\|_\infty\cdot\|\nu\|_{\mathrm{TV}},
+\]
+所以 \(T\) 良定义、有界且线性。满射性已由\cref{b1:prop:bounded-c0-measure-existence}证明。剩下的核心是反向范数估计；达到最佳相位的可测函数不一定连续，因此不能直接拿它作 \(C_0(X)\) 中的测试函数。
+
+由\cref{b1:thm:complex-polar-decomposition}，写 \(\mathrm d\nu=u\,\mathrm d|\nu|\)，其中 \(|u|=1\) 几乎处处。实情形取 Hahn 分解给出的实符号函数 \(u\)。令 \(v=\overline u\)；在实情形中即为 \(v=u\)。由于 \(|\nu|(X)<\infty\)，函数 \(v\) 属于 \(L^1(|\nu|)\)，且
+\[
+ \int_Xv\,\mathrm d\nu=|\nu|(X).
+\]
+给定 \(\varepsilon>0\)，由\cref{b1:prop:radon-cc-dense-lp}取 \(g\in C_c(X;\mathbb K)\)，满足 \(\int_X|g-v|\,\mathrm d|\nu|<\varepsilon\)。为使测试函数仍在单位球内，定义
+\[
+ R(z)=\frac{z}{\max\{1,|z|\}},\quad f=R\circ g.
+\]
+映射 \(R\) 连续、\(R(0)=0\)，故 \(f\in C_c(X;\mathbb K)\)，且 \(\|f\|_\infty\leq1\)。对 \(|w|\leq1\)，若 \(|z|\leq1\)，则 \(R(z)=z\)；若 \(|z|>1\)，则
+\[
+ |R(z)-w|
+ \leq |R(z)-z|+|z-w|
+ =|z|-1+|z-w|\leq2|z-w|.
+\]
+因而 \(\int_X|f-v|\,\mathrm d|\nu|<2\varepsilon\)，进而
+\[
+ \left|\int_Xf\,\mathrm d\nu-|\nu|(X)\right|
+ \leq\int_X|f-v|\,\mathrm d|\nu|<2\varepsilon.
+\]
+让 \(\varepsilon\) 趋零，得到所述两个上确界均不小于 \(|\nu|(X)\)；先前的估计给出反向不等式。于是 \(T\) 等距。若两测度表示同一泛函，它们之差在 \(T\) 下为零，等距性使其全变差范数为零，故两测度相等。
+\end{proof}
+
+因此 \(\mathcal M(X;\mathbb K)\) 是 Banach 空间：通过 \(T\)，其中的 Cauchy 列对应到完备的对偶空间，极限泛函再由定理对应回一个测度。若 \(X\) 紧，则 \(C_0(X)=C(X)\)，正泛函的范数简化为 \(\Lambda(1)\)。在非紧空间中，常函数 \(1\) 通常不属于 \(C_0(X)\)，上述范数公式必须使用上确界，而不能一律写成对 \(1\) 的取值。
+
+例如在 \(\mathbb R\) 上，\(\Lambda(f)=\int_{\mathbb R}f(x)e^{-|x|}\,\mathrm dx\) 的范数为 \(2\)，但在 \(C_0(\mathbb R)\) 的单位球上不达到这个值。若达到，积分三角不等式中的等号迫使 \(f\) 几乎处处等于同一个模为 \(1\) 的常数；连续性及密度处处为正又使它处处为该常数，这与在无穷远消失矛盾。紧支集截断函数的积分却能任意接近 \(2\)。
 
 \subsection{符号测度及复测度版本}
 \label{b1:subsec:110404}
 
-待填充。
+表示定理中的正性和分解与第\ref{b1:ch:06}章完全相容，但现在多了一项拓扑约束。
+
+\begin{proposition}\label{b1:prop:radon-jordan-polar}
+设 \(\nu\in\mathcal M(X;\mathbb R)\)。则 Jordan 分解的 \(\nu^+,\nu^-\) 都是有限正 Radon 测度，而且
+\[
+ \|\nu\|_{\mathrm{TV}}=\nu^+(X)+\nu^-(X).
+\]
+若 \(\nu\in\mathcal M(X;\mathbb C)\)，则其实部、虚部都是有限 Radon 符号测度，其极分解的控制测度 \(|\nu|\) 是有限正 Radon 测度。表示泛函 \(T\nu\) 为正，当且仅当 \(\nu\) 是正测度。
+\end{proposition}
+\begin{proof}
+实情形有 \(0\leq\nu^\pm\leq|\nu|\)，故两部分的 Radon 性来自前面的支配论证；质量等式就是 \(|\nu|=\nu^++\nu^-\) 在全集上的取值。复情形中，
+\[
+ |\operatorname{Re}\nu|\leq|\nu|,\quad
+ |\operatorname{Im}\nu|\leq|\nu|,
+\]
+所以同一论证适用；极分解则直接调用第\ref{b1:ch:06}章的结果。
+
+正测度产生正泛函。反过来，若 \(T\nu\) 为正，由\cref{b1:cor:positive-c0-representation}，它也有一个有限正 Radon 表示测度 \(\mu\)。有界泛函版本的唯一性给出 \(\nu=\mu\)，故 \(\nu\) 为正。
+\end{proof}
+
+测度在此不只是对偶空间中的抽象坐标。例如，取非负 Lebesgue 可积函数 \(w\)，实数 \(a\)，以及复数 \(c\)，则
+\[
+ \Lambda(f)=\int_{\mathbb R}f(x)w(x)\,\mathrm dx+c f(a)
+\]
+由测度 \(\nu=w\,m+c\delta_a\) 表示。两部分分别集中在 \(\mathbb R\setminus\{a\}\) 和 \(\{a\}\)，互不抵消，故
+\[
+ |\nu|=w\,m+|c|\delta_a,\quad
+ \|\Lambda\|=\int_{\mathbb R}w\,\mathrm dm+|c|.
+\]
+其中 \(w\,m\) 的紧内正则性可由 Lebesgue 测度的紧内正则性与积分的绝对连续性得到：先把积分局部化到有限测度的有界区间，再在该区间中取紧集逼近。点质量的正则性则直接由单点紧性得到。
+
+这个例子也说明，不能预先要求所有连续泛函都由某个固定参考测度的密度表示。点值泛函 \(f\mapsto f(a)\) 在 \(C_0(\mathbb R)\) 上有界，却不能写成某个 Lebesgue 可积密度的积分；若能如此，唯一性将使该绝对连续测度等于 \(\delta_a\)，在单点 \(\{a\}\) 上便产生矛盾。允许表示测度同时包含连续分布与集中质量，是这一表示定理比固定测度下的 \(L^p\) 对偶表示更灵活的地方。
