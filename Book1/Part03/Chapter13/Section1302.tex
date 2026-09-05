@@ -2,24 +2,372 @@
 \section{Besicovitch 覆盖}
 \label{b1:sec:1302}
 
-% TODO: 撰写本节正文。
+% 实际读取：Fremlin2016Measure，作者官方 chap47.tex，472A--C；
+% 472A 的径向压缩估计和472B的近最大半径选择均在正文展开。
+% Simon1983Lectures，印刷第23--24页，4.5--4.6：实读Radon细覆盖推论；
+% Simon 的4.6没有几何证明，不以该处作为下面几何引理的证明来源。
+% 本节证明义务：向后相交数界、有限着色、无遗漏中心、点态重数与积分、
+% 有限闭球并之外的细覆盖保持、Radon剩余质量递减。
+
+上一节通过选择不交球来控制覆盖，有时需要把选出的球膨胀，或者允许遗漏零测集。
+在欧氏空间中，还可以保持每个球的大小，并覆盖全部指定中心，
+代价是允许一个只依赖维数的重叠次数。本节证明这一几何事实，
+再说明它为何能够用于任意 Radon 测度，而不只用于 Lebesgue 测度。
+以下 \(d\geq1\)，\(|x|\) 表示欧氏范数，\(\overline B(x,r)\) 始终表示正半径闭球。
 
 \subsection{Besicovitch 覆盖定理}
 \label{b1:subsec:130201}
 
-待填充。
+\term*[besicovitch-fugai]{Besicovitch 覆盖定理}[Besicovitch covering theorem]的一个实用版本，
+只要求每个中心有一个候选球，不要求球的半径任意小。
+所选球可以分成有限个不交子族，这比单纯说重数有界还多给出了一项结构。
+
+\begin{theorem}[Besicovitch 覆盖]\label{b1:thm:besicovitch-covering}
+设 \(A\subseteq\mathbb R^d\) 有界，\(\mathcal F\) 为正半径闭球族，
+并且每个 \(x\in A\) 都是某个 \(\mathcal F\) 中球的中心。
+则存在 \(N_d=5^d\) 个至多可数的子族
+\(\mathcal G_1,\ldots,\mathcal G_{N_d}\subseteq\mathcal F\)，使
+\begin{enumerate}
+\item\label{b1:item:besicovitch-disjoint}每个 \(\mathcal G_k\) 内的闭球两两不交；
+\item\label{b1:item:besicovitch-cover}有
+\[
+ A\subseteq\bigcup_{k=1}^{N_d}\bigcup_{B\in\mathcal G_k}B.
+\]
+\end{enumerate}
+允许某些 \(\mathcal G_k\) 为空。
+\end{theorem}
+
+定理不要求 \(A\) 可测，也不要求原球族全部半径有共同上界。
+它覆盖的是指定中心集 \(A\)，不是原球族的整个并集。
+下面采用 Fremlin 的《Measure Theory》\cite[472A--B]{Fremlin2016Measure}中的径向压缩路线。
+先证明一个有限几何引理，再用它控制无穷选择过程。
+
+\begin{lemma}\label{b1:lem:besicovitch-geometric-bound}
+固定 \(0<\varepsilon<1/4\)，使
+\begin{equation}\label{b1:eq:besicovitch-epsilon}
+ (5^d+1)(1-\varepsilon-\varepsilon^2)^d>(5+\varepsilon)^d.
+\end{equation}
+设 \(B_i=\overline B(x_i,r_i)\)，\(1\leq i\leq n\)，并且对所有 \(i<j\) 有
+\begin{equation}\label{b1:eq:besicovitch-order}
+ |x_i-x_j|>r_i,\quad r_j\leq(1+\varepsilon)r_i.
+\end{equation}
+则 \(B_n\) 至多与前面的 \(5^d-1\) 个球相交。
+\end{lemma}
+\begin{proof}
+满足\eqref{b1:eq:besicovitch-epsilon}的 \(\varepsilon\) 确实存在：
+两侧在 \(\varepsilon=0\) 处分别为 \(5^d+1\) 与 \(5^d\)，再用连续性即可。
+令
+\[
+ I=\{\,i\leq n:B_i\cap B_n\ne\varnothing\,\}.
+\]
+由于 \(n\in I\)，只需证明 \(\#I\leq5^d\)。
+平移并按 \(r_n\) 缩放后，可设 \(x_n=0,r_n=1\)；
+条件\eqref{b1:eq:besicovitch-order}和集合 \(I\) 都不变。
+对 \(i\in I\)，记 \(D_i=|x_i|\)。当 \(i<n\) 时，有
+\[
+ r_i<D_i\leq r_i+1,\quad r_i\geq\frac1{1+\varepsilon}.
+\]
+前一个严格不等式来自末球的中心不在第 \(i\) 个闭球内。
+
+取 \(R=2+\varepsilon\)、\(s=1-\varepsilon-\varepsilon^2>0\)，定义
+\[
+ p_i=
+ \begin{cases}
+ x_i,& |x_i|\leq R,\\[2pt]
+ \dfrac R{|x_i|}x_i,& |x_i|>R.
+ \end{cases}
+\]
+这些点都在 \(\overline B(0,R)\) 内，且 \(p_n=0\)。
+我们证明它们两两距离大于 \(s\)。固定 \(i<j\)、\(i,j\in I\)，
+按两个中心是否被压缩以及它们到原点的远近分成五种情形。
+
+\begin{enumerate}
+\item\label{b1:item:besicovitch-case-one}
+若 \(D_i,D_j\leq R\)，两点都未移动，故
+\[
+ |p_i-p_j|=|x_i-x_j|>r_i
+ \geq\frac1{1+\varepsilon}>1-\varepsilon>s.
+\]
+
+\item\label{b1:item:besicovitch-case-two}
+若 \(D_i\geq R\geq D_j\)，只需估计第 \(i\) 个中心的移动量：
+\[
+ \begin{aligned}
+ |p_i-p_j|
+ &\geq |x_i-x_j|-(D_i-R)\\
+ &>r_i-D_i+R
+ \geq R-1=1+\varepsilon>s.
+ \end{aligned}
+\]
+
+\item\label{b1:item:besicovitch-case-three}
+若 \(D_i\leq R\leq D_j\)，移动的是后一个中心。
+这里还需要半径的近似递减条件：
+\[
+ \begin{aligned}
+ |p_i-p_j|
+ &\geq |x_i-x_j|-(D_j-R)\\
+ &>r_i-D_j+R
+ \geq r_i-r_j-1+R\\
+ &\geq1+\varepsilon-\varepsilon r_i
+ >1+\varepsilon-\varepsilon R
+ =s.
+ \end{aligned}
+\]
+最后一步用了 \(r_i<D_i\leq R\)。
+
+\item\label{b1:item:besicovitch-case-four}
+若 \(D_i\geq D_j\geq R\)，在从 \(0\) 到 \(x_i\) 的线段上取点 \(y\)，使 \(|y|=D_j\)。
+由 \(|x_i-y|=D_i-D_j\)，有
+\[
+ |y-x_j|
+ \geq |x_i-x_j|-(D_i-D_j)
+ >r_i-D_i+D_j
+ \geq D_j-1.
+\]
+把 \(y,x_j\) 同时按比例 \(R/D_j\) 缩放，恰好得到 \(p_i,p_j\)，故
+\[
+ |p_i-p_j|=\frac R{D_j}|y-x_j|
+ >R\left(1-\frac1{D_j}\right)
+ \geq R-1>s.
+\]
+
+\item\label{b1:item:besicovitch-case-five}
+若 \(D_j\geq D_i\geq R\)，改在从 \(0\) 到 \(x_j\) 的线段上取点 \(y\)，使 \(|y|=D_i\)。
+利用 \(D_j\leq r_j+1\)、\(r_j\leq(1+\varepsilon)r_i\) 及 \(r_i<D_i\)，得到
+\[
+ \begin{aligned}
+ |x_i-y|
+ &\geq |x_i-x_j|-(D_j-D_i)\\
+ &>r_i-D_j+D_i
+ \geq r_i-r_j-1+D_i\\
+ &\geq D_i-1-\varepsilon r_i
+ >D_i(1-\varepsilon)-1.
+ \end{aligned}
+\]
+现在缩放比例为 \(R/D_i\)，所以
+\[
+ |p_i-p_j|
+ =\frac R{D_i}|x_i-y|
+ >R(1-\varepsilon)-\frac R{D_i}
+ \geq R(1-\varepsilon)-1=s.
+\]
+\end{enumerate}
+
+若 \(j=n\)，只有前两种情形可能出现，估计仍成立。
+因此以 \(p_i\)、\(i\in I\) 为中心、半径 \(s/2\) 的闭球两两不交。
+另一方面，它们全包含于
+\(\overline B\bigl(0,(5+\varepsilon)/2\bigr)\)，因为
+\[
+ R+\frac s2=\frac{5+\varepsilon-\varepsilon^2}{2}
+ \leq\frac{5+\varepsilon}{2}.
+\]
+记 \(v=m_d\bigl(\overline B(0,1)\bigr)\)，则 \(0<v<\infty\)。
+Lebesgue 测度的平移与缩放性质给出
+\[
+ \#I\,v\left(\frac s2\right)^d
+ \leq v\left(\frac{5+\varepsilon}{2}\right)^d.
+\]
+结合\eqref{b1:eq:besicovitch-epsilon}可得 \(\#I<5^d+1\)。
+由于 \(\#I\) 为整数，\(\#I\leq5^d\)，所需旧球相交数因而至多为 \(5^d-1\)。
+\end{proof}
+
+\begin{proof}[定理\ref{b1:thm:besicovitch-covering}的证明]
+若 \(A=\varnothing\)，取所有子族为空。以下设 \(A\ne\varnothing\)。
+对每个 \(x\in A\)，固定选择一个 \(r_x>0\)，使 \(\overline B(x,r_x)\in\mathcal F\)。
+若这些半径无上界，可选 \(r_x\geq\operatorname{diam}A\)，这一个球已经覆盖 \(A\)。
+因此只需处理半径有共同上界的情形。
+由于中心集也有界，所有选定的候选球都包含在某个固定有界闭球 \(D\) 内。
+
+固定前一引理中的 \(\varepsilon\)，依次选择球。
+已选出 \(B_1,\ldots,B_{n-1}\) 后，若它们已覆盖 \(A\)，就停止。
+否则令
+\[
+ \alpha_n=\sup\left\{\,r_x:
+          x\in A\setminus\bigcup_{i<n}B_i\,\right\},
+\]
+选取尚未覆盖的 \(x_n\)，使 \(r_{x_n}\geq\alpha_n/(1+\varepsilon)\)，
+并令 \(B_n=\overline B(x_n,r_{x_n})\)。
+因为 \(0<\alpha_n<\infty\) 且 \(\alpha_n/(1+\varepsilon)<\alpha_n\)，这种选择总能完成；
+不必假定最大半径存在。
+
+若 \(i<j\)，则 \(x_j\notin B_i\)，故 \(|x_i-x_j|>r_{x_i}\)。
+又因为 \(x_j\) 在第 \(i\) 步也尚未被覆盖，
+\[
+ r_{x_j}\leq\alpha_i\leq(1+\varepsilon)r_{x_i}.
+\]
+因此每个有限前缀都满足\cref{b1:lem:besicovitch-geometric-bound}的假设。
+第 \(n\) 个球最多与 \(5^d-1\) 个旧球相交。
+准备 \(5^d\) 种颜色，每次将新球染成尚未被这些相交旧球使用的一种颜色。
+至少有一种颜色可用；同色的两个球由构造不相交。
+记各颜色的球族为 \(\mathcal G_k\)。
+
+有限步骤停止时结论已经成立。若选择过程无限进行，
+同色球两两不交且都在 \(D\) 内，所以
+\[
+ \sum_{n=1}^{\infty}m_d(B_n)
+ =\sum_{k=1}^{5^d}\sum_{B\in\mathcal G_k}m_d(B)
+ \leq5^d m_d(D)<\infty.
+\]
+假如仍有 \(x\in A\) 从未被覆盖，则每一步都有
+\[
+ \alpha_n\geq r_x,\quad r_{x_n}\geq\frac{r_x}{1+\varepsilon}.
+\]
+于是所有 \(m_d(B_n)\) 都至少为同一个正数，前面的级数不可能收敛。
+这个矛盾说明 \(\bigcup_nB_n\) 覆盖 \(A\)，完成证明。
+\end{proof}
+
+选择过程之所以可以只用一个序列，不是因为 \(A\) 可数，
+而是因为未被覆盖的任意一个中心都带着一个固定的正半径。
+若它一直遗漏，这个半径会阻止已选球的体积趋于零，与不交分族得到的体积界冲突。
 
 \subsection{有界覆盖重数}
 \label{b1:subsec:130202}
 
-待填充。
+\begin{definition}\label{b1:def:covering-multiplicity}
+设 \(\mathcal G\) 为有限或可数的球族。对 \(x\in\mathbb R^d\)，令
+\[
+ N_{\mathcal G}(x)=\sum_{B\in\mathcal G}\mathbf1_B(x).
+\]
+称 \(N_{\mathcal G}(x)\) 为该球族在 \(x\) 处的%
+\term[fugai-chongshu]{覆盖重数}[covering multiplicity]。
+若存在有限常数 \(N\)，使所有 \(x\) 都满足 \(N_{\mathcal G}(x)\leq N\)，
+则称该球族具有有界覆盖重数。
+\end{definition}
+
+重数在整个空间计算，不只在被覆盖的中心集上计算。
+球可以在中心集以外重叠；积分估计同样需要控制这部分重叠。
+
+\begin{corollary}\label{b1:cor:besicovitch-multiplicity}
+在\cref{b1:thm:besicovitch-covering}中，
+令 \(\mathcal G=\bigcup_{k=1}^{5^d}\mathcal G_k\)，并把重复出现的球只计一次。
+则
+\[
+ N_{\mathcal G}(x)\leq5^d\quad(x\in\mathbb R^d).
+\]
+特别地，对任意正 Borel 测度 \(\mu\) 及非负 Borel 函数 \(g\)，有
+\[
+ \sum_{B\in\mathcal G}\int_B g\,d\mu
+ \leq5^d\int_{\mathbb R^d}g\,d\mu.
+\]
+\end{corollary}
+\begin{proof}
+每个颜色的球族在一个点至多贡献一个球，故点态重数不超过颜色总数。
+先对有限多个球求和，再由单调收敛定理得到
+\[
+ \sum_{B\in\mathcal G}\int_Bg\,d\mu
+ =\int_{\mathbb R^d}N_{\mathcal G}g\,d\mu
+ \leq5^d\int_{\mathbb R^d}g\,d\mu.
+\]
+\end{proof}
+
+这里的 \(\mu\) 可以有原子，也可以相对于 Lebesgue 测度奇异。
+在证明几何引理时，Lebesgue 体积只用于估计有限个互不相交的小球能装进多大的球；
+最终的重数结论不含测度。因此应用时不必把 \(\mu\) 换成 Lebesgue 测度，
+也不必先比较某个球与它的膨胀球的 \(\mu\)-质量。
 
 \subsection{与 Vitali 定理的区别}
 \label{b1:subsec:130203}
 
-待填充。
+第\ref{b1:sec:1301}节中的两类选择与本节定理承担不同任务：
+不交子族的膨胀球可以覆盖原集合；细覆盖则允许不交子族在测度意义下覆盖几乎所有点。
+Besicovitch 定理保持原球的大小并覆盖每个中心，但允许有限重叠。
+要求“每点任意小的候选球”后，还能把这份有限重叠转化为任意 Radon 测度下的不交覆盖。
+
+下面只陈述有界 Borel 中心集的版本，足以用于局部微分问题。
+这一由固定比例质量递减得到的推论，可与 Simon 的%
+《Lectures on Geometric Measure Theory》\cite[第23--24页，4.5--4.6]{Simon1983Lectures}对读；
+不限定中心集可测或有界的进一步版本见 Fremlin 的%
+《Measure Theory》\cite[472C]{Fremlin2016Measure}。
+
+\begin{corollary}[Radon 测度的 Vitali 覆盖]\label{b1:cor:radon-vitali-covering}
+设 \(\mu\) 为 \(\mathbb R^d\) 上的 Radon 测度，\(A\subseteq\mathbb R^d\) 为有界 Borel 集。
+设 \(\mathcal F\) 为正半径闭球族，并且对每个 \(x\in A\) 及 \(\eta>0\)，
+都存在 \(0<r<\eta\)，使 \(\overline B(x,r)\in\mathcal F\)。
+则有至多可数的两两不交子族 \(\mathcal G\subseteq\mathcal F\)，满足
+\[
+ \mu\left(A\setminus\bigcup_{B\in\mathcal G}B\right)=0.
+\]
+\end{corollary}
+\begin{proof}
+由于 \(A\) 有界，其闭包紧，Radon 局部有限性保证 \(\mu(A)<\infty\)。
+若 \(\mu(A)=0\)，取空族即可。
+令 \(N=5^d\)。先说明一个有限选择步骤：
+若 \(E\subseteq A\) 为正测度 Borel 集，而某个闭球族在 \(E\) 的每一点至少提供一个中心球，
+则其中有一个有限不交子族 \(\mathcal J\)，使
+\[
+ \mu\left(E\cap\bigcup_{B\in\mathcal J}B\right)
+ \geq\frac1{2N}\mu(E).
+\]
+事实上，Besicovitch 定理给出 \(N\) 个不交可数子族覆盖 \(E\)。
+由测度的次可加性，至少一个子族的并与 \(E\) 的交具有不少于 \(\mu(E)/N\) 的测度。
+将该子族依次枚举，它的有限部分与 \(E\) 的交递增到整个交集；
+测度连续性便给出上述有限 \(\mathcal J\)。
+
+现在设已选择有限多个两两不交闭球，其并为 \(F_m\)，初始取 \(F_0=\varnothing\)。
+令 \(E_m=A\setminus F_m\)。若 \(\mu(E_m)=0\)，就停止。
+否则 \(F_m\) 闭，对每个 \(x\in E_m\) 存在一个以 \(x\) 为中心的邻域与 \(F_m\) 不交。
+由细覆盖假设，可以从 \(\mathcal F\) 中取半径足够小的球，使它完全避开 \(F_m\)。
+因此
+\[
+ \mathcal F_m=\{\,B\in\mathcal F:B\cap F_m=\varnothing\,\}
+\]
+仍在 \(E_m\) 的每一点提供中心球。
+将有限选择步骤用于 \(E_m,\mathcal F_m\)，得到有限不交族 \(\mathcal J_m\)，并令
+\[
+ F_{m+1}=F_m\cup\bigcup_{B\in\mathcal J_m}B.
+\]
+所有新旧球两两不交，\(F_{m+1}\) 仍为有限个闭球的并，而且
+\[
+ \mu(A\setminus F_{m+1})
+ \leq\left(1-\frac1{2N}\right)\mu(A\setminus F_m).
+\]
+若过程不停止，令 \(\mathcal G=\bigcup_{m\geq0}\mathcal J_m\)。
+这是可数不交族，且对每个 \(m\) 有
+\[
+ \mu\left(A\setminus\bigcup_{B\in\mathcal G}B\right)
+ \leq\mu(A\setminus F_m)
+ \leq\left(1-\frac1{2N}\right)^m\mu(A)\longrightarrow0.
+\]
+有限步骤停止时，同一结论已经成立。
+\end{proof}
+
+每一步只选有限多个球，是为了让它们的并保持闭，
+使未覆盖中心周围仍能放入避开旧球的小球。
+整个证明不要求球边界为 \(\mu\)-零集；允许奇异测度时，这一点尤其有用。
 
 \subsection{高维几何意义}
 \label{b1:subsec:130204}
 
-待填充。
+几何引理把半径相差很大的球压缩成一个有界区域内的分离点集。
+欧氏空间中，固定半径的不交球具有固定正体积，
+因而一个有限体积容器只能容纳有限多个这样的球。
+其中 \(r^d\) 的缩放律把常数与维数联系起来，最终得到 \(5^d\)。
+这个数是本证明给出的可用上界，不是最佳常数的断言。
+
+维数依赖本身不能去掉。令 \(e_1,\ldots,e_d\) 为标准正交基，取
+\[
+ A=\{\,e_1,-e_1,\ldots,e_d,-e_d\,\},
+ \quad
+ \mathcal F=\{\,\overline B(a,1):a\in A\,\}.
+\]
+每个球都含原点。任意两个不同中心的距离为 \(\sqrt2\) 或 \(2\)，都大于 \(1\)，
+所以每个中心只属于以它自身为中心的那个球。
+要用原族中的球覆盖 \(A\)，就必须选取全部 \(2d\) 个球，原点处的重数恰为 \(2d\)。
+因此对所有这类闭球族有效的统一重数常数至少随 \(d\) 增长。
+这个例子也表明，不加细覆盖条件而同时要求原球不交、全部中心被覆盖，一般做不到。
+
+在无限维 Hilbert 空间中，障碍更直接。
+取一个标准正交列 \((e_n)\)，并考虑有界中心集 \(\{e_n:n\geq1\}\) 及闭球
+\(\overline B(e_n,1)\)。因为
+\[
+ \|e_n\|=1,\quad \|e_n-e_m\|=\sqrt2\quad(n\ne m),
+\]
+所有球都含 \(0\)，而每个中心仍只属于自己的球。
+任何覆盖全部中心的原球子族都必须包含所有球，于是在 \(0\) 处具有无限重数。
+半径有界和中心集有界均不能修复这一问题。
+
+因此在欧氏空间之外推广覆盖与微分结果时，应重新检查空间是否支持相应的几何选择，
+不能仅把 \(\mathbb R^d\) 换成另一个度量空间。
+第\ref{b1:sec:1303}节将把覆盖选择用于极大函数估计；
+本节的点态重数界则为不依赖 Lebesgue 测度的同类估计保留了途径。

@@ -2,24 +2,207 @@
 \section{Vitali 覆盖}
 \label{b1:sec:1301}
 
-% TODO: 撰写本节正文。
+局部平均是在许多相互重叠的球上取积分；若直接把这些积分相加，同一点可能被反复计算。覆盖定理提供了一种选择办法：保留互不相交的球，同时控制丢弃部分的位置。这里有两个不同的目标。一是把原来的球放进所选球的固定倍膨胀中，二是不作膨胀便覆盖几乎所有待覆盖的点。前者主要依赖距离，后者还要使用测度。
+
+本节先证明一般度量空间中的选择引理，再用 Lebesgue 测度的伸缩性质完成 Vitali 定理。Simon 的《Lectures on Geometric Measure Theory》\cite{Simon1983Lectures}第 3 节适合对照选择过程与尾部覆盖；Fremlin 的《Measure Theory》\cite{Fremlin2016Measure}第 261B 节则给出了允许球只包含待覆盖点的 Lebesgue 版本。
 
 \subsection{Vitali 覆盖族}
 \label{b1:subsec:130101}
 
-待填充。
+在度量空间 \((X,\rho)\) 中，记
+\[
+B(x,r)=\{\,y\in X\mid \rho(x,y)<r\,\},
+\quad
+\overline B(x,r)=\{\,y\in X\mid \rho(x,y)\leq r\,\}.
+\]
+这里的 \(\overline B(x,r)\) 表示闭球，不预先断言它等于开球 \(B(x,r)\) 的闭包。对一个已指定中心和半径的球 \(B\)，用 \(tB\) 表示中心不变、半径乘以 \(t>0\) 的同类球；开球仍取开球，闭球仍取闭球。一般度量空间中，同一集合可能有不同的球表示，因此选择过程中始终保留原来的中心与半径。
+\symidx{\(tB\)：球的同心膨胀}
+
+\begin{definition}
+\label{b1:def:vitali-cover}
+设 \(A\subseteq X\)，\(\mathcal F\) 是一族正半径闭球。若对每个 \(x\in A\) 和每个 \(\delta>0\)，都有某个 \(\overline B(c,r)\in\mathcal F\) 满足
+\[
+x\in\overline B(c,r),
+\quad
+0<r<\delta,
+\]
+则称 \(\mathcal F\) 是 \(A\) 的一个\term[vitali-fugai-zu]{Vitali 覆盖族}[Vitali cover]，也说它在 \(A\) 上细覆盖。若总能取 \(c=x\)，则另说明该覆盖族在每一点都有任意小的中心球。
+\end{definition}
+
+细覆盖要求每一点都能用任意小的尺度观察，而不只是落在某一个球里。例如 \(\mathbb R^d\) 中所有正半径闭球构成任意集合的 Vitali 覆盖族；固定半径为 \(1\) 的球虽然覆盖整个空间，却不满足上述要求。对开集 \(U\supseteq A\)，只保留包含于 \(U\) 的球，仍然得到细覆盖：给定 \(x\in A\)，先取 \(\eta>0\) 使 \(B(x,\eta)\subseteq U\)，再取含 \(x\)、半径小于 \(\eta/2\) 的球即可。球中任一点到 \(x\) 的距离小于 \(\eta\)。还可以同时要求半径小于任何预先指定的正常数。
+
+在欧氏空间中，闭球直径等于半径的两倍，因而定义中的条件也可写成任意小的正直径。球不必以 \(x\) 为中心，这一点将在 Lebesgue 版本中保留；换成其他测度时，中心的位置可能成为实质条件。
 
 \subsection{不交子族选择}
 \label{b1:subsec:130102}
 
-待填充。
+有限个球可以按半径从大到小选择：保留最大的一个，再删除与它相交的球，重复这个过程。无限族未必有最大半径，不能直接照搬这个步骤。下面的\term[wubei-fugai-yinli]{\(5r\) 覆盖引理}[5r covering lemma]把半径分成相邻的二进尺度，保证被删去的球不会比负责覆盖它的球大得太多。
+
+% 实读来源：Simon1983Lectures，§3，Theorem 3.3 与 Corollary 3.4，印刷 pp.11--12；
+% Fremlin2016Measure，卷4，471M--O，作者官方源文件 tmp/ch13-fremlin47.tex。
+% 改编：改用指定半径的球分层，明确一般度量球的直径不必等于两倍半径；补出可分性与有限前缀的作用。
+\begin{lemma}[\texorpdfstring{\(5r\)}{5r} 覆盖引理]
+\label{b1:lem:five-r-covering}
+设 \(\mathcal F\) 是度量空间 \(X\) 中的一族球，每个球的指定半径 \(r_B\) 满足 \(0<r_B\leq R<\infty\)。球可以全取开球或全取闭球。存在两两不交的子族 \(\mathcal G\subseteq\mathcal F\)，使每个 \(B\in\mathcal F\) 都有一个 \(D\in\mathcal G\) 满足
+\[
+B\cap D\ne\varnothing,
+\quad
+r_B<2r_D,
+\quad
+B\subseteq5D.
+\]
+特别地，\(\bigcup\mathcal F\subseteq\bigcup_{D\in\mathcal G}5D\)。若 \(X\) 可分，则 \(\mathcal G\) 至多可数。
+\end{lemma}
+\begin{proof}
+按半径把 \(\mathcal F\) 分为
+\[
+\mathcal F_k
+=\{\,B\in\mathcal F\mid R2^{-(k+1)}<r_B\leq R2^{-k}\,\},
+\quad k=0,1,2,\ldots.
+\]
+在 \(\mathcal F_0\) 中取极大不交子族 \(\mathcal G_0\)。已经选定 \(\mathcal G_0,\ldots,\mathcal G_{k-1}\) 后，从 \(\mathcal F_k\) 中删去与此前所选球相交的球，再从余下部分取极大不交子族 \(\mathcal G_k\)。这里的极大只指不能再加入一个球；它由 Zorn 引理得到，因为按包含关系排列的不交子族的每条链，其并仍是不交子族。令 \(\mathcal G=\bigcup_{k\geq0}\mathcal G_k\)，则这些球两两不交。
+
+任取 \(B\in\mathcal F_k\)。若它与较早尺度选出的球 \(D\) 相交，则 \(r_B\leq r_D\)。否则，由 \(\mathcal G_k\) 的极大性，\(B\) 与某个 \(D\in\mathcal G_k\) 相交；这也包括 \(B\) 本身已被选中的情形。此时同一尺度的界给出 \(r_B<2r_D\)。设两球中心分别为 \(c_B,c_D\)，取 \(z\in B\cap D\)。对任意 \(y\in B\)，三角不等式给出
+\[
+\begin{aligned}
+\rho(y,c_D)
+&\leq\rho(y,c_B)+\rho(c_B,z)+\rho(z,c_D)\\
+&\leq2r_B+r_D<5r_D.
+\end{aligned}
+\]
+故 \(B\subseteq5D\)，无论所用的是开球还是闭球都成立。
+
+若 \(X\) 可分，取可数稠密集 \(\{q_n\}_{n\geq1}\)。每个选中的球都有一个非空的同中心开球，它们仍两两不交。把该开球中下标最小的 \(q_n\) 指派给这个球，不同球得到不同下标。因此 \(\mathcal G\) 至多可数。
+\end{proof}
+
+可数性不是任意度量空间中无条件成立的结论。在不可数集合上取离散度量 \(\rho(x,y)=1\)（\(x\ne y\)），所有半径 \(1/10\) 的球都是单点，五倍球也仍是单点；可数子族不可能覆盖整个空间。半径有上界也有作用：\(\mathbb R\) 中的闭区间族 \(\{[-n,n]:n\geq1\}\) 的不交子族至多含一个成员，它的五倍膨胀不能覆盖整条实线。
+
+\begin{corollary}
+\label{b1:cor:five-r-tail-cover}
+设 \(\mathcal F\) 是 \(A\) 的闭球 Vitali 覆盖族，半径有上界，\(\mathcal G\) 是按\cref{b1:lem:five-r-covering}选出的子族。对任意有限子族 \(\mathcal H\subseteq\mathcal G\)，都有
+\[
+A\setminus\bigcup_{D\in\mathcal H}D
+\subseteq\bigcup_{D\in\mathcal G\setminus\mathcal H}5D.
+\]
+\end{corollary}
+\begin{proof}
+取左边一点 \(x\)。有限个闭球的并是闭集，且不含 \(x\)，故有 \(\eta>0\)，使 \(B(x,\eta)\) 与该并不交。利用细覆盖，选取含 \(x\)、半径小于 \(\eta/2\) 的 \(B\in\mathcal F\)。于是 \(B\) 与 \(\mathcal H\) 中的所有球不交。引理给出的 \(D\in\mathcal G\) 与 \(B\) 相交且 \(B\subseteq5D\)，所以 \(D\notin\mathcal H\)，而 \(x\in5D\)。
+\end{proof}
+
+这个推论比一次性的五倍覆盖多保留了一个信息：已经选出的任意有限部分都可以先划去，剩余点仍由余下的膨胀球覆盖。下一步要把几何包含变成一个趋于零的级数尾和。
 
 \subsection{Vitali 覆盖定理}
 \label{b1:subsec:130103}
 
-待填充。
+下面的\term*[vitali-fugai-dingli]{Vitali 覆盖定理}[Vitali covering theorem]不要求待覆盖集合本身可测；因此结论用 Lebesgue 外测度 \(m^*\) 表述。
+
+% 实读来源：Fremlin2016Measure，卷2，261B，章26印刷 pp.2--3，作者官网 chap26.pdf。
+% 改编：用前面一般度量的分层5r选择替代逐次近最大直径选择；保留有限容器、尾和估计、开环带局部化三个实质步骤。
+\begin{theorem}[Vitali，Lebesgue 测度]
+\label{b1:thm:vitali-covering-lebesgue}
+设 \(A\subseteq\mathbb R^d\)，\(\mathcal F\) 是 \(A\) 的正半径闭球 Vitali 覆盖族。存在至多可数的两两不交子族 \(\mathcal G\subseteq\mathcal F\)，使
+\[
+m^*\left(A\setminus\bigcup_{B\in\mathcal G}B\right)=0.
+\]
+此外，若给定开集 \(U\supseteq A\)，可以要求所有选中的球都包含于 \(U\)。
+\end{theorem}
+\begin{proof}
+先设 \(m^*(A)<\infty\)。由\cref{b1:prop:open-cover-approximation}，可取有限测度开集 \(V\supseteq A\)；若还给定 \(U\)，则把 \(V\) 换成 \(V\cap U\)。只保留包含于 \(V\)、半径不超过 \(1\) 的原族成员，仍得到 \(A\) 的细覆盖。用\cref{b1:lem:five-r-covering}选出至多可数的不交子族。若它有限，\cref{b1:cor:five-r-tail-cover}取 \(\mathcal H=\mathcal G\) 已给出 \(A\subseteq\bigcup\mathcal G\)。
+
+若子族无限，把它列为 \(B_1,B_2,\ldots\)。所有球都在 \(V\) 内，因而
+\[
+\sum_{j=1}^{\infty}m(B_j)
+=m\left(\bigcup_{j=1}^{\infty}B_j\right)
+\leq m(V)<\infty.
+\]
+记 \(E=A\setminus\bigcup_{j\geq1}B_j\)。由尾部覆盖推论，对每个 \(N\geq1\)，有 \(E\subseteq\bigcup_{j>N}5B_j\)。平移不变性与\cref{b1:prop:scaling}给出
+\[
+m^*(E)
+\leq\sum_{j>N}m(5B_j)
+=5^d\sum_{j>N}m(B_j)
+\longrightarrow0.
+\]
+这就证明了有限外测度情形。
+
+一般情形用彼此不交的开环带局部化。令
+\[
+U_k=\{\,x\in\mathbb R^d\mid k<|x|<k+1\,\},
+\quad k=0,1,2,\ldots.
+\]
+集合 \(A\cap U_k\) 有有限外测度；把覆盖族限制为包含于 \(U_k\) 的球，应用已证情形。若预先给定 \(U\)，则限制为包含于 \(U_k\cap U\) 的球。各环带中选出的球仍然全体两两不交，并且总数至多可数。所得并集之外，\(A\) 至多还剩各个环带中的零外测集，以及整数半径球面上的点。
+
+这些球面都是 Lebesgue 零测集。半径为 \(0\) 时它是单点；对 \(k>0\) 和 \(0<\varepsilon<k\)，球面包含于
+\(B(0,k+\varepsilon)\setminus B(0,k-\varepsilon)\)，故其测度不超过
+\[
+m\bigl(B(0,1)\bigr)
+\bigl((k+\varepsilon)^d-(k-\varepsilon)^d\bigr)
+\longrightarrow0.
+\]
+最后用外测度的可数次可加性，得到所求结论。
+\end{proof}
+
+证明没有给出一个特别小的覆盖误差，再另选一套球；它选定一次子族后，让同一个不交级数的尾和趋于零。这使结论确实由一套球实现。闭球条件用在有限个已选球的补集仍开，伸缩公式则用在最后的 \(5^d\) 估计。这两个位置也说明了推广时需要保留什么。
+
+不能把这里的 \(m\) 直接换成任意 Radon 测度。令 \(A=[0,1]\times\{0\}\subseteq\mathbb R^2\)，并定义
+\[
+\mu(E)=m_1\bigl(\{\,t\in[0,1]\mid(t,0)\in E\,\}\bigr)
+\]
+于所有 Borel 集 \(E\)，其中 \(m_1\) 是一维 Lebesgue 测度。这是有限 Radon 测度：原像中的 Borel 集可以由紧集从内逼近，而这些紧集沿 \(t\mapsto(t,0)\) 的像仍为紧集。考虑闭圆盘
+\[
+D(t,r)=\overline B\bigl((t,r),r\bigr),
+\quad 0\leq t\leq1,\quad 0<r<1.
+\]
+每个圆盘只在 \((t,0)\) 与水平轴相切，所以 \(\mu\bigl(D(t,r)\bigr)=0\)。这些圆盘在 \(A\) 上细覆盖，但任何可数子族的并仍为 \(\mu\)-零集，而 \(\mu(A)=1\)。膨胀后的 \(5D(t,r)\) 却会截到水平轴上的一段区间；不存在把它的质量统一控制为原圆盘质量若干倍的估计。
 
 \subsection{Vitali 覆盖关系}
 \label{b1:subsec:130104}
 
-待填充。
+上例中，一个点虽然落在许多小圆盘里，却总在圆盘的边缘。若只记录圆盘集合而不记录它围绕哪个点缩小，就会丢失这种区别。覆盖关系把点和用来观察它的集合放在一起；本节只引入后文所需的闭集型版本。
+
+\begin{definition}
+\label{b1:def:covering-relation}
+设 \((X,\rho)\) 是度量空间。由有序对 \((x,S)\) 组成、其中 \(S\subseteq X\) 是非空有界闭集且 \(x\in S\) 的集合 \(\mathcal R\)，称为一个\term[fugai-guanxi]{覆盖关系}[covering relation]。记
+\[
+\operatorname{diam}S
+=\sup\{\,\rho(y,z)\mid y,z\in S\,\}.
+\]
+\symidx{\(\operatorname{diam}S\)：集合直径}
+若对每个 \(x\in A\) 和 \(\delta>0\)，都有 \((x,S)\in\mathcal R\) 满足 \(\operatorname{diam}S<\delta\)，则说 \(\mathcal R\) 在 \(A\) 上细覆盖。
+\end{definition}
+
+给定 Borel 测度 \(\mu\)，以下用 \(\mu^*(A)=\inf\{\,\mu(E)\mid A\subseteq E,\ E\text{ 为 Borel 集}\,\}\) 表示它诱导的外测度；这里只需可数覆盖的次可加性。在 Borel 集上，它与 \(\mu\) 一致。单点集可以作为覆盖关系中的 \(S\)，是否有用取决于测度；Lebesgue 球覆盖定理所用的球始终有正半径。
+
+\begin{definition}
+\label{b1:def:vitali-relation}
+设 \(\mathcal R\) 是覆盖关系，\(\mu\) 是 \(X\) 上的 Borel 测度。若对每个满足 \(\mu^*(A)<\infty\) 的 \(A\subseteq X\)，以及每个在 \(A\) 上细覆盖的子关系 \(\mathcal R'\subseteq\mathcal R\)，都能选出至多可数个 \((x_j,S_j)\in\mathcal R'\)，使集合 \(S_j\) 两两不交且
+\[
+\mu^*\left(A\setminus\bigcup_jS_j\right)=0,
+\]
+则称 \(\mathcal R\) 是相对于 \(\mu\) 的一个\term[vitali-fugai-guanxi]{Vitali 覆盖关系}[Vitali covering relation]。
+\end{definition}
+
+要求每个仍然细覆盖的子关系都能完成选择，是为了允许先筛选观察尺度。例如，可以要求 \(S\) 包含于一个给定开集、直径小于某个常数，或者在 \(S\) 上满足某个积分不等式。只要筛选后在目标点集上仍有任意小的集合，就能调用同一选择性质。
+
+对 \(\mathbb R^d\) 上的 Lebesgue 测度，由所有 \((x,\overline B(c,r))\)、\(x\in\overline B(c,r)\)、\(r>0\) 构成的关系满足此定义，这正是\cref{b1:thm:vitali-covering-lebesgue}。对子关系应用该定理后，只需为每个选中的球保留一个原有的点球配对。对任意 Radon 测度，这个含点关系由切圆盘的例子可知未必有效；改用 \((x,\overline B(x,r))\) 的中心球关系后，下一节的\cref{b1:cor:radon-vitali-covering}将为有界 Borel 中心集证明相应的不交选择结论，已足以处理本书所需的局部微分问题；这里不以这个局部版本代替上述对任意有限外测度集合量化的关系定义。
+
+一般度量空间中，下面的充分条件说明什么时候仍可沿用本节的尾和方法。
+
+\begin{proposition}
+\label{b1:prop:controlled-dilation-vitali}
+设 \(X\) 是可分度量空间，\(\mu\) 是其 Borel 测度，\(A\subseteq X\)。设闭球族 \(\mathcal F\) 在 \(A\) 上细覆盖，半径有上界，所有球都包含于某个满足 \(\mu(V)<\infty\) 的 Borel 集 \(V\)。若存在 \(C<\infty\)，使每个 \(B\in\mathcal F\) 都满足
+\[
+\mu(5B)\leq C\mu(B),
+\]
+则存在至多可数个两两不交的 \(B_j\in\mathcal F\)，使 \(\mu^*(A\setminus\bigcup_jB_j)=0\)。
+\end{proposition}
+\begin{proof}
+用\cref{b1:lem:five-r-covering}选取子族。若子族有限，尾部覆盖推论直接给出完全覆盖；否则列为 \(B_1,B_2,\ldots\)。由于 \(\sum_j\mu(B_j)\leq\mu(V)<\infty\)，对每个 \(N\) 应用\cref{b1:cor:five-r-tail-cover}可得
+\[
+\mu^*\left(A\setminus\bigcup_jB_j\right)
+\leq\sum_{j>N}\mu(5B_j)
+\leq C\sum_{j>N}\mu(B_j)
+\longrightarrow0.
+\]
+\end{proof}
+
+例如，若在所用中心及相关半径上已有 \(\mu\bigl(\overline B(x,2r)\bigr)\leq C_0\mu\bigl(\overline B(x,r)\bigr)\)，连续应用三次便得到五倍球估计，常数可取 \(C_0^3\)。这是额外的尺度控制，不由局部有限或紧内正则性自动提供。覆盖关系的作用正是把这种几何与测度的配合单独列为条件，供以后的测度微分论反复使用。

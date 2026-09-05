@@ -1,14 +1,16 @@
 % !TeX root = ../../Book1.tex
-\chapter{覆盖定理与 Hardy–Littlewood 最大函数}
+\chapter{覆盖定理与 Hardy–Littlewood 极大函数}
 \label{b1:ch:13}
 % 本章摘要（不计入编号）
 \begin{chapterabstract}
-待填充。
+对一个局部可积函数，单个球上的平均容易定义；困难在于同时比较不同位置、不同半径上的平均。球相互重叠，不能简单地把积分相加。本章从球族选择开始，证明 Vitali 与 Besicovitch 覆盖定理，再把几何控制转化为 Hardy--Littlewood 极大不等式。这些估计将为下一章从积分恢复几乎处处的点值提供依据。
+
+两类覆盖机制须分开理解。五倍膨胀引理依赖距离，Lebesgue 的 Vitali 定理再借助体积缩放；Besicovitch 定理依赖有限维欧氏几何，却给出与所用测度无关的重数界。后者使有原子或奇异的 Radon 测度也能进入后续微分理论。本章不追求最优维数常数，而把选择过程及其适用条件完整写出。
 \end{chapterabstract}
 
 % 本章目标（不计入编号）
 \begin{learninggoals}
-待填充。
+读完本章，应能从一个球族中完成所需的选择，解释为何无限选择不能简单照搬有限集合的最大值步骤；区分膨胀覆盖、不交几乎处处覆盖与有界重数覆盖；由球平均的大值条件推导弱型估计，并通过幅值截断得到强型估计；最后，能说明极大控制怎样用于局部化、稠密类延拓以及积分核的逼近。所需基础是前两编的测度正则性、收敛定理和 \(L^p\) 稠密性。
 \end{learninggoals}
 
 \input{Part03/Chapter13/Section1301}
@@ -17,10 +19,353 @@
 \input{Part03/Chapter13/Section1304}
 % 本章小结（不计入编号）
 \begin{chaptersummary}
-待填充。
+覆盖选择把相互重叠的局部信息变成可以求和的估计。Vitali 的 Lebesgue 版本通过不交球的体积尾和消除遗漏；Besicovitch 的几何版本通过有限分色控制重数，再把这一控制用于任意 Radon 测度。中心条件、维数与球边界在不同论证中承担不同作用，不应混成一条无条件的“覆盖定理”。
+
+Hardy--Littlewood 极大函数在 \(L^1\) 上满足弱型估计，却一般不把可积函数送回 \(L^1\)；有限的 \(p>1\) 则有强型有界性。证明的关键是每个阈值使用不同的大值截断，而不是对所有阈值反复使用同一个总积分。局部化和径向核控制随后说明，这些结论既能处理球平均，也能处理其他有结构的积分平均。至此我们已能控制局部平均的大小，但尚未断言它的极限等于原函数；下一章正要完成这一步。
 \end{chaptersummary}
 
 
 \BookExercises
 
-待填充。
+% 第十三章习题候选；主线程合入，不另建标题或书签。
+% 八题均为自拟，逐题注明前置工具与新增训练目的，不冒称原书题号。
+% M 为开球中心极大算子，omega_d 为单位球 Lebesgue 体积，均由13.3定义。
+% 不调用第十四章的微分定理或几乎处处逼近恒等结论。
+
+\begin{exercise}\label{b1:ex:13-maximal-far-field}
+设 \(f\in L^\infty(\mathbb R^d)\)，且 \(f=0\) 几乎处处于 \(B(0,R)\) 外，其中 \(R>0\)。假设 \(A=\|f\|_1>0\)。
+\begin{enumerate}
+\item\label{b1:item:13-far-asymptotic}
+对 \(|x|>R\)，证明
+\[
+ \frac{A}{\omega_d(|x|+R)^d}\le Mf(x)
+ \le\frac{A}{\omega_d(|x|-R)^d},
+\]
+并由此求 \(|x|\to\infty\) 时 \(|x|^dMf(x)\) 的极限。
+\item\label{b1:item:13-far-nonlocal}
+证明 \(Mf\notin L^1(\mathbb R^d)\)，而且 \(Mf(x)>0\) 对所有 \(x\) 成立。说明即使 \(f\) 在 \(x\) 的一个邻域内为零，也不能据此断言 \(Mf(x)=0\)。
+\end{enumerate}
+\end{exercise}
+% 来源：自拟；把正文单个示性函数的L1反例推进到任意紧支集函数的精确远场渐近。
+\begin{solution}
+若 \(r<|x|-R\)，则 \(B(x,r)\) 与 \(f\) 的非零部分不交，平均值为零。若 \(r\ge|x|-R\)，则分子不超过 \(A\)，分母至少为 \(\omega_d(|x|-R)^d\)，得到上界。另一方面，对每个 \(\varepsilon>0\)，球 \(B(x,|x|+R+\varepsilon)\) 包含 \(B(0,R)\)，故
+\[
+ Mf(x)\ge\frac{A}{\omega_d(|x|+R+\varepsilon)^d}.
+\]
+令 \(\varepsilon\downarrow0\) 即得下界。因此
+\[
+ \lim_{|x|\to\infty}|x|^dMf(x)=\frac A{\omega_d}.
+\]
+两个界只依赖 \(|x|\)，所以极限不依赖趋向无穷的方向。
+
+对 \(|x|\ge2R\)，下界给出 \(Mf(x)\ge c_dA|x|^{-d}\)，其中 \(c_d>0\)。在两两不交的圆环 \(2^kR<|x|<2^{k+1}R\)、\(k\ge1\) 上积分，每个圆环的积分都至少为
+\[
+ c_dA(2^{k+1}R)^{-d}\,
+ \omega_d\bigl((2^{k+1}R)^d-(2^kR)^d\bigr)
+ =c_dA\omega_d(1-2^{-d})>0.
+\]
+故总积分发散。任意中心 \(x\) 都有某个足够大的球包含 \(B(0,R)\)，其平均值为正，因而 \(Mf(x)>0\)。当 \(|x|>R\) 时，所有半径小于 \(|x|-R\) 的局部平均却都为零；极大函数的正值来自更大尺度。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:13-cubes-rectangles}
+令 \(Q(x,r)=x+(-r,r)^d\)，并定义中心立方体极大算子
+\[
+ M_Q f(x)=\sup_{r>0}\frac1{(2r)^d}\int_{Q(x,r)}|f(y)|\,\mathrm dy.
+\]
+\begin{enumerate}
+\item\label{b1:item:13-cube-comparison}
+证明
+\[
+ \frac{\omega_d}{2^d}Mf(x)\le M_Q f(x)
+ \le\frac{\omega_dd^{d/2}}{2^d}Mf(x).
+\]
+据此说明中心球的弱型与强型估计怎样传给中心立方体。
+\item\label{b1:item:13-rectangle-failure}
+在 \(\mathbb R^2\) 上，令 \(\mathcal Rf(x)\) 为所有包含 \(x\)、边平行于坐标轴的有界开矩形上 \(|f|\) 的平均值的上确界。取 \(f=\mathbf1_{[0,1]^2}\)，证明
+\[
+ \sup_{\lambda>0}\lambda\,m_2\{\,\mathcal Rf>\lambda\,\}=\infty.
+\]
+解释为何球与立方体的比较不能直接用于任意长宽比的矩形。
+\end{enumerate}
+\end{exercise}
+% 来源：自拟；比较形状可控的平均与偏心率失控的平均。
+% 矩形反例给出超水平集面积的对数因子，不只宣称覆盖引理失效。
+\begin{solution}
+利用
+\[
+ B(x,r)\subset Q(x,r)\subset B(x,\sqrt d\,r),
+\]
+先比较积分，再比较体积，即得两项不等式。由右侧不等式，\(M_Q f\) 的超水平集包含于 \(Mf\) 的相应超水平集，且其 \(L^p\) 范数也受同一常数倍控制。因此\cref{b1:thm:hl-weak-11,b1:thm:hl-strong-pp}分别给出所需估计。
+
+第二问中，若 \(x>1\)、\(y>1\)，用矩形 \((-\varepsilon,x+\varepsilon)\times(-\varepsilon,y+\varepsilon)\) 作测试，再令 \(\varepsilon\downarrow0\)，便有
+\[
+ \mathcal Rf(x,y)\ge\frac1{xy}.
+\]
+故对 \(0<\lambda<1\)，
+\begin{align*}
+ m_2\{\,\mathcal Rf>\lambda\,\}
+ &\ge\int_1^{1/\lambda}\left(\frac1{\lambda x}-1\right)\,\mathrm dx\\
+ &=\frac1\lambda\log\frac1\lambda-\frac1\lambda+1.
+\end{align*}
+乘以 \(\lambda\) 后，右边趋于无穷，而 \(\|f\|_1=1\)，所以不存在弱型 \((1,1)\) 常数。该极大函数的超水平集是开集：每个符合平均值条件的开矩形都贡献其中全部点，故上述测度有定义。包含一个细长矩形的球，其体积与矩形面积之比可以任意大；第一问所用的统一体积比较在这里不存在。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:13-kernel-envelope}
+设 \(\psi:\mathbb R^d\rightarrow\mathbb C\) 可测。对 \(k\in\mathbb Z\)，令
+\[
+ A_k=\{\,z\mid2^{k-1}<|z|\le2^k\,\},\quad
+ a_k=\mathop{\operatorname{ess\,sup}}_{A_k}|\psi|,
+ \quad S_\psi=\sum_{k\in\mathbb Z}2^{kd}a_k.
+\]
+假设 \(S_\psi<\infty\)，并令 \(\psi_t(z)=t^{-d}\psi(z/t)\)。证明 \(\psi\in L^1\)，且对 \(f\in L^1_{\mathrm{loc}}(\mathbb R^d)\)、\(t>0\)，有
+\[
+ \int_{\mathbb R^d}|\psi_t(y)|\cdot|f(x-y)|\,\mathrm dy
+ \le\omega_d S_\psi Mf(x).
+\]
+特别地，在 \(Mf(x)<\infty\) 处，卷积绝对收敛并满足同样的上界。题设不要求 \(\psi\) 径向、单调或非负。再构造一个径向非负的可积函数，使 \(S_\psi=\infty\)，说明该条件强于单纯可积性。
+\end{exercise}
+% 来源：自拟；由粗糙核构造径向递减可积包络，再接正文径向核控制。
+% 不涉及下一章几乎处处的逼近恒等结论。
+\begin{solution}
+定义非负函数
+\[
+ \Psi(z)=\sum_{k\in\mathbb Z}a_k\mathbf1_{\overline B(0,2^k)}(z).
+\]
+它径向且随半径不增，并且 \(|\psi|\le\Psi\) 几乎处处。由单调收敛或 Tonelli 定理，
+\[
+ \int_{\mathbb R^d}\Psi(z)\,\mathrm dz
+ =\omega_d\sum_{k\in\mathbb Z}2^{kd}a_k
+ =\omega_dS_\psi<\infty.
+\]
+所以 \(\psi\in L^1\)。展开这一包络，得到
+\begin{align*}
+ \int|\psi_t(y)|\cdot|f(x-y)|\,\mathrm dy
+ &\le\sum_k a_kt^{-d}\int_{|y|\le t2^k}|f(x-y)|\,\mathrm dy\\
+ &\le\omega_d\sum_k a_k2^{kd}Mf(x).
+\end{align*}
+Lebesgue 测度不给球面质量，所以此处闭球与开球的积分相同。所得估计也是\cref{b1:prop:radial-kernel-maximal}应用于包络 \(\Psi\) 的结果；包络而非原核承担了径向递减条件。
+
+反过来，令
+\[
+ \psi(z)=\sum_{n=1}^{\infty}2^{-nd}
+ \mathbf1_{\{\,2^n<|z|<2^n+1\,\}}(z).
+\]
+各薄层不交，而第 \(n\) 层的积分为
+\[
+ \omega_d2^{-nd}\bigl((2^n+1)^d-2^{nd}\bigr)
+ \le C_d2^{-n}.
+\]
+所以 \(\psi\) 可积。但这层包含于 \(A_{n+1}\)，且有正体积，故 \(a_{n+1}\ge2^{-nd}\)。于是 \(2^{(n+1)d}a_{n+1}\ge2^d\)，从而 \(S_\psi=\infty\)。薄层的总质量很小，却不能用同样小的径向递减包络控制。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:13-radon-centered-maximal}
+设 \(\mu\) 为 \(\mathbb R^d\) 上的正 Radon 测度，\(f\in L^1(\mu)\)。定义
+\[
+ M_\mu^{\mathrm c}f(x)
+ =\sup_{r>0}\frac{\displaystyle\int_{\overline B(x,r)}|f|\,\mathrm d\mu}
+ {\mu\bigl(\overline B(x,r)\bigr)},
+\]
+其中分母为零时该平均值规定为零。
+\begin{enumerate}
+\item\label{b1:item:13-radon-maximal-measurable}
+证明 \(M_\mu^{\mathrm c}f\) 为 Borel 可测函数，并说明将全部闭球换成全部开球后，上确界不变。
+\item\label{b1:item:13-radon-maximal-weak}
+不用测度的倍增条件，证明对每个 \(\lambda>0\)，
+\[
+ \mu\{\,M_\mu^{\mathrm c}f>\lambda\,\}
+ \le\frac{5^d}{\lambda}\|f\|_{L^1(\mu)}.
+\]
+\end{enumerate}
+\end{exercise}
+% 来源：自拟；调用本章Besicovitch有限重数，新增任意Radon测度的具体极大估计。
+% 开闭球只在取全体半径上确界后等价，不假定任意Radon测度的球面为零测集。
+\begin{solution}
+局部有限性保证每个有界闭球的测度有限，并使 \(\mu\) 为 \(\sigma\)-有限测度。对固定 \(r>0\)，函数
+\[
+ x\longmapsto\mu\bigl(\overline B(x,r)\bigr),\quad
+ x\longmapsto\int_{\overline B(x,r)}|f|\,\mathrm d\mu
+\]
+均 Borel 可测：球的示性函数是 \((x,y)\) 的 Borel 函数，可用第\ref{b1:ch:07}章的非负含参变量积分结论。按约定处理零分母后，每个固定半径的平均值也可测。
+
+对任意 \(r>0\)，选有理数 \(r_j\downarrow r\)。相应闭球递减到 \(\overline B(x,r)\)，分子、分母都收敛到该闭球上的值；若后者分母为正，平均值也收敛。因此上确界只取正有理半径便已足够，\(M_\mu^{\mathrm c}f\) 为可数个 Borel 函数的上确界。
+
+还可用半径递减的开球逼近一个闭球，用半径递增的闭球逼近一个开球。两种过程中分子、分母均按测度的连续性收敛，正分母的平均值随之收敛，故全半径上确界相同。这不表示固定半径上的两个平均值相同；球面上可能有正的 \(\mu\)-质量。
+
+记 \(E_N=\{M_\mu^{\mathrm c}f>\lambda\}\cap B(0,N)\)。对每个 \(x\in E_N\)，选一个中心为 \(x\)、平均值大于 \(\lambda\) 的闭球。由\cref{b1:thm:besicovitch-covering}，可选至多 \(5^d\) 个不交子族覆盖所有这些中心。把选中的球统一列为 \((B_j)\)，其重数不超过 \(5^d\)。于是
+\[
+ \lambda\mu(E_N)
+ \le\lambda\sum_j\mu(B_j)
+ \le\sum_j\int_{B_j}|f|\,\mathrm d\mu
+ \le5^d\|f\|_{L^1(\mu)}.
+\]
+令 \(N\uparrow\infty\) 即得结论。所有平均仍在原来的球上计算，证明中没有把球膨胀后再估计其测度。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:13-nondoubling-uncentered}
+在 \(\mathbb R^2\) 中，对 \(n\ge2\) 和 \(1\le j\le n\)，令
+\[
+ z_n=(4n,0),\quad
+ u_{n,j}=\bigl(\cos(2\pi j/n),\sin(2\pi j/n)\bigr),
+ \quad x_{n,j}=z_n+u_{n,j},\quad
+ a_n=\frac{2^{1-n}}{n+1},
+\]
+并定义
+\[
+ \mu=\sum_{n=2}^{\infty}a_n\left(\delta_{z_n}+\sum_{j=1}^n\delta_{x_{n,j}}\right).
+\]
+对这个测度定义非中心开球极大算子
+\[
+ M_{\mu,u}f(x)=\sup_{\substack{x\in B(y,r)\\\mu(B(y,r))>0}}
+ \frac1{\mu\bigl(B(y,r)\bigr)}\int_{B(y,r)}|f|\,\mathrm d\mu.
+\]
+证明 \(\mu\) 是 Radon 概率测度，但不存在有限常数 \(C\)，使所有 \(f\in L^1(\mu)\) 和 \(\lambda>0\) 都满足
+\[
+ \mu\{\,M_{\mu,u}f>\lambda\,\}\le\frac C\lambda\|f\|_{L^1(\mu)}.
+\]
+另验证球测度之比 \(\mu(B(z_n,3/2))/\mu(B(z_n,3/4))\) 没有共同上界。
+\end{exercise}
+% 来源：自拟；每个块用中心原子和圆周原子构造可单独捕获的一对质量。
+% 系数使单个固定测度总质量为一；所得失败不是仅说不同测度的常数无法统一。
+\begin{solution}
+第 \(n\) 块的质量为 \((n+1)a_n=2^{1-n}\)，总和为 \(1\)。这是有限的可数原子测度；每个 Borel 集的质量都可用其中有限多个原子从内逼近，而有限集紧，故 \(\mu\) 是 Radon 概率测度。
+
+固定 \(n,j\)，以 \(c_{n,j}=z_n+u_{n,j}/2\) 为中心考察球。中心原子 \(z_n\) 与目标原子 \(x_{n,j}\) 距 \(c_{n,j}\) 都为 \(1/2\)。若 \(k\ne j\)，则
+\[
+ |x_{n,k}-c_{n,j}|^2
+ =\frac54-u_{n,k}\cdot u_{n,j}>\frac14.
+\]
+由于本块只有有限个原子，可取 \(0<\varepsilon_n<1/10\)，使每个球 \(B(c_{n,j},1/2+\varepsilon_n)\) 都不含本块的其他圆周原子。这些球包含于 \(B(z_n,11/10)\)，而不同块的中心相距至少 \(4\)，故也不含其他块的原子。因此每个这样的球恰好携带两个质量均为 \(a_n\) 的原子。
+
+取 \(f_n=\mathbf1_{\{z_n\}}\)，则 \(\|f_n\|_{L^1(\mu)}=a_n\)，并且
+\[
+ M_{\mu,u}f_n(x_{n,j})\ge\frac12\quad(1\le j\le n).
+\]
+所以
+\[
+ \frac{(1/3)\,\mu\{\,M_{\mu,u}f_n>1/3\,\}}
+ {\|f_n\|_{L^1(\mu)}}\ge\frac n3\longrightarrow\infty.
+\]
+所需统一常数不存在。这里的超水平集是满足平均值条件的开球之并，所以可测。
+
+最后，\(B(z_n,3/4)\) 只含中心原子，\(B(z_n,3/2)\) 恰好包含第 \(n\) 块的全部原子，故该比值等于 \(n+1\)。前一题的中心极大不等式仍然适用于 \(\mu\)；本题的测试球并不以被覆盖的圆周原子为中心，而改变中心或膨胀球时没有统一的测度比值可用。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:13-partition-maximal}
+设 \((X,\mathcal A,\mu)\) 为概率空间，\((\mathcal P_j)_{j\ge0}\) 为逐级细分的有限可测划分，\(\mathcal P_0=\{X\}\)，并假设每个划分块的测度都为正。对 \(x\in X\)，记 \(A_j(x)\) 为 \(\mathcal P_j\) 中包含 \(x\) 的块。定义
+\[
+ \mathcal Df(x)=\sup_{j\ge0}\frac1{\mu\bigl(A_j(x)\bigr)}
+ \int_{A_j(x)}|f|\,\mathrm d\mu.
+\]
+\begin{enumerate}
+\item\label{b1:item:13-partition-weak}
+对 \(f\in L^1(\mu)\) 和 \(\lambda>0\)，证明更精确的不等式
+\[
+ \lambda\mu\{\,\mathcal Df>\lambda\,\}
+ \le\int_{\{\mathcal Df>\lambda\}}|f|\,\mathrm d\mu.
+\]
+由此得到弱型 \((1,1)\) 估计，并证明其常数 \(1\) 不能减小。
+\item\label{b1:item:13-partition-strong}
+对 \(1<p<\infty\)，证明
+\[
+ \|\mathcal Df\|_p\le\frac p{p-1}\|f\|_p.
+\]
+\end{enumerate}
+\end{exercise}
+% 来源：自拟；有限划分的平均模型，用首个超阈值块代替几何覆盖。
+% 不调用尚未定义的条件期望或鞅；强型常数由局部弱估计与层蛋糕公式导出。
+\begin{solution}
+每一级平均是简单函数，故 \(\mathcal Df\) 可测。对 \(x\in\{\mathcal Df>\lambda\}\)，选择平均首次超过 \(\lambda\) 的级数 \(j\)，并保留其划分块。保留块在该级平均超过阈值，而所有祖先块都未超过阈值。由于划分逐级细分，两个不同保留块不能相交：若相交，较细的一个包含于较粗的一个，便不可能是首次超阈值。因此保留块两两不交，且其可数并恰好为 \(\{\mathcal Df>\lambda\}\)。在每个保留块上写出平均值不等式后求和，便得到第一问。其右侧不超过 \(\|f\|_1\)，所以弱型常数可取 \(1\)。取 \(f=1\) 并令 \(\lambda\uparrow1\)，可知任何这样的常数都至少为 \(1\)。
+
+令 \(H_R=\min\{\mathcal Df,R\}\)。用层蛋糕公式、第一问和 Tonelli 定理，得到
+\begin{align*}
+ \int_XH_R^p\,\mathrm d\mu
+ &=p\int_0^R\lambda^{p-1}\mu\{\mathcal Df>\lambda\}\,\mathrm d\lambda\\
+ &\le p\int_0^R\lambda^{p-2}
+       \int_{\{\mathcal Df>\lambda\}}|f|\,\mathrm d\mu\,\mathrm d\lambda\\
+ &=\frac p{p-1}\int_X|f|H_R^{p-1}\,\mathrm d\mu\\
+ &\le\frac p{p-1}\|f\|_p\cdot\|H_R\|_p^{p-1}.
+\end{align*}
+由于 \(H_R\) 有界且空间为概率空间，所有范数均有限；若 \(\|H_R\|_p>0\)，可以相除，得到 \(\|H_R\|_p\le p\|f\|_p/(p-1)\)。零范数情形也成立。令 \(R\uparrow\infty\)，单调收敛给出结论。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:13-weak-l1-infinite-maximal}
+在实轴上令
+\[
+ I_n=[\log n,\log n+2^{-n}),\quad
+ f(x)=\sum_{n=1}^{\infty}2^n\mathbf1_{I_n}(x).
+\]
+证明各区间两两不交，\(f\in L^1_{\mathrm{loc}}(\mathbb R)\)，并且
+\[
+ \sup_{\lambda>0}\lambda\,m_1\{\,f>\lambda\,\}\le2.
+\]
+然而，证明其中心极大函数满足 \(Mf(x)=\infty\) 对每个 \(x\in\mathbb R\) 都成立。说明为什么这一结论不与本章的弱型 \((1,1)\) 定理矛盾。
+\end{exercise}
+% 来源：自拟；高为2^n、宽为2^{-n}的峰放在log n附近。
+% 例子保持局部可积，避免用原点不可积奇性制造形式上的无穷平均。
+\begin{solution}
+由
+\[
+ 2^{-n}\le\frac1{n+1}
+ \le\int_n^{n+1}\frac{\mathrm dt}{t}
+ =\log(n+1)-\log n,
+\]
+可知第 \(n\) 个区间在下一段开始前已经结束，故各段不交。它们的左端点趋于无穷，任意紧区间只与有限多段相交，所以 \(f\) 局部可积。每一段的积分等于 \(1\)，从而 \(\int_{\mathbb R}f=\infty\)。
+
+若 \(0<\lambda<2\)，则超水平集的测度为 \(\sum_{n\ge1}2^{-n}=1\)。若 \(2^N\le\lambda<2^{N+1}\)，其中 \(N\ge1\)，则
+\[
+ m_1\{\,f>\lambda\,\}=\sum_{n\ge N+1}2^{-n}=2^{-N},
+ \quad\lambda m_1\{\,f>\lambda\,\}\le2.
+\]
+因此题设的弱尾界成立。
+
+固定 \(x\)，令 \(r_N=|x|+\log N+1\)。区间 \((x-r_N,x+r_N)\) 包含前 \(N\) 个峰，故
+\[
+ Mf(x)\ge\frac N{2(|x|+\log N+1)}\longrightarrow\infty.
+\]
+这里每一个有限半径上的积分仍有限；无穷值来自尺度不断增大后的上确界。弱型 \((1,1)\) 定理要求输入属于 \(L^1\)，而本例只有超水平集的弱尾界，整体积分发散。因而不能把该定理的输入条件换成同样的弱尾界。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:13-maximal-continuity}
+\begin{enumerate}
+\item\label{b1:item:13-maximal-lipschitz}
+在 \(Mf\)、\(Mg\) 有限处证明
+\[
+ |Mf-Mg|\le M(f-g).
+\]
+由此证明 \(M\) 在 \(L^\infty\) 上关于范数满足 Lipschitz 估计，常数为 \(1\)；在 \(L^p\)、\(1<p<\infty\) 上也满足相应的 Lipschitz 估计。
+\item\label{b1:item:13-maximal-measure-convergence}
+若 \(f_n\rightarrow f\) 于 \(L^1(\mathbb R^d)\)，证明 \(Mf_n\rightarrow Mf\) 依测度收敛，并可选取几乎处处收敛的子列。
+\item\label{b1:item:13-maximal-not-l1-convergence}
+构造趋于零的 \(L^1\) 函数列，使其极大函数不能在 \(L^1\) 中趋于零。
+\end{enumerate}
+\end{exercise}
+% 来源：自拟；将次线性和强弱型估计用于算子连续性与逼近。
+% 强调弱型稠密推广给出依测度收敛，不把它误写成L1范数连续性。
+\begin{solution}
+逐点不等式 \(|f|\le|g|+|f-g|\) 在每个球上积分并取上确界，给出 \(Mf\le Mg+M(f-g)\)。交换 \(f,g\) 即得第一问的点态估计。对有界函数，\(M(f-g)\le\|f-g\|_\infty\)，因此
+\[
+ \|Mf-Mg\|_\infty\le\|f-g\|_\infty.
+\]
+常数函数 \(f=1\)、\(g=0\) 表明常数 \(1\) 不能减小。若 \(1<p<\infty\)，由\cref{b1:thm:hl-strong-pp}，
+\[
+ \|Mf-Mg\|_p\le C_{d,p}\|f-g\|_p.
+\]
+这些函数的极大值几乎处处有限，所以点态比较足以给出范数结论。
+
+对 \(L^1\) 收敛，由\cref{b1:thm:hl-weak-11}及第一问，
+\[
+ m_d\{\,|Mf_n-Mf|>\lambda\,\}
+ \le\frac{C_d}{\lambda}\|f_n-f\|_1\longrightarrow0.
+\]
+各极大函数共同的非有限点集为零测集，可以先在该集上置零。再取子列使 \(\|f_{n_k}-f\|_1\le2^{-2k}\)，则
+\[
+ m_d\{\,|Mf_{n_k}-Mf|>2^{-k}\,\}\le C_d2^{-k}.
+\]
+右侧可求和，所以几乎每个点仅落在有限多个例外集中；这是因为从第 \(K\) 项起的例外集之并，其测度不超过 \(C_d\sum_{k\ge K}2^{-k}\)，并随 \(K\) 趋于零。因此相应子列几乎处处收敛。
+
+最后取 \(f_n=n^{-1}\mathbf1_{B(0,1)}\)。有 \(\|f_n\|_1=\omega_d/n\rightarrow0\)，但
+\[
+ Mf_n=\frac1nM\mathbf1_{B(0,1)}\notin L^1(\mathbb R^d)
+\]
+由\cref{b1:ex:13-maximal-far-field}得到。这里甚至有 \(\|Mf_n\|_\infty\le1/n\)，仍不能把无限空间上的依测度收敛或一致收敛提升为 \(L^1\) 收敛；远场尾部的积分始终发散。
+\end{solution}

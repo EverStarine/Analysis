@@ -2,24 +2,225 @@
 \section{极大不等式的基本应用}
 \label{b1:sec:1304}
 
-% TODO: 撰写本节正文。
+极大不等式的用途不止是估计一个新函数的范数。它把“一族平均中至少有一个偏大”这样的条件，变成统一的例外集估计；这正是从范数逼近走向几乎处处结论时缺少的信息。本节先明确允许哪些集合趋近一个点，再讨论误差控制与积分核。下一章才证明局部平均恢复函数值的微分定理，这里把其中会反复使用的工具准备好。
 
 \subsection{微分基}
 \label{b1:subsec:130401}
 
-待填充。
+\begin{definition}\label{b1:def:differentiation-basis}
+对每个 \(x\in\mathbb R^d\)，给定一族包含 \(x\) 的有界 Lebesgue 可测集 \(\mathcal B(x)\)。若其中每个 \(E\) 都满足 \(0<m_d(E)<\infty\)，且对每个 \(\delta>0\) 都存在 \(E\in\mathcal B(x)\) 使 \(\operatorname{diam}E<\delta\)，则称 \(\mathcal B\) 为一个\term[weifen-ji]{微分基}[differentiation basis]。
+若对给定的局部可积函数 \(f\)，有
+\[
+ \lim_{\substack{E\in\mathcal B(x)\\\operatorname{diam}E\to0}}
+       \frac1{m_d(E)}\int_E f(y)\,\mathrm dy=f(x)
+\]
+几乎处处成立，就说此基能微分 \(f\)。上式的极限要求所有足够小的允许集合都满足同一个误差界，不只是选定某个集合序列。
+\end{definition}
+
+中心球、含点球和以 \(x\) 为中心的立方体都给出微分基。对连续函数，它们都能恢复函数值：只要 \(x\in E\) 且 \(\operatorname{diam}E<\delta\)，就有
+\[
+ \left|\frac1{m_d(E)}\int_E f-f(x)\right|
+ \leq\sup_{|y-x|<\delta}|f(y)-f(x)|\longrightarrow0.
+\]
+对不连续的可积函数，连续性不能提供这个上界，允许集合的形状便开始影响结论。
+
+一种可用的几何条件是：对每个 \(E\in\mathcal B(x)\)，都能找到 \(r>0\)，使
+\begin{equation}\label{b1:eq:basis-volume-comparison}
+ E\subseteq B(x,r),\quad m_d\bigl(B(x,r)\bigr)\leq A\,m_d(E),
+\end{equation}
+其中 \(A\) 不依赖 \(x,E\)。于是对每个局部可积 \(f\)，
+\[
+ \frac1{m_d(E)}\int_E|f|\leq A Mf(x).
+\]
+如果同时保证所选 \(r\) 随 \(\operatorname{diam}E\) 趋零，就既控制了平均的大小，也保留了趋向该点的尺度。中心立方体满足这种条件；边长比例任意失衡的长方体却不能取统一的 \(A\)。本章习题将给出后一类形状的极大弱型估计失败的具体例子。
+
+第\ref{b1:sec:1301}节的覆盖关系记录点与集合的配对，本节的微分基则额外要求平均的分母为有限正数，并把趋零极限作为研究对象。仅仅满足微分基的定义，不等于已经具有 Vitali 选择性质，也不等于能够微分全部局部可积函数。
 
 \subsection{\texorpdfstring{\(L^p\)}{Lp} 控制}
 \label{b1:subsec:130402}
 
-待填充。
+若 \(A_rf(x)\) 表示中心球上不取绝对值的平均，则
+\[
+ |A_rf(x)-A_rg(x)|\leq M(f-g)(x)
+\]
+对所有 \(r>0\) 同时成立。因此，\(f-g\) 的范数虽只给出整体误差，极大不等式却控制了“存在某个尺度使平均误差超过阈值”的位置。在 \(L^1\) 中用弱型估计，在 \(L^p\)、\(p>1\) 中还可用强型估计。
+
+下面把这一方法抽成一个序列形式。它不预先断言某种具体微分基已经有效。
+
+% 思路来源：实读Axler2020Measure，4.10的连续稠密类加极大误差方法；
+% 改编为可数线性算子族上的闭包原则，证明及常数单独推导。
+\begin{proposition}[极大估计下的收敛延拓]\label{b1:prop:maximal-convergence-principle}
+设 \(1\leq p<\infty\)，\(T_n\) 为从 \(L^p(\mu)\) 到有限值可测函数的线性算子，按几乎处处相等理解。令
+\[
+ T^*f=\sup_{n\geq1}|T_nf|.
+\]
+假设存在 \(A<\infty\)，对每个 \(f\in L^p\)、\(t>0\)，有
+\[
+ \mu\bigl(\{T^*f>t\}\bigr)\leq\frac A{t^p}\|f\|_p^p.
+\]
+若有一个在 \(L^p\) 中稠密的子集 \(\mathcal D\)，使 \(T_ng\to g\) 对每个 \(g\in\mathcal D\) 几乎处处成立，则 \(T_nf\to f\) 对所有 \(f\in L^p\) 几乎处处成立。
+\end{proposition}
+\begin{proof}
+固定 \(f\) 与 \(g\in\mathcal D\)。选定可测代表，删去与它们有关的可数个线性等式失效点以及 \(T_ng\not\to g\) 的零测集。在其余点，
+\[
+ \limsup_{n\to\infty}|T_nf-f|
+ \leq T^*(f-g)+|f-g|.
+\]
+因此对 \(t>0\)，极大估计和 Chebyshev 不等式给出
+\[
+ \begin{aligned}
+ \mu\left(\left\{\limsup_n|T_nf-f|>2t\right\}\right)
+ &\leq\mu\bigl(\{T^*(f-g)>t\}\bigr)
+       +\mu\bigl(\{|f-g|>t\}\bigr)\\
+ &\leq\frac{A+1}{t^p}\|f-g\|_p^p.
+ \end{aligned}
+\]
+左端不依赖 \(g\)。由稠密性让右端任意小，可知左端为零。再取 \(t=1/k\)、\(k\geq1\)，作可数并，即得几乎处处收敛。
+\end{proof}
+
+证明并没有让逼近序号与算子序号同时趋于无穷，而是先对一个固定的稠密类元素取算子极限，再把剩余误差送到零。极大函数负责统一所有算子序号，因此不需要对每个 \(n\) 另选一组例外点。该命题只处理可数族；连续半径情形还应说明可测性或可数尺度的约化，不能把不可数个零测例外集直接并起来。
 
 \subsection{逼近恒等}
 \label{b1:subsec:130403}
 
-待填充。
+球平均可以写成一个固定函数的缩放与积分。为了容纳更平滑的平均方式，先引入卷积所需的最小工具；光滑性与高阶导数留到第四编处理。
+
+给定可测函数 \(K,f\)，在绝对积分有限的点定义它们的\term[juanji]{卷积}[convolution]为
+\[
+ (K*f)(x)=\int_{\mathbb R^d}K(y)f(x-y)\,\mathrm dy.
+\]
+\symidx{\(K*f\)：函数卷积}
+取 Borel 代表后被积函数关于 \((x,y)\) 可测，换回几乎处处相等的代表不改变积分。事实上，固定 \(x\) 时，反射和平移都保持 Lebesgue 零测集。下文把积分不存在的零测集上的值约定为零；涉及某个具体点的结论时，则另行证明该点的积分存在。卷积的这些测度论基础可参看 Fremlin 的《Measure Theory》\cite[255F--L]{Fremlin2016Measure}。
+
+\begin{lemma}\label{b1:lem:convolution-lp-bound}
+若 \(K\in L^1(\mathbb R^d)\)、\(f\in L^p(\mathbb R^d)\)、\(1\leq p\leq\infty\)，则 \(K*f\) 几乎处处绝对存在，且
+\[
+ \|K*f\|_p\leq\|K\|_1\cdot\|f\|_p.
+\]
+\end{lemma}
+\begin{proof}
+令 \(a=\|K\|_1\)。若 \(a=0\)，结论直接成立。设 \(a>0\)、\(p<\infty\)。对概率测度 \(|K(y)|\,\mathrm dy/a\) 应用 Hölder 不等式，得
+\[
+ \left(\int|K(y)|\cdot|f(x-y)|\,\mathrm dy\right)^p
+ \leq a^{p-1}\int|K(y)|\cdot|f(x-y)|^p\,\mathrm dy.
+\]
+当 \(p=1\) 时，这是等式。右侧对 \(x\) 积分，由 Tonelli 定理和平移不变性得 \(a^p\|f\|_p^p<\infty\)。所以绝对积分几乎处处有限；再用积分三角不等式即可得到范数界。若 \(p=\infty\)，选择处处有界代表后，绝对积分直接受 \(a\|f\|_\infty\) 控制。
+\end{proof}
+
+\begin{lemma}\label{b1:lem:lp-translation-continuity}
+若 \(1\leq p<\infty\)、\(f\in L^p(\mathbb R^d)\)，记 \(\tau_hf(x)=f(x-h)\)，则
+\[
+ \|\tau_hf-f\|_p\longrightarrow0\quad(h\to0).
+\]
+\end{lemma}
+\begin{proof}
+由\cref{b1:prop:lp-continuous-dense}，给定 \(\varepsilon>0\)，可取 \(g\in C_c(\mathbb R^d)\) 使 \(\|f-g\|_p<\varepsilon\)。当 \(|h|\leq1\) 时，\(\tau_hg-g\) 的支集包含在一个固定紧集 \(H\) 中。连续紧支集函数在整个空间一致连续，故
+\[
+ \|\tau_hg-g\|_p
+ \leq m_d(H)^{1/p}\sup_x|g(x-h)-g(x)|\longrightarrow0.
+\]
+平移保持 \(L^p\) 范数，所以
+\[
+ \|\tau_hf-f\|_p
+ \leq2\|f-g\|_p+\|\tau_hg-g\|_p.
+\]
+先取 \(h\to0\)，再让 \(\varepsilon\to0\)，得到结论。
+\end{proof}
+
+这一步使用的是第十章已经建立的连续紧支集稠密性，不预借光滑函数稠密性。\(p=\infty\) 时结论不成立：对 \(f=\mathbf1_{(0,1)}\) 和 \(0<|h|<1\)，有 \(\|\tau_hf-f\|_\infty=1\)。
+
+\begin{definition}\label{b1:def:approximate-identity}
+设 \(K\in L^1(\mathbb R^d)\) 且 \(\int K=1\)。令
+\[
+ K_t(x)=t^{-d}K(x/t),\quad t>0.
+\]
+称 \((K_t)_{t>0}\) 为由 \(K\) 生成的一族\term[bijin-hengdeng]{逼近恒等}[approximate identity]。这里采用固定核缩放的版本，不要求 \(K\) 非负或光滑。
+\end{definition}
+\symidx{\(K_t\)：积分核的归一化缩放}
+
+对每个 \(t\)，\(\int K_t=1\)、\(\|K_t\|_1=\|K\|_1\)；而对每个 \(\delta>0\)，
+\[
+ \int_{|x|>\delta}|K_t(x)|\,\mathrm dx
+ =\int_{|z|>\delta/t}|K(z)|\,\mathrm dz\longrightarrow0.
+\]
+所以核的积分保持不变，绝对积分的质量则集中到原点附近。这个描述指测度意义下的集中，不是 \(K_t\) 在原点附近一致有界。
+
+\begin{proposition}\label{b1:prop:approximate-identity-lp}
+对上述 \(K_t\) 及 \(f\in L^p(\mathbb R^d)\)、\(1\leq p<\infty\)，有
+\[
+ \|K_t*f-f\|_p\longrightarrow0\quad(t\downarrow0).
+\]
+若 \(f\) 有界且一致连续，则 \(K_t*f\to f\) 一致成立。
+\end{proposition}
+\begin{proof}
+作代换 \(y=tz\)，并用 \(\int K=1\)，得到
+\[
+ K_t*f(x)-f(x)=\int K(z)\bigl(f(x-tz)-f(x)\bigr)\,\mathrm dz
+\]
+几乎处处成立。令 \(a=\|K\|_1\geq1\)，重复前一卷积界中的概率测度估计，再对 \(x\) 积分，可得
+\[
+ \|K_t*f-f\|_p^p
+ \leq a^{p-1}\int |K(z)|\cdot\|\tau_{tz}f-f\|_p^p\,\mathrm dz.
+\]
+对每个固定 \(z\)，平移连续性使右侧的范数趋零；同时它不超过 \(2^p\|f\|_p^p\)。控制收敛定理因而完成有限 \(p\) 的证明。
+
+若 \(f\) 有界且一致连续，则同一个表示给出
+\[
+ \sup_x|K_t*f(x)-f(x)|
+ \leq\int|K(z)|\sup_x|f(x-tz)-f(x)|\,\mathrm dz.
+\]
+被积的上确界对每个 \(z\) 趋零，且不超过 \(2\|f\|_\infty\)，再次用控制收敛定理即可。
+\end{proof}
+
+上述范数收敛不需要极大函数，但它本身不能把整个连续参数族的极限变成每一点的极限。为获得逐点信息，还需一种能统一所有 \(t\) 的控制。径向递减核正好提供了这样的联系。
+
+\begin{proposition}\label{b1:prop:radial-kernel-maximal}
+设 \(K\geq0\)、\(K\in L^1(\mathbb R^d)\)，且有一个径向非增代表，即 \(K(x)=k(|x|)\)，其中 \(k\) 非增。对每个 \(f\in L^1_{\mathrm{loc}}\)、每个 \(t>0\)，有扩展实数意义的不等式
+\[
+ \int K_t(y)|f(x-y)|\,\mathrm dy\leq\|K\|_1Mf(x).
+\]
+因此在 \(Mf(x)<\infty\) 的每个点，所有 \(K_t*f(x)\) 均绝对存在，并且
+\[
+ \sup_{t>0}|K_t*f(x)|\leq\|K\|_1Mf(x).
+\]
+\end{proposition}
+\begin{proof}
+固定 \(t\)。对 \(s>0\)，集合 \(E_s=\{y:K_t(y)>s\}\) 除去一个球面后是以原点为中心的球，也可能为空或只含原点。它具有有限测度，因为 \(s\,m_d(E_s)\leq\|K\|_1\)。故平移及球平均的定义给出
+\[
+ \int_{E_s}|f(x-y)|\,\mathrm dy\leq m_d(E_s)Mf(x).
+\]
+若 \(Mf(x)=\infty\) 且 \(\|K\|_1>0\)，所求结论直接成立；\(K=0\) 几乎处处的情形也直接成立。其余情形对 \(s\) 积分，由 Tonelli 定理及分层表示得到
+\[
+ \begin{aligned}
+ \int K_t(y)|f(x-y)|\,\mathrm dy
+ &=\int_0^\infty\int_{E_s}|f(x-y)|\,\mathrm dy\,\mathrm ds\\
+ &\leq Mf(x)\int_0^\infty m_d(E_s)\,\mathrm ds
+ =\|K\|_1Mf(x).
+ \end{aligned}
+\]
+积分三角不等式给出最后的断言。
+\end{proof}
+
+例如 \(K=\mathbf1_{B(0,1)}/\omega_d\) 给出原来的中心球平均。另取 \(K(x)=c(1+|x|)^{-d-1}\)，其中 \(c\) 使积分为 \(1\)，便得到支集无界的正核。归一化常数存在：单位球上函数有界，而在 \(2^j\leq|x|<2^{j+1}\) 上的积分至多为一个与 \(j\) 无关的常数乘以 \(2^{-j}\)。两种核都受同一个极大函数控制，尽管前者有跳跃，后者从所有远处位置取值。
 
 \subsection{后续调和分析中的作用}
 \label{b1:subsec:130404}
 
-待填充。
+现在可以分清两种收敛论证的分工。平移连续性说明：对固定 \(f\)，积分核的集中足以使误差的 \(L^p\) 范数趋零。极大估计说明：如果在一个便于计算的稠密类上已知逐点收敛，那么所有尺度的误差可以同时控制，例外集的测度最终也趋零。前者是范数中的逼近，后者是逐点收敛的稳定性，不能把其中一个当作另一个的同义改写。
+
+对径向非增核，上一命题的控制是逐点、全尺度的；需要直接使用可测极大函数时，可以先取可数尺度
+\[
+ K^*_{\mathbb Q}f(x)=\sup_{t\in\mathbb Q,\ t>0}|K_t*f(x)|.
+\]
+它是可测函数，并由 \(\|K\|_1Mf\) 控制。于是当 \(f\in L^1\)、\(\|K\|_1>0\) 时，
+\[
+ m_d\bigl(\{K^*_{\mathbb Q}f>\lambda\}\bigr)
+ \leq\frac{5^d\|K\|_1}{\lambda}\|f\|_1;
+\]
+当 \(f\in L^p\)、\(1<p<\infty\) 时，
+\[
+ \|K^*_{\mathbb Q}f\|_p\leq\|K\|_1 C_{d,p}\|f\|_p.
+\]
+给定任意一列正数 \(t_n\downarrow0\)，同样可以对 \(\sup_n|K_{t_n}*f|\) 使用这些估计。若还要恢复所有实数尺度的极限，则须利用核族的结构或直接作逐点误差估计；下一章在 Lebesgue 点处采用后一条路线。
+
+调和分析中还会遇到不能由绝对平均直接支配的算子。某些核靠正负抵消才有意义，先把核和函数全部取绝对值反而会破坏关键性质。届时覆盖选择、幅值分解与极大估计仍会使用，但要与抵消条件配合。程民德等的《实分析》\cite[第三章]{Cheng2008RealAnalysis}将覆盖、极大函数、插值及奇异积分放在相邻各节，提供了一条中文阅读路径；本卷先把覆盖与微分的基础做完，第二卷再进入这些算子的系统理论。

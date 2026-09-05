@@ -1,25 +1,195 @@
 % !TeX root = ../../Book1.tex
-\section{Hardy–Littlewood 最大函数}
+\section{Hardy–Littlewood 极大函数}
 \label{b1:sec:1303}
 
-% TODO: 撰写本节正文。
+覆盖定理可以把球上的平均值转换为整个空间中的测度估计。若一个点附近存在平均值很大的球，就把它记入例外集；选择不交子族之后，所有这些大平均值只能消耗有限的积分。这一想法给出本节的弱型不等式，再通过按幅值截断得到有限指数的范数估计。
 
-\subsection{最大算子}
+一维版本及其几何图像可对照 Axler 的《Measure, Integration \& Real Analysis》\cite[4A]{Axler2020Measure}；从弱型到强型的截断论证可对照 Fremlin 的《Measure Theory》\cite[472E--F]{Fremlin2016Measure}。本节先在 Lebesgue 测度下证明这些结果，任意 Radon 测度的中心球版本留作本章习题。
+
+\subsection{极大算子}
 \label{b1:subsec:130301}
 
-待填充。
+以下记 \(m_d\) 为 \(\mathbb R^d\) 上的 Lebesgue 测度，并约定
+\[
+ \omega_d=m_d\bigl(B(0,1)\bigr),\quad
+ m_d\bigl(B(x,r)\bigr)=\omega_dr^d.
+\]
+\symidx{\(\omega_d\)：欧氏单位球的体积}
+\(0<\omega_d<\infty\)，本章不需要它的显式数值。欧氏球面为零测集，所以本节的球平均不因把开球改为闭球而变化；对其他测度不能沿用这一约定。
+
+\begin{definition}\label{b1:def:hl-maximal-operator}
+设 \(f\in L^1_{\mathrm{loc}}(\mathbb R^d)\)。定义其中心\term[hardy-littlewood-jida-hanshu]{Hardy--Littlewood 极大函数}[Hardy--Littlewood maximal function]为
+\[
+ Mf(x)=\sup_{r>0}\frac1{\omega_dr^d}
+                  \int_{B(x,r)}|f(y)|\,\mathrm dy,
+ \quad x\in\mathbb R^d.
+\]
+相应的映射 \(f\mapsto Mf\) 称为极大算子。若允许球只包含 \(x\)，不必以 \(x\) 为中心，则定义非中心版本
+\[
+ M_uf(x)=\sup_{x\in B(a,r)}\frac1{\omega_dr^d}
+                  \int_{B(a,r)}|f(y)|\,\mathrm dy.
+\]
+两者均允许取值 \(+\infty\)，且只依赖 \(f\) 的几乎处处等价类。
+\end{definition}
+\symidx{\(Mf\)：中心极大函数}
+\symidx{\(M_uf\)：非中心极大函数}
+
+本书以“极大函数”为主称。程民德、邓东皋、龙瑞麟的《实分析》\cite[第三章第4节]{Cheng2008RealAnalysis}采用这一名称；该书还把它与奇异积分及插值方法相联系，可作为进入第二卷前的中文伴读。这里的“极大”指对所有允许尺度取上确界，并不保证某个球实现这个数值。
+
+\begin{proposition}\label{b1:prop:maximal-elementary}
+对局部可积函数，\(Mf\) 与 \(M_uf\) 都是非负下半连续函数，并且
+\[
+ Mf\leq M_uf\leq2^dMf.
+\]
+极大算子满足正齐次性与次可加性：
+\[
+ M(cf)=|c|Mf,\quad M(f+g)\leq Mf+Mg.
+\]
+在 \(Mf\) 与 \(Mg\) 均有限的点，还有
+\[
+ |Mf-Mg|\leq M(f-g).
+\]
+\end{proposition}
+\begin{proof}
+固定 \(r>0\)。若 \(x_n\to x\)，则 \(B(x_n,r)\) 最终都在同一个有界球内，且其示性函数在 \(\partial B(x,r)\) 外逐点趋于 \(\mathbf1_{B(x,r)}\)。球面为零测集，\(|f|\) 在该有界球上可积，故控制收敛定理给出
+\[
+ \int_{B(x_n,r)}|f|\longrightarrow\int_{B(x,r)}|f|.
+\]
+因此固定半径的平均是中心的连续函数。\(Mf\) 是这些连续函数的上确界，其严格上水平集是开集，即 \(Mf\) 下半连续。对 \(M_u\)，若某个球上的平均大于 \(t\)，该球中的每个点都属于 \(\{M_uf>t\}\)；后者正是所有这类开球的并，也为开集。
+
+中心球是非中心球的特例，故 \(M\leq M_u\)。若 \(x\in B(a,r)\)，则 \(B(a,r)\subseteq B(x,2r)\)，从而
+\[
+ \frac1{\omega_dr^d}\int_{B(a,r)}|f|
+ \leq\frac{2^d}{\omega_d(2r)^d}\int_{B(x,2r)}|f|
+ \leq2^dMf(x).
+\]
+对所有候选球取上确界得到另一方向。齐次性与次可加性分别来自积分的相应性质和三角不等式。最后，将次可加性用于 \(f=g+(f-g)\) 及 \(g=f+(g-f)\)，在允许相减的点得到所述差值估计。
+\end{proof}
+
+极大算子不是线性算子：\(M(-f)=Mf\)，而非 \(-Mf\)。它记录所有尺度上的绝对平均，忽略原函数的符号抵消。这种处理使估计稳定，但也使远处的点受到一个局部峰值的影响。
 
 \subsection{弱型 \texorpdfstring{\((1,1)\)}{(1,1)}}
 \label{b1:subsec:130302}
 
-待填充。
+对 \(f\in L^1\)，单个球平均有限，并不立即说明所有半径平均的上确界有限。所需控制不是逐点的共同上界，而是上确界超过给定阈值的点能占多大测度。
+
+% 实读来源：Axler2020Measure，4.8，印刷pp.106--107（一维有限覆盖证明）；
+% Fremlin2016Measure，472E--F，作者官方chap47.tex（一般Radon弱型与截断强型）。
+% 改编：这里先用前述一般5r引理直接处理全空间Lebesgue上水平集，不要求它有界。
+\begin{theorem}[Hardy--Littlewood，弱型不等式]\label{b1:thm:hl-weak-11}
+若 \(f\in L^1(\mathbb R^d)\)，则对每个 \(t>0\)，有
+\[
+ m_d\bigl(\{Mf>t\}\bigr)\leq\frac{5^d}{t}\|f\|_1.
+\]
+特别地，\(Mf<\infty\) 几乎处处。非中心算子也满足同类估计，常数可取 \(10^d\)。
+\end{theorem}
+\begin{proof}
+若 \(\|f\|_1=0\)，则所有球上的积分均为零。以下设其为正。令 \(E_t=\{Mf>t\}\)。对每个 \(x\in E_t\)，选择一个球 \(B_x=B(x,r_x)\)，使
+\[
+ t\omega_dr_x^d<\int_{B_x}|f|\leq\|f\|_1.
+\]
+所有 \(r_x\) 因而具有共同上界 \(\bigl(\|f\|_1/(t\omega_d)\bigr)^{1/d}\)。由\cref{b1:lem:five-r-covering}，可从中选出至多可数个两两不交的 \(B_j\)，使 \(E_t\subseteq\bigcup_j5B_j\)。于是
+\[
+ \begin{aligned}
+ m_d(E_t)&\leq\sum_jm_d(5B_j)
+       =5^d\sum_jm_d(B_j)\\
+ &\leq\frac{5^d}{t}\sum_j\int_{B_j}|f|
+ \leq\frac{5^d}{t}\|f\|_1.
+ \end{aligned}
+\]
+对每个正整数 \(n\)，\(\{Mf=\infty\}\subseteq E_n\)，其测度不超过 \(5^d\|f\|_1/n\)，故为零。最后，\(M_u\leq2^dM\) 给出非中心版本。
+\end{proof}
+
+若算子 \(T\) 满足 \(m_d(\{|Tf|>t\})\leq C\|f\|_1/t\)，其中 \(C\) 与 \(f,t\) 无关，就说它具有\term[ruoxing-yi-yi]{弱型 \((1,1)\)}[weak type (1,1)]。这种估计与 \(\|Tf\|_1\leq C\|f\|_1\) 不同。后者蕴含前者，而反向一般不成立。
+
+极大算子本身给出了反例。在实直线上取 \(f=\mathbf1_{[0,1]}\)。当 \(x>1\) 时，中心为 \(x\)、半径为 \(x\) 的开区间包含 \((0,1]\)，所以
+\[
+ Mf(x)\geq\frac1{2x}.
+\]
+由 \(\int_1^R\mathrm dx/x=\log R\)，知 \(Mf\notin L^1(\mathbb R)\)。可积输入仍可能产生不可积的远处尾部。若只把弱型界代入分层积分公式，遇到的也正是 \(\int\mathrm dt/t\) 的发散；强型结论需要利用原函数超过相应阈值的那一部分，而不能每次都用整个 \(\|f\|_1\)。
 
 \subsection{强型 \texorpdfstring{\((p,p)\)}{(p,p)}}
 \label{b1:subsec:130303}
 
-待填充。
+\begin{theorem}[Hardy--Littlewood，强型不等式]\label{b1:thm:hl-strong-pp}
+若 \(1<p<\infty\)、\(f\in L^p(\mathbb R^d)\)，则
+\[
+ \|Mf\|_p\leq C_{d,p}\|f\|_p,
+ \quad C_{d,p}=2\left(\frac{5^dp}{p-1}\right)^{1/p}.
+\]
+若 \(f\in L^\infty\)，则 \(\|Mf\|_\infty\leq\|f\|_\infty\)。
+\end{theorem}
+\begin{proof}
+有限 \(p\) 情形中，Hölder 不等式先保证 \(f\) 局部可积，因此 \(Mf\) 已有定义。固定 \(t>0\)，令
+\[
+ g_t=f\mathbf1_{\{|f|>t/2\}},\quad h_t=f-g_t.
+\]
+由 \(|f|\leq(t/2)^{1-p}|f|^p\) 在 \(\{|f|>t/2\}\) 上成立，得 \(g_t\in L^1\)。另一方面，\(|h_t|\leq t/2\)，故 \(Mh_t\leq t/2\)。次可加性和弱型不等式给出
+\begin{equation}\label{b1:eq:maximal-truncated-distribution}
+ m_d\bigl(\{Mf>t\}\bigr)
+ \leq m_d\bigl(\{Mg_t>t/2\}\bigr)
+ \leq\frac{2\cdot5^d}{t}\int_{\{|f|>t/2\}}|f|.
+\end{equation}
+注意这里的右端保留了随 \(t\) 变化的截断。
 
-\subsection{局部最大算子}
+对任意非负可测 \(u\)，将 \(u(x)^p=\int_0^{u(x)}pt^{p-1}\,\mathrm dt\) 代入 Tonelli 定理，可得
+\[
+ \int u^p=p\int_0^\infty t^{p-1}m_d\bigl(\{u>t\}\bigr)\,\mathrm dt,
+\]
+两端此时允许为无穷。应用于 \(u=Mf\)，再用\eqref{b1:eq:maximal-truncated-distribution}，得到
+\[
+ \begin{aligned}
+ \int(Mf)^p
+ &\leq2\cdot5^dp\int_0^\infty t^{p-2}
+              \int_{\{|f|>t/2\}}|f(x)|\,\mathrm dx\,\mathrm dt\\
+ &=2\cdot5^dp\int_{\mathbb R^d}|f(x)|
+                   \int_0^{2|f(x)|}t^{p-2}\,\mathrm dt\,\mathrm dx\\
+ &=\frac{2^p5^dp}{p-1}\int_{\mathbb R^d}|f|^p.
+ \end{aligned}
+\]
+第二次交换仍由 Tonelli 定理保证；最后的内积分有限用到了 \(p>1\)。右端有限才证明 \(Mf\in L^p\)，过程中没有预设这一结论。取 \(p\) 次方根即得估计。
+
+无穷端点只需在所有球上积分不等式 \(|f|\leq\|f\|_\infty\)；改变一个零测集不影响球平均，故 \(Mf(x)\leq\|f\|_\infty\) 对每个 \(x\) 都成立。
+\end{proof}
+
+估计 \(\|Tf\|_p\leq C\|f\|_p\) 称为\term[qiangxing-p-p]{强型 \((p,p)\)}[strong type (p,p)]。这里给出的常数不是最优常数，但明确记录了维数和指数的作用。证明只用到弱型 \((1,1)\)、无穷端点估计与次可加性；第二卷的插值理论将系统整理这种从两个端点推出中间指数的办法。当前需要记住的是截断所在的位置：大值部分交给弱型，小值部分由一致界吸收。
+
+\subsection{局部极大算子}
 \label{b1:subsec:130304}
 
-待填充。
+若 \(f\) 只有局部可积性，全尺度的 \(Mf\) 可能处处无穷。例如在实直线上取 \(f(y)=|y|\)。当 \(r>|x|\) 时，区间 \((x-r,x+r)\) 上的平均为 \((r^2+x^2)/(2r)\)，随 \(r\to\infty\) 发散。这不是小尺度平均失控，而是把越来越远处的增长带进了上确界。
+
+对开集 \(\Omega\subseteq\mathbb R^d\)、\(f\in L^1_{\mathrm{loc}}(\Omega)\)，定义
+\[
+ M_\Omega f(x)=\sup_{0<r<\operatorname{dist}(x,\Omega^c)}
+       \frac1{\omega_dr^d}\int_{B(x,r)}|f|,\quad x\in\Omega,
+\]
+其中 \(\operatorname{dist}(x,\varnothing)=\infty\)。它只允许闭包仍在 \(\Omega\) 内的中心球，但如果 \(\Omega\) 无界，仍可能包含任意大尺度。为处理真正的局部问题，再设
+\[
+ M_{\Omega,R}f(x)=\sup_{0<r<\min\{R,\operatorname{dist}(x,\Omega^c)\}}
+       \frac1{\omega_dr^d}\int_{B(x,r)}|f|.
+\]
+\symidx{\(M_{\Omega,R}f\)：半径受限的局部极大函数}
+这些函数在 \(\Omega\) 上下半连续：一个严格超过阈值的平均由某个固定半径实现，附近中心仍允许这个半径，且平均随中心连续。
+
+\begin{proposition}\label{b1:prop:local-maximal-bound}
+设 \(K\subseteq\Omega\) 紧，选择 \(\rho>0\)，使
+\[
+ K_\rho=\{\,y:\operatorname{dist}(y,K)\leq\rho\,\}\subseteq\Omega.
+\]
+若 \(0<R\leq\rho\)、\(f\in L^1_{\mathrm{loc}}(\Omega)\)，则
+\[
+ m_d\bigl(\{x\in K:M_{\Omega,R}f(x)>t\}\bigr)
+ \leq\frac{5^d}{t}\int_{K_\rho}|f|.
+\]
+若进一步 \(f\in L^p_{\mathrm{loc}}(\Omega)\)、\(1<p<\infty\)，则
+\[
+ \left(\int_K(M_{\Omega,R}f)^p\right)^{1/p}
+ \leq C_{d,p}\left(\int_{K_\rho}|f|^p\right)^{1/p}.
+\]
+\end{proposition}
+\begin{proof}
+将 \(f\mathbf1_{K_\rho}\) 在 \(\Omega\) 外延为零，记为 \(g\)。紧性保证 \(g\in L^1(\mathbb R^d)\)，在第二种情形还有 \(g\in L^p\)。若 \(x\in K\)、\(r<R\)，则 \(B(x,r)\subseteq K_\rho\)，所以所需的每个球平均都与 \(g\) 的相应平均一致。故 \(M_{\Omega,R}f\leq Mg\) 在 \(K\) 上成立，应用前两条极大不等式即可。
+\end{proof}
+
+局部化要先留出边界余量，再作截断；直接把 \(f\) 截在 \(K\) 上，会改变中心靠近 \(K\) 边缘时的平均。下一章中让半径趋零时，只需上述固定小尺度的估计，不需要额外假设函数在整个空间可积。
