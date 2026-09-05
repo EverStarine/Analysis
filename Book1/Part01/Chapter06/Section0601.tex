@@ -2,19 +2,130 @@
 \section{有符号测度}
 \label{b1:sec:0601}
 
-% TODO: 撰写本节正文。
+积分给出一种自然的带符号集合函数：若实函数 \(g\in L^1(\mu)\)，便可令 \(\nu(E)=\int_E g\,\mathrm d\mu\)。当 \(g\) 在区域内变号时，\(\nu(E)\) 会发生抵消，因而不再具有正测度的单调性。本节反过来从可数可加性出发，寻找一个固定的可测分割，使这种抵消在分割的每一侧都消失。以下把取值于 \([0,\infty]\) 的通常测度称为正测度；“正”在这里允许取零。
+
+本节采用实值有符号测度的约定，与 Sheldon Axler 的《Measure, Integration \& Real Analysis》\cite{Axler2020Measure}第 9 章中的 real measure 一致。该章在全变差之后证明分解定理；这里先证明集合函数有界，再构造分解，全变差的定义留到下一节。
 
 \subsection{正集与负集}
 \label{b1:subsec:060101}
 
-待填充。
+\begin{definition}\label{b1:def:signed-measure}
+在可测空间 \((X,\mathcal A)\) 上，一个\term[youfuhao-cedu]{有符号测度}[signed measure]是集合函数 \(\nu:\mathcal A\rightarrow\mathbb R\)，满足 \(\nu(\varnothing)=0\)，且对任意两两不交的可测集列 \((E_n)\)，级数 \(\sum_n\nu(E_n)\) 在 \(\mathbb R\) 中收敛，并有
+\[
+\nu\left(\bigcup_{n=1}^{\infty}E_n\right)=\sum_{n=1}^{\infty}\nu(E_n).
+\]
+可测集 \(P\) 称为 \(\nu\) 的\term[zhengji]{正集}[positive set]，若每个可测子集 \(E\subseteq P\) 都满足 \(\nu(E)\geq0\)。将不等号反向便得到\term[fuji]{负集}[negative set]的定义。
+\end{definition}
+
+有些教材允许有符号测度取某一方向的无穷值，但禁止同时出现 \(+\infty\) 和 \(-\infty\)。本章的有符号测度不采用这个更广的约定，所有值均为有限实数；后文讨论的有符号测度线性空间也遵循这一限制。正测度则仍可取无穷值，Radon--Nikodym 定理会单独处理其 \(\sigma\)-有限版本。
+
+条件 \(\nu(P)\geq0\) 本身远不足以说明 \(P\) 是正集。例如在 \(X=\{a,b\}\) 上取 \(\nu=\delta_a-\delta_b\)，则 \(\nu(X)=0\)，但子集 \(\{b\}\) 的值为 \(-1\)。同样，\(\nu(E)=0\) 可能只是正负抵消，不能据此把 \(E\) 中的函数任意改值而保持积分不变。
+
+\begin{proposition}\label{b1:prop:signed-measure-basic}
+有符号测度在不交可测集列上的可加级数绝对收敛。若 \(E_n\uparrow E\) 或 \(E_n\downarrow E\)，均有 \(\nu(E_n)\rightarrow\nu(E)\)。有符号测度的实线性组合仍是有符号测度。
+\end{proposition}
+\begin{proof}
+对不交集列，把满足 \(\nu(E_n)\geq0\) 的指标组成一组，其并集可测；可数可加性说明这一组非负项的和等于一个有限实数。对负项指标作同样处理，得到 \(\sum_n|\nu(E_n)|<\infty\)。
+
+若 \(E_n\uparrow E\)，令 \(D_1=E_1\)、\(D_n=E_n\setminus E_{n-1}\)。由可数可加性，\(\nu(E_n)=\sum_{j\leq n}\nu(D_j)\) 趋于 \(\nu(E)\)。若 \(E_n\downarrow E\)，对 \(X\setminus E_n\uparrow X\setminus E\) 应用刚才的结论，再用 \(\nu(E_n)=\nu(X)-\nu(X\setminus E_n)\)。这里没有无穷数相减，因为 \(\nu\) 是实值函数。最后，两个收敛级数可以逐项作实线性组合，这便验证了相应集合函数的可数可加性。
+\end{proof}
+
+若正测度 \(\mu\) 上有 \(g\in L^1(\mu;\mathbb R)\)，则 \(g\) 的正负部积分分别诱导有限正测度。由\cref{b1:thm:integral-induced-measure}及上面的线性性质，\(g\mu\) 是有符号测度。集合 \(\{g\geq0\}\) 是正集，\(\{g<0\}\) 是负集。这类例子提示了分解的形状，却不能代替一般有符号测度的构造：此时还不知道任意 \(\nu\) 都能用密度表示。
 
 \subsection{Hahn 分解}
 \label{b1:subsec:060102}
 
-待填充。
+寻找最大的正值，需要先排除 \(\nu\) 虽然逐集有限、整体却无界的可能。
+
+\begin{lemma}\label{b1:lem:signed-measure-bounded}
+任意有符号测度 \(\nu\) 都满足 \(\sup_{E\in\mathcal A}|\nu(E)|<\infty\)。
+\end{lemma}
+\begin{proof}
+对可测集 \(A\) 记 \(M(A)=\sup\{\,|\nu(B)|\mid B\in\mathcal A,\ B\subseteq A\,\}\)。把 \(B\subseteq A\cup C\) 分成 \(B\cap A\) 与 \(B\setminus A\)，可得 \(M(A\cup C)\leq M(A)+M(C)\)。
+
+假设 \(M(X)=\infty\)。从 \(A_1=X\) 开始，若 \(M(A_n)=\infty\)，取可测 \(B_n\subseteq A_n\) 使
+\[
+|\nu(B_n)|>|\nu(A_n)|+1.
+\]
+于是 \(|\nu(A_n\setminus B_n)|>1\)，且 \(B_n\)、\(A_n\setminus B_n\) 中至少一个的 \(M\) 值为无穷。把其中一个这样的集合取为 \(A_{n+1}\)，另一块记为 \(D_n=A_n\setminus A_{n+1}\)。如此得到两两不交的 \(D_n\)，并且 \(|\nu(D_n)|>1\)。可数可加性却要求级数 \(\sum_n\nu(D_n)\) 收敛，其通项应趋于零，矛盾。
+\end{proof}
+
+\term*[hahn-fenjie]{Hahn 分解}[Hahn decomposition]把正负区域同时选出，而不依赖积分表示。
+
+\begin{theorem}[Hahn 分解定理]\label{b1:thm:hahn-decomposition}
+每个有符号测度 \(\nu\) 都有可测分割 \(X=P\mathbin{\dot\cup}N\)，其中 \(P\) 是正集，\(N\) 是负集。还可使
+\[
+\nu(P)=\sup_{E\in\mathcal A}\nu(E),\quad
+\nu(N)=\inf_{E\in\mathcal A}\nu(E).
+\]
+\end{theorem}
+\begin{proof}
+令 \(a=\sup_{E\in\mathcal A}\nu(E)\)。由前一引理，\(0\leq a<\infty\)。取 \(E_j\in\mathcal A\) 使 \(\nu(E_j)>a-2^{-j}\)。对任意可测 \(A,B\)，有限可加性给出
+\[
+\nu(A\cup B)=\nu(A)+\nu(B)-\nu(A\cap B)
+\geq\nu(A)+\nu(B)-a.
+\]
+归纳应用此式，固定 \(k\) 后得到
+\[
+\nu\left(\bigcup_{j=k}^{n}E_j\right)
+\geq a-\sum_{j=k}^{n}2^{-j}.
+\]
+先令 \(n\rightarrow\infty\)，用递增连续性，再令 \(k\rightarrow\infty\)，用递减连续性，便知可测集
+\[
+P=\bigcap_{k=1}^{\infty}\bigcup_{j=k}^{\infty}E_j
+\]
+满足 \(\nu(P)\geq a\)，故 \(\nu(P)=a\)。这个两次取极限的步骤把仅仅逼近上确界的集合变成了真正达到上确界的集合。
+
+若 \(B\subseteq P\) 可测，则 \(\nu(P\setminus B)\leq a=\nu(P)\)，从而 \(\nu(B)\geq0\)。若 \(B\subseteq N=X\setminus P\) 可测，则 \(\nu(P\cup B)\leq a=\nu(P)\)，从而 \(\nu(B)\leq0\)。于是 \(P,N\) 符合要求。任意可测 \(E\) 都满足
+\[
+\nu(E)=\nu(E\cap P)+\nu(E\cap N)\geq\nu(N),
+\]
+因为 \(\nu(E\cap P)\geq0\)，且从负集 \(N\) 中删去一块不会使其值更小。这就证明了下确界公式。
+\end{proof}
+
+\begin{proposition}\label{b1:prop:hahn-essential-uniqueness}
+若 \((P,N)\) 与 \((P',N')\) 都是 Hahn 分解，则 \(P\mathbin{\triangle}P'\) 的每个可测子集的 \(\nu\) 值都为零。
+\end{proposition}
+\begin{proof}
+集合 \(P\setminus P'\subseteq P\cap N'\) 的每个可测子集既有非负值又有非正值，因而值为零。对 \(P'\setminus P\) 也如此。任意位于对称差中的可测集分成这两块后，由有限可加性得结论。
+\end{proof}
+
+因此分割不一定逐点唯一：在密度为零的区域可以自由调整正负两侧。唯一的是它们携带的正负测度。
 
 \subsection{Jordan 分解}
 \label{b1:subsec:060103}
 
-待填充。
+\term*[jordan-fenjie]{Jordan 分解}[Jordan decomposition]把有符号测度写成两个分别集中的正测度之差。
+
+\begin{theorem}[Jordan 分解定理]\label{b1:thm:jordan-decomposition}
+每个有符号测度 \(\nu\) 可唯一写成 \(\nu=\nu^+-\nu^-\)，其中 \(\nu^+,\nu^-\) 是有限正测度，并且集中在互不相交的可测集上。对任一 Hahn 分解 \((P,N)\)，有
+\[
+\nu^+(E)=\nu(E\cap P),\quad \nu^-(E)=-\nu(E\cap N).
+\]
+此外，对每个可测 \(E\)，
+\[
+\nu^+(E)=\sup_{B\in\mathcal A,\,B\subseteq E}\nu(B),\quad
+\nu^-(E)=-\inf_{B\in\mathcal A,\,B\subseteq E}\nu(B).
+\]
+\end{theorem}
+\begin{proof}
+用 Hahn 分解定义 \(\nu^+,\nu^-\)。正负集的定义说明它们非负，可数可加性由 \(\nu\) 在与固定集合取交后的可加性得到。其总质量为有限数 \(\nu(P)\)、\(-\nu(N)\)，且 \(\nu^+(N)=\nu^-(P)=0\)。分割每个 \(E\) 可得 \(\nu=\nu^+-\nu^-\)。
+
+若 \(B\subseteq E\)，则 \(\nu(B)\leq\nu(B\cap P)\leq\nu(E\cap P)=\nu^+(E)\)；取 \(B=E\cap P\) 达到等号。对 \(-\nu\) 作同样处理得到下确界公式，因此这两个测度不依赖所选的 Hahn 分解。
+
+再设 \(\nu=\alpha-\beta\)，其中有限正测度 \(\alpha,\beta\) 分别集中在可测分割 \((A,X\setminus A)\) 上。对 \(B\subseteq A\)，有 \(\nu(B)=\alpha(B)\geq0\)；对 \(B\subseteq X\setminus A\)，有 \(\nu(B)=-\beta(B)\leq0\)。所以这是 Hahn 分解，并由上述公式得到 \(\alpha=\nu^+\)、\(\beta=\nu^-\)。
+\end{proof}
+
+测度 \(\nu^+\) 与 \(\nu^-\) 分别称为 \(\nu\) 的正部与负部。
+\symidx{\(\nu^+\)：有符号测度的正部}
+\symidx{\(\nu^-\)：有符号测度的负部}
+此处的 \(\nu^+(E)\) 通常不等于 \(\max\{\nu(E),0\}\)：前者记录 \(E\) 内的全部正质量，而后者已经经历抵消。对 \(\delta_a-\delta_b\) 取 \(E=\{a,b\}\)，两者分别为 \(1\) 和 \(0\)。
+
+\begin{proposition}\label{b1:prop:jordan-minimality}
+若 \(\nu=\alpha-\beta\)，其中 \(\alpha,\beta\) 是任意有限正测度，则 \(\nu^+\leq\alpha\)、\(\nu^-\leq\beta\)。更精确地，存在有限正测度 \(\rho\) 使 \(\alpha=\nu^++\rho\)、\(\beta=\nu^-+\rho\)。
+\end{proposition}
+\begin{proof}
+对 \(B\subseteq E\)，\(\nu(B)=\alpha(B)-\beta(B)\leq\alpha(E)\)。对 \(B\) 取上确界，得到 \(\nu^+(E)\leq\alpha(E)\)；对 \(-\nu\) 得到另一不等式。于是 \(\rho=\alpha-\nu^+\) 非负且可数可加，并且由两种差表示可知 \(\rho=\beta-\nu^-\)。
+\end{proof}
+
+Jordan 分解剔除了任意差表示中共同抵消的部分。下一节把剩余的正、负质量相加，得到衡量有符号测度大小的全变差。

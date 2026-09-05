@@ -1,24 +1,210 @@
 % !TeX root = ../../Book1.tex
 \OptionalSection{复测度}{b1:sec:0605}
 
-% TODO: 撰写本节正文。
+% 来源：Axler2020Measure，§9A 9.1--9.11、9.17，印刷256--263页；
+% §9B 9.36、9.41，印刷272--274页，已读本地正式OA全文。
+% 变差的有限分割定义与密度公式参考上述结果；下界改用有限相位逼近。
+% 极分解通过实虚部的Jordan正部与本章有限RN定理证明，不使用Hilbert空间表示。
+% 证明义务：先证分割变差有限且可数可加，再建立密度变差公式；
+% 极分解的零集选择、唯一性及复积分换测度一致性均在本节展开。
+
+有符号测度把正质量与负质量分开。对复值集合函数，抵消还可能来自不同方向：实部和虚部的正负分解虽然能提供控制，却不能直接给出复数模的大小。本节先用有限分割测出不受抵消影响的总量，再把复测度写成这一正测度与单位模函数的乘积。这里需要\cref{b1:thm:radon-nikodym-finite}；初读时可以略过本节，不影响后续的正测度理论。
 
 \subsection{复测度}
 \label{b1:subsec:060501}
 
-待填充。
+\begin{definition}\label{b1:def:complex-measure}
+在可测空间 \((X,\mathcal A)\) 上，\term[fu-cedu]{复测度}[complex measure]是可数可加的集合函数 \(\nu:\mathcal A\rightarrow\mathbb C\)：对任意两两不交的可测集合列 \((E_n)\)，数值级数收敛，且
+\[
+\nu\left(\bigcup_{n=1}^{\infty}E_n\right)
+=\sum_{n=1}^{\infty}\nu(E_n).
+\]
+\end{definition}
+
+复测度不允许取无穷值。令可数可加式中的集合全部为空集，可知 \(\nu(\varnothing)=0\)；再补上空集，就得到有限可加性。记
+\[
+\alpha(E)=\operatorname{Re}\nu(E),\quad
+\beta(E)=\operatorname{Im}\nu(E).
+\]
+实部、虚部与收敛级数的和相容，所以 \(\alpha,\beta\) 都是本章所说的有限有符号测度。反过来，任意这样的 \(\alpha,\beta\) 都给出复测度 \(\nu=\alpha+i\beta\)。
+
+由\cref{b1:def:signed-total-variation}，
+\[
+\lambda=|\alpha|+|\beta|
+\]
+是有限正测度，并且 \(|\nu(E)|\leq\lambda(E)\)。于是对两两不交的 \((E_n)\)，
+\[
+\sum_{n=1}^{\infty}|\nu(E_n)|
+\leq\sum_{n=1}^{\infty}\lambda(E_n)
+\leq\lambda(X)<\infty.
+\]
+复测度的可数可加式因而自动绝对收敛，不依赖集合的排列顺序。仅在某个固定排列下条件收敛的系数列，不能用来任意定义可数原子的复测度。
+
+例如，在 \(\mathbb R\) 上取两个点测度，令 \(\nu=\delta_0+i\delta_1\)。它在整个空间上的值为 \(1+i\)，模长为 \(\sqrt2\)；把两个点分开后，各部分模长之和为 \(2\)。复数相加时丢失的模长，取决于各部分的方向。
 
 \subsection{全变差}
 \label{b1:subsec:060502}
 
-待填充。
+\Cref{b1:prop:variation-partition}的有限分割公式在复值情形仍有意义。
+
+\begin{definition}\label{b1:def:complex-total-variation}
+复测度 \(\nu\) 的全变差由下式定义：
+\[
+|\nu|(E)=\sup_{\mathcal P}\sum_{A\in\mathcal P}|\nu(A)|,
+\]
+其中 \(\mathcal P\) 遍历 \(E\) 的全部有限可测分割。空集的变差规定为零。
+\end{definition}
+
+\begin{proposition}\label{b1:prop:complex-variation-measure}
+复测度的全变差是有限正测度。对任意 \(E\in\mathcal A\)，有
+\[
+|\nu(E)|\leq|\nu|(E)\leq\lambda(E),\quad
+|\alpha|(E)\leq|\nu|(E),\quad
+|\beta|(E)\leq|\nu|(E).
+\]
+\end{proposition}
+\begin{proof}
+单块分割给出第一个下界。每个分割的和不超过 \(\sum_{A\in\mathcal P}\lambda(A)=\lambda(E)\)，得到有限上界。又因 \(|\alpha(A)|,|\beta(A)|\leq|\nu(A)|\)，对同样的分割取上确界便得其余两式。
+
+设 \(E=\bigcup_nE_n\)，其中各 \(E_n\) 两两不交。固定正整数 \(m\) 和 \(\varepsilon>0\)，在每个 \(E_n\)、\(n\leq m\) 中取分割，其和大于 \(|\nu|(E_n)-\varepsilon/m\)。合并这些分割，再添上 \(E\setminus\bigcup_{n\leq m}E_n\)，得到 \(E\) 的有限分割。因此
+\[
+|\nu|(E)\geq\sum_{n=1}^{m}|\nu|(E_n)-\varepsilon.
+\]
+先令 \(\varepsilon\downarrow0\)，再令 \(m\to\infty\)，便有一个方向的可数可加不等式。
+
+反过来，对 \(E\) 的任意有限分割 \(\mathcal P\)，可数可加性及数值级数的三角不等式给出
+\[
+\sum_{A\in\mathcal P}|\nu(A)|
+\leq\sum_{A\in\mathcal P}\sum_{n=1}^{\infty}|\nu(A\cap E_n)|
+=\sum_{n=1}^{\infty}\sum_{A\in\mathcal P}|\nu(A\cap E_n)|
+\leq\sum_{n=1}^{\infty}|\nu|(E_n).
+\]
+这里只交换有限和与非负级数。对 \(\mathcal P\) 取上确界，得到反向不等式。空集取零与 \(|\nu|(X)\leq\lambda(X)<\infty\) 完成证明。
+\end{proof}
+
+特别地，\(|\nu|(E)=0\) 当且仅当 \(E\) 的每个可测子集 \(A\) 都满足 \(\nu(A)=0\)。仅有 \(\nu(E)=0\) 不够，它可能只是各部分相互抵消。全变差消除了这种抵消，也给出范数 \(\|\nu\|_{\mathrm{TV}}=|\nu|(X)\)；齐次性与三角不等式直接由分割公式得到，而范数为零时单块下界保证 \(\nu=0\)。
+
+\Cref{b1:def:measure-absolute-continuity}也推广到复测度：对正测度 \(\mu\)，仍以 \(\mu(E)=0\Rightarrow\nu(E)=0\) 定义 \(\nu\ll\mu\)。它等价于 \(|\nu|\ll\mu\)。事实上，\(\mu(E)=0\) 时，\(E\) 的每个可测子集也为 \(\mu\)-零集，可用刚才的零变差判别；反向则由 \(|\nu(E)|\leq|\nu|(E)\) 得到。相互奇异性的定义也沿用\cref{b1:def:mutually-singular-measures}，以 \(|\nu|\perp\mu\) 表示 \(\nu\perp\mu\)。命题中的变差控制还说明，这两种关系分别等价于实部、虚部都与 \(\mu\) 具有相应关系；奇异情形取两部分所集中零测集的并即可。
 
 \subsection{极分解}
 \label{b1:subsec:060503}
 
-待填充。
+先确定由复值密度产生的测度，其变差如何计算。Sheldon Axler 的《Measure, Integration \& Real Analysis》\cite{Axler2020Measure}在第 9 章以简单函数逼近证明这一公式；下面只逼近密度的方向，使模长保留在积分中。
+
+\begin{lemma}\label{b1:lem:complex-density-variation}
+设 \(\mu\) 是正测度，\(h\in L^1(\mu;\mathbb C)\)。则
+\[
+\nu(E)=\int_Eh\,\mathrm d\mu
+\]
+定义复测度，并且对每个可测集合 \(E\)，有
+\[
+|\nu|(E)=\int_E|h|\,\mathrm d\mu.
+\]
+\end{lemma}
+\begin{proof}
+若各 \(E_n\) 两两不交，则 \(h\mathbf1_{\bigcup_{n\leq m}E_n}\) 逐点趋于 \(h\mathbf1_{\bigcup_nE_n}\)，其模不超过可积函数 \(|h|\)。由\cref{b1:thm:dominated-convergence}，有限可加式可取极限，故 \(\nu\) 可数可加。对每个有限分割使用积分三角不等式，立即得到 \(|\nu|(E)\leq\int_E|h|\,\mathrm d\mu\)。
+
+为证明下界，在 \(h\neq0\) 处令 \(v=\overline h/|h|\)，在 \(h=0\) 处令 \(v=1\)。给定 \(\varepsilon>0\)，取足够多个等距分布的单位复数 \(c_1,\ldots,c_N\)，使单位圆上每一点都距其中某一个小于 \(\varepsilon\)。将每个点分配给首个满足 \(|v(x)-c_j|<\varepsilon\) 的序号，得到有限可测分割 \((A_j)\)。简单函数 \(q=\sum_jc_j\mathbf1_{A_j}\) 满足 \(|q-v|<\varepsilon\)，从而
+\[
+\operatorname{Re}(qh)\geq(1-\varepsilon)|h|.
+\]
+另一方面，
+\[
+\operatorname{Re}\int_Eqh\,\mathrm d\mu
+=\sum_{j=1}^{N}\operatorname{Re}\left(c_j\nu(E\cap A_j)\right)
+\leq\sum_{j=1}^{N}|\nu(E\cap A_j)|
+\leq|\nu|(E).
+\]
+合并两式并令 \(\varepsilon\downarrow0\)，得到所需下界。
+\end{proof}
+
+\begin{theorem}\label{b1:thm:complex-polar-decomposition}
+每个复测度 \(\nu\) 都存在可测函数 \(u:X\rightarrow\mathbb C\)，满足 \(|u|=1\) 几乎处处于 \(|\nu|\)，且
+\[
+\nu(E)=\int_Eu\,\mathrm d|\nu|\quad(E\in\mathcal A).
+\]
+这样的 \(u\) 在 \(|\nu|\)-几乎处处意义下唯一。此表示称为复测度的\term[ji-fenjie]{极分解}[polar decomposition]，也记作 \(\mathrm d\nu=u\,\mathrm d|\nu|\)。
+\end{theorem}
+\begin{proof}
+仍令 \(\alpha=\operatorname{Re}\nu\)、\(\beta=\operatorname{Im}\nu\) 和 \(\lambda=|\alpha|+|\beta|\)。由\cref{b1:thm:jordan-decomposition}，\(\alpha^+,\alpha^-,\beta^+,\beta^-\) 都是绝对连续于有限正测度 \(\lambda\) 的有限正测度。分别应用\cref{b1:thm:radon-nikodym-finite}，再将相应密度相减，得到实值可积函数 \(a,b\)，使
+\[
+\alpha(E)=\int_Ea\,\mathrm d\lambda,\quad
+\beta(E)=\int_Eb\,\mathrm d\lambda.
+\]
+令 \(h=a+ib\)，则 \(h\in L^1(\lambda)\)，而前一引理给出 \(\mathrm d|\nu|=|h|\,\mathrm d\lambda\)。
+
+在 \(h\neq0\) 处令 \(u=h/|h|\)，在 \(h=0\) 处令 \(u=1\)。这是处处单位模的可测函数。由\cref{b1:prop:density-change-integral}，
+\[
+\int_Eu\,\mathrm d|\nu|
+=\int_Eu|h|\,\mathrm d\lambda
+=\int_Eh\,\mathrm d\lambda=\nu(E).
+\]
+该换测度公式适用于复值可积函数：\(|u|=1\) 与 \(|\nu|(X)<\infty\) 保证了左侧可积，右侧也由 \(|h|\in L^1(\lambda)\) 保证可积。
+
+若另一函数 \(w\) 也给出所述表示，则 \(\int_E(u-w)\,\mathrm d|\nu|=0\) 对每个 \(E\) 成立。实部的正、负水平集 \(\{\operatorname{Re}(u-w)>1/n\}\)、\(\{\operatorname{Re}(u-w)<-1/n\}\) 必为零测集，否则对应积分严格为正或负。对虚部作相同处理，并对正整数 \(n\) 取可数并，得到 \(u=w\) 几乎处处。
+\end{proof}
+
+在区间 \([0,2\pi]\) 上令 \(\nu(E)=\int_Ee^{it}\,\mathrm dt\)。它的全变差是 Lebesgue 测度，极分解中的函数为 \(u(t)=e^{it}\)。尽管 \(\nu([0,2\pi])=0\)，仍有 \(|\nu|([0,2\pi])=2\pi\)。实部、虚部提供的控制测度则有密度 \(|\cos t|+|\sin t|\)，总质量为 \(8\)；它足以建立有限性，却不是全变差本身。
 
 \subsection{复测度上的积分}
 \label{b1:subsec:060504}
 
-待填充。
+极分解让复测度的积分归结为正测度积分，不必再对有限分割重新建立一套极限过程。
+
+\begin{definition}\label{b1:def:complex-measure-integral}
+设 \(\mathrm d\nu=u\,\mathrm d|\nu|\) 是极分解。称可测复函数 \(f\) 关于 \(\nu\) 可积，是指 \(f\in L^1(|\nu|)\)，并规定
+\[
+\int f\,\mathrm d\nu=\int fu\,\mathrm d|\nu|.
+\]
+\end{definition}
+
+因为 \(|u|=1\) 几乎处处，右端确实可积；极分解的唯一性保证它不依赖 \(u\) 的代表。这个积分对函数复线性，并且由正测度积分的三角不等式，
+\[
+\left|\int f\,\mathrm d\nu\right|\leq\int|f|\,\mathrm d|\nu|.
+\]
+特别地，\(\int\mathbf1_E\,\mathrm d\nu=\nu(E)\)，所以简单函数的积分仍是 \(\sum_jc_j\nu(E_j)\)。若 \(\nu\) 是正测度，可取 \(u=1\)，恢复原有定义；若 \(\nu\) 实值，则 Hahn 分解的正集上取 \(u=1\)、负集上取 \(u=-1\)，积分就是关于 \(\nu^+\)、\(\nu^-\) 的两个积分之差。
+
+\begin{proposition}\label{b1:prop:complex-integral-change-density}
+设 \(\mu\) 是正测度，\(h\in L^1(\mu;\mathbb C)\)，且 \(\mathrm d\nu=h\,\mathrm d\mu\)。则可测复函数 \(f\) 关于 \(\nu\) 可积，当且仅当 \(fh\in L^1(\mu)\)；此时
+\[
+\int f\,\mathrm d\nu=\int fh\,\mathrm d\mu.
+\]
+\end{proposition}
+\begin{proof}
+由\cref{b1:lem:complex-density-variation}与\cref{b1:prop:density-change-integral}，
+\[
+\int|f|\,\mathrm d|\nu|=\int|f||h|\,\mathrm d\mu,
+\]
+这就证明可积性的等价。在 \(h\neq0\) 处取 \(u=h/|h|\)，其余点取 \(u=1\)，所得函数给出 \(\nu\) 的极分解。因此
+\[
+\int f\,\mathrm d\nu
+=\int fu\,\mathrm d|\nu|
+=\int fu|h|\,\mathrm d\mu
+=\int fh\,\mathrm d\mu.
+\]
+每次使用复值换测度公式时，两侧的绝对可积性均由前一等式保证。
+\end{proof}
+
+进一步，若 \(f\in L^1(|\nu|)\)，则 \(\eta(E)=\int_Ef\,\mathrm d\nu\) 也是复测度。它关于 \(|\nu|\) 的密度为 \(fu\)，所以
+\[
+\mathrm d|\eta|=|f|\,\mathrm d|\nu|.
+\]
+可积性中控制的是 \(|f|\) 关于全变差的积分，不能用某些集合上 \(\int_Ef\,\mathrm d\nu\) 的偶然抵消来代替。
+
+\begin{corollary}\label{b1:cor:complex-measure-dominated-convergence}
+设可测复函数满足 \(f_n\to f\) 几乎处处于 \(|\nu|\)，并存在 \(g\in L^1(|\nu|)\)，使 \(|f_n|\leq g\) 几乎处处。则各函数关于 \(\nu\) 可积，且
+\[
+\int|f_n-f|\,\mathrm d|\nu|\longrightarrow0,\quad
+\int f_n\,\mathrm d\nu\longrightarrow\int f\,\mathrm d\nu.
+\]
+\end{corollary}
+\begin{proof}
+对正测度 \(|\nu|\) 使用\cref{b1:thm:dominated-convergence}，得到可积性与第一个极限。再用
+\[
+\left|\int(f_n-f)\,\mathrm d\nu\right|
+\leq\int|f_n-f|\,\mathrm d|\nu|,
+\]
+便得到第二个极限。
+\end{proof}
+
+复积分仍有线性、三角估计和控制收敛，然而不存在复数之间的保序性。使用收敛定理时，几乎处处关系与共同控制都应相对于正测度 \(|\nu|\) 表述，而不是仅要求例外集合的复测度值等于零。

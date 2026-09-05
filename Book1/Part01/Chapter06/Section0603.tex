@@ -2,24 +2,152 @@
 \section{绝对连续与奇异}
 \label{b1:sec:0603}
 
-% TODO: 撰写本节正文。
+% 来源：Axler2020Measure §9B 9.28--9.34，印刷268--270页，已读本地正式OA全文。
+% Fremlin2016Measure §232Aa、232Ac、232Ba：已核读官方chap23.pdf；其epsilon-delta
+% 定义在实值可数可加情形与本节零集定义等价，证明改用全变差及可测尾并。
+% 例子重新组织：离散密度、区间限制测度、二进数字到Cantor集的显式映射。
+% 义务：区分nu(E)=0与变差零；epsilon-delta不要求mu有限；不预用RN表示或Stieltjes构造。
 
-\subsection{\texorpdfstring{\(\nu\ll\mu\)}{μ}}
+给定参考测度 \(\mu\) 后，可以问另一个测度是否给 \(\mu\) 看不见的集合分配了质量。积分密度不会在 \(\mu\) 的零测集上产生质量；单点质量相对于 Lebesgue 测度则恰好相反。这两种关系不涉及正负号，而涉及质量落在哪些可测集上。
+
+\subsection{绝对连续}
 \label{b1:subsec:060301}
 
-待填充。
+\begin{definition}\label{b1:def:measure-absolute-continuity}
+设 \(\mu\) 是 \((X,\mathcal A)\) 上的正测度，\(\nu\) 是正测度或有符号测度。若对每个 \(E\in\mathcal A\)，\(\mu(E)=0\) 都蕴含 \(\nu(E)=0\)，就称 \(\nu\) 关于 \(\mu\)\term[cedu-juedui-lianxu]{绝对连续}[absolutely continuous]，记作 \(\nu\ll\mu\)。
+\symidx{\(\nu\ll\mu\)：测度的绝对连续关系}
+\end{definition}
 
-\subsection{\texorpdfstring{\(\nu\perp\mu\)}{μ}}
+对于有符号测度，有
+\[
+\nu\ll\mu\quad\Longleftrightarrow\quad|\nu|\ll\mu
+\quad\Longleftrightarrow\quad\nu^+\ll\mu\ \text{且}\ \nu^-\ll\mu.
+\]
+事实上，\(\mu(E)=0\) 时每个可测子集 \(A\subseteq E\) 也满足 \(\mu(A)=0\)。若 \(\nu\ll\mu\)，则这些 \(A\) 上的 \(\nu\) 值全部为零，\cref{b1:prop:variation-minimal-control}给出 \(|\nu|(E)=0\)。其余方向由 \(|\nu(E)|\leq|\nu|(E)\) 及 \(|\nu|=\nu^++\nu^-\) 得到。
+
+每个实密度测度 \(g\mu\) 都关于 \(\mu\) 绝对连续，因为零测集上的积分为零。关系 \(\ll\) 有方向性：在 \(\mathbb R\) 上，\(\nu(E)=m(E\cap[0,1])\) 满足 \(\nu\ll m\)，但 \(m\not\ll\nu\)，因为 \((2,3)\) 是 \(\nu\) 的零测集，却不是 \(m\) 的零测集。
+
+对有限变差测度，零集条件还能加强为小测度集合上的一致估计。
+
+\begin{proposition}\label{b1:prop:measure-ac-epsilon-delta}
+设 \(\nu\) 是有符号测度，\(\mu\) 是任意正测度。则 \(\nu\ll\mu\) 当且仅当：对每个 \(\varepsilon>0\)，存在 \(\delta>0\)，使
+\[
+E\in\mathcal A,\quad\mu(E)<\delta
+\quad\Longrightarrow\quad |\nu|(E)<\varepsilon.
+\]
+这里不要求 \(\mu(X)<\infty\)。
+\end{proposition}
+\begin{proof}
+若估计成立，对 \(\mu\) 零测集令 \(\varepsilon\downarrow0\)，就得到 \(|\nu|(E)=0\)，因而 \(\nu\ll\mu\)。
+
+反之，设 \(\nu\ll\mu\)，但估计失败。存在 \(\varepsilon_0>0\) 及可测集 \(E_n\)，使 \(\mu(E_n)<2^{-n}\)、\(|\nu|(E_n)\geq\varepsilon_0\)。令
+\[
+F_k=\bigcup_{n\geq k}E_n,\quad F=\bigcap_{k\geq1}F_k.
+\]
+由次可加性，\(\mu(F)\leq\mu(F_k)\leq2^{1-k}\)，所以 \(\mu(F)=0\)，进而 \(|\nu|(F)=0\)。有限测度 \(|\nu|\) 的从上连续性给出 \(|\nu|(F_k)\downarrow0\)，但 \(|\nu|(F_k)\geq|\nu|(E_k)\geq\varepsilon_0\)，矛盾。
+\end{proof}
+
+这个证明没有先假设 \(\nu\) 存在积分密度。D. H. Fremlin 的《Measure Theory》\cite{Fremlin2016Measure}第 232 节以小集合估计作为绝对连续的定义，再证明它与零集条件的联系；在本章的实值可数可加约定下，两种说法相同。有限变差确实用在从上连续性中：在 \((0,1)\) 上，正测度 \(\rho(E)=\int_E x^{-1}\,\mathrm dm(x)\) 满足 \(\rho\ll m\)，但任意 \((0,\delta)\) 都有无穷的 \(\rho\) 测度，不满足上述估计。
+
+\subsection{相互奇异}
 \label{b1:subsec:060302}
 
-待填充。
+\begin{definition}\label{b1:def:mutually-singular-measures}
+对正测度 \(\rho\) 约定 \(|\rho|=\rho\)。设 \(\nu,\eta\) 各为正测度或有符号测度；若存在 \(S\in\mathcal A\)，使
+\[
+|\nu|(X\setminus S)=0,\quad |\eta|(S)=0,
+\]
+就称它们\term[xianghu-qiyi]{相互奇异}[mutually singular]，记作 \(\nu\perp\eta\)。
+\symidx{\(\nu\perp\eta\)：测度的相互奇异关系}
+\end{definition}
+
+取补集 \(X\setminus S\) 即知关系对称。定义表示 \(\nu\) 的全部质量集中在 \(S\)，而 \(\eta\) 的全部质量集中在它的补集；对有符号测度不能把第一式弱化为 \(\nu(X\setminus S)=0\)，因为后者容许内部抵消。
+
+\begin{proposition}\label{b1:prop:singularity-jordan}
+若 \(\nu\) 是有符号测度，\(\mu\) 是正测度，则
+\[
+\nu\perp\mu\quad\Longleftrightarrow\quad|\nu|\perp\mu
+\quad\Longleftrightarrow\quad\nu^+\perp\mu\ \text{且}\ \nu^-\perp\mu.
+\]
+特别地，Jordan 分解满足 \(\nu^+\perp\nu^-\)。
+\end{proposition}
+\begin{proof}
+第一个等价只是定义。若 \(|\nu|\) 集中在某个 \(\mu\) 零测集 \(S\)，则两个正测度 \(\nu^+,\nu^-\leq|\nu|\) 也集中在 \(S\)，得到一个方向。反之，设 \(\nu^+,\nu^-\) 分别集中在 \(\mu\) 零测集 \(S_+,S_-\)，则它们的和集中在仍为 \(\mu\) 零测的 \(S_+\cup S_-\)。最后，Hahn 分解 \(X=P\sqcup N\) 给出 \(\nu^+(N)=\nu^-(P)=0\)，正好证明 \(\nu^+\perp\nu^-\)。
+\end{proof}
+
+奇异性也是相对关系。测度 \(m\llcorner[0,1]\) 与 \(m\llcorner[2,3]\) 相互奇异，但它们都关于 \(m\) 绝对连续。不能脱离参考测度，把“奇异”理解为一个测度自身的不规则性。
+
+\begin{proposition}\label{b1:prop:ac-singular-linear-stability}
+固定正测度 \(\mu\)。关于 \(\mu\) 绝对连续的有符号测度构成实线性子空间，并且全变差收敛的极限仍在其中。关于 \(\mu\) 奇异的有符号测度也具有这两种性质。
+\end{proposition}
+\begin{proof}
+绝对连续测度的实线性组合仍在每个 \(\mu\) 零测集上取零值，所以保持绝对连续性。若 \(\nu_n\ll\mu\)、\(\|\nu_n-\nu\|_{\mathrm{TV}}\to0\)，则对任意 \(\mu\) 零测集 \(E\)，
+\[
+|\nu(E)|=|\nu(E)-\nu_n(E)|\leq\|\nu-\nu_n\|_{\mathrm{TV}}\longrightarrow0.
+\]
+因此 \(\nu\ll\mu\)。
+
+对于奇异测度，若 \(\nu,\eta\) 分别集中在 \(\mu\) 零测集 \(S,T\)，那么对任意实数 \(a,b\)，全变差估计
+\[
+|a\nu+b\eta|\leq|a|\,|\nu|+|b|\,|\eta|
+\]
+说明该线性组合集中在零测集 \(S\cup T\)。若 \(\nu_n\perp\mu\)，各自选取零测集 \(S_n\) 容纳其全部质量，令 \(S=\bigcup_nS_n\)。仍有 \(\mu(S)=0\)，且 \(|\nu_n|(X\setminus S)=0\)。由
+\[
+|\nu|(X\setminus S)
+\leq|\nu-\nu_n|(X\setminus S)+|\nu_n|(X\setminus S)
+\leq\|\nu-\nu_n\|_{\mathrm{TV}},
+\]
+令 \(n\to\infty\)，便得 \(\nu\perp\mu\)。
+\end{proof}
+
+极限中的奇异集可能随 \(n\) 改变，证明因此先取可数并，再控制同一个补集上的误差。这是全变差收敛所能提供的统一控制；若只观察一类较少的测试对象，奇异质量就可能在极限中变成绝对连续质量，不能套用这一结论。
 
 \subsection{奇异测度}
 \label{b1:subsec:060303}
 
-待填充。
+在实直线的 Borel 集上，称关于 Lebesgue 测度 \(m\) 奇异的正测度为\term[qiyi-cedu]{奇异测度}[singular measure]。最直接的例子是单点质量。更一般地，取互不相同的点 \(x_j\) 与 \(a_j>0\)、\(\sum_ja_j<\infty\)，则
+\[
+\rho(E)=\sum_{j=1}^{\infty}a_j\mathbf1_E(x_j)
+\]
+是有限正测度，集中在可数零测集 \(\{x_j:j\geq1\}\) 上，因而 \(\rho\perp m\)。可数可加性由非负级数换序得到。点集可以稠密，所以集中在零测集上不意味着集中在某个孤立区域。
+
+奇异测度也可以不给任何单点分配质量。下面用\cref{b1:prop:cantor-null}中的数字编码构造一个例子，不预先使用分布函数生成测度的理论。对 \(t\in[0,1)\)，令
+\[
+b_k(t)=\lfloor2^kt\rfloor-2\lfloor2^{k-1}t\rfloor\in\{0,1\},
+\quad
+T(t)=\sum_{k=1}^{\infty}\frac{2b_k(t)}{3^k}.
+\]
+每个 \(b_k\) 为 Borel 可测阶梯函数，所以 \(T\) 可测，且 \(T(t)\) 总在三分 Cantor 集 \(C\) 中。对 Borel 集 \(E\subseteq\mathbb R\) 定义
+\[
+\rho_C(E)=m\bigl(\{\,t\in[0,1)\mid T(t)\in E\,\}\bigr).
+\]
+逆像保持不交并，故 \(m\) 的可数可加性直接给出 \(\rho_C\) 的可数可加性；又有 \(\rho_C(\mathbb R)=1\)、\(\rho_C(C)=1\)，所以它是奇异概率测度。
+
+为计算单点质量，注意只含数字 \(0,2\) 的三进编码是单射，证明已见\cref{b1:prop:cantor-null}。若 \(T(t)=y\)，便唯一确定全部 \(b_k(t)\)。而前 \(n\) 位固定时，恒等式
+\[
+\lfloor2^nt\rfloor=\sum_{k=1}^n2^{n-k}b_k(t)
+\]
+把 \(t\) 限制在一个长度为 \(2^{-n}\) 的半开二进区间内。因此 \(\rho_C(\{y\})\leq2^{-n}\) 对所有 \(n\) 成立，得到 \(\rho_C(\{y\})=0\)。这类例子说明：单点上没有质量，并不能推出关于 Lebesgue 测度绝对连续。
 
 \subsection{Lebesgue 分解的动机}
 \label{b1:subsec:060304}
 
-待填充。
+绝对连续与奇异不穷尽所有可能。比如
+\[
+\nu(E)=m(E\cap[0,1])+\delta_2(E)
+\]
+既不关于 \(m\) 绝对连续，也不关于 \(m\) 奇异：单点 \(\{2\}\) 阻止前者，而长度部分不可能集中在 Lebesgue 零测集上。它却已经呈现出一个绝对连续部分与一个奇异部分的和。
+
+\begin{proposition}\label{b1:prop:ac-singular-zero}
+若有符号测度 \(\nu\) 同时满足 \(\nu\ll\mu\) 与 \(\nu\perp\mu\)，则 \(\nu=0\)。
+\end{proposition}
+\begin{proof}
+由奇异性，取 \(\mu(S)=0\) 且 \(|\nu|(X\setminus S)=0\)。绝对连续性给出 \(|\nu|(S)=0\)，所以 \(|\nu|(X)=0\)，进而 \(\nu=0\)。
+\end{proof}
+
+下一节的目标是：对正 \(\sigma\)-有限参考测度 \(\mu\)，把任意有符号测度 \(\nu\) 唯一写成
+\[
+\nu=\nu_{\mathrm a}+\nu_{\mathrm s},\quad
+\nu_{\mathrm a}\ll\mu,\quad\nu_{\mathrm s}\perp\mu,
+\]
+并进一步寻找 \(g\in L^1(\mu;\mathbb R)\)，使 \(\nu_{\mathrm a}=g\mu\)。第一项任务分开两种质量，第二项任务把可以由 \(\mu\) 描述的部分写成积分。\Cref{b1:prop:ac-singular-zero}将保证两种成分没有非零重叠；存在性则需要实际构造，不能由术语分类本身推出。

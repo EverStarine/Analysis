@@ -2,19 +2,159 @@
 \section{全变差}
 \label{b1:sec:0602}
 
-% TODO: 撰写本节正文。
+% 来源：Axler2020Measure §9A 9.8--9.18，印刷259--265页，已读本地正式OA全文。
+% 复核：Fremlin2016Measure §231Ya、231Yh；此处先用Jordan分解定义变差，后证分割公式。
+% 证明义务：最小正控制测度；实密度的正负部；Cauchy极限的可数可加性和范数收敛。
+% 完备性采用集合函数极限与尾集控制，不前向调用Banach空间的一般理论。
+
+总量 \(\nu(X)\) 会受到正负抵消的影响，不能用来衡量有符号测度的大小。例如 \(\delta_0-\delta_1\) 的总量为零，却在两个单点上各有一单位的质量。Jordan 分解已经把正、负贡献分开；把它们相加，就能得到不受抵消影响的正测度。
 
 \subsection{全变差测度}
 \label{b1:subsec:060201}
 
-待填充。
+\begin{definition}\label{b1:def:signed-total-variation}
+设 \(\nu\) 是 \((X,\mathcal A)\) 上的有符号测度。称有限正测度
+\[
+|\nu|=\nu^++\nu^-
+\]
+为 \(\nu\) 的\term[quan-biancha-cedu]{全变差测度}[total variation measure]。
+\symidx{\(\lvert\nu\rvert\)：有符号测度的全变差测度}
+\end{definition}
+
+这里的 \(|\nu|\) 是集合函数，而 \(|\nu(E)|\) 是一个实数的绝对值。两者一般不同。下面的公式给出不依赖 Hahn 分解的计算方法。
+
+\begin{proposition}\label{b1:prop:variation-partition}
+对每个 \(E\in\mathcal A\)，有
+\[
+|\nu|(E)=\sup_{\mathcal P}\sum_{A\in\mathcal P}|\nu(A)|,
+\]
+其中 \(\mathcal P\) 遍历 \(E\) 的所有有限可测分割，允许分割中出现空集。若 \(X=P\sqcup N\) 是一个 Hahn 分解，则分割 \(E=(E\cap P)\sqcup(E\cap N)\) 便达到这个上确界。
+\end{proposition}
+\begin{proof}
+由 \(\nu=\nu^+-\nu^-\)，每个可测集 \(A\) 都满足
+\[
+|\nu(A)|\leq\nu^+(A)+\nu^-(A)=|\nu|(A).
+\]
+因此，对 \(E\) 的任意有限分割求和，所得值不超过 \(|\nu|(E)\)。另一方面，Hahn 分解的正、负性给出
+\[
+|\nu(E\cap P)|+|\nu(E\cap N)|
+=\nu(E\cap P)-\nu(E\cap N)
+=\nu^+(E)+\nu^-(E).
+\]
+这就得到反向不等式，并说明上确界可以达到。取 \(E=\varnothing\) 时各项均为零。
+\end{proof}
+
+\begin{proposition}\label{b1:prop:variation-minimal-control}
+全变差是控制 \(\nu\) 的最小正测度：若正测度 \(\rho\) 满足 \(|\nu(E)|\leq\rho(E)\) 对所有 \(E\in\mathcal A\) 成立，则 \(|\nu|(E)\leq\rho(E)\) 对所有 \(E\) 成立。并且
+\[
+|\nu|(E)=0
+\quad\Longleftrightarrow\quad
+\nu(A)=0\quad\text{对每个可测 }A\subseteq E.
+\]
+\end{proposition}
+\begin{proof}
+对 \(E\) 的每个有限分割，\(\sum_A|\nu(A)|\leq\sum_A\rho(A)=\rho(E)\)；再取上确界，得到最小性。若 \(|\nu|(E)=0\)，则对可测 \(A\subseteq E\) 有 \(|\nu(A)|\leq|\nu|(A)\leq|\nu|(E)=0\)。反过来，若所有这些子集上的值都为零，则分割公式中的每个和都为零。
+\end{proof}
+
+在 \(\nu=\delta_0-\delta_1\) 的例子中，\(|\nu|=\delta_0+\delta_1\)，故 \(|\nu(\{0,1\})|=0\)，而 \(|\nu|(\{0,1\})=2\)。仅知道 \(\nu(E)=0\) 并不意味着 \(E\) 不承载质量；要排除内部抵消，必须要求它的所有可测子集都取零值。
 
 \subsection{有限变差测度}
 \label{b1:subsec:060202}
 
-待填充。
+当 \(|\nu|(X)<\infty\) 时，称 \(\nu\) 具有\term[youxian-biancha]{有限变差}[finite variation]。按本章的实值约定，每个有符号测度都自动满足这一条件，因为\cref{b1:thm:jordan-decomposition}已经证明 \(\nu^+\)、\(\nu^-\) 均有限。若允许正测度取 \(+\infty\)，就不能省去有限性限制：实直线上的 Lebesgue 测度的变差仍是它本身，总变差为无穷。
+
+带密度的测度把函数的绝对值与测度的全变差联系起来。
+
+\begin{proposition}\label{b1:prop:real-density-variation}
+设 \(\mu\) 是任意正测度，\(g\in L^1(\mu;\mathbb R)\)。规定
+\[
+\nu(E)=\int_E g\,\mathrm d\mu,\quad E\in\mathcal A,
+\]
+也记作 \(\nu=g\mu\)。则 \(\nu\) 是有符号测度，而且
+\[
+\nu^+=g^+\mu,\quad \nu^-=g^-\mu,\quad |\nu|=|g|\mu.
+\]
+\end{proposition}
+\begin{proof}
+由\cref{b1:thm:integral-induced-measure}，\(g^+\mu\) 与 \(g^-\mu\) 是有限正测度。它们的差等于 \(\nu\)，故 \(\nu\) 有限且可数可加。选取可测的实值代表 \(g\)，令 \(P=\{g\geq0\}\)、\(N=\{g<0\}\)。可测子集上的积分保序性说明 \(P\)、\(N\) 分别是 \(\nu\) 的正集、负集，所以它们构成 Hahn 分解。按 Jordan 分解的构造，\(\nu^+(E)=\int_{E\cap P}g\,\mathrm d\mu=\int_Eg^+\,\mathrm d\mu\)，负部也有相应等式。两者相加得到全变差公式。
+\end{proof}
+
+例如在 \([-1,1]\) 上令 \(\nu(E)=\int_E x\,\mathrm dm(x)\)，则 \(\nu([-1,1])=0\)，而
+\[
+|\nu|([-1,1])=\int_{-1}^1|x|\,\mathrm dx=1.
+\]
+对于两个可积实密度 \(g,h\)，同一公式还给出 \(|g\mu-h\mu|(X)=\int|g-h|\,\mathrm d\mu\)。因此密度的积分误差能够精确地转写为测度的变差误差。
 
 \subsection{有符号测度空间的范数}
 \label{b1:subsec:060203}
 
-待填充。
+全体实值有符号测度按逐集相加与实数乘法构成向量空间，记为 \(\mathcal M(X,\mathcal A;\mathbb R)\)。有限实线性组合保持可数可加性；这里不会出现无穷值相减。定义\term[quan-biancha-fanshu]{全变差范数}[total variation norm]为
+\[
+\|\nu\|_{\mathrm{TV}}=|\nu|(X).
+\]
+\symidx{\(\lVert\nu\rVert_{\mathrm{TV}}\)：测度的全变差范数}
+
+\begin{proposition}\label{b1:prop:variation-norm}
+上述公式是 \(\mathcal M(X,\mathcal A;\mathbb R)\) 上的范数。对有符号测度 \(\nu,\eta\) 和实数 \(a\)，还有逐集不等式
+\[
+|\nu+\eta|\leq|\nu|+|\eta|,\quad |a\nu|=|a|\,|\nu|.
+\]
+\end{proposition}
+\begin{proof}
+三角不等式说明 \(|\nu|+|\eta|\) 控制 \(\nu+\eta\)，故第一式来自最小控制性质。第二式可对分割公式中的每一项提出 \(|a|\)，\(a=0\) 时两边均为零。范数有限且非负；若 \(\|\nu\|_{\mathrm{TV}}=0\)，则 \(|\nu(E)|\leq|\nu|(X)=0\) 对每个 \(E\) 成立，因而 \(\nu=0\)。这给出范数所需的全部性质。
+\end{proof}
+
+\begin{proposition}\label{b1:prop:variation-uniform-comparison}
+记 \(s(\nu)=\sup_{E\in\mathcal A}|\nu(E)|\)。则
+\[
+s(\nu)=\max\{\nu^+(X),\nu^-(X)\},\quad
+s(\nu)\leq\|\nu\|_{\mathrm{TV}}\leq2s(\nu).
+\]
+若 \(\nu(X)=0\)，则 \(\|\nu\|_{\mathrm{TV}}=2s(\nu)\)。
+\end{proposition}
+\begin{proof}
+对任意可测集 \(E\)，有 \(-\nu^-(X)\leq\nu(E)\leq\nu^+(X)\)。Hahn 分解的正集 \(P\) 达到右端，负集 \(N\) 达到左端，所以 \(s(\nu)\) 等于两个端点绝对值的较大者。两个非负数的和介于其最大值与最大值的两倍之间，得到范数估计。若 \(\nu(X)=0\)，则 \(\nu^+(X)=\nu^-(X)\)，最后的等式随之成立。
+\end{proof}
+
+因此全变差收敛等价于集合函数在全体可测集上一致收敛；它远强于逐集取极限后不控制误差上界的说法。尤其当 \(\rho,\eta\) 都是概率测度时，\((\rho-\eta)(X)=0\)，于是
+\[
+\|\rho-\eta\|_{\mathrm{TV}}
+=2\sup_{E\in\mathcal A}|\rho(E)-\eta(E)|.
+\]
+左边累计全部正、负差异，右边只取单个事件上的最大差异，因而出现因子二。对于 \(\delta_0\) 与 \(\delta_1\)，事件 \(\{0\}\) 已达到右边的上确界。
+
+若范数空间中每个 Cauchy 列都在该范数下收敛于空间内的元素，就称该空间\term[wanbei-fanshu-kongjian]{完备}[complete]。这里 Cauchy 条件指：对每个 \(\varepsilon>0\)，存在 \(N\)，使 \(n,m\geq N\) 时 \(\|\nu_n-\nu_m\|_{\mathrm{TV}}<\varepsilon\)。下面直接验证测度空间的完备性；其一般理论将在\cref{b1:ch:08}讨论。
+
+Sheldon Axler 的《Measure, Integration \& Real Analysis》\cite{Axler2020Measure}在第 9A 节把实测度与复测度统一放进这一范数框架。以下证明只使用实数的完备性、有限分割和正测度的从上连续性。
+
+\begin{theorem}\label{b1:thm:signed-measures-complete}
+空间 \(\mathcal M(X,\mathcal A;\mathbb R)\) 关于全变差范数完备。
+\end{theorem}
+\begin{proof}
+设 \((\nu_n)\) 为 Cauchy 列。由于
+\[
+|\nu_n(E)-\nu_m(E)|\leq\|\nu_n-\nu_m\|_{\mathrm{TV}},
+\]
+每个固定集合上的数列都收敛，可以定义 \(\nu(E)=\lim_n\nu_n(E)\)。有限可加性通过有限和的极限传给 \(\nu\)，且 \(\nu(\varnothing)=0\)。给定 \(\varepsilon>0\)，取 \(N\) 使 Cauchy 误差小于 \(\varepsilon\)。固定 \(n\geq N\) 并令 \(m\to\infty\)，得到
+\[
+|\nu(E)-\nu_n(E)|\leq\varepsilon\quad(E\in\mathcal A).
+\]
+这一估计对所有可测集同时成立。
+
+取两两不交的 \(E_j\)，令 \(E=\bigcup_{j\geq1}E_j\)、\(R_k=\bigcup_{j>k}E_j\)。则 \(R_k\downarrow\varnothing\)。固定上述 \(n\)，有限测度 \(|\nu_n|\) 的从上连续性给出 \(|\nu_n|(R_k)\to0\)，所以
+\[
+\left|\nu(E)-\sum_{j=1}^k\nu(E_j)\right|
+=|\nu(R_k)|\leq\varepsilon+|\nu_n|(R_k).
+\]
+先令 \(k\to\infty\)，再令 \(\varepsilon\downarrow0\)，便得 \(\nu\) 的可数可加性。因此 \(\nu\) 属于所讨论的空间。
+
+还须证明范数收敛，而不只是逐集收敛。对 \(X\) 的任意有限可测分割 \(\mathcal P\)，当 \(n\geq N\) 时，
+\[
+\sum_{A\in\mathcal P}|(\nu-\nu_n)(A)|
+=\lim_{m\to\infty}\sum_{A\in\mathcal P}|(\nu_m-\nu_n)(A)|
+\leq\varepsilon.
+\]
+对分割取上确界，得到 \(\|\nu-\nu_n\|_{\mathrm{TV}}\leq\varepsilon\)，即所需收敛。
+\end{proof}
+
+全变差收敛控制所有可测集上的误差，但它并不随点的位置连续变化。在实直线上，若 \(x\ne y\)，则 \(\|\delta_x-\delta_y\|_{\mathrm{TV}}=2\)，因为正、负质量分别落在互不相交的单点上。即使 \(x\) 很接近 \(y\)，这一距离也不减小；后文讨论测度的其他收敛方式时，需要记住这一区别。

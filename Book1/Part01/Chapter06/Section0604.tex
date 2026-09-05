@@ -2,24 +2,180 @@
 \section{Radon–Nikodym 定理}
 \label{b1:sec:0604}
 
-% TODO: 撰写本节正文。
+绝对连续只比较零测集，密度表示却要求对每个可测集给出一个积分公式。两者之间的桥梁是\term*[radon-nikodym-dingli]{Radon--Nikodym 定理}[Radon--Nikodym theorem]。证明先在有限正测度之间进行，再用可数分割推广；有符号测度的情形通过 Jordan 分解归结到正测度。
+
+下面的构造采用 Hahn 分解与积分上确界的方法，可与 Fremlin 的《Measure Theory》\cite{Fremlin2016Measure}第二卷第 232 节对读。Sheldon Axler 的《Measure, Integration \& Real Analysis》\cite{Axler2020Measure}第 9 章给出借助 Hilbert 空间表示定理的另一条路线；那种方法适合在学过\hyperref[b1:ch:08]{第八章}后回看，这里不把尚未建立的泛函分析结果用作前提。
 
 \subsection{Radon–Nikodym 导数}
 \label{b1:subsec:060401}
 
-待填充。
+\begin{definition}\label{b1:def:radon-nikodym-derivative}
+设 \(\mu,\nu\) 是 \((X,\mathcal A)\) 上的正测度。若非负可测函数 \(f\) 满足
+\[
+\nu(E)=\int_E f\,\mathrm d\mu\quad(E\in\mathcal A),
+\]
+就称 \(f\) 是 \(\nu\) 关于 \(\mu\) 的一个\term[cedu-midu]{密度}[density]，或\term[radon-nikodym-daoshu]{Radon--Nikodym 导数}[Radon--Nikodym derivative]，记为 \(f=\dfrac{\mathrm d\nu}{\mathrm d\mu}\)。对有符号测度 \(\nu\)，以实可积函数 \(f\) 和同一公式定义其导数。
+\end{definition}
+\symidx{\(\mathrm d\nu/\mathrm d\mu\)：Radon--Nikodym 导数}
+
+这个“导数”首先是对所有可测集成立的积分表示，不预设点、距离或差商。它立刻给出 \(\nu\ll\mu\)，因为零测集上的非负积分或可积函数积分均为零。至于导数是否存在，需要下面的定理；逐点差商的联系则留到\hyperref[b1:ch:14]{第十四章}的测度微分理论。
+
+\begin{proposition}\label{b1:prop:density-change-integral}
+若 \(\nu=f\mu\)，其中 \(f\geq0\) 可测，则对任意非负可测 \(g\)，
+\[
+\int g\,\mathrm d\nu=\int gf\,\mathrm d\mu.
+\]
+乘积采用 \(0\cdot\infty=0\) 的约定。若 \(f\) 在 \(\mu\)-几乎处处有限，将它在相应可测零集上改成零后，对实或复可测 \(g\)，其关于 \(\nu\) 可积当且仅当 \(gf\) 关于 \(\mu\) 可积，此时同一等式成立。
+\end{proposition}
+\begin{proof}
+当 \(g\) 是示性函数时，等式就是密度的定义；有限线性组合给出非负简单函数的情形。取简单函数 \(g_n\uparrow g\)，则 \(g_nf\uparrow gf\)，两边应用单调收敛定理即得一般非负情形。先将此结论用于 \(|g|\)，得到可积性的等价；再将实部、虚部各自分成正负部，用积分的线性性质得到最后的公式。
+\end{proof}
+
+在离散空间 \(X=\mathbb N\) 上，若 \(\mu(\{n\})=a_n>0\)、\(\nu(\{n\})=b_n\geq0\)，密度就是 \(b_n/a_n\)。上面的命题此时退化为加权求和的换权公式。一般测度空间没有这样的原子分解，但积分公式仍承担相同的作用。
 
 \subsection{定理及证明}
 \label{b1:subsec:060402}
 
-待填充。
+先找出可以从非零剩余测度中提取的一小块密度。
+
+\begin{lemma}\label{b1:lem:positive-density-minorant}
+设 \(\mu,\rho\) 是有限正测度，\(\rho\ll\mu\)，且 \(\rho(X)>0\)。则存在 \(c>0\) 和可测集 \(P\)，使 \(\mu(P)>0\)，并且对所有可测 \(E\) 有
+\[
+c\mu(E\cap P)\leq\rho(E).
+\]
+\end{lemma}
+\begin{proof}
+绝对连续性保证 \(\mu(X)>0\)。取 \(c>0\) 使 \(c\mu(X)<\rho(X)\)，对有符号测度 \(\rho-c\mu\) 作 Hahn 分解 \((P,N)\)。在负集 \(N\) 上，\((\rho-c\mu)(N)\leq0\)，所以
+\[
+(\rho-c\mu)(P)\geq(\rho-c\mu)(X)>0.
+\]
+从而 \(\rho(P)>0\)，再由 \(\rho\ll\mu\) 得 \(\mu(P)>0\)。对任意可测 \(E\)，正集性质给出 \(c\mu(E\cap P)\leq\rho(E\cap P)\leq\rho(E)\)。
+\end{proof}
+
+\begin{theorem}[有限正测度的 Radon--Nikodym 定理]\label{b1:thm:radon-nikodym-finite}
+设 \(\mu,\nu\) 是有限正测度，且 \(\nu\ll\mu\)。则存在非负函数 \(f\in L^1(\mu)\)，使 \(\nu=f\mu\)。
+\end{theorem}
+\begin{proof}
+考虑所有尚未超过 \(\nu\) 的密度组成的集合
+\[
+\mathcal F=\left\{\,h:X\rightarrow[0,\infty]\ \middle|\ h\text{ 可测},\
+\int_Eh\,\mathrm d\mu\leq\nu(E)\ (E\in\mathcal A)\,\right\}.
+\]
+零函数属于 \(\mathcal F\)，且每个元素的积分不超过 \(\nu(X)\)。若 \(h,k\in\mathcal F\)，令 \(A=\{h\geq k\}\)，则
+\[
+\int_E\max\{h,k\}\,\mathrm d\mu
+=\int_{E\cap A}h\,\mathrm d\mu+\int_{E\setminus A}k\,\mathrm d\mu
+\leq\nu(E).
+\]
+故 \(\mathcal F\) 对有限逐点最大值封闭。
+
+令 \(a=\sup_{h\in\mathcal F}\int h\,\mathrm d\mu\leq\nu(X)\)。取 \(h_n\in\mathcal F\) 使其积分趋于 \(a\)，并置 \(f_n=\max\{h_1,\ldots,h_n\}\)。这样 \(f_n\uparrow f\)，单调收敛给出
+\[
+\int f\,\mathrm d\mu=a,\quad \int_E f\,\mathrm d\mu\leq\nu(E)
+\quad(E\in\mathcal A).
+\]
+函数 \(f\) 几乎处处有限；在可测零集 \(\{f=\infty\}\) 上将它改成零，便得到非负可积函数，且不改变上式。
+
+定义剩余集合函数 \(\rho=\nu-f\mu\)。这是两个有限测度之差，因而可数可加；由上式它非负，并且 \(\rho\ll\mu\)。若 \(\rho(X)>0\)，前一引理给出 \(c\mathbf1_P\) 满足
+\[
+\int_E(f+c\mathbf1_P)\,\mathrm d\mu\leq\nu(E),\quad
+\int(f+c\mathbf1_P)\,\mathrm d\mu=a+c\mu(P)>a.
+\]
+这与 \(a\) 的定义矛盾。因此 \(\rho(X)=0\)，非负性进一步给出 \(\rho(E)=0\) 对所有 \(E\) 成立，即 \(\nu=f\mu\)。
+\end{proof}
+
+证明中的最大值操作避免了对不可数函数族直接取上确界所可能产生的可测性问题：只需选一列使积分逼近最优值的函数，再逐次取有限最大值。最后由 Hahn 分解排除非零余量，才把“不超过”提升为“处处相等”。
+
+\begin{theorem}[\(\sigma\)-有限正测度的 Radon--Nikodym 定理]\label{b1:thm:radon-nikodym}
+设 \(\mu,\nu\) 是 \(\sigma\)-有限正测度，且 \(\nu\ll\mu\)。则存在非负可测函数 \(f\)，在 \(\mu\)-几乎处处有限，并满足 \(\nu=f\mu\)。若 \(\nu(X)<\infty\)，则 \(f\in L^1(\mu)\)。
+\end{theorem}
+\begin{proof}
+分别取递增可测覆盖 \(U_n\uparrow X\)、\(V_n\uparrow X\)，使 \(\mu(U_n)<\infty\)、\(\nu(V_n)<\infty\)。令 \(A_1=U_1\cap V_1\)，并对 \(n\geq2\) 令
+\[
+A_n=(U_n\cap V_n)\setminus(U_{n-1}\cap V_{n-1}).
+\]
+这些集合构成可测分割，两种测度在每块上都有限。在 \(A_n\) 的迹可测空间应用有限版本，得到非负可积密度 \(f_n\)；把各 \(f_n\) 在其可测零集上改为有限值。令 \(f\) 在 \(A_n\) 上等于 \(f_n\)，则可测性由可数拼接保持。对每个 \(E\in\mathcal A\)，
+\[
+\nu(E)=\sum_n\nu(E\cap A_n)
+=\sum_n\int_{E\cap A_n} f_n\,\mathrm d\mu
+=\int_E f\,\mathrm d\mu.
+\]
+最后一步由非负积分的可数可加性得到，不需要交换条件收敛级数。取 \(E=X\) 就得到最后的可积性结论。
+\end{proof}
+
+\begin{corollary}\label{b1:cor:signed-radon-nikodym}
+若 \(\nu\) 是有符号测度，\(\mu\) 是 \(\sigma\)-有限正测度，且 \(\nu\ll\mu\)，则存在实函数 \(f\in L^1(\mu)\) 使 \(\nu=f\mu\)，并有 \(|\nu|=|f|\mu\)。
+\end{corollary}
+\begin{proof}
+对任意 \(\mu\)-零集，其可测子集也是 \(\mu\)-零集。Jordan 分解的上下确界公式于是给出 \(\nu^+\ll\mu\)、\(\nu^-\ll\mu\)。前一定理提供非负可积密度 \(f_+,f_-\)，分别表示这两个有限正测度。取 \(f=f_+-f_-\)，即可得到积分表示；全变差公式由第\ref{b1:sec:0602}节对积分诱导测度的计算得到。
+\end{proof}
 
 \subsection{唯一性}
 \label{b1:subsec:060403}
 
-待填充。
+\begin{proposition}\label{b1:prop:radon-nikodym-uniqueness}
+在\cref{b1:thm:radon-nikodym}的条件下，若非负可测函数 \(f,g\) 都表示 \(\nu\)，则 \(f=g\) 在 \(\mu\)-几乎处处成立。有符号版本的可积密度也具有同样的唯一性。
+\end{proposition}
+\begin{proof}
+沿用前一定理中两种测度均有限的分割 \((A_n)\)。在每块上，\(\int_{A_n}f\,\mathrm d\mu=\int_{A_n}g\,\mathrm d\mu=\nu(A_n)<\infty\)，故两函数都几乎处处有限。去掉所有这些可测零集后，对
+\[
+E_{n,k}=A_n\cap\{f\geq g+1/k\}
+\]
+有 \(\int_{E_{n,k}}f\,\mathrm d\mu=\int_{E_{n,k}}g\,\mathrm d\mu\)，两边为有限数。另一方面，左边至少为右边加上 \(\mu(E_{n,k})/k\)，因此 \(\mu(E_{n,k})=0\)。对 \(n,k\) 取可数并，得到 \(\mu(\{f>g\})=0\)；交换 \(f,g\) 即得结论。有符号情形中 \(f-g\) 可积，在 \(\{f-g\geq1/k\}\) 上应用相同的积分比较即可。
+\end{proof}
+
+所以导数是一个几乎处处意义下的对象。选定某个代表以后，才可以在公式中逐点相乘；在可测零集上的重新规定不改变所表示的测度。
+
+\begin{proposition}[密度的链式法则]\label{b1:prop:radon-nikodym-chain}
+若三个 \(\sigma\)-有限正测度满足 \(\lambda\ll\nu\ll\mu\)，则
+\[
+\frac{\mathrm d\lambda}{\mathrm d\mu}
+=\frac{\mathrm d\lambda}{\mathrm d\nu}\frac{\mathrm d\nu}{\mathrm d\mu}
+\quad\mu\text{-几乎处处}.
+\]
+若 \(\nu\ll\mu\ll\nu\)，则 \(\mathrm d\nu/\mathrm d\mu>0\) 在 \(\mu\)-几乎处处成立，且反向导数等于其倒数，在 \(\nu\)-几乎处处成立。
+\end{proposition}
+\begin{proof}
+记 \(g=\mathrm d\lambda/\mathrm d\nu\)、\(f=\mathrm d\nu/\mathrm d\mu\)，选非负可测代表。由\cref{b1:prop:density-change-integral}，每个可测集 \(E\) 都满足
+\[
+\lambda(E)=\int_Eg\,\mathrm d\nu=\int_Egf\,\mathrm d\mu.
+\]
+唯一性给出链式法则。若再有 \(\mu\ll\nu\)，则 \(\nu(\{f=0\})=0\) 蕴含 \(\mu(\{f=0\})=0\)。把链式法则用于 \(\mu\ll\nu\ll\mu\)，并注意 \(\mu\) 关于自身的密度是 \(1\)，便得两个导数的乘积几乎处处等于 \(1\)。两测度有相同的零集，故可在 \(\nu\)-几乎处处写出倒数关系。
+\end{proof}
+
+\(\sigma\)-有限性不能从上述密度存在定理中随意删掉。在 \([0,1]\) 的 Borel 集上，令 \(\mu\) 为计数测度，\(\nu=m\) 为 Lebesgue 测度。只有空集的 \(\mu\) 值为零，所以 \(\nu\ll\mu\)。若 \(\nu=f\mu\)，对每个单点积分给出 \(f(x)=\nu(\{x\})=0\)，于是 \(f\) 恒为零，这却不能表示 \(\nu([0,1])=1\)。失败处正是 \(\mu\) 不是 \(\sigma\)-有限；零测集比较在这个例子里过于宽松。
 
 \subsection{Lebesgue 分解定理}
 \label{b1:subsec:060404}
 
-待填充。
+任意两个测度之间不必绝对连续。不过，对有限有符号测度，总能先分离出集中在参照测度零集上的部分。这一步本身比密度存在定理的适用范围更广。
+
+\term*[lebesgue-fenjie]{Lebesgue 分解}[Lebesgue decomposition]由如下定理给出。
+
+\begin{theorem}[Lebesgue 分解定理]\label{b1:thm:lebesgue-decomposition}
+设 \(\mu\) 是任意正测度，\(\nu\) 是有符号测度。则存在唯一的有符号测度 \(\nu_{\mathrm a},\nu_{\mathrm s}\)，满足
+\[
+\nu=\nu_{\mathrm a}+\nu_{\mathrm s},\quad
+\nu_{\mathrm a}\ll\mu,\quad \nu_{\mathrm s}\perp\mu.
+\]
+若 \(\nu\) 非负，这两部分也非负。若再有 \(\mu\) 为 \(\sigma\)-有限测度，则存在唯一到 \(\mu\)-几乎处处相等的 \(f\in L^1(\mu;\mathbb R)\)，使 \(\nu=f\mu+\nu_{\mathrm s}\)。
+\end{theorem}
+\begin{proof}
+全变差 \(|\nu|\) 有限。令
+\[
+a=\sup\{\,|\nu|(E)\mid E\in\mathcal A,\ \mu(E)=0\,\}.
+\]
+选取 \(\mu\)-零集 \(N_j\) 使 \(|\nu|(N_j)\rightarrow a\)，并置 \(N=\bigcup_jN_j\)。由 \(\mu(N)=0\) 和 \(|\nu|(N)\geq\sup_j|\nu|(N_j)\)，得到 \(|\nu|(N)=a\)。对任何另一个 \(\mu\)-零集 \(E\)，\(E\cup N\) 仍为零集，所以
+\[
+|\nu|(E\setminus N)=|\nu|(E\cup N)-|\nu|(N)=0.
+\]
+定义 \(\nu_{\mathrm s}(E)=\nu(E\cap N)\)、\(\nu_{\mathrm a}(E)=\nu(E\setminus N)\)。这两者可数可加，其和为 \(\nu\)，上面的等式说明 \(\nu_{\mathrm a}\ll\mu\)，而 \(\nu_{\mathrm s}\) 集中在 \(\mu\)-零集 \(N\) 上。\(\nu\) 非负时，这两个限制也非负。
+
+若还有分解 \(\nu=\alpha+\beta\)，其中 \(\alpha\ll\mu\)、\(\beta\perp\mu\)，则
+\[
+\alpha-\nu_{\mathrm a}=\nu_{\mathrm s}-\beta.
+\]
+左边绝对连续，右边集中在两个 \(\mu\)-零集的并上。一个既绝对连续又集中在零集上的有符号测度只能为零：每个可测集分别在该零集及其补集上分割，两块都给零值。因此两分解相同。最后，当 \(\mu\) 为 \(\sigma\)-有限测度时，对 \(\nu_{\mathrm a}\) 用\cref{b1:cor:signed-radon-nikodym}，再用密度唯一性即可。
+\end{proof}
+
+例如在 \(\mathbb R\) 的 Borel 集上取 \(\nu=e^{-|x|}m+2\delta_0\)。相对于 \(m\)，第一项是绝对连续部分，第二项是奇异部分；质量为 \(2\) 的单点项不能被任何可积密度吸收。在上一个计数测度的反例中，Lebesgue 分解仍存在，且奇异部分为零，但绝对连续部分没有密度。可见“可分解为两类测度”与“绝对连续部分可写成积分”是两个需要区分的结论。
