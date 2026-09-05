@@ -1,25 +1,194 @@
 % !TeX root = ../../Book1.tex
-\section{模糊收敛与弱收敛}
+\section{淡收敛与弱收敛}
 \label{b1:sec:1201}
 
-% TODO: 撰写本节正文。
+把一个测度看成积分泛函以后，测度列的收敛便可以通过积分值来定义。
+不过，测试函数的范围不能省略。同一列概率测度，用紧支集函数测试可能趋于零，
+用常函数测试却始终得到一。这里的差别不是记号上的习惯，而是是否保留整体质量。
+
+本节先在局部紧 Hausdorff 空间上接续前一章的表示定理，再转到度量空间上的概率测度。
+本章未特别说明时，测度均为正 Borel 测度；需要符号或复测度时会另行指出。
 
 \subsection{测试函数}
 \label{b1:subsec:120101}
 
-待填充。
+对拓扑空间 \(X\)，记
+\[
+ C_b(X)=\{\,f:X\to\mathbb R:f\text{ 连续且有界}\,\},
+ \quad \|f\|_\infty=\sup_{x\in X}|f(x)|.
+\]
+\symidx{\(C_b(X)\)：有界连续函数空间}
+它在一致范数下是 Banach 空间。一致 Cauchy 列的逐点极限仍有界，且收敛一致，
+因而极限连续。以下用实值函数测试已经足够；若要使用复值函数，分别测试实部和虚部即可。
 
-\subsection{模糊收敛}
+当 \(X\) 局部紧 Hausdorff 时，有
+\[
+ C_c(X)\subset C_0(X)\subset C_b(X).
+\]
+三个空间分别允许我们观察紧区域、无穷远处逐渐减弱的区域，以及整个空间。
+若 \(X\) 紧，三者相同；若 \(X\) 非紧，常函数 \(1\) 属于 \(C_b(X)\)，
+却不属于 \(C_0(X)\)。对局部有限的测度，\(C_c(X)\) 上的积分总是有限的；
+要让全部有界测试函数都可积，则必须要求测度有限。
+
+有限符号或复 Radon 测度与 \(C_0(X)^*\) 的等距对应已在%
+定理\ref{b1:thm:riesz-markov-c0}中建立。它给出了一种现成的弱-*收敛：
+对每个 \(f\in C_0(X)\)，积分 \(\int f\,d\mu_n\) 收敛。
+但本章还要使用 \(C_c(X)\) 和 \(C_b(X)\)。每当比较两种收敛时，
+应先写出测试空间，再判断哪个包含关系或逼近结论能够发挥作用。
+
+\subsection{淡收敛}
 \label{b1:subsec:120102}
 
-待填充。
+\begin{definition}\label{b1:def:vague-convergence}
+设 \(X\) 为局部紧 Hausdorff 空间，\(\mu_n,\mu\) 为其上的 Radon 测度。
+若对每个 \(f\in C_c(X)\) 都有
+\[
+ \lim_{n\to\infty}\int_X f\,d\mu_n=\int_X f\,d\mu,
+\]
+则称 \(\mu_n\) \term[danshoulian]{淡收敛}[vague convergence]于 \(\mu\)，
+记为 \(\mu_n\xrightarrow{v}\mu\)。
+\end{definition}
+\symidx{\(\mu_n\xrightarrow{v}\mu\)：由连续紧支集函数测试的淡收敛}
+
+中文名称采用严加安的《测度论讲义》\cite[第6.5节]{Yan2004Cedulun}。
+不同文献对 vague 的测试空间并不一致；例如 Fremlin 的《Measure Theory》%
+\cite[437J(c)]{Fremlin2016Measure}使用 \(C_b(X)\) 定义该名称。
+本书始终按上面的 \(C_c(X)\) 约定，不凭相同的外文名称移用结论。
+
+淡极限若存在便唯一：两个候选极限在全部 \(C_c(X)\) 上有相同积分，
+由正测度表示的唯一性即相等。它还自动控制每一块固定紧集上的质量。
+
+\begin{proposition}\label{b1:prop:vague-local-bound}
+若 \(\mu_n\xrightarrow{v}\mu\)，则对每个紧集 \(K\subset X\)，
+有 \(\sup_n\mu_n(K)<\infty\)。
+\end{proposition}
+\begin{proof}
+由引理\ref{b1:lem:lch-cutoff}取 \(h\in C_c(X)\)，使 \(0\leq h\leq1\)、
+\(h|_K=1\)。于是
+\[
+ \mu_n(K)\leq\int_X h\,d\mu_n\longrightarrow\int_X h\,d\mu<\infty.
+\]
+收敛数列有界，结论随之成立。
+\end{proof}
+
+此处的界依赖 \(K\)，不能直接对所有紧集取上确界。例如在 \(\mathbb R\) 上令
+\(\mu_n=n\delta_n\)。每个紧支集测试函数最终在点 \(n\) 处为零，
+所以 \(\mu_n\xrightarrow{v}0\)，但 \(\mu_n(\mathbb R)=n\)。
+甚至 \(C_0(\mathbb R)\) 中的函数 \(f(x)=(1+|x|)^{-1/2}\) 也满足
+\(\int f\,d\mu_n=n/\sqrt{1+n}\to\infty\)。
+因此没有整体界时，不能把紧支集测试悄悄改为无穷远消失的测试。
+
+\begin{proposition}\label{b1:prop:vague-c0-bounded}
+设 \(\mu_n,\mu\) 为局部紧 Hausdorff 空间上的有限正 Radon 测度，并且
+\(M=\sup_n\mu_n(X)<\infty\)。则 \(\mu_n\xrightarrow{v}\mu\) 当且仅当
+它们在 \(C_0(X)^*\) 中弱-*收敛于 \(\mu\)。
+对有限符号或复 Radon 测度，若改用 \(\sup_n|\mu_n|(X)<\infty\)，结论仍成立。
+\end{proposition}
+\begin{proof}
+弱-*收敛蕴含淡收敛，因为 \(C_c(X)\subset C_0(X)\)。反过来，给定
+\(f\in C_0(X)\) 和 \(\varepsilon>0\)，由命题\ref{b1:prop:cc-dense-c0}%
+选 \(g\in C_c(X)\)，使 \(\|f-g\|_\infty<\varepsilon\)。于是
+\[
+ \left|\int_X f\,d\mu_n-\int_X f\,d\mu\right|
+ \leq\left|\int_X g\,d\mu_n-\int_X g\,d\mu\right|
+       +\varepsilon\bigl(M+\mu(X)\bigr).
+\]
+先令 \(n\to\infty\)，再令 \(\varepsilon\downarrow0\)，便得到所需收敛。
+一般标量测度的证明相同，把两个质量替换为全变差质量即可。
+\end{proof}
+
+上式中的统一界有明确用途：同一个一致逼近误差，必须对所有 \(n\) 同时有效。
+前一例正是在这一步失去控制。另一方面，若已知在 \(C_0(X)^*\) 中弱-*收敛，
+一致有界原理又保证范数一致有界，因此对于收敛的序列，弱-*条件本身包含了全变差界。
 
 \subsection{弱收敛}
 \label{b1:subsec:120103}
 
-待填充。
+\begin{definition}\label{b1:def:measure-weak-convergence}
+设 \(X\) 为拓扑空间，\(\mu_n,\mu\) 为其上的有限正 Borel 测度。
+若对每个 \(f\in C_b(X)\) 都有
+\[
+ \lim_{n\to\infty}\int_X f\,d\mu_n=\int_X f\,d\mu,
+\]
+则称 \(\mu_n\) \term[cedu-ruoshoulian]{弱收敛}[weak convergence of measures]于 \(\mu\)，
+记为 \(\mu_n\Rightarrow\mu\)。测度空间上使所有映射
+\(\nu\mapsto\int f\,d\nu\)、\(f\in C_b(X)\) 连续的最弱拓扑，称为这里的弱拓扑。
+\end{definition}
+\symidx{\(\mu_n\Rightarrow\mu\)：由有界连续函数测试的测度弱收敛}
+
+这个拓扑在 \(\mu\) 处的基本邻域可写成
+\[
+ \left\{\nu:
+ \left|\int_X f_j\,d\nu-\int_X f_j\,d\mu\right|<\varepsilon,
+ \quad 1\leq j\leq m\right\},
+\]
+其中只选有限多个测试函数。对于一般拓扑空间，连续函数未必足以区别测度；
+后文主要使用度量空间，或局部紧空间上的 Radon 测度，这两个场合没有这样的歧义。
+
+\begin{proposition}\label{b1:prop:weak-mass-uniqueness}
+若 \(\mu_n\Rightarrow\mu\)，则 \(\mu_n(X)\to\mu(X)\)。
+在度量空间上，有限正 Borel 测度由其在 \(C_b(X)\) 上的积分唯一确定；
+在局部紧 Hausdorff 空间上，有限正 Radon 测度也具有此性质。
+\end{proposition}
+\begin{proof}
+第一点取 \(f=1\)。在度量空间上，对非空闭集 \(F\) 定义
+\[
+ h_k(x)=\max\{1-kd(x,F),0\}.
+\]
+这些函数有界连续，且 \(h_k\downarrow\mathbf1_F\)。若两个有限测度的连续测试积分相同，
+由支配收敛定理，它们在 \(F\) 上的值也相同。空集的值当然相同。
+所有闭集构成包含 \(X\) 的 \(\pi\)-系并生成 Borel \(\sigma\)-代数，
+故有限测度的唯一性定理给出两测度相同。局部紧情形则直接使用
+\(C_c(X)\subset C_b(X)\) 及前一章的 Radon 表示唯一性。
+\end{proof}
+
+这里的测度弱收敛，不是把测度 Banach 空间 \(M(X)=C_0(X)^*\) 的整个对偶再拿来测试。
+后者对应 \(\sigma\bigl(M(X),M(X)^*\bigr)\)，是第九章意义下 Banach 空间的弱拓扑。
+本章固定 \(C_b(X)\) 测试，不能仅因名称中都有“弱”字便将它们等同。
+即使 \(X\) 紧，测度弱拓扑对应的也是 \(C(X)^*\) 的弱-*拓扑，而非一般的弱拓扑。
 
 \subsection{概率测度情形}
 \label{b1:subsec:120104}
 
-待填充。
+记 \(\mathcal P(X)\) 为 \(X\) 上所有 Borel 概率测度构成的集合，赋予刚定义的弱拓扑。
+\symidx{\(\mathcal P(X)\)：Borel 概率测度空间}
+若有限正测度列的每一项都有质量一，那么任何弱极限仍有质量一。
+但淡极限不一定如此；缺少的质量可能已经离开每一个固定的紧区域。
+第\ref{b1:sec:1203}节将用紧族把这种现象精确表述出来。
+
+先看与质量逃逸不同的集中现象。在 \(\mathbb R\) 上令
+\(d\mu_n(x)=n\mathbf1_{[0,1/n]}(x)\,dx\)。对任意 \(f\in C_b(\mathbb R)\)，有
+\[
+ \left|\int_{\mathbb R}f\,d\mu_n-f(0)\right|
+ \leq\sup_{0\leq x\leq1/n}|f(x)-f(0)|\longrightarrow0.
+\]
+所以 \(\mu_n\Rightarrow\delta_0\)。每个 \(\mu_n\) 都由密度给出，极限却是点质量。
+此外，\(\mu_n(\{0\})=0\) 而 \(\delta_0(\{0\})=1\)，说明弱收敛不要求逐个
+Borel 集的测度值收敛。下一节会指出哪些集合仍能保留这一结论。
+
+\begin{proposition}[连续映射原理]\label{b1:prop:weak-continuous-mapping}
+设 \(T:X\to Y\) 连续，\(\mu_n,\mu\) 为 \(X\) 上的有限正 Borel 测度。
+若 \(\mu_n\Rightarrow\mu\)，则推前测度满足 \(T_\#\mu_n\Rightarrow T_\#\mu\)。
+事实上，\(\mu\mapsto T_\#\mu\) 关于两边的弱拓扑连续。
+\end{proposition}
+\begin{proof}
+对 \(g\in C_b(Y)\)，复合函数 \(g\circ T\) 属于 \(C_b(X)\)。由推前积分公式，
+\[
+ \int_Y g\,d(T_\#\mu_n)=\int_X g\circ T\,d\mu_n
+ \longrightarrow\int_X g\circ T\,d\mu=\int_Y g\,d(T_\#\mu).
+\]
+拓扑连续性也由同一等式给出：目标空间中每个测试积分与推前映射的复合，
+都是源空间中的连续测试积分。
+\end{proof}
+
+这里不要求 \(T\) 为真映射，因为有界连续函数的复合仍有界连续；
+若改用紧支集测试，\(g\circ T\) 的支集就未必紧，这正是第十一章相应习题另加条件的原因。
+在概率论中，若随机变量 \(Z_n\) 的分布为 \(\mu_n\)，它们分布的弱收敛也称为%
+\term[yifenbu-shoulian]{依分布收敛}[convergence in distribution]，通常记作
+\(Z_n\xrightarrow{d}Z\)，其中 \(Z\) 的分布为 \(\mu\)。
+这一说法只比较分布，不要求随机变量处在同一个概率空间上。
+
+后面的概率论版本允许 \(X\) 为无限维度量空间。在无限维 Hilbert 空间中，
+连续紧支集函数可能只有零函数，第十一章已说明其原因。
+因此不能先用 \(C_c(X)\) 定义所有概率测度的收敛，再期待局部紧情形的论证自动推广。
+\(C_b(X)\) 测试则在这一情形仍有充分的区分能力。

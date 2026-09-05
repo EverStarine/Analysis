@@ -2,19 +2,181 @@
 \section{紧性}
 \label{b1:sec:1203}
 
-% TODO: 撰写本节正文。
+淡收敛只用紧支集函数观察测度。若质量逐渐移到每个固定紧集之外，这些测试函数就可能看不到它。要把局部测试推广到全部有界连续函数，需要控制被截断部分的质量，而且这种控制必须对整族测度一致。本节先定义这种条件，再说明它怎样补足淡收敛与弱收敛之间的差别。
 
 \subsection{紧族}
 \label{b1:subsec:120301}
 
-待填充。
+\begin{definition}\label{b1:def:tight-family}
+设 \(X\) 为 Hausdorff 空间，\(\mathcal F\) 是其上的一族有限正 Borel 测度。若对每个 \(\varepsilon>0\)，都存在紧集 \(K\subseteq X\)，使
+\[
+ \sup_{\mu\in\mathcal F}\mu(X\setminus K)<\varepsilon,
+\]
+则称 \(\mathcal F\) 为\term[jinzu]{紧族}[tight family]。%
+\footnote{严加安的《测度论讲义》第二版\cite[第 6.3 节]{Yan2004Cedulun}使用“胎紧”\termidx[taijin]{胎紧}这一名称。本书在测度族的语境中固定使用“紧族”。}
+若单元素族 \(\{\mu\}\) 满足此条件，则称测度 \(\mu\) 是紧的。
+\end{definition}
+
+定义中的量词顺序是先给误差，再为所有测度选同一个紧集；不能让这个紧集随 \(\mu\) 改变。每个有限 Radon 测度都是紧的，因为其总质量可以用紧集从内逼近。有限个这样的测度也组成紧族：对同一误差分别取紧集，再取它们的有限并。对无限族，这个论证便不再适用。
+
+紧族条件不包含总质量一致有界。例如，在 \(\mathbb R\) 上，\(\{n\delta_0:n\geq1\}\) 的全部质量都在紧集 \(\{0\}\) 中，因此它是紧族，但总质量没有上界。概率测度的总质量固定为 \(1\)，才使这一额外问题自动消失。
+
+“紧族”也不直接表示测度空间中的拓扑紧集。在 \(\mathbb R\) 上，族 \(\mathcal F=\{\delta_{1/n}:n\geq1\}\) 的支集都包含在紧集 \(\{0\}\cup\{1/n:n\geq1\}\) 中，因此是紧族。可是连续测试函数 \(f(x)=x/(1+|x|)\) 所给映射 \(\mu\mapsto\int f\,\mathrm d\mu\) 把 \(\mathcal F\) 映为 \(\{1/(n+1):n\geq1\}\)，后者不是 \(\mathbb R\) 中的紧集。故 \(\mathcal F\) 不是弱拓扑下的紧集。这里缺少的是极限 \(\delta_0\)；后面的相对紧性结论会涉及测度族的闭包，不能把闭包二字略去。
+
+实际验证紧族时，常用一个函数惩罚远处的质量。该函数的低值区域必须真正紧，而不只是有界。
+
+\begin{proposition}\label{b1:prop:tight-coercive-bound}
+设 \(X\) 为 Hausdorff 空间，\(\Phi:X\rightarrow[0,\infty]\) 是 Borel 可测函数，且对每个 \(R>0\)，下水平集
+\[
+ K_R=\{\,x\in X\mid\Phi(x)\leq R\,\}
+\]
+都紧。若有限正 Borel 测度族 \(\mathcal F\) 满足
+\[
+ C=\sup_{\mu\in\mathcal F}\int_X\Phi\,\mathrm d\mu<\infty,
+\]
+则 \(\mathcal F\) 是紧族，并且 \(\sup_{\mu\in\mathcal F}\mu(X\setminus K_R)\leq C/R\)。
+\end{proposition}
+\begin{proof}
+逐点不等式 \(R\mathbf1_{\{\Phi>R\}}\leq\Phi\) 给出
+\[
+ R\mu(X\setminus K_R)
+ \leq\int_X\Phi\,\mathrm d\mu\leq C.
+\]
+对 \(\mu\) 取上确界，再选 \(R>C/\varepsilon\)，便得到定义中的紧集及严格小于 \(\varepsilon\) 的尾部界。若 \(C=0\)，任取 \(R>0\) 即可。
+\end{proof}
+
+在 \(\mathbb R^d\) 上，取 \(\Phi(x)=|x|^p\)，其中 \(p>0\)。其下水平集是闭球，故任何满足一致 \(p\) 阶矩界 \(\int|x|^p\,\mathrm d\mu\leq C\) 的测度族都是紧族，具体估计为
+\[
+ \mu\bigl(\{\,x:|x|>r\,\}\bigr)\leq Cr^{-p}
+ \quad(r>0).
+\]
+这给出了可计算的紧集半径。不过，矩界是充分条件，不是紧性的必要条件。例如，实线上密度为 \(1/\bigl(\pi(1+x^2)\bigr)\) 的概率测度满足
+\[
+ \mu\bigl(\mathbb R\setminus[-R,R]\bigr)
+ \leq\frac{2}{\pi R}
+ \quad(R>0),
+\]
+因为在 \(x>R\) 上 \((1+x^2)^{-1}\leq x^{-2}\)。所以它是紧的，而一阶绝对矩发散：对 \(x\geq1\)，有 \(x/(1+x^2)\geq1/(2x)\)。
+
+紧下水平集这一假设也不能删去。在 \(\ell^2\) 中取标准正交向量 \(e_n\) 及点质量 \(\delta_{e_n}\)。虽然 \(\int\|x\|^2\,\mathrm d\delta_{e_n}=1\)，这些测度不组成紧族。任一紧集至多包含有限个 \(e_n\)：否则，由 \(\|e_n-e_m\|=\sqrt2\) 可知其中不存在 Cauchy 子列，与紧度量空间的序列紧性矛盾。于是每个紧集之外都有某个 \(\delta_{e_n}\) 的全部质量。有限维中可用的“矩控制尾部”仍成立，但其尾部是球外部分；无限维闭球一般不紧。
 
 \subsection{质量逃逸}
 \label{b1:subsec:120302}
 
-待填充。
+质量逃逸既可能来自支集整体平移，也可能来自质量不断摊薄。后一种情形中，支集甚至始终包含原点。令实线上的概率测度
+\[
+ \lambda_n=\frac1{2n}\mathbf1_{[-n,n]}m,
+\]
+其中 \(m\) 是 Lebesgue 测度。给定 \(f\in C_c(\mathbb R)\)，取 \(R>0\) 使 \(\operatorname{supp}f\subseteq[-R,R]\)。当 \(n\geq R\) 时，
+\[
+ \left|\int_{\mathbb R}f\,\mathrm d\lambda_n\right|
+ \leq\frac{R}{n}\|f\|_\infty\longrightarrow0.
+\]
+因此 \(\lambda_n\xrightarrow{v}0\)，但不可能弱收敛到零测度，因为常函数 \(1\) 的积分始终为 \(1\)。对任何紧集 \(K\subseteq[-R,R]\)，还有
+\[
+ \lambda_n(\mathbb R\setminus K)\geq1-\frac{R}{n}
+ \quad(n\geq R),
+\]
+故紧族条件失败。每个固定观察区域中的质量都趋于零，而总质量没有消失，只是不再停留在任何统一的紧区域内。
 
-\subsection{模糊收敛与弱收敛的差别}
+这一例子也可以只让一部分质量逃逸。固定 \(0<\alpha<1\)，令
+\[
+ \mu_n=(1-\alpha)\delta_0+\alpha\lambda_n.
+\]
+对每个紧支集测试函数直接积分，得到 \(\mu_n\xrightarrow{v}(1-\alpha)\delta_0\)。所有 \(\mu_n\) 都是概率测度，极限却只有质量 \(1-\alpha\)。因而问题不只是“极限是不是零”，而是极限是否保留了原来的全部质量。
+
+反过来，支集无界增长本身不妨碍紧族条件。令
+\[
+ \eta_n=\left(1-\frac1n\right)\delta_0+\frac1n\delta_n.
+\]
+给定 \(\varepsilon>0\)，选 \(N\) 使 \(1/N<\varepsilon\)，并取紧集 \(K=\{0,1,\ldots,N\}\)。当 \(n\leq N\) 时尾部质量为零，当 \(n>N\) 时尾部质量为 \(1/n<\varepsilon\)。因此 \(\{\eta_n:n\geq1\}\) 是紧族。实际上，对任意 \(f\in C_b(\mathbb R)\)，
+\[
+ \left|\int f\,\mathrm d\eta_n-f(0)\right|
+ =\frac1n\bigl|f(n)-f(0)\bigr|
+ \leq\frac2n\|f\|_\infty,
+\]
+所以 \(\eta_n\Rightarrow\delta_0\)。可以远去的是支集中的点；紧族条件约束的是这些点所携带的质量。
+
+\subsection{淡收敛与弱收敛的差别}
 \label{b1:subsec:120303}
 
-待填充。
+以下回到局部紧 Hausdorff 空间，并采用\cref{b1:def:vague-convergence}的 \(C_c(X)\) 测试和\cref{b1:def:measure-weak-convergence}的 \(C_b(X)\) 测试。有限性与正性在本小节中各有作用：前者使常数函数可积，后者使总质量减去局部质量能够控制尾部。
+
+% 实读来源：Fremlin, Measure Theory, vol.4，官方 chap43.pdf，
+% 437O--P，印刷 pp.66--67：一致紧性定义及其与相对紧性的关系；
+% 437J(c)--(d)，印刷 p.61：vague/narrow 拓扑的原书约定。
+% https://www1.essex.ac.uk/maths/people/fremlin/chap43.pdf
+% Fremlin的vague以Cb测试，不等于本书以Cc测试的淡收敛。
+% 下述LCH序列比较直接用第11章截断引理证明，不借437P或后节Prokhorov。
+% 能量判据、摊薄/部分逃逸及符号相消例由定义和积分估计自行组织。
+测度族的一致紧性及其与拓扑紧性的关系，可参读 D.~H. Fremlin 的《Measure Theory》\cite[第 437O--P 节]{Fremlin2016Measure}。比较该书与本章时须留意，它在第 437J 节把由 \(C_b(X)\) 测试生成的拓扑称为 vague topology，并非本书的淡收敛约定。下面的结论直接用连续截断证明。
+
+\begin{theorem}\label{b1:thm:vague-tight-weak}
+设 \(X\) 为局部紧 Hausdorff 空间，\(\mu_n,\mu\) 均为有限正 Radon 测度，且 \(\mu_n\xrightarrow{v}\mu\)。则下列条件等价：
+\begin{equivalences}
+\item\label{b1:item:vague-tight-family}\(\{\mu_n:n\geq1\}\) 是紧族；
+\item\label{b1:item:vague-total-mass}\(\mu_n(X)\rightarrow\mu(X)\)；
+\item\label{b1:item:vague-to-weak}\(\mu_n\Rightarrow\mu\)。
+\end{equivalences}
+\end{theorem}
+\begin{proof}
+先由\itemref{b1:item:vague-tight-family}推出\itemref{b1:item:vague-to-weak}。固定 \(f\in C_b(X)\) 及 \(\varepsilon>0\)。由紧族条件及 \(\mu\) 的有限 Radon 性，可以选同一个紧集 \(K\)，使
+\[
+ \sup_n\mu_n(X\setminus K)<\varepsilon,
+ \quad \mu(X\setminus K)<\varepsilon.
+\]
+由\cref{b1:lem:lch-cutoff}取 \(h\in C_c(X)\)，满足 \(0\leq h\leq1\) 且 \(h=1\) 于 \(K\)。函数 \(fh\) 有紧支集，故其积分由淡收敛控制；其余部分满足
+\begin{align*}
+ \left|\int_X f\,\mathrm d\mu_n-\int_X f\,\mathrm d\mu\right|
+ &\leq\left|\int_X fh\,\mathrm d\mu_n-\int_X fh\,\mathrm d\mu\right|\\
+ &\quad+\|f\|_\infty\bigl(\mu_n(X\setminus K)+\mu(X\setminus K)\bigr).
+\end{align*}
+先令 \(n\rightarrow\infty\)，再令 \(\varepsilon\downarrow0\)，右端趋于零，得到弱收敛。由\itemref{b1:item:vague-to-weak}推出\itemref{b1:item:vague-total-mass}只需取测试函数 \(f=1\)。
+
+最后假设\itemref{b1:item:vague-total-mass}成立。给定 \(\varepsilon>0\)，先取紧集 \(K\)，使 \(\mu(X\setminus K)<\varepsilon/4\)，再取上述截断 \(h\)，令 \(L=\operatorname{supp}h\)。由 \(h=1\) 于 \(K\) 及 \(0\leq h\leq1\)，
+\[
+ 0\leq\mu(X)-\int_Xh\,\mathrm d\mu<\frac{\varepsilon}{4}.
+\]
+总质量收敛与淡收敛一起给出
+\[
+ \mu_n(X)-\int_Xh\,\mathrm d\mu_n
+ \longrightarrow\mu(X)-\int_Xh\,\mathrm d\mu.
+\]
+由于 \(h=0\) 于 \(X\setminus L\)，存在 \(N\)，使所有 \(n\geq N\) 都满足
+\[
+ \mu_n(X\setminus L)
+ \leq\int_X(1-h)\,\mathrm d\mu_n<\frac{\varepsilon}{2}.
+\]
+对有限个首项 \(\mu_1,\ldots,\mu_{N-1}\)，分别用有限 Radon 性取紧集 \(K_j\)，使 \(\mu_j(X\setminus K_j)<\varepsilon/2\)。将这些紧集与 \(L\) 合并为 \(K'\)，便有 \(\sup_n\mu_n(X\setminus K')\leq\varepsilon/2<\varepsilon\)。因此整列组成紧族。
+\end{proof}
+
+证明中真正把远处质量收回来的量是 \(\mu_n(X)-\int h\,\mathrm d\mu_n\)。它同时使用常数函数和紧支集函数，因而不能由淡收敛单独控制。最后补入有限个首项则用到了序列的结构；对一般网，不能把某个指标之前的所有项当作有限集，这也是将拓扑紧性与序列论证分开的一个理由。
+
+\begin{corollary}\label{b1:cor:vague-probability-weak}
+在局部紧 Hausdorff 空间上，若 Radon 概率测度列淡收敛到一个 Radon 概率测度，则它也弱收敛到该测度，并且整列组成紧族。
+\end{corollary}
+\begin{proof}
+所有测度的总质量均为 \(1\)，故前一定理的总质量条件自动成立。
+\end{proof}
+
+必须要求淡极限仍是概率测度；本节的 \(\lambda_n\) 和 \(\mu_n\) 已分别给出全部与部分质量丢失的情形。若 \(X\) 本身紧，则 \(C_c(X)=C_b(X)=C(X)\)，这两种收敛从定义上就相同；非紧空间中，紧族条件起到了统一限制尾部的作用。
+
+对符号测度和复测度，尾部应由全变差衡量，而不是用可能发生抵消的测度值衡量。
+
+\begin{proposition}\label{b1:prop:signed-tight-vague-weak}
+设 \(X\) 为局部紧 Hausdorff 空间，\(\nu_n,\nu\) 是有限符号或复 Radon 测度。若 \(\nu_n\xrightarrow{v}\nu\)，且正测度族 \(\{|\nu_n|:n\geq1\}\) 是紧族，则对每个 \(f\in C_b(X)\)，有
+\[
+ \int_Xf\,\mathrm d\nu_n\longrightarrow\int_Xf\,\mathrm d\nu.
+\]
+\end{proposition}
+\begin{proof}
+给定 \(\varepsilon>0\)，由假设及 \(|\nu|\) 的有限 Radon 性，取紧集 \(K\)，使 \(\sup_n|\nu_n|(X\setminus K)<\varepsilon\) 且 \(|\nu|(X\setminus K)<\varepsilon\)。再取 \(h\in C_c(X)\)，使 \(0\leq h\leq1\)、\(h=1\) 于 \(K\)。全变差的积分估计给出
+\[
+ \left|\int_X f(1-h)\,\mathrm d\nu_n\right|
+ \leq\|f\|_\infty\cdot|\nu_n|(X\setminus K)
+ <\varepsilon\|f\|_\infty,
+\]
+对 \(\nu\) 也有同样的估计，而 \(fh\) 的积分由淡收敛得到极限。分解 \(f=fh+f(1-h)\)，先令 \(n\rightarrow\infty\)，再令 \(\varepsilon\downarrow0\)，即得结论。
+\end{proof}
+
+单纯的总质量收敛在这里不够。在实线上令 \(\nu_n=\delta_n-\delta_{n+1/2}\)。对每个紧支集函数，其积分最终为零，因此 \(\nu_n\xrightarrow{v}0\)；同时 \(\nu_n(\mathbb R)=0\)，甚至 \(|\nu_n|(\mathbb R)=2\) 一致有界。然而取 \(f(x)=\cos(2\pi x)\)，便有 \(\int f\,\mathrm d\nu_n=2\)，并不趋于零。对任意固定紧集 \(K\)，当 \(n\) 足够大时，\(\nu_n(\mathbb R\setminus K)=0\)，但 \(|\nu_n|(\mathbb R\setminus K)=2\)。总质量的相消掩盖了正负两部分同时逃逸，只有全变差尾部能给出所需的误差控制。

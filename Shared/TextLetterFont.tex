@@ -1,0 +1,47 @@
+% 2026-09-06 字母级试排：只有非数学模式的西文字母改用 Pagella 斜体。
+% 不把主字体的正体映射为斜体；数字、括号、标点及中文沿用原来的字形。
+% 尤其 \term 的原文外括号仍由原来的 \textnormal 排成正体。
+\newfontfamily\AnalysisLetterFont{texgyrepagella-regular.otf}[
+  BoldFont=texgyrepagella-bold.otf,
+  ItalicFont=texgyrepagella-italic.otf,
+  BoldItalicFont=texgyrepagella-bolditalic.otf
+]
+\ExplSyntaxOn
+\bool_new:N \l_analysis_italic_letters_bool
+\bool_set_true:N \l_analysis_italic_letters_bool
+\cs_new_protected:Npn \AnalysisPreserveMathText
+  { \bool_set_false:N \l_analysis_italic_letters_bool }
+\cs_new_protected:Npn \analysis_letter_group_begin:
+  {
+    \group_begin:
+    \bool_if:NT \l_analysis_italic_letters_bool
+      { \AnalysisLetterFont \itshape }
+  }
+% 继承 Default 的全部 xeCJK 转移，保留中西文间距及标点处理；
+% 不能用只有开关分组的转移覆盖 Boundary 或 CJK 的原处理。
+\xeCJK_new_class:n { AnalysisLatinLetter }
+\seq_map_inline:Nn \g__xeCJK_class_seq
+  {
+    \str_if_eq:nnF {#1} { AnalysisLatinLetter }
+      {
+        \xeCJK_copy_inter_class_toks:nnnn
+          {#1} {AnalysisLatinLetter} {#1} {Default}
+        \xeCJK_copy_inter_class_toks:nnnn
+          {AnalysisLatinLetter} {#1} {Default} {#1}
+        \xeCJK_app_inter_class_toks:nnn {#1} {AnalysisLatinLetter}
+          { \analysis_letter_group_begin: }
+        \xeCJK_pre_inter_class_toks:nnn {AnalysisLatinLetter} {#1}
+          { \group_end: }
+      }
+  }
+% ASCII 字母及常用拉丁扩展字母；明确跳过乘号、除号，不重分类标点。
+\xeCJKDeclareCharClass { AnalysisLatinLetter }
+  { "0041->"005A, "0061->"007A, "00C0->"00D6, "00D8->"00F6,
+    "00F8->"024F, "1E00->"1EFF }
+\ExplSyntaxOff
+% 数学组内局部关闭字母切换，连公式中 \text{...} 的字体也保持原样。
+% 只追加，不覆盖 amsmath、unicode-math、xeCJK 已有的数学初始化。
+\AtBeginDocument{%
+  \everymath\expandafter{\the\everymath\AnalysisPreserveMathText}%
+  \everydisplay\expandafter{\the\everydisplay\AnalysisPreserveMathText}%
+}

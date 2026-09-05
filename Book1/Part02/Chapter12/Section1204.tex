@@ -2,24 +2,357 @@
 \section{Prokhorov 定理}
 \label{b1:sec:1204}
 
-% TODO: 撰写本节正文。
+% 实际读取：Fremlin2016Measure，官方 chap43.pdf，434C、437J(c)--(f)、
+% 437K--L、437N--P、437U--V。一般版本采用本书 Borel Radon 约定；
+% 波兰情形另给紧致立方体证明，不调用非局部紧空间上的 C_c 表示。
+% 中文名称：Yan2021Cedulun，科学出版社目录第5.7节“波兰空间上有限测度的正则性”；
+% 只以目录核对名称，不把该书未读到的证明写作本节依据。
 
-\subsection{Polish 空间}
+紧族条件限制了质量的位置，却还没有指定极限。要从这一条件得到收敛子列，
+需要把测度族放进一个确实紧的空间，再说明极限没有离开原来的状态空间。
+本节先处理可完备、可分的度量情形，最后说明其中哪些步骤能够保留到一般拓扑空间。
+
+\subsection{波兰空间}
 \label{b1:subsec:120401}
 
-待填充。
+\begin{definition}\label{b1:def:polish-space}
+设 \(X\) 为拓扑空间。若存在一个给出原拓扑的完备度量，使 \(X\) 关于该度量可分，
+则称 \(X\) 为\term[bolan-kongjian]{波兰空间}[Polish space]。
+\end{definition}
+
+这里要求存在一个相容的完备度量，并不要求每个相容度量都完备。
+例如开区间 \((0,1)\) 的通常距离不完备，但通过它与 \(\mathbb R\) 的同胚可拉回一个完备度量。
+欧氏空间、可分 Banach 空间都是波兰空间；无限维可分 Hilbert 空间也是例子，
+尽管它不局部紧。因此本节始终用 \(C_b(X)\) 测试，不能直接套用上一章的 \(C_c(X)\) 表示。
+严加安的《测度论讲义》第三版\cite[第5.7节]{Yan2021Cedulun}也采用“波兰空间”这一名称。
+
+下面先证明每个概率测度自身都能被紧集捕获。结论中的共同紧集随后才会成为测度族的附加要求。
+
+\begin{lemma}\label{b1:lem:polish-probability-radon}
+波兰空间上的每个有限正 Borel 测度都是 Radon 测度。
+特别地，每个概率测度构成的单元素族都是紧族。
+\end{lemma}
+\begin{proof}
+零测度的结论直接成立；通过除以总质量，只需讨论概率测度 \(\mu\)。
+固定一个相容的完备度量 \(d\)，并取可数稠密集 \(\{a_j:j\geq1\}\)。
+给定 \(\varepsilon>0\)，对每个 \(n\) 取有限多个半径 \(2^{-n}\) 的开球，
+其并记为 \(U_n\)，使
+\[
+ \mu(X\setminus U_n)<\varepsilon 2^{-n}.
+\]
+这是因为以全部 \(a_j\) 为中心的这些球覆盖 \(X\)，有限并的测度递增到 \(1\)。
+令 \(K=\bigcap_{n\geq1}\overline{U_n}\)。它闭，且在任意小的尺度都能用有限多个球覆盖，
+因而全有界。完备性保证 \(K\) 紧：对任意序列逐尺度保留落在同一小球中的子列，
+所得对角子列是 Cauchy 列，极限仍在 \(K\) 中。于是
+\[
+ \mu(X\setminus K)
+ \leq\sum_{n=1}^{\infty}\mu(X\setminus U_n)<\varepsilon.
+\]
+
+还需证明每个 Borel 集都可由紧集从内逼近，而不只是 \(X\) 本身。
+先记 \(\mathcal D\) 为所有具有下述性质的 Borel 集 \(A\)：
+对每个 \(\eta>0\)，存在闭集 \(F\) 与开集 \(G\)，使
+\[
+ F\subseteq A\subseteq G,\quad \mu(G\setminus F)<\eta.
+\]
+每个闭集 \(F\) 属于 \(\mathcal D\)，因为开集
+\(\{x:d(x,F)<1/m\}\) 递减到 \(F\)，而测度有限；空集另直接处理。
+取补集使内外逼近互换，故 \(\mathcal D\) 对取补封闭。
+若 \(A_i\in\mathcal D\)，先选 \(F_i\subseteq A_i\subseteq G_i\)，
+使误差之和小于 \(\eta/2\)。开集 \(G=\bigcup_iG_i\) 从外逼近 \(A=\bigcup_iA_i\)；
+再选 \(N\)，使 \(\mu\bigl(A\setminus\bigcup_{i\leq N}A_i\bigr)<\eta/2\)，
+闭集 \(\bigcup_{i\leq N}F_i\) 就给出所需内逼近。
+因此 \(\mathcal D\) 是含闭集的 \(\sigma\)-代数，包含全部 Borel 集。
+对这样的 \(A\)，先用闭集 \(F\subseteq A\) 控制 \(\mu(A\setminus F)\)，
+再将 \(F\) 与前面构造的紧集 \(K\) 相交，即得紧内逼近。概率测度自动局部有限，
+故满足本书的 Radon 约定。
+\end{proof}
 
 \subsection{紧性与相对紧性}
 \label{b1:subsec:120402}
 
-待填充。
+本小节中的弱拓扑，是使全部映射
+\(\mu\mapsto\int f\,d\mu\)、\(f\in C_b(X)\) 连续的最弱拓扑。
+“相对弱紧”指在 \(\mathcal P(X)\) 内的弱闭包紧，极限仍须是 \(X\) 上的概率测度。
+下面的度量化论证使这种拓扑表述与抽取子列真正接上。
+
+\begin{lemma}\label{b1:lem:probability-open-topology}
+设 \(X\) 为度量空间。概率测度的弱拓扑由下列集合生成：
+\[
+ \{\,\mu\in\mathcal P(X):\mu(U)>a\,\},
+ \quad a\in\mathbb R.
+\]
+这里 \(U\) 遍历 \(X\) 的开子集。
+\end{lemma}
+\begin{proof}
+若 \(U\ne X\)，连续函数
+\(h_m(x)=\min\{1,m\,d(x,X\setminus U)\}\) 递增到 \(\mathbf1_U\)。
+所以 \(\mu(U)=\sup_m\int h_m\,d\mu\) 是弱下半连续函数；
+\(U=X\) 时结论由总质量为 \(1\) 得到。这说明所列集合弱开。
+
+反过来，给 \(\mathcal P(X)\) 装上由这些集合生成的拓扑。
+若 \(f\in C_b(X)\) 且 \(0\leq f\leq1\)，则
+\[
+ s_m=\frac1m\sum_{j=1}^{m}\mathbf1_{\{f>j/m\}},
+ \quad 0\leq f-s_m\leq\frac1m.
+\]
+每个 \(\mu\mapsto\int s_m\,d\mu\) 都下半连续，而逼近误差对所有概率测度一致。
+给定 \(\mu_0\) 及严格小于 \(\int f\,d\mu_0\) 的数，先把 \(1/m\) 取得足够小，
+再用该有限和的下半连续性，就知 \(\mu\mapsto\int f\,d\mu\) 下半连续。
+对 \(1-f\) 使用同一结论，又得上半连续性。平移、缩放以及分解实虚部，
+便得到全部 \(C_b(X)\) 测试积分的连续性。
+\end{proof}
+
+\begin{lemma}\label{b1:lem:probability-weak-metrizable}
+若 \(X\) 为波兰空间，则 \(\mathcal P(X)\) 的弱拓扑可度量。
+若 \(Q\) 为紧致度量空间，则 \(\mathcal P(Q)\) 在弱拓扑下紧且可度量。
+\end{lemma}
+\begin{proof}
+先处理紧致度量空间 \(Q\)。在每个尺度 \(1/n\) 选有限网 \(\{q_{n,j}\}_j\)，并令
+\[
+ w_{n,j}(q)=\max\{0,2/n-d(q,q_{n,j})\},
+ \quad
+ \phi_{n,j}(q)=\frac{w_{n,j}(q)}{\sum_iw_{n,i}(q)}.
+\]
+分母处处为正，且 \(\sum_j\phi_{n,j}=1\)。
+每个连续函数在紧空间上一致连续，故
+\(\sum_jh(q_{n,j})\phi_{n,j}\) 一致逼近 \(h\)。
+再将有限个系数用有理数逼近，复数情形分别逼近实虚部，便得到 \(C(Q)\) 的可数稠密族。
+
+由\cref{b1:cor:positive-c0-representation}，\(\mathcal P(Q)\) 与 \(C(Q)^*\) 中满足
+\[
+ L(1)=1,\quad L(h)\geq0\quad(h\in C(Q),\ h\geq0)
+\]
+的泛函相对应，这些泛函的范数均为 \(1\)。
+这些条件在弱-*拓扑下闭，故 Banach--Alaoglu 定理给出紧性；
+\cref{b1:thm:weak-star-metrizable}给出可度量性。
+此处 \(C(Q)=C_0(Q)\)，其完备性由\cref{b1:prop:cc-dense-c0}保证。
+
+现在固定 \(X\) 的完备度量，并用 \(d'=\min\{1,d\}\) 代替它。
+取可数稠密集 \((a_j)\)，定义
+\[
+ i:X\longrightarrow Q=[0,1]^{\mathbb N},
+ \quad i(x)=\bigl(d'(x,a_j)\bigr)_{j\geq1}.
+\]
+立方体 \(Q\) 在乘积拓扑下紧，且该拓扑由
+\(\rho(u,v)=\sum_{j\geq1}2^{-j}|u_j-v_j|\) 给出：
+级数尾部一致小，而头部只涉及有限坐标。
+各坐标连续，且能分开两点，所以 \(i\) 连续且单射。
+它还是拓扑嵌入。事实上，给定 \(x\) 及 \(0<r<1\)，选 \(a_j\) 使 \(d'(x,a_j)<r/3\)；
+坐标条件 \(d'(y,a_j)<2r/3\) 是 \(x\) 的邻域，并保证 \(d'(y,x)<r\)。
+
+推前映射 \(i_\#:\mathcal P(X)\rightarrow\mathcal P(Q)\) 连续，
+因为对 \(g\in C(Q)\) 有 \(\int g\,d(i_\#\mu)=\int g\circ i\,d\mu\)。
+它也是拓扑嵌入：任一开集 \(U\subseteq X\) 都可写为 \(i^{-1}(V)\)，其中 \(V\) 在 \(Q\) 中开，
+于是
+\[
+ (i_\#\mu)(V)=\mu(U).
+\]
+由\cref{b1:lem:probability-open-topology}，这些开集概率不仅分开不同测度，
+而且生成原来的弱拓扑，故逆映射在像上连续。
+将 \(\mathcal P(Q)\) 的一个相容度量限制到这个像，再拉回 \(\mathcal P(X)\)，就得到所需度量。
+\end{proof}
+
+证明没有断言 \(i(X)\) 在 \(Q\) 中闭，也没有断言拉回的度量完备。
+紧族条件的作用，是使测度极限不会落到立方体中与原空间无关的部分。
+
+\term*[prokhorov]{Prokhorov 定理}[Prokhorov theorem]把这一条件转化为紧性判据。
+更一般的拓扑版本可对照 Fremlin 的《Measure Theory》\cite[437N--P、437U--V]{Fremlin2016Measure}；
+以下证明直接接续本书已经建立的正泛函表示。
+
+\begin{theorem}[Prokhorov]\label{b1:thm:prokhorov}
+设 \(X\) 为波兰空间，\(\mathcal A\subseteq\mathcal P(X)\)。下列条件等价：
+\begin{equivalences}
+\item\label{b1:item:prokhorov-tight}\(\mathcal A\) 是紧族。
+\item\label{b1:item:prokhorov-compact}\(\mathcal A\) 在 \(\mathcal P(X)\) 中相对弱紧。
+\item\label{b1:item:prokhorov-sequence}\(\mathcal A\) 中的每个序列都有弱收敛子列，
+且极限属于 \(\mathcal P(X)\)。
+\end{equivalences}
+\end{theorem}
+\begin{proof}
+先由紧族条件证明相对弱紧。沿用前一引理的嵌入 \(i:X\rightarrow Q\)，
+令 \(\mathcal C\) 为 \(i_\#\mathcal A\) 在紧空间 \(\mathcal P(Q)\) 中的闭包。
+选递增紧集 \(K_m\subseteq X\)，使
+\(\sup_{\mu\in\mathcal A}\mu(X\setminus K_m)<2^{-m}\)；
+将逐次选得的紧集取有限并即可保证递增。
+集合 \(i(K_m)\) 在 \(Q\) 中闭，由\cref{b1:lem:probability-open-topology}，
+条件 \(\nu\bigl(i(K_m)\bigr)\geq1-2^{-m}\) 对 \(\nu\) 是弱闭条件。
+所以每个 \(\nu\in\mathcal C\) 都满足它。令
+\[
+ S=\bigcup_{m\geq1}i(K_m),
+\]
+则 \(S\) 为 Borel 集且 \(\nu(S)=1\)。
+
+现在把 \(\nu\) 拉回 \(X\)。对 Borel 集 \(A\subseteq X\)，定义
+\[
+ \mu(A)=\nu\left(\bigcup_{m\geq1}i(A\cap K_m)\right).
+\]
+每个 \(i(A\cap K_m)\) 都是闭子空间 \(i(K_m)\) 的 Borel 子集，
+因而也是 \(Q\) 的 Borel 集。映射 \(i\) 单射，
+所以不交的 \(A\) 给出不交的像；上式由 \(\nu\) 的可数可加性定义了一个概率测度。
+它满足 \(i_\#\mu=\nu\)，因为两边在 \(S\) 上一致且都将 \(Q\setminus S\) 赋值为零。
+因此 \(\mathcal C\subseteq i_\#\mathcal P(X)\)。
+由前一引理的拓扑嵌入结论，\(\mathcal A\) 的弱闭包同胚于 \(\mathcal C\)，故紧。
+这里未使用“任意 Borel 集的连续单射像仍是 Borel 集”；
+可测性只在各个紧集 \(K_m\) 上判定。
+
+反过来，设 \(\mathcal B=\overline{\mathcal A}\) 弱紧。
+固定完备度量 \(d\)、可数稠密集 \((a_j)\) 及 \(\varepsilon>0\)，令
+\[
+ U_{n,k}=\bigcup_{j=1}^{k}B(a_j,2^{-n}).
+\]
+对固定 \(n\)，弱开集
+\[
+ \{\,\mu\in\mathcal B:\mu(U_{n,k})>1-\varepsilon2^{-n}\,\},
+ \quad k\geq1,
+\]
+递增且覆盖 \(\mathcal B\)。紧性给出一个 \(k_n\)，使这一个集合已覆盖 \(\mathcal B\)。
+于是 \(K=\bigcap_{n\geq1}\overline{U_{n,k_n}}\) 闭且全有界；
+由 \(d\) 完备知 \(K\) 紧，并有
+\[
+ \sup_{\mu\in\mathcal B}\mu(X\setminus K)
+ \leq\sum_{n=1}^{\infty}\varepsilon2^{-n}=\varepsilon.
+\]
+开始时将 \(\varepsilon\) 换成 \(\varepsilon/2\)，便得到紧族定义中的严格不等式。
+
+最后，由\cref{b1:lem:probability-weak-metrizable}，所讨论的是度量空间中的相对紧性。
+紧闭包给出收敛子列。反向若每个 \(\mathcal A\) 中的序列都有所述子列，
+对弱闭包中的任意序列 \((\nu_n)\)，选 \(\mu_n\in\mathcal A\)，
+使二者的相容度量距离小于 \(1/n\)。
+\((\mu_n)\) 的收敛子列同时使相应的 \((\nu_n)\) 收敛，故闭包序列紧，因而紧。
+空族的情形直接成立。
+\end{proof}
+
+完备性在反向证明中将“闭且全有界”变成“紧”。
+另一方面，获得收敛子列后，极限只能由测试函数或其他附加结构辨认，
+定理本身不保证它唯一。
 
 \subsection{概率测度中的应用}
 \label{b1:subsec:120403}
 
-待填充。
+\begin{corollary}\label{b1:cor:tight-unique-limit}
+设 \((\mu_n)\subseteq\mathcal P(X)\)，其中 \(X\) 为波兰空间。
+若 \(\{\mu_n:n\geq1\}\) 是紧族，且每个弱收敛子列的极限都等于同一个概率测度 \(\mu\)，
+则 \(\mu_n\) 弱收敛到 \(\mu\)。
+\end{corollary}
+\begin{proof}
+若结论不成立，则存在 \(f\in C_b(X)\)、\(\eta>0\) 及子列 \((\mu_{n_j})\)，使
+\[
+ \left|\int f\,d\mu_{n_j}-\int f\,d\mu\right|\geq\eta
+ \quad(j\geq1).
+\]
+由 Prokhorov 定理，该子列还有弱收敛子列；其极限按假设只能是 \(\mu\)，
+与上式矛盾。
+\end{proof}
+
+因而证明一个分布极限时，可以先取得统一的紧集控制，
+再在任意收敛子列上辨认极限，而不必从开始就猜出合适的抽取过程。
+紧性也能构造原先没有给定的概率测度。下面用一个确定性动力系统说明这一点。
+
+\begin{proposition}\label{b1:prop:compact-invariant-probability}
+设 \(X\) 为非空紧致度量空间，\(T:X\rightarrow X\) 连续。
+则存在 \(\mu\in\mathcal P(X)\)，使 \(T_\#\mu=\mu\)。
+\end{proposition}
+\begin{proof}
+固定 \(x\in X\)，沿它的轨道取平均
+\[
+ \mu_n=\frac1n\sum_{k=0}^{n-1}\delta_{T^kx}.
+\]
+空间 \(X\) 本身紧，故这些测度构成紧族。紧致度量空间完备且可分，
+由 Prokhorov 定理可取 \(\mu_{n_j}\) 弱收敛到某个 \(\mu\in\mathcal P(X)\)。
+对任意 \(f\in C(X)\)，有
+\[
+ \int f\circ T\,d\mu_n-\int f\,d\mu_n
+ =\frac{f(T^nx)-f(x)}n,
+ \quad
+ \left|\frac{f(T^nx)-f(x)}n\right|\leq\frac{2\|f\|_\infty}{n}.
+\]
+由于 \(f\circ T\) 仍连续，沿子列取极限即得
+\(\int f\,d(T_\#\mu)=\int f\,d\mu\)。
+紧空间上的 Radon 测度由连续函数积分唯一确定，所以 \(T_\#\mu=\mu\)。
+\end{proof}
+
+这个测度记录了轨道平均的一个极限，不要求轨道本身收敛。
+不同初始点或不同子列可以得到不同的测度；若还能证明满足 \(T_\#\mu=\mu\) 的概率测度唯一，
+前一推论才进一步保证整个平均序列收敛。
 
 \subsection{Radon 空间版本}
 \label{b1:subsec:120404}
 
-待填充。
+“Radon 测度”是单个测度的正则性条件。
+若 Hausdorff 空间上每个有限正 Borel 测度都是 Radon 测度，
+则称该空间为\term[radon-kongjian]{Radon 空间}[Radon space]。
+波兰空间由\cref{b1:lem:polish-probability-radon}具有这一性质。
+讨论一般空间上的测度族时，可以不要求所有 Borel 测度都正则，
+而只在 Radon 概率测度的集合 \(\mathcal P_R(X)\) 内考虑弱拓扑。
+
+下面保留一个不依赖度量的方向。所需的分离条件是：
+对每个闭集 \(F\subseteq X\) 及 \(x\notin F\)，存在连续函数 \(h:X\rightarrow[0,1]\)，
+使 \(h(x)=1\) 且 \(h|_F=0\)。满足此条件的 Hausdorff 空间称为%
+\term[wanquan-zhengze-kongjian]{完全正则空间}[completely regular space]。
+度量空间满足此条件；局部紧 Hausdorff 空间由连续截断也满足它。
+
+\begin{proposition}\label{b1:prop:radon-tight-relative-compact}
+设 \(X\) 为完全正则 Hausdorff 空间。
+若 \(\mathcal A\subseteq\mathcal P_R(X)\) 是紧族，
+则 \(\mathcal A\) 在 \(\mathcal P_R(X)\) 内相对弱紧。
+\end{proposition}
+\begin{proof}
+先说明\cref{b1:lem:probability-open-topology}的开集描述仍然成立。
+给定紧集 \(K\subseteq U\)，其中 \(U\) 开，利用完全正则性，
+对每个 \(x\in K\) 选连续函数 \(h_x\)，使 \(h_x(x)=1\)、\(0\leq h_x\leq1\)，
+且 \(h_x=0\) 于 \(X\setminus U\)。
+从 \(\{h_x>1/2\}\) 中取覆盖 \(K\) 的有限子族，
+将对应函数的最大值乘以 \(2\) 后截断到 \(1\)，就得到在 \(K\) 上为 \(1\)、
+在 \(X\setminus U\) 上为零的连续函数。
+由 Radon 内正则性，
+\[
+ \mu(U)=\sup\left\{\,\int h\,d\mu:
+       h\in C_b(X),\ 0\leq h\leq\mathbf1_U\,\right\}.
+\]
+开集概率因此弱下半连续；反向仍用该引理的有限层和逼近，
+不需要度量。连续测试也因而分开 \(\mathcal P_R(X)\) 中的测度。
+
+取所有连续映射 \(h:X\rightarrow[0,1]\) 为坐标，记坐标集合为 \(I\)，定义
+\[
+ i:X\longrightarrow Q=[0,1]^I,\quad i(x)=\bigl(h(x)\bigr)_{h\in I}.
+\]
+分离条件保证这是拓扑嵌入：坐标分开两点，
+且对于 \(x\in U\)，上面分离 \(x\) 与 \(X\setminus U\) 的一个坐标给出包含于 \(U\) 的坐标邻域。
+由 Tychonoff 定理，\(Q\) 紧。连续推前保持 Radon 性，
+因为原空间 Borel 集内的紧集，其像仍是目标 Borel 集内的紧集。
+开集概率的描述进一步说明 \(i_\#\) 在 Radon 概率测度之间仍是拓扑嵌入。
+在紧空间 \(Q\) 上，Riesz--Markov 表示与 Banach--Alaoglu 定理给出
+\(\mathcal P_R(Q)\) 的弱紧性；这一步不要求 \(C(Q)\) 可分。
+
+令 \(\mathcal C\) 为 \(i_\#\mathcal A\) 在 \(\mathcal P_R(Q)\) 中的闭包。
+按 Prokhorov 定理证明中的构造，取递增紧集 \(K_m\)，使共同尾质量小于 \(2^{-m}\)。
+每个 \(\nu\in\mathcal C\) 都将 \(S=\bigcup_mi(K_m)\) 赋值为 \(1\)，
+并可用同一个公式
+\[
+ \mu(A)=\nu\left(\bigcup_m i(A\cap K_m)\right)
+\]
+拉回 Borel 概率测度。还需检查它为 Radon 测度：
+先取 \(m\) 使 \(S\setminus i(K_m)\) 的质量小，
+再在 Borel 集 \(i(A\cap K_m)\) 内用 \(\nu\) 的紧内正则性选紧集 \(L\)。
+由于 \(i|_{K_m}\) 为同胚，\(i^{-1}(L)\) 是 \(A\) 内的紧集，
+这两次逼近使 \(\mu\bigl(A\setminus i^{-1}(L)\bigr)\) 任意小。
+因此 \(\mathcal C\) 完全落在 \(i_\#\mathcal P_R(X)\) 内，
+其紧性通过拓扑嵌入传回所需弱闭包。
+\end{proof}
+
+反向结论涉及空间的另一项性质：若 \(\mathcal P_R(X)\) 的每个弱紧子集都是紧族，
+则称 \(X\) 为\term[prokhorov-kongjian]{Prokhorov 空间}[Prokhorov space]。
+Radon 空间的定义逐个要求测度正则；Prokhorov 空间的定义要求对弱紧族选取共同紧集。
+引用一般版本时应分别列明这些条件，不能把两种名称当作同义词。
+Fremlin 的《Measure Theory》\cite[434C、437P、437U--V]{Fremlin2016Measure}
+讨论了这些区别；本书在波兰空间上已经同时证明了两个方向。
+该书此处的 narrow 拓扑在完全正则空间的 Radon 概率测度上对应本节的 \(C_b\) 弱拓扑，
+不应仅凭它另用的 vague 一词，将测试类换成本章前面定义淡收敛的 \(C_c\)。
+
+一般版本也不能自动换成序列版本。令 \(I=\mathcal P(\mathbb N)\)，
+取紧空间 \(Q=\{0,1\}^I\)，并令 \(x_n(A)=\mathbf1_A(n)\)。
+Dirac 测度列 \((\delta_{x_n})\) 是紧族。
+但对任意子列 \((n_k)\)，取 \(A=\{n_2,n_4,\ldots\}\)，
+连续坐标函数 \(q\mapsto q(A)\) 在这条子列上的积分交替为 \(0,1\)，故没有弱收敛子列。
+这里相对弱紧性仍成立；缺少的是把紧性转为序列紧性所需的度量化条件。

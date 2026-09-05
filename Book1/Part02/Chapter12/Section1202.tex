@@ -1,25 +1,242 @@
 % !TeX root = ../../Book1.tex
-\section{总括定理}
+\section{弱收敛的等价刻画}
 \label{b1:sec:1202}
 
-% TODO: 撰写本节正文。
+弱收敛的定义要求逐个测试有界连续函数，但在具体问题中，集合的质量常常更容易计算。
+从函数回到集合时，开集和闭集给出的不是同一个方向的不等式。
+例如 \(\delta_{1/n}\Rightarrow\delta_0\)，而开集 \((0,1)\) 的质量从 \(1\) 降到 \(0\)，
+闭集 \(\{0\}\) 的质量却从 \(0\) 升到 \(1\)。
+这两种现象并不违背弱收敛；它们说明不能要求所有示性函数的积分都收敛。
+
+本节固定度量空间 \((X,d)\)，并以概率测度为主要对象。
+证明只使用距离函数、有限测度的收敛定理和集合的内外逼近，不预设空间局部紧或完备。
+半连续积分与测度拓扑的关系可对照 Fremlin 的《Measure Theory》%
+\cite[437J(f)--(g)、437K]{Fremlin2016Measure}；其中拓扑命名与本书的区别已在上一节说明。
+% 实际阅读：Fremlin 官方 chap43.pdf 437J(c)--(g)、437K。
+% 以下度量概率版本独立展开：距离逼近开闭集、分层积分与 Fatou、边界控制。
+% Billingsley 仅作章首伴读建议，不声称本证明取自未阅读全文的版本。
 
 \subsection{连续测试函数判据}
 \label{b1:subsec:120201}
 
-待填充。
+\begin{definition}\label{b1:def:measure-continuity-set}
+设 \(\mu\) 为 \(X\) 上的 Borel 测度，\(A\) 为 Borel 集。
+若 \(\mu(\partial A)=0\)，则称 \(A\) 为 \(\mu\) 的%
+\term[cedu-lianxuji]{连续集}[continuity set]。
+这里 \(\partial A=\overline A\setminus A^\circ\) 是相对于 \(X\) 的边界。
+\end{definition}
+
+定义中的连续不是说集合本身是一条曲线或一个连续像，而是说在这个集合的边界上，
+极限测度没有质量。连续测试函数对示性函数的逼近误差便可以集中在越来越小的边界邻域中。
+
+\begin{theorem}[Portmanteau]\label{b1:thm:portmanteau}
+设 \(\mu_n,\mu\in\mathcal P(X)\)。下列条件等价：
+\begin{equivalences}
+\item\label{b1:item:portmanteau-continuous}
+\(\mu_n\Rightarrow\mu\)，即所有有界连续函数的积分收敛。
+\item\label{b1:item:portmanteau-open}
+对每个开集 \(G\subset X\)，有 \(\mu(G)\leq\liminf_n\mu_n(G)\)。
+\item\label{b1:item:portmanteau-closed}
+对每个闭集 \(F\subset X\)，有 \(\limsup_n\mu_n(F)\leq\mu(F)\)。
+\item\label{b1:item:portmanteau-continuity-set}
+对每个 \(\mu\) 的连续集 \(A\)，有 \(\mu_n(A)\to\mu(A)\)。
+\end{equivalences}
+\end{theorem}
+\begin{proof}
+先设弱收敛成立。对非空闭集 \(F\)，令
+\(h_k(x)=\max\{1-kd(x,F),0\}\)。这些函数属于 \(C_b(X)\)，并递减到 \(\mathbf1_F\)。
+固定 \(k\)，由 \(\mathbf1_F\leq h_k\) 得
+\[
+ \limsup_{n\to\infty}\mu_n(F)
+ \leq\lim_{n\to\infty}\int_X h_k\,d\mu_n
+ =\int_X h_k\,d\mu.
+\]
+再令 \(k\to\infty\)，支配收敛定理给出闭集判据。空闭集另直接处理。
+由于所有测度的总质量均为 \(1\)，对 \(G=X\setminus F\) 取补集可知，
+开集判据与闭集判据等价。
+
+现在只假设开集判据成立。若 \(f\in C_b(X)\) 且 \(0\leq f\leq1\)，
+则 \(\{f>t\}\) 对每个 \(t\) 都开。由分层积分公式和 Fatou 引理，
+\[
+ \begin{aligned}
+ \int_X f\,d\mu
+ &=\int_0^1\mu(\{f>t\})\,dt\\
+ &\leq\int_0^1\liminf_{n\to\infty}\mu_n(\{f>t\})\,dt
+ \leq\liminf_{n\to\infty}\int_X f\,d\mu_n.
+ \end{aligned}
+\]
+同样把这个结论用于 \(1-f\)，便得到反向的上极限不等式，故积分收敛。
+任意实值有界连续函数经过平移和正数倍缩放可以落在 \([0,1]\) 中，
+常函数的积分又都相同，因此得到弱收敛。
+
+开闭集判据还给出：对任意 Borel 集 \(A\)，
+\[
+ \mu(A^\circ)\leq\liminf_n\mu_n(A)
+ \leq\limsup_n\mu_n(A)\leq\mu(\overline A).
+\]
+若 \(\mu(\partial A)=0\)，左右两端都等于 \(\mu(A)\)，所以连续集判据成立。
+
+最后假设连续集判据成立，取实值 \(f\in C_b(X)\)。集合
+\(\{t:\mu(\{f=t\})>0\}\) 至多可数：对每个正整数 \(k\)，
+其中质量不小于 \(1/k\) 的互不相交水平集至多有 \(k\) 个。
+给定 \(\varepsilon>0\)，可选有限分点
+\[
+ t_0<\inf_X f\leq\sup_X f<t_m,
+ \quad t_{j+1}-t_j<\varepsilon,
+ \quad \mu(\{f=t_j\})=0.
+\]
+因为 \(f\) 连续，集合 \(A_j=\{t_j<f\leq t_{j+1}\}\) 的边界包含于
+\(\{f=t_j\}\cup\{f=t_{j+1}\}\)，所以各 \(A_j\) 都是连续集。
+令 \(s=\sum_{j=0}^{m-1}t_j\mathbf1_{A_j}\)，则 \(\|f-s\|_\infty<\varepsilon\)，且
+\[
+ \int_X s\,d\mu_n
+ =\sum_{j=0}^{m-1}t_j\mu_n(A_j)
+ \longrightarrow\sum_{j=0}^{m-1}t_j\mu(A_j)=\int_X s\,d\mu.
+\]
+两个概率测度下的一致逼近误差各小于 \(\varepsilon\)。先取积分差的上极限，
+再令 \(\varepsilon\downarrow0\)，便得到 \(\int f\,d\mu_n\to\int f\,d\mu\)。
+\end{proof}
+
+这组等价判据通常称为\term[portmanteau-dingli]{Portmanteau 定理}[Portmanteau theorem]。
+证明中两类逼近各有用途：距离函数从外逼近闭集，取值区间上的阶梯函数则逼近测试函数。
+后一种逼近不是在空间 \(X\) 中划分成许多小区域，而是在函数的值域中分层。
+因此即使 \(X\) 不紧，仍能用有限个水平集处理一个有界函数。
 
 \subsection{开集判据}
 \label{b1:subsec:120202}
 
-待填充。
+开集判据只给出下界。若极限测度在一个开集内有质量，
+那么这部分质量不能在近似测度中一直缺失；但近似测度中的额外质量可以靠近边界，
+最终落到开集之外。为避免记反方向，可以先用 \(\delta_{1/n}\Rightarrow\delta_0\)
+和开集 \((0,1)\) 检查一遍。
+
+集合判据还有一个直接的函数版本。
+
+\begin{proposition}\label{b1:prop:weak-lower-semicontinuity}
+若 \(\mu_n\Rightarrow\mu\)，且 \(f:X\to[0,+\infty]\) 下半连续，则
+\[
+ \int_X f\,d\mu\leq\liminf_{n\to\infty}\int_X f\,d\mu_n.
+\]
+若 \(f\) 为有统一有限下界的实值或扩展实值下半连续函数，结论同样成立。
+\end{proposition}
+\begin{proof}
+下半连续性正是说 \(\{f>t\}\) 对每个实数 \(t\) 都开。
+对非负 \(f\)，重复前一定理中的分层积分与 Fatou 论证，只需把积分区间换为
+\([0,+\infty)\)。即使某个积分为无穷，非负函数的这两个定理仍适用。
+若 \(f\geq a> -\infty\)，先对 \(f-a\) 应用结论，再利用所有测度质量均为一，
+把常数 \(a\) 加回即可。
+\end{proof}
+
+例如在 \(\mathbb R^d\) 上，\(x\mapsto|x|^p\) 对 \(p>0\) 连续且非负，故
+\[
+ \int_{\mathbb R^d}|x|^p\,d\mu
+ \leq\liminf_n\int_{\mathbb R^d}|x|^p\,d\mu_n.
+\]
+因此统一的矩上界会传给弱极限，但矩本身未必收敛。
+对 \(\mu_n=(1-1/n)\delta_0+(1/n)\delta_n\)，任意有界连续测试的积分趋于 \(f(0)\)，
+而一阶绝对矩始终为 \(1\)，极限 \(\delta_0\) 的一阶绝对矩却为 \(0\)。
+趋于零的质量仍可能带着不趋于零的矩，这与有界测试的定义相容。
+
+后面谈弱紧集时，还需要拓扑形式，而不只是序列形式。对开集 \(G\ne X\)，令
+\[
+ g_k(x)=\min\{1,kd(x,X\setminus G)\}.
+\]
+有 \(g_k\uparrow\mathbf1_G\)，从而
+\[
+ \nu(G)=\sup_{k\geq1}\int_X g_k\,d\nu.
+\]
+右侧是弱连续函数的上确界，故 \(\nu\mapsto\nu(G)\) 在 \(\mathcal P(X)\) 上下半连续。
+当 \(G=X\) 时该映射恒为 \(1\)，结论仍成立。特别地，
+\(\{\nu:\nu(G)>a\}\) 是弱开集。这一表述能直接用于开覆盖与有限子覆盖的论证，
+不必先假设测度空间的拓扑可由序列刻画。
 
 \subsection{闭集判据}
 \label{b1:subsec:120203}
 
-待填充。
+若 \(F\) 闭，映射 \(\nu\mapsto\nu(F)\) 上半连续，
+因为它等于 \(1-\nu(X\setminus F)\)。因此 \(\{\nu:\nu(F)\geq a\}\) 弱闭。
+这说明“至少有给定质量留在一个闭集内”的条件能够传给极限。
+相反，“质量恰好落在一个开集内”的条件不一定封闭。
+
+\begin{proposition}\label{b1:prop:weak-closed-support}
+设 \(F\subset X\) 闭。所有满足 \(\nu(F)=1\) 的概率测度构成 \(\mathcal P(X)\) 的弱闭子集。
+若 \(\mu_n\Rightarrow\mu\)，且 \(\mu_n(F)=1\) 对每个 \(n\) 成立，则 \(\mu(F)=1\)。
+\end{proposition}
+\begin{proof}
+由上一段的上半连续性，集合 \(\{\nu:\nu(F)\geq1\}\) 弱闭。
+概率测度的值不超过一，所以该集合恰好是题述集合。序列结论是其直接后果。
+\end{proof}
+
+闭性在这里不能去掉：\(\delta_{1/n}\) 全部集中在开集 \((0,+\infty)\) 内，
+弱极限却集中在其边界。也不能仅凭每一项分别集中在某个紧集内，就推出存在一个
+对全列有效的紧集；紧集随 \(n\) 远移，仍会发生质量逃逸。
+
+闭集方向也对应上半连续测试函数。
+若 \(g:X\to[-\infty,+\infty)\) 上半连续且有有限上界 \(b\)，则
+\(b-g\) 非负下半连续，前一命题给出
+\[
+ \limsup_{n\to\infty}\int_X g\,d\mu_n\leq\int_X g\,d\mu.
+\]
+这里允许积分为 \(-\infty\)，因为正部有界，不会出现未定义的
+\(+\infty-\infty\)。若测试函数既无上界也无下界，则不能直接使用这两个不等式，
+必须先解决可积性和尾部控制。
+
+对于有限正测度，Portmanteau 判据需同时保留总质量收敛。
+若 \(m_n=\mu_n(X)\to m=\mu(X)>0\)，把充分靠后的测度除以各自质量，
+便归约为概率测度版本。若 \(m=0\)，则 \(\mu=0\)，且
+\(\left|\int f\,d\mu_n\right|\leq\|f\|_\infty m_n\to0\)。
+因此开集下界与总质量收敛合在一起，或闭集上界与总质量收敛合在一起，
+都刻画有限正测度的弱收敛。单有开集下界或闭集上界则不够：
+常值列 \(2\delta_0\) 与候选极限 \(\delta_0\) 满足前者，
+常值列 \(\delta_0\) 与候选极限 \(2\delta_0\) 满足后者，但都不弱收敛。
 
 \subsection{边界零测集判据}
 \label{b1:subsec:120204}
 
-待填充。
+连续集判据把开闭集的两个不等式合成了等式，但条件取决于极限测度，而不是近似测度。
+在实轴上，\((a,b]\) 的边界是 \(\{a,b\}\)；
+只要 \(\mu(\{a\})=\mu(\{b\})=0\)，就有
+\(\mu_n\bigl((a,b]\bigr)\to\mu\bigl((a,b]\bigr)\)。
+同样对边界为 \(\{b\}\) 的半直线 \(( -\infty,b]\) 使用判据，
+便得到分布函数在极限分布连续点处的收敛。
+这一条件反过来也能推出弱收敛，具体证明留在习题\ref{b1:ex:12-distribution-functions}中。
+
+连续集还允许把测试函数适当放宽：函数可以不处处连续，只要不连续点不承载极限质量。
+
+\begin{proposition}\label{b1:prop:weak-ae-continuous-test}
+设 \(\mu_n\Rightarrow\mu\)，\(f:X\to\mathbb R\) 为有界 Borel 函数，
+其不连续点集记为 \(D_f\)。若 \(\mu(D_f)=0\)，则
+\[
+ \int_X f\,d\mu_n\longrightarrow\int_X f\,d\mu.
+\]
+\end{proposition}
+\begin{proof}
+先说明零测条件的可测性。定义振幅
+\[
+ \omega_f(x)=\inf_{r>0}\sup\{\,|f(y)-f(z)|:y,z\in B(x,r)\,\}.
+\]
+若 \(\omega_f(x)<a\)，可选一个小球，使其中的振幅小于 \(a\)；
+该球内充分靠近 \(x\) 的点也有同样性质。因此 \(\{\omega_f<a\}\) 开，
+而 \(D_f=\bigcup_{k\geq1}\{\omega_f\geq1/k\}\) 是 Borel 集。
+
+若 \(x\notin D_f\) 且 \(f(x)\ne t\)，连续性使 \(x\) 附近的函数值始终位于 \(t\) 的同一侧，
+所以
+\[
+ \partial\{f\leq t\}\subseteq D_f\cup\{f=t\}.
+\]
+除去至多可数个具有正质量的水平值之后，\(\{f\leq t\}\) 便是 \(\mu\) 的连续集。
+按定理\ref{b1:thm:portmanteau}证明中的方法，在 \(f\) 的有界值域两侧选端点，
+并在内部选间隔小于 \(\varepsilon\) 的有限分点，使各分点都避开这些水平值。
+每个集合 \(\{t_j<f\leq t_{j+1}\}\) 的边界包含于两端水平集与 \(D_f\) 的并，
+因而同样是连续集。相应阶梯函数的积分收敛，且它对 \(f\) 的一致误差小于
+\(\varepsilon\)。两次积分误差均小于 \(\varepsilon\)，令其趋于零即可。
+\end{proof}
+
+取 \(f=\mathbf1_A\)，其不连续点集正是 \(\partial A\)，便回到连续集判据。
+取一个分段连续的有界函数，则只需检查分段边界上的极限质量。
+例如 \(\mu_n\Rightarrow\mu\) 且 \(\mu(\{0\})=0\) 时，
+\(\int\operatorname{sgn}(x)\,d\mu_n\to\int\operatorname{sgn}(x)\,d\mu\)。
+若极限在零点有原子，这个结论可能失败。
+
+至此我们已有定义、集合判据和半连续函数判据，但还没有保证任意给定的测度列存在弱极限。
+下一节转向这个存在性问题所需的质量控制；在最后一节，紧族条件才会与测度空间中的紧性联系起来。
