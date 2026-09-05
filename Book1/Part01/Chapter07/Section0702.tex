@@ -2,24 +2,151 @@
 \section{乘积测度}
 \label{b1:sec:0702}
 
-% TODO: 撰写本节正文。
+% 主来源：Axler2020Measure §5A 5.20、5.25--5.27，印刷124--127页；
+% 唯一性为习题5A.10的完整展开；多重结构参考§5C 5.39--5.40，印刷138--139页。
+% 已读本地正式OA对应页。截面测度可测性以pi-lambda替换原书的集合代数/单调类路线。
+% 证明义务：有限内层测度先行，sigma有限限制后逐点递增；0乘无穷；可数可加性不借Tonelli。
+% 唯一性先有限质量矩形局部化；交换与结合由唯一性得到，不循环使用迭代积分定理。
+
+本节设 \((X,\mathcal A,\mu)\)、\((Y,\mathcal B,\nu)\) 都是正 \(\sigma\)-有限测度空间。构造将先计算集合截面的 \(\nu\) 测度，再对 \(x\) 积分。由于两次测量分属不同空间，内层结果是否可测不能省略核验。Sheldon Axler 的《Measure, Integration \& Real Analysis》\cite{Axler2020Measure}第 5A 节采用这一截面积分路线；它把乘积测度的构造与随后非负函数的迭代积分自然衔接起来。
 
 \subsection{矩形上的测度}
 \label{b1:subsec:070201}
 
-待填充。
+我们希望找到 \(\mathcal A\otimes\mathcal B\) 上的测度 \(\rho\)，使每个可测矩形满足
+\[
+\rho(A\times B)=\mu(A)\nu(B).
+\]
+右边使用非负扩展实数的约定 \(0\cdot\infty=\infty\cdot0=0\)。例如在平面中，\([0,1]\times\{0\}\) 应有面积零；把第一个因子扩大成整条实线，也不应让零宽度的矩形取得正面积。
+
+若两个因子都为可数空间并取计数测度，上述要求就是矩形内的点数相乘。若它们是实直线并取 Lebesgue 测度，则在有界区间的乘积上给出熟悉的面积。抽象公式保留的是坐标之间的乘法结构，而不是区间或欧氏距离。
+
+对矩形 \(A\times B\)，截面测度函数为
+\[
+x\longmapsto\nu((A\times B)_x)=\nu(B)\mathbf1_A(x),
+\]
+在 \(x\notin A\) 处即使 \(\nu(B)=\infty\) 也按零解释。这个函数可测，且其积分等于 \(\mu(A)\nu(B)\)。因此截面积分满足原始矩形要求；要把它用于任意乘积可测集，仍需推广这一可测性。
 
 \subsection{乘积测度的构造}
 \label{b1:subsec:070202}
 
-待填充。
+\begin{lemma}\label{b1:lem:section-measure-measurable}
+设 \((X,\mathcal A)\) 为可测空间，\(\nu\) 为 \((Y,\mathcal B)\) 上的正 \(\sigma\)-有限测度。对每个 \(E\in\mathcal A\otimes\mathcal B\)，函数 \(x\mapsto\nu(E_x)\) 是 \(\mathcal A\)-可测的非负扩展实值函数。
+\end{lemma}
+\begin{proof}
+先设 \(\nu(Y)<\infty\)，令 \(\mathcal D\) 为所有使截面测度函数可测的 \(E\in\mathcal A\otimes\mathcal B\) 组成的集合族。全集属于 \(\mathcal D\)，因为其截面测度为常数 \(\nu(Y)\)。若 \(E,F\in\mathcal D\) 且 \(E\subseteq F\)，则
+\[
+\nu((F\setminus E)_x)=\nu(F_x)-\nu(E_x).
+\]
+两项均有限，故右端可测。若 \(E_j\in\mathcal D\) 两两不交，截面也两两不交，于是
+\[
+\nu\left(\left(\bigcup_jE_j\right)_x\right)
+=\sum_j\nu((E_j)_x).
+\]
+非负可测函数的级数仍可测。因此 \(\mathcal D\) 是 \(\lambda\)-系统，并且包含全部矩形；由\cref{b1:thm:pi-lambda}，\(\mathcal D=\mathcal A\otimes\mathcal B\)。
+
+一般情形下，取 \(Y_n\uparrow Y\)、\(\nu(Y_n)<\infty\)，并使用有限限制测度 \(\nu\llcorner Y_n\)。刚才的结论说明 \(x\mapsto\nu(E_x\cap Y_n)\) 可测。又由从下连续性，
+\[
+\nu(E_x\cap Y_n)\uparrow\nu(E_x)
+\]
+对每个 \(x\) 成立，所以其极限可测。
+\end{proof}
+
+引理不需要 \(X\) 上先有测度。\(\sigma\)-有限性属于被用于测量截面的 \(\nu\)，它把可能无穷的截面测度变成有限测度函数列的极限。若一开始就在无穷总质量下验证差公式，右边可能成为 \(\infty-\infty\)，不能据此断言集合族对差封闭。
+
+\begin{theorem}\label{b1:thm:product-measure-construction}
+对 \(E\in\mathcal A\otimes\mathcal B\)，规定
+\[
+(\mu\otimes\nu)(E)=\int_X\nu(E_x)\,\mathrm d\mu(x).
+\]
+该式定义了正 \(\sigma\)-有限测度，称为 \(\mu\)、\(\nu\) 的\term[chengji-cedu]{乘积测度}[product measure]。对可测矩形，它满足
+\[
+(\mu\otimes\nu)(A\times B)=\mu(A)\nu(B).
+\]
+\symidx{\(\mu\otimes\nu\)：两个测度的乘积测度}
+\end{theorem}
+\begin{proof}
+由前一引理，被积函数可测且非负，所以积分总有定义，允许取 \(+\infty\)。空集的每个截面均为空集，故它的值为零。若 \(E_j\) 两两不交，利用截面的不交性以及\cref{b1:cor:nonnegative-series-integral}，得到
+\begin{align*}
+(\mu\otimes\nu)\left(\bigcup_{j=1}^{\infty}E_j\right)
+&=\int_X\sum_{j=1}^{\infty}\nu((E_j)_x)\,\mathrm d\mu(x)\\
+&=\sum_{j=1}^{\infty}\int_X\nu((E_j)_x)\,\mathrm d\mu(x)
+=\sum_{j=1}^{\infty}(\mu\otimes\nu)(E_j).
+\end{align*}
+这证明了可数可加性。
+
+对矩形，先前的截面计算给出 \(\int_X\nu(B)\mathbf1_A\,\mathrm d\mu\)。当 \(\nu(B)<\infty\) 时，这是常数乘示性函数的积分；当 \(\nu(B)=\infty\) 时，用 \(k\mathbf1_A\uparrow\nu(B)\mathbf1_A\) 的单调收敛可知，该积分在 \(\mu(A)=0\) 时为零，否则为无穷。因此它在所有情形下均等于约定的乘积。
+
+最后，选取递增有限测度穷竭 \(X_n\uparrow X\)、\(Y_n\uparrow Y\)。矩形 \(X_n\times Y_n\) 递增覆盖 \(X\times Y\)，且其乘积测度为有限数 \(\mu(X_n)\nu(Y_n)\)，故所得测度 \(\sigma\)-有限。
+\end{proof}
+
+例如对上一节的三角形区域，竖直截面的长度为 \(x\mathbf1_{(0,1)}(x)\)，所以乘积测度为 \(\int_0^1x\,\mathrm dx=1/2\)。这是依定义算出的集合测度，还没有使用一般函数的二重积分换序。构造次序上应先建立这一集合层面的基础。
 
 \subsection{唯一性}
 \label{b1:subsec:070203}
 
-待填充。
+截面积分先选了 \(y\) 为内层变量。要说明结果没有偏向某个坐标，先证明矩形值足以确定测度。
+
+\begin{theorem}\label{b1:thm:product-measure-uniqueness}
+若正测度 \(\rho\) 定义在 \(\mathcal A\otimes\mathcal B\) 上，并且 \(\rho(A\times B)=\mu(A)\nu(B)\) 对所有可测矩形成立，则 \(\rho=\mu\otimes\nu\)。
+\end{theorem}
+\begin{proof}
+记 \(\tau=\mu\otimes\nu\)，取前述有限测度穷竭矩形 \(Q_n=X_n\times Y_n\)。对每个 \(n\)，\(\rho(Q_n)=\tau(Q_n)<\infty\)。令
+\[
+\mathcal D_n=\{\,E\in\mathcal A\otimes\mathcal B
+\mid\rho(E\cap Q_n)=\tau(E\cap Q_n)\,\}.
+\]
+全集属于 \(\mathcal D_n\)。对嵌套的 \(E,F\in\mathcal D_n\)，交上 \(Q_n\) 后测度均有限，差公式说明 \(F\setminus E\in\mathcal D_n\)。对两两不交的 \(E_j\in\mathcal D_n\)，两侧的可数可加性说明其并也在 \(\mathcal D_n\) 中。因此 \(\mathcal D_n\) 是 \(\lambda\)-系统。
+
+矩形与 \(Q_n\) 的交仍为矩形，故 \(\mathcal D_n\) 包含全部矩形。应用 \(\pi\)-\(\lambda\) 定理，得到 \(\mathcal D_n=\mathcal A\otimes\mathcal B\)。于是对任意 \(E\)，都有 \(\rho(E\cap Q_n)=\tau(E\cap Q_n)\)。由 \(E\cap Q_n\uparrow E\) 的从下连续性，两边取极限即得 \(\rho(E)=\tau(E)\)。
+\end{proof}
+
+这与\cref{b1:thm:sigma-finite-uniqueness}是同一局部化方法。也可以先用\cref{b1:lem:rectangle-algebra}把矩形上的相等推广到有限矩形并，再调用该定理。有限质量条件保证差公式合法，可数穷竭则负责从局部相等返回全局。
+
+\begin{corollary}\label{b1:cor:product-section-formula}
+对任意 \(E\in\mathcal A\otimes\mathcal B\)，有
+\[
+(\mu\otimes\nu)(E)
+=\int_X\nu(E_x)\,\mathrm d\mu(x)
+=\int_Y\mu(E^y)\,\mathrm d\nu(y).
+\]
+\end{corollary}
+\begin{proof}
+交换两坐标后，截面测度可测性引理说明最后一个积分有定义。构造定理的可数可加性证明也适用于集合函数 \(E\mapsto\int_Y\mu(E^y)\,\mathrm d\nu(y)\)，所以它是正测度。其矩形值为 \(\nu(B)\mu(A)=\mu(A)\nu(B)\)，唯一性定理因而说明它等于 \(\mu\otimes\nu\)。
+\end{proof}
+
+现在从三角形的水平截面出发也得到 \(\int_0^1(1-y)\,\mathrm dy=1/2\)。两个计算相等的理由已不只是几何直观，而是它们在生成矩形上给出同一组数据。下一节将从示性函数推广到非负简单函数，再通过单调收敛处理一般非负函数。
 
 \subsection{多重乘积}
 \label{b1:subsec:070204}
 
-待填充。
+\begin{proposition}\label{b1:prop:finite-product-associativity}
+对有限个正 \(\sigma\)-有限测度空间，在自然的坐标识别下，乘积 \(\sigma\)-代数与乘积测度都不依赖括号的结合方式。坐标置换也保持相应的乘积测度，有限重乘积仍 \(\sigma\)-有限。
+\end{proposition}
+\begin{proof}
+先考虑三个因子 \((X,\mathcal A)\)、\((Y,\mathcal B)\)、\((Z,\mathcal C)\)。记 \(\mathcal T\) 为全部 \(A\times B\times C\) 生成的 \(\sigma\)-代数。对固定的 \(C\in\mathcal C\)，所有使 \(E\times C\in\mathcal T\) 的 \(E\subseteq X\times Y\) 组成 \(\sigma\)-代数：补集对应 \(((X\times Y)\setminus E)\times C=(X\times Y\times C)\setminus(E\times C)\)，可数并直接交换。它包含矩形，因此包含 \(\mathcal A\otimes\mathcal B\)。于是 \((\mathcal A\otimes\mathcal B)\otimes\mathcal C\subseteq\mathcal T\)；反向包含由三重矩形均属于左边得到。另一种结合方式使用固定 \(A\) 的同一论证，故也等于 \(\mathcal T\)。
+
+对三个测度 \(\mu,\nu,\lambda\)，两种二步构造所得的测度都在三重矩形上取值
+\[
+\mu(A)\nu(B)\lambda(C).
+\]
+三重矩形构成 \(\pi\)-系统，又有有限质量的穷竭矩形 \(X_n\times Y_n\times Z_n\)。因此唯一性定理证明中的 \(\mathcal D_n\) 方法逐项适用，两种测度相等；这些穷竭矩形也证明 \(\sigma\)-有限性。
+
+增加一个因子重复上述论证，就得到任意有限重乘积的结论。坐标置换的逆像把生成矩形换为相应次序的矩形，故置换及其逆映射可测；将置换后的测度按逆像拉回原坐标空间，其矩形值仍为各因子测度的乘积，再由同一唯一性论证得到相等。
+\end{proof}
+
+欧氏空间中的乘积测度还应与第三章直接由长方体体积构造的 Lebesgue 测度一致，而不能把两种构造视为未经核对的同名对象。
+
+\begin{corollary}\label{b1:cor:euclidean-product-measure}
+在 \(\mathbb R^p\times\mathbb R^q=\mathbb R^{p+q}\) 的 Borel 结构上，有
+\[
+\left(m_p|_{\mathcal B(\mathbb R^p)}\right)
+\otimes\left(m_q|_{\mathcal B(\mathbb R^q)}\right)
+=m_{p+q}|_{\mathcal B(\mathbb R^{p+q})}.
+\]
+\end{corollary}
+\begin{proof}
+两边在每个有界半开长方体上都取其边长乘积。有限个这类长方体的不交并组成集合环，故两边在该环上相等；它生成欧氏 Borel \(\sigma\)-代数，又以有界长方体作有限质量的可数覆盖。由\cref{b1:thm:sigma-finite-uniqueness}，两测度相等。
+\end{proof}
+
+这个推论首先识别 Borel 集上的测度。第三章的完整 Lebesgue 测度是它的完备化，相关结论见\cref{b1:thm:lebesgue-completion-borel}。因此在未说明完备化之前，不能把“乘积可测集”与“所有 Lebesgue 可测集”混为一谈。多重积分的次序可以由后面的收敛定理处理，而可测域的扩大仍须单独核验。

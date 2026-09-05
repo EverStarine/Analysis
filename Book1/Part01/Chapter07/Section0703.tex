@@ -2,24 +2,147 @@
 \section{Tonelli–Fubini 定理}
 \label{b1:sec:0703}
 
-% TODO: 撰写本节正文。
+% 主来源：Axler2020Measure §5B 5.28、5.32，印刷129--133页，已读本地正式OA全文。
+% 完备化边界：Fremlin2016Measure vol.2 §252B(b)(iii)、252C--252E，已核读官方chap25.pdf。
+% 按本书普通乘积sigma代数的定义重组：先逐点截面，再处理完成化后的几乎处处截面。
+% 双级数例按Axler §5B习题2的主题自拟；不需要二重反常积分或换元公式。
+% 证明义务：非负简单逼近、复函数四部分、可积截面的例外集、完成化代表、有限次迭代。
+
+乘积测度已经给出了集合的截面积分公式。接下来要把示性函数推广到一般函数，并区分两个不同的极限过程：非负函数允许积分无穷，变号函数则需要绝对可积性来防止抵消依赖积分次序。本节固定两个 \(\sigma\)-有限测度空间 \((X,\mathcal A,\mu)\)、\((Y,\mathcal B,\nu)\)，记 \(\rho=\mu\otimes\nu\)。除非另行说明，可测性指 \(\mathcal A\otimes\mathcal B\) 上的可测性，不预先将乘积完备化。
 
 \subsection{Tonelli 定理}
 \label{b1:subsec:070301}
 
-待填充。
+\term*[tonelli-dingli]{Tonelli 定理}[Tonelli's theorem]把非负积分转化为迭代积分。
+
+\begin{theorem}[Tonelli]\label{b1:thm:tonelli}
+若 \(f:X\times Y\rightarrow[0,\infty]\) 可测，则
+\[
+F(x)=\int_Y f(x,y)\,\mathrm d\nu(y),\quad
+G(y)=\int_X f(x,y)\,\mathrm d\mu(x)
+\]
+分别是 \(\mathcal A\)、\(\mathcal B\)-可测函数，并且
+\[
+\int_{X\times Y}f\,\mathrm d\rho
+=\int_X F\,\mathrm d\mu
+=\int_Y G\,\mathrm d\nu.
+\]
+这些积分允许同时为 \(+\infty\)。
+\end{theorem}
+\begin{proof}
+当 \(f=\mathbf1_E\) 时，各个截面都可测，而 \(F(x)=\nu(E_x)\)、\(G(y)=\mu(E^y)\)。\Cref{b1:lem:section-measure-measurable}与\cref{b1:cor:product-section-formula}给出全部结论。有限非负线性组合因而给出非负简单函数的情形。
+
+对一般 \(f\)，在乘积可测空间上取非负简单函数 \(s_n\uparrow f\)。固定任意 \(x\)，截面也满足 \(s_n(x,\cdot)\uparrow f(x,\cdot)\)，所以单调收敛给出
+\[
+F_n(x)=\int_Ys_n(x,y)\,\mathrm d\nu(y)\uparrow F(x).
+\]
+每个 \(F_n\) 都可测，其逐点极限 \(F\) 因而可测。分别在 \(X\) 与 \(X\times Y\) 上再用单调收敛，得到
+\[
+\int_XF\,\mathrm d\mu
+=\lim_n\int_XF_n\,\mathrm d\mu
+=\lim_n\int_{X\times Y}s_n\,\mathrm d\rho
+=\int_{X\times Y}f\,\mathrm d\rho.
+\]
+交换两因子的角色，沿同样的非负简单逼近过程得到 \(G\) 的可测性与积分等式。
+\end{proof}
+
+证明中先对一个固定截面取极限，再对外层积分取极限，两次都依靠非负递增性。没有一步要求先知道目标函数可积。因此，要验证某个变号函数是否绝对可积，可以先把本定理用于它的绝对值。
+
+\(\sigma\)-有限性已经在集合截面公式中使用。不能仅因本段简单逼近没有再次写出它，就从定理中删除这一假设。在 \([0,1]\) 的 Borel 集上，一因子取 Lebesgue 测度 \(m\)，另一因子取计数测度 \(\#\)。对角线 \(D=\{(x,x):x\in[0,1]\}\) 闭且可测，却有
+\[
+\int_{[0,1]}\left(\int_{[0,1]}\mathbf1_D(x,y)\,\mathrm d\#(y)\right)\mathrm dm(x)=1,
+\]
+反向先按 \(m\) 积分时，每个单点截面测度为零，迭代积分便为零。这里的计数测度不是 \(\sigma\)-有限测度。
 
 \subsection{Fubini 定理}
 \label{b1:subsec:070302}
 
-待填充。
+\term*[fubini-dingli]{Fubini 定理}[Fubini's theorem]用绝对可积性保证减法和交换次序均有意义。Sheldon Axler 的《Measure, Integration \& Real Analysis》\cite{Axler2020Measure}第 5B 节采用先非负、后变号的顺序；实际计算中也宜先检查绝对值的积分，再选择方便的积分次序。
+
+\begin{theorem}[Fubini]\label{b1:thm:fubini}
+设实值或复值可测函数 \(f\) 满足 \(\int|f|\,\mathrm d\rho<\infty\)。则 \(f(x,\cdot)\) 对 \(\mu\)-几乎每个 \(x\) 关于 \(\nu\) 可积，\(f(\cdot,y)\) 对 \(\nu\)-几乎每个 \(y\) 关于 \(\mu\) 可积。在例外可测零集上把相应的截面积分规定为零，就得到可积函数 \(F,G\)，并有
+\[
+\int_{X\times Y}f\,\mathrm d\rho
+=\int_X\left(\int_Yf(x,y)\,\mathrm d\nu(y)\right)\mathrm d\mu(x)
+=\int_Y\left(\int_Xf(x,y)\,\mathrm d\mu(x)\right)\mathrm d\nu(y).
+\]
+内层积分按上述零集约定理解。
+\end{theorem}
+\begin{proof}
+对 \(|f|\) 用 Tonelli 定理，得可测函数
+\[
+A(x)=\int_Y|f(x,y)|\,\mathrm d\nu(y),\quad
+\int_XA\,\mathrm d\mu=\int|f|\,\mathrm d\rho<\infty.
+\]
+因此 \(N=\{A=\infty\}\) 是可测零集。在 \(N\) 外，截面可测且绝对可积。
+
+先设 \(f\) 实值。Tonelli 定理使两个函数 \(x\mapsto\int_Yf^\pm(x,y)\,\mathrm d\nu(y)\) 可测；它们在 \(N\) 外有限，其差便是 \(F\)，在 \(N\) 上另取零后仍可测。又因 \(|F|\leq A\) 几乎处处，\(F\) 可积。分别对 \(f^+\)、\(f^-\) 的 Tonelli 等式相减，所有积分均有限，得到 \(\int F\,\mathrm d\mu=\int f\,\mathrm d\rho\)。
+
+若 \(f\) 复值，实部、虚部均由 \(|f|\) 控制，分别应用已经证明的实值结论，再由复积分的定义合并。交换因子，对 \(y\mapsto\int_X|f(x,y)|\,\mathrm d\mu(x)\) 重复上述步骤，就得到另一种次序。
+\end{proof}
+
+两个迭代积分分别有限，不足以代替 \(f\) 在乘积空间上绝对可积。在 \(\mathbb N^2\) 上取计数测度，令
+\[
+a_{mn}=\begin{cases}
+1,&n=m,\\
+-1,&n=m+1,\\
+0,&\text{其他情形}.
+\end{cases}
+\]
+每一行有一项 \(1\) 和一项 \(-1\)，行和均为零；第一列的和为 \(1\)，其余列的和为零。因此
+\[
+\sum_{m=1}^{\infty}\left(\sum_{n=1}^{\infty}a_{mn}\right)=0,
+\quad
+\sum_{n=1}^{\infty}\left(\sum_{m=1}^{\infty}a_{mn}\right)=1.
+\]
+每个内层和甚至只有有限个非零项，但 \(\sum_{m,n}|a_{mn}|=\infty\)，正、负部分的二重和都无穷。这个变号函数在乘积空间上的积分没有定义，Fubini 定理并不适用。
 
 \subsection{截面与零测集}
 \label{b1:subsec:070303}
 
-待填充。
+\begin{proposition}\label{b1:prop:product-null-sections}
+对 \(E\in\mathcal A\otimes\mathcal B\)，有
+\[
+\rho(E)=0
+\quad\Longleftrightarrow\quad
+\nu(E_x)=0\text{ 对 }\mu\text{-几乎每个 }x.
+\]
+交换两个因子也有相同判别。特别地，两个联合可测函数在乘积空间中几乎处处相等，当且仅当对几乎每个 \(x\)，相应截面在 \(Y\) 上几乎处处相等。
+\end{proposition}
+\begin{proof}
+截面公式给出 \(\rho(E)=\int_X\nu(E_x)\,\mathrm d\mu(x)\)。非负函数的积分为零当且仅当它几乎处处为零，故得第一个判别。交换因子得到对称结论。最后把此判别用于可测集合 \(\{(x,y):f(x,y)\neq g(x,y)\}\) 即可。
+\end{proof}
+
+上面的“几乎每个”不能改成“每个”。集合 \(\{0\}\times[0,1]\) 的平面测度为零，但在 \(x=0\) 处的截面具有长度一。乘积零集也未必包含在有限条零测横带、竖带中，例如对角线的两个投影都是整个区间。
+
+将乘积测度完备化后，截面的可测性本身也需要保留例外集。D. H. Fremlin 的《Measure Theory》\cite{Fremlin2016Measure}第二卷第 252 节明确区分原可测空间与完备化上的截面；下面把这一点落实到本章的 \(\sigma\)-有限情形。
+
+\begin{proposition}\label{b1:prop:completed-product-sections}
+记 \(\overline\rho\)、\(\overline\mu\)、\(\overline\nu\) 为相应测度的完备化。若实值、复值或非负扩展实值函数 \(f\) 对 \(\overline\rho\) 可测，则对 \(\mu\)-几乎每个 \(x\)，截面 \(f(x,\cdot)\) 对 \(\overline\nu\) 可测；另一方向也成立。若 \(f\geq0\) 或 \(f\in L^1(\overline\rho)\)，相应的 Tonelli 或 Fubini 公式仍成立，其中截面积分在因子的完备化中计算，例外参数上的积分值另取零。
+\end{proposition}
+\begin{proof}
+先说明可以选取一个原乘积可测函数 \(f_0\)，使 \(f=f_0\) 于某个原乘积可测零集 \(Z\) 外。对非负 \(f\) 取完备化可测的简单逼近；由\cref{b1:thm:completion-measure}，每个水平集都可以替换为原可测集，仅在某个原可测零集内发生改变。把可数次替换所用的零集取并为 \(Z\)。替换后的简单函数都是原可测函数，在 \(Z\) 外仍趋于 \(f\)，取其上极限即得所需非负 \(f_0\)。实值或复值情形分别对实、虚部的正负部分作此构造，并在 \(Z\) 上统一取零。
+
+由前一命题，\(Z_x\) 对几乎每个 \(x\) 是 \(\nu\)-零集。对这样的 \(x\)，原可测截面 \(f_0(x,\cdot)\) 与 \(f(x,\cdot)\) 只在 \(Z_x\) 内不同。因子完备化及\cref{b1:thm:complete-null-modification}保证后者可测，并保持非负积分或绝对可积积分不变。对 \(f_0\) 使用已证的 Tonelli、Fubini 公式，就得到 \(f\) 的公式；交换因子完成另一方向。
+\end{proof}
+
+取一个非 Lebesgue 可测集 \(V\subseteq[0,1]\)，则 \(E=\{0\}\times V\) 包含在可测零集 \(\{0\}\times[0,1]\) 中。因此 \(E\) 在乘积完备化中可测，然而截面 \(E_0=V\) 连一维 Lebesgue 可测性都不具备。这说明，即使两个因子本身完备，也不能对完备乘积中的任意函数要求每个截面可测。
 
 \subsection{多重积分}
 \label{b1:subsec:070304}
 
-待填充。
+\begin{corollary}\label{b1:cor:multiple-integral-orders}
+设 \((X_j,\mathcal A_j,\mu_j)\)、\(1\leq j\leq r\)，均为 \(\sigma\)-有限测度空间。对其有限乘积上的非负可测函数，任意次序的迭代积分均等于乘积积分。对绝对可积的实值或复值函数也成立，但中间积分只需在相应剩余变量的几乎处处意义下定义。
+\end{corollary}
+\begin{proof}
+由\cref{b1:prop:finite-product-associativity}，可以把除首个积分变量外的全部因子合为一个仍然 \(\sigma\)-有限的因子。非负情形先应用二因子 Tonelli 定理；所得截面积分非负且可测，再把剩余因子逐次拆开。如此归纳至最后一个变量，每一步都保持积分值。
+
+绝对可积情形先把这个过程用于 \(|f|\)。每一步所得绝对值积分有限几乎处处，故可以在下一步使用 Fubini 定理。内层积分的绝对值不超过对应的绝对值积分，因此中间函数也可积。每一步的例外可测零集上取零，不改变外层积分。因子的任意置换保持乘积测度，故同一过程适用于任何次序。
+\end{proof}
+
+例如在 \((0,\infty)^r\) 上，给定 \(a_j>0\)，非负迭代积分给出
+\[
+\int_{(0,\infty)^r}\exp\left(-\sum_{j=1}^{r}a_jx_j\right)\,\mathrm d(\mu_1\otimes\cdots\otimes\mu_r)
+=\prod_{j=1}^{r}\frac1{a_j},
+\]
+这里各 \(\mu_j\) 为一维 Lebesgue 测度，单变量积分已在\cref{b1:prop:laplace-exponential-moments}计算。反之，多次积分中的每个截面分别可积，并不能保证全部积分次序可交换；双级数例在两个变量时已经显示了这一点。

@@ -1,27 +1,277 @@
 % !TeX root = ../../Book1.tex
 \chapter{乘积测度、Fubini 理论与换元公式}
 \label{b1:ch:07}
-% 本章摘要（不计入编号）
+% 来源与证明义务（2026-09-05）：
+% Axler2020Measure §5A--5C：普通乘积结构、截面积分构造、Tonelli/Fubini及完备化。
+% Fremlin2016Measure vol.2 §252：完成化后的截面；§263：可微换元的一般版本。
+% 本章7.5限C1微分同胚，以立方体失真和第六章RN定理识别密度，
+% 不借第十四章微分定理或第十七章面积公式。中文译名按现行术语规范。
+% 先区分联合/分别可测，再构造测度；非负积分先行，可积积分后行；
+% 函数的代表与例外集明示；换元证明补齐零集保持和可数局部化。
 \begin{chapterabstract}
-待填充。
+多变量积分有两种基本简化方式：固定部分变量逐次积分，或者选择更合适的坐标。前者要求乘积可测结构与积分次序相容，后者要求掌握映射对体积的影响。本章从可测矩形和截面构造乘积测度，证明 Tonelli 与 Fubini 定理，并说明为什么完备化后必须容许少数坏截面。随后研究积分后的参数依赖，以 \(C^1\) 微分同胚的换元公式连接线性代数、密度表示和欧氏积分。
 \end{chapterabstract}
 
-% 本章目标（不计入编号）
 \begin{learninggoals}
-待填充。
+\begin{itemize}
+  \item \label{b1:item:07-goal-structure}区分乘积可测、分别可测和完备化可测，能够判断集合截面及截面测度函数的可测性。
+  \item \label{b1:item:07-goal-integration}从非负或绝对可积条件选择换序定理，识别 \(\sigma\)-有限性与可积截面各自承担的作用。
+  \item \label{b1:item:07-goal-parameter}用可测--连续判据检查联合可测性，结合核估计和控制收敛处理积分后的参数变化。
+  \item \label{b1:item:07-goal-change}理解 Jacobi 行列式如何成为体积密度，并在换元计算中检查单射性、零测边界及行列式的方向。
+\end{itemize}
 \end{learninggoals}
+
+本章用到第\ref{b1:ch:01}章的生成类方法、第\ref{b1:ch:03}章的 Lebesgue 测度与线性变换，以及第\ref{b1:ch:05}章的积分逼近和收敛定理。最后一节还调用第\ref{b1:ch:06}章的 Radon--Nikodym 定理，并假定读者熟悉有限维微分法、链式法则和沿线段的微积分基本定理。
+
+第\ref{b1:sec:0701}、\ref{b1:sec:0702}节先在集合层面完成构造；第\ref{b1:sec:0703}节将它推广为函数积分，第\ref{b1:sec:0704}节把所得结论用于参数依赖。第\ref{b1:sec:0705}节的困难在体积公式的证明，后面的简单函数推广则与前文同型。第一次阅读宜把乘积构造和 Tonelli--Fubini 的证明连起来看；回读时再集中比较完备化前后的截面结论，以及局部线性误差怎样变成全局测度恒等式。
+
+Sheldon Axler 的《Measure, Integration \& Real Analysis》\cite{Axler2020Measure}第 5 章适合作为本章前半部分的伴读材料，尤其可对照可测矩形、非负简单逼近和二维反例之间的联系。D.~H. Fremlin 的《Measure Theory》\cite{Fremlin2016Measure}第二卷第 252、263 节适合进一步核对完备化与换元的适用范围。两者对乘积测度的可测域安排并不完全相同，阅读时应先确认书中是否已经把测度完备化。
 
 \input{Part01/Chapter07/Section0701}
 \input{Part01/Chapter07/Section0702}
 \input{Part01/Chapter07/Section0703}
 \input{Part01/Chapter07/Section0704}
 \input{Part01/Chapter07/Section0705}
-% 本章小结（不计入编号）
 \begin{chaptersummary}
-待填充。
+乘积测度从矩形值出发，却需要截面可测性才能延伸到任意乘积可测集。有限测度下的生成类论证、\(\sigma\)-有限空间的穷竭，以及积分的单调收敛，分别完成了构造中的不同步骤。唯一性又把原本偏向某一坐标的定义变成对称的测度。
+
+Tonelli 定理处理非负函数，Fubini 定理处理绝对可积函数。坏截面、条件抵消和非 \(\sigma\)-有限因子给出的反例，说明这几项限制不能彼此替代。含参变量积分则把这些结论用于产生新的可测函数；连续性和微分仍需各自的局部共同控制。
+
+换元公式先解决集合测度，再解决函数积分。导数连续性给出局部体积估计，Radon--Nikodym 定理及可数局部化将估计识别为 Jacobi 密度。这样得到的公式既能处理不规则可测区域，也能处理非连续的可积函数。第一编至此建立了后续分析所需的测度与积分工具；下一编将把函数组成赋范空间，研究逼近、算子与紧性。
 \end{chaptersummary}
 
 
 \BookExercises
 
-待填充。
+% 综合自拟：以三角形核检验最佳常数与不取等号，不复述正文核估计。
+\begin{exercise}\label{b1:ex:07-triangular-kernel}
+对 \(f\in L^1(0,1)\)，令 \(Af(t)=\int_t^1f(x)\,dx\)。证明
+\[
+\int_0^1Af(t)\,dt=\int_0^1xf(x)\,dx,
+\quad
+\|Af\|_1\leq\|f\|_1.
+\]
+证明最后一个不等式的常数 \(1\) 不能减小，但只要 \(f\) 不几乎处处为零，就有严格不等式。
+\end{exercise}
+\begin{solution}
+在 \((0,1)^2\) 上取 \(K(t,x)=\mathbf1_{\{t<x\}}\)。Tonelli 定理给出
+\(\int_0^1\int_0^1|K(t,x)f(x)|\,dx\,dt=\int_0^1x|f(x)|\,dx<\infty\)，故可用 Fubini 定理交换有符号或复值积分，得到第一个公式。又有
+\[
+\|Af\|_1\leq\int_0^1x|f(x)|\,dx\leq\|f\|_1.
+\]
+若 \(f\neq0\) 于正测度集，正函数 \((1-x)|f(x)|\) 的积分严格为正，故第二步不等式严格。另一方面，取
+\(f_n=n\mathbf1_{(1-1/n,1)}\)，则 \(\|f_n\|_1=1\)，而非负性给出
+\(\|Af_n\|_1=\int_0^1xf_n(x)\,dx=1-1/(2n)\)。比值趋于 \(1\)，所以常数不能减小。
+\end{solution}
+
+% 来源：Axler2020Measure §5C习题6，印刷144页；对角逆像工具见§5A习题2，128页。
+% 改编：比较平面测度与对角推前测度的不同完备化；所有截面均可测。
+\begin{exercise}\label{b1:ex:07-completions-diagonal}
+令 \(I=[0,1]\)，\(\mathcal B,\mathcal L\) 分别为其 Borel 与 Lebesgue \(\sigma\)-代数，\(m\) 为 Borel Lebesgue 测度。记
+\(\rho=m\otimes m\)、\(\eta=d_\#m\)，其中 \(d(t)=(t,t)\)。
+取非 Lebesgue 可测集 \(V\subseteq I\)，令 \(E=d(V)\)。证明 \(E\) 的每个水平和竖直截面都是 Borel 集，但 \(E\notin\mathcal L\otimes\mathcal L\)；它对 \(\rho\) 的完备化可测，对 \(\eta\) 的完备化却不可测。
+\end{exercise}
+\begin{solution}
+每个截面至多含一点，故为 Borel 集。对角线 \(D=d(I)\) 闭且每个截面的 \(m\)-测度为零，所以 \(\rho(D)=0\)。由 \(E\subseteq D\)，集合 \(E\) 对 \(\rho\) 的完备化可测。
+
+对每个 \(A,B\in\mathcal L\)，有 \(d^{-1}(A\times B)=A\cap B\in\mathcal L\)，故 \(d:(I,\mathcal L)\rightarrow(I^2,\mathcal L\otimes\mathcal L)\) 可测。若 \(E\) 属于其值域 \(\sigma\)-代数，则 \(V=d^{-1}(E)\in\mathcal L\)，矛盾。
+
+再假设 \(E\) 对 \(\eta\) 的完备化可测，则存在平面 Borel 集 \(H,N\)，使
+\[
+E\mathbin{\triangle}H\subseteq N,\quad \eta(N)=0.
+\]
+取 \(d\) 的逆像后，
+\[
+V\mathbin{\triangle}d^{-1}(H)\subseteq d^{-1}(N),
+\quad m(d^{-1}(N))=0.
+\]
+两个逆像都是 Borel 集，右侧为零测集，因而 \(V\) 应当 Lebesgue 可测，仍然矛盾。完备化依赖具体测度，不能只由原来的 \(\sigma\)-代数判断。
+\end{solution}
+
+% 来源：Axler2020Measure §5B习题1，印刷135页。
+% 改编：增加正负部分在楔形区域的发散估计和矩形截断的路径极限。
+\begin{exercise}\label{b1:ex:07-corner-singularity}
+在 \((0,1)^2\) 上令
+\[
+f(x,y)=\frac{x^2-y^2}{(x^2+y^2)^2}.
+\]
+计算两个迭代积分，并证明 \(\int f^+=\int f^-=\infty\)。再求
+\[
+J(\varepsilon,\delta)
+=\int_{(\varepsilon,1)\times(\delta,1)}f(x,y)\,dx\,dy
+\]
+的显式表达式，确定当 \(\varepsilon,\delta\downarrow0\) 且 \(\varepsilon/\delta\rightarrow r\in[0,\infty]\) 时的极限。
+\end{exercise}
+\begin{solution}
+对固定 \(x>0\)，函数 \(y/(x^2+y^2)\) 关于 \(y\) 的导数为 \(f(x,y)\)，故
+\[
+\int_0^1f(x,y)\,dy=\frac1{1+x^2}.
+\]
+交换变量后符号相反，所以先按 \(y\) 积分所得迭代积分为 \(\pi/4\)，先按 \(x\) 积分则为 \(-\pi/4\)。
+
+在 \(0<y<x/2\)、\(0<x<1\) 上，分子至少为 \(3x^2/4\)，分母至多为 \(25x^4/16\)，于是
+\[
+\int f^+\geq\int_0^1\int_0^{x/2}\frac{12}{25x^2}\,dy\,dx
+=\frac6{25}\int_0^1\frac{dx}{x}=\infty.
+\]
+由 \(f(y,x)=-f(x,y)\) 得负部分积分也为无穷。因此乘积空间上的 Lebesgue 积分没有定义。
+
+每个截断矩形上的函数有界且可积，故可交换次序，计算得到
+\begin{align*}
+J(\varepsilon,\delta)
+&=\int_\varepsilon^1\left(\frac1{1+x^2}-\frac{\delta}{x^2+\delta^2}\right)\,dx\\
+&=\frac\pi4-\arctan\varepsilon-\arctan(1/\delta)
++\arctan(\varepsilon/\delta).
+\end{align*}
+所求极限为 \(\arctan r-\pi/4\)，其中 \(\arctan\infty=\pi/2\)。方形截断给出零，其他长宽比给出不同值；这些极限不能组成一个与逼近方式无关的 Lebesgue 积分。
+\end{solution}
+
+% 综合自拟：以径向--比例变量连接两个Euler型积分，不预借特殊函数恒等式。
+\begin{exercise}\label{b1:ex:07-euler-integrals}
+对 \(a,b>0\)，记
+\[
+G(a)=\int_0^\infty t^{a-1}e^{-t}\,dt,\quad
+B(a,b)=\int_0^1u^{a-1}(1-u)^{b-1}\,du.
+\]
+先证明 \(0<G(a)<\infty\)，再用 \((x,y)=(ru,r(1-u))\) 证明
+\[
+B(a,b)=\frac{G(a)G(b)}{G(a+b)}.
+\]
+推导时不得预先假定 \(B(a,b)\) 有限。
+\end{exercise}
+\begin{solution}
+在 \((0,1)\) 上用 \(t^{a-1}\) 控制，在 \([1,\infty)\) 上注意
+\(t^{a-1}e^{-t/2}\) 有界，可用常数倍的 \(e^{-t/2}\) 控制。因此 \(G(a)\) 有限；被积函数严格为正，故积分也为正。
+
+所给变换把 \((0,\infty)\times(0,1)\) 微分同胚地映到第一象限，逆映射为 \(r=x+y\)、\(u=x/(x+y)\)，Jacobi 行列式绝对值为 \(r\)。对非负函数应用 Tonelli 定理与换元公式，得
+\begin{align*}
+G(a)G(b)
+&=\int_{(0,\infty)^2}x^{a-1}y^{b-1}e^{-(x+y)}\,dx\,dy\\
+&=\int_0^\infty\int_0^1
+r^{a+b-1}e^{-r}u^{a-1}(1-u)^{b-1}\,du\,dr\\
+&=G(a+b)B(a,b).
+\end{align*}
+这些步骤都允许无穷值；但左侧有限，且 \(G(a+b)\) 有限、严格为正，故 \(B(a,b)\) 只能有限。除以 \(G(a+b)\) 得到结论。
+\end{solution}
+
+% 综合自拟：线性换元与本节Gauss积分结合，强调非对角二次型。
+\begin{exercise}\label{b1:ex:07-gaussian-quadratic}
+设 \(a>0\)、\(ac-b^2>0\)。计算
+\[
+\int_{\mathbb R^2}\exp\bigl(-ax^2-2bxy-cy^2\bigr)\,dx\,dy,
+\]
+并由此求椭圆区域
+\(\{(x,y):ax^2+2bxy+cy^2<1\}\) 的面积。
+\end{exercise}
+\begin{solution}
+令 \(u=\sqrt a\,x+(b/\sqrt a)y\)、\(v=\sqrt{c-b^2/a}\,y\)，则
+\[
+ax^2+2bxy+cy^2=u^2+v^2.
+\]
+这一可逆线性变换的行列式为 \(\sqrt{ac-b^2}\)。由仿射换元公式、Tonelli 定理和上一节的一维 Gauss 积分，所求积分为
+\(\pi/\sqrt{ac-b^2}\)。同一变换把椭圆区域送到单位圆盘；极坐标给出圆盘面积为
+\(\int_0^{2\pi}\int_0^1r\,dr\,d\theta=\pi\)，所以椭圆面积也为
+\(\pi/\sqrt{ac-b^2}\)。两个相同的数值分别来自单位圆盘面积与二维 Gauss 积分，不能因此把两个被积函数混同。
+\end{solution}
+
+% 综合自拟：推前测度的RN密度与非线性坐标变换，附指数映射的具体计算。
+\begin{exercise}\label{b1:ex:07-pushforward-density}
+设 \(\Phi:U\rightarrow V\) 是 \(C^1\) 微分同胚，\(p:U\rightarrow[0,\infty)\) Lebesgue 可测且可积。证明 \(\Phi_\#(p\,m_d)\) 关于 \(V\) 上 Lebesgue 测度的密度为
+\[
+q(y)=\frac{p(\Phi^{-1}(y))}{J_\Phi(\Phi^{-1}(y))}.
+\]
+取 \(U=\mathbb R\)、\(\Phi(x)=e^x\)、\(p(x)=\pi^{-1/2}e^{-x^2}\)，求 \(q\)，并计算对每个实数 \(s\) 的积分 \(\int_0^\infty y^s q(y)\,dy\)。
+\end{exercise}
+\begin{solution}
+对每个可测 \(B\subseteq V\)，对逆微分同胚应用换元公式，得到
+\[
+\Phi_\#(p\,m_d)(B)
+=\int_{\Phi^{-1}(B)}p(x)\,dx
+=\int_Bp(\Phi^{-1}(y))J_{\Phi^{-1}}(y)\,dy.
+\]
+链式法则给出 \(J_{\Phi^{-1}}(y)=1/J_\Phi(\Phi^{-1}(y))\)，所以得到所述密度。特别地，其总积分等于 \(\int_Up\)。
+
+指数映射给出
+\[
+q(y)=\frac{e^{-(\log y)^2}}{\sqrt\pi\,y},\quad y>0.
+\]
+再次换元并完成平方，得
+\[
+\int_0^\infty y^s q(y)\,dy
+=\frac1{\sqrt\pi}\int_{\mathbb R}e^{sx-x^2}\,dx
+=\frac{e^{s^2/4}}{\sqrt\pi}\int_{\mathbb R}e^{-(x-s/2)^2}\,dx
+=e^{s^2/4}.
+\]
+公式同时证明所有这些正、负次幂矩都有限。
+\end{solution}
+
+% 综合自拟，连接第六章与本章；工具定位：Axler2020Measure §5A习题10（128页），
+% §9B 9.36与9.41（272--274页）；不是上述原题的直接改编。
+\begin{exercise}\label{b1:ex:07-signed-product}
+设 \(\alpha,\beta\) 分别是 \((X,\mathcal A)\)、\((Y,\mathcal B)\) 上的有限符号测度。证明存在唯一的有限符号测度 \(\alpha\otimes\beta\)，满足
+\[
+(\alpha\otimes\beta)(A\times B)=\alpha(A)\beta(B),
+\]
+并证明
+\[
+|\alpha\otimes\beta|=|\alpha|\otimes|\beta|,
+\quad
+\|\alpha\otimes\beta\|_{\mathrm{TV}}
+=\|\alpha\|_{\mathrm{TV}}\|\beta\|_{\mathrm{TV}}.
+\]
+若 \(\mu,\nu\) 是对应因子上的 \(\sigma\)-有限正测度，且 \(\alpha,\beta\) 均非零，证明
+\[
+\alpha\otimes\beta\ll\mu\otimes\nu
+\quad\Longleftrightarrow\quad
+\alpha\ll\mu,\ \beta\ll\nu,
+\]
+并求此时的乘积密度。
+\end{exercise}
+\begin{solution}
+由 Jordan 分解，可取可测函数 \(s,t\) 分别只取 \(1,-1\)，使
+\(\alpha=s|\alpha|\)、\(\beta=t|\beta|\)。令
+\[
+\gamma(E)=\int_Es(x)t(y)\,d(|\alpha|\otimes|\beta|)(x,y).
+\]
+控制测度有限，密度绝对值为一，所以 \(\gamma\) 是有限符号测度。Fubini 定理给出所需矩形值。若另一测度给出相同的矩形值，两者之差记为 \(\zeta\)。集合族 \(\{E:\zeta(E)=0\}\) 包含全部矩形及全集，对补集和可数不交并封闭，故由 \(\pi\)-\(\lambda\) 定理，\(\zeta=0\)。这证明唯一性。由\cref{b1:prop:real-density-variation}，有
+\(|\gamma|=|st|(|\alpha|\otimes|\beta|)=|\alpha|\otimes|\beta|\)；在全集取值便得到范数公式。
+
+若 \(\alpha=f\mu\)、\(\beta=g\nu\)，其中 \(f,g\) 分别可积，则 Tonelli 定理说明
+\(h(x,y)=f(x)g(y)\) 关于 \(\mu\otimes\nu\) 可积。它诱导的符号测度在矩形上具有所需数值，由唯一性得
+\[
+\frac{d(\alpha\otimes\beta)}{d(\mu\otimes\nu)}(x,y)
+=\frac{d\alpha}{d\mu}(x)\frac{d\beta}{d\nu}(y)
+\quad\text{几乎处处}.
+\]
+反之，选 \(B_0\in\mathcal B\) 使 \(\beta(B_0)\neq0\)。若 \(\mu(A)=0\)，则
+\((\mu\otimes\nu)(A\times B_0)=0\)，绝对连续性给出
+\(0=\alpha(A)\beta(B_0)\)，所以 \(\alpha(A)=0\)。这证明 \(\alpha\ll\mu\)；交换因子得到 \(\beta\ll\nu\)。非零条件不可省略，因为一个零因子使乘积恒为零，却不能约束另一个因子。
+\end{solution}
+
+% 来源：Axler2020Measure §5B例5.30，印刷131页。
+% 改编：在已知非sigma有限背景上构造两个矩形值相同、对角线值不同的测度，
+% 不重复正文的迭代积分0/1计算。
+\begin{exercise}\label{b1:ex:07-nonsigma-uniqueness}
+令 \(I=[0,1]\)，\(m\) 为 Borel Lebesgue 测度，\(c\) 为 Borel 集上的计数测度。对 Borel 集 \(E\subseteq I^2\)，定义
+\[
+\lambda_0(E)=\sum_{y\in I}m(E^y),
+\quad
+\lambda_1(E)=\lambda_0(E)+m(d^{-1}(E)),\quad d(t)=(t,t).
+\]
+非负数族的不可数和定义为所有有限部分和的上确界。证明两者都是测度，在每个 Borel 矩形上均等于 \(m(A)c(B)\)，但在对角线上取值不同。说明本例与乘积测度唯一性假设的关系。
+\end{exercise}
+\begin{solution}
+截面及对角映射的逆像均 Borel 可测。对任意非负数族 \(a_{yn}\)，有限部分和的定义给出
+\[
+\sum_{y\in I}\sum_{n=1}^\infty a_{yn}
+=\sum_{n=1}^\infty\sum_{y\in I}a_{yn}.
+\]
+两边都等于 \(\sum_{y\in F,n\in G}a_{yn}\) 对有限集 \(F\subseteq I\)、\(G\subseteq\mathbb N\) 所取的上确界；有限个不同的内部截断可以取并，所以没有交换未经证明的无穷运算。对不交集合列的截面应用此等式，便得到 \(\lambda_0\) 的可数可加性。另一个加项是推前测度 \(d_\#m\)，故 \(\lambda_1\) 也是测度。
+
+矩形截面直接给出 \(\lambda_0(A\times B)=m(A)c(B)\)。若此值有限，则或者 \(m(A)=0\)，或者 \(B\) 有限，两种情况下 \(m(A\cap B)=0\)；若此值无穷，增加有限数也不改变它。因此 \(\lambda_1\) 的矩形值相同。可是对角线 \(D=d(I)\) 满足
+\[
+\lambda_0(D)=\sum_{y\in I}m(\{y\})=0,\quad
+\lambda_1(D)=1.
+\]
+计数测度 \(c\) 的有限测度集只能是有限集，其可数并不能覆盖不可数集 \(I\)，故 \(c\) 不 \(\sigma\)-有限。缺少这一假设时，矩形数值相同不再保证整个测度相同。
+\end{solution}

@@ -1,25 +1,160 @@
 % !TeX root = ../../Book1.tex
-\section{参数积分的可测性}
+\section{含参变量积分的可测性}
 \label{b1:sec:0704}
 
-% TODO: 撰写本节正文。
+% 来源：Axler2020Measure §5B 5.28、5.32、5.35，印刷129--134页，已读本地正式OA全文。
+% 参数可测性由集合截面引理自证；可测--连续判据采用可分参数空间的可数分片逼近。
+% 积分核估计为Tonelli/Fubini的直接应用；水平集公式按5.35改写并加p次幂权重。
+% 参数连续与求导接续0504，不重建已有一元定理；补足联合可测及局部共同控制的接口。
+% 证明义务：参数空间可无测度；逐参数可积与几乎处处可积区别；公共零集；无7.5前向依赖。
+
+把一个变量积分掉后，剩下的变量就成了参数。上一节保证非负联合可测函数的截面积分仍然可测；应用时还须回答如何检查联合可测性，以及何时可以进一步得到参数连续性或可微性。参数可测性只需要被积分变量上的测度，参数集合本身不必先配备测度。
 
 \subsection{参数可测性}
 \label{b1:subsec:070401}
 
-待填充。
+分别可测不够，但一个变量连续、另一个变量可测时，可分性提供了可数逼近的方法。以下记 \(\mathcal B(T)\) 为度量空间 \(T\) 的 Borel \(\sigma\)-代数；可分是指它具有可数稠密子集。
 
-\subsection{参数积分}
+\begin{proposition}\label{b1:prop:caratheodory-joint-measurability}
+设 \((X,\mathcal A)\) 可测，\(T\) 是可分度量空间，\(h:T\times X\rightarrow\mathbb C\)。若每个 \(x\mapsto h(t,x)\) 都可测，且每个 \(t\mapsto h(t,x)\) 都连续，则 \(h\) 关于 \(\mathcal B(T)\otimes\mathcal A\) 联合可测。实值函数作为特例也满足结论。
+\end{proposition}
+\begin{proof}
+空参数空间的结论无需证明。否则取可数稠密列 \((t_j)\)。对每个正整数 \(n\)，令
+\[
+C_{n,j}=B(t_j,1/n)\setminus\bigcup_{k<j}B(t_k,1/n).
+\]
+这些 Borel 集构成 \(T\) 的可数分割。在 \(C_{n,j}\times X\) 上定义 \(h_n(t,x)=h(t_j,x)\)。对复平面中的开集 \(U\)，有
+\[
+h_n^{-1}(U)=\bigcup_{j=1}^{\infty}\left(C_{n,j}\times\{x:h(t_j,x)\in U\}\right),
+\]
+故 \(h_n\) 联合可测。若 \(t\in C_{n,j}\)，则 \(d(t,t_j)<1/n\)；固定 \(x\) 后，参数连续性给出 \(h_n(t,x)\to h(t,x)\)。可测函数的逐点极限仍可测，因而得到结论。
+\end{proof}
+
+这里不需要 \(x\) 所在集合具有拓扑，也不要求连续性对 \(x\) 一致。可分性用来把参数取样变成可数分割，使开集逆像仍能用 \(\sigma\)-代数允许的可数并表示。这个判据适合含连续参数的积分表达式；若只有几乎处处的参数连续性，应先明确一个公共可测零集，在该零集上统一取零后再应用判据。
+
+\subsection{含参变量积分}
 \label{b1:subsec:070402}
 
-待填充。
+\begin{proposition}\label{b1:prop:parameter-integral-measurability}
+设 \((X,\mathcal A,\mu)\) 为 \(\sigma\)-有限测度空间，\((T,\mathcal C)\) 仅为可测空间。若非负函数 \(h\) 关于 \(\mathcal C\otimes\mathcal A\) 可测，则
+\[
+H(t)=\int_Xh(t,x)\,\mathrm d\mu(x)
+\]
+是 \(\mathcal C\)-可测函数。对联合可测的复函数 \(h\)，集合
+\[
+T_0=\left\{t:\int_X|h(t,x)|\,\mathrm d\mu(x)<\infty\right\}
+\]
+可测；在 \(T_0\) 上取上述积分、在补集上取零，也得到可测函数。
+\end{proposition}
+\begin{proof}
+对示性函数，结论由\cref{b1:lem:section-measure-measurable}给出；该引理只要求被积分因子 \(\sigma\)-有限，不要求参数空间带测度。非负简单函数由有限线性组合处理。取简单函数递增逼近一般非负 \(h\)，每个截面上的单调收敛把 \(H\) 表示成可测函数列的递增极限。
+
+把非负结论用于 \(|h|\)，便知 \(T_0\) 可测。再用于实部、虚部的正负部分，所得四个含参变量积分在 \(T_0\) 上都有限。将它们在补集上置零，再作相应差与复线性组合，即得最后的可测性。
+\end{proof}
+
+命题没有说每个截面可积，也没有给参数空间补上某个“自然测度”。如果另给 \(T\) 一个 \(\sigma\)-有限测度 \(\lambda\)，并且 \(h\in L^1(\lambda\otimes\mu)\)，Fubini 定理才进一步说明 \(T\setminus T_0\) 是 \(\lambda\)-零集。有时则能直接对每个参数估计积分，从而得到 \(T_0=T\)。
+
+例如，若 \(g\in L^1(\mathbb R)\)，则 \(h(t,x)=e^{itx}g(x)\) 满足前一小节的可测--连续判据，并且每个参数截面的绝对值积分都等于 \(\|g\|_1\)。其含参变量积分因此在整个实轴上有定义且可测；第五章还证明了它的连续性。联合可测性解决的是积分作为函数能否进入下一次测度运算，连续性则需要另一个极限定理。
 
 \subsection{与 Tonelli–Fubini 的结合}
 \label{b1:subsec:070403}
 
-待填充。
+联合可测函数也可以把一个函数变成新的含参变量积分。把 \(K:T\times X\rightarrow\mathbb C\) 用在表达式 \(\int_XK(t,x)f(x)\,\mathrm d\mu(x)\) 中时，称 \(K\) 为\term[jifen-he]{积分核}[integral kernel]。下面的估计说明，控制核在输出变量方向上的总量，可以控制整个输出函数的积分范数。
+
+\begin{proposition}\label{b1:prop:kernel-l1-estimate}
+设 \((T,\mathcal C,\lambda)\)、\((X,\mathcal A,\mu)\) 均 \(\sigma\)-有限，\(K\) 联合可测，并有有限常数 \(M\geq0\) 满足
+\[
+\int_T|K(t,x)|\,\mathrm d\lambda(t)\leq M
+\quad\text{对 }\mu\text{-几乎每个 }x.
+\]
+对 \(f\in L^1(\mu)\)，积分
+\[
+(Af)(t)=\int_XK(t,x)f(x)\,\mathrm d\mu(x)
+\]
+在 \(\lambda\)-几乎处处绝对收敛，取零补足例外参数后属于 \(L^1(\lambda)\)，且
+\[
+\|Af\|_{L^1(\lambda)}\leq M\|f\|_{L^1(\mu)}.
+\]
+它只依赖 \(f\) 的几乎处处等价类。
+\end{proposition}
+\begin{proof}
+选取 \(f\) 的处处有限可测代表。对非负联合可测函数 \(|K(t,x)||f(x)|\) 应用 Tonelli 定理，得到
+\[
+\int_T\int_X|K(t,x)f(x)|\,\mathrm d\mu(x)\,\mathrm d\lambda(t)
+=\int_X|f(x)|\left(\int_T|K(t,x)|\,\mathrm d\lambda(t)\right)\mathrm d\mu(x)
+\leq M\|f\|_1.
+\]
+因此内层绝对值积分有限几乎处处。\Cref{b1:prop:parameter-integral-measurability}给出 \(Af\) 的可测代表，积分三角不等式再给出所需范数界。若更换 \(f\) 的代表，两代表之差的 \(L^1\) 范数为零；把同一估计用于其差，得到输出也几乎处处相等。
+\end{proof}
+
+核的假设只控制一种积分次序，却通过 Tonelli 定理保证另一种次序几乎处处可积。例如 \(K(t,x)=e^{-t}\mathbf1_{(0,\infty)}(t)\) 与 \(x\) 无关时，可取 \(M=1\)，输出为 \(e^{-t}\int f\,\mathrm d\mu\)。更一般的核会让不同参数选择输入的不同部分；证明所需的仍是同一绝对值估计。
+
+另一个用途是改用水平集来表示积分。Sheldon Axler 的《Measure, Integration \& Real Analysis》\cite{Axler2020Measure}第 5B 节从函数图像下方的区域得到这一表示；它把函数的大小转化为各层集合的测度。
+
+\begin{proposition}[水平集积分公式]\label{b1:prop:layer-cake-formula}
+设 \(f:X\rightarrow[0,\infty]\) 可测，\(p>0\)。则
+\[
+\int_X f^p\,\mathrm d\mu
+=\int_0^{\infty}p\,t^{p-1}\mu\left(\{x:f(x)>t\}\right)\,\mathrm dt.
+\]
+两边可为无穷。特别地，\(p=1\) 时，积分等于上水平集测度关于高度的积分。
+\end{proposition}
+\begin{proof}
+集合 \(U=\{(x,t):0<t<f(x)\}\) 联合可测，因为
+\[
+U=\bigcup_{q\in\mathbb Q, q>0}\left(\{x:f(x)>q\}\times(0,q)\right).
+\]
+对 \(p\,t^{p-1}\mathbf1_U(x,t)\) 应用 Tonelli 定理。先按 \(t\) 积分，初等非负积分给出 \(\int_0^{f(x)}p\,t^{p-1}\,\mathrm dt=f(x)^p\)，其中端点为零或无穷的情形由单调极限理解；先按 \(x\) 积分，就得到右侧。
+\end{proof}
+
+这不是对单个水平集的粗略估计，而是把所有高度的贡献重新相加。例如在 \((0,1)\) 上取 \(f(x)=x^{-1/q}\)、\(q>0\)。高度 \(t<1\) 时水平集测度为一，高度 \(t\geq1\) 时为 \(t^{-q}\)。所以 \(f^p\) 可积当且仅当 \(p<q\)，并且此时
+\[
+\int_0^1f(x)^p\,\mathrm dx
+=\int_0^1p\,t^{p-1}\,\mathrm dt+\int_1^{\infty}p\,t^{p-q-1}\,\mathrm dt
+=\frac{q}{q-p}.
+\]
 
 \subsection{与控制收敛的结合}
 \label{b1:subsec:070404}
 
-待填充。
+参数可测性允许再次积分；参数连续性则取决于附近截面的共同可积控制。下面把第五章的实参数结论用于更一般的度量参数。
+
+\begin{proposition}\label{b1:prop:joint-parameter-continuity}
+设 \(T\) 是可分度量空间，\(h:T\times X\rightarrow\mathbb C\) 联合可测，\(t_0\in T\)。若存在 \(t_0\) 的邻域 \(U\)、可测 \(\mu\)-零集 \(N\) 及非负 \(g\in L^1(\mu)\)，使对每个 \(x\notin N\)，有
+\[
+h(t,x)\longrightarrow h(t_0,x)\quad(t\to t_0),\quad
+|h(t,x)|\leq g(x)\quad(t\in U),
+\]
+则 \(H(t)=\int_Xh(t,x)\,\mathrm d\mu(x)\) 在 \(U\) 上有定义，且在 \(t_0\) 处连续。
+\end{proposition}
+\begin{proof}
+联合可测性保证每个截面可测，共同上界保证其可积。对任意 \(t_n\to t_0\)，删去有限个不在 \(U\) 内的序号后，用控制收敛得到
+\[
+|H(t_n)-H(t_0)|\leq\int_X|h(t_n,x)-h(t_0,x)|\,\mathrm d\mu(x)\longrightarrow0.
+\]
+度量空间的连续性可由序列刻画，结论成立。
+\end{proof}
+
+求导还需支配导数或差商。为了不把参数相关的例外集误当成公共零集，以下把零集与局部控制的范围一并写出。
+
+\begin{theorem}[积分号下求导，局部控制情形]\label{b1:thm:joint-parameter-differentiation}
+设 \(I\subseteq\mathbb R\) 为开区间，\(h:I\times X\rightarrow\mathbb C\) 联合可测。假设存在一个可测零集 \(N\)，使每个 \(x\notin N\) 对应的函数 \(h(\cdot,x)\) 属于 \(C^1(I)\)。又设某个 \(t_*\in I\) 满足 \(h(t_*,\cdot)\in L^1(\mu)\)，并且对每个紧区间 \(J\subseteq I\)，都有非负 \(g_J\in L^1(\mu)\)，使
+\[
+|\partial_th(t,x)|\leq g_J(x)\quad(t\in J, x\notin N).
+\]
+在 \(N\) 上将参数导数置零，则导数联合可测，所有 \(H(t)=\int_Xh(t,x)\,\mathrm d\mu(x)\) 均有定义，而且 \(H\in C^1(I)\)，满足
+\[
+H'(t)=\int_X\partial_th(t,x)\,\mathrm d\mu(x).
+\]
+\end{theorem}
+\begin{proof}
+固定 \(t\)，导数截面在 \(X\setminus N\) 上是可测差商列的极限，在 \(N\) 上置零后仍可测。它对每个 \(x\) 关于参数连续，所以\cref{b1:prop:caratheodory-joint-measurability}还给出导数的联合可测性。
+
+对任意 \(t\in I\)，取一个包含 \(t,t_*\) 的紧区间 \(J\subseteq I\)。实部、虚部的中值估计给出
+\[
+|h(t,x)|\leq|h(t_*,x)|+2|t-t_*|g_J(x)\quad(x\notin N),
+\]
+故每个截面可积。再固定 \(t_0\)，在其紧区间邻域 \(J\) 内，差商的绝对值由 \(2g_J\) 控制。按\cref{b1:thm:differentiation-under-integral}的差商论证，控制收敛给出上述导数公式。最后，导数截面关于参数连续，且在同一邻域内受 \(g_J\) 控制；前一命题应用于 \(\partial_th\)，得到 \(H'\) 在 \(t_0\) 连续。由于 \(t_0\) 任意，\(H\in C^1(I)\)。
+\end{proof}
+
+局部控制函数可以随紧区间改变，但在一个已选区间内必须同时控制全部参数。基准截面负责保证积分有定义，导数上界负责控制差商，二者不能互相代替。\Cref{b1:sec:0504}的移动端点例子也说明：即使每个固定参数的导数都几乎处处存在，若没有公共零集，仍可能错误地把零导数积分成非零的参数导数。这里的联合可测性解决了可测问题，并未取消求导所需的这些条件。

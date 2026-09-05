@@ -2,24 +2,240 @@
 \section{欧氏空间中的换元公式}
 \label{b1:sec:0705}
 
-% TODO: 撰写本节正文。
+积分次序的交换保留原有坐标；换元则把坐标本身换掉。在线性情形，\cref{b1:thm:invertible-linear-change}已经说明行列式绝对值是体积的伸缩因子。非线性映射在每一点有不同的导数，因此首先要证明：这些局部线性因子确实能够组成一个测度密度。仅把小区域称作“近似平行多面体”，还不能控制任意可测集的像。
+
+本节使用多元微积分中的导数、链式法则和沿线段的微积分基本定理。先证明一个立方体覆盖估计，再用它识别微分同胚搬运后的测度，最后推广到函数积分。D.~H. Fremlin 的《Measure Theory》\cite{Fremlin2016Measure}第二卷第 263 节讨论了更一般的可微变换；这里保留开集之间的 \(C^1\) 微分同胚假设，使局部误差可以直接由导数的连续性控制。非单射映射的重数与较低正则性的情形留到第\ref{b1:ch:17}章。
+% 来源：Fremlin, Measure Theory, vol. 2, 263A、263C--D、263G。
+% 写法：只证明 C1 微分同胚版本，以无穷范数的立方体覆盖和 RN 密度
+% 代替一般可微映射的可数分片/密度定理路线，不调用后文面积公式。
+% 证明义务：外测度失真、双向零测集保持、像测度的 sigma 有限性、
+% 可数局部化识别密度、简单函数到一般积分，以及极坐标的删缝。
 
 \subsection{线性换元}
 \label{b1:subsec:070501}
 
-待填充。
+以下 \(m_d\) 表示 \(\mathbb R^d\) 上的 Lebesgue 测度。写 \(dx\) 时即指对它积分；积分区域上的可测性均相对于 Lebesgue \(\sigma\)-代数的迹。
+
+\begin{proposition}\label{b1:prop:affine-integral-change}
+设 \(T\) 是可逆的实 \(d\times d\) 矩阵，\(a\in\mathbb R^d\)，且 \(E\subseteq\mathbb R^d\) Lebesgue 可测。对任意非负可测函数 \(g:\mathbb R^d\rightarrow[0,\infty]\)，
+\[
+\int_{TE+a}g(y)\,dy
+=|\det T|\int_E g(Tx+a)\,dx.
+\]
+若 \(g\) 为实值或复值可测函数，则一侧绝对可积当且仅当另一侧绝对可积；在此情形下，上式仍成立。
+\end{proposition}
+\begin{proof}
+仿射双射 \(F(x)=Tx+a\) 及其逆映射均保持 Lebesgue 可测性。先取 \(g=\mathbf1_B\)，其中 \(B\) 可测，则
+\[
+\int_{FE}\mathbf1_B(y)\,dy
+=m_d(F(E\cap F^{-1}B))
+=|\det T|\,m_d(E\cap F^{-1}B),
+\]
+这就是所需公式。对非负简单函数作有限求和，再用递增简单逼近和单调收敛定理得到一般非负情形。对 \(|g|\) 应用这一结论得到可积性等价；最后分别处理实部、虚部及其正负部。
+\end{proof}
+
+例如，若 \(A\) 为可逆矩阵且 \(h\in L^1(\mathbb R^d)\)，则
+\[
+\int_{\mathbb R^d}h(Ax)\,dx
+=|\det A|^{-1}\int_{\mathbb R^d}h(y)\,dy.
+\]
+这里出现倒数，是因为等式右边已改用像空间变量。计算时应先写清映射的方向，再决定行列式放在哪一侧。
 
 \subsection{\texorpdfstring{\(C^1\)}{C1} 微分同胚}
 \label{b1:subsec:070502}
 
-待填充。
+\begin{definition}\label{b1:def:c1-diffeomorphism}
+设 \(U,V\subseteq\mathbb R^d\) 为开集。双射 \(\Phi:U\rightarrow V\) 称为一个 \(C^1\) \term[weifen-tongpei]{微分同胚}[diffeomorphism]，若 \(\Phi\) 和 \(\Phi^{-1}\) 都连续可微。
+\end{definition}
+
+由链式法则，
+\[
+D\Phi^{-1}(\Phi(x))D\Phi(x)=I_d,
+\]
+所以 \(D\Phi(x)\) 处处可逆。局部导数可逆与全局单射是不同的条件；例如 \((r,\theta)\mapsto(r\cos\theta,r\sin\theta)\) 在 \(r>0\) 时的导数可逆，但允许 \(\theta\) 遍历整个实轴便会重复覆盖。
+
+为控制体积，暂用向量范数
+\(\|x\|_\infty=\max_{1\leq i\leq d}|x_i|\)，以及矩阵范数
+\(\|A\|_\infty=\max_i\sum_j|a_{ij}|\)。它们满足
+\(\|Ax\|_\infty\leq\|A\|_\infty\|x\|_\infty\)。映射 \(F:D\rightarrow\mathbb R^d\) 若满足
+\(\|F(x)-F(y)\|_\infty\leq L\|x-y\|_\infty\)，就满足常数为 \(L\) 的\term[lipschitz-tiaojian]{Lipschitz 条件}[Lipschitz condition]。本节只使用这一具体条件；一般度量空间中的系统讨论见第\ref{b1:ch:16}章。
+
+\begin{lemma}\label{b1:lem:cube-lipschitz-distortion}
+若 \(D\subseteq\mathbb R^d\)，且 \(F:D\rightarrow\mathbb R^d\) 满足上述 Lipschitz 条件，则对每个 \(E\subseteq D\)，
+\[
+m_d^*(F(E))\leq L^d m_d^*(E).
+\]
+当 \(L=0\) 时，右边按 \(0\cdot\infty=0\) 解释。
+\end{lemma}
+\begin{proof}
+常数 \(L=0\) 时，像集至多包含一点，结论成立。设 \(L>0\)。若 \(m_d^*(E)=\infty\)，不等式成立；以下设外测度有限。由\cref{b1:prop:cube-cover}，可用半开立方体 \(Q_j\) 覆盖 \(E\)，并令其总体积任意接近 \(m_d^*(E)\)。若 \(Q_j\) 的边长为 \(\ell_j\)，则 \(F(E\cap Q_j)\) 的每个坐标振幅至多为 \(L\ell_j\)。对任意 \(\eta>0\)，将各坐标的上下确界略微外扩，可用一个半开长方体覆盖此像集，且其体积不超过
+\[
+L^d\ell_j^d+\eta2^{-j}.
+\]
+空的交集不必覆盖。所有这些长方体共同覆盖 \(F(E)\)，故
+\[
+m_d^*(F(E))\leq L^d\sum_jm_d(Q_j)+\eta.
+\]
+对原覆盖取下确界，再令 \(\eta\downarrow0\)，即得结论。
+\end{proof}
+
+\begin{proposition}\label{b1:prop:diffeomorphism-measurability}
+若 \(\Phi:U\rightarrow V\) 是 \(C^1\) 微分同胚，则 \(\Phi\) 与 \(\Phi^{-1}\) 都把零测集送到零测集，并把 Lebesgue 可测集送到 Lebesgue 可测集。
+\end{proposition}
+\begin{proof}
+开集 \(U\) 可由可数个闭包包含于 \(U\) 的开球覆盖：取有理中心和有理半径的相应球即可。在每个这样的球 \(B\) 上，连续函数 \(D\Phi\) 在紧集 \(\overline B\) 上有界。沿连接 \(x,y\in B\) 的线段积分，得到
+\[
+\Phi(y)-\Phi(x)=\int_0^1D\Phi(x+t(y-x))(y-x)\,dt,
+\]
+于是 \(\Phi\) 在 \(B\) 上满足某个有限常数的 Lipschitz 条件。若 \(N\subseteq U\) 为零测集，\cref{b1:lem:cube-lipschitz-distortion}说明每个 \(\Phi(N\cap B)\) 都为零测集。可数覆盖给出 \(m_d^*(\Phi(N))=0\)。对 \(\Phi^{-1}\) 在 \(V\) 上重复这一论证，得到反向结论。
+
+若 \(E\subseteq U\) Lebesgue 可测，\cref{b1:thm:lebesgue-completion-borel}给出一个相对 Borel 集 \(B\subseteq U\)，使 \(E\mathbin{\triangle}B\) 为零测集。因为 \(\Phi^{-1}\) 连续，集合 \(\Phi(B)=(\Phi^{-1})^{-1}(B)\) 是 \(V\) 中的 Borel 集；而
+\(\Phi(E)\mathbin{\triangle}\Phi(B)=\Phi(E\mathbin{\triangle}B)\) 为零测集。因此 \(\Phi(E)\) Lebesgue 可测。逆映射的情形相同。
+\end{proof}
+
+仅有连续性不能保证把零测集送到零测集，因此不能把上面的第二段单独作为一般连续换元的依据。这里使用 \(C^1\) 条件的第一个实质位置，正是通过局部 Lipschitz 估计处理完备化增加的集合。
 
 \subsection{Jacobi 行列式}
 \label{b1:subsec:070503}
 
-待填充。
+\begin{definition}\label{b1:def:jacobian-determinant}
+设 \(\Phi:U\rightarrow V\) 为 \(C^1\) 微分同胚。导数矩阵的行列式
+\[
+\det D\Phi(x)
+=\det\left(\frac{\partial\Phi_i}{\partial x_j}(x)\right)_{1\leq i,j\leq d}
+\]
+称为 \(\Phi\) 的\term[jacobi-hanglieshi]{Jacobi 行列式}[Jacobian determinant]。记它的绝对值为
+\[
+J_\Phi(x)=|\det D\Phi(x)|.
+\]
+\end{definition}
+\symidx{\(J_\Phi\)：微分同胚的体积因子}
+
+函数 \(J_\Phi\) 连续且严格为正。对于可复合的微分同胚，链式法则给出
+\[
+J_{\Psi\circ\Phi}(x)=J_\Psi(\Phi(x))J_\Phi(x),
+\quad
+J_{\Phi^{-1}}(\Phi(x))=J_\Phi(x)^{-1}.
+\]
+行列式的符号记录定向，绝对值才记录体积。现在证明它也是一个 Radon--Nikodym 导数。
+
+\begin{theorem}\label{b1:thm:diffeomorphism-volume-density}
+若 \(\Phi:U\rightarrow V\) 是 \(C^1\) 微分同胚，则
+\[
+\nu(E)=m_d(\Phi(E)),\quad E\subseteq U\ \text{Lebesgue 可测},
+\]
+定义一个 \(\sigma\)-有限正测度，且
+\[
+\nu(E)=\int_E J_\Phi(x)\,dx.
+\]
+换言之，\(d\nu/dm_d=J_\Phi\) 几乎处处。
+\end{theorem}
+\begin{proof}
+像集的可测性已由\cref{b1:prop:diffeomorphism-measurability}证明。由于 \(\Phi\) 单射，它保持不交并，所以 \(\nu\) 可数可加。用 \(U\) 中可数个紧集 \(K_j\) 覆盖 \(U\)，每个 \(\Phi(K_j)\) 紧且有界，故 \(\nu(K_j)<\infty\)。上述命题还给出 \(\nu\ll m_d\)。由\cref{b1:thm:radon-nikodym}，存在非负可测密度 \(h\)，使
+\(\nu(E)=\int_Eh\,dx\)。
+
+固定 \(a\in U\)，写 \(A=D\Phi(a)\)。给定 \(0<\varepsilon<1\)，可选取以 \(a\) 为中心、闭包包含于 \(U\) 的开球 \(B\)，使
+\[
+\|A^{-1}D\Phi(x)-I_d\|_\infty\leq\varepsilon,
+\quad
+(1-\varepsilon)J_\Phi(a)\leq J_\Phi(x)
+\leq(1+\varepsilon)J_\Phi(a)
+\]
+对所有 \(x\in B\) 成立。第一式来自导数的连续性，第二式来自正函数 \(J_\Phi\) 的连续性。定义
+\(S(x)=A^{-1}(\Phi(x)-\Phi(a))\)。沿球内线段积分可得
+\[
+\|S(x)-S(y)-(x-y)\|_\infty
+\leq\varepsilon\|x-y\|_\infty.
+\]
+三角不等式及其反向形式于是给出
+\[
+(1-\varepsilon)\|x-y\|_\infty
+\leq\|S(x)-S(y)\|_\infty
+\leq(1+\varepsilon)\|x-y\|_\infty.
+\]
+分别对 \(S\) 与其定义在 \(S(B)\) 上的逆映射应用\cref{b1:lem:cube-lipschitz-distortion}，再用线性变换的体积公式，可得每个可测 \(E\subseteq B\) 均满足
+\[
+(1-\varepsilon)^dJ_\Phi(a)m_d(E)
+\leq\nu(E)
+\leq(1+\varepsilon)^dJ_\Phi(a)m_d(E).
+\]
+因此 \(h\) 在 \(B\) 上几乎处处位于同样的两个常数之间。例如，若超过右端常数的集合有正测度，则某个水平集
+\(\{h\geq(1+\varepsilon)^dJ_\Phi(a)+1/k\}\cap B\)
+有正测度，把它代入上界就产生矛盾。下界以同样的水平集论证得到。结合球上的 \(J_\Phi\) 估计，有
+\[
+\frac{(1-\varepsilon)^d}{1+\varepsilon}
+\leq\frac{h(x)}{J_\Phi(x)}
+\leq\frac{(1+\varepsilon)^d}{1-\varepsilon}
+\quad\text{在 }B\text{ 上几乎处处}.
+\]
+
+这里必须把局部零测例外化为一个全局零测例外。对固定的 \(\varepsilon\)，上述球构成 \(U\) 的开覆盖。由欧氏空间的可数基，可取可数子覆盖：对每个包含于某个覆盖球的基元素选取一个这样的球，所选球便覆盖 \(U\)。相应例外集只有可数个，所以最后的不等式在 \(U\) 上几乎处处成立。再依次取 \(\varepsilon=1/k\)，\(k\geq2\)，并去掉这些例外集的可数并，令 \(k\to\infty\)，得到 \(h=J_\Phi\) 几乎处处。
+\end{proof}
+
+证明中的近似并不是对某一个小球计算比值极限，而是在一个小邻域内同时控制所有可测子集。这样的统一估计使密度能够由水平集判定，也避免了此处提前使用第\ref{b1:ch:14}章的测度微分定理。
 
 \subsection{换元公式}
 \label{b1:subsec:070504}
 
-待填充。
+\begin{theorem}[\(C^1\) 微分同胚的换元公式]\label{b1:thm:c1-change-of-variables}
+设 \(\Phi:U\rightarrow V\) 是开集之间的 \(C^1\) 微分同胚，\(E\subseteq U\) Lebesgue 可测。若 \(g:V\rightarrow[0,\infty]\) Lebesgue 可测，则
+\[
+\int_{\Phi(E)}g(y)\,dy
+=\int_E g(\Phi(x))J_\Phi(x)\,dx.
+\]
+若 \(g:V\rightarrow\mathbb R\) 或 \(\mathbb C\) 可测，则 \(g\) 在 \(\Phi(E)\) 上可积，当且仅当 \((g\circ\Phi)J_\Phi\) 在 \(E\) 上可积；这时同一公式成立。
+\end{theorem}
+\begin{proof}
+由\cref{b1:prop:diffeomorphism-measurability}，函数 \(g\circ\Phi\) 可测。先设 \(g=\mathbf1_B\)，则\cref{b1:thm:diffeomorphism-volume-density}给出
+\[
+\int_{\Phi(E)}\mathbf1_B(y)\,dy
+=m_d(\Phi(E\cap\Phi^{-1}B))
+=\int_E\mathbf1_B(\Phi(x))J_\Phi(x)\,dx.
+\]
+有限线性组合给出非负简单函数情形。对一般非负 \(g\)，取 \(s_n\uparrow g\) 的非负简单逼近，则
+\((s_n\circ\Phi)J_\Phi\uparrow(g\circ\Phi)J_\Phi\)；在两边应用单调收敛定理即可。这里 \(J_\Phi\) 处处有限且为正，乘法与递增极限没有不定式问题。
+
+若 \(g\) 取实值或复值，对非负函数 \(|g|\) 应用已证公式，便得到可积性等价。然后对实部和虚部的正负部应用公式，合并即可。
+\end{proof}
+
+极坐标说明积分变换与积分次序如何配合。取
+\[
+U=(0,\infty)\times(0,2\pi),
+\quad
+\Phi(r,\theta)=(r\cos\theta,r\sin\theta).
+\]
+它把 \(U\) 微分同胚地映到删去非负横轴的平面。逆映射是半径与在这条割线之外连续选择的辐角；其偏导数分别由
+\[
+\nabla r=(x/r,y/r),\quad
+\nabla\theta=(-y/r^2,x/r^2)
+\]
+给出，因而逆映射确为 \(C^1\)。直接计算
+\[
+D\Phi(r,\theta)=
+\begin{pmatrix}
+\cos\theta&-r\sin\theta\\
+\sin\theta&r\cos\theta
+\end{pmatrix},
+\quad J_\Phi(r,\theta)=r.
+\]
+删去的射线是二维零测集。因此，对非负或可积的 Lebesgue 可测函数 \(g\)，\cref{b1:thm:c1-change-of-variables}与\cref{b1:thm:tonelli,b1:thm:fubini}给出
+\[
+\int_{\mathbb R^2}g(x,y)\,dx\,dy
+=\int_0^{2\pi}\int_0^\infty
+g(r\cos\theta,r\sin\theta)\,r\,dr\,d\theta.
+\]
+若 \(g\) 只对完备的 Lebesgue 测度可测，内层积分及其代表按\cref{b1:prop:completed-product-sections}的几乎处处约定理解。角度端点和 \(r=0\) 不参与微分同胚的定义，而是借助零测集论证补回，不能不加说明地把整个闭条带当作单射定义域。
+
+令 \(I=\int_{\mathbb R}e^{-t^2}\,dt\)。由于 \(|t|\geq1\) 时 \(e^{-t^2}\leq e^{-|t|}\)，有 \(0<I<\infty\)。先用 Tonelli 定理，再作极坐标变换，得到
+\[
+I^2=\int_{\mathbb R^2}e^{-(x^2+y^2)}\,dx\,dy
+=2\pi\int_0^\infty e^{-r^2}r\,dr=\pi.
+\]
+最后的一维积分可在有限区间上用原函数 \(-e^{-r^2}/2\) 计算，再令区间递增。因此 \(I=\sqrt\pi\)。两个工具的分工很清楚：乘积理论把平方写成二维积分，换元公式把二维积分化成容易计算的径向积分。
+
+单射假设也有具体的失败方式。令
+\(U=(-1,0)\cup(0,1)\)、\(V=(0,1)\)，并取 \(\Phi(t)=t^2\)。它处处导数非零，但每个像点都有两个原像。于是
+\[
+m_1(V)=1,\quad \int_U|\Phi'(t)|\,dt=2.
+\]
+若不记录覆盖重数，就不能把前者等同于后者。第\ref{b1:ch:17}章的面积公式将把这项重数纳入积分；在本节的微分同胚情形，它恒等于 \(1\)。

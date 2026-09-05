@@ -2,24 +2,115 @@
 \section{乘积可测结构}
 \label{b1:sec:0701}
 
-% TODO: 撰写本节正文。
+% 来源：Axler2020Measure §5A，5.1--5.9、5.13，印刷117--121页，已读本地正式OA文本。
+% 矩形代数展开论证参考5.13；分别可测反例改编习题5A.3，采用第四章已构造的非Borel集。
+% 证明义务：矩形只生成结构而非穷尽结构；截面保可测性逐点成立；联合可测的逆命题失败。
+% 第一章已证product-sigma、pair-measurable、euclidean-product-borel，本节不重复其证明。
+
+第一章已经回答了如何把几个可测坐标合在一起。本章要进一步给乘积空间指定测度，并在其中交换积分次序。构造之前，必须区分三个问题：一个集合是否在乘积可测结构中；固定一个坐标后，它的截面是否可测；截面的测度是否随另一个坐标可测地变化。本节处理前两个问题，第三个问题留到乘积测度的构造中。
 
 \subsection{乘积 \texorpdfstring{\(\sigma\)}{σ}-代数}
 \label{b1:subsec:070101}
 
-待填充。
+固定可测空间 \((X,\mathcal A)\)、\((Y,\mathcal B)\)。沿用\cref{b1:def:product-sigma}的记号，
+\[
+\mathcal A\otimes\mathcal B
+=\sigma\left(\{\,A\times B\mid A\in\mathcal A,\ B\in\mathcal B\,\}\right).
+\]
+它是使两个坐标投影同时可测的最小 \(\sigma\)-代数。由\cref{b1:prop:pair-measurable}，映入乘积空间的映射是否可测，可以通过两个坐标分别检验。这里的结论针对映射的值域坐标；它不意味着多变量函数的定义域变量也可以只靠逐个固定来检验。
+
+在欧氏空间中，\cref{b1:prop:euclidean-product-borel}识别了有限个实坐标的乘积 Borel 结构。把前 \(p\) 个坐标和后 \(q\) 个坐标分别合成一组，同样有
+\[
+\mathcal B(\mathbb R^p)\otimes\mathcal B(\mathbb R^q)
+=\mathcal B(\mathbb R^{p+q}).
+\]
+可测矩形的 Borel 性来自坐标投影，有理端点开矩形的可数基给出另一包含方向。这个等式涉及 Borel 集；不能把其中的 Borel \(\sigma\)-代数直接换成 Lebesgue \(\sigma\)-代数。后者还包含零测集的任意子集，须在测度构造完成后另行讨论。
 
 \subsection{可测矩形}
 \label{b1:subsec:070102}
 
-待填充。
+集合 \(A\times B\)（\(A\in\mathcal A\)、\(B\in\mathcal B\)）称为\term[kece-juxing]{可测矩形}[measurable rectangle]。这里不要求 \(A\)、\(B\) 是区间，也不要求底空间带有拓扑。矩形只是由两个坐标分别提出一个可测条件。
+
+记全部可测矩形组成的集合族为 \(\mathcal R\)。由于
+\[
+(A\times B)\cap(C\times D)=(A\cap C)\times(B\cap D),
+\]
+它是含有 \(X\times Y\) 的 \(\pi\)-系统。矩形的并未必是矩形。例如在 \(\{0,1\}^2\) 中，集合 \(\{(0,0),(1,1)\}\) 的两个坐标投影都等于 \(\{0,1\}\)，却缺少另外两个点。
+
+\begin{lemma}\label{b1:lem:rectangle-algebra}
+有限个可测矩形的并组成一个集合代数。每个这样的并都能写成有限个两两不交的可测矩形之并；这个集合代数生成 \(\mathcal A\otimes\mathcal B\)。
+\end{lemma}
+\begin{proof}
+两个矩形的差有不交表示
+\[
+(A\times B)\setminus(C\times D)
+=\bigl((A\setminus C)\times B\bigr)
+\sqcup\bigl((A\cap C)\times(B\setminus D)\bigr).
+\]
+因此从一个矩形中依次减去有限个矩形，每一步把已有的各个不交矩形至多分成两块，最终仍得到有限不交矩形并。对 \(R_1\cup\cdots\cup R_n\)，依次取
+\[
+R_1,\quad R_2\setminus R_1,\quad\ldots,\quad
+R_n\setminus\bigcup_{j<n}R_j.
+\]
+这些集合两两不交；把每一项按上述方法分块，就得到所需表示。
+
+有限矩形并对有限并封闭；从全集矩形 \(X\times Y\) 中减去这样的并，仍是有限矩形并，所以也对补集封闭。它因而是集合代数。由于它包含所有矩形，又包含在 \(\mathcal A\otimes\mathcal B\) 中，两者生成的 \(\sigma\)-代数相同。
+\end{proof}
+
+有限不交化的作用是让有限可加的数值从矩形延伸到更大的集合族，而不会重复计算重叠部分。到了可数并，单凭这种有限分块还不够，需要调用测度的可数可加性或生成类定理。
 
 \subsection{截面}
 \label{b1:subsec:070103}
 
-待填充。
+\begin{definition}\label{b1:def:product-sections}
+对 \(E\subseteq X\times Y\)，固定 \(x\in X\) 或 \(y\in Y\) 后所得的\term[jiemian]{截面}[section]分别为
+\[
+E_x=\{\,y\in Y\mid(x,y)\in E\,\},\quad
+E^y=\{\,x\in X\mid(x,y)\in E\,\}.
+\]
+对定义在 \(X\times Y\) 上的函数 \(f\)，相应的截面函数为 \(f_x(y)=f(x,y)\) 与 \(f^y(x)=f(x,y)\)。
+\symidx{\(E_x\)：固定第一坐标所得的集合截面}
+\symidx{\(E^y\)：固定第二坐标所得的集合截面}
+\end{definition}
+
+例如，矩形 \(A\times B\) 的截面 \((A\times B)_x\) 在 \(x\in A\) 时是 \(B\)，否则是空集。平面区域
+\[
+E=\{\,(x,y)\in\mathbb R^2\mid0<x<1,\ 0<y<x\,\}
+\]
+在 \(0<x<1\) 时有 \(E_x=(0,x)\)，其他 \(x\) 对应空集；在 \(0<y<1\) 时有 \(E^y=(y,1)\)，其他 \(y\) 对应空集。同一个区域因切片方向不同而得到不同的区间族，后面两种积分正从这两族区间出发。
+
+截面与集合运算交换。例如
+\[
+\bigl((X\times Y)\setminus E\bigr)_x=Y\setminus E_x,
+\quad
+\left(\bigcup_nE_n\right)_x=\bigcup_n(E_n)_x.
+\]
+交、差也有相应等式。两两不交的集合族在固定坐标后仍两两不交。这些性质只依赖成员关系，还未使用任何测度。
 
 \subsection{截面的可测性}
 \label{b1:subsec:070104}
 
-待填充。
+\begin{proposition}\label{b1:prop:product-sections-measurable}
+若 \(E\in\mathcal A\otimes\mathcal B\)，则每个 \(x\in X\)、\(y\in Y\) 都满足 \(E_x\in\mathcal B\)、\(E^y\in\mathcal A\)。若实值、扩展实值或复值函数 \(f\) 关于 \(\mathcal A\otimes\mathcal B\) 可测，则它的每个截面函数也可测。
+\end{proposition}
+\begin{proof}
+固定 \(x\)。所有满足 \(E_x\in\mathcal B\) 的集合 \(E\subseteq X\times Y\) 组成 \(\sigma\)-代数：全集的截面是 \(Y\)，补与可数并的封闭性来自上述交换公式。它包含全部可测矩形，所以包含 \(\mathcal A\otimes\mathcal B\)。固定 \(y\) 后，用另一坐标的截面得到相同结论。
+
+若 \(f\) 可测，对其值域的任意 Borel 集 \(D\) 有
+\[
+f_x^{-1}(D)=\bigl(f^{-1}(D)\bigr)_x.
+\]
+右端是一个乘积可测集的截面，属于 \(\mathcal B\)，故 \(f_x\) 可测。另一截面使用同一逆像等式。值域是实数、扩展实数或复数，不影响这个论证。
+\end{proof}
+
+作为推论，若非空矩形 \(A\times B\) 属于 \(\mathcal A\otimes\mathcal B\)，则 \(A\in\mathcal A\)、\(B\in\mathcal B\)：各固定另一因子中的一点，两个因子本身就成为截面。非空限制不能删去，因为 \(\varnothing\times B=\varnothing\) 不提供关于 \(B\) 的信息。
+
+函数关于乘积 \(\sigma\)-代数可测，也称为\term[lianhe-kece]{联合可测}[jointly measurable]；如果只要求它的每个截面函数可测，则称为\term[fenbie-kece]{分别可测}[separately measurable]。上述命题证明联合可测蕴含分别可测，逆命题一般不成立。
+
+取\cref{b1:prop:borel-implies-lebesgue-function}中构造的非 Borel 集 \(N\subseteq[0,1]\)，令
+\[
+D_N=\{\,(t,t)\mid t\in N\,\}\subseteq\mathbb R^2.
+\]
+每个水平或竖直截面都是空集或单点，因而都是 Borel 集。但 \(D_N\) 不是 Borel 集：连续映射 \(t\mapsto(t,t)\) 的逆像恰为 \(N\)，若 \(D_N\) 为 Borel 集就会矛盾。由欧氏乘积 Borel 结构的等式，\(\mathbf1_{D_N}\) 分别可测却不联合可测。
+
+本节的截面可测性对每个坐标值成立，没有例外零集。若将乘积测度完备化，可测域会扩大，部分截面可能只在几乎处处意义下可测。\Cref{b1:subsec:070303}会说明怎样处理这类零测误差；在那之前，乘积空间一律使用尚未完备化的 \(\mathcal A\otimes\mathcal B\)。
