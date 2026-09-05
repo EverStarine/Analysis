@@ -2,29 +2,191 @@
 \section{\texorpdfstring{\(L^p\)}{Lᵖ} 的基本结构}
 \label{b1:sec:1001}
 
-% TODO: 撰写本节正文。
+% 来源：Axler2020Measure，7A第194--199页（7.1--7.14），7B第202--205页（7.15--7.24）。
+% 改编：先定义几乎处处相等的等价类；Hölder用Young不等式，Minkowski直接用Hölder证明。
+% 完备性采用可和增量子列；补全原书留作习题的p=1、无穷端点与代表选择细节。
+积分不仅能给一个函数赋予数值，也能度量两个函数之间的距离。第五章已经用 \(\int|f-g|\,\mathrm d\mu\) 衡量可积函数的误差；把一次幂换成 \(p\) 次幂，就得到对大幅值误差更加敏感的尺度。本节的测度空间 \((X,\mathcal A,\mu)\) 可以任意选取，不预设有限性、\(\sigma\)-有限性或完备性，标量域仍为 \(\mathbb K=\mathbb R\) 或 \(\mathbb C\)。
 
 \subsection{等价类}
 \label{b1:subsec:100101}
 
-待填充。
+\begin{definition}\label{b1:def:lp-space}
+在全体可测函数 \(X\rightarrow\mathbb K\) 中，规定 \(f\sim g\) 当且仅当 \(f=g\) 几乎处处，并用 \([f]\) 表示 \(f\) 的等价类。对 \(1\leq p<\infty\)，定义
+\[
+ L^p(\mu)=\left\{\,[f]\ \middle|\ \int_X|f|^p\,\mathrm d\mu<\infty\,\right\}.
+\]
+若可测函数 \(f\) 满足：存在 \(M<\infty\)，使 \(|f|\leq M\) 几乎处处，则称 \(f\)\term[benxing-youjie]{本性有界}[essentially bounded]。令 \(L^\infty(\mu)\) 为全部本性有界可测函数的等价类组成的集合。上述空间统称为\term[lebesgue-kongjian]{Lebesgue 空间}[Lebesgue space]。
+\end{definition}
+\symidx{\(L^p(\mu)\)：按几乎处处相等取商的Lebesgue空间}
+
+有限个零测集的并仍是零测集，所以
+\[
+ [f]+[g]=[f+g],\quad a[f]=[af]
+\]
+不依赖代表的选择。若 \(p<\infty\)，初步估计
+\[
+ |f+g|^p\leq 2^p\bigl(|f|^p+|g|^p\bigr)
+\]
+保证加法封闭；齐次性保证数乘封闭。\(p=\infty\) 时，在两个本性界同时成立的零集补集上相加即可。因此这些集合都是向量空间。稍后证明的 Minkowski 不等式会把这里粗略的加法估计改进为真正的三角不等式。
+
+以下通常把 \([f]\) 简写为 \(f\)，但空间中的元素始终是等价类。对 Lebesgue 测度，零函数与 \(\mathbf1_{\mathbb Q}\) 代表同一个元素，逐点求值却可能给出不同结果。因此积分和范数可以直接用于等价类，某一点的函数值则不行。在不完备的测度空间上，等价类也只包含可测代表，不能任意修改零集的子集后便省略可测性的核对。
 
 \subsection{\texorpdfstring{\(L^p\)}{Lp} 范数}
 \label{b1:subsec:100102}
 
-待填充。
+\begin{definition}\label{b1:def:essential-supremum}
+对可测函数 \(f\)，定义其模的\term[benxing-shangquejie]{本性上确界}[essential supremum]为
+\[
+ \operatorname*{ess\,sup}_{X}|f|
+ =\inf\{\,M\geq0\mid\mu(\{|f|>M\})=0\,\},
+\]
+其中空集的下确界取为 \(+\infty\)。在 \(L^p(\mu)\) 上，令
+\[
+ \|f\|_p=\left(\int_X|f|^p\,\mathrm d\mu\right)^{1/p}
+ \quad(1\leq p<\infty),
+ \quad \|f\|_\infty=\operatorname*{ess\,sup}_{X}|f|.
+\]
+\end{definition}
+\symidx{\(\lVert f\rVert_p\)：Lebesgue空间的范数}
+\symidx{\(\operatorname*{ess\,sup}\lvert f\rvert\)：函数模的本性上确界}
+
+当 \(M=\|f\|_\infty<\infty\) 时，实际上 \(|f|\leq M\) 几乎处处。因为定义保证每个 \(\{|f|>M+1/k\}\) 都是零测集，而
+\[
+ \{|f|>M\}=\bigcup_{k=1}^{\infty}\{|f|>M+1/k\}.
+\]
+所以本性上确界不只是可以任意接近的界，它本身也是一个几乎处处成立的界。这一点将用于端点不等式和 \(L^\infty\) 的完备性。
+
+这些量在更换代表后不变，并满足 \(\|af\|_p=|a|\|f\|_p\)。当 \(p<\infty\) 时，对 \(|f|^p\) 使用\cref{b1:prop:integral-markov}可知，积分为零当且仅当 \(f=0\) 几乎处处；\(p=\infty\) 时结论由刚才的本性界成立。因此 \(\|f\|_p=0\) 恰好表示 \(f\) 是零等价类。要确认它们都是范数，还差三角不等式。
+
+计数测度下没有非空零测集，\(L^p\) 就是序列空间 \(\ell^p\)，且
+\[
+ \|a\|_p=\left(\sum_{k=1}^{\infty}|a_k|^p\right)^{1/p},
+ \quad \|a\|_\infty=\sup_k|a_k|.
+\]
+这与前两章使用的 \(\ell^1\)、\(\ell^2\)、\(\ell^\infty\) 一致。若 \(E\subset\mathbb R^d\) 为 Lebesgue 可测集，\(L^p(E)\) 则表示限制测度 \(m\llcorner E\) 对应的空间。特别地，\(\|\mathbf1_E\|_p=m(E)^{1/p}\)（\(p<\infty\)），而正测度集的示性函数具有本性上确界 \(1\)，不论该集多么小。
 
 \subsection{Hölder 不等式}
 \label{b1:subsec:100103}
 
-待填充。
+\begin{definition}\label{b1:def:conjugate-exponent}
+给定 \(p\in[1,\infty]\)，若 \(p'\in[1,\infty]\) 满足
+\[
+ \frac1p+\frac1{p'}=1
+\]
+则称 \(p'\) 为 \(p\) 的\term[gonge-zhishu]{共轭指数}[conjugate exponent]，其中约定 \(1/\infty=0\)。于是 \(1'=\infty\)、\(\infty'=1\)，而 \(1<p<\infty\) 时 \(p'=p/(p-1)\)。
+\end{definition}
+\symidx{\(p'\)：指数\(p\)的共轭指数}
+
+乘积的可积性把两个不同的误差尺度联系起来。证明所需的标量估计是\term*[young-budengshi]{Young 不等式}[Young's inequality]。
+
+\begin{lemma}[Young]\label{b1:lem:young-product}
+若 \(1<p<\infty\)，则对 \(a,b\geq0\)，有
+\[
+ ab\leq\frac{a^p}{p}+\frac{b^{p'}}{p'}.
+\]
+\end{lemma}
+\begin{proof}
+固定 \(b\geq0\)。函数 \(t\mapsto t^p/p-bt\) 在 \([0,\infty)\) 上的最小值于 \(t=b^{1/(p-1)}\) 取得，因为其导数为 \(t^{p-1}-b\)。代入该点所得最小值为 \(-b^{p'}/p'\)，把这一项移到另一侧即得结论。
+\end{proof}
+
+\begin{theorem}[Hölder]\label{b1:thm:lp-holder}
+若 \(1\leq p\leq\infty\)、\(f\in L^p(\mu)\)、\(g\in L^{p'}(\mu)\)，则 \(fg\in L^1(\mu)\)，并有\term*[holder-budengshi]{Hölder 不等式}[Hölder's inequality]
+\[
+ \|fg\|_1\leq\|f\|_p\,\|g\|_{p'}.
+\]
+\end{theorem}
+\begin{proof}
+若任一个范数为零，对应函数几乎处处为零，结论成立。设两个范数均为正，先处理 \(1<p<\infty\)。把 Young 不等式用于
+\[
+ a=\frac{|f(x)|}{\|f\|_p},\quad b=\frac{|g(x)|}{\|g\|_{p'}},
+\]
+再积分，得到
+\[
+ \frac{\int_X|fg|\,\mathrm d\mu}{\|f\|_p\|g\|_{p'}}
+ \leq\frac1p\int_X\frac{|f|^p}{\|f\|_p^p}\,\mathrm d\mu
+ +\frac1{p'}\int_X\frac{|g|^{p'}}{\|g\|_{p'}^{p'}}\,\mathrm d\mu
+ =1.
+\]
+右端有限，同时证明乘积可积。若 \(p=1\)，直接积分几乎处处成立的 \(|fg|\leq|f|\|g\|_\infty\)；若 \(p=\infty\)，交换两个函数即可。
+\end{proof}
+
+当 \(p=2\) 时，这是积分形式的 Cauchy--Schwarz 不等式。一般指数下，它仍使 \(f\mapsto\int_Xfg\,\mathrm d\mu\) 成为连续线性泛函；但所有泛函是否都如此产生，还需要后面的对偶表示定理，不能仅凭这个上界断言。
+
+Hölder 不等式也解释了有限测度为何会改变不同 \(L^p\) 空间的关系。若 \(0<\mu(X)<\infty\) 且 \(1\leq r<q\leq\infty\)，则
+\[
+ \|f\|_r\leq\mu(X)^{1/r-1/q}\|f\|_q.
+\]
+当 \(q<\infty\) 时，对 \(|f|^r\) 与常函数 \(1\) 使用共轭指数 \(q/r\) 和 \(q/(q-r)\)，再取 \(r\) 次方根便得到该式；当 \(q=\infty\) 时直接积分 \(|f|^r\leq\|f\|_\infty^r\)。零测度空间中的结论自然退化为零空间。这里常函数 \(1\) 的可积性不可忽略：在 \(\mathbb R\) 上，局部奇性和远处衰减分别约束不同的指数，并不存在统一的同向包含关系。
 
 \subsection{Minkowski 不等式}
 \label{b1:subsec:100104}
 
-待填充。
+\begin{theorem}[Minkowski]\label{b1:thm:lp-minkowski}
+若 \(1\leq p\leq\infty\)，则对 \(f,g\in L^p(\mu)\)，有\term*[minkowski-budengshi]{Minkowski 不等式}[Minkowski's inequality]
+\[
+ \|f+g\|_p\leq\|f\|_p+\|g\|_p.
+\]
+因此 \(L^p(\mu)\) 是赋范空间。
+\end{theorem}
+\begin{proof}
+\(p=1\) 时积分逐点三角不等式即可。设 \(1<p<\infty\)。本节开头的粗估计已经保证 \(f+g\in L^p\)，所以 \(h=|f+g|^{p-1}\) 属于 \(L^{p'}\)，且
+\[
+ \|h\|_{p'}=\|f+g\|_p^{p-1}.
+\]
+对 \(|f|h\) 和 \(|g|h\) 分别使用 Hölder 不等式，得到
+\[
+ \|f+g\|_p^p
+ \leq\int_X(|f|+|g|)|f+g|^{p-1}\,\mathrm d\mu
+ \leq(\|f\|_p+\|g\|_p)\|f+g\|_p^{p-1}.
+\]
+若 \(\|f+g\|_p=0\)，结论显然；否则约去有限的正因子即可。
+
+最后设 \(p=\infty\)。除去两个零测集的并后，\(|f|\leq\|f\|_\infty\) 与 \(|g|\leq\|g\|_\infty\) 同时成立，故 \(|f+g|\leq\|f\|_\infty+\|g\|_\infty\) 几乎处处。这就给出本性上确界的三角不等式。其他范数公理已经验证完毕。
+\end{proof}
+
+两条不等式的分工不同：Hölder 处理乘积，把互为共轭指数的两个函数送入 \(L^1\)；Minkowski 处理相加，使同一个 \(L^p\) 内的误差能够累积估计。本章限制 \(p\geq1\) 正是为了保留范数结构。例如在两点计数测度空间上，若 \(0<p<1\)，则 \(\|(1,1)\|_p=2^{1/p}>2=\|(1,0)\|_p+\|(0,1)\|_p\)，三角不等式已经失败。
 
 \subsection{完备性}
 \label{b1:subsec:100105}
 
-待填充。
+\term*[riesz-fischer-dingli]{Riesz--Fischer 定理}[Riesz--Fischer theorem]说明，上述误差尺度不仅定义了范数，而且不会使范数 Cauchy 列的极限逸出空间。有限指数的证明先把一个子列的增量安排成可和级数，再用积分控制它的逐点总变动。
+
+\begin{theorem}[Riesz--Fischer]\label{b1:thm:lp-complete}
+对任意测度空间和 \(1\leq p\leq\infty\)，\(L^p(\mu)\) 都是 Banach 空间。
+\end{theorem}
+\begin{proof}
+先设 \(p<\infty\)，取 \(L^p\) 中的 Cauchy 列 \((f_n)\) 并为每项选择可测代表。可递增选取指标 \(n_k\)，使
+\[
+ \|f_{n_{k+1}}-f_{n_k}\|_p\leq2^{-k}\quad(k\geq1).
+\]
+令 \(d_k=f_{n_{k+1}}-f_{n_k}\)，并定义
+\[
+ G_m=|f_{n_1}|+\sum_{k=1}^m|d_k|,\quad
+ G=|f_{n_1}|+\sum_{k=1}^{\infty}|d_k|.
+\]
+Minkowski 不等式给出 \(\|G_m\|_p\leq\|f_{n_1}\|_p+1\)。又因 \(G_m^p\uparrow G^p\)，由\cref{b1:thm:monotone-convergence}，
+\[
+ \int_XG^p\,\mathrm d\mu
+ \leq(\|f_{n_1}\|_p+1)^p<\infty.
+\]
+因此 \(G\) 在一个可测零集外有限。在该零集之外，级数 \(\sum_kd_k(x)\) 绝对收敛，令
+\[
+ f(x)=f_{n_1}(x)+\sum_{k=1}^{\infty}d_k(x),
+\]
+并在例外零集上令 \(f=0\)。这个可测函数满足 \(|f|\leq G\) 几乎处处，所以 \(f\in L^p\)。
+
+还须证明是范数收敛，而不只是几乎处处收敛。对尾部 \(R_k=\sum_{j=k}^{\infty}|d_j|\)，先对有限尾和使用 Minkowski，再用单调收敛，得到
+\[
+ \|R_k\|_p\leq\sum_{j=k}^{\infty}2^{-j}=2^{1-k}.
+\]
+由 \(|f-f_{n_k}|\leq R_k\) 几乎处处可知 \(\|f-f_{n_k}\|_p\to0\)。给定 \(\varepsilon>0\)，先取 Cauchy 列的尾部使 \(\|f_n-f_m\|_p<\varepsilon/2\)，再在该尾部选取一个满足 \(\|f_{n_k}-f\|_p<\varepsilon/2\) 的子列项。三角不等式便给出原列 \(f_n\to f\)。
+
+现在设 \(p=\infty\)。Cauchy 性给出 \(M=\sup_n\|f_n\|_\infty<\infty\)。为每个代表及每一对代表分别除去可测零集，使
+\[
+ |f_n(x)|\leq M,\quad
+ |f_n(x)-f_m(x)|\leq\|f_n-f_m\|_\infty
+\]
+成立。指标对只有可数多个，所以这些例外集的并 \(N\) 仍为零测集。在 \(X\setminus N\) 上，\((f_n)\) 一致 Cauchy，因而逐点收敛于某个函数 \(f\)，且 \(|f|\leq M\)。在 \(N\) 上令 \(f=0\)，所得函数可测且属于 \(L^\infty\)。若 \(n,m\geq n_0\) 时 \(\|f_n-f_m\|_\infty<\varepsilon\)，固定 \(n\geq n_0\) 并令 \(m\to\infty\)，便得 \(|f_n-f|\leq\varepsilon\) 于 \(X\setminus N\)，故 \(\|f_n-f\|_\infty\leq\varepsilon\)。这证明端点情形。
+\end{proof}
+
+证明中使用的共同零集来自可数并，与测度空间是否完备无关；有限指数的可和增量也不需要把整个空间预先分成有限测度片。Sheldon Axler 的《Measure, Integration \& Real Analysis》\cite{Axler2020Measure}第 7A、7B 节适合配合本节阅读：其中从不等式到完备性的推进，展示了此前建立的单调收敛工具如何支撑 Banach 空间结构。

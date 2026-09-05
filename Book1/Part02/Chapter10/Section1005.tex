@@ -1,24 +1,226 @@
 % !TeX root = ../../Book1.tex
 \OptionalSection{\texorpdfstring{\(L^1\)}{L¹} 的特殊性}{b1:sec:1005}
 
-% TODO: 撰写本节正文。
+在 \(1<p<\infty\) 时，有界性足以保证从 \(L^p\) 序列中抽取弱收敛子列。端点 \(p=1\) 的困难在于集中：积分总量可以保持有界，甚至恒定，而越来越多的质量落入越来越小的集合。第五章的一致可积性正是对这种现象的限制。本节说明它如何补足 \(L^1\) 的弱紧性，并在只有有界性时保留一个较弱的子列结论。
+
+除专门讨论无穷测度的段落外，本节固定有限测度空间 \((\Omega,\mathcal A,\mu)\)，即 \(\mu(\Omega)<\infty\)。函数可取实值或复值；涉及点值时选取有限值可测代表。
+
+% 来源：Fremlin2016Measure，卷2，246A、246G(iii)、247C及247E，
+% 已读取作者官网 chap24.pdf 的相应正文。充分性用双对偶弱-*闭包和RN重述；
+% 必要性明确保留proofsketch，不把互不相交化与滑动选择装成完整证明。
+% BallMurat1989Biting：已核作者出版清单、正式元数据与作者公开摘要，
+% 未读取原文证明；下文标量证明自行展开幅值尾部的对角构造。
 
 \subsection{一致可积性再论}
 \label{b1:subsec:100501}
 
-待填充。
+沿用\cref{b1:def:uniform-integrability}，非空族 \(\mathcal F\subset L^1(\mu)\) 一致可积是指
+\[
+  \lim_{M\to\infty}\sup_{f\in\mathcal F}
+  \int_{\{|f|>M\}}|f|\,\mathrm d\mu=0.
+\]
+由\cref{b1:prop:uniform-integrability-criterion}，在当前有限测度假设下，这等价于 \(L^1\) 范数一致有界与积分的一致绝对连续性同时成立。为便于后文使用，记
+\[
+  B=\sup_{f\in\mathcal F}\|f\|_1,
+  \quad
+  \omega(\delta)=\sup_{\substack{f\in\mathcal F,\ A\in\mathcal A\\
+                               \mu(A)\leq\delta}}
+                 \int_A|f|\,\mathrm d\mu.
+\]
+于是上述等价条件就是 \(B<\infty\) 且 \(\omega(\delta)\to0\) 当 \(\delta\downarrow0\)。这里的 \(\omega\) 控制所有小集合，而不只控制某个预先选定的集中位置。
+
+一个稍强的可积性估计往往能给出这种控制。若 \(1<p<\infty\)，且 \(\sup_{f\in\mathcal F}\|f\|_p\leq C\)，则
+\[
+  \int_{\{|f|>M\}}|f|\,\mathrm d\mu
+  \leq M^{1-p}\int_\Omega|f|^p\,\mathrm d\mu
+  \leq C^pM^{1-p}\longrightarrow0
+\]
+一致地对 \(f\) 成立。有限测度又保证这些函数属于 \(L^1\)。不过，一致可积性比“存在某个统一的 \(p>1\) 上界”更灵活：它只要求幅值尾部能够统一趋零，不指定幂次速度。
+
+有限测度这一限定不能在引用定理时略去。在一般 \(\sigma\)-有限空间上，本书的幅值尾部条件还须补上空间尾部条件
+\begin{equation}
+\label{b1:eq:l1-no-escape}
+  \text{对每个 }\varepsilon>0\text{，存在 }E\in\mathcal A,
+  \quad\mu(E)<\infty,\quad
+  \sup_{f\in\mathcal F}\int_{\Omega\setminus E}|f|\,\mathrm d\mu
+  <\varepsilon.
+\end{equation}
+例如，在 \(\mathbb R\) 上令 \(f_n=\mathbf1_{[n,n+1]}\)。它们有统一幅值上界和 \(L^1\) 范数，却不满足\eqref{b1:eq:l1-no-escape}：对任意有限测度集 \(E\)，由区间互不相交可知 \(\mu(E\cap[n,n+1])\to0\)。所以集外积分趋于一，质量没有集中在小集合上，而是向无穷远移动。
+
+本书的幅值尾部条件与\eqref{b1:eq:l1-no-escape}合起来，等价于 Fremlin 在一般测度空间上的一致可积性定义\cite[第2卷，246A]{Fremlin2016Measure}。一个方向由
+\[
+  \int_\Omega\bigl(|f|-M\mathbf1_E\bigr)_+\,\mathrm d\mu
+  \leq\int_{\{|f|>M\}}|f|\,\mathrm d\mu
+       +\int_{\Omega\setminus E}|f|\,\mathrm d\mu
+\]
+给出；反向用 \(|f|\leq2(|f|-M)_+\) 在 \(\{|f|>2M\}\) 上成立，以及集外部分原封不动地出现在左侧积分中。两项控制也给出 \(L^1\) 有界性，因为剩余部分的积分不超过 \(M\mu(E)\)。以下主定理先只在有限测度空间陈述，避免混用定义。
 
 \subsection{Dunford–Pettis 定理}
 \label{b1:subsec:100502}
 
-待填充。
+回顾\cref{b1:def:weakly-compact-set}，相对弱紧要求弱闭包是紧集，并不要求原集合本身闭。\term*[dunford-pettis]{Dunford--Pettis 定理}[Dunford--Pettis theorem]把这个拓扑条件化为积分条件。
+
+\begin{theorem}[Dunford--Pettis，有限测度情形]
+\label{b1:thm:dunford-pettis}
+设 \(\mu(\Omega)<\infty\)，\(\mathcal F\subset L^1(\mu)\) 非空。则 \(\mathcal F\) 相对弱紧，当且仅当 \(\mathcal F\) 一致可积；等价地，当且仅当它 \(L^1\) 有界且积分一致绝对连续。
+\end{theorem}
+
+下面完整证明从一致可积性到相对弱紧性。反向所需的集合选择较长，将另列证明概要。一般测度空间的正式表述及完整证明见 Fremlin 的《Measure Theory》\cite[第2卷，247C；复值情形见247E]{Fremlin2016Measure}；使用其一般版本时应采用上一小节说明的两项尾部条件。
+
+\begin{proof}[充分性的证明]
+设 \(\mathcal F\) 一致可积，取前述 \(B\) 与 \(\omega\)。每个 \(f\in L^1\) 定义 \(L^\infty\) 上的连续线性泛函
+\[
+  T_f(h)=\int_\Omega fh\,\mathrm d\mu,
+  \quad h\in L^\infty.
+\]
+有 \(\|T_f\|\leq\|f\|_1\)。反向在 \(f\ne0\) 处取 \(h=\overline f/|f|\)，在其余点取零，即得 \(\|T_f\|=\|f\|_1\)。由\cref{b1:thm:banach-alaoglu}，\(\{T_f:f\in\mathcal F\}\) 在 \((L^\infty)^*\) 中的弱-*闭包 \(K\) 是紧集，且其中每个泛函的范数不超过 \(B\)。
+
+关键是证明 \(K\) 不会新增无法由 \(L^1\) 函数表示的泛函。固定 \(T\in K\)，令
+\[
+  \nu(A)=T(\mathbf1_A),\quad A\in\mathcal A.
+\]
+由线性性，\(\nu\) 有限可加。对固定的 \(A\)，泛函的取值映射在弱-*拓扑下连续，所以
+\begin{equation}
+\label{b1:eq:dp-limit-measure-control}
+  |\nu(A)|\leq\sup_{f\in\mathcal F}
+                  \int_A|f|\,\mathrm d\mu
+              \leq\omega(\mu(A)).
+\end{equation}
+若 \(A_n\downarrow\varnothing\)，有限测度保证 \(\mu(A_n)\to0\)，从而 \(\nu(A_n)\to0\)。有限可加性与这个从上连续性合起来给出可数可加性：对互不相交的 \(A_j\)，把并集减去前 \(n\) 项所余的集合递减到空集即可。
+
+此外，\(\nu\) 的全变差有限。对任意有限可测分割 \((A_j)\)，选取 \(|c_j|\leq1\) 使 \(c_j\nu(A_j)=|\nu(A_j)|\)，便有
+\[
+  \sum_j|\nu(A_j)|
+  =T\left(\sum_jc_j\mathbf1_{A_j}\right)\leq B.
+\]
+因此 \(|\nu|(\Omega)\leq B\)。由\eqref{b1:eq:dp-limit-measure-control}还知 \(\nu\ll\mu\)。实值情形可用\cref{b1:cor:signed-radon-nikodym}；复值情形分别对 \(\operatorname{Re}\nu\) 与 \(\operatorname{Im}\nu\) 使用该结论。于是存在 \(g\in L^1(\mu)\)，使 \(\nu(A)=\int_Ag\,\mathrm d\mu\)。
+
+从示性函数到简单函数用线性性，再用简单函数在 \(L^\infty\) 范数下的逼近，得到
+\[
+  T(h)=\int_\Omega gh\,\mathrm d\mu\quad(h\in L^\infty).
+\]
+故 \(T=T_g\)，即 \(K\) 中每个点仍来自 \(L^1\)。最后由\cref{b1:thm:l1-dual-sigma-finite}，映射 \(f\mapsto T_f\) 把 \(L^1\) 的弱拓扑恰好变为像上的弱-*拓扑，因为两边都由全部积分 \(\int fh\,\mathrm d\mu\)、\(h\in L^\infty\) 决定。紧集 \(K\) 因而对应于 \(L^1\) 中包含 \(\mathcal F\) 的弱紧集。这证明了相对弱紧性。
+\end{proof}
+
+\begin{proofsketch}
+必要性先看实值情形。相对弱紧族在每个连续线性泛函下的像有界，由一致有界性原理可得 \(L^1\) 范数有界。余下的实质是排除积分在互不相交的集合上持续保留同等大小的质量。
+
+所需的集合判据为：一个 \(L^1\) 有界族一致可积，当且仅当对每列互不相交的可测集 \((A_n)\)，都有
+\[
+  \sup_{f\in\mathcal F}\left|\int_{A_n}f\,\mathrm d\mu\right|
+  \longrightarrow0.
+\]
+这里绝对值放在积分外；把这个条件转回 \(\int_A|f|\) 的一致小量，需要实质性的递归选集论证，见\cite[第2卷，246G(iii)]{Fremlin2016Measure}。
+
+若上述条件失败，便可取 \(f_n\in\mathcal F\) 与互不相交的 \(A_n\)，使相应积分的绝对值均不小于某个 \(\varepsilon>0\)。弱紧性提供聚点。依次抽取函数和集合，可以使每个新函数在先前选定集合上的积分接近聚点的积分，同时使先前函数在以后选定集合上的积分总量很小。将选出的集合取并，就得到一个固定的有界测试函数；它在所选函数上的积分与任何候选聚点上的积分相冲突，从而否定弱紧性。这一选择及误差求和的完整步骤见\cite[第2卷，247C(a)]{Fremlin2016Measure}。本概要不代替上述两处的递归证明。
+
+复值情形将族映到实部族与虚部族；这些映射对于相应的弱拓扑连续，故两个像仍相对弱紧。对它们应用实值结论，再用 \(|f|\leq|\operatorname{Re}f|+|\operatorname{Im}f|\) 和一致绝对连续性判据，即得原族一致可积。
+\end{proofsketch}
 
 \subsection{\texorpdfstring{\(L^1\)}{L1} 弱紧性}
 \label{b1:subsec:100503}
 
-待填充。
+\begin{corollary}[一致可积列的弱收敛子列]
+\label{b1:cor:l1-ui-weak-subsequence}
+若 \(\mu(\Omega)<\infty\)，且 \((f_n)\subset L^1(\mu)\) 一致可积，则存在子列 \((f_{n_j})\) 与 \(f\in L^1(\mu)\)，使
+\[
+  \int_\Omega f_{n_j}h\,\mathrm d\mu
+  \longrightarrow\int_\Omega fh\,\mathrm d\mu
+  \quad(h\in L^\infty(\mu)).
+\]
+\end{corollary}
+\begin{proof}
+由刚证的充分性，\(\{f_n:n\geq1\}\) 的弱闭包紧。应用\cref{b1:thm:eberlein-smulian}中弱紧性蕴含子列性质的方向，再用 \(L^1\) 对偶表示即可。这里使用的是第九章已经展开证明的方向，不需要该处仅列概要的逆向。
+\end{proof}
 
-\subsection{Chacon 咬引理}
+因此，若 \(C\subset L^1\) 非空、凸、范数闭且一致可积，则 \(C\) 弱紧：闭凸性给出弱闭性，Dunford--Pettis 定理给出相对弱紧性。这使第九章的直接法仍有用武之地。对于 \(C\) 上有下界且至少在一点有限的弱下半连续泛函，选取极小化序列，抽取弱收敛子列，再比较极限处的泛函值，就能得到极小点。这里不需要假设整个 \(L^1\) 空间反身；提供弱紧性的是具体可行族的一致可积性。
+
+第五章的集中尖峰 \(f_n=n\mathbf1_{(0,1/n)}\) 没有弱收敛子列。事实上，若某个子列弱收敛于 \(f\)，则对任意 \(\delta>0\) 及可测集 \(A\subset(\delta,1)\)，测试 \(\mathbf1_A\) 得到 \(\int_Af=0\)，故 \(f=0\) 几乎处处于 \((\delta,1)\)。让 \(\delta\downarrow0\) 得 \(f=0\)，但测试常函数一又给出 \(\int_0^1f=1\)，矛盾。这也说明，不能把单位球有界当作 \(L^1\) 中的弱紧性证明。
+
+另一方面，弱紧性仍不等于范数紧性。在 \((0,1)\) 上令
+\[
+  r_n(x)=(-1)^{\lfloor2^nx\rfloor},\quad n\geq1.
+\]
+这些函数均只有 \(\pm1\) 两个值，故一致可积。它们在 \(L^2(0,1)\) 中构成标准正交系：当 \(m>n\) 时，在 \(r_n\) 为常数的每个二进分割区间内，\(r_m\) 取正负值的长度相等。因此，对每个 \(h\in L^\infty(0,1)\subset L^2(0,1)\)，Bessel 不等式给出 \(\int r_nh\to0\)，即 \(r_n\rightharpoonup0\) 于 \(L^1\)。然而对 \(m\ne n\)，
+\[
+  \|r_m-r_n\|_1=1,
+\]
+所以不存在范数收敛子列。一致可积性排除了质量集中，并没有排除这样的振荡。
+
+\subsection{Chacon 引理}
 \label{b1:subsec:100504}
 
-待填充。
+若只能得到 \(L^1\) 有界性，未必能在整个空间上取得弱极限。不过可以先去掉测度任意小的坏集。\term[chacon-yinli]{Chacon 引理}[Chacon's biting lemma]说明，经过抽取子列，这些坏集可以选成一个递减的族，并使每个固定坏集之外都恢复一致可积性。有关标准表述及向量值推广，可参见 Ball 与 Murat 的论文\cite{BallMurat1989Biting}。下面给出实值与复值函数均适用的尾部构造。
+
+\begin{theorem}[Chacon 引理，有限测度情形]
+\label{b1:thm:chacon-biting}
+设 \(\mu(\Omega)<\infty\)，\((f_n)\subset L^1(\mu)\)，且 \(\sup_n\|f_n\|_1\leq B<\infty\)。则存在子列 \((f_{n_j})\) 和递减的可测集 \(E_k\)，使
+\[
+  \mu(E_k)\longrightarrow0,
+  \quad
+  \{f_{n_j}\mathbf1_{\Omega\setminus E_k}:j\geq1\}
+  \text{ 对每个固定的 }k\text{ 一致可积}.
+\]
+还可以进一步抽取子列并找到 \(f\in L^1(\mu)\)，使对每个固定的 \(k\)，
+\[
+  f_{n_j}\mathbf1_{\Omega\setminus E_k}
+  \rightharpoonup f\mathbf1_{\Omega\setminus E_k}
+  \quad\text{于 }L^1(\mu).
+\]
+\end{theorem}
+
+\begin{proof}
+对正整数 \(m\) 记
+\[
+  a_n(m)=\int_{\{|f_n|>m\}}|f_n|\,\mathrm d\mu.
+\]
+每个数列 \((a_n(m))_n\) 都位于 \([0,B]\)。逐个 \(m\) 抽取子列，再取对角子列，可以假定对所有正整数 \(m\)，都有 \(a_n(m)\to a(m)\)。由于 \(a(m)\) 随 \(m\) 递减且非负，存在
+\[
+  \alpha=\lim_{m\to\infty}a(m)\in[0,B].
+\]
+
+选取严格递增的正整数 \(M_j\geq2^j(B+1)\)，再选取严格递增的指标 \(n_j\)，使
+\[
+  |a_{n_j}(m)-a(m)|<\frac1j
+  \quad(1\leq m\leq M_j).
+\]
+每一步只有有限多个收敛条件，故这样的选择总能完成。于是 \(a_{n_j}(M_j)\to\alpha\)。令
+\[
+  A_j=\{|f_{n_j}|>M_j\},\quad
+  g_j=f_{n_j}\mathbf1_{\Omega\setminus A_j}.
+\]
+我们先证明 \((g_j)\) 一致可积。固定正整数 \(m\)，当 \(j\) 充分大而 \(M_j\geq m\) 时，有
+\[
+  \int_{\{|g_j|>m\}}|g_j|\,\mathrm d\mu
+  =a_{n_j}(m)-a_{n_j}(M_j)
+  \longrightarrow a(m)-\alpha.
+\]
+给定 \(\varepsilon>0\)，先取 \(m\) 使 \(a(m)-\alpha<\varepsilon/2\)，上述收敛便保证除有限多个 \(j\) 外，尾部积分都小于 \(\varepsilon\)。对余下的有限多个可积函数再增大截断高度，使它们的尾部积分也小于 \(\varepsilon\)。增大高度不会破坏已经得到的估计，所以全族一致可积。
+
+现在令
+\[
+  E_k=\bigcup_{j\geq k}A_j.
+\]
+由 Markov 不等式，
+\[
+  \mu(E_k)\leq\sum_{j\geq k}\frac{B}{M_j}
+  \leq\sum_{j\geq k}2^{-j}=2^{1-k}\longrightarrow0.
+\]
+对固定的 \(k\) 与所有 \(j\geq k\)，\(A_j\subset E_k\)，因而
+\[
+  f_{n_j}\mathbf1_{\Omega\setminus E_k}
+  =g_j\mathbf1_{\Omega\setminus E_k}.
+\]
+限制到一个可测集不会增加幅值尾部积分，故右侧构成一致可积族。再加上 \(j<k\) 的有限多个函数，仍一致可积，第一部分得证。
+
+最后证明可取相容的弱极限。记 \(F_k=\Omega\setminus E_k\)，则 \(F_k\) 递增，且其并覆盖 \(\Omega\) 除去一个零集。对 \(k=1,2,\ldots\) 依次应用\cref{b1:cor:l1-ui-weak-subsequence}，再抽取对角子列，便可假定对每个固定的 \(k\)，\(f_{n_j}\mathbf1_{F_k}\) 弱收敛于某个 \(h_k\in L^1\)。
+
+乘以 \(\mathbf1_{F_k}\) 是弱连续的有界线性算子，因为每个测试函数 \(h\in L^\infty\) 仍被变为 \(h\mathbf1_{F_k}\in L^\infty\)。所以 \(h_k\) 支持在 \(F_k\) 上，且当 \(k<\ell\) 时，弱极限的唯一性给出 \(h_\ell\mathbf1_{F_k}=h_k\)。在去掉可数个例外零集后，可以把它们拼成一个可测函数 \(f\)，使 \(f\mathbf1_{F_k}=h_k\)。范数的弱下半连续性给出
+\[
+  \int_{F_k}|f|\,\mathrm d\mu=\|h_k\|_1
+  \leq\liminf_{j\to\infty}\|f_{n_j}\mathbf1_{F_k}\|_1\leq B.
+\]
+令 \(k\to\infty\)，单调收敛定理便给出 \(\|f\|_1\leq B\)。这证明了所需的弱收敛结论。
+\end{proof}
+
+这里固定坏集和改变坏集是两回事。结论说的是：先固定 \(k\)，再令子列指标 \(j\to\infty\)。它并不保证 \(\int_{E_k}|f_{n_j}|\) 随 \(k\) 一致趋零，也就不能直接把坏集补回去。对集中尖峰 \(f_n=n\mathbf1_{(0,1/n)}\)，取 \(E_k=(0,1/k)\)，则每个 \(E_k\) 外的序列最终恒为零；但全空间积分始终等于一。Chacon 引理恢复了坏集外的弱极限，可能丢失的集中质量仍须由问题本身提供额外估计。

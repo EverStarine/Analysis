@@ -2,19 +2,132 @@
 \section{反身性与弱收敛}
 \label{b1:sec:1004}
 
-% TODO: 撰写本节正文。
+对偶表示把 \(L^p\) 上抽象的连续泛函变成了乘以函数再积分的操作。将这个表示使用两次，就能判断自然嵌入是否满射；第\ref{b1:ch:09}章的弱紧性理论也随之适用。以下除明确放宽条件的命题外，均设 \((X,\mathcal A,\mu)\) 为 \(\sigma\)-有限正测度空间，并固定 \(1<p<\infty\)、\(q=p'\)。
+
+% 来源：Axler2020Measure，7B习题19及9B习题17提出双对偶反身性；
+% 本节用已证sigma有限对偶表示完整展开自然嵌入计算。
+% 弱子列与凸泛函方法调用本书第9章，不把一般测度对偶版本当作已证。
 
 \subsection{\texorpdfstring{\(1<p<\infty\)}{1<p<∞} 的反身性}
 \label{b1:subsec:100401}
 
-待填充。
+“对偶的对偶又是原来的函数空间”还不足以单独证明反身性；必须核对两次表示的复合确实是自然嵌入。上一节采用的双线性积分配对使这个核对十分直接。
+
+\begin{theorem}\label{b1:thm:lp-reflexive}
+设 \(\mu\) 为 \(\sigma\)-有限正测度，\(1<p<\infty\)。则实或复空间 \(L^p(\mu)\) 反身。
+\end{theorem}
+\begin{proof}
+由\cref{b1:thm:lp-dual}，映射 \(D_p:g\mapsto\Lambda_g\) 是从 \(L^q(\mu)\) 到 \((L^p(\mu))^*\) 的线性等距满射。任取
+\(\Phi\in(L^p(\mu))^{**}\)，令
+\[
+ \Psi(g)=\Phi(D_pg)\quad(g\in L^q(\mu)).
+\]
+因为 \(|\Psi(g)|\le\|\Phi\|\|g\|_q\)，所以 \(\Psi\in(L^q(\mu))^*\)。指数 \(q\) 也在 \((1,\infty)\) 中，其共轭指数为 \(p\)。再次应用对偶表示，取得 \(f\in L^p(\mu)\)，使
+\[
+ \Phi(D_pg)=\Psi(g)=\int_Xgf\,\mathrm d\mu
+ =(D_pg)(f)\quad(g\in L^q(\mu)).
+\]
+由于每个 \(L^p\) 上的连续泛函都等于某个 \(D_pg\)，上式就是
+\(\Phi(\Lambda)=\Lambda(f)\) 对所有 \(\Lambda\in(L^p)^*\) 成立。因此 \(\Phi=J_{L^p}f\)，自然嵌入满射。
+\end{proof}
+
+指数范围在第二次使用对偶表示时至关重要。若从 \(p=1\) 出发，第一次得到 \(L^\infty\)，第二次便遇到上一节的额外泛函，不能再写回 \(L^1\)。具体地，\((\ell^1)^*=\ell^\infty\)，而极限延拓泛函 \(L\in(\ell^\infty)^*\) 不由任何 \(\ell^1\) 元素表示，故不在 \(J_{\ell^1}(\ell^1)\) 中。因此 \(\ell^1\) 不反身。
+
+同样，\(\ell^\infty\) 含有闭线性子空间 \(c_0\)，而第\ref{b1:sec:0904}节已说明 \(c_0\) 不反身；由\cref{b1:cor:closed-subspace-reflexive}，\(\ell^\infty\) 也不反身。这不意味着每个 \(L^1\) 或 \(L^\infty\) 空间都不反身：有限集合上各点质量为正且有限时，它们都有限维。端点所缺少的是对一般测度空间统一成立的反身性结论。
 
 \subsection{有界序列的弱收敛子列}
 \label{b1:subsec:100402}
 
-待填充。
+\begin{corollary}\label{b1:cor:lp-weak-subsequence}
+设 \(\sup_n\|f_n\|_p<\infty\)。则存在子列 \((f_{n_k})\) 及 \(f\in L^p(\mu)\)，使
+\[
+ \int_X f_{n_k}g\,\mathrm d\mu
+ \longrightarrow\int_Xfg\,\mathrm d\mu
+ \quad(g\in L^q(\mu)).
+\]
+这等价于 \(f_{n_k}\rightharpoonup f\) 在 \(L^p(\mu)\) 中成立。
+\end{corollary}
+\begin{proof}
+\cref{b1:thm:lp-reflexive}与\ref{b1:thm:reflexive-weak-subsequence}给出弱收敛子列；\cref{b1:thm:lp-dual}说明全部连续线性泛函恰是所列积分，所以弱收敛等价于这些积分收敛。
+\end{proof}
+
+此结论不要求 \(L^p(\mu)\) 可分，也没有断言函数值逐点收敛。它适合已知范数估计、却尚未找到点态控制的近似过程。由范数的弱下半连续性，还能保留估计
+\[
+ \|f\|_p\le\liminf_{k\to\infty}\|f_{n_k}\|_p.
+\]
+
+\begin{proposition}\label{b1:prop:lp-weak-finite-set-tests}
+设 \(f_n,f\in L^p(\mu)\)，且 \(\sup_n\|f_n\|_p<\infty\)。则 \(f_n\rightharpoonup f\)，当且仅当对每个有限测度可测集 \(E\)，有
+\[
+ \int_E f_n\,\mathrm d\mu\longrightarrow\int_E f\,\mathrm d\mu.
+\]
+\end{proposition}
+\begin{proof}
+若弱收敛成立，取测试函数 \(\mathbf1_E\in L^q(\mu)\) 即得结论。
+
+反之，给定条件及有限线性组合说明积分收敛对所有有限测度支集简单函数成立。由\cref{b1:prop:lp-simple-dense}，这些函数在 \(L^q(\mu)\) 中稠密。记 \(C=\sup_n\|f_n\|_p+\|f\|_p\)。对 \(g\in L^q\) 和这样的简单函数 \(s\)，Hölder 不等式给出
+\[
+ \left|\int_X(f_n-f)g\,\mathrm d\mu\right|
+ \le\left|\int_X(f_n-f)s\,\mathrm d\mu\right|
+   +C\|g-s\|_q.
+\]
+先选择 \(s\) 使第二项足够小，再令 \(n\) 足够大，即得所有 \(g\) 上的收敛。
+\end{proof}
+
+这个判别仍需要统一范数界。它把测试函数从整个 \(L^q\) 简化为集合的指示函数，并没有仅凭集合积分的逐点收敛制造范数估计。
+
+作为对照，在 \(\ell^p\) 中，单位向量 \(e_n\) 对每个 \(g\in\ell^q\) 满足
+\(\Lambda_g(e_n)=g_n\rightarrow0\)，因为 \(q<\infty\) 保证 \(\ell^q\) 序列的各项趋零。所以 \(e_n\rightharpoonup0\)，尽管 \(\|e_n\|_p=1\)，任意两个不同单位向量的距离都是 \(2^{1/p}\)。弱紧性因此不会恢复范数紧性。
+
+若换成 \(\ell^1\)，所有坐标评价仍使 \(e_n\) 趋向零，但对偶中的常数序列 \(\mathbf1\in\ell^\infty\) 给出 \(\Lambda_{\mathbf1}(e_n)=1\)。任何弱收敛子列的极限又都会被坐标评价强制为零，因此这里根本没有弱收敛子列。对偶指数从有限变为无穷，使有限支撑测试不再足以逼近所有测试函数。
 
 \subsection{凸泛函与弱下半连续性}
 \label{b1:subsec:100403}
 
-待填充。
+对积分能量，先在范数收敛下使用逐点工具，再借凸性转到弱拓扑，往往比直接处理弱收敛函数值更方便。
+
+\begin{proposition}[凸积分泛函的弱下半连续性]\label{b1:prop:convex-integral-weak-lsc}
+设 \(\mu\) 为任意正测度，\(1\le r<\infty\)。设
+\(\phi:\mathbb K\rightarrow[0,\infty]\) 下半连续、凸，且 \(\phi(0)=0\)；复情形把 \(\mathbb C\) 看作实平面理解凸性。则
+\[
+ \mathcal F(f)=\int_X\phi(f(x))\,\mathrm d\mu(x)
+ \quad(f\in L^r(\mu;\mathbb K))
+\]
+是强下半连续、弱下半连续的凸泛函。
+\end{proposition}
+\begin{proof}
+下半连续函数 \(\phi\) 可测，所以非负积分有定义，且不随 \(f\) 的几乎处处代表改变。\(\phi(0)=0\) 保证 \(\mathcal F(0)=0\)，故泛函不恒等于无穷。逐点凸不等式经积分得到 \(\mathcal F\) 的凸性。
+
+设 \(f_n\rightarrow f\) 在 \(L^r\) 范数下成立。若 \(\liminf_n\mathcal F(f_n)=\infty\)，所需不等式直接成立。否则先选子列，使其能量趋于这个有限下极限，再取更稀的子列 \((f_{n_k})\)，使
+\[
+ \sum_{k=1}^{\infty}\|f_{n_k}-f\|_r^r<\infty.
+\]
+由非负积分的单调收敛定理，
+\[
+ \int_X\sum_{k=1}^{\infty}|f_{n_k}-f|^r\,\mathrm d\mu
+ =\sum_{k=1}^{\infty}\|f_{n_k}-f\|_r^r<\infty.
+\]
+因此逐点级数几乎处处有限，特别地 \(f_{n_k}\rightarrow f\) 几乎处处。下半连续性与 Fatou 引理给出
+\[
+ \mathcal F(f)\le
+ \int_X\liminf_k\phi(f_{n_k})\,\mathrm d\mu
+ \le\liminf_k\mathcal F(f_{n_k})
+ =\liminf_n\mathcal F(f_n).
+\]
+这证明了范数拓扑下的下半连续性。再由\cref{b1:thm:convex-weak-lsc}，它也是弱下半连续的。
+\end{proof}
+
+例如取 \(\phi(z)=|z|^s\)、\(1\le s<\infty\)，可知即使在所讨论的 \(L^r\) 上积分可能为无穷，这个 \(s\) 次能量仍弱下半连续。这里没有把弱收敛误作几乎处处收敛：逐点子列只用于证明强下半连续，转到弱拓扑时另用了凸性。
+
+回到本节的 \(\sigma\)-有限测度与 \(1<p<\infty\)，取 \(g_1,\ldots,g_m\in L^q\) 及标量 \(a_1,\ldots,a_m\)，假设约束集
+\[
+ \mathcal C=\left\{\,f\in L^p\ \middle|\
+   \int_Xfg_j\,\mathrm d\mu=a_j,\ 1\le j\le m\,\right\}
+\]
+非空。每个约束都是弱连续泛函的水平集，所以 \(\mathcal C\) 弱闭。选取 \(\|f\|_p^p\) 在 \(\mathcal C\) 上的极小化序列，其范数有界；由\cref{b1:cor:lp-weak-subsequence}取得弱收敛子列。极限仍满足全部约束，而弱下半连续性保证它达到下确界。这是\cref{b1:thm:direct-method}在积分约束下的具体实现。
+
+单个非零约束函数 \(g\in L^q\) 时，答案还可以直接计算。若要求 \(\int fg\,\mathrm d\mu=a\)，Hölder 不等式给出 \(\|f\|_p\ge |a|/\|g\|_q\)；而
+\[
+ f_0=\dfrac{a\,\vartheta_g|g|^{q-1}}{\|g\|_q^q}
+\]
+满足约束，并有 \(\|f_0\|_p=|a|/\|g\|_q\)。抽象的存在性过程与对偶范数中达到等号的相位测试，在这个例子中给出同一个极小点。

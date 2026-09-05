@@ -2,24 +2,190 @@
 \section{\texorpdfstring{\(L^p\)}{Lᵖ} 对偶}
 \label{b1:sec:1003}
 
-% TODO: 撰写本节正文。
+Hölder 不等式已经说明，一个可积乘积能够产生连续线性泛函。对偶表示要回答反方向的问题：每个连续线性泛函是否都来自这样的积分？本节以 \(\sigma\)-有限正测度为主线，用第\ref{b1:ch:06}章的 Radon--Nikodym 定理构造表示密度。有限测度块上的构造可参看 Axler 的《Measure, Integration \& Real Analysis》\cite[第 7B 节及定理 9.42]{Axler2020Measure}。该书还处理了 \(1<p<\infty\) 时更一般的测度；以下只证明所明列的 \(\sigma\)-有限版本，不把本节的证明范围误当成定理成立的必要条件。
+
+% 实读来源：Axler2020Measure，7.25--7.26，印刷 pp.206--207；
+% 一般Lp的RN证明不在第7章，而在9.42，有限测度部分为 pp.275--276。
+% 本节改写为sigma有限块拼接，另完整证明p=1端点与复数相位测试。
 
 \subsection{\texorpdfstring{\(1<p<\infty\)}{1<p<∞}}
 \label{b1:subsec:100301}
 
-待填充。
+固定标量域 \(\mathbb K=\mathbb R\) 或 \(\mathbb C\)。设 \(1<p<\infty\)，记 \(q=p'=p/(p-1)\)。给定 \(g\in L^q(\mu;\mathbb K)\)，定义
+\[
+ \Lambda_g:L^p(\mu;\mathbb K)\longrightarrow\mathbb K,
+ \quad \Lambda_g(f)=\int_Xfg\,\mathrm d\mu.
+\]
+这里不在 \(g\) 上加共轭，因此 \(f\mapsto\Lambda_g(f)\) 和 \(g\mapsto\Lambda_g\) 都线性。若采用 Hilbert 空间的写法 \(\int f\overline h\,\mathrm d\mu\)，对应的密度就是 \(g=\overline h\)，两种表示的数学内容一致，但参数到泛函的线性性质不同。
+
+\begin{proposition}\label{b1:prop:lp-dual-isometry}
+设 \(\mu\) 为任意正测度，\(1<p<\infty\)。上述映射
+\[
+ D_p:L^q(\mu)\longrightarrow (L^p(\mu))^*,
+ \quad D_pg=\Lambda_g
+\]
+是线性等距嵌入。
+\end{proposition}
+\begin{proof}
+由\cref{b1:thm:lp-holder}，乘积属于 \(L^1(\mu)\)，且
+\[
+ |\Lambda_g(f)|\le\|g\|_q\|f\|_p.
+\]
+改变任一个函数的几乎处处代表不改变积分，所以泛函在等价类上良定义。
+
+为得到反向估计，令
+\[
+ \vartheta_g(x)=
+ \begin{cases}
+  \overline{g(x)}/|g(x)|,&g(x)\ne0,\\
+  0,&g(x)=0.
+ \end{cases}
+\]
+实情形中的共轭不起作用，而两种情形都满足 \(\vartheta_gg=|g|\)。若 \(\|g\|_q>0\)，取
+\[
+ f_0=\dfrac{\vartheta_g|g|^{q-1}}{\|g\|_q^{q-1}}.
+\]
+因为 \((q-1)p=q\)，有 \(\|f_0\|_p=1\) 及
+\(\Lambda_g(f_0)=\|g\|_q\)。故 \(\|\Lambda_g\|=\|g\|_q\)；\(g=0\) 的情形直接成立。积分的线性性给出 \(D_p\) 线性，等距性则保证单射。
+\end{proof}
+
+这一步不要求 \(\sigma\)-有限性，而且给出了达到对偶范数的测试函数。尚未解决的是满射性：一个抽象的连续泛函并没有预先给定密度。
+
+\begin{theorem}[\(L^p\) 对偶表示]\label{b1:thm:lp-dual}
+设 \((X,\mathcal A,\mu)\) 为 \(\sigma\)-有限正测度空间，\(1<p<\infty\)，\(q=p'\)。则每个 \(\Lambda\in(L^p(\mu;\mathbb K))^*\) 都唯一表示为
+\[
+ \Lambda(f)=\int_Xfg\,\mathrm d\mu
+ \quad(f\in L^p(\mu;\mathbb K)),
+\]
+其中 \(g\in L^q(\mu;\mathbb K)\)，且 \(\|\Lambda\|=\|g\|_q\)。
+\end{theorem}
+
+唯一性及等范数已由前一命题给出。下面用可测集合上的取值制造密度，再从泛函的有界性中读出密度的可积指数。
 
 \subsection{Radon–Nikodym 方法}
 \label{b1:subsec:100302}
 
-待填充。
+若 \(\mu(X)=\infty\)，一般不能写 \(\Lambda(\mathbf1_X)\)，因为 \(\mathbf1_X\) 可能不在 \(L^p\) 中。因此构造首先在有限测度空间上进行；这个局部步骤也将用于 \(p=1\)。
+
+\begin{lemma}\label{b1:lem:lp-functional-local-density}
+设 \(\mu(X)<\infty\)，\(1\le p<\infty\)，\(\Lambda\in(L^p(\mu;\mathbb K))^*\)。则存在 \(g\in L^1(\mu;\mathbb K)\)，使
+\[
+ \Lambda(v)=\int_Xvg\,\mathrm d\mu
+\]
+对每个有界可测函数 \(v\) 成立。
+\end{lemma}
+\begin{proof}
+对 \(E\in\mathcal A\) 定义 \(\nu(E)=\Lambda(\mathbf1_E)\)。若各 \(E_j\) 两两不交，则
+\[
+ \left\|\mathbf1_{\bigcup_jE_j}-\sum_{j=1}^n\mathbf1_{E_j}\right\|_p^p
+ =\mu\left(\bigcup_{j>n}E_j\right)\longrightarrow0.
+\]
+最后一步使用了有限测度性。因此 \(\Lambda\) 的连续性给出
+\(\nu(\bigcup_jE_j)=\sum_j\nu(E_j)\)。又当 \(\mu(E)=0\) 时，\(\mathbf1_E\) 是零等价类，故 \(\nu(E)=0\)。于是 \(\nu\) 是绝对连续于 \(\mu\) 的符号测度或复测度。
+
+实情形由\cref{b1:cor:signed-radon-nikodym}得到 \(g\in L^1(\mu;\mathbb R)\)。复情形分别对 \(\operatorname{Re}\nu\)、\(\operatorname{Im}\nu\) 使用同一结果，得到实密度 \(a,b\in L^1(\mu)\)，令 \(g=a+\mathrm i b\)。两种情形都满足
+\[
+ \Lambda(\mathbf1_E)=\int_Eg\,\mathrm d\mu.
+\]
+有限线性组合将等式推广到简单函数。对有界可测 \(v\)，取一致逼近它的简单函数 \(s_n\)。由于
+\[
+ \|s_n-v\|_p\le\mu(X)^{1/p}\|s_n-v\|_\infty,
+ \quad
+ \left|\int_X(s_n-v)g\,\mathrm d\mu\right|
+ \le\|s_n-v\|_\infty\|g\|_1,
+\]
+两边均可取极限，得到结论。
+\end{proof}
+
+\begin{proof}[定理\ref{b1:thm:lp-dual}的证明]
+取两两不交的可测集 \(A_j\)，使 \(X=\bigcup_jA_j\)、\(\mu(A_j)<\infty\)，并令 \(E_N=\bigcup_{j=1}^NA_j\)。把 \(L^p(\mu|_{A_j})\) 中的函数延拓为 \(A_j\) 外的零函数，就得到 \(L^p(\mu)\) 的子空间；\(\Lambda\) 在其上的限制范数不超过 \(\|\Lambda\|\)。前一引理给出密度 \(g_j\in L^1(\mu|_{A_j})\)。在每个 \(A_j\) 上令 \(g=g_j\)，即可得到可测函数 \(g\)，并对每个有界、在某个 \(E_N\) 外为零的 \(v\) 有
+\[
+ \Lambda(v)=\int_Xvg\,\mathrm d\mu.
+\]
+这是有限多个局部等式之和，尚未使用 \(g\in L^q(\mu)\)。
+
+选各局部密度的几乎处处有限代表，并在相应零集上置零。令
+\[
+ B_N=E_N\cap\{\,|g|\le N\,\},
+ \quad v_N=\vartheta_g|g|^{q-1}\mathbf1_{B_N}.
+\]
+函数 \(v_N\) 有界且支集测度有限，所以刚才的等式适用。记
+\(a_N=\int_{B_N}|g|^q\,\mathrm d\mu<\infty\)，则
+\[
+ a_N=\Lambda(v_N)
+ \le\|\Lambda\|\|v_N\|_p
+ =\|\Lambda\|a_N^{1/p}.
+\]
+若 \(a_N>0\)，相除得到 \(a_N^{1/q}\le\|\Lambda\|\)；若 \(a_N=0\)，这个结论也成立。因为 \(B_N\uparrow X\)，单调收敛定理给出
+\[
+ \int_X|g|^q\,\mathrm d\mu\le\|\Lambda\|^q.
+\]
+故 \(g\in L^q(\mu)\)。
+
+最后，对任意 \(f\in L^p(\mu)\)，取
+\(f_N=f\mathbf1_{E_N\cap\{|f|\le N\}}\)。控制收敛给出 \(\|f_N-f\|_p\rightarrow0\)，而 Hölder 不等式给出
+\[
+ \left|\int_X(f_N-f)g\,\mathrm d\mu\right|
+ \le\|f_N-f\|_p\|g\|_q\longrightarrow0.
+\]
+在 \(\Lambda(f_N)=\int f_Ng\,\mathrm d\mu\) 中取极限，就得到 \(\Lambda=\Lambda_g\)。\cref{b1:prop:lp-dual-isometry}给出唯一性与等范数。
+\end{proof}
+
+证明中的截断有两个不同用途：有限测度支集让指示函数进入 \(L^p\)，幅度截断则让密度所决定的相位测试在尚未知道 \(g\in L^q\) 时也能使用。若直接代入未截断的 \(\vartheta_g|g|^{q-1}\)，就会预先假定正在证明的可积性。
 
 \subsection{\texorpdfstring{\(L^1\)}{L1} 的对偶}
 \label{b1:subsec:100303}
 
-待填充。
+当 \(p=1\) 时，共轭指数为无穷。局部密度仍由 Radon--Nikodym 定理产生，但有界性不再表现为某个幂的可积性，而是密度的本质上界。
+
+\begin{theorem}[\(L^1\) 对偶表示]\label{b1:thm:l1-dual-sigma-finite}
+设 \(\mu\) 为 \(\sigma\)-有限正测度，则
+\[
+ L^\infty(\mu;\mathbb K)\longrightarrow(L^1(\mu;\mathbb K))^*,
+ \quad g\longmapsto\Lambda_g,\quad
+ \Lambda_g(f)=\int_Xfg\,\mathrm d\mu
+\]
+是线性等距满射。
+\end{theorem}
+\begin{proof}
+给定 \(\Lambda\in(L^1)^*\)，用\cref{b1:lem:lp-functional-local-density}在上一证明的有限测度块 \(A_j\) 上构造并拼接 \(g\)。所得 \(g\) 在每个 \(E_N\) 上可积，且表示等式对所有有界、在 \(E_N\) 外为零的测试成立。
+
+固定 \(t>\|\Lambda\|\)，令 \(B=E_N\cap\{|g|>t\}\)。若 \(\mu(B)>0\)，取 \(v=\vartheta_g\mathbf1_B\)，便有
+\[
+ t\mu(B)\le\int_B|g|\,\mathrm d\mu
+ =\Lambda(v)\le\|\Lambda\|\mu(B),
+\]
+矛盾。因此 \(\mu(E_N\cap\{|g|>t\})=0\) 对所有 \(N\) 成立。先合并这些零集，再取 \(t=\|\Lambda\|+1/k\)，可得 \(|g|\le\|\Lambda\|\) 几乎处处。故 \(g\in L^\infty\)。使用 \(L^1\) 截断逼近及
+\[
+ \left|\int_X(f_N-f)g\,\mathrm d\mu\right|
+ \le\|f_N-f\|_1\|g\|_\infty
+\]
+即可把表示推广到所有 \(f\in L^1\)。
+
+对给定 \(g\in L^\infty\)，积分估计给出 \(\|\Lambda_g\|\le\|g\|_\infty\)。若 \(0<t<\|g\|_\infty\)，集合 \(\{|g|>t\}\) 测度为正；由 \(\sigma\)-有限性，其中有一个可测子集 \(A\) 满足 \(0<\mu(A)<\infty\)。取 \(f=\vartheta_g\mathbf1_A/\mu(A)\)，便有 \(\|f\|_1=1\) 和 \(\Lambda_g(f)\ge t\)。令 \(t\uparrow\|g\|_\infty\)，得到等范数；零范数情形直接成立。等距性给出唯一性。
+\end{proof}
+
+这里的有限测度测试不能无条件找到。例如在单点空间 \(\{a\}\) 上令 \(\mu(\{a\})=\infty\)，则 \(L^1(\mu)=\{0\}\)，而 \(L^\infty(\mu)=\mathbb K\)。所有密度都在零空间上诱导零泛函，积分映射并非等距单射。这说明删除测度假设后，不能照抄端点的表示结论。
 
 \subsection{\texorpdfstring{\(L^\infty\)}{L∞} 的特殊性}
 \label{b1:subsec:100304}
 
-待填充。
+对任意正测度，\(g\in L^1(\mu)\) 仍产生 \(L^\infty(\mu)\) 上的泛函，而且
+\[
+ \|\Lambda_g\|=\|g\|_1.
+\]
+上界由积分估计得到，下界由测试函数 \(\vartheta_g\in L^\infty\)、\(\|\vartheta_g\|_\infty\le1\) 得到。然而这个等距嵌入通常不满射，即使测度已经 \(\sigma\)-有限。
+
+在 \(\mathbb N\) 上取计数测度，则 \(L^\infty=\ell^\infty\)、\(L^1=\ell^1\)。令 \(c\) 为收敛序列组成的子空间，其上的极限泛函 \(x\mapsto\lim_nx_n\) 连续且范数为 \(1\)。由 Hahn--Banach 定理取得保范延拓 \(L\in(\ell^\infty)^*\)；实情形的进一步性质见\cref{b1:ex:08-positive-limit}，复情形使用复线性保范延拓即可。
+
+这个 \(L\) 不能由某个 \(a\in\ell^1\) 表示。否则假设
+\[
+ L(x)=\sum_{n=1}^{\infty}a_nx_n.
+\]
+代入每个单位向量 \(e_n\)，由其通常极限为零可得 \(a_n=L(e_n)=0\)；但代入常数序列 \(\mathbf1\)，又有 \(L(\mathbf1)=1\)，矛盾。
+
+这一例子也指出 Radon--Nikodym 方法在这里的断点。令 \(\nu(E)=L(\mathbf1_E)\)，则 \(\nu\) 有限可加，却有
+\[
+ \nu(\mathbb N)=1,\quad \nu(\{n\})=0\quad(n\ge1),
+\]
+所以不可数可加。部分和 \(\sum_{n=1}^N e_n\) 并不在 \(\ell^\infty\) 范数下趋于 \(\mathbf1\)，泛函连续性因而不能提供前面构造测度时的极限等式。这里使用的只是通常极限泛函的延拓，没有额外要求移位不变性。

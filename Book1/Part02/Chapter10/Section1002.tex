@@ -2,24 +2,128 @@
 \section{稠密性}
 \label{b1:sec:1002}
 
-% TODO: 撰写本节正文。
+% 来源：Axler2020Measure，7A习题17--19，第200--201页，结合本卷第4章简单逼近与第5章DCT。
+% 改编：把实直线上的连续紧支集逼近推广至Rn，用第3章正则性和距离函数完整证明；
+% 区分有限p与无穷端点，有限测度非零区域由函数自身选取，不额外假设sigma有限。
+完备性保证逼近过程有极限，稠密性则说明可以从哪些容易处理的函数开始逼近。这里依次减少函数的复杂性：先使值域有限，再控制幅值与非零区域，最后在欧氏空间中要求连续性。每次增加限制，都要检查误差仍能在所选的 \(L^p\) 范数下趋于零；有限指数与无穷端点在这一点上有显著差别。
 
 \subsection{简单函数}
 \label{b1:subsec:100201}
 
-待填充。
+\begin{proposition}\label{b1:prop:lp-simple-dense}
+对任意测度空间及 \(1\leq p\leq\infty\)，属于 \(L^p(\mu)\) 的简单函数在 \(L^p(\mu)\) 中稠密。当 \(p<\infty\) 时，这些简单函数还可以取为在某个有限测度集合外恒为零。
+\end{proposition}
+\begin{proof}
+先设 \(p<\infty\)、\(f\geq0\)。由\cref{b1:thm:nonnegative-simple-approximation}，存在非负简单函数 \(s_n\uparrow f\)。因
+\[
+ |f-s_n|^p\longrightarrow0,\quad |f-s_n|^p\leq f^p\in L^1,
+\]
+\cref{b1:thm:dominated-convergence}给出 \(\|f-s_n\|_p\to0\)。写出 \(s_n\) 的非零规范表示 \(s_n=\sum_{j=1}^ma_j\mathbf1_{A_j}\)，其中 \(a_j>0\)。由
+\[
+ a_j^p\mu(A_j)\leq\int_Xs_n^p\,\mathrm d\mu
+ \leq\int_Xf^p\,\mathrm d\mu<\infty
+\]
+知每个 \(A_j\) 都有有限测度，其有限并容纳 \(s_n\) 的非零区域。对实函数分别逼近正、负部，对复函数再分别处理实、虚部；各部分的 \(p\) 次幂均受 \(|f|^p\) 控制，Minkowski 不等式保证组合后的误差趋零。有限个非零区域的并仍有有限测度。
+
+若 \(p=\infty\)，先选取处处有界的可测代表：把 \(\{|f|>\|f\|_\infty\}\) 上的值改成零即可。对实、虚部各自按长度 \(2^{-n}\) 的区间向下取整，得到有限值的可测函数 \(s_n\)，并有
+\[
+ |f-s_n|\leq\sqrt2\,2^{-n}
+\]
+处处成立；实情形还可去掉 \(\sqrt2\)。所以 \(\|f-s_n\|_\infty\to0\)。这里并未要求 \(s_n\) 的非零区域具有有限测度。
+\end{proof}
+
+“简单”限制的是值域中数值的个数，而不是函数非零处的测度。比如 \(\mathbb R^d\) 上的常函数 \(1\) 已经是简单函数，也属于 \(L^\infty\)，却不属于任何有限指数的 \(L^p\)。因此在无限测度空间上，不能把任意简单函数都当作有限 \(p\) 的逼近候选。对有限测度集 \(A,B\)，一个常用的精确公式是
+\[
+ \|\mathbf1_A-\mathbf1_B\|_p^p
+ =\mu(A\mathbin{\triangle}B)\quad(1\leq p<\infty).
+\]
+这把集合逼近的测度误差，直接转换成函数逼近的范数误差。
 
 \subsection{截断}
 \label{b1:subsec:100202}
 
-待填充。
+对实值函数，最熟悉的截断是把过大的正、负值分别压到 \(M\) 与 \(-M\)。为了兼顾复值函数，我们沿每个函数值的方向截短其模，定义
+\[
+ T_Mf(x)=
+ \begin{cases}
+ f(x),&|f(x)|\leq M,\\
+ M\dfrac{f(x)}{|f(x)|},&|f(x)|>M,
+ \end{cases}
+ \quad M>0.
+\]
+这是可测函数，且 \(|T_Mf|\leq|f|\)、\(|T_Mf|\leq M\)。
+
+\begin{proposition}\label{b1:prop:lp-truncation}
+若 \(1\leq p<\infty\) 且 \(f\in L^p(\mu)\)，则 \(T_Mf\to f\) 于 \(L^p\)。更一般地，若 \(E_n\in\mathcal A\) 递增，且 \(f=0\) 几乎处处于 \(X\setminus\bigcup_nE_n\)，则 \(f\mathbf1_{E_n}\to f\) 于 \(L^p\)。
+\end{proposition}
+\begin{proof}
+第一项的误差满足
+\[
+ |f-T_Mf|^p=(|f|-M)_+^p\longrightarrow0,
+ \quad |f-T_Mf|^p\leq|f|^p.
+\]
+第二项的误差是 \(|f|^p\mathbf1_{X\setminus E_n}\)，也几乎处处趋零并受 \(|f|^p\) 控制。两次使用\cref{b1:thm:dominated-convergence}即可。
+\end{proof}
+
+例如在 \((0,1)\) 上，\(f(x)=x^{-\alpha}\) 属于 \(L^p\) 当且仅当 \(\alpha p<1\)（\(\alpha>0\)）。满足这一条件时，有界截断可以在 \(L^p\) 范数下逼近这个无界函数，尽管每次截断留下的逐点误差仍没有有限上界。积分范数允许极大的误差落在越来越小的区域中，控制收敛正是对这种容许方式的定量依据。
+
+\(L^\infty\) 中，幅值截断对给定本性有界函数最终等于该函数，因而没有困难；困难在于区域截断。即使 \(E_n\uparrow X\)，也未必有 \(\|f-f\mathbf1_{E_n}\|_\infty\to0\)。在 \(\mathbb R\) 上取 \(f=1\)、\(E_n=[-n,n]\)，误差范数始终为 \(1\)。集合尾部虽然在逐点意义下消失，其上保留的误差高度并没有降低。
 
 \subsection{有限测度支集函数}
 \label{b1:subsec:100203}
 
-待填充。
+一般可测空间尚无拓扑，因而本小节所说的“有限测度支集函数”，仅指存在 \(E\in\mathcal A\)、\(\mu(E)<\infty\)，使函数在 \(X\setminus E\) 上几乎处处为零。这里不取非零集合的拓扑闭包，也不要求空间本身能被可数个有限测度集覆盖。
+
+\begin{proposition}\label{b1:prop:lp-finite-support-dense}
+若 \(1\leq p<\infty\)，则有界且在某个有限测度集合外为零的可测函数在 \(L^p(\mu)\) 中稠密。对每个给定的可测代表 \(f\in L^p\)，可具体取
+\[
+ E_n=\{\,1/n<|f|\leq n\,\},\quad f_n=f\mathbf1_{E_n}.
+\]
+\end{proposition}
+\begin{proof}
+由水平集估计，
+\[
+ \mu(E_n)\leq\mu(\{|f|>1/n\})
+ \leq n^p\int_X|f|^p\,\mathrm d\mu<\infty.
+\]
+又有 \(|f_n|\leq n\)，且 \(E_n\uparrow\{f\ne0\}\)，所以 \(f_n\to f\) 处处。最后，\(|f-f_n|^p\leq|f|^p\)，控制收敛给出范数逼近。
+\end{proof}
+
+这一构造由函数决定局部化区域。即使 \(X\) 的测度非常大，每个 \(L^p\) 函数的非零区域仍包含在可数个有限测度集的并中。不同函数可能需要不同的区域，不能因此反推 \(\mu\) 是 \(\sigma\)-有限测度。例如在不可数集合的计数测度下，每个有限指数的 \(L^p\) 函数至多有可数多个非零值，但整个空间不是 \(\sigma\)-有限的。
+
+有限测度支集也不等于拓扑紧支集。在 \(\mathbb R\) 中，可取分布在各整数附近、总长度有限而整体无界的开区间并；其示性函数属于每个有限指数的 \(L^p\)，非零区域却不在任何紧集内。欧氏空间中的紧支集逼近还要进一步使用测度与拓扑之间的正则性。
+
+上述稠密性不能推广到 \(L^\infty\)。若 \(g\) 在某个有限 Lebesgue 测度集外为零，则 \(\|1-g\|_\infty\geq1\)，因为该集的补集具有正测度。这不仅否定某一个截断序列，而且否定用全部有限测度支集函数去逼近常函数 \(1\) 的可能性。
 
 \subsection{欧氏空间中的光滑逼近预告}
 \label{b1:subsec:100204}
 
-待填充。
+现在固定 \(\mathbb R^d\) 上的 Lebesgue 测度。连续函数 \(u\) 的\term[zhiji]{支集}[support]定义为
+\[
+ \operatorname{supp}u=\overline{\{\,x\in\mathbb R^d\mid u(x)\ne0\,\}}.
+\]
+记 \(C_c(\mathbb R^d)\) 为具有紧支集的连续实值或复值函数空间。紧集有有限测度，而连续函数在紧集上有界，所以 \(C_c\subset L^p\) 对每个 \(1\leq p\leq\infty\) 都成立。
+\symidx{\(\operatorname{supp}u\)：连续函数的支集}
+\symidx{\(C_c(\mathbb R^d)\)：欧氏空间上的连续紧支集函数空间}
+
+\begin{proposition}\label{b1:prop:lp-continuous-dense}
+若 \(1\leq p<\infty\)，则 \(C_c(\mathbb R^d)\) 在 \(L^p(\mathbb R^d)\) 中稠密。
+\end{proposition}
+\begin{proof}
+由\cref{b1:prop:lp-simple-dense}和 Minkowski 不等式，只须把有限测度集 \(A\) 的示性函数逼近为连续紧支集函数。给定 \(\eta>0\)，由\cref{b1:thm:inner-regular}取紧集 \(K\subset A\)，使 \(m(A\setminus K)<\eta\)。若 \(K=\varnothing\)，零函数已经满足所需误差估计。否则，由外正则性取包含 \(K\) 的开集，再与一个包含 \(K\) 的大开球相交，可得到有界开集 \(U\supset K\)，满足 \(m(U\setminus K)<\eta\)。
+
+记 \(d(x,F)=\inf_{y\in F}|x-y|\)。到非空闭集的距离函数连续，因为 \(|d(x,F)-d(y,F)|\leq|x-y|\)。定义
+\[
+ u(x)=\frac{d(x,U^c)}{d(x,K)+d(x,U^c)}.
+\]
+分母处处为正：若两个距离同时为零，闭性便给出 \(x\in K\cap U^c\)，与 \(K\subset U\) 矛盾。故 \(u\) 连续，\(0\leq u\leq1\)，在 \(K\) 上等于 \(1\)，在 \(U^c\) 上等于 \(0\)，并且 \(\operatorname{supp}u\subset\overline U\) 为紧集。函数 \(u\) 与 \(\mathbf1_A\) 只有在 \((A\setminus K)\cup(U\setminus K)\) 上可能不同，差的模不超过 \(1\)，所以
+\[
+ \|\mathbf1_A-u\|_p^p
+ \leq m(A\setminus K)+m(U\setminus K)<2\eta.
+\]
+让 \(\eta\) 足够小便可达到任意给定误差。对有限和 \(s=\sum_{j=1}^ra_j\mathbf1_{A_j}\)，分别选择这些连续逼近，使 \(\sum_j|a_j|\|\mathbf1_{A_j}-u_j\|_p\) 任意小。有限和 \(\sum_ja_ju_j\) 仍连续且具有紧支集，Minkowski 不等式完成证明。
+\end{proof}
+
+这一证明把正则性用于跳跃发生的边界：连续函数不必逐点复制示性函数，只须把过渡安排在测度很小的区域中。它建立了从可测函数到连续函数的桥，但还没有建立从连续函数到光滑函数的桥。以后引入卷积磨光时，我们将构造具有紧支集的无穷次可微逼近，并证明磨光误差在 \(L^p\) 范数下趋零；本节不把尚未证明的磨光性质用作稠密性依据。
+
+无穷端点仍然有障碍，而且即使没有远处尾部，跳跃也足以阻止逼近。在 \(\mathbb R\) 上令 \(f=\mathbf1_{(0,1)}\)。对任何连续函数 \(g\)，都有 \(\|f-g\|_\infty\geq1/2\)。否则可取 \(a<1/2\)，使 \(|f-g|\leq a\) 几乎处处。于 \(0\) 左侧取趋于 \(0\) 的非例外点，并用连续性，得到 \(|g(0)|\leq a\)；于右侧同样得到 \(|1-g(0)|\leq a\)。三角不等式便给出 \(1\leq2a<1\)，矛盾。因而连续紧支集函数乃至光滑紧支集函数都不可能在整个 \(L^\infty\) 中稠密。
