@@ -1,25 +1,192 @@
 % !TeX root = ../../Book1.tex
 \section{非负函数的积分}
 \label{b1:sec:0501}
+% 来源与证明义务：Axler2020Measure，§3A，印刷74--80页，已读全文。
+% 改用简单函数起步；先证表示无关性、递增简单逼近和空间可数可加，
+% 不前向调用5.3的一般单调收敛定理。共同分割与无穷值分支均展开。
 
-% TODO: 撰写本节正文。
+测度已经规定了示性函数应有的积分：集合 \(A\) 的示性函数应当积成 \(\mu(A)\)。有限次加权由此给出简单函数的积分；对于一般非负函数，再取所有从下方逼近它的简单函数积分的上确界。构造中需要分别回答两个问题：同一个函数换一种表示，积分是否不变；从简单函数过渡到一般函数后，可加性是否仍然成立。
+
+本节固定测度空间 \((X,\mathcal A,\mu)\)，不要求有限、\(\sigma\)-有限或完备。只在非负积分及其截断记号中约定 \(0\cdot\infty=\infty\cdot0=0\)。例如，零函数在无限测度空间上的积分仍为零；这项约定并不赋予一般扩展实值运算中的 \(\infty-\infty\) 任何意义。
 
 \subsection{简单函数积分}
 \label{b1:subsec:050101}
 
-待填充。
+\begin{definition}\label{b1:def:simple-integral}
+设非负简单函数具有规范表示
+\[
+s=\sum_{j=1}^{r}a_j\mathbf1_{A_j},
+\quad a_j\in[0,\infty),
+\]
+其中 \((A_j)_{j=1}^{r}\) 是 \(X\) 的可测分割。定义它的\term[jiandan-hanshu-jifen]{简单函数积分}[integral of a simple function]为
+\[
+I_\mu(s)=\sum_{j=1}^{r}a_j\mu(A_j)\in[0,\infty].
+\]
+\end{definition}
+
+规范表示的唯一性已见\cref{b1:prop:simple-canonical-form}，但计算时使用的表示未必规范。积分必须容许分块细分、合并以及集合重叠，不能把它们当作不同的函数。
+
+\begin{proposition}\label{b1:prop:simple-integral-well-defined}
+若 \(s=\sum_{j=1}^{r}a_j\mathbf1_{A_j}\)，其中 \(a_j\geq0\)、\(A_j\in\mathcal A\)，则不论这些集合是否互不相交，都有
+\[
+I_\mu(s)=\sum_{j=1}^{r}a_j\mu(A_j).
+\]
+非负简单函数的积分具有单调性，并且对 \(c,d\geq0\) 满足
+\[
+I_\mu(cs+dt)=cI_\mu(s)+dI_\mu(t).
+\]
+\end{proposition}
+\begin{proof}
+把每个 \(A_j\) 及其补集取交，得到有限可测分割 \((C_\ell)_\ell\)，略去空块。在每个 \(C_\ell\) 上，函数值为
+\[
+b_\ell=\sum_{\{j\mid C_\ell\subseteq A_j\}}a_j.
+\]
+每个规范水平集都是若干个这样的块之并。测度的有限可加性给出
+\[
+\begin{aligned}
+I_\mu(s)
+&=\sum_\ell b_\ell\mu(C_\ell)\\
+&=\sum_{j=1}^{r}a_j\sum_{\{\ell\mid C_\ell\subseteq A_j\}}\mu(C_\ell)
+=\sum_{j=1}^{r}a_j\mu(A_j).
+\end{aligned}
+\]
+各项非负，有限次交换求和不涉及无穷量相减；零系数按照本节约定处理。
+
+对两个简单函数取共同的有限可测分割，在每一块上分别记它们的值为 \(u_\ell,v_\ell\)。若 \(s\leq t\)，则 \(u_\ell\leq v_\ell\)，逐块乘以测度并求和便得单调性。函数 \(cs+dt\) 在该块上的值为 \(cu_\ell+dv_\ell\)，同一求和公式给出所述线性关系。若 \(c=0\) 或 \(d=0\)，对应零函数的积分为零，结论仍成立。
+\end{proof}
+
+例如，在实直线上取 \(s=2\mathbf1_{[0,2]}+3\mathbf1_{[1,3]}\)。两项的支集重叠，而积分仍为 \(2\cdot2+3\cdot2=10\)。也可以在 \([0,1)\)、\([1,2]\)、\((2,3]\) 上分别使用函数值 \(2,5,3\)，得到同一结果。这里用的是有限可测分割，不要求分块为区间。
 
 \subsection{非负可测函数积分}
 \label{b1:subsec:050102}
 
-待填充。
+\begin{definition}\label{b1:def:nonnegative-integral}
+设 \(f:X\rightarrow[0,\infty]\) 可测。它的\term[lebesgue-jifen]{Lebesgue 积分}[Lebesgue integral]定义为
+\[
+\int_X f\,\mathrm d\mu
+=\sup\{\,I_\mu(s)\mid 0\leq s\leq f,\ s\in\mathcal S_+(X,\mathcal A)\,\},
+\]
+其中 \(\mathcal S_+(X,\mathcal A)\) 表示全部非负可测简单函数。当定义域明确时省略下标 \(X\)。对 \(E\in\mathcal A\)，定义
+\[
+\int_E f\,\mathrm d\mu=\int_X f\mathbf1_E\,\mathrm d\mu,
+\]
+其中 \(f\mathbf1_E\) 在 \(E\) 外取零，即使 \(f\) 在那里等于无穷也如此。
+\symidx{\(\int_E f\,\mathrm d\mu\)：函数关于测度的积分}
+\end{definition}
+
+候选集合至少包含零函数，因此上确界总有意义。若 \(f\) 本身简单，简单函数积分的单调性说明每个候选的积分不超过 \(I_\mu(f)\)，而 \(f\) 又是候选，所以新定义恰好等于旧定义。另一方面，\(f\leq g\) 时，\(f\) 的每个候选也是 \(g\) 的候选，故新积分同样保序。
+
+下面的逼近引理把上确界变成一个数列极限。这里只处理递增的简单函数列；它将在建立可加性时使用，不预借后面的收敛定理。
+
+\begin{lemma}\label{b1:lem:simple-integral-approximation}
+若非负简单函数列满足 \(s_n\uparrow f\)，则
+\[
+I_\mu(s_n)\uparrow\int f\,\mathrm d\mu.
+\]
+因此这个极限与所选的递增简单逼近列无关。
+\end{lemma}
+\begin{proof}
+由单调性，\(L=\lim_n I_\mu(s_n)\) 存在且不超过 \(\int f\,\mathrm d\mu\)。固定任意非负简单函数 \(s\leq f\)，写成 \(s=\sum_ja_j\mathbf1_{A_j}\)，并固定 \(0<c<1\)。令
+\[
+E_n=\{\,x\in X\mid s_n(x)\geq cs(x)\,\}.
+\]
+这些集合递增，且并为 \(X\)：当 \(s(x)=0\) 时每个不等式都成立；当 \(s(x)>0\) 时，\(s_n(x)\to f(x)\geq s(x)>cs(x)\)，不等式最终成立。于是
+\[
+I_\mu(s_n)\geq cI_\mu(s\mathbf1_{E_n})
+=c\sum_j a_j\mu(A_j\cap E_n).
+\]
+测度的从下连续性给出 \(L\geq cI_\mu(s)\)。若 \(I_\mu(s)=\infty\)，这已经说明 \(L=\infty\)；否则令 \(c\uparrow1\)，得 \(L\geq I_\mu(s)\)。最后对所有 \(s\leq f\) 取上确界，便得反向不等式。
+\end{proof}
+
+\Cref{b1:thm:nonnegative-simple-approximation}保证每个非负可测函数都有这样的逼近列，故引理适用于全部积分对象。例如函数在正测度集合上等于 \(+\infty\) 时，可以在该集合上取任意高的常值简单函数，其积分必为无穷。无穷函数值若只出现在零测集上，则情况不同，下面会给出精确结论。
 
 \subsection{单调性}
 \label{b1:subsec:050103}
 
-待填充。
+\begin{proposition}\label{b1:prop:nonnegative-integral-linearity}
+对非负可测函数 \(f,g\) 以及有限常数 \(c,d\geq0\)，有
+\[
+\int(cf+dg)\,\mathrm d\mu
+=c\int f\,\mathrm d\mu+d\int g\,\mathrm d\mu.
+\]
+此外，\(f\leq g\) 蕴含 \(\int f\,\mathrm d\mu\leq\int g\,\mathrm d\mu\)。
+\end{proposition}
+\begin{proof}
+取非负简单函数 \(s_n\uparrow f\)、\(t_n\uparrow g\)。当 \(c,d>0\) 时，\(cs_n+dt_n\uparrow cf+dg\)，由简单函数的线性与\cref{b1:lem:simple-integral-approximation}，
+\[
+\int(cf+dg)\,\mathrm d\mu
+=\lim_n\bigl(cI_\mu(s_n)+dI_\mu(t_n)\bigr)
+=c\int f\,\mathrm d\mu+d\int g\,\mathrm d\mu.
+\]
+非负数列的和允许一项或两项趋于无穷，因而最后一步仍成立。零系数的情形直接略去对应项。单调性已由定义中的候选集合包含关系得到。
+\end{proof}
+
+\begin{proposition}\label{b1:prop:integral-markov}
+设 \(f\geq0\) 可测。对 \(a>0\)，有
+\[
+a\mu(\{f\geq a\})\leq\int f\,\mathrm d\mu.
+\]
+并且，\(\int f\,\mathrm d\mu=0\) 当且仅当 \(f=0\) 几乎处处；若积分有限，则 \(f\) 几乎处处有限。
+\end{proposition}
+\begin{proof}
+由 \(a\mathbf1_{\{f\geq a\}}\leq f\) 及单调性，得到第一个估计。若积分为零，则对每个正整数 \(k\)，集合 \(\{f\geq1/k\}\) 为零测集。它们的并为 \(\{f>0\}\)，故 \(f=0\) 几乎处处。
+
+反过来，设 \(f\) 在可测零集 \(N\) 外为零。每个非负简单函数 \(s\leq f\) 的正水平集都包含于 \(N\)，从而各项积分均为零；取上确界即得结论。若 \(\int f\,\mathrm d\mu=M<\infty\)，则
+\[
+\mu(\{f=\infty\})\leq\mu(\{f\geq k\})\leq M/k
+\]
+对每个 \(k\) 成立，令 \(k\to\infty\) 得最后一个断言。
+\end{proof}
+
+\begin{corollary}\label{b1:cor:integral-ae-invariance}
+若非负可测函数 \(f,g\) 几乎处处相等，则它们的积分相等。积分单调性中的 \(f\leq g\) 也可以只要求几乎处处成立。
+\end{corollary}
+\begin{proof}
+取包含例外点的可测零集 \(N\)。分解 \(f=f\mathbf1_{X\setminus N}+f\mathbf1_N\)，再用非负可加性及零积分判别，得到
+\(\int f=\int f\mathbf1_{X\setminus N}\)。对 \(g\) 同样处理，在补集上使用相等或大小关系即可。
+\end{proof}
+
+这里始终要求参与积分的函数可测。在非完备空间中，不能因为任意修改只发生在一个零测集上，就不再检查修改后的函数是否可测。对于 Lebesgue 测度，完备性允许这样的修改，例如 \(\mathbf1_{\mathbb Q\cap[0,1]}\) 的积分为零，而 \(\mathbf1_{[0,1]\setminus\mathbb Q}\) 的积分为一。
 
 \subsection{可数可加性}
 \label{b1:subsec:050104}
 
-待填充。
+固定函数，把积分看成积分区域的函数，会重新得到一个测度。这一步说明积分保留了原先测度的可数结构。
+
+\begin{theorem}\label{b1:thm:integral-induced-measure}
+设 \(f:X\rightarrow[0,\infty]\) 可测。公式
+\[
+\nu_f(E)=\int_E f\,\mathrm d\mu\quad(E\in\mathcal A)
+\]
+定义了 \((X,\mathcal A)\) 上的一个测度。因此，对两两不交的可测集 \((E_j)_{j\geq1}\)，
+\[
+\int_{\bigcup_jE_j}f\,\mathrm d\mu
+=\sum_{j=1}^{\infty}\int_{E_j}f\,\mathrm d\mu.
+\]
+\end{theorem}
+\begin{proof}
+先对简单函数 \(s=\sum_\ell a_\ell\mathbf1_{A_\ell}\) 考虑
+\[
+\nu_s(E)=\sum_\ell a_\ell\mu(A_\ell\cap E).
+\]
+它是有限个测度的非负线性组合，空集上为零，可数可加性由 \(\mu\) 的可数可加性逐项得到。
+
+对一般 \(f\) 取 \(s_n\uparrow f\)。在每个 \(E\) 上，\(s_n\mathbf1_E\uparrow f\mathbf1_E\)，所以\cref{b1:lem:simple-integral-approximation}给出
+\(\nu_f(E)=\lim_n\nu_{s_n}(E)\)，且这个极限递增。令 \(E=\bigcup_jE_j\)。一方面，
+\[
+\nu_{s_n}(E)=\sum_j\nu_{s_n}(E_j)\leq\sum_j\nu_f(E_j),
+\]
+令 \(n\to\infty\) 得到一个方向。另一方面，对每个有限的 \(r\)，
+\[
+\nu_{s_n}(E)\geq\sum_{j=1}^{r}\nu_{s_n}(E_j).
+\]
+先令 \(n\to\infty\)，再令 \(r\to\infty\)，便得另一个方向。全过程只用了有限个递增非负数列的极限与非负级数的定义。
+\end{proof}
+
+取 \(f=1\) 就恢复原测度。若 \(f\) 非负且积分为一，\(\nu_f\) 是概率测度。其反问题是：什么测度能够这样由函数生成？\hyperref[b1:ch:06]{下一章}将回答这个问题。
+
+在正整数集上取计数测度 \(\#\)。单点 \(\{k\}\) 上的积分等于函数值，故本定理给出
+\[
+\int_{\mathbb N}f\,\mathrm d\#=\sum_{k=1}^{\infty}f(k)\quad(f\geq0).
+\]
+积分因而把非负级数与连续区域上的求积纳入同一规则。稍后对函数列求和的定理，将进一步允许在适当条件下把求和号移出积分号。

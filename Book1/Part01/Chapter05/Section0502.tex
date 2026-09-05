@@ -2,24 +2,195 @@
 \section{一般可积函数}
 \label{b1:sec:0502}
 
-% TODO: 撰写本节正文。
+% 来源与证明义务：Axler2020Measure，印刷81--84、90--91、155--157页，已读正式OA全文对应页。
+% 正负部沿用第四章；实积分、复积分及复模估计参考§3A、§6B。
+% 绝对连续性改写3.28的简单下逼近证明；局部化以0501的积分诱导测度证明。
+% L1简单逼近用0501的递增简单逼近引理，不前向借用一般MCT或DCT。
+% 义务：排除无穷减无穷、说明有限代表与等价类、证明复线性和范数、保留非sigma有限空间。
+
+非负积分允许取得无穷值，因为正量相加没有抵消问题。函数改变符号后，必须先分别计算正、负两部分，再判断相减是否合法。绝对可积性把两部分都控制在有限范围内，从而使线性运算、误差估计和函数逼近能够同时成立。本节仍固定任意测度空间 \((X,\mathcal A,\mu)\)。
 
 \subsection{正部与负部}
 \label{b1:subsec:050201}
 
-待填充。
+\Cref{b1:def:positive-negative-parts}已经定义了 \(f^+\) 与 \(f^-\)，并给出
+\[
+f=f^+-f^-,\quad |f|=f^++f^-.
+\]
+两部分从不同时为正，因此点态分解总有意义；它们的积分却可能同时为无穷。
+
+\begin{definition}\label{b1:def:signed-integral}
+设 \(f:X\rightarrow[-\infty,\infty]\) 可测。若 \(\int f^+\,\mathrm d\mu\) 与 \(\int f^-\,\mathrm d\mu\) 至少有一个有限，称 \(f\) 的积分有定义，并规定
+\[
+\int f\,\mathrm d\mu
+=\int f^+\,\mathrm d\mu-\int f^-\,\mathrm d\mu.
+\]
+若两项均为 \(+\infty\)，则积分没有定义，不为 \(\infty-\infty\) 指定数值。
+\end{definition}
+
+非负函数的负部为零，故这一规定与上一节一致。例如，常函数 \(1\) 在 \(\mathbb R\) 上的 Lebesgue 积分有定义且为 \(+\infty\)。若函数在 \([0,\infty)\) 上为 \(1\)，在 \((-\infty,0)\) 上为 \(-1\)，则正、负部的积分都无穷，积分没有定义；两个半轴的贡献不能用对称性抵消。
+
+这里区分的是“有定义”和“有限”两件事。只有正部积分无穷时，积分为 \(+\infty\)；只有负部积分无穷时，积分为 \(-\infty\)。两者都有限才得到有限实数。后面的可积性正是第三种情形，它比单纯要求积分有定义更强。
 
 \subsection{可积性}
 \label{b1:subsec:050202}
 
-待填充。
+\begin{definition}\label{b1:def:integrable-function}
+可测实函数 \(f\) 若满足 \(\int|f|\,\mathrm d\mu<\infty\)，称为\term[juedui-keji]{绝对可积}[absolutely integrable]，简称可积。可测复函数 \(f:X\rightarrow\mathbb C\) 也用同一条件定义可积性，并规定
+\[
+\int f\,\mathrm d\mu
+=\int\operatorname{Re}f\,\mathrm d\mu
++i\int\operatorname{Im}f\,\mathrm d\mu.
+\]
+\end{definition}
+
+非负积分的可加性给出
+\[
+\int|f|\,\mathrm d\mu
+=\int f^+\,\mathrm d\mu+\int f^-\,\mathrm d\mu,
+\]
+所以实函数可积当且仅当两个积分都有限。对复函数，\(|\operatorname{Re}f|,|\operatorname{Im}f|\leq|f|\leq|\operatorname{Re}f|+|\operatorname{Im}f|\)，故可积性等价于实、虚部都可积，定义中的两个实积分均有意义。
+
+由\cref{b1:prop:integral-markov}，可积的扩展实值函数几乎处处有限。把可测零集 \(\{|f|=\infty\}\) 上的值改为零，得到处处有限的可测代表，积分不变。下文涉及加法时使用这样的代表，避免在例外点计算 \(+\infty+(-\infty)\)。
+
+在 \(\mathbb N\) 上取计数测度，令 \(f(n)=(-1)^{n+1}/n\)。通常的交错级数 \(\sum_n f(n)\) 收敛，但
+\[
+\int f^+\,\mathrm d\#=\sum_{k=1}^{\infty}\frac1{2k-1}=\infty,
+\quad
+\int f^-\,\mathrm d\#=\sum_{k=1}^{\infty}\frac1{2k}=\infty.
+\]
+第一列逐项不小于第二列，而第二列是调和级数的一半。因此 \(f\) 不可积，甚至没有有定义的 Lebesgue 积分。按某一顺序取得的条件收敛，不能代替绝对可积性。
+
+\begin{proposition}\label{b1:prop:integrable-linearity}
+可积的实函数构成实向量空间，可积的复函数构成复向量空间。对相应数域中的常数 \(a,b\)，
+\[
+\int(af+bg)\,\mathrm d\mu
+=a\int f\,\mathrm d\mu+b\int g\,\mathrm d\mu.
+\]
+对可积实函数，\(f\leq g\) 几乎处处蕴含 \(\int f\,\mathrm d\mu\leq\int g\,\mathrm d\mu\)。
+\end{proposition}
+\begin{proof}
+不等式 \(|af+bg|\leq|a||f|+|b||g|\) 与非负积分的单调性、可加性先给出可积性。对实函数，用恒等式
+\[
+(f+g)^++f^-+g^-=(f+g)^-+f^++g^+
+\]
+两边积分；各项有限，移项便得加法公式。正数乘法保持正、负部，负数乘法交换两部分，零倍函数的积分为零，因而得到实齐次性。
+
+若 \(f=u+iv\)、\(a=\alpha+i\beta\)，则
+\[
+af=(\alpha u-\beta v)+i(\beta u+\alpha v).
+\]
+分别使用实积分的线性，得到 \(\int af=a\int f\)；复函数加法也逐分量归结为实加法。最后，\(f\leq g\) 几乎处处时，\(g-f\) 的负部积分为零，故 \(\int g-\int f=\int(g-f)\geq0\)。
+\end{proof}
+
+\begin{proposition}\label{b1:prop:integral-triangle}
+对可积实函数或复函数 \(f\)，有
+\[
+\left|\int f\,\mathrm d\mu\right|\leq\int|f|\,\mathrm d\mu.
+\]
+\end{proposition}
+\begin{proof}
+记 \(z=\int f\,\mathrm d\mu\)。若 \(z=0\)，结论成立；否则令 \(\alpha=\overline z/|z|\)。由复线性及实积分的保序性，
+\[
+|z|=\operatorname{Re}(\alpha z)
+=\int\operatorname{Re}(\alpha f)\,\mathrm d\mu
+\leq\int|\alpha f|\,\mathrm d\mu
+=\int|f|\,\mathrm d\mu.
+\]
+其中 \(|\alpha|=1\)，且 \(\operatorname{Re}(\alpha f)\leq|\alpha f|\) 逐点成立。
+\end{proof}
+
+复函数没有与实数相同的大小关系，不能直接写 \(-|f|\leq f\leq|f|\)。上面的证明先把积分值旋转到正实轴，再对旋转后函数的实部使用保序性。旋转因子是一个固定常数，因而能够移入积分，而函数的模保持不变。
 
 \subsection{\texorpdfstring{\(L^1\)}{L1} 的初步定义}
 \label{b1:subsec:050203}
 
-待填充。
+积分分辨不出可测函数在零测集上的差别。把这种相等关系纳入对象本身，积分误差才成为真正的距离。
+
+\begin{definition}\label{b1:def:l1-space}
+取 \(\mathbb K=\mathbb R\) 或 \(\mathbb C\)。全体可积函数 \(X\rightarrow\mathbb K\) 按几乎处处相等取商，所得的\term[keji-hanshu-kongjian]{可积函数空间}[space of integrable functions]记为 \(L^1(X,\mathcal A,\mu;\mathbb K)\)，也简记为 \(L^1(\mu)\)。对等价类规定
+\[
+\|f\|_1=\int|f|\,\mathrm d\mu.
+\]
+\symidx{\(L^1(\mu)\)：可积函数按几乎处处相等取商的空间}
+\symidx{\(\lVert f\rVert_1\)：函数的积分范数}
+\end{definition}
+
+\begin{proposition}\label{b1:prop:l1-norm-simple-density}
+上述公式在 \(L^1(\mu)\) 上定义范数。每个 \(f\in L^1(\mu)\) 都能由可积简单函数列 \((s_n)\) 逼近，使 \(\|f-s_n\|_1\to0\)；每个 \(s_n\) 还可取为在某个有限测度集合外恒为零。
+\end{proposition}
+\begin{proof}
+更换代表只在有限个零测集的并上改变函数、线性组合及其模，故运算和范数均不依赖代表。齐次性来自 \(|af|=|a||f|\)，三角不等式来自 \(|f+g|\leq|f|+|g|\) 的积分。由\cref{b1:prop:integral-markov}，\(\|f\|_1=0\) 当且仅当 \(f=0\) 几乎处处，即它是零等价类。
+
+先设 \(f\geq0\)，取非负简单函数 \(s_n\uparrow f\)。由\cref{b1:lem:simple-integral-approximation}及可加性，
+\[
+\|f-s_n\|_1=\int f\,\mathrm d\mu-I_\mu(s_n)\longrightarrow0.
+\]
+若 \(s_n=\sum_ja_j\mathbf1_{A_j}\) 为规范表示，则每个 \(a_j>0\) 对应的 \(\mu(A_j)\) 有限，否则 \(I_\mu(s_n)\leq\int f\) 不可能有限。这些集合的有限并容纳了 \(s_n\) 的全部非零值。
+
+对实函数分别逼近正、负部再相减；对复函数分别处理实、虚部的正、负部，再作复线性组合。所得函数仍然简单，其误差的积分不超过两项或四项非负误差积分之和，故趋于零；各逼近函数非零区域的有限并仍有有限测度。
+\end{proof}
+
+以后写 \(f\in L^1\) 时常把等价类与所选代表共用一个符号，但涉及某一点的值时仍须指定代表。这里尚未讨论这一范数空间的完备性。
+
+有限测度空间上的每个简单函数都可积；无限测度空间则不同，常函数 \(1\) 已是反例。因此逼近命题中的“可积简单函数”不能省略“可积”二字。它保留了有限和的计算便利，同时避免让一个非零常值延伸到无限测度区域。
+
+由线性及\cref{b1:prop:integral-triangle}，
+\[
+\left|\int f\,\mathrm d\mu-\int g\,\mathrm d\mu\right|
+\leq\|f-g\|_1.
+\]
+所以简单函数在此范数下逼近时，它们的积分也逼近目标积分。对于有限测度集合 \(A,B\)，点态等式 \(|\mathbf1_A-\mathbf1_B|=\mathbf1_{A\mathbin{\triangle}B}\) 还给出
+\[
+\|\mathbf1_A-\mathbf1_B\|_1=\mu(A\mathbin{\triangle}B).
+\]
+对称差的测度因而正是示性函数之间的积分距离，前面关于集合的零测误差也成为函数空间中的范数误差。
 
 \subsection{积分的绝对连续性}
 \label{b1:subsec:050204}
 
-待填充。
+固定一个可积函数后，小测度集合上的积分能够一致地控制。这称为\term[jifen-juedui-lianxuxing]{积分的绝对连续性}[absolute continuity of the integral]。
+
+\begin{proposition}\label{b1:prop:integral-absolute-continuity}
+设 \(f\in L^1(\mu)\)。对每个 \(\varepsilon>0\)，存在 \(\delta>0\)，使任意 \(A\in\mathcal A\) 满足
+\[
+\mu(A)<\delta\quad\Longrightarrow\quad\int_A|f|\,\mathrm d\mu<\varepsilon.
+\]
+\end{proposition}
+\begin{proof}
+由积分的上确界定义，取非负简单函数 \(s\leq|f|\)，使 \(\int(|f|-s)\,\mathrm d\mu<\varepsilon/2\)。取有限常数 \(M\geq0\) 使 \(s\leq M\)，并令 \(\delta=\varepsilon/(2(M+1))\)。若 \(\mu(A)<\delta\)，则
+\[
+\int_A|f|\,\mathrm d\mu
+\leq\int(|f|-s)\,\mathrm d\mu+M\mu(A)
+<\frac\varepsilon2+M\delta<\varepsilon.
+\]
+\end{proof}
+
+命题中的 \(\delta\) 依赖于固定的函数 \(f\)。即使一族函数的积分范数都不超过一，也不能直接选取共同的 \(\delta\)。例如，在 \(\mathbb R\) 上令 \(f_n=n\mathbf1_{(0,1/n)}\)，则每个函数的积分范数等于一，但它在测度为 \(1/n\) 的集合上仍有积分一。面积被压到越来越小的区域时，范数有界并不能排除积分集中。
+
+小集合之外，还需要控制无限空间中的远处或低幅值部分。这里的有限测度区域由函数本身决定。
+
+\begin{proposition}\label{b1:prop:integrable-localization}
+设 \(f\in L^1(\mu)\)。集合 \(E_n=\{|f|>1/n\}\) 递增且满足
+\[
+\mu(E_n)\leq n\|f\|_1<\infty,
+\quad
+\int_{X\setminus E_n}|f|\,\mathrm d\mu\longrightarrow0.
+\]
+特别地，对每个 \(\varepsilon>0\)，可以找到有限测度集合 \(E\)，使 \(\int_{X\setminus E}|f|\,\mathrm d\mu<\varepsilon\)。
+\end{proposition}
+\begin{proof}
+测度估计由 \(n^{-1}\mathbf1_{E_n}\leq|f|\) 得到。按\cref{b1:thm:integral-induced-measure}，\(\nu(A)=\int_A|f|\,\mathrm d\mu\) 是有限测度。因为 \(E_n\uparrow\{|f|>0\}\)，测度的从下连续性给出
+\[
+\nu(E_n)\longrightarrow\nu(\{|f|>0\})=\nu(X).
+\]
+这里补集上被积函数为零。有限可加性于是给出 \(\nu(X\setminus E_n)=\nu(X)-\nu(E_n)\to0\)。
+\end{proof}
+
+同一个有限测度 \(\nu\) 也控制大幅值部分。选取处处有限的代表后，\(\{|f|>n\}\) 递减到空集，故测度的从上连续性给出
+\[
+\int_{\{|f|>n\}}|f|\,\mathrm d\mu\longrightarrow0.
+\]
+将它与前一命题结合，就能把函数同时限制在有限测度区域和有界幅值范围内，且只损失任意小的积分误差；这里仍未交换一般函数列的积分与极限。
+
+因此，即使 \(X\) 不是 \(\sigma\)-有限的，每个可积函数的非零区域仍是可数个有限测度集合之并。绝对连续性控制小集合，局部化控制有限区域之外的积分；这两项估计将在下一节把有限测度空间上的收敛论证推广到一般空间。

@@ -1,25 +1,192 @@
 % !TeX root = ../../Book1.tex
 \section{基本收敛定理}
 \label{b1:sec:0503}
+% 主来源：Axler2020Measure §3A 3.11、§3B 3.31及3.34，印刷78、92--94页。
+% Fatou按简单下界和递增集合直接证明，以遵守纲要顺序而不循环引用MCT。
+% Riemann相容性只证本章计算所需方向；连续性几乎处处的充要判别不在此展开。
 
-% TODO: 撰写本节正文。
+点态极限只控制每个固定点上的函数值，不控制积分在整个空间中的分布。以
+\[
+f_n=n\mathbf1_{(0,1/n)}
+\]
+为例，它在 \((0,1)\) 上处处趋于零，积分却恒为一。高度增长抵消了支集缩小。收敛定理的假设应当排除这种损失，或至少规定极限积分与原积分之间的不等式。
 
 \subsection{Fatou 引理}
 \label{b1:subsec:050301}
 
-待填充。
+对于非负函数，即使没有共同上界，仍有一个方向的不等式。\term*[fatou-yinli]{Fatou 引理}[Fatou's lemma]允许极限丢失质量，却不允许非负质量在逐点极限中凭空增加。
+
+\begin{lemma}\label{b1:thm:fatou}
+设 \((f_n)\) 是测度空间上的非负可测函数列，则
+\[
+\int\liminf_{n\to\infty}f_n\,\mathrm d\mu
+\leq\liminf_{n\to\infty}\int f_n\,\mathrm d\mu.
+\]
+\end{lemma}
+\begin{proof}
+记 \(h=\liminf_n f_n\)，它由可数极限运算的可测性仍为非负可测函数。固定非负简单函数 \(s\leq h\) 以及 \(0<c<1\)。对每个 \(k\) 令
+\[
+E_k=\bigcap_{n\geq k}\{\,x\in X\mid f_n(x)\geq cs(x)\,\}.
+\]
+集合 \(E_k\) 可测且递增。若 \(s(x)=0\)，则 \(x\) 属于全部 \(E_k\)；若 \(s(x)>0\)，由 \(\liminf_n f_n(x)\geq s(x)>cs(x)\)，知 \(x\) 最终也属于 \(E_k\)。因此 \(E_k\uparrow X\)。
+
+固定 \(k\)，当 \(n\geq k\) 时有 \(f_n\geq cs\mathbf1_{E_k}\)，于是
+\[
+\liminf_n\int f_n\,\mathrm d\mu\geq c\int_{E_k}s\,\mathrm d\mu.
+\]
+右端是简单函数积分；对其有限个水平集使用测度从下连续性，令 \(k\to\infty\)，得到右端趋于 \(cI_\mu(s)\)。若这个积分无穷，所需下界已得；否则再令 \(c\uparrow1\)。最后对全部 \(s\leq h\) 取上确界，便得到结论。
+\end{proof}
+
+章首的尖峰列使不等号严格。非负性也不能直接删去：取 \(-f_n\)，极限积分仍为零，而各项积分为负一。若存在共同可积控制，就可以通过非负函数重新利用 Fatou 引理；控制收敛的证明正采用这种办法。
 
 \subsection{单调收敛定理}
 \label{b1:subsec:050302}
 
-待填充。
+非负递增列没有先出现、后消失的尖峰。它把积分的下逼近结构保留下来，因而 Fatou 不等式能够加强为等式。
+
+\begin{theorem}\label{b1:thm:monotone-convergence}
+设非负可测函数满足 \(f_n\leq f_{n+1}\) 几乎处处，并且 \(f_n\to f\) 几乎处处，其中 \(f:X\rightarrow[0,\infty]\) 可测。则
+\[
+\int f_n\,\mathrm d\mu\uparrow\int f\,\mathrm d\mu.
+\]
+这称为\term[dandiao-shoulian-dingli]{单调收敛定理}[monotone convergence theorem]。
+\end{theorem}
+\begin{proof}
+把单调性与收敛性的可数个例外零集取并，并将全部函数在所得可测零集上改为零。分块定义保证修改后的函数可测，积分由\cref{b1:cor:integral-ae-invariance}保持不变。因此只需证明逐点版本。
+
+记 \(L=\lim_n\int f_n\,\mathrm d\mu\)。它由单调性存在，而 \(f_n\leq f\) 给出 \(L\leq\int f\,\mathrm d\mu\)。Fatou 引理给出反向不等式
+\(\int f\,\mathrm d\mu\leq\liminf_n\int f_n\,\mathrm d\mu=L\)，两者合并即得等式。
+\end{proof}
+
+\begin{corollary}\label{b1:cor:nonnegative-series-integral}
+对任意非负可测函数列 \((u_j)\)，有
+\[
+\int\sum_{j=1}^{\infty}u_j\,\mathrm d\mu
+=\sum_{j=1}^{\infty}\int u_j\,\mathrm d\mu.
+\]
+\end{corollary}
+\begin{proof}
+部分和 \(S_n=\sum_{j=1}^{n}u_j\) 递增至非负级数的和。先对有限和使用\cref{b1:prop:nonnegative-integral-linearity}，再应用单调收敛定理，便得到等式。两边允许同时为无穷。
+\end{proof}
+
+这条结果不要求级数预先可积。例如在 \((0,1)\) 上，几何级数给出
+\[
+\frac1{1-x}=\sum_{j=0}^{\infty}x^j.
+\]
+一旦核定初等积分与本节积分的一致性，便可逐项积分，得到发散的调和级数。此时结论是原函数不可积，而不是“逐项积分失败”。
+
+\begin{corollary}\label{b1:cor:decreasing-integral-convergence}
+若 \(0\leq f_n\downarrow f\) 几乎处处，且 \(\int f_1\,\mathrm d\mu<\infty\)，则
+\[
+\int f_n\,\mathrm d\mu\downarrow\int f\,\mathrm d\mu.
+\]
+\end{corollary}
+\begin{proof}
+略去共同可测零集后，还可令各函数处处有限。函数 \(f_1-f_n\) 非负递增至 \(f_1-f\)，由单调收敛定理及有限积分的线性，得到
+\[
+\int f_1\,\mathrm d\mu-\int f_n\,\mathrm d\mu
+\longrightarrow
+\int f_1\,\mathrm d\mu-\int f\,\mathrm d\mu.
+\]
+减去共同的有限量即可。
+\end{proof}
+
+有限起始积分不可省。在实直线上，\(\mathbf1_{[n,\infty)}\downarrow0\)，但每个积分都为无穷。这与测度从上连续性需要一个有限测度起点完全对应。
 
 \subsection{控制收敛定理}
 \label{b1:subsec:050303}
 
-待填充。
+积分运算中最常见的情形既不非负，也不单调。一个与序号无关的可积函数若能控制全部函数的绝对值，就足以交换极限与积分。Sheldon Axler 的《Measure, Integration \& Real Analysis》\cite{Axler2020Measure}在这一主题中还展示了 Egoroff 定理与积分绝对连续性配合的证明；下面采用 Fatou 引理的路线，直接得到绝对积分误差趋零。
+
+\begin{theorem}\label{b1:thm:dominated-convergence}
+设 \(f_n,f\) 是实值或复值可测函数，\(f_n\to f\) 几乎处处。若存在非负可积函数 \(g\)，使每个 \(n\) 都满足 \(|f_n|\leq g\) 几乎处处，则 \(f_n,f\) 均可积，而且
+\[
+\lim_{n\to\infty}\int|f_n-f|\,\mathrm d\mu=0,
+\quad
+\lim_{n\to\infty}\int f_n\,\mathrm d\mu=\int f\,\mathrm d\mu.
+\]
+这称为\term[kongzhi-shoulian-dingli]{控制收敛定理}[dominated convergence theorem]。
+\end{theorem}
+\begin{proof}
+在一个共同可测零集外，收敛与所有控制不等式同时成立，且 \(g\) 有限。取极限知 \(|f|\leq g\)，由积分单调性得到可积性。令
+\[
+h_n=2g-|f_n-f|
+\]
+并在例外零集上取零。这是非负可测函数，且几乎处处趋于 \(2g\)。对它应用 Fatou 引理，
+\[
+2\int g\,\mathrm d\mu
+\leq\liminf_n\left(2\int g\,\mathrm d\mu-\int|f_n-f|\,\mathrm d\mu\right).
+\]
+共同量 \(2\int g\,\mathrm d\mu\) 有限，所以
+\(\limsup_n\int|f_n-f|\,\mathrm d\mu\leq0\)。被积函数非负，第一项极限即为零；再用\cref{b1:prop:integral-triangle}，
+\[
+\left|\int f_n\,\mathrm d\mu-\int f\,\mathrm d\mu\right|
+\leq\int|f_n-f|\,\mathrm d\mu,
+\]
+得到第二项极限。
+\end{proof}
+
+有限测度空间上，若 \(|f_n|\leq M\) 几乎处处，可以取 \(g=M\mathbf1_X\)，这就是有界收敛的情形。无限测度空间上常数函数未必可积，所以仅有一致有界不够。\(\mathbf1_{[n,n+1]}\) 在实直线上处处趋零，而积分恒为一，正是一个反例。
+
+\begin{proposition}\label{b1:prop:riemann-lebesgue-compatibility}
+若有界函数 \(f:[a,b]\rightarrow\mathbb R\) Riemann 可积，则它 Lebesgue 可测且可积，并且两种积分相等。
+\end{proposition}
+\begin{proof}
+取逐次加细的有限分割 \(P_n\)，使上、下 Darboux 和之差小于 \(1/n\)。记相应的下、上阶梯函数为 \(l_n,u_n\)，在分割端点处的值任意取为统一有界的值。所有分割端点组成一个可数零测集 \(D\)。在其补集上，
+\[
+-M\leq l_n\leq l_{n+1}\leq f\leq u_{n+1}\leq u_n\leq M,
+\]
+其中 \(M\) 是 \(f\) 的绝对值上界。可测极限 \(l=\lim l_n\)、\(u=\lim u_n\) 在 \(D\) 上另取零；由于 \(D\) 可测，分块定义仍可测。控制收敛给出
+\[
+\int_{[a,b]}(u-l)\,\mathrm dm
+=\lim_n\int_{[a,b]}(u_n-l_n)\,\mathrm dm=0.
+\]
+于是 \(l=u\) 几乎处处，而 \(l\leq f\leq u\) 在 \(D\) 外成立。Lebesgue 测度的完备性说明 \(f\) 可测；有界性与区间有限测度又给出可积性。最后 \(l_n\to f\) 几乎处处，再用控制收敛，得到 \(f\) 的 Lebesgue 积分等于下 Darboux 和的极限，也就是它的 Riemann 积分。
+\end{proof}
+
+因此连续函数在紧区间上的初等求积公式可以直接使用。对非负函数还可由单调收敛令区间递增，例如
+\[
+\int_0^1 x^{-p}\,\mathrm dx=
+\begin{cases}
+(1-p)^{-1},&p<1,\\
++\infty,&p\geq1.
+\end{cases}
+\]
+在 \([\varepsilon,1]\) 上先算初等积分，再令 \(\varepsilon\downarrow0\)，便得到该式。这里近零端的可积性由奇性阶数决定，与远处尾部的可积性是两种不同检查。
+
+\begin{corollary}\label{b1:cor:absolute-series-integral}
+若实值或复值可积函数列满足 \(\sum_j\int|u_j|\,\mathrm d\mu<\infty\)，则级数 \(\sum_ju_j\) 几乎处处绝对收敛，其和可取可积代表 \(S\)，并且
+\[
+\int S\,\mathrm d\mu=\sum_{j=1}^{\infty}\int u_j\,\mathrm d\mu.
+\]
+\end{corollary}
+\begin{proof}
+由非负级数的积分公式，\(G=\sum_j|u_j|\) 的积分有限，故 \(G<\infty\) 几乎处处。在这个可测集合上定义级数和，在补集上令和为零，得到可测函数 \(S\)。部分和几乎处处受 \(G\) 控制并趋于 \(S\)，应用控制收敛即可。数值级数也绝对收敛，因为 \(\sum_j|\int u_j|\leq\sum_j\int|u_j|<\infty\)。
+\end{proof}
 
 \subsection{反向 Fatou 型结论}
 \label{b1:subsec:050304}
 
-待填充。
+如果函数列有共同可积上界，可以反转 Fatou 不等式的方向；此时起作用的仍是非负差函数。
+
+\begin{proposition}\label{b1:prop:reverse-fatou}
+设 \(f_n\) 为实值可积函数，存在实值可积函数 \(g\)，使 \(f_n\leq g\) 几乎处处。则 \(h=\limsup_n f_n\) 的积分有定义，允许为 \(-\infty\)，并且
+\[
+\limsup_n\int f_n\,\mathrm d\mu\leq\int h\,\mathrm d\mu.
+\]
+\end{proposition}
+\begin{proof}
+在共同零测集外有 \(h\leq g\)，故 \(h^+\leq g^+\)，所以 \(\int h^+<\infty\)，积分不会成为 \(\infty-\infty\)。对非负函数 \(g-f_n\) 应用 Fatou 引理，得到
+\[
+\int(g-h)\,\mathrm d\mu
+\leq\int g\,\mathrm d\mu-\limsup_n\int f_n\,\mathrm d\mu.
+\]
+其中 \(\liminf_n(g-f_n)=g-h\)，在 \(h=-\infty\) 处差取 \(+\infty\)。为说明左端的展开合法，可用非负恒等式
+\[
+(g-h)+g^-+h^+=g^++h^-
+\]
+积分；除 \(g-h\) 与 \(h^-\) 外，其余项积分均有限。因而
+\(\int(g-h)=\int g-\int h\)，包括两边对应无穷的情形。代入上式并移去有限量 \(\int g\)，就得到所需不等式。
+\end{proof}
+
+对非负尖峰列 \(n\mathbf1_{(0,1/n)}\)，反向不等式会要求 \(1\leq0\)，所以它不可能有共同可积上界。使用本节结果时，可以先检查手中的控制是哪一种：单调性给精确的非负极限，单侧可积控制给一个方向的不等式，双侧绝对值控制则给出 \(L^1\) 收敛。

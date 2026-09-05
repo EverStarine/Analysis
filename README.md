@@ -28,6 +28,10 @@ try {
         foreach ($analysisIndex in @('chinese', 'foreign', 'symbols')) {
             makeindex -q -s $analysisIndexStyle "$analysisIndex.idx"
             if ($LASTEXITCODE -ne 0) { throw "索引处理失败：$analysisIndex" }
+            $analysisIndexLog = Get-Content -Raw -LiteralPath "$analysisIndex.ilg" -ErrorAction Stop
+            if ($analysisIndexLog -notmatch '\b0 rejected\b' -or $analysisIndexLog -notmatch '\b0 warnings\b') {
+                throw "索引存在拒收条目或警告：$analysisIndex；请检查对应 .ilg。"
+            }
         }
     } finally {
         Pop-Location
@@ -42,7 +46,7 @@ try {
 }
 ```
 
-首轮 XeLaTeX 收集引文与索引条目，Biber 生成本卷实际引用的参考文献，循环中的三次 `makeindex` 分别处理一个 `.idx`，并以 `-s` 载入右对齐样式；不可省略样式或将三个索引名并入一次调用。随后两轮 XeLaTeX 排入书目和索引，并稳定目录、交叉引用与书签。任一步骤失败都会中止，不用旧构建结果覆盖成品。其他两卷相应替换卷号；尚无引文或索引条目的卷可以暂不执行相应的 Biber 或 `makeindex` 命令。项目根目录只保留最终的三份 PDF。
+首轮 XeLaTeX 收集引文与索引条目，Biber 生成本卷实际引用的参考文献，循环中的三次 `makeindex` 分别处理一个 `.idx`，并以 `-s` 载入右对齐样式；不可省略样式或将三个索引名并入一次调用。随后两轮 XeLaTeX 排入书目和索引，并稳定目录、交叉引用与书签。任一步骤失败都会中止，不用旧构建结果覆盖成品。其他两卷相应替换卷号；尚无引文或索引条目的卷可以暂不执行相应的 Biber 或 `makeindex` 命令。项目根目录只保留三份供验收的 PDF，不存放辅助文件；编写期间按阶段更新成功构建的预览，具体见工作流程说明第 5 节。
 
 ## 编辑规范
 

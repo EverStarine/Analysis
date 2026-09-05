@@ -2,24 +2,253 @@
 \section{一致可积性}
 \label{b1:sec:0505}
 
-% TODO: 撰写本节正文。
+控制收敛定理用一个可积函数同时控制整列函数。若找不到这样的函数，仍可能通过统一控制大函数值所贡献的积分来交换极限与积分。有限测度空间上的一致可积性给出相应判据；在无穷测度空间上，还要防止积分分散到越来越大的区域。本节固定测度空间 \((X,\mathcal A,\mu)\)，讨论实值或复值函数；涉及逐点值时取有限值可测代表，\(L^1\) 及其范数沿用\cref{b1:def:l1-space}的约定。
+
+% 来源：Fremlin2016Measure，第二卷 246A、246B、246I、246J；
+% 官方 chap24.pdf 第 56--57、61--62 页已核读。
+% 本节采用幅值尾部定义，区别于 Fremlin 包含有限测度集外控制的定义。
+% Bass2024Real，习题 7.21--7.24 及解答只用于内部教学对照，不作正式引文。
 
 \subsection{一致可积族}
 \label{b1:subsec:050501}
 
-待填充。
+\begin{definition}
+\label{b1:def:uniform-integrability}
+设 \(\mathcal F\) 是 \(L^1(\mu)\) 中非空的一族函数。若
+\[
+\lim_{M\to\infty}\sup_{f\in\mathcal F}
+\int_{\{\,|f|>M\,\}}|f|\,\mathrm d\mu=0,
+\]
+就称 \(\mathcal F\) \term[yizhi-keji]{一致可积}[uniformly integrable]。这里的同一个截断高度 \(M\) 必须适用于族中所有函数。
+\end{definition}
+
+集合 \(\{|f|>M\}\) 随函数 \(f\) 改变，定义并不要求所有大函数值集中在同一个小集合中。它要求无论大函数值出现在哪里，它们贡献的积分都能由同一个高度控制。因而，函数值很大本身并不妨碍一致可积；需要同时考察这些函数值所占的测度。
+
+每个可积函数单独都满足上述尾部极限，困难在于能否统一选择截断高度。例如，若 \(|f|\leq g\) 几乎处处对所有 \(f\in\mathcal F\) 成立，其中 \(g\geq0\) 可积，则
+\[
+\sup_{f\in\mathcal F}\int_{\{\,|f|>M\,\}}|f|\,\mathrm d\mu
+\leq\int_{\{\,g>M\,\}}g\,\mathrm d\mu
+\longrightarrow0
+\]
+由\cref{b1:thm:dominated-convergence}成立。反之，仅有积分有界不足以排除尖峰：在 \((0,1)\) 上，函数 \(f_n=n\mathbf 1_{(0,1/n)}\) 满足 \(\|f_n\|_1=1\)，而对每个 \(M\)，只要 \(n>M\)，其高于 \(M\) 的部分仍贡献全部积分 \(1\)。
 
 \subsection{一致绝对连续性}
 \label{b1:subsec:050502}
 
-待填充。
+\begin{definition}
+\label{b1:def:uniform-absolute-continuity}
+若对每个 \(\varepsilon>0\)，存在 \(\delta>0\)，使
+\[
+A\in\mathcal A,\quad\mu(A)<\delta
+\quad\Longrightarrow\quad
+\sup_{f\in\mathcal F}\int_A|f|\,\mathrm d\mu<\varepsilon,
+\]
+就称这族积分具有\term[yizhi-juedui-lianxu]{一致绝对连续性}[uniform absolute continuity]。
+\end{definition}
+
+\cref{b1:prop:integral-absolute-continuity}已经保证每个可积函数各自具有积分绝对连续性，但在那里 \(\delta\) 可以依赖于函数。现在要求选定 \(\delta\) 后，对全族和所有测度小于 \(\delta\) 的集合同时有效。前一个定义按函数值截断，这一个定义按集合测度控制；下面的估计把两种条件联系起来。
+
+\begin{proposition}
+\label{b1:prop:uniform-integrability-criterion}
+在任意测度空间上，一致可积性推出一致绝对连续性；一致绝对连续性与 \(L^1\) 有界性合在一起推出一致可积性。若 \(\mu(X)<\infty\)，则一致可积性等价于后一组条件。
+\end{proposition}
+
+\begin{proof}
+先设 \(\mathcal F\) 一致可积。给定 \(\varepsilon>0\)，取 \(M>0\) 使所有幅值尾部积分小于 \(\varepsilon/2\)。于是
+\[
+\int_A|f|\,\mathrm d\mu
+\leq M\mu(A)+\int_{\{\,|f|>M\,\}}|f|\,\mathrm d\mu
+<M\mu(A)+\frac{\varepsilon}{2}.
+\]
+取 \(\delta=\varepsilon/(2M)\) 即得一致绝对连续性。若全空间测度有限，再选一个尾部积分均小于 \(1\) 的高度 \(M\)，便有 \(\sup_{f\in\mathcal F}\|f\|_1\leq M\mu(X)+1\)。
+
+反过来，设 \(B=\sup_{f\in\mathcal F}\|f\|_1<\infty\)，并已知一致绝对连续性。给定 \(\varepsilon>0\)，选取相应的 \(\delta>0\)。由\cref{b1:prop:integral-markov}，
+\[
+\mu\{\,|f|>M\,\}\leq\frac{B}{M}<\delta
+\]
+对所有 \(f\in\mathcal F\) 及充分大的 \(M\) 成立。在这些集合上应用一致绝对连续性，得到尾部积分均小于 \(\varepsilon\)。
+\end{proof}
+
+有限测度假设只用于上述有界性估计。若 \(\mu(X)=\infty\)，幅值有统一上界也不能控制积分总量：在实轴上取 \(\mathbf 1_{[0,n]}\)，所得族一致可积，积分却等于 \(n\)。
+
+一致绝对连续性本身也不保证 \(L^1\) 有界。取单点空间 \(X=\{a\}\)、\(\mu(\{a\})=1\)，并令 \(f_n(a)=n\)。选 \(\delta=1\) 时，满足 \(\mu(A)<\delta\) 的集合只有空集，故这族积分一致绝对连续；然而 \(\|f_n\|_1=n\)。这说明上述判据中的有界性条件不能省略，即使全空间的测度有限。
 
 \subsection{Vitali 收敛定理}
 \label{b1:subsec:050503}
 
-待填充。
+先引入一种只记录偏差集合大小的收敛。
+
+\begin{definition}
+\label{b1:def:convergence-in-measure}
+设 \(f_n,f\) 是可测函数。若对每个 \(\eta>0\)，都有
+\[
+\mu\{\,|f_n-f|>\eta\,\}\longrightarrow0,
+\]
+就称 \(f_n\) \term[yi-cedu-shoulian]{依测度收敛}[convergence in measure]于 \(f\)，记为 \(f_n\xrightarrow{\mu}f\)。本书这里指全空间上的收敛，不只要求在各有限测度子集上收敛。
+\end{definition}
+
+在这个定义中，先固定容许偏差 \(\eta\)，再让超出偏差的集合测度趋零。偏差集合可以不断移动，因此定义没有指定每一个空间点最终是否离开它们。取子列时可以要求偏差集合的测度衰减得足够快，使这些集合的尾并具有任意小的测度，从而恢复几乎处处收敛。
+
+\begin{lemma}
+\label{b1:lem:measure-convergence-subsequence}
+依测度收敛的函数列有几乎处处收敛于同一极限的子列。若 \(\mu(X)<\infty\)，则几乎处处收敛也推出依测度收敛。
+\end{lemma}
+
+\begin{proof}
+设 \(f_n\xrightarrow{\mu}f\)。递归选择严格递增的整数 \(n_k\)，使
+\[
+A_k=\{\,|f_{n_k}-f|>2^{-k}\,\},
+\quad\mu(A_k)<2^{-k}.
+\]
+令 \(N=\bigcap_{m\geq1}\bigcup_{k\geq m}A_k\)。对每个 \(m\)，可数次可加不等式给出
+\[
+\mu(N)\leq\sum_{k\geq m}2^{-k}=2^{1-m},
+\]
+故 \(\mu(N)=0\)。若 \(x\notin N\)，则 \(x\) 只属于有限多个 \(A_k\)，从而 \(|f_{n_k}(x)-f(x)|\leq2^{-k}\) 最终成立，子列便在 \(X\setminus N\) 上收敛于 \(f\)。
+
+现设 \(\mu(X)<\infty\)，且 \(f_n\to f\) 几乎处处。固定 \(\eta>0\)，令
+\[
+B_m=\bigcup_{n\geq m}\{\,|f_n-f|>\eta\,\}.
+\]
+这些集合递减，交集包含在收敛失败的零测集中。因为 \(\mu(B_1)<\infty\)，测度的上连续性给出 \(\mu(B_m)\to0\)。又有 \(\{|f_m-f|>\eta\}\subset B_m\)，故依测度收敛成立。
+\end{proof}
+
+在实轴上，平移的示性函数 \(\mathbf 1_{[n,n+1]}\) 逐点趋零，但当 \(0<\eta<1\) 时偏差集合的测度恒为 \(1\)。因此不能从上一引理中删掉第二个结论的有限测度假设。
+
+下面的\term*[vitali-shoulian-dingli]{Vitali 收敛定理}[Vitali convergence theorem]把收敛模式与积分尾部条件合在一起。
+
+\begin{theorem}[Vitali 收敛定理]
+\label{b1:thm:vitali-convergence}
+设 \(\mu(X)<\infty\)，\(f_n\in L^1(\mu)\)，且 \(f_n\xrightarrow{\mu}f\)。若 \(\{f_n\}\) 一致可积，则 \(f\in L^1(\mu)\)，并且 \(\|f_n-f\|_1\to0\)。
+\end{theorem}
+
+\begin{proof}
+由\cref{b1:prop:uniform-integrability-criterion}，有 \(B=\sup_n\|f_n\|_1<\infty\)。取\cref{b1:lem:measure-convergence-subsequence}给出的几乎处处收敛子列，再由\cref{b1:thm:fatou}得到
+\[
+\int_X|f|\,\mathrm d\mu
+\leq\liminf_{k\to\infty}\int_X|f_{n_k}|\,\mathrm d\mu
+\leq B.
+\]
+给定 \(\varepsilon>0\)，由 \(\{f_n\}\) 的一致绝对连续性及\cref{b1:prop:integral-absolute-continuity}，可选 \(\delta>0\)，使 \(\mu(A)<\delta\) 时
+\[
+\sup_n\int_A|f_n|\,\mathrm d\mu<\frac{\varepsilon}{3},
+\quad\int_A|f|\,\mathrm d\mu<\frac{\varepsilon}{3}.
+\]
+选 \(\eta>0\) 使 \(\eta\mu(X)<\varepsilon/3\)。充分大的 \(n\) 满足 \(\mu(A_n)<\delta\)，其中 \(A_n=\{|f_n-f|>\eta\}\)。在 \(A_n\) 及其补集上分别估计，得到
+\[
+\|f_n-f\|_1
+\leq\int_{A_n}|f_n|\,\mathrm d\mu+\int_{A_n}|f|\,\mathrm d\mu
++\eta\mu(X)<\varepsilon.
+\]
+\end{proof}
+
+该定理也适用于几乎处处收敛的函数列，因为有限测度下可以先应用\cref{b1:lem:measure-convergence-subsequence}。与控制收敛定理相比，证明只要求小集合上的积分对全列同时变小。
+
+抽取子列用于确认极限可积，最后的偏差集合估计则作用于原函数列。有限测度在 \(\eta\mu(X)\) 一项中再次出现：偏差虽小，若它分布在无穷测度的区域上，仍不能据此估计积分。
 
 \subsection{\texorpdfstring{\(L^1\)}{L1} 收敛判据}
 \label{b1:subsec:050504}
 
-待填充。
+\begin{proposition}
+\label{b1:prop:l1-convergence-uniform-integrability}
+在任意测度空间上，若 \(f_n,f\in L^1(\mu)\) 且 \(\|f_n-f\|_1\to0\)，则 \(f_n\xrightarrow{\mu}f\)，并且 \(\{f_n\}\) 一致可积。
+\end{proposition}
+
+\begin{proof}
+由\cref{b1:prop:integral-markov}，对每个 \(\eta>0\)，
+\[
+\mu\{\,|f_n-f|>\eta\,\}
+\leq\frac{\|f_n-f\|_1}{\eta}\longrightarrow0.
+\]
+三角不等式还给出 \(\sup_n\|f_n\|_1<\infty\)。要验证一致绝对连续性，给定 \(\varepsilon>0\)，取 \(N\) 使 \(n\geq N\) 时 \(\|f_n-f\|_1<\varepsilon/2\)。由\cref{b1:prop:integral-absolute-continuity}，可对有限多个函数 \(f,f_1,\ldots,f_{N-1}\) 选同一个 \(\delta>0\)，使它们在测度小于 \(\delta\) 的集合上，绝对值积分均小于 \(\varepsilon/2\)。对 \(n\geq N\)，则有
+\[
+\int_A|f_n|\,\mathrm d\mu
+\leq\|f_n-f\|_1+\int_A|f|\,\mathrm d\mu<\varepsilon.
+\]
+于是全列具有一致绝对连续性，由\cref{b1:prop:uniform-integrability-criterion}即得一致可积性。
+\end{proof}
+
+因此，在有限测度空间上，\(L^1\) 收敛恰好等价于依测度收敛与一致可积性同时成立。对一般测度空间，还需单独控制远离某个有限测度集合的积分。Fremlin 的《Measure Theory》\cite[第2卷，246A、246B、246J]{Fremlin2016Measure}把这种控制纳入一般空间上一致可积性的定义；本节采用的幅值尾部定义则将它单列如下。
+
+\begin{proposition}
+\label{b1:prop:vitali-general-measure}
+设 \(f_n\in L^1(\mu)\) 一致可积，且 \(f_n\xrightarrow{\mu}f\) 或 \(f_n\to f\) 几乎处处。若对每个 \(\varepsilon>0\)，存在 \(E\in\mathcal A\)，使
+\begin{equation}
+\label{b1:eq:uniform-finite-measure-tail}
+\mu(E)<\infty,
+\quad\sup_n\int_{X\setminus E}|f_n|\,\mathrm d\mu<\varepsilon,
+\end{equation}
+则 \(f\in L^1(\mu)\)，且 \(\|f_n-f\|_1\to0\)。反之，\(L^1\) 收敛的函数列满足\eqref{b1:eq:uniform-finite-measure-tail}。
+\end{proposition}
+
+\begin{proof}
+固定 \(\varepsilon>0\) 及相应的 \(E\)。限制到 \(E\) 后，偏差集合的测度与幅值尾部积分都不超过全空间上的相应量。因而依测度收敛和一致可积性均保持；若原来假设几乎处处收敛，则在有限测度集 \(E\) 上用\cref{b1:lem:measure-convergence-subsequence}得到依测度收敛。于是\cref{b1:thm:vitali-convergence}给出
+\[
+f|_E\in L^1(\mu_E),
+\quad\int_E|f_n-f|\,\mathrm d\mu\longrightarrow0.
+\]
+在全空间上取几乎处处收敛的子列；若原列已几乎处处收敛，直接使用原列。由\cref{b1:thm:fatou}，
+\[
+\int_{X\setminus E}|f|\,\mathrm d\mu
+\leq\liminf_{k\to\infty}\int_{X\setminus E}|f_{n_k}|\,\mathrm d\mu
+\leq\varepsilon.
+\]
+所以 \(f\) 可积，且 \(\limsup_n\|f_n-f\|_1\leq2\varepsilon\)。令 \(\varepsilon\downarrow0\) 得到结论。
+
+反之，设 \(f_n\to f\) 于 \(L^1\)。选 \(N\) 使 \(n\geq N\) 时 \(\|f_n-f\|_1<\varepsilon/2\)。由\cref{b1:prop:integrable-localization}，对 \(f,f_1,\ldots,f_{N-1}\) 各选一个有限测度集，使其集外绝对值积分小于 \(\varepsilon/2\)，再取这些集合的并 \(E\)。该并仍有有限测度；初始有限项满足所需估计，其余各项则满足
+\[
+\int_{X\setminus E}|f_n|\,\mathrm d\mu
+\leq\|f_n-f\|_1+\int_{X\setminus E}|f|\,\mathrm d\mu
+<\varepsilon.
+\]
+\end{proof}
+
+条件\eqref{b1:eq:uniform-finite-measure-tail}要求同一个集合 \(E\) 适用于全列。每个函数单独满足的局部化性质并不能保证这一点。这里既未给 \(X\) 指定拓扑，也未要求 \(E\) 紧；条件只涉及测度和积分，所以不应把它解释为某个拓扑空间中的紧性假设。
+
+集外控制确有必要。在实轴上令 \(f_n=n^{-1}\mathbf 1_{[0,n]}\)。函数列一致趋零，也依测度趋零，且全部函数值不超过 \(1\)，所以一致可积；但积分恒为 \(1\)。对任意有限测度集 \(E\)，有
+\[
+\int_{\mathbb R\setminus E}f_n\,\mathrm dx
+\geq1-\frac{m(E)}{n}\longrightarrow1,
+\]
+故\eqref{b1:eq:uniform-finite-measure-tail}失败。
+
+\begin{proposition}
+\label{b1:prop:l1-dominated-subsequence}
+若 \(f_n\to f\) 于 \(L^1(\mu)\)，则存在子列 \(f_{n_k}\) 及非负可积函数 \(g\)，使 \(f_{n_k}\to f\) 几乎处处，并且 \(|f_{n_k}|\leq g\) 几乎处处对每个 \(k\) 成立。
+\end{proposition}
+
+\begin{proof}
+选择子列使 \(\|f_{n_k}-f\|_1<2^{-k}\)，并令
+\[
+g=|f|+\sum_{k=1}^{\infty}|f_{n_k}-f|.
+\]
+\cref{b1:cor:nonnegative-series-integral}给出 \(\int_Xg\,\mathrm d\mu\leq\|f\|_1+1<\infty\)。所以级数几乎处处有限，其各项便几乎处处趋零，即 \(f_{n_k}\to f\)。同时 \(|f_{n_k}|\leq|f|+|f_{n_k}-f|\leq g\)。若需有限值代表，只须在 \(g=\infty\) 的零测集上统一改值。
+\end{proof}
+
+这个结论只保证为选出的子列找到共同控制函数，并未断言原列满足控制收敛定理的假设。它常用于把 \(L^1\) 收敛转为可在逐点运算中使用的收敛，再借助已知的积分估计处理所选子列。
+
+对于非负函数，还有一个只需比较积分数值的判据，称为\term*[scheffe-yinli]{Scheff\'e 引理}[Scheff\'e lemma]。
+
+\begin{proposition}[Scheff\'e 引理]
+\label{b1:prop:scheffe-lemma}
+设 \(f_n,f\geq0\) 可积且 \(f_n\to f\) 几乎处处。则 \(\|f_n-f\|_1\to0\) 当且仅当 \(\int_Xf_n\,\mathrm d\mu\to\int_Xf\,\mathrm d\mu\)。
+\end{proposition}
+
+\begin{proof}
+必要性由积分的模不等式成立。为证充分性，注意 \(\min\{f_n,f\}\to f\) 几乎处处，且由可积函数 \(f\) 控制。因此
+\[
+\|f_n-f\|_1
+=\int_Xf_n\,\mathrm d\mu+\int_Xf\,\mathrm d\mu
+-2\int_X\min\{f_n,f\}\,\mathrm d\mu
+\longrightarrow0.
+\]
+\end{proof}
+
+这个判据不要求全空间测度有限。它利用非负性把函数之差的积分化成三个可比较的量；对一般变号函数，积分本身的收敛不能替代对绝对值的控制。
+
+例如在 \((0,1)\) 上取
+\[
+f_n=n\mathbf 1_{(0,1/(2n))}
+-n\mathbf 1_{(1/(2n),1/n)}.
+\]
+它逐点趋零，积分始终为零，但 \(\|f_n\|_1=1\)。正负两部分在积分中恰好抵消，并没有减小函数与零函数之间的 \(L^1\) 距离。

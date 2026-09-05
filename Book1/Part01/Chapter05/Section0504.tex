@@ -2,24 +2,197 @@
 \section{参数积分：极限与微分}
 \label{b1:sec:0504}
 
-% TODO: 撰写本节正文。
+% 资料：已核对 Axler2020Measure，第 3B 节，3.28--3.31，印刷页 90--93。
+% 该来源用于控制收敛及可积函数的局部化；以下参数推论由本章结果自证，
+% 不将参数求导定理或计算实例归作 Axler 原书的直接陈述。
+% 证明义务：参数邻域内统一控制；变动区间的端点零集；公共零集外的
+% 参数可微性、导数可测性与差商控制；先截断再处理无穷远的一致尾部。
+
+控制收敛定理也能处理连续变化的参数。设 \((X,\mathcal A,\mu)\) 是测度空间，实参数 \(t\) 在区间 \(I\) 中变化。若每个截面 \(x\mapsto f(t,x)\) 可积，便可定义\term[canshu-jifen]{参数积分}[parameter integral]，记为
+\[
+F(t)=\int_X f(t,x)\,\mathrm d\mu(x).
+\]
+逐点检查 \(f\) 对参数的变化以后，还要找到对附近参数同时有效的可积控制。控制函数在这里的作用，可对照 Sheldon Axler 的《Measure, Integration \& Real Analysis》\cite{Axler2020Measure}第 3B 节关于控制收敛的论证。以下允许被积函数取实值或复值；记号 \(dx\) 表示对一维 Lebesgue 测度积分。
 
 \subsection{参数积分的连续性}
 \label{b1:subsec:050401}
 
-待填充。
+\begin{proposition}
+\label{b1:prop:parameter-integral-continuity}
+设 \(t_0\in I\)，每个 \(f(t,\cdot)\) 可测。若存在 \(t_0\) 在 \(I\) 中的邻域 \(U\)、非负可积函数 \(g\) 和可测零集 \(N\)，使对所有 \(x\notin N\) 都有
+\[
+\lim_{t\to t_0}f(t,x)=f(t_0,x),
+\quad
+|f(t,x)|\leq g(x)\quad(t\in U),
+\]
+则 \(F\) 在 \(U\) 上有定义，并且在 \(t_0\) 处连续。
+\end{proposition}
+\begin{proof}
+可积控制先保证各个积分有限。任取 \(U\) 中趋于 \(t_0\) 的序列 \(t_n\)，由\cref{b1:thm:dominated-convergence}，
+\[
+|F(t_n)-F(t_0)|
+\leq\int_X|f(t_n,x)-f(t_0,x)|\,\mathrm d\mu(x)
+\longrightarrow0.
+\]
+实数区间上的连续性可由序列刻画，故结论成立。
+\end{proof}
+
+证明还给出了截面在 \(L^1(\mu)\) 中的连续性。条件只放在 \(t_0\) 的一个邻域上，因此研究另一个参数点时可以换用新的控制函数，不必用同一个上界控制整个参数区间。每个截面各自可积却不够：这只说明积分存在，并未限制附近截面的大小如何变化。
+
+例如，若 \(h\in L^1(\mathbb R)\)，则
+\[
+t\longmapsto\int_{\mathbb R}e^{itx}h(x)\,\mathrm dx
+\]
+连续，因为被积函数的绝对值恒为 \(|h(x)|\)。这里没有要求 \(xh(x)\) 可积；若要再对参数求导，就需要检查差商能否受到可积函数控制。
 
 \subsection{积分号下取极限}
 \label{b1:subsec:050402}
 
-待填充。
+参数的极限点不必属于原来的参数范围。例如研究 \(t\downarrow0\) 时，可把逐点极限作为 \(t=0\) 的截面，再应用\cref{b1:prop:parameter-integral-continuity}。积分区间也可以随参数改变，只要先把它写进示性函数。
+
+\begin{proposition}
+\label{b1:prop:moving-interval-integral-limit}
+设 \(a_n,b_n\in[A,B]\)，\(a_n\leq b_n\)，且 \(a_n\to a\)、\(b_n\to b\)。设 \(f_n,f\) 在 \([A,B]\) 上可测，\(f_n\to f\) 几乎处处，并有非负 \(g\in L^1([A,B])\) 使 \(|f_n|\leq g\) 几乎处处。则
+\[
+\lim_{n\to\infty}\int_{a_n}^{b_n}f_n(x)\,\mathrm dx
+=\int_a^b f(x)\,\mathrm dx.
+\]
+\end{proposition}
+\begin{proof}
+除端点 \(a,b\) 外，示性函数 \(\mathbf1_{[a_n,b_n]}\) 逐点收敛于 \(\mathbf1_{[a,b]}\)。这两个端点组成零集；再合并函数列的可数个例外零集，即得
+\[
+f_n\mathbf1_{[a_n,b_n]}
+\longrightarrow f\mathbf1_{[a,b]}
+\quad\text{几乎处处}.
+\]
+左侧仍由 \(g\) 控制，在固定区间 \([A,B]\) 上应用\cref{b1:thm:dominated-convergence}即可。
+\end{proof}
+
+端点的零测性在这里承担了具体作用。若把 Lebesgue 测度换成集中在 \(0\) 的单位质量，则 \([1/n,1]\) 的积分恒为零，而极限区间 \([0,1]\) 的积分为一。一般测度下，要么另行控制端点的质量，要么直接检查变动集合的示性函数是否几乎处处收敛。
+
+取 \(0<|t|<1/2\)。在 \([0,2]\) 上有 \(|\sin(tx)/t|\leq x\)，且该商趋于 \(x\)，所以
+\[
+\lim_{t\to0}\int_0^{1+t}\dfrac{\sin(tx)}{t}\,\mathrm dx
+=\int_0^1x\,\mathrm dx=\dfrac12.
+\]
+这里只需对任意趋于零的参数序列应用\cref{b1:prop:moving-interval-integral-limit}。末项及下文连续函数的有限区间积分，可以依据\cref{b1:prop:riemann-lebesgue-compatibility}用初等定积分计算。
 
 \subsection{积分号下求导}
 \label{b1:subsec:050403}
 
-待填充。
+求导要求控制的对象是差商。导数的一致上界可以通过一元中值定理给出这种控制，但例外零集必须与参数无关。
+
+\begin{theorem}[积分号下求导]
+\label{b1:thm:differentiation-under-integral}
+设 \(J\) 是开区间，每个 \(f(t,\cdot)\) 可测，且某个 \(t_*\in J\) 满足 \(f(t_*,\cdot)\in L^1(\mu)\)。设存在可测零集 \(N\) 和非负 \(g\in L^1(\mu)\)，使对每个 \(x\notin N\)，函数 \(t\mapsto f(t,x)\) 在整个 \(J\) 上可微，并满足
+\[
+|\partial_t f(t,x)|\leq g(x)\quad(t\in J).
+\]
+在 \(N\) 上把导数定义为零。则每个 \(f(t,\cdot)\) 可积，\(F\) 在 \(J\) 上可微，且
+\[
+F'(t)=\int_X\partial_t f(t,x)\,\mathrm d\mu(x).
+\]
+\end{theorem}
+\begin{proof}
+先考虑实值函数。对 \(x\notin N\)，中值定理给出
+\[
+|f(t,x)-f(s,x)|\leq |t-s|g(x)
+\quad(s,t\in J).
+\]
+复值情形分别对实部、虚部使用中值定理，再用三角不等式，得到右侧改为 \(2|t-s|g(x)\) 的估计。因此两种情形都满足
+\[
+|f(t,x)|\leq |f(t_*,x)|+2|t-t_*|g(x),
+\]
+从而每个截面可积。
+
+固定 \(t\in J\)，取非零实数 \(h_n\to0\) 且 \(t+h_n\in J\)。在 \(X\setminus N\) 上，相应差商趋于 \(\partial_t f(t,x)\)，绝对值不超过 \(2g(x)\)。把差商在 \(N\) 上置零，就得到可测函数列，故其极限即上述导数也是可测的。由\cref{b1:thm:dominated-convergence}与积分线性性，
+\[
+\dfrac{F(t+h_n)-F(t)}{h_n}
+=\int_X\dfrac{f(t+h_n,x)-f(t,x)}{h_n}\,\mathrm d\mu(x)
+\longrightarrow\int_X\partial_t f(t,x)\,\mathrm d\mu(x).
+\]
+该结论对任意这样的序列成立，因而给出 \(F'(t)\)。
+\end{proof}
+
+基准截面的可积性也不能删去。在 \((0,\infty)\) 上取 \(f(t,x)=1+te^{-x}\)，其参数导数由可积函数 \(e^{-x}\) 控制，但每个截面都不可积。证明中先用基准截面控制函数本身，再用导数控制差商，两处可积性分别保证 \(F\) 有定义和极限可以交换。
+
+若只要求对每个固定参数几乎处处可微，结论可能失败。在 \(I=X=(0,1)\) 上取 \(f(t,x)=\mathbf1_{(0,t)}(x)\)。对固定 \(t\)，除 \(x=t\) 外的参数导数都是零，但 \(F(t)=t\) 的导数是 \(1\)。不同参数的例外点合起来覆盖了整个区间，不能从这里删去一个公共零集。
+
+\begin{corollary}
+\label{b1:cor:higher-parameter-derivatives}
+设 \(I\) 是开区间。在一个公共可测零集外，\(f(t,x)\) 关于 \(t\in I\) 属于 \(C^k\)，每个 \(f(t,\cdot)\) 可测；各正阶导数在该零集上取零。若每个参数点都有开区间邻域 \(J\subseteq I\)，使各阶 \(0\leq j\leq k\) 的导数在 \(J\) 上分别受到某个非负可积函数 \(g_j\) 控制，则 \(F\in C^k(I)\)，且
+\[
+F^{(j)}(t)=\int_X\partial_t^j f(t,x)\,\mathrm d\mu(x)
+\quad(0\leq j\leq k).
+\]
+\end{corollary}
+\begin{proof}
+逐阶取差商，得到各阶导数截面的可测性。固定上述邻域 \(J\)，第零阶控制保证可积；依次对 \(f,\partial_t f,\ldots,\partial_t^{k-1}f\) 应用\cref{b1:thm:differentiation-under-integral}，得到各阶公式。每阶被积函数关于参数连续且有可积控制，\cref{b1:prop:parameter-integral-continuity}又保证各个 \(F^{(j)}\) 连续。
+\end{proof}
+
+回到本节开始的指数积分。若除 \(h\in L^1(\mathbb R)\) 外，还有 \(|x|^kh(x)\in L^1(\mathbb R)\)，则每个 \(j\leq k\) 的参数导数都由 \((1+|x|^k)|h(x)|\) 控制。这是因为 \(|x|^j\leq1+|x|^k\)。于是该参数积分属于 \(C^k\)，并且
+\[
+\dfrac{d^j}{dt^j}\int_{\mathbb R}e^{itx}h(x)\,\mathrm dx
+=\int_{\mathbb R}(ix)^j e^{itx}h(x)\,\mathrm dx.
+\]
+这些加权可积条件把空间变量的增长与参数方向的可微性联系起来。
 
 \subsection{无穷区间积分中的参数依赖}
 \label{b1:subsec:050404}
 
-待填充。
+在无穷区间上，有限区间内的控制还不足以决定整个积分的极限。截断以后的尾部需要对附近参数同时变小。
+
+\begin{proposition}
+\label{b1:prop:parameter-uniform-tails}
+设 \(f(t,\cdot)\in L^1(0,\infty)\)，\(U\) 是 \(t_0\) 的参数邻域。若对每个 \(R>0\) 都有
+\[
+\lim_{t\to t_0}\int_0^R|f(t,x)-f(t_0,x)|\,\mathrm dx=0,
+\]
+并且
+\[
+\lim_{R\to\infty}\sup_{t\in U}\int_R^\infty|f(t,x)|\,\mathrm dx=0,
+\]
+则 \(f(t,\cdot)\to f(t_0,\cdot)\) 在 \(L^1(0,\infty)\) 中成立，参数积分也趋于 \(F(t_0)\)。
+\end{proposition}
+\begin{proof}
+把差的绝对值积分拆成 \((0,R)\) 和 \((R,\infty)\) 两段，得到
+\[
+\begin{split}
+\int_0^\infty|f(t,x)-f(t_0,x)|\,\mathrm dx
+&\leq\int_0^R|f(t,x)-f(t_0,x)|\,\mathrm dx\\
+&\quad+2\sup_{s\in U}\int_R^\infty|f(s,x)|\,\mathrm dx.
+\end{split}
+\]
+给定 \(\varepsilon>0\)，先选 \(R\) 使第二项小于 \(\varepsilon/2\)，再令 \(t\) 足够接近 \(t_0\) 使第一项小于 \(\varepsilon/2\)。积分的收敛由\cref{b1:prop:integral-triangle}得到。
+\end{proof}
+
+第一项常可在紧矩形上处理。例如，若 \(f\) 在 \([t_0-\delta,t_0+\delta]\times[0,R]\) 上连续，则它在这个紧集上有界，常数上界在有限区间上可积，控制收敛便给出命题中的局部条件。无穷远的部分仍须另作估计。选择截断位置时，应先使尾部对整个参数邻域都小，再固定这个位置考察参数极限；逐个参数选择不同的截断位置，不能替代所需的一致估计。
+
+若附近所有截面都由同一个 \(g\in L^1(0,\infty)\) 控制，则\cref{b1:thm:monotone-convergence}应用于 \(g\mathbf1_{(0,R)}\) 就给出一致尾部条件。反之，区间族 \(f(t,x)=\mathbf1_{[t,t+1]}(x)\) 在 \(t\to\infty\) 时逐点趋于零，在任意固定有限区间内最终恒为零，而整个积分始终为 \(1\)。它的质量移向无穷远，尾部不能一致舍去。
+
+\begin{proposition}
+\label{b1:prop:laplace-exponential-moments}
+对 \(a>0\) 和整数 \(m\geq0\)，有
+\[
+\int_0^\infty x^m e^{-ax}\,\mathrm dx=\dfrac{m!}{a^{m+1}}.
+\]
+函数 \(L(a)=\int_0^\infty e^{-ax}\,\mathrm dx\) 在 \((0,\infty)\) 上光滑，其第 \(m\) 阶导数可在积分号内计算。
+\end{proposition}
+\begin{proof}
+先在有限区间计算，再用单调收敛，得到
+\[
+L(a)=\lim_{R\to\infty}\dfrac{1-e^{-aR}}{a}=\dfrac1a.
+\]
+固定 \(a_0>0\)。当 \(a_0/2<a<3a_0/2\) 时，每阶参数导数满足
+\[
+|\partial_a^m e^{-ax}|=x^m e^{-ax}
+\leq C_{m,a_0}e^{-a_0x/4},
+\]
+其中可取 \(C_{m,a_0}=m!(4/a_0)^m\)：把初等不等式 \(e^y\geq y^m/m!\) 用于 \(y=a_0x/4\)，就得到所需上界。右侧由已经算出的零阶积分可知可积。\cref{b1:cor:higher-parameter-derivatives}于是适用于任意有限阶数，并给出
+\[
+(-1)^m\int_0^\infty x^m e^{-ax}\,\mathrm dx
+=L^{(m)}(a)=\dfrac{(-1)^m m!}{a^{m+1}}.
+\]
+\end{proof}
+
+这里的控制只需在每个 \(a_0>0\) 的邻域内成立；当 \(a\downarrow0\) 时，\(L(a)\to\infty\)，不能把同一结论延伸到零参数。第\ref{b1:sec:0505}节将进一步讨论：一个函数族没有共同的可积上界时，还能用哪些条件控制积分极限。
