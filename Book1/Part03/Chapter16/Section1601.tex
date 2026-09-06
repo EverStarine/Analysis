@@ -2,24 +2,235 @@
 \section{Lipschitz 映射}
 \label{b1:sec:1601}
 
-% TODO: 撰写本节正文。
+上一章只用距离控制就得到了 Hausdorff 测度的映射估计。
+本章进一步说明，这种不涉及导数的距离条件，为什么仍能产生几乎处处的线性近似。
+在进入 Rademacher 定理以前，先整理 Lipschitz 常数、延拓和参数化的几个接口。
+其中实值延拓尤其有用：它允许把定义在任意子集上的函数变成全空间函数，
+而不要求原来的定义域有光滑边界。
+
+% 实际读取：Fremlin2016Measure 作者官方chap26.tex，262A、262B(a)(b)完整正文。
+% 本节把标量延拓写成上下两种包络，并单列向量逐坐标延拓的sqrt(m)常数。
+% Hausdorff估计引用本书15.1已证结果；像的可测性不借尚未建立的描述集合论。
+关于这些基本操作，可对读 Fremlin 的《Measure Theory》第262节%
+\cite{Fremlin2016Measure}。本节把延拓所需的有限值检查与向量常数写出，
+后面的可微性证明将直接使用它们。
 
 \subsection{Lipschitz 常数}
 \label{b1:subsec:160101}
 
-待填充。
+\begin{definition}\label{b1:def:lipschitz-map}
+设 \((X,d_X)\)、\((Y,d_Y)\) 是度量空间，\(A\subseteq X\)。
+若存在 \(L<\infty\)，使
+\[
+ d_Y\bigl(f(x),f(y)\bigr)\leq Ld_X(x,y)
+ \quad(x,y\in A),
+\]
+则称 \(f:A\rightarrow Y\) 为 \term[lipschitz-yingshe]{Lipschitz 映射}[Lipschitz map]，
+并称每个满足此式的非负数 \(L\) 为它的一个 Lipschitz 常数。
+记最小常数为
+\[
+ \operatorname{Lip}(f;A)
+ =\sup_{\substack{x,y\in A\\x\ne y}}
+   \frac{d_Y\bigl(f(x),f(y)\bigr)}{d_X(x,y)};
+\]
+当 \(A\) 至多有一个点时，规定此上确界为零。
+\end{definition}
+\symidx{\(\operatorname{Lip}(f;A)\)：最小 Lipschitz 常数}
+
+最小常数确实仍满足距离不等式，而不是只给出可取常数的下确界。
+Lipschitz 映射一致连续，并把 Cauchy 列映成 Cauchy 列。
+若目标空间完备，则它能唯一连续延拓到 \(\overline A\)，且 Lipschitz 常数不变：
+对 \(x\in\overline A\) 取 \(A\) 中收敛到 \(x\) 的序列，
+以像序列的极限定义延拓值；交错两条逼近列保证定义无关，再对不等式取极限。
+这一结论只是在闭包上延拓，不能与稍后的全空间延拓混为一谈。
+
+若 \(f\)、\(g\) 可以复合，则
+\[
+ \operatorname{Lip}(g\circ f;A)
+ \leq\operatorname{Lip}(g;f(A))\operatorname{Lip}(f;A).
+\]
+对向量值函数，和与标量乘法的常数估计由三角不等式直接得到。
+特别地，点到非空集合 \(E\) 的距离函数满足
+\[
+ \bigl|\operatorname{dist}(x,E)-\operatorname{dist}(y,E)\bigr|
+ \leq d_X(x,y),
+\]
+因为先对 \(z\in E\) 使用三角不等式，再取下确界并交换 \(x,y\)。
+距离函数即使没有普通导数，也始终具有这个定量控制。
+
+若对定义域内每一点，都存在一个邻域，使函数在该邻域内 Lipschitz，
+则称其局部 Lipschitz。局部条件不自动给出一个对整个定义域有效的常数；
+例如 \(x\mapsto x^2\) 在 \(\mathbb R\) 上局部 Lipschitz，却不是全局 Lipschitz。
+对于开集上的局部 Lipschitz 映射，可取可数个小球覆盖定义域，
+使函数在每个球上都有一个常数。这个可数化保证后面逐球取得的零测例外仍可合并为零测集。
+
+\begin{proposition}\label{b1:prop:bounded-derivative-lipschitz}
+设 \(\Omega\subseteq\mathbb R^d\) 是开凸集，
+\(f:\Omega\rightarrow\mathbb R^m\) 在每一点可微，且
+\(\|Df(x)\|\leq L\) 对所有 \(x\in\Omega\) 成立。
+则 \(f\) 为 \(L\)-Lipschitz 映射。
+\end{proposition}
+\begin{proof}
+任取 \(x,y\in\Omega\) 及 \(\mathbb R^m\) 中的单位向量 \(v\)。
+对实函数 \(t\mapsto\langle v,f(x+t(y-x))\rangle\) 使用一维中值定理，
+其导数的绝对值不超过 \(L|y-x|\)，故
+\[
+ |\langle v,f(y)-f(x)\rangle|\leq L|y-x|.
+\]
+对单位向量 \(v\) 取上确界即得结论。凸性保证连接两点的整条线段都在定义域内。
+\end{proof}
+
+若定义域不连通，“导数处处为零”也可能只说明函数在各个连通部分上常值。
+例如在 \((-1,0)\cup(0,1)\) 上，左右两部分分别取值 \(0\)、\(1\)，
+函数处处可微且导数为零，却不是 Lipschitz 的。
+这说明从局部导数信息恢复全局距离估计，需要检查定义域中的连接条件。
 
 \subsection{双 Lipschitz 映射}
 \label{b1:subsec:160102}
 
-待填充。
+第\ref{b1:sec:1502}节已经定义双 Lipschitz 映射。
+它除距离上界外还具有严格正的下界
+\[
+ a|x-y|\leq|f(x)-f(y)|\leq b|x-y|,
+ \quad0<a\leq b<\infty.
+\]
+左侧立即保证单射，也保证像上的逆映射具有常数 \(a^{-1}\)。
+因此这是一种同时控制两边距离的参数化，而不是一般的连续一一对应。
+
+线性情形最能说明这个差别。若 \(T:\mathbb R^k\rightarrow\mathbb R^d\) 单射，
+则连续函数 \(v\mapsto|Tv|\) 在单位球面上有正的最小值 \(\sigma\)，从而
+\[
+ \sigma|x-y|\leq|T(x-y)|\leq\|T\|\,|x-y|.
+\]
+若 \(T\) 有非零核向量，则任何正的下界都不可能成立。
+非线性映射在某一点有单射微分，并不单凭这一点就保证它在某邻域内双 Lipschitz；
+微分在附近是否受控同样重要。
+
+一个经常使用的充分条件是对线性单射作小 Lipschitz 扰动。
+若 \(|Tv|\geq\sigma|v|\)，且 \(g:A\rightarrow\mathbb R^d\) 满足
+\(\operatorname{Lip}(g;A)=\eta<\sigma\)，则对 \(f(x)=Tx+g(x)\) 有
+\[
+ (\sigma-\eta)|x-y|
+ \leq|f(x)-f(y)|
+ \leq(\|T\|+\eta)|x-y|.
+\]
+两侧分别来自反向三角不等式和三角不等式。
+这里的小量是 \(g\) 的距离差商，而不仅是它的函数值。
+即使函数值在一个小邻域内很小，其振荡仍可能破坏单射性。
 
 \subsection{Lipschitz 像}
 \label{b1:subsec:160103}
 
-待填充。
+设 \(f:A\subseteq\mathbb R^k\rightarrow\mathbb R^d\) 为 Lipschitz 映射。
+若 \(A\) 紧，则 \(f(A)\) 紧；若 \(A\) 是可数个紧集的并，则像也是可数个紧集的并。
+但对一般 Borel 定义域，不能仅凭连续性就断言其像是 Borel 集。
+本书在尚未证明像的可测性时，对 \(\mathcal H^s\bigl(f(A)\bigr)\) 一律按外测度解释。
+
+参数化往往先在一个不规则的子集上给出。
+以下实值延拓把这类定义域问题与可微性问题分开处理。
+
+\begin{theorem}[McShane 延拓]\label{b1:thm:mcshane-extension}
+设 \((X,d)\) 为度量空间，\(A\subseteq X\) 非空，
+\(f:A\rightarrow\mathbb R\) 为 \(L\)-Lipschitz 函数。
+对每个 \(x\in X\)，定义
+\[
+ F_-(x)=\sup_{a\in A}\bigl(f(a)-Ld(x,a)\bigr),
+ \quad
+ F_+(x)=\inf_{a\in A}\bigl(f(a)+Ld(x,a)\bigr).
+\]
+则这两个函数处处有限，均为 \(f\) 的 \(L\)-Lipschitz 延拓，并满足 \(F_-\leq F_+\)。
+\end{theorem}
+\term*[mcshane-yantuo]{McShane 延拓定理}[McShane extension theorem]的一个特点是，
+原定义域既不必闭，也不必有界；因此证明中必须先检查上、下确界不会为无穷。
+
+\begin{proof}
+固定 \(a_0\in A\)。由 \(f\) 的 Lipschitz 条件和三角不等式，
+对所有 \(a\in A\) 都有
+\[
+ f(a)+Ld(x,a)
+ \geq f(a_0)-Ld(a,a_0)+Ld(x,a)
+ \geq f(a_0)-Ld(x,a_0).
+\]
+而取 \(a=a_0\) 又给出有限上界，故 \(F_+(x)\) 有限。
+同理，\(F_-(x)\) 也有限。
+若 \(x\in A\)，Lipschitz 条件给出 \(F_+(x)\geq f(x)\)，
+而候选点 \(a=x\) 给出反向不等式；对 \(F_-\) 一样，故两者都延拓 \(f\)。
+
+对每个 \(a\in A\)，有
+\[
+ f(a)+Ld(x,a)\leq f(a)+Ld(y,a)+Ld(x,y).
+\]
+取下确界得 \(F_+(x)\leq F_+(y)+Ld(x,y)\)，交换两点得到 Lipschitz 条件。
+对 \(F_-\) 取上确界可作同样证明。
+最后，对任意 \(a,b\in A\)，
+\[
+ f(a)-Ld(x,a)
+ \leq f(b)+Ld(a,b)-Ld(x,a)
+ \leq f(b)+Ld(x,b).
+\]
+先对 \(a\) 取上确界，再对 \(b\) 取下确界，即得 \(F_-\leq F_+\)。
+\end{proof}
+
+对 \(f:A\subseteq\mathbb R^k\rightarrow\mathbb R^d\)，逐坐标使用该定理，
+即可得到全空间的向量值延拓 \(\widetilde f\)，并有
+\[
+ \operatorname{Lip}(\widetilde f;\mathbb R^k)\leq\sqrt d\,\operatorname{Lip}(f;A).
+\]
+因为每个坐标的差至多为 \(L|x-y|\)，把 \(d\) 个坐标的平方相加就得到这个常数。
+这里没有证明向量延拓保持最优常数；后面的局部可微性论证只需要一个有限常数，
+故逐坐标构造已经足够。
+
+作为典型的参数化，若 \(u:A\subseteq\mathbb R^k\rightarrow\mathbb R^m\)
+是 \(L\)-Lipschitz 的，则它的图像映射 \(G(x)=(x,u(x))\) 满足
+\[
+ |x-y|\leq|G(x)-G(y)|\leq\sqrt{1+L^2}\,|x-y|.
+\]
+图像因而与定义域双 Lipschitz 等价，逆映射就是坐标投影。
+这给出了不要求函数光滑的曲面片模型，后面将用其微分描述局部切向信息。
 
 \subsection{Hausdorff 测度估计}
 \label{b1:subsec:160104}
 
-待填充。
+\cref{b1:prop:hausdorff-lipschitz}已给出核心估计：
+对 \(s>0\)、任意 \(E\subseteq A\)，
+\[
+ \mathcal H^s\bigl(f(E)\bigr)\leq L^s\mathcal H^s(E).
+\]
+本节不重复覆盖证明，而列出它与本章问题直接相关的后果。
+若 \(f\) 为双 Lipschitz 映射，还同时有
+\[
+ a^s\mathcal H^s(E)\leq\mathcal H^s\bigl(f(E)\bigr)
+ \leq b^s\mathcal H^s(E).
+\]
+因此零测性和有限正测度性质在这种参数化下保持。
+
+特别地，Lipschitz 映射 \(f:A\subseteq\mathbb R^d\rightarrow\mathbb R^d\)
+把 Lebesgue 零测集映成 Lebesgue 零测集。
+这使用了同维的 \(\mathcal H^d=m_d^*\)。
+若目标是更高维空间，最直接的结论仍是像的 \(d\) 维 Hausdorff 测度为零，
+不能把下标随意改成目标空间维数来代替这一更强信息。
+对局部 Lipschitz 映射，以可数个具有有限常数的局部块覆盖定义域，再取可数并，同样成立。
+
+图像模型给出一个具体的双边比较：
+\[
+ \mathcal H^k(E)\leq
+ \mathcal H^k\bigl(\{(x,u(x)):x\in E\}\bigr)
+ \leq(1+L^2)^{k/2}\mathcal H^k(E).
+\]
+但这还不是面积公式。它用一个全局常数控制所有点，
+没有记录不同位置的倾斜程度，也没有处理一般映射的多重覆盖。
+第\ref{b1:ch:17}章将以微分矩阵给出更精确的计算。
+
+对一条 \(L\)-Lipschitz 曲线 \(\gamma:[a,b]\rightarrow\mathbb R^d\)，
+已经有
+\[
+ \mathcal H^1\bigl(\gamma([a,b])\bigr)\leq L(b-a).
+\]
+而对任意连续曲线，像的 \(\mathcal H^1\) 测度至少为其直径：
+取像中的 \(p,q\)，距离函数 \(z\mapsto|z-p|\) 是 \(1\)-Lipschitz 的，
+由连续性，其在曲线像上的取值包含区间 \([0,|q-p|]\)；
+使用测度映射估计及 \(\mathcal H^1([0,|q-p|])=|q-p|\)，
+再对 \(p,q\) 取上确界即可。
+这些估计只涉及像作为一个集合的大小。
+若一条曲线反复经过同一线段，像并不会因此变大，但沿参数走过的总长度会增加。
+第\ref{b1:sec:1604}节将把两种量分清，并用度量导数计算后者。

@@ -2,19 +2,242 @@
 \section{近似微分}
 \label{b1:sec:1603}
 
-% TODO: 撰写本节正文。
+Rademacher 定理对 Lipschitz 映射给出通常意义的微分。
+一般可测函数却会因零测集上的改值而失去连续性，这时普通微分并不适合作为几乎处处性质的唯一表述。
+近似微分允许忽略在观察点附近所占比例趋于零的部分。
+本节先比较两种微分，再证明一个分片结论：几乎处处近似可微的有限值可测映射，
+除去零测集以后，可以限制在可数个紧集上分别成为 Lipschitz 映射。
+
+% 来源范围：近似微分定义及唯一性沿用本书140504；
+% 由密度一集合恢复普通极限用1405已证性质。
+% Fremlin2016Measure 262N实际读到的是通常相对可微映射的Lipschitz分片，
+% 不能把它直接引作这里近似可微版本的证明。
+% 本节用统一球内坏点比例、两球相交与共同好点完整证明所需分片结论。
 
 \subsection{近似可微性}
 \label{b1:subsec:160301}
 
-待填充。
+沿用\cref{b1:def:approximate-differential}，以下 \(\Omega\subseteq\mathbb R^d\) 为开集，
+\(f:\Omega\rightarrow\mathbb R^m\) 有限值且 Lebesgue 可测。
+若 \(f\) 在 \(x\) 处近似可微，把其唯一的线性映射记为
+\(\operatorname{ap}Df(x)\)。记 \(A=\operatorname{ap}Df(x)\)，则对每个 \(\varepsilon>0\)，
+\begin{equation}\label{b1:eq:approximate-differential-bad-set}
+ \lim_{r\downarrow0}\frac{
+ m_d\bigl(\{\,y\in B(x,r)\setminus\{x\}:
+ |f(y)-f(x)-A(y-x)|>\varepsilon|y-x|\,\}\bigr)}
+ {m_d(B(x,r))}=0.
+\end{equation}
+半径充分小时球包含于 \(\Omega\)。这个定义把函数值 \(f(x)\) 本身固定在观察点上，
+并没有先用近似极限另选中心值。
+\symidx{\(\operatorname{ap}Df(x)\)：近似微分}
+
+第\ref{b1:subsec:140504}小节已经用锥形方向上的正体积比例证明唯一性：
+一个非零线性映射的相对大小 \(|Ah|/|h|\)，不可能在几乎所有小方向上趋于零。
+因此近似微分仍是一张确定的线性映射，而不是随所忽略的集合变化的一族矩阵。
+
+\begin{proposition}\label{b1:prop:approximate-differential-density-set}
+\(f\) 在 \(x\) 处近似可微且近似微分为 \(A\)，当且仅当存在可测集
+\(E\subseteq\Omega\)，使 \(E\) 在 \(x\) 处的密度为 \(1\)，并且
+\[
+ \lim_{\substack{y\to x\\y\in E,\ y\ne x}}
+ \frac{|f(y)-f(x)-A(y-x)|}{|y-x|}=0.
+\]
+\end{proposition}
+\begin{proof}
+将\cref{b1:prop:approximate-limit-density-one}用于可测的误差商，即得正向结论。
+反向若在密度为 \(1\) 的 \(E\) 上有这个极限，
+则对每个 \(\varepsilon>0\)，在充分小的球中，误差商大于 \(\varepsilon\) 的点
+只能落在 \(E\) 的补集。因此坏点比例趋于零，得到定义。
+\end{proof}
+
+这里选出的 \(E\) 可以依赖 \(x\)。
+不能据此立刻声称存在一个公共满测集，使 \(f\) 在其上每一点都有相同的相对可微性质；
+把逐点选择整理成可数个公共部分，正是本节最后需要补充的工作。
+
+若 \(f\) 与 \(g\) 几乎处处相等，并且在当前观察点 \(x\) 也满足 \(f(x)=g(x)\)，
+则两者在 \(x\) 处的近似可微性及近似微分相同。
+因为两种误差商只会在一个零测集上不同，这个集合在每个球中的质量都为零。
+若只改了 \(x\) 处的值，却没有保持 \(f(x)=g(x)\)，则点态结论可能改变。
+不过对于几乎处处结论，可以再除去改值的零测集，所以几乎处处近似可微确实是等价类的性质。
 
 \subsection{与普通微分的关系}
 \label{b1:subsec:160302}
 
-待填充。
+通常可微蕴含近似可微，且两种微分相等。
+其逆命题对一般连续函数也不成立：很窄的尖峰可以使差商沿某列点保持较大，
+同时让这些坏点在小球中所占比例趋于零。
+习题\ref{b1:ex:16-approximate-not-ordinary}给出一个连续的一维例子。
+但如果函数已有局部 Lipschitz 控制，窄峰就不能任意陡峭，逆命题反而成立。
+
+\begin{proposition}\label{b1:prop:lipschitz-approximate-ordinary}
+若 \(f\) 在 \(x\) 的某邻域内 Lipschitz，并在 \(x\) 处近似可微，
+则 \(f\) 在 \(x\) 处通常可微，且
+\[
+ Df(x)=\operatorname{ap}Df(x).
+\]
+\end{proposition}
+\begin{proof}
+记 \(A=\operatorname{ap}Df(x)\)，令
+\[
+ R(y)=f(y)-f(x)-A(y-x).
+\]
+在所取邻域内，\(R\) 的 Lipschitz 常数不超过 \(M=L+\|A\|\)，且 \(R(x)=0\)。
+若 \(M=0\)，结论直接成立。设 \(M>0\)。
+若 \(R(y)=o(|y-x|)\) 不成立，就存在 \(\varepsilon>0\) 及
+\(y_j\to x\)，使 \(r_j=|y_j-x|>0\) 且 \(|R(y_j)|\geq\varepsilon r_j\)。
+取 \(0<c<\min\{1/2,\varepsilon/(2M)\}\)。
+对 \(z\in B(y_j,cr_j)\)，当 \(j\) 充分大时，Lipschitz 估计给出
+\[
+ |R(z)|\geq |R(y_j)|-M|z-y_j|>\frac{\varepsilon r_j}{2},
+ \quad |z-x|<(1+c)r_j.
+\]
+所以这些点全满足
+\[
+ \frac{|R(z)|}{|z-x|}>\frac{\varepsilon}{2(1+c)}.
+\]
+而球 \(B(y_j,cr_j)\) 包含于 \(B(x,(1+c)r_j)\)，
+在后一个球中所占体积比例恒为 \(\bigl(c/(1+c)\bigr)^d>0\)。
+这与误差商近似趋于零矛盾。
+\end{proof}
+
+这个论证说明 Lipschitz 条件在这里的具体作用：
+若某点的误差达到距离的一定比例，附近一整小球的误差也不能骤然消失。
+所以一个例外方向无法独自存在，它会带出一块有固定相对体积的坏点区域。
+近似极限恰好排除了这种情况。
+
+近似微分也有直接的代数运算规则。
+若 \(f,g\) 在同一点近似可微，则任意固定线性组合也近似可微，
+其微分是微分的相应线性组合：用三角不等式后，新的坏集包含在两个旧坏集之并中即可。
+若 \(f\) 在 \(x\) 处近似可微，\(\Phi\) 在 \(f(x)\) 处通常可微，则
+\begin{equation}\label{b1:eq:approximate-chain-rule}
+ \operatorname{ap}D(\Phi\circ f)(x)
+ =D\Phi(f(x))\circ\operatorname{ap}Df(x).
+\end{equation}
+为验证此式，取前一命题之前得到的密度一集合 \(E\)，在其上有
+\[
+ f(y)-f(x)=A(y-x)+o(|y-x|).
+\]
+因而沿 \(E\) 有 \(|f(y)-f(x)|=O(|y-x|)\) 且 \(f(y)\to f(x)\)。
+将它代入 \(\Phi\) 的普通可微展开，所得余项仍为 \(o(|y-x|)\)，
+再由密度一集合判据得到链式法则。
+此处假设外层 \(\Phi\) 通常可微，不能不加条件地换成仅近似可微：
+内层映射可能把大块集合压到外层的异常集合上。
+
+另一个常用结论是，在可测水平集的几乎处处，近似微分为零。
+确切地说，若 \(E=\{x:f(x)=v\}\)，则在 \(E\) 的每个密度点，
+沿 \(E\) 函数恒为 \(v=f(x)\)，故零映射满足密度一集合判据。
+Lebesgue 密度定理说明 \(E\) 中几乎每点都是这样的点。
+特别地，若 \(f\) 本身 Lipschitz，则在该水平集的几乎处处有 \(Df=0\)。
 
 \subsection{可测函数中的精细结构}
 \label{b1:subsec:160303}
 
-待填充。
+近似可微比 Lipschitz 条件弱得多，却仍能在可数个部分上恢复距离控制。
+下面的证明不使用光滑延拓定理，而是从近似微分所给的小球坏点比例出发，
+为两个中心找到一个共同的好点。
+
+\begin{theorem}\label{b1:thm:approximate-lipschitz-pieces}
+设 \(\Omega\subseteq\mathbb R^d\) 为开集，\(f:\Omega\rightarrow\mathbb R^m\)
+为有限值 Lebesgue 可测映射。下列两条等价：
+\begin{equivalences}
+\item\label{b1:item:approximate-pieces-ae}映射 \(f\) 在 \(\Omega\) 中几乎处处近似可微。
+\item\label{b1:item:approximate-pieces-compact}存在可数个紧集 \(K_j\subseteq\Omega\)，使
+\[
+ m_d\left(\Omega\setminus\bigcup_jK_j\right)=0,
+\]
+且每个限制 \(f|_{K_j}\) 都是 Lipschitz 映射，其常数可以依赖于 \(j\)。
+\end{equivalences}
+\end{theorem}
+\begin{proof}
+先证\itemref{b1:item:approximate-pieces-ae}蕴含%
+\itemref{b1:item:approximate-pieces-compact}。
+可以先选 \(f\) 的一个 Borel 代表，并在 \(\mathbb R^d\setminus\Omega\) 上补零。
+原函数与代表只差一个 Lebesgue 零测集；最终选紧集时再避开一个包含该零测集的 Borel 零测集，
+所得限制也就适用于原函数。以下暂把这个 Borel 代表仍记为 \(f\)。
+
+固定 \(0<\eta<2^{-d-1}\)。对正整数 \(n\)，令 \(A_n\) 由所有满足以下条件的
+\(x\in\Omega\) 组成：
+\[
+ \begin{gathered}
+ |x|\leq n,\quad |f(x)|\leq n,\\
+ m_d\bigl(\{\,y\in B(x,r):
+       |f(y)-f(x)|>n|y-x|\,\}\bigr)
+ \leq\eta\,\omega_d r^d
+ \quad(0<r<1/n).
+ \end{gathered}
+\]
+这些集合是 Borel 集。事实上，被积的坏点指标函数关于 \((x,y)\) 为 Borel 函数，
+Tonelli 定理保证对 \(y\) 积分后关于 \(x\) 可测；
+而半径条件只需对有理数 \(r\) 检查，任意半径由开球从内逼近及 \(r^d\) 连续得到。
+
+若 \(f\) 在 \(x\) 处近似可微，其微分为 \(T\)，选整数 \(n_0>\|T\|+1\)。
+当 \(|f(y)-f(x)|>n_0|y-x|\) 时，误差商必大于 \(1\)。
+由近似微分，充分小球中的这类点所占比例小于 \(\eta\)。
+再把 \(n_0\) 增大到某个 \(n\)，使 \(1/n\) 小于所需半径，
+并使 \(|x|,|f(x)|\leq n\)，便有 \(x\in A_n\)。
+增大阈值只会缩小坏集，所以这一步保持估计。
+因此 \(\bigcup_n A_n\) 包含几乎所有点。
+
+证明 \(f|_{A_n}\) 为 Lipschitz。取不同的 \(x,y\in A_n\)，记 \(\rho=|x-y|\)。
+若 \(\rho<1/(2n)\)，考虑
+\[
+ B\left(\frac{x+y}{2},\rho\right)
+ \subset B(x,2\rho)\cap B(y,2\rho).
+\]
+两个中心各自的坏点集，在其半径为 \(2\rho\) 的球内至多具有质量
+\(\eta\omega_d(2\rho)^d\)。
+二者质量之和严格小于 \(\omega_d\rho^d\)，所以在上述公共球中可找到一点 \(z\)，
+它对两个中心都不是坏点。于是
+\[
+ |f(x)-f(y)|
+ \leq|f(x)-f(z)|+|f(z)-f(y)|
+ \leq n\bigl(|x-z|+|z-y|\bigr)
+ \leq4n\rho.
+\]
+若 \(\rho\geq1/(2n)\)，则由 \(|f(x)|,|f(y)|\leq n\)，有
+\[
+ |f(x)-f(y)|\leq2n\leq4n^2\rho.
+\]
+合起来得到 \(f|_{A_n}\) 的 Lipschitz 常数不超过 \(4n^2\)。
+
+每个 \(A_n\) 有界，Lebesgue 测度有限。
+由紧内正则性，可以在 \(A_n\) 内选可数个紧集，其并除去 \(A_n\) 的一个零测集；
+若原函数换过代表，就先从 \(A_n\) 删去前述 Borel 零测集。
+把所有这些紧集列为一列 \((K_j)\)，得到所需覆盖及 Lipschitz 限制。
+
+反过来，假设\itemref{b1:item:approximate-pieces-compact}成立。
+由逐坐标 McShane 延拓，将 \(f|_{K_j}\) 延拓为全空间 Lipschitz 映射 \(F_j\)。
+Rademacher 定理保证 \(F_j\) 几乎处处可微，Lebesgue 密度定理保证
+\(K_j\) 中几乎每点都是 \(K_j\) 的密度点。
+在同时满足两条件的 \(x\in K_j\)，沿 \(K_j\) 有 \(f=F_j\)，故
+\[
+ \lim_{\substack{y\to x\\y\in K_j,\ y\ne x}}
+ \frac{|f(y)-f(x)-DF_j(x)(y-x)|}{|y-x|}=0.
+\]
+由密度一集合判据，\(f\) 在 \(x\) 处近似可微。
+合并可数个零测例外并使用紧集族几乎处处覆盖，即得%
+\itemref{b1:item:approximate-pieces-ae}。
+\end{proof}
+
+定理只保证分片上的 Lipschitz 性质，常数可能趋于无穷，片与片之间也不提供统一距离估计。
+因此不能由它倒推出 \(f\) 局部 Lipschitz。
+同样，紧片的像是紧的，可数个紧片像之并也是 Borel 集，
+但被遗漏的定义域零测集可能在一般可测映射下有很大的像；
+没有额外的零测集映射性质时，不能忽略这部分像。
+
+\begin{corollary}\label{b1:cor:approximate-derivative-measurable}
+若 \(f\) 几乎处处近似可微，则其近似微分的矩阵系数有 Borel 可测代表。
+\end{corollary}
+\begin{proof}
+沿前一定理取紧集 \(K_j\) 和全空间延拓 \(F_j\)。
+由\cref{b1:prop:lipschitz-differentiability-borel}，每个 \(DF_j\)
+在可微集外补零后是 Borel 矩阵函数。
+置 \(E_j=K_j\setminus\bigcup_{i<j}K_i\)，在 \(E_j\) 上取矩阵 \(DF_j\)，
+在所有 \(E_j\) 之外取零，得到 Borel 矩阵函数。
+前一定理的反向证明表明，这个函数在几乎处处的点等于 \(\operatorname{ap}Df\)。
+\end{proof}
+
+普通微分从相邻点的逐点行为产生，近似微分则先允许丢掉相对稀薄的异常点。
+本节的分片定理说明，两者之间可以通过可数个 Lipschitz 限制建立联系。
+后续面积公式将需要这种联系，但还必须另行处理像的测度与重数；
+本节没有把这些未建立的结论包含进“分片”二字之中。

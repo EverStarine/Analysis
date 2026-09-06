@@ -1,19 +1,268 @@
 % !TeX root = ../../Book1.tex
 \OptionalSection{绝对连续曲线与度量导数}{b1:sec:1604}
 
-% TODO: 撰写本节正文。
+在欧氏空间中，曲线的导数同时记录速度的大小与方向。一般度量空间没有向量差，方向未必能够定义，但相邻时刻的位置仍有距离。用距离除以时间差，可以保留速度的大小；要使它与长度的积分相联系，合适的条件是绝对连续性。
+
+本节的参数区间固定为 \([a,b]\)，其中 \(a<b\)。空间只假设为度量空间，不要求线性、完备或局部紧。我们先补齐实值绝对连续函数的积分表示，再把曲线转换成可数个实值距离函数。这一转换使前面建立的测度论微积分能够用于没有坐标的空间。
+
+% 实读来源：Fremlin2016Measure，作者官方 chap22.pdf，225B--E（该文件印刷 pp.27--29）；
+% 以及作者官方 chap26.tex 的 264Yp（度量空间绝对连续性的习题定义）。
+% 实 AC 积分表示另以变差、单调分解、广义逆推前和 RN 补写，不把未写的 Stieltjes 构造当作先修。
+% 度量导数对照 Rossi--Mielke--Savare (2008)，A metric approach to a class of doubly
+% nonlinear evolution equations and applications，作者公开版 §2.1，Proposition 2.2 及证明，pp.10--12：
+% https://riccarda-rossi.unibs.it/pubblicazioni/Published%20papers/pubblicazioni-files/rossi-mielke-savare.pdf
+% 正式发表信息：Ann. Scuola Norm. Sup. Pisa Cl. Sci. (5), 7(1), 97--169。
+% 该文处理更广的非对称距离；本节只证对称度量，用可数距离测试和长度函数独立组织证明。
 
 \subsection{绝对连续曲线}
 \label{b1:subsec:160401}
 
-待填充。
+\begin{definition}
+\label{b1:def:absolutely-continuous-curve}
+设 \((X,d)\) 为度量空间，\(\gamma:[a,b]\to X\)。若对每个 \(\varepsilon>0\)，存在 \(\delta>0\)，使任意有限族内点互不相交的区间 \([s_i,t_i]\subseteq[a,b]\) 满足
+\[
+\sum_i(t_i-s_i)<\delta
+\quad\Longrightarrow\quad
+\sum_i d\bigl(\gamma(s_i),\gamma(t_i)\bigr)<\varepsilon,
+\]
+则称 \(\gamma\) 为\term[juedui-lianxu-quxian]{绝对连续曲线}[absolutely continuous curve]，记作 \(\gamma\in\operatorname{AC}([a,b];X)\)。当 \(X=\mathbb R\) 时，也称其为\term[juedui-lianxu-hanshu]{绝对连续函数}[absolutely continuous function]。
+\end{definition}
+
+这里只取一个区间，便可看出绝对连续曲线一致连续；它的像是紧的，因而是可分度量空间。Lipschitz 曲线满足定义，因为所有距离之和不超过 Lipschitz 常数乘以区间长度之和。绝对连续性允许不同位置具有不同的速度控制，但要求小的总时间长度只能产生小的总位移。
+
+\begin{lemma}
+\label{b1:lem:ac-variation}
+设 \(\gamma\in\operatorname{AC}([a,b];X)\)，定义
+\[
+V(t)=\sup\Bigl\{\sum_{i=1}^n d\bigl(\gamma(t_i),\gamma(t_{i-1})\bigr):
+a=t_0<\cdots<t_n=t\Bigr\},
+\quad V(a)=0.
+\]
+则 \(V\) 有限、单调不减且绝对连续。对 \(a\leq s<t\leq b\)，有
+\[
+d\bigl(\gamma(s),\gamma(t)\bigr)\leq V(t)-V(s),
+\]
+而右端正是同一个分割上确界在子区间 \([s,t]\) 上的值。
+\end{lemma}
+\begin{proof}
+在一个分割中插入中间点，由三角不等式，距离和不会减小；反过来，可以拼接两个子区间的分割。这证明分割上确界对子区间可加，允许暂取无穷值。
+
+对 \(\varepsilon=1\) 取定义中的 \(\delta\)，把 \([a,b]\) 分成有限个长度小于 \(\delta\) 的区间。在其中任一区间内，任意分割的各小段总长度小于 \(\delta\)，所以距离和小于 \(1\)。把一个任意分割加上这些预定端点，便得到总上界，故 \(V(b)<\infty\)。单调性、子区间公式及位移估计随之成立。
+
+最后，给定 \(\varepsilon>0\)，对绝对连续性取使距离和小于 \(\varepsilon/2\) 的 \(\delta\)。若一族不交区间的总长度小于 \(\delta\)，在每个区间内部选分割来逼近其分割上确界。所有分割小段仍组成总长度小于 \(\delta\) 的不交族。因此，取这些有限个上确界后，
+\[
+\sum_i\bigl(V(t_i)-V(s_i)\bigr)\leq\varepsilon/2<\varepsilon.
+\]
+这正是 \(V\) 的绝对连续性。
+\end{proof}
+
+对于实函数，上式的分割上确界就是其全变差。下一定理是后面度量速度证明的实值基础。Fremlin 的《Measure Theory》\cite[225B--E]{Fremlin2016Measure}系统讨论绝对连续函数及其积分表示；下面采用第六章的 Radon--Nikodym 定理来证明表示方向，使这里不依赖尚未建立的一般有界变差函数微分理论。
+
+\begin{theorem}[微积分基本定理，绝对连续函数]
+\label{b1:thm:ac-fundamental-calculus}
+实函数 \(f:[a,b]\to\mathbb R\) 绝对连续，当且仅当存在 \(g\in L^1([a,b])\)，使
+\[
+f(t)=f(a)+\int_a^t g(r)\,\mathrm dr
+\quad(t\in[a,b]).
+\]
+在这种情形下，\(f'=g\) 几乎处处，因而可以取 \(g=f'\)。
+\end{theorem}
+\begin{proof}
+先设 \(f\) 绝对连续，令 \(V\) 为引理\ref{b1:lem:ac-variation}中的实值变差函数。两个函数
+\[
+P(t)=\frac{V(t)+f(t)-f(a)}2,
+\quad
+Q(t)=\frac{V(t)-f(t)+f(a)}2
+\]
+都单调不减，因为 \(V(t)-V(s)\geq|f(t)-f(s)|\)。它们还绝对连续，在 \(a\) 处为零，且 \(f-f(a)=P-Q\)。所以只需为任意单调不减的绝对连续函数 \(F\)，在 \(F(a)=0\) 的归一化下，构造积分密度。
+
+令 \(M=F(b)\)。若 \(M=0\)，则 \(F=0\)。若 \(M>0\)，对 \(0<u<M\) 定义
+\[
+q(u)=\min\{t\in[a,b]:F(t)\geq u\}.
+\]
+这个最小值由 \(F\) 的连续性与单调性存在，并且
+\[
+q(u)\leq t\quad\Longleftrightarrow\quad u\leq F(t).
+\]
+所以 \(q\) 是 Borel 可测函数。把 \((0,M)\) 上的 Lebesgue 测度经 \(q\) 推前，得到 \([a,b]\) 上的有限正 Borel 测度 \(\mu_F\)，满足
+\[
+\mu_F([a,t])=F(t),
+\quad
+\mu_F((s,t])=F(t)-F(s).
+\]
+又由 \(F\) 连续，这个测度没有原子，包括两个端点。
+
+现证明 \(\mu_F\ll m_1\)。设 Borel 集 \(N\subseteq[a,b]\) 的 Lebesgue 测度为零，给定 \(\varepsilon>0\)，取 \(F\) 的绝对连续性所对应的 \(\delta\)。由 Lebesgue 测度的外正则性，存在开集 \(O\supseteq N\)，使 \(m_1(O)<\delta\)。开集 \(O\) 与 \([a,b]\) 的交可分成可数个内点互不相交的区间；端点有没有包含不影响 \(\mu_F\) 的值。每个有限子族的 \(\mu_F\) 测度之和，就是相应的 \(F\) 增量之和，不超过 \(\varepsilon\)。由可数可加性，\(\mu_F(N)\leq\mu_F(O\cap[a,b])\leq\varepsilon\)。令 \(\varepsilon\downarrow0\)，得到绝对连续性。
+
+由定理\ref{b1:thm:radon-nikodym-finite}，存在非负 \(g_F\in L^1([a,b])\)，使 \(\mu_F=g_Fm_1\)，因此 \(F(t)=\int_a^t g_F\)。分别用于 \(P,Q\)，便得到所需 \(g=g_P-g_Q\)。这同时补出了本证明所需的单调函数生成测度的步骤。
+
+反过来，若 \(f(t)=f(a)+\int_a^t g\)，则对任意不交区间族，
+\[
+\sum_i|f(t_i)-f(s_i)|
+\leq\int_{\bigcup_i[s_i,t_i]}|g(r)|\,\mathrm dr.
+\]
+积分的绝对连续性，即命题\ref{b1:prop:integral-absolute-continuity}，证明 \(f\) 绝对连续。最后，在 \(g\) 的每个内部 Lebesgue 点 \(t\)，
+\[
+\left|\frac{f(t+h)-f(t)}h-g(t)\right|
+\leq\frac1{|h|}\int_{t-|h|}^{t+|h|}|g(r)-g(t)|\,\mathrm dr
+\longrightarrow0.
+\]
+定理\ref{b1:thm:lebesgue-point}遂给出 \(f'=g\) 几乎处处。
+\end{proof}
+
+例如，\(t\mapsto\sqrt t\) 在 \([0,1]\) 上绝对连续，因为它是 \((2\sqrt t)^{-1}\) 的积分，但它在零点附近不是 Lipschitz 的。另一方向的边界由习题\ref{b1:ex:14-cantor-function}中的 Cantor 函数给出：它连续、单调且导数几乎处处为零，却不是常数，所以不是绝对连续函数。仅有连续性和几乎处处可微性，还不足以保证微积分基本定理。
+
+对一般度量曲线，引理与实值积分表示立即给出一个等价而实用的条件：\(\gamma\) 绝对连续，当且仅当存在非负 \(g\in L^1([a,b])\)，使
+\[
+d\bigl(\gamma(s),\gamma(t)\bigr)
+\leq\int_s^t g(r)\,\mathrm dr
+\quad(a\leq s<t\leq b).
+\]
+正向取 \(g=V'\)，因为单调的 \(V\) 有非负导数且 \(V(t)-V(s)=\int_s^tV'\)；反向对不交区间求和，再用积分绝对连续性。于是绝对连续曲线确有一个可积的速度上界。下一小节将证明，这些上界中有一个几乎处处最小的选择。
 
 \subsection{度量导数}
 \label{b1:subsec:160402}
 
-待填充。
+\begin{definition}
+\label{b1:def:metric-derivative}
+设 \(\gamma:[a,b]\to X\) 为曲线。若在 \(t\in(a,b)\) 处极限
+\[
+|\gamma'|_d(t)
+=\lim_{h\to0}\frac{d\bigl(\gamma(t+h),\gamma(t)\bigr)}{|h|}
+\]
+存在且有限，则称其为 \(\gamma\) 在 \(t\) 处的\term[duliang-daoshu]{度量导数}[metric derivative]，也称该处的度量速度。这里 \(|\gamma'|_d\) 是一个整体记号，并不预设 \(\gamma'\) 作为向量存在。
+\symidx{\(\lvert\gamma'\rvert_d(t)\)：曲线的度量导数}
+\end{definition}
+
+度量导数及其最小控制性质，可以与 Rossi、Mielke、Savar\'e 的《A metric approach to a class of doubly nonlinear evolution equations and applications》\cite[第2.1节，命题2.2]{Rossi2008Metric}对照阅读。该文还允许非对称距离，服务于演化方程的度量表述；本节只讨论通常的对称度量，并将证明组织为距离函数与长度函数之间的比较。
+
+\begin{theorem}[度量导数的存在性]
+\label{b1:thm:metric-derivative}
+若 \(\gamma\in\operatorname{AC}([a,b];X)\)，则其度量导数几乎处处存在。在例外零集上把它赋值为零后，它是可积函数，并且
+\[
+d\bigl(\gamma(s),\gamma(t)\bigr)
+\leq\int_s^t|\gamma'|_d(r)\,\mathrm dr
+\quad(a\leq s<t\leq b).
+\]
+若非负 \(g\in L^1([a,b])\) 也满足这个位移控制不等式，则 \(|\gamma'|_d\leq g\) 几乎处处。
+\end{theorem}
+\begin{proof}
+在紧像 \(\gamma([a,b])\) 中取可数稠密集 \(\{y_j:j\geq1\}\)，令
+\[
+f_j(t)=d\bigl(\gamma(t),y_j\bigr).
+\]
+三角不等式给出 \(|f_j(t)-f_j(s)|\leq d\bigl(\gamma(t),\gamma(s)\bigr)\)，因此每个 \(f_j\) 都是实值绝对连续函数。它们还完整记录像中两点的距离：
+\[
+d(x,y)=\sup_j|d(x,y_j)-d(y,y_j)|
+\quad(x,y\in\gamma([a,b])).
+\]
+其中“\(\geq\)”来自三角不等式；为得反向不等式，只需选 \(y_j\to x\)。
+
+在全部 \(f_j\) 及引理中的 \(V\) 都可微的共同满测度集上，定义
+\[
+v(t)=\sup_j|f_j'(t)|,
+\]
+在其补集上赋值为零。导数可由可测差商的极限得到，因此 \(v\) 可测。由 \(|f_j(t)-f_j(s)|\leq|V(t)-V(s)|\)，有 \(0\leq v\leq V'\) 几乎处处，故 \(v\in L^1\)。实值微积分基本定理又给出
+\[
+|f_j(t)-f_j(s)|\leq\int_s^t v(r)\,\mathrm dr.
+\]
+对 \(j\) 取上确界，得到 \(d\bigl(\gamma(s),\gamma(t)\bigr)\leq\int_s^tv\)。在 \([s,t]\) 的任意分割上求和并取上确界，进一步得到
+\[
+V(t)-V(s)\leq\int_s^t v(r)\,\mathrm dr.
+\]
+在 \(V\) 可微且 \(v\) 为 Lebesgue 点之处取差商，可知 \(V'\leq v\) 几乎处处。因此
+\[
+v=V'\quad\text{几乎处处}.
+\]
+
+现在取一个满足上述等式、且全部 \(f_j\) 和 \(V\) 可微的内部点 \(t\)。对每个 \(j\)，距离商不小于 \(|f_j(t+h)-f_j(t)|/|h|\)，所以
+\[
+\liminf_{h\to0}\frac{d\bigl(\gamma(t+h),\gamma(t)\bigr)}{|h|}
+\geq\sup_j|f_j'(t)|=v(t).
+\]
+另一方面，由引理\ref{b1:lem:ac-variation}，同一个距离商不超过 \(|V(t+h)-V(t)|/|h|\)，故其上极限不超过 \(V'(t)=v(t)\)。这证明极限存在，且 \(|\gamma'|_d=V'=v\) 几乎处处，并给出可积性及位移估计。
+
+若 \(g\) 是另一个可积控制函数，则在度量导数存在且 \(g\) 为 Lebesgue 点的地方，对 \(\gamma(t+h)\) 与 \(\gamma(t)\) 使用控制不等式，再除以 \(|h|\) 并令 \(h\to0\)，便得到 \(|\gamma'|_d(t)\leq g(t)\)。
+\end{proof}
+
+这个证明的可数性来自曲线的紧像，而不是来自环境空间的可分性。它也没有把可数个实导数组合成一个向量导数，只是用这些导数确定了一个非负速度。
+
+这种区别在无限维空间中确实会发生。取 \(X=L^1(0,1)\)，令 \(\gamma(t)=\mathbf1_{[0,t]}\)。则
+\[
+\|\gamma(t)-\gamma(s)\|_1=|t-s|,
+\]
+所以曲线是等距的，\(|\gamma'|_d(t)=1\) 在所有内部点成立。然而，对充分小的 \(h>0\)，正向差商为 \(q_h=h^{-1}\mathbf1_{(t,t+h]}\)，并且
+\[
+\|q_h-q_{h/2}\|_1
+=\int_t^{t+h/2}\frac1h\,\mathrm dr
++\int_{t+h/2}^{t+h}\frac1h\,\mathrm dr=1.
+\]
+差商不是 Cauchy 族，故在任何内部点都不存在 \(L^1\) 范数意义下的向量导数。一般 Banach 空间中的绝对连续曲线不能直接套用有限维 Rademacher 定理；度量导数的存在性却不受这个障碍影响。
 
 \subsection{长度公式}
 \label{b1:subsec:160403}
 
-待填充。
+\begin{definition}
+\label{b1:def:curve-length}
+给定连续曲线 \(\gamma:[a,b]\to X\)，称
+\[
+\ell(\gamma)
+=\sup\Bigl\{\sum_{i=1}^n d\bigl(\gamma(t_i),\gamma(t_{i-1})\bigr):
+a=t_0<\cdots<t_n=b\Bigr\}
+\]
+为曲线的\term[quxian-changdu]{长度}[length of a curve]。若 \(\ell(\gamma)<\infty\)，则称其为\term[keqiuchang-quxian]{可求长曲线}[rectifiable curve]。
+\symidx{\(\ell(\gamma)\)：参数化曲线的长度}
+\end{definition}
+
+长度计入曲线的行进过程，不只是像集的大小。绝对连续曲线的长度就是先前的 \(V(b)\)，而 \(V(t)\) 记录截至时刻 \(t\) 的累积长度。
+
+\begin{theorem}[绝对连续曲线的长度公式]
+\label{b1:thm:metric-curve-length}
+设 \(\gamma\in\operatorname{AC}([a,b];X)\)。则对任意 \([s,t]\subseteq[a,b]\)，
+\[
+\ell\bigl(\gamma|_{[s,t]}\bigr)
+=\int_s^t|\gamma'|_d(r)\,\mathrm dr.
+\]
+若 \(X=\mathbb R^m\)，则 \(\gamma'\) 几乎处处存在，且
+\[
+|\gamma'|_d=\|\gamma'\|
+\quad\text{几乎处处},
+\quad
+\ell(\gamma)=\int_a^b\|\gamma'(t)\|\,\mathrm dt.
+\]
+\end{theorem}
+\begin{proof}
+度量导数定理的证明已经得到 \(|\gamma'|_d=V'\) 几乎处处。由 \(V\) 的绝对连续性及子区间可加性，
+\[
+\ell\bigl(\gamma|_{[s,t]}\bigr)
+=V(t)-V(s)=\int_s^tV'(r)\,\mathrm dr,
+\]
+这就是长度公式。若像在 \(\mathbb R^m\) 中，每个坐标函数都是实值绝对连续函数，因而可微的共同满测度集只需除去有限个零集。在此集合上，向量差商收敛到坐标导数组成的 \(\gamma'\)，取范数便得 \(|\gamma'|_d=\|\gamma'\|\)。
+\end{proof}
+
+绝对连续性不能由“连续且可求长”替换。Cantor 函数作为 \([0,1]\) 中的一条单调连续曲线，长度为 \(1\)，度量速度却几乎处处为零。它把一部分行进过程集中在零测参数集上，导数的 Lebesgue 积分不能恢复这部分长度。
+
+\begin{proposition}
+\label{b1:prop:arc-length-parameterization}
+设 \(\gamma\in\operatorname{AC}([a,b];X)\)，且 \(L=\ell(\gamma)>0\)。则存在 \(1\)-Lipschitz 曲线 \(\eta:[0,L]\to X\)，满足
+\[
+\gamma(t)=\eta\bigl(V(t)\bigr),
+\quad
+\ell\bigl(\eta|_{[u,v]}\bigr)=v-u
+\quad(0\leq u<v\leq L).
+\]
+因而 \(|\eta'|_d=1\) 几乎处处。这称为曲线的\term[huchang-canshuhua]{弧长参数化}[arc-length parameterization]。
+\end{proposition}
+\begin{proof}
+函数 \(V\) 连续、单调不减，从 \([a,b]\) 映满 \([0,L]\)。定义 \(\eta(s)=\gamma(t)\)，其中 \(V(t)=s\)。若两个参数有相同的 \(V\) 值，则它们的像点距离不超过 \(V\) 的增量零，所以定义与选择无关。同一个位移估计给出 \(d\bigl(\eta(u),\eta(v)\bigr)\leq v-u\)，故 \(\eta\) 是 \(1\)-Lipschitz 的，特别有 \(\ell(\eta)\leq L\)。
+
+反过来，把 \(\gamma\) 的任意分割经 \(V\) 映到 \([0,L]\)，删去重复参数，距离和保持不变。因此 \(\ell(\gamma)\leq\ell(\eta)\)，遂有 \(\ell(\eta)=L\)。长度对相邻子区间可加，而每个子区间的长度都不超过其参数长度，于是 \([0,u]\)、\([u,v]\)、\([v,L]\) 三段必须分别取到这个上界。故 \(\ell\bigl(\eta|_{[u,v]}\bigr)=v-u\)。由长度公式，\(\int_u^v|\eta'|_d=v-u\) 对所有子区间成立，再用 Lebesgue 微分即得 \(|\eta'|_d=1\) 几乎处处。
+\end{proof}
+
+若 \(L=0\)，曲线由位移估计必为常值。对 \(L>0\)，弧长参数化与上一章的 Lipschitz 测度估计还给出
+\[
+\mathcal H^1\bigl(\gamma([a,b])\bigr)
+=\mathcal H^1\bigl(\eta([0,L])\bigr)
+\leq\mathcal H^1([0,L])=L.
+\]
+这里用到了命题\ref{b1:prop:hausdorff-lipschitz}及定理\ref{b1:thm:hausdorff-lebesgue}。不等式可以严格：曲线先从 \(0\) 匀速走到 \(1\)，再原路返回 \(0\)，其像为 \([0,1]\)，一维测度为 \(1\)，但长度为 \(2\)。像集测度不计重复经过，长度则把它计入；下一章的面积公式将以重数处理这种区别。

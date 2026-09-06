@@ -2,24 +2,266 @@
 \section{Rademacher 定理}
 \label{b1:sec:1602}
 
-% TODO: 撰写本节正文。
+Lipschitz 条件控制任意两点之间的增量，却没有直接给出增量的一阶主部。本节证明：在欧氏空间中，这个一阶主部几乎处处存在。论证采用 Leon Simon 的《Lectures on Geometric Measure Theory》\cite[第 5.2 节，第 30--32 页]{Simon1983Lectures}中的方向导数路线：先沿直线取得导数，再借平移下的积分恒等式识别它们之间的线性关系，最后把逐方向的极限提升为全微分。
+
+% 来源：实际读取 Simon1983Lectures §5.2，印刷 pp.30--32；
+% 对照 Fremlin2016Measure 官方 chap26.tex 的 262Q。
+% Simon 在一维处调用绝对连续理论；本节改用已证 L1 对偶表示补齐此桥，
+% 不预借16.4的一般绝对连续函数定理。紧支集测试分离用14.4的近似恒等核。
 
 \subsection{一维 Lipschitz 函数}
 \label{b1:subsec:160201}
 
-待填充。
+先考察闭区间上的函数。此时不只是差商几乎处处收敛：函数的全部增量还可以由一个有界密度的积分恢复。这一点将保证沿直线取得的导数保留原函数的信息。
+
+\begin{theorem}\label{b1:thm:one-dimensional-lipschitz-ftc}
+设 \(a<b\)，且 \(f:[a,b]\rightarrow\mathbb R^m\) 为 \(L\)-Lipschitz 映射。则存在可测函数 \(g:(a,b)\rightarrow\mathbb R^m\)，使 \(|g|\leq L\) 几乎处处成立，并且对全部 \(a\leq s<t\leq b\)，
+\[
+ f(t)-f(s)=\int_s^t g(u)\,\mathrm du.
+\]
+这里的向量积分按分量定义。函数 \(f\) 在 \((a,b)\) 的几乎每个点可导，且 \(f'=g\) 几乎处处；上述积分密度在几乎处处相等的意义下唯一。
+\end{theorem}
+\begin{proof}
+先设 \(m=1\)。对区间阶梯函数
+\[
+ \phi=\sum_{i=1}^N c_i\mathbf1_{(t_{i-1},t_i]},
+ \quad a=t_0<t_1<\cdots<t_N=b,
+\]
+定义
+\[
+ \Lambda(\phi)=\sum_{i=1}^N c_i\bigl(f(t_i)-f(t_{i-1})\bigr).
+\]
+细分区间不改变右端，因为相邻增量相加会消去中间端点值。两种表示取共同细分后，在每个正长度开区间上的系数必须一致；有限个端点不影响 \(L^1(a,b)\) 的等价类。因此 \(\Lambda\) 是这个阶梯函数子空间上的良定义线性泛函，而且
+\[
+ |\Lambda(\phi)|
+ \leq L\sum_{i=1}^N|c_i|(t_i-t_{i-1})
+ =L\|\phi\|_1.
+\]
+这类阶梯函数在 \(L^1(a,b)\) 中稠密。事实上，把任意 \(L^1(a,b)\) 函数在区间外延为零，由\cref{b1:prop:lp-continuous-dense}先用 \(\mathbb R\) 上的连续紧支集函数作 \(L^1\) 逼近；再利用其在 \([a,b]\) 上的一致连续性，用有限区间阶梯函数一致逼近其限制。
+
+由\cref{b1:prop:continuous-extension-closure}，\(\Lambda\) 唯一延拓为整个 \(L^1(a,b)\) 上的连续线性泛函，范数不超过 \(L\)。再用\cref{b1:thm:l1-dual-sigma-finite}，得到实函数 \(g\in L^\infty(a,b)\)，满足
+\[
+ \|g\|_\infty\leq L,\quad
+ \Lambda(\phi)=\int_a^b\phi(u)g(u)\,\mathrm du.
+\]
+测试 \(\mathbf1_{(s,t]}\) 就得到所需增量公式。这是对任意端点成立的等式，不是仅在删去一组端点后成立的表示。
+
+取 \(g\) 的一个有限值代表。若 \(x\in(a,b)\) 是它的 Lebesgue 点，则对充分小的非零 \(h\)，无论 \(h\) 正负，都有
+\[
+ \left|\frac{f(x+h)-f(x)}h-g(x)\right|
+ \leq\frac1{|h|}\int_{x-|h|}^{x+|h|}
+                 |g(u)-g(x)|\,\mathrm du
+ \longrightarrow0.
+\]
+右端是中心区间平均绝对偏差的两倍，故由\cref{b1:thm:lebesgue-point}趋零。这证明 \(f'=g\) 几乎处处，也说明任何给出同样增量公式的可积密度都必须几乎处处等于 \(f'\)。
+
+对一般 \(m\)，逐个实分量应用已证结论，并删去有限个例外零测集的并。在剩余点，各分量差商同时收敛，因而向量差商收敛到 \(g\)。原来的 Lipschitz 估计直接给出
+\[
+ |g(x)|=\lim_{h\to0}\frac{|f(x+h)-f(x)|}{|h|}\leq L.
+\]
+于是得到欧氏范数下的界 \(L\)，而不只是从分量界拼出的 \(\sqrt mL\)。积分等式及唯一性也逐分量成立。
+\end{proof}
+
+例如 \(f(t)=|t|\) 的密度可取为 \(\operatorname{sgn}t\)，并在原点任意赋值。这个函数在原点有折角，但折角不妨碍积分恢复任意两个端点之间的增量。定理并不声称导数处处存在，更不声称导数连续。
 
 \subsection{高维可微性}
 \label{b1:subsec:160202}
 
-待填充。
+在高维情形，需要先分清沿一条直线的导数与同时控制全部增量的微分。
+
+\begin{definition}\label{b1:def:frechet-differentiability}
+设 \(U\subseteq\mathbb R^n\) 为开集，\(f:U\rightarrow\mathbb R^m\)，且 \(x\in U\)。若存在一个线性映射 \(A:\mathbb R^n\rightarrow\mathbb R^m\)，使
+\[
+ \lim_{\substack{h\to0\\h\ne0}}
+       \frac{|f(x+h)-f(x)-Ah|}{|h|}=0,
+\]
+则称 \(f\) 在 \(x\) 处\term[kewei]{可微}[differentiable]，称 \(A\) 为它在该点的\term[quan-weifen]{全微分}[total differential]，记作 \(Df(x)\)。若固定 \(v\in\mathbb R^n\)，且有限极限
+\[
+ D_vf(x)=\lim_{t\to0}\frac{f(x+tv)-f(x)}t
+\]
+存在，则称其为 \(f\) 在 \(x\) 处沿 \(v\) 的\term[fangxiang-daoshu]{方向导数}[directional derivative]。
+\end{definition}
+\symidx{\(Df(x)\)：映射在一点的全微分}
+
+全微分唯一：若 \(A,B\) 都满足定义，沿 \(h=tv\) 取极限便得到 \(Av=Bv\)，这对每个 \(v\) 成立。可微性还给出 \(D_vf(x)=Df(x)v\)。若 \(f\) 在 \(x\) 附近为 \(L\)-Lipschitz，则沿同样的增量取极限，得到
+\[
+ |Df(x)v|\leq L|v|,\quad \|Df(x)\|\leq L,
+\]
+其中 \(\|\cdot\|\) 是线性映射的算子范数。
+
+反过来，所有方向导数都存在，并不足以给出一个全微分。考虑
+\[
+ F(x,y)=
+ \begin{cases}
+ \dfrac{xy^2}{x^2+y^2},&(x,y)\ne(0,0),\\[4pt]
+ 0,&(x,y)=(0,0).
+ \end{cases}
+\]
+这个函数实际上是全局 Lipschitz 的。原点外的偏导数为
+\[
+ \partial_xF=\frac{y^2(y^2-x^2)}{(x^2+y^2)^2},
+ \quad
+ \partial_yF=\frac{2x^3y}{(x^2+y^2)^2},
+\]
+二者的绝对值都不超过 \(1\)，故梯度范数不超过 \(\sqrt2\)。不经过原点的线段可直接应用一元中值估计；若线段经过原点，则分成两段，并利用 \(F\) 在原点的连续性取极限。因此 \(F\) 的 Lipschitz 常数不超过 \(\sqrt2\)。然而，对非零方向 \(v=(v_1,v_2)\)，
+\[
+ D_vF(0,0)=\frac{v_1v_2^2}{v_1^2+v_2^2}.
+\]
+两个坐标方向的导数均为零，而方向 \((1,1)\) 的导数为 \(1/2\)，所以这些数不可能来自同一个线性映射。
+
+Rademacher 定理的证明必须排除上述非线性现象在正测度集合上发生。为此，先给出一个以积分辨认局部可积函数的工具。以下 \(C_c^1(U)\) 表示具有紧支集、且一阶偏导数连续的实值函数。
+
+\begin{lemma}\label{b1:lem:compact-tests-separate}
+设 \(w\in L^1_{\mathrm{loc}}(U)\) 为实值函数。如果对每个 \(\phi\in C_c^1(U)\) 都有
+\[
+ \int_U w(y)\phi(y)\,\mathrm dy=0,
+\]
+那么 \(w=0\) 几乎处处。
+\end{lemma}
+\begin{proof}
+取
+\[
+ \eta(z)=c(1-|z|^2)_+^2,
+ \quad c^{-1}=\int_{B(0,1)}(1-|z|^2)^2\,\mathrm dz.
+\]
+归一化常数正且有限，\(\eta\) 非负、径向非增、积分为 \(1\)。由于球内的函数及其一阶偏导数在球面上都与外侧的零函数相接，\(\eta\in C_c^1(\mathbb R^n)\)。固定 \(x\in U\)，并取 \(\overline B(x,r)\subseteq U\)。函数
+\[
+ \phi_{x,r}(y)=r^{-n}\eta\left(\frac{y-x}r\right)
+\]
+属于允许的测试类，故其与 \(w\) 的积分为零。若 \(x\) 是 \(w\) 的 Lebesgue 点，\cref{b1:prop:approx-identity-lebesgue-point}的紧支集版本说明该积分在 \(r\downarrow0\) 时趋于 \(w(x)\)。几乎每个点都是这样的点，所以 \(w=0\) 几乎处处。
+\end{proof}
 
 \subsection{Rademacher 定理}
 \label{b1:subsec:160203}
 
-待填充。
+\term*[rademacher-dingli]{Rademacher 定理}[Rademacher theorem]中的“几乎处处”指 \(n\) 维 Lebesgue 测度。它适用于任意有限维值域，不要求定义域中的函数已经具有连续偏导数。
+
+\begin{theorem}[Rademacher]\label{b1:thm:rademacher}
+设 \(U\subseteq\mathbb R^n\) 为开集，且 \(f:U\rightarrow\mathbb R^m\) 局部 Lipschitz。则 \(f\) 在 \(U\) 的几乎每个点可微。若 \(f\) 在某个邻域内为 \(L\)-Lipschitz，则该邻域内每个可微点均满足 \(\|Df(x)\|\leq L\)。
+\end{theorem}
+\begin{proof}
+先证明全空间上的实值 \(L\)-Lipschitz 函数。对每个固定的单位向量 \(v\)，记
+\[
+ \Delta_{v,t}f(x)=\frac{f(x+tv)-f(x)}t\quad(t\ne0).
+\]
+每个差商都是 \(x\) 的连续函数，且其绝对值不超过 \(L\)。固定 \(x\) 后，差商关于 \(t\ne0\) 也连续，因此 \(t\to0\) 的上下极限可只在非零有理数上计算。于是，方向导数存在集是两个 Borel 上下极限相等的集合，因而为 Borel 集。在此集合上记 \(g_v=D_vf\)，其外取 \(g_v=0\)，便得到满足 \(|g_v|\leq L\) 的 Borel 函数。
+
+沿每条平行于 \(v\) 的直线，函数 \(t\mapsto f(y+tv)\) 都是 \(L\)-Lipschitz 的。在逐个有界区间上应用\cref{b1:thm:one-dimensional-lipschitz-ftc}，再取可数并，说明它在这条直线上几乎处处可导。若 \(n\geq2\)，选择以 \(v\) 为第一轴的正交坐标，由\cref{b1:thm:invertible-linear-change}及 Fubini 定理可知，整个 \(\mathbb R^n\) 中方向导数不存在的 Borel 集也为零测集。这里可先对每个有界坐标箱应用 Tonelli 定理，再穷竭全空间。\(n=1\) 时直接使用一维结论即可。至此，对每个固定的 \(v\)，都有
+\[
+ \Delta_{v,t}f\longrightarrow g_v
+ \quad\text{几乎处处},\quad t\to0.
+\]
+
+现在取任意 \(\phi\in C_c^1(\mathbb R^n)\)。平移换元给出恒等式
+\[
+ \int_{\mathbb R^n}\Delta_{v,t}f(x)\phi(x)\,\mathrm dx
+ =
+ \int_{\mathbb R^n}f(x)
+             \frac{\phi(x-tv)-\phi(x)}t\,\mathrm dx.
+\]
+左端的被积函数受 \(L|\phi|\) 支配。右端在 \(|t|\leq1\) 时仅涉及一个固定的紧集，\(f\) 在其上有界；而 \(\phi\) 的差商由 \(\|\nabla\phi\|_\infty\) 控制。因此两边都可以应用控制收敛定理，得到
+\begin{equation}\label{b1:eq:directional-translation-test}
+ \int g_v\phi=-\int fD_v\phi.
+\end{equation}
+对坐标方向 \(e_i\) 记 \(g_i=g_{e_i}\)。测试函数的普通微分给出 \(D_v\phi=\sum_{i=1}^n v_i\partial_i\phi\)，故再次使用\eqref{b1:eq:directional-translation-test}便有
+\[
+ \int\left(g_v-\sum_{i=1}^n v_ig_i\right)\phi=0.
+\]
+由\cref{b1:lem:compact-tests-separate}，
+\[
+ g_v=\sum_{i=1}^n v_ig_i
+ \quad\text{几乎处处}.
+\]
+这条等式目前只对每个固定方向分别成立；不能直接合并不可数多个方向的例外集。
+
+在单位球面 \(S^{n-1}\) 中取一个可数稠密集 \(V\)，并使它包含全部坐标方向。把这些方向中导数不存在或上述线性关系不成立的零测集取并，得到一个零测集 \(N\)。对每个 \(x\notin N\)，令 \(g(x)=(g_1(x),\ldots,g_n(x))\)，则同时有
+\[
+ D_vf(x)=g(x)\cdot v\quad(v\in V).
+\]
+又因 \(|D_vf(x)|\leq L\)，由 \(V\) 的稠密性和线性函数 \(v\mapsto g(x)\cdot v\) 的连续性可知 \(|g(x)|\leq L\)。
+
+固定这样的 \(x\)，并对 \(v\in S^{n-1}\)、\(t>0\) 定义
+\[
+ Q(v,t)=\frac{f(x+tv)-f(x)}t-g(x)\cdot v.
+\]
+Lipschitz 条件给出一个与 \(t\) 无关的方向误差界：
+\[
+ |Q(v,t)-Q(w,t)|
+ \leq\bigl(L+|g(x)|\bigr)|v-w|
+ \leq2L|v-w|.
+\]
+给定 \(\varepsilon>0\)，从 \(V\) 中取单位球面的一个有限 \(\varepsilon/\bigl(2(1+2L)\bigr)\)-网，记其方向为 \(v_1,\ldots,v_k\)。在这有限个方向上分别使用 \(Q(v_j,t)\to0\)，可以选择共同的 \(\delta>0\)，使
+\[
+ |Q(v_j,t)|<\varepsilon/2
+ \quad(1\leq j\leq k,\ 0<t<\delta).
+\]
+对任意单位方向 \(v\)，选取网中与它足够接近的 \(v_j\)，再用方向误差界，得到 \(|Q(v,t)|<\varepsilon\)。任意非零增量都可写成 \(h=|h|v\)，因此
+\[
+ \lim_{h\to0}\frac{|f(x+h)-f(x)-g(x)\cdot h|}{|h|}=0.
+\]
+这就证明了全空间实值情形。
+
+若值域为 \(\mathbb R^m\)，对有限个分量分别应用实值结论，并删去这些零测集的并。各分量的余项除以 \(|h|\) 都趋零，有限维欧氏范数也就趋零，所得微分矩阵的各行由相应的分量微分给出。
+
+最后处理局部情形。由局部 Lipschitz 条件和欧氏空间的可数拓扑基，可用可数个开球覆盖 \(U\)，使 \(f\) 在每个球上具有一个有限 Lipschitz 常数。对每个球和每个实分量，用\cref{b1:thm:mcshane-extension}延拓到全空间，再应用已经证明的结论。延拓函数在球内与原分量局部相同，所以在那里具有相同的可微性。可数个球及有限个分量的例外零测集之并仍为零测集。算子范数界则直接来自原函数的局部 Lipschitz 不等式，如上一小节所示。
+\end{proof}
+
+证明中的有限方向网是全微分出现的关键。平移测试先在一个共同的大集合上把方向导数确定为线性函数，Lipschitz 估计再使不同方向之间的差商不会失去控制；两者缺一，都不能从逐方向极限推出任意增量下的线性逼近。
 
 \subsection{几乎处处线性化}
 \label{b1:subsec:160204}
 
-待填充。
+后续对微分矩阵作积分或划分水平集时，需要一个明确的可测代表。只说“微分几乎处处存在”还没有规定异常点上的取值。下面把真正的可微点集合与任意补值区别开来。
+
+\begin{proposition}\label{b1:prop:lipschitz-differentiability-borel}
+设 \(U\subseteq\mathbb R^n\) 为开集，\(f:U\rightarrow\mathbb R^m\) 局部 Lipschitz。它的可微点集合 \(\mathcal D_f\) 为 Borel 集。约定矩阵函数 \(Df\) 在 \(\mathcal D_f\) 上取真实全微分，在 \(U\setminus\mathcal D_f\) 上取零矩阵，则 \(Df:U\rightarrow\mathbb R^{m\times n}\) 为 Borel 可测函数。
+\end{proposition}
+\begin{proof}
+对每个坐标方向 \(e_i\)，考虑 Borel 函数列
+\[
+ q_{i,k}(x)=
+ \begin{cases}
+ 2^k\bigl(f(x+2^{-k}e_i)-f(x)\bigr),&x+2^{-k}e_i\in U,\\
+ 0,&x+2^{-k}e_i\notin U.
+ \end{cases}
+\]
+对固定 \(x\in U\)，第一种情形最终总成立。由可数 Cauchy 条件，所有 \(n\) 列都具有有限极限的点组成 Borel 集 \(C\)。在 \(C\) 上以这些极限为列组成矩阵 \(A(x)\)，在 \(U\setminus C\) 上置零，则 \(A\) 为 Borel 矩阵函数。每个真正的可微点都在 \(C\) 中，且此时 \(A(x)=Df(x)\)。
+
+为了检验全部增量，而不只是这几列差商，令
+\[
+ r_j(x)=
+ \sup_{\substack{q\in\mathbb Q^n,\ 0<|q|<1/j\\x+q\in U}}
+       \frac{|f(x+q)-f(x)-A(x)q|}{|q|}.
+\]
+对固定的非零有理向量 \(q\)，商在 \(x+q\in U\) 的 Borel 区域上可测，在其外补为零；可数上确界因而给出非负扩展实值 Borel 函数 \(r_j\)。固定 \(x\) 后，商关于允许的非零增量连续，所以有理增量的上确界等于全部实增量的上确界。于是
+\[
+ \mathcal D_f=C\cap\{\,x:\lim_{j\to\infty}r_j(x)=0\,\}.
+\]
+右端为 Borel 集，并与可微性定义完全相符：从左向右用真实微分作为候选矩阵，从右向左则由全部增量的误差趋零得到微分 \(A(x)\)。最后把 \(A\) 限于 \(\mathcal D_f\)，其外取零，就得到所述 Borel 代表。
+\end{proof}
+
+本书在后文使用 \(Df\) 的可测性时沿用这个约定。异常点上的零矩阵是补值，不表示函数在那里真的具有零微分。由 Rademacher 定理，这些补值只发生在零测集上；若 \(f\) 为全局 \(L\)-Lipschitz，则这个代表处处满足 \(\|Df\|\leq L\)。
+
+逐点的余项估计还可以在删去小测度集合后统一起来。
+
+\begin{proposition}\label{b1:prop:uniform-linearization-large-set}
+设 \(f:\mathbb R^n\rightarrow\mathbb R^m\) 为 \(L\)-Lipschitz 映射，\(E\subseteq\mathbb R^n\) 为有限测度 Lebesgue 可测集。对每个 \(\varepsilon>0\)，存在紧集 \(K\subseteq E\cap\mathcal D_f\)，满足 \(m_n(E\setminus K)<\varepsilon\)，并存在非负函数 \(\omega(r)\to0\)（\(r\downarrow0\)），使
+\[
+ |f(x+h)-f(x)-Df(x)h|
+ \leq\omega(|h|)|h|
+ \quad(x\in K,\ h\ne0).
+\]
+\end{proposition}
+\begin{proof}
+在上一个证明的 \(r_j\) 中改用已经约定的 Borel 矩阵 \(Df\)。所得函数仍可测，并处处不超过 \(2L\)；在 \(\mathcal D_f\) 上有 \(r_j\downarrow0\)。对有限测度集 \(E\cap\mathcal D_f\) 应用\cref{b1:cor:egoroff-compact}，得到所需紧集 \(K\)，使 \(r_j\to0\) 在 \(K\) 上一致成立。由于 \(E\setminus\mathcal D_f\) 为零测集，可以同时保证 \(m_n(E\setminus K)<\varepsilon\)。
+
+若 \(K\) 为空，取 \(\omega=0\)。否则定义
+\[
+ \omega(r)=
+ \sup_{\substack{x\in K\\0<|h|\leq r}}
+       \frac{|f(x+h)-f(x)-Df(x)h|}{|h|}.
+\]
+它不超过 \(2L\)，并且在 \(r<1/j\) 时不超过 \(\sup_{x\in K}r_j(x)\)。因此 \(\omega(r)\to0\)，所需误差界由定义直接得到。
+\end{proof}
+
+这个结论只统一了保留点上的一阶余项，并没有构造一个在整个空间上连续可微的延拓。下一节研究近似微分时，将允许增量估计忽略密度为零的方向区域；本节的真实微分及其 Borel 代表，则提供与这种较弱局部性质比较的基准。
