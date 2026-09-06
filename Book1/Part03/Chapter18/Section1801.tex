@@ -2,24 +2,247 @@
 \section{水平集}
 \label{b1:sec:1801}
 
-% TODO: 撰写本节正文。
+面积公式沿着参数映射计算像的大小；余面积公式则沿着同一函数的等值集合切分定义域。若 \(f:\mathbb R^m\rightarrow\mathbb R^n\) 且 \(m\geq n\)，固定函数值通常会留下 \(m-n\) 个自由方向。不过，这只是满秩线性模型给出的预期，不能不加条件地当作每个水平集的几何描述。本节先辨清这一点，再建立下一节积分公式所需的线性恒等式。
+
+% 实读：Simon1983Lectures，本地正式出版扫描本，§7印刷40--41页的局部坐标与曲线速度定义；
+% §10印刷53--57页，重点10.1--10.2线性切分及10.3之后的满秩水平集说明。
+% 线性余面积证明据10.1--10.2改写为非负函数版本；不把该书略去的非线性证明写成已读全证。
+% 本节补证局部逆映射工具；第7章仅已证明C1微分同胚的换元，并未建立逆函数定理。
+% 正规坐标恒等式用核与正交补的块矩阵计算展开，不依赖后续可整流性理论。
 
 \subsection{Lipschitz 函数的水平集}
 \label{b1:subsec:180101}
 
-待填充。
+本章设 \(U\subseteq\mathbb R^m\) 为开集，\(1\leq n\leq m\)，并记 \(q=m-n\)。除另行说明外，映射 \(f:U\rightarrow\mathbb R^n\) 局部 Lipschitz。
+
+\begin{definition}
+\label{b1:def:level-set}
+给定 \(y\in\mathbb R^n\)，集合
+\[
+ M_y=f^{-1}(\{y\})=\{\,x\in U\mid f(x)=y\,\}
+\]
+称为 \(f\) 在值 \(y\) 处的\term[shuipingji]{水平集}[level set]。
+\end{definition}
+
+由于 \(f\) 连续，\(M_y\) 在 \(U\) 中相对闭，因而是 \(\mathbb R^m\) 中的 Borel 集；但它未必在整个空间中闭。例如恒等于零的函数以 \(U\) 本身为零水平集。对投影 \(f(z,w)=w\)，其中 \(z\in\mathbb R^q\)、\(w\in\mathbb R^n\)，水平集则是平行的 \(q\) 维仿射平面。这正是 Fubini 定理中的截面。
+
+一般 Lipschitz 函数的个别水平集可以复杂得多。给定非空闭集 \(F\subseteq\mathbb R^m\)，函数
+\[
+ d_F(x)=\inf_{a\in F}|x-a|
+\]
+满足 \(d_F(x)\leq|x-x'|+d_F(x')\)；交换两点即得它为 \(1\)-Lipschitz。而 \(d_F^{-1}(\{0\})=F\)。因此，仅仅知道函数 Lipschitz，并不排除某个水平集是 Cantor 型集合，也不保证该水平集具有预期维数或局部有限的 \(\mathcal H^q\) 测度。
+
+即使函数为 \(C^1\)，也必须区分满秩点与秩亏点。函数 \(f(u,v)=uv\) 的零水平集是两条相交的坐标轴；在原点以外可以局部写成一条光滑曲线，在原点却出现交叉。后面的余面积结论按目标变量的 Lebesgue 测度处理几乎处处的水平，而不是逐一消除所有特殊水平。
 
 \subsection{法方向}
 \label{b1:subsec:180102}
 
-待填充。
+先看一个满秩线性映射 \(A:\mathbb R^m\rightarrow\mathbb R^n\)。由
+\[
+ \langle Av,w\rangle=\langle v,A^{\mathsf T}w\rangle
+\]
+可知 \((\operatorname{im}A^{\mathsf T})^\perp=\ker A\)，所以
+\[
+ \mathbb R^m=\ker A\oplus\operatorname{im}A^{\mathsf T}.
+\]
+两个子空间的维数分别为 \(q\) 与 \(n\)。沿着核移动不改变函数值；只有在其正交补上的位移才被 \(A\) 检测到。
+
+这一分解还给出可直接计算的投影。矩阵 \(AA^{\mathsf T}\) 正定，因为对非零 \(w\in\mathbb R^n\)，有
+\[
+ \langle AA^{\mathsf T}w,w\rangle=|A^{\mathsf T}w|^2>0.
+\]
+于是到 \(N=\operatorname{im}A^{\mathsf T}\) 的正交投影和到核的正交投影分别是
+\[
+ \Pi_N=A^{\mathsf T}(AA^{\mathsf T})^{-1}A,
+ \quad \Pi_{\ker A}=I_m-\Pi_N.
+\]
+事实上，\(\Pi_N\) 的像包含于 \(N\)，且对任意 \(A^{\mathsf T}w\in N\)，它保持该向量不变；另一方面，\(A(v-\Pi_Nv)=0\)。这就将每个向量分成上述两个相互正交的分量。
+
+若 \(f\) 在 \(x\) 处可微且 \(Df(x)\) 满秩，把 \(A=Df(x)\) 代入便得到它的线性化方向。写 \(f=(f_1,\ldots,f_n)\)，则
+\[
+ \operatorname{im}Df(x)^{\mathsf T}
+ =\operatorname{span}\{\nabla f_1(x),\ldots,\nabla f_n(x)\}.
+\]
+对于标量函数，这只是一条由非零梯度张成的直线。若 \(\gamma\) 是位于 \(M_{f(x)}\) 内、满足 \(\gamma(0)=x\) 的可微曲线，链式法则给出 \(Df(x)\gamma'(0)=0\)，所以梯度确实垂直于这种曲线的速度。不过，只在一个点知道微分，尚不能断言核中的每个向量都是某条水平集内曲线的速度。下面用 \(C^1\) 条件补足这一方向。
 
 \subsection{切空间}
 \label{b1:subsec:180103}
 
-待填充。
+正规坐标需要一个局部求逆步骤。第\ref{b1:sec:0705}节的换元公式以已有的微分同胚为前提，下面的\term[ni-hanshu-dingli]{逆函数定理}[inverse function theorem]说明所需的微分同胚如何产生。
+
+\begin{lemma}[局部逆函数]
+\label{b1:lem:level-set-local-inverse}
+设 \(F:O\rightarrow\mathbb R^m\) 为开集上的 \(C^1\) 映射。若 \(DF(a)\) 可逆，则存在 \(a\) 的开邻域 \(O_0\) 和 \(F(a)\) 的开邻域 \(V_0\)，使 \(F:O_0\rightarrow V_0\) 为 \(C^1\) 微分同胚，且
+\[
+ D(F^{-1})(y)=\Bigl(DF\bigl(F^{-1}(y)\bigr)\Bigr)^{-1}.
+\]
+\end{lemma}
+\begin{proof}
+平移并在值域复合 \(DF(a)^{-1}\)，可设 \(a=0\)、\(F(0)=0\)、\(DF(0)=I_m\)。取 \(r>0\)，使 \(\overline B(0,r)\subseteq O\)，且在这个闭球上有 \(\|DF-I_m\|\leq\theta<1\)。写 \(F(x)=x+R(x)\)。沿线段积分得 \(R\) 为 \(\theta\)-Lipschitz，从而
+\[
+ (1-\theta)|x-x'|\leq|F(x)-F(x')|
+ \quad(x,x'\in\overline B(0,r)).
+\]
+对 \(|y|<(1-\theta)r\)，映射 \(T_y(x)=y-R(x)\) 把闭球映入自身，且压缩距离的比例至多为 \(\theta\)。从球中任一点开始迭代，相邻迭代点的距离依次不超过 \(\theta^j\) 乘初始距离；几何级数收敛说明迭代列为 Cauchy 列，其极限仍在闭球内，并由连续性满足 \(T_y(x)=x\)。压缩不等式保证不动点唯一，严格的半径不等式还保证它在开球内。
+
+故 \(F\) 在 \(O_0=B(0,r)\cap F^{-1}(V_0)\) 上一一映到 \(V_0=B\bigl(0,(1-\theta)r\bigr)\)，逆映射的 Lipschitz 常数至多为 \((1-\theta)^{-1}\)。在球内每一点，\(|DF(x)v|\geq(1-\theta)|v|\)，所以 \(DF(x)\) 可逆。若 \(k=F(x+h)-F(x)\)，则
+\[
+ k=DF(x)h+o(|h|),\quad |h|\leq(1-\theta)^{-1}|k|.
+\]
+因而 \(h=DF(x)^{-1}k+o(|k|)\)，这证明逆映射可微及所述公式。矩阵求逆在可逆矩阵集上连续，\(DF\) 也连续，故逆映射为 \(C^1\)。撤销最初的平移和线性变换即可。
+\end{proof}
+
+\begin{proposition}[满秩水平集的局部坐标]
+\label{b1:prop:regular-level-set}
+设 \(f:U\rightarrow\mathbb R^n\) 为 \(C^1\)，且 \(\operatorname{rank}Df(a)=n\)。重排定义域坐标后，写 \(x=(z,w)\in\mathbb R^q\times\mathbb R^n\)。存在 \(a\) 的开邻域 \(O\) 及乘积开集 \(Z\times Y\)，使
+\[
+ \Phi:O\longrightarrow Z\times Y,\quad
+ \Phi(z,w)=\bigl(z,f(z,w)\bigr)
+\]
+为 \(C^1\) 微分同胚。其逆可写为 \(\Psi(z,y)=(z,h(z,y))\)，且对每个 \(y\in Y\)，
+\[
+ M_y\cap O=\{\,(z,h(z,y))\mid z\in Z\,\}.
+\]
+在 \(x\in M_y\cap O\) 处，所有水平集内 \(C^1\) 曲线的速度组成的集合恰好为 \(\ker Df(x)\)。
+\end{proposition}
+\begin{proof}
+满秩保证可选出 \(n\) 个坐标，使方阵 \(D_wf(a)\) 可逆。按这些坐标重排后，
+\[
+ D\Phi(a)=
+ \begin{pmatrix}I_q&0\\D_zf(a)&D_wf(a)\end{pmatrix}
+\]
+可逆。应用引理\ref{b1:lem:level-set-local-inverse}，再把值域缩小到包含 \(\Phi(a)\) 的乘积开集，得到所述微分同胚。由于 \(\Phi\) 保留第一组坐标，其逆必有给出的形式，水平集的图像表达也随之成立。
+
+固定 \(y\)，对恒等式 \(f\bigl(z,h(z,y)\bigr)=y\) 求导。记 \(C=D_zf(x)\)、\(D=D_wf(x)\)，可得
+\[
+ D_zh(z,y)=-D^{-1}C,\quad
+ D_z\Psi(z,y)=\begin{pmatrix}I_q\\-D^{-1}C\end{pmatrix}.
+\]
+核中的每个向量都有唯一形式 \((v,-D^{-1}Cv)\)。对充分小的 \(t\)，曲线 \(t\mapsto\Psi(z+tv,y)\) 留在水平集内，并以这个向量为速度。反过来，任意水平集内曲线的速度都由链式法则落在核中，故二者相等。
+\end{proof}
+
+在命题的条件下，称这个速度空间为水平集在 \(x\) 处的\term[qiekongjian]{切空间}[tangent space]，记为 \(T_xM_y\)；其正交补称为\term[fakongjian]{法空间}[normal space]，记为 \(N_xM_y\)。于是
+\[
+ T_xM_y=\ker Df(x),\quad
+ N_xM_y=\operatorname{im}Df(x)^{\mathsf T}.
+\]
+\symidx{\(T_xM_y\)：光滑水平集的切空间}
+\symidx{\(N_xM_y\)：光滑水平集的法空间}
+这里速度给出的描述不依赖所选的坐标块，因而同一水平集用不同局部图像表示时得到相同的切空间。当 \(q=0\) 时，\(\mathbb R^0\) 只有一个点；命题表示水平集在 \(a\) 附近只有一个点，切空间为 \(\{0\}\)。
+
+例如 \(f(x)=|x|^2\) 的正水平集是球面，在半径为 \(r>0\) 的球面上，切空间为 \(\{v:\langle x,v\rangle=0\}\)，单位法方向可取 \(x/r\)。零水平集却只有原点，不能把公式 \(\ker Df(0)=\mathbb R^m\) 当成它的切空间。另一方面，Lipschitz 映射即使在某点具有满秩微分，也不能直接应用本命题；习题\ref{b1:ex:16-invertible-derivative-not-local-injective}已经说明了微分缺少邻域连续性时局部求逆可能失败。
 
 \subsection{余面积 Jacobi 行列式}
 \label{b1:subsec:180104}
 
-待填充。
+\begin{definition}
+\label{b1:def:coarea-jacobian}
+设 \(A:\mathbb R^m\rightarrow\mathbb R^n\) 为线性映射，\(m\geq n\)。定义它的\term[yumianji-jacobi-hanglieshi]{余面积 Jacobi 行列式}[coarea Jacobian]为
+\[
+ J_n(A)=\sqrt{\det(AA^{\mathsf T})}.
+\]
+若 \(f:U\rightarrow\mathbb R^n\) 局部 Lipschitz，记其真实可微集为 \(\mathcal D_f\)，并约定
+\[
+ J_nf(x)=
+ \begin{cases}
+ \sqrt{\det\bigl(Df(x)Df(x)^{\mathsf T}\bigr)},&x\in\mathcal D_f,\\
+ 0,&x\notin\mathcal D_f.
+ \end{cases}
+\]
+\end{definition}
+\symidx{\(J_nf(x)\)：高维到低维映射的余面积因子}
+
+这里下标 \(n\) 是目标空间的维数。第\ref{b1:sec:1701}节对低维到高维映射取列向量的 Gram 矩阵；这里取行向量的 Gram 矩阵，也就是把那里的构造应用于 \(A^{\mathsf T}\)。若 \(m>n\)，矩阵 \(A^{\mathsf T}A\) 的行列式总是零，不能用它代替 \(AA^{\mathsf T}\)。对坐标投影 \((z,w)\mapsto w\)，本定义给出 \(J_n=1\)；当 \(m=n\) 时给出 \(|\det A|\)，当 \(n=1\) 时则给出 \(J_1f=|\nabla f|\)。
+
+由命题\ref{b1:prop:linear-jacobian-properties}应用于转置矩阵，\(J_n(A)\) 连续，且
+\[
+ 0\leq J_n(A)\leq\|A\|^n,\quad
+ J_n(A)>0\ \Longleftrightarrow\ \operatorname{rank}A=n.
+\]
+这里 \(\|A^{\mathsf T}\|=\|A\|\) 可由欧氏空间的对偶范数公式得到。再由命题\ref{b1:prop:lipschitz-differentiability-borel}，可微集外补零的 \(Df\) 为 Borel 矩阵函数，故 \(J_nf\) 也是 Borel 函数；在 \(f\) 为 \(L\)-Lipschitz 的开集上有 \(J_nf\leq L^n\)。这给出了后续积分所需的可测性和局部有界性。
+
+为了同时处理 \(m=n\) 的端点，下文在 \(\mathbb R^0\) 上使用单点质量为 \(1\) 的测度 \(m_0=\mathcal H^0\)，约定空矩阵的行列式为 \(1\)，从而从零维空间出发的线性映射具有面积因子 \(J_0=1\)。
+
+\begin{theorem}[线性余面积公式]
+\label{b1:thm:linear-coarea-formula}
+若 \(A:\mathbb R^m\rightarrow\mathbb R^n\) 满秩，则对每个非负 Borel 函数 \(g\)，函数
+\[
+ y\longmapsto\int_{A^{-1}(\{y\})}g\,d\mathcal H^q
+\]
+可测，并且
+\[
+ J_n(A)\int_{\mathbb R^m}g(x)\,dx
+ =\int_{\mathbb R^n}\left(
+   \int_{A^{-1}(\{y\})}g(x)\,d\mathcal H^q(x)
+ \right)dy.
+\]
+\end{theorem}
+\begin{proof}
+取 \(\ker A\) 的标准正交基组成矩阵 \(E\)，取其正交补的标准正交基组成矩阵 \(N\)。于是 \(Q=[E\ N]\) 是正交矩阵，\(AE=0\)，而方阵 \(S=AN\) 可逆。由 \(NN^{\mathsf T}+EE^{\mathsf T}=I_m\) 得
+\[
+ AA^{\mathsf T}=SS^{\mathsf T},\quad J_n(A)=|\det S|.
+\]
+固定 \(y\)，所有解为 \(x=Ez+NS^{-1}y\)，且 \(z\mapsto Ez+NS^{-1}y\) 是 \(\mathbb R^q\) 到该水平集的等距映射。平坦子空间上的 Hausdorff 测度与 Lebesgue 测度一致，故
+\[
+ \int_{A^{-1}(\{y\})}g\,d\mathcal H^q
+ =\int_{\mathbb R^q}g(Ez+NS^{-1}y)\,dz.
+\]
+右侧由 Tonelli 定理是 \(y\) 的可测函数。用正交坐标 \(x=Ez+Nw\) 及线性换元 \(y=Sw\)，再次应用 Tonelli 定理，得到
+\[
+ \begin{aligned}
+ \int_{\mathbb R^n}\int_{\mathbb R^q}g(Ez+NS^{-1}y)\,dz\,dy
+ &=|\det S|\int_{\mathbb R^n}\int_{\mathbb R^q}g(Ez+Nw)\,dz\,dw\\
+ &=J_n(A)\int_{\mathbb R^m}g(x)\,dx.
+ \end{aligned}
+\]
+当 \(q=0\) 时，内层积分只是唯一解处的函数值，同一计算就是普通线性换元公式。
+\end{proof}
+
+这个证明解释了余面积因子的几何位置：它计量的是 \(A\) 在法空间上的 \(n\) 维体积伸缩，核方向的 \(q\) 维体积则留给每张切片。Simon 的《Lectures on Geometric Measure Theory》\cite[\S10，式10.1--10.2]{Simon1983Lectures}也从正交投影的 Fubini 公式出发，再通过核的正交补处理一般线性映射。
+
+非线性证明还要比较切片参数与整个定义域的坐标变换。以下恒等式仅依赖矩阵，因此以后在 Lipschitz 分片上也能使用，不要求矩阵来自 \(C^1\) 坐标。
+
+\begin{proposition}[切片坐标的 Jacobi 恒等式]
+\label{b1:prop:coarea-coordinate-identity}
+设 \(A:\mathbb R^m\rightarrow\mathbb R^n\) 满秩，\(P:\mathbb R^m\rightarrow\mathbb R^q\) 为选取 \(q\) 个坐标的投影，并设
+\[
+ B=\begin{pmatrix}P\\A\end{pmatrix}
+\]
+可逆。定义 \(V:\mathbb R^q\rightarrow\mathbb R^m\) 为
+\[
+ V=B^{-1}\begin{pmatrix}I_q\\0\end{pmatrix}.
+\]
+则 \(V\) 单射且
+\begin{equation}
+\label{b1:eq:coarea-coordinate-linear}
+ J_q(V)|\det B|=J_n(A).
+\end{equation}
+左边的 \(J_q\) 为面积因子，右边的 \(J_n\) 为余面积因子。
+\end{proposition}
+\begin{proof}
+沿用上一证明的正交矩阵 \(Q=[E\ N]\)。有
+\[
+ BQ=\begin{pmatrix}PE&PN\\0&AN\end{pmatrix},\quad
+ |\det B|=|\det(PE)|\cdot|\det(AN)|.
+\]
+因为 \(B\) 可逆，方阵 \(PE\) 也可逆。关系 \(AV=0\)、\(PV=I_q\) 唯一确定
+\[
+ V=E(PE)^{-1}.
+\]
+由于 \(E\) 等距，\(V\) 单射；第\ref{b1:sec:1701}节的线性面积因子给出 \(J_q(V)=|\det(PE)|^{-1}\)。再用 \(J_n(A)=|\det(AN)|\) 即得等式。若 \(q=0\)，上述空块的行列式为 \(1\)，等式直接成为方阵的行列式公式。
+\end{proof}
+
+若把行块次序改为
+\[
+ \widetilde B=\begin{pmatrix}A\\P\end{pmatrix},\quad
+ V=\widetilde B^{-1}\begin{pmatrix}0\\I_q\end{pmatrix},
+\]
+则 \(|\det\widetilde B|=|\det B|\)，恒等式不变。行块次序影响坐标的排列，不影响这里的非负因子。
+
+特别地，在命题\ref{b1:prop:regular-level-set}的坐标中，取 \(x=\Psi(z,y)\)、\(A=Df(x)\)，则 \(B=D\Phi(x)\)、\(V=D_z\Psi(z,y)\)。由逆映射微分公式和\eqref{b1:eq:coarea-coordinate-linear}得到
+\begin{equation}
+\label{b1:eq:coarea-coordinate-smooth}
+ J_nf\bigl(\Psi(z,y)\bigr)\bigl|\det D\Psi(z,y)\bigr|
+ =J_q\bigl(D_z\Psi(z,y)\bigr).
+\end{equation}
+左边先按全维换元计算体积，再乘上余面积因子；右边恰是固定 \(y\) 后参数图像的面积因子。例如在平面上取 \(f(s,t)=t+as\)，可用 \(\Psi(z,y)=(z,y-az)\)。此时 \(|\det D\Psi|=1\)，而 \(J_1f=J_1(D_z\Psi)=\sqrt{1+a^2}\)：斜切片的长度与横坐标长度之间的比例正由这个因子补偿。下一节将把这种切片计算推广到一般 Lipschitz 映射，并处理没有满秩正规坐标的部分。

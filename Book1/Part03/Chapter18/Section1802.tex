@@ -2,24 +2,304 @@
 \section{余面积公式}
 \label{b1:sec:1802}
 
-% TODO: 撰写本节正文。
+面积公式沿参数方向把低维区域映入高维空间；\term[yumianji-gongshi]{余面积公式}[coarea formula]则把高维区域按映射值分层。正交投影时，这就是 Fubini 定理。一般 Lipschitz 映射的水平集不再平行，补偿因子也由常数变成余面积 Jacobi 行列式。
+线性情形与几何表述可对照 Simon 的《Lectures on Geometric Measure Theory》\cite[第 10 节，第 53--57 页]{Simon1983Lectures}；本节从零测集的切片、满秩坐标分片和前章面积公式出发，证明 Lipschitz 版本。
+
+% 实际读取：本地Simon1983Lectures §10印刷pp.53--57全文。
+% 该来源的10.3只给C1版本并把逼近论证交外部文献，不能声称它提供了此处完整Lip证明。
+% Fremlin官方已存chap26/47未找到一般coarea全文；265G仅为特殊球面公式。
+% Simon作者站NTU2018修订稿前言自称rough lecture draft，仅作背景线索，不增正式书目。
+% 本稿的实际自足依赖：13章Besicovitch；15章Hausdorff覆盖量与归一化；
+% 16章Borel微分、密度点及McShane；17章近线性分片和加权面积公式；
+% 18.1的纯线代余面积恒等式。未使用C1逼近、Sard或19章可整流理论。
 
 \subsection{标量函数}
 \label{b1:subsec:180201}
 
-待填充。
+设 \(f:\mathbb R^m\rightarrow\mathbb R\) 为 Lipschitz 函数。对每个实数 \(t\)，水平集 \(f^{-1}(\{t\})\) 是闭集，但它不必是光滑曲面。例如 \(f(x)=|x|\) 在原点不可微，而其正水平集都是球面；一个常值函数则有一个等于整个定义域的水平集。余面积公式要求把这些层按照 \(t\) 的 Lebesgue 测度积分，而不是声称每层都具有同样的几何性质。
+
+\begin{theorem}[标量余面积公式]\label{b1:thm:scalar-coarea}
+设 \(f:\mathbb R^m\rightarrow\mathbb R\) 为 Lipschitz 函数，且 \(E\subseteq\mathbb R^m\) Lebesgue 可测。则
+\[
+ \int_E|\nabla f(x)|\,\mathrm dx
+ =
+ \int_{\mathbb R}\mathcal H^{m-1}
+       \bigl(E\cap f^{-1}(\{t\})\bigr)\,\mathrm dt.
+\]
+不可微点的梯度约定为零。几乎每个切片在 \(\mathcal H^{m-1}\) 下可测，右端的切片外测度函数为 Lebesgue 可测函数；两端均允许为无穷。
+\end{theorem}
+
+这个结论将在下一小节与向量值版本一并证明。当 \(m=1\) 时，\(\mathcal H^0\) 是计数测度，公式已经包含在前章的面积公式中。对于 \(m>1\)，一个新的问题是：Lebesgue 零测集的切片是否仍可忽略？不能仅凭定义域零测，就断言每一层都零测。
+
+下面两个引理同时处理向量值映射。暂设 \(m>n\geq1\)，\(q=m-n\)，且 \(f:\mathbb R^m\rightarrow\mathbb R^n\) 为 \(L\)-Lipschitz 映射。对集合 \(E\)，简记 \(E_y=E\cap f^{-1}(\{y\})\)。在尚未证明切片可测时，\(\mathcal H^q(E_y)\) 表示外测度。
+
+\begin{lemma}\label{b1:lem:null-set-slices}
+若 \(N\subseteq\mathbb R^m\) 为 Lebesgue 零测集，则
+\[
+ \mathcal H^q(N_y)=0
+ \quad\text{对几乎每个 }y\in\mathbb R^n.
+\]
+\end{lemma}
+\begin{proof}
+记尺度不超过 \(\delta\) 的归一化覆盖量为
+\[
+ \mathcal H^q_\delta=c_qh^q_\delta,
+ \quad c_q=\omega_q/2^q.
+\]
+由 \(\mathcal H^m(N)=m_m^*(N)=0\)，对每个正整数 \(j\)，可以用闭球 \(B_{j,i}=\overline B(x_{j,i},r_{j,i})\) 覆盖 \(N\)，使
+\[
+ 2r_{j,i}\leq2^{-j},\quad \sum_i r_{j,i}^m<2^{-j}.
+\]
+从任意直径覆盖得到这样的球覆盖，只需在每个非空覆盖集中选一点，以该集直径为半径作球，并在一开始把尺度及误差预算减小。对直径为零的覆盖集，把半径取为足够小的正数，并使这些额外代价之和仍在预算内。
+
+若切片 \(N_y\) 与球 \(B_{j,i}\) 相交，则 \(y\in f(B_{j,i})\)。因而
+\[
+ \mathcal H^q_{2^{-j}}(N_y)
+ \leq G_j(y):=\omega_q\sum_i r_{j,i}^q
+                              \mathbf1_{f(B_{j,i})}(y).
+\]
+闭球的像紧，故 \(G_j\) 可测。又因
+\[
+ f(B_{j,i})\subseteq
+ \overline B\bigl(f(x_{j,i}),Lr_{j,i}\bigr),
+\]
+有
+\[
+ \int_{\mathbb R^n}G_j(y)\,\mathrm dy
+ \leq\omega_q\omega_n L^n\sum_i r_{j,i}^{q+n}
+ <\omega_q\omega_n L^n2^{-j}.
+\]
+由 Tonelli 定理，\(\sum_jG_j(y)<\infty\) 几乎处处，因此 \(G_j(y)\to0\) 几乎处处。与此同时，\(\mathcal H^q_{2^{-j}}(N_y)\) 随 \(j\) 增加趋于 \(\mathcal H^q(N_y)\)。结合上述逐点上界，得到所需零测性。
+\end{proof}
+
+这个证明没有预先使用切片质量的可测性，而是先构造了可测的上界函数。接着可以确定真正的切片质量何时可测。
+
+\begin{lemma}\label{b1:lem:slice-measure-measurable}
+若 \(K\subseteq\mathbb R^m\) 紧，则函数
+\[
+ y\longmapsto\mathcal H^q(K_y)
+\]
+为 Borel 可测函数。若 \(E\subseteq\mathbb R^m\) 仅 Lebesgue 可测，则 \(E_y\) 对几乎每个 \(y\) 都是 \(\mathcal H^q\) 可测集，且 \(y\mapsto\mathcal H^q(E_y)\) 为 Lebesgue 可测函数。
+\end{lemma}
+\begin{proof}
+令 \(\mathscr U\) 为全部有理中心、有理半径开球的有限并所成的可数集合族。对固定 \(\delta>0\)，考虑所有有限族 \(U_1,\ldots,U_a\in\mathscr U\)，其中 \(\operatorname{diam}U_i<\delta\)，并以
+\[
+ c_q\sum_{i=1}^a(\operatorname{diam}U_i)^q
+\]
+作为覆盖代价。对给定的这样一族，它覆盖 \(K_y\) 的条件是
+\[
+ y\notin f\left(K\setminus\bigcup_{i=1}^aU_i\right).
+\]
+括号内的集合紧，其像也紧，故允许的 \(y\) 组成开集。对所有允许的有限覆盖取代价下确界，得到函数 \(F_\delta(y)\)。允许空族覆盖空切片。由于候选族可数，集合 \(\{F_\delta<a\}\) 是可数个开集之并，所以 \(F_\delta\) 为 Borel 函数。
+
+说明其极限确为 Hausdorff 测度。所有候选都是直径小于 \(\delta\) 的覆盖，故
+\[
+ \mathcal H^q_\delta(K_y)\leq F_\delta(y).
+\]
+反过来，把 \(K_y\) 的任意直径不超过 \(\delta/2\) 的可数覆盖略微扩大为开集，可以保持每个直径小于 \(\delta\)，并使总代价增加任意小的量；这里使用 \(q>0\) 及幂函数的连续性。紧性给出有限子覆盖。再用有理开球基细化这个有限开覆盖，并把落在同一个原开集内的有限个球合并，就得到 \(\mathscr U\) 中的有限覆盖，代价不增加。因此对每个 \(\eta>0\)，
+\[
+ F_\delta(y)\leq\mathcal H^q_{\delta/2}(K_y)+\eta.
+\]
+令 \(\eta\downarrow0\)，再令 \(\delta\downarrow0\)，得到
+\[
+ \mathcal H^q(K_y)=\lim_{j\to\infty}F_{1/j}(y).
+\]
+所以紧集情形的切片质量为 Borel 函数。
+
+对于一般 \(E\)，由紧内正则性可取递增紧集 \(K_j\subseteq E\)，使
+\[
+ E=\bigcup_jK_j\cup N,\quad m_m(N)=0.
+\]
+前一引理说明 \(N_y\) 几乎处处为 \(\mathcal H^q\) 零测集。对这些 \(y\)，切片 \(E_y\) 是可测集，并且
+\[
+ \mathcal H^q(E_y)=\lim_{j\to\infty}\mathcal H^q\bigl((K_j)_y\bigr).
+\]
+于是它在一个 Lebesgue 零测集以外等于可测函数；例外集上的外测度取值即使无穷，也不影响完备 Lebesgue 测度下的可测性。
+\end{proof}
 
 \subsection{向量值映射}
 \label{b1:subsec:180202}
 
-待填充。
+沿用\cref{b1:def:coarea-jacobian}的记号
+\[
+ J_nf(x)
+ =\sqrt{\det\bigl(Df(x)Df(x)^{\mathsf T}\bigr)}
+\]
+并在不可微点取零。它非负、Borel 可测，且不超过 \(L^n\)。先处理余面积 Jacobi 行列式消失的部分；与前章不同，这里不要求该部分的像在目标空间中零测。
+
+\begin{lemma}\label{b1:lem:critical-set-slices}
+设
+\[
+ C=\{\,x\in\mathcal D_f:\operatorname{rank}Df(x)<n\,\}.
+\]
+则 \(\mathcal H^q(C_y)=0\) 对几乎每个 \(y\in\mathbb R^n\) 成立。
+\end{lemma}
+\begin{proof}
+固定正整数 \(R\)，只考虑 \(C_R=C\cap\overline B(0,R)\)。给定 \(x\in C_R\) 及 \(0<\varepsilon\leq1\)，可微性保证充分小的 \(\rho>0\) 满足
+\[
+ f\bigl(\overline B(x,\rho)\bigr)
+ \subseteq f(x)+Df(x)\bigl(\overline B(0,\rho)\bigr)
+                   +\overline B(0,\varepsilon\rho).
+\]
+记 \(r=\operatorname{rank}Df(x)\leq n-1\)。选取目标空间的正交坐标，使前 \(r\) 个方向张成 \(Df(x)\) 的像。由于 \(\|Df(x)\|\leq L\)，右端包含于一个长方体，前 \(r\) 条边的长度不超过 \(2(L+\varepsilon)\rho\)，其余边的长度不超过 \(2\varepsilon\rho\)。因此
+\[
+ m_n\Bigl(f\bigl(\overline B(x,\rho)\bigr)\Bigr)
+ \leq 2^n(1+L)^{n-1}\varepsilon\rho^n.
+\]
+闭球的像紧，故这里确实是在估计可测集的体积。
+
+对每个 \(j\)，令 \(\varepsilon_j=2^{-j}\)。为 \(C_R\) 中每一点选一个使上述估计成立、且 \(2\rho\leq2^{-j}\) 的中心闭球。由\cref{b1:thm:besicovitch-covering}，可从中选出可数个闭球 \(B_{j,i}=\overline B(x_{j,i},r_{j,i})\) 覆盖 \(C_R\)，并将它们分为至多 \(5^m\) 个两两不交的族。球均包含于 \(B(0,R+1)\)，所以
+\[
+ \sum_i r_{j,i}^m\leq5^m(R+1)^m.
+\]
+如前一小节那样，构造
+\[
+ H_j(y)=\omega_q\sum_i r_{j,i}^q
+                                \mathbf1_{f(B_{j,i})}(y).
+\]
+有逐点上界 \(\mathcal H^q_{2^{-j}}\bigl((C_R)_y\bigr)\leq H_j(y)\)，而上述像体积估计给出
+\[
+ \int_{\mathbb R^n}H_j(y)\,\mathrm dy
+ \leq
+ \omega_q2^n(1+L)^{n-1}5^m(R+1)^m\,2^{-j}.
+\]
+于是 \(\sum_jH_j<\infty\) 几乎处处。令 \(j\to\infty\)，得到 \(\mathcal H^q\bigl((C_R)_y\bigr)=0\) 几乎处处。最后对整数 \(R\) 取可数并，得到结论。
+\end{proof}
+
+证明只排除了几乎每层中的正 \(\mathcal H^q\) 测度贡献，并未排除临界纤维中仍有点。因此不能把它改述成“几乎每个水平集都不经过临界点”。
+
+\begin{theorem}[余面积公式]\label{b1:thm:coarea-formula}
+设 \(m\geq n\geq1\)，\(f:\mathbb R^m\rightarrow\mathbb R^n\) 为 Lipschitz 映射，且 \(E\subseteq\mathbb R^m\) Lebesgue 可测。则
+\[
+ \int_EJ_nf(x)\,\mathrm dx
+ =
+ \int_{\mathbb R^n}
+       \mathcal H^{m-n}\bigl(E\cap f^{-1}(\{y\})\bigr)\,\mathrm dy.
+\]
+右端的切片可测性与质量函数可测性按前述意义成立，两边允许为无穷。
+\end{theorem}
+
+\begin{proof}[\cref{b1:thm:coarea-formula}及其标量版本的证明]
+当 \(m=n\) 时，\(J_nf=|\det Df|\)，而切片的 \(\mathcal H^0\) 测度为重数，结论就是\cref{b1:thm:area-formula}。以下设 \(q=m-n>0\)。
+
+令 \(G=\{x\in\mathcal D_f:\operatorname{rank}Df(x)=n\}\)。在 \(G\) 外，余面积 Jacobi 行列式为零；不可微点由\cref{b1:lem:null-set-slices}处理，秩亏点由\cref{b1:lem:critical-set-slices}处理。因此只需证明 \(E\cap G\) 上的公式。
+
+在每个 \(x\in G\)，可以选取一个由 \(q\) 个坐标组成的投影 \(P:\mathbb R^m\rightarrow\mathbb R^q\)，使
+\[
+ B(x)=\begin{pmatrix}P\\ Df(x)\end{pmatrix}
+\]
+可逆：在 \(Df(x)\) 中选一个非零的 \(n\) 阶坐标子式，再用其余坐标补齐即可。这样的投影只有有限种。对每一种 \(P\)，定义 Lipschitz 映射
+\[
+ \Phi_P(x)=(Px,f(x))\in\mathbb R^q\times\mathbb R^n.
+\]
+在其微分可逆的集合上，应用\cref{b1:lem:linear-approximation-pieces}，并把误差取得小于对应线性映射最小伸缩的一半。由近线性的距离比较，可得到可数个 Borel 片，使 \(\Phi_P\) 在每片上为双 Lipschitz 映射。合并有限种 \(P\) 的片，再依次相减，就把 \(G\) 分为两两不交的 Borel 集 \(A_j\)，每片各有这样一个投影 \(P_j\)。
+
+固定一片，并简写 \(A=E\cap A_j\)、\(P=P_j\)、\(\Phi=\Phi_P\)。记
+\[
+ Z=\Phi(A)\subseteq\mathbb R^q\times\mathbb R^n.
+\]
+它是 Lebesgue 可测集，因为 \(\Phi\) 是 Lipschitz 映射，且定义域、目标空间同维。片上的逆映射 \(H:Z\rightarrow A\) 为 Lipschitz 映射。逐坐标延拓，得到全空间的 Lipschitz 映射 \(\widetilde H:\mathbb R^m\rightarrow\mathbb R^m\)。
+
+对几乎每个 \(u=(z,y)\in Z\)，\(u\) 是 \(Z\) 的密度点，且 \(\widetilde H\) 在 \(u\) 处可微。置 \(x=H(u)\)，由于 \(x\in A_j\subseteq\mathcal D_f\)，映射 \(\Phi\) 在 \(x\) 处可微。又因
+\[
+ \Phi\bigl(\widetilde H(v)\bigr)=v\quad(v\in Z),
+\]
+在密度点处比较双方的微分可得
+\[
+ D\Phi(x)D\widetilde H(u)=I_m,\quad
+ D\widetilde H(u)=B(x)^{-1}.
+\]
+这里的比较只需密度点的线性唯一性：若一个在 \(u\) 可微的函数在密度一集合上等于零，其微分也为零；否则沿微分不为零的锥形方向会出现一块固定正比例的坏点区域。链式展开则直接来自两映射在相应点的通常可微性。
+
+由\cref{b1:prop:coarea-coordinate-identity}的纯线代形式，上式给出
+\[
+ J_q\bigl(D_z\widetilde H(z,y)\bigr)
+ =
+ \frac{J_nf\bigl(H(z,y)\bigr)}
+      {|\det B\bigl(H(z,y)\bigr)|}
+ \quad\text{在 }Z\text{ 中几乎处处}.
+\]
+左端使用微分矩阵的前 \(q\) 列。不可微点上补零使这个矩阵函数可测，不改变上述几乎处处等式。
+
+Fubini 定理保证：对几乎每个固定的 \(y\)，截面
+\[
+ Z_y=\{\,z:(z,y)\in Z\,\}
+\]
+Lebesgue 可测，并且前述微分关系对几乎每个 \(z\in Z_y\) 成立。映射 \(z\mapsto\widetilde H(z,y)\) 是 \(\mathbb R^q\) 上的 Lipschitz 映射，在 \(Z_y\) 上单射，而且它的像恰好为 \(A\cap f^{-1}(\{y\})\)。在联合可微点处，该映射的微分正是 \(D_z\widetilde H\)。因此由单射面积公式，
+\[
+ \mathcal H^q\bigl(A\cap f^{-1}(\{y\})\bigr)
+ =
+ \int_{Z_y}J_q\bigl(D_z\widetilde H(z,y)\bigr)\,\mathrm dz
+\]
+对几乎每个 \(y\) 成立。
+
+另一方面，对单射映射 \(\Phi|_A\) 使用加权面积公式，权取为 \(J_nf/|\det B|\)，得到
+\[
+ \int_AJ_nf(x)\,\mathrm dx
+ =
+ \int_Z
+ \frac{J_nf\bigl(H(u)\bigr)}
+      {|\det B\bigl(H(u)\bigr)|}\,\mathrm du.
+\]
+分母在 \(A\) 上非零；涉及的权函数均可测。把矩阵恒等式及切片面积式代入，再用 Tonelli 定理，便得
+\[
+ \int_AJ_nf(x)\,\mathrm dx
+ =
+ \int_{\mathbb R^n}\mathcal H^q
+                 \bigl(A\cap f^{-1}(\{y\})\bigr)\,\mathrm dy.
+\]
+最后对两两不交的 \(E\cap A_j\) 求和。几乎每个纤维中的这些部分都可测，因而其 Hausdorff 测度可数相加。再补回已经证明几乎每层零测的 \(E\setminus G\)，得到一般公式。
+
+若 \(n=1\)，微分矩阵只有一行，因此 \(J_1f=|\nabla f|\)。这同时证明了\cref{b1:thm:scalar-coarea}。
+\end{proof}
+
+证明没有要求片上的坐标变换在开邻域内可逆。它只用双 Lipschitz 片上的逆映射，并在片像的密度点处识别其微分。这是通常光滑坐标证明在 Lipschitz 情形中需要补充的步骤。
 
 \subsection{可积函数版本}
 \label{b1:subsec:180203}
 
-待填充。
+先说明如何限制一个 Lebesgue 可测函数到纤维。设 \(m>n\)。若 \(g\) 有限值且 Lebesgue 可测，可以选一个几乎处处相等的 Borel 代表 \(g_0\)。二者不同的点组成零测集，其切片由\cref{b1:lem:null-set-slices}几乎处处为 Hausdorff 零测集。因此几乎每层上的 \(g\) 都是完备 \(\mathcal H^q\) 可测的，并与 \(g_0\) 给出相同积分。对非负扩展实值函数，以可数个可测水平集作同样处理即可。当 \(m=n\) 时，零测集的像为零测集，所以几乎每个纤维根本不遇到改值点，同样得到结论。
+
+\begin{theorem}[加权余面积公式]\label{b1:thm:weighted-coarea}
+在\cref{b1:thm:coarea-formula}的条件下，设 \(g:E\rightarrow[0,\infty]\) Lebesgue 可测。则几乎每个纤维上都有定义良好的非负积分，并且
+\[
+ \int_Eg(x)J_nf(x)\,\mathrm dx
+ =
+ \int_{\mathbb R^n}
+   \left(\int_{E\cap f^{-1}(\{y\})}g(x)\,
+                     \mathrm d\mathcal H^{m-n}(x)\right)\,\mathrm dy.
+\]
+内积分在例外零测集上任意补值后为 Lebesgue 可测函数，等式允许两端为无穷，并约定 \(0\cdot\infty=0\)。
+\end{theorem}
+\begin{proof}
+若 \(g\) 是非负简单函数，对它的各个可测水平集应用余面积公式，再线性相加即可。对一般 \(g\)，取非负简单函数列 \(g_j\uparrow g\)。上述切片可测性允许删去一个公共零测集，使每个 \(g_j\) 及 \(g\) 都能在余下纤维上积分。逐层应用单调收敛定理，再对外层及定义域上的积分使用单调收敛定理，就得到结论。当 \(m=n\) 时，这也是前章加权面积公式的计数形式。
+\end{proof}
+
+若 \(g\) 实值或复值，并满足
+\[
+ \int_E|g(x)|J_nf(x)\,\mathrm dx<\infty,
+\]
+先对 \(|g|\) 应用定理，得到几乎每层上的绝对可积性。再对实部、虚部的正负部分分别应用非负公式，便得到同样的等式。若不具有这个条件，不能仅凭某一种迭代积分存在，就交换变号的积分。
+
+这些结论也适用于开集上的局部 Lipschitz 映射。取可数个具有有限 Lipschitz 常数的开球，并把定义域分成从属于它们的不交可测片。在每个球上延拓至全空间后应用公式，最后逐片相加。原映射与延拓在球内局部相同，故微分及余面积 Jacobi 因子一致；补回局部异常集时仍只涉及可数个零测集。
 
 \subsection{几何解释}
 \label{b1:subsec:180204}
 
-待填充。
+对投影 \(f(x_1,\ldots,x_m)=(x_1,\ldots,x_n)\)，有 \(J_nf=1\)，纤维是互相平行的 \((m-n)\) 维平面，公式退化为 Fubini 定理。对满秩线性映射，\cref{b1:thm:linear-coarea-formula}说明余面积 Jacobi 因子补偿了法向方向上的伸缩。一般 Lipschitz 映射则在几乎处处使用相应微分矩阵进行同样的补偿。
+
+若 \(n=1\) 且 \(\nabla f(x)\ne0\)，微分核为与 \(\nabla f(x)\) 正交的超平面，\(|\nabla f(x)|\) 测量函数值沿法向变化的速率。沿函数值 \(t\) 积分时，变化快的地方需要更大的补偿因子，才能恢复原空间中的体积。这个解释只涉及正规点的局部微分，不把所有水平集都说成光滑超曲面。
+
+对几乎每个 \(y\)，上面的证明实际上把水平集分成可数个由 \(\mathbb R^{m-n}\) 的子集作 Lipschitz 参数化的部分，再加一个 \(\mathcal H^{m-n}\) 零测集。这个结构是在证明中由满秩坐标片得到的，不是预先假定的水平集正则性。后面的可整流性章节会把这种可数参数化单独命名，并研究它与切空间的关系。
+
+若 \(m_m(E)<\infty\)，则
+\[
+ \int_{\mathbb R^n}\mathcal H^{m-n}(E_y)\,\mathrm dy
+ \leq L^n m_m(E).
+\]
+因此几乎每个切片的 \((m-n)\) 维测度有限，并且对 \(\lambda>0\)，
+\[
+ m_n\{\,y:\mathcal H^{m-n}(E_y)>\lambda\,\}
+ \leq\lambda^{-1}\int_EJ_nf.
+\]
+这是一条关于大多数层的估计，而不是每层的统一上界。它将用于下一节的层析积分与水平集估计。

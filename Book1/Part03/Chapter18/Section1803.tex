@@ -2,24 +2,186 @@
 \section{应用}
 \label{b1:sec:1803}
 
-% TODO: 撰写本节正文。
+余面积公式把一个高维积分拆成水平集上的积分，但实际使用时仍须回答三个问题：水平集上该用哪一维测度，是否需要除以梯度，以及梯度为零的参数如何处理。本节从坐标投影和径向分层开始，再讨论水平集面积的平均控制与分布函数。最后把这一方法和第七章已有的 Cavalieri 原理放在一起，说明两种“分层”并不使用同一个积分对象。
+
+% 来源：本书1802的完整余面积公式及1704球面积；主代理实际读取
+% Fremlin2016Measure chap26.tex 265G--H的球壳积分与球面积推导。
+% 分布推前按本书RN/积分微分工具自行组织；不把临界部分的推前自动宣称为奇异测度。
+% 振荡三角波反例为自拟，展示固定Lipschitz常数也不控制全部水平集的统一面积。
 
 \subsection{层析积分}
 \label{b1:subsec:180301}
 
-待填充。
+先取坐标投影 \(p:\mathbb R^d\to\mathbb R\)，\(p(x)=x_1\)。它的余面积 Jacobi 因子为 \(|\nabla p|=1\)，水平集是仿射平面 \(\{x_1=t\}\)。该平面上的 \(\mathcal H^{d-1}\) 与其余坐标的 Lebesgue 测度一致，因此对非负可测 \(g\)，余面积公式给出
+\[
+ \int_{\mathbb R^d}g(x)\,\mathrm dx
+ =\int_{\mathbb R}\int_{\mathbb R^{d-1}}
+        g(t,z)\,\mathrm dz\,\mathrm dt.
+\]
+这里得到的就是 Tonelli 公式。若换成任意单位向量方向上的正交投影，只需作一次正交坐标变换。一般余面积公式允许这些直平面随位置弯曲，同时用 Jacobi 因子补偿层与层之间的参数间距。
+
+\begin{proposition}\label{b1:prop:radial-shell-integration}
+设 \(d\geq2\)，\(a\in\mathbb R^d\)。对每个非负 Lebesgue 可测函数 \(g\)，
+\[
+ \int_{\mathbb R^d}g(x)\,\mathrm dx
+ =\int_0^\infty\int_{\partial B(a,r)}g(x)\,
+       \mathrm d\mathcal H^{d-1}(x)\,\mathrm dr.
+\]
+若 \(g\) 实值或复值且可积，同一等式成立，内层积分在几乎每个 \(r\) 上绝对可积。
+\end{proposition}
+\begin{proof}
+令 \(u(x)=|x-a|\)。它是 \(1\)-Lipschitz 函数，并且在 \(x\ne a\) 时
+\[
+ \nabla u(x)=\frac{x-a}{|x-a|},\quad |\nabla u(x)|=1.
+\]
+单点 \(\{a\}\) 的 \(d\) 维测度为零。在\cref{b1:thm:weighted-coarea}中使用映射 \(u\) 及权 \(g\)，注意正水平集恰为 \(\partial B(a,r)\)，便得到非负版本。对 \(|g|\) 先应用该式，再分实部、虚部的正负部分，就得到可积版本。
+\end{proof}
+
+结合\cref{b1:prop:sphere-hausdorff-area}，若 \(g(x)=\varphi(|x-a|)\)，便有
+\begin{equation}\label{b1:eq:radial-one-dimensional-integral}
+ \int_{\mathbb R^d}\varphi(|x-a|)\,\mathrm dx
+ =d\omega_d\int_0^\infty\varphi(r)r^{d-1}\,\mathrm dr.
+\end{equation}
+公式中的 \(r^{d-1}\) 是半径为 \(r\) 的球面相对于单位球面的面积因子；它不是把球面上的点按 \(d\) 维体积重新计量。\(d=1\) 时，正半径的水平集由两个点组成，\(\mathcal H^0\) 是计数测度，相应公式就是在中心两侧分别积分。
+
+球壳积分还有一个局部读法。若 \(g\in L^1_{\mathrm{loc}}(\mathbb R^d)\)，令
+\[
+ W(r)=\int_{B(a,r)}g(x)\,\mathrm dx.
+\]
+对任意有限半径区间，球壳公式表明 \(W\) 是一个可积函数的不定积分。因此在几乎每个 \(r>0\)，
+\[
+ W'(r)=\int_{\partial B(a,r)}g\,\mathrm d\mathcal H^{d-1}.
+\]
+“几乎每个”不能在一般可积 \(g\) 下删去。此处控制的是球面积分关于半径的可积性，而不是每张球面上的点态连续性。Fremlin 的《Measure Theory》\cite[265G]{Fremlin2016Measure}直接从参数化推导球壳积分；这里则将它看成余面积公式的径向特例。
 
 \subsection{水平集的 Hausdorff 测度}
 \label{b1:subsec:180302}
 
-待填充。
+设 \(U\subseteq\mathbb R^d\) 开，\(u:U\to\mathbb R\) 为 \(L\)-Lipschitz 函数，\(E\subseteq U\) Lebesgue 可测且 \(m_d(E)<\infty\)。令
+\[
+ A_E(t)=\mathcal H^{d-1}\bigl(E\cap u^{-1}(\{t\})\bigr).
+\]
+上一节保证切片在几乎每个参数值上可测，并使 \(A_E\) 具有 Lebesgue 可测的版本。余面积公式给出
+\begin{equation}\label{b1:eq:level-area-average}
+ \int_{\mathbb R}A_E(t)\,\mathrm dt
+ =\int_E|\nabla u(x)|\,\mathrm dx
+ \leq Lm_d(E).
+\end{equation}
+于是几乎每个水平集与 \(E\) 的交具有有限 \((d-1)\) 维测度，而且对 \(M>0\)，
+\[
+ m_1\{t:A_E(t)>M\}\leq\frac{Lm_d(E)}M.
+\]
+后一个估计来自非负积分的简单下界 \(\int A_E\geq M m_1\{A_E>M\}\)，它控制大面积水平集出现的参数范围。
+
+这并不控制每个水平集。若 \(u\) 在一个开球上恒为 \(c\)，则 \(u^{-1}(\{c\})\) 含有该开球，它的 \((d-1)\) 维测度为无穷；异常参数只有一个，仍与\eqref{b1:eq:level-area-average}相容。即使排除这种平台，固定定义域与 Lipschitz 常数也不能给所有正常水平集一个统一的面积上界。
+
+为看清后一件事，在单位开立方体 \(Q=(0,1)^d\) 上取
+\[
+ u_N(x)=\frac1N\operatorname{dist}(Nx_1,\mathbb Z),
+ \quad N=1,2,ldots.
+\]
+距离函数为 \(1\)-Lipschitz，所以每个 \(u_N\) 也为 \(1\)-Lipschitz。对 \(0<t<1/(2N)\)，方程 \(u_N(x)=t\) 在第一坐标上恰有 \(2N\) 个解，其余坐标自由。因此水平集由 \(2N\) 个互不相交的单位截面组成，
+\[
+ A_Q(t)=2N\quad\bigl(0<t<1/(2N)\bigr).
+\]
+每张这样的水平集面积随 \(N\) 增长，但对应参数区间缩短；其面积积分始终为 \(1\)，也正好等于 \(\int_Q|\nabla u_N|\)。余面积公式描述的是这两种变化之间的平衡。
+
+对于 \(f:U\subseteq\mathbb R^m\to\mathbb R^n\)、\(m\geq n\)，同一论证给出
+\[
+ \int_{\mathbb R^n}\mathcal H^{m-n}
+       \bigl(E\cap f^{-1}(\{y\})\bigr)\,\mathrm dy
+ =\int_EJ_nf\leq L^n m_m(E).
+\]
+在开集上仅局部 Lipschitz 时，可先限制于较小的相对紧参数块。这里仍只得到几乎处处的测度结论；水平集是不是流形，或能否由可数个 Lipschitz 片覆盖，是另一个结构问题。
 
 \subsection{分布函数}
 \label{b1:subsec:180303}
 
-待填充。
+现在考虑一个常见的计算目标：已知空间中的密度 \(g(x)\)，希望求数值 \(u(x)\) 的分布。余面积公式的左端带有 \(|\nabla u|\)，而分布的定义直接对 \(g(x)\,\mathrm dx\) 积分，因此需要仔细处理除以梯度的步骤。
+
+设 \(u:U\subseteq\mathbb R^d\to\mathbb R\) 局部 Lipschitz，\(g\geq0\) Lebesgue 可测且 \(\int_Ug<\infty\)。记 \(D_u\) 为真正可微点集，置
+\[
+ R=\{x\in D_u:|\nabla u(x)|>0\},\quad C=U\setminus R.
+\]
+在 \(C\) 中，真正临界点与不可微点仍须区分；后者为 Lebesgue 零测集，对这里的 \(g\,\mathrm dx\) 没有质量。定义有限推前测度
+\[
+ \nu(B)=\int_{u^{-1}(B)}g(x)\,\mathrm dx
+ \quad(B\subseteq\mathbb R\text{ Borel}).
+\]
+
+\begin{proposition}\label{b1:prop:distribution-coarea-decomposition}
+上述推前测度可以写成
+\[
+ \nu=\rho(t)\,\mathrm dt+\nu_C,
+\]
+其中
+\[
+ \rho(t)=\int_{R\cap u^{-1}(\{t\})}
+          \frac{g(x)}{|\nabla u(x)|}\,
+          \mathrm d\mathcal H^{d-1}(x),
+ \quad
+ \nu_C(B)=\int_{C\cap u^{-1}(B)}g(x)\,\mathrm dx.
+\]
+\(\rho\) 在几乎处处定义，并有一个非负可测版本，满足
+\(\int_{\mathbb R}\rho=\int_Rg\)。若 \(\int_Cg=0\)，则尾分布函数
+\[
+ F(t)=\int_{\{x\in U:u(x)>t\}}g(x)\,\mathrm dx
+\]
+绝对连续，且 \(F'(t)=-\rho(t)\) 几乎处处。
+\end{proposition}
+\begin{proof}
+给定非负 Borel 测试函数 \(\psi\)，在余面积公式中取权
+\[
+ h(x)=
+ \begin{cases}
+  \psi(u(x))g(x)/|\nabla u(x)|,&x\in R,\\
+  0,&x\in C.
+ \end{cases}
+\]
+非负版本不要求 \(h\) 本身对体积可积。它的乘积 \(h|\nabla u|\) 等于 \(\mathbf1_R\psi(u)g\)，所以
+\[
+ \int_R\psi(u(x))g(x)\,\mathrm dx
+ =\int_{\mathbb R}\psi(t)\rho(t)\,\mathrm dt.
+\]
+令 \(\psi=1\) 得到可积性，令 \(\psi=\mathbf1_B\) 得到 \(R\) 部分的推前密度；再加上 \(C\) 部分即得测度分解。若 \(\int_Cg=0\)，则
+\[
+ F(t)=\int_t^\infty\rho(s)\,\mathrm ds.
+\]
+因 \(\rho\in L^1(\mathbb R)\)，绝对连续性及导数结论由第十六章的积分表示得到。
+\end{proof}
+
+这里 \(\nu_C\) 是临界部分的推前记号，不是未经证明就得到的 Lebesgue 分解中的奇异部分。余面积公式在 \(C\) 上的左端为零，它只说明几乎每张纤维中相应的低维测度为零，不能单凭这一点恢复 \(g\,\mathrm dx\) 在 \(C\) 上的全部质量。要进一步说明 \(\nu_C\) 的性质，必须利用具体映射的结构。
+
+平台是一个明确的例子：若 \(u=c\) 在可测集 \(A\) 上成立，且 \(\int_Ag>0\)，则 \(\nu\) 在 \(c\) 至少有这部分原子质量。此时尾分布在 \(c\) 跳跃，不可能由某个普通密度函数完全描述。另一方面，临界推前也可能是无原子的奇异测度，本章习题会由上一章的 Lipschitz 同胚给出实例。
+
+作为没有临界质量的计算例子，在 \(B(0,1)\subseteq\mathbb R^d\) 上取均匀概率密度 \(g=1/\omega_d\)，令 \(u(x)=|x|^2\)。除原点外，\(|\nabla u(x)|=2|x|\)。对 \(0<t<1\)，水平集为半径 \(\sqrt t\) 的球面，故
+\[
+ \rho(t)=\frac{d\omega_d t^{(d-1)/2}}{2\omega_d\sqrt t}
+         =\frac d2t^{d/2-1}.
+\]
+在区间外密度为零。因此 \(\nu((0,t])=t^{d/2}\)，与半径 \(\sqrt t\) 球的体积比例相同。分母 \(2\sqrt t\) 不可遗漏；水平集面积本身还不是数值 \(|x|^2\) 的概率密度。
 
 \subsection{Cavalieri 原理}
 \label{b1:subsec:180304}
 
-待填充。
+第七章的\term*[cavalieri-yuanli]{Cavalieri 原理}[Cavalieri's principle]说明，同方向截面的面积可以积成体积。对非负可测函数 \(v\)，其下方区域
+\[
+ S_v=\{(x,t):0<t<v(x)\}
+\]
+从两个坐标方向切分，便给出已经证明的水平集积分公式
+\[
+ \int v(x)\,\mathrm dx
+ =\int_0^\infty m_d\{x:v(x)>t\}\,\mathrm dt.
+\]
+这里内层测量的是超水平集的 \(d\) 维体积，不是等值集的 \((d-1)\) 维面积；也不需要 \(v\) 连续或可微。严格依据是\cref{b1:prop:layer-cake-formula}，不应把余面积公式的梯度因子移入这个等式。
+
+若改为用等值集分层，在上一小节的记号下，对 \(a<b\) 则有
+\begin{equation}\label{b1:eq:slab-volume-coarea}
+ \int_{\{a<u\leq b\}}g(x)\,\mathrm dx
+ =\int_a^b\rho(t)\,\mathrm dt+\nu_C((a,b]).
+\end{equation}
+这个式子来自推前测度作用于区间，因而端点质量也处理得清楚。若 \(\nu_C=0\)，薄层的质量由水平集上的 \(g/|\nabla u|\) 积分得到；若有临界质量，则还必须保留最后一项。
+
+例如令 \(u(x)=ax_1\)、\(a>0\)，在柱体 \((0,1)\times D\) 中取 \(g=1\)，其中 \(D\subseteq\mathbb R^{d-1}\) 的体积为 \(M<\infty\)。每个内部水平截面的面积都是 \(M\)，但其数值参数 \(t\) 在 \((0,a)\) 中变化，分布密度为 \(M/a\)。若只积截面面积，将得到 \(aM\) 而不是柱体体积 \(M\)。除以梯度 \(a\)，正是在修正数值参数与空间厚度的比例。
+
+把这一区别记住，比背诵两个形式相似的公式更有用。超水平集分层直接计算函数值下方的体积；余面积分层则在原空间内部沿等值集切开。后者有赖于映射的微分结构，给出更细的几何信息，也带来临界点与几乎处处切片的额外条件。下一章会进一步考察这些低维集合本身，说明何时它们能在忽略零测集后由可数个参数片描述。
