@@ -2,24 +2,264 @@
 \section{近似切空间}
 \label{b1:sec:1902}
 
-% TODO: 撰写本节正文。
+Lipschitz 参数化在几乎每一点有线性微分，但一个可整流集可能由许多相交的参数像组成。要把参数空间中的微分解释成集合自身的切平面，既要看清单个片的局部形状，也要控制其余各片进入同一个小球的质量。本节采用缩放测度的定义；它同时记录方向与单位面积密度。Simon 的《Lectures on Geometric Measure Theory》\cite[第11.2--11.6节]{Simon1983Lectures}以这种方式组织近似切空间。本节直接从 Lipschitz 片和已证的面积公式出发，不另引入光滑逼近定理。
+
+% 来源：实读 Simon 1983 印刷第59--63页，第11.2--11.7节；定义及片间转移思路据此，
+% 其 C^1 分片在本节改为第17章双 Lipschitz 分片、加权面积公式与 Lebesgue 点的完整论证。
+% 另实读 Fremlin 作者版 chap47.tex 第474O--P：该处 Federer exterior normal
+% 针对实体集合的半空间体积逼近，不是本节一般余维的近似法空间，未据此移用结论。
 
 \subsection{近似切平面}
 \label{b1:subsec:190201}
 
-待填充。
+以下先固定 \(1\leq k\leq n\)，并设 \(E\subseteq\mathbb R^n\) 为 Borel 集，限制测度 \(\mu=\mathcal H^k|_E\) 局部有限。这里 \(\mathcal H^k|_E(A)=\mathcal H^k(E\cap A)\)，不是把整个空间上的 \(\mathcal H^k\) 假定为局部有限。对 \(k<n\)，后一个假定通常不成立。
+
+\begin{definition}\label{b1:def:approximate-tangent-plane}
+设 \(x\in E\)，\(T\subseteq\mathbb R^n\) 为 \(k\) 维线性子空间。若对每个 \(\varphi\in C_c(\mathbb R^n)\) 都有
+\begin{equation}\label{b1:eq:approximate-tangent-blowup}
+ \lim_{r\downarrow0}\frac1{r^k}
+ \int_E\varphi\left(\frac{y-x}{r}\right)\,\mathrm d\mathcal H^k(y)
+ =\int_T\varphi(z)\,\mathrm d\mathcal H^k(z),
+\end{equation}
+则称 \(T\) 为 \(E\) 在 \(x\) 处的\term[jinsi-qiepingmian]{近似切平面}[approximate tangent plane]，记为 \(\operatorname{Tan}^k(E,x)\)。平移后的仿射平面为 \(x+\operatorname{Tan}^k(E,x)\)。
+\symidx{\(\operatorname{Tan}^k(E,x)\)：可整流集的近似切平面}
+\end{definition}
+
+局部有限性保证上式左端的每次积分有限。这一定义要求缩放后的质量趋于平面上的 \(\mathcal H^k\)，没有额外的重数因子；一般带权测度的缩放极限将在第\ref{b1:sec:1904}节另行讨论。改变 \(E\) 的一个 \(\mathcal H^k\) 零测子集不会改变积分条件，但是否把某个点列为 \(E\) 的元素，仍取决于所选集合。
+
+\begin{proposition}\label{b1:prop:approximate-tangent-properties}
+若 \(E\) 在 \(x\) 处有近似切平面 \(T\)，则该平面唯一，并且
+\begin{equation}\label{b1:eq:rectifiable-unit-density}
+ \lim_{r\downarrow0}
+ \frac{\mathcal H^k\bigl(E\cap\overline B(x,r)\bigr)}
+      {\omega_k r^k}=1.
+\end{equation}
+开球也满足同一极限。对每个 \(\varepsilon>0\)，还有
+\begin{equation}\label{b1:eq:approximate-tangent-cone}
+ \lim_{r\downarrow0}\frac1{r^k}\mathcal H^k
+ \left(\left\{\,y\in E\cap\overline B(x,r):
+  \operatorname{dist}(y-x,T)\geq\varepsilon|y-x|\,\right\}\right)=0.
+\end{equation}
+\end{proposition}
+\begin{proof}
+若 \(T_1,T_2\) 为两个不同的候选平面，取 \(z\in T_1\setminus T_2\)，再取一个与 \(T_2\) 不交的小球 \(B(z,\rho)\)。可以选取非负连续函数 \(\varphi\)，支集包含于这个球，并在 \(z\) 的某个邻域严格为正。它在 \(T_1\) 上的积分为正，在 \(T_2\) 上的积分为零，与同一个缩放积分具有这两个极限矛盾。
+
+为求球的质量，固定 \(0<\delta<1\)，取径向连续函数 \(\varphi_-,\varphi_+\)，满足
+\[
+ {\bf1}_{\overline B(0,1-\delta)}
+ \leq\varphi_-\leq{\bf1}_{B(0,1)}
+ \leq{\bf1}_{\overline B(0,1)}
+ \leq\varphi_+\leq{\bf1}_{B(0,1+\delta)}.
+\]
+由\eqref{b1:eq:approximate-tangent-blowup}，开球与闭球的归一化质量下极限至少为 \((1-\delta)^k\)，上极限至多为 \((1+\delta)^k\)。这里使用了平面上 \(\mathcal H^k\) 与 \(k\) 维 Lebesgue 测度的一致性。令 \(\delta\downarrow0\) 即得密度结论。
+
+最后固定 \(\varepsilon,\delta>0\)。紧集
+\[
+ F_{\varepsilon,\delta}
+ =\{\,z:\delta\leq|z|\leq1,\,
+              \operatorname{dist}(z,T)\geq\varepsilon|z|\,\}
+\]
+与 \(T\) 不交，故可取非负的紧支集连续函数 \(\chi\)，在这个紧集上等于 \(1\)，并在 \(T\) 的一个邻域等于零。缩放积分条件说明落在该环形区域内的锥外质量除以 \(r^k\) 趋于零。剩余部分在 \(\overline B(x,\delta r)\) 中，其质量除以 \(r^k\) 的极限为 \(\omega_k\delta^k\)。再令 \(\delta\downarrow0\)，便得到\eqref{b1:eq:approximate-tangent-cone}。单点的 \(\mathcal H^k\) 测度为零，因而 \(y=x\) 不影响结论。
+\end{proof}
+
+锥外质量的消失说明，少量偏离切平面的点可以保留，但它们在当前尺度下不能占有正比例的面积。这个条件不要求小球内的整个集合都靠近平面，也不要求集合在一点的邻域内恰是一张图。有些表述以锥外质量的消失配合正上密度来定义近似切平面；本书采用的缩放积分条件还明确规定平面上的单位重数，不把这些不同条件在每个例外点都视为已经证明等价。
 
 \subsection{近似法向量}
 \label{b1:subsec:190202}
 
-待填充。
+\begin{definition}\label{b1:def:approximate-normal-space}
+若 \(\operatorname{Tan}^k(E,x)\) 存在，则定义 \(E\) 在 \(x\) 处的\term[jinsi-fakongjian]{近似法空间}[approximate normal space]为
+\[
+ \operatorname{Nor}^k(E,x)
+ =\operatorname{Tan}^k(E,x)^\perp.
+\]
+其中的向量称为\term[jinsi-faxiangliang]{近似法向量}[approximate normal vector]；长度为 \(1\) 的向量称为单位近似法向量。
+\symidx{\(\operatorname{Nor}^k(E,x)\)：可整流集的近似法空间}
+\end{definition}
+
+在余维 \(1\) 的情形，单位法向量恰有两个互为相反数的选择。仅从集合本身的无向面积测度出发，没有指定其中哪一个为“外法向量”。余维大于 \(1\) 时，法空间的维数为 \(n-k\)，更不能用唯一的单位向量代替它；当 \(k=n\) 时，法空间只有零向量。
+
+例如，设 \(g:\mathbb R^k\rightarrow\mathbb R\) 为 Lipschitz 函数，\(\psi(a)=(a,g(a))\)。在 \(g\) 可微且图的近似切平面等于 \(\operatorname{im}D\psi(a)\) 的点，切向量与一个单位法向量分别为
+\[
+ (v,Dg(a)v),\quad
+ \nu(a)=\frac{(-\nabla g(a),1)}
+                    {\sqrt{1+|\nabla g(a)|^2}}.
+\]
+两者内积为零，这直接验证了法向量公式。切平面与参数微分几乎处处相容的事实将在本节后半部证明。此处的法向量针对图上的面积；一个实体集合由哪一侧占据半空间，是另一个需要补充内外信息的问题。
 
 \subsection{密度与切空间}
 \label{b1:subsec:190203}
 
-待填充。
+先把问题限于一个没有自交的参数片。面积公式负责把像上的积分拉回参数空间，Lebesgue 点则保证缩小邻域中的 Jacobi 行列式 平均趋于它在中心的值。
+
+\begin{lemma}\label{b1:lem:bilipschitz-piece-blowup}
+设 \(F:\mathbb R^k\rightarrow\mathbb R^n\) 为 Lipschitz 映射，\(D\subseteq\mathbb R^k\) 为 Borel 集，且存在 \(c>0\) 使
+\[
+ |F(u)-F(v)|\geq c|u-v|\quad(u,v\in D).
+\]
+记 \(M=F(D)\)，并设 \(DF\) 在 \(D\) 的几乎每一点存在且秩为 \(k\)。则对 \(\mathcal H^k\)-几乎处处的 \(x=F(a)\in M\)，集合 \(M\) 的缩放积分满足\eqref{b1:eq:approximate-tangent-blowup}，其中 \(T=\operatorname{im}DF(a)\)。
+\end{lemma}
+\begin{proof}
+采用第\ref{b1:sec:1702}节的 Borel Jacobi 行列式，置 \(h={\bf1}_D J_kF\)。它是有界可测函数。删去一个参数零测集后，可同时要求 \(F\) 在 \(a\in D\) 处可微、\(A=DF(a)\) 满秩，以及 \(a\) 为 \(h\) 的 Lebesgue 点，且 \(h(a)=J_k(A)\)。被删集合的像也是 \(\mathcal H^k\) 零测集。
+
+像 \(M\) 由\cref{b1:lem:lipschitz-image-hausdorff-measurable}可测。其局部质量有限：若 \(M\cap\overline B(x,R)\) 非空，选取其中一点的原像，则所有其他原像均落在一个半径 \(2R/c\) 的参数球内；Lipschitz 测度估计给出有限的 \(\mathcal H^k\) 质量。因此本引理的紧支集积分有意义。
+
+固定上述好点 \(a\)，令 \(x=F(a)\)。由单射情形的加权面积公式与参数空间的平移缩放，
+\[
+ \begin{aligned}
+ &\frac1{r^k}\int_M
+       \varphi\left(\frac{y-x}{r}\right)\,\mathrm d\mathcal H^k(y)\\
+ &\hspace{1em}=
+ \int_{\mathbb R^k}
+   \varphi\left(\frac{F(a+rv)-F(a)}r\right)h(a+rv)\,\mathrm dv.
+ \end{aligned}
+\]
+若 \(\operatorname{supp}\varphi\subseteq\overline B(0,R)\)，被积函数非零时必有 \(a+rv\in D\)，进而 \(|v|\leq R/c\)。满秩矩阵 \(A\) 有最小伸缩 \(\sigma>0\)，所以 \(\varphi(Av)\) 非零时也有 \(|v|\leq R/\sigma\)。选取大于这两个界的常数 \(L\)，以后只在 \(B(0,L)\) 上积分。
+
+可微性给出
+\[
+ \sup_{|v|\leq L}
+ \left|\frac{F(a+rv)-F(a)}r-Av\right|\longrightarrow0.
+\]
+而 Lebesgue 点性质给出
+\[
+ \int_{B(0,L)}|h(a+rv)-J_k(A)|\,\mathrm dv
+ =\frac1{r^k}\int_{B(a,Lr)}|h(u)-h(a)|\,\mathrm du
+ \longrightarrow0.
+\]
+利用 \(\varphi\) 的一致连续性和有界性，前一个积分因而趋于
+\[
+ J_k(A)\int_{\mathbb R^k}\varphi(Av)\,\mathrm dv
+ =\int_{\operatorname{im}A}\varphi\,\mathrm d\mathcal H^k,
+\]
+末步是线性面积公式。所选好点只取决于可微性与 \(h\) 的 Lebesgue 点性质，不取决于测试函数；故在这些点对全部 \(\varphi\in C_c\) 同时成立。
+\end{proof}
+
+从单片走向整个集合时，不能仅说“各片不交，所以其他片没有贡献”：互不相交的片仍可在任意小球中彼此逼近。下一证明用奇异测度微分定理控制这种贡献。
+
+\begin{theorem}\label{b1:thm:rectifiable-density-tangent}
+设 \(E\subseteq\mathbb R^n\) 为 Borel 的可数 \(k\)-可整流集，且 \(\mathcal H^k|_E\) 局部有限。则 \(E\) 在 \(\mathcal H^k\)-几乎每一点有唯一的近似切平面，并且
+\[
+ \lim_{r\downarrow0}
+ \frac{\mathcal H^k\bigl(E\cap\overline B(x,r)\bigr)}
+      {\omega_k r^k}=1
+ \quad\text{对 }\mathcal H^k\text{-几乎处处的 }x\in E.
+\]
+\end{theorem}
+\begin{proof}
+按可数可整流性的定义，用可数个全空间 Lipschitz 映射 \(F_i:\mathbb R^k\rightarrow\mathbb R^n\) 的像覆盖 \(E\)，只遗漏一个 \(\mathcal H^k\) 零测集。若原始参数域不是全空间，先用第\ref{b1:sec:1601}节的逐坐标延拓。
+
+对每个 \(F_i\)，不可微集的像为 \(\mathcal H^k\) 零测集，秩亏集的像由\cref{b1:lem:rank-deficient-image-null}也为零测集。由\cref{b1:lem:linear-approximation-pieces}，其满秩集可分为可数个 Borel 片，使每片上 \(F_i\) 都是双 Lipschitz 映射。具体地，把对应误差取为小于单射矩阵最小伸缩的一半，就得到严格的距离下界。
+
+将每个参数片与 \(F_i^{-1}(E)\) 相交，再用 Lebesgue 内正则性在其有界部分中选取可数紧集，使遗漏参数集为零测集。全部这些紧集的像记为 \(Q_1,Q_2,\ldots\)；它们是包含于 \(E\) 的紧集，并在忽略零测集后覆盖 \(E\)。依次相减，得到两两不交的 Borel 片
+\[
+ M_j=Q_j\setminus\bigcup_{\ell<j}Q_\ell.
+\]
+若 \(Q_j=F_{i_j}(K_j)\)，则
+\[
+ D_j=K_j\cap F_{i_j}^{-1}(M_j)
+\]
+为 Borel 集，\(F_{i_j}|_{D_j}\) 双 Lipschitz，且其微分在 \(D_j\) 上满秩。由上一引理，\(M_j\) 在自身几乎每一点的缩放极限为一个 \(k\) 维平面，并在这些点有密度 \(1\)。
+
+现在置
+\[
+ \mu=\mathcal H^k|_E,\quad
+ \nu_j=\mathcal H^k|_{M_j},\quad
+ \sigma_j=\mathcal H^k|_{E\setminus M_j}.
+\]
+这些都是局部有限的 Borel 测度，因而是本书约定的 Radon 测度。为明确正则性的来源，把它们限制到 \(\overline B(0,N)\)，应用\cref{b1:lem:polish-probability-radon}中有限 Borel 测度的紧内正则性；再令 \(N\) 递增，便得到所有 Borel 集的紧内正则性。
+
+由于 \(\sigma_j\perp\nu_j\)，由\cref{b1:thm:radon-singular-differentiation}，在 \(\nu_j\)-几乎每一点有
+\[
+ \frac{\sigma_j\bigl(\overline B(x,r)\bigr)}
+      {\nu_j\bigl(\overline B(x,r)\bigr)}
+ \longrightarrow0.
+\]
+在 \(M_j\) 的密度为 \(1\) 的点，分母等价于 \(\omega_k r^k\)，故
+\[
+ \sigma_j\bigl(\overline B(x,r)\bigr)=o(r^k).
+\]
+这一论证使用中心闭球，并未假设任何球边界对这些测度为零测集。
+
+对支集在 \(\overline B(0,R)\) 内的测试函数，整个 \(E\) 与单片 \(M_j\) 的缩放积分之差的绝对值不超过
+\[
+ \|\varphi\|_\infty\,
+ \frac{\sigma_j\bigl(\overline B(x,Rr)\bigr)}{r^k},
+\]
+它趋于零。因此 \(M_j\) 的平面缩放极限也是 \(E\) 的缩放极限。对所有 \(j\) 取可数并，便在 \(E\) 的几乎每一点建立了近似切平面的存在性；唯一性与密度由\cref{b1:prop:approximate-tangent-properties}给出。
+\end{proof}
+
+局部有限性在这里控制的是所有片合起来的质量，保证片间余量可以作为 Radon 测度来微分。单个参数像的可数覆盖本身不能替代这个假设。
+
+即使密度在某一点恰好为 \(1\)，该点仍可能没有近似切平面。取平面内两条互相垂直的正半轴
+\[
+ E=\{\,te_1:t\geq0\,\}\cup\{\,te_2:t\geq0\,\}.
+\]
+在原点有 \(\mathcal H^1\bigl(E\cap B(0,r)\bigr)=2r=\omega_1r\)。但任意一条过原点的直线都至少与一条半轴成正角；选择足够小的锥角后，该半轴在球中的长度始终为 \(r\)，违反\eqref{b1:eq:approximate-tangent-cone}。原点因而没有近似切线。密度记录质量总数，不能独自辨别它分布在哪些方向。
 
 \subsection{Lipschitz 图表示}
 \label{b1:subsec:190204}
 
-待填充。
+一般的 Lipschitz 参数像在全局可以折叠或相交。要在集合上定义微分，采用没有自交且坐标投影可逆的图更方便。第\ref{b1:sec:1703}节的近线性分片已经提供了这种图，只需把片上定义的函数延拓到整个平面。
+
+\begin{proposition}\label{b1:prop:rectifiable-lipschitz-graphs}
+在\cref{b1:thm:rectifiable-density-tangent}的假设下，存在可数个 \(k\) 维线性平面 \(P_j\)、Lipschitz 映射 \(g_j:P_j\rightarrow P_j^\perp\)，以及两两不交的 Borel 集
+\[
+ M_j\subseteq E\cap\Gamma_j,\quad
+ \Gamma_j=\{\,z+g_j(z):z\in P_j\,\},
+\]
+使 \(\mathcal H^k\bigl(E\setminus\bigcup_jM_j\bigr)=0\)。记
+\[
+ \psi_j(z)=z+g_j(z),\quad A_j=\psi_j^{-1}(M_j).
+\]
+则 \(A_j\) 为 Borel 集，\(\psi_j|_{A_j}\) 双 Lipschitz；对参数平面上几乎处处的 \(a\in A_j\)，有
+\begin{equation}\label{b1:eq:graph-approximate-tangent}
+ \operatorname{Tan}^k\bigl(E,\psi_j(a)\bigr)
+ =\operatorname{im}D\psi_j(a).
+\end{equation}
+这里参数平面的零测集与 \(M_j\) 中的 \(\mathcal H^k\) 零测集通过 \(\psi_j\) 互相对应。
+\end{proposition}
+\begin{proof}
+先设 \(k<n\)。在一个满秩参数片 \(D\) 上，第\ref{b1:sec:1703}节的分片估计给出单射矩阵 \(T\) 与 \(\eta>0\)，使
+\[
+ |F(v)-F(u)-T(v-u)|\leq\eta|v-u|
+ \quad(u,v\in D),
+\]
+并可要求 \(\eta<\sigma/2\)，其中 \(\sigma\) 是 \(T\) 的最小伸缩。令 \(P=\operatorname{im}T\)，以 \(p,q\) 分别表示到 \(P,P^\perp\) 的正交投影。于是
+\[
+ \begin{aligned}
+ |pF(v)-pF(u)|&\geq(\sigma-\eta)|v-u|,\\
+ |qF(v)-qF(u)|&\leq\eta|v-u|.
+ \end{aligned}
+\]
+第一式使 \(p\) 在 \(F(D)\) 上单射，因此
+\[
+ h\bigl(pF(u)\bigr)=qF(u)
+\]
+在 \(pF(D)\) 上良定义。两式相除表明 \(h\) 的 Lipschitz 常数不超过 \(\eta/(\sigma-\eta)\)。在 \(P^\perp\) 选定标准正交基，逐坐标应用\cref{b1:thm:mcshane-extension}，便把 \(h\) 延拓为全平面 \(P\) 上的 Lipschitz 映射 \(g\)。延拓的向量 Lipschitz 常数至多额外乘以 \(\sqrt{n-k}\)，其有限性已经足够。所得完整图包含 \(F(D)\)。
+
+把这一构造用于可数参数像的全部满秩片；忽略已经证明像为零测集的部分，得到可数图 \(\Gamma_j\) 覆盖 \(E\) 的几乎全部。每张完整图是闭集：若 \(z_\ell+g_j(z_\ell)\) 收敛，投影得到 \(z_\ell\) 收敛，连续性再给出极限仍在图上。故可置
+\[
+ M_j=(E\cap\Gamma_j)\setminus\bigcup_{\ell<j}\Gamma_\ell,
+\]
+它们 Borel、两两不交，并满足所需覆盖。连续性保证 \(A_j\) Borel。正交投影是 \(\psi_j\) 的逆，且
+\[
+ |a-b|\leq|\psi_j(a)-\psi_j(b)|
+ \leq\sqrt{1+\operatorname{Lip}(g_j)^2}\,|a-b|,
+\]
+所以参数化双 Lipschitz。
+
+在 \(g_j\) 可微的点，\(D\psi_j(v)=v+Dg_j(v)\) 的 \(P_j\) 分量就是 \(v\)，故它满秩。对 \(A_j\) 应用\cref{b1:lem:bilipschitz-piece-blowup}，再像前一定理那样对 \(\mathcal H^k|_{E\setminus M_j}\) 与 \(\mathcal H^k|_{M_j}\) 使用奇异测度微分，得到\eqref{b1:eq:graph-approximate-tangent}。参数零测集由 Lipschitz 性映为面积零测集；反向对零测子集使用逆投影的 Lipschitz 性即可。
+
+当 \(k=n\) 时只需取 \(P_1=\mathbb R^n\)、\(g_1=0\)、\(M_1=E\)。图参数化为恒等映射，结论由同一个单片论证成立。
+\end{proof}
+
+这些图给出的只是可数覆盖和片上的坐标，并不说明 \(E\) 在几乎每一点的整个邻域内等于一张图。邻近的其他片仍可存在；证明已经说明，它们在典型点的面积贡献是低阶量。
+
+为后续积分，还可将切平面的可测性写成矩阵形式。对上述图的好点，令 \(A=D\psi_j(a)\)，则到近似切平面的正交投影矩阵为
+\[
+ \Pi\bigl(\psi_j(a)\bigr)=A(A^{\mathsf T}A)^{-1}A^{\mathsf T}.
+\]
+Borel 微分代表、连续的逆投影坐标及矩阵求逆说明，这个矩阵在各 Borel 片上有 Borel 代表。把各片的例外集包在一个 Borel 零测集中，并在那里指定一个固定 \(k\) 维平面的投影，就得到整个 \(E\) 上的 Borel 代表，且几乎处处确为到 \(\operatorname{Tan}^k(E,x)\) 的投影。下一节因此可以在切平面上定义微分与 Jacobi 行列式，而不必要求某个环境延拓恰好在 \(\mathcal H^k\)-几乎每一点可微。
+
+若另考虑 \(k=0\)，局部有限的 \(\mathcal H^0|_E\) 意味着每个有界区域只含有限个点。每个 \(x\in E\) 因而在 \(E\) 中孤立，其缩放测度趋于原点的单位点质量；对应的切空间为 \(\{0\}\)，法空间为 \(\mathbb R^n\)。以上需要 \(r^k\) 质量估计的论证主要服务于正维数情形。

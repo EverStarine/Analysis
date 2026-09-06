@@ -2,24 +2,212 @@
 \section{可整流集上的面积公式}
 \label{b1:sec:1903}
 
-% TODO: 撰写本节正文。
+上一节把可整流集的几何结构落实为可数个 Lipschitz 图，并在几乎处处确定了近似切平面。现在考虑定义在这个集合上的映射：它在切方向上怎样改变面积？问题不能直接化为环境空间中的普通微分，因为一个环境 Lebesgue 零测集仍可能具有正的低维 Hausdorff 测度。我们先通过参数片定义微分，再把第十七章的面积公式逐片转移过来。
+
+% 实读：Simon1983Lectures，§12印刷66--69页，12.1--12.5的切向微分、参数独立性及加权面积。
+% 原书利用C1子流形分解；本稿改用19.2已建立的Lipschitz图参数片，并展开密度点上的参数链式法则。
+% 不以环境空间Rademacher定理断言映射在H^k几乎处处的E上可微。
+% 测度推前公式据本节面积公式自证；J=0部分保留为可能非零的奇异推前。
 
 \subsection{参数化}
 \label{b1:subsec:190301}
 
-待填充。
+本节设 \(E\subseteq\mathbb R^m\) 为 Borel 可数 \(k\) 可整流集，\(1\leq k\leq m\)，且 \(\mathcal H^k\llcorner E\) 局部有限。映射 \(f:E\rightarrow\mathbb R^p\) 为 Lipschitz，\(p\geq k\)。几乎处处的说法，如不另行注明，都相对于 \(\mathcal H^k\llcorner E\)。
+
+由命题\ref{b1:prop:rectifiable-lipschitz-graphs}和定理\ref{b1:thm:rectifiable-density-tangent}，可取互不相交的 Borel 集 \(M_j\subseteq E\)，使它们覆盖 \(E\) 除去一个 \(\mathcal H^k\) 零测集。每片包含在某个平面 \(P_j\) 上的全局 Lipschitz 图中，写成
+\[
+ \psi_j:P_j\longrightarrow\mathbb R^m,\quad
+ \psi_j(a)=a+u_j(a),\quad u_j(a)\in P_j^\perp.
+\]
+其参数域 \(A_j=\psi_j^{-1}(M_j)\) 为 Borel 集。正交投影 \(\pi_j:\mathbb R^m\rightarrow P_j\) 满足 \(\pi_j\psi_j=\operatorname{id}_{P_j}\)，所以 \(\psi_j\) 为双 Lipschitz 参数化。选定 \(P_j\) 的标准正交坐标后，可以在这个平面上使用通常的 \(k\) 维微分和 Lebesgue 测度。
+
+逐坐标使用 Lipschitz 延拓，可把 \(f\) 延拓为 \(\widetilde f:\mathbb R^m\rightarrow\mathbb R^p\)。这里不要求延拓保持原有的最优 Lipschitz 常数。函数 \(F_j=\widetilde f\circ\psi_j\) 为全平面上的 Lipschitz 映射。在 \(A_j\) 的几乎每个参数点 \(a\)，它与 \(\psi_j\) 都可微，\(a\) 是 \(A_j\) 的密度点，而且
+\[
+ \operatorname{im}D\psi_j(a)
+ =\operatorname{Tan}^k\bigl(E,\psi_j(a)\bigr).
+\]
+这些参数异常集的像均为 \(\mathcal H^k\) 零测集；反过来，图上零测集的参数原像也为零测集，因为逆投影 Lipschitz。以后略去的异常集均可扩大为 Borel 零测集，涉及可测代表时统一在这个 Borel 集上补零。
+
+下面反复使用一个密度点事实。若 \(A\subseteq\mathbb R^k\) 在 \(a\in A\) 处的密度为 \(1\)，则对每个固定 \(v\)，当 \(t\to0\) 时，可以选 \(a_t\in A\) 满足
+\[
+ a_t=a+tv+o(|t|).
+\]
+否则存在 \(\varepsilon>0\) 和趋于零的 \(t\)，使 \(B(a+tv,\varepsilon|t|)\) 避开 \(A\)；这些球都包含于半径为 \((|v|+\varepsilon)|t|\) 的中心球内，占据固定的体积比例，与密度为 \(1\) 矛盾。因此，两个在 \(a\) 可微且在 \(A\) 上相等的函数具有相同微分：沿上述 \(a_t\) 比较一阶展开即可。
+
+\begin{definition}
+\label{b1:def:tangential-differential}
+在上述非异常点 \(x=\psi_j(a)\)，令 \(T=\operatorname{Tan}^k(E,x)\)，并定义
+\[
+ d^Ef(x):T\longrightarrow\mathbb R^p,\quad
+ d^Ef(x)=DF_j(a)\bigl(D\psi_j(a):P_j\rightarrow T\bigr)^{-1}.
+\]
+称此线性映射为 \(f\) 在 \(x\) 处的\term[qiexiang-weifen]{切向微分}[tangential differential]。
+\end{definition}
+\symidx{\(d^Ef(x)\)：可整流集上的切向微分}
+
+这个定义通过图参数片描述一阶变化，不要求沿 \(E\) 中任意趋近序列都有普通微分展开；参数独立性也应理解为删去零测集后的独立性。
+
+\begin{proposition}
+\label{b1:prop:tangential-differential-independent}
+切向微分在几乎处处有定义，并且不依赖所用的图参数片分解或 Lipschitz 延拓。若 \(f\) 的 Lipschitz 常数为 \(L\)，则 \(\|d^Ef(x)\|\leq L\) 几乎处处成立。
+\end{proposition}
+\begin{proof}
+先固定参数片。两个延拓与 \(\psi_j\) 的复合在 \(A_j\) 上相同；在公共可微点和密度点处，刚证的事实保证它们的微分相同，所以定义与延拓无关。
+
+再比较两张图 \(\psi:P\rightarrow\mathbb R^m\)、\(\chi:Q\rightarrow\mathbb R^m\) 的重叠片 \(M\)。取其两边的参数域，并略去各自的非密度点、参数映射及复合函数的不可微点。这只删除图上的零测集。记 \(x=\psi(a)=\chi(b)\)，令 \(\eta=\pi_Q\circ\psi\)，则 \(b=\eta(a)\)，且在重叠参数域上有
+\[
+ \psi=\chi\circ\eta,\quad
+ \widetilde f\circ\psi=(\widetilde f\circ\chi)\circ\eta.
+\]
+这些等式不必在开邻域上成立，但在密度点处可以求导。链式法则及密度点事实给出
+\[
+ D\psi(a)=D\chi(b)D\eta(a),\quad
+ D(\widetilde f\circ\psi)(a)
+ =D(\widetilde f\circ\chi)(b)D\eta(a).
+\]
+由于 \(D\psi(a)\)、\(D\chi(b)\) 都单射，且维数均为 \(k\)，方阵 \(D\eta(a)\) 可逆。两式相除，便得到同一个从切平面到值域的线性映射。两套可数分解只有可数个重叠片，故合并异常集后仍只删除零测集。
+
+最后，在 \(A_j\) 内有
+\[
+ |F_j(a')-F_j(a)|\leq L|\psi_j(a')-\psi_j(a)|.
+\]
+对每个 \(v\in P_j\)，沿密度点事实给出的 \(a'=a+tv+o(|t|)\) 除以 \(|t|\) 并取极限，得 \(|DF_j(a)v|\leq L|D\psi_j(a)v|\)。这恰好说明 \(\|d^Ef(x)\|\leq L\)。
+\end{proof}
+
+若某个环境延拓恰在 \(x\) 普通可微，参数链式法则给出 \(d^Ef(x)=D\widetilde f(x)|_{\operatorname{Tan}^k(E,x)}\)，但普通可微不是本定义的前提。例如在横轴 \(E=\mathbb R\times\{0\}\) 上，函数 \(f=0\) 的切向微分处处为零；延拓 \(\widetilde f(s,t)=|t|\) 却在整条横轴上都不可微。把环境 Rademacher 定理直接用于横轴，无法解释这个最简单的例子。
 
 \subsection{变量代换}
 \label{b1:subsec:190302}
 
-待填充。
+参数化不只是把点换成坐标，还要转移积分。设 \(\psi:P\rightarrow\mathbb R^m\) 为上述 Lipschitz 图，\(A\subseteq P\) Borel，\(M=\psi(A)\)。第\ref{b1:sec:1703}节的加权面积公式给出：对任意非负 \(\mathcal H^k\) 可测函数 \(h\)，
+\begin{equation}
+\label{b1:eq:rectifiable-chart-integral}
+ \int_Mh(x)\,d\mathcal H^k(x)
+ =\int_A h\bigl(\psi(a)\bigr)J_k\psi(a)\,da.
+\end{equation}
+这里无须重数，因为 \(\psi\) 单射。可测性也能从参数与图之间的双 Lipschitz 对应看出：Borel 集双向对应，而两边的零测集由 Lipschitz 测度界双向保持。
+
+若同一片 \(M\) 还由 \(\chi:B\rightarrow M\) 参数化，上一证明中的坐标变换 \(\eta=\pi_Q\circ\psi\) 在 \(A\) 上一一映到 \(B\)。在几乎每个参数点，线性 Jacobi 因子的复合公式给出
+\begin{equation}
+\label{b1:eq:rectifiable-chart-transition}
+ J_k\psi(a)=J_k\chi\bigl(\eta(a)\bigr)|\det D\eta(a)|.
+\end{equation}
+把第十七章的加权面积公式用于 \(\eta\) 及非负权 \((h\circ\psi)(J_k\chi\circ\eta)\)，便得到
+\[
+ \int_A h\bigl(\psi(a)\bigr)J_k\psi(a)\,da
+ =\int_B h\bigl(\chi(b)\bigr)J_k\chi(b)\,db.
+\]
+因此，坐标选择造成的参数体积变化，正好由 Jacobi 因子补偿。这里的参数域只是可测集合，不要求是开集；我们用的是全平面 Lipschitz 映射在这些集合上的面积公式，而不是假设坐标变换已经构成 \(C^1\) 微分同胚。
+
+对于一般的 \(E\)，在互不相交的 \(M_j\) 上应用\eqref{b1:eq:rectifiable-chart-integral}并求和，得到
+\[
+ \int_Eh\,d\mathcal H^k
+ =\sum_j\int_{A_j}h\bigl(\psi_j(a)\bigr)J_k\psi_j(a)\,da.
+\]
+分片必须不交，或者另外记录重数；否则同一部分面积会被重复计算。Simon 的《Lectures on Geometric Measure Theory》\cite[\S12，式12.1--12.5]{Simon1983Lectures}用子流形片组织同一思想。这里采用上一节的 Lipschitz 图，使参数代换直接衔接已经证明的面积公式。
 
 \subsection{切向 Jacobi 行列式}
 \label{b1:subsec:190303}
 
-待填充。
+\begin{definition}
+\label{b1:def:tangential-jacobian}
+在切向微分存在的点 \(x\)，取 \(T=\operatorname{Tan}^k(E,x)\) 的任意标准正交基 \(v_1,\ldots,v_k\)，定义
+\[
+ J_Ef(x)=\sqrt{\det G_x},\quad
+ G_x=\Bigl(\bigl\langle d^Ef(x)v_i,d^Ef(x)v_j\bigr\rangle\Bigr)_{i,j=1}^k.
+\]
+称它为 \(f\) 的\term[qiexiang-jacobi-hanglieshi]{切向 Jacobi 行列式}[tangential Jacobian]，并在异常零测集上补零。
+\end{definition}
+\symidx{\(J_Ef(x)\)：可整流集上的切向面积因子}
+
+正交不变性说明该数值不依赖基的选择。由切向微分的范数界和线性 Jacobi 因子的性质，\(0\leq J_Ef\leq L^k\)，且在非异常点处，\(J_Ef=0\) 当且仅当 \(d^Ef\) 的秩小于 \(k\)。与上一章相反，这里始终计算 \(k\) 个切方向的面积伸缩，目标维数 \(p\) 不小于 \(k\)。
+
+在图参数片 \(x=\psi_j(a)\) 上，把 \(D\psi_j(a)\) 看作从 \(k\) 维参数平面到切平面的同构。选择切平面的标准正交坐标，写 \(D\psi_j(a)=QS\)，其中 \(Q\) 等距、\(S\) 可逆。由 \(DF_j(a)=d^Ef(x)QS\) 可得
+\begin{equation}
+\label{b1:eq:tangential-jacobian-chart}
+ J_kF_j(a)=J_Ef\bigl(\psi_j(a)\bigr)J_k\psi_j(a)
+ \quad\text{在 }A_j\text{ 中几乎处处}.
+\end{equation}
+事实上，左右两边分别为 \(J_k(d^Ef(x)Q)|\det S|\) 和同一个乘积；秩亏时两边同时为零。由于图参数满足 \(J_k\psi_j\geq1\)，这个等式也给出 \(J_Ef\) 的可测代表：在各片上取两个 Borel Jacobi 函数之比，再经逆投影转回 \(M_j\)，并在异常集上补零。若需要微分本身的矩阵代表，记 \(A=D\psi_j(a)\)、\(B=DF_j(a)\)，则
+\[
+ B(A^{\mathsf T}A)^{-1}A^{\mathsf T}
+\]
+是 \(d^Ef(x)\) 在切平面的正交补上补零后的矩阵，因而也可取 Borel 代表。
+
+\begin{theorem}[可整流集上的加权面积公式]
+\label{b1:thm:rectifiable-area-formula}
+在本节的假设下，对每个非负 \(\mathcal H^k\) 可测函数 \(g:E\rightarrow[0,\infty]\)，纤维权重和可测，并且
+\[
+ \int_E g(x)J_Ef(x)\,d\mathcal H^k(x)
+ =\int_{\mathbb R^p}
+   \sum_{x\in E\cap f^{-1}(\{y\})}g(x)\,d\mathcal H^k(y).
+\]
+其中非负项之和仍按全部有限部分和的上确界解释，两边都允许为无穷，并沿用 \(0\cdot\infty=0\) 的约定。
+\end{theorem}
+\begin{proof}
+记 \(N=E\setminus\bigcup_jM_j\)。由于 \(\mathcal H^k(N)=0\) 且 \(f\) Lipschitz，\(\mathcal H^k\bigl(f(N)\bigr)=0\)。因此，删去 \(N\) 不改变左侧积分，也只会在目标零测集上改变右侧的纤维和。
+
+用参数积分式\eqref{b1:eq:rectifiable-chart-integral}及\eqref{b1:eq:tangential-jacobian-chart}，再对每个 \(F_j\) 应用定理\ref{b1:thm:weighted-area-formula}，得到
+\[
+ \begin{aligned}
+ \int_EgJ_Ef\,d\mathcal H^k
+ &=\sum_j\int_{A_j}g\bigl(\psi_j(a)\bigr)J_kF_j(a)\,da\\
+ &=\sum_j\int_{\mathbb R^p}
+       \sum_{\substack{a\in A_j\\F_j(a)=y}}
+       g\bigl(\psi_j(a)\bigr)\,d\mathcal H^k(y).
+ \end{aligned}
+\]
+各内层纤维和可测。由于 \(\psi_j\) 单射且各 \(M_j\) 不交，最后一行的可数和恰好计入 \(E\setminus N\) 内的每个原像点一次。由单调收敛定理交换非负求和与积分，得到结论；\(f(N)\) 上的补值由 Hausdorff 测度的完备性处理。
+\end{proof}
+
+取 \(g=\mathbf1_A\)，右端便是 \(f\) 在可测子集 \(A\subseteq E\) 上的重数积分。若 \(f\) 在 \(A\) 上单射，则进一步成为
+\[
+ \mathcal H^k\bigl(f(A)\bigr)=\int_AJ_Ef\,d\mathcal H^k.
+\]
+对一般非负权 \(w\)，单射情形相应给出 \(\int_{f(A)}w\circ f^{-1}\,d\mathcal H^k=\int_AwJ_Ef\,d\mathcal H^k\)。这些公式测量像的 \(k\) 维面积，并不声称原有质量自动以相同密度转移。
 
 \subsection{可整流测度}
 \label{b1:subsec:190304}
 
-待填充。
+设 \(\mu=\theta\mathcal H^k\llcorner E\)，其中 \(\theta\geq0\) 可测。以下恒等式对非负测度成立，不预先假定推前局部有限。有限原测度的推前仍有限，但即使如此，不带 Jacobi 因子的推前也未必是 \(k\) 可整流测度；下述临界部分正是障碍。
+
+\begin{proposition}
+\label{b1:prop:rectifiable-measure-pushforward}
+设 \(G=\{x\in E:J_Ef(x)>0\}\)、\(C=E\setminus G\)。则
+\[
+ f_\#(J_Ef\,\mu)=\Theta\mathcal H^k,\quad
+ \Theta(y)=\sum_{x\in E\cap f^{-1}(\{y\})}\theta(x).
+\]
+不带 Jacobi 因子的推前则为
+\[
+ f_\#\mu=\rho\mathcal H^k+f_\#(\mu\llcorner C),\quad
+ \rho(y)=\sum_{x\in G\cap f^{-1}(\{y\})}
+          \dfrac{\theta(x)}{J_Ef(x)}.
+\]
+两个密度均为 \(\mathcal H^k\) 可测函数，并且 \(f_\#(\mu\llcorner C)\) 集中在某个 \(\mathcal H^k\) 零测 Borel 集上，因而与 \(\mathcal H^k\) 相互奇异。
+\end{proposition}
+\begin{proof}
+对非负 Borel 测试函数 \(\varphi\)，在面积公式中取 \(g=(\varphi\circ f)\theta\)，得到
+\[
+ \int_E\varphi\bigl(f(x)\bigr)J_Ef(x)\,d\mu(x)
+ =\int_{\mathbb R^p}\varphi(y)\Theta(y)\,d\mathcal H^k(y).
+\]
+取指示函数即得第一个测度等式。再在 \(G\) 上取权 \(g=(\varphi\circ f)\theta/J_Ef\)，在 \(C\) 上置零，得到 \(f_\#(\mu\llcorner G)=\rho\mathcal H^k\)。加上未作变换的 \(C\) 部分，就得到第二个等式。密度的可测性都包含在加权面积公式中。
+
+最后取 \(g=\mathbf1_C\)。面积公式左端为零，故
+\[
+ \int_{\mathbb R^p}\#\bigl(C\cap f^{-1}(\{y\})\bigr)
+ \,d\mathcal H^k(y)=0.
+\]
+因而 \(\mathcal H^k\bigl(f(C)\bigr)=0\)。取包含 \(f(C)\) 的 Borel 零测集，\(f_\#(\mu\llcorner C)\) 在其补集上的质量为零，得到所述奇异性。
+\end{proof}
+
+第一式保留各分支的权重，第二式还要除以每个分支的面积伸缩。例如把两条平行单位线段分别赋予常密度 \(a\)、\(b\)，再正交投影到同一条单位线段，切向 Jacobi 因子都为 \(1\)，目标密度为 \(a+b\)。忽略重数就会漏掉其中一条线段的质量。
+
+临界部分的像零测，不表示它的推前质量为零。取 \(E=(0,1)\times\{0\}\)、\(\mu=\mathcal H^1\llcorner E\)，并令 \(f\) 恒等于目标直线的原点。此时 \(J_Ef=0\)，所以 \(f_\#(J_Ef\,\mu)=0\)，但 \(f_\#\mu=\delta_0\)。一般临界部分同样可能把正质量压在低维集合上，不能把 \(\theta/J_Ef\) 在零分母处补零后冒充整个推前密度。
+
+一般可整流测度的载体不一定满足本节开头的局部有限性假设，这时可以按有限测度片使用上述公式。具体地，把第\ref{b1:sec:1901}节的可数 Lipschitz 参数域用闭球穷竭。每个闭球的像都紧，且具有有限 \(\mathcal H^k\) 测度。把载体与这些紧像相交，再按顺序相减，得到互不相交的 Borel 片 \(E_\ell\)，满足 \(\mathcal H^k(E_\ell)<\infty\)，并覆盖载体除去零测集。每个 \(E_\ell\) 都满足本节的几何假设，所以可以在该片上定义切向微分和 \(J_{E_\ell}(f|_{E_\ell})\)。
+
+令 \(J(x)=J_{E_\ell}(f|_{E_\ell})(x)\) 于 \(E_\ell\)。换用另一套有限片时，在两套分片的可数个交集上，命题\ref{b1:prop:tangential-differential-independent}的参数密度点论证仍给出相同微分，因而 \(J\) 几乎处处相同。对各片的非负面积公式及推前公式求和，便得到一般可整流测度的同一组公式，其中把 \(J_Ef\) 换成这个分片定义的 \(J\)。这一局部化没有断言整个载体都具有定理\ref{b1:thm:rectifiable-density-tangent}中的单位重数近似切平面；关于整个集合的那项几何结论仍保留局部有限性条件。
+
+最后，临界像的 \(\mathcal H^k\) 零测性在这里来自 \(p\geq k\) 的面积公式。上一章的余面积公式处理高维到低维映射，临界部分只在几乎每个水平集上具有零切片测度；它不直接断言临界值集零测。这两个结论的维数和积分对象不同。

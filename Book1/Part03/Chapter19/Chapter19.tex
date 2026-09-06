@@ -1,13 +1,22 @@
 % !TeX root = ../../Book1.tex
 \OptionalChapter{可整流集与可整流性}{b1:ch:19}% 本章摘要（不计入编号）
 \begin{chapterabstract}
-待填充。
+面积与余面积公式已经说明，Lipschitz 参数片可以承载微分和积分。本章转而从集合与测度本身出发，定义可数可整流性和纯不可整流性，证明局部有限面积集合的近似切空间与单位密度，再建立切向微分、面积公式及带权推前。最后讨论可整流／纯不可整流分解，并以明确的文献边界介绍密度判据与 Preiss 定理。
 \end{chapterabstract}
 
 % 本章目标（不计入编号）
 \begin{learninggoals}
-待填充。
+\begin{itemize}
+\item\label{b1:item:ch19-goal-rectifiable}能区分参数像、可数可整流集、纯不可整流集及可整流测度，注意局部有限性和绝对连续条件。
+\item\label{b1:item:ch19-goal-tangent}理解单片缩放、片间余量与近似切平面的关系，并能用图的微分计算切空间和法空间。
+\item\label{b1:item:ch19-goal-area}能在参数片上定义与坐标选择无关的切向微分，正确使用切向面积及推前密度公式。
+\item\label{b1:item:ch19-goal-density}理解密度为一的顺向结论、纯不可整流分解与 Preiss 逆向判据各自需要哪些工具。
+\end{itemize}
 \end{learninggoals}
+
+本章为选读内容，但不是此前定理的补充假设：第十七、十八章的面积与余面积证明已经独立闭合。读者可以先掌握可整流性的定义和图上的切向积分，把最后一节的深层密度判据留作第二遍阅读。关于近似切平面的主线，先修是 Rademacher、面积公式、Lebesgue 点，以及第十四章对一般 Radon 测度的微分；后一个工具用来说明相邻参数片为何不会在典型点留下额外的主阶质量。
+
+Simon 的《Lectures on Geometric Measure Theory》第11--12节\cite{Simon1983Lectures}是切空间与切向面积公式的主要参照。本书改用前章已经建立的 Lipschitz 分片，把参数独立性与片间测度比较展开。Mattila 的《Rectifiability: A Survey》\cite{Mattila2023Rectifiability}提供集合、测度与密度判据的系统对照；其测度定义有不要求相对于 Hausdorff 测度绝对连续的版本，本书会明确区分。Preiss 定理只给有出处的陈述与证明概要，其深层证明不作为本章已自行证完的内容。
 
 \input{Part03/Chapter19/Section1901}
 \input{Part03/Chapter19/Section1902}
@@ -15,10 +24,326 @@
 \input{Part03/Chapter19/Section1904}
 % 本章小结（不计入编号）
 \begin{chaptersummary}
-待填充。
+可数可整流性允许可数参数片和面积零测的余项，纯不可整流性则排除了与任何参数片的正测相交。四角 Cantor 集说明，一个集合可以有正且有限的长度，却没有可由曲线捕捉的正长度部分。有限面积集合总能在零测意义下唯一分成这两类部分。
+
+局部有限的可整流集合在几乎处处具有单位重数的平面缩放极限。证明先把一张双 Lipschitz 片上的积分拉回参数域，再以测度微分控制其余片的质量。图参数化随后给出切向微分，重叠参数域的密度点保证它与坐标和延拓的选择无关。切向面积公式计算的是面积伸缩后的质量；原质量的推前还须保留被临界映射压缩的部分。
+
+密度的顺向结论已在本章证明；由正有限密度反推可整流性则属于 Preiss 定理的深层内容，这里只概述其方法与边界。几何测度论的这一组工具为后面的弱导数、Sobolev 和 BV 理论准备了低维集合及积分的语言。
 \end{chaptersummary}
 
 
 \BookExercises
 
-待填充。
+% 第十九章习题来源与设计说明。
+% 八题均为依据本章及前文工具组织的自拟变式；不冒认教材题号。
+% 不以四角 Cantor 集的纯不可整流性或尚未证明的 Preiss 定理作为解题前置。
+
+\begin{exercise}\label{b1:ex:19-dense-parallel-planes}
+设 \(k\ge1\)，在 \(\mathbb R^{k+1}\) 中令
+\[
+ E=\bigcup_{q\in\mathbb Q}\bigl(\mathbb R^k\times\{q\}\bigr).
+\]
+证明 \(E\) 是可数 \(k\)-可整流 Borel 集，\(\mathcal H^k|_E\) 为 \(\sigma\) 有限测度，却在每个非空开球上取无穷值。
+进一步证明：对任意 \(x\in E\)、任意 \(k\) 维线性子空间 \(T\subset\mathbb R^{k+1}\) 及 \(r>0\)，有
+\[
+ \mathcal H^k\Bigl(
+ \bigl\{\,y\in E\cap B(x,r)\mid
+ \operatorname{dist}(y-x,T)>\tfrac12|y-x|\,\bigr\}
+ \Bigr)=\infty.
+\]
+据此说明该集合没有近似切平面，且不能删去密度与切平面定理中的局部有限性假设。
+\end{exercise}
+% 来源：自拟；用锥外球中的无穷个正面积切片实际检验近似切条件，而不从缺少假设直接推断结论失败。
+\begin{solution}
+每个平面 \(\mathbb R^k\times\{q\}\) 都是等距线性参数化的平移像，所以 \(E\) 可数 \(k\)-可整流。各平面闭、并为可数，故 \(E\) 是 Borel 集。再将每个平面分成与 \([-j,j]^{k+1}\) 的交，就得到可数个有限 \(\mathcal H^k\) 测度集的覆盖，证明了 \(\sigma\) 有限性。
+
+任取开球 \(B(a,r)\)。对所有满足 \(|q-a_{k+1}|<r/2\) 的有理数 \(q\)，球与第 \(q\) 个平面的交是半径至少为 \(\sqrt3r/2\) 的 \(k\) 维球。这样的有理数无穷多，各切片互不相交，且每片的 \(\mathcal H^k\) 测度至少为 \(\omega_k(\sqrt3r/2)^k>0\)。可数可加性给出 \(\mathcal H^k\bigl(E\cap B(a,r)\bigr)=\infty\)。
+
+现在固定 \(x,T,r\)，取垂直于 \(T\) 的单位向量 \(v\)，并令
+\[
+ U=B\left(x+\frac r2v,\frac r8\right).
+\]
+若 \(y\in U\)，则
+\[
+ |y-x|<\frac{5r}{8}<r,
+ \quad \operatorname{dist}(y-x,T)>\frac{3r}{8}
+ >\frac12|y-x|.
+\]
+所以 \(E\cap U\) 包含在题述锥外集合中。上一段已证明 \(\mathcal H^k(E\cap U)=\infty\)，所求断言随即成立。
+
+近似切平面的锥外面积除以 \(r^k\) 应趋于零；这里对每个候选平面、每个半径，锥外面积已经是无穷。故近似切平面确实不存在。可数可整流性给出了参数片，却不保证这些片在小球中的总面积有限。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:19-saddle-tangent-projection}
+令
+\[
+ G(x,y)=(x,y,xy),
+ \quad E=G([-1,1]^2),
+ \quad P(x,y,z)=(y,z).
+\]
+这里 \(P\) 是投向第二、第三坐标平面的正交投影，随后将该平面等距识别为 \(\mathbb R^2\)。
+\begin{enumerate}
+\item\label{b1:item:19-saddle-tangent-normal}
+求图像内部点 \(G(x,y)\) 的切平面及一个单位法向量，计算 \(J_2G\) 和切向面积因子 \(J_EP\)。
+\item\label{b1:item:19-saddle-critical-fiber}
+描述 \(P(E)\) 及投影的各纤维，指出切向面积因子为零的集合。用可整流集上的面积公式计算
+\[
+ \int_EJ_EP\,\mathrm d\mathcal H^2.
+\]
+\end{enumerate}
+\end{exercise}
+% 来源：自拟；通过非底面投影计算图像切向伸缩，保留被压成一点的整条临界纤维。
+\begin{solution}
+图像参数化的两列为
+\[
+ G_x=(1,0,y),
+ \quad G_y=(0,1,x).
+\]
+它们线性无关，所以图像内部处处有切平面
+\[
+ T_{G(x,y)}E=\operatorname{span}\{(1,0,y),(0,1,x)\},
+\]
+并可选择单位法向量
+\[
+ n(x,y)=\frac{(-y,-x,1)}{\sqrt{1+x^2+y^2}}.
+\]
+Gram 行列式给出 \(J_2G=\sqrt{1+x^2+y^2}\)。另一方面，
+\[
+ (P\circ G)(x,y)=(y,xy),
+ \quad D(P\circ G)=\begin{pmatrix}0&1\\y&x\end{pmatrix}.
+\]
+因此 \(J_2(P\circ G)=|y|\)。将投影限制在图像切平面上，再用线性面积因子的复合公式，得到
+\[
+ J_EP\bigl(G(x,y)\bigr)=
+ \frac{|y|}{\sqrt{1+x^2+y^2}}.
+\]
+它也等于单位法向量第一分量的绝对值。图像边界是四条 Lipschitz 曲线的并，二维测度为零，不影响后续积分。
+
+若把目标点记为 \((a,b)\)，原像条件是 \(y=a\)、\(xy=b\)，所以
+\[
+ P(E)=\{\,(a,b)\mid |a|\le1,\ |b|\le|a|\,\}.
+\]
+当 \(a\ne0\) 时，原像恰为 \(G(b/a,a)\)，是唯一一点；当 \((a,b)=(0,0)\) 时，整条线段 \(\{(x,0,0):-1\le x\le1\}\) 都在纤维中。没有其他非空纤维。
+
+这条线段正是切向因子为零的集合，它的 \(\mathcal H^2\) 测度为零。除目标原点这一零测例外外，像内重数为 \(1\)，所以\cref{b1:thm:rectifiable-area-formula}给出
+\[
+ \int_EJ_EP\,\mathrm d\mathcal H^2
+ =m_2\bigl(P(E)\bigr)=\int_{-1}^12|a|\,\mathrm da=2.
+\]
+也可由图像面积公式直接核对左端为 \(\int_{[-1,1]^2}|y|\,\mathrm dx\,\mathrm dy=2\)。投影存在无穷重数的纤维，并不妨碍几乎处处重数为 \(1\) 的面积计算。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:19-sphere-projection-density}
+设 \(S^2=\{\,(x,y,z)\in\mathbb R^3\mid x^2+y^2+z^2=1\,\}\)，令 \(P(x,y,z)=(x,y)\)。求切向因子 \(J_{S^2}P\)，验证
+\[
+ \int_{S^2}J_{S^2}P\,\mathrm d\mathcal H^2=2\pi.
+\]
+再求 \(P_\#(\mathcal H^2|_{S^2})\) 关于平面面积的密度，并说明单位圆周是否承受额外的推前质量。
+\end{exercise}
+% 来源：自拟；球面积在前文已知，此处训练切向 Jacobi、二重投影与推前密度，不重复球面积的参数化证明。
+\begin{solution}
+在点 \(p=(x,y,z)\in S^2\)，切平面为 \(p^\perp\)。取其定向标准正交基 \(v,w\)，使 \(v\times w=p\)。投影限制在该平面上的矩阵为
+\[
+ \begin{pmatrix}v_1&w_1\\v_2&w_2\end{pmatrix},
+\]
+其行列式是 \(v_1w_2-v_2w_1=(v\times w)_3=z\)。因此
+\[
+ J_{S^2}P(p)=|z|.
+\]
+对开单位圆盘中的每一点 \((a,b)\)，两个原像为
+\[
+ \left(a,b,\sqrt{1-a^2-b^2}\right),
+ \quad \left(a,b,-\sqrt{1-a^2-b^2}\right).
+\]
+圆周上原像只有一个，圆盘外没有原像。圆周的二维测度为零，故切向面积公式给出
+\[
+ \int_{S^2}|z|\,\mathrm d\mathcal H^2
+ =\int_{a^2+b^2<1}2\,\mathrm da\,\mathrm db=2\pi.
+\]
+
+赤道是 Lipschitz 曲线，\(\mathcal H^2\) 测度为零。在其补集上把 \(h\circ P/|z|\) 作为非负权重代入面积公式，就得到
+\[
+ \int_{S^2}h\bigl(P(p)\bigr)\,\mathrm d\mathcal H^2(p)
+ =\int_{a^2+b^2<1}
+ h(a,b)\frac{2}{\sqrt{1-a^2-b^2}}\,\mathrm da\,\mathrm db.
+\]
+所以密度为
+\[
+ \rho(a,b)=\frac{2}{\sqrt{1-a^2-b^2}},
+ \quad a^2+b^2<1,
+\]
+在其余点另定义为零。极坐标给出
+\[
+ \int\rho\,\mathrm dm_2
+ =4\pi\int_0^1\frac r{\sqrt{1-r^2}}\,\mathrm dr=4\pi,
+\]
+与球面积一致。密度趋近圆周时发散，但圆周的原像恰为赤道，原测度为零，所以不存在附加的圆周质量。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:19-weighted-cross-and-atom}
+在 \(\mathbb R^2\) 中令 \(L_1=\mathbb R\times\{0\}\)、\(L_2=\{0\}\times\mathbb R\)，并定义
+\[
+ E=L_1\cup L_2,
+ \quad \mu=2\mathcal H^1|_{L_1}+3\mathcal H^1|_{L_2}.
+\]
+计算每个 \(x\in E\) 处的极限
+\[
+ \lim_{r\downarrow0}\frac{\mu\bigl(B(x,r)\bigr)}{2r},
+\]
+并与集合 \(E\) 在原点的密度比较。说明 \(\mu\) 为何是 \(1\)-可整流测度，而对任意 \(c>0\)，测度 \(\mu+c\delta_0\) 都不是 \(1\)-可整流测度，尽管二者有相同的支撑。
+\end{exercise}
+% 来源：自拟；显式区分集合密度、加权测度密度和仅集中在可整流集合上的测度。
+\begin{solution}
+在 \(L_1\setminus\{0\}\) 的点处，足够小的球不与 \(L_2\) 相交，且在 \(L_1\) 上截出长度 \(2r\) 的线段，所以 \(\mu\bigl(B(x,r)\bigr)=4r\)，所求极限为 \(2\)。在 \(L_2\setminus\{0\}\) 上同理得到极限 \(3\)。在原点，两条直线都贡献长度 \(2r\)，故
+\[
+ \mu\bigl(B(0,r)\bigr)=10r,
+ \quad \lim_{r\downarrow0}\frac{\mu\bigl(B(0,r)\bigr)}{2r}=5.
+\]
+若去掉权重，\(\mathcal H^1\bigl(E\cap B(0,r)\bigr)=4r\)，所以集合密度是 \(2\)，不是测度密度 \(5\)。
+
+集合 \(E\) 可数 \(1\)-可整流，且 \(\mathcal H^1|_E\) 局部有限。令 \(\theta=2\) 于 \(L_1\setminus\{0\}\)，\(\theta=3\) 于 \(L_2\setminus\{0\}\)，在原点任取有限值，便有
+\[
+ \mu=\theta\mathcal H^1|_E.
+\]
+因此 \(\mu\) 是 \(1\)-可整流 Radon 测度。原点的权值怎样修改都不改变 \(\mu\)，却不能改变原点处计算出的密度 \(5\)；密度等于权值的结论只要求几乎处处成立。
+
+另一方面，\(\mathcal H^1(\{0\})=0\)，而 \((\mu+c\delta_0)(\{0\})=c>0\)。任何 \(\theta\mathcal H^1|_R\) 形式的测度都不可能在这个单点上赋正质量，故 \(\mu+c\delta_0\) 不是 \(1\)-可整流测度。它在原点的上述密度为无穷。两种测度的支撑都是 \(E\)，可见支撑是可整流集合并不足以代替关于 \(\mathcal H^1\) 的绝对连续性。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:19-null-addition-topology}
+令 \(S^1\subset\mathbb R^2\) 为单位圆周，并令 \(E=S^1\cup\mathbb Q^2\)。证明：
+\begin{enumerate}
+\item\label{b1:item:19-null-addition-measure}
+集合 \(E\) 可数 \(1\)-可整流，且 \(\mathcal H^1|_E=\mathcal H^1|_{S^1}\)。两集合的近似切线在 \(\mathcal H^1\) 几乎处处意义下相同。
+\item\label{b1:item:19-null-addition-closure}
+有 \(\overline E=\mathbb R^2\)，但测度 \(\mathcal H^1|_E\) 的支撑是 \(S^1\)，并且 \(\overline E\) 不是可数 \(1\)-可整流集。
+\end{enumerate}
+\end{exercise}
+% 来源：自拟；通过零测稠密附加集区分模零几何、拓扑闭包与测度支撑。
+\begin{solution}
+有理点集可数，所以 \(\mathcal H^1(\mathbb Q^2)=0\)。圆周是区间的 Lipschitz 像，故 \(E\) 可数 \(1\)-可整流。对任意 Borel 集 \(A\)，附加的有理点不改变一维测度，因此
+\[
+ \mathcal H^1(A\cap E)=\mathcal H^1(A\cap S^1).
+\]
+近似切线定义所用的小球质量和锥外质量也逐一相同。圆周的切线在 \(p\in S^1\) 处为 \(p^\perp\)，所以 \(E\) 与圆周具有相同的几乎处处近似切线。
+
+由于 \(\mathbb Q^2\) 稠密，\(\overline E=\mathbb R^2\)。但是圆周外每个点都有一个不交圆周的小球，其 \(\mathcal H^1|_E\) 测度为零；圆周上每个点的任意小球都含正长度圆弧。于是测度的支撑恰为 \(S^1\)。
+
+最后，每个 Lipschitz 曲线像的二维 Lebesgue 测度为零：将参数域分成有界部分，再用 Lipschitz 映射不增加 Hausdorff 维数即可。任意 \(\mathcal H^1\) 零测集也为 \(\mathcal H^2=m_2\) 零测集。因此每个可数 \(1\)-可整流集都为二维零测集，而 \(\mathbb R^2\) 不是。可整流性及其几乎处处切线不随零测修改而变化，但拓扑闭包可以彻底改变。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:19-rectifiable-cylinder}
+设 \(1\le k\le m\)、\(l\ge1\) 为整数。先证明：若 \(N\subset\mathbb R^m\) 满足 \(\mathcal H^k(N)=0\)，则
+\[
+ \mathcal H^{k+l}\bigl(N\times[0,1]^l\bigr)=0.
+\]
+再由此证明：若 \(E\subset\mathbb R^m\) 是可数 \(k\)-可整流 Borel 集，则 \(E\times[0,1]^l\) 是可数 \((k+l)\)-可整流集。
+提示：不能把定义中未被参数片覆盖的零测余项直接省掉，须先处理它与立方体的乘积。
+\end{exercise}
+% 来源：自拟；用同尺度网格控制零测余项的柱体，再构造乘积参数片；不使用一般集合的错误维数相加上界。
+\begin{solution}
+给定 \(\delta\in(0,1)\) 和 \(\varepsilon>0\)。由 \(\mathcal H^k(N)=0\)，可用可数个半径 \(r_i\in(0,\delta)\) 的球 \(B_i\) 覆盖 \(N\)，并使
+\[
+ \sum_i r_i^k<\varepsilon.
+\]
+这可由任意小直径的 Hausdorff 覆盖分别套入球得到，归一化常数吸收到 \(\varepsilon\) 中。
+
+对每个 \(i\)，把 \([0,1]^l\) 分成边长至多 \(r_i\) 的小立方体，所需数目不超过 \(2^lr_i^{-l}\)。每个乘积 \(B_i\times Q\) 的直径至多为 \(\sqrt{4+l}\,r_i\)。这些乘积覆盖 \(N\times[0,1]^l\)，其 \((k+l)\) 次直径和至多为
+\[
+ \sum_i2^lr_i^{-l}
+ \bigl(\sqrt{4+l}\,r_i\bigr)^{k+l}
+ \le C_{k,l}\sum_i r_i^k
+ <C_{k,l}\varepsilon.
+\]
+令 \(\varepsilon\downarrow0\)，再令 \(\delta\downarrow0\)，即得第一问。
+
+现按可数可整流性的定义，选 Lipschitz 映射 \(f_j:A_j\subset\mathbb R^k\rightarrow\mathbb R^m\)，使
+\[
+ N=E\setminus\bigcup_jf_j(A_j),
+ \quad \mathcal H^k(N)=0.
+\]
+对每个 \(j\) 定义
+\[
+ F_j:A_j\times[0,1]^l\longrightarrow\mathbb R^{m+l},
+ \quad F_j(a,b)=(f_j(a),b).
+\]
+映射 \(F_j\) 的 Lipschitz 常数不超过 \(\max\{\operatorname{Lip}(f_j),1\}\)。这些 \((k+l)\) 维参数片覆盖 \((E\setminus N)\times[0,1]^l\)，而剩余的 \(N\times[0,1]^l\) 已由第一问证明为零测集。这就建立了柱体的可数可整流性。证明中立方体的网格数 \(O(r_i^{-l})\) 抵消了额外的 \(l\) 次尺度因子。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:19-pure-bilipschitz-decomposition}
+设 \(1\le k\le n\)。证明纯 \(k\)-不可整流 Borel 集的 Borel 子集与可数并仍为纯 \(k\)-不可整流集。再设 \(F:\mathbb R^n\rightarrow\mathbb R^n\) 为双 Lipschitz 同胚，证明集合 \(P\) 纯 \(k\)-不可整流当且仅当 \(F(P)\) 纯 \(k\)-不可整流。
+
+若 Borel 集 \(E\) 的 \(\mathcal H^k\) 测度 \(\sigma\) 有限，且 \(E=R\mathbin{\dot\cup}P\) 是本章的可整流—纯不可整流分解，证明 \(F(E)=F(R)\mathbin{\dot\cup}F(P)\) 给出 \(F(E)\) 的对应分解，其唯一性仍按 \(\mathcal H^k\) 零测集理解。
+\end{exercise}
+% 来源：自拟；把纯不可整流性的测试定义用于双 Lipschitz 变换，进而检验结构分解对坐标选择的独立性。
+\begin{solution}
+若 \(P'\subset P\)，则 \(P'\) 与任意 Lipschitz \(k\) 维像的交包含在 \(P\) 与该像的交中；后者零测便推出前者零测。若每个 \(P_j\) 纯 \(k\)-不可整流，则对任意 Lipschitz 映射 \(g:A\subset\mathbb R^k\rightarrow\mathbb R^n\)，
+\[
+ \mathcal H^k\Bigl(\bigcup_j\bigl(P_j\cap g(A)\bigr)\Bigr)
+ \le\sum_j\mathcal H^k\bigl(P_j\cap g(A)\bigr)=0.
+\]
+这证明子集与可数并的封闭性。
+
+假设 \(P\) 纯 \(k\)-不可整流。由于 \(F^{-1}\circ g\) 仍为 Lipschitz 映射，集合
+\[
+ P\cap(F^{-1}\circ g)(A)
+\]
+为 \(\mathcal H^k\) 零测集。又有
+\[
+ F(P)\cap g(A)=F\bigl(P\cap(F^{-1}\circ g)(A)\bigr).
+\]
+Lipschitz 映射把 \(\mathcal H^k\) 零测集送到零测集，所以右端为零测集，证明 \(F(P)\) 纯 \(k\)-不可整流。对 \(F^{-1}\) 重复此论证便得逆向蕴涵。
+
+同时，若 \(R\) 可数 \(k\)-可整流，将它的各参数映射与 \(F\) 复合即可覆盖 \(F(R)\)，原来的零测余项仍为零测。因此 \(F(R)\) 可数 \(k\)-可整流。\(F\) 单射保证两部分不交，且它们覆盖 \(F(E)\)。若 \(E\) 被可数个有限 \(\mathcal H^k\) 测度集覆盖，Lipschitz 测度估计也保证 \(F(E)\) 仍为 \(\sigma\) 有限。故本章结构分解的唯一性适用，任何另一分解都只在 \(\mathcal H^k\) 零测集上与 \(F(R),F(P)\) 不同。
+
+这里同时使用了两个方向的 Lipschitz 控制：前向控制保持零测集，反向控制把目标中的每个测试参数片拉回为合法的测试参数片。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:19-rectifiable-weak-limit-dimension}
+对整数 \(N\ge1\)，令
+\[
+ S_{j,N}=[0,1]\times\left\{\frac{j-1/2}{N}\right\},
+ \quad j=1,\ldots,N,
+ \quad \mu_N=\frac1N\sum_{j=1}^N\mathcal H^1|_{S_{j,N}}.
+\]
+\begin{enumerate}
+\item\label{b1:item:19-grid-weak-limit}
+证明 \(\mu_N\) 是 \(1\)-可整流概率测度，并且弱收敛到 \(\mu=m_2|_{[0,1]^2}\)。证明极限 \(\mu\) 不是 \(1\)-可整流测度。
+\item\label{b1:item:19-grid-density-bound}
+求 \(\mu_N\) 在其 \(\mathcal H^1\) 几乎每个支撑点处的一维密度，并证明对每个 \(a\in\mathbb R^2\)、\(r>0\)，
+\[
+ \mu_N\bigl(B(a,r)\bigr)\le4r^2+\frac{4r}{N}.
+\]
+据此说明：共同紧支撑、固定总质量，甚至统一的一维球增长上界，都不足以保证弱极限仍为 \(1\)-可整流测度。
+\end{enumerate}
+\end{exercise}
+% 来源：自拟；以加权网格线的 Riemann 和展示可整流测度的弱极限可增加维数，不把 Preiss 概览当作证明工具。
+\begin{solution}
+每条线段长度为 \(1\)，彼此不交，所以 \(\mu_N\) 的总质量为 \(1\)。它等于有限可整流集 \(\bigcup_jS_{j,N}\) 上的常权 \((1/N)\mathcal H^1\)，故为 \(1\)-可整流概率测度。
+
+设 \(h\in C_b(\mathbb R^2)\)。它在单位方形上一致连续，记其在该方形上的连续模为
+\[
+ \omega_h(\delta)=\sup\{\,|h(x)-h(y)|\mid x,y\in[0,1]^2,\ |x-y|\le\delta\,\}.
+\]
+把方形按第二坐标分成 \(N\) 条等宽条带，每条带中的点到其中线的距离不超过 \(1/(2N)\)。于是
+\[
+ \left|\int h\,\mathrm d\mu_N-\int_{[0,1]^2}h\,\mathrm dm_2\right|
+ \le\omega_h\left(\frac1{2N}\right)\longrightarrow0.
+\]
+这正是 \(\mu_N\Rightarrow\mu\)。
+
+每个可数 \(1\)-可整流集都是二维零测集，理由见\cref{b1:ex:19-null-addition-topology}。如果 \(\mu\) 是 \(1\)-可整流测度，它必须集中在某个这样的集合 \(R\) 上；但 \(\mu(R)=m_2(R\cap[0,1]^2)=0\)，与总质量 \(1\) 矛盾。因此弱极限不再 \(1\)-可整流。
+
+对固定 \(N\)，在任一线段的非端点处，半径充分小的球只与该线段相交，并截出长度 \(2r\) 的区间。故
+\[
+ \lim_{r\downarrow0}\frac{\mu_N\bigl(B(x,r)\bigr)}{2r}=\frac1N
+\]
+在 \(\mu_N\) 几乎处处成立。另一方面，与 \(B(a,r)\) 相交的水平线条数不超过 \(2Nr+2\)，每条在球中留下的长度不超过 \(2r\)，所以
+\[
+ \mu_N\bigl(B(a,r)\bigr)\le\frac{2r}{N}(2Nr+2)
+ =4r^2+\frac{4r}{N}.
+\]
+当 \(0<r\le1\) 时，右端不超过 \(8r\)；当 \(r>1\) 时，由总质量 \(1\) 同样得到 \(\mu_N\bigl(B(a,r)\bigr)\le8r\)。因此存在独立于 \(N\) 的一维球增长上界。
+
+但各条线上的正密度为 \(1/N\)，没有统一的正下界；极限测度在方形内部满足 \(\mu\bigl(B(x,r)\bigr)/(2r)=\pi r/2\to0\)。球增长的上界容许质量铺展到更高维区域，不能保证极限的一维密度仍为正。
+\end{solution}

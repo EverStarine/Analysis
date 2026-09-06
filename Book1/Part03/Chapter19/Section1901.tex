@@ -2,24 +2,135 @@
 \section{可整流集}
 \label{b1:sec:1901}
 
-% TODO: 撰写本节正文。
+前两章总是先给一个映射，再计算它的像或纤维。本章改变出发点：只给一个集合，问它能否在忽略零测部分后由可数个 Lipschitz 参数块描述。这样既保留曲线和曲面的局部微分结构，又允许交叉、断裂和多张参数片。可整流性正是对这种测度意义下的几何结构所作的要求。
+
+% 实读：Mattila2023Rectifiability 出版社OA正式全书§4.1，定义4.1--4.2及随后约定说明。
+% 本书区分可数可整流与有限Hk测度；可整流测度另要求mu<<Hk，严于该书定义4.2。
+% 基本闭合性质、紧片、四角Cantor纯不可整流例和RN表示均用本书前章工具完整展开。
 
 \subsection{Lipschitz 像}
 \label{b1:subsec:190101}
 
-待填充。
+以下先固定整数 \(1\leq k\leq n\)。若 \(A\subseteq\mathbb R^k\)，且 \(f:A\to\mathbb R^n\) 为 Lipschitz 映射，则 \(f(A)\) 是一个由 \(k\) 个参数描述的像。不过，这个描述不保证参数唯一，也不保证微分满秩；一张参数片可以折回或塌缩到较低维集合。
+
+定义可整流性时，可以把参数映射取为在整个 \(\mathbb R^k\) 上定义。因为逐坐标使用第十六章的延拓定理，任意 \(f:A\to\mathbb R^n\) 都可延为全空间的 Lipschitz 映射，至多增大一个仅依赖目标维数的常数。这里仅需存在一个有限常数，不要求向量值延拓保留最优常数。
+
+全空间参数化还有一个可测性上的好处。若 \(f:\mathbb R^k\to\mathbb R^n\) Lipschitz，则
+\[
+ f(\mathbb R^k)=\bigcup_{j=1}^{\infty}f\bigl(\overline B(0,j)\bigr)
+\]
+是可数个紧集之并，因而 Borel 可测。每个紧像的 \(\mathcal H^k\) 测度有限，因为
+\[
+ \mathcal H^k\Bigl(f\bigl(\overline B(0,j)\bigr)\Bigr)
+ \leq\operatorname{Lip}(f)^k\omega_kj^k.
+\]
+当 \(f\) 为常值时，左端为零，同一结论仍成立。因此可数参数化天然给出的是 \(\sigma\) 有限性；它不必给出全体像的有限面积，也不必给出每个环境球中的有限面积。
 
 \subsection{可数 \texorpdfstring{\(m\)}{m}-可整流集}
 \label{b1:subsec:190102}
 
-待填充。
+\begin{definition}\label{b1:def:countably-rectifiable-set}
+若集合 \(E\subseteq\mathbb R^n\) 是 \(\mathcal H^k\) 可测的，并且存在 Lipschitz 映射 \(f_j:\mathbb R^k\to\mathbb R^n\)，使
+\[
+ \mathcal H^k\left(E\setminus\bigcup_{j=1}^{\infty}f_j(\mathbb R^k)\right)=0,
+\]
+则称 \(E\) 为\term[keshu-kezhengliuji]{可数 \(k\) 维可整流集}[countably k-rectifiable set]。在本章不致混淆时简称 \(k\) 维可整流集。若还要求 \(\mathcal H^k(E)<\infty\)，会明确写出这一附加条件。
+\end{definition}
+
+定义允许一个 \(\mathcal H^k\) 零测余项，但不允许遗漏具有正 \(k\) 维测度的部分。零测集因而自动满足定义；这只是定义在零测情形下没有几何要求，并不意味着每个零测集都是一张平滑曲面。相反，一个集合即使不可数、拓扑复杂，也可能在所讨论维数下没有需要参数化的质量。
+
+\begin{proposition}\label{b1:prop:rectifiable-basic-properties}
+可数 \(k\) 维可整流集具有以下性质。
+\begin{enumerate}
+\item\label{b1:item:rectifiable-sigma-finite}其 \(\mathcal H^k\) 测度为 \(\sigma\) 有限；其中每个 \(\mathcal H^k\) 可测子集仍可整流。
+\item\label{b1:item:rectifiable-countable-union}可数个这样的集合之并仍可整流；增删 \(\mathcal H^k\) 零测集不改变可整流性。
+\item\label{b1:item:rectifiable-lipschitz-image}若 \(g:E\to\mathbb R^p\) 为 Lipschitz 映射，则 \(g(E)\) 是 \(\mathcal H^k\) 可测的可数 \(k\) 维可整流集，其中目标维数取 \(p\geq k\)。
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+第一项的 \(\sigma\) 有限性来自上一小节的有界参数块及零测余项；对子集仍用原来的参数映射即可。第二项把各组可数参数映射并为一列，遗漏的可数个零测余项之并仍零测。
+
+证明第三项时，先把 \(g\) 逐坐标延为 \(\mathbb R^n\) 上的 Lipschitz 映射 \(\widetilde g\)。于是 \(\widetilde g\circ f_j\) 给出所需参数映射，而遗漏部分的像由 Hausdorff 测度的 Lipschitz 估计仍为零测。
+
+还须说明像的可测性。由第一项及 Hausdorff 测度的 Borel 包络、有限 Borel 测度的紧内正则性，可以取紧集 \(K_j\subseteq E\)，使 \(\mathcal H^k(E\setminus\bigcup_jK_j)=0\)。具体地，先将 \(E\) 分成有限测度块，在各块的有限 Borel 包络上使用正则性，再删去一个覆盖改值余项的 Borel 零测集即可取得块内紧逼近。各 \(g(K_j)\) 紧，余项的像零测，所以 \(g(E)\) 在完备 \(\mathcal H^k\) 下可测。
+\end{proof}
+
+特别地，\(C^1\) 图像和光滑水平集的满秩部分都可整流。前者在相对紧的小球上有界导数，因而局部 Lipschitz；用可数个这样的球覆盖参数域即可。后者由上一章的正规坐标命题局部化成图像，再利用欧氏空间的可数拓扑基选取可数覆盖。
+
+上一章还给出了一个非光滑来源。若 \(f:\mathbb R^m\to\mathbb R^n\) Lipschitz 且 \(m>n\)，则其几乎每个水平集都可数 \((m-n)\) 维可整流。事实上，余面积证明中的满秩坐标片在固定目标值后由 \(\mathbb R^{m-n}\) 的子集作 Lipschitz 参数化，临界与不可微部分则在几乎每层上为零测。把各子集上的参数映射延到全空间，正好满足本定义。\(m=n\) 时，相应结论是几乎每个纤维至多可数，可按零维约定理解。
+
+可整流性不包含局部有限面积的要求。例如可数条平行直线可以在平面中稠密，它们的并可数 \(1\) 维可整流，但每个非空开球内的总长度为无穷。下一节需要研究球内密度时，会另外要求 \(\mathcal H^k|_E\) 局部有限。不能只凭已经写下“可整流”三个字便自动使用这一条件。
 
 \subsection{纯不可整流集}
 \label{b1:subsec:190103}
 
-待填充。
+\begin{definition}\label{b1:def:purely-unrectifiable-set}
+若 \(P\subseteq\mathbb R^n\) 是 \(\mathcal H^k\) 可测的，且对每个 Lipschitz 映射 \(f:\mathbb R^k\to\mathbb R^n\) 都有
+\[
+ \mathcal H^k\bigl(P\cap f(\mathbb R^k)\bigr)=0,
+\]
+则称 \(P\) 为\term[chun-bukezhengliuji]{纯 \(k\) 维不可整流集}[purely k-unrectifiable set]。
+\end{definition}
+
+等价地，\(P\) 与每个可数 \(k\) 维可整流集的交都为 \(\mathcal H^k\) 零测集：只需把该可整流集的参数片逐个相交，再加上零测余项。这个条件比“\(P\) 不是可整流集”强得多，因为后者可能还包含一大块可整流部分。
+
+\begin{proposition}\label{b1:prop:rectifiable-pure-zero}
+若一个 \(\mathcal H^k\) 可测集既可数 \(k\) 维可整流又纯 \(k\) 维不可整流，则它为 \(\mathcal H^k\) 零测集。反过来，每个 \(\mathcal H^k\) 零测集都同时具有这两个性质。
+\end{proposition}
+\begin{proof}
+把可整流集的参数覆盖代入纯不可整流的定义，每片所截到的测度都为零，加上零测余项便得到整个集合零测。反向结论由两个定义直接得到。
+\end{proof}
+
+下面给出一个有正长度却纯不可整流的紧集，说明这种分类不是仅在零测情形下成立。令 \(C\subseteq[0,1]\) 为保留左右各四分之一区间的 Cantor 集，并置 \(P=C\times C\)。
+
+\begin{proposition}\label{b1:prop:four-corner-pure-unrectifiable}
+上述四角 Cantor 集满足 \(0<\mathcal H^1(P)<\infty\)，并且纯 \(1\) 维不可整流。
+\end{proposition}
+\begin{proof}
+第 \(j\) 步的 \(P\) 包含于 \(4^j\) 个边长 \(4^{-j}\) 的正方形中，直径覆盖的总代价为 \(\sqrt2\)。所以 \(\mathcal H^1(P)\leq\sqrt2\)。第十五章 Cantor 集构造中的等权概率测度 \(\nu\) 满足 \(\nu(I)\leq C_0|I|^{1/2}\)；这里对应 \(\lambda=1/4\)，其维数为 \(1/2\)。对乘积概率 \(\mu=\nu\times\nu\)，半径为 \(r\) 的球包含于两条长度为 \(2r\) 的区间的乘积内，因而
+\[
+ \mu\bigl(\overline B(x,r)\bigr)\leq2C_0^2r.
+\]
+由质量分布原理，\(\mathcal H^1(P)>0\)。
+
+证明纯不可整流性。任取 Lipschitz 曲线 \(\gamma:\mathbb R\to\mathbb R^2\)，写 \(\gamma=(\gamma_1,\gamma_2)\)，并令 \(A=\gamma^{-1}(P)\)。这个集合闭，且 \(\gamma_i(A)\subseteq C\)。由于 \(m_1(C)=0\)，对标量映射 \(\gamma_i\) 使用一维面积公式，得到
+\[
+ \int_A|\gamma_i'(t)|\,\mathrm dt=0\quad(i=1,2).
+\]
+因此 \(\gamma'=0\) 在 \(A\) 中几乎处处成立。再对向量映射 \(\gamma\) 使用面积公式的上界，
+\[
+ \mathcal H^1\bigl(P\cap\gamma(\mathbb R)\bigr)
+ =\mathcal H^1\bigl(\gamma(A)\bigr)
+ \leq\int_A|\gamma'(t)|\,\mathrm dt=0.
+\]
+这对任意 Lipschitz 曲线成立，故 \(P\) 纯 \(1\) 维不可整流。
+\end{proof}
+
+证明利用的是两个坐标投影都为零测，而非只用“不连通”这种拓扑描述。一般可整流集也可以很不连通，例如一条直线上的正测 Cantor 集。是否有正质量能够落在 Lipschitz 参数片上，才是这里的区分依据。
 
 \subsection{可整流测度}
 \label{b1:subsec:190104}
 
-待填充。
+集合之外还可以携带不同的质量密度。为避免把“集中在曲面上”与“沿曲面的面积连续分布”混为一谈，本书明确采用下面的约定。
+
+\begin{definition}\label{b1:def:rectifiable-measure}
+若正 Radon 测度 \(\mu\) 满足 \(\mu\ll\mathcal H^k\)，且存在可数 \(k\) 维可整流的 Borel 集 \(E\)，使 \(\mu(\mathbb R^n\setminus E)=0\)，则称 \(\mu\) 为 \(k\) 维\term[kezhengliu-cedu]{可整流测度}[rectifiable measure]。
+\end{definition}
+
+绝对连续条件的含义是每个 Borel 的 \(\mathcal H^k\) 零测集都为 \(\mu\) 零测集。这里不要求环境空间上的 \(\mathcal H^k\) 本身是 Radon 测度；当 \(k<n\) 时，它通常不是局部有限的。
+
+\begin{proposition}\label{b1:prop:rectifiable-measure-density}
+上述定义等价于存在可数 \(k\) 维可整流 Borel 集 \(E\) 和非负 Borel 函数 \(\theta\)，使
+\[
+ \mu(B)=\int_{B\cap E}\theta(x)\,\mathrm d\mathcal H^k(x)
+ \quad(B\subseteq\mathbb R^n\text{ Borel}).
+\]
+\(\theta\) 可以取为在 \(E\) 上 \(\mathcal H^k\)-几乎处处有限；若只保留 \(\{\theta>0\}\)，还可令它在承载集上几乎处处为正。简记为 \(\mu=\theta\mathcal H^k|_E\)。
+\end{proposition}
+\begin{proof}
+\(\mathcal H^k|_E\) 为 \(\sigma\) 有限，而 \(\mu\) 是欧氏空间上的 Radon 测度，也为 \(\sigma\) 有限。把第六章的 Radon--Nikodym 定理应用于承载集 \(E\)，即得密度。它可取 Borel 代表；若在正 \(\mathcal H^k\) 测度的集合上为无穷，该集合与某个有界块的交仍有正测度，就会迫使该块具有无穷 \(\mu\) 质量，与局部有限性矛盾。删去 \(\theta=0\) 的部分不损失 \(\mu\) 质量。反过来，所给积分表示直接保证绝对连续性与集中性。
+\end{proof}
+
+例如一条线上的 \(\theta\mathcal H^1\) 是带密度的可整流测度，只要每个紧集上的加权质量有限；它的密度不必为整数，也不必等于 \(1\)。单点质量 \(\delta_a\) 虽可集中在任何经过 \(a\) 的直线上，却不是本书意义下的 \(1\) 维可整流测度，因为 \(\mathcal H^1(\{a\})=0\) 而 \(\delta_a(\{a\})=1\)。它应归入零维的计数型几何。
+
+Mattila 的《Rectifiability: A Survey》\cite[定义4.1--4.2及第19页说明]{Mattila2023Rectifiability}对集合采用同样的可数参数覆盖，但对测度有时不附加 \(\mu\ll\mathcal H^k\)。读者对照文献时须保留这一差别；“可整流测度”这个名称本身并不能代替绝对连续假设。本书保留该假设，是为了使面积密度、切向积分和后文的测度密度结论使用同一约定。
