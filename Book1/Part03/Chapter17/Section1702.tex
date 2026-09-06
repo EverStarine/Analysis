@@ -2,24 +2,145 @@
 \section{Lipschitz 映射的 Jacobi 行列式}
 \label{b1:sec:1702}
 
-% TODO: 撰写本节正文。
+线性映射的 Jacobi 行列式已经给出了精确的体积伸缩因子。对非线性映射，在一个可微点可以把同一构造用于微分矩阵，得到随点变化的局部因子。不过，从线性模型的体积伸缩过渡到原映射的面积公式，还需要控制邻近点之间的误差、退化点的像以及重复覆盖。本节先把局部因子定义清楚，并说明这些后续问题为何不能从定义中自动消失。
+
+% 实读来源：Fremlin2016Measure，作者官方 chap26.tex，265A--D、265E 的陈述及 §265 末说明。
+% 265D 的片上近线性估计只用于本节的距离解释；相应 Hausdorff 测度比较和分片构造留到1703。
+% 先修实读：1602末 b1:prop:lipschitz-differentiability-borel；1603全节，尤其近似微分Borel代表。
+% 本节不将单点可微性解释为小球像测度比收敛，也不提前调用秩亏像零测或非线性面积公式。
 
 \subsection{微分与 Jacobi 行列式}
 \label{b1:subsec:170201}
 
-待填充。
+以下固定 \(1\leq k\leq n\)，\(U\subseteq\mathbb R^k\) 为开集，\(f:U\to\mathbb R^n\) 为局部 Lipschitz 映射。定义域的维数始终是 \(k\)，因此要计算的是 \(k\) 维面积，而不是值域的 \(n\) 维体积。沿用命题\ref{b1:prop:lipschitz-differentiability-borel}，记真正的可微点集合为 \(\mathcal D_f\)，并约定 \(Df\) 在 \(U\setminus\mathcal D_f\) 上补为零矩阵。
+
+\begin{definition}
+\label{b1:def:lipschitz-jacobian}
+对上述映射 \(f\)，定义
+\[
+J_k f(x)=J_k\bigl(Df(x)\bigr)
+=\sqrt{\det\bigl(Df(x)^{\mathsf T}Df(x)\bigr)}
+\quad(x\in U),
+\]
+称为 \(f\) 的 \(k\) 维 Jacobi 行列式。这里转置与行列式均对实矩阵计算，\(Df(x)^{\mathsf T}Df(x)\) 是 \(k\times k\) 的半正定矩阵，故平方根总是非负实数。
+\symidx{\(J_k f(x)\)：Lipschitz 映射的 Jacobi 行列式}
+\end{definition}
+
+这个非负量与可能带符号的普通行列式有区别。当 \(k=n\) 时，\(J_k f=|\det Df|\)，因而不记录定向；当 \(k<n\) 时，微分矩阵本身不是方阵，定义借助其 Gram 矩阵给出 \(k\) 维因子。异常点处的值为零只是可测代表的约定，不表示函数在那些点确实具有零微分。
+
+\begin{proposition}
+\label{b1:prop:lipschitz-jacobian-borel}
+函数 \(J_k f\) 是非负 Borel 可测函数，并且局部有界。若 \(f\) 在开集 \(W\subseteq U\) 上为 \(L\)-Lipschitz，则
+\[
+0\leq J_k f(x)\leq L^k\quad(x\in W).
+\]
+特别地，\(J_k f\in L^\infty_{\mathrm{loc}}(U)\)。
+\end{proposition}
+\begin{proof}
+矩阵函数 \(Df\) 按第\ref{b1:subsec:160204}小节的约定为 Borel 函数，而命题\ref{b1:prop:linear-jacobian-properties}说明 \(A\mapsto J_k(A)\) 连续，二者复合即得可测性。在 \(W\) 的每个真正可微点，原 Lipschitz 不等式沿直线取差商给出 \(\|Df(x)\|\leq L\)。由上一节的线性估计，\(J_k\bigl(Df(x)\bigr)\leq\|Df(x)\|^k\leq L^k\)；其余点补零，同一界仍成立。每个紧集可以用有限个具有 Lipschitz 常数的邻域覆盖，所以 \(J_k f\) 在紧集上有统一有限上界。
+\end{proof}
+
+因此，对可测参数集 \(E\subseteq U\)，积分 \(\int_EJ_k f\,\mathrm dm_k\) 已经有严格意义。若只在一个零测集上更换 \(Df\) 的补值，相应的积分不变；但这只是定义域积分的事实，尚不能据此断言这组参数的像也可以忽略。后者需要映射对零测集的控制。
+
+当 \(k=1\) 时，\(Df(t)\) 只有一列，故 \(J_1f(t)=|f'(t)|\) 在可微点成立。结合上一章的曲线结果，这正是欧氏曲线的速度。这里同样区分点态概念与代表：若某个不可微点仍存在度量导数，本节补零的 \(J_1f\) 未必在该点等于度量导数，两者的联系是几乎处处的。
 
 \subsection{几何意义}
 \label{b1:subsec:170202}
 
-待填充。
+固定 \(x\in\mathcal D_f\)，记 \(A=Df(x)\)。可微性意味着对每个 \(\varepsilon>0\)，存在 \(r_0>0\)，使
+\[
+|f(x+h)-f(x)-Ah|\leq\varepsilon|h|
+\quad(|h|\leq r_0),
+\]
+并可缩小 \(r_0\)，使闭球包含于 \(U\)。对 \(0<r\leq r_0\)，定义缩放后的映射
+\[
+f_{x,r}(v)=\frac{f(x+rv)-f(x)}r
+\quad(|v|\leq1).
+\]
+于是 \(\sup_{|v|\leq1}|f_{x,r}(v)-Av|\leq\varepsilon\)。这给出一个准确的局部图景：缩放后的像与线性椭球 \(A\bigl(\overline B(0,1)\bigr)\) 可以逐参数配对，每对点的距离至多为 \(\varepsilon\)。若 \(A\) 满秩，定理\ref{b1:thm:linear-area-formula}说明该椭球的 \(k\) 维测度为 \(\omega_kJ_k(A)\)。若秩不足，它则落在更低维的线性子空间中。
+
+这种距离逼近本身还不是面积逼近。最简单的提醒是有限网格 \(G_j=\{i/j:0\leq i\leq j\}\)：区间 \([0,1]\) 中的每个点离 \(G_j\) 至多 \(1/j\)，但 \(\mathcal H^1(G_j)=0\)，而 \(\mathcal H^1([0,1])=1\)。所以，不能只凭像集在距离上越来越接近，就写出小球像的测度比趋于 \(J_k f(x)\)。本书也不把这样的极限用作 Jacobi 行列式的定义。
+
+面积证明实际需要的是一块参数集上任意两点之间的比较。设 \(E\subseteq U\)，\(A:\mathbb R^k\to\mathbb R^n\) 为满秩线性映射，且
+\[
+|f(y)-f(z)-A(y-z)|\leq\varepsilon|y-z|
+\quad(y,z\in E).
+\]
+令 \(\sigma=\min_{|v|=1}|Av|>0\)，并假设 \(\varepsilon<\sigma\)。由 \(\sigma|y-z|\leq|A(y-z)|\) 与三角不等式，直接得到
+\[
+\left(1-\frac\varepsilon\sigma\right)|A(y-z)|
+\leq|f(y)-f(z)|
+\leq\left(1+\frac\varepsilon\sigma\right)|A(y-z)|.
+\]
+因此，\(f\) 在这块 \(E\) 上为单射，而且与线性像之间有双向距离控制。下一节将先由此比较 Hausdorff 测度，再证明怎样从逐点可微性组织出适用这种估计的可数分片。Fremlin 的《Measure Theory》\cite[265D]{Fremlin2016Measure}可用于对照这一步中满秩假设的作用。
+
+点态可微不能替代上述片上条件。习题\ref{b1:ex:16-invertible-derivative-not-local-injective}已经给出一个处处可微的 Lipschitz 函数：它在原点的导数为 \(1\)，却在原点的任何邻域内都不是单射。单点非退化微分还没有提供一整块集合上的统一下距离估计；下一节的可数分片正是为补上这一步。
 
 \subsection{退化点}
 \label{b1:subsec:170203}
 
-待填充。
+\begin{definition}
+\label{b1:def:jacobian-degenerate-set}
+对本节的局部 Lipschitz 映射 \(f\)，若 \(x\in\mathcal D_f\) 且 \(\operatorname{rank}Df(x)<k\)，则称 \(x\) 为本节意义下的退化点。记
+\[
+Z_f=\{x\in\mathcal D_f:\operatorname{rank}Df(x)<k\}
+=\mathcal D_f\cap\{x:J_k f(x)=0\}.
+\]
+\end{definition}
+
+集合 \(Z_f\) 为 Borel 集，因为 \(\mathcal D_f\) 与 \(J_k f\) 都可测。它与异常集 \(U\setminus\mathcal D_f\) 是两回事：异常点没有真实微分，退化点则具有真实微分，只是其秩不足。采用补零约定后，\(\{J_k f=0\}\) 包含这两类点，后续证明必须分别说明它们的像如何处理。
+
+线性退化已经很清楚。例如对 \(k\geq2\)，映射
+\[
+T(x_1,\ldots,x_k)=(x_1,\ldots,x_{k-1},0)
+\]
+处处秩为 \(k-1\)，且 \(J_k(T)=0\)。它把 \(k\) 维体积压到一个 \((k-1)\) 维平面，像的 \(\mathcal H^k\) 测度为零。这可以直接应用上一节的线性结论，也可以在有界像片上用约 \(\delta^{-(k-1)}\) 个直径为常数乘 \(\delta\) 的小块覆盖：\(k\) 次幂代价趋于零，再对有界片取可数并。
+
+非线性情形要注意退化所指的尺度。映射 \(f(u,v)=(u,v^2)\) 处处可微，且
+\[
+Df(u,v)=
+\begin{pmatrix}1&0\\0&2v\end{pmatrix},
+\quad
+J_2f(u,v)=2|v|.
+\]
+原点是退化点，但任何包含原点的开邻域的像都有正的二维测度：若邻域包含 \((-r,r)^2\)，其像就包含 \((-r,r)\times(0,r^2)\)。微分秩不足表示一阶模型缺少方向，并不表示整个邻域已经落在那个一阶子空间中。
+
+对于局部 Lipschitz 映射，真正需要建立的结论是整组退化点的像 \(f(Z_f)\) 具有零 \(\mathcal H^k\) 测度。它不能由“每个线性切像零测”直接推出，因为零测集的不可数并可以有正测度。下一节会用分片估计并单独处理秩亏部分；这里尚未把这个结论包含在退化点的定义里。
 
 \subsection{近似 Jacobi 行列式}
 \label{b1:subsec:170204}
 
-待填充。
+现在暂时去掉局部 Lipschitz 条件，设 \(f:U\to\mathbb R^n\) 为有限值 Lebesgue 可测映射。第\ref{b1:sec:1603}节的近似微分仍给出了一个逐点线性模型，所以同样可以对它取 Gram 行列式。
+
+\begin{definition}
+\label{b1:def:approximate-jacobian}
+若 \(f\) 在 \(x\) 处近似可微，则定义它在该点的\term[jinsi-jacobi-hanglieshi]{近似 Jacobi 行列式}[approximate Jacobian]为
+\[
+\operatorname{ap}J_k f(x)
+=J_k\bigl(\operatorname{ap}Df(x)\bigr)
+=\sqrt{\det\Bigl(\bigl(\operatorname{ap}Df(x)\bigr)^{\mathsf T}
+\operatorname{ap}Df(x)\Bigr)}.
+\]
+\symidx{\(\operatorname{ap}J_k f(x)\)：映射的近似 Jacobi 行列式}
+\end{definition}
+
+\begin{proposition}
+\label{b1:prop:approximate-jacobian-measurable}
+若 \(f\) 几乎处处近似可微，则 \(\operatorname{ap}J_k f\) 具有非负 Borel 可测代表。若 \(f\) 还局部 Lipschitz，则该代表几乎处处等于 \(J_k f\)。
+\end{proposition}
+\begin{proof}
+由推论\ref{b1:cor:approximate-derivative-measurable}，存在 Borel 矩阵函数 \(A\)，几乎处处等于 \(\operatorname{ap}Df\)。取 \(J_k(A)\)，由线性 Jacobi 行列式的连续性便得到所需代表。若 \(f\) 局部 Lipschitz，则普通微分几乎处处存在，并等于近似微分；也可由命题\ref{b1:prop:lipschitz-approximate-ordinary}在每个近似可微点比较二者。于是两种 Jacobi 行列式几乎处处相同。
+\end{proof}
+
+这里的 Borel 代表由可数 Lipschitz 分片取得，只要求几乎处处等于近似微分产生的数值；不要把它与前面“真实可微集外补零”的逐点约定混同。一般情形也没有局部有界性，例如 \(f(t)=\sqrt{|t|}\) 在零点外可微，而其近似 Jacobi 行列式 \((2\sqrt{|t|})^{-1}\) 在零点附近无界。
+
+从近似 Jacobi 行列式写出一个可测积分，并不等于已经得到面积公式。这里的关键障碍是被可数分片遗漏的零测参数集。给定 \(f:U\to\mathbb R^n\)，若
+\[
+m_k(N)=0\quad\Longrightarrow\quad\mathcal H^k\bigl(f(N)\bigr)=0
+\quad(N\subseteq U),
+\]
+则称其具有相对于 \(m_k\) 与 \(\mathcal H^k\) 的\term*[lusin-n-xingzhi]{Lusin 的 \(N\) 性质}[Lusin's property N]。上式对像使用外测度，因而不预设其可测性。局部 Lipschitz 映射满足这个条件：先在一个 Lipschitz 邻域内用 \(\mathcal H^k=m_k\) 和命题\ref{b1:prop:hausdorff-lipschitz}，再用可数个这样的邻域覆盖 \(U\)。
+
+一般近似可微映射则不必满足这个条件。把习题\ref{b1:ex:14-cantor-function}中的 Cantor 函数 \(F_C\) 按原定义看作 \(\mathbb R\) 上的函数。它在三分 Cantor 集之外局部为常数，所以 \(\operatorname{ap}J_1F_C=0\) 几乎处处；然而 \(F_C(C)=[0,1]\)。最后这个等式可从连续性与端点值看出：任意中间值都在 \([0,1]\) 中取得，若取得值的位置落在某个被删去的开区间内，函数在该区间上为常数，同一值也在属于 \(C\) 的端点取得。因此零测集 \(C\) 的像有长度 \(1\)，\(F_C\) 不具有上述 \(N\) 性质。
+
+这个例子说明，即使近似 Jacobi 行列式几乎处处为零，也不能在一般可测映射下直接断言像集面积为零。第\ref{b1:sec:1603}节的可数 Lipschitz 分片提供了处理大部分参数的工具；面积公式还必须解释剩余参数的像，并记录同一像点被多少参数覆盖。下一节将在 Lipschitz 主线下把这些测度问题逐一补齐。

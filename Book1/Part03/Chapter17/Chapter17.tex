@@ -3,13 +3,22 @@
 \label{b1:ch:17}
 % 本章摘要（不计入编号）
 \begin{chapterabstract}
-待填充。
+从参数域走到曲线或曲面，首先要知道每个微分矩阵怎样改变相应维数的面积；其次要分清同一像点被多少参数点覆盖。本章用 Gram 行列式构造非方阵的面积因子，完整证明 Lipschitz 映射的单射、重数及加权面积公式。证明中分别处理满秩点、退化点和不可微的零测余项，再把结论用于弧长、球面、参数改变和图像面积。
 \end{chapterabstract}
 
 % 本章目标（不计入编号）
 \begin{learninggoals}
-待填充。
+\begin{itemize}
+\item\label{b1:item:ch17-goal-linear}能用 Gram 矩阵、奇异值和子式计算 Jacobi 因子，并说明它与线性像的 Hausdorff 测度的关系。
+\item\label{b1:item:ch17-goal-proof}理解从逐点可微到近线性分片的步骤，能说明增广映射如何处理秩亏部分。
+\item\label{b1:item:ch17-goal-multiplicity}正确使用重数和加权面积公式，分清像集面积与参数化的累计面积。
+\item\label{b1:item:ch17-goal-applications}能计算曲线、球面和图像的面积，辨明参数改变、投影与零测接缝各自的作用。
+\end{itemize}
 \end{learninggoals}
+
+本章依赖第十五章的 \(\mathcal H^k=m_k\) 归一化及第十六章的 Rademacher 定理。只有掌握这两项，微分矩阵与面积才使用同一个尺度。第\ref{b1:sec:1701}节补齐所需有限维代数，不要求先读尚未展开的外代数附录；第\ref{b1:sec:1703}节是证明主线，初读时可以先明确单射公式、重数公式各自说什么，再顺着分片与秩亏处理回读论证。
+
+Fremlin 的《Measure Theory》第265节\cite{Fremlin2016Measure}提供线性面积、近线性比较与增广映射的主要参照；本书利用已经建立的 Borel 微分矩阵，把可数分片和一般重数版本逐步展开。Simon 的《Lectures on Geometric Measure Theory》第8节\cite{Simon1983Lectures}适合对照面积公式的几何写法及曲面应用。该书在光滑逼近处另指向外部资料，不能把那段说明直接当作这里 Lipschitz 证明的替代。希望继续学习更一般集合上的面积与可整流性，可在读完第十九章后转向 Mattila 的《Geometry of Sets and Measures in Euclidean Spaces》\cite{Mattila1995Geometry}。
 
 \input{Part03/Chapter17/Section1701}
 \input{Part03/Chapter17/Section1702}
@@ -17,10 +26,384 @@
 \input{Part03/Chapter17/Section1704}
 % 本章小结（不计入编号）
 \begin{chaptersummary}
-待填充。
+非方阵的面积伸缩由 \(J_k(T)=\sqrt{\det(T^{\mathsf T}T)}\) 给出。其平方既是 Gram 行列式，也是所有最大阶子式的平方和；在线性像平面中选择规范正交坐标，便可把测度等式还原为第三章的方阵换元。
+
+对 Lipschitz 映射，逐点微分必须先组织成可数个两点误差受控的片。满秩片上可用双向距离比较面积；秩亏部分则通过 \((f,\eta\operatorname{id})\) 的满秩增广和投影证明像的面积为零。单射片的像可能重叠，重数函数正好记录这种重叠，非负简单函数逼近随后给出加权版本。
+
+曲线长度与图像面积是这一公式的直接应用，但它们也提醒我们：积分的维数、参数化的次数及临界部分的像都不能省略。下一章转向高维到低维的映射，以水平集上的 Hausdorff 测度分解高维积分，建立余面积公式。
 \end{chaptersummary}
 
 
 \BookExercises
 
-待填充。
+% 第十七章习题临时稿；不另设 BookExercises 标题。
+% 八题均为依据本章工具组织的自拟变式；未把未读到的教材题号当作来源。
+% 只使用面积公式，不调用第十八章余面积公式或尚未建立的可整流集理论。
+
+\begin{exercise}\label{b1:ex:17-nonsquare-linear-area}
+令 \(A:\mathbb R^2\to\mathbb R^3\) 为线性映射
+\[
+ A(s,t)=(s+t,t,s),
+\]
+并令 \(T=\{(s,t):s\ge0,\ t\ge0,\ s+t\le1\}\)、\(P=A(T)\)。
+分别用 Gram 矩阵和二阶子式计算 \(J_2(A)\)，再求
+\[
+ \mathcal H^2(P),
+ \quad \int_P x_1\,\mathrm d\mathcal H^2(x),
+\]
+以及面积均匀分布在 \(P\) 上时第一坐标的平均值。
+\end{exercise}
+% 来源：自拟；把非方阵的面积伸缩与实际的线性像积分联系起来。
+\begin{solution}
+矩阵 \(A\) 的两列分别为 \((1,0,1)^{\mathsf T}\) 与 \((1,1,0)^{\mathsf T}\)，故
+\[
+ A^{\mathsf T}A=\begin{pmatrix}2&1\\1&2\end{pmatrix},
+ \quad J_2(A)=\sqrt3.
+\]
+按行号 \((1,2)\)、\((1,3)\)、\((2,3)\) 取得的三个二阶子式分别为 \(1,-1,-1\)，平方和也等于 \(3\)，给出同一个结果。
+\(A\) 单射，且 \(m_2(T)=1/2\)，所以面积公式给出
+\[
+ \mathcal H^2(P)=\sqrt3/2.
+\]
+加权面积公式进一步给出
+\[
+ \int_Px_1\,\mathrm d\mathcal H^2(x)
+ =\sqrt3\int_0^1\int_0^{1-s}(s+t)\,\mathrm dt\,\mathrm ds
+ =\frac{\sqrt3}{3}.
+\]
+除以总面积，所得平均值为 \(2/3\)。
+这里虽然像位于三维空间中，积分所用的仍是二维面积；不能用一个不存在的三阶行列式代替 \(J_2(A)\)。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:17-composition-tangent-factor}
+设 \(B=\operatorname{diag}(2,3,5)\)，\(V\subset\mathbb R^3\) 为过原点的二维平面，\(\nu=(\nu_1,\nu_2,\nu_3)\) 是其单位法向量。记 \(\rho(V)\) 为 \(B\) 在 \(V\) 上的二维面积伸缩因子。
+\begin{enumerate}
+\item\label{b1:item:17-composition-restriction}
+用二阶子式证明
+\[
+ \rho(V)^2=225\nu_1^2+100\nu_2^2+36\nu_3^2.
+\]
+求 \(\rho(V)\) 的全部可能取值，并确定最大值、最小值的等号平面。
+\item\label{b1:item:17-composition-false-scalar}
+令 \(A_\lambda(s,t)=(s,t,\lambda s)\)，其中 \(\lambda\in\mathbb R\)。利用\eqref{b1:eq:linear-jacobian-composition}计算 \(J_2(BA_\lambda)\)，并解释它与 \(J_2(A_\lambda)\) 的比值如何随 \(|\lambda|\) 变化。全维因子 \(J_3(B)=30\) 能否代替这一比值？
+\item\label{b1:item:17-composition-near-extremizer}
+设 \(\alpha\in[0,\pi/2]\) 为法线 \(\mathbb R\nu\) 与 \(\mathbb R e_3\) 的夹角。证明
+\[
+ 64\sin^2\alpha\le\rho(V)^2-36\le189\sin^2\alpha,
+\]
+并由此说明：面积伸缩接近最小值时，平面 \(V\) 必须接近第一、第二坐标平面。
+\end{enumerate}
+\end{exercise}
+% 来源：自拟；调用正文的像平面复合公式，计算方向依赖及极值的定量稳定性，不重复其证明。
+\begin{solution}
+取 \(V\) 的标准正交基 \(u,v\)，并选择方向使 \(u\times v=\nu\)。矩阵 \(Q=(u,v)\) 的三个二阶子式，依行号 \((1,2)\)、\((1,3)\)、\((2,3)\) 排列，分别为 \(\nu_3,-\nu_2,\nu_1\)。左乘 \(B\) 后，这三个子式分别乘以 \(6,10,15\)，故子式平方和公式给出
+\[
+ \rho(V)^2=J_2(BQ)^2
+ =36\nu_3^2+100\nu_2^2+225\nu_1^2.
+\]
+因为 \(\nu_1^2+\nu_2^2+\nu_3^2=1\)，所以 \(6\le\rho(V)\le15\)。三个系数互不相等，左端等号当且仅当 \(\nu=\pm e_3\)，即 \(V=\operatorname{span}(e_1,e_2)\)；右端等号当且仅当 \(\nu=\pm e_1\)，即 \(V=\operatorname{span}(e_2,e_3)\)。取 \(\nu=(\sin\theta,0,\cos\theta)\)、\(0\le\theta\le\pi/2\)，所得 \(\rho(V)^2=36+189\sin^2\theta\) 遍历 \([36,225]\)，故面积因子的全部取值恰为 \([6,15]\)。
+
+第二问中，\(A_\lambda\) 的两列正交，长度分别为 \(\sqrt{1+\lambda^2}\) 与 \(1\)，因此
+\[
+ J_2(A_\lambda)=\sqrt{1+\lambda^2},
+ \quad \nu=\frac{(-\lambda,0,1)}{\sqrt{1+\lambda^2}}.
+\]
+将第一问代入\eqref{b1:eq:linear-jacobian-composition}，得到
+\[
+ J_2(BA_\lambda)=\sqrt{36+225\lambda^2},
+ \quad \frac{J_2(BA_\lambda)}{J_2(A_\lambda)}
+ =\sqrt{\frac{36+225\lambda^2}{1+\lambda^2}}.
+\]
+该比值在 \(|\lambda|=0\) 时为 \(6\)，随 \(|\lambda|\) 严格增加，并在 \(|\lambda|\to\infty\) 时趋于 \(15\)。这是像平面逐渐转向第二、第三坐标平面的结果；全空间体积因子 \(30\) 不是其中任何一个二维面积因子。
+
+最后，\(\sin^2\alpha=\nu_1^2+\nu_2^2\)，而
+\[
+ \rho(V)^2-36=189\nu_1^2+64\nu_2^2,
+\]
+直接给出第三问的不等式。特别地，若 \(\rho(V)\le6+\varepsilon\)，其中 \(\varepsilon\ge0\)，则
+\[
+ \sin^2\alpha\le\frac{12\varepsilon+\varepsilon^2}{64}.
+\]
+因此当面积伸缩趋于 \(6\) 时，法线与 \(e_3\) 的无向夹角趋于零，也就是平面趋于取得最小值的坐标平面。面积因子的方向信息不仅确定极值，还控制偏离极值平面的程度。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:17-power-map-multiplicity}
+将 \(\mathbb R^2\) 识别为复数平面，令 \(D=\{z:|z|\le1\}\)，并对整数 \(q\ge2\) 定义实平面映射 \(F_q(z)=z^q\)。
+\begin{enumerate}
+\item\label{b1:item:17-power-area}
+只用实微分和复数乘法的代数性质，计算 \(J_2F_q\) 及 \(F_q|_D\) 的重数。
+对每个非负 Borel 函数 \(h:D\to[0,\infty]\)，证明
+\[
+ \int_D h(z^q)q^2|z|^{2q-2}\,\mathrm dm_2(z)
+ =q\int_Dh(w)\,\mathrm dm_2(w).
+\]
+\item\label{b1:item:17-power-pushforward}
+设 \(\lambda=\pi^{-1}m_2|_D\) 为圆盘上的均匀概率测度，求 \((F_q)_\#\lambda\) 关于 \(m_2\) 的密度。
+\end{enumerate}
+\end{exercise}
+% 来源：自拟；将有限重数的加权面积公式用于显式推前密度，不前向调用复分析定理。
+\begin{solution}
+二项式展开给出
+\[
+ (z+h)^q-z^q=qz^{q-1}h+O(|h|^2),
+\]
+故实微分是复数乘法 \(h\mapsto qz^{q-1}h\)。复数乘法在实平面上是旋转与伸缩的复合，其面积因子为乘数模长的平方，所以
+\[
+ J_2F_q(z)=q^2|z|^{2q-2}.
+\]
+微分的算子范数在凸集 \(D\) 上不超过 \(q\)，沿线段积分可知 \(F_q|_D\) 为 \(q\)-Lipschitz 映射。
+
+对 \(w=re^{i\theta}\ne0\)，其在 \(D\) 内的原像恰为
+\[
+ r^{1/q}\exp\left(\frac{i(\theta+2\pi j)}q\right),
+ \quad j=0,\ldots,q-1.
+\]
+因此除 \(w=0\) 外重数为 \(q\)，而原点的重数为 \(1\)。原点是二维零测集，加权面积公式立即给出第一问。
+
+对非负 Borel 函数 \(g\)，在第一问中令
+\[
+ h(w)=\frac{g(w)}{q^2|w|^{2-2/q}}\quad(w\ne0),
+ \quad h(0)=0.
+\]
+忽略无质量的原点后，两边分别化为
+\[
+ \int_Dg(z^q)\,\mathrm dm_2(z)
+ =\frac1q\int_Dg(w)|w|^{2/q-2}\,\mathrm dm_2(w).
+\]
+故所求密度为
+\[
+ \frac1{\pi q}|w|^{2/q-2}\mathbf1_D(w),
+\]
+其在原点的取值任意。它虽在原点附近无界，却可积，因为极坐标积分给出
+\[
+ \frac1{\pi q}\int_D|w|^{2/q-2}\,\mathrm dm_2(w)
+ =\frac2q\int_0^1r^{2/q-1}\,\mathrm dr=1.
+\]
+均匀面积经这个多重覆盖推前后不再均匀，重数与局部伸缩必须同时计入。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:17-torus-area}
+给定 \(R>r>0\)，令
+\[
+ T(\theta,\varphi)=
+ \bigl((R+r\cos\varphi)\cos\theta,
+       (R+r\cos\varphi)\sin\theta,
+       r\sin\varphi\bigr),
+ \quad(\theta,\varphi)\in[0,2\pi]^2,
+\]
+并记像集为 \(S\)。
+\begin{enumerate}
+\item\label{b1:item:17-torus-jacobian}
+计算 \(J_2T\)，说明参数接缝的像为何可以在面积积分中忽略，并证明
+\[
+ \mathcal H^2(S)=4\pi^2Rr.
+\]
+\item\label{b1:item:17-torus-moment}
+求 \(\int_Sx_3^2\,\mathrm d\mathcal H^2(x)\)。
+再判断当 \(R=r>0\) 时，两项积分公式是否仍成立；此时须另行处理哪些退化参数？
+\end{enumerate}
+\end{exercise}
+% 来源：自拟；在光滑参数曲面上计算面积与加权矩，并检查接缝及一条退化参数线。
+\begin{solution}
+两条偏导向量相互正交，长度分别为 \(R+r\cos\varphi\) 和 \(r\)，因此
+\[
+ J_2T(\theta,\varphi)=r(R+r\cos\varphi).
+\]
+当 \(R>r\) 时，水平半径 \(\sqrt{x_1^2+x_2^2}\) 始终为正，由它与 \(x_3\) 可恢复 \(\cos\varphi\)、\(\sin\varphi\)，再由水平坐标恢复 \(\theta\)，二者都只差 \(2\pi\) 的整数倍。
+故除去参数矩形边界的像后，每个像点恰有一个原像。边界的像是有限条 Lipschitz 曲线，其二维 Hausdorff 测度为零。
+由面积公式，
+\[
+ \mathcal H^2(S)
+ =\int_0^{2\pi}\int_0^{2\pi}r(R+r\cos\varphi)\,\mathrm d\varphi\,\mathrm d\theta
+ =4\pi^2Rr.
+\]
+同样由加权公式，
+\begin{align*}
+ \int_Sx_3^2\,\mathrm d\mathcal H^2(x)
+ &=2\pi r^3\int_0^{2\pi}\sin^2\varphi(R+r\cos\varphi)\,\mathrm d\varphi\\
+ &=2\pi^2Rr^3.
+\end{align*}
+
+若 \(R=r\)，则 \(\varphi=\pi\) 的整条参数线都映到原点，微分在那里秩亏。
+除去这条参数线及边界后，水平半径仍为正，以上唯一性论证照常成立。
+新增的例外像只有一个点，二维测度为零；\(J_2T=r^2(1+\cos\varphi)\) 在退化参数线上为零。
+所以两项公式仍成立，只需将 \(R\) 换成 \(r\)。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:17-paraboloid-area}
+对 \(R>0\)，令
+\[
+ S_R=\{(x,y,z):x^2+y^2\le R^2,\ z=(x^2+y^2)/2\}.
+\]
+利用图像面积公式求 \(\mathcal H^2(S_R)\) 及
+\(\int_{S_R}z\,\mathrm d\mathcal H^2\)。
+再比较曲面面积与其在 \(xy\) 平面上投影的面积，并求两者之比在 \(R\downarrow0\) 和 \(R\to\infty\) 时的行为。
+\end{exercise}
+% 来源：自拟；实际计算非线性图像的面积及高度积分，区分面积元与平面投影面积元。
+\begin{solution}
+图像参数化 \(\Phi(x,y)=(x,y,(x^2+y^2)/2)\) 单射，且
+\[
+ J_2\Phi(x,y)=\sqrt{1+x^2+y^2}.
+\]
+在圆盘上应用面积公式，再用极坐标积分，得到
+\[
+ \mathcal H^2(S_R)
+ =2\pi\int_0^R\rho\sqrt{1+\rho^2}\,\mathrm d\rho
+ =\frac{2\pi}{3}\bigl((1+R^2)^{3/2}-1\bigr).
+\]
+加权积分则为
+\begin{align*}
+ \int_{S_R}z\,\mathrm d\mathcal H^2
+ &=\pi\int_0^R\rho^3\sqrt{1+\rho^2}\,\mathrm d\rho\\
+ &=\frac\pi{15}\bigl(3(1+R^2)^{5/2}-5(1+R^2)^{3/2}+2\bigr).
+\end{align*}
+后一等式可令 \(u=1+\rho^2\)，将积分化为 \((\pi/2)\int_1^{1+R^2}(u^{3/2}-u^{1/2})\,\mathrm du\) 验证。
+
+投影面积为 \(\pi R^2\)，所以比值为
+\[
+ \frac{2\bigl((1+R^2)^{3/2}-1\bigr)}{3R^2}.
+\]
+它严格大于 \(1\)，因为面积元 \(\sqrt{1+x^2+y^2}\) 除原点外都大于 \(1\)。
+当 \(R\downarrow0\) 时，比值趋于 \(1\)；当 \(R\to\infty\) 时，比值与 \(2R/3\) 之比趋于 \(1\)，因而无界增长。
+这说明即使投影是单射，也不能把投影面积直接当作曲面面积。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:17-unbounded-multiplicity-curve}
+令 \(r_n=2^{-n}/n\)、\(t_0=0\)、\(t_n=1-2^{-n}\)。在 \([t_{n-1},t_n]\) 上设
+\[
+ \tau_n(t)=2^n(t-t_{n-1}),
+ \quad
+ \gamma(t)=r_n\bigl(1-\cos(2\pi n\tau_n(t)),
+                         \sin(2\pi n\tau_n(t))\bigr),
+\]
+并取 \(\gamma(1)=0\)。
+\begin{enumerate}
+\item\label{b1:item:17-countable-loop-lipschitz}
+证明这个可数拼接给出一条 \(2\pi\)-Lipschitz 曲线，且长度为 \(2\pi\)。
+\item\label{b1:item:17-countable-loop-multiplicity}
+求像集 \(G=\gamma([0,1])\) 的一维 Hausdorff 测度和重数函数
+\(N(y)=\#\gamma^{-1}(\{y\})\)，并证明
+\[
+ \mathcal H^1(G)=2\pi\log2,
+ \quad \int_GN(y)\,\mathrm d\mathcal H^1(y)=2\pi.
+\]
+由此说明有限长度不要求重数有统一上界。
+\end{enumerate}
+\end{exercise}
+% 来源：自拟；把有限多次绕行推进到可数拼接及无界但可积的重数。
+\begin{solution}
+每段都从原点出发又回到原点，故公共端点的定义一致。
+第 \(n\) 段位于圆 \(C_n\) 上，其中 \(C_n\) 的圆心为 \((r_n,0)\)、半径为 \(r_n\)，它把此圆绕了 \(n\) 次。
+由于 \(|\gamma(t)|\le2r_n\to0\)，曲线在 \(t=1\) 也连续。
+在每段内部，其速度为
+\[
+ r_n\cdot2\pi n\cdot2^n=2\pi.
+\]
+对 \(s<t<1\)，将 \([s,t]\) 按所经过的有限个拼接点分段，逐段应用此 Lipschitz 估计并相加，得到 \(|\gamma(t)-\gamma(s)|\le2\pi(t-s)\)。
+再令 \(t\uparrow1\) 可包括右端点。
+曲线速度在几乎处处等于 \(2\pi\)，由第十六章的长度公式，长度为 \(2\pi\)。
+
+不同圆 \(C_n,C_m\) 只在原点相交。事实上，其方程分别为
+\(x^2+y^2=2r_nx\) 与 \(x^2+y^2=2r_mx\)，相减后得到 \(x=0\)，进而 \(y=0\)。
+每个 \(C_n\) 的一维测度为 \(2\pi r_n\)，因此
+\[
+ \mathcal H^1(G)=2\pi\sum_{n=1}^{\infty}\frac{2^{-n}}n=2\pi\log2.
+\]
+最后的级数恒等式可将 \(\sum_{n\ge1}u^{n-1}=1/(1-u)\) 从 \(0\) 到 \(1/2\) 积分得到。
+
+在 \(C_n\setminus\{0\}\) 上，每点恰有 \(n\) 个原像；在原点有无穷多个原像；在 \(G\) 之外重数为零。
+这些圆都是闭集，所以所得重数函数可测。原点的一维测度为零，不影响积分，故
+\[
+ \int_GN\,\mathrm d\mathcal H^1
+ =\sum_{n=1}^{\infty}n\cdot2\pi r_n
+ =2\pi\sum_{n=1}^{\infty}2^{-n}=2\pi.
+\]
+重数在每个圆上逐渐增大，却仍然可积。长度记录重复绕行的次数，而像集的测度只把各圆计算一次。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:17-approximate-jacobian-without-n}
+令 \(C\subset[0,1]\) 为三分 Cantor 集，\(F\) 为其连续分布函数，并在 \([0,1]^2\) 上定义
+\[
+ G(x,y)=(F(x),y).
+\]
+\begin{enumerate}
+\item\label{b1:item:17-cantor-jacobian}
+证明 \(G\) 几乎处处可微，而且 \(J_2G=0\) 几乎处处；因此其近似 Jacobi 行列式也几乎处处为零。
+\item\label{b1:item:17-cantor-n-failure}
+证明 \(A=C\times[0,1]\) 是二维零测集，而 \(G(A)=[0,1]^2\)。
+再证明 \(G\) 的重数在 \([0,1]^2\) 上几乎处处等于 \(1\)，从而直接显示面积公式的两边不相等。
+\end{enumerate}
+\end{exercise}
+% 来源：Cantor 函数工具的自拟变式；具体展示仅有近似微分不足以控制零测集的像。
+\begin{solution}
+在 \([0,1]\setminus C\) 的每个开区间分支上，\(F\) 为常数。
+因此在几乎每个 \((x,y)\in(0,1)^2\) 处，
+\[
+ DG(x,y)=\begin{pmatrix}0&0\\0&1\end{pmatrix},
+\]
+其行列式为零。普通可微蕴含近似可微，且两种微分一致，所以近似 Jacobi 行列式也为零。
+
+由 \(m_1(C)=0\) 及乘积积分，\(m_2(A)=0\)。另一方面，\(F\) 连续单调且 \(F(0)=0\)、\(F(1)=1\)，故映满 \([0,1]\)。
+若某个原像落在 \(C\) 的补集区间内，则该区间的端点属于 \(C\)，且有同样的 \(F\) 值。因此 \(F(C)=[0,1]\)，进而 \(G(A)=[0,1]^2\)。
+这正是将零测集映成正测集的情形，\(G\) 不具有相应的 Lusin \(N\) 性质。
+
+单调连续函数的每个非单点纤维都是一个包含非空开区间的闭区间。
+不同非单点纤维的内部互不相交，每个内部各选一个有理数可知，这些纤维对应的值至多可数。
+故除至多可数个 \(u\in[0,1]\) 外，\(F^{-1}(\{u\})\) 恰含一点；例外纤维的点数为无穷。
+于是 \(G\) 的重数除去至多可数条竖直线后为 \(1\)，这些直线的二维测度为零。
+所以
+\[
+ \int_{[0,1]^2}J_2G\,\mathrm dm_2=0,
+ \quad
+ \int_{\mathbb R^2}\#G^{-1}(\{z\})\,\mathrm dm_2(z)=1.
+\]
+面积公式不能仅凭几乎处处存在近似微分就无条件使用；本例缺少的零集控制是实质性条件。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:17-singular-lipschitz-homeomorphism}
+设 \(K\subset[0,1]\) 紧且无处稠密，并满足 \(0<m_1(K)<1\)。令
+\[
+ f(t)=\int_0^t\mathbf1_{[0,1]\setminus K}(u)\,\mathrm du,
+ \quad \ell=1-m_1(K).
+\]
+\begin{enumerate}
+\item\label{b1:item:17-singular-interval-homeomorphism}
+证明 \(f:[0,1]\to[0,\ell]\) 是 \(1\)-Lipschitz 同胚，\(m_1(f(K))=0\)，但其逆映射不是绝对连续函数。
+\item\label{b1:item:17-singular-planar-homeomorphism}
+令 \(H(x,y)=(f(x),y)\)。证明 \(H\) 是两个闭矩形之间的 Lipschitz 同胚，其 Jacobi 行列式在正测集 \(K\times[0,1]\) 上几乎处处为零，而这个集合的像为零测集。
+这与面积公式是否矛盾？逆映射是否仍把零测集映成零测集？
+\end{enumerate}
+\end{exercise}
+% 来源：自拟；由正测无处稠密集构造 Lipschitz 单射的退化集合，检验逆映射的零集性质。
+\begin{solution}
+被积函数取值于 \([0,1]\)，所以 \(f\) 为 \(1\)-Lipschitz 函数。
+对 \(a<b\)，由 \(K\) 无处稠密，\((a,b)\) 内存在一个与 \(K\) 不交的非空开区间，故 \(f(b)-f(a)>0\)。
+因此 \(f\) 严格递增且连续，将 \([0,1]\) 映到 \([0,\ell]\)，其逆映射也连续。
+微积分基本定理给出
+\[
+ f'(t)=\mathbf1_{[0,1]\setminus K}(t)
+ \quad\text{几乎处处}.
+\]
+将单射的一维面积公式用于 \(K\)，得到
+\[
+ m_1(f(K))=\int_K|f'(t)|\,\mathrm dt=0.
+\]
+
+记逆映射为 \(g\)。在 \([0,1]\setminus K\) 的每个开区间分支上，\(f\) 是斜率为 \(1\) 的仿射函数，所以 \(g'=1\) 于相应像区间。
+这些像区间除去端点后覆盖了 \([0,\ell]\setminus f(K)\)，故 \(g'=1\) 几乎处处。
+若 \(g\) 绝对连续，微积分基本定理将给出
+\[
+ 1=g(\ell)-g(0)=\int_0^\ell g'(u)\,\mathrm du=\ell,
+\]
+与 \(\ell<1\) 矛盾。
+
+在二维中，\(H\) 及其逆映射分别为 \((f(x),y)\) 与 \((g(u),y)\)，所以 \(H\) 是同胚；\(f\) 的 Lipschitz 估计还给出 \(H\) 为 \(1\)-Lipschitz。
+几乎处处有
+\[
+ DH(x,y)=\begin{pmatrix}f'(x)&0\\0&1\end{pmatrix},
+ \quad J_2H(x,y)=\mathbf1_{[0,1]\setminus K}(x).
+\]
+集合 \(E=K\times[0,1]\) 的面积为 \(m_1(K)>0\)，但其像 \(f(K)\times[0,1]\) 的面积为零。
+这完全符合面积公式：\(\int_EJ_2H=0\)，而在整个正方形上 \(\int J_2H=\ell\)，恰等于目标矩形的面积。
+逆映射却把零测的 \(H(E)\) 映回正测的 \(E\)，因而不再具有把零测集映为零测集的性质，也不可能是 Lipschitz 映射。
+\end{solution}

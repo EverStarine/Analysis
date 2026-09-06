@@ -2,24 +2,196 @@
 \section{应用}
 \label{b1:sec:1704}
 
-% TODO: 撰写本节正文。
+面积公式使曲线和曲面的积分有了共同的测度论解释。本节先把曲线的行进长度与像集长度区分开，再计算球面面积，最后讨论参数选择和图像。计算中始终使用第十五章归一化的 \(\mathcal H^k\)；参数块的选取可以改变，测量单位不能随参数化改变。
+
+% 实读：Fremlin2016Measure 作者公开chap26.tex，265F--H；265F以球坐标递推计算球面积。
+% 本节改用上下半球图像和Fubini，完整处理赤道与边界奇性，不冒称原证采用此路线。
+% 协作读源：Simon1983Lectures §8.6，印刷pp.47--48，曲线、参数曲面与图像三个例子。
+% 参数不变性、重复覆盖和投影边界均按本章已经证明的面积公式自行推导。
 
 \subsection{曲线长度}
 \label{b1:subsec:170401}
 
-待填充。
+设 \(\gamma:[a,b]\to\mathbb R^n\) 为 Lipschitz 曲线。上一章已经由区间分割证明
+\[
+ \ell(\gamma)=\int_a^b|\gamma'(t)|\,\mathrm dt.
+\]
+这个积分计算的是行进长度。面积公式进一步说明，每一段像集究竟被计算了几次。
+
+\begin{proposition}\label{b1:prop:curve-length-multiplicity}
+对上述曲线，有
+\[
+ \ell(\gamma)
+ =\int_{\mathbb R^n}N(\gamma,[a,b],y)\,
+       \mathrm d\mathcal H^1(y).
+\]
+若 \(h:\mathbb R^n\to[0,\infty]\) 为 Borel 函数，则
+\[
+ \int_a^b h\bigl(\gamma(t)\bigr)|\gamma'(t)|\,\mathrm dt
+ =\int_{\mathbb R^n}h(y)N(\gamma,[a,b],y)\,
+       \mathrm d\mathcal H^1(y).
+\]
+特别地，若 \(\gamma\) 单射，则 \(\ell(\gamma)=\mathcal H^1\bigl(\gamma([a,b])\bigr)\)。
+\end{proposition}
+\begin{proof}
+在区间两端把曲线延为常值，得到全实线上的 Lipschitz 映射。由 \(J_1\gamma=|\gamma'|\) 几乎处处，将\cref{b1:thm:area-formula,b1:thm:weighted-area-formula}应用于参数集 \([a,b]\)，就得到前两个等式。单射时重数是像集的示性函数，最后一个结论随即成立。
+\end{proof}
+
+例如 \(\gamma(t)=(\cos t,\sin t)\)，\(0\leq t\leq4\pi\)，速度恒为 \(1\)，所以行进长度为 \(4\pi\)。除去 \((1,0)\) 外，圆周上每点恰有两个原像；\((1,0)\) 有三个原像，但单点的 \(\mathcal H^1\) 测度为零。因此圆周本身的长度为 \(2\pi\)，而非 \(4\pi\)。端点重复可以忽略，是因为对应像集零测；重复走完一整圈不能忽略。
+
+对一般绝对连续的单射欧氏曲线，像集长度仍等于行进长度。事实上，由\cref{b1:prop:arc-length-parameterization}写成 \(\gamma=\eta\circ s\)，其中 \(s\) 是累计变差。单射性保证 \(s\) 严格递增，否则某个非退化区间上的变差为零，\(\gamma\) 将在其上为常值。因此弧长参数化 \(\eta\) 也单射，与 \(\gamma\) 有相同的像；对 \(1\)-Lipschitz 的 \(\eta\) 使用上面的结论即可。这一步用弧长参数化消除了速度不有界的问题，而不是直接把 Lipschitz 面积公式的假设删掉。
 
 \subsection{曲面积}
 \label{b1:subsec:170402}
 
-待填充。
+设 \(X:U\subseteq\mathbb R^2\to\mathbb R^3\) 为 \(C^1\) 映射，\(U\) 开。其微分的两列为 \(X_u,X_v\)，于是
+\[
+ J_2X=\sqrt{|X_u|^2\cdot|X_v|^2-\langle X_u,X_v\rangle^2}
+      =|X_u\times X_v|.
+\]
+若 \(X\) 单射，且 \(E\subseteq U\) Lebesgue 可测，则
+\[
+ \mathcal H^2\bigl(X(E)\bigr)
+ =\int_E|X_u\times X_v|\,\mathrm du\,\mathrm dv.
+\]
+这正是熟悉的曲面积分因子。若去掉单射条件，积分仍有意义，但它给出按重数累计的面积。\(X_u\times X_v\ne0\) 只说明微分满秩，并不能排除全局重复覆盖。
+
+下面在任意维数计算球面，顺便说明参数化在边界处失去统一 Lipschitz 常数时应怎样处理。记
+\[
+ S^k=\{z\in\mathbb R^{k+1}:|z|=1\},\quad k\geq1,
+\]
+并沿用 \(\omega_j=m_j(B(0,1))\)，另约定 \(\omega_0=1\)。
+
+\begin{proposition}\label{b1:prop:sphere-hausdorff-area}
+单位球面的面积为
+\[
+ \mathcal H^k(S^k)=2\pi\omega_{k-1}=(k+1)\omega_{k+1}.
+\]
+因此半径为 \(R>0\) 的 \(k\) 维球面面积为 \((k+1)\omega_{k+1}R^k\)。
+\end{proposition}
+\begin{proof}
+上下开半球分别由单位开球上的映射
+\[
+ F_\pm(x)=\bigl(x,\pm\sqrt{1-|x|^2}\bigr),
+ \quad x\in B_{\mathbb R^k}(0,1),
+\]
+单射参数化。它们在定义域内 \(C^1\)，因而局部 Lipschitz。对实值图像 \((x,u(x))\)，微分的 Gram 矩阵为 \(I_k+\nabla u\,\nabla u^{\mathsf T}\)。若 \(\nabla u\ne0\)，在其方向上的特征值为 \(1+|\nabla u|^2\)，在垂直方向上均为 \(1\)；梯度为零时矩阵就是恒等矩阵。因此
+\[
+ J_kF_\pm(x)=\sqrt{1+\frac{|x|^2}{1-|x|^2}}
+            =\frac1{\sqrt{1-|x|^2}}.
+\]
+面积公式可先用于 \(B(0,1-1/j)\)，再由单调收敛取遍开球；不要求在整个开球上有统一 Lipschitz 常数。
+
+遗漏的赤道是 \(S^k\cap\{z_{k+1}=0\}\)。它位于一个 \(k\) 维平面内，在该平面的坐标中是单位球的边界，Lebesgue 测度为零。因此由平面上的归一化等式，赤道的 \(\mathcal H^k\) 测度为零。两半球给出
+\[
+ \mathcal H^k(S^k)=2\int_{|x|<1}\frac{\mathrm dx}{\sqrt{1-|x|^2}}.
+\]
+当 \(k=1\) 时，右端是 \(2\int_{-1}^1(1-t^2)^{-1/2}\,\mathrm dt=2\pi\)。当 \(k\geq2\) 时，写 \(x=(z,t)\)，由 Tonelli 定理先对 \(t\) 积分，
+\[
+ \begin{aligned}
+ \int_{|x|<1}\frac{\mathrm dx}{\sqrt{1-|x|^2}}
+ &=\int_{|z|<1}
+   \int_{-\sqrt{1-|z|^2}}^{\sqrt{1-|z|^2}}
+       \frac{\mathrm dt\,\mathrm dz}{\sqrt{1-|z|^2-t^2}}\\
+ &=\pi\omega_{k-1}.
+ \end{aligned}
+\]
+最后利用第十五章的 \(\omega_j=\pi^{j/2}/\Gamma(1+j/2)\) 及 \(\Gamma(t+1)=t\Gamma(t)\)，得到 \(2\pi\omega_{k-1}=(k+1)\omega_{k+1}\)。一般半径的结论由 Hausdorff 测度的相似缩放性质得到。
+\end{proof}
+
+于是通常的圆周长 \(2\pi R\) 与球面积 \(4\pi R^2\) 都是同一归一化下的特例。Fremlin 的《Measure Theory》\cite[265F--H]{Fremlin2016Measure}还给出球坐标递推的处理；这里的半球计算只用面积公式与 Tonelli 定理，没有把下一章的余面积公式预先当作球面测度公式使用。
 
 \subsection{Lipschitz 参数曲面}
 \label{b1:subsec:170403}
 
-待填充。
+给定开集 \(U\subseteq\mathbb R^k\) 上的局部 Lipschitz 映射 \(f:U\to\mathbb R^n\)，参数集 \(E\subseteq U\) 所对应的累计面积是
+\[
+ \mathcal A(f;E)=\int_EJ_kf(x)\,\mathrm dx.
+\]
+这里 \(\mathcal A(f;E)\) 是带有参数化的数据，并非只由集合 \(f(E)\) 决定。面积公式给出
+\[
+ \mathcal A(f;E)=\int_{f(E)}N(f,E,y)\,\mathrm d\mathcal H^k(y).
+\]
+若左端有限，则它等于 \(\mathcal H^k(f(E))\) 当且仅当 \(N(f,E,y)=1\) 在像集上几乎处处成立：两者之差正是非负函数 \(N-1\) 在像集上的积分。若二者都是无穷，单凭两个无穷相等不能推出重数为一。
+
+参数改变不应造成新的几何面积。以下结论给出一个精确的核对办法。
+
+\begin{proposition}\label{b1:prop:area-reparameterization}
+设 \(\phi:V\to U\) 是两个 \(\mathbb R^k\) 中开集之间的 \(C^1\) 微分同胚，\(f:U\to\mathbb R^n\) 局部 Lipschitz。则几乎处处有
+\[
+ J_k(f\circ\phi)(z)=J_kf\bigl(\phi(z)\bigr)|\det D\phi(z)|.
+\]
+对 Lebesgue 可测集 \(A\subseteq V\)，有
+\[
+ \mathcal A(f\circ\phi;A)=\mathcal A\bigl(f;\phi(A)\bigr).
+\]
+\end{proposition}
+\begin{proof}
+\(f\) 不可微的点构成零测集。由于 \(\phi^{-1}\) 局部 Lipschitz，这个零测集在 \(\phi^{-1}\) 下的像仍为零测集；所以在几乎每个 \(z\) 都可以应用普通链式法则，得到
+\[
+ D(f\circ\phi)(z)=Df\bigl(\phi(z)\bigr)D\phi(z).
+\]
+对右边的可逆方阵使用\eqref{b1:eq:linear-jacobian-composition}之后的参数变换形式，即得 Jacobi 等式。再用第七章的 \(C^1\) 换元公式，对非负函数 \(J_kf\) 积分，得到第二个结论。若积分无穷，先截断或直接用非负版本，结论不变。
+\end{proof}
+
+这个命题只改变同一组参数点的坐标，不增加其重数。若换成一个多对一的参数映射，就不能再使用“微分同胚”版本；此时应重新计算重数。例如圆柱的参数化
+\[
+ X(u,v)=(R\cos u,R\sin u,v)
+\]
+有 \(J_2X=R\)。在 \([0,2\pi)\times(0,h)\) 上它单射，圆柱侧面积为 \(2\pi Rh\)；若让角度取遍 \([0,4\pi)\)，累计面积就变成 \(4\pi Rh\)。接缝是一条线，在二维面积中零测，但第二遍覆盖的是整个侧面，不能归入接缝误差。
+
+同样，投影可以压低面积而不改变每个点的存在性。圆柱向底平面的正交投影把二维侧面压到一条圆周，投影像的二维测度为零；这不是原曲面的面积为零。要判断某个线性操作对参数曲面的影响，应把该操作限制在每个微分的像平面上，再使用\eqref{b1:eq:linear-jacobian-composition}，不能一律取环境空间的行列式。
+
+本节的“Lipschitz 参数曲面”只指由上述参数映射描述的像及其参数化。是否容许可数个参数片、如何忽略零测余项、何时存在近似切平面，将在第十九章用可整流集的定义统一处理；这里不把一个像集未经说明地当作全局嵌入的光滑流形。
 
 \subsection{图像的面积}
 \label{b1:subsec:170404}
 
-待填充。
+图像是一类天然没有重叠的参数曲面。设 \(u:U\subseteq\mathbb R^k\to\mathbb R^q\) 局部 Lipschitz，定义
+\[
+ G(x)=(x,u(x))\in\mathbb R^{k+q}.
+\]
+坐标投影恢复 \(x\)，所以 \(G\) 单射。在 \(u\) 可微的点，
+\[
+ DG(x)=\begin{pmatrix}I_k\\Du(x)\end{pmatrix},
+ \quad DG(x)^{\mathsf T}DG(x)=I_k+Du(x)^{\mathsf T}Du(x).
+\]
+因此面积公式立即得到下述结论。
+
+\begin{theorem}[图像面积公式]\label{b1:thm:graph-area-formula}
+对每个 Lebesgue 可测集 \(E\subseteq U\)，
+\[
+ \mathcal H^k\bigl(G(E)\bigr)
+ =\int_E\sqrt{\det\bigl(I_k+Du(x)^{\mathsf T}Du(x)\bigr)}\,\mathrm dx.
+\]
+若 \(q=1\)，该式化为
+\[
+ \mathcal H^k\bigl(G(E)\bigr)
+ =\int_E\sqrt{1+|\nabla u(x)|^2}\,\mathrm dx.
+\]
+\end{theorem}
+\begin{proof}
+矩阵计算与单射面积公式给出第一式；异常参数点为零测集，其像也是 \(\mathcal H^k\) 零测集，不影响积分。\(q=1\) 时，\(Du^{\mathsf T}Du=\nabla u\,\nabla u^{\mathsf T}\) 至多秩一，\(I_k+Du^{\mathsf T}Du\) 的特征值为 \(1+|\nabla u|^2\) 及其余的 \(1\)，故得到第二式。
+\end{proof}
+
+若 \(u\) 是 \(L\)-Lipschitz，则 Gram 矩阵的特征值位于 \([1,1+L^2]\)，从而
+\[
+ m_k(E)\leq\mathcal H^k\bigl(G(E)\bigr)
+ \leq(1+L^2)^{k/2}m_k(E).
+\]
+这与上一章用双 Lipschitz 距离比较所得的界一致，现在多了精确的积分因子。标量图像还有更好的上界 \(\sqrt{1+L^2}\,m_k(E)\)，因为真正改变的特征值至多只有一个。
+
+向量值图像不能把行列式随意简写成 \(1+|Du|^2\)。例如 \(k=q=2\)，取 \(u(x)=ax\)，则
+\[
+ J_2G=1+a^2,
+ \quad |Du|_{\mathrm F}^2=2a^2,
+\]
+其中 \(|\cdot|_{\mathrm F}\) 是矩阵各元素平方和的平方根。一般有 \(1+a^2\ne\sqrt{1+2a^2}\)。标量公式的简化来自秩一结构，不是所有非方阵都满足的恒等式。
+
+若曲面上还带有非负 Borel 密度 \(h\)，加权面积公式给出
+\[
+ \int_{G(E)}h(y)\,\mathrm d\mathcal H^k(y)
+ =\int_Eh(x,u(x))
+       \sqrt{\det\bigl(I_k+Du^{\mathsf T}Du\bigr)}\,\mathrm dx.
+\]
+例如把 \(h\) 取为位置坐标、温度或质量密度时，应同时保留图像的面积因子；只在参数域直接积分 \(h(x,u(x))\)，计算的是对底面体积的积分。Simon 的《Lectures on Geometric Measure Theory》\cite[8.6]{Simon1983Lectures}把曲线、参数曲面和图像并列为面积公式的基本应用。下一章将改变切分方式：不再从低维参数块生成曲面，而是按高维映射的水平集分解积分。

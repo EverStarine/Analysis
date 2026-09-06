@@ -2,24 +2,316 @@
 \section{面积公式}
 \label{b1:sec:1703}
 
-% TODO: 撰写本节正文。
+线性面积公式已经给出一个线性映射的精确体积伸缩率。对于 Lipschitz 映射，应在每一点使用 \(J_kf\)，再把局部贡献积起来；若不同参数点落到同一像点，还须按覆盖次数重复计入。本节的\term[mianji-gongshi]{面积公式}[area formula]把这两件事联系起来，先证明单射版本，再引入重数。证明的近线性比较与秩亏处理参考 Fremlin 的《Measure Theory》第265D--E节\cite{Fremlin2016Measure}，并把本书所需的可测分片与一般重数版本展开。
+
+% 实际读源：Fremlin 作者官方 chap26.tex 的262M、265B--E完整正文，
+% 尤其265D的双Lipschitz比较及265E(d)的增广映射(f,eta Id)；
+% 本书已有Df的Borel代表，分片可直接使用Borel余项函数，简化262M的相对域论证。
+% Simon1983Lectures §8，印刷pp.46--47，8.1--8.5已读：
+% 8.2的C1逼近细节交给外部文献，不作为此处Lipschitz证明已经完整给出的来源。
+% 本节统一使用本书归一化H^k，不沿用Fremlin的未归一化原始Hausdorff记号。
 
 \subsection{单射情形}
 \label{b1:subsec:170301}
 
-待填充。
+以下先设 \(1\leq k\leq n\)，且 \(f:\mathbb R^k\rightarrow\mathbb R^n\) 为 \(L\)-Lipschitz 映射。沿用\cref{b1:def:lipschitz-jacobian}，在真正可微点取
+\[
+ J_kf(x)=\sqrt{\det\bigl(Df(x)^{\mathsf T}Df(x)\bigr)},
+\]
+其余点取零。记可微点集为 \(\mathcal D_f\)，并置
+\[
+ G=\{\,x\in\mathcal D_f:J_kf(x)>0\,\}.
+\]
+由前一节，\(\mathcal D_f\)、\(G\) 及 \(J_kf\) 都是 Borel 可测的。目标空间中的 \(\mathcal H^k\) 取其完备的 Carathéodory 测度，而不只限制于 Borel 集。
+
+\begin{lemma}\label{b1:lem:lipschitz-image-hausdorff-measurable}
+对每个 Lebesgue 可测集 \(E\subseteq\mathbb R^k\)，像 \(f(E)\) 都是 \(\mathcal H^k\) 可测集。若 \(m_k(E)=0\)，则 \(\mathcal H^k\bigl(f(E)\bigr)=0\)。
+\end{lemma}
+\begin{proof}
+由紧内正则性，在逐个有界块上取紧集逼近，可写成
+\[
+ E=\bigcup_{j=1}^{\infty}K_j\cup N,
+ \quad K_j\subseteq E\text{ 紧},\quad m_k(N)=0.
+\]
+每个 \(f(K_j)\) 紧，因而可测。\cref{b1:prop:hausdorff-lipschitz}及同维归一化给出
+\[
+ \mathcal H^k\bigl(f(N)\bigr)\leq L^k\mathcal H^k(N)=0.
+\]
+外测度为零的集合及其全部子集均为 Carathéodory 可测集，所以 \(f(E)\) 可测。若 \(E\) 本身零测，直接使用同一估计即可。
+\end{proof}
+
+这只保证完备 Hausdorff 测度下的可测性，不把一般 \(f(E)\) 说成 Borel 集。下一步比较一个在整片上接近固定线性映射的函数。
+
+\begin{lemma}\label{b1:lem:near-linear-area-comparison}
+设 \(T:\mathbb R^k\rightarrow\mathbb R^n\) 为单射线性映射。给定 \(\varepsilon>0\)，存在 \(\zeta(T,\varepsilon)>0\)，满足以下性质：若矩阵 \(S\) 满足 \(\|S-T\|\leq\zeta(T,\varepsilon)\)，则
+\[
+ |J_k(S)-J_k(T)|\leq\varepsilon;
+\]
+若 \(P\subseteq\mathbb R^k\)，且映射 \(u:P\rightarrow\mathbb R^n\) 满足
+\[
+ |u(y)-u(x)-T(y-x)|
+ \leq\zeta(T,\varepsilon)|y-x|\quad(x,y\in P),
+\]
+则 \(u\) 在 \(P\) 上单射，并且对每个有限外测度子集 \(A\subseteq P\)，
+\[
+ \left|\mathcal H^k\bigl(u(A)\bigr)-J_k(T)m_k^*(A)\right|
+ \leq\varepsilon m_k^*(A).
+\]
+这里像的测度先按外测度解释。
+\end{lemma}
+\begin{proof}
+令
+\[
+ a=\min_{|v|=1}|Tv|>0,\quad J=J_k(T)>0.
+\]
+取 \(0<\zeta<a\)，并记 \(\theta=\zeta/a\)。题设的距离误差给出
+\[
+ (1-\theta)|T(y-x)|
+ \leq|u(y)-u(x)|
+ \leq(1+\theta)|T(y-x)|.
+\]
+因此映射 \(Tx\mapsto u(x)\) 在 \(T(P)\) 上良定义，Lipschitz 常数不超过 \(1+\theta\)，其逆映射的常数不超过 \((1-\theta)^{-1}\)。分别应用 Hausdorff 测度的 Lipschitz 估计，再由\cref{b1:thm:linear-area-formula}得到
+\[
+ (1-\theta)^kJm_k^*(A)
+ \leq\mathcal H^k\bigl(u(A)\bigr)
+ \leq(1+\theta)^kJm_k^*(A).
+\]
+当 \(\zeta\downarrow0\) 时，左右系数都趋于 \(J\)。把 \(\zeta\) 取到足够小，使两个系数与 \(J\) 的差不超过 \(\varepsilon\)，就得到面积比较。再利用 \(J_k\) 关于矩阵的连续性，必要时继续减小 \(\zeta\)，便同时得到第一个结论。以后还可以要求 \(\zeta<a/2\)。
+\end{proof}
+
+仅有一点的可微性，还不能直接使用这个引理，因为它要求同一片内任意两点的距离都受控。下面的可数分片补上这个区别。
+
+\begin{lemma}\label{b1:lem:linear-approximation-pieces}
+对每个单射矩阵 \(T:\mathbb R^k\rightarrow\mathbb R^n\)，指定任意正数 \(\zeta(T)\)。满秩集合 \(G\) 可以分为可数个两两不交的 Borel 集 \(P_j\)，并为每一片选一个单射矩阵 \(T_j\)，使
+\[
+ \|Df(x)-T_j\|\leq\zeta(T_j)\quad(x\in P_j),
+\]
+以及
+\[
+ |f(y)-f(x)-T_j(y-x)|
+ \leq\zeta(T_j)|y-x|\quad(x,y\in P_j).
+\]
+\end{lemma}
+\begin{proof}
+在单射矩阵所成的开集中，用球
+\[
+ \{\,S:\|S-T\|<\zeta(T)/2\,\}
+\]
+作覆盖。有限维矩阵空间有可数拓扑基，因此可取可数子覆盖，记其中心为 \(T_1,T_2,\ldots\)。具体而言，对每个包含于某一覆盖球的基元选取一个这样的球；这些被选球已经覆盖原开集。
+
+使用\cref{b1:prop:lipschitz-differentiability-borel}证明中的余项函数
+\[
+ r_\ell(x)=\sup_{0<|h|<1/\ell}
+       \frac{|f(x+h)-f(x)-Df(x)h|}{|h|}.
+\]
+由于可把 \(h\) 限于非零有理向量，这些函数为 Borel 函数；在 \(\mathcal D_f\) 上有 \(r_\ell\downarrow0\)。对每个 \(i,\ell\)，令
+\[
+ A_{i,\ell}=
+ \{\,x\in G:\|Df(x)-T_i\|<\zeta(T_i)/2,\
+                      r_\ell(x)\leq\zeta(T_i)/2\,\}.
+\]
+这些 Borel 集覆盖 \(G\)。再把每个 \(A_{i,\ell}\) 与一个直径小于 \(1/\ell\) 的可数立方体网格相交。若 \(x,y\) 同在所得的一片内，则
+\[
+ \begin{aligned}
+ |f(y)-f(x)-T_i(y-x)|
+ &\leq |f(y)-f(x)-Df(x)(y-x)|\\
+ &\quad+\|Df(x)-T_i\|\cdot|y-x|\\
+ &\leq\zeta(T_i)|y-x|.
+ \end{aligned}
+\]
+按一列枚举全部片，并从每一片中删去此前各片，就得到两两不交的 Borel 分割。删去点不破坏已有的两点估计，矩阵比较也仍成立。
+\end{proof}
+
+上述分片不要求 \(Df\) 在整片上连续，也不使用光滑延拓。它把点态余项的小半径、矩阵的近似值和两点距离同时固定下来。
+
+\begin{lemma}\label{b1:lem:full-rank-area-comparison}
+若 \(E\subseteq G\) Lebesgue 可测，则
+\[
+ \mathcal H^k\bigl(f(E)\bigr)\leq\int_EJ_kf(x)\,\mathrm dx.
+\]
+若 \(f|_E\) 还单射，则等号成立。
+\end{lemma}
+\begin{proof}
+先设 \(m_k(E)<\infty\)。固定 \(\varepsilon>0\)，在上一引理中使用\cref{b1:lem:near-linear-area-comparison}提供的 \(\zeta(T,\varepsilon)\)。记所得分割为 \(P_j\)，置 \(E_j=E\cap P_j\)，\(J_j=J_k(T_j)\)。则在 \(E_j\) 上有 \(|J_kf-J_j|\leq\varepsilon\)，且
+\[
+ \left|\mathcal H^k\bigl(f(E_j)\bigr)-J_jm_k(E_j)\right|
+ \leq\varepsilon m_k(E_j).
+\]
+所有像都由\cref{b1:lem:lipschitz-image-hausdorff-measurable}保证可测。利用可数次可加性及 \(E_j\) 的两两不交性，
+\[
+ \begin{aligned}
+ \mathcal H^k\bigl(f(E)\bigr)
+ &\leq\sum_j\mathcal H^k\bigl(f(E_j)\bigr)\\
+ &\leq\sum_jJ_jm_k(E_j)+\varepsilon m_k(E)\\
+ &\leq\int_EJ_kf+2\varepsilon m_k(E).
+ \end{aligned}
+\]
+若 \(f|_E\) 单射，则像 \(f(E_j)\) 也两两不交，反向估计给出
+\[
+ \begin{aligned}
+ \int_EJ_kf
+ &\leq\sum_jJ_jm_k(E_j)+\varepsilon m_k(E)\\
+ &\leq\sum_j\mathcal H^k\bigl(f(E_j)\bigr)+2\varepsilon m_k(E)\\
+ &=\mathcal H^k\bigl(f(E)\bigr)+2\varepsilon m_k(E).
+ \end{aligned}
+\]
+令 \(\varepsilon\downarrow0\)，得到有限测度情形。对于一般 \(E\)，应用已证结论于递增集合 \(E\cap B(0,q)\)。它们的像也递增；对像测度使用下连续性，对积分使用单调收敛定理，即得结论。
+\end{proof}
+
+接下来处理 \(J_kf=0\) 的部分。这里不能仅凭微分矩阵秩亏，就把逐点的线性像结论直接移到原映射的像上。
+
+\begin{lemma}\label{b1:lem:rank-deficient-image-null}
+集合 \(Z=\{\,x:J_kf(x)=0\,\}\) 的像满足
+\[
+ \mathcal H^k\bigl(f(Z)\bigr)=0.
+\]
+\end{lemma}
+\begin{proof}
+不可微点组成 Lebesgue 零测集，其像已经由\cref{b1:lem:lipschitz-image-hausdorff-measurable}证明为 \(\mathcal H^k\) 零测集。只需处理
+\[
+ C=\{\,x\in\mathcal D_f:\operatorname{rank}Df(x)<k\,\}.
+\]
+固定正整数 \(q\)，置 \(C_q=C\cap B(0,q)\)。对 \(0<\eta\leq1\)，定义增广映射
+\[
+ F_\eta(x)=(f(x),\eta x)\in\mathbb R^{n+k}.
+\]
+它是单射的 Lipschitz 映射，在每个 \(x\in C_q\) 可微，并有
+\[
+ DF_\eta(x)=
+ \begin{pmatrix}Df(x)\\ \eta I_k\end{pmatrix},
+ \quad
+ J_kF_\eta(x)=
+ \sqrt{\det\bigl(Df(x)^{\mathsf T}Df(x)+\eta^2I_k\bigr)}>0.
+\]
+因此刚刚证明的满秩单射结论已经适用于 \(F_\eta|_{C_q}\)，给出
+\[
+ \mathcal H^k\bigl(F_\eta(C_q)\bigr)
+ =\int_{C_q}J_kF_\eta(x)\,\mathrm dx.
+\]
+这里没有使用尚待证明的秩亏结论。投影 \((y,z)\mapsto y\) 是 \(1\)-Lipschitz 的，故
+\[
+ \mathcal H^k\bigl(f(C_q)\bigr)
+ \leq\mathcal H^k\bigl(F_\eta(C_q)\bigr).
+\]
+对 \(x\in C_q\)，矩阵 \(Df(x)^{\mathsf T}Df(x)\) 的行列式为零，因而 \(J_kF_\eta(x)\to0\)。另一方面，
+\[
+ 0\leq J_kF_\eta(x)\leq(L^2+1)^{k/2}.
+\]
+由于 \(m_k(C_q)<\infty\)，控制收敛定理使右端积分趋零。所以 \(f(C_q)\) 为零测集，再对 \(q\) 取可数并即可。
+\end{proof}
+
+增广映射用额外的 \(\eta x\) 保留全部参数方向，使问题暂时成为满秩问题；最后投影回原空间时，Hausdorff 测度只会减小。
+
+\begin{theorem}[单射面积公式]\label{b1:thm:injective-area-formula}
+设 \(E\subseteq\mathbb R^k\) Lebesgue 可测，且 \(f|_E\) 单射。则
+\[
+ \mathcal H^k\bigl(f(E)\bigr)=\int_EJ_kf(x)\,\mathrm dx.
+\]
+\end{theorem}
+\begin{proof}
+在 \(E\cap G\) 上应用\cref{b1:lem:full-rank-area-comparison}。余下集合 \(E\setminus G\) 的像由\cref{b1:lem:rank-deficient-image-null}为零测集，并且 \(J_kf=0\) 在该集合上成立。因此两边都不因补回这部分而变化。
+\end{proof}
+
+同一分解还给出不要求单射的上界
+\[
+ \mathcal H^k\bigl(f(E)\bigr)\leq\int_EJ_kf.
+\]
+但若同一像点由多个参数点给出，这个上界通常不是等式。例如 \(t\mapsto t^2\) 在 \([-1,1]\) 上的像为 \([0,1]\)，其长度为 \(1\)，而 \(\int_{-1}^1 2|t|\,\mathrm dt=2\)。
 
 \subsection{重数函数}
 \label{b1:subsec:170302}
 
-待填充。
+\begin{definition}\label{b1:def:multiplicity-function}
+给定 \(E\subseteq\mathbb R^k\) 及 \(y\in\mathbb R^n\)，把纤维 \(E\cap f^{-1}(\{y\})\) 中的点数记为
+\[
+ N(f,E,y)=\#\{\,x\in E:f(x)=y\,\}.
+\]
+空纤维的值为零；任何无限纤维的值都记为 \(+\infty\)。这个函数称为参数化 \(f\) 在 \(E\) 上的\term[chongshu-hanshu]{重数函数}[multiplicity function]。
+\end{definition}
+\symidx{\(N(f,E,y)\)：参数化的重数函数}
+
+对于 \(f(t)=t^2\)、\(E=[-1,1]\)，在 \(0<y<1\) 时重数为 \(2\)，在 \(y=0\) 时为 \(1\)，区间外则为零。端点处的差别不影响长度积分。一般纤维可能无限，甚至不可数；可测性不能由这个定义直接看出。
+
+\begin{proposition}\label{b1:prop:multiplicity-measurable}
+若 \(E\) Lebesgue 可测，则 \(N(f,E,\cdot)\) 为 \(\mathcal H^k\) 可测函数。除去一个 \(\mathcal H^k\) 零测集后，每个纤维至多可数。
+\end{proposition}
+\begin{proof}
+在\cref{b1:lem:linear-approximation-pieces}中选取满足
+\[
+ 0<\zeta(T)<\frac12\min_{|v|=1}|Tv|
+\]
+的误差函数。所得 Borel 分割 \(G=\bigsqcup_jP_j\) 在每片上使 \(f\) 成为单射，甚至成为到其像的双 Lipschitz 映射。置 \(E_j=E\cap P_j\)。在零测像 \(f(\mathbb R^k\setminus G)\) 以外，每个纤维只会从每个 \(E_j\) 贡献至多一个点，因此
+\[
+ N(f,E,y)=\sum_{j=1}^{\infty}\mathbf1_{f(E_j)}(y)
+\]
+在该零测集外成立。这也证明相应纤维至多可数。各 \(f(E_j)\) 可测，右端因而可测。零测像上的实际重数无论有限还是无穷，均不破坏完备测度下的可测性。
+\end{proof}
+
+这里没有断言整个目标空间关于 \(\mathcal H^k\) 为 \(\sigma\) 有限；当 \(k<n\) 时一般并非如此。实际出现的函数均集中在 \(f(\mathbb R^k)\) 上，而这个像可以由可数个有限 \(\mathcal H^k\) 测度集覆盖：对定义域的有界块使用 Lipschitz 测度估计即可。
 
 \subsection{一般面积公式}
 \label{b1:subsec:170303}
 
-待填充。
+有了重数函数，就可以把各单射片上的面积等式合为一个公式。
+
+\begin{theorem}[面积公式]\label{b1:thm:area-formula}
+设 \(1\leq k\leq n\)，\(f:\mathbb R^k\rightarrow\mathbb R^n\) 为 Lipschitz 映射，\(E\subseteq\mathbb R^k\) Lebesgue 可测。则
+\[
+ \int_EJ_kf(x)\,\mathrm dx
+ =
+ \int_{\mathbb R^n}N(f,E,y)\,\mathrm d\mathcal H^k(y).
+\]
+两边允许取 \(+\infty\)。
+\end{theorem}
+\begin{proof}
+沿用前一命题的互不相交集合 \(E_j\)。在目标空间中使用其重数表达式及单调收敛定理，再逐片应用单射面积公式，
+\[
+ \begin{aligned}
+ \int_{\mathbb R^n}N(f,E,y)\,\mathrm d\mathcal H^k(y)
+ &=\sum_j\mathcal H^k\bigl(f(E_j)\bigr)\\
+ &=\sum_j\int_{E_j}J_kf(x)\,\mathrm dx\\
+ &=\int_EJ_kf(x)\,\mathrm dx.
+ \end{aligned}
+\]
+最后一步使用了 \(J_kf=0\) 在 \(E\setminus G\) 上成立。虽然不同片的像可以重叠，积分中的重数恰好把各片的贡献相加。
+\end{proof}
+
+这个公式不要求一般点只有有限个原像。若 \(\int_EJ_kf<\infty\)，才可进一步推出 \(N(f,E,\cdot)<\infty\) 几乎处处：一个在正测度集合上等于 \(+\infty\) 的非负函数，不可能具有有限积分。
+
+公式也适用于开集 \(U\subseteq\mathbb R^k\) 上的局部 Lipschitz 映射。用可数个具有有限 Lipschitz 常数的开球覆盖 \(U\)，依次相减得到不交的 Borel 分片；在每个球上逐坐标延拓到全空间。延拓与原映射在球内局部相同，所以 \(J_kf\) 在那里不变。对各片分别应用公式，再把非负积分及纤维点数相加即可。这一局部化不要求 \(U\) 有规则边界，也不要求整张映射具有一个公共 Lipschitz 常数。
 
 \subsection{加权面积公式}
 \label{b1:subsec:170304}
 
-待填充。
+在几何积分中，参数点还可能携带质量或符号。先对非负权处理，这样即使纤维或积分无穷，也不会出现未定义的相减。
+
+\begin{theorem}[加权面积公式]\label{b1:thm:weighted-area-formula}
+在\cref{b1:thm:area-formula}的条件下，设 \(g:E\rightarrow[0,\infty]\) Lebesgue 可测。则纤维权重和
+\[
+ S_g(y)=\sum_{x\in E\cap f^{-1}(\{y\})}g(x)
+\]
+为 \(\mathcal H^k\) 可测函数，并满足
+\[
+ \int_E g(x)J_kf(x)\,\mathrm dx
+ =
+ \int_{\mathbb R^n}
+       \sum_{x\in E\cap f^{-1}(\{y\})}g(x)\,
+       \mathrm d\mathcal H^k(y).
+\]
+非负数在任意指标集上的和定义为全部有限部分和的上确界，空和为零，并约定 \(0\cdot\infty=0\)。
+\end{theorem}
+\begin{proof}
+若 \(g=\sum_{i=1}^ra_i\mathbf1_{A_i}\) 为非负简单函数，其中 \(A_i\subseteq E\) 可测且两两不交，则
+\[
+ S_g(y)=\sum_{i=1}^r a_iN(f,A_i,y).
+\]
+可测性及积分等式直接由一般面积公式得到。对一般 \(g\)，取非负简单函数列 \(g_\ell\uparrow g\)。对每个固定纤维，先在有限子集上取极限，再对有限子集取上确界，可得 \(S_{g_\ell}\uparrow S_g\)。于是可测性由逐点极限保持，两端分别应用单调收敛定理，就得到所需等式。
+\end{proof}
+
+若 \(g:E\rightarrow\mathbb R\) 或 \(\mathbb C\) 可测且有限值，并满足
+\[
+ \int_E |g(x)|J_kf(x)\,\mathrm dx<\infty,
+\]
+先对 \(|g|\) 使用定理，说明纤维上的绝对值之和几乎处处有限。因此相应纤维级数几乎处处绝对收敛；在其余零测集上任意补值后，对实部、虚部的正负部分分别应用非负版本，就得到同样的加权等式。这个可积性条件控制的是带 Jacobi 因子的参数域积分，不是无权的 \(\int_E|g|\)。
+
+单射时纤维只有一个参数点，加权公式便退化为沿参数化转移积分。非单射时必须保留求和：折回、重叠或重复经过同一区域，都会改变右端的权重。Simon 的《Lectures on Geometric Measure Theory》\cite[式 8.4--8.5]{Simon1983Lectures}用计数测度 \(\mathcal H^0\) 写出同一结构；这里的纤维求和正是该计数积分。下一节将把这个公式用于曲线、图像与 Lipschitz 参数曲面。

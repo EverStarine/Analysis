@@ -2,24 +2,183 @@
 \section{线性映射的 Jacobi 行列式}
 \label{b1:sec:1701}
 
-% TODO: 撰写本节正文。
+第三章的线性换元公式适用于方阵：体积按行列式的绝对值改变。参数曲面却经常由非方阵描述，例如一个二维参数块可以映入三维空间。这时应比较二维面积，而不是把像看作三维零测集后停止计算。本节从 Gram 矩阵构造所需的非负伸缩因子，并把它与第十五章归一化的 Hausdorff 测度接起来。
+
+% 实读：Fremlin2016Measure 作者公开chap26.tex，265B--C全文。
+% 采用像平面的规范正交坐标，将非方阵化为方阵；第三章已有任意集合的线性外测度换元。
+% Gram、奇异值、子式和外积的有限维代数在此展开，不依赖尚未写出的附录B1。
 
 \subsection{Gram 行列式}
 \label{b1:subsec:170101}
 
-待填充。
+给定向量 \(v_1,\ldots,v_k\in\mathbb R^n\)，把它们按列排成矩阵 \(T\)。矩阵
+\[
+ G=T^{\mathsf T}T
+   =\bigl(\langle v_i,v_j\rangle\bigr)_{i,j=1}^k
+\]
+称为这组向量的\term[gram-juzhen]{Gram 矩阵}[Gram matrix]，其行列式称为\term[gram-hanglieshi]{Gram 行列式}[Gram determinant]。它只记录内积，不依赖目标空间选择哪一组规范正交坐标。
 
-\subsection{\texorpdfstring{\(m\)}{m}-维 Jacobi 行列式}
+\begin{proposition}\label{b1:prop:gram-determinant}
+Gram 矩阵半正定，并且
+\[
+ \det G\geq0,\quad
+ \det G>0\ \Longleftrightarrow\ v_1,\ldots,v_k\text{ 线性无关}.
+\]
+若向量线性无关，逐次正交化所得的垂直分量为 \(w_1,\ldots,w_k\)，则
+\[
+ \det G=\prod_{i=1}^k|w_i|^2.
+\]
+\end{proposition}
+\begin{proof}
+对 \(a\in\mathbb R^k\)，有
+\[
+ a^{\mathsf T}Ga=|Ta|^2\geq0,\quad \ker G=\ker T.
+\]
+因此 \(G\) 的特征值非负；其行列式是这些特征值的乘积，且严格为正当且仅当 \(T\) 单射。这里使用实对称矩阵的正交对角化，也可由第八章自伴算子的有限维情形得到。
+
+若列向量线性无关，令 \(q_i=w_i/|w_i|\)，把 \(q_i\) 排成矩阵 \(Q\)。正交化给出 \(T=QR\)，其中 \(Q^{\mathsf T}Q=I_k\)，\(R\) 为上三角矩阵且对角元为 \(|w_i|\)。于是
+\[
+ T^{\mathsf T}T=R^{\mathsf T}R,\quad
+ \det G=(\det R)^2=\prod_i|w_i|^2.
+\]
+\end{proof}
+
+正交化的最后一个等式解释了平方根的出现。平行多面体的体积应当等于“底的体积乘以垂直高度”，而 Gram 行列式给出的是这些长度乘积的平方。若某个垂直高度为零，则参数方向发生塌缩，满维体积也应为零。
+
+例如两列向量 \(v,w\) 的 Gram 行列式为
+\[
+ |v|^2\cdot|w|^2-\langle v,w\rangle^2.
+\]
+若二者非零、夹角为 \(\theta\)，它的非负平方根为 \(|v|\cdot|w|\cdot|\sin\theta|\)。因而面积不仅取决于边长，也取决于两条边是否接近平行。只把每列长度相乘，会遗漏这个角度因素。
+
+\subsection{多维 Jacobi 行列式}
 \label{b1:subsec:170102}
 
-待填充。
+\begin{definition}\label{b1:def:linear-jacobian}
+设 \(1\leq k\leq n\)，\(T:\mathbb R^k\to\mathbb R^n\) 为线性映射。定义其 \(k\) 维\term[jacobi-hanglieshi]{Jacobi 行列式}[Jacobian]为
+\[
+ J_k(T)=\sqrt{\det(T^{\mathsf T}T)}.
+\]
+\end{definition}
+\symidx{\(J_k(T)\)：线性映射的 \(k\) 维面积伸缩因子}
+
+这里下标 \(k\) 是定义域的维数。本章只用这一情形；下一章讨论高维到低维的映射时，将另行说明所取的 Jacobi 因子。普通方阵的行列式记录定向，而 \(J_k\) 总是非负的。当 \(k=n\) 时，\(J_k(T)=|\det T|\)，并不是带符号的 \(\det T\)。
+
+\begin{proposition}\label{b1:prop:linear-jacobian-properties}
+映射 \(T\mapsto J_k(T)\) 连续。若 \(\sigma_1,\ldots,\sigma_k\) 为 \(T\) 的奇异值，即 \(T^{\mathsf T}T\) 的特征值的非负平方根，则
+\[
+ J_k(T)=\prod_{i=1}^k\sigma_i,\quad
+ 0\leq J_k(T)\leq\|T\|^k.
+\]
+此外，\(J_k(T)=0\) 当且仅当 \(\operatorname{rank}T<k\)；对正交矩阵 \(U\) 和 \(V\)，
+\[
+ J_k(UTV)=J_k(T),\quad J_k(cT)=|c|^kJ_k(T).
+\]
+\end{proposition}
+\begin{proof}
+Gram 矩阵的条目是 \(T\) 的条目的多项式，行列式连续，非负平方根也连续，故 \(J_k\) 连续。对 \(T^{\mathsf T}T\) 作正交对角化即得奇异值乘积式。对任意单位向量 \(v\)，有 \(v^{\mathsf T}T^{\mathsf T}Tv\leq\|T\|^2\)，所以每个奇异值至多为 \(\|T\|\)，得到上界。零点刻画已由 Gram 矩阵的核得到。
+
+正交变换给出
+\[
+ (UTV)^{\mathsf T}(UTV)=V^{\mathsf T}T^{\mathsf T}TV.
+\]
+两侧 Gram 行列式相同；倍乘则把 Gram 矩阵乘以 \(c^2\)，其行列式乘以 \(c^{2k}\)。分别取非负平方根即可。
+\end{proof}
+
+若 \(T\) 单射，其最小奇异值满足
+\[
+ \sigma_{\min}(T)=\min_{|v|=1}|Tv|>0.
+\]
+因此 \(\sigma_{\min}(T)|v|\leq|Tv|\leq\|T\|\cdot|v|\)。面积公式的证明不仅要控制 \(J_k(T)\)，还要用这个正的下界，把参数距离误差换成像空间的相对距离误差。
+
+对非方阵，复合时不能不分维数地相乘两个 Jacobi 因子。若 \(T:\mathbb R^k\to\mathbb R^n\) 单射，\(S:\mathbb R^n\to\mathbb R^p\)，且 \(p\geq k\)，则正确的因子只涉及 \(S\) 在平面 \(T(\mathbb R^k)\) 上的限制。为说明这一点，取该平面的一组规范正交基组成矩阵 \(Q\)，写 \(T=QB\)，其中 \(B\) 为可逆 \(k\times k\) 矩阵。于是
+\[
+ \begin{aligned}
+ J_k(ST)^2
+ &=\det\bigl(B^{\mathsf T}Q^{\mathsf T}S^{\mathsf T}SQB\bigr)\\
+ &=(\det B)^2J_k(SQ)^2,
+ \end{aligned}
+\]
+从而
+\begin{equation}\label{b1:eq:linear-jacobian-composition}
+ J_k(ST)=J_k(SQ)J_k(T)
+ \leq\|S\|^kJ_k(T).
+\end{equation}
+正交不变性说明 \(J_k(SQ)\) 与平面上选哪组规范正交基无关。若 \(T\) 秩不足，则复合也秩不足，上式的不等式仍成立。特别地，若 \(B:\mathbb R^k\to\mathbb R^k\) 可逆，则 \(J_k(TB)=J_k(T)|\det B|\)，这是重新选择参数坐标时需要的形式。
 
 \subsection{体积伸缩}
 \label{b1:subsec:170103}
 
-待填充。
+\begin{theorem}[线性面积公式]\label{b1:thm:linear-area-formula}
+设 \(T:\mathbb R^k\to\mathbb R^n\) 为线性映射，\(1\leq k\leq n\)。若 \(T\) 单射，则对任意集合 \(E\subseteq\mathbb R^k\)，
+\[
+ \mathcal H^k\bigl(T(E)\bigr)=J_k(T)m_k^*(E).
+\]
+若 \(T\) 不单射，则对任意 \(E\) 都有 \(\mathcal H^k\bigl(T(E)\bigr)=0\)。这里 \(\mathcal H^k\) 先按外测度解释；若 \(E\) Lebesgue 可测，则 \(T(E)\) 是完备 \(\mathcal H^k\) 测度下的可测集。
+\end{theorem}
+\begin{proof}
+先设 \(T\) 单射。仍取像平面的规范正交坐标，写 \(T=QB\)，其中 \(Q:\mathbb R^k\to\mathbb R^n\) 等距，\(B\) 为可逆方阵。由\cref{b1:cor:hausdorff-flat-subspace,b1:thm:invertible-linear-change}，
+\[
+ \mathcal H^k\bigl(T(E)\bigr)
+ =m_k^*\bigl(B(E)\bigr)
+ =|\det B|m_k^*(E).
+\]
+又由 \(Q^{\mathsf T}Q=I_k\) 知 \(J_k(T)=|\det B|\)，便得到等式。
+
+若 \(T\) 的秩为 \(r<k\)，像落在一个 \(r\) 维平面中。由第十五章的临界维数性质，这个平面的有界块的 \(k\) 维 Hausdorff 测度为零；取可数并，整个平面也为零测集。\(r=0\) 时像为单点，同一结论因 \(k>0\) 成立。因此不论 \(E\) 是否可测或有界，其像的外测度都是零。
+
+最后设 \(E\) Lebesgue 可测。取紧集 \(K_j\subseteq E\)，使 \(E\setminus\bigcup_jK_j\) 为 Lebesgue 零测集。各 \(T(K_j)\) 紧，而零测余项的像由刚证的等式或秩亏结论为 \(\mathcal H^k\) 零测集。完备性于是保证 \(T(E)\) 可测。
+\end{proof}
+
+把秩亏情形单独陈述，是为了不在 \(m_k^*(E)=\infty\) 时使用没有解释的 \(0\cdot\infty\)。对于有限体积参数块，当然可以简写成同一个乘法公式。上述证明也表明，等式中的常数来自第十五章的归一化，而不是另行选择的“曲面单位”。Fremlin 的《Measure Theory》\cite[265B--C]{Fremlin2016Measure}给出了相同的线性测度比较。
+
+例如 \(T(u,v)=(u,v,au+bv)\) 的 Gram 矩阵为
+\[
+ T^{\mathsf T}T=
+ \begin{pmatrix}1+a^2&ab\\ab&1+b^2\end{pmatrix},
+ \quad J_2(T)=\sqrt{1+a^2+b^2}.
+\]
+所以斜平面上由一个面积为 \(A\) 的参数块给出的部分，真实二维面积为 \(A\sqrt{1+a^2+b^2}\)。它的三维 Lebesgue 测度仍然为零；两句话使用的维数不同，并不矛盾。
 
 \subsection{外代数解释}
 \label{b1:subsec:170104}
 
-待填充。
+为了以后处理参数变换和多个方向，把上述代数写成外积会更简洁。这里只引入本章需要的有限维构造，不把附录中的整个外代数理论作为前提。
+
+令 \(e_1,\ldots,e_n\) 为 \(\mathbb R^n\) 的标准基。在向量空间 \(\bigwedge^k\mathbb R^n\) 中，以所有符号
+\[
+ e_{i_1}\wedge\cdots\wedge e_{i_k},
+ \quad 1\leq i_1<\cdots<i_k\leq n,
+\]
+为规范正交基。对任意 \(v_1,\ldots,v_k\)，若其列矩阵为 \(T\)，定义\term[waiji]{外积}[exterior product]
+\[
+ v_1\wedge\cdots\wedge v_k
+ =\sum_{|I|=k}\det(T_I)e_I.
+\]
+这里 \(I\) 为递增的行指标组，\(T_I\) 是选取这些行得到的方阵，\(e_I\) 是相应的基向量。由行列式的多线性与交错性，这个构造对各 \(v_i\) 多线性，交换两个向量会改变符号，重复两个向量则得到零。
+
+\begin{proposition}\label{b1:prop:jacobian-minors}
+对 \(T:\mathbb R^k\to\mathbb R^n\)，有
+\[
+ J_k(T)^2=\sum_{|I|=k}\det(T_I)^2
+ =|Te_1\wedge\cdots\wedge Te_k|^2.
+\]
+\end{proposition}
+\begin{proof}
+第二个等式就是刚定义的规范正交坐标下的范数公式。证明第一个等式只需有限维的行列式展开。若 \(A\) 为 \(k\times n\) 矩阵、\(B\) 为 \(n\times k\) 矩阵，按列的多线性展开 \(\det(AB)\)，得到
+\[
+ \det(AB)
+ =\sum_{j_1,\ldots,j_k}
+ B_{j_1,1}\cdots B_{j_k,k}
+ \det(A_{j_1},\ldots,A_{j_k}),
+\]
+其中 \(A_j\) 表示 \(A\) 的第 \(j\) 列。有重复指标的项为零；将其余项按递增指标组 \(I\) 合并，每一组中各排列的带符号系数恰好组成 \(\det(B_I)\)。因此得到 \term*[cauchy-binet]{Cauchy--Binet 公式}[Cauchy--Binet formula]
+\[
+ \det(AB)=\sum_{|I|=k}\det(A_{:,I})\det(B_I).
+\]
+取 \(A=T^{\mathsf T}\)、\(B=T\)，两个子式互为转置，便得到平方和公式。
+\end{proof}
+
+因此 \(J_k(T)\) 是一个外积的长度；它不记录外积的方向。\(k=2,n=3\) 时，三个二阶子式就是叉积的三个坐标（其中一个按既定次序带负号），所以 \(J_2(T)=|v_1\times v_2|\)。\(k=n\) 时只有一个子式，长度退化为行列式的绝对值。
+
+这也说明为什么面积可以在改变定向后保持不变，而有向积分未必如此。本章只研究非负面积和带标量权的积分，不把外积的方向直接解释为尚未定义的微分形式或流。下一节将对每个可微点的矩阵 \(Df(x)\) 使用同一构造。
