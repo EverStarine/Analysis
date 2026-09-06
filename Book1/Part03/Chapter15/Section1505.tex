@@ -2,24 +2,248 @@
 \section{Hausdorff 密度}
 \label{b1:sec:1505}
 
-% TODO: 撰写本节正文。
+维数给出的是尺度变化的指数，尚未描述质量在某一点附近如何分布。
+即使两个集合的维数相同，它们在小球中的质量也可能有不同的渐近行为。
+本节把上一章的密度问题改写为以 \(r^s\) 为分母的几何问题。
+整数维平面提供归一化的基准；一般集合则先有上密度的几乎处处估计，
+不能预先假定密度极限存在。
+
+% 实际读取：Simon1983Lectures §3，印刷页10--17，密度定义及3.2、3.6。
+% 原书的一般度量空间版本与本节不同；本节限R^d的Borel E且H^s(E)<infty，
+% 上界改用本书13.2的Radon细覆盖，下界完整写出统一半径分组。
+% 平面密度及Cantor端点的两列尺度计算在本文直接推导。
 
 \subsection{\texorpdfstring{\(s\)}{s}-维密度}
 \label{b1:subsec:150501}
 
-待填充。
+沿用 \(c_s\) 的约定，记
+\[
+ \alpha_s=2^s c_s=\frac{\pi^{s/2}}{\Gamma(1+s/2)}.
+\]
+对正整数 \(k\)，第\ref{b1:sec:1503}节证明了 \(\alpha_k=\omega_k\)，
+即 \(\mathbb R^k\) 中单位球的体积。
+非整数 \(s\) 时，\(\alpha_s\) 只是明确指定的正归一化常数，
+并不意味着存在一个通常意义的“\(s\) 维欧氏空间”。
+
+\begin{definition}\label{b1:def:hausdorff-density}
+设 \(s>0\)，\(\mu\) 为 \(\mathbb R^d\) 上的正 Radon 测度。
+定义 \(\mu\) 在 \(x\) 处的 \term[shang-hausdorff-midu]{上 \(s\) 维密度}[upper \(s\)-dimensional density]
+和 \term[xia-hausdorff-midu]{下 \(s\) 维密度}[lower \(s\)-dimensional density] 为
+\[
+ \Theta^{*s}(\mu,x)=
+ \limsup_{r\downarrow0}\frac{\mu\bigl(\overline B(x,r)\bigr)}{\alpha_s r^s},
+ \quad
+ \Theta_*^s(\mu,x)=
+ \liminf_{r\downarrow0}\frac{\mu\bigl(\overline B(x,r)\bigr)}{\alpha_s r^s}.
+\]
+若二者相等，则把共同值记为 \(\Theta^s(\mu,x)\)，称为 \(s\) 维密度。
+对 Borel 集 \(E\) 及局部有限测度 \(\mathcal H^s|_E\)，还记
+\[
+ \Theta^{*s}(E,x)=\Theta^{*s}(\mathcal H^s|_E,x),
+ \quad
+ \Theta_*^s(E,x)=\Theta_*^s(\mathcal H^s|_E,x).
+\]
+\end{definition}
+\symidx{\(\Theta^{*s},\Theta_*^s,\Theta^s\)：上、下与存在时的 \(s\) 维密度}
+
+这些函数是 Borel 可测的。事实上，固定 \(r\) 时的闭球质量为上半连续函数；
+利用闭球从外逼近的连续性，可把半径上、下极限化为可数有理半径的上、下极限。
+论证与\cref{b1:prop:relative-density-borel}相同，这里的分母
+\(\alpha_s r^s\) 更是处处正的连续函数。
+同样，把闭球改成开球不改变这些上、下极限：
+固定 \(0<\varepsilon<1\)，使用
+\[
+ B(x,r)\subset\overline B(x,r)\subset B\bigl(x,(1+\varepsilon)r\bigr)
+\]
+夹住比值，先取上、下极限，再令 \(\varepsilon\downarrow0\)。
+这个理由不需要任何球面都是零测集。
+
+若 \(\mu\) 是 \(\mathbb R^d\) 中的一个原子测度，并且 \(\mu(\{x\})>0\)，
+则对每个 \(s>0\) 都有 \(\Theta^s(\mu,x)=\infty\)。
+相反，一条直线上的长度测度在直线外的点附近为零。
+由此可见，密度既依赖增长指数，也依赖观察点与质量支撑的关系。
 
 \subsection{密度存在问题}
 \label{b1:subsec:150502}
 
-待填充。
+不能把\cref{b1:thm:radon-measure-differentiation}直接解释为本节密度几乎处处存在。
+该定理的分母是一个固定 Radon 测度的小球质量，
+而本节的 \(r^s\) 在非整数维情形并没有相应的环境体积测度。
+即使 \(s=k<d\) 为整数，\(\mathcal H^k\) 在环境空间 \(\mathbb R^d\) 上也不是局部有限测度。
+正确的出发点是下面的估计，它只涉及上密度。
+
+\begin{theorem}[Hausdorff 上密度估计]\label{b1:thm:hausdorff-upper-density}
+设 \(E\subset\mathbb R^d\) 为 Borel 集，\(s>0\)，\(\mathcal H^s(E)<\infty\)。
+则对 \(\mathcal H^s\)-几乎处处的 \(x\in E\)，
+\[
+ 2^{-s}\leq\Theta^{*s}(E,x)\leq1.
+\]
+\end{theorem}
+\begin{proof}
+令 \(\mu=\mathcal H^s|_E\)。它是有限 Borel 测度，
+由欧氏空间中有限 Borel 测度的正则性，亦为 Radon 测度。
+若 \(\mu(E)=0\)，结论自动成立，以下允许 \(\mu(E)>0\)。
+
+先证上界。固定 \(t>1\)，记
+\[
+ A=\{\,x\in E\mid\Theta^{*s}(E,x)>t\,\}.
+\]
+只需证明 \(A\) 的每个有界 Borel 部分 \(A_0\) 都为零测集。
+给定 \(\varepsilon>0\)，取开集 \(U\supset A_0\)，使
+\(\mu(U)\leq\mu(A_0)+\varepsilon\)。
+对任意 \(\delta>0\)，由上极限的定义，
+每个 \(x\in A_0\) 都是任意小闭球的中心，这些闭球满足
+\[
+ \overline B(x,r)\subset U,\quad 2r<\delta,\quad
+ \mu\bigl(\overline B(x,r)\bigr)>t\alpha_s r^s.
+\]
+由\cref{b1:cor:radon-vitali-covering}，可选两两不交的至多可数个这样的球
+\(\overline B(x_j,r_j)\)，覆盖 \(A_0\) 除去一个 \(\mu\)-零测集。
+因遗漏集包含于 \(E\)，它也是 \(\mathcal H^s\)-零测集；
+这就允许在 Hausdorff 覆盖估计中真正忽略遗漏部分。因此
+\[
+ \mathcal H^s_\delta(A_0)
+ \leq\sum_j c_s(2r_j)^s
+ \leq\frac1t\sum_j\mu\bigl(\overline B(x_j,r_j)\bigr)
+ \leq\frac{\mu(A_0)+\varepsilon}{t}.
+\]
+依次令 \(\delta\downarrow0\)、\(\varepsilon\downarrow0\)，并用
+\(\mathcal H^s(A_0)=\mu(A_0)<\infty\)，得到
+\(\mu(A_0)\leq\mu(A_0)/t\)，故 \(\mu(A_0)=0\)。
+用有界球穷竭 \(A\)，再令 \(t\) 沿可数列下降到 \(1\)，即得上界。
+
+再证下界。固定 \(0<t<2^{-s}\)，令
+\[
+ A_n=\left\{\,x\in E\ \middle|\
+       \mu\bigl(\overline B(x,r)\bigr)\leq t\alpha_s r^s
+       \text{ 对所有 }0<r<1/n\,\right\}.
+\]
+这些集是 Borel 集：只需检查有理 \(r\)，再用闭球从外逼近。
+若 \(\Theta^{*s}(E,x)<t\)，则 \(x\) 属于某个 \(A_n\)。
+取 \(\delta<1/n\) 及 \(A_n\) 的任意可数 \(\delta\)-覆盖 \((U_j)\)，
+可删去不与 \(A_n\) 相交的覆盖集。
+对直径 \(a_j>0\) 的 \(U_j\)，取 \(x_j\in U_j\cap A_n\)，得
+\[
+ \mu^*(U_j\cap A_n)
+ \leq\mu\bigl(\overline B(x_j,a_j)\bigr)
+ \leq t\alpha_s a_j^s.
+\]
+直径为零的覆盖集至多为单点，因 \(s>0\)，其 \(\mathcal H^s\) 测度与 \(\mu\) 质量均为零。
+于是
+\[
+ \mu(A_n)\leq t2^s c_s\sum_j a_j^s.
+\]
+先对覆盖取下确界，再令 \(\delta\downarrow0\)，得到
+\[
+ \mu(A_n)\leq t2^s\mathcal H^s(A_n)=t2^s\mu(A_n).
+\]
+由 \(t2^s<1\) 及 \(\mu(A_n)<\infty\)，知 \(\mu(A_n)=0\)。
+最后令 \(t\) 沿可数列上升到 \(2^{-s}\)，便排除了上密度小于 \(2^{-s}\) 的点集。
+\end{proof}
+
+上界使用可选取的细球覆盖，下界使用任意细覆盖；
+常数 \(2^{-s}\) 来自把一个直径为 \(a\) 的任意集合放入半径为 \(a\) 的球。
+这也解释了为何不能在下界中擅自用半径 \(a/2\)：等直径不等式比较体积，
+并没有断言每个直径为 \(a\) 的集合都包含于某个半径为 \(a/2\) 的球。
+Simon 的《Lectures on Geometric Measure Theory》第3节%
+\cite{Simon1983Lectures}讨论了这类密度与覆盖的联系；
+上面的证明利用本书前两章已有的 Radon 细覆盖，把所需有限性与可测性条件单独列明。
+
+若只知 \(\mathcal H^s|_E\) 局部有限，同一结论仍可局部使用。
+例如对 \(E\cap B(0,n)\) 应用定理，在内部点的小球上，该限制与原集合给出相同的质量。
+再作可数穷竭即可。这里仍不能删去局部有限性而直接把整个
+\(\mathcal H^s\) 当作环境中的 Radon 测度。
 
 \subsection{局部结构}
 \label{b1:subsec:150503}
 
-待填充。
+先看平面上的密度。设 \(P\) 为 \(\mathbb R^d\) 中的 \(k\) 维仿射平面，
+\(1\leq k\leq d\)，\(T:\mathbb R^k\rightarrow P\) 为等距参数化。
+对任意 \(A\subset P\)，
+\begin{equation}\label{b1:eq:hausdorff-plane-identification}
+ \mathcal H^k_{\mathbb R^d}(A)
+ =\mathcal H^k_{\mathbb R^k}\bigl(T^{-1}(A)\bigr)
+ =m_k^*\bigl(T^{-1}(A)\bigr).
+\end{equation}
+第一个等号需注意覆盖所在的空间：一方面，平面内覆盖也是环境中的覆盖；
+另一方面，把环境中的覆盖集正交投影到 \(P\)，直径不会增加。
+再用等距参数化即可得到反向不等式。
+第二个等号是\cref{b1:thm:hausdorff-lebesgue}。
+
+\begin{proposition}\label{b1:prop:plane-hausdorff-density}
+若 \(E\subset P\) 为 Borel 集，\(\mathcal H^k|_E\) 局部有限，
+则对 \(\mathcal H^k\)-几乎处处的 \(x\in E\)，
+\[
+ \Theta^k(E,x)=1.
+\]
+\end{proposition}
+\begin{proof}
+把 \(E\) 用 \(T^{-1}\) 搬回 \(\mathbb R^k\)。
+对 \(x=T(u)\)，球 \(\overline B(x,r)\) 与 \(P\) 的交集对应于
+\(\mathbb R^k\) 中的闭球 \(\overline B(u,r)\)，体积为 \(\omega_k r^k\)。
+因此所需比值正是集合 \(T^{-1}(E)\) 的 Lebesgue 密度比值。
+由\cref{b1:thm:lebesgue-density}及%
+\eqref{b1:eq:hausdorff-plane-identification}即得结论。
+\end{proof}
+
+这个结论不要求 \(E\) 在平面内开，也不要求它的边界光滑。
+更一般地，若 \(g\geq0\) 在平面上局部可积，
+\(\nu=g\,\mathcal H^k|_P\)，则由 \(k\) 维 Lebesgue 微分定理，
+\[
+ \Theta^k(\nu,x)=g(x)
+ \quad\text{对 }\mathcal H^k\text{-几乎处处的 }x\in P.
+\]
+归一化后，一个平面上均匀的单位质量密度，恰好对应数值 \(1\)。
+
+一般集合上则可能出现尺度振荡。令 \(C\) 为三分 Cantor 集，
+\(s=\log2/\log3\)，并记 \(M=\mathcal H^s(C)\in(0,\infty)\)。
+相似缩放与测度可加性给出：每个第 \(n\) 层基本区间内的部分都有质量 \(2^{-n}M\)。
+在端点 \(0\)，取两列半径
+\[
+ r_n=3^{-n},\quad R_n=2\cdot3^{-n}.
+\]
+这两个闭球与 \(C\) 的交集，只相差至多有限个端点：
+从最左基本区间的右端到下一基本区间的左端，中间仍是空隙。
+单点的 \(\mathcal H^s\) 测度为零，故
+\[
+ \frac{\mathcal H^s\bigl(C\cap\overline B(0,r_n)\bigr)}{\alpha_s r_n^s}
+ =\frac{M}{\alpha_s},
+ \quad
+ \frac{\mathcal H^s\bigl(C\cap\overline B(0,R_n)\bigr)}{\alpha_s R_n^s}
+ =\frac{M}{2^s\alpha_s}.
+\]
+两个常数不同，所以 \(\Theta^s(C,0)\) 不存在。
+这个计算只证明端点 \(0\) 的失败，不能据此声称已经证明
+Cantor 集几乎处处的密度都不收敛。
+
+即使是直线段的并，也不能把密度的几乎处处结论改成处处结论。
+在平面中取两条垂直线段的并 \(E\)，交点为各自的内点。
+对充分小的 \(r\)，交点附近的总长度为 \(4r\)，而 \(\omega_1r=2r\)，
+故交点的一维密度为 \(2\)。
+交点本身是 \(\mathcal H^1\)-零测集，因此这并不违反上密度定理。
 
 \subsection{可整流性的预告}
 \label{b1:subsec:150504}
 
-待填充。
+到此为止，Hausdorff 测度为任意集合提供了长度、面积及非整数尺度的统一测量办法。
+但“具有有限的 \(k\) 维测度”与“可以分成可参数化的 \(k\) 维曲面片”是两种不同的要求。
+前者只限制覆盖代价，后者还要求局部形状可以用映射描述。
+第\ref{b1:ch:19}章将正式讨论可整流性；这里先说明为什么后面还需要映射的微分。
+
+设 \(f:A\subset\mathbb R^k\rightarrow\mathbb R^d\) 是 Lipschitz 映射。
+本章已经知道
+\[
+ \mathcal H^k\bigl(f(A)\bigr)
+ \leq\operatorname{Lip}(f)^k\mathcal H^k(A).
+\]
+这能控制像集的大小，却不能区分哪些方向被压缩，也不能计算映射多次覆盖同一部分的影响。
+如果在某点附近 \(f\) 可以用一个线性映射逼近，
+那么线性映射的秩与体积伸缩就有机会进入局部测度的计算。
+为把这一想法变成定理，必须先证明 Lipschitz 映射几乎处处可微，
+再把点态线性近似整合为面积公式。这分别是第\ref{b1:ch:16}章与第\ref{b1:ch:17}章的任务。
+
+因此，密度是连接覆盖测度与局部几何的一项资料，却不是全部资料。
+本节的上密度定理没有产生切平面，也没有提供参数化；
+平面例子中的精确密度为 \(1\)，依赖我们事先知道集合位于一个平面。
+后续论证会逐步回答何时能够反过来从映射或测度的精细性质恢复这种结构，
+而不把这里尚未证明的逆向命题当作现成工具。

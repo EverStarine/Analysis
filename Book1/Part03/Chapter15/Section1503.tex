@@ -1,25 +1,310 @@
 % !TeX root = ../../Book1.tex
-\section{\texorpdfstring{\(\mathcal H^n\)}{Hⁿ} 与 Lebesgue 测度}
+\section{\texorpdfstring{\(\mathcal H^d\)}{Hd} 与 Lebesgue 测度}
 \label{b1:sec:1503}
 
-% TODO: 撰写本节正文。
+% 实际读取：Fremlin2016Measure，作者官方 chap26.tex，264H--I 完整证明及264节末注释。
+% 264H的有限次坐标对称化在此完整展开；不调用Brunn--Minkowski或面积公式。
+% 264I的球覆盖比较改接本书13.1 Vitali，另由第三章立方体覆盖补全零测遗漏。
+% 归一化常数以本书070504已证一维Gauss积分、Tonelli和Gamma定义重新推导。
+
+用直径计算覆盖的代价，是否仍能得到通常的长度、面积和体积？
+仅凭平移不变性还不能确定答案中的常数。
+关键是一个几何问题：给定直径时，集合的体积至多有多大。
+本节先证明球达到最大的体积，再把这一不等式与 Vitali 覆盖结合，
+精确比较 \(\mathbb R^d\) 上的 \(d\) 维 Hausdorff 测度与 Lebesgue 测度。
 
 \subsection{等直径问题}
 \label{b1:subsec:150301}
 
-待填充。
+沿用第\ref{b1:sec:1303}节的记号
+\(\omega_d=m_d\bigl(B(0,1)\bigr)\)，其中 \(d\geq1\)。
+球面的 Lebesgue 测度为零，所以使用开单位球或闭单位球得到同一个 \(\omega_d\)。
+若一个集合的直径为 \(D\)，任选其中一点为中心，只能直接把它放进半径 \(D\) 的球。
+要把体积估计改善到半径 \(D/2\) 的球，不能单靠这种包含关系。
+
+\begin{theorem}[等直径不等式]\label{b1:thm:isodiametric}
+设 \(A\subseteq\mathbb R^d\) 有界。则
+\begin{equation}\label{b1:eq:isodiametric}
+ m_d^*(A)\leq\frac{\omega_d}{2^d}
+                  (\operatorname{diam}A)^d.
+\end{equation}
+空集的直径按零理解。对任意 \(D>0\)，直径为 \(D\) 的闭球达到等号。
+\end{theorem}
+
+这就是\term[dengzhijing-budengshi]{等直径不等式}[isodiametric inequality]。
+它不要求 \(A\) 可测，因此以后可以用于 Hausdorff 覆盖中任意形状的覆盖集。
+不等式比较的是体积，而不是说每个直径为 \(D\) 的集合都能放进半径 \(D/2\) 的球。
+例如边长为 \(1\) 的正三角形的三个顶点，直径为 \(1\)，却不能放进半径 \(1/2\) 的圆盘：
+若一个这样的圆盘含两个相距 \(1\) 的顶点，它的中心必须是二者中点，
+第三个顶点距该中点为 \(\sqrt3/2>1/2\)。
+
+下面按 Fremlin 的《Measure Theory》\cite[264H及第264节注释]{Fremlin2016Measure}，
+把集合逐坐标对称化。每一步都保持或增大体积，同时不增加直径。
+只需 \(d\) 步，就能得到一个关于原点中心对称的集合。
 
 \subsection{欧氏球的极值性质}
 \label{b1:subsec:150302}
 
-待填充。
+对第 \(j\) 个坐标，记反射
+\[
+ R_j(x_1,\ldots,x_d)
+ =(x_1,\ldots,x_{j-1},-x_j,x_{j+1},\ldots,x_d).
+\]
+以下操作把平行于某条坐标轴的截面移到该轴坐标为零的位置，
+并用同长度的中心区间替代它。
+这种操作称为\term[steiner-duichenhua]{Steiner 对称化}[Steiner symmetrization]；
+这里仅需它沿坐标方向的一个版本。
 
-\subsection{\texorpdfstring{\(\mathcal H^n\)}{m} 与 Lebesgue 测度}
+\begin{lemma}[逐坐标对称化]\label{b1:lem:coordinate-symmetrization}
+设 \(d\geq2\)、\(C\subseteq\mathbb R^d\) 有界，并且对每个 \(i\in J\subseteq\{1,\ldots,d\}\) 都有 \(R_i(C)=C\)。
+若 \(j\notin J\)，则存在有界 Borel 集 \(D\)，使
+\[
+ m_d(D)\geq m_d^*(C),\quad
+ \operatorname{diam}D\leq\operatorname{diam}C,
+ \quad R_i(D)=D\quad(i\in J\cup\{j\}).
+\]
+\end{lemma}
+\begin{proof}
+置换坐标不会改变距离或 Lebesgue 测度，故只需证明 \(j=d\) 的情形。
+空集取 \(D=\varnothing\)。以下令 \(F=\overline C\)，它是紧集，满足
+\[
+ \operatorname{diam}F=\operatorname{diam}C,
+ \quad m_d(F)\geq m_d^*(C).
+\]
+反射与取闭包可交换，所以 \(F\) 仍保留所有 \(J\) 中的坐标对称性。
+对 \(y\in\mathbb R^{d-1}\)，令
+\[
+ F_y=\{\,t\in\mathbb R:(y,t)\in F\,\},\quad
+ \ell(y)=m_1(F_y),\quad
+ D=\{\,(y,t):|t|<\ell(y)/2\,\}.
+\]
+由截面测度的可测性，\(\ell\) 为 Borel 函数，故 \(D\) 是 Borel 集。
+紧集 \(F\) 的投影有界，各个截面的长度也有统一上界，因此 \(D\) 有界。
+每个 \(D_y\) 的长度恰为 \(\ell(y)\)，包括 \(\ell(y)=0\) 时的空截面。
+Tonelli 定理给出
+\[
+ m_d(D)=\int_{\mathbb R^{d-1}}\ell(y)\,\mathrm dy=m_d(F).
+\]
+
+接着验证直径。任取 \((y,t),(y',t')\in D\)，这两个对应的 \(F\)-截面都非空。
+记它们的最小、最大点分别为
+\[
+ a=\min F_y,\quad b=\max F_y,
+ \quad a'=\min F_{y'},\quad b'=\max F_{y'}.
+\]
+这些端点属于截面，因为截面紧。又有 \(\ell(y)\leq b-a\)、\(\ell(y')\leq b'-a'\)，所以
+\[
+ \begin{aligned}
+ |t-t'|
+ &\leq|t|+|t'|
+ <\frac{\ell(y)+\ell(y')}{2}\\
+ &\leq\frac{(b-a)+(b'-a')}{2}
+ =\frac{(b-a')+(b'-a)}2\\
+ &\leq\max\{\,|b-a'|,|b'-a|\,\}.
+ \end{aligned}
+\]
+因此可以从 \((b,a')\) 与 \((a,b')\) 中选一对端点 \((u,v)\)，使 \(|u-v|\geq|t-t'|\)。
+两点 \((y,u),(y',v)\) 都属于 \(F\)，从而
+\[
+ |(y,t)-(y',t')|^2
+ =|y-y'|^2+|t-t'|^2
+ \leq|y-y'|^2+|u-v|^2
+ \leq(\operatorname{diam}F)^2.
+\]
+对 \(D\) 中两点取上确界，就得到所需直径估计。
+
+由 \(D\) 的定义，\(R_d(D)=D\)。
+若 \(i\in J\)，则 \(i<d\)，并且 \(F_{R_i y}=F_y\)，这里 \(R_i\) 也表示对应的 \(\mathbb R^{d-1}\) 反射。
+故 \(\ell(R_i y)=\ell(y)\)，进而 \((y,t)\in D\) 当且仅当 \((R_i y,t)\in D\)。
+这说明以前取得的坐标对称性没有被本次操作破坏。
+\end{proof}
+
+\begin{proof}[定理\ref{b1:thm:isodiametric}的证明]
+空集及直径为零的集合都满足结论。设 \(A\ne\varnothing\)，并记 \(D_0=\operatorname{diam}A>0\)。
+若 \(d=1\)，集合包含于 \([\inf A,\sup A]\)，该区间长度为 \(D_0\)，而 \(\omega_1=2\)，故结论成立。
+
+设 \(d\geq2\)。从 \(A_0=A\) 出发，依次对第 \(1,\ldots,d\) 个坐标应用前一引理，得到 \(A_1,\ldots,A_d\)。
+它们满足
+\[
+ m_d^*(A_0)\leq m_d(A_1)\leq\cdots\leq m_d(A_d),
+ \quad\operatorname{diam}A_k\leq D_0,
+\]
+且 \(A_k\) 关于前 \(k\) 个坐标反射不变。
+若某一步所得集合为空，上式已经给出 \(m_d^*(A)=0\)。否则对任意 \(x\in A_d\)，连续反射全部坐标得到 \(-x\in A_d\)，故
+\[
+ 2|x|=|x-(-x)|\leq\operatorname{diam}A_d\leq D_0.
+\]
+因此 \(A_d\subseteq\overline B(0,D_0/2)\)，由体积的伸缩公式可得
+\[
+ m_d^*(A)\leq m_d(A_d)
+ \leq m_d\bigl(\overline B(0,D_0/2)\bigr)
+ =\omega_d(D_0/2)^d.
+\]
+最后，任意半径 \(D_0/2\) 的闭球都具有直径 \(D_0\) 和上述体积，故确实达到等号。
+\end{proof}
+
+证明没有把原集合直接装进同直径的球，而是先改变其形状，再比较体积。
+中间取闭包可能增大体积，但不增大直径，也不破坏已有的反射对称性；
+这正是能够对任意有界集合使用同一论证的原因。
+球达到最佳上界，已经足以确定下面的测度常数，不需要再对全部等号情形作分类。
+
+\subsection{\texorpdfstring{\(\mathcal H^d\)}{Hd} 与 Lebesgue 测度}
 \label{b1:subsec:150303}
 
-待填充。
+先使用第\ref{b1:sec:1501}节未归一化的覆盖量 \(h_\delta^d\) 与 \(h^d\)。
+这样可以先确定几何给出的常数，再与 \(c_d\) 的 Gamma 积分表达式核对。
+所用比较见 Fremlin 的《Measure Theory》\cite[264I]{Fremlin2016Measure}。
+
+有一个细节不能省略：Vitali 定理只覆盖几乎所有点，Hausdorff 定义却要求覆盖全部点。
+我们先说明 Lebesgue 零测集能用任意小的直径代价补上。
+若 \(m_d^*(N)=0\)，给定 \(\delta,\varepsilon>0\)，由\cref{b1:prop:cube-cover}可取半开立方体 \((Q_i)\) 覆盖 \(N\)，使
+\[
+ \sum_i m_d(Q_i)<\varepsilon d^{-d/2}.
+\]
+把边长过大的立方体作有限次等分，总代价不变，可使每个新立方体的直径都小于 \(\delta\)。
+边长为 \(a\) 的立方体直径为 \(\sqrt d\,a\)，故细分后的覆盖满足
+\[
+ \sum_i(\operatorname{diam}Q_i)^d
+ =d^{d/2}\sum_i m_d(Q_i)<\varepsilon.
+\]
+这直接从覆盖定义给出 \(h_\delta^d(N)=0\)，进而 \(h^d(N)=0\)，并未预先使用待证的测度一致性。
+
+\begin{proposition}\label{b1:prop:raw-hausdorff-lebesgue}
+对任意 \(E\subseteq\mathbb R^d\) 及每个 \(\delta>0\)，都有
+\[
+ h_\delta^d(E)=h^d(E)=\frac{2^d}{\omega_d}m_d^*(E).
+\]
+\end{proposition}
+\begin{proof}
+先证下界。若 \((E_i)\) 是 \(E\) 的一个直径不超过 \(\delta\) 的覆盖，
+则由等直径不等式与外测度的次可加性，
+\[
+ m_d^*(E)\leq\sum_i m_d^*(E_i)
+ \leq\frac{\omega_d}{2^d}\sum_i(\operatorname{diam}E_i)^d.
+\]
+对覆盖取下确界，得到 \(m_d^*(E)\leq(\omega_d/2^d)h_\delta^d(E)\)。
+因此若 \(m_d^*(E)=\infty\)，全部所需等式已经成立。
+
+以下设 \(m_d^*(E)<\infty\)。给定 \(\eta>0\)，由\cref{b1:prop:open-cover-approximation}取开集 \(G\supseteq E\)，使
+\(m_d(G)<m_d^*(E)+\eta\)。
+考虑全部包含于 \(G\)、直径小于 \(\delta\) 的正半径中心闭球。
+它们在 \(E\) 上细覆盖，故\cref{b1:thm:vitali-covering-lebesgue}给出至多可数个两两不交的闭球 \((B_j)\)，使
+\[
+ N=E\setminus\bigcup_jB_j,
+ \quad m_d^*(N)=0.
+\]
+这些球仍包含于 \(G\)，于是
+\[
+ \sum_j(\operatorname{diam}B_j)^d
+ =\frac{2^d}{\omega_d}\sum_j m_d(B_j)
+ \leq\frac{2^d}{\omega_d}m_d(G).
+\]
+再用本小节开头构造的小立方体覆盖 \(N\)，令其直径代价之和小于 \(\varepsilon\)。
+合并两族就真正覆盖了 \(E\)，并且每个覆盖集的直径都小于 \(\delta\)。因此
+\[
+ h_\delta^d(E)
+ \leq\frac{2^d}{\omega_d}\bigl(m_d^*(E)+\eta\bigr)+\varepsilon.
+\]
+先让 \(\varepsilon,\eta\downarrow0\)，得所需上界。
+这对每个 \(\delta>0\) 都成立，再取 \(\delta\downarrow0\) 即得到 \(h^d\) 的公式。
+\end{proof}
+
+下界使用任意覆盖集的等直径体积界，上界则主动选择球，因为球恰好达到这个界。
+Vitali 选择把球的质量之和控制在开集的体积内；剩余零测集由立方体覆盖补齐。
+所以两种方向的估计最终给出了同一个常数。
 
 \subsection{归一化常数}
 \label{b1:subsec:150304}
 
-待填充。
+第\ref{b1:sec:1501}节对所有实数 \(s\geq0\) 统一采用
+\[
+ \mathcal H^s=c_sh^s,\quad
+ c_s=\frac{\pi^{s/2}}{2^s\Gamma(1+s/2)}.
+\]
+在整数维数，这个看似解析的表达式恰好等于单位直径球的体积。
+
+\begin{proposition}[整数维归一化]\label{b1:prop:hausdorff-normalization}
+对每个正整数 \(d\)，有
+\[
+ \omega_d\Gamma(1+d/2)=\pi^{d/2},\quad c_d=\frac{\omega_d}{2^d}.
+\]
+\end{proposition}
+\begin{proof}
+第\ref{b1:subsec:070504}小节已用二维换元证明
+\(\int_{\mathbb R}e^{-t^2}\,\mathrm dt=\sqrt\pi\)。
+由 Tonelli 定理反复分离坐标，得到
+\[
+ \int_{\mathbb R^d}e^{-|x|^2}\,\mathrm dx
+ =\left(\int_{\mathbb R}e^{-t^2}\,\mathrm dt\right)^d
+ =\pi^{d/2}.
+\]
+另一方面，恒等式
+\(e^{-|x|^2}=\int_{|x|^2}^\infty e^{-u}\,\mathrm du\)
+与 Tonelli 定理给出
+\[
+ \begin{aligned}
+ \int_{\mathbb R^d}e^{-|x|^2}\,\mathrm dx
+ &=\int_0^\infty e^{-u}
+      m_d\bigl(\{\,x:|x|^2\leq u\,\}\bigr)\,\mathrm du\\
+ &=\omega_d\int_0^\infty e^{-u}u^{d/2}\,\mathrm du
+ =\omega_d\Gamma(1+d/2).
+ \end{aligned}
+\]
+这里仅使用了球体积的伸缩公式，没有使用高维极坐标或球面的面积公式。
+比较两次计算，便得第一式，代入 \(c_d\) 的定义得到第二式。
+\end{proof}
+
+\begin{theorem}\label{b1:thm:hausdorff-lebesgue}
+采用上述归一化时，对任意 \(E\subseteq\mathbb R^d\)，有
+\[
+ \mathcal H^d(E)=m_d^*(E).
+\]
+因此 \(\mathcal H^d\) 与 Lebesgue 测度具有相同的 Carathéodory 可测集，
+且在这些集合上完全相等。
+\end{theorem}
+\begin{proof}
+由前一命题及\cref{b1:prop:raw-hausdorff-lebesgue}，
+\[
+ \mathcal H^d(E)
+ =c_dh^d(E)
+ =\frac{\omega_d}{2^d}\cdot\frac{2^d}{\omega_d}m_d^*(E)
+ =m_d^*(E).
+\]
+这首先是两个外测度在所有集合上的相等。
+将其代入 Carathéodory 可测性判据，可知可测集族也相同，限制后的测度自然一致。
+\end{proof}
+
+\begin{corollary}\label{b1:cor:hausdorff-flat-subspace}
+设 \(1\leq k\leq d\)，\(T\colon\mathbb R^k\to\mathbb R^d\) 是等距仿射嵌入。
+则对任意 \(E\subseteq\mathbb R^k\)，有
+\[
+ \mathcal H^k_{\mathbb R^d}\bigl(T(E)\bigr)=m_k^*(E).
+\]
+这里的下标仅用于区分计算 Hausdorff 测度的环境空间。
+\end{corollary}
+\begin{proof}
+映射 \(T\) 及其从像空间到 \(\mathbb R^k\) 的逆映射都保持距离。
+由\cref{b1:prop:hausdorff-lipschitz}中的等距不变性与子空间环境独立性，
+\[
+ \mathcal H^k_{\mathbb R^d}\bigl(T(E)\bigr)
+ =\mathcal H^k_{\mathbb R^k}(E).
+\]
+再在 \(k\) 维欧氏空间应用前一定理，得到右侧等于 \(m_k^*(E)\)。
+\end{proof}
+
+因此一条直线上的 \(\mathcal H^1\) 是通常的长度，一个平面上的 \(\mathcal H^2\) 是通常的面积，
+不论它们嵌入多高维的欧氏空间。
+这些是等距参数化的直接结果；曲面或非等距参数化中的体积变化，需要另外计算。
+
+例如 \(c_1=1\)、\(c_2=\pi/4\)、\(c_3=\pi/6\)，分别把直径代价换算成线段长度、圆盘面积和球体积。
+这些数值也可由 Gamma 积分直接核对：分部积分给出
+\(\Gamma(t+1)=t\Gamma(t)\)（\(t>0\)），而 \(\Gamma(1)=1\)、
+\(\Gamma(1/2)=2\int_0^\infty e^{-v^2}\,\mathrm dv=\sqrt\pi\)。
+分部积分先在 \([\varepsilon,R]\) 上进行，再令 \(\varepsilon\downarrow0\)、\(R\uparrow\infty\)，
+端点项因 \(t>0\) 与指数衰减而消失。
+零维时 \(c_0=1\)，仍得到第\ref{b1:sec:1501}节的计数测度。
+
+归一化不会改变某个集合的 Hausdorff 维数，因为对固定 \(s\)，因子 \(c_s\) 是严格正的有限数。
+但涉及长度、面积、体积或密度中的精确常数时，归一化必须保持一致。
+比较不同参考书的公式，应同时检查覆盖代价究竟写作 \((\operatorname{diam}E_i)^s\)，
+还是已经乘入 \(c_s\)，不能只根据符号 \(\mathcal H^s\) 判断它们数值相同。

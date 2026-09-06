@@ -2,24 +2,227 @@
 \section{Hausdorff 维数}
 \label{b1:sec:1502}
 
-% TODO: 撰写本节正文。
+上一节对每个指数 \(s\) 都构造了一个测度。现在固定集合而改变指数：同一批小覆盖块，在较大的指数下有较小的代价。这个比较会产生一个临界值。在临界值以下，覆盖代价积累为无穷；在临界值以上，覆盖代价可以趋于零。Hausdorff 维数就是从这族测度中提取出的临界指数。
+
+% 实读来源：Fremlin2016Measure，第4卷 471L、471Xh，第2卷 264J，作者正式 TeX 全文。
+% 471Xh 只给维数与可数稳定性的习题题面，以下补写完整证明。
+% Cantor 部分推广为等比例两分支；下界另用二进位推前测度和球质量估计，非逐句改写 264J 的精确测度证明。
 
 \subsection{临界指数}
 \label{b1:subsec:150201}
 
-待填充。
+\begin{proposition}
+\label{b1:prop:hausdorff-critical-exponent}
+设 \(E\) 是度量空间的任意子集，\(0\leq s<t\)。对每个 \(0<\delta<\infty\)，有
+\[
+h^t_\delta(E)\leq\delta^{t-s}h^s_\delta(E),
+\quad
+\mathcal H^t_\delta(E)
+\leq\frac{c_t}{c_s}\delta^{t-s}\mathcal H^s_\delta(E).
+\]
+因此，若 \(\mathcal H^s(E)<\infty\)，则 \(\mathcal H^t(E)=0\)；等价地，若 \(\mathcal H^t(E)>0\)，则 \(\mathcal H^s(E)=\infty\)。
+\end{proposition}
+\begin{proof}
+对任意合法的 \(\delta\)-覆盖，当 \(s>0\) 时逐项有
+\[
+(\operatorname{diam}U_i)^t
+\leq\delta^{t-s}(\operatorname{diam}U_i)^s.
+\]
+当 \(s=0\) 时，每个非空块的右端是 \(\delta^t\)，不等式同样成立；空块两端均为零。求和并取下确界，得到尺度估计。若 \(h^s(E)<\infty\)，则
+\[
+h^t_\delta(E)\leq\delta^{t-s}h^s(E)\longrightarrow0
+\quad(\delta\downarrow0),
+\]
+故 \(\mathcal H^t(E)=0\)。最后的结论是这一蕴含的逆否命题。
+\end{proof}
+
+必须让尺度趋零，才会得到这种明确的临界行为。对于一个任意大的覆盖块，增大指数未必减小代价；几何归一化常数 \(c_s\) 也随 \(s\) 改变。因此本命题不是在说 \(\mathcal H^s(E)\) 对指数处处单调，而是在比较不同指数下有限、无穷与零这三种状态。特别是，一旦某个指数给出有限测度，所有更大的指数便只得到零测度。
 
 \subsection{Hausdorff 维数}
 \label{b1:subsec:150202}
 
-待填充。
+\begin{definition}
+\label{b1:def:hausdorff-dimension}
+给定度量空间中的集合 \(E\)，定义其\term[hausdorff-weishu]{Hausdorff 维数}[Hausdorff dimension]为
+\[
+\dim_{\mathrm H}E
+=\inf\{s\geq0:\mathcal H^s(E)=0\},
+\]
+其中空集的下确界取 \(+\infty\)。这里 \(\dim_{\mathrm H}\varnothing=0\)。
+\symidx{\(\dim_{\mathrm H}E\)：集合的 Hausdorff 维数}
+\end{definition}
+
+若 \(d_E=\dim_{\mathrm H}E\)，则
+\[
+\mathcal H^s(E)=\infty\quad(0\leq s<d_E),
+\quad
+\mathcal H^t(E)=0\quad(t>d_E).
+\]
+第二个断言在 \(d_E<\infty\) 时由下确界定义证明：给定 \(t>d_E\)，可取 \(u<t\) 使 \(\mathcal H^u(E)=0\)，再用命题\ref{b1:prop:hausdorff-critical-exponent}。若第一个断言失败，即某个 \(s<d_E\) 的测度有限，则在 \(s<t<d_E\) 处测度已经为零，与 \(d_E\) 的定义矛盾。这也说明
+\[
+\dim_{\mathrm H}E
+=\sup\{s\geq0:\mathcal H^s(E)=\infty\},
+\]
+其中右侧集合为空时取值为零。定义没有决定临界指数处的测度值；知道维数之后，这个值仍需要另外计算。
+
+例如，所有非空有限集和所有可数无限集的维数都为零，但它们的 \(\mathcal H^0\) 分别是有限点数与无穷。维数相同不等于测度相同。另一方面，由单调性立即得到
+\[
+E\subseteq F\quad\Longrightarrow\quad
+\dim_{\mathrm H}E\leq\dim_{\mathrm H}F.
+\]
+
+Lipschitz 映射不增大 Hausdorff 维数。事实上，若 \(t>\dim_{\mathrm H}E\)，则 \(\mathcal H^t(E)=0\)，命题\ref{b1:prop:hausdorff-lipschitz}给出 \(\mathcal H^t\bigl(f(E)\bigr)=0\)，再令 \(t\) 下降到原集合的维数即可；常值映射单独由像至多为单点处理。给定单射 \(f:E\to Y\)，若存在 \(0<a\leq b<\infty\) 满足
+\[
+a\,d_X(x,y)\leq d_Y\bigl(f(x),f(y)\bigr)
+\leq b\,d_X(x,y)
+\quad(x,y\in E),
+\]
+则称 \(f\) 为\term[shuang-lipschitz-yingshe]{双 Lipschitz 映射}[bi-Lipschitz map]。它与在像上的逆映射都是 Lipschitz 的，因而保持 Hausdorff 维数。这种不变性依赖距离的定量比较，仅仅知道一个映射及其逆连续，还不足以使用上述估计。
 
 \subsection{可数稳定性}
 \label{b1:subsec:150203}
 
-待填充。
+\begin{proposition}
+\label{b1:prop:hausdorff-dimension-countable}
+设 \((E_j)_{j\geq1}\) 是同一度量空间中的任意集合序列，则
+\[
+\dim_{\mathrm H}\left(\bigcup_{j=1}^{\infty}E_j\right)
+=\sup_{j\geq1}\dim_{\mathrm H}E_j.
+\]
+\end{proposition}
+\begin{proof}
+记右端为 \(a\)。每个 \(E_j\) 都包含在并集中，故左端至少为 \(a\)。若 \(a=\infty\)，证明已经结束；否则，对任意 \(t>a\)，每个 \(E_j\) 都满足 \(\mathcal H^t(E_j)=0\)。外测度的可数次可加性给出
+\[
+\mathcal H^t\left(\bigcup_jE_j\right)
+\leq\sum_j\mathcal H^t(E_j)=0.
+\]
+所以并集的维数不超过任意 \(t>a\)，从而不超过 \(a\)。
+\end{proof}
+
+这个结果允许先处理有界部分，再恢复整个欧氏空间。它也解释了为什么可数集的维数都是零：可数并不会累积单点的维数。若把可数并换成任意并，结论便不成立，因为每个集合都是其单点子集之并。
+
+\begin{proposition}
+\label{b1:prop:euclidean-hausdorff-dimension}
+对任意 \(E\subseteq\mathbb R^d\)，有 \(\dim_{\mathrm H}E\leq d\)。若其 Lebesgue 外测度 \(m_d^*(E)>0\)，则 \(\dim_{\mathrm H}E=d\)。特别地，非空开集的 Hausdorff 维数为 \(d\)。
+\end{proposition}
+\begin{proof}
+先设 \(E\) 有界，把它放在 \([-M,M]^d\) 内。边长为 \(1/n\) 的网格立方体中，至多 \(C_{M,d}n^d\) 个就能覆盖这个盒子，而每个立方体的直径为 \(\sqrt d/n\)。若 \(t>d\)，这些覆盖的总代价不超过
+\[
+C_{M,d}n^d\left(\frac{\sqrt d}{n}\right)^t
+=C_{M,d}d^{t/2}n^{d-t}\longrightarrow0.
+\]
+因此 \(\mathcal H^t(E)=0\)。一般集合写成 \(E=\bigcup_{M=1}^{\infty}\bigl(E\cap[-M,M]^d\bigr)\)，由可数稳定性得到维数上界。
+
+下界不必预先使用下一节的精确归一化。若 \(U\) 的有限直径为 \(D>0\)，选 \(x\in U\)，则 \(U\) 包含在以 \(x\) 为中心、边长 \(2D\) 的立方体中，故 \(m_d^*(U)\leq2^dD^d\)；若 \(D=0\)，集合至多为单点，仍满足这个估计。对任意有限尺度的覆盖求和，得到
+\[
+m_d^*(E)\leq2^d h^d_\delta(E),
+\quad
+\mathcal H^d(E)\geq c_d2^{-d}m_d^*(E).
+\]
+正 Lebesgue 外测度因此推出 \(\mathcal H^d(E)>0\)，再由临界指数性质得到 \(\dim_{\mathrm H}E\geq d\)。非空开集包含一个非退化立方体，所以具有正 Lebesgue 测度。
+\end{proof}
+
+由此可见，取闭包可能改变维数：\(\mathbb Q^d\) 的维数为零，闭包 \(\mathbb R^d\) 的维数却为 \(d\)。覆盖的尺度虽然趋于零，却不意味着维数只由集合的闭包决定。相反，零体积也还不能决定维数是否小于环境维数；下面先给出严格位于零与一之间的具体值。
 
 \subsection{Cantor 型集合}
 \label{b1:subsec:150204}
 
-待填充。
+命题\ref{b1:prop:cantor-null}已经证明三分 Cantor 集不可数而 Lebesgue 测度为零。现在考虑一族类似集合。固定 \(0<\lambda<1/2\)，从 \([0,1]\) 开始，在每个保留区间的左右两端各保留原长度 \(\lambda\) 倍的闭区间。记第 \(n\) 轮的并集为 \(K_{\lambda,n}\)，并令
+\[
+K_\lambda=\bigcap_{n=0}^{\infty}K_{\lambda,n}.
+\]
+第 \(n\) 轮恰有 \(2^n\) 个长度为 \(\lambda^n\) 的互不相交闭区间，以下称它们为第 \(n\) 层区间。集合 \(K_\lambda\) 是非空紧集，且
+\[
+m_1(K_\lambda)\leq m_1(K_{\lambda,n})=(2\lambda)^n\longrightarrow0.
+\]
+
+直接用第 \(n\) 层覆盖很容易得到维数上界。困难是下界：定义允许任意覆盖，不能只证明这一组自然覆盖的代价较大。为控制所有覆盖，我们在集合上放置一个概率测度，并证明小球容纳的质量不能太多。
+
+\begin{lemma}[质量分布原理]
+\label{b1:lem:mass-distribution}
+设 \(\nu\) 为度量空间 \(X\) 上的有限正 Borel 测度，\(E\subseteq X\) 为 Borel 集且 \(\nu(E)>0\)。若存在 \(s>0\)、\(C>0\)、\(r_0>0\)，使
+\[
+\nu\bigl(\overline B(x,r)\bigr)\leq Cr^s
+\quad(x\in E,\ 0<r\leq r_0),
+\]
+则
+\[
+\mathcal H^s(E)\geq\frac{c_s\nu(E)}{C}>0,
+\quad
+\dim_{\mathrm H}E\geq s.
+\]
+这一估计称为\term[zhiliang-fenbu-yuanli]{质量分布原理}[mass distribution principle]。
+\end{lemma}
+\begin{proof}
+对 \(x\in E\)，令 \(r\downarrow0\)，由有限测度的从上连续性得 \(\nu(\{x\})=0\)。固定 \(0<\delta\leq r_0\)，取 \(E\) 的任意 \(\delta\)-覆盖 \((U_i)\)，丢掉不与 \(E\) 相交的块，并在其余每块中选 \(x_i\in U_i\cap E\)。若 \(D_i=\operatorname{diam}U_i>0\)，则
+\[
+U_i\cap E\subseteq\overline B(x_i,D_i),
+\quad
+\nu\bigl(\overline B(x_i,D_i)\bigr)\leq CD_i^s.
+\]
+若 \(D_i=0\)，这一块至多为一个 \(\nu\)-零测单点。这些闭球及单点覆盖 \(E\)，故由可数次可加性，
+\[
+\nu(E)\leq C\sum_i(\operatorname{diam}U_i)^s.
+\]
+取覆盖的下确界，再令尺度趋零并乘以 \(c_s\)，即得结论。证明没有要求原覆盖块可测，也不要求球估计在大尺度上成立。
+\end{proof}
+
+\begin{proposition}
+\label{b1:prop:cantor-hausdorff-dimension}
+对 \(0<\lambda<1/2\)，令 \(s_\lambda=\log2/\log(1/\lambda)\)。则
+\[
+0<\mathcal H^{s_\lambda}(K_\lambda)<\infty,
+\quad
+\dim_{\mathrm H}K_\lambda=s_\lambda.
+\]
+特别地，三分 Cantor 集的 Hausdorff 维数为 \(\log2/\log3\)。
+\end{proposition}
+\begin{proof}
+简记 \(s=s_\lambda\)，于是 \(\lambda^s=1/2\)。第 \(n\) 层区间给出的覆盖满足
+\[
+h^s_{\lambda^n}(K_\lambda)
+\leq2^n(\lambda^n)^s=1.
+\]
+令 \(n\to\infty\)，得到 \(\mathcal H^s(K_\lambda)\leq c_s\)。
+
+现在构造均匀分配在两分支上的概率测度。对 \(t\in[0,1)\)，定义二进位数字
+\[
+\varepsilon_j(t)=\lfloor2^jt\rfloor-2\lfloor2^{j-1}t\rfloor\in\{0,1\},
+\quad
+\pi_\lambda(t)=(1-\lambda)\sum_{j=1}^{\infty}\varepsilon_j(t)\lambda^{j-1}.
+\]
+这个级数收敛，且其部分和可测，所以 \(\pi_\lambda\) 是 Borel 可测映射。前 \(n\) 位确定第 \(n\) 层的一个区间，后面的尾和位于长度 \(\lambda^n\) 的该区间内，故 \(\pi_\lambda(t)\in K_\lambda\)。将 \([0,1)\) 上的 Lebesgue 测度推前，得到
+\[
+\nu_\lambda(A)=m_1\bigl(\pi_\lambda^{-1}(A)\bigr)
+\quad(A\in\mathcal B(\mathbb R)).
+\]
+它是集中在 \(K_\lambda\) 上的 Borel 概率测度。每组前 \(n\) 位对应一个长度为 \(2^{-n}\) 的半开二进区间；不同组对应的第 \(n\) 层区间正距离相隔，因此每个第 \(n\) 层区间的 \(\nu_\lambda\) 测度恰为 \(2^{-n}\)。二进端点已经由上述取整公式固定，不影响质量计算。
+
+取 \(0<r<1\)，选 \(n\geq1\) 使 \(\lambda^n\leq r<\lambda^{n-1}\)。任意两个相邻的第 \(n\) 层区间之间，距离至少为
+\[
+g_n=(1-\lambda)\lambda^{n-1}-\lambda^n
+=(1-2\lambda)\lambda^{n-1}.
+\]
+若一个长度为 \(2r\) 的闭球与 \(N\) 个第 \(n\) 层区间相交，在各交集中选一点并按大小排列，相邻所选点之间至少相隔 \(g_n\)。所以
+\[
+(N-1)g_n\leq2r<2\lambda^{n-1},
+\quad
+N\leq1+\frac{2}{1-2\lambda}=:C_\lambda.
+\]
+由各层区间的质量公式，对任意中心 \(x\in\mathbb R\)，
+\[
+\nu_\lambda\bigl(\overline B(x,r)\bigr)
+\leq C_\lambda2^{-n}
+=C_\lambda(\lambda^n)^s
+\leq C_\lambda r^s.
+\]
+当 \(r=1\) 时也有这个估计，因为总质量为 \(1\)。质量分布原理因而给出
+\[
+\frac{c_s}{C_\lambda}\leq\mathcal H^s(K_\lambda)\leq c_s.
+\]
+临界指数性质随即推出 \(\dim_{\mathrm H}K_\lambda=s\)。
+\end{proof}
+
+这里维数的数值来自两种数量的平衡：每细分一层，覆盖块的数目乘以 \(2\)，直径乘以 \(\lambda\)，所以临界指数满足 \(2\lambda^s=1\)。上界使用这种平衡，下界则还使用分支之间的间隙；没有后者，不能仅凭“块数乘直径幂”的计算断定维数。
+
+若希望继续计算三分 Cantor 集在原始归一化下的精确测度值，可阅读 Fremlin 的《Measure Theory》\cite[264J]{Fremlin2016Measure}。本节保留足以确定维数的上下界，使同一证明能处理全部 \(0<\lambda<1/2\)。下一节转向欧氏空间的精确测度识别；第\ref{b1:sec:1504}节则进一步讨论，什么时候可以从集合的覆盖性质反过来构造具有球质量控制的测度。

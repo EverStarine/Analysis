@@ -2,24 +2,287 @@
 \section{Frostman 引理}
 \label{b1:sec:1504}
 
-% TODO: 撰写本节正文。
+在 Cantor 集上，基本区间已经告诉我们应把质量放在哪里。
+一般紧集没有现成的分支结构，却仍可以提出同一要求：半径为 \(r\) 的球至多承载常数倍的 \(r^s\) 质量。
+质量分布原理说明，这种要求足以给出维数下界。
+\term*[frostman-yinli]{Frostman 引理}[Frostman's lemma]则回答反方向的问题：集合的 Hausdorff 测度为正时，是否总能找到这样的质量分布？
+本节对欧氏空间中的紧集给出肯定回答，并用前一编的测度弱紧性完成构造。
+
+% 来源范围：Fremlin2016Measure 471Xd(ii)只作为Frostman型结论的对照，
+% 不把该习题的附加假设误当成一般紧集定理的完整证明。
+% 下文有限树递推、割集下界、原子测度弱极限及能量估计均在本书内完整展开。
+% Mattila1995Geometry与Falconer2014Fractal在本节只作专题伴读推荐。
 
 \subsection{质量分布原理}
 \label{b1:subsec:150401}
 
-待填充。
+设 \(s>0\)，\(\mu\) 是集中在 Borel 集 \(E\subset\mathbb R^d\) 上的有限正测度，
+\(\mu(E)>0\)。若所有足够小的球都满足
+\[
+ \mu\bigl(B(x,r)\bigr)\leq A r^s,
+\]
+则任意细覆盖都必须付出一定的直径幂和。
+事实上，对与 \(E\) 相交且直径为 \(a>0\) 的覆盖集 \(U\)，取 \(x\in U\cap E\)，
+就有 \(U\subset\overline B(x,a)\)，从而其质量至多为 \(Aa^s\)。
+这里不要求 \(U\) 可测：应写作 \(\mu^*(U\cap E)\)，再用包住它的可测球估计。
+这正是\cref{b1:lem:mass-distribution}的覆盖论证。
+
+值得注意的是不等式的方向。若希望证明集合至少有 \(s\) 维，
+就应限制小球不能装入过多的质量，而不是要求小球质量至少为 \(r^s\)。
+一旦总质量固定，单个小集合能承载的质量越少，覆盖整个集合所需的集合就越多。
+常数 \(A\) 只改变最后的测度下界，不改变维数。
+
+若估计只在 \(\mu\)-几乎处处中心成立，也常可先限制到一个正质量子集上。
+但必须检查两个统一性问题：常数是否统一，以及允许的半径范围是否统一。
+例如，若对每个 \(x\) 都有某个 \(A_x<\infty\) 和 \(r_x>0\)，
+可按 \(A_x\leq n\)、\(r_x\geq1/n\) 分组；在分组可测的条件下，
+总有一组仍有正质量。仅写“对每个点有局部估计”而不作这一步，不能直接套用质量分布原理。
 
 \subsection{Frostman 测度}
 \label{b1:subsec:150402}
 
-待填充。
+\begin{definition}\label{b1:def:frostman-measure}
+设 \(s\geq0\)，\(K\subset\mathbb R^d\) 为非空紧集。
+若非零有限正 Borel 测度 \(\mu\) 集中在 \(K\) 上，并存在 \(A<\infty\)，使
+\[
+ \mu\bigl(B(x,r)\bigr)\leq A r^s
+ \quad(x\in\mathbb R^d,\ r>0),
+\]
+则称 \(\mu\) 为 \(K\) 上的一个 \term[frostman-cedu]{Frostman 测度}[Frostman measure]，
+其中 \(s\) 是所用的增长指数。
+\end{definition}
+
+“集中在 \(K\) 上”只要求 \(\mu(\mathbb R^d\setminus K)=0\)，
+不要求 \(\operatorname{supp}\mu=K\)。
+由于总质量有限，除以 \(\mu(K)\) 即可改成概率测度，只需相应调整 \(A\)。
+当 \(s>0\) 时，这样的测度没有原子，因为令 \(r\downarrow0\) 就得 \(\mu(\{x\})=0\)。
+当 \(s=0\) 时，非空紧集上的任意 Dirac 测度均满足要求。
+
+\begin{lemma}\label{b1:lem:hausdorff-content-positive}
+若 \(s>0\)，则对任意集合 \(E\subset\mathbb R^d\)，
+\[
+ \mathcal H^s(E)>0\quad\Longleftrightarrow\quad
+ \mathcal H^s_\infty(E)>0.
+\]
+\end{lemma}
+\begin{proof}
+这正是\cref{b1:prop:hausdorff-borel-hull}中零测性等价关系的逆否形式：
+无尺度限制的代价能够任意小时，各个覆盖集的直径也被迫任意小。
+\end{proof}
+
+下面的构造不把 \(\mathcal H^s|_K\) 归一化，因为 \(\mathcal H^s(K)\) 可能为无穷。
+我们先在有限层的二进立方体上分配质量，再把层数趋于无穷。
+
+这里的二进立方体是半开立方体 \(Q_0\) 及反复等分各边所得的子立方体；
+每个立方体有 \(2^d\) 个互不相交的子立方体。记其边长为 \(\ell(Q)\)。
+半开约定使同层立方体真正构成分割，点不会因落在公共边界而被重复计数。
+
+\begin{theorem}[Frostman]\label{b1:thm:frostman}
+设 \(K\subset\mathbb R^d\) 为非空紧集，\(0<s\leq d\)。
+则 \(\mathcal H^s(K)>0\) 当且仅当 \(K\) 上存在增长指数为 \(s\) 的 Frostman 测度。
+\end{theorem}
+\begin{proof}
+已有测度时，由质量分布原理即得 \(\mathcal H^s(K)>0\)。
+以下设 \(\mathcal H^s(K)>0\)，取内部包含 \(K\) 的半开立方体 \(Q_0\)，边长为 \(L\)。
+由前一引理，
+\[
+ a=\frac{\mathcal H^s_\infty(K)}{c_s d^{s/2}}>0.
+\]
+又因 \(Q_0\) 本身覆盖 \(K\)，有 \(a\leq L^s\)。
+
+固定层数 \(N\)。给第 \(N\) 层立方体规定数值
+\[
+ F_N(Q)=
+ \begin{cases}
+  \ell(Q)^s,&Q\cap K\ne\varnothing,\\
+  0,&Q\cap K=\varnothing.
+ \end{cases}
+\]
+然后逐层向上定义
+\begin{equation}\label{b1:eq:frostman-tree-recursion}
+ F_N(Q)=\min\left\{\ell(Q)^s,\ \sum_{Q'\text{ 为 }Q\text{ 的子立方体}}F_N(Q')\right\}.
+\end{equation}
+这个递推有一个直接的覆盖解释：在 \(Q\) 内，要覆盖所有与 \(K\) 相交的末层立方体，
+可以选取 \(Q\) 本身，也可以分别在各个子立方体内继续选取。
+对有限层数归纳，\(F_N(Q_0)\) 就是这类选取所能达到的最小边长幂和。
+更明确地说，每条通往非空末层立方体的分支至少须选中一个立方体；
+若选中了某立方体，就不必再选它的后代。
+每一种如此得到的有限族都覆盖 \(K\)，所以
+\[
+ c_s d^{s/2} F_N(Q_0)\geq\mathcal H^s_\infty(K),
+ \quad F_N(Q_0)\geq a.
+\]
+
+现在从上向下分配质量。给根立方体质量 \(a\)；
+若 \(Q\) 已分得 \(m(Q)\leq F_N(Q)\)，由%
+\eqref{b1:eq:frostman-tree-recursion}可把它分成非负数 \(m(Q')\leq F_N(Q')\)，
+且所有子立方体所得质量之和恰为 \(m(Q)\)。
+这种分配总能完成：依次向子立方体分配不超过其限额的质量，
+由于所有限额之和至少为 \(m(Q)\)，不会有剩余质量无处安放。
+有限次重复后，在每个与 \(K\) 相交的末层立方体内选一点 \(x_Q\)，令
+\[
+ \mu_N=\sum_{Q\text{ 在第 }N\text{ 层}}m(Q)\delta_{x_Q},
+\]
+空立方体不计入和式。于是 \(\mu_N(K)=a\)，
+而每个不深于第 \(N\) 层的立方体均满足
+\[
+ \mu_N(Q)=m(Q)\leq\ell(Q)^s.
+\]
+这里使用了半开分割，故原子即使位于某些立方体边界上，等式仍然成立。
+
+概率测度 \(\mu_N/a\) 全部集中在紧集 \(K\) 上。
+由\cref{b1:lem:probability-weak-metrizable}，可取子列弱收敛到 \(K\) 上的概率测度；
+把它乘以 \(a\)，并视为 \(\mathbb R^d\) 上的测度，记为 \(\mu\)。
+因此 \(\mu(K)=a>0\)。还须证明小球质量估计在极限中保留；
+不能直接对半开立方体使用闭集版本的 Portmanteau 不等式。
+
+若 \(0<r<L\)，选取一层，使其边长 \(\ell\) 满足 \(r\leq\ell<2r\)。
+球 \(B(x,r)\) 在每个坐标方向至多遇到四个该层区间，
+故它至多与 \(4^d\) 个该层立方体相交。只要 \(N\) 不小于这一层数，就有
+\[
+ \mu_N\bigl(B(x,r)\bigr)\leq4^d\ell^s\leq4^d2^s r^s.
+\]
+对开球使用\cref{b1:thm:portmanteau}得
+\[
+ \mu\bigl(B(x,r)\bigr)
+ \leq\liminf_N\mu_N\bigl(B(x,r)\bigr)
+ \leq4^d2^s r^s,
+\]
+其中极限沿已选子列取。
+若 \(r\geq L\)，则 \(\mu\bigl(B(x,r)\bigr)\leq a\leq L^s\leq r^s\)。
+故 \(\mu\) 满足定义中的统一增长估计。
+\end{proof}
+
+紧性在这段证明中有明确的位置：它使各层构造的质量无法在弱极限中逃走。
+另一方面，各层的质量分配不必彼此相容；相容性由取弱极限解决。
+把这两件事分开，往往比直接在一棵无限树上规定所有分支的质量更方便。
+关于更一般集合上的版本及其与势论的关系，可继续阅读 Mattila 的
+《Geometry of Sets and Measures in Euclidean Spaces》\cite{Mattila1995Geometry}；
+这里的证明只使用本书已建立的紧集概率测度紧性。
 
 \subsection{Hausdorff 维数下界}
 \label{b1:subsec:150403}
 
-待填充。
+\begin{corollary}\label{b1:cor:frostman-dimension}
+对非空紧集 \(K\subset\mathbb R^d\)，
+\[
+ \dim_{\mathrm H}K=
+ \sup\{\,s\geq0\mid K\text{ 上存在增长指数为 }s\text{ 的 Frostman 测度}\,\}.
+\]
+\end{corollary}
+\begin{proof}
+若存在增长指数为 \(s\) 的测度，质量分布原理给出 \(\dim_{\mathrm H}K\geq s\)。
+反之，若 \(0<s<\dim_{\mathrm H}K\)，则 \(\mathcal H^s(K)=\infty\)，
+由 Frostman 引理可构造所需测度。
+当 \(\dim_{\mathrm H}K=0\) 时，Dirac 测度给出指数 \(0\)，也得到等式。
+\end{proof}
+
+这不是说临界指数一定可以取到。设 \(s_0=\dim_{\mathrm H}K>0\)，
+在 \(s=s_0\) 时，能否找到相应测度，恰好取决于
+\(\mathcal H^{s_0}(K)\) 是否为正；维数本身并不决定这个数值。
+在三分 Cantor 集上，前面构造的等分质量恰好实现临界指数。
+对于别的集合，先证明所有 \(s<s_0\) 都有增长估计，已经足以得到维数下界，
+不应为获得一个并非必要的端点估计而停下整个论证。
+
+作为应用，设 \(F:K\rightarrow\mathbb R^m\) 是双 Lipschitz 映射，
+\(\mu\) 是 \(K\) 上的一个 \(s\) 指数 Frostman 测度。
+若逆映射的 Lipschitz 常数为 \(L\)，并且 \(B(y,r)\cap F(K)\ne\varnothing\)，
+任选其中一点 \(F(x_0)\)，便有
+\[
+ F^{-1}\bigl(B(y,r)\cap F(K)\bigr)\subset B(x_0,2Lr).
+\]
+所以推前测度 \(F_\#\mu\) 仍满足 \(s\) 次增长估计。
+这从测度构造一侧再次解释了双 Lipschitz 不变性：
+距离只改变固定倍数时，质量增长的指数不会改变。
 
 \subsection{能量方法初步}
 \label{b1:subsec:150404}
 
-待填充。
+逐球估计要求控制所有中心和尺度，有时不便直接验证。
+另一种办法是把点对之间的距离作一次非负积分。
+
+\begin{definition}\label{b1:def:riesz-energy}
+设 \(t>0\)，\(\mu\) 为 \(\mathbb R^d\) 上的有限正 Borel 测度。
+定义其 \term[riesz-nengliang]{Riesz 能量}[Riesz energy] 为
+\[
+ I_t(\mu)=\iint_{\mathbb R^d\times\mathbb R^d}|x-y|^{-t}\,d\mu(y)\,d\mu(x),
+\]
+并约定对角线上的核值为 \(+\infty\)。
+相应的非负函数
+\[
+ U_t^\mu(x)=\int_{\mathbb R^d}|x-y|^{-t}\,d\mu(y)
+\]
+称为这里的 \(t\) 次势。能量与势都允许取无穷值。
+\end{definition}
+\symidx{\(I_t(\mu)\)：Riesz 能量}
+\symidx{\(U_t^\mu\)：距离负幂核的势}
+
+核是非负 Borel 函数，故 Tonelli 定理保证上述积分有意义，
+也保证 \(U_t^\mu\) 可测。这里用距离负幂 \(t\) 作为下标；
+其他书中若按势算子的阶数编号，可能使用核 \(|x-y|^{\alpha-d}\)，
+其参数应对应为 \(t=d-\alpha\)，不能只按字母名称比较。
+
+\begin{proposition}\label{b1:prop:frostman-finite-energy}
+若非零有限正测度 \(\mu\) 满足
+\(\mu\bigl(B(x,r)\bigr)\leq A r^s\) 对所有 \(x,r\) 成立，
+则对 \(0<t<s\) 有 \(I_t(\mu)<\infty\)。
+\end{proposition}
+\begin{proof}
+记 \(M=\mu(\mathbb R^d)\)。由
+\[
+ u^{-t}=\int_u^\infty t r^{-t-1}\,dr
+\]
+及 Tonelli 定理，包括 \(u=0\) 的无穷值情形，得到
+\begin{equation}\label{b1:eq:energy-ball-integral}
+ I_t(\mu)=t\int_0^\infty r^{-t-1}
+       \int_{\mathbb R^d}\mu\bigl(B(x,r)\bigr)\,d\mu(x)\,dr.
+\end{equation}
+在 \(0<r<1\) 用增长估计，在 \(r\geq1\) 用总质量估计，即得
+\[
+ I_t(\mu)\leq tAM\int_0^1r^{s-t-1}\,dr+
+ tM^2\int_1^\infty r^{-t-1}\,dr
+ =\frac{tAM}{s-t}+M^2<\infty.
+\]
+\end{proof}
+
+\begin{proposition}\label{b1:prop:finite-energy-dimension}
+设非零有限正测度 \(\mu\) 集中在 Borel 集 \(E\) 上。
+若 \(I_t(\mu)<\infty\)，则 \(\dim_{\mathrm H}E\geq t\)。
+\end{proposition}
+\begin{proof}
+由能量有限，\(U_t^\mu(x)<\infty\) 对 \(\mu\)-几乎处处的 \(x\) 成立。
+可选正整数 \(n\)，使 Borel 集
+\[
+ E_n=\{\,x\in E\mid U_t^\mu(x)\leq n\,\}
+\]
+有正质量，令 \(\nu=\mu|_{E_n}\)。
+若 \(B(z,r)\cap E_n\ne\varnothing\)，取 \(x\) 属于此交集。
+对 \(y\in B(z,r)\) 有 \(|x-y|<2r\)，故
+\[
+ \nu\bigl(B(z,r)\bigr)
+ \leq(2r)^t\int_{B(z,r)}|x-y|^{-t}\,d\mu(y)
+ \leq 2^t n r^t.
+\]
+若交集为空，左边为零，同一估计仍成立。
+对正质量测度 \(\nu\) 使用质量分布原理，便得
+\(\mathcal H^t(E_n)>0\)，因而 \(\dim_{\mathrm H}E\geq t\)。
+\end{proof}
+
+有限能量先给出势几乎处处有限，再限制到势有统一上界的部分；
+这个限制步骤不能省略为“所以原测度具有统一增长估计”。
+而且有限能量必定排除原子：若某点质量为 \(b>0\)，
+对角线上的该点对就有质量 \(b^2\)，使能量为无穷。
+
+结合以上两命题与 Frostman 引理，对非空紧集 \(K\) 有
+\[
+ \dim_{\mathrm H}K=
+ \sup\Bigl(\{0\}\cup
+ \{\,t>0\mid \text{存在集中在 }K\text{ 上的概率测度 }\mu,\ I_t(\mu)<\infty\,\}\Bigr).
+\]
+其中下界使用有限能量命题；上界的反向逼近则对
+\(0<t<s<\dim_{\mathrm H}K\) 先构造 \(s\) 指数 Frostman 测度。
+公式中的严格不等式 \(t<s\) 有实质作用，在端点把积分
+\(\int_0^1r^{-1}\,dr\) 当成有限会得出错误结论。
+Falconer 的《Fractal Geometry: Mathematical Foundations and Applications》%
+\cite{Falconer2014Fractal}可作为继续学习维数估计与分形应用的伴读；
+本节只建立了距离负幂核所需的基本积分估计，尚未引入一般容量理论。

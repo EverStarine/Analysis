@@ -2,24 +2,203 @@
 \section{Hausdorff 测度}
 \label{b1:sec:1501}
 
-% TODO: 撰写本节正文。
+Lebesgue 测度用体积衡量集合，却不能进一步区分许多零测集：一段曲线、一个曲面和三分 Cantor 集，在足够高维的环境空间中都可能只有零体积。若覆盖一个集合时不再累加覆盖块的体积，而是累加其直径的某个幂，就能让尺度与指数共同参与测量。这个构造只需要距离，因此也适用于没有线性结构的度量空间。
 
-\subsection{Hausdorff 含量}
+% 实读来源：Fremlin2016Measure，第4卷 471A--E、471J--L，作者正式 TeX 全文。
+% 改编：保留一般度量空间；补入 s=0 的计数约定，采用本书的全实指数几何归一化。
+% Borel 可测性使用 471C 的分层思想；Borel 包络只证明后文够用的版本，不调用描述集合论。
+本节的度量空间构造可与 Fremlin 的《Measure Theory》\cite[471A--E、471J--L]{Fremlin2016Measure}对读。该书使用直径幂的原始归一化；本书稍后乘一个只依赖指数的正常数，以便整数维的测度与通常的长度、面积、体积相衔接。两种约定不会改变零测集和维数，但比较具体测度值时必须保留这个常数。
+
+\subsection{直径覆盖与尺度}
 \label{b1:subsec:150101}
 
-待填充。
+固定度量空间 \((X,d)\)。集合 \(U\subseteq X\) 的直径为 \(\operatorname{diam}U=\sup\{d(x,y):x,y\in U\}\)，约定空集直径为零，允许无界集合的直径为无穷。下面的覆盖集不要求开、闭或可测；它们只承担几何覆盖的作用。
 
-\subsection{\texorpdfstring{\(\mathcal H^s\)}{m}}
+\begin{definition}
+\label{b1:def:hausdorff-content}
+给定 \(s\geq0\)、\(0<\delta\leq\infty\) 及 \(E\subseteq X\)，定义覆盖量
+\[
+h^s_\delta(E)
+=\inf\Bigl\{\sum_{i=1}^{\infty}(\operatorname{diam}U_i)^s:
+E\subseteq\bigcup_{i=1}^{\infty}U_i,
+\ \operatorname{diam}U_i\leq\delta\Bigr\}.
+\]
+这里有限覆盖可以补空集写成序列；没有满足条件的可数覆盖时，下确界取 \(+\infty\)。当 \(\delta=\infty\) 时不限制直径。代价的零维约定是：若 \(s=0\)，则每个非空覆盖集的代价为 \(1\)，包括单点；空集的代价始终为 \(0\)。若 \(s>0\)，则使用通常的直径幂。
+\symidx{\(h^s_\delta(E)\)：直径受限的原始覆盖量}
+\end{definition}
+
+零维约定只规定这个覆盖构造的代价，不是把一般算术中的 \(0^0\) 重新定义。无尺度限制的 \(h^s_\infty\) 在英文文献中称为 Hausdorff content；\foreignidx{Hausdorff content}不同资料也可能把后面引入的归一化常数包含在这一记号中。
+
+尺度越小，可用的覆盖越少，因此
+\[
+0<\delta_1\leq\delta_2
+\quad\Longrightarrow\quad
+h^s_{\delta_1}(E)\geq h^s_{\delta_2}(E).
+\]
+这一步限制很重要。例如，两个不同的点可以一起放进一个无尺度限制的覆盖集，所以 \(h^0_\infty\) 对这个两点集的值仍为 \(1\)。若要求覆盖块的直径小于两点间距，就必须使用两个非空块。只有让尺度趋于零，测量才不能把相距一定距离的部分永久合并。
+
+每个固定的 \(h^s_\delta\) 都是外测度。空集与单调性直接来自定义。为说明可数次可加性，设 \(E=\bigcup_jE_j\)。若 \(\sum_jh^s_\delta(E_j)=\infty\)，不等式自动成立；否则，对每个 \(j\) 取代价不超过 \(h^s_\delta(E_j)+\varepsilon2^{-j}\) 的覆盖，将所有这些覆盖合并，得到
+\[
+h^s_\delta(E)\leq\sum_jh^s_\delta(E_j)+\varepsilon.
+\]
+令 \(\varepsilon\downarrow0\) 即可。固定尺度的外测度一般还不是 Borel 测度；上述两点集已经说明，它未必对不交闭集可加。
+
+\subsection{\texorpdfstring{\(\mathcal H^s\)}{Hausdorff 测度}的构造}
 \label{b1:subsec:150102}
 
-待填充。
+由尺度的单调性，可以定义极限
+\[
+h^s(E)=\lim_{\delta\downarrow0}h^s_\delta(E)
+=\sup_{\delta>0}h^s_\delta(E).
+\]
+它仍是外测度。事实上，对任意可数族 \((E_j)\) 及任意 \(\delta>0\)，有
+\[
+h^s_\delta\left(\bigcup_jE_j\right)
+\leq\sum_jh^s_\delta(E_j)
+\leq\sum_jh^s(E_j),
+\]
+再令 \(\delta\downarrow0\)。这里直接核对了可数次可加性，并未使用“一族外测度的上确界总是外测度”这样的断言。
+
+为统一不同指数下的记号，先给出归一化常数。对 \(a>0\)，定义\term[gamma-hanshu]{Gamma 函数}[Gamma function]
+\[
+\Gamma(a)=\int_0^\infty t^{a-1}e^{-t}\,\mathrm dt.
+\]
+这个积分严格为正且有限：在 \((0,1)\) 上，\(t^{a-1}\) 可积；在 \([1,\infty)\) 上，指数衰减控制任意固定幂。例如取整数 \(N>a\)，由 \(e^{t/2}\geq(t/2)^N/N!\) 可知被积函数不超过某个常数乘 \(e^{-t/2}\)。本章只用这个积分来定义正常数，不需要 Gamma 函数的进一步理论。特别地，\(\Gamma(1)=1\)。
+
+\begin{definition}
+\label{b1:def:hausdorff-measure}
+给定 \(s\geq0\)，令
+\[
+c_s=\frac{\pi^{s/2}}{2^s\Gamma(1+s/2)},
+\quad
+\mathcal H^s_\delta(E)=c_s h^s_\delta(E),
+\quad
+\mathcal H^s(E)=c_s h^s(E).
+\]
+称 \(\mathcal H^s\) 为 \(s\) 维\term[hausdorff-ce-du]{Hausdorff 外测度}[Hausdorff outer measure]；把它限制到 Carathéodory 可测集上得到的测度，称为 \(s\) 维\term[hausdorff-cedu]{Hausdorff 测度}[Hausdorff measure]。下面将证明所有 Borel 集都在其可测域内。讨论 Borel 测度时，我们也把相应的限制记为 \(\mathcal H^s\)。
+\symidx{\(\mathcal H^s\)：归一化的 Hausdorff 测度及其外测度}
+\symidx{\(\mathcal H^s_\delta\)：归一化的尺度覆盖量}
+\symidx{\(c_s\)：Hausdorff 测度的归一化常数}
+\end{definition}
+
+对任意集合写 \(\mathcal H^s(E)\) 时，尚未声明其可测性也有意义，此时指外测度值。整数 \(d\geq1\) 时，常数将满足 \(c_d=\omega_d/2^d\)，其中 \(\omega_d\) 是 \(\mathbb R^d\) 中单位球的体积；这一识别及 \(\mathcal H^d=m_d\) 的证明放在第\ref{b1:sec:1503}节。当前构造只需要 \(0<c_s<\infty\) 与 \(c_0=1\)。
+
+\begin{theorem}
+\label{b1:thm:hausdorff-borel-measure}
+任意度量空间上的 \(\mathcal H^s\) 都使全部 Borel 集 Carathéodory 可测。因而它在 Borel \(\sigma\)-代数上的限制是测度，在全部 Carathéodory 可测集上的限制则是完备测度。
+\end{theorem}
+\begin{proof}
+先证明一个由距离带来的可加性。若 \(A,B\subseteq X\) 且 \(\operatorname{dist}(A,B)>0\)，取 \(\delta<\operatorname{dist}(A,B)\)。任何直径不超过 \(\delta\) 的覆盖块都不能同时接触 \(A\) 与 \(B\)。把覆盖 \(A\cup B\) 的块按它所接触的集合分开，得到
+\[
+h^s_\delta(A\cup B)\geq h^s_\delta(A)+h^s_\delta(B).
+\]
+令 \(\delta\downarrow0\)，再结合外测度的次可加性，得
+\[
+\mathcal H^s(A\cup B)=\mathcal H^s(A)+\mathcal H^s(B).
+\]
+若一个度量空间上的外测度对所有正距离相隔的两集合都满足这个等式，则称其为\term[duliang-waicedu]{度量外测度}[metric outer measure]。
+
+下面证明任意度量外测度 \(\theta\) 都使闭集可测。固定闭集 \(F\)，只需考察满足 \(\theta(E)<\infty\) 的任意集合 \(E\)：若 \(\theta(E)=\infty\)，Carathéodory 判据所需的反向不等式自动成立。空的或全空间的 \(F\) 无需证明，以下设 \(F\) 非空。记
+\[
+t(x)=\operatorname{dist}(x,F),
+\quad E_n=\{x\in E:t(x)\geq1/n\}.
+\]
+集合 \(E_n\) 与 \(E\cap F\) 正距离相隔，所以
+\[
+\theta(E)\geq\theta(E_n)+\theta(E\cap F).
+\]
+不能在尚未证明可测性时直接对外测度使用从下连续性。为补上这一步，令
+\[
+A_i=\{x\in E:1/(i+1)<t(x)\leq1/i\},
+\quad i\geq1.
+\]
+函数 \(t\) 是 \(1\)-Lipschitz 的。两个下标至少相差 \(2\) 的带 \(A_i\) 正距离相隔，因此任意有限个奇数下标带的测度之和不超过 \(\theta(E)\)，偶数下标也一样。于是
+\[
+\sum_{i=1}^{\infty}\theta(A_i)\leq2\theta(E)<\infty.
+\]
+又因 \(F\) 闭，\(E\setminus F\subseteq E_n\cup\bigcup_{i\geq n}A_i\)，故
+\[
+\theta(E\setminus F)
+\leq\theta(E_n)+\sum_{i\geq n}\theta(A_i).
+\]
+尾和趋于零，结合前面的分离估计，得到
+\[
+\theta(E\cap F)+\theta(E\setminus F)\leq\theta(E).
+\]
+闭集因此 Carathéodory 可测。由定理\ref{b1:thm:caratheodory}，可测集组成 \(\sigma\)-代数，包含闭集便包含全部 Borel 集；同一定理也给出可数可加性与完备性。取 \(\theta=\mathcal H^s\) 即得结论。
+\end{proof}
 
 \subsection{基本性质}
 \label{b1:subsec:150103}
 
-待填充。
+先看指数为零的情形。它检验了单点代价的约定，也说明 Hausdorff 测度并非总是局部有限。
+
+\begin{proposition}
+\label{b1:prop:hausdorff-counting}
+对任意 \(E\subseteq X\)，\(\mathcal H^0(E)\) 等于 \(E\) 的点数；若 \(E\) 无限，则其值为 \(+\infty\)。若 \(s>0\)，则每个可数集的 \(\mathcal H^s\) 外测度为零。
+\end{proposition}
+\begin{proof}
+若 \(E\) 恰有 \(N\) 个点，单点覆盖给出 \(h^0_\delta(E)\leq N\)。当 \(N\geq2\) 时，取 \(\delta\) 小于这些点之间的最小距离，每个覆盖块至多包含一个点，因此 \(h^0_\delta(E)\geq N\)；空集与单点情形直接成立。由于 \(c_0=1\)，得到 \(\mathcal H^0(E)=N\)。无限集包含任意大的有限子集，单调性遂给出无穷值。若 \(s>0\)，每个单点的代价为零，可数个单点本身便是任意尺度下的零代价覆盖。
+\end{proof}
+
+例如，\(\mathbb R\) 上的 \(\mathcal H^0\) 在任何非空开区间上都为无穷。故 Borel 可测性不意味着局部有限，更不能据此直接把任意 Hausdorff 测度称为第\ref{b1:ch:11}章意义下的 Radon 测度。另一方面，覆盖允许使用任意集合并不会妨碍从外部找到一个具有相同测度的 Borel 集。
+
+\begin{proposition}
+\label{b1:prop:hausdorff-borel-hull}
+对任意 \(E\subseteq X\) 及 \(s\geq0\)，存在 Borel 集 \(G\supseteq E\)，使 \(\mathcal H^s(G)=\mathcal H^s(E)\)。此外，
+\[
+\mathcal H^s_\infty(E)=0
+\quad\Longleftrightarrow\quad
+\mathcal H^s(E)=0.
+\]
+\end{proposition}
+\begin{proof}
+若 \(h^s(E)=\infty\)，取 \(G=X\)。否则，对每个 \(n\geq1\)，取覆盖 \((U_{ni})_i\)，使各块直径不超过 \(1/n\)，总代价不超过 \(h^s_{1/n}(E)+1/n\)。集合的闭包不改变直径，也不改变是否为空，故
+\[
+G=\bigcap_{n=1}^{\infty}\bigcup_{i=1}^{\infty}\overline{U_{ni}}
+\]
+是包含 \(E\) 的 Borel 集。固定 \(\delta>0\)，对一切充分大的 \(n\)，第 \(n\) 组闭包是 \(G\) 的合法 \(\delta\)-覆盖。因此
+\[
+h^s_\delta(G)\leq h^s_{1/n}(E)+1/n\leq h^s(E)+1/n.
+\]
+先令 \(n\to\infty\)，再令 \(\delta\downarrow0\)，并用单调性，即得等测度包络。
+
+零测性等价的反向蕴含由 \(h^s_\infty\leq h^s\) 得到。正向蕴含在 \(s=0\) 时只涉及空集。若 \(s>0\) 且 \(h^s_\infty(E)=0\)，给定 \(\varepsilon,\delta>0\)，可以找到总代价小于 \(\min\{\varepsilon,\delta^s\}\) 的无尺度限制覆盖。每个非空块的直径都小于 \(\delta\)，故它也是一个 \(\delta\)-覆盖，且 \(h^s_\delta(E)<\varepsilon\)。令 \(\varepsilon\downarrow0\)，再对尺度取上确界即可。
+\end{proof}
+
+最后一个等价关系并不是说无尺度限制的覆盖量与测度总相等。它只说明，若总代价已经能够任意小，那么覆盖块也被迫同时变小。这正是后面用一次覆盖估计判断零测性时所需的事实。
 
 \subsection{Lipschitz 映射下的行为}
 \label{b1:subsec:150104}
 
-待填充。
+Hausdorff 测度最直接的几何性质来自直径的控制。若映射使所有距离至多放大 \(L\) 倍，就应当使 \(s\) 维代价至多放大 \(L^s\) 倍。这里不需要映射可微，也不要求集合先有某种曲面参数化。
+
+\begin{proposition}
+\label{b1:prop:hausdorff-lipschitz}
+设 \(X,Y\) 为度量空间，\(A\subseteq X\)，映射 \(f:A\to Y\) 满足
+\[
+d_Y\bigl(f(x),f(y)\bigr)\leq Ld_X(x,y)
+\quad(x,y\in A),
+\]
+其中 \(L>0\)。则对任意 \(E\subseteq A\) 及 \(s\geq0\)，
+\[
+\mathcal H^s_Y\bigl(f(E)\bigr)\leq L^s\mathcal H^s_X(E).
+\]
+Hausdorff 外测度不依赖于所采用的等距环境空间。特别地，等距映射保持 \(\mathcal H^s\)；若 \(f\) 把所有距离恰好乘以 \(L>0\)，则上式为等式。
+\end{proposition}
+\begin{proof}
+先说明子空间问题。若 \(A\subseteq X\)，则 \(A\) 内的覆盖也是 \(X\) 内的覆盖；反过来，把 \(X\) 内的每个覆盖块 \(U_i\) 换成 \(U_i\cap A\)，直径和代价均不增。这证明对 \(E\subseteq A\)，每个尺度的覆盖量在 \(A\) 与 \(X\) 中相同。
+
+现在取 \(E\) 的一个 \(\delta\)-覆盖 \((U_i)\)，把覆盖块先与 \(E\) 相交再取像。它们覆盖 \(f(E)\)，且
+\[
+\operatorname{diam}\bigl(f(U_i\cap E)\bigr)
+\leq L\operatorname{diam}U_i.
+\]
+当 \(s>0\) 时直接对直径取幂；当 \(s=0\) 时，非空像的数量不超过非空原覆盖块的数量。因此
+\[
+h^s_{L\delta,Y}\bigl(f(E)\bigr)\leq L^s h^s_{\delta,X}(E).
+\]
+令 \(\delta\downarrow0\)，乘以相同的 \(c_s\)，即得测度不等式。等距情形分别应用于 \(f\) 与其在像上的逆映射；距离恰好乘以 \(L\) 的情形，再对逆映射使用常数 \(1/L\)，便得到反向不等式。
+\end{proof}
+
+若 Lipschitz 常数为零，映射的像至多只有一个点：对 \(s>0\)，像的测度为零；对 \(s=0\)，仍有像的点数不超过原集合点数。这样单独处理，就不必在测度无穷时解释 \(0\cdot\infty\)。欧氏空间中的平移、旋转保持距离，伸缩把距离乘以伸缩率，因此上述结论已经包含了 Hausdorff 测度相应的不变性与齐次性。
