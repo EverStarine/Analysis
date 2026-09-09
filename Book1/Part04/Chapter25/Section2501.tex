@@ -2,19 +2,268 @@
 \section{\texorpdfstring{\(L^p\)}{Lᵖ} 中的平移判据}
 \label{b1:sec:2501}
 
-% TODO: 撰写本节正文。
+范数有界只能把函数限制在一个大球内，不能阻止它们向无穷远移动，也不能阻止固定区域内越来越快的振荡。强紧性需要同时限制这些变化。本节用远处的积分尾部和小平移误差刻画它，并把证明落实为有限个网格平均值的逼近；暂不要求函数具有弱导数。
+
+Hanche-Olsen 与 Holden 的《The Kolmogorov--Riesz compactness theorem》\cite[第3节，定理5]{HancheOlsenHolden2010Compactness}采用有限维投影处理这一问题，并讨论不同文献中的定理命名。本节固定 \(d\geq1\)、\(1\leq p<\infty\) 和 \(\mathbb K=\mathbb R\) 或 \(\mathbb C\)。所有紧性均指 \(L^p\) 范数拓扑下的紧性，不是弱紧性。
+
+% 实读 HancheOlsenHolden2010Compactness 的作者公开副本：
+% https://www.math.ntnu.no/conservation/2009/037.pdf ，第3节Theorem5及完整证明，内页3--4。
+% 正式发表：Expositiones Mathematicae 28(4) (2010),385--394，
+% DOI10.1016/j.exmath.2010.03.001；作者副本首页2009是稿本日期，不作发表年。
+% 本节将有限投影拆成全空间网格平均与有限cell截断，保留差集体积因子2^d。
+% 必要性用有限网；任意域的零延拓结论只在Lp层面，未借后节Sobolev紧嵌入。
 
 \subsection{平移连续性}
 \label{b1:subsec:250101}
 
-待填充。
+沿用 \(\tau_hu(x)=u(x-h)\)。平移是 \(L^p(\mathbb R^d)\) 上的线性等距映射，并满足
+\[
+ \tau_h\tau_k=\tau_{h+k},\quad
+ \|\tau_hu-\tau_hv\|_p=\|u-v\|_p.
+\]
+由\cref{b1:lem:lp-translation-continuity}，每个固定的 \(u\in L^p\) 都有
+\(\|\tau_hu-u\|_p\to0\)。但这里允许控制 \(h\) 的尺度随 \(u\) 改变；若面对一整个函数族，就需要一个适用于所有成员的尺度。
+
+为把量词写清楚，对非空族 \(\mathcal F\subseteq L^p(\mathbb R^d)\) 记
+\[
+ \omega_{\mathcal F}(\delta)
+ =\sup_{u\in\mathcal F}\sup_{|h|\leq\delta}
+       \|\tau_hu-u\|_p.
+\]
+于是所需条件为 \(\omega_{\mathcal F}(\delta)\to0\)：给定误差后，先选同一个 \(\delta\)，再允许任取 \(u\in\mathcal F\) 和 \(|h|\leq\delta\)。这比逐个函数的平移连续性更强。
+
+这种一致性可以控制函数在每个小网格内被常数代替时的误差。固定 \(\delta>0\)，用半开立方体
+\[
+ Q_{\delta,k}=\delta\bigl(k+[0,1)^d\bigr),
+ \quad k\in\mathbb Z^d
+\]
+划分全空间；这些集合两两不交，并覆盖每个点。定义
+\[
+ (P_\delta u)(x)=\frac1{\delta^d}\int_{Q_{\delta,k}}u(y)\,\mathrm dy
+ \quad(x\in Q_{\delta,k}).
+\]
+有限测度上的 Hölder 不等式保证每个平均值有定义。即使 \(u\) 是复值函数，平均值仍按普通复积分定义，不取共轭。
+
+\begin{lemma}\label{b1:lem:lp-cell-average}
+算子 \(P_\delta\) 是 \(L^p(\mathbb R^d)\) 上的线性投影，且
+\(\|P_\delta u\|_p\leq\|u\|_p\)。此外，
+\begin{equation}\label{b1:eq:lp-cell-average-error}
+ \|u-P_\delta u\|_p^p
+ \leq\frac1{\delta^d}
+       \int_{[-\delta,\delta]^d}\|\tau_hu-u\|_p^p\,\mathrm dh.
+\end{equation}
+因此
+\[
+ \sup_{u\in\mathcal F}\|u-P_\delta u\|_p
+ \leq2^{d/p}\omega_{\mathcal F}(\sqrt d\,\delta).
+\]
+\end{lemma}
+\begin{proof}
+对每个网格 \(Q=Q_{\delta,k}\)，平均值的 Hölder 估计给出
+\[
+ \delta^d\left|\frac1{\delta^d}\int_Q u\right|^p
+ \leq\int_Q|u|^p.
+\]
+对 \(k\) 求和，得到收缩性。平均一个已在每个网格上为常数的函数，不会改变它，故 \(P_\delta^2=P_\delta\)。
+
+对 \(x\in Q\)，同一估计应用于 \(u(x)-u(y)\)，得
+\[
+ |u(x)-P_\delta u(x)|^p
+ \leq\frac1{\delta^d}\int_Q|u(x)-u(y)|^p\,\mathrm dy.
+\]
+先在 \(x\) 上积分并对网格求和，再作换元 \(y=x+h\)。同一个网格中的两个点满足 \(h\in[-\delta,\delta]^d\)，所以
+\[
+ \begin{aligned}
+ \|u-P_\delta u\|_p^p
+ &\leq\frac1{\delta^d}
+      \sum_k\int_{Q_{\delta,k}}\int_{Q_{\delta,k}}
+             |u(x)-u(y)|^p\,\mathrm dy\,\mathrm dx\\
+ &\leq\frac1{\delta^d}
+      \sum_k\int_{Q_{\delta,k}}\int_{[-\delta,\delta]^d}
+             |u(x)-u(x+h)|^p\,\mathrm dh\,\mathrm dx\\
+ &=\frac1{\delta^d}
+      \int_{[-\delta,\delta]^d}\|\tau_{-h}u-u\|_p^p\,\mathrm dh.
+ \end{aligned}
+\]
+这些是非负积分，Tonelli 定理允许求和及换序。积分区域关于原点对称，令 \(h\) 换成 \(-h\) 即得\eqref{b1:eq:lp-cell-average-error}。最后，该区域体积为 \((2\delta)^d\)，其中每个向量满足 \(|h|\leq\sqrt d\,\delta\)，从而得到因子 \(2^{d/p}\)。
+\end{proof}
+
+差向量所在的立方体边长为 \(2\delta\)，不是 \(\delta\)。因此上式右端不是一个已经归一化为一的平均；这个体积差正是因子 \(2^d\) 的来源。
 
 \subsection{Fréchet–Kolmogorov 定理}
 \label{b1:subsec:250102}
 
-待填充。
+先回顾证明中需要的度量事实。若对每个 \(\varepsilon>0\)，一个集合 \(A\) 都能被有限个半径为 \(\varepsilon\) 的球覆盖，则称 \(A\) 为\term[quanyoujie]{全有界}[totally bounded]集；这些球的中心构成一个有限 \(\varepsilon\)-网。
 
-\subsection{紧性与支集控制}
+\begin{lemma}\label{b1:lem:complete-total-bounded}
+在完备度量空间中，一个子集相对紧，当且仅当它全有界。
+\end{lemma}
+\begin{proof}
+紧闭包的任意固定半径球覆盖都有有限子覆盖，故必要性成立。反过来，若 \(A\) 全有界，则闭包 \(K=\overline A\) 也全有界：先用半径为 \(\varepsilon/2\) 的有限网覆盖 \(A\)，把半径扩大到 \(\varepsilon\) 即覆盖闭包。
+
+对 \(K\) 中任意序列，逐次使用半径 \(2^{-j}\) 的有限覆盖，保留落在同一球中的无限子列，再对角抽选，所得子列为 Cauchy 列。由于 \(K\) 闭且环境完备，它在 \(K\) 中收敛。
+
+这也给出开覆盖意义下的紧性。对 \(K\) 的任意开覆盖，必有 \(\eta>0\)，使每个 \(x\in K\) 的相对球 \(B_K(x,\eta)\) 包含于某个覆盖成员。否则可选 \(x_j\)，使 \(B_K(x_j,1/j)\) 不包含于任何单个成员；取收敛子列及包含其极限的开集，就会在充分大时得到相反结论。有限网的中心也可选在 \(K\) 中：从每个与 \(K\) 相交的网球中取一点作新中心，至多把半径扩大一倍。因此可用中心在 \(K\) 内的有限 \(\eta/2\)-网覆盖 \(K\)，为每个中心选择一个容纳其 \(\eta\)-球的覆盖成员，便得到有限子覆盖。
+\end{proof}
+
+现在引入\term*[frechet-kolmogorov-dingli]{Fréchet–Kolmogorov 定理}[Fréchet--Kolmogorov compactness theorem]。条件分别写成范数、尾部与平移的形式，便于在具体问题中使用。
+
+\begin{theorem}[Fréchet–Kolmogorov]\label{b1:thm:frechet-kolmogorov-lp}
+设 \(1\leq p<\infty\)，\(\mathcal F\subseteq L^p(\mathbb R^d;\mathbb K)\) 非空。则 \(\mathcal F\) 相对紧，当且仅当下列条件都成立。
+\begin{enumerate}
+\item\label{b1:item:fk-bounded}
+范数一致有界：
+\[
+ \sup_{u\in\mathcal F}\|u\|_p<\infty.
+\]
+\item\label{b1:item:fk-tail}
+远处尾部一致趋零：
+\[
+ \lim_{R\to\infty}\sup_{u\in\mathcal F}
+       \int_{|x|>R}|u(x)|^p\,\mathrm dx=0.
+\]
+\item\label{b1:item:fk-translation}
+小平移误差一致趋零：
+\[
+ \lim_{\delta\downarrow0}\omega_{\mathcal F}(\delta)=0.
+\]
+\end{enumerate}
+等价地，\(\mathcal F\) 中每个序列都有一个在 \(L^p\) 范数中收敛的子列，极限允许在 \(\overline{\mathcal F}\) 中。
+\end{theorem}
+\begin{proof}
+先证明必要性。相对紧性给出任意尺度的有限网。一个有限 \(1\)-网已经说明范数有界，因为每个 \(u\) 的范数不超过其所靠近的网点范数加一。
+
+固定 \(\varepsilon>0\)，取有限 \(\varepsilon\)-网
+\(g_1,\ldots,g_N\)。每个 \(g_j\in L^p\) 都满足
+\(\|\mathbf1_{\{|x|>R\}}g_j\|_p\to0\)。网点有限，可以选同一个 \(R\)，使这些尾部范数都小于 \(\varepsilon\)。给定 \(u\in\mathcal F\)，选取
+\(\|u-g_j\|_p<\varepsilon\) 的网点，则
+\[
+ \|\mathbf1_{\{|x|>R\}}u\|_p
+ \leq\|u-g_j\|_p+\|\mathbf1_{\{|x|>R\}}g_j\|_p<2\varepsilon.
+\]
+由此得到尾部条件。
+
+同样，由每个网点的平移连续性，可选同一个 \(\delta>0\)，使
+\(\|\tau_hg_j-g_j\|_p<\varepsilon\) 对全部 \(j\) 及
+\(|h|\leq\delta\) 成立。平移等距性给出
+\[
+ \|\tau_hu-u\|_p
+ \leq2\|u-g_j\|_p+\|\tau_hg_j-g_j\|_p<3\varepsilon.
+\]
+这就把有限多个函数的连续性变成了整族的一致连续性。
+
+再证充分性。给定 \(\varepsilon>0\)，由平移条件选 \(\delta>0\)，使
+\[
+ \sup_{u\in\mathcal F}\|u-P_\delta u\|_p<\varepsilon/3.
+\]
+这是网格平均引理的直接应用，选取时保留其中的
+\(2^{d/p}\) 及 \(\sqrt d\)。再由尾部条件选 \(R\)，使
+\[
+ \sup_{u\in\mathcal F}\|\mathbf1_{\{|x|>R\}}u\|_p<\varepsilon/3.
+\]
+保留所有与 \(B(0,R)\) 相交的网格，指标集合记为 \(J_{\delta,R}\)，它是有限集；令
+\[
+ S_{\delta,R}=\bigcup_{k\in J_{\delta,R}}Q_{\delta,k},
+ \quad A_{\delta,R}u=\mathbf1_{S_{\delta,R}}P_\delta u.
+\]
+未保留的网格全部位于球外，至多涉及一个零测球面。逐网格使用平均值收缩估计，得到
+\begin{equation}\label{b1:eq:cell-projection-tail}
+ \begin{aligned}
+ \|P_\delta u-A_{\delta,R}u\|_p^p
+ &=\sum_{k\notin J_{\delta,R}}
+       \delta^d\left|\frac1{\delta^d}\int_{Q_{\delta,k}}u\right|^p\\
+ &\leq\sum_{k\notin J_{\delta,R}}\int_{Q_{\delta,k}}|u|^p
+ \leq\int_{|x|>R}|u|^p.
+ \end{aligned}
+\end{equation}
+因此
+\(\|u-A_{\delta,R}u\|_p<2\varepsilon/3\)，对整族一致成立。
+
+所有 \(A_{\delta,R}u\) 落在有限维空间
+\[
+ V_{\delta,R}
+ =\operatorname{span}\{\,\mathbf1_{Q_{\delta,k}}:k\in J_{\delta,R}\,\},
+\]
+且范数一致有界。具体地，若 \(v=\sum_{k\in J_{\delta,R}}a_k\mathbf1_{Q_{\delta,k}}\)，则
+\[
+ \|v\|_p^p=\delta^d\sum_{k\in J_{\delta,R}}|a_k|^p.
+\]
+于是每个系数都落在固定的有界区间或有界复平面方框中。将这些有限个坐标分别用足够细的有限网格逼近，即得
+\(A_{\delta,R}\mathcal F\) 的有限 \(\varepsilon/3\)-网；每个坐标误差不超过 \(\eta\) 时，总误差不超过
+\(\delta^{d/p}|J_{\delta,R}|^{1/p}\eta\)。
+
+三角不等式说明同一组网点构成 \(\mathcal F\) 的有限
+\(\varepsilon\)-网。因此 \(\mathcal F\) 全有界。由\cref{b1:thm:lp-complete}及前一引理，闭包紧。引理证明中的抽选过程同时给出所述子列结论；反过来，若不存在某个尺度的有限网，就可逐个选出彼此距离至少为该尺度的序列，它不可能有收敛子列。
+\end{proof}
+
+证明始终先对原函数作全空间网格平均，然后截去平均函数的远处部分。\eqref{b1:eq:cell-projection-tail}控制了第二步；没有把“先截断函数、再平移”产生的边界差当成零。范数一致有界用于保证保留下来的有限个平均值有界，尾部与平移条件则决定需要保留多少网格、网格应当多细。
+
+\subsection{尾部一致控制与支集}
 \label{b1:subsec:250103}
 
-待填充。
+若所有函数都在同一个有界集外几乎处处为零，尾部条件自动满足。反过来，尾部条件不要求严格的共同紧支集。例如，一个已经在 \(L^p\) 中收敛的序列连同极限是紧集，定理保证其尾部一致小，而各成员的支集完全可以无界。
+
+固定支集不能排除振荡。令 \(Q=(0,1)^d\)，定义
+\[
+ u_n(x)=\mathbf1_Q(x)(-1)^{\lfloor2^n x_1\rfloor}.
+\]
+这些函数的 \(L^p\) 范数均为一，且在同一个紧集外为零。当 \(m>n\) 时，在每个较粗的二进小区间内，两种符号相同与相反的部分各占一半，故
+\[
+ \|u_m-u_n\|_p^p=2^{p-1}.
+\]
+所以任何子列都不是 Cauchy 列。还可直接看出平移条件失败：取
+\(h_n=2^{-n}e_1\)，在
+\((2^{-n},1)\times(0,1)^{d-1}\) 上，\(u_n(x-h_n)=-u_n(x)\)，从而
+\[
+ \|\tau_{h_n}u_n-u_n\|_p^p
+ \geq2^p(1-2^{-n}).
+\]
+每个固定的 \(u_n\) 仍有自己的平移连续性，但这些尺度不能统一。
+
+另一种失败是向远处移动。取 \(g=\mathbf1_Q\)，令
+\(v_n=\tau_{3ne_1}g\)。由于平移可交换，
+\[
+ \|\tau_hv_n-v_n\|_p=\|\tau_hg-g\|_p,
+\]
+小平移条件对整列一致成立。然而对每个固定 \(R\)，充分远的
+\(v_n\) 把全部 \(L^p\) 质量放在 \(B(0,R)\) 外，尾部条件失败。其支集两两不交，故不同项之间的距离为 \(2^{1/p}\)。这与前面的振荡例子是不同的障碍。
+
+现在把判据用于一般定义域。这里只需要 Lebesgue 可测性，不要求边界光滑。
+
+\begin{corollary}\label{b1:cor:lp-domain-zero-extension-compactness}
+设 \(\Omega\subseteq\mathbb R^d\) 为 Lebesgue 可测集，且
+\(\mathcal F\subseteq L^p(\Omega;\mathbb K)\)。把每个 \(u\) 在域外补零，记为 \(E_0u\)。则 \(\mathcal F\) 在 \(L^p(\Omega)\) 中相对紧，当且仅当它范数一致有界，且
+\[
+ \lim_{R\to\infty}\sup_{u\in\mathcal F}
+      \int_{\Omega\cap\{|x|>R\}}|u|^p=0,\quad
+ \lim_{\delta\downarrow0}\sup_{u\in\mathcal F}
+      \sup_{|h|\leq\delta}\|\tau_hE_0u-E_0u\|_{L^p(\mathbb R^d)}=0.
+\]
+若 \(\Omega\) 有界，第一个极限条件自动成立。空族按平凡情形处理。
+\end{corollary}
+\begin{proof}
+补零是 \(L^p(\Omega)\) 到 \(L^p(\mathbb R^d)\) 的线性等距嵌入，其像为在 \(\Omega^c\) 上几乎处处为零的函数所成的闭子空间。闭性可直接检查：若 \(E_0u_j\to f\) 于全空间 \(L^p\)，则
+\[
+ \|\mathbf1_{\Omega^c}f\|_p
+ \leq\|f-E_0u_j\|_p\longrightarrow0.
+\]
+因此 \(\mathcal F\) 相对紧与 \(E_0\mathcal F\) 相对紧等价。把前一定理用于补零后的族，三个条件正好成为所列条件。
+\end{proof}
+
+其中的平移误差必须在整个空间计算。若只在两份定义域的交集上比较函数，就会漏掉跨越边界的部分。事实上，记
+\(\Omega+h=\{x+h:x\in\Omega\}\)，分割积分区域可得
+\[
+ \begin{aligned}
+ \|\tau_hE_0u-E_0u\|_p^p
+ &=\int_{\Omega\cap(\Omega+h)}
+         |u(x-h)-u(x)|^p\,\mathrm dx\\
+ &\quad+\int_{\Omega\setminus(\Omega+h)}|u(x)|^p\,\mathrm dx
+       +\int_{\Omega\setminus(\Omega-h)}|u(x)|^p\,\mathrm dx.
+ \end{aligned}
+\]
+最后一项由 \(x\in(\Omega+h)\setminus\Omega\) 的积分作平移换元得到。这个恒等式既记录了域内变化，也记录了靠近边界的质量；此处从未假设弱导数可以补零。后续处理 Sobolev 函数时，还须另用延拓定理或零边界条件建立所需的平移估计。
+
+有限 \(p\) 的限制不能直接删去。第\ref{b1:sec:1304}节已经指出，
+\(u=\mathbf1_{(0,1)}\) 满足
+\(\|\tau_hu-u\|_\infty=1\)（\(0<|h|<1\)）。因此连单元素紧集
+\(\{u\}\) 都不满足上述平移条件的无穷范数版本。网格平均的积分误差证明也没有提供对应的上确界逼近，不能把本定理机械改成 \(p=\infty\)。

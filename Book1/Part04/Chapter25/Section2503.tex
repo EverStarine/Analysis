@@ -2,24 +2,251 @@
 \section{弱收敛方法}
 \label{b1:sec:2503}
 
-% TODO: 撰写本节正文。
+紧嵌入使有界序列在较弱的范数下具有收敛子列，Sobolev 空间的自反性则在原空间中提供弱收敛子列。这两种结论经常一起使用，但承担不同的任务：弱收敛保留导数的积分恒等式，紧嵌入加强函数本身的收敛。至于某个非线性能量能否通过极限，还要看它的凸性、增长条件以及所需的收敛方式。
+
+除最后的实值变分问题外，本节允许实值或复值函数。主要指数范围为 \(1<p<\infty\)，并记 \(p'=p/(p-1)\)。
+% 本节证明直接接本书第9章弱闭性、凸泛函弱下半连续性，
+% 第21章Sobolev分量结构及本章Rellich结论。
+% Brezis2011Functional在来源台账中只有出版社信息与目录证据；
+% 文末仅作系统伴读推荐，不将未取得的全文列为某项证明的实读来源。
 
 \subsection{有界序列}
 \label{b1:subsec:250301}
 
-待填充。
+设 \(\Omega\subset\mathbb R^d\) 为开集，并已从一个近似问题中取得估计
+\[
+ \sup_j\left(
+   \|u_j\|_{L^p(\Omega)}^p+
+   \sum_{i=1}^d\|\partial_i u_j\|_{L^p(\Omega)}^p
+ \right)<\infty.
+\]
+由\cref{b1:prop:sobolev-separable-reflexive}与\ref{b1:cor:sobolev-weak-subsequence}，可抽取子列，使
+\[
+ u_{j_\ell}\rightharpoonup u
+ \quad\text{于 }W^{1,p}(\Omega).
+\]
+这一抽列不要求 \(\Omega\) 有界，也不要求边界光滑。它来自空间的自反性，而不是来自区域上的紧嵌入。
+
+计算中也常先把函数和导数分别处理。由于分量只有有限个，对
+\(u_j,\partial_1u_j,\ldots,\partial_du_j\) 逐次抽取子列，就能得到一个共同子列和函数 \(v_0,v_1,\ldots,v_d\in L^p(\Omega)\)，使各分量分别弱收敛到这些函数。此时还不能把 \(v_i\) 直接记成 \(\partial_i v_0\)：它们最初只是不同 \(L^p\) 空间中的极限，导数关系需要由测试函数确认。
+
+在两个端点，上述自反性理由不再适用。\(p=1\) 时，有界导数的积分可能集中；\(p=\infty\) 时，利用 \(L^1\) 测试得到的弱-*收敛也不等于由整个连续对偶测试的弱收敛。前者的集中问题可回看第\ref{b1:sec:1005}节，后者的区别见\cref{b1:prop:sobolev-weak-components}后的说明。
 
 \subsection{弱极限}
 \label{b1:subsec:250302}
 
-待填充。
+\begin{proposition}\label{b1:prop:sobolev-weak-limit-identification}
+设 \(1<p<\infty\)、\(u_j\in W^{1,p}(\Omega)\)，并有
+\[
+ u_j\rightharpoonup v_0,\quad
+ \partial_i u_j\rightharpoonup v_i
+ \quad\text{于 }L^p(\Omega),\quad 1\le i\le d.
+\]
+则 \(v_0\in W^{1,p}(\Omega)\)、\(\partial_i v_0=v_i\)，且
+\(u_j\rightharpoonup v_0\) 于 \(W^{1,p}(\Omega)\)。
+若另有固定的 \(g\in W^{1,p}(\Omega)\) 及范数闭线性子空间
+\(M\subset W^{1,p}(\Omega)\)，并且所有 \(u_j\in g+M\)，则 \(v_0\in g+M\)。
+\end{proposition}
+\begin{proof}
+对任意 \(\varphi\in C_c^\infty(\Omega)\)，函数 \(\varphi,\partial_i\varphi\) 都属于 \(L^{p'}(\Omega)\)。将它们代入两个弱极限，得到
+\[
+ \int_\Omega v_0\partial_i\varphi\,\mathrm dx
+ =\lim_{j\to\infty}\int_\Omega u_j\partial_i\varphi\,\mathrm dx
+ =-\lim_{j\to\infty}\int_\Omega\partial_i u_j\varphi\,\mathrm dx
+ =-\int_\Omega v_i\varphi\,\mathrm dx.
+\]
+这正是 \(v_i\) 为 \(v_0\) 的弱偏导数的定义。由\cref{b1:prop:sobolev-weak-components}，全部分量的弱收敛给出 Sobolev 空间中的弱收敛。
+
+仿射集 \(g+M\) 范数闭且凸，故由\cref{b1:thm:convex-weak-closure}也是弱闭的。因此弱极限仍属于这个集合。
+\end{proof}
+
+取 \(M=W_0^{1,p}(\Omega)\)，便知边界约束
+\[
+ u_j-g\in W_0^{1,p}(\Omega)
+\]
+能够随弱极限保留。这里使用的是\cref{b1:def:sobolev-zero-boundary}中的范数闭包，不需要给任意粗糙边界上的函数指定逐点值。在有界 Lipschitz 区域上，若再调用迹定理，才可把这一约束解释为与 \(g\) 具有相同的迹。
+
+导数的识别只用了线性积分关系。若近似方程中还出现
+\(|\nabla u_j|^{p-2}\nabla u_j\) 等非线性表达式，不能仅凭
+\(\nabla u_j\rightharpoonup\nabla u\) 就把它的弱极限写成对应的极限表达式。后面的变分论证将先比较能量，再从极小性质推导方程。
 
 \subsection{强收敛的恢复}
 \label{b1:subsec:250303}
 
-待填充。
+已有弱极限时，紧性不只是再给出一条强收敛子列。它能确定像序列的全部极限，从而使整列收敛。第\ref{b1:ex:09-compact-improves}题中的抽列方法在此成为使用紧嵌入的基本步骤。
+
+\begin{proposition}\label{b1:prop:compact-weak-to-strong}
+设 \(X,Y\) 为赋范空间，\(T:X\rightarrow Y\) 为紧线性算子。若
+\(x_j\rightharpoonup x\) 于 \(X\)，则 \(Tx_j\to Tx\) 于 \(Y\) 的范数。
+\end{proposition}
+\begin{proof}
+弱收敛列有界。又因每个 \(y^*\in Y^*\) 与 \(T\) 的复合都属于 \(X^*\)，有
+\(Tx_j\rightharpoonup Tx\)。若范数收敛不成立，可选 \(\varepsilon>0\) 及子列，使
+\[
+ \|Tx_{j_\ell}-Tx\|_Y\ge\varepsilon
+ \quad\text{对所有 }\ell.
+\]
+紧性使这条子列还有范数收敛子列，设其极限为 \(y\)。范数收敛蕴含弱收敛，弱极限唯一，故 \(y=Tx\)，与上式矛盾。
+\end{proof}
+
+例如，设 \(\Omega\) 为有界 Lipschitz 区域，且
+\(u_j\rightharpoonup u\) 于 \(W^{1,p}(\Omega)\)。由\cref{b1:thm:rellich-subcritical}，当 \(p<d\) 时，对每个 \(1\le q<p^*=dp/(d-p)\)，整列 \(u_j\to u\) 于 \(L^q(\Omega)\)；当 \(p=d\) 时，这对每个有限 \(q\) 成立。若 \(p>d\)，则\cref{b1:thm:rellich-holder}使连续代表在
+\(C(\overline\Omega)\) 以及每个 \(0<\beta<1-d/p\) 对应的
+\(C^{0,\beta}(\overline\Omega)\) 中整列收敛。这些结论没有使梯度自动强收敛。
+
+要恢复原 Sobolev 范数的收敛，可以补充范数大小的信息。先证明所需的标量事实。
+
+\begin{lemma}\label{b1:lem:lp-weak-norm-strong}
+设 \(1<p<\infty\)。若 \(f_j\rightharpoonup f\) 于实或复 \(L^p(\mu)\)，且
+\(\|f_j\|_p\to\|f\|_p\)，则 \(\|f_j-f\|_p\to0\)。
+\end{lemma}
+\begin{proof}
+标量函数 \(a\mapsto|a|^p\) 严格凸：三角不等式的等号首先要求两个非零标量同向，而实函数 \(t\mapsto t^p\) 在非负半轴上的严格凸性又排除不同的长度。因此
+\[
+ D(a,b)=\frac{|a|^p+|b|^p}{2}
+              -\left|\frac{a+b}{2}\right|^p
+\]
+非负，且仅在 \(a=b\) 时为零。固定 \(0<\varepsilon<1\)。在有限维紧集
+\[
+ \left\{\,(a,b):|a|^p+|b|^p=1,\ |a-b|\ge\varepsilon\,\right\}
+\]
+上，\(D\) 有正的最小值 \(\delta_\varepsilon\)。由齐次性，若
+\(S=|a|^p+|b|^p\) 且 \(|a-b|\ge\varepsilon S^{1/p}\)，便有
+\(D(a,b)\ge\delta_\varepsilon S\)。
+
+另一方面，\((f_j+f)/2\rightharpoonup f\)，故范数弱下半连续性与三角不等式给出
+\[
+ \|f\|_p
+ \le\liminf_j\left\|\frac{f_j+f}{2}\right\|_p
+ \le\limsup_j\left\|\frac{f_j+f}{2}\right\|_p
+ \le\|f\|_p.
+\]
+因此 \(\int D(f_j,f)\,\mathrm d\mu\to0\)。在
+\(|f_j-f|<\varepsilon\bigl(|f_j|^p+|f|^p\bigr)^{1/p}\) 的部分，用该不等式控制差；在其余部分，使用刚才的亏损估计以及
+\(|a-b|^p\le2^{p-1}S\)。积分后得到
+\[
+ \|f_j-f\|_p^p
+ \le\varepsilon^p\bigl(\|f_j\|_p^p+\|f\|_p^p\bigr)
+   +\frac{2^{p-1}}{\delta_\varepsilon}
+       \int D(f_j,f)\,\mathrm d\mu.
+\]
+先让 \(j\to\infty\)，再让 \(\varepsilon\downarrow0\)，即得结论。
+\end{proof}
+
+\begin{proposition}\label{b1:prop:sobolev-weak-norm-strong}
+设 \(1<p<\infty\)，且 \(u_j\rightharpoonup u\) 于 \(W^{1,p}(\Omega)\)。若本书规定的标准范数满足
+\[
+ \|u_j\|_{W^{1,p}(\Omega)}
+ \longrightarrow\|u\|_{W^{1,p}(\Omega)},
+\]
+则 \(u_j\to u\) 于 \(W^{1,p}(\Omega)\)。
+\end{proposition}
+\begin{proof}
+在 \(Z=\Omega\times\{0,\ldots,d\}\) 上取 Lebesgue 测度与有限计数测度的乘积，令
+\[
+ F_j(x,0)=u_j(x),\quad F_j(x,i)=\partial_i u_j(x)
+ \quad(1\le i\le d),
+\]
+并由 \(u\) 定义 \(F\)。每个 \(L^{p'}(Z)\) 测试函数只有有限多个分量，故 Sobolev 弱收敛蕴含 \(F_j\rightharpoonup F\) 于 \(L^p(Z)\)。而标准范数恰好满足
+\[
+ \|F_j\|_{L^p(Z)}=\|u_j\|_{W^{1,p}(\Omega)},\quad
+ \|F_j-F\|_{L^p(Z)}=\|u_j-u\|_{W^{1,p}(\Omega)}.
+\]
+应用前一引理即可。
+\end{proof}
+
+这里使用了标准范数的有限分量 \(p\) 次和形式。等价范数保持强、弱拓扑，却不保证“某一范数的数值收敛”对另一个范数仍然成立；不能把上一命题的附加条件换成任意等价范数而不另作证明。
+
+在 \(\Omega=(0,2\pi)\) 上，取
+\[
+ u_j(x)=\frac{\sin(jx)}j,\quad u_j'(x)=\cos(jx).
+\]
+函数一致趋于零，由零端点及\cref{b1:thm:interval-zero-boundary}也知它们属于 \(W_0^{1,p}(\Omega)\)，但
+\[
+ \|u_j'\|_{L^p(0,2\pi)}^p
+ =\int_0^{2\pi}|\cos x|^p\,\mathrm dx>0.
+\]
+同时梯度弱趋于零：对 \(\psi\in C_c^\infty(0,2\pi)\)，分部积分给出
+\[
+ \left|\int_0^{2\pi}\psi(x)\cos(jx)\,\mathrm dx\right|
+ =\frac1j\left|\int_0^{2\pi}\psi'(x)\sin(jx)\,\mathrm dx\right|
+ \le\frac{\|\psi'\|_1}{j}\longrightarrow0.
+\]
+再用这类函数在 \(L^{p'}\) 中的稠密性和余弦函数的统一 \(L^p\) 界，把结论推广到全部测试函数。于是 \(u_j\rightharpoonup0\) 于 \(W^{1,p}\)，却不强收敛。这个例子中的障碍是梯度振荡；函数值的强收敛没有消除导数的范数。
 
 \subsection{变分问题中的应用}
 \label{b1:subsec:250304}
 
-待填充。
+下面在一个具体能量上实施第\ref{b1:sec:0905}节的变分直接法。零阶正项同时控制函数大小，因此不需要借助 Poincaré 不等式，也不必为区域增加边界正则性。
+
+\begin{theorem}\label{b1:thm:sobolev-variational-minimum}
+设 \(\Omega\subset\mathbb R^d\) 为有界开集，\(1<p<\infty\)，
+\(g\in W^{1,p}(\Omega)\)、\(f\in L^{p'}(\Omega)\) 均为实值。则泛函
+\[
+ J(u)=\frac1p\int_\Omega\bigl(|\nabla u|^p+|u|^p\bigr)\,\mathrm dx
+                -\int_\Omega fu\,\mathrm dx
+\]
+在仿射集 \(\mathcal A=g+W_0^{1,p}(\Omega)\) 上有唯一极小点 \(u\)。这里
+\(|\nabla u|\) 取欧氏长度。极小点也恰是 \(\mathcal A\) 中满足下列积分恒等式的函数：
+\begin{equation}\label{b1:eq:sobolev-euler-lagrange}
+ \int_\Omega\left(
+   |\nabla u|^{p-2}\nabla u\cdot\nabla\varphi
+       +|u|^{p-2}u\varphi
+ \right)\,\mathrm dx
+ =\int_\Omega f\varphi\,\mathrm dx
+ \quad\bigl(\varphi\in W_0^{1,p}(\Omega)\bigr).
+\end{equation}
+其中 \(|z|^{p-2}z\) 在 \(z=0\) 处规定为零。
+\end{theorem}
+\begin{proof}
+记
+\[
+ A(u)=\int_\Omega\bigl(|\nabla u|^p+|u|^p\bigr)\,\mathrm dx.
+\]
+有限维范数的等价性给出 \(c_{d,p}\|u\|_{W^{1,p}}^p\le A(u)\)。当 \(p\ne2\) 时，不把这里的欧氏梯度能量与逐分量 \(p\) 次和认作数值相等。由 Hölder 不等式及带参数的 Young 不等式，
+\[
+ \left|\int_\Omega fu\,\mathrm dx\right|
+ \le\|f\|_{p'}\cdot\|u\|_p
+ \le\frac1{2p}\|u\|_p^p+C_p\|f\|_{p'}^{p'}.
+\]
+所以
+\[
+ J(u)\ge\frac1{2p}A(u)-C_p\|f\|_{p'}^{p'}
+ \ge c\|u\|_{W^{1,p}}^p-C_p\|f\|_{p'}^{p'}.
+\]
+这既给出下界，也保证能量有统一上界的序列在 \(W^{1,p}\) 中有界。\(\mathcal A\) 非空且 \(J(g)\) 有限，故其下确界是实数，可以选取极小化序列。
+
+再看弱下半连续性。映射 \(z\mapsto|z|^p\) 在欧氏空间中凸，因此 \(A\) 凸。它也在 Sobolev 范数下连续：梯度的欧氏 \(L^p\) 范数之差不超过梯度差的欧氏 \(L^p\) 范数，后者由标准 Sobolev 范数控制；零阶项相同。取 \(p\) 次幂仍保持连续。由\cref{b1:thm:convex-weak-lsc}，\(A\) 弱下半连续，而 \(u\mapsto\int fu\) 弱连续。因此 \(J\) 弱下半连续。
+
+从极小化序列中抽出 Sobolev 弱收敛子列。由\cref{b1:prop:sobolev-weak-limit-identification}，极限仍在 \(\mathcal A\) 中；由弱下半连续性，它的能量不超过原下确界，因而取得极小值。若两个实函数代表不同的等价类，它们在正测度集合上不同，严格凸的零阶函数 \(s\mapsto|s|^p\) 使中点能量严格小于两个能量的平均。梯度项凸、线性项不影响这个严格不等式，故极小点唯一。
+
+最后推导方程，并核实积分求导。对固定 \(\varphi\in W_0^{1,p}(\Omega)\)，所有实数 \(t\) 都满足 \(u+t\varphi\in\mathcal A\)。欧氏函数 \(z\mapsto|z|^p/p\) 在包括零点在内的每一点可微，导数为 \(|z|^{p-2}z\)。对 \(0<|t|\le1\)，沿线段积分其导数，得到
+\[
+ \left|\frac{|z+tw|^p-|z|^p}{pt}\right|
+ \le C_p\bigl(|z|^{p-1}+|w|^{p-1}\bigr)\cdot|w|.
+\]
+分别取 \((z,w)=(\nabla u,\nabla\varphi)\) 与 \((u,\varphi)\)。右端由 Hölder 不等式可积，故控制收敛定理允许在两个能量积分内通过差商极限。由
+\[
+ \left.\frac{\mathrm d}{\mathrm dt}J(u+t\varphi)\right|_{t=0}=0
+\]
+即得\eqref{b1:eq:sobolev-euler-lagrange}。
+
+反过来，若 \(u\in\mathcal A\) 满足该恒等式，对任意 \(v\in\mathcal A\) 取 \(\varphi=v-u\)。凸函数的一阶支撑不等式给出
+\[
+ \begin{split}
+ J(v)-J(u)\ge
+ \int_\Omega\bigl(
+  |\nabla u|^{p-2}\nabla u\cdot\nabla(v-u)
+       +|u|^{p-2}u(v-u)-f(v-u)
+ \bigr)\,\mathrm dx=0.
+ \end{split}
+\]
+因此 \(u\) 是极小点，且由已经证明的严格凸性唯一。
+\end{proof}
+
+式\eqref{b1:eq:sobolev-euler-lagrange}称为这一能量的%
+\term*[euler-lagrange-fangcheng]{Euler–Lagrange 方程}[Euler–Lagrange equation]的弱形式。它在推导时只要求一阶弱导数，没有预先假定极小点具有二阶经典导数。
+
+这个存在性证明没有使用 Rellich 紧性：自反性给出弱子列，闭仿射约束保留边界条件，凸性给出能量的弱下半连续性。若再加入关于 \(u\) 的非凸低阶项，弱下半连续性可能失效，此时紧嵌入提供的 \(L^q\) 强收敛才可能用来控制该项，还须核对它的连续性和增长条件。不能仅因已经抽取了弱子列，就宣称全部非线性项都能通过极限。
+
+希望把这些步骤放在 Sobolev 空间与偏微分方程的系统课程中学习，可伴读 Brezis 的《Functional Analysis, Sobolev Spaces and Partial Differential Equations》\cite{Brezis2011Functional}。本节的极小值论证也说明，使用紧性之前先辨认方程中究竟需要哪一种收敛，往往能够减少不必要的几何假设。

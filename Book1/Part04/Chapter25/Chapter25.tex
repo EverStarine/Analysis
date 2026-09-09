@@ -1,25 +1,484 @@
 % !TeX root = ../../Book1.tex
 \chapter{Sobolev 空间中的紧性}
 \label{b1:ch:25}
-% 本章摘要（不计入编号）
 \begin{chapterabstract}
-待填充。
+本章把 Sobolev 范数的统一估计转化为函数列的收敛结论。先以有限网格平均证明有限指数 \(L^p\) 的平移紧性判据，再结合延拓、梯度平移估计及插值得到 Rellich–Kondrachov 定理。随后区分弱极限的识别、较弱范数中的强收敛和原 Sobolev 范数的强收敛，并在具体变分问题中说明各自的用途。临界集中和粗糙边界的例子用来检验结论的适用范围。
 \end{chapterabstract}
 
-% 本章目标（不计入编号）
 \begin{learninggoals}
-待填充。
+\begin{enumerate}
+\item\label{b1:goal:25-fk}用尾部和一致平移连续性构造有限维逼近，证明 Fréchet–Kolmogorov 判据，辨别单个函数的连续性与函数族的一致条件。
+\item\label{b1:goal:25-rellich}从弱梯度控制小平移，证明积分范数和连续函数范数中的紧嵌入，并说明严格低于临界指数的必要性。
+\item\label{b1:goal:25-boundary}区分一般 Lipschitz 区域、任意有界开集上的零边界闭包及内部紧性，高阶结论保留相应的延拓假设。
+\item\label{b1:goal:25-weak}识别 Sobolev 弱极限，分别通过紧映射和标准范数的收敛恢复强收敛，避免对非线性表达式直接代入弱极限。
+\item\label{b1:goal:25-variation}完整实施一个凸能量的极小值证明，并在习题中用紧性保留非凸的单位范数约束。
+\end{enumerate}
 \end{learninggoals}
+
+本章以前一章的连续嵌入为起点，但“连续”与“紧”所回答的问题不同。连续嵌入对每个函数给出同一常数的估计；紧嵌入则使任意有界列都能抽出强收敛子列。有限维空间中有界列自然具有这一性质，无限维函数空间却存在振荡、逃逸和集中，必须逐一控制。
+
+阅读第\ref{b1:sec:2501}节时可以暂时忘记弱导数，只关心怎样用有限个平均值逼近整族函数。第\ref{b1:sec:2502}节再将这个判据用于 Sobolev 空间，所需延拓已在第22章建立。最后一节接回第9章的自反性与弱下半连续性：先问近似问题给了哪种有界估计，再问通过极限究竟需要哪种收敛，而不是一开始就把所有收敛方式混为一谈。
+
+平移判据可对照 Hanche-Olsen 与 Holden 的《The Kolmogorov--Riesz compactness theorem》\cite{HancheOlsenHolden2010Compactness}第3节阅读；本章把其有限维投影路线中的网格平均误差和远处截断分别展开。Sobolev 紧嵌入及变分方法的系统伴读可选 Adams 与 Fournier 的《Sobolev Spaces》\cite{Adams2003Sobolev}和 Brezis 的《Functional Analysis, Sobolev Spaces and Partial Differential Equations》\cite{Brezis2011Functional}。本章的证明始终从前面已经建立的工具出发，不要求读者预先掌握第二卷的偏微分方程理论。
 
 \input{Part04/Chapter25/Section2501}
 \input{Part04/Chapter25/Section2502}
 \input{Part04/Chapter25/Section2503}
-% 本章小结（不计入编号）
-\begin{chaptersummary}
-待填充。
-\end{chaptersummary}
 
+\begin{chaptersummary}
+有限指数 \(L^p\) 的强紧性可以落实为一个具体逼近过程：先用小平移控制网格内的变化，再用尾部控制把无穷多个网格缩减为有限多个。有界弱梯度提供了整族的一致平移模；有界区域及适当延拓提供尾部控制，由此得到最基本的 Sobolev 紧嵌入。更高积分指数和较低 Hölder 指数的紧性，通过连续估计与插值进一步获得。
+
+边界规则性不是所有版本都需要的条件。一般函数可借 Lipschitz 延拓，零边界闭包可以补零，局部问题可以先截断；高阶问题则必须有真正控制相应导数的延拓。临界指数处不再保留插值余量，集中例子说明这会实质性地破坏紧性。
+
+弱收敛保留线性导数关系与闭凸约束，紧性能够加强像空间中的收敛，而原 Sobolev 范数的强收敛还需要额外信息。凸能量的极小值问题可以仅用弱下半连续性；需要保留单位范数等非弱闭约束，或处理合适的非凸低阶项时，强紧性才承担不可替代的任务。下一章进一步研究等价类在多小的例外集外能够确定点值，这与本章的积分范数紧性是另一层问题。
+\end{chaptersummary}
 
 \BookExercises
 
-待填充。
+% 第二十五章习题临时稿；不另设 BookExercises 入口。
+% 八题均按本章及前章已建立的工具自拟，来源与实质增量逐题说明，不冒认教材原题号。
+% 不使用容量、谱完备性或尚未建立的偏微分方程正则性。
+
+\begin{exercise}\label{b1:ex:25-fk-redundant-boundedness}
+设 \(1\le p<\infty\)，\(\mathcal F\subset L^p(\mathbb R^d)\) 满足
+\[
+ \lim_{R\to\infty}\sup_{f\in\mathcal F}
+       \|f\|_{L^p(\{|x|>R\})}=0,
+ \quad
+ \lim_{\delta\downarrow0}\sup_{f\in\mathcal F}
+       \sup_{|h|<\delta}\|\tau_hf-f\|_p=0,
+\]
+其中 \(\tau_hf(x)=f(x-h)\)。证明 \(\mathcal F\) 的 \(L^p\) 范数自动一致有界。
+因此，Fréchet–Kolmogorov 判据虽然可以列成三个条件，却不能据此断言三个条件在逻辑上相互独立。
+\end{exercise}
+% 来源：自拟推导；用长位移的有限分步把球内质量与球外尾部相比较，不借用未实读论文的证明。
+\begin{solution}
+取 \(R\ge1\)，使每个 \(f\in\mathcal F\) 的球外范数不超过 \(1\)，再取
+\(\delta>0\)，使所有 \(|h|<\delta\) 的平移误差都不超过 \(1\)。固定
+\(a=3Re_1\)，选一个正整数 \(N\)，使 \(|a|/N<\delta\)，并记 \(h=a/N\)。
+平移等距性与望远镜求和给出
+\[
+ \tau_af-f=\sum_{j=0}^{N-1}\tau_{jh}(\tau_hf-f),
+ \quad
+ \|\tau_af-f\|_p\le N.
+\]
+对 \(x\in B(0,R)\)，有 \(|x-a|>R\)，因此
+\[
+ \|\tau_af\|_{L^p(B(0,R))}
+   =\|f\|_{L^p(B(0,R)-a)}\le1.
+\]
+于是
+\[
+ \begin{aligned}
+ \|f\|_p
+ &\le\|f\|_{L^p(B(0,R))}
+              +\|f\|_{L^p(\{|x|>R\})}\\
+ &\le\|f-\tau_af\|_p
+        +\|\tau_af\|_{L^p(B(0,R))}+1
+ \le N+2.
+ \end{aligned}
+\]
+球面为零测集，开闭球的差别不影响这些范数。数 \(N\) 只由两个统一条件选出的
+\(R,\delta\) 决定，不依赖 \(f\)，故得到一致界。再结合定理%
+\ref{b1:thm:frechet-kolmogorov-lp}，这两个条件本身已经足以推出相对紧性。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:25-weighted-confinement}
+设 \(1\le p<\infty\)、\(a>0\)、\(0\le M<\infty\)。证明集合
+\[
+ \mathcal K=\left\{u\in W^{1,p}(\mathbb R^d):
+   \|u\|_p^p+\|\nabla u\|_p^p+
+        \int_{\mathbb R^d}|x|^a\cdot|u(x)|^p\,\mathrm dx
+                               \le M^p\right\}
+\]
+在 \(L^p(\mathbb R^d)\) 中相对紧。解释最后的加权项如何替代有界区域或共同紧支集的条件。
+\end{exercise}
+% 来源：自拟；全空间的矩控制给出尾部，弱导数给出一致平移控制，组合为非有界区域上的紧性。
+\begin{solution}
+集合中的函数首先满足 \(\|u\|_p\le M\)。对 \(R>0\)，由
+\(|x|^a\ge R^a\) 在球外成立，得到
+\[
+ \int_{|x|>R}|u(x)|^p\,\mathrm dx
+ \le R^{-a}\int_{\mathbb R^d}|x|^a\cdot|u(x)|^p\,\mathrm dx
+ \le M^pR^{-a}.
+\]
+因此尾部一致趋于零。
+
+还需控制平移。若 \(u\in C_c^\infty(\mathbb R^d)\)，线段积分给出
+\[
+ u(x-h)-u(x)
+       =-\int_0^1\nabla u(x-th)\cdot h\,\mathrm dt,
+\]
+从而 Minkowski 积分不等式及平移等距性推出
+\[
+ \|\tau_hu-u\|_p\le|h|\cdot\|\nabla u\|_p.
+\]
+由定理\ref{b1:thm:whole-space-sobolev-density}，对一般
+\(u\in W^{1,p}(\mathbb R^d)\) 作光滑紧支集逼近；等式两侧所需的
+\(L^p\) 范数都可通过极限，上式仍成立。因此对 \(\mathcal K\) 有
+\[
+ \sup_{u\in\mathcal K}\|\tau_hu-u\|_p\le M|h|\longrightarrow0.
+\]
+定理\ref{b1:thm:frechet-kolmogorov-lp}的三个条件均已满足，所求相对紧性随之成立。
+
+加权项并不要求任何一个函数具有紧支集；它要求所有函数在远处放置的质量都受到同一个界限制。导数界约束局部振荡，而这个额外条件阻止质量整体移向无穷远，两者承担不同的任务。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:25-critical-mass-concentration}
+设 \(d\ge2\)、\(1\le p<d\)、\(p^*=dp/(d-p)\)，取非零
+\(\varphi\in C_c^\infty(B(0,1))\)。对 \(0<\varepsilon<1\)，令
+\[
+ u_\varepsilon(x)=\varepsilon^{1-d/p}\varphi(x/\varepsilon),
+ \quad x\in\mathbb R^d.
+\]
+\begin{enumerate}
+ \item\label{b1:item:25-critical-no-strong-subsequence}
+ 证明 \(u_\varepsilon\) 在 \(W_0^{1,p}(B(0,1))\) 中有界，在每个
+ \(1\le q<p^*\) 的 \(L^q\) 中趋于零；但对于任意 \(\varepsilon_n\downarrow0\)，
+ \((u_{\varepsilon_n})\) 都没有 \(L^{p^*}\) 强收敛子列。
+ \item\label{b1:item:25-critical-defect-measures}
+ 把
+ \[
+  \mu_\varepsilon=|u_\varepsilon|^{p^*}\,\mathrm dx,\quad
+  \nu_\varepsilon=|\nabla u_\varepsilon|^p\,\mathrm dx
+ \]
+ 看成全空间上的有限正 Borel 测度。证明
+ \[
+  \mu_\varepsilon\Rightarrow
+      \|\varphi\|_{p^*}^{p^*}\delta_0,
+  \quad
+  \nu_\varepsilon\Rightarrow
+      \|\nabla\varphi\|_p^p\delta_0.
+ \]
+\end{enumerate}
+\end{exercise}
+% 来源：自拟；临界重缩放后进一步计算有限测度的弱极限，不止于前章排除过强范数估计。
+\begin{solution}
+每个函数光滑且具有包含在单位球内部的紧支集。变量代换给出
+\[
+ \|\nabla u_\varepsilon\|_p=\|\nabla\varphi\|_p,
+ \quad
+ \|u_\varepsilon\|_q
+  =\varepsilon^{1-d/p+d/q}\|\varphi\|_q
+                      \quad(1\le q<\infty).
+\]
+特别地，\(\|u_\varepsilon\|_p=\varepsilon\|\varphi\|_p\)，所以
+\(W^{1,p}\) 范数一致有界。当 \(q<p^*\) 时，指数
+\(1-d/p+d/q\) 为正，得到强 \(L^q\) 收敛；在 \(q=p^*\) 时，这个指数等于零，因而
+\[
+ \|u_\varepsilon\|_{p^*}=\|\varphi\|_{p^*}>0.
+\]
+对每个 \(x\ne0\)，当 \(\varepsilon\) 足够小时，\(x\) 已在
+\(\varepsilon\operatorname{supp}\varphi\) 之外，所以 \(u_\varepsilon(x)=0\)。
+假如某个子列在 \(L^{p^*}\) 中强收敛，则它还能抽出几乎处处收敛的子列；上述逐点结论使其极限只能为零。但强收敛应使范数趋于零，与固定的正范数矛盾。这排除了全部强收敛子列。
+
+对第二问，任取 \(\psi\in C_b(\mathbb R^d)\)。临界指数恰好消去变量代换产生的尺度因子，故
+\[
+ \int\psi\,\mathrm d\mu_\varepsilon
+    =\int_{\mathbb R^d}\psi(\varepsilon y)|\varphi(y)|^{p^*}\,\mathrm dy
+    \longrightarrow\psi(0)\|\varphi\|_{p^*}^{p^*}.
+\]
+控制收敛适用，因为 \(\psi\) 有界，而 \(|\varphi|^{p^*}\) 可积。同样，
+\[
+ \int\psi\,\mathrm d\nu_\varepsilon
+    =\int_{\mathbb R^d}\psi(\varepsilon y)|\nabla\varphi(y)|^p\,\mathrm dy
+    \longrightarrow\psi(0)\|\nabla\varphi\|_p^p.
+\]
+这就是有限测度弱收敛的定义。函数在次临界范数中消失，并不意味着这些临界总量消失；它们集中到了一个点上。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:25-holder-endpoint}
+设 \(d<p<\infty\)、\(\alpha=1-d/p\)，取
+\(\varphi\in C_c^\infty(B(0,1/4))\) 且 \(\varphi(0)=1\)。对
+\(0<\varepsilon<1\)，在单位球 \(B\) 上令
+\[
+ u_\varepsilon(x)=\varepsilon^\alpha\varphi(x/\varepsilon).
+\]
+证明这是一族有界的 \(W_0^{1,p}(B)\) 函数，并且对每个
+\(0<\beta<\alpha\)，有 \(u_\varepsilon\to0\) 于
+\(C^{0,\beta}(\overline B)\)。另一方面，证明对任何
+\(\varepsilon_n\downarrow0\)，它都没有 \(C^{0,\alpha}(\overline B)\) 强收敛子列。
+由此区分 Morrey 的连续嵌入指数与 Rellich 的紧嵌入指数。
+\end{exercise}
+% 来源：自拟；在可用的临界 Hölder 估计内证明失去相对紧性，不再讨论更高指数是否有统一界。
+\begin{solution}
+与上一题相同的变量代换给出
+\[
+ \|u_\varepsilon\|_p=\varepsilon\|\varphi\|_p,
+ \quad
+ \|\nabla u_\varepsilon\|_p=\|\nabla\varphi\|_p,
+ \quad
+ \|u_\varepsilon\|_\infty=\varepsilon^\alpha\|\varphi\|_\infty.
+\]
+函数均光滑且内部紧支集，所以属于 \(W_0^{1,p}(B)\)，并在其中有界；最后一式还给出一致趋零。
+
+把 \(\varphi\) 视为全空间光滑紧支集函数。它的全空间
+\(\beta\)-Hölder 半范数有限：距离不超过 \(1\) 时用梯度上界，距离超过 \(1\) 时用两倍上确界。对任意 \(x,y\in B\) 作缩放比较，得到
+\[
+ [u_\varepsilon]_{0,\beta;\overline B}
+     \le\varepsilon^{\alpha-\beta}
+                   [\varphi]_{0,\beta;\mathbb R^d}.
+\]
+若 \(\beta<\alpha\)，这个半范数也趋于零，因而得到所求的强
+\(C^{0,\beta}\) 收敛。
+
+但取 \(a=e_1/2\)，有 \(\varphi(a)=0\)。在 \(0,\varepsilon a\) 两点比较，
+\[
+ [u_\varepsilon]_{0,\alpha;\overline B}
+ \ge\frac{|u_\varepsilon(0)-u_\varepsilon(\varepsilon a)|}
+             {|\varepsilon a|^\alpha}
+ =2^\alpha.
+\]
+若某个子列在 \(C^{0,\alpha}\) 中强收敛，它也应一致收敛；唯一可能的极限是零。
+然而强 \(C^{0,\alpha}\) 收敛到零又要求上述半范数趋于零，矛盾。
+所以临界指数处有连续嵌入，并不足以推出同一目标空间中的相对紧性。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:25-infinitely-many-components}
+设 \(d\ge1\)、\(1\le p<\infty\)，令
+\[
+ x_n=2^{-n}e_1,\quad r_n=2^{-n-3},\quad
+ B_n=B(x_n,r_n),\quad
+ \Omega=\bigcup_{n=1}^\infty B_n.
+\]
+证明 \(\Omega\) 是有界开集，但嵌入
+\(W^{1,p}(\Omega)\to L^p(\Omega)\) 不紧。具体地，考虑
+\[
+ u_n=|B_n|^{-1/p}\mathbf1_{B_n}
+                  \quad\text{作为 }\Omega\text{ 上的函数},
+\]
+计算它们的弱导数、Sobolev 范数和两两 \(L^p\) 距离。
+解释这为什么不反驳任意有界开集上的 \(W_0^{1,p}\) 紧嵌入。
+\end{exercise}
+% 来源：自拟；无限分量上的归一化常数，区别无边界条件空间与零边界闭包。
+\begin{solution}
+相邻两个中心的距离为 \(2^{-n-1}\)，而半径之和为
+\(3\cdot2^{-n-4}\)，前者严格较大；不相邻的球距离更大。因此各球闭包两两不交。
+所有球都包含在单位球内，故 \(\Omega\) 是有界开集。中心列趋于原点，而原点不属于 \(\Omega\)。
+
+函数 \(u_n\) 在每个分量内都是常数，因此其弱梯度在 \(\Omega\) 内为零。也可以直接检验：若 \(\phi\in C_c^\infty(\Omega)\)，则
+\(\phi|_{B_n}\) 的支集与 \(\partial B_n\) 保持正距离，故对每个坐标 \(i\)，
+\[
+ \int_\Omega u_n\partial_i\phi
+      =|B_n|^{-1/p}\int_{B_n}\partial_i\phi=0.
+\]
+这里是在 \(\Omega\) 内求弱导数，没有把 \(u_n\) 补零后跨越分量边界求导。
+由归一化可得
+\[
+ \|u_n\|_{L^p(\Omega)}=1,\quad
+ \nabla u_n=0,\quad
+ \|u_n\|_{W^{1,p}(\Omega)}=1.
+\]
+当 \(n\ne m\) 时，两个函数支集不交，因此
+\[
+ \|u_n-u_m\|_{L^p(\Omega)}^p
+          =\|u_n\|_p^p+\|u_m\|_p^p=2.
+\]
+这是一列有界 Sobolev 函数，却没有 \(L^p\) Cauchy 子列，故嵌入不紧。
+
+最后，任何一个 \(u_n\) 都不属于 \(W_0^{1,p}(\Omega)\)。否则定理%
+\ref{b1:thm:zero-boundary-poincare}会使
+\(\|u_n\|_p\le C\|\nabla u_n\|_p=0\)，与其范数等于 \(1\) 矛盾。
+因此这个例子检验的是不加边界条件且不加边界规则性时的失败，不涉及零边界版本的反例。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:25-nonlinear-reaction-limit}
+设 \(\Omega\subset\mathbb R^d\) 为有界 Lipschitz 开集，
+\(1\le p<d\)、\(1<q<p^*=dp/(d-p)\)，并令 \(q'=q/(q-1)\)。
+设实值函数 \(u_n\rightharpoonup u\) 于 \(W^{1,p}(\Omega)\)。
+\begin{enumerate}
+ \item\label{b1:item:25-reaction-strong-limit}
+ 证明
+ \[
+  |u_n|^{q-2}u_n\longrightarrow |u|^{q-2}u
+                       \quad\text{于 }L^{q'}(\Omega),
+ \]
+ 其中在函数值为零处规定相应表达式为零。分别给出 \(q\ge2\) 和
+ \(1<q<2\) 所需的点态估计。
+ \item\label{b1:item:25-reaction-strong-weak-pairing}
+ 若另有 \(v_n\rightharpoonup v\) 于 \(L^q(\Omega)\)，证明
+ \[
+  \int_\Omega |u_n|^{q-2}u_n v_n
+          \longrightarrow\int_\Omega |u|^{q-2}u v.
+ \]
+\end{enumerate}
+\end{exercise}
+% 来源：自拟；次临界紧嵌入与幂次映射的定量连续性，再组合强弱配对，不把非线性操作直接套在弱极限上。
+\begin{solution}
+由定理\ref{b1:thm:rellich-subcritical}，嵌入
+\(W^{1,p}(\Omega)\to L^q(\Omega)\) 是紧线性算子。命题%
+\ref{b1:prop:compact-weak-to-strong}因而给出整列
+\(u_n\to u\) 于 \(L^q(\Omega)\)，不需要再为不同测试函数分别抽子列。
+记 \(F(t)=|t|^{q-2}t\)。首先
+\[
+ \|F(w)\|_{q'}=\|w\|_q^{q-1},
+\]
+所以题中的非线性项都属于所需对偶指数空间。
+
+当 \(q>2\) 时，由 \(F'(t)=(q-1)|t|^{q-2}\) 及一维积分公式，
+\[
+ |F(a)-F(b)|
+       \le(q-1)(|a|+|b|)^{q-2}\cdot|a-b|.
+\]
+以指数 \(q/(q-2)\) 和 \(q\) 对乘积使用 Hölder 不等式，得到
+\[
+ \|F(u_n)-F(u)\|_{q'}
+ \le(q-1)(\|u_n\|_q+\|u\|_q)^{q-2}
+                              \cdot\|u_n-u\|_q
+ \longrightarrow0.
+\]
+在 \(q=2\) 时，\(F(t)=t\)，结论直接就是 \(L^2\) 强收敛。
+
+当 \(1<q<2\) 时，记 \(\theta=q-1\in(0,1)\)。同号的 \(a,b\) 可用
+\(t^\theta\) 的次可加性得到
+\(|F(a)-F(b)|\le|a-b|^\theta\)；异号时，由凹性有
+\[
+ |F(a)-F(b)|
+   =|a|^\theta+|b|^\theta
+   \le2^{1-\theta}(|a|+|b|)^\theta
+   =2^{1-\theta}|a-b|^\theta.
+\]
+因而对所有实数都有
+\[
+ |F(a)-F(b)|\le2^{2-q}|a-b|^{q-1},
+ \quad
+ \|F(u_n)-F(u)\|_{q'}
+                  \le2^{2-q}\|u_n-u\|_q^{q-1}\longrightarrow0.
+\]
+这完成第一问。
+
+对于第二问，弱收敛列 \((v_n)\) 的 \(L^q\) 范数一致有界。分解为
+\[
+ \int_\Omega F(u_n)v_n-\int_\Omega F(u)v
+   =\int_\Omega\bigl(F(u_n)-F(u)\bigr)v_n
+                       +\int_\Omega F(u)(v_n-v).
+\]
+第一项的绝对值不超过
+\(\|F(u_n)-F(u)\|_{q'}\cdot\|v_n\|_q\)，所以趋于零；第二项则因
+\(F(u)\in L^{q'}\) 是一个固定的弱收敛测试函数而趋于零。
+这里先由紧性恢复了 \(u_n\) 的强收敛，才有资格把非线性项传到极限。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:25-first-dirichlet-eigenvalue}
+设 \(\Omega\subset\mathbb R^d\) 为非空有界开集，本题取实值函数，并定义
+\[
+ \lambda_1=\inf\left\{
+       \int_\Omega|\nabla v|^2:
+       v\in H_0^1(\Omega),\ \|v\|_{L^2(\Omega)}=1
+                    \right\}.
+\]
+\begin{enumerate}
+ \item\label{b1:item:25-first-eigenvalue-attainment}
+ 证明 \(0<\lambda_1<\infty\)，且存在 \(u\in H_0^1(\Omega)\) 取得这个下确界。
+ \item\label{b1:item:25-first-eigenvalue-equation}
+ 不借助抽象乘子定理，沿保持约束的曲线证明
+ \[
+  \int_\Omega\nabla u\cdot\nabla\phi
+       =\lambda_1\int_\Omega u\phi
+              \quad\bigl(\phi\in H_0^1(\Omega)\bigr).
+ \]
+ 若非零 \(w\in H_0^1(\Omega)\) 也满足这个恒等式，但参数换成实数
+ \(\lambda\)，证明 \(\lambda\ge\lambda_1\)。
+\end{enumerate}
+本题的方程按弱导数解释，不要求证明特征函数的经典光滑性或全部特征函数的完备性。
+\end{exercise}
+% 来源：自拟；L2 单位球这一非凸约束下的直接法与归一化变分，不重复正文带正零阶项的无约束凸能量问题。
+\begin{solution}
+由定理\ref{b1:thm:zero-boundary-poincare}，存在 \(C_P<\infty\)，使
+\(\|v\|_2\le C_P\|\nabla v\|_2\) 对所有 \(v\in H_0^1(\Omega)\) 成立。
+于是约束集中的每个函数都有梯度能量至少 \(C_P^{-2}\)，故
+\(\lambda_1>0\)。又因为非空开集包含一个球，可在其中取非零光滑紧支集函数并归一化，得到约束集非空且 \(\lambda_1<\infty\)。
+
+取极小化序列 \(u_n\)，满足 \(\|u_n\|_2=1\) 及
+\(\|\nabla u_n\|_2^2\to\lambda_1\)。这列函数在 Hilbert 空间
+\(H_0^1(\Omega)\) 中有界。由定理\ref{b1:thm:reflexive-weak-subsequence}，可以抽出一个子列在该空间中弱收敛到某个 \(u\)。
+定理\ref{b1:thm:rellich-subcritical}与\ref{b1:thm:rellich-holder}的零边界版本给出
+\(H_0^1(\Omega)\to L^2(\Omega)\) 的紧性：在 \(d>2\) 时
+\(2<2d/(d-2)\)，在 \(d=2\) 时使用临界的有限指数结论；在 \(d=1\) 时，紧 Hölder 嵌入先给出一致收敛，再由区域有界性推出 \(L^2\) 收敛。
+结合命题\ref{b1:prop:compact-weak-to-strong}，该子列在 \(L^2\) 中强收敛到
+\(u\)，所以 \(\|u\|_2=1\)。
+
+梯度范数的弱下半连续性给出
+\[
+ \|\nabla u\|_2^2
+      \le\liminf_n\|\nabla u_n\|_2^2=\lambda_1.
+\]
+由于 \(u\) 已满足约束，下确界的定义又给出反向不等式，因此
+\(\|\nabla u\|_2^2=\lambda_1\)。强 \(L^2\) 收敛在这里保住了单位范数约束；仅有弱收敛并不能保证这一点。
+
+对任意 \(\phi\in H_0^1(\Omega)\)，令
+\[
+ v_t=\frac{u+t\phi}{\|u+t\phi\|_2}
+\]
+并取充分小的实数 \(t\)，使分母非零。这个曲线始终属于约束集。
+记 \(A=\int_\Omega\nabla u\cdot\nabla\phi\)、\(B=\int_\Omega u\phi\)，则
+\[
+ \int_\Omega|\nabla v_t|^2
+ =\frac{\lambda_1+2tA+t^2\|\nabla\phi\|_2^2}
+        {1+2tB+t^2\|\phi\|_2^2}.
+\]
+左侧在 \(t=0\) 取得极小值，故其导数为零，即
+\(2A-2\lambda_1B=0\)。这正是所求恒等式。特别地，对光滑紧支集测试函数成立，所以它表示分布意义的
+\(-\Delta u=\lambda_1u\)，零边界条件则由 \(u\in H_0^1(\Omega)\) 表达。
+
+最后，若非零 \(w\) 满足参数为 \(\lambda\) 的同类弱方程，取测试函数
+\(\phi=w\)，便有
+\[
+ \lambda=\frac{\|\nabla w\|_2^2}{\|w\|_2^2}\ge\lambda_1.
+\]
+因此取得的参数确实是所有这种弱 Dirichlet 特征值中的最小值；这个结论不需要预先建立谱分解。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:25-recover-weak-limit}
+设 \(X\) 为自反 Banach 空间，\(Y\) 为 Banach 空间，
+\(T:X\to Y\) 为有界线性单射。设 \((x_n)\) 在 \(X\) 中有界，且
+\(Tx_n\to y\) 于 \(Y\) 的范数。
+\begin{enumerate}
+ \item\label{b1:item:25-reflexive-recovery}
+ 证明存在唯一 \(x\in X\)，使 \(Tx=y\)，并且整列
+ \(x_n\rightharpoonup x\) 于 \(X\)。注意本方向没有假设 \(T\) 为紧算子。
+ \item\label{b1:item:25-nonreflexive-recovery-failure}
+ 证明去掉 \(X\) 的自反性后，结论即使对紧线性单射也会失败。具体检验
+ \[
+  T:\ell^1\longrightarrow\ell^2,\quad
+  T(a_1,a_2,\ldots)=(a_1,a_2/2,a_3/3,\ldots)
+ \]
+ 及 \(\ell^1\) 的标准单位向量列。
+\end{enumerate}
+\end{exercise}
+% 来源：自拟；由较弱空间中的强极限识别原空间弱极限，配合紧对角算子展示自反性不可由紧性替代。
+\begin{solution}
+由定理\ref{b1:thm:reflexive-weak-subsequence}，有界列可以抽出弱收敛子列
+\(x_{n_j}\rightharpoonup x\)。有界线性算子保持弱收敛，因为对每个
+\(f\in Y^*\)，\(f\circ T\in X^*\)，所以 \(Tx_{n_j}\rightharpoonup Tx\)。
+另一方面，它已在范数中趋于 \(y\)，故也弱收敛到 \(y\)。弱极限唯一，得到
+\(Tx=y\)。单射性使这样的 \(x\) 至多有一个。
+
+还须从一个子列推进到整列。假设整列不弱收敛到 \(x\)，则存在
+\(g\in X^*\)、\(\varepsilon>0\) 及一个子列，满足
+\[
+ |g(x_{n_j})-g(x)|\ge\varepsilon\quad\text{对每个 }j.
+\]
+这个子列仍然有界，再用自反性抽出弱收敛子列，记其弱极限为 \(z\)。
+按前面的论证，必有 \(Tz=y\)，从而单射性给出 \(z=x\)。这与所列标量距离始终不小于 \(\varepsilon\) 矛盾，因此整列确实弱收敛。
+
+对第二问，所给对角算子线性且单射，并满足
+\(\|Ta\|_2\le\|a\|_1\)。记 \(T_Na\) 为只保留前 \(N\) 个坐标的部分，则
+\[
+ \|(T-T_N)a\|_2
+       \le\frac1{N+1}\|a\|_2
+       \le\frac1{N+1}\|a\|_1.
+\]
+对 \(\ell^1\) 单位球，前 \(N\) 个坐标的像是有限维有界集，具有有限的任意精度网；尾项又由上式一致控制。因此 \(T\) 的单位球像全有界，在完备空间
+\(\ell^2\) 中相对紧，说明 \(T\) 是紧算子。
+
+可是对标准单位向量 \(e_n\)，有
+\[
+ \|e_n\|_1=1,\quad \|Te_n\|_2=1/n\longrightarrow0.
+\]
+若原向量列弱收敛，其极限由 \(T\) 的连续性和单射性只能为零。但连续线性泛函
+\[
+ g(a)=\sum_{j=1}^\infty a_j,\quad |g(a)|\le\|a\|_1,
+\]
+始终满足 \(g(e_n)=1\)，故这个列并不弱收敛到零。紧性能够控制像空间中的收敛，不能替代原空间中抽取弱子列所需的条件。
+\end{solution}

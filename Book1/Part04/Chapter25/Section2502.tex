@@ -2,24 +2,184 @@
 \section{Rellich–Kondrachov 定理}
 \label{b1:sec:2502}
 
-% TODO: 撰写本节正文。
+第24章的嵌入估计说明，一族函数的弱导数若有统一积分界，函数本身就有更强的可积性或连续性。但连续嵌入只给出范数估计，尚未保证有收敛子列。本节再用梯度控制小平移，从而把 Sobolev 有界性接到上一节的紧性判据。区域有界提供尾部控制，边界延拓则使平移能够在全空间进行。
+
+两项限制会贯穿证明。第一，一般区域上的函数不能直接补零后求弱导数，必须使用第22章建立的延拓。第二，从连续嵌入得到紧嵌入时，目标指数通常要留出严格余量；临界指数处的缩放会保留一部分范数，而使支集越来越小。
 
 \subsection{有界区域}
 \label{b1:subsec:250201}
 
-待填充。
+先明确梯度所提供的统一模。以下有限 \(p\) 的估计已用于第23章的整数阶到分数阶嵌入；把它单列出来，便于识别紧性证明的输入。
+
+\begin{lemma}\label{b1:lem:sobolev-translation-gradient}
+若 \(1\le p<\infty\)、\(u\in W^{1,p}(\mathbb R^d)\)，则
+\begin{equation}\label{b1:eq:sobolev-translation-gradient}
+ \|\tau_hu-u\|_{L^p(\mathbb R^d)}
+ \le |h|\cdot\bigl\|\,|\nabla u|\,\bigr\|_{L^p(\mathbb R^d)}
+ \quad(h\in\mathbb R^d).
+\end{equation}
+\end{lemma}
+\begin{proof}
+先设 \(u\in C_c^\infty(\mathbb R^d)\)。沿线段积分得
+\[
+ u(x-h)-u(x)=-\int_0^1\nabla u(x-th)\cdot h\,\mathrm dt.
+\]
+对 \(t\) 的概率积分使用 Jensen 不等式，再对 \(x\) 积分，得到
+\[
+ \int_{\mathbb R^d}|u(x-h)-u(x)|^p\,\mathrm dx
+ \le |h|^p\int_0^1\int_{\mathbb R^d}|\nabla u(x-th)|^p
+                \,\mathrm dx\,\mathrm dt
+ =|h|^p\int_{\mathbb R^d}|\nabla u|^p.
+\]
+由\cref{b1:thm:whole-space-sobolev-density}取光滑逼近；平移等距，梯度的欧氏 \(L^p\) 范数又受标准 Sobolev 范数控制，故两端都能通过极限。
+\end{proof}
+
+\begin{proposition}\label{b1:prop:rellich-base-lp}
+设 \(\Omega\subset\mathbb R^d\) 为有界 Lipschitz 区域，\(1\le p<\infty\)。则 \(W^{1,p}(\Omega)\) 的任意有界子集在 \(L^p(\Omega)\) 中相对紧。
+\end{proposition}
+\begin{proof}
+由\cref{b1:thm:lipschitz-domain-extension}，存在固定的有界线性延拓算子 \(E\)，其像中所有函数都在一个与函数无关的紧集 \(K\) 外为零。若 \(\mathcal F\) 在 \(W^{1,p}(\Omega)\) 中有界，则 \(E\mathcal F\) 在全空间 \(W^{1,p}\) 中有界，因而在 \(L^p\) 中有界；共同支集保证远处尾部为零；上一引理又给出
+\[
+ \sup_{u\in\mathcal F}\|\tau_hEu-Eu\|_p\le C|h|.
+\]
+Fréchet–Kolmogorov 定理的三个条件都满足。因此任取 \(u_j\in\mathcal F\)，可抽取子列使 \(Eu_j\) 在全空间 \(L^p\) 中收敛。限制到 \(\Omega\) 不增加 \(L^p\) 距离，就得到所需收敛子列。
+\end{proof}
+
+证明不要求 \(\Omega\) 连通，因为所用的一阶延拓不要求连通。它也不要求事先知道序列有弱极限，因而包括 \(p=1\)。不过，把“有界 Lipschitz 区域”仅改成“有界开集”，对一般 \(W^{1,p}\) 就不成立；第\ref{b1:ex:25-infinitely-many-components}题用越来越小的连通分支给出反例。
 
 \subsection{次临界嵌入}
 \label{b1:subsec:250202}
 
-待填充。
+若赋范空间之间的包含映射连续，并把有界集映为相对紧集，就称这个嵌入为\term[jinqianru]{紧嵌入}[compact embedding]。下面的结果通常称为\term*[rellich-kondrachov-dingli]{Rellich–Kondrachov 定理}[Rellich--Kondrachov theorem]。这里分别列出积分范数与连续函数范数的结论。
+
+\begin{theorem}[Rellich–Kondrachov，有限目标指数]\label{b1:thm:rellich-subcritical}
+设 \(\Omega\subset\mathbb R^d\) 为有界 Lipschitz 区域，\(1\le p<\infty\)。下列嵌入是紧的：
+\begin{enumerate}
+\item 若 \(p<d\)，则 \(W^{1,p}(\Omega)\subset L^q(\Omega)\)，其中 \(1\le q<dp/(d-p)\)。
+\item 若 \(p=d\)，则 \(W^{1,p}(\Omega)\subset L^q(\Omega)\)，其中 \(1\le q<\infty\)。
+\item 若 \(p>d\)，则 \(W^{1,p}(\Omega)\subset L^q(\Omega)\)，其中 \(1\le q<\infty\)；实际上连续代表还满足下面的更强结论。
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+取 Sobolev 有界列。前一命题给出在 \(L^p\) 中收敛的子列。若 \(q<p\)，有限测度上的 Hölder 不等式
+\[
+ \|v\|_q\le m_d(\Omega)^{1/q-1/p}\|v\|_p
+\]
+已经给出 \(L^q\) 收敛。若存在 \(r>q>p\)，使原列的 \(L^r\) 范数一致有界，则对任意两项之差使用第10章的插值估计，得到
+\[
+ \|u_j-u_k\|_q
+ \le \|u_j-u_k\|_p^\theta
+       \cdot\|u_j-u_k\|_r^{1-\theta},
+ \qquad
+ \frac1q=\frac\theta p+\frac{1-\theta}r.
+\]
+于是子列在 \(L^q\) 中也是 Cauchy 列。由完备性它有 \(L^q\) 极限；有限测度上两种范数收敛都蕴含依测度收敛，故极限相同。
+
+当 \(p<d\) 时，由第24章的域上 Sobolev 嵌入可取 \(r=p^*=dp/(d-p)\)。当 \(p=d\ge2\) 时，第\ref{b1:sec:2405}节已经证明任意有限指数的连续嵌入，任选有限的 \(r>q\) 即可。若不读该选读节，也可先在有限测度的 \(\Omega\) 上降到 \(p_0<d\)，选 \(p_0\) 足够接近 \(d\) 使 \(dp_0/(d-p_0)>q\)，再用次临界嵌入获得同一 \(L^r\) 界。
+
+剩下 \(d=p=1\)。利用一阶延拓取得共同有界支集的 \(W^{1,1}(\mathbb R)\) 函数；其绝对连续代表满足
+\[
+ |Eu(x)|\le\int_{\mathbb R}|(Eu)'(t)|\,\mathrm dt.
+\]
+这是从支集左侧的零值沿区间积分得到的。因此有统一 \(L^\infty\) 界，在有限测度的 \(\Omega\) 上也有任意有限 \(L^r\) 界，同样完成插值。
+
+若 \(p>d\)，Morrey 不等式给出连续代表的统一上确界界，再取有限 \(r>q\) 即可。上述各步也同时给出包含映射的连续性。
+\end{proof}
+
+这个证明的紧性来源是 \(L^p\) 中的平移控制；更高指数来自第24章已经建立的连续估计。插值中的 \(\theta>0\) 很重要：正是这一幂次把已知趋零的 \(L^p\) 差保留下来。到 \(q=p^*\) 时，不能再由此获得趋零因子。
+
+\begin{theorem}[Rellich–Kondrachov，连续代表]\label{b1:thm:rellich-holder}
+设 \(\Omega\) 为有界 Lipschitz 区域。
+若 \(d<p<\infty\)，记 \(\alpha=1-d/p\)；若 \(p=\infty\)，记 \(\alpha=1\)。
+则连续代表给出的映射
+\[
+ W^{1,p}(\Omega)\longrightarrow C(\overline\Omega)
+ \quad\text{及}\quad
+ W^{1,p}(\Omega)\longrightarrow C^{0,\beta}(\overline\Omega)
+ \quad(0<\beta<\alpha)
+\]
+都是紧嵌入。其中 \(C(\overline\Omega)\) 取上确界范数。
+\end{theorem}
+\begin{proof}
+由延拓及 Morrey 估计，有限 \(p>d\) 时，有界列的连续代表满足
+\[
+ \sup_j\|u_j\|_{C^{0,\alpha}(\overline\Omega)}\le M.
+\]
+若 \(p=\infty\)，第21章的 Lipschitz 代表与第22章的全空间延拓给出同样的结论，指数取 \(1\)。这时并未把有限 \(p\) 的平移判据推广到无穷范数。
+
+下面直接证明所需的一致收敛子列。紧集 \(\overline\Omega\) 在每个尺度 \(1/n\) 都有有限网；把这些网点排成一个可数集。每个网点处的数列有界，对网点依次抽取子列并取对角列，便使所有网点处的值都收敛。给定 \(\varepsilon>0\)，先取一个足够细的有限网，使 \(2M|x-y|^\alpha<\varepsilon/2\) 对相邻点与网点成立；再把这有限个网点处的两项差控制在 \(\varepsilon/2\) 内。三角不等式说明对角列在整个 \(\overline\Omega\) 上一致 Cauchy。逐点取极限并使用这一统一控制，所得极限连续，子列一致收敛。
+
+还须增强到较低阶 Hölder 范数。对任意 \(v\in C^{0,\alpha}(\overline\Omega)\)，令 \(A=\|v\|_\infty\)、\(B=[v]_{0,\alpha}\)。当 \(A,B>0\) 时，对不同的两点及 \(r=|x-y|\)，
+\[
+ |v(x)-v(y)|\le\min\{2A,Br^\alpha\}.
+\]
+在 \(r=(2A/B)^{1/\alpha}\) 两侧分别使用两个估计，得到
+\begin{equation}\label{b1:eq:holder-interpolation-compact}
+ [v]_{0,\beta}\le
+ (2A)^{1-\beta/\alpha}B^{\beta/\alpha}.
+\end{equation}
+若 \(A=0\) 或 \(B=0\)，结论直接成立。子列的一致极限仍有 Hölder 半范数不超过 \(M\)，因为每个固定两点的估计都能通过极限。对 \(v=u_j-u\) 使用\eqref{b1:eq:holder-interpolation-compact}，右端的 \(A\) 趋零而 \(B\le2M\)，于是得到 \(C^{0,\beta}\) 收敛。
+\end{proof}
+
+这里需要 \(\beta<\alpha\)，与积分情形的严格余量相对应。第\ref{b1:ex:25-critical-mass-concentration}题和第\ref{b1:ex:25-holder-endpoint}题分别计算临界积分指数与临界 Hölder 指数的集中例子：有界性仍在，但紧性丧失。另一方面，\(W^{1,1}\) 在区间上虽由绝对连续代表连续嵌入 \(L^\infty\)，其有界列并没有统一的连续模，因此本定理没有把 \(p=d=1\) 列为连续函数空间中的紧嵌入。
 
 \subsection{边界条件}
 \label{b1:subsec:250203}
 
-待填充。
+区域边界的规则性与函数自身的边界条件，可以分别提供进入全空间所需的通道。对零边界闭包，补零已由第22章证明能够保留弱导数，因此不必再次要求 Lipschitz 边界。
+
+\begin{corollary}\label{b1:cor:rellich-zero-boundary}
+设 \(\Omega\subset\mathbb R^d\) 为任意有界开集。对 \(W_0^{1,p}(\Omega)\)，%
+\cref{b1:thm:rellich-subcritical}的全部有限目标指数结论仍成立。
+当 \(d<p\le\infty\) 时，补零后的连续代表限制到 \(\overline\Omega\)，还给出%
+\cref{b1:thm:rellich-holder}中的紧嵌入。
+\end{corollary}
+\begin{proof}
+有限 \(p\) 时，\cref{b1:prop:w0-zero-extension}把有界列等距送入 \(W^{1,p}(\mathbb R^d)\)，共同支集包含于紧集 \(\overline\Omega\)。梯度平移估计和 Fréchet–Kolmogorov 定理直接给出全空间 \(L^p\) 收敛子列。更高积分指数的界，取第24章的零边界版本；临界 \(p=d\ge2\) 也可先在包含 \(\overline\Omega\) 的球上降低指数，再用该球的连续嵌入。其余插值步骤完全相同。
+
+当 \(p>d\) 时，对全空间补零函数使用 Morrey 估计；\(p=\infty\) 时使用全空间 Lipschitz 代表。于是有限网抽列及 Hölder 插值的证明都直接用于紧集 \(\overline\Omega\)。
+\end{proof}
+
+上述连续代表确实在每个边界点为零，而不只是在域外几乎处处为零。由 \(W_0^{1,p}\) 的闭包定义，可用 \(C_c^\infty(\Omega)\) 函数在 Sobolev 范数下逼近。其补零函数在全空间有同一范数收敛；对 \(p>d\) 的 Morrey 估计或 \(p=\infty\) 的上确界控制，使这些补零函数一致趋于连续代表。每个逼近函数在 \(\partial\Omega\) 都为零，极限也为零。这个理由包括边界中可能存在的裂缝，不能只凭“域外几乎处处为零”略过。
+
+在有界 Lipschitz 区域上，有限 \(p\) 的零迹刻画把这个推论与第23章接起来。固定边界迹也不会破坏紧性：若 \(g\in W^{1,p}(\Omega)\) 固定，而 \(u_j-g\in W_0^{1,p}(\Omega)\) 且 \(u_j\) 有界，就对 \(u_j-g\) 使用推论，再把 \(g\) 加回去。在任意有界开集上，同样可以用这个闭仿射条件表述边界约束；不必先给粗糙边界定义迹。
+
+内部紧性则完全不需要全域边界条件。若 \((u_j)\) 在 \(W^{1,p}_{\mathrm{loc}}(\Omega)\) 中局部有界，固定一个 \(\overline U\Subset\Omega\)，取等于一于 \(\overline U\) 附近的光滑紧支集截断。乘积在全空间补零后属于一个有界的 Sobolev 族，因而在 \(U\) 上具有上述相应强收敛子列。用可数内部穷尽和对角抽选，可以取得一个在所有内部子域上收敛的共同子列。它不保证原区域的全局范数收敛，因为质量仍可能靠近边界或移向无穷远。
 
 \subsection{高阶版本}
 \label{b1:subsec:250204}
 
-待填充。
+高阶紧性首先表现为损失一阶导数后的强收敛。为了不预借尚未证明的高阶边界延拓，先把所需条件写在命题中。
+
+\begin{proposition}\label{b1:prop:rellich-higher-order}
+设 \(k\ge2\)、\(1\le p<\infty\)，\(\Omega\) 为有界开集。若存在有界线性延拓
+\[
+ E_k:W^{k,p}(\Omega)\longrightarrow W^{k,p}(\mathbb R^d),
+ \qquad (E_ku)|_\Omega=u,
+\]
+则 \(W^{k,p}(\Omega)\subset W^{k-1,p}(\Omega)\) 是紧嵌入。
+无论是否存在这个延拓，令
+\[
+ W_0^{k,p}(\Omega)
+ =\overline{C_c^\infty(\Omega)}^{\,W^{k,p}(\Omega)},
+\]
+则 \(W_0^{k,p}(\Omega)\subset W^{k-1,p}(\Omega)\) 总是紧嵌入。
+\end{proposition}
+\begin{proof}
+先处理延拓情形。取等于一于 \(\overline\Omega\) 邻域的固定光滑紧支集函数 \(\chi\)。乘子估计说明 \(u\mapsto\chi E_ku\) 有界进入全空间 \(W^{k,p}\)，而且所有像具有共同紧支集。对 \(|\gamma|\le k-1\)，函数 \(\partial^\gamma(\chi E_ku_j)\) 在全空间 \(W^{1,p}\) 中有界，故由梯度平移界和紧性判据可抽出 \(L^p\) 收敛子列。这样的 \(\gamma\) 只有有限多个，逐次抽取可使它们同时收敛。
+
+限制到 \(\Omega\) 后，所得子列在 \(W^{k-1,p}(\Omega)\) 范数中 Cauchy，因为这个范数由刚才有限多个分量的 \(p\) 次和构成。完备性给出该空间中的极限；或者逐项对测试函数通过积分极限，也能确认低阶导数的相容关系。
+
+再看零边界闭包。对 \(u\in W_0^{k,p}(\Omega)\)，取 \(C_c^\infty(\Omega)\) 逼近列。每一项及其各阶导数补零后，在全空间的 \(W^{k,p}\) 距离与原域距离相同，因而为 Cauchy 列。由全空间完备性得到极限；其零阶分量是 \(E_0u\)，所有导数均为原弱导数的补零。因此补零是所需的等距延拓，并具有共同有界支集，前面的有限分量抽列再次适用。
+\end{proof}
+
+若关心更高的积分指数，可在上述证明中对每个低阶导数使用第24章的高阶连续嵌入，再与已获得的强 \(L^p\) 收敛插值。例如，在该命题的任一种边界条件下，若 \(kp<d\)，则
+\[
+ W^{k,p}(\Omega)\subset L^q(\Omega),
+ \qquad 1\le q<\frac{dp}{d-kp}
+\]
+为紧嵌入；在零边界情形把左端换成 \(W_0^{k,p}\)。右端的严格不等式仍不能省去。
+
+同样，若 \(k-d/p=m+\alpha>0\) 且 \(m\) 为非负整数、\(0<\alpha<1\)，第24章给出全部不超过 \(m\) 阶导数的统一连续界及 \(m\) 阶导数的统一 Hölder 界。对这有限多个分量使用有限网抽列和\eqref{b1:eq:holder-interpolation-compact}，便得到每个 \(0<\beta<\alpha\) 对应的 \(C^{m,\beta}(\overline\Omega)\) 紧嵌入。极限分量的导数关系由内部线段积分通过一致极限确认，与第24章相同。正整数余量的情形，则在该章已证明的低于1的指数之间再留出严格余量。
+
+这些表述中的高阶延拓假设没有因为使用了第24章而消失。对于任意开集，可以始终取得内部版本；对于零边界闭包，可以始终使用补零；对于一般高阶 Sobolev 函数的全边界版本，还必须给出对应的延拓。把不同通道分开，才能看清紧性究竟由哪些已建立的条件保证。
