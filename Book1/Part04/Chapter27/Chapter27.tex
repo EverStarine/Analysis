@@ -1,15 +1,40 @@
 % !TeX root = ../../Book1.tex
 \chapter{BV 函数与有限周长集合}
 \label{b1:ch:27}
-% 本章摘要（不计入编号）
 \begin{chapterabstract}
-待填充。
+本章把可积弱梯度推广为有限向量测度，建立有界变差函数的逼近、紧性及余面积公式。
+随后从集合示性函数的分布导数定义周长，在约化边界处证明半空间缩放与可整流性，
+得到 De Giorgi 结构定理及 Gauss–Green 公式。最后把 BV 的 Sobolev 端点估计与集合的等周估计联系起来。
 \end{chapterabstract}
 
-% 本章目标（不计入编号）
 \begin{learninggoals}
-待填充。
+\begin{enumerate}
+\item 从向量测度的欧氏全变差和测试场对偶式识别 BV，区分它与 \(W^{1,1}\) 的导数类型。
+\item 完整掌握严格光滑逼近中的单位分解误差，区分局部紧性、全域紧性、弱-*收敛和范数收敛。
+\item 从层集截断推导 BV 余面积公式，说明它为何不预先要求光滑边界或结构定理。
+\item 区分测度论边界、约化边界和任意代表的拓扑边界，从半空间缩放恢复法向及周长面积。
+\item 理解函数与集合不等式之间的双向传递，不把非最优常数的证明误认为尖锐等周定理。
+\end{enumerate}
 \end{learninggoals}
+
+在一维，阶跃函数虽然没有可积的弱导数，却有一个十分明确的导数：跳跃点上的点质量。
+在高维，两个常值区域之间的一道界面也应当贡献变化，而不是因为经典梯度几乎处处为零就被忽略。
+BV 空间保留了这类变化，把导数放进有限测度而非仅仅可积函数的范围。
+因此它既与前面的 Sobolev 理论连续衔接，又能直接处理不连续函数和集合边界。
+
+本章的证明次序依赖这一选择。先建立变差的分析工具，再用示性函数定义周长；
+余面积公式只凭这些工具就能完成。此后才讨论周长究竟集中在哪一种边界上，
+不能把尚未证明的“周长等于面积”反过来放进前面的定义或逼近证明。
+结构定理中最重要的桥梁是两侧体积下界：方向集中虽然指向一个半空间，
+但若没有这项下界，缩放极限仍可能退化为全空间或空集。
+
+Simon 的《Lectures on Geometric Measure Theory》%
+\cite[第6节、第14节]{Simon1983Lectures}是本章局部变差及边界结构的对读资料。
+本书展开其中需要承接的单位分解、平移紧性和图分片步骤；
+更系统的 BV 理论可参阅 Ambrosio、Fusco 与 Pallara 的%
+《Functions of Bounded Variation and Free Discontinuity Problems》%
+\cite{Ambrosio2000Functions}。
+后者还讨论下一章的跳跃、Cantor 部分与自由间断问题，初读本章不必先掌握这些内容。
 
 \input{Part04/Chapter27/Section2701}
 \input{Part04/Chapter27/Section2702}
@@ -17,12 +42,421 @@
 \input{Part04/Chapter27/Section2704}
 \input{Part04/Chapter27/Section2705}
 \input{Part04/Chapter27/Section2706}
-% 本章小结（不计入编号）
-\begin{chaptersummary}
-待填充。
-\end{chaptersummary}
 
+\begin{chaptersummary}
+BV 函数以有限导数测度控制变化，既容纳可积梯度，也容纳跳跃及更分散的奇异变化。
+光滑逼近保持函数的 \(L^1\) 极限和总变差数值，却通常不能保持导数的变差范数极限；
+紧性则依赖平移控制，并在全域结论中继续要求质量不逃向边界或无穷远。
+
+余面积公式把导数变差分解为水平集周长。对每个有限周长集合，
+De Giorgi 定理进一步把周长识别成约化边界的余维一面积，
+其证明先取得非退化半空间极限，再构造可数 Lipschitz 图并辨认密度。
+Gauss–Green 的外法向负号与分布导数的约定相配合，不能随文献记号一起忽略。
+
+全空间 BV 端点不等式与有限体积集合的等周不等式具有相同的常数传递机制。
+本章证明了它们的有效估计，没有计算最佳常数。
+一般 BV 函数并非单个集合的示性函数；各层边界的累积还会形成怎样的导数，
+将由下一章的精细结构解释。
+\end{chaptersummary}
 
 \BookExercises
 
-待填充。
+% 第二十七章习题临时稿；不另设 BookExercises 入口。
+% 八题均由本章与前章已证明工具自拟，逐题注明实质增量，不冒认教材原题号。
+% 不调用第28章的一般BV链式法则、跳跃集结构或SBV理论。
+
+\begin{exercise}\label{b1:ex:27-grid-interface-cancellation}
+取正整数 \(m,n\)，令 \(\Omega=(0,m)\times(0,n)\)。
+在每个单位格
+\[
+ Q_{ij}=(i-1,i)\times(j-1,j),\quad
+ 1\le i\le m,\quad1\le j\le n,
+\]
+上令 \(u=a_{ij}\)，其中 \(a_{ij}\in\mathbb R\)。
+网格线上的值任取。求 \(Du\) 和 \(|Du|(\Omega)\)，并求全空间零延拓 \(E_0u\) 的总变差。
+解释为什么内部界面的贡献是相邻值之差，而不是两个值的绝对值之和。
+\end{exercise}
+% 来源：自拟；把单个矩形的导数推广到共享界面，重点是先相消再取向量变差。
+\begin{solution}
+对光滑紧支集测试函数逐格积分。固定一条竖界面
+\(V_{ij}=\{i\}\times(j-1,j)\)，左格在右侧贡献
+\(-a_{ij}e_1\mathcal H^1\)，右格在左侧贡献
+\(a_{i+1,j}e_1\mathcal H^1\)。
+水平界面 \(H_{ij}=(i-1,i)\times\{j\}\) 同理。因此在 \(\Omega\) 中，
+\[
+ \begin{aligned}
+ Du={}&\sum_{i=1}^{m-1}\sum_{j=1}^n
+       (a_{i+1,j}-a_{ij})e_1\,\mathcal H^1\!\llcorner V_{ij}\\
+ &+\sum_{i=1}^m\sum_{j=1}^{n-1}
+       (a_{i,j+1}-a_{ij})e_2\,\mathcal H^1\!\llcorner H_{ij}.
+ \end{aligned}
+\]
+不同线段只可能在端点相交，这些点的 \(\mathcal H^1\) 测度为零。
+每条线段长度为一，所以
+\[
+ |Du|(\Omega)=
+ \sum_{i=1}^{m-1}\sum_{j=1}^n|a_{i+1,j}-a_{ij}|
+ +\sum_{i=1}^m\sum_{j=1}^{n-1}|a_{i,j+1}-a_{ij}|.
+\]
+外边界在相对导数中没有贡献。补零后，下侧与左侧的系数为内部值，
+上侧与右侧的系数为内部值的负号；它们与内部界面互不重叠到面测度零集。
+于是
+\[
+ \begin{aligned}
+ |D(E_0u)|(\mathbb R^2)
+ ={}&|Du|(\Omega)
+    +\sum_{j=1}^n(|a_{1j}|+|a_{mj}|)\\
+   &+\sum_{i=1}^m(|a_{i1}|+|a_{in}|).
+ \end{aligned}
+\]
+若相邻两格取同一个值，跨界面并没有变化，故该界面必须完全抵消。
+先对每格分别取变差再相加，会丢失导数测度的这个抵消过程。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:27-small-balls-perimeter-threshold}
+设 \(d\ge2\)、\(\alpha>1/d\)，并令
+\[
+ x_j=3je_1,\quad r_j=\frac14j^{-\alpha},\quad
+ E=\bigcup_{j=1}^\infty B(x_j,r_j).
+\]
+证明 \(m_d(E)<\infty\)，并确定哪些 \(\alpha\) 使 \(E\) 有有限周长。
+在允许无穷的意义下计算 \(P(E)\)，说明有限体积不能控制周长。
+\end{exercise}
+% 来源：自拟；用局部有限且相隔的小球把体积和边界的两个尺度化成不同级数。
+\begin{solution}
+这些闭球两两不交，而且每个紧集只与有限个球相交。
+由体积的可数可加性，
+\[
+ m_d(E)=\omega_d4^{-d}\sum_{j=1}^\infty j^{-\alpha d}<\infty.
+\]
+对任意紧支集测试场，只有有限个球参与积分。
+光滑域周长公式因而给出局部向量测度
+\[
+ D\mathbf1_E
+ =-\sum_{j=1}^\infty
+      \nu_j\,\mathcal H^{d-1}\!\llcorner\partial B(x_j,r_j),
+ \quad \nu_j(x)=\frac{x-x_j}{r_j}.
+\]
+这是局部有限的和；各球面互不相交，故变差没有相消，且
+\[
+ P(E)=d\omega_d\sum_{j=1}^\infty r_j^{d-1}
+     =d\omega_d4^{1-d}\sum_{j=1}^\infty j^{-\alpha(d-1)}.
+\]
+若级数收敛，右侧给出全空间有限导数测度，所以 \(E\) 有有限周长。
+若级数发散，包含前 \(N\) 个球面的有界开集上的变差至少为前 \(N\) 项之和，
+让 \(N\to\infty\) 即知全空间周长无穷。
+因此
+\[
+ P(E)<\infty\quad\Longleftrightarrow\quad
+       \alpha>\frac1{d-1}.
+\]
+特别地，\(1/d<\alpha\le1/(d-1)\) 时体积有限而周长无限。
+两个端点不同，是因为球体积按 \(r^d\) 缩放，而球周长按 \(r^{d-1}\) 缩放。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:27-translation-bv-norm-characterization}
+设 \(u\in BV(\mathbb R^d)\)，\(\tau_hu(x)=u(x-h)\)。
+\begin{enumerate}
+ \item\label{b1:item:27-translation-strict}
+ 证明当 \(h\to0\) 时，\(\tau_hu\) 总是严格收敛到 \(u\)。
+ \item\label{b1:item:27-translation-norm}
+ 证明
+ \[
+  \|\tau_hu-u\|_{BV(\mathbb R^d)}\longrightarrow0
+    \quad\Longleftrightarrow\quad u\in W^{1,1}(\mathbb R^d).
+ \]
+ \item\label{b1:item:27-translation-interval}
+ 对 \(u=\mathbf1_{(0,1)}\)，计算 \(0<h<1\) 时的
+ \(\|\tau_hu-u\|_{BV(\mathbb R)}\)。
+\end{enumerate}
+\end{exercise}
+% 来源：自拟；以测度在全变差范数中的平移连续性辨认绝对连续导数，
+% 不重复正文对阶跃函数作光滑严格逼近的例子。
+\begin{solution}
+函数的 \(L^1\) 平移连续，而
+\[
+ D(\tau_hu)=\tau_hDu,\quad
+ |D(\tau_hu)|(\mathbb R^d)=|Du|(\mathbb R^d),
+\]
+其中 \((\tau_h\mu)(A)=\mu(A-h)\)。
+这证明第一项。若 \(u\in W^{1,1}\)，则函数及各弱偏导数都在 \(L^1\) 中平移连续，
+从而得到第二项的反向蕴涵。
+
+现假设 BV 范数中的平移连续，记 \(\mu=Du\)。
+于是 \(|\tau_h\mu-\mu|(\mathbb R^d)\to0\)。
+用非负单位积分核磨光测度，记
+\(\mu_\varepsilon=(\rho_\varepsilon*\mu)m_d\)。
+对每个连续紧支集向量场 \(\Phi\)，Fubini 定理给出
+\[
+ \int\Phi\cdot\mathrm d(\mu_\varepsilon-\mu)
+ =\int\rho_\varepsilon(h)
+       \left(\int\Phi\cdot\mathrm d(\tau_h\mu-\mu)\right)\,\mathrm dh.
+\]
+向量测度全变差的连续测试对偶式于是给出
+\[
+ |\mu_\varepsilon-\mu|(\mathbb R^d)
+ \le\sup_{|h|\le\varepsilon}
+          |\tau_h\mu-\mu|(\mathbb R^d)\longrightarrow0.
+\]
+每个 \(\mu_\varepsilon\) 都对 Lebesgue 测度绝对连续。
+若 \(N\) 为 Lebesgue 零测 Borel 集，则
+\[
+ |\mu|(N)\le|\mu-\mu_\varepsilon|(\mathbb R^d)
+                     +|\mu_\varepsilon|(N)\longrightarrow0.
+\]
+所以 \(\mu\ll m_d\)。各分量由 Radon–Nikodym 定理写为 \(L^1\) 密度，
+这些密度正是 \(u\) 的弱偏导数，因而 \(u\in W^{1,1}\)。
+此处连续测试对偶式由极分解和连续紧支集函数的积分逼近得到，与变差对偶证明中的步骤相同。
+
+最后，当 \(u=\mathbf1_{(0,1)}\) 时，
+\[
+ \|\tau_hu-u\|_1=2h,\quad
+ D(\tau_hu-u)=\delta_h-\delta_{1+h}-\delta_0+\delta_1.
+\]
+四个点互不相同，故导数差的全变差为 \(4\)，于是
+\[
+ \|\tau_hu-u\|_{BV(\mathbb R)}=2h+4.
+\]
+函数与自身的小平移严格接近，却没有在 BV 范数中接近。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:27-finite-valued-strict-approximation}
+设 \(m_d(\Omega)<\infty\)，\(u\in BV(\Omega)\)，且 \(0\le u\le M<\infty\) 几乎处处。
+证明存在只取有限多个值的 \(v_j\in BV(\Omega)\)，使
+\[
+ \|v_j-u\|_{L^\infty(\Omega)}\longrightarrow0,\quad
+ |Dv_j|(\Omega)\longrightarrow|Du|(\Omega).
+\]
+这里 \(L^\infty\) 指本性上确界范数。要求将每个 \(v_j\) 写成有限周长超水平集的示性函数之和，
+并说明层值怎样选择。
+\end{exercise}
+% 来源：自拟；在一组平移的等距层值中平均周长，选出变差受控的量化函数。
+\begin{solution}
+固定 \(h>0\)，对 \(0<\theta<h\) 定义
+\[
+ v_{h,\theta}
+   =h\sum_{k=0}^\infty\mathbf1_{\{u>\theta+kh\}}.
+\]
+因为 \(u\le M\)，非空层只有有限个，所得函数取有限多个值。
+对每个 \(s\in[0,M]\)，等距网格的计数误差小于或等于一个网格长度，
+所以
+\[
+ |v_{h,\theta}-u|\le h\quad\text{几乎处处}.
+\]
+余面积公式说明，对几乎每个 \(\theta\)，上式涉及的全部层集都有有限周长；
+只需排除每个平移网格命中坏层值的零测集，再取可数并。
+在这些 \(\theta\) 上，
+\[
+ |Dv_{h,\theta}|(\Omega)
+ \le S_h(\theta):=
+        h\sum_{k=0}^\infty P(\{u>\theta+kh\},\Omega).
+\]
+由 Tonelli 定理及 \(u\ge0\)，
+\[
+ \frac1h\int_0^hS_h(\theta)\,\mathrm d\theta
+ =\int_0^\infty P(\{u>t\},\Omega)\,\mathrm dt
+ =|Du|(\Omega).
+\]
+因此可选一个容许的 \(\theta_h\)，使
+\(S_h(\theta_h)\le|Du|(\Omega)+h\)。
+取 \(h_j\downarrow0\)，令 \(v_j=v_{h_j,\theta_{h_j}}\)。
+有限体积保证
+\[
+ \|v_j-u\|_1\le h_jm_d(\Omega)\longrightarrow0,
+ \quad
+ \limsup_j|Dv_j|(\Omega)\le|Du|(\Omega).
+\]
+下半连续性给出相反的下极限不等式，因而总变差收敛。
+有限值逼近与光滑逼近采用不同的对象：前者以有限周长层集承载界面，
+后者以光滑梯度承载变化；二者都只要求总变差数值收敛。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:27-irregular-zero-extension}
+令
+\[
+ a_j=2^{-j},\quad b_j=2^{-j}+2^{-j-2},\quad
+ \Omega=\bigcup_{j=1}^\infty(a_j,b_j)\subset(0,1).
+\]
+在 \(\Omega\) 上取 \(u=1\)，并令 \(u_N\) 在前 \(N\) 个区间上等于 \(1\)，
+在其余区间上等于 \(0\)。
+证明 \(u_N\to u\) 于 \(BV(\Omega)\)，每个全空间零延拓 \(E_0u_N\) 都属于
+\(BV(\mathbb R)\)，但 \(E_0u\notin BV(\mathbb R)\)。
+计算 \(|D(E_0u_N)|(\mathbb R)\)。
+\end{exercise}
+% 来源：自拟；域内没有导数的常数分片，经补零后产生无穷多个端点代价。
+\begin{solution}
+这些区间两两分离，且长度为 \(2^{-j-2}\)。
+函数 \(u_N\) 和 \(u\) 在每个连通分量上为常数，所以它们在 \(\Omega\) 中的分布导数均为零。
+因此
+\[
+ \|u_N-u\|_{BV(\Omega)}
+ =\sum_{j>N}(b_j-a_j)\longrightarrow0.
+\]
+另一方面，在全空间中逐区间计算，得到
+\[
+ D(E_0u_N)=\sum_{j=1}^N(\delta_{a_j}-\delta_{b_j}),
+ \quad
+ |D(E_0u_N)|(\mathbb R)=2N.
+\]
+所有端点互不相同，因此没有相消。
+
+若 \(E_0u\) 有有限变差，则在每个端点的小邻域内，它的导数都必须与上述单个区间的导数一致。
+每次固定有限多个端点，可以选取两两不交的小邻域并避开其余端点。
+故对每个 \(N\)，其总变差至少为 \(2N\)，矛盾。
+这个例子不否认内部紧支集截断的零延拓性质：\(u\) 的非零部分一直延伸到
+无穷多个分量端点，没有同一个内部紧集隔开这些边界。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:27-eccentric-hole-flux}
+在 \(\mathbb R^2\) 中设 \(R,r>0\)、\(|a|+r<R\)，并令
+\[
+ E=B(0,R)\setminus\overline{B(a,r)}.
+\]
+求 \(E\) 的外法向、\(D\mathbf1_E\) 及 \(P(E)\)。
+再对向量场
+\[
+ F(x)=\frac{x-a}{|x-a|^2}
+\]
+计算两条边界曲线各自的外向通量，解释为什么总通量为零。
+不要求使用绕数或复分析。
+\end{exercise}
+% 来源：自拟；用偏心孔检验内边界方向，以光滑域Gauss计算奇点被排除后的通量。
+\begin{solution}
+外圆上的外法向为 \(x/R\)，内圆上的外法向指向孔内，即
+\[
+ \nu_E(x)=
+ \begin{cases}
+ x/R,&x\in\partial B(0,R),\\
+ -(x-a)/r,&x\in\partial B(a,r).
+ \end{cases}
+\]
+由光滑域周长公式，
+\[
+ D\mathbf1_E
+ =-\frac{x}{R}\,\mathcal H^1\!\llcorner\partial B(0,R)
+   +\frac{x-a}{r}\,\mathcal H^1\!\llcorner\partial B(a,r),
+ \quad P(E)=2\pi(R+r).
+\]
+两条边界的周长相加，虽然它们的外法向相对于各自圆心取了不同的方向。
+
+场 \(F\) 在 \(\overline E\) 的邻域内光滑，直接求导得
+\[
+ \operatorname{div}F(x)
+ =\frac2{|x-a|^2}-\frac{2|x-a|^2}{|x-a|^4}=0.
+\]
+如需紧支集测试场，可乘以在 \(\overline E\) 的邻域等于 \(1\)、支集避开 \(a\) 的光滑截断。
+在内圆上，\(F\cdot\nu_E=-1/r\)，故内圆通量为 \(-2\pi\)。
+Gauss 公式给出两条曲线的通量之和等于 \(\int_E\operatorname{div}F=0\)，
+所以外圆通量为 \(2\pi\)。
+奇点位于被删去的孔中，不在积分区域内；把内孔也按远离其圆心的方向取法向，
+会错误地丢失这个抵消。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:27-signed-measure-primitive}
+设 \(-\infty<a<b<\infty\)，\(\mu\) 是 \((a,b)\) 上的有限 Radon 符号测度，
+并令
+\[
+ F(x)=\mu\bigl((a,x]\bigr),\quad a<x<b,\quad M=\mu\bigl((a,b)\bigr).
+\]
+\begin{enumerate}
+ \item\label{b1:item:27-measure-primitive}
+ 证明 \(F\in BV(a,b)\)、\(DF=\mu\)，并证明所有分布导数为 \(\mu\) 的
+ \(BV(a,b)\) 函数都与某个 \(F+c\) 几乎处处相等。
+ \item\label{b1:item:27-measure-primitive-endpoints}
+ 求 \(F\) 的左右极限及跳跃值。将 \(F+c\) 在 \((a,b)\) 外补零，记为 \(G_c\)，
+ 计算 \(DG_c\) 和 \(|DG_c|(\mathbb R)\)。
+ \item\label{b1:item:27-measure-primitive-optimal-constant}
+ 在全部常数 \(c\in\mathbb R\) 中，求上述零延拓总变差的最小值。
+\end{enumerate}
+\end{exercise}
+% 来源：自拟；一般符号测度原函数及端点代价，不复述正文的Cantor概率测度例子。
+\begin{solution}
+有 \(|F(x)|\le|\mu|\bigl((a,b)\bigr)\)，故 \(F\in L^1(a,b)\)。
+对 \(\varphi\in C_c^\infty(a,b)\)，Fubini 定理给出
+\[
+ \int_a^bF(x)\varphi'(x)\,\mathrm dx
+ =\int_{(a,b)}\left(\int_t^b\varphi'(x)\,\mathrm dx\right)\,\mathrm d\mu(t)
+ =-\int_{(a,b)}\varphi\,\mathrm d\mu.
+\]
+换序由有限变差及 \((b-a)\|\varphi'\|_\infty\) 的控制保证。
+因此 \(DF=\mu\)，且 \(|DF|\bigl((a,b)\bigr)=|\mu|\bigl((a,b)\bigr)\)。
+
+若 \(Dv=\mu\)，令 \(w=v-F\)，则 \(Dw=0\)。
+任何积分为零的 \(\psi\in C_c^\infty(a,b)\) 都可写成某个
+\(\phi\in C_c^\infty(a,b)\) 的导数，故 \(\int w\psi=0\)。
+固定 \(\eta\in C_c^\infty(a,b)\)、\(\int\eta=1\)，令 \(c=\int w\eta\)。
+将任意测试函数减去其积分乘以 \(\eta\)，可得
+\(\int w\psi=c\int\psi\)，于是正则分布的唯一性给出 \(w=c\) 几乎处处。
+
+有限测度的集合连续性给出
+\[
+ F(a+)=0,\quad F(b-)=M,\quad
+ F(x+)=F(x),\quad F(x-)=\mu\bigl((a,x)\bigr).
+\]
+所以内部跳跃值为 \(F(x)-F(x-)=\mu(\{x\})\)。
+对全空间测试函数重复上面的换序，但保留端点项，得到
+\[
+ DG_c=\mu+c\delta_a-(c+M)\delta_b.
+\]
+其中 \(\mu\) 在区间外补零。内部测度与两个端点质量相互奇异，故
+\[
+ |DG_c|(\mathbb R)=|\mu|\bigl((a,b)\bigr)+|c|+|c+M|.
+\]
+由三角不等式，\(|c|+|c+M|\ge|M|\)，
+并且当且仅当 \(c\) 位于连接 \(0\) 与 \(-M\) 的闭区间内时取等号。
+故最小值为
+\[
+ |\mu|\bigl((a,b)\bigr)+|M|.
+\]
+内部总变差由导数固定，常数的选择只改变两个端点之间分配的补零代价。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:27-confined-bv-minimization}
+设 \(d\ge2\)，考虑
+\[
+ \mathcal A=\left\{\,u\in BV(\mathbb R^d):
+      u\ge0\ \text{几乎处处},\quad\int_{\mathbb R^d}u\,\mathrm dx=1\,\right\},
+\]
+以及允许取值 \(+\infty\) 的泛函
+\[
+ J(u)=|Du|(\mathbb R^d)+\int_{\mathbb R^d}|x|u(x)\,\mathrm dx.
+\]
+证明 \(J\) 在 \(\mathcal A\) 上取得有限的极小值。
+再证明，若删除最后的一阶矩项，只最小化总变差，则下确界为零但不能取得。
+指出矩项在极限过程中保持单位质量的具体作用。
+\end{exercise}
+% 来源：自拟；全空间BV直接法由矩控制防止质量逃逸，不使用最佳等周常数或解的正则性。
+\begin{solution}
+取非负光滑紧支集函数并归一化积分，得到 \(J<\infty\) 的容许函数。
+故下确界 \(I\) 有限且非负。选 \(u_j\in\mathcal A\)，使 \(J(u_j)\to I\)，
+并可要求 \(J(u_j)\le I+1\)。
+于是 \(\|u_j\|_1=1\)、总变差一致有界，且
+\[
+ \int_{|x|>R}u_j(x)\,\mathrm dx
+ \le R^{-1}\int|x|u_j(x)\,\mathrm dx\le\frac{I+1}{R}.
+\]
+由带尾部控制的 BV 紧性推论%
+\ref{b1:cor:bv-global-compactness-with-tails}，可取全空间 \(L^1\) 收敛子列，
+记极限为 \(u\)。再抽几乎处处收敛子列，有 \(u\ge0\)，而全域 \(L^1\) 收敛保证
+\(\int u=1\)，并非只得到 \(\int u\le1\)。
+变差下半连续性和 Fatou 引理分别给出
+\[
+ |Du|(\mathbb R^d)\le\liminf_j|Du_j|(\mathbb R^d),\quad
+ \int|x|u(x)\,\mathrm dx\le\liminf_j\int|x|u_j(x)\,\mathrm dx.
+\]
+所以 \(u\in\mathcal A\)，且 \(J(u)\le\liminf_jJ(u_j)=I\)，即取得极小值。
+
+删除矩项后，取固定的非负 \(\eta\in C_c^\infty(\mathbb R^d)\)、\(\int\eta=1\)，令
+\[
+ v_R(x)=R^{-d}\eta(x/R).
+\]
+则 \(v_R\in\mathcal A\)，且
+\[
+ |Dv_R|(\mathbb R^d)=R^{-1}\|\nabla\eta\|_1\longrightarrow0.
+\]
+因此总变差的下确界为零。如果某个 \(v\in\mathcal A\) 达到它，
+由 BV 的 Sobolev 端点估计\ref{b1:thm:bv-sobolev-endpoint}便有 \(\|v\|_{d/(d-1)}=0\)，
+与 \(\int v=1\) 矛盾。
+膨胀序列在每个有界区域内的质量趋零，但总质量始终为一；
+矩项所给的统一尾部估计，恰好排除了这种单位质量在局部极限中丢失的情形。
+\end{solution}

@@ -2,24 +2,239 @@
 \section{BV 函数}
 \label{b1:sec:2701}
 
-% TODO: 撰写本节正文。
+一维阶跃函数的经典导数几乎处处为零，但它的分布导数在跳跃点留下一个点质量。高维函数也可能把变化集中在超曲面上。若只允许弱导数由 \(L^1\) 函数表示，就会排除这些对象；若允许导数是一份有限 Radon 测度，就能同时保留通常的梯度和集中在薄集上的变化。
+
+本章的函数除非另行说明均为实值，\(\Omega\subseteq\mathbb R^d\) 为开集。导数 \(Du\) 取值于 \(\mathbb R^d\)，其长度由欧氏范数衡量。这里 \(D\) 表示分布导数测度，\(\nabla u\) 则用于确有可积弱梯度的情形；二者不能不加说明地互换。
+
+Simon 的《Lectures on Geometric Measure Theory》\cite[第6节，式(6.1)]{Simon1983Lectures}从散度测试泛函引入局部有界变差函数。本节先补齐有限维向量测度的变差与极分解，再把这种测试表述同分布导数逐项连接起来。它只调用第6章的 Radon–Nikodym 表示和第11章的 Radon 测度表示，不预借本章后面的几何结构定理。
+% 实读本地正式版Simon第6节印刷35--36页，式6.1与局部变差测试表述；
+% 该书把向量泛函表示接第4节，本书改经已有标量Riesz--Markov逐分量构造。
+% 向量变差的有限分割与连续单位球测试证明在本节完整展开。
 
 \subsection{分布导数为 Radon 测度}
 \label{b1:subsec:270101}
 
-待填充。
+先取一个有限向量 Radon 测度 \(\mu=(\mu_1,\ldots,\mu_d)\)，即各分量均为有限实 Radon 符号测度。对 Borel 集 \(A\subseteq\Omega\)，定义其欧氏全变差为
+\[
+ |\mu|(A)=
+ \sup\left\{\sum_{j=1}^N|\mu(A_j)|:
+       A=\bigsqcup_{j=1}^N A_j,\ A_j\text{ Borel}\right\}.
+\]
+这里 \(|\mu(A_j)|\) 是向量的欧氏长度，而不是分量绝对值之和。
+
+\begin{proposition}\label{b1:prop:vector-measure-polar}
+令 \(\lambda=\sum_{i=1}^d|\mu_i|\)，并由 Radon–Nikodym 定理写 \(\mu_i=g_i\lambda\)，\(g=(g_1,\ldots,g_d)\)。则
+\[
+ |\mu|=|g|\lambda.
+\]
+因此 \(|\mu|\) 是有限正 Radon 测度，且有
+\[
+ \mu=\sigma_\mu|\mu|,\qquad |\sigma_\mu|=1
+ \quad |\mu|\text{-几乎处处}.
+\]
+这个方向函数在 \(|\mu|\)-几乎处处意义下唯一。上述结论在局部有限情形可逐个内部区域使用，并在重叠处相容。
+\end{proposition}
+\begin{proof}
+对任意有限 Borel 分割，由向量积分的三角不等式，
+\[
+ \sum_j|\mu(A_j)|=\sum_j\left|\int_{A_j}g\,\mathrm d\lambda\right|
+ \le\int_A|g|\,\mathrm d\lambda.
+\]
+反向取一个有限值向量简单函数 \(s=\sum_j a_j\mathbf1_{A_j}\)，使
+\(\int_A|g-s|\,\mathrm d\lambda<\varepsilon\)。这可以逐分量简单逼近，再取共同的有限分割。于是
+\[
+ \begin{aligned}
+ \sum_j|\mu(A_j)|
+ &\ge\sum_j |a_j|\lambda(A_j)
+           -\sum_j\left|\int_{A_j}(g-a_j)\,\mathrm d\lambda\right|\\
+ &\ge\int_A|s|\,\mathrm d\lambda-\varepsilon
+ \ge\int_A|g|\,\mathrm d\lambda-2\varepsilon.
+ \end{aligned}
+\]
+让误差趋零，得到变差公式，因而也证明了可数可加性。有限 Radon 测度乘以非负可积密度仍为 Radon 测度，这是第11章的密度稳定性。
+
+在 \(g\ne0\) 处取 \(\sigma_\mu=g/|g|\)，其余处取零。测度 \(|\mu|\) 在 \(\{g=0\}\) 上为零，所以所得方向在其几乎处处长度为一，并满足表示式。两个方向若给出同一个向量测度，逐分量用 Radon–Nikodym 唯一性即可证明它们相等。对局部有限分量，把论证限制到内部相对紧开集；唯一性保证局部得到的变差和方向在相交处一致。
+\end{proof}
+
+这就是向量测度的极分解，与第6章复测度的方向分解相似。用于控制的 \(\lambda\) 很方便，但真正的欧氏变差是 \(|g|\lambda\)。例如，\(\mu=(m_d,m_d)\) 限制到一个有限体积区域时，其变差是 \(\sqrt2m_d\)，不是 \(2m_d\)。
+
+\begin{definition}\label{b1:def:bv-function}
+给定 \(u\in L^1(\Omega)\)。若对每个 \(i=1,\ldots,d\)，分布偏导数都由有限 Radon 符号测度 \(D_i u\) 表示，即
+\[
+ \int_\Omega u\,\partial_i\varphi\,\mathrm dx
+ =-\int_\Omega\varphi\,\mathrm dD_i u
+ \quad(\varphi\in C_c^\infty(\Omega)),
+\]
+则称 \(u\) 为 \(\Omega\) 上的\term[youjie-biancha-hanshu]{有界变差函数}[function of bounded variation]，记 \(u\in BV(\Omega)\)。记
+\[
+ Du=(D_1u,\ldots,D_du),
+\]
+并以 \(|Du|\) 表示其欧氏全变差测度。
+\end{definition}
+\symidx{\(BV(\Omega)\)：分布导数为有限向量测度的可积函数空间}
+\symidx{\(Du\)：BV 函数的分布导数测度}
+\symidx{\(\lvert Du\rvert\)：BV 导数测度的欧氏全变差}
+
+若只要求 \(u\in L^1_{\mathrm{loc}}(\Omega)\)，且上述导数测度在每个紧集上具有有限变差，则记 \(u\in BV_{\mathrm{loc}}(\Omega)\)。在内部区域上施加分布测试即可定义这些测度；相邻区域上的表示由测试函数的唯一性相互一致。一个局部有界变差函数不一定在整个 \(\Omega\) 上可积，也不一定有有限的总变差。
 
 \subsection{全变差}
 \label{b1:subsec:270102}
 
-待填充。
+变差不仅能由测度分割定义，也能直接从函数通过测试读出。对于任意 \(u\in L^1_{\mathrm{loc}}(\Omega)\) 和开集 \(U\subseteq\Omega\)，规定
+\begin{equation}\label{b1:eq:bv-variational-definition}
+ V(u,U)=\sup\left\{\int_Uu\,\operatorname{div}\varphi\,\mathrm dx:
+ \varphi\in C_c^\infty(U;\mathbb R^d),\
+ \sup_U|\varphi|\le1\right\}\in[0,\infty].
+\end{equation}
+每个积分有限，因为测试函数的支集紧含于 \(U\)。把 \(\varphi\) 换成 \(-\varphi\)，说明上确界中也可以对积分取绝对值。
+
+\begin{proposition}\label{b1:prop:bv-variation-duality}
+设 \(u\in L^1_{\mathrm{loc}}(\Omega)\)。则 \(V(u,\Omega)<\infty\)，当且仅当分布导数 \(Du\) 是有限向量 Radon 测度。此时对每个开集 \(U\subseteq\Omega\)，
+\begin{equation}\label{b1:eq:bv-variation-open-set}
+ V(u,U)=|Du|(U).
+\end{equation}
+若只要求每个 \(\overline U\Subset\Omega\) 的 \(V(u,U)\) 有限，则相应地得到 \(BV_{\mathrm{loc}}\) 的判别和同一局部公式。
+\end{proposition}
+\begin{proof}
+先设 \(V(u,\Omega)<\infty\)。对每个坐标 \(i\)，实线性泛函
+\[
+ T_i(\psi)=-\int_\Omega u\,\partial_i\psi\,\mathrm dx
+ \quad(\psi\in C_c^\infty(\Omega))
+\]
+满足 \(|T_i(\psi)|\le V(u,\Omega)\|\psi\|_\infty\)，只须在\eqref{b1:eq:bv-variational-definition}中取 \(\varphi=\psi e_i/\|\psi\|_\infty\)。光滑紧支集函数在 \(C_0(\Omega)\) 的上确界范数中稠密：先以紧支集截断，再在离边界有正距离处磨光即可。故 \(T_i\) 唯一延拓为 \(C_0(\Omega)\) 上的有界实泛函。由\cref{b1:thm:riesz-markov-c0}，它由有限 Radon 符号测度 \(D_i u\) 表示，正好满足分布导数关系。
+
+反过来，若 \(Du\) 为有限向量测度，则对任意容许测试场，
+\[
+ \left|\int_Uu\,\operatorname{div}\varphi\,\mathrm dx\right|
+ =\left|\int_U\varphi\cdot\mathrm dDu\right|
+ \le\int_U|\varphi|\,\mathrm d|Du|\le|Du|(U).
+\]
+这先给出 \(V(u,U)\le|Du|(U)\)。
+
+要取得反向不等式，不能直接把可测方向 \(-\sigma_u\) 当作光滑测试场。由有限 Radon 测度的 \(C_c\) 稠密性，逐分量在 \(L^1(|Du|\!\llcorner U)\) 中用连续紧支集向量场逼近 \(-\sigma_u\)。再投影到闭单位球：映射 \(z\mapsto z/\max(1,|z|)\) 连续，且对任意 \(|w|\le1\) 满足
+\[
+ \left|\frac z{\max(1,|z|)}-w\right|\le2|z-w|.
+\]
+因此投影后仍能以任意小的积分误差逼近方向，支集仍紧含于 \(U\)，欧氏长度不超过一。将其补零后用非负核小尺度磨光，支集仍在 \(U\) 内，长度由凸性仍不超过一；连续紧支集函数的一致逼近又使积分误差趋零。于是可取光滑场 \(\varphi\)，使
+\[
+ -\int_U\varphi\cdot\sigma_u\,\mathrm d|Du|
+ \ge |Du|(U)-\varepsilon.
+\]
+由分布恒等式，左端就是 \(\int_Uu\operatorname{div}\varphi\)，从而得到反向不等式。
+
+局部情形在各内部区域实施相同证明。表示测度在重叠处由分布唯一性相等，故可以拼成局部有限的向量 Radon 测度。若开集 \(U\) 上总变差无穷，就先对其中的内部穷尽应用有限情形；下界可以任意大，仍有 \(V(u,U)=|Du|(U)=\infty\)。这也证明了允许无穷值的公式。
+\end{proof}
+
+对于 \(u\in W^{1,1}(\Omega)\)，各测度 \(D_i u\) 都有密度 \(\partial_i u\)，前面的向量分解给出
+\begin{equation}\label{b1:eq:sobolev-bv-variation}
+ Du=\nabla u\,m_d,\qquad
+ |Du|=|\nabla u|\,m_d.
+\end{equation}
+因此 \(W^{1,1}(\Omega)\subseteq BV(\Omega)\)，且光滑函数的变差就是梯度长度的积分。一般 \(BV\) 导数可能含有相对于体积的奇异部分，不能把\eqref{b1:eq:sobolev-bv-variation}不加条件地用于所有 \(BV\) 函数。
+
+这一测试表述也是下半连续性的来源：固定测试场时，积分只依赖 \(u\) 在一个内部紧集上的 \(L^1\) 值；取所有这类连续表达式的上确界，便得到可通过极限保留的下界。下一节将把这个事实连同光滑逼近一起用于紧性。
 
 \subsection{BV 范数}
 \label{b1:subsec:270103}
 
-待填充。
+在 \(BV(\Omega)\) 上规定
+\[
+ \|u\|_{BV(\Omega)}=\|u\|_{L^1(\Omega)}+|Du|(\Omega).
+\]
+向量测度的三角不等式保证它满足范数三角不等式，零阶项则保证范数为零只对应零等价类。
+
+\begin{proposition}\label{b1:prop:bv-complete}
+上述范数使 \(BV(\Omega)\) 成为 Banach 空间。
+\end{proposition}
+\begin{proof}
+设 \((u_n)\) 是 Cauchy 列。由 \(L^1\) 完备性，存在 \(u\in L^1(\Omega)\)，使 \(u_n\to u\) 于 \(L^1\)。同时
+\[
+ |D_i u_n-D_i u_m|(\Omega)
+ \le|D(u_n-u_m)|(\Omega)\longrightarrow0.
+\]
+第11章的有限 Radon 测度空间在全变差范数下完备，因此每个分量都趋于某个有限 Radon 符号测度 \(\mu_i\)。对任意 \(\varphi\in C_c^\infty(\Omega)\)，
+\[
+ \int_\Omega u\,\partial_i\varphi
+ =\lim_n\int_\Omega u_n\partial_i\varphi
+ =-\lim_n\int_\Omega\varphi\,\mathrm dD_i u_n
+ =-\int_\Omega\varphi\,\mathrm d\mu_i.
+\]
+故 \(D_i u=\mu_i\)，而 \(u\in BV(\Omega)\)。再由
+\[
+ |D(u_n-u)|(\Omega)
+ \le\sum_{i=1}^d|D_i u_n-\mu_i|(\Omega)\longrightarrow0,
+\]
+得到原范数中的收敛。
+\end{proof}
+
+局部化仍然可用，但乘法公式中需要同时保留测度项与体积项。
+
+\begin{proposition}\label{b1:prop:bv-product-rule}
+设 \(u\in BV(\Omega)\)。若 \(v\) 在 \(\Omega\) 中局部 Lipschitz，并满足 \(v,\nabla v\in L^\infty(\Omega)\)，则
+\[
+ vu\in BV(\Omega),\qquad
+ D(vu)=v\,Du+u\nabla v\,m_d,
+\]
+且
+\[
+ |D(vu)|(\Omega)
+ \le\|v\|_\infty|Du|(\Omega)
+       +\|\nabla v\|_\infty\|u\|_1.
+\]
+第一项使用 \(v\) 的连续点值，第二项使用其几乎处处弱梯度。相应局部结论也成立。
+\end{proposition}
+\begin{proof}
+先取光滑 \(v\)。对任意光滑紧支集测试函数，将乘积 \(v\varphi\) 代入 \(Du\) 的定义，再用普通乘积求导：
+\[
+ \int_\Omega uv\,\partial_i\varphi
+ =\int_\Omega u\,\partial_i(v\varphi)
+       -\int_\Omega u\varphi\,\partial_i v
+ =-\int_\Omega v\varphi\,\mathrm dD_i u
+       -\int_\Omega u\varphi\,\partial_i v.
+\]
+这就是所需测度公式。若 \(v\) 只局部 Lipschitz，固定测试函数的支集，在其邻域中磨光 \(v\)。磨光函数局部一致趋于 \(v\)，梯度局部一致有界，且沿一个子列几乎处处趋于 \(\nabla v\)。因此测度积分由局部一致收敛通过极限，体积积分由 \(|u|\) 控制收敛通过极限。每个测试函数都得到相同公式，故分布表示成立。
+
+最后，对 Borel 集上的向量积分取变差，得到
+\[
+ |D(vu)|\le |v|\,|Du|+|u|\cdot|\nabla v|\,m_d.
+\]
+积分即得估计，且零阶积 \(vu\) 可积。局部版本限制到内部区域即可。
+\end{proof}
+
+特别地，乘以内部光滑紧支集截断后，可以在域外补零，得到全空间 \(BV\) 函数。证明只需在截断支集附近代入测试函数，因而不会产生边界项。这个内部补零与在任意边界直接补零不同；后者可能增加一份边界测度，甚至使总变差失去控制。
 
 \subsection{基本例子}
 \label{b1:subsec:270104}
 
-待填充。
+在区间 \((-1,1)\) 上取 \(u=\mathbf1_{(0,1)}\)。对任意测试函数，
+\[
+ \int_{-1}^1u\varphi'\,\mathrm dx
+ =\int_0^1\varphi'\,\mathrm dx=-\varphi(0).
+\]
+因此 \(Du=\delta_0\)，\(|Du|((-1,1))=1\)。这个函数属于 \(BV\)，却不属于 \(W^{1,1}\)，因为点质量没有 \(L^1\) 密度。导数测度记录了一次跳跃的大小，而不是把它藏进“经典导数几乎处处为零”的表述中。
+
+高维的长方体可用相同计算处理。令 \(Q=\prod_{i=1}^d(a_i,b_i)\)。在全空间中，
+\[
+ \int_Q\partial_i\varphi\,\mathrm dx
+ =\int_{\prod_{j\ne i}(a_j,b_j)}
+       \bigl(\varphi(x',b_i)-\varphi(x',a_i)\bigr)\,\mathrm dx'.
+\]
+所以 \(D_i\mathbf1_Q\) 在下侧面取正的面测度，在上侧面取负的面测度。除边棱这个面测度零集以外，各侧面互不重叠；导数方向在每个面上均为单位法向的负号。因此
+\[
+ |D\mathbf1_Q|(\mathbb R^d)
+ =2\sum_{i=1}^d\prod_{j\ne i}(b_j-a_j).
+\]
+这是边界各面的面积之和。\(d=1\) 时空乘积取一，恢复一个有界区间两端的总变差二。到第\ref{b1:sec:2704}节，我们会把这种现象扩展为一般集合的周长。
+
+变化也可能既不由体积密度给出，又不集中在离散跳点。令 \(\mu_C\) 为标准 Cantor 概率测度，\(c(x)=\mu_C([0,x])\)，\(0<x<1\)。对 \(\varphi\in C_c^\infty(0,1)\)，Fubini 定理给出
+\[
+ \begin{aligned}
+ \int_0^1c(x)\varphi'(x)\,\mathrm dx
+ &=\int_{[0,1]}\left(\int_t^1\varphi'(x)\,\mathrm dx\right)
+                                      \mathrm d\mu_C(t)\\
+ &=-\int_{[0,1]}\varphi(t)\,\mathrm d\mu_C(t).
+ \end{aligned}
+\]
+端点不带原子，故在开区间内有 \(Dc=\mu_C\)，总变差为一。函数 \(c\) 连续，在 Cantor 集的补区间上局部常数，所以经典导数几乎处处为零；但导数测度仍保留了非零的奇异连续变化。这是后面 Cantor 部分的最基本模型。
+
+这些例子也说明 \(BV\) 是一个积分与分布概念，不是对任意点态代表计算振幅总和。把零函数在有理点上改为一，不改变其 \(L^1\) 类和分布导数，所以在多维定义下仍是零 \(BV\) 类。若回到一维的点态分割变差，则需先选择相应的规范代表；不能把任意零测改动后的点态分割和与这里的 \(|Du|\) 混为一谈。

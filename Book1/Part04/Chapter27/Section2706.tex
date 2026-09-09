@@ -2,19 +2,192 @@
 \section{等周不等式}
 \label{b1:sec:2706}
 
-% TODO: 撰写本节正文。
+周长描述边界的代价，体积描述集合占据的空间。两者的联系不仅属于几何：
+将一个函数拆成超水平集，集合的体积估计就能转化为函数的可积性估计。
+反过来，把函数不等式用于示性函数，又会恢复集合不等式。
+本节在全空间完整建立这两个方向；所证明的是只依赖维数的常数，并不预先宣称其最优。
+
+Simon 的《Lectures on Geometric Measure Theory》\cite[第6节，第34--40页]{Simon1983Lectures}
+把局部变差、磨光与 Poincaré 型估计放在同一条线上。
+这里将前节的严格逼近接到第\ref{b1:sec:2402}节已经证明的端点 Sobolev 不等式，
+再用余面积公式说明其集合意义。
+
+% 实读范围：本地 Simon1983Lectures 正式扫描本，第6节印刷34--40页，
+% 尤其6.1、6.2及6.4--6.6。该范围用于局部变差/磨光/Poincare语境，
+% 不冒称提供最佳欧氏等周常数或球等号唯一性的证明。
+% 主证明直接依赖本书24章GNS端点、27.2严格逼近、27.3余面积。
+% 全空间Cc∞严格逼近在下面实际补做远处截断，不把任意域光滑逼近写成紧支集逼近。
 
 \subsection{BV 形式}
 \label{b1:subsec:270601}
 
-待填充。
+\begin{theorem}[BV 的 Sobolev 端点估计]\label{b1:thm:bv-sobolev-endpoint}
+设 \(d\ge2\)，\(q=d/(d-1)\)。存在仅依赖维数的常数 \(S_d<\infty\)，使
+每个 \(u\in BV(\mathbb R^d)\) 都属于 \(L^q(\mathbb R^d)\)，且
+\begin{equation}\label{b1:eq:bv-sobolev-endpoint}
+ \|u\|_{L^q(\mathbb R^d)}\le S_d|Du|(\mathbb R^d).
+\end{equation}
+\end{theorem}
+\begin{proof}
+先把严格逼近改成全空间紧支集逼近。由定理%
+\ref{b1:thm:bv-strict-approximation}，可取
+\(w_j\in C^\infty(\mathbb R^d)\cap W^{1,1}(\mathbb R^d)\)，使
+\[
+ \|w_j-u\|_1\to0,\quad
+ \int_{\mathbb R^d}|\nabla w_j|\,\mathrm dx
+       \longrightarrow|Du|(\mathbb R^d).
+\]
+选光滑截断 \(0\le\chi_R\le1\)，在 \(B(0,R)\) 上等于 \(1\)，
+支集包含于 \(B(0,2R)\)，且 \(|\nabla\chi_R|\le C/R\)。
+对固定 \(j\)，当 \(R\to\infty\) 时，
+\[
+ \|\chi_Rw_j-w_j\|_1\to0,\quad
+ \int_{\mathbb R^d}|w_j|\cdot|\nabla\chi_R|\,\mathrm dx
+       \le\frac C R\|w_j\|_1\to0.
+\]
+因此可取 \(R_j\ge j\)，使这两个量都小于 \(1/j\)。
+令 \(v_j=\chi_{R_j}w_j\)，则 \(v_j\in C_c^\infty(\mathbb R^d)\)，
+\(v_j\to u\) 于 \(L^1\)，且由乘积公式，
+\[
+ \limsup_j\int_{\mathbb R^d}|\nabla v_j|\,\mathrm dx
+ \le\lim_j\left(\int_{\mathbb R^d}|\nabla w_j|\,\mathrm dx+\frac1j\right)
+ =|Du|(\mathbb R^d).
+\]
+下半连续性给出反向的下极限不等式，所以
+\(\int|\nabla v_j|\to|Du|(\mathbb R^d)\)。
+
+现在对 \(v_j\) 应用定理\ref{b1:thm:gns-endpoint}：
+\[
+ \|v_j\|_q\le S_d\int_{\mathbb R^d}|\nabla v_j|\,\mathrm dx.
+\]
+再从 \(L^1\) 收敛中抽取几乎处处收敛子列，利用 Fatou 引理，得到
+\[
+ \|u\|_q
+ \le\liminf_j\|v_j\|_q
+ \le S_d|Du|(\mathbb R^d).
+\]
+这一步同时证明目标 \(L^q\) 可积性，不要求预先知道 \(u\in L^q\)。
+\end{proof}
+
+右端没有零阶项，但左端函数类仍要求 \(u\in L^1(\mathbb R^d)\)。
+这一条件使远处截断的误差消失，也排除了全空间上的非零常数。
+严格逼近在这里提供的是总变差的数值收敛，不是导数测度的变差范数收敛；
+证明也没有推出 \(v_j\to u\) 于临界空间 \(L^q\)。
+
+维数 \(d=1\) 时，对 \(v\in C_c^\infty(\mathbb R)\) 分别从左右无穷远积分，可得
+\[
+ |v(x)|\le\int_{-\infty}^x|v'|,\quad
+ |v(x)|\le\int_x^\infty|v'|,
+ \quad
+ 2\|v\|_\infty\le\int_{\mathbb R}|v'|.
+\]
+沿上面同一组紧支集严格逼近，并在几乎处处极限上取界，得到
+\[
+ \|u\|_{L^\infty(\mathbb R)}\le\frac12|Du|(\mathbb R),
+ \quad u\in BV(\mathbb R).
+\]
+这是单独的一维端点，不把 \(d/(d-1)\) 当作有限指数使用。
 
 \subsection{有限周长集合形式}
 \label{b1:subsec:270602}
 
-待填充。
+\begin{theorem}[有限周长集合的等周估计]\label{b1:thm:finite-perimeter-isoperimetric}
+设 \(d\ge2\)，集合 \(E\subseteq\mathbb R^d\) 可测、体积有限且周长有限。
+则
+\begin{equation}\label{b1:eq:finite-perimeter-isoperimetric}
+ m_d(E)^{(d-1)/d}\le S_dP(E).
+\end{equation}
+\end{theorem}
+\begin{proof}
+有限体积给出 \(\mathbf1_E\in L^1(\mathbb R^d)\)，有限周长给出
+\(\mathbf1_E\in BV(\mathbb R^d)\)。将它代入\eqref{b1:eq:bv-sobolev-endpoint}，
+并注意
+\[
+ \|\mathbf1_E\|_{d/(d-1)}=m_d(E)^{(d-1)/d},
+ \quad |D\mathbf1_E|(\mathbb R^d)=P(E),
+\]
+便得结论。
+\end{proof}
 
-\subsection{Sobolev 与 等周不等式 的联系}
+这类将体积与边界大小联系起来的估计称为%
+\term[dengzhou-budengshi]{等周不等式}[isoperimetric inequality]。
+这里使用的是全空间周长。若将右端直接改为 \(P(E,\Omega)\)，
+取 \(E=\Omega\) 就会出现正体积与零相对周长，因此必须另加适合区域的归一化。
+有限体积也不可删除：全空间自身的周长为零，却有无穷体积。
+在一维，前面的端点界说明 \(0<m_1(E)<\infty\) 的有限周长集合满足 \(P(E)\ge2\)；
+一个有界非空区间达到这个值。
+
+球可以用来检查常数的尺度。记 \(\omega_d=m_d(B(0,1))\)。
+由光滑域周长公式\ref{b1:prop:smooth-domain-perimeter}及球面积计算，
+\[
+ m_d(B(a,r))=\omega_dr^d,\quad
+ P(B(a,r))=d\omega_dr^{d-1}.
+\]
+所以任何适用于所有集合的常数 \(S_d\) 都必须满足
+\[
+ S_d\ge\frac1{d\omega_d^{1/d}}.
+\]
+半径恰好消去，说明指数 \((d-1)/d\) 与边界尺度相匹配。
+但求出球的比值，并不证明这个下界对所有集合都可作为不等式常数，
+更不证明哪些集合能取等号。本节不从非最优的 Gagliardo–Nirenberg–Sobolev 估计
+推断最佳等周常数或等号分类。
+
+\subsection{Sobolev 与等周不等式的联系}
 \label{b1:subsec:270603}
 
-待填充。
+从函数不等式到集合不等式只需代入示性函数。反方向则需要把函数的全部层重新组合，
+余面积公式正好将累积的周长转回总变差。
+
+\begin{proposition}[集合与函数估计的常数传递]\label{b1:prop:isoperimetric-sobolev-equivalence}
+固定 \(d\ge2\)、\(q=d/(d-1)\) 及 \(C>0\)。下列两条等价。
+\begin{equivalences}
+ \item\label{b1:item:bv-isoperimetric-set-bound}
+ 每个有限体积的有限周长集合 \(E\subseteq\mathbb R^d\) 都满足
+ \(m_d(E)^{1/q}\le CP(E)\)。
+ \item\label{b1:item:bv-isoperimetric-function-bound}
+ 每个实值 \(u\in BV(\mathbb R^d)\) 都满足
+ \(\|u\|_q\le C|Du|(\mathbb R^d)\)。
+\end{equivalences}
+\end{proposition}
+\begin{proof}
+由\itemref{b1:item:bv-isoperimetric-function-bound}推出%
+\itemref{b1:item:bv-isoperimetric-set-bound}已在前一定理中证明。
+现假设集合估计成立。
+
+先说明可以取绝对值而不增加总变差。用严格逼近取
+\(u_j\in W^{1,1}(\mathbb R^d)\)，使 \(u_j\to u\) 于 \(L^1\)，且
+\(\int|\nabla u_j|\to|Du|(\mathbb R^d)\)。
+Sobolev 绝对值公式给出 \(|u_j|\in W^{1,1}\)，
+\(\bigl|\nabla|u_j|\bigr|\le|\nabla u_j|\) 几乎处处。
+又有 \(\||u_j|-|u|\|_1\le\|u_j-u\|_1\)，故变差下半连续性推出
+\[
+ w=|u|\in BV(\mathbb R^d),\quad
+ |Dw|(\mathbb R^d)\le|Du|(\mathbb R^d).
+\]
+
+令 \(E_t=\{w>t\}\)，\(t>0\)。由于 \(w\in L^1\)，有
+\(m_d(E_t)\le\|w\|_1/t<\infty\)；余面积公式又保证几乎每个 \(E_t\) 周长有限。
+对 \(R,N>0\)，用积分 Minkowski 不等式及集合估计，得到
+\[
+ \begin{aligned}
+ \|\mathbf1_{B(0,R)}\min\{w,N\}\|_q
+ &=\left\|\int_0^N\mathbf1_{E_t\cap B(0,R)}\,\mathrm dt\right\|_q\\
+ &\le\int_0^N m_d\bigl(E_t\cap B(0,R)\bigr)^{1/q}\,\mathrm dt\\
+ &\le\int_0^N m_d(E_t)^{1/q}\,\mathrm dt\\
+ &\le C\int_0^\infty P(E_t)\,\mathrm dt
+   =C|Dw|(\mathbb R^d).
+ \end{aligned}
+\]
+空间与层值的截断保证最初的函数有界且支集有限，因而没有预设 \(w\in L^q\)。
+令 \(R,N\to\infty\)，单调收敛定理给出
+\[
+ \|u\|_q=\|w\|_q\le C|Dw|(\mathbb R^d)\le C|Du|(\mathbb R^d).
+\]
+同一个常数 \(C\) 在两个方向均未改变，证明完成。
+\end{proof}
+
+这个等价性说明，最佳集合常数与最佳 BV 函数常数若按各自下确界定义，必然相同；
+但它本身并不计算那个下确界。
+在本书当前的证明链中，先由坐标积分建立 Sobolev 估计，再由严格逼近与余面积转到集合，
+所有实际使用的常数已经得到控制。若转而从尖锐的几何等周定理出发，
+同一层积分论证也能将它的常数原样传给 BV 端点估计。

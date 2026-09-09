@@ -2,24 +2,317 @@
 \section{BV 的余面积公式}
 \label{b1:sec:2703}
 
-% TODO: 撰写本节正文。
+一个实值函数可以由全部超水平集重建。对于 Sobolev 函数，第%
+\ref{b1:sec:1802}节用梯度长度补偿水平集上的面积；对于 BV 函数，
+梯度不再一定是函数，但超水平集的边界仍可由示性函数的分布导数描述。
+本节证明：函数的总变差恰好是各层周长的积分。证明先用窄条带截断处理
+\(W^{1,1}\) 函数，再借严格逼近通过极限，不以有限周长集合的深层边界结构为前提。
+
+% 实际来源范围：本地 Simon1983Lectures 正式扫描本，第6节印刷34--40页，
+% 6.1的局部变差对偶、6.2的磨光及6.4--6.6的Poincare型估计。
+% 该范围没有提供本节BV余面积的完整证明；下面条带截断、可数测试族和
+% 有符号分层的证明由本书已证工具独立组织，不冒称来自原书某一未读定理。
+% 依赖：27.1变差对偶；27.2扩展变差L1loc下半连续与任意开集严格逼近；
+% 21章Sobolev截断。第18章仅作几何对照，不作为本证明的必要黑箱。
 
 \subsection{超水平集}
 \label{b1:subsec:270301}
 
-待填充。
+以下固定开集 \(\Omega\subseteq\mathbb R^d\)。为实值可测函数 \(u\) 记
+\[
+ E_t=\{\,x\in\Omega:u(x)>t\,\},\quad t\in\mathbb R.
+\]
+改动 \(u\) 的一个 Lebesgue 零测集，只会在同一个零测集内改动每个 \(E_t\)。
+示性函数的分布导数不受这种改动影响，所以后面的周长由原来的几乎处处类决定。
+需要联合可测性时，可以先选一个 Borel 代表。
+
+对有限实数 \(a,b\)，有两个基本恒等式：
+\begin{equation}\label{b1:eq:bv-signed-layer-cake}
+ a=\int_{\mathbb R}
+       \bigl(\mathbf1_{\{a>t\}}-\mathbf1_{\{0>t\}}\bigr)\,\mathrm dt,
+ \quad
+ |a-b|=\int_{\mathbb R}
+       \bigl|\mathbf1_{\{a>t\}}-\mathbf1_{\{b>t\}}\bigr|\,\mathrm dt.
+\end{equation}
+第一式在 \(a\ge0\) 时积分区间为 \((0,a)\)，在 \(a<0\) 时则在
+\((a,0)\) 上积分 \(-1\)；第二式的被积函数只在两个端点之间等于 \(1\)。
+负值情形必须保留第一式中的基准项，不能将有符号函数写成所有超水平集示性函数的直接积分。
+
+由第二式及 Tonelli 定理，对 \(u,v\in L^1(U)\)，有
+\begin{equation}\label{b1:eq:bv-level-set-l1-distance}
+ \int_{\mathbb R}
+ m_d\bigl(\{u>t\}\mathbin{\triangle}\{v>t\}\bigr)\,\mathrm dt
+   =\|u-v\|_{L^1(U)},
+\end{equation}
+其中所有层集均取在 \(U\) 内。若 \(u_j\to u\) 于 \(L^1(U)\)，
+抽取满足 \(\sum_j\|u_j-u\|_1<\infty\) 的子列，就得到对几乎每个 \(t\)，
+\[
+ \mathbf1_{\{u_j>t\}}\longrightarrow\mathbf1_{\{u>t\}}
+       \quad\text{于 }L^1(U).
+\]
+这里的子列对几乎所有层值共同有效；它不是为每个 \(t\) 分别抽取的子列。
 
 \subsection{周长}
 \label{b1:subsec:270302}
 
-待填充。
+在任意开集 \(U\subseteq\Omega\) 上，沿用前节的扩展变差记号
+\[
+ V(f,U)=\sup\left\{\,
+     \int_U f\,\operatorname{div}\varphi\,\mathrm dx:
+     \varphi\in C_c^1(U;\mathbb R^d),\
+     \|\varphi\|_\infty\le1\,\right\}.
+\]
+\(C_c^1\) 测试场可在共同紧集内磨光，并在必要时按上确界范数归一化；
+因此这个上确界与前节使用 \(C_c^\infty\) 的定义相同。
+这个数允许为无穷；\(f\) 只需局部可积。测试场的大小始终用欧氏范数。
+
+\begin{definition}\label{b1:def:perimeter}
+设 \(E\subseteq\Omega\) 为 Lebesgue 可测集。定义它在开集 \(U\subseteq\Omega\) 内的%
+\term[zhouchang]{周长}[perimeter]为
+\[
+ P(E,U)=V(\mathbf1_E,U).
+\]
+若 \(P(E,\Omega)<\infty\)，则称 \(E\) 为 \(\Omega\) 内的%
+\term[youxian-zhouchang-ji]{有限周长集}[set of finite perimeter]。
+若对每个满足 \(\overline U\Subset\Omega\) 的开集 \(U\) 都有 \(P(E,U)<\infty\)，
+则称 \(E\) 在 \(\Omega\) 内具有局部有限周长。
+后一条件下，\(D\mathbf1_E\) 是局部有限的向量 Radon 测度；对 Borel 集 \(A\subseteq\Omega\)，记
+\[
+ P(E,A)=|D\mathbf1_E|(A).
+\]
+全空间周长简记为 \(P(E)=P(E,\mathbb R^d)\)。
+\end{definition}
+\symidx{\(P(E,U)\)：集合在开集内的相对周长}
+\symidx{\(P(E,\cdot)\)：有限周长集合的周长测度}
+
+由变差对偶，测度记号在开集上与前面的定义一致。
+示性函数总是局部可积，但在无界区域上未必属于 \(L^1(\Omega)\)。
+因此，有限周长不自动意味着 \(\mathbf1_E\in BV(\Omega)\)；还需要 \(m_d(E)<\infty\)。
+例如 \(E=\Omega\) 的相对周长为零，无论 \(\Omega\) 的体积是否有限。
+相对周长也不计入位于 \(\partial\Omega\) 上的部分，不能与全空间周长混用。
+补集与原集合具有相同的相对周长，因为
+\(D\mathbf1_{\Omega\setminus E}=-D\mathbf1_E\) 于 \(\Omega\)。
+
+\begin{lemma}[层集周长的可测性]\label{b1:lem:level-perimeter-measurable}
+若 \(u\) 在 \(\Omega\) 上可测，则对每个开集 \(U\subseteq\Omega\)，
+函数 \(t\mapsto P(E_t,U)\) 可测，允许取值 \(+\infty\)。
+\end{lemma}
+\begin{proof}
+用紧集 \(K_j\) 穷竭 \(U\)，并要求每个紧支集测试场的支集最终包含在某个 \(K_j\) 内。
+固定 \(j\)，考虑支集包含于 \(K_j\)、且 \(\|\varphi\|_\infty\le1\) 的
+\(C_c^1\) 测试场。以函数及一阶导数的上确界之和作距离，这个集合可分：
+将场及其全部一阶导数限制到 \(K_j\)，它嵌入有限个 \(C(K_j)\) 的乘积，
+而紧度量空间上的连续函数空间可分。于是可以在这组测试场内部选一个可数稠密族。
+将各 \(j\) 的稠密族合并，记为 \((\varphi_k)\)。
+
+对支集固定的测试场，\(C^1\) 收敛使
+\(\int_{E_t}\operatorname{div}\varphi\) 收敛，因为示性函数有界且支集体积有限。
+因而对每个 \(t\)，都有
+\[
+ P(E_t,U)=\sup_k\int_U\mathbf1_{\{u(x)>t\}}
+                         \operatorname{div}\varphi_k(x)\,\mathrm dx.
+\]
+每一项都是可测的含参变量积分：被积函数在共同的紧支集上绝对可积。
+可数上确界仍可测，结论成立。
+\end{proof}
 
 \subsection{余面积公式}
 \label{b1:subsec:270303}
 
-待填充。
+\begin{lemma}[层集积分对变差的控制]\label{b1:lem:layer-perimeter-controls-variation}
+设 \(u\in L^1_{\mathrm{loc}}(\Omega)\)。对任意开集 \(U\subseteq\Omega\)，有
+\[
+ V(u,U)\le\int_{\mathbb R}P(E_t,U)\,\mathrm dt.
+\]
+\end{lemma}
+\begin{proof}
+任取 \(\varphi\in C_c^1(U;\mathbb R^d)\)，\(\|\varphi\|_\infty\le1\)。
+由\eqref{b1:eq:bv-signed-layer-cake}，且
+\[
+ \int_{\mathbb R}\int_U
+ \bigl|\mathbf1_{\{u>t\}}-\mathbf1_{\{0>t\}}\bigr|
+                 \cdot|\operatorname{div}\varphi|\,\mathrm dx\,\mathrm dt
+ =\int_U|u|\cdot|\operatorname{div}\varphi|\,\mathrm dx<\infty,
+\]
+可以使用 Fubini 定理。紧支集又保证
+\(\int_U\operatorname{div}\varphi\,\mathrm dx=0\)，故
+\[
+ \int_Uu\,\operatorname{div}\varphi\,\mathrm dx
+ =\int_{\mathbb R}\left(\int_{E_t}\operatorname{div}\varphi\,\mathrm dx\right)\,\mathrm dt
+ \le\int_{\mathbb R}P(E_t,U)\,\mathrm dt.
+\]
+先保留基准项验证绝对可积，再利用散度积分为零将它消去，是有符号分层的关键。
+对测试场取上确界即得结论。
+\end{proof}
+
+\begin{lemma}[\(W^{1,1}\) 的层集周长公式]\label{b1:lem:w11-perimeter-coarea}
+设 \(U\) 为有界开集，\(v\in W^{1,1}(U)\)。则
+\[
+ \int_{\mathbb R}P(\{v>t\},U)\,\mathrm dt
+       =\int_U|\nabla v|\,\mathrm dx.
+\]
+\end{lemma}
+\begin{proof}
+取 \(\varepsilon>0\)，定义分段线性截断
+\[
+ H_\varepsilon(s)=\min\bigl\{1,\max\{0,s/\varepsilon\}\bigr\}.
+\]
+Sobolev 截断公式及水平集上的梯度为零给出
+\[
+ H_\varepsilon(v-t)\in W^{1,1}(U),\quad
+ \bigl|\nabla H_\varepsilon(v-t)\bigr|
+   =\varepsilon^{-1}\mathbf1_{\{t<v<t+\varepsilon\}}|\nabla v|
+       \quad\text{几乎处处}.
+\]
+在固定的层值 \(t\) 上，\(H_\varepsilon(v-t)\) 逐点收敛到
+\(\mathbf1_{\{v>t\}}\)，且值在 \([0,1]\) 内。
+由于 \(U\) 有限体积，控制收敛给出 \(L^1(U)\) 收敛。
+变差下半连续性于是给出
+\[
+ P(\{v>t\},U)
+ \le\liminf_{\varepsilon\downarrow0}
+      \varepsilon^{-1}\int_{\{t<v<t+\varepsilon\}}|\nabla v|\,\mathrm dx.
+\]
+沿任意趋零的正数列应用 Fatou 引理，再用 Tonelli 定理，得到
+\[
+ \begin{aligned}
+ \int_{\mathbb R}P(\{v>t\},U)\,\mathrm dt
+ &\le\liminf_{\varepsilon\downarrow0}
+   \int_U|\nabla v(x)|\left(
+    \varepsilon^{-1}\int_{\mathbb R}
+       \mathbf1_{\{t<v(x)<t+\varepsilon\}}\,\mathrm dt\right)\,\mathrm dx\\
+ &=\int_U|\nabla v|\,\mathrm dx.
+ \end{aligned}
+\]
+括号中的积分等于 \(1\)，因为固定 \(x\) 后，所允许的 \(t\) 构成长度为
+\(\varepsilon\) 的区间。反向不等式由前一引理和
+\(V(v,U)=\int_U|\nabla v|\) 得到。
+\end{proof}
+
+\begin{theorem}[BV 余面积公式]\label{b1:thm:bv-coarea}
+设 \(u\in BV(\Omega)\) 为实值函数，\(E_t=\{u>t\}\)。
+则几乎每个 \(E_t\) 在 \(\Omega\) 内具有有限周长，且对每个开集 \(U\subseteq\Omega\)，
+\begin{equation}\label{b1:eq:bv-coarea-open}
+ |Du|(U)=\int_{\mathbb R}P(E_t,U)\,\mathrm dt.
+\end{equation}
+在周长无限的零测层值集合上，将周长测度统一记为零，则对任意 Borel 集
+\(A\subseteq\Omega\)，都有
+\begin{equation}\label{b1:eq:bv-coarea-measure}
+ |Du|(A)=\int_{\mathbb R}|D\mathbf1_{E_t}|(A)\,\mathrm dt.
+\end{equation}
+\end{theorem}
+\begin{proof}
+先设 \(U\subseteq\Omega\) 有界。将 \(u\) 限制到 \(U\)，用%
+\cref{b1:thm:bv-strict-approximation}选
+\(u_j\in C^\infty(U)\cap W^{1,1}(U)\)，使
+\[
+ u_j\to u\quad\text{于 }L^1(U),\quad
+ \int_U|\nabla u_j|\,\mathrm dx\longrightarrow|Du|(U).
+\]
+按\eqref{b1:eq:bv-level-set-l1-distance}抽一个共同子列，使几乎每个层值都有
+\(\mathbf1_{\{u_j>t\}}\to\mathbf1_{E_t}\) 于 \(L^1(U)\)。
+变差下半连续性和 Fatou 引理给出
+\[
+ \begin{aligned}
+ \int_{\mathbb R}P(E_t,U)\,\mathrm dt
+ &\le\liminf_j\int_{\mathbb R}P(\{u_j>t\},U)\,\mathrm dt\\
+ &=\lim_j\int_U|\nabla u_j|\,\mathrm dx=|Du|(U).
+ \end{aligned}
+\]
+最后的等号使用前一引理。由层集积分控制变差的引理，又有反向不等式。
+
+对一般开集 \(U\)，用递增有界开集 \(U_j\) 穷竭它。
+每个紧支集测试场最终支承于某个 \(U_j\)，故对所有 \(t\)，
+\[
+ P(E_t,U)=\lim_jP(E_t,U_j).
+\]
+对周长一侧用单调收敛定理，对 \(|Du|\) 一侧用测度从下连续性，
+便得到\eqref{b1:eq:bv-coarea-open}。
+取 \(U=\Omega\)，右端有限，所以周长无限的层值构成一个 Lebesgue 零测集 \(Z\)。
+
+还须将开集等式推广到 Borel 集，而不为每个集合另选一组例外层值。
+对 \(t\notin Z\)，令 \(\mu_t=|D\mathbf1_{E_t}|\)，对 \(t\in Z\) 令 \(\mu_t=0\)。
+这些都是 \(\Omega\) 上的有限 Borel 测度，且对每个开集 \(U\)，
+\(t\mapsto\mu_t(U)\) 可测。
+使 \(t\mapsto\mu_t(A)\) 可测的 Borel 集 \(A\) 构成一个 Dynkin 系统：
+补集利用 \(\mu_t(\Omega)<\infty\) 作差，可数不交并利用单调收敛。
+它包含开集，而开集构成生成 Borel 集的 \(\pi\)-系统，故包含全部 Borel 集。
+因此
+\[
+ \lambda(A)=\int_{\mathbb R}\mu_t(A)\,\mathrm dt
+\]
+定义一个有限 Borel 测度；可数可加性由 Tonelli 定理给出。
+开集等式说明 \(\lambda\) 与 \(|Du|\) 在所有开集上一致，
+有限测度唯一性遂给出它们在全部 Borel 集上一致。
+这就是\eqref{b1:eq:bv-coarea-measure}。
+\end{proof}
+
+周长本身始终用分布导数定义。在光滑情形，它与通常边界面积的联系还需相应的
+Gauss 公式；上述论证没有将这个联系预先放入定义。
+对于一般 BV 函数，几乎所有层集具有有限周长并不意味着每个层集都有光滑边界，
+也不意味着例外层值不存在。
 
 \subsection{Cavalieri 型公式}
 \label{b1:subsec:270304}
 
-待填充。
+普通的 Cavalieri 分层公式分解体积，BV 余面积公式分解变差。
+例如对 \(u\in BV(\Omega)\)，前者给出
+\[
+ \|u\|_{L^1(\Omega)}
+ =\int_0^\infty m_d(\{u>t\})\,\mathrm dt
+    +\int_0^\infty m_d(\{u<-t\})\,\mathrm dt,
+\]
+而变差等式对全部实数层值积分，不能在有符号情形只留下正层值。
+例如取 \(u=c\mathbf1_E\)，其中 \(\mathbf1_E\in BV(\Omega)\)、\(c\ne0\)。
+若 \(c>0\)，有周长贡献的层位于 \((0,c)\)，这些层集均为 \(E\)；
+若 \(c<0\)，对应区间为 \((c,0)\)，层集则为 \(\Omega\setminus E\)。
+补集周长不变，两个方向都给出 \(|Du|=|c|\cdot|D\mathbf1_E|\)。
+
+由\eqref{b1:eq:bv-coarea-measure}，对每个非负 Borel 函数 \(g\)，还有加权形式
+\begin{equation}\label{b1:eq:bv-weighted-coarea}
+ \int_\Omega g\,\mathrm d|Du|
+ =\int_{\mathbb R}\left(\int_\Omega g\,\mathrm d|D\mathbf1_{E_t}|\right)\,\mathrm dt.
+\end{equation}
+先对示性函数和非负简单函数应用测度等式，再作单调逼近，即可同时得到内层积分的可测性与该公式。
+取 \(g=\mathbf1_A\)，它描述指定区域内的变差来自哪些层；
+取一般权重，则可以分别强调不同空间位置。
+
+分层还精确描述了截断所保留的变差。固定 \(a<b\)，令
+\[
+ F_{a,b}(s)=\min\bigl\{\max\{s-a,0\},b-a\bigr\}
+                -\min\bigl\{\max\{-a,0\},b-a\bigr\}.
+\]
+减去常数使 \(F_{a,b}(0)=0\)，所以
+\(|F_{a,b}(u)|\le|u|\)，在无限体积区域上也保留 \(L^1\) 可积性。
+
+\begin{proposition}[截断的变差分层]\label{b1:prop:bv-truncation-coarea}
+若 \(u\in BV(\Omega)\)，则 \(F_{a,b}(u)\in BV(\Omega)\)，且对每个 Borel 集
+\(A\subseteq\Omega\)，
+\[
+ |D F_{a,b}(u)|(A)=\int_a^b|D\mathbf1_{E_t}|(A)\,\mathrm dt.
+\]
+\end{proposition}
+\begin{proof}
+截断有有符号表示
+\[
+ F_{a,b}(u)=\int_a^b
+      \bigl(\mathbf1_{\{u>t\}}-\mathbf1_{\{0>t\}}\bigr)\,\mathrm dt.
+\]
+按层集控制变差引理的测试计算，
+\[
+ V(F_{a,b}(u),\Omega)\le\int_a^bP(E_t,\Omega)\,\mathrm dt
+       \le|Du|(\Omega).
+\]
+结合 \(L^1\) 可积性，变差对偶的刻画给出 \(F_{a,b}(u)\in BV(\Omega)\)。
+记 \(c=\min\bigl\{\max\{-a,0\},b-a\bigr\}\)。
+当 \(-c<s<b-a-c\) 时，
+\[
+ \{F_{a,b}(u)>s\}=\{u>a+c+s\}.
+\]
+区间以外的超水平集为全区域或空集，只有两个端点层值不必遵循这段表述，
+而它们不影响层积分。将这一关系代入 \(F_{a,b}(u)\) 的测度余面积公式，
+再作平移换元 \(t=a+c+s\)，即得结论。
+\end{proof}
+
+因此，把函数值限制在一段区间内，恰好保留这段层值所贡献的变差。
+这种按值域而非按空间切分的方法，将在有限周长集合的逼近以及后续精细结构中继续使用。

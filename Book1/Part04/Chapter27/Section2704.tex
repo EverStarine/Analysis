@@ -2,29 +2,167 @@
 \section{有限周长集合}
 \label{b1:sec:2704}
 
-% TODO: 撰写本节正文。
+前一节用示性函数的分布导数定义了周长。这一定义不需要先知道边界是否光滑，甚至不要求集合有有限体积。现在的问题是：导数测度集中在哪里，它的方向能否解释为边界法向？为此必须区分普通拓扑边界、按体积密度定义的边界，以及能从周长测度读出单位方向的约化边界。
+
+本节固定开集 \(\Omega\subset\mathbb R^d\)，令 \(E\subset\mathbb R^d\) 为在 \(\Omega\) 内局部有限周长的可测集。所有边界与支撑均只考察 \(\Omega\) 内的点。需要时可先将 \(E\) 换成几乎处处相等的 Borel 集；下面的对象不会因此改变。
+
+% 实读本地 Simon1983Lectures，正式第14节印刷71--76页；
+% 本节特别对应72页(14.1)--(14.2)及极分解后的微分论证。
+% 原书用内法向表示Dχ_E/|Dχ_E|；本书外法向取其负号。
+% 本节不提前把约化边界认作Hausdorff面积边界，几何识别在下一节证明。
 
 \subsection{周长测度}
 \label{b1:subsec:270401}
 
-待填充。
+沿用\cref{b1:def:perimeter}，记
+\[
+ \mu_E=|D\chi_E|,\quad P(E,A)=\mu_E(A)
+\]
+对 Borel 集 \(A\subset\Omega\) 成立。局部有限性是说每个 \(K\Subset\Omega\) 上的 \(\mu_E(K)\) 有限，不等于 \(P(E,\Omega)<\infty\)，更不等于 \(m_d(E)<\infty\)。例如半空间的体积与全空间周长都无穷，但在每个有界内部区域中的周长有限。
+
+周长只依赖集合的几乎处处类。若 \(m_d(E\mathbin{\triangle}F)=0\)，则 \(\chi_E=\chi_F\) 几乎处处，所以它们的分布导数及全变差完全相同。对于补集，内部测试函数的积分给出
+\begin{equation}\label{b1:eq:perimeter-complement}
+ D\chi_{\mathbb R^d\setminus E}=-D\chi_E,\quad
+ \mu_{\mathbb R^d\setminus E}=\mu_E.
+\end{equation}
+这说明周长本身不区分内外，区分内外的是导数测度的方向。
+
+\begin{proposition}\label{b1:prop:perimeter-support-locality}
+对 \(x\in\Omega\)，下列条件等价：\(x\in\operatorname{supp}\mu_E\)；每个满足 \(\overline B(x,r)\Subset\Omega\) 的球都有
+\[
+ 0<m_d\bigl(E\cap B(x,r)\bigr)<m_d\bigl(B(x,r)\bigr).
+\]
+\end{proposition}
+\begin{proof}
+若某个球内 \(\chi_E\) 几乎处处为 \(0\) 或 \(1\)，则内部所有分布偏导为零，周长测度在该球内也为零，故 \(x\) 不在支撑中。
+
+反过来，若 \(\mu_E\bigl(B(x,r)\bigr)=0\)，则 \(\chi_E\) 在此球中的所有分布偏导为零。局部磨光后，所得光滑函数在每个较小的同心球上梯度为零，因而为常数。让磨光尺度趋零，常数的 \(L^1\) 极限说明 \(\chi_E\) 在每个较小球上几乎处处为常数；重叠处这些常数相同。由于示性函数只取 \(0,1\)，它在原球内也几乎处处取其中一个值。
+\end{proof}
+
+这个判据只说明每个球都看得到两侧的正体积，还没有给出两侧所占的比例。某一侧的比例可能随半径缩小而趋于零；不能把周长的支撑直接定义成下面的测度论边界。
 
 \subsection{测度论内部与外部}
 \label{b1:subsec:270402}
 
-待填充。
+\begin{definition}\label{b1:def:measure-interior-exterior}
+给定可测集 \(E\)，定义它在 \(\Omega\) 内的\term[cedulun-neibu]{测度论内部}[measure-theoretic interior]与\term[cedulun-waibu]{测度论外部}[measure-theoretic exterior]分别为
+\[
+ E^1=\left\{x\in\Omega:
+ \lim_{r\downarrow0}\frac{m_d\bigl(E\cap B(x,r)\bigr)}{\omega_dr^d}=1\right\},
+\]
+\[
+ E^0=\left\{x\in\Omega:
+ \lim_{r\downarrow0}\frac{m_d\bigl(E\cap B(x,r)\bigr)}{\omega_dr^d}=0\right\}.
+\]
+\end{definition}
+\symidx{\(E^1\)：集合的测度论内部}
+\symidx{\(E^0\)：集合的测度论外部}
+
+这是第十四章密度点概念的集合记号，而不是另一种拓扑内部。球体积积分的 Borel 性及有理半径逼近说明 \(E^1,E^0\) 都是 Borel 集。\cref{b1:thm:lebesgue-density}给出
+\[
+ m_d\bigl((E\cap\Omega)\mathbin{\triangle}E^1\bigr)=0,\quad
+ m_d\bigl((\Omega\setminus E)\mathbin{\triangle}E^0\bigr)=0.
+\]
+因此 \(E^1\) 是集合的一个由密度选定的代表，但它未必开。普通内点属于 \(E^1\)，普通外点属于 \(E^0\)；逆命题没有普遍保证。
+
+例如在 \(\Omega=\mathbb R^d\) 中取 \(E=B(0,1)\setminus\mathbb Q^d\)。这个集合没有普通内点，却有 \(E^1=B(0,1)\)；它与开球具有完全相同的示性函数等价类和周长。若使用任意代表的拓扑边界去计算周长，就会把整个闭球误当成边界。
 
 \subsection{测度论边界}
 \label{b1:subsec:270403}
 
-待填充。
+\begin{definition}\label{b1:def:measure-theoretic-boundary}
+给定可测集 \(E\)，称
+\[
+ \partial^eE=\Omega\setminus(E^0\cup E^1)
+\]
+为它在 \(\Omega\) 内的\term[cedulun-bianjie]{测度论边界}[measure-theoretic boundary]，也在外文索引中以 essential boundary 登记。\foreignidx{essential boundary}
+\end{definition}
+\symidx{\(\partial^eE\)：测度论边界}
+
+定义允许密度不存在。因此 \(\partial^eE\) 并不只是密度介于 \(0\) 与 \(1\) 之间且极限存在的点集。它是 Borel 集，并且对任意可测 \(E\) 都有 \(m_d(\partial^eE)=0\)。但在余维一的尺度上，这个集合可以很大。
+
+半空间边界上每个球被平面分成等体积的两半，故其边界点的密度为 \(1/2\)。对于第一象限 \(E=(0,\infty)^2\)，正坐标轴上的非原点边界点仍有密度 \(1/2\)，原点的密度却为 \(1/4\)。它们都属于测度论边界；仅知道某点在 \(\partial^eE\)，还不能给它指定唯一切线或法向。
+
+对于任意选定的集合代表，\(\partial^eE\) 包含于它的普通边界在 \(\Omega\) 中的部分：普通内外点都已经被密度 \(1\) 或 \(0\) 排除。前述删去有理点的例子表明，这个包含可以非常严格。与普通边界不同，\(\partial^eE\) 在零测修改下保持不变。
 
 \subsection{约化边界}
 \label{b1:subsec:270404}
 
-待填充。
+由\cref{b1:prop:vector-measure-polar}，写
+\[
+ D\chi_E=\sigma_E\mu_E,\quad |\sigma_E|=1
+ \quad\mu_E\text{-几乎处处}.
+\]
+一个点附近的方向可能彼此抵消。只有当缩小球中方向的平均趋于单位向量时，才看得到一个没有被抵消的极限方向。
+
+\begin{definition}\label{b1:def:reduced-boundary}
+设 \(E\) 在 \(\Omega\) 内局部有限周长。若 \(x\in\operatorname{supp}\mu_E\)，并且极限
+\begin{equation}\label{b1:eq:reduced-boundary-direction}
+ a_E(x)=\lim_{r\downarrow0}
+ \frac{D\chi_E\bigl(\overline B(x,r)\bigr)}
+ {\mu_E\bigl(\overline B(x,r)\bigr)}
+\end{equation}
+存在且长度为 \(1\)，则称 \(x\) 为 \(E\) 的约化边界点。全体这些点组成\term[yuehua-bianjie]{约化边界}[reduced boundary]，记为 \(\partial^*E\)。
+\end{definition}
+\symidx{\(\partial^*E\)：由周长方向极限定义的约化边界}
+
+这里 \(\partial^*E\) 专指约化边界，\(\partial^eE\) 专指测度论边界；不能因文献记号不同而互换二者。式\eqref{b1:eq:reduced-boundary-direction}采用与 Radon 微分定理相同的闭球。将半径从内增大或从外减小，并对向量测度的各分量使用连续性，可知用开球得到的极限完全相同。在支撑上，两种球的分母在充分小的正半径下都为正。
+
+\begin{proposition}\label{b1:prop:reduced-boundary-carries-perimeter}
+约化边界为 Borel 集，\(a_E\) 可取为其上的 Borel 函数，并且
+\[
+ \mu_E(\Omega\setminus\partial^*E)=0.
+\]
+对每个 \(x\in\partial^*E\)，还有
+\begin{equation}\label{b1:eq:reduced-direction-oscillation}
+ \lim_{r\downarrow0}
+ \frac{1}{\mu_E\bigl(B(x,r)\bigr)}
+ \int_{B(x,r)}|\sigma_E(y)-a_E(x)|^2\,\mathrm d\mu_E(y)=0.
+\end{equation}
+\end{proposition}
+\begin{proof}
+球质量与向量分量的球积分都是 Borel 函数。对固定中心，将闭球半径从外作有理数逼近，利用局部有限测度的连续性，可把极限存在及极限长度为 \(1\) 的条件写成可数个 Borel 条件；支撑本身闭，故约化边界 Borel，极限函数也 Borel。
+
+由\cref{b1:thm:radon-function-differentiation}逐分量作用于 \(\sigma_E\)，球平均在 \(\mu_E\)-几乎处处趋于 \(\sigma_E(x)\)。后者长度为 \(1\)，而支撑的补集为 \(\mu_E\)-零集，故周长集中在约化边界上。最后，固定该边界的一点，利用两个方向的单位长度得到
+\[
+ \frac{\int_{B(x,r)}|\sigma_E-a_E(x)|^2\,\mathrm d\mu_E}
+ {\mu_E\bigl(B(x,r)\bigr)}
+ =2-2a_E(x)\cdot
+ \frac{D\chi_E\bigl(B(x,r)\bigr)}{\mu_E\bigl(B(x,r)\bigr)},
+\]
+右端趋于零，证明了最后一式。
+\end{proof}
+
+这一命题仍是向量测度的微分结论，没有证明 \(\mu_E\) 等于某种 Hausdorff 面积。下一节的结构定理将说明：约化边界处的集合缩放为半空间，周长缩放为其边界平面的面积测度。
 
 \subsection{测度论法向}
 \label{b1:subsec:270405}
 
-待填充。
+\begin{definition}\label{b1:def:measure-theoretic-outer-normal}
+对 \(x\in\partial^*E\)，定义 \(E\) 的\term[cedulun-waifaxiang]{测度论外法向}[measure-theoretic outer unit normal]为
+\[
+ \nu_E(x)=-a_E(x).
+\]
+\end{definition}
+\symidx{\(\nu_E(x)\)：有限周长集合的测度论外法向}
+
+负号来自分布导数的约定。例如 \(E=\{x_d<0\}\) 时，直接沿 \(x_d\) 积分得到
+\[
+ \int_E\partial_d\varphi\,\mathrm dx
+ =\int_{\mathbb R^{d-1}}\varphi(x',0)\,\mathrm dx',
+\]
+所以 \(D\chi_E=-e_d\mathcal H^{d-1}\llcorner\{x_d=0\}\)，而几何上的外法向是 \(e_d\)。一般情形因此写成
+\[
+ D\chi_E=-\nu_E\mu_E.
+\]
+法向只需在 \(\partial^*E\) 上指定；在其补集任意补值不会改变测度等式。补集的约化边界与原集相同，而外法向相反，这也与\eqref{b1:eq:perimeter-complement}一致。
+
+第一象限的角点说明单位长度条件有实际作用。由两次一维分部积分，
+\[
+ D\chi_{(0,\infty)^2}
+ =e_1\mathcal H^1\llcorner\bigl(\{0\}\times(0,\infty)\bigr)
+ +e_2\mathcal H^1\llcorner\bigl((0,\infty)\times\{0\}\bigr).
+\]
+原点半径 \(r\) 的球中，两条射线各贡献长度 \(r\)，所以向量与全变差之比为 \((e_1+e_2)/2\)，长度为 \(1/\sqrt2\)。原点属于 \(\partial^eE\)，却不属于 \(\partial^*E\)。这不是在角点随意漏掉一个法向，而是定义准确地记录了两个方向的抵消。
+
+Simon 的《Lectures on Geometric Measure Theory》第14节以 \(D\chi_E/\mu_E\) 表示内法向\cite[式(14.1)--(14.2)]{Simon1983Lectures}。本书选择外法向，是为使下一节的 Gauss–Green 公式保持“区域内散度积分等于向外通量”的符号。阅读其他文献时，应先检查这一等式，再对照法向名称。

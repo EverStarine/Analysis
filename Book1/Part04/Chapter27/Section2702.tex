@@ -2,24 +2,384 @@
 \section{BV 的逼近与紧性}
 \label{b1:sec:2702}
 
-% TODO: 撰写本节正文。
+对 Sobolev 函数，磨光可以同时逼近函数及其弱梯度；对一般 BV 函数，导数可能含有集中在零测集上的部分，光滑梯度不能按总变差范数逼近这种测度。本节保留函数的 \(L^1\) 收敛和导数的总量收敛，并用导数测度控制平移，得到局部紧性。所有函数均取实值，\(|Du|\) 使用前一节的欧氏全变差。
+
+Simon 的《Lectures on Geometric Measure Theory》\cite[第6节，6.2--6.3]{Simon1983Lectures}以磨光及变差对偶式组织 BV 的逼近与紧性。下面的全域严格逼近另外展开单位分解的误差控制；局部紧性的抽选步骤则调用已经证明的 \(L^1\) 平移判据。
+
+% 实读 Simon1983Lectures 正式公开本§6，印刷35--38页：
+% 6.1局部BV的测度表示、6.2局部磨光及变差测度收敛、6.3局部紧性；
+% 核看第37页。原书6.3将平滑函数的紧性细节交给GT，本节改用已证FK。
+% 任意开集的全域严格逼近按22.1局部有限分区路线独立展开，
+% 特别控制rho_i*(u grad psi_i)-u grad psi_i，不声称直接来自Simon完整证明。
+% 不使用一般BV边界延拓；补零只对内部光滑截断或另列已知BV补零假设。
 
 \subsection{光滑逼近}
 \label{b1:subsec:270201}
 
-待填充。
+\begin{definition}\label{b1:def:bv-strict-convergence}
+设 \(u_j,u\in BV(\Omega)\)。若
+\[
+ \|u_j-u\|_{L^1(\Omega)}\longrightarrow0,\quad
+ |Du_j|(\Omega)\longrightarrow|Du|(\Omega),
+\]
+则称 \(u_j\) 在 \(BV(\Omega)\) 中\term[yange-shoulian]{严格收敛}[strict convergence]到 \(u\)。
+\end{definition}
+
+这一定义比较的是两个导数测度的总变差数值，并没有要求
+\(|D(u_j-u)|(\Omega)\to0\)。先记录内部截断及全空间磨光的公式。
+
+\begin{lemma}\label{b1:lem:bv-cutoff-and-mollification}
+设 \(u\in BV_{\mathrm{loc}}(\Omega)\)、\(\eta\in C_c^\infty(\Omega)\)，把 \(\eta u\) 在 \(\Omega\) 外补零，记为 \(v\)。则 \(v\in BV(\mathbb R^d)\)，且
+\begin{equation}\label{b1:eq:bv-cutoff-derivative}
+ Dv=\eta Du+u\nabla\eta\,m_d,
+ \quad
+ |Dv|(\mathbb R^d)
+ \leq\int_\Omega|\eta|\,\mathrm d|Du|
+       +\int_\Omega|u|\cdot|\nabla\eta|\,\mathrm dx,
+\end{equation}
+右侧两项测度均在域外补零。
+
+若 \(v\in BV(\mathbb R^d)\)，用非负、偶、单位积分的磨光函数定义
+\(v_\varepsilon=\rho_\varepsilon*v\)，则
+\[
+ v_\varepsilon\in C^\infty(\mathbb R^d)\cap W^{1,1}(\mathbb R^d),
+ \quad v_\varepsilon\longrightarrow v\ \text{于 }L^1,
+\]
+并有
+\begin{equation}\label{b1:eq:bv-convolution-gradient}
+ \nabla v_\varepsilon=\rho_\varepsilon*Dv,\quad
+ \int_{\mathbb R^d}|\nabla v_\varepsilon|\,\mathrm dx
+ \leq|Dv|(\mathbb R^d).
+\end{equation}
+\end{lemma}
+\begin{proof}
+对任意 \(\Phi\in C_c^\infty(\mathbb R^d;\mathbb R^d)\)，函数
+\(\eta\Phi\) 的支集紧含于 \(\Omega\)。乘积公式给出
+\[
+ \begin{aligned}
+ \int_{\mathbb R^d}v\,\operatorname{div}\Phi
+ &=\int_\Omega u\,\operatorname{div}(\eta\Phi)
+       -\int_\Omega u\nabla\eta\cdot\Phi\\
+ &=-\int_\Omega\eta\Phi\cdot\mathrm dDu
+       -\int_\Omega u\nabla\eta\cdot\Phi.
+ \end{aligned}
+\]
+两项导数测度均有限，得到补零后的导数公式；总变差的三角不等式给出估计。这里没有跨越 \(\partial\Omega\) 的边界项，因为 \(\eta\) 的支集留在域内。
+
+对任意有限向量测度 \(\mu\)，定义
+\[
+ (\rho_\varepsilon*\mu)(x)
+ =\int_{\mathbb R^d}\rho_\varepsilon(x-y)\,\mathrm d\mu(y).
+\]
+由向量测度的极分解和积分三角不等式，
+\[
+ \bigl|(\rho_\varepsilon*\mu)(x)\bigr|
+ \leq\int\rho_\varepsilon(x-y)\,\mathrm d|\mu|(y),
+ \quad
+ \int|\rho_\varepsilon*\mu|\,\mathrm dx\leq|\mu|(\mathbb R^d).
+\]
+后一式由 Tonelli 定理及核的单位积分得到。
+
+函数 \(v_\varepsilon\) 的光滑性由卷积求导给出，而 \(L^1\) 收敛来自\cref{b1:prop:approximate-identity-lp}。利用核的偶性及 Fubini 定理，对测试向量场 \(\Phi\) 有
+\[
+ \begin{aligned}
+ \int v_\varepsilon\operatorname{div}\Phi
+ &=\int v\,\operatorname{div}(\rho_\varepsilon*\Phi)\\
+ &=-\int(\rho_\varepsilon*\Phi)\cdot\mathrm dDv
+ =-\int\Phi(x)\cdot(\rho_\varepsilon*Dv)(x)\,\mathrm dx.
+ \end{aligned}
+\]
+因此经典梯度为 \(\rho_\varepsilon*Dv\)。刚证的向量测度卷积估计说明它可积，并给出\eqref{b1:eq:bv-convolution-gradient}。
+\end{proof}
+
+\begin{theorem}\label{b1:thm:bv-strict-approximation}
+设 \(\Omega\subseteq\mathbb R^d\) 为任意非空开集，\(u\in BV(\Omega)\)。存在
+\[
+ u_j\in C^\infty(\Omega)\cap W^{1,1}(\Omega)
+\]
+严格收敛到 \(u\)，也就是
+\[
+ u_j\to u\ \text{于 }L^1(\Omega),\quad
+ \int_\Omega|\nabla u_j|\,\mathrm dx\longrightarrow|Du|(\Omega).
+\]
+这里不要求 \(u_j\) 紧支集，也不要求边界正则。
+\end{theorem}
+\begin{proof}
+给定 \(\varepsilon>0\)。沿用\cref{b1:thm:meyers-serrin}证明中的局部有限开层及光滑单位分解，取
+\[
+ \psi_i\geq0,\quad \sum_i\psi_i=1,\quad
+ K_i=\operatorname{supp}\psi_i\Subset V_{j(i)},\quad
+ \overline{V_{j(i)}}\Subset\Omega.
+\]
+每个紧集只遇到有限个开层 \(V_j\)，每一层只分配有限多个 \(\psi_i\)。
+
+令 \(f_i=\psi_i u\)，并补零到全空间。由前一引理，
+\[
+ Df_i=\mu_i+g_i\,m_d,\quad
+ \mu_i=\psi_iDu,\quad g_i=u\nabla\psi_i.
+\]
+每个 \(f_i,g_i\) 都属于全空间 \(L^1\)，且支集包含于 \(K_i\)。选择足够小的半径 \(\delta_i>0\)，同时满足
+\[
+ K_i+\overline B(0,\delta_i)\subset V_{j(i)},\quad
+ \|\rho_{\delta_i}*f_i-f_i\|_1<\varepsilon2^{-i-1},\quad
+ \|\rho_{\delta_i}*g_i-g_i\|_1<\varepsilon2^{-i-1}.
+\]
+支集条件由紧集到补集的正距离保证；两个误差条件由 \(L^1\) 磨光逼近保证，因而可以通过进一步缩小同一个半径同时实现。
+
+定义
+\[
+ v=\sum_i\rho_{\delta_i}*f_i.
+\]
+每个紧集只遇到有限个磨光后的支集，所以此和在局部为有限个光滑函数之和，故 \(v\in C^\infty(\Omega)\)。又因
+\[
+ \sum_i\|f_i\|_1=\int_\Omega|u|\sum_i\psi_i=\|u\|_1,
+\]
+卷积后的级数也在 \(L^1\) 中绝对收敛，并且
+\[
+ \|v-u\|_1
+ \leq\sum_i\|\rho_{\delta_i}*f_i-f_i\|_1<\varepsilon/2.
+\]
+
+梯度需要另作估计。在任意内部紧集上，单位分解满足
+\(\sum_i\nabla\psi_i=0\)。因此局部逐项求导给出
+\begin{equation}\label{b1:eq:bv-partition-commutator}
+ \nabla v
+ =\sum_i\rho_{\delta_i}*\mu_i
+       +\sum_i(\rho_{\delta_i}*g_i-g_i).
+\end{equation}
+第一组项的全域 \(L^1\) 范数可求和，因为非负权重给出
+\[
+ \sum_i\int_{\mathbb R^d}|\rho_{\delta_i}*\mu_i|
+ \leq\sum_i|\mu_i|(\mathbb R^d)
+ =\sum_i\int_\Omega\psi_i\,\mathrm d|Du|
+ =|Du|(\Omega).
+\]
+第二组误差的 \(L^1\) 范数之和小于 \(\varepsilon/2\)。所以
+\[
+ v\in W^{1,1}(\Omega),\quad
+ \int_\Omega|\nabla v|\leq|Du|(\Omega)+\varepsilon/2.
+\]
+这里没有要求 \(\sum_i\|u\nabla\psi_i\|_1<\infty\)；相消先在局部进行，全域求和只作用于已经控制的误差。
+
+令 \(\varepsilon\downarrow0\)，得到所需的 \(L^1\) 逼近列及梯度积分的上极限估计。为取得反向不等式，对每个
+\(\Phi\in C_c^\infty(\Omega;\mathbb R^d)\)、\(|\Phi|\leq1\)，有
+\[
+ \int_\Omega u\,\operatorname{div}\Phi
+ =\lim_j\int_\Omega u_j\operatorname{div}\Phi
+ \leq\liminf_j\int_\Omega|\nabla u_j|.
+\]
+对 \(\Phi\) 取上确界，由变差对偶式得到
+\(|Du|(\Omega)\leq\liminf_j\int_\Omega|\nabla u_j|\)，完成证明。
+\end{proof}
+
+严格收敛确实弱于 BV 范数收敛。例如在 \((-1,1)\) 上取
+\(u=\mathbf1_{(0,1)}\)，则 \(Du=\delta_0\)。令
+\[
+ u_\varepsilon(x)=\int_{-\infty}^x\rho_\varepsilon(t)\,\mathrm dt,
+ \quad 0<\varepsilon<1.
+\]
+这些函数光滑，与 \(u\) 只在 \((-\varepsilon,\varepsilon)\) 内不同，且
+\(\int_{-1}^1|u_\varepsilon'|=1=|Du|\bigl((-1,1)\bigr)\)。因此它们严格收敛，但
+\(\rho_\varepsilon\,m_1\) 与 \(\delta_0\) 相互奇异，所以
+\[
+ |D(u_\varepsilon-u)|\bigl((-1,1)\bigr)=2.
+\]
+不能把光滑严格逼近改称一般 BV 函数的光滑范数稠密性。
 
 \subsection{下半连续性}
 \label{b1:subsec:270202}
 
-待填充。
+前面最后一步只使用了紧支集测试，因此它实际上是一个局部结论。
+
+\begin{theorem}[变差的下半连续性]\label{b1:thm:bv-lower-semicontinuity}
+设 \(u_j,u\in L^1_{\mathrm{loc}}(\Omega)\)，且
+\(u_j\to u\) 于 \(L^1_{\mathrm{loc}}(\Omega)\)。对任意开集 \(U\subseteq\Omega\)，有
+\[
+ V(u,U)\leq\liminf_{j\to\infty}V(u_j,U),
+\]
+其中 \(V\) 是\cref{b1:prop:bv-variation-duality}中的扩展变差，允许取无穷。
+
+若右端在每个内部相对紧开集上有限，则 \(u\in BV_{\mathrm{loc}}(\Omega)\)。在导数测度存在时，上式就是
+\[
+ |Du|(U)\leq\liminf_j|Du_j|(U).
+\]
+若另有 \(u\in L^1(\Omega)\) 及 \(\liminf_jV(u_j,\Omega)<\infty\)，则 \(u\in BV(\Omega)\)。
+\end{theorem}
+\begin{proof}
+任取 \(\Phi\in C_c^\infty(U;\mathbb R^d)\)、\(|\Phi|\leq1\)。因为
+\(\operatorname{div}\Phi\) 有界且紧支集，局部 \(L^1\) 收敛给出
+\[
+ \int_Uu\,\operatorname{div}\Phi
+ =\lim_j\int_Uu_j\operatorname{div}\Phi
+ \leq\liminf_jV(u_j,U).
+\]
+右端不依赖 \(\Phi\)，故对测试场取上确界，得到第一项。其余断言由局部与全局的有限变差判别及 \(V=|Du|\) 得到。
+\end{proof}
+
+对层集示性函数也可以直接用这个版本：即使 \(\{u>t\}\) 的体积无穷，
+\(\mathbf1_{\{u>t\}}\) 仍局部可积，扩展变差依然有定义。全域
+\(L^1\) 是进入 \(BV(\Omega)\) 的额外要求，不是定义局部周长的必要条件。
 
 \subsection{BV 紧性定理}
 \label{b1:subsec:270203}
 
-待填充。
+导数是测度时，平移仍能由它的总变差控制。
+
+\begin{lemma}\label{b1:lem:bv-translation-estimate}
+若 \(v\in BV(\mathbb R^d)\)，则对每个 \(h\in\mathbb R^d\)，有
+\[
+ \|\tau_hv-v\|_{L^1(\mathbb R^d)}
+ \leq |h|\cdot|Dv|(\mathbb R^d),
+ \quad \tau_hv(x)=v(x-h).
+\]
+\end{lemma}
+\begin{proof}
+先对全空间磨光 \(v_\varepsilon\) 使用沿线段的微积分基本定理：
+\[
+ |v_\varepsilon(x-h)-v_\varepsilon(x)|
+ \leq|h|\int_0^1|\nabla v_\varepsilon(x-th)|\,\mathrm dt.
+\]
+积分换序及平移不变性给出
+\[
+ \|\tau_hv_\varepsilon-v_\varepsilon\|_1
+ \leq|h|\int|\nabla v_\varepsilon|
+ \leq|h|\cdot|Dv|(\mathbb R^d).
+\]
+由 \(v_\varepsilon\to v\) 于 \(L^1\)，以及平移的等距性，左端在
+\(\varepsilon\downarrow0\) 时趋于 \(\|\tau_hv-v\|_1\)，从而完成证明。
+\end{proof}
+
+\begin{theorem}[BV 局部紧性]\label{b1:thm:bv-local-compactness}
+设 \(u_j\in BV_{\mathrm{loc}}(\Omega)\)，且对每个
+\(\overline U\Subset\Omega\) 的开集 \(U\)，都有
+\[
+ \sup_j\bigl(\|u_j\|_{L^1(U)}+|Du_j|(U)\bigr)<\infty.
+\]
+则存在子列及 \(u\in BV_{\mathrm{loc}}(\Omega)\)，使
+\[
+ u_{j_k}\longrightarrow u\quad\text{于 }L^1_{\mathrm{loc}}(\Omega).
+\]
+对任意开集 \(U\subseteq\Omega\)，所得极限满足
+\(|Du|(U)\leq\liminf_k|Du_{j_k}|(U)\)。
+\end{theorem}
+\begin{proof}
+取递增开集穷竭 \(U_m\)，使
+\(\overline{U_m}\Subset U_{m+1}\)，并取
+\(\eta_m\in C_c^\infty(U_{m+1})\)、\(0\leq\eta_m\leq1\)，在 \(U_m\) 上等于 \(1\)。把 \(\eta_mu_j\) 补零到全空间，记为 \(v_{m,j}\)。由截断引理及假设，
+\[
+ \sup_j\bigl(\|v_{m,j}\|_1+|Dv_{m,j}|(\mathbb R^d)\bigr)<\infty
+\]
+对每个固定 \(m\) 成立，且这组函数都在
+\(\operatorname{supp}\eta_m\) 外为零。
+
+共同紧支集保证尾部条件，前一引理保证平移误差一致趋零。由\cref{b1:thm:frechet-kolmogorov-lp}取 \(p=1\)，对固定 \(m\)，族
+\((v_{m,j})_j\) 在全空间 \(L^1\) 中相对紧，因而 \((u_j)_j\) 在
+\(L^1(U_m)\) 中有收敛子列。
+
+逐次为 \(m=1,2,\ldots\) 选取子列，再取对角子列。其在每个 \(U_m\) 上都有 \(L^1\) 极限，不同区域的极限在交集上几乎处处相同，因为
+\(L^1\) 极限唯一。因此这些极限定义了一个 \(u\in L^1_{\mathrm{loc}}(\Omega)\)。局部变差界及下半连续性保证 \(u\in BV_{\mathrm{loc}}\)，并给出全部开集上的所述不等式。
+\end{proof}
+
+若原序列在全域 BV 范数中一致有界，局部紧性得到的极限也属于全域
+\(BV(\Omega)\)：可以再抽出几乎处处收敛子列，用 Fatou 引理控制其
+\(L^1\) 范数，再用变差下半连续性控制 \(|Du|(\Omega)\)。但这个结论尚未给出全域 \(L^1\) 收敛，质量仍可能移到穷竭所遗漏的区域。
+
+\begin{corollary}\label{b1:cor:bv-global-compactness-with-tails}
+设 \((u_j)\) 在 \(BV(\Omega)\) 中一致有界。若存在递增紧集
+\(K_m\Subset\Omega\)，使
+\[
+ \lim_{m\to\infty}\sup_j
+       \int_{\Omega\setminus K_m}|u_j|\,\mathrm dx=0,
+\]
+则它有全域 \(L^1(\Omega)\) 收敛子列。
+
+特别地，若 \(\Omega\) 有界，只需另有边界附近的统一质量控制
+\[
+ \lim_{\delta\downarrow0}\sup_j
+ \int_{\{\,x\in\Omega:\operatorname{dist}(x,\Omega^c)<\delta\,\}}
+       |u_j(x)|\,\mathrm dx=0.
+\]
+另一项充分条件是：\(\Omega\) 有界，而且补零函数 \(E_0u_j\) 属于
+\(BV(\mathbb R^d)\)，并在该空间中一致有界。
+\end{corollary}
+\begin{proof}
+先取局部 \(L^1\) 收敛子列，再抽出几乎处处收敛子列，极限记为
+\(u\in BV(\Omega)\)。Fatou 引理使极限继承同一个尾部界。给定
+\(\varepsilon>0\)，取 \(m\)，使序列及极限在 \(\Omega\setminus K_m\) 上的 \(L^1\) 范数都小于 \(\varepsilon\)。于是
+\[
+ \|u_j-u\|_{L^1(\Omega)}
+ \leq\|u_j-u\|_{L^1(K_m)}+2\varepsilon.
+\]
+第一项由局部收敛趋于零，再令 \(\varepsilon\downarrow0\)。
+
+当 \(\Omega\) 有界时，可取
+\(K_m=\{\,x\in\Omega:\operatorname{dist}(x,\Omega^c)\geq1/m\,\}\)；
+这些集合紧含于 \(\Omega\)，并穷竭它，所以边界条件推出前述尾部条件。
+
+最后一种情形直接在全空间应用平移引理和 Fréchet--Kolmogorov 定理：补零函数具有共同有界支承区域，且全空间导数总变差一致有界。所得全空间 \(L^1\) 收敛限制到 \(\Omega\) 即可。
+\end{proof}
+
+仅有“\(\Omega\) 有界”不能代替这些条件。第\ref{b1:ex:25-infinitely-many-components}题中，取 \(p=1\)，在越来越小的不同连通分量上放置归一化常数，得到
+\[
+ \|u_j\|_{L^1(\Omega)}=1,\quad Du_j=0,\quad
+ \|u_j-u_k\|_{L^1(\Omega)}=2\quad(j\ne k).
+\]
+这同时是一个 BV 有界列，却没有全域 \(L^1\) 收敛子列。对有界
+Lipschitz 区域，若要通过延拓证明无附加条件的 BV 全局紧性，还须先建立 BV 延拓定理；第22章的 \(W^{1,1}\) 延拓算子并未定义在一般 BV 函数上，不能直接套用。
 
 \subsection{弱-*收敛}
 \label{b1:subsec:270204}
 
-待填充。
+局部 \(L^1\) 收敛首先决定分布导数的极限，变差界再把光滑测试扩展为连续测试。
+
+\begin{proposition}\label{b1:prop:bv-distributional-weak-star}
+设 \(u_j,u\in BV_{\mathrm{loc}}(\Omega)\)，\(u_j\to u\) 于
+\(L^1_{\mathrm{loc}}(\Omega)\)，且导数变差在每个内部紧集的邻域上一致有界。则对每个
+\(\Phi\in C_c(\Omega;\mathbb R^d)\)，有
+\[
+ \int_\Omega\Phi\cdot\mathrm dDu_j
+ \longrightarrow\int_\Omega\Phi\cdot\mathrm dDu.
+\]
+若进一步有 \(\sup_j|Du_j|(\Omega)<\infty\)，则 \(|Du|(\Omega)<\infty\)，并且测试函数可以取为任意 \(\Phi\in C_0(\Omega;\mathbb R^d)\)。
+\end{proposition}
+\begin{proof}
+若 \(\Phi\) 光滑且紧支集，由分布导数定义，
+\[
+ \int\Phi\cdot\mathrm dDu_j
+ =-\int u_j\operatorname{div}\Phi
+ \longrightarrow-\int u\operatorname{div}\Phi
+ =\int\Phi\cdot\mathrm dDu.
+\]
+给定连续紧支集 \(\Phi\)，可把它补零后磨光，得到统一收敛于它的光滑向量场 \(\Phi_\ell\)，并使这些场的支集留在某个固定
+\(K\Subset\Omega\) 内。若 \(M_K=\sup_j|Du_j|(K)<\infty\)，则
+\[
+ \left|\int(\Phi-\Phi_\ell)\cdot\mathrm dDu_j\right|
+ \leq M_K\|\Phi-\Phi_\ell\|_\infty.
+\]
+极限测度有同样的估计。先固定 \(\ell\) 令 \(j\to\infty\)，再令
+\(\ell\to\infty\)，得到连续紧支集测试的结论。
+
+若总变差一致有界，下半连续性给出 \(|Du|(\Omega)<\infty\)。由\cref{b1:prop:cc-dense-c0}，连续紧支集函数在 \(C_0\) 中一致稠密；用全域总变差界重复刚才的误差估计，就得到全部 \(C_0\) 测试。
+\end{proof}
+
+\begin{definition}\label{b1:def:bv-weak-star-convergence}
+设 \(u_j,u\in BV(\Omega)\)。若 \(u_j\to u\) 于 \(L^1(\Omega)\)，且有限向量测度 \(Du_j\) 对全部 \(C_0(\Omega;\mathbb R^d)\) 测试弱-*收敛到 \(Du\)，则称这种收敛为\term[bv-ruoxing-shoulian]{BV 弱-*收敛}[weak-* convergence in BV]。
+\end{definition}
+
+因此，在 BV 有界列上，一旦已经取得全域 \(L^1\) 收敛，导数测度的弱-*收敛就随之成立。只取得局部 \(L^1\) 收敛时，仍有前一命题的测度测试结论，却不能省去本定义中的全域 \(L^1\) 条件。
+
+弱-*收敛不保证总变差数值收敛。边界逃逸给出一个例子：在
+\(\Omega=(0,1)\) 上，令 \(u_j=\mathbf1_{(0,1/j)}\)。则
+\[
+ u_j\to0\ \text{于 }L^1,\quad
+ Du_j=-\delta_{1/j}\overset{*}{\rightharpoonup}0,\quad
+ |Du_j|(\Omega)=1.
+\]
+这里 \(C_0\bigl((0,1)\bigr)\) 测试在边界附近趋零；常数函数 \(1\) 不属于这个测试空间。若改用全部 \(C_b\) 测试，就换成了第十二章的另一种测度收敛。
+
+振荡也会造成变差损失，即使不把质量集中到边界。取
+\(\Omega=(0,2\pi)\)、\(u_j(x)=j^{-1}\sin(jx)\)。函数在 \(L^1\) 中趋零，导数为 \(\cos(jx)\,m_1\)，故由前一命题弱-*趋零，但
+\[
+ |Du_j|(\Omega)=\int_0^{2\pi}|\cos(jx)|\,\mathrm dx=4.
+\]
+这些变差测度在边界宽度为 \(\delta\) 的区域内质量至多 \(2\delta\)，所以即使控制了边界质量，也不能从导数的弱-*收敛推出总变差收敛。严格逼近定理额外取得的，正是后一个数值极限。
