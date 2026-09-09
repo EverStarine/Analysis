@@ -2,19 +2,225 @@
 \section{精确代表与近似极限}
 \label{b1:sec:2801}
 
-% TODO: 撰写本节正文。
+上一章把总变差解释为各层周长的累积。本章进一步问：这些周长在同一点附近怎样叠加？
+有些点的函数值沿各个方向趋于同一个数，有些点则沿一个界面的两侧趋于不同的数。
+若只查看任意选定代表的普通不连续点，零测修改就会掩盖这种区别。
+因此先从邻近球中的体积比例定义点值，暂不使用导数测度。
+本节的基础定义适用于一般实值可测函数；涉及 BV 的余维一结构时，再明确加入有限变差条件。
+
+Alberti 与 Mantegazza 的《A Note on the Theory of SBV Functions》%
+\cite[注1.2]{AlbertiMantegazza1997SBV}把近似极限与导数分解放在一起介绍。
+其文中把没有近似极限的集合记为 \(S_u\)，并在这个集合上给代表补零；
+本章保留 \(S_u\) 表示近似不连续集，另以 \(J_u\) 专指有两个不同单侧值的跳跃点。
+两者的关系是后面的结构定理，不能在定义时直接把它们当成同一个集合。
+系统学习可继续参阅 Evans 与 Gariepy 的《Measure Theory and Fine Properties of Functions》%
+\cite{Evans2015Measure}及 Ambrosio、Fusco 与 Pallara 的%
+《Functions of Bounded Variation and Free Discontinuity Problems》%
+\cite{Ambrosio2000Functions}。
+
+% 实读AlbertiMantegazza1997SBV作者公开正式副本，刊印376--377页注1.2；
+% 作者副本内页2--3。本文前节基础密度刻画独立证明，不冒称这些页含全证。
+% 原文S_u与本书J_u的区别在正文说明；下节引述精细结构时另列证明义务。
 
 \subsection{近似上、下极限}
 \label{b1:subsec:280101}
 
-待填充。
+固定开集 \(\Omega\subseteq\mathbb R^d\)，令 \(u:\Omega\to\mathbb R\) 可测。
+只考察中心 \(x\in\Omega\) 且足够小的球。对可测集 \(A\subseteq\Omega\)，简记
+\[
+ \theta_r(A,x)=\frac{m_d(A\cap B(x,r))}{\omega_dr^d}.
+\]
+说一个性质在 \(x\) 附近以密度一成立，是说不满足它的点集之 \(\theta_r\) 趋于零。
+这里的“密度一”不是“某个邻域中处处成立”，也不是“除掉一个固定的零测集后成立”。
+
+\begin{definition}\label{b1:def:approximate-upper-lower-limits}
+定义 \(u\) 在 \(x\) 的\term[jinsi-xia-jixian]{近似下极限}[approximate lower limit]与%
+\term[jinsi-shang-jixian]{近似上极限}[approximate upper limit]为
+\[
+ u^\wedge(x)=
+ \sup\{\,t\in\mathbb R:\lim_{r\downarrow0}\theta_r(\{u<t\},x)=0\,\},
+\]
+\[
+ u^\vee(x)=
+ \inf\{\,t\in\mathbb R:\lim_{r\downarrow0}\theta_r(\{u>t\},x)=0\,\}.
+\]
+允许取扩展实数值，约定 \(\sup\varnothing=-\infty\)、\(\inf\varnothing=+\infty\)。
+\end{definition}
+\symidx{\(u^\wedge\)：近似下极限}
+\symidx{\(u^\vee\)：近似上极限}
+
+下极限的容许阈值构成向下封闭的区间，上极限的容许阈值构成向上封闭的区间；
+端点是否属于该区间不影响定义。不能把这里的体积密度换成小球中的本性上、下确界。
+前者允许例外部分的比例逐渐趋零，后者只忽略严格零测的部分。
+
+\begin{proposition}\label{b1:prop:approximate-limits-basic}
+函数 \(u^\wedge,u^\vee\) 是扩展实值 Borel 函数，且
+\[
+ u^\wedge(x)\le u^\vee(x)\quad(x\in\Omega).
+\]
+它们只依赖 \(u\) 的几乎处处等价类。若 \(u\le v\) 几乎处处，则在每一点都有
+\[
+ u^\wedge\le v^\wedge,\quad u^\vee\le v^\vee.
+\]
+此外，\((-u)^\wedge=-u^\vee\)、\((-u)^\vee=-u^\wedge\)。
+\end{proposition}
+\begin{proof}
+先把 \(u\) 换成几乎处处相等的 Borel 代表。任意这样的替换都只在零测集内改变每个阈值集，
+故不改变任何球中的体积，特别不改变任一点的两个近似极限。
+
+对固定阈值 \(t\) 与半径 \(r\)，球体积积分作为中心的函数是 Borel 的。
+对固定中心，它关于正半径连续，因为球壳的体积趋于零。
+因此“\(\theta_r(\{u<t\},x)\to0\)”可以只用正有理半径写成可数个 Borel 条件。
+例如对充分小的半径，使用
+\(\inf_{n}\sup_{r\in\mathbb Q,\ 0<r<1/n}\theta_r\)；
+球未必留在 \(\Omega\) 时可先在域外把阈值集补空，极限不受影响。
+阈值的单调性又使定义中的上、下确界可只取有理 \(t\)。
+所以两个近似极限都是 Borel 函数。
+
+若 \(u^\wedge(x)>u^\vee(x)\)，可在二者之间取 \(a<b\)，使
+\(\{u<b\}\) 与 \(\{u>a\}\) 在 \(x\) 都有密度零。
+但这两个集合的并为 \(\Omega\)，不可能在内部一点有密度零，矛盾。
+这个论证同样涵盖端点为无穷的情况。
+
+若 \(u\le v\) 几乎处处，则
+\(\{v<t\}\subseteq\{u<t\}\)、\(\{u>t\}\subseteq\{v>t\}\)，均按零测集忽略理解。
+比较容许阈值区间即可得到两个单调关系。
+最后，把 \(\{-u<t\}\) 写成 \(\{u>-t\}\)，便得到取负号的公式。
+\end{proof}
 
 \subsection{近似连续点}
 \label{b1:subsec:280102}
 
-待填充。
+\begin{definition}\label{b1:def:bv-finite-approximate-limit}
+若存在有限实数 \(\ell\)，使对每个 \(\varepsilon>0\)，都有
+\begin{equation}\label{b1:eq:approximate-limit-density}
+ \lim_{r\downarrow0}
+ \frac{m_d\bigl(\{y\in B(x,r):|u(y)-\ell|>\varepsilon\}\bigr)}
+ {\omega_dr^d}=0,
+\end{equation}
+则按\cref{b1:def:approximate-limit}，\(u\) 在 \(x\) 有近似极限 \(\ell\)。
+记该点集为 \(G_u\)，并在其上记 \(\widetilde u(x)=\ell\)。
+\end{definition}
+
+这里并不要求原代表已经满足 \(u(x)=\ell\)。
+第十四章的“近似连续”还要求这个等式成立，属于指定代表的性质；
+本章的 \(G_u\) 只记录等价类有有限近似极限的点。
+在 \(G_u\) 上重定义为 \(\widetilde u\) 后，该代表才在这些点近似连续。
+后文为简便说等价类的近似连续点时，均指这项重定义后的性质，
+不更改第十四章对于指定函数值的定义。
+
+\begin{proposition}\label{b1:prop:approximate-continuity-characterization}
+对 \(x\in\Omega\) 及有限实数 \(\ell\)，下列条件等价：
+\begin{equivalences}
+ \item\label{b1:item:approximate-limit-density}
+ \(u\) 在 \(x\) 的近似极限为 \(\ell\)。
+ \item\label{b1:item:approximate-limits-equal}
+ \(u^\wedge(x)=u^\vee(x)=\ell\)。
+\end{equivalences}
+近似极限若存在便唯一。若 \(u\in L^1_{\mathrm{loc}}(\Omega)\)，则几乎每点属于 \(G_u\)，
+且 \(\widetilde u=u\) 几乎处处。
+\end{proposition}
+\begin{proof}
+若密度条件成立，则对 \(a<\ell<b\)，集合 \(\{u<a\}\)、\(\{u>b\}\) 都有密度零。
+故 \(u^\wedge\ge\ell\)、\(u^\vee\le\ell\)，结合前一命题得相等。
+反过来，若两极限都等于 \(\ell\)，给定 \(\varepsilon>0\)，
+可在 \(\ell-\varepsilon\) 与 \(\ell\) 之间取一个下极限的容许阈值，
+在 \(\ell\) 与 \(\ell+\varepsilon\) 之间取一个上极限的容许阈值。
+两项密度零条件的并包含 \(\{|u-\ell|>\varepsilon\}\)，所以该集合也有密度零。
+唯一性随两极限的数值唯一性得到。
+
+由第十四章的 Lebesgue 微分定理，局部可积函数的几乎每点满足
+\[
+ \lim_{r\downarrow0}\frac1{\omega_dr^d}\int_{B(x,r)}|u(y)-u(x)|\,\mathrm dy=0.
+\]
+Chebyshev 不等式将左侧平均振荡控制转成%
+\eqref{b1:eq:approximate-limit-density}，从而得到最后一项。
+\end{proof}
+
+Lebesgue 点的平均振荡趋零，比一般的密度意义近似极限强。
+若 \(u\) 在 \(x\) 的某个邻域本性有界，二者确实等价：
+密度意义收敛给出
+\[
+ \frac1{\omega_dr^d}\int_{B(x,r)}|u-\ell|
+ \le\varepsilon+M\,\theta_r(\{|u-\ell|>\varepsilon\},x),
+\]
+其中 \(M\) 是邻域内 \(|u-\ell|\) 的本性上界。先令 \(r\downarrow0\)，再令
+\(\varepsilon\downarrow0\) 即可。无界函数则可能在密度很小的部分上留下较大的积分。
+
+第\ref{b1:sec:1405}节已构造可积尖峰的反例：非零部分在原点的密度趋零，
+而球中归一化积分不趋零。因此这里不重复该构造，也不把近似极限存在自动当作一个
+\(L^1\) 平均极限。BV 在余维一尺度上还具有更强的性质，证明这点需要下一节的结构输入。
 
 \subsection{不连续点集}
 \label{b1:subsec:280103}
 
-待填充。
+\begin{definition}\label{b1:def:bv-approximate-discontinuity-set}
+定义 \(u\) 的\term[jinsi-bulianxu-ji]{近似不连续集}[approximate discontinuity set]为
+\[
+ S_u=\Omega\setminus G_u.
+\]
+\end{definition}
+\symidx{\(S_u\)：没有有限近似极限的点集}
+\symidx{\(\widetilde u\)：有限近似极限给出的代表}
+
+由前面的刻画，\(S_u\) 为 Borel 集。它包括 \(u^\wedge<u^\vee\) 的点，
+也包括两极限都等于同一个无穷值的点；后者不能因上下极限相等而被算作有限值近似连续点。
+在 \(S_u\) 上暂给 \(\widetilde u\) 补零，便得到一个全域 Borel 代表。
+局部可积时，它与原函数几乎处处相等。
+这个补零约定不声称零值具有特殊的边界意义；在跳跃点上，稍后还会定义两侧值的平均。
+
+对任何 \(L^1_{\mathrm{loc}}\) 函数，目前只能由微分定理断言 \(m_d(S_u)=0\)。
+对于 BV 函数，下一节将把它加强为一个余维一的结构结论。
+加强的内容不是把 \(S_u\) 全部删掉，而是说明除了一个
+\(\mathcal H^{d-1}\)-零集，近似不连续表现为沿界面的两侧跳跃。
+
+例如 \(u=\mathbf1_{\{x_d>0\}}\) 在平面外近似连续，在平面上有
+\(u^\wedge=0\)、\(u^\vee=1\)，因此 \(S_u=\{x_d=0\}\)。
+它在局部属于 BV，却在一个具有正余维一测度的集合上没有单一近似极限。
+反之，\(\mathbf1_{\mathbb Q^d}\) 的任意点均有近似极限零，
+所以 \(S_u=\varnothing\)，尽管这个指定代表在通常意义下处处不连续。
+两个例子分别说明，跳跃不能通过给界面点重赋单一值消除，
+而零测修改造成的普通不连续根本不应计入 \(S_u\)。
+
+无穷近似值即使在 BV 中也可能发生。设 \(d\ge2\)、\(0<\alpha<d-1\)，
+在 \(B(0,1)\) 上令 \(u(x)=|x|^{-\alpha}\)，原点任意补值。
+球壳积分给出 \(u,\,\alpha|x|^{-\alpha-1}\in L^1\)。
+在删去半径 \(\varepsilon\) 小球的区域上分部积分，内边界项的绝对值至多为
+\[
+ C\varepsilon^{d-1-\alpha}\|\varphi\|_\infty\longrightarrow0.
+\]
+因此经典梯度在原点外的表达式也是全域弱梯度，\(u\in W^{1,1}\subset BV\)。
+但原点的两个近似极限均为 \(+\infty\)，故 \(0\in S_u\)，而这不是两个有限值之间的跳跃。
+单点的 \(\mathcal H^{d-1}\) 测度为零，所以这个现象与下一节的结构定理相容。
+
+\begin{proposition}[近似振荡与层集边界]\label{b1:prop:approximate-oscillation-level-boundary}
+设 \(T\subset\mathbb R\) 为任意可数稠密集。则
+\[
+ \{x:u^\wedge(x)<u^\vee(x)\}
+ \subseteq\bigcup_{t\in T}\partial^e\{u>t\}.
+\]
+更具体地，若 \(u^\wedge(x)<t<u^\vee(x)\)，则 \(x\) 属于该层集的测度论边界；
+若 \(t<u^\wedge(x)\)，层集在 \(x\) 的密度为 \(1\)；
+若 \(t>u^\vee(x)\)，密度为 \(0\)。
+\end{proposition}
+\begin{proof}
+若 \(t<u^\wedge(x)\)，在 \(t\) 与下极限之间选容许阈值 \(a\)，
+则 \(\{u\le t\}\subseteq\{u<a\}\) 的密度为零，故 \(\{u>t\}\) 密度为一。
+上极限情形直接由阈值单调性得到。
+
+若 \(u^\wedge(x)<t<u^\vee(x)\)，而 \(\{u>t\}\) 密度为零，
+则 \(t\) 是上极限的容许阈值，与 \(t<u^\vee(x)\) 矛盾。
+若它密度为一，则 \(\{u<t\}\) 密度为零，推出 \(u^\wedge(x)\ge t\)，同样矛盾。
+因而该点既不在测度论内部，也不在外部，属于 \(\partial^e\{u>t\}\)。
+最后，在每段非空的扩展实数开区间 \((u^\wedge(x),u^\vee(x))\) 中取一个 \(T\) 的点，
+就得到可数并包含。
+\end{proof}
+
+这条联系允许先选出一组周长有限的稠密好层值，再利用上一章的边界结构。
+它还没有处理两极限同为无穷的点，也没有保证同一点上的不同层面法向一致；
+后两项正是不能由这个简单包含替代的精细性质。
+
+后续所有界面与代表仍由几乎处处类决定。特别是，
+“导数由函数的精确代表给出”必须同时说明用了哪一种代表、
+在哪一个测度的几乎处处意义下成立；Lebesgue 几乎处处相等的代表，
+若被直接放进奇异导数测度的积分，结果未必相同。

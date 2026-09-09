@@ -2,24 +2,314 @@
 \section{跳跃集}
 \label{b1:sec:2802}
 
-% TODO: 撰写本节正文。
+近似不连续只说明一个球中不能用单一数值描述函数。
+跳跃则有更确定的形状：把球沿一个平面分成两半后，两侧分别接近两个不同的有限值。
+本节先把这个局部图像写成定义，确定两侧值和方向；
+再用上一章的层集与周长结构，说明 BV 函数的跳跃点为何由可数个曲面承载。
+
+以下均取实值函数。定义和最初几个命题只要求 \(u\in L^1_{\mathrm{loc}}(\Omega)\)；
+涉及可整流性与导数测度时，另加 \(u\in BV(\Omega)\)。
+文献有时允许任意选择法向并同时交换两侧值，本书则把较大值记作 \(u^+\)，固定取向。
+这一选择不改变最终的向量测度。
+
+% 实际阅读：AlbertiMantegazza1997SBV，作者公开正式副本，注1.2，
+% 作者版内页2--3（刊印376--377页）。其中给出广义跳跃集上的两侧L1迹与导数公式，
+% 并将精细结构证明指向Evans--Gariepy 1992第5.9节；未声称已实读该书证明。
+% 下文唯一性、上下值关系、Borel性及Ju可整流性在本书工具内独立证明；
+% 非有限近似值的余维一零测性、BV曲面两侧迹与界面导数公式明确作为深层输入。
 
 \subsection{跳跃点}
 \label{b1:subsec:280201}
 
-待填充。
+对 \(x\in\Omega\)、单位向量 \(\nu\) 及足够小的 \(r>0\)，记
+\[
+ B_r^\pm(x,\nu)
+ =\{y\in B(x,r):\ \pm(y-x)\cdot\nu>0\}.
+\]
+两半球的体积均为 \(\omega_dr^d/2\)；中间平面为体积零集，不影响平均。
+
+\begin{definition}\label{b1:def:approximate-jump-point}
+给定 \(u\in L^1_{\mathrm{loc}}(\Omega)\) 与 \(x\in\Omega\)。
+若存在有限实数 \(a<b\) 和单位向量 \(\nu\)，使
+\begin{equation}\label{b1:eq:approximate-jump-halves}
+ \begin{aligned}
+ \lim_{r\downarrow0}\frac2{\omega_dr^d}
+       \int_{B_r^+(x,\nu)}|u(y)-b|\,\mathrm dy&=0,\\
+ \lim_{r\downarrow0}\frac2{\omega_dr^d}
+       \int_{B_r^-(x,\nu)}|u(y)-a|\,\mathrm dy&=0.
+ \end{aligned}
+\end{equation}
+则称 \(x\) 为 \(u\) 的\term[jinsi-tiaoyue-dian]{近似跳跃点}[approximate jump point]。
+全体这样的点组成\term[tiaoyue-ji]{跳跃集}[jump set]，记为 \(J_u\)。
+\end{definition}
+\symidx{\(J_u\)：函数的近似跳跃点集}
+
+此处使用的是半球中的 \(L^1\) 平均，不只是某个稀疏点列上的极限，
+也不只是半球内依测度趋近一个数。尤其对无界函数，
+上一节已经说明后两种较弱信息不能自动给出平均绝对误差趋零。
+
+把半球缩放到单位球更便于比较不同的跳跃描述。设
+\[
+ w_{a,b,\nu}(z)=
+ \begin{cases}
+  b,&z\cdot\nu>0,\\
+  a,&z\cdot\nu<0.
+ \end{cases}
+\]
+平面上任意补值。条件\eqref{b1:eq:approximate-jump-halves}恰好等价于
+\begin{equation}\label{b1:eq:jump-step-blowup}
+ u(x+r\,\cdot)\longrightarrow w_{a,b,\nu}
+ \quad\text{于 }L^1\bigl(B(0,1)\bigr).
+\end{equation}
+这个缩放极限保留了跳跃的高度和方向，却不读取原代表在点 \(x\) 的指定值。
+
+\begin{proposition}\label{b1:prop:approximate-jump-uniqueness}
+在 \(a<b\) 的排序约定下，近似跳跃点的三元组 \((a,b,\nu)\) 唯一。
+跳跃集及其三元组只依赖函数的几乎处处等价类。
+\end{proposition}
+\begin{proof}
+若两个三元组满足定义，则由 \(L^1\) 极限的唯一性，所得两个阶跃函数几乎处处相等。
+每个阶跃函数都恰好取两个不同的本性值，而且每个值占半个单位球。
+因此它们的无序值集相同；排序以后，两侧的数值分别相同。
+
+较大值所占的半球于是也几乎处处相同。若两个单位法向不同，
+对应正半球的对称差便含有一个非空开锥与单位球的交，具有正体积，矛盾。
+故法向也相同。若不排序，唯一的另一种写法是同时交换两个值并把法向反号。
+最后，零测修改不改变任何半球积分，故不改变定义。
+\end{proof}
 
 \subsection{单侧近似极限}
 \label{b1:subsec:280202}
 
-待填充。
+现在可以在 \(J_u\) 上无歧义地记
+\[
+ u^-(x)=a,\quad u^+(x)=b,\quad \nu_u(x)=\nu.
+\]
+称 \(u^\pm(x)\) 为相应两侧的\term[dance-jinsi-jixian]{单侧近似极限}[one-sided approximate limits]。
+这里的正负号指向由 \(\nu_u\) 确定的半球；依本书约定，正侧同时是数值较大的一侧。
+\symidx{\(u^+\)：跳跃点的较大单侧近似极限}
+\symidx{\(u^-\)：跳跃点的较小单侧近似极限}
+
+\begin{proposition}\label{b1:prop:jump-approximate-limits}
+若 \(x\in J_u\)，则
+\begin{equation}\label{b1:eq:jump-upper-lower-values}
+ u^\wedge(x)=u^-(x)<u^+(x)=u^\vee(x).
+\end{equation}
+特别地，\(J_u\subseteq S_u\)。对每个 \(u^-(x)<t<u^+(x)\)，还有
+\begin{equation}\label{b1:eq:jump-level-half-density}
+ \lim_{r\downarrow0}
+ \frac{m_d\bigl(\{u>t\}\cap B(x,r)\bigr)}{\omega_dr^d}
+ =\frac12.
+\end{equation}
+\end{proposition}
+\begin{proof}
+记 \(a=u^-(x)\)、\(b=u^+(x)\)。在正半球中，\(\{u\le t\}\) 上的
+\(|u-b|\) 至少为 \(b-t>0\)，故 Chebyshev 不等式说明这个例外集的相对体积趋零。
+在负半球中同理，\(\{u>t\}\) 的相对体积趋零。
+两项相加就得到\eqref{b1:eq:jump-level-half-density}。
+
+若 \(s<a\)，两半球中的误差估计都给出 \(\{u<s\}\) 的密度为零；
+若 \(s>a\)，在 \(a\) 与 \(\min(s,b)\) 之间取一个阈值，
+负半球便给出 \(\{u<s\}\) 的正密度下界。
+所以近似下极限恰为 \(a\)。对上极限作相同的论证，得到 \(b\)。
+由于两者不同，有限近似极限不可能存在，故 \(x\in S_u\)。
+\end{proof}
+
+在跳跃点上还可取中点值
+\[
+ u^*(x)=\frac{u^+(x)+u^-(x)}2.
+\]
+由两个半球的平均收敛立即得到
+\[
+ \lim_{r\downarrow0}\frac1{\omega_dr^d}\int_{B(x,r)}u(y)\,\mathrm dy=u^*(x).
+\]
+但这不使跳跃点成为 Lebesgue 点：事实上
+\[
+ \lim_{r\downarrow0}\frac1{\omega_dr^d}\int_{B(x,r)}|u(y)-u^*(x)|\,\mathrm dy
+ =\frac{u^+(x)-u^-(x)}2>0.
+\]
+因此球平均有极限、有限近似极限存在、平均绝对振荡趋零，是需要区别的三种陈述。
+因此这里的 \(u^*\) 与第十四章由球平均定义的精确代表在 \(J_u\) 上相同；
+不另用这个记号表示一个冲突的点值约定。
 
 \subsection{跳跃法向量}
 \label{b1:subsec:280203}
 
-待填充。
+向量 \(\nu_u\) 称为\term[tiaoyue-faxiangliang]{跳跃法向量}[jump normal]。
+它从低值侧指向高值侧。这个取向首先由函数的两侧行为定义，
+尚不需要预先知道 \(J_u\) 是一张光滑曲面。
+\symidx{\(\nu_u\)：从低值侧指向高值侧的单位跳跃法向量}
+
+取盒子 \(\Omega=(-1,1)^d\)，并令
+\[
+ u(x)=
+ \begin{cases}
+  a,&x_d<0,\\
+  b,&x_d>0,
+ \end{cases}
+ \quad a<b.
+\]
+界面上任意补值。此时
+\[
+ J_u=\Omega\cap\{x_d=0\},\quad
+ u^-=a,\quad u^+=b,\quad \nu_u=e_d.
+\]
+逐坐标应用 Fubini 定理和一维分部积分，可得
+\[
+ Du=(b-a)e_d\,\mathcal H^{d-1}\llcorner
+       \bigl(\Omega\cap\{x_d=0\}\bigr).
+\]
+具体地，前 \(d-1\) 个方向的测试积分为零；最后一个方向则满足
+\[
+ -\int_\Omega u\,\partial_d\varphi\,\mathrm dx
+ =(b-a)\int_{(-1,1)^{d-1}}\varphi(x',0)\,\mathrm dx'.
+\]
+这也直接检验了导数中法向因子的正负号。
+
+对光滑集合的示性函数，数值 \(1\) 位于集合内部，数值 \(0\) 位于外部。
+所以在其边界上，\(\nu_{\mathbf1_E}=-\nu_E\)，其中 \(\nu_E\) 是集合外法向。
+跳跃公式因此写成
+\[
+ D\mathbf1_E=-\nu_E\,\mathcal H^{d-1}\llcorner\partial E,
+\]
+与命题\ref{b1:prop:smooth-domain-perimeter}一致。不能将集合外法向直接代入
+排序后的函数跳跃公式而漏掉这个负号。
+
+为了稍后把两侧值和法向放进测度积分，还需确认它们的可测性。
+\begin{proposition}\label{b1:prop:jump-data-borel}
+对 \(u\in L^1_{\mathrm{loc}}(\Omega)\)，集合 \(J_u\) 是 Borel 集，
+而 \(u^\pm\) 与 \(\nu_u\) 是其上的 Borel 函数。
+\end{proposition}
+\begin{proof}
+先选取 \(u\) 的 Borel 代表；这不改变任何跳跃数据。
+由命题\ref{b1:prop:approximate-limits-basic}，集合
+\[
+ A=\{x:-\infty<u^\wedge(x)<u^\vee(x)<+\infty\}
+\]
+是 Borel 的。在 \(A\) 上置 \(a=u^\wedge(x)\)、\(b=u^\vee(x)\)，并记
+\[
+ F_r(x,v)=\frac1{\omega_d}\int_{B(0,1)}
+       |u(x+rz)-w_{a,b,v}(z)|\,\mathrm dz.
+\]
+先在距边界有正距离的可数个内部集合上考察足够小的 \(r\)。
+对固定 \(r,v\)，这个函数关于 \(x\) 是 Borel 的；关于正半径 \(r\) 连续。
+后一事实先对连续函数成立，再在共同紧集上用 \(L^1\) 逼近即可得到。
+它关于 \(v\) 也连续，因为两半球的对称差体积随方向连续变化。
+
+取单位球面的一个可数稠密子集 \(D\)。条件 \(x\in J_u\) 等价于：
+对每个正整数 \(k\)，存在 \(v\in D\) 和正整数 \(m\)，使所有充分留在定义域内、
+满足 \(0<r<1/m\) 的正有理半径都有 \(F_r(x,v)<1/k\)。
+这是一组可数的 Borel 条件。
+正向蕴含由阶跃极限及方向的连续性立即得到。
+反过来，选取这些方向 \(v_k\)；在同时足够小的半径上用三角不等式，得到
+\[
+ \frac1{\omega_d}\int_{B(0,1)}
+ |w_{a,b,v_k}-w_{a,b,v_\ell}|
+ \le \frac1k+\frac1\ell.
+\]
+从单位球面到这些阶跃函数的映射连续且单射，球面又紧，
+故 \(v_k\) 收敛到唯一方向 \(v\)。再次用三角不等式，并利用半径连续性，
+便得 \(F_r(x,v)\to0\)。因此上述可数条件确实刻画 \(J_u\)。
+
+每次按固定枚举选取第一个合条件的 \((v,m)\)，便使 \(v_k(x)\) 成为 Borel 函数；
+其极限就是 \(\nu_u(x)\)。最后由\eqref{b1:eq:jump-upper-lower-values}，
+两侧值也是 Borel 函数。
+\end{proof}
 
 \subsection{\texorpdfstring{\(J_u\)}{Ju} 的可整流性}
 \label{b1:subsec:280204}
 
-待填充。
+跳跃方向并不预设曲面，但 BV 条件将这些局部方向约束在可数个可整流集合上。
+证明的关键是只选一组稠密的好层值，而不要求每一个层值都有有限周长。
+
+\begin{proposition}\label{b1:prop:bv-jump-rectifiable}
+若 \(u\in BV(\Omega)\)，则 \(J_u\) 可数 \((d-1)\)-可整流。
+\end{proposition}
+\begin{proof}
+由 BV 余面积公式，几乎每个 \(t\in\mathbb R\) 都使
+\(E_t=\{u>t\}\) 在 \(\Omega\) 内有有限周长。
+这个好层值集合中可以选取一个可数稠密集 \(D\)：在每个有理端点开区间中取一个好值即可。
+不能未经选择便声称所有有理层值都好。
+
+若 \(x\in J_u\)，在 \((u^-(x),u^+(x))\) 内取 \(t\in D\)。
+由\eqref{b1:eq:jump-level-half-density}，\(E_t\) 在 \(x\) 的密度为 \(1/2\)，
+所以 \(x\in\partial^eE_t\)。于是
+\[
+ J_u\subseteq\bigcup_{t\in D}(\partial^eE_t\cap\Omega).
+\]
+De Giorgi 结构定理\ref{b1:thm:de-giorgi-structure}说明，
+每个 \(\partial^eE_t\cap\Omega\) 与可数可整流的
+\(\partial^*E_t\cap\Omega\) 只差一个 \(\mathcal H^{d-1}\)-零集。
+可数合并后就得到所需覆盖。这里没有声称每个跳跃点都属于某个指定层集的约化边界；
+用到的是两类边界之间已经证明的模零关系。
+当 \(d=1\) 时，各好层集的内部边界局部只有有限个点，
+同一论证给出 \(J_u\) 至多可数。
+\end{proof}
+
+可整流性尚未回答两个问题：近似不连续能否在跳跃集之外占据正的余维一测度，
+以及导数在跳跃面上究竟有多大。完整答案如下。
+\begin{theorem}[BV 跳跃结构]\label{b1:thm:bv-jump-structure}
+若 \(u\in BV(\Omega)\)，则
+\begin{equation}\label{b1:eq:bv-discontinuity-jump-null}
+ \mathcal H^{d-1}(S_u\setminus J_u)=0.
+\end{equation}
+而且其向量导数测度在 \(J_u\) 上满足
+\begin{equation}\label{b1:eq:bv-jump-derivative}
+ Du\llcorner J_u
+ =(u^+-u^-)\nu_u\,\mathcal H^{d-1}\llcorner J_u.
+\end{equation}
+因而
+\[
+ |Du|\llcorner J_u
+ =(u^+-u^-)\,\mathcal H^{d-1}\llcorner J_u,
+ \quad
+ \int_{J_u}(u^+-u^-)\,\mathrm d\mathcal H^{d-1}
+ \le |Du|(\Omega).
+\]
+\end{theorem}
+\begin{proofsketch}
+上述可整流性已完整证明。余下的两项是 BV 精细结构的深层部分；
+Alberti 与 Mantegazza 在《A Note on the Theory of SBV Functions》的注1.2中准确列出相应的两侧 \(L^1\) 迹及导数公式%
+\cite[注1.2，刊印376--377页]{AlbertiMantegazza1997SBV}。
+该注把精细结构的证明指向 Evans 与 Gariepy 的相关论述，
+并不在这几页中完整证明曲面迹定理。这里说明尚需的桥梁。
+
+第一项输入是 BV 函数的非有限近似值集合
+\[
+ N_\infty
+ =\{x:u^\wedge(x)\notin\mathbb R
+          \text{ 或 }u^\vee(x)\notin\mathbb R\}
+\]
+具有零 \(\mathcal H^{d-1}\) 测度。
+在 \(S_u\setminus N_\infty\) 上，两近似极限有限且不相等。
+在它们之间选稠密好层值，由命题\ref{b1:prop:approximate-oscillation-level-boundary}，
+便把这些点覆盖在好层集的测度论边界上。
+由上一章，这些边界模零由可数个可整流曲面承载。
+
+第二项输入是 BV 函数在可整流曲面上的两侧迹定理：
+对曲面面积几乎每点，都存在有限的两个半球 \(L^1\) 迹；
+在该曲面上的导数限制等于两侧迹之差乘有向单位法向与面积测度。
+两迹相等时，合并半球平均便得到有限近似极限；
+故在所覆盖的 \(S_u\) 上，两迹几乎处处不同，按大小排序即得到 \(J_u\)。
+这证明\eqref{b1:eq:bv-discontinuity-jump-null}；
+曲面上的导数限制公式再给出\eqref{b1:eq:bv-jump-derivative}。
+最后，单位法向的长度为一，故向量测度的变差就是所写的非负密度积分。
+
+本节不展开非有限近似值的余维一估计，以及 BV 曲面两侧迹与其分部积分公式。
+它们需要进一步的 BV 切片和精细代表理论，不能把第23章的 Sobolev 迹定理
+直接套在一般 BV 函数上来替代。
+\end{proofsketch}
+
+上一节的无穷近似值例子因此没有被漏掉：那些点仍属于 \(S_u\)，
+却不符合两个有限值的跳跃定义；结构定理把它们连同其他非跳跃例外一起控制在
+\(\mathcal H^{d-1}\)-零集中。
+另一方面，公式控制的是跳跃高度与面积的乘积，
+并不保证跳跃集本身有有限面积。
+它只立即保证
+\[
+ \mathcal H^{d-1}
+ \bigl(\{x\in J_u:u^+(x)-u^-(x)\ge 1/k\}\bigr)
+ \le k\,|Du|(\Omega).
+\]
+下一节将把这部分导数与体积上的密度、以及剩余的 Cantor 部分分开，
+从而得到三种互不混淆的变差来源。

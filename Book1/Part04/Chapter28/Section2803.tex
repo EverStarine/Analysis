@@ -2,19 +2,277 @@
 \section{导数测度的分解}
 \label{b1:sec:2803}
 
-% TODO: 撰写本节正文。
+分布导数把一个函数的全部一阶变化保存在同一向量测度中。
+但这些变化可以分布在体积中，也可以集中在跳跃面上，还可能既不占体积、又不由跳跃面承载。
+本节区分这三种情形。前两种分别连接 Sobolev 梯度与有限周长集合，
+第三种则解释连续函数为何仍可能没有可积的弱导数。
+
+以下 \(\Omega\subseteq\mathbb R^d\) 为开集，\(u\in BV(\Omega)\) 为实值。
+跳跃值与法向沿用第\ref{b1:sec:2802}节的约定：
+\(u^+>u^-\)，\(\nu_u\) 从低值侧指向高值侧。
+深层结构的准确陈述可参看 Alberti、Mantegazza 的
+《A Note on the Theory of SBV Functions》\cite[Remark 1.2]{AlbertiMantegazza1997SBV}；
+系统学习可继续阅读 Ambrosio、Fusco、Pallara 的
+《Functions of Bounded Variation and Free Discontinuity Problems》%
+\cite[第3章]{Ambrosio2000Functions}。
+本节把测度分解的直接后果完整推出，而将近似微分的识别和链律中的深层步骤明确列为证明概要。
+% 实读作者公开正式论文 Alberti--Mantegazza 1997：
+% 作者版第2--3页（刊印376--377）Remark 1.2；
+% 作者版第4--5页（刊印378--379）Remark 2.1；
+% 其§2.3--2.5另供下一节紧性使用。AFP只核实出版与章节导航，无全文阅读声明。
+% 原文Su表示无近似极限集；本书保留Su与真正两侧跳跃集Ju的区别。
 
 \subsection{绝对连续部分}
 \label{b1:subsec:280301}
 
-待填充。
+先不使用函数的几何性质。对 \(Du\) 的每个分量应用 Lebesgue 分解，
+得到唯一的表示
+\begin{equation}\label{b1:eq:bv-lebesgue-decomposition}
+ Du=g\,m_d+D^su,\quad g\in L^1(\Omega;\mathbb R^d),\quad
+ |D^su|\perp m_d.
+\end{equation}
+记 \(D^au=g\,m_d\)，称它为导数测度的绝对连续部分。
+具体说，各分量的奇异部分分别集中在某个体积零的 Borel 集上；
+取这有限多个集合的并 \(N\)，便有
+\[
+ D^au=Du\mathbin{\llcorner}(\Omega\setminus N),
+ \quad
+ D^su=Du\mathbin{\llcorner}N.
+\]
+这里限制记号只表示在相应 Borel 集上取测度。
+向量极分解给出 \(|D^au|=|g|m_d\)；
+不同分量的分解由标量唯一性保证相容。因而这一步只需要第6章的测度论，
+尚未证明 \(g\) 与逐点的微分有什么联系。
+\symidx{\(D^au\)：BV 导数测度的绝对连续部分}
+\symidx{\(D^su\)：BV 导数测度的奇异部分}
+
+\begin{theorem}[BV 函数的近似梯度]
+\label{b1:thm:bv-approximate-gradient}
+函数 \(u\) 在 \(m_d\)-几乎处处近似可微。
+若在近似极限存在处用该极限选取中心值，则其近似微分可写成
+\[
+ \operatorname{ap}Du(x)\,h=\nabla u(x)\cdot h,
+ \quad \nabla u(x)=g(x)
+ \quad m_d\text{-几乎处处},
+\]
+其中 \(g\) 是\eqref{b1:eq:bv-lebesgue-decomposition}中的密度。
+特别地，\(D^au=\nabla u\,m_d\)，且 \(\nabla u\in L^1(\Omega;\mathbb R^d)\)。
+\end{theorem}
+\begin{proofsketch}
+这里不仅需要 Radon--Nikodym 定理，还要证明函数本身在几乎每点有一阶线性近似。
+一种路线先用变差的局部平均控制函数振荡，把函数限制在可数个 Lipschitz 片上；
+在这些片的密度点应用 Rademacher 定理，再用分布测试识别所得梯度与 \(g\)。
+把振荡估计转成覆盖几乎所有点的 Lipschitz 分片，以及最后的密度识别，
+是本节未展开的两步，不能由测度有密度直接代替。
+上述结论在所引短文 Remark 1.2、式(1.2)之后明确陈述，
+该处将完整论证指向 Evans--Gariepy 原版的第6.1节。
+\end{proofsketch}
+
+从此对一般 BV 函数写 \(\nabla u\) 时，指这个近似梯度的几乎处处等价类。
+它不是 \(Du\) 的另一种写法，也不要求一个任意指定的代表具有经典偏导数。
+若 \(u\in W^{1,1}(\Omega)\)，分布导数已经完全由弱梯度表示，
+上述唯一性便说明近似梯度与弱梯度几乎处处一致。
+
+\begin{proposition}\label{b1:prop:bv-sobolev-singular-criterion}
+对于 \(u\in BV(\Omega)\)，有
+\[
+ u\in W^{1,1}(\Omega)\quad\Longleftrightarrow\quad D^su=0.
+\]
+\end{proposition}
+\begin{proof}
+正向由弱导数的定义和 Lebesgue 分解唯一性得到。
+反向若 \(D^su=0\)，则每个分布偏导数都由 \(g_i\in L^1(\Omega)\) 表示。
+再加上 BV 定义中的 \(u\in L^1(\Omega)\)，恰好满足 \(W^{1,1}\) 的定义。
+\end{proof}
 
 \subsection{跳跃部分}
 \label{b1:subsec:280302}
 
-待填充。
+\begin{definition}\label{b1:def:bv-jump-derivative}
+将导数测度限制到跳跃集 \(J_u\)，所得向量测度记为
+\[
+ D^ju=Du\mathbin{\llcorner}J_u,
+\]
+称为导数测度的\term[tiaoyue-bufen]{跳跃部分}[jump part]。
+\end{definition}
+\symidx{\(D^ju\)：BV 导数测度的跳跃部分}
+
+由\cref{b1:thm:bv-jump-structure}，它具有明确的表面密度：
+\begin{equation}\label{b1:eq:bv-jump-density}
+ D^ju=(u^+-u^-)\nu_u\,
+       \mathcal H^{d-1}\mathbin{\llcorner}J_u.
+\end{equation}
+跳跃的高度、朝向与承载的面积在这个公式中各占一个位置。
+如果改用不排序的两侧记号，同时交换 \(u^+\)、\(u^-\) 并把法向反号，
+右侧向量不变。因此测度不依赖人为的定向选择。
+由于 \(|\nu_u|=1\)，对每个 Borel 集 \(A\subseteq\Omega\)，
+\[
+ |D^ju|(A)=\int_{A\cap J_u}(u^+-u^-)\,\mathrm d\mathcal H^{d-1}.
+\]
+这给出跳跃高度的可积性，但不保证 \(\mathcal H^{d-1}(J_u)<\infty\)：
+很多很小的跳跃，可以具有有限总变差和无限总面积。
+
+例如在 \((0,1)\) 内令
+\[
+ v(x)=\sum_{n=1}^{\infty}2^{-n}\mathbf1_{(2^{-n},1)}(x).
+\]
+该级数一致绝对收敛，每项的分布导数为 \(2^{-n}\delta_{2^{-n}}\)。
+对测试函数逐项积分合法，故
+\[
+ Dv=\sum_{n=1}^{\infty}2^{-n}\delta_{2^{-n}},
+ \quad |Dv|\bigl((0,1)\bigr)=1.
+\]
+在每个 \(2^{-n}\) 处跳跃高度为 \(2^{-n}\)，其他内部点在一个邻域内函数恒定，
+所以 \(J_v=\{\,2^{-n}:n\ge1\,\}\)。
+一维的 \(\mathcal H^0\) 是计数测度，因而 \(\mathcal H^0(J_v)=\infty\)。
 
 \subsection{Cantor 部分}
 \label{b1:subsec:280303}
 
-待填充。
+跳跃集可数 \((d-1)\)-可整流，因而是体积零集。
+所以 \(D^ju\) 是 \(D^su\) 在 \(J_u\) 上的限制，余下的部分仍为奇异测度。
+
+\begin{definition}\label{b1:def:bv-cantor-derivative}
+规定
+\[
+ D^cu=D^su-D^ju
+     =D^su\mathbin{\llcorner}(\Omega\setminus J_u),
+\]
+称 \(D^cu\) 为导数测度的\term[cantor-bufen]{Cantor 部分}[Cantor part]。
+\end{definition}
+\symidx{\(D^cu\)：BV 导数测度的 Cantor 部分}
+
+\begin{theorem}[BV 导数测度的三部分分解]
+\label{b1:thm:bv-derivative-decomposition}
+对于任意实值 \(u\in BV(\Omega)\)，有
+\begin{equation}\label{b1:eq:bv-three-part-decomposition}
+ Du=\nabla u\,m_d
+    +(u^+-u^-)\nu_u\,
+      \mathcal H^{d-1}\mathbin{\llcorner}J_u
+    +D^cu.
+\end{equation}
+这三项两两互相奇异。更进一步，若 Borel 集 \(A\subseteq\Omega\)
+关于 \(\mathcal H^{d-1}\) 为 \(\sigma\)-有限，则
+\[
+ |D^cu|(A)=0.
+\]
+有限近似极限 \(\widetilde u\) 在 \(|D^cu|\)-几乎处处存在。
+\end{theorem}
+\begin{proofsketch}
+分解等式由前面两项的识别和 \(D^cu\) 的定义得到。
+若 \(N\) 承载 \(D^su\) 且 \(m_d(N)=0\)，三项分别集中于
+\(\Omega\setminus(N\cup J_u)\)、\(J_u\)、\(N\setminus J_u\)，故两两互相奇异。
+这里尚不能只由 \(D^cu(J_u)=0\) 推出它不充任何有限面积集。
+
+后一性质是 BV 精细结构的额外结论。
+证明须把任意有限 \(\mathcal H^{d-1}\) 集与函数在不同方向上的一维截面比较，
+识别其中能承载导数的部分为两侧迹的跳跃部分；
+剩余部分在这样的集合上均为零，再由可数并处理 \(\sigma\)-有限集。
+这一几何识别没有在本节证明，准确结论见前引 Remark 1.2 的式(1.1)--(1.4)。
+结合\cref{b1:thm:bv-jump-structure}，
+没有有限近似极限的集合除去 \(J_u\) 只有 \(\mathcal H^{d-1}\) 零测余项，
+因此它也是 \(|D^cu|\) 的零测集。这给出最后一句。
+\end{proofsketch}
+
+\begin{proposition}\label{b1:prop:bv-decomposition-variation}
+三部分分解唯一，并且对每个 Borel 集 \(A\subseteq\Omega\)，
+\begin{equation}\label{b1:eq:bv-three-part-variation}
+ |Du|(A)=\int_A|\nabla u|\,\mathrm dx
+   +\int_{A\cap J_u}(u^+-u^-)\,\mathrm d\mathcal H^{d-1}
+   +|D^cu|(A).
+\end{equation}
+\end{proposition}
+\begin{proof}
+Lebesgue 分解唯一确定第一项。
+在 \(J_u\) 上限制剩余测度，唯一确定第二项；相减便唯一确定第三项。
+取上述三个互不交的承载集，在每个承载集上 \(Du\) 等于相应分量，
+所以其变差也等于该分量的变差。
+由变差的可数可加性相加，再用向量密度的变差公式，即得所述等式。
+\end{proof}
+
+Cantor 部分的名称不是说它必须集中在三分 Cantor 集上，
+而是说它代表不能由体积密度和跳跃面描述的奇异变化。
+在一维，它恰好成为无原子的奇异部分，这一点可以不借高维结构定理直接证明。
+
+\begin{proposition}\label{b1:prop:one-dimensional-bv-decomposition}
+设 \(I=(a,b)\) 为有界区间，\(u\in BV(I)\)，\(\mu=Du\)。
+则存在常数 \(c\)，使
+\[
+ \widehat u(x)=c+\mu\bigl((a,x]\bigr)
+\]
+是 \(u\) 的右连续代表。
+其左右极限之差等于 \(\mu(\{x\})\)，且
+\[
+ D^ju=\sum_{x\in I}\mu(\{x\})\delta_x.
+\]
+这里非零项至多可数，绝对值之和有限。
+测度 \(D^cu\) 则是 \(\mu\) 的奇异部分删去全部原子后的剩余测度；
+它的累积分布函数连续。
+\end{proposition}
+\begin{proof}
+函数 \(F(x)=\mu\bigl((a,x]\bigr)\) 有界。由符号测度积分的 Fubini 计算，
+对 \(\varphi\in C_c^\infty(I)\)，
+\[
+ \int_a^b F(x)\varphi'(x)\,\mathrm dx
+ =\int_I\left(\int_t^b\varphi'(x)\,\mathrm dx\right)\mathrm d\mu(t)
+ =-\int_I\varphi\,\mathrm d\mu.
+\]
+因此 \(D(u-F)=0\)。
+第\ref{b1:sec:2004}节证明的零弱导数判别说明 \(u-F=c\) 几乎处处。
+有限测度的从上、从下连续性分别给出 \(F\) 的右连续性和左极限，
+并且 \(F(x)-F(x-)=\mu(\{x\})\)。
+非零原子至多可数，因为对每个正整数 \(n\)，质量绝对值至少 \(1/n\) 的原子只有有限个。
+对有限原子集求和再取上确界，得到
+\(\sum_x|\mu(\{x\})|\le|\mu|(I)\)。
+
+累积分布代表在非原子点连续，在原子点具有不相同的两侧极限；
+因此它的近似跳跃集恰为非零原子集。
+每个原子的有向跳跃等于其有符号质量，给出 \(D^ju\) 的公式。
+绝对连续测度没有原子，故原子全部属于 \(\mu\) 的奇异部分。
+删去它们以后所得奇异测度无原子，其累积分布在每点左右连续，因而连续。
+\end{proof}
+
+例如，习题\ref{b1:ex:14-cantor-function}中的 \(F_C\) 满足
+\[
+ DF_C=\rho_C,\quad D^aF_C=0,\quad D^jF_C=0,\quad D^cF_C=\rho_C
+ \quad\text{在 }(0,1)\text{ 上}.
+\]
+第一式由刚才的测试积分得出；后面三式来自 \(\rho_C\) 奇异且无原子。
+于是函数
+\[
+ u(x)=x+\mathbf1_{(1/2,1)}(x)+F_C(x)
+\]
+在同一区间内同时具有三种非零变化：
+\(D^au=m_1\)、\(D^ju=\delta_{1/2}\)、\(D^cu=\rho_C\)，总变差为 \(3\)。
+这也表明连续性只能排除跳跃，不能排除 Cantor 部分。
+
+最后记录复合函数所需的精细链律。
+下一节会用它分别测试跳跃的存在与梯度的极限。
+
+\begin{theorem}[Volpert 链律的 \(C^1\) 版本]
+\label{b1:thm:volpert-chain-rule}
+设 \(u\in BV(\Omega)\)，\(\Phi\in C^1(\mathbb R)\)，且 \(\Phi'\) 有界。
+若 \(m_d(\Omega)<\infty\) 或 \(\Phi(0)=0\)，则 \(\Phi(u)\in BV(\Omega)\)，并且
+\begin{equation}\label{b1:eq:volpert-chain-rule}
+ D\bigl(\Phi(u)\bigr)
+ =\Phi'(\widetilde u)(D^au+D^cu)
+  +\bigl(\Phi(u^+)-\Phi(u^-)\bigr)\nu_u\,
+    \mathcal H^{d-1}\mathbin{\llcorner}J_u.
+\end{equation}
+其中 \(\widetilde u\) 在有限近似极限不存在处可任意补值。
+\end{theorem}
+\term*[volpert-lianlv]{Volpert 链律}[Volpert chain rule]在跳跃处使用两端值之差，
+而不是把某个任选的点值代入 \(\Phi'\) 后乘上跳跃高度。
+\begin{proofsketch}
+一维时先用测度累积代表，把连续变化与原子变化分开：
+连续部分满足通常的链式乘法，原子在复合后变成
+\(\Phi(u(x+))-\Phi(u(x-))\)。
+高维论证用 BV 切片定理将各方向的分布导数还原为这些一维导数，
+再重组为向量测度。这里省略的是切片定理及其与三个导数部分的相容性，
+不是对公式作形式求导。
+所用版本见 Alberti 与 Mantegazza 的《A Note on the Theory of SBV Functions》%
+\cite[Remark 2.1，式(2.1)]{AlbertiMantegazza1997SBV}；
+本书按既定方向约定显式写出法向因子。
+可积性由 \(|\Phi(t)|\le|\Phi(0)|+\|\Phi'\|_\infty\cdot|t|\) 及给定假设保证，
+测度右侧的有限性则由三部分变差公式和 \(\Phi\) 的 Lipschitz 界保证。
+\end{proofsketch}

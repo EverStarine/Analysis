@@ -2,24 +2,331 @@
 \section{\texorpdfstring{\(SBV\)}{SBV} 与自由间断问题概览}
 \label{b1:sec:2804}
 
-% TODO: 撰写本节正文。
+在允许界面出现的变分问题中，变化的代价通常分成两类：
+区域内部的梯度能量，以及界面本身的面积代价。
+如果把所有 BV 函数都作为候选，而能量只计入这两项，
+Cantor 部分便可能不付出任何代价。
+因此需要一个排除该部分、同时保留跳跃的函数类。
+
+本节证明一个带值域约束的 Mumford--Shah 型极小值存在定理。
+它用到第\ref{b1:ch:27}章的 BV 紧性，以及前节作为深层输入记录的 Volpert 链律。
+后者如何用于 SBV 闭合性，可参看 Alberti、Mantegazza 的
+《A Note on the Theory of SBV Functions》%
+\cite[Theorem 1.4，Propositions 2.3、2.5]{AlbertiMantegazza1997SBV}。
+以下只处理这些工具足以覆盖的版本，不涉及自由间断集的正则性。
+% 实读作者公开版第4--7页，对应刊印378--381页；
+% Theorem1.4只陈述紧性及绝对连续/跳跃部分分开收敛，不包含面积下半连续性。
+% 本节取其增长函数f(t)=1(t>0),f(0)=0，采用正弦/余弦测试展开闭合桥；
+% 跳集面积下半连续性用C1链律、可数阈值族和有限不交开集独立推导。
 
 \subsection{特殊有界变差函数}
 \label{b1:subsec:280401}
 
-待填充。
+\begin{definition}\label{b1:def:sbv-function}
+设 \(u\in BV(\Omega)\)。若 \(D^cu=0\)，则称 \(u\) 为%
+\term[teshu-youjie-biancha-hanshu]{特殊有界变差函数}[special function of bounded variation]，
+记 \(u\in SBV(\Omega)\)。因此
+\[
+ Du=\nabla u\,m_d+(u^+-u^-)\nu_u\,
+ \mathcal H^{d-1}\mathbin{\llcorner}J_u.
+\]
+\end{definition}
+\symidx{\(SBV(\Omega)\)：没有 Cantor 导数部分的 BV 函数类}
 
-\subsection{Mumford–Shah 型能量}
+每个 \(W^{1,1}\) 函数都属于 \(SBV\)。
+有界区域内有限周长集合的示性函数也属于 \(SBV\)：
+它的导数由约化边界上的面积表示，故完全属于跳跃部分。
+但 SBV 既不等于 Sobolev 空间，也不等于全部 BV：一个非零阶跃不属于 \(W^{1,1}\)，
+而前节的连续 Cantor 函数不属于 \(SBV\)。
+定义本身也不要求跳跃集具有有限面积，更不要求它是闭集或由有限张光滑曲面组成。
+
+\begin{proposition}\label{b1:prop:sbv-not-strictly-closed}
+在区间 \((0,1)\) 上，\(SBV\) 对 BV 严格收敛并不闭合。
+甚至存在 \(0\le u_n\le1\) 的连续分段线性函数，
+满足 \(u_n\to F_C\) 一致收敛、\(|Du_n|\bigl((0,1)\bigr)=1\)，
+而 \(D^cF_C\ne0\)。
+\end{proposition}
+\begin{proof}
+记 \(C_n\) 为三分 Cantor 集构造中的第 \(n\) 层闭区间之并。
+在每个长度 \(3^{-n}\) 的基本区间上，用直线连接 Cantor 函数的两个端点值；
+在其余间隙上保持 Cantor 函数的常值，所得函数记为 \(u_n\)。
+两端值之差为 \(2^{-n}\)，故
+\[
+ u_n'=(3/2)^n\mathbf1_{C_n}\quad\text{几乎处处}.
+\]
+函数 \(u_n\) 连续且分段线性，因而属于 \(W^{1,1}\subseteq SBV\)。
+它在每个基本区间内与 \(F_C\) 相差至多 \(2^{-n}\)，
+在间隙上则相等，所以一致收敛成立。
+又因为 \(m_1(C_n)=(2/3)^n\)，
+\[
+ \int_0^1|u_n'|\,\mathrm dx=1=|DF_C|\bigl((0,1)\bigr).
+\]
+这正是严格收敛，但 \(D^cF_C=\rho_C\ne0\)。
+\end{proof}
+
+这组函数没有跳跃，且梯度的 \(L^1\) 范数一致有界，
+仍能把全部导数集中成奇异连续测度。
+若 \(p>1\)，同一计算给出
+\[
+ \int_0^1|u_n'|^p\,\mathrm dx=(3/2)^{n(p-1)}\longrightarrow\infty.
+\]
+超线性的梯度控制正是后面紧性条件中的一个实质要求。
+
+\subsection{Mumford--Shah 型能量}
 \label{b1:subsec:280402}
 
-待填充。
+固定有界非空开集 \(\Omega\subseteq\mathbb R^d\)，
+给定数据 \(g\in L^2(\Omega)\)、参数 \(\beta,\lambda>0\) 和 \(1<p<\infty\)。
+对实值 \(u\in SBV(\Omega)\)，考虑
+\begin{equation}\label{b1:eq:mumford-shah-energy}
+ \mathcal F_p(u)=
+ \int_\Omega|\nabla u|^p\,\mathrm dx
+ +\beta\mathcal H^{d-1}(J_u)
+ +\lambda\int_\Omega|u-g|^2\,\mathrm dx,
+\end{equation}
+各项允许为无穷。
+当 \(p=2\) 时，这就是常用的
+\term*[mumford-shah-nengliang]{Mumford--Shah 能量}[Mumford--Shah energy]%
+的 SBV 表述；其余 \(p>1\) 给出相应的超线性梯度版本。
+第一项惩罚区域内部变化，第二项惩罚跳跃界面的面积，
+第三项衡量候选函数偏离给定数据的程度。
+
+这里的表面代价与
+\(\int_{J_u}(u^+-u^-)\,\mathrm d\mathcal H^{d-1}=|D^ju|(\Omega)\)
+不同：非零跳跃不论高度多小，都按所在界面的面积计费。
+这一区别使能量同时控制跳跃的几何数量，而不仅是变化总量。
+例如在一维，把高度为 \(1\) 的跳跃改成宽度 \(2\varepsilon\) 的线性过渡，
+就消除了一个跳跃点，但相应梯度能量为
+\[
+ (2\varepsilon)\left(\frac1{2\varepsilon}\right)^p
+ =(2\varepsilon)^{1-p}.
+\]
+当 \(p>1\) 时，越来越窄的连续过渡不可能保持这项能量有界。
+
+在图像解释中，\(g\) 可以表示观测的灰度，\(u\) 是待恢复的灰度，
+而 \(J_u\) 提供候选边缘。这是一个明确的数学模型，
+不意味着任意图像的所有视觉特征都由这三项描述。
+从函数类与自由界面的联系继续深入，可读
+Ambrosio、Fusco 与 Pallara 的《Functions of Bounded Variation and Free Discontinuity Problems》%
+\cite[第4--6章]{Ambrosio2000Functions}。
+
+给定 \(M>0\)，本节采用的容许类为
+\begin{equation}\label{b1:eq:mumford-shah-admissible-class}
+ \mathcal A_{M,p}=
+ \left\{\,u\in SBV(\Omega):
+ |u|\le M\ \ m_d\text{-几乎处处},\
+ \nabla u\in L^p(\Omega;\mathbb R^d),\
+ \mathcal H^{d-1}(J_u)<\infty\,\right\}.
+\end{equation}
+若观测数据本来就在 \([-M,M]\) 内，这一值域约束有直接含义。
+以下仍将它作为问题的显式条件，不在尚未讨论截断链律的情况下
+声称它与无值域约束的问题具有同一个极小值。
 
 \subsection{紧性}
 \label{b1:subsec:280403}
 
-待填充。
+\begin{theorem}[Ambrosio 紧性：有界值域与超线性梯度]
+\label{b1:thm:ambrosio-sbv-compactness}
+设 \(\Omega\) 为有界开集，\(1<p<\infty\)，\(u_j\in SBV(\Omega)\)，且
+\[
+ \sup_j\left\{\|u_j\|_{L^\infty(\Omega)}
+       +\int_\Omega|\nabla u_j|^p\,\mathrm dx
+       +\mathcal H^{d-1}(J_{u_j})\right\}<\infty.
+\]
+则存在子列与 \(u\in SBV(\Omega)\cap L^\infty(\Omega)\)，使
+\[
+ u_j\longrightarrow u\quad\text{在每个 }L^r(\Omega),\ 1\le r<\infty,
+ \quad
+ \nabla u_j\rightharpoonup\nabla u\quad\text{在 }L^p(\Omega;\mathbb R^d).
+\]
+此外，\(D^au_j\) 与 \(D^ju_j\) 分别弱-*收敛到 \(D^au\) 与 \(D^ju\)，
+测度收敛均以 \(C_0(\Omega;\mathbb R^d)\) 为测试类。
+\end{theorem}
+\term*[ambrosio-sbv-jinxing]{Ambrosio 紧性定理}[Ambrosio compactness theorem]
+比一般 BV 紧性多给出一个结论：极限仍没有 Cantor 部分。
+\begin{proofsketch}
+以下展开这个特殊版本的闭合步骤；所依赖的额外深层工具是
+\cref{b1:thm:volpert-chain-rule}，不把它当作已经由普通 Sobolev 链律推出的结果。
+记统一的值域界为 \(M\)，跳跃面积界为 \(S\)。
+两侧近似值也在 \([-M,M]\) 中，故
+\[
+ |Du_j|(\Omega)
+ \le m_d(\Omega)^{1-1/p}\|\nabla u_j\|_{L^p(\Omega)}
+      +2M S.
+\]
+于是 BV 范数一致有界。由\cref{b1:thm:bv-local-compactness}取局部 \(L^1\) 收敛子列。
+对于内部紧集穷竭 \(K_n\uparrow\Omega\)，
+\(\int_{\Omega\setminus K_n}|u_j|\le M\,m_d(\Omega\setminus K_n)\) 一致趋零；
+所以\cref{b1:cor:bv-global-compactness-with-tails}给出全域 \(L^1\) 收敛，
+极限 \(u\in BV(\Omega)\) 且 \(|u|\le M\)。
+再取子列，使 \(u_j\to u\) 几乎处处，且 \(\nabla u_j\rightharpoonup h\) 于 \(L^p\)。
+尚需识别 \(h\) 并排除 \(D^cu\)。
+
+取任意 \(\Phi\in C^1(\mathbb R)\)，满足 \(0\le\Phi\le1\) 且 \(\Phi'\) 有界。
+由链律和 \(D^cu_j=0\)，测度
+\[
+ T_j^\Phi=D\bigl(\Phi(u_j)\bigr)-\Phi'(u_j)\nabla u_j\,m_d
+\]
+的总变差不超过 \(S\)。
+函数 \(\Phi(u_j)\to\Phi(u)\) 于 \(L^1\)。
+若 \(p'=p/(p-1)\)，对每个 \(q\in L^{p'}\)，
+控制收敛给出
+\(\Phi'(u_j)q\to\Phi'(u)q\) 于 \(L^{p'}\)，
+因而 \(\Phi'(u_j)\nabla u_j\rightharpoonup\Phi'(u)h\)。
+对紧支集光滑向量场取极限，再用变差的测试表述，得到
+\[
+ \left|D\bigl(\Phi(u)\bigr)-\Phi'(u)h\,m_d\right|(\Omega)\le S.
+\]
+再对 \(u\) 用链律，绝对连续、Cantor、跳跃三项互相奇异，因此
+\[
+ \int_\Omega|\Phi'(\widetilde u)|\,\mathrm d\sigma\le S,
+ \quad
+ \sigma=|\nabla u-h|\,m_d+|D^cu|.
+\]
+有限近似极限在 \(\sigma\)-几乎处处存在，故积分不依赖其余点的补值。
+分别取
+\[
+ \Phi_N(t)=\frac{1+\sin(Nt)}2,\quad
+ \Psi_N(t)=\frac{1+\cos(Nt)}2.
+\]
+因为 \(|\Phi_N'(t)|+|\Psi_N'(t)|\ge N/2\)，两次估计相加即得
+\[
+ \frac N2\,\sigma(\Omega)\le2S.
+\]
+令 \(N\to\infty\)，便有 \(\sigma=0\)，即 \(h=\nabla u\) 且 \(D^cu=0\)。
+这个振荡测试正是所引论文 Propositions 2.3、2.5 在固定面积界下的核心机制。
+
+最后，\(|u_j-u|\le2M\) 给出
+\(\|u_j-u\|_r^r\le(2M)^{r-1}\|u_j-u\|_1\)，得到全部有限 \(r\) 的强收敛。
+绝对连续部分的收敛来自梯度弱收敛，
+跳跃部分的收敛来自 \(D^ju_j=Du_j-D^au_j\)
+与\cref{b1:prop:bv-distributional-weak-star}。
+\end{proofsketch}
+
+紧性还不足以直接最小化能量；需要分别控制两项几何能量的下极限。
+梯度项可用 \(L^p\) 弱下半连续性，跳跃面积则不能由 \(|Du|\) 的下半连续性替代。
+
+\begin{proposition}\label{b1:prop:sbv-jump-area-lower-semicontinuity}
+设 \(\Omega\) 为有界开集，\(1<p<\infty\)，\(u_j,u\in SBV(\Omega)\)，
+\(u_j\to u\) 于 \(L^1(\Omega)\)，且
+\(\nabla u_j\rightharpoonup\nabla u\) 于 \(L^p(\Omega;\mathbb R^d)\)。
+则
+\[
+ \mathcal H^{d-1}(J_u)
+ \le\liminf_{j\to\infty}\mathcal H^{d-1}(J_{u_j}).
+\]
+\end{proposition}
+\begin{proof}
+只需考虑右侧有限的情形，并取实现下极限且几乎处处收敛的子列。
+对上述满足 \(0\le\Phi\le1\) 的光滑函数，链律给出正测度
+\[
+ \lambda_\Phi(u)
+ =\left|D\bigl(\Phi(u)\bigr)-\Phi'(u)\nabla u\,m_d\right|
+ =|\Phi(u^+)-\Phi(u^-)|\,
+       \mathcal H^{d-1}\mathbin{\llcorner}J_u.
+\]
+括号中的向量测度按前一证明的乘积极限计算收敛。
+向量测度变差的连续测试表述于是说明，对每个开集 \(U\subseteq\Omega\)，
+\[
+ \lambda_\Phi(u)(U)\le
+ \liminf_j\lambda_\Phi(u_j)(U)
+ \le\liminf_j\mathcal H^{d-1}(J_{u_j}\cap U).
+\]
+
+取一个固定的光滑非减函数 \(\theta:\mathbb R\to[0,1]\)，
+使它在 \((-\infty,0]\) 上为零、在 \([1,\infty)\) 上为一。
+将所有
+\(\Phi_{a,b}(t)=\theta\bigl((t-a)/(b-a)\bigr)\)，\(a,b\in\mathbb Q\)、\(a<b\)，
+排成序列 \(\Phi_1,\Phi_2,\ldots\)。
+对任意两个不同的有限实数，总能在二者之间选择有理数 \(a<b\)；
+故在 \(J_u\) 上
+\[
+ \sup_i|\Phi_i(u^+)-\Phi_i(u^-)|=1.
+\]
+记这些差的绝对值为 \(a_i(x)\)，并置
+\(b_N=\max_{1\le i\le N}a_i\)。
+把 \(J_u\) 分成 Borel 集 \(E_1,\ldots,E_N\)，在 \(E_i\) 上
+第 \(i\) 个函数最先达到该最大值。于是
+\[
+ \int_{J_u}b_N\,\mathrm d\mathcal H^{d-1}
+ =\sum_{i=1}^N\lambda_{\Phi_i}(u)(E_i).
+\]
+每个右侧测度有限且为 Radon 测度。
+给定 \(\varepsilon>0\)，可取互不交的紧集 \(K_i\subseteq E_i\)，
+使右侧与 \(\sum_i\lambda_{\Phi_i}(u)(K_i)\) 相差小于 \(\varepsilon\)。
+再为这些有限个紧集取互不交的开邻域 \(U_i\subseteq\Omega\)。
+因此
+\[
+ \begin{aligned}
+ \int_{J_u}b_N\,\mathrm d\mathcal H^{d-1}-\varepsilon
+ &\le\sum_{i=1}^N\lambda_{\Phi_i}(u)(U_i)\\
+ &\le\liminf_j\sum_{i=1}^N
+       \mathcal H^{d-1}(J_{u_j}\cap U_i)\\
+ &\le\liminf_j\mathcal H^{d-1}(J_{u_j}).
+ \end{aligned}
+\]
+先令 \(\varepsilon\downarrow0\)，再令 \(N\to\infty\)。
+由于 \(b_N\uparrow1\)，单调收敛定理给出所需结论；
+这个论证也覆盖左侧原先可能为无穷的情形。
+\end{proof}
+
+这个证明用光滑阈值区分两侧值，再在空间中分别测试不同的阈值。
+仅用一个全局阈值，不能同时检测所有高度范围内的跳跃；
+有限分片和紧内正则性正是把点态分辨能力变成总面积估计的步骤。
 
 \subsection{变分法中的位置}
 \label{b1:subsec:280404}
 
-待填充。
+\begin{theorem}[有界值域内的 Mumford--Shah 型极小值]
+\label{b1:thm:mumford-shah-existence}
+设 \(\Omega\subseteq\mathbb R^d\) 为有界非空开集，
+\(g\in L^2(\Omega)\)，\(M>0\)，\(\beta,\lambda>0\)，\(1<p<\infty\)。
+则\eqref{b1:eq:mumford-shah-energy}中的能量在
+\eqref{b1:eq:mumford-shah-admissible-class}的 \(\mathcal A_{M,p}\) 上取得极小值。
+\end{theorem}
+\begin{proof}
+零函数属于容许类，且
+\(\mathcal F_p(0)=\lambda\|g\|_2^2<\infty\)，所以极小值下确界有限。
+取极小化序列 \(u_j\in\mathcal A_{M,p}\)，并使其能量一致有界。
+能量各项非负且 \(\beta>0\)，故梯度 \(p\) 次积分和跳跃面积分别一致有界。
+值域界由容许类给出。
+
+由\cref{b1:thm:ambrosio-sbv-compactness}，取子列使
+\[
+ u_j\to u\text{ 于 }L^2(\Omega),\quad
+ \nabla u_j\rightharpoonup\nabla u\text{ 于 }L^p(\Omega;\mathbb R^d),
+ \quad u\in SBV(\Omega),\quad |u|\le M.
+\]
+梯度积分是有限个 \(L^p\) 分量上的连续凸泛函，
+所以由\cref{b1:thm:convex-weak-lsc}，
+\[
+ \int_\Omega|\nabla u|^p\,\mathrm dx
+ \le\liminf_j\int_\Omega|\nabla u_j|^p\,\mathrm dx.
+\]
+由\cref{b1:prop:sbv-jump-area-lower-semicontinuity}，
+跳跃面积也不超过相应下极限，特别地它有限。
+因此 \(u\in\mathcal A_{M,p}\)。
+又由三角不等式，
+\[
+ \left|\|u_j-g\|_2-\|u-g\|_2\right|
+ \le\|u_j-u\|_2\longrightarrow0,
+\]
+所以数据项连续。三项相加便得
+\[
+ \mathcal F_p(u)\le\liminf_j\mathcal F_p(u_j)
+ =\inf_{v\in\mathcal A_{M,p}}\mathcal F_p(v).
+\]
+反向不等式来自 \(u\) 的可容许性，故 \(u\) 是极小元。
+\end{proof}
+
+这里没有要求 \(\partial\Omega\) 光滑。
+全域函数紧性由统一值域界和有限体积补足，
+不是把任意粗糙域上的 BV 有界列误当成自动全域紧。
+此外，证明没有给出唯一性：跳跃集本身也参与选择，容许类与能量都不具有通常凸最小化问题的结构。
+
+所得极小元首先是一份 SBV 等价类及其几乎处处确定的跳跃集。
+它是否对应一组闭裂纹、界面是否光滑、界面端点具有什么形状，
+都属于额外的自由间断正则性问题。
+本节的存在性不能代替这些结论，也不预设 \(J_u\) 是有限张曲面的并。
+继续研究时，读者需要把本卷的测度分解、覆盖与可整流性、
+以及紧性和下半连续性联合使用；更一般的表面能与模型逼近，则需要另行发展的变分理论。
