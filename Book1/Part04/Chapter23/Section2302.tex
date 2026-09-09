@@ -2,24 +2,294 @@
 \section{分数阶 Sobolev 空间}
 \label{b1:sec:2302}
 
-% TODO: 撰写本节正文。
+整数阶 Sobolev 范数通过弱导数衡量函数的变化。分数阶空间则直接比较两点的函数值：差值除以距离的一定幂，再对所有点对积分。这样既不必先定义一个“半阶导数”，也能记录介于函数值与一阶导数之间的正则性。稍后的迹空间将使用这一尺度，因为限制到边界后，正则性通常不再是整数阶。
+
+Di Nezza、Palatucci 与 Valdinoci 的《Hitchhiker's guide to the fractional Sobolev spaces》\cite[第2节及引理5.1--5.3]{DiNezza2012Hitchhikers}给出双积分定义、指数比较及局部化工具。本节固定 \(0<s<1\)、\(1\leq p<\infty\)，函数可以取实值或复值；\(\Omega\subseteq\mathbb R^d\) 为非空开集，\(d\geq1\)。所有积分均使用 Lebesgue 测度，不在双积分前加入依赖于 \(s\) 的归一化系数。
+
+% 实读 DiNezza2012Hitchhikers 的作者 arXiv:1104.4345v3 副本：
+% 内页5--10，式(2.1)--(2.4)、Proposition2.1/2.2及Theorem2.4；
+% 内页33--36，Lemma5.1--5.3及其证明。页码为作者副本内部页码，非期刊页码。
+% 2.4仅陈述稠密性并转引Adams，未将其视为已读取的完整证明。
+% 本节稠密性用差分映射的Lp平移连续性与远处截断另行完整展开；
+% 双Lipschitz换元用本书已证测度变换界，不借后文迹理论。
 
 \subsection{Slobodeckij 半范数}
 \label{b1:subsec:230201}
 
-待填充。
+\begin{definition}\label{b1:def:slobodeckij-seminorm}
+设 \(u:\Omega\rightarrow\mathbb K\) 可测。定义其\term[slobodeckij-banfanshu]{Slobodeckij 半范数}[Slobodeckij seminorm]为
+\begin{equation}\label{b1:eq:slobodeckij-seminorm}
+ [u]_{s,p;\Omega}
+ =\left(\int_\Omega\int_\Omega
+       \frac{|u(x)-u(y)|^p}{|x-y|^{d+sp}}\,\mathrm dy\,\mathrm dx\right)^{1/p},
+\end{equation}
+允许取值 \(+\infty\)。对角线 \(x=y\) 上的被积函数约定为零。全空间的半范数简记为 \([u]_{s,p}\)。
+\end{definition}
+\symidx{\([u]_{s,p;\Omega}\)：Slobodeckij 半范数}
 
-\subsection{\texorpdfstring{\(W^{s,p}\)}{Ws,p}, \texorpdfstring{\(0<s<1\)}{0<s<1}}
+Di Nezza 等在所引文章第2节将同一双积分称为 Gagliardo semi-norm，亦即以 Gagliardo 命名的半范数。\index[foreign]{Gagliardo semi-norm}这里的两个名称指向同一个差分条件；本书保持上述主称及不附加归一化系数的约定。
+
+改变 \(u\) 在一个零测集 \(N\) 上的值，只会改变 \((N\times\Omega)\cup(\Omega\times N)\) 上的被积函数；这个集合由 Tonelli 定理为零测集。因此半范数只依赖几乎处处等价类。它的齐次性来自绝对值，三角不等式则是对函数
+\[
+ (x,y)\longmapsto\frac{u(x)-u(y)}{|x-y|^{d/p+s}}
+\]
+应用 \(L^p(\Omega\times\Omega)\) 中的 Minkowski 不等式。若半范数为零，Fubini 定理给出某个 \(y\in\Omega\)，使 \(u(x)=u(y)\) 对几乎每个 \(x\) 成立；反过来，常数函数的半范数为零。
+
+这个结论不需要 \(\Omega\) 连通，因为积分也比较不同连通分支上的点。例如取 \(\Omega=(-2,-1)\cup(1,2)\)，令 \(u\) 在左区间等于 \(1\)，在右区间等于 \(0\)。它的弱导数在 \(\Omega\) 内为零，但
+\[
+ [u]_{s,p;\Omega}^p
+ =2\int_{-2}^{-1}\int_1^2\frac{1}{|x-y|^{1+sp}}\,\mathrm dy\,\mathrm dx>0.
+\]
+两个区间的距离为 \(2\)，所以该积分有限。分数阶半范数不仅记录每个小邻域中的变化，还记录相隔位置之间的差异。
+
+\begin{proposition}\label{b1:prop:fractional-difference-formula}
+对 \(u\in L^p(\mathbb R^d)\)，置 \(\Delta_hu(x)=u(x+h)-u(x)\)。则
+\begin{equation}\label{b1:eq:fractional-difference-formula}
+ [u]_{s,p}^p
+ =\int_{\mathbb R^d}\frac{\|\Delta_hu\|_p^p}{|h|^{d+sp}}\,\mathrm dh,
+\end{equation}
+两端允许同时为无穷。
+\end{proposition}
+\begin{proof}
+双积分中的函数非负。对每个固定 \(x\) 作平移换元 \(y=x+h\)，再用 Tonelli 定理交换 \(x,h\) 的积分次序，内层积分便是 \(\|\Delta_hu\|_p^p\)。无需预先假定半范数有限。
+\end{proof}
+
+因此，分数阶控制可以理解为：以不同距离平移函数，把各个平移误差按距离加权后合在一起。单个 \(h\) 上误差趋零，只是 \(L^p\) 平移连续性；这里还要求这些误差满足一个关于全部小尺度的可积条件。
+
+\subsection{\texorpdfstring{\(W^{s,p}\)}{Ws,p}，\texorpdfstring{\(0<s<1\)}{0<s<1}}
 \label{b1:subsec:230202}
 
-待填充。
+\begin{definition}\label{b1:def:fractional-sobolev}
+设 \(u\in L^p(\Omega)\)。若 \([u]_{s,p;\Omega}<\infty\)，则称 \(u\) 属于\term[fenshujie-sobolev-kongjian]{分数阶 Sobolev 空间}[fractional Sobolev space] \(W^{s,p}(\Omega)\)。该空间按几乎处处相等取商，赋予范数
+\[
+ \|u\|_{W^{s,p}(\Omega)}
+ =\left(\|u\|_{L^p(\Omega)}^p+[u]_{s,p;\Omega}^p\right)^{1/p}.
+\]
+\end{definition}
+\symidx{\(W^{s,p}(\Omega)\)：分数阶 Sobolev 空间}
+
+零阶项保证正定性。在无穷测度域上，它也控制远处的函数值，不能单凭双积分代替。
+
+\begin{theorem}\label{b1:thm:fractional-sobolev-complete}
+上述 \(W^{s,p}(\Omega)\) 是 Banach 空间。
+\end{theorem}
+\begin{proof}
+记 \(G_su(x,y)=\bigl(u(x)-u(y)\bigr)/|x-y|^{d/p+s}\)，对角线上补零。映射 \(u\mapsto(u,G_su)\) 将本空间等距嵌入
+\(L^p(\Omega)\times L^p(\Omega\times\Omega)\)，乘积使用两个范数的 \(p\) 次和。
+
+设 \((u_j)\) 在 Sobolev 范数中为 Cauchy 列。由 \(L^p\) 完备性，存在 \(u\in L^p(\Omega)\) 和 \(F\in L^p(\Omega\times\Omega)\)，使 \(u_j\to u\)、\(G_su_j\to F\) 于相应 \(L^p\) 空间。可选共同子列 \((u_{j_\ell})\)，使
+\[
+ \sum_\ell\left(\|u_{j_\ell}-u\|_p^p+
+                       \|G_su_{j_\ell}-F\|_p^p\right)<\infty.
+\]
+Tonelli 定理说明两组函数值误差分别几乎处处趋于零。删去 \(u_{j_\ell}\) 不趋于 \(u\) 的零测集所形成的两条乘积带后，\(G_su_{j_\ell}(x,y)\to G_su(x,y)\) 对几乎每个点对成立。因此 \(F=G_su\) 几乎处处，\(u\in W^{s,p}(\Omega)\)，而最初的整列在该范数中趋于 \(u\)。
+\end{proof}
+
+下面的三个工具用于把这个空间放到边界图表上。它们均直接控制点对积分，不要求对 \(u\) 作任何求导。
+
+\begin{proposition}\label{b1:prop:fractional-lipschitz-multiplier}
+设 \(a:\Omega\rightarrow\mathbb K\) 满足 \(|a|\leq A\) 且 Lipschitz 常数不超过 \(L\)。则乘法 \(u\mapsto au\) 在 \(W^{s,p}(\Omega)\) 上有界，具体有
+\[
+ [au]_{s,p;\Omega}^p
+ \leq2^{p-1}A^p[u]_{s,p;\Omega}^p
+       +C(d,s,p)(L^p+A^p)\|u\|_p^p,
+ \quad \|au\|_p\leq A\|u\|_p.
+\]
+\end{proposition}
+\begin{proof}
+分解
+\[
+ a(x)u(x)-a(y)u(y)
+ =a(x)\bigl(u(x)-u(y)\bigr)+u(y)\bigl(a(x)-a(y)\bigr).
+\]
+使用 \(|b+c|^p\leq2^{p-1}(|b|^p+|c|^p)\)，第一部分给出所列半范数项。对第二部分，利用
+\(\bigl|a(x)-a(y)\bigr|\leq\min\{L|x-y|,2A\}\)。对每个 \(y\)，内层核积分不超过
+\[
+ L^p\int_{|h|<1}|h|^{p-d-sp}\,\mathrm dh
+ +(2A)^p\int_{|h|\geq1}|h|^{-d-sp}\,\mathrm dh
+ =d\omega_d\left(\frac{L^p}{p(1-s)}+\frac{(2A)^p}{sp}\right).
+\]
+这里用了\eqref{b1:eq:radial-one-dimensional-integral}，两个积分恰因 \(0<s<1\) 而有限。再乘以 \(|u(y)|^p\) 并积分，得到结论。
+\end{proof}
+
+\begin{proposition}\label{b1:prop:fractional-bilipschitz-change}
+设 \(U,V\subseteq\mathbb R^d\) 为开集，\(\Phi:U\rightarrow V\) 为双 Lipschitz 同胚，\(\Phi\) 及其逆的 Lipschitz 常数分别不超过 \(L,M\)。则复合 \(u\mapsto u\circ\Phi\) 给出 \(W^{s,p}(V)\) 与 \(W^{s,p}(U)\) 之间的有界线性同构。正向估计为
+\[
+ \|u\circ\Phi\|_{L^p(U)}^p\leq M^d\|u\|_{L^p(V)}^p,
+ \quad
+ [u\circ\Phi]_{s,p;U}^p\leq L^{d+sp}M^{2d}[u]_{s,p;V}^p.
+\]
+\end{proposition}
+\begin{proof}
+逆映射保持 Lebesgue 零测集，故复合不依赖代表。由\eqref{b1:eq:sobolev-change-measure-bound}，对任意非负可测 \(b\)，有 \(\int_U b\bigl(\Phi(x)\bigr)\,\mathrm dx\leq M^d\int_Vb\)，从而得到零阶估计。
+
+距离不等式 \(|\Phi(x)-\Phi(y)|\leq L|x-y|\) 给出
+\[
+ \frac{\bigl|u\bigl(\Phi(x)\bigr)-u\bigl(\Phi(y)\bigr)\bigr|^p}{|x-y|^{d+sp}}
+ \leq L^{d+sp}
+       \frac{\bigl|u\bigl(\Phi(x)\bigr)-u\bigl(\Phi(y)\bigr)\bigr|^p}{|\Phi(x)-\Phi(y)|^{d+sp}}.
+\]
+对右侧先在 \(x\) 变量使用测度变换界，再在 \(y\) 变量使用一次；Tonelli 定理允许这些非负积分运算，得到因子 \(M^{2d}\) 及所列半范数估计。对 \(\Phi^{-1}\) 重复论证，便得到逆方向的有界性。
+\end{proof}
+
+\begin{lemma}\label{b1:lem:compact-fractional-zero-extension}
+设 \(u\in W^{s,p}(\Omega)\)，在 \(\Omega\setminus K\) 上几乎处处为零，其中 \(K\Subset\Omega\) 非空。记 \(\delta=\operatorname{dist}(K,\Omega^c)>0\)，在域外补零得到 \(\widetilde u\)。则 \(\widetilde u\in W^{s,p}(\mathbb R^d)\)，且
+\begin{equation}\label{b1:eq:compact-fractional-zero-extension}
+ [\widetilde u]_{s,p}^p
+ \leq[u]_{s,p;\Omega}^p
+       +\frac{2d\omega_d}{sp}\delta^{-sp}\|u\|_p^p,
+ \quad\|\widetilde u\|_p=\|u\|_p.
+\end{equation}
+若 \(\Omega=\mathbb R^d\)，约定 \(\delta=\infty\)，附加项为零。
+\end{lemma}
+\begin{proof}
+把全空间点对分成域内、域外及两个交叉部分，得到
+\[
+ [\widetilde u]_{s,p}^p
+ =[u]_{s,p;\Omega}^p
+   +2\int_K |u(x)|^p
+      \left(\int_{\Omega^c}\frac{\mathrm dy}{|x-y|^{d+sp}}\right)\mathrm dx.
+\]
+若 \(\Omega^c\ne\varnothing\)，对 \(x\in K\) 和 \(y\in\Omega^c\) 有 \(|x-y|\geq\delta\)，故括号内不超过
+\(\int_{|h|\geq\delta}|h|^{-d-sp}\,\mathrm dh
+=d\omega_d\delta^{-sp}/(sp)\)。由此即得结论。空补集情形没有交叉积分，零阶范数等式则直接来自补零的定义。
+\end{proof}
+
+与整数阶内部补零不同，这里一般会增加半范数。原因是新加入的域外零值仍要与域内非零值比较；支集到边界的距离为这种相互作用提供了统一控制。边界图表中的截断必须在图表侧边留出余量，正是为了能够使用这一估计。
 
 \subsection{基本嵌入}
 \label{b1:subsec:230203}
 
-待填充。
+\begin{proposition}\label{b1:prop:integer-to-fractional-sobolev}
+全空间上有连续包含 \(W^{1,p}(\mathbb R^d)\subseteq W^{s,p}(\mathbb R^d)\)。具体地，
+\begin{equation}\label{b1:eq:integer-fractional-estimate}
+ [u]_{s,p}^p
+ \leq d\omega_d\left(
+    \frac{\|\nabla u\|_p^p}{p(1-s)}
+    +\frac{2^p\|u\|_p^p}{sp}\right),
+\end{equation}
+其中 \(\|\nabla u\|_p\) 使用梯度的欧氏长度，与各偏导数 \(L^p\) 范数的有限乘积范数等价。
+\end{proposition}
+\begin{proof}
+先设 \(u\in C_c^\infty(\mathbb R^d)\)。线段上的积分公式及 Hölder 不等式给出
+\[
+ \begin{aligned}
+ u(x+h)-u(x)&=\int_0^1\nabla u(x+th)\cdot h\,\mathrm dt,\\
+ |u(x+h)-u(x)|^p
+ &\leq |h|^p\int_0^1|\nabla u(x+th)|^p\,\mathrm dt.
+ \end{aligned}
+\]
+对 \(x\) 积分，得到 \(\|\Delta_hu\|_p\leq|h|\cdot\|\nabla u\|_p\)。利用\cref{b1:thm:whole-space-sobolev-density}取 \(W^{1,p}\) 中的光滑逼近，函数差及梯度都在 \(L^p\) 中收敛，因而对每个固定 \(h\) 可把这一不等式传给一般 \(u\)。另一方面，平移不改变 \(L^p\) 范数，所以
+\[
+ \|\Delta_hu\|_p
+ \leq\min\{\,|h|\cdot\|\nabla u\|_p,\ 2\|u\|_p\,\}.
+\]
+把它代入\eqref{b1:eq:fractional-difference-formula}。在 \(|h|<1\) 上用梯度界，在 \(|h|\geq1\) 上用函数值界；相应径向积分分别为 \(1/[p(1-s)]\) 和 \(1/(sp)\)，得到所列估计。
+\end{proof}
+
+这一论证先在全空间中进行，线段和平移都不会离开定义域。对已有有界 \(W^{1,p}\) 延拓算子的域，可以先延拓、再使用该命题并限制回原域；不能在任意开集上未经说明就沿两点间的整条线段积分。
+
+估计中的两个分母说明了指数范围的作用：\(s\uparrow1\) 时，小尺度的径向积分接近 \(\int_0^1r^{-1}\,\mathrm dr\)；\(s\downarrow0\) 时，远处的径向积分接近 \(\int_1^\infty r^{-1}\,\mathrm dr\)。所以不能把这两个端点直接代入当前定义并认作原来的整数阶范数。适当归一化后的极限是另一项需要证明的结论。
+
+\begin{proposition}\label{b1:prop:fractional-order-embedding}
+若 \(0<t<s<1\)，则对任意开集 \(\Omega\)，有连续包含 \(W^{s,p}(\Omega)\subseteq W^{t,p}(\Omega)\)，并满足
+\[
+ [u]_{t,p;\Omega}^p
+ \leq[u]_{s,p;\Omega}^p+\frac{2^pd\omega_d}{tp}\|u\|_p^p.
+\]
+若 \(\Omega\) 有界，另有更直接的估计
+\( [u]_{t,p;\Omega}\leq(\operatorname{diam}\Omega)^{s-t}[u]_{s,p;\Omega}\)。
+\end{proposition}
+\begin{proof}
+在 \(|x-y|<1\) 上，\(|x-y|^{-d-tp}\leq|x-y|^{-d-sp}\)，所以这一部分不超过 \(s\) 阶半范数的 \(p\) 次方。在余下部分，用
+\( |u(x)-u(y)|^p\leq2^{p-1}(|u(x)|^p+|u(y)|^p)\)，并把每个核积分扩大到 \(|h|\geq1\)，便得附加项 \(2^pd\omega_d\|u\|_p^p/(tp)\)。如果直径有限，则直接在全部点对上使用 \(|x-y|^{(s-t)p}\leq(\operatorname{diam}\Omega)^{(s-t)p}\)，得到第二个估计。
+\end{proof}
 
 \subsection{光滑函数的稠密性}
 \label{b1:subsec:230204}
 
-待填充。
+对每个 \(h\)，普通 \(L^p\) 平移连续性已经成立，但若要在带奇异权的所有 \(h\) 上积分，还需要统一处理这些差分。把它们放进一个乘积空间即可完成这一点。
+
+\begin{proposition}\label{b1:prop:fractional-translation-mollification}
+设 \(u\in W^{s,p}(\mathbb R^d)\)，沿用 \(\tau_zu(x)=u(x-z)\) 的平移约定。则
+\[
+ \|\tau_zu-u\|_{W^{s,p}(\mathbb R^d)}\longrightarrow0\quad(z\to0).
+\]
+对第\ref{b1:sec:2003}节的磨光函数，还成立
+\[
+ u_\varepsilon=\rho_\varepsilon*u\in C^\infty(\mathbb R^d)\cap W^{s,p}(\mathbb R^d),
+ \quad\|u_\varepsilon\|_{W^{s,p}}\leq\|u\|_{W^{s,p}},
+ \quad u_\varepsilon\to u\text{ 于 }W^{s,p}.
+\]
+\end{proposition}
+\begin{proof}
+在 \(h\ne0\) 时定义
+\[
+ D_su(x,h)=\frac{u(x+h)-u(x)}{|h|^{d/p+s}},
+\]
+在 \(h=0\) 时补零。差分积分公式说明 \(D_su\in L^p(\mathbb R^{2d})\)，其范数为 \([u]_{s,p}\)。而
+\[
+ D_s(\tau_zu)(x,h)=D_su(x-z,h).
+\]
+因此 \([\tau_zu-u]_{s,p}\to0\) 就是 \(L^p(\mathbb R^{2d})\) 中沿向量 \((z,0)\) 的平移连续性。对零阶项同样应用\cref{b1:lem:lp-translation-continuity}，得到第一条结论。
+
+卷积的光滑性来自第\ref{b1:sec:2003}节。差分与积分相交换，给出
+\[
+ D_su_\varepsilon(x,h)
+ =\int\rho_\varepsilon(z)D_su(x-z,h)\,\mathrm dz
+\]
+几乎处处成立；其绝对可积性可先用概率测度上的 Hölder 不等式，再用 Tonelli 定理对 \((x,h)\) 积分确认。分别对零阶项及上述差分项使用同一估计，得到
+\[
+ \|u_\varepsilon-u\|_{W^{s,p}}^p
+ \leq\int\rho_\varepsilon(z)\|\tau_zu-u\|_{W^{s,p}}^p\,\mathrm dz.
+\]
+右侧只使用 \(|z|\leq\varepsilon\) 的平移误差，故由第一条结论趋于零。不减去 \(u\) 时，同一估计与平移不改变范数的事实给出 \(\|u_\varepsilon\|_{W^{s,p}}\leq\|u\|_{W^{s,p}}\)。
+\end{proof}
+
+\begin{theorem}\label{b1:thm:fractional-sobolev-smooth-density}
+空间 \(C_c^\infty(\mathbb R^d)\) 在 \(W^{s,p}(\mathbb R^d)\) 中稠密。
+\end{theorem}
+\begin{proof}
+先证明可以截去无穷远处的尾部。取 \(0\leq\chi\leq1\)、\(\chi\in C_c^\infty\bigl(B(0,2)\bigr)\)，使 \(\chi=1\) 于 \(\overline B(0,1)\)，并置 \(\chi_R(x)=\chi(x/R)\)、\(R\geq1\)。令 \(w_R=(1-\chi_R)u\)。零阶范数 \(\|w_R\|_p\) 由控制收敛定理趋于零。对差分，写成
+\[
+ \Delta_hw_R(x)
+ =\bigl(1-\chi_R(x)\bigr)\Delta_hu(x)
+   +u(x+h)\bigl(\chi_R(x)-\chi_R(x+h)\bigr).
+\]
+第一项除以 \(|h|^{d/p+s}\) 后，在 \((x,h)\) 上几乎处处趋于零，其 \(p\) 次方受 \(|D_su|^p\) 控制，因此相应积分趋零。
+
+设 \(L\) 为 \(\chi\) 的 Lipschitz 常数。第二项的加权 \(p\) 次积分不超过
+\[
+ \begin{aligned}
+ &\int_{\mathbb R^d}\int_{\mathbb R^d}
+  |u(x+h)|^p\frac{\min\{L|h|/R,2\}^p}{|h|^{d+sp}}\,\mathrm dx\,\mathrm dh\\
+ &=R^{-sp}\|u\|_p^p
+      \int_{\mathbb R^d}\frac{\min\{L|z|,2\}^p}{|z|^{d+sp}}\,\mathrm dz.
+ \end{aligned}
+\]
+等式先在 \(x\) 中使用平移不变性，再令 \(h=Rz\)。最后的核积分在原点附近由 \(|z|^{p-d-sp}\) 控制，在远处由 \(2^p|z|^{-d-sp}\) 控制，故有限。因 \(sp>0\)，这一项也趋于零。合并两项并使用 \(|a+b|^p\leq2^{p-1}(|a|^p+|b|^p)\)，得到 \([w_R]_{s,p}\to0\)。所以 \(\chi_Ru\to u\) 于 \(W^{s,p}\)。
+
+给定误差 \(\eta>0\)，先取 \(R\) 使截断误差小于 \(\eta/2\)，再用前一命题磨光 \(\chi_Ru\)，使磨光误差小于 \(\eta/2\)。卷积的支集包含于 \(\operatorname{supp}\chi_R+\overline B(0,\varepsilon)\)，仍为紧集。所得函数属于 \(C_c^\infty\)，三角不等式完成证明。
+\end{proof}
+
+截断证明的第二项不能省去：即使 \(u\) 在远处很小，截断函数的两个取值不同仍会参与点对积分。估计中的 \(R^{-sp}\) 把这种非局部误差控制住，而不是把它当成普通的函数值尾部。
+
+\begin{corollary}\label{b1:cor:compact-fractional-smooth-approximation}
+设 \(u\in W^{s,p}(\Omega)\) 在内部紧集 \(K\) 外几乎处处为零。对任意包含 \(K\) 的开集 \(V\subseteq\Omega\)，存在 \(u_j\in C_c^\infty(V)\)，使 \(u_j\to u\) 于 \(W^{s,p}(\Omega)\)。
+\end{corollary}
+\begin{proof}
+由\cref{b1:lem:compact-fractional-zero-extension}先补零得到 \(\widetilde u\in W^{s,p}(\mathbb R^d)\)。前面的磨光命题保证 \(\rho_\varepsilon*\widetilde u\to\widetilde u\) 于全空间范数。取 \(\varepsilon<\operatorname{dist}(K,V^c)\)，其支集便留在 \(V\) 内；限制回 \(\Omega\) 不增加范数误差。若 \(K\) 为空，直接取零函数列。
+\end{proof}
+
+\begin{corollary}\label{b1:cor:fractional-domain-smooth-density}
+对任意开集 \(\Omega\)，空间 \(C^\infty(\Omega)\cap W^{s,p}(\Omega)\) 在 \(W^{s,p}(\Omega)\) 中稠密。
+\end{corollary}
+\begin{proof}
+采用\cref{b1:thm:meyers-serrin}证明中的单位分解 \((\psi_i)\)，同时保留各支集所在的局部有限开族 \((V_i)\)。每个 \(\psi_i\) 是有界 Lipschitz 函数，故由乘子命题，\(\psi_i u\in W^{s,p}(\Omega)\)，且具有内部紧支集。给定 \(\eta>0\)，前一推论允许取 \(v_i\in C_c^\infty(V_i)\)，使
+\[
+ \|v_i-\psi_i u\|_{W^{s,p}(\Omega)}<\eta2^{-i-1}.
+\]
+局部有限和 \(v=\sum_i v_i\) 在 \(\Omega\) 内光滑。另一方面，由完备性，误差级数 \(\sum_i(v_i-\psi_i u)\) 在 \(W^{s,p}(\Omega)\) 中收敛到某个 \(e\)，且 \(\|e\|_{W^{s,p}}\leq\eta/2\)。在每个内部相对紧开集上，级数只有有限个非零项，故其和等于 \(v-u\)；范数收敛蕴含局部 \(L^p\) 收敛，因而 \(e=v-u\) 几乎处处。于是 \(v\in W^{s,p}(\Omega)\)，并达到所需误差。
+\end{proof}
+
+这里的局部有限光滑和未必具有紧支集。因此最后一个推论不能直接改写成 \(C_c^\infty(\Omega)\) 的稠密性；域内光滑逼近与要求逼近函数在边界附近为零，仍是不同的问题。下一节将把本节的乘子、换元和内部补零估计用于边界图表，使分数阶范数成为迹空间的具体描述。

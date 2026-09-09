@@ -2,19 +2,284 @@
 \section{Lipschitz 边界上的迹空间}
 \label{b1:sec:2303}
 
-% TODO: 撰写本节正文。
+迹属于边界上的 \(L^p\)，只说明它的大小可以控制，还没有说明边界不同位置的函数值如何相互约束。一阶内部导数会给边界留下一个分数阶的差分条件。本节证明：当 \(1<p<\infty\) 时，有界 Lipschitz 区域的一阶迹空间恰为 \(W^{1-1/p,p}(\partial\Omega)\)，而且每个这样的边界数据都有线性、有界地选取的内部延拓。
+
+Di Nezza、Palatucci 与 Valdinoci 的《Hitchhiker's guide to the fractional Sobolev spaces》\cite{DiNezza2012Hitchhikers}第2节末介绍了这一联系，第3.8命题用 Fourier 方法证明二次可积情形。本节改用差分、一个一维积分不等式及尺度卷积，直接处理 \(1<p<\infty\)。
+% 实读：DiNezza2012Hitchhikers，作者公开副本 arXiv:1104.4345，
+% 第2节末迹空间说明（副本第11页），Proposition 3.8及完整证明（副本第19--21页）。
+% 该命题的证明限于p=2；第2节末的一般p陈述没有给出这里所需的完整证明。
+% 图表组织另据已实读的第5节；本节Hardy--差分与尺度卷积路线在正文独立展开，
+% 不把上述p=2证明写成一般p证明的来源，也不调用后续嵌入或高阶边界理论。
 
 \subsection{局部图表示}
 \label{b1:subsec:230301}
 
-待填充。
+先设 \(d\ge2\)，记 \(n=d-1\)，并令
+\(\sigma=\mathcal H^n\llcorner\partial\Omega\)。取第\ref{b1:sec:2203}节的有限内外图表：在刚性坐标中，
+\[
+ F_j(z,t)=(z,\varphi_j(z)+t),\quad
+ D_j=B_j\times(-2h_j,2h_j),\quad
+ B_j=(-2\rho_j,2\rho_j)^n,
+\]
+其中 \(F_j(D_j)\cap\Omega=F_j(D_j\cap H_+)\)。边界参数化为
+\(\Gamma_j(z)=F_j(z,0)\)。固定非负函数 \(\chi_j\in C_c^\infty(V_j)\)，其中 \(V_j\) 是对应内图表，使
+\[
+ \sum_{j=1}^N\chi_j(x)=1\quad(x\in\partial\Omega).
+\]
+这些函数可由前节构造所用的边界分割项取得；内部项在边界上为零。
+
+\cref{b1:thm:graph-area-formula}给出
+\[
+ \int_{\Gamma_j(B_j)}q\,\mathrm d\sigma
+ =\int_{B_j}q\bigl(\Gamma_j(z)\bigr)
+       \sqrt{1+|\nabla\varphi_j(z)|^2}\,\mathrm dz
+\]
+对非负可测 \(q\) 成立。若 \(\varphi_j\) 的 Lipschitz 常数为 \(L_j\)，面积因子几乎处处介于 \(1\) 与 \(\sqrt{1+L_j^2}\) 之间。因此图上与参数域上的零测集相互对应，\(L^p\) 范数也只相差受控常数。
+
+\begin{definition}\label{b1:def:boundary-fractional-sobolev}
+给定 \(0<s<1\)、\(1\le p<\infty\) 及 \(f\in L^p(\partial\Omega,\sigma)\)，将
+\[
+ f_j(z)=\chi_j\bigl(\Gamma_j(z)\bigr)f\bigl(\Gamma_j(z)\bigr)
+ \quad(z\in B_j)
+\]
+在 \(B_j\) 外补零。若每个 \(f_j\) 都属于 \(W^{s,p}(\mathbb R^n)\)，则称 \(f\) 属于\term[bianjie-fenshujie-sobolev-kongjian]{边界分数阶 Sobolev 空间}[fractional Sobolev space on the boundary]，记为 \(W^{s,p}(\partial\Omega)\)，并规定
+\[
+ \|f\|_{W^{s,p}(\partial\Omega)}
+ =\left(\sum_{j=1}^N\|f_j\|_{W^{s,p}(\mathbb R^n)}^p\right)^{1/p}.
+\]
+\end{definition}
+\symidx{\(W^{s,p}(\partial\Omega)\)：用局部图表定义的边界分数阶空间}
+
+分割系数不能从定义中直接删去：将图表边缘处不消失的函数补零，可能引入原函数没有的跳跃。这里每个 \(\chi_j\) 的支集都与外图表的边缘保持正距离。
+
+\begin{proposition}\label{b1:prop:trace-chart-independence}
+上述空间不依赖有限图表与分割函数的选择，不同选择给出的范数等价。它在所定范数下完备，而且连续嵌入 \(L^p(\partial\Omega,\sigma)\)。
+\end{proposition}
+\begin{proof}
+由 \(f=\sum_j\chi_j f\)、有限和的不等式及面积因子的上下界，
+\[
+ \|f\|_{L^p(\sigma)}^p
+ \le C\sum_j\|f_j\|_{L^p(\mathbb R^n)}^p
+ \le C\|f\|_{W^{s,p}(\partial\Omega)}^p.
+\]
+这也说明定义中的表达式是范数。
+
+考虑另一套图表 \(\widetilde\Gamma_k\) 与分割函数 \(\widetilde\chi_k\)。在两个边界片相交处，过渡坐标
+\[
+ \Delta_{jk}=\Gamma_j^{-1}\circ\widetilde\Gamma_k
+\]
+是两个开子集之间的双 Lipschitz 同胚：图参数化为 Lipschitz 映射，其逆就是相应刚性坐标中的横向投影。待比较的第 \(k\) 个局部函数是有限和
+\[
+ (\widetilde\chi_k f)\circ\widetilde\Gamma_k
+ =\sum_j
+   (\widetilde\chi_k\circ\widetilde\Gamma_k)(f_j\circ\Delta_{jk}),
+\]
+其中每项只需在相应的重叠参数域中解释。
+
+两处分割函数的支集相交部分是重叠图表内的紧集。因而可以在重叠参数域选一个光滑紧支集函数，在该紧集上等于 \(1\)。在右端对应项前乘上这个辅助函数并不改变该项，却使它的支集与重叠域边缘保持正距离。依次使用\cref{b1:prop:fractional-bilipschitz-change}、\ref{b1:prop:fractional-lipschitz-multiplier}及\ref{b1:lem:compact-fractional-zero-extension}，得到该项补零后的 \(W^{s,p}(\mathbb R^n)\) 范数不超过 \(C_{jk}\|f_j\|_{W^{s,p}(\mathbb R^n)}\)。有限求和得到一方向的范数界，交换两套图表得到反向界。
+
+最后，若 \(f^{(m)}\) 在边界范数下为 Cauchy 列，第一步保证它在 \(L^p(\sigma)\) 中收敛到某个 \(f\)。每个局部函数 \(f_j^{(m)}\) 在 \(W^{s,p}(\mathbb R^n)\) 中为 Cauchy 列，由\cref{b1:thm:fractional-sobolev-complete}存在极限。其 \(L^p\) 极限必为 \((\chi_j f)\circ\Gamma_j\) 的零延拓，所以 \(f\) 属于边界空间，且 \(f^{(m)}\) 在定义的范数中收敛到 \(f\)。
+\end{proof}
 
 \subsection{半空间迹定理}
 \label{b1:subsec:230302}
 
-待填充。
+本节在半空间公式中将 \(\operatorname{Tr}_+\) 简记为 \(\operatorname{Tr}\)。以下令 \(H_+=\mathbb R^n\times(0,\infty)\)，并固定 \(1<p<\infty\) 及 \(s=1-1/p\)。估计边界差分时，把两个边界点抬到与其距离相同的高度。两段竖向差需要下面的\term*[hardy-budengshi]{Hardy 不等式}[Hardy inequality]。
+
+\begin{lemma}[Hardy]\label{b1:lem:trace-hardy-inequality}
+若 \(a\ge0\) 且 \(a\in L^p(0,\infty)\)，其中 \(1<p<\infty\)，则
+\[
+ \int_0^\infty r^{-p}\left(\int_0^r a(t)\,\mathrm dt\right)^p\mathrm dr
+ \le\left(\frac p{p-1}\right)^p\int_0^\infty a(r)^p\,\mathrm dr.
+\]
+\end{lemma}
+\begin{proof}
+先设 \(a\) 有界且支集紧含于 \((0,\infty)\)，令 \(A(r)=\int_0^r a(t)\,\mathrm dt\)。在零点附近 \(A=0\)，在充分大的 \(r\) 处 \(A\) 为常数；由于 \(p>1\)，分部积分的两端边界项都为零。记左端为 \(I\)，则
+\[
+ I=\frac p{p-1}\int_0^\infty
+       \left(\frac{A(r)}r\right)^{p-1}a(r)\,\mathrm dr
+ \le\frac p{p-1}I^{(p-1)/p}\|a\|_p.
+\]
+若 \(I>0\)，约去相应幂次即得结论；\(I=0\) 时也成立。对一般 \(a\)，取
+\[
+ a_m=\min\{a,m\}\mathbf1_{(1/m,m)},
+\]
+再由单调收敛定理取极限。
+\end{proof}
+
+\begin{theorem}[半空间分数阶迹]\label{b1:thm:half-space-fractional-trace}
+设 \(n\ge1\)、\(1<p<\infty\)。半空间的迹算子满足
+\[
+ \operatorname{Tr}:W^{1,p}(H_+)
+ \longrightarrow W^{1-1/p,p}(\mathbb R^n),\quad
+ \|\operatorname{Tr}u\|_{W^{1-1/p,p}}
+ \le C_{n,p}\|u\|_{W^{1,p}(H_+)}.
+\]
+\end{theorem}
+\begin{proof}
+先取整个空间的光滑紧支集函数在闭半空间上的限制，记 \(f(x)=u(x,0)\)。给定 \(h=r\omega\)，其中 \(r>0\)、\(|\omega|=1\)，分解
+\[
+ \begin{split}
+ f(x+h)-f(x)
+ ={}&f(x+h)-u(x+h,r)\\
+    &+u(x+h,r)-u(x,r)+u(x,r)-f(x).
+ \end{split}
+\]
+令 \(a(t)=\|\partial_tu(\cdot,t)\|_p\)，并令
+\(b(t)=\sum_{i=1}^n\|\partial_i u(\cdot,t)\|_p\)。由微积分基本定理、积分的 Minkowski 不等式及平移不变性，两段竖向差的 \(L^p\) 范数各不超过 \(\int_0^r a(t)\,\mathrm dt\)，而水平差满足
+\[
+ \|u(\cdot+r\omega,r)-u(\cdot,r)\|_p
+ \le r\,b(r).
+\]
+所以
+\[
+ \|\Delta_{r\omega}f-f\|_p^p
+ \le C_p\left(\int_0^r a(t)\,\mathrm dt\right)^p
+       +C_p r^p b(r)^p,
+\]
+这里采用 \(\Delta_hf(x)=f(x+h)\)。
+
+由于 \(n+sp=n+p-1\)，\cref{b1:prop:fractional-difference-formula}与极坐标变换给出
+\[
+ [f]_{s,p}^p
+ =\int_{\mathbb S^{n-1}}\int_0^\infty
+       r^{-p}\|\Delta_{r\omega}f-f\|_p^p\,\mathrm dr\,
+       \mathrm d\mathcal H^{n-1}(\omega).
+\]
+代入上面的三项估计并用\cref{b1:lem:trace-hardy-inequality}，可得
+\[
+ [f]_{s,p}^p
+ \le C_{n,p}\int_0^\infty\bigl(a(t)^p+b(t)^p\bigr)\,\mathrm dt
+ \le C_{n,p}\sum_{i=1}^{n+1}\|\partial_i u\|_{L^p(H_+)}^p.
+\]
+再加上\cref{b1:thm:half-space-lp-trace}的零阶迹估计，就得到所需全范数界。
+
+对一般 \(u\in W^{1,p}(H_+)\)，先偶反射，再在整个空间中作光滑紧支集逼近，最后限制回半空间。这是第\ref{b1:sec:2301}节构造 \(L^p\) 迹时使用的逼近。上述估计作用于两项之差，使光滑迹成为 \(W^{s,p}(\mathbb R^n)\) 中的 Cauchy 列；其极限在 \(L^p\) 中又等于既有的 \(\operatorname{Tr}u\)。完备性于是给出结论，并保留同一个范数界。
+\end{proof}
+
+指数 \(1-1/p\) 已在积分中出现：边界的径向体积因子将差分核变成 \(r^{-p}\)，恰好与竖向积分的 Hardy 估计匹配。若把 \(p=1\) 直接代入，所用 Hardy 常数发散，而 \(s=0\) 也离开本章分数阶双积分定义的范围；这不是把目标空间写成 \(W^{0,1}\) 就能补上的端点论证。
 
 \subsection{迹的满射性与右逆}
 \label{b1:subsec:230303}
 
-待填充。
+仅有迹估计还不能说明每个边界函数都能实现。若在每个高度使用同一个磨光尺度，通常不能同时恢复原数据并控制竖向导数；尺度应随高度一起趋零。
+
+\begin{theorem}\label{b1:thm:half-space-trace-right-inverse}
+设 \(n\ge1\)、\(1<p<\infty\)，并令 \(s=1-1/p\)。存在有界线性映射
+\[
+ R_+:W^{s,p}(\mathbb R^n)\longrightarrow W^{1,p}(H_+),
+ \quad \operatorname{Tr}(R_+f)=f.
+\]
+因此半空间分数阶迹算子为满射。
+\end{theorem}
+\begin{proof}
+固定非负 \(\rho\in C_c^\infty(B(0,1))\)，使 \(\int\rho=1\)，并取 \(\eta\in C_c^\infty(\mathbb R)\)，使 \(\eta=1\) 于 \([-1,1]\)，支集包含于 \((-2,2)\)。对 \(t>0\) 规定
+\[
+ \rho_t(h)=t^{-n}\rho(h/t),\quad
+ v(x,t)=(\rho_t*f)(x),\quad
+ (R_+f)(x,t)=\eta(t)v(x,t).
+\]
+由卷积不等式，\(\|v(\cdot,t)\|_p\le\|f\|_p\)，所以零阶项和竖向求导产生的 \(\eta'(t)v(x,t)\) 都有由 \(\|f\|_p\) 控制的全域 \(L^p\) 范数。
+
+对切向导数，核为 \(t^{-n-1}(\partial_i\rho)(h/t)\)；对高度导数，核为
+\[
+ \partial_t\rho_t(h)=t^{-n-1}\psi(h/t),\quad
+ \psi(z)=-n\rho(z)-z\cdot\nabla\rho(z).
+\]
+这些核都支撑在 \(|h|<t\) 内，绝对值不超过 \(Ct^{-n-1}\)，且积分为零。最后一点对 \(\psi\) 由紧支集函数的分部积分得到。若 \(K_t\) 是其中任一导数核，因而可以写
+\[
+ (K_t*f)(x)=\int K_t(h)\bigl(f(x-h)-f(x)\bigr)\,\mathrm dh.
+\]
+Hölder 不等式给出
+\[
+ \begin{split}
+ |(K_t*f)(x)|^p
+ &\le\left(\int|K_t(h)|\,\mathrm dh\right)^{p-1}
+       \int|K_t(h)|\cdot|f(x-h)-f(x)|^p\,\mathrm dh\\
+ &\le Ct^{-n-p}\int_{|h|<t}|f(x-h)-f(x)|^p\,\mathrm dh.
+ \end{split}
+\]
+先对 \(x\) 积分，再对 \(0<t<2\) 积分，由 Tonelli 定理，
+\[
+ \begin{split}
+ \int_0^2\|K_t*f\|_p^p\,\mathrm dt
+ &\le C\int_{|h|<2}\|\Delta_{-h}f-f\|_p^p
+                  \int_{|h|}^2t^{-n-p}\,\mathrm dt\,\mathrm dh\\
+ &\le C_{n,p}\int_{\mathbb R^n}
+        \frac{\|\Delta_hf-f\|_p^p}{|h|^{n+p-1}}\,\mathrm dh
+ =C_{n,p}[f]_{s,p}^p.
+ \end{split}
+\]
+函数 \(v\) 在 \(t>0\) 处光滑，因而这些可积的经典导数也是弱导数。结合零阶项及 \(\eta'\) 项的估计，得到
+\[
+ \|R_+f\|_{W^{1,p}(H_+)}
+ \le C_{n,p}\|f\|_{W^{s,p}(\mathbb R^n)}.
+\]
+所有核与截断都已固定，所以该映射线性。最后，近似恒等核保证 \(v(\cdot,t)\to f\) 于 \(L^p\)，且 \(\eta(t)=1\) 于充分小的正高度。由半空间 \(L^p\) 迹的切片刻画，\(\operatorname{Tr}(R_+f)=f\)。
+\end{proof}
+
+这里的 \(R_+\) 是迹算子的右逆：先延入半空间，再取迹，恢复边界数据；反向复合不必恢复任意内部函数，因为零迹函数还可以自由加入。
+
+\begin{theorem}[Lipschitz 边界的分数阶迹]\label{b1:thm:lipschitz-fractional-trace}
+设 \(d\ge2\)，\(\Omega\subset\mathbb R^d\) 为有界 Lipschitz 区域，且 \(1<p<\infty\)。既有的迹算子增强为有界满射
+\[
+ \operatorname{Tr}:W^{1,p}(\Omega)
+ \longrightarrow W^{1-1/p,p}(\partial\Omega).
+\]
+它有一个有界线性右逆 \(R_\Omega\)。此外，边界范数等价于最小延拓范数：
+\[
+ \|f\|_{W^{1-1/p,p}(\partial\Omega)}
+ \asymp
+ \inf\bigl\{\,\|u\|_{W^{1,p}(\Omega)}
+        \mid \operatorname{Tr}u=f\,\bigr\}.
+\]
+\end{theorem}
+\begin{proof}
+先证明有界性。对每个固定边界系数 \(\chi_j\)，将 \(\chi_j u\) 拉回 \(D_j\cap H_+\)，再在侧面和顶面之外补零，得到整个半空间上的函数 \(v_j\)。第\ref{b1:sec:2203}节局部图表延拓证明中的测试分解适用于此处：支集与侧面、顶面有正距离，但允许贴着 \(t=0\)。因此
+\[
+ \|v_j\|_{W^{1,p}(H_+)}
+ \le C_j\|u\|_{W^{1,p}(\Omega)}.
+\]
+由\cref{b1:thm:lipschitz-lp-trace}的局部端点刻画，它的半空间迹是
+\((\chi_j\operatorname{Tr}u)\circ\Gamma_j\) 的零延拓。该相容性已经通过跨边界光滑逼近建立，不要求图函数光滑。半空间分数阶迹估计于是逐项给出
+\[
+ \|\operatorname{Tr}u\|_{W^{1-1/p,p}(\partial\Omega)}^p
+ \le C\|u\|_{W^{1,p}(\Omega)}^p.
+\]
+
+现给定 \(f\in W^{s,p}(\partial\Omega)\)，其中 \(s=1-1/p\)。令 \(f_j\) 为定义中的局部零延拓，取 \(w_j=R_+f_j\)。记
+\[
+ K_j=\operatorname{supp}(\chi_j\circ\Gamma_j)\Subset B_j,
+\]
+并固定 \(\beta_j\in C_c^\infty(D_j)\)，使
+\(\beta_j(z,0)=1\) 于 \(K_j\)。函数
+\[
+ q_j(z,t)=\beta_j(z,t)w_j(z,t),\quad t>0,
+\]
+在侧面和顶面附近为零。由 \(w_j(\cdot,t)\to f_j\) 于 \(L^p\)，以及 \(\beta_j(\cdot,t)\) 一致趋于 \(\beta_j(\cdot,0)\)，可得
+\(\operatorname{Tr}q_j=\beta_j(\cdot,0)f_j=f_j\)。
+把 \(q_j\) 经 \(F_j^{-1}\) 推回 \(\Omega\cap F_j(D_j)\)，再在 \(\Omega\) 的其余部分补零，记结果为 \(Q_jf\)。侧面和顶面的支集余量再次保证局部测试恒等式可以拼接；这里始终只在 \(\Omega\) 内补零，并没有跨越 \(\partial\Omega\) 作零延拓。故
+\[
+ \|Q_jf\|_{W^{1,p}(\Omega)}
+ \le C_j\|f_j\|_{W^{s,p}(\mathbb R^n)}.
+\]
+迹与局部坐标的相容性给出
+\(\operatorname{Tr}(Q_jf)=\chi_j f\)，包括图表外的零部分。
+
+规定
+\[
+ R_\Omega f=\sum_{j=1}^N Q_jf.
+\]
+所有图表、边界系数、卷积核与 \(\beta_j\) 都固定不变，所以它是线性的。有限求和与上述估计给出有界性，而
+\[
+ \operatorname{Tr}(R_\Omega f)
+ =\sum_{j=1}^N\chi_j f=f
+\]
+证明右逆性质和满射性。最后，对任意迹为 \(f\) 的 \(u\)，迹估计给出边界范数不超过 \(C\|u\|_{W^{1,p}}\)；反向取 \(u=R_\Omega f\) 即得最小延拓范数的等价关系。
+\end{proof}
+
+这个迹空间允许的边界不连续性取决于 \(p\)。例如在二维半空间上取边界函数 \(f=\mathbf1_{(0,1)}\)。习题\ref{b1:ex:23-interval-characteristic}的差分计算表明，它属于 \(W^{s,p}(\mathbb R)\) 当且仅当 \(sp<1\)。代入 \(s=1-1/p\)，就知道它能作为 \(W^{1,p}(H_+)\) 函数的迹，当且仅当 \(1<p<2\)。因此不能从内部具有一阶弱导数，直接推断边界数据连续。
+
+本节没有把两个端点纳入分数阶结论。对 \(p=1\)，第\ref{b1:sec:2301}节的 \(L^1\) 迹仍可使用，但这里的 \(W^{s,p}\) 定义要求 \(s>0\)，也没有给出同样的线性右逆证明。对 \(p=\infty\)，既不能代入有限 \(p\) 的双积分范数，也不能用该范数的稠密性取极限；应回到局部 Lipschitz 代表与边界几何讨论。
+
+若 \(d=1\)，有界 Lipschitz 开集的每个边界点都在边界中孤立，边界又紧，故只有有限多个端点。迹空间此时就是这些端点上的有限维数据空间：在每个区间分量上作连接两端数据的仿射函数，便得到线性右逆，其范数由有限多个区间长度控制。这个论证也处理相应端点指数，但不把 \(n=0\) 代入上面的欧氏差分核。

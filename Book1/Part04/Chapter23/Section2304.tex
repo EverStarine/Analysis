@@ -1,19 +1,133 @@
 % !TeX root = ../../Book1.tex
 \OptionalSection{高阶迹理论}{b1:sec:2304}
 
-% TODO: 撰写本节正文。
+一阶迹决定函数在边界上的零阶数据。若域内还有更多弱导数，便可以继续对这些导数取迹；但所得数据不是一组互不相关的边界函数。切向导数必须与原函数迹的切向变化一致，法向导数则承担另外的边界信息。本节先在平坦边界上证明这种结构，再说明弯曲边界的几何限制。完整的高阶边界数据延拓不在本节证明范围内。
 
 \subsection{\texorpdfstring{\(W^{k,p}\)}{Wk,p} 的边界数据}
 \label{b1:subsec:230401}
 
-待填充。
+设 \(d\ge2\)、\(n=d-1\)、\(H_+=\mathbb R^n\times(0,\infty)\)，并取整数 \(k\ge1\)、\(1<p<\infty\)。若 \(u\in W^{k,p}(H_+)\)，那么对每个 \(|\alpha|\le k-1\)，都有 \(\partial^\alpha u\in W^{1,p}(H_+)\)，所以
+\[
+ g_\alpha=\operatorname{Tr}_+(\partial^\alpha u)
+\]
+已经有明确定义。各个 \(g_\alpha\) 至少属于 \(W^{s,p}(\mathbb R^n)\)，其中 \(s=1-1/p\)；这是把一阶分数迹定理用于 \(\partial^\alpha u\) 的直接结果。下面还要利用不同阶数据之间的相容关系。
+
+先约定非整数高阶空间的记号。对整数 \(m\ge0\)、\(0<s<1\)，令
+\[
+ W^{m+s,p}(\mathbb R^n)
+ =\{\,f\in W^{m,p}(\mathbb R^n)
+       \mid \partial^\beta f\in W^{s,p}(\mathbb R^n)
+               \text{ 对所有 }|\beta|=m\,\},
+\]
+其范数取为
+\[
+ \|f\|_{W^{m+s,p}}^p
+ =\|f\|_{W^{m,p}}^p+
+     \sum_{|\beta|=m}[\partial^\beta f]_{s,p}^p.
+\]
+当 \(m=0\) 时，这正是第\ref{b1:sec:2302}节的定义。这里对最高整数阶弱导数增加分数阶差分条件，而不是把原先的整数阶定义中的“阶数”形式地换成实数。
+
+\begin{proposition}[平坦边界的高阶迹]\label{b1:prop:flat-higher-traces}
+设 \(u\in W^{k,p}(H_+)\)、\(1<p<\infty\)。对 \(|\alpha|\le k-2\) 及切向方向 \(1\le i\le n\)，有
+\begin{equation}\label{b1:eq:trace-tangential-compatibility}
+ \partial_i g_\alpha=g_{\alpha+e_i}
+ \quad\text{作为 }\mathbb R^n\text{ 上的弱导数}.
+\end{equation}
+若记
+\[
+ \gamma_j u=\operatorname{Tr}_+(\partial_d^j u),
+ \quad 0\le j\le k-1,
+\]
+则
+\begin{equation}\label{b1:eq:higher-flat-trace-bound}
+ \gamma_j u\in W^{k-j-1/p,p}(\mathbb R^n),\qquad
+ \|\gamma_j u\|_{W^{k-j-1/p,p}}
+ \le C_{d,k,p}\|u\|_{W^{k,p}(H_+)}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+先证切向相容性。固定 \(|\alpha|\le k-2\)，令 \(v=\partial^\alpha u\)、\(w=\partial_i v\)。两者都属于 \(W^{1,p}(H_+)\)。由 Fubini 定理及切向弱导数恒等式，对几乎每个 \(t>0\)，切片满足
+\[
+ \int_{\mathbb R^n}v(x',t)\partial_i\phi(x')\,\mathrm dx'
+ =-\int_{\mathbb R^n}w(x',t)\phi(x')\,\mathrm dx'
+ \quad\bigl(\phi\in C_c^\infty(\mathbb R^n)\bigr).
+\]
+这里可以先对可数稠密的测试函数族取得共同的好切片，再由局部积分连续性扩展到全部测试函数。选取这样的 \(t_\ell\downarrow0\)。由\eqref{b1:eq:trace-slice-convergence}，\(v(\cdot,t_\ell)\to g_\alpha\)、\(w(\cdot,t_\ell)\to g_{\alpha+e_i}\) 于 \(L^p(\mathbb R^n)\)。在积分恒等式中取极限，便得\eqref{b1:eq:trace-tangential-compatibility}。
+
+令 \(m=k-1-j\)。反复使用切向相容性，得到
+\[
+ \partial_{x'}^\beta\gamma_j u
+ =\operatorname{Tr}_+
+       (\partial_{x'}^\beta\partial_d^j u)
+ \quad(|\beta|\le m).
+\]
+右侧由半空间的 \(L^p\) 迹估计控制，因为内部导数总阶数至多 \(k-1\)，还能再取一阶弱导数。这证明 \(\gamma_ju\in W^{m,p}(\mathbb R^n)\) 并控制其整数阶范数。
+
+对 \(|\beta|=m\)，内部函数
+\(\partial_{x'}^\beta\partial_d^j u\in W^{1,p}(H_+)\)。再用\cref{b1:thm:half-space-fractional-trace}，得到它的迹属于 \(W^{s,p}\)，且相应半范数受 \(\|u\|_{W^{k,p}}\) 控制。有限多个 \(\beta\) 求和，即得 \(\gamma_ju\in W^{m+s,p}\) 及所需估计，因为 \(m+s=k-j-1/p\)。
+\end{proof}
+
+例如 \(u\in W^{2,p}(H_+)\) 时，零阶迹属于 \(W^{2-1/p,p}\)，法向方向的一阶导数迹属于 \(W^{1-1/p,p}\)，而每个切向导数迹必须等于零阶迹的对应弱导数。不能先任意指定函数值及全部一阶偏导数的边界值，再期待存在一个内部函数实现它们。
+
+上述证明只需对已有整数阶导数重复使用一阶迹，不依赖高阶函数在闭半空间上的光滑稠密性。它给出的是连续性和数据相容性；同时为所有 \(\gamma_j\) 构造有界右逆，还需要能匹配多项边界数据的延拓公式，不能把零阶的尺度卷积原样使用 \(k\) 次就视为完成。
 
 \subsection{法向导数}
 \label{b1:subsec:230402}
 
-待填充。
+在上半空间的边界上，外单位法向为 \(\nu=-e_d\)。因此对 \(u\in W^{2,p}(H_+)\)，\term[faxiang-daoshu]{法向导数}[normal derivative]的边界迹为
+\[
+ \partial_\nu u=-\operatorname{Tr}_+(\partial_du)=-\gamma_1u.
+\]
+更高阶沿固定法向的导数相应带有 \((-1)^j\)。本节的 \(\gamma_j\) 始终按正 \(x_d\) 方向定义；写外法向数据时另加这个符号，避免把方向约定隐藏在记号中。
+
+设 \(\Omega\) 为有界 Lipschitz 区域。边界图表几乎处处给出外单位法向 \(\nu\)，其分量本性有界。对 \(u\in W^{2,p}(\Omega)\)，各一阶导数属于 \(W^{1,p}(\Omega)\)，所以可以在 \(L^p(\partial\Omega)\) 中定义
+\[
+ \partial_\nu u
+ =\sum_{i=1}^d\nu_i\operatorname{Tr}(\partial_i u).
+\]
+由 \(|\nu|=1\) 及 \(L^p\) 迹估计，这是受 \(\|u\|_{W^{2,p}(\Omega)}\) 控制的边界函数。若 \(u\) 与边界足够光滑，它与通常的方向导数相同。
+
+但是，本性有界乘子未必保持分数阶 Sobolev 空间。第\ref{b1:sec:2302}节的乘子结论还要求 Lipschitz 控制；在折角处，\(\nu\) 可以跳跃。因此不能仅凭每个 \(\operatorname{Tr}(\partial_i u)\) 属于 \(W^{1-1/p,p}(\partial\Omega)\)，就断言它们与 \(\nu_i\) 相乘后仍属于该空间。
+
+一个具体例子是正方形 \(\Omega=(0,1)^2\) 与光滑函数 \(u(x,y)=x\)。在下边上 \(\partial_\nu u=0\)，在左边上 \(\partial_\nu u=-1\)。在原点附近用折线弧长作参数，这个边界函数有一个大小为 \(1\) 的跳跃。若它属于 \(W^{s,p}\)，其半范数必须包含有限的跨角点积分；然而该积分从下方控制
+\[
+ \int_0^\varepsilon\int_0^\varepsilon
+       \frac{\mathrm da\,\mathrm db}{(a+b)^{1+sp}}.
+\]
+在 \(0<a<\varepsilon/2\)、\(a<b<2a\) 上积分，便得到常数倍的
+\(\int_0^{\varepsilon/2}a^{-sp}\,\mathrm da\)，当 \(sp\ge1\) 时发散。因此取 \(s=1-1/p\)、\(p\ge2\)，这个法向数据不属于预期的分数阶空间，尽管 \(u\) 在整个平面上光滑。
+
+若边界具有更多光滑性，法向及坐标过渡也具有更多可控导数，平坦边界的高阶估计才有望在图表之间保持。对高阶法向导数，还须说明是在边界点固定方向作高阶导数，还是把法向场延到邻域后反复作用；后者可能引入法向场的导数。高阶迹理论同时涉及函数正则性、边界正则性和数据约定，三者不能只靠一个“边界光滑”的笼统表述代替。
 
 \subsection{Besov 空间作为自然迹空间的预告}
 \label{b1:subsec:230403}
 
-待填充。
+一阶迹的指数 \(1-1/p\)，来自对法向厚度的积分与切向差分尺度之间的配合。允许更一般的光滑阶数和尺度求和方式后，便进入\term[besov-kongjian]{Besov 空间}[Besov space]。这里只介绍本章已经能够理解的一种差分定义，不预用 Fourier 变换。
+
+设 \(0<s<1\)、\(1\le p,q<\infty\)。对 \(f\in L^p(\mathbb R^n)\)，令
+\[
+ [f]_{B^s_{p,q}}
+ =\left(
+   \int_{\mathbb R^n}
+    \frac{\|f(\cdot+h)-f\|_{L^p}^q}{|h|^{sq}}
+    \,\frac{\mathrm dh}{|h|^n}
+   \right)^{1/q}.
+\]
+要求这个量有限，并以 \(\|f\|_p+[f]_{B^s_{p,q}}\) 为范数，得到本节所用的非齐次 Besov 空间 \(B^s_{p,q}(\mathbb R^n)\)。\(q=\infty\) 时，把积分的 \(q\) 次平均改为关于 \(h\ne0\) 的本性上确界。由于大尺度差分受 \(2\|f\|_p\) 控制，也可以只在 \(|h|<1\) 上积分，得到等价范数。
+
+两个指数承担不同的平均：\(p\) 先度量固定平移 \(h\) 下、空间变量中的差分大小；\(q\) 再度量这些大小随平移尺度的分布。当 \(q=p\) 时，Tonelli 定理直接给出
+\[
+ [f]_{B^s_{p,p}}^p
+ =\int_{\mathbb R^n}\int_{\mathbb R^n}
+       \frac{|f(x+h)-f(x)|^p}{|h|^{n+sp}}\,\mathrm dx\,\mathrm dh
+ =[f]_{s,p}^p.
+\]
+因此在当前 \(0<s<1\) 的范围内，
+\[
+ B^s_{p,p}(\mathbb R^n)=W^{s,p}(\mathbb R^n)
+\]
+作为集合相同，所列非齐次范数等价。一阶迹空间也就可以写成 \(B^{1-1/p}_{p,p}\)，并不是又多出了一种不同的边界条件。
+
+对更高的非整数阶数，需要使用高阶差分或先取整数阶导数；这些定义之间的等价、一般 Besov 空间的插值以及完整高阶迹右逆，属于进一步的函数空间理论。可从 Triebel 的《Theory of Function Spaces》\cite{Triebel1983Theory}继续阅读，也可在 Adams 与 Fournier 的《Sobolev Spaces》\cite{Adams2003Sobolev}中衔接经典 Sobolev 理论。这里不将尚未展开的一般 Besov 迹定理用作后续正文的前置。
+
+至此，边界值的定义、其一阶分数正则性及零边界闭包已连成一条证明链。下一章回到区域内部：在这些逼近与延拓工具准备好以后，将研究梯度怎样控制函数的振幅和可积性。这些嵌入估计与本章的迹估计相互补充，但处理的是不同的测度和不同位置上的函数信息。

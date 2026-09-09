@@ -2,24 +2,186 @@
 \section{Sobolev 迹}
 \label{b1:sec:2301}
 
-% TODO: 撰写本节正文。
+Sobolev 函数首先是域内的几乎处处等价类。给这个等价类随意补上边界值，不会改变任何体积积分，却会任意改变所谓“边界限制”。所以迹不是把某个可测代表直接放到边界上，而是一个由内部正则性决定、并对 Sobolev 范数连续的运算。
+
+本节先把目标空间取为边界上的 \(L^p\)，并处理全部有限指数 \(1\le p<\infty\)。更精细的分数阶目标留到第\ref{b1:sec:2303}节。暂时不要求读者预先理解分数阶空间，也不把有限指数的零迹刻画推广到 \(p=\infty\)。
 
 \subsection{光滑函数的边界限制}
 \label{b1:subsec:230101}
 
-待填充。
+设 \(\Omega\subset\mathbb R^d\) 为有界 Lipschitz 区域，记
+\[
+ \sigma(A)=\mathcal H^{d-1}(A\cap\partial\Omega).
+\]
+这里表示将 \((d-1)\) 维 Hausdorff 测度限制到边界；以后直接写 \(\int_{\partial\Omega}f\,\mathrm d\sigma\)。在第\ref{b1:sec:2203}节的图表中，边界参数为
+\[
+ \Gamma(z)=(z,\varphi(z)).
+\]
+由 Lipschitz 图像的面积公式，
+\begin{equation}\label{b1:eq:lipschitz-boundary-measure}
+ \int_{\Gamma(A)}f\,\mathrm d\sigma
+ =\int_A f(\Gamma(z))\sqrt{1+|\nabla\varphi(z)|^2}\,\mathrm dz.
+\end{equation}
+梯度在几乎处处存在，面积因子处于 \(1\) 与 \(\sqrt{1+L^2}\) 之间。因此图表中的零测集、可积性和 \(L^p\) 范数都能与横向 Lebesgue 测度比较。有限图表覆盖又保证 \(\sigma(\partial\Omega)<\infty\)。维数为一时，\(\mathcal H^0\) 是计数测度，有界 Lipschitz 区域的边界是有限点集。
+
+若 \(v\) 在 \(\overline\Omega\) 的一个邻域内光滑，则 \(v|_{\partial\Omega}\) 没有歧义。把它延伸到一般 Sobolev 元素之前，需要先知道这样的函数确实足够多。
+
+\begin{proposition}\label{b1:prop:sobolev-smooth-up-to-boundary}
+设 \(1\le p<\infty\)，且 \(\Omega\) 是有界 Lipschitz 区域。则
+\[
+ \{\,v|_\Omega\mid v\in C_c^\infty(\mathbb R^d)\,\}
+\]
+在 \(W^{1,p}(\Omega)\) 中稠密。
+\end{proposition}
+\begin{proof}
+取定理\ref{b1:thm:lipschitz-domain-extension}的有界延拓 \(Eu\in W^{1,p}(\mathbb R^d)\)。由全空间光滑稠密性，选 \(v_j\in C_c^\infty(\mathbb R^d)\)，使 \(v_j\to Eu\) 于 \(W^{1,p}(\mathbb R^d)\)。限制到 \(\Omega\) 不增加范数，且 \((Eu)|_\Omega=u\)，所以 \(v_j|_\Omega\to u\)。
+\end{proof}
+
+这里的紧支集属于整个空间，不必留在 \(\Omega\) 内；这些近似函数可以在边界处非零。这与 \(W_0^{1,p}\) 的定义有本质区别。稠密性本身还不足以保证它们的边界限制收敛，必须另外建立边界范数估计。
 
 \subsection{迹算子}
 \label{b1:subsec:230102}
 
-待填充。
+先在 \(H_+=\mathbb R^{d-1}\times(0,\infty)\) 上说明边界估计的来源。横向变量写作 \(x'\)，纵向变量写作 \(t\)。沿几乎每条竖线，Sobolev 函数具有绝对连续代表，因而有机会通过 \(t\downarrow0\) 确定边界值。
+
+\begin{theorem}[半空间的 \(L^p\) 迹]\label{b1:thm:half-space-lp-trace}
+设 \(1\le p<\infty\)。存在唯一有界线性算子
+\[
+ \operatorname{Tr}_+:W^{1,p}(H_+)\longrightarrow L^p(\mathbb R^{d-1}),
+\]
+使它对 \(C_c^\infty(\mathbb R^d)\) 的限制等于 \(u(x',0)\)。它由几乎每条竖线的绝对连续端点值给出，并满足
+\begin{equation}\label{b1:eq:half-space-lp-trace}
+ \|\operatorname{Tr}_+u\|_{L^p(\mathbb R^{d-1})}
+ \le\|u\|_{L^p(\mathbb R^{d-1}\times(0,1))}
+      +\|\partial_du\|_{L^p(\mathbb R^{d-1}\times(0,1))}.
+\end{equation}
+选择这些沿线代表后，对每个 \(0<t<1\)，
+\begin{equation}\label{b1:eq:trace-slice-convergence}
+ \|u(\cdot,t)-\operatorname{Tr}_+u\|_{L^p}
+ \le t^{1-1/p}
+       \|\partial_du\|_{L^p(\mathbb R^{d-1}\times(0,t))}.
+\end{equation}
+特别地，切片在 \(L^p\) 中趋于迹；\(p=1\) 时右侧也趋零。
+\end{theorem}
+\begin{proof}
+取定理\ref{b1:thm:sobolev-acl}的共同代表。Fubini 定理保证，对几乎每个 \(x'\)，函数 \(u(x',\cdot)\) 与 \(\partial_du(x',\cdot)\) 都在 \((0,1)\) 上可积。因此其绝对连续代表延伸到端点，并可写成
+\[
+ u(x',t)=a(x')+\int_0^t\partial_du(x',s)\,\mathrm ds.
+\]
+在例外的 \(x'\) 上赋零；端点值可由 \(u(x',1/j)\) 的极限取得，故可取为可测函数。由上式，对 \(0<t<1\)，
+\[
+ |a(x')|\le |u(x',t)|
+                  +\int_0^1|\partial_du(x',s)|\,\mathrm ds.
+\]
+对 \(t\in(0,1)\) 平均，再对 \(x'\) 取 \(L^p\) 范数。积分 Minkowski 不等式和区间长度为一给出\eqref{b1:eq:half-space-lp-trace}。因此 \(a\in L^p\)，令 \(\operatorname{Tr}_+u=a\)。两代表几乎处处相同，则对几乎每个 \(x'\) 沿线几乎处处相同，绝对连续代表及其端点值因而一致。这使定义在等价类层面良定义并线性。
+
+在端点积分表示中用 Hölder 不等式，
+\[
+ |u(x',t)-a(x')|^p
+ \le t^{p-1}\int_0^t|\partial_du(x',s)|^p\,\mathrm ds.
+\]
+对 \(x'\) 积分即得\eqref{b1:eq:trace-slice-convergence}。当 \(p=1\) 时，用积分三角不等式取得同一结论，右端由可积函数在缩小边界层上的积分趋零。沿线代表的选择还使这些切片对每个 \(t\) 都可测并属于 \(L^p\)。
+
+对光滑函数，端点值当然就是通常限制。最后，将 \(u\) 偶反射到全空间，再用全空间 \(C_c^\infty\) 稠密性，说明光滑限制在 \(W^{1,p}(H_+)\) 中稠密。任意两个有界线性算子若在这一稠密类上相同，就在全空间相同，得到唯一性。
+\end{proof}
+
+这种由连续性延伸边界限制的算子，称为\term[ji-suanzi]{迹算子}[trace operator]，其输出称为函数的\term[ji]{迹}[trace]，常记为 \(\operatorname{Tr}u\) 或 \(\gamma_0u\)。本书统一以前一记号表示零阶边界数据。“迹”不是函数在任意可测代表上的边界赋值；上述定理通过内部沿线积分把它唯一地确定下来。
+\symidx{\(\operatorname{Tr}u\)：Sobolev 函数的边界迹}
 
 \subsection{\texorpdfstring{\(W^{1,p}\)}{W1,p} 的迹}
 \label{b1:subsec:230103}
 
-待填充。
+对于 Lipschitz 边界，竖线改成图表中横向位置固定的线段。图函数只需 Lipschitz，因为本章首先处理一阶空间，双 Lipschitz 换元已有相应弱导数规则。
+
+\begin{theorem}[Lipschitz 区域的 \(L^p\) 迹]\label{b1:thm:lipschitz-lp-trace}
+设 \(\Omega\subset\mathbb R^d\) 为有界 Lipschitz 区域，\(1\le p<\infty\)。存在唯一有界线性算子
+\[
+ \operatorname{Tr}:W^{1,p}(\Omega)\longrightarrow L^p(\partial\Omega,\sigma)
+\]
+延伸光滑函数的通常边界限制，并满足
+\[
+ \|\operatorname{Tr}u\|_{L^p(\partial\Omega)}
+ \le C_{\Omega,p}\|u\|_{W^{1,p}(\Omega)}.
+\]
+若 \(u\in W^{1,p}(\Omega)\cap C(\overline\Omega)\)，则迹与该连续代表的边界限制相同。在各个局部图表内，迹也等于相应竖线的绝对连续端点值。
+\end{theorem}
+\begin{proof}
+先设 \(d\ge2\)。取第\ref{b1:sec:2203}节的有限内外图表、压平映射 \(F_j\) 及光滑分割函数 \(\eta_j\)。内部项 \(\eta_0\) 在边界附近为零，其他项满足 \(\sum_{j=1}^N\eta_j=1\) 于边界。记 \(\Gamma_j(z)=F_j(z,0)\)。
+
+对 \(u\in W^{1,p}(\Omega)\)，先将 \(\eta_ju\) 拉回正半盒。它在侧面及顶面附近为零，可以像局部延拓引理那样补零为 \(H_+\) 上的 \(W^{1,p}\) 函数 \(v_j\)。这里不跨过 \(t=0\) 补零，故不需要预先假设零边界值。定义
+\[
+ T_ju=(\operatorname{Tr}_+v_j)\circ\Gamma_j^{-1}
+\]
+于该边界片，并在其余边界上取零。由半空间迹估计、坐标换元、光滑乘法及\eqref{b1:eq:lipschitz-boundary-measure}，
+\[
+ \|T_ju\|_{L^p(\partial\Omega)}
+ \le C_j\|u\|_{W^{1,p}(\Omega)}.
+\]
+有限和 \(Tu=\sum_{j=1}^N T_ju\) 因而是有界线性映射。
+
+若 \(u\) 光滑到边界，则沿图表竖线有通常连续端点值，即
+\[
+ T_ju=(\eta_j|_{\partial\Omega})(u|_{\partial\Omega}).
+\]
+分割函数之和在边界为一，所以 \(Tu=u|_{\partial\Omega}\)。由\cref{b1:prop:sobolev-smooth-up-to-boundary}的稠密性，\(T\) 是唯一延伸光滑限制的有界算子，记为 \(\operatorname{Tr}\)。不同图表或分割函数得到的构造必然一致。
+
+还需说明局部相容性并不限于本次选定的分割函数。给定一个图表及支集留在其内的光滑截断 \(\chi\)，取全空间光滑限制 \(u_m\to u\) 于 \(W^{1,p}(\Omega)\)。弱乘积与双 Lipschitz 换元保证 \((\chi u_m)\circ F\to(\chi u)\circ F\) 于相应正半盒。对各 \(u_m\)，两种端点解释一致；两边的 \(L^p\) 迹映射都连续，因此取极限仍一致。在任意较小边界片选取 \(\chi=1\)，即可得到所述局部端点刻画。
+
+若 \(u\) 还有闭域连续代表，则沿这些图表竖线的端点值就是它的连续边界值，故两者一致。最后，\(d=1\) 时区域是有限个有界区间之并；在每个区间使用第\ref{b1:sec:2202}节的端点连续映射，再对有限端点求和，给出同一结论。
+\end{proof}
+
+\begin{proposition}\label{b1:prop:trace-multiplication}
+若 \(\chi\) 在 \(\overline\Omega\) 的一个邻域内光滑，则
+\[
+ \operatorname{Tr}(\chi u)
+ =(\chi|_{\partial\Omega})\operatorname{Tr}u
+ \quad\text{于 }L^p(\partial\Omega).
+\]
+\end{proposition}
+\begin{proof}
+对光滑限制该等式只是通常乘法。对一般 \(u\)，用光滑限制依 \(W^{1,p}\) 逼近。由于 \(\overline\Omega\) 紧，\(\chi\) 及其一阶导数有界，乘法在 \(W^{1,p}(\Omega)\) 中连续；边界乘法及迹也连续，故等式可以取极限。
+\end{proof}
+
+迹定理并不说每个 \(L^p\) 边界函数都是某个 \(W^{1,p}\) 函数的迹。在 \(1<p<\infty\) 时，梯度可积性还强迫边界数据具有分数阶正则性；后两节将刻画这一附加条件。本节只先建立一个足以比较边界值、且涵盖 \(p=1\) 的连续目标空间。
 
 \subsection{零迹与 \texorpdfstring{\(W_0^{1,p}\)}{W01,p}}
 \label{b1:subsec:230104}
 
-待填充。
+现在可以把上一章的闭包条件与真正的边界数据联系起来。零迹条件比“在边界上给代表赋零”强得多：它要求由内部弱导数确定的端点值为零。
+
+\begin{lemma}\label{b1:lem:half-space-zero-trace-extension}
+对 \(u\in W^{1,p}(H_+)\)、\(1\le p<\infty\)，若 \(\operatorname{Tr}_+u=0\)，则零延拓 \(\widetilde u\) 属于 \(W^{1,p}(\mathbb R^d)\)，并有
+\[
+ \partial_i\widetilde u=\widetilde{\partial_i u}.
+\]
+此外，\(u\in W_0^{1,p}(H_+)\)。
+\end{lemma}
+\begin{proof}
+沿几乎每条竖线，\(u\) 的绝对连续代表在零点取值零。把它在负半线补零，两侧绝对连续函数的端点值相同，因而在跨过零点的紧区间上仍绝对连续；导数就是原导数的补零。沿其他坐标方向，正半空间保持原来的沿线性质，负半空间恒为零，中间整层直线在横向参数中是零测集。因此零延拓具有一个共同 ACL 代表，函数和候选导数又都属于 \(L^p\)。由 ACL 判据得到所求弱导数等式。
+
+为得到内部光滑逼近，令 \(F=\widetilde u\)，取向内平移 \(F_h(x)=F(x-he_d)\)。函数及其弱导数的 \(L^p\) 平移连续性给出 \(F_h\to F\) 于 \(W^{1,p}(\mathbb R^d)\)，而 \(F_h=0\) 于 \(\{x_d<h\}\)。固定 \(h\)，用远处截断 \(\chi_R\) 令 \(\chi_RF_h\to F_h\)；这与全空间稠密性证明中的尾部估计相同。再以小于 \(h/2\) 的尺度磨光，所得函数的紧支集留在 \(H_+\) 内，且在全空间 Sobolev 范数中逼近 \(\chi_RF_h\)。依次令平移、尾部及磨光误差趋零，再限制回半空间，即得 \(W_0^{1,p}\) 的闭包条件。
+\end{proof}
+
+\begin{theorem}[零迹刻画]\label{b1:thm:zero-trace-characterization}
+设 \(\Omega\) 为有界 Lipschitz 区域，\(1\le p<\infty\)。则
+\[
+ W_0^{1,p}(\Omega)
+ =\{\,u\in W^{1,p}(\Omega)\mid\operatorname{Tr}u=0\,\}
+ =\ker\operatorname{Tr}.
+\]
+\end{theorem}
+\begin{proof}
+若 \(u\in W_0^{1,p}(\Omega)\)，取 \(\varphi_m\in C_c^\infty(\Omega)\) 在 \(W^{1,p}\) 中逼近它。各 \(\varphi_m\) 在边界附近为零，故其迹均为零。迹的连续性给出 \(\operatorname{Tr}u=0\)。
+
+反过来，设 \(\operatorname{Tr}u=0\)。维数为一的情形已由区间零端点刻画证明；以下设 \(d\ge2\)。仍用有限分解 \(u=\eta_0u+\sum_{j=1}^N\eta_ju\)。内部项具有内部紧支集，故由有限指数的内部磨光属于 \(W_0^{1,p}(\Omega)\)。
+
+对一个边界项，将 \(\eta_ju\) 拉回正半盒并在半空间内补零，记为 \(v_j\)。迹的乘法及图表相容性说明 \(\operatorname{Tr}_+v_j=0\)，所以前一引理给出 \(v_j\in W_0^{1,p}(H_+)\)。取 \(a_m\in C_c^\infty(H_+)\)，使 \(a_m\to v_j\) 于 \(W^{1,p}(H_+)\)。
+
+为在原图表内推回，选 \(\zeta\in C_c^\infty(D_j)\)，使它在 \(v_j\) 的闭支集附近等于一；这里支集可以接触 \(t=0\)，但仍紧含于外盒 \(D_j\)。光滑乘法连续，故 \(\zeta a_m\to v_j\) 于半空间 Sobolev 范数。每个 \(\zeta a_m\) 的支集同时避开 \(t=0\) 与外盒边界。
+
+将 \(\zeta a_m\) 经 \(F_j^{-1}\) 推回，并在图表外补零，得到 \(\Omega\) 内部紧支集的 \(W^{1,p}\) 函数 \(b_m\)。虽然 Lipschitz 坐标变换不保证它光滑，但内部紧支集逼近保证 \(b_m\in W_0^{1,p}(\Omega)\)。由双 Lipschitz 换元的范数估计，\(b_m\to\eta_ju\) 于 \(W^{1,p}(\Omega)\)。闭性于是给出 \(\eta_ju\in W_0^{1,p}(\Omega)\)。有限个边界项与内部项相加，完成证明。
+\end{proof}
+
+证明中不能省略“推回后再次作内部光滑逼近”：图函数通常并不光滑，拉回坐标中的光滑函数推回去未必光滑。真正保留下来的是一阶 Sobolev 范数和内部紧支集，这已足以使用上一章的逼近定理。
+
+有限 \(p\) 的范围也不可省去。区间函数 \(u(x)=x(1-x)\) 在两个端点取零，但第\ref{b1:sec:2202}节已经证明它不属于本书按范数闭包定义的 \(W_0^{1,\infty}(0,1)\)。另一方面，任意开集未必有单侧 Lipschitz 图表，上一章去掉中点的区间反例也不能被当前定理覆盖。零迹与闭包条件等价，既使用了指数范围，也使用了边界几何。

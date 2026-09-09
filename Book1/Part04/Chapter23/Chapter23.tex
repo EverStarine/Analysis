@@ -1,26 +1,455 @@
 % !TeX root = ../../Book1.tex
 \chapter{迹理论与分数阶 Sobolev 空间}
 \label{b1:ch:23}
-% 本章摘要（不计入编号）
 \begin{chapterabstract}
-待填充。
+本章从一个边界值问题出发：域内几乎处处等价的 Sobolev 函数，怎样决定边界上的数据？先通过沿线端点与范数估计构造迹算子，证明有限指数下零迹与紧支集光滑闭包等价；再以点对差分定义分数阶 Sobolev 空间，刻画一阶迹的真实目标，并构造有界线性右逆。最后讨论平坦边界上的高阶数据相容性、法向导数在折角处的限制，以及 Besov 空间与本章差分范数的关系。
 \end{chapterabstract}
 
-% 本章目标（不计入编号）
 \begin{learninggoals}
-待填充。
+\begin{enumerate}
+\item\label{b1:goal:23-trace}区分可测代表的边界赋值与由内部正则性确定的迹，完成半空间和有界 Lipschitz 区域上的 \(L^p\) 迹构造。
+\item\label{b1:goal:23-zero}通过局部压平、零端点拼合及内部逼近，证明有限指数下的零迹刻画，说明其中的几何和指数条件。
+\item\label{b1:goal:23-fractional}掌握分数阶双积分、差分表示、完备性、乘子、坐标变换及光滑稠密性，追踪非局部截断的额外项。
+\item\label{b1:goal:23-boundary-space}证明 \(1<p<\infty\) 时的一阶分数迹定理与满射性，理解右逆的尺度卷积构造及边界范数的图表独立性。
+\item\label{b1:goal:23-higher}在选读部分辨认高阶边界数据之间的切向相容关系，区分平坦法向和变化的法向场，并理解当前分数阶空间的 Besov 表述。
+\end{enumerate}
 \end{learninggoals}
+
+本章使用第\ref{b1:ch:21}章的沿线绝对连续代表，以及第\ref{b1:ch:22}章的逼近、补零和一阶延拓。边界面积通过 Lipschitz 图像公式计算。因此先前的几何测度工具并未退出分析问题：它们保证不同边界参数中所说的“几乎处处”相容，也使边界积分得到正确的面积因子。
+
+初读可先读完第\ref{b1:sec:2301}节，建立零迹与 \(W_0^{1,p}\) 的联系；再依次读分数阶空间的基本工具和完整的一阶迹定理。第\ref{b1:sec:2304}节为选读，后续内部嵌入理论不依赖其中未展开的高阶右逆或一般 Besov 理论。特别应留意两个范围：本章的 \(L^p\) 迹与零迹刻画包含 \(p=1\)，精确分数阶目标及所构造的线性右逆则只在 \(1<p<\infty\) 证明。
+
+中文伴读可选王明新的《索伯列夫空间》\cite{Wang2013SobolevChinese}，先对照第2.4节、第2.10节的边界迹，再读第3.5节中的实指数空间与迹。该书书名采用人名的中文音译，本书正文仍沿用 Sobolev 原拼。Di Nezza、Palatucci 与 Valdinoci 的《Hitchhiker's guide to the fractional Sobolev spaces》\cite{DiNezza2012Hitchhikers}适合伴读本章的差分部分；涉及原文仅陈述或采用不同前置工具的地方，各节另行说明，不把一条参考文献当作未写出的证明。
 
 \input{Part04/Chapter23/Section2301}
 \input{Part04/Chapter23/Section2302}
 \input{Part04/Chapter23/Section2303}
 \input{Part04/Chapter23/Section2304}
-% 本章小结（不计入编号）
-\begin{chaptersummary}
-待填充。
-\end{chaptersummary}
 
+\begin{chaptersummary}
+迹由内部沿线绝对连续性和 Sobolev 范数估计确定，而不是任意边界赋值。对有界 Lipschitz 区域，有限指数下迹的核正是 \(W_0^{1,p}\)；反向证明必须在图表中控制支集，再将不一定光滑的坐标推回函数作内部逼近。
+
+分数阶范数比较所有点对，因而能检测跨越边界或连通分支的差异。乘子、补零、截断和坐标变换都要控制这种非局部比较。对于 \(1<p<\infty\)，法向积分和切向尺度配合给出 \(1-1/p\) 阶边界正则性；高度随磨光尺度变化的构造，又把任意这样的数据延回内部。
+
+高阶数据进一步具有切向相容性。平坦边界的结论不能不加条件地转移到有折角的法向场上。本章因此把已证明的一阶边界理论、平坦高阶估计和进一步的 Besov 理论分开。接下来的嵌入与紧性，将主要利用前两章和本章已经完成的逼近、延拓及零边界工具。
+\end{chaptersummary}
 
 \BookExercises
 
-待填充。
+% 第二十三章习题临时稿；不另设 BookExercises 入口。
+% 八题均为自拟的工具变式；来源为已建立的正文接口与此处独立展开的计算，不冒认教材原题编号。
+% 仅用本章及前章工具，不使用后续嵌入、Fourier或尚未建立的Besov表示定理。
+
+\begin{exercise}\label{b1:ex:23-interval-characteristic}
+设 \(0<s<1\)、\(1\le p<\infty\)，令 \(u=\mathbf1_{(0,1)}\)，把它看作整个 \(\mathbb R\) 上的函数。证明
+\[
+ u\in W^{s,p}(\mathbb R)\quad\Longleftrightarrow\quad sp<1,
+\]
+并在有限情形计算半范数 \([u]_{s,p}^p\) 的精确值。说明临界条件 \(sp=1\) 不能归入有限的一侧。
+\end{exercise}
+% 来源：自拟；直接计算定义中的跨跳跃双积分，区别于原区间内常函数的零半范数。
+\begin{solution}
+函数的 \(L^p\) 范数为 \(1\)，问题完全在于半范数。只有一个变量在 \((0,1)\)、另一个变量在其外时，函数差才非零。由对称性及 Tonelli 定理，
+\[
+ \begin{aligned}
+ [u]_{s,p}^p
+ &=2\int_0^1\left(
+     \int_{-\infty}^0\frac{\mathrm dy}{(x-y)^{1+sp}}
+    +\int_1^\infty\frac{\mathrm dy}{(y-x)^{1+sp}}
+             \right)\mathrm dx\\
+ &=\frac2{sp}\int_0^1
+       \bigl(x^{-sp}+(1-x)^{-sp}\bigr)\,\mathrm dx.
+ \end{aligned}
+\]
+当 \(sp<1\) 时，两个端点积分各等于 \(1/(1-sp)\)，故
+\[
+ [u]_{s,p}^p=\frac4{sp(1-sp)}.
+\]
+若 \(sp\ge1\)，至少一个端点积分发散；在 \(sp=1\) 时就是 \(\int_0^1x^{-1}\,\mathrm dx\) 的对数发散。因此条件为严格不等式。
+
+若仅在 \((0,1)\) 内计算，\(u\) 是常函数，双积分为零。全空间半范数还比较边界两侧的函数值，正是这些跨越端点的配对检测到了跳跃。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:23-smooth-integer-limit}
+设 \(d\ge2\)、\(1\le p<\infty\)，实值 \(u\in C_c^\infty(\mathbb R^d)\)。记 \(\mathrm d\sigma\) 为单位球面上的 \(\mathcal H^{d-1}\) 测度。证明
+\[
+ \lim_{s\uparrow1}(1-s)[u]_{s,p}^p
+ =\frac1p\int_{\mathbb S^{d-1}}\int_{\mathbb R^d}
+            |\nabla u(x)\cdot\omega|^p\,\mathrm dx\,\mathrm d\sigma(\omega).
+\]
+特别地，\(p=2\) 时右端等于
+\[
+ \frac{\sigma(\mathbb S^{d-1})}{2d}
+       \int_{\mathbb R^d}|\nabla u|^2\,\mathrm dx.
+\]
+本题只要求证明光滑紧支集情形，不把所得极限未经说明地推广到一般函数。
+\end{exercise}
+% 来源：自拟；差分公式、Taylor余项与径向积分的组合计算，不预借一般整数阶极限定理。
+\begin{solution}
+由命题\ref{b1:prop:fractional-difference-formula}，半范数可写成平移差的积分。先估计 \(|h|\ge1\) 的部分。平移等距性与三角不等式给出
+\[
+ \|u(\,\cdot+h)-u\|_p^p\le2^p\|u\|_p^p,
+\]
+所以
+\[
+ (1-s)\int_{|h|\ge1}
+ \frac{\|u(\,\cdot+h)-u\|_p^p}{|h|^{d+sp}}\,\mathrm dh
+ \le\frac{(1-s)2^p\sigma(\mathbb S^{d-1})}{sp}\|u\|_p^p
+ \longrightarrow0.
+\]
+
+对 \(0<r<1\)、\(\omega\in\mathbb S^{d-1}\)，记
+\[
+ A(r,\omega)=
+ \left\|\frac{u(\,\cdot+r\omega)-u}{r}\right\|_p^p,
+ \quad A(0,\omega)=\|\nabla u\cdot\omega\|_p^p.
+\]
+微积分基本定理给出
+\[
+ \frac{u(x+r\omega)-u(x)}r
+ =\int_0^1\nabla u(x+tr\omega)\cdot\omega\,\mathrm dt.
+\]
+因为 \(\nabla u\) 一致连续且有紧支集，右端与
+\(\nabla u(x)\cdot\omega\) 之差在 \(L^p(\mathbb R^d)\) 中趋零，而且对全部单位向量 \(\omega\) 一致：函数差的支集包含在一个固定有界集内，其上确界受 \(\nabla u\) 在距离不超过 \(r\) 的两点间的振幅控制。各差商的 \(L^p\) 范数又一致有界，故
+\[
+ \sup_\omega|A(r,\omega)-A(0,\omega)|\longrightarrow0.
+\]
+
+令 \(B(r)=\int_{\mathbb S^{d-1}}A(r,\omega)\,\mathrm d\sigma(\omega)\)，则 \(B\) 有界且 \(B(r)\to B(0)\)。用径向积分处理 \(|h|<1\) 的部分，得到
+\[
+ (1-s)\int_0^1r^{p(1-s)-1}B(r)\,\mathrm dr.
+\]
+这段权重的总积分为 \(1/p\)。给定 \(0<\delta<1\)，在 \((0,\delta)\) 上用 \(B(r)\) 接近 \(B(0)\) 控制误差；在 \((\delta,1)\) 上，权重质量为
+\[
+ \frac{1-\delta^{p(1-s)}}p\longrightarrow0.
+\]
+先选小 \(\delta\)，再令 \(s\uparrow1\)，便知所列积分趋于 \(B(0)/p\)。结合远处部分趋零，得到第一条公式。
+
+当 \(p=2\) 时，球面对称性给出
+\(\int\omega_i\omega_j\,\mathrm d\sigma=0\)（\(i\ne j\)），各
+\(\int\omega_i^2\,\mathrm d\sigma\) 相等，而它们之和为
+\(\sigma(\mathbb S^{d-1})\)。展开 \(|\nabla u\cdot\omega|^2\) 后逐项积分，便得第二条公式。有限差分在小尺度下读出方向导数，系数 \(1/p\) 来自径向权重，而不是可以任意省略的归一化。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:23-fractional-modulus-truncation}
+设 \(0<s<1\)、\(1\le p<\infty\)，实值 \(u\in W^{s,p}(\Omega)\)。
+\begin{enumerate}
+\item\label{b1:item:23-fractional-modulus}
+证明 \(|u|\in W^{s,p}(\Omega)\)，且 \([\,|u|\,]_{s,p;\Omega}\le[u]_{s,p;\Omega}\)。当 \(p=2\) 时，求两个半范数平方之差，并证明半范数相等当且仅当 \(u\) 几乎处处不变号。
+\item\label{b1:item:23-fractional-truncation}
+令 \(T_M(t)=\max\bigl(-M,\min(t,M)\bigr)\)。证明 \(T_M(u)\to u\) 于 \(W^{s,p}(\Omega)\)。
+\end{enumerate}
+\end{exercise}
+% 来源：自拟；非线性收缩、变号能量损失与可积双积分上的控制收敛，不重复正文线性乘子及光滑稠密性。
+\begin{solution}
+由反三角不等式，
+\[
+ \bigl||u(x)|-|u(y)|\bigr|\le|u(x)-u(y)|.
+\]
+将其 \(p\) 次幂除以核的分母并积分，即得半范数估计；零阶 \(L^p\) 范数则完全相等。
+
+若 \(p=2\)，对任意实数 \(a,b\)，
+\[
+ |a-b|^2-\bigl||a|-|b|\bigr|^2
+ =4|a|\cdot|b|\,\mathbf1_{\{ab<0\}}.
+\]
+两边积分得到
+\[
+ [u]_{s,2;\Omega}^2-[\,|u|\,]_{s,2;\Omega}^2
+ =4\iint_{\{u(x)u(y)<0\}}
+       \frac{|u(x)|\cdot|u(y)|}{|x-y|^{d+2s}}\,\mathrm dx\,\mathrm dy.
+\]
+两个半范数都有限，所以这里没有无穷量相减。若 \(u\) 几乎处处不变号，右侧为零。反之，若正值集和负值集都具有正测度，则其乘积集具有正的乘积测度，核上的被积函数在那里严格为正，故积分严格为正。这证明等号的刻画。
+
+对于第二问，记 \(R_M(t)=t-T_M(t)\)。这个实函数连续、分段线性，各段斜率为 \(0\) 或 \(1\)，因此
+\[
+ |R_M(a)-R_M(b)|\le|a-b|,\quad |R_M(a)|\le|a|.
+\]
+又因为有限实数 \(a\) 满足 \(R_M(a)\to0\)，控制收敛先给出
+\(\|R_M(u)\|_p\to0\)。对于双积分，几乎每一对 \((x,y)\) 的分子也趋于零，并且
+\[
+ \frac{\bigl|R_M\bigl(u(x)\bigr)-R_M\bigl(u(y)\bigr)\bigr|^p}{|x-y|^{d+sp}}
+ \le\frac{|u(x)-u(y)|^p}{|x-y|^{d+sp}}.
+\]
+右端按假设可积，再次应用控制收敛，得到
+\([R_M(u)]_{s,p;\Omega}\to0\)。这就是所求范数收敛。两处收敛都使用有限 \(p\) 的积分控制，并非对所有函数值统一取上确界。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:23-boundary-concentration}
+设 \(d\ge2\)、\(1\le p<\infty\)，并记
+\(\Omega=(0,1)^{d-1}\times(0,1)\)、\(B'=(0,1)^{d-1}\)。
+取非零 \(f\in C_c^\infty(B')\) 及满足 \(\chi(0)=1\)、\(\operatorname{supp}\chi\subset(-1,1)\) 的 \(\chi\in C_c^\infty(\mathbb R)\)。对 \(0<\varepsilon<1\)，令
+\[
+ u_\varepsilon(x',t)=f(x')\chi(t/\varepsilon).
+\]
+计算 \(u_\varepsilon\) 的体积 \(L^p\) 范数、边界迹的 \(L^p\) 范数以及
+\(\|\partial_tu_\varepsilon\|_{L^p(\Omega)}\) 随 \(\varepsilon\) 的变化。由此证明：不存在与 \(u\) 无关的常数 \(C\)，使所有在 \(\overline\Omega\) 附近光滑的函数都满足
+\[
+ \|\operatorname{Tr}u\|_{L^p(\partial\Omega)}
+ \le C\|u\|_{L^p(\Omega)}.
+\]
+说明这个例子为什么不反驳本章的 \(W^{1,p}\) 迹估计。
+\end{exercise}
+% 来源：自拟；边界层缩放例，用来分开体积收敛、迹收敛与一阶导数控制。
+\begin{solution}
+记两个严格为正的常数
+\[
+ A_p=\left(\int_0^1|\chi(r)|^p\,\mathrm dr\right)^{1/p},
+ \quad
+ B_p=\left(\int_0^1|\chi'(r)|^p\,\mathrm dr\right)^{1/p}.
+\]
+\(A_p>0\) 来自 \(\chi(0)=1\) 及连续性；\(B_p>0\) 是因为 \(\chi\) 在 \(1\) 的邻域为零，不可能在 \([0,1]\) 上恒为常数。代换 \(t=\varepsilon r\) 得
+\[
+ \|u_\varepsilon\|_{L^p(\Omega)}
+   =\varepsilon^{1/p}A_p\|f\|_{L^p(B')},
+ \quad
+ \|\partial_tu_\varepsilon\|_{L^p(\Omega)}
+   =\varepsilon^{1/p-1}B_p\|f\|_{L^p(B')}.
+\]
+底面上的限制为 \(f\)，顶面上的限制为零；由于 \(f\) 的支集包含在 \(B'\) 的内部，各侧面上的限制也为零。棱边的 \(\mathcal H^{d-1}\) 测度为零，故光滑函数的迹满足
+\[
+ \|\operatorname{Tr}u_\varepsilon\|_{L^p(\partial\Omega)}
+ =\|f\|_{L^p(B')}>0.
+\]
+若题设估计成立，约去这个正数就会得到
+\(1\le C A_p\varepsilon^{1/p}\)，令 \(\varepsilon\downarrow0\) 即矛盾。
+
+另一方面，法向导数的范数在 \(p>1\) 时趋于无穷，在 \(p=1\) 时保持为严格正的常数；切向导数则满足
+\[
+ \|\partial_{x_i}u_\varepsilon\|_{L^p(\Omega)}
+ =\varepsilon^{1/p}A_p\|\partial_{x_i}f\|_{L^p(B')}.
+\]
+因此 \(u_\varepsilon\) 虽然在体积 \(L^p\) 中趋于零，却不在 \(W^{1,p}\) 中趋于零。迹估计使用的一阶导数项正好检测到了这层越来越薄的过渡区域。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:23-trace-right-inverse-freedom}
+设 \(\Omega\subset\mathbb R^d\) 为非空有界 Lipschitz 开集，\(d\ge2\)、\(1<p<\infty\)。记
+\[
+ X=W^{1,p}(\Omega),\quad
+ Y=W^{1-1/p,p}(\partial\Omega),\quad
+ T=\operatorname{Tr}:X\longrightarrow Y,
+\]
+并取定理\ref{b1:thm:lipschitz-fractional-trace}给出的一个有界线性右逆 \(R:Y\to X\)。
+\begin{enumerate}
+ \item\label{b1:item:23-trace-right-inverse-difference}
+ 证明有界线性算子 \(S:Y\to X\) 也是 \(T\) 的右逆，当且仅当
+ \(S=R+K\)，其中 \(K:Y\to W_0^{1,p}(\Omega)\) 是有界线性算子。实际构造一个非零的 \(K\)，说明右逆一般不唯一。
+ \item\label{b1:item:23-trace-affine-class}
+ 对任意 \(g\in Y\)，证明
+ \[
+  \{u\in X:Tu=g\}=Rg+W_0^{1,p}(\Omega).
+ \]
+ 说明为什么用另一个右逆替换 \(R\)，不会改变给定边界值的这一函数类。
+\end{enumerate}
+\end{exercise}
+% 来源：自拟；把迹满射和零迹刻画组合为仿射 Dirichlet 类，不预用后续偏微分方程存在定理。
+\begin{solution}
+由定理\ref{b1:thm:zero-trace-characterization}，
+\(\ker T=W_0^{1,p}(\Omega)\)。若 \(TS=\operatorname{id}_Y=TR\)，则
+\[
+ T(S-R)=0,
+\]
+所以 \(K=S-R\) 的像包含于 \(W_0^{1,p}(\Omega)\)。这个子空间采用 \(X\) 的限制范数，因此 \(K\) 作为取值于该子空间的算子仍然有界。反过来，若 \(K\) 的像包含于 \(\ker T\)，则 \(T(R+K)=\operatorname{id}_Y\)。
+
+下面给出非零的选择。记 \(\sigma=\mathcal H^{d-1}|_{\partial\Omega}\)，取非零 \(w\in C_c^\infty(\Omega)\)，并令
+\[
+ \ell(g)=\int_{\partial\Omega}g\,\mathrm d\sigma,
+ \quad K(g)=\ell(g)w.
+\]
+有界 Lipschitz 开集的边界具有有限且严格为正的 \(\sigma\) 测度，而本章选定的边界范数控制 \(L^p(\partial\Omega)\) 范数。因此 Hölder 不等式给出
+\[
+ |\ell(g)|\le
+ \sigma(\partial\Omega)^{1-1/p}\|g\|_{L^p(\partial\Omega)}
+ \le C\|g\|_Y.
+\]
+常函数 \(1\) 是 \(X\) 中常函数的迹，故属于 \(Y\)，并且
+\(\ell(1)=\sigma(\partial\Omega)>0\)。于是 \(K\ne0\)，且其像包含于
+\(\operatorname{span}\{w\}\subset W_0^{1,p}(\Omega)\)。这便构造出两个不同的右逆 \(R\) 与 \(R+K\)。
+
+最后，\(Tu=g\) 等价于 \(T(u-Rg)=0\)，也就等价于
+\(u-Rg\in W_0^{1,p}(\Omega)\)，这证明第二问的集合恒等式。如果换用 \(S\)，则
+\(Sg-Rg\in W_0^{1,p}(\Omega)\)；用子空间中的一个元素平移这个子空间不会改变所得陪集。因此边界条件本身是确定的，选择右逆只是选择了其中一个起点。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:23-circle-energy}
+把单位圆盘 \(D\subset\mathbb R^2\) 记为复平面中的 \(\{z:|z|<1\}\)。对 \(n\ge1\)，令
+\[
+ U_n(z)=z^n,\quad g_n(e^{i\theta})=e^{in\theta}.
+\]
+本题单独采用圆周上的弦长双积分
+\[
+ Q(g)=\int_{\mathbb S^1}\int_{\mathbb S^1}
+        \frac{|g(x)-g(y)|^2}{|x-y|^2}\,
+                 \mathrm d\mathcal H^1(x)\,\mathrm d\mathcal H^1(y).
+\]
+证明
+\[
+ \|g_n\|_{L^2(\mathbb S^1)}^2=2\pi,\quad
+ Q(g_n)=4\pi^2 n,\quad
+ \int_D|\nabla U_n|^2\,\mathrm dx=2\pi n,
+\]
+其中复值函数的梯度平方是
+\(|\partial_xU_n|^2+|\partial_yU_n|^2\)。
+只用有限几何级数与积分计算完成证明，不使用 Fourier 展开定理。
+\end{exercise}
+% 来源：自拟；圆周高频数据和显式光滑延拓的精确计算。Q 为题内指定双积分，不冒认为正文固定图表范数的原值。
+\begin{solution}
+因为 \(|g_n|=1\)，第一个等式直接由圆周长度得到。在几乎每一对参数 \((\theta,\varphi)\) 处，有限几何级数给出
+\[
+ \frac{|e^{in\theta}-e^{in\varphi}|^2}
+      {|e^{i\theta}-e^{i\varphi}|^2}
+ =\left|\sum_{j=0}^{n-1}e^{ij(\theta-\varphi)}\right|^2.
+\]
+对于整数 \(j,\ell\)，初等积分满足
+\[
+ \int_0^{2\pi}e^{i(j-\ell)h}\,\mathrm dh
+ =
+ \begin{cases}
+  2\pi,&j=\ell,\\
+  0,&j\ne\ell.
+ \end{cases}
+\]
+展开有限和的模平方，再逐项积分，得到
+\[
+ \int_0^{2\pi}\left|\sum_{j=0}^{n-1}e^{ijh}\right|^2
+                        \,\mathrm dh=2\pi n.
+\]
+对固定的 \(\varphi\)，以 \(h=\theta-\varphi\) 代换并用周期性，内层积分仍等于 \(2\pi n\)。外层再积分一次便得 \(Q(g_n)=4\pi^2n\)。
+
+在圆盘内直接求导，
+\[
+ \partial_x U_n=n z^{n-1},\quad
+ \partial_y U_n=in z^{n-1}.
+\]
+所以两项的模平方之和为 \(2n^2|z|^{2n-2}\)，极坐标积分给出
+\[
+ \int_D|\nabla U_n|^2\,\mathrm dx
+ =2n^2\int_0^{2\pi}\int_0^1r^{2n-2}r\,\mathrm dr\,\mathrm d\theta
+ =2\pi n.
+\]
+在这个显式函数族上，\(Q(g_n)\) 恰为内部梯度能量的 \(2\pi\) 倍，而边界 \(L^2\) 范数不随 \(n\) 增长。这反映了分数阶边界量对振荡的敏感性。本题计算的是指定的弦长双积分；正文通过固定图表和分割选取的边界范数，数值还取决于那些选择。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:23-higher-zero-endpoints}
+设 \(I=(0,1)\)、\(k\ge1\) 为整数、\(1\le p<\infty\)。以
+\[
+ W_0^{k,p}(I)=\overline{C_c^\infty(I)}^{\,W^{k,p}(I)}
+\]
+定义高阶零边界空间。给定 \(u\in W^{k,p}(I)\)，对 \(0\le j<k\)，用
+\(u^{(j)}\) 的绝对连续代表定义它在 \(0,1\) 处的端点值。证明下列条件等价。
+\begin{equivalences}
+ \item\label{b1:item:23-higher-zero-closure}
+ \(u\in W_0^{k,p}(I)\)。
+ \item\label{b1:item:23-higher-zero-jets}
+ 对所有 \(0\le j<k\)，都有 \(u^{(j)}(0)=u^{(j)}(1)=0\)。
+\end{equivalences}
+证明充分性时，应给出边界截断的高阶导数估计；仅仅说“在端点附近截去一小段”不足以推出 \(W^{k,p}\) 收敛。
+\end{exercise}
+% 来源：自拟；一维绝对连续积分表示与内部紧支集逼近的高阶组合，不借助一般高阶迹空间。
+\begin{solution}
+每个 \(u^{(j)}\)、\(j<k\)，都属于 \(W^{1,p}(I)\)，因而具有题设的绝对连续代表。若 \(u_n\in C_c^\infty(I)\) 且 \(u_n\to u\) 于 \(W^{k,p}(I)\)，则
+\[
+ u_n^{(j)}\longrightarrow u^{(j)}
+       \quad\text{于 }W^{1,p}(I),\quad 0\le j<k.
+\]
+一维代表估计，即命题\ref{b1:prop:sobolev-interval-representative}，使这个收敛也成为闭区间上的一致收敛。由于 \(u_n^{(j)}\) 的两端值都是零，极限的两端值也为零，必要性得证。
+
+反过来，设所有这些端点值都为零。反复使用微积分基本定理，对于 \(0\le r<k\)，有
+\[
+ u^{(r)}(x)=\frac1{(k-r-1)!}
+             \int_0^x(x-t)^{k-r-1}u^{(k)}(t)\,\mathrm dt.
+\]
+将右端视为截断积分核与 \(u^{(k)}\) 的卷积，并使用 Minkowski 积分不等式，可得对 \(0<a<1\)，
+\[
+ \|u^{(r)}\|_{L^p(0,a)}
+ \le\frac{a^{k-r}}{(k-r)!}\,
+             \|u^{(k)}\|_{L^p(0,a)}.
+\]
+具体地，只需把 \(u^{(k)}|_{(0,a)}\) 向外补零；核
+\(t^{k-r-1}\mathbf1_{(0,a)}(t)/(k-r-1)!\) 的 \(L^1\) 范数为
+\(a^{k-r}/(k-r)!\)，平移保持 \(L^p\) 范数，于是逐个平移积分便得到上式。这一步同样适用于 \(p=1\)。从右端点向左积分，还得到
+\[
+ \|u^{(r)}\|_{L^p(1-a,1)}
+ \le\frac{a^{k-r}}{(k-r)!}\,
+             \|u^{(k)}\|_{L^p(1-a,1)}.
+\]
+
+取 \(0<\varepsilon<1/4\)，选取 \(0\le\eta_\varepsilon\le1\) 的光滑截断，使它在
+\([2\varepsilon,1-2\varepsilon]\) 上为 \(1\)，在两个端点的 \(\varepsilon\) 邻域内为零，并满足
+\[
+ \|\eta_\varepsilon^{(\ell)}\|_\infty
+          \le C_\ell\varepsilon^{-\ell},\quad 1\le\ell\le k.
+\]
+记 \(A_\varepsilon=(0,2\varepsilon)\cup(1-2\varepsilon,1)\)。
+对 \(0\le j\le k\)，Leibniz 公式给出
+\[
+ \bigl((1-\eta_\varepsilon)u\bigr)^{(j)}
+ =(1-\eta_\varepsilon)u^{(j)}
+  -\sum_{\ell=1}^j\binom j\ell
+           \eta_\varepsilon^{(\ell)}u^{(j-\ell)}.
+\]
+第一项的 \(L^p\) 范数不超过
+\(\|u^{(j)}\|_{L^p(A_\varepsilon)}\)，因 \(p<\infty\) 而趋于零。和式中
+\(j-\ell<k\)，可以应用刚才的端点估计，得到
+\[
+ \begin{aligned}
+ \|\eta_\varepsilon^{(\ell)}u^{(j-\ell)}\|_{L^p(I)}
+ &\le C\varepsilon^{-\ell}
+       \|u^{(j-\ell)}\|_{L^p(A_\varepsilon)}\\
+ &\le C\varepsilon^{k-j}
+       \|u^{(k)}\|_{L^p(A_\varepsilon)}
+ \longrightarrow0.
+ \end{aligned}
+\]
+即使 \(j=k\)，最后一项也因 \(u^{(k)}\in L^p(I)\) 的积分绝对连续性而趋于零。因此
+\(\eta_\varepsilon u\to u\) 于 \(W^{k,p}(I)\)。
+
+每个 \(\eta_\varepsilon u\) 都有包含在 \(I\) 内部的紧支集。由命题%
+\ref{b1:prop:compact-sobolev-smooth-approximation}，它可以在 \(W^{k,p}(I)\) 中由
+\(C_c^\infty(I)\) 函数逼近。先选 \(\varepsilon\) 控制截断误差，再作光滑逼近，便得到
+\(u\in W_0^{k,p}(I)\)。这里有限 \(p\) 保证了边界层上的最高阶导数范数趋零；证明并未涵盖 \(p=\infty\)。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:23-smooth-normal-data}
+设 \(d\ge2\)，\(H=\mathbb R^{d-1}\times(0,\infty)\)，其边界外法向为
+\(\nu=-e_d\)。本题只考虑光滑边界数据。
+\begin{enumerate}
+ \item\label{b1:item:23-independent-smooth-normal-data}
+ 给定任意 \(a,b\in C_c^\infty(\mathbb R^{d-1})\)，构造一个在
+ \(\overline H\) 附近光滑、支集在 \(\overline H\) 中紧的函数 \(U\)，满足
+ \[
+  U(x',0)=a(x'),\quad \partial_\nu U(x',0)=b(x').
+ \]
+ 说明该函数属于每个整数阶的 \(W^{k,p}(H)\)，其中 \(1\le p<\infty\)。
+ \item\label{b1:item:23-smooth-tangential-compatibility}
+ 若还要求对 \(1\le i<d\) 有
+ \(\partial_{x_i}U(x',0)=c_i(x')\)，其中 \(c_i\in C_c^\infty(\mathbb R^{d-1})\)，证明这些要求可同时满足，当且仅当
+ \(c_i=\partial_{x_i}a\) 对每个 \(i\) 成立。
+\end{enumerate}
+\end{exercise}
+% 来源：自拟；显式光滑边界数据延拓，分开自由法向数据与受约束的切向数据，不声称给出了粗糙数据的高阶右逆。
+\begin{solution}
+取 \(\chi\in C_c^\infty(\mathbb R)\)，使 \(\chi\) 在 \(0\) 的邻域恒等于 \(1\)。令
+\[
+ U(x',t)=\chi(t)\bigl(a(x')-t b(x')\bigr),\quad t\ge0.
+\]
+这个公式也在 \(t<0\) 定义光滑函数，因而确实给出了边界附近的光滑延拓。它在
+\(\overline H\) 中的支集包含于
+\[
+ \bigl(\operatorname{supp}a\cup\operatorname{supp}b\bigr)
+       \times\bigl(\operatorname{supp}\chi\cap[0,\infty)\bigr),
+\]
+后者为紧集。边界处 \(\chi(0)=1\)、\(\chi'(0)=0\)，所以
+\[
+ U(x',0)=a(x'),\quad
+ \partial_tU(x',0)=-b(x'),\quad
+ \partial_\nu U(x',0)=-\partial_tU(x',0)=b(x').
+\]
+所有阶导数都是紧支集的有界光滑函数，因此属于每个有限指数的 \(L^p(H)\)，也就得到题设的全部整数阶 Sobolev 正则性。
+
+对任何在边界附近光滑的 \(U\)，把恒等式 \(U(x',0)=a(x')\) 沿边界变量求导，必有
+\[
+ \partial_{x_i}U(x',0)=\partial_{x_i}a(x'),\quad 1\le i<d.
+\]
+这证明条件的必要性。若 \(c_i=\partial_{x_i}a\)，第一问构造的 \(U\) 已经同时满足它们，故条件也充分。由此可见，光滑函数的边界值与法向导数可以独立指定，切向导数却已由边界值决定。整个构造只处理光滑数据，不据此推断一般分数阶数据所需的高阶延拓估计。
+\end{solution}
