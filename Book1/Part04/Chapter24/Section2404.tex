@@ -2,19 +2,203 @@
 \section{高阶 Sobolev 嵌入}
 \label{b1:sec:2404}
 
-% TODO: 撰写本节正文。
+一阶嵌入可以作用于函数，也可以作用于它的低阶弱导数。逐次使用这一事实，就能把高阶可积性转化为更高的积分指数，或转化为经典导数的 Hölder 连续性。整个过程有两个需要区分的步骤：先提高每个弱导数的可积性，再证明所得连续代表确实互为经典导数。
+
+本节首先取整数 \(k\ge1\) 和有限指数 \(1\le p<\infty\)，在全空间中讨论。一般开集上的内部结论可通过截断取得；涉及整个边界时，所需延拓必须控制到 \(k\) 阶。最后单独从双积分定义证明 \(0<s<1\) 的分数阶版本。
+% 整数阶迭代由本章Gagliardo--Nirenberg--Sobolev与Morrey定理自足推出。
+% 分数阶均值比较沿用已实读Hajlasz2003SobolevMetric §9 Theorem 9.4
+% 的望远镜组织（印刷204--205页）；原文9.7(3)仅作为已读的范围说明，
+% 不把该文未展开于本书的度量空间理论当作高阶或分数阶证明前置。
 
 \subsection{高阶导数}
 \label{b1:subsec:240401}
 
-待填充。
+若 \(u\in W^{k,p}(\mathbb R^d)\)，则每个 \(|\beta|\le k-1\) 的弱导数 \(\partial^\beta u\) 都属于 \(W^{1,p}\)。在 \(p<d\) 时，对这些函数分别使用一阶嵌入，便得到
+\[
+ W^{k,p}(\mathbb R^d)\subset W^{k-1,p_1}(\mathbb R^d),
+ \quad \frac1{p_1}=\frac1p-\frac1d.
+\]
+右端包含所有不超过 \(k-1\) 阶的弱导数，不只是最高阶的某几个分量。因此下一次迭代仍有完整的 Sobolev 空间可用。
+
+\begin{theorem}\label{b1:thm:higher-order-subcritical-embedding}
+设 \(1\le p<\infty\)、\(k\ge1\) 且 \(kp<d\)，并令
+\[
+ q=\frac{dp}{d-kp}.
+\]
+则有连续嵌入
+\[
+ W^{k,p}(\mathbb R^d)\subset L^q(\mathbb R^d),
+ \quad
+ \|u\|_q\le C_{d,k,p}\|u\|_{W^{k,p}(\mathbb R^d)}.
+\]
+\end{theorem}
+\begin{proof}
+规定 \(p_0=p\) 及
+\[
+ \frac1{p_j}=\frac1p-\frac jd,\quad 0\le j\le k.
+\]
+条件 \(kp<d\) 保证这些指数有限，而且每一步开始时 \(p_j<d\)，其中 \(0\le j<k\)。若已知 \(u\in W^{k-j,p_j}\)，则对每个 \(|\beta|\le k-j-1\)，由\cref{b1:thm:sobolev-subcritical-embedding}，
+\[
+ \|\partial^\beta u\|_{p_{j+1}}
+ \le C_{d,p_j}\sum_{i=1}^d
+                  \|\partial^{\beta+e_i}u\|_{p_j}.
+\]
+这些弱导数仍是原来的分布导数；改变可积指数不改变其定义。对有限多个 \(\beta\) 求和，得到
+\[
+ \|u\|_{W^{k-j-1,p_{j+1}}}
+ \le C_{d,k,p_j}\|u\|_{W^{k-j,p_j}}.
+\]
+从 \(j=0\) 迭代到 \(j=k-1\)，便到达 \(W^{0,p_k}=L^q\)，并得到范数界。
+\end{proof}
+
+每提高一次积分指数，消耗一阶导数，同时使 \(1/p\) 减少 \(1/d\)。例如在五维空间中，\(W^{2,2}\) 先嵌入 \(W^{1,10/3}\)，再嵌入 \(L^{10}\)。若中途指数达到 \(d\)，就不能继续把分母等于零的表达式当作下一步的一阶公式；若指数超过 \(d\)，则应转入 Morrey 理论。
 
 \subsection{Hölder 空间}
 \label{b1:subsec:240402}
 
-待填充。
+\begin{definition}\label{b1:def:higher-holder-space}
+给定开集 \(U\subset\mathbb R^d\)、整数 \(m\ge0\) 及 \(0<\alpha\le1\)，若 \(v\in C^m(U)\)，所有不超过 \(m\) 阶的经典偏导数均有界，且每个 \(m\) 阶偏导数都为 \(\alpha\) 阶 Hölder 连续，则记 \(v\in C^{m,\alpha}(U)\)，并规定
+\[
+ \|v\|_{C^{m,\alpha}(U)}
+ =\sum_{|\beta|\le m}\sup_U|\partial^\beta v|
+   +\sum_{|\beta|=m}[\partial^\beta v]_{0,\alpha;U}.
+\]
+记号 \(C^{m,\alpha}(\overline U)\) 还要求这些导数连续延伸到 \(\overline U\)，上式中的上确界与 Hölder 半范数也在闭包上计算。\(m=0\) 时与前节的定义一致。
+\end{definition}
+\symidx{\(C^{m,\alpha}(U)\)：最高\(m\)阶经典导数为Hölder连续的空间}
+
+\begin{theorem}\label{b1:thm:higher-order-holder-embedding}
+设 \(k\ge1\)、\(1\le p<\infty\)，且 \(k-d/p>0\) 不是整数。写成
+\[
+ k-\frac dp=m+\alpha,\quad m\in\mathbb N_0,\quad 0<\alpha<1.
+\]
+则每个 \(u\in W^{k,p}(\mathbb R^d)\) 都有唯一的 \(C^m\) 代表 \(v\)，满足
+\[
+ v\in C^{m,\alpha}(\mathbb R^d),\quad
+ \|v\|_{C^{m,\alpha}(\mathbb R^d)}
+ \le C_{d,k,p}\|u\|_{W^{k,p}(\mathbb R^d)}.
+\]
+\end{theorem}
+\begin{proof}
+令 \(\ell=k-m-1\ge0\)，并规定
+\[
+ \frac1q=\frac1p-\frac\ell d=\frac{1-\alpha}{d}.
+\]
+故 \(q>d\)。若 \(\ell=0\)，已知 \(u\in W^{m+1,q}\)。若 \(\ell>0\)，前一证明中的一阶迭代可以进行 \(\ell\) 次：最后一次开始前的指数仍小于 \(d\)，因为对应的 \(d/p_{\ell-1}=2-\alpha>1\)。因此两种情形均得到
+\[
+ \|u\|_{W^{m+1,q}(\mathbb R^d)}
+ \le C_{d,k,p}\|u\|_{W^{k,p}(\mathbb R^d)}.
+\]
+对每个 \(|\beta|\le m\)，函数 \(\partial^\beta u\) 属于 \(W^{1,q}\)。由\cref{b1:thm:morrey-whole-space}，它有 \(C^{0,\alpha}\) 代表 \(v_\beta\)，且相应范数受上式控制。
+
+现在核实这些代表确实是同一经典函数的导数。取局部矩形及其稍大的内部邻域，令 \(u_\varepsilon=\rho_\varepsilon*u\)。由\cref{b1:prop:sobolev-friedrichs-smoothing}，
+\[
+ \partial^\beta u_\varepsilon
+ =\rho_\varepsilon*\partial^\beta u
+ =\rho_\varepsilon*v_\beta,\quad |\beta|\le m.
+\]
+因为 \(v_\beta\) 连续，右端在每个紧集上一致趋于 \(v_\beta\)。对 \(|\beta|<m\)，在矩形内的坐标线段上有
+\[
+ \partial^\beta u_\varepsilon(x+te_i)-\partial^\beta u_\varepsilon(x)
+ =\int_0^t\partial^{\beta+e_i}u_\varepsilon(x+re_i)\,\mathrm dr.
+\]
+让 \(\varepsilon\) 趋零，得到相同恒等式，其两侧分别换成 \(v_\beta\) 与 \(v_{\beta+e_i}\)。由于被积函数连续，\(v_\beta\) 的经典偏导数就是 \(v_{\beta+e_i}\)。连续偏导保证经典可微；逐阶使用便得到
+\(v_0\in C^m\) 且 \(\partial^\beta v_0=v_\beta\)。当 \(m=0\) 时，只需已经得到的连续代表。
+
+对所有低阶上确界及最高阶 Hölder 半范数求和，得到所需估计。连续代表唯一，因而 \(C^m\) 代表也唯一。
+\end{proof}
+
+正整数差不能不加论证地解释为端点 Lipschitz 正则性。下面给出足以覆盖任意较小 Hölder 指数的结论。
+
+\begin{proposition}\label{b1:prop:integer-gap-holder-embedding}
+设 \(1<p<\infty\)，且 \(j=k-d/p\) 为正整数。对每个 \(0<\alpha<1\)，均有连续嵌入
+\[
+ W^{k,p}(\mathbb R^d)\subset C^{j-1,\alpha}(\mathbb R^d),
+\]
+其中右端取经典代表。
+\end{proposition}
+\begin{proof}
+选取充分接近 \(p\) 的 \(p_0\in(1,p)\)，使
+\[
+ k-\frac d{p_0}=j-1+\alpha_0,\quad \alpha<\alpha_0<1.
+\]
+固定 \(\chi\in C_c^\infty\bigl(B(0,2)\bigr)\)，使它在 \(B(0,1)\) 上等于 \(1\)，并令
+\(\chi_a(x)=\chi(x-a)\)。由于支集体积固定，Hölder 不等式及高阶弱 Leibniz 公式给出与中心 \(a\) 无关的界
+\[
+ \|\chi_a u\|_{W^{k,p_0}(\mathbb R^d)}
+ \le C_{d,k,p,p_0,\chi}\|u\|_{W^{k,p}(\mathbb R^d)}.
+\]
+应用前一定理，\(\chi_a u\) 在 \(B(a,1)\) 上的经典代表具有一致的 \(C^{j-1,\alpha_0}\) 界。不同球上的代表在交集几乎处处相等，因连续而处处相等，其经典导数也相同，所以这些局部代表拼成同一个 \(C^{j-1}\) 函数。
+
+所有不超过 \(j-1\) 阶的导数由局部界得到全域上确界。对最高阶导数的两点差，若 \(|x-y|<1\)，取中心 \(a=x\)，局部估计与
+\(|x-y|^{\alpha_0}\le|x-y|^\alpha\) 给出所需界；若 \(|x-y|\ge1\)，则用两倍上确界控制差值。两种距离范围合起来得到全域的 \(C^{j-1,\alpha}\) 范数界。
+\end{proof}
+
+这个证明中的降指数只在固定大小的支集上进行，没有使用全空间 \(L^p\subset L^{p_0}\) 这一错误包含关系。它也没有证明 \(\alpha=1\) 的结论。若 \(p=1\)，就不能再降到允许范围内的 \(p_0<p\)；该临界端点需要专门论证，本节不从上述方法推断其最强结论。差 \(k-d/p=0\) 同样不在这个正整数差命题中。无穷指数若另作讨论，应逐阶使用 Lipschitz 代表的判据，而不是代入有限指数迭代。
+
+一般开集上的内部版本不需要边界正则性：若
+\(\overline U\Subset V\)、\(u\in W^{k,p}(V)\)，选取在 \(\overline U\) 附近等于 \(1\) 的 \(\chi\in C_c^\infty(V)\)，以高阶弱乘积公式估计 \(\chi u\)，再用\cref{b1:lem:compact-sobolev-zero-extension}补零即可应用上述全空间结论。由此取得内部的 \(L^q\) 或 \(C^{m,\alpha}(\overline U)\) 估计。
+
+若要把这些估计延至整个 \(\overline\Omega\)，可以假设存在有界线性延拓
+\[
+ E_k:W^{k,p}(\Omega)\longrightarrow W^{k,p}(\mathbb R^d),
+ \quad (E_ku)|_\Omega=u,
+\]
+再应用全空间定理。第\ref{b1:sec:2203}节只为 Lipschitz 区域证明了一阶延拓；在这里讨论 \(k>1\) 时，不能把那个一阶算子当作已经具备高阶有界性。
 
 \subsection{整数阶与非整数阶}
 \label{b1:subsec:240403}
 
-待填充。
+整数阶迭代使用了弱导数链。对于 \(0<s<1\) 的空间，正则性由差分双积分度量，必须重新从该定义取得平均振荡估计。两种推导最后会汇合到相同的球均值方法。
+
+\begin{theorem}[分数阶 Morrey]\label{b1:thm:fractional-morrey}
+设 \(0<s<1\)、\(1\le p<\infty\) 且 \(sp>d\)，令
+\(\alpha=s-d/p\in(0,1)\)。每个 \(u\in W^{s,p}(\mathbb R^d)\) 都有唯一的连续代表 \(u^*\)，其值在每个点由球平均极限给出，且
+\[
+ [u^*]_{0,\alpha;\mathbb R^d}\le C_{d,s,p}[u]_{s,p},
+ \quad
+ \|u^*\|_{C^{0,\alpha}(\mathbb R^d)}
+ \le C_{d,s,p}\|u\|_{W^{s,p}(\mathbb R^d)}.
+\]
+\end{theorem}
+\begin{proof}
+先取 \(B=B(x,r)\)。由平均值的 Jensen 不等式，
+\[
+ \begin{split}
+ \frac1{m_d(B)}\int_B|u-u_B|^p
+ &\le\frac1{m_d(B)^2}\int_B\int_B|u(z)-u(y)|^p\,\mathrm dy\,\mathrm dz\\
+ &\le\frac{(2r)^{d+sp}}{m_d(B)^2}
+       \int_B\int_B
+          \frac{|u(z)-u(y)|^p}{|z-y|^{d+sp}}\,\mathrm dy\,\mathrm dz\\
+ &\le C_{d,s,p}r^{sp-d}[u]_{s,p;B}^p.
+ \end{split}
+\]
+再用 Hölder 不等式，得到
+\[
+ \frac1{m_d(B)}\int_B|u-u_B|
+ \le C_{d,s,p}r^\alpha[u]_{s,p;B}.
+\]
+固定任意 \(x,R\)，取 \(B_i=B(x,2^{-i}R)\)。与相邻球的体积比较给出
+\[
+ |u_{B_{i+1}}-u_{B_i}|
+ \le C_{d,s,p}2^{-i\alpha}R^\alpha[u]_{s,p;B(x,R)}.
+\]
+因为 \(\alpha>0\)，级数收敛。对夹在两个相邻二分半径之间的任意半径，仍可用体积比及刚才的平均振荡界比较均值。因此球平均在每个点存在有限极限，而且
+\[
+ |u^*(x)-u_{B(x,R)}|
+ \le C_{d,s,p}R^\alpha[u]_{s,p;B(x,R)}.
+\]
+这正是\cref{b1:lem:morrey-ball-average-limit}证明中的求和与任意半径夹逼步骤；这里只将弱梯度范数换成了由双积分直接得到的控制量。Lebesgue 点定理保证该极限几乎处处等于 \(u\)。
+
+给定 \(x\ne y\)，令 \(r=|x-y|\)，比较 \(B(x,r)\)、\(B(y,r)\) 与 \(B(x,3r)\) 的均值。两个小球与大球的体积比有界，所以它们的均值差由大球的平均振荡控制。再加上两个点各自的均值误差，得到
+\[
+ |u^*(x)-u^*(y)|
+ \le C_{d,s,p}|x-y|^\alpha\cdot[u]_{s,p;B(x,3|x-y|)}
+ \le C_{d,s,p}|x-y|^\alpha\cdot[u]_{s,p}.
+\]
+于是 \(u^*\) 连续，并取得所需 Hölder 半范数界。取 \(R=1\)，以 \(\|u\|_p\) 控制单位球均值，便得到全范数界。连续代表的唯一性与前节相同。
+\end{proof}
+
+上述论证仍在每个点构造极限，而不只是在几乎处处的点获得一个差分估计。它也说明分数阶嵌入的尺度来自 \(sp-d>0\)：双积分能量控制平均振荡，再由几何级数恢复点值。这里没有通过把整数阶公式中的 \(k\) 直接替换为 \(s\) 来定义分数阶导数。
+
+Hajłasz 的《Sobolev spaces on metric-measure spaces》\cite{Hajlasz2003SobolevMetric}第9.4定理提供了这种均值比较的系统组织。整数阶和分数阶条件如何产生平均振荡界，各有自己的证明；将这些条件放在同一尺度观点下理解，也有助于辨清第\ref{b1:sec:2405}节临界情形中哪些步骤不再成立。

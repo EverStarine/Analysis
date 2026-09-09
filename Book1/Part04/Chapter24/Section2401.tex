@@ -2,24 +2,186 @@
 \section{Poincaré 型不等式}
 \label{b1:sec:2401}
 
-% TODO: 撰写本节正文。
+梯度不能区分两个相差常数的函数。因此，在一般函数空间中用梯度控制函数本身，必须先消除常数这一自由度。减去平均值是一种办法，要求零边界条件是另一种办法；它们需要的几何假设并不相同。本节先在球上建立尺度明确的估计，再说明连通性和边界条件分别在哪里起作用。
 
 \subsection{平均值版本}
 \label{b1:subsec:240101}
 
-待填充。
+对有限正测度的集合 \(A\)，记
+\[
+ u_A=\frac1{|A|}\int_Au(x)\,\mathrm dx.
+\]
+本章 \(|A|\) 表示 Lebesgue 测度，\(|\nabla u|\) 表示弱梯度的欧氏长度。后者的 \(L^p\) 范数与本书逐偏导数求和的范数只相差维数常数。
+
+\term*[poincare-budengshi]{Poincaré 不等式}[Poincaré inequality]的球上版本如下。
+
+\begin{theorem}[Poincaré]\label{b1:thm:ball-poincare-lp}
+设 \(B=B(x_0,r)\subset\mathbb R^d\)、\(1\le p\le\infty\)。对 \(u\in W^{1,p}(B)\)，有
+\begin{equation}\label{b1:eq:ball-poincare-lp}
+ \|u-u_B\|_{L^p(B)}
+ \le C_d r\|\nabla u\|_{L^p(B)}.
+\end{equation}
+常数可以只依赖于维数，不依赖于球的位置、半径或指数 \(p\)。
+\end{theorem}
+\begin{proof}
+先取 \(u\in C^\infty(B)\cap W^{1,p}(B)\)。球的凸性保证两点间的线段留在球内，故
+\[
+ |u(x)-u(y)|
+ \le\int_0^1|\nabla u(x+t(y-x))|\cdot|x-y|\,\mathrm dt.
+\]
+对 \(y\) 平均并用积分三角不等式，得到
+\[
+ |u(x)-u_B|
+ \le\frac1{|B|}\int_0^1\int_B
+   |\nabla u(x+t(y-x))|\cdot|x-y|\,\mathrm dy\,\mathrm dt.
+\]
+对固定 \(x,t\) 作代换 \(z=x+t(y-x)\)。Jacobi 因子为 \(t^d\)，而 \(|x-y|=|x-z|/t\)。若 \(z\in x+t(B-x)\)，则 \(|x-z|<2rt\)，因此
+\[
+ \begin{aligned}
+ |u(x)-u_B|
+ &\le\frac1{|B|}\int_B|\nabla u(z)|\cdot|x-z|
+       \int_{|x-z|/(2r)}^1t^{-d-1}\,\mathrm dt\,\mathrm dz\\
+ &\le C_d\int_B\frac{|\nabla u(z)|}{|x-z|^{d-1}}\,\mathrm dz.
+ \end{aligned}
+\]
+所有被积函数非负，故换元后的次序交换由 Tonelli 定理合法；对角线上的值不影响积分。这里
+\[
+ \int_{a}^1t^{-d-1}\,\mathrm dt\le\frac{a^{-d}}d,
+ \quad |B|=\omega_dr^d,
+\]
+所以半径在系数中相消。
+
+在域外将 \(|\nabla u|\) 补零，右端受卷积核
+\[
+ K_r(h)=|h|^{1-d}\mathbf1_{\{|h|<2r\}}
+\]
+控制。这个核可积，并满足 \(\|K_r\|_1=C_dr\)。卷积的 \(L^1*L^p\) 估计于是给出\eqref{b1:eq:ball-poincare-lp}，其中常数不依赖 \(p\)。
+
+若 \(p<\infty\)，由 Meyers--Serrin 定理在 \(W^{1,p}(B)\) 中逼近一般 \(u\)。均值是 \(L^p(B)\) 上的连续线性泛函，所以函数、均值和梯度都可取极限，得到一般情形。若 \(p=\infty\)，则 \(u\in W^{1,q}(B)\) 对每个有限 \(q\) 成立。应用刚证且常数与 \(q\) 无关的估计，再令 \(q\to\infty\)，利用有限测度集上 \(L^q\) 范数趋于本性上确界，得到无穷端点。
+\end{proof}
+
+这个证明同时给出一个有用的凸集版本。若 \(G\) 是非空有界凸开集，直径为 \(D\)，则同样的线段换元把系数换成 \(C_dD^d/|G|\)。截断核的 \(L^1\) 范数再贡献 \(C_dD\)，因此
+\begin{equation}\label{b1:eq:convex-poincare-shape}
+ \|u-u_G\|_{L^p(G)}
+ \le C_d\frac{D^{d+1}}{|G|}\|\nabla u\|_{L^p(G)}.
+\end{equation}
+这里给出的是充分使用的粗常数，不主张它对所有凸集都最优。对长宽比固定的盒子，\(|G|\) 与 \(D^d\) 可比，便仍得到“直径乘梯度”的尺度。
+
+平均值不是随意插入的修饰。若改成固定常数零，非零常函数会立即反驳估计；若把半径因子删去，伸缩 \(u(x)=v((x-x_0)/r)\) 又会使函数和梯度两边的尺度失配。估计既消除了梯度的常数核，也保留了空间尺度。
 
 \subsection{零边界版本}
 \label{b1:subsec:240102}
 
-待填充。
+零边界条件已经排除非零常数，因此可以直接估计函数本身。这里不要求开集连通，也不要求它的边界具有图表。
+
+\begin{theorem}[零边界 Poincaré 不等式]\label{b1:thm:zero-boundary-poincare}
+设非空开集 \(\Omega\subset(a,b)\times\mathbb R^{d-1}\)，其中 \(b-a<\infty\)。则对 \(1\le p\le\infty\)、\(u\in W_0^{1,p}(\Omega)\)，有
+\begin{equation}\label{b1:eq:zero-boundary-poincare}
+ \|u\|_{L^p(\Omega)}
+ \le(b-a)\|\partial_1u\|_{L^p(\Omega)}
+ \le(b-a)\|\nabla u\|_{L^p(\Omega)}.
+\end{equation}
+特别地，每个有界开集都满足相应的零边界估计。
+\end{theorem}
+\begin{proof}
+先取 \(\varphi\in C_c^\infty(\Omega)\)，并把它补零到全空间。对固定的其余坐标 \(x'\)，
+\[
+ \varphi(x_1,x')=\int_a^{x_1}\partial_1\varphi(t,x')\,\mathrm dt.
+\]
+有限 \(p\) 时，Hölder 不等式给出
+\[
+ |\varphi(x_1,x')|^p
+ \le(b-a)^{p-1}\int_a^b|\partial_1\varphi(t,x')|^p\,\mathrm dt.
+\]
+先对 \(x_1\in(a,b)\) 积分，再对 \(x'\) 积分，所得即为\eqref{b1:eq:zero-boundary-poincare}的 \(p\) 次方。对于 \(p=1\)，沿线的积分三角不等式就是同一计算；对于 \(p=\infty\)，直接对沿线表示取上确界即可。
+
+一般 \(u\in W_0^{1,p}(\Omega)\) 按定义有内部紧支集光滑逼近。将刚证估计传给这列逼近的极限，即得结论，包括按闭包定义给定的无穷端点。最后，\(|\partial_1u|\le|\nabla u|\) 给出第二个不等式。
+\end{proof}
+
+这一计算在习题\ref{b1:ex:22-strip-poincare}中已作为工具出现，现在将它列为后续反复使用的定理。它证明梯度半范数在 \(W_0^{1,p}\) 上是范数，并与原 Sobolev 范数等价。在有界 Lipschitz 区域和有限 \(p\) 时，可用上一章的零迹刻画把条件改写成 \(\operatorname{Tr}u=0\)；对任意开集或无穷端点，仍应保留闭包定义。
 
 \subsection{Poincaré–Wirtinger 不等式}
 \label{b1:subsec:240103}
 
-待填充。
+在一般连通区域上，均值版本通常称为\term*[poincare-wirtinger-budengshi]{Poincaré--Wirtinger 不等式}[Poincaré--Wirtinger inequality]。连通性阻止函数在不同分支上分别取互不相同的常数；边界图表则提供有限个可比较的局部区域。
+
+\begin{theorem}[Poincaré--Wirtinger]\label{b1:thm:connected-domain-poincare}
+设 \(\Omega\subset\mathbb R^d\) 为非空、有界、连通的 Lipschitz 区域。对 \(1\le p\le\infty\)，存在常数 \(C_{\Omega,p}\)，使
+\[
+ \|u-u_\Omega\|_{L^p(\Omega)}
+ \le C_{\Omega,p}\|\nabla u\|_{L^p(\Omega)}
+ \quad\bigl(u\in W^{1,p}(\Omega)\bigr).
+\]
+\end{theorem}
+\begin{proof}
+先构造有限局部覆盖。边界附近取第\ref{b1:sec:2203}节的有限内图表；它们与 \(\Omega\) 的交都是正半盒在双 Lipschitz 映射下的像。图表未覆盖的剩余部分是内部紧集，再用有限个内部球覆盖。由此得到有限个非空开集 \(G_1,\ldots,G_N\)，覆盖 \(\Omega\)。
+
+每个 \(G_j\) 上都有
+\[
+ \|u-u_{G_j}\|_{L^p(G_j)}
+ \le C_j\|\nabla u\|_{L^p(G_j)}.
+\]
+对于球，这是前面的定理。对于图表像，将函数拉回凸正半盒，使用\eqref{b1:eq:convex-poincare-shape}，再通过双 Lipschitz 换元控制函数和梯度。拉回的均值是一个常数 \(c_j\)，虽未必等于物理区域均值，但
+\[
+ \|u-u_{G_j}\|_{L^p(G_j)}
+ \le2\|u-c_j\|_{L^p(G_j)}.
+\]
+这个估计来自
+\(|u_{G_j}-c_j|\le |G_j|^{-1/p}\|u-c_j\|_p\)，无穷端点按 \(1/p=0\) 解释。故局部均值估计确实成立。
+
+以 \(G_j\) 为顶点，若 \(G_i\cap G_j\ne\varnothing\) 就连一条边。这个有限图连通；否则两组顶点的并会把连通的 \(\Omega\) 分成两个不交非空开集。每个非空交集也是开集，测度严格为正。记 \(m_j=u_{G_j}\)，对相邻顶点及 \(A_{ij}=G_i\cap G_j\)，有
+\[
+ |m_i-m_j|
+ \le |A_{ij}|^{-1/p}
+       \bigl(\|u-m_i\|_{L^p(G_i)}
+              +\|u-m_j\|_{L^p(G_j)}\bigr).
+\]
+这是把常数 \(m_i-m_j=(m_i-u)+(u-m_j)\) 限制到交集后取范数。
+
+在有限连通图中固定从顶点1到各顶点的路径，沿路径相加得到
+\[
+ |m_j-m_1|\le C_{\Omega,p}\|\nabla u\|_{L^p(\Omega)}.
+\]
+常数包含局部图表界、交集测度及有限条路径。再在每个 \(G_j\) 上写
+\[
+ \|u-m_1\|_{L^p(G_j)}
+ \le\|u-m_j\|_{L^p(G_j)}+|G_j|^{1/p}|m_j-m_1|.
+\]
+有限覆盖允许将这些局部估计合为
+\(\|u-m_1\|_{L^p(\Omega)}\le C_{\Omega,p}\|\nabla u\|_p\)。
+最后用
+\(\|u-u_\Omega\|_p\le2\|u-m_1\|_p\)，完成证明。上述有限和及交集估计也适用于 \(p=\infty\)。
+\end{proof}
+
+这个证明没有用到下一章的紧嵌入定理。相反，它具体显示了常数如何受几何影响：图表越来越窄或相邻块的交集越来越小，所给的统一常数都可能恶化。仅知道区域有界，并不足以对一族变化的区域取得相同常数。
+
+若 \(\Omega\) 不连通，取函数在两个分量上分别为不同常数，则弱梯度为零，减去全域均值后却不为零。因此通常只能逐连通分量减去各自均值，或另加能连接这些自由常数的约束。零边界版本没有这一障碍，因为每个分量上的非零常数都已被闭包条件排除。
 
 \subsection{局部形式}
 \label{b1:subsec:240104}
 
-待填充。
+将球上不等式除以 \(|B|^{1/p}\)，得到尺度归一化的形式
+\begin{equation}\label{b1:eq:poincare-average-form}
+ \left(\frac1{|B|}\int_B|u-u_B|^p\,\mathrm dx\right)^{1/p}
+ \le C_dr
+       \left(\frac1{|B|}\int_B|\nabla u|^p\,\mathrm dx\right)^{1/p}.
+\end{equation}
+在有限 \(p\) 时，这个式子同时比较平均振幅与平均梯度大小。它适用于内部球，不要求全域边界规则，也不包含尚未指定的边界条件。
+
+两个不同半径的均值也可以比较。若 \(B_r=B(x,r)\)、\(B_{2r}=B(x,2r)\subset\Omega\)，则
+\[
+ \begin{aligned}
+ |u_{B_r}-u_{B_{2r}}|
+ &\le \frac1{|B_r|}\int_{B_r}|u-u_{B_{2r}}|\\
+ &\le C_d r^{1-d/p}\|\nabla u\|_{L^p(B_{2r})}.
+ \end{aligned}
+\]
+第二步先扩大积分区域，再使用 \(L^1\) Poincaré 与 Hölder 不等式。这个半径幂是第\ref{b1:sec:2403}节 Morrey 理论的关键：当 \(p>d\) 时，沿半径逐次减半得到一个可和的几何级数；当 \(p=d\) 时，仅凭这个界不再获得衰减。
+
+另一种局部形式来自零边界估计。对 \(\eta\in C_c^\infty(B_R)\)、\(u\in W^{1,p}(B_R)\)，有限 \(p\) 时 \(\eta u\in W_0^{1,p}(B_R)\)，因此
+\[
+ \|\eta u\|_{L^p(B_R)}
+ \le C_dR\bigl(\|\eta\nabla u\|_{L^p(B_R)}
+                   +\|u\nabla\eta\|_{L^p(B_R)}\bigr).
+\]
+要使右侧的零阶项更小，常把 \(u\) 换成 \(u-u_{B_R}\)，再用均值版本控制它。这种减常数再截断的组织，与上一章 Caccioppoli 不等式中任意常数 \(c\) 的选择一致；局部化引入的截断导数仍必须保留。

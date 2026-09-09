@@ -2,24 +2,297 @@
 \section{Sobolev 不等式}
 \label{b1:sec:2402}
 
-% TODO: 撰写本节正文。
+一阶导数可积，能否使函数本身具有更高的可积指数？Poincaré 型估计控制函数减去常数后的大小，而本节要提高左端的积分指数。证明从紧支集函数开始：函数沿每条坐标线都在两端消失，因而可以用该方向的导数恢复函数值。把各方向的估计合在一起，维数便进入了可积指数。
 
-\subsection{\texorpdfstring{\(p<n\)}{p<n}}
+Nirenberg 的《On elliptic partial differential equations》\cite[第II讲，第128--129页]{Nirenberg1959Elliptic}给出逐坐标积分的证明及幂次代换。本节把其中的乘积积分步骤写成任意维归纳，再用已经建立的稠密性和延拓定理进入 Sobolev 空间。除最后的一维说明外，始终设 \(d\geq2\)；标量域为 \(\mathbb K=\mathbb R\) 或 \(\mathbb C\)，梯度长度采用
+\[
+ |\nabla u|=\left(\sum_{i=1}^d|\partial_i u|^2\right)^{1/2}.
+\]
+其 \(L^p\) 范数与一阶导数分量的有限乘积范数等价，所需比较常数只依赖于 \(d,p\)。
+
+% 实读正式来源 Nirenberg1959Elliptic，Numdam 开放扫描：
+% https://numdam.org/item/ASNSP_1959_3_13_2_115_0.pdf
+% 印刷128--129页（PDF第15--16页），式(2.4)、(2.4)'及三维逐坐标证明。
+% 原文一般维数写为同样使用Holder，一般p仅给幂次；本节展开归纳、幂次计算与复值C1细节。
+% 一般W1p推广、W0补零和Lipschitz域推广调用本书第22章，不将原文的光滑域讨论扩写成任意域结论。
+
+\subsection{\texorpdfstring{\(1\leq p<d\)}{1≤p<d}}
 \label{b1:subsec:240201}
 
-待填充。
+先处理 \(p=1\)。对 \(x=(x_1,\ldots,x_d)\)，以 \(\widehat{x}_i\) 表示删去第 \(i\) 个坐标所得的向量。沿第 \(i\) 条坐标线积分导数后，得到的函数不再依赖 \(x_i\)。下面的不等式正是为这种结构准备的。
+
+\begin{lemma}\label{b1:lem:coordinate-product-integral}
+设 \(f_i\in L^1(\mathbb R^{d-1})\) 非负，\(1\leq i\leq d\)。则
+\begin{equation}\label{b1:eq:coordinate-product-integral}
+ \int_{\mathbb R^d}\prod_{i=1}^d
+          f_i(\widehat{x}_i)^{1/(d-1)}\,\mathrm dx
+ \leq\prod_{i=1}^d
+          \left(\int_{\mathbb R^{d-1}}f_i\right)^{1/(d-1)}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+对维数归纳。\(d=2\) 时，左端为
+\(\int_{\mathbb R^2}f_1(x_2)f_2(x_1)\,\mathrm dx\)，由 Tonelli 定理恰好等于两个积分的乘积。
+
+设 \(d\geq3\)，且结论在 \(d-1\) 维成立。写 \(x'=(x_1,\ldots,x_{d-1})\)，对 \(i<d\) 置
+\[
+ F_i(\widehat{x'}_i)=\int_{\mathbb R}f_i(\widehat{x}_i)\,\mathrm dx_d.
+\]
+它是 \(d-2\) 个变量的非负可积函数，而且
+\(\int F_i=\int f_i\)。对固定 \(x'\)，在 \(x_d\) 中使用 \(d-1\) 个指数都为 \(d-1\) 的 Hölder 不等式，得
+\[
+ \int_{\mathbb R}\prod_{i=1}^{d-1}
+       f_i(\widehat{x}_i)^{1/(d-1)}\,\mathrm dx_d
+ \leq\prod_{i=1}^{d-1}
+       F_i(\widehat{x'}_i)^{1/(d-1)}.
+\]
+这里的多因子 Hölder 可由两因子形式归纳得到：分出第一个因子，用指数 \(N,N/(N-1)\)，再对后 \(N-1\) 个因子的 \(N/(N-1)\) 次幂应用归纳假设，即得 \(N\) 个指数都为 \(N\) 的形式。
+
+记\eqref{b1:eq:coordinate-product-integral}左端为 \(I\)。由于 \(f_d\) 与 \(x_d\) 无关，上述估计给出
+\[
+ \begin{aligned}
+ I
+ &\leq\int_{\mathbb R^{d-1}}f_d(x')^{1/(d-1)}
+             \prod_{i=1}^{d-1}F_i(\widehat{x'}_i)^{1/(d-1)}\,\mathrm dx'\\
+ &\leq\left(\int_{\mathbb R^{d-1}}f_d\right)^{1/(d-1)}
+       \left(\int_{\mathbb R^{d-1}}
+             \prod_{i=1}^{d-1}F_i(\widehat{x'}_i)^{1/(d-2)}
+             \,\mathrm dx'\right)^{(d-2)/(d-1)}.
+ \end{aligned}
+\]
+第二步的两个 Hölder 指数为 \(d-1\) 和 \((d-1)/(d-2)\)。对最后的积分应用 \(d-1\) 维归纳假设，再取外面的幂，得到
+\[
+ I\leq\left(\int f_d\right)^{1/(d-1)}
+             \prod_{i=1}^{d-1}\left(\int F_i\right)^{1/(d-1)}.
+\]
+这就是所需估计。全部被积函数非负，交换积分由 Tonelli 定理保证，无须先假定乘积可积。
+\end{proof}
+
+把它用于各坐标方向的导数，就得到\term*[gagliardo-nirenberg-sobolev-budengshi]{Gagliardo–Nirenberg–Sobolev 不等式}[Gagliardo--Nirenberg--Sobolev inequality]的端点版本。
+
+\begin{theorem}[Gagliardo–Nirenberg–Sobolev，\(p=1\)]\label{b1:thm:gns-endpoint}
+若 \(u\in C_c^1(\mathbb R^d;\mathbb K)\)，则
+\begin{equation}\label{b1:eq:gns-endpoint}
+ \|u\|_{d/(d-1)}
+ \leq\frac12\prod_{i=1}^d\|\partial_i u\|_1^{1/d}
+ \leq\frac12\|\nabla u\|_1.
+\end{equation}
+\end{theorem}
+\begin{proof}
+固定其余坐标。由于 \(u\) 在该坐标线两端为零，微积分基本定理分别给出
+\[
+ u(x)=\int_{-\infty}^{x_i}\partial_i u(x_1,\ldots,t,\ldots,x_d)\,\mathrm dt
+     =-\int_{x_i}^{\infty}\partial_i u(x_1,\ldots,t,\ldots,x_d)\,\mathrm dt.
+\]
+这对复值函数也成立，只须按实部和虚部积分。对两式分别取绝对值并相加，得
+\[
+ 2|u(x)|\leq
+ A_i(\widehat{x}_i),\quad
+ A_i(\widehat{x}_i)
+ =\int_{\mathbb R}|\partial_i u(x_1,\ldots,t,\ldots,x_d)|\,\mathrm dt.
+\]
+对 \(i=1,\ldots,d\) 相乘，再取 \(1/(d-1)\) 次幂并积分。由前一引理，
+\[
+ \int |u|^{d/(d-1)}
+ \leq2^{-d/(d-1)}
+       \prod_{i=1}^d\left(\int A_i\right)^{1/(d-1)}
+ =2^{-d/(d-1)}
+       \prod_{i=1}^d\|\partial_i u\|_1^{1/(d-1)}.
+\]
+取 \((d-1)/d\) 次幂即得第一个不等式。又因每个
+\(\|\partial_i u\|_1\leq\|\nabla u\|_1\)，得到第二个不等式。
+\end{proof}
+
+这里并未寻求最佳常数。重要的是右端只含一阶导数，而左端指数已经大于一；各坐标方向都参与估计，不能只在一个方向积分后便把其余变量略去。
 
 \subsection{临界指数}
 \label{b1:subsec:240202}
 
-待填充。
+\begin{definition}\label{b1:def:sobolev-critical-exponent}
+设 \(1\leq p<d\)。定义相应的\term[sobolev-linjie-zhishu]{Sobolev 临界指数}[Sobolev critical exponent]为
+\begin{equation}\label{b1:eq:sobolev-critical-exponent}
+ p^*=\frac{dp}{d-p},\quad
+ \frac1{p^*}=\frac1p-\frac1d.
+\end{equation}
+\end{definition}
+\symidx{\(p^*\)：Sobolev 临界指数}
+
+这里的“临界”指给定 \(p<d\) 后，函数值可以达到的边界指数 \(p^*\)，不是把导数指数设成 \(p=d\)。后者将在第\ref{b1:sec:2405}节另行讨论。比如 \(d=3,p=2\) 时，\(p^*=6\)：平方可积的一阶导数将给出函数的六次可积性。
+
+端点估计应用于函数的一定幂，就能提高导数端的指数。设 \(1<p<d\)，希望把\eqref{b1:eq:gns-endpoint}用于 \(v=|u|^\gamma\)。左端积分中的幂为 \(\gamma d/(d-1)\)，而右端使用 \(p,p'=p/(p-1)\) 的 Hölder 不等式后，会出现 \((\gamma-1)p'\)。要让这两者相同，须取
+\begin{equation}\label{b1:eq:sobolev-power-choice}
+ \gamma=\frac{p(d-1)}{d-p}>1,\quad
+ \frac{\gamma d}{d-1}=(\gamma-1)p'=p^*.
+\end{equation}
+因此这个幂不是独立的技巧性参数，而是由两端积分必须相容决定的。
+
+\begin{lemma}\label{b1:lem:gns-power-estimate}
+设 \(1<p<d\)，\(u\in C_c^1(\mathbb R^d;\mathbb K)\)，并令 \(\gamma\) 如\eqref{b1:eq:sobolev-power-choice}。则
+\[
+ \|u\|_{p^*}\leq\frac{\gamma}{2}\|\nabla u\|_p.
+\]
+\end{lemma}
+\begin{proof}
+先说明幂次代换的正则性。把 \(\mathbb C\) 视为 \(\mathbb R^2\)，映射 \(F(z)=|z|^\gamma\) 在 \(z\ne0\) 处的导数长度为 \(\gamma|z|^{\gamma-1}\)。在原点，
+\[
+ \frac{|F(z)-F(0)|}{|z|}=|z|^{\gamma-1}\longrightarrow0,
+\]
+所以导数为零；上述导数长度也趋于零，故 \(F\) 在原点为 \(C^1\)。实值情形是同一论证的一维版本。因此 \(v=|u|^\gamma\) 属于 \(C_c^1\)，不必把它误当成无限次光滑函数。
+
+经典链式法则及欧氏范数不等式给出
+\[
+ |\nabla v|\leq\gamma|u|^{\gamma-1}\cdot|\nabla u|.
+\]
+复值情况下，每个偏导数为
+\(\partial_i v=\gamma|u|^{\gamma-2}\operatorname{Re}
+(\overline u\,\partial_i u)\)（在 \(u\ne0\) 处），在 \(u=0\) 处为零；用
+\(\bigl|\operatorname{Re}(\overline u\,\partial_i u)\bigr|
+\leq|u|\cdot|\partial_i u|\) 后求平方和，即得同一梯度界。
+
+将 \(v\) 代入端点估计，再用 Hölder 不等式和\eqref{b1:eq:sobolev-power-choice}，得到
+\[
+ \begin{aligned}
+ \|u\|_{p^*}^{\gamma}
+ &=\|v\|_{d/(d-1)}
+ \leq\frac{\gamma}{2}
+          \int |u|^{\gamma-1}\cdot|\nabla u|\\
+ &\leq\frac{\gamma}{2}
+       \left(\int|u|^{(\gamma-1)p'}\right)^{1/p'}
+       \|\nabla u\|_p
+ =\frac{\gamma}{2}\|u\|_{p^*}^{\gamma-1}
+                  \cdot\|\nabla u\|_p.
+ \end{aligned}
+\]
+紧支集和连续性保证出现的范数有限。若 \(u\ne0\)，约去
+\(\|u\|_{p^*}^{\gamma-1}\)；零函数则直接满足结论。
+\end{proof}
 
 \subsection{Gagliardo–Nirenberg–Sobolev 不等式}
 \label{b1:subsec:240203}
 
-待填充。
+接下来把光滑函数上的估计传给弱导数。需要辨明左端极限：逼近原先只在 \(W^{1,p}\) 中给出，而提高指数后的极限由刚才的估计产生，不能预先假定二者相同。
+
+\begin{theorem}[Gagliardo–Nirenberg–Sobolev]\label{b1:thm:sobolev-subcritical-embedding}
+设 \(d\geq2\)、\(1\leq p<d\)。则每个 \(u\in W^{1,p}(\mathbb R^d;\mathbb K)\) 都属于 \(L^{p^*}(\mathbb R^d)\)，并有
+\begin{equation}\label{b1:eq:sobolev-global-embedding}
+ \|u\|_{p^*}\leq C_{d,p}\|\nabla u\|_p.
+\end{equation}
+可以取 \(C_{d,1}=1/2\)，当 \(p>1\) 时取
+\(C_{d,p}=p(d-1)/[2(d-p)]\)。本节不主张这些常数最佳。
+\end{theorem}
+\begin{proof}
+由\cref{b1:thm:whole-space-sobolev-density}取
+\(u_j\in C_c^\infty(\mathbb R^d;\mathbb K)\)，使 \(u_j\to u\) 于 \(W^{1,p}\)。将已经证明的估计用于 \(u_j-u_\ell\)，得
+\[
+ \|u_j-u_\ell\|_{p^*}
+ \leq C_{d,p}\|\nabla u_j-\nabla u_\ell\|_p\longrightarrow0.
+\]
+由 \(L^{p^*}\) 完备性，存在 \(v\in L^{p^*}\)，使 \(u_j\to v\) 于该空间。取一条子列，使它同时几乎处处收敛到原来的 \(L^p\) 极限 \(u\) 和新的 \(L^{p^*}\) 极限 \(v\)：例如令两种范数误差的相应次幂之和沿该子列可和，再用 Tonelli 定理。因此 \(u=v\) 几乎处处。最后在
+\(\|u_j\|_{p^*}\leq C_{d,p}\|\nabla u_j\|_p\) 中取极限，得到结论。这里 \(p^*<\infty\)，所以两种有限指数的逼近都适用。
+\end{proof}
+
+\begin{corollary}\label{b1:cor:domain-sobolev-embedding}
+设 \(1\leq p<d\)，则有以下两种域上的结论。
+\begin{enumerate}
+\item\label{b1:item:domain-sobolev-zero-boundary}
+对任意非空开集 \(\Omega\subseteq\mathbb R^d\) 及
+\(u\in W_0^{1,p}(\Omega)\)，有
+\[
+ \|u\|_{L^{p^*}(\Omega)}
+ \leq C_{d,p}\|\nabla u\|_{L^p(\Omega)}.
+\]
+常数与 \(\Omega\) 无关。
+\item\label{b1:item:domain-sobolev-extension}
+若 \(\Omega\) 为有界 Lipschitz 区域，则每个
+\(u\in W^{1,p}(\Omega)\) 满足
+\[
+ \|u\|_{L^{p^*}(\Omega)}
+ \leq C_{\Omega,p}\|u\|_{W^{1,p}(\Omega)}.
+\]
+\end{enumerate}
+若相应的 \(\Omega\) 具有有限测度，这两条结论还分别给出所有
+\(1\leq q\leq p^*\) 的 \(L^q\) 估计，只须在左端变换指数时加入因子
+\(m_d(\Omega)^{1/q-1/p^*}\)。
+\end{corollary}
+\begin{proof}
+第一条使用\cref{b1:prop:w0-zero-extension}：补零函数
+\(E_0u\in W^{1,p}(\mathbb R^d)\)，其梯度也由域内梯度补零得到。对它应用\eqref{b1:eq:sobolev-global-embedding}，两端范数分别等于域内范数。
+
+第二条使用\cref{b1:thm:lipschitz-domain-extension}的有界延拓 \(E\)，依次得到
+\[
+ \|u\|_{L^{p^*}(\Omega)}
+ \leq\|Eu\|_{L^{p^*}(\mathbb R^d)}
+ \leq C_{d,p}\|\nabla(Eu)\|_{L^p(\mathbb R^d)}
+ \leq C_{\Omega,p}\|u\|_{W^{1,p}(\Omega)}.
+\]
+最后，有限测度下直接对 \(|u|^q\cdot1\) 使用 Hölder 不等式，有
+\(\|u\|_q\leq m_d(\Omega)^{1/q-1/p^*}\|u\|_{p^*}\)，即得较低指数的估计。
+\end{proof}
+
+一般开集的第一条结论依赖零边界闭包，而非边界光滑性。第二条没有零边界条件，右端因此保留零阶项：非零常数函数在有界区域内属于 \(W^{1,p}\)，梯度却为零，已经排除了对所有函数只用梯度控制的可能。
+
+\begin{proposition}\label{b1:prop:sobolev-subcritical-interpolation}
+设 \(u\in W^{1,p}(\mathbb R^d)\)，\(p\leq q\leq p^*\)，并置
+\(\theta=d(1/p-1/q)\in[0,1]\)。则
+\begin{equation}\label{b1:eq:sobolev-subcritical-interpolation}
+ \|u\|_q
+ \leq \|u\|_p^{1-\theta}\cdot\|u\|_{p^*}^{\theta}
+ \leq C_{d,p}^{\theta}
+       \|u\|_p^{1-\theta}\cdot\|\nabla u\|_p^{\theta}.
+\end{equation}
+端点 \(\theta=0,1\) 按相应单个范数理解。
+\end{proposition}
+\begin{proof}
+只需处理 \(0<\theta<1\)。关系
+\[
+ \frac1q=\frac{1-\theta}{p}+\frac{\theta}{p^*}
+\]
+使 \(p/[(1-\theta)q]\) 与 \(p^*/(\theta q)\) 成为共轭指数。将
+\(|u|^q=|u|^{(1-\theta)q}\cdot|u|^{\theta q}\) 代入 Hölder 不等式，并取 \(q\) 次根，得到第一个估计；再代入全空间的 Sobolev 不等式，得到第二个。两个端点分别是恒等式和\eqref{b1:eq:sobolev-global-embedding}。
+\end{proof}
+
+全空间的测度无限，所以不能像有界域那样，仅凭 \(L^{p^*}\) 就向所有较低指数下降。这里 \(L^p\) 项与梯度项共同控制中间指数；\(q<p\) 不在这个插值结论的范围内。
 
 \subsection{缩放}
 \label{b1:subsec:240204}
 
-待填充。
+临界指数还可以从尺度直接读出。固定非零
+\(u\in C_c^\infty(\mathbb R^d)\)，令 \(u_\lambda(x)=u(\lambda x)\)，其中 \(\lambda>0\)。换元给出
+\[
+ \|u_\lambda\|_q=\lambda^{-d/q}\|u\|_q,\quad
+ \|\nabla u_\lambda\|_p=\lambda^{1-d/p}\|\nabla u\|_p,
+\]
+\(q=\infty\) 时按 \(1/q=0\) 理解。如果存在不随函数改变的常数，使所有紧支集光滑函数都满足
+\(\|u\|_q\leq C\|\nabla u\|_p\)，那么必有
+\[
+ \lambda^{d/p-1-d/q}\|u\|_q\leq C\|\nabla u\|_p
+ \quad(\lambda>0).
+\]
+指数为正时令 \(\lambda\to\infty\)，为负时令 \(\lambda\to0\)，都会矛盾。因此必须
+\(1/q=1/p-1/d\)，即 \(q=p^*\)。尺度只给出必要条件；前面的坐标积分证明才保证这个指数确实能够达到。
+
+即使定义域固定为一个小球，非齐次估计也不能越过 \(p^*\)。取
+\(x_0\in\Omega\)、非零 \(\varphi\in C_c^\infty\bigl(B(0,1)\bigr)\)，并在
+\(\varepsilon<\operatorname{dist}(x_0,\Omega^c)\) 时置
+\[
+ v_\varepsilon(x)
+ =\varepsilon^{1-d/p}
+       \varphi\left(\frac{x-x_0}{\varepsilon}\right).
+\]
+这些函数属于 \(C_c^\infty(\Omega)\)，而
+\[
+ \|v_\varepsilon\|_p=\varepsilon\|\varphi\|_p,\quad
+ \|\nabla v_\varepsilon\|_p=\|\nabla\varphi\|_p,\quad
+ \|v_\varepsilon\|_q
+ =\varepsilon^{1-d/p+d/q}\|\varphi\|_q.
+\]
+当 \(q>p^*\) 时，最后的指数为负，左端趋于无穷，前两个量却有界。这排除了任何统一的
+\(W^{1,p}(\Omega)\rightarrow L^q(\Omega)\) 范数估计；它只检验可积性估计的边界，不需要引入后文的紧性理论。
+
+一维情形须单独读。条件 \(1\leq p<d\) 在 \(d=1\) 时为空，但沿整条实轴的基本定理仍给出另一个端点：
+\[
+ \|u\|_\infty\leq\frac12\|u'\|_1
+ \quad\bigl(u\in W^{1,1}(\mathbb R)\bigr).
+\]
+对 \(C_c^1\) 函数，它就是从左右两端积分后相加的估计。对一般
+\(W^{1,1}\) 函数，取紧支集光滑逼近；将估计用于两项之差，得到一致 Cauchy 列，其连续极限与 \(L^1\) 极限几乎处处相同，故同一界传到极限。这里的结论是本性上确界控制；第\ref{b1:sec:2403}节讨论 \(p>d\) 时更精确的连续性估计。

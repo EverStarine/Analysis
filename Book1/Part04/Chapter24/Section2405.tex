@@ -1,24 +1,248 @@
 % !TeX root = ../../Book1.tex
 \OptionalSection{临界嵌入}{b1:sec:2405}
 
-% TODO: 撰写本节正文。
+当 \(p=d\) 时，Sobolev 次临界指数的分母为零，而 Morrey 指数也恰好降为零。这并不意味着所有估计都消失了；它意味着不能继续用前面的幂次公式描述端点。以下设 \(d\ge2\)，先证明零边界函数在每个有限 \(L^q\) 中都有控制，再追踪常数随 \(q\) 的增长，把这些估计合成为指数可积性。
 
-\subsection{\texorpdfstring{\(p=n\)}{p=n}}
+Moser 的《A Sharp Form of an Inequality by N. Trudinger》\cite[第1节，第1077页]{Moser1971Trudinger}说明了临界指数可积性的背景，并进一步研究最佳常数。本节采用较直接的卷积与指数级数路线，只证明足以展示临界现象的非最优常数版本；不把下述常数认作原文的尖锐常数。
+% 实读范围：Moser1971Trudinger官方首页PDF，印刷1077页第1节。
+% 完整Theorem1跨至1078页，本次未读全定理或尖锐常数证明。
+% 下文势表示、有限指数卷积估计与级数求和均在本书展开；
+% 只引用实读首页作历史定位与进一步阅读，不声称复现Moser最佳常数。
+
+\subsection{\texorpdfstring{\(p=d\)}{p=d}}
 \label{b1:subsec:240501}
 
-待填充。
+为了在卷积估计中让输出指数增大，先补充有限指数的\term*[young-juanji-budengshi]{Young 卷积不等式}[Young convolution inequality]。它与第\ref{b1:sec:1001}节的标量 Young 不等式有关，但陈述对象不同。
+
+\begin{lemma}[Young]\label{b1:lem:young-convolution-finite}
+设 \(1\le a,b,q<\infty\)，满足
+\[
+ 1+\frac1q=\frac1a+\frac1b.
+\]
+若 \(f\in L^a(\mathbb R^d)\)、\(g\in L^b(\mathbb R^d)\)，则卷积几乎处处绝对收敛，并有
+\[
+ \|f*g\|_{L^q}\le\|f\|_{L^a}\cdot\|g\|_{L^b}.
+\]
+\end{lemma}
+\begin{proof}
+条件保证 \(q\ge a,b\)。对固定 \(x\)，把绝对值乘积写为三因子：
+\[
+ |f(x-y)|\cdot|g(y)|
+ =\bigl(|f(x-y)|^a|g(y)|^b\bigr)^{1/q}
+    |f(x-y)|^{1-a/q}|g(y)|^{1-b/q}.
+\]
+Hölder 不等式所用的三个倒指数为
+\[
+ \frac1q,\qquad \frac1a-\frac1q,\qquad \frac1b-\frac1q,
+\]
+其和为一；若某一后项为零，就删去对应的零幂因子。由此
+\[
+ \left(\int|f(x-y)|\cdot|g(y)|\,\mathrm dy\right)^q
+ \le \|f\|_a^{q-a}\cdot\|g\|_b^{q-b}
+         \int |f(x-y)|^a|g(y)|^b\,\mathrm dy.
+\]
+对 \(x\) 积分并使用 Tonelli 定理及平移不变性，右侧等于
+\(\|f\|_a^q\cdot\|g\|_b^q\)。因此左侧有限，这同时证明几乎处处绝对收敛和所求界。零范数情形直接为零，\(a=b=q=1\) 时整个论证就是 Tonelli 定理。
+\end{proof}
+
+\begin{proposition}\label{b1:prop:critical-finite-q-estimate}
+设 \(\Omega\subset\mathbb R^d\) 为非空有界开集，\(D=\operatorname{diam}\Omega\)，且 \(d\ge2\)。对 \(d\le q<\infty\)、\(u\in W_0^{1,d}(\Omega)\)，有
+\begin{equation}\label{b1:eq:critical-q-growth}
+ \|u\|_{L^q(\Omega)}
+ \le C_dD^{d/q}q^{1-1/d}\|\nabla u\|_{L^d(\Omega)}.
+\end{equation}
+其中 \(C_d\) 不依赖 \(q,u,\Omega\)。
+\end{proposition}
+\begin{proof}
+先取 \(u\in C_c^\infty(\Omega)\)，在全空间补零。固定 \(x\) 及单位向量 \(\omega\)，沿射线积分得
+\[
+ u(x)=-\int_0^\infty\nabla u(x+r\omega)\cdot\omega\,\mathrm dr.
+\]
+对单位球面平均，再使用极坐标换元，得到
+\[
+ |u(x)|\le\frac1{d\omega_d}
+        \int_{\mathbb R^d}\frac{|\nabla u(y)|}{|x-y|^{d-1}}\,\mathrm dy.
+\]
+若 \(x\in\Omega\)，只有 \(y\in\Omega\) 对积分有贡献，故 \(|x-y|\le D\)。记
+\[
+ K_D(h)=|h|^{1-d}\mathbf1_{\{|h|\le D\}},\qquad
+ b_q=\frac{dq}{(d-1)q+d}.
+\]
+则 \(1\le b_q<d/(d-1)\)，并且
+\[
+ 1+\frac1q=\frac1d+\frac1{b_q}.
+\]
+Young 卷积不等式给出
+\[
+ \|u\|_{L^q(\Omega)}
+ \le C_d\|K_D\|_{L^{b_q}}\cdot\|\nabla u\|_{L^d(\Omega)}.
+\]
+核的范数可以直接计算：
+\[
+ \begin{aligned}
+ \|K_D\|_{L^{b_q}}
+ &=\left(\frac{d\omega_d}
+                    {d-(d-1)b_q}\right)^{1/b_q}
+        D^{\,d/b_q-(d-1)}\\
+ &\le C_d q^{1/b_q}D^{d/q}
+ \le C_d q^{1-1/d}D^{d/q}.
+ \end{aligned}
+\]
+这里 \(d/b_q-(d-1)=d/q\)，
+\(d-(d-1)b_q=db_q/q\)，且
+\(q^{1/b_q}=q^{1-1/d}q^{1/q}\)，最后一因子在 \(q\ge1\) 上有界。这解释了常数中 \(q^{1-1/d}\) 的来源。
+
+对一般 \(u\in W_0^{1,d}(\Omega)\)，取内部紧支集光滑逼近。将已证估计用于逼近列两项之差，可知它在每个固定有限 \(L^q\) 中为 Cauchy 列；其极限与原来的 \(L^d\) 极限一致，所以就是 \(u\)。取极限完成证明。
+\end{proof}
+
+在有界 Lipschitz 区域上，一般 \(u\in W^{1,d}(\Omega)\) 也属于每个有限 \(L^q(\Omega)\)。事实上，定理\ref{b1:thm:lipschitz-domain-extension}给出支集留在固定紧集中的全空间延拓；把这个紧集放进一个更大的球，延拓函数属于该球的 \(W_0^{1,d}\)，便可应用上面的估计。所得界包含 \(\|u\|_{W^{1,d}(\Omega)}\)，不能只用梯度，因为非零常数也在此空间中。
+
+不能在\eqref{b1:eq:critical-q-growth}中令 \(q=\infty\)：常数随 \(q\) 增大而发散。接下来的求和恰好利用这一增长速度，而不是把它忽略。
 
 \subsection{Trudinger–Moser 不等式}
 \label{b1:subsec:240502}
 
-待填充。
+记 \(d'=d/(d-1)\)。\term*[trudinger-moser-budengshi]{Trudinger--Moser 不等式}[Trudinger--Moser inequality]的一个非最优常数版本如下。
+
+\begin{theorem}[Trudinger--Moser，非最优常数版]\label{b1:thm:trudinger-moser}
+设 \(d\ge2\)，\(\Omega\subset\mathbb R^d\) 为非空有界开集，\(D=\operatorname{diam}\Omega\)。存在只依赖于 \(d\) 的正数 \(c_d,C_d\)，使每个 \(u\in W_0^{1,d}(\Omega)\) 满足
+\begin{equation}\label{b1:eq:trudinger-moser}
+ \int_\Omega
+  \exp\left(c_d
+       \left|\frac{u(x)}{\|\nabla u\|_{L^d(\Omega)}}\right|^{d'}\right)
+       \mathrm dx
+ \le C_dD^d
+\end{equation}
+当 \(\|\nabla u\|_d>0\)。若梯度范数为零，则 \(u=0\)，将被积函数解释为 \(1\)。这里不声称 \(c_d\) 是最大的允许常数。
+\end{theorem}
+\begin{proof}
+由零边界 Poincaré 不等式，梯度为零时 \(u=0\)，所列约定成立。其余情形可通过数乘归一化为 \(\|\nabla u\|_d=1\)。展开非负指数级数，单调收敛定理给出
+\[
+ \int_\Omega e^{c|u|^{d'}}
+ =|\Omega|+
+   \sum_{j=1}^\infty\frac{c^j}{j!}
+          \|u\|_{L^{d'j}(\Omega)}^{d'j}.
+\]
+对 \(d'j\ge d\)，应用\eqref{b1:eq:critical-q-growth}，
+\[
+ \|u\|_{L^{d'j}}^{d'j}
+ \le D^d C_d^{d'j}(d'j)^j.
+\]
+由
+\[
+ \log(j!)=\sum_{\ell=1}^j\log\ell
+ \ge\int_1^j\log t\,\mathrm dt
+ =j\log j-j+1
+\]
+得到 \(j!\ge(j/e)^j\)。因此上述级数的相应项不超过
+\[
+ D^d\bigl(c\,C_d^{d'}d'e\bigr)^j.
+\]
+选取只依赖于 \(d\) 的充分小 \(c=c_d>0\)，使括号不超过 \(1/2\)，这些高次项之和便受常数倍的 \(D^d\) 控制。
+
+剩下满足 \(d'j<d\) 的项只有有限个。由 Hölder 不等式及零边界 Poincaré 估计，
+\[
+ \|u\|_{L^{d'j}}^{d'j}
+ \le|\Omega|^{\,1-d'j/d}\|u\|_{L^d}^{d'j}
+ \le C_dD^d.
+\]
+这里把 \(\Omega\) 放入直径不超过常数倍 \(D\) 的球，使用
+\(|\Omega|\le\omega_dD^d\) 与 \(\|u\|_d\le C_dD\)。
+有限低次项、常数项和高次几何级数合起来，给出所需估计。最后恢复原函数的梯度范数，完成证明。
+\end{proof}
+
+这个定理是对梯度范数有界函数族的统一估计，不只是说每个固定函数在某个很小参数下可积。指数幂 \(d'\) 使高次 \(L^q\) 常数产生的 \(j^j\) 与阶乘的增长相抵；若把指数幂再增大，后者便未必能够控制前者。习题中的集中函数列将直接说明这种更强统一估计为何失败。
+
+一般 \(W^{1,d}\) 函数若没有零边界条件，不能在分母中只放梯度；常数函数已足以显示问题。可在有界连通 Lipschitz 区域上先减去均值，再使用 Poincaré 和固定支集延拓取得相应的指数估计，但其常数会随区域几何改变。本文所证明的\eqref{b1:eq:trudinger-moser}保留了一个便于检查的版本：任意有界开集、零边界闭包、非最优常数和明确的直径尺度。
 
 \subsection{Morrey–Campanato 观点}
 \label{b1:subsec:240503}
 
-待填充。
+Morrey 证明中的决定性步骤不是逐点微分，而是球平均的振幅随半径衰减。把导数暂时拿掉，只保留这种平均条件，就得到 Campanato 观点的基本形式。
+
+\begin{proposition}[Campanato 型平均条件]\label{b1:prop:campanato-holder}
+设 \(u\in L^1_{\mathrm{loc}}(\mathbb R^d)\)、\(0<\alpha\le1\)。若存在 \(A<\infty\)，使每个球 \(B(x,r)\) 都满足
+\begin{equation}\label{b1:eq:campanato-mean-condition}
+ \frac1{|B(x,r)|}\int_{B(x,r)}
+       |u-u_{B(x,r)}|\,\mathrm dy\le Ar^\alpha,
+\end{equation}
+则 \(u\) 有唯一连续代表 \(u^*\)，并有
+\[
+ |u^*(x)-u^*(y)|\le C_{d,\alpha}A|x-y|^\alpha.
+\]
+反过来，任意满足全域 \(\alpha\)-Hölder 估计的函数都满足相应的平均条件。
+\end{proposition}
+\begin{proof}
+固定 \(x,R\)。两相邻同心球的体积比为 \(2^d\)，故
+\[
+ |u_{B(x,2^{-j-1}R)}-u_{B(x,2^{-j}R)}|
+ \le2^dA(2^{-j}R)^\alpha.
+\]
+右侧为可和几何级数，所以球均值在每个点有有限极限，并有
+\[
+ |u^*(x)-u_{B(x,R)}|
+ \le C_{d,\alpha}AR^\alpha.
+\]
+任意半径可夹在两个相邻二分半径之间，使用相同的体积比估计，说明极限不依赖这列半径。Lebesgue 微分定理保证 \(u^*=u\) 几乎处处。
+
+对 \(x\ne y\)，令 \(R=|x-y|\)。两个球 \(B(x,R)\)、\(B(y,R)\) 都包含在 \(B(x,3R)\) 内，且体积比受维数控制。因此各自均值与大球均值之差均不超过 \(C_dAR^\alpha\)。再加上两个点到各自均值的误差，得到所求双点估计。它同时证明连续性；两个连续代表若几乎处处相等，就处处相等，因此代表唯一。
+
+反过来，若 \(|u(z)-u(w)|\le L|z-w|^\alpha\)，则
+\[
+ \begin{aligned}
+ \frac1{|B|}\int_B|u-u_B|
+ &\le\frac1{|B|^2}\int_B\int_B|u(z)-u(w)|\,\mathrm dz\,\mathrm dw\\
+ &\le L(2r)^\alpha,
+ \end{aligned}
+\]
+这就是平均条件。
+\end{proof}
+
+更常见的表述把左侧换成 \(q\) 次平均振幅，\(1\le q<\infty\)。它由 Hölder 不等式控制这里的一次平均，而 Hölder 连续函数也控制每个这样的 \(q\) 次平均，因此在正衰减指数范围内仍刻画相同的连续性。一般 Campanato 空间允许更多参数和多项式近似；这里仅需平均常数的基本情形。
+
+在临界指数 \(p=d\) 时，Poincaré 不等式只给出
+\[
+ \frac1{|B|}\int_B|u-u_B|
+ \le C_d\left(\int_B|\nabla u|^d\right)^{1/d}.
+\]
+右侧没有固定的正半径幂。对固定的可积梯度，它会随球的体积缩小而趋零，但这些误差未必沿二分尺度可求和。因而“平均振幅趋零”与“可以把球均值求和为连续代表”仍有距离；仅把前一命题的 \(\alpha\) 设为零，会破坏其关键级数。
 
 \subsection{临界现象}
 \label{b1:subsec:240504}
 
-待填充。
+下面构造一个 \(W_0^{1,d}\) 中本性无界的函数，说明临界指数的确不能一般给出连续或有界代表。取
+\[
+ 0<\beta<1-\frac1d,
+\]
+并选光滑径向截断 \(\chi\)，使它在原点附近等于 \(1\)、支集包含于 \(B(0,1/2)\)。对 \(0<|x|<1/2\)，令
+\[
+ u(x)=\chi(x)\bigl(\log(e/|x|)\bigr)^\beta,
+\]
+在支集外取零，在原点任意赋一个有限值。显然它在每个原点邻域中本性无界。
+
+函数本身属于 \(L^d(B(0,1))\)，因为径向体积因子 \(r^{d-1}\) 控制任意固定的对数幂。在 \(\chi=1\) 的小球内，梯度长度为
+\[
+ |\nabla u(x)|
+ =\frac{\beta}{|x|}
+       \bigl(\log(e/|x|)\bigr)^{\beta-1},
+\]
+故其 \(d\) 次积分等价于
+\[
+ \int_0^\varepsilon
+      \frac{\mathrm dr}
+           {r\bigl(\log(e/r)\bigr)^{d(1-\beta)}}.
+\]
+代换 \(t=\log(e/r)\) 后，这是尾部的
+\(\int^\infty t^{-d(1-\beta)}\,\mathrm dt\)，由于 \(d(1-\beta)>1\) 而收敛。截断的变化只发生在避开原点的紧环带上，不增加奇性。
+
+还须确认这些经典导数确实是弱导数。对测试函数在挖去半径 \(\varepsilon\) 小球的区域上分部积分，内球面边界项的绝对值受
+\[
+ C\varepsilon^{d-1}
+       \bigl(\log(e/\varepsilon)\bigr)^\beta
+       \|\varphi\|_\infty
+\]
+控制，因 \(d\ge2\) 而趋零。函数和候选导数局部可积，故令 \(\varepsilon\downarrow0\) 得到全域弱导数恒等式。于是 \(u\in W^{1,d}\)，又因为它具有内部紧支集，有限指数的内部逼近给出 \(u\in W_0^{1,d}(B(0,1))\)。
+
+它没有有界代表，但仍服从本节证明的指数估计。这并不矛盾：指数可积性限制的是大值集合的体积，而非禁止函数取得任意大的值。另一方面，当 \(d=1\) 时，\(W^{1,1}\) 的绝对连续代表已经由积分基本定理得到有界控制，本节的临界反例和指数幂 \(d/(d-1)\) 都不适用。
+
+本章至此建立了梯度对均值振幅、可积性与连续性的不同控制。下一章将询问一个新的问题：若一列函数都服从这些控制，能否从中抽出强收敛子列？单个函数的嵌入估计不会自动给出序列紧性；还须排除质量逃向无穷远、平移失控和临界尺度的集中。

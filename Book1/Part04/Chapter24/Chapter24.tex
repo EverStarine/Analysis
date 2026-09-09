@@ -1,27 +1,537 @@
 % !TeX root = ../../Book1.tex
 \chapter{Poincaré 不等式与 Sobolev 嵌入}
 \label{b1:ch:24}
-% 本章摘要（不计入编号）
 \begin{chapterabstract}
-待填充。
+本章研究弱梯度能够控制哪些函数性质。减去均值或施加零边界条件后，Poincaré 不等式控制函数振幅；当导数可积指数低于维数时，Sobolev 不等式提高函数的可积指数；超过维数时，Morrey 估计给出具有确定 Hölder 指数的连续代表。高阶结论通过迭代与局部化建立，临界情形则转向有限指数常数的增长和指数可积性。不同结论对区域几何、边界条件与指数端点各有要求。
 \end{chapterabstract}
 
-% 本章目标（不计入编号）
 \begin{learninggoals}
-待填充。
+\begin{enumerate}
+\item\label{b1:goal:24-poincare}证明球上的均值估计、任意有界域的零边界估计及连通 Lipschitz 区域的均值估计，明确常数核和几何常数的作用。
+\item\label{b1:goal:24-sobolev}从逐坐标积分与任意维乘积估计出发证明 Gagliardo--Nirenberg--Sobolev 不等式，再用幂次、稠密性和延拓处理一般指数与区域。
+\item\label{b1:goal:24-morrey}通过逐尺度均值比较在每个点构造连续代表，推导局部、全空间及闭区域上的 Morrey 估计，并辨认指数的适用边界。
+\item\label{b1:goal:24-higher}把一阶结论组织成高阶和分数阶嵌入，区分经典连续导数、弱导数与高阶边界延拓的额外要求。
+\item\label{b1:goal:24-critical}在选读部分追踪临界 \(L^q\) 常数随 \(q\) 的增长，证明非最优常数的 Trudinger--Moser 不等式，并用具体函数辨认临界有界性的失败。
+\end{enumerate}
 \end{learninggoals}
+
+本章以第\ref{b1:ch:21}章的弱导数运算和代表理论为基础，反复使用第\ref{b1:ch:22}章的内部逼近、零边界闭包及一阶延拓。第\ref{b1:ch:23}章的分数阶空间用于高阶一节末尾，迹则帮助解释零边界条件。这里先直接证明均值 Poincaré 不等式，不把下一章的紧嵌入提前作为工具。
+
+读到每个估计时，宜先检查右端是否包含函数的零阶范数，以及常数依赖于什么。全空间的紧支集路线能给出只含梯度的估计；一般有界区域若不减均值、不施加零边界条件，就必须保留常数函数的贡献。次临界可积性和超临界连续性虽都来自一阶导数，却不能通过简单替换指数相互推导。
+
+中文伴读可参阅王明新的《索伯列夫空间》\cite[第2.6--2.11节]{Wang2013SobolevChinese}。Nirenberg 的《On elliptic partial differential equations》\cite[第II讲]{Nirenberg1959Elliptic}提供 Sobolev 不等式的原始证明路线；本章展开其中任意维 Hölder 归纳和幂次代换。Morrey 部分参照 Hajłasz 的《Sobolev spaces on metric-measure spaces》\cite{Hajlasz2003SobolevMetric}中球均值的组织方式，但这里的证明始终在欧氏空间中完成。
 
 \input{Part04/Chapter24/Section2401}
 \input{Part04/Chapter24/Section2402}
 \input{Part04/Chapter24/Section2403}
 \input{Part04/Chapter24/Section2404}
 \input{Part04/Chapter24/Section2405}
-% 本章小结（不计入编号）
-\begin{chaptersummary}
-待填充。
-\end{chaptersummary}
 
+\begin{chaptersummary}
+梯度首先只能控制函数相对于常数的变化。均值与零边界条件以不同方式消除了这一自由度：前者在一般区域上需要连通性及合适的几何控制，后者可以在任意有界开集上通过紧支集逼近建立。
+
+指数低于维数时，逐坐标积分与幂次代换提高了函数值的可积性；指数高于维数时，可和的球平均误差产生了连续代表。两条路线都保留了尺度，并各有不能直接纳入的端点。高阶与分数阶嵌入需要把这些工具实际作用于相应导数或差分，不能仅对定理中的阶数作形式替换。
+
+临界指数没有一般的 \(L^\infty\) 控制，却仍能给出指数可积性。常数的增长、平均振幅的衰减和集中反例共同说明了这种边界。下一章将把注意力从单个函数转到函数列，研究这些有界控制在什么条件下能够产生强收敛子列。
+\end{chaptersummary}
 
 \BookExercises
 
-待填充。
+% 第二十四章习题临时稿；不另设 BookExercises 入口。
+% 八题均为自拟的正文工具变式；各解答展开新增计算或构造，不冒认教材原题编号。
+% 依赖止于本章，不调用第二十五章的紧嵌入或平移紧性判据。
+
+\begin{exercise}\label{b1:ex:24-componentwise-poincare}
+设 \(1\le p<\infty\)，\(\Omega_1,\ldots,\Omega_N\subset\mathbb R^d\) 为非空、有界、连通的 Lipschitz 开集，且它们的闭包两两不交。令
+\(\Omega=\bigcup_{j=1}^N\Omega_j\)，并对 \(u\in W^{1,p}(\Omega)\) 定义
+\[
+ Pu=\sum_{j=1}^Nu_{\Omega_j}\mathbf1_{\Omega_j},
+ \quad u_{\Omega_j}=\frac1{|\Omega_j|}\int_{\Omega_j}u.
+\]
+\begin{enumerate}
+ \item\label{b1:item:24-componentwise-estimate}
+ 证明 \(P\) 是 \(L^p(\Omega)\) 上的压缩投影，且
+ \[
+  \|u-Pu\|_{L^p(\Omega)}
+       \le C\|\nabla u\|_{L^p(\Omega)}.
+ \]
+ 若各分量均值 Poincaré 不等式的最优常数为 \(C_j\)，证明此处最优常数为
+ \(\max_j C_j\)。
+ \item\label{b1:item:24-componentwise-kernel}
+ 刻画 \(W^{1,p}(\Omega)\) 中满足 \(\nabla u=0\) 的全部函数，并证明当 \(N\ge2\) 时，不能把上式中的 \(Pu\) 换成全域平均值 \(u_\Omega\)。
+\end{enumerate}
+\end{exercise}
+% 来源：自拟；有限分量的直和估计及梯度核，补充连通域均值 Poincaré 的假设边界。
+\begin{solution}
+由 Jensen 不等式，
+\[
+ |\Omega_j|\cdot|u_{\Omega_j}|^p
+       \le\int_{\Omega_j}|u|^p.
+\]
+求和得到 \(\|Pu\|_p\le\|u\|_p\)。取过一次分量平均后，每个分量上已是常函数，所以 \(P^2=P\)；线性也由积分的线性得到。
+
+分量上的常函数在 \(\Omega\) 内没有弱导数。事实上，测试函数的支集与
+\(\partial\Omega\) 保持正距离，在每个分量内积分其偏导都为零；这里没有跨越域外边界的跳跃项。因此 \(Pu\in W^{1,p}(\Omega)\)，且
+\(\nabla(u-Pu)=\nabla u\)。在每个分量应用定理%
+\ref{b1:thm:connected-domain-poincare}，再把 \(p\) 次方相加，得到
+\[
+ \begin{aligned}
+ \|u-Pu\|_p^p
+ &=\sum_{j=1}^N\|u-u_{\Omega_j}\|_{L^p(\Omega_j)}^p\\
+ &\le\left(\max_j C_j\right)^p
+                       \sum_{j=1}^N\|\nabla u\|_{L^p(\Omega_j)}^p.
+ \end{aligned}
+\]
+最优常数的下界可以逐个分量测试：在 \(\Omega_j\) 上任选一个函数，在其他分量上置零，整体比值恰好成为该分量的比值。取上确界并遍历 \(j\)，就得到所求的精确常数，不要求最优值由某个函数取得。
+
+若 \(\nabla u=0\)，刚才的估计给出 \(u=Pu\) 几乎处处，故 \(u\) 在每个分量上分别为常数；反向已在前面说明。若 \(N\ge2\)，取
+\[
+ u=|\Omega_2|\mathbf1_{\Omega_1}
+           -|\Omega_1|\mathbf1_{\Omega_2},
+\]
+并在其余分量上置零。此函数的全域平均为零、梯度为零，却不是零函数。因此全域平均不能消除梯度核中的全部自由度；需要消除的是每个分量上的一个常数。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:24-thin-neck-constant}
+设 \(d\ge2\)、\(1\le p<\infty\)、\(0<\varepsilon<1/2\)。考虑两个盒子由细颈连接而成的开集
+\[
+ \begin{aligned}
+ \Omega_\varepsilon={}&
+   \bigl((-2,-1/2)\times(-1,1)^{d-1}\bigr)\\
+ &{}\cup\bigl((-1,1)\times(-\varepsilon,\varepsilon)^{d-1}\bigr)\\
+ &{}\cup\bigl((1/2,2)\times(-1,1)^{d-1}\bigr).
+ \end{aligned}
+\]
+令 \(C_\varepsilon\) 为该连通 Lipschitz 开集上均值 Poincaré 不等式的最优常数。证明
+\[
+ C_\varepsilon\ge
+       \frac{3^{1/p}}2\,\varepsilon^{-(d-1)/p}.
+\]
+据此说明：对全部有界连通 Lipschitz 开集，常数不能只由维数、指数以及直径和体积的统一上下界控制。
+\end{exercise}
+% 来源：自拟；固定体积盒子与退化细颈的显式测试，不借用特征值或谱理论。
+\begin{solution}
+定义分段线性函数
+\[
+ h(s)=
+ \begin{cases}
+  -1,&s\le-1/2,\\
+  2s,&-1/2<s<1/2,\\
+  1,&s\ge1/2,
+ \end{cases}
+ \quad u_\varepsilon(x)=h(x_1).
+\]
+这个函数在全空间 Lipschitz，因而其在 \(\Omega_\varepsilon\) 上的限制属于
+\(W^{1,p}\)。区域关于 \(x_1\mapsto-x_1\) 对称，而函数关于此变换变号，所以
+\((u_\varepsilon)_{\Omega_\varepsilon}=0\)。
+
+两个大盒子上的函数模都等于 \(1\)。它们各自的体积为
+\((3/2)2^{d-1}\)，故
+\[
+ \|u_\varepsilon\|_{L^p(\Omega_\varepsilon)}^p
+              \ge3\cdot2^{d-1}.
+\]
+唯一非零的偏导是中央细颈上的 \(\partial_1u_\varepsilon=2\)。这一部分的长度为 \(1\)，横截面体积为 \((2\varepsilon)^{d-1}\)，因而
+\[
+ \|\nabla u_\varepsilon\|_{L^p(\Omega_\varepsilon)}^p
+              =2^p(2\varepsilon)^{d-1}.
+\]
+将这个函数代入最优常数的定义，即得
+\[
+ C_\varepsilon^p\ge
+     \frac{3\cdot2^{d-1}}{2^p(2\varepsilon)^{d-1}}
+     =\frac3{2^p}\varepsilon^{-(d-1)}.
+\]
+
+这些区域均包含固定的两个大盒子，又都包含在
+\((-2,2)\times(-1,1)^{d-1}\) 中，故体积和直径均有与 \(\varepsilon\) 无关的正下界及有限上界。对每个固定 \(\varepsilon\)，盒子的平面边界与有限个转角给出 Lipschitz 边界；开集连通，因为细颈与两个盒子分别重叠。随 \(\varepsilon\) 缩小，退化的是连接几何，而不是这些粗略尺寸。上面的下界趋于无穷，证明了最后的断言。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:24-linear-normalization}
+设 \(\Omega\subset\mathbb R^d\) 为非空、有界、连通的 Lipschitz 开集，
+\(1\le p<\infty\)。本题取实值函数，并令
+\(\ell:W^{1,p}(\Omega)\to\mathbb R\) 为连续线性泛函。证明下列条件等价。
+\begin{equivalences}
+ \item\label{b1:item:24-normalization-detects-constants}
+ \(\ell(1)\ne0\)。
+ \item\label{b1:item:24-normalization-poincare}
+ 存在有限常数 \(C_\ell\)，使所有满足 \(\ell(u)=0\) 的 \(u\) 都有
+ \(\|u\|_{L^p(\Omega)}\le C_\ell\|\nabla u\|_{L^p(\Omega)}\)。
+\end{equivalences}
+进一步，若 \(A\subset\Omega\) 可测且 \(|A|>0\)，证明条件 \(\int_Au=0\) 蕴含
+\[
+ \|u\|_{L^p(\Omega)}
+ \le C_P\Bigl(1+(|\Omega|/|A|)^{1/p}\Bigr)
+          \|\nabla u\|_{L^p(\Omega)},
+\]
+其中 \(C_P\) 是通常均值 Poincaré 不等式的任一个可用常数。
+\end{exercise}
+% 来源：自拟；用一般连续线性约束代替全域均值，再给出可测子集上的明确常数。
+\begin{solution}
+若 \(\ell(1)=0\)，常函数 \(u=1\) 就属于 \(\ker\ell\)，但其梯度为零、函数范数非零，所以第二个条件不可能成立。
+
+现在设 \(\ell(1)\ne0\)，并取 \(\ell(u)=0\)。写成
+\[
+ u=v+c,\quad c=u_\Omega,\quad v=u-u_\Omega.
+\]
+由定理\ref{b1:thm:connected-domain-poincare}及弱导数范数的有限维等价性，有
+\[
+ \|v\|_{L^p(\Omega)}\le C_P\|\nabla u\|_p,
+ \quad \|v\|_{W^{1,p}(\Omega)}\le C_0\|\nabla u\|_p,
+\]
+其中 \(C_0\) 只依赖于 \(\Omega,d,p\)。因为
+\(0=\ell(v)+c\ell(1)\)，连续性给出
+\[
+ |c|\le\frac{\|\ell\|}{|\ell(1)|}
+                   \|v\|_{W^{1,p}(\Omega)}
+       \le\frac{C_0\|\ell\|}{|\ell(1)|}\|\nabla u\|_p.
+\]
+于是
+\[
+ \|u\|_p\le\|v\|_p+|\Omega|^{1/p}\cdot|c|
+ \le\left(C_P+
+       \frac{|\Omega|^{1/p}C_0\|\ell\|}{|\ell(1)|}\right)
+                 \|\nabla u\|_p,
+\]
+这就证明等价性。
+
+对于最后的条件，仍用同一分解；从 \(\int_Au=0\) 得到
+\[
+ |c|=\left|\frac1{|A|}\int_Av\right|
+       \le |A|^{-1/p}\|v\|_{L^p(A)}.
+\]
+这里 \(p=1\) 时直接使用积分三角不等式，\(p>1\) 时使用 Hölder 不等式。因此
+\[
+ \|u\|_p\le
+     \Bigl(1+(|\Omega|/|A|)^{1/p}\Bigr)
+                   \|v\|_p,
+\]
+再代入通常的 Poincaré 估计，便得到所列常数。这个约束不要求 \(A\) 是开集，也不要求它包含一个球。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:24-supercritical-algebra}
+设 \(\Omega\subset\mathbb R^d\) 为非空有界 Lipschitz 开集，\(d<p<\infty\)，本题取实值函数。
+\begin{enumerate}
+ \item\label{b1:item:24-sobolev-algebra}
+ 证明乘法满足
+ \[
+  \|uv\|_{W^{1,p}(\Omega)}
+       \le C\|u\|_{W^{1,p}(\Omega)}
+                 \cdot\|v\|_{W^{1,p}(\Omega)}.
+ \]
+ 由此证明，适当放大原范数后，新范数仍完备且满足次乘性
+ \(\|uv\|_{\mathrm A}\le\|u\|_{\mathrm A}\cdot\|v\|_{\mathrm A}\)，常函数 \(1\) 为乘法单位元。
+ \item\label{b1:item:24-sobolev-inversion}
+ 若 \(u\in W^{1,p}(\Omega)\) 且 \(|u|\ge\delta>0\) 几乎处处，证明
+ \(1/u\in W^{1,p}(\Omega)\)，并给出它的函数项与梯度项估计。进一步证明：在这类远离零的函数中，若 \(u_n\to u\) 于 \(W^{1,p}\)，且所有 \(|u_n|\ge\delta\)，则
+ \(1/u_n\to1/u\) 于 \(W^{1,p}\)。
+\end{enumerate}
+\end{exercise}
+% 来源：自拟；Morrey 嵌入与已建立的 Leibniz、链式法则组合，强调代数性所需的上确界控制。
+\begin{solution}
+由推论\ref{b1:cor:morrey-domain}，
+\[
+ \|w\|_\infty\le C_M\|w\|_{W^{1,p}(\Omega)}.
+\]
+所以 \(u,v\) 都本性有界，可以使用命题\ref{b1:prop:sobolev-product}的乘积公式。
+函数项和梯度项分别满足
+\[
+ \|uv\|_p\le\|u\|_\infty\cdot\|v\|_p,
+ \quad
+ \|\nabla(uv)\|_p
+ \le\|u\|_\infty\cdot\|\nabla v\|_p
+       +\|v\|_\infty\cdot\|\nabla u\|_p.
+\]
+代入上确界估计并合并各项，就得到第一问。取一个不小于 \(1\) 的可用常数 \(C\)，将范数改为
+\(\|w\|_{\mathrm A}=C\|w\|_{W^{1,p}}\)，则
+\(\|uv\|_{\mathrm A}\le\|u\|_{\mathrm A}\cdot\|v\|_{\mathrm A}\)。
+等价范数保持完备性，而有界域上的常函数 \(1\) 属于这个空间，并且是乘法单位元。
+
+对第二问，取光滑函数 \(\zeta\)，使它在 \([-\delta/2,\delta/2]\) 上为零，在
+\((-\infty,-\delta]\cup[\delta,\infty)\) 上为一，令
+\(F(t)=\zeta(t)/t\) 并规定 \(F(0)=0\)。这样 \(F\) 在全实轴光滑，导数有界，且
+\(F(u)=1/u\)。由定理\ref{b1:thm:sobolev-chain}，
+\[
+ \nabla(1/u)=-u^{-2}\nabla u
+       \quad\text{几乎处处},
+\]
+且
+\[
+ \|1/u\|_p\le|\Omega|^{1/p}\delta^{-1},
+ \quad
+ \|\nabla(1/u)\|_p\le\delta^{-2}\|\nabla u\|_p.
+\]
+这里有界域使函数项可积，不仅仅是导数项可积。
+
+最后，Morrey 估计使 \(u_n\to u\) 也成为连续代表的一致收敛。倒数之差满足
+\[
+ \|1/u_n-1/u\|_p\le\delta^{-2}\|u_n-u\|_p.
+\]
+在集合 \(\{\,t:|t|\ge\delta\,\}\) 上，映射 \(t\mapsto t^{-2}\) 满足
+\[
+ |a^{-2}-b^{-2}|\le2\delta^{-3}|a-b|.
+\]
+当 \(a,b\) 同号时这来自导数界；异号时可先比较 \(|a|,|b|\)，并使用
+\(\bigl||a|-|b|\bigr|\le|a-b|\)。因此
+\[
+ \begin{aligned}
+ \|\nabla(1/u_n)-\nabla(1/u)\|_p
+ &\le\delta^{-2}\|\nabla u_n-\nabla u\|_p\\
+ &\quad+2\delta^{-3}\|u_n-u\|_\infty
+                         \cdot\|\nabla u\|_p
+ \longrightarrow0.
+ \end{aligned}
+\]
+两项合起来便给出所求 Sobolev 范数收敛。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:24-morrey-logarithmic-cusp}
+设 \(d\ge2\)、\(d<p<\infty\)，并记 \(\alpha=1-d/p\)。
+对于实数 \(\gamma\)，在单位球 \(B\) 上定义
+\[
+ u(0)=0,\quad
+ u(x)=|x|^\alpha\bigl(\log(e/|x|)\bigr)^{-\gamma}
+                  \quad(0<|x|<1).
+\]
+证明
+\[
+ u\in W^{1,p}(B)\quad\Longleftrightarrow\quad\gamma p>1.
+\]
+在 \(\gamma p>1\) 时，证明 \(u\) 的连续代表属于 \(C^{0,\alpha}(\overline B)\)，但不属于任何
+\(C^{0,\beta}(\overline B)\)，其中 \(\alpha<\beta\le1\)。
+这里要检验一个固定函数的正则性，不能只用函数族的缩放排除统一估计。
+\end{exercise}
+% 来源：自拟；临界幂次乘对数因子的可积性计算，与正文的统一 Hölder 估计尖锐性区分。
+\begin{solution}
+令 \(L(r)=\log(e/r)\)。由于任意正幂的衰减快于对数的增长，
+\(r^\alpha L(r)^{-\gamma}\to0\)，所以给定函数在 \(\overline B\) 连续，特别属于
+\(L^p(B)\)。在原点以外，径向求导得到
+\[
+ \frac{\mathrm d}{\mathrm dr}
+       \bigl(r^\alpha L(r)^{-\gamma}\bigr)
+ =r^{\alpha-1}L(r)^{-\gamma}
+                     \left(\alpha+\frac\gamma{L(r)}\right).
+\]
+当 \(r\) 足够小时，最后括号中的量处于两个严格为正的常数之间。因此经典梯度的
+\(p\) 次积分在原点附近有限，当且仅当
+\[
+ \int_0^{1/2}r^{d-1+p(\alpha-1)}L(r)^{-\gamma p}\,\mathrm dr
+ =\int_0^{1/2}\frac{\mathrm dr}{rL(r)^{\gamma p}}<\infty.
+\]
+代换 \(t=L(r)\) 后，这等价于 \(\int_{\log(2e)}^\infty t^{-\gamma p}\,\mathrm dt<\infty\)，也就是 \(\gamma p>1\)。
+如果 \(u\in W^{1,p}(B)\)，它的弱梯度在不含原点的区域必与这个经典梯度一致，故该条件必要。
+
+为证明充分性，还须核实原点没有遗漏的分布项。设 \(\gamma p>1\)，取光滑
+\(\eta:[0,\infty)\to[0,1]\)，使它在 \([0,1]\) 上为零，在 \([2,\infty)\) 上为一，令
+\[
+ u_\varepsilon(x)=\eta(|x|/\varepsilon)u(x).
+\]
+每个 \(u_\varepsilon\) 在 \(B\) 内光滑。记上面算出的经典梯度为 \(g\)，并在原点随意赋值。已经知道 \(g\in L^p(B)\)，且
+\[
+ \nabla u_\varepsilon
+  =\eta(|x|/\varepsilon)g
+       +\varepsilon^{-1}\eta'(|x|/\varepsilon)
+                         u(x)\frac{x}{|x|}
+\]
+在原点以外成立。第一项在 \(L^p\) 中趋于 \(g\)。第二项仅支于
+\(\{\varepsilon<|x|<2\varepsilon\}\)，其范数的 \(p\) 次方不超过
+\[
+ C\varepsilon^{-p}\varepsilon^{d+\alpha p}
+                  L(\varepsilon)^{-\gamma p}
+   =C L(\varepsilon)^{-\gamma p}\longrightarrow0.
+\]
+这里用到了环带上 \(L(|x|)\) 与 \(L(\varepsilon)\) 的可比性，以及
+\(d+\alpha p-p=0\)。同时 \(u_\varepsilon\to u\) 于 \(L^p\)。在弱导数恒等式中通过极限，得到 \(u\in W^{1,p}(B)\) 且 \(\nabla u=g\)。
+
+由推论\ref{b1:cor:morrey-domain}，这个空间的元素有 \(\alpha\)-Hölder 连续代表。它与题中已有的连续函数几乎处处相同，因而处处相同。可是对任意 \(\beta>\alpha\)，
+\[
+ \frac{|u(re_1)-u(0)|}{|re_1|^\beta}
+       =r^{\alpha-\beta}L(r)^{-\gamma}
+                  \longrightarrow\infty.
+\]
+所以任何更大的 Hölder 指数都不能用于这个固定函数。对数衰减使临界梯度可积，却不能补偿正幂之间的差距。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:24-moser-concentration}
+设 \(d\ge2\)，记 \(\omega_d=|B(0,1)|\)、\(\sigma_{d-1}=d\omega_d\)，固定 \(R=1/2\)。对 \(L\ge1\)，在 \(\mathbb R^d\) 上定义
+\[
+ u_L(x)=\sigma_{d-1}^{-1/d}
+ \begin{cases}
+  L^{(d-1)/d},& |x|\le R e^{-L},\\
+  L^{-1/d}\log(R/|x|),& R e^{-L}<|x|<R,\\
+  0,&|x|\ge R.
+ \end{cases}
+\]
+\begin{enumerate}
+ \item\label{b1:item:24-moser-norms}
+ 证明 \(u_L\in W_0^{1,d}(B(0,1))\)，并且
+ \(\|\nabla u_L\|_d=1\)、\(\|u_L\|_d\to0\)。
+ \item\label{b1:item:24-moser-supercritical-exponent}
+ 证明若 \(q>d/(d-1)\)，则对于每个 \(a>0\)，都有
+ \[
+  \int_{B(0,1)}\exp(a|u_L|^q)\,\mathrm dx
+                       \longrightarrow\infty.
+ \]
+ 在 \(q=d/(d-1)\) 时，进一步证明同样的发散对于
+ \(a>d\,\sigma_{d-1}^{1/(d-1)}\) 成立。
+\end{enumerate}
+由此说明超临界指数不可能具有梯度单位球上的统一指数积分界；本题不要求证明临界系数上界能够取得。
+\end{exercise}
+% 来源：自拟整理经典径向对数集中机制；这里逐项证明所需结论，不冒认未实读的 Moser 原题或最优常数证明。
+\begin{solution}
+对于每个固定 \(L\)，径向剖面连续且分段光滑，导数有界。因此 \(u_L\) 是全空间的
+Lipschitz 函数，支集包含于 \(\overline{B(0,R)}\Subset B(0,1)\)。它属于
+\(W^{1,d}\)，由命题\ref{b1:prop:compact-sobolev-smooth-approximation}的内部紧支集逼近，得到 \(u_L\in W_0^{1,d}(B(0,1))\)。
+
+梯度只在中间环带非零，其模为
+\(\sigma_{d-1}^{-1/d}L^{-1/d}|x|^{-1}\)。极坐标积分给出
+\[
+ \int_{\mathbb R^d}|\nabla u_L|^d\,\mathrm dx
+       =L^{-1}\int_{Re^{-L}}^R\frac{\mathrm dr}{r}=1.
+\]
+对函数本身，在环带使用 \(t=\log(R/r)\) 代换，得到
+\[
+ \|u_L\|_d^d
+ =\frac{\omega_dR^d}{\sigma_{d-1}}L^{d-1}e^{-dL}
+       +\frac{R^d}{L}\int_0^L t^d e^{-dt}\,\mathrm dt.
+\]
+第一个项趋于零；第二个项也趋于零，因为
+\(\int_0^\infty t^d e^{-dt}\,\mathrm dt<\infty\)。这证明第一问的两个范数结论。
+
+内球 \(B(0,Re^{-L})\) 上的函数值是常数，故
+\[
+ \int_{B(0,1)}\exp(a|u_L|^q)\,\mathrm dx
+ \ge\omega_dR^d
+       \exp\left(-dL+
+          a\sigma_{d-1}^{-q/d}L^{q(d-1)/d}\right).
+\]
+若 \(q>d/(d-1)\)，最后的正项关于 \(L\) 的幂次严格大于 \(1\)，因而它超过线性负项，右端趋于无穷。若 \(q=d/(d-1)\)，指数变为
+\[
+ \left(a\sigma_{d-1}^{-1/(d-1)}-d\right)L.
+\]
+题设对 \(a\) 的条件恰使括号为正，所以仍然发散。这给出了临界指数下系数的一个必要上界；证明没有给出该界处的统一可积估计。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:24-higher-order-scaling}
+设 \(B=B(0,1)\subset\mathbb R^d\)、\(k\ge2\) 为整数、\(1\le p<\infty\)。本题只测试
+\(C_c^\infty(B)\) 中的函数，不使用高阶延拓定理。
+\begin{enumerate}
+ \item\label{b1:item:24-higher-order-lq-obstruction}
+ 当 \(kp<d\) 时，设 \(1\le q\le\infty\)。证明若
+ \[
+  \|u\|_{L^q(B)}\le C\|u\|_{W^{k,p}(B)}
+       \quad\text{对全部 }u\in C_c^\infty(B)
+ \]
+ 成立，则必须有 \(q\le dp/(d-kp)\)。这里允许 \(q=\infty\)。
+ \item\label{b1:item:24-higher-order-holder-obstruction}
+ 设 \(0\le j<k\)、\(0<\beta\le1\)。若存在有限常数 \(C\)，使所有
+ \(u\in C_c^\infty(B)\) 都满足
+ \[
+  \max_{|\kappa|=j}[D^\kappa u]_{0,\beta;\overline B}
+        \le C\|u\|_{W^{k,p}(B)},
+ \]
+ 证明必要关系为 \(j+\beta\le k-d/p\)。
+\end{enumerate}
+说明为什么第一问的同一种集中计算，在 \(kp=d\) 时不能单独排除目标空间
+\(L^\infty\)。
+\end{exercise}
+% 来源：自拟；高阶非齐次范数中各阶项的尺度分离，以及高阶 Hölder 目标的必要限制。
+\begin{solution}
+取非零 \(\varphi\in C_c^\infty(B)\)，并对 \(0<\varepsilon<1\) 令
+\[
+ u_\varepsilon(x)=\varepsilon^{k-d/p}\varphi(x/\varepsilon).
+\]
+它的支集包含于 \(\varepsilon\operatorname{supp}\varphi\Subset B\)。对每个
+\(|\kappa|\le k\)，变量代换给出
+\[
+ \|D^\kappa u_\varepsilon\|_{L^p(B)}
+       =\varepsilon^{k-|\kappa|}
+                    \|D^\kappa\varphi\|_{L^p(\mathbb R^d)}.
+\]
+因此这列函数的 \(W^{k,p}(B)\) 范数一致有界；最高阶项保持不变，低阶项趋于零。
+另一方面，对 \(q<\infty\)，
+\[
+ \|u_\varepsilon\|_{L^q(B)}
+       =\varepsilon^{k-d/p+d/q}\|\varphi\|_q,
+\]
+而 \(q=\infty\) 时同式按 \(d/q=0\) 理解。若 \(kp<d\) 且
+\(q>dp/(d-kp)\)，这个幂次严格为负，左端趋于无穷，与统一估计矛盾。
+
+为检验第二问，选取 \(\varphi\)、一个 \(|\kappa|=j\) 的多重指标，以及
+\(a,b\in B\)，使 \(a\ne b\) 且
+\(D^\kappa\varphi(a)\ne D^\kappa\varphi(b)\)。例如取一个相应导数不恒定的光滑紧支集函数即可。对同一集中族，在两个点
+\(\varepsilon a,\varepsilon b\) 处计算得到
+\[
+ \frac{|D^\kappa u_\varepsilon(\varepsilon a)
+             -D^\kappa u_\varepsilon(\varepsilon b)|}
+      {|\varepsilon a-\varepsilon b|^\beta}
+ =\varepsilon^{k-d/p-j-\beta}
+       \frac{|D^\kappa\varphi(a)-D^\kappa\varphi(b)|}
+            {|a-b|^\beta}.
+\]
+最后一个分式是严格为正的固定数。因此若
+\(j+\beta>k-d/p\)，左侧趋于无穷，而右侧所允许的 Sobolev 范数仍然有界，矛盾。
+
+在临界关系 \(kp=d\) 下，第一问的函数族变成
+\(u_\varepsilon(x)=\varphi(x/\varepsilon)\)，其上确界范数不随 \(\varepsilon\) 改变。这个计算既没有制造上确界发散，也没有证明统一 \(L^\infty\) 嵌入成立。临界情形需要对数剖面等不同于单纯重缩放的构造。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:24-morrey-integrability-balance}
+设 \(d<p<\infty\)、\(1\le r<\infty\)，令
+\[
+ \alpha=1-\frac dp,\quad
+ a=\frac d{d+\alpha r}.
+\]
+证明对于每个
+\(u\in W^{1,p}(\mathbb R^d)\cap L^r(\mathbb R^d)\)，其连续代表满足
+\[
+ \|u\|_\infty
+    \le C_{d,p,r}\|\nabla u\|_p^a
+                    \cdot\|u\|_r^{\,1-a}.
+\]
+提示：比较一个点的函数值与半径 \(R\) 的球平均，再依两个范数选择 \(R\)。
+还应处理梯度范数为零的情形，并说明为何任何具有相同两因子形式、对全空间全部函数成立的估计，都必须采用这里的指数 \(a\)。
+\end{exercise}
+% 来源：自拟；将全空间 Morrey 振荡控制与额外 Lr 可积性平衡，不使用紧性或插值空间理论。
+\begin{solution}
+记 \(G=\|\nabla u\|_p\)、\(A=\|u\|_r\)。由定理%
+\ref{b1:thm:morrey-whole-space}，存在唯一连续代表，使
+\[
+ |u(x)-u(y)|\le C_{d,p}G|x-y|^\alpha
+                  \quad(x,y\in\mathbb R^d).
+\]
+若 \(G=0\)，这个代表为全空间常函数；有限 \(r\) 的可积性迫使它等于零，所求估计成立。
+若 \(A=0\)，函数同样为零。因此以下只考虑 \(G,A>0\)。
+
+固定 \(x\in\mathbb R^d\) 及任意 \(R>0\)，对 \(y\in B(x,R)\) 平均上述振荡界，再使用 Hölder 不等式，得到
+\[
+ \begin{aligned}
+ |u(x)|
+ &\le\frac1{|B(x,R)|}\int_{B(x,R)}|u(y)|\,\mathrm dy
+                                  +C_{d,p}G R^\alpha\\
+ &\le\omega_d^{-1/r}R^{-d/r}A+C_{d,p}G R^\alpha.
+ \end{aligned}
+\]
+在 \(r=1\) 时，第二行只是把局部积分放大为全空间积分。选择
+\[
+ R=(A/G)^{1/(\alpha+d/r)}
+\]
+后，两个项都由一个只依赖 \(d,p,r\) 的常数乘
+\[
+ G^{\,d/(d+\alpha r)}A^{\,\alpha r/(d+\alpha r)}
+\]
+控制。此界与 \(x\) 无关，取上确界即得结论。
+
+最后，假设同样的估计能以某个固定指数 \(b\) 代替 \(a\)。取非零
+\(\varphi\in C_c^\infty(\mathbb R^d)\)，对全部 \(\lambda>0\) 测试
+\(\varphi_\lambda(x)=\varphi(\lambda x)\)。其上确界不变，而
+\[
+ \|\nabla\varphi_\lambda\|_p
+        =\lambda^\alpha\|\nabla\varphi\|_p,\quad
+ \|\varphi_\lambda\|_r
+        =\lambda^{-d/r}\|\varphi\|_r.
+\]
+估计右端中的尺度因子为 \(\lambda^{b\alpha-(1-b)d/r}\)。若幂次非零，令
+\(\lambda\) 趋于零或无穷即可使右端趋于零，违反左端严格为正这一事实。所以
+\(b\alpha=(1-b)d/r\)，解得 \(b=a\)。这一必要性来自尺度平衡，并未使用任何极值函数或紧性结论。
+\end{solution}

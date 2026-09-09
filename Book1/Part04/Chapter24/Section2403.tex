@@ -2,24 +2,232 @@
 \section{Morrey 理论}
 \label{b1:sec:2403}
 
-% TODO: 撰写本节正文。
+当梯度的可积指数超过空间维数时，局部平均振荡不仅趋零，而且在逐次缩小半径后可以求和。这使 Sobolev 函数获得连续代表，并给出两点之间的定量控制。以下先讨论 \(d\ge1\)、\(d<p<\infty\)，令
+\[
+ \alpha=1-\frac dp\in(0,1).
+\]
+以下以实值函数为主，复值或有限维向量值函数可按分量处理。记 \(\|\nabla u\|_{L^p}\) 为弱梯度的欧氏长度的 \(L^p\) 范数；它与本书按偏导分量计算的梯度范数只相差依赖维数及 \(p\) 的等价常数。
 
-\subsection{\texorpdfstring{\(p>n\)}{p>n}}
+Hajłasz 的《Sobolev spaces on metric-measure spaces》\cite{Hajlasz2003SobolevMetric}第9节用球均值的望远镜求和把平均振荡变成双点估计。下面保留这一组织，但利用欧氏体积与 \(p>d\)，直接让球均值在每个点收敛，不先把讨论限制在 Lebesgue 点上。
+% 实读 Hajlasz2003SobolevMetric：作者正式公开PDF，§9 Theorem 9.4及完整证明，
+% 印刷204--205页；另读Theorem 9.7(3)的Hölder结论陈述，印刷206页。
+% 这里改编逐半径球均值比较；一般度量空间的先修与9.7完整证明不作为本节依赖。
+% 欧氏球Poincare由本章24.1提供；每一点的极限、任意半径一致性及代表辨析另行展开。
+
+\subsection{\texorpdfstring{\(p>d\)}{p>d}}
 \label{b1:subsec:240301}
 
-待填充。
+对球 \(B=B(x,r)\)，记 \(u_B=m_d(B)^{-1}\int_Bu\)。球上的 Poincaré 不等式与 Hölder 不等式给出
+\begin{equation}\label{b1:eq:morrey-average-oscillation}
+ \begin{split}
+ \frac1{m_d(B)}\int_B|u-u_B|
+ &\le m_d(B)^{-1/p}\|u-u_B\|_{L^p(B)}\\
+ &\le C_{d,p}r^{1-d/p}\|\nabla u\|_{L^p(B)}.
+ \end{split}
+\end{equation}
+这里使用的是\cref{b1:thm:ball-poincare-lp}，无需先知道 \(u\) 连续。幂次 \(1-d/p\) 是导数贡献的一个长度因子，与平均化引入的 \(r^{-d/p}\) 相乘所得。当它为正时，各个尺度的误差形成收敛的几何级数。
+
+\begin{lemma}\label{b1:lem:morrey-ball-average-limit}
+若 \(u\in W^{1,p}_{\mathrm{loc}}(\Omega)\)，其中 \(\Omega\subset\mathbb R^d\) 为开集、\(d<p<\infty\)，则对每个 \(x\in\Omega\)，有限极限
+\[
+ u^*(x)=\lim_{r\downarrow0}u_{B(x,r)}
+\]
+都存在，且 \(u^*=u\) 几乎处处。对每个满足 \(\overline{B(x,R)}\Subset\Omega\) 的球，还有
+\begin{equation}\label{b1:eq:morrey-average-error}
+ |u^*(x)-u_{B(x,R)}|
+ \le C_{d,p}R^\alpha\|\nabla u\|_{L^p(B(x,R))}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+固定 \(x,R\)，置 \(r_j=2^{-j}R\) 和 \(B_j=B(x,r_j)\)。因为两相邻球的体积比为 \(2^d\)，
+\[
+ \begin{split}
+ |u_{B_{j+1}}-u_{B_j}|
+ &\le\frac1{m_d(B_{j+1})}\int_{B_j}|u-u_{B_j}|\\
+ &\le C_{d,p}r_j^\alpha\|\nabla u\|_{L^p(B_j)}
+ \le C_{d,p}2^{-j\alpha}R^\alpha
+                         \|\nabla u\|_{L^p(B_0)}.
+ \end{split}
+\]
+右端可求和，所以均值序列为 Cauchy 列，存在有限极限；从 \(j=0\) 起求和就得到\eqref{b1:eq:morrey-average-error}。
+
+还要排除极限对选定半径列的依赖。若 \(r_{j+1}<r\le r_j\)，则 \(B(x,r)\subset B_j\)，且体积比仍不超过 \(2^d\)。同一估计给出
+\[
+ |u_{B(x,r)}-u_{B_j}|
+ \le C_{d,p}r_j^\alpha\|\nabla u\|_{L^p(B_0)}
+ \longrightarrow0.
+\]
+因此所有趋零半径的均值都趋于同一极限，它与最初的 \(R\) 无关。以上论证对每个固定点成立，没有删除例外点。最后由\cref{b1:thm:lebesgue-point}，在几乎每个点，该极限等于原函数值，故确实得到 \(u\) 的一个代表。
+\end{proof}
+
+当 \(p=d\) 时，上面用整个固定球上的梯度范数估计的几何级数失去衰减。这个观察只说明当前证明不能给出正的 Hölder 指数。第\ref{b1:sec:2405}节将讨论临界情形中的其他控制。
 
 \subsection{Hölder 连续性}
 \label{b1:subsec:240302}
 
-待填充。
+\begin{definition}\label{b1:def:holder-space}
+给定非空集合 \(A\subset\mathbb R^d\) 及 \(0<\gamma\le1\)，若函数 \(v:A\rightarrow\mathbb R\) 满足
+\[
+ [v]_{0,\gamma;A}
+ =\sup_{\substack{x,y\in A\\x\ne y}}
+       \frac{|v(x)-v(y)|}{|x-y|^\gamma}<\infty,
+\]
+则称它在 \(A\) 上为 \(\gamma\) 阶\term[holder-lianxu]{Hölder 连续}[Hölder continuous]。若还满足 \(\sup_A|v|<\infty\)，记 \(v\in C^{0,\gamma}(A)\)，并规定
+\[
+ \|v\|_{C^{0,\gamma}(A)}
+ =\sup_A|v|+[v]_{0,\gamma;A}.
+\]
+集合只有一个点时，半范数中的上确界约定为零。
+\end{definition}
+\symidx{\(C^{0,\gamma}(A)\)：有界Hölder连续函数空间}
+\symidx{\([v]_{0,\gamma;A}\)：Hölder半范数}
+
+指数为 \(1\) 时就是 Lipschitz 条件。对紧集，有限半范数和任意一个有限点值已保证有界；在全空间上则不能省去零阶条件，例如 \(v(x)=x_1\) 虽然 Lipschitz，却不属于这里的 \(C^{0,1}(\mathbb R^d)\)。
+
+\begin{theorem}[Morrey]\label{b1:thm:morrey-whole-space}
+设 \(d<p<\infty\) 且 \(u\in W^{1,p}(\mathbb R^d)\)。球平均极限 \(u^*\) 是唯一的连续代表，属于 \(C^{0,\alpha}(\mathbb R^d)\)，其中 \(\alpha=1-d/p\)，并满足
+\begin{equation}\label{b1:eq:morrey-whole-space}
+ [u^*]_{0,\alpha;\mathbb R^d}
+ \le C_{d,p}\|\nabla u\|_{L^p(\mathbb R^d)},
+ \quad
+ \|u^*\|_{C^{0,\alpha}(\mathbb R^d)}
+ \le C_{d,p}\|u\|_{W^{1,p}(\mathbb R^d)}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+给定 \(x\ne y\)，令 \(r=|x-y|\)，并取
+\[
+ B_x=B(x,r),\quad B_y=B(y,r),\quad B_*=B(x,3r).
+\]
+两个小球都包含于 \(B_*\)，体积比只依赖于 \(d\)。由\eqref{b1:eq:morrey-average-oscillation}，
+\[
+ |u_{B_x}-u_{B_*}|+|u_{B_y}-u_{B_*}|
+ \le C_{d,p}r^\alpha\|\nabla u\|_{L^p(B_*)}.
+\]
+再在 \(x,y\) 两点使用\eqref{b1:eq:morrey-average-error}，得到
+\begin{equation}\label{b1:eq:morrey-local-pair}
+ |u^*(x)-u^*(y)|
+ \le C_{d,p}|x-y|^\alpha\cdot
+                 \|\nabla u\|_{L^p(B(x,3|x-y|))}.
+\end{equation}
+放大积分域到整个空间，即得 Hölder 半范数界，也证明 \(u^*\) 处处连续。
+
+半范数不能单独控制常数，因此还须估计一个平均值。对任意 \(x\)，用半径为 \(1\) 的球，
+\[
+ \begin{split}
+ |u^*(x)|
+ &\le|u^*(x)-u_{B(x,1)}|+|u_{B(x,1)}|\\
+ &\le C_{d,p}\|\nabla u\|_{L^p(\mathbb R^d)}
+       +\omega_d^{-1/p}\|u\|_{L^p(\mathbb R^d)}.
+ \end{split}
+\]
+于是得到全范数估计。若另一个连续函数与 \(u\) 几乎处处相等，它与 \(u^*\) 的差连续且几乎处处为零；一旦在某点非零，就会在一个正测度小球内非零，矛盾。因此连续代表唯一。
+\end{proof}
+
+上述\term*[morrey-budengshi]{Morrey 不等式}[Morrey inequality]把弱梯度的积分控制转成点值的变化控制。证明中的每一个平均值只依赖等价类，连续代表不是通过任意指定某个零测集上的值获得的。
 
 \subsection{Morrey 不等式}
 \label{b1:subsec:240303}
 
-待填充。
+全空间估计也给出内部估计。这里必须留意参与均值比较的球是否仍在原开集内，而不能直接对靠近边界的点使用越出开集的球。
+
+\begin{corollary}\label{b1:cor:morrey-domain}
+设 \(d<p<\infty\)、\(\alpha=1-d/p\)。
+若 \(u\in W^{1,p}_{\mathrm{loc}}(\Omega)\)，则其球平均代表局部 Hölder 连续。具体地，若 \(\overline{B(a,8R)}\Subset\Omega\)，则
+\begin{equation}\label{b1:eq:morrey-interior-ball}
+ \begin{split}
+ [u^*]_{0,\alpha;\overline{B(a,R)}}
+ &\le C_{d,p}\|\nabla u\|_{L^p(B(a,8R))},\\
+ \sup_{\overline{B(a,R)}}|u^*|
+ &\le C_{d,p}\left(
+        R^{-d/p}\|u\|_{L^p(B(a,8R))}
+        +R^\alpha\|\nabla u\|_{L^p(B(a,8R))}\right).
+ \end{split}
+\end{equation}
+若 \(\overline U\Subset V\subset\Omega\)，其中 \(U,V\) 为开集，且 \(u\in W^{1,p}(V)\)，则
+\[
+ \|u^*\|_{C^{0,\alpha}(\overline U)}
+ \le C_{U,V,d,p}\|u\|_{W^{1,p}(V)}.
+\]
+若 \(\Omega\) 为有界 Lipschitz 区域，则 \(u\in W^{1,p}(\Omega)\) 有唯一的连续延伸到 \(\overline\Omega\) 的代表，且
+\begin{equation}\label{b1:eq:morrey-lipschitz-domain}
+ \|u^*\|_{C^{0,\alpha}(\overline\Omega)}
+ \le C_{\Omega,p}\|u\|_{W^{1,p}(\Omega)}.
+\end{equation}
+\end{corollary}
+\begin{proof}
+对 \(x,y\in\overline{B(a,R)}\)，有 \(|x-y|\le2R\)，故
+\(B(x,3|x-y|)\subset B(a,8R)\)。主定理的双点比较只在这些内部球中进行，所以\eqref{b1:eq:morrey-local-pair}仍成立，给出第一个估计。对 \(x\) 使用 \(B(x,R)\) 的平均值，并以 Hölder 不等式控制该平均值，就得到第二个估计。这同时证明代表的局部 Hölder 连续性。
+
+给定 \(\overline U\Subset V\)，取固定 \(\chi\in C_c^\infty(V)\)，使它在 \(\overline U\) 的一个邻域内等于 \(1\)。将 \(\chi u\) 补零到整个空间。由弱乘积公式及\cref{b1:lem:compact-sobolev-zero-extension}，所得 \(w\) 满足
+\[
+ \|w\|_{W^{1,p}(\mathbb R^d)}
+ \le C_{\chi,p}\|u\|_{W^{1,p}(V)}.
+\]
+在 \(\overline U\) 附近的充分小球上，\(u\) 与 \(w\) 的平均值相同，故两者的精确代表也相同。应用全空间估计即得第二项结论。
+
+最后，若 \(\Omega\) 有界且为 Lipschitz 区域，用\cref{b1:thm:lipschitz-domain-extension}取得全空间延拓 \(Eu\)，再把其 Hölder 连续代表限制到 \(\overline\Omega\)。在内部，它与原来的球平均代表一致；边界值由内部连续趋近唯一确定。因此结果不依赖所选延拓算子，且延拓范数界给出\eqref{b1:eq:morrey-lipschitz-domain}。
+\end{proof}
+
+区域不必连通，但区域版本使用的是完整 \(W^{1,p}\) 范数，不能一律只保留 \(\|\nabla u\|_p\)。例如在两个分离的球上分别取常数 \(0\) 与 \(1\)，弱梯度为零，跨两个分量的 Hölder 半范数却非零。全空间延拓同时处理各分量之间的变化，相关常数包含区域的几何信息。
+
+当 \(p=\infty\) 时，结论中的指数改为 \(1\)，但证明不通过把 \(p\) 代入有限指数公式来完成。\cref{b1:thm:w1infty-lipschitz}已经给出局部 Lipschitz 代表；在全空间中，把连接两点的线段分为有限个落在局部球内的小段并求和，就得到由全域弱梯度本性界控制的 Lipschitz 常数。其上确界由 \(\|u\|_\infty\) 控制。再使用截断或有界 Lipschitz 区域的延拓算子，分别得到局部和闭区域上的 \(C^{0,1}\) 估计。
+
+指数 \(\alpha=1-d/p\) 在统一范数估计中不能提高。固定非恒定函数 \(\phi\in C_c^\infty(B(0,1))\)，并令
+\[
+ u_\varepsilon(x)=\varepsilon^\alpha\phi(x/\varepsilon),
+ \quad 0<\varepsilon<1.
+\]
+换元直接给出
+\[
+ \|u_\varepsilon\|_p=\varepsilon\|\phi\|_p,\quad
+ \|\nabla u_\varepsilon\|_p=\|\nabla\phi\|_p.
+\]
+这些函数在 \(W^{1,p}\) 中一致有界。然而，选取 \(\phi(a)\ne\phi(b)\)，对每个 \(\alpha<\beta\le1\)，
+\[
+ [u_\varepsilon]_{0,\beta;\mathbb R^d}
+ \ge\varepsilon^{\alpha-\beta}
+       \frac{|\phi(a)-\phi(b)|}{|a-b|^\beta}
+ \longrightarrow\infty.
+\]
+所以不存在把所有 \(W^{1,p}\) 函数的 \(C^{0,\beta}\) 范数控制住的统一常数；同一例子也适用于包含这些小支集的固定球。每个 \(u_\varepsilon\) 本身仍然光滑，这里排除的是更强的连续嵌入估计，而不是说单个函数不能具有更好的正则性。
 
 \subsection{精确代表}
 \label{b1:subsec:240304}
 
-待填充。
+第\ref{b1:sec:1404}节曾由球平均定义精确代表，并在极限不存在处另作赋值。现在，超临界可积性使这一例外情形在内部完全消失。
+
+\begin{proposition}\label{b1:prop:morrey-precise-representative}
+若 \(u\in W^{1,p}_{\mathrm{loc}}(\Omega)\)、\(d<p<\infty\)，则其精确代表 \(u^*\) 是唯一的连续代表，并且对每个 \(x\in\Omega\)，
+\[
+ \lim_{r\downarrow0}\frac1{m_d(B(x,r))}
+       \int_{B(x,r)}|u(y)-u^*(x)|\,\mathrm dy=0.
+\]
+特别地，\(u^*\) 的每个内部点都是 Lebesgue 点。若 \(u_j\to u\) 于 \(W^{1,p}_{\mathrm{loc}}(\Omega)\)，则对每个相对紧开集 \(U\)，精确代表在 \(C^{0,\alpha}(\overline U)\) 中收敛；这里取 \(\overline U\Subset\Omega\)，且 \(\alpha=1-d/p\)。
+\end{proposition}
+\begin{proof}
+有限极限已由\cref{b1:lem:morrey-ball-average-limit}在每个点构造，局部 Hölder 连续性由前一推论给出。连续代表的唯一性仍由非空开球具有正测度得到。对充分小的 \(r\)，
+\[
+ \begin{split}
+ \frac1{m_d(B(x,r))}\int_{B(x,r)}|u-u^*(x)|
+ &\le\frac1{m_d(B(x,r))}\int_{B(x,r)}|u-u_{B(x,r)}|
+       +|u_{B(x,r)}-u^*(x)|\\
+ &\le C_{d,p}r^\alpha
+                 \|\nabla u\|_{L^p(B(x,r))}
+ \longrightarrow0.
+ \end{split}
+\]
+将积分中的 \(u\) 换成与它几乎处处相等的 \(u^*\)，即得每点的 Lebesgue 点性质。
+
+最后取 \(\overline U\Subset V\) 且 \(\overline V\Subset\Omega\)。球均值的线性及每点极限说明
+\((u_j-u)^*=u_j^*-u^*\)。对差函数使用前一推论，便有
+\[
+ \|u_j^*-u^*\|_{C^{0,\alpha}(\overline U)}
+ \le C_{U,V,d,p}\|u_j-u\|_{W^{1,p}(V)}
+ \longrightarrow0.
+\]
+\end{proof}
+
+连续性属于这个被确定的代表，而不是等价类中的每个可测函数。即使只在一点改变 \(u^*\) 的值，也不改变任何 \(L^p\) 范数或弱导数，却可能破坏该点的连续性。另一方面，在有界 Lipschitz 区域上，\cref{b1:thm:lipschitz-lp-trace}说明这个闭域连续代表的边界限制恰是前章的迹；积分方式定义的边界值与通常点值在这里相遇。
+
+本节得到的是函数值的 Hölder 控制，并不使弱梯度自动连续。把同一方法应用到哪些低阶导数、怎样组织高阶连续代表，是第\ref{b1:sec:2404}节高阶嵌入要处理的问题。
