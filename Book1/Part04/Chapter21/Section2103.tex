@@ -2,24 +2,215 @@
 \section{运算规则}
 \label{b1:sec:2103}
 
-% TODO: 撰写本节正文。
+经典微积分的运算公式能否保留，要同时回答两个问题：等式在分布意义下是否成立，右端是否具有所要求的可积性。下面先在开集内部把函数光滑化，再用局部积分收敛传递公式。整个过程只使用第20章的卷积，不依赖下一章的全域光滑稠密性或延拓定理。
+
+\begin{lemma}\label{b1:lem:sobolev-local-smoothing}
+设 \(u\in W^{k,p}_{\mathrm{loc}}(\Omega)\)，\(U,V\) 为开集，\(\overline U\Subset V\)、\(\overline V\Subset\Omega\)。取第20章的非负单位积分磨光函数，令 \(u_\varepsilon=u*\rho_\varepsilon\)。当 \(\varepsilon\) 充分小时，\(u_\varepsilon\) 在 \(U\) 的邻域光滑，且
+\[
+ \partial^\alpha u_\varepsilon
+   =(\partial^\alpha u)*\rho_\varepsilon
+ \quad\text{在 }U\text{ 上},\qquad |\alpha|\le k.
+\]
+若 \(p<\infty\)，则 \(u_\varepsilon\to u\) 于 \(W^{k,p}(U)\)。若 \(p=\infty\)，则对每个有限 \(q\ge1\) 有 \(W^{k,q}(U)\) 收敛，并有
+\[
+ \|u_\varepsilon\|_{W^{k,\infty}(U)}
+ \le\|u\|_{W^{k,\infty}(V)}.
+\]
+\end{lemma}
+\begin{proof}
+选择 \(\varepsilon<\operatorname{dist}(\overline U,V^c)\)。卷积在 \(U\) 上只读取 \(V\) 中的值，导数交换由\cref{b1:prop:distribution-convolution-smooth}成立。对有限个导数分别应用\cref{b1:prop:local-smoothing-approximation}，得到有限 \(p\) 的范数收敛。若 \(p=\infty\)，这些导数在 \(V\) 上也属于每个有限 \(L^q\)，故局部收敛仍成立；非负核与单位积分则给出每个导数的本性界，取最大值即得所列估计。
+\end{proof}
+
+后面的证明还会使用这样的取极限方式：若 \(u_j\to u\)、\(g_{i,j}\to g_i\) 于 \(L^1_{\mathrm{loc}}\)，且 \(\partial_i u_j=g_{i,j}\)，则 \(\partial_i u=g_i\)。只需对固定测试函数在分部积分恒等式两端取极限，正如第\ref{b1:sec:2004}节已说明的那样。
+
+无穷端点只提供有限 \(q\) 的局部逼近和统一界，不能改写为 \(W^{k,\infty}\) 范数逼近。例如 \(|x|\) 的弱导数为符号函数，光滑函数不可能在原点附近依本性上确界范数逼近这个跳跃。
 
 \subsection{乘积法则}
 \label{b1:subsec:210301}
 
-待填充。
+先考虑局部有界的因子，这使乘积右端仍处于原来的 \(L^p\) 尺度。
+
+\begin{proposition}[Leibniz]\label{b1:prop:sobolev-product}
+若 \(u,v\in W^{1,p}_{\mathrm{loc}}(\Omega)\cap L^\infty_{\mathrm{loc}}(\Omega)\)，则 \(uv\in W^{1,p}_{\mathrm{loc}}(\Omega)\)，并且
+\begin{equation}\label{b1:eq:sobolev-product}
+ \partial_i(uv)=u\partial_i v+v\partial_i u
+ \quad\text{几乎处处},\qquad 1\le i\le d.
+\end{equation}
+若两个函数均属于全域 \(W^{1,p}(\Omega)\cap L^\infty(\Omega)\)，则乘积也属于该空间，且
+\[
+ \|uv\|_{W^{1,p}}
+ \le\|u\|_\infty\cdot\|v\|_{W^{1,p}}
+      +\|v\|_\infty\cdot\|u\|_{W^{1,p}}.
+\]
+\end{proposition}
+\begin{proof}
+先设 \(p<\infty\)，固定 \(U,V\) 如前一引理。局部卷积给出光滑 \(u_j,v_j\)，它们在 \(U\) 中依 \(W^{1,p}\) 收敛，并可取一个子列，使两列函数几乎处处收敛。非负核保证 \(|u_j|\)、\(|v_j|\) 具有由原函数在 \(V\) 上的本性界给出的公共界。
+
+因此 \(u_jv_j\to uv\) 于 \(L^p(U)\)。对一个导数项，分解
+\[
+ u_j\partial_i v_j-u\partial_i v
+ =u_j(\partial_i v_j-\partial_i v)
+   +(u_j-u)\partial_i v.
+\]
+第一项由统一有界性和导数的 \(L^p\) 收敛趋零；第二项由几乎处处收敛及以 \(C|\partial_i v|^p\) 为控制函数的控制收敛定理趋零。另一导数项同理。对经典乘积公式取极限，再遍历内部开集，就得到\eqref{b1:eq:sobolev-product}。
+
+若 \(p=\infty\)，先把相同函数视为局部 \(W^{1,1}\) 成员，用刚证明的公式；其右端由假设局部本性有界，所以确实给出 \(W^{1,\infty}_{\mathrm{loc}}\) 关系。全域情形直接估计右端各分量，应用有限分量的 Minkowski 不等式，即得范数界；乘积的本性有界性也显然成立。
+\end{proof}
+
+只知道 \(u,v\in W^{1,p}\) 时，不能无条件断言乘积仍属于 \(W^{1,p}\)。弱导数公式并不自动提高 \(u\partial_i v\) 的可积性；第\ref{b1:ch:24}章的嵌入定理以后会提供另外一些充分条件。习题\ref{b1:ex:21-product-integrability-loss}则直接构造乘积失去原有可积性的例子。
+
+若其中一个因子为光滑函数，不需要假设另一因子局部有界。第20章的弱 Leibniz 公式直接给出
+\[
+ \partial_i(au)=a\partial_i u+(\partial_i a)u.
+\]
+特别地，\(a\in C_c^\infty(\Omega)\) 时可以截出一个内部部分；这里产生的额外项 \(u\partial_i a\) 不能省略。
 
 \subsection{链式法则}
 \label{b1:subsec:210302}
 
-待填充。
+本小节先讨论实值函数。对于向量值映射，把每个分量分别放在 Sobolev 空间中，证明完全相同；复值函数可以按两个实分量处理，而不是擅自要求复合映射全纯。
+
+\begin{theorem}[链式法则]\label{b1:thm:sobolev-chain}
+设 \(u\in W^{1,p}_{\mathrm{loc}}(\Omega;\mathbb R^m)\)，\(F\in C^1(\mathbb R^m;\mathbb R^\ell)\)，且 \(DF\) 有界。则
+\[
+ F\circ u\in W^{1,p}_{\mathrm{loc}}(\Omega;\mathbb R^\ell),
+ \qquad
+ \partial_i(F\circ u)=DF(u)\partial_i u
+ \quad\text{几乎处处}.
+\]
+若 \(u\) 局部本性有界，则可去掉 \(DF\) 全域有界的要求。
+\end{theorem}
+\begin{proof}
+有界导数使 \(F\) 为 Lipschitz 映射，因而
+\[
+ |F(u)|\le |F(0)|+\|DF\|_\infty\cdot|u|.
+\]
+右端局部属于 \(L^p\)，包括无穷端点。先取 \(p<\infty\)，并在固定内部区域用前面的卷积引理选取 \(u_j\to u\) 于 \(W^{1,p}\)，同时几乎处处收敛。Lipschitz 界给出 \(F(u_j)\to F(u)\) 于 \(L^p\)。导数分解为
+\[
+ DF(u_j)\partial_i u_j-DF(u)\partial_i u
+ =DF(u_j)(\partial_i u_j-\partial_i u)
+   +\bigl(DF(u_j)-DF(u)\bigr)\partial_i u.
+\]
+第一项的 \(L^p\) 范数趋零。第二项由于 \(DF\) 连续而几乎处处趋零，并受 \(2\|DF\|_\infty\cdot|\partial_i u|\) 控制，所以也依 \(L^p\) 趋零。经典链式法则在极限下给出弱导数公式。
+
+\(p=\infty\) 时先在局部使用 \(p=1\) 的结论，再用所得公式的本性界。若 \(u\) 仅局部本性有界，对固定区域取包含其值域和卷积值域的紧球，用光滑截断把 \(F\) 改成该球邻域上与其相等、导数全域有界的映射，即归结为已证情形。
+\end{proof}
+
+全域结论还需要零阶项可积。若 \(u\in W^{1,p}(\Omega)\)，\(DF\) 有界且 \(F(0)=0\)，则 \(F(u)\in W^{1,p}(\Omega)\)。若 \(p<\infty\) 且 \(m_d(\Omega)<\infty\)，允许 \(F(0)\ne0\) 也可以；但在无限测度域上，\(u=0\)、\(F(t)=1+t\) 已经说明不能遗漏这个条件。\(p=\infty\) 时，全域本性有界的 \(u\) 经连续 \(F\) 映射后仍本性有界。
+
+稍后要把光滑的 \(F\) 换成折线函数。折点处不能任意填写一个经典导数便结束论证，所需事实是：Sobolev 函数在一个水平集上没有非零弱梯度。
+
+\begin{proposition}\label{b1:prop:sobolev-gradient-on-level-sets}
+设实值 \(u\in W^{1,p}_{\mathrm{loc}}(\Omega)\)。对每个 \(c\in\mathbb R\)，有
+\[
+ \nabla u=0\quad\text{几乎处处于 }\{u=c\}.
+\]
+这里的水平集可以用任一可测代表定义，结论不受零测修改影响。
+\end{proposition}
+\begin{proof}
+取 \(0\le\theta\le1\)、\(\theta\in C_c^\infty((-1,1))\)、\(\theta(0)=1\)，令
+\[
+ F_\varepsilon(t)=\int_c^t\theta\left(\frac{s-c}{\varepsilon}\right)\,\mathrm ds.
+\]
+有 \(|F_\varepsilon|\le2\varepsilon\)，而链式法则给出
+\[
+ \partial_i F_\varepsilon(u)
+ =\theta\left(\frac{u-c}{\varepsilon}\right)\partial_i u.
+\]
+函数在每个内部有界区域趋于零，右端则由控制收敛在局部 \(L^1\) 中趋于 \(\mathbf1_{\{u=c\}}\partial_i u\)。弱导数关系的闭性说明后一个极限是零函数的弱导数，因此等于零。这个证明也包括 \(p=\infty\)，并没有使用尚待证明的沿直线代表或近似可微性。
+\end{proof}
 
 \subsection{截断}
 \label{b1:subsec:210303}
 
-待填充。
+对实数 \(M>0\)，定义截断函数
+\[
+ T_M(t)=\max\{-M,\min\{t,M\}\}.
+\]
+它保留 \([-M,M]\) 内的值，并把其余值压到两个端点。与把定义域截成一个子集不同，这是一种作用于函数值的操作。
+
+\begin{proposition}\label{b1:prop:sobolev-truncation}
+若实值 \(u\in W^{1,p}_{\mathrm{loc}}(\Omega)\)，则
+\[
+ T_M(u)\in W^{1,p}_{\mathrm{loc}}(\Omega),\qquad
+ \nabla T_M(u)=\mathbf1_{\{|u|<M\}}\nabla u
+ \quad\text{几乎处处}.
+\]
+正部 \(u^+=\max\{u,0\}\)、负部 \(u^-=\max\{-u,0\}\) 和绝对值也属于同一局部空间，且
+\[
+ \nabla u^+=\mathbf1_{\{u>0\}}\nabla u,\quad
+ \nabla u^-=-\mathbf1_{\{u<0\}}\nabla u,\quad
+ \nabla|u|=\operatorname{sgn}(u)\nabla u.
+\]
+约定 \(\operatorname{sgn}(0)=0\)。若 \(u\in W^{1,p}(\Omega)\)，上述函数也属于全域空间。
+\end{proposition}
+\begin{proof}
+在实轴上用非负偶光滑核 \(\eta_\varepsilon\) 卷积 \(T_M\)，记为 \(F_\varepsilon\)。由于 \(T_M\) 奇且为 \(1\)-Lipschitz，\(F_\varepsilon(0)=0\)、\(|F_\varepsilon'|\le1\)，并且 \(F_\varepsilon\to T_M\) 一致成立。分段求导或直接积分可得
+\[
+ F_\varepsilon'=\mathbf1_{(-M,M)}*\eta_\varepsilon.
+\]
+因此当 \(t\ne\pm M\) 时，导数趋于 \(\mathbf1_{(-M,M)}(t)\)。在 \(\{u=\pm M\}\) 上，前一命题保证 \(\nabla u=0\)，所以无论近似导数在两个端点的极限为何，都有
+\[
+ F_\varepsilon'(u)\nabla u
+ \longrightarrow\mathbf1_{\{|u|<M\}}\nabla u
+ \quad\text{于 }L^1_{\mathrm{loc}}.
+\]
+由链式法则和弱导数的闭性得到所求关系；右端的局部 \(L^p\) 控制给出空间归属。
+
+对 \(t^+\) 作同样卷积，并减去卷积在零点的值，使近似函数仍在零点为零。其导数在 \(t\ne0\) 处趋于 \(\mathbf1_{(0,\infty)}(t)\)，在零水平集上仍由梯度为零消除折点的不确定性。于是正部公式成立。负部及绝对值由 \((-u)^+\) 和 \(u^++u^-\) 得到。
+
+最后，\(|T_M(u)|\)、\(u^+\)、\(u^-\) 和 \(|u|\) 均不超过 \(|u|\)，各导数的绝对值也由原导数控制，故全域情形不会丢失零阶或一阶可积性。
+\end{proof}
+
+若 \(1\le p<\infty\) 且 \(u\in W^{1,p}(\Omega)\)，则
+\begin{equation}\label{b1:eq:sobolev-truncation-convergence}
+ T_M(u)\longrightarrow u\quad\text{于 }W^{1,p}(\Omega)
+ \quad(M\to\infty).
+\end{equation}
+事实上，函数误差由 \(|u|\mathbf1_{\{|u|>M\}}\) 控制，导数误差由 \(|\partial_i u|\mathbf1_{\{|u|\ge M\}}\) 控制，对它们的 \(p\) 次幂分别用控制收敛即可。在全域 \(W^{1,\infty}\) 中，对一个固定 \(u\)，只要 \(M\ge\|u\|_\infty\)，截断已经与原函数几乎处处相等；这不意味着正部等非线性运算对 \(W^{1,\infty}\) 范数总是连续，习题会区分这两个问题。
 
 \subsection{坐标变换}
 \label{b1:subsec:210304}
 
-待填充。
+改变坐标还会改变积分域和零测集。若一个坐标映射把零测集拉回成正测度集，\(u\circ\Phi\) 就可能依赖 \(u\) 的代表；因此先明确映射的几何控制。
+
+\begin{theorem}\label{b1:thm:sobolev-bilipschitz-change}
+设 \(U,V\subset\mathbb R^d\) 为开集，\(\Phi:U\to V\) 是双 Lipschitz 同胚，且
+\[
+ |\Phi(x)-\Phi(y)|\le L|x-y|,\qquad
+ |\Phi^{-1}(z)-\Phi^{-1}(w)|\le M|z-w|.
+\]
+若 \(u\in W^{1,p}(V)\)，则 \(u\circ\Phi\in W^{1,p}(U)\)，且
+\begin{equation}\label{b1:eq:sobolev-coordinate-chain}
+ \nabla(u\circ\Phi)(x)
+   =D\Phi(x)^{\mathsf T}(\nabla u)(\Phi(x))
+ \quad\text{对几乎处处的 }x\in U.
+\end{equation}
+包含零阶项的范数满足
+\[
+ \|u\circ\Phi\|_{W^{1,p}(U)}
+ \le C(d,p,L,M)\|u\|_{W^{1,p}(V)}.
+\]
+\end{theorem}
+\begin{proof}
+由 Lipschitz 映射的零测集性质，\(\Phi^{-1}\) 把 \(V\) 中的 Lebesgue 零测集映成 \(U\) 中的零测集，所以复合不依赖代表。对非负可测 \(g\)，第17章的加权面积公式用于单射映射 \(\Phi^{-1}\)，给出
+\begin{equation}\label{b1:eq:sobolev-change-measure-bound}
+ \int_U g(\Phi(x))\,\mathrm dx
+ =\int_V g(y)|\det D\Phi^{-1}(y)|\,\mathrm dy
+ \le M^d\int_Vg(y)\,\mathrm dy.
+\end{equation}
+这里 Rademacher 定理保证导数几乎处处存在，算子范数不超过 \(M\)，从而行列式绝对值不超过 \(M^d\)。
+
+先设 \(p<\infty\)，固定 \(U_0\) 满足 \(\overline{U_0}\Subset U\)。其像的闭包紧含于 \(V\)，因而可以在像的一个内部邻域对 \(u\) 作局部 \(W^{1,p}\) 光滑逼近 \(u_j\)。函数 \(u_j\circ\Phi\) 局部 Lipschitz；经典链式法则在 \(\Phi\) 的可微点给出
+\[
+ \nabla(u_j\circ\Phi)
+ =D\Phi^{\mathsf T}(\nabla u_j)\circ\Phi.
+\]
+由\cref{b1:thm:lipschitz-weak-derivative}，这也是弱导数等式。估计\eqref{b1:eq:sobolev-change-measure-bound}使复合后的函数差及导数差在 \(U_0\) 中依 \(L^p\) 趋零；\(D\Phi\) 的算子范数又不超过 \(L\)，故右端也在 \(L^p\) 中收敛。弱导数关系的闭性于是给出\eqref{b1:eq:sobolev-coordinate-chain}。由于 \(U_0\) 任意，这一关系在整个 \(U\) 上成立。
+
+若 \(p=\infty\)，同一局部证明先使用有限指数 \(1\)，得到公式后再取本性界。最后，对有限 \(p\) 用\eqref{b1:eq:sobolev-change-measure-bound}，对无穷端点用零测集拉回性质，并结合有限维向量范数等价性，得到包含函数与全部一阶偏导数的全域范数估计。
+\end{proof}
+
+对 \(\Phi^{-1}\) 再用一次定理可知，这个复合映射实际给出两个 \(W^{1,p}\) 空间之间的有界线性同构。它并不保持本书范数的数值，也不由单向 Lipschitz 控制推出逆方向的有界性。
+
+高阶空间需要更强的坐标条件。若 \(\Phi\) 还是 \(C^k\) 微分同胚，并且 \(1\) 至 \(k\) 阶的各导数有界，则相同方法给出 \(u\circ\Phi\in W^{k,p}(U)\) 及相应有界估计：对光滑 \(u_j\)，逐次求导后，每一项都是某个 \((\partial^\beta u_j)\circ\Phi\) 乘以有限个 \(\Phi\) 的导数，且 \(|\beta|\le k\)；系数有统一界，故逐项用换元估计取极限即可。若还要得到反向的 \(W^{k,p}\) 有界映射，同样要控制 \(\Phi^{-1}\) 的高阶导数。仅有双 Lipschitz 性只控制一阶，不能代替这些条件。

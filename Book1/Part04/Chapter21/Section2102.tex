@@ -2,24 +2,216 @@
 \section{基本结构}
 \label{b1:sec:2102}
 
-% TODO: 撰写本节正文。
+弱导数的定义把函数与一组积分恒等式联系起来，Sobolev 范数则同时控制函数和这些导数。两者配合，才能回答极限是否仍留在空间内。本节把所有导数放入一个有限乘积空间：范数、完备性和弱收敛都可以在这些分量上研究，而分量之间必须满足的相容关系由测试函数保存。
 
-\subsection{Banach 结构}
+Hunter 与 Nachtergaele 的《Applied Analysis》\cite[第12.9节，第363页]{Hunter2001Applied}在 Sobolev 空间定义之后列出 Banach 与 Hilbert 结构。本节从第\ref{b1:ch:10}章的 \(L^p\) 理论出发证明这些结论，并展开连续泛函如何由导数分量表示。以下固定非空开集 \(\Omega\subseteq\mathbb R^d\)、\(k\in\mathbb N_0\) 及标量域 \(\mathbb K=\mathbb R\) 或 \(\mathbb C\)，不要求 \(\Omega\) 有界或具有规则边界。
+
+% 实读来源：Hunter2001Applied，作者官方 ch12.pdf，印刷 pp.362--367；
+% 定义12.66及Banach/Hilbert结构的陈述在p.363，未附证明。
+% pp.365--367为作者明确不附证明的性质综述，不作为本节技术证明来源。
+% 下文有限乘积、闭性、可分性及对偶证明以本书第8--10章已证结果展开，
+% 不使用第22章的全局光滑稠密性或边界延拓。
+
+\subsection{导数分量与完备性}
 \label{b1:subsec:210201}
 
-待填充。
+沿用前节的有限指标集 \(A_k=\{\,\alpha\in\mathbb N_0^d\mid|\alpha|\leq k\,\}\)，并置
+\[
+ Y_p=\prod_{\alpha\in A_k}L^p(\Omega;\mathbb K).
+\]
+对 \(v=(v_\alpha)_{\alpha\in A_k}\)，赋予范数
+\[
+ \|v\|_{Y_p}=
+ \begin{cases}
+  \left(\displaystyle\sum_{\alpha\in A_k}\|v_\alpha\|_p^p\right)^{1/p},
+       &1\leq p<\infty,\\[2mm]
+  \displaystyle\max_{\alpha\in A_k}\|v_\alpha\|_\infty,
+       &p=\infty.
+ \end{cases}
+\]
+这里各分量相互独立；任取这样的函数族，通常不能把它们全部看成同一个函数的导数。
+
+\begin{proposition}\label{b1:prop:sobolev-derivative-embedding}
+映射
+\[
+ \mathcal J:W^{k,p}(\Omega)\longrightarrow Y_p,
+ \quad u\longmapsto(\partial^\alpha u)_{\alpha\in A_k}
+\]
+是线性等距嵌入。特别地，前一节规定的 \(\|\cdot\|_{W^{k,p}}\) 确为范数，每个导数映射
+\(u\mapsto\partial^\alpha u\) 都是范数不超过 \(1\) 的有界线性映射。
+\end{proposition}
+\begin{proof}
+弱导数恒等式对函数线性，唯一性保证这些运算在几乎处处等价类上有定义。有限 \(p\) 的三角不等式来自各分量中的 Minkowski 不等式及有限序列的 Minkowski 不等式；后者是对有限计数测度应用\cref{b1:thm:lp-minkowski}。无穷端点直接取各分量范数的最大值。范数等式
+\(\|\mathcal Ju\|_{Y_p}=\|u\|_{W^{k,p}}\) 来自定义。由于指标集含零指标，\(\mathcal Ju=0\) 特别蕴含 \(u=0\) 几乎处处，所以映射单射，范数也正定。最后，每个分量的范数不超过整个乘积范数，得到导数映射的估计。
+\end{proof}
+
+\begin{theorem}[Sobolev 空间的完备性]\label{b1:thm:sobolev-complete}
+对每个 \(1\leq p\leq\infty\)，像空间 \(\mathcal J\bigl(W^{k,p}(\Omega)\bigr)\) 是 \(Y_p\) 的闭线性子空间，因而 \(W^{k,p}(\Omega)\) 是 Banach 空间。
+\end{theorem}
+\begin{proof}
+先看 \(Y_p\)。其中的 Cauchy 列在每个分量上都是 \(L^p\) 中的 Cauchy 列。由\cref{b1:thm:lp-complete}，各分量都有极限；分量只有有限个，所以这些极限组成的向量也是原序列在 \(Y_p\) 中的极限。因此 \(Y_p\) 完备。
+
+设 \(u_j\in W^{k,p}(\Omega)\)，并且 \(\mathcal Ju_j\to(v_\alpha)_\alpha\) 于 \(Y_p\)。取零阶分量 \(u=v_0\)。我们需要证明 \(v_\alpha=\partial^\alpha u\)，不能只把它们命名为导数。给定 \(\varphi\in C_c^\infty(\Omega)\)，记 \(p'\) 为共轭指数，端点取 \(1'=\infty\)、\(\infty'=1\)。函数 \(\varphi\) 及其各阶导数均有紧支集，故属于 \(L^{p'}(\Omega)\)。Hölder 不等式给出
+\[
+ \left|\int_\Omega(\partial^\alpha u_j-v_\alpha)\varphi\,\mathrm dx\right|
+ \leq\|\partial^\alpha u_j-v_\alpha\|_p\cdot\|\varphi\|_{p'}
+ \longrightarrow0,
+\]
+也给出 \(\int_\Omega u_j\partial^\alpha\varphi\to\int_\Omega u\partial^\alpha\varphi\)。于是对每个 \(\alpha\in A_k\)，
+\[
+ \int_\Omega v_\alpha\varphi\,\mathrm dx
+ =\lim_{j\to\infty}\int_\Omega\partial^\alpha u_j\,\varphi\,\mathrm dx
+ =(-1)^{|\alpha|}\int_\Omega u\partial^\alpha\varphi\,\mathrm dx.
+\]
+所有分量均局部可积，所以上式正是弱导数的定义。因而 \(u\in W^{k,p}(\Omega)\) 且 \(\mathcal Ju=(v_\alpha)_\alpha\)，像空间闭。最后应用\cref{b1:prop:closed-subspace-complete}，再通过等距映射 \(\mathcal J\) 把完备性传回原空间。
+\end{proof}
+
+证明中没有在 \(\partial\Omega\) 上做任何运算。测试函数的支集留在域内，使极限所需的积分始终受控；这也是任意开集都适用的原因。另一方面，不能在乘积空间中随意指定导数。例如在 \((0,1)\) 上，\((0,1)\in L^p\times L^p\) 不可能等于 \((u,u')\)：零阶分量要求 \(u=0\)，其弱导数便也只能为零。
 
 \subsection{Hilbert 结构}
 \label{b1:subsec:210202}
 
-待填充。
+\begin{corollary}\label{b1:cor:sobolev-hilbert}
+空间 \(H^k(\Omega)=W^{k,2}(\Omega)\) 关于内积
+\[
+ \langle u,v\rangle_{H^k}
+ =\sum_{\alpha\in A_k}
+   \int_\Omega\partial^\alpha u\,\overline{\partial^\alpha v}\,\mathrm dx
+\]
+是 Hilbert 空间，其内积范数恰为前一节的 \(W^{k,2}\) 范数。
+\end{corollary}
+\begin{proof}
+每一项由 \(L^2\) 中的 Cauchy--Schwarz 不等式保证有限。积分的线性性与复共轭规则给出第一变量线性和共轭对称性；且
+\[
+ \langle u,u\rangle_{H^k}
+ =\sum_{\alpha\in A_k}\|\partial^\alpha u\|_2^2
+ =\|u\|_{W^{k,2}}^2.
+\]
+零阶项保证正定性。前一定理已证明该范数完备，因此它是 Hilbert 内积。
+\end{proof}
 
-\subsection{完备性}
+这使第\ref{b1:ch:08}章的正交投影与表示定理可以用于 Sobolev 函数。具体地，由\cref{b1:thm:hilbert-riesz}，每个 \(\Lambda\in H^k(\Omega)^*\) 都有唯一 \(w\in H^k(\Omega)\)，使
+\[
+ \Lambda(u)=\sum_{\alpha\in A_k}
+       \int_\Omega\partial^\alpha u\,\overline{\partial^\alpha w}\,\mathrm dx,
+ \quad \|\Lambda\|=\|w\|_{H^k}.
+\]
+复情形中，\(w\mapsto\Lambda\) 是共轭线性的，不能把上式中的共轭静默去掉。
+
+例如，给定这个泛函，考虑
+\[
+ \mathcal E(u)=\dfrac12\|u\|_{H^k}^2-\operatorname{Re}\Lambda(u).
+\]
+把 \(\Lambda(u)=\langle u,w\rangle_{H^k}\) 代入并展开内积，得到
+\[
+ \mathcal E(u)=\dfrac12\|u-w\|_{H^k}^2-\dfrac12\|w\|_{H^k}^2.
+\]
+因此最小值在 \(u=w\) 处唯一达到。这里同时控制了零阶及高阶导数；若删去零阶项，常数函数可能有零能量，便不能不加条件地沿用同一范数和唯一性论证。
+
+\subsection{可分性与自反性}
 \label{b1:subsec:210203}
 
-待填充。
+\begin{proposition}\label{b1:prop:sobolev-separable-reflexive}
+若 \(1\leq p<\infty\)，则 \(W^{k,p}(\Omega)\) 可分；若 \(1<p<\infty\)，则它还自反。
+\end{proposition}
+\begin{proof}
+先给出 \(L^p(\Omega)\) 的可数稠密集。由\cref{b1:prop:lp-continuous-dense}，只须在 \(\mathbb R^d\) 上逼近连续紧支集函数。把空间划成边长 \(2^{-j}\) 的半开立方体，在有限多个这样的立方体上取有理数值，其余处取零；复情形取实部、虚部均有理的数。所有这些阶梯函数组成可数集。
+
+给定 \(f\in C_c(\mathbb R^d)\)，固定一个内部包含其支集的大立方体。对充分细的网格，仅在与支集相交的网格立方体上取样，再把样本值逼近为上述有理数值。函数 \(f\) 一致连续，故所得阶梯函数与 \(f\) 的一致误差趋于零；误差支集又全落在一个固定有界集内，因此 \(L^p\) 误差也趋于零。任意 \(L^p(\Omega)\) 函数在域外补零后属于 \(L^p(\mathbb R^d)\)，将上述逼近限制回 \(\Omega\)，便得到所需可数稠密集。这里的补零只用于 \(L^p\) 函数，没有断言它保持弱导数。
+
+有限乘积 \(Y_p\) 因而可分。可分度量空间的子空间仍可分：用一个可数稠密集中的点作中心、正有理数作半径，得到可数拓扑基；对其中每个与子空间相交的基元素，选取一个交点，这些交点便在子空间中稠密。将此事实用于 \(\mathcal J\bigl(W^{k,p}(\Omega)\bigr)\)，可分性得证。
+
+为证明自反性，把有限乘积看成一个 \(L^p\) 空间。令
+\[
+ Z=\Omega\times A_k,
+ \quad \nu(A)=\sum_{\alpha\in A_k}
+       m_d\bigl(\{\,x\in\Omega\mid(x,\alpha)\in A\,\}\bigr),
+\]
+其中可测集是各截面均 Lebesgue 可测的集合。有限求和定义了一个 \(\sigma\)-有限测度，映射 \((v_\alpha)_\alpha\mapsto[(x,\alpha)\mapsto v_\alpha(x)]\) 将 \(Y_p\) 线性等距地识别为 \(L^p(\nu)\)。若 \(1<p<\infty\)，由\cref{b1:thm:lp-reflexive}，\(Y_p\) 自反；其闭线性子空间由\cref{b1:cor:closed-subspace-reflexive}也自反。通过 \(\mathcal J\) 即得结论。
+\end{proof}
+
+有限 \(p\) 的可分性并不来自“所有 Sobolev 函数都能由光滑函数逼近”这一尚未证明的命题。我们只使用了 \(L^p\) 的可分性及度量子空间的性质；由此选出的稠密族未必光滑。
+
+无穷端点不能作同样结论，甚至 \(W^{1,\infty}(0,1)\) 也不可分。函数本身可以连续且一致有界，其导数中的跳跃位置仍能在无穷范数下彼此分离；本章习题将给出这一边界的具体构造。
 
 \subsection{弱收敛}
 \label{b1:subsec:210204}
 
-待填充。
+范数收敛等价于有限多个导数分量的 \(L^p\) 范数收敛。弱收敛也有相应的分量刻画，但不能仅由范数定义直接宣布这一点：还需说明原空间上的每个连续泛函都能由分量上的泛函组合而成。
+
+\begin{proposition}\label{b1:prop:sobolev-functional-representation}
+设 \(1\leq p<\infty\)，\(q=p'\)。每个 \(\Lambda\in W^{k,p}(\Omega)^*\) 都可写为
+\begin{equation}\label{b1:eq:sobolev-functional-representation}
+ \Lambda(u)=\sum_{\alpha\in A_k}
+   \int_\Omega g_\alpha\,\partial^\alpha u\,\mathrm dx,
+ \quad g_\alpha\in L^q(\Omega).
+\end{equation}
+反过来，每个这样的有限函数族都定义连续线性泛函，且
+\[
+ \|\Lambda\|\leq\|(g_\alpha)_\alpha\|_{Y_q}.
+\]
+表示族通常不唯一，但可选得此处等号成立；换言之，\(\|\Lambda\|\) 是所有表示族的 \(Y_q\) 范数的最小值。
+\end{proposition}
+\begin{proof}
+在 \(\mathcal J\bigl(W^{k,p}(\Omega)\bigr)\) 上定义 \(F(\mathcal Ju)=\Lambda(u)\)。等距性保证 \(F\) 良定义且范数等于 \(\|\Lambda\|\)。由\cref{b1:thm:hahn-banach}，它有同范数延拓 \(\widetilde F\in Y_p^*\)。使用上一证明中的 \(\sigma\)-有限测度空间 \((Z,\nu)\)，由\cref{b1:thm:lp-dual}及 \(p=1\) 时的\cref{b1:thm:l1-dual-sigma-finite}，存在 \(g\in L^q(\nu)\)，满足
+\[
+ \widetilde F(v)=\int_Zgv\,\mathrm d\nu,
+ \quad\|g\|_{L^q(\nu)}=\|\widetilde F\|=\|\Lambda\|.
+\]
+写成截面 \(g_\alpha(x)=g(x,\alpha)\)，再限制到 \(v=\mathcal Ju\)，即得所需表示和等范数。反方向在 \((Z,\nu)\) 上应用 Hölder 不等式，得到
+\[
+ |\Lambda(u)|
+ \leq\|(g_\alpha)_\alpha\|_{Y_q}\cdot\|\mathcal Ju\|_{Y_p}
+ =\|(g_\alpha)_\alpha\|_{Y_q}\cdot\|u\|_{W^{k,p}}.
+\]
+于是每个表示族的范数均不小于 \(\|\Lambda\|\)，先前构造的族达到此下界。
+\end{proof}
+
+这个表示沿用 \(L^p\) 对偶的双线性积分约定，\(g_\alpha\) 上不取共轭。它与 Hilbert 表示的区别还在于各分量未被要求来自同一函数。非唯一性可以直接看见：若 \(k\geq1\)、\(\psi\in C_c^\infty(\Omega)\)，取 \(g_0=\partial_1\psi\)、\(g_{e_1}=\psi\)，其余分量取零，则弱导数恒等式给出
+\[
+ \int_\Omega u\partial_1\psi\,\mathrm dx
+ +\int_\Omega\psi\partial_1u\,\mathrm dx=0.
+\]
+所以可以把这一族加到任何表示族上而不改变泛函。它并不抵触 Hilbert 表示向量 \(w\) 的唯一性。
+
+\begin{proposition}\label{b1:prop:sobolev-weak-components}
+设 \(1\leq p\leq\infty\)，\(u_j,u\in W^{k,p}(\Omega)\)。则
+\[
+ u_j\rightharpoonup u\text{ 于 }W^{k,p}(\Omega)
+ \quad\Longleftrightarrow\quad
+ \partial^\alpha u_j\rightharpoonup\partial^\alpha u
+ \text{ 于 }L^p(\Omega)\quad(\alpha\in A_k).
+\]
+当 \(p<\infty\) 时，右边又等价于对每个 \(\alpha\in A_k\) 和 \(g\in L^{p'}(\Omega)\)，
+\[
+ \int_\Omega g\partial^\alpha u_j\,\mathrm dx
+ \longrightarrow\int_\Omega g\partial^\alpha u\,\mathrm dx.
+\]
+\end{proposition}
+\begin{proof}
+若在 Sobolev 空间中弱收敛，将 \(L^p\) 上任意连续线性泛函与有界导数映射 \(u\mapsto\partial^\alpha u\) 复合，便得到各分量的弱收敛。
+
+反过来，设每个分量弱收敛。对任意 \(\Lambda\in W^{k,p}(\Omega)^*\)，再次用 Hahn--Banach 定理将其通过 \(\mathcal J\) 延拓为 \(\widetilde F\in Y_p^*\)。记 \(\iota_\alpha:L^p(\Omega)\to Y_p\) 为只在第 \(\alpha\) 个分量放入输入函数的映射，令 \(F_\alpha=\widetilde F\circ\iota_\alpha\)。这些都是 \(L^p\) 上的连续线性泛函，且有限分量分解给出
+\[
+ \Lambda(u_j)=\sum_{\alpha\in A_k}F_\alpha(\partial^\alpha u_j)
+ \longrightarrow\sum_{\alpha\in A_k}F_\alpha(\partial^\alpha u)
+ =\Lambda(u).
+\]
+此论证也适用于 \(p=\infty\)。有限 \(p\) 时再用 \(L^p\) 对偶表示，便得到积分形式的刻画。
+\end{proof}
+
+在无穷端点，只用 \(L^1\) 函数检验各分量，表达的是各分量的弱-*收敛，不能据此改称 \(W^{k,\infty}\) 的弱收敛。上一个命题的端点版本使用整个 \((L^\infty)^*\)。
+
+\begin{corollary}\label{b1:cor:sobolev-weak-subsequence}
+若 \(1<p<\infty\) 且 \((u_j)\) 在 \(W^{k,p}(\Omega)\) 中有界，则存在子列 \((u_{j_\ell})\) 及 \(u\in W^{k,p}(\Omega)\)，使 \(u_{j_\ell}\rightharpoonup u\)。并且
+\[
+ \|u\|_{W^{k,p}}\leq\liminf_{\ell\to\infty}\|u_{j_\ell}\|_{W^{k,p}}.
+\]
+\end{corollary}
+\begin{proof}
+由自反性及\cref{b1:thm:reflexive-weak-subsequence}取得弱收敛子列；最后的不等式来自\cref{b1:prop:norm-weak-lsc}。
+\end{proof}
+
+也可以先对各阶导数应用 \(L^p\) 的弱子列结论。分量有限，逐次抽取后有共同子列；把测试函数代入各分量的弱极限，如完备性证明那样即可辨认零阶极限的弱导数。前一命题保证最后得到的确实是 Sobolev 空间中的弱收敛。这种分量做法常用于逐阶估计近似解。
+
+当 \(p=1\) 时，有界性本身不再保证上述抽列结论，导数质量可能集中在越来越小的区域内。阻止这种集中的条件属于第\ref{b1:sec:1005}节的一致可积性理论，不由 Sobolev 范数的有界性自动产生。章末将用一维有界序列说明这个障碍。

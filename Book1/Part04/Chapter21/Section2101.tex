@@ -2,24 +2,132 @@
 \section{定义}
 \label{b1:sec:2101}
 
-% TODO: 撰写本节正文。
+上一章把导数关系写成测试积分恒等式。现在给函数及其弱导数同时加上可积性要求，就能用一个范数度量它们。这种做法适合处理取极限的问题：函数可以不再光滑，但只要各阶弱导数仍有适当的积分控制，极限就有希望留在同一个空间中。
+
+以下固定非空开集 \(\Omega\subset\mathbb R^d\)，使用 Lebesgue 测度，标量域为 \(\mathbb K=\mathbb R\) 或 \(\mathbb C\)。不预设 \(\Omega\) 有界、连通或边界光滑。弱导数始终按\cref{b1:def:weak-derivative}理解；函数及其导数均按几乎处处相等取等价类。
+% 实读来源：Hunter2001Applied作者公开第12章印刷362--364页，定义12.66及其后的范数、内积。
+% 此处完整规定本书多指标范数；对局部空间、边界可积性及高阶计数另作说明。
 
 \subsection{\texorpdfstring{\(W^{1,p}\)}{W1,p}}
 \label{b1:subsec:210101}
 
-待填充。
+\begin{definition}\label{b1:def:sobolev-first-order}
+给定 \(1\le p\le\infty\)，若 \(u\in L^p(\Omega)\)，且它的每个一阶弱偏导数 \(\partial_i u\) 均存在并属于 \(L^p(\Omega)\)，则称 \(u\) 属于一阶\term[sobolev-kongjian]{Sobolev 空间}[Sobolev space]，记为 \(u\in W^{1,p}(\Omega)\)。规定
+\[
+ \|u\|_{W^{1,p}(\Omega)}
+ =\left(\|u\|_{L^p(\Omega)}^p+
+         \sum_{i=1}^d\|\partial_i u\|_{L^p(\Omega)}^p\right)^{1/p}
+ \quad(1\le p<\infty),
+\]
+\[
+ \|u\|_{W^{1,\infty}(\Omega)}
+ =\max\bigl\{\|u\|_{L^\infty(\Omega)},
+                \|\partial_1u\|_{L^\infty(\Omega)},\ldots,
+                \|\partial_du\|_{L^\infty(\Omega)}\bigr\}.
+\]
+\end{definition}
+\symidx{\(W^{1,p}(\Omega)\)：函数及一阶弱导数属于\(L^p\)的空间}
+
+这些弱导数首先确实可以按上一章定义。因为对每个紧集 \(K\Subset\Omega\)，Hölder 不等式给出
+\[
+ \int_K|u|\,\mathrm dx
+ \le m_d(K)^{1-1/p}\|u\|_{L^p(\Omega)}
+ \quad(1\le p<\infty),
+\]
+而 \(p=\infty\) 时右端换为 \(m_d(K)\|u\|_\infty\)。因此 \(L^p(\Omega)\subset L^1_{\mathrm{loc}}(\Omega)\)，即使 \(\Omega\) 的总体积无限也成立。第\ref{b1:sec:2004}节的唯一性又保证范数不依赖弱导数代表的选择。
+
+定义中既控制导数，也控制函数本身。在有界开集上，非零常函数的梯度为零，函数本身却不是零等价类；因此只用 \(\|\nabla u\|_p\) 不能定义这里的范数。涉及边界条件或把常数取商的空间，需要以后另作定义。
+
+在 \((-1,1)\) 上，\(u(x)=|x|\) 属于每个 \(W^{1,p}\)，包括 \(p=\infty\)，尽管它在原点不可微。相反，一个函数即使在开集内处处光滑，也不保证满足全域积分条件。例如 \(u(x)=\sqrt{x}\) 在 \((0,1)\) 内光滑，且函数本身有界，但
+\[
+ \int_0^1|u'(x)|^p\,\mathrm dx
+ =2^{-p}\int_0^1x^{-p/2}\,\mathrm dx
+\]
+只在 \(p<2\) 时有限。因此它属于 \(W^{1,p}(0,1)\) 当且仅当 \(1\le p<2\)。这里的障碍发生在趋近边界时，不在任何内部点。
 
 \subsection{\texorpdfstring{\(W^{k,p}\)}{Wk,p}}
 \label{b1:subsec:210102}
 
-待填充。
+令 \(k\in\mathbb N_0\)，记
+\[
+ A_k=\{\alpha\in\mathbb N_0^d:|\alpha|\le k\},
+ \qquad N_k=\#A_k=\binom{d+k}{k}.
+\]
+约定 \(\partial^0u=u\)。对高阶空间，需要每一个不超过 \(k\) 阶的弱导数，而不只是某几个最高阶组合。
+
+\begin{definition}\label{b1:def:sobolev-higher-order}
+若 \(u\in L^p(\Omega)\)，且对每个 \(\alpha\in A_k\)，弱导数 \(\partial^\alpha u\) 都属于 \(L^p(\Omega)\)，则称 \(u\in W^{k,p}(\Omega)\)。其范数规定为
+\begin{equation}\label{b1:eq:sobolev-norm}
+ \|u\|_{W^{k,p}(\Omega)}
+ =\left(\sum_{\alpha\in A_k}
+              \|\partial^\alpha u\|_{L^p(\Omega)}^p\right)^{1/p}
+ \quad(p<\infty),
+\end{equation}
+而 \(p=\infty\) 时取这些导数的 \(L^\infty\) 范数的最大值。特别地，\(W^{0,p}(\Omega)=L^p(\Omega)\)。
+\end{definition}
+\symidx{\(W^{k,p}(\Omega)\)：最高\(k\)阶弱导数均属于\(L^p\)的空间}
+
+若 \(|\alpha|+|\beta|\le k\)，则 \(\partial^\alpha(\partial^\beta u)=\partial^{\alpha+\beta}u\)。这不是另加一条经典可微假设：等式先由分布导数可交换得到，再由局部可积代表的唯一性成为弱导数的等式。因此也可以递归地检查 \(u\) 及其低阶导数是否具有下一阶弱导数。
+
+同一空间常配有不同但等价的范数。例如令
+\[
+ S(u)=\sum_{\alpha\in A_k}\|\partial^\alpha u\|_p.
+\]
+对 \(p<\infty\)，有限维 Hölder 不等式给出
+\[
+ \|u\|_{W^{k,p}}\le S(u)
+ \le N_k^{1-1/p}\|u\|_{W^{k,p}},
+\]
+对 \(p=\infty\) 则有 \(\|u\|_{W^{k,\infty}}\le S(u)\le N_k\|u\|_{W^{k,\infty}}\)。所以空间及收敛概念相同，但后续若要追踪精确常数，须回到本书的\eqref{b1:eq:sobolev-norm}，不能把等价范数当作数值相等。
+
+当 \(k\ge1\) 时，记最高阶部分为
+\[
+ |u|_{W^{k,p}(\Omega)}
+ =\left(\sum_{|\alpha|=k}\|\partial^\alpha u\|_p^p\right)^{1/p}
+ \quad(p<\infty),
+\]
+无穷端点仍取最大值。这一般只是半范数。比如在有界域上，次数低于 \(k\) 的多项式具有零的最高阶半范数，却未必为零函数。
+
+提高 \(k\) 会缩小空间：\(W^{k+1,p}(\Omega)\subset W^{k,p}(\Omega)\)，且本书范数下包含映射的范数不超过 \(1\)。提高 \(p\) 则还要看域的测度。若 \(m_d(\Omega)<\infty\) 且 \(1\le p\le q\le\infty\)，逐项使用 Hölder 可得
+\[
+ \|u\|_{W^{k,p}(\Omega)}
+ \le N_k^{1/p-1/q}m_d(\Omega)^{1/p-1/q}
+       \|u\|_{W^{k,q}(\Omega)}.
+\]
+在无限测度域上没有这条无条件包含关系；常函数 \(1\) 在 \(\mathbb R^d\) 上属于 \(W^{k,\infty}\)，却不属于任何有限 \(p\) 的 \(W^{k,p}\)。
 
 \subsection{\texorpdfstring{\(H^k=W^{k,2}\)}{Hk=Wk,2}}
 \label{b1:subsec:210103}
 
-待填充。
+\begin{definition}\label{b1:def:sobolev-hilbert}
+将 \(W^{k,2}(\Omega)\) 记作 \(H^k(\Omega)\)，并定义
+\begin{equation}\label{b1:eq:sobolev-inner-product}
+ \langle u,v\rangle_{H^k(\Omega)}
+ =\sum_{\alpha\in A_k}\int_\Omega
+       \partial^\alpha u\,\overline{\partial^\alpha v}\,\mathrm dx.
+\end{equation}
+实值情形省略复共轭。
+\end{definition}
+\symidx{\(H^k(\Omega)\)：\(W^{k,2}(\Omega)\)及其导数内积}
+
+内积对第一变量线性，与第八章约定一致。零阶项保证正定性，并且 \(\langle u,u\rangle_{H^k}=\|u\|_{W^{k,2}}^2\)。因此 \(H^k\) 不仅表示另一种记号，还突出了二次能量与正交方法可以使用的结构；要称它为 Hilbert 空间，仍须在下一节证明完备性。
+
+这里每个多重指标只计一次。例如二维 \(H^2\) 范数含有一个 \(\|\partial_1\partial_2u\|_2^2\) 项；若把 Hessian 矩阵每个位置都逐项平方求和，混合导数会计两次，得到的是另一个等价范数。两种约定都常用，本文需要数值恒等式时始终以\eqref{b1:eq:sobolev-inner-product}为准。
+
+Hunter 与 Nachtergaele 的《Applied Analysis》\cite[\S12.9，定义12.66及其后讨论]{Hunter2001Applied}把这些空间放在弱导数之后引入。接下来我们将把导数作为 \(L^p\) 中的有限组分量，直接从第十章的完备性推导其基本结构。
 
 \subsection{局部 Sobolev 空间}
 \label{b1:subsec:210104}
 
-待填充。
+全域可积性会同时检测函数在边界附近及无穷远处的行为。研究开集内部的运算时，往往只需要把这些位置暂时排除。
+
+\begin{definition}\label{b1:def:sobolev-local}
+若 \(u\in L^1_{\mathrm{loc}}(\Omega)\)，且每个 \(|\alpha|\le k\) 阶弱导数都存在并属于 \(L^p_{\mathrm{loc}}(\Omega)\)，则称 \(u\) 属于\term[jubu-sobolev-kongjian]{局部 Sobolev 空间}[local Sobolev space]，记作 \(W^{k,p}_{\mathrm{loc}}(\Omega)\)。这里 \(L^p_{\mathrm{loc}}\) 表示在每个紧子集上 \(p\) 次幂可积，或在 \(p=\infty\) 时本性有界。
+\end{definition}
+\symidx{\(W^{k,p}_{\mathrm{loc}}(\Omega)\)：局部Sobolev空间}
+
+等价地，对每个开集 \(V\) 满足 \(\overline V\Subset\Omega\)，都有 \(u|_V\in W^{k,p}(V)\)。一个方向由限制立即得到。反过来，用可数个这类 \(V\) 覆盖 \(\Omega\)；重叠部分的弱导数由唯一性相等，故能拼接为同一个局部 \(L^p\) 函数，再用\cref{b1:prop:weak-derivative-locality}得到整个 \(\Omega\) 上的弱导数关系。
+
+例如 \(x\mapsto1/x\) 属于 \((0,1)\) 上的每个 \(W^{k,p}_{\mathrm{loc}}\)，但并不属于该区间上的 \(L^1\)。另一个方向，\(W^{k,p}(\Omega)\) 总包含于 \(W^{k,p}_{\mathrm{loc}}(\Omega)\)，而局部成员只有在所有导数的全域范数也有限时才回到全域空间。
+
+局部收敛同样按内部区域理解：\(u_j\to u\) 于 \(W^{k,p}_{\mathrm{loc}}(\Omega)\)，是指对上述每个 \(V\)，都有 \(\|u_j-u\|_{W^{k,p}(V)}\to0\)。只要选一列内部开集穷竭，使每个紧子集最终落在其中，检查这可数列就足够。局部化并不规定边界值，更不意味着把函数在域外补零后仍属于同阶 Sobolev 空间；上一章的端点点质量已经说明零延拓可能产生额外的分布导数。

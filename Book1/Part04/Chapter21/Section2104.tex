@@ -2,24 +2,230 @@
 \section{Sobolev 函数的代表}
 \label{b1:sec:2104}
 
-% TODO: 撰写本节正文。
+Sobolev 空间按几乎处处相等取商，而连续性、沿直线的变化和差商都涉及点值。讨论这些性质时，必须先说明选择什么代表。本节先把一维积分表示推广到几乎所有坐标直线，再区分通常微分与近似微分。以下以实值函数为主；有限维向量值函数的相应结论可逐分量应用。
+
+% 实读 Hajlasz2003SobolevMetric，作者公开正式版，Contemp. Math. 338 (2003)，
+% §2 pp.175--177：ACL 定义、定理2.3及式(2.5)；§7定理7.13 pp.192--193；
+% §9定理9.4及完整证明 pp.204--205。
+% 原文7.13经上梯度并使用全域光滑稠密性；本节不移用该前置，
+% ACL 改用第20章局部磨光及可数内矩形上的公共快速收敛子列。
+% 双点估计改编9.4的均值望远镜路线，立方体平均振荡先由ACL自足证明。
 
 \subsection{一维绝对连续代表}
 \label{b1:subsec:210401}
 
-待填充。
+一维情形中，弱导数不只决定积分配对，也决定代表在任意两点之间的增量。
+
+\begin{proposition}\label{b1:prop:sobolev-interval-representative}
+设 \(I\) 为开区间、\(1\leq p\leq\infty\)。函数 \(u\) 属于 \(W^{1,p}_{\mathrm{loc}}(I)\)，当且仅当它有局部绝对连续代表 \(\widetilde u\)，且 \(\widetilde u,\widetilde u'\in L^p_{\mathrm{loc}}(I)\)。这个代表唯一，经典导数与弱导数几乎处处相等。
+
+若 \(I=(a,b)\) 有界且 \(u\in W^{1,p}(I)\)，则该代表还唯一延伸为 \([a,b]\) 上的绝对连续函数，并满足
+\begin{equation}\label{b1:eq:interval-sobolev-sup}
+ \|\widetilde u\|_{L^\infty([a,b])}
+ \leq\dfrac{\|u\|_{L^1(I)}}{b-a}+\|u'\|_{L^1(I)}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+局部刻画及唯一性就是定理\ref{b1:thm:one-dimensional-weak-ac}。在有界区间上，由 Hölder 不等式，\(u,u'\in L^1(I)\)。固定内点 \(x_0\)，积分表示
+\[
+ \widetilde u(x)=\widetilde u(x_0)+\int_{x_0}^x u'(t)\,\mathrm dt
+\]
+一直延伸到两端，并在整个闭区间上绝对连续。对任意 \(x,y\in[a,b]\)，有
+\[
+ |\widetilde u(x)|\leq|\widetilde u(y)|+\int_a^b|u'(t)|\,\mathrm dt.
+\]
+对 \(y\) 取平均，再对 \(x\) 取上确界，即得\eqref{b1:eq:interval-sobolev-sup}。
+\end{proof}
+
+当 \(1<p<\infty\) 时，同一积分表示给出
+\[
+ |\widetilde u(t)-\widetilde u(s)|
+ \leq\|u'\|_{L^p(I)}\cdot|t-s|^{1-1/p}
+ \quad(s,t\in[a,b]).
+\]
+当 \(p=\infty\) 时，右侧改为 \(\|u'\|_\infty\cdot|t-s|\)；当 \(p=1\) 时，对 \(s<t\) 的增量由 \(\int_s^t|u'|\) 控制，但不能从 \(L^1\) 范数单独读出一个正的 Hölder 指数。估计\eqref{b1:eq:interval-sobolev-sup}还有另一个用途：函数及其一阶导数的 \(L^1\) 收敛，会使对应的绝对连续代表一致收敛。下一小节将在几乎每条直线上使用这一点。
 
 \subsection{ACL 性质}
 \label{b1:subsec:210402}
 
-待填充。
+在多维开集内，平行于某个坐标轴的直线可能与区域相交为多个区间，所以这里的绝对连续性应逐个紧子区间理解。先设 \(d\geq2\)；\(d=1\) 时，下面的条件就是局部绝对连续。
+
+\begin{definition}\label{b1:def:acl}
+设 \(v:\Omega\rightarrow\mathbb R\) 为有限值 Borel 函数。若对每个坐标方向 \(e_i\)，对其正交补中几乎所有 \(z\)，限制
+\[
+ t\longmapsto v(z+te_i)
+\]
+在开集 \(\{\,t\in\mathbb R\mid z+te_i\in\Omega\,\}\) 的每个紧子区间上绝对连续，则称 \(v\) \term[yan-zuobiaoxian-jueduilianxu]{沿坐标线绝对连续}[absolutely continuous on lines]，简称具有 ACL 性质。这里的“几乎所有”使用横向变量 \(z\) 上的 \((d-1)\) 维 Lebesgue 测度。
+\end{definition}
+
+\begin{theorem}\label{b1:thm:sobolev-acl}
+设 \(1\leq p\leq\infty\)，且 \(u,g_1,\ldots,g_d\in L^p_{\mathrm{loc}}(\Omega)\)。则 \(\partial_i u=g_i\) 对所有 \(i\) 成立，当且仅当 \(u\) 有一个具有 ACL 性质的代表 \(\widetilde u\)，其经典坐标偏导数几乎处处存在，且等于 \(g_i\)。
+\end{theorem}
+\begin{proof}
+先设弱导数关系成立。列出所有闭包紧含于 \(\Omega\) 的有理端点开矩形 \(Q_m\)。由引理\ref{b1:lem:sobolev-local-smoothing}，可以选 \(\varepsilon_j\downarrow0\)，使 \(u_j=u*\rho_{\varepsilon_j}\) 在 \(Q_1,\ldots,Q_j\) 的邻域上都有定义，且
+\[
+ \|u_j-u\|_{L^1(Q_m)}
+ +\sum_{i=1}^d\|\partial_i u_j-g_i\|_{L^1(Q_m)}<2^{-j}
+ \quad(m\leq j).
+\]
+这里仅用了内矩形上的局部 \(L^1\) 逼近。将每个 \(u_j\) 在其定义域外补零，只为得到 \(\Omega\) 上的 Borel 函数；不宣称补零后的函数在全域光滑或保留弱导数。
+
+固定 \(Q_m\) 和方向 \(i\)，写 \(Q_m=Q_m'\times I\)，把第 \(i\) 个坐标放在最后。对上述可求和误差应用 Tonelli 定理，可知对几乎每个 \(z\in Q_m'\)，
+\[
+ \sum_{j\geq m}\left(
+  \|u_j(z,\cdot)-u(z,\cdot)\|_{L^1(I)}
+  +\|\partial_i u_j(z,\cdot)-g_i(z,\cdot)\|_{L^1(I)}
+ \right)<\infty.
+\]
+因此这条直线上的 \(u_j\) 在一维 \(W^{1,1}(I)\) 中为 Cauchy 列。将\eqref{b1:eq:interval-sobolev-sup}用于差 \(u_j-u_k\)，得到它们在 \(I\) 上一致收敛到某个函数 \(v_z\)。又因导数在 \(L^1(I)\) 中趋于 \(g_i(z,\cdot)\)，在光滑函数的积分公式中取极限，得
+\[
+ v_z(t)-v_z(s)=\int_s^t g_i(z,r)\,\mathrm dr
+ \quad(s,t\in I).
+\]
+所以 \(v_z\) 绝对连续，导数几乎处处为该截面的 \(g_i\)。它也与 \(u(z,\cdot)\) 几乎处处相等。
+
+现在在 \(\Omega\) 中统一定义
+\[
+ \widetilde u(x)=
+ \begin{cases}
+  \displaystyle\lim_{j\to\infty}u_j(x),&\text{若极限存在且有限},\\
+  0,&\text{其他情形}.
+ \end{cases}
+\]
+这是一个 Borel 函数，并由各矩形上的可求和 \(L^1\) 误差知 \(\widetilde u=u\) 几乎处处。在前述每条良好直线上，它在矩形内的每一点都等于一致极限 \(v_z\)。对可数个矩形及有限个方向合并横向零测例外后，仍只排除了各方向中的一个横向零测集。任意紧线段可用有限个这样的矩形覆盖，局部积分表示在交叠处来自同一个函数 \(\widetilde u\)，故可拼接。这证明了同一个代表同时具有全部坐标方向的 ACL 性质。
+
+反过来，在内矩形中取测试函数，沿第 \(i\) 个方向在几乎每条良好直线上作一维分部积分，再由 Fubini 定理得
+\[
+ \int_{Q_m}\widetilde u\,\partial_i\varphi
+ =-\int_{Q_m}g_i\varphi.
+\]
+各积分因局部可积性而有定义；测试函数在相应区间端点附近为零。弱导数的局部性随后把这些关系拼成整个 \(\Omega\) 上的关系。
+\end{proof}
+
+沿几乎所有直线成立，与沿每一条直线成立不同。维数至少为二时，甚至把一个 ACL 代表在单点改值，也只会破坏有限条坐标直线上的绝对连续性，而不改变 ACL 性质。因此 ACL 代表不像一维连续代表那样逐点唯一。定理所需的是存在一个共同代表，并不是给等价类的每一点都指定不可更改的值。
 
 \subsection{几乎处处可微}
 \label{b1:subsec:210403}
 
-待填充。
+由 ACL 性质，Sobolev 函数的合适代表有几乎处处存在的坐标偏导数，且它们组成弱梯度。但坐标偏导存在不等于通常的全微分存在。本小节先给出能够恢复通常微分的有界梯度情形。
+
+\begin{theorem}\label{b1:thm:w1infty-lipschitz}
+函数 \(u\) 属于 \(W^{1,\infty}_{\mathrm{loc}}(\Omega)\)，当且仅当它有局部 Lipschitz 代表。该连续代表唯一，并几乎处处通常可微，其经典微分为弱梯度所确定的线性映射。
+
+更具体地，若 \(B\) 为开球、\(\overline B\Subset\Omega\)，且 \(|\nabla u|\leq L\) 几乎处处于 \(B\)，则此代表在 \(B\) 上为 \(L\)-Lipschitz 函数。
+\end{theorem}
+\begin{proof}
+先设 \(u\in W^{1,\infty}_{\mathrm{loc}}\)。固定所述开球，令 \(u_\varepsilon=u*\rho_\varepsilon\)。局部卷积微分公式给出
+\[
+ \nabla u_\varepsilon=(\nabla u)*\rho_\varepsilon,
+ \quad |\nabla u_\varepsilon|\leq L
+\]
+于卷积只涉及 \(B\) 内点的区域。取 \(B\) 中两个 Lebesgue 点 \(x,y\)。线段 \([x,y]\) 紧含于 \(B\)，故当 \(\varepsilon\) 足够小时，在这条线段上积分光滑函数的导数可得
+\[
+ |u_\varepsilon(x)-u_\varepsilon(y)|\leq L|x-y|.
+\]
+由命题\ref{b1:prop:approx-identity-lebesgue-point}，两端趋于 \(u\) 在相应点的 Lebesgue 值。于是同一 Lipschitz 不等式在 \(B\) 的 Lebesgue 点集上成立。
+
+该点集满测度，因而在 \(B\) 中稠密。对任意点取其中的逼近点列，Lipschitz 估计使函数值为 Cauchy 列；估计也保证极限不依赖所选点列，并在整个 \(B\) 上保留常数 \(L\)。所得连续函数与 \(u\) 几乎处处相等。在交叠球上，两个连续代表几乎处处相等，所以处处相等，由此拼成局部 Lipschitz 代表。唯一性同样来自连续性与几乎处处相等。
+
+反向由定理\ref{b1:thm:lipschitz-weak-derivative}得到。最后对局部 Lipschitz 代表使用 Rademacher 定理\ref{b1:thm:rademacher}；经典偏导与弱偏导几乎处处一致，故全微分的系数正是弱梯度。
+\end{proof}
+
+这里的“局部”不能无条件去掉。例如在 \(\Omega=(-1,0)\cup(0,1)\) 上，令 \(u\) 左侧为零、右侧为一，则 \(u\in W^{1,\infty}(\Omega)\)，弱导数为零；但跨越缺失的原点取两侧点，差商可以任意大，故它不是 \(\Omega\) 上的 Lipschitz 函数。
+
+即使函数属于 \(W^{1,\infty}\)，通常可微的断言也针对所选的局部 Lipschitz 代表，而非任意代表。在有界开集上，\(\mathbf1_{\mathbb Q^d}\) 代表零元素，却处处不连续。一般有限 \(p\) 时，上述有界梯度证明不适用；不能把本小节标题理解成“所有 Sobolev 代表都几乎处处通常可微”。对全部 \(1\leq p\leq\infty\) 统一成立的结论是下一小节的近似可微性。
 
 \subsection{近似可微性}
 \label{b1:subsec:210404}
 
-待填充。
+近似微分允许忽略密度为零的异常点，但仍要求一阶误差相对于距离趋于零。为从弱导数得到这种控制，先把沿坐标线的积分公式转成局部平均振荡的估计。对有限正体积的集合 \(Q\)，简记
+\[
+ u_Q=\dfrac1{m_d(Q)}\int_Q u.
+\]
+
+\begin{lemma}\label{b1:lem:sobolev-cube-oscillation}
+设 \(u\in W^{1,1}_{\mathrm{loc}}(\Omega)\)，\(Q\) 为边长 \(\ell\) 的坐标开立方体，且 \(\overline Q\Subset\Omega\)。则
+\begin{equation}\label{b1:eq:sobolev-cube-oscillation}
+ \int_Q|u-u_Q|
+ \leq\ell\sum_{i=1}^d\int_Q|\partial_i u|.
+\end{equation}
+\end{lemma}
+\begin{proof}
+选取 ACL 代表。对几乎所有 \(x,y\in Q\)，依次把 \(x\) 的各坐标换成 \(y\) 的坐标，用 \(d\) 条坐标线段连接它们。所有这些线段都属于良好直线的例外集之外；此断言对几乎所有点对成立，正是对每个方向的横向零测集应用 Fubini 定理的结果。沿线段积分，再用三角不等式，得到
+\[
+ |u(x)-u(y)|
+ \leq\sum_{i=1}^d\int_{[x_i,y_i]}
+ |\partial_i u(y_1,\ldots,y_{i-1},t,x_{i+1},\ldots,x_d)|\,\mathrm dt,
+\]
+其中 \([x_i,y_i]\) 表示两端点之间的无向区间。将此式对 \(x,y\) 积分。第 \(i\) 项中未出现的 \(d-1\) 个坐标积分产生因子 \(\ell^{d-1}\)；对固定 \(t\)，使区间 \([x_i,y_i]\) 包含 \(t\) 的点对面积至多为 \(\ell^2\)。由 Tonelli 定理，第 \(i\) 项的二重积分不超过 \(\ell^{d+1}\int_Q|\partial_i u|\)。因此
+\[
+ \int_Q|u(x)-u_Q|\,\mathrm dx
+ \leq\dfrac1{m_d(Q)}\int_Q\int_Q|u(x)-u(y)|\,\mathrm dy\,\mathrm dx
+ \leq\ell\sum_{i=1}^d\int_Q|\partial_i u|,
+\]
+因为 \(m_d(Q)=\ell^d\)。
+\end{proof}
+
+下一步比较两个点附近的一列局部均值。Hajłasz 的《Sobolev spaces on metric-measure spaces》\cite[\S9，定理9.4]{Hajlasz2003SobolevMetric}用这种逐半径的望远镜求和，从平均振荡得到双点控制；以下在欧氏立方体上给出所需证明。
+
+\begin{proposition}\label{b1:prop:sobolev-maximal-difference}
+设 \(w\in W^{1,1}(\mathbb R^d)\)，令 \(g=\sum_{i=1}^d|\partial_iw|\)。存在只依赖于 \(d\) 的常数 \(C_d\)，使在 \(w\) 的任意两个 Lebesgue 点 \(x,y\) 上，其 Lebesgue 值满足
+\begin{equation}\label{b1:eq:sobolev-maximal-difference}
+ |w(x)-w(y)|\leq C_d|x-y|\bigl(Mg(x)+Mg(y)\bigr).
+\end{equation}
+这里 \(M\) 是第\ref{b1:sec:1303}节的中心极大算子。
+\end{proposition}
+\begin{proof}
+只需考虑 \(x\ne y\) 且两处极大函数都有限的情形。记 \(r=|x-y|\)，\(Q(x,t)=x+(-t,t)^d\)，并置 \(Q_j=Q(x,2^{-j}r)\)。由于立方体包含在可比半径的球内，Lebesgue 点性质给出 \(w_{Q_j}\rightarrow w(x)\)。由\eqref{b1:eq:sobolev-cube-oscillation}，
+\[
+ \begin{aligned}
+ |w_{Q_{j+1}}-w_{Q_j}|
+ &\leq\dfrac1{m_d(Q_{j+1})}\int_{Q_j}|w-w_{Q_j}|\\
+ &\leq C_d\,2^{-j}r\,\dfrac1{m_d(Q_j)}\int_{Q_j}g
+ \leq C_d\,2^{-j}r\,Mg(x).
+ \end{aligned}
+\]
+最后一步使用 \(Q(x,t)\subseteq B(x,\sqrt d\,t)\) 及两者体积比只依赖维数。求和得到
+\[
+ |w(x)-w_{Q(x,r)}|\leq C_drMg(x).
+\]
+在 \(y\) 处也有同样的估计。
+
+还需比较半径为 \(r\) 的两个均值。因为 \(Q(x,r)\) 和 \(Q(y,r)\) 都包含在 \(R=Q(x,2r)\) 中，体积比有统一界，故
+\[
+ \begin{aligned}
+ |w_{Q(x,r)}-w_{Q(y,r)}|
+ &\leq|w_{Q(x,r)}-w_R|+|w_{Q(y,r)}-w_R|\\
+ &\leq\dfrac{C_d}{m_d(R)}\int_R|w-w_R|
+ \leq C_drMg(x).
+ \end{aligned}
+\]
+合并三项便得到\eqref{b1:eq:sobolev-maximal-difference}。
+\end{proof}
+
+极大函数在某个层集上有界时，上式就成为该层集上的 Lipschitz 估计。这里不需要 \(M\) 在 \(L^1\) 中强有界，只需要它对可积函数几乎处处有限，因此端点 \(p=1\) 也能纳入论证。
+
+\begin{theorem}\label{b1:thm:sobolev-approximate-differentiability}
+设 \(1\leq p\leq\infty\)，且 \(u\in W^{1,p}_{\mathrm{loc}}(\Omega)\)。则任一有限值可测代表都几乎处处近似可微，并且
+\[
+ \operatorname{ap}Du(x)h=\nabla u(x)\cdot h
+ \quad(h\in\mathbb R^d)
+\]
+在几乎所有 \(x\in\Omega\) 上成立。
+\end{theorem}
+\begin{proof}
+局部 \(L^p\) 包含于局部 \(L^1\)，所以先把 \(u\) 看成 \(W^{1,1}_{\mathrm{loc}}\) 函数。固定 \(K\Subset\Omega\)，选 \(\chi\in C_c^\infty(\Omega)\)，使 \(\chi=1\) 于 \(K\) 的某个邻域。由光滑乘法公式，将 \(w=\chi u\) 及其弱导数补零到 \(\mathbb R^d\)，得到 \(w\in W^{1,1}(\mathbb R^d)\)。这一步的补零没有边界项，因为 \(\chi\) 紧支撑于 \(\Omega\)。
+
+令 \(g=\sum_i|\partial_iw|\in L^1(\mathbb R^d)\)。由 Hardy--Littlewood 弱型不等式\ref{b1:thm:hl-weak-11}，\(Mg\) 几乎处处有限。从 \(K\) 删去零测例外，使剩下的点都是 \(w\) 的 Lebesgue 点，且所选的 \(u\) 值等于该点的 Lebesgue 值。再按 \(Mg(x)\leq n\) 分层，得可测集 \(E_n\)，其并覆盖 \(K\) 中几乎所有点。由\eqref{b1:eq:sobolev-maximal-difference}，\(u|_{E_n}\) 为 \(2C_dn\)-Lipschitz 函数。
+
+每个 \(E_n\) 体积有限。由紧内正则性，可在其中选择可数个紧集，除去一个零测集后覆盖 \(E_n\)。再用可数个 \(K\Subset\Omega\) 覆盖 \(\Omega\)，就得到几乎处处覆盖定义域的紧集族 \((K_j)\)，每个 \(u|_{K_j}\) 都 Lipschitz。由定理\ref{b1:thm:approximate-lipschitz-pieces}，\(u\) 几乎处处近似可微。
+
+还要识别近似微分，而不只是证明它存在。把 \(u|_{K_j}\) 延拓为全空间 Lipschitz 函数 \(F_j\)。由定理\ref{b1:thm:lipschitz-weak-derivative}，\(F_j\) 的弱梯度等于其几乎处处经典梯度。又因 \(u-F_j=0\) 于 \(K_j\)，命题\ref{b1:prop:sobolev-gradient-on-level-sets}给出
+\[
+ \nabla u=\nabla F_j=DF_j
+ \quad\text{几乎处处于 }K_j.
+\]
+其中最后一项按行向量与线性泛函的对应理解。在 \(K_j\) 的密度点且 \(F_j\) 可微的点上，沿 \(K_j\) 两函数相等，所以密度一集合判据给出 \(\operatorname{ap}Du=DF_j\)。合并这些等式，再合并可数个零测例外，便得所需识别。
+\end{proof}
+
+这个结论把弱导数与点态的一阶几何联系起来，但所得 Lipschitz 常数依赖于所选片，不能据此推出整个邻域上的 Lipschitz 性质。它也不声称 Sobolev 映射把每个零测集映成零测集：近似微分忽略定义域中的零测改值，像的测度却可能受到这些改值影响。以后将微分性质用于面积、迹或嵌入问题时，仍须分别检查那些问题需要的代表与额外条件。
