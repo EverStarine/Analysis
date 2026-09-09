@@ -1,25 +1,291 @@
 % !TeX root = ../../Book1.tex
-\section{精细拓扑}
+\section{细拓扑}
 \label{b1:sec:2604}
 
-% TODO: 撰写本节正文。
+拟连续性允许删去容量很小的开集，却没有把余集变成通常的开集。若希望直接谈论这些代表的连续性，就需要一种能够辨认容量大小的邻域。本节先从相对容量构造这种拓扑，再说明它与边界值问题的联系。相对容量的基本性质和拓扑公理将在这里证明；Cartan 性质、拟连续与细连续的联系以及非线性 Wiener 判别属于进一步的势论，均明确给出证明概要，不把它们当成前面 Sobolev 理论的直接推论。
 
-\subsection{稀薄性}
+“细拓扑”与“薄性”采用 Doob 的《经典位势论与概率位势论（上册）》中文目录中的名称。\footnote{科学出版社的\href{https://www.ecsponline.com/goods.php?id=6199}{官方书目}第XI章及第XI.2、第XIII.17节采用这些名称；这里仅据目录核对称谓，不以古典位势论的目录代替非线性 \(p\)-容量的定义或证明。}本节的“细”指一套特定的势论拓扑，并不是泛指任意比原拓扑更细的拓扑。
+
+% 中文“细拓扑”“薄性”据科学出版社《经典位势论与概率位势论（上册）》
+% 官方目录第XI章、XI.2及XIII.17；目录只作名称证据，不作非线性证明来源。
+% 实读 Heinonen--Kilpeläinen--Martio 1989, AIF 39(2), 293--318：
+% 293--295页引言，298--299页第3节定义及Theorem 3.2；
+% 300--303页只读相关证明路线，不声称完整重建全部势论。
+% 实读 Björn--Björn--Latvala 2018, J. Anal. Math. 135(1), 59--83：
+% 62页Theorem 1.4，64页拟开/拟连续定义，71页Definitions 6.1--6.2，
+% 75页第8节Theorem 1.4的证明；未读完其所调用的所有先前论文。
+% 实读 Kilpeläinen--Malý 1994, Acta Math. 172(1), 137--161：
+% 137--139页Theorems 1.1、1.3、1.6的陈述；
+% 155--158页第5节Cartan性质、Perron比较与Wiener判别证明路线。
+% 未完整读第4节非线性势估计的证明；本节将该估计明确列为未展开输入。
+% 相对开集a.e.定义、格能量证明和离散尺度整理按本书前章工具重写。
+
+\subsection{薄性}
 \label{b1:subsec:260401}
 
-待填充。
+本节仍取 \(1<p<\infty\)。全空间容量 \(C_p\) 同时计入函数和梯度的能量；在一个不断缩小的球内考察边界障碍时，更合适的是固定外边界、只计梯度的相对容量。两个对象控制相同的局部零容量现象，但尺度公式不同，不能混用。
 
-\subsection{精细连续性}
+\begin{definition}\label{b1:def:relative-variational-capacity}
+设 \(D\subset\mathbb R^d\) 为有界开集。给定开集 \(G\subset D\)，定义它相对于 \(D\) 的 \term[xiangdui-bianfen-rongliang]{相对变分容量}[relative variational capacity]为
+\[
+ \operatorname{cap}_p(G,D)
+ =\inf\left\{\int_D|\nabla v|^p\,\mathrm dx:
+ v\in W_0^{1,p}(D),\
+ v\ge1\ \text{几乎处处于 }G\right\}.
+\]
+空容许类的下确界为 \(+\infty\)。对任意 \(E\subset D\)，再令
+\[
+ \operatorname{cap}_p(E,D)
+ =\inf\{\,\operatorname{cap}_p(G,D):
+ E\subset G\subset D,\ G\text{开}\,\}.
+\]
+这里的 \(W_0^{1,p}(D)\) 仍是内部紧支集光滑函数的闭包，不预先用边界点值解释。
+\end{definition}
+\symidx{\(\operatorname{cap}_p(E,D)\)：相对于开集的纯梯度容量}
+
+\begin{lemma}\label{b1:lem:relative-capacity-basic}
+相对容量关于 \(E\) 单调且可数次可加，关于外域 \(D\) 反向单调。容许函数可以限制为 \(0\le v\le1\)。对紧集 \(K\Subset D\)，还有
+\begin{equation}\label{b1:eq:relative-compact-capacity}
+ \operatorname{cap}_p(K,D)
+ =\inf\left\{\int_D|\nabla\varphi|^p\,\mathrm dx:
+ \varphi\in C_c^\infty(D),\
+ \varphi\ge1\text{ 于 }K\text{ 的某个开邻域}\right\}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+先说明格运算不会破坏零边界闭包。以 \(C_c^\infty(D)\) 逼近 \(v\in W_0^{1,p}(D)\)，对逼近函数取正部或截断。所得函数有内部紧支集，仍可在 \(W^{1,p}\) 中用内部光滑函数逼近。截断的梯度界给有界性，零阶项则收敛到相应的截断；弱极限识别及 \(W_0^{1,p}(D)\) 的弱闭性说明极限仍在这个空间。由正部公式又得到最大值、最小值的闭包性质。于是前面的格能量论证同样给出
+\[
+ \int_D|\nabla(v\vee w)|^p
+ +\int_D|\nabla(v\wedge w)|^p
+ =\int_D|\nabla v|^p+\int_D|\nabla w|^p.
+\]
+取值截断到 \([0,1]\) 不增加能量，也不改变容许性。
+
+集合单调性来自容许类的包含；外域增大时，利用\cref{b1:prop:w0-zero-extension}把容许函数补零即可。证明可数次可加性时，只须考虑容量之和有限的情形。为各集选取开覆盖及近乎最优的容许函数 \(v_j\in[0,1]\)，使梯度能量之和有限，并令 \(w_N=\max_{j\le N}v_j\)。格公式控制其梯度，\cref{b1:thm:zero-boundary-poincare}控制其零阶项；而
+\[
+ 0\le w_N\uparrow w,\quad
+ w^p\le\sum_j v_j^p\in L^1(D).
+\]
+故 \(w_N\to w\) 于 \(L^p(D)\)。抽取 Sobolev 弱子列，极限仍在 \(W_0^{1,p}(D)\)，且梯度能量不超过各项能量之和。它在开覆盖之并上几乎处处等于 \(1\)。最后让选取容许函数时的总误差趋零。
+
+式\eqref{b1:eq:relative-compact-capacity}右边至少等于左边。反过来，选取开集 \(G\supset K\) 和在 \(G\) 上几乎处处等于 \(1\) 的容许函数 \(v\in[0,1]\)。取 \(\psi\in C_c^\infty(G)\)，使 \(0\le\psi\le1\) 且在 \(K\) 的邻域等于 \(1\)，再取 \(v_j\in C_c^\infty(D)\) 趋于 \(v\)。函数
+\[
+ \varphi_j=\psi+(1-\psi)v_j
+\]
+在该邻域等于 \(1\)，并且
+\[
+ \varphi_j-v=(1-\psi)(v_j-v),
+\]
+因为 \(\psi(1-v)=0\) 几乎处处。光滑乘法的有界性给出 \(\varphi_j\to v\) 于 \(W^{1,p}(D)\)，所以光滑容许函数的能量可逼近原下确界。
+\end{proof}
+
+这也说明本定义与经典势论先在紧集上定义容量的口径一致。具体地，取开集 \(G\) 的递增紧穷竭 \(K_j\)，使 \(\bigcup_j\operatorname{int}K_j=G\)。若这些紧集的容量有统一上界，对其光滑容许函数取弱极限，每个固定 \(K_j\) 上的几乎处处约束都保留下来，因而极限在 \(G\) 上几乎处处至少为 \(1\)。这就证明
+\(\operatorname{cap}_p(G,D)=\sup_{K\Subset G}\operatorname{cap}_p(K,D)\)；最后再对任意集取开外正则化。此处不需要先定义某个 Sobolev 代表在任意集合上的逐点约束。
+
+\begin{proposition}\label{b1:prop:relative-capacity-scale}
+平移、伸缩给出
+\[
+ \operatorname{cap}_p(x+rE,x+rD)
+ =r^{d-p}\operatorname{cap}_p(E,D),\quad r>0.
+\]
+存在仅依赖 \(d,p\) 的正常数 \(c,C\)，使
+\begin{equation}\label{b1:eq:relative-ball-capacity}
+ cr^{d-p}\le
+ \operatorname{cap}_p\bigl(B(x,r),B(x,2r)\bigr)
+ \le Cr^{d-p}.
+\end{equation}
+此外，对任意 \(F\subset B(x,r)\)，有
+\begin{equation}\label{b1:eq:relative-outer-ball-comparison}
+ \operatorname{cap}_p\bigl(F,B(x,4r)\bigr)
+ \le\operatorname{cap}_p\bigl(F,B(x,2r)\bigr)
+ \le C\operatorname{cap}_p\bigl(F,B(x,4r)\bigr).
+\end{equation}
+\end{proposition}
+\begin{proof}
+作变量代换 \(y=x+rz\)，梯度产生因子 \(r^{-1}\)，体积产生因子 \(r^d\)；该变换及其逆保持零边界闭包和开邻域约束，所以先对开集、再对任意集得到精确的尺度公式。
+
+固定一个在单位球上等于 \(1\)、支集含于二倍球的光滑截断，伸缩后得到球对的上界。若 \(v\) 是内球的容许函数，则零边界 Poincaré 不等式给出
+\[
+ \omega_d r^d
+ \le\int_{B(x,2r)}|v|^p
+ \le(4r)^p\int_{B(x,2r)}|\nabla v|^p,
+\]
+从而得到下界。
+
+最后一个式子的左侧来自外域单调性。证明右侧时，取在 \(B(x,r)\) 上等于 \(1\)、支集含于 \(B(x,2r)\) 的截断 \(\eta\)，其中 \(|\nabla\eta|\le C/r\)。将 \(B(x,4r)\) 中的容许函数 \(v\) 乘以 \(\eta\)，便得到较小外球中的容许函数。乘积法则和零边界 Poincaré 不等式给出
+\[
+ \int|\nabla(\eta v)|^p
+ \le C\int|\nabla v|^p+Cr^{-p}\int|v|^p
+ \le C'\int|\nabla v|^p.
+\]
+若原约束在开集 \(G\supset F\) 上成立，乘积的约束就在 \(G\cap B(x,r)\) 上成立，仍是 \(F\) 的开邻域。取下确界即得结论。
+\end{proof}
+
+特别地，\(p=d\) 时球对容量有与半径无关的正上下界。这不与全空间容量 \(C_d(B(x,r))\to0\) 矛盾：相对容量要求函数在距离中心仅为 \(2r\) 的地方已经满足零边界条件。
+
+\begin{definition}\label{b1:def:p-thin-set}
+给定 \(E\subset\mathbb R^d\) 和 \(x\in\mathbb R^d\)，令 \(r_j=2^{-j}\)。若
+\begin{equation}\label{b1:eq:p-wiener-series}
+ \sum_{j=0}^{\infty}
+ \left(
+ \frac{\operatorname{cap}_p\bigl(E\cap B(x,r_j),B(x,2r_j)\bigr)}
+ {r_j^{d-p}}
+ \right)^{1/(p-1)}<\infty,
+\end{equation}
+则称 \(E\) 在 \(x\) 处具有 \(p\)-\term[boxing]{薄性}[thinness]，或称 \(E\) 在 \(x\) 处是 \(p\)-薄的；级数发散时则称它在该点不是 \(p\)-薄的。
+\end{definition}
+
+分母也可以换成球对容量，因\eqref{b1:eq:relative-ball-capacity}只会改变正常数。有限个大尺度项不影响收敛性。外球的倍数也不是定义的本质：\eqref{b1:eq:relative-outer-ball-comparison}及其相同的截断证明允许把倍数 \(2\) 换成任意固定的 \(\lambda>1\)。
+
+文献通常在连续的对数尺度上写 Wiener 积分；本节采用二进级数，使任意集合 \(E\) 都可直接进入定义。两种尺度判据的比较只需前述估计：当 \(r/2\le t\le r\) 时，利用内集单调性、外球比较以及 \(t^{d-p}\) 与 \(r^{d-p}\) 的可比性，中间尺度的归一化容量被相邻两个二进尺度的量从上下控制。因此逐个对数尺度求和与通常的 Wiener 积分给出同一收敛判据，也不依赖起始半径的选择。相对容量及这一薄性条件可与 Heinonen、Kilpeläinen 和 Martio 的《Fine topology and quasilinear elliptic equations》\cite[第3节]{Heinonen1989Fine}对读。
+
+\subsection{细连续性}
 \label{b1:subsec:260402}
 
-待填充。
+\begin{definition}\label{b1:def:p-fine-topology}
+设 \(U\subset\mathbb R^d\)。若 \(\mathbb R^d\setminus U\) 在每个 \(x\in U\) 处都是 \(p\)-薄的，则称 \(U\) 为 \(p\)-细开集。所有这样的集合组成的拓扑称为 \(p\)-\term[xituopu]{细拓扑}[fine topology]。
+\end{definition}
+
+这里先给出了开集的判据，仍须验证它确实定义一个拓扑。还要留意量词：补集只在一个点 \(x\) 处是薄的，并不根据这一定义就成为 \(x\) 的细邻域；定义要求对细开集中的每个点检查薄性。二者之间的联系将在最后一小节作为势论定理陈述。
+
+\begin{proposition}\label{b1:prop:p-fine-topology-basic}
+细开集组成一个比欧氏拓扑更细的拓扑。若 \(C_p(N)=0\)，则 \(\mathbb R^d\setminus N\) 为细开集。若 \(p>d\)，细拓扑恰好等于欧氏拓扑。
+\end{proposition}
+\begin{proof}
+薄性对取子集保持。相对容量的次可加性与
+\[
+ (a+b)^q\le\max(1,2^{q-1})(a^q+b^q),\quad
+ a,b\ge0,\quad q=\frac1{p-1},
+\]
+又说明有限个在 \(x\) 处薄的集合之并仍在 \(x\) 处薄。因此有限个细开集的交是细开的。若 \(x\in\bigcup_\lambda U_\lambda\)，选取一个包含 \(x\) 的 \(U_\lambda\)；并集的补集包含于这个 \(U_\lambda\) 的补集，所以也在 \(x\) 处薄。这证明任意并的封闭性，空集与全空间则直接满足条件。普通开集的补集在每个内点附近为空，故一定细开。
+
+若 \(C_p(N)=0\)，固定 \(B(x,r)\)。将全空间中覆盖 \(N\) 的容许函数乘以在该球上等于 \(1\)、支集含于 \(B(x,2r)\) 的截断，得到
+\[
+ \operatorname{cap}_p\bigl(N\cap B(x,r),B(x,2r)\bigr)
+ \le C_{r,p}\,C_p(N)=0.
+\]
+于是 \(N\) 在每一点都薄，结论成立。
+
+最后设 \(p>d\)，并令 \(y\in B(x,r)\)。对 \(B(x,2r)\) 中覆盖单点 \(y\) 的任一容许函数，先补零到全空间。\cref{b1:thm:morrey-whole-space}给出其连续代表；它在容许开邻域上几乎处处至少为 \(1\)，故在 \(y\) 处也至少为 \(1\)。取 \(z=x+3re_1\)，补零代表在 \(z\) 处为零，因而
+\[
+ 1\le |v(y)-v(z)|
+ \le C(4r)^{1-d/p}\|\nabla v\|_{L^p}.
+\]
+所以相对单点容量至少为 \(cr^{d-p}\)，常数对 \(y\in B(x,r)\) 一致。若 \(x\in\overline E\)，每个小球都含有 \(E\) 的一点，\eqref{b1:eq:p-wiener-series}的每项便有统一正下界，不可能收敛。反之，若 \(x\notin\overline E\)，小尺度项最终为零。于是这个范围内，“在 \(x\) 处薄”等价于“在 \(x\) 的某个普通邻域中为空”，细开集恰好就是普通开集。
+\end{proof}
+
+当 \(1<p\le d\) 时则不同。由\cref{b1:sec:2601}的单点容量计算，\(\mathbb Q^d\) 的容量为零，因此 \(\mathbb R^d\setminus\mathbb Q^d\) 是细开集；它却不是欧氏开集，因为每个普通球都含有有理点。细拓扑所忽略的是某种容量很小的障碍，而不是距离上很远的点。
+
+\begin{definition}\label{b1:def:p-fine-continuity}
+设 \(v\colon\mathbb R^d\to\mathbb R\)。若对每个 \(\varepsilon>0\)，都存在含 \(x\) 的细开集 \(V\)，使
+\[
+ |v(y)-v(x)|<\varepsilon\quad(y\in V),
+\]
+则称 \(v\) 在 \(x\) 处 \(p\)-\term[xilianxu]{细连续}[finely continuous]。这就是定义域取细拓扑、值域取通常拓扑时的点态连续性。
+\end{definition}
+
+普通连续性蕴含细连续性。反过来没有这样的普遍蕴含；而拟连续性与细连续性的关系，也不是仅由“细拓扑更细”这一事实决定的。
+
+\begin{theorem}\label{b1:thm:quasicontinuous-fine-continuity}
+设 \(1<p<\infty\)。每个有限实值的 \(p\)-拟连续函数都在 \(p\)-拟处处细连续。特别地，\cref{b1:thm:sobolev-quasicontinuous-representative}所构造的 Sobolev 代表具有这一性质。
+\end{theorem}
+\begin{proofsketch}
+需要的深层输入是以下集合刻画：若一个集合在加入容量任意小的适当开集后总能成为开集，则它可写成一个细开集与一个容量零集的并。这是非线性势论中的结果，其证明依赖 Cartan 型分离、Choquet 性质和相应的容量例外集控制；这些步骤不在本节展开。Björn、Björn 和 Latvala 的《The Cartan, Choquet and Kellogg properties for the fine topology on metric spaces》\cite[定理1.4，第8节]{Bjorn2018Cartan}给出该刻画与本定理的联系，这里仅使用其欧氏空间情形。
+
+有了该输入，最后一步是直接的。拟连续函数 \(v\) 的每个超水平集 \(\{v>a\}\) 和次水平集 \(\{v<a\}\)，在加入使 \(v\) 于其补集连续的坏开集后，都成为开集。对所有有理数 \(a\) 应用集合刻画，合并所得的可数个容量零集为 \(N\)。在 \(N\) 外，这些水平集都由相应的细开集给出。又因 \(\mathbb R^d\setminus N\) 细开，围绕 \(v(x)\) 选取两个有理阈值，就得到细连续性所需的邻域。
+
+因此，未展开的关键在于上述集合刻画，而不在有理阈值这一步。前一节在坏开集外的一致逼近本身，没有证明那些补集在其各点附近都是细邻域。
+\end{proofsketch}
 
 \subsection{Wiener 型思想}
 \label{b1:subsec:260403}
 
-待填充。
+薄性之所以采用指数 \(1/(p-1)\)，最终与 \(p\) 次梯度能量的非线性边界行为有关。为说明这点，先写出相应的方程。
+
+\begin{definition}\label{b1:def:p-harmonic}
+设 \(\Omega\subset\mathbb R^d\) 开。给定连续函数 \(u\in W_{\mathrm{loc}}^{1,p}(\Omega)\)，若
+\[
+ \int_\Omega |\nabla u|^{p-2}\nabla u\cdot\nabla\varphi\,\mathrm dx=0
+ \quad(\varphi\in C_c^\infty(\Omega)),
+\]
+则称 \(u\) 为\term[p-tiaohe-hanshu]{\(p\)-调和函数}[p-harmonic function]。当梯度为零时，向量 \( |\nabla u|^{p-2}\nabla u\) 约定为零。
+\end{definition}
+
+形式上，该方程写成 \(\Delta_pu=0\)，其中
+\[
+ \Delta_pu=\operatorname{div}\bigl(|\nabla u|^{p-2}\nabla u\bigr).
+\]
+\symidx{\(\Delta_pu\)：由 \(p\) 次梯度能量产生的非线性算子}
+当 \(p=2\) 时，它是通常的 Laplace 方程；一般 \(p\) 时不能利用解的叠加。
+
+设 \(\Omega\) 有界，且 \(g\in W^{1,p}(\Omega)\cap C(\overline\Omega)\)。在仿射类 \(g+W_0^{1,p}(\Omega)\) 上最小化 \(\int_\Omega|\nabla u|^p\)，确实有唯一极小元：对 \(u-g\) 用零边界 Poincaré 不等式，便由梯度界得到 Sobolev 有界性；弱子列、仿射类弱闭性和凸能量的弱下半连续性给出存在。严格凸性先给极小元的梯度相等，再由零边界 Poincaré 不等式得到函数相等。沿内部测试函数作变分，则得到上面的弱方程。这部分与\cref{b1:thm:sobolev-variational-minimum}使用同一直接法。
+
+但极小元具有内部连续代表，尤其在 \(p\le d\) 时，不是 Morrey 不等式的推论，而是 \(p\)-调和方程的内正则性定理。以下边界判别把这项正则性作为经典非线性势论的输入，并用 \(u_g\) 表示该连续代表。
+
+\begin{definition}\label{b1:def:p-dirichlet-regular-point}
+设 \(\Omega\) 为有界开集，\(x_0\in\partial\Omega\)。若对每个 \(g\in W^{1,p}(\Omega)\cap C(\overline\Omega)\)，上述变分解都满足
+\[
+ \lim_{\substack{x\to x_0\\x\in\Omega}}u_g(x)=g(x_0),
+\]
+则称 \(x_0\) 为这个 \(p\)-Dirichlet 问题的\term[zhengze-bianjiedian]{正则边界点}[regular boundary point]。
+\end{definition}
+
+边界值在这里不是任意指定的可测代表值。闭包条件给出变分意义的边界约束，而正则边界点要求这一约束能够由内部连续解的极限恢复。
+
+\term*[wiener-panbie-zhunze]{Wiener 判别准则}[Wiener criterion]把这个分析问题转化为补集在每个小尺度上的容量问题。
+\begin{theorem}[Wiener]\label{b1:thm:p-wiener-criterion}
+设 \(d\ge2\)、\(1<p\le d\)，\(\Omega\subset\mathbb R^d\) 为有界开集，且 \(x_0\in\partial\Omega\)。则 \(x_0\) 是正则边界点，当且仅当 \(\mathbb R^d\setminus\Omega\) 在 \(x_0\) 处不是 \(p\)-薄的，即\eqref{b1:eq:p-wiener-series}中取 \(E=\mathbb R^d\setminus\Omega\) 所得级数发散。
+\end{theorem}
+\begin{proofsketch}
+充分性需要把补集的相对容量转化为变分解在相邻尺度间的边界振荡衰减，再迭代这些估计。发散条件恰好使未被边界约束消除的振荡趋于零。这里需要方程的比较原理和容量控制的边界衰减估计，不能用普通球均值 Poincaré 不等式直接代替。
+
+必要性更深：当补集薄时，借助相对容量的极小函数、非线性势的点态估计及 Cartan 性质，构造在该点不能恢复指定边值的解。Kilpeläinen 与 Malý 的《The Wiener test and potential estimates for quasilinear elliptic equations》\cite[定理1.1，第5节]{Kilpelainen1994Wiener}给出上述完整范围，并说明 Cartan 性质、比较方法和 Wiener 判别之间的联系。本节不展开支撑必要性的非线性势估计，也不另行建立 Perron 方法及其与变分解的对应。定理在这里用于指出容量理论通向边界正则性的方向，而不是宣称这些势论工具已在前文证明。
+\end{proofsketch}
+
+这个判据可以立即解释两种相反的几何情形。若存在固定 \(a>0\)，使每个充分小的 \(B(x_0,r)\setminus\Omega\) 都包含一个半径为 \(ar\) 的球，那么任何容许函数在该小球上至少为 \(1\)。对外球中的容许函数用零边界 Poincaré 不等式，得到
+\[
+ \operatorname{cap}_p\bigl(B(x_0,r)\setminus\Omega,B(x_0,2r)\bigr)
+ \ge c_a r^{d-p}.
+\]
+故 Wiener 级数发散。Lipschitz 图表的外侧含有这种按比例缩小的球，因此它的边界点符合该判据。相反，在穿孔球 \(\Omega=B(0,1)\setminus\{0\}\) 中，\(1<p\le d\) 时内边界点 \(0\) 附近的补集只有容量为零的单点，级数收敛，于是该点不正则。这说明一个拓扑边界点未必足以对变分解施加可见的点态边值。
 
 \subsection{势论联系}
 \label{b1:subsec:260404}
 
-待填充。
+线性势论以调和函数及超调和函数组织比较原理；非线性情形保留比较的思想，但不能把超调和函数都当作局部 Sobolev 函数。
+
+\begin{definition}\label{b1:def:p-superharmonic}
+设 \(\Omega\subset\mathbb R^d\) 开。给定下半连续、在一个稠密子集上有限的函数 \(v\colon\Omega\to(-\infty,+\infty]\)。若对每个满足 \(\overline D\Subset\Omega\) 的开集 \(D\)，以及每个在 \(D\) 上 \(p\)-调和且属于 \(C(\overline D)\) 的 \(h\)，都有
+\[
+ h\le v\text{ 于 }\partial D
+ \quad\Longrightarrow\quad h\le v\text{ 于 }D,
+\]
+则称 \(v\) 为\term[p-chaotiaohe-hanshu]{\(p\)-超调和函数}[p-superharmonic function]。
+\end{definition}
+
+定义允许取 \(+\infty\)，也不先要求 \(v\in W_{\mathrm{loc}}^{1,p}\)。因此不能未经论证就把每个这样的 \(v\) 代入弱方程并写出其梯度。超调和函数的截断正则性、下半连续代表与弱不等式的对应，都属于这套理论需要另外建立的内容。
+
+\term*[cartan-xingzhi]{Cartan 性质}[Cartan property]说明，薄性可以由一个势函数在该点与沿障碍集合的值之间的严格间隙检测。
+\begin{theorem}[Cartan]\label{b1:thm:p-cartan-characterization}
+设 \(d\ge2\)、\(1<p\le d\)，且 \(x_0\in\overline E\setminus E\)。集合 \(E\) 在 \(x_0\) 处是 \(p\)-薄的，当且仅当在 \(x_0\) 的某个普通邻域中存在非负 \(p\)-超调和函数 \(v\)，使
+\[
+ v(x_0)<
+ \liminf_{\substack{x\to x_0\\x\in E}}v(x).
+\]
+相应地，对任意 \(U\ni x_0\)，\(U\) 包含 \(x_0\) 的一个细开邻域，当且仅当 \(\mathbb R^d\setminus U\) 在 \(x_0\) 处是 \(p\)-薄的。细拓扑也正是使所有局部 \(p\)-超调和函数连续的最弱拓扑，允许函数值为 \(+\infty\) 时在值域采用通常的扩充实数拓扑。
+\end{theorem}
+\begin{proofsketch}
+由势函数的比较性质和容量估计，可以从严格间隙推出薄性。反向需要将小尺度的容量障碍组合成超调和势，同时控制它在 \(x_0\) 的值。在线性情形可以使用势的叠加；一般 \(p\) 时必须用非线性势估计与比较方法替代，不能把线性证明中的级数逐项照搬。
+
+Kilpeläinen 与 Malý 的《The Wiener test and potential estimates for quasilinear elliptic equations》\cite[定理1.3，第5节]{Kilpelainen1994Wiener}建立这种点态分离；由超调和函数定义的拓扑与薄性邻域的等价刻画，可参阅 Heinonen、Kilpeläinen 和 Martio 的《Fine topology and quasilinear elliptic equations》\cite[定理3.2]{Heinonen1989Fine}。这些结论包含了前文尚未证明的邻域提取步骤。若一个集合已经含有细开邻域，其补集薄只需单调性；从仅在一个点成立的薄性反过来提取细开邻域，才是此处需要势论的方向。
+\end{proofsketch}
+
+可以用一个公式看清这些深层估计增加了什么。给定正 Radon 测度 \(\sigma\)，相关的局部非线性势积分具有形式
+\[
+ \int_0^R
+ \left(\frac{\sigma(B(x,r))}{r^{d-p}}\right)^{1/(p-1)}
+ \frac{\mathrm dr}{r}.
+\]
+它把测度在所有小尺度上的集中程度累积起来。完整理论先为容量障碍构造极小函数和相应测度，再用这类势积分估计超调和函数的点值；由此才能控制 Cartan 分离和边界极限。本节没有证明该测度构造及点态估计，公式本身也不能代替它们。
+
+到这里，三种“忽略异常”的方式便有了明确分工。几乎处处只识别积分等价类；拟处处用容量限制可忽略的点集；细拓扑则让容量所控制的局部障碍进入邻域结构。前两者的基本 Sobolev 结论已在本章建立，后者与非线性方程之间的深层联系在本节给出了准确入口。继续阅读时，可先沿 Cartan 性质与 Wiener 判别的两篇原始论文补足势估计和比较方法，再回看拟连续代表为何能在拟处处成为细连续函数。

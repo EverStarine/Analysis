@@ -2,24 +2,233 @@
 \section{拟处处性质}
 \label{b1:sec:2602}
 
-% TODO: 撰写本节正文。
+弱导数只由几乎处处等价类决定，而点值需要指定代表。容量提供了比 Lebesgue 零测集更细的例外集尺度：我们希望在这个尺度下选出合适的代表，并说明哪些逐点结论不再依赖选择。本节固定 \(1<p<\infty\)，先讨论实值 \(W^{1,p}(\mathbb R^d)\)，容量及能量 \(E_p\) 均沿用\cref{b1:def:sobolev-capacity}。特别地，\(E_p^{1/p}\) 与通常 Sobolev 范数等价，梯度项用欧氏模。
+
+Kinnunen 与 Martio 的《The Sobolev capacity on metric spaces》\cite[第3节，定理3.6与推论3.7]{KinnunenMartio1996Capacity}用可和的坏集容量，从连续函数逼近构造拟连续代表。这条路线也适用于这里已经建立的经典容量。该文研究的度量空间范数与本书能量不同；其第368页明确说明，在欧氏空间中两种范数及相应容量等价，而非数值相同。
+
+“拟处处”与“拟连续”的中文名称可对照王巍翰、赵唯的《Finsler 度量测度空间上的容量》\cite[定义4.4]{WangZhao2023Capacity}。那里允许删去一般的小容量集；借助本章的开外正则性，可以把它包含在容量仍任意小的开集中。本书在定义时直接要求坏集开放，以便随后使用闭补集上的相对连续性；名称对照不意味着把其 Finsler 空间结论未经证明移到这里。
+
+% 实读正式期刊公开全文 https://www.acadsci.fi/mathematica/Vol21/kinnunen.pdf：
+% 第368页(1.3)--(1.5)区分Hajlasz型范数与经典欧氏能量；
+% 第371--374页3.1--3.7，重点3.6的快速逼近完整证明及3.7；
+% 第375页4.1的测度下界。第374页另核看实际页面。
+% 本节不照搬该文容量数值；拟连续超水平估计及唯一性按经典开集容量独立证明。
+% 前置：26.1格能量、可数次可加性、连续函数超水平估计、m*<=C；
+% 22.1全空间光滑稠密。未调用一般精细拓扑或容量版Lebesgue点定理。
 
 \subsection{拟处处}
 \label{b1:subsec:260201}
 
-待填充。
+\begin{definition}\label{b1:def:capacity-quasi-everywhere}
+设 \(E\subseteq\mathbb R^d\)。若某性质在 \(E\) 上除去一个 \(C_p\)-容量为零的集合后成立，则称它在 \(E\) 上\term[nichuchu]{拟处处}[quasi-everywhere]成立，记作 \(p\)-q.e.；固定 \(p\) 后也简写为 q.e.
+\end{definition}
+\symidx{\(p\text{-q.e.}\)：除去 \(p\)-容量零集后成立}
+
+由\cref{b1:prop:sobolev-capacity-basic}中的 \(m_d^*(N)\leq C_p(N)\)，容量零集一定是 Lebesgue 零测集，所以拟处处成立蕴含几乎处处成立。这是容量估计的后果，不是两种例外集的定义相同。反向蕴含不能由此推出。
+
+可数个拟处处结论可以放在同一个例外集外使用。事实上，若第 \(j\) 条结论的例外集为 \(N_j\)，则可数次可加性给出
+\[
+ C_p\left(\bigcup_{j=1}^{\infty}N_j\right)
+ \leq\sum_{j=1}^{\infty}C_p(N_j)=0.
+\]
+同样，如果一列集合 \(A_j\) 满足 \(\sum_j C_p(A_j)<\infty\)，则
+\begin{equation}\label{b1:eq:capacity-summable-exceptions}
+ C_p\left(\bigcap_{N=1}^{\infty}\bigcup_{j\geq N}A_j\right)
+ \leq\inf_N\sum_{j\geq N}C_p(A_j)=0.
+\end{equation}
+这只用了单调性与次可加性，没有把容量当成可数可加测度。其含义是：拟处处的点只会落入有限多个 \(A_j\)。
+
+还应分清集合上的两类条件。容量定义中的“\(u\geq1\) 几乎处处于某个开邻域”只涉及 Sobolev 等价类；“某个代表在 \(E\) 上逐点大于等于 \(1\)”涉及额外选择。下面先构造代表，再证明可对这些代表作点值容量估计，不倒过来用点值解释原定义。
 
 \subsection{拟连续代表}
 \label{b1:subsec:260202}
 
-待填充。
+\begin{definition}\label{b1:def:sobolev-quasicontinuous}
+设 \(v\colon\mathbb R^d\rightarrow\mathbb R\) 为有限值函数。若对每个 \(\varepsilon>0\)，都存在开集 \(G\)，使
+\[
+ C_p(G)<\varepsilon,\quad
+ v|_{\mathbb R^d\setminus G}\ \text{连续},
+\]
+则称 \(v\) 为 \(p\)-\term[nilianxu]{拟连续}[quasicontinuous]函数。这里的连续性是补集上的相对连续性。若还有 \(v=u\) 几乎处处，其中 \(u\in W^{1,p}(\mathbb R^d)\)，则称 \(v\) 为 \(u\) 的拟连续代表。
+\end{definition}
+
+本节在容量零集上可以补以有限值，例如补零，不要求那些点具有由局部平均恢复的值。连续函数当然拟连续，只需取 \(G=\varnothing\)。另一个直接事实是：有限个拟连续函数的线性组合仍拟连续。为每个函数选取足够小的坏开集，取它们的并；在并集外，各项均连续，容量则由各项容量之和控制。
+
+\begin{theorem}\label{b1:thm:sobolev-quasicontinuous-representative}
+每个 \(u\in W^{1,p}(\mathbb R^d)\) 都有有限值 Borel 拟连续代表 \(\widetilde u\)。而且可以选取
+\(\varphi_j\in C_c^\infty(\mathbb R^d)\)，使 \(\varphi_j\to u\) 于 \(W^{1,p}\)，并使这列函数在拟处处收敛到 \(\widetilde u\)。对每个 \(\varepsilon>0\)，还能删去一个容量小于 \(\varepsilon\) 的开集，使同一列函数在其补集上一致收敛。
+\end{theorem}
+\begin{proof}
+由\cref{b1:thm:whole-space-sobolev-density}及范数等价性，选择
+\[
+ E_p(\varphi_j-u)^{1/p}\leq2^{-3j-2}.
+\]
+能量的 \(p\) 次方根满足三角不等式，因此
+\[
+ E_p(\varphi_{j+1}-\varphi_j)^{1/p}\leq2^{-3j}.
+\]
+定义坏开集
+\[
+ A_j=\{\,x:|\varphi_{j+1}(x)-\varphi_j(x)|>2^{-j}\,\},
+ \quad G_N=\bigcup_{j\geq N}A_j.
+\]
+函数之差连续，故这些集合确实是开集。由\cref{b1:lem:continuous-capacity-level-set}和容量的可数次可加性，
+\begin{equation}\label{b1:eq:quasicontinuous-bad-open-sets}
+ C_p(G_N)\leq\sum_{j\geq N}C_p(A_j)
+ \leq\sum_{j\geq N}2^{jp}E_p(\varphi_{j+1}-\varphi_j)
+ \leq\sum_{j\geq N}2^{-2jp}.
+\end{equation}
+右端趋于零。令 \(Z=\bigcap_NG_N\)，由单调性得到 \(C_p(Z)=0\)。
+
+固定 \(N\)。在闭集 \(F_N=\mathbb R^d\setminus G_N\) 上，对 \(k>j\geq N\)，
+\[
+ |\varphi_k(x)-\varphi_j(x)|
+ \leq\sum_{i=j}^{k-1}|\varphi_{i+1}(x)-\varphi_i(x)|
+ \leq\sum_{i=j}^{k-1}2^{-i}\leq2^{1-j}.
+\]
+所以这列连续函数在 \(F_N\) 上一致为 Cauchy 列，其极限有限且在 \(F_N\) 上连续。不同 \(F_N\) 上的极限在重叠处相同，因为它们来自同一列逐点极限。又有
+\(\bigcup_NF_N=\mathbb R^d\setminus Z\)，故可定义
+\[
+ \widetilde u(x)=
+ \begin{cases}
+ \displaystyle\lim_{j\to\infty}\varphi_j(x),&x\notin Z,\\
+ 0,&x\in Z.
+ \end{cases}
+\]
+集合 \(Z\) 为 Borel 集，在其补集上取 Borel 函数列的有限极限，再在 \(Z\) 上补零，所得函数仍为 Borel 函数。\eqref{b1:eq:quasicontinuous-bad-open-sets}及 \(F_N\) 上的一致收敛证明了拟连续性与定理最后一项。
+
+还须核实这是原来 Sobolev 类的代表，而非仅仅某个点态极限。上述逼近速度给出
+\[
+ \sum_j\|\varphi_j-u\|_p^p<\infty.
+\]
+对非负项积分求和，得到
+\(\sum_j|\varphi_j(x)-u(x)|^p<\infty\) 几乎处处，因而
+\(\varphi_j(x)\to u(x)\) 几乎处处。另一方面，\(C_p(Z)=0\) 已由测度下界推出 \(m_d(Z)=0\)。在两个满测度集合的交上，点态极限只能是 \(u\)，所以 \(\widetilde u=u\) 几乎处处。
+\end{proof}
+
+这里的坏开集按容量控制，集合 \(F_N\) 不必有内点，也不必包含每个点的邻域。因此，补集上的一致极限只能直接给出相对连续性，不能将结论改写为通常连续性。光滑逼近的速度也不可省略：普通范数收敛只说明相邻差趋零，而证明需要加权后的能量级数可和。
 
 \subsection{拟连续代表的唯一性}
 \label{b1:subsec:260203}
 
-待填充。
+先把连续函数的容量估计推广到拟连续代表。此时超水平集未必开，需要借助定义中的坏开集，把点态条件放入一个真正的开邻域。
+
+\begin{proposition}\label{b1:prop:quasicontinuous-capacity-level-set}
+设 \(v\) 是 \(u\in W^{1,p}(\mathbb R^d)\) 的拟连续代表。对每个 \(t>0\)，有
+\begin{equation}\label{b1:eq:quasicontinuous-capacity-level-set}
+ C_p\bigl(\{\,x:|v(x)|>t\,\}\bigr)
+ \leq t^{-p}E_p(u).
+\end{equation}
+\end{proposition}
+\begin{proof}
+固定 \(\varepsilon>0\) 及 \(0<a<t\)。选取开集 \(G\)，使
+\(C_p(G)<\varepsilon\)，且 \(v\) 在闭集 \(F=G^c\) 上连续。相对开集
+\(\{\,x\in F:|v(x)|>a\,\}\) 可以写成 \(O\cap F\)，其中 \(O\) 在全空间开。于是
+\[
+ \{\,|v|>t\,\}\subseteq O\cup G,\quad
+ |v|>a\ \text{于 }O\setminus G.
+\]
+由开集容量定义，取实值 \(w_G\in W^{1,p}\)，使
+\[
+ 0\leq w_G\leq1,\quad
+ w_G=1\ \text{几乎处处于 }G,\quad
+ E_p(w_G)<C_p(G)+\varepsilon<2\varepsilon.
+\]
+截断到 \([0,1]\) 不增能量，故前两项可以同时要求。
+
+在 Sobolev 等价类中定义
+\[
+ z=\max\{\,|u|/a,w_G\,\}.
+\]
+由\cref{b1:lem:sobolev-lattice-energy}，
+\[
+ z\in W^{1,p},\quad
+ E_p(z)\leq a^{-p}E_p(u)+E_p(w_G)
+ <a^{-p}E_p(u)+2\varepsilon.
+\]
+在 \(G\) 上，函数 \(w_G\) 几乎处处等于 \(1\)；在 \(O\setminus G\) 上，由 \(u=v\) 几乎处处可知 \(|u|/a>1\) 几乎处处。因此 \(z\) 是开集 \(O\cup G\) 的容许函数，进而
+\[
+ C_p\bigl(\{\,|v|>t\,\}\bigr)
+ \leq C_p(O\cup G)
+ \leq a^{-p}E_p(u)+2\varepsilon.
+\]
+先令 \(\varepsilon\downarrow0\)，再令 \(a\uparrow t\)，得到所需估计。
+\end{proof}
+
+估计中的能量由等价类 \(u\) 决定，左端的超水平集却由指定代表 \(v\) 决定。把两者连接起来的是拟连续性；如果给任意几乎处处代表套用同一估计，就会错误地认定所有 Lebesgue 零测集都具有零容量。
+
+\begin{theorem}\label{b1:thm:quasicontinuous-uniqueness}
+同一 Sobolev 类的两个有限值拟连续代表拟处处相等。反过来，在容量零集上任意改变一个拟连续代表的有限点值，所得函数仍是同一类的拟连续代表。
+\end{theorem}
+\begin{proof}
+设 \(v,w\) 为同一类的拟连续代表。它们的差拟连续，并且几乎处处为零，故由前一命题，对每个正整数 \(j\)，
+\[
+ C_p\bigl(\{\,|v-w|>1/j\,\}\bigr)
+ \leq j^p E_p(0)=0.
+\]
+取这些集合的可数并，得到 \(C_p(\{v\ne w\})=0\)。
+
+再设 \(N\) 容量为零，函数 \(v'\) 在 \(N^c\) 上与 \(v\) 相同，在 \(N\) 上仍取有限值。给定 \(\varepsilon>0\)，先删去开集 \(G\)，使
+\(C_p(G)<\varepsilon/2\)，且 \(v|_{G^c}\) 连续；再由外正则性选开集 \(H\supseteq N\)，使 \(C_p(H)<\varepsilon/2\)。在
+\((G\cup H)^c\) 上，两个函数相同，故 \(v'\) 也连续，而
+\(C_p(G\cup H)<\varepsilon\)。这就证明拟连续性。又因容量零集为 Lebesgue 零测集，且 Lebesgue 测度完备，任意这样的有限值改动仍可测，且不改变 Sobolev 类。
+\end{proof}
+
+因此可以用 \(\widetilde u\) 表示 Sobolev 类的拟连续代表，只要涉及的点态等式均在拟处处意义下理解。\symidx{\(\widetilde u\)：Sobolev 函数的拟连续代表，拟处处唯一}%
+这个记号没有把某个光滑逼近序列或零容量集上的补值固定为额外结构。
 
 \subsection{Sobolev 函数的精细代表}
 \label{b1:subsec:260204}
 
-待填充。
+拟连续代表的选择还与 Sobolev 范数中的极限相容。这比单纯的 \(L^p\) 几乎处处抽列结论更细，所用超水平估计则必须是刚刚证明的拟连续版本。
+
+\begin{theorem}\label{b1:thm:sobolev-quasi-everywhere-subsequence}
+若 \(u_n\to u\) 于 \(W^{1,p}(\mathbb R^d)\)，为各项及极限任取有限值拟连续代表 \(\widetilde u_n,\widetilde u\)，则存在子列
+\(\widetilde u_{n_j}\) 拟处处收敛到 \(\widetilde u\)。对每个 \(\varepsilon>0\)，还能删去一个容量小于 \(\varepsilon\) 的开集，使该子列在补集上一致收敛。
+\end{theorem}
+\begin{proof}
+抽取子列，使
+\[
+ E_p(u_{n_j}-u)\leq2^{-2jp}.
+\]
+差函数的拟连续代表可取
+\(\widetilde u_{n_j}-\widetilde u\)。由超水平估计，
+\[
+ C_p\bigl(\{\,|\widetilde u_{n_j}-\widetilde u|>2^{-j}\,\}\bigr)
+ \leq2^{-jp}.
+\]
+外正则性允许把每个超水平集包含在开集 \(O_j\) 中，并要求
+\(C_p(O_j)<2^{1-jp}\)。令
+\[
+ V_N=\bigcup_{j\geq N}O_j,\quad Z=\bigcap_NV_N.
+\]
+则 \(C_p(V_N)\leq2\sum_{j\geq N}2^{-jp}\to0\)，因而 \(C_p(Z)=0\)。在 \(V_N^c\) 上，对每个 \(j\geq N\) 都有
+\[
+ |\widetilde u_{n_j}(x)-\widetilde u(x)|\leq2^{-j}.
+\]
+这同时证明补集上的一致收敛和 \(Z^c\) 上的逐点收敛。给定 \(\varepsilon\) 后取足够大的 \(N\)，即得最后一项。
+\end{proof}
+
+对整个收敛序列，虽未必有逐点收敛，上述命题仍给出每个固定 \(t>0\) 的定量结论：
+\[
+ C_p\bigl(\{\,|\widetilde u_n-\widetilde u|>t\,\}\bigr)
+ \leq t^{-p}E_p(u_n-u)\longrightarrow0.
+\]
+这里不能用任意的可测代表替换拟连续代表，也不能只假设零阶 \(L^p\) 收敛而删去梯度控制。
+
+再与第\ref{b1:sec:1404}节的精确代表 \(u^*\) 比较。那里的定义由缩小球的平均值决定，与可测代表的任意改动无关；本节的 \(\widetilde u\) 则由容量和连续逼近确定，只在拟处处意义下唯一。由于两者均与 \(u\) 几乎处处相等，已有
+\[
+ \widetilde u=u^*\quad\text{几乎处处}.
+\]
+若 \(\widetilde u\) 在某点 \(x\) 通常连续，则对充分小的球，
+\[
+ \frac1{m_d\bigl(B(x,r)\bigr)}
+ \int_{B(x,r)}|u(y)-\widetilde u(x)|\,\mathrm dy
+ \leq\sup_{y\in B(x,r)}
+          |\widetilde u(y)-\widetilde u(x)|\longrightarrow0.
+\]
+所以这个点具有由平均绝对偏差确定的值，且 \(u^*(x)=\widetilde u(x)\)。对于一般拟连续点，删去小容量集后的相对连续性本身并未估计球内落在该坏集中的积分。本节因而不把上述几乎处处等式升级为“每个拟连续代表拟处处都是 Lebesgue 点”；这需要进一步的容量微分估计，不能仅从普通 Lebesgue 点定理推出。
+
+单点容量把两种连续性的边界具体化。若 \(p>d\)，由\cref{b1:prop:sobolev-point-capacity}，每个非空集合的容量都有同一个正下界。拟连续定义中把 \(\varepsilon\) 取得小于这个下界时，坏开集只能为空，故拟连续函数实际上通常连续。若 \(1<p\leq d\)，单点容量为零，可数次可加性说明 \(C_p(\mathbb Q^d)=0\)。于是 \(\mathbf1_{\mathbb Q^d}\) 是零 Sobolev 类的一个拟连续代表，却处处不连续；它与连续代表零函数恰好在一个容量零集上不同。这也说明拟处处唯一不能替换为逐点唯一。
+
+复值情形可按实部、虚部分别构造代表，再把两组坏开集合并。两个分量的唯一性给出复代表的拟处处唯一；范数收敛抽列时先后为两个分量选子列，仍得到共同坏开集外的一致收敛。容量的容许函数依旧是实值非负函数，不因讨论复值代表而改变。

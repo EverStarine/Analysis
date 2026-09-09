@@ -2,24 +2,317 @@
 \section{容量与 Hausdorff 测度}
 \label{b1:sec:2603}
 
-% TODO: 撰写本节正文。
+容量由函数能量定义，Hausdorff 测度由小集合覆盖定义。两者相遇的地方是球截断：半径为 \(r\) 的球可以用一个梯度能量约为 \(r^{d-p}\) 的函数包住。这个尺度解释了 \(d-p\) 为何成为临界维数，但它本身还不能处理临界测度有限、却不为零的集合。
+
+Kinnunen 与 Martio 的《The Sobolev capacity on metric spaces》\cite[第380--381页，定理4.13与4.15]{KinnunenMartio1996Capacity}组织了容量与 Hausdorff 覆盖之间的两个方向。本节使用本书的经典弱梯度，分别补出临界测度有限时的凸组合论证，以及反方向中的 \(5r\) 覆盖步骤。除非另行限制，以下集合不必为 Borel 集；\(\mathcal H^s\) 与 \(C_p\) 均按外测度值理解。
+
+% 实读 KinnunenMartio1996Capacity 官方全文第380--381页4.13--4.15及完整证明，
+% 并核看第381页。该文的g是Hajlasz梯度，本节不将其当作弱梯度。
+% 球覆盖方向参考4.13的组织；反向以本书球Poincare重写4.15，
+% 并用13章5r引理展开原文援引Federer的最后一步。
+% H^{d-p}有限/σ有限推出零容量是本节独立展开的经典Sobolev凸组合论证。
+% 前置：26.1格能量与球截断；9章Mazur；13章5r；15章Hausdorff外测度；
+% 18章径向积分；21章Sobolev弱子列；24章球Poincare。不用Frostman或一般可容性。
 
 \subsection{维数估计}
 \label{b1:subsec:260301}
 
-待填充。
+先设 \(1<p<d\)，记 \(t=d-p>0\)。由\cref{b1:prop:sobolev-capacity-balls}，当 \(0<r\leq1\) 时，
+\[
+ C_p\bigl(B(x,r)\bigr)\leq C_{d,p}(r^d+r^{d-p})
+ \leq2C_{d,p}r^t.
+\]
+它立即给出一个覆盖上界。
+
+\begin{proposition}\label{b1:prop:capacity-hausdorff-upper}
+设 \(1<p<d\)。存在仅依赖 \(d,p\) 的常数 \(C\)，使每个
+\(E\subseteq\mathbb R^d\) 都满足
+\[
+ C_p(E)\leq C\mathcal H^{d-p}(E).
+\]
+\end{proposition}
+\begin{proof}
+令 \(t=d-p\)，并假设右端有限。由 Hausdorff 覆盖定义，对每个
+\(0<\delta<1\) 及 \(\eta>0\)，可以用开球 \(B(x_i,r_i)\) 覆盖 \(E\)，使
+\begin{equation}\label{b1:eq:critical-hausdorff-ball-cover}
+ 0<r_i\leq\delta,\quad
+ \sum_i r_i^t\leq C_t\mathcal H^t(E)+\eta.
+\end{equation}
+具体地，先取直径不超过 \(\delta/4\) 的可数覆盖。直径 \(a_i>0\) 的非空成员，可放入以其中一点为中心、半径 \(2a_i\) 的开球；直径为零的成员至多是单点，为这些单点另选正半径，使半径的 \(t\) 次幂之和小于任意给定误差。再利用归一化常数 \(c_t>0\)，便得到所列球覆盖。这里使用了 \(t>0\)。
+
+单调性、可数次可加性及球上界给出
+\[
+ C_p(E)\leq\sum_iC_p\bigl(B(x_i,r_i)\bigr)
+ \leq C_{d,p}\sum_i r_i^t
+ \leq C\mathcal H^t(E)+C_{d,p}\eta.
+\]
+令 \(\eta\downarrow0\) 即得结论。右端无穷时不需另证。
+\end{proof}
+
+这个命题已说明 \(\mathcal H^{d-p}(E)=0\) 足以推出零容量。若临界测度只是有限，上界却只给出有限容量；要进一步得到零，还必须利用覆盖半径能够趋于零。
+
+\begin{theorem}\label{b1:thm:finite-critical-hausdorff-zero-capacity}
+设 \(1<p<d\)。若 \(E\subseteq\mathbb R^d\) 可以写成可数个具有有限
+\(\mathcal H^{d-p}\) 外测度的集合之并，则 \(C_p(E)=0\)。特别地，
+\(\mathcal H^{d-p}(E)<\infty\) 时容量为零。
+\end{theorem}
+\begin{proof}
+先设 \(\mathcal H^t(E)<\infty\)，其中 \(t=d-p\)。取 \(0<\delta_n<1\)、\(\delta_n\downarrow0\)，并用\eqref{b1:eq:critical-hausdorff-ball-cover}选取开球覆盖
+\[
+ E\subseteq G_n=\bigcup_i B(x_{n,i},r_{n,i}),\quad
+ r_{n,i}\leq\delta_n,\quad
+ \sum_i r_{n,i}^t\leq M.
+\]
+常数 \(M<\infty\) 与 \(n\) 无关，可把每次覆盖的额外误差取为 \(1\)。
+
+固定 \(0\leq\chi\leq1\)、\(\chi\in C_c^\infty\bigl(B(0,2)\bigr)\)，使 \(\chi=1\) 于 \(B(0,1)\)，并令
+\[
+ \chi_{n,i}(x)=\chi\left(\frac{x-x_{n,i}}{r_{n,i}}\right).
+\]
+直接伸缩计算给出
+\[
+ E_p(\chi_{n,i})
+ \leq C_{d,p}(r_{n,i}^d+r_{n,i}^{d-p}).
+\]
+我们需要这些截断的可数最大值，而不是它们的和；求和可能在高度上重复付出代价。对固定 \(n\)，置
+\[
+ v_{n,k}=\max_{1\leq i\leq k}\chi_{n,i},\quad
+ u_n=\sup_{i\geq1}\chi_{n,i},\quad
+ S_n=\bigcup_i B(x_{n,i},2r_{n,i}).
+\]
+由\cref{b1:lem:sobolev-lattice-energy}，有
+\[
+ E_p(v_{n,k})\leq\sum_iE_p(\chi_{n,i})\leq C_{d,p}M.
+\]
+又有 \(0\leq v_{n,k}\uparrow u_n\leq\mathbf1_{S_n}\)，并且
+\begin{equation}\label{b1:eq:critical-cover-small-volume}
+ m_d(S_n)\leq2^d\omega_d\sum_i r_{n,i}^d
+ \leq2^d\omega_d\delta_n^p\sum_i r_{n,i}^{d-p}
+ \leq C_dM\delta_n^p.
+\end{equation}
+所以 \(v_{n,k}\to u_n\) 于 \(L^p\)。由\cref{b1:cor:sobolev-weak-subsequence}取一个 Sobolev 弱收敛子列，其零阶极限只能为 \(u_n\)。能量是一个等价范数的 \(p\) 次幂，故弱下半连续，得到
+\[
+ u_n\in W^{1,p}(\mathbb R^d),\quad
+ E_p(u_n)\leq C_{d,p}M,\quad
+ u_n=1\ \text{几乎处处于 }G_n.
+\]
+最后一项也可从逐点最大值直接读出；作为 Sobolev 类使用时，只要求这个几乎处处条件。
+
+由\eqref{b1:eq:critical-cover-small-volume}，
+\(\|u_n\|_p^p\leq C_dM\delta_n^p\to0\)。再从能量有界列
+\((u_n)\) 中抽取 Sobolev 弱收敛子列，零阶强极限把其弱极限确定为零。仍把该子列记作 \((u_n)\)，并保留相应的 \(G_n\)。
+
+由\cref{b1:thm:mazur}，每个尾部的有限凸组合可以在 Sobolev 范数中任意接近零。于是存在
+\[
+ z_j=\sum_{n=j}^{N_j}a_{j,n}u_n,\quad
+ a_{j,n}\geq0,\quad \sum_{n=j}^{N_j}a_{j,n}=1,\quad
+ E_p(z_j)\longrightarrow0.
+\]
+有限交 \(U_j=\bigcap_{n=j}^{N_j}G_n\) 仍是包含 \(E\) 的开集。在这个交集上，所有参与组合的 \(u_n\) 几乎处处等于 \(1\)，所以
+\(z_j=1\) 几乎处处于 \(U_j\)。因此
+\[
+ C_p(E)\leq C_p(U_j)\leq E_p(z_j)\longrightarrow0.
+\]
+此处必须用有限凸组合；无限多个开邻域的交未必还是开邻域。
+
+最后，若 \(E=\bigcup_\ell E_\ell\)，每个 \(E_\ell\) 的临界外测度有限，就由刚证的结论及容量的可数次可加性得到 \(C_p(E)=0\)。
+\end{proof}
+
+这个论证不要求 \(E\) 紧，也不要求从 \(E\) 上取得一个 Frostman 测度。它控制的是开集 \(S_n\) 的体积，不是 \(u_n\) 的拓扑支集；当覆盖的中心稠密时，\(S_n\) 的闭包可能很大。
 
 \subsection{零容量集}
 \label{b1:subsec:260302}
 
-待填充。
+反方向的目标不同：不是从覆盖造容许函数，而是用一组能量很小的容许函数造出一个函数，使它在给定集合每一点附近的平均值都发散。这迫使梯度能量在那些点周围聚集。
+
+\begin{theorem}\label{b1:thm:zero-capacity-hausdorff-dimension}
+设 \(1<p\leq d\)，且 \(E\subseteq\mathbb R^d\) 满足 \(C_p(E)=0\)。则对每个 \(s>d-p\)，都有
+\[
+ \mathcal H^s(E)=0.
+\]
+特别地，零容量集的 Hausdorff 维数至多为 \(d-p\)。
+\end{theorem}
+\begin{proof}
+由容量为零，选取开集 \(G_j\supseteq E\) 和非负函数
+\(u_j\in W^{1,p}(\mathbb R^d)\)，使
+\[
+ u_j\geq1\ \text{几乎处处于 }G_j,\quad
+ E_p(u_j)^{1/p}\leq2^{-j}.
+\]
+能量范数的可和性和 Sobolev 完备性说明
+\[
+ w=\sum_{j=1}^{\infty}u_j\in W^{1,p}(\mathbb R^d).
+\]
+这里可取非负逐点和作为几乎处处代表：部分和在 \(L^p\) 中收敛，又单调递增，故逐点和有限几乎处处，并与范数极限相同。
+
+任取 \(x\in E\) 及正整数 \(N\)。有限交
+\(\bigcap_{j=1}^NG_j\) 是 \(x\) 的开邻域，其中 \(w\geq N\) 几乎处处。因此
+\begin{equation}\label{b1:eq:zero-capacity-divergent-means}
+ \lim_{r\downarrow0}w_{B(x,r)}=+\infty
+ \quad(x\in E).
+\end{equation}
+每个固定球上的平均仍有限，因为 \(w\in L^p\subseteq L^1_{\mathrm{loc}}\)。这个发散结论由开邻域上的几乎处处不等式推出，不需要预先给 \(w\) 选拟连续点值。
+
+令 \(\mu=|\nabla w|^p\,m_d\)，它是有限正 Borel 测度。固定 \(s>d-p\)。假设某个 \(x\in E\) 满足
+\[
+ \limsup_{r\downarrow0}\frac{\mu\bigl(B(x,r)\bigr)}{r^s}<\infty.
+\]
+则存在 \(R>0\) 和 \(A<\infty\)，使
+\(\mu\bigl(B(x,r)\bigr)\leq Ar^s\) 对 \(0<r\leq R\) 均成立。记
+\(r_i=2^{-i}R\)、\(B_i=B(x,r_i)\)。由 Hölder 不等式及\cref{b1:thm:ball-poincare-lp}，
+\[
+ \begin{aligned}
+ |w_{B_{i+1}}-w_{B_i}|
+ &\leq\frac1{m_d(B_{i+1})}\int_{B_{i+1}}|w-w_{B_i}|\\
+ &\leq C_d\,m_d(B_i)^{-1/p}\|w-w_{B_i}\|_{L^p(B_i)}\\
+ &\leq C_d r_i^{1-d/p}\|\nabla w\|_{L^p(B_i)}
+ \leq C_dA^{1/p}r_i^{(p-d+s)/p}.
+ \end{aligned}
+\]
+指数 \((p-d+s)/p\) 严格为正，所以右端对 \(i\) 可和。相邻平均值之差可和，说明 \((w_{B_i})\) 收敛到有限值，与\eqref{b1:eq:zero-capacity-divergent-means}矛盾。因此
+\begin{equation}\label{b1:eq:capacity-zero-gradient-density}
+ E\subseteq
+ \left\{\,x:\limsup_{r\downarrow0}
+               \frac{\mu\bigl(B(x,r)\bigr)}{r^s}=+\infty\,\right\}.
+\end{equation}
+
+最后把这个密度条件变成覆盖估计。固定 \(M>0\)、\(\delta>0\) 和 \(R_0>0\)。对每个 \(x\in E\cap B(0,R_0)\)，由\eqref{b1:eq:capacity-zero-gradient-density}，存在任意小的半径
+\(0<r<\delta/10\)，使
+\(\mu\bigl(B(x,r)\bigr)>Mr^s\)。把全部这样的开球组成一个族。由\cref{b1:lem:five-r-covering}，可选至多可数个两两不交的球 \(B_i=B(x_i,r_i)\)，使
+\[
+ E\cap B(0,R_0)\subseteq\bigcup_i5B_i,\quad
+ \operatorname{diam}(5B_i)=10r_i<\delta.
+\]
+于是
+\[
+ \begin{aligned}
+ \mathcal H^s_\delta\bigl(E\cap B(0,R_0)\bigr)
+ &\leq c_s10^s\sum_i r_i^s\\
+ &\leq\frac{c_s10^s}{M}\sum_i\mu(B_i)
+ \leq\frac{c_s10^s}{M}\mu(\mathbb R^d).
+ \end{aligned}
+\]
+此处测度只作用于所选开球，不要求 \(E\) 可测。先令
+\(\delta\downarrow0\)，再令 \(M\to\infty\)，得到
+\(\mathcal H^s(E\cap B(0,R_0))=0\)。最后对整数 \(R_0\) 取可数并，便有 \(\mathcal H^s(E)=0\)。
+\end{proof}
+
+证明中严格不等式 \(s>d-p\) 用在几何级数的收敛上。若直接取 \(s=d-p\)，相邻平均值的估计只剩一个不随尺度衰减的常数，不能据此推出平均值收敛。
 
 \subsection{奇异集}
 \label{b1:subsec:260303}
 
-待填充。
+上一节产生的例外集，现在可以附加几何大小的说明。这里所说的异常，是某条拟处处结论的例外，不是所有通常不连续点的统称。
+
+\begin{corollary}\label{b1:cor:capacity-exception-dimension}
+设 \(1<p\leq d\)。同一 Sobolev 类的两个拟连续代表不相等的集合，对每个 \(s>d-p\) 都具有零 \(\mathcal H^s\) 测度。若一列 Sobolev 函数在范数中收敛，则可以选取子列，使其拟连续代表不逐点收敛到极限代表的集合也满足同一结论。
+\end{corollary}
+\begin{proof}
+由\cref{b1:thm:quasicontinuous-uniqueness}，第一类集合容量为零。由\cref{b1:thm:sobolev-quasi-everywhere-subsequence}，第二类集合可以包含在一个容量零集中。分别应用前一定理即可。
+\end{proof}
+
+例如，在 \(\mathbb R^3\) 中取 \(p=2\)，一条有限线段的
+\(\mathcal H^1\) 测度有限，故其 \(2\)-容量为零。这个结论正好落在临界维数 \(d-p=1\) 上，不能仅凭“维数较低”而跳过有限临界测度的论证。
+
+更一般地，在 \(1<p<d\) 时，若
+\(\dim_{\mathrm H}E<d-p\)，则 \(\mathcal H^{d-p}(E)=0\)，所以容量为零；若
+\(\dim_{\mathrm H}E>d-p\)，容量便不可能为零。两种严格不等式给出清楚的判别，而维数恰为 \(d-p\) 时仍须查看更细的测度或覆盖信息。特别是，已证的充分条件包括临界测度 \(\sigma\)-有限，并不只包括临界测度为零。
+
+这些结果没有把普通 Lebesgue 点定理的例外集改成容量零集。第\ref{b1:sec:2602}节只在已经选定的拟连续代表与容量例外集之间建立了关系；由此得到的维数结论也只适用于这些例外集。例如当 \(1<p\leq d\) 时，零类的代表 \(\mathbf1_{\mathbb Q^d}\) 拟连续，却通常处处不连续，其通常不连续点集是整个空间。它不与本推论冲突，因为与零代表不相等的集合只是 \(\mathbb Q^d\)。
 
 \subsection{临界维数}
 \label{b1:subsec:260304}
 
-待填充。
+当 \(p=d>1\) 时，幂次 \(r^{d-p}\) 变为常数，普通伸缩截断不能反映小球容量趋零的速度。这时可以把高度下降分散到许多同心环带，得到一个对数尺度。
+
+\begin{proposition}\label{b1:prop:critical-logarithmic-capacity}
+设 \(d>1\)。存在仅依赖于 \(d\) 的常数 \(\kappa_d\)，使
+\[
+ C_d\bigl(B(x,r)\bigr)
+ \leq\kappa_d\bigl(\log(1/r)\bigr)^{1-d},
+ \quad 0<r\leq\tfrac12.
+\]
+这里左端 \(C_d(\,\cdot\,)\) 是指数为 \(d\) 的容量。
+\end{proposition}
+\begin{proof}
+平移不改变能量，故只考虑球心为零。令 \(L=\log(1/r)\)，取径向函数
+\[
+ v_r(x)=
+ \begin{cases}
+ 1,&|x|\leq r,\\
+ L^{-1}\log(1/|x|),&r<|x|<1,\\
+ 0,&|x|\geq1.
+ \end{cases}
+\]
+对固定 \(r>0\)，该函数为全空间 Lipschitz 函数，紧支集且在
+\(B(0,r)\) 上等于 \(1\)，因而是容许函数。在中间环带上，
+\(|\nabla v_r(x)|=1/(L|x|)\) 几乎处处；其余部分梯度为零。
+由\cref{b1:prop:radial-shell-integration}，
+\[
+ \int_{\mathbb R^d}|\nabla v_r|^d
+ =d\omega_d L^{-d}\int_r^1\frac{\mathrm d\rho}{\rho}
+ =d\omega_d L^{1-d}.
+\]
+非齐次容量还包括零阶项，不能只估计这一梯度积分。作代换
+\(t=\log(1/\rho)\)，得到
+\[
+ \begin{aligned}
+ \int_{\mathbb R^d}|v_r|^d
+ &=\omega_dr^d+d\omega_dL^{-d}
+       \int_r^1\bigl(\log(1/\rho)\bigr)^d\rho^{d-1}\,\mathrm d\rho\\
+ &=\omega_de^{-dL}
+   +d\omega_dL^{-d}\int_0^L t^de^{-dt}\,\mathrm dt
+ \leq A_dL^{-d}.
+ \end{aligned}
+\]
+最后一步使用
+\(\sup_{L\geq\log2}L^de^{-dL}<\infty\) 及
+\(\int_0^\infty t^de^{-dt}\,\mathrm dt<\infty\)；指数衰减使这两个量有限。因此，当 \(L\geq\log2\) 时，
+\[
+ E_d(v_r)\leq d\omega_dL^{1-d}+A_dL^{-d}
+ \leq\kappa_dL^{1-d}.
+\]
+以这个能量作为球容量的上界，即得结论。
+\end{proof}
+
+为记录相应的覆盖判据，记
+\[
+ \ell_d(r)=\bigl(\log(1/r)\bigr)^{1-d},
+ \quad 0<r\leq\tfrac12.
+\]
+对 \(0<\delta\leq1/2\)，直接用可数开球覆盖定义对数覆盖量
+\[
+ \mathcal H^{\ell_d}_\delta(E)
+ =\inf\left\{\,
+    \sum_i\ell_d(r_i):
+    E\subseteq\bigcup_i B(x_i,r_i),\quad 0<r_i\leq\delta
+   \,\right\}.
+\]
+再令
+\[
+ \mathcal H^{\ell_d}(E)
+ =\lim_{\delta\downarrow0}\mathcal H^{\ell_d}_\delta(E).
+\]
+这个极限由尺度单调性存在。本式以半径为代价的自变量，没有另加
+\(c_s\) 归一化；它是对数代价下的 Hausdorff 覆盖构造，不是
+\(\mathcal H^0\) 的另一种记法。
+
+\begin{corollary}\label{b1:cor:logarithmic-cover-zero-capacity}
+若 \(d>1\)，则对任意 \(E\subseteq\mathbb R^d\)，有
+\[
+ C_d(E)\leq\kappa_d\mathcal H^{\ell_d}(E).
+\]
+特别地，对数覆盖量为零的集合具有零 \(d\)-容量。
+\end{corollary}
+\begin{proof}
+对任意半径不超过 \(\delta\leq1/2\) 的开球覆盖，用容量的次可加性和前一命题，得到
+\[
+ C_d(E)\leq\sum_iC_d\bigl(B(x_i,r_i)\bigr)
+ \leq\kappa_d\sum_i\ell_d(r_i).
+\]
+先对覆盖取下确界，再令 \(\delta\downarrow0\) 即可。
+\end{proof}
+
+由于 \(\ell_d(r)\to0\)，单点的对数覆盖量为零；可数集也可逐点分配任意小的可和代价，所以仍为零。另一方面，\(\mathcal H^0\) 是计数测度，单点已有 \(\mathcal H^0\) 值 \(1\)。这说明在临界指数处，以零维测度替代对数尺度会丢掉信息。
+
+零 \(d\)-容量仍由前面定理推出 \(\mathcal H^s(E)=0\) 对全部 \(s>0\) 成立，但“维数为零”本身没有估计这里的对数覆盖量。也不能把 \(p<d\) 时有限临界测度的凸组合证明原样搬来断言有限对数覆盖量必然为零容量：上面的对数截断延伸到固定大小的球，未使容许函数在一个体积趋零的区域外为零。本节在此只使用已经证明的零覆盖量判据。

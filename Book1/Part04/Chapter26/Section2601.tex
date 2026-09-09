@@ -2,24 +2,202 @@
 \section{\texorpdfstring{\(p\)}{p}-容量}
 \label{b1:sec:2601}
 
-% TODO: 撰写本节正文。
+一个集合的 Lebesgue 测度为零，意味着在它上面更改函数值不影响任何 \(L^p\) 等价类。但如果要求函数在这个集合的整个邻域中保持某种大小，更改就不再是免费的：过渡到邻域外部需要弱梯度，而梯度也计入 Sobolev 范数。容量用完成这种过渡所需的最小能量度量集合。
+
+本章固定 \(d\ge1\)、\(1<p<\infty\)，容许函数先取实值。这个范围使我们可以使用已经证明的自反性；它不包括 \(p=1\) 的另行处理，也不把 \(p=\infty\) 纳入同一能量定义。记
+\begin{equation}\label{b1:eq:sobolev-capacity-energy}
+ E_p(u)=\int_{\mathbb R^d}
+       \bigl(|u(x)|^p+|\nabla u(x)|^p\bigr)\,\mathrm dx.
+\end{equation}
+梯度取欧氏长度，故 \(E_p(u)^{1/p}\) 是一个旋转不变的范数，与第21章逐分量 \(p\) 次和定义的标准范数等价；当 \(p\ne2\) 时，二者通常不相等。保留零阶项，使这里的容量成为非齐次全空间容量。第\ref{b1:sec:2604}节的相对纯梯度容量将另行定义。
+
+Kinnunen 与 Martio 的《The Sobolev capacity on metric spaces》\cite{KinnunenMartio1996Capacity}第1、3节提供开邻域容量及其基本性质的组织方式。其主体使用度量空间中的另一种 Sobolev 范数，第368页明确区分它与经典弱梯度能量；本节直接使用\eqref{b1:eq:sobolev-capacity-energy}，以本书已经建立的截断、弱紧性和弱下半连续性完成证明。
+% 正式论文368页(1.3)--(1.5)及371--375页3.1--3.7、4.1已由协作撰写者实读。
+% 本节经典欧氏格能量路线独立展开，不把Hajlasz型梯度当作普通弱梯度。
 
 \subsection{定义}
 \label{b1:subsec:260101}
 
-待填充。
+\begin{definition}\label{b1:def:sobolev-capacity}
+对开集 \(G\subseteq\mathbb R^d\)，定义
+\[
+ C_p(G)=\inf\left\{E_p(u):
+ u\in W^{1,p}(\mathbb R^d),\
+ u\ge1\text{ 几乎处处于 }G\right\}.
+\]
+若容许类为空，规定下确界为 \(+\infty\)。对任意集合 \(A\subseteq\mathbb R^d\)，定义其 \term[sobolev-rongliang]{Sobolev 容量}[Sobolev capacity]，亦称 \(p\)-容量，为
+\begin{equation}\label{b1:eq:sobolev-outer-capacity}
+ C_p(A)=\inf\{C_p(G): A\subseteq G,\ G\text{ 开}\}.
+\end{equation}
+\end{definition}
+\symidx{\(C_p(A)\)：非齐次 Sobolev \(p\)-容量}
+
+定义分为两步。第一步只要求开集上的几乎处处不等式，因此容许性不依赖 Sobolev 代表的选择。第二步以真正包含 \(A\) 的开集作外逼近，所以即使 \(A\) 本身不可测，也仍有明确的容量。开集的单调性直接来自容许类的包含关系；因此当 \(A\) 本身开时，第二步所得数值与第一步相同。
+
+不能把上述条件改成“选某个代表使其在 \(A\) 上至少为一”。若 \(A\) 是零测集，零函数类可以任意在 \(A\) 上改成一；这种定义会令全部零测集都没有代价，失去我们要研究的区别。也不能一开始就要求“拟处处至少为一”，因为拟处处正要依赖容量才能定义。
+
+截断使容许函数具有统一的数值范围。以下格运算的能量公式也将保证我们能处理多个集合。
+
+\begin{lemma}\label{b1:lem:sobolev-lattice-energy}
+若 \(u,v\in W^{1,p}(\mathbb R^d)\) 为实值，则 \(u\vee v=\max(u,v)\)、\(u\wedge v=\min(u,v)\) 都属于该空间，且
+\begin{equation}\label{b1:eq:sobolev-lattice-energy}
+ E_p(u\vee v)+E_p(u\wedge v)=E_p(u)+E_p(v).
+\end{equation}
+此外，\(T(u)=\min(1,\max(0,u))\) 满足 \(E_p(T(u))\le E_p(u)\)。若 \(u\) 在开集 \(G\) 上容许，则 \(T(u)\) 仍容许，且 \(0\le T(u)\le1\)，在 \(G\) 上几乎处处等于一。
+\end{lemma}
+\begin{proof}
+由第21章的截断公式，\(u\vee v=v+(u-v)_+\) 属于 Sobolev 空间。在 \(\{u>v\}\) 上，它的弱梯度为 \(\nabla u\)；在 \(\{u<v\}\) 上为 \(\nabla v\)。在相等集合上，\cref{b1:prop:sobolev-gradient-on-level-sets}给出 \(\nabla(u-v)=0\) 几乎处处，两个选择也一致。最小值的公式相反。
+
+于是对几乎所有点，最大值与最小值只是重新排列了两个函数值和两个梯度向量。分别取绝对值或欧氏长度的 \(p\) 次幂后相加，再积分，就得\eqref{b1:eq:sobolev-lattice-energy}。截断的值不增大绝对值，梯度只在 \(0<u<1\) 上保留原梯度，故能量不增。最后的容许性由截断在 \([1,\infty)\) 上恒等于一立即得到。
+\end{proof}
 
 \subsection{单调性}
 \label{b1:subsec:260102}
 
-待填充。
+\begin{proposition}\label{b1:prop:sobolev-capacity-basic}
+容量具有以下性质：
+\begin{enumerate}
+\item \(C_p(\varnothing)=0\)，且 \(A\subseteq B\) 蕴含 \(C_p(A)\le C_p(B)\)。
+\item 容量满足\eqref{b1:eq:sobolev-outer-capacity}的开外正则性，并且
+\[
+ m_d^*(A)\le C_p(A)
+ \quad\text{对任意 }A\subseteq\mathbb R^d.
+\]
+\item 每个有界集具有有限容量。平移或正交变换不改变容量。
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+零函数在空集上容许，所以空集容量为零。开集之间的单调性已由容许类包含得到；再对开邻域取下确界，便得任意集合的单调性。
+
+若 \(A\subseteq G\) 且 \(u\) 在开集 \(G\) 上容许，则
+\[
+ m_d^*(A)\le m_d(G)\le\int_G|u|^p
+ \le E_p(u).
+\]
+先对容许函数、再对开邻域取下确界，即得外测度下界。开外正则性本身就是第二步定义。
+
+有界集包含在一个球内，取在该球附近等于一的光滑紧支集函数，其有限能量给出容量上界。平移、正交变换保持 Lebesgue 测度和欧氏梯度长度，把一个集合的容许函数与开邻域双向变换，就得到容量不变。
+\end{proof}
+
+零阶项使一个简单结论变得明显：无限 Lebesgue 测度的集合具有无限容量。这与只看梯度的全空间齐次问题不同。另一方面，面积为零的薄片仍可能具有正容量，稍后会给出直接证明。
+
+若把 \(E_p\) 换成标准 Sobolev 范数的 \(p\) 次幂，由两种能量的正常数比较，所得容量也双向受常数控制。因此零容量集相同；第\ref{b1:sec:2602}节按任意小容量开集定义的拟连续性也相同。但对于一个具体集合，容量的数值可能改变，不能在精确常数的计算中随意更换能量。
 
 \subsection{次可加性}
 \label{b1:subsec:260103}
 
-待填充。
+把两个容许函数相加虽然能覆盖两个集合，却会在能量中产生不必要的幂次常数。取最大值并使用格能量公式，可以保留系数一；处理可数个集合时，再用弱紧性通过极限。
+
+\begin{theorem}\label{b1:thm:sobolev-capacity-subadditive}
+对任意集合列 \((A_j)_{j\ge1}\)，
+\begin{equation}\label{b1:eq:capacity-countable-subadditivity}
+ C_p\left(\bigcup_{j=1}^\infty A_j\right)
+ \le\sum_{j=1}^\infty C_p(A_j).
+\end{equation}
+\end{theorem}
+\begin{proof}
+若右端无限，结论显然。以下设其有限，固定 \(\varepsilon>0\)。逐项选择开邻域 \(G_j\supseteq A_j\) 及截断后的容许函数 \(u_j\)，使
+\[
+ 0\le u_j\le1,\qquad
+ E_p(u_j)\le C_p(A_j)+\varepsilon2^{-j}.
+\]
+这里可在选择开集与选择容许函数时分别分配半份误差。令
+\[
+ v_N=\max(u_1,\ldots,u_N),\qquad v=\sup_j u_j.
+\]
+反复应用格能量公式可得
+\[
+ E_p(v_N)\le\sum_{j=1}^N E_p(u_j)
+ \le\sum_jC_p(A_j)+\varepsilon.
+\]
+同时 \(0\le v_N\uparrow v\)，且 \(v^p\le\sum_j|u_j|^p\)，右端可积。控制收敛因此给出 \(v_N\to v\) 于 \(L^p\)。
+
+有界能量等价于 Sobolev 范数有界。由于 \(1<p<\infty\)，可抽取 Sobolev 弱收敛子列；其零阶弱极限由已经取得的 \(L^p\) 强极限确定，必为 \(v\)。所以 \(v\in W^{1,p}\)。能量是凸且范数连续的泛函，故由第9章的凸泛函弱下半连续性，
+\[
+ E_p(v)\le\liminf_N E_p(v_N)
+ \le\sum_jC_p(A_j)+\varepsilon.
+\]
+每个 \(u_j\) 在 \(G_j\) 上几乎处处等于一。合并可数个例外零集后，\(v\) 在开集 \(\bigcup_jG_j\) 上几乎处处等于一，因此是这个开并的容许函数。该开并包含 \(\bigcup_jA_j\)，故得到\eqref{b1:eq:capacity-countable-subadditivity}，最后让 \(\varepsilon\downarrow0\)。
+\end{proof}
+
+至此，\(C_p\) 具有外测度的三个公理。不过它一般不是通常意义的可加测度；不能因其定义在全部集合上，就认定所有 Borel 集自动满足 Carathéodory 可测性。第\ref{b1:ex:26-one-dimensional-exact-capacity}题将具体算出可加性的失败。我们在后续只使用已经证明的单调性、次可加性和开外正则性。
+
+下一条估计把能量与点值联系起来，但暂时只对连续函数陈述。
+
+\begin{lemma}\label{b1:lem:continuous-capacity-level-set}
+设 \(v\in W^{1,p}(\mathbb R^d)\cap C(\mathbb R^d)\)，\(t>0\)。则
+\[
+ C_p(\{|v|>t\})\le t^{-p}E_p(v).
+\]
+\end{lemma}
+\begin{proof}
+连续性使超水平集开；函数 \(\min(1,|v|/t)\) 在其上几乎处处等于一，且能量不超过 \(t^{-p}E_p(v)\)，因而是所需容许函数。
+\end{proof}
+
+这不是对任意代表都成立的 Chebyshev 不等式。若只知道 \(v\) 是一个可测代表，超水平集未必开，而且在零测集上任意改变它会改变该集合的容量。下一节先构造拟连续代表，再为那一类代表证明对应估计。
 
 \subsection{容量零集}
 \label{b1:subsec:260104}
 
-待填充。
+若 \(C_p(N)=0\)，则称 \(N\) 为容量零集。它的任意子集仍为容量零集，可数个容量零集的并也为容量零集；这些集合又都是 Lebesgue 零测集。为了了解这个例外集尺度到底有多细，先考察小球与单点。
+
+\begin{proposition}\label{b1:prop:sobolev-capacity-balls}
+存在只依赖 \(d,p\) 的常数，使所有 \(x\in\mathbb R^d\)、\(r>0\) 满足
+\[
+ C_p(B(x,r))\le C_{d,p}(r^d+r^{d-p}).
+\]
+\end{proposition}
+\begin{proof}
+固定 \(0\le\eta\le1\) 的光滑函数，等于一于 \(B(0,1)\) 的一个邻域，且支集包含于 \(B(0,2)\)。函数 \(\eta((\,\cdot-x)/r)\) 在 \(B(x,r)\) 上容许，变量代换给出其零阶能量为 \(r^d\|\eta\|_p^p\)，梯度能量为 \(r^{d-p}\|\nabla\eta\|_p^p\)。两者相加即得。
+\end{proof}
+
+\begin{proposition}\label{b1:prop:sobolev-point-capacity}
+若 \(1<p\le d\)，每个单点以及每个可数集的 \(p\)-容量均为零。
+若 \(p>d\)，存在 \(c_{d,p}>0\)，使每个非空集合 \(A\) 都满足 \(C_p(A)\ge c_{d,p}\)。
+\end{proposition}
+\begin{proof}
+当 \(p<d\) 时，小球上界在 \(r\downarrow0\) 时趋零，单点结论由单调性得到，再用次可加性处理可数并。
+
+当 \(p=d>1\) 时，普通缩放的梯度能量不趋零，需要较慢的对数过渡。固定 \(R>0\)，取 \(0<\varepsilon<R\)，定义径向函数
+\[
+ v_\varepsilon(x)=
+ \begin{cases}
+ 1,&|x|\le\varepsilon,\\
+ \displaystyle\frac{\log(R/|x|)}{\log(R/\varepsilon)},
+       &\varepsilon<|x|<R,\\
+ 0,&|x|\ge R.
+ \end{cases}
+\]
+对每个固定的 \(\varepsilon\)，这是紧支集 Lipschitz 函数，故属于 \(W^{1,d}\)。记 \(\sigma_{d-1}=d\omega_d\) 为单位球面的面积，径向积分给出
+\[
+ \int|\nabla v_\varepsilon|^d
+ =\frac{\sigma_{d-1}}{\log(R/\varepsilon)^d}
+            \int_\varepsilon^R\frac{\mathrm dr}{r}
+ =\sigma_{d-1}\log(R/\varepsilon)^{1-d}\longrightarrow0.
+\]
+同时 \(0\le v_\varepsilon\le\mathbf1_{B(0,R)}\)，并在每个非零点趋于零，控制收敛给出其零阶能量趋零。它在原点的开邻域上容许，因此 \(C_d(\{0\})=0\)。平移及可数次可加性完成本情形。
+
+最后设 \(p>d\)。由 Morrey 估计与范数等价性，每个 Sobolev 函数都有连续代表，并满足
+\[
+ |u^*(x)|\le C_{d,p}E_p(u)^{1/p}
+ \quad(x\in\mathbb R^d).
+\]
+若 \(u\) 在含 \(x\) 的开集上几乎处处至少为一，连续性说明 \(u^*(x)\ge1\)：否则某个小球上都小于一，与几乎处处条件矛盾。所以每个这样的容许函数都有统一的正能量下界。两次取下确界得到单点正下界，再用单调性得到全部非空集合的下界。
+\end{proof}
+
+在 \(d\ge2\) 时，一个平面片给出更直观的零测而正容量集合。令
+\[
+ S=[0,1]^{d-1}\times\{0\}.
+\]
+若开集 \(G\) 包含 \(S\)，紧性保证存在 \(\delta>0\)，使 \([0,1]^{d-1}\times(-\delta,\delta)\subset G\)。对在 \(G\) 上容许的 \(u\)，ACL 性质与 Fubini 定理表明，对几乎所有 \(x'\in(0,1)^{d-1}\)，竖线上的一维绝对连续代表在高度零处至少为一。一维点值估计给出
+\[
+ 1\le C_p\int_{\mathbb R}
+          \bigl(|u(x',t)|^p+|\partial_du(x',t)|^p\bigr)\,\mathrm dt.
+\]
+为看出该估计的常数不依赖 \(\delta\)，可任取 \(s\in(0,1)\)，由
+\[
+ |u(x',0)|\le |u(x',s)|+\int_0^1|\partial_du(x',t)|\,\mathrm dt
+\]
+对 \(s\) 平均，再用 Hölder 不等式。随后对 \(x'\) 积分，得到 \(1\le C_p E_p(u)\)。因此 \(C_p(S)>0\)，尽管 \(m_d(S)=0\)。邻域厚度可以任意小，保持片上值所需的能量却不能消失。
+
+这些例子揭示了容量与代表理论之间的联系。超过维数的 Sobolev 指数已经使点值连续受控，于是一个点也不能被视为可忽略的容量例外。指数不超过维数时，单点可以忽略，但不是所有 Lebesgue 零测集都可以忽略；下一节将在这个更严格的例外集尺度下讨论代表的唯一性。
