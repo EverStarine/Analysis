@@ -2,24 +2,181 @@
 \section{局部化}
 \label{b1:sec:2204}
 
-% TODO: 撰写本节正文。
+前三节反复使用“先乘截断，再磨光或延拓”。现在把其中的估计单独整理出来。局部化不仅用来拼接函数，也能把一个只允许紧支集测试函数的积分恒等式，转成较小区域上的定量控制。需要留意的是截断函数的导数：它们记录了较小区域与外部边界之间的距离，也是局部估计中常数的来源。
 
 \subsection{截断函数}
 \label{b1:subsec:220401}
 
-待填充。
+设 \(U,V\subseteq\Omega\) 为开集，且 \(\overline U\Subset V\)。由光滑截断引理，可选 \(0\le\eta\le1\)，使 \(\eta\in C_c^\infty(V)\)，并在 \(\overline U\) 的邻域内等于 \(1\)。对 \(u\in W^{k,p}_{\mathrm{loc}}(\Omega)\)，函数 \(\eta u\) 在 \(U\) 上与 \(u\) 相同，却具有内部紧支集。这个替换保留了所关注区域中的函数和全部弱导数。
+
+\begin{proposition}\label{b1:prop:sobolev-cutoff-estimate}
+设 \(k\in\mathbb N_0\)、\(1\le p\le\infty\)，且 \(\eta\in C_c^\infty(V)\)。对 \(u\in W^{k,p}(V)\)，把 \(\eta u\) 在 \(V\) 外补零，得到
+\[
+ \|\widetilde{\eta u}\|_{W^{k,p}(\mathbb R^d)}
+ \le C_{d,k}
+ \left(\max_{|\beta|\le k}\|\partial^\beta\eta\|_\infty\right)
+ \|u\|_{W^{k,p}(V)}.
+\]
+更精细地，对每个 \(|\alpha|\le k\)，
+\begin{equation}\label{b1:eq:sobolev-cutoff-components}
+ \|\partial^\alpha(\eta u)\|_{L^p(V)}
+ \le\sum_{\beta\le\alpha}\binom\alpha\beta
+     \|\partial^\beta\eta\|_\infty
+     \cdot\|\partial^{\alpha-\beta}u\|_{L^p(V)}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+弱 Leibniz 公式给出
+\[
+ \partial^\alpha(\eta u)
+ =\sum_{\beta\le\alpha}\binom\alpha\beta
+       (\partial^\beta\eta)(\partial^{\alpha-\beta}u).
+\]
+对每一项使用有界函数乘法的 \(L^p\) 估计，再用三角不等式，即得分量估计。这对 \(p=\infty\) 也成立。多重指标的数目和二项式系数仅依赖于 \(d,k\)，有限维范数比较于是给出总范数估计；所用比较常数可统一取在 \(1\le p\le\infty\) 上有界。\cref{b1:lem:compact-sobolev-zero-extension}保证补零后的导数不增加边界项，也不改变范数。
+\end{proof}
+
+在两个同心球之间，截断常数可以写得更具体。若 \(0<r<R\)，存在 \(\eta\in C_c^\infty(B(x_0,R))\)，使 \(0\le\eta\le1\)、\(\eta=1\) 于 \(\overline B(x_0,r)\)，并且
+\begin{equation}\label{b1:eq:ball-cutoff-derivatives}
+ \|\partial^\beta\eta\|_\infty
+ \le C_{d,\beta}(R-r)^{-|\beta|}
+ \quad(|\beta|\ge1).
+\end{equation}
+例如取 \(\delta=(R-r)/4\)，将 \(B(x_0,r+2\delta)\) 的示性函数与 \(\rho_\delta\) 卷积。卷积在 \(\overline B(x_0,r)\) 附近等于 \(1\)，支集包含于 \(\overline B(x_0,r+3\delta)\subset B(x_0,R)\)。将导数放在核上，并用
+\[
+ \|\partial^\beta\rho_\delta\|_{L^1}
+ =\delta^{-|\beta|}\|\partial^\beta\rho\|_{L^1},
+\]
+就得到上述界。
+
+因此，局部化不是无代价的限制运算。例如一阶时，
+\[
+ \|\nabla(\eta u)\|_{L^p}
+ \le \|\eta\nabla u\|_{L^p}
+      +\|u\nabla\eta\|_{L^p}.
+\]
+第二项含有函数本身，而不只含梯度；当 \(R-r\) 缩小时，它通常会增大。把一个全域估计用于 \(\eta u\) 后，必须保留这项，不能因 \(\eta=1\) 于内球就将它删去。
 
 \subsection{单位分解}
 \label{b1:subsec:220402}
 
-待填充。
+截断处理一个区域；单位分解则使相容的局部函数成为一个整体。这里先区分“局部属于 Sobolev 空间”和“具有有限全域范数”。
+
+\begin{proposition}\label{b1:prop:sobolev-local-gluing}
+设 \((U_j)_{j\in J}\) 为开集 \(\Omega\) 的开覆盖。若 \(u\in L^1_{\mathrm{loc}}(\Omega)\)，且每个限制 \(u|_{U_j}\) 都属于 \(W^{k,p}_{\mathrm{loc}}(U_j)\)，则 \(u\in W^{k,p}_{\mathrm{loc}}(\Omega)\)。
+
+若进一步 \(u\in L^p(\Omega)\)，且各个局部弱导数拼成的函数 \(g_\alpha\) 满足 \(g_\alpha\in L^p(\Omega)\)（\(1\le|\alpha|\le k\)），则 \(u\in W^{k,p}(\Omega)\)，并有 \(\partial^\alpha u=g_\alpha\)。
+\end{proposition}
+\begin{proof}
+在两个开集的交上，同阶弱导数由唯一性相等。因此各局部导数可以拼接。为避免不可数个零测集的问题，先利用欧氏空间的可数基，从原覆盖中取出可数子覆盖；再在这个可数族内去掉各交集上导数不一致的零测集。由此得到几乎处处定义且可测的 \(g_\alpha\)。
+
+任取 \(K\Subset\Omega\)。可以用有限个相对紧于某些 \(U_j\) 的小开集覆盖 \(K\)，所以 \(g_\alpha\) 在 \(K\) 附近属于 \(L^p\)。现取 \(\varphi\in C_c^\infty(\Omega)\)，并将其按从属于覆盖的光滑单位分解写为有限和
+\[
+ \varphi=\sum_\ell\psi_\ell\varphi.
+\]
+每个非零分量都紧支于某个 \(U_j\)。在那里应用弱导数恒等式，求和得到
+\[
+ \begin{aligned}
+ \int_\Omega u\,\partial^\alpha\varphi
+ &=\sum_\ell\int_\Omega u\,\partial^\alpha(\psi_\ell\varphi)\\
+ &=(-1)^{|\alpha|}\sum_\ell\int_\Omega g_\alpha\psi_\ell\varphi
+ =(-1)^{|\alpha|}\int_\Omega g_\alpha\varphi.
+ \end{aligned}
+\]
+第一处等号使用的是测试函数分解后的导数之和；单位分解导数产生的项已经在这个和中相消。于是 \(g_\alpha\) 是全域弱导数。局部或全域的可积性分别给出两种结论。
+\end{proof}
+
+同样，若 \((v_j)\) 的支集在 \(\Omega\) 中局部有限，且每个 \(v_j\in W^{k,p}_{\mathrm{loc}}(\Omega)\)，那么局部有限和
+\[
+ v=\sum_jv_j
+\]
+属于 \(W^{k,p}_{\mathrm{loc}}(\Omega)\)，其导数可以逐项相加，因为每个点附近实际只有有限项。这里没有保证 \(\|v\|_{W^{k,p}(\Omega)}<\infty\)。例如在全空间取光滑单位分解，所有分解函数都有紧支集，但它们的和为 \(1\)，在有限 \(p\) 时不属于 \(L^p(\mathbb R^d)\)。
+
+获得全域界需要额外估计。一种简单而充分的条件是
+\[
+ \sum_j\|v_j\|_{W^{k,p}(\Omega)}<\infty.
+\]
+此时完备性使级数在全域范数中收敛，其极限与局部有限和相同，而且总范数不超过右侧之和。Meyers--Serrin 定理正是对磨光误差建立了这样的可和界；不必要求单位分解后的原函数各项也满足它。
 
 \subsection{局部 Sobolev 空间}
 \label{b1:subsec:220403}
 
-待填充。
+第\ref{b1:sec:2101}节的局部空间定义，要求在每个内部相对紧开集上控制函数及导数。用刚才的截断估计，可以把这个条件改写成全空间中的一族条件。
+
+\begin{proposition}\label{b1:prop:local-sobolev-cutoff-characterization}
+设 \(u\in L^1_{\mathrm{loc}}(\Omega)\)。下列条件等价：
+\begin{equivalences}
+\item\label{b1:item:local-sobolev-membership}
+\(u\in W^{k,p}_{\mathrm{loc}}(\Omega)\)。
+\item\label{b1:item:all-sobolev-cutoffs}
+对每个 \(\chi\in C_c^\infty(\Omega)\)，补零函数 \(\widetilde{\chi u}\) 属于 \(W^{k,p}(\mathbb R^d)\)。
+\end{equivalences}
+若 \(u_n,u\in W^{k,p}_{\mathrm{loc}}(\Omega)\)，则在每个 \(\overline U\Subset\Omega\) 的开集 \(U\) 上有 \(u_n\to u\) 于 \(W^{k,p}(U)\)，当且仅当对每个上述 \(\chi\)，
+\[
+ \widetilde{\chi u_n}\longrightarrow\widetilde{\chi u}
+ \quad\text{于 }W^{k,p}(\mathbb R^d).
+\]
+\end{proposition}
+\begin{proof}
+由局部可积性，先取一个内部开集包含 \(\operatorname{supp}\chi\)，再应用截断估计和补零引理，得到从\ref{b1:item:local-sobolev-membership}到\ref{b1:item:all-sobolev-cutoffs}的蕴含。反过来，对任意 \(\overline U\Subset\Omega\)，选取在 \(\overline U\) 附近为一的 \(\chi\)。由于 \(\widetilde{\chi u}|_U=u|_U\)，限制全空间弱导数便得到 \(u|_U\in W^{k,p}(U)\)。
+
+收敛部分使用相同的两个操作。由局部收敛及固定 \(\chi\) 的截断估计，得到全空间乘积的收敛；反过来，取 \(\chi=1\) 于 \(\overline U\) 附近，限制不会增大范数，故得到 \(U\) 上的收敛。
+\end{proof}
+
+这里的“每个截断函数”不意味着实际工作中必须检验不可数多项。取递增的内部相对紧开集 \(U_j\) 穷竭 \(\Omega\)，再固定 \(\chi_j=1\) 于 \(\overline{U_j}\) 附近，即可只用这一列截断检验局部条件。任意内部紧集都包含在某个 \(U_j\) 中，因而不会漏掉局部信息。
+
+局部有界性还足以在自反指数范围内抽取局部弱极限。具体说，若 \(1<p<\infty\)，且 \((u_n)\) 在每个 \(W^{k,p}(U_j)\) 中有界，则在 \(U_1\) 上用自反性抽取弱收敛子列，再在 \(U_2\) 上从中继续抽取，依次进行。对角子列在每个 \(U_j\) 上弱收敛。限制算子是有界线性的，故相邻区域上的极限限制相同；这些极限拼成 \(u\in W^{k,p}_{\mathrm{loc}}(\Omega)\)。这只给出局部弱收敛，不保证全域范数有界，更不保证强收敛。以互相远离的平移函数为例，函数可以在每个固定内部区域上消失，而全域范数一直保持不变。
 
 \subsection{局部估计}
 \label{b1:subsec:220404}
 
-待填充。
+局部化的一个重要用途，是允许测试函数依赖于待研究的 Sobolev 函数。若积分恒等式最初只对 \(C_c^\infty\) 函数成立，不能直接把一个不光滑的乘积代入；内部紧支集的范数逼近提供了所需过渡。
+
+以下在实数范围内讨论。设 \(u\in H^1_{\mathrm{loc}}(\Omega)\)，满足
+\begin{equation}\label{b1:eq:weak-harmonic-condition}
+ \int_\Omega\nabla u\cdot\nabla\varphi\,\mathrm dx=0
+ \quad\bigl(\varphi\in C_c^\infty(\Omega)\bigr).
+\end{equation}
+这个恒等式是方程 \(-\Delta u=0\) 的弱形式，并不预先要求 \(u\) 有经典二阶导数。下面的\term*[caccioppoli-budengshi]{Caccioppoli 不等式}[Caccioppoli inequality]用较大球中的函数大小控制较小球中的梯度能量。
+
+\begin{theorem}[Caccioppoli]\label{b1:thm:caccioppoli}
+若 \(u\in H^1_{\mathrm{loc}}(\Omega)\) 满足\eqref{b1:eq:weak-harmonic-condition}，则对实常数 \(c\) 及实值 \(\eta\in C_c^\infty(\Omega)\)，
+\begin{equation}\label{b1:eq:caccioppoli-cutoff}
+ \int_\Omega\eta^2|\nabla u|^2\,\mathrm dx
+ \le4\int_\Omega|u-c|^2\cdot|\nabla\eta|^2\,\mathrm dx.
+\end{equation}
+特别地，若 \(0<r<R\)、\(\overline B(x_0,R)\Subset\Omega\)，则
+\begin{equation}\label{b1:eq:caccioppoli-balls}
+ \int_{B(x_0,r)}|\nabla u|^2\,\mathrm dx
+ \le\frac{C_d}{(R-r)^2}
+       \int_{B(x_0,R)}|u-c|^2\,\mathrm dx.
+\end{equation}
+\end{theorem}
+\begin{proof}
+令 \(v=\eta^2(u-c)\)。弱乘积公式保证 \(v\in H^1(\Omega)\)，且它具有内部紧支集。选一个开集 \(V\)，使 \(\operatorname{supp}\eta\Subset V\)、\(\overline V\Subset\Omega\)。由\cref{b1:prop:compact-sobolev-smooth-approximation}，存在 \(v_j\in C_c^\infty(V)\)，使 \(v_j\to v\) 于 \(H^1(\Omega)\)。由于 \(\nabla u\in L^2(V)\)，Cauchy--Schwarz 不等式给出
+\[
+ \left|\int_V\nabla u\cdot\nabla(v_j-v)\,\mathrm dx\right|
+ \le\|\nabla u\|_{L^2(V)}
+      \cdot\|\nabla(v_j-v)\|_{L^2(V)}
+ \longrightarrow0.
+\]
+因此弱恒等式也允许使用测试函数 \(v\)。展开
+\[
+ \nabla v=\eta^2\nabla u+2\eta(u-c)\nabla\eta
+\]
+并代入，得到
+\[
+ \int_\Omega\eta^2|\nabla u|^2
+ =-2\int_\Omega\eta(u-c)\nabla u\cdot\nabla\eta.
+\]
+用向量 Cauchy--Schwarz 不等式及 \(2ab\le a^2/2+2b^2\)，得到
+\[
+ \int_\Omega\eta^2|\nabla u|^2
+ \le\frac12\int_\Omega\eta^2|\nabla u|^2
+       +2\int_\Omega|u-c|^2\cdot|\nabla\eta|^2.
+\]
+吸收左侧的一半即得\eqref{b1:eq:caccioppoli-cutoff}。最后选取\eqref{b1:eq:ball-cutoff-derivatives}中的球间截断，使用 \(\eta=1\) 于内球及 \(|\nabla\eta|\le C_d/(R-r)\)，便得\eqref{b1:eq:caccioppoli-balls}。
+\end{proof}
+
+常数 \(c\) 可以自由选取，因为方程只涉及梯度。取 \(c=0\) 得到直接的 \(L^2\) 控制；取 \(c\) 为较大球上的平均值，则右侧只测量函数相对于常数的振幅。当 \(u\) 本来就是常数时，左右两侧都为零，这也说明估计保留了方程对加常数的不变性。
+
+本证明没有从 \(\|u\|_{L^2}\) 推出任意函数的梯度估计，而是先用方程将梯度能量变成截断交叉项。没有弱恒等式时，这一步并不存在。另一方面，截断只在内部起作用，所以定理没有使用边界值或迹；靠近边界的估计则需要额外信息。下一章将给出 Sobolev 函数的边界值应如何定义，以及这种边界值与 \(W_0^{1,p}\) 的关系。

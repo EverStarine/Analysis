@@ -1,26 +1,439 @@
 % !TeX root = ../../Book1.tex
 \chapter{Sobolev 函数的逼近、局部化与延拓}
 \label{b1:ch:22}
-% 本章摘要（不计入编号）
 \begin{chapterabstract}
-待填充。
+本章研究如何把 Sobolev 函数换成便于计算的函数，同时保留弱导数与范数控制。内部紧支集允许补零和磨光；逐层分解使任意开集上的局部磨光成为全域光滑逼近。要求逼近函数具有紧支集，则产生零边界空间，并使边界几何进入问题。最后通过半空间反射、Lipschitz 图表及单位分解构造有界延拓，再用截断推导一个基本的局部能量估计。
 \end{chapterabstract}
 
-% 本章目标（不计入编号）
 \begin{learninggoals}
-待填充。
+\begin{enumerate}
+\item\label{b1:goal:22-approximation}证明内部紧支集与全空间的光滑逼近，掌握 Meyers--Serrin 定理中磨光尺度、支集和可和误差的配合。
+\item\label{b1:goal:22-zero-boundary}理解 \(W_0^{1,p}\) 的闭包定义，区分补零、零端点值和内部光滑逼近，并辨认无穷指数的额外障碍。
+\item\label{b1:goal:22-extension}通过沿线绝对连续性证明半空间反射，再把反射放入 Lipschitz 边界图表，构造固定的有界线性延拓。
+\item\label{b1:goal:22-localization}追踪截断导数对估计常数的影响，用紧支集逼近合法化 Sobolev 测试函数，并推导局部梯度能量界。
+\end{enumerate}
 \end{learninggoals}
+
+第\ref{b1:ch:21}章的完备性、弱乘积公式和沿坐标线绝对连续性，是本章的直接前置。光滑单位分解与磨光函数来自第\ref{b1:ch:20}章。证明安排先处理开集内部，再处理边界；这样可以看清哪些结论对任意开集成立，哪些结论必须使用边界图表。
+
+阅读时应把三种要求分开：在域内光滑、具有内部紧支集、能够延拓到边界之外。常数函数在有界区间上已经光滑，却不能由内部紧支集函数依一阶 Sobolev 范数逼近；有界 Lipschitz 区域上的函数可以受控延拓，却仍可能在 \(W^{1,\infty}\) 范数下无法磨光逼近。这些差别并不是符号细节，而会决定后续边界条件的含义。
+
+Meyers 与 Serrin 的《\(H=W\)》\cite{MeyersSerrin1964HW}是全域光滑稠密性的原始文献，篇幅很短，适合在读完第\ref{b1:sec:2201}节后对照。需要把本章放回 Sobolev 空间的系统理论时，可伴读 Adams 与 Fournier 的《Sobolev Spaces》\cite{Adams2003Sobolev}及 Brézis 的《Functional Analysis, Sobolev Spaces and Partial Differential Equations》\cite{Brezis2011Functional}。延拓中的几何组织另在第\ref{b1:sec:2203}节说明具体参考范围。
 
 \input{Part04/Chapter22/Section2201}
 \input{Part04/Chapter22/Section2202}
 \input{Part04/Chapter22/Section2203}
 \input{Part04/Chapter22/Section2204}
-% 本章小结（不计入编号）
-\begin{chaptersummary}
-待填充。
-\end{chaptersummary}
 
+\begin{chaptersummary}
+内部紧支集使补零与弱微分相容；有限指数的卷积逼近随后给出光滑替代。任意开集上的 Meyers--Serrin 定理还需要逐层控制支集及误差，不能把单位分解的局部有限性误当作全域范数收敛。
+
+\(W_0^{1,p}\) 用范数闭包定义，不依赖预先存在的边界值。它的元素可以补零，但任意开集上不能由补零反推出闭包条件。有限区间的零端点刻画说明了边界层估计如何起作用，也显示无穷指数与有限指数不能混用。
+
+Lipschitz 区域的一阶延拓来自相容的反射、坐标变换和有限拼接。局部化则把这些构造中反复出现的截断整理为估计工具，使弱恒等式可以接受内部紧支集的 Sobolev 测试函数。下一章将正式定义迹，并说明在适当边界上，范数闭包意义的零边界条件怎样成为零迹条件。
+\end{chaptersummary}
 
 \BookExercises
 
-待填充。
+% 第二十二章习题临时稿；由章聚合文件已有的 BookExercises 入口统一接入。
+% 八题均为自拟的工具变式，来源说明记录实际前置，不冒认教材原题编号。
+% 不使用第23章的迹或容量，也不使用后续嵌入及一般椭圆方程理论。
+
+\begin{exercise}\label{b1:ex:22-strip-poincare}
+设非空开集 \(\Omega\subset(a,b)\times\mathbb R^{d-1}\)，其中 \(L=b-a<\infty\)。证明对每个 \(1\le p\le\infty\) 及 \(u\in W_0^{1,p}(\Omega)\)，
+\[
+ \|u\|_{L^p(\Omega)}\le L\|\partial_1u\|_{L^p(\Omega)}.
+\]
+据此说明，仅由全部一阶弱导数组成的半范数在 \(W_0^{1,p}(\Omega)\) 上是范数，并与原 Sobolev 范数等价。不要求 \(\Omega\) 在其余坐标方向有界。
+\end{exercise}
+% 来源：自拟；紧支集光滑函数的沿线积分、Hölder及闭包定义给出粗Poincare估计，不预借后续同名定理。
+\begin{solution}
+先取 \(\varphi\in C_c^\infty(\Omega)\)，并把它补零为全空间上的紧支集光滑函数。写 \(x=(x_1,x')\)。沿第一坐标应用微积分基本定理，
+\[
+ \varphi(x_1,x')=\int_a^{x_1}\partial_1\varphi(t,x')\,\mathrm dt
+ \quad(a<x_1<b).
+\]
+若 \(1\le p<\infty\)，Hölder 不等式给出
+\[
+ |\varphi(x_1,x')|^p
+ \le L^{p-1}\int_a^b|\partial_1\varphi(t,x')|^p\,\mathrm dt.
+\]
+这里 \(p=1\) 时直接使用积分的三角不等式。先对 \(x_1\in(a,b)\) 积分，再对 \(x'\) 积分；补零函数及其导数在 \(\Omega\) 外都为零，所以
+\[
+ \|\varphi\|_{L^p(\Omega)}^p
+ \le L^p\|\partial_1\varphi\|_{L^p(\Omega)}^p.
+\]
+若 \(p=\infty\)，直接由沿线积分取得
+\(\|\varphi\|_\infty\le L\|\partial_1\varphi\|_\infty\)。
+
+对一般 \(u\in W_0^{1,p}(\Omega)\)，按定义\ref{b1:def:sobolev-zero-boundary}取 \(\varphi_n\in C_c^\infty(\Omega)\)，使 \(\varphi_n\to u\) 于 \(W^{1,p}\)。函数及第一偏导数的范数均随之收敛，在刚证的不等式中取极限即可。这个步骤也适用于 \(p=\infty\)，因为使用的是闭包定义给定的逼近，而非一般函数的无穷范数磨光。
+
+记 \(M_p(u)=\bigl(\sum_{j=1}^d\|\partial_ju\|_p^p\bigr)^{1/p}\)，其中 \(p<\infty\)；无穷端点改记 \(M_\infty(u)=\max_j\|\partial_ju\|_\infty\)。如果 \(M_p(u)=0\)，所求不等式使 \(\|u\|_p=0\)，故它确为范数。有限 \(p\) 时，
+\[
+ M_p(u)\le\|u\|_{W^{1,p}}
+ \le(1+L^p)^{1/p}M_p(u);
+\]
+无穷端点则有
+\[
+ M_\infty(u)\le\|u\|_{W^{1,\infty}}
+ \le\max(1,L)M_\infty(u).
+\]
+这些常数只取决于条带宽度和指数，并不要求条带中每条截线与 \(\Omega\) 的交集连通。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:22-w0-infty-interval}
+设 \(I=(0,1)\)，\(u\in W^{1,\infty}(I)\)。证明下列两条等价：
+\begin{equivalences}
+\item\label{b1:item:22-w0-infty-closure}
+\(u\in W_0^{1,\infty}(I)\)。
+\item\label{b1:item:22-w0-infty-c1-endpoints}
+等价类 \(u\) 有一个代表 \(U\in C^1([0,1])\)，且
+\[
+ U(0)=U(1)=U'(0)=U'(1)=0.
+\]
+\end{equivalences}
+这里端点导数按单侧导数解释。
+\end{exercise}
+% 来源：自拟；用C1一致极限刻画无穷端点的闭包，进一步说明正文单个端点反例背后的完整条件。
+\begin{solution}
+先设 \itemref{b1:item:22-w0-infty-closure}成立，选取紧支集光滑函数 \(\varphi_n\to u\) 于 \(W^{1,\infty}(I)\)。每个 \(\varphi_n\) 在端点附近为零，可以看作 \([0,1]\) 上的光滑函数。连续函数在这个闭区间上的上确界等于其在 \(I\) 上的本性上确界。因此 \((\varphi_n)\) 与 \((\varphi_n')\) 都在一致范数下为 Cauchy 列，分别趋于连续函数 \(U,G\)，并满足
+\[
+ U(0)=U(1)=G(0)=G(1)=0.
+\]
+在等式 \(\varphi_n(x)=\int_0^x\varphi_n'(t)\,\mathrm dt\) 中取一致极限，得到 \(U(x)=\int_0^xG(t)\,\mathrm dt\)。所以 \(U\in C^1([0,1])\)，且 \(U'=G\)。由于 \(\varphi_n\) 同时在 \(L^\infty(I)\) 中趋于 \(u\)，这个 \(U\) 正是 \(u\) 的一个代表，第二条成立。
+
+反过来，设第二条成立。取 \(\theta\in C^\infty(\mathbb R)\)，使 \(0\le\theta\le1\)，在 \((-\infty,1]\) 上为零，在 \([2,\infty)\) 上为一，并记 \(C=\|\theta'\|_\infty\)。对 \(0<\varepsilon<1/4\)，令
+\[
+ \chi_\varepsilon(x)=\theta(x/\varepsilon)
+                 \theta\bigl((1-x)/\varepsilon\bigr).
+\]
+它在两端的 \(\varepsilon\) 邻域为零，在 \([2\varepsilon,1-2\varepsilon]\) 上为一，且
+\(\|\chi_\varepsilon'\|_\infty\le2C/\varepsilon\)。
+记
+\[
+ \omega_\varepsilon
+ =\sup_{x\in[0,2\varepsilon]\cup[1-2\varepsilon,1]}|U'(x)|.
+\]
+由 \(U'\) 连续且端点值为零，\(\omega_\varepsilon\to0\)。利用 \(U\) 的两个端点值也为零，在这些边界区间上有
+\[
+ |U(x)|\le2\varepsilon\omega_\varepsilon.
+\]
+于是
+\[
+ \|(1-\chi_\varepsilon)U\|_\infty
+ \le2\varepsilon\omega_\varepsilon,
+ \quad
+ \|\bigl((1-\chi_\varepsilon)U\bigr)'\|_\infty
+ \le(1+4C)\omega_\varepsilon.
+\]
+因此 \(\chi_\varepsilon U\to U\) 于 \(W^{1,\infty}(I)\)。
+
+每个 \(\chi_\varepsilon U\) 是内部紧支集的 \(C^1\) 函数，补零后仍属于 \(C_c^1(\mathbb R)\)。固定 \(\varepsilon\)，再选择充分小的磨光尺度，使卷积支集仍紧含于 \(I\)。命题\ref{b1:prop:local-smoothing-approximation}的 \(C^1\) 部分保证函数及其一阶导数一致逼近。依次选择这两个参数，便得到 \(C_c^\infty(I)\) 中依 \(W^{1,\infty}\) 逼近 \(u\) 的序列。
+
+这一步只对已有 \(C^1\) 代表的函数使用逐阶一致磨光，并未声称任意 \(W^{1,\infty}\) 函数都有这样的逼近。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:22-w0-order-ideal}
+设 \(1\le p<\infty\)，实值 \(u\in W_0^{1,p}(\Omega)\)、\(v\in W^{1,p}(\Omega)\)，且 \(u\ge0\)、\(|v|\le u\) 几乎处处。
+证明 \(v\in W_0^{1,p}(\Omega)\)。再在 \(I=(0,1)\) 上构造满足相同大小关系的 \(u\in C_c^\infty(I)\) 和内部紧支集 \(v\in W^{1,\infty}(I)\)，使 \(v\notin W_0^{1,\infty}(I)\)。
+\end{exercise}
+% 来源：自拟；用第21章正部强连续性制造保序逼近，无穷端点反例是内部尖点，不重复正文边界障碍。
+\begin{solution}
+取实值 \(\varphi_n\in C_c^\infty(\Omega)\)，使 \(\varphi_n\to u\) 于 \(W^{1,p}\)，并令 \(s_n=\varphi_n^+\)。由习题\ref{b1:ex:21-positive-part-continuity}，\(s_n\to u^+=u\) 于同一空间。再令
+\[
+ v_n=\max\bigl(-s_n,\min(v,s_n)\bigr).
+\]
+正部运算、加法和减法都在有限指数的 \(W^{1,p}\) 中连续，而
+\[
+ \min(a,b)=a-(a-b)^+,\quad
+ \max(a,b)=b+(a-b)^+.
+\]
+因此 \(v_n\in W^{1,p}(\Omega)\)，并在这个空间中有
+\[
+ v_n\longrightarrow\max\bigl(-u,\min(v,u)\bigr)=v.
+\]
+最后一个等式使用了 \(|v|\le u\)。
+
+由于 \(-s_n\le v_n\le s_n\)，函数 \(v_n\) 在 \(\operatorname{supp}\varphi_n\) 之外几乎处处为零。它虽不一定光滑，却有内部紧支集。由命题\ref{b1:prop:compact-sobolev-smooth-approximation}，每个 \(v_n\) 都能由内部紧支集光滑函数在 \(W^{1,p}\) 中逼近，故 \(v_n\in W_0^{1,p}(\Omega)\)。闭包空间本身是闭的，再由 \(v_n\to v\) 得到所求结论。
+
+对无穷端点，取非负 \(\chi\in C_c^\infty(I)\)，使它在 \(1/2\) 的一个邻域等于一，令
+\[
+ u=\chi,\quad v(x)=\chi(x)|x-1/2|.
+\]
+则 \(0\le v\le u/2\le u\)。函数 \(v\) 为内部紧支集 Lipschitz 函数，因而属于 \(W^{1,\infty}(I)\)；但它在 \(1/2\) 处有尖点，不属于 \(C^1(I)\)。若它另有一个 \(C^1\) 代表，该代表与连续的 \(v\) 几乎处处相等，便由连续性处处相等，仍无法消除尖点。由习题\ref{b1:ex:22-w0-infty-interval}，\(v\notin W_0^{1,\infty}(I)\)。
+
+所以内部紧支集本身不能保证无穷指数的光滑范数逼近；有限指数证明所用的非线性强连续性与内部磨光都确有指数范围。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:22-halfspace-zero-extension-converse}
+令 \(H=\{\,x\in\mathbb R^d\mid x_d>0\,\}\)，\(1\le p<\infty\)，并设 \(u\in W^{1,p}(H)\)。记 \(\widetilde u\) 为它在 \(H\) 外的零延拓。证明下列两条等价：
+\begin{equivalences}
+\item\label{b1:item:22-halfspace-w0}
+\(u\in W_0^{1,p}(H)\)。
+\item\label{b1:item:22-halfspace-global-zero-extension}
+\(\widetilde u\in W^{1,p}(\mathbb R^d)\)。
+\end{equivalences}
+反向证明须实际构造支集留在半空间内部的光滑逼近，而不使用迹定理。
+\end{exercise}
+% 来源：自拟；由向内平移、远处截断和内部磨光证明半空间零延拓逆命题，正文只给正向与任意域的失败边界。
+\begin{solution}
+第一条蕴涵第二条是命题\ref{b1:prop:w0-zero-extension}。现设第二条成立，记 \(F=\widetilde u\)。对 \(h>0\) 定义
+\[
+ F_h(x)=F(x-he_d).
+\]
+这个函数在 \(\{x_d<h\}\) 上几乎处处为零。通过弱导数测试中的平移换元可得
+\[
+ \partial_jF_h(x)=(\partial_jF)(x-he_d).
+\]
+对函数和全部一阶导数分别应用引理\ref{b1:lem:lp-translation-continuity}，得到
+\[
+ \|F_h-F\|_{W^{1,p}(\mathbb R^d)}\longrightarrow0
+ \quad(h\downarrow0).
+\]
+因而可以先把函数的支集与边界隔开，再处理它在无穷远处的部分。
+
+固定 \(h\)。取 \(0\le\chi\le1\)、\(\chi\in C_c^\infty(\mathbb R^d)\)，使 \(\chi=1\) 于单位球，置 \(\chi_R(x)=\chi(x/R)\)、\(G_{h,R}=\chi_RF_h\)。当 \(R\to\infty\) 时，函数及导数中的
+\[
+ (\chi_R-1)F_h,\quad(\chi_R-1)\partial_jF_h
+\]
+都由控制收敛在 \(L^p\) 中趋零，而额外项满足
+\[
+ \|(\partial_j\chi_R)F_h\|_p
+ \le R^{-1}\|\partial_j\chi\|_\infty\cdot\|F_h\|_p
+ \longrightarrow0.
+\]
+所以 \(G_{h,R}\to F_h\) 于 \(W^{1,p}(\mathbb R^d)\)。同时 \(G_{h,R}\) 有紧支集，并在 \(\{x_d<h\}\) 上几乎处处为零。
+
+最后固定 \(h,R\)，令
+\[
+ \varphi_{h,R,\varepsilon}=G_{h,R}*\rho_\varepsilon,
+ \quad 0<\varepsilon<h/2.
+\]
+其支集有界且包含在 \(\{x_d\ge h-\varepsilon\}\) 中，因此 \(\varphi_{h,R,\varepsilon}\in C_c^\infty(H)\)。卷积微分公式以及有限指数的逼近恒等分别作用于 \(G_{h,R}\) 和各一阶导数，给出它在全空间 \(W^{1,p}\) 中的收敛：
+\[
+ \varphi_{h,R,\varepsilon}\longrightarrow G_{h,R}.
+\]
+给定任意误差要求，依次选择充分小的 \(h\)、充分大的 \(R\)、再选小于 \(h/2\) 的充分小 \(\varepsilon\)，使上述三段误差之和满足要求。限制到 \(H\) 不会增大 Sobolev 范数，所得函数便在 \(W^{1,p}(H)\) 中逼近 \(u\)。这证明 \(u\in W_0^{1,p}(H)\)。
+
+半空间的作用在第一步：统一向内平移能为整个支集留下正距离。这个几何步骤在一般开集上未必可行，因此不能据本题撤去正文任意域逆命题的限制。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:22-second-order-reflection}
+设 \(1\le p\le\infty\)，记 \(I=(0,\infty)\)。对 \(u\in W^{2,p}(I)\)，定义
+\[
+ Eu(x)=
+ \begin{cases}
+ u(x),&x>0,\\
+ 3u(-x)-2u(-2x),&x<0.
+ \end{cases}
+\]
+原点处的值不影响等价类。证明 \(E\) 是从 \(W^{2,p}(I)\) 到 \(W^{2,p}(\mathbb R)\) 的有界线性延拓算子，并说明系数 \(3,-2\) 如何由原点处的两项匹配条件确定。
+\end{exercise}
+% 来源：自拟；修正正文偶反射的一阶构造，在半直线上显式匹配函数及一阶导数，不预借高阶迹理论。
+\begin{solution}
+先说明匹配条件有意义。固定 \(R>0\)，由有限区间上的 Hölder 不等式，\(u,u',u''\) 都在 \((0,R)\) 上可积。对 \(u'\) 应用定理\ref{b1:thm:one-dimensional-weak-ac}，其连续代表可写为某个常数加上 \(u''\) 的积分。由于 \(u''\in L^1(0,R)\)，这个代表绝对连续地延伸到原点，记为 \(G\)。同样，\(u\) 有一个代表 \(U\)，满足
+\[
+ U(x)=U(x_0)+\int_{x_0}^xG(t)\,\mathrm dt,
+\]
+并延伸为 \([0,R]\) 上的 \(C^1\) 函数，\(U'=G\)。在不同 \(R\) 上，连续代表由唯一性一致，故 \(U(0)\)、\(G(0)\) 都有明确含义。
+
+假设先在负半轴使用 \(AU(-x)+BU(-2x)\)。其原点左极限为 \((A+B)U(0)\)，一阶导数的左极限为 \((-A-2B)G(0)\)。要对任意 \(u\) 分别与右侧的函数和导数匹配，应有
+\[
+ A+B=1,\quad -A-2B=1.
+\]
+解得 \(A=3\)、\(B=-2\)。因此题中延拓函数在原点连续，其分段一阶导数
+\[
+ Q(x)=
+ \begin{cases}
+ G(x),&x>0,\\
+ -3G(-x)+4G(-2x),&x<0
+ \end{cases}
+\]
+也在原点连续。
+
+两侧绝对连续函数只要端点值相同，就能绝对连续地拼合：把两侧的积分表示以共同端点值为常数连接即可。由此，\(EU\) 在每个紧区间上绝对连续，弱导数是 \(Q\)；而 \(Q\) 同样绝对连续，其弱导数在负半轴上为 \(3u''(-x)-8u''(-2x)\)，在正半轴上为 \(u''(x)\)。两次拼合均无跳跃，因而没有遗漏集中于原点的分布项。
+
+统一地，对 \(j=0,1,2\)，负半轴上的第 \(j\) 阶导数为
+\[
+ \partial^j(Eu)(x)
+ =3(-1)^ju^{(j)}(-x)-2(-2)^ju^{(j)}(-2x).
+\]
+记 \(I_-=(-\infty,0)\)。换元给出
+\[
+ \|u^{(j)}(-2\,\cdot)\|_{L^p(I_-)}
+ =2^{-1/p}\|u^{(j)}\|_{L^p(I)},
+\]
+其中 \(p=\infty\) 时约定 \(1/p=0\)。由三角不等式，负半轴上的导数范数至多是
+\(\bigl(3+2^{j+1-1/p}\bigr)\|u^{(j)}\|_{L^p(I)}\)。
+再加上正半轴的贡献，可使用统一粗界
+\[
+ \|\partial^j(Eu)\|_{L^p(\mathbb R)}
+ \le12\|u^{(j)}\|_{L^p(I)}.
+\]
+对三个导数分量取相应的有限 \(p\) 和范数或无穷端点最大值，得到
+\[
+ \|Eu\|_{W^{2,p}(\mathbb R)}
+ \le12\|u\|_{W^{2,p}(I)}.
+\]
+定义显然对等价类良定义并线性，且在正半轴保留 \(u\)，因此确为所需延拓算子。这里建立的是半直线上的二阶构造，不是任意 Lipschitz 开集的高阶延拓结论。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:22-quadratic-localization}
+设 \(\Omega\subset\mathbb R^d\) 为开集，实光滑函数 \(\eta_1,\ldots,\eta_N\) 满足
+\[
+ \sum_{j=1}^N\eta_j^2=1,\quad
+ A=\left\|\sum_{j=1}^N|\nabla\eta_j|^2\right\|_{L^\infty(\Omega)}<\infty.
+\]
+证明对实值或复值 \(u\in H^1(\Omega)\)，每个 \(\eta_ju\) 都属于 \(H^1(\Omega)\)，并有
+\[
+ \sum_{j=1}^N\|\eta_ju\|_{H^1(\Omega)}^2
+ =\|u\|_{H^1(\Omega)}^2
+   +\int_\Omega\left(\sum_{j=1}^N|\nabla\eta_j|^2\right)|u|^2\,\mathrm dx.
+\]
+据此给出局部化范数和原范数的双向估计，并用一个具体例子说明右侧的额外项不能一般删除。
+\end{exercise}
+% 来源：自拟；平方和分解使交叉项精确抵消，新增可计算的局部化能量误差，不另命名未经核定的专门公式。
+\begin{solution}
+由平方和为一，\(|\eta_j|\le1\)；由 \(A<\infty\)，每个光滑 \(\nabla\eta_j\) 也有界。光滑乘法的弱 Leibniz 公式给出
+\[
+ \nabla(\eta_ju)=\eta_j\nabla u+u\nabla\eta_j.
+\]
+右侧两项均属于 \(L^2(\Omega)\)，而 \(\eta_ju\in L^2(\Omega)\)，所以乘积属于 \(H^1\)。这里不要求 \(u\) 本性有界：起作用的是光滑乘子的函数和一阶导数有界。
+
+几乎处处展开欧氏长度的平方，
+\[
+ |\nabla(\eta_ju)|^2
+ =\eta_j^2|\nabla u|^2+|u|^2\cdot|\nabla\eta_j|^2
+   +2\eta_j\operatorname{Re}(\overline u\nabla u)\cdot\nabla\eta_j.
+\]
+对于实值函数，实部与共轭不改变表达式。对恒等式 \(\sum_j\eta_j^2=1\) 求导，得到
+\[
+ \sum_{j=1}^N\eta_j\nabla\eta_j=0.
+\]
+因此将前一等式求和时，全部交叉项相消，得到
+\[
+ \sum_{j=1}^N|\nabla(\eta_ju)|^2
+ =|\nabla u|^2+\left(\sum_{j=1}^N|\nabla\eta_j|^2\right)|u|^2.
+\]
+零阶部分另有 \(\sum_j|\eta_ju|^2=|u|^2\)。将两条等式积分，便得所求能量恒等式。
+
+额外项非负且至多为 \(A\|u\|_2^2\)，所以
+\[
+ \|u\|_{H^1}
+ \le\left(\sum_{j=1}^N\|\eta_ju\|_{H^1}^2\right)^{1/2}
+ \le(1+A)^{1/2}\|u\|_{H^1}.
+\]
+取 \(\Omega=(0,1)\)、\(\eta_1(x)=\cos x\)、\(\eta_2(x)=\sin x\)，以及 \(u=1\)。此时平方和为一，梯度平方和也为一，额外项恰等于 \(1\)，严格为正。局部化保持零阶平方和，却会为分割函数的变化付出一阶能量。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:22-caccioppoli-reaction}
+设实值 \(u\in H^1_{\mathrm{loc}}(\Omega)\)、\(f\in L^2_{\mathrm{loc}}(\Omega)\)，常数 \(\lambda>0\)，且对每个实值 \(\varphi\in C_c^\infty(\Omega)\) 都有
+\[
+ \int_\Omega\nabla u\cdot\nabla\varphi\,\mathrm dx
+ +\lambda\int_\Omega u\varphi\,\mathrm dx
+ =\int_\Omega f\varphi\,\mathrm dx.
+\]
+证明对每个非负 \(\eta\in C_c^\infty(\Omega)\)，
+\[
+ \int_\Omega\eta^2|\nabla u|^2\,\mathrm dx
+ +\lambda\int_\Omega\eta^2u^2\,\mathrm dx
+ \le4\int_\Omega u^2|\nabla\eta|^2\,\mathrm dx
+     +\lambda^{-1}\int_\Omega\eta^2f^2\,\mathrm dx.
+\]
+须先说明为什么可以用通常不光滑的 \(\eta^2u\) 代入测试恒等式。
+\end{exercise}
+% 来源：自拟；把正文弱调和Caccioppoli方法扩展到源项及正零阶项，独立说明测试合法化及吸收常数。
+\begin{solution}
+令 \(\psi=\eta^2u\)。光滑乘法的弱求导公式说明 \(\psi\in H^1(\Omega)\)，且它具有内部紧支集。由命题\ref{b1:prop:compact-sobolev-smooth-approximation}，存在 \(\psi_n\in C_c^\infty(\Omega)\) 在 \(H^1\) 中逼近它。还可以要求这些测试函数的支集包含在同一个开集 \(V\) 中，并满足 \(\overline V\Subset\Omega\)：先选 \(\zeta\in C_c^\infty(V)\)，使 \(\zeta=1\) 于 \(\operatorname{supp}\eta\) 的邻域，再把任意所述逼近列换成 \(\zeta\psi_n\)。乘子及其梯度有界，所以替换后仍趋于 \(\zeta\psi=\psi\)。
+
+函数 \(u,\nabla u,f\) 在 \(V\) 上均平方可积。测试恒等式三项之差的绝对值分别受
+\[
+ \begin{gathered}
+ \|\nabla u\|_{L^2(V)}\cdot\|\nabla(\psi_n-\psi)\|_{L^2(V)},\\
+ \lambda\|u\|_{L^2(V)}\cdot\|\psi_n-\psi\|_{L^2(V)},\\
+ \|f\|_{L^2(V)}\cdot\|\psi_n-\psi\|_{L^2(V)}
+ \end{gathered}
+\]
+控制，都趋于零。因而恒等式对 \(\psi=\eta^2u\) 成立。
+
+利用 \(\nabla(\eta^2u)=\eta^2\nabla u+2\eta u\nabla\eta\)，代入得
+\[
+ \int_\Omega\eta^2|\nabla u|^2
+ +\lambda\int_\Omega\eta^2u^2
+ =-2\int_\Omega\eta u\nabla u\cdot\nabla\eta
+   +\int_\Omega\eta^2fu.
+\]
+分别使用两个带参数的平方不等式，
+\[
+ 2|\eta|\cdot|u|\cdot|\nabla u|\cdot|\nabla\eta|
+ \le\frac12\eta^2|\nabla u|^2+2u^2|\nabla\eta|^2,
+\]
+\[
+ \eta^2|f|\cdot|u|
+ \le\frac{\lambda}{2}\eta^2u^2+\frac1{2\lambda}\eta^2f^2.
+\]
+将它们积分并代回，梯度项和零阶项各有一半可以吸收到左端；再将两边乘以 \(2\)，恰得题中的估计。常数 \(\lambda>0\) 在第二个吸收步骤中使用，不能在最终公式里直接令 \(\lambda=0\)。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:22-dirichlet-minimum}
+设 \(\Omega\subset\mathbb R^d\) 为非空有界开集，实值 \(g\in H^1(\Omega)\)，记
+\[
+ \mathcal A=g+H_0^1(\Omega),\quad
+ \mathcal E(v)=\int_\Omega|\nabla v|^2\,\mathrm dx.
+\]
+证明对 \(u\in\mathcal A\)，下列两条等价：
+\begin{equivalences}
+\item\label{b1:item:22-energy-minimum}
+\(\mathcal E(u)=\inf_{v\in\mathcal A}\mathcal E(v)\)。
+\item\label{b1:item:22-energy-orthogonality}
+对每个实值 \(\varphi\in H_0^1(\Omega)\)，都有
+\[
+ \int_\Omega\nabla u\cdot\nabla\varphi\,\mathrm dx=0.
+\]
+\end{equivalences}
+再证明这样的 \(u\) 存在且唯一，并说明这里的边界条件为何不需要先定义边界迹。
+\end{exercise}
+% 来源：自拟；题1恢复纯梯度内积的正定性，再用第8章Hilbert Riesz求仿射闭包类的最小能量元素。
+\begin{solution}
+先证明等价性。若 \(u\) 为极小点，对任意 \(\varphi\in H_0^1(\Omega)\) 和实数 \(t\)，仍有 \(u+t\varphi\in\mathcal A\)，而
+\[
+ \mathcal E(u+t\varphi)
+ =\mathcal E(u)+2t\int_\Omega\nabla u\cdot\nabla\varphi
+                 +t^2\|\nabla\varphi\|_2^2.
+\]
+这个关于 \(t\) 的二次多项式在 \(t=0\) 取极小值，其一次项系数必须为零，所以第二条成立。
+
+反过来，若第二条成立，任意 \(v\in\mathcal A\) 都可写成 \(v=u+\psi\)，其中 \(\psi\in H_0^1(\Omega)\)。交叉项为零，故
+\[
+ \mathcal E(v)=\mathcal E(u)+\|\nabla(v-u)\|_2^2
+ \ge\mathcal E(u).
+\]
+这就证明了第一条。
+
+为证明存在性，在 \(V=H_0^1(\Omega)\) 上定义实内积
+\[
+ (v,w)_V=\int_\Omega\nabla v\cdot\nabla w\,\mathrm dx.
+\]
+因为 \(\Omega\) 有界，可以把它放入某个有限宽度的坐标条带。习题\ref{b1:ex:22-strip-poincare}说明 \(\|\nabla v\|_2\) 在 \(V\) 上确为范数，并与 \(H^1\) 范数等价。空间 \(V\) 按定义为 \(H^1(\Omega)\) 的闭子空间，故关于原范数完备；范数等价使其关于梯度内积也完备。因此这是一个 Hilbert 空间。
+
+定义连续线性泛函
+\[
+ \Lambda(\varphi)=-\int_\Omega\nabla g\cdot\nabla\varphi\,\mathrm dx.
+\]
+由 Cauchy--Schwarz 不等式，
+\[
+ |\Lambda(\varphi)|\le\|\nabla g\|_2\cdot\|\varphi\|_V.
+\]
+Hilbert 空间的 Riesz 表示定理\ref{b1:thm:hilbert-riesz}给出 \(h\in V\)，使
+\[
+ \int_\Omega\nabla h\cdot\nabla\varphi\,\mathrm dx
+ =-\int_\Omega\nabla g\cdot\nabla\varphi\,\mathrm dx
+ \quad(\varphi\in V).
+\]
+令 \(u=g+h\)，则 \(u\in\mathcal A\) 且满足正交条件，因而是极小点。
+
+若 \(u_1,u_2\) 都为极小点，上面的能量分解给出
+\(\|\nabla(u_1-u_2)\|_2=0\)。其差属于 \(H_0^1(\Omega)\)，再次使用题1的不等式便得 \(u_1=u_2\) 几乎处处。这证明在 Sobolev 等价类意义下唯一；连通性并不是这里所需的额外假设。
+
+本题的边界条件就是 \(u-g\in H_0^1(\Omega)\)，即这个差能由内部紧支集光滑函数依 \(H^1\) 范数逼近。整个构造没有给每个边界点赋值，也没有将任意开集上的闭包条件认作某个尚未建立的零迹条件。若 \(g\) 换成同一仿射类的另一个代表，集合 \(\mathcal A\) 不变，所得唯一极小点也不变。
+\end{solution}

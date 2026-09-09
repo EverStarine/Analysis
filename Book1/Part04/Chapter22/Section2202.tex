@@ -2,24 +2,153 @@
 \section{\texorpdfstring{\(W_0^{1,p}\)}{W₀(1,p)}}
 \label{b1:sec:2202}
 
-% TODO: 撰写本节正文。
+域内光滑逼近不要求近似函数在边界附近消失。若近似函数还须有紧支集，上一节的一维反例已经表明，得到的闭包可能是真子空间。本节就以这个闭包定义零边界空间，再说明它与补零、截断以及经典端点值之间的关系。对一般开集，定义本身不预设迹算子存在。
 
 \subsection{定义}
 \label{b1:subsec:220201}
 
-待填充。
+\begin{definition}\label{b1:def:sobolev-zero-boundary}
+设 \(\Omega\subset\mathbb R^d\) 为非空开集、\(1\le p\le\infty\)。定义
+\[
+ W_0^{1,p}(\Omega)
+ =\overline{C_c^\infty(\Omega)}^{\,W^{1,p}(\Omega)}.
+\]
+也就是说，\(u\in W_0^{1,p}(\Omega)\) 当且仅当存在 \(\varphi_j\in C_c^\infty(\Omega)\)，使 \(\|u-\varphi_j\|_{W^{1,p}(\Omega)}\to0\)。另记 \(H_0^1(\Omega)=W_0^{1,2}(\Omega)\)。
+\end{definition}
+\symidx{\(W_0^{1,p}(\Omega)\)：紧支集光滑函数在\(W^{1,p}\)中的闭包}
+\symidx{\(H_0^1(\Omega)\)：\(W_0^{1,2}(\Omega)\)}
+
+它是 \(W^{1,p}\) 的闭线性子空间，所以关于原范数完备；\(H_0^1\) 关于原 \(H^1\) 内积为 Hilbert 空间。若 \(1<p<\infty\)，闭子空间的自反性又给出 \(W_0^{1,p}\) 自反。这些结论都来自定义中的闭包，不需要对边界作几何假设。
+
+下标 \(0\) 通常用来表达零边界条件。不过在这个定义中，“零”首先落实为可用内部紧支集函数逼近，而不是给每个边界点指定一个数。一般 Sobolev 元素仅是几乎处处等价类，边界点甚至不属于定义域；若没有额外的代表定理，写下逐点边界值就还没有确定一个运算。
+
+\(p=\infty\) 时，本书也严格使用上述范数闭包。它通常比“有零边界值的 Lipschitz 函数”更小，不能把有限 \(p\) 的稠密性结论直接搬到这个端点。需要时，应明确其他文献所用 \(W_0^{1,\infty}\) 是否采用同一定义。
 
 \subsection{零边界条件}
 \label{b1:subsec:220202}
 
-待填充。
+先把不涉及边界点取值、却总是有效的补零结论证明出来。对 \(u\) 在 \(\Omega\) 上的可测代表，令
+\[
+ E_0u(x)=
+ \begin{cases}
+ u(x),&x\in\Omega,\\
+ 0,&x\notin\Omega.
+ \end{cases}
+\]
+这个操作在 \(L^p\) 等价类上始终有定义并保持范数，困难只在于补零后的导数。
+
+\begin{proposition}\label{b1:prop:w0-zero-extension}
+若 \(u\in W_0^{1,p}(\Omega)\)，则 \(E_0u\in W^{1,p}(\mathbb R^d)\)，并且
+\[
+ \partial_i(E_0u)=E_0(\partial_i u),\qquad
+ \|E_0u\|_{W^{1,p}(\mathbb R^d)}=\|u\|_{W^{1,p}(\Omega)}.
+\]
+因此 \(E_0\) 是一个线性等距嵌入，结论包括 \(p=\infty\)。
+\end{proposition}
+\begin{proof}
+取定义中的 \(\varphi_j\)。每个 \(E_0\varphi_j\) 都属于 \(C_c^\infty(\mathbb R^d)\)，而且经典导数在域内外直接给出
+\[
+ \partial_i(E_0\varphi_j)=E_0(\partial_i\varphi_j).
+\]
+因此 \(\|E_0\varphi_j-E_0\varphi_k\|_{W^{1,p}(\mathbb R^d)}
+=\|\varphi_j-\varphi_k\|_{W^{1,p}(\Omega)}\)。由完备性，它们在全空间的 \(W^{1,p}\) 中收敛。另一方面，\(L^p\) 补零等距性表明其零阶极限为 \(E_0u\)，各一阶分量的极限为 \(E_0(\partial_i u)\)。这就同时证明了导数公式及范数等式。
+\end{proof}
+
+反向在任意开集上不成立。令
+\[
+ \Omega=(-1,0)\cup(0,1),\qquad u(x)=1-|x|\quad(x\in\Omega).
+\]
+补零后所得等价类由全实轴上的帐篷函数 \((1-|x|)^+\) 表示；仅在原点处填的值不同，不影响等价类，所以 \(E_0u\in W^{1,p}(\mathbb R)\) 对全部 \(p\) 成立。然而若 \(\varphi_j\in C_c^\infty(\Omega)\) 依 \(W^{1,p}(\Omega)\) 逼近 \(u\)，限制到 \((0,1)\)，由第\ref{b1:sec:2104}节的一维上确界估计，绝对连续代表必须在 \([0,1]\) 上一致收敛。近似函数在 \(0\) 处都为零，极限代表在 \(0\) 处却为一，矛盾。
+
+这里补零只改变一个内部缺失点，积分看不见这个点；但沿两侧区间逼近时，端点行为仍受到导数范数控制。因此“补零没有产生奇异导数”与“能够在域内由紧支集函数逼近”是两条不同的条件。
+
+无穷端点还有另一种障碍。在 \((0,1)\) 上，\(u(x)=x(1-x)\) 光滑且两个端点值都为零，但它不属于 \(W_0^{1,\infty}(0,1)\)。事实上，每个 \(\varphi\in C_c^\infty(0,1)\) 在零点附近恒为零，故 \(\varphi'=0\) 在该邻域；而 \(u'(x)=1-2x\) 趋于一。因此
+\[
+ \|u'-\varphi'\|_{L^\infty(0,1)}\ge1.
+\]
+这不是端点函数值的问题，而是强无穷范数还要求导数在靠近端点时也能被一致控制。
 
 \subsection{截断逼近}
 \label{b1:subsec:220203}
 
-待填充。
+以后在积分恒等式中使用 Sobolev 函数作测试时，常需先控制它的幅值。有限 \(p\) 下可以在零边界空间内完成这一步。
+
+\begin{proposition}\label{b1:prop:w0-truncation}
+设 \(1\le p<\infty\)，实值 \(u\in W_0^{1,p}(\Omega)\)。则对每个 \(M>0\)，截断 \(T_M(u)\) 仍属于 \(W_0^{1,p}(\Omega)\)，且
+\[
+ T_M(u)\longrightarrow u\quad\text{于 }W^{1,p}(\Omega)
+ \quad(M\to\infty).
+\]
+正部、负部和绝对值也保持 \(W_0^{1,p}\)。若另外 \(|u|\le M\) 几乎处处，则可以选取 \(\psi_j\in C_c^\infty(\Omega)\)，使 \(|\psi_j|\le M\) 且 \(\psi_j\to u\) 于 \(W^{1,p}\)。
+\end{proposition}
+\begin{proof}
+取 \(\varphi_j\in C_c^\infty(\Omega)\) 逼近 \(u\)。固定 \(M\)，先说明
+\[
+ T_M(\varphi_j)\longrightarrow T_M(u)\quad\text{于 }W^{1,p}(\Omega).
+\]
+零阶收敛由 \(T_M\) 的 \(1\)-Lipschitz 性得到。一阶导数使用上一章的截断公式，分解为
+\[
+ \begin{aligned}
+ \partial_iT_M(\varphi_j)-\partial_iT_M(u)
+ &=\mathbf1_{\{|\varphi_j|<M\}}(\partial_i\varphi_j-\partial_i u)\\
+ &\quad+
+  \bigl(\mathbf1_{\{|\varphi_j|<M\}}-\mathbf1_{\{|u|<M\}}\bigr)\partial_i u.
+ \end{aligned}
+\]
+第一项在 \(L^p\) 中趋零。沿任意一条 \(\varphi_j\to u\) 几乎处处的子列，第二项在 \(|u|\ne M\) 处几乎处处趋零；在 \(|u|=M\) 上，水平集梯度为零。控制收敛于是给出该项的 \(L^p\) 收敛。对任意子列再抽取这样的子列，可把结论传回全列，正如习题\ref{b1:ex:21-positive-part-continuity}中的论证。
+
+每个 \(T_M(\varphi_j)\) 都是内部紧支集的 \(W^{1,p}\) 函数。由命题\ref{b1:prop:compact-sobolev-smooth-approximation}，它属于 \(W_0^{1,p}\)。再用闭性，得到 \(T_M(u)\in W_0^{1,p}\)。当 \(M\to\infty\) 时的强收敛已由\eqref{b1:eq:sobolev-truncation-convergence}证明。正部、负部和绝对值用相同的紧支集逼近，并使用上一章相应的强连续性，即可得到。
+
+若 \(|u|\le M\)，则 \(T_M(u)=u\)。对每个 \(T_M(\varphi_j)\) 选择足够小的非负单位积分卷积，使支集仍留在 \(\Omega\)，且 \(W^{1,p}\) 误差小于 \(1/j\)。卷积不增加幅值上界，故得到所需的 \(\psi_j\)。
+\end{proof}
+
+最后一段同时说明了一个常用事实：内部紧支集的 \(W^{1,p}\) 函数在有限 \(p\) 下属于 \(W_0^{1,p}\)。无穷端点不能以同一理由推出结论，因为磨光并不保证 \(W^{1,\infty}\) 范数收敛；一个内部尖点已经可能构成障碍。这里对截断保持性的断言也只在有限 \(p\) 范围内使用。
 
 \subsection{与迹的关系}
 \label{b1:subsec:220204}
 
-待填充。
+在有界区间 \(I=(a,b)\) 上，上一章已经给每个 \(W^{1,p}(I)\) 元素选出了唯一的闭区间绝对连续代表。于是端点取值
+\[
+ \gamma_Iu=(\widetilde u(a),\widetilde u(b))
+\]
+是良定义的线性映射；由\eqref{b1:eq:interval-sobolev-sup}及 Hölder 不等式，它对 \(W^{1,p}\) 范数连续。这是一般迹算子的一维原型。
+
+\begin{theorem}\label{b1:thm:interval-zero-boundary}
+若 \(I=(a,b)\) 有界、\(1\le p<\infty\)，则
+\[
+ W_0^{1,p}(I)
+ =\{\,u\in W^{1,p}(I):\widetilde u(a)=\widetilde u(b)=0\,\}
+ =\ker\gamma_I.
+\]
+\end{theorem}
+\begin{proof}
+一个方向由 \(\gamma_I\) 连续且在 \(C_c^\infty(I)\) 上为零立即得到。反过来，设两个端点值均为零。对充分小的 \(\varepsilon>0\)，选 \(0\le\eta_\varepsilon\le1\)，使其在距端点不超过 \(\varepsilon\) 处为零、在 \([a+2\varepsilon,b-2\varepsilon]\) 上为一，且
+\[
+ \eta_\varepsilon\in C_c^\infty(I),\qquad
+ |\eta_\varepsilon'|\le C/\varepsilon.
+\]
+乘积 \(u_\varepsilon=\eta_\varepsilon u\) 为内部紧支集的 Sobolev 函数，因此属于 \(W_0^{1,p}(I)\)。函数差 \((1-\eta_\varepsilon)u\) 与导数项 \((1-\eta_\varepsilon)u'\) 的 \(L^p\) 范数都因边界层缩小而趋零。需要单独估计的是 \(\eta_\varepsilon'u\)。
+
+由 \(u(a)=0\) 和绝对连续性，对 \(a<x<a+2\varepsilon\)，Hölder 不等式给出
+\[
+ |u(x)|^p
+ \le (x-a)^{p-1}\int_a^x|u'(t)|^p\,\mathrm dt.
+\]
+\(p=1\) 时这就是积分三角不等式。再次积分并用 Tonelli 定理，得到
+\[
+ \varepsilon^{-p}\int_a^{a+2\varepsilon}|u(x)|^p\,\mathrm dx
+ \le 2^p\int_a^{a+2\varepsilon}|u'(t)|^p\,\mathrm dt
+ \longrightarrow0.
+\]
+在右端点使用 \(u(b)=0\) 得到同样估计。因此 \(\eta_\varepsilon'u\to0\) 于 \(L^p\)，所以 \(u_\varepsilon\to u\) 于 \(W^{1,p}(I)\)。利用 \(W_0^{1,p}\) 的闭性完成证明。
+\end{proof}
+
+这个证明显示了零端点值的具体作用：它把 \(u\) 在薄边界层中的大小变成 \(u'\) 在同一层上的积分，从而抵消截断导数中的 \(\varepsilon^{-1}\)。仅仅知道 \(u\) 有界，不足以完成这一步。前面的 \(x(1-x)\) 例子则说明，定理的有限 \(p\) 范围不可直接放宽到无穷端点。
+
+对有界开集，还有一个不要求边界规则的充分条件。若实值 \(u\in W^{1,p}(\Omega)\cap C(\overline\Omega)\)、\(p<\infty\)，并且 \(u=0\) 在 \(\partial\Omega\) 上，则 \(u\in W_0^{1,p}(\Omega)\)。为此取
+\[
+ v_\varepsilon=u-T_\varepsilon(u).
+\]
+由连续性与零边界值，\(v_\varepsilon\) 的支集包含于紧集 \(\{x\in\overline\Omega:|u(x)|\ge\varepsilon\}\Subset\Omega\)，所以它属于 \(W_0^{1,p}\)。而 \(T_\varepsilon(u)\to0\) 于 \(L^p\)，其弱梯度为 \(\mathbf1_{\{|u|<\varepsilon\}}\nabla u\)，由水平集梯度为零及控制收敛也趋于零。故 \(v_\varepsilon\to u\) 于 \(W^{1,p}\)。复值情形对实部、虚部分别处理即可。
+
+一般 Sobolev 元素未必具有这样的连续代表；一般边界也未必允许只用逐点限制描述其行为。下一章将对适当的区域构造有界迹算子，并在明确条件下辨认其核。在此之前，\(W_0^{1,p}\) 始终以紧支集光滑闭包为定义，而不是以尚未定义的边界取值替换它。

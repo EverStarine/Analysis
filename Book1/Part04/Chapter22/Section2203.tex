@@ -2,24 +2,214 @@
 \section{延拓算子}
 \label{b1:sec:2203}
 
-% TODO: 撰写本节正文。
+在开集内部磨光时，可以把卷积半径选得足够小；接近边界以后，这种选择不再给出同一个全域函数。延拓提供了另一条路线：先在开集外补出函数，同时控制弱导数，再在整个空间中使用卷积。本节只处理一阶空间，且保留两个端点 \(p=1\) 与 \(p=\infty\)。
+
+有限图表、反射和单位分解的几何组织，可对照 Di Nezza、Palatucci 与 Valdinoci 的《Hitchhiker's guide to the fractional Sobolev spaces》\cite{DiNezza2012Hitchhikers}第5节。该文讨论分数阶空间；下面的一阶证明则使用前章的沿线绝对连续代表与双 Lipschitz 换元，不由分数阶结论直接推出。
+% 实读来源：DiNezza2012Hitchhikers，作者公开副本 arXiv:1104.4345，
+% 第5节 Lemmas 5.1--5.3 与 Theorem 5.4 的完整证明。
+% 原文范围为 0<s<1、1<=p<infty；这里只借鉴图表、截断和反射的组织，
+% 一阶及 p=infty 的论证由本书21.3--21.4接口独立完成。
 
 \subsection{半空间反射}
 \label{b1:subsec:220301}
 
-待填充。
+记上半空间为 \(H_+=\mathbb R^{d-1}\times(0,\infty)\)，点写成 \(x=(x',t)\)。反射时保留函数值，法向导数则改变符号。关键不是这个形式计算，而是证明两个半空间的弱导数能跨过中间的超平面拼在一起。
+
+\begin{theorem}[半空间偶反射]\label{b1:thm:half-space-sobolev-extension}
+设 \(1\le p\le\infty\)。对 \(u\in W^{1,p}(H_+)\)，在 \(t\ne0\) 处规定
+\[
+ (E_+u)(x',t)=u(x',|t|).
+\]
+该公式定义一个从 \(W^{1,p}(H_+)\) 到 \(W^{1,p}(\mathbb R^d)\) 的线性映射，其弱导数为
+\begin{equation}\label{b1:eq:half-space-reflection-derivatives}
+ \partial_i(E_+u)(x',t)=
+ \begin{cases}
+  (\partial_i u)(x',|t|),&1\le i<d,\\
+  \operatorname{sgn}(t)(\partial_d u)(x',|t|),&i=d.
+ \end{cases}
+\end{equation}
+此外，按本书的 Sobolev 范数，
+\[
+ \|E_+u\|_{W^{1,p}(\mathbb R^d)}
+ =2^{1/p}\|u\|_{W^{1,p}(H_+)}\quad(1\le p<\infty),
+\]
+而 \(p=\infty\) 时两侧范数相等。
+\end{theorem}
+\begin{proof}
+先取\cref{b1:thm:sobolev-acl}给出的共同 Borel 代表。由 Fubini 定理及有界盒上的 Hölder 不等式，对几乎每个 \(x'\)，函数 \(u(x',\cdot)\) 与 \(\partial_d u(x',\cdot)\) 在每个 \((0,R)\) 上均可积。只需先取正整数 \(R\)，便可使这里的例外集与 \(R\) 无关。沿线的绝对连续性与\cref{b1:prop:sobolev-interval-representative}于是给出端点值 \(a(x')\)，并有
+\[
+ u(x',t)=a(x')+\int_0^t\partial_d u(x',r)\,\mathrm dr
+ \quad(0\le t\le R).
+\]
+两侧反射使用同一个 \(a(x')\)，故所得函数在 \([-R,R]\) 上绝对连续，导数为\eqref{b1:eq:half-space-reflection-derivatives}的法向分量。端点值可取为 \(u(x',1/k)\) 的极限；在有限极限不存在处取零，从而仍得到 Borel 代表。
+
+对其他坐标方向，\(t\ne0\) 的直线只是原来水平直线的反射，其绝对连续性及切向导数公式均得保留。超平面 \(t=0\) 所在的整层直线，在这些方向的横向参数中为零测集，可以一并排除。因此新函数有同一个适用于全部方向的沿线绝对连续代表。
+
+反射保持 Lebesgue 测度，故新函数及候选弱导数都在 \(L^p(\mathbb R^d)\) 中。由 ACL 的反向判据，它们确实满足弱导数关系。对有限 \(p\)，函数和每个一阶导数的 \(p\) 次积分都恰好加倍；对 \(p=\infty\)，本性上确界不变，这就给出范数等式。最后，反射把零测集映为零测集，公式不依赖 \(u\) 的代表；超平面上的赋值不改变等价类。因而算子在等价类层面是线性的。
+\end{proof}
+
+如果把 \(u(t)=e^{-t}\) 从 \((0,\infty)\) 直接补零到负半轴，原点两侧的值不吻合，分布导数便含有点质量。偶反射得到 \(e^{-|t|}\)，两侧连续接合，其一阶弱导数只有普通函数部分。这里需要的是函数值接合，而不是要求法向导数也在边界两侧相等。
 
 \subsection{Lipschitz 区域}
 \label{b1:subsec:220302}
 
-待填充。
+半空间模型可以在边界附近经过坐标变换使用。为此，边界不必具有连续法向，但须能在足够小的坐标柱中写成一张 Lipschitz 图像。
+
+\begin{definition}\label{b1:def:lipschitz-domain}
+设 \(\Omega\subset\mathbb R^d\) 为开集。若每个 \(a\in\partial\Omega\) 都有刚性坐标，使 \(a\) 的坐标为零，并有 \(R,H>0\) 及 Lipschitz 函数
+\(\varphi:(-R,R)^{d-1}\rightarrow(-H,H)\)，满足 \(\varphi(0)=0\) 和
+\[
+ \Omega\cap C=\{\,(z,s)\in C\mid s>\varphi(z)\,\},
+ \quad C=(-R,R)^{d-1}\times(-H,H),
+\]
+则称 \(\Omega\) 为\term[lipschitz-quyu]{Lipschitz 区域}[Lipschitz domain]。本章不要求它连通；需要有界性时另行说明。维数为一时，横向坐标省略，条件就是边界附近为区间的一端。
+\end{definition}
+
+例如平面第一象限在角点旋转坐标后可写成 \(s>|z|\)，因此角点本身不妨碍这一条件。有限个互不接触的闭球的内部之并，也符合本章不要求连通的约定。这里允许折角，但不允许在同一局部图柱中把开集放在图像的两侧。
+
+下面固定图表尺寸，以便在反射以后仍有空间补零。设图函数的 Lipschitz 常数为 \(L\)，选取 \(\rho>0\)，使
+\[
+ 2\rho<R,\quad 2L\sqrt{d-1}\rho<H/4,
+ \quad h=H/4.
+\]
+若 \(L=0\) 或 \(d=1\)，第二个限制自动满足。取对称盒
+\[
+ \begin{split}
+ D&=(-2\rho,2\rho)^{d-1}\times(-2h,2h),\\
+ D_1&=(-\rho,\rho)^{d-1}\times(-h,h),
+ \end{split}
+\]
+并在上述刚性坐标中规定
+\[
+ F(z,t)=(z,\varphi(z)+t),\quad
+ F^{-1}(z,s)=(z,s-\varphi(z)).
+\]
+由于 \(|\varphi(z)|<H/4\) 且 \(|t|<H/2\)，整个 \(F(D)\) 都留在原图柱内。映射 \(F\) 与 \(F^{-1}\) 的 Lipschitz 常数至多为 \(1+L\)。回到原坐标以后，刚性变换不破坏这一控制。
+
+记 \(U=F(D)\)、\(V=F(D_1)\) 及 \(D^+=D\cap H_+\)。于是 \(\overline V\subset U\)，且
+\[
+ \Omega\cap U=F(D^+).
+\]
+两个盒都关于 \(t=0\) 对称；内盒中的集合反射后仍在内盒中。后面将截断函数放在 \(V\) 内，却在较大的 \(U\) 中完成延拓，内外两层之间的余量用来避免侧面和顶面上的跳跃。
 
 \subsection{延拓算子}
 \label{b1:subsec:220303}
 
-待填充。
+\begin{definition}\label{b1:def:sobolev-extension-operator}
+给定开集 \(\Omega\) 及 \(1\le p\le\infty\)，若线性映射
+\[
+ E:W^{1,p}(\Omega)\longrightarrow W^{1,p}(\mathbb R^d)
+\]
+满足 \((Eu)|_\Omega=u\) 几乎处处，则称它为该空间的\term[yantuo-suanzi]{延拓算子}[extension operator]。若还有与 \(u\) 无关的常数 \(C\)，使
+\[
+ \|Eu\|_{W^{1,p}(\mathbb R^d)}
+ \le C\|u\|_{W^{1,p}(\Omega)},
+\]
+则称这个延拓算子有界。
+\end{definition}
+
+先处理落在一个边界图表内的部分。此时截断函数在物理空间中光滑；拉回后只保证 Lipschitz，所以先作光滑乘法、再作坐标变换，可以直接使用已经建立的两条规则。
+
+\begin{lemma}\label{b1:lem:localized-graph-extension}
+固定上一小节满足 \(\overline V\Subset U\) 的内外图表及 \(\eta\in C_c^\infty(V)\)。存在与 \(p\) 无关的线性构造 \(E_\eta\)，使每个 \(u\in W^{1,p}(\Omega)\) 都满足
+\[
+ E_\eta u\in W^{1,p}(\mathbb R^d),\quad
+ (E_\eta u)|_\Omega=\eta u,
+\]
+并有
+\[
+ \|E_\eta u\|_{W^{1,p}(\mathbb R^d)}
+ \le C_{\eta,F,p}\|u\|_{W^{1,p}(\Omega\cap U)}.
+\]
+延拓的支集包含在一个只依赖于 \(\eta,F\) 的固定紧集内，该紧集包含于 \(U\)。
+\end{lemma}
+\begin{proof}
+光滑乘法的弱 Leibniz 公式给出
+\[
+ \partial_i(\eta u)=\eta\partial_i u+(\partial_i\eta)u.
+\]
+因此乘法在这里的 Sobolev 范数下有界，不要求 \(u\) 本性有界。由\cref{b1:thm:sobolev-bilipschitz-change}，函数
+\[
+ v=(\eta u)\circ F\in W^{1,p}(D^+)
+\]
+也有相应范数控制。它在 \(D^+\setminus\overline{D_1}\) 上为零，其弱导数在这一开集上同样为零。
+
+将 \(v\) 在 \(H_+\setminus D^+\) 上补零，记为 \(\widehat v\)。这里的支集可能贴着 \(t=0\)，不能把它当作紧含于 \(D^+\) 的内部函数。不过，开集
+\[
+ D^+,\quad H_+\setminus\overline{D_1}
+\]
+覆盖整个 \(H_+\)，且在交集上，\(v\) 与零函数及其弱导数都相同。任取 \(H_+\) 上的测试函数，利用\cref{b1:thm:smooth-partition-unity}将它分解为有限个测试函数之和，每个分量支集落在上述某个开集中。在各分量上分别使用 \(v\) 或零函数的弱导数恒等式，再求和，便得到 \(\widehat v\) 的弱导数。候选导数正是原导数的零延拓，因此
+\[
+ \|\widehat v\|_{W^{1,p}(H_+)}=\|v\|_{W^{1,p}(D^+)}.
+\]
+
+现在作半空间偶反射 \(w=E_+\widehat v\)。令
+\[
+ S=F^{-1}(\operatorname{supp}\eta)\cap\{\,t\ge0\,\},
+ \quad \mathcal R(z,t)=(z,-t).
+\]
+集合 \(S\) 是 \(D_1\) 中的紧集，\(w\) 在 \(S\cup\mathcal R(S)\) 之外几乎处处为零。因此反射后的支集仍紧含于 \(D_1\)。再在 \(U\) 上把 \(w\) 推回物理空间：
+\[
+ e=w\circ F^{-1}.
+\]
+双 Lipschitz 换元保证 \(e\in W^{1,p}(U)\)，且它的支集包含于固定紧集
+\(F\bigl(S\cup\mathcal R(S)\bigr)\Subset U\)。此时可用\cref{b1:lem:compact-sobolev-zero-extension}把 \(e\) 补零到整个空间，所得函数就是 \(E_\eta u\)。
+
+在 \(\Omega\cap U\) 上，拉回坐标的最后一分量为正，所以反射并未改变原函数，故 \(E_\eta u=\eta u\)；在 \(\Omega\setminus U\) 上两者都为零。各次乘法、复合、反射与补零都是固定的线性操作。依次使用它们的范数界，就得到引理中的估计。
+\end{proof}
 
 \subsection{有界延拓}
 \label{b1:subsec:220304}
 
-待填充。
+有界性使边界能够由有限个内图表覆盖，从而把局部延拓合成一个全域算子。
+
+\begin{theorem}[Lipschitz 区域的一阶延拓]\label{b1:thm:lipschitz-domain-extension}
+设 \(\Omega\subset\mathbb R^d\) 为有界 Lipschitz 区域。可以固定同一套线性延拓公式，使它对每个 \(1\le p\le\infty\) 都定义有界算子
+\[
+ E:W^{1,p}(\Omega)\longrightarrow W^{1,p}(\mathbb R^d),
+ \quad (Eu)|_\Omega=u,
+\]
+并满足
+\begin{equation}\label{b1:eq:lipschitz-domain-extension-bound}
+ \|Eu\|_{W^{1,p}(\mathbb R^d)}
+ \le C_{\Omega,p}\|u\|_{W^{1,p}(\Omega)}.
+\end{equation}
+所有 \(Eu\) 均可取支集包含于同一个固定紧集。
+\end{theorem}
+\begin{proof}
+由边界的紧性，选有限个内图表 \(V_1,\ldots,V_N\) 覆盖 \(\partial\Omega\)，对应外图表记为 \(U_j\)。集合
+\[
+ K_0=\overline\Omega\setminus\bigcup_{j=1}^N V_j
+\]
+是 \(\Omega\) 内的紧集。选开集 \(V_0\) 包含 \(K_0\)，并使 \(\overline{V_0}\Subset\Omega\)。若 \(K_0\) 为空，可省去这一内部项。
+
+在开集 \(N_0=\bigcup_{j=0}^N V_j\) 上取从属于这有限覆盖的光滑单位分解，再取 \(\chi\in C_c^\infty(N_0)\)，使它在 \(\overline\Omega\) 的一个邻域 \(N_1\) 中等于 \(1\)。单位分解局部有限，所以只有有限个分解函数的支集与 \(\operatorname{supp}\chi\) 相交。将这些函数乘以 \(\chi\)，并按所属的 \(V_j\) 合并，得到
+\[
+ \eta_j\in C_c^\infty(V_j),\quad
+ \sum_{j=0}^N\eta_j=1
+ \quad(x\in N_1).
+\]
+这一步只依赖区域和图表，不依赖待延拓的函数。
+
+内部函数 \(\eta_0u\) 由\cref{b1:lem:compact-sobolev-zero-extension}补零，记为 \(e_0\)。对每个边界项应用\cref{b1:lem:localized-graph-extension}，记其延拓为 \(E_{\eta_j}u\)，并规定
+\[
+ Eu=e_0+\sum_{j=1}^N E_{\eta_j}u.
+\]
+限制到 \(\Omega\) 后，各项之和为 \(\sum_j\eta_j u=u\)。所有构造均线性，所以 \(E\) 线性。用三角不等式及各局部估计，得到
+\[
+ \begin{split}
+ \|Eu\|_{W^{1,p}(\mathbb R^d)}
+ &\le\|e_0\|_{W^{1,p}(\mathbb R^d)}
+       +\sum_{j=1}^N\|E_{\eta_j}u\|_{W^{1,p}(\mathbb R^d)}\\
+ &\le\left(C_{0,p}+\sum_{j=1}^N C_{\eta_j,F_j,p}\right)
+       \|u\|_{W^{1,p}(\Omega)}.
+ \end{split}
+\]
+常数包含有限个图表的 Lipschitz 界与截断函数的一阶导数界，这就证明\eqref{b1:eq:lipschitz-domain-extension-bound}。各项支集都包含在预先固定的紧集中，有限并仍紧。整个公式不随 \(p\) 改变，因此在不同指数空间的交上也给出同一个延拓。
+\end{proof}
+
+半空间的精确因子 \(2^{1/p}\) 来自标准坐标中的测度保持反射；一般区域还经过坐标变换和截断，不能期待相同常数。延拓算子也不是唯一的，改变外部截断或边界图表通常就会改变开集外的函数，但不会改变它在 \(\Omega\) 上的限制。
+
+一阶构造不能直接重复用于高阶空间。取 \(\zeta\in C_c^\infty(\mathbb R)\)，使它在零点附近等于 \(1\)，并令 \(u(t)=t\zeta(t)\) 于 \(t>0\)。这个函数属于半轴上的每个整数阶 Sobolev 空间，但其偶反射在零点附近等于 \(|t|\)，二阶分布导数含有 \(2\delta_0\)，不是局部可积函数。另一方面，Lipschitz 图函数本身也没有足够的高阶导数供坐标链式法则使用。因此这里只证明一阶延拓；Lipschitz 区域上的高阶延拓需要另外的构造，不能把普通反射的失败解释为高阶延拓不可能。
+
+对于有限 \(p\)，将 \(Eu\) 在整个空间磨光再限制回 \(\Omega\)，便可得到跨越边界的光滑近似；\(p=\infty\) 时，延拓的存在并不使卷积自动在一阶 Sobolev 范数下收敛。两个问题分别是能否补出受控函数、能否在指定范数中逼近，不能因前者成立而省略后者的端点条件。
