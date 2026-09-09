@@ -2,24 +2,164 @@
 \section{弱导数}
 \label{b1:sec:2004}
 
-% TODO: 撰写本节正文。
+分布总可以求导，但导数未必还能由函数表示。弱导数研究的正是后一个问题：给定局部可积函数，把它作为正则分布求导后，结果是否仍是一个局部可积函数？这个要求比几乎处处存在经典导数更强，因为分部积分还会检测跳跃以及集中在零测集上的变化。
+
+% 实读：Hunter2001Applied，作者官方ch12.pdf，§12.9印刷362--364页，
+% 定义12.63--12.68；本节主要对照12.64的多指标弱导数与L1loc范围。
+% 原PDF文本层乱码，实际读作者公开原页图像，不声称这些页含本节全部证明。
+% 唯一性承接2002正则嵌入；局部Lipschitz证明用16章Rademacher及差商平移；
+% 一维代表用零积分测试函数原函数、Fubini及1604绝对连续微积分基本定理自足证明。
 
 \subsection{定义}
 \label{b1:subsec:200401}
 
-待填充。
+设 \(\Omega\subseteq\mathbb R^d\) 为开集，函数可取实值或复值。沿用多指标记号 \(\alpha=(\alpha_1,\ldots,\alpha_d)\in\mathbb N_0^d\)，其中 \(|\alpha|=\alpha_1+\cdots+\alpha_d\)，\(\partial^\alpha=\partial_1^{\alpha_1}\cdots\partial_d^{\alpha_d}\) 在光滑函数上表示通常的偏导数。
+
+\begin{definition}
+\label{b1:def:weak-derivative}
+给定 \(u,g\in L^1_{\mathrm{loc}}(\Omega)\) 和多指标 \(\alpha\)，若对每个 \(\varphi\in C_c^\infty(\Omega)\) 都有
+\begin{equation}
+\label{b1:eq:weak-derivative-test}
+ \int_\Omega g\varphi\,\mathrm dx
+ =(-1)^{|\alpha|}\int_\Omega u\,\partial^\alpha\varphi\,\mathrm dx,
+\end{equation}
+则称 \(g\) 为 \(u\) 的 \(\alpha\) 阶\term[ruo-daoshu]{弱导数}[weak derivative]，记为 \(\partial^\alpha u=g\)。当 \(\alpha=e_i\) 时，记为 \(\partial_i u\)。若全部一阶弱偏导数存在，便把它们合记为 \(\nabla u=(\partial_1u,\ldots,\partial_du)\)。
+\end{definition}
+\symidx{\(\partial^\alpha u\)：局部可积函数的多指标弱导数}
+
+所有积分只涉及测试函数的紧支集，所以局部可积性已经足够，不要求 \(u\) 或 \(g\) 在整个 \(\Omega\) 上可积。定义不含复共轭，与前面的复线性分布配对一致。\(|\alpha|=0\) 时，它只是函数本身；正阶时，定义并没有先要求经典差商存在。
+
+用正则分布记号，\eqref{b1:eq:weak-derivative-test}就是 \(\partial^\alpha T_u=T_g\)。因此，本书把“\(u\) 有弱导数”限定为其分布导数能够由 \(L^1_{\mathrm{loc}}\) 函数表示；不能因为分布导数总存在，就认为弱导数也总存在。Hunter 与 Nachtergaele 的《Applied Analysis》\cite[\S12.9，定义12.64]{Hunter2001Applied}采用这一局部可积函数的定义，并由此引入下一章的函数空间。
 
 \subsection{唯一性}
 \label{b1:subsec:200402}
 
-待填充。
+\begin{proposition}
+\label{b1:prop:weak-derivative-unique}
+一个给定阶数的弱导数若存在，则在几乎处处相等的意义下唯一。把 \(u\) 或其弱导数在零测集上改值，不改变弱导数关系。
+\end{proposition}
+\begin{proof}
+若 \(g_1,g_2\) 都满足定义，则 \(\int_\Omega(g_1-g_2)\varphi=0\) 对所有测试函数成立。由命题\ref{b1:prop:regular-distribution-injective}，\(g_1=g_2\) 几乎处处。零测集上的改值不影响定义中的积分，因此也不影响这个等价类。
+\end{proof}
+
+唯一性并不指定每一点的导数值。例如 \(u(x)=|x|\) 的一阶弱导数将在下文确定为 \(\operatorname{sgn}x\)，它在原点取哪个有限值都无关紧要。反过来，若要求导数具有额外的连续代表或指定的点值，就需要另外证明这种代表存在。
+
+\begin{proposition}
+\label{b1:prop:weak-derivative-locality}
+设 \(u,g\in L^1_{\mathrm{loc}}(\Omega)\)，且 \(\{U_j\}\) 是 \(\Omega\) 的一个开覆盖。则 \(\partial^\alpha u=g\) 在 \(\Omega\) 上成立，当且仅当它在每个 \(U_j\) 上成立。
+\end{proposition}
+\begin{proof}
+整体关系限制到开子集时仍成立，因为子集内的测试函数补零后仍是 \(\Omega\) 中的测试函数。反过来，分布 \(S=\partial^\alpha T_u-T_g\) 在每个 \(U_j\) 上为零。由命题\ref{b1:prop:distribution-locality}，\(S=0\) 在整个 \(\Omega\) 上成立，正是所需关系。
+\end{proof}
+
+弱导数关系还便于取极限。若 \(u_j\rightarrow u\)、\(g_j\rightarrow g\) 于 \(L^1_{\mathrm{loc}}(\Omega)\)，且 \(\partial^\alpha u_j=g_j\)，则 \(\partial^\alpha u=g\)。事实上，对固定测试函数，\(\varphi\) 与 \(\partial^\alpha\varphi\) 在同一个紧集上有界；两个积分的误差分别受相应的局部 \(L^1\) 误差乘这个界控制，因而可在\eqref{b1:eq:weak-derivative-test}中直接取极限。
+
+这里需要同时控制函数和导数，而不是从 \(u_j\) 的收敛自动推断导数收敛。例如 \(u_j(x)=j^{-1}\sin(j^2x)\) 一致趋于零，但其经典导数 \(j\cos(j^2x)\) 在原点甚至趋于无穷。分布导数仍由前节的连续性趋于零；要求导数在某个函数空间中收敛，则是另外一个有实质内容的条件。
 
 \subsection{分部积分}
 \label{b1:subsec:200403}
 
-待填充。
+\begin{proposition}[Leibniz]
+\label{b1:prop:weak-leibniz}
+若 \(u\) 的全部 \(|\beta|\leq r\) 阶弱导数局部可积，且 \(a\in C^\infty(\Omega)\)，则对 \(|\alpha|\leq r\)，
+\[
+ \partial^\alpha(au)
+ =\sum_{\beta\leq\alpha}\binom\alpha\beta
+    (\partial^{\alpha-\beta}a)(\partial^\beta u),
+ \quad
+ \binom\alpha\beta=\prod_{i=1}^d\binom{\alpha_i}{\beta_i}.
+\]
+其中 \(\beta\leq\alpha\) 指逐分量不等式，等式按弱导数解释。
+\end{proposition}
+\begin{proof}
+先设 \(r=1\)，记 \(g_i=\partial_i u\)。将 \(a\varphi\) 代入定义，得到
+\[
+ \begin{aligned}
+ -\int_\Omega au\,\partial_i\varphi
+ &=-\int_\Omega u\,\partial_i(a\varphi)
+    +\int_\Omega u(\partial_i a)\varphi\\
+ &=\int_\Omega\bigl(ag_i+u\partial_i a\bigr)\varphi.
+ \end{aligned}
+\]
+右侧函数局部可积，故这就证明一阶公式。高阶时，分布导数可交换，所以已存在的 \(\partial^\beta u\) 的弱偏导数为 \(\partial^{\beta+e_i}u\)。反复应用一阶公式；对每个坐标，\(\alpha_i\) 次求导中有 \(\beta_i\) 次落在 \(u\) 上的选择数为 \(\binom{\alpha_i}{\beta_i}\)，各坐标的选择数相乘，便得到所列系数及公式。
+\end{proof}
+
+上述计算是内部的分部积分，不要求 \(\Omega\) 的边界光滑。它也允许把测试函数类扩大到 \(C_c^1(\Omega)\)：若 \(\partial_i u=g_i\in L^1_{\mathrm{loc}}\)，则
+\begin{equation}
+\label{b1:eq:weak-integration-by-parts}
+ \int_\Omega u\,\partial_i v\,\mathrm dx
+ =-\int_\Omega g_i v\,\mathrm dx
+ \quad(v\in C_c^1(\Omega)).
+\end{equation}
+为证明这一点，把 \(v\) 在域外补零，并用第\ref{b1:sec:2003}节的磨光函数取 \(v_\varepsilon=v*\rho_\varepsilon\)。当 \(\varepsilon\) 足够小时，这些函数的支集包含在同一个 \(K\Subset\Omega\) 中，且 \(v_\varepsilon\rightarrow v\)、\(\partial_i v_\varepsilon\rightarrow\partial_i v\) 一致收敛。这两个一致收敛也可直接由 \(v\) 及其一阶导数的一致连续性和 \(\int\rho_\varepsilon=1\) 得到。对 \(v_\varepsilon\) 使用定义，再由 \(u,g_i\in L^1(K)\) 取极限，得到\eqref{b1:eq:weak-integration-by-parts}。
+
+紧支集条件在这里有实际作用：测试函数在边界附近为零，所以不出现边界项。对一直延伸到边界的函数使用分部积分，需要边界值及迹的概念，不能从上式省略紧支集条件后直接得到。
+
+与此相应，在开子集上限制弱导数是安全的，在域外补零却需要额外检查。例如常函数 \(u=1\) 在 \((0,1)\) 上的弱导数为零，但其零延拓 \(\overline u=\mathbf1_{(0,1)}\) 满足
+\[
+ \langle\partial T_{\overline u},\varphi\rangle
+ =-\int_0^1\varphi'(x)\,\mathrm dx
+ =\varphi(0)-\varphi(1).
+\]
+因此零延拓产生了 \(\delta_0-\delta_1\) 两个端点项，并不是把内部的零导数也补零。若先乘以 \(\chi\in C_c^\infty(\Omega)\)，则 \(\chi u\) 在边界附近已经为零，Leibniz 公式给出的导数便可以与函数一起补零。这是局部化与直接截断定义域的区别。
 
 \subsection{与经典导数的关系}
 \label{b1:subsec:200404}
 
-待填充。
+若 \(u\in C^1(\Omega)\)，则经典偏导数也是弱偏导数。事实上，\(u\varphi\) 在域外补零后属于 \(C_c^1(\mathbb R^d)\)。沿第 \(i\) 个坐标积分，由一维微积分基本定理和 Fubini 定理，\(\int\partial_i(u\varphi)=0\)，展开乘积即得定义中的等式。重复这个论证，也能处理 \(C^r\) 函数的 \(r\) 阶导数。
+
+\begin{theorem}
+\label{b1:thm:lipschitz-weak-derivative}
+局部 Lipschitz 函数 \(u:\Omega\rightarrow\mathbb R\) 或 \(\mathbb C\) 的各一阶弱导数存在，属于 \(L^\infty_{\mathrm{loc}}(\Omega)\)，并几乎处处等于经典偏导数。在 \(u\) 为 \(L\)-Lipschitz 的开集上，\(|\partial_i u|\leq L\) 几乎处处。
+\end{theorem}
+\begin{proof}
+先在 \(u\) 为 \(L\)-Lipschitz 的有界开球 \(B\Subset\Omega\) 内证明。由定理\ref{b1:thm:rademacher}，经典微分几乎处处存在；把异常点处的偏导数补零，得到可测函数 \(g_i\)，满足 \(|g_i|\leq L\)。将 \(u|_B\) 在球外补零为 \(u_0\)。对 \(\varphi\in C_c^\infty(B)\)，平移变量给出
+\[
+ \int_{\mathbb R^d}\dfrac{u_0(x+he_i)-u_0(x)}h\varphi(x)\,\mathrm dx
+ =\int_{\mathbb R^d}u_0(x)
+   \dfrac{\varphi(x-he_i)-\varphi(x)}h\,\mathrm dx.
+\]
+当 \(|h|\) 足够小时，左侧非零测试点所涉及的两点都在球内，差商被 \(L\) 控制，并几乎处处趋于 \(g_i\)。右侧测试差商支集留在固定的紧子集内，被 \(\|\partial_i\varphi\|_\infty\) 控制，且趋于 \(-\partial_i\varphi\)。两边应用支配收敛定理，得 \(\int_Bg_i\varphi=-\int_Bu\partial_i\varphi\)。最后用这样的球覆盖 \(\Omega\)，由弱导数的局部性和唯一性拼合。
+\end{proof}
+
+因此 \(|x|\) 的弱导数为 \(\operatorname{sgn}x\)，尖点不妨碍一阶弱导数存在。一维情形还有一个更精确的刻画，它同时说明绝对连续性为什么会出现。
+
+\begin{theorem}[一维弱导数与绝对连续代表]
+\label{b1:thm:one-dimensional-weak-ac}
+设 \(I\subseteq\mathbb R\) 为非空开区间，\(u,g\in L^1_{\mathrm{loc}}(I)\)。则 \(u'=g\) 作为弱导数成立，当且仅当 \(u\) 有一个代表 \(\widetilde u\)，在每个紧子区间上绝对连续，且 \(\widetilde u'=g\) 几乎处处。这个连续代表唯一，并满足
+\[
+ \widetilde u(t)-\widetilde u(s)=\int_s^t g(r)\,\mathrm dr
+ \quad(s,t\in I).
+\]
+\end{theorem}
+\begin{proof}
+先证明：若 \(w\in L^1_{\mathrm{loc}}(I)\) 的弱导数为零，则 \(w\) 几乎处处为常数。对积分为零的 \(\psi\in C_c^\infty(I)\)，先在 \(I\) 外补零，其原函数 \(\Psi(x)=\int_{-\infty}^x\psi(t)\,\mathrm dt\) 仍属于 \(C_c^\infty(I)\)，故 \(\int_Iw\psi=\int_Iw\Psi'=0\)。取固定的 \(\eta\in C_c^\infty(I)\)，使 \(\int_I\eta=1\)。对任意测试函数 \(\varphi\)，将上述结论用于 \(\psi=\varphi-(\int_I\varphi)\eta\)，便得
+\[
+ \int_I w\varphi=c\int_I\varphi,\quad c=\int_Iw\eta.
+\]
+正则分布嵌入的单射性说明 \(w=c\) 几乎处处。
+
+现固定 \(x_0\in I\)，定义 \(G(x)=\int_{x_0}^xg(t)\,\mathrm dt\)。由定理\ref{b1:thm:ac-fundamental-calculus}，\(G\) 在每个紧子区间上绝对连续，且 \(G'=g\) 几乎处处。它也有弱导数 \(g\)：给定测试函数，取包含其支集的 \([a,b]\subset I\)，写 \(G(x)=G(a)+\int_a^xg(t)\,\mathrm dt\)，由 Fubini 定理，
+\[
+ \int_a^bG(x)\varphi'(x)\,\mathrm dx
+ =\int_a^b g(t)\left(\int_t^b\varphi'(x)\,\mathrm dx\right)\mathrm dt
+ =-\int_a^b g(t)\varphi(t)\,\mathrm dt.
+\]
+若 \(u'=g\)，则 \(u-G\) 的弱导数为零，所以 \(u=c+G\) 几乎处处，所需代表为 \(\widetilde u=c+G\)。反向则由绝对连续函数的积分表示及同一个 Fubini 计算得到。复值情形对实部和虚部分别使用绝对连续积分表示即可。两个连续代表若几乎处处相等，则处处相等，否则连续性会给出一个它们不相等的开子区间，故代表唯一。
+\end{proof}
+
+这个刻画给出了超出 Lipschitz 类的具体函数。若 \(0<\beta<1\)，则 \(u(x)=|x|^\beta\) 在原点附近不是 Lipschitz 函数，但
+\[
+ |x|^\beta=\int_0^x\beta\operatorname{sgn}(t)|t|^{\beta-1}\,\mathrm dt.
+\]
+被积函数局部可积，因而它就是 \(u\) 的弱导数。进一步，对 \(1\leq p<\infty\)，该导数在原点附近属于 \(L^p\)，当且仅当 \(p(1-\beta)<1\)；这可由积分 \(\int_0^r t^{-p(1-\beta)}\,\mathrm dt\) 直接判断。在临界等号处，积分按对数发散。导数存在与导数具有何种可积性，是两个不同层次的问题。
+
+最后看两个反例。令 \(H=\mathbf1_{(0,\infty)}\)。它的经典导数在原点外为零，但
+\[
+ \langle\partial T_H,\varphi\rangle
+ =-\int_0^\infty\varphi'(x)\,\mathrm dx
+ =\varphi(0),
+\]
+所以分布导数是 \(\delta_0\)，而不是零。它不能由局部可积函数表示：若能，则相应函数在不含原点的开集上由正则嵌入的单射性为零，于是几乎处处为零，却无法对满足 \(\varphi(0)=1\) 的测试函数给出值 \(1\)。因此 \(H\) 没有本节意义下的一阶弱导数。
+
+连续性也不能排除这种问题。习题\ref{b1:ex:14-cantor-function}构造的 Cantor 函数 \(F_C\) 连续、非恒定，且经典导数几乎处处为零。如果它在 \((0,1)\) 上有局部可积的弱导数，由刚证的定理，便有局部绝对连续代表；该代表与连续的 \(F_C\) 必须处处相等。其弱导数于是等于经典导数，几乎处处为零，迫使 \(F_C\) 为常数，矛盾。跳跃函数和 Cantor 函数分别说明，点上的跳跃与零测集上的连续变化，都可能被经典的几乎处处导数遗漏。

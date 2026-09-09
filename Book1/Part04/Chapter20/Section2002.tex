@@ -2,24 +2,274 @@
 \section{分布}
 \label{b1:sec:2002}
 
-% TODO: 撰写本节正文。
+一个函数可以通过与测试函数的积分来辨认；分部积分又能把求导转移到测试函数上。沿着这个方向，研究对象不必先在每一点有函数值，只需规定它怎样作用于测试函数。这样得到的空间既包含局部可积函数，也容纳点质量及其任意阶导数。
+
+% 实读 Hunter--Nachtergaele 作者官方 ch11.pdf，印刷291--292、294--297页：
+% 11.2 的对偶配对、例11.5--11.6，11.3 的光滑乘法、定义11.10与例11.14。
+% 原书这一段主要讨论 Schwartz 测试空间及温和分布；294页明确另有 D'。
+% 本节改用任意开集上的 D，并自足展开局部有限阶、限制、支集和局部唯一性；
+% 不移用原书的无穷远多项式增长条件，不依赖尚未建立的20.3光滑化。
+% 中文异名据 Schwartz2010DistributionsChinese 高等教育出版社目录第一章核定；
+% 本轮未读该中译本正文，目录只作为名称及伴读位置的证据，不承担数学证明。
 
 \subsection{分布的定义}
 \label{b1:subsec:200201}
 
-待填充。
+本节固定开集 \(\Omega\subseteq\mathbb R^d\)，默认测试函数取复值，沿用 \(\mathcal D(\Omega)=C_c^\infty(\Omega)\)。光滑函数的偏导数记作 \(\partial^\alpha\)，与上一节的 \(D^\alpha\) 相同。
+
+\begin{definition}\label{b1:def:distribution}
+设 \(T:\mathcal D(\Omega)\rightarrow\mathbb C\) 为复线性泛函。若每当 \(\varphi_j\rightarrow0\) 为测试函数收敛列时都有 \(T(\varphi_j)\rightarrow0\)，则称 \(T\) 为 \(\Omega\) 上的\term[fenbu]{分布}[distribution]。所有这样的泛函组成向量空间 \(\mathcal D'(\Omega)\)，配对记作
+\[
+ \langle T,\varphi\rangle=T(\varphi).
+\]
+配对对两个变量均线性，不对测试函数取复共轭。
+\end{definition}
+\symidx{\(\mathcal D'(\Omega)\)：分布空间}
+
+分布也称广义函数；这一中文名称见 Schwartz 的《广义函数论》\cite[第一章]{Schwartz2010DistributionsChinese}。\termidx[guangyi-hanshu]{广义函数}\foreignidx{generalized function}这里的“广义”不是给每个点补一个广义数值，而是改变描述对象的方式。实值理论采用实测试函数和实线性泛函，以下证明不变。
+
+由\cref{b1:prop:test-functional-continuity}，上述连续性等价于：对每个紧集 \(K\subseteq\Omega\)，存在常数 \(C_K\) 和非负整数 \(m_K\)，使
+\begin{equation}\label{b1:eq:distribution-local-order}
+ |\langle T,\varphi\rangle|
+ \leq C_K p_{K,m_K}(\varphi)
+ \quad(\varphi\in\mathcal D_K).
+\end{equation}
+这就是分布的局部有限阶估计。阶数允许随 \(K\) 改变；若能对所有紧集选用同一个整数 \(m\)，则称这个\term[fenbu-de-jie]{分布的阶}[order of a distribution]不超过 \(m\)。局部估计并不要求 \(\Omega\) 上存在一个统一的阶数或常数。
+
+\begin{definition}\label{b1:def:distribution-convergence}
+设 \(T_j,T\in\mathcal D'(\Omega)\)。若对每个固定的 \(\varphi\in\mathcal D(\Omega)\) 都有
+\[
+ \langle T_j,\varphi\rangle\longrightarrow\langle T,\varphi\rangle,
+\]
+则称 \(T_j\) 在分布意义下收敛于 \(T\)，记作 \(T_j\rightarrow T\) 于 \(\mathcal D'(\Omega)\)。
+\end{definition}
+
+这里变化的是分布而不是测试函数；它与定义分布时要求的测试函数列连续性是两个不同的量词安排。
+
+\begin{definition}\label{b1:def:distribution-support}
+对开集 \(U\subseteq\Omega\)，将 \(\varphi\in\mathcal D(U)\) 在 \(\Omega\setminus U\) 上延为零，所得测试函数记为 \(\widetilde\varphi\)。规定
+\[
+ \langle T|_U,\varphi\rangle=\langle T,\widetilde\varphi\rangle,
+\]
+称 \(T|_U\) 为 \(T\) 在 \(U\) 上的限制。若 \(T|_U=0\)，则称 \(T\) 在 \(U\) 上为零。定义\term[fenbu-zhiji]{分布的支集}[support of a distribution]为
+\[
+ \operatorname{supp}T
+ =\Omega\setminus\bigcup\{\,U\subseteq\Omega:U\text{ open},\ T|_U=0\,\}.
+\]
+\end{definition}
+\symidx{\(\operatorname{supp}T\)：分布的支集}
+
+\begin{proposition}\label{b1:prop:distribution-locality}
+限制 \(T|_U\) 是 \(U\) 上的分布，并与进一步限制相容。支集是 \(\Omega\) 中的相对闭集；若测试函数的支集避开 \(\operatorname{supp}T\)，则 \(T\) 在该测试函数上的值为零。特别地，两个分布在某个开覆盖的每个成员上相等，就在 \(\Omega\) 上相等。
+\end{proposition}
+\begin{proof}
+紧支集测试函数在 \(U\) 的边界附近已经为零，因而延零后仍光滑，且延零保持共同紧支集及所有阶导数的一致收敛。这证明限制的连续性；复线性和限制的相容性直接由定义得到。
+
+记定义中零开集的并为 \(V\)。若 \(\varphi\in\mathcal D(V)\)，其紧支集被有限个这样的开集 \(U_1,\ldots,U_N\) 覆盖。由\cref{b1:thm:smooth-partition-unity}，可将它写成有限和 \(\varphi=\sum_{\ell=1}^N\varphi_\ell\)，其中 \(\varphi_\ell\in\mathcal D(U_\ell)\)。每项配对为零，所以 \(T|_V=0\)。支集外测试的结论随即成立。对两个分布之差作同一论证，就得到开覆盖上的唯一性。
+\end{proof}
+
+支集的意义还在于局部化：如果两个测试函数在 \(\operatorname{supp}T\) 的某个邻域相同，它们之差的支集便避开 \(\operatorname{supp}T\)，所以配对相同。对紧支集分布，这使我们能够扩大测试函数的范围。
+
+\begin{corollary}\label{b1:cor:compact-distribution-smooth-action}
+若 \(S=\operatorname{supp}T\) 是包含于 \(\Omega\) 的紧集，则 \(T\) 有有限阶。选取在 \(S\) 的邻域为 \(1\) 的 \(\chi\in\mathcal D(\Omega)\)，可以对任意 \(f\in C^\infty(\Omega)\) 规定
+\[
+ \langle T,f\rangle=\langle T,\chi f\rangle.
+\]
+这一规定不依赖 \(\chi\)，并与原来在测试函数上的作用一致。存在固定紧集 \(L\subseteq\Omega\)、整数 \(m\) 和常数 \(C\)，使
+\[
+ |\langle T,f\rangle|
+ \leq C\max_{|\alpha|\leq m}\sup_{x\in L}|\partial^\alpha f(x)|.
+\]
+\end{corollary}
+\begin{proof}
+截断函数由\cref{b1:lem:smooth-cutoff}给出。若 \(\chi_1,\chi_2\) 都满足要求，则 \((\chi_1-\chi_2)f\) 为紧支集光滑函数，并在 \(S\) 的邻域为零，由上一命题，其配对为零。对原本紧支集的 \(f\)，同样将 \((1-\chi)f\) 配对为零，得到一致性。
+
+在 \(L=\operatorname{supp}\chi\) 上应用\eqref{b1:eq:distribution-local-order}，再展开 \(\chi f\) 的有限阶导数，就得到所述估计。对任意测试函数 \(\varphi\)，\(L\) 上的导数上确界不超过 \(\operatorname{supp}\varphi\) 上相同阶导数的上确界，因为所有这些导数在该支集之外为零。因此这里的同一个 \(m\) 控制所有测试函数，证明 \(T\) 有有限阶。
+\end{proof}
 
 \subsection{正则分布}
 \label{b1:subsec:200202}
 
-待填充。
+\begin{definition}\label{b1:def:regular-distribution}
+给定 \(f\in L^1_{\mathrm{loc}}(\Omega)\)，规定
+\[
+ \langle T_f,\varphi\rangle
+ =\int_\Omega f(x)\varphi(x)\,\mathrm dx.
+\]
+由这种局部可积函数产生的分布称为\term[zhengze-fenbu]{正则分布}[regular distribution]。
+\end{definition}
+
+这个规定确实给出分布。若 \(\operatorname{supp}\varphi\subseteq K\)，则
+\[
+ |\langle T_f,\varphi\rangle|
+ \leq\left(\int_K|f|\,\mathrm dx\right)p_{K,0}(\varphi).
+\]
+因此 \(T_f\) 为零阶分布。积分只看到几乎处处等价类；下面证明它也没有丢失等价类以外的信息。
+
+\begin{proposition}\label{b1:prop:regular-distribution-injective}
+映射 \(f\mapsto T_f\) 是从 \(L^1_{\mathrm{loc}}(\Omega)\) 到 \(\mathcal D'(\Omega)\) 的线性单射。若 \(f_j\rightarrow f\) 于 \(L^1_{\mathrm{loc}}\)，则 \(T_{f_j}\rightarrow T_f\) 于分布意义。
+\end{proposition}
+\begin{proof}
+只需证明 \(T_f=0\) 蕴含 \(f=0\) 几乎处处。选取非负的 \(\rho\in C_c^\infty\bigl(B(0,1)\bigr)\)，使 \(\int\rho=1\)。这样的函数由上一节的光滑截断归一化得到。对 \(f\) 的一个 Lebesgue 点 \(x\in\Omega\)，当 \(r>0\) 足够小时，
+\[
+ \varphi_{x,r}(y)=r^{-d}\rho\left(\frac{y-x}r\right)
+\]
+属于 \(\mathcal D(\Omega)\)，所以 \(\int f\varphi_{x,r}=0\)。利用其积分为 \(1\)，有
+\[
+ \begin{aligned}
+ |f(x)|
+ &=\left|\int_\Omega\bigl(f(x)-f(y)\bigr)\varphi_{x,r}(y)\,\mathrm dy\right|\\
+ &\leq\frac{\|\rho\|_\infty}{r^d}
+        \int_{B(x,r)}|f(y)-f(x)|\,\mathrm dy
+ \longrightarrow0.
+ \end{aligned}
+\]
+由\cref{b1:thm:lebesgue-point}，几乎每一点都是这样的点，故单射性成立。最后，对固定测试函数及 \(K=\operatorname{supp}\varphi\)，
+\[
+ |\langle T_{f_j}-T_f,\varphi\rangle|
+ \leq\|\varphi\|_\infty\cdot\|f_j-f\|_{L^1(K)}
+ \longrightarrow0.
+\]
+\end{proof}
+
+因此以后可以把 \(f\) 与 \(T_f\) 视为同一对象，但不能据此为一般分布写下点值 \(T(x)\)。同一命题在每个开子集上适用，故 \(T_f\) 在一个开集上为零，当且仅当 \(f\) 在那里几乎处处为零。这也说明分布支集对应的是函数的本质支集，而不是任选代表的非零点集合之闭包。
 
 \subsection{Dirac 分布}
 \label{b1:subsec:200203}
 
-待填充。
+\begin{definition}\label{b1:def:dirac-distribution}
+给定 \(a\in\Omega\)，以
+\[
+ \langle\delta_a,\varphi\rangle=\varphi(a)
+\]
+定义 \(a\) 处的\term[dirac-fenbu]{Dirac 分布}[Dirac distribution]。
+\end{definition}
+
+估计 \(|\varphi(a)|\leq p_{K,0}(\varphi)\) 对 \(a\in K\) 成立；若 \(a\notin K\)，配对为零。因此 \(\delta_a\) 是零阶分布。它与点质量测度作用于测试函数所得的泛函一致，但不是局部可积函数。
+
+\begin{proposition}\label{b1:prop:dirac-not-regular}
+Dirac 分布不是正则分布。更一般地，对任意多重指标 \(\alpha\)，泛函
+\[
+ \langle S_{a,\alpha},\varphi\rangle
+ =(-1)^{|\alpha|}\partial^\alpha\varphi(a)
+\]
+是非正则分布，且其支集恰为 \(\{a\}\)。
+\end{proposition}
+\begin{proof}
+点上导数由 \(p_{K,|\alpha|}\) 控制，所以 \(S_{a,\alpha}\) 连续。选取在原点附近为 \(1\) 的光滑截断 \(\chi\)，支集包含于 \(B(0,1)\)，令
+\[
+ \psi(z)=\frac{z^\alpha}{\alpha!}\chi(z),\quad
+ \psi_r(x)=r^{|\alpha|}\psi\left(\frac{x-a}r\right).
+\]
+当 \(r\) 足够小时，\(\psi_r\in\mathcal D(\Omega)\)，且 \(\partial^\alpha\psi_r(a)=1\)。若 \(S_{a,\alpha}=T_g\)，则一方面配对的绝对值恒为 \(1\)，另一方面
+\[
+ |\langle T_g,\psi_r\rangle|
+ \leq r^{|\alpha|}\|\psi\|_\infty
+            \int_{B(a,r)}|g(x)|\,\mathrm dx
+ \longrightarrow0,
+\]
+其中使用 \(g\) 的局部可积性及积分的绝对连续性，产生矛盾。取 \(\alpha=0\) 即包含 Dirac 分布的情形。
+
+支集避开 \(a\) 的测试函数在 \(a\) 的邻域恒为零，其所有点上导数也为零；反过来，任意包含 \(a\) 的开集都容纳上述某个 \(\psi_r\)，其配对非零。由支集定义得到结论。
+\end{proof}
+
+Dirac 分布揭示了“零阶”与“正则”之间的区别：只需要函数值估计的泛函仍可能集中在一个 Lebesgue 零测集上。Hunter 与 Nachtergaele 的《Applied Analysis》\cite[第11.2--11.3节，第291--296页]{Hunter2001Applied}给出了点质量、正则分布和导数的同类构造；该书此处主要使用温和分布，本章的紧支集测试则不要求无穷远处的增长限制。
 
 \subsection{分布导数}
 \label{b1:subsec:200204}
 
-待填充。
+若 \(f\) 足够光滑，反复分部积分会把它的偏导数转移到测试函数上，而紧支集消去边界项。这提示我们把右侧作为一般分布的求导规则。
+
+\begin{definition}\label{b1:def:distributional-derivative}
+设 \(T\in\mathcal D'(\Omega)\)，\(\alpha\) 为多重指标。定义其\term[fenbu-daoshu]{分布导数}[distributional derivative]为
+\begin{equation}\label{b1:eq:distributional-derivative}
+ \langle\partial^\alpha T,\varphi\rangle
+ =(-1)^{|\alpha|}\langle T,\partial^\alpha\varphi\rangle.
+\end{equation}
+对 \(a\in C^\infty(\Omega)\)，定义光滑函数与分布的乘法为
+\[
+ \langle aT,\varphi\rangle=\langle T,a\varphi\rangle.
+\]
+\end{definition}
+\symidx{\(\partial^\alpha T\)：分布导数}
+
+\begin{proposition}\label{b1:prop:distribution-derivative-calculus}
+上述导数与乘积都是分布。分布偏导数可交换，并满足
+\[
+ \partial^\alpha\partial^\beta T=\partial^{\alpha+\beta}T.
+\]
+求导与乘以固定光滑函数都保持分布收敛。若 \(f\in C^{|\alpha|}(\Omega)\)，则
+\[
+ \partial^\alpha T_f=T_{\partial^\alpha f}.
+\]
+此外，限制与求导、光滑乘法相容，且
+\[
+ \operatorname{supp}(\partial^\alpha T)\subseteq\operatorname{supp}T,\quad
+ \operatorname{supp}(aT)\subseteq\operatorname{supp}a\cap\operatorname{supp}T.
+\]
+\end{proposition}
+\begin{proof}
+固定 \(K\)，若 \(T\) 满足阶数为 \(m\) 的局部估计，则
+\[
+ |\langle\partial^\alpha T,\varphi\rangle|
+ \leq C_K p_{K,m+|\alpha|}(\varphi).
+\]
+光滑乘积的通常求导公式给出
+\[
+ p_{K,m}(a\varphi)
+ \leq C_{K,m,a}p_{K,m}(\varphi),
+\]
+因为其中只出现 \(a\) 在 \(K\) 上有限多个有界导数。代入 \(T\) 的估计，就证明了 \(aT\) 的连续性。
+
+对同一测试函数连续使用定义，得到
+\[
+ \langle\partial^\alpha\partial^\beta T,\varphi\rangle
+ =(-1)^{|\alpha|+|\beta|}
+       \langle T,\partial^{\alpha+\beta}\varphi\rangle,
+\]
+所以混合偏导数可交换。若 \(T_j\rightarrow T\)，分别用固定测试函数 \(\partial^\alpha\varphi\) 和 \(a\varphi\) 测试，即得对应导数与乘积的收敛。
+
+对经典可微的 \(f\)，先将测试函数用光滑划分分为支集包含在 \(\Omega\) 内小矩形中的有限项。对每项使用 Fubini 定理和一维分部积分，反复 \(|\alpha|\) 次可得
+\[
+ \int_\Omega(\partial^\alpha f)\varphi\,\mathrm dx
+ =(-1)^{|\alpha|}\int_\Omega f\,\partial^\alpha\varphi\,\mathrm dx.
+\]
+测试函数在每个矩形边界附近为零，故没有边界项。求和证明与经典导数一致。
+
+延零与测试函数的求导、乘法相容，所以限制也相容。若 \(T\) 在某开集上为零，则其导数和 \(aT\) 在该开集上为零；若 \(a\) 在开集上恒为零，则 \(aT\) 也为零。支集的包含关系由此得到。
+\end{proof}
+
+\begin{proposition}[Leibniz 公式]\label{b1:prop:distribution-leibniz}
+对 \(a\in C^\infty(\Omega)\) 与任意多重指标 \(\alpha\)，有
+\[
+ \partial^\alpha(aT)
+ =\sum_{\beta\leq\alpha}\binom{\alpha}{\beta}
+      (\partial^\beta a)\,\partial^{\alpha-\beta}T.
+\]
+\end{proposition}
+\begin{proof}
+先求一阶导数。对任意测试函数，
+\[
+ \begin{aligned}
+ \langle\partial_i(aT),\varphi\rangle
+ &=-\langle T,a\,\partial_i\varphi\rangle\\
+ &=-\langle T,\partial_i(a\varphi)\rangle
+       +\langle T,(\partial_i a)\varphi\rangle\\
+ &=\langle a\,\partial_iT+(\partial_i a)T,\varphi\rangle.
+ \end{aligned}
+\]
+再对 \(|\alpha|\) 归纳。给归纳式施加 \(\partial_i\)，每一项分别对光滑系数和分布求导；同一项的两个系数按
+\(\binom{\alpha}{\beta}+\binom{\alpha}{\beta-e_i}
+=\binom{\alpha+e_i}{\beta}\)
+合并，越界系数规定为零，便得到下一阶公式。
+\end{proof}
+
+由定义，上一小节的点导数泛函正是 \(\partial^\alpha\delta_a\)，所以每个分布都能任意阶求导，但导数不必是正则分布。例如在一维有 \(x\delta_0=0\)，一阶 Leibniz 公式给出
+\[
+ x\delta_0'=-\delta_0.
+\]
+这些运算不依赖点值，却仍能给出精确的代数恒等式。对于一般两个分布，上述定义没有赋予它们乘法，因而不能把 \(\delta_0^2\) 等符号作为已经存在的对象使用。
+
+局部有限阶也不等于全局有限阶：把越来越高阶的点导数放在趋于无穷远的位置，可以使每个紧集只遇到有限多项，却找不到统一的阶数界。具体构造留在习题\ref{b1:ex:20-locally-finite-unbounded-order}。
+
+分布空间容纳这种随位置变化的阶数，同时又允许统一求导。本章的下一步是研究如何用光滑函数逼近分布；再把分布导数要求为局部可积函数，就导向第\ref{b1:sec:2004}节的弱导数。

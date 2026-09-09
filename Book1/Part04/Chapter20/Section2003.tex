@@ -2,24 +2,143 @@
 \section{卷积与光滑化}
 \label{b1:sec:2003}
 
-% TODO: 撰写本节正文。
+第\ref{b1:subsec:130403}小节已经用可积核构造函数的逼近恒等。本节把平均推广到分布：把核的平移看成测试函数，由分布作用于它。所得对象虽然是普通光滑函数，其导数却能保留原分布的微分信息。整个构造先在远离边界的区域进行，不预设分布可以延拓到开集之外。
 
-\subsection{磨光子}
+% 实读 Hunter2001Applied 作者官方 ch11.pdf，11.3--11.4，印刷 pp.297--301。
+% 原书讨论 Schwartz 测试函数与缓增分布，11.23 只有稠密性证明概要；
+% 本节一般开集 D' 的有限阶差商、共同紧支集 Riemann 和及局部化证明另行完整组织。
+% 名称依据：Oleinik2008PDEChinese官方目录1.2用“磨光函数”；只核名称，未读该节定义。
+% “磨光子”另见北京大学公开《实变函数》前言，来源记录限定到名称，不据此声称核对其归一化。
+
+\subsection{磨光函数}
 \label{b1:subsec:200301}
 
-待填充。
+取非负偶函数 \(\rho\in C_c^\infty(\mathbb R^d)\)，使
+\[
+ \operatorname{supp}\rho\subset\overline{B(0,1)},
+ \quad \int_{\mathbb R^d}\rho=1,
+ \quad \rho_\varepsilon(x)=\varepsilon^{-d}\rho(x/\varepsilon).
+\]
+满足上述条件的核称为本章的\term[moguang-hanshu]{磨光函数}[mollifier]。名称可对照 Oleinik 的《偏微分方程讲义》\cite[第1.2节]{Oleinik2008PDEChinese}；中文资料也使用“磨光子”这一名称。\termidx[moguangzi]{磨光子}\footnote{北京大学数学学院公开的《实变函数》前言，在介绍第四章的 \(L^p\) 与 Sobolev 空间工具时采用“磨光子”。该用词说明见\href{https://math101.pku.edu.cn/docs/2025-04/b74312fec0b54f0c90ff66270f2bded8.pdf}{学校公布的前言}；这里仅提示名称，不据前言推断其核函数的全部约定。}
+
+例如可将 \(|x|<1\) 上的 \(\exp\bigl(-1/(1-|x|^2)\bigr)\) 在球外补零，再除以其正积分；光滑性已在第\ref{b1:sec:2001}节的截断构造中说明。这是\cref{b1:def:approximate-identity}中的一种特殊核，光滑性和紧支集是本节新增的要求，偶性则用来简化反射记号。
+
+对开集 \(\Omega\subset\mathbb R^d\)，记
+\[
+ \Omega_\varepsilon
+ =\{\,x\in\Omega\mid\operatorname{dist}(x,\Omega^c)>\varepsilon\,\}.
+\]
+约定到空集的距离为无穷，故 \(\Omega=\mathbb R^d\) 时 \(\Omega_\varepsilon=\mathbb R^d\)。若 \(x\in\Omega_\varepsilon\)，则 \(y\mapsto\rho_\varepsilon(x-y)\) 的支集紧含于 \(\Omega\)；这才保证一般分布可以作用于它。
 
 \subsection{分布卷积}
 \label{b1:subsec:200302}
 
-待填充。
+\begin{definition}\label{b1:def:distribution-test-convolution}
+设 \(T\in\mathcal D'(\Omega)\)、\(\eta\in C_c^\infty(\mathbb R^d)\)，且 \(\operatorname{supp}\eta\subset\overline{B(0,a)}\)，其中 \(a>0\)。在 \(\Omega_a\) 上定义 \(T\) 与测试函数 \(\eta\) 的\term[fenbu-juanji]{分布卷积}[convolution of a distribution with a test function]为
+\[
+ (T*\eta)(x)=\langle T_y,\eta(x-y)\rangle.
+\]
+下标 \(y\) 指明分布所作用的变量，不表示对 \(T\) 作逐点取值。
+\end{definition}
+\symidx{\(T*\eta\)：分布与测试函数的卷积}
+
+若 \(T=T_f\) 来自 \(f\in L^1_{\mathrm{loc}}(\Omega)\)，该定义成为
+\[
+ (T_f*\eta)(x)=\int_\Omega f(y)\eta(x-y)\,\mathrm dy.
+\]
+被积函数支集紧含于 \(\Omega\)，所以每个 \(x\in\Omega_a\) 处都绝对可积，并与前文函数卷积一致。这里没有定义两个任意分布的卷积；即使两个常函数 \(1\) 的通常卷积，在全空间也会发散。紧支集等附加条件可以支持更广的分布卷积，但不参与本节证明。
+
+\begin{proposition}\label{b1:prop:distribution-convolution-smooth}
+上述 \(T*\eta\) 属于 \(C^\infty(\Omega_a)\)。对任意多重指标 \(\alpha\)，在 \(\Omega_a\) 上有
+\[
+ D^\alpha(T*\eta)=T*(D^\alpha\eta)=(D^\alpha T)*\eta.
+\]
+\end{proposition}
+\begin{proof}
+固定 \(K\Subset\Omega_a\)，取 \(K\) 的稍大紧邻域 \(K'\Subset\Omega_a\)。当 \(x\in K'\) 时，所有 \(\eta(x-\cdot)\) 的支集都在紧集 \(H=K'+\overline{B(0,a)}\Subset\Omega\) 中。由\eqref{b1:eq:distribution-local-order}，存在 \(C,m\) 使
+\[
+ |\langle T,\psi\rangle|\le C p_{H,m}(\psi)
+ \quad(\psi\in\mathcal D_H).
+\]
+对每个坐标方向 \(e_j\)，Taylor 公式及 \(\eta\) 各阶导数的有界性给出
+\[
+ p_{H,m}\left(
+ \frac{\eta(x+he_j-\cdot)-\eta(x-\cdot)}h
+ -(\partial_j\eta)(x-\cdot)\right)\le C_\eta|h|
+\]
+对 \(x\in K\) 和充分小的 \(h\) 一致成立。将 \(T\) 作用于差商，便证明第一阶导数公式；同一估计也证明所得导数连续。把 \(\eta\) 换成其各阶导数，迭代即得全部光滑性与第一项等式。
+
+分布导数的定义又给出
+\[
+ \langle D^\alpha T_y,\eta(x-y)\rangle
+ =(-1)^{|\alpha|}\langle T_y,D_y^\alpha\eta(x-y)\rangle
+ =\langle T_y,(D^\alpha\eta)(x-y)\rangle,
+\]
+因为对 \(y\) 微分还产生一个 \((-1)^{|\alpha|}\)。这证明第二项等式。
+\end{proof}
+
+例如在全空间，\(\delta_b*\eta=\eta(\cdot-b)\)，而 \((D^\alpha\delta_b)*\eta=D^\alpha\eta(\cdot-b)\)。点质量及其导数被变成普通光滑函数，但导数阶数没有丢失。
 
 \subsection{正则化}
 \label{b1:subsec:200303}
 
-待填充。
+为了讨论收敛，还须把光滑函数 \(T*\eta\) 再与测试函数配对。记反射核 \(\check\eta(z)=\eta(-z)\)。反射不可由卷积记号中擅自省去；当 \(\eta=\rho_\varepsilon\) 时，偶性才使它等于原核。
+
+\begin{proposition}\label{b1:prop:distribution-convolution-pairing}
+若 \(\varphi\in\mathcal D(\Omega_a)\)，将其在外部补零，则
+\[
+ \langle T*\eta,\varphi\rangle
+ =\langle T,\check\eta*\varphi\rangle.
+\]
+右端的卷积属于 \(\mathcal D(\Omega)\)。
+\end{proposition}
+\begin{proof}
+令 \(K=\operatorname{supp}\varphi\)，则
+\[
+ q(y)=\int_{\mathbb R^d}\varphi(x)\eta(x-y)\,\mathrm dx
+ =(\check\eta*\varphi)(y)
+\]
+光滑，且支集包含在 \(H=K+\overline{B(0,a)}\Subset\Omega\) 中。以下证明 \(T\) 与这个积分确能交换。
+
+取包含 \(K\) 的有界闭矩形 \(Q\)，并将其分成网格趋于零的小矩形 \(Q_i\)，各选一点 \(x_i\)。函数值 Riemann 和
+\[
+ q_N(y)=\sum_i m_d(Q_i)\varphi(x_i)\eta(x_i-y)
+\]
+都属于 \(\mathcal D_H\)。对任意固定阶数 \(j\)，\(\varphi(x)D_y^\beta\eta(x-y)\) 在共同紧集上一致连续，\(|\beta|\le j\)，所以 Riemann 和误差关于 \(y\) 一致趋零，即 \(p_{H,j}(q_N-q)\to0\)。有限阶估计因此给出 \(\langle T,q_N\rangle\to\langle T,q\rangle\)。另一方面，由线性性，每个配对都是连续紧支集函数 \(x\mapsto\varphi(x)(T*\eta)(x)\) 的 Riemann 和；在 \(\Omega_a\) 外该乘积补零。它们趋于 \(\int\varphi(x)(T*\eta)(x)\,\mathrm dx\)，等式得证。
+\end{proof}
+
+\begin{theorem}[分布的局部光滑化]\label{b1:thm:distribution-regularization}
+设 \(T\in\mathcal D'(\Omega)\)，令 \(T_\varepsilon=T*\rho_\varepsilon\in C^\infty(\Omega_\varepsilon)\)。则对每个固定的 \(\varphi\in\mathcal D(\Omega)\)，当 \(\varepsilon\) 充分小时配对有定义，且
+\[
+ \langle T_\varepsilon,\varphi\rangle\longrightarrow\langle T,\varphi\rangle.
+\]
+每个 \(D^\alpha T_\varepsilon\) 也以同样的局部意义趋于 \(D^\alpha T\)。
+\end{theorem}
+\begin{proof}
+设 \(K=\operatorname{supp}\varphi\)，取 \(a>0\) 使 \(H=K+\overline{B(0,a)}\Subset\Omega\)。当 \(0<\varepsilon<a\) 时，\(\check\rho_\varepsilon*\varphi\) 和 \(\varphi\) 的支集均在 \(H\) 中，而且
+\[
+ D^\beta(\check\rho_\varepsilon*\varphi-\varphi)(y)
+ =\int\rho(z)\bigl(D^\beta\varphi(y+\varepsilon z)-D^\beta\varphi(y)\bigr)\,\mathrm dz.
+\]
+因 \(D^\beta\varphi\) 一致连续、\(\rho\) 只在单位球中有质量，每个阶数的上确界范数都趋于零。前一命题与 \(T\) 的连续性给出所求配对极限。再将 \(T\) 换成 \(D^\alpha T\)，并用卷积微分公式，即得导数结论。
+\end{proof}
+
+这里 \(T_\varepsilon\) 的定义域随 \(\varepsilon\) 改变；“局部”指每个固定测试函数最终都能使用，不是把 \(T_\varepsilon\) 未经说明地当成整个 \(\Omega\) 上的函数。也不要求 \(T_\varepsilon\) 本身有逐点极限：例如 \(\delta_0*\rho_\varepsilon=\rho_\varepsilon\)，其峰值通常随 \(\varepsilon^{-d}\) 增长。
 
 \subsection{逼近恒等}
 \label{b1:subsec:200304}
 
-待填充。
+\begin{proposition}\label{b1:prop:local-smoothing-approximation}
+设 \(K\Subset\Omega\)。若 \(f\in L^p_{\mathrm{loc}}(\Omega)\)、\(1\le p<\infty\)，则
+\[
+ \|f*\rho_\varepsilon-f\|_{L^p(K)}\longrightarrow0.
+\]
+若 \(f\in C^k(\Omega)\)，则对所有 \(|\alpha|\le k\)，\(D^\alpha(f*\rho_\varepsilon)\to D^\alpha f\) 在 \(K\) 上一致成立。
+\end{proposition}
+\begin{proof}
+由第\ref{b1:sec:2001}节的光滑截断，取 \(\chi\in C_c^\infty(\Omega)\)，使它在 \(K\) 的一个邻域上等于 \(1\)。将 \(\chi f\) 补零到全空间；当 \(\varepsilon\) 充分小时，它与 \(f\) 的卷积在 \(K\) 上相同。有限 \(p\) 的结论因此直接归结为\cref{b1:prop:approximate-identity-lp}。
+
+若 \(f\in C^k\)，则 \(\chi f\) 的各阶导数都是连续紧支集函数。对每个 \(|\alpha|\le k\)，卷积微分公式把所需差转为 \((D^\alpha(\chi f))*\rho_\varepsilon-D^\alpha(\chi f)\)，再用同一命题的一致收敛部分即可。
+\end{proof}
+
+不能把有限 \(p\) 的结论照搬到 \(p=\infty\)。例如 \(f=\mathbf1_{(0,\infty)}\) 在一维原点附近有跳跃，偶核卷积在原点取值 \(1/2\)，并在附近连续，故其与 \(f\) 的本质上确界距离至少为 \(1/2\)。局部分布收敛、有限 \(p\) 范数收敛和光滑函数的逐阶一致收敛是不同层次，后续使用时须说明所需的是哪一种。
