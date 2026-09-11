@@ -1,21 +1,21 @@
-% 2026-09-06 字母级试排：只有非数学模式的西文字母改用 Pagella 斜体。
-% 不把主字体的正体映射为斜体；数字、括号、标点及中文沿用原来的字形。
-% 尤其 \term 的原文外括号仍由原来的 \textnormal 排成正体。
+% 2026-09-11：非数学模式的西文字母统一使用 Pagella 正体，保留粗细区别。
+% 保留字母级边界，不重分类数字、括号、标点及中文。
+% 此设置也覆盖列表序号字母和术语原文；数学模式保持原样。
 \newfontfamily\AnalysisLetterFont{texgyrepagella-regular.otf}[
   BoldFont=texgyrepagella-bold.otf,
   ItalicFont=texgyrepagella-italic.otf,
   BoldItalicFont=texgyrepagella-bolditalic.otf
 ]
 \ExplSyntaxOn
-\bool_new:N \l_analysis_italic_letters_bool
-\bool_set_true:N \l_analysis_italic_letters_bool
+\bool_new:N \l_analysis_text_letters_bool
+\bool_set_true:N \l_analysis_text_letters_bool
 \cs_new_protected:Npn \AnalysisPreserveMathText
-  { \bool_set_false:N \l_analysis_italic_letters_bool }
+  { \bool_set_false:N \l_analysis_text_letters_bool }
 \cs_new_protected:Npn \analysis_letter_group_begin:
   {
     \group_begin:
-    \bool_if:NT \l_analysis_italic_letters_bool
-      { \AnalysisLetterFont \itshape }
+    \bool_if:NT \l_analysis_text_letters_bool
+      { \AnalysisLetterFont \upshape }
   }
 % 继承 Default 的全部 xeCJK 转移，保留中西文间距及标点处理；
 % 不能用只有开关分组的转移覆盖 Boundary 或 CJK 的原处理。

@@ -57,6 +57,9 @@
 \addbibresource{../Shared/References.bib}
 % 访问日期保留在书目库供内部核验，成品参考文献不显示 visited on。
 \renewbibmacro*{url+urldate}{\usebibmacro{url}}
+% biblatex 在书目内重绑定格式宏；在其作用域中将强调统一为正体，
+% 同时避免书名中的中文及标点仍继承旧的斜体样式。
+\AtBeginBibliography{\let\emph\textup\let\textit\textup}
 \usepackage{etoolbox}
 \usepackage{xparse}
 \usepackage[noautomatic]{imakeidx}
@@ -166,11 +169,11 @@
 \def\p@paragraph#1{#1}
 \def\p@subparagraph#1{#1}
 \makeatother
-% 非数学西文字母的斜体试排；不改变括号、标点、数字或数学字体。
+% 非数学西文字母统一正体；不改变括号类别、标点或数学字体。
 \input{../Shared/TextLetterFont}
 
 \newtheoremstyle{analysisplain}
-  {1.2ex}{1.2ex}{\itshape}{}
+  {1.2ex}{1.2ex}{\normalfont\upshape}{}
   {\color{AnalysisBlue}\bfseries}{.}{0.6em}{}
 \newtheoremstyle{analysisdefinition}
   {1.2ex}{1.2ex}{\normalfont}{}
@@ -220,6 +223,17 @@
 \newtheorem{remark}[remark]{注记}
 \aliascntresetthe{remark}
 \renewcommand{\proofname}{证明}
+% 保留 amsthm 的证明间距与终止符，只将标题字形改为正体。
+\makeatletter
+\renewenvironment{proof}[1][\proofname]{\par
+  \pushQED{\qed}%
+  \normalfont \topsep6\p@\@plus6\p@\relax
+  \trivlist
+  \item[\hskip\labelsep\upshape #1\@addpunct{.}]\ignorespaces
+}{%
+  \popQED\endtrivlist\@endpefalse
+}
+\makeatother
 \newenvironment{solution}
   {\begin{proof}[解]}
   {\end{proof}}
