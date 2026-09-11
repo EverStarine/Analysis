@@ -2,4 +2,426 @@
 \chapter{多线性代数、外代数与 Jacobi 行列式}
 \label{b1:app:B}
 
-% TODO: 按计划纲要展开本附录。
+\begin{chapterabstract}
+本附录从多线性映射的线性化出发，构造张量积与外代数，
+说明交错型、外向量及其对偶配对之间的关系。
+在引入欧氏内积以后，Gram 行列式给出体积，线性映射的外作用给出各维伸缩。
+最后区分无向面积与定向体积，为面积公式、余面积公式和流的积分表示补齐代数基础。
+\end{chapterabstract}
+
+\begin{learninggoals}
+\begin{enumerate}
+\item\label{b1:item:app-b-goal-tensor}
+从商空间与泛性质两个角度理解张量积，辨认一般张量与一个纯张量的差别。
+\item\label{b1:item:app-b-goal-wedge}
+完成外代数的构造，掌握外向量、交错型和行列式求值的归一化。
+\item\label{b1:item:app-b-goal-gram}
+用诱导内积解释 Gram 行列式、非正交坐标的体积因子及可分解条件的作用。
+\item\label{b1:item:app-b-goal-jacobian}
+区分指定切平面的伸缩与外映射的最大伸缩，统一面积和余面积中的 Jacobi 因子。
+\item\label{b1:item:app-b-goal-orientation}
+使用顶次外空间固定定向，追踪参数变化与外法向优先约定中的符号。
+\end{enumerate}
+\end{learninggoals}
+
+第\ref{b1:ch:17}章已经用子式写出外积，并由 Gram 行列式计算面积伸缩。
+这种坐标方法适合直接进入面积公式，却留下几个代数问题：
+为什么换基后仍得到同一个对象？向量的外积与作用于向量的交错型有什么区别？
+为何某些文献的公式带有阶乘，而另一些没有？
+本附录从这些问题出发，将此前使用的计算放回一个统一构造中。
+
+读者只需熟悉有限维线性代数中的基、商空间、对偶、行列式与实对称矩阵的正交对角化。
+前三节的代数构造可以独立阅读；体积的测度解释调用第\ref{b1:ch:17}章，
+余面积的几何解释调用第\ref{b1:ch:18}章。
+若只为查阅 Jacobi 因子的约定，可先看第\ref{b1:sec:B103}节与第\ref{b1:sec:B104}节；
+准备阅读流的定义时，还应掌握交错型的配对和第\ref{b1:sec:B105}节的定向。
+这里始终限于有限维实空间，不讨论无限维张量积的范数与完备化。
+
+黎景辉、白正简、周国晖的《高等线性代数学》\cite{LiBaiZhou2014AdvancedLinear}%
+可用于衔接张量积、张量代数与交错型的中文表述。
+Simon 的《Lectures on Geometric Measure Theory》\cite[第25节]{Simon1983Lectures}%
+则适合核对几何测度论中外向量、交错型与测试形式的使用方式；
+本附录补出了该处简述的有限维代数构造。
+希望把这些工具继续用于流形上的微分形式与积分，可以阅读杜武亮的%
+《An Introduction to Manifolds》\cite{Tu2011Introduction}中微分形式与积分两章。
+后一本书在这里是进一步阅读的路径，不承担本附录任何省略的证明。
+
+\input{Appendices/AppendixB/SectionB101}
+\input{Appendices/AppendixB/SectionB102}
+\input{Appendices/AppendixB/SectionB103}
+\input{Appendices/AppendixB/SectionB104}
+\input{Appendices/AppendixB/SectionB105}
+
+\begin{chaptersummary}
+张量积通过商去双线性关系，把多线性问题转为线性问题；
+外代数进一步商去重复因子，保留有序向量组的交错信息。
+这两个构造都先于内积，不能把向量、对偶向量及坐标数组直接混为一谈。
+
+欧氏内积传到外空间以后，单位正交外基的约定决定了 Gram 公式及体积归一化。
+可分解外向量能够记录一个平面、一个体积尺度和一个方向，
+一般外向量则未必对应单独一块平行多面体。
+这种差别也解释了为何流的质量不能未经说明就换成系数的欧氏长度。
+
+线性映射在各次外空间上的作用由子式组成，奇异值控制各维最大伸缩。
+面积公式考察定义域的全部方向，余面积公式考察核的正交补；
+在非正交坐标下，两端度量的 Gram 矩阵都必须纳入。
+保留顶次外作用的符号便得到定向，取其长度才回到非负的 Jacobi 因子。
+在有向积分中同时记录参数的符号和测度的绝对值，才能保持同一个几何对象不随表示改变。
+\end{chaptersummary}
+
+\BookExercises
+
+% 习题均为自拟。每题具体训练增量见相邻注释；不将正文主构造留作习题。
+\begin{exercise}\label{b1:ex:app-b-tensor-rank}
+设 \(V,W\) 是有限维实空间，\(\xi\in V\otimes W\)。定义
+\[
+ T_\xi:V^*\longrightarrow W,\quad
+ T_{v\otimes w}(\lambda)=\lambda(v)w,
+\]
+并按 \(\xi\) 线性延拓。证明该定义良定，且把 \(\xi\) 写成纯张量之和所需的最少项数等于 \(\operatorname{rank}T_\xi\)；零张量的最少项数规定为零。
+对 \(V=\mathbb R^m,W=\mathbb R^n\)，把
+\(\xi=\sum_{i,j}a_{ij}e_i\otimes f_j\) 的这一数值与矩阵 \((a_{ij})\) 的秩比较，并解释为何它不依赖所选基。
+\end{exercise}
+% 来源：自拟；由正文的非纯张量例子推进到最少分解项数的内在刻画。
+\begin{solution}
+对固定 \(\lambda\)，求值 \((v,w)\mapsto\lambda(v)w\) 双线性，因而可在张量积上线性化。
+对每个 \(\xi\)，所得值又对 \(\lambda\) 线性，所以确实得到 \(T_\xi\)。
+若 \(\xi=\sum_{\ell=1}^r v_\ell\otimes w_\ell\)，则
+\[
+ T_\xi(\lambda)=\sum_{\ell=1}^r\lambda(v_\ell)w_\ell.
+\]
+它的像包含在 \(\operatorname{span}(w_1,\ldots,w_r)\) 中，故
+\(\operatorname{rank}T_\xi\leq r\)。
+
+反过来，设像空间维数为 \(q\)，取其基 \(w_1,\ldots,w_q\)。
+存在唯一的线性泛函 \(\ell_j\) 作用于 \(V^*\)，使
+\[
+ T_\xi(\lambda)=\sum_{j=1}^q\ell_j(\lambda)w_j.
+\]
+有限维双对偶的自然识别给出 \(v_j\in V\)，满足
+\(\ell_j(\lambda)=\lambda(v_j)\)：若 \(e_i,e^i\) 互为对偶基，
+可直接取 \(v_j=\sum_i\ell_j(e^i)e_i\) 并验证。
+于是 \(\xi-\sum_jv_j\otimes w_j\) 对每个 \(e^i\) 的收缩都为零。
+按基 \(e_i\otimes f_j\) 展开，这迫使全部系数为零，故得到了 \(q\) 项分解。
+当 \(q=0\) 时同一坐标检验说明 \(\xi=0\)。
+
+最后，\(T_\xi(e^i)=\sum_ja_{ij}f_j\)，所以 \(T_\xi\) 的矩阵是 \((a_{ij})\) 的转置。
+两者秩相同，而线性映射像空间的维数不依赖基。
+因此最少分解项数虽然可以通过一个系数矩阵计算，结果是张量本身的性质。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:app-b-tensor-kernel}
+设 \(A:V\rightarrow V'\)、\(B:W\rightarrow W'\) 线性。
+把子空间的张量积通过自然映射识别为 \(V\otimes W\) 的子空间，证明
+\[
+ \ker(A\otimes B)
+  =(\ker A)\otimes W+V\otimes(\ker B).
+\]
+进一步证明
+\[
+ \operatorname{rank}(A\otimes B)
+   =(\operatorname{rank}A)(\operatorname{rank}B).
+\]
+说明为什么若只在纯张量上核验“一个因子落在核中”，还不足以证明第一个等式。
+\end{exercise}
+% 来源：自拟；将泛性质连接到核与商空间，并训练一般张量上的论证。
+\begin{solution}
+取直和分解
+\[
+ V=K\oplus V_0,\quad W=L\oplus W_0,\quad
+ K=\ker A,\quad L=\ker B.
+\]
+分别选各分量的基并合在一起。由张量积的基定理，自然包含映射在对应基张量上单射，且
+\[
+ V\otimes W=(K\otimes L)\oplus(K\otimes W_0)
+       \oplus(V_0\otimes L)\oplus(V_0\otimes W_0).
+\]
+前三项都被 \(A\otimes B\) 消去，其和恰为题述右侧。
+最后一项中，\(A|_{V_0}\)、\(B|_{W_0}\) 分别是到各自像空间的线性同构。
+它们的逆也诱导张量映射，并由复合公式给出逆映射，
+故 \(A\otimes B\) 在 \(V_0\otimes W_0\) 上单射。
+这同时说明没有其他核向量，并且其像为
+\(\operatorname{ran}A\otimes\operatorname{ran}B\)，维数为两秩之积。
+
+一般张量是若干纯张量的和，各项的像可能相互抵消。
+对单项的判断没有排除这类抵消产生新的核元素；
+上述直和分解将所有剩余项放在一个映射单射的子空间内，才完成了排除。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:app-b-plucker-four}
+在 \(\mathbb R^4\) 中写
+\[
+ \xi=\sum_{1\leq i<j\leq4}p_{ij}e_i\wedge e_j.
+\]
+证明 \(\xi\) 可分解当且仅当
+\[
+ p_{12}p_{34}-p_{13}p_{24}+p_{14}p_{23}=0.
+\]
+当 \(p_{12}\ne0\) 时给出显式的两个因子，并说明如何处理其余情形。
+\end{exercise}
+% 来源：自拟；将正文的不可分解反例推进到四维二次外向量的完整判据。
+\begin{solution}
+直接按交错法则展开得到
+\[
+ \xi\wedge\xi
+ =2(p_{12}p_{34}-p_{13}p_{24}+p_{14}p_{23})
+       e_1\wedge e_2\wedge e_3\wedge e_4.
+\]
+若 \(\xi=v\wedge w\)，则与自身的外积中有重复向量，故为零，证明必要性。
+
+若 \(a=p_{12}\ne0\)，令
+\[
+ v=e_1-\frac{p_{23}}a e_3-\frac{p_{24}}a e_4,\quad
+ w=ae_2+p_{13}e_3+p_{14}e_4.
+\]
+外积 \(v\wedge w\) 的前五个系数分别为
+\(p_{12},p_{13},p_{14},p_{23},p_{24}\)，
+而 \(e_3\wedge e_4\) 的系数为
+\[
+ \frac{p_{13}p_{24}-p_{14}p_{23}}a=p_{34}.
+\]
+因此 \(v\wedge w=\xi\)。
+若 \(\xi\ne0\) 但 \(p_{12}=0\)，选取一个非零 \(p_{ij}\)，
+将该对坐标排列到前两个位置。
+条件 \(\xi\wedge\xi=0\) 与坐标排列无关，故在新基下可用刚才的构造，
+再将所得向量写回原坐标。
+若 \(\xi=0\)，取一个因子为零即可。这里四维二次的特殊形式很重要；
+不能由这一题便断言所有次数与维数都有同样的一条二次判据。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:app-b-projection-volume}
+设 \(v_1,\ldots,v_k\in\mathbb R^n\)，\(1\leq k\leq n\)，
+令 \(Q\) 为它们生成的平行多面体。
+对大小为 \(k\) 的递增指标组 \(I\)，记 \(\pi_I\) 为到对应坐标 \(k\) 维平面的正交投影。
+证明
+\[
+ \bigl(\mathcal H^k(Q)\bigr)^2
+   =\sum_{|I|=k}\bigl(\mathcal H^k(\pi_IQ)\bigr)^2.
+\]
+在 \(n=3,k=2\) 时证明常数 \(1/\sqrt3\) 是不等式
+\[
+ \max_{|I|=2}\mathcal H^2(\pi_IQ)
+   \geq\frac1{\sqrt3}\mathcal H^2(Q)
+\]
+中最好的统一常数，并构造一个非退化的取等例子。
+\end{exercise}
+% 来源：自拟；将子式系数解释为所有坐标投影的面积，并要求最优性构造。
+\begin{solution}
+记列坐标矩阵为 \(A\)。投影多面体的面积是
+\(|\det A_I|\)，而 \(Q\) 的面积平方为
+\(\det(A^{\mathsf T}A)\)。
+外积子式展开和外基的正交性给出
+\[
+ |v_1\wedge\cdots\wedge v_k|^2=\sum_{|I|=k}|\det A_I|^2,
+\]
+所以得到所需几何恒等式。向量相关时，各项都为零，仍然成立。
+
+当 \(n=3,k=2\) 时右侧有三项，最大一项的平方至少为总和的三分之一。
+取
+\[
+ v_1=e_1-e_3,\quad v_2=e_2-e_3.
+\]
+它们的外积为
+\(e_1\wedge e_2-e_1\wedge e_3+e_2\wedge e_3\)，
+三个投影面积都是 \(1\)，原面积为 \(\sqrt3\)。
+因此这一例子取等，任何更大的统一常数都会失败。
+同一恒等式并不说原面积等于各投影面积之和；本题中后者是 \(3\)。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:app-b-normal-transform}
+设 \(A:\mathbb R^n\rightarrow\mathbb R^n\) 可逆，\(n\geq2\)。
+给定单位向量 \(\nu\)，令 \(H=\nu^\perp\)，并按外法向优先约定赋予 \(H\) 定向 \(\tau_H\)。
+证明像平面 \(A(H)\) 的单位法向可取
+\[
+ \nu'=\frac{A^{-\mathsf T}\nu}{|A^{-\mathsf T}\nu|}.
+\]
+用 \(\nu'\) 和环境标准定向确定 \(\tau_{A(H)}\)，证明
+\[
+ (\bigwedge\nolimits^{n-1}A)\tau_H
+   =(\det A)|A^{-\mathsf T}\nu|\,\tau_{A(H)},
+\]
+并推出超平面上的面积伸缩公式
+\[
+ J_{n-1}(A;H)=|\det A|\cdot|A^{-\mathsf T}\nu|.
+\]
+\end{exercise}
+% 来源：自拟；由顶次行列式推导余维一法向和面积的共同变换，不依赖未定义的余子式算子。
+\begin{solution}
+对 \(v\in H\)，有
+\(\langle A^{-\mathsf T}\nu,Av\rangle=\langle\nu,v\rangle=0\)。
+由于 \(A\) 可逆，\(A^{-\mathsf T}\nu\ne0\)，所以所写 \(\nu'\) 确为像平面的单位法向。
+
+选 \(H\) 的正向标准正交基 \(q_1,\ldots,q_{n-1}\)。
+由 \(\nu\wedge\tau_H=e_1\wedge\cdots\wedge e_n\)，
+\((\nu,q_1,\ldots,q_{n-1})\) 为正向标准正交基。
+像外向量落在一维空间 \(\bigwedge^{n-1}A(H)\) 中，故等于
+\(c\tau_{A(H)}\)。把 \(\nu'\) 放在首位并取环境体积形式求值，有
+\[
+ \begin{aligned}
+ c&=\det(\nu',Aq_1,\ldots,Aq_{n-1})\\
+  &=(\det A)\det(A^{-1}\nu',q_1,\ldots,q_{n-1})\\
+  &=(\det A)\langle A^{-1}\nu',\nu\rangle\\
+  &=(\det A)|A^{-\mathsf T}\nu|.
+ \end{aligned}
+\]
+第三行将第一列分为法向分量与切向分量，切向部分与其余列线性相关而消失。
+取外向量长度，便得到面积伸缩公式。
+特别当 \(\det A<0\) 时，直接传递原切向外向量与按像平面法向重新确定的定向相反；
+只写非负面积公式会丢掉这一信息。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:app-b-hodge-linear-map}
+设 \(V\) 是已定向的 \(n\) 维欧氏空间，\(\tau_V\) 为其正向单位顶次外向量。
+对 \(0\leq k\leq n\)，证明存在唯一线性映射
+\[
+ \star:\bigwedge\nolimits^kV\longrightarrow
+             \bigwedge\nolimits^{n-k}V
+\]
+满足
+\[
+ \alpha\wedge(\star\beta)=\langle\alpha,\beta\rangle\tau_V
+ \quad(\alpha,\beta\in\bigwedge\nolimits^kV).
+\]
+给出它在正向标准正交外基上的公式，并证明
+\[
+ |\star\beta|=|\beta|,\quad
+ \star(\star\beta)=(-1)^{k(n-k)}\beta.
+\]
+最后判断反转 \(V\) 的定向时，这一映射如何变化。
+\end{exercise}
+% 来源：自拟；以非退化外配对构造 Hodge 型线性映射，增加对偶和定向的综合训练。
+\begin{solution}
+取正向标准正交基 \(e_1,\ldots,e_n\)。
+对递增指标组 \(I\)，令 \(I^c\) 为递增补指标组，选
+\(s_I\in\{-1,1\}\) 使
+\[
+ e_I\wedge(s_Ie_{I^c})=\tau_V.
+\]
+规定 \(\star e_I=s_Ie_{I^c}\)，并线性延拓。
+若 \(J\ne I\) 且 \(|J|=|I|=k\)，则 \(J\) 至少有一个指标属于 \(I^c\)，
+所以 \(e_J\wedge e_{I^c}=0\)。
+因此在任意两个基向量上都有
+\(e_J\wedge\star e_I=\delta_{JI}\tau_V\)，双线性给出要求的等式。
+
+另一方面，若 \(\eta\in\bigwedge^{n-k}V\) 满足每个 \(e_J\wedge\eta=0\)，
+把 \(\eta\) 按补指标基展开，每次测试 \(e_J\) 都挑出对应的唯一系数。
+于是 \(\eta=0\)，证明外配对非退化，也证明满足要求的 \(\star\) 唯一。
+所定义的映射把标准正交基送到带符号的标准正交基，故保持长度。
+
+由块交换法则，
+\[
+ e_{I^c}\wedge e_I=(-1)^{k(n-k)}e_I\wedge e_{I^c},
+\]
+所以 \(s_{I^c}=(-1)^{k(n-k)}s_I\)，从而
+\(\star\star e_I=(-1)^{k(n-k)}e_I\)。
+线性延拓得到一般情形；\(k=0,n\) 同样由空外积约定包含在内。
+反转定向把右侧 \(\tau_V\) 取负，而内积不变，
+因此由唯一性，新映射恰为原映射的负号。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:app-b-mobius-orientation}
+取 \(R>\varepsilon>0\)，考虑参数化
+\[
+ F(\theta,t)=
+ \bigl((R+t\cos(\theta/2))\cos\theta,\,
+       (R+t\cos(\theta/2))\sin\theta,\,
+       t\sin(\theta/2)\bigr),
+ \quad |t|<\varepsilon.
+\]
+先说明它在每点具有秩 \(2\)，且
+\(F(\theta+2\pi,-t)=F(\theta,t)\)。
+把这条缝合关系形成的曲面称为 Möbius 带，证明它没有连续定向。
+同时解释这不妨碍每个足够小的参数片具有连续定向。
+\end{exercise}
+% 来源：自拟；显式跟踪接缝的符号，检验局部定向与全局连续定向的差别。
+\begin{solution}
+写柱坐标方向为
+\[
+ e_r=(\cos\theta,\sin\theta,0),\quad
+ e_\theta=(-\sin\theta,\cos\theta,0),\quad e_z=(0,0,1).
+\]
+有
+\[
+ F_t=\cos(\theta/2)e_r+\sin(\theta/2)e_z,
+\]
+\[
+ F_\theta=(R+t\cos(\theta/2))e_\theta
+      -\frac t2\sin(\theta/2)e_r
+      +\frac t2\cos(\theta/2)e_z.
+\]
+第一个向量长度为 \(1\) 且没有 \(e_\theta\) 分量；
+第二个的 \(e_\theta\) 分量大于 \(R-\varepsilon>0\)。
+所以它们线性无关。把 \(\theta+2\pi,-t\) 代入公式，
+利用半角正弦、余弦同时变号，就得到所述缝合关系。
+由于径向坐标始终为正，像点的极角决定 \(\theta\) 模 \(2\pi\)；
+固定这一选择后，径向与竖直分量确定 \(t\)。
+因此除此缝合外没有其他重合，局部确为光滑曲面。
+
+假设存在连续单位切向外向量场 \(\tau\) 给曲面定向。
+沿中央圆 \(t=0\) 定义
+\[
+ \eta(\theta)=
+ \frac{F_\theta(\theta,0)\wedge F_t(\theta,0)}
+      {|F_\theta(\theta,0)\wedge F_t(\theta,0)|}.
+\]
+它连续且处处为单位切向外向量，所以
+\(\tau\bigl(F(\theta,0)\bigr)=\sigma(\theta)\eta(\theta)\)，
+其中 \(\sigma:[0,2\pi]\rightarrow\{-1,1\}\) 连续。
+区间连通，故 \(\sigma\) 为常数。
+但 \(F(2\pi,0)=F(0,0)\)，
+\(F_\theta(2\pi,0)=F_\theta(0,0)\)，而
+\(F_t(2\pi,0)=-F_t(0,0)\)，因此
+\(\eta(2\pi)=-\eta(0)\)。
+这迫使同一点的 \(\tau\) 等于自己的负号，与单位长度矛盾。
+
+在任何不绕过接缝的小参数片上，归一化的 \(F_\theta\wedge F_t\) 都给出连续定向。
+失败的只是沿闭合路径将这些局部选择拼成同一个连续选择，
+不是局部外积不存在，也不是面积为零。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:app-b-rectangle-boundary}
+设 \(Q=[a,b]\times[c,d]\)，\(a<b,c<d\)，
+函数 \(P,S\) 在 \(Q\) 的某邻域上为 \(C^1\)。
+对 \(v=(v_1,v_2)\in\mathbb R^2\)，令一型场
+\[
+ \omega(x,y)(v)=P(x,y)v_1+S(x,y)v_2.
+\]
+按区域外法向优先的约定给四条边定向，证明
+\[
+ \int_{\partial Q}\omega
+   =\int_Q(\partial_xS-\partial_yP)\,\mathrm dx\,\mathrm dy.
+\]
+将 \(Q\) 分成有限个轴平行小矩形，说明分别应用此公式再相加时，
+内部边为何完全抵消，并解释这一抵消为什么依赖方向而不只是边的集合相同。
+\end{exercise}
+% 来源：自拟；以已知的基本定理与 Fubini 推导定向边界积分，展示局部拼接的符号机制。
+\begin{solution}
+正向依次是底边向右、右边向上、顶边向左、左边向下。
+按定向积分的参数表达，
+\[
+ \begin{aligned}
+ \int_{\partial Q}\omega
+  &=\int_a^bP(x,c)\,\mathrm dx
+     +\int_c^dS(b,y)\,\mathrm dy\\
+  &\quad-\int_a^bP(x,d)\,\mathrm dx
+     -\int_c^dS(a,y)\,\mathrm dy.
+ \end{aligned}
+\]
+由一维微积分基本定理，
+\[
+ P(x,c)-P(x,d)=-\int_c^d\partial_yP(x,y)\,\mathrm dy,
+\]
+\[
+ S(b,y)-S(a,y)=\int_a^b\partial_xS(x,y)\,\mathrm dx.
+\]
+导数在紧矩形上连续，因而可积；Fubini 定理允许把两个迭代积分写成同一个二重积分，
+即得结论。四个顶点的长度测度为零，不影响边积分。
+
+对相邻小矩形，它们在公共边上的外法向相反，
+由边界定向约定，相应切向也相反。
+沿同一几何线段的两个积分于是互为负数，逐对抵消，
+仅留下原矩形的外边界。右侧则按不重叠内部作积分相加，得到整个 \(Q\) 的积分。
+如果把边积分误写成相对于无向长度的同一个正密度积分，
+内部边会相加成两倍而非抵消。边界作为集合没有记录足够的信息；
+交错型与定向共同提供了这里所需的符号。
+\end{solution}

@@ -2,4 +2,354 @@
 \chapter{泛函分析补充}
 \label{b1:app:C}
 
-% TODO: 按计划纲要展开本附录。
+\begin{chapterabstract}
+本附录围绕有界线性方程的可解性补充泛函分析工具。
+商空间去掉解的不唯一方向，对偶算子给出相容条件，闭值域估计把近似可解提升为精确可解。
+紧扰动使核与余核降为有限维；在自伴情形，谱分解进一步给出解的坐标与近似误差。
+最后将凸分离用于统一间隙、距离公式和最佳逼近。
+\end{chapterabstract}
+
+\begin{learninggoals}
+\begin{enumerate}
+\item\label{b1:item:C1-goal-quotient}用商范数表述稳定性，区分 Banach 空间对偶算子与 Hilbert 空间伴随。
+\item\label{b1:item:C1-goal-closed-range}从对偶消去条件得到近似可解性，并说明闭值域估计怎样补足存在性。
+\item\label{b1:item:C1-goal-fredholm}证明恒等算子的紧扰动具有有限维核、闭值域和零指标。
+\item\label{b1:item:C1-goal-spectral}使用已有紧自伴谱定理求解方程，辨认共振、小特征值及截断稳定性。
+\item\label{b1:item:C1-goal-separation}将凸分离转成定量距离估计，辨明最近点存在与对偶最大值取得的区别。
+\end{enumerate}
+\end{learninggoals}
+
+有限维线性代数中，检查右端是否满足左零空间给出的约束，就能判定方程有没有解。
+搬到函数空间以后，这个判断首先只能得到右端在值域的闭包中。
+值域可能不闭，近似解也可能没有任何有界子列。分析中的先验估计所承担的任务之一，
+便是阻止这一失败；它需要估计全部解中去掉齐次解以后的部分，而不一定控制任意原像。
+
+读者应熟悉第八章的 Hahn--Banach 定理、开映射定理、Hilbert 投影和紧算子，
+以及第九章的弱拓扑与自然嵌入。商空间完备性及其对偶已经在%
+\cref{b1:ex:08-quotient-dual}证明，双零化子关系见%
+\cref{b1:ex:09-double-annihilator}。
+本附录沿这些结果继续，不重新把相关习题改写为一遍正文。
+若主要关心 Hilbert 空间方程，可先掌握商空间估计，再阅读闭值域的正交形式和谱应用；
+一般 Banach 空间的 Fredholm 证明则说明哪些结论并不需要自伴性。
+
+Hunter 与 Nachtergaele 的《Applied Analysis》\cite{Hunter2001Applied}第 8.3 节
+适合对照伴随、值域与可解性条件的关系；该书采用的内积线性变量与本书不同，
+读公式时应以定义为准。本附录把可解性推导推进到一般 Banach 空间，并给出所用紧扰动结论的证明。
+已有许全华、马涛、尹智的《泛函分析讲义》\cite{Xu2017Fanhan}可作为中文衔接读物：
+第 9.1、9.2 节的“共轭算子”“商空间”是核对名称和查找相关内容的入口。
+若要从这里系统进入一般算子谱与局部凸空间，
+可继续阅读 Rudin 的《Functional Analysis》\cite{Rudin1991Functional}；
+本附录不涉及一般无界算子的定义域理论，也不以有界算子的公式代替那些额外问题。
+
+\input{Appendices/AppendixC/SectionC101}
+\input{Appendices/AppendixC/SectionC102}
+\input{Appendices/AppendixC/SectionC103}
+\input{Appendices/AppendixC/SectionC104}
+\input{Appendices/AppendixC/SectionC105}
+\input{Appendices/AppendixC/SectionC106}
+
+\begin{chaptersummary}
+方程 \(Tx=y\) 的不唯一性由核描述，近似可解性由对偶核描述；
+闭值域估计使近似可解性与精确可解性一致，并在商空间中控制解对右端的依赖。
+这些论断对一般 Banach 空间成立。Hilbert 空间的正交补额外提供唯一的最小范数代表，
+不能在没有内积时直接照搬。
+
+紧性把可能失控的方向压缩为有限维障碍。对于 \(I-K\)，
+核有限维、值域闭和指标为零经过不同的证明步骤得到；
+右移与左移的例子说明，最后一个性质不能从前两个直接推出。
+自伴性再把可解性写成正交坐标条件。
+恒等项防止高阶坐标的分母趋零，而直接求解 \(Kx=y\) 时，小特征值会造成额外的可求和条件。
+
+凸分离则把几何约束写成线性测试。集外一点总有距离公式，
+紧凸集与不交闭凸集之间有统一间隙，内部非空的闭凸集在边界处有非零线性支撑。
+三种结论各自使用不同的几何假设；在具体的方程或极小化问题中，
+应把这些假设与所需结论一并带入。
+\end{chaptersummary}
+
+\BookExercises
+
+% 八题均为自拟；逐题注释列出训练增量。
+% 不复述第八章商空间、c0对偶及第九章双零化子、范数不取得的既有习题。
+
+\begin{exercise}\label{b1:ex:C1-nonclosed-sum}
+在实或复 \(H=\ell^2\) 上令 \(De_j=j^{-1}e_j\)，并在 \(H\oplus H\) 中取
+\[
+ M=\{\,(x,Dx):x\in H\,\},\quad N=H\oplus\{0\}.
+\]
+证明 \(M,N\) 都是闭线性子空间，\(M\cap N=\{0\}\)，但 \(M+N\) 不闭。
+求 \(\overline{M+N}\)，并构造一列和空间中的向量，其和收敛而 \(M\) 分量的范数发散。
+\end{exercise}
+% 来源：自拟；把非闭值域变成两个闭子空间之和不闭，增加分解稳定性的解释。
+\begin{solution}
+若 \((x_n,Dx_n)\to(x,y)\)，由 \(D\) 连续得到 \(y=Dx\)，所以图像 \(M\) 闭。
+空间 \(N\) 是第二坐标投影的核，也闭。由于 \(D\) 单射，交集为零。
+直接计算给出
+\[
+ M+N=H\oplus\operatorname{ran}D.
+\]
+值域包含所有有限支撑序列，故稠密；但
+\(y=\sum_{j\geq1}j^{-1}e_j\) 不在值域中，其唯一可能原像是常数序列 \(1\)。
+因此和空间不闭，而其闭包等于 \(H\oplus H\)。
+
+令 \(u_n=\sum_{j=1}^ne_j\)，则
+\[
+ (u_n,Du_n)+(-u_n,0)=(0,Du_n)\longrightarrow(0,y).
+\]
+这是由于交集为零而唯一的 \(M+N\) 分解；
+其中 \(M\) 分量的范数至少为 \(\|u_n\|=\sqrt n\)。
+两个闭子空间分别具有完备性，却没有给它们的和提供有界的分量提取。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:C1-rank-one-fredholm}
+设 \(X\) 为 Banach 空间，\(u\in X\setminus\{0\}\)、\(f\in X^*\setminus\{0\}\)，
+令 \(Kx=f(x)u\)。对任意标量 \(\alpha\)，分别在
+\(1-\alpha f(u)\ne0\) 与 \(1-\alpha f(u)=0\) 时求解
+\[
+ (I-\alpha K)x=y.
+\]
+写出 \(K'\)，并在第二种情形直接核对对偶相容条件。
+\end{exercise}
+% 来源：自拟；在复Banach配对中显式计算秩一算子，避免把对偶误写成Hilbert伴随。
+\begin{solution}
+恒有 \(K^2=f(u)K\)。当 \(1-\alpha f(u)\ne0\) 时，直接相乘得到
+\[
+ (I-\alpha K)^{-1}
+ =I+\frac{\alpha}{1-\alpha f(u)}K,
+\]
+所以唯一解为
+\[
+ x=y+\frac{\alpha f(y)}{1-\alpha f(u)}u.
+\]
+这包括 \(\alpha=0\) 或 \(f(u)=0\) 的情况。
+
+当 \(\alpha f(u)=1\) 时，对方程作用 \(f\) 得 \(f(y)=0\)。
+若该条件满足，则 \(x=y\) 是一解；齐次方程要求 \(x=\alpha f(x)u\)，
+故核恰为 \(\mathbb Ku\)，所有解为 \(y+tu\)。
+对任意 \(g\in X^*\)，
+\[
+ K'g=g(u)f.
+\]
+因此 \((I-\alpha K')g=0\) 恰好等价于 \(g\in\mathbb Kf\)。
+对偶核消去右端的条件就是 \(f(y)=0\)，与直接计算一致。
+这里没有对 \(\alpha\) 或 \(f(u)\) 加复共轭，因为连续对偶由线性泛函组成。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:C1-shift-index}
+在 \(\ell^2(\mathbb N)\) 上令
+\[
+ R(x_1,x_2,\ldots)=(0,x_1,x_2,\ldots),\quad
+ L(x_1,x_2,\ldots)=(x_2,x_3,\ldots).
+\]
+给定非负整数 \(m,n\)，求 \(A=R^mL^n\) 的核、值域、伴随和指标。
+判定 \(A\) 何时可以写成 \(I+F\)，其中 \(F\) 有限秩；
+再判定 \(m\ne n\) 时它能否写成 \(I+K\)，其中 \(K\) 紧。
+\end{exercise}
+% 来源：自拟；把单次左右移推广到不同次数的复合，区分零指标与具体有限秩扰动。
+\begin{solution}
+算子 \(L^n\) 丢掉前 \(n\) 个坐标，\(R^m\) 再在前面补 \(m\) 个零，所以
+\[
+ \ker A=\operatorname{span}\{e_1,\ldots,e_n\},\quad
+ \operatorname{ran}A=\{\,y:y_1=\cdots=y_m=0\,\}.
+\]
+当次数为零时相应限制为空。值域闭且余维为 \(m\)，故
+\(\operatorname{ind}A=n-m\)。
+由 \(R^*=L\)、\(L^*=R\)，有 \(A^*=R^nL^m\)，其核维数为 \(m\)。
+
+若 \(m=n\)，则 \(A=I-P_n\)，其中 \(P_n\) 是前 \(n\) 个坐标的正交投影，
+所以确为有限秩扰动。若 \(m\ne n\)，指标非零，
+而恒等算子的紧扰动指标必须为零，因此不能写成 \(I+K\)，更不能写成有限秩扰动。
+也可以直接看见非紧性：取充分稀疏的一列 \(j_k>n\)，使
+\(\{j_k,j_k-n+m\}\) 互不相交，则 \((A-I)e_{j_k}\) 两两正交且范数均为 \(\sqrt2\)，
+不存在收敛子列。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:C1-weighted-shift}
+在复 \(\ell^2(\mathbb N)\) 上定义 \(Ke_j=j^{-1}e_{j+1}\)。
+证明 \(K\) 紧且没有非零特征值，进一步证明
+\[
+ \|K^r\|=\frac1{r!}\quad(r\geq1),\quad
+ (I-\alpha K)^{-1}=\sum_{r=0}^{\infty}\alpha^rK^r
+ \quad(\alpha\in\mathbb C).
+\]
+由此求 \(\sigma(K)\)，并说明非零特征向量不一定足以描述紧算子。
+\end{exercise}
+% 来源：自拟；提供非自伴且无非零特征值的紧算子，幂范数给出任意参数的收敛逆。
+\begin{solution}
+把 \(K\) 限制到前 \(N\) 个输入坐标得到有限秩算子 \(K_N\)，且
+\(\|K-K_N\|=1/(N+1)\)。所以 \(K\) 紧。
+若 \(Kx=\lambda x\) 且 \(\lambda\ne0\)，第一坐标给出 \(x_1=0\)，
+以后逐个坐标给出 \(x_j=0\)。故没有非零特征值。
+
+重复作用得到
+\[
+ K^re_j=\frac{(j-1)!}{(j+r-1)!}e_{j+r}.
+\]
+这些输出方向正交，系数随 \(j\) 递减，最大值在 \(j=1\) 处为 \(1/r!\)。
+对任意 \(\alpha\)，算子级数由
+\(\sum_r|\alpha|^r/r!<\infty\) 绝对控制，故在算子范数下收敛。
+其前 \(N+1\) 项与 \(I-\alpha K\) 左右相乘，余项均为
+\(-\alpha^{N+1}K^{N+1}\)，范数趋零，因此给出双侧逆。
+所以每个 \(\lambda\ne0\) 都不在谱中；而 \(K\) 的像第一坐标恒为零，不满射，
+故 \(0\in\sigma(K)\)。于是 \(\sigma(K)=\{0\}\)，但 \(K\ne0\)。
+紧性没有提供自伴算子所具有的特征向量展开。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:C1-spectral-regularization}
+沿用\cref{b1:prop:C1-spectral-range}中的紧自伴算子 \(K\)。
+对 \(\eta>0\)、\(y\in H\)，定义
+\[
+ x_\eta(y)=\sum_j\frac{\lambda_j}{\lambda_j^2+\eta}y_je_j.
+\]
+证明级数收敛，且这是 \((K^2+\eta I)x=Ky\) 的唯一解，并满足
+\[
+ \|x_\eta(y)-x_\eta(z)\|\leq\frac1{2\sqrt\eta}\|y-z\|.
+\]
+若 \(y=Kx^\dagger\)、\(x^\dagger\perp\ker K\)，证明 \(x_\eta(y)\to x^\dagger\)。
+若还可写 \(x^\dagger=Kw\)，证明
+\[
+ \|x_\eta(y)-x^\dagger\|\leq\frac{\sqrt\eta}{2}\|w\|.
+\]
+最后给出右端误差不超过 \(\delta\) 时的总误差界。
+\end{exercise}
+% 来源：自拟；从谱坐标构造稳定近似并量化噪声与逼近误差，不引用尚未建立的正则化理论。
+\begin{solution}
+由 \(2\sqrt\eta\,|\lambda|\leq\lambda^2+\eta\)，每个乘子绝对值不超过
+\(1/(2\sqrt\eta)\)。正交级数判据给出收敛及题述 Lipschitz 估计。
+算子 \(K^2+\eta I\) 在 \(H_0\) 上乘 \(\eta\)，在 \(e_j\) 上乘
+\(\lambda_j^2+\eta\)，均以 \(\eta\) 为正下界。
+逐坐标可知候选向量满足方程，齐次方程各分量均为零，故解唯一。
+
+若 \(y_j=\lambda_jx^\dagger_j\)，则
+\[
+ x_\eta(y)-x^\dagger
+ =-\sum_j\frac{\eta}{\lambda_j^2+\eta}x^\dagger_je_j.
+\]
+每个系数乘子趋零且绝对值至多为 \(1\)。先使
+\(\sum_{j>N}|x^\dagger_j|^2\) 任意小，再对有限个首项取 \(\eta\downarrow0\)，
+得到范数收敛。
+若 \(x^\dagger=Kw\)，误差的乘子改为
+\(\eta\lambda_j/(\lambda_j^2+\eta)\)，其绝对值不超过 \(\sqrt\eta/2\)，
+于是得到更精确的界。
+
+若 \(\|y^\delta-y\|\leq\delta\)，在最后这个附加条件下，
+\[
+ \|x_\eta(y^\delta)-x^\dagger\|
+ \leq\frac{\delta}{2\sqrt\eta}+\frac{\sqrt\eta}{2}\|w\|.
+\]
+例如令 \(\eta=\delta\) 并使 \(\delta\downarrow0\)，两项都趋零。
+若固定 \(\delta>0\) 却一味使 \(\eta\) 趋零，第一项可能增大，不能只依据精确数据的极限选择参数。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:C1-galerkin}
+设可分 Hilbert 空间 \(H\) 有标准正交基 \((e_j)\)，\(P_N\) 为前 \(N\) 个坐标的正交投影。
+设 \(K:H\rightarrow H\) 紧，不要求自伴，且 \(A=I-K\) 可逆。
+证明
+\[
+ \|(I-P_N)K\|\longrightarrow0.
+\]
+由此证明：对充分大的 \(N\)，有限维方程
+\[
+ x_N-P_NKx_N=P_Ny,\quad x_N\in P_NH
+\]
+有唯一解；若 \(Ax=y\)，则存在与 \(N,y\) 无关的常数 \(C\)，使
+\[
+ \|x_N-x\|\leq C\|(I-P_N)x\|.
+\]
+\end{exercise}
+% 来源：自拟；将自伴谱截断换成任意正交基投影，需用紧像有限网把逐点收敛提升为算子范数收敛。
+\begin{solution}
+投影满足 \(\|I-P_N\|\leq1\)，并对每个 \(z\in H\) 有 \(P_Nz\to z\)。
+给定 \(\varepsilon>0\)，在紧集 \(\overline{K(B_H)}\) 中取半径
+\(\varepsilon/2\) 的有限网 \(z_1,\ldots,z_m\)。
+对充分大的 \(N\)，每个网点都满足
+\(\|(I-P_N)z_i\|<\varepsilon/2\)。
+先移到网点，再用投影范数控制误差，即得
+\(\sup_{\|v\|\leq1}\|(I-P_N)Kv\|\leq\varepsilon\)。
+
+令 \(A_N=I-P_NK\)。则
+\[
+ A_N=A\bigl(I+A^{-1}(I-P_N)K\bigr).
+\]
+扰动范数趋零，由几何级数构造逆，充分大时有
+\(\|A_N^{-1}\|\leq2\|A^{-1}\|=:C\)。
+全空间中的唯一解 \(x_N=A_N^{-1}P_Ny\) 自动满足
+\((I-P_N)x_N=0\)，故确在 \(P_NH\) 内，给出题中的有限维解。
+又因 \(Ax=y\)，
+\[
+ A_N(x_N-x)=P_Ny-x+P_NKx=-(I-P_N)x.
+\]
+应用 \(A_N^{-1}\) 得误差界。右边是解的正交截断误差，而不是预先假定的数值求解误差。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:C1-dual-maximum-no-nearest}
+\begin{enumerate}
+\item\label{b1:item:C1-nonunique-nearest}
+在 \(\mathbb R^2\) 的最大值范数下，求点 \((0,1)\) 到横轴的全部最近点。
+\item\label{b1:item:C1-no-nearest}
+在实 \(c_0\) 上令 \(f(x)=\sum_{j\geq1}2^{-j}x_j\)，取 \(C=\ker f\)、\(x=2e_1\)。
+证明 \(\operatorname{dist}(x,C)=1\)，但 \(C\) 中没有最近点。
+说明\cref{b1:thm:C1-distance-dual}的最大值在此仍可取得。
+\end{enumerate}
+\end{exercise}
+% 来源：自拟；调用第九章已有范数不取得反例，新增最近点失败与对偶取得性并存的对比。
+\begin{solution}
+第一部分中，
+\[
+ \|(0,1)-(t,0)\|_\infty=\max\{|t|,1\}.
+\]
+所以距离为 \(1\)，全部最近点为 \(\{\,(t,0):|t|\leq1\,\}\)，并不唯一。
+
+第二部分中，\cref{b1:ex:09-norm-attainment}已经证明 \(\|f\|=1\)，且
+\(f\) 不在 \(c_0\) 的闭单位球上取得范数。因为 \(f(x)=1\)，有
+\(\|x-c\|\geq f(x-c)=1\) 对每个 \(c\in C\) 成立。
+令 \(v_N=\sum_{j=1}^Ne_j\)，则 \(f(v_N)=1-2^{-N}\)。
+向量 \(c_N=x-v_N/(1-2^{-N})\) 属于 \(C\)，且
+\[
+ \|x-c_N\|_\infty=(1-2^{-N})^{-1}\longrightarrow1.
+\]
+故距离等于 \(1\)。若 \(c\) 为最近点，则 \(z=x-c\) 满足
+\(\|z\|=1\)、\(f(z)=1\)，违反范数不取得，故不存在最近点。
+然而对偶距离公式直接用单位泛函 \(f\) 就得到
+\(f(x)-\sup_Cf=1\)，其最大值确实取得。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:C1-finite-inequality-alternative}
+给定实矩阵 \(A\in\mathbb R^{m\times n}\) 与 \(b\in\mathbb R^m\)。
+证明以下条件等价：
+\begin{equivalences}
+\item\label{b1:item:C1-positive-solution}存在 \(x\in\mathbb R^n\)，使 \(Ax=b\) 且每个 \(x_j\geq0\)；
+\item\label{b1:item:C1-positive-test}对每个满足 \(A^{\mathsf T}z\geq0\) 的 \(z\in\mathbb R^m\)，均有 \(z\cdot b\geq0\)。
+\end{equivalences}
+不预先引用多面体理论；须证明由 \(A\) 的列向量的非负组合组成的集合是闭集。
+\end{exercise}
+% 来源：自拟；把凸分离变成有限线性约束的对偶判别，关键增量是有限生成锥的闭性而非一句调用分离。
+\begin{solution}
+将 \(A\) 的列写成 \(a_1,\ldots,a_n\)，并令
+\[
+ C=\left\{\,\sum_{j=1}^nt_ja_j:t_j\geq0\,\right\}.
+\]
+先说明每个 \(y\in C\) 都有仅用线性无关列向量的表示。
+若一个表示的正系数所对应的列线性相关，取这些列的一条非零关系
+\(\sum_jc_ja_j=0\)，必要时整体变号，使某个 \(c_j>0\)。
+令
+\[
+ s=\min_{c_j>0}\frac{t_j}{c_j}>0.
+\]
+改用 \(t_j-sc_j\) 后，全部系数仍非负，和不变，且至少一个正系数消失。
+有限次重复即得所需表示。
+
+现设 \(y_k\in C\)、\(y_k\to y\)。独立列的指标子集只有有限多个，可取子列使它们
+使用同一个子集 \(I\)。若子集为空，子列恒为零，结论成立。
+否则从 \(\mathbb R^{I}\) 到这些列张成空间的线性映射为有限维同构，
+故其逆连续。相应系数向量随 \(y_k\) 收敛，极限各坐标非负，给出 \(y\in C\)。
+因此 \(C\) 闭。
+
+若 \(Ax=b\)、\(x\geq0\)，则
+\(z\cdot b=(A^{\mathsf T}z)\cdot x\geq0\)，得到一个方向。
+反过来，若 \(b\notin C\)，对闭凸集 \(C\) 与点 \(b\) 作严格分离，
+可取线性泛函 \(h\)，使 \(\sup_Ch<h(b)\)。
+由于 \(C\) 是含零且对非负数乘封闭的锥，这个有限上确界必为零，
+并且 \(h(a_j)\leq0\) 对所有 \(j\) 成立。
+写 \(h(v)=-z\cdot v\)，则 \(A^{\mathsf T}z\geq0\)，但 \(z\cdot b<0\)，
+违反第二项。因此 \(b\in C\)，即存在所需的非负解。
+\end{solution}

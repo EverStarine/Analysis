@@ -1,0 +1,151 @@
+% !TeX root = ../../Book1.tex
+\section{紧自伴谱分解与方程求解}
+\label{b1:sec:C105}
+
+上一节没有使用内积，因此得到了广泛的可解性结论，却没有给出解的坐标。
+对于紧自伴算子，\cref{b1:thm:compact-self-adjoint-spectral}已经建立完整的正交分解。
+这里把它用于三件事：写出相容条件，估计截断误差，以及区分两类性质很不相同的方程。
+谱定理的证明不再重复，重点是从分解到求解之间的步骤。
+
+\subsection{零特征空间与非零坐标}
+\label{b1:subsec:C10501}
+
+设 \(H\) 为实或复 Hilbert 空间，\(K:H\rightarrow H\) 紧且自伴。
+按谱定理选取有限个或可数个标准正交向量 \(e_j\)，对应非零实特征值 \(\lambda_j\)，并记
+\[
+ H_0=\ker K,\quad
+ x=x_0+\sum_jx_je_j,\quad
+ x_j=\langle x,e_j\rangle,\quad x_0=P_{H_0}x.
+\]
+全部级数均在 \(H\) 中按范数收敛。若非零特征值只有有限个，以下的和与条件
+只遍历实际存在的指标；若 \(K=0\)，这些和为空和。
+核 \(H_0\) 不要求有限维或可分，不能把它遗漏后声称 \(\{e_j\}\) 是 \(H\) 的基。
+
+\begin{proposition}\label{b1:prop:C1-spectral-solvability}
+给定标量 \(\alpha\)，令 \(E_\alpha=\ker(I-\alpha K)\)。
+方程
+\[
+ (I-\alpha K)x=y
+\]
+有解，当且仅当 \(y\perp E_\alpha\)。满足 \(x\perp E_\alpha\) 的解唯一，且为
+\[
+ x=y_0+
+ \sum_{1-\alpha\lambda_j\ne0}
+       \frac{y_j}{1-\alpha\lambda_j}e_j,
+ \quad y_j=\langle y,e_j\rangle,\quad y_0=P_{H_0}y.
+\]
+所有解由这个解加上 \(E_\alpha\) 中的任意向量得到。
+\end{proposition}
+\begin{proof}
+在 \(H_0\) 上，\(I-\alpha K\) 为恒等算子；在 \(e_j\) 方向上，它为乘
+\(1-\alpha\lambda_j\)。所以方程要求 \(x_0=y_0\)，以及
+\[
+ (1-\alpha\lambda_j)x_j=y_j.
+\]
+当乘子为零时必须有 \(y_j=0\)，这些方向恰好张成 \(E_\alpha\)。
+若 \(\alpha=0\)，这个空间为零；若 \(\alpha\ne0\)，它至多是一个非零特征值
+对应的有限维特征空间。
+
+还须验证候选解的级数收敛。非零分母存在统一正下界 \(\delta_\alpha\)：
+无穷列情形中 \(\lambda_j\to0\)，故充分大的 \(j\) 满足
+\(|1-\alpha\lambda_j|\geq1/2\)；剩下有限多个非零分母的模也有正最小值。
+有限列情形直接取有限个正数的最小值，没有此类指标时取 \(\delta_\alpha=1\)。
+由 Bessel 不等式，
+\[
+ \sum_{1-\alpha\lambda_j\ne0}
+ \frac{|y_j|^2}{|1-\alpha\lambda_j|^2}
+ \leq\delta_\alpha^{-2}\|y\|^2<\infty.
+\]
+级数因而收敛。对部分和作用连续算子并取极限，得到原方程。
+其在 \(E_\alpha\) 上的分量为零；任意两个解之差属于 \(E_\alpha\)，所以唯一性成立。
+\end{proof}
+
+在复空间中，\(\alpha\) 可以非实。此时 \(I-\alpha K\) 不一定自伴，但其核与伴随的核相同：
+伴随为 \(I-\overline\alpha K\)，实特征值使两个算子可能出现的零乘子完全一致。
+因此这里的正交条件与前一节的 Fredholm 条件相符，不是忽略了复共轭。
+
+当参数接近某个 \(\lambda_j^{-1}\) 时，相应方向的分母变小，解会对右端误差更敏感。
+在参数恰等于这个值时，该方向不再由方程确定，同时右端在该方向上的分量必须为零。
+这分别是接近共振和精确共振的两种情况。
+
+\subsection{有限秩截断的稳定性}
+\label{b1:subsec:C10502}
+
+设 \(I-\alpha K\) 可逆，记
+\[
+ K_Nx=\sum_{j=1}^N\lambda_j\langle x,e_j\rangle e_j,\quad
+ \varepsilon_N=\|K-K_N\|.
+\]
+有限秩情形取足够大的 \(N\) 后令 \(K_N=K\)。截断的对象是算子，不是先把整个右端扔进
+有限维空间。因此 \(I-\alpha K_N\) 在所选特征向量的正交补上仍为恒等算子。
+
+\begin{proposition}\label{b1:prop:C1-spectral-truncation}
+令 \(A=I-\alpha K\)，\(A_N=I-\alpha K_N\)，并设
+\[
+ q_N=|\alpha|\cdot\|A^{-1}\|\varepsilon_N<1.
+\]
+则 \(A_N\) 可逆。若 \(Ax=y\)、\(A_Nx_N=y\)，则
+\[
+ \|x_N-x\|\leq
+ \frac{|\alpha|\cdot\|A^{-1}\|^2\varepsilon_N}{1-q_N}\|y\|.
+\]
+特别地，\(x_N\to x\)，且此收敛对有界的右端一致。
+\end{proposition}
+\begin{proof}
+有
+\[
+ A_N=A\bigl(I+A^{-1}\alpha(K-K_N)\bigr).
+\]
+括号中的扰动范数不超过 \(q_N\)。若 \(\|B\|<1\)，则
+\(\sum_{m\geq0}(-B)^m\) 在算子范数下收敛，与 \(I+B\) 相乘后由有限几何级数公式
+及余项趋零得到双侧逆；其范数不超过 \((1-\|B\|)^{-1}\)。
+因此
+\[
+ \|A_N^{-1}\|\leq\frac{\|A^{-1}\|}{1-q_N}.
+\]
+再由 \(A_N(x_N-x)=\alpha(K_N-K)x\)，得到所述误差估计。
+谱定理给出 \(\varepsilon_N\to0\)，所以充分大的 \(N\) 满足假设。
+\end{proof}
+
+这一估计同时说明了截断误差和逆算子范数的作用。仅知道 \(K_N\to K\)，
+却不检查极限方程是否可逆，不能保证离散方程的逆一致有界。
+若固定在共振参数，必须先施加相容条件、去掉核，再在其正交补上进行相同论证。
+
+\subsection{直接求逆与小特征值}
+\label{b1:subsec:C10503}
+
+方程 \(Kx=y\) 没有恒等项。它的分母是 \(\lambda_j\)，无穷多个小特征值
+会改变可解性条件，不能照搬上一小节中的统一下界。
+
+\begin{proposition}\label{b1:prop:C1-spectral-range}
+方程 \(Kx=y\) 有解，当且仅当
+\[
+ y\perp\ker K,\quad \sum_j\frac{|y_j|^2}{|\lambda_j|^2}<\infty.
+\]
+有解时，唯一的最小范数解为
+\[
+ x^\dagger=\sum_j\frac{y_j}{\lambda_j}e_j.
+\]
+此外，紧自伴算子的值域闭，当且仅当其秩有限。
+\end{proposition}
+\begin{proof}
+若 \(Kx=y\)，则 \(y\perp\ker K\)，且 \(x_j=y_j/\lambda_j\)；
+Bessel 不等式给出所述可求和条件。反过来，该条件保证候选级数收敛，
+对部分和作用 \(K\) 后取极限就得到 \(Kx^\dagger=y\)。
+它属于 \((\ker K)^\perp\)，由正交分解得到最小范数性。
+
+有限秩时值域有限维，因而闭。若秩无限，则非零特征向量有无穷多个，
+\(\lambda_j\to0\)。每个 \(e_j\) 到 \(\ker K\) 的距离等于 \(1\)，
+但 \(\|Ke_j\|=|\lambda_j|\to0\)，违反闭值域的估计判别。
+\end{proof}
+
+例如 \(Ke_j=j^{-1}e_j\) 时，右端 \(y=\sum_{j\geq1}j^{-1}e_j\) 属于
+\(\ell^2\)，也与核正交，却不在值域中，因为候选原像的每个坐标都为 \(1\)。
+取前 \(N\) 个坐标所得右端趋于 \(y\)，其解的范数却等于 \(\sqrt N\)。
+正交相容只排除了核的障碍，小特征值另带来无穷维的可求和要求。
+
+对确实可解的右端，截断
+\(\sum_{j=1}^N(y_j/\lambda_j)e_j\) 总趋于最小范数解；
+但若观测右端有微小误差，除以小 \(\lambda_j\) 会放大它。
+习题进一步给出一个带正参数的稳定近似，使读者能直接比较“极限存在”
+与“每个近似对数据连续”这两个要求。

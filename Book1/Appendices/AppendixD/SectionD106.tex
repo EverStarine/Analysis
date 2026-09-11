@@ -1,0 +1,265 @@
+% !TeX root = ../../Book1.tex
+\section{填充估计与几何变分问题}
+\label{b1:sec:D106}
+
+积分流紧性最直接的用途，是从一列面积越来越小的候选曲面中取得极小者。
+但在抽取子列之前，需要先回答两个问题：是否至少有一个候选对象，
+以及能否把全部候选限制在某个共同紧集内。
+锥构造解决第一类问题；在欧氏空间中，闭球上的不增距投影处理第二类问题。
+
+\subsection{等周填充与尺度}
+\label{b1:subsec:D10601}
+
+锥填充的估计含有承载集的半径：
+\(\mathbf M(C_aT)\leq R\mathbf M(T)/(k+1)\)。
+若只知道边界的质量，不知道其形状和直径，就需要一个与半径无关的估计。
+变形定理与网格整数系数的离散性恰能给出它。
+
+\begin{theorem}[Federer--Fleming 等周不等式]\label{b1:thm:app-d-isoperimetric}
+设 \(1\leq k<n\)，\(T\in\mathbf I_k(\mathbb R^n)\) 紧支撑且 \(\partial T=0\)。
+则存在紧支集 \(R\in\mathbf I_{k+1}(\mathbb R^n)\)，满足
+\[
+ \partial R=T,\quad
+ \mathbf M(R)\leq C(n,k)\,\mathbf M(T)^{(k+1)/k}.
+\]
+\end{theorem}
+\begin{proof}
+零流可取零填充，以下设 \(\mathbf M(T)>0\)。
+在\cref{b1:thm:app-d-deformation}中，因 \(\partial T=0\)，
+边界误差 \(S\) 的质量为零，所以 \(S=0\)，并且 \(\partial P=0\)。
+记变形定理中控制 \(\mathbf M(P)\) 的常数为 \(C_0\)，选取网格尺度
+\[
+ \delta=\bigl(2C_0\mathbf M(T)\bigr)^{1/k}.
+\]
+若 \(P\neq0\)，整数网格流的最小质量性质给出
+\[
+ \mathbf M(P)\geq\delta^k=2C_0\mathbf M(T),
+\]
+与 \(\mathbf M(P)\leq C_0\mathbf M(T)\) 矛盾。
+因此 \(P=0\)，变形恒等式成为 \(T=\partial R\)。
+最后
+\[
+ \mathbf M(R)\leq C\delta\mathbf M(T)
+        \leq C'\mathbf M(T)^{(k+1)/k}.
+\]
+变形定理的支撑控制保证该填充有紧支集。
+\end{proof}
+
+这一证明沿用 Simon 的《Lectures on Geometric Measure Theory》%
+\cite{Simon1983Lectures}第30.1条的网格选择。
+指数也可由缩放检验：把距离乘以 \(\lambda\)，边界质量乘以 \(\lambda^k\)，
+填充质量乘以 \(\lambda^{k+1}\)，因此两侧的指数必须匹配。
+
+整数条件在证明中用于“非零网格流至少含一整块面”。
+容许任意小实系数时，这个阈值消失，上述无半径估计不能保留相同的齐次形式：
+对一个固定非零边界乘以很小的实数，填充的最小质量按一次齐次变化，
+而右端按大于一的幂次变化。
+零维边界也须单独处理。\(\delta_b-\delta_a\) 的质量恒为 \(2\)，
+连接它的线段长度却可以任意大，因此不可能只用零维边界质量控制填充长度。
+
+\subsection{Lipschitz 推前及闭球投影}
+\label{b1:subsec:D10602}
+
+第\ref{b1:sec:D103}节只定义了光滑映射的推前。
+现在已有积分流紧性，可以用光滑逼近把推前延拓到 Lipschitz 映射，
+同时保留整数结构。这个次序避免在不光滑映射下直接对一般分布作拉回。
+
+\begin{proposition}\label{b1:prop:app-d-lipschitz-pushforward}
+设 \(T\in\mathbf I_k(\mathbb R^n)\) 有紧支集，
+\(f:\mathbb R^n\rightarrow\mathbb R^N\) 为 Lipschitz 映射。
+则存在唯一由光滑等 Lipschitz 逼近所确定的积分流 \(f_\#T\)，并满足
+\[
+ \partial(f_\#T)=f_\#(\partial T),\quad
+ \operatorname{supp}(f_\#T)\subset f(\operatorname{supp}T),
+\]
+以及
+\[
+ \mathbf M(f_\#T)\leq\operatorname{Lip}(f)^k\,\mathbf M(T).
+\]
+对 \(k=0\)，右侧的 Lipschitz 幂因子约定为 \(1\)。
+推前是线性的；若 \(f=g\) 在 \(\operatorname{supp}T\) 上成立，则 \(f_\#T=g_\#T\)。
+\end{proposition}
+\begin{proof}
+先给出逼近独立性所需的估计。
+若 \(f_1,f_2\) 光滑，Lipschitz 常数不超过 \(L\)，
+令 \(A=\max\{1,L\}\)，并在
+\(K=\operatorname{supp}T\) 上记
+\(\varepsilon=\sup_K|f_1-f_2|\)。
+取直线同伦 \(h(t,x)=(1-t)f_1(x)+tf_2(x)\)。
+其时间导数在 \(K\) 上不超过 \(\varepsilon\)，空间导数不超过 \(L\)。
+同伦公式及质量估计给出
+\[
+ \mathbb F\bigl((f_2)_\#T-(f_1)_\#T\bigr)
+ \leq \varepsilon A^k\bigl(\mathbf M(T)+\mathbf M(\partial T)\bigr).
+\]
+零维时边界项为零，同一个上界仍有效。
+
+对 \(f\) 逐分量磨光，得到 \(f_j\rightarrow f\) 一致、
+\(\operatorname{Lip}(f_j)\leq\operatorname{Lip}(f)\) 的光滑映射。
+光滑推前 \((f_j)_\#T\) 的质量及边界质量一致有界，
+其支撑都落在 \(f(K)\) 的一个固定有界闭邻域内。
+由积分流紧性定理，存在弱收敛子列，其极限为积分流。
+上述同伦估计使全部逼近项构成平坦范数 Cauchy 列，
+所以任意弱收敛子列的极限都相同。
+再与一个给定收敛子列比较，可知整列平坦收敛于该极限。
+这里没有预先假定整个平坦空间完备，而是由紧性提供实际存在的极限。
+
+任意另一个光滑逼近族，只要在 \(K\) 上一致逼近且 Lipschitz 常数一致受控，
+用同伦估计交叉比较便得到同一个极限。
+若 \(f=g\) 于 \(K\)，其两个逼近族在 \(K\) 上的差趋零，也给出同一推前。
+线性由对相同逼近族逐项取极限得到。
+边界交换式由光滑情形及边界的弱连续性得到；
+支撑包含由一致逼近和弱极限的支撑性质得到。
+最后使用光滑推前的质量估计及下半连续性，保留精确常数
+\(\operatorname{Lip}(f)^k\)。
+\end{proof}
+
+设 \(B=\overline{B(a,R)}\)。到 \(B\) 的最近点投影为
+\[
+ p(x)=a+\min\!\left\{1,\frac{R}{|x-a|}\right\}(x-a),
+\]
+在 \(x=a\) 处取 \(p(a)=a\)。
+它在球内等于恒等映射，且 \(\operatorname{Lip}(p)\leq1\)。
+可以不用微分来核对后一性质：
+凸集投影满足 \((x-p(x))\cdot(z-p(x))\leq0\) 对所有 \(z\in B\) 成立；
+分别代入 \(z=p(y)\) 与 \(z=p(x)\)，相加得
+\[
+ |p(x)-p(y)|^2\leq (x-y)\cdot(p(x)-p(y))
+                \leq |x-y|\cdot|p(x)-p(y)|.
+\]
+因此把积分流投到闭球不会增加质量。
+只要其边界已经位于球内，边界推前仍等于原边界。
+投影可能在球面处不可微，但这已经由刚才的延拓处理，不需要假设它光滑。
+
+\subsection{Plateau 问题的存在性}
+\label{b1:subsec:D10603}
+
+给定一个边界，寻找质量最小的积分流，是%
+\term[plateau-wenti]{Plateau 问题}[Plateau problem]%
+的一种精确表述。
+它保留取向与整数重数，不等同于在所有闭集合中直接最小化 Hausdorff 测度，
+也不把候选对象限制为嵌入光滑曲面。
+
+\begin{theorem}[Plateau 问题的积分流形式]\label{b1:thm:app-d-plateau-existence}
+设 \(1\leq k\leq n\)，\(S\in\mathbf I_{k-1}(\mathbb R^n)\) 有紧支集且
+\(\partial S=0\)。
+若 \(k=1\)，另要求零维流 \(S\) 的全部整数系数之和为零。
+则存在紧支集积分流 \(T_*\in\mathbf I_k(\mathbb R^n)\)，使
+\[
+ \partial T_*=S,\quad
+ \mathbf M(T_*)=
+   \inf\{\,\mathbf M(T):T\in\mathbf I_k(\mathbb R^n),\
+                      \operatorname{supp}T\text{ 紧},\ \partial T=S\,\}.
+\]
+若 \(S\) 的支撑包含在某闭球内，可以选取 \(T_*\) 的支撑也包含在该球内。
+\end{theorem}
+\begin{proof}
+取包含 \(\operatorname{supp}S\) 的闭球 \(B=\overline{B(a,R)}\)。
+当 \(k\geq2\) 时，锥 \(C_aS\) 具有边界 \(S\)，且支撑位于 \(B\)。
+当 \(k=1\) 时，写 \(S=\sum_iq_i\delta_{x_i}\)，
+由总系数条件，
+\[
+ T_0=\sum_iq_i[a,x_i],\quad
+ \partial T_0=\sum_iq_i(\delta_{x_i}-\delta_a)=S.
+\]
+这也是球内的有限质量积分流。因此容许类非空，质量下确界 \(m\) 有限。
+
+选取紧支集积分流 \(T_j\)，满足 \(\partial T_j=S\) 且
+\(\mathbf M(T_j)\rightarrow m\)。
+这些流未必有共同紧支撑，但上一小节的投影流 \(p_\#T_j\) 全部支撑于 \(B\)，
+边界仍为 \(S\)，质量不增。
+因 \(m\) 是原容许类的下确界，其质量也趋于 \(m\)。
+这就把最小化列置于同一个紧集内。
+
+积分流紧性给出子列弱收敛于积分流 \(T_*\)，支撑位于 \(B\)。
+边界的弱连续性给出 \(\partial T_*=S\)。
+由质量下半连续性，
+\[
+ \mathbf M(T_*)\leq\liminf_j\mathbf M(p_\#T_j)=m.
+\]
+而 \(T_*\) 属于容许类，所以其质量又不小于 \(m\)，从而取到最小值。
+\end{proof}
+
+零维边界的系数和条件不仅足够，而且必要。
+若 \(S=\partial T\) 且 \(T\) 紧支撑，取在该支撑附近恒为一的测试函数 \(\phi\)，则
+\[
+ S(\phi)=T(d\phi)=0.
+\]
+左端就是 \(S\) 的总系数。
+一个单独点质量没有紧支集填充；两个系数相反的点质量则有有向线段填充。
+
+存在性证明没有说明极小者唯一，也没有说明其支撑处处光滑。
+高余维与多重数可能产生真实奇性，边界的几何性质又会带来额外问题。
+Simon 的《Lectures on Geometric Measure Theory》%
+\cite{Simon1983Lectures}第33节以后转向极小流的局部性质；
+阅读这些内容之前，应先分清“最小化列存在极限”和“极限具有何种正则性”。
+
+\subsection{闭形式给出的质量下界}
+\label{b1:subsec:D10604}
+
+紧性证明保证某个极小者存在，但通常不能直接写出它。
+有时，一个闭微分形式已经给出足够尖锐的下界，可以识别具体极小者。
+
+\begin{proposition}\label{b1:prop:app-d-closed-form-minimality}
+设 \(T_0\in\mathbf I_k(\mathbb R^n)\) 紧支撑。
+若存在光滑闭 \(k\) 次形式 \(\omega=d\eta\)，使
+\[
+ \sup_x\|\omega(x)\|_{\mathrm{co}}\leq1,\quad
+ T_0(\omega)=\mathbf M(T_0),
+\]
+则对每个紧支集积分流 \(T\) 满足 \(\partial T=\partial T_0\)，都有
+\(\mathbf M(T)\geq\mathbf M(T_0)\)。
+这里不要求 \(\omega,\eta\) 本身紧支撑，配对时在各流的紧支撑附近取截断。
+\end{proposition}
+\begin{proof}
+对紧支集闭流 \(T-T_0\)，取在其支撑邻域恒为一的光滑紧支集函数 \(\chi\)。
+因 \(d\chi=0\) 在该邻域，
+\[
+ (T-T_0)(\omega)
+    =(T-T_0)\bigl(d(\chi\eta)\bigr)
+    =\partial(T-T_0)(\chi\eta)=0.
+\]
+于是 \(T(\omega)=T_0(\omega)=\mathbf M(T_0)\)。
+余质量上界又给出 \(T(\omega)\leq\mathbf M(T)\)，得到结论。
+计算 \(T(\omega)\) 时可选取 \(0\leq\chi\leq1\) 的截断，
+因此不会破坏质量上界。
+\end{proof}
+
+虽然命题称作闭形式下界，这里还明确要求 \(\omega=d\eta\)，
+以便不借助额外的上同调理论就说明所有竞争者积分相同。
+在全空间上可用 Poincaré 引理从闭性推出这一点；
+在一般区域中则不能省去相应条件。
+
+例如令 \(D\) 是坐标 \(k\) 平面内的一个有界光滑区域，取标准定向，
+\[
+ \omega=dx^1\wedge\cdots\wedge dx^k
+       =d\bigl(x^1\,dx^2\wedge\cdots\wedge dx^k\bigr).
+\]
+当 \(k=1\) 时，右侧括号理解为零次形式 \(x^1\)。
+这个形式的余质量为一，并在 \(D\) 的取向上恒取值一，
+故 \([D]\) 在所有具有相同边界的紧支集积分流中质量最小。
+特别地，平面圆盘是其边界圆的一张最小质量积分流。
+这项论证比较的是所有积分流竞争者，不只是图形曲面或光滑小扰动。
+
+最后也可把固定边界换成惩罚项。
+设 \(K\) 紧，\(S\in\mathbf I_{k-1}(\mathbb R^n)\) 支撑于 \(K\)，
+对固定 \(\lambda>0\) 考虑
+\[
+ \mathcal E_\lambda(T)=\mathbf M(T)+\lambda\mathbf M(\partial T-S),
+ \quad T\in\mathbf I_k(\mathbb R^n),\
+                 \operatorname{supp}T\subset K.
+\]
+零流使容许类非空，且能量有界控制
+\[
+ \mathbf M(T)+\mathbf M(\partial T)
+ \leq (1+\lambda^{-1})\mathcal E_\lambda(T)+\mathbf M(S).
+\]
+于是最小化列满足积分流紧性；
+边界误差的弱收敛及质量下半连续性保证能量也取到最小值。
+这一模型允许不完全匹配边界，但必须为误差支付质量代价。
+它与精确 Plateau 问题的容许类不同，不能由有限的 \(\lambda\) 自动断言极小者满足
+\(\partial T=S\)。
+
+从 BV 到流，变分法的解析骨架仍是有界性、紧性和下半连续性。
+新增的几何困难是：极限能否保留维数、取向和整数重数。
+切片、变形及整数闭合定理承担了这部分工作，而不是把它们交给一个没有几何信息的弱极限。

@@ -1,0 +1,329 @@
+% !TeX root = ../../Book1.tex
+\section{平坦范数、变形与积分流紧性}
+\label{b1:sec:D105}
+
+两张靠得很近但互不重合的曲面，作为向量测度可以相差很大的总变差。
+若它们之间只夹着一层很薄的区域，几何上却应当接近。
+合适的距离允许把差拆成两部分：一部分直接按质量计价，另一部分作为某个高一维流的边界，
+按这个填充的质量计价。这样既能测量小块误差，也能测量曲面移动所扫过的薄层。
+
+\subsection{允许填充的距离}
+\label{b1:subsec:D10501}
+
+\begin{definition}\label{b1:def:app-d-flat-norm}
+对 \(\mathbb R^n\) 上的 \(k\) 维流 \(T\)，定义%
+\term[pingtan-fanshu]{平坦范数}[flat norm]为
+\[
+ \mathbb F(T)=\inf\{\,\mathbf M(A)+\mathbf M(B):
+       T=A+\partial B,\ \mathbf M(A),\mathbf M(B)<\infty\,\},
+\]
+其中 \(A\) 为 \(k\) 维流，\(B\) 为 \(k+1\) 维流。
+若不存在这种分解，则取值为 \(+\infty\)。
+在最高维时 \(B=0\)。这里允许实系数的有限质量流，不要求 \(A,B\) 是积分流。
+\symidx{\(\mathbb F(T)\)：实系数平坦范数}
+\end{definition}
+
+定义里没有要求下确界能取到，也没有限定填充的支撑。
+后面讨论固定紧集内的对象时，紧性假设作用于原流，而不是静默修改本定义的分解集合。
+
+\begin{proposition}\label{b1:prop:app-d-flat-properties}
+在平坦范数有限的流组成的向量空间上，\(\mathbb F\) 是范数，且
+\[
+ \mathbb F(T)\leq\mathbf M(T),\quad
+ \mathbb F(\partial T)\leq\mathbb F(T).
+\]
+对任意测试 \(k\) 次形式 \(\omega\)，有
+\[
+ |T(\omega)|
+ \leq
+ \max\!\left\{\sup_x\|\omega(x)\|_{\mathrm{co}},
+               \sup_x\|d\omega(x)\|_{\mathrm{co}}\right\}\mathbb F(T).
+\]
+因而平坦范数收敛蕴含流的弱收敛。
+\end{proposition}
+\begin{proof}
+分解相加、乘以标量，分别给出三角不等式和绝对齐次性；
+齐次性的反向由除以非零标量得到。
+取 \(A=T,B=0\)，得到第一个上界。
+若 \(T=A+\partial B\)，则 \(\partial T=\partial A\)，
+故 \(\mathbb F(\partial T)\leq\mathbf M(A)\)。
+对所有分解取下确界，得到第二个上界。
+
+对同一个分解，
+\[
+ |T(\omega)|=|A(\omega)+B(d\omega)|
+ \leq \mathbf M(A)\sup_x\|\omega(x)\|_{\mathrm{co}}
+       +\mathbf M(B)\sup_x\|d\omega(x)\|_{\mathrm{co}}.
+\]
+取下确界即得测试估计。
+若 \(\mathbb F(T)=0\)，则所有测试形式上的值都为零，所以 \(T=0\)。
+这也证明平坦范数收敛必然弱收敛。
+\end{proof}
+
+Simon 的《Lectures on Geometric Measure Theory》%
+\cite{Simon1983Lectures}第31节在整数重数流之间采用要求分解项也为整数重数的局部距离。
+其允许的分解较少，不能不加说明地把定义中的下确界照搬为本书的 \(\mathbb F\)。
+下文会直接证明实系数平坦范数在正规流有界族上的紧性，
+再单独使用整数闭合定理保留积分流结构。
+
+例如，平行的两个单位正方形取相同取向，间距为 \(h>0\)。
+它们之差的质量是 \(2\)，与 \(h\) 无关；
+但借助夹层和沿边界扫出的侧面，平坦范数至多为常数乘 \(h\)。
+有边界的曲面移动时，夹层的边界不仅含上下两面，侧面项不能漏去。
+下面用同伦公式给出统一估计。
+
+\begin{proposition}\label{b1:prop:app-d-translation-flat}
+设 \(T\) 为紧支集正规流，\(\tau_h(x)=x+h\)。则
+\[
+ \mathbb F\bigl((\tau_h)_\#T-T\bigr)
+       \leq |h|\bigl(\mathbf M(T)+\mathbf M(\partial T)\bigr).
+\]
+\end{proposition}
+\begin{proof}
+设 \(H_h(t,x)=x+th\)，并记
+\(A_hT=(H_h)_\#([0,1]\times T)\)。
+由同伦公式，
+\[
+ (\tau_h)_\#T-T=\partial(A_hT)+A_h(\partial T).
+\]
+沿时间方向的导数是 \(h\)，其他方向的导数是恒等映射。
+由余质量对偶估计，
+\[
+ \mathbf M(A_hT)\leq |h|\,\mathbf M(T),\quad
+ \mathbf M(A_h\partial T)\leq |h|\,\mathbf M(\partial T).
+\]
+把两项作为平坦范数定义中的分解，即得结论。
+\end{proof}
+
+\subsection{正规流的解析紧性}
+\label{b1:subsec:D10502}
+
+质量控制首先带来一个向量测度的弱极限。这里的困难尚不在整数，
+而在选择同一条子列，使所有测试形式同时收敛。
+
+\begin{proposition}\label{b1:prop:app-d-normal-weak-compactness}
+设 \(K\subset\mathbb R^n\) 紧，\(\operatorname{supp}T_j\subset K\)，且
+\[
+ \sup_j\bigl(\mathbf M(T_j)+\mathbf M(\partial T_j)\bigr)<\infty.
+\]
+则有子列弱收敛于支撑包含于 \(K\) 的正规流 \(T\)，并且
+\[
+ \mathbf M(T)\leq\liminf_j\mathbf M(T_j),\quad
+ \mathbf M(\partial T)\leq\liminf_j\mathbf M(\partial T_j).
+\]
+\end{proposition}
+\begin{proof}
+将 \(T_j\) 的有限质量表示按标准外积基分解。
+每个分量都是支撑在 \(K\) 上、总变差一致有界的符号测度。
+空间 \(C(K)\) 可分；对其中一个可数稠密族逐次抽取并取对角子列，
+使所有分量在该族上同时收敛。
+一致总变差界把收敛推广到整个 \(C(K)\)，
+Riesz 表示给出极限分量测度。
+将它们组合，得到支撑在 \(K\) 上的有限质量流 \(T\)，且 \(T_j\rightharpoonup T\)。
+
+对任意测试 \(k-1\) 次形式 \(\eta\)，
+\[
+ \partial T_j(\eta)=T_j(d\eta)\longrightarrow T(d\eta)=\partial T(\eta).
+\]
+原有边界质量界故也约束这个极限，说明 \(T\) 正规。
+最后，固定任一个余质量不超过一的测试形式，先取极限再用质量上界，
+对所有测试形式取上确界，得到两条下半连续不等式。
+对远离 \(K\) 的测试形式，原序列恒为零，故极限仍以 \(K\) 为支撑范围。
+\end{proof}
+
+接下来证明，在这样的有界族里，弱收敛还能升级为本节的平坦范数收敛。
+与第\ref{b1:ch:25}章的平移紧性准则相似，证明先把对象统一磨光，
+再把小尺度误差与固定尺度下的紧性分开。
+
+\begin{proposition}\label{b1:prop:app-d-normal-weak-flat}
+在前一命题的假设下，若整列 \(T_j\rightharpoonup T\)，则
+\(\mathbb F(T_j-T)\rightarrow0\)。
+\end{proposition}
+\begin{proof}
+取非负光滑磨光核 \(\rho_\varepsilon\)，支撑于 \(B(0,\varepsilon)\)，单位积分。
+对有限质量流逐系数卷积，等价地定义
+\[
+ T_\varepsilon
+    =\int_{\mathbb R^n}\rho_\varepsilon(h)(\tau_h)_\#T\,dh.
+\]
+这个积分可按每个测试形式理解，也可按有限维向量测度逐分量理解。
+将上一命题证明中的 \(A_hT\) 逐分量积分，记所得流为 \(B_\varepsilon T\)。
+其质量至多为 \(\varepsilon\mathbf M(T)\)，支撑包含于 \(K+\overline{B(0,\varepsilon)}\)，
+并且边界与积分交换。因此
+\[
+ T_\varepsilon-T
+       =\partial(B_\varepsilon T)+B_\varepsilon(\partial T),\quad
+ \mathbb F(T_\varepsilon-T)
+       \leq\varepsilon\bigl(\mathbf M(T)+\mathbf M(\partial T)\bigr).
+\]
+同样的估计对全部 \(T_j\) 使用同一个常数成立。
+
+固定 \(\varepsilon>0\)。
+流 \((T_j)_\varepsilon\) 的各分量现在具有光滑密度，
+其函数值和一阶导数由原序列的质量界及 \(\rho_\varepsilon\) 的相应导数一致控制。
+弱收敛使每个固定点的密度值收敛到 \(T_\varepsilon\) 的密度：
+卷积核关于原变量是光滑测试函数，在 \(K\) 附近乘一个固定截断即可。
+共同紧支撑及等度连续性把逐点收敛提升为一致收敛。
+具体地，在紧支撑上取有限的充分细网格，先控制各网格点的差，再用共同连续模控制网格间隙。
+故
+\[
+ \mathbf M\bigl((T_j)_\varepsilon-T_\varepsilon\bigr)\longrightarrow0.
+\]
+这里可以先估计每个系数的 \(L^1\) 范数，再用有限维质量范数等价得到上述结论。
+
+三角不等式给出
+\[
+ \limsup_j\mathbb F(T_j-T)\leq2C\varepsilon
+\]
+其中 \(C\) 为原序列与极限的共同正规质量界。
+最后令 \(\varepsilon\downarrow0\)，得到所需收敛。
+\end{proof}
+
+这两个解析命题对实系数正规流成立，但没有证明极限是一张有整数层数的曲面。
+例如前面给出的光滑体积密度一维流本来就是正规流。
+要把这一紧性用于曲面的面积极小化，必须补上整数重数可整流类的闭合性。
+
+\subsection{网格变形与离散逼近}
+\label{b1:subsec:D10503}
+
+整数条件在固定网格上特别清楚。
+给定边长 \(\delta\) 的立方网格，一个整数系数 \(k\) 维多面体流
+\[
+ P=\sum_F q_F[F],\quad q_F\in\mathbb Z
+\]
+若不为零，其质量至少为 \(\delta^k\)。
+这里对网格的 \(k\) 维面 \(F\) 取固定取向，求和只有有限个非零项，
+不同面的相对内部互不相交。这个正的最小质量是实系数所不具备的。
+
+将一般流移到网格上并不是作一个处处光滑的最近点投影。
+网格低维骨架不存在这种全局投影；正确构造要在各高维胞腔中选择中心，
+用径向映射逐层推出，并把移动产生的流和边界误差一起记录。
+
+\begin{theorem}[Federer--Fleming 变形]\label{b1:thm:app-d-deformation}
+设 \(1\leq k<n\)，\(T\in\mathbf I_k(\mathbb R^n)\) 有紧支集，\(\delta>0\)。
+则存在整数系数网格多面体 \(k\) 维流 \(P\)，以及紧支集积分流
+\(R\in\mathbf I_{k+1}(\mathbb R^n)\)、\(S\in\mathbf I_k(\mathbb R^n)\)，使
+\[
+ T-P=\partial R+S,
+\]
+并且
+\[
+ \begin{aligned}
+ \mathbf M(P)&\leq C\mathbf M(T),&
+ \mathbf M(\partial P)&\leq C\mathbf M(\partial T),\\
+ \mathbf M(R)&\leq C\delta\,\mathbf M(T),&
+ \mathbf M(S)&\leq C\delta\,\mathbf M(\partial T).
+ \end{aligned}
+\]
+常数 \(C\) 只依赖 \(n,k\)。
+流 \(P,R\) 的支撑位于 \(\operatorname{supp}T\) 的 \(C\delta\) 邻域，
+而 \(\partial P,S\) 的支撑位于 \(\operatorname{supp}\partial T\) 的 \(C\delta\) 邻域。
+\end{theorem}
+
+这条%
+\term*[federer-fleming-bianxing]{Federer--Fleming 变形定理}[Federer--Fleming deformation theorem]%
+属于流理论的主要技术结果。
+此处采用 Simon 的《Lectures on Geometric Measure Theory》%
+\cite{Simon1983Lectures}第29.1条及其缩放版本29.3；该版本对 \(\mathbf M(P)\)
+的估计不需要另加 \(\delta\mathbf M(\partial T)\)。
+历史原文为 Federer 与 Fleming 的《Normal and Integral Currents》%
+\cite{FedererFleming1960Normal}。
+
+\begin{proofsketch}
+从 \(n\) 维网格胞腔开始，在每个胞腔内部选一点，把流沿射线推向胞腔边界。
+在一个 \(m\) 维胞腔内，径向映射的导数由
+\(C\delta/\operatorname{dist}(x,a)\) 控制。
+只要 \(m>k\)，对中心 \(a\) 积分时，核
+\(\operatorname{dist}(x,a)^{-k}\) 在 \(m\) 维内可积。
+Fubini 因而允许选择使 \(k\) 维质量增量有界的中心，
+而不是在奇点处直接假设投影的 Lipschitz 常数有限。
+对边界也作相容的选择，并逐层推进到 \(k\) 维骨架。
+
+每次变形的同伦扫出一个高一维流；其厚度不超过常数乘 \(\delta\)，
+所以总质量由 \(C\delta\mathbf M(T)\) 控制。
+原边界的同伦产生同维误差，估计为 \(C\delta\mathbf M(\partial T)\)。
+在最终网格面内部，零边界条件使重数为常数；
+推前和切片保留整数重数，故最终对象是整数系数网格流。
+胞腔内的局部构造还给出所述支撑控制。
+
+这里未展开奇点邻域的切除与极限、各胞腔映射的一致拼接、
+以及在最后一层修正边界的步骤。
+这些步骤共同承担质量估计和整数性，完整证明见上述第29节；
+不能只凭画出一个径向投影就认为变形定理已经证明。
+\end{proofsketch}
+
+由分解直接得到
+\[
+ \mathbb F(T-P)\leq
+       C\delta\bigl(\mathbf M(T)+\mathbf M(\partial T)\bigr).
+\]
+因此积分流可以按平坦范数逼近为整数网格流。
+但这并不是质量范数逼近：把一条斜线移到坐标网格上，承载集几乎处处不同，
+质量差可以一直不小。网格的作用是控制几何移动后的误差，而不是逐点保留原切向。
+
+\subsection{整数闭合与紧性定理}
+\label{b1:subsec:D10504}
+
+网格上的整数系数虽然离散，网格尺度却在趋零。
+仅说“整数列的极限仍是整数”不足以处理承载集、切空间和质量都在变化的流。
+必须先证明极限重新具有可整流表示，随后才能讨论其中的重数。
+
+\begin{theorem}[Federer--Fleming 整数闭合]\label{b1:thm:app-d-integral-closure}
+设 \(U\subset\mathbb R^n\) 开，\(T_j\) 是 \(U\) 内的局部积分 \(k\) 维流，
+\(T_j\rightharpoonup T\)，并且对每个 \(W\Subset U\)，有
+\[
+ \sup_j\bigl(\mathbf M_W(T_j)+\mathbf M_W(\partial T_j)\bigr)<\infty.
+\]
+则 \(T\) 为局部积分流。
+\end{theorem}
+\begin{proofsketch}
+可按维数归纳。零维时，每个紧集内只有一致有界个带非零整数系数的点，
+取点的位置子列并合并重合极限，即保留整数性。
+高维时先用切片选取良好球面，使截取流的边界质量受控；
+归纳假设使这些低维边界在极限中仍具有整数结构。
+用等周填充与局部比较排除极限质量在正密度缺失部分的弥散，
+再利用流的可整流性定理得到极限的切向表示。
+最后在可整流片上切片或投影，把重数的识别降到整数计数。
+
+这一证明的难点包括从局部填充估计推出正密度，
+以及从正密度和边界控制推出切向可整流表示。
+这些并不是弱-*紧性本身的后果。Simon 的
+《Lectures on Geometric Measure Theory》%
+\cite{Simon1983Lectures}第32.1--32.3条给出完整证明，
+其中需要前面的变形、等周和可整流结构理论。
+本附录引用这一闭合结果，不展开该章的全部结构证明。
+对边界使用低一维结论，并结合
+\(\partial T_j\rightharpoonup\partial T\)，得到边界同样为局部整数重数可整流流。
+\end{proofsketch}
+
+将这条几何闭合定理接到已经完整证明的解析抽取命题上，即得到常用的紧性形式。
+
+\begin{theorem}[Federer--Fleming 紧性]\label{b1:thm:app-d-federer-fleming-compactness}
+设 \(K\subset\mathbb R^n\) 紧，\(T_j\in\mathbf I_k(\mathbb R^n)\)，且
+\[
+ \operatorname{supp}T_j\subset K,\quad
+ \sup_j\bigl(\mathbf M(T_j)+\mathbf M(\partial T_j)\bigr)<\infty.
+\]
+则存在积分流 \(T\)，其支撑包含于 \(K\)，以及子列使
+\[
+ T_{j_\ell}\rightharpoonup T,\quad
+ \mathbb F(T_{j_\ell}-T)\longrightarrow0.
+\]
+质量与边界质量满足相应的下半连续不等式。
+\end{theorem}
+\begin{proof}
+由\cref{b1:prop:app-d-normal-weak-compactness}取得正规流弱极限，
+其支撑仍包含于 \(K\)。
+由\cref{b1:thm:app-d-integral-closure}，极限及其边界具有整数重数可整流表示。
+全域质量与边界质量有限，故极限为积分流。
+再由\cref{b1:prop:app-d-normal-weak-flat}得到平坦范数收敛。
+两条下半连续不等式已在弱抽取过程中证明。
+\end{proof}
+
+首次把这条结果称为%
+\term*[federer-fleming-jin]{Federer--Fleming 紧性定理}[Federer--Fleming compactness theorem]%
+时，应把它的两个控制量同时记住。
+只有面积上界并不能限制越来越碎的边界；只有边界上界也不能限制不断增加的闭曲面。
+固定紧支撑防止整个对象逃向无穷远。
+在一般开集中的局部版本可以用紧集穷尽和对角抽取得到，
+但局部收敛不能保证全空间的平坦范数收敛，不能省去无穷远处的控制。

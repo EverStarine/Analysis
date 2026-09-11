@@ -1,0 +1,197 @@
+% !TeX root = ../../Book1.tex
+\section{线性映射的外作用与 Jacobi 因子}
+\label{b1:sec:B104}
+
+在普通线性代数中，映射 \(A:V\rightarrow W\) 逐个作用于向量。若我们关心的对象是一组向量共同张成的面积元，就应让 \(A\) 同时作用于它们，再比较外积的长度。本节从这一简单操作出发，统一第十七章的面积因子和第十八章的余面积因子，同时说明中间维数的最大伸缩与某个指定切平面的伸缩为何不是同一个数。
+
+\subsection{诱导映射、子式与拉回}
+\label{b1:subsec:B10401}
+
+\begin{definition}\label{b1:def:app-b-exterior-map}
+给定线性映射 \(A:V\rightarrow W\)，由
+\[
+ \bigwedge\nolimits^k A:
+     \bigwedge\nolimits^kV\longrightarrow\bigwedge\nolimits^kW,
+ \quad
+ v_1\wedge\cdots\wedge v_k
+       \longmapsto Av_1\wedge\cdots\wedge Av_k
+\]
+定义它在 \(k\) 次外空间上的诱导映射。零次诱导映射规定为 \(\mathbb R\) 上的恒等映射。
+\end{definition}
+\symidx{\(\bigwedge^kA\)：线性映射在外空间上的诱导映射}
+
+这一定义的良定义性直接来自交错泛性质：右侧对输入多线性，而且任意两个输入相同时为零。它不依赖一个外向量被写成哪些可分解外向量之和。对可复合映射 \(A,B\)，有
+\[
+ \bigwedge\nolimits^k(BA)
+  =\bigl(\bigwedge\nolimits^kB\bigr)
+       \bigl(\bigwedge\nolimits^kA\bigr),\quad
+ \bigwedge\nolimits^kI=I.
+\]
+两式都可以先在生成元上验证，再用线性性推广。若 \(A\) 可逆，诱导映射也可逆，其逆就是 \(\bigwedge^k(A^{-1})\)。
+
+在 \(V,W\) 的基下，把 \(A\) 的矩阵记为 \(M\)。则 \(\bigwedge^kA\) 的行、列分别按大小为 \(k\) 的递增指标组 \(I,J\) 编号，其矩阵元为
+\[
+ \bigl[\bigwedge\nolimits^kA\bigr]_{I,J}=\det(M_{I,J}).
+\]
+这是把 \(Ae_{j_1}\wedge\cdots\wedge Ae_{j_k}\) 按目标外空间基展开的直接结果。复合公式因此包含所有阶数子式的 Cauchy--Binet 关系，而不只是最高阶行列式的乘法公式。
+
+交错型的运算方向相反。若 \(\omega\in\bigwedge^kW^*\)，规定
+\[
+ (A^*\omega)(v_1,\ldots,v_k)
+      =\omega(Av_1,\ldots,Av_k).
+\]
+这个交错型称为 \(\omega\) 沿 \(A\) 的\term[lahui]{拉回}[pullback]。它把目标空间上用来测试面积元的型变为定义域上的型。因此 \((BA)^*=A^*B^*\)，次序与向量的传递相反。
+
+\begin{proposition}\label{b1:prop:app-b-exterior-adjoint}
+上述拉回满足
+\[
+ \langle A^*\omega,\xi\rangle
+    =\langle\omega,(\bigwedge\nolimits^kA)\xi\rangle,
+ \quad
+ A^*(\alpha\wedge\beta)=A^*\alpha\wedge A^*\beta.
+\]
+若 \(V,W\) 具有欧氏内积，用 \(A^\dagger:W\rightarrow V\) 表示欧氏伴随，则
+\[
+ \bigl(\bigwedge\nolimits^kA\bigr)^\dagger
+      =\bigwedge\nolimits^k(A^\dagger).
+\]
+\end{proposition}
+\begin{proof}
+第一个等式在 \(\xi=v_1\wedge\cdots\wedge v_k\) 上就是拉回的定义，故对一般 \(\xi\) 由线性性成立。对一形式的外积，由行列式配对得到
+\[
+ A^*(\lambda_1\wedge\cdots\wedge\lambda_k)
+    =(\lambda_1\circ A)\wedge\cdots\wedge(\lambda_k\circ A).
+\]
+可分解型张成全部型空间，再将 \(\alpha,\beta\) 展开，便证明与外积的相容性。
+
+最后取 \(\xi=v_1\wedge\cdots\wedge v_k\)、
+\(\eta=w_1\wedge\cdots\wedge w_k\)，由诱导内积公式，
+\[
+ \begin{aligned}
+ \langle(\bigwedge\nolimits^kA)\xi,\eta\rangle
+  &=\det\bigl(\langle Av_i,w_j\rangle_W\bigr)\\
+  &=\det\bigl(\langle v_i,A^\dagger w_j\rangle_V\bigr)\\
+  &=\langle\xi,(\bigwedge\nolimits^kA^\dagger)\eta\rangle.
+ \end{aligned}
+\]
+再用双线性将等式推广到任意外向量，按伴随的唯一性即得结论。
+\end{proof}
+
+记号 \(A^*\) 在本节表示对型的拉回；\(A^\dagger\) 表示由两个内积确定的向量映射。通过欧氏 Riesz 对应识别向量与一形式后，两者相互对应，但在没有内积时只有前一种构造。用标准正交坐标表示 \(A^\dagger\)，其矩阵就是熟悉的 \(A^{\mathsf T}\)。
+
+\subsection{奇异值控制的多维伸缩}
+\label{b1:subsec:B10402}
+
+\begin{theorem}[外映射的奇异值]\label{b1:thm:app-b-exterior-singular-values}
+设 \(\dim V=n\)、\(\dim W=m\)，\(A:V\rightarrow W\) 为欧氏空间之间的线性映射，非零奇异值按
+\(\sigma_1\geq\cdots\geq\sigma_r>0\) 排列，其中 \(r=\operatorname{rank}A\)。当 \(1\leq k\leq r\) 时，\(\bigwedge^kA\) 的非零奇异值为
+\[
+ \sigma_{i_1}\cdots\sigma_{i_k},
+ \quad 1\leq i_1<\cdots<i_k\leq r,
+\]
+并且
+\[
+ \|\bigwedge\nolimits^kA\|
+     =\sigma_1\cdots\sigma_k.
+\]
+当 \(k>r\) 时，\(\bigwedge^kA=0\)。
+\end{theorem}
+\begin{proof}
+对自伴非负算子 \(A^\dagger A\) 作有限维正交对角化，取标准正交特征基 \(e_i\)，将正特征值写为 \(\sigma_i^2\)。对 \(i\leq r\)，令 \(f_i=Ae_i/\sigma_i\)，则
+\[
+ \langle f_i,f_j\rangle_W
+ =\frac{\langle e_i,A^\dagger Ae_j\rangle_V}{\sigma_i\sigma_j}
+ =\delta_{ij}.
+\]
+把 \(f_1,\ldots,f_r\) 扩充为 \(W\) 的标准正交基。对 \(i>r\)，由
+\(|Ae_i|^2=\langle e_i,A^\dagger Ae_i\rangle_V=0\) 得 \(Ae_i=0\)。
+
+由外映射的定义，对 \(I=(i_1<\cdots<i_k)\) 有
+\[
+ (\bigwedge\nolimits^kA)e_I
+  =\begin{cases}
+     (\sigma_{i_1}\cdots\sigma_{i_k})f_I,&i_k\leq r,\\
+     0,&i_k>r.
+   \end{cases}
+\]
+源与目标的这些外基都标准正交，所以诱导映射已经被写成对角的长方形矩阵。非零对角元就是非零奇异值。对单位外向量，各坐标平方之和为 \(1\)，像的长度不超过最大的对角元；取 \(e_1\wedge\cdots\wedge e_k\) 恰好达到它，从而得到算子范数。若 \(k>r\)，每个基外向量都被送到零。
+\end{proof}
+
+这里的最大值在一个可分解单位外向量上达到。因此算子范数虽然允许在所有单位外向量上取上确界，结果仍可只用单位平行多面体求得：
+\[
+ \|\bigwedge\nolimits^kA\|
+  =\max_{\substack{v_1,\ldots,v_k\\\text{标准正交}}}
+       |Av_1\wedge\cdots\wedge Av_k|.
+\]
+不过，某个指定 \(k\) 维平面上的伸缩未必达到最大值。例如
+\(A=\operatorname{diag}(3,2,1)\) 在 \(e_1,e_2\) 张成的平面上把面积放大 \(6\) 倍，在 \(e_2,e_3\) 张成的平面上只放大 \(2\) 倍。不能把两种伸缩都写成同一个“二维行列式”。
+
+对指定 \(k\) 维平面 \(P\subseteq V\)，选择它的一组标准正交基 \(q_i\)，记
+\[
+ J_k(A;P)=|Aq_1\wedge\cdots\wedge Aq_k|.
+\]
+若换用另一组标准正交基，外积只乘以 \(\pm1\)，所以这个数与选择无关；它就是 \(A|_P\) 的面积因子。若 \(A|_P\) 单射，令 \(Q=A(P)\)，则由外映射的复合和归一化可分解外向量，有
+\[
+ J_k(BA;P)=J_k(B;Q)J_k(A;P).
+\]
+若 \(A|_P\) 秩不足，两边的面积都为零，但此时 \(Q\) 不再是 \(k\) 维平面，不能继续把 \(J_k(B;Q)\) 当作上面定义的量。一般的不等式
+\[
+ J_k(BA;P)
+ \leq\|\bigwedge\nolimits^kB\|\,J_k(A;P)
+ \leq\|B\|^kJ_k(A;P)
+\]
+则不需要单射假设。
+
+\subsection{面积因子与余面积因子的统一}
+\label{b1:subsec:B10403}
+
+先设 \(\dim V=k\leq\dim W\)，并取 \(V\) 的单位顶次外向量 \(\tau=e_1\wedge\cdots\wedge e_k\)。因为 \(\bigwedge^kV\) 是一维空间，
+\[
+ J_k(A)=|(\bigwedge\nolimits^kA)\tau|
+       =\|\bigwedge\nolimits^kA\|
+       =\sqrt{\det(A^\dagger A)}.
+\]
+在标准正交坐标下，这就是第十七章的列 Gram 公式
+\(\sqrt{\det(A^{\mathsf T}A)}\)。若 \(A\) 单射，诱导外映射把定义域的单位面积元变成像平面的面积元；取长度就给出了无向面积伸缩。
+
+若改为 \(\dim W=k\leq\dim V\)，取 \(W\) 的单位顶次外向量 \(\zeta\)。此时自然的量为
+\[
+ |(\bigwedge\nolimits^kA^\dagger)\zeta|
+   =\sqrt{\det(AA^\dagger)}
+   =\|\bigwedge\nolimits^kA\|.
+\]
+在标准正交坐标下，它是第十八章的行 Gram 公式
+\(\sqrt{\det(AA^{\mathsf T})}\)。这不是把 \(A^\dagger A\) 的全部特征值相乘；当定义域维数更大时，该算子必有零特征值。我们只取与目标维数相应的非零体积伸缩。
+
+当 \(A\) 满射时，记 \(N=(\ker A)^\perp\)。限制
+\(A|_N:N\rightarrow W\) 是 \(k\) 维空间之间的同构，而 \(A\) 在核方向上为零。取核及其正交补的标准正交基后，矩阵写成 \([0\ C]\)，故
+\[
+ \sqrt{\det(AA^\dagger)}=|\det C|=J_k(A;N).
+\]
+因此余面积因子计量法方向上的伸缩，核方向的体积则由水平集内的 Hausdorff 测度计算。第十八章的线性余面积公式正是把这两个方向分开积分。
+
+例如 \(A:\mathbb R^3\rightarrow\mathbb R^2\) 定义为
+\[
+ A(x,y,z)=(x+z,y).
+\]
+它的行 Gram 矩阵为 \(\operatorname{diag}(2,1)\)，所以 \(J_2(A)=\sqrt2\)。但在水平平面 \(\operatorname{span}(e_1,e_2)\) 上，限制映射的面积因子为 \(1\)。达到最大伸缩的平面是核的正交补，它由
+\((e_1+e_3)/\sqrt2,e_2\) 张成。余面积因子不是任意一个横截面上的面积因子；选择非正交截面还会带来相应的几何修正。
+
+对一般坐标，设定义域维数为 \(k\)，定义域基的 Gram 矩阵为 \(G\)，目标基的 Gram 矩阵为 \(H\)，而 \(A\) 的坐标矩阵为 \(M\)。定义域基外积的长度为 \(\sqrt{\det G}\)，其像的长度为 \(\sqrt{\det(M^{\mathsf T}HM)}\)，所以
+\begin{equation}\label{b1:eq:app-b-coordinate-jacobian}
+ J_k(A)
+   =\sqrt{\frac{\det(M^{\mathsf T}HM)}{\det G}}.
+\end{equation}
+这就是列 Gram 公式的坐标无关内容。在任意基下只写 \(\sqrt{\det(M^{\mathsf T}M)}\)，会把坐标数组当作标准正交坐标；遗漏的并非高阶误差，而是定义域与目标域的实际度量。
+
+最后，若 \(f:U\subseteq\mathbb R^k\rightarrow\mathbb R^n\) 在 \(x\) 可微，其微分 \(Df(x)\) 是线性映射，故
+\[
+ J_kf(x)
+ =|\partial_1f(x)\wedge\cdots\wedge\partial_kf(x)|.
+\]
+若再作可微参数变换 \(x=\phi(s)\)，普通链式法则与外映射的复合给出
+\[
+ J_k(f\circ\phi)(s)
+   =J_kf\bigl(\phi(s)\bigr)|\det D\phi(s)|.
+\]
+此处 \(\phi\) 在两端都是 \(k\) 维参数空间，故顶次外作用恰为乘以一个行列式，秩不足时两边仍同时为零。这个公式说明参数改变如何作用于面积密度；若还想保留 \(\det D\phi\) 的符号，就必须给参数域与曲面指定定向。

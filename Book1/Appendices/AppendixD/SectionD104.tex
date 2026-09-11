@@ -1,0 +1,230 @@
+% !TeX root = ../../Book1.tex
+\section{切片与边界的局部化}
+\label{b1:sec:D104}
+
+把一张有边界的曲面沿一个水平面切开，会出现两种边界：
+原边界留在下方的部分，以及切割新产生的截面。
+后者并不是把原流直接限制在水平集上。
+一张二维曲面的面积测度通常不给一条水平截线任何质量，
+但截线本身可以有正长度。切片必须降低维数，不能只乘一个示性函数。
+
+\subsection{由边界差定义切片}
+\label{b1:subsec:D10401}
+
+本节先设 \(T\) 是 \(\mathbb R^n\) 上的紧支集正规 \(k\) 维流，\(k\geq1\)，
+且 \(f:\mathbb R^n\rightarrow\mathbb R\) 为 Lipschitz 函数。
+有限质量表示已经允许对 Borel 集作限制，所以
+\[
+ S_t=\partial(T\llcorner\{f<t\})
+             -(\partial T)\llcorner\{f<t\}
+\]
+对每个实数 \(t\) 都定义了一个流。
+此时尚不知道其质量是否有限。
+对几乎所有水平值成立的有限质量结论，是切片理论首先需要证明的内容。
+
+\begin{theorem}\label{b1:thm:app-d-normal-slicing}
+在上述条件下，\(S_t\) 对几乎每个 \(t\) 是正规 \(k-1\) 维流，且
+\[
+ \int_{\mathbb R}\mathbf M(S_t)\,dt
+       \leq\operatorname{Lip}(f)\,\mathbf M(T).
+\]
+其支撑包含于 \(\operatorname{supp}T\cap\{f=t\}\)，并满足
+\[
+ \partial S_t=-\langle\partial T,f,t\rangle
+ \quad\text{对几乎每个 }t.
+\]
+右端为对 \(\partial T\) 使用同一构造的切片；零维流的切片约定为零。
+\end{theorem}
+
+在这些良好水平上，将 \(S_t\) 记为 \(\langle T,f,t\rangle\)，称为 \(T\)
+由 \(f\) 在水平 \(t\) 处确定的%
+\term[liu-qiepian]{切片}[slice]。
+\symidx{\(\langle T,f,t\rangle\)：流的标量切片}
+同一术语用于多分量映射时，还须逐个固定坐标顺序；本节只需标量版本。
+
+\begin{proof}
+先假设 \(f\) 光滑且 \(|Df|\leq L\)。
+取光滑递增函数 \(\chi\)，使 \(0\leq\chi\leq1\)，
+在 \((-\infty,0]\) 上为零、在 \([1,\infty)\) 上为一。
+令
+\[
+ g_{\varepsilon,t}(x)
+       =\chi\!\left(\frac{t-f(x)}{\varepsilon}\right).
+\]
+乘以非紧支集函数时，在 \(T\) 的固定紧支撑附近使用截断。
+由外微分的乘积法则，对测试 \(k-1\) 次形式 \(\eta\)，有
+\[
+ \begin{split}
+ S_{\varepsilon,t}(\eta)
+ &:=\bigl[\partial(T\llcorner g_{\varepsilon,t})
+               -(\partial T)\llcorner g_{\varepsilon,t}\bigr](\eta)\\
+ &=-T(dg_{\varepsilon,t}\wedge\eta)\\
+ &=T\!\left(\frac1\varepsilon
+       \chi'\!\left(\frac{t-f}{\varepsilon}\right)df\wedge\eta\right).
+ \end{split}
+\]
+对一次形式 \(a\) 和交错形式 \(\eta\)，有
+\(\|a\wedge\eta\|_{\mathrm{co}}\leq |a|\cdot\|\eta\|_{\mathrm{co}}\)。
+验证时可把任一单位简单 \(k\) 向量的第一个正交基方向选成
+\(a\) 在其张成空间上的投影方向；其余方向被 \(a\) 消去，
+只剩一个系数不超过 \(|a|\) 的配对。
+于是
+\[
+ \mathbf M(S_{\varepsilon,t})
+ \leq L\int\frac1\varepsilon
+           \chi'\!\left(\frac{t-f(x)}{\varepsilon}\right)\,d\|T\|(x).
+\]
+对 \(t\) 积分，Tonelli 定理及 \(\int\chi'=1\) 给出
+\(\int\mathbf M(S_{\varepsilon,t})\,dt\leq L\mathbf M(T)\)。
+
+测度 \(f_\#(\|T\|+\|\partial T\|)\) 有限，故它的原子至多可数。
+排除对应水平后，\(g_{\varepsilon,t}\) 对这两个测度几乎处处趋于
+\(\mathbf1_{\{f<t\}}\)。
+控制收敛说明两个被限制的流分别按质量收敛，
+从而 \(S_{\varepsilon,t}\rightharpoonup S_t\)。
+质量是对测试形式所得连续函数的上确界，所以对弱收敛下半连续。
+因此 Fatou 引理给出
+\[
+ \int\mathbf M(S_t)\,dt\leq L\mathbf M(T).
+\]
+这里的被积函数可测：在固定支撑邻域内取可数个光滑形式，
+使它们在函数及一阶导数的一致范数下稠密，
+便可把质量写成可数上确界。对每个这样的形式，限制积分关于 \(t\) 可测。
+
+对一般 Lipschitz 函数，取全空间磨光 \(f_j\)，使 \(f_j\rightarrow f\) 一致且
+\(\operatorname{Lip}(f_j)\leq\operatorname{Lip}(f)\)。
+在上面排除的水平以外，
+\(\mathbf1_{\{f_j<t\}}\rightarrow\mathbf1_{\{f<t\}}\)
+对 \(\|T\|+\|\partial T\|\) 几乎处处成立。
+相应的边界差因而弱收敛于 \(S_t\)。
+再用质量下半连续性与 Fatou 引理，得到同一个积分上界。
+这个论证只拉回了函数的水平集，没有把不光滑形式当作一般分布的测试形式。
+
+若一个测试形式的支撑位于 \(\{f<t\}\)，两个限制在该支撑附近都等于原流，
+故边界差为零；位于 \(\{f>t\}\) 时两者都为零。
+对 \(\{f\neq t\}\) 内的测试形式使用有限光滑划分，得到所述支撑包含。
+最后对定义式再取边界，利用 \(\partial^2T=0\)，有
+\[
+ \partial S_t=-\partial\bigl((\partial T)\llcorner\{f<t\}\bigr)
+             =-\langle\partial T,f,t\rangle.
+\]
+若 \(k\geq2\)，对正规流 \(\partial T\) 使用已证质量估计，其切片几乎处处有限质量；
+若 \(k=1\)，零维流的边界为零。两种情形都得到 \(S_t\) 的正规性。
+\end{proof}
+
+定理只保证几乎处处良好，不能要求每个预先指定的水平都具有同样性质。
+不过，若需在一个小区间里选择合适水平，积分上界总能提供它。
+例如对长度为 \(\delta\) 的区间 \(J\)，可以选取 \(t\in J\)，使
+\[
+ \mathbf M(\langle T,f,t\rangle)
+       \leq \frac{\operatorname{Lip}(f)}{\delta}\,\mathbf M(T).
+\]
+这一选择常用于先截取紧支撑部分，再控制新产生的边界。
+
+\subsection{可整流流的几何截面}
+\label{b1:subsec:D10402}
+
+设 \(T=[E,\theta,\tau]\)，且 \(f\) 光滑。
+在 \(E\) 的近似切空间上，把 \(Df\) 的切向部分按第\ref{b1:ch:19}章记为 \(d^Ef\)，
+其对应切向梯度记为 \(\nabla_Ef\)。
+当该梯度非零时，截面切空间是
+\[
+ \operatorname{Tan}^k(E,x)\cap\ker Df_x.
+\]
+若 \(v=\nabla_Ef/|\nabla_Ef|\)，则截面取向 \(\tau_t\) 由
+\(v\wedge\tau_t=\tau\) 确定。这是“朝 \(f\) 增大方向在前”的约定。
+
+\begin{theorem}\label{b1:thm:app-d-rectifiable-slicing}
+若 \(T=[E,\theta,\tau]\) 为紧支集积分 \(k\) 维流，且 \(f\) 光滑、梯度有界，
+则几乎每个 \(\langle T,f,t\rangle\) 是积分流。
+它由
+\[
+ E_t=E\cap\{f=t\}\cap\{|\nabla_Ef|>0\}
+\]
+承载，具有重数 \(\theta|_{E_t}\) 和上述取向 \(\tau_t\)。
+并且
+\[
+ \int_{\mathbb R}\mathbf M(\langle T,f,t\rangle)\,dt
+        =\int_E\theta\,|\nabla_Ef|\,d\mathcal H^k.
+\]
+\end{theorem}
+\begin{proof}
+可整流集上的余面积公式给出：几乎每个 \(E_t\) 可数 \(k-1\) 维可整流，
+并具有上述切空间。
+这可在可数光滑片上应用隐函数定理，再删去切向微分退化部分得到；
+退化部分的截面面积积分由余面积公式等于零。
+把这些片合并，所得截面流
+\[
+ R_t(\eta)=\int_{E_t}\theta\langle\eta,\tau_t\rangle\,d\mathcal H^{k-1}
+\]
+在几乎每个水平具有有限质量，且重数仍为整数。
+
+前一证明中的 \(S_{\varepsilon,t}\) 可写成
+\[
+ S_{\varepsilon,t}(\eta)
+    =\int_{\mathbb R}\frac1\varepsilon
+          \chi'\!\left(\frac{t-s}{\varepsilon}\right)R_s(\eta)\,ds.
+\]
+这里使用配对恒等式
+\(\langle df\wedge\eta,\tau\rangle
+ =|\nabla_Ef|\langle\eta,\tau_t\rangle\)，
+以及余面积公式。
+对每个固定测试形式，右边是可积函数 \(s\mapsto R_s(\eta)\) 的单侧近似恒等算子。
+Lebesgue 微分定理说明它几乎处处趋于 \(R_t(\eta)\)。
+取一个可数、在一阶一致范数下稠密的测试族，
+把这些例外集与上一证明的例外集合并，
+便在同一满测水平集上得到 \(S_t=R_t\)。
+从稠密测试族推广时，\(S_t\) 和 \(R_t\) 已有有限质量，不需要再为每个形式选择子列。
+
+当 \(k\geq2\) 时，对 \(\partial T\) 使用同一论证，并利用切片边界公式，
+可知 \(\partial S_t\) 也具有整数重数可整流表示。
+当 \(k=1\) 时，\(S_t\) 为零维整数重数流，其边界为零。
+所以 \(S_t\) 为积分流。
+最后，简单单位截面取向的质量范数为一，
+对 \(\theta\) 应用余面积公式，即得等式。
+\end{proof}
+
+Simon 的《Lectures on Geometric Measure Theory》%
+\cite{Simon1983Lectures}第28.1--28.5条给出 Lipschitz 函数的同一几何描述。
+其推广还要在可整流集的光滑片上处理切向微分及函数逼近；
+不能把一般流的形式拉回直接代入来替代这一步。
+上面的完整几何证明采用光滑函数；正规流的边界差构造与积分估计已经覆盖 Lipschitz 函数。
+后文按网格坐标切割只需光滑的线性坐标函数。
+
+\subsection{符号、重数与切割产生的边界}
+\label{b1:subsec:D10403}
+
+取带标准定向的矩形
+\(Q=(0,a)\times(0,b)\subset\mathbb R^2\)，令 \(T=[Q]\)、\(f(x,y)=x\)。
+当 \(0<t<a\) 时，切片是从 \((t,0)\) 指向 \((t,b)\) 的线段。
+其取向为 \(e_2\)，因为 \(e_1\wedge e_2\) 是矩形的取向。
+切片的两个端点满足
+\[
+ \partial\langle T,f,t\rangle
+    =\delta_{(t,b)}-\delta_{(t,0)}.
+\]
+原矩形上边向左、下边向右，因此
+\[
+ \langle\partial T,f,t\rangle
+    =\delta_{(t,0)}-\delta_{(t,b)}.
+\]
+两式直接展示了边界交换式中的负号。若把原流乘以整数 \(q\)，截面也乘以 \(q\)，
+维数降低不会消除重数。
+
+另一方面，\(\|T\|(\{x=t\})=0\)，故作为二维流的限制
+\(T\llcorner\{x=t\}\) 等于零。
+这是切片不等于水平集限制的具体例子。
+对高度函数 \(f(x,y)=x+y\)，截面长度随 \(t\) 改变，
+但其总量满足
+\[
+ \int_{\mathbb R}\mathbf M(\langle T,f,t\rangle)\,dt
+       =\sqrt2\,ab,
+\]
+因为 \(|\nabla f|=\sqrt2\)。额外的 \(\sqrt2\) 来自水平参数的速度，
+不是取向或重数造成的面积修正。
+
+若 \(T\) 原本没有边界，切割后的新边界就是
+\(\partial(T\llcorner\{f<t\})=\langle T,f,t\rangle\)。
+若原流有边界，两部分必须同时保留。
+这一恒等式把可控切割接到下一节的网格变形上：
+要把曲面移到低维骨架，既要估计移动扫出的体积，也要估计边界在切割和移动中产生的误差。

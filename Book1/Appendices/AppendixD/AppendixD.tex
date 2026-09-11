@@ -2,4 +2,288 @@
 \chapter{高阶几何测度论与流}
 \label{b1:app:D}
 
-% TODO: 按计划纲要展开本附录。
+\begin{chapterabstract}
+可整流集合告诉我们，一个粗糙集合在几乎每点仍可以由切平面描述；
+BV 理论进一步把集合的边界写成向量测度。
+本附录加入取向和整数重数，将这些对象放进一个可以取边界、推前和弱极限的线性空间。
+目标不是罗列流理论的全部定理，而是从微分形式的积分出发，
+理解为什么质量与边界质量共同受控时，可以取得保留整数几何结构的极限，
+并用它建立几何变分问题的存在性。
+\end{chapterabstract}
+
+先修材料包括第\ref{b1:ch:19}章的可整流集及面积、余面积公式，
+第\ref{b1:ch:20}章的分布，以及第\ref{b1:ch:27}章的有限周长集合。
+附录\ref{b1:app:B}提供外代数、Jacobi 因子与取向约定。
+切测度部分只需 Radon 测度的微分与淡收敛；
+从流的定义开始，则要把测试函数换成交错微分形式。
+
+\begin{learninggoals}
+\begin{enumerate}
+ \item\label{b1:item:app-d-goal-tangents}
+ 区分测度放大的尺度系数与映射推前，理解可整流测度的平面切测度。
+ \item\label{b1:item:app-d-goal-objects}
+ 能从测试形式定义流、边界和质量，分清正规、可整流与整数重数三个条件。
+ \item\label{b1:item:app-d-goal-operations}
+ 掌握推前、同伦、切片的边界公式，并能用简单曲面核对取向符号。
+ \item\label{b1:item:app-d-goal-compactness}
+ 分清正规流的解析抽取与整数闭合的几何内容，
+ 用平坦范数、变形和积分流紧性处理填充及最小化问题。
+\end{enumerate}
+\end{learninggoals}
+
+主要伴读是 Simon 的《Lectures on Geometric Measure Theory》%
+\cite{Simon1983Lectures}第26--32节。
+其中微分形式上的泛函、切片、网格变形和整数闭合构成连贯路线。
+本附录完整证明基本构造、正规流切片估计、解析紧性以及变分应用；
+变形定理和整数闭合定理的完整结构证明较长，给出明确出处及证明概要。
+后两项是采用的深层输入，不能把对它们的引用误当成本附录已独立重建整套流理论。
+
+\input{Appendices/AppendixD/SectionD101}
+\input{Appendices/AppendixD/SectionD102}
+\input{Appendices/AppendixD/SectionD103}
+\input{Appendices/AppendixD/SectionD104}
+\input{Appendices/AppendixD/SectionD105}
+\input{Appendices/AppendixD/SectionD106}
+
+\begin{chaptersummary}
+切测度描述局部放大后的质量分布，流则进一步保存取向，并用测试形式上的外微分定义边界。
+余质量及其对偶质量把有符号的积分恢复为无符号的大小；对可整流流，这个大小就是重数加权面积。
+有限周长集合的 Gauss--Green 公式因此成为流的边界表示。
+
+同伦与切片分别记录移动和切割产生的误差。
+平坦范数允许用高一维填充计量这些误差，使靠近的曲面可以趋近，
+而不要求它们的承载集逐点相同。
+质量和边界质量提供正规流的解析紧性；
+变形及整数闭合定理补充保留整数几何结构所需的部分。
+由此得到的极小流是变分问题的解，但其光滑性、奇点和唯一性仍是进一步研究的问题。
+\end{chaptersummary}
+
+\BookExercises
+
+% 自拟。目标：从混合测度中辨认原子主尺度；区别一般切测度系数与固定幂归一化。
+\begin{exercise}\label{b1:ex:app-d-atomic-tangents}
+设 \(\mu=a\delta_0+\nu\)，其中 \(a>0\)，\(\nu\) 是
+\(\mathbb R^n\) 上的正 Radon 测度且 \(\nu(\{0\})=0\)。
+证明 \(\operatorname{Tan}(\mu,0)=\{\,b\delta_0:b>0\,\}\)。
+若 \(\nu=\mathcal H^k\llcorner P\)，其中 \(k\geq1\)、\(P\) 为过原点的 \(k\) 维平面，
+说明为什么 \(r^{-k}\) 归一化不能产生非零 Radon 淡极限。
+\end{exercise}
+\begin{solution}
+对支撑于 \(B(0,R)\) 的连续测试函数 \(\varphi\)，
+\[
+ \left|\int\varphi(y/r)\,d\nu(y)\right|
+       \leq\|\varphi\|_\infty\,\nu(B(0,Rr))\longrightarrow0.
+\]
+最后一步来自 \(\nu\) 在某固定球上有限及向下连续性。
+所以 \((\eta_{0,r})_\#\mu\rightarrow a\delta_0\)，乘以任意正常数可得到所需射线。
+
+反之，设 \(c_j(\eta_{0,r_j})_\#\mu\rightarrow\lambda\neq0\)。
+取非负紧支集函数 \(\varphi\)，使 \(\varphi(0)=1\)。
+被测试的积分至少为 \(ac_j\)，故 \(c_j\) 必有界。
+若有趋零子列，由前面的局部质量计算，沿该子列所有紧支集测试积分都趋零，
+与 \(\lambda\neq0\) 矛盾。
+再抽子列令 \(c_j\rightarrow c>0\)，上述 \(\nu\) 部分的估计给出
+\(\lambda=ca\delta_0\)。
+这就排除了任何非点质量切测度。
+
+在后一情形，固定 \(\varphi(0)=1\) 的非负测试函数满足
+\[
+ r^{-k}\int\varphi(y/r)\,d\mu(y)\geq ar^{-k}\longrightarrow\infty.
+\]
+所以它不可能淡收敛于局部有限测度；同一点上原子项比 \(k\) 维面积项更强。
+\end{solution}
+
+% 自拟。目标：构造非测度型零维流，并发现有限平坦范数不蕴含有限质量。
+\begin{exercise}\label{b1:ex:app-d-dirac-derivative}
+在 \(\mathbb R\) 上令 \(T(\varphi)=\varphi'(0)\)。
+证明 \(T\) 是零维流，\(\mathbf M(T)=\infty\)，但 \(\mathbb F(T)\leq1\)。
+这是否与零维积分流是有限整数点质量和的描述矛盾？
+\end{exercise}
+\begin{solution}
+在任何共同紧支集上，\(|T(\varphi)|\leq\|\varphi'\|_\infty\)，
+所以 \(T\) 是连续线性泛函。
+选取 \(\psi\in C_c^\infty(\mathbb R)\)，满足
+\(\|\psi\|_\infty\leq1\)、\(\psi'(0)\neq0\)。
+对 \(\varphi_j(x)=\psi(jx)\)，有 \(\|\varphi_j\|_\infty\leq1\)，
+而 \(|T(\varphi_j)|=j|\psi'(0)|\rightarrow\infty\)，故质量无限。
+
+定义一维流 \(B(g\,dx)=g(0)\)。其质量为 \(1\)，并且
+\(\partial B(\varphi)=B(d\varphi)=\varphi'(0)=T(\varphi)\)。
+取平坦分解 \(T=0+\partial B\)，便有 \(\mathbb F(T)\leq1\)。
+这个 \(T\) 不是积分流，甚至不是有限质量零维流；
+而 \(B\) 也不正规，因为其边界质量无限。
+“零维流”“有限质量零维流”“零维积分流”是逐步缩小的类别，没有矛盾。
+\end{solution}
+
+% 自拟。目标：将分布的零导数性质用于最高维流，得到固定边界的唯一性特例。
+\begin{exercise}\label{b1:ex:app-d-top-dimensional-uniqueness}
+证明：若 \(T\) 是 \(\mathbb R^n\) 上有限质量的 \(n\) 维流且 \(\partial T=0\)，
+则 \(T=0\)。
+推出具有相同边界的两个有限质量 \(n\) 维流必相同。
+这里为什么不能把 \(n\) 维改成任意 \(k<n\)？
+\end{exercise}
+\begin{solution}
+最高次形式只有一个系数，因此 \(T\) 对应一个有限符号测度 \(\mu\)：
+\[
+ T(\varphi\,dx^1\wedge\cdots\wedge dx^n)=\int\varphi\,d\mu.
+\]
+对省去 \(dx^i\) 的测试 \(n-1\) 次形式使用 \(\partial T=0\)，
+得到 \(\int\partial_i\varphi\,d\mu=0\)，即 \(\partial_i\mu=0\) 作为分布成立。
+用光滑核卷积后，函数 \(u_\varepsilon=\rho_\varepsilon*\mu\)
+的全部偏导都为零，所以它在连通的 \(\mathbb R^n\) 上为常数。
+又有
+\(\|u_\varepsilon\|_{L^1}\leq|\mu|(\mathbb R^n)<\infty\)，
+全空间上的可积常数只能为零。
+令 \(\varepsilon\downarrow0\)，在测试函数上恢复 \(\mu=0\)，故 \(T=0\)。
+
+对两个具有相同边界的流取差即可得到唯一性。
+低维时，一条有向圆周给出非零、有限质量、零边界的一维流；
+更一般的球面边界也提供反例。
+其质量集中在低维几何对象上，不对应全空间常数密度。
+\end{solution}
+
+% 自拟。目标：构造质量下半连续而不连续的几何例子，使用高一维薄层填充。
+\begin{exercise}\label{b1:ex:app-d-thin-rectangles}
+令 \(Q_j=(0,1)\times(0,j^{-1})\subset\mathbb R^2\)，
+\(T_j=\partial[Q_j]\)。
+求 \(\mathbf M(T_j)\) 与 \(\partial T_j\)，证明 \(T_j\) 按平坦范数趋于零，
+并解释该例与质量下半连续性的关系。
+\end{exercise}
+\begin{solution}
+矩形边界各边内部互不重合，单位重数给出
+\[
+ \mathbf M(T_j)=2+2j^{-1},\quad \partial T_j=0.
+\]
+取填充 \(B=[Q_j]\)，其质量为 \(j^{-1}\)，所以
+\[
+ \mathbb F(T_j)\leq j^{-1}\longrightarrow0.
+\]
+因此 \(T_j\rightharpoonup0\)，但其质量趋于 \(2\)，并不趋于极限流的质量 \(0\)。
+下半连续性要求的是
+\(\mathbf M(0)\leq\liminf_j\mathbf M(T_j)\)，在这里是严格不等式。
+几何上，两条较长的边反向靠拢并相消；有向极限允许抵消，不保存无向周长总和。
+\end{solution}
+
+% 自拟。目标：说明积分流紧性中的边界质量界不能删除；极限出现半整数重数。
+\begin{exercise}\label{b1:ex:app-d-unbounded-boundary}
+把 \([0,1]\) 嵌入 \(\mathbb R^2\) 的横轴，令
+\[
+ T_j=\sum_{i=0}^{j-1}
+       \left[\left(\frac{i}{j},0\right),
+             \left(\frac{i+1/2}{j},0\right)\right].
+\]
+证明 \(T_j\) 的质量和支撑一致受控，
+但它弱收敛于重数为 \(1/2\) 的整条单位线段流。
+计算边界质量，并说明哪个紧性假设失败。
+\end{exercise}
+\begin{solution}
+各短线段内部互不相交且取向相同，故
+\[
+ \mathbf M(T_j)=\frac12,\quad
+ \operatorname{supp}T_j\subset[0,1]\times\{0\}.
+\]
+每条线段有一个正端点和一个负端点，所有 \(2j\) 个端点互不重合，
+所以 \(\mathbf M(\partial T_j)=2j\)。
+
+对测试一形式 \(\omega=a(x,y)\,dx+b(x,y)\,dy\)，只有第一项贡献积分。
+在每个区间 \([i/j,(i+1)/j]\) 内，以 \(a(i/j,0)\) 代替 \(a(x,0)\)，
+两种积分的误差都由该系数在尺度 \(1/j\) 上的连续模控制。
+所有区间相加后得到
+\[
+ T_j(\omega)-\frac12\int_0^1a(x,0)\,dx\longrightarrow0.
+\]
+故弱极限为 \(\frac12[(0,0),(1,0)]\)。
+其正长度部分的重数为 \(1/2\)，不是整数，因而不是积分流。
+失败的是边界质量的一致有界性；仅凭原流面积界不能在极限中保留整数层数。
+\end{solution}
+
+% 自拟。目标：区分局部弱收敛与全空间平坦收敛，检验无穷远紧性。
+\begin{exercise}\label{b1:ex:app-d-escape-to-infinity}
+设 \(T\neq0\) 是 \(\mathbb R^2\) 上沿单位圆周的积分流，
+\(T_j=(\tau_{(3j,0)})_\#T\)。
+证明 \(T_j\rightharpoonup0\)，但没有平坦范数收敛子列。
+这些流的质量与边界质量是否仍一致有界？
+\end{exercise}
+\begin{solution}
+任意固定测试形式具有紧支集，充分大的 \(j\) 使它与平移圆周不相交，
+因此 \(T_j\) 在该测试形式上最终为零。
+另一方面，
+\(\mathbf M(T_j)=2\pi\)、\(\partial T_j=0\)，两个质量仍一致有界。
+
+欧氏平移保持质量和边界，并将每个平坦分解推前为同样代价的分解。
+对逆平移再作一次比较，得到
+\(\mathbb F(T_j)=\mathbb F(T)>0\)。
+若有子列按平坦范数收敛，其弱极限必须是零；
+但按范数收敛到零要求上述范数趋零，矛盾。
+因此共同紧支撑不能仅用各个支撑分别紧来代替。
+\end{solution}
+
+% 自拟。目标：计算零维平坦距离，区分移动代价与直接删除代价。
+\begin{exercise}\label{b1:ex:app-d-flat-two-points}
+对不同的 \(a,b\in\mathbb R^n\)，证明
+\[
+ \mathbb F(\delta_b-\delta_a)=\min\{\,|b-a|,2\,\}.
+\]
+由此说明平坦范数在空间伸缩下为什么不总按单一维数幂次变化。
+\end{exercise}
+\begin{solution}
+把整个差作为质量项，可得上界 \(2\)；
+把它写成有向线段的边界，可得上界 \(|b-a|\)。
+
+记 \(d=|b-a|\)、\(e=(b-a)/d\)，考虑一维截断函数
+\[
+ q(s)=\max\{-1,\min\{1,s-d/2\}\}.
+\]
+函数 \(q(e\cdot(x-a))\) 的绝对值不超过一、Lipschitz 常数不超过一，
+且在 \(b,a\) 两点之差恰为 \(\min\{d,2\}\)。
+为得到紧支集测试函数，先乘一个在包含这两点的大球内为一、
+梯度上界趋零的光滑截断；其 Lipschitz 常数至多为 \(1+\varepsilon\)。
+再磨光并除以 \(1+\varepsilon\)。
+这样得到 \(\varphi_\varepsilon\in C_c^\infty\)，
+\[
+ \|\varphi_\varepsilon\|_\infty\leq1,\quad
+ \|\nabla\varphi_\varepsilon\|_\infty\leq1,
+\]
+且两点之差趋于 \(\min\{d,2\}\)。
+平坦范数的测试估计因此给出反向下界。
+
+把两点距离乘以 \(\lambda\)，所得距离为 \(\min\{\lambda d,2\}\)。
+短距离时选择线段填充，长距离时直接支付两个点的质量更便宜；
+分解中两个相邻维数的代价竞争，使它不具有单一的空间缩放幂律。
+\end{solution}
+
+% 自拟。目标：利用整数零维误差的离散性求解一个边界惩罚问题，联系距离下界。
+\begin{exercise}\label{b1:ex:app-d-penalty-threshold}
+设 \(a\neq b\)，紧集 \(K\subset\mathbb R^n\) 包含线段 \([a,b]\)，\(\lambda>0\)。
+在支撑于 \(K\) 的积分一维流上，证明
+\[
+ \min_T\left\{\mathbf M(T)
+       +\lambda\mathbf M\bigl(\partial T-(\delta_b-\delta_a)\bigr)\right\}
+       =\min\{\,|b-a|,2\lambda\,\}.
+\]
+说明当 \(2\lambda<|b-a|\) 时零流为何是唯一极小者，
+而当 \(2\lambda>|b-a|\) 时所有极小者都精确满足指定边界。
+\end{exercise}
+\begin{solution}
+设误差流 \(R=\partial T-(\delta_b-\delta_a)\)。
+它是有限整数系数零维流，且全部系数之和为零：
+对 \(\partial T\) 用在 \(K\) 邻域恒为一的测试函数计算即可。
+若 \(R\neq0\)，正系数和与负系数和的绝对值至少各为一，
+因此 \(\mathbf M(R)\geq2\)，能量至少为 \(2\lambda+\mathbf M(T)\)。
+
+若 \(R=0\)，令 \(e=(b-a)/|b-a|\)。
+常值一形式 \(\omega=e\cdot dx=d(e\cdot x)\) 的余质量为一。
+在 \(T\) 的紧支撑附近取截断，边界公式给出
+\[
+ T(\omega)=(\delta_b-\delta_a)(e\cdot x)=|b-a|.
+\]
+所以 \(\mathbf M(T)\geq|b-a|\)。
+这两种情形共同给出所需下界；零流的能量为 \(2\lambda\)，
+有向线段流的能量为 \(|b-a|\)，下界确能达到。
+
+若 \(2\lambda<|b-a|\)，精确边界的候选不可能极小，
+而非零误差候选要达到 \(2\lambda\)，必须满足 \(\mathbf M(T)=0\)，即 \(T=0\)。
+若 \(2\lambda>|b-a|\)，任何非零误差都已经支付过高代价，极小者只能满足 \(R=0\)。
+在相等的临界值，零流与线段流都为极小者；
+有限惩罚参数并不无条件等同于精确边界约束。
+\end{solution}

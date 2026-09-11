@@ -1,0 +1,262 @@
+% !TeX root = ../../Book1.tex
+\section{微分形式、流与质量}
+\label{b1:sec:D102}
+
+对一条有向曲线积分时，反向参数化改变积分的符号，却不改变曲线的长度。
+高维曲面也有同样的两种信息：积分带符号，面积不带符号。
+流首先保存前者，再通过对所有单位测试形式取上确界恢复后者。
+因此它与正测度的差别不只在于允许负数，还在于测试对象携带维数和方向。
+
+\subsection{测试形式与外微分}
+\label{b1:subsec:D10201}
+
+本节在开集 \(U\subset\mathbb R^n\) 中工作。
+附录\ref{b1:app:B}已构造外空间及其对偶配对。
+记 \(I=(i_1,\ldots,i_k)\) 为严格递增多重指标，并置
+\(dx^I=dx^{i_1}\wedge\cdots\wedge dx^{i_k}\)。
+
+\begin{definition}\label{b1:def:app-d-differential-form}
+若
+\[
+ \omega(x)=\sum_{|I|=k}\omega_I(x)\,dx^I,
+ \quad \omega_I\in C^\infty(U),
+\]
+则称 \(\omega\) 为 \(U\) 上的光滑 \(k\) 次%
+\term[weifen-xingshi]{微分形式}[differential form]。
+所有具有紧支集的此类形式组成 \(\mathcal D^k(U)\)。
+其收敛约定为：支集包含在同一个紧集内，且每个系数的每阶导数都一致收敛。
+\end{definition}
+
+零次形式就是函数，零次外空间约定为 \(\mathbb R\)。
+外积的归一化沿用\cref{b1:prop:app-b-form-pairing}，不额外乘 \(1/k!\)。
+定义%
+\term[wai-weifen]{外微分}[exterior derivative]为
+\[
+ d\omega=\sum_{|I|=k}\sum_{i=1}^n
+       \partial_i\omega_I\,dx^i\wedge dx^I.
+\]
+对最高次形式规定 \(d\omega=0\)。
+
+\begin{proposition}\label{b1:prop:app-d-exterior-derivative}
+外微分是测试形式空间之间的连续线性映射，并满足
+\[
+ d^2\omega=0,\quad
+ d(\alpha\wedge\beta)
+   =d\alpha\wedge\beta+(-1)^p\alpha\wedge d\beta
+\]
+其中 \(\alpha\) 为 \(p\) 次形式。
+\end{proposition}
+\begin{proof}
+连续性来自系数的一阶微分：输出的每个固定阶导数由输入的下一阶导数控制，
+支集不扩大。
+计算 \(d^2\omega\) 时，\(i=j\) 的项含 \(dx^i\wedge dx^i=0\)；
+当 \(i\neq j\) 时，交换 \(i,j\) 不改变二阶偏导，却使外积改变符号，所以两项抵消。
+对第二式只需考察
+\(\alpha=a\,dx^I\)、\(\beta=b\,dx^J\)。
+系数乘积求导给出 \(b\,da+a\,db\)，
+再把第二项中的 \(db\) 移过 \(p\) 个一次形式，得到因子 \((-1)^p\)。
+对所有 \(I,J\) 求和即得结论。
+\end{proof}
+
+\subsection{由积分到连续线性泛函}
+\label{b1:subsec:D10202}
+
+\begin{definition}\label{b1:def:app-d-current}
+从 \(\mathcal D^k(U)\) 到 \(\mathbb R\) 的连续线性泛函称为 \(U\) 上的 \(k\) 维%
+\term[liu]{流}[current]，全体记为 \(\mathcal D_k(U)\)。
+\symidx{\(\mathcal D_k(U)\)：\(k\) 维流的空间}
+若 \(T_j(\omega)\to T(\omega)\) 对每个 \(\omega\in\mathcal D^k(U)\) 成立，
+则称 \(T_j\) 弱收敛于 \(T\)，记为 \(T_j\rightharpoonup T\)。
+\end{definition}
+
+连续性的含义与分布相同：对每个紧集 \(K\subset U\)，
+存在 \(C_K<\infty\) 和非负整数 \(m_K\)，使支集位于 \(K\) 内的形式满足
+\[
+ |T(\omega)|\leq
+ C_K\max_{\substack{|I|=k\\|\alpha|\leq m_K}}
+       \|\partial^\alpha\omega_I\|_\infty.
+\]
+证明可逐系数归结到测试函数空间的连续性。
+特别地，零维流就是第\ref{b1:ch:20}章的分布，而不只是点质量的线性组合。
+这里的“流”也不是依时间演化的映射族；两种对象的英文分别为 current 和 flow。
+
+流的支撑沿用分布的约定：删去所有使该流在其中的测试形式上恒为零的开集，
+剩下的相对闭集记为 \(\operatorname{supp}T\)。
+若测试形式在此支撑的邻域恒为零，使用光滑划分便知它在 \(T\) 上取值为零。
+因此后文可在支撑附近乘截断来解释非紧支集光滑形式的配对。
+
+设 \(M\subset U\) 是有定向的光滑 \(k\) 维子流形，且在紧集内面积有限。
+以单位简单切向 \(k\) 向量 \(\tau_M\) 表示定向，定义
+\[
+ [M](\omega)=\int_M\langle\omega(x),\tau_M(x)\rangle\,d\mathcal H^k(x).
+\]
+在每个共同紧支集上，积分由系数的一致范数控制，所以这确实是流。
+改变取向得到 \(-[M]\)。
+从 \(a\) 指向 \(b\) 的线段对应
+\[
+ [a,b](\omega)
+ =\int_0^1\langle\omega(a+t(b-a)),b-a\rangle\,dt.
+\]
+这个记号表示有向线段流，本附录中不表示无向闭区间。
+
+\begin{definition}\label{b1:def:app-d-current-boundary}
+对 \(k\geq1\) 和 \(T\in\mathcal D_k(U)\)，定义其%
+\term[liu-bianjie]{边界}[boundary]为
+\[
+ (\partial T)(\eta)=T(d\eta),
+ \quad\eta\in\mathcal D^{k-1}(U).
+\]
+对零维流规定 \(\partial T=0\)。
+\symidx{\(\partial T\)：流的边界}
+\end{definition}
+
+由外微分的连续性，\(\partial T\) 是 \(k-1\) 维流；
+由 \(d^2=0\)，有 \(\partial^2T=0\)。
+若 \(T_j\rightharpoonup T\)，则对固定 \(\eta\)，
+\(\partial T_j(\eta)=T_j(d\eta)\to T(d\eta)\)，故边界也弱收敛。
+边界条件因而能在弱极限中保留，且不需要先知道极限曲面是否光滑。
+
+在线段例子中，一维微积分基本定理给出
+\[
+ \partial[a,b]=\delta_b-\delta_a.
+\]
+这同时确定了本书的符号约定：终点为正，起点为负。
+对光滑带边界曲面，经典 Stokes 公式写作
+\(\partial[M]=[\partial M]\)，边界取“外法向在前”的定向。
+流的定义把这个公式推广为边界算子的定义，并不把一切流预先视为某张光滑曲面。
+
+\subsection{余质量与质量范数}
+\label{b1:subsec:D10203}
+
+附录\ref{b1:app:B}在外空间中使用使标准外积基正交归一的欧氏范数，记为 \(|\xi|\)。
+当 \(\xi\) 为简单向量时，它等于对应平行多面体的体积；
+一般向量可能不是一个平行多面体，需要另一个范数。
+
+\begin{definition}\label{b1:def:app-d-comass}
+对交错 \(k\) 次形式 \(\alpha\)，定义其%
+\term[yu-zhiliang]{余质量}[comass]为
+\[
+ \|\alpha\|_{\mathrm{co}}
+  =\sup\{\,|\langle\alpha,\xi\rangle|:
+                   \xi\text{ 为简单 }k\text{ 向量},\ |\xi|=1\,\}.
+\]
+在 \(k=0\) 时，规定它为绝对值。
+外空间上的对偶范数记为
+\[
+ |\xi|_{\mathrm m}
+    =\sup_{\|\alpha\|_{\mathrm{co}}\leq1}|\langle\alpha,\xi\rangle|,
+\]
+称为外向量的质量范数。
+\end{definition}
+
+\begin{proposition}\label{b1:prop:app-d-mass-comass}
+上述两个量都是范数。对简单向量 \(\xi\)，有 \(|\xi|_{\mathrm m}=|\xi|\)；
+对任意 \(\xi\)，则有
+\[
+ |\xi|\leq|\xi|_{\mathrm m}\leq
+           \sqrt{\binom nk}\,|\xi|.
+\]
+\end{proposition}
+\begin{proof}
+简单标准基张成整个外空间，因而余质量只在零形式处消失；
+三角不等式和齐次性由上确界定义得到。
+其对偶量也是有限维空间上的范数。
+若 \(\xi\) 简单，取向后可写为
+\(\xi=|\xi|\,v_1\wedge\cdots\wedge v_k\)，其中 \(v_i\) 标准正交。
+定义本身给出 \(|\xi|_{\mathrm m}\leq|\xi|\)；
+取相应的体积形式 \(v_1^*\wedge\cdots\wedge v_k^*\)，
+其余质量为一且在该向量上取值 \(|\xi|\)，得到反向不等式。
+
+对一般 \(\xi=\sum_I\xi_Ie_I\)，欧氏单位形式的余质量不超过一，
+故欧氏对偶范数不超过质量范数。
+另一方面，三角不等式给出
+\(|\xi|_{\mathrm m}\leq\sum_I|\xi_I|
+\leq\sqrt{\binom nk}\,|\xi|\)。
+\end{proof}
+
+这两个范数不能在所有维数上混用。例如在 \(\bigwedge^2\mathbb R^4\) 中，
+\[
+ \xi=e_1\wedge e_2+e_3\wedge e_4
+\]
+的欧氏范数为 \(\sqrt2\)，质量范数却为 \(2\)。
+形式 \(dx^1\wedge dx^2+dx^3\wedge dx^4\) 的余质量为一，
+因为它在正交单位向量 \(v,w\) 上的值可写成 \(\langle Jv,w\rangle\)，其中 \(J\) 为正交变换；
+它在 \(\xi\) 上取值二。反向上界来自两项分解。
+
+\begin{definition}\label{b1:def:app-d-current-mass}
+流 \(T\in\mathcal D_k(U)\) 的%
+\term[liu-zhiliang]{质量}[mass]定义为
+\[
+ \mathbf M_U(T)=
+ \sup\{\,|T(\omega)|:\omega\in\mathcal D^k(U),\
+                           \sup_x\|\omega(x)\|_{\mathrm{co}}\leq1\,\}.
+\]
+在 \(\mathbb R^n\) 上简记为 \(\mathbf M(T)\)。
+\symidx{\(\mathbf M(T)\)：流的质量}
+\end{definition}
+
+对任意开集 \(W\subset U\)，把测试形式限制为支集包含于 \(W\)，便得到局部质量。
+质量可以为无穷。
+本书采用余质量的对偶定义；Simon 在《Lectures on Geometric Measure Theory》%
+\cite{Simon1983Lectures}第26.6条明确说明后改用欧氏形式范数。
+两种约定在可整流流上给出同一面积，但在一般流上不必数值相等。
+有限维范数等价保证局部有界性和相应紧性假设相同，不能由此声称所有质量数值相同。
+
+\begin{proposition}\label{b1:prop:app-d-mass-representation}
+若 \(T\) 在每个内部紧集附近质量有限，则存在唯一正 Radon 测度 \(\|T\|\)
+及一个 \(\|T\|\)-可测外向量场 \(\vec T\)，使
+\[
+ T(\omega)=\int_U\langle\omega,\vec T\rangle\,d\|T\|,
+ \quad |\vec T|_{\mathrm m}=1\quad\|T\|\text{-几乎处处}.
+\]
+向量场在 \(\|T\|\)-几乎处处意义下唯一，且对每个开集 \(W\subset U\)，
+\(\|T\|(W)=\mathbf M_W(T)\)。
+\symidx{\(\lVert T\rVert\)：流的质量测度}
+\end{proposition}
+\begin{proof}
+逐个测试标准系数，局部质量界将每个分量延拓为连续紧支集函数上的局部有界泛函。
+由实值 Riesz 表示，每个分量是符号 Radon 测度 \(\mu_I\)。
+以 \(\lambda=\sum_I|\mu_I|\) 控制这些分量，写
+\(\mu_I=v_I\lambda\)，并记 \(v=\sum_Iv_Ie_I\)。
+令 \(q=|v|_{\mathrm m}\)，取 \(\|T\|=q\lambda\) 及 \(\vec T=v/q\)；
+在 \(q=0\) 处任意赋值，因为该处不承担 \(\|T\|\)。
+范数等价保证这仍是局部有限 Radon 测度。
+
+由对偶不等式，所有允许的测试形式都满足
+\(|T(\omega)|\leq\int\|\omega\|_{\mathrm{co}}\,d\|T\|\)，
+所以局部质量不超过 \(\|T\|(W)\)。
+反向可先取 \(W\) 内紧集 \(K\)，再用余质量单位球中的可数稠密集合，
+在每点选取使配对逼近 \(q\) 的形式。
+将选择截成有限个可测片，并由 Radon 正则性在各片内部取两两不交的紧集，
+使被删去部分的 \(\|T\|\) 质量任意小。
+在这些紧集的两两不交邻域上取光滑截断，乘以对应的常值形式后相加。
+所成测试形式在每点至多有一个非零项，故余质量不超过一，
+其积分任意接近 \(\|T\|(K)\)。
+对 \(K\) 取上确界便得到等号。
+分量测度及其 Radon--Nikodym 密度的唯一性给出最后的唯一性。
+\end{proof}
+
+对 Borel 集 \(A\subset U\)，现在可以定义限制
+\[
+ (T\llcorner A)(\omega)
+       =\int_A\langle\omega,\vec T\rangle\,d\|T\|.
+\]
+不光滑示性函数的限制只在这种测度表示成立后使用。
+一般分布不能直接与任意示性函数相乘。
+
+\begin{definition}\label{b1:def:app-d-normal-current}
+若 \(\mathbf M(T)+\mathbf M(\partial T)<\infty\)，则称 \(T\) 为%
+\term[zhenggui-liu]{正规流}[normal current]。
+只要求上述两项在每个内部紧集附近有限时，称为局部正规流。
+\end{definition}
+
+“正规”在此不表示光滑，也不表示与法向量有关。
+正规性同时控制对象和边界，而不是只要求对象有限质量。
+例如在 \(\mathbb R^2\) 取非零光滑紧支集函数 \(\phi\)，令
+\[
+ T(\omega_1\,dx^1+\omega_2\,dx^2)
+      =\int_{\mathbb R^2}\phi\omega_1\,dx.
+\]
+其边界为密度 \(-\partial_1\phi\) 的零维流，所以 \(T\) 正规。
+它的质量却分布在二维体积上，不可能由可数条曲线的长度积分表示。
+下一节的可整流性是独立的几何要求。

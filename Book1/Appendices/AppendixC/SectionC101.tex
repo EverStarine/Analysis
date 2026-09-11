@@ -1,0 +1,151 @@
+% !TeX root = ../../Book1.tex
+\section{商空间与对偶算子}
+\label{b1:sec:C101}
+
+求解线性方程 \(Tx=y\) 时，两个不同的向量可能给出同一个像。这种不唯一性完全由
+\(\ker T\) 描述；若先把相差一个核向量的点视为同一点，剩下的问题便成为单射算子的求逆。
+商空间因此不只是代数上的简写。商范数还会告诉我们：在忽略不唯一部分以后，一个近似解究竟离真解多远。
+
+\subsection{商映射与算子的因子分解}
+\label{b1:subsec:C10101}
+
+设 \(M\) 为 Banach 空间 \(X\) 的闭线性子空间。沿用%
+\cref{b1:ex:08-quotient-dual}中的商范数与商映射：
+\[
+ \|x+M\|_{X/M}=\operatorname{dist}(x,M),\quad Qx=x+M.
+\]
+该习题已经证明 \(X/M\) 完备，并把 \((X/M)^*\) 等距识别为
+\[
+ M^\circ=\{\,f\in X^*:f(m)=0\ \text{对每个 }m\in M\,\}.
+\]
+本节直接使用这两个结果，不再重新证明商空间的完备性。商空间的定义要求 \(M\) 闭；
+若不闭，上式只是半范数，它把 \(\overline M\) 中的所有点也压成距离零。
+
+商映射不仅连续，而且把开球精确地映为开球。对 \(r>0\)，有
+\[
+ Q\bigl(B_X(x,r)\bigr)=B_{X/M}(Qx,r).
+\]
+一个方向来自 \(\|Qz\|\leq\|z\|\)。另一个方向使用严格不等式：
+若 \(\|v-Qx\|<r\)，按下确界定义可为这个商元素选取范数小于 \(r\) 的代表 \(z\)，
+于是 \(v=Q(x+z)\)。闭球的像却未必等于闭球，因为距离的下确界未必取得。
+下面所有选代表的步骤都会保留一个任意小的余量，而不假定存在最短代表。
+
+\begin{proposition}[商空间上的因子分解]\label{b1:prop:C1-quotient-factor}
+设 \(X,Y\) 为 Banach 空间，\(M\subset X\) 为闭线性子空间，
+\(T\in\mathcal B(X,Y)\) 且 \(M\subset\ker T\)。则存在唯一的
+\(\widetilde T\in\mathcal B(X/M,Y)\)，使 \(T=\widetilde TQ\)，并且
+\(\|\widetilde T\|=\|T\|\)。若取 \(M=\ker T\)，则 \(\widetilde T\) 单射，
+其值域等于 \(\operatorname{ran}T\)。
+\end{proposition}
+\begin{proof}
+定义 \(\widetilde T(x+M)=Tx\)。更换代表时差属于 \(M\)，被 \(T\) 消去，
+故定义良好；线性和唯一性由 \(Q\) 满射得到。对任意 \(m\in M\)，
+\[
+ \|\widetilde T(x+M)\|=\|T(x+m)\|\leq\|T\|\cdot\|x+m\|.
+\]
+取下确界给出 \(\|\widetilde T\|\leq\|T\|\)。反过来，
+\(\|Tx\|\leq\|\widetilde T\|\cdot\|Qx\|\leq\|\widetilde T\|\cdot\|x\|\)，
+故两范数相同。当 \(M=\ker T\) 时，\(\widetilde T(x+M)=0\) 恰好表示 \(x+M=0\)。
+\end{proof}
+
+这里的单射结论还没有给出连续逆。若把值域赋予 \(Y\) 的子空间范数，则
+\(\widetilde T^{-1}\) 有界恰好意味着存在 \(C\)，使
+\[
+ \operatorname{dist}(x,\ker T)\leq C\|Tx\|\quad(x\in X).
+\]
+这项估计允许核非零；它估计的是解的等价类，而不是任意选出的一个解。
+对于微分方程，核中的向量常是常数或有限个齐次解，因此这种写法比要求
+\(\|x\|\leq C\|Tx\|\) 更贴近问题本身。
+
+\subsection{对偶算子的方向与标量}
+\label{b1:subsec:C10102}
+
+以下 \(X^*\) 始终由连续线性泛函组成，标量域为 \(\mathbb K=\mathbb R\) 或 \(\mathbb C\)。
+若 \(g\) 测试输出 \(Tx\)，那么 \(g\circ T\) 就是对输入的测试。这个复合运算把
+算子的方向反转，却不需要在 \(X,Y\) 上引入内积。
+
+\begin{definition}\label{b1:def:C1-dual-operator}
+设 \(T\in\mathcal B(X,Y)\)。规定
+\[
+ T':Y^*\longrightarrow X^*,\quad (T'g)(x)=g(Tx),
+\]
+并称 \(T'\) 为 \(T\) 的\term[duiou-suanzi]{对偶算子}[dual operator]。%
+\footnote{许全华等《泛函分析讲义》\cite{Xu2017Fanhan}第 9.1 节使用
+“共轭算子”这一名称。第八章已经说明同一中文名称也用于 Hilbert 空间伴随；
+本附录用 \(T'\) 指作用在连续对偶上的算子，用 \(T^*\) 保留 Hilbert 空间伴随，
+阅读其他教材时须先看定义域与值域。}
+\termidx[gonge-suanzi]{共轭算子}
+\end{definition}
+\symidx{\(T'\)：有界线性算子的对偶算子}
+
+\begin{proposition}\label{b1:prop:C1-dual-calculus}
+对偶算子是有界线性算子，且 \(\|T'\|=\|T\|\)。若复合有意义，则
+\[
+ (ST)'=T'S',\quad (aT+bU)'=aT'+bU',\quad I'=I.
+\]
+自然嵌入 \(J_X:X\rightarrow X^{**}\) 满足 \(T''J_X=J_YT\)。
+算子 \(T'\) 对相应的弱-*拓扑连续。
+\end{proposition}
+\begin{proof}
+由
+\[
+ |(T'g)(x)|=|g(Tx)|\leq\|g\|\cdot\|T\|\cdot\|x\|
+\]
+得 \(\|T'\|\leq\|T\|\)。对每个 \(x\)，由%
+\cref{b1:cor:norming-functional}，
+\[
+ \|Tx\|=\sup_{\|g\|\leq1}|g(Tx)|
+       =\sup_{\|g\|\leq1}|(T'g)(x)|
+       \leq\|T'\|\cdot\|x\|,
+\]
+从而反向不等式成立。复合与线性组合等式逐个在 \(x\) 上求值即可得到。
+同样，对 \(g\in Y^*\)，有
+\[
+ (T''J_Xx)(g)=(J_Xx)(T'g)=g(Tx)=(J_YTx)(g).
+\]
+最后，若 \(g_\alpha\) 弱-*收敛于 \(g\)，则对每个固定的 \(x\)，
+\((T'g_\alpha)(x)=g_\alpha(Tx)\rightarrow g(Tx)\)。这正是像网弱-*收敛的定义。
+\end{proof}
+
+在复 Hilbert 空间中，令 \(R_Hh=\langle\,\cdot,h\rangle\)。按本书第一变量线性的约定，
+\(R_H:H\rightarrow H^*\) 是共轭线性等距映射，而
+\[
+ T'R_Y=R_XT^*.
+\]
+因此 \((aT)'=aT'\)，但 \((aT)^*=\overline a\,T^*\)。
+两条公式没有矛盾：从对偶空间回到 Hilbert 空间时，Riesz 对应本身就共轭了标量。
+例如 \(Tz=iz\) 在一维复空间上的对偶算子仍是乘 \(i\)，Hilbert 伴随却是乘 \(-i\)。
+把 \(T'\) 与 \(T^*\) 不加说明地混写，会在复系数方程中改变相容条件。
+
+\subsection{核与值域的对偶关系}
+\label{b1:subsec:C10103}
+
+对 \(G\subset X^*\)，记
+\[
+ {}^\circ G=\{\,x\in X:f(x)=0\ \text{对每个 }f\in G\,\}.
+\]
+上标圆圈在集合右侧时取连续对偶中的泛函，在左侧时取原空间中的向量。
+这一记号只是把“被全部测试消去”的条件集中写出，不把 \(X\) 与 \(X^{**}\) 视为同一空间。
+
+\begin{proposition}\label{b1:prop:C1-range-annihilator}
+设 \(T\in\mathcal B(X,Y)\)。则
+\[
+ \ker T'=(\operatorname{ran}T)^\circ,\quad
+ \ker T={}^{\circ}(\operatorname{ran}T'),\quad
+ \overline{\operatorname{ran}T}={}^{\circ}(\ker T').
+\]
+最后一式中的闭包是范数闭包。因此 \(T\) 的值域稠密，当且仅当 \(T'\) 单射。
+\end{proposition}
+\begin{proof}
+第一个等式把 \(T'g=0\) 展开为 \(g(Tx)=0\) 对所有 \(x\) 成立。
+若 \(Tx=0\)，则全部 \(T'g\) 都消去 \(x\)；反过来，若 \(g(Tx)=0\) 对所有
+\(g\in Y^*\) 成立，由连续泛函分离点得到 \(Tx=0\)。这给出第二个等式。
+对第三个等式，先由第一个等式得到闭包包含于右边；若 \(y\) 不在值域闭包，
+对闭线性子空间 \(\overline{\operatorname{ran}T}\) 使用%
+\cref{b1:ex:09-double-annihilator}中的分离结论，可取 \(g\) 消去这个子空间而
+\(g(y)\ne0\)。此时 \(g\in\ker T'\)，故 \(y\) 不在右边。
+\end{proof}
+
+该命题只检测近似可解性。条件 \(g(y)=0\) 对所有齐次对偶解 \(T'g=0\) 成立，
+保证 \(y\) 可以由 \(Tx_n\) 逼近，但并未保证原像 \(x_n\) 不逃向无穷远。
+要从近似解得到真解，还需要值域的闭性。这个缺口正是后面闭值域定理所处理的内容。

@@ -1,0 +1,150 @@
+% !TeX root = ../../Book1.tex
+\section{闭值域与可解性}
+\label{b1:sec:C103}
+
+对于有限维矩阵，值域总是闭的，所以一致线性方程组的极限仍然一致。
+无穷维空间中的区别在于：右端可能收敛，所需原像却越来越大。
+例如第八章的对角算子 \(Te_n=n^{-1}e_n\)，可以把单位向量压得任意小。
+本节把排除这种现象的条件写成估计，并说明这个估计怎样传到对偶方程。
+
+\subsection{去掉核以后的下界}
+\label{b1:subsec:C10301}
+
+\begin{theorem}[闭值域的估计判别]\label{b1:thm:C1-closed-range-estimate}
+设 \(X,Y\) 为 Banach 空间，\(T\in\mathcal B(X,Y)\)。以下条件等价：
+\begin{equivalences}
+\item\label{b1:item:C1-range-closed}\(\operatorname{ran}T\) 在 \(Y\) 中闭；
+\item\label{b1:item:C1-quotient-bound}存在 \(C>0\)，使
+\[
+ \operatorname{dist}(x,\ker T)\leq C\|Tx\|\quad(x\in X).
+\]
+\end{equivalences}
+在这些条件下，对每个 \(y\in\operatorname{ran}T\)，方程 \(Tx=y\) 的解组成一个商类，
+而从 \(\operatorname{ran}T\) 到 \(X/\ker T\) 的解映射有界。
+\end{theorem}
+\begin{proof}
+若值域闭，则它是 Banach 空间。由%
+\cref{b1:prop:C1-quotient-factor}，
+\(\widetilde T:X/\ker T\rightarrow\operatorname{ran}T\) 是有界双射。
+有界逆定理给出 \(\|\widetilde T^{-1}y\|\leq C\|y\|\)，即所述估计。
+
+反过来，设估计成立，\(Tx_n\rightarrow y\)。对任意 \(m,n\)，有
+\[
+ \|Qx_n-Qx_m\|
+ =\operatorname{dist}(x_n-x_m,\ker T)
+ \leq C\|Tx_n-Tx_m\|.
+\]
+所以 \(Qx_n\) 在完备的商空间中收敛于某个 \(u\)。连续性给出
+\(\widetilde Tu=y\)，因此 \(y\in\operatorname{ran}T\)。这里没有声称原来的
+\(x_n\) 收敛；它们可以在核的方向任意漂移，真正收敛的是商类。
+\end{proof}
+
+当 \(\ker T=\{0\}\) 时，估计简化为 \(\|Tx\|\geq c\|x\|\)。
+它比单射性强：单射性只禁止某个非零向量被压成零，估计则禁止单位向量列的像趋于零。
+当核非零时，单位向量本来就可能在核内；正确的归一化是到核的距离等于 \(1\)，
+而不是单纯要求 \(\|x\|=1\)。
+
+闭值域保证有界的商类解映射，但不自动给出一个取值于 \(X\) 的有界线性选解算子。
+要线性选取代表，需要核有一个闭补空间。有限维核总有这种补空间：取核的一组基，
+将其坐标泛函用 Hahn--Banach 延拓到 \(X\)，所得有限秩投影的核就是所需补空间。
+Hilbert 空间中则可以统一使用 \((\ker T)^\perp\)。
+
+\subsection{Banach 闭值域定理}
+\label{b1:subsec:C10302}
+
+\begin{theorem}[Banach，闭值域]\label{b1:thm:C1-banach-closed-range}
+设 \(X,Y\) 为 Banach 空间，\(T\in\mathcal B(X,Y)\)。
+则 \(\operatorname{ran}T\) 范数闭，当且仅当 \(\operatorname{ran}T'\) 范数闭。
+当它们闭时，
+\[
+ \operatorname{ran}T={}^{\circ}(\ker T'),\quad
+ \operatorname{ran}T'=(\ker T)^\circ.
+\]
+\end{theorem}
+\begin{proof}
+先设 \(\operatorname{ran}T\) 闭，并取%
+\cref{b1:thm:C1-closed-range-estimate}中的常数 \(C\)。
+若 \(f\in(\ker T)^\circ\)，在值域上定义
+\(\varphi(Tx)=f(x)\)。因 \(f\) 消去核，此定义与原像选择无关，而且
+\[
+ |\varphi(Tx)|=|f(x)|
+ \leq\|f\|\operatorname{dist}(x,\ker T)
+ \leq C\|f\|\cdot\|Tx\|.
+\]
+Hahn--Banach 定理把 \(\varphi\) 延拓为 \(g\in Y^*\)，于是 \(T'g=f\)。
+反向包含 \(\operatorname{ran}T'\subset(\ker T)^\circ\) 不需闭性就成立。
+因此 \(\operatorname{ran}T'=(\ker T)^\circ\)，后者是闭子空间。
+值域的另一等式由\cref{b1:prop:C1-range-annihilator}去掉闭包得到。
+
+现在设 \(\operatorname{ran}T'\) 闭。将闭值域的估计判别用于 \(T'\)，可取 \(C>0\) 使
+\[
+ \operatorname{dist}(g,\ker T')\leq C\|T'g\|\quad(g\in Y^*).
+\]
+记 \(Z=\overline{\operatorname{ran}T}\)。对 \(z\in Z\)，每个 \(h\in\ker T'\) 都消去 \(z\)，故
+\begin{equation}\label{b1:eq:C1-dual-lifting-bound}
+ |g(z)|\leq\|z\|\operatorname{dist}(g,\ker T')
+ \leq C\|z\|\cdot\|T'g\|.
+\end{equation}
+这个不等式先给出范数可控的近似原像，再由级数把近似变为精确。
+
+具体地，令 \(D=\overline{T(\overline B_X(0,1))}\)，这是 \(Y\) 中闭、凸且平衡的集合。
+我们断言 \(\overline B_Z(0,1)\subset CD\)。
+若某个 \(\|z\|\leq1\) 的 \(z\in Z\) 不属于 \(CD\)，则凸分离定理给出
+\(g\in Y^*\)，使
+\[
+ \operatorname{Re}g(z)>\sup_{v\in CD}\operatorname{Re}g(v)=C\|T'g\|.
+\]
+最后的等式使用复平衡性；实标量情形使用正负对称性。
+这与\eqref{b1:eq:C1-dual-lifting-bound}矛盾，断言得证。
+
+取 \(z\in Z\)。由刚得到的包含关系，可以选 \(x_1\) 满足
+\(\|x_1\|\leq C\|z\|\) 及 \(\|z-Tx_1\|\leq\|z\|/2\)；
+若某次余项已经为零，后面全部取零。
+否则对余项再次作同样选择，得到
+\[
+ \|x_j\|\leq C\,2^{-(j-1)}\|z\|,\quad
+ \left\|z-T\sum_{j=1}^n x_j\right\|\leq2^{-n}\|z\|.
+\]
+由 \(X\) 完备，级数 \(x=\sum_jx_j\) 收敛，且 \(\|x\|\leq2C\|z\|\)。
+连续性给出 \(Tx=z\)。因此 \(Z\subset\operatorname{ran}T\)，值域闭。
+再用证明的前半部分，得到第二个值域等式。
+\end{proof}
+
+把\term*[banach-bizhiyu]{Banach 闭值域定理}[Banach closed range theorem]用于
+存在性问题时，应分别核对“测试消去”与“值域闭”。
+前者往往来自积分分部，后者则来自先验估计、紧性或某种有限维约化。
+仅写出形式上的伴随方程，不足以证明原方程有解。
+
+上述反向证明也解释了完备性的位置。对偶估计首先只保证任意小残差，
+然后以几何级数控制校正项，原空间的完备性才允许把它们求和。
+若直接从 \(z\in\overline{T(B_X)}\) 选出精确原像，就跳过了这一技术桥。
+
+\subsection{Hilbert 空间中的正交解}
+\label{b1:subsec:C10303}
+
+\begin{corollary}\label{b1:cor:C1-hilbert-closed-range}
+设 \(T:H\rightarrow G\) 为 Hilbert 空间间的有界线性算子。
+若 \(\operatorname{ran}T\) 闭，则
+\[
+ \operatorname{ran}T=(\ker T^*)^\perp,\quad
+ \operatorname{ran}T^*=(\ker T)^\perp.
+\]
+每个满足 \(y\perp\ker T^*\) 的右端有唯一的解 \(x_0\perp\ker T\)；
+它是全部解中范数最小的一个，并满足 \(\|x_0\|\leq C\|y\|\)。
+\end{corollary}
+\begin{proof}
+由 Riesz 对应 \(T'R_G=R_HT^*\)，Banach 闭值域定理中的消去条件变为正交条件。
+任一解 \(x\) 可唯一分解为 \(x=x_0+n\)，其中 \(x_0\perp\ker T\)，\(n\in\ker T\)。
+投影后仍有 \(Tx_0=y\)，两个这样的解相减同时属于核及其正交补，只能为零。
+由勾股等式 \(\|x_0+n\|^2=\|x_0\|^2+\|n\|^2\)，最小范数性成立。
+最后，\(\|x_0\|=\operatorname{dist}(x_0,\ker T)\)，所以前述估计适用。
+\end{proof}
+
+若右端 \(y\) 不满足正交条件，也可以先将其投影到 \(\operatorname{ran}T\)。
+此时最小化 \(\|Tx-y\|\) 等价于解
+\[
+ T^*Tx=T^*y.
+\]
+这是因为 \(Tx-y\) 与值域正交当且仅当被 \(T^*\) 消去。
+只要值域闭，投影存在，从而得到最小二乘解；若值域不闭，最小残差的下确界可能不取得。
+闭值域因此同时联系精确可解性、解的稳定性和最小二乘问题。

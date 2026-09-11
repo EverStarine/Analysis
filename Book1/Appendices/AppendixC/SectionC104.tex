@@ -1,0 +1,209 @@
+% !TeX root = ../../Book1.tex
+\section{恒等算子的紧扰动与 Fredholm 理论}
+\label{b1:sec:C104}
+
+方程 \(x-Kx=y\) 常在先求出某个简单方程的逆以后出现。
+算子 \(K\) 若紧，未知量的无限维部分就受到很强的限制：
+不唯一的方向只有有限多个，可解性也只留下有限多个线性条件。
+这一节不要求 \(K\) 自伴，甚至不要求底空间是 Hilbert 空间。
+
+Hunter 与 Nachtergaele 的《Applied Analysis》\cite{Hunter2001Applied}第 8.3 节
+用原方程与伴随方程说明 Fredholm 理论所描述的可解性模式。
+下面将这一路线放到 Banach 空间的对偶配对中，并直接证明恒等算子的紧扰动所需的结论。
+读者要区分三个论断：核有限维、值域闭、核与余核维数相同。前两个尚不自动推出第三个。
+
+\subsection{有限维核与闭值域}
+\label{b1:subsec:C10401}
+
+本节固定 Banach 空间 \(X\) 及紧算子 \(K:X\rightarrow X\)，记 \(T=I-K\)。
+由于紧算子在有界复合及线性组合下稳定，每个正整数 \(m\) 都有
+\[
+ T^m=I-K_m,\quad
+ K_m=\sum_{j=1}^m(-1)^{j+1}\binom mjK^j,
+\]
+其中 \(K_m\) 仍紧。这个观察使下面关于 \(T\) 的结论也能用于它的所有正整数次幂。
+
+\begin{lemma}\label{b1:lem:C1-compact-perturbation-range}
+算子 \(T=I-K\) 的核有限维，值域闭；并且存在 \(C>0\)，使
+\[
+ \operatorname{dist}(x,\ker T)\leq C\|Tx\|\quad(x\in X).
+\]
+\end{lemma}
+\begin{proof}
+在闭子空间 \(N=\ker T\) 上，\(Kx=x\)。因此 \(N\) 的闭单位球在 \(X\) 中相对紧，
+又因 \(N\) 闭而在 \(N\) 中紧。Riesz 引理的推论给出 \(N\) 有限维。
+
+若所述估计不成立，对每个 \(n\) 可取 \(z_n\)，使
+\(\operatorname{dist}(z_n,N)>n\|Tz_n\|\)。将 \(z_n\) 除以它到 \(N\) 的距离，
+再减去一个 \(N\) 中的向量，可得到 \(x_n\)，满足
+\[
+ \operatorname{dist}(x_n,N)=1,\quad \|x_n\|\leq2,\quad \|Tx_n\|<1/n.
+\]
+减去核向量不改变 \(Tx_n\)，选取范数至多 \(2\) 的代表只用下确界定义。
+紧性给出子列 \(Kx_{n_j}\rightarrow v\)，因而
+\(x_{n_j}=Tx_{n_j}+Kx_{n_j}\rightarrow v\)。
+连续性给出 \(Tv=0\)，但距离函数连续，所以
+\(\operatorname{dist}(v,N)=1\)，矛盾。估计成立，再由%
+\cref{b1:thm:C1-closed-range-estimate}得值域闭。
+\end{proof}
+
+若 \(T\) 单射，估计就控制整个向量。若 \(T\) 不单射，它仍控制与齐次解无关的部分。
+证明没有依赖核的某个事先选好的补空间；先在商空间意义下归一化，
+再借紧性得到极限，避免了“原像列有界”这一通常并不成立的假设。
+
+\subsection{单射与满射为何等价}
+\label{b1:subsec:C10402}
+
+\begin{theorem}[Fredholm，单射与满射]\label{b1:thm:C1-fredholm-bijective}
+对 \(T=I-K\)，下列条件等价：
+\begin{equivalences}
+\item\label{b1:item:C1-fredholm-injective}\(T\) 单射；
+\item\label{b1:item:C1-fredholm-surjective}\(T\) 满射；
+\item\label{b1:item:C1-fredholm-invertible}\(T\) 有有界双侧逆。
+\end{equivalences}
+\end{theorem}
+\begin{proof}
+先设 \(T\) 单射但不满射。记 \(R_n=T^nX\)，其中 \(R_0=X\)。
+这些子空间闭，因为每个 \(T^n\) 都是恒等算子的紧扰动。
+它们还严格递减：若 \(R_n=R_{n+1}\)，则对任意 \(x\in X\)，存在 \(y\) 使
+\(T^nx=T^{n+1}y\)；由 \(T^n\) 单射，得到 \(x=Ty\)，与不满射矛盾。
+
+对真闭子空间 \(R_n\subset R_{n-1}\) 应用 Riesz 引理，选取
+\[
+ x_n\in R_{n-1},\quad\|x_n\|=1,\quad\operatorname{dist}(x_n,R_n)>1/2.
+\]
+当 \(m>n\) 时，\(x_m\in R_n\)。又因为 \(K=I-T\) 与 \(T\) 交换，
+\(K\) 保持每个 \(R_n\)，所以 \(Tx_n+Kx_m\in R_n\)。于是
+\[
+ \|Kx_n-Kx_m\|=\|x_n-(Tx_n+Kx_m)\|>1/2.
+\]
+紧性不允许有界列的像保持这种间距，矛盾。
+
+再设 \(T\) 满射但不单射。记 \(N_n=\ker T^n\)，\(N_0=\{0\}\)。
+从 \(0\ne z_1\in\ker T\) 出发，利用满射性逐次选取 \(Tz_{n+1}=z_n\)。
+于是 \(z_n\in N_n\setminus N_{n-1}\)，各个闭子空间 \(N_n\) 严格递增。
+仍由 Riesz 引理，可选 \(x_n\in N_n\)，使
+\(\|x_n\|=1\) 且 \(\operatorname{dist}(x_n,N_{n-1})>1/2\)。
+对 \(m<n\)，有 \(Tx_n\in N_{n-1}\)、\(Kx_m\in N_{n-1}\)，故
+\[
+ \|Kx_n-Kx_m\|=\|x_n-(Tx_n+Kx_m)\|>1/2,
+\]
+再次与紧性矛盾。单射与满射因此等价；双射的有界逆由开映射定理保证。
+\end{proof}
+
+在上述证明中，每次违背可逆性都会产生一条严格变化的子空间链。
+Riesz 引理从链中选出彼此分开的方向，紧性再排除这样的无穷过程。
+这种方法不依赖对角化，所以也适用于没有标准正交特征向量基的紧算子。
+
+\subsection{有限个相容条件}
+\label{b1:subsec:C10403}
+
+\begin{definition}\label{b1:def:C1-fredholm-operator}
+设 \(X,Y\) 为 Banach 空间，\(A\in\mathcal B(X,Y)\)。
+若 \(\operatorname{ran}A\) 闭，且 \(\ker A\) 与商空间 \(Y/\operatorname{ran}A\)
+均有限维，则称 \(A\) 为\term[fredholm-suanzi]{Fredholm 算子}[Fredholm operator]。
+商空间 \(Y/\operatorname{ran}A\) 称为其\term[yuhe]{余核}[cokernel]，规定
+\[
+ \operatorname{ind}A=\dim\ker A-\dim(Y/\operatorname{ran}A),
+\]
+称为 \(A\) 的\term[fredholm-zhibiao]{Fredholm 指标}[Fredholm index]。
+\end{definition}
+\symidx{\(\operatorname{ind}A\)：Fredholm 算子的指标}
+
+值域闭时，商空间对偶识别给出
+\((Y/\operatorname{ran}A)^*=(\operatorname{ran}A)^\circ=\ker A'\)。
+因此有限余维可由 \(\dim\ker A'<\infty\) 检测，且两维数相等。
+这里还用到一个简单事实：若赋范空间的连续对偶有限维，则原空间也有限维且维数相同。
+因为连续对偶分离点，自然映射把原空间单射到其有限维二次对偶；随后使用有限维对偶的维数公式。
+
+\begin{theorem}[Fredholm，可解性与维数]\label{b1:thm:C1-fredholm-alternative}
+设 \(K:X\rightarrow X\) 紧，\(T=I-K\)。则 \(T\) 为指标零的 Fredholm 算子：
+\[
+ \dim\ker T=\dim\ker T'<\infty,\quad
+ \operatorname{ran}T={}^{\circ}(\ker T').
+\]
+因此恰有以下两种情形之一：
+\begin{enumerate}
+\item\label{b1:item:C1-fredholm-unique}核为零，且对每个 \(y\in X\)，方程 \(Tx=y\) 都有唯一解；
+\item\label{b1:item:C1-fredholm-compatible}核非零且有限维；方程 \(Tx=y\) 有解，当且仅当
+\(g(y)=0\) 对所有 \(g\in\ker T'\) 成立。有解时全部解为 \(x_0+\ker T\)。
+\end{enumerate}
+对偶方程 \(T'g=f\) 的可解性条件同样为 \(f(x)=0\) 对所有 \(x\in\ker T\) 成立。
+\end{theorem}
+\begin{proof}
+由 Schauder 定理，\(K'\) 紧。所以%
+\cref{b1:lem:C1-compact-perturbation-range}分别用于 \(T\) 与 \(T'=I-K'\)，
+给出二者的有限维核及闭值域。Banach 闭值域定理给出两组可解性条件，
+上面的商空间对偶识别则说明 \(T\) 具有有限维余核。
+尚须证明两维数相同。
+
+记 \(n=\dim\ker T\)，\(m=\dim(X/\operatorname{ran}T)\)，\(r=\min(n,m)\)。
+在核中取基 \(z_1,\ldots,z_n\)，把其坐标泛函延拓为 \(f_1,\ldots,f_n\in X^*\)，
+使 \(f_i(z_j)=\delta_{ij}\)。在 \(X\) 中选取 \(y_1,\ldots,y_r\)，使它们在
+\(X/\operatorname{ran}T\) 中的像线性无关。定义有限秩算子
+\[
+ Fx=\sum_{i=1}^r f_i(x)y_i,\quad S=T+F.
+\]
+它仍是恒等算子的紧扰动，因为 \(S=I-(K-F)\)。
+
+若 \(Sx=0\)，在商空间中取像，得到所有 \(f_i(x)=0\)，\(1\leq i\leq r\)；
+于是 \(Tx=0\)。反过来，核中前 \(r\) 个坐标为零的向量都被 \(S\) 消去。因此
+\(\dim\ker S=n-r\)。
+另一方面，
+\[
+ \operatorname{ran}S=\operatorname{ran}T+\operatorname{span}\{y_1,\ldots,y_r\}.
+\]
+一个包含关系直接来自定义。反向关系中，\(Sz_i=y_i\)；
+而对任意 \(x\)，向量 \(w=x-\sum_{i=1}^r f_i(x)z_i\) 满足 \(Sw=Tx\)。
+所以等式成立，余维为 \(m-r\)。
+
+按 \(r\) 的选择，\(S\) 的核与余核至少有一个为零。
+由\cref{b1:thm:C1-fredholm-bijective}，单射与满射等价，所以另一个也为零。
+故 \(n=r=m\)。若这个公共维数为零，可逆性给出唯一可解；
+若非零，可解性由闭值域定理刻画，任意两个解的差属于核。
+\end{proof}
+
+这个可解性结论在此记为\term*[fredholm-dingli]{Fredholm 定理}[Fredholm alternative]。
+在实际计算中，先求一组 \(\ker T'\) 的基 \(g_1,\ldots,g_n\)，
+条件便缩减为 \(n\) 个标量等式 \(g_j(y)=0\)。相容条件的数目与解的不唯一方向数相等，
+而不是与所选近似空间的维数相等。
+
+指标零是紧扰动恒等算子的特殊性质，不是 Fredholm 算子的定义。
+例如右移算子在 \(\ell^2\) 上单射且值域余维为 \(1\)，所以指标为 \(-1\)；
+其伴随左移满射而核一维，指标为 \(1\)。这两个算子都不能表示为恒等算子加一个紧算子。
+
+\subsection{非零谱点的有限维性}
+\label{b1:subsec:C10404}
+
+以下仅在复 Banach 空间上谈谱，并沿用第八章的记号 \(\sigma(K)\)：
+\(\lambda\) 属于谱是指 \(\lambda I-K\) 没有有界双侧逆。
+
+\begin{corollary}[紧算子的非零谱]\label{b1:cor:C1-compact-nonzero-spectrum}
+若 \(K\) 紧，则每个非零谱点都是特征值，对应特征空间有限维。
+对每个 \(\varepsilon>0\)，绝对值至少为 \(\varepsilon\) 的不同特征值只有有限个。
+因此非零谱点至多可数，且除零以外没有聚点。
+\end{corollary}
+\begin{proof}
+对 \(\lambda\ne0\)，将 Fredholm 定理用于 \(I-\lambda^{-1}K\)。
+若没有非零齐次解，它便可逆，所以非零谱点必是特征值；
+核有限维给出特征空间的结论。
+
+若有无穷多个不同特征值 \(\lambda_n\)，且 \(|\lambda_n|\geq\varepsilon\)，
+各选特征向量 \(v_n\ne0\)，令 \(M_n=\operatorname{span}\{v_1,\ldots,v_n\}\)。
+不同特征值的特征向量线性无关：若有最短非平凡线性关系，对关系作用
+\(K-\lambda_nI\) 就得到更短的关系。故 \(M_{n-1}\) 是 \(M_n\) 的真子空间。
+取 \(x_n\in M_n\)，使 \(\|x_n\|=1\) 且到 \(M_{n-1}\) 的距离大于 \(1/2\)。
+由于 \((K-\lambda_nI)M_n\subset M_{n-1}\)，当 \(m<n\) 时，
+\[
+ \frac{Kx_n}{\lambda_n}-\frac{Kx_m}{\lambda_m}
+ =x_n+w,\quad w\in M_{n-1},
+\]
+两项之差的范数大于 \(1/2\)。但 \(|\lambda_n|\leq\|K\|\)，可先抽取
+\(\lambda_n\) 的收敛子列，极限的模至少为 \(\varepsilon\)，再利用 \(K\) 紧抽取
+\(Kx_n\) 的收敛子列。所得 \(Kx_n/\lambda_n\) 收敛，矛盾。
+最后对 \(\varepsilon=1,1/2,\ldots\) 取并，得到可数性与聚点结论。
+\end{proof}
+
+非零特征空间有限维，并不意味着这些空间张成全空间。没有自伴性时，
+有限维部分可以含 Jordan 型行为；甚至可能没有任何非零特征值。
+本附录习题中的加权移位算子就是后一种情形。下一节恢复自伴性，才能进一步把可解性写成正交坐标条件。

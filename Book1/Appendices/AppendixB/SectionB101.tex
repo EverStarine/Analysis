@@ -1,0 +1,165 @@
+% !TeX root = ../../Book1.tex
+\section{多线性映射与张量积}
+\label{b1:sec:B101}
+
+内积、行列式和二阶微分有一个共同特点：把其他变量固定后，它们对剩下的一个变量是线性的。这并不意味着它们对所有变量合在一起线性。例如实数乘法满足 \((2x)(2y)=4xy\)，而不是 \(2xy\)。若仍希望使用核、像、对偶等线性代数工具，就应当改变输入空间，把一对向量所携带的双线性信息组织成一个向量。张量积解决的正是这个问题。
+
+本附录中的向量空间均为有限维实向量空间；代数构造本身不要求内积。对偶 \(V^*\) 表示全部实线性泛函，有限维时它与连续对偶一致。直到第\ref{b1:sec:B103}节才给空间增加内积，不能在此前用内积把 \(V\) 和 \(V^*\) 默认为同一个对象。
+
+\subsection{把双线性关系变成线性关系}
+\label{b1:subsec:B10101}
+
+\begin{definition}\label{b1:def:app-b-multilinear}
+设 \(V_1,\ldots,V_k,W\) 为实向量空间。若映射
+\[
+ B:V_1\times\cdots\times V_k\longrightarrow W
+\]
+对每个变量分别线性，则称 \(B\) 为\term[duoxianxing-yingshe]{多线性映射}[multilinear map]。当 \(k=2\) 时称为双线性映射；当 \(W=\mathbb R\) 时称为多线性型。
+\end{definition}
+
+例如 \(\beta(v,w)=v^{\mathsf T}Aw\) 是双线性型；若给定向量空间 \(V\)，求值映射 \((\lambda,v)\mapsto\lambda(v)\) 是 \(V^*\times V\) 上的双线性型。求值不需要选基，矩阵表达却需要选基。这一区别提示我们：一个合适的构造应当保留双线性映射本身，而不是只保留它在某组坐标中的数组。
+
+\begin{definition}\label{b1:def:app-b-tensor-product}
+设 \(V,W\) 为实向量空间。若向量空间 \(P\) 及双线性映射 \(\iota:V\times W\rightarrow P\) 满足以下性质：对任意向量空间 \(Z\) 和双线性映射 \(B:V\times W\rightarrow Z\)，都存在唯一的线性映射 \(\widetilde B:P\rightarrow Z\)，使
+\[
+ B(v,w)=\widetilde B\bigl(\iota(v,w)\bigr),
+\]
+则称 \((P,\iota)\) 为 \(V,W\) 的\term[zhangliangji]{张量积}[tensor product]，记为 \(V\otimes W\)，并把 \(\iota(v,w)\) 记为 \(v\otimes w\)。上述唯一分解性质称为这一构造的\term[fanxingzhi]{泛性质}[universal property]。
+\end{definition}
+\symidx{\(V\otimes W\)：实向量空间的代数张量积}
+
+这里的“对任意 \(Z\)”很重要。它要求同一个空间能够接收所有双线性映射的线性化，而不是为某个预先选好的双线性型临时制造一个表示。张量积的定义并未说每个元素都是一个 \(v\otimes w\)；事实上通常需要有限多个这样的元素相加。
+
+\begin{theorem}[张量积的构造与唯一性]\label{b1:thm:app-b-tensor-construction}
+任意有限维实向量空间 \(V,W\) 的张量积存在，且任意两个满足定义的构造之间，存在唯一保持 \(v\otimes w\) 的线性同构。若 \(e_1,\ldots,e_m\) 与 \(f_1,\ldots,f_n\) 分别是 \(V,W\) 的基，则
+\[
+ \{\,e_i\otimes f_j:1\leq i\leq m,\ 1\leq j\leq n\,\}
+\]
+是 \(V\otimes W\) 的基。因此 \(\dim(V\otimes W)=mn\)。
+\end{theorem}
+\begin{proof}
+先把 \(V\times W\) 中每一对 \((v,w)\) 当作一个形式基符号 \([v,w]\)，组成实向量空间 \(F\)。这里元素按定义是有限线性组合；即使形式基的指标集合无限，也没有无穷求和问题。令 \(R\) 为下列元素张成的子空间：
+\[
+ \begin{aligned}
+ &[v+v',w]-[v,w]-[v',w],\quad [av,w]-a[v,w],\\
+ &[v,w+w']-[v,w]-[v,w'],\quad [v,aw]-a[v,w].
+ \end{aligned}
+\]
+定义 \(P=F/R\)，把 \([v,w]\) 的陪集写成 \(v\otimes w\)。商空间恰好把上述四类关系变为等式，故 \(\iota(v,w)=v\otimes w\) 双线性。
+
+给定 \(B\)，先在线性组合上规定
+\[
+ \widehat B\left(\sum_{\ell=1}^N a_\ell[v_\ell,w_\ell]\right)
+   =\sum_{\ell=1}^N a_\ell B(v_\ell,w_\ell).
+\]
+这定义了 \(F\) 上的线性映射。双线性保证每个生成关系都落入它的核，因而 \(R\subseteq\ker\widehat B\)。所以 \(\widehat B\) 唯一下降为 \(P\) 上的线性映射 \(\widetilde B\)。由于所有 \(v\otimes w\) 张成 \(P\)，指定这些元素的像就决定了整个线性映射，得到所需唯一性。
+
+若 \((P',\iota')\) 也满足泛性质，分别把 \(\iota'\) 和 \(\iota\) 作为双线性映射，得到 \(L:P\rightarrow P'\) 与 \(M:P'\rightarrow P\)。复合 \(ML\) 与恒等映射在每个 \(\iota(v,w)\) 上相同；泛性质的唯一性给出 \(ML=I_P\)。另一复合同样为恒等映射，故 \(L\) 为唯一指定的同构。
+
+对基的陈述，写 \(v=\sum_i v_i e_i\)、\(w=\sum_jw_jf_j\)。双线性给出
+\[
+ v\otimes w=\sum_{i,j}v_iw_j\,e_i\otimes f_j,
+\]
+所以所列元素张成张量积。令 \(e^i,f^j\) 为对偶基，双线性型
+\((v,w)\mapsto e^i(v)f^j(w)\) 诱导线性泛函 \(\ell_{ij}\)。它满足
+\(\ell_{ij}(e_a\otimes f_b)=\delta_{ia}\delta_{jb}\)。对任一线性关系逐个作用这些泛函，得到全部系数为零，故所列元素线性无关。若某个原空间是零空间，则双线性已强迫全部生成元为零，维数公式仍然成立。
+\end{proof}
+
+取基只是最后验证维数的工具，并未参与 \(F/R\) 的定义。若另一组基产生不同的系数矩阵，这些矩阵仍描述同一个张量。所谓坐标无关，不是拒绝坐标计算，而是说明计算结果所代表的对象并不随坐标改变。
+
+\subsection{一般张量与一个乘积的区别}
+\label{b1:subsec:B10102}
+
+形如 \(v\otimes w\) 的张量称为\term[chun-zhangliang]{纯张量}[pure tensor]。一般元素是纯张量的有限和。若 \(v,w\) 都非零，选 \(\lambda\in V^*\)、\(\mu\in W^*\) 使 \(\lambda(v)=\mu(w)=1\)，则由泛性质得到的泛函满足
+\[
+ (\lambda\otimes\mu)(v\otimes w)=1.
+\]
+因而非零向量的纯张量不会为零。这里写 \(\lambda\otimes\mu\) 同时预告了对偶张量的自然配对，后面将给出其精确解释。
+
+在 \(V=W=\mathbb R^2\) 中，张量
+\[
+ \tau=e_1\otimes e_1+e_2\otimes e_2
+\]
+不是纯张量。否则存在 \(v=(a,b)\)、\(w=(c,d)\)，使
+\[
+ ac=bd=1,\quad ad=bc=0.
+\]
+前两个等式迫使 \(a,b,c,d\) 全部非零，与后两个等式矛盾。按所选基把张量排列成矩阵后，纯张量对应秩至多一的矩阵；加法可以增加秩。这也解释了为什么不能把一个张量总当作“两个因子”，更不能未经论证从张量等式中分别比较所谓第一因子和第二因子。
+
+同样，\((v+w)\otimes(v+w)\) 含有两个不同的交叉项
+\[
+ v\otimes w+w\otimes v.
+\]
+除非额外取商或施加对称性，不能把它们合并成 \(2v\otimes w\)。下一节的外代数恰好要加入另一种关系：这两个交叉项之和为零，而不是两者相等。
+
+\begin{proposition}\label{b1:prop:app-b-tensor-maps}
+若 \(A:V\rightarrow V'\)、\(B:W\rightarrow W'\) 线性，则存在唯一线性映射
+\[
+ A\otimes B:V\otimes W\longrightarrow V'\otimes W'
+\]
+满足 \((A\otimes B)(v\otimes w)=Av\otimes Bw\)。它与复合相容：
+\[
+ (A'\otimes B')(A\otimes B)=(A'A)\otimes(B'B).
+\]
+此外，自然的交换和结合映射
+\[
+ \begin{aligned}
+ V\otimes W&\longrightarrow W\otimes V,
+     &v\otimes w&\longmapsto w\otimes v,\\
+ (U\otimes V)\otimes W&\longrightarrow U\otimes(V\otimes W),
+     &(u\otimes v)\otimes w&\longmapsto u\otimes(v\otimes w)
+ \end{aligned}
+\]
+都是线性同构。
+\end{proposition}
+\begin{proof}
+第一映射由 \((v,w)\mapsto Av\otimes Bw\) 的双线性和泛性质得到。复合公式两边在每个纯张量上相等，而纯张量张成全空间，因此两边相等。交换映射同样由泛性质得到，交换两次为恒等映射，故可逆。
+
+对结合映射，先固定 \(w\)，把 \((u,v)\mapsto u\otimes(v\otimes w)\) 线性化；所得映射对 \(w\) 仍线性，因为这一性质可在生成元 \(u\otimes v\) 上逐一验证。再对 \((U\otimes V)\times W\) 使用泛性质，便得到所写映射。反向以同样两步定义，两个复合在 \((u\otimes v)\otimes w\) 或 \(u\otimes(v\otimes w)\) 上为恒等，而这些元素分别张成对应空间，所以互为逆映射。
+\end{proof}
+
+通过这些指定的同构，可以不写张量积的结合括号，并把
+\(V^{\otimes k}\) 称为 \(V\) 的 \(k\) 次张量积，约定 \(V^{\otimes0}=\mathbb R\)。反复应用泛性质，\(V_1\times\cdots\times V_k\) 上的多线性映射恰好对应 \(V_1\otimes\cdots\otimes V_k\) 上的线性映射。这里没有把双线性与联合线性混淆：前者的定义域是直积，后者的定义域是另一个向量空间。
+
+\subsection{张量、线性映射与求值}
+\label{b1:subsec:B10103}
+
+\begin{proposition}\label{b1:prop:app-b-tensor-hom}
+存在自然线性同构
+\[
+ V^*\otimes W\longrightarrow\operatorname{Hom}(V,W),
+ \quad \lambda\otimes w\longmapsto
+       \bigl[v\longmapsto\lambda(v)w\bigr].
+\]
+还存在自然同构
+\[
+ V^*\otimes W^*\longrightarrow (V\otimes W)^*,
+ \quad
+ (\lambda\otimes\mu)(v\otimes w)=\lambda(v)\mu(w).
+\]
+\end{proposition}
+\begin{proof}
+第一个公式对 \(\lambda,w\) 双线性，故定义了张量积上的线性映射。若 \(e_i\) 是 \(V\) 的基、\(e^i\) 是对偶基，则对每个 \(A:V\rightarrow W\)，张量
+\(\sum_i e^i\otimes Ae_i\) 映到 \(A\)，因为
+\[
+ \sum_i e^i(v)Ae_i=A\left(\sum_i e^i(v)e_i\right)=Av.
+\]
+再选 \(W\) 的基 \(f_j\)，所列基张量 \(e^i\otimes f_j\) 的像正是把第 \(i\) 个基向量送到 \(f_j\)、其余基向量送到零的矩阵单位。矩阵单位线性无关，故映射也单射。
+
+第二个公式先对 \(v,w\) 线性化，再对 \(\lambda,\mu\) 线性化，得到所述映射。它把 \(e^i\otimes f^j\) 送到上一构造中的坐标泛函 \(\ell_{ij}\)，而这些泛函正是基 \(e_i\otimes f_j\) 的对偶基，所以它是同构。两项定义都直接使用求值，不含任意选基；证明中采用的基只用来核验双射性。
+\end{proof}
+
+第一项同构把有限秩算子和纯张量联系起来：非零纯张量对应秩一算子，多个纯张量之和对应有限个秩一算子之和。例如 \(V^*\otimes V\) 中的 \(\sum_i e^i\otimes e_i\) 对应 \(I_V\)。这个张量与基无关，因为无论用哪组基，映到的都是同一个恒等映射。
+
+双线性求值还诱导了线性泛函
+\[
+ c:V^*\otimes V\longrightarrow\mathbb R,\quad
+ c(\lambda\otimes v)=\lambda(v).
+\]
+若 \(A\) 对应于 \(\sum_i e^i\otimes Ae_i\)，则
+\[
+ c(A)=\sum_i e^i(Ae_i)=\operatorname{tr}A.
+\]
+因此矩阵的迹可以理解为一个不依赖基的求值运算。这比直接比较两套对角元更接近迹的本质，也为后面把行列式理解成最高次外空间上的作用提供了类比。
+
+本节始终讨论有限维的代数张量积。无限维时，纯张量有限和仍可以构成代数张量积，但赋范空间上还有不同的张量范数及相应完备化，\(\operatorname{Hom}\) 也需要区分全部线性映射和有界线性映射。这里的有限维同构不能不加条件地移用到那些问题。

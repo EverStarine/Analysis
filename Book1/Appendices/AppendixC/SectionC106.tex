@@ -1,0 +1,163 @@
+% !TeX root = ../../Book1.tex
+\section{凸分离的进一步形式}
+\label{b1:sec:C106}
+
+第八章的几何 Hahn--Banach 定理把凸集与其外的一点分开，
+本附录的闭值域证明已经用它把对偶估计转成有界的近似原像。
+本节沿另外两条方向继续：把一点换成紧凸集，以及把“分开”定量化为距离。
+这些形式只需赋范空间，不预先要求完备性或内积。
+
+\subsection{紧凸集与闭凸集的统一间隙}
+\label{b1:subsec:C10601}
+
+\begin{theorem}[Hahn--Banach，紧集与闭集的凸分离]
+\label{b1:thm:C1-compact-closed-separation}
+设 \(A,C\) 是实或复赋范空间 \(X\) 中不交的非空凸集，\(A\) 紧、\(C\) 闭。
+则存在 \(f\in X^*\) 及实数 \(a<b\)，使
+\[
+ \sup_{c\in C}\operatorname{Re}f(c)\leq a
+ <b\leq\inf_{u\in A}\operatorname{Re}f(u).
+\]
+\end{theorem}
+\begin{proof}
+差集 \(D=C-A\) 凸，且不含零。先证明 \(D\) 闭：
+若 \(c_n-u_n\to z\)，由 \(A\) 紧可取子列使 \(u_{n_j}\to u\in A\)，
+于是 \(c_{n_j}\to z+u\in C\)，故 \(z\in D\)。
+赋范空间为度量空间，这个序列判据足以给出闭性。
+
+对 \(D\) 和零点应用\cref{b1:thm:geometric-hahn-banach}，可取非零 \(f\in X^*\) 与
+\(\gamma<0\)，使
+\[
+ \operatorname{Re}f(c-u)\leq\gamma\quad(c\in C,\ u\in A).
+\]
+连续函数 \(\operatorname{Re}f\) 在紧集 \(A\) 上有有限最小值 \(b\)。
+上式给出 \(\sup_C\operatorname{Re}f\leq b+\gamma\)。
+令 \(a=b+\gamma\)，即得严格的统一间隙。
+\end{proof}
+
+紧性用在差集的闭性中，而不是只用来保证 \(A\) 有界。
+若只要求两个集合闭，差集未必闭，统一间隙也可能消失。
+这与第八章给出的指数曲线上方区域和横轴的例子一致。
+另一方面，任何这样的泛函都给出
+\[
+ \|u-c\|\geq\frac{b-a}{\|f\|}\quad(u\in A,\ c\in C),
+\]
+所以统一分离必定伴随正距离。
+
+\subsection{用连续泛函计算距离}
+\label{b1:subsec:C10602}
+
+对非空凸集 \(C\subset X\)，给定 \(f\in X^*\) 后，上确界
+\(\sup_{c\in C}\operatorname{Re}f(c)\) 可以是 \(+\infty\)。
+下面的公式允许这一情形，相应的差值记为 \(-\infty\)；零泛函始终给出值零。
+
+\begin{theorem}\label{b1:thm:C1-distance-dual}
+若 \(C\) 是非空闭凸集，则对每个 \(x\in X\)，
+\[
+ \operatorname{dist}(x,C)=
+ \sup_{\|f\|\leq1}
+ \left(\operatorname{Re}f(x)-\sup_{c\in C}\operatorname{Re}f(c)\right).
+\]
+若 \(x\notin C\)，右边的上确界可由某个范数为 \(1\) 的泛函取得。
+这个结论不要求 \(C\) 中存在离 \(x\) 最近的点。
+\end{theorem}
+\begin{proof}
+对任意 \(\|f\|\leq1\) 及 \(c\in C\)，有
+\[
+ \operatorname{Re}f(x)-\sup_C\operatorname{Re}f
+ \leq \operatorname{Re}f(x-c)\leq\|x-c\|.
+\]
+先取距离下确界，再对泛函取上确界，得右边不大于左边。
+若 \(x\in C\)，两边都等于零。
+
+设 \(d=\operatorname{dist}(x,C)>0\)。开球 \(B(x,d)\) 与 \(C\) 是不交非空凸集，
+由开集一侧的分离定理，改变泛函的符号后可取非零 \(f\in X^*\)，使
+\[
+ \sup_C\operatorname{Re}f\leq
+ \inf_{z\in B(x,d)}\operatorname{Re}f(z)
+ =\operatorname{Re}f(x)-d\|f\|.
+\]
+最后一个等式来自
+\(\inf_{\|v\|<d}\operatorname{Re}f(v)=-d\|f\|\)：
+实情形可变号，复情形可旋转标量相位，使模接近范数的值变为负实数。
+除以 \(\|f\|\) 即得一个单位泛函，使右边至少为 \(d\)。
+结合已经证明的反向不等式，等号及取得性成立。
+\end{proof}
+
+该公式把寻找近点的几何问题变成寻找测试泛函的问题。
+对于闭子空间，有限的上确界迫使泛函消去整个子空间，便回到%
+\cref{b1:ex:08-quotient-dual}中的商范数公式。
+一般凸集不具备正负缩放的封闭性，因此这里必须保留实部和整个上确界。
+
+\begin{corollary}\label{b1:cor:C1-best-approximation}
+设 \(C\) 为非空闭凸集，\(x\notin C\)，\(c_0\in C\)。
+则 \(c_0\) 是离 \(x\) 最近的点，当且仅当存在 \(\|f\|=1\) 的连续线性泛函，使
+\[
+ \operatorname{Re}f(x-c_0)=\|x-c_0\|,\quad
+ \operatorname{Re}f(c-c_0)\leq0\quad(c\in C).
+\]
+\end{corollary}
+\begin{proof}
+若 \(c_0\) 最近，在距离公式中取到上确界的单位泛函满足
+\[
+ d=\operatorname{Re}f(x)-\sup_C\operatorname{Re}f
+ \leq\operatorname{Re}f(x-c_0)\leq\|x-c_0\|=d.
+\]
+所有不等号均为等号，得到两个条件。
+反过来，若条件成立，则对每个 \(c\in C\)，
+\[
+ \|x-c\|\geq\operatorname{Re}f(x-c)
+ =\|x-c_0\|-\operatorname{Re}f(c-c_0)\geq\|x-c_0\|.
+\]
+所以 \(c_0\) 最近。
+\end{proof}
+
+在 Hilbert 空间中可取
+\(f(v)=\langle v,x-c_0\rangle/\|x-c_0\|\)，于是第二个条件成为
+\[
+ \operatorname{Re}\langle c-c_0,x-c_0\rangle\leq0\quad(c\in C).
+\]
+这就是凸集最近点的变分条件。若 \(C\) 为线性子空间，沿正负和复数倍方向变化后，
+它化为通常的正交条件。
+
+\subsection{边界处的线性支撑及其限制}
+\label{b1:subsec:C10603}
+
+距离公式处理的是集外点。若点已在凸集边界上，则正距离消失；
+仍想找到非零泛函在该点取得最大值，需要另看集合是否具有内部。
+
+\begin{proposition}\label{b1:prop:C1-boundary-support}
+设 \(C\subset X\) 为闭凸集，内部非空。对每个边界点 \(c_0\in\partial C\)，
+存在非零 \(f\in X^*\)，使
+\[
+ \operatorname{Re}f(c)\leq\operatorname{Re}f(c_0)\quad(c\in C).
+\]
+\end{proposition}
+\begin{proof}
+内部 \(U=\operatorname{int}C\) 为开凸集，且不含 \(c_0\)。
+开凸集分离定理给出非零 \(f\)，使
+\(\operatorname{Re}f(u)\leq\operatorname{Re}f(c_0)\) 对每个 \(u\in U\) 成立。
+只须证明 \(\overline U=C\)。
+取 \(u_0\in U\) 和 \(r>0\)，使 \(B(u_0,r)\subset C\)。
+对任意 \(c\in C\) 与 \(0<t<1\)，凸性给出
+\[
+ B\bigl((1-t)c+tu_0,tr\bigr)
+ =(1-t)c+tB(u_0,r)\subset C.
+\]
+故 \((1-t)c+tu_0\in U\)，当 \(t\downarrow0\) 时趋于 \(c\)。
+由 \(C\) 闭及 \(f\) 连续，结论成立。
+\end{proof}
+
+内部条件在无穷维中不能随意删除。例如在实 \(\ell^2\) 中取闭凸集
+\[
+ C=\{\,x:x_j\geq0\ \text{对每个 }j\,\}.
+\]
+它的内部为空：任一 \(x\in C\) 的坐标趋零，因此任意小的球中都能把某个远处坐标
+改成负值。取 \(c_0=(2^{-j})_{j\geq1}\)，这是一个边界点。
+若 \(f\) 满足上面的支撑不等式，则对每个固定 \(j\)，向量
+\(c_0\pm te_j\) 在充分小的正 \(t\) 下都属于 \(C\)，从而 \(f(e_j)=0\)。
+有限支撑向量稠密，连续性迫使 \(f=0\)。这个点不存在所要求的非零泛函。
+
+分离集外点、统一分离两个集合、在边界点作线性支撑，是三个不同的问题。
+它们都来自 Hahn--Banach 定理，却分别依赖空球、紧性和内部条件。
+使用时先确认需要哪一种结论，往往比记住一个笼统的“分离定理”名称更有用。
