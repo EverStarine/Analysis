@@ -2,4 +2,122 @@
 \chapter{拓扑与度量空间基础}
 \label{b1:app:A}
 
-% TODO: 按计划纲要展开本附录。
+\begin{chapterabstract}
+本附录收集全卷使用的拓扑基础，重点不在列举公理，而在解释几种常用构造：用 Cauchy 列补齐空间，用有限球网辨认紧性，用可数基控制开集，用闭集分离构造连续函数。最后把这些工具结合成波兰空间的稳定性，说明它为什么适合测度收敛问题。
+\end{chapterabstract}
+
+\begin{learninggoals}
+\begin{itemize}
+\item\label{b1:item:A1-goal-metric}区分拓扑性质与特定度量的完备性，掌握完备化及其延拓性质。
+\item\label{b1:item:A1-goal-compact}能以全有界性和完备性证明紧性，知道局部紧、相对紧与有界的区别。
+\item\label{b1:item:A1-goal-countable}理解可分性、第二可数性和乘积拓扑中各自的可数化步骤。
+\item\label{b1:item:A1-goal-extension}能从 Urysohn 引理推出 Tietze 延拓，并为波兰空间的开子集构造相容完备度量。
+\end{itemize}
+\end{learninggoals}
+
+\begin{chapterguide}
+本附录可在第\ref{b1:ch:01}章之前作为基础补读，也可按正文需要查阅。度量与紧性部分只需实数完备性和集合运算；乘积部分回顾第\ref{b1:sec:0903}节已经证明的 Tychonoff 定理，不把其证明转嫁到本附录。最后一节用到的 Baire 纲定理可在第\ref{b1:sec:0803}节找到。一般点集拓扑可继续读熊金城《点集拓扑讲义》第五版\cite[第3、5--7章]{Xiong2020Topology}；与分析的联系可对照 Hunter、Nachtergaele《Applied Analysis》\cite[第1、2、4章]{Hunter2001Applied}，测度论常用的拓扑事实可查 Fremlin《Measure Theory》\cite[卷四，4A2]{Fremlin2016Measure}。
+\end{chapterguide}
+
+\input{Appendices/AppendixA/SectionA101}
+\input{Appendices/AppendixA/SectionA102}
+\input{Appendices/AppendixA/SectionA103}
+\input{Appendices/AppendixA/SectionA104}
+\input{Appendices/AppendixA/SectionA105}
+
+\begin{chaptersummary}
+拓扑记录邻域和连续性，完备性则还记录 Cauchy 逼近所使用的距离。紧度量空间恰好是完备而全有界的空间；可数基使开覆盖和 Borel 生成过程可以可数化。正规性把闭集分离转化为连续函数，并由几何递减的误差构造闭集上的连续延拓。波兰空间允许选择合适的完备度量，但并不自动局部紧；使用紧支集方法和使用概率测度紧族方法时，应分别检查所需假设。
+\end{chaptersummary}
+
+\BookExercises
+
+% 以下八题均自拟；用于辨析假设、构造拓扑反例和连接函数空间，不改编未核实的原题。
+\begin{exercise}\label{b1:ex:A1-contraction}
+在 \(X=\mathbb Q\cap[1,2]\) 上取通常距离，令 \(T(x)=(x+2)/(x+1)\)。证明 \(T(X)\subset X\)，且 \(T\) 是常数不超过 \(1/4\) 的压缩映射，但在 \(X\) 中没有不动点。说明其迭代为何构成 Cauchy 列，并在完备化中找到极限。
+\end{exercise}
+\begin{solution}
+函数 \(T\) 在 \([1,2]\) 上取值于 \([4/3,3/2]\)，并保持有理数。直接相减可得
+\[
+ |T(x)-T(y)|=\frac{|x-y|}{(x+1)(y+1)}\le\frac14|x-y|.
+\]
+不动点方程为 \(x^2=2\)，故在 \(X\) 中无解。令 \(x_{n+1}=T(x_n)\)，则相邻差被 \(4^{-n}|x_1-x_0|\) 控制，尾部差以几何级数估计，故是 Cauchy 列。\(X\) 的完备化为 \([1,2]\)；连续延拓的极限满足同一方程，因而为 \(\sqrt2\)。这说明不动点论证需要完备性，不能只检查压缩常数。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:A1-l2-local}
+证明 \(\ell^2\) 的闭单位球有界且完备，但不紧；进一步证明 \(\ell^2\) 不局部紧。另一方面，说明它仍是波兰空间。
+\end{exercise}
+\begin{solution}
+空间 \(\ell^2\) 完备，闭单位球也完备。标准单位向量两两距离为 \(\sqrt2\)，因此球不全有界，不能紧。若零点有紧邻域，该邻域包含半径 \(r>0\) 的开球，便包含两两距离为 \(r/\sqrt2\) 的点 \((r/2)e_n\)，与紧集全有界矛盾。平移说明每一点均无紧邻域。有限支集有理数序列在实 \(\ell^2\) 中可数且稠密；复情形改用有理实部和虚部。因此它完备、可分，是波兰空间。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:A1-product-sequences}
+设 \(I\) 不可数，在 \(X=\{0,1\}^I\) 上取乘积拓扑。令 \(\Sigma\) 为所有至多在可数个坐标取值 \(1\) 的点。证明 \(\Sigma\) 稠密且对序列极限封闭，却不是闭集。说明为何不能用序列检测这个空间中的闭性。
+\end{exercise}
+\begin{solution}
+每个非空基本开集只限制有限个坐标；在其余坐标取零便给出 \(\Sigma\) 中的一点，所以 \(\Sigma\) 稠密。若 \(x_n\in\Sigma\) 且 \(x_n\rightarrow x\)，各 \(x_n\) 的非零坐标集之并 \(J\) 可数。对 \(i\notin J\)，全部 \(x_n(i)=0\)，逐坐标收敛给出 \(x(i)=0\)，故 \(x\in\Sigma\)。但恒等于 \(1\) 的点不属于 \(\Sigma\)，所以它是稠密真子集而不闭。这个例子不与度量空间的序列判据矛盾，反而说明此不可数乘积不能具有给出其拓扑的度量。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:A1-distance-test}
+设 \(Y\) 为非空可分度量空间，\(D\subset Y\) 为可数稠密集，\((S,\mathcal A)\) 为可测空间。证明 \(f:S\rightarrow Y\) Borel 可测，当且仅当对每个 \(a\in D\)，实函数 \(s\mapsto d(f(s),a)\) 可测。
+\end{exercise}
+\begin{solution}
+必要性由距离函数连续得到。反之，假设这些实函数可测，则所有以 \(D\) 中的点为中心、正有理半径的球的反像可测。它们是可数拓扑基；任意开集为其中至多可数个成员的并，故其反像可测。再由 Borel \(\sigma\)-代数的生成性质得到 \(f\) 可测。可数性用在开集到可测并的步骤，不是用于任意不可数并也可测的错误推断。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:A1-vector-extension}
+设 \(X\) 正规，\(F\subset X\) 闭，\(f:F\rightarrow\mathbb R^m\) 连续且 \(|f|\le1\)。证明存在连续延拓 \(g:X\rightarrow\mathbb R^m\)，仍满足 \(|g|\le1\)。为什么逐坐标延拓后还需要一步处理？
+\end{exercise}
+\begin{solution}
+由 Tietze 定理逐坐标延拓，得连续 \(G:X\rightarrow\mathbb R^m\)。即使每个坐标都限制在 \([-1,1]\)，也只能直接保证 \(|G|\le\sqrt m\)，而不是单位球值域。定义连续映射
+\[
+ R(v)=\frac{v}{\max\{1,|v|\}},\quad g=R\circ G.
+\]
+它在闭单位球上为恒等，故 \(g=f\) 于 \(F\)，并且全域取值于该球。复值函数可视为 \(m=2\) 的情形，同样保持圆盘而不只保持外接正方形。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:A1-hyperspace}
+设 \((X,d)\) 为非空紧度量空间，以 \(\mathcal K(X)\) 表示全部非空紧子集。对 \(A,B\in\mathcal K(X)\) 规定
+\[
+ d_H(A,B)=\max\left\{\sup_{a\in A}d(a,B),\ \sup_{b\in B}d(b,A)\right\}.
+\]
+证明 \(d_H\) 为度量，并证明 \(\mathcal K(X)\) 在此度量下紧。
+\end{exercise}
+\begin{solution}
+各上确界有限；若 \(d_H(A,B)=0\)，闭性说明 \(A\subset B\) 且 \(B\subset A\)。由
+\(d(a,C)\le d(a,B)+\sup_{b\in B}d(b,C)\)
+及反向同类估计，取上确界得到三角不等式。
+
+给定 \(X\) 的有限 \(\varepsilon\)-网 \(\{x_1,\ldots,x_N\}\)。对每个非空紧集 \(A\)，保留那些 \(\varepsilon\)-球与 \(A\) 相交的网点，所得非空有限集 \(F_A\) 满足 \(d_H(A,F_A)\le\varepsilon\)。这样的有限集只有有限多个，故 \(\mathcal K(X)\) 全有界。
+
+设 \((A_n)\) 是 \(d_H\)-Cauchy 列。令
+\[
+ A=\bigcap_{N=1}^{\infty}\overline{\bigcup_{n\ge N}A_n}.
+\]
+右侧是紧空间 \(X\) 中递减非空闭集的交，所以 \(A\) 非空且紧。给定 \(\varepsilon>0\)，选 \(N\)，使 \(n,m\ge N\) 时 \(d_H(A_n,A_m)<\varepsilon\)。固定 \(n\ge N\) 与 \(a\in A_n\)，在每个 \(A_m\)、\(m\ge N\)，选 \(a_m\) 距 \(a\) 不超过 \(\varepsilon\)。取趋于无穷的指标的收敛子列，极限属于 \(A\)，所以 \(d(a,A)\le\varepsilon\)。反过来，每个 \(b\in A\) 可由 \(b_j\in A_{m_j}\)、\(m_j\to\infty\)，逼近；故 \(d(b,A_n)\le\varepsilon\)。于是 \(d_H(A_n,A)\le\varepsilon\)。这证明完备，结合全有界性得到紧性。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:A1-polish-image}
+给出一个波兰空间及其连续满射，使像空间在给定拓扑下不是波兰空间。另证明无理数集不是实数直线中的可数并闭集。
+\end{exercise}
+\begin{solution}
+取带离散距离的 \(\mathbb N\)，它完备且可分。把自然数按某个枚举映到带通常拓扑的 \(\mathbb Q\)，任何这样的映射都连续，因为离散空间的任意子集开；像 \(\mathbb Q\) 不是波兰空间。
+
+若无理数集是 \(\mathbb R\) 中可数并闭集，则 \(\mathbb Q\) 是可数交开集，按\cref{b1:prop:app-polish-operations}应为波兰空间，矛盾。这并不否定连续像的可分性，而是表明可完备度量化性不会被一般连续满射保留。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:A1-local-functions}
+在 \(C(\mathbb R^d)\) 上令 \(K_n=\{\,x:|x|\le n\,\}\)，并设
+\[
+ \rho(f,g)=\sum_{n=1}^{\infty}2^{-n}\min\{1,\|f-g\|_{C(K_n)}\}.
+\]
+证明此度量的收敛恰为在每个紧集上一致收敛，并证明它完备且可分。
+\end{exercise}
+\begin{solution}
+每个紧集包含于某个 \(K_n\)，因此在所有 \(K_n\) 上的一致收敛等价于在每个紧集上一致收敛。级数的有限前段与尾和估计又说明它等价于 \(\rho\)-收敛。
+
+把函数送到其限制族，得到
+\[
+ C(\mathbb R^d)\longrightarrow\prod_{n\ge1}C(K_n).
+\]
+像由闭条件 \(f_{n+1}|_{K_n}=f_n\) 给出。满足这些条件的连续函数族能拼成全域连续函数，因为 \(K_n^\circ\) 覆盖整个空间；所以像正好是这个闭子空间。各 \(C(K_n)\) 在一致范数下完备且可分，可数乘积的标准截断度量拉回恰为 \(\rho\)。闭子空间完备，可分度量子空间可分，由此得到两项结论。这里得到的是紧集上一致收敛的完备距离，不是要求函数全域有界的一致范数。
+\end{solution}

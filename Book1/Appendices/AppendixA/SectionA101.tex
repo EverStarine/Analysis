@@ -1,0 +1,113 @@
+% !TeX root = ../../Book1.tex
+\section{距离、拓扑与完备化}
+\label{b1:sec:A101}
+
+分析中经常先给出一种距离，再谈极限、连续与闭集。但这些概念对距离的依赖并不相同：连续性只看开集，Cauchy 条件却比较尚未知道极限的两个点。本节把这一区别落实到构造中。以下用 \(d\) 表示距离；正文中同一个字母常表示欧氏空间的维数，两种用法由所讨论的空间区分。
+
+\subsection{开集与连续性}
+\label{b1:subsec:A10101}
+
+\begin{definition}\label{b1:def:app-metric}
+设 \(X\) 为集合。若函数 \(d:X\times X\rightarrow[0,\infty)\) 满足
+\[
+ d(x,y)=0\ \Longleftrightarrow\ x=y,\quad
+ d(x,y)=d(y,x),\quad d(x,z)\le d(x,y)+d(y,z),
+\]
+则称 \(d\) 为 \(X\) 上的\term[duliang]{度量}[metric]，称 \((X,d)\) 为度量空间。开球记作 \(B_d(x,r)=\{\,y:d(x,y)<r\,\}\)。若 \(U\subset X\) 的每个点都包含在一个仍位于 \(U\) 内的开球中，则称 \(U\) 为开集。
+\end{definition}
+
+赋范空间中的 \(d(x,y)=\|x-y\|\) 是例子，任意集合上的离散距离也是例子：不同点的距离规定为 \(1\)。反过来，度量空间不必允许向量相加。讨论曲线、测度的状态空间时，这一点尤其有用。
+
+开集对任意并、有限交封闭，并包含 \(\varnothing\) 与 \(X\)。有限交的断言只需在交集中的一点取有限个半径的最小值；对无穷交，这个最小值可能变成零。例如 \(\bigcap_n(-1/n,1/n)=\{0\}\) 不是实数中的开集。
+
+\begin{definition}\label{b1:def:app-topology}
+集合 \(X\) 的一个子集族 \(\mathcal T\)，若包含 \(\varnothing,X\)，并对任意并与有限交封闭，则称为 \(X\) 上的\term[tuopu]{拓扑}[topology]。其成员称为开集，开集的补集称为闭集。若集合 \(V\) 包含点 \(x\) 的一个开集邻域，则称 \(V\) 为 \(x\) 的邻域。包含 \(E\) 的全部闭集之交是其闭包 \(\overline E\)；包含于 \(E\) 的全部开集之并是其内部 \(E^\circ\)。
+\end{definition}
+
+子集 \(A\subset X\) 自带的子空间拓扑，由所有 \(A\cap U\)、\(U\in\mathcal T\) 组成。因此“闭”必须说明相对于谁。例如 \([1/2,1)\) 在 \((0,1)\) 中闭，却不在 \(\mathbb R\) 中闭。若 \(X\) 来自度量，子空间拓扑正是限制距离所得的拓扑。
+
+\begin{proposition}\label{b1:prop:app-continuity}
+映射 \(f:X\rightarrow Y\) 连续，当且仅当每个开集 \(V\subset Y\) 的反像 \(f^{-1}(V)\) 开。这里连续指：对每个 \(x\) 及 \(f(x)\) 的邻域 \(V\)，存在 \(x\) 的邻域 \(U\)，使 \(f(U)\subset V\)。当源与目标均为度量空间时，这又等价于保持所有收敛序列的极限。
+\end{proposition}
+\begin{proof}
+若反像开，则 \(f^{-1}(V^\circ)\) 给出所需邻域。反之，若 \(V\) 开，对反像中的每个点可取映入 \(V\) 的开邻域，反像是这些邻域的并。
+
+连续映射保持序列极限，直接由邻域定义得到。若度量空间间的映射在 \(x\) 不连续，则存在 \(\varepsilon>0\)，对每个 \(n\) 都能取 \(x_n\in B_d(x,1/n)\)，而目标距离满足 \(d_Y\bigl(f(x_n),f(x)\bigr)\ge\varepsilon\)。这个序列反驳保持极限的性质。
+\end{proof}
+
+最后一步依靠可数个球控制一点附近的全部邻域。一般拓扑空间不能不加条件地以序列代替连续性的定义；第\ref{b1:sec:0901}节引入网，正是为了处理这种局限。
+
+\subsection{相同拓扑与不同的 Cauchy 列}
+\label{b1:subsec:A10102}
+
+\begin{definition}\label{b1:def:app-complete}
+若对每个 \(\varepsilon>0\)，存在 \(N\)，使 \(m,n\ge N\) 时 \(d(x_m,x_n)<\varepsilon\)，则称 \((x_n)\) 为 Cauchy 列。若空间中每个 Cauchy 列都收敛到本空间的点，则称它\term[wanbei]{完备}[complete]。
+若对每个 \(\varepsilon>0\) 可取不依赖于点的 \(\delta>0\)，使 \(d_X(x,y)<\delta\) 蕴含 \(d_Y\bigl(f(x),f(y)\bigr)<\varepsilon\)，则称 \(f\) 一致连续。
+\end{definition}
+
+度量 \(d\) 与 \(\min(1,d)\) 给出相同的开集，也有相同的 Cauchy 列，因为小于 \(1\) 的距离阈值没有改变。相同拓扑本身却不足以推出后一结论。在 \((0,1)\) 上，通常距离与
+\[
+ \rho(x,y)=\left|\log\frac{x}{1-x}-\log\frac{y}{1-y}\right|
+\]
+给出同一拓扑；映射 \(x\mapsto\log\frac{x}{1-x}\) 把后一空间等距送到 \(\mathbb R\)，所以 \(\rho\) 完备。通常距离下的 \(1/(n+1)\) 是 Cauchy 列，在 \(\rho\) 下不是。故完备性首先是选定距离的性质。
+
+\begin{proposition}\label{b1:prop:app-complete-closed}
+度量空间的完备子空间必为闭集；完备度量空间的闭子空间仍完备。一个 Cauchy 列只要有收敛子列，整个序列便收敛于同一点。
+\end{proposition}
+\begin{proof}
+对最后一句，取子列中的一项同时足够接近极限，又足够深入 Cauchy 尾部，以三角不等式控制全部尾项。
+若 \(A\) 完备而 \(x\in\overline A\)，从 \(A\cap B_d(x,1/n)\) 取 \(a_n\)。它是 Cauchy 列，在 \(A\) 中有极限；极限唯一，故 \(x\in A\)。反之，闭子集中的 Cauchy 列先在全空间收敛，闭性再把极限留在子集中。
+\end{proof}
+
+“闭子空间完备”不能省掉全空间完备。例如 \(\mathbb Q\) 在自身中既开又闭，却有趋向 \(\sqrt2\) 的 Cauchy 列而没有相应极限。完备化就是把这种缺失的极限系统地补入。
+
+\subsection{由 Cauchy 列补入极限}
+\label{b1:subsec:A10103}
+
+\begin{theorem}[度量空间的完备化]\label{b1:thm:app-completion}
+每个度量空间 \(X\) 都可等距嵌入一个完备度量空间 \(\widehat X\)，并在其中稠密。这样的空间在保持 \(X\) 中各点的等距同构意义下唯一。
+\end{theorem}
+\begin{proof}
+空空间无需补点。以下设 \(X\ne\varnothing\)，令 \(\mathcal C\) 为 \(X\) 中所有 Cauchy 列组成的集合。在 \(\mathcal C\) 上规定
+\[
+ (x_n)\sim(y_n)\quad\Longleftrightarrow\quad d(x_n,y_n)\longrightarrow0.
+\]
+三角不等式给出传递性，因此这确为等价关系。令 \(\widehat X=\mathcal C/{\sim}\)，定义
+\[
+ \widehat d\bigl([(x_n)],[(y_n)]\bigr)=\lim_{n\to\infty}d(x_n,y_n).
+\]
+由
+\[
+ |d(x_n,y_n)-d(x_m,y_m)|
+ \le d(x_n,x_m)+d(y_n,y_m)
+\]
+可知右侧极限存在。再用同一估计比较两组代表，极限不随代表改变。对称性与三角不等式从逐项距离传到极限，零距离的情形恰好是同一个等价类。于是 \(\widehat d\) 是度量。
+
+把 \(x\) 送到常值列的等价类，得到等距嵌入 \(i:X\rightarrow\widehat X\)。若 \(\xi=[(x_n)]\)，则
+\[
+ \widehat d\bigl(i(x_m),\xi\bigr)=\lim_{n\to\infty}d(x_m,x_n)
+ \longrightarrow0\quad(m\to\infty).
+\]
+所以 \(i(X)\) 稠密。
+
+为证完备，设 \((\xi_m)\) 是 \(\widehat X\) 中的 Cauchy 列。由稠密性取 \(a_m\in X\)，使 \(\widehat d\bigl(i(a_m),\xi_m\bigr)<1/m\)。三角不等式说明 \((a_m)\) 是 \(X\) 中的 Cauchy 列。令 \(\xi=[(a_m)]\)，上段已证 \(i(a_m)\rightarrow\xi\)，故 \(\xi_m\rightarrow\xi\)。
+
+最后设 \(j:X\rightarrow Y\) 是另一稠密等距嵌入，且 \(Y\) 完备。规定
+\[
+ U([(x_n)])=\lim_{n\to\infty}j(x_n).
+\]
+完备性保证极限存在，等距性保证良定义并保持距离。对任意 \(y\in Y\)，用 \(j(X)\) 中的序列逼近 \(y\)，可知 \(U\) 满射。它在稠密子集上满足 \(U\circ i=j\)，故也被这一条件唯一确定。
+\end{proof}
+
+这称为\term[wanbeihua]{完备化}[completion]。构造并没有给每个 Cauchy 列增加一个不同的新点：彼此距离趋零的列必须识别，否则同一个极限会被重复加入。实数可由有理数作这样的构造；函数空间中用范数完成时，背后的距离步骤也相同，额外的线性运算还需验证能传到等价类。
+
+\begin{proposition}[一致连续延拓]\label{b1:prop:app-uniform-extension}
+设 \(A\) 在度量空间 \(X\) 中稠密，\(Y\) 完备。每个一致连续映射 \(f:A\rightarrow Y\) 都有唯一的一致连续延拓 \(F:X\rightarrow Y\)。若 \(f\) 是 \(L\)-Lipschitz 的，则 \(F\) 保持相同常数。
+\end{proposition}
+\begin{proof}
+对 \(x\in X\)，取 \(a_n\in A\) 趋向 \(x\)。一致连续性将 Cauchy 列送到 Cauchy 列，故可令 \(F(x)=\lim_n f(a_n)\)。两列交错后仍是 Cauchy 列，说明定义与逼近列无关。它显然延拓 \(f\)，连续延拓的唯一性也由稠密性得到。
+
+给定 \(\varepsilon>0\)，以 \(\varepsilon/2\) 在 \(A\) 上的一致连续性选取 \(\delta>0\)。若 \(d_X(x,y)<\delta/3\)，可分别用 \(a_n,b_n\) 逼近它们，尾部满足 \(d_X(a_n,b_n)<\delta\)。传到极限得 \(d_Y(F(x),F(y))\le\varepsilon/2<\varepsilon\)。Lipschitz 断言则把原不等式直接传到极限。
+\end{proof}
+
+单纯连续不够：\(x\mapsto1/x\) 在稠密子集 \((0,1]\subset[0,1]\) 上连续，却不能延拓到端点。这里的障碍是逼近端点时没有有限极限，与稍后从闭集延拓的 Tietze 定理是不同问题。

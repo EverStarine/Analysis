@@ -1,0 +1,92 @@
+% !TeX root = ../../Book1.tex
+\section{紧性、有限逼近与局部紧性}
+\label{b1:sec:A102}
+
+紧性把无穷的信息压缩成有限的信息。开覆盖的定义最适合一般拓扑，度量空间中的有限球网则把它变成一种可以构造的逼近。本节说明这两种表述怎样联系，也说明只控制集合的直径为什么远远不够。
+
+\subsection{开覆盖与有限球网}
+\label{b1:subsec:A10201}
+
+\begin{definition}\label{b1:def:app-compact}
+若拓扑空间 \(K\) 的每个开覆盖都有有限子覆盖，则称 \(K\) 紧。对 \(A\subset X\)，紧性按子空间拓扑理解。若度量空间 \(A\) 对每个 \(\varepsilon>0\) 都能被有限个以 \(A\) 中的点为中心、半径为 \(\varepsilon\) 的球覆盖，则称 \(A\) \term[quanyoujie]{全有界}[totally bounded]，这些中心组成一个有限 \(\varepsilon\)-网。
+\end{definition}
+
+一个有限 \(\varepsilon\)-网不必逼近所有尺度；要求是每个正尺度都有一个有限网，其点数可以随尺度缩小而增加。例如区间中的等分点可以给出有限网，而无穷离散空间在半径小于 \(1\) 时必须逐点覆盖。后者有界，却不全有界。
+
+\begin{lemma}\label{b1:lem:app-compact-properties}
+紧空间的闭子集紧，紧空间在连续映射下的像紧；Hausdorff 空间的紧子集闭。连续双射从紧空间到 Hausdorff 空间时，逆映射也连续。
+\end{lemma}
+\begin{proof}
+对闭子集的开覆盖，加入其补集便覆盖全空间；取有限子覆盖后删去补集即可。对连续像的开覆盖取反像，便归结为定义。
+
+设 \(K\subset X\) 紧而 \(x\notin K\)。对每个 \(y\in K\)，用 Hausdorff 性取互不相交的开邻域 \(U_y\ni y\)、\(V_y\ni x\)。有限个 \(U_{y_j}\) 覆盖 \(K\)，而 \(\bigcap_jV_{y_j}\) 是 \(x\) 的开邻域且不交 \(K\)。所以 \(K\) 闭。最后，连续双射把源空间的闭集送到目标中的紧集，因而送到闭集，恰好说明逆映射连续。
+\end{proof}
+
+\begin{theorem}[度量空间的紧性判据]\label{b1:thm:app-metric-compact}
+对度量空间 \(X\)，下列条件等价：
+\begin{equivalences}
+\item\label{b1:item:app-compact-cover}\(X\) 紧；
+\item\label{b1:item:app-compact-sequence}每个序列都有在 \(X\) 中收敛的子列；
+\item\label{b1:item:app-compact-complete} \(X\) 完备且全有界。
+\end{equivalences}
+\end{theorem}
+\begin{proof}
+先由\itemref{b1:item:app-compact-cover}推出\itemref{b1:item:app-compact-sequence}。给定序列，令 \(F_n=\overline{\{x_j:j\ge n\}}\)。这些非空闭集递减；若交为空，补集构成没有有限子覆盖的开覆盖。因此有 \(x\in\bigcap_nF_n\)。递归选取严格递增的 \(j_k\)，使 \(d(x_{j_k},x)<1/k\)。
+
+由\itemref{b1:item:app-compact-sequence}，Cauchy 列有收敛子列，于是整列收敛。若不全有界，则某个 \(\varepsilon>0\) 下不存在有限网。依次在前面各点的 \(\varepsilon\)-球之外选新点，得到两两距离至少为 \(\varepsilon\) 的序列，与存在收敛子列矛盾。这得到\itemref{b1:item:app-compact-complete}。
+
+现在假设\itemref{b1:item:app-compact-complete}。每个序列都有 Cauchy 子列：先取覆盖 \(X\) 的有限个半径 \(1/2\) 球，选一个含无穷多项的球；在这些项中再用有限个半径 \(1/4\) 球选择，依次进行。每次保留的指标集包含于上一次，取对角子列，其足够后的两项同处一个半径 \(2^{-k}\) 的球。完备性给出收敛子列。
+
+还需从子列性质回到开覆盖。给定开覆盖 \(\mathcal U\)，若对每个 \(n\) 都存在 \(x_n\)，使球 \(B_d(x_n,1/n)\) 不包含在任何一个成员中，取子列 \(x_{n_j}\rightarrow x\) 并取 \(U\in\mathcal U\)、\(B_d(x,r)\subset U\)。当 \(j\) 足够大，\(d(x_{n_j},x)<r/2\) 且 \(1/n_j<r/2\)，对应小球便包含于 \(U\)，矛盾。因此存在 \(\delta>0\)，使每个半径为 \(\delta\) 的球均位于某个覆盖成员内。用有限个半径 \(\delta/2\) 的球覆盖 \(X\)，再为各中心选择包含其 \(\delta\)-球的成员，就得到有限子覆盖。
+\end{proof}
+
+证明的最后一步常称为 Lebesgue 数论证。它不是说开覆盖中某个成员含有整个空间，而是说每个足够小的球都能被某个成员容纳，允许成员依球心变化。
+
+\begin{corollary}\label{b1:cor:app-relative-compact}
+完备度量空间中的子集 \(A\) 相对紧，当且仅当它全有界。
+\end{corollary}
+\begin{proof}
+若 \(\overline A\) 紧，则有限小球覆盖限制到 \(A\) 后，把与 \(A\) 相交的球心移到交点，半径至多扩大一倍，便得全有界性。反之，\(A\) 的有限 \(\varepsilon/2\)-网给出 \(\overline A\) 的有限 \(\varepsilon\)-网；闭包又完备，故紧。
+\end{proof}
+
+例如 \((0,1)\subset\mathbb R\) 相对紧但不完备，所缺极限被其闭包补上。在非完备的环境 \(\mathbb Q\) 中，\(\mathbb Q\cap[0,1]\) 全有界，其在 \(\mathbb Q\) 内的闭包却不紧。因此相对紧性仍与所在环境有关。
+
+\subsection{紧性提供的一致控制}
+\label{b1:subsec:A10202}
+
+\begin{proposition}[Heine--Cantor]\label{b1:prop:app-heine-cantor}
+从紧度量空间 \(K\) 到度量空间 \(Y\) 的连续映射一致连续。特别地，紧空间上的连续实函数有界，并取到最大值与最小值。
+\end{proposition}
+\begin{proof}
+若一致连续性不成立，则存在 \(\varepsilon>0\) 与点对 \(x_n,y_n\in K\)，使 \(d_K(x_n,y_n)<1/n\)，但像点距离至少为 \(\varepsilon\)。取 \(x_n\) 的收敛子列，三角不等式说明对应的 \(y_n\) 趋于同一点，连续性给出矛盾。连续实函数的像是 \(\mathbb R\) 中的紧集，因此有界且闭；非空时它的上、下确界均属于像。
+\end{proof}
+
+这里的极值断言约定 \(K\ne\varnothing\)。它在几何测度论中常用来控制一个紧参数块上的导数，但不能据此给整个非紧区域一个统一常数。局部估计到整体估计之间，还需要覆盖或穷竭。
+
+\subsection{紧邻域与可数穷竭}
+\label{b1:subsec:A10203}
+
+沿用第\ref{b1:sec:1101}节的约定，局部紧 Hausdorff 空间中的每一点有紧邻域。局部紧与全局紧不同，例如 \(\mathbb R^d\) 不是紧空间；局部紧也不保证可用可数个紧集覆盖，不可数离散空间便是反例。
+
+\begin{lemma}\label{b1:lem:app-local-shrink}
+在局部紧 Hausdorff 空间中，对 \(x\in U\)、\(U\) 开，可取开集 \(V\)，使 \(x\in V\subset\overline V\subset U\)，并且 \(\overline V\) 紧。若 \(K\subset U\) 紧，可取同样的 \(V\) 满足 \(K\subset V\subset\overline V\subset U\)。
+\end{lemma}
+\begin{proof}
+取 \(x\) 的紧邻域 \(N\)。集合 \(F=N\setminus U\) 紧。用 Hausdorff 性逐点分开 \(x\) 与 \(F\)，再从 \(F\) 一侧取有限覆盖，可得互不相交的开集 \(O\ni x\)、\(W\supset F\)。于是 \(V=O\cap N^\circ\) 满足
+\(\overline V\subset N\setminus W\subset U\)，且闭包作为 \(N\) 的闭子集紧。若 \(F\) 为空，直接取 \(O=X\)、\(W=\varnothing\)。紧集版本由有限个这样的 \(V\) 取并得到。
+\end{proof}
+
+这是\cref{b1:lem:lch-shrink}所用的缩小邻域步骤。这里把它放回拓扑背景，以便看清 Hausdorff 条件与紧性的不同任务。
+
+\begin{proposition}\label{b1:prop:app-compact-exhaustion}
+设 \(X\) 为局部紧 Hausdorff 空间，而且每个开覆盖都有可数子覆盖。则存在紧集列 \((K_n)\)，满足
+\[
+ K_n\subset K_{n+1}^{\circ},\quad X=\bigcup_{n=1}^{\infty}K_n^\circ.
+\]
+对任意紧集 \(K\subset X\)，有 \(K\subset K_n^\circ\) 对某个 \(n\) 成立。
+\end{proposition}
+\begin{proof}
+以相对紧开集覆盖 \(X\)，再选可数子覆盖 \(V_1,V_2,\ldots\)。先选相对紧开集 \(W_1\) 包含 \(\overline V_1\)。已构造 \(W_n\) 后，用上一引理覆盖紧集 \(\overline W_n\cup\overline V_{n+1}\)，得到相对紧开集 \(W_{n+1}\) 包含它。令 \(K_n=\overline W_n\)，则 \(K_n\subset W_{n+1}\subset K_{n+1}^\circ\)，且这些内部覆盖 \(X\)。紧集 \(K\) 被有限个内部覆盖，因其递增，可取最大的一个。
+\end{proof}
+
+因此穷竭不是随便罗列一列紧集：内部包含关系保证任意固定紧集最终落在某一层内部，给截断、局部弱收敛与对角抽取留出余地。第\ref{b1:sec:A103}节将证明第二可数性提供这里所需的可数子覆盖条件。

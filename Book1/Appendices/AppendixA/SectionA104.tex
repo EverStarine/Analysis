@@ -1,0 +1,123 @@
+% !TeX root = ../../Book1.tex
+\section{闭集分离与连续延拓}
+\label{b1:sec:A104}
+
+在度量空间中，点到集合的距离天然给出连续函数。一般拓扑没有距离，分离闭集的开邻域便成为替代工具。第\ref{b1:sec:1101}节已经在局部紧空间中构造过紧支集截断；本节给出正规空间上的一般分离原理，并由一列逐次改进的近似建立连续延拓。
+
+\subsection{正规性与邻域缩小}
+\label{b1:subsec:A10401}
+
+\begin{definition}\label{b1:def:app-normal}
+若 \(X\) 的每个单点集闭，称它为 \(T_1\) 空间。若任意不同两点有互不相交的开邻域，称它为 Hausdorff 空间。若 \(X\) 为 \(T_1\) 空间，而且任意两个不交闭集均可分别包含在两个不交开集中，则称 \(X\) 为\term[zhenggui-kongjian]{正规空间}[normal space]。
+\end{definition}
+
+本书把 \(T_1\) 条件包含在正规空间的定义中；有些文献把它单列，读者比较分离公理时须先检查这一约定。以下实际的函数构造只用分开闭集的条件。
+
+\begin{lemma}\label{b1:lem:app-normal-shrink}
+正规空间中，若 \(F\subset U\)、\(F\) 闭且 \(U\) 开，则存在开集 \(V\)，使 \(F\subset V\subset\overline V\subset U\)。每个度量空间正规，每个紧 Hausdorff 空间也正规。
+\end{lemma}
+\begin{proof}
+把不交闭集 \(F\) 与 \(X\setminus U\) 用不交开集 \(V,W\) 分开，则 \(\overline V\subset X\setminus W\subset U\)。
+
+在度量空间中，单点闭。对非空不交闭集 \(A,B\)，函数 \(d(x,A)=\inf_{a\in A}d(x,a)\) 满足
+\[
+ |d(x,A)-d(y,A)|\le d(x,y),
+\]
+因而连续，且零点集恰为 \(A\)。取
+\[
+ U=\{\,x:d(x,A)<d(x,B)/2\,\},\quad
+ V=\{\,x:d(x,B)<d(x,A)/2\,\}.
+\]
+它们分别包含 \(A,B\)，且不相交。有空集时直接处理即可。
+
+若 \(X\) 紧且 Hausdorff，先把一点 \(a\notin B\) 与闭集 \(B\) 分开：逐点选择不交邻域，在 \(B\) 一侧取有限覆盖，再把 \(a\) 一侧的邻域取交。对另一个紧闭集 \(A\) 中的点重复这一步，在 \(A\) 一侧再取有限覆盖，便得到分别包含 \(A,B\) 的不交开集。Hausdorff 性也保证 \(T_1\)。
+\end{proof}
+
+注意两个不交闭集之间的距离可以为零；上面的证明没有声称存在统一的正距离。例如平面中横轴与曲线 \(y=e^{-x}\) 是不交闭集，它们在无穷远处越来越近。距离函数在每个点的分离足以工作，不需要全局间隔。
+
+\subsection{Urysohn 引理}
+\label{b1:subsec:A10402}
+
+\begin{theorem}[Urysohn]\label{b1:thm:app-urysohn}
+设 \(X\) 正规，\(A,B\subset X\) 是不交闭集。存在连续函数 \(u:X\rightarrow[0,1]\)，使 \(u=0\) 于 \(A\)，\(u=1\) 于 \(B\)。
+\end{theorem}
+\begin{proof}
+若有一个集合为空，取相应常函数。以下设二者非空。令 \(U_1=X\setminus B\)，利用缩小引理取开集 \(U_0\)，使 \(A\subset U_0\subset\overline U_0\subset U_1\)。在 \(0,1\) 之间插入 \(1/2\)，令
+\(\overline U_0\subset U_{1/2}\subset\overline U_{1/2}\subset U_1\)。
+继续在每两个相邻的已选二进有理数之间插入中点，并对闭集 \(\overline U_r\) 与开集 \(U_s\) 应用缩小引理。这样对所有二进有理数
+\(\mathcal D=\{\,k2^{-n}:0\le k\le2^n,\ n\ge0\,\}\)
+得到开集 \(U_r\)，满足
+\[
+ \overline U_r\subset U_s\quad(0\le r<s\le1).
+\]
+定义
+\[
+ u(x)=\inf\bigl(\{\,r\in\mathcal D:x\in U_r\,\}\cup\{1\}\bigr).
+\]
+若 \(x\in A\)，则 \(x\in U_0\)，故 \(u(x)=0\)；若 \(x\in B\)，它不属于任何 \(U_r\)，故 \(u(x)=1\)。
+
+对 \(0<t\le1\)，有
+\[
+ \{u<t\}=\bigcup_{\substack{r\in\mathcal D\\r<t}}U_r.
+\]
+对 \(0\le t<1\)，还有
+\[
+ \{u>t\}
+ =\bigcup_{\substack{r\in\mathcal D\\t<r<1}}
+       \bigl(X\setminus\overline U_r\bigr).
+\]
+为核对后一等式，若 \(x\notin\overline U_r\)，则所有 \(s<r\) 都不可能满足 \(x\in U_s\)，于是 \(u(x)\ge r>t\)。反之，若 \(u(x)>t\)，取 \(t<r<s<u(x)\) 的二进有理数。此时 \(x\notin U_s\)，由 \(\overline U_r\subset U_s\) 得 \(x\notin\overline U_r\)。两类逆像均开，端点之外的逆像又是空集或全空间，故 \(u\) 连续。
+\end{proof}
+
+关键不是只让 \(U_r\subset U_s\)，而是把闭包也放进去。这个余量同时控制严格下水平集与严格上水平集，从而得到连续性。Fremlin《Measure Theory》卷四\cite[4A2F(d)]{Fremlin2016Measure}列有这一引理和下面的延拓结论，适合查阅不同分离公理下的版本。
+
+若只在度量空间中分开两个闭集，可直接写
+\[
+ u(x)=\frac{d(x,A)}{d(x,A)+d(x,B)}.
+\]
+分母在每个点为正，因为闭集 \(A,B\) 不交。一般正规空间上的二进插值，是在没有距离时构造同类函数的方法。
+
+\subsection{Tietze 延拓及值域控制}
+\label{b1:subsec:A10403}
+
+下面的结果称为\term*[tietze-yantuo]{Tietze 延拓定理}[Tietze extension theorem]。%
+\footnote{熊金城《点集拓扑讲义》第五版\cite[第6.3节]{Xiong2020Topology}使用“Tie\-tze 扩张定理”这一名称，故同时登记“Tietze 扩张定理”\termidx[tietze-kuozhang]{Tietze 扩张定理}供检索。此处“扩张”与“延拓”指同一闭集上的连续函数延伸问题。}
+
+\begin{theorem}[Tietze]\label{b1:thm:app-tietze}
+设 \(X\) 正规，\(F\subset X\) 闭。每个连续实函数 \(f:F\rightarrow\mathbb R\) 都有连续延拓 \(g:X\rightarrow\mathbb R\)。若 \(f\) 的值域包含于闭区间 \([a,b]\)，可让 \(g\) 也取值于该区间。
+\end{theorem}
+\begin{proof}
+先证明一个逼近步骤。若 \(h:F\rightarrow[-M,M]\) 连续，\(M>0\)，则闭集
+\[
+ A=\{\,x\in F:h(x)\le-M/3\,\},\quad
+ B=\{\,x\in F:h(x)\ge M/3\,\}
+\]
+也是 \(X\) 中的闭集，且互不相交。用 Urysohn 引理构造 \(v:X\rightarrow[-M/3,M/3]\)，使 \(v=-M/3\) 于 \(A\)，\(v=M/3\) 于 \(B\)。在 \(F\) 上逐段比较可得 \(|h-v|\le2M/3\)：两端区间利用规定的端点值，中间区间利用 \(h,v\) 均落在 \([-M/3,M/3]\)。
+
+设 \(|f|\le M\)。以 \(h_0=f\) 开始，递归把上述步骤用于当前余项，得到连续函数 \(v_n:X\rightarrow\mathbb R\)、\(n\ge0\)，使
+\[
+ \|v_n\|_\infty\le\frac M3\left(\frac23\right)^n,\quad
+ \left|f-\sum_{j=0}^{n}v_j\right|
+ \le M\left(\frac23\right)^{n+1}\quad\hbox{于 }F.
+\]
+级数 \(g=\sum_{n\ge0}v_n\) 一致收敛，故连续；余项估计保证 \(g=f\) 于 \(F\)，几何级数又给出 \(|g|\le M\)。平移、缩放便处理一般闭区间；退化区间取常函数。
+
+对可能无界的 \(f\)，令 \(h=f/(1+|f|)\)，这是 \(F\) 上取值于 \((-1,1)\) 的连续函数。由有界情形，先延拓为 \(H:X\rightarrow[-1,1]\)。集合 \(E=\{\,x:|H(x)|=1\,\}\) 闭且不交 \(F\)。再用 Urysohn 引理取 \(\eta:X\rightarrow[0,1]\)，使 \(\eta=1\) 于 \(F\)、\(\eta=0\) 于 \(E\)。令 \(G=\eta H\)。在 \(E\) 上 \(G=0\)，在其外 \(|G|<1\)，所以
+\[
+ g=\frac{G}{1-|G|}
+\]
+是整个 \(X\) 上有限的连续实函数，且在 \(F\) 上等于 \(f\)。
+\end{proof}
+
+无界情形不能把一个 \([-1,1]\) 值延拓直接代入逆变换：它可能在 \(F\) 之外取到端点。第二次分离恰好把这些端点消掉，同时不改变 \(F\) 上的值。
+
+这里也没有断言延拓唯一，或给出一个线性的延拓选择。比如从闭集 \(\{0\}\subset\mathbb R\) 延拓零函数，有无穷多个选择。与\cref{b1:prop:app-uniform-extension}相比，一个在闭集上，另一个在稠密集上；闭性提供“可以自由补函数”的空间，稠密性则提供唯一性。
+
+\begin{corollary}\label{b1:cor:app-compact-extension}
+设 \(X\) 为局部紧 Hausdorff 空间，\(K\subset X\) 紧，且 \(U\supset K\) 开。每个连续实函数 \(f:K\rightarrow\mathbb R\) 都可延拓为 \(g\in C_c(X)\)，满足 \(\operatorname{supp}g\subset U\) 以及 \(\|g\|_\infty\le\|f\|_\infty\)。
+\end{corollary}
+\begin{proof}
+选相对紧开集 \(V\)，使 \(K\subset V\subset\overline V\subset U\)。紧 Hausdorff 空间 \(\overline V\) 正规；由 Tietze 定理把 \(f\) 延拓到 \(\overline V\)，不增加上确界范数。再由\cref{b1:lem:lch-cutoff}取 \(0\le\chi\le1\)，使 \(\chi=1\) 于 \(K\) 且 \(\operatorname{supp}\chi\subset V\)。在 \(V\) 内令 \(g=\chi f_{\mathrm{ext}}\)，在 \(V\) 外补零。由于 \(\chi\) 的支集是 \(V\) 内的紧集，拼接处函数在邻域中恒为零，故延拓连续，并有要求的支集及范数控制。
+\end{proof}
+
+此推论只用一个紧邻域的正规性，不要求整个局部紧 Hausdorff 空间正规。这也是在一般 Radon 测度论中宜先把问题局部化的原因。
