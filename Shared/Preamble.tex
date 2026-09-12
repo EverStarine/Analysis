@@ -319,17 +319,34 @@
 % 章、节、小节的引用：整个“第 X 章／第 X 节／第 X 小节”都是跳转链接。
 % 链接必须走 hyperref 的标签解析机制（目标名 chapter.N／section.N.M）；
 % 早先用 \hyperlink{裸标签名} 指向不存在的目标，链接全部失效。
-% 章号用 \ref* 取标签中的真实编号：不可用 \thechapter（那是当前计数器，
-% 在编导读、前言或跨章引用时会给出错误章号，表现为“第零章”）。
-% 章号目前为阿拉伯数字。汉字章号（第五章）需要另行记录汉字号，见提交
-% 6fdbe63 的说明：在 \@chapter 上打补丁、或逐章加标签后用 \edef 组合，
-% 都会与 ctex 的章标题机制或 hyperref 的 \edef 展开冲突，暂不采用。
+%
+% 章号用汉字（“第五章”）且必须取“被引用那一章”的编号；\thechapter 是当前
+% 计数器，在编导读、前言或跨章引用时会给出错误章号（表现为“第零章”）。
+% hyperref 下 \ref 受保护、\getrefnumber 在 \edef 中又失真，故改由 zref 记录：
+% 各章在 \chapter 之后调用 \BookChapterNumber，把汉字号存为 zref 属性；
+% \zref@extract 可展开，能在 \edef 中安全取出。
+\usepackage[user,hyperref]{zref}
+\makeatletter
+\zref@newprop{analysischapternum}{}
+% 在 \chapter 之后调用，参数即该章标签；把本章汉字号存为 zref 属性
+\NewDocumentCommand{\BookChapterNumber}{m}{%
+  \zref@setcurrent{analysischapternum}{\chinese{chapter}}%
+  \zref@labelbyprops{zch@#1}{analysischapternum}%
+}
+% 取出某章标签对应的汉字号（\zref@extract 可展开，能在 \edef 中安全使用）
+\NewDocumentCommand{\AnalysisChineseChapterOf}{m}{%
+  \zref@extract{zch@#1}{analysischapternum}}
+\makeatother
 \NewDocumentCommand{\secref}{m}{%
   \begingroup\xeCJKsetup{CJKecglue={}}\hyperref[#1]{第\ref*{#1}节}\endgroup}
 \NewDocumentCommand{\subsecref}{m}{%
   \begingroup\xeCJKsetup{CJKecglue={}}\hyperref[#1]{第\ref*{#1}小节}\endgroup}
 \NewDocumentCommand{\chapref}{m}{%
-  \begingroup\xeCJKsetup{CJKecglue={}}\hyperref[#1]{第\ref*{#1}章}\endgroup}
+  \begingroup
+  \xeCJKsetup{CJKecglue={}}%
+  \edef\AnalysisChapterDisp{第\AnalysisChineseChapterOf{#1}章}%
+  \hyperref[#1]{\AnalysisChapterDisp}%
+  \endgroup}
 
 % 算法采用带编号的步骤，并明确标出输入与输出。
 \floatname{algorithm}{算法}
