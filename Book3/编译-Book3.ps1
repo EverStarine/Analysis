@@ -25,8 +25,8 @@ $book     = 'Book3'
 $bookDir  = $PSScriptRoot                 # 本脚本位于该卷目录内
 $root     = Split-Path -Parent $bookDir  # 项目根目录
 $buildDir = Join-Path $root "tmp/build/$book"
-$relOut   = Join-Path $root "tmp/build/$book"   # 必须用绝对路径：相对路径会随
-                                                      # 调用方的工作目录解析到错误位置
+$relOut   = "../tmp/build/$book"   # 必须用相对路径：biber 无法打开含中文的绝对路径
+                                    # （两者须配合：下面以 Set-Location 固定工作目录为卷目录）
 $style    = Join-Path $root 'Shared/analysis.ist'
 $target   = Join-Path $root "$book.pdf"
 $log      = Join-Path $buildDir "$book.log"
@@ -73,8 +73,9 @@ function Invoke-FirstPass {
     return $LASTEXITCODE
 }
 
-Set-Location -LiteralPath $bookDir   # 校正工作目录，使相对资源（../Shared）可解析
-Push-Location -LiteralPath $bookDir
+# 关键：把进程工作目录固定为卷目录。这样相对输出目录 ../tmp/build/BookN 才解析正确，
+# 且相对资源 ../Shared/References.bib 可用；又不使用含中文的绝对路径（biber 会失败）。
+Set-Location -LiteralPath $bookDir
 try {
     Write-Host ""
     Write-Host "[1/5] 首轮 XeLaTeX" -ForegroundColor Cyan
