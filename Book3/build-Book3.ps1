@@ -1,20 +1,15 @@
 ﻿# 分析学 · 第三卷 一键编译（专用）
 #
-# 放在本卷目录内，专用于 Book3。在 TeXstudio 中配置一次即可一键整卷编译：
+# 放在本卷目录内，专用于 Book3。一键整卷编译顺序为：
 #     xelatex → biber → 三类索引 → xelatex ×2 → 校验 → 更新根目录 Book3.pdf
 # 单独运行 XeLaTeX 不会显示参考文献与索引，必须走完整流程。
 #
-# TeXstudio 配置（选项 → 构建 → 用户命令，命令与工作目录按下面填写）：
-#     命令:
-#       "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -ExecutionPolicy Bypass -File "C:\\Users\\75054\\Documents\\Codex\\分析学\\Book3\\编译-Book3.ps1" -NoPause > txs:///messages 2>&1
-#     工作目录: C:\\Users\\75054\\Documents\\Codex\\分析学\\Book3
-#
-# 说明：命令用 PowerShell 的绝对路径与脚本的绝对路径，并把输出重定向到 TeXstudio
-# 的消息面板；-NoPause 使脚本不等待回车（重定向后没有窗口接收输入）。若希望看到
-# 控制台窗口，去掉 “> txs:///messages 2>&1” 与 “-NoPause” 即可。
+# TeXstudio 无需另建用户命令：Book3.tex 顶部的 TXS-program 魔法注释会在按“编译”
+# 时调用 build-Book3.bat -NoPause；TeXstudio 以根文档目录为工作目录。若刚修改过
+# 魔法注释，请重新打开根文档使其生效。“构建并查看”会打开项目根目录 Book3.pdf。
 #
 # 命令行用法（在本目录下，会等待回车以便查看结果）：
-#     powershell -ExecutionPolicy Bypass -File .\编译-Book3.ps1
+#     powershell -ExecutionPolicy Bypass -File .\build-Book3.ps1
 #
 # param 必须位于所有可执行语句之前，故紧随文件头注释。
 param([switch]$NoPause)
@@ -26,7 +21,7 @@ $bookDir  = $PSScriptRoot                 # 本脚本位于该卷目录内
 $root     = Split-Path -Parent $bookDir  # 项目根目录
 $buildDir = Join-Path $root "tmp/build/$book"
 $relOut   = "../tmp/build/$book"   # 必须用相对路径：biber 无法打开含中文的绝对路径
-                                    # （两者须配合：下面以 Set-Location 固定工作目录为卷目录）
+                                    # （两者须配合：下面以 Push-Location 固定工作目录为卷目录）
 $style    = Join-Path $root 'Shared/analysis.ist'
 $target   = Join-Path $root "$book.pdf"
 $log      = Join-Path $buildDir "$book.log"
@@ -75,7 +70,7 @@ function Invoke-FirstPass {
 
 # 关键：把进程工作目录固定为卷目录。这样相对输出目录 ../tmp/build/BookN 才解析正确，
 # 且相对资源 ../Shared/References.bib 可用；又不使用含中文的绝对路径（biber 会失败）。
-Set-Location -LiteralPath $bookDir
+Push-Location -LiteralPath $bookDir
 try {
     Write-Host ""
     Write-Host "[1/5] 首轮 XeLaTeX" -ForegroundColor Cyan
@@ -111,19 +106,30 @@ finally { Pop-Location }
 
 Write-Host ""
 Write-Host "[3/5] 三类索引" -ForegroundColor Cyan
+$builtIndexes = @()
 foreach ($idxName in 'chinese', 'foreign', 'symbols') {
     $idx = Join-Path $buildDir "$idxName.idx"
     if (-not (Test-Path -LiteralPath $idx) -or (Get-Item -LiteralPath $idx).Length -eq 0) {
-        Say "$idxName 索引为空，跳过" 'DarkGray'
+        # 当前源码没有该类条目时，清除旧构建可能留下的索引，避免误排陈旧内容。
+        foreach ($extension in 'ind', 'ilg') {
+            $stale = Join-Path $buildDir "$idxName.$extension"
+            if (Test-Path -LiteralPath $stale) { Remove-Item -LiteralPath $stale -Force }
+        }
+        Say "$idxName 索引为空（当前源码未登记条目），跳过 makeindex" 'DarkGray'
         continue
     }
     Push-Location -LiteralPath $buildDir
     try { Step 'makeindex' @('-q', '-s', $style, "$idxName.idx") "makeindex（$idxName）" }
     finally { Pop-Location }
+    $ind = Join-Path $buildDir "$idxName.ind"
+    if (-not (Test-Path -LiteralPath $ind) -or (Get-Item -LiteralPath $ind).Length -eq 0) {
+        Fail "$idxName 索引未生成有效的 .ind 文件：$ind"
+    }
     $ilg = Get-Content -Raw -LiteralPath (Join-Path $buildDir "$idxName.ilg")
     if ($ilg -notmatch '\b0 rejected\b' -or $ilg -notmatch '\b0 warnings\b') {
         Fail "$idxName 索引存在拒收条目或警告：$buildDir\$idxName.ilg"
     }
+    $builtIndexes += $idxName
     Say "$idxName 索引：零拒收、零警告" 'Green'
 }
 
@@ -148,11 +154,21 @@ $nErr  = ([regex]::Matches($text, '(?m)^! ')).Count
 $nRef  = ([regex]::Matches($text, 'There were undefined references')).Count
 $nCite = ([regex]::Matches($text, 'Citation .* undefined')).Count
 $nMiss = ([regex]::Matches($text, 'Missing character')).Count
-Say "编译错误 $nErr ／ 未定义引用 $nRef ／ 未定义引文 $nCite ／ 缺字 $nMiss"
+$nMulti = ([regex]::Matches($text, 'There were multiply-defined labels')).Count
+$nRerun = ([regex]::Matches($text, 'Label\(s\) may have changed|Rerun to get cross-references right')).Count
+Say "编译错误 $nErr ／ 未定义引用 $nRef ／ 未定义引文 $nCite ／ 缺字 $nMiss ／ 重复标签 $nMulti ／ 待重编 $nRerun"
 $pages = (Select-String -LiteralPath $log -Pattern 'Output written on' | Select-Object -Last 1).Line
 Say $pages.Trim()
 
-if ($nErr -gt 0 -or $nRef -gt 0 -or $nCite -gt 0) { Fail "存在错误或未定义引用，不覆盖成品。日志：$log" }
+foreach ($idxName in $builtIndexes) {
+    if (-not $text.Contains("$idxName.ind")) {
+        Fail "$idxName.ind 已生成，但最终 XeLaTeX 未将它排入 PDF。"
+    }
+}
+
+if ($nErr -gt 0 -or $nRef -gt 0 -or $nCite -gt 0 -or $nMiss -gt 0 -or $nMulti -gt 0 -or $nRerun -gt 0) {
+    Fail "构建尚未通过完整校验，不覆盖成品。日志：$log"
+}
 
 Copy-Item -LiteralPath $pdf -Destination $target -Force
 Say "已更新成品：$target" 'Green'

@@ -151,7 +151,7 @@
 % 与 unicode-math 命令在页眉标记中发生冲突。
 % 偶数页页眉显示“章序＋章标题”（如“第一章 集合系、可测空间与可测映射”）；
 % 章序与章标题之间以 \quad 分隔，间距与奇数页节眉“节号＋节标题”之间一致；
-% 附录章的章序由 \CTEXthechapter 按卷附录编号（如 A1）给出。
+% 附录章的章序由 \CTEXthechapter 按本卷附录字母（如 A）给出。
 \renewcommand{\chaptermark}[1]{\markboth{\CTEXthechapter\quad #1}{}}
 \renewcommand{\sectionmark}[1]{\markright{\thesection\quad #1}}
 % 章末习题不编号，但进入习题页后应覆盖上一节留下的奇数页页眉；
@@ -171,6 +171,21 @@
 \usepackage[unicode,colorlinks=true,linkcolor=AnalysisBlue,
   citecolor=AnalysisBlue,urlcolor=AnalysisBlue,pdfborder={0 0 0}]{hyperref}
 \usepackage{bookmark}
+
+% unicode-math 会调整原始 Unicode 希腊字母的类别码。若把这些字母直接写进
+% \texorpdfstring 的书签分支，辅助文件回读时类别码不同，LaTeX 会在每一轮都
+% 误报标签发生变化。书签分支统一写成下列可展开宏，既保留希腊字母显示，
+% 又使写入和回读的标签文本稳定。
+\newcommand{\AnalysisPdfAlpha}{α}
+\newcommand{\AnalysisPdfGamma}{Γ}
+\newcommand{\AnalysisPdfLambda}{λ}
+\newcommand{\AnalysisPdfMu}{μ}
+\newcommand{\AnalysisPdfPi}{π}
+\newcommand{\AnalysisPdfSigma}{σ}
+\newcommand{\AnalysisPdfTheta}{θ}
+\newcommand{\AnalysisPdfXi}{ξ}
+\newcommand{\AnalysisPdfZeta}{ζ}
+
 \usepackage[nameinlink,noabbrev]{cleveref}
 
 % CTeX 2.5.10 的标题前缀宏带一个参数，而 TeX Live 2025 中 cleveref
@@ -264,13 +279,15 @@
 
 % 正文选读内容的星号属于编号而不属于标题；第二参数统一接收标签。
 \newcommand{\AnalysisOptionalMark}{\texorpdfstring{\textsuperscript{*}}{*}}
-\NewDocumentCommand{\OptionalChapter}{mm}{%
+% 可选参数只供目录与 PDF 书签使用；正文题名可借此按语义手动换行，
+% 又不把换行命令写入目录或书签。
+\NewDocumentCommand{\OptionalChapter}{O{}mm}{%
   \begingroup
   \let\AnalysisSavedTheChapter\thechapter
   \renewcommand{\thechapter}{\AnalysisSavedTheChapter\AnalysisOptionalMark}%
   \ctexset{chapter={name={第,章\AnalysisOptionalMark},
     number=\chinese{chapter},aftername=\quad}}%
-  \chapter{#1}\label{#2}%
+  \ifstrempty{#1}{\chapter{#2}}{\chapter[#1]{#2}}\label{#3}%
   \endgroup
 }
 \NewDocumentCommand{\OptionalSection}{mm}{%
@@ -353,10 +370,12 @@
 \NewDocumentCommand{\AnalysisChineseChapterOf}{m}{%
   \zref@extract{zch@#1}{analysischapternum}}
 \makeatother
+% \ref* 的分组会遮住编号末端的西文字符类别；编号前的间距可由 xeCJK
+% 自动产生，编号后的同类间距须在完整链接内部显式补回。
 \NewDocumentCommand{\secref}{m}{%
-  \begingroup\xeCJKsetup{CJKecglue={}}\hyperref[#1]{第\ref*{#1}节}\endgroup}
+  \hyperref[#1]{第\ref*{#1}\CJKecglue 节}}
 \NewDocumentCommand{\subsecref}{m}{%
-  \begingroup\xeCJKsetup{CJKecglue={}}\hyperref[#1]{第\ref*{#1}小节}\endgroup}
+  \hyperref[#1]{第\ref*{#1}\CJKecglue 小节}}
 \NewDocumentCommand{\chapref}{m}{%
   \begingroup
   \xeCJKsetup{CJKecglue={}}%
@@ -398,23 +417,51 @@
   title=待 Sol Ultra 复核,fonttitle=\bfseries
 }
 \NewDocumentEnvironment{chapterabstract}{}
-  {\begin{quote}\small\color{AnalysisGray}}
-  {\end{quote}}
-% 引诗专用：居中对齐，中文用定理类环境的楷体。
-% 不可直接改 quote 环境——chapterabstract 复用了它，改了会连带影响章摘要。
+  {\list{}{\rightmargin\leftmargin}\item\relax\small\color{AnalysisGray}}
+  {\endlist}
+% 引诗与短引文统一居中，中文使用定理类环境的楷体；章摘要已在上方独立定义，
+% 不继承这里的字形与对齐方式。
+\RenewDocumentEnvironment{quote}{}
+  {\list{}{\rightmargin\leftmargin}\item\relax\centering\kaishu}
+  {\endlist}
+% 引诗环境保留为语义清楚的兼容入口，版式与 quote 完全一致。
 \NewDocumentEnvironment{poemquote}{}
-  {\begin{quote}\centering\kaishu}
+  {\begin{quote}}
   {\end{quote}}
+% 引诗末尾的作者或出处在引诗区域内右对齐。
+\NewDocumentCommand{\quoteattribution}{m}{%
+  \par\smallskip
+  {\raggedleft #1\par}%
+}
 
 \makeindex[name=chinese,title=中文索引,columns=2,intoc,options=-q]
 \makeindex[name=foreign,title=外文索引,columns=2,intoc,options=-q]
 \makeindex[name=symbols,title=符号索引,columns=2,intoc,options=-q]
 
-% 普通形式显示原文；星号形式仅在正文隐藏原文，两种形式都登记中外文索引。
+% 有条目时读入 makeindex 生成的真实索引；尚无条目时仍保留书后结构与目录入口。
+% 一键脚本会在 .idx 为空时删除旧 .ind，故这里不会误排上一次构建的陈旧索引。
+\NewDocumentCommand{\PrintBookIndex}{m m}{%
+  \IfFileExists{#1.ind}{%
+    \printindex[#1]%
+  }{%
+    \chapter*{#2}%
+    \addcontentsline{toc}{chapter}{#2}%
+  }%
+}
+
+% 所有术语在每卷首次正式定义或引入时都显示完整原文，并登记中外文索引。
+% 星号形式与缺失原文均视为错误，防止旧的隐藏原文规则被重新带回源码。
+% 定理类正文处于楷体；Fandol 楷体没有粗体字形，直接 \textbf 会退回普通楷体。
+% 术语主称因此局部恢复正文的宋体字族，再使用与普通正文一致的粗体。
 \NewDocumentCommand{\term}{s O{} m o}{%
-  \textbf{\textup{#3}}%
-  \IfBooleanF{#1}{%
-    \IfNoValueF{#4}{\textnormal{(\textup{#4})}}%
+  \IfBooleanT{#1}{%
+    \PackageError{analysis}{\string\term* 已取消}{请改用 \string\term，并保留末尾的原文注解。}%
+  }%
+  {\songti\textbf{\textup{#3}}}%
+  \IfNoValueTF{#4}{%
+    \PackageError{analysis}{术语缺少原文注解}{每个术语首次正式定义或引入时都必须写成 \string\term[排序键]{中文主称}[原文]。}%
+  }{%
+    \textnormal{(\textup{#4})}%
   }%
   \ifstrempty{#2}{\index[chinese]{#3}}{\index[chinese]{#2@#3}}%
   \IfNoValueF{#4}{\index[foreign]{#4}}%
@@ -456,6 +503,43 @@
 \crefname{table}{表}{表}
 \crefname{algorithm}{算法}{算法}
 
+% cleveref 会在自己的分组中排出“定义3.1.5”一类完整链接；分组结束后，
+% xeCJK 无法再从末端识别出西文数字，因而不会在紧随其后的汉字前插入
+% 与“义”和“3”之间相同的 \CJKecglue。这里只在下一个源码记号确为
+% CJK 正文字时补回同一种间距；空格、控制序列以及中英文标点均不处理，
+% 从而不在“定义3.1.5，”或“定义3.1.5.”前制造额外空白。
+\NewCommandCopy{\AnalysisOriginalCref}{\cref}
+\NewCommandCopy{\AnalysisOriginalCrefCapital}{\Cref}
+\ExplSyntaxOn
+\cs_new_protected:Npn \analysis_cref_maybe_cjk_glue:
+  { \peek_after:Nw \analysis_cref_maybe_cjk_glue_aux: }
+\cs_new_protected:Npn \analysis_cref_maybe_cjk_glue_aux:
+  {
+    \token_if_space:NF \l_peek_token
+      {
+        \token_if_cs:NF \l_peek_token
+          {
+            \xeCJK_if_same_class:NNT \l_peek_token 中
+              { \CJKecglue }
+          }
+      }
+  }
+\RenewDocumentCommand{\cref}{s m}
+  {
+    \IfBooleanTF{#1}
+      { \AnalysisOriginalCref*{#2} }
+      { \AnalysisOriginalCref{#2} }
+    \analysis_cref_maybe_cjk_glue:
+  }
+\RenewDocumentCommand{\Cref}{s m}
+  {
+    \IfBooleanTF{#1}
+      { \AnalysisOriginalCrefCapital*{#2} }
+      { \AnalysisOriginalCrefCapital{#2} }
+    \analysis_cref_maybe_cjk_glue:
+  }
+\ExplSyntaxOff
+
 \newcommand{\MakeBookTitle}[1][封面]{%
   % 书名页在 PDF 侧栏中作为顶级入口；卷级文件可传入更具辨识性的书签名。
   \bookmarksetup{startatroot}%
@@ -482,6 +566,17 @@
   \bookmarksetup{startatroot}%
   \pdfbookmark[0]{目录}{AnalysisContents}%
   \tableofcontents
+}
+
+% 某卷首次出现表格后，在总目录之后生成表目录；无表格的卷不调用本命令。
+\newcommand{\MakeBookListOfTables}{%
+  \cleardoublepage
+  \bookmarksetup{startatroot}%
+  \pdfbookmark[0]{表目录}{AnalysisListOfTables}%
+  \begingroup
+    \renewcommand{\listtablename}{表目录}%
+    \listoftables
+  \endgroup
 }
 
 % 无编号章（序言、目录、编导读、后记、参考文献、索引等）同样写入页眉标记，
