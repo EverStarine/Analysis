@@ -60,6 +60,18 @@
 % biblatex 在书目内重绑定格式宏；在其作用域中将强调统一为正体，
 % 同时避免书名中的中文及标点仍继承旧的斜体样式。
 \AtBeginBibliography{\let\emph\textup\let\textit\textup}
+% 中文条目的责任者连接符：不可套用西文的 “and”，按 GB/T 7714—2015 的著录
+% 惯例改用逗号分隔。中文条目在 Shared/References.bib 中以 langid = {chinese}
+% 标注（含译本，因其著录信息为中文形式），西文条目保持 “and” 不变。
+% 按条目切换须在每条书目项处理时判定；\DeclareDelimFormat 的可选参数不是
+% 语言选择器（实测无效），故用 \AtEveryBibitem 配合 \iffieldequalstr。
+\AtEveryBibitem{%
+  \iffieldequalstr{langid}{chinese}%
+    {\DeclareDelimFormat{finalnamedelim}{\addcomma\space}%
+     \DeclareDelimFormat{multinamedelim}{\addcomma\space}}%
+    {\DeclareDelimFormat{finalnamedelim}{\addspace\bibstring{and}\space}%
+     \DeclareDelimFormat{multinamedelim}{\addcomma\space}}%
+}
 \usepackage{etoolbox}
 \usepackage{xparse}
 \usepackage[noautomatic]{imakeidx}
@@ -387,6 +399,11 @@
 }
 \NewDocumentEnvironment{chapterabstract}{}
   {\begin{quote}\small\color{AnalysisGray}}
+  {\end{quote}}
+% 引诗专用：居中对齐，中文用定理类环境的楷体。
+% 不可直接改 quote 环境——chapterabstract 复用了它，改了会连带影响章摘要。
+\NewDocumentEnvironment{poemquote}{}
+  {\begin{quote}\centering\kaishu}
   {\end{quote}}
 
 \makeindex[name=chinese,title=中文索引,columns=2,intoc,options=-q]
