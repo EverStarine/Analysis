@@ -71,10 +71,14 @@
 
 \ctexset{
   part = {
-    format = \centering\Huge\bfseries\color{AnalysisBlue},
-    name = {第,编},
-    number = \chinese{part},
-    aftername = \quad,
+    % 编题页分两行：第一行“第X编”，与封面“第一卷”同款（大号无衬线灰色）；
+    % 第二行编名，与封面“分析学”同款（大号无衬线蓝色粗体），字号保持原样。
+    % 第一行与行距由 number／aftername 给出，format 只负责编名的字体，
+    % 以免字号被重置或被重复输出。
+    format = {\centering\fontsize{36}{46}\selectfont\sffamily\bfseries\color{AnalysisBlue}},
+    name = {,},
+    number = {\centering\normalfont\normalsize{\Large\sffamily\color{AnalysisGray}第\chinese{part}编}},
+    aftername = {\par\vspace{0.7cm}},
     beforeskip = 0pt,
     afterskip = 2.5\baselineskip,
     pagestyle = plain
@@ -480,4 +484,13 @@
   \PackageWarning{analysis}{无法为目录节条目着色}}
 \pretocmd{\l@subsection}{\hypersetup{linkcolor=AnalysisGray}}{}{%
   \PackageWarning{analysis}{无法为目录小节条目着色}}
+% 编的目录条目与 PDF 书签须用纯文本“第X编”。ctex 的 \CTEX@part@tocline
+% 取 \CTEXthepart，而该宏带上编题页的颜色与字体设置，会把格式代码写进目录，
+% 并使书签出现 “=AnalysisGray第一编” 之类乱码。此覆盖须置于 \ctexset 之后，
+% 否则会被 ctex 重新定义；\CTEXifname 是 ctex 的内部开关，此处沿用。
+\def\CTEX@part@tocline#1#2{%
+  \CTEXifname
+    {第\chinese{part}编\hspace{1em}}%
+    {}%
+  #2}
 \makeatother
