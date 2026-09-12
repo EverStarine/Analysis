@@ -4,12 +4,20 @@
 #     xelatex → biber → 三类索引 → xelatex ×2 → 校验 → 更新根目录 Book2.pdf
 # 单独运行 XeLaTeX 不会显示参考文献与索引，必须走完整流程。
 #
-# TeXstudio 配置（选项 → 构建 → 用户命令）：
-#     命令:     powershell -NoProfile -ExecutionPolicy Bypass -File "编译-Book2.ps1"
-#     工作目录: 当前文档所在目录
+# TeXstudio 配置（选项 → 构建 → 用户命令，命令与工作目录按下面填写）：
+#     命令:
+#       "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -ExecutionPolicy Bypass -File "C:\\Users\\75054\\Documents\\Codex\\分析学\\Book2\\编译-Book2.ps1" -NoPause > txs:///messages 2>&1
+#     工作目录: C:\\Users\\75054\\Documents\\Codex\\分析学\\Book2
 #
-# 命令行用法（在本目录下）：
+# 说明：命令用 PowerShell 的绝对路径与脚本的绝对路径，并把输出重定向到 TeXstudio
+# 的消息面板；-NoPause 使脚本不等待回车（重定向后没有窗口接收输入）。若希望看到
+# 控制台窗口，去掉 “> txs:///messages 2>&1” 与 “-NoPause” 即可。
+#
+# 命令行用法（在本目录下，会等待回车以便查看结果）：
 #     powershell -ExecutionPolicy Bypass -File .\编译-Book2.ps1
+#
+# param 必须位于所有可执行语句之前，故紧随文件头注释。
+param([switch]$NoPause)
 
 $ErrorActionPreference = 'Stop'
 
@@ -26,9 +34,11 @@ $t0       = Get-Date
 function Say([string]$t, [string]$c = 'Gray') { Write-Host "  $t" -ForegroundColor $c }
 function Fail([string]$t) {
     Write-Host "  [错误] $t" -ForegroundColor Red
-    Write-Host ""
-    Write-Host "按回车键关闭…" -ForegroundColor DarkGray
-    [void](Read-Host)
+    if (-not $NoPause) {
+        Write-Host ""
+        Write-Host "按回车键关闭…" -ForegroundColor DarkGray
+        [void](Read-Host)
+    }
     exit 1
 }
 
@@ -55,11 +65,34 @@ function Step([string]$exe, [string[]]$argv, [string]$what) {
     }
 }
 
+# 首轮 XeLaTeX；若辅助文件损坏（中断的编译常留下半个 \newlabel），
+# 自动清空构建目录重试一次，避免每次都要手工清理。
+function Invoke-FirstPass {
+    & xelatex @('-interaction=nonstopmode', '-halt-on-error', "--output-directory=$relOut", "$book.tex") | Out-Null
+    return $LASTEXITCODE
+}
+
 Push-Location -LiteralPath $bookDir
 try {
     Write-Host ""
     Write-Host "[1/5] 首轮 XeLaTeX" -ForegroundColor Cyan
-    Step 'xelatex' @('-interaction=nonstopmode', '-halt-on-error', "--output-directory=$relOut", "$book.tex") '首轮 XeLaTeX'
+    $code = Invoke-FirstPass
+    if ($code -ne 0 -and (Test-Path -LiteralPath $log)) {
+        $broken = (Get-Content -LiteralPath $log -Raw) -match '@newl@bel|Runaway argument'
+        if ($broken) {
+            Say '检测到辅助文件损坏，清空构建目录后重试…' 'Yellow'
+            Remove-Item -LiteralPath $buildDir -Recurse -Force -ErrorAction SilentlyContinue
+            New-Item -ItemType Directory -Force -Path $buildDir | Out-Null
+            $code = Invoke-FirstPass
+        }
+    }
+    if ($code -ne 0) {
+        if (Test-Path -LiteralPath $log) {
+            Select-String -LiteralPath $log -Pattern '^! ' -ErrorAction SilentlyContinue |
+                Select-Object -First 5 | ForEach-Object { Write-Host ("    " + $_.Line.Trim()) -ForegroundColor Yellow }
+        }
+        Fail "首轮 XeLaTeX 失败（退出码 $code）。日志：$log"
+    }
     Say '已生成辅助文件' 'Green'
 
     Write-Host ""
@@ -123,5 +156,7 @@ Say "已更新成品：$target" 'Green'
 $secs = [int]((Get-Date) - $t0).TotalSeconds
 Write-Host ""
 Write-Host "完成，用时 $secs 秒。" -ForegroundColor Green
-Write-Host "按回车键关闭窗口…" -ForegroundColor DarkGray
-[void](Read-Host)
+if (-not $NoPause) {
+    Write-Host "按回车键关闭窗口…" -ForegroundColor DarkGray
+    [void](Read-Host)
+}
