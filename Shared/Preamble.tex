@@ -289,6 +289,15 @@
   \null
   \clearpage
 }
+% 各编的“本编导读”是星号章（不计编号、不入目录编号）。ctex 的 \@schapter
+% 调用 \CTEX@makeanchor@schapter，该宏在 ctex 中只有调用而无定义，展开为空，
+% 故星号章不产生 PDF 书签。此处显式补一个章级（第 1 层）书签，使“本编导读”
+% 与各章并列挂在所属编之下。
+\NewDocumentCommand{\BookPartGuide}{O{本编导读}}{%
+  \chapter*{#1}%
+  \pdfbookmark[1]{#1}{AnalysisPartGuide@\thepage}%
+}
+
 % “附录”只作为书签与目录中的编级节点存在，不排可见的编题页：
 % 第一个附录章直接自奇数页开始，PDF 书签中仍保留“附录”顶层节点。
 % startatroot 使根级书签与书后顶层节点分离；phantomsection 须先于
