@@ -25,7 +25,8 @@ $book     = 'Book2'
 $bookDir  = $PSScriptRoot                 # 本脚本位于该卷目录内
 $root     = Split-Path -Parent $bookDir  # 项目根目录
 $buildDir = Join-Path $root "tmp/build/$book"
-$relOut   = "../tmp/build/$book"
+$relOut   = Join-Path $root "tmp/build/$book"   # 必须用绝对路径：相对路径会随
+                                                      # 调用方的工作目录解析到错误位置
 $style    = Join-Path $root 'Shared/analysis.ist'
 $target   = Join-Path $root "$book.pdf"
 $log      = Join-Path $buildDir "$book.log"
@@ -72,6 +73,7 @@ function Invoke-FirstPass {
     return $LASTEXITCODE
 }
 
+Set-Location -LiteralPath $bookDir   # 校正工作目录，使相对资源（../Shared）可解析
 Push-Location -LiteralPath $bookDir
 try {
     Write-Host ""
