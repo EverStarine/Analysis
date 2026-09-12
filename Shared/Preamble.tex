@@ -316,17 +316,17 @@
 % 补齐列表项引用的左括号，同时只让编号本身承担链接。
 \NewDocumentCommand{\itemref}{m}{(\ref{#1})}
 
-% 章、节、小节的引用：整个“第 X 章／第 X 节／第 X 小节”都是跳转链接，
-% 与定理引用“定理 x.y”一致。章号必须是汉字（如“第八章”），故章引用取
-% \chinese{chapter} 而非 \ref；节与小节取阿拉伯编号。正文不再另写“第”“节”。
-% 中文与数字之间的空隙由 xeCJK 的 \CJKecglue 产生；\ref 是控制序列故不触发，
-% 而 \hyperref 的链接组会使它出现，因此在此局部清空该空隙，保持紧排。
+% 章、节、小节的引用：整个“第 X 章／第 X 节／第 X 小节”都是跳转链接。
+% 链接必须走 hyperref 的标签解析机制（目标名 chapter.N／section.N.M）；
+% 早先用 \hyperlink{裸标签名} 指向不存在的目标，链接全部失效。
+% 章号用 \ref* 取标签中的真实编号：不可用 \thechapter（那是当前计数器，
+% 在编导读、前言或跨章引用时会给出错误章号，表现为“第零章”）。
 \NewDocumentCommand{\secref}{m}{%
-  \begingroup\xeCJKsetup{CJKecglue={}}\hyperlink{#1}{第\ref*{#1}节}\endgroup}
+  \begingroup\xeCJKsetup{CJKecglue={}}\hyperref[#1]{第\ref*{#1}节}\endgroup}
 \NewDocumentCommand{\subsecref}{m}{%
-  \begingroup\xeCJKsetup{CJKecglue={}}\hyperlink{#1}{第\ref*{#1}小节}\endgroup}
+  \begingroup\xeCJKsetup{CJKecglue={}}\hyperref[#1]{第\ref*{#1}小节}\endgroup}
 \NewDocumentCommand{\chapref}{m}{%
-  \begingroup\xeCJKsetup{CJKecglue={}}\hyperlink{#1}{\CTEXthechapter}\endgroup}
+  \begingroup\xeCJKsetup{CJKecglue={}}\hyperref[#1]{第\ref*{#1}章}\endgroup}
 
 % 算法采用带编号的步骤，并明确标出输入与输出。
 \floatname{algorithm}{算法}
