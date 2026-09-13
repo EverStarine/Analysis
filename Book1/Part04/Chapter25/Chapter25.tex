@@ -18,7 +18,7 @@
 
 本章以前一章的连续嵌入为起点，但“连续”与“紧”所回答的问题不同。连续嵌入对每个函数给出同一常数的估计；紧嵌入则使任意有界列都能抽出强收敛子列。有限维空间中有界列自然具有这一性质，无限维函数空间却存在振荡、逃逸和集中，必须逐一控制。
 
-阅读\secref{b1:sec:2501}时可以暂时忘记弱导数，只关心怎样用有限个平均值逼近整族函数。\secref{b1:sec:2502}再将这个判据用于 Sobolev 空间，所需延拓已在第22章建立。最后一节接回第9章的自反性与弱下半连续性：先问近似问题给了哪种有界估计，再问通过极限究竟需要哪种收敛，而不是一开始就把所有收敛方式混为一谈。
+阅读\secref{b1:sec:2501}时可以暂时忘记弱导数，只关心怎样用有限个平均值逼近整族函数。\secref{b1:sec:2502}再将这个判据用于 Sobolev 空间，所需延拓已在第22章建立；其中 \(d=p=1\) 的端点只调用主线\secref{b1:sec:1604}中的实值绝对连续函数理论，不依赖随后关于度量曲线的选读部分。最后一节接回第9章的自反性与弱下半连续性：先问近似问题给了哪种有界估计，再问通过极限究竟需要哪种收敛，而不是一开始就把所有收敛方式混为一谈。
 
 平移判据可对照 Hanche-Olsen 与 Holden 的《The Kolmogorov--Riesz compactness theorem》\cite[Section 3]{HancheOlsenHolden2010Compactness}阅读；本章把其有限维投影路线中的网格平均误差和远处截断分别展开。Sobolev 紧嵌入及变分方法的系统伴读可选 Adams 与 Fournier 的《Sobolev Spaces》\cite{Adams2003Sobolev}和 Brezis 的《Functional Analysis, Sobolev Spaces and Partial Differential Equations》\cite{Brezis2011Functional}。本章的证明始终从前面已经建立的工具出发，不要求读者预先掌握第二卷的偏微分方程理论。
 
@@ -29,7 +29,7 @@
 \begin{chaptersummary}
 有限指数 \(L^p\) 的强紧性可以落实为一个具体逼近过程：先用小平移控制网格内的变化，再用尾部控制把无穷多个网格缩减为有限多个。有界弱梯度提供了整族的一致平移模；有界区域及适当延拓提供尾部控制，由此得到最基本的 Sobolev 紧嵌入。更高积分指数和较低 Hölder 指数的紧性，通过连续估计与插值进一步获得。
 
-边界规则性不是所有版本都需要的条件。一般函数可借 Lipschitz 延拓，零边界闭包可以补零，局部问题可以先截断；高阶问题则必须有真正控制相应导数的延拓。临界指数处不再保留插值余量，集中例子说明这会实质性地破坏紧性。
+边界规则性不是所有版本都需要的条件。一般全边界函数可借 Lipschitz 延拓，零边界闭包可以补零，局部问题可以先截断；只有一般高阶全边界结论需要真正控制相应阶导数的延拓，零边界高阶结论仍可直接使用补零。临界指数处不再保留插值余量，集中例子说明这会实质性地破坏紧性。
 
 弱收敛保留线性导数关系与闭凸约束，紧性能够加强像空间中的收敛，而原 Sobolev 范数的强收敛还需要额外信息。凸能量的极小值问题可以仅用弱下半连续性；需要保留单位范数等非弱闭约束，或处理合适的非凸低阶项时，强紧性才承担不可替代的任务。下一章进一步研究等价类在多小的例外集外能够确定点值，这与本章的积分范数紧性是另一层问题。
 \end{chaptersummary}
@@ -37,8 +37,100 @@
 \BookExercises
 
 % \chapref{b1:ch:25}习题临时稿；不另设 BookExercises 入口。
-% 八题均按本章及前章已建立的工具自拟，来源与实质增量逐题说明，不冒认教材原题号。
+% 十题均按本章及前章已建立的工具自拟，来源与实质增量逐题说明，不冒认教材原题号。
 % 不使用容量、谱完备性或尚未建立的偏微分方程正则性。
+
+\begin{exercise}\label{b1:ex:25-fk-model-families}
+在复空间 \(L^2(\mathbb R)\) 中考察下列三个函数族：
+\[
+ \mathcal A=\{\,\mathbf1_{[0,t]}:0\le t\le1\,\},\qquad
+ \mathcal B=\{\,\mathbf1_{[n,n+1]}:n\ge1\,\},
+\]
+\[
+ \mathcal C=\{\,e^{inx}\mathbf1_{[0,2\pi]}:n\ge1\,\}.
+\]
+逐一检查 Fréchet–Kolmogorov 定理中的范数有界、尾部一致控制和一致平移连续性，并据此判断三个函数族是否相对紧。对不相对紧的函数族，再直接给出没有 Cauchy 子列的理由。
+\end{exercise}
+% 来源：自拟基础辨析题；用区间参数、整体平移和固定支集高频振荡分别呈现判据的三种典型行为。
+\begin{solution}
+三个函数族的范数都一致有界。对 \(\mathcal A\)，所有函数支集于 \([0,1]\)，故尾部一致为零；若 \(|h|\le1\)，则
+\[
+ \|\tau_h\mathbf1_{[0,t]}-\mathbf1_{[0,t]}\|_2^2
+ =m_1\bigl((h,t+h)\mathbin{\triangle}(0,t)\bigr)
+ \le2|h|,
+\]
+端点的取舍不影响等价类。因此 \(\mathcal A\) 满足三个条件并相对紧。也可直接看到
+\[
+ \|\mathbf1_{[0,t]}-\mathbf1_{[0,s]}\|_2^2=|t-s|,
+\]
+所以它是紧区间在连续映射下的像。
+
+对 \(\mathcal B\)，同一对称差计算给出
+\[
+ \sup_{n\ge1}\|\tau_h\mathbf1_{[n,n+1]}-
+                    \mathbf1_{[n,n+1]}\|_2^2\le2|h|
+ \quad(|h|\le1),
+\]
+但尾部条件失败：给定 \(R\)，取足够大的 \(n\)，整个区间 \([n,n+1]\) 都落在 \(\{\,|x|>R\,\}\) 中，球外范数仍为 \(1\)。不同成员的支集至多交于零测端点，故其两两距离为 \(\sqrt2\)，不存在 Cauchy 子列。
+
+对 \(\mathcal C\)，所有函数具有共同支集且范数均为 \(\sqrt{2\pi}\)，所以范数与尾部条件成立。令 \(h_n=\pi/n\)。在 \([h_n,2\pi]\) 上有
+\[
+ \tau_{h_n}\bigl(e^{inx}\mathbf1_{[0,2\pi]}\bigr)
+ =e^{in(x-h_n)}=-e^{inx},
+\]
+因而
+\[
+ \bigl\|\tau_{h_n}\bigl(e^{inx}\mathbf1_{[0,2\pi]}\bigr)
+       -e^{inx}\mathbf1_{[0,2\pi]}\bigr\|_2^2
+ \ge4(2\pi-h_n).
+\]
+虽然 \(h_n\to0\)，这些平移误差不趋于零，所以一致平移连续性失败。又由区间上的指数函数正交性，对 \(n\ne m\) 有
+\[
+ \|e^{inx}\mathbf1_{[0,2\pi]}-
+       e^{imx}\mathbf1_{[0,2\pi]}\|_2^2=4\pi,
+\]
+故同样没有 Cauchy 子列。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:25-rellich-regimes}
+令 \(\Omega=(0,2\pi)\times(0,1)^2\subset\mathbb R^3\)，并设 \((u_n)\) 在 \(W^{1,2}(\Omega)\) 中有界。
+\begin{enumerate}
+\item 判断包含映射到 \(L^1(\Omega)\)、\(L^2(\Omega)\)、\(L^5(\Omega)\) 和 \(L^6(\Omega)\) 时，哪些由本章定理保证紧，哪些只保证连续而一般不紧。
+\item 若进一步有 \(u_n\rightharpoonup u\) 于 \(W^{1,2}(\Omega)\)，证明整列在每个 \(1\le q<6\) 的 \(L^q(\Omega)\) 中强收敛到 \(u\)。
+\item 取 \(u_n(x)=n^{-1}\sin(nx_1)\)。证明 \(u_n\rightharpoonup0\) 于 \(W^{1,2}(\Omega)\)，但不在该空间中强收敛。再说明增加哪一项范数信息即可恢复强收敛。
+\end{enumerate}
+\end{exercise}
+% 来源：自拟基础范围题；把三维临界指数、紧算子对弱收敛整列的作用及标准范数判据放在同一例中比较。
+\begin{solution}
+这里 \(d=3\)、\(p=2\)，故临界指数为 \(p^*=6\)。Rellich–Kondrachov 定理给出
+\[
+ W^{1,2}(\Omega)\longrightarrow L^q(\Omega)
+ \quad(1\le q<6)
+\]
+为紧嵌入，所以 \(q=1,2,5\) 都属于紧的范围。到 \(q=6\) 时，第24章只给出连续嵌入；临界集中族可以放进 \(\Omega\) 内的一个小球，表明该嵌入一般不紧，具体缩放见第\ref{b1:ex:25-critical-mass-concentration}题。
+
+若 \(u_n\rightharpoonup u\) 于 \(W^{1,2}\)，对每个固定的 \(q<6\)，上述包含映射是紧线性算子。由\cref{b1:prop:compact-weak-to-strong}，无需再抽子列便有
+\[
+ u_n\longrightarrow u\quad\text{于 }L^q(\Omega).
+\]
+
+对第三问，\(u_n\to0\) 于 \(L^2(\Omega)\)，而
+\[
+ \partial_1u_n=\cos(nx_1),\qquad
+ \partial_2u_n=\partial_3u_n=0.
+\]
+余弦列在 \(L^2(\Omega)\) 中弱收敛到零：先对光滑函数沿 \(x_1\) 分部积分，再用光滑函数在 \(L^2\) 中的稠密性和余弦列的一致范数界推广到全部测试函数。因此 \(u_n\rightharpoonup0\) 于 \(W^{1,2}(\Omega)\)。然而
+\[
+ \|\partial_1u_n\|_{L^2(\Omega)}^2
+ =\int_0^{2\pi}\cos^2(nx_1)\,\mathrm dx_1=\pi,
+\]
+所以梯度不可能强收敛到零，原 Sobolev 范数中的强收敛失败。若另知本书标准范数满足
+\[
+ \|u_n\|_{W^{1,2}(\Omega)}\longrightarrow
+ \|u\|_{W^{1,2}(\Omega)},
+\]
+则\cref{b1:prop:sobolev-weak-norm-strong}利用 Radon–Riesz 性质恢复 \(W^{1,2}\) 强收敛。
+\end{solution}
 
 \begin{exercise}\label{b1:ex:25-fk-redundant-boundedness}
 设 \(1\le p<\infty\)，\(\mathcal F\subset L^p(\mathbb R^d)\) 满足
@@ -125,7 +217,7 @@
 加权项并不要求任何一个函数具有紧支集；它要求所有函数在远处放置的质量都受到同一个界限制。导数界约束局部振荡，而这个额外条件阻止质量整体移向无穷远，两者承担不同的任务。
 \end{solution}
 
-\begin{exercise}\label{b1:ex:25-critical-mass-concentration}
+\begin{optionalexercise}\label{b1:ex:25-critical-mass-concentration}
 设 \(d\ge2\)、\(1\le p<d\)、\(p^*=dp/(d-p)\)，取非零
 \(\varphi\in C_c^\infty(B(0,1))\)。对 \(0<\varepsilon<1\)，令
 \[
@@ -152,7 +244,7 @@
       \|\nabla\varphi\|_p^p\delta_0.
  \]
 \end{enumerate}
-\end{exercise}
+\end{optionalexercise}
 % 来源：自拟；临界重缩放后进一步计算有限测度的弱极限，不止于前章排除过强范数估计。
 \begin{solution}
 每个函数光滑且具有包含在单位球内部的紧支集。变量代换给出
@@ -283,7 +375,7 @@
 因此这个例子检验的是不加边界条件且不加边界规则性时的失败，不涉及零边界版本的反例。
 \end{solution}
 
-\begin{exercise}\label{b1:ex:25-nonlinear-reaction-limit}
+\begin{optionalexercise}\label{b1:ex:25-nonlinear-reaction-limit}
 设 \(\Omega\subset\mathbb R^d\) 为有界 Lipschitz 开集，
 \(1\le p<d\)、\(1<q<p^*=dp/(d-p)\)，并令 \(q'=q/(q-1)\)。
 设实值函数 \(u_n\rightharpoonup u\) 于 \(W^{1,p}(\Omega)\)。
@@ -303,7 +395,7 @@
           \longrightarrow\int_\Omega |u|^{q-2}u v.
  \]
 \end{enumerate}
-\end{exercise}
+\end{optionalexercise}
 % 来源：自拟；次临界紧嵌入与幂次映射的定量连续性，再组合强弱配对，不把非线性操作直接套在弱极限上。
 \begin{solution}
 由\cref{b1:thm:rellich-subcritical}，嵌入
@@ -360,7 +452,7 @@
 这里先由紧性恢复了 \(u_n\) 的强收敛，才有资格把非线性项传到极限。
 \end{solution}
 
-\begin{exercise}\label{b1:ex:25-first-dirichlet-eigenvalue}
+\begin{optionalexercise}\label{b1:ex:25-first-dirichlet-eigenvalue}
 设 \(\Omega\subset\mathbb R^d\) 为非空有界开集，本题取实值函数，并定义
 \[
  \lambda_1=\inf\left\{
@@ -382,7 +474,7 @@
  \(\lambda\)，证明 \(\lambda\ge\lambda_1\)。
 \end{enumerate}
 本题的方程按弱导数解释，不要求证明特征函数的经典光滑性或全部特征函数的完备性。
-\end{exercise}
+\end{optionalexercise}
 % 来源：自拟；L2 单位球这一非凸约束下的直接法与归一化变分，不重复正文带正零阶项的无约束凸能量问题。
 \begin{solution}
 由\cref{b1:thm:zero-boundary-poincare}，存在 \(C_P<\infty\)，使
@@ -430,7 +522,7 @@
 因此取得的参数确实是所有这种弱 Dirichlet 特征值中的最小值；这个结论不需要预先建立谱分解。
 \end{solution}
 
-\begin{exercise}\label{b1:ex:25-recover-weak-limit}
+\begin{optionalexercise}\label{b1:ex:25-recover-weak-limit}
 设 \(X\) 为自反 Banach 空间，\(Y\) 为 Banach 空间，
 \(T:X\to Y\) 为有界线性单射。设 \((x_n)\) 在 \(X\) 中有界，且
 \(Tx_n\to y\) 于 \(Y\) 的范数。
@@ -446,7 +538,7 @@
  \]
  及 \(\ell^1\) 的标准单位向量列。
 \end{enumerate}
-\end{exercise}
+\end{optionalexercise}
 % 来源：自拟；由较弱空间中的强极限识别原空间弱极限，配合紧对角算子展示自反性不可由紧性替代。
 \begin{solution}
 由\cref{b1:thm:reflexive-weak-subsequence}，有界列可以抽出弱收敛子列
