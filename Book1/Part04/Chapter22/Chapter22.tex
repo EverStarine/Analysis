@@ -3,19 +3,19 @@
 \label{b1:ch:22}
 \BookChapterNumber{b1:ch:22}
 \begin{chapterabstract}
-本章研究如何把 Sobolev 函数换成便于计算的函数，同时保留弱导数与范数控制。内部紧支集允许补零和磨光；逐层分解使任意开集上的局部磨光成为全域光滑逼近。要求逼近函数具有紧支集，则产生零边界空间，并使边界几何进入问题。最后通过半空间反射、Lipschitz 图表及单位分解构造有界延拓，再用截断推导一个基本的局部能量估计。
+本章研究如何把 Sobolev 函数换成便于计算的函数，同时保留弱导数与范数控制。内部紧支集允许补零，并在有限指数下允许磨光；逐层分解使任意开集上的局部磨光成为全域光滑逼近。无穷指数下卷积仍有范数界，却一般不在 Sobolev 范数中收敛。要求逼近函数具有紧支集，则产生零边界空间，并使边界几何进入问题。最后通过半空间反射、Lipschitz 图表及单位分解构造有界延拓，再用截断推导一个基本的局部能量估计。
 \end{chapterabstract}
 
 \begin{learninggoals}
 \begin{enumerate}
-\item\label{b1:goal:22-approximation}证明内部紧支集与全空间的光滑逼近，掌握 Meyers--Serrin 定理中磨光尺度、支集和可和误差的配合。
+\item\label{b1:goal:22-approximation}在 \(1\le p<\infty\) 的范围内证明内部紧支集与全空间的光滑逼近，掌握 Meyers--Serrin 定理中磨光尺度、支集和可和误差的配合，并辨认 \(p=\infty\) 时强逼近失效的原因。
 \item\label{b1:goal:22-zero-boundary}理解 \(W_0^{1,p}\) 的闭包定义，区分补零、零端点值和内部光滑逼近，并辨认无穷指数的额外障碍。
 \item\label{b1:goal:22-extension}通过沿线绝对连续性证明半空间反射，再把反射放入 Lipschitz 边界图表，构造固定的有界线性延拓。
 \item\label{b1:goal:22-localization}追踪截断导数对估计常数的影响，用紧支集逼近合法化 Sobolev 测试函数，并推导局部梯度能量界。
 \end{enumerate}
 \end{learninggoals}
 
-\chapref{b1:ch:21}的完备性、弱乘积公式和沿坐标线绝对连续性，是本章的直接前置。光滑单位分解与磨光函数来自\chapref{b1:ch:20}。证明安排先处理开集内部，再处理边界；这样可以看清哪些结论对任意开集成立，哪些结论必须使用边界图表。
+\chapref{b1:ch:21}的完备性、弱乘积公式、沿坐标线绝对连续性与双 Lipschitz 坐标变换，是本章的直接前置。光滑单位分解与磨光函数来自\chapref{b1:ch:20}。证明安排先处理开集内部，再处理边界；这样可以看清哪些结论对任意开集成立，哪些结论必须使用边界图表。
 
 阅读时应把三种要求分开：在域内光滑、具有内部紧支集、能够延拓到边界之外。常数函数在有界区间上已经光滑，却不能由内部紧支集函数依一阶 Sobolev 范数逼近；有界 Lipschitz 区域上的函数可以受控延拓，却仍可能在 \(W^{1,\infty}\) 范数下无法磨光逼近。这些差别并不是符号细节，而会决定后续边界条件的含义。
 
@@ -37,8 +37,63 @@ Lipschitz 区域的一阶延拓来自相容的反射、坐标变换和有限拼�
 \BookExercises
 
 % \chapref{b1:ch:22}习题临时稿；由章聚合文件已有的 BookExercises 入口统一接入。
-% 八题均为自拟的工具变式，来源说明记录实际前置，不冒认教材原题编号。
+% 十题均为自拟的基础训练或工具变式，来源说明记录实际前置，不冒认教材原题编号。
 % 不使用第23章的迹或容量，也不使用后续嵌入及一般椭圆方程理论。
+
+\begin{exercise}\label{b1:ex:22-basic-sobolev-mollification}
+设 \(1\le p<\infty\)、\(u\in W^{1,p}(\mathbb R^d)\)，并令
+\(u_\varepsilon=\rho_\varepsilon*u\)。逐个导数分量证明
+\[
+ \partial_i u_\varepsilon=\rho_\varepsilon*\partial_i u,qquad
+ u_\varepsilon\longrightarrow u\quad\text{于 }W^{1,p}(\mathbb R^d).
+\]
+说明为什么同一论证不能把收敛结论直接扩展到 \(p=\infty\)。
+\end{exercise}
+% 来源：自拟；把正文全阶磨光命题降到一阶逐分量复算，训练最基本的Sobolev范数逼近。
+\begin{solution}
+由分布卷积的求导公式，
+\[
+ \partial_i u_\varepsilon
+ =\partial_i(\rho_\varepsilon*u)
+ =\rho_\varepsilon*\partial_i u.
+\]
+有限指数的逼近恒等分别给出
+\[
+ \|\rho_\varepsilon*u-u\|_p\longrightarrow0,qquad
+ \|\rho_\varepsilon*\partial_i u-\partial_i u\|_p\longrightarrow0
+ \quad(1\le i\le d).
+\]
+按本书的 \(W^{1,p}\) 范数把这有限多个分量的 \(p\) 次方相加，便得
+\(\|u_\varepsilon-u\|_{W^{1,p}}\to0\)。无穷指数下仍有卷积范数不增，但一般 \(L^\infty\) 函数不具平移连续性；即使函数本身可以一致逼近，一阶导数的跳跃也可能使 \(W^{1,\infty}\) 误差不趋零。因此上述最后一步所用的有限指数逼近恒等不能照搬。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:22-basic-even-reflection}
+在半直线 \((0,\infty)\) 上取 \(u(t)=e^{-t}\)，并在全实轴定义偶反射
+\(Eu(t)=e^{-|t|}\)。直接按测试函数定义证明
+\[
+ (Eu)'(t)=-\operatorname{sgn}(t)e^{-|t|}
+ \quad\text{几乎处处},
+\]
+特别说明原点处没有 Dirac 项。再验证有限 \(p\) 时
+\(\|Eu\|_{W^{1,p}(\mathbb R)}=2^{1/p}\|u\|_{W^{1,p}(0,\infty)}\)，而 \(p=\infty\) 时两侧相等。
+\end{exercise}
+% 来源：自拟；用显式偶反射训练跨边界弱求导及范数计算，不重复一般维半空间证明。
+\begin{solution}
+任取 \(\varphi\in C_c^\infty(\mathbb R)\)。分别在两侧积分并换元，得到
+\[
+ \begin{aligned}
+ \int_{\mathbb R}e^{-|t|}\varphi'(t)\,\mathrm dt
+ &=\int_0^\infty e^{-t}\varphi'(t)\,\mathrm dt
+   +\int_0^\infty e^{-t}\varphi'(-t)\,\mathrm dt\\
+ &=-\int_0^\infty(-e^{-t})\varphi(t)\,\mathrm dt
+   -\int_{-\infty}^0 e^t\varphi(t)\,\mathrm dt.
+ \end{aligned}
+\]
+两次分部积分在原点产生的边界项互相抵消；这正是偶反射两侧函数值相接所排除的 Dirac 项。右端等于
+\(-\int_{\mathbb R}[-\operatorname{sgn}(t)e^{-|t|}]\varphi(t)\,\mathrm dt\)，故得到所列弱导数。
+
+函数及弱导数的绝对值都等于 \(e^{-|t|}\)。有限 \(p\) 时，它们各自在全轴上的 \(p\) 次积分都是半轴上的两倍，所以 Sobolev 范数乘以 \(2^{1/p}\)；无穷端点的本性上确界在反射后不变。
+\end{solution}
 
 \begin{exercise}\label{b1:ex:22-strip-poincare}
 设非空开集 \(\Omega\subset(a,b)\times\mathbb R^{d-1}\)，其中 \(L=b-a<\infty\)。证明对每个 \(1\le p\le\infty\) 及 \(u\in W_0^{1,p}(\Omega)\)，
@@ -82,7 +137,7 @@ Lipschitz 区域的一阶延拓来自相容的反射、坐标变换和有限拼�
 这些常数只取决于条带宽度和指数，并不要求条带中每条截线与 \(\Omega\) 的交集连通。
 \end{solution}
 
-\begin{exercise}\label{b1:ex:22-w0-infty-interval}
+\begin{exercise}[\(\star\) 选读]\label{b1:ex:22-w0-infty-interval}
 设 \(I=(0,1)\)，\(u\in W^{1,\infty}(I)\)。证明下列两条等价：
 \begin{equivalences}
 \item\label{b1:item:22-w0-infty-closure}
@@ -140,7 +195,7 @@ Lipschitz 区域的一阶延拓来自相容的反射、坐标变换和有限拼�
 \end{exercise}
 % 来源：自拟；用第21章正部强连续性制造保序逼近，无穷端点反例是内部尖点，不重复正文边界障碍。
 \begin{solution}
-取实值 \(\varphi_n\in C_c^\infty(\Omega)\)，使 \(\varphi_n\to u\) 于 \(W^{1,p}\)，并令 \(s_n=\varphi_n^+\)。由\cref{b1:ex:21-positive-part-continuity}，\(s_n\to u^+=u\) 于同一空间。再令
+取实值 \(\varphi_n\in C_c^\infty(\Omega)\)，使 \(\varphi_n\to u\) 于 \(W^{1,p}\)，并令 \(s_n=\varphi_n^+\)。由\cref{b1:prop:sobolev-lattice-strong-continuity}，\(s_n\to u^+=u\) 于同一空间。再令
 \[
  v_n=\max\bigl(-s_n,\min(v,s_n)\bigr).
 \]
@@ -155,7 +210,7 @@ Lipschitz 区域的一阶延拓来自相容的反射、坐标变换和有限拼�
 \]
 最后一个等式使用了 \(|v|\le u\)。
 
-由于 \(-s_n\le v_n\le s_n\)，函数 \(v_n\) 在 \(\operatorname{supp}\varphi_n\) 之外几乎处处为零。它虽不一定光滑，却有内部紧支集。由\cref{b1:prop:compact-sobolev-smooth-approximation}，每个 \(v_n\) 都能由内部紧支集光滑函数在 \(W^{1,p}\) 中逼近，故 \(v_n\in W_0^{1,p}(\Omega)\)。闭包空间本身是闭的，再由 \(v_n\to v\) 得到所求结论。
+由于 \(-s_n\le v_n\le s_n\)，函数 \(v_n\) 在紧集 \(\operatorname{supp}\varphi_n\Subset\Omega\) 外几乎处处为零。它虽不一定光滑，却具有正文所定义的内部紧支集。由\cref{b1:prop:compact-sobolev-smooth-approximation}，每个 \(v_n\) 都能由内部紧支集光滑函数在 \(W^{1,p}\) 中逼近，故 \(v_n\in W_0^{1,p}(\Omega)\)。闭包空间本身是闭的，再由 \(v_n\to v\) 得到所求结论。
 
 对无穷端点，取非负 \(\chi\in C_c^\infty(I)\)，使它在 \(1/2\) 的一个邻域等于一，令
 \[
@@ -219,7 +274,7 @@ Lipschitz 区域的一阶延拓来自相容的反射、坐标变换和有限拼�
 半空间的作用在第一步：统一向内平移能为整个支集留下正距离。这个几何步骤在一般开集上未必可行，因此不能据本题撤去正文任意域逆命题的限制。
 \end{solution}
 
-\begin{exercise}\label{b1:ex:22-second-order-reflection}
+\begin{exercise}[\(\star\) 选读]\label{b1:ex:22-second-order-reflection}
 设 \(1\le p\le\infty\)，记 \(I=(0,\infty)\)。对 \(u\in W^{2,p}(I)\)，定义
 \[
  Eu(x)=
@@ -376,7 +431,7 @@ Lipschitz 区域的一阶延拓来自相容的反射、坐标变换和有限拼�
 将它们积分并代回，梯度项和零阶项各有一半可以吸收到左端；再将两边乘以 \(2\)，恰得题中的估计。常数 \(\lambda>0\) 在第二个吸收步骤中使用，不能在最终公式里直接令 \(\lambda=0\)。
 \end{solution}
 
-\begin{exercise}\label{b1:ex:22-dirichlet-minimum}
+\begin{exercise}[\(\star\) 选读]\label{b1:ex:22-dirichlet-minimum}
 设 \(\Omega\subset\mathbb R^d\) 为非空有界开集，实值 \(g\in H^1(\Omega)\)，记
 \[
  \mathcal A=g+H_0^1(\Omega),\quad

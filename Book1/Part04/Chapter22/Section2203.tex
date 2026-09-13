@@ -110,6 +110,8 @@
 
 先处理落在一个边界图表内的部分。此时截断函数在物理空间中光滑；拉回后只保证 Lipschitz，所以先作光滑乘法、再作坐标变换，可以直接使用已经建立的两条规则。
 
+局部构造分成五步：先在物理空间乘光滑截断，再把边界拉平；随后只越过图表盒的侧面和顶面作零延拓，此时并不跨越代表真实边界的超平面 \(t=0\)；第四步才关于 \(t=0\) 作偶反射；最后把函数推回物理空间，并在一个固定紧集以外补零到全空间。第三步排除的是图表人工边界上的跳跃，第四步处理的才是真实边界，两者不能合并成一次无条件补零。
+
 \begin{lemma}\label{b1:lem:localized-graph-extension}
 固定上一小节满足 \(\overline V\Subset U\) 的内外图表及 \(\eta\in C_c^\infty(V)\)。存在与 \(p\) 无关的线性构造 \(E_\eta\)，使每个 \(u\in W^{1,p}(\Omega)\) 都满足
 \[
@@ -121,7 +123,7 @@
  \|E_\eta u\|_{W^{1,p}(\mathbb R^d)}
  \le C_{\eta,F,p}\|u\|_{W^{1,p}(\Omega\cap U)}.
 \]
-延拓的支集包含在一个只依赖于 \(\eta,F\) 的固定紧集内，该紧集包含于 \(U\)。
+存在一个只依赖于 \(\eta,F\) 的固定紧集 \(K_{\eta,F}\Subset U\)，使每个 \(E_\eta u\) 在 \(K_{\eta,F}\) 外几乎处处为零。
 \end{lemma}
 \begin{proof}
 光滑乘法的弱 Leibniz 公式给出
@@ -134,7 +136,7 @@
 \]
 也有相应范数控制。它在 \(D^+\setminus\overline{D_1}\) 上为零，其弱导数在这一开集上同样为零。
 
-将 \(v\) 在 \(H_+\setminus D^+\) 上补零，记为 \(\widehat v\)。这里的支集可能贴着 \(t=0\)，不能把它当作紧含于 \(D^+\) 的内部函数。不过，开集
+将 \(v\) 在 \(H_+\setminus D^+\) 上补零，记为 \(\widehat v\)。这里的非零部分可能贴着 \(t=0\)，不能把它当作在某个紧含于 \(D^+\) 的集合外几乎处处为零的内部函数。不过，开集
 \[
  D^+,\quad H_+\setminus\overline{D_1}
 \]
@@ -148,17 +150,17 @@
  S=F^{-1}(\operatorname{supp}\eta)\cap\{\,t\ge0\,\},
  \quad \mathcal R(z,t)=(z,-t).
 \]
-集合 \(S\) 是 \(D_1\) 中的紧集，\(w\) 在 \(S\cup\mathcal R(S)\) 之外几乎处处为零。因此反射后的支集仍紧含于 \(D_1\)。再在 \(U\) 上把 \(w\) 推回物理空间：
+集合 \(S\) 是 \(D_1\) 中的紧集，\(w\) 在 \(S\cup\mathcal R(S)\) 之外几乎处处为零。因此反射后的非零部分仍留在 \(D_1\) 的一个紧子集中。再在 \(U\) 上把 \(w\) 推回物理空间：
 \[
  e=w\circ F^{-1}.
 \]
-双 Lipschitz 换元保证 \(e\in W^{1,p}(U)\)，且它的支集包含于固定紧集
-\(F\bigl(S\cup\mathcal R(S)\bigr)\Subset U\)。此时可用\cref{b1:lem:compact-sobolev-zero-extension}把 \(e\) 补零到整个空间，所得函数就是 \(E_\eta u\)。
+双 Lipschitz 换元保证 \(e\in W^{1,p}(U)\)，且它在固定紧集
+\(F\bigl(S\cup\mathcal R(S)\bigr)\Subset U\) 外几乎处处为零。此时可用\cref{b1:lem:compact-sobolev-zero-extension}把 \(e\) 补零到整个空间，所得函数就是 \(E_\eta u\)。
 
 在 \(\Omega\cap U\) 上，拉回坐标的最后一分量为正，所以反射并未改变原函数，故 \(E_\eta u=\eta u\)；在 \(\Omega\setminus U\) 上两者都为零。各次乘法、复合、反射与补零都是固定的线性操作。依次使用它们的范数界，就得到引理中的估计。
 \end{proof}
 
-\subsection{有界延拓}
+\subsection{有界 Lipschitz 区域上的延拓}
 \label{b1:subsec:220304}
 
 有界性使边界能够由有限个内图表覆盖，从而把局部延拓合成一个全域算子。
@@ -174,7 +176,7 @@
  \|Eu\|_{W^{1,p}(\mathbb R^d)}
  \le C_{\Omega,p}\|u\|_{W^{1,p}(\Omega)}.
 \end{equation}
-所有 \(Eu\) 均可取支集包含于同一个固定紧集。
+存在一个只依赖于 \(\Omega\) 及所选图表的固定紧集 \(K\subset\mathbb R^d\)，使所有 \(Eu\) 均在 \(K\) 外几乎处处为零。
 \end{theorem}
 \begin{proof}
 由边界的紧性，选有限个内图表 \(V_1,\ldots,V_N\) 覆盖 \(\partial\Omega\)，对应外图表记为 \(U_j\)。集合
@@ -205,7 +207,7 @@
        \|u\|_{W^{1,p}(\Omega)}.
  \end{split}
 \]
-常数包含有限个图表的 Lipschitz 界与截断函数的一阶导数界，这就证明\eqref{b1:eq:lipschitz-domain-extension-bound}。各项支集都包含在预先固定的紧集中，有限并仍紧。整个公式不随 \(p\) 改变，因此在不同指数空间的交上也给出同一个延拓。
+常数包含有限个图表的 Lipschitz 界与截断函数的一阶导数界，这就证明\eqref{b1:eq:lipschitz-domain-extension-bound}。各项都在预先固定的紧集外几乎处处为零，有限个这样的紧集之并仍紧。整个公式不随 \(p\) 改变，因此在不同指数空间的交上也给出同一个延拓。
 \end{proof}
 
 半空间的精确因子 \(2^{1/p}\) 来自标准坐标中的测度保持反射；一般区域还经过坐标变换和截断，不能期待相同常数。延拓算子也不是唯一的，改变外部截断或边界图表通常就会改变开集外的函数，但不会改变它在 \(\Omega\) 上的限制。

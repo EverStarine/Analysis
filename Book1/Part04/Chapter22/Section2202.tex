@@ -22,7 +22,7 @@
 
 下标 \(0\) 通常用来表达零边界条件。不过在这个定义中，“零”首先落实为可用内部紧支集函数逼近，而不是给每个边界点指定一个数。一般 Sobolev 元素仅是几乎处处等价类，边界点甚至不属于定义域；若没有额外的代表定理，写下逐点边界值就还没有确定一个运算。
 
-当 \(p=\infty\) 时，本书也严格使用上述范数闭包。它通常比“有零边界值的 Lipschitz 函数”更小，不能把有限 \(p\) 的稠密性结论直接搬到这个端点。需要时，应明确其他文献所用 \(W_0^{1,\infty}\) 是否采用同一定义。
+当 \(p=\infty\) 时，本书也严格使用上述范数闭包。即使在有界区间这样的规则区域上，这个闭包也可能严格小于“具有连续零边界值的 Lipschitz 函数”所组成的比较类，不能把有限 \(p\) 的稠密性结论直接搬到这个端点。需要时，应明确其他文献所用 \(W_0^{1,\infty}\) 是否采用同一定义。
 
 \subsection{零边界条件}
 \label{b1:subsec:220202}
@@ -66,7 +66,7 @@
 \[
  \|u'-\varphi'\|_{L^\infty(0,1)}\ge1.
 \]
-这不是端点函数值的问题，而是强无穷范数还要求导数在靠近端点时也能被一致控制。
+这不是端点函数值的问题，而是强无穷范数还要求导数在靠近端点时也能被一致控制。因此，即使在最规则的一维区域上，连续零边界值也不能刻画本书按范数闭包定义的 \(W_0^{1,\infty}\)。
 
 \subsection{截断逼近}
 \label{b1:subsec:220203}
@@ -95,9 +95,9 @@
   \bigl(\mathbf1_{\{|\varphi_j|<M\}}-\mathbf1_{\{|u|<M\}}\bigr)\partial_i u.
  \end{aligned}
 \]
-第一项在 \(L^p\) 中趋零。沿任意一条 \(\varphi_j\to u\) 几乎处处的子列，第二项在 \(|u|\ne M\) 处几乎处处趋零；在 \(|u|=M\) 上，水平集梯度为零。控制收敛于是给出该项的 \(L^p\) 收敛。对任意子列再抽取这样的子列，可把结论传回全列，正如\cref{b1:ex:21-positive-part-continuity}中的论证。
+第一项在 \(L^p\) 中趋零。沿任意一条 \(\varphi_j\to u\) 几乎处处的子列，第二项在 \(|u|\ne M\) 处几乎处处趋零；在 \(|u|=M\) 上，水平集梯度为零。控制收敛于是给出该项的 \(L^p\) 收敛。对任意子列再抽取这样的子列，可把结论传回全列，正如\cref{b1:prop:sobolev-lattice-strong-continuity}证明中的论证。
 
-每个 \(T_M(\varphi_j)\) 都是内部紧支集的 \(W^{1,p}\) 函数。由\cref{b1:prop:compact-sobolev-smooth-approximation}，它属于 \(W_0^{1,p}\)。再用闭性，得到 \(T_M(u)\in W_0^{1,p}\)。当 \(M\to\infty\) 时的强收敛已由\eqref{b1:eq:sobolev-truncation-convergence}证明。正部、负部和绝对值用相同的紧支集逼近，并使用上一章相应的强连续性，即可得到。
+每个 \(T_M(\varphi_j)\) 都是内部紧支集的 \(W^{1,p}\) 函数。由\cref{b1:prop:compact-sobolev-smooth-approximation}，它属于 \(W_0^{1,p}\)。再用闭性，得到 \(T_M(u)\in W_0^{1,p}\)。当 \(M\to\infty\) 时的强收敛已由\eqref{b1:eq:sobolev-truncation-convergence}证明。正部、负部和绝对值用相同的紧支集逼近，并使用\cref{b1:prop:sobolev-lattice-strong-continuity}，即可得到。
 
 若 \(|u|\le M\)，则 \(T_M(u)=u\)。对每个 \(T_M(\varphi_j)\) 选择足够小的非负单位积分卷积，使支集仍留在 \(\Omega\)，且 \(W^{1,p}\) 误差小于 \(1/j\)。卷积不增加幅值上界，故得到所需的 \(\psi_j\)。
 \end{proof}
@@ -145,10 +145,24 @@
 
 这个证明显示了零端点值的具体作用：它把 \(u\) 在薄边界层中的大小变成 \(u'\) 在同一层上的积分，从而抵消截断导数中的 \(\varepsilon^{-1}\)。仅仅知道 \(u\) 有界，不足以完成这一步。前面的 \(x(1-x)\) 例子则说明，定理的有限 \(p\) 范围不可直接放宽到无穷端点。
 
-对有界开集，还有一个不要求边界规则的充分条件。若实值 \(u\in W^{1,p}(\Omega)\cap C(\overline\Omega)\)、\(p<\infty\)，并且 \(u=0\) 在 \(\partial\Omega\) 上，则 \(u\in W_0^{1,p}(\Omega)\)。为此取
+对有界开集，还有一个不要求边界规则的充分条件。
+
+\begin{proposition}[连续零边界的充分条件]
+\label{b1:prop:continuous-zero-boundary-w0}
+设 \(\Omega\subseteq\mathbb R^d\) 为有界开集、\(1\le p<\infty\)。若实值或复值函数 \(u\in W^{1,p}(\Omega)\) 有代表 \(U\in C(\overline\Omega)\)，且 \(U=0\) 于 \(\partial\Omega\)，则 \(u\in W_0^{1,p}(\Omega)\)。这里不要求 \(\partial\Omega\) 具有任何正则性。
+\end{proposition}
+\begin{proof}
+先设 \(u\) 为实值，并仍以 \(u\) 表示给定的连续代表。对 \(\varepsilon>0\) 取
 \[
  v_\varepsilon=u-T_\varepsilon(u).
 \]
-由连续性与零边界值，\(v_\varepsilon\) 的支集包含于紧集 \(\{x\in\overline\Omega:|u(x)|\ge\varepsilon\}\Subset\Omega\)，所以它属于 \(W_0^{1,p}\)。而 \(T_\varepsilon(u)\to0\) 于 \(L^p\)，其弱梯度为 \(\mathbf1_{\{|u|<\varepsilon\}}\nabla u\)，由水平集梯度为零及控制收敛也趋于零。故 \(v_\varepsilon\to u\) 于 \(W^{1,p}\)。复值情形对实部、虚部分别处理即可。
+由连续性与零边界值，
+\[
+ K_\varepsilon
+ =\{\,x\in\overline\Omega\mid |u(x)|\ge\varepsilon\,\}
+ \Subset\Omega,
+\]
+而 \(v_\varepsilon\) 在 \(\Omega\setminus K_\varepsilon\) 上几乎处处为零。因此\cref{b1:prop:compact-sobolev-smooth-approximation}给出 \(v_\varepsilon\in W_0^{1,p}(\Omega)\)。又因 \(|T_\varepsilon(u)|\le\varepsilon\) 且 \(\Omega\) 有限测度，\(T_\varepsilon(u)\to0\) 于 \(L^p\)。它的弱梯度为 \(\mathbf1_{\{|u|<\varepsilon\}}\nabla u\)；在 \(u=0\) 的水平集上梯度几乎处处为零，故控制收敛定理说明这部分也趋于零。于是 \(v_\varepsilon\to u\) 于 \(W^{1,p}\)，再用 \(W_0^{1,p}\) 的闭性即得结论。复值情形分别对连续代表的实部与虚部应用实值结论。
+\end{proof}
 
 一般 Sobolev 元素未必具有这样的连续代表；一般边界也未必允许只用逐点限制描述其行为。下一章将对适当的区域构造有界迹算子，并在明确条件下辨认其核。在此之前，\(W_0^{1,p}\) 始终以紧支集光滑闭包为定义，而不是以尚未定义的边界取值替换它。
