@@ -287,6 +287,17 @@
 
 % 正文选读内容的星号属于编号而不属于标题；第二参数统一接收标签。
 \newcommand{\AnalysisOptionalMark}{\texorpdfstring{\textsuperscript{*}}{*}}
+% 选做习题沿用同一编号星号。可选参数仍只表示习题自身的简短题名，
+% 不得再写“选读”或“选做”；星号由本环境自动附在题号右侧。
+\NewDocumentEnvironment{optionalexercise}{o}{%
+  \begingroup
+  \let\AnalysisSavedTheExercise\theexercise
+  \renewcommand{\theexercise}{\AnalysisSavedTheExercise\AnalysisOptionalMark}%
+  \IfNoValueTF{#1}{\begin{exercise}}{\begin{exercise}[#1]}%
+}{%
+  \end{exercise}%
+  \endgroup
+}
 % 可选参数只供目录与 PDF 书签使用；正文题名可借此按语义手动换行，
 % 又不把换行命令写入目录或书签。
 \NewDocumentCommand{\OptionalChapter}{O{}mm}{%
