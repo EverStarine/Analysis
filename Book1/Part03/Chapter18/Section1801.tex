@@ -19,12 +19,31 @@
 \label{b1:def:level-set}
 给定 \(y\in\mathbb R^n\)，集合
 \[
- M_y=f^{-1}(\{y\})=\{\,x\in U\mid f(x)=y\,\}
+ M_y\coloneqq f^{-1}(\{y\})=\{\,x\in U\mid f(x)=y\,\}
 \]
 称为 \(f\) 在值 \(y\) 处的\term[shuipingji]{水平集}[level set]。
 \end{definition}
 
 由于 \(f\) 连续，\(M_y\) 在 \(U\) 中相对闭，因而是 \(\mathbb R^m\) 中的 Borel 集；但它未必在整个空间中闭。例如恒等于零的函数以 \(U\) 本身为零水平集。对投影 \(f(z,w)=w\)，其中 \(z\in\mathbb R^q\)、\(w\in\mathbb R^n\)，水平集则是平行的 \(q\) 维仿射平面。这正是 Fubini 定理中的截面。
+
+\cref{b1:fig:level-set-slicing}画出标量投影的模型。余面积公式把定义域中的积分按这些水平集切开，再对目标值积分。
+\begin{figure}[htbp]
+  \centering
+  \begin{tikzpicture}[>=stealth]
+    \draw[thick] (-4,-1.55) rectangle (0,1.55);
+    \node[above] at (-2,1.55) {$U$};
+    \foreach \y/\lab in {-0.9/y_1,0/y_2,0.9/y_3} {
+      \draw[thick] (-3.75,\y)--(-0.25,\y);
+      \node[left] at (-3.75,\y) {$M_{\lab}$};
+      \fill (3,\y) circle (1.4pt) node[right] {$\lab$};
+      \draw[->] (0.15,\y)--(2.75,\y);
+    }
+    \draw[->,thick] (3,-1.45)--(3,1.5) node[above] {$\mathbb R$};
+    \node at (1.45,1.25) {$f$};
+  \end{tikzpicture}
+  \caption[水平集切片]{水平集切片。投影 \(f(z,w)=w\) 把每张平行水平集 \(M_y\) 压到目标空间中的一点 \(y\)。}
+  \label{b1:fig:level-set-slicing}
+\end{figure}
 
 一般 Lipschitz 函数的个别水平集可以复杂得多。给定非空闭集 \(F\subseteq\mathbb R^m\)，函数
 \[
@@ -130,7 +149,7 @@
 \symidx{\(N_xM_y\)：光滑水平集的法空间}
 这里速度给出的描述不依赖所选的坐标块，因而同一水平集用不同局部图像表示时得到相同的切空间。当 \(q=0\) 时，\(\mathbb R^0\) 只有一个点；命题表示水平集在 \(a\) 附近只有一个点，切空间为 \(\{0\}\)。
 
-例如 \(f(x)=|x|^2\) 的正水平集是球面，在半径为 \(r>0\) 的球面上，切空间为 \(\{v:\langle x,v\rangle=0\}\)，单位法方向可取 \(x/r\)。零水平集却只有原点，不能把公式 \(\ker Df(0)=\mathbb R^m\) 当成它的切空间。另一方面，Lipschitz 映射即使在某点具有满秩微分，也不能直接应用本命题；习题\ref{b1:ex:16-invertible-derivative-not-local-injective}已经说明了微分缺少邻域连续性时局部求逆可能失败。
+例如 \(f(x)=|x|^2\) 的正水平集是球面，在半径为 \(r>0\) 的球面上，切空间为 \(\{v:\langle x,v\rangle=0\}\)，单位法方向可取 \(x/r\)。零水平集却只有原点，不能把公式 \(\ker Df(0)=\mathbb R^m\) 当成它的切空间。另一方面，Lipschitz 映射即使在某点具有满秩微分，也不能直接应用本命题；\cref{b1:ex:16-invertible-derivative-not-local-injective}已经说明了微分缺少邻域连续性时局部求逆可能失败。
 
 \subsection{余面积 Jacobi 因子}
 \label{b1:subsec:180104}
@@ -139,11 +158,11 @@
 \label{b1:def:coarea-jacobian}
 设 \(A:\mathbb R^m\rightarrow\mathbb R^n\) 为线性映射，\(m\geq n\)。定义它的\term[yumianji-jacobi-yinzi]{余面积 Jacobi 因子}[coarea Jacobian]为
 \[
- J_n(A)=\sqrt{\det(AA^{\mathsf T})}.
+ J_n(A)\coloneqq\sqrt{\det(AA^{\mathsf T})}.
 \]
 若 \(f:U\rightarrow\mathbb R^n\) 局部 Lipschitz，记其真实可微集为 \(\mathcal D_f\)，并约定
 \[
- J_nf(x)=
+ J_nf(x)\coloneqq
  \begin{cases}
  \sqrt{\det\bigl(Df(x)Df(x)^{\mathsf T}\bigr)},&x\in\mathcal D_f,\\
  0,&x\notin\mathcal D_f.
@@ -239,7 +258,7 @@
 \]
 则 \(|\det\widetilde B|=|\det B|\)，恒等式不变。行块次序影响坐标的排列，不影响这里的非负因子。
 
-特别地，在命题\ref{b1:prop:regular-level-set}的坐标中，取 \(x=\Psi(z,y)\)、\(A=Df(x)\)，则 \(B=D\Phi(x)\)、\(V=D_z\Psi(z,y)\)。由逆映射微分公式和\eqref{b1:eq:coarea-coordinate-linear}得到
+特别地，在\cref{b1:prop:regular-level-set}的坐标中，取 \(x=\Psi(z,y)\)、\(A=Df(x)\)，则 \(B=D\Phi(x)\)、\(V=D_z\Psi(z,y)\)。由逆映射微分公式和\eqref{b1:eq:coarea-coordinate-linear}得到
 \begin{equation}
 \label{b1:eq:coarea-coordinate-smooth}
  J_nf\bigl(\Psi(z,y)\bigr)\bigl|\det D\Psi(z,y)\bigr|

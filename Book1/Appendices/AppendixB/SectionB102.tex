@@ -28,7 +28,7 @@
 设 \(e_1,\ldots,e_n\) 是 \(V\) 的基，\(e^1,\ldots,e^n\) 为对偶基。对递增指标组 \(I=(i_1<\cdots<i_k)\)，定义
 \[
  \epsilon^I(v_1,\ldots,v_k)
-   =\det\bigl(e^{i_a}(v_b)\bigr)_{a,b=1}^k.
+   \coloneqq\det\bigl(e^{i_a}(v_b)\bigr)_{a,b=1}^k.
 \]
 这些都是交错型。把一般输入逐个按基展开，并把不同排列整理到递增次序，就得到
 \begin{equation}\label{b1:eq:app-b-alternating-expansion}
@@ -44,7 +44,7 @@
 
 将各次张量积组成直和
 \[
- T(V)=\bigoplus_{k=0}^{\infty}V^{\otimes k}.
+ T(V)\coloneqq\bigoplus_{k=0}^{\infty}V^{\otimes k}.
 \]
 元素只含有限个非零分量。由连接张量因子定义乘法，零次的 \(1\in\mathbb R\) 为单位；结合律来自上一节的结合映射。这个代数称为\term[zhangliang-daishu]{张量代数}[tensor algebra]。它本身并不交换。
 
@@ -53,13 +53,13 @@
 \begin{definition}\label{b1:def:app-b-exterior-algebra}
 上述商代数
 \[
- \bigwedge V=T(V)/I
+ \bigwedge V\coloneqq T(V)/I
    =\bigoplus_{k=0}^{n}\bigwedge\nolimits^kV,
  \quad
- \bigwedge\nolimits^kV=
+ \bigwedge\nolimits^kV\coloneqq
    V^{\otimes k}/\bigl(I\cap V^{\otimes k}\bigr)
 \]
-称为 \(V\) 的\term[waidaishu]{外代数}[exterior algebra]；其中 \(\bigwedge^kV\) 是它的 \(k\) 次分量。商中的乘法记为 \(\wedge\)，称为外积，纯张量的像记为 \(v_1\wedge\cdots\wedge v_k\)。约定 \(\bigwedge^0V=\mathbb R\)。
+称为 \(V\) 的\term[waidaishu]{外代数}[exterior algebra]；其中 \(\bigwedge^kV\) 是它的 \(k\) 次分量。商中的乘法记为 \(\wedge\)，称为外积，纯张量的像记为 \(v_1\wedge\cdots\wedge v_k\)。约定 \(\bigwedge^0V\coloneqq\mathbb R\)。
 \end{definition}
 \symidx{\(\bigwedge^kV\)：外代数的 \(k\) 次分量}
 
@@ -168,7 +168,7 @@
 没有额外的 \(\frac12\)。若把一般 \(r\) 次多线性型 \(T\) 的交错化定义为
 \[
  \operatorname{Alt}T(v_1,\ldots,v_r)
-  =\frac1{r!}\sum_{\sigma\in S_r}
+  \coloneqq\frac1{r!}\sum_{\sigma\in S_r}
        \operatorname{sgn}(\sigma)
        T(v_{\sigma(1)},\ldots,v_{\sigma(r)}),
 \]
@@ -180,12 +180,46 @@
 \]
 这个因子来自两种不同的安排：\(\operatorname{Alt}\) 是平均，而外积要使基型与基外向量的配对恰为 \(1\)。以后积分微分形式时沿用后一约定。
 
-类似地，把 \(\bigwedge^kV\) 识别为张量空间中的交错部分时，可送
+类似地，令置换 \(\sigma\in S_k\) 在张量空间上的作用为
 \[
- v_1\wedge\cdots\wedge v_k
- \longmapsto
+ P_\sigma(v_1\otimes\cdots\otimes v_k)
+ \coloneqq
+ v_{\sigma^{-1}(1)}\otimes\cdots\otimes v_{\sigma^{-1}(k)},
+\]
+并定义反对称化算子
+\[
+ \operatorname{Alt}_{\otimes}
+ \coloneqq
+ \frac1{k!}\sum_{\sigma\in S_k}
+   \operatorname{sgn}(\sigma)P_\sigma.
+\]
+它满足 \(\operatorname{Alt}_{\otimes}^2=\operatorname{Alt}_{\otimes}\)。事实上，
+\(P_\tau\operatorname{Alt}_{\otimes}
+=\operatorname{sgn}(\tau)\operatorname{Alt}_{\otimes}\)；反过来，若张量 \(T\) 满足
+\(P_\tau T=\operatorname{sgn}(\tau)T\) 对每个 \(\tau\in S_k\) 成立，则
+\(\operatorname{Alt}_{\otimes}T=T\)。所以
+\[
+ \operatorname{im}(\operatorname{Alt}_{\otimes})
+ =\{\,T\in V^{\otimes k}:P_\sigma T
+      =\operatorname{sgn}(\sigma)T\ \text{对所有 }\sigma\in S_k\,\},
+\]
+即它的像恰为交错张量子空间。
+
+若两个张量因子相同，交换这两个位置的转置保持该纯张量不变，却使反对称化求和中的符号反转，故各项两两抵消。于是反对称化消去外代数商关系中的全部生成元，下面的公式便给出良定义的线性映射
+\(\iota:\bigwedge^kV\rightarrow V^{\otimes k}\)：
+\[
+ \iota(v_1\wedge\cdots\wedge v_k)
+ \coloneqq
  \frac1{k!}\sum_{\sigma\in S_k}
    \operatorname{sgn}(\sigma)
    v_{\sigma(1)}\otimes\cdots\otimes v_{\sigma(k)}.
 \]
-在外代数商映射之后，这个表达又回到原来的外积，因此确为单射。这个识别中的 \(1/k!\) 与型的行列式求值公式并不冲突，但提醒我们：不能既使用张量子空间的平均定义，又未经换算套用另一种外积归一化。
+设 \(\pi:V^{\otimes k}\rightarrow\bigwedge^kV\) 为商映射，则
+\(\pi\circ\iota\) 是恒等映射，故 \(\iota\) 单射；同时在纯张量上
+\(\iota\circ\pi=\operatorname{Alt}_{\otimes}\)，再由纯张量的张成性可知两边在整个
+\(V^{\otimes k}\) 上相等。因此
+\[
+ \operatorname{im}\iota
+ =\operatorname{im}(\operatorname{Alt}_{\otimes}),
+\]
+这就完整证明了 \(\bigwedge^kV\) 与张量空间中交错部分的自然识别。这个识别中的 \(1/k!\) 与型的行列式求值公式并不冲突，但提醒我们：不能既使用张量子空间的平均定义，又未经换算套用另一种外积归一化。

@@ -60,7 +60,7 @@
   maxbibnames=99,
   doi=true,
   url=true,
-  isbn=false
+  isbn=true
 ]{biblatex}
 \addbibresource{../Shared/References.bib}
 % 访问日期保留在书目库供内部核验，成品参考文献不显示 visited on。
@@ -365,8 +365,8 @@
 }
 \makeatother
 
-% 补齐列表项引用的左括号，同时只让编号本身承担链接。
-\NewDocumentCommand{\itemref}{m}{(\ref{#1})}
+% 列表项的括号与编号整体承担链接，避免只让中间的编号可点击。
+\NewDocumentCommand{\itemref}{m}{\hyperref[#1]{(\ref*{#1})}}
 
 % 章、节、小节的引用：整个“第 X 章／第 X 节／第 X 小节”都是跳转链接。
 % 链接必须走 hyperref 的标签解析机制（目标名 chapter.N／section.N.M）；
@@ -567,6 +567,13 @@
     \IfBooleanTF{#1}
       { \AnalysisOriginalCrefCapital*{#2} }
       { \AnalysisOriginalCrefCapital{#2} }
+    \analysis_cref_maybe_cjk_glue:
+  }
+% 附录标签沿用字母编号；名称与编号整体进入同一链接，并与 \cref
+% 采用相同的链接后中西文间距规则。
+\NewDocumentCommand{\appref}{m}
+  {
+    \hyperref[#1]{附录\CJKecglue\ref*{#1}}
     \analysis_cref_maybe_cjk_glue:
   }
 \ExplSyntaxOff
