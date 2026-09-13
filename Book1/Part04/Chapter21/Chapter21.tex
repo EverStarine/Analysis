@@ -4,7 +4,7 @@
 \BookChapterNumber{b1:ch:21}
 % 本章摘要（不计入编号）
 \begin{chapterabstract}
-本章把弱导数的积分恒等式与 \(L^p\) 范数结合，建立 Sobolev 空间。先用有限组导数分量证明完备性、可分性和自反性，再通过局部光滑逼近推导乘积、复合、截断及坐标变换的规则。最后选取适当的函数代表，说明一维绝对连续性怎样转成多维的沿坐标线绝对连续性，以及弱梯度怎样决定几乎处处的近似微分。空间的范数结构与代表的点态性质是两条相互联系、却不能混同的主线。
+本章把弱导数的积分恒等式与 \(L^p\) 范数结合，建立 Sobolev 空间。先用有限组导数分量证明完备性，并在相应指数范围内证明可分性与自反性，再通过局部光滑逼近推导乘积、复合、截断及坐标变换的规则。最后选取适当的函数代表，说明一维绝对连续性怎样转成多维的沿坐标线绝对连续性，以及弱梯度怎样决定几乎处处的近似微分。空间的范数结构与代表的点态性质是两条相互联系、却不能混同的主线。
 \end{chapterabstract}
 
 % 本章目标（不计入编号）
@@ -17,7 +17,7 @@
 \end{enumerate}
 \end{learninggoals}
 
-本章的起点是\chapref{b1:ch:20}的弱导数及局部卷积。\secref{b1:sec:2102}使用第八至十章的 Banach 空间、Hahn--Banach 定理与 \(L^p\) 对偶；\secref{b1:sec:2104}末尾再接上极大函数和\secref{b1:sec:1603}的 Lipschitz 分片。这些工具的调用都发生在开集内部，暂不要求边界光滑，也不先使用下一章的全域光滑逼近。
+本章的起点是\chapref{b1:ch:20}的弱导数及局部卷积。\secref{b1:sec:2102}使用第八至十章的 Banach 空间、Hahn--Banach 定理与 \(L^p\) 对偶；\secref{b1:sec:2103}前三类局部运算沿用第二十章的卷积，而坐标变换还调用\cref{b1:thm:rademacher}和\cref{b1:thm:weighted-area-formula}。代表理论使用\secref{b1:sec:1604}的一维绝对连续微积分，通常可微性调用\chapref{b1:ch:14}的 Lebesgue 点与 Rademacher 定理，近似可微性再接上\chapref{b1:ch:13}的 Hardy--Littlewood 极大函数和\secref{b1:sec:1603}的 Lipschitz 分片。由此，定义与空间结构只依赖前两编及卷积工具，点态代表和坐标变换则确实使用第三编；这些调用仍发生在开集内部，暂不要求边界光滑，也不先使用下一章的全域光滑逼近。
 
 初读时宜先贯通定义、完备性、局部运算和一维代表，再细读共同直线代表的选取与近似微分的证明。后两步中的量词尤其重要：沿几乎每条坐标线具有绝对连续性，不等于对每个代表都能逐点求导；弱梯度有界与仅属于某个有限 \(L^p\) 空间，也给出不同强度的点态结论。
 
@@ -40,10 +40,94 @@ Sobolev 空间的基本结构来自两个事实：各阶导数可以作为有限
 \BookExercises
 
 % \chapref{b1:ch:21}习题临时稿；由章聚合文件已有的 BookExercises 入口统一接入。
-% 八题均为依据已读本章纲要、实际前章正文与已确认正文接口自拟的工具变式。
+% 十一题均为依据已读本章纲要、实际前章正文与已确认正文接口自拟的工具变式。
 % 不冒认教材原题编号；不用第22章全局稠密性、第24章嵌入或尚未建立的迹理论。
 
-\begin{exercise}\label{b1:ex:21-scaling-concentration}
+\begin{exercise}\label{b1:ex:21-basic-definition-norm}
+令 \(Q=(0,1)^2\)，\(u(x,y)=xy\)。对每个 \(1\leq p\leq\infty\)，直接从弱导数定义验证 \(u\in W^{1,p}(Q)\)，求出两个弱偏导数，并计算本章约定的 \(\|u\|_{W^{1,p}(Q)}\)。
+\end{exercise}
+% 来源：自拟；用于训练弱导数定义与本章逐分量范数，不调用后续嵌入或正则性。
+\begin{solution}
+取任意 \(\varphi\in C_c^\infty(Q)\)。由 Fubini 定理和一维分部积分，
+\[
+ \int_Qxy\,\partial_x\varphi(x,y)\,\mathrm dx\,\mathrm dy
+ =\int_0^1y\left(\int_0^1x\,\partial_x\varphi(x,y)\,\mathrm dx\right)\mathrm dy
+ =-\int_Qy\varphi(x,y)\,\mathrm dx\,\mathrm dy.
+\]
+测试函数在端点附近为零，所以没有边界项。交换两个变量得到
+\[
+ \partial_xu=y,\qquad \partial_yu=x
+\]
+的弱导数等式。三者在有界方形上都属于每个 \(L^p\)，故 \(u\in W^{1,p}(Q)\)。
+
+若 \(1\leq p<\infty\)，则
+\[
+ \|u\|_p^p=\frac1{(p+1)^2},\qquad
+ \|\partial_xu\|_p^p=\|\partial_yu\|_p^p=\frac1{p+1}.
+\]
+因此
+\[
+ \|u\|_{W^{1,p}(Q)}
+ =\left(\frac1{(p+1)^2}+\frac2{p+1}\right)^{1/p}.
+\]
+当 \(p=\infty\) 时，\(u\)、\(x\) 与 \(y\) 的本性上确界都为 \(1\)，而本章范数取三者的最大值，故 \(\|u\|_{W^{1,\infty}(Q)}=1\)。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:21-basic-vector-chain}
+设 \(\Omega\subset\mathbb R^d\) 为开集、\(1\leq p\leq\infty\)，且
+\[
+ u=(u^1,u^2)\in W^{1,p}_{\mathrm{loc}}(\Omega;\mathbb R^2).
+\]
+令 \(F(s,t)=\sin s+\cos t\)。证明 \(F\circ u\in W^{1,p}_{\mathrm{loc}}(\Omega)\)，并对每个 \(1\leq i\leq d\) 求出 \(\partial_i(F\circ u)\)。
+\end{exercise}
+% 来源：自拟；直接训练向量值记号及正文链式法则的基础计算。
+\begin{solution}
+映射 \(F\in C^1(\mathbb R^2)\)，且
+\[
+ DF(s,t)=(\cos s,-\sin t)
+\]
+一致有界。由\cref{b1:thm:sobolev-chain}，复合函数属于所述局部 Sobolev 空间，并且
+\[
+ \partial_i(F\circ u)
+ =\cos(u^1)\,\partial_i u^1
+  -\sin(u^2)\,\partial_i u^2
+ \quad\text{几乎处处于 }\Omega.
+\]
+右端属于 \(L^p_{\mathrm{loc}}\)，因为两个三角函数因子的绝对值不超过 \(1\)。局部陈述不要求 \(F\circ u\) 在无界域上具有全域 \(L^p\) 范数。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:21-basic-derivative-embedding}
+在 \(I=(0,1)\) 上令
+\[
+ u_n(x)=x+n^{-2}\sin(nx),\qquad u(x)=x.
+\]
+证明对每个 \(1\leq p\leq\infty\)，都有 \(u_n\to u\) 于 \(W^{1,p}(I)\)。再用\cref{b1:prop:sobolev-derivative-embedding}中的映射 \(\mathcal J\)，解释为什么这里的 Sobolev 收敛恰好等价于函数分量与一阶导数分量同时在 \(L^p(I)\) 中收敛。
+\end{exercise}
+% 来源：自拟；用于训练有限乘积嵌入和Sobolev范数收敛的直接判定。
+\begin{solution}
+两函数光滑，且
+\[
+ u_n-u=n^{-2}\sin(nx),\qquad
+ u_n'-u'=n^{-1}\cos(nx).
+\]
+由于 \(m_1(I)=1\)，对每个有限 \(p\) 有
+\[
+ \|u_n-u\|_p\leq n^{-2},\qquad
+ \|u_n'-u'\|_p\leq n^{-1},
+\]
+所以
+\[
+ \|u_n-u\|_{W^{1,p}(I)}
+ \leq\bigl(n^{-2p}+n^{-p}\bigr)^{1/p}\longrightarrow0.
+\]
+在 \(p=\infty\) 时，本章范数取两个分量范数的最大值，同样有
+\[
+ \|u_n-u\|_{W^{1,\infty}(I)}\leq n^{-1}\longrightarrow0.
+\]
+这里 \(\mathcal Jv=(v,v')\)，而 \(Y_p\) 的乘积范数正按有限 \(p\) 的 \(p\) 次和或无穷端点的最大值定义。因此 \(\|\mathcal J(u_n-u)\|_{Y_p}=\|u_n-u\|_{W^{1,p}}\)，所述两个分量同时收敛与 Sobolev 范数收敛完全等价。
+\end{solution}
+
+\begin{exercise}[\(\star\) 选读]\label{b1:ex:21-scaling-concentration}
 设整数 \(d\ge2\)、\(1\le p<d\)，记 \(B=B(0,1)\)，取非零 \(\psi\in C_c^\infty(B)\)，并令
 \[
  u_r(x)=r^{1-d/p}\psi(x/r),\quad 0<r<1.
@@ -80,7 +164,7 @@ Sobolev 空间的基本结构来自两个事实：各阶导数可以作为有限
 因为 \(p<d\)。若题中统一估计成立，左端便会被一致有界的 Sobolev 范数控制，矛盾。这个例子只处理严格不等式 \(p<d\)；当 \(p=d\) 时，同一伸缩的振幅不再增长，不能从本题推出临界指数的结论。
 \end{solution}
 
-\begin{exercise}\label{b1:ex:21-endpoint-structure}
+\begin{exercise}[\(\star\) 选读]\label{b1:ex:21-endpoint-structure}
 \begin{enumerate}
 \item\label{b1:item:21-w11-no-weak-subsequence}
 在 \(I=(0,1)\) 上令 \(v_n(x)=\min(nx,1)\)。证明 \((v_n)\) 在 \(W^{1,1}(I)\) 中有界，但没有弱收敛子列。
@@ -217,7 +301,7 @@ Sobolev 空间的基本结构来自两个事实：各阶导数可以作为有限
 区间虽不断缩小，本性上确界仍能检测其中的完整跳差。这正是有限 \(p\) 的控制收敛论证不能照搬的地方。
 \end{solution}
 
-\begin{exercise}\label{b1:ex:21-coordinate-change-boundaries}
+\begin{exercise}[\(\star\) 选读]\label{b1:ex:21-coordinate-change-boundaries}
 \begin{enumerate}
 \item\label{b1:item:21-inverse-lipschitz-required}
 映射 \(\Phi(x)=x^3\) 是 \(I=(-1,1)\) 到自身的光滑 Lipschitz 双射。取坐标函数 \(u(x)=x\)，证明 \(u\in H^1(I)\)，但 \(u\circ\Phi^{-1}\notin H^1(I)\)。
@@ -284,7 +368,7 @@ Sobolev 空间的基本结构来自两个事实：各阶导数可以作为有限
 右侧在每个球中都为零测集，所以左侧的相对测度为零。这就说明近似微分在 \(z\) 存在且为零。仅有改值集上的基点可能不满足这个论证，而它本身是零测集，故几乎处处近似微分保持不变。
 \end{solution}
 
-\begin{exercise}\label{b1:ex:21-highest-derivative-kernel}
+\begin{exercise}[\(\star\) 选读]\label{b1:ex:21-highest-derivative-kernel}
 设 \(\Omega\subset\mathbb R^d\) 为非空连通开集，整数 \(k\ge1\)，\(1\le p\le\infty\)，且 \(u\in W^{k,p}_{\mathrm{loc}}(\Omega)\)。证明以下两条等价：
 \begin{equivalences}
 \item\label{b1:item:21-highest-derivatives-zero}
@@ -316,5 +400,5 @@ Sobolev 空间的基本结构来自两个事实：各阶导数可以作为有限
 
 上述小球覆盖 \(\Omega\)。固定其中一个球，取所有能够通过有限条相交小球链与它连接的球的并集。这个并集开，补集也是其余链类的球的并集，因而也开。由 \(\Omega\) 连通，只能有一个链类，所以全部 \(P_B\) 都是同一个多项式 \(P\)。再由开覆盖的可数子覆盖性，球内各自的零测例外可以并成一个零测集，从而 \(u=P\) 几乎处处于整个 \(\Omega\)。
 
-若 \(\Omega\) 不连通，则在每个连通分支上分别得到一个总次数不超过 \(k-1\) 的多项式，不同分支间不要求系数相同。反过来，按分支给出的这类函数具有所需的局部正则性：每个紧子集可被有限个内部小球覆盖，只遇到有限个分支，且分支边界不在 \(\Omega\) 内，不产生内部跳跃项。
+若 \(\Omega\) 不连通，则在每个连通分支上分别得到一个总次数不超过 \(k-1\) 的多项式，不同分支间不要求系数相同。反过来，按分支给出的这类函数具有所需的局部正则性。确实，若 \(K\Subset\Omega\)，则 \(\delta=\operatorname{dist}(K,\Omega^c)>0\)。对每个 \(x\in K\)，连通球 \(B(x,\delta/2)\) 包含于 \(\Omega\)，因而完全落在 \(x\) 所属的连通分支中；由紧性可取有限个这样的球覆盖 \(K\)，所以 \(K\) 只遇到有限个分支。分支边界不在 \(\Omega\) 内，也不会产生内部跳跃项。
 \end{solution}
