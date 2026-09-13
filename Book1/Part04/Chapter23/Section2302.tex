@@ -43,15 +43,22 @@ Di Nezza 等在所引文章的 Section 2 将同一双积分称为 Gagliardo semi
 两个区间的距离为 \(2\)，所以该积分有限。分数阶半范数不仅记录每个小邻域中的变化，还记录相隔位置之间的差异。
 
 \begin{proposition}\label{b1:prop:fractional-difference-formula}
-对 \(u\in L^p(\mathbb R^d)\)，置 \(\Delta_hu(x)=u(x+h)-u(x)\)。则
+对 \(u\in L^p(\mathbb R^d)\)，沿用平移约定
+\[
+ \tau_hu(x)=u(x-h),\qquad
+ \Delta_hu=\tau_hu-u.
+\]
+也就是说，\(\Delta_hu(x)=u(x-h)-u(x)\)。则
 \begin{equation}\label{b1:eq:fractional-difference-formula}
  [u]_{s,p}^p
  =\int_{\mathbb R^d}\frac{\|\Delta_hu\|_p^p}{|h|^{d+sp}}\,\mathrm dh,
 \end{equation}
 两端允许同时为无穷。
 \end{proposition}
+\symidx{\(\tau_hu\)：平移，\(\tau_hu(x)=u(x-h)\)}
+\symidx{\(\Delta_hu\)：有限差分，\(\Delta_hu=\tau_hu-u\)}
 \begin{proof}
-双积分中的函数非负。对每个固定 \(x\) 作平移换元 \(y=x+h\)，再用 Tonelli 定理交换 \(x,h\) 的积分次序，内层积分便是 \(\|\Delta_hu\|_p^p\)。无需预先假定半范数有限。
+双积分中的函数非负。对每个固定 \(x\) 作平移换元 \(y=x-h\)，再用 Tonelli 定理交换 \(x,h\) 的积分次序，内层积分便是 \(\|\Delta_hu\|_p^p\)。无需预先假定半范数有限。
 \end{proof}
 
 因此，分数阶控制可以理解为：以不同距离平移函数，把各个平移误差按距离加权后合在一起。单个 \(h\) 上误差趋零，只是 \(L^p\) 平移连续性；这里还要求这些误差满足一个关于全部小尺度的可积条件。
@@ -174,9 +181,9 @@ Tonelli 定理说明两组函数值误差分别几乎处处趋于零。删去 \(
 先设 \(u\in C_c^\infty(\mathbb R^d)\)。线段上的积分公式及 Hölder 不等式给出
 \[
  \begin{aligned}
- u(x+h)-u(x)&=\int_0^1\nabla u(x+th)\cdot h\,\mathrm dt,\\
- |u(x+h)-u(x)|^p
- &\leq |h|^p\int_0^1|\nabla u(x+th)|^p\,\mathrm dt.
+ u(x-h)-u(x)&=-\int_0^1\nabla u(x-th)\cdot h\,\mathrm dt,\\
+ |u(x-h)-u(x)|^p
+ &\leq |h|^p\int_0^1|\nabla u(x-th)|^p\,\mathrm dt.
  \end{aligned}
 \]
 对 \(x\) 积分，得到 \(\|\Delta_hu\|_p\leq|h|\cdot\|\nabla u\|_p\)。利用\cref{b1:thm:whole-space-sobolev-density}取 \(W^{1,p}\) 中的光滑逼近，函数差及梯度都在 \(L^p\) 中收敛，因而对每个固定 \(h\) 可把这一不等式传给一般 \(u\)。另一方面，平移不改变 \(L^p\) 范数，所以
@@ -211,7 +218,7 @@ Tonelli 定理说明两组函数值误差分别几乎处处趋于零。删去 \(
 对每个 \(h\)，普通 \(L^p\) 平移连续性已经成立，但若要在带奇异权的所有 \(h\) 上积分，还需要统一处理这些差分。把它们放进一个乘积空间即可完成这一点。
 
 \begin{proposition}\label{b1:prop:fractional-translation-mollification}
-设 \(u\in W^{s,p}(\mathbb R^d)\)，沿用 \(\tau_zu(x)=u(x-z)\) 的平移约定。则
+设 \(u\in W^{s,p}(\mathbb R^d)\)，对上述平移有
 \[
  \|\tau_zu-u\|_{W^{s,p}(\mathbb R^d)}\longrightarrow0\quad(z\to0).
 \]
@@ -225,7 +232,8 @@ Tonelli 定理说明两组函数值误差分别几乎处处趋于零。删去 \(
 \begin{proof}
 在 \(h\ne0\) 时定义
 \[
- D_su(x,h)=\frac{u(x+h)-u(x)}{|h|^{d/p+s}},
+ D_su(x,h)=\frac{\Delta_hu(x)}{|h|^{d/p+s}}
+ =\frac{u(x-h)-u(x)}{|h|^{d/p+s}},
 \]
 在 \(h=0\) 时补零。差分积分公式说明 \(D_su\in L^p(\mathbb R^{2d})\)，其范数为 \([u]_{s,p}\)。而
 \[
@@ -254,7 +262,7 @@ Tonelli 定理说明两组函数值误差分别几乎处处趋于零。删去 \(
 \[
  \Delta_hw_R(x)
  =\bigl(1-\chi_R(x)\bigr)\Delta_hu(x)
-   +u(x+h)\bigl(\chi_R(x)-\chi_R(x+h)\bigr).
+   +u(x-h)\bigl(\chi_R(x)-\chi_R(x-h)\bigr).
 \]
 第一项除以 \(|h|^{d/p+s}\) 后，在 \((x,h)\) 上几乎处处趋于零，其 \(p\) 次方受 \(|D_su|^p\) 控制，因此相应积分趋零。
 
@@ -262,7 +270,7 @@ Tonelli 定理说明两组函数值误差分别几乎处处趋于零。删去 \(
 \[
  \begin{aligned}
  &\int_{\mathbb R^d}\int_{\mathbb R^d}
-  |u(x+h)|^p\frac{\min\{L|h|/R,2\}^p}{|h|^{d+sp}}\,\mathrm dx\,\mathrm dh\\
+  |u(x-h)|^p\frac{\min\{L|h|/R,2\}^p}{|h|^{d+sp}}\,\mathrm dx\,\mathrm dh\\
  &=R^{-sp}\|u\|_p^p
       \int_{\mathbb R^d}\frac{\min\{L|z|,2\}^p}{|z|^{d+sp}}\,\mathrm dz.
  \end{aligned}
@@ -285,7 +293,7 @@ Tonelli 定理说明两组函数值误差分别几乎处处趋于零。删去 \(
 对任意开集 \(\Omega\)，空间 \(C^\infty(\Omega)\cap W^{s,p}(\Omega)\) 在 \(W^{s,p}(\Omega)\) 中稠密。
 \end{corollary}
 \begin{proof}
-采用\cref{b1:thm:meyers-serrin}证明中的单位分解 \((\psi_i)\)，同时保留各支集所在的局部有限开族 \((V_i)\)。每个 \(\psi_i\) 是有界 Lipschitz 函数，故由乘子命题，\(\psi_i u\in W^{s,p}(\Omega)\)，且具有内部紧支集。给定 \(\eta>0\)，前一推论允许取 \(v_i\in C_c^\infty(V_i)\)，使
+取\cref{b1:cor:precompact-smooth-partition}给出的光滑单位分解 \((\psi_i)\) 与局部有限开覆盖 \((V_i)\)，其中 \(\psi_i\in C_c^\infty(V_i)\)、\(V_i\Subset\Omega\)。每个 \(\psi_i\) 是有界 Lipschitz 函数，故由乘子命题，\(\psi_i u\in W^{s,p}(\Omega)\)，且在紧集 \(\operatorname{supp}\psi_i\) 外几乎处处为零。给定 \(\eta>0\)，前一推论允许取 \(v_i\in C_c^\infty(V_i)\)，使
 \[
  \|v_i-\psi_i u\|_{W^{s,p}(\Omega)}<\eta2^{-i-1}.
 \]

@@ -4,6 +4,14 @@
 
 迹属于边界上的 \(L^p\)，只说明它的大小可以控制，还没有说明边界不同位置的函数值如何相互约束。一阶内部导数会给边界留下一个分数阶的差分条件。本节证明：当 \(1<p<\infty\) 时，有界 Lipschitz 区域的一阶迹空间恰为 \(W^{1-1/p,p}(\partial\Omega)\)，而且每个这样的边界数据都有线性、有界地选取的内部延拓。
 
+证明按四步推进：先确认边界分数阶范数不依赖图表与分割函数的选择，再把半空间迹估计增强到 \(W^{1-1/p,p}\)；随后在半空间中令磨光尺度随高度趋零，构造迹的右逆；最后用有限图表与截断把这一构造拼回 Lipschitz 区域。也就是
+\[
+ \text{图表独立性}
+ \longrightarrow \text{半空间分数阶迹}
+ \longrightarrow \text{半空间右逆}
+ \longrightarrow \text{区域上的有限拼接}.
+\]
+
 Di Nezza、Palatucci 与 Valdinoci 的《Hitchhiker's guide to the fractional Sobolev spaces》\cite[Section 2, Proposition 3.8]{DiNezza2012Hitchhikers}介绍了这一联系，并用 Fourier 方法证明二次可积情形。本节改用差分、一个一维积分不等式及尺度卷积，直接处理 \(1<p<\infty\)。
 % 实读：DiNezza2012Hitchhikers，作者公开副本 arXiv:1104.4345，
 % 第2节末迹空间说明（副本第11页），Proposition 3.8及完整证明（副本第19--21页）。
@@ -66,13 +74,13 @@ Di Nezza、Palatucci 与 Valdinoci 的《Hitchhiker's guide to the fractional So
 
 考虑另一套图表 \(\widetilde\Gamma_k\) 与分割函数 \(\widetilde\chi_k\)。在两个边界片相交处，过渡坐标
 \[
- \Delta_{jk}=\Gamma_j^{-1}\circ\widetilde\Gamma_k
+ \Psi_{jk}=\Gamma_j^{-1}\circ\widetilde\Gamma_k
 \]
 是两个开子集之间的双 Lipschitz 同胚：图参数化为 Lipschitz 映射，其逆就是相应刚性坐标中的横向投影。待比较的第 \(k\) 个局部函数是有限和
 \[
  (\widetilde\chi_k f)\circ\widetilde\Gamma_k
  =\sum_j
-   (\widetilde\chi_k\circ\widetilde\Gamma_k)(f_j\circ\Delta_{jk}),
+   (\widetilde\chi_k\circ\widetilde\Gamma_k)(f_j\circ\Psi_{jk}),
 \]
 其中每项只需在相应的重叠参数域中解释。
 
@@ -120,30 +128,31 @@ Di Nezza、Palatucci 与 Valdinoci 的《Hitchhiker's guide to the fractional So
 先取整个空间的光滑紧支集函数在闭半空间上的限制，记 \(f(x)=u(x,0)\)。给定 \(h=r\omega\)，其中 \(r>0\)、\(|\omega|=1\)，分解
 \[
  \begin{split}
- f(x+h)-f(x)
- ={}&f(x+h)-u(x+h,r)\\
-    &+u(x+h,r)-u(x,r)+u(x,r)-f(x).
+ \Delta_{r\omega}f(x)
+ ={}&f(x-r\omega)-u(x-r\omega,r)\\
+    &+u(x-r\omega,r)-u(x,r)+u(x,r)-f(x).
  \end{split}
 \]
 令 \(a(t)=\|\partial_tu(\cdot,t)\|_p\)，并令
 \(b(t)=\sum_{i=1}^n\|\partial_i u(\cdot,t)\|_p\)。由微积分基本定理、积分的 Minkowski 不等式及平移不变性，两段竖向差的 \(L^p\) 范数各不超过 \(\int_0^r a(t)\,\mathrm dt\)，而水平差满足
 \[
- \|u(\cdot+r\omega,r)-u(\cdot,r)\|_p
+ \|u(\cdot-r\omega,r)-u(\cdot,r)\|_p
  \le r\,b(r).
 \]
 所以
 \[
- \|\Delta_{r\omega}f-f\|_p^p
+ \|\Delta_{r\omega}f\|_p^p
  \le C_p\left(\int_0^r a(t)\,\mathrm dt\right)^p
        +C_p r^p b(r)^p,
 \]
-这里采用 \(\Delta_hf(x)=f(x+h)\)。
+这里沿用\cref{b1:prop:fractional-difference-formula}的记号
+\(\Delta_hf=\tau_hf-f\)，不再把 \(\Delta_h\) 临时改作平移算子。
 
 由于 \(n+sp=n+p-1\)，\cref{b1:prop:fractional-difference-formula}与极坐标变换给出
 \[
  [f]_{s,p}^p
  =\int_{\mathbb S^{n-1}}\int_0^\infty
-       r^{-p}\|\Delta_{r\omega}f-f\|_p^p\,\mathrm dr\,
+       r^{-p}\|\Delta_{r\omega}f\|_p^p\,\mathrm dr\,
        \mathrm d\mathcal H^{n-1}(\omega).
 \]
 代入上面的三项估计并用\cref{b1:lem:trace-hardy-inequality}，可得
@@ -162,7 +171,7 @@ Di Nezza、Palatucci 与 Valdinoci 的《Hitchhiker's guide to the fractional So
 \subsection{迹的满射性与右逆}
 \label{b1:subsec:230303}
 
-仅有迹估计还不能说明每个边界函数都能实现。若在每个高度使用同一个磨光尺度，通常不能同时恢复原数据并控制竖向导数；尺度应随高度一起趋零。
+仅有迹估计还不能说明每个边界函数都能实现。下面先在半空间中令“磨光尺度等于高度”，同时恢复原数据并控制竖向导数；再把所得右逆逐图表搬回、截断并作有限求和，得到一般有界 Lipschitz 区域上的右逆。
 
 \begin{theorem}\label{b1:thm:half-space-trace-right-inverse}
 设 \(n\ge1\)、\(1<p<\infty\)，并令 \(s=1-1/p\)。存在有界线性映射
@@ -188,7 +197,7 @@ Di Nezza、Palatucci 与 Valdinoci 的《Hitchhiker's guide to the fractional So
 \]
 这些核都支撑在 \(|h|<t\) 内，绝对值不超过 \(Ct^{-n-1}\)，且积分为零。最后一点对 \(\psi\) 由紧支集函数的分部积分得到。若 \(K_t\) 是其中任一导数核，因而可以写
 \[
- (K_t*f)(x)=\int K_t(h)\bigl(f(x-h)-f(x)\bigr)\,\mathrm dh.
+ (K_t*f)(x)=\int K_t(h)\Delta_hf(x)\,\mathrm dh.
 \]
 Hölder 不等式给出
 \[
@@ -203,10 +212,10 @@ Hölder 不等式给出
 \[
  \begin{split}
  \int_0^2\|K_t*f\|_p^p\,\mathrm dt
- &\le C\int_{|h|<2}\|\Delta_{-h}f-f\|_p^p
+ &\le C\int_{|h|<2}\|\Delta_hf\|_p^p
                   \int_{|h|}^2t^{-n-p}\,\mathrm dt\,\mathrm dh\\
  &\le C_{n,p}\int_{\mathbb R^n}
-        \frac{\|\Delta_hf-f\|_p^p}{|h|^{n+p-1}}\,\mathrm dh
+        \frac{\|\Delta_hf\|_p^p}{|h|^{n+p-1}}\,\mathrm dh
  =C_{n,p}[f]_{s,p}^p.
  \end{split}
 \]
@@ -235,7 +244,7 @@ Hölder 不等式给出
 \]
 \end{theorem}
 \begin{proof}
-先证明有界性。对每个固定边界系数 \(\chi_j\)，将 \(\chi_j u\) 拉回 \(D_j\cap H_+\)，再在侧面和顶面之外补零，得到整个半空间上的函数 \(v_j\)。\secref{b1:sec:2203}局部图表延拓证明中的测试分解适用于此处：支集与侧面、顶面有正距离，但允许贴着 \(t=0\)。因此
+先证明有界性。对每个固定边界系数 \(\chi_j\)，将 \(\chi_j u\) 拉回 \(D_j\cap H_+\)，再在侧面和顶面之外补零，得到整个半空间上的函数 \(v_j\)。由边界截断的构造，存在固定紧集 \(L_j\Subset D_j\)，使 \(v_j=0\) 几乎处处成立于 \(H_+\setminus L_j\)；\(L_j\) 可以接触 \(t=0\)，但与图表盒的侧面和顶面有正距离。\secref{b1:sec:2203}局部图表延拓证明中的测试分解因而适用于此处。因此
 \[
  \|v_j\|_{W^{1,p}(H_+)}
  \le C_j\|u\|_{W^{1,p}(\Omega)}.
@@ -258,7 +267,7 @@ Hölder 不等式给出
 \]
 在侧面和顶面附近为零。由 \(w_j(\cdot,t)\to f_j\) 于 \(L^p\)，以及 \(\beta_j(\cdot,t)\) 一致趋于 \(\beta_j(\cdot,0)\)，可得
 \(\operatorname{Tr}q_j=\beta_j(\cdot,0)f_j=f_j\)。
-把 \(q_j\) 经 \(F_j^{-1}\) 推回 \(\Omega\cap F_j(D_j)\)，再在 \(\Omega\) 的其余部分补零，记结果为 \(Q_jf\)。侧面和顶面的支集余量再次保证局部测试恒等式可以拼接；这里始终只在 \(\Omega\) 内补零，并没有跨越 \(\partial\Omega\) 作零延拓。故
+把 \(q_j\) 经 \(F_j^{-1}\) 推回 \(\Omega\cap F_j(D_j)\)，再在 \(\Omega\) 的其余部分补零，记结果为 \(Q_jf\)。由于 \(\beta_j\in C_c^\infty(D_j)\)，\(q_j\) 在固定紧集 \(\operatorname{supp}\beta_j\) 外几乎处处为零；这一紧集与侧面和顶面有正距离，故局部测试恒等式可以拼接。这里始终只在 \(\Omega\) 内补零，并没有跨越 \(\partial\Omega\) 作零延拓。故
 \[
  \|Q_jf\|_{W^{1,p}(\Omega)}
  \le C_j\|f_j\|_{W^{s,p}(\mathbb R^n)}.
@@ -280,6 +289,6 @@ Hölder 不等式给出
 
 这个迹空间允许的边界不连续性取决于 \(p\)。例如在二维半空间上取边界函数 \(f=\mathbf1_{(0,1)}\)。习题\ref{b1:ex:23-interval-characteristic}的差分计算表明，它属于 \(W^{s,p}(\mathbb R)\) 当且仅当 \(sp<1\)。代入 \(s=1-1/p\)，就知道它能作为 \(W^{1,p}(H_+)\) 函数的迹，当且仅当 \(1<p<2\)。因此不能从内部具有一阶弱导数，直接推断边界数据连续。
 
-本节没有把两个端点纳入分数阶结论。对 \(p=1\)，\secref{b1:sec:2301}的 \(L^1\) 迹仍可使用，但这里的 \(W^{s,p}\) 定义要求 \(s>0\)，也没有给出同样的线性右逆证明。对 \(p=\infty\)，既不能代入有限 \(p\) 的双积分范数，也不能用该范数的稠密性取极限；应回到局部 Lipschitz 代表与边界几何讨论。
+本节没有把两个端点纳入分数阶结论。对 \(p=1\)，\secref{b1:sec:2301}仍给出取值于 \(L^1(\partial\Omega)\) 的连续迹与零迹刻画；本章不据此声称 \(L^1(\partial\Omega)\) 是迹的精确像空间，也不声称该迹满射或具有同样的线性右逆。对 \(p=\infty\)，既不能代入有限 \(p\) 的双积分范数，也不能用该范数的稠密性取极限；应回到局部 Lipschitz 代表与边界几何讨论。
 
 若 \(d=1\)，有界 Lipschitz 开集的每个边界点都在边界中孤立，边界又紧，故只有有限多个端点。迹空间此时就是这些端点上的有限维数据空间：在每个区间分量上作连接两端数据的仿射函数，便得到线性右逆，其范数由有限多个区间长度控制。这个论证也处理相应端点指数，但不把 \(n=0\) 代入上面的欧氏差分核。
