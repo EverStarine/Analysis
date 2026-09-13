@@ -6,16 +6,18 @@
 一般紧集没有现成的分支结构，却仍可以提出同一要求：半径为 \(r\) 的球至多承载常数倍的 \(r^s\) 质量。
 质量分布原理说明，这种要求足以给出维数下界。
 \term[frostman-yinli]{Frostman 引理}[Frostman's lemma]则回答反方向的问题：集合的 Hausdorff 测度为正时，是否总能找到这样的质量分布？
-本节对欧氏空间中的紧集给出肯定回答，并用前一编的测度弱紧性完成构造。
+本节对欧氏空间中的紧集给出肯定回答，并在本节内证明构造所需的紧集概率测度序列紧性。
 
 % 来源范围：Fremlin2016Measure 471Xd(ii)只作为Frostman型结论的对照，
 % 不把该习题的附加假设误当成一般紧集定理的完整证明。
 % 下文有限树递推、割集下界、原子测度弱极限及能量估计均在本书内完整展开。
 % Mattila1995Geometry与Falconer2014Fractal在本节只作专题伴读推荐。
 
-\subsection{质量分布原理}
+\subsection{质量分布原理回顾与统一增长条件}
 \label{b1:subsec:150401}
 
+\cref{b1:lem:mass-distribution}已经正式给出了质量分布原理及其证明。
+本小节只回顾其中的覆盖机制，并强调 Frostman 理论所需估计必须在中心、常数与尺度上统一。
 设 \(s>0\)，\(\mu\) 是集中在 Borel 集 \(E\subset\mathbb R^d\) 上的有限正测度，
 \(\mu(E)>0\)。若所有足够小的球都满足
 \[
@@ -77,12 +79,104 @@
 每个立方体有 \(2^d\) 个互不相交的子立方体。记其边长为 \(\ell(Q)\)。
 半开约定使同层立方体真正构成分割，点不会因落在公共边界而被重复计数。
 
+\cref{b1:fig:frostman-dyadic-tree}示意有限树上的两个约束：质量从根向下守恒，
+每个结点所得质量又不超过递推给出的容量 \(F_N(Q)\)。末层质量最终放在
+\(K\) 中选定的点上，形成离散测度。
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[>=stealth,line cap=round,line join=round,
+  box/.style={draw,rounded corners,align=center,inner sep=4pt}]
+  \node[box] (root) at (0,2.2) {$Q_0$\\$m(Q_0)=a$};
+  \node[box] (left) at (-3.4,0.5) {$Q'$\\$m(Q')\leq F_N(Q')$};
+  \node at (0,0.5) {$\cdots$};
+  \node[box] (right) at (3.4,0.5) {$Q''$\\$m(Q'')\leq F_N(Q'')$};
+  \node[box] (ll) at (-4.5,-1.35) {$R_1$\\$m(R_1)\delta_{x_{R_1}}$};
+  \node[box] (lr) at (-2.3,-1.35) {$R_2$\\$m(R_2)\delta_{x_{R_2}}$};
+  \node at (2.25,-1.35) {$\cdots$};
+  \node[box] (rr) at (4.15,-1.35) {$R$\\$m(R)\delta_{x_R}$};
+  \draw[->,thick] (root)--(left);
+  \draw[->,thick] (root)--(right);
+  \draw[->,thick] (left)--(ll);
+  \draw[->,thick] (left)--(lr);
+  \draw[->,thick] (right)--(rr);
+  \node[align=center] at (0,-1.35) {逐层分配\\质量守恒};
+\end{tikzpicture}
+\caption{Frostman 构造中的有限二进立方体树。根质量 \(a\) 逐层向子立方体分配；每个结点受容量 \(F_N\) 控制，末层质量则变成位于 \(K\) 上的原子。图中只画出部分分支。}
+\label{b1:fig:frostman-dyadic-tree}
+\end{figure}
+
+下面把构造中唯一需要的紧性输入单独列出。这样本节不依赖\chapref{b1:ch:12}的完整弱收敛理论；
+该章给出的是波兰空间、紧性与 Portmanteau 判据的更一般版本。
+
+\begin{lemma}[紧集上概率测度的序列紧性]\label{b1:lem:compact-probability-subsequence}
+设 \(K\subset\mathbb R^d\) 为非空紧集，\((\nu_n)\) 是 \(K\) 上的 Borel 概率测度序列。
+则存在子列 \((\nu_{n_j})\) 与 \(K\) 上的 Borel 概率测度 \(\nu\)，使
+\[
+ \int_K f\,\mathrm d\nu_{n_j}\longrightarrow\int_K f\,\mathrm d\nu
+ \quad\bigl(f\in C(K;\mathbb R)\bigr).
+\]
+此外，对每个在 \(K\) 中相对开的集合 \(G\)，都有
+\[
+ \nu(G)\leq\liminf_{j\to\infty}\nu_{n_j}(G).
+\]
+\end{lemma}
+\begin{proof}
+先说明 \(C(K)\) 可分。对每个 \(n\geq1\)，取有限的 \(1/n\)-网
+\(\{q_{n,1},\ldots,q_{n,N_n}\}\)，并令
+\[
+ w_{n,k}(x)=\max\{0,2/n-|x-q_{n,k}|\},
+ \qquad
+ \phi_{n,k}(x)=\frac{w_{n,k}(x)}{\sum_iw_{n,i}(x)}.
+\]
+分母处处为正，且 \(\sum_k\phi_{n,k}=1\)。连续函数在紧集上一致连续，故
+\(\sum_k f(q_{n,k})\phi_{n,k}\) 随 \(n\to\infty\) 一致逼近 \(f\)。
+再把有限个系数换成有理数，就得到 \(C(K;\mathbb R)\) 的可数稠密族。
+
+由于 \(K\) 紧，\(C(K;\mathbb R)=C_0(K;\mathbb R)\)。由\cref{b1:cor:positive-c0-representation}，
+概率测度恰对应于 \(C(K;\mathbb R)^*\) 中满足
+\[
+ L(1)=1,\qquad L(f)\geq0\quad(f\geq0)
+\]
+的泛函；它们都位于对偶单位球中。这些条件在弱-*拓扑下闭。
+\cref{b1:thm:banach-alaoglu}、\cref{b1:thm:weak-star-metrizable}与 \(C(K)\) 的可分性说明，
+这族泛函是紧致可度量空间，因而每个序列都有弱-*收敛子列。
+再用同一个表示定理识别极限泛函，就得到概率测度 \(\nu\) 及题设的积分收敛。
+
+最后设 \(G\subset K\) 相对开。若 \(G=K\)，所需不等式由总质量为 \(1\) 得到；
+否则令
+\[
+ f_m(x)=\min\{1,m\,\operatorname{dist}(x,K\setminus G)\}.
+\]
+则 \(f_m\in C(K)\)、\(0\leq f_m\leq\mathbf1_G\)，且 \(f_m\uparrow\mathbf1_G\)。
+于是对每个 \(m\)，
+\[
+ \int_K f_m\,\mathrm d\nu
+ =\lim_{j\to\infty}\int_K f_m\,\mathrm d\nu_{n_j}
+ \leq\liminf_{j\to\infty}\nu_{n_j}(G).
+\]
+令 \(m\to\infty\)，再用单调收敛定理，即得开集不等式。
+\end{proof}
+
 \begin{theorem}[Frostman]\label{b1:thm:frostman}
 设 \(K\subset\mathbb R^d\) 为非空紧集，\(0<s\leq d\)。
 则 \(\mathcal H^s(K)>0\) 当且仅当 \(K\) 上存在增长指数为 \(s\) 的 Frostman 测度。
 \end{theorem}
+存在性方向有四个转换：先把正覆盖量变成有限二进立方体树上的容量下界；
+再从根向下分配质量，得到具有统一立方体控制的离散测度；
+随后用前一引理抽取弱收敛子列；最后用开集不等式把球质量控制传给极限。即
+\[
+ \begin{aligned}
+ \mathcal H^s_\infty(K)>0
+ &\longrightarrow \text{有限树容量与质量分配}
+ \longrightarrow \mu_N(B(x,r))\lesssim r^s\\
+ &\longrightarrow \mu_{N_j}\Rightarrow\mu
+ \longrightarrow \mu(B(x,r))\lesssim r^s.
+ \end{aligned}
+\]
 \begin{proof}
-已有测度时，由质量分布原理即得 \(\mathcal H^s(K)>0\)。
+已有测度时，由 \(\overline B(x,r)\subset B(x,2r)\) 及质量分布原理即得
+\(\mathcal H^s(K)>0\)。
 以下设 \(\mathcal H^s(K)>0\)，取内部包含 \(K\) 的半开立方体 \(Q_0\)，边长为 \(L\)。
 由前一引理，
 \[
@@ -131,8 +225,9 @@
 这里使用了半开分割，故原子即使位于某些立方体边界上，等式仍然成立。
 
 概率测度 \(\mu_N/a\) 全部集中在紧集 \(K\) 上。
-由\cref{b1:lem:probability-weak-metrizable}，可取子列弱收敛到 \(K\) 上的概率测度；
-把它乘以 \(a\)，并视为 \(\mathbb R^d\) 上的测度，记为 \(\mu\)。
+由\cref{b1:lem:compact-probability-subsequence}，可取子列 \((\mu_{N_j}/a)\)
+弱收敛到 \(K\) 上的概率测度；把极限乘以 \(a\)，并视为
+\(\mathbb R^d\) 上的测度，记为 \(\mu\)。
 因此 \(\mu(K)=a>0\)。还须证明小球质量估计在极限中保留；
 不能直接对半开立方体使用闭集版本的 Portmanteau 不等式。
 
@@ -142,13 +237,13 @@
 \[
  \mu_N\bigl(B(x,r)\bigr)\leq4^d\ell^s\leq4^d2^s r^s.
 \]
-对开球使用\cref{b1:thm:portmanteau}得
+对 \(K\cap B(x,r)\) 使用\cref{b1:lem:compact-probability-subsequence}中的开集不等式，得
 \[
  \mu\bigl(B(x,r)\bigr)
- \leq\liminf_N\mu_N\bigl(B(x,r)\bigr)
+ \leq\liminf_{j\to\infty}\mu_{N_j}\bigl(B(x,r)\bigr)
  \leq4^d2^s r^s,
 \]
-其中极限沿已选子列取。
+其中只需取 \(j\) 充分大，使 \(N_j\) 不小于所选层数。
 若 \(r\geq L\)，则 \(\mu\bigl(B(x,r)\bigr)\leq a\leq L^s\leq r^s\)。
 故 \(\mu\) 满足定义中的统一增长估计。
 \end{proof}
@@ -158,7 +253,8 @@
 把这两件事分开，往往比直接在一棵无限树上规定所有分支的质量更方便。
 关于更一般集合上的版本及其与势论的关系，可继续阅读 Mattila 的
 《Geometry of Sets and Measures in Euclidean Spaces》\cite{Mattila1995Geometry}；
-这里的证明只使用本书已建立的紧集概率测度紧性。
+这里已把所需的紧集概率测度序列紧性和开集不等式在本节内证明；
+\chapref{b1:ch:12}则把这些结论放到更一般的测度弱收敛框架中。
 
 \subsection{Hausdorff 维数下界}
 \label{b1:subsec:150403}

@@ -1,5 +1,5 @@
 % !TeX root = ../../Book1.tex
-\chapter{弱拓扑、弱-*拓扑与紧性}
+\chapter{弱拓扑、弱-*\WeakStarJoin{}拓扑与紧性}
 \label{b1:ch:09}
 \BookChapterNumber{b1:ch:09}
 % 资料组：Fremlin2016Measure，2A5B--J、3A3I--J、3A5E--G、4A2Bd、4A4E、462A--D。
@@ -11,7 +11,7 @@
 在无穷维空间里，范数有界不能保证存在范数收敛子列。
 然而，许多方程和极小化问题并不要求所有误差都以范数趋于零：
 只要连续线性测试的结果收敛，就可能先保住方程，再借额外估计恢复更强的性质。
-本章从这种测试方式构造弱拓扑和弱-*拓扑，证明对偶球的紧性，
+本章从这种测试方式构造弱拓扑和弱-*\WeakStarJoin{}拓扑，证明对偶球的紧性，
 说明自反性如何把紧性带回原空间，最后把这些工具用于凸集、下半连续泛函和极小元的存在。
 贯穿全章的问题是：减弱收敛以后，哪些信息仍然保存，哪些信息必须另行补回？
 \end{chapterabstract}
@@ -19,7 +19,7 @@
 % 本章目标（不计入编号）
 \begin{learninggoals}
 \begin{itemize}
-\item\label{b1:item:09-goal-testing}区分范数收敛、弱收敛与弱-*收敛，能根据所在空间写出正确的测试对象。
+\item\label{b1:item:09-goal-testing}区分范数收敛、弱收敛与弱-*\WeakStarJoin{}收敛，能根据所在空间写出正确的测试对象。
 \item\label{b1:item:09-goal-compact}理解 Banach--Alaoglu 证明中的乘积空间与闭条件，知道紧性何时能够转化为收敛子列。
 \item\label{b1:item:09-goal-reflexive}从自然嵌入识别自反空间，并能对自反空间中的有界列抽取弱收敛子列。
 \item\label{b1:item:09-goal-convex}用凸分离和 Mazur 引理比较强、弱闭包，说明凸性在这种比较中的作用。
@@ -33,7 +33,7 @@
 可分空间中的序列版本则有可直接操作的对角抽取过程。
 
 建议先在 \(\ell^2\)、\(c_0\) 和 \(\ell^1\) 上复算两节中的收敛例子，
-然后连读\secref{b1:sec:0903}、。
+然后连读\secref{b1:sec:0903}与\secref{b1:sec:0904}。
 最后一节的变分应用只需要前面已证的自反空间序列结论，
 不依赖选读部分的一般 Eberlein--Šmulian 定理。
 这一安排使读者可以先掌握常用的存在性方法，再回头理解一般弱紧性的拓扑特征。
@@ -42,7 +42,7 @@
 \cite[Appendix to Volume 2, \S2A5; Appendix to Volume 3, \S3A5]{Fremlin2016Measure}阅读；
 其附录按供后文调用的方式紧凑排列，本书则把主要证明与例子接成一条教学主线。
 中文伴读可选许全华、马涛、尹智《泛函分析讲义》%
-\cite[第8--9章]{Xu2017Fanhan}，对照其中的弱拓扑、弱-*紧性及自反性各节。
+\cite[第8--9章]{Xu2017Fanhan}，对照其中的弱拓扑、弱-*\WeakStarJoin{}紧性及自反性各节。
 希望进一步系统学习局部凸空间或变分方法，可继续阅读 Rudin 的《Functional Analysis》%
 \cite{Rudin1991Functional}及 Brézis 的《Functional Analysis, Sobolev Spaces and Partial Differential Equations》%
 \cite{Brezis2011Functional}；后者也可作为下一章至 Sobolev 空间部分的连续伴读。
@@ -54,9 +54,9 @@
 \input{Part02/Chapter09/Section0905}
 % 本章小结（不计入编号）
 \begin{chaptersummary}
-弱收敛测试 \(X^*\) 的全部成员，弱-*收敛则在一个已经写成对偶的空间上只测试原空间。
+弱收敛测试 \(X^*\) 的全部成员，弱-*\WeakStarJoin{}收敛则在一个已经写成对偶的空间上只测试原空间。
 两者都把无穷维收敛拆成标量信息，但标量信息不能自动恢复范数，也不能无条件用序列描述整个拓扑。
-弱收敛序列必有界，弱-*收敛序列的范数有界则需要原空间的完备性。
+弱收敛序列必有界。当原空间为 Banach 空间时，一致有界原理保证弱-*\WeakStarJoin{}收敛序列范数有界；若原空间不完备，这一一般结论可能失效。
 
 Banach--Alaoglu 定理将对偶单位球放入紧乘积，再以线性关系截出闭子集。
 可分性把有界球上的全部测试压缩到可数稠密族，因而得到度量和收敛子列。
@@ -73,12 +73,79 @@ Goldstine 定理与自然嵌入进一步把自反性刻画为原空间闭单位�
 
 \BookExercises
 
-% 以下八题由本章工具组织并给出独立解答，不逐字摘录文献习题。
+% 以下十一题由本章工具组织并给出独立解答，不逐字摘录文献习题。
+
+\begin{exercise}\label{b1:ex:09-basic-convergence}
+分别判断下列序列的强收敛、弱收敛或弱-*\WeakStarJoin{}收敛，并说明所断言的较强收敛为何成立或失败。
+\begin{enumerate}
+\item \(\ell^2\) 中的 \(x^{(n)}=e_n/n\)；
+\item \(\ell^2\) 中的 \(y^{(n)}=e_n\)；
+\item 把 \(\ell^\infty\) 识别为 \((\ell^1)^*\)，并令
+\[
+ z^{(n)}=(\underbrace{1,\ldots,1}_{n\text{ 项}},0,0,\ldots).
+\]
+\end{enumerate}
+\end{exercise}
+\begin{solution}
+第一列满足 \(\|x^{(n)}\|_2=1/n\to0\)，故强收敛于零，也弱收敛于零。
+
+第二列的范数恒为一，因而不强收敛于零。对每个 \(h\in\ell^2\)，有
+\(\langle e_n,h\rangle=\overline{h_n}\to0\)；由 Riesz 表示定理，\(y^{(n)}\rightharpoonup0\)。
+
+第三列范数恒为一，每个固定坐标最终等于一。由\cref{b1:cor:linfty-weak-star-coordinate}，
+\[
+ z^{(n)}\overset{*}{\rightharpoonup}\boldsymbol 1=(1,1,\ldots).
+\]
+但 \(\|z^{(n)}-\boldsymbol1\|_\infty=1\) 对每个 \(n\) 都成立，所以它不强收敛于这个弱-*\WeakStarJoin{}极限。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:09-basic-weak-neighborhood}
+设 \(X\) 是赋范空间，\(x_0\in X\)，\(f_1,\ldots,f_m\in X^*\)，且 \(\varepsilon_1,\ldots,\varepsilon_m>0\)。令
+\[
+ W=\{x\in X:|f_j(x-x_0)|<\varepsilon_j\text{ 对 }1\leq j\leq m\}.
+\]
+证明 \(W\) 是 \(x_0\) 的弱邻域，并写出一个包含于 \(W\) 的标准基本邻域 \(U(x_0;F,\varepsilon)\)。若 \(X\) 无穷维，再证明 \(W\) 包含一条经过 \(x_0\) 的仿射直线，因而在范数下无界。
+\end{exercise}
+\begin{solution}
+取 \(F=\{f_1,\ldots,f_m\}\) 及 \(\varepsilon=\min_j\varepsilon_j\)，则
+\[
+ U(x_0;F,\varepsilon)\subset W,
+\]
+所以 \(W\) 是弱邻域。若 \(X\) 无穷维，线性映射
+\[
+ T:X\to\mathbb K^m,\qquad Tx=(f_1(x),\ldots,f_m(x))
+\]
+不可能单射。取非零 \(v\in\ker T\)，便有 \(f_j(tv)=0\) 对所有标量 \(t\) 和全部 \(j\) 成立。因此 \(x_0+tv\in W\) 对每个 \(t\) 成立，而这条直线在范数下无界。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:09-weak-star-coordinate-test}
+设 \(u^{(n)}=(u_k^{(n)})\in\ell^\infty\)，并假设
+\[
+ \sup_n\|u^{(n)}\|_\infty\leq M,
+ \qquad u_k^{(n)}\longrightarrow u_k\quad(k\geq1).
+\]
+不用直接引用坐标判别推论，证明 \(u=(u_k)\in\ell^\infty\)，并从 \(\ell^1\) 配对的首项与尾项估计推出 \(u^{(n)}\overset{*}{\rightharpoonup}u\)。再用 \(v^{(n)}=ne_n\) 说明：若删去统一范数界，逐坐标收敛不足以推出弱-*\WeakStarJoin{}收敛。
+\end{exercise}
+\begin{solution}
+逐坐标取极限给出 \(|u_k|\leq M\)，故 \(u\in\ell^\infty\)。对任意 \(a\in\ell^1\) 及正整数 \(N\)，有
+\[
+ \left|\sum_{k=1}^{\infty}a_k(u_k^{(n)}-u_k)\right|
+ \leq\sum_{k=1}^N|a_k|\,|u_k^{(n)}-u_k|
+     +2M\sum_{k>N}|a_k|.
+\]
+先选 \(N\) 控制尾和，再对有限个首项取 \(n\to\infty\)，便得到全部 \(\ell^1\) 测试下的收敛。
+
+序列 \(v^{(n)}=ne_n\) 的每个固定坐标都最终为零。令 \(a_{2^j}=2^{-j}\)，其余坐标为零，则 \(a\in\ell^1\)，而
+\[
+ \sum_k a_kv_k^{(n)}=na_n
+\]
+在 \(n=2^j\) 时等于一，在其余无限多个 \(n\) 上等于零，故不收敛于零。于是 \(v^{(n)}\) 并不弱-*\WeakStarJoin{}收敛于零。
+\end{solution}
 
 \begin{exercise}\label{b1:ex:09-varying-tests}
 设 \(X\) 是 Banach 空间。若 \(x_n\rightharpoonup x\) 且 \(f_n\to f\) 于 \(X^*\) 的范数，
-证明 \(f_n(x_n)\to f(x)\)。若改为 \(x_n\to x\) 于范数而 \(f_n\) 弱-*趋于 \(f\)，结论是否仍成立？
-最后说明同时只要求 \(x_n\rightharpoonup x\) 与 \(f_n\) 弱-*趋于 \(f\) 时，结论可以失败。
+证明 \(f_n(x_n)\to f(x)\)。若改为 \(x_n\to x\) 于范数而 \(f_n\) 弱-*\WeakStarJoin{}趋于 \(f\)，结论是否仍成立？
+最后说明同时只要求 \(x_n\rightharpoonup x\) 与 \(f_n\) 弱-*\WeakStarJoin{}趋于 \(f\) 时，结论可以失败。
 \end{exercise}
 \begin{solution}
 第一种情形中 \(M=\sup_n\|x_n\|<\infty\)，且
@@ -90,7 +157,7 @@ Goldstine 定理与自然嵌入进一步把自反性刻画为原空间闭单位�
  |f_n(x_n)-f(x)|\leq M'\|x_n-x\|+|f_n(x)-f(x)|\longrightarrow0.
 \]
 若两边都只有较弱的收敛，取 \(X=\ell^2\)、\(x_n=e_n\)、\(f_n(y)=y_n\)。
-则 \(x_n\rightharpoonup0\)，每个固定 \(y\in\ell^2\) 的坐标 \(y_n\to0\)，故 \(f_n\) 弱-*趋于零；
+则 \(x_n\rightharpoonup0\)，每个固定 \(y\in\ell^2\) 的坐标 \(y_n\to0\)，故 \(f_n\) 弱-*\WeakStarJoin{}趋于零；
 但 \(f_n(x_n)=1\)。逐个固定测试的极限，不能直接用于随 \(n\) 一同改变的测试对象。
 \end{solution}
 
@@ -128,7 +195,7 @@ Goldstine 定理与自然嵌入进一步把自反性刻画为原空间闭单位�
 证明 \(L\) 对 \(\sigma(X^*,X)\) 连续，当且仅当存在 \(x\in X\)，使 \(L(f)=f(x)\) 对所有 \(f\in X^*\) 成立。
 \end{exercise}
 \begin{solution}
-逐点评值按弱-*拓扑的定义连续，只需证必要性。
+逐点评值按弱-*\WeakStarJoin{}拓扑的定义连续，只需证必要性。
 由零点连续性，可找 \(x_1,\ldots,x_m\in X\) 及 \(\delta>0\)，使
 \[
  \max_i|f(x_i)|<\delta\quad\Longrightarrow\quad |L(f)|<1.
@@ -139,10 +206,10 @@ Goldstine 定理与自然嵌入进一步把自反性刻画为原空间闭单位�
 所以 \(A(Tf)=L(f)\) 定义了 \(T(X^*)\) 上的线性泛函。
 将 \(A\) 代数延拓到有限维空间 \(\mathbb K^m\)，写成 \(A(z)=\sum_i a_iz_i\)。
 于是 \(L(f)=\sum_i a_if(x_i)=f(\sum_i a_ix_i)\)，取 \(x=\sum_i a_ix_i\) 即可。
-这个证明说明，一个弱-*连续的线性测试最终只需有限个原空间向量，合并后就是单点评值。
+这个证明说明，一个弱-*\WeakStarJoin{}连续的线性测试最终只需有限个原空间向量，合并后就是单点评值。
 \end{solution}
 
-\begin{exercise}\label{b1:ex:09-compact-improves}
+\begin{exercise}[\(\star\) 选读]\label{b1:ex:09-compact-improves}
 设 \(X,Y\) 是 Banach 空间，\(T:X\to Y\) 是紧线性算子。
 证明 \(x_n\rightharpoonup x\) 蕴含 \(Tx_n\to Tx\) 于范数。
 \end{exercise}
@@ -156,23 +223,23 @@ Goldstine 定理与自然嵌入进一步把自反性刻画为原空间闭单位�
 \end{solution}
 
 \begin{exercise}\label{b1:ex:09-double-annihilator}
-设 \(M\subset X\) 是赋范空间的线性子空间，记
+设 \(A\) 是赋范空间 \(X\) 的任意子集，记
 \[
- M^\circ=\{f\in X^*:f|_M=0\}.
+ A^\circ=\{f\in X^*:f(a)=0\text{ 对每个 }a\in A\}.
 \]
-证明 \(M\) 的范数闭包和弱闭包都等于
-\(\{x\in X:f(x)=0\text{ 对所有 }f\in M^\circ\}\)。
+证明 \(A^\circ=(\operatorname{span}A)^\circ\)，并利用\cref{b1:prop:double-annihilator}推出
+\[
+ \overline{\operatorname{span}A}^{\,\|\cdot\|}
+ =\overline{\operatorname{span}A}^{\,w}
+ =\{x\in X:f(x)=0\text{ 对所有 }f\in A^\circ\}.
+\]
+特别地，证明 \(\operatorname{span}A\) 在 \(X\) 中稠密，当且仅当 \(A^\circ=\{0\}\)。
 \end{exercise}
 \begin{solution}
-记右边的集合为 \(N\)。每个核 \(\ker f\) 弱闭，故 \(N\) 弱闭并包含 \(M\)，
-从而 \(\overline M^{\,w}\subset N\)。又有 \(\overline M^{\,\|\cdot\|}\subset\overline M^{\,w}\)。
-若 \(x\notin\overline M^{\,\|\cdot\|}\)，令 \(d=\operatorname{dist}(x,\overline M)>0\)。
-在 \(\overline M+\mathbb Kx\) 上定义 \(h(m+tx)=t\)。表示唯一，且
-\[
- |h(m+tx)|=|t|\leq d^{-1}\|m+tx\|.
-\]
-Hahn--Banach 定理将 \(h\) 连续延拓为 \(f\in X^*\)。此时 \(f|_M=0\) 而 \(f(x)=1\)，
-故 \(x\notin N\)。反向包含成立，三个集合相等。
+泛函若在 \(A\) 上为零，由线性性就在 \(\operatorname{span}A\) 上为零；反向包含显然。因此
+\(A^\circ=(\operatorname{span}A)^\circ\)。把 \(M=\operatorname{span}A\) 代入\cref{b1:prop:double-annihilator}，再用这个零化子等式，就得到题中的三个集合相等。
+
+若 \(\operatorname{span}A\) 稠密，连续泛函在 \(A\) 上为零便在整个 \(X\) 上为零，所以 \(A^\circ=\{0\}\)。反过来，若 \(A^\circ=\{0\}\)，上述等式最右侧没有任何非零测试条件，等于整个 \(X\)，故 \(\overline{\operatorname{span}A}=X\)。
 \end{solution}
 
 \begin{exercise}\label{b1:ex:09-norm-attainment}

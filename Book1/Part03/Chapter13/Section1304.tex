@@ -17,12 +17,44 @@
 几乎处处成立，就说此基能微分 \(f\)。上式的极限要求所有足够小的允许集合都满足同一个误差界，不只是选定某个集合序列。
 \end{definition}
 
+这里的“基”只描述允许集合怎样趋近一点；它是否能够微分某个函数类，是需要另外证明的性质，不能从定义中的任意小尺度条件直接推出。
+
 中心球、含点球和以 \(x\) 为中心的立方体都给出微分基。对连续函数，它们都能恢复函数值：只要 \(x\in E\) 且 \(\operatorname{diam}E<\delta\)，就有
 \[
  \left|\frac1{m_d(E)}\int_E f-f(x)\right|
  \leq\sup_{|y-x|<\delta}|f(y)-f(x)|\longrightarrow0.
 \]
 对不连续的可积函数，连续性不能提供这个上界，允许集合的形状便开始影响结论。
+
+\cref{b1:fig:differentiation-bases}把三种常见的趋近方式并列画出。中心条件控制球心与观察点的关系；任意长宽比的矩形则可能在一个方向很短、另一个方向仍相对很长。图中只比较几何限制，不预先断言哪一族能微分全部局部可积函数。
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=0.95,line cap=round,line join=round]
+  \begin{scope}[xshift=-4.3cm]
+    \draw[thick] (0,0) circle (1);
+    \fill (0,0) circle (1.5pt);
+    \node[above right] at (0,0) {$x$};
+    \node[below] at (0,-1.35) {中心球};
+  \end{scope}
+  \begin{scope}
+    \draw[thick] (0.35,0.05) circle (1);
+    \draw (0.35,0.05) circle (1.5pt);
+    \fill (-0.25,0.30) circle (1.5pt);
+    \node[above left] at (-0.25,0.30) {$x$};
+    \node[below right] at (0.35,0.05) {$c$};
+    \node[below] at (0,-1.35) {含点球};
+  \end{scope}
+  \begin{scope}[xshift=4.3cm]
+    \draw[thick] (-1.65,-0.28) rectangle (1.65,0.28);
+    \fill (0,0) circle (1.5pt);
+    \node[above] at (0,0) {$x$};
+    \node[below] at (0,-1.35) {任意长宽比的矩形};
+  \end{scope}
+\end{tikzpicture}
+\caption{微分基中三类允许集合的几何差别。前两类保持球形，但观察点与球心的关系不同；第三类若不限制长宽比，偏心率可以任意增大。}
+\label{b1:fig:differentiation-bases}
+\end{figure}
 
 一种可用的几何条件是：对每个 \(E\in\mathcal B(x)\)，都能找到 \(r>0\)，使
 \begin{equation}\label{b1:eq:basis-volume-comparison}
@@ -80,10 +112,10 @@
 
 证明并没有让逼近序号与算子序号同时趋于无穷，而是先对一个固定的稠密类元素取算子极限，再把剩余误差送到零。极大函数负责统一所有算子序号，因此不需要对每个 \(n\) 另选一组例外点。该命题只处理可数族；连续半径情形还应说明可测性或可数尺度的约化，不能把不可数个零测例外集直接并起来。
 
-\subsection{逼近恒等}
-\label{b1:subsec:130403}
+\subsection{卷积与 \texorpdfstring{\(L^p\)}{Lp} 平移连续性}
+\label{b1:subsec:1304-convolution-translation}
 
-球平均可以写成一个固定函数的缩放与积分。为了容纳更平滑的平均方式，先引入卷积所需的最小工具；光滑性与高阶导数留到第四编处理。
+球平均可以写成一个固定函数的缩放与积分。为了容纳更平滑的平均方式，本小节建立卷积的 \(L^p\) 有界性和平移连续性；光滑性与高阶导数留到第四编处理。
 
 给定可测函数 \(K,f\)，在绝对积分有限的点定义它们的\term[juanji]{卷积}[convolution]为
 \[
@@ -129,6 +161,11 @@
 
 这一步使用的是\chapref{b1:ch:10}已经建立的连续紧支集稠密性，不预借光滑函数稠密性。当 \(p=\infty\) 时结论不成立：对 \(f=\mathbf1_{(0,1)}\) 和 \(0<|h|<1\)，有 \(\|\tau_hf-f\|_\infty=1\)。
 
+\subsection{逼近恒等与极大函数控制}
+\label{b1:subsec:130403}
+
+有了卷积的范数估计和平移连续性，可以先证明固定核缩放在 \(L^p\) 中逼近恒等，再说明径向递减核为何同时受 Hardy--Littlewood 极大函数控制。
+
 \begin{definition}\label{b1:def:approximate-identity}
 设 \(K\in L^1(\mathbb R^d)\) 且 \(\int K=1\)。令
 \[
@@ -164,12 +201,23 @@
 \]
 对每个固定 \(z\)，平移连续性使右侧的范数趋零；同时它不超过 \(2^p\|f\|_p^p\)。控制收敛定理因而完成有限 \(p\) 的证明。
 
-若 \(f\) 有界且一致连续，则同一个表示给出
+若 \(f\) 有界且一致连续，定义其平移模
+\[
+ \omega_f(h)=\sup_x|f(x-h)-f(x)|.
+\]
+由平移变量和三角不等式，
+\[
+ \omega_f(-h)=\omega_f(h),
+ \quad
+ |\omega_f(h)-\omega_f(k)|\leq\omega_f(h-k).
+\]
+一致连续性给出 \(\omega_f(u)\to0\) 当 \(u\to0\)，所以上式又说明 \(\omega_f\) 在每一点连续，特别地是 Borel 可测函数。现在同一个卷积表示给出
 \[
  \sup_x|K_t*f(x)-f(x)|
- \leq\int|K(z)|\sup_x|f(x-tz)-f(x)|\,\mathrm dz.
+ \leq\int|K(z)|\omega_f(tz)\,\mathrm dz.
 \]
-被积的上确界对每个 \(z\) 趋零，且不超过 \(2\|f\|_\infty\)，再次用控制收敛定理即可。
+对每个固定 \(z\)，\(\omega_f(tz)\to0\)，而且
+\(0\leq\omega_f(tz)\leq2\|f\|_\infty\)。因此被积函数可测，并由可积函数 \(2\|f\|_\infty|K(z)|\) 控制；控制收敛定理给出一致收敛。
 \end{proof}
 
 上述范数收敛不需要极大函数，但它本身不能把整个连续参数族的极限变成每一点的极限。为获得逐点信息，还需一种能统一所有 \(t\) 的控制。径向递减核正好提供了这样的联系。

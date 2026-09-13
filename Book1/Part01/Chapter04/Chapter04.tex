@@ -48,15 +48,45 @@
 
 \BookExercises
 
+\Cref{b1:ex:0401}和\cref{b1:ex:0402}先核验阈值集合、极限集合与可测拼接等基本操作；\cref{b1:ex:0403}、\cref{b1:ex:0407}至\cref{b1:ex:0409}需要综合本章若干工具，可作为进阶练习，其中\cref{b1:ex:0408}着重量词次序与反例构造。
+
+% 基础核验与拼接综合自拟：先训练4.1的阈值操作和未定义扩展实值运算，
+% 再把同一类集合分解用于可数覆盖上的函数拼接。
 \begin{exercise}\label{b1:ex:0401}
-设 \((A_n)_{n\geq1}\) 是可测空间 \((X,\mathcal A)\) 的一个可数可测覆盖。对每个 \(n\)，函数
+设 \((X,\mathcal A)\) 是可测空间。完成下列可测性核验。
+\begin{enumerate}
+\item 设 \(f,g:X\rightarrow\overline{\mathbb R}\) 可测。用有理阈值表示 \(\{f<g\}\)，并证明 \(\{f=g\}\)、\(\max\{f,g\}\) 与 \(\min\{f,g\}\) 可测。
+\item 说明为什么在断言 \(f-g\) 或 \(fg\) 可测之前，必须先排除 \(\infty-\infty\) 或 \(0\cdot\infty\) 一类未定义点。
+\item 设 \((A_n)_{n\geq1}\) 是 \(X\) 的一个可数可测覆盖。对每个 \(n\)，函数
 \(f_n:(A_n,\mathcal A|_{A_n})\rightarrow\overline{\mathbb R}\) 可测，并且
 \[
 f_n=f_m\quad\text{在 }A_n\cap A_m\text{ 上成立}.
 \]
 证明公式 \(f(x)=f_n(x)\)（\(x\in A_n\)）给出了良定义的可测函数 \(f:X\rightarrow\overline{\mathbb R}\)。
+\end{enumerate}
 \end{exercise}
 \begin{solution}
+有理数在实数中稠密，而且下面的等式对无穷值仍成立：
+\[
+\{f<g\}
+=\bigcup_{q\in\mathbb Q}
+  \bigl(\{f<q\}\cap\{g>q\}\bigr).
+\]
+因此 \(\{f<g\}\) 可测，交换 \(f,g\) 后 \(\{g<f\}\) 也可测，进而
+\[
+\{f=g\}
+=X\setminus\bigl(\{f<g\}\cup\{g<f\}\bigr)
+\]
+可测。对每个 \(a\in\mathbb R\)，又有
+\[
+\{\max(f,g)>a\}=\{f>a\}\cup\{g>a\},
+\quad
+\{\min(f,g)>a\}=\{f>a\}\cap\{g>a\},
+\]
+所以阈值判别给出最大值与最小值的可测性。
+
+可测性是映射的性质，因而首先要求目标表达式在每一点都有定义。例如在单点空间上取 \(f=g=+\infty\)，表达式 \(f-g\) 没有值；取 \(f=0\)、\(g=+\infty\)，表达式 \(fg\) 也没有值。在这些点尚未排除或另行约定取值以前，所谓“所得函数可测”并不是一个完整陈述。
+
 相容条件保证同一点无论选取哪个包含它的 \(A_n\)，所得函数值都相同，故 \(f\) 良定义。令
 \[
 B_1=A_1,
@@ -68,16 +98,38 @@ B_n=A_n\setminus\bigcup_{k<n}A_k\quad(n\geq2).
 \(f_n|_{B_n}\)。对可测分割应用\cref{b1:lem:measurable-pasting}，便知 \(f\) 可测。
 \end{solution}
 
+% 基础极限集合与构造性逼近自拟：把4.2的可数并交表达和4.3的二进逼近连接起来。
 \begin{exercise}\label{b1:ex:0402}
-设 \((f_n)_{n\geq1}\) 是一列非负可测函数。对每个 \(k\)，把%
-\cref{b1:thm:nonnegative-simple-approximation}的第 \(k\) 级二进公式分别应用于
+设 \((f_n)_{n\geq1}\) 是一列非负扩展实值可测函数。
+\begin{enumerate}
+\item 对每个 \(a\in\mathbb R\)，证明
+\[
+\left\{\sup_{n\geq1}f_n>a\right\}
+=\bigcup_{n=1}^{\infty}\{f_n>a\}
+\]
+以及
+\[
+\left\{\limsup_{n\to\infty}f_n>a\right\}
+=\bigcup_{\substack{q\in\mathbb Q\\q>a}}
+  \bigcap_{m=1}^{\infty}\bigcup_{n=m}^{\infty}\{f_n>q\}.
+\]
+再说明使数列 \((f_n(x))\) 在 \(\overline{\mathbb R}\) 中收敛的点组成可测集。
+\item 对每个 \(k\)，把\cref{b1:thm:nonnegative-simple-approximation}的第 \(k\) 级二进公式分别应用于
 \(f_1,\ldots,f_k\)，所得简单函数记为 \(\varphi_{1,k},\ldots,\varphi_{k,k}\)。证明可以令
 \[
 s_k=\max_{1\leq j\leq k}\varphi_{j,k},
 \]
 从而得到一列非负简单函数 \(s_k\uparrow\sup_{n\geq1}f_n\)。
+\end{enumerate}
 \end{exercise}
 \begin{solution}
+第一个等式直接来自上确界的定义。对第二个等式，若上极限大于 \(a\)，可在二者之间取有理数 \(q\)；此时对每个 \(m\)，总有某个 \(n\geq m\) 使 \(f_n>q\)。反过来，若对某个 \(q>a\) 有无穷多项满足 \(f_n>q\)，则上极限至少为 \(q\)，因而严格大于 \(a\)。右端只含可数并、交，所以也直接证明了上极限可测。下极限同理可测。由于 \(\overline{\mathbb R}\) 中的数列收敛当且仅当其上极限与下极限相等，收敛点集为
+\[
+\left\{\limsup_{n\to\infty}f_n
+=\liminf_{n\to\infty}f_n\right\},
+\]
+它由前一题的等值集合结论可测。
+
 同一级有限多个简单函数的最大值仍是简单函数，故 \(s_k\) 非负且简单。显式二进公式对逼近层级单调，所以当 \(j\leq k\) 时
 \(\varphi_{j,k}\leq\varphi_{j,k+1}\)；第 \(k+1\) 项还在最大值中增加了一个候选函数。因此
 \[
@@ -94,21 +146,24 @@ s_k\leq s_{k+1}\leq\sup_{n\geq1}f_n.
 \end{solution}
 
 \begin{exercise}\label{b1:ex:0403}
-设 \(f:\mathbb R^d\rightarrow\overline{\mathbb R}\) 是 Lebesgue 可测的。证明存在 Borel 可测函数
-\(g:\mathbb R^d\rightarrow\overline{\mathbb R}\)，使 \(f=g\) 几乎处处。
+设 \(\Omega\in\mathcal L^d\)，且 \(f:\Omega\to\mathbb R^q\) 是有限值 Lebesgue 可测映射。
+证明存在 Borel 可测映射 \(G:\mathbb R^d\to\mathbb R^q\)，使
+\(G|_\Omega=f\) 几乎处处。再说明即使 \(q=1\)、\(\Omega=[0,1]\)，一般也不能要求
+\(G|_\Omega=f\) 在每一点成立。
 \end{exercise}
 \begin{solution}
-由\cref{b1:cor:simple-pointwise-characterization}，可取实值简单函数 \(s_n\to f\) 逐点成立。把 \(s_n\) 的规范表示写成
+把 \(f\) 在 \(\mathbb R^d\setminus\Omega\) 上补为零，得到有限值 Lebesgue 可测映射
+\(\widetilde f:\mathbb R^d\to\mathbb R^q\)。由
+\cref{b1:thm:lebesgue-borel-representative}，存在有限值 Borel 可测映射 \(G\)，
+使 \(G=\widetilde f\) 几乎处处。限制到 \(\Omega\) 就得到所需结论。
+
+为说明逐点要求一般不可能，取三分 Cantor 集中的非 Borel 子集
+\(N\subseteq C\subseteq[0,1]\)，并令 \(f=\mathbf1_N\)。它是 Lebesgue 可测函数。
+若存在 Borel 可测 \(G:\mathbb R\to\mathbb R\) 满足 \(G|_{[0,1]}=f\) 处处成立，则
 \[
-s_n=\sum_{j=1}^{N_n}a_{n,j}\mathbf 1_{E_{n,j}}.
+ N=[0,1]\cap G^{-1}\bigl((1/2,3/2)\bigr)
 \]
-由\cref{b1:thm:borel-approximation}，对每个 \(E_{n,j}\) 可取 Borel 集 \(B_{n,j}\)，使
-\(E_{n,j}\mathbin{\triangle}B_{n,j}\) 为零测集。令
-\(t_n=\sum_ja_{n,j}\mathbf 1_{B_{n,j}}\)，则 \(t_n\) 是 Borel 可测的，而且 \(t_n=s_n\) 在一个零测集外成立。所有这些例外集的可数并仍为零测集，所以在其补集上 \(t_n\to f\)。定义
-\[
-g=\limsup_{n\to\infty}t_n.
-\]
-函数 \(g\) 是 Borel 可测的，并在上述补集上等于 \(f\)，即为所求 Borel 代表。
+应为 Borel 集，矛盾。因此“几乎处处”不能删去。
 \end{solution}
 
 \begin{exercise}\label{b1:ex:0404}
@@ -212,7 +267,6 @@ m(E\setminus K)
 \end{solution}
 
 \begin{exercise}\label{b1:ex:0408}
-% 根据本轮审稿关于几乎一致收敛与固定零测例外集的辨析建议自拟；以连续有理函数峰替代正文的收缩区间示性函数。
 在 \([0,1]\) 上构造一列连续函数 \(f_n\)，使 \(f_n\to0\) 处处成立，并同时满足：对每个 \(\varepsilon>0\)，能显式给出有限个区间之并 \(A_\varepsilon\subseteq[0,1]\)，使 \(m(A_\varepsilon)<\varepsilon\) 且收敛在 \([0,1]\setminus A_\varepsilon\) 上一致；但对任意固定的零测集 \(N\subseteq[0,1]\)，收敛在 \([0,1]\setminus N\) 上都不一致。
 \end{exercise}
 \begin{solution}
@@ -253,13 +307,39 @@ E_1\subseteq E_2\subseteq\cdots,
 \]
 使得给定 \(\varepsilon>0\) 后，可以为每个 \(j\) 取
 \(A_j\subseteq E_j\)、\(\mu(A_j)<\varepsilon2^{-j}\)，且
-\(f_n\to f\) 在 \(E_j\setminus A_j\) 上一致。解释为什么这只给出逐层的一致收敛，而不保证在
+\(f_n\to f\) 在 \(E_j\setminus A_j\) 上一致。证明时在删去公共零集后，直接为每个 \(E_j\) 构造 Egoroff 坏集，而不把有限测度情形作为黑箱。解释为什么这只给出逐层的一致收敛，而不保证在
 \(X\setminus\bigcup_jA_j\) 上全局一致收敛。
 \end{exercise}
 \begin{solution}
-由 \(\sigma\)-有限性，可取有限测度可测集 \((F_j)\) 覆盖
-\(X\)。令 \(E_j=\bigcup_{k=1}^{j}F_k\)，便得到题设的递增有限测度穷竭。把 Egoroff 定理的几乎处处版本应用于每个 \(E_j\)，并使用误差预算
-\(\varepsilon2^{-j}\)，即可得到所需的 \(A_j\)。此外
+由 \(\sigma\)-有限性，可取有限测度可测集 \((Y_j)\) 覆盖
+\(X\)。令 \(E_j=\bigcup_{k=1}^{j}Y_k\)，便得到题设的递增有限测度穷竭。再取可测零集 \(Z\)，使 \(f_n\to f\) 在 \(X\setminus Z\) 上逐点成立，并令 \(D_j=E_j\setminus Z\)。
+
+对整数 \(j,r,N\geq1\)，定义
+\[
+B_{j,r,N}
+=\bigcup_{n=N}^{\infty}
+  \{\,x\in D_j\mid |f_n(x)-f(x)|\geq r^{-1}\,\}.
+\]
+固定 \(j,r\) 后，\(B_{j,r,N}\downarrow\varnothing\)，且
+\(\mu(B_{j,r,1})\leq\mu(E_j)<\infty\)。由测度的从上连续性，可选 \(N_{j,r}\)，使
+\[
+\mu(B_{j,r,N_{j,r}})
+<\varepsilon2^{-j-r-1}.
+\]
+令
+\[
+A_j=(Z\cap E_j)
+\cup\bigcup_{r=1}^{\infty}B_{j,r,N_{j,r}}.
+\]
+则 \(A_j\subseteq E_j\) 可测，并且
+\[
+\mu(A_j)
+\leq\sum_{r=1}^{\infty}\mu(B_{j,r,N_{j,r}})
+<\varepsilon2^{-j-1}<\varepsilon2^{-j}.
+\]
+若 \(x\in E_j\setminus A_j\)，则对每个 \(r\) 和所有 \(n\geq N_{j,r}\) 都有
+\(|f_n(x)-f(x)|<r^{-1}\)。因而 \(f_n\to f\) 在每个
+\(E_j\setminus A_j\) 上一致。此外
 \[
 \mu\left(\bigcup_{j=1}^{\infty}A_j\right)
 \leq\sum_{j=1}^{\infty}\varepsilon2^{-j}

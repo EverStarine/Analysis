@@ -1,5 +1,5 @@
 % !TeX root = ../../Book1.tex
-\chapter{Jacobi 行列式与面积公式}
+\chapter{Jacobi 因子与面积公式}
 \label{b1:ch:17}
 \BookChapterNumber{b1:ch:17}
 % 本章摘要（不计入编号）
@@ -17,7 +17,7 @@
 \end{itemize}
 \end{learninggoals}
 
-本章依赖\chapref{b1:ch:15}的 \(\mathcal H^k=m_k\) 归一化及\chapref{b1:ch:16}的 Rademacher 定理。只有掌握这两项，微分矩阵与面积才使用同一个尺度。\secref{b1:sec:1701}补齐所需有限维代数，不要求先读尚未展开的外代数附录；\secref{b1:sec:1703}是证明主线，初读时可以先明确单射公式、重数公式各自说什么，再顺着分片与秩亏处理回读论证。
+本章主线依赖\chapref{b1:ch:15}的 \(\mathcal H^k=m_k\) 归一化，以及\secref{b1:sec:1602}的 Rademacher 定理与可微点的 Borel 结构。只有掌握这些结论，微分矩阵与面积才使用同一个尺度。选读的\subsecref{b1:subsec:170204}另用\secref{b1:sec:1603}的近似微分；选读的\subsecref{b1:subsec:170401}则调用\secref{b1:sec:1605}的度量导数、长度公式与弧长参数化。\secref{b1:sec:1701}补齐所需有限维代数，不要求先读尚未展开的外代数附录；\secref{b1:sec:1703}是证明主线，初读时可以先明确单射公式、重数公式各自说什么，再顺着分片与秩亏处理回读论证。
 
 Fremlin 的《Measure Theory》\cite[\S265]{Fremlin2016Measure}提供线性面积、近线性比较与增广映射的主要参照；本书利用已经建立的 Borel 微分矩阵，把可数分片和一般重数版本逐步展开。Simon 的《Lectures on Geometric Measure Theory》\cite[\S8]{Simon1983Lectures}适合对照面积公式的几何写法及曲面应用。该书在光滑逼近处另指向外部资料，不能把那段说明直接当作这里 Lipschitz 证明的替代。希望继续学习更一般集合上的面积与可整流性，可在读完\chapref{b1:ch:19}后转向 Mattila 的《Geometry of Sets and Measures in Euclidean Spaces》\cite{Mattila1995Geometry}。
 
@@ -38,7 +38,7 @@ Fremlin 的《Measure Theory》\cite[\S265]{Fremlin2016Measure}提供线性面�
 \BookExercises
 
 % \chapref{b1:ch:17}习题临时稿；不另设 BookExercises 标题。
-% 八题均为依据本章工具组织的自拟变式；未把未读到的教材题号当作来源。
+% 十题均为依据本章工具组织的自拟变式；未把未读到的教材题号当作来源。
 % 只使用面积公式，不调用\chapref{b1:ch:18}余面积公式或尚未建立的可整流集理论。
 
 \begin{exercise}\label{b1:ex:17-nonsquare-linear-area}
@@ -269,7 +269,100 @@ Fremlin 的《Measure Theory》\cite[\S265]{Fremlin2016Measure}提供线性面�
 这说明即使投影是单射，也不能把投影面积直接当作曲面面积。
 \end{solution}
 
-\begin{exercise}\label{b1:ex:17-unbounded-multiplicity-curve}
+\begin{exercise}[一维面积公式的直接核对]\label{b1:ex:17-basic-area-formula}
+令 \(f:\mathbb R\to\mathbb R\) 为 \(f(t)=t^2\)，并取 \(E=[-1,2]\)。
+\begin{enumerate}
+\item 求 \(J_1f\) 以及重数函数 \(N(f,E,\cdot)\) 的几乎处处取值，并直接核对
+\[
+ \int_EJ_1f(t)\,\mathrm dt
+ =\int_{\mathbb R}N(f,E,y)\,\mathrm dy.
+\]
+\item 取目标空间上的权函数 \(h(y)=y\)。直接计算加权面积公式两端，并核对它们都等于 \(17/2\)。
+\end{enumerate}
+\end{exercise}
+% 来源：自拟；先训练一维 Jacobi 因子、重数和加权面积公式的直接计算。
+\begin{solution}
+函数在每点可微，故
+\[
+ J_1f(t)=|f'(t)|=2|t|.
+\]
+除去端点这些零测例外，重数为
+\[
+ N(f,E,y)=
+ \begin{cases}
+ 2,&0<y<1,\\
+ 1,&1<y<4,\\
+ 0,&y<0\text{ 或 }y>4.
+ \end{cases}
+\]
+因此
+\[
+ \int_{-1}^{2}2|t|\,\mathrm dt=1+4=5,
+ \qquad
+ \int_{\mathbb R}N(f,E,y)\,\mathrm dy=2+3=5.
+\]
+
+对第二问，在参数域中使用权 \(h\circ f=t^2\)，得到
+\[
+ \int_{-1}^{2}t^2\cdot2|t|\,\mathrm dt
+ =\frac12+8=\frac{17}{2}.
+\]
+目标空间一侧为
+\[
+ \int_0^1 2y\,\mathrm dy+\int_1^4y\,\mathrm dy
+ =1+\frac{15}{2}=\frac{17}{2}.
+\]
+端点处重数的特殊取值不改变积分。
+\end{solution}
+
+\begin{exercise}[秩亏部分的增广映射]\label{b1:ex:17-rank-deficient-augmentation}
+设 \(f:\mathbb R^k\to\mathbb R^n\) 为 \(L\)-Lipschitz 映射，其中 \(1\leq k\leq n\)，并令
+\[
+ C=\{\,x\in\mathcal D_f:\operatorname{rank}Df(x)<k\,\},
+ \qquad C_q=C\cap B(0,q).
+\]
+对 \(0<\eta\leq1\)，定义 \(F_\eta(x)=(f(x),\eta x)\)。
+\begin{enumerate}
+\item 证明 \(F_\eta\) 是单射的 Lipschitz 映射，并在 \(C\) 上计算 \(DF_\eta\) 与 \(DF_\eta^{\mathsf T}DF_\eta\)。
+\item 证明 \(J_kF_\eta>0\)，且它在 \(C\) 上逐点趋于零，并满足
+\[
+ 0\leq J_kF_\eta\leq(L^2+1)^{k/2}.
+\]
+\item 对每个 \(q\)，用满秩单射情形及投影 \((y,z)\mapsto y\) 证明
+\[
+ \mathcal H^k\bigl(f(C_q)\bigr)
+ \leq\int_{C_q}J_kF_\eta(x)\,\mathrm dx,
+\]
+再令 \(\eta\downarrow0\)。
+\item 推出 \(\mathcal H^k(f(C))=0\)，并说明为什么“每个切线性像都零测”本身不足以代替上述论证。
+\end{enumerate}
+\end{exercise}
+% 来源：自拟；把正文秩亏引理中的增广映射机制拆成可独立复做的步骤。
+\begin{solution}
+若 \(F_\eta(x)=F_\eta(y)\)，比较后 \(k\) 个坐标便得 \(\eta x=\eta y\)，故 \(x=y\)。映射 \(f\) 与线性映射 \(x\mapsto\eta x\) 都是 Lipschitz 的，所以 \(F_\eta\) 也是 Lipschitz 的。在 \(C\) 上，
+\[
+ DF_\eta(x)=
+ \begin{pmatrix}Df(x)\\ \eta I_k\end{pmatrix},
+ \qquad
+ DF_\eta(x)^{\mathsf T}DF_\eta(x)
+ =Df(x)^{\mathsf T}Df(x)+\eta^2I_k.
+\]
+后一个矩阵正定，故 \(J_kF_\eta(x)>0\)。若 \(\lambda_1(x),\ldots,\lambda_k(x)\) 是 \(Df(x)^{\mathsf T}Df(x)\) 的特征值，则
+\[
+ J_kF_\eta(x)=
+ \prod_{i=1}^k\sqrt{\lambda_i(x)+\eta^2}.
+\]
+秩亏使至少一个 \(\lambda_i(x)\) 为零，所以该乘积随 \(\eta\downarrow0\) 越来越小并趋于零。又因 \(0\leq\lambda_i(x)\leq L^2\)，可得题设统一上界。
+
+映射 \(F_\eta\) 在 \(C_q\) 上单射且 Jacobi 因子为正，故\cref{b1:lem:full-rank-area-comparison}给出
+\[
+ \mathcal H^k\bigl(F_\eta(C_q)\bigr)
+ =\int_{C_q}J_kF_\eta(x)\,\mathrm dx.
+\]
+坐标投影是 \(1\)-Lipschitz 的，并把 \(F_\eta(C_q)\) 映到 \(f(C_q)\)，因此得到题中不等式。集合 \(C_q\) 测度有限，上一问的上界允许使用控制收敛定理，故右端趋于零，于是 \(\mathcal H^k(f(C_q))=0\)。最后由 \(C=\bigcup_qC_q\) 和可数次次可加性得 \(\mathcal H^k(f(C))=0\)。逐点的切线性像虽然各自零测，但不可数个零测集的并可以有正测度；它没有给出这里所需的整体像估计。
+\end{solution}
+
+\begin{exercise}[\(\star\) 选读]\label{b1:ex:17-unbounded-multiplicity-curve}
 令 \(r_n=2^{-n}/n\)、\(t_0=0\)、\(t_n=1-2^{-n}\)。在 \([t_{n-1},t_n]\) 上设
 \[
  \tau_n(t)=2^n(t-t_{n-1}),
@@ -302,7 +395,7 @@ Fremlin 的《Measure Theory》\cite[\S265]{Fremlin2016Measure}提供线性面�
 \]
 对 \(s<t<1\)，将 \([s,t]\) 按所经过的有限个拼接点分段，逐段应用此 Lipschitz 估计并相加，得到 \(|\gamma(t)-\gamma(s)|\le2\pi(t-s)\)。
 再令 \(t\uparrow1\) 可包括右端点。
-曲线速度在几乎处处等于 \(2\pi\)，由\chapref{b1:ch:16}的长度公式，长度为 \(2\pi\)。
+曲线速度在几乎处处等于 \(2\pi\)，由\cref{b1:thm:metric-curve-length}，长度为 \(2\pi\)。
 
 不同圆 \(C_n,C_m\) 只在原点相交。事实上，其方程分别为
 \(x^2+y^2=2r_nx\) 与 \(x^2+y^2=2r_mx\)，相减后得到 \(x=0\)，进而 \(y=0\)。
@@ -322,14 +415,14 @@ Fremlin 的《Measure Theory》\cite[\S265]{Fremlin2016Measure}提供线性面�
 重数在每个圆上逐渐增大，却仍然可积。长度记录重复绕行的次数，而像集的测度只把各圆计算一次。
 \end{solution}
 
-\begin{exercise}\label{b1:ex:17-approximate-jacobian-without-n}
+\begin{exercise}[\(\star\) 选读]\label{b1:ex:17-approximate-jacobian-without-n}
 令 \(C\subset[0,1]\) 为三分 Cantor 集，\(F\) 为其连续分布函数，并在 \([0,1]^2\) 上定义
 \[
  G(x,y)=(F(x),y).
 \]
 \begin{enumerate}
 \item\label{b1:item:17-cantor-jacobian}
-证明 \(G\) 几乎处处可微，而且 \(J_2G=0\) 几乎处处；因此其近似 Jacobi 行列式也几乎处处为零。
+证明 \(G\) 几乎处处可微，而且 \(J_2G=0\) 几乎处处；因此其近似 Jacobi 因子也几乎处处为零。
 \item\label{b1:item:17-cantor-n-failure}
 证明 \(A=C\times[0,1]\) 是二维零测集，而 \(G(A)=[0,1]^2\)。
 再证明 \(G\) 的重数在 \([0,1]^2\) 上几乎处处等于 \(1\)，从而直接显示面积公式的两边不相等。
@@ -342,7 +435,7 @@ Fremlin 的《Measure Theory》\cite[\S265]{Fremlin2016Measure}提供线性面�
 \[
  DG(x,y)=\begin{pmatrix}0&0\\0&1\end{pmatrix},
 \]
-其行列式为零。普通可微蕴含近似可微，且两种微分一致，所以近似 Jacobi 行列式也为零。
+其行列式为零。普通可微蕴含近似可微，且两种微分一致，所以近似 Jacobi 因子也为零。
 
 由 \(m_1(C)=0\) 及乘积积分，\(m_2(A)=0\)。另一方面，\(F\) 连续单调且 \(F(0)=0\)、\(F(1)=1\)，故映满 \([0,1]\)。
 若某个原像落在 \(C\) 的补集区间内，则该区间的端点属于 \(C\)，且有同样的 \(F\) 值。因此 \(F(C)=[0,1]\)，进而 \(G(A)=[0,1]^2\)。
@@ -361,7 +454,7 @@ Fremlin 的《Measure Theory》\cite[\S265]{Fremlin2016Measure}提供线性面�
 面积公式不能仅凭几乎处处存在近似微分就无条件使用；本例缺少的零集控制是实质性条件。
 \end{solution}
 
-\begin{exercise}\label{b1:ex:17-singular-lipschitz-homeomorphism}
+\begin{exercise}[\(\star\) 选读]\label{b1:ex:17-singular-lipschitz-homeomorphism}
 设 \(K\subset[0,1]\) 紧且无处稠密，并满足 \(0<m_1(K)<1\)。令
 \[
  f(t)=\int_0^t\mathbf1_{[0,1]\setminus K}(u)\,\mathrm du,
@@ -371,7 +464,7 @@ Fremlin 的《Measure Theory》\cite[\S265]{Fremlin2016Measure}提供线性面�
 \item\label{b1:item:17-singular-interval-homeomorphism}
 证明 \(f:[0,1]\to[0,\ell]\) 是 \(1\)-Lipschitz 同胚，\(m_1(f(K))=0\)，但其逆映射不是绝对连续函数。
 \item\label{b1:item:17-singular-planar-homeomorphism}
-令 \(H(x,y)=(f(x),y)\)。证明 \(H\) 是两个闭矩形之间的 Lipschitz 同胚，其 Jacobi 行列式在正测集 \(K\times[0,1]\) 上几乎处处为零，而这个集合的像为零测集。
+令 \(H(x,y)=(f(x),y)\)。证明 \(H\) 是两个闭矩形之间的 Lipschitz 同胚，其 Jacobi 因子在正测集 \(K\times[0,1]\) 上几乎处处为零，而这个集合的像为零测集。
 这与面积公式是否矛盾？逆映射是否仍把零测集映成零测集？
 \end{enumerate}
 \end{exercise}
@@ -385,7 +478,7 @@ Fremlin 的《Measure Theory》\cite[\S265]{Fremlin2016Measure}提供线性面�
  f'(t)=\mathbf1_{[0,1]\setminus K}(t)
  \quad\text{几乎处处}.
 \]
-将单射的一维面积公式用于 \(K\)，得到
+由\cref{b1:thm:mcshane-extension}取 \(f\) 的一个全实线 Lipschitz 延拓 \(\widetilde f\)。它在 \([0,1]\) 上等于 \(f\)，因而除去两个端点后，两者的导数相同。将单射的一维面积公式用于 \(\widetilde f|_K\)，得到
 \[
  m_1(f(K))=\int_K|f'(t)|\,\mathrm dt=0.
 \]
@@ -398,13 +491,18 @@ Fremlin 的《Measure Theory》\cite[\S265]{Fremlin2016Measure}提供线性面�
 \]
 与 \(\ell<1\) 矛盾。
 
-在二维中，\(H\) 及其逆映射分别为 \((f(x),y)\) 与 \((g(u),y)\)，所以 \(H\) 是同胚；\(f\) 的 Lipschitz 估计还给出 \(H\) 为 \(1\)-Lipschitz。
-几乎处处有
+在二维中，\(H\) 及其逆映射分别为 \((f(x),y)\) 与 \((g(u),y)\)，所以 \(H\) 是同胚；\(f\) 的 Lipschitz 估计还给出 \(H\) 为 \(1\)-Lipschitz。为与面积公式的全空间定义域对齐，令
 \[
- DH(x,y)=\begin{pmatrix}f'(x)&0\\0&1\end{pmatrix},
- \quad J_2H(x,y)=\mathbf1_{[0,1]\setminus K}(x).
+ \widetilde H(x,y)=\bigl(\widetilde f(x),y\bigr)
+ \quad((x,y)\in\mathbb R^2).
+\]
+它是全空间上的 Lipschitz 映射，并在 \([0,1]^2\) 上等于 \(H\)；正方形边界为零测集，所以内部的导数计算足够决定相关积分。在 \((0,1)^2\) 内几乎处处有
+\[
+ D\widetilde H(x,y)=DH(x,y)
+ =\begin{pmatrix}f'(x)&0\\0&1\end{pmatrix},
+ \quad J_2\widetilde H(x,y)=\mathbf1_{[0,1]\setminus K}(x).
 \]
 集合 \(E=K\times[0,1]\) 的面积为 \(m_1(K)>0\)，但其像 \(f(K)\times[0,1]\) 的面积为零。
-这完全符合面积公式：\(\int_EJ_2H=0\)，而在整个正方形上 \(\int J_2H=\ell\)，恰等于目标矩形的面积。
+由于 \(\widetilde H|_E=H|_E\)，全空间面积公式给出 \(\mathcal H^2(H(E))=\int_EJ_2\widetilde H=0\)。在整个正方形上的积分则为 \(\ell\)，恰等于目标矩形的面积，所以这里没有矛盾。
 逆映射却把零测的 \(H(E)\) 映回正测的 \(E\)，因而不再具有把零测集映为零测集的性质，也不可能是 Lipschitz 映射。
 \end{solution}

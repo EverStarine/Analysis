@@ -14,6 +14,19 @@
 \subsection{单射情形}
 \label{b1:subsec:170301}
 
+单射面积公式的证明分成六步：先保证可测参数集的像可测，再比较一块上接近固定线性映射的面积，随后把满秩点分成可数个这样的片；满秩部分由逐片比较处理，秩亏部分则另用增广映射 \((f,\eta\operatorname{id})\) 压回原像，最后合并两部分。也就是
+\[
+ \begin{aligned}
+ \text{像的可测性}
+ &\longrightarrow\text{近线性比较}
+ \longrightarrow\text{满秩分片}\\
+ &\longrightarrow\text{满秩面积比较}
+ \longrightarrow\text{秩亏像零测}
+ \longrightarrow\text{单射面积公式}.
+ \end{aligned}
+\]
+满秩部分依靠近线性分片的双向距离控制；秩亏部分没有这样的下界，不能用同一个估计替代增广映射。
+
 以下先设 \(1\leq k\leq n\)，且 \(f:\mathbb R^k\rightarrow\mathbb R^n\) 为 \(L\)-Lipschitz 映射。沿用\cref{b1:def:lipschitz-jacobian}，在真正可微点取
 \[
  J_kf(x)=\sqrt{\det\bigl(Df(x)^{\mathsf T}Df(x)\bigr)},
@@ -137,7 +150,7 @@
  \left|\mathcal H^k\bigl(f(E_j)\bigr)-J_jm_k(E_j)\right|
  \leq\varepsilon m_k(E_j).
 \]
-所有像都由\cref{b1:lem:lipschitz-image-hausdorff-measurable}保证可测。利用可数次可加性及 \(E_j\) 的两两不交性，
+所有像都由\cref{b1:lem:lipschitz-image-hausdorff-measurable}保证可测。集合 \(f(E_j)\) 一般会互相重叠，所以第一步只能使用 \(\mathcal H^k\) 的可数次次可加性；参数片 \(E_j\) 的两两不交性则用于合并参数域上的测度与积分：
 \[
  \begin{aligned}
  \mathcal H^k\bigl(f(E)\bigr)
@@ -278,8 +291,6 @@
 
 这个公式不要求一般点只有有限个原像。若 \(\int_EJ_kf<\infty\)，才可进一步推出 \(N(f,E,\cdot)<\infty\) 几乎处处：一个在正测度集合上等于 \(+\infty\) 的非负函数，不可能具有有限积分。
 
-公式也适用于开集 \(U\subseteq\mathbb R^k\) 上的局部 Lipschitz 映射。用可数个具有有限 Lipschitz 常数的开球覆盖 \(U\)，依次相减得到不交的 Borel 分片；在每个球上逐坐标延拓到全空间。延拓与原映射在球内局部相同，所以 \(J_kf\) 在那里不变。对各片分别应用公式，再把非负积分及纤维点数相加即可。这一局部化不要求 \(U\) 有规则边界，也不要求整张映射具有一个公共 Lipschitz 常数。
-
 \subsection{加权面积公式}
 \label{b1:subsec:170304}
 
@@ -306,6 +317,39 @@
  S_g(y)=\sum_{i=1}^r a_iN(f,A_i,y).
 \]
 可测性及积分等式直接由一般面积公式得到。对一般 \(g\)，取非负简单函数列 \(g_\ell\uparrow g\)。对每个固定纤维，先在有限子集上取极限，再对有限子集取上确界，可得 \(S_{g_\ell}\uparrow S_g\)。于是可测性由逐点极限保持，两端分别应用单调收敛定理，就得到所需等式。
+\end{proof}
+
+\begin{corollary}[局部面积公式]\label{b1:cor:local-area-formulas}
+设 \(U\subseteq\mathbb R^k\) 为开集，\(f:U\rightarrow\mathbb R^n\) 为局部 Lipschitz 映射，其中 \(1\leq k\leq n\)，并设 \(E\subseteq U\) 是 Lebesgue 可测的。则重数函数 \(N(f,E,\cdot)\) 是 \(\mathcal H^k\) 可测的，并且
+\[
+ \int_EJ_kf(x)\,\mathrm dx
+ =
+ \int_{\mathbb R^n}N(f,E,y)\,\mathrm d\mathcal H^k(y).
+\]
+若 \(g:E\rightarrow[0,\infty]\) 是 Lebesgue 可测的，则相应的加权公式
+\[
+ \int_Eg(x)J_kf(x)\,\mathrm dx
+ =
+ \int_{\mathbb R^n}
+ \sum_{x\in E\cap f^{-1}(\{y\})}g(x)\,
+ \mathrm d\mathcal H^k(y)
+\]
+也成立。
+\end{corollary}
+\begin{proof}
+取可数个开球 \(B_j\) 覆盖 \(U\)，使 \(f|_{B_j}\) 都具有有限的 Lipschitz 常数，并令
+\[
+ A_1=B_1,
+ \qquad
+ A_j=B_j\setminus\bigcup_{i<j}B_i\quad(j\geq2).
+\]
+则 \(A_j\) 是两两不交的 Borel 集，\(A_j\subseteq B_j\)，且其并为 \(U\)。把 \(f|_{B_j}\) 的各坐标分别作 Lipschitz 延拓，得到全空间上的 Lipschitz 映射 \(f_j:\mathbb R^k\rightarrow\mathbb R^n\)。在开球 \(B_j\) 内，\(f_j\) 与 \(f\) 局部相同，因而二者的可微点及 Jacobi 因子在那里一致。
+
+置 \(E_j=E\cap A_j\)。分别对 \(f_j|_{E_j}\) 使用\cref{b1:thm:area-formula,b1:thm:weighted-area-formula}。由于参数片不交，对每个 \(y\) 都有
+\[
+ N(f,E,y)=\sum_jN(f_j,E_j,y),
+\]
+加权纤维和也逐片相加。再对这些非负可测函数及参数域积分使用单调收敛定理，便得到两式及重数的可测性。这一局部化不要求 \(U\) 有规则边界，也不要求 \(f\) 在整个 \(U\) 上具有同一个 Lipschitz 常数。
 \end{proof}
 
 若 \(g:E\rightarrow\mathbb R\) 或 \(\mathbb C\) 可测且有限值，并满足

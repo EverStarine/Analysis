@@ -214,3 +214,52 @@ x^{(n)}=(2^{-1},2^{-2},\ldots,2^{-n},0,0,\ldots)
 \end{proof}
 
 这一判别把完备性转化成可求和误差的累积控制；后面的开映射论证将用它把逐次近似拼成真正的原像。关于完备性、算子范数和线性泛函的连续叙述，可参阅 Sheldon Axler 的《Measure, Integration \& Real Analysis》\cite[Sections 6C--6D]{Axler2020Measure}。
+
+\subsection{商空间与商范数}
+\label{b1:subsec:080105}
+
+设 \(M\) 是赋范空间 \(X\) 的线性子空间。把相差一个 \(M\) 中向量的点视为同一点，所得线性空间
+\[
+X/M=\{x+M:x\in X\}
+\]
+称为\term[shang-kongjian]{商空间}[quotient space]，其加法和数乘由陪集代表完成。若 \(M\) 闭，则在 \(X/M\) 上规定
+\[
+\|x+M\|_{X/M}=\inf_{m\in M}\|x+m\|
+=\operatorname{dist}(x,M),
+\]
+并称它为\term[shang-fanshu]{商范数}[quotient norm]。闭性正是正定性所需的条件；若 \(M\) 不闭，\(\overline M\setminus M\) 中向量的陪集也会具有零长度。
+
+自然映射
+\[
+Q:X\longrightarrow X/M,\qquad Qx=x+M,
+\]
+称为\term[shang-yingshe]{商映射}[quotient map]。
+
+\begin{theorem}[闭子空间的商空间]\label{b1:thm:quotient-banach}
+若 \(X\) 是 Banach 空间，\(M\subset X\) 是闭线性子空间，则商范数使 \(X/M\) 成为 Banach 空间。商映射 \(Q\) 是线性连续满射，并满足 \(\|Qx\|_{X/M}\leq\|x\|\)。
+\end{theorem}
+\begin{proof}
+若 \(x+M=y+M\)，则 \(x-y\in M\)，在距离下确界中平移 \(M\) 便知定义与代表无关。齐次性同样来自变量代换。给定 \(x,y\in X\) 及 \(\varepsilon>0\)，可取 \(m,n\in M\)，使
+\[
+\|x+m\|<\|x+M\|_{X/M}+\varepsilon,
+\qquad
+\|y+n\|<\|y+M\|_{X/M}+\varepsilon.
+\]
+将两个代表相加并令 \(\varepsilon\downarrow0\)，得到三角不等式。商范数为零当且仅当 \(x\in\overline M=M\)，故它确为范数。商映射的线性与满射性由定义得到，取 \(m=0\) 则给出 \(\|Qx\|_{X/M}\leq\|x\|\)。
+
+现设 \((u_n)\) 是 \(X/M\) 中的 Cauchy 列。选取子列 \((u_{n_k})\)，使
+\[
+\|u_{n_{k+1}}-u_{n_k}\|_{X/M}<2^{-k-1}.
+\]
+取 \(z_0\in X\) 满足 \(Qz_0=u_{n_1}\)，并对每个 \(k\geq1\) 选取 \(z_k\in X\)，使
+\[
+Qz_k=u_{n_{k+1}}-u_{n_k},\qquad \|z_k\|<2^{-k}.
+\]
+由\cref{b1:prop:banach-series-criterion}，级数 \(z_0+\sum_{k\geq1}z_k\) 在 \(X\) 中收敛于某个 \(z\)。商映射连续，且前 \(k-1\) 个增量相消后有
+\[
+Q\left(z_0+\sum_{j=1}^{k-1}z_j\right)=u_{n_k},
+\]
+所以 \(u_{n_k}\to Qz\)。原序列为 Cauchy 列，因而也趋于 \(Qz\)。这证明了 \(X/M\) 的完备性。
+\end{proof}
+
+商映射把不唯一性压入零向量，同时保留逼近误差：\(\|Qx\|\) 正是 \(x\) 到 \(M\) 的距离。下一节会说明，对商空间的连续线性观测恰好对应于原空间中消去 \(M\) 的连续泛函。

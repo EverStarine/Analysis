@@ -41,9 +41,121 @@ Fremlin 的《Measure Theory》适合核对一般 Radon 测度的版本
 
 \BookExercises
 
-% 八题均为自拟，以下注释只记录前置工具与题目目的，不冒称参考书原题。
+% 十题均为自拟，以下注释只记录前置工具与题目目的，不冒称参考书原题。
 % 正文来源对照：Fremlin2016Measure 472D（已实际读取）的一般Radon微分；
 % Cantor测度使用本书0603已构造的数字映射，不预借第16章或未读书中的证明。
+
+\begin{exercise}[绝对连续部分与奇异部分的球比值]\label{b1:ex:14-ac-singular-ball-ratios}
+在实线上令
+\[
+ \mu=m_1,\qquad
+ \nu=(1+x^2)m_1+2\delta_0+3\delta_1.
+\]
+\begin{enumerate}
+\item\label{b1:item:14-explicit-decomposition}
+写出 \(\nu\) 相对于 \(\mu\) 的绝对连续部分与奇异部分，并说明它们为何构成 Lebesgue 分解。
+\item\label{b1:item:14-explicit-ball-ratios}
+直接计算 \(x\notin\{0,1\}\)、\(x=0\) 与 \(x=1\) 三种情形的小区间质量比
+\[
+ \frac{\nu([x-r,x+r])}{\mu([x-r,x+r])},
+\]
+并求相应极限。
+\item\label{b1:item:14-explicit-recovery}
+据此辨认绝对连续密度与奇异质量在球比值中的不同表现，并说明为什么
+\[
+ \int_E D_{m_1}\nu\,\mathrm dm_1
+\]
+对每个 Borel 集 \(E\) 恢复的是 \(\nu\) 的绝对连续部分，而不是整个 \(\nu\)。
+\end{enumerate}
+\end{exercise}
+% 来源：自拟；用光滑密度加两个原子，把绝对连续恢复、奇异侧发散和积分只恢复绝对连续部分放在同一显式模型中。
+\begin{solution}
+函数 \(x\mapsto1+x^2\) 非负且局部可积，所以
+\[
+ \nu_a=(1+x^2)m_1,qquad \nu_s=2\delta_0+3\delta_1
+\]
+都是 Radon 测度。第一项绝对连续于 \(m_1\)，第二项集中在 \(m_1\)-零测集 \(\{0,1\}\) 上，故 \(\nu=\nu_a+\nu_s\) 正是所需分解。
+
+若 \(x\notin\{0,1\}\)，充分小的 \([x-r,x+r]\) 不含两个原子，因而
+\[
+ \frac{\nu([x-r,x+r])}{2r}
+ =\frac1{2r}\int_{x-r}^{x+r}(1+t^2)\,\mathrm dt
+ =1+x^2+\frac{r^2}{3}
+ \longrightarrow1+x^2.
+\]
+若 \(0<r<1\)，在原点和一点分别有
+\[
+ \frac{\nu([-r,r])}{2r}
+ =1+\frac{r^2}{3}+\frac1r\longrightarrow+\infty,
+\]
+以及
+\[
+ \frac{\nu([1-r,1+r])}{2r}
+ =2+\frac{r^2}{3}+\frac3{2r}\longrightarrow+\infty.
+\]
+因此绝对连续部分在普通点给出密度 \(1+x^2\)，奇异原子则在自己的位置产生发散项。特别地，
+\[
+ D_{m_1}\nu(x)=1+x^2
+ \quad\text{对 }m_1\text{-几乎处处的 }x.
+\]
+原子处的无穷值落在 \(m_1\)-零测集上，不改变非负积分，所以对每个 Borel 集 \(E\)，
+\[
+ \int_E D_{m_1}\nu\,\mathrm dm_1
+ =\int_E(1+x^2)\,\mathrm dm_1
+ =\nu_a(E).
+\]
+右端不含 \(2\delta_0(E)+3\delta_1(E)\)，故球比值的 \(m_1\)-几乎处处积分不能恢复奇异部分。
+\end{solution}
+
+\begin{exercise}[密度一集合上的普通极限]\label{b1:ex:14-density-one-criterion}
+在平面上用极坐标定义
+\[
+ S=\{\,(\rho\cos\theta,\rho\sin\theta):0<\rho<1,\ |\theta|<\rho\,\},
+\]
+其中 \(-\pi<\theta\leq\pi\)。令 \(u(0)=0\)，并对 \(z\ne0\) 定义
+\[
+ u(z)=
+ \begin{cases}
+ |z|^{-1},&z\in S,\\
+ |z|,&z\notin S.
+ \end{cases}
+\]
+\begin{enumerate}
+\item\label{b1:item:14-polar-density-one}
+证明 \(m_2(S\cap B(0,r))=2r^3/3\) 对 \(0<r<1\) 成立，并由此说明 \(E=\mathbb R^2\setminus S\) 在原点的密度为 \(1\)。
+\item\label{b1:item:14-polar-approximate-limit}
+在 \(E\) 上求 \(u(z)\) 当 \(z\to0\) 时的普通极限，再用\cref{b1:prop:approximate-limit-density-one}求 \(u\) 在原点的近似极限。
+\item\label{b1:item:14-polar-not-lebesgue}
+证明 \(u\) 在原点没有普通极限，而且原点不是它的 Lebesgue 点。
+\end{enumerate}
+\end{exercise}
+% 来源：自拟；用角宽随半径缩小的极坐标尖域直接训练密度一集合判据，并把近似极限与普通极限、Lebesgue点分开。
+\begin{solution}
+当 \(0<r<1\) 时，极坐标换元给出
+\[
+ m_2\bigl(S\cap B(0,r)\bigr)
+ =\int_0^r\int_{-\rho}^{\rho}\rho\,\mathrm d\theta\,\mathrm d\rho
+ =\frac23r^3.
+\]
+除以 \(m_2(B(0,r))=\pi r^2\)，所得比例为 \(2r/(3\pi)\)，趋于零。因此 \(S\) 在原点的密度为零，补集 \(E\) 在原点的密度为 \(1\)。
+
+在 \(E\) 上有 \(u(z)=|z|\)，故 \(u(z)\to0\) 当 \(z\to0\)、\(z\in E\setminus\{0\}\)。由\cref{b1:prop:approximate-limit-density-one}，
+\[
+ \operatorname*{ap\,lim}_{z\to0}u(z)=0=u(0),
+\]
+所以 \(u\) 在原点近似连续。
+
+沿正横轴取 \(z=(\rho,0)\)、\(0<\rho<1\)，则 \(z\in S\) 且 \(u(z)=1/\rho\to+\infty\)，所以普通极限不存在。另一方面，\(u\) 非负且局部可积，并且
+\[
+ \begin{aligned}
+ \frac1{\pi r^2}\int_{B(0,r)}|u(z)-u(0)|\,\mathrm dm_2(z)
+ &\geq\frac1{\pi r^2}\int_{S\cap B(0,r)}\frac1{|z|}\,\mathrm dm_2(z)\\
+ &=\frac1{\pi r^2}\int_0^r\int_{-\rho}^{\rho}1\,\mathrm d\theta\,\mathrm d\rho
+ =\frac1\pi.
+ \end{aligned}
+\]
+平均绝对偏差不趋于零，故原点不是 Lebesgue 点。密度一集合判据只忽略坏集的相对体积，并不控制其中函数值的大小。
+\end{solution}
 
 \begin{exercise}\label{b1:ex:14-one-sided-primitive}
 设 \(f\in L^1((a,b))\)，并令
@@ -146,7 +258,7 @@ Fremlin 的《Measure Theory》适合核对一般 Radon 测度的版本
 
 当 \(x\notin C\) 时，由 \(C\) 闭，可取一个不交于 \(C\) 的邻域。
 测度在该邻域为零，\(F_C\) 因而在其中为常数，所以 \(F_C'(x)=0\)。
-由于 \(m(C)=0\)，导数几乎处处为零。
+由于 \(m_1(C)=0\)，导数几乎处处为零。
 假如存在题述 \(g\)，\cref{b1:ex:14-one-sided-primitive}给出 \(F_C'=g\) 几乎处处，
 于是 \(g=0\) 几乎处处。这会推出 \(F_C(1)=0\)，与 \(F_C(1)=1\) 矛盾。
 连续性、单调性以及几乎处处存在的导数，尚不足以保证由导数积分恢复原函数。
@@ -159,7 +271,7 @@ Fremlin 的《Measure Theory》适合核对一般 Radon 测度的版本
 \item\label{b1:item:14-representative-unique-value}
 证明对每个 \(x\)，恰有一个数 \(a\) 满足
 \[
- \lim_{r\downarrow0}\frac1{m\bigl(B(x,r)\bigr)}
+ \lim_{r\downarrow0}\frac1{m_d\bigl(B(x,r)\bigr)}
        \int_{B(x,r)}|f(y)-a|\,\mathrm dy=0,
 \]
 且该数为 \(u(x)\)。据此求出 \(f\) 的 Lebesgue 点集及\cref{b1:def:precise-representative}中的精确代表。
@@ -174,15 +286,15 @@ Fremlin 的《Measure Theory》适合核对一般 Radon 测度的版本
 由于 Lebesgue 测度完备，\(f\) 可测且与 \(u\) 具有相同的局部积分。
 连续性给出
 \[
- \frac1{m\bigl(B(x,r)\bigr)}\int_{B(x,r)}|f(y)-u(x)|\,\mathrm dy
- =\frac1{m\bigl(B(x,r)\bigr)}\int_{B(x,r)}|u(y)-u(x)|\,\mathrm dy
+ \frac1{m_d\bigl(B(x,r)\bigr)}\int_{B(x,r)}|f(y)-u(x)|\,\mathrm dy
+ =\frac1{m_d\bigl(B(x,r)\bigr)}\int_{B(x,r)}|u(y)-u(x)|\,\mathrm dy
  \longrightarrow0.
 \]
 若 \(a\) 也满足题述极限，三角不等式给出
 \[
  |a-u(x)|
- \leq\frac1{m\bigl(B(x,r)\bigr)}\int_{B(x,r)}|a-f(y)|\,\mathrm dy
- +\frac1{m\bigl(B(x,r)\bigr)}\int_{B(x,r)}|f(y)-u(x)|\,\mathrm dy.
+ \leq\frac1{m_d\bigl(B(x,r)\bigr)}\int_{B(x,r)}|a-f(y)|\,\mathrm dy
+ +\frac1{m_d\bigl(B(x,r)\bigr)}\int_{B(x,r)}|f(y)-u(x)|\,\mathrm dy.
 \]
 令 \(r\downarrow0\)，得 \(a=u(x)\)。
 因此 \(x\) 是指定代表 \(f\) 的 Lebesgue 点，当且仅当 \(f(x)=u(x)\)。
@@ -208,8 +320,8 @@ Fremlin 的《Measure Theory》适合核对一般 Radon 测度的版本
 若在一点 \(x\) 有
 \[
  \begin{aligned}
- \frac1{m\bigl(B(x,r)\bigr)}\int_{B(x,r)}|f(y)-f(x)|^p\,\mathrm dy&\longrightarrow0,\\
- \frac1{m\bigl(B(x,r)\bigr)}\int_{B(x,r)}|g(y)-g(x)|^q\,\mathrm dy&\longrightarrow0,
+ \frac1{m_d\bigl(B(x,r)\bigr)}\int_{B(x,r)}|f(y)-f(x)|^p\,\mathrm dy&\longrightarrow0,\\
+ \frac1{m_d\bigl(B(x,r)\bigr)}\int_{B(x,r)}|g(y)-g(x)|^q\,\mathrm dy&\longrightarrow0,
  \end{aligned}
 \]
 证明 \(x\) 是乘积 \(fg\) 的 Lebesgue 点。
@@ -222,22 +334,22 @@ Fremlin 的《Measure Theory》适合核对一般 Radon 测度的版本
 % 来源：自拟；第一问用第10章Hölder/Minkowski，第二问采用显式尖峰。
 % 反例同时区分L1平均偏差与L2平均偏差，不误把逐点的L1性质提升为Lp性质。
 \begin{solution}
-对球 \(B=B(x,r)\)，把 \(m(B)^{-1}m|_B\) 视为概率测度。
+对球 \(B=B(x,r)\)，把 \(m_d(B)^{-1}m_d|_B\) 视为概率测度。
 由 \(fg-f(x)g(x)=(f-f(x))g+f(x)(g-g(x))\) 及 Hölder 不等式，
 \[
  \begin{aligned}
- \frac1{m(B)}\int_B|fg-f(x)g(x)|
+ \frac1{m_d(B)}\int_B|fg-f(x)g(x)|
  &\leq
- \left(\frac1{m(B)}\int_B|f-f(x)|^p\right)^{1/p}
- \left(\frac1{m(B)}\int_B|g|^q\right)^{1/q}\\
- &\quad+|f(x)|\left(\frac1{m(B)}\int_B|g-g(x)|^q\right)^{1/q}.
+ \left(\frac1{m_d(B)}\int_B|f-f(x)|^p\right)^{1/p}
+ \left(\frac1{m_d(B)}\int_B|g|^q\right)^{1/q}\\
+ &\quad+|f(x)|\left(\frac1{m_d(B)}\int_B|g-g(x)|^q\right)^{1/q}.
  \end{aligned}
 \]
 Minkowski 不等式还给出
 \[
- \left(\frac1{m(B)}\int_B|g|^q\right)^{1/q}
+ \left(\frac1{m_d(B)}\int_B|g|^q\right)^{1/q}
  \leq|g(x)|+
- \left(\frac1{m(B)}\int_B|g-g(x)|^q\right)^{1/q},
+ \left(\frac1{m_d(B)}\int_B|g-g(x)|^q\right)^{1/q},
 \]
 故这一因子保持有界，前一式右侧趋于零。局部可积性 \(fg\in L^1_{\mathrm{loc}}\) 也由 Hölder 不等式得到。
 
@@ -289,7 +401,7 @@ Minkowski 不等式还给出
 由于 \(0\notin E\)，\(f(0)=0\)，且 \(|f|^p=\mathbf1_E\) 对每个 \(p>0\) 都成立。
 若 \(2^{-(N+1)}<r\leq2^{-N}\)，则只有 \(n\geq N+1\) 的区间可能在 \((-r,r)\) 内贡献正长度，故
 \[
- m\bigl(E\cap(-r,r)\bigr)
+ m_1\bigl(E\cap(-r,r)\bigr)
  \leq\sum_{n=N+1}^{\infty}2^{-2n-2}
  =\frac1{12}\,2^{-2N}.
 \]
@@ -327,14 +439,14 @@ Minkowski 不等式还给出
 由 \(T(B(x,r))\subseteq B(y_0,cr)\)，有
 \[
  \begin{aligned}
- &\frac1{m\bigl(B(x,r)\bigr)}
+ &\frac1{m_d\bigl(B(x,r)\bigr)}
     \int_{B(x,r)}|f\bigl(T(z)\bigr)-f(y_0)|\,\mathrm dz\\
  &\quad\leq
- \frac1{|\det A|\,m\bigl(B(x,r)\bigr)}
+ \frac1{|\det A|\,m_d\bigl(B(x,r)\bigr)}
     \int_{B(y_0,cr)}|f(y)-f(y_0)|\,\mathrm dy\\
  &\quad=
  \frac{c^d}{|\det A|}\,
- \frac1{m\bigl(B(y_0,cr)\bigr)}
+ \frac1{m_d\bigl(B(y_0,cr)\bigr)}
     \int_{B(y_0,cr)}|f(y)-f(y_0)|\,\mathrm dy.
  \end{aligned}
 \]

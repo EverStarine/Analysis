@@ -62,8 +62,9 @@ Urysohn 截断与有限连续分解都在\secref{b1:sec:1101}证明，不借尚�
 则对应于允许符号或复数质量，并用全变差衡量抵消前的大小。
 
 等距表示把有限测度放进一个具体的对偶空间。
-下一章将据此研究测度列的极限：用 \(C_c\) 或 \(C_0\) 测试可以忽略逃往无穷远处的质量，
-而用全部有界连续函数测试还能观察总质量。
+下一章将据此研究测度列的极限：用 \(C_c\) 或 \(C_0\) 测试可能看不见逃往无穷远处的质量；
+例如质量恒为 \(1\) 的 \(\delta_n\) 在 \(C_0(\mathbb R)^*\) 中仍弱-*\WeakStarJoin{}收敛到零。
+若缺少一致质量控制，这种现象不能作无条件概括；而用全部有界连续函数测试还能观察总质量。
 要从有界的测度族中取得合适的收敛子列，就必须分清这些测试空间，并补上防止质量逃逸的条件。
 \end{chaptersummary}
 
@@ -72,10 +73,104 @@ Urysohn 截断与有限连续分解都在\secref{b1:sec:1101}证明，不借尚�
 
 % 每题及其解答紧随其后；题源与改编说明在题前后注释登记。
 % \chapref{b1:ch:11}习题候选；由主线程合入 Chapter11.tex，不另建习题标题或书签。
-% 八题均为自拟，解答独立组织，不冒称来自某书某题。
+% 十题均为自拟，解答独立组织，不冒称来自某书某题。
 % 截断工具实读：Fremlin2016Measure，4A2Ge(i)--(ii)，本地 ch11-fremlin4a.tex。
 % 其余工具调用本书第六、九、十、十一章已建立的结果；各题另记组合目的。
 % Radon 约定：局部有限，全部 Borel 集紧内正则；不擅加全局外正则性。
+
+\begin{exercise}[基础构造：开集与紧集测试]\label{b1:ex:11-euclidean-testing}
+设 \(\mu\) 为 \(\mathbb R^d\) 上的正 Radon 测度，\(U\subseteq\mathbb R^d\) 为开集，\(K\subseteq\mathbb R^d\) 为非空紧集。
+\begin{enumerate}
+\item\label{b1:item:11-euclidean-cutoff}
+若 \(K\subseteq U\)，请只用距离函数写出 \(h\in C_c(\mathbb R^d)\)，使
+\[
+ 0\leq h\leq1,\qquad h|_K=1,\qquad \operatorname{supp}h\subseteq U.
+\]
+\item\label{b1:item:11-euclidean-tests}
+利用上一问证明
+\[
+ \mu(U)=\sup_{\substack{h\in C_c(\mathbb R^d)\\0\leq h\leq1,\ \operatorname{supp}h\subseteq U}}
+              \int h\,\mathrm d\mu,
+ \qquad
+ \mu(K)=\inf_{\substack{h\in C_c(\mathbb R^d)\\h\geq0,\ h|_K\geq1}}
+              \int h\,\mathrm d\mu.
+\]
+说明第一式怎样从积分泛函 \(\Lambda_\mu(f)=\int f\,\mathrm d\mu\) 恢复开集质量 \(a(U)\)。
+\end{enumerate}
+\end{exercise}
+% 来源：自拟；把正文的一般拓扑截断与开集、紧集测试公式放回欧氏距离模型，
+% 要求显式构造测试函数，并同时使用紧内正则与开外正则，不是重述正文命题。
+\begin{solution}
+若 \(U=\mathbb R^d\)，任选 \(r>0\)；否则令
+\[
+ \delta=\operatorname{dist}\bigl(K,\mathbb R^d\setminus U\bigr)>0
+\]
+并取 \(r=\delta/2\)。在前一种情形中仍记所选正数为 \(r\)。定义
+\[
+ h(x)=\max\left\{0,1-\frac{\operatorname{dist}(x,K)}{r}\right\}.
+\]
+距离函数连续，故 \(h\) 连续；它在 \(K\) 上等于 \(1\)，并满足 \(0\leq h\leq1\)。其支集包含在 \(K\) 的闭 \(r\)-邻域中，因而紧；当 \(U\ne\mathbb R^d\) 时，这个闭邻域包含在 \(U\) 中。于是得到所需截断。
+
+对第一式右端的任一测试函数，\(0\leq h\leq\mathbf1_U\)，故其积分不超过 \(\mu(U)\)。
+反过来，对每个非空紧集 \(K'\subseteq U\)，上一问给出的截断满足
+\[
+ \int h\,\mathrm d\mu\geq\mu(K').
+\]
+对 \(K'\) 取上确界，再用紧内正则性，便得到反向不等式；若 \(U\) 不含非空紧集，则内正则性已迫使 \(\mu(U)=0\)，零函数给出等号。
+其右端正是把 \(\Lambda_\mu\) 代入正文 \(a(U)\) 定义所得的上确界。
+
+对第二式中的任一测试函数，\(h\geq\mathbf1_K\)，所以积分不小于 \(\mu(K)\)。由\cref{b1:prop:radon-outer-regularity}，给定 \(\varepsilon>0\)，可取开集 \(U'\supseteq K\)，使 \(\mu(U')<\mu(K)+\varepsilon\)。上一问给出支集包含于 \(U'\) 的 \(0\leq h\leq1\)，故
+\[
+ \int h\,\mathrm d\mu\leq\mu(U')<\mu(K)+\varepsilon.
+\]
+令 \(\varepsilon\downarrow0\) 即得所述下确界公式。
+\end{solution}
+
+\begin{exercise}[基础模型：离散空间中的构造链]\label{b1:ex:11-discrete-construction}
+给 \(\mathbb N\) 配备离散拓扑，设 \(\Lambda:C_c(\mathbb N;\mathbb R)\to\mathbb R\) 为正线性泛函，并令
+\[
+ w_n=\Lambda(\mathbf1_{\{n\}}).
+\]
+证明 \(w_n\geq0\)，且对每个有限支集函数 \(f\) 都有
+\[
+ \Lambda(f)=\sum_{n\in\mathbb N}f(n)w_n.
+\]
+再按正文定义 \(\mathcal T(U)\) 与 \(a(U)\)，证明
+\[
+ a(U)=\sum_{n\in U}w_n
+ :=\sup_{\substack{F\subseteq U\\F\text{ 有限}}}\sum_{n\in F}w_n.
+\]
+最后说明在这个模型中，\(\mu_0^*\)、\(\mu_0\) 与紧内正则化后的 \(\mu\) 都等于
+\(A\mapsto\sum_{n\in A}w_n\)，并验证它表示 \(\Lambda\)。
+\end{exercise}
+% 来源：自拟；在可逐点计算的离散模型中重走 a(U) 到表示测度的完整构造链，
+% 作为后一道任意离散空间及 C0 对偶综合题的基础版本。
+\begin{solution}
+每个单点示性函数非负，故 \(w_n\geq0\)。若 \(f\) 的支集为有限集 \(F\)，则
+\[
+ f=\sum_{n\in F}f(n)\mathbf1_{\{n\}},
+\]
+线性性给出所述积分和公式。
+
+若 \(h\in\mathcal T(U)\)，则其支集 \(F\subseteq U\) 有限，且
+\[
+ \Lambda(h)=\sum_{n\in F}h(n)w_n\leq\sum_{n\in F}w_n
+ \leq\sup_{E\subseteq U,\ E\text{ 有限}}\sum_{n\in E}w_n.
+\]
+反过来，每个有限集 \(F\subseteq U\) 的示性函数都属于 \(\mathcal T(U)\)，并给出泛函值 \(\sum_{n\in F}w_n\)。因此两边相等。
+
+离散空间的每个子集都开，故
+\[
+ \mu_0^*(A)=\inf_{U\supseteq A}a(U)=a(A)=\sum_{n\in A}w_n.
+\]
+对两两不交的集合 \(A_j\)，任一有限集 \(F\subseteq\bigcup_jA_j\) 可按所属的 \(A_j\) 分开，
+而有限多个 \(A_j\) 中选出的有限子集也可合并；对两边取有限部分和的上确界，便得
+\(\sum_{n\in\cup_jA_j}w_n=\sum_j\sum_{n\in A_j}w_n\)。因此这个集合函数可数可加。
+每个点的质量 \(w_n\) 有限，所以它局部有限。离散空间中的紧集恰好是有限集，因而上式本身就是所有 Borel 集上的紧内正则公式。于是 \(\mu_0^*=\mu_0=\mu\)，不需要再改变无限质量集合。对有限支集的 \(f\)，第一段已经给出
+\[
+ \Lambda(f)=\sum_n f(n)w_n=\int_{\mathbb N}f\,\mathrm d\mu.
+\]
+\end{solution}
 
 \begin{exercise}\label{b1:ex:11-positive-c0}
 设 \(X\) 为局部紧 Hausdorff 空间。
@@ -309,7 +404,7 @@ Urysohn 截断与有限连续分解都在\secref{b1:sec:1101}证明，不借尚�
 最后取 \(X=\mathbb R\)、\(Y=\{a\}\)，令 \(T\) 为常值映射，\(\mu=m\)。此时 \((T_*m)(\{a\})=\infty\)，而单点是 \(a\) 唯一的非空邻域，故推前不局部有限。
 \end{solution}
 
-\begin{exercise}\label{b1:ex:11-extreme-states}
+\begin{exercise}[\(\star\) 选读]\label{b1:ex:11-extreme-states}
 设 \(K\) 为非空紧 Hausdorff 空间，令 \(\mathcal S\) 为 \(C(K;\mathbb R)\) 上满足 \(\Lambda(1)=1\) 的正线性泛函组成的集合。证明 \(\mathcal S\) 是 \(C(K;\mathbb R)^*\) 单位球中的凸集，并证明以下条件等价：
 \begin{enumerate}
 \item\label{b1:item:11-state-extreme}
@@ -348,7 +443,7 @@ Urysohn 截断与有限连续分解都在\secref{b1:sec:1101}证明，不借尚�
 故两个泛函不同，第一项不成立。这样便证得等价性。
 \end{solution}
 
-\begin{exercise}\label{b1:ex:11-norm-attainment}
+\begin{exercise}[\(\star\) 选读]\label{b1:ex:11-norm-attainment}
 \begin{enumerate}
 \item\label{b1:item:11-positive-attainment}
 设 \(\mu\) 为局部紧 Hausdorff 空间 \(X\) 上的非零有限正 Radon 测度，\(\Lambda_\mu(f)=\int_Xf\,\mathrm d\mu\)。证明：存在 \(f\in C_0(X)\)，满足 \(\|f\|_\infty=1\) 及 \(|\Lambda_\mu(f)|=\|\Lambda_\mu\|\)，当且仅当存在紧集 \(K\subset X\)，使 \(\mu(X\setminus K)=0\)。

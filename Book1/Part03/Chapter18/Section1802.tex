@@ -2,7 +2,7 @@
 \section{余面积公式}
 \label{b1:sec:1802}
 
-面积公式沿参数方向把低维区域映入高维空间；\term[yumianji-gongshi]{余面积公式}[coarea formula]则把高维区域按映射值分层。正交投影时，这就是 Fubini 定理。一般 Lipschitz 映射的水平集不再平行，补偿因子也由常数变成余面积 Jacobi 行列式。
+面积公式沿参数方向把低维区域映入高维空间；\term[yumianji-gongshi]{余面积公式}[coarea formula]则把高维区域按映射值分层。正交投影时，这就是 Fubini 定理。一般 Lipschitz 映射的水平集不再平行，补偿因子也由常数变成余面积 Jacobi 因子。
 线性情形与几何表述可对照 Simon 的《Lectures on Geometric Measure Theory》\cite[\S10, pp. 53--57]{Simon1983Lectures}；本节从零测集的切片、满秩坐标分片和前章面积公式出发，证明 Lipschitz 版本。
 
 % 实际读取：本地Simon1983Lectures §10印刷pp.53--57全文。
@@ -125,7 +125,7 @@
  J_nf(x)
  =\sqrt{\det\bigl(Df(x)Df(x)^{\mathsf T}\bigr)}
 \]
-并在不可微点取零。它非负、Borel 可测，且不超过 \(L^n\)。先处理余面积 Jacobi 行列式消失的部分；与前章不同，这里不要求该部分的像在目标空间中零测。
+并在不可微点取零。它非负、Borel 可测，且不超过 \(L^n\)。先处理余面积 Jacobi 因子消失的部分；与前章不同，这里不要求该部分的像在目标空间中零测。
 
 \begin{lemma}\label{b1:lem:critical-set-slices}
 设
@@ -179,10 +179,20 @@
 右端的切片可测性与质量函数可测性按前述意义成立，两边允许为无穷。
 \end{theorem}
 
+证明分为五步：先分别排除不可微点与秩亏点在几乎每张纤维上的贡献，再把满秩集分成可数个双 Lipschitz 坐标片；在每片上使用切片坐标的 Jacobi 因子恒等式，最后以面积公式和 Tonelli 定理合并切片积分。也就是
+\[
+ \begin{aligned}
+ \text{零测集切片与临界集切片}
+ &\longrightarrow\text{满秩集的双 Lipschitz 分片}\\
+ &\longrightarrow\text{Jacobi 因子恒等式}
+ \longrightarrow\text{面积公式与 Tonelli 定理}.
+ \end{aligned}
+\]
+
 \begin{proof}[定理\ref{b1:thm:coarea-formula}及其标量版本的证明]
 当 \(m=n\) 时，\(J_nf=|\det Df|\)，而切片的 \(\mathcal H^0\) 测度为重数，结论就是\cref{b1:thm:area-formula}。以下设 \(q=m-n>0\)。
 
-令 \(G=\{x\in\mathcal D_f:\operatorname{rank}Df(x)=n\}\)。在 \(G\) 外，余面积 Jacobi 行列式为零；不可微点由\cref{b1:lem:null-set-slices}处理，秩亏点由\cref{b1:lem:critical-set-slices}处理。因此只需证明 \(E\cap G\) 上的公式。
+令 \(G=\{x\in\mathcal D_f:\operatorname{rank}Df(x)=n\}\)。在 \(G\) 外，余面积 Jacobi 因子为零；不可微点由\cref{b1:lem:null-set-slices}处理，秩亏点由\cref{b1:lem:critical-set-slices}处理。因此只需证明 \(E\cap G\) 上的公式。
 
 在每个 \(x\in G\)，可以选取一个由 \(q\) 个坐标组成的投影 \(P:\mathbb R^m\rightarrow\mathbb R^q\)，使
 \[
@@ -198,7 +208,7 @@
 \[
  Z=\Phi(A)\subseteq\mathbb R^q\times\mathbb R^n.
 \]
-它是 Lebesgue 可测集，因为 \(\Phi\) 是 Lipschitz 映射，且定义域、目标空间同维。片上的逆映射 \(H:Z\rightarrow A\) 为 Lipschitz 映射。逐坐标延拓，得到全空间的 Lipschitz 映射 \(\widetilde H:\mathbb R^m\rightarrow\mathbb R^m\)。
+由\cref{b1:lem:lipschitz-image-hausdorff-measurable}及同维归一化 \(\mathcal H^m=m_m\)，同维 Lipschitz 映射把 Lebesgue 可测集 \(A\) 送到 Lebesgue 可测集，故 \(Z\) 可测。片上的逆映射 \(H:Z\rightarrow A\) 为 Lipschitz 映射。逐坐标延拓，得到全空间的 Lipschitz 映射 \(\widetilde H:\mathbb R^m\rightarrow\mathbb R^m\)。
 
 对几乎每个 \(u=(z,y)\in Z\)，\(u\) 是 \(Z\) 的密度点，且 \(\widetilde H\) 在 \(u\) 处可微。置 \(x=H(u)\)，由于 \(x\in A_j\subseteq\mathcal D_f\)，映射 \(\Phi\) 在 \(x\) 处可微。又因
 \[
@@ -258,7 +268,7 @@ Lebesgue 可测，并且前述微分关系对几乎每个 \(z\in Z_y\) 成立。
 \subsection{可积函数版本}
 \label{b1:subsec:180203}
 
-先说明如何限制一个 Lebesgue 可测函数到纤维。设 \(m>n\)。若 \(g\) 有限值且 Lebesgue 可测，可以选一个几乎处处相等的 Borel 代表 \(g_0\)。二者不同的点组成零测集，其切片由\cref{b1:lem:null-set-slices}几乎处处为 Hausdorff 零测集。因此几乎每层上的 \(g\) 都是完备 \(\mathcal H^q\) 可测的，并与 \(g_0\) 给出相同积分。对非负扩展实值函数，以可数个可测水平集作同样处理即可。当 \(m=n\) 时，零测集的像为零测集，所以几乎每个纤维根本不遇到改值点，同样得到结论。
+先说明如何限制一个 Lebesgue 可测函数到纤维。设 \(E\subseteq\mathbb R^m\) Lebesgue 可测，\(g:E\rightarrow[0,\infty]\) Lebesgue 可测；把 \(g\) 在 \(E^c\) 上补零，得到全空间函数 \(\widehat g\)。由\cref{b1:thm:lebesgue-borel-representative}，可取与 \(\widehat g\) 几乎处处相等的 Borel 函数，再以其正部替代之，从而得到取值于 \([0,\infty]\) 的 Borel 代表 \(g_0\)。记两者不同的零测集为 \(N\)。若 \(m>n\)，由\cref{b1:lem:null-set-slices}，\(N\) 在几乎每张纤维上的 \(\mathcal H^q\) 测度为零；所以这些纤维上 \(g\) 对完备测度 \(\mathcal H^q\) 可测，并与 \(g_0\) 给出相同的非负扩展积分。若 \(m=n\)，则由\cref{b1:lem:lipschitz-image-hausdorff-measurable}及 \(\mathcal H^m=m_m\) 有 \(m_n(f(N))=0\)；当 \(y\notin f(N)\) 时，纤维根本不遇到改值点。这个构造已经直接允许 \(g=+\infty\)，无须再用水平集作额外约定。
 
 \begin{theorem}[加权余面积公式]\label{b1:thm:weighted-coarea}
 在\cref{b1:thm:coarea-formula}的条件下，设 \(g:E\rightarrow[0,\infty]\) 是 Lebesgue 可测的。则几乎每个纤维上都有定义良好的非负积分，并且
@@ -281,14 +291,42 @@ Lebesgue 可测，并且前述微分关系对几乎每个 \(z\in Z_y\) 成立。
 \]
 先对 \(|g|\) 应用定理，得到几乎每层上的绝对可积性。再对实部、虚部的正负部分分别应用非负公式，便得到同样的等式。若不具有这个条件，不能仅凭某一种迭代积分存在，就交换变号的积分。
 
-这些结论也适用于开集上的局部 Lipschitz 映射。取可数个具有有限 Lipschitz 常数的开球，并把定义域分成从属于它们的不交可测片。在每个球上延拓至全空间后应用公式，最后逐片相加。原映射与延拓在球内局部相同，故微分及余面积 Jacobi 因子一致；补回局部异常集时仍只涉及可数个零测集。
+\begin{corollary}[局部余面积公式]\label{b1:cor:local-coarea-formulas}
+设 \(U\subseteq\mathbb R^m\) 为开集，\(m\geq n\geq1\)，\(f:U\rightarrow\mathbb R^n\) 为局部 Lipschitz 映射，且 \(E\subseteq U\) Lebesgue 可测。则
+\[
+ \int_EJ_nf(x)\,\mathrm dx
+ =
+ \int_{\mathbb R^n}
+ \mathcal H^{m-n}\bigl(E\cap f^{-1}(\{y\})\bigr)\,\mathrm dy.
+\]
+若 \(g:E\rightarrow[0,\infty]\) Lebesgue 可测，则还有
+\[
+ \int_Eg(x)J_nf(x)\,\mathrm dx
+ =
+ \int_{\mathbb R^n}
+ \left(\int_{E\cap f^{-1}(\{y\})}g(x)\,
+ \mathrm d\mathcal H^{m-n}(x)\right)\,\mathrm dy.
+\]
+两式中的纤维积分及其可测性按\cref{b1:thm:coarea-formula,b1:thm:weighted-coarea}的约定理解。
+\end{corollary}
+\begin{proof}
+取可数个开球 \(B_j\) 覆盖 \(U\)，使 \(f|_{B_j}\) 都具有有限的 Lipschitz 常数，并令
+\[
+ A_1=B_1,
+ \qquad
+ A_j=B_j\setminus\bigcup_{i<j}B_i\quad(j\geq2).
+\]
+则 \(A_j\) 是两两不交的 Borel 集，且 \(A_j\subseteq B_j\)。由\cref{b1:thm:mcshane-extension}逐坐标延拓 \(f|_{B_j}\)，得到全空间 Lipschitz 映射 \(f_j:\mathbb R^m\rightarrow\mathbb R^n\)。它与 \(f\) 在开球 \(B_j\) 内局部相同，故二者的可微点、微分及余面积 Jacobi 因子在那里一致。
+
+置 \(E_j=E\cap A_j\)，分别对 \(f_j|_{E_j}\) 应用\cref{b1:thm:coarea-formula,b1:thm:weighted-coarea}。对可数个片的例外参数集取并后，几乎每张纤维中的 \(E_j\cap f^{-1}(\{y\})\) 都可测；它们彼此不交，故可数可加性与单调收敛定理允许逐片求和，得到两式。
+\end{proof}
 
 \subsection{几何解释}
 \label{b1:subsec:180204}
 
 对投影 \(f(x_1,\ldots,x_m)=(x_1,\ldots,x_n)\)，有 \(J_nf=1\)，纤维是互相平行的 \((m-n)\) 维平面，公式退化为 Fubini 定理。对满秩线性映射，\cref{b1:thm:linear-coarea-formula}说明余面积 Jacobi 因子补偿了法向方向上的伸缩。一般 Lipschitz 映射则在几乎处处使用相应微分矩阵进行同样的补偿。
 
-若 \(n=1\) 且 \(\nabla f(x)\ne0\)，微分核为与 \(\nabla f(x)\) 正交的超平面，\(|\nabla f(x)|\) 测量函数值沿法向变化的速率。沿函数值 \(t\) 积分时，变化快的地方需要更大的补偿因子，才能恢复原空间中的体积。这个解释只涉及正规点的局部微分，不把所有水平集都说成光滑超曲面。
+若 \(n=1\) 且 \(\nabla f(x)\ne0\)，微分核为与 \(\nabla f(x)\) 正交的超平面，\(|\nabla f(x)|\) 测量函数值沿法向变化的速率。沿函数值 \(t\) 积分时，变化快的地方需要更大的补偿因子，才能恢复原空间中的体积。这个解释只涉及正则点的局部微分，不把所有水平集都说成光滑超曲面。
 
 对几乎每个 \(y\)，上面的证明实际上把水平集分成可数个由 \(\mathbb R^{m-n}\) 的子集作 Lipschitz 参数化的部分，再加一个 \(\mathcal H^{m-n}\) 零测集。这个结构是在证明中由满秩坐标片得到的，不是预先假定的水平集正则性。后面的可整流性章节会把这种可数参数化单独命名，并研究它与切空间的关系。
 

@@ -2,13 +2,6 @@
 \chapter{乘积测度、Fubini 理论与换元公式}
 \label{b1:ch:07}
 \BookChapterNumber{b1:ch:07}
-% 来源与证明义务（2026-09-05）：
-% Axler2020Measure §5A--5C：普通乘积结构、截面积分构造、Tonelli/Fubini及完备化。
-% Fremlin2016Measure vol.2 §252：完成化后的截面；§263：可微换元的一般版本。
-% 本章7.5限C1微分同胚，以立方体失真和\chapref{b1:ch:06}RN定理识别密度，
-% 不借\chapref{b1:ch:14}微分定理或\chapref{b1:ch:17}面积公式。中文译名按现行术语规范。
-% 先区分联合/分别可测，再构造测度；非负积分先行，可积积分后行；
-% 函数的代表与例外集明示；换元证明补齐零集保持和可数局部化。
 \begin{chapterabstract}
 多变量积分有两种基本简化方式：固定部分变量逐次积分，或者选择更合适的坐标。前者要求乘积可测结构与积分次序相容，后者要求掌握映射对体积的影响。本章从可测矩形和截面构造乘积测度，证明 Tonelli 与 Fubini 定理，并说明为什么完备化后必须容许少数坏截面。随后研究积分后的参数依赖，以 \(C^1\) 微分同胚的换元公式连接线性代数、密度表示和欧氏积分。
 \end{chapterabstract}
@@ -65,9 +58,81 @@ Tonelli 定理处理非负函数，Fubini 定理处理绝对可积函数。坏�
 \(\|Af_n\|_1=\int_0^1xf_n(x)\,dx=1-1/(2n)\)。比值趋于 \(1\)，所以常数不能减小。
 \end{solution}
 
+% 综合自拟：以三角区域训练集合截面、截面测度函数与两种积分次序。
+\begin{exercise}\label{b1:ex:07-basic-sections-tonelli}
+在 \((0,1)^2\) 上令
+\[
+E=\{(x,y):0<y<x,\ x+y<1\}.
+\]
+分别写出两个方向的截面 \(E_x\) 与 \(E^y\)，并用两种积分次序计算 \(E\) 的二维 Lebesgue 测度。
+\end{exercise}
+\begin{solution}
+固定 \(x\in(0,1)\) 时，条件等价于
+\[
+0<y<\min\{x,1-x\},
+\]
+所以
+\[
+m(E_x)=
+\begin{cases}
+x,&0<x\leq1/2,\\
+1-x,&1/2<x<1.
+\end{cases}
+\]
+固定 \(y\in(0,1)\) 时，必须有 \(y<x<1-y\)，故
+\[
+m(E^y)=
+\begin{cases}
+1-2y,&0<y<1/2,\\
+0,&1/2\leq y<1.
+\end{cases}
+\]
+对非负函数 \(\mathbf1_E\) 应用 Tonelli 定理，两种次序分别给出
+\[
+m_2(E)=\int_0^{1/2}x\,dx+\int_{1/2}^1(1-x)\,dx
+=\frac14
+=\int_0^{1/2}(1-2y)\,dy.
+\]
+两种截面计算一致。
+\end{solution}
+
+% 综合自拟：直接训练局部共同控制、积分号下求导及参数零点的处理。
+\begin{exercise}\label{b1:ex:07-parameter-differentiation}
+对 \(t>-1\)，令
+\[
+H(t)=\int_0^1\frac{dx}{1+tx}.
+\]
+不先对积分作显式计算，证明 \(H\in C^1((-1,\infty))\)，并证明
+\[
+H'(t)=-\int_0^1\frac{x}{(1+tx)^2}\,dx.
+\]
+然后求出 \(H(t)\) 的显式表达式以及 \(H'(0)\)。
+\end{exercise}
+\begin{solution}
+令 \(h(t,x)=(1+tx)^{-1}\)。对任意紧区间 \(J=[a,b]\subset(-1,\infty)\)，置
+\[
+c_J=\min\{1,1+a\}>0.
+\]
+当 \(t\in J\)、\(0\leq x\leq1\) 时，\(1+tx\geq c_J\)，因而
+\[
+|\partial_th(t,x)|=\frac{x}{(1+tx)^2}\leq c_J^{-2}.
+\]
+右端在 \((0,1)\) 上可积，而 \(h(0,\cdot)=1\) 也可积。积分号下求导定理因此给出 \(H\in C^1((-1,\infty))\) 及所述导数公式。
+
+当 \(t\neq0\) 时，直接积分得到
+\[
+H(t)=\frac{\log(1+t)}{t};
+\]
+当 \(t=0\) 时，\(H(0)=1\)。最后由已经证明的导数公式，
+\[
+H'(0)=-\int_0^1x\,dx=-\frac12.
+\]
+这里在 \(t=0\) 处使用积分表示，无须先对 \(\log(1+t)/t\) 作级数展开。
+\end{solution}
+
 % 来源：Axler2020Measure §5C习题6，印刷144页；对角逆像工具见§5A习题2，128页。
 % 改编：比较平面测度与对角推前测度的不同完备化；所有截面均可测。
-\begin{exercise}\label{b1:ex:07-completions-diagonal}
+\begin{exercise}[\(\star\) 选读]\label{b1:ex:07-completions-diagonal}
 令 \(I=[0,1]\)，\(\mathcal B,\mathcal L\) 分别为其 Borel 与 Lebesgue \(\sigma\)-代数，\(m\) 为 Borel Lebesgue 测度。记
 \(\rho=m\otimes m\)、\(\eta=d_\#m\)，其中 \(d(t)=(t,t)\)。
 取非 Lebesgue 可测集 \(V\subseteq I\)，令 \(E=d(V)\)。证明 \(E\) 的每个水平和竖直截面都是 Borel 集，但 \(E\notin\mathcal L\otimes\mathcal L\)；它对 \(\rho\) 的完备化可测，对 \(\eta\) 的完备化却不可测。
@@ -208,7 +273,7 @@ q(y)=\frac{e^{-(\log y)^2}}{\sqrt\pi\,y},\quad y>0.
 
 % 综合自拟，连接\chapref{b1:ch:06}与本章；工具定位：Axler2020Measure §5A习题10（128页），
 % §9B 9.36与9.41（272--274页）；不是上述原题的直接改编。
-\begin{exercise}\label{b1:ex:07-signed-product}
+\begin{exercise}[\(\star\) 选读]\label{b1:ex:07-signed-product}
 设 \(\alpha,\beta\) 分别是 \((X,\mathcal A)\)、\((Y,\mathcal B)\) 上的有限符号测度。证明存在唯一的有限符号测度 \(\alpha\otimes\beta\)，满足
 \[
 (\alpha\otimes\beta)(A\times B)=\alpha(A)\beta(B),
@@ -252,7 +317,7 @@ q(y)=\frac{e^{-(\log y)^2}}{\sqrt\pi\,y},\quad y>0.
 % 来源：Axler2020Measure §5B例5.30，印刷131页。
 % 改编：在已知非sigma有限背景上构造两个矩形值相同、对角线值不同的测度，
 % 不重复正文的迭代积分0/1计算。
-\begin{exercise}\label{b1:ex:07-nonsigma-uniqueness}
+\begin{exercise}[\(\star\) 选读]\label{b1:ex:07-nonsigma-uniqueness}
 令 \(I=[0,1]\)，\(m\) 为 Borel Lebesgue 测度，\(c\) 为 Borel 集上的计数测度。对 Borel 集 \(E\subseteq I^2\)，定义
 \[
 \lambda_0(E)=\sum_{y\in I}m(E^y),

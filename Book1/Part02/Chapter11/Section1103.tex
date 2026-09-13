@@ -52,10 +52,19 @@
 
 局部估计通常不能换成一个与 \(K\) 无关的常数。在 \(C_c(\mathbb R)\) 上取 Lebesgue 积分泛函，并取 \(0\leq h_n\leq1\)、在 \([-n,n]\) 上等于 \(1\) 的连续紧支集函数，则 \(\|h_n\|_\infty=1\)，而 \(\Lambda(h_n)\geq2n\)。所以这个正泛函关于一致范数无界。只有在 \(X\) 紧时，常数函数 \(1\) 本身才属于 \(C_c(X)\)，此时上述证明才直接给出全局界 \(\Lambda(1)\)。
 
-\subsection{支集与正则性}
+\subsection{从正泛函构造 Radon 测度}
 \label{b1:subsec:110303}
 
-恢复测度的第一步是在开集上定义候选值。若连续函数只在开集 \(U\) 内活动，且取值不超过 \(1\)，它的泛函值不应超过 \(U\) 的质量。因此令
+本小节的存在性证明分为四步：
+\[
+ a(U)\longrightarrow\mu_0^*\longrightarrow\mu_0
+ \longrightarrow\mu\longrightarrow\text{积分表示}.
+\]
+先从泛函定义开集的候选质量 \(a(U)\)，再由开覆盖得到外测度 \(\mu_0^*\) 及其 Borel 限制 \(\mu_0\)；
+这里的 \(\mu_0\) 负责外部逼近。随后只保留 \(\mu_0\) 在紧集上看到的质量，构造满足本书 Radon 约定的 \(\mu\)；
+最后才证明 \(\Lambda(f)=\int f\,\mathrm d\mu\)。两层测度各有任务，并非重复构造。
+
+第一步是在开集上定义候选值。若连续函数只在开集 \(U\) 内活动，且取值不超过 \(1\)，它的泛函值不应超过 \(U\) 的质量。因此令
 \[
  \mathcal T(U)=\{\,h\in C_c^+(X):0\leq h\leq1,
                        \ \operatorname{supp}h\subseteq U\,\},
@@ -106,7 +115,7 @@
 此外，每个有限 \(\mu_0\) 测度的 Borel 集都能从内部用紧集逼近。
 \end{lemma}
 \begin{proof}
-首先，\(\mu_0^*(\varnothing)=0\)，且 \(\mu_0^*\) 单调。为证可数次可加性，只需考虑 \(\sum_n\mu_0^*(A_n)<\infty\) 的情形。给定 \(\varepsilon>0\)，逐个选择开集 \(U_n\supseteq A_n\)，使 \(a(U_n)<\mu_0^*(A_n)+\varepsilon2^{-n}\)。由前一引理，
+首先，\(\mu_0^*(\varnothing)=0\)，且 \(\mu_0^*\) 单调。为证可数次次可加性，只需考虑 \(\sum_n\mu_0^*(A_n)<\infty\) 的情形。给定 \(\varepsilon>0\)，逐个选择开集 \(U_n\supseteq A_n\)，使 \(a(U_n)<\mu_0^*(A_n)+\varepsilon2^{-n}\)。由前一引理，
 \[
  \mu_0^*\biggl(\bigcup_n A_n\biggr)
  \leq a\biggl(\bigcup_n U_n\biggr)
@@ -151,9 +160,12 @@
 这证明了有限测度 Borel 集的紧内正则性。
 \end{proof}
 
-目前只证明了 \(\mu_0\) 在开集及有限测度 Borel 集上紧内正则。若一个无限测度 Borel 集没有可数的有限测度覆盖，不能据此直接宣称它也紧内正则。下面用紧集上的限制重新定义测度，补足这一点。
+至此得到的 \(\mu_0\) 是局部有限、外正则的 Borel 测度，并在开集及有限测度 Borel 集上紧内正则；
+它还不一定是本书定义下的 Radon 测度。若一个无限测度 Borel 集没有可数的有限测度覆盖，不能据此直接宣称它也紧内正则。
+下面用紧集上的限制重新定义测度。这个正则化不会改变有限 \(\mu_0\) 测度的 Borel 集，也不会改变开集和紧集；
+只有某些无限质量 Borel 集可能改变。
 
-\begin{theorem}[Riesz--Markov，测度构造]\label{b1:thm:positive-radon-construction}
+\begin{theorem}[正泛函表示测度的存在性]\label{b1:thm:positive-radon-construction}
 每个正线性泛函 \(\Lambda:C_c(X;\mathbb K)\rightarrow\mathbb K\) 都由一个正 Radon 测度 \(\mu\) 表示，即
 \[
  \Lambda(f)=\int_X f\,\mathrm d\mu
@@ -180,7 +192,9 @@
 \]
 分别对每个 \(K_n\) 取上确界，再令 \(N\uparrow\infty\)，得到反向不等式。结合 \(\mu(\varnothing)=0\)，可知 \(\mu\) 是 Borel 测度。
 
-若 Borel 集 \(A\) 包含在某个紧集 \(K_0\) 中，则定义中取 \(K=K_0\) 即得 \(\mu(A)=\mu_0(A)\)。特别地，两测度在紧集上相同。对开集 \(U\)，一方面 \(\mu(U)\leq\mu_0(U)\)，另一方面由\eqref{b1:eq:positive-functional-open-inner}，
+定义立即给出 \(\mu(A)\leq\mu_0(A)\)。若 \(\mu_0(A)<\infty\)，则前一引理允许在 \(A\) 内取紧集 \(C\)，使 \(\mu_0(C)\) 任意接近 \(\mu_0(A)\)；
+而定义中取 \(K=C\) 便有 \(\mu(A)\geq\mu_0(C)\)。因此两测度在所有有限 \(\mu_0\) 测度的 Borel 集上相同，特别地在紧集及紧集内的 Borel 子集上相同。
+对开集 \(U\)，一方面 \(\mu(U)\leq\mu_0(U)\)，另一方面由\eqref{b1:eq:positive-functional-open-inner}，
 \[
  \mu(U)\geq\sup_{K\subseteq U,\ K\text{ 紧}}\mu_0(K)=\mu_0(U),
 \]
@@ -195,7 +209,7 @@
 \]
 因此 \(\mu\) 满足本书的 Radon 测度定义。
 
-余下证明积分等式。先设 \(f\in C_c^+(X)\)，令 \(K=\operatorname{supp}f\)、\(M=\|f\|_\infty\)。当 \(M=0\) 时无须证明，以下设 \(M>0\)。给定正整数 \(n\)，令 \(\delta=M/n\)，并对 \(1\leq j\leq n\) 置 \(U_j=\{f>j\delta\}\)。若分别取 \(h_j\in\mathcal T(U_j)\)，则逐点有 \(\delta\sum_{j=1}^n h_j\leq f\)。由正性，分别对有限个 \(h_j\) 取上确界，得到
+现在表示测度已经构造完毕；余下只需识别它确实表示 \(\Lambda\)。先设 \(f\in C_c^+(X)\)，令 \(K=\operatorname{supp}f\)、\(M=\|f\|_\infty\)。当 \(M=0\) 时无须证明，以下设 \(M>0\)。给定正整数 \(n\)，令 \(\delta=M/n\)，并对 \(1\leq j\leq n\) 置 \(U_j=\{f>j\delta\}\)。若分别取 \(h_j\in\mathcal T(U_j)\)，则逐点有 \(\delta\sum_{j=1}^n h_j\leq f\)。由正性，分别对有限个 \(h_j\) 取上确界，得到
 \[
  \delta\sum_{j=1}^n\mu_0(U_j)\leq\Lambda(f).
 \]

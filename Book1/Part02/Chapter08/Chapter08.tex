@@ -31,7 +31,7 @@
 Hahn--Banach 定理的一般延拓和不可分 Hilbert 空间中正交基的存在使用 Zorn 引理，
 文中会明确指出使用位置，不把这种选择步骤写成有限次构造。
 
-第一次阅读宜先把\secref{b1:sec:0801}的例子算清，再沿\secref{b1:sec:0802}
+第一次阅读宜先把\secref{b1:sec:0801}的例子和商空间构造算清，再沿\secref{b1:sec:0802}
 “一维泛函—延拓—分离—对偶范数”的顺序阅读。
 \secref{b1:sec:0803}的三个基本原理用途不同，不应只记成一组定理名称；
 其中从像的闭包到真正原像的逐次逼近值得单独复算。
@@ -66,7 +66,7 @@ Baire 纲定理提供另一种存在性机制：把可数覆盖中的局部信�
 Hilbert 空间的内积增加了正交几何。最近点由平行四边形恒等式得到，
 投影又导出 Riesz 表示和正交展开。一般正交基可以不可数，
 但每个向量至多具有可数个非零坐标；函数展开的范数收敛也不等于逐点收敛。
-紧自伴谱定理进一步把算子本身作有限秩逼近，Green 算子的例子则把这种逼近
+在选读部分，紧自伴谱定理进一步把算子本身作有限秩逼近，Green 算子的例子则把这种逼近
 落实为正弦特征函数。下一章将研究较弱的收敛方式，
 以应对有界列在原范数下通常没有收敛子列这一困难。
 \end{chaptersummary}
@@ -77,42 +77,110 @@ Hilbert 空间的内积增加了正交几何。最近点由平行四边形恒等
 % 下列题目按本章证明工具综合组织，非逐字摘录；
 % 背景定位：Axler2020Measure 6C--E（完备性、延拓、对偶、算子原理）、
 % 8B--C（投影与正交坐标）、10C--D（紧算子和谱分解）。
-% 商空间、极限泛函和Volterra为经典训练主题，补完整定义与解答；
+% 商空间距离公式、极限泛函和Volterra为经典训练主题，补完整题设与解答；
 % Green共振题为本章边值模型的继续推导。均不要求未写章节的结果。
 
-\begin{exercise}\label{b1:ex:08-quotient-dual}
-设 \(M\) 是 Banach 空间 \(X\) 的闭线性子空间。在商空间 \(X/M\) 上定义
+% 自拟：把向量嵌入二次对偶，直接训练算子范数与一致有界原理。
+\begin{exercise}\label{b1:ex:08-uniform-bounded-vectors}
+设 \(X\) 是赋范空间，\((x_n)\subset X\)，并且对每个 \(f\in X^*\)，数列 \((f(x_n))\) 都有界。对 \(n\geq1\)，定义
 \[
- \|x+M\|_q=\inf_{m\in M}\|x+m\|.
+J_n:X^*\longrightarrow\mathbb K,\qquad J_n(f)=f(x_n).
 \]
-证明这是使 \(X/M\) 完备的范数。若 \(Qx=x+M\)，证明%
-\(\varphi\mapsto\varphi\circ Q\) 将 \((X/M)^*\) 线性等距地映满
-\[
- M^\circ=\{f\in X^*:f|_M=0\}.
-\]
-最后证明 \(\operatorname{dist}(x,M)=\sup\{|f(x)|:f\in M^\circ,\ \|f\|\leq1\}\)。
+证明 \(J_n\) 是有界线性泛函且 \(\|J_n\|=\|x_n\|\)，再用一致有界原理证明 \((x_n)\) 在 \(X\) 中范数有界。说明为什么这里不需要假设 \(X\) 完备。
 \end{exercise}
 \begin{solution}
-更换代表只使下确界中的 \(m\) 平移，故公式良定义。
-齐次性由变量代换得到；为证三角不等式，分别选取距离下确界不到%
-\(\varepsilon\) 的两个代表，相加并令 \(\varepsilon\downarrow0\)。
-商范数为零等价于 \(x\in\overline M=M\)，故正定性成立。
+线性由定义得到，而
+\[
+|J_n(f)|=|f(x_n)|\leq\|f\|\cdot\|x_n\|
+\]
+给出 \(\|J_n\|\leq\|x_n\|\)。若 \(x_n\ne0\)，\cref{b1:cor:norming-functional}给出 \(f_n\in X^*\)，使 \(\|f_n\|=1\)、\(|f_n(x_n)|=\|x_n\|\)，故反向不等式成立；\(x_n=0\) 时范数等式直接成立。
 
-设 \((u_n)\) 在商范数下为 Cauchy 列，取子列使%
-\(\|u_{n_{k+1}}-u_{n_k}\|_q<2^{-k-1}\)。
-按下确界的定义，选 \(z_k\in X\) 满足%
-\(Qz_k=u_{n_{k+1}}-u_{n_k}\)、\(\|z_k\|<2^{-k}\)。
-再取 \(Qz_0=u_{n_1}\)。由 \(X\) 完备，\(z=z_0+\sum_kz_k\) 存在。
-因为 \(\|Qx\|_q\leq\|x\|\)，有 \(u_{n_k}\to Qz\)，
-Cauchy 条件和三角不等式遂使整个 \((u_n)\) 趋于同一极限。
+题设正是
+\[
+\sup_n|J_n(f)|<\infty\qquad(f\in X^*).
+\]
+对 Banach 空间 \(X^*\) 上的算子族 \(\{J_n:n\geq1\}\) 应用一致有界原理，得到
+\[
+\sup_n\|x_n\|=\sup_n\|J_n\|<\infty.
+\]
+定义域是 \(X^*\)，而连续对偶总是 Banach 空间；原空间 \(X\) 是否完备不参与这次应用。
+\end{solution}
 
-若 \(f=\varphi Q\)，则 \(f|_M=0\)，且 \(\|f\|\leq\|\varphi\|\)。
-对任一商元素 \(u\)，选代表 \(x\) 使 \(\|x\|<\|u\|_q+\varepsilon\)，得到%
-\(|\varphi(u)|=|f(x)|\leq\|f\|(\|u\|_q+\varepsilon)\)；
-令 \(\varepsilon\downarrow0\) 得反向范数估计。
-反过来，若 \(f|_M=0\)，公式 \(\varphi(x+M)=f(x)\) 良定义且线性，
-同一估计证明它连续并保持范数。最后在商空间中对 \(Qx\) 使用%
-\cref{b1:cor:norming-functional}，再通过这个等距对应拉回泛函，即得距离公式。
+% 自拟：训练有界逆定理给出的下界及其对闭值域的直接作用。
+\begin{exercise}\label{b1:ex:08-bounded-below-closed-range}
+设 \(X\) 是 Banach 空间，\(Y\) 是赋范空间，\(T\in\mathcal B(X,Y)\)。若存在 \(c>0\)，使
+\[
+\|Tx\|\geq c\|x\|\qquad(x\in X),
+\]
+证明 \(T\) 单射、\(T(X)\) 闭，且 \(T^{-1}:T(X)\to X\) 有界。反过来，设 \(X,Y\) 都是非零 Banach 空间且 \(T:X\to Y\) 是有界线性双射；用有界逆定理证明上述下界对某个 \(c>0\) 成立。
+\end{exercise}
+\begin{solution}
+下界立即说明 \(Tx=0\) 只能发生在 \(x=0\)，故 \(T\) 单射。若 \(Tx_n\to y\) 于 \(Y\)，则
+\[
+c\|x_n-x_m\|\leq\|Tx_n-Tx_m\|,
+\]
+所以 \((x_n)\) 是 Cauchy 列。由 \(X\) 完备，存在 \(x\in X\) 使 \(x_n\to x\)；再由 \(T\) 连续，\(Tx_n\to Tx\)，从而 \(y=Tx\in T(X)\)。因此值域闭。对 \(y=Tx\in T(X)\)，同一估计给出
+\[
+\|T^{-1}y\|=\|x\|\leq c^{-1}\|y\|,
+\]
+故逆算子有界。
+
+反过来，有界逆定理给出 \(T^{-1}\in\mathcal B(Y,X)\)。因为空间非零，\(\|T^{-1}\|>0\)，并且
+\[
+\|x\|=\|T^{-1}Tx\|\leq\|T^{-1}\|\,\|Tx\|.
+\]
+取 \(c=\|T^{-1}\|^{-1}\) 即得所需下界。
+\end{solution}
+
+% 自拟：用对角乘子把“处处有定义加闭图像”转化为统一系数界。
+\begin{exercise}\label{b1:ex:08-closed-graph-diagonal}
+设 \((a_n)\) 是任意标量序列，并假设对每个 \(x=(x_n)\in\ell^1\)，序列 \((a_nx_n)\) 仍属于 \(\ell^1\)。定义
+\[
+D_a:\ell^1\longrightarrow\ell^1,\qquad D_ax=(a_nx_n).
+\]
+先证明 \(D_a\) 的图像闭，再用闭图像定理证明 \((a_n)\in\ell^\infty\)，并求 \(\|D_a\|\)。最后证明 \((a_n)\in\ell^\infty\) 也足以保证 \(D_a\) 在整个 \(\ell^1\) 上有定义。
+\end{exercise}
+\begin{solution}
+设 \(x^{(k)}\to x\) 且 \(D_ax^{(k)}\to y\) 都在 \(\ell^1\) 中成立。每个坐标泛函在 \(\ell^1\) 上连续，因此对固定 \(n\)，有
+\[
+x_n^{(k)}\to x_n,\qquad a_nx_n^{(k)}\to y_n.
+\]
+标量极限唯一性给出 \(y_n=a_nx_n\)。题设保证 \(D_ax\in\ell^1\)，所以 \(y=D_ax\)，图像闭。定义域和值域都是 Banach 空间，闭图像定理因而给出 \(D_a\) 有界。
+
+对第 \(n\) 个单位向量 \(e_n\)，有
+\[
+|a_n|=\|D_ae_n\|_1\leq\|D_a\|,
+\]
+故 \(a\in\ell^\infty\)。反过来，若 \(a\in\ell^\infty\)，则
+\[
+\|D_ax\|_1=\sum_n|a_nx_n|
+\leq\|a\|_\infty\|x\|_1,
+\]
+所以 \(D_a\) 处处有定义且 \(\|D_a\|\leq\|a\|_\infty\)。再用单位向量并对 \(n\) 取上确界，得到 \(\|D_a\|=\|a\|_\infty\)。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:08-quotient-dual}
+设 \(X\) 是 Banach 空间，\(M\subset X\) 是闭线性子空间，\(Q:X\to X/M\) 是商映射。利用\cref{b1:thm:quotient-banach}与\cref{b1:prop:quotient-dual}证明：对每个 \(x\in X\) 和 \(r>0\)，都有
+\[
+Q\bigl(B_X(x,r)\bigr)=B_{X/M}(Qx,r),
+\]
+并且
+\[
+\operatorname{dist}(x,M)
+=\sup\{\,|f(x)|:f\in M^\circ,\ \|f\|\leq1\,\}.
+\]
+最后指出：若把第一式中的开球改成闭球，同一证明会在哪一步失效。
+\end{exercise}
+\begin{solution}
+若 \(z\in B_X(x,r)\)，则
+\[
+\|Qz-Qx\|=\|Q(z-x)\|\leq\|z-x\|<r,
+\]
+所以左边包含于右边。反过来，若 \(u\in B_{X/M}(Qx,r)\)，则 \(\|u-Qx\|<r\)。按商范数的下确界定义，可以为 \(u-Qx\) 选取代表 \(v\in X\)，使 \(Qv=u-Qx\) 且 \(\|v\|<r\)。于是 \(u=Q(x+v)\)，而 \(x+v\in B_X(x,r)\)。这证明开球等式。
+
+商范数定义给出 \(\operatorname{dist}(x,M)=\|Qx\|\)。对 \(X/M\) 中的向量 \(Qx\) 使用\cref{b1:cor:norming-functional}，再由\cref{b1:prop:quotient-dual}把 \((X/M)^*\) 的单位球等距拉回 \(M^\circ\) 的单位球，便得到所述上确界公式。
+
+开球的反向包含使用了严格不等式 \(\|u-Qx\|<r\)，因而能从下确界中选到范数严格小于 \(r\) 的代表。若只有 \(\|u-Qx\|\leq r\)，边界情形会要求这个下确界实际取得；一般闭子空间未必为每个向量提供最佳逼近，所以同一论证不能推出闭球等式。
 \end{solution}
 
 \begin{exercise}\label{b1:ex:08-c0-dual}
@@ -197,7 +265,9 @@ Cauchy 条件和三角不等式遂使整个 \((u_n)\) 趋于同一极限。
 若 \(h\geq0\)、\(h\ne0\)，则 \(P_Ch=h\) 而 \(P_C(-h)=0\)，不满足线性映射的奇性。
 \end{solution}
 
-\begin{exercise}\label{b1:ex:08-strong-finite-rank}
+以下四题对应选读的\secref{b1:sec:0805}，第一次阅读跳过该节时可一并暂缓。
+
+\begin{exercise}[\(\star\) 选读]\label{b1:ex:08-strong-finite-rank}
 在 \(\ell^2\) 上令 \(P_Nx=(x_1,\ldots,x_N,0,\ldots)\)。
 证明每个 \(P_N\) 都有限秩且紧，对每个 \(x\) 都有 \(P_Nx\to x\)，
 但 \(\|P_N-I\|=1\)。再证明：若 \(K\subset\ell^2\) 是范数紧集，则
@@ -224,7 +294,7 @@ Cauchy 条件和三角不等式遂使整个 \((u_n)\) 趋于同一极限。
 所以紧集上一致收敛不能用于那个集合。
 \end{solution}
 
-\begin{exercise}\label{b1:ex:08-compact-closed-range}
+\begin{exercise}[\(\star\) 选读]\label{b1:ex:08-compact-closed-range}
 设 \(H,K\) 是 Hilbert 空间，\(T:H\to K\) 紧。
 证明 \(T(H)\) 闭，当且仅当 \(T\) 有限秩。此处不要求 \(T\) 自伴。
 \end{exercise}
@@ -238,7 +308,7 @@ Cauchy 条件和三角不等式遂使整个 \((u_n)\) 趋于同一极限。
 与恒等算子紧矛盾。因此 \(M\) 有限维，且 \(T(H)=T(M)\) 也有限维。
 \end{solution}
 
-\begin{exercise}\label{b1:ex:08-volterra}
+\begin{exercise}[\(\star\) 选读]\label{b1:ex:08-volterra}
 在 \(L^2(0,1)\) 上定义%
 \((Vf)(x)=\int_0^x f(y)\,dy\)。
 证明 \(V\) 紧，并求 \(V^*\)；证明 \(V+V^*\) 的值域是常数函数空间。
@@ -270,7 +340,7 @@ Fubini 定理给出
 紧性自身并不能提供紧自伴谱定理中的特征向量。
 \end{solution}
 
-\begin{exercise}\label{b1:ex:08-green-resonance}
+\begin{exercise}[\(\star\) 选读]\label{b1:ex:08-green-resonance}
 令 \(G\) 为\cref{b1:prop:dirichlet-green}的算子，\(\alpha\in\mathbb R\)。
 利用正弦基，求解 \(L^2(0,1)\) 中的方程%
 \((I-\alpha G)u=f\)。

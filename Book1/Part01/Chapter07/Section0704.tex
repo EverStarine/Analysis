@@ -2,11 +2,7 @@
 \section{含参变量积分}
 \label{b1:sec:0704}
 
-% 来源：Axler2020Measure §5B 5.28、5.32、5.35，印刷129--134页，已读本地正式OA全文。
-% 参数可测性由集合截面引理自证；可测--连续判据采用可分参数空间的可数分片逼近。
-% 积分核估计为Tonelli/Fubini的直接应用；水平集公式按5.35改写并加p次幂权重。
-% 参数连续与求导接续0504，不重建已有一元定理；补足联合可测及局部共同控制的接口。
-% 证明义务：参数空间可无测度；逐参数可积与几乎处处可积区别；公共零集；无7.5前向依赖。
+本节固定测度空间 \((X,\mathcal A,\mu)\)。除非另行说明，不要求 \(\mu\) 为 \(\sigma\)-有限测度；只有在调用乘积测度、Tonelli--Fubini 定理或依赖其截面引理时，才明确增加相应的 \(\sigma\)-有限假设。
 
 把一个变量积分掉后，剩下的变量就成了参数。上一节保证非负联合可测函数的截面积分仍然可测；应用时还须回答如何检查联合可测性，以及何时可以进一步得到参数连续性或可微性。参数可测性只需要被积分变量上的测度，参数集合本身不必先配备测度。
 
@@ -56,7 +52,7 @@ T_0=\left\{t:\int_X|h(t,x)|\,\mathrm d\mu(x)<\infty\right\}
 
 例如，若 \(g\in L^1(\mathbb R)\)，则 \(h(t,x)=e^{itx}g(x)\) 满足前一小节的可测--连续判据，并且每个参数截面的绝对值积分都等于 \(\|g\|_1\)。其含参变量积分因此在整个实轴上有定义且可测；\chapref{b1:ch:05}还证明了它的连续性。联合可测性解决的是积分作为函数能否进入下一次测度运算，连续性则需要另一个极限定理。
 
-\subsection{与 Tonelli–Fubini 的结合}
+\subsection{积分核与 \texorpdfstring{\(L^1\)}{L1} 估计}
 \label{b1:subsec:070403}
 
 联合可测函数也可以把一个函数变成新的含参变量积分。把 \(K:T\times X\rightarrow\mathbb C\) 用在表达式 \(\int_XK(t,x)f(x)\,\mathrm d\mu(x)\) 中时，称 \(K\) 为\term[jifen-he]{积分核}[integral kernel]。下面的估计说明，控制核在输出变量方向上的总量，可以控制整个输出函数的积分范数。
@@ -89,7 +85,10 @@ T_0=\left\{t:\int_X|h(t,x)|\,\mathrm d\mu(x)<\infty\right\}
 
 核的假设只控制一种积分次序，却通过 Tonelli 定理保证另一种次序几乎处处可积。例如 \(K(t,x)=e^{-t}\mathbf1_{(0,\infty)}(t)\) 与 \(x\) 无关时，可取 \(M=1\)，输出为 \(e^{-t}\int f\,\mathrm d\mu\)。更一般的核会让不同参数选择输入的不同部分；证明所需的仍是同一绝对值估计。
 
-另一个用途是改用水平集来表示积分。Sheldon Axler 的《Measure, Integration \& Real Analysis》\cite[Section 5B]{Axler2020Measure}从函数图像下方的区域得到这一表示；它把函数的大小转化为各层集合的测度。
+\subsection{水平集积分公式}
+\label{b1:subsec:070404-layer-cake}
+
+水平集也可以用来表示积分。Sheldon Axler 的《Measure, Integration \& Real Analysis》\cite[Section 5B]{Axler2020Measure}从函数图像下方的区域得到这一表示；它把函数的大小转化为各层集合的测度。
 
 \begin{proposition}[水平集积分公式]\label{b1:prop:layer-cake-formula}
 设 \(f:X\rightarrow[0,\infty]\) 可测，\(p>0\)。则
@@ -100,11 +99,28 @@ T_0=\left\{t:\int_X|h(t,x)|\,\mathrm d\mu(x)<\infty\right\}
 两边可为无穷。特别地，\(p=1\) 时，积分等于上水平集测度关于高度的积分。
 \end{proposition}
 \begin{proof}
-集合 \(U=\{(x,t):0<t<f(x)\}\) 联合可测，因为
+先设 \(s\) 是取有限个非负有限值的简单函数。把它写成
 \[
-U=\bigcup_{q\in\mathbb Q, q>0}\bigl(\{x:f(x)>q\}\times(0,q)\bigr).
+s=\sum_{j=1}^r a_j\mathbf1_{A_j},
 \]
-对 \(p\,t^{p-1}\mathbf1_U(x,t)\) 应用 Tonelli 定理。先按 \(t\) 积分，初等非负积分给出 \(\int_0^{f(x)}p\,t^{p-1}\,\mathrm dt=f(x)^p\)，其中端点为零或无穷的情形由单调极限理解；先按 \(x\) 积分，就得到右侧。
+其中 \(A_1,\ldots,A_r\) 两两不交且 \(a_j>0\)。于是
+\[
+\mu(\{s>t\})=\sum_{a_j>t}\mu(A_j),
+\]
+有限求和及一元非负积分给出
+\begin{align*}
+\int_0^\infty p\,t^{p-1}\mu(\{s>t\})\,\mathrm dt
+&=\sum_{j=1}^r\mu(A_j)\int_0^{a_j}p\,t^{p-1}\,\mathrm dt\\
+&=\sum_{j=1}^r a_j^p\mu(A_j)
+=\int_Xs^p\,\mathrm d\mu.
+\end{align*}
+等式在扩展非负实数中理解，所以某个 \(\mu(A_j)\) 为无穷也不妨碍计算。
+
+对一般 \(f\)，取非负有限值简单函数 \(s_n\uparrow f\)。则 \(s_n^p\uparrow f^p\)，而对每个 \(t>0\)，有
+\[
+\{s_n>t\}\uparrow\{f>t\}.
+\]
+测度从下连续性给出 \(\mu(\{s_n>t\})\uparrow\mu(\{f>t\})\)。分别在 \(X\) 与 \((0,\infty)\) 上应用单调收敛定理，并使用已经证明的简单函数公式，便得到结论。这个证明没有构造乘积测度，也不需要 \(\mu\) 为 \(\sigma\)-有限测度。
 \end{proof}
 
 这不是对单个水平集的粗略估计，而是把所有高度的贡献重新相加。例如在 \((0,1)\) 上取 \(f(x)=x^{-1/q}\)、\(q>0\)。高度 \(t<1\) 时水平集测度为一，高度 \(t\geq1\) 时为 \(t^{-q}\)。所以 \(f^p\) 可积当且仅当 \(p<q\)，并且此时
@@ -114,7 +130,7 @@ U=\bigcup_{q\in\mathbb Q, q>0}\bigl(\{x:f(x)>q\}\times(0,q)\bigr).
 =\frac{q}{q-p}.
 \]
 
-\subsection{与控制收敛的结合}
+\subsection{参数连续性与积分号下求导}
 \label{b1:subsec:070404}
 
 参数可测性允许再次积分；参数连续性则取决于附近截面的共同可积控制。下面把\chapref{b1:ch:05}的实参数结论用于更一般的度量参数。

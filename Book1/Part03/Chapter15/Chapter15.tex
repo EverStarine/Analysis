@@ -23,9 +23,11 @@ Cantor 集甚至可能需要非整数的指数才能辨认其大小。
 \end{learninggoals}
 
 前两章的覆盖定理与测度微分在本章有不同的用途：前者用于比较覆盖代价，
-后者提供平面上密度为 \(1\) 的基准。\chapref{b1:ch:12}的紧性则在 Frostman 测度的构造中重新出现。
-首次阅读可以先沿“测度定义—Cantor 维数—质量分布—Frostman 引理”这一顺序掌握维数估计，
-再回读等直径不等式及密度证明中的常数。
+后者提供平面上密度为 \(1\) 的基准。\chapref{b1:ch:12}给出了概率测度弱紧性的更一般理论；
+为使本章的首次阅读路线自足，Frostman 证明所需的紧集版本将在\secref{b1:sec:1504}内单独证明。
+首次阅读可以先沿“测度定义—Cantor 维数—质量分布—Frostman 引理”这一顺序掌握维数估计。
+等直径不等式的对称化证明标为第二遍阅读内容；接受其结论后，可直接进入整数维归一化，
+再按需要回读几何证明及密度估计中的常数。
 
 Fremlin 的《Measure Theory》\cite[\S264]{Fremlin2016Measure}与 Simon 的
 《Lectures on Geometric Measure Theory》\cite[\S\S3--4]{Simon1983Lectures}%
@@ -57,8 +59,107 @@ Frostman 引理说明，对紧集而言，只要相应 Hausdorff 测度为正，
 \BookExercises
 
 % \chapref{b1:ch:15}习题临时稿；合入章聚合文件已有的 BookExercises 之后。
-% 八题均自拟，来源是本章工具的变式；不冒称取自尚未读到全文的教材习题。
+% 十一题均自拟，来源是本章工具的变式；不冒称取自尚未读到全文的教材习题。
 % 统一采用 H^s=c_s h^s，H^s_infty 同系数；不另建标题或书签。
+
+\begin{exercise}[覆盖量与基本维数]\label{b1:ex:15-basic-covering-dimensions}
+令 \(I=[0,1]\)。
+\begin{enumerate}
+\item\label{b1:item:15-interval-one-content}
+证明对每个 \(0<\delta\leq1\)，都有 \(h^1_\delta(I)=1\)。
+\item\label{b1:item:15-interval-critical-exponent}
+证明当 \(0<s<1\) 时，\(h^s_\delta(I)\geq\delta^{s-1}\)；
+当 \(s>1\) 时，\(h^s_{1/n}(I)\leq n^{1-s}\)。由此求出
+\(\mathcal H^s(I)\) 在 \(s<1\)、\(s=1\)、\(s>1\) 时的值，并求 \(\dim_{\mathrm H}I\)。
+\item\label{b1:item:15-finite-countable-dimension}
+求非空有限集和可数无限集的 Hausdorff 维数，并分别说明临界指数 \(s=0\) 处的测度值。
+\end{enumerate}
+\end{exercise}
+% 来源：自拟；直接训练固定尺度覆盖量、临界指数与零维计数约定。
+\begin{solution}
+任取 \(I\) 的可数 \(\delta\)-覆盖 \((U_j)\)。每个有界非空 \(U_j\subset\mathbb R\)
+都包含在一个长度为 \(\operatorname{diam}U_j\) 的闭区间中，故 Lebesgue 外测度的次可加性给出
+\[
+ 1=m_1(I)\leq\sum_j\operatorname{diam}U_j.
+\]
+另一方面，取整数 \(N\) 使 \(1/N\leq\delta\)，用 \(N\) 个长度为 \(1/N\) 的闭区间覆盖 \(I\)，
+总代价为 \(1\)。因此 \(h^1_\delta(I)=1\)。
+
+若 \(0<s<1\)，则对每个直径不超过 \(\delta\) 的非空覆盖块，
+\[
+ (\operatorname{diam}U_j)^s
+ =\operatorname{diam}U_j\,(\operatorname{diam}U_j)^{s-1}
+ \geq\delta^{s-1}\operatorname{diam}U_j.
+\]
+对覆盖求和并取下确界，得到 \(h^s_\delta(I)\geq\delta^{s-1}\)，
+所以 \(\mathcal H^s(I)=\infty\)。若 \(s>1\)，把 \(I\) 等分为 \(n\) 段即得
+\(h^s_{1/n}(I)\leq n(1/n)^s=n^{1-s}\)，从而 \(\mathcal H^s(I)=0\)。
+又因 \(c_1=1\)，第一问给出 \(\mathcal H^1(I)=1\)，故 \(\dim_{\mathrm H}I=1\)。
+
+由\cref{b1:prop:hausdorff-counting}，含 \(N\) 个点的集合满足 \(\mathcal H^0=N\)，
+可数无限集满足 \(\mathcal H^0=\infty\)，而二者在每个 \(s>0\) 下都为零测集。
+因此所有非空有限集和可数无限集的 Hausdorff 维数均为零。
+\end{solution}
+
+\begin{exercise}[一次质量分布估计]\label{b1:ex:15-basic-mass-distribution}
+令 \(\lambda=m_1|_{[0,1]}\)。证明对任意 \(x\in\mathbb R\)、\(r>0\)，
+\[
+ \lambda\bigl(\overline B(x,r)\bigr)\leq2r.
+\]
+用质量分布原理推出 \(\mathcal H^1([0,1])\geq1/2\) 与
+\(\dim_{\mathrm H}[0,1]\geq1\)，再用显式覆盖证明反向维数不等式。
+说明这里的常数为何没有给出精确的一维测度，却仍给出了精确维数。
+\end{exercise}
+% 来源：自拟；在最简单的 Lebesgue 测度上直接使用质量分布原理。
+\begin{solution}
+闭球 \(\overline B(x,r)=[x-r,x+r]\) 的长度为 \(2r\)，故其与 \([0,1]\) 的交集长度至多为 \(2r\)。
+质量分布原理取 \(s=1\)、\(C=2\)、\(c_1=1\)，得到
+\[
+ \mathcal H^1([0,1])\geq\frac{\lambda([0,1])}{2}=\frac12,
+ \qquad \dim_{\mathrm H}[0,1]\geq1.
+\]
+对任意 \(t>1\)，用 \(n\) 个长度为 \(1/n\) 的区间覆盖，总代价
+\(c_tn^{1-t}\to0\)，所以 \(\mathcal H^t([0,1])=0\) 且维数不超过 \(1\)。
+球估计使用了对所有中心都成立的粗常数 \(2\)，因而只给出测度的非锐下界；
+但常数不影响增长指数，所以维数下界仍然锐利。
+\end{solution}
+
+\begin{exercise}[上密度、下密度与密度极限]\label{b1:ex:15-basic-density-oscillation}
+令
+\[
+ E=\bigcup_{j=0}^{\infty}\bigl(2^{-(2j+1)},2^{-2j}\bigr]\subset(0,1],
+ \qquad \mu=m_1|_E.
+\]
+证明
+\[
+ \Theta_*^1(\mu,0)=\frac16,
+ \qquad
+ \Theta^{*1}(\mu,0)=\frac13,
+\]
+从而 \(\Theta^1(\mu,0)\) 不存在。证明中不仅要计算半径 \(2^{-N}\) 的两列比值，
+还要控制位于相邻两个二进尺度之间的所有半径。
+\end{exercise}
+% 来源：自拟；用交替二进环带区分上、下密度与密度极限存在性。
+\begin{solution}
+由于 \(\alpha_1=2\) 且 \(E\subset(0,1]\)，所需比值为
+\[
+ R(r)=\frac{m_1(E\cap(0,r])}{2r}.
+\]
+固定 \(N\geq0\)，令 \(a=2^{-(N+1)}\)，并取 \(a\leq r\leq2^{-N}\)。
+若 \(N\) 为偶数，则区间 \((a,2^{-N}]\) 包含于 \(E\)，而更小尺度处的总质量为 \(a/3\)。因此
+\[
+ R(r)=\frac{r-a+a/3}{2r}
+ =\frac12-\frac{2^{-N}}{6r},
+\]
+它在该区间上从 \(1/6\) 增至 \(1/3\)。若 \(N\) 为奇数，则
+\((a,2^{-N}]\cap E=\varnothing\)，而 \((0,a]\) 中的总质量为 \(2^{-N}/3\)，故
+\[
+ R(r)=\frac{2^{-N}}{6r},
+\]
+它从 \(1/3\) 减至 \(1/6\)。所以所有充分小半径的比值都在
+\([1/6,1/3]\) 内，而偶数、奇数 \(N\) 的端点尺度分别达到两个端值。
+这便给出所述上、下密度，并说明共同极限不存在。
+\end{solution}
 
 \begin{exercise}\label{b1:ex:15-bilipschitz-norms}
 设 \(E\subset\mathbb R^d\)，映射 \(\Phi:E\to\mathbb R^m\) 满足
@@ -131,7 +232,7 @@ Frostman 引理说明，对紧集而言，只要相应 Hausdorff 测度为正，
 本题中单点覆盖逐项取闭包后仍只有 \(D\)，并没有变成 \([0,1]\) 的覆盖。
 \end{solution}
 
-\begin{exercise}\label{b1:ex:15-snowflake-metric}
+\begin{exercise}[\(\star\) 选读]\label{b1:ex:15-snowflake-metric}
 设 \((X,\rho)\) 是度量空间，\(0<\alpha<1\)，令
 \(\rho_\alpha(x,y)=\rho(x,y)^\alpha\)。
 \begin{enumerate}
@@ -176,7 +277,7 @@ Frostman 引理说明，对紧集而言，只要相应 Hausdorff 测度为正，
 此时距离幂甚至不再是度量。
 \end{solution}
 
-\begin{exercise}\label{b1:ex:15-holder-graphs}
+\begin{exercise}[\(\star\) 选读]\label{b1:ex:15-holder-graphs}
 设 \(f:[0,1]^d\to\mathbb R^k\) 满足
 \[
  |f(x)-f(y)|\le L|x-y|^\alpha
@@ -211,7 +312,7 @@ Frostman 引理说明，对紧集而言，只要相应 Hausdorff 测度为正，
 两个上界与投影下界合用即可；\(\alpha=1\) 时上下界均为 \(d\)。
 \end{solution}
 
-\begin{exercise}\label{b1:ex:15-zero-dimensional-compact}
+\begin{exercise}[\(\star\) 选读]\label{b1:ex:15-zero-dimensional-compact}
 令
 \[
  K=\left\{\sum_{n=1}^{\infty}\varepsilon_n2^{-n^2}:
@@ -262,7 +363,7 @@ Frostman 引理说明，对紧集而言，只要相应 Hausdorff 测度为正，
 所以任何正指数的 Hölder 条件都失败。
 \end{solution}
 
-\begin{exercise}\label{b1:ex:15-energy-choice}
+\begin{exercise}[\(\star\) 选读]\label{b1:ex:15-energy-choice}
 取 \(0<t<1\)，记 \(\lambda\) 为 \([0,1]\) 上的均匀概率测度。
 \begin{enumerate}
 \item\label{b1:item:15-atom-energy}
@@ -309,7 +410,7 @@ Frostman 引理说明，对紧集而言，只要相应 Hausdorff 测度为正，
 因此即使支集的维数为 \(1>t\)，测度过度集中在小尺度上仍可使能量发散；均匀测度与 \(\nu\) 的差别在质量配置，而不在支集。
 \end{solution}
 
-\begin{exercise}\label{b1:ex:15-separated-similarities}
+\begin{exercise}[\(\star\) 选读]\label{b1:ex:15-separated-similarities}
 设 \(S_1,\ldots,S_m:\mathbb R^d\to\mathbb R^d\) 是相似映射，收缩比分别为 \(r_i\in(0,1)\)，其中 \(m\ge2\)。
 设非空紧集 \(K\) 满足 \(K=\bigcup_{i=1}^mS_i(K)\)，且这些像两两不交。
 令 \(s>0\) 为方程 \(\sum_{i=1}^mr_i^s=1\) 的唯一解。
@@ -388,7 +489,7 @@ Frostman 引理说明，对紧集而言，只要相应 Hausdorff 测度为正，
 所以 \(\mathcal H^s(K)\le c_sD^s<\infty\)，临界维数即为 \(s\)。
 \end{solution}
 
-\begin{exercise}\label{b1:ex:15-cantor-product}
+\begin{exercise}[\(\star\) 选读]\label{b1:ex:15-cantor-product}
 令 \(C\subset[0,1]\) 为三分 Cantor 集，\(s=\log2/\log3\)，\(k\ge1\) 为整数。
 证明
 \[

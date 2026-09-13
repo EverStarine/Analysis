@@ -29,6 +29,14 @@
 % 公式之外的正文西文仍由 setmainfont 使用 Pagella；黑板粗体单独采用 AMS。
 \let\mathbb\relax
 \DeclareMathAlphabet{\mathbb}{U}{msb}{m}{n}
+% unicode-math 的 Latin Modern Math 将 \varnothing 映为瘦长椭圆；空集单独
+% 采用传统 AMS MSBM 的圆形斜杠字形，不改变其余数学符号的字体。
+\DeclareSymbolFont{AnalysisAMSb}{U}{msb}{m}{n}
+\DeclareMathSymbol{\AnalysisRoundEmptySet}{\mathord}{AnalysisAMSb}{"3F}
+\AtBeginDocument{%
+  \let\varnothing\AnalysisRoundEmptySet
+  \let\emptyset\AnalysisRoundEmptySet
+}
 
 \usepackage{microtype}
 \usepackage{xcolor}
@@ -383,6 +391,13 @@
   \hyperref[#1]{\AnalysisChapterDisp}%
   \endgroup}
 
+% “弱-*拓扑”等固定术语在源码中虽已连写，xeCJK 仍会在西文星号与
+% 后续汉字之间自动加入中西文胶。该零宽连接记号只抑制这一处自动
+% 间距；写入书签时展开为空，避免把排版命令带入 PDF 字符串。
+\NewDocumentCommand{\WeakStarJoin}{}{%
+  \texorpdfstring{\kern0pt{}}{}}
+\pdfstringdefDisableCommands{\def\WeakStarJoin{}}
+
 % 算法采用带编号的步骤，并明确标出输入与输出。
 \floatname{algorithm}{算法}
 \renewcommand{\listalgorithmname}{算法目录}
@@ -468,6 +483,11 @@
 }
 \NewDocumentCommand{\termidx}{O{}m}{%
   \ifstrempty{#1}{\index[chinese]{#2}}{\index[chinese]{#1@#2}}%
+}
+% 中文异名不另排成带页码的同义主词条，而以“见 主称”导向规范名称。
+\renewcommand*{\seename}{见}
+\NewDocumentCommand{\termsee}{O{}mm}{%
+  \ifstrempty{#1}{\index[chinese]{#2|see{#3}}}{\index[chinese]{#1@#2|see{#3}}}%
 }
 \NewDocumentCommand{\foreignidx}{O{}m}{%
   \ifstrempty{#1}{\index[foreign]{#2}}{\index[foreign]{#1@#2}}%
