@@ -2,9 +2,10 @@
 \section{近似切空间}
 \label{b1:sec:1902}
 
-Lipschitz 参数化在几乎每一点有线性微分，但一个可整流集可能由许多相交的参数像组成。要把参数空间中的微分解释成集合自身的切平面，既要看清单个片的局部形状，也要控制其余各片进入同一个小球的质量。本节采用缩放测度的定义；它同时记录方向与单位面积密度。Simon 的《Lectures on Geometric Measure Theory》\cite[11.2 DEFINITION, 11.3 REMARK, 11.4 DEFINITION, 11.5 REMARK, and 11.6 THEOREM]{Simon1983Lectures}以这种方式组织近似切空间。本节直接从 Lipschitz 片和已证的面积公式出发，不另引入光滑逼近定理。
+Lipschitz 参数化在几乎每一点有线性微分，但一个可整流集可能由许多相交的参数像组成。要把参数空间中的微分解释成集合自身的切平面，既要看清单个片的局部形状，也要控制其余各片进入同一个小球的质量。本节先用正上密度与锥外质量定义近似切平面，再把单位密度的平面缩放极限作为更强结论单列。这样既与通常的 GMT 定义对齐，也不丢失 Simon 的《Lectures on Geometric Measure Theory》\cite[11.2 DEFINITION, 11.3 REMARK, 11.4 DEFINITION, 11.5 REMARK, and 11.6 THEOREM]{Simon1983Lectures}所强调的缩放测度信息。本节直接从 Lipschitz 片和已证的面积公式出发，不另引入光滑逼近定理。
 
-% 来源：实读 Simon 1983 印刷第59--63页，第11.2--11.7节；定义及片间转移思路据此，
+% 来源：实读 Simon 1983 印刷第59--63页，第11.2--11.7节；单位密度缩放结论及片间转移思路据此，
+% 标准锥定义与重数区分按本轮定义审计单列，
 % 其 C^1 分片在本节改为第17章双 Lipschitz 分片、加权面积公式与 Lebesgue 点的完整论证。
 % 另实读 Fremlin 作者版 chap47.tex 第474O--P：该处 Federer exterior normal
 % 针对实体集合的半空间体积逼近，不是本节一般余维的近似法空间，未据此移用结论。
@@ -15,31 +16,40 @@ Lipschitz 参数化在几乎每一点有线性微分，但一个可整流集可�
 以下先固定 \(1\leq k\leq n\)，并设 \(E\subseteq\mathbb R^n\) 为 Borel 集，限制测度 \(\mu=\mathcal H^k|_E\) 局部有限。这里 \(\mathcal H^k|_E(A)=\mathcal H^k(E\cap A)\)，不是把整个空间上的 \(\mathcal H^k\) 假定为局部有限。对 \(k<n\)，后一个假定通常不成立。
 
 \begin{definition}\label{b1:def:approximate-tangent-plane}
-设 \(x\in E\)，\(T\subseteq\mathbb R^n\) 为 \(k\) 维线性子空间。若对每个 \(\varphi\in C_c(\mathbb R^n)\) 都有
-\begin{equation}\label{b1:eq:approximate-tangent-blowup}
- \lim_{r\downarrow0}\frac1{r^k}
- \int_E\varphi\left(\frac{y-x}{r}\right)\,\mathrm d\mathcal H^k(y)
- =\int_T\varphi(z)\,\mathrm d\mathcal H^k(z),
+设 \(x\in E\)，\(T\subseteq\mathbb R^n\) 为 \(k\) 维线性子空间，并且
+\[
+ \limsup_{r\downarrow0}
+ \frac{\mathcal H^k\bigl(E\cap\overline B(x,r)\bigr)}
+      {\omega_kr^k}>0.
+\]
+若对每个 \(\varepsilon>0\) 都有
+\begin{equation}\label{b1:eq:approximate-tangent-cone}
+ \lim_{r\downarrow0}\frac1{r^k}\mathcal H^k
+ \left(\left\{\,y\in E\cap\overline B(x,r):
+  \operatorname{dist}(y-x,T)\geq\varepsilon|y-x|\,\right\}\right)=0,
 \end{equation}
-则称 \(T\) 为 \(E\) 在 \(x\) 处的\term[jinsi-qiepingmian]{近似切平面}[approximate tangent plane]，记为 \(\operatorname{Tan}^k(E,x)\)。平移后的仿射平面为 \(x+\operatorname{Tan}^k(E,x)\)。
+则称 \(T\) 为 \(E\) 在 \(x\) 处的\term[jinsi-qiepingmian]{近似切平面}[approximate tangent plane]。在以下几乎处处唯一的情形中，记为 \(\operatorname{Tan}^k(E,x)\)；对应的仿射平面为 \(x+\operatorname{Tan}^k(E,x)\)。
 \symidx{\(\operatorname{Tan}^k(E,x)\)：可整流集的近似切平面}
 \end{definition}
 
-局部有限性保证上式左端的每次积分有限。这一定义要求缩放后的质量趋于平面上的 \(\mathcal H^k\)，没有额外的重数因子；一般带权测度的缩放极限将在\secref{b1:sec:1904}另行讨论。改变 \(E\) 的一个 \(\mathcal H^k\) 零测子集不会改变积分条件，但是否把某个点列为 \(E\) 的元素，仍取决于所选集合。
+这个定义只要求小球中的主阶质量逐渐集中到 \(T\) 的任意细锥内，并不预先指定密度为 \(1\)。改变 \(E\) 的一个 \(\mathcal H^k\) 零测子集不会改变密度与锥条件，但是否把某个点列为 \(E\) 的元素，仍取决于所选集合。
+
+后文实际证明的结论更强：对每个 \(\varphi\in C_c(\mathbb R^n)\) 都有
+\begin{equation}\label{b1:eq:approximate-tangent-blowup}
+ \lim_{r\downarrow0}\frac1{r^k}
+ \int_E\varphi\left(\frac{y-x}{r}\right)\,\mathrm d\mathcal H^k(y)
+ =\int_T\varphi(z)\,\mathrm d\mathcal H^k(z).
+\end{equation}
+这称为在 \(x\) 处具有方向 \(T\) 的单位密度平面缩放极限。它是一项带有单位重数的加强性质，不是“近似切平面”的第二个同义定义；一般带权测度的缩放极限将在\secref{b1:sec:1904}另行讨论。局部有限性保证上式左端的每次积分有限。
 
 \begin{proposition}\label{b1:prop:approximate-tangent-properties}
-若 \(E\) 在 \(x\) 处有近似切平面 \(T\)，则该平面唯一，并且
+若 \(E\) 在 \(x\) 处满足\eqref{b1:eq:approximate-tangent-blowup}，则满足该缩放条件的平面 \(T\) 唯一，并且
 \begin{equation}\label{b1:eq:rectifiable-unit-density}
  \lim_{r\downarrow0}
  \frac{\mathcal H^k\bigl(E\cap\overline B(x,r)\bigr)}
       {\omega_k r^k}=1.
 \end{equation}
-开球也满足同一极限。对每个 \(\varepsilon>0\)，还有
-\begin{equation}\label{b1:eq:approximate-tangent-cone}
- \lim_{r\downarrow0}\frac1{r^k}\mathcal H^k
- \left(\left\{\,y\in E\cap\overline B(x,r):
-  \operatorname{dist}(y-x,T)\geq\varepsilon|y-x|\,\right\}\right)=0.
-\end{equation}
+开球也满足同一极限，而且 \(T\) 是\cref{b1:def:approximate-tangent-plane}意义下的近似切平面。
 \end{proposition}
 \begin{proof}
 若 \(T_1,T_2\) 为两个不同的候选平面，取 \(z\in T_1\setminus T_2\)，再取一个与 \(T_2\) 不交的小球 \(B(z,\rho)\)。可以选取非负连续函数 \(\varphi\)，支集包含于这个球，并在 \(z\) 的某个邻域严格为正。它在 \(T_1\) 上的积分为正，在 \(T_2\) 上的积分为零，与同一个缩放积分具有这两个极限矛盾。
@@ -62,9 +72,14 @@ Lipschitz 参数化在几乎每一点有线性微分，但一个可整流集可�
 与 \(T\) 不交，故可取非负的紧支集连续函数 \(\chi\)，在这个紧集上等于 \(1\)，并在 \(T\) 的一个邻域等于零。缩放积分条件说明落在该环形区域内的锥外质量除以 \(r^k\) 趋于零。剩余部分在 \(\overline B(x,\delta r)\) 中，其质量除以 \(r^k\) 的极限为 \(\omega_k\delta^k\)。再令 \(\delta\downarrow0\)，便得到\eqref{b1:eq:approximate-tangent-cone}。单点的 \(\mathcal H^k\) 测度为零，因而 \(y=x\) 不影响结论。
 \end{proof}
 
-锥外质量的消失说明，少量偏离切平面的点可以保留，但它们在当前尺度下不能占有正比例的面积。这个条件不要求小球内的整个集合都靠近平面，也不要求集合在一点的邻域内恰是一张图。有些表述以锥外质量的消失配合正上密度来定义近似切平面；本书采用的缩放积分条件还明确规定平面上的单位重数，不把这些不同条件在每个例外点都视为已经证明等价。
+锥外质量的消失说明，少量偏离切平面的点可以保留，但它们在当前尺度下不能占有正比例的面积。这个条件不要求小球内的整个集合都靠近平面，也不要求集合在一点的邻域内恰是一张图。它也不强迫单位密度。例如令
+\[
+ E=\{\,(t,t^2):|t|<1\,\}\cup
+   \{\,(t,-t^2):|t|<1\,\}.
+\]
+两条曲线在原点相切。对任意锥角，充分靠近原点的两条曲线都落在水平轴的锥内，所以水平轴是标准近似切线；但两支分别贡献一份长度，故原点的密度为 \(2\)，缩放测度趋于水平轴上 \(2\mathcal H^1\)，而不是\eqref{b1:eq:approximate-tangent-blowup}中的单位重数极限。这正是两层陈述不能逐点混同的原因。
 
-\subsection{近似法向量}
+\subsection{近似法空间}
 \label{b1:subsec:190202}
 
 \begin{definition}\label{b1:def:approximate-normal-space}
@@ -138,7 +153,7 @@ Lipschitz 参数化在几乎每一点有线性微分，但一个可整流集可�
 从单片走向整个集合时，不能仅说“各片不交，所以其他片没有贡献”：互不相交的片仍可在任意小球中彼此逼近。下一证明用奇异测度微分定理控制这种贡献。
 
 \begin{theorem}\label{b1:thm:rectifiable-density-tangent}
-设 \(E\subseteq\mathbb R^n\) 为 Borel 的可数 \(k\)-可整流集，且 \(\mathcal H^k|_E\) 局部有限。则 \(E\) 在 \(\mathcal H^k\)-几乎每一点有唯一的近似切平面，并且
+设 \(E\subseteq\mathbb R^n\) 为 Borel 的可数 \(k\)-可整流集，且 \(\mathcal H^k|_E\) 局部有限。则对 \(\mathcal H^k\)-几乎每个 \(x\in E\)，存在唯一的 \(k\) 维平面 \(T_x\) 使单位密度平面缩放极限\eqref{b1:eq:approximate-tangent-blowup}成立。特别地，\(T_x\) 是 \(E\) 在 \(x\) 处的近似切平面，记为 \(\operatorname{Tan}^k(E,x)\)，并且
 \[
  \lim_{r\downarrow0}
  \frac{\mathcal H^k\bigl(E\cap\overline B(x,r)\bigr)}
@@ -186,7 +201,7 @@ Lipschitz 参数化在几乎每一点有线性微分，但一个可整流集可�
  \|\varphi\|_\infty\,
  \frac{\sigma_j\bigl(\overline B(x,Rr)\bigr)}{r^k},
 \]
-它趋于零。因此 \(M_j\) 的平面缩放极限也是 \(E\) 的缩放极限。对所有 \(j\) 取可数并，便在 \(E\) 的几乎每一点建立了近似切平面的存在性；唯一性与密度由\cref{b1:prop:approximate-tangent-properties}给出。
+它趋于零。因此 \(M_j\) 的平面缩放极限也是 \(E\) 的缩放极限。对所有 \(j\) 取可数并，便在 \(E\) 的几乎每一点建立了单位密度平面缩放极限；其唯一性、近似切平面性质与密度由\cref{b1:prop:approximate-tangent-properties}给出。
 \end{proof}
 
 局部有限性在这里控制的是所有片合起来的质量，保证片间余量可以作为 Radon 测度来微分。单个参数像的可数覆盖本身不能替代这个假设。

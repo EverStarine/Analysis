@@ -4,7 +4,7 @@
 \BookChapterNumber{b1:ch:20}
 % 本章摘要（不计入编号）
 \begin{chapterabstract}
-分部积分把求导转移到测试函数上，使不可微函数乃至点质量也能拥有导数。本章构造紧支集光滑测试空间，定义分布及其基本操作，证明分布的局部光滑化，再从中识别能够由局部可积函数表示的弱导数。跳跃函数、尖角和 Cantor 函数将说明：经典导数几乎处处存在，并不足以保证弱导数存在。
+分部积分把求导转移到测试函数上，使不可微函数乃至点质量也能拥有导数。本章构造紧支集光滑测试空间，定义分布及其基本操作，证明分布的局部光滑化，再从中识别能够由局部可积函数表示的弱导数。尖角说明少量经典不可微点并不妨碍弱导数存在；跳跃函数与 Cantor 函数则说明，仅有经典导数几乎处处存在仍不足以保证存在局部可积弱导数。
 \end{chapterabstract}
 
 % 本章目标（不计入编号）
@@ -17,7 +17,7 @@
 \end{itemize}
 \end{learninggoals}
 
-从\secref{b1:sec:2001}到\secref{b1:sec:2004}，测试空间、其连续对偶以及对偶中仍由函数表示的部分依次出现。测试空间的局部凸拓扑只展开到本章需要的有限阶估计；读者第一次阅读时可以先掌握共同紧支集的收敛判据，再回看其拓扑构造。积分、\(L^p\) 平移连续性与\chapref{b1:ch:16}的绝对连续理论是主要前置工具。
+从\secref{b1:sec:2001}到\secref{b1:sec:2004}，测试空间、其连续对偶以及对偶中仍由函数表示的部分依次出现。测试空间的局部凸拓扑只展开到本章需要的有限阶估计；读者第一次阅读时可以先掌握共同紧支集的收敛判据，再回看其拓扑构造。主要前置工具是\chapref{b1:ch:13}的卷积与 \(L^p\) 平移连续性、\chapref{b1:ch:14}的 Lebesgue 点定理，以及\chapref{b1:ch:16}的 Rademacher 定理和一维绝对连续函数理论。
 
 Hunter 与 Nachtergaele 的《Applied Analysis》\cite[Chapter 11 and Section 12.9]{Hunter2001Applied}适合对照对偶配对、导数和典型例子，其中 Chapter 11 主要面向温和分布，本章则在一般开集上使用紧支集测试函数，不施加无穷远增长条件。Schwartz 的《广义函数论》\cite[第一至三章]{Schwartz2010DistributionsChinese}把测试空间、局部化和导数系统地联系起来，可用作进一步阅读。Sobolev 空间的应用路线可接 Evans 的《Partial Differential Equations》\cite[Chapter 5]{Evans2010Partial}；本章先完成这条路线所需的弱导数语言。
 
@@ -36,9 +36,103 @@ Hunter 与 Nachtergaele 的《Applied Analysis》\cite[Chapter 11 and Section 12
 \BookExercises
 
 % \chapref{b1:ch:20}习题临时稿；不另设 BookExercises 入口。
-% 八题均为依据本章已建立工具自拟的变式，不冒认教材原题编号。
+% 十一题均为依据本章已建立工具自拟的变式，不冒认教材原题编号。
 % 训练分工：测试拓扑/局部阶；乘法核/主值构造；跳跃/分布ODE；磨光误差/弱导数端点。
 % 前置：20.1测试列判据，20.2有限阶与分布运算，20.3卷积，20.4弱导数；无21章依赖。
+
+\begin{exercise}\label{b1:ex:20-basic-distribution-pairings}
+在 \(\mathcal D'(\mathbb R)\) 中按定义计算下列对象对测试函数 \(\varphi\) 的作用，并辨认所得分布：
+\[
+ \delta_a',\qquad x\delta_0',\qquad (T_x)'.
+\]
+其中 \(T_x\) 表示函数 \(x\mapsto x\) 产生的正则分布。
+\end{exercise}
+% 来源：自拟；先以三项按定义配对训练点导数、光滑乘法与正则分布求导。
+\begin{solution}
+分布导数的定义直接给出
+\[
+ \langle\delta_a',\varphi\rangle=-\varphi'(a).
+\]
+再由光滑函数与分布的乘法，
+\[
+ \langle x\delta_0',\varphi\rangle
+ =\langle\delta_0',x\varphi\rangle
+ =-(x\varphi)'(0)=-\varphi(0),
+\]
+所以 \(x\delta_0'=-\delta_0\)。最后作一次普通分部积分，测试函数的边界项为零，故
+\[
+ \langle(T_x)',\varphi\rangle
+ =-\int_{\mathbb R}x\varphi'(x)\,\mathrm dx
+ =\int_{\mathbb R}\varphi(x)\,\mathrm dx
+ =\langle T_1,\varphi\rangle.
+\]
+因此 \((T_x)'=T_1\)。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:20-basic-weak-derivatives}
+在 \(\mathbb R\) 上分别考虑 \(1\)、\(x\)、\(|x|\) 和 \(H=\mathbf1_{(0,\infty)}\)。
+\begin{enumerate}
+\item 求前三个函数的一阶弱导数。
+\item 证明 \(H\) 的分布导数为 \(\delta_0\)，因而它没有局部可积的一阶弱导数。
+\item 求 \(|x|\) 的二阶分布导数，并判断它是否存在局部可积的二阶弱导数。
+\end{enumerate}
+\end{exercise}
+% 来源：自拟；用最基本模型区分经典不可微点、弱导数和集中型分布导数。
+\begin{solution}
+常函数与恒等函数的经典导数分别为 \(0\) 和 \(1\)，由经典导数与弱导数的一致性，它们的一阶弱导数也是这两个函数。函数 \(|x|\) 局部 Lipschitz，所以由\cref{b1:thm:lipschitz-weak-derivative}，
+\[
+ (|x|)'=\operatorname{sgn}x
+ \quad\text{几乎处处}.
+\]
+原点处给 \(\operatorname{sgn}x\) 赋哪个有限值都不影响弱导数。
+
+对任意测试函数，
+\[
+ \langle(T_H)',\varphi\rangle
+ =-\int_0^\infty\varphi'(x)\,\mathrm dx
+ =\varphi(0)=\langle\delta_0,\varphi\rangle.
+\]
+若 \(H\) 有局部可积弱导数，该函数产生的正则分布就应等于 \(\delta_0\)，与\cref{b1:prop:dirac-not-regular}矛盾。
+
+同理，分段积分给出
+\[
+ \langle(\operatorname{sgn}x)',\varphi\rangle=2\varphi(0),
+\]
+所以 \((T_{|x|})''=2\delta_0\)。它不是正则分布，故 \(|x|\) 没有本章意义下的二阶局部可积弱导数。尖点容许一阶弱导数，却在再求一次导数时产生点质量。
+\end{solution}
+
+\begin{exercise}\label{b1:ex:20-dirac-mollification}
+设 \(a\in\mathbb R^d\)，\(\rho_\varepsilon\) 为本章的磨光函数。证明
+\[
+ \delta_a*\rho_\varepsilon=\rho_\varepsilon(\,\cdot-a),
+ \qquad
+ (\partial^\alpha\delta_a)*\rho_\varepsilon
+ =\partial^\alpha\rho_\varepsilon(\,\cdot-a).
+\]
+再直接验证这两个光滑函数产生的正则分布分别趋于 \(\delta_a\) 和 \(\partial^\alpha\delta_a\)。
+\end{exercise}
+% 来源：自拟；直接练习点质量的卷积、导数交换与分布收敛。
+\begin{solution}
+由分布卷积的定义，
+\[
+ (\delta_a*\rho_\varepsilon)(x)
+ =\langle(\delta_a)_y,\rho_\varepsilon(x-y)\rangle
+ =\rho_\varepsilon(x-a).
+\]
+卷积微分公式随即给出第二个等式。对任意 \(\varphi\in\mathcal D(\mathbb R^d)\)，变量代换 \(x=a+\varepsilon z\) 得
+\[
+ \int_{\mathbb R^d}\rho_\varepsilon(x-a)\varphi(x)\,\mathrm dx
+ =\int_{\mathbb R^d}\rho(z)\varphi(a+\varepsilon z)\,\mathrm dz
+ \longrightarrow\varphi(a),
+\]
+其中使用 \(\rho\) 的紧支集、单位积分和 \(\varphi\) 的连续性。因此相应正则分布趋于 \(\delta_a\)。对导数再作分部积分，
+\[
+ \int\partial^\alpha\rho_\varepsilon(x-a)\varphi(x)\,\mathrm dx
+ =(-1)^{|\alpha|}\int\rho_\varepsilon(x-a)\partial^\alpha\varphi(x)\,\mathrm dx
+ \longrightarrow(-1)^{|\alpha|}\partial^\alpha\varphi(a),
+\]
+右端正是 \(\langle\partial^\alpha\delta_a,\varphi\rangle\)。
+\end{solution}
 
 \begin{exercise}\label{b1:ex:20-test-convergence-boundaries}
 \begin{enumerate}
@@ -70,7 +164,7 @@ Hunter 与 Nachtergaele 的《Applied Analysis》\cite[Chapter 11 and Section 12
 但在 \([-1,1]\) 上有 \(u_n'(x)=\cos(nx)\)，特别是 \(u_n'(0)=1\)。因此一阶导数不一致趋零，仍不满足测试列判据。分布收敛只逐个测试其积分，不能据此反推函数及其导数的测试空间收敛。
 \end{solution}
 
-\begin{exercise}\label{b1:ex:20-locally-finite-unbounded-order}
+\begin{exercise}[\(\star\) 选读]\label{b1:ex:20-locally-finite-unbounded-order}
 在 \(\mathbb R\) 上定义线性泛函
 \[
  \langle T,\varphi\rangle
@@ -101,7 +195,7 @@ Hunter 与 Nachtergaele 的《Applied Analysis》\cite[Chapter 11 and Section 12
 与 \(|\langle T,\varphi\rangle|\le C_Kp_{K,m}(\varphi)\) 矛盾。这不是常数在远处增大的问题，而是在同一个选定紧集上，第 \(m\) 阶控制已经不够。
 \end{solution}
 
-\begin{exercise}\label{b1:ex:20-polynomial-annihilator}
+\begin{exercise}[\(\star\) 选读]\label{b1:ex:20-polynomial-annihilator}
 设整数 \(m\ge1\)，\(T\in\mathcal D'(\mathbb R)\)。证明
 \[
  x^mT=0
@@ -143,7 +237,7 @@ Hunter 与 Nachtergaele 的《Applied Analysis》\cite[Chapter 11 and Section 12
 所以 \(x\delta_0^{(j)}=-j\delta_0^{(j-1)}\)，而 \(x\delta_0=0\)。迭代可知 \(x^m\delta_0^{(j)}=0\) 对 \(j<m\) 成立，这证明了反向蕴涵。
 \end{solution}
 
-\begin{exercise}\label{b1:ex:20-principal-value-logarithm}
+\begin{exercise}[\(\star\) 选读]\label{b1:ex:20-principal-value-logarithm}
 对 \(\varphi\in\mathcal D(\mathbb R)\)，考察
 \[
  \langle P,\varphi\rangle
@@ -221,7 +315,7 @@ Hunter 与 Nachtergaele 的《Applied Analysis》\cite[Chapter 11 and Section 12
 故一阶弱导数存在等价于各段函数值能连续拼接；二阶弱导数存在等价于函数值及一阶导数都能连续拼接。断点上预先填写的单点值不改变这些结论，因为弱导数只依赖几乎处处等价类。
 \end{solution}
 
-\begin{exercise}\label{b1:ex:20-distribution-first-order-ode}
+\begin{exercise}[\(\star\) 选读]\label{b1:ex:20-distribution-first-order-ode}
 设 \(I\subset\mathbb R\) 为非空开区间，\(a\in\mathbb C\)。证明 \(\mathcal D'(I)\) 中的方程
 \[
  T'+aT=0
@@ -254,7 +348,7 @@ Hunter 与 Nachtergaele 的《Applied Analysis》\cite[Chapter 11 and Section 12
 若底空间为不连通开集，每个连通分支都是开区间，可在各分支上独立选择一个常数。这些解能拼成局部光滑函数：一个紧子集可被有限个包含于开集内的区间覆盖，只会遇到有限个分支，故不存在分支端点处的内部跳跃条件。
 \end{solution}
 
-\begin{exercise}\label{b1:ex:20-smoothing-variable-coefficient}
+\begin{exercise}[\(\star\) 选读]\label{b1:ex:20-smoothing-variable-coefficient}
 设 \(\Omega\subset\mathbb R^d\) 为开集，\(U\) 为开集且 \(K\Subset U\)、\(\overline U\Subset\Omega\)，\(a\in C^\infty(\Omega)\)，\(f\in L^p_{\mathrm{loc}}(\Omega)\)，\(1\le p\le\infty\)。沿用本章非负单位积分光滑核 \(\rho_\varepsilon\)，令
 \[
  C_\varepsilon(x)=a(x)(f*\rho_\varepsilon)(x)-\bigl((af)*\rho_\varepsilon\bigr)(x).
