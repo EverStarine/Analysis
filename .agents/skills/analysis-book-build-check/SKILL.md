@@ -26,7 +26,7 @@ description: 为《分析学》三卷教材按改动范围规划和执行隔离�
 & ./.agents/skills/analysis-book-build-check/scripts/build-book.ps1 -ProjectRoot . -CheckManifest './tmp/build/skill-RUN/manifest.json'
 ```
 
-每次执行创建唯一 `tmp/build/skill-时间-随机值/`，保存所选卷与 `Shared/` 的源文件快照、构建日志和 `manifest.json`；既有 `tmp/build-current.ps1` 不作为运行依赖。源码集合是这些目录下除已知辅助文件之外的全部文件，含图片和样式；这是保守版本身份，未被输入的文件变化也会标为过期。快照前后核对哈希，构建期间继续写正文不会改变正在编译的版本。符号链接或不在所选目录内的项目依赖需先人工明确，脚本不声称覆盖任意 TeX 工程。
+每次执行创建唯一 `tmp/build/skill-时间-随机值/`，保存所选卷与 `Shared/` 的源文件快照、构建日志和 `manifest.json`；既有 `tmp/build-current.ps1` 不作为运行依赖。源码集合是这些目录下除已知辅助文件与各卷同名 TeXstudio 预览 PDF 之外的全部文件，含正文所用图片和样式；这是保守版本身份，未被输入的文件变化也会标为过期。卷目录中的 `BookN.pdf` 与 `BookN.synctex.gz` 由分卷脚本生成，只服务于编辑预览与源文定位，不属于源码或验收成品。快照前后核对哈希，构建期间继续写正文不会改变正在编译的版本。符号链接或不在所选目录内的项目依赖需先人工明确，脚本不声称覆盖任意 TeX 工程。
 
 构建采用 XeLaTeX 的 `-recorder` 和 `-no-shell-escape`，首轮后按实际 `.bcf` 引文运行 Biber；分别处理非空 `chinese.idx`、`foreign.idx`、`symbols.idx`，每次传入快照中的绝对 `.ist` 路径。`.ilg` 必须零拒收、零警告。后续若索引输入或书目控制文件改变，重新处理；至少三轮、至多默认六轮 XeLaTeX，结合辅助文件哈希和 rerun 警告确认稳定。无引文或空索引可跳过相应处理。错误、未定义引用或引文、重复标签、未稳定均非成功。查看首次失败对应日志，保留失败快照。
 

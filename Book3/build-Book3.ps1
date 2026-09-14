@@ -1,12 +1,13 @@
 ﻿# 分析学 · 第三卷 一键编译（专用）
 #
 # 放在本卷目录内，专用于 Book3。一键整卷编译顺序为：
-#     xelatex → biber → 三类索引 → xelatex ×2 → 校验 → 更新根目录 Book3.pdf
+#     xelatex → biber → 三类索引 → xelatex ×2 → 校验 → 更新同目录预览与根目录成品
 # 单独运行 XeLaTeX 不会显示参考文献与索引，必须走完整流程。
 #
 # TeXstudio 无需另建用户命令：Book3.tex 顶部的 TXS-program 魔法注释会在按“编译”
 # 时调用 build-Book3.bat -NoPause；TeXstudio 以根文档目录为工作目录。若刚修改过
-# 魔法注释，请重新打开根文档使其生效。“构建并查看”会打开项目根目录 Book3.pdf。
+# 魔法注释，请重新打开根文档使其生效。“构建并查看”会打开同目录 Book3.pdf，
+# 并使用同目录 Book3.synctex.gz 在源码与 PDF 之间定位。
 #
 # 命令行用法（在本目录下，会等待回车以便查看结果）：
 #     powershell -ExecutionPolicy Bypass -File .\build-Book3.ps1
@@ -24,6 +25,8 @@ $relOut   = "../tmp/build/$book"   # 必须用相对路径：biber 无法打开�
                                     # （两者须配合：下面以 Push-Location 固定工作目录为卷目录）
 $style    = Join-Path $root 'Shared/analysis.ist'
 $target   = Join-Path $root "$book.pdf"
+$editorPdf = Join-Path $bookDir "$book.pdf"
+$editorSync = Join-Path $bookDir "$book.synctex.gz"
 $log      = Join-Path $buildDir "$book.log"
 $t0       = Get-Date
 
@@ -64,7 +67,7 @@ function Step([string]$exe, [string[]]$argv, [string]$what) {
 # 首轮 XeLaTeX；若辅助文件损坏（中断的编译常留下半个 \newlabel），
 # 自动清空构建目录重试一次，避免每次都要手工清理。
 function Invoke-FirstPass {
-    & xelatex @('-interaction=nonstopmode', '-halt-on-error', "--output-directory=$relOut", "$book.tex") | Out-Null
+    & xelatex @('-interaction=nonstopmode', '-halt-on-error', '-synctex=1', "--output-directory=$relOut", "$book.tex") | Out-Null
     return $LASTEXITCODE
 }
 
@@ -138,7 +141,7 @@ try {
     foreach ($pass in 1..2) {
         Write-Host ""
         Write-Host "[$($pass + 3)/5] 第 $($pass + 1) 轮 XeLaTeX" -ForegroundColor Cyan
-        Step 'xelatex' @('-interaction=nonstopmode', '-halt-on-error', "--output-directory=$relOut", "$book.tex") "第 $($pass + 1) 轮 XeLaTeX"
+        Step 'xelatex' @('-interaction=nonstopmode', '-halt-on-error', '-synctex=1', "--output-directory=$relOut", "$book.tex") "第 $($pass + 1) 轮 XeLaTeX"
         Say '完成' 'Green'
     }
 }
@@ -148,6 +151,8 @@ Write-Host ""
 Write-Host "[校验与交付]" -ForegroundColor Cyan
 $pdf = Join-Path $buildDir "$book.pdf"
 if (-not (Test-Path -LiteralPath $pdf)) { Fail "未生成 PDF：$pdf" }
+$synctex = Join-Path $buildDir "$book.synctex.gz"
+if (-not (Test-Path -LiteralPath $synctex)) { Fail "未生成 SyncTeX 文件：$synctex" }
 
 $text = Get-Content -LiteralPath $log -Raw
 $nErr  = ([regex]::Matches($text, '(?m)^! ')).Count
@@ -170,8 +175,12 @@ if ($nErr -gt 0 -or $nRef -gt 0 -or $nCite -gt 0 -or $nMiss -gt 0 -or $nMulti -g
     Fail "构建尚未通过完整校验，不覆盖成品。日志：$log"
 }
 
+Copy-Item -LiteralPath $pdf -Destination $editorPdf -Force
+Copy-Item -LiteralPath $synctex -Destination $editorSync -Force
 Copy-Item -LiteralPath $pdf -Destination $target -Force
-Say "已更新成品：$target" 'Green'
+Say "已更新 TeXstudio 预览：$editorPdf" 'Green'
+Say "已更新 SyncTeX：$editorSync" 'Green'
+Say "已更新根目录成品：$target" 'Green'
 $secs = [int]((Get-Date) - $t0).TotalSeconds
 Write-Host ""
 Write-Host "完成，用时 $secs 秒。" -ForegroundColor Green

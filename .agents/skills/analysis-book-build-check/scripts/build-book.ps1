@@ -21,7 +21,11 @@ function Get-SourceFiles([string]$Base, [int[]]$Volumes) {
         if (@($items | Where-Object { $_.Attributes -band [IO.FileAttributes]::ReparsePoint }).Count) {
             throw "Source links/junctions require explicit scope review: $directory"
         }
-        foreach ($file in ($items | Where-Object { !$_.PSIsContainer -and $_.Name -notmatch $sourceExclusions } | Sort-Object FullName)) {
+        foreach ($file in ($items | Where-Object {
+            !$_.PSIsContainer -and
+            $_.Name -notmatch $sourceExclusions -and
+            -not ($folder -match '^Book[123]$' -and $_.Name -eq "$folder.pdf")
+        } | Sort-Object FullName)) {
             [pscustomobject]@{ path=$file.FullName.Substring($Base.Length+1).Replace('\','/'); sha256=(Get-FileHash -LiteralPath $file.FullName -Algorithm SHA256).Hash }
         }
     }

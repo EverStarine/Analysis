@@ -4,6 +4,8 @@
 
 积分把函数的逐点次序变成实数的次序：非负函数的积分非负。本节反过来问，若只知道一个线性泛函具有这种性质，能否从它恢复测度？答案中的关键条件是正性，而不是关于整个 \(C_c(X)\) 的统一范数估计。正性先在每个紧集上给出控制，再借助连续截断把控制转化为集合的质量。
 
+\ProseParagraphBreak
+
 以下 \(X\) 为局部紧 Hausdorff 空间，\(\mathbb K=\mathbb R\) 或 \(\mathbb C\)。记 \(C_c^+(X)\) 为 \(C_c(X;\mathbb R)\) 中的非负函数全体。
 
 \subsection{\texorpdfstring{\(C_c(X)\)}{Cc(X)} 上的正泛函}
@@ -14,6 +16,8 @@
 \end{definition}
 
 例如，若 \(x_1,\ldots,x_N\in X\) 且 \(a_1,\ldots,a_N\geq0\)，则 \(\Lambda(f)=\sum_{j=1}^N a_jf(x_j)\) 是正泛函。更一般地，对局部有限 Borel 测度积分便给出正泛函：紧支集函数有界，支集又有有限测度，故积分一定有限。表示问题所要证明的是，每个正泛函都能写成后一种形式，并且可以要求表示测度满足前一节的紧内正则性。
+
+\ProseParagraphBreak
 
 先记录正性的两个直接后果。对实函数 \(u=u_+-u_-\)，两个正负部分仍在 \(C_c^+(X)\) 中，所以 \(\Lambda(u)\) 是实数；若 \(u\leq v\)，则 \(\Lambda(u)\leq\Lambda(v)\)。实、复两种情形还统一满足
 \begin{equation}\label{b1:eq:positive-functional-modulus}
@@ -50,6 +54,8 @@
 
 这项局部估计还蕴含一个单调连续性结论。若 \(f_n\in C_c^+(X)\) 且 \(f_n\downarrow0\)，则所有支集均包含在 \(K=\operatorname{supp}f_1\) 中。对任意 \(\varepsilon>0\)，紧集中的闭集 \(\{x\in K:f_n(x)\geq\varepsilon\}\) 递减且交为空，故其中某一个已经为空。因此 \(f_n\) 一致趋于零，局部估计给出 \(\Lambda(f_n)\downarrow0\)。这里用到的是紧性，而不是测度论的单调收敛定理；测度尚待构造。
 
+\ProseParagraphBreak
+
 局部估计通常不能换成一个与 \(K\) 无关的常数。在 \(C_c(\mathbb R)\) 上取 Lebesgue 积分泛函，并取 \(0\leq h_n\leq1\)、在 \([-n,n]\) 上等于 \(1\) 的连续紧支集函数，则 \(\|h_n\|_\infty=1\)，而 \(\Lambda(h_n)\geq2n\)。所以这个正泛函关于一致范数无界。只有在 \(X\) 紧时，常数函数 \(1\) 本身才属于 \(C_c(X)\)，此时上述证明才直接给出全局界 \(\Lambda(1)\)。
 
 \subsection{从正泛函构造 Radon 测度}
@@ -64,19 +70,29 @@
 这里的 \(\mu_0\) 负责外部逼近。随后只保留 \(\mu_0\) 在紧集上看到的质量，构造满足本书 Radon 约定的 \(\mu\)；
 最后才证明 \(\Lambda(f)=\int f\,\mathrm d\mu\)。两层测度各有任务，并非重复构造。
 
+\ProseParagraphBreak
+
 \cref{b1:fig:riesz-markov-construction}把这条存在性证明链压缩成五个节点；每个箭头只表示下一步的构造来源，并不表示这些对象可以彼此无条件等同。
 \begin{figure}[htbp]
   \centering
-  \begin{tikzpicture}[>=stealth, every node/.style={align=center}]
-    \node[draw,rounded corners,minimum width=1.7cm,minimum height=0.9cm] (a) at (-5.2,0) {$a(U)$\\开集质量};
-    \node[draw,rounded corners,minimum width=1.7cm,minimum height=0.9cm] (os) at (-2.6,0) {$\mu_0^*$\\外测度};
-    \node[draw,rounded corners,minimum width=1.7cm,minimum height=0.9cm] (m0) at (0,0) {$\mu_0$\\Borel 测度};
-    \node[draw,rounded corners,minimum width=1.7cm,minimum height=0.9cm] (m) at (2.7,0) {$\mu$\\Radon 测度};
-    \node[draw,rounded corners,minimum width=2.2cm,minimum height=0.9cm] (rep) at (5.55,0) {$\Lambda(f)=\displaystyle\int f\,\mathrm d\mu$};
-    \draw[->,thick] (a)--node[above]{开覆盖} (os);
-    \draw[->,thick] (os)--node[above]{限制} (m0);
-    \draw[->,thick] (m0)--node[above]{紧内正则化} (m);
-    \draw[->,thick] (m)--node[above]{识别} (rep);
+  \begin{tikzpicture}[
+      >=stealth,
+      process/.style={draw,rounded corners,align=center,fill=gray!5,
+        text width=2.4cm,minimum height=1cm,inner sep=4pt,font=\small},
+      result/.style={process,text width=3.2cm},
+      flowlabel/.style={font=\footnotesize,fill=white,inner sep=1.5pt},
+      flow/.style={->,thick}
+    ]
+    \node[process] (a) at (-3.6,1.2) {$a(U)$\\开集质量};
+    \node[process] (os) at (0,1.2) {$\mu_0^*$\\外测度};
+    \node[process] (m0) at (3.6,1.2) {$\mu_0$\\Borel 测度};
+    \node[process] (m) at (3.6,-1.2) {$\mu$\\Radon 测度};
+    \node[result] (rep) at (-0.5,-1.2)
+      {$\Lambda(f)=\displaystyle\int f\,\mathrm d\mu$\\积分表示};
+    \draw[flow] (a)--node[flowlabel,above]{开覆盖} (os);
+    \draw[flow] (os)--node[flowlabel,above]{限制} (m0);
+    \draw[flow] (m0)--node[flowlabel,right]{紧内正则化} (m);
+    \draw[flow] (m)--node[flowlabel,above]{识别} (rep);
   \end{tikzpicture}
   \caption[表示测度的构造]{表示测度的构造。从开集候选质量到积分表示，中间的 \(\mu_0\) 与 \(\mu\) 分别承担外逼近和紧内正则化。}
   \label{b1:fig:riesz-markov-construction}
@@ -90,6 +106,8 @@
  a(U)=\sup_{h\in\mathcal T(U)}\Lambda(h).
 \]
 这里允许 \(a(U)=\infty\)，但 \(0\in\mathcal T(U)\)，所以上确界总有意义。
+
+\ProseParagraphBreak
 
 % 实读来源：Fremlin, Measure Theory, vol.4, 436J，印刷 pp.47--48，
 % 官方 https://www1.essex.ac.uk/maths/people/fremlin/chap43.pdf；
@@ -133,7 +151,7 @@
 此外，每个有限 \(\mu_0\) 测度的 Borel 集都能从内部用紧集逼近。
 \end{lemma}
 \begin{proof}
-首先，\(\mu_0^*(\varnothing)=0\)，且 \(\mu_0^*\) 单调。为证可数次次可加性，只需考虑 \(\sum_n\mu_0^*(A_n)<\infty\) 的情形。给定 \(\varepsilon>0\)，逐个选择开集 \(U_n\supseteq A_n\)，使 \(a(U_n)<\mu_0^*(A_n)+\varepsilon2^{-n}\)。由前一引理，
+首先，\(\mu_0^*(\varnothing)=0\)，且 \(\mu_0^*\) 单调。为证可数次可加性，只需考虑 \(\sum_n\mu_0^*(A_n)<\infty\) 的情形。给定 \(\varepsilon>0\)，逐个选择开集 \(U_n\supseteq A_n\)，使 \(a(U_n)<\mu_0^*(A_n)+\varepsilon2^{-n}\)。由前一引理，
 \[
  \mu_0^*\biggl(\bigcup_n A_n\biggr)
  \leq a\biggl(\bigcup_n U_n\biggr)
