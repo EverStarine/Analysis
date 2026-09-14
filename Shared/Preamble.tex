@@ -359,18 +359,28 @@
   \pdfbookmark[1]{#1}{AnalysisPartGuide@\thepage}%
 }
 
-% “附录”只作为书签与目录中的编级节点存在，不排可见的编题页：
-% 第一个附录章直接自奇数页开始，PDF 书签中仍保留“附录”顶层节点。
+% “附录”单独排无编号编题页，使用与正文编名相同的字号、字体和颜色。
+% 题页从奇数页开始，其后保留一张空白页，再进入第一个附录章。
 % startatroot 使根级书签与书后顶层节点分离；phantomsection 须先于
 % addcontentsline，目录中的“附录”行才能获得独立锚点而非沿用前一节的
 % section*.N。根级“附录”书签连同其子章由 addcontentsline 的 part 行自动
 % 建立，不得再手写 \pdfbookmark（实测会产生重复的“附录”节点）。
 \NewDocumentCommand{\BookAppendixPart}{m}{%
   \cleardoublepage
-  \bookmarksetup{startatroot}%
-  \phantomsection
-  \addcontentsline{toc}{part}{附录}%
-  \label{#1}%
+  \begingroup
+  \def\AnalysisPartLabel{#1}%
+  % 在 part* 的题页尚未翻走时建立唯一的目录与书签目标。
+  \pretocmd{\@endpart}{%
+    \bookmarksetup{startatroot}%
+    \phantomsection
+    \addcontentsline{toc}{part}{附录}%
+    \label{\AnalysisPartLabel}%
+  }{}{\PackageError{analysis}{无法为附录编题页写入目录与标签}{请检查当前文档类的 \string\@endpart 定义。}}%
+  \part*{附录}%
+  \endgroup
+  \thispagestyle{empty}%
+  \null
+  \clearpage
 }
 \makeatother
 
@@ -411,7 +421,7 @@
   \hyperref[#1]{\AnalysisChapterDisp}%
   \endgroup}
 
-% “弱-*拓扑”等固定术语在源码中虽已连写，xeCJK 仍会在西文星号与
+% “弱*拓扑”等固定术语在源码中虽已连写，xeCJK 仍会在西文星号与
 % 后续汉字之间自动加入中西文胶。该零宽连接记号只抑制这一处自动
 % 间距；写入书签时展开为空，避免把排版命令带入 PDF 字符串。
 \NewDocumentCommand{\WeakStarJoin}{}{%
@@ -452,7 +462,9 @@
   title=待 Sol Ultra 复核,fonttitle=\bfseries
 }
 \NewDocumentEnvironment{chapterabstract}{}
-  {\list{}{\rightmargin\leftmargin}\item\relax\small\color{AnalysisGray}}
+  {\small\list{}{\rightmargin\leftmargin
+    \listparindent=2\ccwd\itemindent=\listparindent}%
+    \item\relax\color{AnalysisGray}}
   {\endlist}
 % 引诗与短引文统一居中，中文使用定理类环境的楷体；章摘要已在上方独立定义，
 % 不继承这里的字形与对齐方式。
