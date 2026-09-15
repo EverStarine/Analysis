@@ -421,11 +421,18 @@
   \hyperref[#1]{\AnalysisChapterDisp}%
   \endgroup}
 
-% “弱*拓扑”等固定术语在源码中虽已连写，xeCJK 仍会在西文星号与
-% 后续汉字之间自动加入中西文胶。该零宽连接记号只抑制这一处自动
-% 间距；写入书签时展开为空，避免把排版命令带入 PDF 字符串。
-\NewDocumentCommand{\WeakStarJoin}{}{%
-  \texorpdfstring{\kern0pt{}}{}}
+% 中文“弱∗”术语使用数学轴上居中的星号；局部抑制星号两侧的
+% 中西文胶，使它与前后的汉字连写。字号随上下文变化，书签保留
+% 同一居中字形的 Unicode 文本。正文、标题及索引统一使用此宏。
+\NewDocumentCommand{\WeakStar}{}{%
+  \texorpdfstring{%
+    \begingroup\xeCJKsetup{CJKecglue={}}%
+    弱\kern0pt\(\mathord{\ast}\)\kern0pt{}%
+    \endgroup
+  }{弱∗}}
+\pdfstringdefDisableCommands{\def\WeakStar{弱∗}}
+% 兼容首次重编时尚未更新的旧目录和索引辅助文件。
+\NewDocumentCommand{\WeakStarJoin}{}{\texorpdfstring{\kern0pt{}}{}}
 \pdfstringdefDisableCommands{\def\WeakStarJoin{}}
 
 % 算法采用带编号的步骤，并明确标出输入与输出。
