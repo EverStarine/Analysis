@@ -2,34 +2,244 @@
 \section{偏微分方程的基本概念}
 \label{b2:sec:0104}
 
-% TODO: 撰写本节正文。
+前面三节准备了两种表达变化的方式：用导数描述一个点附近的变化，用积分把内部变化与边界上的量联系起来。偏微分方程把这些关系作为未知函数必须满足的条件。一个完整的问题不仅要给出方程，还要说明定义域、附加条件和解的意义。
 
 \subsection{阶数}
 \label{b2:subsec:010401}
 
-待填充。
+为统一记号，把 \(\alpha=(\alpha_1,\ldots,\alpha_n)\in\mathbb N_0^n\) 称为\term[duochong-zhibiao]{多重指标}[multi-index]，并记
+\[
+|\alpha|=\alpha_1+\cdots+\alpha_n,
+\quad
+\partial^\alpha=\partial_{x_1}^{\alpha_1}\cdots\partial_{x_n}^{\alpha_n}.
+\]
+这里 \(\mathbb N_0=\{0,1,2,\ldots\}\)。在导数连续到相应阶时，微分次序可以交换。
+\symidx{\(\partial^\alpha u\)：多重指标对应的偏导数}
+
+\begin{definition}\label{b2:def:01-pde-order}
+设 \(\Omega\subset\mathbb R^n\) 为开集，\(u:\Omega\to\mathbb R\) 为未知函数。含有 \(u\) 的偏导数的关系式
+\[
+\mathcal F\bigl(x,(\partial^\alpha u(x))_{|\alpha|\leq k}\bigr)=0
+\]
+称为\term[pianweifen-fangcheng]{偏微分方程}[partial differential equation]，简称 PDE。其中真正出现的最高导数阶数称为方程的\term[jieshu]{阶数}[order]。若最高阶为 \(k\)，则它是 \(k\) 阶方程。
+\end{definition}
+
+例如，\(u_t+c u_x=0\) 是一阶方程，\(u_t-\Delta u=f\) 和 \(u_{tt}-\Delta u=0\) 是二阶方程。这里时间 \(t\) 也计作一个自变量，而 \(\Delta\) 只对空间变量作用。热方程的时间导数是一阶，并不妨碍它按最高偏导数阶数被归为二阶方程。
+
+\ProseParagraphBreak
+
+方程必须先化简再判断阶数，不能把彼此抵消的高阶项计入。最高阶系数在某些点为零，则可能造成局部退化。例如 \(xu_{xx}+u_y=0\) 在 \(x\neq0\) 时含有二阶项，而在 \(x=0\) 处这一项消失。这种退化会影响后面的理论，不能仅凭“二阶”二字判断。
 
 \subsection{线性、半线性、拟线性}
 \label{b2:subsec:010402}
 
-待填充。
+分类时应先看最高阶导数怎样出现，再看系数依赖哪些量。以下讨论已经写成明确表达式的标量方程；乘以处处非零的已知函数不改变其解，但不能通过除以可能为零的表达式随意改变方程。
+
+\begin{definition}\label{b2:def:01-pde-linearity}
+对一个 \(k\) 阶方程，约定如下。
+\begin{enumerate}
+\item\label{b2:item:01-pde-linear}若可写成
+\[
+Lu\coloneqq\sum_{|\alpha|\leq k}a_\alpha(x)\partial^\alpha u=f(x),
+\]
+其中全部系数和右端都是给定的 \(x\) 的函数，则称为\term[xianxing-pianweifen-fangcheng]{线性偏微分方程}[linear partial differential equation]。\(f=0\) 时称为\term[qici-fangcheng]{齐次方程}[homogeneous equation]，否则称为\term[feiqici-fangcheng]{非齐次方程}[inhomogeneous equation]。
+\item\label{b2:item:01-pde-semilinear}若最高阶导数线性地出现，且其系数只依赖 \(x\)，即方程写为
+\[
+\sum_{|\alpha|=k}a_\alpha(x)\partial^\alpha u
++b\bigl(x,(\partial^\beta u)_{|\beta|<k}\bigr)=0,
+\]
+则称为\term[banxianxing-fangcheng]{半线性方程}[semilinear equation]。
+\item\label{b2:item:01-pde-quasilinear}若最高阶导数仍线性地出现，但其系数还可依赖低阶导数，即
+\[
+\sum_{|\alpha|=k}a_\alpha\bigl(x,(\partial^\beta u)_{|\beta|<k}\bigr)\partial^\alpha u
++b\bigl(x,(\partial^\beta u)_{|\beta|<k}\bigr)=0,
+\]
+则称为\term[nixianxing-fangcheng]{拟线性方程}[quasilinear equation]。
+\item\label{b2:item:01-pde-fullynonlinear}若最高阶导数本身以非线性方式出现，则称为\term[wanquan-feixianxing-fangcheng]{完全非线性方程}[fully nonlinear equation]。
+\end{enumerate}
+\end{definition}
+
+按这一定义，线性方程属于半线性方程，半线性方程属于拟线性方程。说明一个具体方程的类型时，通常给出其中最精确的一类。线性算子中
+\[
+\sum_{|\alpha|=k}a_\alpha(x)\partial^\alpha
+\]
+称为其\term[zhubu]{主部}[principal part]；它记录最高阶作用，低阶项仍可能影响解的增长、唯一性及边界条件。
+
+\begin{table}[htbp]
+\centering
+\caption{按最高阶导数的出现方式区分方程}
+\label{b2:tab:01-pde-types}
+\begin{tabular}{lll}
+\toprule
+方程 & 类型 & 判定依据 \\
+\midrule
+\(u_t-\Delta u=f(x,t)\) & 线性 & 系数和右端均已给定 \\
+\(u_t-\Delta u=u^3\) & 半线性 & 非线性只在零阶项 \\
+\(u_t+u u_x=0\) & 拟线性 & 一阶导数的系数含 \(u\) \\
+\(u_{xx}u_{yy}-u_{xy}^2=f(x,y)\) & 完全非线性 & 二阶导数相乘 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\Cref{b2:tab:01-pde-types}中的第三个方程也可以写成 \(u_t+\partial_x(u^2/2)=0\)。在光滑函数上两种写法等价；当导数不再逐点存在时，后一种散度形式会提示一种可保留的积分表达式。解的意义因此与方程的表达方式密切相关。
 
 \subsection{初值问题}
 \label{b2:subsec:010403}
 
-待填充。
+把一个自变量解释为时间时，通常在初始时刻给出函数或若干时间导数的值。这样的附加条件称为\term[chuzhi-tiaojian]{初值条件}[initial condition]，方程与初值条件共同构成\term[chuzhi-wenti]{初值问题}[initial value problem]。一阶时间方程通常给定 \(u(\cdot,0)\)，二阶时间方程通常还给定 \(u_t(\cdot,0)\)；这些是常见模型的安排，是否能任意指定仍须由具体方程决定。
+
+\begin{proposition}\label{b2:prop:01-transport-initial}
+设 \(c\in\mathbb R\)、\(g\in C^1(\mathbb R)\)。初值问题
+\[
+u_t+c u_x=0\quad\text{于 }\mathbb R\times(0,\infty),
+\quad u(x,0)=g(x)
+\]
+在 \(C^1(\mathbb R\times[0,\infty))\) 中有唯一解
+\[
+u(x,t)=g(x-ct).
+\]
+\end{proposition}
+\begin{proof}
+链式法则给出 \(u_t=-c g'(x-ct)\)、\(u_x=g'(x-ct)\)，故所给函数满足方程和初值。反过来，若 \(v\) 是一个解，固定 \((x,t)\)，在 \(0\leq s\leq t\) 上考虑 \(v(x-c(t-s),s)\)。其导数为 \(c v_x+v_t=0\)，因而恒定。在两个端点取值可得 \(v(x,t)=v(x-ct,0)=g(x-ct)\)。
+\end{proof}
+
+初始图形以速度 \(c\) 平移，函数值沿直线 \(x-ct=\text{常数}\) 保持不变。这些直线给出解怎样从初始数据传到后来的时刻。后面的特征线方法会把这一计算推广到变系数和非线性的一阶方程。
 
 \subsection{边值问题}
 \label{b2:subsec:010404}
 
-待填充。
+设 \(\Omega\) 是有界 \(C^1\) 域，\(\nu\) 表示外单位法向。在边界上规定附加条件得到\term[bianzhi-wenti]{边值问题}[boundary value problem]。最常用的三类是
+\begin{align*}
+u&=g &&\text{于 }\partial\Omega,\\
+\partial_\nu u&=h &&\text{于 }\partial\Omega,\\
+\partial_\nu u+\sigma u&=h &&\text{于 }\partial\Omega.
+\end{align*}
+它们依次称为\term[dirichlet-bianjie-tiaojian]{Dirichlet 边界条件}[Dirichlet boundary condition]、\term[neumann-bianjie-tiaojian]{Neumann 边界条件}[Neumann boundary condition]和\term[robin-bianjie-tiaojian]{Robin 边界条件}[Robin boundary condition]。这里 \(g,h,\sigma\) 都是给定的边界函数。前一种指定函数值，第二种指定法向变化率，第三种联系二者。
 
-\subsection{经典解 / 强解 / 弱解}
+\begin{proposition}\label{b2:prop:01-poisson-boundary}
+设 \(\Omega\subset\mathbb R^n\) 是有界、连通的 \(C^1\) 域，考虑 \(-\Delta u=f\)，并只讨论能在 \(\overline\Omega\) 的某开邻域内成为 \(C^2\) 函数的实值解。
+\begin{enumerate}
+\item\label{b2:item:01-dirichlet-unique}给定 Dirichlet 数据 \(u=g\) 时，解至多一个。
+\item\label{b2:item:01-neumann-compatible}若给定 Neumann 数据 \(\partial_\nu u=h\)，则解存在的必要条件是
+\begin{equation}\label{b2:eq:01-neumann-compatibility}
+\int_\Omega f\,\mathrm{d}x+\int_{\partial\Omega}h\,\mathrm{d}S=0.
+\end{equation}
+满足同一数据的两个解至多相差一个常数。
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+设 \(u,v\) 满足同一方程和同一边界条件，令 \(w=u-v\)，则 \(\Delta w=0\)。Green 第一公式\eqref{b2:eq:01-vector-green-first}给出
+\[
+\int_\Omega|\nabla w|^2\,\mathrm{d}x
+=\int_{\partial\Omega}w\partial_\nu w\,\mathrm{d}S
+-\int_\Omega w\Delta w\,\mathrm{d}x.
+\]
+在 Dirichlet 情形下 \(w=0\) 于边界，在 Neumann 情形下 \(\partial_\nu w=0\) 于边界，故右端均为零。\(|\nabla w|^2\) 非负连续，积分为零使 \(\nabla w=0\) 处处成立。连通开集内任意两点可用有限段折线相连，沿每段积分便知 \(w\) 为常数。Dirichlet 情形的零边值使该常数为零。
+
+若 \(u\) 满足 Neumann 问题，对方程积分并用\cref{b2:thm:01-vector-gauss}，得到
+\[
+\int_\Omega f\,\mathrm{d}x=-\int_\Omega\Delta u\,\mathrm{d}x
+=-\int_{\partial\Omega}\partial_\nu u\,\mathrm{d}S,
+\]
+即\eqref{b2:eq:01-neumann-compatibility}。
+\end{proof}
+
+相容条件反映了内部源项与边界通量的平衡。例如 \(f\equiv1\)、\(h\equiv0\) 时，上式不可能成立，故不存在这样的解。至多一个解和确有一个解是两项不同任务；上述能量计算证明的是唯一性与存在的必要条件，并未给出任意数据的存在定理。
+
+\subsection{经典解、强解与弱解}
 \label{b2:subsec:010405}
 
-待填充。
+如果只允许处处可微的函数，一些自然的极限便会落在讨论范围之外。例如连续函数列可以趋于带折角的函数，光滑介质的极限也可能出现分界面。要在这些情形下保留方程，须明确导数和等式各自的意义。
+
+\ProseParagraphBreak
+
+先回顾\term[ruo-daoshu]{弱导数}[weak derivative]的积分定义：对 \(u,g\in L^1_{\mathrm{loc}}(\Omega)\)，若
+\[
+\int_\Omega u\partial^\alpha\varphi\,\mathrm{d}x
+=(-1)^{|\alpha|}\int_\Omega g\varphi\,\mathrm{d}x
+\quad\bigl(\varphi\in C_c^\infty(\Omega)\bigr),
+\]
+则称 \(g\) 为 \(u\) 的 \(\alpha\) 阶弱导数。空间 \(C_c^\infty(\Omega)\) 由支集紧含于 \(\Omega\) 的光滑函数组成，这些函数称为\term[ceshi-hanshu]{测试函数}[test function]。\term[sobolev-kongjian]{Sobolev 空间}[Sobolev space] \(W^{k,p}\) 要求函数及所有不超过 \(k\) 阶的弱导数属于 \(L^p\)；下标 \(\mathrm{loc}\) 表示只在每个紧含的开子域上作此要求。这些约定见第一卷定义 20.4.1、定义 21.1.1 和定义 21.1.2，弱导数的唯一性等基本性质也在第一卷相应小节中建立。本节还记 \(H^1=W^{1,2}\)。
+% 跨卷引用：b1:def:weak-derivative，Book1/Part04/Chapter20/Section2004.tex；b1:def:sobolev-first-order、b1:def:sobolev-higher-order，Book1/Part04/Chapter21/Section2101.tex。
+
+\symidx{\(C_c^\infty(\Omega)\)：光滑紧支集测试函数空间}
+\symidx{\(W^{k,p}(\Omega)\)：Sobolev 空间}
+\symidx{\(H^1(\Omega)\)：\(W^{1,2}(\Omega)\)}
+
+\begin{definition}\label{b2:def:01-classical-strong}
+对 \(\Omega\) 上的 \(k\) 阶方程，若 \(u\in C^k(\Omega)\)，方程在每个点成立，则称 \(u\) 为\term[jingdian-jie]{经典解}[classical solution]。若还讨论初值或边值，则另要求相应导数连续延伸到指定部分，并满足那些附加条件。
+
+\ProseParagraphBreak
+
+若所有不超过 \(k\) 阶的弱导数局部属于 \(L^p\)，即 \(u\in W^{k,p}_{\mathrm{loc}}(\Omega)\)，方程中的各项有意义，且等式几乎处处成立，则称它为本节 \(W^{k,p}_{\mathrm{loc}}\) 意义下的\term[qiang-jie]{强解}[strong solution]。这里 \(1\leq p\leq\infty\)，具体问题必须说明所取的 \(p\) 和函数空间。
+\end{definition}
+
+“强解”的用法依赖所研究的方程与空间；例如演化方程还可能分别规定时间和空间的正则性。本节给出的约定用于比较经典导数、弱导数及几乎处处成立的方程，不把它当作所有文献统一的定义。
+
+\begin{definition}\label{b2:def:01-divergence-weak}
+设矩阵函数 \(A\in L^\infty_{\mathrm{loc}}(\Omega;\mathbb R^{n\times n})\)，\(f\in L^2_{\mathrm{loc}}(\Omega)\)。若 \(u\in H^1_{\mathrm{loc}}(\Omega)\) 满足
+\begin{equation}\label{b2:eq:01-weak-divergence}
+\int_\Omega A\nabla u\cdot\nabla\varphi\,\mathrm{d}x
+=\int_\Omega f\varphi\,\mathrm{d}x
+\quad\bigl(\varphi\in C_c^\infty(\Omega)\bigr),
+\end{equation}
+则称 \(u\) 是方程 \(-\operatorname{div}(A\nabla u)=f\) 的\term[ruo-jie]{弱解}[weak solution]。
+\end{definition}
+
+所有积分都在测试函数的紧支集附近进行，局部有界的 \(A\) 和局部平方可积的 \(\nabla u,f\) 保证其有限。若 \(A\in C^1\)、\(u\in C^2\)、\(f\) 连续，分部积分说明经典解满足\eqref{b2:eq:01-weak-divergence}。反过来，在这些光滑性条件下若弱等式成立，连续函数 \(r=-\operatorname{div}(A\nabla u)-f\) 与每个测试函数的积分都为零。倘若 \(r(x_0)>0\)，它在某小球内有正下界，取该球内非负且不恒为零的光滑测试函数，就得到正积分而矛盾；\(r(x_0)<0\) 同理。所以 \(r=0\) 处处成立。
+
+\ProseParagraphBreak
+
+上述定义只表达区域内部的方程，测试函数在边界附近为零，所以它没有包含边界条件。对零 Dirichlet 数据，一个常用做法是进一步要求 \(u\in H_0^1(\Omega)\)，其中 \(H_0^1\) 是 \(C_c^\infty(\Omega)\) 在 \(H^1\) 范数下的闭包，这与第一卷定义 22.2.1 一致。\symidx{\(H_0^1(\Omega)\)：光滑紧支集函数在 \(H^1\) 中的闭包}此时必须把空间条件与内部弱等式同时写出；不能从内部恒等式读出任意边值。
+
+\ProseParagraphBreak
+
+下面三个一维例子区分这些概念。首先，令 \(u(x)=(\max\{x,0\})^2\)。分段积分可验证 \(u'=2\max\{x,0\}\)、\(u''=2\mathbf1_{(0,\infty)}\) 都是弱导数。因此 \(u\in W^{2,\infty}_{\mathrm{loc}}(\mathbb R)\)，是方程 \(u''=2\mathbf1_{(0,\infty)}\) 的强解；但它在零点没有二阶经典导数，所以不是经典解。
+
+\ProseParagraphBreak
+
+其次，\(v(x)=|x|\) 在零点外满足 \(v''=0\)，却不是 \(-v''=0\) 的弱解。事实上 \(v'=\operatorname{sgn}x\) 是它的弱导数，并且
+\[
+\int_{\mathbb R}v'(x)\varphi'(x)\,\mathrm{d}x=-2\varphi(0).
+\]
+取 \(\varphi(0)\neq0\) 就否定了弱等式。只把零点删掉再说“方程几乎处处成立”，忽略了导数在该点积累的作用。
+
+\ProseParagraphBreak
+
+最后，在 \((-1,1)\) 上令
+\[
+a(x)=\begin{cases}1,&x<0,\\2,&x\geq0,\end{cases}
+\quad
+w(x)=\begin{cases}x,&x<0,\\x/2,&x\geq0.\end{cases}
+\]
+函数 \(w\) 连续且分段仿射，其弱导数为左右两段的斜率。因此 \(aw'=1\) 几乎处处，故对任意紧支集测试函数，\(\int aw'\varphi'=\int\varphi'=0\)。这给出 \(-(aw')'=0\) 的弱解，尽管 \(w\) 在零点有折角。它没有局部可积的二阶弱导数：分段积分给出
+\[
+-\int_{-1}^1 w'\varphi'\,\mathrm{d}x=-\frac12\varphi(0).
+\]
+若右端可以写为某个局部可积函数与 \(\varphi\) 的积分，取 \(\varphi_\varepsilon(x)=\eta(x/\varepsilon)\)，其中 \(\eta\in C_c^\infty((-1,1))\)、\(0\leq\eta\leq1\)、\(\eta(0)=1\)，则积分绝对连续性使左述表示趋于零，而 \(-\varphi_\varepsilon(0)/2=-1/2\)，矛盾。弱方程保留的是通量 \(aw'\) 的平衡，并不要求 \(w\) 的所有二阶弱导数都是函数。
 
 \subsection{叠加原理}
 \label{b2:subsec:010406}
 
-待填充。
+线性方程的一个基本优点，是可以把较复杂的数据拆开处理。\term[diejia-yuanli]{叠加原理}[superposition principle]必须同时考虑方程与附加条件。
+
+\begin{proposition}\label{b2:prop:01-superposition}
+设 \(L\) 是线性微分算子，\(B\) 是线性初值或边界算子，且讨论的函数空间对线性组合封闭。若 \(Lu_j=f_j\)、\(Bu_j=g_j\)，则对任意常数 \(c_1,\ldots,c_N\)，
+\[
+L\Bigl(\sum_{j=1}^N c_ju_j\Bigr)=\sum_{j=1}^N c_jf_j,
+\quad
+B\Bigl(\sum_{j=1}^N c_ju_j\Bigr)=\sum_{j=1}^N c_jg_j.
+\]
+特别地，若 \(u_p\) 满足 \(Lu_p=f\)、\(Bu_p=g\)，则同一问题的全部解恰为 \(u_p+v\)，其中 \(Lv=0\)、\(Bv=0\)。
+\end{proposition}
+\begin{proof}
+两个等式直接来自线性。若 \(u\) 与 \(u_p\) 满足同一数据，则线性给出 \(L(u-u_p)=0\)、\(B(u-u_p)=0\)；反过来，把这样的 \(v\) 加到 \(u_p\) 上就恢复原数据。弱解情形下，对测试函数的积分等式也保持线性，故同一论证适用。
+\end{proof}
+
+同一非齐次方程的两个解直接相加，通常得到右端加倍的问题。对非线性方程，连这种结论也不成立：\(u(t)=1/(1-t)\) 在 \(t<1\) 满足 \(u_t=u^2\)，但 \(2u\) 的时间导数是 \(2u^2\)，而其平方是 \(4u^2\)。
+
+\ProseParagraphBreak
+
+后面的 Fourier 方法会把一个函数分解为许多振动模式，再对各模式分别求解。有限叠加由线性直接保证；无穷叠加还涉及级数收敛、逐项微分以及初值或边值的恢复，这些正是接下来几章必须建立的内容。
+
+% 跨卷引用：b1:def:sobolev-zero-boundary，Book1/Part04/Chapter22/Section2202.tex，定义22.2.1。

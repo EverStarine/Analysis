@@ -1,25 +1,178 @@
 % !TeX root = ../../Book2.tex
 \section{含参变量积分回顾}
 \label{b2:sec:0103}
+% 证明工具：第一卷定理5.3.5、5.3.2及7.3.2；下文多参数版本与例子独立推导。
 
-% TODO: 撰写本节正文。
+Fourier 分析会反复遇到这样的函数：自变量藏在被积函数中，而积分区域往往没有界。即使每个参数值都给出一个有限积分，也不能立刻断言所得函数连续或可微。这里要把两件事分开：有限区域内的局部变化，以及积分区域远处的尾部。
 
-\subsection{含参积分连续性}
+\subsection{含参变量积分的连续性}
 \label{b2:subsec:010301}
 
-待填充。
+设 \((X,\mathcal A,\mu)\) 是测度空间，\(U\subset\mathbb R^m\) 为开集。若对每个 \(t\in U\)，函数 \(x\mapsto f(t,x)\) 可积，则
+\[
+F(t)\coloneqq\int_X f(t,x)\,\mathrm{d}\mu(x)
+\]
+是一个\term[hancan-bianliang-jifen]{含参变量积分}[parameter integral]。参数空间和积分空间承担不同的角色：连续、可微等性质针对 \(t\)，可测、可积等性质首先针对 \(x\)。本节允许被积函数取复值。
+\termsee[hancanliang-jifen]{含参量积分}{含参变量积分}
+
+\begin{proposition}\label{b2:prop:01-parameter-continuity}
+固定 \(t_0\in U\)。设每个 \(f(t,\cdot)\) 可测；存在 \(t_0\) 的邻域 \(V\subset U\)、非负函数 \(g\in L^1(\mu)\) 和一个可测零集 \(N\)，使 \(x\notin N\) 时，\(f(\cdot,x)\) 在 \(t_0\) 连续，且
+\[
+|f(t,x)|\leq g(x)\quad(t\in V).
+\]
+则 \(F\) 在 \(V\) 上有定义，且在 \(t_0\) 连续；事实上，\(f(t,\cdot)\) 在 \(L^1(\mu)\) 中趋于 \(f(t_0,\cdot)\)。
+\end{proposition}
+\begin{proof}
+任取 \(t_n\in V\) 且 \(t_n\to t_0\)。共同零集外有 \(f(t_n,x)\to f(t_0,x)\)，并有可积控制 \(g\)。第一卷定理 5.3.5 给出 \(L^1\) 收敛，而
+\[
+|F(t_n)-F(t_0)|\leq\int_X|f(t_n,x)-f(t_0,x)|\,\mathrm{d}\mu(x).
+\]
+欧氏空间中的连续性可由序列判定，故结论成立。
+\end{proof}
+% 跨卷引用：b1:thm:dominated-convergence，Book1/Part01/Chapter05/Section0503.tex。
+
+这里调用的是\term[kongzhi-shoulian-dingli]{控制收敛定理}[dominated convergence theorem]。第一卷已证明其一般测度空间版本；本节把它用于欧氏空间中的参数。条件是局部的：证明 \(t_0\) 附近连续，只需控制这个邻域内的被积函数，不必控制全部参数。
+
+\ProseParagraphBreak
+
+例如，取 \(g\in L^1(\mathbb R^n)\)，令
+\[
+G(\xi)=\int_{\mathbb R^n}g(x)\cdot e^{-\mathrm{i}x\cdot\xi}\,\mathrm{d}x,
+\quad \xi\in\mathbb R^n.
+\]
+指数因子的模恒为一，所以 \(|G(\xi)|\leq\|g\|_1\)，而 \(|g|\) 给出与 \(\xi\) 无关的控制，故 \(G\) 连续。这正是后面研究 Fourier 变换时最先需要的正则性。若要继续对 \(\xi\) 求导，就会多出 \(x\) 的因子；原先的 \(L^1\) 条件未必还能提供控制。
 
 \subsection{积分号下求导}
 \label{b2:subsec:010302}
 
-待填充。
+导数是差商的极限。因此，证明\term[jifenhaoxia-qiudao]{积分号下求导}[differentiation under the integral sign]合法，关键在于找出一个控制差商的可积函数。对多参数而言，还须保证得到的各偏导数组合成连续的全微分。
+
+\begin{theorem}\label{b2:thm:01-parameter-differentiation}
+设 \(B\subset\mathbb R^m\) 是开球，\(t_*\in B\)，每个 \(f(t,\cdot)\) 可测且 \(f(t_*,\cdot)\in L^1(\mu)\)。假设存在一个可测零集 \(N\)，使每个 \(x\notin N\) 对应的 \(f(\cdot,x)\) 属于 \(C^1(B)\)，并存在 \(g_j\in L^1(\mu)\)、\(g_j\geq0\)，满足
+\[
+|\partial_{t_j}f(t,x)|\leq g_j(x)
+\quad(t\in B,\ x\notin N,\ 1\leq j\leq m).
+\]
+则所有 \(f(t,\cdot)\) 可积，\(F\in C^1(B)\)，而且
+\begin{equation}\label{b2:eq:01-parameter-derivative}
+\partial_{t_j}F(t)=\int_X\partial_{t_j}f(t,x)\,\mathrm{d}\mu(x).
+\end{equation}
+\end{theorem}
+\begin{proof}
+可先把全部函数在 \(N\) 上改为零。沿 \(t_*\) 与 \(t\) 间的线段应用一元微积分基本定理，得到
+\[
+|f(t,x)|\leq |f(t_*,x)|+\sum_{j=1}^m|t_j-t_{*,j}|\cdot g_j(x).
+\]
+右端可积，所以 \(F(t)\) 有定义。对固定 \(t\) 和 \(j\)，在 \(t+he_j\in B\) 时，同样沿线段积分可得
+\[
+\frac{f(t+he_j,x)-f(t,x)}{h}
+=\int_0^1\partial_{t_j}f(t+she_j,x)\,\mathrm{d}s.
+\]
+因此差商的模不超过 \(g_j(x)\)。这是对复值函数也成立的积分恒等式，并未使用复值函数的实数中值等式。
+
+取任意非零数列 \(h_k\to0\)，左端是可测函数，逐点极限为 \(\partial_{t_j}f(t,x)\)，所以此导数关于 \(x\) 可测。控制收敛允许把差商极限移入积分，给出\eqref{b2:eq:01-parameter-derivative}。最后，当 \(t\to t_0\) 时，\(\partial_{t_j}f(t,x)\) 连续地趋于 \(\partial_{t_j}f(t_0,x)\)，仍由 \(g_j\) 控制，再用控制收敛可知 \(\partial_{t_j}F\) 连续。\cref{b2:prop:01-c1-criterion}表明 \(F\in C^1(B)\)。
+\end{proof}
+
+这一定理可以在每个参数点附近分别使用。同一零集以外的 \(C^1\) 条件，使整条参数线段上的微积分恒等式有意义；“每个参数各自几乎处处可导”本身没有保证这一点。
+
+\ProseParagraphBreak
+
+对上一小节的 \(G\)，若再有 \(|x|g(x)\in L^1(\mathbb R^n)\)，则
+\[
+\partial_{\xi_j}G(\xi)=\int_{\mathbb R^n}(-\mathrm{i}x_j)g(x)\cdot e^{-\mathrm{i}x\cdot\xi}\,\mathrm{d}x.
+\]
+控制函数是 \(|x_jg(x)|\)。更高阶求导相应要求更高阶矩可积。这说明积分中的衰减条件怎样转化为参数函数的光滑性；它也提醒我们，形式上容易写出的导数公式仍有各自的适用范围。
+
+\begin{proposition}[Leibniz 积分公式]\label{b2:prop:01-leibniz-integral}
+设 \(J\) 是开区间，\(a,b\in C^1(J)\)，且 \(a(t)<b(t)\)。设 \(f\) 定义在包含全部 \((t,x)\)、\(a(t)\leq x\leq b(t)\) 的开集上，\(f\) 与 \(\partial_t f\) 连续。则
+\[
+\frac{\mathrm{d}}{\mathrm{d}t}\int_{a(t)}^{b(t)}f(t,x)\,\mathrm{d}x
+=\int_{a(t)}^{b(t)}\partial_t f(t,x)\,\mathrm{d}x
++f\bigl(t,b(t)\bigr)\cdot b'(t)-f\bigl(t,a(t)\bigr)\cdot a'(t).
+\]
+\end{proposition}
+\begin{proof}
+固定 \(t_0\)，取包含 \([a(t_0),b(t_0)]\) 的稍大紧区间 \([c,d]\)。缩小 \(t_0\) 的邻域后，矩形上 \(f\) 与 \(\partial_t f\) 均连续。令
+\[
+H(t,s)=\int_c^s f(t,x)\,\mathrm{d}x.
+\]
+固定 \(s\) 时，\cref{b2:thm:01-parameter-differentiation}给出 \(\partial_t H=\int_c^s\partial_t f\,\mathrm{d}x\)；微积分基本定理给出 \(\partial_s H=f(t,s)\)。两者都连续，故对 \(H(t,b(t))-H(t,a(t))\) 使用链式法则即得结论。\(t_0\) 任意，公式在整个 \(J\) 上成立。
+\end{proof}
+
+这个结论称为\term[leibniz-jifen-gongshi]{Leibniz 积分公式}[Leibniz integral rule]。两个端点项来自积分区域的变化。例如
+\[
+\frac{\mathrm{d}}{\mathrm{d}t}\int_0^t e^{tx}\,\mathrm{d}x
+=e^{t^2}+\int_0^t xe^{tx}\,\mathrm{d}x\quad(t>0).
+\]
+若只对被积函数求导，端点 \(x=t\) 带来的那一项就会遗漏。
 
 \subsection{无穷区间积分}
 \label{b2:subsec:010303}
 
-待填充。
+在无穷区间上，“积分存在”还需要说明采用哪一种积分。Lebesgue 可积要求绝对值的积分有限；\term[fanchang-jifen]{反常积分}[improper integral]
+\[
+\int_0^\infty f(t,x)\,\mathrm{d}x
+\coloneqq\lim_{R\to\infty}\int_0^R f(t,x)\,\mathrm{d}x
+\]
+则可能仅靠正负抵消而存在。下面的尾部判据也适用于后一种情形。
+
+\begin{proposition}\label{b2:prop:01-improper-uniform-tail}
+设参数集 \(T\subset\mathbb R^m\)，对每个 \(R>0\)，\(F_R(t)=\int_0^R f(t,x)\,\mathrm{d}x\) 在 \(T\) 上连续。若
+\[
+\lim_{R\to\infty}\ \sup_{t\in T}\ \sup_{S\geq R}
+\left|\int_R^S f(t,x)\,\mathrm{d}x\right|=0,
+\]
+则每个参数对应的反常积分 \(F(t)\) 存在，且 \(F_R\) 在 \(T\) 上一致趋于连续函数 \(F\)。
+\end{proposition}
+\begin{proof}
+给定 \(\varepsilon>0\)，选取 \(R_0\)，使条件中的上确界在 \(R\geq R_0\) 时小于 \(\varepsilon\)。对固定 \(t\)，这正是有限积分 \(F_R(t)\) 在 \(R\to\infty\) 时的 Cauchy 条件，所以极限存在。令 \(S\to\infty\)，得到 \(\sup_{t\in T}|F(t)-F_R(t)|\leq\varepsilon\)，即一致收敛。
+
+对任意 \(t_0\in T\)，先固定这样一个 \(R\)，再由 \(F_R\) 连续使 \(|F_R(t)-F_R(t_0)|<\varepsilon\)。将 \(F(t)-F(t_0)\) 拆为两段尾部误差和中间的有限积分差，便有绝对值不超过 \(3\varepsilon\)。故 \(F\) 连续。
+\end{proof}
+
+绝对尾部 \(\sup_t\int_R^\infty|f(t,x)|\,\mathrm{d}x\to0\) 是上述条件的充分条件，但振荡有时能给出更精细的控制。考虑
+\[
+I(a)=\int_0^\infty e^{-ax}\frac{\sin x}{x}\,\mathrm{d}x,
+\quad a\geq0,
+\]
+其中 \(x=0\) 处用连续延拓解释。当 \(a>0\) 时积分绝对收敛，且在 \(a_0>0\) 附近，参数导数由 \(e^{-a_0x/2}\) 控制。因此
+\[
+I'(a)=-\int_0^\infty e^{-ax}\sin x\,\mathrm{d}x=-\frac1{1+a^2}.
+\]
+末一等式可对 \(e^{(-a+\mathrm{i})x}\) 求原函数后取虚部得到。又因 \(|\sin x/x|\leq1\)，有 \(|I(a)|\leq1/a\)，故 \(I(a)\to0\) 当 \(a\to\infty\)。于是
+\[
+I(a)=\int_a^\infty\frac{\mathrm{d}s}{1+s^2}
+=\frac\pi2-\arctan a\quad(a>0).
+\]
+要让 \(a\downarrow0\)，不能使用上述依赖 \(a_0\) 的控制函数。令 \(h_a(x)=e^{-ax}/x\)。对 \(S\geq R>0\) 分部积分，并利用 \(h_a\) 非负递减，得到
+\[
+\left|\int_R^S h_a(x)\sin x\,\mathrm{d}x\right|
+\leq h_a(R)+h_a(S)+\int_R^S|h_a'(x)|\,\mathrm{d}x
+=2h_a(R)\leq\frac2R.
+\]
+这个估计对全部 \(a\geq0\) 一致成立。有限区间上的积分又连续地依赖于 \(a\)，所以\cref{b2:prop:01-improper-uniform-tail}给出
+\[
+\int_0^\infty\frac{\sin x}{x}\,\mathrm{d}x=I(0)=\frac\pi2.
+\]
+此处是反常积分。在每个区间 \([k\pi+\pi/6,k\pi+5\pi/6]\) 上，\(|\sin x|\geq1/2\)；由调和级数发散可知绝对值积分发散，因而不能把这个结果解释成 \(\sin x/x\) 的 Lebesgue 可积性。
 
 \subsection{与第一卷收敛定理的关系}
 \label{b2:subsec:010304}
 
-待填充。
+第一卷的积分理论在这里承担三种不同工作。\term[dandiao-shoulian-dingli]{单调收敛定理}[monotone convergence theorem]处理非负递增逼近，允许极限积分为无穷；控制收敛处理有共同可积上界的极限，并给出 \(L^1\) 误差趋零；\term[fubini-dingli]{Fubini 定理}[Fubini's theorem]在绝对可积时交换积分次序。这些结果分别见第一卷定理 5.3.2、定理 5.3.5 和定理 7.3.2。
+% 跨卷引用：b1:thm:monotone-convergence、b1:thm:dominated-convergence，Section0503.tex；b1:thm:fubini，Section0703.tex。
+
+\ProseParagraphBreak
+
+例如，若 \(J\) 是有界区间，\((X,\mu)\) 为 \(\sigma\)-有限测度空间，\(q:J\times X\to\mathbb C\) 联合可测，并且 \(|q(s,x)|\leq g(x)\)、\(g\in L^1(\mu)\)，则
+\[
+\int_J\int_X|q(s,x)|\,\mathrm{d}\mu(x)\,\mathrm{d}s
+\leq |J|\cdot\|g\|_1<\infty.
+\]
+先由第一卷定理 7.3.1，即\term[tonelli-dingli]{Tonelli 定理}[Tonelli\textquotesingle s theorem]，把非负函数 \(|q|\) 的迭代积分识别为乘积积分，再由上述有限性得到乘积空间上的绝对可积。这就验证了交换 \(s\) 与 \(x\) 两重积分所需的绝对可积条件。如果还要把一个极限移入所得积分，则仍须另外核对相应收敛定理的假设。
+
+\ProseParagraphBreak
+
+实际计算时，先明确积分的意义，再写出需要交换的具体操作。对求导，应估计差商；对无穷区域，应控制尾部；对两重积分，应检查联合可测性与绝对可积性。上面的振荡例说明，一致尾部估计可以在没有全局可积控制函数时发挥作用，但它给出的结论仍须按照反常积分来理解。
+
+% 跨卷引用：b1:thm:tonelli，Book1/Part01/Chapter07/Section0703.tex，定理7.3.1。

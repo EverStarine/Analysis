@@ -2,24 +2,247 @@
 \section{幂级数}
 \label{b3:sec:0102}
 
-% TODO: 撰写本节正文。
+多项式可以直接求导，而无穷级数的求导必须受到收敛条件约束。幂级数的特殊之处在于：只要把讨论限制在收敛圆的内部，级数本身及它的各阶导数就都有统一控制。更深的一步是反过来证明，每个全纯函数局部都来自这样的级数。这个结论不能仅由 Cauchy--Riemann 方程的形式推出。
 
 \subsection{收敛半径}
 \label{b3:subsec:010201}
 
-待填充。
+固定 \(a\in\mathbb C\) 及复数列 \((c_n)_{n\geq0}\)。形如
+\[
+\sum_{n=0}^\infty c_n(z-a)^n
+\]
+的级数称为以 \(a\) 为中心的\term[miji-shu]{幂级数}[power series]。常数项为 \(c_0\)，在 \(z=a\) 处级数总是收敛。记 \(D(a,r)=\{z\in\mathbb C:|z-a|<r\}\)。
+\symidx{\(D(a,r)\)：中心为 \(a\)、半径为 \(r\) 的开圆盘}
+
+\ProseParagraphBreak
+
+下面的\term[cauchy-hadamard-gongshi]{Cauchy--Hadamard 公式}[Cauchy--Hadamard formula]从系数确定收敛的范围。
+
+\begin{theorem}[Cauchy--Hadamard]\label{b3:thm:01-power-radius}
+令 \(q=\limsup_{n\to\infty}|c_n|^{1/n}\)，并规定 \(1/0=\infty\)、\(1/\infty=0\)。则 \(R=1/q\) 满足：级数在 \(|z-a|<R\) 时绝对收敛，在 \(|z-a|>R\) 时发散。对任意 \(0<r<R\)，级数在闭圆盘 \(\overline{D(a,r)}\) 上绝对一致收敛。
+\end{theorem}
+\begin{proof}
+若 \(0<r<R\)，可选 \(b>q\) 使 \(br<1\)。由上极限的定义，对充分大的 \(n\) 有 \(|c_n|\leq b^n\)，故在 \(|z-a|\leq r\) 上，级数尾部由几何级数 \(\sum_n(br)^n\) 控制。它既证明绝对收敛，也给出与 \(z\) 无关的尾部误差估计。
+
+若 \(s=|z-a|>R\)，则可选 \(b<q\) 使 \(bs>1\)，并有无穷多个 \(n\) 满足 \(|c_n|^{1/n}>b\)。对这些指标，\(|c_n(z-a)^n|>(bs)^n\)，所以通项不趋于零。上述选择在 \(q=0\) 或 \(q=\infty\) 时仍按相应方向适用：前者任意有限闭圆盘上收敛，后者每个非中心点处发散。
+\end{proof}
+
+数 \(R\) 称为\term[shoulian-banjing]{收敛半径}[radius of convergence]。定理没有判定边界。半径同为 \(1\) 的三个级数
+\[
+\sum_{n=0}^\infty z^n,\quad
+\sum_{n=1}^\infty\frac{z^n}{n},\quad
+\sum_{n=1}^\infty\frac{z^n}{n^2}
+\]
+分别展示不同情形：第一个在单位圆上处处发散；第二个在 \(z=1\) 处发散、在 \(z=-1\) 处由交错级数判据收敛；第三个在整个闭单位圆盘上绝对一致收敛，因为尾部由 \(\sum n^{-2}\) 控制。因此，不能把开圆盘内的结论直接延到边界。
+
+\ProseParagraphBreak
+
+收敛半径还依赖展开中心。例如对 \(a\neq1\)，几何级数给出
+\[
+\frac1{1-z}=\frac1{1-a}\sum_{n=0}^\infty
+\left(\frac{z-a}{1-a}\right)^n,
+\quad |z-a|<|1-a|.
+\]
+由系数直接计算，半径恰为 \(|1-a|\)。同一个函数在不同中心的展开，能够覆盖的圆盘大小并不相同。
 
 \subsection{逐项求导}
 \label{b3:subsec:010202}
 
-待填充。
+一致收敛只控制函数值，一般并不自动保留导数。幂级数在较小圆盘上的优势，是微分所增加的多项式因子能够被几何衰减吸收。
+
+\begin{theorem}\label{b3:thm:01-power-differentiation}
+设幂级数 \(f(z)=\sum_{n=0}^\infty c_n(z-a)^n\) 的收敛半径 \(R>0\)。则 \(f\) 在 \(D(a,R)\) 上全纯，并可任意次\term[zhuxiang-qiudao]{逐项求导}[termwise differentiation]：
+\begin{equation}\label{b3:eq:01-power-derivatives}
+f^{(k)}(z)=\sum_{n=k}^\infty\frac{n!}{(n-k)!}c_n(z-a)^{n-k}
+\quad(k\geq1).
+\end{equation}
+各导数级数在任意闭子圆盘上一致收敛，收敛半径仍为 \(R\)。特别地，\(c_k=f^{(k)}(a)/k!\)。
+\end{theorem}
+\begin{proof}
+固定 \(0<r<\rho<R\)。由于级数在 \(a+\rho\) 收敛，通项有界，故存在 \(M\) 使 \(|c_n|\rho^n\leq M\)。于是对 \(|z-a|\leq r\)，有
+\[
+\left|\frac{n!}{(n-k)!}c_n(z-a)^{n-k}\right|
+\leq M\rho^{-k}n^k\left(\frac r\rho\right)^{n-k}.
+\]
+右侧关于 \(n\geq k\) 可求和，这可由相邻项比值趋于 \(r/\rho<1\) 验证。因而所有形式导数级数在闭子盘上都一致收敛，其和连续。
+
+先处理一阶。记部分和为 \(S_N\)，形式一阶导数级数的和为 \(g\)。当线段 \([z,z+h]\) 留在一个闭子盘中时，对多项式沿该线段积分得到
+\[
+S_N(z+h)-S_N(z)=h\int_0^1 S_N'(z+th)\,\mathrm{d}t.
+\]
+两组级数的一致收敛允许令 \(N\to\infty\)，故对 \(h\neq0\)，
+\[
+\frac{f(z+h)-f(z)}h=\int_0^1g(z+th)\,\mathrm{d}t.
+\]
+由 \(g\) 连续，右端在 \(h\to0\) 时趋于 \(g(z)\)。所以 \(f'=g\)。对导数级数重复同一论证，即得各阶公式。
+
+估计已经说明导数级数的半径不小于 \(R\)。反过来，若一阶导数级数在半径 \(s>0\) 处绝对收敛，则
+\[
+\sum_{n=1}^\infty|c_n|s^n
+\leq s\sum_{n=1}^\infty n|c_n|s^{n-1}<\infty.
+\]
+因此导数级数的收敛圆盘不能更大；逐阶应用便得到相同半径。最后代入 \(z=a\) 给出系数公式。
+\end{proof}
+
+公式\eqref{b3:eq:01-power-derivatives}也证明同一中心的幂级数表示唯一。每个系数由函数在中心的一个导数确定，不能在保持函数不变的同时任意调整系数。
 
 \subsection{解析函数}
 \label{b3:subsec:010203}
 
-待填充。
+\begin{definition}\label{b3:def:01-analytic}
+设 \(\Omega\subseteq\mathbb C\) 为开集，\(f:\Omega\to\mathbb C\)。若对每个 \(a\in\Omega\)，都存在 \(r>0\)、\(D(a,r)\subseteq\Omega\) 及一个幂级数，使
+\[
+f(z)=\sum_{n=0}^\infty c_n(z-a)^n\quad(z\in D(a,r)),
+\]
+则称 \(f\) 在 \(\Omega\) 上\term[jiexi]{解析}[analytic]，也称它为\term[jiexi-hanshu]{解析函数}[analytic function]。
+\end{definition}
+
+解析性是每个点附近的局部性质，不要求在整个定义域上使用一个中心的级数。由\cref{b3:thm:01-power-differentiation}，解析函数必全纯，且它的局部展开就是以 \(f^{(n)}(a)/n!\) 为系数的\term[taylor-ji-shu]{Taylor 级数}[Taylor series]。
+
+\begin{proposition}\label{b3:prop:01-power-recenter}
+一个收敛半径为 \(R>0\) 的幂级数之和，在其整个收敛圆盘上解析。更具体地，若 \(|b-a|<R\)，则对 \(|z-b|<R-|b-a|\)，
+\[
+f(z)=\sum_{k=0}^\infty\left(
+\sum_{n=k}^\infty\binom nk c_n(b-a)^{n-k}\right)(z-b)^k.
+\]
+\end{proposition}
+\begin{proof}
+固定 \(z\) 满足所写条件，令 \(q=|b-a|+|z-b|<R\)。二项式公式给出绝对值总和的控制
+\[
+\sum_{n=0}^\infty\sum_{k=0}^n
+\binom nk |c_n|\cdot|b-a|^{n-k}\cdot|z-b|^k
+=\sum_{n=0}^\infty|c_n|q^n<\infty.
+\]
+所以可以先按 \(n\) 展开 \(((b-a)+(z-b))^n\)，再按 \(k\) 合并：有限和重排不改变数值，绝对收敛使未计入部分的误差趋于零。得到的即为所述级数。内层系数按逐项微分公式等于 \(f^{(k)}(b)/k!\)，不依赖所选的 \(z\)。
+\end{proof}
+
+实变量中的无限次可微并不保证局部 Taylor 展开等于原函数。复变量的差商要求从所有方向趋近同一个值，这个约束更强。下面证明它足以推出解析性，证明过程中不预设 \(f'\) 连续。
 
 \subsection{全纯即解析}
 \label{b3:subsec:010204}
 
-待填充。
+本小节先建立一个圆盘内的积分公式。一般曲线、定义域拓扑与积分定理将在\chapref{b3:ch:02}中系统处理；这里的局部论证同时为该章提供起点。
+
+\ProseParagraphBreak
+
+对分段 \(C^1\) 曲线 \(\gamma:[\alpha,\beta]\to\mathbb C\) 和其像上的连续函数 \(h\)，定义\term[fu-quxian-jifen]{复曲线积分}[complex line integral]为
+\[
+\int_\gamma h(\zeta)\,\mathrm{d}\zeta
+\coloneqq\int_\alpha^\beta h\bigl(\gamma(t)\bigr)\cdot\gamma'(t)\,\mathrm{d}t.
+\]
+右端分为实部、虚部的一元积分。曲线长度为 \(\ell(\gamma)=\int_\alpha^\beta|\gamma'(t)|\,\mathrm{d}t\)，从而
+\begin{equation}\label{b3:eq:01-contour-estimate}
+\left|\int_\gamma h(\zeta)\,\mathrm{d}\zeta\right|
+\leq\ell(\gamma)\cdot\max_{\zeta\in\gamma}|h(\zeta)|.
+\end{equation}
+反向行进使积分变号，连接曲线使积分相加；这些性质直接来自一元换元与积分可加性。本小节的三角形和圆周都取逆时针方向。
+\symidx{\(\int_\gamma h(\zeta)\,\mathrm{d}\zeta\)：复曲线积分}
+
+\ProseParagraphBreak
+
+\term[goursat-dingli]{Goursat 定理}[Goursat's theorem]先给出三角形边界上的积分消失。
+
+\begin{lemma}[Goursat，三角形情形]\label{b3:lem:01-goursat-local}
+若 \(f\) 在一个闭三角形 \(T\) 的开邻域内全纯，则
+\[
+\int_{\partial T}f(\zeta)\,\mathrm{d}\zeta=0.
+\]
+\end{lemma}
+\begin{proof}
+将三边中点相连，把 \(T\) 分成四个相似小三角形。小三角形边界上的积分之和等于原积分，因为内部边以相反方向出现两次。故至少一个小三角形上的积分绝对值不小于原积分绝对值的四分之一。反复选择，得到嵌套闭三角形 \(T_n\)，其直径和周长均缩为原来的 \(2^{-n}\)，并有
+\[
+\left|\int_{\partial T}f\,\mathrm{d}\zeta\right|
+\leq4^n\left|\int_{\partial T_n}f\,\mathrm{d}\zeta\right|.
+\]
+嵌套紧集 \(T_n\) 的交为一点 \(p\)。在 \(p\) 处复可微意味着
+\[
+f(\zeta)=f(p)+f'(p)(\zeta-p)+\varepsilon(\zeta)(\zeta-p),
+\quad\varepsilon(\zeta)\to0\quad(\zeta\to p).
+\]
+在 \(p\) 处令 \(\varepsilon(p)=0\)。常数项与一次项在闭三角形上的积分为零，因为它们分别是 \(f(p)\zeta\) 和 \(f'(p)(\zeta-p)^2/2\) 的导数，沿各边使用一元微积分基本定理后端点项相消。对余项应用\eqref{b3:eq:01-contour-estimate}，得
+\[
+\left|\int_{\partial T}f\,\mathrm{d}\zeta\right|
+\leq\ell(\partial T)\cdot\operatorname{diam}(T)
+\cdot\sup_{\zeta\in T_n}|\varepsilon(\zeta)|.
+\]
+令 \(n\to\infty\)，右端趋于零，结论成立。
+\end{proof}
+
+这是 Goursat 定理的三角形形式。它只用了复导数在一个极限点处的存在，没有调用连续偏导数或平面 Green 公式。
+
+\begin{lemma}\label{b3:lem:01-punctured-primitive}
+设 \(D\) 为开圆盘，\(p\in D\)。若 \(h\) 在 \(D\) 上连续，在 \(D\setminus\{p\}\) 上全纯，则存在全纯函数 \(H\) 满足 \(H'=h\)。因此 \(h\) 沿 \(D\) 内任意分段 \(C^1\) 闭曲线的积分为零。
+\end{lemma}
+\begin{proof}
+先证明 \(h\) 沿每个闭三角形 \(T\subset D\) 的边界积分为零。把 \(T\) 均匀分成 \(4^n\) 个直径为原来 \(2^{-n}\) 的小三角形。不接触 \(p\) 的小三角形由\cref{b3:lem:01-goursat-local}积分为零。一个点至多属于这个三角网格中六个小三角形的闭包；其余可能不为零的积分之和，绝对值不超过
+\[
+6\cdot2^{-n}\ell(\partial T)\cdot\max_T|h|.
+\]
+内部边仍两两抵消。\(h\) 连续保证最大值有限，令 \(n\to\infty\) 即得三角形积分为零。若 \(p\notin T\)，直接用前一引理即可。
+
+固定 \(a\in D\)，沿线段定义 \(H(w)=\int_{[a,w]}h(\zeta)\,\mathrm{d}\zeta\)。圆盘凸性保证涉及的线段和三角形都留在 \(D\) 中。三角形积分为零给出
+\[
+H(w+v)-H(w)=\int_{[w,w+v]}h(\zeta)\,\mathrm{d}\zeta
+=v\int_0^1h(w+tv)\,\mathrm{d}t.
+\]
+三点共线时，同一等式由线段积分的可加性得到。除以 \(v\neq0\)，由连续性令 \(v\to0\)，便有 \(H'(w)=h(w)\)。最后，沿任一所述闭曲线应用链式法则，积分变为 \(H\circ\gamma\) 的端点差，故为零。
+\end{proof}
+
+满足 \(H'=h\) 的函数称为 \(h\) 的\term[yuanhanshu]{原函数}[primitive]。前一引理暂时允许一个点处未能确认复可微；这一点正是下一步处理商式所需的余地。
+
+\ProseParagraphBreak
+
+接着建立\term[cauchy-jifen-gongshi]{Cauchy 积分公式}[Cauchy's integral formula]在圆盘内的形式。
+
+\begin{lemma}[Cauchy 积分公式，圆盘情形]\label{b3:lem:01-disk-cauchy}
+设 \(f\) 在 \(D(a,R)\) 上全纯。若 \(0<r<R\)，则对 \(|z-a|<r\)，
+\begin{equation}\label{b3:eq:01-disk-cauchy}
+f(z)=\frac1{2\pi\mathrm{i}}\int_{|\zeta-a|=r}
+\frac{f(\zeta)}{\zeta-z}\,\mathrm{d}\zeta.
+\end{equation}
+圆周取逆时针方向。
+\end{lemma}
+\begin{proof}
+固定 \(z\)，令
+\[
+h(\zeta)=\begin{cases}
+\dfrac{f(\zeta)-f(z)}{\zeta-z},&\zeta\neq z,\\[4pt]
+f'(z),&\zeta=z.
+\end{cases}
+\]
+它在整个圆盘连续，在 \(z\) 以外全纯，由\cref{b3:lem:01-punctured-primitive}，其圆周积分为零。因此只需证明
+\[
+\int_{|\zeta-a|=r}\frac{\mathrm{d}\zeta}{\zeta-z}=2\pi\mathrm{i}.
+\]
+在该圆周上，几何级数
+\[
+\frac1{\zeta-z}=\sum_{n=0}^\infty
+\frac{(z-a)^n}{(\zeta-a)^{n+1}}
+\]
+一致收敛，因为 \(|z-a|/r<1\)。由\eqref{b3:eq:01-contour-estimate}可逐项积分。\(n=0\) 项沿 \(\zeta=a+r(\cos t+\mathrm{i}\sin t)\)、\(0\leq t\leq2\pi\) 参数化，积分为 \(2\pi\mathrm{i}\)；\(n\geq1\) 时，\((\zeta-a)^{-n-1}\) 有原函数 \(-\frac1n(\zeta-a)^{-n}\)，其闭曲线积分为零。把结果代回 \(h\) 的零积分，得到公式。
+\end{proof}
+
+公式\eqref{b3:eq:01-disk-cauchy}是 Cauchy 积分公式的局部版本。边界圆周上的函数值已经决定内部值；核函数 \((\zeta-z)^{-1}\) 的几何展开将把这种决定关系变成幂级数。
+
+\begin{theorem}[全纯与解析的等价性]\label{b3:thm:01-holomorphic-analytic}
+开集上的函数全纯，当且仅当它解析。若 \(f\) 在 \(D(a,R)\) 上全纯，则
+\begin{equation}\label{b3:eq:01-holomorphic-taylor}
+f(z)=\sum_{n=0}^\infty\frac{f^{(n)}(a)}{n!}(z-a)^n
+\quad(|z-a|<R).
+\end{equation}
+\end{theorem}
+\begin{proof}
+解析推出全纯已由逐项求导证明。反之，设 \(f\) 全纯，固定 \(0<r<R\)。在\eqref{b3:eq:01-disk-cauchy}中展开刚才的几何级数；在任意 \(|z-a|\leq\rho<r\) 上，它关于圆周变量一致收敛，乘以连续有界的 \(f(\zeta)\) 后仍可逐项积分。于是
+\[
+f(z)=\sum_{n=0}^\infty c_n(z-a)^n,
+\quad c_n=\frac1{2\pi\mathrm{i}}\int_{|\zeta-a|=r}
+\frac{f(\zeta)}{(\zeta-a)^{n+1}}\,\mathrm{d}\zeta.
+\]
+若 \(M_r=\max_{|\zeta-a|=r}|f(\zeta)|\)，则 \(|c_n|\leq M_r/r^n\)，所以所得幂级数至少在半径 \(r\) 内收敛。由逐项求导及系数唯一性，\(c_n=f^{(n)}(a)/n!\)，不依赖选择的 \(r\)。任意 \(|z-a|<R\) 都可放在一个 \(r<R\) 的圆盘内，故得到\eqref{b3:eq:01-holomorphic-taylor}。对一般开集，在每一点内取一个这样的圆盘即可。
+\end{proof}
+
+现在才可以断言：全纯函数拥有任意阶复导数，各阶导数连续且全纯。由 Cauchy--Riemann 关系，\(\partial_x f=f'\)、\(\partial_y f=\mathrm{i}f'\)，重复使用可知实部和虚部也都无限次可微。这个结论来自积分与幂级数论证，不能在 Goursat 定理的证明中倒过来充当前提。
+
+\ProseParagraphBreak
+
+本小节提前建立的只是局部积分工具。\chapref{b3:ch:02}将把三角形结论接入一般曲线与定义域的拓扑条件，并系统讨论积分公式的推论；本章接下来则先用解析性构造初等函数、控制零点并理解局部映射的形状。

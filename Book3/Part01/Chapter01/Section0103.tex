@@ -2,24 +2,282 @@
 \section{初等全纯函数}
 \label{b3:sec:0103}
 
-% TODO: 撰写本节正文。
+幂级数提供了构造全纯函数的直接方法。本节先把实变量的指数与三角函数延伸到复平面，再处理指数函数的局部逆。对数的困难来自不同点可以有同一个指数值：局部求逆没有障碍，沿闭曲线作全局选择却可能失败。最后讨论的 Möbius 变换则把代数运算与圆、直线的几何联系起来。
 
 \subsection{指数函数}
 \label{b3:subsec:010301}
 
-待填充。
+\begin{definition}
+\label{b3:def:01-elementary-exp}
+对 \(z\in\mathbb C\)，令
+\[
+\exp z\coloneqq\sum_{n=0}^{\infty}\frac{z^n}{n!},
+\quad e^z\coloneqq\exp z.
+\]
+这个函数称为复\term[zhishu-hanshu]{指数函数}[exponential function]。\symidx{\(\exp z=e^z\)：复指数函数}
+\end{definition}
+
+对每个固定的 \(R>0\)，相邻控制项 \(R^{n+1}/(n+1)!\) 与 \(R^n/n!\) 的比值趋于零。因此级数在每个闭圆盘上一致绝对收敛；由\cref{b3:thm:01-power-differentiation}，它在整个复平面上全纯，并可任意次逐项求导。实轴上的定义与实变量指数函数相同，这也可由实 Taylor 公式及其余项估计核对。下面的\term[euler-gongshi]{Euler 公式}[Euler's formula]进一步说明复指数与实三角函数之间的联系。
+
+\begin{proposition}[Euler 公式]
+\label{b3:prop:01-elementary-exp}
+复指数函数满足
+\[
+(e^z)'=e^z,
+\quad e^{z+w}=e^z\cdot e^w,
+\quad e^z\neq0.
+\]
+若 \(x,y\in\mathbb R\)，则
+\begin{equation}
+\label{b3:eq:01-elementary-euler}
+e^{x+\mathrm{i}y}=e^x\cdot(\cos y+\mathrm{i}\sin y),
+\quad |e^{x+\mathrm{i}y}|=e^x.
+\end{equation}
+此外，\(e^z=e^w\) 当且仅当 \(z-w\in2\pi\mathrm{i}\mathbb Z\)。
+\end{proposition}
+
+\begin{proof}
+逐项求导后把指标减一，得到导数公式。两个指数级数的绝对值级数均收敛，故其乘积可按总次数重新求和；总次数为 \(n\) 的项为
+\[
+\sum_{k=0}^{n}\frac{z^kw^{n-k}}{k!(n-k)!}
+=\frac{(z+w)^n}{n!}.
+\]
+这里重新求和的合法性来自绝对尾项控制：保留足够大的有限矩形后，遗漏项绝对值之和可由两个收敛的非负级数的尾和控制到任意小。于是得到加法公式。令 \(w=-z\)，可知 \(e^z\cdot e^{-z}=1\)，从而指数函数没有零点。
+
+把 \(e^{\mathrm{i}y}\) 的偶数次项与奇数次项分别收集，得到实余弦与实正弦的 Taylor 级数。实正弦、余弦的各阶导数绝对值不超过 \(1\)，Taylor 余项趋于零，因此
+\[
+e^{\mathrm{i}y}=\cos y+\mathrm{i}\sin y.
+\]
+再用加法公式及实恒等式 \(\cos^2y+\sin^2y=1\)，便得到\eqref{b3:eq:01-elementary-euler}。若 \(e^{z-w}=1\)，模长公式先给出 \(\operatorname{Re}(z-w)=0\)，实三角函数的取值再给出 \(\operatorname{Im}(z-w)\in2\pi\mathbb Z\)。反向结论直接代入即可。
+\end{proof}
+
+式\eqref{b3:eq:01-elementary-euler}把复指数分成径向伸缩与转动两部分。特别地，\(2\pi\mathrm{i}\) 是指数函数的周期，而指数函数的导数处处不为零。因此，导数不消失只能保证局部的可逆性，不能保证在整个定义域上单射。
 
 \subsection{对数函数}
 \label{b3:subsec:010302}
 
-待填充。
+对非零复数 \(z\)，方程 \(e^w=z\) 的解的实部必须等于 \(\log|z|\)，虚部则是 \(z\) 的一个辐角；所有解恰好相差 \(2\pi\mathrm{i}\) 的整数倍。要把这些解组成一个函数，需要连续地选取辐角。
+
+\begin{definition}
+\label{b3:def:01-elementary-log}
+在割平面 \(D\coloneqq\mathbb C\setminus(-\infty,0]\) 上，取满足
+\[
+z=|z|e^{\mathrm{i}\theta},\quad -\pi<\theta<\pi
+\]
+的唯一实数 \(\theta\)，记为 \(\operatorname{Arg}z\)，称为\term[fujiao-zhuzhi]{辐角主值}[principal argument]。函数
+\[
+\operatorname{Log}z\coloneqq\log|z|+\mathrm{i}\operatorname{Arg}z
+\]
+称为\term[duishu-zhuzhi]{对数主值}[principal logarithm]。\symidx{\(\operatorname{Arg}z\)：取值于 \((-\pi,\pi)\) 的辐角主值}\symidx{\(\operatorname{Log}z\)：割平面上的对数主值}
+\end{definition}
+
+这里实数的对数仍记为 \(\log\)。本书把负实轴连同原点从主值的定义域中删去；另有把非零复数的辐角主值取在 \((-\pi,\pi]\) 的约定。\footnote{参见王以忠《工程复变函数与积分变换》（清华大学出版社，2021）\href{https://www.tup.tsinghua.edu.cn/upload/books/yz/091462-01.pdf}{出版社样章}印刷第 8 页。该处使用 \((-\pi,\pi]\) 选取点值；本节为讨论全纯分支而删去负实轴。}给负实数指定端点辐角，不能使主值在那里连续。
+
+\begin{proposition}
+\label{b3:prop:01-elementary-principal-log}
+对数主值在 \(D\) 上全纯，并且
+\[
+\operatorname{Log}1=0,
+\quad e^{\operatorname{Log}z}=z,
+\quad (\operatorname{Log}z)'=\frac1z.
+\]
+当且仅当 \(-\pi<\operatorname{Im}w<\pi\) 时，有 \(e^w\in D\) 且 \(\operatorname{Log}(e^w)=w\)。
+\end{proposition}
+
+\begin{proof}
+写 \(z=x+\mathrm{i}y\)、\(r=(x^2+y^2)^{1/2}\)。在 \(D\) 上有 \(r+x>0\)，实半角公式给出
+\[
+\operatorname{Arg}(x+\mathrm{i}y)
+=2\arctan\frac{y}{r+x}.
+\]
+右边取值于 \((-\pi,\pi)\)，其余弦为 \(x/r\)、正弦为 \(y/r\)，所以确实是定义中的唯一辐角。这个表达式还证明辐角主值是光滑的。对其求实偏导，得到
+\[
+(\operatorname{Arg}z)_x=-\frac{y}{r^2},
+\quad (\operatorname{Arg}z)_y=\frac{x}{r^2}.
+\]
+另一方面，\(\log r\) 的两个偏导为 \(x/r^2\) 与 \(y/r^2\)。它们满足 Cauchy--Riemann 方程，由\cref{b3:cor:01-continuous-partial-criterion}可知主对数全纯，且其复导数为
+\[
+\frac{x}{r^2}-\mathrm{i}\frac{y}{r^2}=\frac1z.
+\]
+其余断言由定义及\cref{b3:prop:01-elementary-exp}得出：指数值唯一确定实部，并把虚部确定到模 \(2\pi\)；主值恰选取位于 \((-\pi,\pi)\) 的代表。
+\end{proof}
+
+主值不能无条件保留实对数的乘法规则。例如取 \(z=e^{3\pi\mathrm{i}/4}\)，则 \(z^2=-\mathrm{i}\)，所以
+\[
+\operatorname{Log}(z^2)=-\frac{\pi\mathrm{i}}2,
+\quad 2\operatorname{Log}z=\frac{3\pi\mathrm{i}}2.
+\]
+两者相差一个完整的周期。类似地，当正数 \(r\) 固定时，从负实轴的上侧和下侧趋近 \(-r\)，主对数分别趋于 \(\log r+\pi\mathrm{i}\) 与 \(\log r-\pi\mathrm{i}\)。这解释了为什么不能把两侧的主值直接接起来。
+
+\begin{definition}
+\label{b3:def:01-elementary-log-branch}
+设 \(U\subseteq\mathbb C\setminus\{0\}\) 是开集。若连续函数 \(L\colon U\rightarrow\mathbb C\) 满足 \(e^{L(z)}=z\)，则称 \(L\) 为 \(U\) 上的一个\term[duishu-fenzhi]{对数分支}[branch of the logarithm]。
+\end{definition}
+
+\begin{proposition}
+\label{b3:prop:01-elementary-local-log}
+每个非零点都有一个邻域，在该邻域上存在全纯的对数分支。任何连续的对数分支自动全纯，导数为 \(1/z\)；在连通开集上，两个分支之差是某个固定的 \(2\pi\mathrm{i}k\)，其中 \(k\in\mathbb Z\)。但整个 \(\mathbb C\setminus\{0\}\) 上不存在连续的对数分支。
+\end{proposition}
+
+\begin{proof}
+固定 \(z_0\neq0\)，选取 \(\ell_0\) 使 \(e^{\ell_0}=z_0\)。当 \(|z-z_0|<|z_0|\) 时，\(z/z_0\) 的实部为正，故
+\[
+L_0(z)=\ell_0+\operatorname{Log}(z/z_0)
+\]
+有定义，且是所需的局部分支。若 \(L\) 是同一邻域上的任意连续分支，则 \((L-L_0)/(2\pi\mathrm{i})\) 是整数值连续函数，在较小的连通邻域上恒定。因此 \(L\) 局部全纯且 \(L'=1/z\)。同一理由说明连通开集上两个分支的差恒定。
+
+若整个去心平面上存在连续分支 \(L\)，令
+\[
+h(t)=\frac{L(e^{\mathrm{i}t})-\mathrm{i}t}{2\pi\mathrm{i}},
+\quad 0\leq t\leq2\pi.
+\]
+由指数函数的周期刻画，\(h\) 是连续的整数值函数，因而恒定。但 \(e^{2\pi\mathrm{i}}=1\) 使 \(h(2\pi)=h(0)-1\)，矛盾。
+\end{proof}
+
+有了一个分支 \(L\)，便可在其定义域上令 \(z^{\alpha}=\exp(\alpha L(z))\)。改变分支会把这个值乘以 \(e^{2\pi\mathrm{i}k\alpha}\)。整数幂与分支无关，平方根等非整数幂则必须交代所选分支。\subsecref{b3:subsec:010404}构造一个非零全纯函数的局部根时，只需在像靠近某个非零值的小邻域内使用这里的局部分支。
 
 \subsection{三角函数}
 \label{b3:subsec:010303}
 
-待填充。
+\begin{definition}
+\label{b3:def:01-elementary-trigonometric}
+在复平面上定义\term[zhengxian-hanshu]{正弦函数}[sine function]与\term[yuxian-hanshu]{余弦函数}[cosine function]为
+\[
+\sin z\coloneqq\frac{e^{\mathrm{i}z}-e^{-\mathrm{i}z}}{2\mathrm{i}},
+\quad \cos z\coloneqq\frac{e^{\mathrm{i}z}+e^{-\mathrm{i}z}}2.
+\]
+\symidx{\(\sin z\)：复正弦函数}\symidx{\(\cos z\)：复余弦函数}
+\end{definition}
+
+由 Euler 公式，这些定义在实轴上还原通常的正弦与余弦。求导及相乘给出
+\[
+(\sin z)'=\cos z,
+\quad (\cos z)'=-\sin z,
+\quad \sin^2z+\cos^2z=1.
+\]
+例如最后一个等式来自
+\[
+\frac{(e^{\mathrm{i}z}+e^{-\mathrm{i}z})^2
+-(e^{\mathrm{i}z}-e^{-\mathrm{i}z})^2}{4}=1.
+\]
+把指数的加法公式代入定义，还得到
+\[
+\begin{aligned}
+\sin(z+w)&=\sin z\cdot\cos w+\cos z\cdot\sin w,\\
+\cos(z+w)&=\cos z\cdot\cos w-\sin z\cdot\sin w.
+\end{aligned}
+\]
+同样，由指数级数的奇偶项分别得到
+\[
+\sin z=\sum_{n=0}^{\infty}\frac{(-1)^nz^{2n+1}}{(2n+1)!},
+\quad
+\cos z=\sum_{n=0}^{\infty}\frac{(-1)^nz^{2n}}{(2n)!}.
+\]
+它们都是整个复平面上的全纯函数。由指数函数的周期刻画，\(\sin z=0\) 恰在 \(z\in\pi\mathbb Z\) 时发生，\(\cos z=0\) 恰在 \(z\in\pi/2+\pi\mathbb Z\) 时发生；例如前者等价于 \(e^{2\mathrm{i}z}=1\)，后者等价于 \(e^{2\mathrm{i}z}=-1\)。
+
+\ProseParagraphBreak
+复三角函数保留上述恒等式，却不保留实轴上的有界性。沿虚轴有
+\[
+\sin(\mathrm{i}y)=\frac{\mathrm{i}}2(e^y-e^{-y}),
+\quad \cos(\mathrm{i}y)=\frac12(e^y+e^{-y}),
+\quad y\in\mathbb R.
+\]
+当 \(y\rightarrow+\infty\) 时，两者的模都以指数速度增长。恒等式 \(\sin^2z+\cos^2z=1\) 中的平方没有复共轭，因而不能推出 \(|\sin z|^2+|\cos z|^2=1\)。计算复函数的大小时，代数恒等式与含模估计必须分别处理。
 
 \subsection{Möbius 变换}
 \label{b3:subsec:010304}
 
-待填充。
+分式线性函数可能在一个有限点没有有限值。把这个值解释为无穷远点以后，它们可以作为整个扩充平面上的可逆映射来讨论。
+
+\begin{definition}
+\label{b3:def:01-elementary-extended-plane}
+在复平面上添加一个点 \(\infty\)，得到\term[kuochong-fu-pingmian]{扩充复平面}[extended complex plane]
+\[
+% 零宽核避免 XeTeX 对 AMS 单字母加 unicode-math 重音时的字体错误。
+\widehat{\mathbb C\kern0pt}\coloneqq\mathbb C\cup\{\infty\}.
+\]
+\symidx{\(\widehat{\mathbb C\kern0pt}\)：扩充复平面}
+无穷远点的基本邻域取为 \(\{\infty\}\cup\{z:|z|>R\}\)，其中 \(R>0\)。在这样的邻域内使用坐标 \(\zeta=1/z\)，并规定无穷远点对应 \(\zeta=0\)。
+\end{definition}
+
+讨论映射在无穷远点附近的连续性或全纯性，是指改用上述坐标以后讨论相应的普通函数；若函数值也为无穷远，则目标同样使用倒数坐标。例如 \(z\mapsto1/z\) 在扩充平面上交换 \(0\) 与 \(\infty\)，在相应坐标中就是恒等函数。本节只需这两张坐标图，不预先使用一般曲面的理论。
+
+\begin{definition}
+\label{b3:def:01-elementary-mobius}
+设 \(a,b,c,d\in\mathbb C\) 且 \(ad-bc\neq0\)。在分母不为零处定义
+\[
+T(z)=\frac{az+b}{cz+d}.
+\]
+若 \(c\neq0\)，补定义 \(T(-d/c)=\infty\)、\(T(\infty)=a/c\)；若 \(c=0\)，补定义 \(T(\infty)=\infty\)。这样得到的扩充平面上的映射称为\term[mobius-bianhuan]{Möbius 变换}[Möbius transformation]，也称分式线性变换。\footnote{“分式线性变换”见王晓光《复变函数》（高等教育出版社，2025）第十三章的\href{https://xuanshu.hep.com.cn/front/h5Mobile/bookDetails?bookId=68598849e119ac9729fe438b}{出版社目录}。}\termsee[fenshi-xianxing-bianhuan]{分式线性变换}{Möbius 变换}
+\end{definition}
+
+\begin{proposition}
+\label{b3:prop:01-elementary-mobius-inverse}
+每个 Möbius 变换都是扩充平面上的连续双射，其逆变换为
+\[
+T^{-1}(w)=\frac{dw-b}{-cw+a},
+\]
+其中无穷值按定义中的规则解释。在有限且函数值有限的点处，
+\[
+T'(z)=\frac{ad-bc}{(cz+d)^2}\neq0.
+\]
+在源与目标的其他坐标中，它也全纯且导数不为零。
+\end{proposition}
+
+\begin{proof}
+令 \(\Delta=ad-bc\)。从 \(w(cz+d)=az+b\) 解出 \(z\)，得到逆变换公式；其系数行列式也是 \(\Delta\neq0\)，且代入补定义的特殊点仍互为逆。因此映射是双射，普通点处的连续性和导数公式由商法则得到。
+
+若 \(c\neq0\)，在 \(z_0=-d/c\) 附近给目标使用倒数坐标，所得函数为
+\[
+\frac1{T(z)}=\frac{cz+d}{az+b}.
+\]
+分母在 \(z_0\) 处等于 \(-\Delta/c\neq0\)，导数在该点为 \(-c^2/\Delta\neq0\)。在源点 \(\infty\) 附近令 \(z=1/\zeta\)，则
+\[
+T(1/\zeta)=\frac{a+b\zeta}{c+d\zeta},
+\]
+右边在 \(\zeta=0\) 处全纯，导数为 \(-\Delta/c^2\neq0\)。若 \(c=0\)，则 \(a,d\neq0\)，在源与目标同时使用倒数坐标，得到
+\[
+\frac1{T(1/\zeta)}=\frac{d\zeta}{a+b\zeta},
+\]
+其在零点处的导数为 \(d/a\neq0\)。这些式子同时证明所补无穷值处的连续性及局部全纯性。
+\end{proof}
+
+下面把圆与直线放在一起讨论。圆取通常的有限半径圆，直线则补入无穷远点；这一约定使 Möbius 变换的几何性质能够统一表述。
+
+\begin{proposition}
+\label{b3:prop:01-elementary-mobius-circles}
+Möbius 变换把每个圆或直线双射到一个圆或直线。
+\end{proposition}
+
+\begin{proof}
+圆或直线的有限部分统一写成
+\[
+A|z|^2+Bz+\overline B\,\overline z+C=0,
+\quad A,C\in\mathbb R,
+\quad |B|^2-AC>0.
+\]
+若 \(A\neq0\)，配方后这是圆心为 \(-\overline B/A\)、半径为 \(\sqrt{|B|^2-AC}/|A|\) 的圆；若 \(A=0\)，则 \(B\neq0\)，方程给出一条直线，并按约定补入 \(\infty\)。
+
+平移和非零复数乘法把圆变为圆、直线变为直线：例如代入 \(z=(w-\beta)/\alpha\)、乘以 \(|\alpha|^2\)，所得方程仍具同一形式，且新系数的判别量为 \(|\alpha|^2\cdot\bigl(|B|^2-AC\bigr)>0\)。对于倒数变换 \(w=1/z\)，在 \(w\neq0\) 处代入并乘以 \(|w|^2\)，得到
+\[
+C|w|^2+\overline B w+B\overline w+A=0.
+\]
+判别量没有改变。原方程含有 \(0\) 当且仅当 \(C=0\)，恰与像方程表示直线、因而含有 \(\infty\) 对应；原方程表示直线当且仅当 \(A=0\)，恰与像中含有 \(0\) 对应。所以特殊点也包含在这个对应中。
+
+当 \(c=0\) 时，\(T\) 本身是非退化的仿射变换；当 \(c\neq0\) 时，可以分解为
+\[
+T(z)=\frac ac-\frac{ad-bc}{c^2}\cdot\frac1{z+d/c}.
+\]
+这是平移、倒数变换、非零复数乘法与平移的复合。前面的计算证明其像是圆或直线，逆变换又保证映射到的是整个圆或整条直线。
+\end{proof}
+
+一个常用例子是
+\[
+T(z)=\frac{z-\mathrm{i}}{z+\mathrm{i}}.
+\]
+当 \(\operatorname{Im}z>0\) 时，\(|z+\mathrm{i}|^2-|z-\mathrm{i}|^2=4\operatorname{Im}z>0\)，故 \(|T(z)|<1\)。反过来，由 \(z=\mathrm{i}(1+w)/(1-w)\) 算出
+\[
+\operatorname{Im}z=\frac{1-|w|^2}{|1-w|^2}>0
+\quad (|w|<1).
+\]
+因此这个变换把上半平面双射到单位圆盘；它把扩充实轴送到单位圆周，无穷远点对应圆周上的 \(1\)。这类显式坐标变换使半平面和圆盘上的问题可以相互转移，也为后面的共形几何提供了最初的模型。

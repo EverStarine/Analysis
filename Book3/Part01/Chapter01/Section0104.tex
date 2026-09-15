@@ -2,24 +2,141 @@
 \section{局部结构}
 \label{b3:sec:0104}
 
-% TODO: 撰写本节正文。
+局部幂级数把函数在一点附近的行为分成两部分：最先出现的非零项确定主要形状，其后的项给出可控制的修正。零点是否孤立、函数能否求逆、像集是否开放，都可以沿着这条线索理解。
 
 \subsection{孤立零点}
 \label{b3:subsec:010401}
 
-待填充。
+\begin{definition}\label{b3:def:01-zero-order}
+设 \(f\) 在 \(a\) 附近全纯，且 \(f(a)=0\)。若存在正整数 \(m\)，使
+\[
+f(a)=f'(a)=\cdots=f^{(m-1)}(a)=0,
+\quad f^{(m)}(a)\neq0,
+\]
+则称 \(a\) 是 \(f\) 的 \(m\) 阶零点，\(m\) 称为\term[lingdian-jieshu]{零点阶数}[order of a zero]，记为 \(\operatorname{ord}_a f\)。\(m=1\) 时称为\term[dan-lingdian]{单零点}[simple zero]。若 \(a\) 的某邻域内没有其他零点，则称 \(a\) 为\term[guli-lingdian]{孤立零点}[isolated zero]。
+\end{definition}
+\symidx{\(\operatorname{ord}_a f\)：全纯函数在 \(a\) 处的零点阶数}
+
+\begin{proposition}\label{b3:prop:01-zero-factorization}
+设 \(f\) 在 \(a\) 附近全纯，\(f(a)=0\)。则恰有以下两种情形之一：\(f\) 在 \(a\) 的一个邻域内恒为零；或存在唯一正整数 \(m\) 和一个在 \(a\) 附近全纯的函数 \(g\)，使
+\begin{equation}\label{b3:eq:01-zero-factorization}
+f(z)=(z-a)^m\cdot g(z),
+\quad g(a)\neq0.
+\end{equation}
+后一种情形中，\(a\) 是孤立零点，且阶数为 \(m\)。
+\end{proposition}
+\begin{proof}
+在 \(a\) 处使用\eqref{b3:eq:01-holomorphic-taylor}。若所有系数都为零，函数就在一个圆盘内恒为零。否则，令 \(m\geq1\) 为第一个非零系数的指标。提出 \((z-a)^m\)，余下级数
+\[
+g(z)=\sum_{k=0}^\infty\frac{f^{(m+k)}(a)}{(m+k)!}(z-a)^k
+\]
+仍在原圆盘内收敛并全纯，而且 \(g(a)=f^{(m)}(a)/m!\neq0\)。由连续性，在更小的圆盘内有 \(|g(z)|\geq|g(a)|/2>0\)，所以其中只有 \(a\) 一个零点。系数唯一性同时确定 \(m\)；在 \(z\neq a\) 处 \(g\) 由商式唯一确定，在 \(a\) 处再由连续性确定。
+\end{proof}
+
+例如 \(e^z-1\) 在零点处的一阶系数为 \(1\)，所以零点是单的；\(1-\cos z=z^2/2+\cdots\) 在原点的零点阶数为 \(2\)。若 \(f,g\) 在 \(a\) 的零点阶数分别为 \(m,n\)，相乘其局部分解便有
+\[
+\operatorname{ord}_a(fg)=m+n.
+\]
+阶数记录的是最早非零项，求和时可能因首项抵消而升高，不能把乘法规则照搬到加法。
 
 \subsection{恒等定理}
 \label{b3:subsec:010402}
 
-待填充。
+一个零点的附近可以由幂级数控制；要把局部信息传遍定义域，还需要连通性。\term[hengdeng-dingli]{恒等定理}[identity theorem]，也称唯一性定理或惟一性定理，\footnote{王晓光《复变函数》（高等教育出版社，2025）第 11.3 节的\href{https://xuanshu.hep.com.cn/front/h5Mobile/bookDetails?bookId=68598849e119ac9729fe438b}{出版社目录}用“唯一性定理”；钟玉泉《复变函数论》（第五版，高等教育出版社，2021）第四章第 4 节的\href{https://xuanshu.hep.com.cn/front/book/findBookDetails?bookId=60202746966feeeca73340f0}{出版社目录}用“惟一性定理”。}\termsee[weiyixing-dingli]{唯一性定理}{恒等定理}\termsee[weiyixing-dingli-old]{惟一性定理}{恒等定理}说明，在区域内部积累的一列相等函数值，已经足以确定整个全纯函数。
 
-\subsection{局部反函数定理}
+\begin{theorem}[恒等定理]\label{b3:thm:01-identity}
+设 \(\Omega\subseteq\mathbb C\) 为区域，\(f,g\) 在 \(\Omega\) 上全纯。若集合 \(\{z\in\Omega:f(z)=g(z)\}\) 在 \(\Omega\) 内有一个聚点，则 \(f=g\) 于整个 \(\Omega\)。
+\end{theorem}
+\begin{proof}
+令 \(h=f-g\)，设所述聚点为 \(a\in\Omega\)。由连续性，\(h(a)=0\)。\Cref{b3:prop:01-zero-factorization}排除了有限阶零点，因为那会使 \(a\) 附近没有其他零点。因此 \(h\) 在 \(a\) 的某邻域内恒为零。
+
+令 \(E\) 为 \(\Omega\) 中那些具有恒零邻域的点组成的集合。它非空且开；由 Taylor 展开，亦可写为
+\[
+E=\bigcap_{k=0}^\infty\{z\in\Omega:h^{(k)}(z)=0\}.
+\]
+各阶导数连续，所以 \(E\) 在 \(\Omega\) 中闭。区域连通性使非空的开闭子集 \(E\) 等于 \(\Omega\)，结论得证。
+\end{proof}
+
+\begin{corollary}\label{b3:cor:01-discrete-zeros}
+区域上不恒为零的全纯函数只有孤立零点，并且在该区域的每个紧子集内只有有限个零点。
+\end{corollary}
+\begin{proof}
+若有零点不是有限阶，\cref{b3:prop:01-zero-factorization}给出恒零邻域，再由恒等定理得到全域恒零，矛盾。所以每个零点都孤立。若紧集内有无穷多个不同零点，紧致性给出其中一列的聚点；聚点仍在区域内，再次与恒等定理矛盾。
+\end{proof}
+
+聚点位于区域内部这一条件不能删去。函数 \(\sin(\pi/z)\) 在 \(\mathbb C\setminus\{0\}\) 上全纯，具有零点 \(1/n\)、\(n\geq1\)，却不恒为零；这些零点的聚点 \(0\) 不在定义域内。连通性也有自己的作用：在两个不交圆盘上分别取常数 \(0\) 和 \(1\)，得到一个全纯函数，它在一个圆盘内恒为零，却不能因此确定另一个圆盘上的值。
+
+\ProseParagraphBreak
+
+一个常用后果是：若两个全纯函数在区域内的一段实区间上相等，则它们在整个区域相等。实区间在复平面中没有内部，但它拥有位于定义域内的聚点。恒等定理所用的是聚点，而不是相等集合具有二维内部。
+
+\subsection{局部逆函数定理}
 \label{b3:subsec:010403}
 
-待填充。
+复导数不为零时，微分是可逆的旋转伸缩。局部\term[ni-hanshu-dingli]{逆函数定理}[inverse function theorem]把这一点上的可逆性提升为邻域内函数的可逆性。本书沿用第一、二卷的“逆函数”主称。
+
+\begin{theorem}[局部逆函数]\label{b3:thm:01-local-inverse}
+设 \(f\) 在 \(a\) 附近全纯，且 \(f'(a)\neq0\)。则存在开邻域 \(U\ni a\)、\(V\ni f(a)\)，使 \(f:U\to V\) 为双射，其逆函数 \(h\) 全纯，并满足
+\[
+h'(w)=\frac1{f'\bigl(h(w)\bigr)}\quad(w\in V).
+\]
+\end{theorem}
+\begin{proof}
+由\cref{b3:thm:01-holomorphic-analytic}，将 \(f\) 看作 \(\mathbb R^2\) 间的映射时，它为 \(C^1\)。其在 \(a\) 处的实微分为乘以 \(f'(a)\) 的复线性映射，Jacobi 行列式为 \(|f'(a)|^2>0\)。第一卷引理 18.1.2 给出的实逆函数定理于是提供邻域间的 \(C^1\) 逆映射。还可缩小 \(U\)，使 \(f'\) 在 \(U\) 上处处非零，并把 \(V\) 换为 \(f(U)\)；实逆映射的连续性保证这个像仍是开邻域。
+
+固定 \(w_0\in V\)，记 \(z_0=h(w_0)\)。当 \(w\neq w_0\) 且 \(w\to w_0\) 时，由逆映射连续性，\(z=h(w)\to z_0\)，并有
+\[
+\frac{h(w)-h(w_0)}{w-w_0}
+=\left(\frac{f(z)-f(z_0)}{z-z_0}\right)^{-1}
+\longrightarrow\frac1{f'(z_0)}.
+\]
+所以逆映射在每个点复可微，得到结论。
+\end{proof}
+% 跨卷引用：Book1/Part03/Chapter18/Section1801.tex，b1:lem:level-set-local-inverse，当前引理18.1.2；完整实逆函数证明不在本卷重复。
+
+例如指数函数处处导数非零，因此每一点附近都可求全纯逆函数；但 \(e^{z+2\pi\mathrm{i}}=e^z\)，它在整个复平面上并非单射。局部求逆只确定一张附近的分支，不消除全局的周期或绕行问题。
 
 \subsection{开映射定理}
 \label{b3:subsec:010404}
 
-待填充。
+在导数为零的点，局部逆函数定理不再适用，但全纯函数的像仍有明确的局部形状。先把高阶项吸收到一个新的局部坐标中。
+
+\begin{proposition}[局部标准形]\label{b3:prop:01-local-normal-form}
+设 \(f\) 在 \(a\) 附近全纯，且 \(f-f(a)\) 不在 \(a\) 附近恒为零。令其零点阶数为 \(m\geq1\)。则存在开邻域 \(U\ni a\)、数 \(r>0\) 和全纯双射 \(\phi:U\to D(0,r)\)，使 \(\phi(a)=0\)、\(\phi'(a)\neq0\)，并有
+\begin{equation}\label{b3:eq:01-local-normal-form}
+f(z)=f(a)+\phi(z)^m\quad(z\in U).
+\end{equation}
+\end{proposition}
+\begin{proof}
+由零点分解，\(f(z)-f(a)=(z-a)^m\cdot g(z)\)，其中 \(g(a)\neq0\)。取 \(c\in\mathbb C\) 满足 \(c^m=g(a)\)；这样的数可由非零复数的极坐标表示取得。缩小圆盘后，使 \(|g(z)/g(a)-1|<1/2\)，从而 \(g(z)/g(a)\) 落在对数主支的定义域中。利用\cref{b3:prop:01-elementary-principal-log}，定义
+\[
+q(z)=c\cdot\exp\left(\frac1m\operatorname{Log}\frac{g(z)}{g(a)}\right).
+\]
+它全纯，且 \(q(a)=c\)、\(q(z)^m=g(z)\)。令 \(\phi(z)=(z-a)\cdot q(z)\)，则 \(\phi'(a)=c\neq0\)。由\cref{b3:thm:01-local-inverse}，它在 \(a\) 的某邻域上可逆。其像包含一个 \(D(0,r)\)，将定义域限制到这个圆盘的原像，就得到所需的 \(U\) 和公式。
+\end{proof}
+
+当 \(m=1\) 时，这是可逆的局部坐标变换；当 \(m\geq2\) 时，函数在新坐标中等于 \(m\) 次幂。这里开根只针对一个始终靠近非零值的局部因子，未声称一般零点函数或任意区域上的非零函数都存在单值全纯根。
+
+\begin{theorem}[开映射]\label{b3:thm:01-open-mapping}
+区域 \(\Omega\) 上的非常值全纯函数 \(f\) 是\term[kai-yingshe]{开映射}[open map]：对任意开集 \(O\subseteq\Omega\)，像 \(f(O)\) 在 \(\mathbb C\) 中开。这个结论称为\term[kai-yingshe-dingli]{开映射定理}[open mapping theorem]。
+\end{theorem}
+\begin{proof}
+任取 \(a\in O\)。恒等定理说明 \(f-f(a)\) 不会在 \(a\) 附近恒零，否则 \(f\) 将在整个 \(\Omega\) 上为常数。将\cref{b3:prop:01-local-normal-form}的邻域取在 \(O\) 内，得到 \(f(z)=f(a)+\phi(z)^m\)，且 \(\phi(U)=D(0,r)\)。幂映射把 \(D(0,r)\) 满射到 \(D(0,r^m)\)：任意非零数 \(w\) 的 \(m\) 次根均有模 \(|w|^{1/m}\)，零的原像为零。因此
+\[
+D\bigl(f(a),r^m\bigr)=f(U)\subseteq f(O).
+\]
+像中每个点都是内点，故 \(f(O)\) 开。
+\end{proof}
+
+\begin{corollary}\label{b3:cor:01-local-injectivity}
+全纯函数在一点的某邻域内单射，当且仅当它在该点的导数不为零。更一般地，在\eqref{b3:eq:01-local-normal-form}的邻域内，每个满足 \(0<|w-f(a)|<r^m\) 的值 \(w\) 恰有 \(m\) 个不同原像。
+\end{corollary}
+\begin{proof}
+方程 \(f(z)=w\) 等价于 \(\phi(z)^m=w-f(a)\)。右端非零时有恰好 \(m\) 个不同的 \(m\) 次根，均落在 \(D(0,r)\) 内，再由 \(\phi\) 的双射性得到相同数目的原像。若导数为零而函数不局部恒定，则 \(m\geq2\)。对任意给定的 \(a\) 的邻域，都可在其中取上述标准形邻域，得到多个原像，所以原邻域上不能单射；局部恒定时也不能单射。反方向由局部逆函数定理得到。
+\end{proof}
+
+函数 \(z\mapsto z^m\) 在 \(m\geq2\) 时提供最直接的例子：零点处导数为零，但每个小圆盘仍映为一个圆盘。开映射要求像含有邻域，局部单射要求不同点不重合，它们是不同的性质。对 \(z\mapsto|z|^2\) 这样的实可微函数，小圆盘的像只落在实轴上，开映射结论则不成立。
+
+\ProseParagraphBreak
+
+至此，复差商、积分公式、局部幂级数和映射形状形成了一条完整的联系。\chapref{b3:ch:02}将从一般曲线重新整理积分语言，并把局部 Cauchy 公式发展为估计与全局结论；这里得到的局部结果也会为随后讨论奇点、零点计数和解析延拓提供起点。

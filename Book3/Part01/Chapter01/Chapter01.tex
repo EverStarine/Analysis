@@ -4,13 +4,32 @@
 \BookChapterNumber{b3:ch:01}
 % 本章摘要（不计入编号）
 \begin{chapterabstract}
-待填充。
+复导数要求差商从所有方向趋近同一个值。这个局部条件最终会迫使函数具有收敛的幂级数展开，带来远强于实可微的刚性。本章从复差商与 Cauchy--Riemann 方程开始，证明幂级数的收敛与微分性质，再借助圆盘内的积分公式建立全纯与解析的等价性。随后构造指数、对数、三角函数和 Möbius 变换，最后由零点分解得到恒等定理、局部逆函数定理与开映射定理。
 \end{chapterabstract}
 
 % 本章目标（不计入编号）
 \begin{learninggoals}
-待填充。
+\begin{itemize}
+\item\label{b3:item:01-goal-derivative}能区分复可微、实可微与全纯，正确使用 Cauchy--Riemann 方程，并解释非零复导数的几何意义。
+\item\label{b3:item:01-goal-series}能计算收敛半径、判断逐项微分的范围，并说明局部积分公式如何推出幂级数展开。
+\item\label{b3:item:01-goal-elementary}能在明确的定义域和分支约定下使用初等复函数，核对 Möbius 变换在有限点与无穷远点的行为。
+\item\label{b3:item:01-goal-local}能利用零点阶数和连通性判断函数的唯一性，并区分局部可逆、全局单射与开映射。
+\end{itemize}
 \end{learninggoals}
+
+本章预设一元微积分、有限维实微分与平面拓扑的基本语言。局部求逆时调用第一卷已经证明的实逆函数定理，正文在使用处注明实际编号。其余复分析结论从本章定义出发证明，尤其不把全纯函数的导数连续性当作已知条件。
+
+\ProseParagraphBreak
+
+阅读的关键在于\subsecref{b3:subsec:010204}。为了在第一章内完整证明“全纯即解析”，这里先建立三角形上的 Goursat 定理与圆盘内的 Cauchy 积分公式；\chapref{b3:ch:02}再系统处理一般曲线与定义域的拓扑条件。首次阅读应跟住“复差商—局部积分—幂级数”的证明次序，再看初等函数与局部结构。熟悉这一论证的读者可先核对本卷的对数主值和保向共形约定。
+
+\ProseParagraphBreak
+
+关于幂级数，John B. Conway 的《Functions of One Complex Variable I》\cite[Chapter III, \S1, pp. 30--31]{Conway1978Functions}从绝对收敛和几何级数进入收敛半径，适合与\secref{b3:sec:0102}对照。若希望按初等函数、解析函数、复积分和幂级数的次序伴读，可参看 Theodore W. Gamelin 的《Complex Analysis》\cite{Gamelin2001Complex}相应各章。两书的编排不同，阅读时应辨认哪些积分结论已经建立，再比较证明路线。
+
+% 本章写作计划及实读范围：tmp/book3-ch01-draft/plan.md、reference-notes.md。
+% Conway 公开样章实读印刷30--31页；Gamelin仅核验官方书目与目录。
+% 跨卷调用稳定标签与当前编号登记于跨卷引用表.md。
 
 \input{Part01/Chapter01/Section0101}
 \input{Part01/Chapter01/Section0102}
@@ -18,10 +37,177 @@
 \input{Part01/Chapter01/Section0104}
 % 本章小结（不计入编号）
 \begin{chaptersummary}
-待填充。
+复可微把二维实微分限制为复数乘法。偏导数满足 Cauchy--Riemann 方程只是其中一部分；若没有实可微的统一余项控制，复差商仍可能不存在。反过来，函数在开集上处处复可微，则由局部积分公式得到收敛的 Taylor 展开，各阶导数的存在与连续性随之成立。
+
+\ProseParagraphBreak
+
+幂级数的运算许可来自收敛圆内部的统一估计，不能自动延伸到边界。指数与三角函数可在全平面构造，对数却需要选定分支。局部存在全纯的对数或逆函数，并不保证能在整个定义域连续选取；指数函数的周期和去心平面上的对数障碍清楚地显示了这一区别。
+
+\ProseParagraphBreak
+
+非恒零全纯函数的零点由最先出现的非零 Taylor 项控制。恒等定理通过连通性把局部相等传到整个区域；局部标准形进一步把非常值函数化成一个幂映射。导数非零对应局部单射，较高阶零点对应多个原像，而两种情形都把邻域映为邻域。下一章将在本章局部积分结果上继续建立一般 Cauchy 理论。
 \end{chaptersummary}
 
 
 \BookExercises
 
-待填充。
+\Cref{b3:ex:01-reconstruct-real-part}与\cref{b3:ex:01-power-series-ode}训练方程和幂级数的具体计算；\cref{b3:ex:01-mean-value-failure}检验实变量中值定理的适用边界。\Cref{b3:ex:01-disk-distance-ratio}考察圆盘变换，\cref{b3:ex:01-equal-modulus}与\cref{b3:ex:01-local-involution}组合使用零点、恒等定理和局部求逆。两道带星号的题进一步讨论逆函数的展开半径和幂级数跨越收敛圆周的障碍。
+
+% 自拟题组，2026-09-15。与本章正文例题逐项对照后设计。
+% 训练目标及所用工具见tmp/book3-ch01-draft/reference-notes.md；不复刻第三方原题。
+
+\begin{exercise}\label{b3:ex:01-reconstruct-real-part}
+求出所有满足
+\[
+  \operatorname{Re}f(x+\mathrm{i}y)=x^3-3xy^2+2xy
+\]
+的整函数 \(f\)，并说明给定条件为什么只留下一个实常数的自由度。
+\end{exercise}
+\begin{solution}
+记题给的实部为 \(u\)，虚部为 \(v\)。Cauchy--Riemann 方程给出
+\[
+  v_y=3x^2-3y^2+2y,\quad v_x=6xy-2x.
+\]
+对第一个等式关于 \(y\) 积分，得到
+\(v=3x^2y-y^3+y^2+h(x)\)。代入第二个等式，有
+\(h'(x)=-2x\)，所以
+\[
+  f(z)=z^3-\mathrm{i}z^2+\mathrm{i}C,\quad C\in\mathbb R.
+\]
+这些多项式均满足要求。反过来，上述计算由必要条件推出所有可能的虚部，故没有遗漏。实部已经固定，只能给虚部加实常数，不能给 \(f\) 任意加复常数。
+\end{solution}
+
+\begin{exercise}\label{b3:ex:01-mean-value-failure}
+设 \(f\) 在开集 \(U\) 上全纯，线段 \([a,b]\) 包含于 \(U\)，其中 \(a\ne b\)。证明
+\[
+  f(b)-f(a)=(b-a)\int_0^1 f'\bigl(a+t(b-a)\bigr)\,\mathrm{d}t
+\]
+及相应的模估计。再构造一个整函数，说明一般不能把积分替换为某个 \(t\in(0,1)\) 处的被积函数值。
+\end{exercise}
+\begin{solution}
+全纯即解析保证 \(f'\) 连续。将实变量微积分基本定理分别用于
+\(t\mapsto f\bigl(a+t(b-a)\bigr)\) 的实部和虚部，再用链式法则，便得到所写等式。三角不等式给出
+\[
+  |f(b)-f(a)|\le |b-a|\cdot
+    \max_{0\le t\le1}\left|f'\bigl(a+t(b-a)\bigr)\right|.
+\]
+取 \(f(z)=e^z\)、\(a=0\)、\(b=2\pi \mathrm{i}\)。左边的差为零，而
+\((b-a)\cdot f'\bigl(a+t(b-a)\bigr)=2\pi \mathrm{i} e^{2\pi \mathrm{i}t}\)
+对所有 \(t\) 都非零。实变量中值定理中的单点等式因此不能照搬，积分表示与模估计仍然成立。
+\end{solution}
+
+\begin{exercise}\label{b3:ex:01-power-series-ode}
+求满足 \(f'(z)=z\cdot f(z)\)、\(f(0)=1\) 的整函数。先由幂级数求出系数并核对收敛半径，再证明解的唯一性。
+\end{exercise}
+\begin{solution}
+在原点附近写 \(f(z)=\sum_{n\ge0}a_nz^n\)。比较系数得
+\(a_0=1\)、\(a_1=0\)，以及
+\((n+1)a_{n+1}=a_{n-1}\)（\(n\ge1\)）。因此
+\[
+  a_{2k}=\frac{1}{2^k k!},\quad a_{2k+1}=0,\quad
+  f(z)=\sum_{k=0}^{\infty}\frac{z^{2k}}{2^k k!}=e^{z^2/2}.
+\]
+对每个固定的 \(r>0\)，相邻非零项的模之比为
+\(r^2/\bigl(2(k+1)\bigr)\)，趋于零，故级数在每个闭圆盘上一致绝对收敛，收敛半径为无穷大。逐项求导验证微分方程和初值。若 \(g\) 是另一整函数解，则
+\[
+  \bigl(e^{-z^2/2}\cdot g(z)\bigr)'=e^{-z^2/2}\cdot\bigl(g'(z)-z\cdot g(z)\bigr)=0.
+\]
+该函数在连通集 \(\mathbb C\) 上为常数，原点处的值为 \(1\)，所以 \(g=f\)。
+\end{solution}
+
+\begin{exercise}\label{b3:ex:01-disk-distance-ratio}
+记 \(\mathbb D=\{\,z\in\mathbb C\mid |z|<1\,\}\)。对 \(a\in\mathbb D\) 定义
+\[
+  \phi_a(z)=\frac{z-a}{1-\overline a z}.
+\]
+证明 \(\phi_a\) 是 \(\mathbb D\) 到自身的双射，其逆映射也全纯；并对 \(z,w\in\mathbb D\) 证明
+\[
+  \left|\frac{\phi_a(z)-\phi_a(w)}
+  {1-\overline{\phi_a(w)}\cdot\phi_a(z)}\right|
+  =\left|\frac{z-w}{1-\overline w z}\right|.
+\]
+\end{exercise}
+\begin{solution}
+因 \(|a|\cdot|z|<1\)，分母非零。直接展开平方模可得
+\[
+  |1-\overline a z|^2-|z-a|^2=(1-|a|^2)(1-|z|^2)>0,
+\]
+故 \(|\phi_a(z)|<1\)。解出 \(z=(w+a)/(1+\overline a w)\)，这是
+\(\phi_{-a}(w)\)，同样把圆盘映入自身，因而确为全纯逆映射。
+再分别通分，得到
+\[
+ \phi_a(z)-\phi_a(w)
+ =\frac{(1-|a|^2)(z-w)}{(1-\overline a z)(1-\overline a w)},
+\]
+\[
+ 1-\overline{\phi_a(w)}\cdot\phi_a(z)
+ =\frac{(1-|a|^2)(1-\overline w z)}{(1-a\overline w)(1-\overline a z)}.
+\]
+两式相除后，额外因子为
+\((1-a\overline w)/(1-\overline a w)\)，其模为 \(1\)，于是得到所求恒等式。它说明某些由两点组成的距离比在圆盘变换下保持不变，尽管欧氏距离一般改变。
+\end{solution}
+
+\begin{exercise}\label{b3:ex:01-equal-modulus}
+设 \(U\) 是区域，\(f,g\) 在 \(U\) 上全纯，且处处满足 \(|f|=|g|\)。证明存在模为 \(1\) 的常数 \(c\)，使 \(f=cg\)。解答须处理共同零点，不能直接假设 \(f/g\) 处处有定义。
+\end{exercise}
+\begin{solution}
+若 \(g\equiv0\)，则 \(f\equiv0\)，取 \(c=1\)。以下设 \(g\not\equiv0\)，从而 \(f\not\equiv0\)。在共同零点 \(a\) 附近，零点分解给出
+\[
+ f(z)=(z-a)^mF(z),\quad g(z)=(z-a)^nG(z),\quad F(a)\cdot G(a)\ne0.
+\]
+等模条件意味着 \(|z-a|^{m-n}\cdot|F(z)/G(z)|=1\)。令 \(z\rightarrow a\)，若 \(m>n\) 左边趋于零，若 \(m<n\) 左边趋于无穷大，故 \(m=n\)。于是 \(f/g\) 在 \(a\) 处可由全纯函数 \(F/G\) 补定义。各零点孤立，这些局部定义与非零点上的商一致，合成 \(U\) 上模恒为 \(1\) 的全纯函数 \(h\)。若 \(h\) 非常值，开映射定理将使 \(h(U)\) 成为开集，这与其包含于单位圆矛盾。因此 \(h=c\)，且 \(|c|=1\)。
+\end{solution}
+
+\begin{exercise}\label{b3:ex:01-local-involution}
+设 \(U\) 是包含原点的区域，\(f:U\rightarrow U\) 全纯，并满足
+\(f(0)=0\)、\(f\bigl(f(z)\bigr)=z\)。证明 \(f'(0)\) 只能为 \(1\) 或 \(-1\)。若为 \(1\)，证明 \(f(z)=z\)；若为 \(-1\)，构造一个在原点附近具有全纯逆的函数 \(h\)，使
+\(h\bigl(f(z)\bigr)=-h(z)\)。
+\end{exercise}
+\begin{solution}
+在原点对复合恒等式求导，得到 \(f'(0)^2=1\)。若 \(f'(0)=1\) 且 \(f\) 不恒等于恒等映射，由恒等定理和 Taylor 展开，在原点附近存在最小的 \(m\ge2\)，使
+\[
+  f(z)=z+az^m+O(z^{m+1}),\quad a\ne0.
+\]
+代入两次得到 \(f\bigl(f(z)\bigr)=z+2az^m+O(z^{m+1})\)，与题设矛盾，故 \(f(z)=z\) 在 \(U\) 上成立。
+若 \(f'(0)=-1\)，令 \(h(z)=\bigl(z-f(z)\bigr)/2\)，则 \(h'(0)=1\)，局部逆函数定理保证 \(h\) 有全纯局部逆，并且
+\[
+ h\bigl(f(z)\bigr)=\frac{f(z)-f\bigl(f(z)\bigr)}2=-h(z).
+\]
+缩小原点邻域，使上述复合及所需局部逆均有定义，即把 \(f\) 化为新坐标中的 \(w\mapsto-w\)。
+\end{solution}
+
+\begin{optionalexercise}\label{b3:ex:01-inverse-radius}
+设 \(F(z)=z+z^2\)。求满足 \(G(0)=0\) 的全纯局部逆 \(G\) 在原点的前四个非零 Taylor 系数，并证明该 Taylor 级数的收敛半径恰为 \(1/4\)。
+\end{optionalexercise}
+\begin{solution}
+由 \(F'(0)=1\) 可得全纯局部逆。将
+\(G(w)=b_1w+b_2w^2+b_3w^3+b_4w^4+O(w^5)\)
+代入 \(G+G^2=w\)，逐次比较系数，得到
+\[
+ b_1=1,\quad b_2=-1,\quad b_3=2,\quad b_4=-5.
+\]
+当 \(|w|<1/4\) 时，\(1+4w\) 位于右半平面，主对数有定义。因此
+\[
+ G(w)=\frac{\exp\bigl(\tfrac12\operatorname{Log}(1+4w)\bigr)-1}{2}
+\]
+在该圆盘全纯，并满足原来的局部逆条件，故 Taylor 级数半径至少为 \(1/4\)。若半径更大，其和函数在 \(w_0=-1/4\) 的邻域仍全纯；由恒等定理，\(G+G^2=w\) 也在那里成立。在 \(w_0\) 处必有 \(G(w_0)=-1/2\)。但对该恒等式求导所得
+\((1+2G)G'=1\) 在 \(w_0\) 处给出 \(0=1\)，矛盾。
+\end{solution}
+
+\begin{optionalexercise}\label{b3:ex:01-factorial-gaps}
+设
+\[
+  f(z)=\sum_{n=1}^{\infty}z^{n!}.
+\]
+证明其收敛半径为 \(1\)，并证明对单位圆上的每个点 \(\zeta\)，都不存在 \(\zeta\) 的圆盘邻域 \(V\) 及其上的全纯函数 \(F\)，使 \(F=f\) 在 \(V\cap D(0,1)\) 上成立。
+\end{optionalexercise}
+\begin{solution}
+将缺少的幂次系数补为零，所得幂级数有无穷多个系数等于 \(1\)，所有系数不超过 \(1\)，故根值公式给出半径 \(1\)。
+先设 \(q\geq1\) 为整数，\(\eta^q=1\)，即 \(\eta\) 是一个单位根。取 \(N\ge q\)，则 \(n\ge N\) 时 \(\eta^{n!}=1\)。对 \(0<r<1\)，
+\[
+ f(r\eta)=\sum_{n<N}(r\eta)^{n!}+\sum_{n\ge N}r^{n!}.
+\]
+前一有限和有界，后一项为非负实数之和，且当 \(r\uparrow1\) 时趋于无穷大：任取正整数 \(M\)，先保留 \(M\) 项，再令 \(r\uparrow1\)，其和趋于 \(M\)。所以 \(f(r\eta)\) 不可能有有限极限，排除了在 \(\eta\) 邻域的全纯延拓。
+单位根在单位圆上稠密，因为有理数在实轴上稠密。若题设的 \(V,F\) 对某个 \(\zeta\) 存在，可在 \(V\) 中选一个单位根 \(\eta\)。当 \(r<1\) 足够接近 \(1\) 时，\(r\eta\in V\cap D(0,1)\)，从而
+\(f(r\eta)=F(r\eta)\rightarrow F(\eta)\)，与前述结论矛盾。
+\end{solution}

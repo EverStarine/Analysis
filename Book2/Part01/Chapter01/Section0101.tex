@@ -2,24 +2,259 @@
 \section{多元微分学}
 \label{b2:sec:0101}
 
-% TODO: 撰写本节正文。
+% 数学依赖：第一卷定义 16.2.2，b1:def:frechet-differentiability；
+% 第一卷引理 18.1.2，b1:lem:level-set-local-inverse，完整压缩迭代证明。
+% 本节其余结果按一元微积分与有限维线性代数独立展开，反例与计算自行组织。
+
+偏微分方程把一个函数在不同方向上的变化联系起来。要正确读取这样的关系，需要先分清三件事：沿固定直线能否求导，小增量能否由同一个线性映射逼近，以及导数在邻近点之间是否连续。本节在开集上讨论经典微分；边界上的导数与较弱意义的导数将在需要时另行说明。以下向量使用欧氏范数 \(\lvert\cdot\rvert\)，矩阵使用由它诱导的算子范数 \(\lVert\cdot\rVert\)。
 
 \subsection{方向导数}
 \label{b2:subsec:010101}
 
-待填充。
+\begin{definition}\label{b2:def:01-directional}
+设 \(U\subseteq\mathbb R^d\) 为开集，\(f:U\rightarrow\mathbb R^m\)，且 \(a\in U\)。给定 \(v\in\mathbb R^d\)，若有限极限
+\[
+ D_vf(a)\coloneqq\lim_{t\to0}\frac{f(a+tv)-f(a)}{t}
+\]
+存在，则称它为 \(f\) 在 \(a\) 处沿 \(v\) 的\term[fangxiang-daoshu]{方向导数}[directional derivative]。取第 \(j\) 个坐标向量 \(e_j\)，所得 \(D_{e_j}f(a)\) 称为第 \(j\) 个\term[piandaoshu]{偏导数}[partial derivative]，记作 \(\partial_jf(a)\)。
+\end{definition}
+\symidx{\(D_vf\)：沿向量 \(v\) 的方向导数}
+\symidx{\(\partial_jf\)：第 \(j\) 个偏导数}
+
+这里不要求 \(v\) 为单位向量；当 \(\lvert v\rvert=1\) 时，参数 \(t\) 才直接计量沿直线的有向距离。定义中的极限为双侧极限，开集条件保证充分小的正、负 \(t\) 都有意义。例如 \(u(x,y)=x^2+xy\) 满足
+\[
+ D_{(a,b)}u(x,y)=a(2x+y)+bx.
+\]
+右端关于方向 \((a,b)\) 线性。不过，这一性质不能从方向导数的存在本身推出。
+
+\ProseParagraphBreak
+
+事实上，即使所有方向导数都为零，也不能断言函数连续。令
+\[
+ f(x,y)=
+ \begin{cases}
+ \dfrac{x^3y}{x^6+y^2},&(x,y)\ne(0,0),\\[4pt]
+ 0,&(x,y)=(0,0).
+ \end{cases}
+\]
+若 \(b\ne0\)，沿方向 \((a,b)\) 有
+\[
+ \frac{f(ta,tb)}t=\frac{ta^3b}{t^4a^6+b^2}\longrightarrow0;
+\]
+若 \(b=0\)，差商恒为零。然而 \(f(x,x^3)=1/2\) 对一切 \(x\ne0\) 成立。直线逐条检查的极限，没有控制沿弯曲路径趋近的行为。研究坐标变换和微分方程时，需要一个同时约束全部小增量的定义。
 
 \subsection{Fréchet 微分}
 \label{b2:subsec:010102}
 
-待填充。
+\begin{definition}\label{b2:def:01-frechet}
+设 \(f:U\rightarrow\mathbb R^m\)，且 \(a\in U\)。若存在线性映射 \(A:\mathbb R^d\rightarrow\mathbb R^m\)，使
+\[
+ \lim_{\substack{h\to0\\h\ne0}}
+ \frac{\left|f(a+h)-f(a)-Ah\right|}{\lvert h\rvert}=0,
+\]
+则称 \(f\) 在 \(a\) 处\term[frechet-kewei]{Fréchet 可微}[Fréchet differentiable]，称 \(A\) 为其\term[frechet-weifen]{Fréchet 微分}[Fréchet differential]，记作 \(Df(a)\)。在有限维空间中，这就是\term[quan-weifen]{全微分}[total differential]；下文未加限定的“可微”均指这一意义。
+\end{definition}
+\symidx{\(Df(a)\)：映射在一点的 Fréchet 微分}
 
-\subsection{反函数/隐函数定理}
+这与第一卷定义 16.2.2 的全微分约定一致。余项也可记为 \(o(\lvert h\rvert)\)，意思是其范数除以 \(\lvert h\rvert\) 趋于零。由于线性映射在有限维空间中连续，可微性立即给出 \(f(a+h)\to f(a)\)。令 \(h=tv\) 又得 \(D_vf(a)=Df(a)v\)，所以微分由各坐标偏导唯一确定。若 \(f=(f_1,\ldots,f_m)\)，其矩阵表示
+\[
+ Df(a)=\left(\partial_jf_i(a)\right)_{1\leq i\leq m,\,1\leq j\leq d}
+\]
+称为\term[jacobi-juzhen]{Jacobi 矩阵}[Jacobian matrix]。行指标对应输出分量，列指标对应输入坐标；方阵时的 \(\det Df(a)\) 称为\term[jacobi-hanglieshi]{Jacobi 行列式}[Jacobian determinant]。
+
+\ProseParagraphBreak
+
+实际计算中，偏导数的邻域连续性提供了一个便于核验的充分条件。记 \(C^1(U;\mathbb R^m)\) 为一阶偏导数存在且连续的映射类；这样的映射称为\term[lianxu-kewei]{连续可微}[continuously differentiable]。记号 \(C^k\) 表示直到 \(k\) 阶的各阶偏导数都连续，\(C^\infty\) 表示任意有限阶偏导数都连续；这些记号本身不要求全域有界。
+\symidx{\(C^k(U;\mathbb R^m)\)：具有连续偏导数直到 \(k\) 阶的映射类}
+
+\begin{proposition}\label{b2:prop:01-c1-criterion}
+若 \(f\) 的各一阶偏导数在 \(a\) 的某邻域内存在，且在 \(a\) 连续，则 \(f\) 在 \(a\) 可微。特别地，\(C^1\) 映射处处可微，且 \(x\mapsto Df(x)\) 连续。
+\end{proposition}
+\begin{proof}
+先设 \(f\) 实值。把从 \(a\) 到 \(a+h\) 的位移拆成依次改变坐标的 \(d\) 段。每一段上的一元函数可微，中值定理给出该段增量为 \(h_j\cdot\partial_jf(\xi_j)\)，其中 \(\lvert\xi_j-a\rvert\leq\lvert h\rvert\)；当 \(h_j=0\) 时该项直接为零。因此
+\[
+ \left|f(a+h)-f(a)-\sum_{j=1}^d h_j\cdot\partial_jf(a)\right|
+ \leq\sum_{j=1}^d\lvert h_j\rvert\cdot
+ \left|\partial_jf(\xi_j)-\partial_jf(a)\right|
+ =o(\lvert h\rvert),
+\]
+其中用了 \(\sum_j\lvert h_j\rvert\leq\sqrt d\,\lvert h\rvert\)。向量值情形对有限个分量分别应用此结论，余项的欧氏范数仍为 \(o(\lvert h\rvert)\)。最后，矩阵的有限个系数连续就给出算子范数意义的连续性。
+\end{proof}
+
+连续偏导是充分条件，不能误读为可微的必要条件。一元函数 \(u(t)=t^2\sin(1/t)\) 在 \(t\ne0\) 时按此式取值，另设 \(u(0)=0\)，则 \(u'(0)=0\)，但
+\[
+ u'(t)=2t\sin(1/t)-\cos(1/t)\quad(t\ne0)
+\]
+在零点没有极限。可微只比较函数与一点处的线性模型；连续可微还约束这些模型随基点如何变化。
+
+\ProseParagraphBreak
+
+\term[lianshi-faze]{链式法则}[chain rule]把线性近似与函数复合联系起来。它只要求涉及的两点可微，并不要求整个邻域都是 \(C^1\)。
+
+\begin{proposition}[链式法则]\label{b2:prop:01-chain-rule}
+设 \(f:U\rightarrow V\subseteq\mathbb R^m\)、\(g:V\rightarrow\mathbb R^n\)，其中 \(U,V\) 为开集。若 \(f\) 在 \(a\) 可微，\(g\) 在 \(f(a)\) 可微，则
+\[
+ D(g\circ f)(a)=Dg\bigl(f(a)\bigr)\circ Df(a).
+\]
+\end{proposition}
+\begin{proof}
+令 \(A=Df(a)\)、\(B=Dg\bigl(f(a)\bigr)\)，写
+\[
+ f(a+h)-f(a)=Ah+r(h),\quad
+ g\bigl(f(a)+k\bigr)-g\bigl(f(a)\bigr)=Bk+s(k),
+\]
+其中 \(r(h)=o(\lvert h\rvert)\)、\(s(k)=o(\lvert k\rvert)\)，并在零点把余项取为零。代入 \(k=Ah+r(h)\)，有 \(\lvert k\rvert\leq C\lvert h\rvert\)，复合的余项为 \(Br(h)+s(k)=o(\lvert h\rvert)\)。这里对 \(s(k)\) 的估计在 \(k=0\) 时也成立。
+\end{proof}
+
+一阶微分决定切向变化，二阶微分记录弯曲。对实值 \(u\in C^2(U)\)，矩阵
+\[
+ D^2u(a)\coloneqq\left(\partial_i\partial_ju(a)\right)_{i,j=1}^d
+\]
+称为\term[hesse-juzhen]{Hesse 矩阵}[Hessian matrix]。
+\symidx{\(D^2u\)：实值函数的 Hesse 矩阵}
+下面的\term[taylor-gongshi]{Taylor 公式}[Taylor formula]将其与函数增量联系起来。
+
+\begin{proposition}[二阶 Taylor 公式]\label{b2:prop:01-taylor}
+若 \(u\in C^2(U)\)，则 \(D^2u(a)\) 为对称矩阵。对包含于 \(U\) 的线段 \([a,a+h]\)，有
+\[
+ u(a+h)=u(a)+Du(a)h+
+ \int_0^1(1-t)h^{\mathsf T}D^2u(a+th)h\,\mathrm{d}t.
+\]
+因而在 \(h\to0\) 时，最后一项等于
+\(\dfrac12 h^{\mathsf T}D^2u(a)h+o(\lvert h\rvert^2)\)。
+\end{proposition}
+\begin{proof}
+固定 \(i\ne j\)，对充分小的正数 \(s,t\)，考虑矩形的交错增量
+\[
+ R(s,t)=u(a+se_i+te_j)-u(a+se_i)-u(a+te_j)+u(a).
+\]
+先沿 \(i\) 方向、再沿 \(j\) 方向用一元微积分基本定理，得到
+\[
+ R(s,t)=\int_0^s\int_0^t
+ \partial_j\partial_i u(a+\sigma e_i+\tau e_j)
+ \,\mathrm{d}\tau\,\mathrm{d}\sigma.
+\]
+改变两次求增量的次序，则得到含 \(\partial_i\partial_j u\) 的相应迭代积分。分别除以 \(st\)，由被积函数在 \(a\) 连续，两式在 \(s,t\downarrow0\) 时趋于相等的混合偏导数。
+
+令 \(q(t)=u(a+th)\)。由链式法则，\(q'(0)=Du(a)h\)、\(q''(t)=h^{\mathsf T}D^2u(a+th)h\)。对 \(\int_0^1(1-t)q''(t)\,\mathrm{d}t\) 作一元分部积分即得公式。最后，积分余项减去 \(h^{\mathsf T}D^2u(a)h/2\) 的绝对值不超过
+\[
+ \frac{\lvert h\rvert^2}{2}
+ \sup_{0\leq t\leq1}\left\lVert D^2u(a+th)-D^2u(a)\right\rVert,
+\]
+而上确界随 \(h\to0\) 趋于零。
+\end{proof}
+
+\subsection{逆函数与隐函数定理}
 \label{b2:subsec:010103}
 
-待填充。
+若两个开集之间的双射及其逆映射都为 \(C^1\)，则称它为 \(C^1\) \term[weifen-tongpei]{微分同胚}[diffeomorphism]。链式法则说明，这时微分必须可逆。\term[ni-hanshu-dingli]{逆函数定理}[inverse function theorem]在 \(C^1\) 条件下给出局部的逆向结论，也称反函数定理。\termsee[fan-hanshu-dingli]{反函数定理}{逆函数定理}
+
+\begin{theorem}[逆函数]\label{b2:thm:01-inverse}
+设 \(O\subseteq\mathbb R^d\) 为开集，\(F:O\rightarrow\mathbb R^d\) 为 \(C^1\) 映射，且 \(a\in O\)。若 \(DF(a)\) 可逆，则存在开邻域 \(O_0\ni a\)、\(V_0\ni F(a)\)，使 \(F:O_0\rightarrow V_0\) 为 \(C^1\) 微分同胚，并且
+\[
+ D(F^{-1})(y)=\Bigl(DF\bigl(F^{-1}(y)\bigr)\Bigr)^{-1}.
+\]
+\end{theorem}
+
+本书已在第一卷引理 18.1.2 中通过压缩迭代完整证明此结果；那里的一致压缩估计正是由 \(DF\) 在 \(a\) 的连续性取得的。
+
+\ProseParagraphBreak
+
+局部结论不能自动拼成全局一一对应。例如
+\[
+ F(s,t)=\bigl(\mathrm{e}^s\cos t,\mathrm{e}^s\sin t\bigr)
+\]
+处处具有 Jacobi 行列式 \(\mathrm{e}^{2s}>0\)，但 \(F(s,t+2\pi)=F(s,t)\)。用这种映射作坐标时，必须先限制角变量的范围。
+
+\ProseParagraphBreak
+
+方程 \(F(x,y)=0\) 往往已经把 \(y\) 确定为 \(x\) 的函数，只是没有显式解出。\term[yin-hanshu-dingli]{隐函数定理}[implicit function theorem]通过保留 \(x\) 坐标、只把 \(y\) 换成 \(F\) 的值来处理这一问题。
+
+\begin{theorem}[隐函数]\label{b2:thm:01-implicit}
+设 \(F\) 是 \(\mathbb R^p\times\mathbb R^q\) 中开集上的 \(C^1\) 映射，值域为 \(\mathbb R^q\)。若 \(F(a,b)=0\)，且对 \(y\) 变量的偏微分矩阵 \(D_yF(a,b)\) 可逆，则存在开邻域 \(X\ni a\)、\(Y\ni b\) 和唯一的 \(C^1\) 映射 \(\varphi:X\rightarrow Y\)，使
+\[
+ F(x,y)=0\quad\Longleftrightarrow\quad y=\varphi(x)
+ \quad\bigl((x,y)\in X\times Y\bigr).
+\]
+其微分满足
+\[
+ D\varphi(x)=-\Bigl(D_yF\bigl(x,\varphi(x)\bigr)\Bigr)^{-1}
+ D_xF\bigl(x,\varphi(x)\bigr).
+\]
+\end{theorem}
+\begin{proof}
+令 \(G(x,y)=(x,F(x,y))\)。其微分为块矩阵
+\[
+ DG(a,b)=
+ \begin{pmatrix}I_p&0\\D_xF(a,b)&D_yF(a,b)\end{pmatrix},
+\]
+故可逆。由\cref{b2:thm:01-inverse}，\(G\) 在 \((a,b)\) 的某开邻域 \(O_0\) 上具有 \(C^1\) 逆映射。该逆映射的第一组分量必保持不变，因此写作 \(G^{-1}(x,z)=(x,\psi(x,z))\)。
+
+先在 \(O_0\) 内选择包含 \((a,b)\) 的乘积邻域 \(X_1\times Y\)。再缩小 \(a\) 的邻域为 \(X\subseteq X_1\)，使 \((x,0)\) 都属于逆映射的定义域，且 \(\psi(x,0)\in Y\)；这由开性及 \(\psi(a,0)=b\) 处的连续性保证。令 \(\varphi(x)=\psi(x,0)\)，就有 \(F\bigl(x,\varphi(x)\bigr)=0\)。反之，若 \((x,y)\in X\times Y\) 且 \(F(x,y)=0\)，则 \(G(x,y)=(x,0)\)，由 \(G\) 在 \(O_0\) 上的单射性得到 \(y=\varphi(x)\)。
+
+映射 \(\varphi\) 为 \(C^1\)。在 \(O_0\) 内，\(DG\) 由逆映射的链式法则处处可逆，其块形式保证 \(D_yF\) 可逆。对 \(F\bigl(x,\varphi(x)\bigr)=0\) 求导，得到 \(D_xF+D_yF\circ D\varphi=0\)，遂得所述公式。
+\end{proof}
+
+例如单位圆的方程 \(x^2+y^2=1\) 在 \((0,1)\) 附近给出 \(y=\sqrt{1-x^2}\)，导数为 \(-x/y\)。在 \((1,0)\) 处，\(y\) 方向的导数退化，但可改解为 \(x\) 关于 \(y\) 的函数。至于 \(F(x,y)=xy\) 在原点的零集合，它含两条相交直线，任意原点邻域内都不能把全部零集合写成一个 \(y=\varphi(x)\) 的图像。可逆性条件既选择可求解的变量，也排除了这种局部交叉。
 
 \subsection{梯度、散度与 Laplace 算子}
 \label{b2:subsec:010104}
 
-待填充。
+\begin{definition}\label{b2:def:01-vector-operators}
+设 \(u\in C^1(U)\) 为实值函数。其\term[tidu]{梯度}[gradient]为列向量
+\[
+ \nabla u\coloneqq(\partial_1u,\ldots,\partial_du)^{\mathsf T}.
+\]
+对 \(C^1\) 向量场 \(X=(X_1,\ldots,X_d)\)，定义其\term[sandu]{散度}[divergence]为
+\[
+ \operatorname{div}X\coloneqq\sum_{j=1}^d\partial_jX_j.
+\]
+对 \(u\in C^2(U)\)，定义\term[laplace-suanzi]{Laplace 算子}[Laplace operator]为
+\[
+ \Delta u\coloneqq\operatorname{div}(\nabla u)
+ =\sum_{j=1}^d\partial_j^2u=\operatorname{tr}(D^2u).
+\]
+\end{definition}
+\symidx{\(\nabla u\)：实值函数的梯度}
+\symidx{\(\operatorname{div}X\)：向量场的散度}
+\symidx{\(\Delta u\)：Laplace 算子，取各坐标二阶偏导数之和}
+
+梯度把微分写成内积：\(D_vu=\nabla u\cdot v\)。由 Cauchy--Schwarz 不等式，单位方向上的变化率不超过 \(\lvert\nabla u\rvert\)，当梯度非零时，在方向 \(\nabla u/\lvert\nabla u\rvert\) 取到最大值。散度则是向量场微分的迹；\secref{b2:sec:0102}的散度定理将赋予它单位体积净流出的积分解释。本书固定 \(\Delta=\sum_j\partial_j^2\) 的符号，后文的正能量通常对应 \(-\Delta\)。
+
+\begin{proposition}\label{b2:prop:01-product-rules}
+对 \(u\in C^1(U)\)、\(X\in C^1(U;\mathbb R^d)\)，有
+\[
+ \operatorname{div}(uX)=\nabla u\cdot X+u\cdot\operatorname{div}X.
+\]
+若 \(u,v\in C^2(U)\)，则
+\[
+ \Delta(uv)=u\cdot\Delta v+2\nabla u\cdot\nabla v+v\cdot\Delta u.
+\]
+\end{proposition}
+\begin{proof}
+对第 \(j\) 个分量使用一元乘积法则，得到
+\(\partial_j(uX_j)=(\partial_ju)X_j+u\cdot\partial_jX_j\)，求和即得第一式。第二式由
+\(\partial_j^2(uv)=u\cdot\partial_j^2v+2(\partial_ju)\cdot(\partial_jv)+v\cdot\partial_j^2u\)
+对 \(j\) 求和得到。
+\end{proof}
+
+虽然 \(\Delta\) 写成坐标偏导数之和，它不依赖欧氏空间中标准正交坐标系的选择。设 \(Q\) 为正交矩阵，在 \(Qz\in U\) 的开集上令 \(v(z)=u(Qz)\)。两次应用链式法则得到
+\[
+ \nabla v(z)=Q^{\mathsf T}\nabla u(Qz),\quad
+ D^2v(z)=Q^{\mathsf T}D^2u(Qz)Q.
+\]
+取矩阵迹，并利用 \(QQ^{\mathsf T}=I_d\)，即得 \(\Delta v(z)=(\Delta u)(Qz)\)。一般可逆线性变换不满足这个结论：例如把一个坐标放大两倍，会把该方向的二阶导数放大四倍。因而换坐标后，必须重新计算二阶项的系数。
+
+\ProseParagraphBreak
+
+这些算子也适合利用对称性计算。若 \(u(x)=g(r)\)，其中 \(r=\lvert x\rvert>0\)、\(g\in C^2((0,\infty))\)，则链式法则给出
+\[
+ \partial_ju=g'(r)\frac{x_j}{r},\quad
+ \partial_j^2u=g''(r)\frac{x_j^2}{r^2}
+ +g'(r)\left(\frac1r-\frac{x_j^2}{r^3}\right).
+\]
+利用 \(\sum_jx_j^2=r^2\)，得到
+\begin{equation}\label{b2:eq:01-radial-laplacian}
+ \Delta u=g''(r)+\frac{d-1}{r}\,g'(r).
+\end{equation}
+例如 \(\Delta\lvert x\rvert^2=2d\)；当 \(d\geq3\) 时，\(\Delta\lvert x\rvert^{2-d}=0\)，而 \(d=2\) 时 \(\Delta\log\lvert x\rvert=0\)。后两式只在原点以外成立，奇点不能由一次代入计算抹去。径向对称性把多元算子化成一元微分表达式，原点处留下的问题则需要后续的积分与弱解方法。
