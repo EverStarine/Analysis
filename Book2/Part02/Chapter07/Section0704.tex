@@ -1,29 +1,118 @@
 % !TeX root = ../../Book2.tex
 \OptionalSection{一阶非线性方程}{b2:sec:0704}
 
-% TODO: 撰写本节正文。
+在线性输运中，先由已知速度场确定轨道，再沿轨道计算数值。若速度依赖未知函数，这两步便相互耦合。本节只构造局部光滑解，并用一个显式例子说明这种解可能在有限时间失效。后面的波动、热与 Laplace 方程不依赖本节。
 
 \subsection{拟线性方程}
 \label{b2:subsec:070401}
 
-待填充。
+考虑已在\secref{b2:sec:0104}定义的拟线性类型
+\[
+ u_t+b(x,t,u)\cdot\nabla u=f(x,t,u),\quad u(x,0)=g(x).
+\]
+设 \(b,f\) 在相关变量的开集上为 \(C^1\)，\(g\in C^1\)。把未知的函数值也看成一个坐标，解联立系统
+\begin{equation}\label{b2:eq:07-quasilinear-system}
+ \begin{aligned}
+ X'&=b(X,t,Z),&X(0,a)&=a,\\
+ Z'&=f(X,t,Z),&Z(0,a)&=g(a).
+ \end{aligned}
+\end{equation}
+对向量 \((X,t,Z)\) 应用局部流定理，得到其对 \((t,a)\) 的 \(C^1\) 依赖。时刻零有 \(D_aX=I\)，故映射 \((a,t)\mapsto(X(t,a),t)\) 在每个 \((a_0,0)\) 附近的导数可逆。
+
+\begin{proposition}\label{b2:prop:07-quasilinear-local}
+在上述假设下，对每个初始点 \(a_0\)，存在它在时空中的邻域，在其中拟线性初值问题有唯一的局部 \(C^1\) 解。
+\end{proposition}
+\begin{proof}
+由\cref{b2:thm:01-inverse}，缩小邻域后可反解 \(a=A(x,t)\)。令 \(u(x,t)=Z(t,A(x,t))\)，则
+\(u(X(t,a),t)=Z(t,a)\)。对此式求时间导数并代入\eqref{b2:eq:07-quasilinear-system}，得到偏微分方程。初始时 \(A(x,0)=x\)，所以 \(u(x,0)=g(x)\)。若另有经典解 \(v\)，沿满足 \(X'=b(X,t,v(X,t))\) 的曲线令 \(Z=v(X,t)\)，链式法则表明 \((X,Z)\) 满足同一联立系统和同一初值。常微分方程唯一性使二者与构造的 \((X,Z)\) 相同，再由局部反演得到 \(v=u\)。
+\end{proof}
+
+这一结论的邻域可以依赖 \(a_0\)。即使联立系统一直有解，其空间投影 \(a\mapsto X(t,a)\) 也可能先失去可逆性。下面的例子把这种障碍显示为一个分母趋零的计算。
 
 \subsection{特征线交叉}
 \label{b2:subsec:070402}
 
-待填充。
+\term[burgers-fangcheng]{无黏 Burgers 方程}[inviscid Burgers equation]为
+\[
+ u_t+u u_x=0.
+\]
+沿特征线 \(Z'=0\)，所以 \(Z(t,a)=g(a)\)、\(X(t,a)=a+tg(a)\)。若 \(g\in C^1(\mathbb R)\) 有界，且 \(1+tg'(a)>0\) 对所有 \(a\) 成立，则 \(X(t,\cdot)\) 严格递增，又因 \(|X(t,a)-a|\leq t\|g\|_\infty\) 而满射。它是全实轴的微分同胚，解由 \(u(X(t,a),t)=g(a)\) 给出，并满足
+\begin{equation}\label{b2:eq:07-burgers-gradient}
+ u_x(X(t,a),t)=\frac{g'(a)}{1+tg'(a)}.
+\end{equation}
+若 \(g'\geq0\)，上述构造对所有正时间有效；若 \(g'\) 的负最小值 \(m\) 在某点取到，则在 \(T_*=-1/m\) 之前有效，而该点轨道上的梯度在 \(t\uparrow T_*\) 时趋于负无穷。
 
-\subsection{激波形成 的预告}
+\ProseParagraphBreak
+
+具体取 \(g(a)=-\tanh a\)，有 \(m=-1\)、\(T_*=1\)。函数值始终处于 \((-1,1)\)，但原点处梯度为 \(-1/(1-t)\)。失效不是振幅无限增长，而是相邻初始点的空间间隔被压缩为零。当 \(t>1\) 时，映射 \(a-t\tanh a\) 在原点附近下降，在两端上升，因而不单射。两条不同初始标签的轨道可以投影到同一个时空点，而所携带的值不同，不可能成为单值经典解。\Cref{b2:fig:07-characteristic-compression}区分了光滑阶段与失效后的轨道投影。
+\input{Figures/F07-CharacteristicCompression}
+
+\subsection{激波形成的预告}
 \label{b2:subsec:070403}
 
-待填充。
+在经典解存在时，Burgers 方程等价于
+\(u_t+\partial_x(u^2/2)=0\)。对于有跳跃的函数，后一种写法仍可通过分布导数解释。若一般通量 \(F\in C^1(\mathbb R)\)，一条 \(C^1\) 曲线 \(x=s(t)\) 两侧的函数都是常数 \(u_-,u_+\)，把测试积分在曲线两侧分别分部积分，界面项为
+\[
+ \int \bigl(F(u_+)-F(u_-)-s'(t)(u_+-u_-)\bigr)
+ \varphi(s(t),t)\,\mathrm dt.
+\]
+它对所有紧支集光滑测试函数为零，当且仅当
+\[
+ s'(t)(u_+-u_-)=F(u_+)-F(u_-).
+\]
+这称为\term[rankine-hugoniot]{Rankine--Hugoniot 条件}[Rankine--Hugoniot condition]。对不同的 Burgers 左右状态，速度为 \((u_-+u_+)/2\)；这样的移动跳跃称为\term[jibo]{激波}[shock wave]。
 
-\subsection{Hamilton–Jacobi 方程}
+\ProseParagraphBreak
+
+界面恒等式只给出弱方程的相容条件，没有证明某个跳跃是光滑解失效后的唯一延续。物理上允许的压缩跳跃与不允许的展开跳跃，都可能满足同一恒等式。要挑选延续还需附加条件，并建立存在、稳定性与唯一性理论；本节的梯度爆破计算本身不承担这些结论。
+
+\subsection{Hamilton--Jacobi 方程}
 \label{b2:subsec:070404}
 
-待填充。
+另一类重要的一阶非线性方程是\term[hamilton-jacobi-fangcheng]{Hamilton--Jacobi 方程}[Hamilton--Jacobi equation]
+\[
+ u_t+H(x,\nabla u)=0.
+\]
+这里 \(H\) 为给定函数。先假定 \(H\in C^3\)、\(g\in C^3\)，只在初始点附近构造光滑解。取
+\begin{equation}\label{b2:eq:07-hamilton-system}
+ X'=H_p(X,P),\quad P'=-H_x(X,P),\quad
+ Z'=P\cdot H_p(X,P)-H(X,P),
+\end{equation}
+初始值为 \(X(0,a)=a\)、\(P(0,a)=\nabla g(a)\)、\(Z(0,a)=g(a)\)。前两式描述位置和候选梯度的演化，第三式计算函数值。
 
-\subsection{守恒律 的位置}
+\ProseParagraphBreak
+
+这里需要的二阶参数可微性仍来自流构造：对 \(C^2\) 向量场 \(B\)，在\eqref{b2:eq:07-variational-ode}上再取差商，二阶候选导数满足
+\[
+ V'=DB(Y)V+D^2B(Y)[A v,A w],\quad V(0)=0.
+\]
+右侧系数连续，矩阵积分方程给出唯一 \(V\)。以 \(D^2B\) 在紧集上的一致连续性控制差商余项，再用 Gronwall 估计，得到余项一致趋零。这与一阶证明的线性余项论证相同，且明确给出二阶导数的方程；所以此处构造的 \(X,P,Z\) 对 \((t,a)\) 为 \(C^2\)。
+
+\begin{proposition}\label{b2:prop:07-hamilton-local}
+在上述假设下，系统\eqref{b2:eq:07-hamilton-system}在充分小的邻域中确定一个 \(C^2\) 解 \(u\)，满足 Hamilton--Jacobi 方程及初值 \(g\)。
+\end{proposition}
+\begin{proof}
+从 \(D_aX(0,a)=I\) 出发，局部反演得到 \(a=A(x,t)\)，令 \(u(x,t)=Z(t,A(x,t))\)。关键是验证 \(P=\nabla u\)，不能把候选梯度直接当成真实梯度。对每个初始坐标 \(a_j\)，记
+\(W_j=\partial_{a_j}Z-P\cdot\partial_{a_j}X\)。对系统求导，利用 \(X'=H_p\)、\(P'=-H_x\)，得到
+\[
+ \begin{aligned}
+ \partial_{a_j}Z'
+ &=P\cdot\partial_{a_j}(H_p)-H_x\cdot\partial_{a_j}X,\\
+ (P\cdot\partial_{a_j}X)'
+ &=-H_x\cdot\partial_{a_j}X+P\cdot\partial_{a_j}(H_p).
+ \end{aligned}
+\]
+故 \(W_j'=0\)，初值又为 \(\partial_jg-\partial_jg=0\)。因此 \(D_aZ=P^TD_aX\)，由 \(D_aX\) 可逆得到 \(\nabla_xu(X,t)=P\)。最后沿轨道有
+\(u_t+\nabla u\cdot X'=Z'=P\cdot H_p-H\)，约去相同项得 \(u_t+H(x,\nabla u)=0\)。
+\end{proof}
+
+取 \(H(p)=|p|^2/2\) 时，\(P=\nabla g(a)\)、\(X=a+t\nabla g(a)\)、\(Z=g(a)+t|\nabla g(a)|^2/2\)。可逆性要求 \(I+tD^2g(a)\) 不退化。这与 Burgers 方程的分母具有同一几何含义，但高维中须检查整个矩阵。局部光滑构造失效之后的解概念，本章不再展开。
+
+\subsection{守恒律的位置}
 \label{b2:subsec:070405}
 
-待填充。
+形如 \(u_t+\operatorname{div}_xF(u)=0\) 的方程称为\term[shouhenglv]{守恒律}[conservation law]，其中 \(F:\mathbb R\rightarrow\mathbb R^d\)。光滑时，它等价于拟线性方程 \(u_t+F'(u)\cdot\nabla u=0\)；不光滑时，两种写法的意义不同，后一项中的乘积未必已有定义。守恒形式可直接作用于测试函数，通过积分表达局部通量平衡。
+
+\ProseParagraphBreak
+
+线性连续性方程的速度由外部给定，密度与体积的补偿由 Jacobi 公式控制；非线性守恒律的速度随状态变化，投影交叉会使经典表示失效。两者都使用特征线，却不能把线性流的全局微分同胚结论原样移到非线性问题。本节建立了光滑阶段的局部构造和一个明确的失效机制，为以后阅读守恒律与 Hamilton--Jacobi 理论划出入口。

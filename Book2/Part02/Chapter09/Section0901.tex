@@ -2,19 +2,94 @@
 \section{齐次方程}
 \label{b2:sec:0901}
 
-% TODO: 撰写本节正文。
+一根均匀弦作小幅横向振动时，位移的时间加速度与空间曲率成正比。忽略阻尼和外力，得到 \(u_{tt}-c^2u_{xx}=0\)，其中 \(c>0\) 为固定波速。本章先在整条实线上讨论，因而没有端点反射。方程含二阶时间导数，初始状态必须同时指定形状与速度；只给初始形状不会确定随后的运动。
 
 \subsection{特征变量}
 \label{b2:subsec:090101}
 
-待填充。
+常系数使波算子可以分解为两个可交换的一阶算子：
+\[
+ \partial_t^2-c^2\partial_x^2
+ =(\partial_t-c\partial_x)(\partial_t+c\partial_x).
+\]
+若令 \(\alpha=x+ct\)、\(\beta=x-ct\)，则
+\[
+ x=\dfrac{\alpha+\beta}{2},\quad
+ t=\dfrac{\alpha-\beta}{2c},\quad
+ \partial_t^2-c^2\partial_x^2=-4c^2\partial_\alpha\partial_\beta.
+\]
+这对坐标称为\term[tezheng-bianliang]{特征变量}[characteristic variables]；两族坐标线正是斜率分别为 \(\pm c\) 的传播直线。在一个坐标矩形上，方程成为 \(U_{\alpha\beta}=0\)。先对 \(\beta\) 积分，再对 \(\alpha\) 积分，得到 \(U=A(\alpha)+B(\beta)\)。相应地，原坐标中的两个分量分别保持形状向左、向右移动。
+
+\ProseParagraphBreak
+
+对初值问题，直接追踪一阶导数更便于把解与数据联系起来。设 \(u\) 为二次连续可微的解，记
+\[
+ p=u_t+cu_x,\quad q=u_t-cu_x.
+\]
+由原方程，\(p_t-cp_x=0\)、\(q_t+cq_x=0\)。沿通过 \((t,x)\) 的直线积分，便有
+\[
+ p(t,x)=p(0,x+ct),\quad q(t,x)=q(0,x-ct).
+\]
+这里的符号可由沿线求导检查：曲线 \(s\mapsto(s,x+c(t-s))\) 的导数算子是 \(\partial_t-c\partial_x\)。因此 \(p\) 沿向左的直线传递，\(q\) 沿向右的直线传递。两者不是额外的数据，而是位移梯度和速度的线性组合。
 
 \subsection{d'Alembert 公式}
 \label{b2:subsec:090102}
 
-待填充。
+考虑初值
+\[
+ u(0,x)=f(x),\quad u_t(0,x)=g(x).
+\]
+初始组合为 \(p(0,x)=g(x)+cf'(x)\)、\(q(0,x)=g(x)-cf'(x)\)。将它们相加，恢复 \(u_t\)，再从 \(0\) 积分到 \(t\)，就会出现区间 \([x-ct,x+ct]\) 上的初速度积分。
+
+\begin{theorem}[d'Alembert]\label{b2:thm:09-dalembert}
+若 \(f\in C^2(\mathbb R)\)、\(g\in C^1(\mathbb R)\)，则初值问题在 \(\mathbb R_t\times\mathbb R_x\) 上有唯一经典解，且
+\begin{equation}\label{b2:eq:09-dalembert}
+ u(t,x)=\dfrac{f(x+ct)+f(x-ct)}2
+ +\dfrac1{2c}\int_{x-ct}^{x+ct}g(y)\,\mathrm{d}y.
+\end{equation}
+当 \(t<0\) 时，积分按有向区间解释；不要求 \(f\)、\(g\) 在无穷远有界或衰减。
+\end{theorem}
+\begin{proof}
+由前述沿线等式，任一经典解都满足
+\[
+ u_t(t,x)=\dfrac{g(x+ct)+g(x-ct)}2
+ +\dfrac c2\bigl(f'(x+ct)-f'(x-ct)\bigr).
+\]
+把右端对时间积分并加上 \(f(x)\)。两个导数项分别换元，得到两个平移的平均减去 \(f(x)\)；速度项换元得到\eqref{b2:eq:09-dalembert}的区间积分。因此任何解都必须是该表达式，唯一性已经得到。
+
+反过来，由 \(f\in C^2\)、\(g\in C^1\)，公式右端二次连续可微。位移项的二阶时间导数等于其二阶空间导数乘 \(c^2\)。若将积分项记作 \(v\)，则
+\[
+ v_t=\dfrac{g(x+ct)+g(x-ct)}2,\quad
+ v_x=\dfrac{g(x+ct)-g(x-ct)}{2c},
+\]
+从而 \(v_{tt}=c^2v_{xx}\)。令 \(t=0\)，积分项与位移项的时间导数分别给出 \(g\) 与 \(0\)，位移本身则为 \(f\)。所以存在性和全部初值条件成立。
+\end{proof}
+
+表达式\eqref{b2:eq:09-dalembert}称为\term[dalembert-gongshi]{d'Alembert 公式}[d'Alembert's formula]。它把初始位移分成两个等幅平移，把初始速度转化为一个不断扩张的区间积分。初始位移只在区间的两个端点取值，初始速度却在整段区间内参与；这一区别将影响长时间留下的位移。
+
+\ProseParagraphBreak
+
+例如取 \(g=0\)、\(f(x)=e^{-x^2}\)，初始隆起分裂成两个各有原来一半高度的平移。若取 \(f(x)=\cos(kx)\)、\(g=0\)，则
+\[
+ u(t,x)=\cos(kx)\cos(ckt).
+\]
+后一种运动的零点位置不变，通常称为\term[zhubo]{驻波}[standing wave]；前一种保持轮廓平移的分量称为\term[xingbo]{行波}[traveling wave]。相同方程容许不同运动，区别来自初值，而不来自方程阶数。
 
 \subsection{初值问题}
 \label{b2:subsec:090103}
 
-待填充。
+为了只得到向右的行波 \(u(t,x)=f(x-ct)\)，必须取 \(g=-cf'\)。若只把弦拉成 \(f\) 然后静止释放，即令 \(g=0\)，通常会同时产生两个方向的波。一般数据可用一个原函数 \(G'=g\) 写成
+\[
+ u(t,x)=A(x+ct)+B(x-ct),\quad
+ A=\dfrac f2+\dfrac G{2c},\quad
+ B=\dfrac f2-\dfrac G{2c}.
+\]
+原函数的常数分别改变 \(A\)、\(B\) 的常数部分，但不改变它们的和。这说明行波分解具有一个无关紧要的常数自由度，初值问题的解本身仍唯一。
+
+\ProseParagraphBreak
+
+初值线 \(t=0\) 同时与两族特征线相交，因而能确定两个传播分量。若改在特征线 \(x=ct\) 上给值，则沿这条线只能看到 \(A(2ct)+B(0)\)，不能恢复整个函数 \(B\)。例如 \(B(x-ct)\) 在该线上恒为零，只需 \(B(0)=0\)，但离开该线以后可以非零。对于二阶方程，数据的几何位置与数据数量同样重要。
+
+\ProseParagraphBreak
+
+公式还表明齐次运动在时间上可逆：把 \(t\) 换成 \(-t\)，得到的数据为 \((f,-g)\)。这种可逆性与后面热方程的平滑过程不同。若初始轮廓有折角，把它平移并不会使折角消失；在经典可微性不足时，仍可在分布或能量意义下解释同一公式。\secref{b2:sec:0903}将给出这一延拓的空间、极限和唯一性，而不是仅把不可微函数代入经典方程。

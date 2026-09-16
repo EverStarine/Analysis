@@ -2,15 +2,32 @@
 \chapter{Fourier 级数}
 \label{b2:ch:02}
 \BookChapterNumber{b2:ch:02}
-% 本章摘要（不计入编号）
+% 资料组与证明义务见 tmp/book2-part01-20260915/plan.md。
+% Axler2020Measure：实读11A的系数、正核与光滑衰减，11B的完备性、卷积、唯一性；
+% p.352仅用来定位Carleson与Kolmogorov概览，不冒称原书给出深层证明。
 \begin{chapterabstract}
-待填充。
+周期函数可以用不同频率的复指数描述，但计算出系数只是展开的开始。本章从 Hilbert 空间中的正交投影出发，将部分和写成 Dirichlet 核的卷积，分别研究局部有界变差函数的点态收敛和平方可积函数的范数收敛。Fejér 平均通过正核给出更稳定的逼近。随后把光滑性与系数衰减联系起来，说明积分、经典求导和弱求导各自的条件。选读部分以 Gibbs 过冲和算子范数增长解释普通部分和的局限。
 \end{chapterabstract}
 
-% 本章目标（不计入编号）
 \begin{learninggoals}
-待填充。
+\begin{itemize}
+\item\label{b2:item:02-goal-projection}用有限误差恒等式理解 Bessel、Parseval 与最佳平方逼近，区分正交性和完备性。
+\item\label{b2:item:02-goal-kernel}计算 Dirichlet 核、Fejér 核与周期 Poisson 核，并判断振荡、非负性和质量集中各起什么作用。
+\item\label{b2:item:02-goal-convergence}按函数的局部正则性、可积指数和系数衰减选择合适的收敛结论。
+\item\label{b2:item:02-goal-operation}核对逐项运算的许可，用带权平方和刻画周期弱导数。
+\item\label{b2:item:02-goal-boundary}辨认跳跃处取值、几乎处处例外集与端点范数失败，避免把不同收敛方式互相替换。
+\end{itemize}
 \end{learninggoals}
+
+本章预设 Lebesgue 积分、\(L^p\) 完备性及 Hilbert 空间内积的基本性质。所需正交展开在\secref{b2:sec:0201}重新建立；选读部分关于发散的存在性证明调用第一卷定理 8.3.3（一致有界原理）。周期归一化固定为 \(1\)，内积仍对第一变量线性。
+
+\ProseParagraphBreak
+
+\secref{b2:sec:0202}和\secref{b2:sec:0203}分别沿点态与平方范数两条路线推进，\secref{b2:sec:0204}再用正核把连续和可积函数放进同一逼近框架。\secref{b2:sec:0205}与\secref{b2:sec:0206}准备后续方程所需的收敛与求导工具。初次阅读可暂缓\secref{b2:sec:0207}，但应保留“平方范数收敛并不直接推出整列点态收敛”这一边界。
+
+\ProseParagraphBreak
+
+Sheldon Axler 的《Measure, Integration \& Real Analysis》\cite[Sections 11A--11B]{Axler2020Measure}适合伴读系数唯一性、正核和 Hilbert 空间方法。Elias M. Stein 与 Rami Shakarchi 的《Fourier Analysis: An Introduction》\cite{Stein2003Fourier}可帮助读者把这些结果放回周期振动与热传导的背景；较深的三角级数问题可继续参阅 Antoni Zygmund 的《Trigonometric Series》\cite{Zygmund2002Trigonometric}。
 
 \input{Part01/Chapter02/Section0201}
 \input{Part01/Chapter02/Section0202}
@@ -19,12 +36,127 @@
 \input{Part01/Chapter02/Section0205}
 \input{Part01/Chapter02/Section0206}
 \input{Part01/Chapter02/Section0207}
-% 本章小结（不计入编号）
-\begin{chaptersummary}
-待填充。
-\end{chaptersummary}
 
+\begin{chaptersummary}
+Fourier 系数把周期函数投向离散频率。正交性先给出有限维误差公式，三角系的稠密性再把它提升为完整的平方范数展开；系数尾部就是舍弃频率后的能量误差。点态收敛还需另一类论证，局部有界变差和 Dini 条件分别用变差控制或可积控制约束振荡积分。
+
+\ProseParagraphBreak
+
+正核平均避免了 Dirichlet 核绝对质量增长带来的不稳定。Fejér 平均对连续函数一致逼近，对所有有限指数的可积函数按范数逼近，并由此证明 Fourier 系数的唯一性。微分放大高频，积分减弱高频；经典逐项运算、弱导数与分布配对应按各自的收敛条件使用。这些区别在欧氏空间上的 Fourier 变换中仍会出现。
+\end{chaptersummary}
 
 \BookExercises
 
-待填充。
+前两题练习频率与对称性、相关积分的关系；随后处理由系数恢复函数、正则性边界及带最优常数的估计。最后两题把频率截断和指数衰减看作算子，连接本章与后续方程。
+
+% 自拟：将平移对称性与系数唯一性组合，区分偶频和奇频。
+\begin{exercise}\label{b2:ex:02-antiperiodic}
+设 \(f\in L^1(\mathbb T)\)。证明 \(f(x+1/2)=-f(x)\) 几乎处处，当且仅当全部偶数频率的 Fourier 系数为零。再证明 \(f\) 几乎处处为实值，当且仅当 \(\widehat f(-k)=\overline{\widehat f(k)}\) 对全部 \(k\) 成立。
+\end{exercise}
+\begin{solution}
+换元给出平移函数的第 \(k\) 个系数为 \((-1)^k\widehat f(k)\)。因而 \(f(\cdot+1/2)+f\) 的系数等于 \(((-1)^k+1)\widehat f(k)\)；它们全为零等价于偶频系数全为零，再用唯一性。另有 \(\widehat{\overline f}(k)=\overline{\widehat f(-k)}\)。所给共轭对称条件等价于 \(f\) 与 \(\overline f\) 系数一致，故等价于两者几乎处处相等。
+\end{solution}
+
+% 自拟：由区间示性函数转为平移相关，给出含参数的平方和。
+\begin{exercise}\label{b2:ex:02-interval-correlation}
+设 \(0<a<1\)，\(f=\mathbf1_{(0,a)}\)。计算其 Fourier 系数，证明
+\[
+ \sum_{k=1}^\infty\dfrac{\sin^2(\pi ka)}{k^2}=\dfrac{\pi^2}2a(1-a).
+\]
+再将 \(C(h)=\int_{\mathbb T}f(x+h)\cdot f(x)\,\mathrm{d}x\) 写成绝对一致收敛的 Fourier 级数，并解释它的几何意义。
+\end{exercise}
+\begin{solution}
+直接积分得到 \(\widehat f(0)=a\)，且对 \(k\ne0\)，
+\[
+ \widehat f(k)=e^{-\pi\mathrm{i}ka}\cdot\dfrac{\sin(\pi ka)}{\pi k}.
+\]
+Parseval 给出 \(a=a^2+2\sum_{k\geq1}\sin^2(\pi ka)/(\pi^2k^2)\)，整理即得所求。用内积形式的 Parseval，
+\[
+ C(h)=\sum_{k\in\mathbb Z}|\widehat f(k)|^2e^{2\pi\mathrm{i}kh}.
+\]
+系数总和为 \(a\)，故绝对一致收敛。积分等于圆周上弧段 \((0,a)\) 与其平移的重叠长度，故 \(0\leq C(h)\leq a\)、\(C(0)=a\)。当 \(a\leq1/2\) 且 \(\mathrm{d}_{\mathbb T}(h,0)\leq a\) 时，该长度为 \(a-\mathrm{d}_{\mathbb T}(h,0)\)，其余位置为零。
+\end{solution}
+
+% 改编：Axler2020Measure, Exercises11B,7（印刷361页）；增加范数和重建说明。
+\begin{exercise}\label{b2:ex:02-l1-l2-criterion}
+设 \(f\in L^1(\mathbb T)\)。证明 \(f\) 有平方可积代表，当且仅当 \(\sum_k|\widehat f(k)|^2<\infty\)。在充分性证明中，不得直接对尚未知道属于 \(L^2\) 的 \(f\) 使用 Parseval 恒等式。
+\end{exercise}
+\begin{solution}
+必要性由 Parseval 得到。反之，用平方可和系数构造 \(L^2\) 收敛的三角多项式列，其极限记为 \(g\)。连续的系数泛函给出 \(\widehat g(k)=\widehat f(k)\)。由于圆周总测度为 \(1\)，\(g\in L^1\)，故可对 \(f-g\) 使用系数唯一性，得到 \(f=g\) 几乎处处。此时才可写 \(\|f\|_2^2=\sum_k|\widehat f(k)|^2\)。
+\end{solution}
+
+% 自拟：绝对收敛不保证可微，利用稀疏频率的非负对称差。
+\begin{exercise}\label{b2:ex:02-lacunary-nondifferentiable}
+证明
+\[
+ f(x)=\sum_{j=1}^\infty2^{-j}\cos(2\pi2^jx)
+\]
+定义一个连续周期函数，Fourier 级数绝对一致收敛，但 \(f\) 在 \(0\) 不可微。
+\end{exercise}
+\begin{solution}
+各项绝对值不超过 \(2^{-j}\)，故一致收敛且极限连续。逐项积分可辨认这些就是所写函数的 Fourier 系数。函数为偶函数，若原点可微，导数只能为零。取 \(h_m=2^{-m}\)、\(m\geq2\)。由于每项 \(1-\cos(2\pi2^jh_m)\) 非负，保留 \(j=m-1\) 一项便得
+\[
+ \dfrac{f(0)-f(h_m)}{h_m}
+ \geq 2^m\cdot2^{-(m-1)}\bigl(1-\cos\pi\bigr)=4.
+\]
+这排除了导数为零的可能，所以导数不存在。
+\end{solution}
+
+% 自拟：周期弱导数与最佳常数；取等分类提供正文之外的增量。
+\begin{exercise}\label{b2:ex:02-sharp-poincare}
+设 \(f\) 有平方可积周期弱导数。证明
+\[
+ \|f-\widehat f(0)\|_2\leq\dfrac1{2\pi}\|f'\|_2,
+\]
+常数最佳，并求全部取等函数。
+\end{exercise}
+\begin{solution}
+Parseval 和弱导数的系数关系给出
+\[
+ \|f-\widehat f(0)\|_2^2=\sum_{k\ne0}|\widehat f(k)|^2
+ \leq\sum_{k\ne0}k^2|\widehat f(k)|^2=(2\pi)^{-2}\|f'\|_2^2.
+\]
+取等当且仅当全部 \(|k|\geq2\) 的系数为零，故函数为 \(c+ae^{2\pi\mathrm{i}x}+be^{-2\pi\mathrm{i}x}\) 几乎处处。取 \(a\ne0,b=0\) 即证常数不能缩小。
+\end{solution}
+
+% 自拟：频率方法求周期强制方程，检查零频与解的意义。
+\begin{exercise}\label{b2:ex:02-periodic-resolvent}
+设 \(a>0\)、\(f\in L^2(\mathbb T)\)。用 Fourier 系数构造唯一满足 \(-u''+a^2u=f\) 的周期函数 \(u\)，其中 \(u,u',u''\in L^2\)，导数均取弱意义。证明 \(\|u\|_2\leq a^{-2}\|f\|_2\)，并说明 \(a=0\) 时存在性与唯一性如何改变。
+\end{exercise}
+\begin{solution}
+设 \(\widehat u(k)=\widehat f(k)/(4\pi^2k^2+a^2)\)。系数及其乘以 \(k\)、\(k^2\) 后均平方可和，所以连续两次使用弱导数刻画可得所需导数。逐频率检验方程，再用系数唯一性，便知方程在 \(L^2\) 中成立。任何两个解之差的每个系数都乘以非零数 \(4\pi^2k^2+a^2\) 后等于零，故解唯一。分母至少为 \(a^2\)，由 Parseval 得到范数界。若 \(a=0\)，零频方程要求 \(\widehat f(0)=0\)；满足时按非零频率同样构造，而 \(\widehat u(0)\) 可任意选取，故只在相差常数的意义下唯一。
+\end{solution}
+
+% 自拟：强收敛、算子范数与有限秩的区分。
+\begin{exercise}\label{b2:ex:02-fejer-operator}
+把 \(\sigma_N\) 看作 \(L^2(\mathbb T)\) 上的算子。证明它自伴、非负、有限秩，且 \(\|\sigma_N\|=1\)、\(\|I-\sigma_N\|=1\)。这为何不与对每个 \(f\) 有 \(\sigma_Nf\to f\) 矛盾？
+\end{exercise}
+\begin{solution}
+在指数基上，算子乘以实权重 \(w_N(k)=(1-|k|/(N+1))_+\)，该权重介于 \(0\) 和 \(1\) 之间，且仅有限多个非零。这分别给出自伴、非负与有限秩。常数函数对应权重 \(1\)，故范数为 \(1\)；对 \(|k|>N\)，\((I-\sigma_N)e_k=e_k\)，加上所有权重差不超过 \(1\)，得到第二个范数等式。对固定 \(f\)，平方误差为 \(\sum_k|1-w_N(k)|^2|\widehat f(k)|^2\)，由控制收敛趋零。算子范数则允许随 \(N\) 选择不同的高频测试函数，量词不同。
+\end{solution}
+
+% 自拟：指数频率阻尼、半群与热方程；不作为后文基本核证明的唯一输入。
+\begin{optionalexercise}\label{b2:ex:02-periodic-heat}
+设 \(f\in L^2(\mathbb T)\)，\(t>0\)。证明
+\[
+ u(t,x)=\sum_{k\in\mathbb Z}e^{-4\pi^2k^2t}\widehat f(k)e^{2\pi\mathrm{i}kx}
+\]
+在每个 \(t\geq\varepsilon>0\) 的范围内可任意次逐项求导，满足 \(u_t=u_{xx}\)，且 \(u(t,\cdot)\to f\) 于 \(L^2\)。证明相应算子满足 \(H_tH_s=H_{t+s}\)，并求 \(t\to\infty\) 的极限及平均为零时的衰减率。
+\end{optionalexercise}
+\begin{solution}
+任意混合导数只给系数增加一个固定次幂 \(k^m\)。由 Cauchy--Schwarz，
+\[
+ \sum_k|k|^m e^{-4\pi^2k^2\varepsilon}\cdot|\widehat f(k)|<\infty,
+\]
+所以导数级数一致收敛，求导合法。逐项计算得热方程。初值收敛由
+\[
+ \|u(t,\cdot)-f\|_2^2
+ =\sum_k|e^{-4\pi^2k^2t}-1|^2|\widehat f(k)|^2\longrightarrow0
+\]
+得到。两次作用使指数因子相乘，故有半群等式。零频保持不变，非零频衰减；因此 \(u(t,\cdot)\to\widehat f(0)\) 于 \(L^2\)，且
+\[
+ \|u(t,\cdot)-\widehat f(0)\|_2
+ \leq e^{-4\pi^2t}\|f-\widehat f(0)\|_2.
+\]
+只含频率 \(\pm1\) 时取等，因而这一一致衰减指数不能增大。
+\end{solution}

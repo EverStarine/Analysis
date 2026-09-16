@@ -2,24 +2,131 @@
 \section{能量方法}
 \label{b2:sec:0903}
 
-% TODO: 撰写本节正文。
+显式公式给出解的每个点值；能量方法则把速度与空间梯度放进一个积分量。后者能在点值不可定义、二阶导数只存在于分布意义下时继续工作。真正需要保存的是估计所控制的范数，以及把光滑解送到极限的过程。
 
 \subsection{能量恒等式}
 \label{b2:subsec:090301}
 
-待填充。
+先设解和外力光滑，且在每个有界时间区间内有共同的紧空间支集。定义\term[nengliang-midu]{能量密度}[energy density]及总能量
+\[
+ e(t,x)\coloneqq\dfrac12\bigl(|u_t(t,x)|^2+c^2|u_x(t,x)|^2\bigr),\quad
+ E(t)\coloneqq\int_{\mathbb R}e(t,x)\,\mathrm{d}x.
+\]
+复值解也使用这一实数能量。把方程乘以 \(\overline{u_t}\) 并取实部，得到局部恒等式
+\begin{equation}\label{b2:eq:09-local-energy}
+ \partial_te-\partial_x\bigl(c^2\operatorname{Re}(u_x\overline{u_t})\bigr)
+ =\operatorname{Re}(F\overline{u_t}).
+\end{equation}
+因此相应的\term[nengliang-tongliang]{能量通量}[energy flux]为 \(-c^2\operatorname{Re}(u_x\overline{u_t})\)。负号与守恒式 \(\partial_te+\partial_xj=\operatorname{Re}(F\overline{u_t})\) 相配。
+\symidx{\(E(t)\)：波动方程的总能量}
+
+\begin{proposition}[能量与外力功]\label{b2:prop:09-energy}
+在上述光滑紧支集假设下，
+\begin{equation}\label{b2:eq:09-energy-identity}
+ E(t)=E(0)+\operatorname{Re}\int_0^t\int_{\mathbb R}
+ F(s,x)\overline{u_t(s,x)}\,\mathrm{d}x\,\mathrm{d}s.
+\end{equation}
+特别，\(F=0\) 时总能量守恒。一般有
+\begin{equation}\label{b2:eq:09-energy-bound}
+ \sqrt{2E(t)}\leq\sqrt{2E(0)}+\int_0^t\|F(s)\|_2\,\mathrm{d}s.
+\end{equation}
+\end{proposition}
+\begin{proof}
+将\eqref{b2:eq:09-local-energy}对空间积分，支集条件消去无穷远边界项，再对时间积分，得到恒等式。由 Cauchy--Schwarz，
+\[
+ E'(t)\leq\|F(t)\|_2\cdot\|u_t(t)\|_2
+ \leq\sqrt{2E(t)}\cdot\|F(t)\|_2.
+\]
+不能在 \(E(t)=0\) 时直接除以 \(\sqrt{E(t)}\)。对 \(\varepsilon>0\)，改对 \(\sqrt{2E(t)+\varepsilon^2}\) 求导，其导数不超过 \(\|F(t)\|_2\)。积分后令 \(\varepsilon\downarrow0\)，得到估计。
+\end{proof}
+
+齐次解的动能 \(\|u_t\|_2^2/2\) 与势能 \(c^2\|u_x\|_2^2/2\) 可以互相转换，守恒的是两者之和。总位移的 \(L^2\) 范数并不出现在能量里，因此不能直接从 \(E(t)=E(0)\) 得到 \(\|u(t)\|_2=\|f\|_2\)。其零阶部分须另由时间积分控制。
 
 \subsection{唯一性}
 \label{b2:subsec:090302}
 
-待填充。
+全空间积分要求有限总能量，但经典解唯一性不应排除多项式增长的初值。把能量放在随时间收缩的有限区间上，可以摆脱无穷远条件。固定 \(x_0\)、\(t_0\)，设
+\[
+ a(t)=x_0-c(t_0-t),\quad b(t)=x_0+c(t_0-t),\quad
+ E_K(t)=\int_{a(t)}^{b(t)}e(t,x)\,\mathrm{d}x.
+\]
+移动端点的速度为 \(a'=c\)、\(b'=-c\)，因此即使 \(F=0\)，也不能仅把空间导数积分后宣称局部能量不变。
+
+\begin{proposition}[收缩区间的能量]\label{b2:prop:09-cone-energy}
+若 \(u\) 在依赖三角形的邻域中为经典齐次解，则对 \(0<t<t_0\)，
+\[
+ E_K'(t)=-\dfrac c2|u_t-cu_x|^2(t,b(t))
+             -\dfrac c2|u_t+cu_x|^2(t,a(t))\leq0.
+\]
+若初始位移与初始速度在底边区间上为零，则 \(u\) 在整个三角形上为零。
+\end{proposition}
+\begin{proof}
+Leibniz 公式与\eqref{b2:eq:09-local-energy}给出
+\[
+ E_K'=c^2\operatorname{Re}(u_x\overline{u_t})(t,b)-c\cdot e(t,b)
+       -c^2\operatorname{Re}(u_x\overline{u_t})(t,a)-c\cdot e(t,a).
+\]
+分别配方即得所示平方和。若初值为零，则底边内部的 \(f'\) 也为零，故 \(E_K(0)=0\)。非负性与单调性给出 \(E_K(t)=0\)，从而内部的 \(u_t\)、\(u_x\) 都为零。对内部任一点沿竖直线积分到初值线，这条线始终留在三角形中，故 \(u(t,x)=u(0,x)=0\)。边界和顶点由连续性得到。
+\end{proof}
+
+把命题用于两个解之差，可重新得到局部唯一性和有限传播速度。这一次不使用 d'Alembert 表达式，核心是侧边通量恰被边界收缩带走的能量控制。选择比 \(c\) 更慢的收缩速度时，平方配方的符号可能失效；波速是估计所允许的几何尺度。
 
 \subsection{稳定性}
 \label{b2:subsec:090303}
 
-待填充。
+比较两个光滑解 \(u\)、\(\widetilde u\)，分别记数据差为 \(h=f-\widetilde f\)、\(k=g-\widetilde g\)、\(G=F-\widetilde F\)。对差解使用能量估计，令
+\[
+ M_T\coloneqq\bigl(\|k\|_2^2+c^2\|h'\|_2^2\bigr)^{1/2}
+                +\int_0^T\|G(s)\|_2\,\mathrm{d}s.
+\]
+则在 \(0\leq t\leq T\) 上有
+\begin{equation}\label{b2:eq:09-stability}
+ \|u_t(t)-\widetilde u_t(t)\|_2\leq M_T,\quad
+ c\|u_x(t)-\widetilde u_x(t)\|_2\leq M_T,\quad
+ \|u(t)-\widetilde u(t)\|_2\leq\|h\|_2+tM_T.
+\end{equation}
+最后一项来自 \(u(t)-\widetilde u(t)=h+\int_0^t(u_s-\widetilde u_s)\,\mathrm{d}s\)。它补上了能量没有控制的零阶部分，也解释了估计为何依赖所观察的有限时间长度。
+
+\ProseParagraphBreak
+
+以上结果给出的\term[lianxu-yilai]{连续依赖}[continuous dependence]有明确含义：初始位移在 \(H^1\) 范数、初始速度在 \(L^2\) 范数、外力在时间可积的 \(L^2\) 范数中接近，则位移与速度在整个有限时间区间内一致接近。这里不能仅保留 \(\|h\|_2\)。例如取固定非零光滑紧支集函数 \(\eta\)，令 \(h_n(x)=n^{-1}\eta(x)\sin(nx)\)。虽然 \(h_n\to0\) 于 \(L^2\)，其导数含 \(\eta(x)\cos(nx)\)，平方范数趋于 \(\|\eta\|_2^2/2\)；后一极限由 Riemann--Lebesgue 定理处理振荡项得到。很小的位移可以携带不消失的高频能量。
 
 \subsection{低正则初值}
 \label{b2:subsec:090304}
 
-待填充。
+以下使用第一编已经建立的 \(L^2\) 与弱导数语言。记 \(H^1(\mathbb R)=\{f\in L^2:f'\in L^2\}\)，范数平方为 \(\|f\|_2^2+\|f'\|_2^2\)。外力空间 \(L^1(0,T;L^2)\) 指强可测且 \(\int_0^T\|F(s)\|_2\,\mathrm{d}s<\infty\) 的函数；其中的向量值积分可由简单函数在这一积分范数中的逼近定义。积分三角不等式保证定义不依赖逼近。
+
+\begin{definition}\label{b2:def:09-energy-solution}
+设 \(f\in H^1\)、\(g\in L^2\)、\(F\in L^1(0,T;L^2)\)。若
+\[
+ u\in C([0,T];H^1)\cap C^1([0,T];L^2),
+\]
+在 \((0,T)\times\mathbb R\) 上满足分布方程 \(u_{tt}-c^2u_{xx}=F\)，并在所示范数意义下满足 \(u(0)=f\)、\(u_t(0)=g\)，则称 \(u\) 为本初值问题的\term[nengliang-jie]{能量解}[energy solution]。
+\end{definition}
+
+分布方程是双线性测试等式
+\[
+ \int_0^T\int_{\mathbb R}u(\varphi_{tt}-c^2\varphi_{xx})\,\mathrm{d}x\,\mathrm{d}t
+ =\int_0^T\int_{\mathbb R}F\varphi\,\mathrm{d}x\,\mathrm{d}t,
+ \quad \varphi\in C_c^\infty((0,T)\times\mathbb R).
+\]
+这里不放复共轭；能量计算中的共轭来自 Hilbert 内积，两种配对各有用途。初值通过时间连续性另行给定，不能由仅在开时间区间内成立的测试等式推出来。
+
+\begin{theorem}[能量极限]\label{b2:thm:09-energy-solution}
+上述数据存在唯一能量解。光滑紧支集数据在 \(H^1\times L^2\times L^1(0,T;L^2)\) 中趋于给定数据时，对应经典解在 \(C([0,T];H^1)\cap C^1([0,T];L^2)\) 中趋于该解。能量恒等式\eqref{b2:eq:09-energy-identity}及稳定性估计\eqref{b2:eq:09-stability}仍成立。
+\end{theorem}
+\begin{proof}
+先说明可选取所需数据。对 \(f\) 乘以在 \([-R,R]\) 上等于一、导数为 \(O(R^{-1})\) 的光滑截断，再卷积磨光函数。尾部的 \(f\)、\(f'\) 平方积分趋零，截断导数乘 \(f\) 的范数也趋零；卷积由平移连续性在 \(L^2\) 中同时逼近函数和导数。于是得到 \(f_n\in C_c^\infty\) 在 \(H^1\) 中逼近 \(f\)。对 \(g\) 只需同样的零阶论证。外力先用有限个 \(L^2\) 值简单函数逼近，再逼近这些值的空间函数和各个时间示性函数，得到光滑且空间紧支撑的 \(F_n\)，误差趋零于 \(L^1(0,T;L^2)\)。
+
+由 d'Alembert--Duhamel 公式产生经典解 \(u_n\)。稳定性估计说明 \(u_n\)、\(\partial_xu_n\)、\(\partial_tu_n\) 分别在 \(C([0,T];L^2)\) 中为 Cauchy 列，记极限为 \(u,w,v\)。空间分部积分取极限得到 \(w=\partial_xu\)；等式 \(u_n(t)=f_n+\int_0^t\partial_su_n(s)\,\mathrm{d}s\) 在 \(L^2\) 中取极限得到 \(u(t)=f+\int_0^tv(s)\,\mathrm{d}s\)，故 \(u_t=v\)。测试等式的各项由范数收敛取极限，得到分布方程。初值也由一致时间收敛保留。
+
+能量中的两个平方范数随强收敛趋于极限。功积分的差可分成 \(F_n-F\) 乘 \(\overline{u_{n,t}}\) 和 \(F\) 乘 \(\overline{u_{n,t}-u_t}\)；分别由外力的积分范数收敛和速度的一致范数收敛控制。因此能量恒等式传到极限。相同过程也保留稳定性估计，并说明极限不依赖所选数据逼近。
+
+还须排除其他分布能量解。设 \(z\) 为零数据的能量解，对空间卷积光滑紧支集核，得到 \(z_\varepsilon\)。它在空间具有任意阶 \(L^2\) 导数，而且 \(z_{\varepsilon,tt}=c^2z_{\varepsilon,xx}\)。右端连续取值于 \(L^2\)，故 \(z_{\varepsilon,t}\) 在时间上可按 \(L^2\) 微积分求导。Hilbert 内积的乘积法则与全空间分部积分给出其能量守恒；全空间分部积分可先乘空间截断，误差由 \(L^2\) 尾部与 Cauchy--Schwarz 控制后趋零。零初值使能量为零，因而 \(z_{\varepsilon,t}=0\)，再由 \(z_\varepsilon(0)=0\) 得到 \(z_\varepsilon=0\)。让 \(\varepsilon\downarrow0\)，得到 \(z=0\)。
+\end{proof}
+
+有限传播也传到能量极限，但支集应按 \(L^2\) 函数的本性支集理解。若初值和几乎每个时刻的外力支撑在同一闭集 \(A\) 内，可以先截断再用半径 \(\varepsilon\) 的磨光核逼近，使近似数据支撑在 \(A\) 的 \(\varepsilon\) 邻域。经典解支撑在距离 \(A\) 不超过 \(ct+\varepsilon\) 的区域内。在其外部固定一个紧集，先令逼近指标趋于无穷，再令 \(\varepsilon\) 趋零，\(L^2\) 极限仍为零。
+
+\ProseParagraphBreak
+
+最后取 \(f(x)=\max\{1-|x|,0\}\)、\(g=0\)。它的弱导数分段为常数并属于 \(L^2\)，所以数据属于能量空间；公式仍为两个帐篷形状的平移平均。初始的三个折角分别沿特征线前进，得到连续但通常非二次可微的解。能量解的存在并不制造额外的平滑性，它给原先不满足经典正则性的数据提供了稳定且唯一的演化意义。

@@ -2,24 +2,107 @@
 \section{Schwartz 空间上的 Fourier 变换}
 \label{b2:sec:0502}
 
-% TODO: 撰写本节正文。
+Schwartz 函数的全部矩和导数都可积，因此\chapref{b2:ch:03}的运算公式可以任意次迭代。空间权重与导数在变换下互换，使这一测试空间保持不变。
 
-\subsection{\texorpdfstring{\(\mathcal S\)}{m} 的不变性}
+\subsection{Schwartz 空间的不变性}
 \label{b2:subsec:050201}
 
-待填充。
+\begin{theorem}\label{b2:thm:05-schwartz-invariance}
+Fourier 变换连续地映 \(\mathcal S(\mathbb R^d)\) 到自身。对任意多重指标 \(\alpha,\beta\)，有
+\[
+ \mathcal F(\partial^\beta\varphi)=(2\pi\mathrm{i}\xi)^\beta\widehat\varphi,
+ \quad
+ \mathcal F(x^\alpha\varphi)=\left(\dfrac{\mathrm{i}}{2\pi}\right)^{|\alpha|}\partial_\xi^\alpha\widehat\varphi.
+\]
+\end{theorem}
+\begin{proof}
+\chapref{b2:ch:03}的矩与导数公式适用于每一阶，所以变换光滑且公式成立。进一步，\(\xi^\beta\partial_\xi^\alpha\widehat\varphi\) 是常数乘 \(\mathcal F(\partial^\beta(x^\alpha\varphi))\)。其上确界由原函数的 \(L^1\) 范数控制；用 Leibniz 展开，再以足够高的 Schwartz 半范数控制积分，即得
+\[
+ \sup_\xi|\xi^\beta\partial_\xi^\alpha\widehat\varphi(\xi)|
+ \leq C_{\alpha,\beta,d}\cdot p_M(\varphi)
+\]
+对某个有限 \(M\) 成立。每个目标半范数因此受某个源半范数控制，这同时证明不变性与连续性。
+\end{proof}
 
 \subsection{Fourier 反演}
 \label{b2:subsec:050202}
 
-待填充。
+\begin{corollary}\label{b2:cor:05-schwartz-automorphism}
+Fourier 变换是 \(\mathcal S\) 上的连续线性双射，逆映射 \(\mathcal F^{-1}\varphi=\check\varphi\) 也连续。并且 \(\widehat{\widehat\varphi}(x)=\varphi(-x)\)。
+\end{corollary}
+\begin{proof}
+函数与变换都可积，故\chapref{b2:ch:03}的反演适用；两者连续，等式处处成立。反射保持每个径向半范数，而正号变换是反射与负号变换的复合，所以逆映射连续。反演也证明满射性。
+\end{proof}
 
-\subsection{Gaussian 函数}
+\begin{proposition}\label{b2:prop:05-product-transform}
+若 \(\varphi,\psi\in\mathcal S\)，则
+\[
+ \widehat{\varphi\psi}=\widehat\varphi*\widehat\psi,
+ \quad \widehat{\varphi*\psi}=\widehat\varphi\cdot\widehat\psi.
+\]
+\end{proposition}
+\begin{proof}
+第二式已由卷积定理得到。对第一式，在 \(\varphi\psi\) 的变换积分中用反演展开 \(\psi\)。重积分绝对值不超过 \(\|\varphi\|_1\cdot\|\widehat\psi\|_1\)，所以 Fubini 合法；内层积分为 \(\widehat\varphi(\xi-\eta)\)，从而得到频率卷积。
+\end{proof}
+
+\subsection{Gauss 函数}
 \label{b2:subsec:050203}
 
-待填充。
+Gauss 函数 \(e^{-\pi|x|^2}\) 的每个导数都等于多项式乘该函数，因此属于 \(\mathcal S\)。其自对偶性已在\cref{b2:thm:03-gaussian}证明，这里不另换归一化。更一般地，若 \(A\) 是正定实对称矩阵，则
+\[
+ \mathcal F(e^{-\pi x^TAx})(\xi)
+ =(\det A)^{-1/2}e^{-\pi\xi^TA^{-1}\xi}.
+\]
+证明只需将 \(A\) 正交对角化，再分别作一维伸缩；换元因子为各个特征值平方根的倒数之积。空间中的长轴变为频率中的短轴，逆矩阵明确记录了这个互换。
+
+\ProseParagraphBreak
+
+John K. Hunter 与 Bruno Nachtergaele 的《Applied Analysis》\cite[pp. 303--304]{Hunter2001Applied}也用正定二次型说明这组变换。该书将 \((2\pi)^{-d/2}\) 放在积分前并使用不同的指数，比较公式时必须先转换归一化；本书始终沿用\chapref{b2:ch:03}的约定。
 
 \subsection{Hermite 函数}
 \label{b2:subsec:050204}
 
-待填充。
+Gauss 函数不只是一个特例，它可以生成 Fourier 变换的一组完整特征函数。先在一维引入作用于 \(\mathcal S(\mathbb R)\) 的两个算子
+\[
+ a=\dfrac1{\sqrt{4\pi}}\left(\dfrac{\mathrm{d}}{\mathrm{d}x}+2\pi x\right),
+ \quad
+ a^*=\dfrac1{\sqrt{4\pi}}\left(-\dfrac{\mathrm{d}}{\mathrm{d}x}+2\pi x\right).
+\]
+符号 \(a^*\) 在此表示分部积分意义下的伴随表达式；本节不讨论无界算子的最大定义域。直接作用于测试函数可验证 \(aa^*-a^*a=I\)。令
+\[
+ h_0(x)=2^{1/4}e^{-\pi x^2},\quad
+ h_n\coloneqq\dfrac{(a^*)^nh_0}{\sqrt{n!}}\quad(n\geq0),
+\]
+称为本书归一化的\term[hermite-hanshu]{Hermite 函数}[Hermite functions]。
+\symidx{\(h_n\)：归一化 Hermite 函数}
+
+\begin{theorem}\label{b2:thm:05-hermite}
+函数系 \((h_n)_{n\geq0}\) 是 \(L^2(\mathbb R)\) 的标准正交基，且
+\[
+ ah_n=\sqrt n\,h_{n-1}\ (n\geq1),\quad
+ a^*h_n=\sqrt{n+1}\,h_{n+1},\quad
+ \widehat h_n=(-\mathrm{i})^nh_n.
+\]
+\end{theorem}
+\begin{proof}
+由 \(ah_0=0\) 和交换关系，归纳得 \(a(a^*)^nh_0=n(a^*)^{n-1}h_0\)，这给出下降公式；上升公式来自定义。因此 \(a^*ah_n=nh_n\)。分部积分说明 \(a^*a\) 在 \(\mathcal S\) 上对称，故不同 \(n\) 的函数正交。又因 \(\|h_0\|_2=1\)，伴随关系给出
+\[
+ \|a^*h_n\|_2^2=\langle aa^*h_n,h_n\rangle
+ =(n+1)\|h_n\|_2^2,
+\]
+从而所有 \(h_n\) 范数为 \(1\)。每个 \(h_n\) 是次数为 \(n\)、首项系数非零的多项式乘 \(h_0\)，这可直接由上升操作归纳。
+
+为证完备，设 \(f\in L^2\) 与所有 \(h_n\) 正交。多项式的三角形首项结构说明，对全部 \(n\) 都有
+\[
+ \int f(x)\cdot e^{-\pi x^2}x^n\,\mathrm{d}x=0.
+\]
+对任意 \(z\in\mathbb C\)，Cauchy--Schwarz 保证 \(|f(x)|e^{-\pi x^2}e^{|z|\cdot|x|}\) 可积，所以可把 \(e^{zx}\) 的幂级数逐项积分，得到
+\[
+ \int f(x)\cdot e^{-\pi x^2}e^{zx}\,\mathrm{d}x=0.
+\]
+令 \(z=-2\pi\mathrm{i}\xi\)，可知可积函数 \(fe^{-\pi x^2}\) 的变换恒为零。唯一性使 \(f=0\) 几乎处处，故标准正交系完备。
+
+最后，由变换的微分与乘法公式，\(\mathcal F a^*=-\mathrm{i}a^*\mathcal F\)。从 \(\widehat h_0=h_0\) 出发归纳，即得特征值公式。
+\end{proof}
+
+多维时取乘积 \(h_\alpha(x)=\prod_{j=1}^dh_{\alpha_j}(x_j)\)，Fubini 给出标准正交性及特征值 \((-\mathrm{i})^{|\alpha|}\)。其完备性可沿上述矩证明逐坐标进行：若与所有乘积正交，乘以多维 Gauss 后的全部混合矩为零，展开 \(e^{z\cdot x}\) 再用多维变换唯一性。Hermite 展开把连续频率变换与离散特征函数联系起来，也为后续谐振子提供了具体模型。

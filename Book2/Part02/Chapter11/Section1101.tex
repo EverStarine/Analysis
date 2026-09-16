@@ -2,19 +2,79 @@
 \section{球平均法}
 \label{b2:sec:1101}
 
-% TODO: 撰写本节正文。
+一维公式依赖左右两个方向，高维空间却有连续无穷多个传播方向。对以观察点为球心的球面取平均，可以把这些方向组织成一个半径变量。得到的方程仍记得空间维数：球面的面积增长会在半径导数中产生一个系数。
 
 \subsection{球面平均}
 \label{b2:subsec:110101}
 
-待填充。
+记 \(\sigma_{n-1}=\mathcal H^{n-1}(\mathbb S^{n-1})\) 为单位球面的面积；特别，\(\sigma_1=2\pi\)、\(\sigma_2=4\pi\)。对连续函数 \(h:\mathbb R^n\to\mathbb C\)，定义其\term[qiumian-pingjun]{球面平均}[spherical mean]为
+\begin{equation}\label{b2:eq:11-spherical-mean}
+ M_rh(x)\coloneqq\dfrac1{\sigma_{n-1}}
+ \int_{\mathbb S^{n-1}}h(x+r\theta)\,\mathrm{d}\sigma(\theta),\quad r\in\mathbb R.
+\end{equation}
+积分测度是标准球面面积测度。换元 \(\theta\mapsto-\theta\) 表明平均关于 \(r\) 为偶函数；令 \(r=0\) 则得到 \(M_0h(x)=h(x)\)。若 \(r>0\)，亦可把它写成 \(\partial B_r(x)\) 上的面积积分除以 \(\sigma_{n-1}r^{n-1}\)。
+\symidx{\(M_rh\)：半径为 \(r\) 的球面平均}
 
-\subsection{Euler–Poisson–Darboux 方程}
+\ProseParagraphBreak
+
+这里的球心 \(x\) 仍是自由变量。即使 \(h\) 不径向，每个球心附近也有自己的平均函数；不应把 \(M_rh(x)\) 误当作只依赖 \(r\) 的一个全局径向化结果。对平滑 \(h\)，求导可穿过紧球面上的积分，因此 \(\Delta_xM_rh=M_r\Delta h\)。另一方面，半径导数满足另一个表达式，正是它把空间算子转成单变量算子。
+
+\begin{lemma}[球面平均的微分恒等式]\label{b2:lem:11-spherical-identity}
+若 \(h\in C^2(\mathbb R^n)\)、\(n\geq2\)，则对 \(r>0\)，
+\begin{equation}\label{b2:eq:11-epd-spatial}
+ \partial_r^2M_rh+\dfrac{n-1}{r}\partial_rM_rh=M_r\Delta h=\Delta_xM_rh.
+\end{equation}
+当 \(r\to0\) 时，\(M_rh=h+r^2\Delta h/(2n)+o(r^2)\)，且 \(\partial_rM_rh|_{r=0}=0\)。
+\end{lemma}
+\begin{proof}
+对\eqref{b2:eq:11-spherical-mean}求导，再换到半径为 \(r\) 的球面。由散度公式，
+\[
+ r^{n-1}\partial_rM_rh(x)
+ =\dfrac1{\sigma_{n-1}}\int_{\partial B_r(x)}\partial_\nu h\,\mathrm{d}\sigma
+ =\dfrac1{\sigma_{n-1}}\int_{B_r(x)}\Delta h(y)\,\mathrm{d}y.
+\]
+将球内积分写成半径积分，对 \(r\) 求导，右端为 \(r^{n-1}M_r\Delta h\)，除以 \(r^{n-1}\) 即得恒等式。
+
+零点展开来自二阶 Taylor 公式。球面对称性给出 \(\int\theta_j\,\mathrm{d}\sigma=0\)，不同坐标的交叉项积分为零，而各 \(\theta_j^2\) 的积分相同，其总和为 \(\sigma_{n-1}\)。所以每项为 \(\sigma_{n-1}/n\)，得到二阶系数。Taylor 余项在紧球面方向上一致为 \(o(r^2)\)，可直接积分。第一半径导数为零也可由 \(h\) 的一阶展开得到。
+\end{proof}
+
+例如对 \(h(x)=|x|^2\)，有 \(M_rh(x)=|x|^2+r^2\)，左侧等于 \(2n\)，与 \(\Delta h\) 一致。若把球面平均误写成没有除面积的积分，额外的 \(r^{n-1}\) 将改变整个微分方程。
+
+\subsection{Euler--Poisson--Darboux 方程}
 \label{b2:subsec:110102}
 
-待填充。
+设 \(u_{tt}=c^2\Delta u\) 为平滑解，固定观察中心 \(x\)，并记 \(U(t,r)=M_ru(t,\cdot)(x)\)。由前一引理，
+\begin{equation}\label{b2:eq:11-epd}
+ U_{tt}=c^2\left(U_{rr}+\dfrac{n-1}{r}U_r\right),\quad r>0.
+\end{equation}
+这是本章所用的\term[euler-poisson-darboux-fangcheng]{Euler--Poisson--Darboux 方程}[Euler--Poisson--Darboux equation]。系数在 \(r=0\) 看似奇异，但平均来自一个偶函数，且 \(U_r(t,0)=0\)。它在零点的行为不是可以任意添加的边界数据，而由球面平均的定义强制决定。
+
+\ProseParagraphBreak
+
+三维时系数为 \(2/r\)。乘以 \(r\)，令 \(V(t,r)=rU(t,r)\)，就有
+\[
+ V_{tt}=c^2V_{rr}.
+\]
+平均 \(U\) 为偶函数，故 \(V\) 为奇函数，并在 \(r=0\) 光滑穿过。若初始数据为 \((f,g)\)，则
+\[
+ V(0,r)=rM_rf(x),\quad V_t(0,r)=rM_rg(x).
+\]
+现在可在整条 \(r\) 轴上使用\cref{b2:thm:09-dalembert}。最后通过 \(u(t,x)=V_r(t,0)\) 恢复原解。这里的径向变量只服务于固定球心的平均，并未假设原始初值关于原点径向。
 
 \subsection{降维}
 \label{b2:subsec:110103}
 
-待填充。
+把径向方程转成一维方程，与把一个高维解限制到较少变量，是两个不同步骤。后一种构造称为\term[jiangweifa]{降维法}[method of descent]：若高维初值不依赖最后一个坐标，且得到的解也具有这种独立性，那么最后一个坐标的二阶导数为零，方程就成为低一维的波方程。
+
+\ProseParagraphBreak
+
+该方法需要保留解的适用范围。把一个紧支集二维函数视作三维函数后，它沿第三坐标无限延伸，已经不属于三维 \(L^2\)。所以不能用只对三维有限总能量解成立的表示来完成降维；下一节的球面表示只需局部光滑初值，没有无穷远积分条件，因而适合这个目的。
+
+\ProseParagraphBreak
+
+几何上，三维球面的上下半球投影到二维圆盘，各自带来面积伸缩因子 \((1-|z|^2)^{-1/2}\)。它在圆周附近发散，却可积，因为
+\[
+ \int_{B_1(0)\subset\mathbb R^2}\dfrac{\mathrm{d}z}{\sqrt{1-|z|^2}}=2\pi.
+\]
+因此球面上的传播下降到平面以后，会变成整个圆盘上的加权传播。奇偶维差异的第一个例子已经出现在这一投影里，不能只把三维公式的球面维数改掉。
+

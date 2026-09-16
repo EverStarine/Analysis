@@ -2,24 +2,171 @@
 \section{Sturm–Liouville 问题}
 \label{b2:sec:1002}
 
-% TODO: 撰写本节正文。
-
 \subsection{特征值问题}
 \label{b2:subsec:100201}
 
-待填充。
+本节固定有限区间 \(I=(a,b)\)，实函数 \(p,w,q\in C([a,b])\)，并要求 \(p(x)>0\)、\(w(x)>0\) 在闭区间处处成立。连续性与紧性给出正的下界；\(q\) 可以变号。以下定义容许 \(p\) 只有连续性，不把 \((pu')'\) 强行拆成包含未定义的 \(p'\) 的表达式。
+
+\begin{definition}\label{b2:def:10-sl-operator}
+在每个端点 \(s\in\{a,b\}\) 固定一个条件：或为 \(u(s)=0\)，或为
+\[
+ \partial_{\nu,p}u(s)+h_su(s)=0,
+ \quad h_s\in\mathbb R,
+ \quad\partial_{\nu,p}u(a)=-p(a)u'(a),
+ \quad\partial_{\nu,p}u(b)=p(b)u'(b).
+\]
+这些条件各只涉及一个端点，称为\term[fenli-bianjie-tiaojian]{分离边界条件}[separated boundary conditions]。记 \(R\) 为选择第二类表达式的端点集合，\(h_s=0\) 包含 Neumann 条件。令
+\[
+ H\coloneqq L^2(I,w\,\mathrm{d}x),
+ \quad\langle u,v\rangle_H\coloneqq\int_a^b u\overline v\,w\,\mathrm{d}x,
+\]
+\[
+ D(A)\coloneqq\{\,u\in H^1(I)\mid pu'\in H^1(I),\ u\text{ 满足已定端点条件}\,\},
+ \quad Au\coloneqq\dfrac{-(pu')'+qu}{w}.
+\]
+方程 \(Au=\lambda u\)、\(u\in D(A)\setminus\{0\}\) 称为本章的\term[sturm-liouville-wenti]{Sturm--Liouville 特征值问题}[Sturm--Liouville eigenvalue problem]。
+\end{definition}
+\symidx{\(L^2(I,w\,\mathrm{d}x)\)：区间上的加权平方可积空间}
+
+由第一卷命题 21.4.1，\(H^1(I)\) 的元素有唯一的绝对连续代表，并连续延至两端；\(pu'\in H^1\) 也有这种代表。因为 \(p\) 连续且不为零，\(u'=(pu')/p\) 有连续代表，故定义中的端点值和通量都有意义。这里 \(H\) 的内积仍对第一变量线性，\(w\) 同时出现在特征方程与正交关系中。若去掉这个权重，一般不会得到所需的对称性。
+
+\ProseParagraphBreak
+
+把 \(z=pu'\) 作为第二个未知量，齐次方程化成
+\begin{equation}\label{b2:eq:10-first-order-system}
+ u'=p^{-1}z,
+ \quad z'=(q-\lambda w)u.
+\end{equation}
+给定一个端点的 \((u,z)\) 就唯一确定解。所需的常微分方程事实在这里只涉及连续系数线性系统：将积分方程反复代入，第 \(n\) 次差由 \(M^n|x-a|^n/n!\) 控制，迭代级数一致收敛，给出存在性；两个解之差反复使用同一估计则为零。故非零解不可能在同一点同时满足 \(u=z=0\)。这也解释了为何 \(p\) 在端点退化的 Legendre 型问题不属于本章范围。
 
 \subsection{自伴性}
 \label{b2:subsec:100202}
 
-待填充。
+先处理积分恒等式，再检查算子定义域。对满足定义域正则性的 \(u,v\)，绝对连续函数的分部积分给出
+\begin{equation}\label{b2:eq:10-lagrange-identity}
+ \langle Au,v\rangle_H-\langle u,Av\rangle_H
+ =\left[u\overline{pv'}-pu'\overline v\right]_a^b.
+\end{equation}
+这是一维的\term[lagrange-hengdengshi]{Lagrange 恒等式}[Lagrange identity]。同一分离边界条件使每个端点贡献单独消失：Dirichlet 端点有 \(u=v=0\)，Robin 端点则由实数 \(h_s\) 消去两项。因此 \(A\) 是对称的。无界算子的自伴性还要求伴随定义域与 \(D(A)\) 相同；此结论稍后由一个满射解算子证明，不能只由上式命名。
+
+\ProseParagraphBreak
+
+为找到一个可逆的移位，令 \(V\) 为 \(H^1(I)\) 中满足所有 Dirichlet 端点值为零的函数。Robin 条件不加入 \(V\) 的定义，而作为能量中的边界项出现。定义
+\begin{equation}\label{b2:eq:10-energy-form}
+ \mathfrak a(u,v)\coloneqq
+ \int_a^b\left(pu'\overline{v'}+qu\overline v\right)\,\mathrm{d}x
+ +\sum_{s\in R}h_su(s)\overline{v(s)},
+ \quad u,v\in V.
+\end{equation}
+对 \(u\in D(A)\)、\(v\in V\)，一次分部积分给出 \(\mathfrak a(u,v)=\langle Au,v\rangle_H\)。这一步同时检验了两个端点的符号。
+
+\begin{lemma}[移位能量估计]\label{b2:lem:10-form-coercive}
+存在 \(\sigma>0\) 及 \(c,C>0\)，使
+\[
+ c\|u\|_{H^1(I)}^2
+ \leq\mathfrak a_\sigma(u,u)
+ \coloneqq\mathfrak a(u,u)+\sigma\|u\|_H^2
+ \leq C\|u\|_{H^1(I)}^2
+ \quad(u\in V).
+\]
+可以增加 \(\sigma\)，使 \(\mathfrak a_\sigma(u,u)\geq\|u\|_H^2\)。
+\end{lemma}
+\begin{proof}
+对 \(0<r<b-a\)，由 \(u(a)=u(x)-\int_a^xu'\) 得
+\[
+ |u(a)|^2\leq2|u(x)|^2+2r\int_a^{a+r}|u'|^2.
+\]
+对 \(x\in(a,a+r)\) 平均，得到 \(|u(a)|^2\leq2r^{-1}\|u\|_2^2+2r\|u'\|_2^2\)。右端点有相同估计。给定 \(\varepsilon>0\)，取足够小的 \(r\)，便有
+\[
+ |u(a)|^2+|u(b)|^2
+ \leq\varepsilon\|u'\|_2^2+C_\varepsilon\|u\|_2^2.
+\]
+用它控制所有负边界项，使导数项至少保留 \(\min p/2\)。负的 \(q\) 项由 \(\|q\|_\infty\|u\|_2^2\) 控制；再取 \(\sigma\) 足够大，由 \(\min w>0\) 吸收全部负的零阶项。上界则由系数有界性与固定 \(\varepsilon\) 的端点估计得到。
+\end{proof}
+
+特别地，\(A+\sigma I\) 的核为零。以下固定满足引理最后条件的 \(\sigma\)，并构造其逆。
+
+\begin{proposition}[移位 Green 算子]\label{b2:prop:10-green-resolvent}
+存在实连续对称核 \(G_\sigma(x,y)\)，使
+\[
+ (Kf)(x)\coloneqq\int_a^bG_\sigma(x,y)\cdot f(y)w(y)\,\mathrm{d}y
+\]
+对每个 \(f\in H\) 给出 \((A+\sigma I)u=f\) 的唯一解 \(u\in D(A)\)。作为 \(H\) 上的算子，\(K\) 有界、自伴、单射，而且 \(\langle Kf,f\rangle_H>0\) 对 \(f\ne0\) 成立。
+\end{proposition}
+\begin{proof}
+取方程 \(-(pu')'+(q+\sigma w)u=0\) 的非零实解 \(\phi\)，使它满足左边界条件；另取满足右边界条件的非零实解 \(\psi\)。按端点数据构造这些解可用式\eqref{b2:eq:10-first-order-system}。量
+\[
+ W=p(x)\left(\phi'(x)\psi(x)-\phi(x)\psi'(x)\right)
+\]
+为常数：写成 \(z_\phi\psi-\phi z_\psi\) 后求导，两类项分别抵消。若 \(W=0\)，两组初值成比例，唯一性给出两解成比例，从而产生满足两端条件的非零齐次解，与移位能量估计矛盾。令
+\[
+ G_\sigma(x,y)=\dfrac1W
+ \begin{cases}
+ \phi(x)\psi(y),&x\leq y,\\
+ \phi(y)\psi(x),&y\leq x.
+ \end{cases}
+\]
+它连续、实且对称。固定 \(y\)，其 \(x\) 通量跨越 \(y\) 的跳跃为 \(-1\)，因而符号与负的二阶算子相符。
+
+为避免仅凭形式跳跃断言，直接将 \(u=Kf\) 写成
+\[
+ u(x)=\dfrac1W\left(
+ \psi(x)\int_a^x\phi(y)\cdot f(y)w(y)\,\mathrm{d}y
+ +\phi(x)\int_x^b\psi(y)\cdot f(y)w(y)\,\mathrm{d}y\right).
+\]
+积分为绝对连续函数，求一阶导数时含 \(f(x)\) 的两项抵消。再次对通量求导得
+\[
+ (pu')'=(q+\sigma w)u-wf
+\]
+几乎处处成立。右侧属于 \(L^2\)，故 \(pu'\in H^1\)，而 \(u\in H^1\)。端点代入上式的积分表示及其一阶导数，得到相应条件。齐次差由能量估计为零，因此这是唯一解，且 \(K(A+\sigma I)u=u\) 对全部 \(u\in D(A)\) 成立。
+
+连续核有界，Cauchy--Schwarz 不等式给出 \(K\) 的有界性；核对称与 Fubini 给出自伴性。若 \(Kf=0\)，应用 \(A+\sigma I\) 得 \(f=0\)。最后令 \(u=Kf\)，则
+\[
+ \langle Kf,f\rangle_H
+ =\langle u,(A+\sigma I)u\rangle_H
+ =\mathfrak a_\sigma(u,u)>0
+\]
+对非零 \(f\) 成立。
+\end{proof}
+
+这个积分核是移位边值问题的\term[green-hanshu]{Green 函数}[Green function]。实连续核的结论依赖有限规则区间；它不是高维 Green 函数在对角线也连续的断言。
+
+\ProseParagraphBreak
+
+对 Hilbert 空间中的稠密定义算子 \(T\)，若存在 \(g\) 使 \(\langle Tu,v\rangle=\langle u,g\rangle\) 对全部 \(u\in D(T)\) 成立，就令 \(v\in D(T^*)\)、\(T^*v=g\)；稠密性保证 \(g\) 唯一。这样得到的 \(T^*\) 称为\term[bansui-suanzi]{伴随算子}[adjoint operator]。若 \(D(T)=D(T^*)\) 且二者作用相同，则称 \(T\) 为\term[zi-ban-suanzi]{自伴算子}[self-adjoint operator]。全空间定义的有界算子是这个定义的特例。
+
+\begin{theorem}[Sturm--Liouville 算子的自伴性]\label{b2:thm:10-self-adjoint}
+\cref{b2:def:10-sl-operator}给出的 \(A\) 是 \(H\) 上稠密定义的闭自伴算子。
+\end{theorem}
+\begin{proof}
+先证明稠密性。若 \(v\perp D(A)=\operatorname{ran}K\)，则 \(\langle Kf,v\rangle_H=\langle f,Kv\rangle_H=0\) 对一切 \(f\) 成立，所以 \(Kv=0\)，由单射性 \(v=0\)。闭性也由逆映射得到：若 \(u_j\to u\)、\(Au_j\to g\) 于 \(H\)，则 \(u_j=K(Au_j+\sigma u_j)\to K(g+\sigma u)\)，故 \(u=K(g+\sigma u)\in D(A)\) 且 \(Au=g\)。
+
+对稠密定义的算子，\(v\in D(A^*)\) 指存在 \(g\in H\)，使 \(\langle Au,v\rangle_H=\langle u,g\rangle_H\) 对所有 \(u\in D(A)\) 成立，此时 \(A^*v=g\)。取 \(u=Kf\) 后得到
+\[
+ \langle f,v\rangle_H
+ =\langle Kf,g+\sigma v\rangle_H
+ =\langle f,K(g+\sigma v)\rangle_H.
+\]
+所以 \(v=K(g+\sigma v)\in D(A)\)，且 \(Av=g\)。这证明 \(A^*\subseteq A\)；Lagrange 恒等式给出反向包含，故两者定义域和作用均相同。
+\end{proof}
 
 \subsection{正交性}
 \label{b2:subsec:100203}
 
-待填充。
+\begin{proposition}\label{b2:prop:10-real-orthogonal-simple}
+本章的特征值均为实数，不同特征值的特征函数在 \(H\) 中正交，每个特征空间为一维。
+\end{proposition}
+\begin{proof}
+若 \(Au=\lambda u\)，则 \(\lambda\|u\|_H^2=\mathfrak a(u,u)\) 为实数。若再有 \(Av=\mu v\)，自伴性给出 \((\lambda-\mu)\langle u,v\rangle_H=0\)。最后，满足左分离条件的初值 \((u(a),p(a)u'(a))\) 构成二维空间中的一条直线。同一 \(\lambda\) 的任何两个非零解在左端初值成比例，常微分方程唯一性使两解处处成比例。
+\end{proof}
+
+单重性依赖分离条件。周期条件耦合两个端点，正弦与余弦可以属于同一特征值；它们的二维特征空间并不违反本命题。正交性本身更为一般，只需所选定义域使边界配对消失。
 
 \subsection{特征值离散性}
 \label{b2:subsec:100204}
 
-待填充。
+能量下界已经排除了充分负的特征值，还须排除有限处的无穷聚集。若 \(\lambda_j\) 为有界的不同特征值，相应单位特征函数 \(e_j\) 两两正交，且
+\[
+ \mathfrak a_\sigma(e_j,e_j)=\lambda_j+\sigma
+\]
+一致有界。移位估计使它们在 \(H^1(I)\) 中有界。一维积分表示给出 \(|e_j(x)-e_j(y)|\leq C|x-y|^{1/2}\)，且端点估计使函数一致有界。对每个正整数 \(m\) 选网格宽度小于 \(1/m\) 的有限网格，依次取子列，使第一个网格上的全部函数值收敛，再使第二个网格上的全部值收敛，如此继续。对角子列在每个固定网格上收敛；任意点可移到距它至多 \(1/m\) 的网格点，误差至多 \(Cm^{-1/2}\)。先取 \(m\) 大，再比较子列中足够靠后的两项，就得到一致 Cauchy 性。因此存在一致收敛子列，特别在 \(H\) 中收敛；这与任意两项距离 \(\sqrt2\) 矛盾。下一节用 \(K\) 的紧性把同一机制提升为完备性定理，同时证明特征值确有无穷多个。

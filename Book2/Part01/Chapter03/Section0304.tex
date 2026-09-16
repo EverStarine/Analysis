@@ -1,25 +1,103 @@
 % !TeX root = ../../Book2.tex
-\section{近似恒等}
+\section{逼近恒等}
 \label{b2:sec:0304}
 
-% TODO: 撰写本节正文。
+圆周上，Fejér 核把质量集中到原点，同时保持积分为 \(1\)。欧氏空间中的同一思想还要控制无穷远尾部。只要这两种控制成立，核可以有符号，也不必紧支集。
 
-\subsection{逼近恒等}
+\subsection{逼近恒等的条件}
 \label{b2:subsec:030401}
 
-待填充。
+\begin{definition}\label{b2:def:03-approximate-identity}
+设 \((K_\varepsilon)_{\varepsilon>0}\subset L^1(\mathbb R^d)\)。若
+\begin{enumerate}
+\item\label{b2:item:03-identity-mass}\(\int K_\varepsilon=1\)；
+\item\label{b2:item:03-identity-bound}\(\sup_{\varepsilon>0}\|K_\varepsilon\|_1<\infty\)；
+\item\label{b2:item:03-identity-tail}对每个 \(\delta>0\)，\(\int_{|x|\geq\delta}|K_\varepsilon(x)|\,\mathrm{d}x\to0\) 当 \(\varepsilon\downarrow0\)，
+\end{enumerate}
+则称它为一族\term[bijin-hengdeng]{逼近恒等}[approximate identity]。第一卷定义 13.4.6 的固定核缩放是其中一种情形。
+\end{definition}
 
-\subsection{\texorpdfstring{\(L^p\)}{Lp} 逼近}
+确实，若 \(K\in L^1\)、\(\int K=1\)，取 \(K_\varepsilon(x)=\varepsilon^{-d}\cdot K(x/\varepsilon)\)，前三个量分别由换元化为 \(1\)、\(\|K\|_1\) 和 \(\int_{|z|\geq\delta/\varepsilon}|K(z)|\,\mathrm{d}z\)。最后一项因可积性趋零。固定核允许正负抵消；一般核族则必须另写统一 \(L^1\) 界，不能由积分等于 \(1\) 推出。
+
+\subsection{\texorpdfstring{\(L^p\)}{Lᵖ} 逼近}
 \label{b2:subsec:030402}
 
-待填充。
+\begin{theorem}\label{b2:thm:03-approximate-identity}
+设 \((K_\varepsilon)\) 满足上述条件。若 \(1\leq p<\infty\)、\(f\in L^p\)，则 \(\|K_\varepsilon*f-f\|_p\to0\)。若 \(f\) 有界且一致连续，则 \(K_\varepsilon*f\to f\) 一致成立。
+\end{theorem}
+\begin{proof}
+记 \(A=\sup_\varepsilon\|K_\varepsilon\|_1\)。利用积分为 \(1\)，将误差写成 \(\int K_\varepsilon(y)(\tau_yf-f)\,\mathrm{d}y\)。对归一化正权 \(|K_\varepsilon|/\|K_\varepsilon\|_1\) 使用 Jensen，再对 \(x\) 积分，得到
+\[
+ \|K_\varepsilon*f-f\|_p^p
+ \leq A^{p-1}\int|K_\varepsilon(y)|\cdot\|\tau_yf-f\|_p^p\,\mathrm{d}y.
+\]
+平移连续性使 \(|y|<\delta\) 时范数误差统一小于任给的正数；远处使用 \(\|\tau_yf-f\|_p\leq2\|f\|_p\)，再由核的尾部条件控制。先选 \(\delta\)，再令 \(\varepsilon\downarrow0\)，即可完成证明。有界一致连续情形直接对逐点误差作相同分割，近处用一致连续性，远处用 \(2\|f\|_\infty\)。
+\end{proof}
 
-\subsection{Gaussian 函数}
+有限 \(p\) 与一致连续性的假设不可随意省略。即使取非负紧支集核，跳跃函数也不能在 \(L^\infty\) 中被连续卷积一致逼近。另一方面，一族只满足总积分为 \(1\) 的核可以平移到无穷远，使其与固定函数的卷积远离原函数；质量的位置和绝对质量都要检查。
+
+\ProseParagraphBreak
+
+磨光函数是这种方法的常见实例。取非负 \(\rho\in C_c^\infty\)、\(\int\rho=1\)，则 \(\rho_\varepsilon*f\to f\) 于有限指数的 \(L^p\)，而卷积光滑。若还先对 \(f\) 做空间截断，就得到光滑紧支集逼近。对同时属于 \(L^1\) 和 \(L^2\) 的函数，可先用同一个有界紧支集截断，再把磨光尺度取得足够小，使两种范数误差同时趋零；下一章将使用这个共同稠密类。
+
+
+\begin{proposition}\label{b2:prop:03-first-moment-error}
+设 \(K\in L^1\)、\(\int K=1\)，且 \(M_1=\int|z|\cdot|K(z)|\,\mathrm{d}z<\infty\)。若 \(f\in C_c^1(\mathbb R^d)\)、\(1\leq p\leq\infty\)，则
+\[
+ \|K_\varepsilon*f-f\|_p
+ \leq\varepsilon M_1\bigl\||\nabla f|\bigr\|_p.
+\]
+\end{proposition}
+\begin{proof}
+微积分基本定理给出
+\[
+ f(x-\varepsilon z)-f(x)
+ =-\varepsilon\int_0^1 z\cdot\nabla f(x-s\varepsilon z)\,\mathrm{d}s.
+\]
+对绝对值以 \(\varepsilon|z||\nabla f|\) 控制，随后用权重 \(|z||K(z)|\,\mathrm{d}z\,\mathrm{d}s/M_1\) 的 Jensen 不等式并对 \(x\) 积分。平移保持梯度范数，得到误差的 \(p\) 次方至多为 \((\varepsilon M_1)^p\bigl\||\nabla f|\bigr\|_p^p\)。无穷端点直接在梯度上取上确界。\(M_1=0\) 对单位积分的普通可积核不可能发生；若只看零误差情形，也可单独处理。
+\end{proof}
+
+这个估计把定性逼近转成一次阶误差，并说明常数由核的一阶绝对矩和函数梯度控制。若核为偶函数，线性项的积分可能相消；但要把这种相消转成更高阶的范数误差，还需控制二阶余项。后面的 Gauss 核习题会具体计算这一改进。
+
+\subsection{Gauss 核}
 \label{b2:subsec:030403}
 
-待填充。
+\begin{theorem}[Gauss 函数的 Fourier 变换]\label{b2:thm:03-gaussian}
+令 \(G(x)=e^{-\pi|x|^2}\)。则 \(\int_{\mathbb R^d}G=1\)，且 \(\widehat G=G\)。因而
+\[
+ G_\varepsilon(x)\coloneqq\varepsilon^{-d}e^{-\pi|x|^2/\varepsilon^2},
+ \quad \widehat {G_\varepsilon}(\xi)=e^{-\pi\varepsilon^2|\xi|^2}.
+\]
+\end{theorem}
+\begin{proof}
+先看一维。若 \(I=\int_{\mathbb R}e^{-\pi x^2}\,\mathrm{d}x\)，则由 Tonelli 和平面极坐标换元，
+\[
+ I^2=2\pi\int_0^\infty e^{-\pi r^2}r\,\mathrm{d}r=1,
+\]
+故 \(I=1\)。记 \(g=\widehat G\)。空间矩可积使 \(g\) 可微，而 \(G'=-2\pi xG\)；结合\cref{b2:prop:03-moments}和\cref{b2:prop:03-derivative}得到 \(g'(\xi)=-2\pi\xi g(\xi)\)。所以 \(e^{\pi\xi^2}g(\xi)\) 导数为零，由 \(g(0)=1\) 得 \(g(\xi)=e^{-\pi\xi^2}\)。
+
+高维时 \(G(x)=\prod_j e^{-\pi x_j^2}\)，绝对可积性和 Fubini 将变换分解为一维结果的乘积。最后使用伸缩公式。
+\end{proof}
+
+函数 \(G_\varepsilon\) 称为归一化\term[gauss-he]{Gauss 核}[Gaussian kernel]。它有无限支集，但尾部因指数衰减而可控。其 Fourier 变换仍为同类函数，使空间磨光与频率截断之间出现一个可精确计算的对应。
+\symidx{\(G_\varepsilon\)：单位质量 Gauss 核}
 
 \subsection{Poisson 核}
 \label{b2:subsec:030404}
 
-待填充。
+在 \(\mathbb R^d\) 上另定义
+\[
+ P_t(x)\coloneqq c_d\dfrac{t}{(t^2+|x|^2)^{(d+1)/2}},
+ \quad
+ c_d^{-1}=\int_{\mathbb R^d}(1+|z|^2)^{-(d+1)/2}\,\mathrm{d}z.
+\]
+归一化常数有限且正：单位球内被积函数有界；在半径约 \(2^j\) 的环带上，积分至多为 \(C2^{-j}\)。这些核非负、积分为 \(1\)，并且 \(P_t(x)=t^{-d}P_1(x/t)\)，所以构成逼近恒等。它与上一章的圆周 Poisson 核定义域不同，本节用下标 \(t>0\) 区分欧氏空间的尺度。
+\symidx{\(P_t\)：欧氏空间 Poisson 核}
+
+\ProseParagraphBreak
+
+一维时 \(c_1=1/\pi\)，所以 \(P_t(x)=t/(\pi(t^2+x^2))\)。由本章开头双边指数的直接计算，
+\[
+ \mathcal F(e^{-2\pi t|x|})(\xi)=P_t(\xi).
+\]
+此刻不能未经证明就反转变换；下一节的反演定理建立以后，才能推出 \(\widehat {P_t}(\xi)=e^{-2\pi t|\xi|}\)。Poisson 核的空间尾部仅按幂衰减，Gauss 核则按指数衰减；两者都逼近恒等，但对远处增长的容许范围不同。

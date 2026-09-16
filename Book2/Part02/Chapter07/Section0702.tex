@@ -2,24 +2,132 @@
 \section{特征曲线}
 \label{b2:sec:0702}
 
-% TODO: 撰写本节正文。
+变系数速度场已经给出粒子在每一点的瞬时运动方向，却没有直接给出整条轨道。先解常微分方程，再用轨道作坐标，是本节的构造顺序。以下 \(U\subseteq\mathbb R^d\) 为开集，\(b\in C^1(U;\mathbb R^d)\)；本节先处理不显含时间的速度场。
 
 \subsection{特征常微分方程}
 \label{b2:subsec:070201}
 
-待填充。
+\begin{definition}\label{b2:def:07-characteristic}
+若 \(X:I\rightarrow U\) 属于 \(C^1\)，并满足
+\[
+ X'(t)=b\bigl(X(t)\bigr),
+\]
+则称它为速度场 \(b\) 的\term[tezheng-quxian]{特征曲线}[characteristic curve]，也称特征线。其常微分方程称为\term[tezheng-changweifen-fangcheng]{特征常微分方程}[characteristic ordinary differential equation]。
+\end{definition}
+
+沿这样的曲线，复合函数的导数只涉及 \(u_t+b\cdot\nabla u\)。但在应用链式法则之前，要确认对给定初始位置确实有一条且只有一条曲线。下面给出局部构造，并保留稍后需要的定量控制。
+
+\begin{theorem}[Picard--Lindelöf]\label{b2:thm:07-local-ode}
+对每个 \(a_0\in U\)，存在 \(r>0\)、\(h>0\)，使每个 \(a\in B_r(a_0)\) 都有唯一的局部解
+\[
+ X'(t)=b\bigl(X(t)\bigr),\quad X(0)=a,
+ \quad |t|\leq h.
+\]
+各解取值于同一个紧球。若 \(L\) 是该球上 \(\|Db\|\) 的上界，则
+\begin{equation}\label{b2:eq:07-flow-lipschitz}
+ |X(t,a)-X(t,\widetilde a)|\leq e^{L|t|}\cdot|a-\widetilde a|.
+\end{equation}
+局部唯一性指任意两条满足同一初值的解在共同定义区间上相等。
+\end{theorem}
+\begin{proof}
+取闭球 \(\overline B_{2r}(a_0)\subseteq U\)，记其上 \(|b|\)、\(\|Db\|\) 的上界为 \(M,L\)。选 \(h>0\) 满足 \(Mh\leq r\)、\(Lh<1\)；上界为零的条件可略去。对固定 \(a\in B_r(a_0)\)，在连续曲线空间中考虑闭集
+\[
+ E_a=\{\,Y\in C([-h,h];\mathbb R^d)\mid
+ \sup_{|t|\leq h}|Y(t)-a|\leq r\,\}.
+\]
+一致 Cauchy 曲线列逐点有极限，一致极限仍连续且满足闭球约束，所以 \(E_a\) 关于一致范数完备。定义
+\[
+ (TY)(t)=a+\int_0^t b\bigl(Y(s)\bigr)\,\mathrm ds.
+\]
+速度界保证 \(T(E_a)\subseteq E_a\)，中值估计保证
+\(\|TY-TZ\|_\infty\leq Lh\cdot\|Y-Z\|_\infty\)。从常曲线 \(Y_0=a\) 迭代，连续两次之差不超过 \((Lh)^n\cdot\|Y_1-Y_0\|_\infty\)。几何级数收敛，故迭代一致收敛到 \(X\in E_a\)。算子连续性给出 \(TX=X\)；积分的被积函数连续，所以 \(X\) 可微并满足方程。两个不动点之间的距离不超过原距离的 \(Lh\) 倍，故相等。
+
+为证明稳定估计，先记录一个积分不等式。若连续非负函数 \(q\) 满足 \(q(t)\leq A+L\int_0^tq(s)\,\mathrm ds\)，令 \(Q(t)=A+L\int_0^tq(s)\,\mathrm ds\)，则 \(Q'\leq LQ\)，从而 \((e^{-Lt}Q)'\leq0\)，得到 \(q(t)\leq Ae^{Lt}\)。此结论也覆盖 \(A=0\)。对两个解的积分方程作差即可用它得到\eqref{b2:eq:07-flow-lipschitz}；负时间用 \(s=-t\) 处理。任意两个局部解在某个更短区间上都落入同一个球，故先在那里相等。在共同区间内，相等的时刻构成闭集，局部唯一性又使它为开集，因而它充满包含初始时刻的整个区间。
+\end{proof}
+
+上述结果称为\term[picard-lindelof]{Picard--Lindelöf 定理}[Picard--Lindelöf theorem]，证明中的积分估计是\term[gronwall-budengshi]{Gronwall 不等式}[Gronwall inequality]的一个基本形式。只要求速度连续时，唯一性可能失败。例如 \(X'=2\sqrt{|X|}\)、\(X(0)=0\) 除零解外，对每个 \(a\geq0\) 还允许先在 \([0,a]\) 上停留，之后取 \(X(t)=(t-a)^2\)。本章采用 \(C^1\) 速度，正是为了排除这种轨道分叉。
 
 \subsection{流映射}
 \label{b2:subsec:070202}
 
-待填充。
+把从 \(a\) 出发的解记为 \(\Phi_t(a)\)，称 \(a\mapsto\Phi_t(a)\) 为\term[liu-yingshe]{流映射}[flow map]。局部解借唯一性在重叠区间上拼接，得到经过 \(a\) 的最大解区间 \(I_a\)。记号 \(\Phi_t(a)\) 只在 \(t\in I_a\) 时使用；不能因为给了一个映射名称便假定它对所有时间存在。
+\symidx{\(\Phi_t\)：自治速度场的流映射}
+
+\begin{proposition}\label{b2:prop:07-flow-composition}
+凡各项有定义，流满足
+\[
+ \Phi_0(a)=a,\quad
+ \Phi_{t+s}(a)=\Phi_t\bigl(\Phi_s(a)\bigr),\quad
+ \Phi_{-t}\bigl(\Phi_t(a)\bigr)=a.
+\]
+固定 \(t\) 时，\(\Phi_t\) 在其定义域上单射，其逆为相应的 \(\Phi_{-t}\)。
+\end{proposition}
+\begin{proof}
+曲线 \(r\mapsto\Phi_{s+r}(a)\) 与 \(r\mapsto\Phi_r(\Phi_s(a))\) 在 \(r=0\) 具有相同初值，且都满足自治方程。唯一性给出复合关系。令 \(r=-s\) 得逆关系，进而得到单射性。
+\end{proof}
+
+\begin{theorem}\label{b2:thm:07-flow-derivative}
+流 \((t,a)\mapsto\Phi_t(a)\) 在其开定义域上属于 \(C^1\)。对初始点的导数 \(A(t,a)=D_a\Phi_t(a)\) 满足
+\begin{equation}\label{b2:eq:07-variational-ode}
+ A'(t,a)=Db\bigl(\Phi_t(a)\bigr)A(t,a),\quad A(0,a)=I.
+\end{equation}
+因此固定时间的流是其定义域到像集的 \(C^1\) 微分同胚。
+\end{theorem}
+\begin{proof}
+先在上一构造的紧球和短时间内工作。式\eqref{b2:eq:07-flow-lipschitz}与 \(|\partial_t\Phi_t|\leq M\) 保证流联合连续。矩阵积分方程
+\[
+ A(t)=I+\int_0^t Db\bigl(\Phi_s(a)\bigr)A(s)\,\mathrm ds
+\]
+可用同样的迭代构造，且 \(\|A(t)\|\leq e^{L|t|}\)。现取小向量 \(v\)，令 \(\delta_v(t)=\Phi_t(a+v)-\Phi_t(a)\)。中值积分给出
+\[
+ b\bigl(\Phi_t(a+v)\bigr)-b\bigl(\Phi_t(a)\bigr)
+ =Db\bigl(\Phi_t(a)\bigr)\delta_v(t)+r_v(t).
+\]
+导数 \(Db\) 在紧球上一致连续，而 \(|\delta_v(t)|\leq e^{Lh}|v|\)，所以
+\(\sup_t|r_v(t)|/|v|\to0\)。将 \(\delta_v-Av\) 的两个积分方程相减，再用刚证的 Gronwall 估计，得到
+\[
+ \sup_t\frac{|\Phi_t(a+v)-\Phi_t(a)-A(t,a)v|}{|v|}\longrightarrow0.
+\]
+这证明的是完整 Fréchet 微分，而非只沿坐标求导。若 \(a\) 改为邻近点，矩阵方程的系数一致收敛；作差和 Gronwall 估计又给出 \(A\) 对 \((t,a)\) 连续。因此流为 \(C^1\)。
+
+对一段已存在的轨道，其图像在任意紧时间区间内为紧集。用上述局部构造覆盖它，并取有限子覆盖，连续依赖使邻近初始点的解也能逐段通过这些邻域。故流的定义域为开集，局部可微结论可以沿轨道继续。最后，\cref{b2:prop:07-flow-composition}给出双方均 \(C^1\) 的逆映射，所以导数矩阵可逆，像集也为开集。
+\end{proof}
+
+流的空间可微性比轨道本身可微更强。前者控制相邻粒子之间的距离、角度和体积，后者只说明单个粒子的速度存在。后面 Jacobi 行列式的演化式依赖的是\eqref{b2:eq:07-variational-ode}，不能只从每条轨道 \(C^1\) 便直接写下。
 
 \subsection{沿特征线的表示公式}
 \label{b2:subsec:070203}
 
-待填充。
+对自治输运问题 \(u_t+b(x)\cdot\nabla u=0\)，沿轨道有
+\[
+ \frac{\mathrm d}{\mathrm dt}u\bigl(\Phi_t(a),t\bigr)=0.
+\]
+因此只要轨道可从时刻 \(t\) 返回 \(0\)，解就由
+\begin{equation}\label{b2:eq:07-autonomous-representation}
+ u(x,t)=g\bigl(\Phi_{-t}(x)\bigr)
+\end{equation}
+给出。这里的“返回”既包括时间存在范围，也包括轨道始终位于系数定义域；若在有界区域中轨道先碰到边界，单靠内部初值不足以继续决定数值。
+
+\ProseParagraphBreak
+
+例如平面速度 \(b(x,y)=(-y,x)\) 给出
+\[
+ \Phi_t(a_1,a_2)=(a_1\cos t-a_2\sin t,\ a_1\sin t+a_2\cos t).
+\]
+解是初始图形的旋转，\(u(x,y,t)=g(x\cos t+y\sin t,-x\sin t+y\cos t)\)。另一例是 \(b(x)=x\)，其流为 \(\Phi_t(a)=e^ta\)，故 \(u(x,t)=g(e^{-t}x)\)。后者虽然函数值不变，体积却按 \(e^{dt}\) 扩张；把 \(u\) 的积分解释成守恒质量就会出错。
 
 \subsection{存在与唯一性}
 \label{b2:subsec:070204}
 
-待填充。
+\begin{proposition}\label{b2:prop:07-global-flow}
+设 \(b\in C^1(\mathbb R^d;\mathbb R^d)\)，且存在 \(C\geq0\) 使
+\( |b(x)|\leq C(1+|x|)\)。则所有轨道在整个实轴上存在。对 \(g\in C^1(\mathbb R^d)\)，式\eqref{b2:eq:07-autonomous-representation}给出整个时空上的唯一 \(C^1\) 输运解。
+\end{proposition}
+\begin{proof}
+对正时间，积分方程与 Gronwall 估计给出
+\(1+|\Phi_t(a)|\leq(1+|a|)e^{Ct}\)。负时间对反向速度 \(-b\) 使用同一估计。若最大解区间有有限右端点 \(T\)，此估计使轨道在 \([0,T)\) 落于某个紧球。该球上速度有界，所以 \(|\Phi_t(a)-\Phi_s(a)|\leq M|t-s|\)，从而 \(t\uparrow T\) 时有极限 \(a_T\)。由 \(a_T\) 出发的局部解可与原解拼接；积分方程保证拼接点导数也满足方程，与最大性矛盾。左端点相同。
+
+全局流的 \(C^1\) 性保证表示公式给出 \(C^1\) 函数。沿特征线该函数等于 \(g(a)\)，故满足方程。任意另一经典解沿同一轨道也恒等于 \(g(a)\)，因此唯一。
+\end{proof}
+
+线性增长条件可以有许多替代，但不能不加条件地省去。对于 \(b(x)=x^2\)，从 \(a>0\) 出发的轨道为 \(a/(1-at)\)，在 \(t=1/a\) 逃向无穷。局部唯一性始终成立，障碍在于不存在覆盖所有初始点的共同正时间流。另一方面，若只关心一条有限轨道及其附近，紧集上的局部条件已经足够，不必强求整个空间上的有界导数。

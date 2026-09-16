@@ -2,24 +2,128 @@
 \section{Plancherel 定理}
 \label{b2:sec:0401}
 
-% TODO: 撰写本节正文。
+上一章把 Fourier 变换定义为绝对收敛积分，因此要求 \(f\in L^1\)。平方可积函数未必可积，但其能量仍有限。本节先在两个空间的交集上证明能量守恒，再利用完备性延拓变换。延拓所得对象是一个 \(L^2\) 等价类，不能自动解释为每个频率处的普通积分。
 
-\subsection{\texorpdfstring{\(L^1\cap L^2\)}{L12}}
+\subsection{\texorpdfstring{\(L^1\cap L^2\)}{L¹∩L²}}
 \label{b2:subsec:040101}
 
-待填充。
+先在同时具有可积变换的函数上计算。
+
+\begin{lemma}\label{b2:lem:04-parseval-core}
+若 \(f,g\in L^1\cap L^2\)，且 \(\widehat f,\widehat g\in L^1\)，则
+\[
+ \int f(x)\cdot\overline{g(x)}\,\mathrm{d}x
+ =\int\widehat f(\xi)\cdot\overline{\widehat g(\xi)}\,\mathrm{d}\xi.
+\]
+\end{lemma}
+\begin{proof}
+反演使 \(f(x)=\int\widehat f(\xi)e^{2\pi\mathrm{i}x\cdot\xi}\,\mathrm{d}\xi\) 几乎处处。将此式乘以 \(\overline g(x)\) 再积分；重积分绝对值不超过 \(\|\widehat f\|_1\cdot\|g\|_1\)，故可交换次序。内层积分为 \(\overline{\widehat g(\xi)}\)。右侧绝对收敛还可由 \(\widehat f\in L^1\)、\(\widehat g\in L^\infty\) 直接确认。
+\end{proof}
+
+\begin{theorem}[Plancherel，交空间形式]\label{b2:thm:04-plancherel-core}
+若 \(f\in L^1(\mathbb R^d)\cap L^2(\mathbb R^d)\)，则 \(\widehat f\in L^2\)，且 \(\|\widehat f\|_2=\|f\|_2\)。
+\end{theorem}
+\begin{proof}
+令 \(f_\varepsilon=G_\varepsilon*f\)。Young 不等式保证 \(f_\varepsilon\in L^1\cap L^2\)，且 \(f_\varepsilon\to f\) 于 \(L^2\)。卷积定理给出
+\[
+ \widehat {f_\varepsilon}(\xi)
+ =e^{-\pi\varepsilon^2|\xi|^2}\cdot\widehat f(\xi).
+\]
+右侧是有界函数与可积 Gauss 因子的乘积，所以属于 \(L^1\)，也属于 \(L^2\)。对 \(f_\varepsilon\) 使用前一引理，得到
+\[
+ \|f_\varepsilon\|_2^2
+ =\int e^{-2\pi\varepsilon^2|\xi|^2}|\widehat f(\xi)|^2\,\mathrm{d}\xi.
+\]
+令 \(\varepsilon\downarrow0\)，左侧趋于 \(\|f\|_2^2\)；右侧由单调收敛趋于 \(\int|\widehat f|^2\)，即使预先尚不知道此积分有限也可使用。于是同时得到可积性和等式。
+\end{proof}
+
+这称为\term[plancherel-dingli]{Plancherel 定理}[Plancherel's theorem]。证明中特意先使用 Gauss 因子使变换可积；不能对一般 \(L^1\cap L^2\) 函数直接写反演，再把待证明的平方可积性用于换序。
 
 \subsection{Plancherel 延拓}
 \label{b2:subsec:040102}
 
-待填充。
+\begin{theorem}\label{b2:thm:04-plancherel-extension}
+存在唯一线性等距映射 \(\mathcal F_2:L^2(\mathbb R^d)\to L^2(\mathbb R^d)\)，在 \(L^1\cap L^2\) 上与可积 Fourier 变换一致。
+\end{theorem}
+\begin{proof}
+对 \(f\in L^2\)，取 \(f_n=f\cdot\mathbf1_{\{|x|\leq n,\ |f|\leq n\}}\)。它有界、有限测度支集，故属于 \(L^1\cap L^2\)，并由控制收敛在 \(L^2\) 中趋于 \(f\)。Plancherel 等式说明 \((\widehat f_n)\) 是 Cauchy 列，定义 \(\mathcal F_2f\) 为其 \(L^2\) 极限。
+
+若使用另一逼近列 \(g_n\)，则 \(\|\widehat f_n-\widehat g_n\|_2=\|f_n-g_n\|_2\to0\)，所以定义不依赖选择。对和与标量倍数选择相应的逼近列，便知映射线性；取范数极限得到等距性。任何连续延拓在稠密子集上相等，就在整个空间相等，故唯一。
+\end{proof}
+\symidx{\(\mathcal F_2\)：平方可积函数的 Fourier 变换}
+
+当不致混淆时仍记 \(\widehat f=\mathcal F_2f\)。例如一维函数 \((1+|x|)^{-3/4}\) 平方可积却不可积；对它不能用原来的 Lebesgue 积分定义变换，因为振荡因子模为 \(1\)，不改变绝对可积性。它的变换由上述范数极限定义。
 
 \subsection{酉性}
 \label{b2:subsec:040103}
 
-待填充。
+\begin{theorem}[Plancherel，酉形式]\label{b2:thm:04-unitary}
+映射 \(\mathcal F_2\) 满射并保持内积，因而为\term[you-suanzi]{酉算子}[unitary operator]。若 \(Rf(x)=f(-x)\)，则
+\[
+ \mathcal F_2^2=R,\quad \mathcal F_2^4=I,
+ \quad \mathcal F_2^{-1}=R\mathcal F_2=\mathcal F_2R.
+\]
+\end{theorem}
+\begin{proof}
+若 \(f\in C_c^\infty\)，则 \(\widehat f\in L^1\cap L^2\)，由反演有 \(\mathcal F_2^2f=Rf\)。光滑紧支集函数在 \(L^2\) 中稠密，且两边都是连续算子，故等式推广到全部 \(L^2\)。于是 \(\mathcal F_2^4=R^2=I\)，特别每个 \(g\) 都是 \(\mathcal F_2(\mathcal F_2^3g)\)，所以满射。线性等距映射保持内积：将 \(f+g\)、\(f-g\)、\(f+\mathrm{i}g\)、\(f-\mathrm{i}g\) 的范数平方展开并作差，可分别恢复内积的实部和虚部。最后由平方等式及反射的交换关系得到逆算子公式；交换关系先由可积函数换元验证，再按稠密性延拓。
+\end{proof}
 
-\subsection{\texorpdfstring{\(L^2\)}{L2} 反演}
+在本书的归一化下，Fourier 变换没有丢失或放大总能量，但一般不保持某个点的值，也不保持函数的支集。酉性属于 Hilbert 空间结构，而不是逐点大小不变。
+
+\subsection{\texorpdfstring{\(L^2\)}{L²} 反演}
 \label{b2:subsec:040104}
 
-待填充。
+\begin{corollary}\label{b2:cor:04-l2-inversion}
+若 \(f\in L^2\)，则
+\[
+ f=\lim_{R\to\infty}\int_{|\xi|\leq R}\widehat f(\xi)\cdot e^{2\pi\mathrm{i}x\cdot\xi}\,\mathrm{d}\xi
+\]
+在 \(L^2\) 范数中成立。Gauss 正则化也有 \(\mathcal F_2^{-1}(e^{-\pi\varepsilon^2|\xi|^2}\widehat f)\to f\) 于 \(L^2\)。
+\end{corollary}
+\begin{proof}
+有限球上的 \(\widehat f\) 由 Cauchy--Schwarz 属于 \(L^1\)，故截断反演积分有定义。其与 \(f\) 的平方范数误差恰为 \(\int_{|\xi|>R}|\widehat f|^2\)，由尾部可积性趋零。Gauss 情形同理由频率侧的控制收敛和酉性得到。
+\end{proof}
+
+任何递增穷尽空间的可测频率区域都可替代球；所需条件只是被舍弃部分的平方质量趋零。这个结论没有保证每个点上的截断积分收敛。对于随时间演化的方程，只要频率乘子有界，就可以先在 \(L^2\) 中定义演化，再另行研究点值和正则性。
+
+
+
+\begin{theorem}[平方可积弱导数的频率刻画]\label{b2:thm:04-weak-derivative}
+设 \(f\in L^2(\mathbb R^d)\)。它具有平方可积的第 \(j\) 个弱导数，当且仅当 \(\xi_j\widehat f(\xi)\in L^2\)。此时
+\[
+ \mathcal F_2(\partial_jf)=2\pi\mathrm{i}\xi_j\widehat f,
+ \quad\|\partial_jf\|_2=2\pi\|\xi_j\widehat f\|_2.
+\]
+\end{theorem}
+\begin{proof}
+先记下双线性积分等式 \(\int\widehat u\,v=\int u\,\widehat v\)，它对 \(u,v\in L^2\) 成立：在可积平方可积的共同稠密类上由 Fubini 证明，再按 Cauchy--Schwarz 取极限。
+
+若 \(g=\partial_jf\in L^2\)，弱导数测试式原先只用于 \(C_c^\infty\)。对 \(\psi\in C_c^\infty\)，函数 \(\widehat\psi\) 及其导数快速下降；将 \(\chi_R\widehat\psi\) 代入，再让 \(R\to\infty\)。含截断导数的误差由 \(R^{-1}\|f\|_2\cdot\|\widehat\psi\|_2\) 控制，其余项按平方可积性取极限。因此也可将 \(\widehat\psi\) 用作测试函数，得到
+\[
+ \int\widehat g\,\psi
+ =\int g\,\widehat\psi
+ =-\int f\,\partial_j\widehat\psi
+ =\int\widehat f\,(2\pi\mathrm{i}\xi_j\psi).
+\]
+两边的局部可积函数对全部紧支集光滑函数配对相同，故几乎处处相等。这个局部唯一性可由磨光核在 Lebesgue 点的逼近直接得出。于是必要条件成立。
+
+反之，设 \(g=\mathcal F_2^{-1}(2\pi\mathrm{i}\xi_j\widehat f)\)。对 \(\varphi\in C_c^\infty\)，用双线性 Plancherel 等式与正号变换的求导公式，
+\[
+ \int g\varphi
+ =\int2\pi\mathrm{i}\xi_j\widehat f\,\check\varphi
+ =-\int\widehat f\,\check{\partial_j\varphi}
+ =-\int f\partial_j\varphi.
+\]
+所以 \(g\) 是弱导数。范数式由酉性得到。
+\end{proof}
+
+对多重指标迭代，可得到整数阶 Sobolev 空间的频率描述。若沿用第一卷定义 21.1.2 中按每个多重指标计一次的范数，则
+\[
+ \|f\|_{H^m}^2
+ =\int\left(\sum_{|\alpha|\leq m}(2\pi)^{2|\alpha|}\xi^{2\alpha}\right)|\widehat f(\xi)|^2\,\mathrm{d}\xi.
+\]
+括号中的多项式与 \((1+4\pi^2|\xi|^2)^m\) 可用只依赖 \(d,m\) 的正数互相控制，但高阶时一般不数值相等：后者的多项式展开带有组合系数。因此用后一权重定义的范数与既有范数等价，却不能静默地把等价写成相等。
+
+\ProseParagraphBreak
+
+例如对 \(f\in L^2\)，令 \(\widehat u=(1+4\pi^2|\xi|^2)^{-1}\widehat f\)。所有不超过二阶的导数乘子有界，故 \(u\in H^2\)，并在弱导数意义下解 \((1-\Delta)u=f\)。这个例子只用能量估计就取得解和两阶正则性；\chapref{b2:ch:05}将进一步把同一分母解释成基本解的变换。

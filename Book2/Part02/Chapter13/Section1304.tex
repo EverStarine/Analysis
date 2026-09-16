@@ -2,24 +2,227 @@
 \section{Green 函数}
 \label{b2:sec:1304}
 
-% TODO: 撰写本节正文。
+基本解在整个空间处理点源，Green 函数还把区域和边界条件包含进来。在 Dirichlet 问题中，它由基本解减去一个调和修正，使边界值归零。修正是否存在取决于区域，不能因为形式上写出了一个差，就认为边值问题已经解决。
 
 \subsection{有界区域}
 \label{b2:subsec:130401}
 
-待填充。
+以下固定 \(d\geq2\) 和有界连通 \(C^2\) 区域 \(\Omega\)。\chapref{b2:ch:10}已经把 Green 函数用于一维边值算子的逆；这里明确其负 Laplace 与 Dirichlet 版本。
+
+\begin{definition}\label{b2:def:13-dirichlet-green}
+若对每个 \(x\in\Omega\)，存在 \(h_x\in C^2(\Omega)\cap C^1(\overline\Omega)\)，满足
+\[
+ \Delta_yh_x=0\quad\text{于 }\Omega,
+ \quad h_x(y)=\Phi_d(x-y)\quad(y\in\partial\Omega),
+\]
+则定义
+\[
+ G_\Omega(x,y)\coloneqq\Phi_d(x-y)-h_x(y)\quad(y\ne x),
+\]
+称为本节经典框架下的 Dirichlet Green 函数。
+\end{definition}
+\symidx{\(G_\Omega(x,y)\)：Dirichlet Green 函数}
+
+这个定义规定了点源归一化、调和修正及零边界条件。一般区域上还须证明所需的 \(h_x\) 存在；本节将在球上直接构造它，并在半空间写出对应公式。这里不预设任意粗糙边界都具有连续 Dirichlet 解。
+
+\begin{proposition}[Green 函数的唯一性与正性]\label{b2:prop:13-green-positive}
+在上述假设下，\(G_\Omega\) 唯一，且 \(G_\Omega(x,y)>0\) 对 \(x\ne y\) 成立。
+\end{proposition}
+\begin{proof}
+两个候选的调和修正具有相同边界值，最大值原理使它们相等，故唯一。固定 \(x\)，当 \(y\to x\) 时，\(\Phi_d(x-y)\to+\infty\)，而 \(h_x\) 在该点附近有界。因此在足够小的内球边界上 \(G_\Omega>0\)，在外边界上为零。对挖孔区域使用最小值原理，得到 \(G_\Omega\geq0\)。当 \(d\geq2\) 时，连通开集去掉一个点仍可用绕开该点的折线连接；所以强最小值原理排除了其他内点取零的可能。
+\end{proof}
+
+\begin{proposition}[Green 函数的对称性]\label{b2:prop:13-green-symmetry}
+对不同的 \(x,z\in\Omega\)，有 \(G_\Omega(x,z)=G_\Omega(z,x)\)。
+\end{proposition}
+\begin{proof}
+对函数 \(G_x(y)=G_\Omega(x,y)\)、\(G_z(y)=G_\Omega(z,y)\)，在去掉 \(x,z\) 附近两只不交小球后的区域使用第二 Green 恒等式。体积项为零，外边界项也为零，因为两个函数都在那里取零。若它们只在边界为 \(C^1\)，先在向内平移的光滑边界上使用公式再取极限：有限个 \(C^2\) 边界图表给出趋向原边界的法向与面积因子，函数及一阶导数的连续性保证边界积分收敛。
+
+在以 \(x\) 为中心的小球上，\(G_z\) 光滑，而 \(G_x\) 的奇性与 \(\Phi_d(x-y)\) 相同。与\cref{b2:thm:13-green-representation}相同的内球计算，使这一边界的 \(G_x\partial_\nu G_z-G_z\partial_\nu G_x\) 积分趋于 \(-G_z(x)\)。在以 \(z\) 为中心的小球上，极点角色交换，极限为 \(G_x(z)\)。两项之和为零，即得对称性。
+\end{proof}
+
+因此固定 \(y\) 时，\(G_\Omega(x,y)\) 在 \(x\ne y\) 处也调和。对称性来自算子与边界条件的共同结构；若改成非自伴算子，一般应比较原算子与伴随算子的两个 Green 核，而不能直接沿用同核对称式。
 
 \subsection{Dirichlet 问题}
 \label{b2:subsec:130402}
 
-待填充。
+\begin{theorem}[Dirichlet Green 表示]\label{b2:thm:13-dirichlet-representation}
+假设上述 Green 函数存在，\(u\) 在 \(\overline\Omega\) 的某邻域内为 \(C^2\) 函数，且 \(-\Delta u=f\)、\(u|_{\partial\Omega}=g\)。则
+\begin{equation}\label{b2:eq:13-dirichlet-representation}
+ u(x)=\int_\Omega G_\Omega(x,y)\cdot f(y)\,\mathrm{d}y
+      +\int_{\partial\Omega}P_\Omega(x,y)\cdot g(y)\,\mathrm{d}S_y,
+\end{equation}
+其中 \(P_\Omega(x,y)\coloneqq-\partial_{\nu_y}G_\Omega(x,y)\)。这个边界核非负，且对每个 \(x\in\Omega\) 的边界积分为 \(1\)。
+\end{theorem}
+\begin{proof}
+将基本解表示中的核换成 \(G_\Omega(x,\cdot)\)。两者的奇性相同，内球极限仍产生 \(u(x)\)；调和修正不增加体积源。外边界上 \(G_\Omega=0\)，原来乘以 \(\partial_\nu u\) 的项消失，留下 \(-g\partial_\nu G_\Omega\)，得到公式。对 \(C^1\) 边界迹的极限使用前一证明中的向内平行面处理。
+
+Green 函数在内部非负、边界为零，所以向外的一阶法向导数不大于零；这是从边界向内取差商直接得到的结论。故 \(P_\Omega\geq0\)。再把 \(u=1\)、\(f=0\)、\(g=1\) 代入表示式，即得核的积分为 \(1\)。
+\end{proof}
+
+这时边界数据以加权平均的方式进入解。公式首先表示一个已有解；要把右侧直接用作存在性构造，还须检查它在内部调和、以及趋向边界时是否恢复给定的连续数据。下面的显式核将完成这些步骤。
+
+\ProseParagraphBreak
+
+Poisson 方程的体积项与边界项承担不同任务。前者产生内部源，后者修正边界值；若给定的是零 Dirichlet 数据，前者的 Green 核为正，所以 \(f\geq0\) 时解非负。这与一维或球上的正源例子一致，也再次核对了采用 \(-\Delta\) 后的符号。
+
 
 \subsection{半空间与球}
 \label{b2:subsec:130403}
 
-待填充。
+先看球 \(B=B(0,R)\)。对 \(0<|x|<R\)，令 \(x^*=R^2x/|x|^2\)，它位于球外。这一反演点满足：当 \(|y|=R\) 时，
+\[
+ |x^*-y|=\dfrac R{|x|}|x-y|.
+\]
+等式由两边平方后直接展开得到。它使原点源和球外像点的基本解在球面上具有可精确配平的比例。
+
+\begin{proposition}[球上的 Green 函数]\label{b2:prop:13-ball-green}
+当 \(d\geq3\)、\(x\ne0\) 时，球上的 Dirichlet Green 函数为
+\[
+ G_B(x,y)=\Phi_d(x-y)
+ -\left(\dfrac R{|x|}\right)^{d-2}\Phi_d(x^*-y).
+\]
+当 \(d=2\)、\(x\ne0\) 时，
+\[
+ G_B(x,y)=\dfrac1{2\pi}
+ \log\left(\dfrac{|x|\cdot|x^*-y|}{R|x-y|}\right).
+\]
+中心处统一取 \(G_B(0,y)=\Phi_d(y)-\Phi_d(Re_1)\)。
+\end{proposition}
+\begin{proof}
+像点 \(x^*\) 在球外，因此相应的基本解在闭球附近光滑且调和。高维情况下，将球面距离恒等式代入 \(|z|^{2-d}\)，两个边界项恰好抵消；二维情况下，同一恒等式使对数的真数为 \(1\)，边界值也为零。原点源的系数仍为 \(1\)，故原点奇性未改，满足定义中的全部要求。对 \(x=0\)，修正直接取常数，使边界归零即可。唯一性已由前文证明。
+\end{proof}
+
+\begin{proposition}[球上的 Poisson 核]\label{b2:prop:13-ball-poisson}
+球的边界核为
+\begin{equation}\label{b2:eq:13-ball-poisson}
+ P_B(x,y)=\dfrac{R^2-|x|^2}{\sigma_{d-1}R|x-y|^d}
+ \quad(|x|<R,\ |y|=R).
+\end{equation}
+它关于 \(x\) 调和、严格为正，且 \(\int_{\partial B}P_B(x,y)\,\mathrm{d}S_y=1\)。
+\end{proposition}
+\begin{proof}
+在球面上 \(\nu_y=y/R\)。基本解的一阶导数给出
+\[
+ \partial_{\nu_y}\Phi_d(x-y)
+ =-\dfrac{R^2-x\cdot y}{\sigma_{d-1}R|x-y|^d}.
+\]
+对像点项同样求导，并用 \(|x^*-y|=(R/|x|)|x-y|\)。其系数与分母的合并因子为 \(|x|^2/R^2\)，于是相减后的分子为
+\[
+ (R^2-x\cdot y)-\dfrac{|x|^2}{R^2}(R^2-x^*\cdot y)=R^2-|x|^2.
+\]
+这给出 \(-\partial_{\nu_y}G_B\) 的公式。二维对数中的附加常数不影响 \(y\) 导数；中心情形由直接计算或连续极限得到。
+
+正性由公式可见，积分为 \(1\) 可把常函数代入已证明的 Green 表示式。至于 \(x\) 的调和性，对固定 \(|y|=R\) 直接使用乘积法则，得到
+\[
+ \Delta_x\bigl((R^2-|x|^2)|x-y|^{-d}\bigr)
+ =2d(R^2-|y|^2)|x-y|^{-d-2}=0.
+\]
+所需导数在每个内部紧集上都没有奇性。
+\end{proof}
+\symidx{\(P_B(x,y)\)：球的 Poisson 核}
+
+\begin{theorem}[球上的连续 Dirichlet 问题]\label{b2:thm:13-ball-dirichlet}
+对每个 \(g\in C(\partial B)\)，函数
+\[
+ u(x)=\int_{\partial B}P_B(x,y)\cdot g(y)\,\mathrm{d}S_y\quad(x\in B)
+\]
+与边界上的 \(u=g\) 共同定义了 \(C(\overline B)\) 函数。它在 \(B\) 内光滑且调和，并且是这一函数类中唯一满足该边界数据的解。
+\end{theorem}
+\begin{proof}
+内部紧集离边界有正距离，核的任意阶 \(x\) 导数在该紧集乘球面上统一有界，所以可在积分下逐项求导，得到内部光滑性与调和性。
+
+固定边界点 \(\zeta\)。给定 \(\varepsilon>0\)，由 \(g\) 连续性选 \(\delta>0\)，使 \(|g(y)-g(\zeta)|<\varepsilon\) 当 \(|y-\zeta|<\delta\)。利用正性与总质量为 \(1\)，
+\[
+ |u(x)-g(\zeta)|
+ \leq\varepsilon+2\|g\|_\infty
+       \int_{|y-\zeta|\geq\delta}P_B(x,y)\,\mathrm{d}S_y.
+\]
+当 \(x\to\zeta\) 且 \(|x-\zeta|<\delta/2\) 时，远处有 \(|x-y|\geq\delta/2\)，而分子 \(R^2-|x|^2\to0\)。所以尾积分趋零，得到边界连续性。唯一性由有界域上的最大值原理取得。
+\end{proof}
+
+例如单位圆上的边界数据 \(g(e^{\mathrm{i}\theta})=\cos(m\theta)\) 对应于圆盘内 \(u(r,\theta)=r^m\cos(m\theta)\)。可直接在极坐标下检查调和性和边界值，再由唯一性确认它就是 Poisson 积分。高频边界振荡在内部被 \(r^m\) 压低；当 \(r<1\) 固定时，频率越高，影响越小。这也与\chapref{b2:ch:02}圆周 Poisson 平均的系数权重一致。
+
+\begin{corollary}[球上的 Poisson 方程]\label{b2:cor:13-ball-poisson-problem}
+设 \(f\in C^{0,\alpha}(\overline B)\)、\(0<\alpha\leq1\)，\(g\in C(\partial B)\)。则存在唯一的 \(u\in C^2(B)\cap C(\overline B)\)，满足 \(-\Delta u=f\)、\(u|_{\partial B}=g\)。
+\end{corollary}
+\begin{proof}
+先将 \(f\) 延拓为某个 \(F\in C_c^{0,\alpha}(\mathbb R^d)\)。实值情形可用
+\[
+ F_0(x)=\inf_{y\in\overline B}\bigl(f(y)+L|x-y|^\alpha\bigr),
+\]
+其中 \(L\) 为 Hölder 常数。由 \(|x-z|^\alpha\leq|x-y|^\alpha+|y-z|^\alpha\)，可证 \(F_0\) 保持该 Hölder 常数，且在 \(\overline B\) 上等于 \(f\)。乘以在闭球附近为 \(1\) 的光滑紧支集截断，得到 \(F\)；复值时按实、虚部分别延拓。
+
+令 \(v=NF\)，由\cref{b2:thm:13-newton-holder}知 \(v\in C^2\)、\(-\Delta v=f\) 于球内。再对连续边界值 \(g-v|_{\partial B}\) 使用 Poisson 积分，所得调和函数记为 \(h\)。于是 \(u=v+h\) 满足方程与边界数据。两个候选之差调和且在边界为零，故唯一；这也说明构造不依赖于所选的延拓。
+\end{proof}
+
+
+\ProseParagraphBreak
+
+再看上半空间 \(H=\{(x',t)\in\mathbb R^{d-1}\times\mathbb R:t>0\}\)。固定 \(x=(x',t)\)，其关于边界平面的反射点为 \(x^*=(x',-t)\)。令
+\[
+ G_H(x,y)=\Phi_d(x-y)-\Phi_d(x^*-y).
+\]
+反射点在区域外，且平面上的点到 \(x,x^*\) 等距，所以核在边界为零。对 \(y\) 而言，区域内只有原极点，满足 \(-\Delta_yG_H(x,\cdot)=\delta_x\)。这里没有把有界区域上的唯一性直接移到半空间；无穷远的条件还需单独指定。
+
+\begin{proposition}[半空间的 Poisson 核]\label{b2:prop:13-halfspace-poisson}
+对 \(x=(x',t)\in H\)、\(y'\in\mathbb R^{d-1}\)，负外法向导数给出的核为
+\[
+ P_H(x,y')=\dfrac2{\sigma_{d-1}}
+       \dfrac{t}{\bigl(|x'-y'|^2+t^2\bigr)^{d/2}}.
+\]
+它严格为正，对 \(x\) 调和，并有 \(\int_{\mathbb R^{d-1}}P_H(x,y')\,\mathrm{d}y'=1\)。
+\end{proposition}
+\begin{proof}
+边界外法向为 \(-e_d\)，因此 \(-\partial_{\nu_y}G_H=\partial_{y_d}G_H\)。在 \(y_d=0\) 处，两个极点项的竖直导数大小相同、符号相反，相减后得到系数 \(2t/\sigma_{d-1}\)。对 \(x\) 的调和性可直接对有理核求导验证；也可注意它是原点外调和基本解的一个坐标导数。
+
+尺度换元使总积分不依赖 \(t\)。为计算常数，令
+\[
+ I=\int_{\mathbb R^{d-1}}(1+|z|^2)^{-d/2}\,\mathrm{d}z,
+ \quad J=\int_0^\infty e^{-\pi s^2}s^{d-1}\,\mathrm{d}s.
+\]
+在 \(d\) 维 Gauss 积分的上半空间内作换元 \((x',x_d)=(sz,s)\)，Jacobi 因子为 \(s^{d-1}\)，再缩放径向变量，得到 \(1/2=IJ\)。而整个空间的极坐标公式给出 \(1=\sigma_{d-1}J\)，因此 \(I=\sigma_{d-1}/2\)，所写核的积分为 \(1\)。
+\end{proof}
+\symidx{\(P_H(x,y')\)：半空间 Poisson 核}
+
+这正是\secref{b2:sec:0304}中定义在 \(\mathbb R^{d-1}\) 上的 Poisson 逼近恒等。那里先用积分定义归一化常数，这里通过边界几何得到了它的具体数值。
+
+\begin{theorem}[半空间的有界连续 Dirichlet 问题]\label{b2:thm:13-halfspace-dirichlet}
+若 \(g\in C_b(\mathbb R^{d-1})\)，则
+\[
+ u(x',t)=\int_{\mathbb R^{d-1}}P_H((x',t),y')\cdot g(y')\,\mathrm{d}y'
+\]
+是在 \(H\) 内调和、在 \(\overline H\) 上连续且有界、边界值为 \(g\) 的唯一函数。并且 \(\|u\|_\infty\leq\|g\|_\infty\)。
+\end{theorem}
+\begin{proof}
+核非负且积分为 \(1\)，所以积分绝对收敛并给出范数界。对每个紧正高度区间，各阶内部导数核在边界变量中具有统一的可积尾部，因此可在积分下求导，得到内部调和性与光滑性。
+
+固定边界点 \((a',0)\)，按 \(|y'-a'|<\delta\) 与其余部分分割误差。近处由 \(g\) 在该点连续而小；当 \(|x'-a'|<\delta/2\) 时，远处的核积分不超过
+\[
+ C_d t\int_{\delta/2}^\infty r^{-d}r^{d-2}\,\mathrm{d}r
+ \leq C_d\,t/\delta,
+\]
+所以 \(x'\to a'\)、\(t\downarrow0\) 时误差趋零，得到边界连续性。
+
+唯一性须使用有界条件。若 \(w\) 为两个解之差，则其边界值为零，在平面另一侧作奇反射，得到整个 \(\mathbb R^d\) 上的有界连续函数 \(\widetilde w\)。它在平面两侧分别调和；在平面上的每个点，以该点为中心的球面平均因反射抵消而为零，等于函数值。因此每个点都有足够小半径的球面平均性质。
+
+为确认 \(\widetilde w\) 跨平面调和，在任意球上取与它具有相同连续边界值的 Poisson 解 \(v\)。差 \(\widetilde w-v\) 连续，并在每个点具有局部均值性质。若它在球内达到正最大值，均值与非负差的积分论证使最大值点集既开又闭，从而与零边界矛盾；负最小值同理。因此它等于零，说明 \(\widetilde w\) 在每个球上都调和。由全空间 Liouville 定理，\(\widetilde w\) 为常数；又因奇反射，该常数只能为零。
+\end{proof}
+
+如果去掉有界性，函数 \(u(x',t)=t\) 就是非零的零边界调和函数，唯一性失败。对一般无界区域，边界值只控制有限位置的边界，不能替代无穷远增长条件。另一方面，若 \(g\) 有界且一致连续，则由逼近恒等理论还可得到 \(u(\cdot,t)\to g\) 的一致收敛；只有逐点连续时，本定理只断言相应的边界连续性。
 
 \subsection{镜像法}
 \label{b2:subsec:130404}
 
-待填充。
+在半空间中，补入符号相反的反射点源，使平面上两项恰好抵消；在球中，则用反演点、维数相关的系数和二维的对数常数完成同样的边界配平。这类构造称为\term[jingxiang-fa]{镜像法}[method of images]。两种像点的几何关系见\cref{b2:fig:13-images}。
+\input{Figures/F13-Images}
+
+镜像的几何位置与系数各有职责。平面反射保持到边界点的距离，因此系数为 \(1\) 即可；球面反演只保持一个固定距离比，因而高维幂核必须乘上相应幂次，二维还要减去常数。若遗漏这些系数，所得表达式可能在内部仍满足点源方程，却不满足零边界条件。
+
+\ProseParagraphBreak
+
+两个互相垂直的平面可以通过有限次反射配出更多像点；章末习题给出第一象限的四点构造，并要求检查每条边界及正性。一般曲面则没有这样的有限反射关系。此时不能把任意一个“对称点”放到区域外就称为 Green 函数，而应回到调和修正的边界问题，或使用变分和势论方法。
+
+\ProseParagraphBreak
+
+本章给出的球与半空间公式分别提供了有界区域与无界区域的基本模型。它们都从同一个基本解出发，但边界配平、核的归一化以及唯一性所需的函数类各不相同。进入一般椭圆边值问题时，正是这些需要逐项保留的条件决定后面的理论能够推广到哪里。

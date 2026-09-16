@@ -2,24 +2,95 @@
 \section{分离变量法}
 \label{b2:sec:1001}
 
-% TODO: 撰写本节正文。
-
 \subsection{有限区间}
 \label{b2:subsec:100101}
 
-待填充。
+同一根细杆上的振动与导热具有不同的时间规律，却受同一种空间边界约束控制。设杆占据区间 \(I=(0,\ell)\)，\(\ell>0\)。常系数模型分别是 \(u_{tt}=c^2u_{xx}\) 与 \(u_t=\kappa u_{xx}\)，其中 \(c,\kappa>0\)。若先寻找非零乘积 \(u(t,x)=T(t)X(x)\)，在两因子不为零的小矩形上相除，便得到一个只依赖 \(t\)、又只依赖 \(x\) 的量。它必须是常数；把空间方程写成
+\[
+ -X''=\lambda X,
+ \quad T''+c^2\lambda T=0
+ \quad\text{或}\quad T'+\kappa\lambda T=0.
+\]
+这称为\term[fenli-bianliang-fa]{分离变量法}[separation of variables]。实际计算不必在零点反复相除：一旦得到这两个常微分方程，将乘积直接代回原方程，就能在整个区域验证它。
+
+\ProseParagraphBreak
+
+分离变量首先产生某些特殊解。它既没有断言每个解都是一个乘积，也没有保证任意初值都能展开为这些空间因子。前一个问题由线性叠加处理，后一个问题需要本章的完备性定理。有限和一定满足同一齐次线性方程；无穷和是否仍满足方程，则还取决于收敛发生在哪个空间。
+
+\ProseParagraphBreak
+
+齐次边界条件应先施加于 \(X\)。如果端点温度给定为非零常数，一般不能让每个分离项各自满足它们，而应先减去一个满足边界值的函数。相应的非齐次问题将在\chapref{b2:ch:12}中处理。下面先把三种齐次边界条件对应的频率区分清楚。
 
 \subsection{Dirichlet 边界条件}
 \label{b2:subsec:100102}
 
-待填充。
+两端固定或温度保持为零时，空间条件为 \(X(0)=X(\ell)=0\)。对特征方程乘 \(\overline X\) 并积分，得到
+\[
+ \lambda\int_0^\ell |X|^2\,\mathrm{d}x
+ =\int_0^\ell |X'|^2\,\mathrm{d}x.
+\]
+非零解因此只能对应实数 \(\lambda>0\)：若 \(\lambda=0\)，导数为零，端点条件再迫使常数为零。写 \(\lambda=k^2\)，通解是 \(A\cos(kx)+B\sin(kx)\)。左端条件给出 \(A=0\)，右端条件给出 \(k\ell=n\pi\)，\(n\geq1\)。归一化后为
+\begin{equation}\label{b2:eq:10-dirichlet-modes}
+ e_n(x)=\sqrt{\dfrac2\ell}\sin\dfrac{n\pi x}{\ell},
+ \quad\lambda_n=\left(\dfrac{n\pi}{\ell}\right)^2,
+ \quad n\geq1.
+\end{equation}
+直接积分验证 \(\langle e_n,e_m\rangle=\delta_{nm}\)。这里的正交性还只是两两关系，完备性将在\secref{b2:sec:1003}中作为一般定理的特例重新取得。
+
+\ProseParagraphBreak
+
+一个模态在振动时按 \(\cos(c\sqrt{\lambda_n}t)\) 或 \(\sin(c\sqrt{\lambda_n}t)\) 变化，在导热时按 \(e^{-\kappa\lambda_nt}\) 衰减。因此同一空间高频在前一个方程中振动更快，在后一个方程中衰减更快。区间放大 \(r\) 倍，特征值缩小为原来的 \(r^{-2}\)；振动时间尺度随长度变化，扩散时间尺度则随长度平方变化。
 
 \subsection{Neumann 边界条件}
 \label{b2:subsec:100103}
 
-待填充。
+绝热端点对应 \(X'(0)=X'(\ell)=0\)。分部积分仍给出非负特征值，但这次常数不再被排除。零特征值有单位特征函数 \(e_0=\ell^{-1/2}\)，而正特征值及单位特征函数为
+\begin{equation}\label{b2:eq:10-neumann-modes}
+ \lambda_n=\left(\dfrac{n\pi}{\ell}\right)^2,
+ \quad e_n(x)=\sqrt{\dfrac2\ell}\cos\dfrac{n\pi x}{\ell},
+ \quad n\geq1.
+\end{equation}
+求解时必须单独保留 \(n=0\)，不能把含 \(\lambda_n^{-1}\) 或 \(\lambda_n^{-1/2}\) 的正频公式直接用于它。热方程的零模态保持不变；波方程的零模态为 \(a_0+b_0t\)，代表整体平移而没有恢复力。
+
+\ProseParagraphBreak
+
+左右端也可以采用不同类型。例如 \(X(0)=0\)、\(X'(\ell)=0\) 给出
+\[
+ X_n(x)=\sin\dfrac{(n+1/2)\pi x}{\ell},
+ \quad\lambda_n=\left(\dfrac{(n+1/2)\pi}{\ell}\right)^2,
+ \quad n\geq0.
+\]
+这里最低频率不是零。决定零模态的条件是空间能量为零时哪些函数仍满足端点限制，而不是边界条件的名称中是否出现 Neumann。
 
 \subsection{Robin 边界条件}
 \label{b2:subsec:100104}
 
-待填充。
+沿用\secref{b2:sec:0104}的外法向约定，区间两端的 Robin 条件写成
+\begin{equation}\label{b2:eq:10-robin-flat}
+ -X'(0)+h_0X(0)=0,
+ \quad X'(\ell)+h_\ell X(\ell)=0,
+ \quad h_0,h_\ell\in\mathbb R.
+\end{equation}
+于是
+\[
+ \lambda\|X\|_2^2
+ =\|X'\|_2^2+h_0|X(0)|^2+h_\ell|X(\ell)|^2.
+\]
+当 \(h_0,h_\ell\geq0\) 时，谱非负；若其中至少一个严格为正，零特征函数只能为零。若二者均为零，就回到 Neumann 情形。负的边界系数会向系统输入能量，不能再由这个恒等式推出 \(\lambda\geq0\)。例如取 \(h_0=-a\)、\(h_\ell=a\)，\(a>0\)，则 \(X(x)=e^{-ax}\) 满足两个边界条件，特征值为 \(-a^2\)。
+
+\ProseParagraphBreak
+
+正频率仍可由一个标量方程求出。对 \(\lambda=k^2>0\)，左端条件使
+\[
+ X(x)=A\left(\cos(kx)+\dfrac{h_0}{k}\sin(kx)\right),
+\]
+代入右端条件得到
+\begin{equation}\label{b2:eq:10-robin-characteristic}
+ (h_0h_\ell-k^2)\sin(k\ell)
+ +k(h_0+h_\ell)\cos(k\ell)=0.
+\end{equation}
+求根后还须归一化。零特征值则用 \(X=A+Bx\) 单独检查，其存在条件为 \(h_0+h_\ell+\ell h_0h_\ell=0\)。式\eqref{b2:eq:10-robin-characteristic}在 \(k=0\) 总形式消失，是前面乘以 \(k\) 造成的，不能把这个消失误认为零必是特征值。
+
+\ProseParagraphBreak
+
+显式三角函数仅适用于常系数模型。杆的密度、张力或热传导系数随位置变化时，特征函数一般不再等间距振荡。下一节不依赖显式求根，而从边界项、加权内积和解算子建立展开的共同基础。

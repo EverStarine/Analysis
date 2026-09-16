@@ -2,29 +2,124 @@
 \section{Fourier 变换}
 \label{b2:sec:0301}
 
-% TODO: 撰写本节正文。
+周期函数的频率由整数标记。若函数定义在整个欧氏空间上而不再周期重复，频率也变为连续变量。离散系数的求和于是让位于积分，但可积性、归一化与极限交换仍须逐项检查。
 
 \subsection{定义与规范}
 \label{b2:subsec:030101}
 
-待填充。
+\begin{definition}\label{b2:def:03-fourier-transform}
+设 \(f\in L^1(\mathbb R^d)\)。函数
+\begin{equation}\label{b2:eq:03-fourier-definition}
+ \widehat f(\xi)\coloneqq\mathcal Ff(\xi)
+ =\int_{\mathbb R^d}f(x)\cdot e^{-2\pi\mathrm{i}x\cdot\xi}\,\mathrm{d}x
+\end{equation}
+称为 \(f\) 的\term[fourier-bianhuan]{Fourier 变换}[Fourier transform]。对 \(g\in L^1(\mathbb R^d)\)，另记
+\[
+ \check g(x)\coloneqq\int_{\mathbb R^d}g(\xi)\cdot e^{2\pi\mathrm{i}x\cdot\xi}\,\mathrm{d}\xi.
+\]
+此时只定义了正号积分；它何时反演 \(\mathcal F\)，将在\secref{b2:sec:0305}证明。
+\end{definition}
+\symidx{\(\mathcal Ff=\widehat f\)：欧氏空间 Fourier 变换}
+\symidx{\(\check g\)：正号 Fourier 积分}
+
+积分对每个 \(\xi\) 绝对收敛，且 \(|\widehat f(\xi)|\leq\|f\|_1\)，所以变换不依赖 \(f\) 的代表。这里 \(x\cdot\xi\) 是欧氏内积，虚数单位写作 \(\mathrm{i}\)。采用这个 \(2\pi\) 约定后，后面的反演公式没有额外常数，平方范数也将保持不变。若使用 \(e^{-\mathrm{i}x\cdot\xi}\) 的其他教材，需要同时转换频率尺度，不能只删去指数中的 \(2\pi\)。
+
+\ProseParagraphBreak
+
+在一维，区间示性函数给出一个可直接计算的模型：
+\[
+ \widehat{\mathbf1_{[-a,a]}}(\xi)=\dfrac{\sin(2\pi a\xi)}{\pi\xi}\quad(\xi\ne0),
+ \quad \widehat{\mathbf1_{[-a,a]}}(0)=2a.
+\]
+原函数紧支集，并不使其变换紧支集；跳跃还使变换仅按 \(1/|\xi|\) 的尺度衰减。相反，对 \(a>0\)，分成正、负半轴积分可得
+\[
+ \mathcal F(e^{-a|x|})(\xi)=\dfrac{2a}{a^2+4\pi^2\xi^2}.
+\]
+这些公式同时提供了后面检验常数和反演条件的例子。
 
 \subsection{平移}
 \label{b2:subsec:030102}
 
-待填充。
+沿用第一卷的平移约定 \(\tau_hf(x)\coloneqq f(x-h)\)。变量替换 \(y=x-h\) 给出
+\[
+ \widehat{\tau_hf}(\xi)=e^{-2\pi\mathrm{i}h\cdot\xi}\cdot\widehat f(\xi).
+\]
+平移保持 \(L^1\) 范数，故两侧都有定义。空间中的位置变化只改变频率中的相位，不改变 \(|\widehat f|\)。因而仅保留变换的模，通常不能恢复函数所在的位置。
+\symidx{\(\tau_hf\)：平移，\(\tau_hf(x)=f(x-h)\)}
 
 \subsection{调制}
 \label{b2:subsec:030103}
 
-待填充。
+对 \(\eta\in\mathbb R^d\)，算子
+\[
+ M_\eta f(x)\coloneqq e^{2\pi\mathrm{i}\eta\cdot x}\cdot f(x)
+\]
+称为\term[tiaozhi]{调制}[modulation]。合并指数便得
+\[
+ \widehat{M_\eta f}(\xi)=\widehat f(\xi-\eta).
+\]
+因此空间中的调制将频率整体平移。两种操作的次序要保留：\(\tau_hM_\eta=e^{-2\pi\mathrm{i}\eta\cdot h}M_\eta\tau_h\)，一般并不交换。
+\symidx{\(M_\eta\)：调制算子}
 
 \subsection{伸缩}
 \label{b2:subsec:030104}
 
-待填充。
+\begin{proposition}\label{b2:prop:03-linear-change}
+设 \(A\) 是可逆实 \(d\times d\) 矩阵，\(g(x)=f(Ax)\)，则
+\[
+ \widehat g(\xi)=|\det A|^{-1}\cdot\widehat f(A^{-T}\xi).
+\]
+特别地，对 \(a>0\)，若 \(f_a(x)\coloneqq a^{-d}\cdot f(x/a)\)，则 \(\widehat{f_a}(\xi)=\widehat f(a\xi)\)。
+\end{proposition}
+\begin{proof}
+在定义积分中令 \(y=Ax\)。体积元为 \(|\det A|^{-1}\mathrm{d}y\)，而 \(x\cdot\xi=y\cdot A^{-T}\xi\)。绝对可积性由同一换元公式保证；取 \(A=a^{-1}I\) 再乘以归一化因子，即得后一式。
+\end{proof}
+
+一个在空间中压缩到宽度 \(a\) 的单位质量函数，其变换扩展到约 \(a^{-1}\) 的频率范围。这是尺度互换的初步形式；此处只有精确换元公式，还没有给出一般的测不准估计。
+
+
+\begin{proposition}\label{b2:prop:03-symmetries}
+若 \(f\in L^1\)，则 \(\widehat{\overline f}(\xi)=\overline{\widehat f(-\xi)}\)。实值偶函数的变换为实值偶函数；若 \(f\) 在所有正交变换下不变，则其变换也有同样的不变性。
+\end{proposition}
+\begin{proof}
+第一式由对定义积分取共轭得到。偶性由反射换元得到，再与第一式组合即知实偶函数的变换为实值。对正交矩阵 \(Q\)，线性换元公式中的绝对行列式为 \(1\)、逆转置为 \(Q\)。若 \(f(Qx)=f(x)\)，便有 \(\widehat f(Q\xi)=\widehat f(\xi)\)。
+\end{proof}
+
+例如矩形 \(Q=\prod_j[-a_j,a_j]\) 的变换为各坐标区间变换的乘积，频率中的零点形成相应的超平面。球的示性函数则有旋转不变的变换；但旋转不变性并不提供其径向表达式，还须计算角积分。这里先由对称性确定变换的结构，具体特殊函数留待附录处理。
+
+\ProseParagraphBreak
+
+反射与共轭也是校验计算的工具。若一个实值偶函数被算出了非实的变换，或径向函数被算出了依赖坐标方向的变换，应先回查相位和换元。另一方面，实值函数不一定有实值变换：只有共轭对称是普遍结论，偶性是额外条件。
 
 \subsection{微分与乘法}
 \label{b2:subsec:030105}
 
-待填充。
+\begin{proposition}\label{b2:prop:03-moments}
+若 \(f\in L^1(\mathbb R^d)\) 且 \(|x|^m f\in L^1\)，则 \(\widehat f\in C^m\)，并对 \(|\alpha|\leq m\) 有
+\[
+ \partial_\xi^\alpha\widehat f(\xi)
+ =(-2\pi\mathrm{i})^{|\alpha|}\mathcal F(x^\alpha f)(\xi).
+\]
+\end{proposition}
+\begin{proof}
+一阶差商中指数之差除以步长的模不超过 \(2\pi|x_j|\)。因此 \(|x_jf|\) 提供共同的可积控制，可以把差商极限移入积分。导数的连续性由相同控制下的控制收敛得到。迭代时，每次增加一个坐标因子；所有不超过 \(m\) 阶的单项式都由常数乘 \(1+|x|^m\) 控制，故每一步都合法。
+\end{proof}
+
+\begin{proposition}\label{b2:prop:03-derivative}
+若 \(f\in C^1(\mathbb R^d)\)，且 \(f,\partial_jf\in L^1\)，则
+\[
+ \mathcal F(\partial_jf)(\xi)=2\pi\mathrm{i}\xi_j\widehat f(\xi).
+\]
+若存在可积弱导数，公式也成立。
+\end{proposition}
+\begin{proof}
+取光滑紧支集函数 \(\chi\)，在单位球上等于 \(1\)，并令 \(\chi_R(x)=\chi(x/R)\)。先对紧支集函数 \(\chi_Rf\) 分部积分，得到
+\[
+ \mathcal F(\chi_R\partial_jf)(\xi)
+ +\mathcal F(f\partial_j\chi_R)(\xi)
+ =2\pi\mathrm{i}\xi_j\mathcal F(\chi_Rf)(\xi).
+\]
+第一项及右侧用控制收敛取极限；中间误差的绝对值至多为 \(R^{-1}\|\partial_j\chi\|_\infty\cdot\|f\|_1\)，故趋零。弱导数情形直接把 \(\chi_Re^{-2\pi\mathrm{i}x\cdot\xi}\) 代入弱导数的测试恒等式，得到同一公式和估计。
+\end{proof}
+
+于是空间中的可积导数产生频率衰减，空间中的可积矩产生频率光滑性。两类假设各控制一个不同方向，不能把“变换连续”误认为原函数已经可微。

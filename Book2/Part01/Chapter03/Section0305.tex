@@ -2,24 +2,109 @@
 \section{Fourier 反演}
 \label{b2:sec:0305}
 
-% TODO: 撰写本节正文。
+反演的关键不是把指数的符号形式上改回来，而是说明两重振荡积分怎样得到原函数。直接交换两个没有绝对收敛保证的积分没有意义。我们先加一个可积的 Gauss 因子，使换序合法，再让这个因子逐渐趋于 \(1\)。
 
 \subsection{光滑情形}
 \label{b2:subsec:030501}
 
-待填充。
+\begin{lemma}\label{b2:lem:03-gaussian-inversion}
+若 \(f\in L^1(\mathbb R^d)\)、\(\varepsilon>0\)，则每个 \(x\) 满足
+\begin{equation}\label{b2:eq:03-gaussian-inversion}
+ \int_{\mathbb R^d}\widehat f(\xi)\cdot e^{-\pi\varepsilon^2|\xi|^2}e^{2\pi\mathrm{i}x\cdot\xi}\,\mathrm{d}\xi
+ =(f*G_\varepsilon)(x).
+\end{equation}
+\end{lemma}
+\begin{proof}
+左侧绝对收敛，因为 \(\widehat f\) 有界而 Gauss 因子可积。代入变换定义，重积分绝对值的积分为 \(\|f\|_1\int e^{-\pi\varepsilon^2|\xi|^2}\,\mathrm{d}\xi<\infty\)，故可用 Fubini。内层正号积分由 Gauss 变换公式及偶性等于 \(G_\varepsilon(x-y)\)，从而得到右侧。
+\end{proof}
 
-\subsection{\texorpdfstring{\(L^1\)}{L1} 反演}
+\begin{proposition}\label{b2:prop:03-smooth-inversion}
+若 \(f\in C_c^\infty(\mathbb R^d)\)，则 \(\widehat f\in L^1\)，并有处处成立的绝对收敛反演公式 \(f=\check {\widehat f}\)。
+\end{proposition}
+\begin{proof}
+取整数 \(m>d\)。纯坐标高阶导数可积，故\cref{b2:prop:03-derivative}及最大坐标估计给出 \(|\widehat f(\xi)|\leq C(1+|\xi|)^{-m}\)，于是变换可积。在\eqref{b2:eq:03-gaussian-inversion}左侧以 \(|\widehat f|\) 控制，得到 \(\check {\widehat f}(x)\)；右侧由有界一致连续函数的逼近恒等结论一致趋于 \(f\)。
+\end{proof}
+
+此证明只用到已有的 Gauss 积分、导数变换与逼近恒等，没有预设一般反演。因此它也提供了以后在测试函数空间上建立变换的起点。
+
+\subsection{\texorpdfstring{\(L^1\)}{L¹} 反演}
 \label{b2:subsec:030502}
 
-待填充。
+\begin{theorem}[Fourier 反演]\label{b2:thm:03-inversion}
+若 \(f\in L^1(\mathbb R^d)\) 且 \(\widehat f\in L^1(\mathbb R^d)\)，则
+\[
+ f(x)=\int_{\mathbb R^d}\widehat f(\xi)\cdot e^{2\pi\mathrm{i}x\cdot\xi}\,\mathrm{d}\xi
+\]
+几乎处处成立。右侧定义一个属于 \(C_0\) 的代表；若 \(f\) 在某一点连续，则该点也成立。
+\end{theorem}
+\begin{proof}
+由控制收敛，\eqref{b2:eq:03-gaussian-inversion}左侧一致趋于 \(g=\check {\widehat f}\)，因为误差不超过
+\[
+ \int|\widehat f(\xi)|\cdot|e^{-\pi\varepsilon^2|\xi|^2}-1|\,\mathrm{d}\xi\longrightarrow0.
+\]
+右侧在 \(L^1\) 中趋于 \(f\)。选一列尺度使右侧还有几乎处处收敛子列，便得 \(f=g\) 几乎处处。由 Riemann--Lebesgue 引理，\(g\in C_0\)。若 \(f\) 在 \(x\) 连续，则可取趋向 \(x\)、避开相等关系的零测例外集的一列点；利用两个函数的连续性，得到 \(f(x)=g(x)\)。
+\end{proof}
+
+这称为\term[fourier-fanyan-gongshi]{Fourier 反演公式}[Fourier inversion formula]。条件 \(\widehat f\in L^1\) 保证普通反演积分绝对收敛；它不是所有形式的反演都成立的必要条件。尤其对区间示性函数，此条件失败，但仍可讨论带正则化因子的反演。
 
 \subsection{点态反演}
 \label{b2:subsec:030503}
 
-待填充。
+沿用第一卷定义 14.4.1：若 \(f\) 在 \(x\) 的小球内满足
+\[
+ \dfrac1{|B(x,r)|}\int_{B(x,r)}|f(y)-f(x)|\,\mathrm{d}y\longrightarrow0,
+\]
+则 \(x\) 为该代表的 Lebesgue 点。第一卷命题 14.4.6 证明了非负径向非增单位质量核在 Lebesgue 点处的逼近；本章以 \(f\in L^1\) 满足该命题对非紧支集核要求的全局可积性。Gauss 核和本章 Poisson 核均满足核的条件。
+
+\begin{corollary}[Gauss 正则化反演]\label{b2:cor:03-pointwise-inversion}
+若 \(f\in L^1(\mathbb R^d)\)，则在每个 Lebesgue 点 \(x\) 有
+\[
+ f(x)=\lim_{\varepsilon\downarrow0}
+ \int\widehat f(\xi)\cdot e^{-\pi\varepsilon^2|\xi|^2}e^{2\pi\mathrm{i}x\cdot\xi}\,\mathrm{d}\xi.
+\]
+特别地，该结论几乎处处成立。
+\end{corollary}
+\begin{proof}
+由\eqref{b2:eq:03-gaussian-inversion}，积分就是 \(G_\varepsilon*f(x)\)。应用上述第一卷命题，再用第一卷定理 14.4.2 的几乎处处 Lebesgue 点结论。
+\end{proof}
+
+这项结论不要求 \(\widehat f\) 可积，但不能把 Gauss 因子直接删去，也不能未经证明改成任意频率截断形状。一个有两个单侧极限的一维函数，在跳跃点经偶核正则化时趋向中点值：近处分别用左右极限，远处用核在离原点固定距离外的一致衰减估计。点本身的任意赋值不会被积分恢复。
+
+\ProseParagraphBreak
+
+反演还能确定上一节的一维 Poisson 变换。对 \(f(x)=e^{-2\pi t|x|}\)，直接计算已给出 \(\widehat f=P_t\)，且两者均可积。反演与偶性于是给出
+\[
+ \widehat {P_t}(\xi)=e^{-2\pi t|\xi|}\quad(d=1).
+\]
+两侧连续，所以最初的几乎处处等式提升为处处等式。
 
 \subsection{唯一性定理}
 \label{b2:subsec:030504}
 
-待填充。
+\begin{corollary}[唯一性]\label{b2:cor:03-uniqueness}
+若 \(f,g\in L^1(\mathbb R^d)\) 且 \(\widehat f=\widehat g\)，则 \(f=g\) 几乎处处。
+\end{corollary}
+\begin{proof}
+差 \(h=f-g\) 的变换恒为零，特别属于 \(L^1\)，故 Fourier 反演使 \(h=0\) 几乎处处。
+\end{proof}
+
+唯一性不依赖一般函数是否存在无正则化的反演积分。它只须对零变换使用反演，所以仍适用于全部 \(L^1\)。例如若 \(f*G_\varepsilon=0\) 对某个固定 \(\varepsilon>0\) 成立，则变换相乘后得到 \(\widehat f(\xi)e^{-\pi\varepsilon^2|\xi|^2}=0\)。Gauss 因子处处非零，因而 \(f=0\)。然而从带误差的卷积数据恢复 \(f\)，却要除以趋零的 Gauss 因子；唯一可恢复与稳定可恢复是不同问题。
+
+
+
+\begin{proposition}\label{b2:prop:03-inverse-regularity}
+若 \(f\in L^1\)，且 \(\int(1+|\xi|)^m|\widehat f(\xi)|\,\mathrm{d}\xi<\infty\)，其中 \(m\) 为非负整数，则 \(f\) 有一个 \(C^m\) 代表，且其不超过 \(m\) 阶的每个导数都连续并在无穷远趋零。
+\end{proposition}
+\begin{proof}
+零阶权已保证反演适用，取连续代表 \(g=\check {\widehat f}\)。每次对 \(x_j\) 求导，只给频率被积函数增加 \(2\pi\mathrm{i}\xi_j\)。所有相应差商都由假设中的可积矩控制，所以可逐阶求导，得到
+\[
+ \partial^\alpha g(x)=\int(2\pi\mathrm{i}\xi)^\alpha\widehat f(\xi)e^{2\pi\mathrm{i}x\cdot\xi}\,\mathrm{d}\xi.
+\]
+其绝对值由频率矩积分控制，连续性与无穷远消失由 Riemann--Lebesgue 引理给出。
+\end{proof}
+
+这与空间矩产生频率微分的命题构成对称关系。频率中的可积衰减可以恢复空间光滑性，条件必须作用于带权的绝对积分；仅知道变换逐点趋零，没有提供这些矩。反演因此不仅是一条恢复数值的公式，也是从频率估计提取正则性的工具。
+
+
+\Cref{b2:tab:03-transform-rules}集中列出本章的运算规则，便于在后续方程计算中同时核对公式与假设。
+\input{Tables/T03-TransformRules}

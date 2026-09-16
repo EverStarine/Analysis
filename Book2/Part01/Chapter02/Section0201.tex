@@ -2,24 +2,90 @@
 \section{Hilbert 空间中的正交系统}
 \label{b2:sec:0201}
 
-% TODO: 撰写本节正文。
+把一个向量沿互相垂直的方向分解，是有限维线性代数中熟悉的计算。对函数进行同样的分解时，有限个坐标变成一列积分，而重建函数要经过极限。本节先把这两步分开：正交性给出误差公式；只有正交系足够丰富，误差才必然趋于零。
 
 \subsection{Fourier 系数}
 \label{b2:subsec:020101}
 
-待填充。
+本章固定圆周 \(\mathbb T\coloneqq\mathbb R/\mathbb Z\)，把它上的函数看作周期为 \(1\) 的函数。积分取任一长度为 \(1\) 的区间上的 Lebesgue 积分，通常写为 \(\int_{\mathbb T}\)，因此 \(\int_{\mathbb T}1\,\mathrm{d}x=1\)。函数空间 \(L^p(\mathbb T)\) 中的元素仍按几乎处处相等取商；需要点值时另行指定代表。内积固定为
+\[
+ \langle f,g\rangle\coloneqq\int_{\mathbb T}f(x)\cdot\overline{g(x)}\,\mathrm{d}x,
+\]
+对第一变量线性。周期为 \(L>0\) 的问题可令 \(x=Lt\) 化到本章约定，系数中的积分同时变为 \(L^{-1}\int_0^L\)。
+\symidx{\(\mathbb T\)：单位周期圆周}
+\symidx{\(e_k\)：圆周上的指数函数}
+
+令 \(e_k(x)\coloneqq e^{2\pi\mathrm{i}kx}\)。直接积分给出 \(\langle e_k,e_l\rangle=\delta_{kl}\)。若 Hilbert 空间中的一族向量满足这一关系，称其为\term[biaozhun-zhengjiao-xi]{标准正交系}[orthonormal system]；不要求每个向量具有单位长度时，只称正交系。此处的“标准”正好消去投影系数中的长度分母。
+
+\begin{definition}\label{b2:def:02-fourier-coefficient}
+设 \(f\in L^1(\mathbb T)\)。对每个 \(k\in\mathbb Z\)，积分
+\[
+ \widehat f(k)\coloneqq\int_{\mathbb T}f(x)\cdot e^{-2\pi\mathrm{i}kx}\,\mathrm{d}x
+\]
+称为 \(f\) 的第 \(k\) 个\term[fourier-xishu]{Fourier 系数}[Fourier coefficient]。形式级数 \(\sum_{k\in\mathbb Z}\widehat f(k)e_k\) 称为它的\term[fourier-jishu]{Fourier 级数}[Fourier series]。在确定收敛意义以前，不把这个形式级数直接写成等于 \(f\)。
+\end{definition}
+\symidx{\(\widehat f(k)\)：周期函数的 Fourier 系数}
+
+估计 \(|\widehat f(k)|\leq\|f\|_1\) 说明每个系数都定义在 \(L^1\) 等价类上。若 \(f\in L^2\)，系数又等于 \(\langle f,e_k\rangle\)。例如常函数只占据频率 \(0\)；\(\cos(2\pi mx)\) 在 \(m\) 与 \(-m\) 两个频率上的系数均为 \(1/2\)。复指数的正负频率不是两个独立的实振动：实值函数满足 \(\widehat f(-k)=\overline{\widehat f(k)}\)。
 
 \subsection{Bessel 不等式}
 \label{b2:subsec:020102}
 
-待填充。
+下列误差恒等式同时给出\term[bessel-budengshi]{Bessel 不等式}[Bessel's inequality]及有限维逼近的几何意义。
 
-\subsection{Parseval 等式 恒等式}
+\begin{proposition}[Bessel]\label{b2:prop:02-bessel}
+设 \((u_j)_{j\geq1}\) 是 Hilbert 空间 \(H\) 中的标准正交系。对 \(v\in H\)、有限集 \(F\subset\mathbb N\) 及任意标量 \((a_j)_{j\in F}\)，有
+\[
+ \left\|v-\sum_{j\in F}a_ju_j\right\|^2
+ =\|v\|^2-\sum_{j\in F}|\langle v,u_j\rangle|^2
+   +\sum_{j\in F}|a_j-\langle v,u_j\rangle|^2.
+\]
+特别地，\(\sum_{j\geq1}|\langle v,u_j\rangle|^2\leq\|v\|^2\)。
+\end{proposition}
+\begin{proof}
+记 \(P_Fv=\sum_{j\in F}\langle v,u_j\rangle u_j\)。对每个 \(l\in F\)，内积第一变量的线性性给出 \(\langle v-P_Fv,u_l\rangle=0\)。于是 \(v-P_Fv\) 与 \(\sum_{j\in F}(\langle v,u_j\rangle-a_j)u_j\) 正交。对这两项使用勾股恒等式，再利用标准正交性计算后一项的范数，就得到所述等式。取 \(a_j=\langle v,u_j\rangle\)，右侧剩余的误差范数非负；最后让有限集递增穷尽 \(\mathbb N\)。
+\end{proof}
+
+只知道一组方向互相垂直，并不能断言它们能恢复所有向量。例如只取偶数频率 \((e_{2k})_{k\in\mathbb Z}\)，函数 \(e_1\) 的全部相应系数都为零。Bessel 不等式没有失效，而是这组方向遗漏了整个正交补。
+
+\subsection{Parseval 恒等式}
 \label{b2:subsec:020103}
 
-待填充。
+\begin{definition}\label{b2:def:02-complete-system}
+设 \((u_j)\) 是 \(H\) 中的标准正交系。若其有限线性组合在 \(H\) 中稠密，则称它是\term[wanbei-zhengjiao-xi]{完备正交系}[complete orthonormal system]，也称\term[biaozhun-zhengjiao-ji]{标准正交基}[orthonormal basis]。
+\end{definition}
+
+\begin{theorem}[正交展开与 Parseval]\label{b2:thm:02-abstract-parseval}
+设 \((u_j)_{j\geq1}\) 是标准正交系，\(M\) 是其线性张成空间的闭包。对任意 \(v\in H\)，级数 \(\sum_j\langle v,u_j\rangle u_j\) 在 \(H\) 中收敛到唯一满足 \(w\in M\)、\(v-w\perp M\) 的向量 \(w\)。该系完备当且仅当每个 \(v\in H\) 都满足
+\[
+ \|v\|^2=\sum_{j\geq1}|\langle v,u_j\rangle|^2.
+\]
+这一等式称为\term[parseval-hengdengshi]{Parseval 恒等式}[Parseval's identity]。
+\end{theorem}
+\begin{proof}
+Bessel 不等式使系数的平方和收敛。两段部分和之差的范数平方恰为相应尾部平方和，故部分和是 Cauchy 列，由 \(H\) 完备得到极限 \(w\in M\)。对每个固定 \(u_l\) 取内积极限可得 \(\langle v-w,u_l\rangle=0\)，再用连续性推广到 \(M\)。若另有 \(w'\) 满足同样条件，则 \(w-w'\) 同时属于 \(M\) 和 \(M^\perp\)，只能为零。有限误差公式取极限后成为
+\[
+ \|v-w\|^2=\|v\|^2-\sum_j|\langle v,u_j\rangle|^2.
+\]
+若 \(M=H\)，则 \(w=v\)，等式成立。反之，若等式对每个 \(v\) 成立，误差为零，所以每个 \(v\) 都属于 \(M\)。
+\end{proof}
+
+这一证明还说明，只要有限频率集最终包含每个频率，逼近次序就不影响 Hilbert 空间中的极限。对称部分和是研究点态行为时的自然选择，却不是平方范数收敛所必需的排列约定。
 
 \subsection{正交投影}
 \label{b2:subsec:020104}
 
-待填充。
+上面的映射 \(v\mapsto w\) 称为到 \(M\) 的\term[zhengjiao-touying]{正交投影}[orthogonal projection]。其线性性可从系数公式直接看出；勾股恒等式给出 \(\|w\|\leq\|v\|\)。对任意 \(z\in M\)，还有
+\[
+ \|v-z\|^2=\|v-w\|^2+\|w-z\|^2.
+\]
+因此 \(w\) 是 \(M\) 中唯一的最佳逼近。这里的距离来自 Hilbert 范数；换成一致范数，最佳逼近一般不再由 Fourier 系数直接给出。
+
+\ProseParagraphBreak
+
+对圆周上的函数，记
+\[
+ S_Nf\coloneqq\sum_{|k|\leq N}\widehat f(k)e_k.
+\]
+当 \(f\in L^2(\mathbb T)\) 时，它是到 \(\operatorname{span}\{e_{-N},\ldots,e_N\}\) 的正交投影，且 \(\|S_Nf\|_2\leq\|f\|_2\)。对一般 \(L^1\) 函数，这个有限和仍有意义，但正交投影解释已超出其定义范围。下一节先研究这个有限和的积分核，再回到整个三角系统是否完备的问题。
+\symidx{\(S_Nf\)：Fourier 级数的对称部分和}

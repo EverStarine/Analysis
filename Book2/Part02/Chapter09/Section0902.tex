@@ -2,19 +2,98 @@
 \section{非齐次方程}
 \label{b2:sec:0902}
 
-% TODO: 撰写本节正文。
+外力在每一时刻都改变速度。线性叠加允许把持续作用拆成各个时刻产生的初速度增量，再分别传播到观察时刻。积分上限处的贡献决定了非齐次项；若只对积分内部求导，便会漏掉外力本身。
 
 \subsection{Duhamel 原理}
 \label{b2:subsec:090201}
 
-待填充。
+先把零位移、给定速度的解算子记为
+\[
+ S_c(t)h(x)\coloneqq\dfrac1{2c}\int_{x-ct}^{x+ct}h(y)\,\mathrm{d}y.
+\]
+它满足 \(S_c(0)h=0\)、\(\partial_tS_c(0)h=h\)。若时刻 \(s\) 的力为 \(F(s,\cdot)\)，它在时长 \(t-s\) 内产生的响应是 \(S_c(t-s)F(s,\cdot)\)。对这些响应积分的做法称为\term[duhamel-yuanli]{Duhamel 原理}[Duhamel's principle]。
+\symidx{\(S_c(t)\)：一维波方程的初速度传播算子}
+
+\begin{theorem}[Duhamel，一维波方程]\label{b2:thm:09-duhamel}
+设 \(T>0\)，\(f\in C^2(\mathbb R)\)、\(g\in C^1(\mathbb R)\)、\(F\in C^1([0,T]\times\mathbb R)\)。问题
+\[
+ u_{tt}-c^2u_{xx}=F,\quad u(0)=f,\quad u_t(0)=g
+\]
+有唯一经典解；它等于\eqref{b2:eq:09-dalembert}的齐次解加上
+\begin{equation}\label{b2:eq:09-duhamel}
+ w(t,x)=\int_0^tS_c(t-s)F(s,\cdot)(x)\,\mathrm{d}s
+ =\dfrac1{2c}\int_0^t\int_{x-c(t-s)}^{x+c(t-s)}F(s,y)\,\mathrm{d}y\,\mathrm{d}s.
+\end{equation}
+\end{theorem}
+\begin{proof}
+记 \(V(\tau,s,x)=S_c(\tau)F(s,\cdot)(x)\)。固定 \(s\) 时，\(V_{\tau\tau}=c^2V_{xx}\)，且 \(V(0,s,x)=0\)、\(V_\tau(0,s,x)=F(s,x)\)。各阶求导只涉及一个紧三角形上的 \(F\)、\(F_x\)，故可在积分号下求导。Leibniz 公式给出
+\[
+ w_t=\int_0^tV_\tau(t-s,s,x)\,\mathrm{d}s,\quad
+ w_{tt}=F(t,x)+\int_0^tV_{\tau\tau}(t-s,s,x)\,\mathrm{d}s.
+\]
+另一方面，\(c^2w_{xx}\) 正是第二式的积分项。所以 \(w_{tt}-c^2w_{xx}=F\)。积分区间在 \(t=0\) 退化，给出 \(w(0)=w_t(0)=0\)。减去这个特解后使用\cref{b2:thm:09-dalembert}，即可得到一般初值的存在性与唯一性。
+\end{proof}
+
+外力项的积分区域是观察点向过去展开的三角形。对固定 \(s\)，水平截面宽度为 \(2c(t-s)\)：较早施加的力能够从较远的位置传来，刚施加的力只能从观察点附近传来。这一几何结构比公式中的常数更有普遍性，后面的高维问题将把区间改成球。
 
 \subsection{外力项}
 \label{b2:subsec:090202}
 
-待填充。
+若 \(F(s,y)=a(s)\) 与空间无关，且初值为零，公式化为
+\[
+ u(t,x)=\int_0^t(t-s)a(s)\,\mathrm{d}s.
+\]
+因此恒力产生 \(u=at^2/2\)，恰与没有空间变化时的常微分方程 \(u_{tt}=a\) 一致。常数 \(1/(2c)\) 被区间长度中的 \(2c\) 抵消，这也是检查归一化的一种简便方法。
+
+\ProseParagraphBreak
+
+外力的大小受到控制，并不意味着位移在所有时间上一致有界。取 \(k>0\)、\(\omega=ck\)，令
+\[
+ F(t,x)=\cos(\omega t)\cos(kx),\quad f=g=0.
+\]
+设 \(u(t,x)=a(t)\cos(kx)\)，则 \(a''+\omega^2a=\cos(\omega t)\)，从而
+\[
+ a(t)=\dfrac{t\sin(\omega t)}{2\omega}.
+\]
+直接求导可核对方程与零初值。外力的时间频率与自由振动频率相同，持续作用可使振幅增长；这种现象称为\term[gongzhen]{共振}[resonance]。本例为空间周期的经典解，不具有整条实线上的有限总能量，因此不把它代入稍后的全空间能量积分。
+
+\ProseParagraphBreak
+
+若仅需有限时间的逐点控制，\eqref{b2:eq:09-duhamel}直接给出
+\[
+ \|w(t)\|_\infty\leq\int_0^t(t-s)\|F(s)\|_\infty\,\mathrm{d}s.
+\]
+在 \(F\) 一致有界时右端不超过 \(t^2\|F\|_\infty/2\)。该估计没有利用振荡抵消，适合控制局部存在时间内的误差；它不声称捕捉每一个振荡外力的精确长时间增长。
 
 \subsection{有限传播速度}
 \label{b2:subsec:090203}
 
-待填充。
+给定 \(t_0>0\)、\(x_0\in\mathbb R\)，记过去的传播区域为
+\[
+ K_{t_0,x_0}\coloneqq
+ \{\,(s,y):0\leq s\leq t_0,\ |y-x_0|\leq c(t_0-s)\,\}.
+\]
+若称某个区域为观察点的\term[yilai-quyu]{依赖区域}[domain of dependence]，意思是该处的解只由区域内的数据确定。相反，从一个初始位置出发可能受到影响的未来区域称为\term[yingxiang-quyu]{影响区域}[domain of influence]。这两个说法分别固定终点和起点，不能把箭头方向混同。
+
+\begin{proposition}[有限传播速度]\label{b2:prop:09-finite-speed}
+设两个经典解具有相同波速。若它们的初始位移、初始速度在 \([x_0-ct_0,x_0+ct_0]\) 上分别相等，外力在 \(K_{t_0,x_0}\) 上相等，则两解在整个 \(K_{t_0,x_0}\) 上相等。特别，若初值及每个时刻的外力都支撑在固定闭集 \(A\) 内，则
+\[
+ \operatorname{supp}u(t,\cdot)\subseteq
+ \{\,x:\operatorname{dist}(x,A)\leq ct\,\},\quad 0\leq t\leq T.
+\]
+\end{proposition}
+\begin{proof}
+对两解作差。区域中任一点 \((s,y)\) 的初始依赖区间包含在 \([x_0-ct_0,x_0+ct_0]\) 内，而它的过去三角形包含在 \(K_{t_0,x_0}\) 内：这两点都由三角不等式
+\(|z-x_0|\leq|z-y|+|y-x_0|\) 得出。因此 d'Alembert 公式中的两端点值与区间积分为零，Duhamel 积分也为零。
+
+若 \(\operatorname{dist}(x,A)>ct\)，则过去三角形的任何截面都不与 \(A\) 相交，故解在该点为零。距离函数连续，使这个零值结论在点的邻域也成立；于是得到所陈述的支集包含关系。
+\end{proof}
+
+\cref{b2:fig:09-cone}画出了同一个区域的两种用途：计算 \((t_0,x_0)\) 的位移时读取过去的数据；证明唯一性时则比较一整个收缩区间上的能量。第二种方式不依赖显式公式，因而能够推广到其他维数。
+\input{Figures/F09-cone}
+
+传播速度的结论只给出支集的外界，不保证界内处处非零。左右行波可以抵消，数据本身也可能具有空隙。此外，在一维即使初始数据紧支撑，固定位置也未必在波前经过以后回到零位移：若 \(f=0\)、\(g\) 紧支撑，则对足够大的 \(t\)，
+\[
+ u(t,x)=\dfrac1{2c}\int_{\mathbb R}g(y)\,\mathrm{d}y.
+\]
+这个尾部不违反有限传播，因为它位于允许的传播区域内部。三维方程在相同条件下具有更强的无尾传播性质，须到\chapref{b2:ch:11}重新证明。

@@ -2,26 +2,163 @@
 \chapter{Laplace 与 Poisson 方程}
 \label{b2:ch:13}
 \BookChapterNumber{b2:ch:13}
-% 本章摘要（不计入编号）
+% 证明义务与实际来源范围见 tmp/book2-part02-20260916/plan.md。
+% Axler2001Harmonic 本轮实读pp.4--8、12--18、47--50、144--146。
+% 既有第一章Green公式、第五章负Laplace基本解为当前同卷证明输入。
 \begin{chapterabstract}
-待填充。
+本章研究没有时间变量的平衡方程。调和函数的均值结构产生最大值原理、Harnack 比较与内部光滑性；Green 恒等式则把内部源量与边界通量联系起来。利用既有基本解构造 Newton 势后，进一步分析奇核的一阶可积性和二阶抵消，说明右端正则性怎样影响经典解。最后通过球面反演与平面反射构造 Green 函数，完成球和半空间上的连续 Dirichlet 问题，并明确一般区域与无穷远条件所留下的边界。
 \end{chapterabstract}
 
-% 本章目标（不计入编号）
 \begin{learninggoals}
-待填充。
+\begin{itemize}
+\item\label{b2:item:13-goal-mean}从球面和球内平均理解调和性，掌握最大值、Harnack 链和 Liouville 结论的假设。
+\item\label{b2:item:13-goal-boundary}使用外法向 Green 恒等式检查 Dirichlet、Neumann 和 Robin 数据的唯一性及相容条件。
+\item\label{b2:item:13-goal-potential}构造 Newton 势，区别有界、连续与 Hölder 密度所能保证的正则性。
+\item\label{b2:item:13-goal-green}核对 Green 函数的点源、零边界、正性和对称性，区分表示公式与存在性证明。
+\item\label{b2:item:13-goal-models}用显式 Poisson 核解球与半空间的问题，说明镜像系数、维数和增长类各起什么作用。
+\end{itemize}
 \end{learninggoals}
+
+本章沿用\chapref{b2:ch:01}的向量分析与外法向约定，以及\chapref{b2:ch:05}已经证明的负 Laplace 基本解。方程统一写为 \(-\Delta u=f\)，所以正源与零 Dirichlet 数据对应非负解。\chapref{b2:ch:10}的 Green 核首先服务于有限区间；这里把相同的逆算子思想放入欧氏空间的几何边界中。
+
+\ProseParagraphBreak
+
+\secref{b2:sec:1301}的局部调和理论先独立建立，Harnack 的证明不预借后面才出现的 Poisson 核。\secref{b2:sec:1302}整理边界与能量接口，\secref{b2:sec:1303}处理体积源。\secref{b2:sec:1304}在明确假设下一般讨论 Green 表示，并在球与半空间完成存在性；任意粗糙域上的边界正则性不在这组显式构造中自动得到。
+
+\ProseParagraphBreak
+
+Sheldon Axler、Paul Bourdon 与 Wade Ramey 的《Harmonic Function Theory》\cite[Chapters 1, 3, and 7]{Axler2001Harmonic}可伴读均值、正调和函数及半空间核，比较其单位球面概率测度与本书未归一化面积测度的差别。Lawrence C. Evans 的《Partial Differential Equations》\cite{Evans2010Partial}可用于继续学习一般椭圆方程与弱解；本章不以未展开的一般正则性结论替代显式核的计算。
 
 \input{Part02/Chapter13/Section1301}
 \input{Part02/Chapter13/Section1302}
 \input{Part02/Chapter13/Section1303}
 \input{Part02/Chapter13/Section1304}
-% 本章小结（不计入编号）
-\begin{chaptersummary}
-待填充。
-\end{chaptersummary}
 
+\begin{chaptersummary}
+均值性质把调和函数的局部微分方程变成平均约束，由此得到内部极值的排除、正函数的比例比较及任意阶局部估计。Green 恒等式同时记录内部源与边界通量，区分了三类边界条件的相容性和唯一性。无界区域还必须限制增长，不能只凭有限位置的边界值断言解唯一。
+
+\ProseParagraphBreak
+
+Newton 势先给出全空间特解；一阶导数的核局部可积，二阶导数则要保留角向抵消和原点项。Hölder 或 Dini 条件提供了这种抵消后的可积控制，单纯连续右端不普遍保证 \(C^2\) 正则性。Green 函数再通过调和修正满足边界，球和半空间的显式构造展示了表示、边界极限与唯一性如何闭合。下一编将用函数空间和变分方法处理无法直接写出核的区域与算子。
+\end{chaptersummary}
 
 \BookExercises
 
-待填充。
+前几题组合平均、核与能量方法；后面的题目改变区域、边界连续性或无穷远条件，用以检验本章各项假设的作用。
+
+% 自拟：二次型边界数据的调和修正，不只辨认一个调和多项式。
+\begin{exercise}\label{b2:ex:13-quadratic-boundary}
+设 \(A\) 为实对称 \(d\times d\) 矩阵。在 \(B(0,R)\) 上求边界数据 \(g(y)=y^TAy\) 的调和延拓，并求其中心值。若 \(A\) 半正定，说明延拓在球内为何非负。
+\end{exercise}
+\begin{solution}
+因为 \(\Delta(x^TAx)=2\operatorname{tr}A\)，而 \(\Delta|x|^2=2d\)，函数
+\[
+ u(x)=x^TAx+\dfrac{\operatorname{tr}A}{d}(R^2-|x|^2)
+\]
+调和，在边界上等于 \(g\)。由 Dirichlet 唯一性，它就是所求延拓，且 \(u(0)=R^2\operatorname{tr}A/d\)。半正定时边界数据非负，最小值原理保证内部非负；这项判断不需要从修正公式中逐项比较符号。
+\end{solution}
+
+% 改编：Axler2001Harmonic, Exercises3,2（印刷56页）的取等问题；
+% 增加一般半径的推导与不连续边界极值对象的辨析。
+\begin{exercise}\label{b2:ex:13-sharp-harnack}
+设 \(d\geq2\)，\(u>0\) 在 \(B(0,R)\) 调和，\(|x|=r<R\)、\(s=r/R\)。证明
+\[
+ \dfrac{1-s}{(1+s)^{d-1}}u(0)
+ \leq u(x)\leq
+ \dfrac{1+s}{(1-s)^{d-1}}u(0).
+\]
+当 \(x\ne0\) 时，分别给出取等的正调和函数；说明这些例子为何没有连续延拓到整个球面。
+\end{exercise}
+\begin{solution}
+先假设函数在闭球附近调和。由 Poisson 表示、\(R-r\leq|x-y|\leq R+r\) 以及球面平均，
+\[
+ \dfrac{R^{d-2}(R^2-r^2)}{(R+r)^d}u(0)
+ \leq u(x)\leq
+ \dfrac{R^{d-2}(R^2-r^2)}{(R-r)^d}u(0),
+\]
+化简即得。一般情形在半径 \(\rho\in(r,R)\) 的球上应用，再令 \(\rho\uparrow R\)。
+
+固定边界点 \(\zeta\)，函数 \(u_\zeta(z)=\sigma_{d-1}R^{d-1}P_B(z,\zeta)\) 在开球内为正且调和，中心值为 \(1\)。当 \(\zeta=Rx/r\) 时，在 \(x\) 处取得上界；当 \(\zeta=-Rx/r\) 时取得下界。沿着趋向 \(\zeta\) 的径向路径，Poisson 核具有边界奇性，所以这些函数没有连续延拓到整个闭球；它们仍符合题目的开球假设。
+\end{solution}
+
+% 自拟：零总源量后的偶极项，使用已建立Hessian核作远场余项估计。
+\begin{exercise}\label{b2:ex:13-dipole}
+设 \(d\geq2\)，\(f\) 有界且紧支集，\(\int f=0\)，记 \(m=\int y f(y)\,\mathrm{d}y\)。证明
+\[
+ Nf(x)=\dfrac{x\cdot m}{\sigma_{d-1}|x|^d}+O(|x|^{-d})
+ \quad(|x|\to\infty).
+\]
+构造 \(m\ne0\) 的光滑紧支集密度，并说明当 \(m=0\) 时衰减如何改善。
+\end{exercise}
+\begin{solution}
+设支集包含于 \(B(0,R_0)\)。当 \(|x|>2R_0\) 时，对 \(\Phi_d(x-y)\) 在 \(y=0\) 处作一次 Taylor 展开。线段上二阶核的模不超过 \(C_d|x|^{-d}\)，所以余项积分由 \(C_d|x|^{-d}\int|y|^2|f(y)|\,\mathrm{d}y\) 控制。常数项因零总质量消失，线性项为 \(-\nabla\Phi_d(x)\cdot m=x\cdot m/(\sigma_{d-1}|x|^d)\)。
+
+取偶的非负单位积分磨光函数 \(\rho\)，以及 \(a\ne0\)，令 \(f(y)=\rho(y-a)-\rho(y+a)\)。换元给出总质量为零，第一矩为 \(2a\)，故偶极项非零。如果第一矩也为零，则只剩 \(O(|x|^{-d})\) 的余项；这是一项由矩相消产生的改进。
+\end{solution}
+
+% 自拟：有两个边界分支时的外法向与Neumann相容性。
+\begin{exercise}\label{b2:ex:13-annulus-neumann}
+在环域 \(a<|x|<b\)、\(d\geq2\)，要求调和函数在内、外球面的外法向导数分别为常数 \(g_a,g_b\)。给出存在解的充要条件，写出所有径向解，并说明这些解是否已覆盖全部经典解。
+\end{exercise}
+\begin{solution}
+相容条件为 \(a^{d-1}g_a+b^{d-1}g_b=0\)。径向调和方程给出 \(u'(r)=Cr^{1-d}\)，而内边界的外法向为 \(-e_r\)，故
+\[
+ C=-a^{d-1}g_a=b^{d-1}g_b.
+\]
+条件成立时，可取 \(u(r)=C\log r+B\)（\(d=2\)），或 \(u(r)=C r^{2-d}/(2-d)+B\)（\(d\geq3\)），所以条件也充分。任意经典解与此显式解具有相同 Neumann 数据，其差由能量唯一性为常数，因此这些径向解已经给出全部解。再指定环域上的平均值即可固定 \(B\)。
+\end{solution}
+
+% 自拟：同时改变源项与边界值，给出可取等的稳定性常数。
+\begin{exercise}\label{b2:ex:13-source-stability}
+设 \(u,v\in C^2(B(0,R))\cap C(\overline{B(0,R)})\)，且 \(-\Delta u=f\)、\(-\Delta v=k\)，其中 \(f-k\) 有界。证明
+\[
+ \|u-v\|_\infty\leq
+ \|u-v\|_{C(\partial B)}+\dfrac{R^2}{2d}\|f-k\|_\infty,
+\]
+并证明两个常数可同时取等。
+\end{exercise}
+\begin{solution}
+记 \(M=\|u-v\|_{C(\partial B)}\)、\(F=\|f-k\|_\infty\)，令 \(w=(R^2-|x|^2)/(2d)\)，则 \(-\Delta w=1\)、边界值为零。函数 \(u-v-M-Fw\) 的 Laplace 非负，边界值不大于零，由\cref{b2:prop:13-subharmonic-comparison}得 \(u-v\leq M+Fw\)。对负差同样处理，得到绝对值界，再使用 \(\max w=R^2/(2d)\)。取 \(v=0\)、\(u=M+Fw\)、\(M,F\geq0\)，在球心即取等。
+\end{solution}
+
+% 自拟：改变区域而保持点源，比较Green核并推出正密度势的单调性。
+\begin{exercise}\label{b2:ex:13-domain-monotonicity}
+设 \(\overline{\Omega_1}\subset\Omega_2\)，两者满足本章经典 Green 函数的假设。证明对 \(x,y\in\Omega_1\)、\(x\ne y\)，有 \(G_{\Omega_1}(x,y)\leq G_{\Omega_2}(x,y)\)。若非负 \(f\) 紧支撑于 \(\Omega_1\)，比较两个 Green 核与 \(f\) 的积分。
+\end{exercise}
+\begin{solution}
+固定 \(x\)。两个核之差的极点奇性相消，故可在整个 \(\Omega_1\) 上延拓为调和函数。在 \(\partial\Omega_1\) 上，差等于 \(G_{\Omega_2}(x,\cdot)\geq0\)，所以最小值原理给出差非负。乘以非负密度 \(f\) 再积分便保持不等式；核在极点局部可积，若 \(f\) 有界或相应积分有限，比较即在通常积分意义下成立。一般非负密度可先截断，再由单调收敛保留允许无穷值的比较。
+\end{solution}
+
+% 自拟：边界跳跃处依赖趋近路径，检验连续边值假设。
+\begin{exercise}\label{b2:ex:13-halfplane-step}
+在上半平面取边界数据 \(g(y)=\mathbf1_{(0,\infty)}(y)\)。计算其 Poisson 积分，求它在每个非零边界点的极限，以及沿 \(x=ct\)、\(t\downarrow0\) 趋于原点的极限。说明为何不存在在闭半平面连续且取该边界数据的函数。
+\end{exercise}
+\begin{solution}
+直接积分得到
+\[
+ u(x,t)=\dfrac1\pi\int_0^\infty\dfrac{t}{(x-y)^2+t^2}\,\mathrm{d}y
+ =\dfrac12+\dfrac1\pi\arctan(x/t).
+\]
+在正边界点极限为 \(1\)，负边界点为 \(0\)。沿 \(x=ct\) 的极限为 \(1/2+\pi^{-1}\arctan c\)，随 \(c\) 改变，所以原点处没有与路径无关的连续极限。题目的边界数据本身有跳跃，也已排除闭半平面上的连续延拓。内部 Poisson 积分仍是有界调和函数。
+\end{solution}
+
+% 自拟：两次反射形成四个像点，并用代数证明正性。
+\begin{optionalexercise}\label{b2:ex:13-quadrant-images}
+令 \(Q=\{(x_1,x_2):x_1>0,x_2>0\}\)，\(R_1,R_2\) 分别反射第一、第二坐标。对 \(x,y\in Q\)、\(x\ne y\)，验证
+\[
+ G(x,y)=\Phi_2(x-y)-\Phi_2(x-R_1y)-\Phi_2(x-R_2y)+\Phi_2(x-R_1R_2y)
+\]
+关于 \(x\) 满足单位点源方程，在两条坐标轴上为零，并严格为正。为何仅有这些方程和边界条件仍不能唯一确定无界区域上的核？
+\end{optionalexercise}
+\begin{solution}
+三个像点都在区域外，故区域内只有 \(y\) 贡献 \(-\Delta_xG=\delta_y\)。在任一坐标轴上，等距的两对项分别抵消。若 \(x=(a,b)\)、\(y=(c,e)\)，令
+\[
+ A=(a-c)^2+(b-e)^2,\quad p=4ac>0,\quad q=4be>0,
+\]
+则四个距离平方分别为 \(A,A+p,A+q,A+p+q\)。所以
+\[
+ G(x,y)=\dfrac1{4\pi}\log
+ \left(\dfrac{(A+p)(A+q)}{A(A+p+q)}\right)>0,
+\]
+因为分子比分母大 \(pq\)。但对固定 \(y\)，还可给 \(G\) 加上任意常数倍的调和函数 \(x_1x_2\)，不改变方程及坐标轴边界值。需要无穷远增长条件才能排除这种自由度；显式四像点核的远处衰减正是一种选择。
+\end{solution}

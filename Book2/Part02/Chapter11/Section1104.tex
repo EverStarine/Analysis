@@ -1,19 +1,97 @@
 % !TeX root = ../../Book2.tex
 \OptionalSection{分散性观点}{b2:sec:1104}
 
-% TODO: 撰写本节正文。
+能量守恒不排斥某些逐点振幅随时间减小：相同的平方能量可以分布在越来越大的区域上。为了看清波动传播中的振荡抵消，本节只证明三维、固定频带上的一个衰减估计。频带和空间正则性是结论的一部分；不能删掉频率限制而仍保持同一个 \(L^1\) 数据范数。
 
 \subsection{\texorpdfstring{\(L^1\to L^\infty\)}{L1∞} 衰减}
 \label{b2:subsec:110401}
 
-待填充。
+在 \(\mathbb R^3\) 上定义一支波传播算子
+\[
+ U_c(t)h\coloneqq\mathcal F_2^{-1}
+ \left(e^{2\pi\mathrm{i}ct|\xi|}\widehat h(\xi)\right).
+\]
+它在 \(L^2\) 上等距；另一支以 \(-t\) 代替 \(t\)。取固定 \(\chi\in C_c^\infty((1/2,2))\)，用径向乘子
+\[
+ \widehat{P_Nh}(\xi)=\chi(|\xi|/N)\widehat h(\xi),\quad N>0,
+\]
+把频率局部化到大小为 \(N\) 的环带。这里称为\term[pinlv-jubuhua]{频率局部化}[frequency localization]，其空间作用是卷积，并不是把函数截断到某个空间区域。
+
+\begin{theorem}[三维频带衰减]\label{b2:thm:11-localized-decay}
+存在仅依赖 \(c\)、\(\chi\) 的常数 \(C\)，使任意 \(N>0\)、\(t\in\mathbb R\)、\(h\in L^1(\mathbb R^3)\) 满足
+\begin{equation}\label{b2:eq:11-localized-decay}
+ \|U_c(t)P_Nh\|_\infty
+ \leq C N^3(1+N|t|)^{-1}\|h\|_1.
+\end{equation}
+此处由光滑紧频带的卷积核定义算子，因而不要求 \(h\in L^2\)。
+\end{theorem}
+\begin{proof}
+先取 \(N=1\)。核为
+\[
+ K(t,x)=\int_{\mathbb R^3}e^{2\pi\mathrm{i}(x\cdot\xi+ct|\xi|)}
+                       \chi(|\xi|)\,\mathrm{d}\xi.
+\]
+绝对值直接积分给出统一常数界，足以处理 \(|t|\leq1\)。令 \(r=|x|\)。若 \(r>0\)，对角变量积分，利用
+\(\int_{\mathbb S^2}e^{2\pi\mathrm{i}r\rho\theta_1}\,\mathrm{d}\sigma
+=2\sin(2\pi r\rho)/(r\rho)\)，得到
+\[
+ K(t,x)=\dfrac1{\mathrm{i}r}\bigl(I(ct+r)-I(ct-r)\bigr),\quad
+ I(s)=\int_0^\infty\rho\chi(\rho)e^{2\pi\mathrm{i}s\rho}\,\mathrm{d}\rho.
+\]
+当 \(r\geq c|t|/2\) 时，\(I\) 的绝对值有统一界，因此 \(|K|\leq C/|t|\)。这个区域包括最难抵消的传播球面 \(r=c|t|\)。
+
+若 \(r<c|t|/2\)，在角积分之前对径向变量操作。相位的径向导数为 \(ct+x\cdot\theta\)，绝对值至少为 \(c|t|/2\)。因 \(\rho^2\chi(\rho)\) 光滑且紧支撑在正半轴内部，两次分部积分没有边界项，给出
+\[
+ \left|\int_0^\infty\rho^2\chi(\rho)
+ e^{2\pi\mathrm{i}\rho(ct+x\cdot\theta)}\,\mathrm{d}\rho\right|
+ \leq C|t|^{-2}
+\]
+并且常数与方向无关。球面积分后仍有同样估计，也覆盖 \(r=0\)。两个区域合起来得到 \(\|K(t)\|_\infty\leq C(1+|t|)^{-1}\)。
+
+一般 \(N\) 时换元 \(\xi=N\eta\)，有 \(K_N(t,x)=N^3K(Nt,Nx)\)。核的上确界遂满足\eqref{b2:eq:11-localized-decay}中的系数。最后对 \(K_N*h\) 使用绝对积分界，得到算子估计。
+\end{proof}
+
+当 \(N|t|\gg1\) 时，右端量级为 \(|t|^{-1}N^2\|h\|_1\)。两个频率幂说明，全频率估计必须支付相应的空间正则性代价。例如对适当频带分解，若 \(h=\sum_jh_j\)、\(h_j\) 的频率支撑在大小为 \(2^j\) 的环带，且
+\[
+ \sum_j2^{2j}\|h_j\|_1<\infty,
+\]
+则用一个在每个环带上等于一的稍宽光滑截断，逐项应用核估计，得到
+\[
+ \left\|\sum_jU_c(t)h_j\right\|_\infty
+ \leq\dfrac C{|t|}\sum_j2^{2j}\|h_j\|_1,\quad t\ne0.
+\]
+右侧使传播后的级数绝对一致收敛；若初始分解同时在分布意义下恢复 \(h\)，这个和就是完整演化。这里只给出一个明确的充分条件，不把加权频带和擅自替换为没有导数的 \(L^1\) 范数。
 
 \subsection{色散}
 \label{b2:subsec:110402}
 
-待填充。
+在振荡积分中，不同方向的相位可以互相抵消；传播球面附近保留最大的贡献，而远离它的区域允许更多次分部积分。这种由相位和传播方向使振幅分散的现象，在本节称为\term[sesan]{色散}[dispersion]。波方程的关系式 \(\rho=2\pi c|\xi|\) 对径向频率是线性的，沿同一方向的不同频率以相同速度行进；因此它的衰减机制包含角向展开，不能直接照搬二次相位的热核或 Schrödinger 核计算。
 
-\subsection{Strichartz 估计 的动机}
+\ProseParagraphBreak
+
+频率代价不是上述证明的偶然损失。取非负非零 \(\chi\)，令 \(h=\mathcal F^{-1}(\chi(|\xi|))\)，再令 \(h_N(x)=N^3h(Nx)\)。这些都是 Schwartz 函数，且 \(\|h_N\|_1=\|h\|_1\)。在固定 \(t>0\) 和 \(|x|=ct\) 处，刚才的角积分公式给出
+\[
+ U_c(t)h_N(x)=\dfrac{N^2}{\mathrm{i}ct}
+                    \bigl(I(2Nct)-I(0)\bigr).
+\]
+分部积分说明 \(I(2Nct)\to0\)，而 \(I(0)>0\)，故其模以 \(N^2\) 的量级增长。于是不存在对全部 Schwartz 数据成立的固定时间无导数 \(L^1\to L^\infty\) 界；更不能宣称完整波群具有 \(C|t|^{-1}\|h\|_1\) 的三维界。
+
+\ProseParagraphBreak
+
+另一方面，\(U_c(t)\) 在 \(L^2\) 中没有范数衰减。这与频带上的逐点衰减并不冲突：上确界下降时，波可以分布在更大的球壳上。三维壳层的面积按 \(t^2\) 增长，幅度按 \(t^{-1}\) 减小，恰与平方能量保持同一尺度相容。这只是对估计的几何解释；严格结论仍是上面带频带条件的核界与 Plancherel 等式。
+
+\subsection{Strichartz 估计的动机}
 \label{b2:subsec:110403}
 
-待填充。
+非线性波方程中的外力依赖解本身，仅有每个时刻的能量界往往不够控制 Duhamel 积分。需要同时记录时间和空间的可积性，例如
+\[
+ \|u\|_{L^q_tL^r_x(I\times\mathbb R^n)}
+ =\left(\int_I\left(\int_{\mathbb R^n}|u(t,x)|^r\,\mathrm{d}x\right)^{q/r}
+ \,\mathrm{d}t\right)^{1/q},
+\]
+有限指数时按此定义，指数为无穷时改用本性上确界。能量给出某些 \(q=\infty\) 的控制，色散则提供随时间变化的空间映射界；连接两者的时空估计属于\term[strichartz-guji]{Strichartz 估计}[Strichartz estimates]的研究范围。
+
+\ProseParagraphBreak
+
+本节不把单个频带的核估计当作已经证明了全频 Strichartz 定理。时间积分的端点、频带求和和数据的正则性都需要额外论证。陶哲轩的《Nonlinear Dispersive Equations: Local and Global Analysis》\cite{Tao2006Nonlinear}可作为进入这一方向的伴读；本卷\appref{b2:app:E}将进一步讨论相应的时空估计。主线的球面表示、有限传播与能量解不依赖本选读节。
+

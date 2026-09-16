@@ -2,24 +2,94 @@
 \section{一阶线性方程}
 \label{b2:sec:0701}
 
-% TODO: 撰写本节正文。
+给定某一时刻的浓度分布，若介质只作平移而没有扩散，后来的图形应当保持原来的形状。方程如何记下这一过程，反过来又如何从方程恢复运动，是特征线法最直接的入口。本章把空间变量写在前面，时间变量写在后面，即 \(u=u(x,t)\)。向量场表示速度，函数值既可能表示随粒子携带的量，也可能表示单位体积中的密度；这两种含义将在\secref{b2:sec:0703}区分。
 
 \subsection{输运方程}
 \label{b2:subsec:070101}
 
-待填充。
+设 \(b\in\mathbb R^d\) 为固定速度。经过初始位置 \(a\) 的粒子在时刻 \(t\) 位于 \(a+tb\)。若沿这一运动携带的数值不变，则链式法则给出
+\[
+ \frac{\mathrm d}{\mathrm dt}u(a+tb,t)
+ =u_t(a+tb,t)+b\cdot\nabla_xu(a+tb,t)=0.
+\]
+这产生\term[shuyun-fangcheng]{输运方程}[transport equation]
+\begin{equation}\label{b2:eq:07-constant-transport}
+ u_t+b\cdot\nabla_xu=0.
+\end{equation}
+其中 \(u_t\) 衡量固定观察点的变化，\(b\cdot\nabla_xu\) 衡量移动造成的变化。二者可以分别非零而恰好相消。例如一维函数 \(u(x,t)=\sin(x-bt)\) 的每个波峰向右或向左平移，方向取决于 \(b\) 的符号。
+
+\ProseParagraphBreak
+
+这里讨论的经典解属于 \(C^1\)，因此上述链式法则有逐点意义。本卷\chapref{b2:ch:04}的分布语言允许进一步处理不光滑对象，但本章先把几何和唯一性建立在光滑范围内；仅在明确写出测试函数恒等式时才转入弱解。
 
 \subsection{常系数情形}
 \label{b2:subsec:070102}
 
-待填充。
+\begin{proposition}\label{b2:prop:07-translation-solution}
+设 \(I\) 为包含 \(0\) 的区间，\(u\in C^1(\mathbb R^d\times I)\)。函数 \(u\) 满足\eqref{b2:eq:07-constant-transport}，当且仅当存在 \(g\in C^1(\mathbb R^d)\)，使
+\[
+ u(x,t)=g(x-tb).
+\]
+其中 \(g(x)=u(x,0)\)，因而初值唯一确定解。
+\end{proposition}
+\begin{proof}
+固定 \((x,t)\)，取 \(a=x-tb\)。函数 \(s\mapsto u(a+sb,s)\) 的导数为零，从 \(0\) 积分到 \(t\) 得 \(u(x,t)=u(a,0)\)。反过来，对所给公式求导，有 \(u_t=-b\cdot\nabla g(x-tb)\)、\(\nabla_xu=\nabla g(x-tb)\)，故方程成立。时间为负时，积分的方向反转，论证不变。
+\end{proof}
+
+平移不会提高正则性：初值在哪里存在折角，后来就在相应平移点保留折角。对于任意 \(1\leq p\leq\infty\)，若初值还属于 \(L^p\)，平移不变性给出 \(\|u(\cdot,t)\|_p=\|g\|_p\)。这一恒等式没有衰减因子，与以后热方程的平滑效应不同。
+
+\ProseParagraphBreak
+
+不把某个变量预先叫作时间时，同样的方法适用于 \(\alpha u_x+\beta u_y=0\)，其中 \((\alpha,\beta)\ne(0,0)\)。取
+\[
+ r=\alpha x+\beta y,\quad s=\beta x-\alpha y,
+\]
+则变换的行列式为 \(-\alpha^2-\beta^2\ne0\)，算子化为 \((\alpha^2+\beta^2)\partial_r\)。所以在整个平面上，解恰为 \(F(\beta x-\alpha y)\)。若区域与一条直线的交集不连通，各个连通片上的常数未必由同一个全局函数 \(F\) 描述；局部坐标公式不能自动升级为任意区域上的全局表示。
 
 \subsection{非齐次方程}
 \label{b2:subsec:070103}
 
-待填充。
+源项使粒子所携带的值随时间累积，零阶项则造成吸收或增长。先考虑 \(\lambda\in\mathbb R\) 为常数的情形。
+
+\begin{theorem}\label{b2:thm:07-constant-source}
+设 \(g\in C^1(\mathbb R^d)\)、\(f\in C^1(\mathbb R^d\times[0,T])\)。问题
+\[
+ u_t+b\cdot\nabla u+\lambda u=f,\quad u(x,0)=g(x)
+\]
+有唯一的 \(C^1\) 解，且
+\begin{equation}\label{b2:eq:07-constant-source}
+ u(x,t)=e^{-\lambda t}\cdot g(x-tb)
+ +\int_0^t e^{-\lambda(t-s)}\cdot f\bigl(x-(t-s)b,s\bigr)\,\mathrm ds.
+\end{equation}
+闭时间区间上的光滑性均理解为能局部延伸到邻域，端点导数也可取相应单侧值。
+\end{theorem}
+\begin{proof}
+沿 \(x=a+tb\) 令 \(v(t)=u(a+tb,t)\)，方程成为
+\(v'+\lambda v=f(a+tb,t)\)。乘以 \(e^{\lambda t}\) 并从 \(0\) 积分，得到
+\[
+ v(t)=e^{-\lambda t}\cdot g(a)
+ +\int_0^t e^{-\lambda(t-s)}\cdot f(a+sb,s)\,\mathrm ds.
+\]
+令 \(a=x-tb\) 即为表示公式，故任何经典解只能取此值。公式右侧在每个紧时空集合上的被积函数及一阶导数都有共同界，\secref{b2:sec:0103}的积分求导规则保证它属于 \(C^1\)。把它沿每条直线拉回，所得函数满足刚才的常微分方程；链式法则再给出原方程。取 \(t=0\) 得到初值。
+\end{proof}
+
+例如在一维取 \(b=1\)、\(\lambda=0\)、\(g=0\)、\(f(x,t)=x\)，有
+\[
+ u(x,t)=\int_0^t(x-t+s)\,\mathrm ds=tx-\frac{t^2}{2}.
+\]
+这里源项须在粒子过去所在的位置取值；若误把积分写成 \(\int_0^tf(x,s)\,\mathrm ds\)，会得到不满足方程的 \(tx\)。
 
 \subsection{初值问题}
 \label{b2:subsec:070104}
 
-待填充。
+初值面 \(t=0\) 被每条轨道恰好穿过一次，因此可以给每条轨道一个独立数值。若改在与轨道相切的曲线上给值，存在性或唯一性就会失效。以 \(u_x+u_y=0\) 为例，沿直线 \(y=x\) 解必须恒定；指定 \(u(s,s)=s\) 没有解，而指定 \(u(s,s)=0\) 则允许所有满足 \(F(0)=0\) 的解 \(u(x,y)=F(x-y)\)。方程与数据之间的几何位置是初值问题的一部分。
+
+\ProseParagraphBreak
+
+常系数公式还直接给出数据稳定性。若 \(u,\widetilde u\) 对应 \(g,f\) 与 \(\widetilde g,\widetilde f\)，并且右侧范数有限，则
+\[
+ \|u(\cdot,t)-\widetilde u(\cdot,t)\|_\infty
+ \leq e^{|\lambda|t}\left(\|g-\widetilde g\|_\infty
+ +\int_0^t\|f(\cdot,s)-\widetilde f(\cdot,s)\|_\infty\,\mathrm ds\right).
+\]
+证明只需在\eqref{b2:eq:07-constant-source}中相减并取绝对值。下一节把直线改成由速度场决定的曲线；为使这种替换合法，先要证明曲线存在、彼此不发生碰撞，并且随初始点可微地变化。

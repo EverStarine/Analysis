@@ -2,19 +2,92 @@
 \section{三维波方程}
 \label{b2:sec:1102}
 
-% TODO: 撰写本节正文。
+三维球平均乘以半径后满足一维波方程，这使观察点的位移由一个球面上的初值表示。球面半径随时间增长，但球内较早经过的点不会持续出现在齐次表示中。本节把这一精确的支集信息与一般能量方法所得的球内依赖区别开来。
 
 \subsection{Kirchhoff 公式}
 \label{b2:subsec:110201}
 
-待填充。
+\begin{theorem}[Kirchhoff]\label{b2:thm:11-kirchhoff}
+设 \(f\in C^3(\mathbb R^3)\)、\(g\in C^2(\mathbb R^3)\)。三维齐次初值问题 \(u_{tt}-c^2\Delta u=0\)、\(u(0)=f\)、\(u_t(0)=g\) 的经典解为
+\begin{equation}\label{b2:eq:11-kirchhoff}
+ u(t,x)=\partial_t\bigl(tM_{ct}f(x)\bigr)+tM_{ct}g(x).
+\end{equation}
+对 \(t>0\)，等价地，
+\[
+ u(t,x)=\partial_t\left(\dfrac1{4\pi c^2t}
+       \int_{|y-x|=ct}f(y)\,\mathrm{d}\sigma(y)\right)
+       +\dfrac1{4\pi c^2t}\int_{|y-x|=ct}g(y)\,\mathrm{d}\sigma(y).
+\]
+\end{theorem}
+\begin{proof}
+先对一个足够平滑的解求表示。按上一节的记号，令 \(H(r)=rM_rf(x)\)、\(J(r)=rM_rg(x)\)，两者均为奇函数。对 \(V=rU\) 使用一维公式并在 \(r=0\) 求导，得到
+\[
+ V_r(t,0)=H'(ct)+\dfrac1cJ(ct)
+ =M_{ct}f(x)+ct\,\partial_rM_rf(x)|_{r=ct}+tM_{ct}g(x).
+\]
+右端正是\eqref{b2:eq:11-kirchhoff}。这个计算揭示了公式来源，存在性还需直接验证。
+
+对任意 \(h\in C^2\)，令 \(W_h(t,x)=tM_{ct}h(x)\)。球面平均恒等式给出 \((W_h)_{tt}=c^2\Delta W_h\)，且 \(W_h(0)=0\)、\((W_h)_t(0)=h\)。于是 \(u=\partial_tW_f+W_g\) 满足波方程；\(f\in C^3\) 确保位移部分具有所需二阶导数。偶性及零点 Taylor 展开使 \(\partial_tW_f(0)=f\)、\(\partial_t^2W_f(0)=0\)，给出两项初值。球面平均化为面积积分产生 \(4\pi c^2t\) 的分母。经典解的唯一性由下一命题的局部能量论证得到，不附加无穷远条件。
+\end{proof}
+
+这称为\term[kirchhoff-gongshi]{Kirchhoff 公式}[Kirchhoff's formula]。在单位球面上展开时间导数，可把它写成
+\[
+ u(t,x)=\dfrac1{4\pi}\int_{\mathbb S^2}
+ \bigl(f(x+ct\theta)+ct\,\theta\cdot\nabla f(x+ct\theta)
+              +t\cdot g(x+ct\theta)\bigr)\,\mathrm{d}\sigma(\theta).
+\]
+因此“只依赖球面上的位移”须理解为还读取初始位移的法向导数；只知道两个函数在球面上的值相等，未必使它们的解相等。若数据在该球面的一个邻域相等，则所有所需数据当然都相等。
+
+\ProseParagraphBreak
+
+例如取 \(f(x)=|x|^2\)、\(g=0\)。由 \(M_{ct}f=|x|^2+c^2t^2\)，得到 \(u=|x|^2+3c^2t^2\)。它满足 \(u_{tt}=6c^2=c^2\Delta u\)。这份数据不具有有限总能量，却仍可使用局部球面公式。对空间常初速度 \(g=1\)、\(f=0\)，公式给出 \(u=t\)，再次核对了单位质量归一化。
 
 \subsection{传播速度}
 \label{b2:subsec:110202}
 
-待填充。
+下面的计算适用于任何空间维数 \(n\)，也为随后各种表示公式提供统一的唯一性依据。令
+\[
+ e=\dfrac12(|u_t|^2+c^2|\nabla u|^2),\quad
+ E_B(t)=\int_{B_{c(t_0-t)}(x_0)}e(t,x)\,\mathrm{d}x.
+\]
+局部守恒式为 \(\partial_te=c^2\operatorname{div}\operatorname{Re}(\overline{u_t}\nabla u)\)。球面随时间以法向速度 \(-c\) 收缩，因此出现一个符号有利的面积项。
+
+\begin{proposition}[波方程的局部能量]\label{b2:prop:11-local-energy}
+设 \(n\geq1\)，\(u\) 为收缩球锥邻域中的经典齐次解。则
+\[
+ E_B'(t)=\int_{\partial B_{c(t_0-t)}(x_0)}
+ \bigl(c^2\operatorname{Re}(\partial_\nu u\,\overline{u_t})-c\cdot e\bigr)
+ \,\mathrm{d}\sigma\leq0.
+\]
+若初始位移和速度在底球上为零，则 \(u\) 在整个锥内为零。因此任意维全空间经典初值问题至多有一个解，且其传播速度不超过 \(c\)。
+\end{proposition}
+\begin{proof}
+对移动球积分求导并使用散度公式得到所示等式。将梯度分成法向分量和切向分量，积分被积函数等于
+\[
+ -\dfrac c2|u_t-c\partial_\nu u|^2
+ -\dfrac{c^3}{2}|\nabla_{\mathrm{tan}}u|^2.
+\]
+所以局部能量不增。零初值使初始梯度和速度为零，因此能量恒为零。内部的 \(u_t\) 和 \(\nabla u\) 随之为零，沿留在锥内的竖直线积分到零时刻得到 \(u=0\)，边界由连续性补上。对两个解作差并让 \(x_0,t_0\) 任意，得到唯一性。比较局部相同的数据，同样给出球内依赖和有限传播。
+\end{proof}
+
+具有外力时，只在局部能量导数中增加 \(\operatorname{Re}\int F\overline{u_t}\)。若两个解的外力在过去锥内相等，其差仍满足上述齐次论证。因此一般外力的影响也沿速度不超过 \(c\) 的路径传递，不能从一个源点瞬时到达远处。
 
 \subsection{Huygens 原理}
 \label{b2:subsec:110203}
 
-待填充。
+一般能量方法允许初始数据在整个底球上起作用；三维 Kirchhoff 公式却只读取球面上的数据及位移的一阶导数。这一更强的无尾传播性质称为\term[huygens-yuanli]{Huygens 原理}[Huygens' principle]，本章使用它的强形式：固定正时间的初速度传播核支撑在传播球面上，而非整个球内。
+
+\begin{corollary}[三维无尾传播]\label{b2:cor:11-huygens}
+若三维齐次初值 \(f,g\) 光滑并支撑在 \(\overline{B_R(0)}\) 内，则对 \(t>0\)，
+\begin{equation}\label{b2:eq:11-shell}
+ \operatorname{supp}u(t,\cdot)\subseteq
+ \{\,x:\max\{0,ct-R\}\leq |x|\leq ct+R\,\}.
+\end{equation}
+特别，在固定位置 \(x\)，当 \(ct>|x|+R\) 时解为零。
+\end{corollary}
+\begin{proof}
+若 \(|x|>ct+R\)，球面 \(\partial B_{ct}(x)\) 不与数据支集相交。若 \(ct>|x|+R\)，数据支集严格处于这个球的内部，也不与球面相交。在这两种情形中，球面都有一个邻域使 \(f,g\) 及 \(\nabla f\) 为零。展开的 Kirchhoff 公式遂为零。非零区域的闭包包含于所示闭壳层，便得到支集结论。
+\end{proof}
+
+内半径在 \(ct<R\) 时取零，不能写成负半径的球面。等号边界也只用于描述支集外界，不保证解在整个壳层上非零。如果外力持续存在，新产生的球面响应可以在内部叠加；无尾陈述首先针对齐次问题或单次瞬时扰动，不意味着持续振动源在身后必定留下空区。
+

@@ -2,19 +2,99 @@
 \section{\texorpdfstring{\(\theta\)}{\AnalysisPdfTheta} 函数的首次出现}
 \label{b2:sec:0603}
 
-% TODO: 撰写本节正文。
+\begin{definition}\label{b2:def:06-theta}
+对 \(t>0\)，定义
+\[
+ \vartheta(t)\coloneqq\sum_{n\in\mathbb Z}e^{-\pi n^2t}
+ =1+2\sum_{n=1}^\infty e^{-\pi n^2t}.
+\]
+这是本章使用的实参数\term[theta-hanshu]{\(\theta\) 函数}[theta function]。
+\end{definition}
+\symidx{\(\vartheta(t)\)：实参数 Jacobi \(\theta\) 级数}
+
+级数对每个 \(t>0\) 收敛；在 \(t\geq\varepsilon>0\) 上，乘以任意固定次幂 \(n^{2m}\) 后仍一致可和，所以 \(\vartheta\) 光滑且可逐项求任意阶导数。暂时只在正实参数上工作，复参数、完整模群作用及算术函数方程将在第三卷展开。
 
 \subsection{模变换}
 \label{b2:subsec:060301}
 
-待填充。
+\begin{theorem}[\texorpdfstring{\(\theta\)}{theta} 变换]\label{b2:thm:06-theta-transformation}
+对每个 \(t>0\)，有
+\begin{equation}\label{b2:eq:06-theta-transformation}
+ \vartheta(t)=t^{-1/2}\vartheta(1/t).
+\end{equation}
+\end{theorem}
+\begin{proof}
+将 \(g_t(x)=e^{-\pi t x^2}\) 代入 Poisson 求和，并使用 \(\widehat g_t(\xi)=t^{-1/2}e^{-\pi\xi^2/t}\)，即得等式。Gauss 函数属于 \(\mathcal S\)，两侧所有求和条件均已满足。
+\end{proof}
+
+本小节所说的模变换，是指正实参数上的倒数变换 \(t\mapsto1/t\) 及其权因子；尚不把它当作完整模形式定义。该等式把大量缓慢衰减的项换成少量快速衰减的项。例如 \(t\) 很小时，原级数要保留约 \(t^{-1/2}\) 个频率才能看到总量，而右侧只需估计一个接近 \(1\) 的级数。
+
+\begin{corollary}\label{b2:cor:06-theta-asymptotics}
+当 \(t\to\infty\) 时，\(\vartheta(t)=1+2e^{-\pi t}+O(e^{-4\pi t})\)；当 \(t\downarrow0\) 时，
+\[
+ \vartheta(t)=t^{-1/2}\left(1+2e^{-\pi/t}+O(e^{-4\pi/t})\right).
+\]
+\end{corollary}
+\begin{proof}
+对 \(n\geq2\)，\(n^2\geq4+5(n-2)\)，故在 \(t\geq1\) 时
+\[
+ 0\leq2\sum_{n=2}^\infty e^{-\pi n^2t}
+ \leq\dfrac{2e^{-4\pi t}}{1-e^{-5\pi t}}.
+\]
+分母有统一正下界，得到大参数估计；小参数估计由\eqref{b2:eq:06-theta-transformation}直接转换。
+\end{proof}
+
+这里的误差是绝对可核查的指数尾，不只是形式渐近。它也表明 \(\vartheta(t)\) 在小尺度的主项由实线 Gauss 积分 \(t^{-1/2}\) 决定，整数格的离散效应进入更小的指数修正。
 
 \subsection{格点计数}
 \label{b2:subsec:060302}
 
-待填充。
+对正整数 \(d\)，乘开 \(d\) 个非负级数，有
+\[
+ \vartheta(t)^d=\sum_{n\in\mathbb Z^d}e^{-\pi t|n|^2}
+ =\sum_{m=0}^\infty r_d(m)e^{-\pi tm},
+\]
+其中 \(r_d(m)\) 是将 \(m\) 写成 \(d\) 个有序整数平方和的方式数，符号和顺序均计数。每个 \(r_d(m)\) 有限；所有项非负，重排由 Tonelli 保证。这就把 \(\theta\) 函数变成平方和的生成函数。
+\symidx{\(r_d(m)\)：有序整数平方和的表示数}
+
+\begin{proposition}\label{b2:prop:06-lattice-counting}
+记 \(N_d(R)=\#\{n\in\mathbb Z^d:|n|\leq R\}\)，\(\omega_d\) 为单位球体积。则
+\[
+ N_d(R)=\omega_dR^d+O_d(R^{d-1}+1),
+\]
+并且对 \(t>0\) 有
+\[
+ \vartheta(t)^d=2\pi t\int_0^\infty R e^{-\pi tR^2}N_d(R)\,\mathrm{d}R.
+\]
+\end{proposition}
+\begin{proof}
+在每个整数点上放一个中心单位立方体，令 \(c=\sqrt d/2\)。以 \(|n|\leq R\) 的点为中心的这些立方体内部不交，体积和为 \(N_d(R)\)。它们的并包含半径 \((R-c)_+\) 的球，并包含于半径 \(R+c\) 的球；前一包含来自每个点可以舍入到相距不超过 \(c\) 的整数点。因此
+\[
+ \omega_d(R-c)_+^d\leq N_d(R)\leq\omega_d(R+c)^d.
+\]
+对 \(R\geq2c\) 展开两端的多项式，误差为 \(O_d(R^{d-1})\)；有界 \(R\) 范围吸收到常数项中。
+
+对每个整数向量，\(e^{-\pi t|n|^2}=\int_{|n|}^\infty2\pi tR e^{-\pi tR^2}\,\mathrm{d}R\)。逐项求和并用非负换序，便得到积分式，包括 \(n=0\) 的贡献。
+\end{proof}
+
+\(\theta\) 函数对格点作平滑计数，而 \(N_d(R)\) 使用球的硬边界。不能仅由平滑计数的精确变换就无条件推出硬计数的同样精细误差；去平滑步骤会引入新的估计问题。上面的立方体论证给出了独立且足够基础的计数误差。
 
 \subsection{第三卷中的应用}
 \label{b2:subsec:060303}
 
-待填充。
+先只取实数 \(s>1\)，定义\term[riemann-zeta-hanshu]{Riemann \(\zeta\) 函数}[Riemann zeta function]在这一范围内的值为 \(\zeta(s)\coloneqq\sum_{n\geq1}n^{-s}\)。对 \(a>0\)，积分
+\[
+ \Gamma(a)\coloneqq\int_0^\infty u^{a-1}e^{-u}\,\mathrm{d}u
+\]
+定义正实参数上的\term[gamma-hanshu]{Gamma 函数}[gamma function]。两个定义的收敛分别由正项级数比较、原点幂积分和无穷远指数尾保证。非负换序与代换 \(u=\pi n^2t\) 给出
+\[
+ \int_0^\infty(\vartheta(t)-1)t^{s/2-1}\,\mathrm{d}t
+ =2\pi^{-s/2}\Gamma(s/2)\zeta(s).
+\]
+左侧在无穷远由指数衰减控制；原点附近由 \(\vartheta(t)\sim t^{-1/2}\) 控制，恰好要求 \(s>1\)。因此这条等式在当前实参数范围内有完整的积分依据。
+\symidx{\(\zeta(s)\)：实数 \(s>1\) 上的 Riemann zeta 级数}
+\symidx{\(\Gamma(a)\)：正实参数 Gamma 积分}
+
+\ProseParagraphBreak
+
+如果将积分分成 \((0,1)\) 和 \((1,\infty)\)，再在前一部分使用 \(\theta\) 变换，就能将小参数行为改写成大参数行为。第三卷第二十六章将把这个步骤放入复参数的 Mellin 变换框架，用来研究 \(\zeta\) 函数；第三卷第二十四章将进一步研究平方和生成函数。本节只说明这些后续问题的入口，不用尚未建立的解析延拓或模形式结论证明当前公式。

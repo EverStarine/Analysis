@@ -2,24 +2,132 @@
 \section{坐标变换}
 \label{b2:sec:0803}
 
-% TODO: 撰写本节正文。
+主符号的惯性告诉我们可以期待哪一种模型，坐标变换则把这一判断落实为计算。本节区分三种任务：常系数主部在整个坐标域中的标准化，变系数主部在一点的标准化，以及利用特征曲线在一个邻域中构造坐标。三者使用的条件不同，结论也不相同。
 
 \subsection{二维标准型}
 \label{b2:subsec:080301}
 
-待填充。
+\begin{theorem}\label{b2:thm:08-constant-canonical}
+设 \(a,b,c\) 为实常数且不全为零。存在可逆实线性坐标变换，并允许把整个方程乘以一个非零常数，使主部 \(a\partial_x^2+2b\partial_x\partial_y+c\partial_y^2\) 依照 \(D=b^2-ac\) 的符号分别成为
+\[
+ \partial_r^2+\partial_s^2\quad(D<0),\quad
+ \partial_r^2-\partial_s^2\quad(D>0),\quad
+ \partial_r^2\quad(D=0).
+\]
+低阶项须按同一个变换保留。双曲标准型还可用 \(\xi=r+s\)、\(\eta=r-s\) 化为 \(4\partial_\xi\partial_\eta\)。
+\end{theorem}
+\begin{proof}
+先设 \(a\ne0\)，取 \(r=x\)、\(s=y-(b/a)x\)。此变换行列式为一，且
+\[
+ \partial_x=\partial_r-\frac ba\partial_s,\quad
+ \partial_y=\partial_s.
+\]
+代入并展开，混合项的系数 \(-2b+2b\) 抵消，得到
+\[
+ a\partial_r^2+\delta\partial_s^2,\quad
+ \delta=c-\frac{b^2}{a}=-\frac Da.
+\]
+若 \(\delta\ne0\)，再令 \(R=r/\sqrt{|a|}\)、\(S=s/\sqrt{|\delta|}\)，主部变为
+\(\operatorname{sgn}(a)\partial_R^2+\operatorname{sgn}(\delta)\partial_S^2\)。乘以 \(\operatorname{sgn}(a)\)，第二项符号等于 \(-\operatorname{sgn}(D)\)，得到前两种形式。若 \(\delta=0\)，只缩放 \(r\) 即得第三种。
+
+若 \(a=0,c\ne0\)，交换 \(x,y\) 后归入上一情形。若 \(a=c=0,b\ne0\)，取 \(r=(x+y)/\sqrt2\)、\(s=(x-y)/\sqrt2\)，则 \(2b\partial_x\partial_y=b(\partial_r^2-\partial_s^2)\)，再缩放并调整符号即可。最后，\(\partial_r=\partial_\xi+\partial_\eta\)、\(\partial_s=\partial_\xi-\partial_\eta\)，相减平方得到 \(4\partial_\xi\partial_\eta\)。
+\end{proof}
+
+例如主部 \(4u_{xx}+4u_{xy}+2u_{yy}\) 取 \(r=x/2\)、\(s=y-x/2\) 后成为 \(v_{rr}+v_{ss}\)。同样的变换把
+\[
+ 4u_{xx}+4u_{xy}+u_{yy}+u_x=0
+\]
+化为 \(v_{rr}+v_r/2-v_s/2=0\)，即 \(v_s=2v_{rr}+v_r\)。二阶部分秩为一，而原来的一阶项恰好提供了新的时间导数。若删掉原式的 \(u_x\)，新方程只是 \(v_{rr}=0\)，便没有这一演化含义。
+
+\ProseParagraphBreak
+
+上述论证适用于常系数。若每一点分别对 \(A(x,y)\) 选一个对角化矩阵，并不能立即把这些矩阵拼成坐标变换的导数：一个候选矩阵场必须满足混合偏导的相容条件。特别是把位置依赖的向量场平方，会额外产生系数导数；不能把变系数算子当成常系数多项式直接配方而忽略这些项。
 
 \subsection{特征坐标}
 \label{b2:subsec:080302}
 
-待填充。
+先处理一个双曲邻域。假定 \(a,b,c\in C^2\)、\(a\ne0\)、\(D=b^2-ac>0\)。二维特征斜率为
+\[
+ m_\pm=\frac{b\pm\sqrt D}{a}.
+\]
+两族曲线分别由 \(y'=m_\pm(x,y)\) 给出。\chapref{b2:ch:07}的局部流与初值可微依赖保证：以横截直线 \(x=x_0\) 上的交点作为标签，可构造局部函数 \(\xi,\eta\)，使
+\[
+ \xi_x+m_+\xi_y=0,\quad
+ \eta_x+m_-\eta_y=0,\quad \xi_y\ne0,\ \eta_y\ne0.
+\]
+它们分别在两族特征线上保持常值，称为\term[tezheng-zuobiao]{特征坐标}[characteristic coordinates]。系数为 \(C^2\) 时，流也是 \(C^2\)：对其一阶变分方程再求一次初值导数，所得二阶导数满足线性方程，其非齐次项为速度的二阶导数作用于两个一阶变分；局部一致连续性控制差商余项，再用 Gronwall 不等式得到导数存在且连续。因此这里的坐标变换符合二阶链式法则的要求。
+
+\begin{proposition}\label{b2:prop:08-hyperbolic-coordinates}
+上述 \((\xi,\eta)\) 在充分小的邻域内构成 \(C^2\) 微分同胚，并把方程化为
+\[
+ \gamma(\xi,\eta)v_{\xi\eta}
+ +\beta_1(\xi,\eta)v_\xi+\beta_2(\xi,\eta)v_\eta
+ +\kappa(\xi,\eta)v=\widetilde f,
+ \quad \gamma\ne0.
+\]
+\end{proposition}
+\begin{proof}
+坐标的行列式为
+\[
+ \xi_x\eta_y-\xi_y\eta_x
+ =(m_--m_+)\xi_y\eta_y\ne0,
+\]
+因此可用逆函数定理。由特征方程，\(p(\nabla\xi)=p(\nabla\eta)=0\)，新矩阵的两个对角元为零。其混合系数为
+\[
+ \gamma=2\bigl(a\xi_x\eta_x+b(\xi_x\eta_y+\xi_y\eta_x)+c\xi_y\eta_y\bigr).
+\]
+合同变换保持矩阵可逆，而 \(\left(\begin{smallmatrix}0&\gamma/2\\\gamma/2&0\end{smallmatrix}\right)\) 可逆恰好要求 \(\gamma\ne0\)。一阶与零阶系数按\cref{b2:prop:08-coordinate-change}保留，即得所述方程。
+\end{proof}
+
+例如在 \(x>0\) 上，方程 \(u_{xx}-x^2u_{yy}=0\) 的两族特征为 \(y\pm x^2/2\) 恒定。取 \(\xi=y+x^2/2\)、\(\eta=y-x^2/2\)，其行列式为 \(2x\ne0\)。两次求导得到
+\[
+ u_{xx}-x^2u_{yy}=-4x^2v_{\xi\eta}+v_\xi-v_\eta.
+\]
+新方程不只是 \(v_{\xi\eta}=0\)；两个一阶项正是坐标曲率带来的贡献。在 \(x=0\) 上行列式退化，所以不能用同一坐标穿过那里。
+
+\ProseParagraphBreak
+
+若 \(D=0\) 在整个邻域成立，且 \(a\ne0\)，令 \(\beta=b/a\)、\(V=\partial_x+\beta\partial_y\)，则
+\[
+ a\partial_x^2+2b\partial_x\partial_y+c\partial_y^2
+ =aV^2-a(\partial_x\beta+\beta\partial_y\beta)\partial_y.
+\]
+取 \(\xi=x\)，并沿 \(V\) 的流构造 \(\eta\) 使 \(V\eta=0\)、\(\eta_y\ne0\)，则 \(V=\partial_\xi\)。方程成为
+\[
+ a\,v_{\xi\xi}+\beta_1v_\xi+\beta_2v_\eta+\kappa v=\widetilde f.
+\]
+这是邻域中的秩一标准形式。只有 \(\beta_2\ne0\) 时才能解出 \(v_\eta\)，要按 \(\eta\) 正方向解释为向前热型，还须 \(-a/\beta_2>0\)。秩为一的二阶部分本身没有决定这些条件。
+
+\ProseParagraphBreak
+
+椭圆型没有两族实特征线，因此上述沿实轨道找坐标的方法不适用。一般变系数椭圆主部的邻域标准化需要另解坐标方程，本章不把它当作已证工具；本节已经完整建立的是常系数标准型及一点处冻结系数的标准型。某些特殊系数可直接处理，例如在全平面上取 \(r=e^x\)、\(s=y\)，有
+\[
+ u_{xx}+e^{2x}u_{yy}=r^2(v_{rr}+v_{ss})+r v_r.
+\]
+这个映射是全平面到半平面的微分同胚。除以 \(r^2\) 后主部化为 Laplace 算子，但保留了 \(r^{-1}v_r\)；所获表达式的定义域也随坐标改变。
 
 \subsection{高维主符号}
 \label{b2:subsec:080303}
 
-待填充。
+在 \(n\) 维，实对称矩阵可经正交变换化为 \(\operatorname{diag}(\lambda_1,\ldots,\lambda_n)\)，再沿非零特征方向缩放，使非零对角元都成为 \(1\) 或 \(-1\)。因此常系数主部完全由惯性三元组 \((n_+,n_-,n_0)\) 决定，允许整体乘以负数时还可交换前两项。这个结论包含二维的三种标准型，但高维中还有更多可能。
+
+\ProseParagraphBreak
+
+例如 \(\partial_1^2+\partial_2^2-\partial_3^2-\partial_4^2\) 的惯性为 \((2,2,0)\)。它既不椭圆，也不属于只有一个异号方向的双曲类型，更不是抛物型。又如三变量算子 \(\partial_1^2\) 的惯性为 \((1,0,2)\)，有两个完全缺失的二阶方向。对这些算子只说“判别式非正”没有明确含义；一个行列式也不能恢复全部惯性信息。
+
+\ProseParagraphBreak
+
+变系数时，可以在任意固定点 \(z_0\) 选一个线性坐标使 \(A(z_0)\) 标准化。邻近点的矩阵通常只是接近标准矩阵。若该点主部非退化，连续性使惯性在足够小邻域内保持不变；理由是单位球上可逆矩阵的最小伸缩量有正下界，小扰动不可能使某个特征值穿过零。秩退化情形没有这样的稳定性，任意小的系数扰动都可能改变类型。
 
 \subsection{几何意义}
 \label{b2:subsec:080304}
 
-待填充。
+主符号作用在法向上，特征曲线却画在自变量空间里。两者之间的联系可以用一个直接计算辨明。若 \(\nu\ne0\)、\(p(z,\nu)=0\)，则
+\[
+ \nu\cdot A(z)\nu=0.
+\]
+所以当 \(A\nu\ne0\) 时，向量 \(A\nu\) 位于法向为 \(\nu\) 的切平面中。对于非退化双曲型，\(A\nu\) 必非零；对于秩退化类型，它可能恰为零。二阶主符号不仅记录符号，也记录哪些方向上二阶约束消失。
+
+\ProseParagraphBreak
+
+在一维波动方程中，特征曲线为 \(x\pm ct\) 恒定，两族曲线把初值上的区间与后来一点联系起来，\chapref{b2:ch:09}将据此推导表示公式。高维波动方程对应实特征锥，\chapref{b2:ch:11}进一步研究其传播区域。热方程的时间方向由一阶项选定，不能把秩退化的零方向画成波动锥；Laplace 方程则没有非零实特征法向。坐标标准化明确了这些差别，具体解的性质仍由后续各章在相应模型中建立。

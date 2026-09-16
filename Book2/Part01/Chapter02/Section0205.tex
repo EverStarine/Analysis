@@ -2,24 +2,82 @@
 \section{点态、一致与绝对收敛}
 \label{b2:sec:0205}
 
-% TODO: 撰写本节正文。
+Fourier 系数唯一决定可积函数，并不意味着对称部分和在每种意义下都恢复它。本节逐项说明点态、一致和绝对收敛分别需要什么控制，尤其把控制函数值与控制导数两种方法联系起来。
 
 \subsection{点态收敛}
 \label{b2:subsec:020501}
 
-待填充。
+\begin{theorem}[Dini 判据]\label{b2:thm:02-dini}
+设 \(f\in L^1(\mathbb T)\)，\(A\in\mathbb C\)。若存在 \(0<\delta<1/2\) 使
+\[
+ \int_0^\delta\dfrac{|f(x+t)+f(x-t)-2A|}{t}\,\mathrm{d}t<\infty,
+\]
+则 \(S_Nf(x)\to A\)。
+\end{theorem}
+\begin{proof}
+令 \(g(t)=f(x+t)+f(x-t)-2A\)。核的偶性使误差等于 \(\int_0^{1/2}g(t)\cdot D_N(t)\,\mathrm{d}t\)。由 \(\sin(\pi t)\geq2t\)，假设保证 \(g/\sin(\pi t)\) 在原点附近可积；远离原点时，可积性由 \(f\in L^1\) 给出。对整个区间应用\cref{b2:lem:02-oscillation}。
+\end{proof}
+
+上述条件称为\term[dini-panju]{Dini 判据}[Dini's criterion]。若在 \(x\) 附近有 \(|f(x+t)-f(x)|\leq C|t|^\alpha\)，其中 \(\alpha>0\)，则可取 \(A=f(x)\)，因为 \(t^{\alpha-1}\) 可积。另一方面，仅知道模连续度趋零并不足以直接套用这个判据：例如 \(1/|\log t|\) 虽趋零，除以 \(t\) 后的积分仍发散。判据不满足并不等于级数必发散。
 
 \subsection{一致收敛}
 \label{b2:subsec:020502}
 
-待填充。
+\begin{proposition}\label{b2:prop:02-uniform-dini}
+设 \(f\in C(\mathbb T)\)，模连续度
+\[
+ \omega_f(t)\coloneqq\sup_{\mathrm{d}_{\mathbb T}(x,y)\leq t}|f(x)-f(y)|
+\]
+满足 \(\int_0^{1/2}\omega_f(t)t^{-1}\,\mathrm{d}t<\infty\)，则 \(S_Nf\to f\) 一致成立。
+\end{proposition}
+\begin{proof}
+误差仍为对称差与 \(D_N\) 的积分。在 \((0,\delta)\) 上，绝对误差至多 \(\int_0^\delta\omega_f(t)t^{-1}\,\mathrm{d}t\)，因而对 \(x,N\) 一致趋小。对固定 \(\delta\)，函数族
+\[
+ h_x(t)=\dfrac{f(x+t)+f(x-t)-2f(x)}{\sin(\pi t)}\quad(\delta\leq t\leq1/2)
+\]
+在 \(L^1\) 中是紧集：映射 \(x\mapsto h_x\) 由 \(f\) 的一致连续性而连续，参数圆周紧。给这个紧集取有限 \(\varepsilon\)-网，对网中每个函数应用振荡积分引理；任意其他函数的积分误差至多为其 \(L^1\) 距离。这使远处的积分也对全部 \(x\) 一致趋零。
+\end{proof}
+
+例如任何正指数 Hölder 连续周期函数都满足此条件。证明中的有限网补足了从“每个 \(x\) 分别收敛”到“对全部 \(x\) 一致收敛”的量词变化，不能只把单点判据逐点使用后省去这一步。
 
 \subsection{绝对收敛}
 \label{b2:subsec:020503}
 
-待填充。
+\begin{proposition}\label{b2:prop:02-absolute}
+若 \(f\in L^1(\mathbb T)\) 且 \(\sum_k|\widehat f(k)|<\infty\)，则其 Fourier 级数绝对一致收敛到某个连续周期函数 \(g\)，且 \(f=g\) 几乎处处。若 \(f\) 本身连续，则处处相等。
+\end{proposition}
+\begin{proof}
+每个指数因子的模为 \(1\)，故绝对可和的系数直接控制一致尾部。极限 \(g\) 连续，逐项积分表明它与 \(f\) 的全部系数一致。由\cref{b2:cor:02-uniqueness}，二者几乎处处相等。若两者连续而在一点不同，连续性会使差在某个开弧上与零保持正距离，与几乎处处相等矛盾。
+\end{proof}
+
+例如给定 \(0<r<1\)，几何级数相加得到
+\[
+ \sum_{k\in\mathbb Z}r^{|k|}e^{2\pi\mathrm{i}kx}
+ =\dfrac{1-r^2}{1-2r\cos(2\pi x)+r^2}.
+\]
+这个核记为 \(P_r(x)\)，称为圆周上的\term[poisson-he]{Poisson 核}[Poisson kernel]。它非负、积分为 \(1\)，离开 \(0\) 后一致趋零，因而也是正逼近恒等。其权重呈指数下降，作用在 \(L^1\) 函数上后可逐项求任意阶导数。
+\symidx{\(P_r\)：圆周 Poisson 核}
 
 \subsection{光滑性与 Fourier 系数衰减}
 \label{b2:subsec:020504}
 
-待填充。
+\begin{proposition}\label{b2:prop:02-smooth-decay}
+若 \(f\) 是 \(C^m\) 周期函数，则
+\[
+ \widehat {f^{(m)}}(k)=(2\pi\mathrm{i}k)^m\widehat f(k),
+ \quad |\widehat f(k)|\leq\dfrac{\|f^{(m)}\|_1}{(2\pi|k|)^m}\quad(k\ne0).
+\]
+若 \(f\) 绝对连续、\(f(0)=f(1)\) 且 \(f'\in L^2(0,1)\)，则 \(\sum_k|\widehat f(k)|<\infty\)，从而其 Fourier 级数一致收敛到 \(f\)。
+\end{proposition}
+\begin{proof}
+逐次分部积分，周期端点的边界项相消，给出第一式。取绝对值便得到系数估计。绝对连续情形同样可作一次分部积分；再用 Cauchy--Schwarz 与 Bessel 不等式，
+\[
+ \sum_{k\ne0}|\widehat f(k)|
+ \leq\left(\sum_{k\ne0}\dfrac1{4\pi^2k^2}\right)^{1/2}
+       \left(\sum_{k\ne0}|\widehat {f'}(k)|^2\right)^{1/2}
+ \leq\dfrac1{\sqrt{12}}\|f'\|_2.
+\]
+绝对收敛结论随后由前一命题给出。
+\end{proof}
+
+因而 \(C^1\) 已足以保证绝对一致收敛，尽管对每个系数分别估计只给出 \(O(1/|k|)\)。改善来自把全部导数系数一起放进平方和，而不是逐个使用相同上界。若在周期拼接处发生跳跃，分部积分会留下边界项，通常正是 \(1/k\) 衰减的来源。

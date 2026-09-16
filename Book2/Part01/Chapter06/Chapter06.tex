@@ -2,26 +2,141 @@
 \chapter{Poisson 求和公式与 \texorpdfstring{\(\theta\)}{\AnalysisPdfTheta} 函数预备}
 \label{b2:ch:06}
 \BookChapterNumber{b2:ch:06}
-% 本章摘要（不计入编号）
+% Hunter2001Applied Section11.11印刷319页实际图像核读：11.45与Example11.46。
+% 本章固定单位周期及2π频率约定，完整展开周期化换序、尺度、格与对偶格。
 \begin{chapterabstract}
-待填充。
+Poisson 求和把欧氏空间上函数的格点采样与 Fourier 变换的对偶格采样联系起来。本章从光滑周期化出发证明公式，再通过 Gauss 函数得到尺度倒置与圆周热核的两种表达。实参数 \(\theta\) 级数随后把这种对称连接到格点计数和整数平方和。高维选读部分追踪格基、对偶格与基本区域体积，为第三卷的 \(\theta\) 函数及解析数论提供入口。
 \end{chapterabstract}
-
-% 本章目标（不计入编号）
 \begin{learninggoals}
-待填充。
+\begin{itemize}
+\item\label{b2:item:06-goal-periodic}从周期化函数计算 Fourier 系数，逐项核对求和、积分和微分的交换条件。
+\item\label{b2:item:06-goal-scale}写出带平移、调制和尺度的 Poisson 公式，辨认采样间距与倒数频率间距。
+\item\label{b2:item:06-goal-theta}由 Gauss 自对偶性推导 \(\theta\) 变换，使用指数尾在大小参数之间转换估计。
+\item\label{b2:item:06-goal-count}区分平滑格点计数与球内硬计数，理解平方和生成函数及 Mellin 积分的作用。
+\item\label{b2:item:06-goal-lattice}在选读部分计算对偶格与基本区域体积，保留高维公式中的行列式因子。
+\end{itemize}
 \end{learninggoals}
+
+本章同时使用\chapref{b2:ch:02}的周期系数唯一性与\chapref{b2:ch:05}的 Schwartz 变换不变性。Gauss 变换沿用\chapref{b2:ch:03}已经固定的常数；平方能量观点则帮助解释热核的频率表达。前面各章的离散展开和连续变换到这里合流。
+
+\ProseParagraphBreak
+
+\secref{b2:sec:0601}建立求和，\secref{b2:sec:0602}解释 Gauss 与热核，\secref{b2:sec:0603}完成实参数 theta 主线。\secref{b2:sec:0604}只在需要一般格时阅读，不作为前三节的证明前置。John K. Hunter 与 Bruno Nachtergaele 的《Applied Analysis》\cite[Section 11.11, p. 319]{Hunter2001Applied}可用于伴读周期化证明与 theta 例子；Elias M. Stein 与 Rami Shakarchi 的《Fourier Analysis: An Introduction》\cite{Stein2003Fourier}则提供从 Fourier 分析通向数论的进一步阅读。
 
 \input{Part01/Chapter06/Section0601}
 \input{Part01/Chapter06/Section0602}
 \input{Part01/Chapter06/Section0603}
 \input{Part01/Chapter06/Section0604}
-% 本章小结（不计入编号）
-\begin{chaptersummary}
-待填充。
-\end{chaptersummary}
 
+\begin{chaptersummary}
+周期化把实线上的函数放到圆周上，其 Fourier 系数就是连续变换在整数频率处的值。Poisson 求和从这个事实与系数唯一性得出；尺度变化产生倒数格与体积因子，不能省去对采样点和代表的正则性要求。
+
+\ProseParagraphBreak
+
+Gauss 变换把参数取倒数，使 \(\theta\) 级数在大小尺度间交换。相同的对称既解释圆周热核的局部尖峰和低频平衡，也把整数平方和与 Mellin 积分联系起来。至此，第一编已经建立周期展开、欧氏变换、能量延拓和分布表达；后续偏微分方程将在具体初值、边值和解的空间中使用这些工具。
+\end{chaptersummary}
 
 \BookExercises
 
-待填充。
+前五题围绕一维求和、误差和采样边界；后两道选做题使用一般格或进一步的参数分析。所有交换极限与求和的步骤均应说明所用的统一控制。
+
+% 自拟：调制Gauss后得到交错theta，避免从复参数模公式直接摘用。
+\begin{exercise}\label{b2:ex:06-alternating-theta}
+对 \(t>0\)，证明
+\[
+ \sum_{n\in\mathbb Z}(-1)^ne^{-\pi tn^2}
+ =t^{-1/2}\sum_{k\in\mathbb Z}e^{-\pi(k-1/2)^2/t}>0.
+\]
+求 \(t\downarrow0\) 时的首项，并给出相对误差的指数阶。
+\end{exercise}
+\begin{solution}
+在带调制的 Poisson 公式中取 \(h=1,a=0,b=1/2\)，得到等式；右侧每项为正，故严格为正。距离 \(1/2\) 最近的整数为 \(0,1\)，贡献 \(2t^{-1/2}e^{-\pi/(4t)}\)。下一对整数距离为 \(3/2\)，平方差为 \(2\)，其余尾部按递增平方差被几何级数控制。因此结果为 \(2t^{-1/2}e^{-\pi/(4t)}(1+O(e^{-2\pi/t}))\)。
+\end{solution}
+
+% 自拟：theta的自反尺度给出一个精确的带权求和。
+\begin{exercise}\label{b2:ex:06-theta-derivative}
+证明
+\[
+ \sum_{n\in\mathbb Z}n^2e^{-\pi n^2}
+ =\dfrac1{4\pi}\sum_{n\in\mathbb Z}e^{-\pi n^2}.
+\]
+\end{exercise}
+\begin{solution}
+\(\theta\) 级数在 \(t\) 的紧正区间上可逐项求导。对 \(\vartheta(t)=t^{-1/2}\vartheta(1/t)\) 求导并令 \(t=1\)，得 \(\vartheta'(1)=-\vartheta(1)/2-\vartheta'(1)\)，所以 \(\vartheta'(1)=-\vartheta(1)/4\)。再用 \(\vartheta'(1)=-\pi\sum_nn^2e^{-\pi n^2}\) 即得。
+\end{solution}
+
+% 自拟：空间截断与频率误差分开控制，可作为实际求积依据。
+\begin{exercise}\label{b2:ex:06-quadrature-error}
+设 \(0<h\leq1\)、\(M\geq0\) 为整数，\(Q_{h,M}=h\sum_{|n|\leq M}e^{-\pi h^2n^2}\)。证明
+\[
+ |Q_{h,M}-1|
+ \leq\dfrac{2e^{-\pi/h^2}}{1-e^{-3\pi/h^2}}
+ +\dfrac{2h e^{-\pi h^2(M+1)^2}}{1-e^{-\pi h^2(2M+3)}}.
+\]
+\end{exercise}
+\begin{solution}
+无穷求和由 Poisson 公式等于 \(\sum_ke^{-\pi k^2/h^2}\)，减去零频项 \(1\) 后，用 \(k^2\geq1+3(k-1)\)、\(k\geq1\) 得到第一个几何级数界。空间截断误差为 \(2h\sum_{n=M+1}^\infty e^{-\pi h^2n^2}\)。写 \(n=M+1+j\)，有 \(n^2\geq(M+1)^2+(2M+3)j\)，得到第二项。两类误差分别来自离散采样和有限截断，最后用三角不等式合并。
+\end{solution}
+
+% 改编：Hunter2001Applied, Theorem11.45, p.319 的C1衰减范围；
+% 在单位周期下用于非Schwartz有理核，并推导显式双边求和。
+\begin{exercise}\label{b2:ex:06-rational-sum}
+对 \(a>0\)，证明
+\[
+ \sum_{n\in\mathbb Z}\dfrac1{n^2+a^2}
+ =\dfrac\pi a\coth(\pi a).
+\]
+所用函数不属于 Schwartz 空间，须先说明为何仍能使用周期化与 Fourier 系数方法。
+\end{exercise}
+\begin{solution}
+取 \(f(x)=1/(x^2+a^2)\)。函数及一阶导数的整数平移级数都在 \([0,1]\) 上绝对一致收敛，分别可由 \(C(1+|n|)^{-2}\)、\(C(1+|n|)^{-3}\) 控制。所以周期化为 \(C^1\) 函数，其 Fourier 级数由\chapref{b2:ch:02}的导数平方可积判据绝对一致收敛。系数计算中的绝对积分换序仍由 \(f\in L^1\) 保证。
+
+\chapref{b2:ch:03}的一维 Poisson 变换给出 \(\widehat f(k)=\pi a^{-1}e^{-2\pi a|k|}\)。在周期化的零点处求和，得到
+\[
+ \sum_nf(n)=\dfrac\pi a\left(1+2\sum_{k=1}^\infty e^{-2\pi ak}\right)
+ =\dfrac\pi a\dfrac{1+e^{-2\pi a}}{1-e^{-2\pi a}}
+ =\dfrac\pi a\coth(\pi a).
+\]
+\end{solution}
+
+% 自拟：整数采样变换不恢复未周期化的函数。
+\begin{exercise}\label{b2:ex:06-periodization-kernel}
+构造非零 \(f\in C_c^\infty(\mathbb R)\)，使 \(\mathcal Pf=0\)。证明其变换在每个整数处为零，但并非处处为零。这是否与变换唯一性矛盾？
+\end{exercise}
+\begin{solution}
+取非零 \(g\in C_c^\infty((-1/4,1/4))\)，令 \(f=g-\tau_1g\)。两个支集不交，故 \(f\ne0\)，而周期化时两个整数平移和逐项重排后相同，所以 \(\mathcal Pf=0\)。变换为 \((1-e^{-2\pi\mathrm{i}\xi})\widehat g(\xi)\)，在整数处全为零。若它处处为零，唯一性会给出 \(f=0\)，矛盾。因此整数采样只确定周期化函数；唯一性定理要求全部连续频率的数据，二者条件不同。
+\end{solution}
+
+% 自拟：从平方和生成函数读取有序计数，辨认符号和顺序。
+\begin{exercise}\label{b2:ex:06-squares-count}
+证明 \(r_{d+e}(m)=\sum_{j=0}^mr_d(j)r_e(m-j)\)，并直接计算 \(r_2(5)\)、\(r_4(1)\)、\(r_4(2)\)。解释为何不应再除以排列数。
+\end{exercise}
+\begin{solution}
+把一个 \((d+e)\) 元整数向量分成前 \(d\) 个和后 \(e\) 个坐标，前一组平方和为某个 \(j\)，后一组为 \(m-j\)。对各组独立计数再求和即得公式。平方和为 \(5\) 的二维向量是 \((\pm1,\pm2)\) 及其坐标交换，共 \(8\) 个。四维平方和为 \(1\) 时选一个坐标放 \(\pm1\)，共 \(8\) 个；平方和为 \(2\) 时选两个坐标各放 \(\pm1\)，共 \(\binom42 2^2=24\) 个。theta 乘积的每个因子对应一个有序坐标，因此这些排列已代表不同向量，不应再除掉。
+\end{solution}
+
+% 自拟：非正交格的逆转置与最短向量，调用选读正文。
+\begin{optionalexercise}\label{b2:ex:06-parity-lattice}
+令 \(\Lambda\) 由 \((2,0)\)、\((1,1)\) 生成。求 \(\Lambda^*\)、两格的基本区域体积和最短非零向量长度，写出 \(\theta\) 变换，并求 \(\Theta_\Lambda(t)\) 在 \(t\to\infty\) 时的首个指数修正。
+\end{optionalexercise}
+\begin{solution}
+基矩阵为 \(A=\left(\begin{smallmatrix}2&1\\0&1\end{smallmatrix}\right)\)，故对偶格由 \((1/2,-1/2)\)、\((0,1)\) 生成；基本区域体积分别为 \(2\)、\(1/2\)。原格是两个整数坐标同奇偶的向量，最短非零向量为 \((\pm1,\pm1)\)，长度 \(\sqrt2\)。对偶格最短向量为 \((\pm1/2,\pm1/2)\)，长度 \(1/\sqrt2\)。因此
+\[
+ \Theta_\Lambda(t)=\dfrac1{2t}\Theta_{\Lambda^*}(1/t),
+ \quad\Theta_\Lambda(t)=1+4e^{-2\pi t}+O(e^{-4\pi t}).
+\]
+最后的尾部估计可在 \(t\geq1\) 时提出 \(e^{-4\pi t}\)，其余由格上可和的固定 Gauss 级数控制；最短向量后的平方长度至少为 \(4\)。
+\end{solution}
+
+% 自拟：正权平方矩的方差解释theta的对数凸性。
+\begin{optionalexercise}\label{b2:ex:06-log-convexity}
+证明 \(\vartheta\) 严格递减，而 \(\log\vartheta\) 严格凸。将后一结论解释成以权重 \(w_n(t)=e^{-\pi n^2t}/\vartheta(t)\) 计算的方差为正。
+\end{optionalexercise}
+\begin{solution}
+逐项求导得到 \(\vartheta'(t)=-\pi\sum_nn^2e^{-\pi n^2t}<0\)。权重正且总和为 \(1\)，于是
+\[
+ (\log\vartheta)''(t)
+ =\pi^2\left(\sum_n n^4w_n(t)-\left(\sum_n n^2w_n(t)\right)^2\right).
+\]
+括号中为随机取值 \(n^2\) 的方差。值 \(0\) 与 \(1\) 都有正权重，所以它不恒定，方差严格为正。所有一、二阶参数求导都由紧正参数区间上的 Gauss 尾控制。
+\end{solution}

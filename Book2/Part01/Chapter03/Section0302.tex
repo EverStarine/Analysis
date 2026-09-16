@@ -1,20 +1,58 @@
 % !TeX root = ../../Book2.tex
-\section{Riemann–Lebesgue 引理}
+\section{Riemann--Lebesgue 引理}
 \label{b2:sec:0302}
 
-% TODO: 撰写本节正文。
+周期情形中 Fourier 系数趋零；在欧氏空间中，对应的问题是频率沿任意方向走向无穷时，变换是否趋零。单纯观察某个积分公式不足以说明所有方向，必须用可积逼近将有限计算推广。
 
 \subsection{基本衰减}
 \label{b2:subsec:030201}
 
-待填充。
+\begin{theorem}[Riemann--Lebesgue]\label{b2:thm:03-riemann-lebesgue}
+Fourier 变换将 \(L^1(\mathbb R^d)\) 连续地映入 \(C_0(\mathbb R^d)\)，且
+\[
+ \|\widehat f\|_\infty\leq\|f\|_1.
+\]
+这里 \(C_0\) 表示在无穷远处趋零的连续函数空间。
+\end{theorem}
+\begin{proof}
+对有界矩形 \(Q=\prod_{j=1}^d[a_j,b_j]\)，Fubini 把 \(\widehat{\mathbf1_Q}\) 分解成一维区间变换的乘积。每个因子连续且有界；当 \(|\xi|\to\infty\) 时，至少一个坐标的绝对值不小于 \(|\xi|/\sqrt d\)，相应因子趋零，所以整个乘积趋零。
+
+有限个矩形示性函数的线性组合在 \(L^1\) 中稠密。具体可先用第一卷命题 10.2.4 的连续紧支集稠密性逼近 \(f\)，再把包含其支集的一个大矩形细分成网格；一致连续性使每个网格内用常数代替函数的总积分误差趋零。记所得阶梯函数为 \(q\)，则
+\[
+ \|\widehat f-\widehat q\|_\infty\leq\|f-q\|_1.
+\]
+因此 \(\widehat f\) 是 \(C_0\) 函数的一致极限，仍属于 \(C_0\)。范数界直接来自积分三角不等式。
+\end{proof}
+
+该结论沿用\subsecref{b2:subsec:020202}的 Riemann--Lebesgue 名称。对 \(f_n\to f\) 于 \(L^1\)，变换在全部频率上一致收敛，而不只是每个固定频率分别收敛。
 
 \subsection{连续性}
 \label{b2:subsec:030202}
 
-待填充。
+实际上 \(\widehat f\) 一致连续。定义式给出
+\[
+ |\widehat f(\xi+h)-\widehat f(\xi)|
+ \leq\int|f(x)|\cdot|e^{-2\pi\mathrm{i}x\cdot h}-1|\,\mathrm{d}x.
+\]
+右侧不依赖 \(\xi\)，并由控制收敛趋零。若又有 \(\int|x|\cdot|f(x)|\,\mathrm{d}x<\infty\)，则可将右侧进一步估计为 \(2\pi|h|\int|x|\cdot|f(x)|\,\mathrm{d}x\)，得到 Lipschitz 控制。
+
+\ProseParagraphBreak
+
+注意 \(L^1\) 假设并未强迫原函数有界或连续。例如 \(f(x)=|x|^{-a}\mathbf1_{\{|x|<1\}}\) 在 \(0<a<d\) 时可积，其变换仍连续且趋零。反过来，紧支集函数的变换也未必可积；区间示性函数的 \(1/|\xi|\) 尾部正好落在一维不可积的边界。
 
 \subsection{无穷远行为}
 \label{b2:subsec:030203}
 
-待填充。
+\begin{proposition}\label{b2:prop:03-no-uniform-decay}
+在 \(L^1(\mathbb R^d)\) 的单位球上，不存在只依赖 \(|\xi|\)、并在无穷远处趋零的共同上界 \(|\widehat f(\xi)|\leq r(|\xi|)\)。
+\end{proposition}
+\begin{proof}
+取非负单位积分的 \(g\in L^1\)。对任意 \(\eta\)，函数 \(M_\eta g\) 的范数仍为 \(1\)，而 \(\widehat{M_\eta g}(\eta)=\widehat g(0)=1\)。令 \(|\eta|\) 任意大，便与共同趋零上界矛盾。
+\end{proof}
+
+Riemann--Lebesgue 引理逐个控制固定函数，并没有统一控制整个单位球。若增加导数范数或矩的上界，才可能提取定量信息。例如当所有 \(m\) 阶纯坐标弱导数都可积时，选取最大的频率坐标，由\cref{b2:prop:03-derivative}可得
+\[
+ |\widehat f(\xi)|\leq C_{d,m}|\xi|^{-m}\sum_{j=1}^d\|\partial_j^m f\|_1
+ \quad(\xi\ne0).
+\]
+这也说明变换衰减的常数应明确由哪些原函数量控制。

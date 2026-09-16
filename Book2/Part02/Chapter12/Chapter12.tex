@@ -4,13 +4,25 @@
 \BookChapterNumber{b2:ch:12}
 % 本章摘要（不计入编号）
 \begin{chapterabstract}
-待填充。
+热传导把空间振荡逐渐消去。有限区间上，边界条件决定离散模态及最终平衡；全空间上，Gauss 核把扩散写成平移平均。本章将前面的特征展开与 Fourier 变换用于初边值问题，说明粗初温怎样在正时间变为光滑函数，并分别在有界经典解类与平方可积解类中证明唯一性。最后把时间演化组织成热半群，明确收缩性、强连续性的空间范围，以及生成元的定义域。
 \end{chapterabstract}
 
 % 本章目标（不计入编号）
 \begin{learninggoals}
-待填充。
+\begin{itemize}
+\item\label{b2:item:12-goal-boundary}用特征展开与镜像核求解区间热问题，区分固定端温、绝热端点和散热边界。
+\item\label{b2:item:12-goal-kernel}从已知 Gauss 变换取得全空间核解，并证明初值收敛和含源项公式。
+\item\label{b2:item:12-goal-smooth}按抛物尺度估计各阶导数，解释光滑化与无穷传播速度。
+\item\label{b2:item:12-goal-unique}使用最大值原理或平方能量控制唯一性，说明全空间的解类限制。
+\item\label{b2:item:12-goal-semigroup}检查热半群的时间连续性，识别 \(L^2\) 生成元及反向时间的不稳定性。
+\end{itemize}
 \end{learninggoals}
+
+区间部分直接使用\chapref{b2:ch:10}的离散谱、能量空间和热级数极限；全空间部分使用\chapref{b2:ch:03}的 Gauss 变换与逼近恒等、\chapref{b2:ch:04}的 Plancherel 理论。\chapref{b2:ch:06}的圆周周期化提供镜像核。\chapref{b2:ch:11}的传播现象可以作比较，但不参与本章存在性证明。
+
+\ProseParagraphBreak
+
+\secref{b2:sec:1201}先从边界与长期平衡理解扩散，\secref{b2:sec:1202}给出全空间表示，\secref{b2:sec:1203}分析正则性、比较与唯一性，\secref{b2:sec:1204}统一时间观点。Lawrence C. Evans 的《Partial Differential Equations》\cite{Evans2010Partial}可作为热方程、能量方法与线性发展方程的系统伴读；Walter A. Strauss 的《Partial Differential Equations: An Introduction》\cite{Strauss2008Partial}适合结合有限杆模型练习边界处理。此处只推荐两书的主题范围，不以未取得的正文页码替代下文论证。
 
 \input{Part02/Chapter12/Section1201}
 \input{Part02/Chapter12/Section1202}
@@ -18,10 +30,121 @@
 \input{Part02/Chapter12/Section1204}
 % 本章小结（不计入编号）
 \begin{chaptersummary}
-待填充。
+区间热流由边界适配的模态展开，全空间热流由 Gauss 卷积表示；两种构造都能从粗初值出发，通过范数极限取得初值。正时间的指数频率衰减提供光滑化，但零模态是否保留、总热量是否守恒、是否有统一指数衰减，都要由所在区域和边界条件判断。
+
+\ProseParagraphBreak
+
+最大值原理控制有界经典解，Fourier 能量控制平方可积解；无界空间中的唯一性必须附带相应的解类。热半群在有限指数的 \(L^p\)、无穷远消失的连续函数空间及有界一致连续空间上强连续，在整个 \(L^\infty\) 上则失败。生成元把这些空间中的零时变化记录为带定义域的 Laplace 算子，正时间收缩并不意味着初温反演稳定。
 \end{chaptersummary}
 
 
 \BookExercises
 
-待填充。
+下面八题分别训练级数计算、非齐次边界、镜像法、尺度、长时间质量轮廓、逆问题、各向异性和导数能量。
+
+% 自拟：多项式初温的系数计算，并由已证收敛给出初温与衰减。
+\begin{exercise}\label{b2:ex:12-parabolic-profile}
+在 \((0,\ell)\) 上取零 Dirichlet 条件及初温 \(f(x)=x(\ell-x)\)。求热解的正弦级数，判断其在零时是否一致取得初值，并求 \(t\to\infty\) 时的第一主项。
+\end{exercise}
+\begin{solution}
+两次分部积分给出非单位正弦系数
+\[
+ b_n=\dfrac2\ell\int_0^\ell x(\ell-x)\sin\dfrac{n\pi x}\ell\,\mathrm{d}x
+ =\dfrac{4\ell^2(1-(-1)^n)}{n^3\pi^3}.
+\]
+故解为 \(\sum_{n\geq1}b_ne^{-\kappa(n\pi/\ell)^2t}\sin(n\pi x/\ell)\)。系数绝对可和，级数在 \(t\geq0\) 上一致收敛；零时由 \(L^2\) 唯一性识别为连续函数 \(f\)，所以也一致取得初值。第一主项为 \((8\ell^2/\pi^3)e^{-\kappa\pi^2t/\ell^2}\sin(\pi x/\ell)\)，其余只含奇数 \(n\geq3\)，一致余项为 \(O(e^{-9\kappa\pi^2t/\ell^2})\)。
+\end{solution}
+
+% 自拟：固定非零边界下的平衡与平均值，区分绝热守恒。
+\begin{exercise}\label{b2:ex:12-affine-equilibrium}
+端点温度固定为 \(a,b\in\mathbb R\)，初温 \(f\in L^2(0,\ell)\)。求长期平衡温度，并证明解在 \(L^2\) 中指数趋于该平衡。平衡的平均温度是否必须等于初始平均温度？
+\end{exercise}
+\begin{solution}
+令 \(r(x)=a+(b-a)x/\ell\)，则 \(r''=0\) 且满足两端条件。差 \(v=u-r\) 为零边界热解，初值 \(f-r\)，所以
+\[
+ \|u(t)-r\|_2\leq e^{-\kappa\pi^2t/\ell^2}\|f-r\|_2.
+\]
+平衡平均为 \((a+b)/2\)，不必等于 \(\ell^{-1}\int f\)。端点可以持续吸收或补给热量，热量变化由法向通量决定；固定端温不要求通量为零。
+\end{solution}
+
+% 自拟：半直线核的严格正性与总质量损失，连接镜像和边界吸收。
+\begin{exercise}\label{b2:ex:12-half-line}
+在 \(x>0\) 上取 \(u(t,0)=0\)。证明相应核为 \(K(t,x,y)=H_{\kappa t}(x-y)-H_{\kappa t}(x+y)\)，并且 \(K>0\) 当 \(x,y,t>0\)。计算 \(\int_0^\infty K(t,x,y)\,\mathrm{d}x\)，解释其严格小于一。
+\end{exercise}
+\begin{solution}
+把初值奇延拓到实线后作热卷积，拆成两个半轴便得到核。因为 \(|x-y|<x+y\)，Gauss 函数随正半径严格递减，所以核严格为正。换元得
+\[
+ \int_0^\infty K(t,x,y)\,\mathrm{d}x
+ =\int_{-y}^{y}H_{\kappa t}(z)\,\mathrm{d}z<1.
+\]
+单位点热量在正时间有一部分经零温边界流出。奇延拓的负半轴是计算工具；半直线上真正的温度仍为正。
+\end{solution}
+
+% 自拟：尺度限制Lp到Lq衰减指数，增加对估计最优尺度的辨析。
+\begin{exercise}\label{b2:ex:12-scaling-exponent}
+设对全部 \(t>0\)、\(f\in C_c^\infty(\mathbb R^d)\) 有 \(\|S(t)f\|_q\leq Ct^{-\beta}\|f\|_p\)，其中常数与 \(t,f\) 无关。证明必须有 \(\beta=d(1/p-1/q)/2\)。
+\end{exercise}
+\begin{solution}
+固定非零非负 \(f\)，令 \(f_R(x)=f(x/R)\)。热核缩放给出 \(S(R^2)f_R(x)=S(1)f(x/R)\)。代入估计得
+\[
+ R^{d/q}\|S(1)f\|_q\leq C R^{-2\beta+d/p}\|f\|_p.
+\]
+两边不随 \(R\) 变化的范数均有限而正。分别令 \(R\downarrow0\)、\(R\to\infty\)，两次要求的幂不等式只能同时以等式满足，故得到所述值。无穷指数按 \(d/\infty=0\) 处理。
+\end{solution}
+
+% 自拟：扩散尺度上的质量轮廓，非正文点态衰减的重复。
+\begin{exercise}\label{b2:ex:12-mass-asymptotic}
+设 \(f\in L^1(\mathbb R^d)\)，\(M=\int f\)。证明
+\[
+ t^{d/2}u(t,\sqrt t\,\cdot)\longrightarrow M H_\kappa
+ \quad\text{于 }L^1(\mathbb R^d),\quad t\to\infty.
+\]
+若 \(M=0\) 且 \(\int |y|\cdot|f(y)|\,\mathrm{d}y<\infty\)，再证 \(\|u(t)\|_\infty\leq Ct^{-(d+1)/2}\int |y|\cdot|f(y)|\,\mathrm{d}y\)。
+\end{exercise}
+\begin{solution}
+缩放后左侧函数等于 \(\int H_\kappa(z-y/\sqrt t)\cdot f(y)\,\mathrm{d}y\)。与 \(MH_\kappa\) 相减，其 \(L^1\) 范数至多为
+\[
+ \int\|H_\kappa(\,\cdot-y/\sqrt t)-H_\kappa\|_1\cdot|f(y)|\,\mathrm{d}y.
+\]
+对固定 \(y\)，平移连续性使范数趋零；它始终不超过二，由控制收敛得第一式。若 \(M=0\)，在原卷积中减去 \(H_{\kappa t}(x)M\)，由微积分基本定理
+\[
+ |H_{\kappa t}(x-y)-H_{\kappa t}(x)|
+ \leq |y|\cdot\|\nabla H_{\kappa t}\|_\infty
+ \leq Ct^{-(d+1)/2}|y|.
+\]
+积分即得改进的衰减。
+\end{solution}
+
+% 自拟：正时间算子单射而逆不连续，用归一化高频数据作证。
+\begin{exercise}\label{b2:ex:12-backward-instability}
+对固定 \(T>0\)，证明 \(S(T)\) 在 \(L^2(\mathbb R^d)\) 上单射，并构造 \(\|f_n\|_2=1\) 而 \(\|S(T)f_n\|_2\to0\) 的序列。说明为何这否定了从终温到初温的有界逆。
+\end{exercise}
+\begin{solution}
+Fourier 乘子 \(e^{-4\pi^2\kappa T|\xi|^2}\) 处处严格为正，所以 \(S(T)f=0\) 迫使 \(\widehat f=0\)。选 \(\widehat f_n\) 支于球 \(B(ne_1,1/2)\)，并归一化其 \(L^2\) 范数为一。则
+\[
+ \|S(T)f_n\|_2\leq e^{-4\pi^2\kappa T(n-1/2)^2}\longrightarrow0.
+\]
+若在值域上有有界逆，就有 \(1=\|f_n\|_2\leq C\|S(T)f_n\|_2\)，矛盾。单射保证精确数据至多对应一个初温，但不控制微小终温误差的放大。
+\end{solution}
+
+% 自拟：两种正定矩阵不必同时对角化，频率指数相加即可。
+\begin{exercise}\label{b2:ex:12-anisotropic-convolution}
+设 \(B,C\) 为实对称正定矩阵。证明 \(H_s^B*H_t^C=H_1^{sB+tC}\)，即使 \(BC\ne CB\) 也成立。由此求扩散矩阵为 \(B\)、初值为 \(H_1^C\) 的解。
+\end{exercise}
+\begin{solution}
+两个核的变换分别是 \(e^{-4\pi^2s\xi^TB\xi}\)、\(e^{-4\pi^2t\xi^TC\xi}\)，相乘为 \(e^{-4\pi^2\xi^T(sB+tC)\xi}\)。矩阵 \(sB+tC\) 仍正定，Fourier 唯一性给出核等式；这里相加的是标量二次型，不需要矩阵交换。所求解为 \(H_1^{C+tB}\)，其椭球轴可以随时间旋转，不一定保持初值的主轴。
+\end{solution}
+
+% 自拟：对已有能量增加一阶导数，核对总耗散的精确常数。
+\begin{exercise}\label{b2:ex:12-gradient-dissipation}
+若 \(f\in H^1(\mathbb R^d)\)，证明
+\[
+ \|\nabla u(T)\|_2^2
+ +2\kappa\int_0^T\|\Delta u(t)\|_2^2\,\mathrm{d}t
+ =\|\nabla f\|_2^2.
+\]
+进而计算 \(\int_0^\infty\|\Delta u(t)\|_2^2\,\mathrm{d}t\)。
+\end{exercise}
+\begin{solution}
+对能量证明中的逐频率恒等式乘以 \(4\pi^2|\xi|^2\)，非负换序和 Plancherel 给出所述式子。\(H^1\) 条件保证右端有限，所以不需要预设初值属于 \(H^2\)。当 \(T\to\infty\)，梯度平方范数由频率控制收敛趋零，故积分等于 \(\|\nabla f\|_2^2/(2\kappa)\)。零频点的测度为零，不留下额外项。
+\end{solution}

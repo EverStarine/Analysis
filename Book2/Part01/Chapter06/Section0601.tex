@@ -2,24 +2,137 @@
 \section{Poisson 求和公式}
 \label{b2:sec:0601}
 
-% TODO: 撰写本节正文。
+\chapref{b2:ch:02}用离散频率描述周期函数，\chapref{b2:ch:03}用连续频率描述欧氏空间上的函数。将一个快速下降函数反复平移并相加，就能从后一种对象构造前一种对象。计算这个周期化函数的 Fourier 系数，便会把两种变换联系起来。
 
 \subsection{周期化}
 \label{b2:subsec:060101}
 
-待填充。
+\begin{definition}\label{b2:def:06-periodization}
+对 \(f\in\mathcal S(\mathbb R)\)，定义其\term[zhouqihua]{周期化}[periodization]为
+\[
+ (\mathcal Pf)(x)\coloneqq\sum_{n\in\mathbb Z}f(x+n).
+\]
+\end{definition}
+\symidx{\(\mathcal Pf\)：单位周期的周期化函数}
+
+\begin{proposition}\label{b2:prop:06-periodization-smooth}
+上述级数及其每个固定阶的导数级数在 \([0,1]\) 上绝对一致收敛。所得函数光滑、周期为 \(1\)，并可逐项求任意阶导数。
+\end{proposition}
+\begin{proof}
+固定导数阶 \(j\)，选 \(M\geq j\)、\(M>1\)。当 \(x\in[0,1]\) 时，存在绝对常数使 \(1+|x+n|\geq(1+|n|)/3\)，因此
+\[
+ |f^{(j)}(x+n)|\leq3^M p_M(f)(1+|n|)^{-M}.
+\]
+右侧可和且不依赖 \(x\)，故每个导数级数一致收敛。由微积分基本定理逐阶识别导数，得到光滑性。把 \(x\) 换成 \(x+1\) 后对整数指标重排，绝对收敛保证值不变，因而周期性成立。
+\end{proof}
+
+这里的快速下降既保证级数存在，也控制全部导数；若只知道 \(f\in L^1\)，Tonelli 至多给出周期化几乎处处绝对存在，不能自动保证它在整数采样点处有确定值。
 
 \subsection{Fourier 系数}
 \label{b2:subsec:060102}
 
-待填充。
+\begin{proposition}\label{b2:prop:06-periodic-coefficients}
+对每个 \(k\in\mathbb Z\)，周期化函数的第 \(k\) 个 Fourier 系数恰为连续变换的采样值 \(\widehat f(k)\)。
+\end{proposition}
+\begin{proof}
+有 \(\sum_n\int_0^1|f(x+n)|\,\mathrm{d}x=\|f\|_1\)，故可以交换求和与积分。对第 \(n\) 项令 \(y=x+n\)，因 \(e^{2\pi\mathrm{i}kn}=1\)，得到
+\[
+ \begin{aligned}
+ \int_0^1\mathcal Pf(x)\cdot e^{-2\pi\mathrm{i}kx}\,\mathrm{d}x
+ &=\sum_n\int_n^{n+1}f(y)\cdot e^{-2\pi\mathrm{i}ky}\,\mathrm{d}y\\
+ &=\widehat f(k).
+ \end{aligned}
+\]
+半开区间的端点没有积分贡献，且这些区间穷尽实线。
+\end{proof}
+
+连续频率只在整数处被读取，是因为周期已经固定为 \(1\)。这是一种精确的采样关系；若改变周期，采样间距必须随之改变，下一小节将把这个尺度写明。
 
 \subsection{Poisson 求和}
 \label{b2:subsec:060103}
 
-待填充。
+\begin{theorem}[Poisson 求和]\label{b2:thm:06-poisson}
+若 \(f\in\mathcal S(\mathbb R)\)，则
+\begin{equation}\label{b2:eq:06-poisson-periodic}
+ \sum_{n\in\mathbb Z}f(x+n)
+ =\sum_{k\in\mathbb Z}\widehat f(k)e^{2\pi\mathrm{i}kx}
+ \quad(x\in\mathbb R).
+\end{equation}
+两侧级数在任一周期区间上绝对一致收敛。特别地，
+\[
+ \sum_{n\in\mathbb Z}f(n)=\sum_{k\in\mathbb Z}\widehat f(k).
+\]
+\end{theorem}
+\begin{proof}
+左侧已由周期化命题得到光滑函数。由于 \(\widehat f\in\mathcal S\)，整数采样值绝对可和，所以右侧定义连续周期函数，且可逐项积分取得 Fourier 系数 \(\widehat f(k)\)。两侧的全部系数相同，由\chapref{b2:ch:02}的系数唯一性几乎处处相等；两者连续，故处处相等。取 \(x=0\) 得到求和式。
+\end{proof}
+
+这称为\term[poisson-qiuhe-gongshi]{Poisson 求和公式}[Poisson summation formula]。整数点的函数值必须通过有正则性的代表取得；若只把 \(f\) 当作 \(L^1\) 等价类，在所有整数点上任意改值不改变变换，却会改变左侧和式。因而公式中的采样条件不能只写“可积”。
+
+\ProseParagraphBreak
+
+还可用温和分布表达这项对称。格点测度 \(\mathrm{III}=\sum_{n\in\mathbb Z}\delta_n\) 对每个 Schwartz 函数绝对可和，并由 \(p_2\) 控制，所以温和。对测试函数 \(\varphi\) 使用求和公式，
+\[
+ \langle\widehat{\mathrm{III}},\varphi\rangle
+ =\sum_n\widehat\varphi(n)=\sum_n\varphi(n)
+ =\langle\mathrm{III},\varphi\rangle.
+\]
+因此整数格点测度在本书归一化下自对偶。这个等式不能读成一个普通函数的积分计算，它在连续测试配对中成立。
+\symidx{\(\mathrm{III}\)：单位整数格点测度}
 
 \subsection{缩放形式}
 \label{b2:subsec:060104}
 
-待填充。
+\begin{corollary}\label{b2:cor:06-scaled-poisson}
+若 \(h>0\)、\(a,b\in\mathbb R\)、\(f\in\mathcal S(\mathbb R)\)，则
+\[
+ \sum_{n\in\mathbb Z}f(hn+a)e^{2\pi\mathrm{i}b(hn+a)}
+ =\dfrac1h\sum_{k\in\mathbb Z}e^{2\pi\mathrm{i}ka/h}\widehat f(k/h-b).
+\]
+特别地，\(h\sum_nf(hn)=\sum_k\widehat f(k/h)\)。
+\end{corollary}
+\begin{proof}
+对 \(g(x)=f(hx+a)e^{2\pi\mathrm{i}b(hx+a)}\) 应用 Poisson 求和。函数 \(g\) 仍属于 \(\mathcal S\)。在变换积分中令 \(y=hx+a\)，得到 \(\widehat g(k)=h^{-1}e^{2\pi\mathrm{i}ka/h}\widehat f(k/h-b)\)，代入即得。
+\end{proof}
+
+这还给出整条实线梯形求积的误差。固定任意整数 \(M>1\)，由 \(\widehat f\) 快速下降，在 \(0<h\leq1\) 时有
+\[
+ \left|h\sum_nf(hn)-\int_{\mathbb R}f(x)\,\mathrm{d}x\right|
+ \leq\sum_{k\ne0}|\widehat f(k/h)|\leq C_{f,M}h^M.
+\]
+因此误差比任意预先指定的幂次都快地趋零，常数可依赖 \(f,M\)。结论不表示对所有 Schwartz 函数存在同一个误差常数，也不涉及将无穷求和截断后产生的空间尾部误差。
+
+
+
+\begin{theorem}[带限采样]\label{b2:thm:06-sampling}
+设 \(h>0\)、\(f\in L^2(\mathbb R)\)，且 \(\widehat f\) 几乎处处支撑于 \([-1/(2h),1/(2h)]\)。取其连续反演代表，则
+\[
+ h\sum_{n\in\mathbb Z}|f(nh)|^2=\|f\|_2^2,
+\]
+并有
+\[
+ f(x)=\sum_{n\in\mathbb Z}f(nh)
+ \dfrac{\sin(\pi(x/h-n))}{\pi(x/h-n)},
+\]
+其中分式在零点补为 \(1\)，对称部分和按 \(L^2\) 范数和在整条实线上的一致范数收敛。
+\end{theorem}
+\begin{proof}
+频率函数在有限区间上可积，故反演给出连续代表。在 \([-1/2,1/2]\) 上令 \(g(t)=h^{-1/2}\widehat f(t/h)\)。换元给出 \(\|g\|_2=\|\widehat f\|_2\)，其第 \(k\) 个周期系数为
+\[
+ \int_{-1/2}^{1/2}g(t)e^{-2\pi\mathrm{i}kt}\,\mathrm{d}t
+ =h^{1/2}f(-kh).
+\]
+对 \(g\) 用周期 Parseval 即得采样平方和。周期 Fourier 级数在 \(L^2\) 中恢复 \(g\)，还原频率变量后得到
+\[
+ \widehat f(\xi)=h\sum_{n\in\mathbb Z}f(nh)e^{-2\pi\mathrm{i}nh\xi}
+ \quad\left(|\xi|\leq\dfrac1{2h}\right)
+\]
+的平方范数展开。每个部分和在区间外补零，再作逆变换；区间指数的积分就是所写的 sinc 项。酉性保证部分和按 \(L^2\) 收敛。其误差的频率支集始终在同一个有限区间内，所以
+\[
+ \sup_x|f(x)-f_N(x)|
+ \leq h^{-1/2}\|\widehat f-\widehat f_N\|_2\longrightarrow0,
+\]
+也得到整条实线上的一致收敛。
+\end{proof}
+
+这个\term[caiyang-dingli]{采样定理}[sampling theorem]依靠的是明确的带限条件。它解释了为什么在某一类函数中，离散点值可以恢复整个函数；若允许任意高频，则不同函数可有同样的采样值。采样频率与最高允许频率之间的比例来自有限区间上的正交基，而不是经验性的点数规则。它与 Poisson 求和共享同一个结构：先在一侧作周期展开，再将整数指标解释为另一侧的采样。

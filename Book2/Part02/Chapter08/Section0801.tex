@@ -2,24 +2,121 @@
 \section{二阶线性方程}
 \label{b2:sec:0801}
 
-% TODO: 撰写本节正文。
+两个二阶方程可能只差一个符号，解的行为却截然不同。分类首先抓住最高阶导数的组合，把它看成每一点上的二次型。本节使用 \(z=(z_1,\ldots,z_n)\) 表示全部自变量；只有在讨论演化问题时才拆成 \(z=(t,x)\)。因此 \(n\) 不总等于空间维数。
 
 \subsection{主部}
 \label{b2:subsec:080101}
 
-待填充。
+在开集 \(\Omega\subseteq\mathbb R^n\) 上考虑实系数算子
+\begin{equation}\label{b2:eq:08-linear-operator}
+ Lu=\sum_{i,j=1}^n a^{ij}(z)\partial_i\partial_ju
+ +\sum_{i=1}^n b^i(z)\partial_i u+c(z)u.
+\end{equation}
+系数至少连续，经典解至少属于 \(C^2\)。一阶和零阶项称为低阶项；主部已在\secref{b2:sec:0104}引入，此处专指含二阶导数的和式，记为 \(L_2u\)。由于混合偏导相等，把 \(a^{ij}\) 换成 \((a^{ij}+a^{ji})/2\) 不改变算子。以下始终取实对称矩阵 \(A=(a^{ij})\)。
+
+\ProseParagraphBreak
+
+二维中习惯写为
+\[
+ L_2u=a u_{xx}+2b u_{xy}+c u_{yy},\quad
+ A=\begin{pmatrix}a&b\\b&c\end{pmatrix}.
+\]
+混合项前面的 \(2\) 来自矩阵求和中 \((1,2)\) 和 \((2,1)\) 两项。若方程写成 \(u_{xx}+6u_{xy}+u_{yy}=0\)，则矩阵的非对角元为 \(3\)，不是 \(6\)。本节中的 \(a,b,c\) 是二维主部的临时系数，不与\eqref{b2:eq:08-linear-operator}中的向量低阶系数混用。
+
+\ProseParagraphBreak
+
+散度形式也有相同的最高阶矩阵。在 \(a^{ij}\in C^1\) 时，
+\[
+ \sum_{i,j}\partial_i(a^{ij}\partial_ju)
+ =\sum_{i,j}a^{ij}\partial_i\partial_ju
+ +\sum_{i,j}(\partial_i a^{ij})\partial_ju.
+\]
+它与非散度形式在经典分类上相同，但分部积分时低阶项不同；在粗糙系数或弱解问题中，两种写法更不能只凭主部相同便随意交换。
 
 \subsection{主符号}
 \label{b2:subsec:080102}
 
-待填充。
+\begin{definition}\label{b2:def:08-principal-symbol}
+对实对称主部矩阵 \(A(z)\)，二次齐次多项式
+\[
+ p(z,\xi)\coloneqq\xi^TA(z)\xi
+ =\sum_{i,j=1}^n a^{ij}(z)\xi_i\xi_j
+ \quad(\xi\in\mathbb R^n)
+\]
+称为 \(L\) 的\term[zhufuhao]{主符号}[principal symbol]。本章不把 Fourier 微分规则中的 \(-4\pi^2\) 因子纳入这个几何记号。
+\end{definition}
+\symidx{\(p(z,\xi)\)：二阶算子的几何主符号}
+
+后一约定与第一编的 \(2\pi\) 归一化相容：对常系数主部，
+\[
+ L_2e^{2\pi\mathrm i z\cdot\xi}
+ =-4\pi^2p(\xi)\cdot e^{2\pi\mathrm i z\cdot\xi}.
+\]
+因此 \(p\) 记录不同频率方向的二阶作用，整个 Fourier 乘子则是 \(-4\pi^2p\)。不同文献可能把这个负号纳入符号定义；判断椭圆性和特征集合时，必须先核对其约定。
+
+\ProseParagraphBreak
+
+更一般地，对光滑实相位 \(\phi\) 与大参数 \(\lambda\)，直接两次求导给出
+\[
+ L\bigl(e^{2\pi\mathrm i\lambda\phi}\bigr)
+ =e^{2\pi\mathrm i\lambda\phi}
+ \left(-4\pi^2\lambda^2p(z,\nabla\phi)
+ +2\pi\mathrm i\lambda\left(\sum_{i,j}a^{ij}\partial_{ij}\phi
+ +\sum_i b^i\partial_i\phi\right)+c\right).
+\]
+在固定紧集上，最高的 \(\lambda^2\) 次项由主符号决定。若该系数为零，通常占主导的二阶作用恰好抵消；特征几何正由这类方向产生。这个计算只是代数恒等式，没有断言任意高频函数就是某个方程的近似解。
 
 \subsection{特征方向}
 \label{b2:subsec:080103}
 
-待填充。
+\begin{definition}\label{b2:def:08-characteristic-covector}
+在一点 \(z\)，若非零余向量 \(\nu\) 满足 \(p(z,\nu)=0\)，则称它确定该点的一个\term[tezheng-fangxiang]{特征方向}[characteristic direction]。若 \(C^2\) 超曲面局部写为 \(\phi=0\)、\(\nabla\phi\ne0\)，并且其各点满足 \(p(z,\nabla\phi(z))=0\)，则称它为\term[tezheng-chaqumian]{特征超曲面}[characteristic hypersurface]；不满足等式的点称为非特征点。
+\end{definition}
+
+这里的 \(\nu\) 表示余向量，也就是对位移作线性求值的法向数据；借欧氏内积可用列向量表示，但不能把它直接当作曲面的切向。换一个定义函数 \(\widetilde\phi=\alpha\phi\)，在曲面上梯度变为 \(\alpha\nabla\phi\)，其中 \(\alpha\ne0\)。主符号齐次，零值条件不变，所以定义不依赖这个选择。
+
+\ProseParagraphBreak
+
+在二维中，若曲线切向为 \((\mathrm dx,\mathrm dy)\)，则其一个法向与 \((-\mathrm dy,\mathrm dx)\) 平行。特征条件因而写作
+\begin{equation}\label{b2:eq:08-characteristic-differential}
+ a(\mathrm dy)^2-2b\,\mathrm dx\,\mathrm dy+c(\mathrm dx)^2=0.
+\end{equation}
+当 \(\mathrm dx\ne0\) 时，它变为斜率方程 \(am^2-2bm+c=0\)。这解释了为什么这里混合项的符号与主符号 \(a\xi^2+2b\xi\eta+c\eta^2\) 相反：一个写切向，一个写法向。
+
+\ProseParagraphBreak
+
+非特征条件的代数意义是可以解出法向二阶导数。取坐标 \(y_1=\phi(z)\)，补足其余坐标后，\(\partial_{y_1}^2v\) 的系数就是 \(p(z,\nabla\phi)\)。该系数非零时，可以把它移到方程一侧并相除。但这一步只整理了方程，没有证明给定 Cauchy 数据的解存在，也没有得到稳定性。例如对 Laplace 方程，任意非零实法向都是非特征的，而给定函数值和法向导数的 Cauchy 问题仍可能非常不稳定。
 
 \subsection{坐标不变性}
 \label{b2:subsec:080104}
 
-待填充。
+\begin{proposition}\label{b2:prop:08-coordinate-change}
+设 \(y=F(z)\) 为 \(C^2\) 微分同胚，\(u(z)=v(F(z))\)，并令 \(B=DF(z)\)。则新坐标中的主部矩阵为
+\begin{equation}\label{b2:eq:08-congruence}
+ \widetilde A(y)=B A(z)B^T,\quad z=F^{-1}(y),
+\end{equation}
+一阶系数为
+\begin{equation}\label{b2:eq:08-lower-transform}
+ \widetilde b^k(y)=\sum_{i,j}a^{ij}(z)\partial_{ij}F^k(z)
+ +\sum_i b^i(z)\partial_iF^k(z).
+\end{equation}
+主符号满足 \(\widetilde p(y,\eta)=p(z,B^T\eta)\)。
+\end{proposition}
+\begin{proof}
+链式法则给出
+\[
+ \partial_i u=\sum_k\partial_kv\cdot\partial_iF^k,
+\quad
+ \partial_{ij}u=\sum_{k,l}\partial_{kl}v\cdot\partial_iF^k\cdot\partial_jF^l
+ +\sum_k\partial_kv\cdot\partial_{ij}F^k.
+\]
+代入算子并按 \(v\) 的导数阶数整理，得到两条系数公式。再把 \(\eta\) 代入二次型，便有
+\(\eta^TBAB^T\eta=(B^T\eta)^TA(B^T\eta)\)。
+\end{proof}
+
+实对称矩阵在可逆\term[hetong-bianhuan]{合同变换}[congruence transformation]下保持正、负及零特征值的个数，这三项称为其\term[guanxing]{惯性}[inertia]。为说明这一事实，先由有限维谱定理把矩阵正交对角化。二次型为正定的子空间最大维数恰等于正特征值个数：正特征子空间达到这个维数；任何更大子空间必与非正特征子空间非平凡相交，不可能正定。可逆线性变换保持子空间维数，因而保持该最大值。对负号二次型重复此论证可得负特征值个数不变，最后由总维数得到零特征值个数不变。
+
+\ProseParagraphBreak
+
+所以主部分类不依赖合法坐标，但矩阵的具体特征值和统一常数可能改变。若 \(A\geq\lambda I\)，则
+\(\eta^T\widetilde A\eta\geq\lambda|B^T\eta|^2\)；只有 \(B^{-1}\) 也有统一界，才能推出整个区域上的同一个正下界。点态坐标不变性与全域定量估计是两个层次。非线性坐标还会产生\eqref{b2:eq:08-lower-transform}中的一阶项，忽略它们会改变原方程。

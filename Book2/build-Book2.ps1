@@ -175,6 +175,16 @@ if ($nErr -gt 0 -or $nRef -gt 0 -or $nCite -gt 0 -or $nMiss -gt 0 -or $nMulti -g
     Fail "构建尚未通过完整校验，不覆盖成品。日志：$log"
 }
 
+
+# Biber 生成编号不等于 PDF 排出了书目；逐项检查实际排版时写入的标记。
+$citedKeys = @([regex]::Matches((Get-Content -LiteralPath $bcf -Raw), '<bcf:citekey\b[^>]*>([^<]+)</bcf:citekey>') | ForEach-Object { $_.Groups[1].Value } | Sort-Object -Unique)
+$printedKeys = @([regex]::Matches($text, '(?m)^ANALYSIS-BIBITEM:([^\r\n]+)') | ForEach-Object { $_.Groups[1].Value.Trim() } | Sort-Object -Unique)
+$missingBibliography = @($citedKeys | Where-Object { $_ -ne '*' -and $_ -notin $printedKeys })
+if ($missingBibliography.Count -gt 0 -or ($citedKeys.Count -gt 0 -and $printedKeys.Count -eq 0)) {
+    Fail ("引用已有编号，但参考文献未实际排出：" + ($missingBibliography -join ', '))
+}
+Say ("参考文献：已排出 {0} 条，引用条目无遗漏" -f $printedKeys.Count) 'Green'
+
 Copy-Item -LiteralPath $pdf -Destination $editorPdf -Force
 Copy-Item -LiteralPath $synctex -Destination $editorSync -Force
 Copy-Item -LiteralPath $pdf -Destination $target -Force

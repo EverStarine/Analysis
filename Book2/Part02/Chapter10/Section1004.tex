@@ -2,19 +2,106 @@
 \section{广义解与逼近}
 \label{b2:sec:1004}
 
-% TODO: 撰写本节正文。
-
 \subsection{形式级数解}
 \label{b2:subsec:100401}
 
-待填充。
+本节在 \(\mathfrak a(u,u)\geq0\) 的附加假设下讨论演化，故 \(\lambda_n\geq0\)。例如 \(q\geq0\)、所有 Robin 系数非负时即满足此条件。空间仍取上一节的 \(H,V,A\)，时间系数吸收进 \(A\)。对方程
+\[
+ u_{tt}+Au=0,
+ \quad u(0)=f,
+ \quad u_t(0)=g,
+\]
+逐模态的候选为
+\begin{equation}\label{b2:eq:10-wave-series}
+ u(t)=\sum_n\left(f_n\cos(\sqrt{\lambda_n}t)
+ +g_n s_n(t)\right)e_n,
+ \quad s_n(t)=
+ \begin{cases}
+ \sin(\sqrt{\lambda_n}t)/\sqrt{\lambda_n},&\lambda_n>0,\\
+ t,&\lambda_n=0.
+ \end{cases}
+\end{equation}
+而 \(u_t+Au=0\)、\(u(0)=f\) 的候选为 \(\sum_ne^{-\lambda_nt}f_ne_n\)。每个有限截断都可逐项求导，它满足方程及截断后的数据。现在的问题是：这些有限解以什么方式趋近一个满足原数据的解？
 
 \subsection{不可逐项经典求导时的处理}
 \label{b2:subsec:100402}
 
-待填充。
+取正弦系，若 \(f_n=n^{-2}\)、\(g_n=0\)，则 \(\sum_n\lambda_n|f_n|^2<\infty\)，但 \(\sum_n\lambda_n^2|f_n|^2=\infty\)。这给出有限能量初位移，却不属于 \(D(A)\)。因此波方程在初始时刻不必有 \(H\) 值二阶时间导数；把 \(-\lambda_nf_n\) 的级数硬作 \(L^2\) 函数会失去收敛。合理的做法是把空间导数移到检验函数上。
+
+\begin{definition}\label{b2:def:10-energy-wave}
+设 \(f\in V\)、\(g\in H\)。若 \(u\in C([0,T];V)\)、\(u_t\in C([0,T];H)\)，初值分别为 \(f,g\)，并且对每个 \(v\in V\)、\(\eta\in C_c^\infty(0,T)\) 有
+\[
+ \int_0^T\left(-\langle u_t(t),v\rangle_H\eta'(t)
+ +\mathfrak a(u(t),v)\eta(t)\right)\,\mathrm{d}t=0,
+\]
+则称 \(u\) 为波动问题的能量解。此处将\chapref{b2:ch:09}的能量解概念用于带分离边界的加权区间。
+\end{definition}
+
+条件 \(u(t)\in V\) 保存 Dirichlet 端点值。Robin 通量一般不能对能量解逐点求值，其边界信息已包含在 \(\mathfrak a\) 中。正则性提高到 \(D(A)\) 时，分部积分又恢复原来的通量条件。因此这种定义保留了边界约束的作用，并没有要求所有弱解都有经典边界导数。
+
+\begin{theorem}[波动问题的能量极限]\label{b2:thm:10-wave-energy-limit}
+对每个 \(f\in V\)、\(g\in H\)，式\eqref{b2:eq:10-wave-series}在每个有限时间区间上给出唯一能量解。它的有限截断在 \(C([0,T];V)\) 中收敛，时间导数在 \(C([0,T];H)\) 中收敛，并满足
+\begin{equation}\label{b2:eq:10-wave-energy}
+ \dfrac12\|u_t(t)\|_H^2+\dfrac12\mathfrak a(u(t),u(t))
+ =\dfrac12\|g\|_H^2+\dfrac12\mathfrak a(f,f).
+\end{equation}
+若再有 \(f\in D(A)\)、\(g\in V\)，则 \(u\in C([0,T];D(A))\cap C^1([0,T];V)\cap C^2([0,T];H)\)。
+\end{theorem}
+\begin{proof}
+每个标量系数 \(c_n\) 满足 \(c_n''+\lambda_nc_n=0\)，故
+\[
+ |c_n'(t)|^2+\lambda_n|c_n(t)|^2
+ =|g_n|^2+\lambda_n|f_n|^2.
+\]
+截断之差对任意尾部满足相同等式。初数据条件使右侧尾和趋零，一致控制 \(H\) 值速度和 \(\mathfrak a\) 能量。另由
+\[
+ \|u_N(t)-u_M(t)\|_H
+ \leq\|P_Nf-P_Mf\|_H
+ +T\sup_{s\leq T}\|u_N'(s)-u_M'(s)\|_H
+\]
+补上可能存在的零模态。结合 \(\mathfrak a_\sigma\) 与 \(H^1\) 的等价性，得到所称两种一致收敛，极限的时间导数由积分恒等式 \(u_N(t)=P_Nf+\int_0^tu_N'(s)\,\mathrm{d}s\) 传递。
+
+有限截断满足定义中的检验恒等式；\(\mathfrak a\) 在 \(V\times V\) 连续，所以可以传递到极限。能量等式也由范数收敛传递。对任一能量解，取 \(v=e_n\)，得到系数 \(c_n\) 的标量微分方程及初值；其分布二阶导数为连续函数 \(-\lambda_nc_n\)，积分两次后即为经典方程，故系数唯一。完备性再给出解的唯一性。
+
+若初值更正则，将刚才的标量恒等式乘以 \(\lambda_n\)，加上原等式和 \(H\) 分量控制，便得到 \(\sum r_n^2|c_n(t)|^2\)、\(\sum r_n|c_n'(t)|^2\) 的统一可和尾界。由\cref{b2:prop:10-spectral-domains}得前三个空间的连续性，且 \(u_{tt}=-Au\) 于 \(H\) 中连续。
+\end{proof}
 
 \subsection{能量极限解释}
 \label{b2:subsec:100403}
 
-待填充。
+热方程允许更粗的初值，因为每个正频率都有指数衰减。为了将此结论用于\chapref{b2:ch:12}，先给出不依赖逐点求导的版本。
+
+\begin{proposition}[热方程的平方能量极限]\label{b2:prop:10-heat-energy-limit}
+对 \(f\in H\)，级数
+\[
+ u(t)=\sum_ne^{-\lambda_nt}f_ne_n
+\]
+定义 \(C([0,\infty);H)\) 函数，\(u(0)=f\)，且对 \(t>0\) 属于 \(D(A)\)，在 \(H\) 中满足 \(u_t=-Au\)。对 \(T>0\)，有
+\begin{equation}\label{b2:eq:10-heat-energy}
+ \|u(T)\|_H^2+2\int_0^T\mathfrak a(u(t),u(t))\,\mathrm{d}t
+ =\|f\|_H^2.
+\end{equation}
+有限截断在 \(C([0,T];H)\) 以及 \(L^2((0,T);V)\) 中收敛。
+\end{proposition}
+\begin{proof}
+对全部 \(t\geq0\)，平方尾和不超过 \(\sum_{n>N}|f_n|^2\)，故有限截断一致收敛于 \(H\) 值连续函数并取得初值。在 \(t\geq\delta>0\) 上，\(r_n^2e^{-2\lambda_nt}\) 一致有界；更高有限次幂也有同一性质。因此定义域刻画允许在 \(H\) 中逐项求一次时间导数，得到 \(u_t=-Au\)。
+
+逐模态积分恒等式为
+\[
+ e^{-2\lambda_nT}|f_n|^2
+ +2\int_0^T\lambda_ne^{-2\lambda_nt}|f_n|^2\,\mathrm{d}t
+ =|f_n|^2,
+\]
+在 \(\lambda_n=0\) 时也成立。由非负项求和与单调收敛，得到式\eqref{b2:eq:10-heat-energy}。对尾部应用同一式，给出积分能量尾趋零；再加 \(\sigma T\sum_{n>N}|f_n|^2\)，由能量范数等价得到 \(L^2((0,T);V)\) 收敛。
+\end{proof}
+
+这个极限也满足弱方程。对 \(v\in V\)、\(\eta\in C_c^\infty(0,T)\)，由有限解再过极限有
+\[
+ \int_0^T\left(-\langle u(t),v\rangle_H\eta'(t)
+ +\mathfrak a(u(t),v)\eta(t)\right)\,\mathrm{d}t=0.
+\]
+在 \(C([0,T];H)\cap L^2((0,T);V)\) 的同初值解类中，取 \(v=e_n\) 就得到 \(c_n'+\lambda_nc_n=0\)，从而唯一。这里不需要先给全部弱解建立可逐点微分的能量等式。
+
+\ProseParagraphBreak
+
+若原算子有负特征值，谱展开仍成立，但波动中的相应三角函数变为双曲函数，热方程相应项按 \(e^{|\lambda_n|t}\) 增长。只有有限个负模态，故有限时间内的解理论仍可逐项处理；收缩性、非负能量和趋向平衡等结论却必须重新检查。本章把非负情形单独陈述，为后面的扩散与振动模型提供可直接调用的接口。

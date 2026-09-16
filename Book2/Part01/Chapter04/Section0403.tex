@@ -2,24 +2,87 @@
 \section{\texorpdfstring{\(L^p\)}{Lᵖ} Fourier 变换的局限}
 \label{b2:sec:0403}
 
-% TODO: 撰写本节正文。
+把指数从 \(2\) 往两侧移动，会改变变换所能取值的空间。下面用尺度和相互分离的波包解释为什么 \(p>2\) 不能照搬上一节的结论，并为分布意义下的变换留下明确的问题。
 
 \subsection{\texorpdfstring{\(p>2\)}{p>2}}
 \label{b2:subsec:040301}
 
-待填充。
+先作尺度检验。若存在 \(\|\widehat f\|_q\leq C\|f\|_p\) 对全部光滑紧支集函数成立，则对 \(f(ax)\) 使用伸缩公式，得到左右尺度分别为 \(a^{-d+d/q}\) 与 \(a^{-d/p}\)。让 \(a\) 趋于零或无穷，必须有 \(1/p+1/q=1\)。这个必要条件仍不充分。
+
+\begin{theorem}\label{b2:thm:04-p-above-two}
+若 \(2<p\leq\infty\)、\(q=p'\)，则不存在常数 \(C\) 使 \(\|\widehat f\|_q\leq C\|f\|_p\) 对所有 \(f\in C_c^\infty(\mathbb R^d)\) 成立。
+\end{theorem}
+\begin{proof}
+固定非零 \(\varphi\in C_c^\infty\)，选 \(L\) 足够大，使 \(\varphi(x-jLe_1)\) 的支集互不相交。对符号 \(\epsilon_j\in\{-1,1\}\)，令
+\[
+ f_N(x)=\sum_{j=1}^N\epsilon_j\varphi(x-jLe_1).
+\]
+于是 \(\|f_N\|_p=N^{1/p}\|\varphi\|_p\)，\(p=\infty\) 时取 \(N^{1/p}=1\)；其变换为 \(\widehat\varphi(\xi)\sum_{j=1}^N\epsilon_je^{-2\pi\mathrm{i}jL\xi_1}\)。
+
+把全部 \(2^N\) 种符号等权平均。对任意模为 \(1\) 的复数 \(z_j\)，记 \(Z=\sum_j\epsilon_jz_j\)、\(X=|Z|^2\)。展开后，含某个符号奇数次的项平均为零，所以 \(\mathbb EX=N\)；四次矩只有指标成对出现的项保留，三个配对方式各至多贡献 \(N^2\)，故 \(\mathbb EX^2\leq3N^2\)。令 \(E=\{X\geq N/2\}\)，则
+\[
+ N=\mathbb EX\leq N/2+(\mathbb EX^2)^{1/2}\mathbb P(E)^{1/2},
+\]
+因此 \(\mathbb P(E)\geq1/12\)，进而 \(\mathbb E|Z|^q\geq12^{-1}(N/2)^{q/2}\)。
+
+逐频率使用这个估计，乘以 \(|\widehat\varphi(\xi)|^q\) 再积分。有限平均可与积分交换，故至少有一组选定符号使
+\[
+ \|\widehat {f_N}\|_q\geq c_qN^{1/2}\|\widehat\varphi\|_q.
+\]
+光滑紧支集函数的变换快速衰减且非零，故右侧范数有限而正。若所求估计成立，则 \(N^{1/2-1/p}\) 应一致有界，与 \(p>2\) 矛盾。
+\end{proof}
+
+这个反例甚至使用光滑紧支集函数，故障碍来自范数估计本身，并非某个积分未定义。它否定的是在整个 \(L^p\) 上取值于 \(L^{p'}\) 的有界延拓；并没有否定特殊函数仍可能有很好的变换。
 
 \subsection{点态意义}
 \label{b2:subsec:040302}
 
-待填充。
+在无限测度空间上，较大的 \(p\) 不意味着 \(L^1\)。例如 \((1+|x|)^{-\alpha}\) 在 \(\alpha p>d\) 时属于 \(L^p\)，但若 \(\alpha\leq d\) 就不可积。乘上单位模复指数以后，绝对可积性没有改善，所以定义式不能作为普通 Lebesgue 积分使用。
+
+\ProseParagraphBreak
+
+有时可以指定对称截断、Gauss 正则化或其他极限。不同极限的存在性各需证明；一般的 \(L^p\) 等价类也没有预先规定的点值。即使在 \(L^2\) 中，构造的是频率侧的等价类；一句“取每个频率的极限”并不能替代范数完备性给出的定义。
 
 \subsection{乘子问题}
 \label{b2:subsec:040303}
 
-待填充。
+\begin{definition}\label{b2:def:04-multiplier}
+对 \(m\in L^\infty(\mathbb R^d)\)，在 \(L^2\) 上定义
+\[
+ T_mf\coloneqq\mathcal F_2^{-1}(m\widehat f),
+\]
+称为符号 \(m\) 的\term[fourier-chengzi-suanzi]{Fourier 乘子算子}[Fourier multiplier operator]。
+\end{definition}
+\symidx{\(T_m\)：符号为 \(m\) 的 Fourier 乘子算子}
+
+\begin{proposition}\label{b2:prop:04-multiplier-norm}
+有 \(\|T_m\|_{L^2\to L^2}=\|m\|_\infty\)。若 \(K\in L^1\)、\(m=\widehat K\)，则 \(T_mf=K*f\) 对 \(f\in L^2\) 成立；卷积公式还定义了每个 \(L^p\)、\(1\leq p\leq\infty\) 上的有界算子，范数至多为 \(\|K\|_1\)。
+\end{proposition}
+\begin{proof}
+酉性给出上界。对任意 \(a<\|m\|_\infty\)，集合 \(\{|m|>a\}\) 有正测度，可取其中一个有限正测度子集 \(E\)，令 \(\widehat f=\mathbf1_E\)。于是 \(\|T_mf\|_2>a\|f\|_2\)，令 \(a\uparrow\|m\|_\infty\) 得到等号。卷积表示先对 \(f\in L^1\cap L^2\) 由卷积定理成立，再以 Young 估计和稠密性推广到 \(L^2\)。其余指数直接由 Young 不等式给出。
+\end{proof}
+
+对 \(p\ne2\)，仅有 \(m\) 有界通常不足以取得同样的乘子结论；符号的平滑程度、奇性与维数会参与估计。本章不预先断言某个粗糙符号在哪些指数上有界，相关问题将在\chapref{b2:ch:22}系统研究。
+
+
+\ProseParagraphBreak
+
+平滑频率截断说明为何符号的导数有用。取 \(m\in C_c^\infty\)，令 \(K=\check m\)。由\chapref{b2:ch:03}的微分衰减估计，\(K\in L^1\)，所以 \(T_m\) 在每个 \(L^p\) 上都由 Young 不等式控制。对 \(m_R(\xi)=m(\xi/R)\)，相应核为 \(K_R(x)=R^dK(Rx)\)，且 \(\|K_R\|_1=\|K\|_1\)。于是这一族算子对全部尺度具有同一个范数界。
+
+\ProseParagraphBreak
+
+相反，一维的硬截断符号 \(m=\mathbf1_{[-R,R]}\) 对应
+\[
+ K(x)=\dfrac{\sin(2\pi Rx)}{\pi x},
+\]
+该核不属于 \(L^1\)。对 \(f\in C_c^\infty\)，仍可用有限频率积分和 Fubini 验证 \(T_mf=K*f\)，但不能再用 \(\|K\|_1\) 给出有限的 Young 上界。\(L^2\) 上的范数仍为 \(1\)，因为符号是有界的正交投影。这个例子把两种方法的职责分开：酉性直接控制平方能量，绝对可积核则提供全部指数上的一种充分条件。
 
 \subsection{分布意义的 Fourier 变换的动机}
 \label{b2:subsec:040304}
 
-待填充。
+若不能要求变换是一个普通函数，还可以要求它对足够好的测试函数产生确定的数值。对 \(f\in L^p\) 和光滑紧支集的 \(\varphi\)，函数 \(\widehat\varphi\) 快速衰减，因而 \(\int f\widehat\varphi\) 总有意义。若 \(f\) 原来可积，Fubini 又给出
+\[
+ \int\widehat f(\xi)\varphi(\xi)\,\mathrm{d}\xi
+ =\int f(x)\widehat\varphi(x)\,\mathrm{d}x.
+\]
+右侧因此提供了延拓变换的线索，且对每个 \(1\leq p\leq\infty\) 都适用。下一章将选取在 Fourier 变换下保持不变的 Schwartz 测试空间，使这个配对成为完整定义。

@@ -2,24 +2,152 @@
 \section{Green 恒等式}
 \label{b2:sec:1302}
 
-% TODO: 撰写本节正文。
+均值性质适合局部比较，Green 恒等式则把区域内部的微分与边界通量放在同一个式子中。我们沿用\cref{b2:cor:01-vector-green}，把外法向固定为 \(\nu\)，并将 Poisson 方程统一写成 \(-\Delta u=f\)。本节能量与边界积分先对有界 \(C^1\) 区域，以及在其闭包某邻域内为 \(C^2\) 的函数推导；只用最大值原理的结论会另行放宽边界条件。
 
 \subsection{第一 Green 恒等式}
 \label{b2:subsec:130201}
 
-待填充。
+在当前符号下，第一 Green 恒等式为
+\begin{equation}\label{b2:eq:13-green-first}
+ \int_\Omega v\cdot(-\Delta u)\,\mathrm{d}x
+ =\int_\Omega\nabla u\cdot\nabla v\,\mathrm{d}x
+  -\int_{\partial\Omega}v\cdot\partial_\nu u\,\mathrm{d}S.
+\end{equation}
+它是\eqref{b2:eq:01-vector-green-first}的移项形式。若 \(-\Delta u=f\)，取 \(v=u\) 得到
+\[
+ \int_\Omega|\nabla u|^2\,\mathrm{d}x
+ =\int_\Omega f\cdot u\,\mathrm{d}x
+  +\int_{\partial\Omega}u\cdot\partial_\nu u\,\mathrm{d}S.
+\]
+边界上给定函数值与给定法向导数，控制的是同一边界乘积的不同因子。它们不应被当作可以任意同时指定的两套数据。
+
+\ProseParagraphBreak
+
+例如在球 \(B(0,R)\) 上，函数 \(u(x)=(R^2-|x|^2)/(2d)\) 满足 \(-\Delta u=1\)、\(u|_{\partial B}=0\)。能量等式此时化为 \(\int|\nabla u|^2=\int u\)。左侧由 \(\nabla u=-x/d\) 计算，右侧由极坐标计算，二者都等于 \(\omega_dR^{d+2}/(d(d+2))\)。边界值为零消去了通量乘积，并不意味着法向导数本身为零；事实上 \(\partial_\nu u=-R/d\)。
+
+\begin{proposition}[Dirichlet 能量极小性]\label{b2:prop:13-dirichlet-energy}
+设 \(u\) 为实值调和函数，\(v\) 与 \(u\) 具有相同边界值，且两者满足本节的光滑假设。则
+\[
+ \int_\Omega|\nabla v|^2\,\mathrm{d}x
+ =\int_\Omega|\nabla u|^2\,\mathrm{d}x
+  +\int_\Omega|\nabla(v-u)|^2\,\mathrm{d}x.
+\]
+因此 \(u\) 在同边界值的光滑函数中使梯度能量最小。
+\end{proposition}
+\begin{proof}
+令 \(w=v-u\)。展开 \(|\nabla(u+w)|^2\) 后，交叉项为 \(2\int\nabla u\cdot\nabla w\)。由第一 Green 恒等式，\(\Delta u=0\) 及 \(w=0\) 于边界，该项为零，得到恒等式。
+\end{proof}
+
+这只证明已有调和解的极小性，没有仅凭能量非负就证明极小元存在。要从极小化序列构造解，还需选择完备的函数空间并处理紧性与边界约束；这些问题在本卷的变分法与弱解部分继续研究。
 
 \subsection{第二 Green 恒等式}
 \label{b2:subsec:130202}
 
-待填充。
+对 \(u,v\) 交换第一恒等式中的位置再相减，得到
+\begin{equation}\label{b2:eq:13-green-second}
+ \int_\Omega\bigl(u\cdot\Delta v-v\cdot\Delta u\bigr)\,\mathrm{d}x
+ =\int_{\partial\Omega}
+       \bigl(u\cdot\partial_\nu v-v\cdot\partial_\nu u\bigr)\,\mathrm{d}S.
+\end{equation}
+如果两者都调和，边界上的两种通量配对相等。这个对称性是后面 Green 函数对称性的来源。
+
+\begin{proposition}[Neumann 数据的相容条件]\label{b2:prop:13-neumann-compatibility}
+若 \(-\Delta u=f\) 于 \(\Omega\)，且 \(\partial_\nu u=g\) 于 \(\partial\Omega\)，则必有
+\[
+ \int_\Omega f\,\mathrm{d}x+\int_{\partial\Omega}g\,\mathrm{d}S=0.
+\]
+\end{proposition}
+\begin{proof}
+对 \(\Delta u\) 使用散度定理，\(\int_\Omega\Delta u=\int_{\partial\Omega}\partial_\nu u\)。代入方程和边界值，再移项即得。
+\end{proof}
+
+对上一小节的球内例子，\(f=1\)、\(g=-R/d\)，两个积分为 \(\omega_dR^d\) 和 \(-\sigma_{d-1}R^d/d\)，正好抵消。若同样取 \(f=1\) 却要求整个边界上 \(g=0\)，便不可能有解。相容条件是对总源量与总通量的约束；即使它成立，本节也不据此直接宣布任意边界上的存在性。
+
+\ProseParagraphBreak
+
+在复值情形，\eqref{b2:eq:13-green-second}仍可作为双线性恒等式使用；讨论自伴或正能量时则应把一个函数换成共轭。比如 \(\int\nabla u\cdot\nabla\overline u=\int|\nabla u|^2\)，而不加共轭的平方和可能不是非负实数。
 
 \subsection{唯一性}
 \label{b2:subsec:130203}
 
-待填充。
+\begin{theorem}[三类边界条件下的唯一性]\label{b2:thm:13-boundary-uniqueness}
+固定有界连通 \(C^1\) 区域和给定的 \(f\)。在本节的光滑类中，方程 \(-\Delta u=f\) 满足下列结论。
+\begin{enumerate}
+\item\label{b2:item:13-unique-dirichlet}给定 \(u|_{\partial\Omega}\) 时，解至多一个。
+\item\label{b2:item:13-unique-neumann}给定 \(\partial_\nu u\) 时，解在相差常数的意义下至多一个；再给定 \(\int_\Omega u\) 可得到唯一性。
+\item\label{b2:item:13-unique-robin}若 \(\beta\) 连续、\(\beta\geq0\) 且 \(\int_{\partial\Omega}\beta\,\mathrm{d}S>0\)，给定 \(\partial_\nu u+\beta u\) 时，解至多一个。
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+取两个解之差 \(w\)，则 \(\Delta w=0\)。在 Dirichlet 或 Neumann 情形，第一 Green 恒等式给出 \(\int|\nabla w|^2=0\)，因为边界乘积分别由 \(w=0\) 或 \(\partial_\nu w=0\) 消去。于是 \(\nabla w=0\)，连通性使 \(w\) 为常数；Dirichlet 数据使该常数为零，Neumann 数据则允许常数自由度。
+
+Robin 情形中，\(\partial_\nu w=-\beta w\)，故
+\[
+ \int_\Omega|\nabla w|^2\,\mathrm{d}x
+ +\int_{\partial\Omega}\beta|w|^2\,\mathrm{d}S=0.
+\]
+两项非负，第一项使 \(w=c\)，第二项变为 \(|c|^2\int\beta=0\)，由严格正积分得 \(c=0\)。复值解取共轭后同样证明。
+\end{proof}
+
+Dirichlet 唯一性还可在任意有界开集上由最大值原理取得，只需解属于 \(C^2(\Omega)\cap C(\overline\Omega)\)，无需边界光滑。Neumann 与 Robin 的能量论证则实际使用了边界法向和 Green 恒等式，不能不加说明地移到任意粗糙边界。
+
+\ProseParagraphBreak
+
+Robin 系数的符号也不是装饰。在球上取 \(w(x)=x_1\)，则 \(\Delta w=0\)、\(\partial_\nu w=w/R\)。因此 \(\beta=-1/R\) 时，非零函数 \(w\) 满足齐次 Robin 数据，唯一性失败。若区域不连通，Neumann 情形则允许每个连通分支各加一个常数，只固定整个区域的平均值通常不能消除全部自由度。
+
+\begin{proposition}\label{b2:prop:13-subharmonic-comparison}
+设 \(\Omega\) 为有界开集，\(w\in C^2(\Omega)\cap C(\overline\Omega)\)，且 \(\Delta w\geq0\)。则 \(w(x)\leq\max_{\partial\Omega}w\)。因而若 \(-\Delta u\leq-\Delta v\) 且 \(u\leq v\) 于边界，则内部也有 \(u\leq v\)。
+\end{proposition}
+\begin{proof}
+令 \(w_\varepsilon=w+\varepsilon|x|^2\)，则 \(\Delta w_\varepsilon\geq2d\varepsilon>0\)。如果其最大值在内部达到，Hesse 矩阵在该点半负定，会使 Laplace 不大于零，矛盾。因此
+\[
+ w(x)+\varepsilon|x|^2
+ \leq\max_{\partial\Omega}w+\varepsilon\max_{\partial\Omega}|x|^2.
+\]
+让 \(\varepsilon\downarrow0\) 即得第一项；第二项用于 \(w=u-v\)。
+\end{proof}
+
+\begin{corollary}[边界数据的一致稳定性]\label{b2:cor:13-dirichlet-stability}
+设 \(u,v\in C^2(\Omega)\cap C(\overline\Omega)\) 在有界区域中满足相同的 Poisson 右端，则
+\[
+ \|u-v\|_{C(\overline\Omega)}\leq\|u-v\|_{C(\partial\Omega)}.
+\]
+\end{corollary}
+\begin{proof}
+差 \(u-v\) 调和，分别对它和负号使用边界最大值原理；复值时使用模的最大值原理。
+\end{proof}
+
+这里稳定性只比较相同的内部源项。如果右端也改变，需要另估计由该差产生的势；不能把一个有源方程的解直接当作调和函数使用。
 
 \subsection{边界积分}
 \label{b2:subsec:130204}
 
-待填充。
+现在将第二 Green 恒等式中的一个函数换成带极点的基本解。沿用\cref{b2:thm:05-laplace-fundamental}的 \(\Phi_d\)，满足 \(-\Delta\Phi_d=\delta_0\)。极点附近的边界项会保留下一个点值，不能把基本解当作整个区域内的普通调和函数。
+
+\begin{theorem}[Green 表示公式]\label{b2:thm:13-green-representation}
+设 \(d\geq2\)，\(u\) 在有界 \(C^1\) 区域 \(\overline\Omega\) 的某邻域内为 \(C^2\)，并记 \(f=-\Delta u\)。则对每个 \(x\in\Omega\)，
+\begin{equation}\label{b2:eq:13-green-representation}
+ \begin{aligned}
+ u(x)={}&\int_\Omega\Phi_d(x-y)\cdot f(y)\,\mathrm{d}y\\
+ &+\int_{\partial\Omega}
+ \left(\Phi_d(x-y)\cdot\partial_\nu u(y)
+       -u(y)\cdot\partial_{\nu_y}\Phi_d(x-y)\right)\,\mathrm{d}S_y.
+ \end{aligned}
+\end{equation}
+\end{theorem}
+\begin{proof}
+选 \(\varepsilon>0\) 使闭球 \(\overline{B(x,\varepsilon)}\subset\Omega\)，在挖掉这只球的区域上对 \(u(y)\) 和 \(\Phi_d(x-y)\) 使用第二 Green 恒等式。该区域内基本解调和，故
+\[
+ -\int_{\Omega\setminus\overline{B(x,\varepsilon)}}\Phi_d(x-y)f(y)\,\mathrm{d}y
+ =I_{\partial\Omega}+I_\varepsilon,
+\]
+其中 \(I_{\partial\Omega}\) 是所求公式的边界积分，内球边界项为
+\[
+ I_\varepsilon=\int_{|y-x|=\varepsilon}
+ \left(\Phi_d(x-y)\cdot\partial_\nu u(y)
+ -u(y)\cdot\partial_\nu\Phi_d(x-y)\right)\,\mathrm{d}S_y.
+\]
+内边界相对于挖孔区域的外法向朝向 \(x\)，所以 \(\partial_\nu\Phi_d=1/(\sigma_{d-1}\varepsilon^{d-1})\)。第二项为 \(u\) 的负球面平均，趋于 \(-u(x)\)。第一项的模至多为常数乘 \(\varepsilon\)（\(d\geq3\)）或 \(\varepsilon|\log\varepsilon|\)（\(d=2\)），故趋零。体积分由 \(f\) 有界和 \(\Phi_d\) 局部可积而收敛，令 \(\varepsilon\downarrow0\) 并移项即得。
+\end{proof}
+
+表示公式同时出现边界值与法向导数，所以还不是只用 Dirichlet 数据的求解公式。Green 函数的作用正是修改基本解，使它在边界为零，从而消去不希望出现的法向导数项。下一节先处理体积项及其正则性，随后再作这一边界修正。

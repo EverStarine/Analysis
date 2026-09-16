@@ -1,24 +1,81 @@
 % !TeX root = ../../Book2.tex
 \OptionalSection{Fourier 级数的深层收敛现象}{b2:sec:0207}
 
-% TODO: 撰写本节正文。
+前面已经证明许多充分条件。它们的边界同样有教学价值：跳跃导致局部过冲，Dirichlet 核的绝对质量增长导致算子不稳定，而几乎处处收敛又比局部初等判据覆盖得更广。本节前面三个现象给出计算或证明，最后只介绍一个明确标源的深层定理。
 
 \subsection{Gibbs 现象}
 \label{b2:subsec:020701}
 
-待填充。
+仍取 \(f(x)=x-1/2\) 于 \((0,1)\)。固定 \(c>0\)，在距跳跃约 \(1/N\) 的点 \(x_N=c/(2\pi N)\) 处，
+\[
+ S_Nf(x_N)=-\dfrac1\pi\sum_{k=1}^N\dfrac{\sin(kc/N)}k
+ \longrightarrow-\dfrac1\pi\int_0^c\dfrac{\sin u}{u}\,\mathrm{d}u.
+\]
+这是连续函数 \(\sin u/u\)（原点补为 \(1\)）的 Riemann 和。另一方面，\(f(x_N)\to-1/2\)。当 \(c=\pi\) 时，右侧约为 \(-0.58949\)，超出了右侧函数值的极限。这种过冲称为\term[gibbs-xianxiang]{Gibbs 现象}[Gibbs phenomenon]。
 
-\subsection{\texorpdfstring{\(L^1\)}{L1} 收敛失败}
+\ProseParagraphBreak
+
+为看清过冲确实为正，先注意 \(\int_0^\infty\sin u/u\,\mathrm{d}u=\pi/2\)。可在积分中加入 \(e^{-\varepsilon u}\)，对频率参数求导后积分得到 \(\arctan(1/\varepsilon)\)，再由分部积分的一致尾部界令 \(\varepsilon\downarrow0\)。从 \(\pi\) 开始，正负半波的绝对积分逐段减小，第一段为负，故剩余尾积分严格为负。因此 \(\pi^{-1}\int_0^\pi\sin u/u\,\mathrm{d}u-1/2>0\)。过冲的高度不消失，发生过冲的区域却不断收缩；这与平方误差趋零并不矛盾。
+
+\ProseParagraphBreak
+
+这一计算对应于\cref{b2:fig:02-gibbs}。图中的两种截断使用同一个坐标尺度，可同时比较过冲的高度与区域宽度。
+\input{Figures/F02-Gibbs}
+
+\subsection{\texorpdfstring{\(L^1\)}{L¹} 收敛失败}
 \label{b2:subsec:020702}
 
-待填充。
+\begin{proposition}\label{b2:prop:02-lebesgue-constants}
+存在绝对常数 \(c,C>0\)，使 \(N\geq2\) 时
+\[
+ c\cdot\log(N+1)\leq\|D_N\|_1\leq C\cdot\log(N+1).
+\]
+此外，\(\|S_N\|_{L^1\to L^1}=\|D_N\|_1\)。
+\end{proposition}
+\begin{proof}
+在 \(0<t\leq1/2\) 上，\(|D_N(t)|\leq\min\{2N+1,(2t)^{-1}\}\)，分成 \((0,1/(2N+1))\) 和其余部分积分，得到上界。下界利用 \(\sin(\pi t)\leq\pi t\)；令 \(u=(2N+1)\pi t\)，可得
+\[
+ \|D_N\|_1\geq\dfrac2\pi\int_0^{(2N+1)\pi/2}\dfrac{|\sin u|}{u}\,\mathrm{d}u.
+\]
+在每个完整区间 \([j\pi,(j+1)\pi]\) 上，以 \(((j+1)\pi)^{-1}\) 下估 \(1/u\)，而 \(\int_{j\pi}^{(j+1)\pi}|\sin u|\,\mathrm{d}u=2\)。求和即得调和级数的对数下界。
+
+卷积和 Tonelli 给出算子范数不超过 \(\|D_N\|_1\)。反向取非负单位积分的窄区间核 \(q_\varepsilon=\varepsilon^{-1}\mathbf1_{(0,\varepsilon)}\)。固定 \(N\) 时，\(q_\varepsilon*D_N\to D_N\) 一致成立，因为 \(D_N\) 连续；且 \(\|q_\varepsilon\|_1=1\)。故算子范数至少为 \(\|D_N\|_1\)。
+\end{proof}
+
+\begin{corollary}\label{b2:cor:02-l1-failure}
+存在 \(f\in L^1(\mathbb T)\)，使 \(\sup_N\|S_Nf\|_1=\infty\)。因而其 Fourier 部分和不在 \(L^1\) 中收敛。
+\end{corollary}
+\begin{proof}
+若每个 \(f\) 的部分和范数都有界，由第一卷定理 8.3.3（一致有界原理），算子族 \((S_N)\) 的范数也应一致有界，这与前一命题矛盾。
+\end{proof}
+
+同一个函数的 Fejér 平均仍按 \(L^1\) 范数收敛。失败属于所选求和方法，不是 Fourier 系数失去了唯一确定函数的能力。
 
 \subsection{发散例子}
 \label{b2:subsec:020703}
 
-待填充。
+\begin{proposition}\label{b2:prop:02-continuous-divergence}
+对任意预先指定的 \(x_0\in\mathbb T\)，存在连续周期函数 \(f\)，使 \(\sup_N|S_Nf(x_0)|=\infty\)。
+\end{proposition}
+\begin{proof}
+将 \(T_Nf=S_Nf(x_0)\) 看作 \(C(\mathbb T)\) 上的连续线性泛函。积分公式给出 \(\|T_N\|\leq\|D_N\|_1\)。为证明反向不等式，取连续函数
+\[
+ f_\varepsilon(x_0-t)=\dfrac{D_N(t)}{|D_N(t)|+\varepsilon}.
+\]
+它的上确界范数至多为 \(1\)，且 \(T_Nf_\varepsilon=\int D_N^2/(|D_N|+\varepsilon)\to\|D_N\|_1\)，其中控制函数为 \(|D_N|\)。故 \(\|T_N\|=\|D_N\|_1\to\infty\)。再用第一卷定理 8.3.3，存在固定的 \(f\) 使 \((T_Nf)\) 无界。
+\end{proof}
 
-\subsection{Carleson 定理 概览}
+这个存在性证明没有给出一串闭式系数，但确实产生了一个对所有 \(N\) 固定的连续函数。只为每个 \(N\) 另选一个坏函数，尚不能证明存在单个发散例子；一致有界原理在这里承担的正是这一量词转换。
+
+\subsection{Carleson 定理概览}
 \label{b2:subsec:020704}
 
-待填充。
+\begin{claim}[Carleson，深层收敛定理]\label{b2:claim:02-carleson}
+若 \(f\in L^2(\mathbb T)\)，则对称 Fourier 部分和 \(S_Nf(x)\) 在几乎处处收敛到 \(f(x)\)。
+\end{claim}
+
+这一\term[carleson-dingli]{Carleson 定理}[Carleson's theorem]在本章不证明，也不作为其他结果的证明输入。Sheldon Axler 的《Measure, Integration \& Real Analysis》\cite[p. 352; Section 11B]{Axler2020Measure}介绍了该结论与连续函数发散例子的关系。其困难在于同时控制全部截断频率；固定一个 \(N\) 的平方范数估计，以及本章抽子列的办法，都不能代替这种控制。
+
+\ProseParagraphBreak
+
+“几乎处处”允许存在例外零测集，所以定理与在指定点发散的连续函数不冲突。对任意可积函数，连几乎处处收敛也会失败；上述资料同页介绍了 Kolmogorov 的结果。本节不展开其构造，不把这个外部事实混入已经给出完整证明的 \(L^1\) 范数失败结论。读者首先应掌握普通部分和、正核平均、范数收敛与点态收敛之间的区别，再进入深层收敛理论。

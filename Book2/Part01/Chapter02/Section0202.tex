@@ -2,24 +2,105 @@
 \section{Dirichlet 核与经典收敛}
 \label{b2:sec:0202}
 
-% TODO: 撰写本节正文。
+一个部分和含有许多 Fourier 系数。把各系数的积分合并，可以把“同时截取许多频率”改写成对原函数的一次加权积分。权重的振荡既产生抵消，也决定跳跃附近的行为。
 
 \subsection{Dirichlet 核}
 \label{b2:subsec:020201}
 
-待填充。
+\begin{definition}\label{b2:def:02-dirichlet-kernel}
+对非负整数 \(N\)，函数
+\[
+ D_N(t)\coloneqq\sum_{|k|\leq N}e^{2\pi\mathrm{i}kt}
+\]
+称为\term[dirichlet-he]{Dirichlet 核}[Dirichlet kernel]。
+\end{definition}
+\symidx{\(D_N\)：Dirichlet 核}
+
+有限几何级数给出
+\[
+ D_N(t)=\dfrac{\sin((2N+1)\pi t)}{\sin(\pi t)}\quad(t\notin\mathbb Z),
+ \quad D_N(0)=2N+1.
+\]
+它是实值偶函数，积分为 \(1\)，但并不处处非负。峰值随 \(N\) 增高，并不能单独保证卷积趋向原函数；还要控制旁边不断增加的正负振荡。
 
 \subsection{部分和算子}
 \label{b2:subsec:020202}
 
-待填充。
+圆周上的\term[zhouqi-juanji]{周期卷积}[periodic convolution]记为
+\[
+ (f*g)(x)\coloneqq\int_{\mathbb T}f(x-t)\cdot g(t)\,\mathrm{d}t,
+\]
+在积分绝对收敛的点定义。有限换序直接给出
+\begin{equation}\label{b2:eq:02-dirichlet-convolution}
+ S_Nf(x)=(f*D_N)(x)
+ =\int_{-1/2}^{1/2}f(x-t)\cdot D_N(t)\,\mathrm{d}t.
+\end{equation}
+由于 \(D_N\) 有界，这个等式对 \(f\in L^1\) 的每个 \(x\) 都有意义，右端的值不随代表的零测修改改变。
 
-\subsection{Dirichlet–Jordan 定理}
+\begin{lemma}[振荡积分趋零]\label{b2:lem:02-oscillation}
+若 \(h\in L^1(a,b)\)，其中 \(a<b\) 有限，则
+\[
+ \int_a^b h(t)\cdot e^{\mathrm{i}\lambda t}\,\mathrm{d}t\longrightarrow0
+ \quad(|\lambda|\to\infty).
+\]
+\end{lemma}
+\begin{proof}
+对区间示性函数，积分等于两个单位复数之差除以 \(\mathrm{i}\lambda\)，模不超过 \(2/|\lambda|\)。有限阶梯函数也满足结论。任意 \(L^1\) 函数可先截断幅值，再用简单函数逼近；有限测度可测集由有限个区间的并在测度上逼近，故阶梯函数在 \(L^1(a,b)\) 中稠密。选阶梯函数 \(q\) 使 \(\|h-q\|_1<\varepsilon\)，两积分之差对所有 \(\lambda\) 都不超过 \(\varepsilon\)，再令 \(|\lambda|\to\infty\) 和 \(\varepsilon\downarrow0\)。
+\end{proof}
+
+上述区间逼近只用 Lebesgue 测度的正则性：先取开集逼近可测集，再保留开集区间分解的有限项。将引理用于 \(\lambda=2\pi k\) 可知 \(\widehat f(k)\to0\)。这称为周期情形的\term[riemann-lebesgue-yinli]{Riemann--Lebesgue 引理}[Riemann--Lebesgue lemma]。它只说单个系数变小，不说系数绝对可和。
+
+\subsection{Dirichlet--Jordan 定理}
 \label{b2:subsec:020203}
 
-待填充。
+先说明处理有界变差所需的抵消估计。区间上函数的变差是所有有限分割下相邻函数值差的绝对值之和的上确界；上确界有限时称为\term[youjie-biancha-hanshu]{有界变差函数}[function of bounded variation]。实值有界变差函数可写成两个有界单调函数之差：若 \(V(t)\) 是从左端到 \(t\) 的累积变差，取 \((V+g)/2\) 与 \((V-g)/2\) 即可。这同时保证单侧极限存在。复值情形按实部、虚部分别处理。
+
+\begin{lemma}\label{b2:lem:02-bv-oscillation}
+设 \(0<\delta<1/2\)，\(g\) 在 \((0,\delta)\) 上有界变差且 \(g(0+)=0\)。存在与 \(N\)、\(g\) 和 \(\delta\) 无关的常数 \(C\)，使
+\[
+ \left|\int_0^\delta g(t)\cdot D_N(t)\,\mathrm{d}t\right|
+ \leq C\bigl(|g(\delta-)|+\operatorname{Var}_{(0,\delta)}g\bigr).
+\]
+右侧随 \(\delta\downarrow0\) 趋于零。
+\end{lemma}
+\begin{proof}
+记 \(\lambda=(2N+1)\pi\)。先估计 \(\int_a^bD_N(t)\,\mathrm{d}t\)，其中 \(0\leq a<b\leq1/2\)。在 \(0<t<1/\lambda\) 上，\(|\sin(\lambda t)|\leq\lambda t\)、\(\sin(\pi t)\geq2t\)，故这部分绝对积分至多 \(1/2\)。在 \(t\geq1/\lambda\) 的区间上，对单调递减函数 \(1/\sin(\pi t)\) 分部积分；\(\sin(\lambda t)\) 的任意区间原函数差不超过 \(2/\lambda\)，所得界至多 \(C/(\lambda a)\)（下端取 \(a\geq1/\lambda\)）。因此所有上述区间积分有同一个绝对常数界。
+
+为把这个界用于 \(g\)，可将其选为右连续代表。单调分解把 \(g\) 的增量表示为有限符号 Stieltjes 测度的质量；这一测度由半开区间上的增量先定义，再按测度延拓得到。其全变差不超过函数的变差。对固定 \(N\)，核有界，故有限测度下的换序合法；将 \(g(t)\) 写成端点值与增量积分，得到通常的 Stieltjes 分部积分式。前一步对核原函数的统一界于是给出所需估计。若原代表并非右连续，仅在至多可数个不连续点改变它，不影响 Lebesgue 积分。
+
+最后，累积变差对应一个有限正测度。在不包含端点 \(0\) 的递减区间 \((0,\delta)\) 上，其质量趋于零；加上 \(g(0+)=0\)，即得最后的断言。复值情形把实、虚部的估计相加。
+\end{proof}
+
+\begin{theorem}[Dirichlet--Jordan]\label{b2:thm:02-dirichlet-jordan}
+设 \(f\in L^1(\mathbb T)\)，且某一代表在点 \(x\) 两侧的一个邻域内有界变差，则
+\[
+ S_Nf(x)\longrightarrow\dfrac{f(x+)+f(x-)}2.
+\]
+\end{theorem}
+\begin{proof}
+令 \(A=(f(x+)+f(x-))/2\)，并在 \(0<t<1/2\) 记
+\[
+ g(t)=f(x+t)+f(x-t)-2A.
+\]
+利用核的偶性及积分为 \(1\)，\eqref{b2:eq:02-dirichlet-convolution}给出 \(S_Nf(x)-A=\int_0^{1/2}g(t)\cdot D_N(t)\,\mathrm{d}t\)。在 \((0,\delta)\) 上，\(g\) 有界变差且右极限为零；由前一引理，这部分对全部 \(N\) 一致趋小。在 \([\delta,1/2]\) 上，\(g(t)/\sin(\pi t)\) 可积，\cref{b2:lem:02-oscillation}使其与 \(\sin((2N+1)\pi t)\) 的积分趋零。先固定 \(\delta\) 令 \(N\to\infty\)，再令 \(\delta\downarrow0\)。
+\end{proof}
+
+定理名称\term[dirichlet-jordan]{Dirichlet--Jordan 定理}[Dirichlet--Jordan theorem]对应的是局部有界变差条件。远处只需可积性，点 \(x\) 本身被赋予什么值也不影响结论；跳跃点恢复的是两侧值的平均。
 
 \subsection{分段光滑函数}
 \label{b2:subsec:020204}
 
-待填充。
+若一个周期内有有限分割，函数在每段内部为 \(C^1\)，且函数与一阶导数均可连续延拓到该段端点，则它在每段上的变差不超过导数绝对值的积分，加上有限个跳跃仍为有界变差。于是 Fourier 级数在连续点收敛到函数值，在跳跃点收敛到中点值。这里端点是圆周上的同一个点，检查周期拼接处时必须比较 \(f(0+)\) 与 \(f(1-)\)。
+
+\ProseParagraphBreak
+
+例如取锯齿函数 \(f(x)=x-1/2\) 于 \(0<x<1\)。分部积分给出
+\[
+ \widehat f(0)=0,\quad \widehat f(k)=-\dfrac1{2\pi\mathrm{i}k}\quad(k\ne0).
+\]
+因此
+\[
+ x-\dfrac12=-\dfrac1\pi\sum_{k=1}^\infty\dfrac{\sin(2\pi kx)}k
+ \quad(0<x<1).
+\]
+在整数处，每个对称部分和都为零，正好等于跳跃两侧的平均。连续的部分和不可能在整个圆周上一致趋向这个不连续代表；点态收敛结论与一致收敛之间仍有实质距离。

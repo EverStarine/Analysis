@@ -2,24 +2,156 @@
 \section{基本解与 Newton 势}
 \label{b2:sec:1303}
 
-% TODO: 撰写本节正文。
+基本解描述集中于一点的单位源。将它与分布在整个区域中的密度叠加，就得到 Poisson 方程的一个特解。奇核的可积性决定叠加是否存在，核的导数及其抵消则决定这个特解有多光滑。
 
 \subsection{Laplace 算子的基本解}
 \label{b2:subsec:130301}
 
-待填充。
+\Cref{b2:thm:05-laplace-fundamental}已经证明，负 Laplace 算子的基本解可取
+\[
+ \Phi_d(z)=\dfrac{|z|^{2-d}}{(d-2)\sigma_{d-1}}\quad(d\geq3),
+ \quad \Phi_2(z)=-\dfrac1{2\pi}\log|z|,
+\]
+一维则为 \(\Phi_1(z)=-|z|/2\)。它们在分布意义下满足 \(-\Delta\Phi_d=\delta_0\)，在原点外调和。以下涉及奇核积分时固定 \(d\geq2\)。
+
+\ProseParagraphBreak
+
+原点附近的奇性仍局部可积：高维核与体积元相乘后只剩 \(r\,\mathrm{d}r\)，二维对数也可积。但二阶导数的尺度为 \(|z|^{-d}\)，绝对积分已处于临界发散情形。因此“基本解可积”并不能自动许可两次在积分下求导，下面会保留所需的抵消项。
 
 \subsection{Poisson 方程}
 \label{b2:subsec:130302}
 
-待填充。
+对 \(f\in C_c^\infty(\mathbb R^d)\)，\cref{b2:prop:05-fundamental-convolution}给出光滑特解 \(u=\Phi_d*f\)。这个构造把导数移到右端的紧支集光滑函数上，得到 \(-\Delta u=f\)。它先解全空间方程；若目标区域上另给边界值，还需加一个调和修正。
+
+\begin{proposition}\label{b2:prop:13-poisson-affine-space}
+若 \(u_0\in C^2(\Omega)\) 满足 \(-\Delta u_0=f\)，则全部 \(C^2\) 解恰为 \(u=u_0+h\)，其中 \(h\) 在 \(\Omega\) 上调和。
+\end{proposition}
+\begin{proof}
+线性性使任意两个解之差满足 \(\Delta h=0\)；反过来，给特解加调和函数不改变方程右端。
+\end{proof}
+
+这说明基本解不负责选择边界条件。例如球上 \(-\Delta u=1\) 的一个多项式特解为 \(-|x|^2/(2d)\)；若要求边界值为零，再加常数 \(R^2/(2d)\)。非球形区域上需要的修正一般不再是常数，不能沿用球上公式只替换一个“半径”。
 
 \subsection{Newton 势}
 \label{b2:subsec:130303}
 
-待填充。
+\begin{definition}\label{b2:def:13-newton-potential}
+设 \(f\) 是有界紧支集的可测函数。定义
+\[
+ (Nf)(x)\coloneqq\int_{\mathbb R^d}\Phi_d(x-y)\cdot f(y)\,\mathrm{d}y,
+\]
+称为密度 \(f\) 的\term[newton-shi]{Newton 势}[Newtonian potential]。二维沿用同一记号，但其核为对数核。
+\end{definition}
+\symidx{\(Nf\)：Newton 势}
+
+\begin{proposition}\label{b2:prop:13-newton-c1}
+上述积分在每个 \(x\) 绝对收敛，\(Nf\in C^1(\mathbb R^d)\)，并且
+\[
+ \partial_jNf(x)=\int\partial_j\Phi_d(x-y)\cdot f(y)\,\mathrm{d}y,
+ \quad-\Delta Nf=f
+\]
+后一等式取分布意义。
+\end{proposition}
+\begin{proof}
+固定 \(x\)。在 \(y=x\) 附近用 \(f\) 的本性界和 \(\Phi_d\) 的局部可积性，远处则用 \(f\) 的紧支集，故积分绝对收敛。对 \(z\ne0\)，两种维数下都有
+\[
+ \partial_j\Phi_d(z)=-\dfrac{z_j}{\sigma_{d-1}|z|^d},
+\]
+它也局部可积。该式同时给出分布的一阶导数：在挖去小球后分部积分，球面边界项由 \(|\Phi_d(\varepsilon)|\varepsilon^{d-1}\) 控制，随 \(\varepsilon\downarrow0\) 趋零。
+
+对局部 \(x\) 范围，截断核到一个固定大球即可计算卷积。局部可积核的平移在 \(L^1\) 中连续，因此核与有界 \(f\) 的卷积连续；对一阶导数核同样成立。由分布卷积的求导公式，这些连续函数是 \(Nf\) 的弱一阶导数。可用内部磨光并在坐标线段上取一致极限，说明连续弱导数就是经典导数，所以 \(Nf\in C^1\)。
+
+最后对 \(\varphi\in C_c^\infty\) 换序，
+\[
+ \int Nf(x)\cdot(-\Delta\varphi(x))\,\mathrm{d}x
+ =\int f(y)\left(\int\Phi_d(x-y)\cdot(-\Delta\varphi(x))\,\mathrm{d}x\right)\,\mathrm{d}y
+ =\int f(y)\varphi(y)\,\mathrm{d}y.
+\]
+两个紧区域内的核绝对积分有限，故换序合法；内层等式是基本解的定义。
+\end{proof}
+
+势在源区之外调和。其远处行为主要由总源量 \(M=\int f\) 决定：若支集包含于 \(B(0,R_0)\)，对 \(|x|>2R_0\) 用核的中值估计，可得
+\[
+ Nf(x)=\dfrac{M}{(d-2)\sigma_{d-1}}|x|^{2-d}+O(|x|^{1-d})\quad(d\geq3),
+\]
+而二维有 \(Nf(x)=-(M/(2\pi))\log|x|+O(|x|^{-1})\)。这里常数依赖密度的一阶绝对矩及支集范围；若 \(M=0\)，首项抵消，衰减随之改善。二维非零总源量通常产生对数增长，并非无穷远趋零的势。
+
+\ProseParagraphBreak
+
+一个具体模型是 \(d\geq3\)、\(f=\mathbf1_{B(0,R)}\)。旋转不变性使势只依赖 \(r=|x|\)。将径向方程 \(-(r^{d-1}u')'=r^{d-1}f(r)\) 分段积分，并要求中心有限、\(u,u'\) 在 \(R\) 处连续、无穷远趋零，得到
+\[
+ Nf(x)=
+ \begin{cases}
+ \dfrac{R^2}{2(d-2)}-\dfrac{r^2}{2d},&r\leq R,\\[4pt]
+ \dfrac{R^d}{d(d-2)}r^{2-d},&r\geq R.
+ \end{cases}
+\]
+这两个表达式的一阶导数在 \(R\) 处均为 \(-R/d\)，所以没有额外的球面源；二阶导数却不连续。它展示了有界密度产生 \(C^1\) 势但未必产生 \(C^2\) 势的边界。要识别此径向构造确为 \(Nf\)，注意它与前一命题的势之差连续、分布调和且无穷远趋零，由\cref{b2:prop:13-converse-mean}和 Liouville 定理，该差只能为零。
 
 \subsection{正则性初步}
 \label{b2:subsec:130304}
 
-待填充。
+为了再求一次导数，先保留 Hessian 核的角向抵消。对 \(z\ne0\)，令
+\[
+ K_{ij}(z)\coloneqq\dfrac1{\sigma_{d-1}}
+ \left(\dfrac{d z_i z_j}{|z|^{d+2}}-\dfrac{\delta_{ij}}{|z|^d}\right).
+\]
+它满足 \(|K_{ij}(z)|\leq C_d|z|^{-d}\)，但在每个以原点为中心的球面上的平均为零，因为 \(\int\theta_i\theta_j\,\mathrm{d}S=(\sigma_{d-1}/d)\delta_{ij}\)。
+
+\begin{lemma}\label{b2:lem:13-hessian-kernel}
+在分布意义下，
+\[
+ \partial_i\partial_j\Phi_d
+ =\operatorname{pv}K_{ij}-\dfrac{\delta_{ij}}d\delta_0,
+\]
+其中\term[zhu-zhi]{主值}[principal value]在本式中指挖去中心小球后取极限：
+\[
+ \langle\operatorname{pv}K_{ij},\varphi\rangle
+ =\lim_{\varepsilon\downarrow0}\int_{|z|>\varepsilon}K_{ij}(z)\varphi(z)\,\mathrm{d}z.
+\]
+\end{lemma}
+\begin{proof}
+在单位球内减去 \(\varphi(0)\)，球面平均为零使被减项的截断积分为零。其余部分满足 \(|\varphi(z)-\varphi(0)|\leq C|z|\)，与核相乘后绝对可积，所以主值存在。
+
+从 \(\partial_i\Phi_d=-z_i/(\sigma_{d-1}|z|^d)\) 出发，在小球外对 \(-\int\partial_i\Phi_d\partial_j\varphi\) 分部积分。体积项为 \(\int K_{ij}\varphi\)；内球的外法向为 \(-\theta\)，故需要减去的边界项为
+\[
+ \dfrac1{\sigma_{d-1}}\int_{\partial B(0,1)}\theta_i\theta_j\varphi(\varepsilon\theta)\,\mathrm{d}S_\theta
+ \longrightarrow\dfrac{\delta_{ij}}d\varphi(0).
+\]
+这给出原点项及其负号。将 \(i=j\) 后求和，主值核的迹为零，正好恢复 \(\Delta\Phi_d=-\delta_0\)。
+\end{proof}
+
+\begin{theorem}[Hölder 密度的 Newton 势]\label{b2:thm:13-newton-holder}
+若 \(f\in C_c^{0,\alpha}(\mathbb R^d)\)、\(0<\alpha\leq1\)，则 \(Nf\in C^2(\mathbb R^d)\)，且 \(-\Delta Nf=f\) 逐点成立。其二阶导数可写为
+\begin{equation}\label{b2:eq:13-newton-hessian}
+ \begin{aligned}
+ \partial_i\partial_jNf(x)={}&
+ \int_{|z|<1}K_{ij}(z)\bigl(f(x-z)-f(x)\bigr)\,\mathrm{d}z\\
+ &+\int_{|z|\geq1}K_{ij}(z)f(x-z)\,\mathrm{d}z
+ -\dfrac{\delta_{ij}}d f(x).
+ \end{aligned}
+\end{equation}
+\end{theorem}
+\begin{proof}
+近处的绝对值由 \(C_d[f]_{C^{0,\alpha}}|z|^{\alpha-d}\) 控制，其径向积分为 \(\int_0^1r^{\alpha-1}\,\mathrm{d}r<\infty\)。远处核没有局部奇性，且对紧的 \(x\) 范围，\(f(x-z)\) 只在一个固定有界 \(z\) 区域内非零。因此两个积分都绝对收敛，并由控制收敛连续依赖 \(x\)。
+
+前一引理与角向抵消给出该表达式作为分布二阶导数。也可先将 \(f\) 磨光，使用引理对光滑密度求导；磨光后的 Hölder 半范数受同一常数控制，上述可积界允许在局部取极限。由\cref{b2:prop:13-newton-c1}，一阶导数已连续；二阶弱导数又由连续函数给出，在坐标线段上对磨光函数的导数取一致极限，便知它们是经典二阶导数。最后对 \(i=j\) 求和，两个积分的核迹均为零，得到 \(-\Delta Nf=f\)。
+\end{proof}
+
+Hölder 条件在证明中只用于使 \(\int_0^1\omega_f(r)\,\mathrm{d}r/r\) 有限。因此同一证明也适用于具有这一 Dini 模连续度的紧支集连续密度。单纯连续性只保证 \(\omega_f(r)\to0\)，并不保证该积分有限。
+
+\ProseParagraphBreak
+
+确实，在二维原点附近令 \(r=|x|\)、\(\ell(r)=\log(e/r)\)，取
+\[
+ u(x)=(x_1^2-x_2^2)\log\ell(r),\quad u(0)=0.
+\]
+函数及其一阶导数在原点连续，因为它们分别为 \(O(r^2\log\ell(r))\) 和 \(O(r\log\ell(r))\)。对 \(r>0\)，极坐标计算给出
+\[
+ -\Delta u(x)=\left(\dfrac4{\ell(r)}+\dfrac1{\ell(r)^2}\right)\cos(2\theta),
+\]
+右侧在原点补零后连续。但沿 \(x_1\) 轴的二阶对称差商为 \(2\log\ell(|h|)\)，趋于无穷，所以 \(u\) 不属于 \(C^2\)。分部积分时小圆边界项趋零，故原点没有额外的点质量，等式确在分布意义下成立。
+
+\ProseParagraphBreak
+
+再乘一个在原点附近为 \(1\) 的光滑紧支集截断，可以将此例放到全平面，所得右端 \(f\) 仍连续且紧支集。如果 \(Nf\) 是 \(C^2\) 的，那么 \(u-Nf\) 连续且分布调和，因而光滑，就会迫使 \(u\) 为 \(C^2\)，矛盾。这个例子说明二阶奇核的抵消需要定量连续性；把“连续”直接当作“可在核下求两次导数”的许可，会遗漏实质条件。

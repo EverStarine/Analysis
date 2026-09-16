@@ -2,19 +2,103 @@
 \section{完备性}
 \label{b2:sec:1003}
 
-% TODO: 撰写本节正文。
-
 \subsection{紧算子方法}
 \label{b2:subsec:100301}
 
-待填充。
+算子 \(A\) 对高频求导，通常无界；其移位逆 \(K\) 则把输入积分两次，具有紧性。若一个有界线性算子把每个有界列送到有收敛子列的像列，则称它为\term[jin-suanzi]{紧算子}[compact operator]。这里调用第一卷定理 8.5.5 的紧自伴谱定理：紧自伴算子的非零特征向量张成核空间的正交补，每个非零特征值重数有限，唯一可能的聚点是零。应用前须核对紧性及核，而不能只从自伴性猜测完备性。
+
+\begin{theorem}[Sturm--Liouville 展开]\label{b2:thm:10-sl-spectral}
+在\cref{b2:def:10-sl-operator}的假设下，存在一组实的标准正交特征函数 \((e_n)_{n\geq1}\)，构成 \(H\) 的基。相应特征值可按严格递增次序排列为
+\[
+ -\sigma<\lambda_1<\lambda_2<\cdots,
+ \quad\lambda_n\longrightarrow+\infty.
+\]
+特别地，负特征值只有有限多个。每个 \(f\in H\) 都有
+\[
+ f=\sum_{n=1}^{\infty}f_ne_n,
+ \quad f_n=\langle f,e_n\rangle_H,
+ \quad\|f\|_H^2=\sum_{n=1}^{\infty}|f_n|^2,
+\]
+其中级数在 \(H\) 中收敛。
+\end{theorem}
+\begin{proof}
+将 \([a,b]^2\) 分成有限个小矩形，在每个矩形内以 \(G_\sigma\) 的一个取值近似它。连续性给出阶梯核 \(G_j\to G_\sigma\) 一致收敛。对应算子 \(K_j\) 的像落在有限个区间示性函数的张成空间内，因而有限秩。记 \(m_w=\int_a^bw\)，则
+\[
+ \|(K-K_j)f\|_H
+ \leq m_w\|G_\sigma-G_j\|_\infty\cdot\|f\|_H.
+\]
+故 \(K_j\to K\) 于算子范数，\(K\) 紧。第一卷紧自伴谱定理与\cref{b2:prop:10-green-resolvent}给出正特征值 \(\mu_n\) 及其标准正交特征向量；因 \(\ker K=0\)，这些向量在全部 \(H\) 中完备。这个列必须无穷，因为 \(H\) 无穷维，而有限秩算子不能在无穷维空间上单射。因此 \(\mu_n\to0\)。
+
+若 \(Ke_n=\mu_ne_n\)，则 \(e_n\in\operatorname{ran}K=D(A)\)，且 \(Ae_n=(\mu_n^{-1}-\sigma)e_n\)。反过来，任一 \(A\) 的特征向量都是 \(K\) 的特征向量。上一节的单重性使 \(\mu_n\) 无重复，并可取实特征函数；实系数常微分方程的左端初值先取为实数即可。按 \(\mu_n\) 递减排序，得到所述严格递增的 \(\lambda_n\)。完备性给出展开及 Parseval 等式。
+\end{proof}
+
+这里的两个谱极限方向相反：\(K\) 的小特征值对应 \(A\) 的大特征值。零始终是 \(K\) 的谱极限，却不是它的特征值；\(A\) 是否有零特征值，则取决于原方程及边界条件。移位只是为证明选择一个可逆点，并没有把物理模型中的零频率删去。
+
+\ProseParagraphBreak
+
+有限区间的假设不能仅从符号上删掉。考虑实线上 \(-u''+u=f\)，其平方可积解算子为与 \(k(x)=e^{-|x|}/2\) 卷积。分布求导给出 \(-k''+k=\delta_0\)，而 \(\widehat k(\xi)=(1+4\pi^2\xi^2)^{-1}\)，所以这是有界单射的解算子。然而它不紧：固定非零 \(f\in C_c^\infty\)，记 \(g=k*f\ne0\)。输入平移 \(f(\,\cdot-jR)\) 范数不变，输出为 \(g(\,\cdot-jR)\)。平方可积函数的远平移内积趋零，这可先把 \(g\) 在大紧区间外的平方尾截掉，再使用两个紧支集的分离证明。选足够稀疏的平移序列，输出两两距离便有同一个正下界，不可能有收敛子列。
+
+\ProseParagraphBreak
+
+这个反例中，局部积分仍然提高正则性，但函数可以向无穷远整体移动，阻止了全空间紧性。本章连续核在紧正方形上的有限秩逼近同时利用了局部平滑和空间范围有界；后一项在实线模型中消失。因而全空间的 Fourier 积分不能无条件改写成一列平方可积特征函数的展开。
 
 \subsection{特征函数展开}
 \label{b2:subsec:100302}
 
-待填充。
+为了使用展开求解方程，需要知道哪些系数列还可以求导。记 \(r_n=\lambda_n+\sigma\geq1\)，并令 \(P_Nf=\sum_{n=1}^Nf_ne_n\)。以下两个刻画区分算子定义域与能量空间。
+
+\begin{proposition}[定义域和能量的系数刻画]\label{b2:prop:10-spectral-domains}
+对 \(f\in H\)，有
+\[
+ f\in D(A)\quad\Longleftrightarrow\quad
+ \sum_n r_n^2|f_n|^2<\infty,
+\]
+此时 \(Af=\sum_n\lambda_nf_ne_n\) 在 \(H\) 中成立。又有
+\begin{equation}\label{b2:eq:10-form-parseval}
+ f\in V\quad\Longleftrightarrow\quad\sum_n r_n|f_n|^2<\infty,
+ \quad\mathfrak a_\sigma(f,f)=\sum_n r_n|f_n|^2.
+\end{equation}
+对应截断分别在定义域范数 \(\|f\|_H+\|Af\|_H\) 与 \(H^1(I)\) 范数中收敛。
+\end{proposition}
+\begin{proof}
+若 \(f\in D(A)\)，令 \(g=(A+\sigma I)f\)，则 \(f=Kg\)，系数关系为 \(g_n=r_nf_n\)。反过来，若 \((r_nf_n)\in\ell^2\)，它给出某个 \(g\in H\)，而 \(Kg\) 与 \(f\) 的全部系数相同，故 \(f=Kg\in D(A)\)。这也证明定义域范数中的截断收敛。
+
+\(V\) 是 \(H^1\) 的闭子空间，因为端点取值连续；由\cref{b2:lem:10-form-coercive}，\(\mathfrak a_\sigma\) 是它的一个等价 Hilbert 内积。函数 \(e_n/\sqrt{r_n}\) 在这个内积下标准正交。若 \(v\in V\) 与它们全部正交，分部积分给出
+\[
+ 0=\mathfrak a_\sigma(v,e_n)=r_n\langle v,e_n\rangle_H,
+\]
+而 \(H\) 中的完备性推出 \(v=0\)。所以它们也是 \(V\) 的标准正交基，\(V\) 中的 Fourier 系数为 \(\sqrt{r_n}v_n\)，由此得式\eqref{b2:eq:10-form-parseval}的正向及等式。反向中若加权和有限，\(P_Nf\) 在 \(V\) 中为 Cauchy 列，其 \(V\) 极限在 \(H\) 中只能为 \(f\)，故 \(f\in V\)。
+\end{proof}
+
+系数刻画也给出非齐次边值问题的完整可解条件。若实数 \(z\) 不等于任何 \(\lambda_n\)，则
+\[
+ u=\sum_n\dfrac{f_n}{\lambda_n-z}e_n
+\]
+属于 \(D(A)\)，并且 \((A-zI)u=f\)。因为 \(\lambda_n\to\infty\)，比值 \(r_n/|\lambda_n-z|\) 一致有界，定义域条件正由这个界保证。若 \(z=\lambda_k\)，可解当且仅当 \(f_k=0\)；满足这个条件时去掉第 \(k\) 项所得级数给出一个解，全部解还可加上任意倍 \(e_k\)。这里的自由常数来自齐次核，并非级数方法漏掉的解。
+
+\ProseParagraphBreak
+
+例如 Neumann 问题 \(-u''=f\) 的可解条件为 \(\int_0^\ell f=0\)，因为零特征函数为常数。将方程直接积分也得到这一条件；谱方法进一步给出它的充分性和除常数外的唯一性。取零均值解相当于在核的正交补中选取唯一代表。
 
 \subsection{Fourier 级数作为特殊情形}
 \label{b2:subsec:100303}
 
-待填充。
+对 \(p=w=1,q=0\)，\cref{b2:thm:10-sl-spectral}与显式计算给出正弦基、余弦基及混合边界基的完备性。正弦展开也可以把区间函数作奇延拓后由周期 Fourier 理论得到，余弦展开则对应偶延拓。两条路线各有用途：周期化便于使用卷积核和求和公式，Green 算子路线则能在 \(p,w,q\) 改变后继续成立。
+
+\ProseParagraphBreak
+
+能量刻画把熟悉的导数公式变成精确命题。对 \(f\in H_0^1(0,\ell)\)，其正弦系数满足
+\[
+ \int_0^\ell|f'|^2\,\mathrm{d}x
+ =\sum_{n\geq1}\left(\dfrac{n\pi}{\ell}\right)^2|f_n|^2.
+\]
+因而
+\[
+ \|f\|_2\leq\dfrac\ell\pi\|f'\|_2,
+\]
+等号恰在第一正弦模态及零函数处成立。Neumann 情形对零均值的 \(H^1\) 函数有同一最优常数，但不加零均值条件时常数函数使不等式失败。这些结论来自同一能量恒等式；边界值与均值限制决定了最低允许频率。
+
+\ProseParagraphBreak
+
+一般系数问题仍有 \(H\) 与 \(V\) 中的截断收敛，却不能仅由本章谱定理断言任意连续函数的原始特征函数级数处处收敛。正交完备、点态收敛与一致收敛是不同层次。下一节以范数极限解释演化方程，正是为避免把第一种结论误当成后两种。
+

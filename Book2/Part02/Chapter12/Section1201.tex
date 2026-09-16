@@ -2,24 +2,115 @@
 \section{分离变量法}
 \label{b2:sec:1201}
 
-% TODO: 撰写本节正文。
-
 \subsection{有界区间}
 \label{b2:subsec:120101}
 
-待填充。
+热传导中，温度梯度引起从高温向低温的通量。设细杆的热容量密度为 \(w(x)>0\)、传导系数为 \(p(x)>0\)，通量取 \(-p(x)u_x\)。无热源时，对任意子区间的热量平衡给出 \(wu_t=(pu_x)_x\)。若再有与温度成正比的损耗 \(q(x)u\)，则方程成为
+\[
+ wu_t=(pu_x)_x-qu,
+ \quad u_t+Au=0.
+\]
+在有限区间及\cref{b2:def:10-sl-operator}的连续系数、分离边界假设下，空间算子就是\chapref{b2:ch:10}建立的 Sturm--Liouville 算子。本节先取非负能量情形；例如 \(q\geq0\)，以及 Robin 系数非负。
+
+\ProseParagraphBreak
+
+对初温 \(f\in H=L^2(I,w\,\mathrm{d}x)\)，\cref{b2:prop:10-heat-energy-limit}给出
+\begin{equation}\label{b2:eq:12-interval-expansion}
+ u(t)=\sum_ne^{-\lambda_nt}f_ne_n,
+ \quad f_n=\langle f,e_n\rangle_H.
+\end{equation}
+它在零时以 \(H\) 范数取得初值，正时间属于 \(D(A)\)，并在 \(H\) 中满足方程；还在 \(L^2((0,T);V)\) 中具有有限能量。连续系数并不使空间解自动无限次可微：当 \(p\) 只有连续性时，正则性应以 \(pu_x\) 和 \(D(A)\) 表述。下面转到常系数杆，才进一步证明所有空间阶数的经典光滑性。
 
 \subsection{Fourier 级数}
 \label{b2:subsec:120102}
 
-待填充。
+在 \(0<x<\ell\) 上固定 \(\kappa>0\)，考虑 \(u_t=\kappa u_{xx}\)。齐次 Dirichlet 条件给出
+\begin{equation}\label{b2:eq:12-dirichlet-series}
+ u_D(t,x)=\sum_{n=1}^infty f_ne^{-\kappa(n\pi/\ell)^2t}
+ \sqrt{\dfrac2\ell}\sin\dfrac{n\pi x}{\ell}.
+\end{equation}
+齐次 Neumann 条件给出
+\begin{equation}\label{b2:eq:12-neumann-series}
+ u_N(t,x)=\overline f+
+ \sum_{n=1}^infty g_ne^{-\kappa(n\pi/\ell)^2t}
+ \sqrt{\dfrac2\ell}\cos\dfrac{n\pi x}{\ell},
+ \quad\overline f=\dfrac1\ell\int_0^\ell f.
+\end{equation}
+其中 \(f_n,g_n\) 分别为正弦和非零余弦系数。常数项来自零模态；它不随时间衰减。
+
+\begin{proposition}[正时间的经典解]\label{b2:prop:12-interval-smooth}
+若 \(f\in L^2(0,\ell)\)，上面两个级数及其任意有限阶 \(x,t\) 导数在 \([\delta,T]\times[0,\ell]\) 上绝对一致收敛，其中 \(0<\delta<T\)。因此它们在正时间光滑，满足各自方程和边界条件。
+\end{proposition}
+\begin{proof}
+求 \(j\) 次空间导数及 \(m\) 次时间导数只会把第 \(n\) 项乘以至多 \(C_{j,m}n^{j+2m}\)。Cauchy--Schwarz 给出统一可和上界
+\[
+ \sum_{n\geq1}|f_n|n^{j+2m}e^{-c\delta n^2}
+ \leq\left(\sum_{n\geq1}|f_n|^2\right)^{1/2}
+ \left(\sum_{n\geq1}n^{2j+4m}e^{-2c\delta n^2}\right)^{1/2}<\infty.
+\]
+余弦系数的证明相同。每个阶数都有相应一致收敛，故逐项微分合法。有限项已经满足方程和边界条件，极限保持它们。
+\end{proof}
+
+例如两端温度固定为零，初温在杆内恒为 \(1\)，则
+\[
+ u_D(t,x)=\dfrac4\pi\sum_{j=0}^{\infty}
+ \dfrac{e^{-\kappa((2j+1)\pi/\ell)^2t}}{2j+1}
+ \sin\dfrac{(2j+1)\pi x}{\ell}.
+\]
+正时间的端点值为零，而零时的 \(L^2\) 初温仍是常数一。它不可能在闭区间上随着 \(t\downarrow0\) 一致趋于一，因为端点值始终为零；初边值在角点不相容并不妨碍平方能量解存在。
 
 \subsection{边界条件}
 \label{b2:subsec:120103}
 
-待填充。
+周期热核提供另一种表示。沿用第一编的实线核 \(H_s(x)=(4\pi s)^{-1/2}e^{-x^2/(4s)}\)，定义
+\begin{align*}
+ K_D(t,x,y)&=\sum_{m\in\mathbb Z}
+ \left(H_{\kappa t}(x-y+2m\ell)-H_{\kappa t}(x+y+2m\ell)\right),\\
+ K_N(t,x,y)&=\sum_{m\in\mathbb Z}
+ \left(H_{\kappa t}(x-y+2m\ell)+H_{\kappa t}(x+y+2m\ell)\right).
+\end{align*}
+则 \(u_D(t,x)=\int_0^\ell K_D(t,x,y)\cdot f(y)\,\mathrm{d}y\)，Neumann 情形用 \(K_N\)。两式分别来自 \(f\) 的奇延拓、偶延拓及 \(2\ell\) 周期化；将卷积在每个周期分割后换元即得。高斯尾保证对正时间紧区间的一切求和与微分可交换。第一编的周期 Fourier 系数唯一性证明它们与式\eqref{b2:eq:12-dirichlet-series}、式\eqref{b2:eq:12-neumann-series}一致。
+
+\ProseParagraphBreak
+
+这两个空间表达式在小时间有直接用途：附近的镜像点控制边界影响，远处项指数小。大时间则应使用特征级数，只保留低频项。由于奇延拓与偶延拓在有限 \(p\) 范数中有界，周期热核逼近还给出 \(f\in L^p(0,\ell)\)、\(1\leq p<\infty\) 时的初值收敛。Dirichlet 的闭区间一致收敛要求 \(f\) 连续且两端为零；Neumann 情形对任意连续 \(f\) 都成立，零时不要求导数边界相容。
+
+\ProseParagraphBreak
+
+非齐次端点先用提升处理。例如 \(u(t,0)=a(t)\)、\(u(t,\ell)=b(t)\)，其中 \(a,b\in C^1\)，令
+\[
+ r(t,x)=a(t)\left(1-\dfrac x\ell\right)+b(t)\dfrac x\ell,
+ \quad v=u-r.
+\]
+那么 \(v\) 的边界为零，且 \(v_t-\kappa v_{xx}=-r_t\)。记源项正弦系数为 \(F_n(t)\)，逐模态公式为
+\[
+ v_n(t)=e^{-\kappa\lambda_nt}v_n(0)
+ +\int_0^te^{-\kappa\lambda_n(t-s)}F_n(s)\,\mathrm{d}s.
+\]
+对 \(F\in C([0,T];L^2)\)，积分项的平方范数由 \(\int_0^t\|F(s)\|_2\,\mathrm{d}s\) 控制，有限截断因紧时间区间上的连续像为紧集而一致逼近。因而该公式给出 \(C([0,T];L^2)\) 中的解；不能只因源项连续就额外断言所有高阶导数连续。
+
+\ProseParagraphBreak
+
+Robin 条件的解仍用式\eqref{b2:eq:12-interval-expansion}。热量是否守恒取决于通量：常系数时
+\[
+ \dfrac{\mathrm{d}}{\mathrm{d}t}\int_0^\ell u
+ =\kappa\left(u_x(t,\ell)-u_x(t,0)\right).
+\]
+Neumann 的两项为零；Robin 的两项给出端点散热；Dirichlet 固定端温却不固定通量，不能由齐次边界推出总热量不变。
 
 \subsection{长时间行为}
 \label{b2:subsec:120104}
 
-待填充。
+\begin{proposition}[趋向零模态]\label{b2:prop:12-long-time}
+设本节的空间算子非负，\(P_0\) 为到零特征空间的正交投影；若没有零特征值则 \(P_0=0\)。记最小正特征值为 \(\lambda_+\)。则
+\[
+ \|u(t)-P_0f\|_H\leq e^{-\lambda_+t}\|f-P_0f\|_H.
+\]
+常系数 Dirichlet 情形 \(P_0f=0\)，Neumann 情形 \(P_0f=\overline f\)；两者 \(\lambda_+=\kappa\pi^2/\ell^2\)。
+\end{proposition}
+\begin{proof}
+将零模态从展开中分离，剩余每个系数的平方都乘以不大于 \(e^{-2\lambda_+t}\) 的因子，求和即得。最小正特征值存在由\cref{b2:thm:10-sl-spectral}保证。
+\end{proof}
+
+对常系数区间，这还给出 \(t\geq1\) 时的一致收敛：先演化至 \(t-1\)，再由固定时间一的核把 \(L^2\) 误差送到一致范数；Cauchy--Schwarz 与正时间可和尾给出固定的 \(L^2\to L^\infty\) 界。若初值恰与最低正模态正交，衰减速度由下一项非零系数决定。正 Robin 系数排除常数零模态，故最终冷却到零；出现负特征值时却可有指数增长，不能继续使用本命题。
+

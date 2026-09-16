@@ -2,29 +2,180 @@
 \section{温和分布}
 \label{b2:sec:0503}
 
-% TODO: 撰写本节正文。
+第一卷把分布定义为紧支集测试函数上的连续线性泛函。Schwartz 测试函数虽然允许无穷支集，却对无穷远有很强的控制。改用这个空间之后，可以定义一类在 Fourier 变换下封闭的分布。
 
-\subsection{\texorpdfstring{\(\mathcal S'\)}{'}}
+\subsection{Schwartz 空间的连续对偶}
 \label{b2:subsec:050301}
 
-待填充。
+\begin{definition}\label{b2:def:05-tempered}
+若复线性泛函 \(T:\mathcal S(\mathbb R^d)\to\mathbb C\) 连续，则称它为\term[wenhe-fenbu]{温和分布}[tempered distribution]。所有温和分布组成空间 \(\mathcal S'(\mathbb R^d)\)，配对记为 \(\langle T,\varphi\rangle=T(\varphi)\)，对两个变量均线性。若对每个 \(\varphi\in\mathcal S\) 都有 \(\langle T_n,\varphi\rangle\to\langle T,\varphi\rangle\)，本章称 \(T_n\to T\) 于 \(\mathcal S'\)。
+\end{definition}
+\symidx{\(\mathcal S'(\mathbb R^d)\)：温和分布空间}
+
+\begin{proposition}\label{b2:prop:05-tempered-estimate}
+线性泛函 \(T\) 连续，当且仅当存在非负整数 \(m\) 和常数 \(C\)，使
+\[
+ |\langle T,\varphi\rangle|\leq C\cdot p_m(\varphi)\quad(\varphi\in\mathcal S).
+\]
+\end{proposition}
+\begin{proof}
+该估计使收敛到零的测试函数列被送到零，故给出连续性。反之，零点连续性保证某个由有限多个半范数约束构成的邻域被送入单位圆盘。由于 \(p_m\) 递增，可用一个条件 \(p_m(\varphi)<\delta\) 包含于该邻域。对非零 \(\varphi\) 将其乘以 \(\delta/(2p_m(\varphi))\)，利用线性即得所需估计。若 \(p_m(\varphi)=0\)，则 \(p_0(\varphi)=0\)，所以 \(\varphi=0\)。
+\end{proof}
+
+John K. Hunter 与 Bruno Nachtergaele 的《Applied Analysis》\cite[Section 11.2, p. 291; p. 294]{Hunter2001Applied}可用于对照这一有限半范数估计与双线性配对。这里的括号不是复 Hilbert 内积；给测试函数加复共轭会改变后面的变换定义和符号。
+
+\begin{proposition}\label{b2:prop:05-regular-tempered}
+每个 \(f\in L^p(\mathbb R^d)\)、\(1\leq p\leq\infty\)，都通过
+\[
+ \langle T_f,\varphi\rangle\coloneqq\int f(x)\cdot\varphi(x)\,\mathrm{d}x
+\]
+定义一个温和分布。更一般地，若 \(f\) 局部可积且对某个 \(N\) 有 \(\int|f(x)|(1+|x|)^{-N}\,\mathrm{d}x<\infty\)，同一公式仍定义温和分布。
+\end{proposition}
+\begin{proof}
+第一项由 Hölder 及 \(\mathcal S\to L^{p'}\) 的连续包含得到；两个端点分别用上确界或绝对积分控制。第二项则由
+\[
+ |\langle T_f,\varphi\rangle|
+ \leq p_N(\varphi)\int|f(x)|(1+|x|)^{-N}\,\mathrm{d}x
+\]
+直接得到。可积性也由同一估计保证。
+\end{proof}
+
+温和分布可限制到 \(\mathcal D=C_c^\infty\)，成为第一卷意义下的分布；共同紧支集上的全部导数收敛蕴含 Schwartz 收敛，故限制连续。限制还是单射，因为 \(\mathcal D\) 在 \(\mathcal S\) 中稠密。但并非每个普通分布都温和。例如一维的 \(e^{x^2}\) 局部可积，定义一个普通分布；对非负光滑小支集函数 \(\rho\not\equiv0\)，令 \(\varphi_n(x)=e^{-n}\rho(x-n)\)，则每个 \(p_m(\varphi_n)\to0\)，而 \(\int e^{x^2}\varphi_n(x)\,\mathrm{d}x\to\infty\)。因此这个普通分布不可能连续延拓到 \(\mathcal S\)。
 
 \subsection{Fourier 变换}
 \label{b2:subsec:050302}
 
-待填充。
+\begin{definition}\label{b2:def:05-distribution-transform}
+对 \(T\in\mathcal S'\)，定义其 Fourier 变换为
+\begin{equation}\label{b2:eq:05-distribution-transform}
+ \langle\widehat T,\varphi\rangle\coloneqq\langle T,\widehat\varphi\rangle
+ \quad(\varphi\in\mathcal S).
+\end{equation}
+\end{definition}
+
+\begin{theorem}\label{b2:thm:05-distribution-automorphism}
+上述定义给出 \(\mathcal S'\) 的线性双射，保持本章所规定的分布收敛，且
+\[
+ \widehat{\widehat T}=RT,\quad
+ \langle RT,\varphi\rangle=\langle T,\varphi(-\cdot)\rangle.
+\]
+它与 \(L^1\)、\(L^2\) 及 \(1<p<2\) 的 Fourier 变换在各自定义域上一致。
+\end{theorem}
+\begin{proof}
+Schwartz 变换连续，故 \(\varphi\mapsto\langle T,\widehat\varphi\rangle\) 是连续线性泛函。两次作用给出 \(\langle\widehat{\widehat T},\varphi\rangle=\langle T,\widehat{\widehat\varphi}\rangle=\langle T,\varphi(-\cdot)\rangle\)。因此四次作用为恒等，线性双射成立。若 \(T_n\to T\)，将固定的 \(\widehat\varphi\in\mathcal S\) 代入收敛定义便知 \(\widehat T_n\to\widehat T\)。
+
+当 \(f\in L^1\) 时，Fubini 给出 \(\int\widehat f\varphi=\int f\widehat\varphi\)，重积分绝对值由 \(\|f\|_1\cdot\|\varphi\|_1\) 控制。\(L^2\) 情形取可积平方可积函数逼近，原空间和频率侧分别用 Cauchy--Schwarz 取极限。\(1<p<2\) 情形用 Hölder 与 Hausdorff--Young 作相同的共同稠密类极限。因此各定义相容。
+\end{proof}
+
+对 \(p>2\)，同一配对仍定义 \(\widehat {T_f}\)，却不保证它由 \(L^{p'}\) 函数表示。至此可以把\chapref{b2:ch:04}的范数障碍与变换仍然存在这两件事同时准确表达。
 
 \subsection{Dirac 测度}
 \label{b2:subsec:050303}
 
-待填充。
+对 \(a\in\mathbb R^d\)，\term[dirac-cedu]{Dirac 测度}[Dirac measure]通过 \(\langle\delta_a,\varphi\rangle=\varphi(a)\) 作用；其绝对值由 \(p_0(\varphi)\) 控制，所以温和。由定义，
+\[
+ \widehat\delta_a(\xi)=e^{-2\pi\mathrm{i}a\cdot\xi},
+ \quad\widehat\delta_0=1,\quad\widehat1=\delta_0.
+\]
+第一式由 \(\widehat\varphi(a)\) 的积分直接得到，最后一式则由测试函数反演给出 \(\int\widehat\varphi=\varphi(0)\)。常函数的普通 Fourier 积分不绝对收敛，但其分布变换恰为零频率的点质量。
+\symidx{\(\delta_a\)：位于 \(a\) 的 Dirac 测度}
+
+\ProseParagraphBreak
+
+对 Gauss 核，\(G_\varepsilon\to\delta_0\) 于 \(\mathcal S'\)，因为 \(\int G(z)\varphi(\varepsilon z)\,\mathrm{d}z\to\varphi(0)\)。其变换 \(e^{-\pi\varepsilon^2|\xi|^2}\) 相应趋于常函数 \(1\)。空间质量集中与频率展平在分布框架中成为同一个连续变换下的极限。
 
 \subsection{多项式}
 \label{b2:subsec:050304}
 
-待填充。
+沿用第一卷定义 20.2.10 的分布微分约定，并对本章允许的乘子定义乘法：
+\[
+ \langle\partial^\alpha T,\varphi\rangle
+ =(-1)^{|\alpha|}\langle T,\partial^\alpha\varphi\rangle,
+ \quad\langle aT,\varphi\rangle=\langle T,a\varphi\rangle.
+\]
+Schwartz 空间上的连续操作保证右侧仍是温和分布。将测试函数变换公式代入配对，可得
+\begin{equation}\label{b2:eq:05-distribution-operations}
+ \mathcal F(\partial^\alpha T)=(2\pi\mathrm{i}\xi)^\alpha\widehat T,
+ \quad
+ \mathcal F(x^\alpha T)=\left(\dfrac{\mathrm{i}}{2\pi}\right)^{|\alpha|}\partial^\alpha\widehat T.
+\end{equation}
+例如第一阶的第一式来自 \(-\partial_x\widehat\varphi=\mathcal F(2\pi\mathrm{i}\xi\varphi)\)；第二式由 \(\widehat{\partial\varphi}=2\pi\mathrm{i}x\widehat\varphi\) 和分布导数中的负号得到。于是
+\[
+ \widehat{\partial^\alpha\delta_0}=(2\pi\mathrm{i}\xi)^\alpha,
+ \quad
+ \widehat{x^\alpha}=\left(\dfrac{\mathrm{i}}{2\pi}\right)^{|\alpha|}\partial^\alpha\delta_0.
+\]
+多项式的频率支集因此集中在原点，而不是一个普通可积函数的支集。
+
+
+分布导数还保留 Leibniz 法则。若 \(a\) 及其各阶导数至多多项式增长，则对一阶导数有
+\[
+ \partial_j(aT)=(\partial_ja)T+a\partial_jT.
+\]
+确实，对测试函数 \(\varphi\)，右侧的配对为 \(\langle T,(\partial_ja)\varphi-\partial_j(a\varphi)\rangle=-\langle T,a\partial_j\varphi\rangle\)，等于左侧。迭代即可得到带多项式组合系数的高阶公式。
+
+\ProseParagraphBreak
+
+一个可跟算的例子是一维阶跃函数 \(H=\mathbf1_{(0,\infty)}\)。它有界，故定义温和分布；分部积分给出 \(\langle H',\varphi\rangle=-\int_0^\infty\varphi'=\varphi(0)\)，因此 \(H'=\delta_0\)。若函数在有限个点有跳跃，在各段绝对连续，且函数及各段导数满足所需的多项式加权可积性，则逐段积分给出
+\[
+ Df=f'_{\mathrm{pieces}}+\sum_a(f(a+)-f(a-))\delta_a.
+\]
+跳跃系数由右值减左值决定；即使普通导数几乎处处为零，分布导数也可能非零。这个计算解释了点质量在边界条件和基本解中出现的方式。
 
 \subsection{齐次分布}
 \label{b2:subsec:050305}
 
-待填充。
+\begin{definition}\label{b2:def:05-homogeneous}
+对 \(\lambda>0\)，规定缩放分布满足
+\[
+ \langle T(\lambda\cdot),\varphi\rangle
+ =\lambda^{-d}\langle T,\varphi(\cdot/\lambda)\rangle.
+\]
+若对所有 \(\lambda>0\) 有 \(T(\lambda\cdot)=\lambda^sT\)，则称 \(T\) 为 \(s\) 阶\term[qici-fenbu]{齐次分布}[homogeneous distribution]。
+\end{definition}
+
+\begin{proposition}\label{b2:prop:05-homogeneous-transform}
+若温和分布 \(T\) 为 \(s\) 阶齐次，则 \(\widehat T\) 为 \(-d-s\) 阶齐次。
+\end{proposition}
+\begin{proof}
+对测试函数作变量替换，得到分布伸缩公式
+\[
+ \mathcal F(T(\lambda\cdot))
+ =\lambda^{-d}\widehat T(\cdot/\lambda).
+\]
+左侧由齐次性等于 \(\lambda^s\widehat T\)，所以 \(\widehat T(\cdot/\lambda)=\lambda^{d+s}\widehat T\)。以 \(\lambda^{-1}\) 代替 \(\lambda\)，即得结论。
+\end{proof}
+
+例如 \(\delta_0\) 的阶为 \(-d\)，变换常数的阶为 \(0\)；\(m\) 次齐次多项式的阶为 \(m\)，其变换的阶为 \(-d-m\)。函数 \(|x|^s\) 在 \(s>-d\) 时局部可积、无穷远至多多项式增长，所以定义温和齐次分布。若 \(s\leq-d\)，原点积分发散，不能继续把同一个积分式当作分布定义；需要指定延拓方法，并检查可能增加的原点项。
+
+
+
+\begin{proposition}\label{b2:prop:05-tempered-convolution}
+若 \(T\in\mathcal S'\)、\(\varphi\in\mathcal S\)，则
+\[
+ (T*\varphi)(x)\coloneqq\langle T_y,\varphi(x-y)\rangle
+\]
+定义一个光滑函数，其每个导数至多多项式增长，并且
+\[
+ \mathcal F(T*\varphi)=\widehat\varphi\,\widehat T
+\]
+在温和分布意义下成立。
+\end{proposition}
+\begin{proof}
+设 \(|\langle T,\psi\rangle|\leq Cp_m(\psi)\)。由 \(1+|y|\leq(1+|x|)(1+|x-y|)\)，平移测试函数的半范数至多为 \((1+|x|)^m p_m(\varphi)\)。其关于 \(x\) 的任意阶差商在 \(\mathcal S\) 中趋于相应导数；用 Taylor 余项和较高阶半范数即可验证。因此 \(T*\varphi\) 光滑，且
+\[
+ |\partial^\alpha(T*\varphi)(x)|
+ \leq C(1+|x|)^m p_{m+|\alpha|}(\varphi).
+\]
+这保证它也定义温和分布。
+
+对 \(\psi\in\mathcal S\)，要计算变换配对，可将连续泛函移过积分
+\(\int\varphi(x-\cdot)\widehat\psi(x)\,\mathrm{d}x\)：每个半范数下的被积量都由多项式乘 \(|\widehat\psi|\) 控制，因而可积；先在有界区域用 Riemann 和逼近，再估计外部的半范数尾，即可证明该交换合法。内层函数经普通 Fubini 化为
+\[
+ \int\varphi(x-y)\widehat\psi(x)\,\mathrm{d}x
+ =\mathcal F(\widehat\varphi\,\psi)(y).
+\]
+因此 \(\langle\mathcal F(T*\varphi),\psi\rangle=\langle T,\mathcal F(\widehat\varphi\psi)\rangle=\langle\widehat T,\widehat\varphi\psi\rangle\)，即得结论。
+\end{proof}
+
+这里一般只得到多项式增长，不能断言卷积仍为 Schwartz 函数。例如 \(T=1\)、\(\int\varphi=1\) 时，\(T*\varphi=1\)。任意两个温和分布之间则没有普遍可定义的卷积；一方为 Schwartz 函数是本命题中保证配对及积分操作成立的条件。

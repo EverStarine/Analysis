@@ -2,24 +2,170 @@
 \section{高维情形}
 \label{b2:sec:1103}
 
-% TODO: 撰写本节正文。
+维数进入球平均的径向系数，也进入初速度传播核的支集。以下先把三维结果降到二维，再给出任意奇偶维的表示。最后改用 Fourier 变换构造有限能量解，使点值表示、分布基本解与范数演化得到同一个接口。
 
 \subsection{奇偶维差异}
 \label{b2:subsec:110301}
 
-待填充。
+设 \(f,g\) 为 \(\mathbb R^2\) 上的光滑函数，把它们延拓为与第三坐标无关的函数。三维 Kirchhoff 公式显然也与第三坐标无关，因此给出二维解。单位球面的上下半球是 \((z,\pm\sqrt{1-|z|^2})\)，其面积元分别为 \((1-|z|^2)^{-1/2}\,\mathrm{d}z\)，故
+\[
+ M_{ct}^{(3)}\widetilde h(x,0)=\dfrac1{2\pi}
+ \int_{|z|<1}\dfrac{h(x+ctz)}{\sqrt{1-|z|^2}}\,\mathrm{d}z.
+\]
+这里上标只用来区别球平均所处的维数。
+
+\begin{theorem}[Poisson，二维波方程]\label{b2:thm:11-poisson-wave}
+对二维光滑初值 \(f,g\)，唯一经典解为 \(u=\partial_tS_2(t)f+S_2(t)g\)，其中 \(t>0\) 时
+\begin{equation}\label{b2:eq:11-two-dimensional}
+ S_2(t)h(x)\coloneqq\dfrac1{2\pi c}
+ \int_{|y-x|<ct}\dfrac{h(y)}{\sqrt{c^2t^2-|y-x|^2}}\,\mathrm{d}y.
+\end{equation}
+在 \(t=0\) 通过连续极限和时间导数恢复初值。
+\end{theorem}
+\begin{proof}
+将上面的投影公式代入三维表示，先得到单位圆盘上 \(t/(2\pi)\) 乘加权积分。换元 \(y=x+ctz\) 后，二维体积因子为 \(c^2t^2\)，平方根带来 \(ct\)，得到\eqref{b2:eq:11-two-dimensional}。存在性和初值来自三维解，唯一性来自\cref{b2:prop:11-local-energy}。在单位圆盘的表达式里，权重固定且可积，光滑数据的时间求导有紧域上的共同控制；不应对移动圆盘上的奇异积分不加说明地直接使用边界求导公式。
+\end{proof}
+
+这称为二维波方程的\term[poisson-bodong-gongshi]{Poisson 公式}[Poisson's formula for the wave equation]，与调和函数的 Poisson 积分公式是不同的表示。若 \(f=0\)、\(g\geq0\) 光滑紧支撑且非零，对固定 \(x\) 和充分大的 \(t\)，整个初速度支集都位于积分圆盘内，而核严格为正，故 \(u(t,x)>0\)。二维波在经过以后留下逐渐减小的尾部。
+
+\ProseParagraphBreak
+
+任意奇维同样可由球平均给出有限阶微分表示。以下使用光滑数据以避免与维数有关的有限阶可微性记账；低正则数据随后在能量空间中单独处理。令 \(D_t=t^{-1}\partial_t\)，并约定空次幂为恒等算子，\((2m-1)!!=1\cdot3\cdots(2m-1)\)。
+
+\begin{theorem}[奇维球面表示]\label{b2:thm:11-odd-wave}
+设 \(n=2m+1\geq3\)，初值光滑。在 \(t>0\) 定义
+\begin{equation}\label{b2:eq:11-odd-wave}
+ S_n(t)h\coloneqq\dfrac1{(2m-1)!!}
+ D_t^{m-1}\bigl(t^{2m-1}M_{ct}h\bigr).
+\end{equation}
+则 \(u=\partial_tS_n(t)f+S_n(t)g\) 为唯一经典解。初速度传播只依赖 \(\partial B_{ct}(x)\) 上有限阶的初值导数。
+\end{theorem}
+\begin{proof}
+对 \(a(t,x)=M_{ct}h(x)\)，球平均恒等式成为
+\[
+ a_{tt}+\dfrac{2m}{t}a_t=c^2\Delta_xa.
+\]
+记 \(T_ma=D_t^{m-1}(t^{2m-1}a)\)。所需的微分恒等式为
+\[
+ (\partial_t^2-c^2\Delta_x)T_ma
+ =T_m\left(a_{tt}+\dfrac{2m}{t}a_t-c^2\Delta_xa\right).
+\]
+可用乘积法则逐阶建立：\(D_t(t^ka)=kt^{k-2}a+t^{k-1}a_t\)，因而
+\(T_m=t\prod_{j=1}^{m-1}(t\partial_t+2j+1)\)。把 \(t\partial_t\) 移过 \(t^k\) 时，按 \((t\partial_t)t^k=t^k(t\partial_t+k)\) 增加 \(k\)，两边即得到相同因子。比如 \(m=2\) 时 \(T_2a=3ta+t^2a_t\)，两边的时间项均为 \(t^2a_{ttt}+7ta_{tt}+8a_t\)。因此 \(S_n(t)h\) 满足波方程。
+
+球平均为光滑偶函数，所以 \(a(t,x)=h(x)+O(t^2)\)，而此展开可在任意所需有限阶微分后继续使用。对常数项施加 \(T_m\) 得到 \((2m-1)!!\,t\cdot h\)，余项为 \(O(t^3)\)。于是 \(S_n(0)h=0\)、\(\partial_tS_n(0)h=h\)、\(\partial_t^2S_n(0)h=0\)。据此检验 \(u\) 的两项初值。唯一性仍由局部能量给出。最后，时间求导只改变球面半径及被积函数的有限阶导数，不把取值位置移入球内，故支集陈述成立。
+\end{proof}
+
+偶维 \(n=2m\geq2\) 从 \(n+1\) 维降下来。单位球面投影的同一计算给出
+\begin{equation}\label{b2:eq:11-even-wave}
+ S_n(t)h(x)=\dfrac2{(2m-1)!!\,\sigma_{2m}}
+ D_t^{m-1}\left(t^{2m-1}
+ \int_{|z|<1}\dfrac{h(x+ctz)}{\sqrt{1-|z|^2}}\,\mathrm{d}z\right).
+\end{equation}
+分母中的 \(\sigma_{2m}\) 是高一维单位球面的面积。公式的存在性、初值与唯一性由奇维结果和降维法得到；\(m=1\) 时恰好回到二维 Poisson 公式。\cref{b2:fig:11-kernel-support}将三维球面支集与二维圆盘支集并列，后者不能由前者简单删去一个坐标符号得到。
+\input{Figures/F11-kernel-support}
 
 \subsection{基本解}
 \label{b2:subsec:110302}
 
-待填充。
+为避免混同两个对象，先固定正时间 \(t\)。把 \(S_n(t)\) 的卷积核记为 \(K_{n,c}(t,\cdot)\)，即对光滑测试函数 \(h\)，有 \(S_n(t)h=K_{n,c}(t,\cdot)*h\)。球面或圆盘公式及其有限阶导数，使该核成为一个紧支集分布。前两种显式形式为
+\[
+ K_{3,c}(t,\cdot)=\dfrac1{4\pi c^2t}\,\sigma_{ct},\quad
+ K_{2,c}(t,x)=\dfrac{\mathbf1_{\{|x|<ct\}}}{2\pi c\sqrt{c^2t^2-|x|^2}},
+\]
+其中 \(\sigma_{ct}\) 为球面 \(\partial B_{ct}(0)\) 上的面积测度。两者对常数一的作用都为 \(t\)，它们是初速度核，不是单位质量的位移核。
+
+\ProseParagraphBreak
+
+再把这个核对负时间补零，记所得时空分布为 \(E_{n,c}\)。具体地，对时空测试函数 \(\varphi\)，规定
+\[
+ \langle E_{n,c},\varphi\rangle
+ =\int_0^\infty\langle K_{n,c}(t,\cdot),\varphi(t,\cdot)\rangle\,\mathrm{d}t.
+\]
+零时刻 \(K(0)=0\)、\(\partial_tK(0)=\delta_0\) 的意义由对每个空间测试函数的极限给出。这里的分布配对仍采用双线性约定。
+
+\begin{proposition}[延迟基本解]\label{b2:prop:11-retarded-fundamental}
+时空分布 \(E_{n,c}\) 满足
+\[
+ (\partial_t^2-c^2\Delta_x)E_{n,c}=\delta_{(0,0)},\quad
+ \operatorname{supp}E_{n,c}\subseteq\{\,(t,x):t\geq0,\ |x|\leq ct\,\}.
+\]
+对光滑外力和零初值，解为 \(\int_0^tS_n(t-s)F(s)\,\mathrm{d}s\)。
+\end{proposition}
+\begin{proof}
+在 \(t>0\) 时，各维表示都满足齐次波方程。对时间积分分部两次，负半轴上的零延拓不产生位移跳跃，因为 \(K(0)=0\)；速度跳跃则为 \(\delta_0\)，给出时空原点的点质量。等价地，截断积分到 \(t\geq\varepsilon\)，其边界项为 \(\langle K_t(\varepsilon),\varphi(\varepsilon)\rangle-\langle K(\varepsilon),\varphi_t(\varepsilon)\rangle\)，在 \(\varepsilon\downarrow0\) 时趋于 \(\varphi(0,0)\)。传播支集来自固定时间核的球或球面支集；时间微分不会扩大闭支集。外力表达式的验证与\cref{b2:thm:09-duhamel}相同：第二次时间求导在积分上限产生 \(F(t)\)，其余项由齐次方程抵消。
+\end{proof}
+
+这一基本解因支集限制在未来而称为\term[yanchi-jibenjie]{延迟基本解}[retarded fundamental solution]。它的时空支集与某个给定初值所产生的解的支集不同，不能把基本解的整个传播区域误当成任意解必定非零的区域。
+
+\ProseParagraphBreak
+
+奇维 \(n\geq3\) 的固定时间核支撑在球面上；偶维核则具有球内尾部。后一个事实也可从\eqref{b2:eq:11-even-wave}精确读取：只在开球 \(|x|<ct\) 内考察其分布限制，换元后再对 \(t\) 求导得到光滑函数
+\[
+ K_{n,c}(t,x)=\dfrac{2(-1)^{(n-2)/2}}{(n-1)\sigma_n c}
+ \bigl(c^2t^2-|x|^2\bigr)^{-(n-1)/2},\quad n\geq2\text{ 为偶数}.
+\]
+它在球内处处非零。对于 \(n\geq4\)，这个表达式在球面附近不再局部可积，因而只描述核在开球内部的限制；完整核必须按圆盘公式的分布微分解释，不能把这一个发散函数直接当作整个核积分。奇维无尾也不包括一维：\chapref{b2:ch:09}的初速度核是区间示性函数除以 \(2c\)。
 
 \subsection{Fourier 方法}
 \label{b2:subsec:110303}
 
-待填充。
+球面表示显示几何，频率表示则统一各维数。沿用第一编的 \(2\pi\) 归一化，记 \(\rho(\xi)=2\pi c|\xi|\)。对 Schwartz 初值作空间变换，方程成为
+\[
+ \partial_t^2\widehat u(t,\xi)+\rho(\xi)^2\widehat u(t,\xi)=0,
+\]
+所以
+\begin{equation}\label{b2:eq:11-fourier-wave}
+ \widehat u(t,\xi)=\cos(t\rho)\cdot\widehat f(\xi)
+             +\dfrac{\sin(t\rho)}{\rho}\cdot\widehat g(\xi).
+\end{equation}
+商在 \(\rho=0\) 处取值 \(t\)。它是可去奇点，不能因此对初速度附加零均值条件。
+
+\ProseParagraphBreak
+
+这些乘子也与前面的各维公式一致。对一个平面波 \(h(x)=e^{2\pi\mathrm{i}x\cdot\xi}\)，球面或圆盘算子仍给同一平面波乘一个标量；这个标量满足初值为 \((0,1)\) 的上述常微分方程，因此等于 \(\sin(t\rho)/\rho\)。Schwartz 反演把一般 \(h\) 写成平面波积分，快速下降控制表示中有限阶导数引入的频率幂，故可以交换积分和这些导数。于是两条构造路线在共同的光滑数据类上相同。
+
+\begin{theorem}[任意维能量解]\label{b2:thm:11-fourier-energy}
+对 \(f\in H^1(\mathbb R^n)\)、\(g\in L^2(\mathbb R^n)\)，\eqref{b2:eq:11-fourier-wave}通过 \(L^2\) 反演定义唯一的
+\[
+ u\in C(\mathbb R;H^1)\cap C^1(\mathbb R;L^2)
+\]
+分布解，满足相应初值。能量
+\[
+ E(t)=\dfrac12\bigl(\|u_t(t)\|_2^2+c^2\|\nabla u(t)\|_2^2\bigr)
+\]
+守恒，且 \(\|u(t)\|_2\leq\|f\|_2+|t|\|g\|_2\)。
+\end{theorem}
+\begin{proof}
+由 \(|\sin(t\rho)/\rho|\leq|t|\)，公式定义 \(L^2\) 函数，并给出零阶估计。速度变换为 \(-\rho\sin(t\rho)\widehat f+\cos(t\rho)\widehat g\)。将其与 \(\rho\widehat u\) 合在一起，得到
+\[
+ \begin{pmatrix}\rho\widehat u(t)\\\widehat u_t(t)\end{pmatrix}
+ =\begin{pmatrix}\cos(t\rho)&\sin(t\rho)\\-\sin(t\rho)&\cos(t\rho)\end{pmatrix}
+ \begin{pmatrix}\rho\widehat f\\\widehat g\end{pmatrix}.
+\]
+右侧矩阵在每个频率保持复二维向量的欧氏平方范数。积分后使用\cref{b2:thm:04-unitary}与\cref{b2:thm:04-weak-derivative}，得到梯度平方可积及能量守恒。注意一阶梯度权重确为 \(4\pi^2|\xi|^2\)，没有高阶多重指标计数的问题。
+
+时间连续性由频率逐点连续性和控制收敛得到：梯度、速度用固定的 \(\rho|\widehat f|+|\widehat g|\) 控制，位移在每个有界时间区间用 \(|\widehat f|+T|\widehat g|\) 控制。位移的差商也以速度的上述界控制，所以它在 \(L^2\) 中可微。先在有界频率截断上验证分布方程，再让截断半径增大；测试函数的导数属于 \(L^2\)，故范数收敛允许取极限。初值直接由时间连续性与公式恢复。
+
+若另有同类解，取差并作空间磨光。\cref{b2:thm:09-energy-solution}证明末尾的时间微积分与全空间分部积分论证逐坐标相加，得到零数据磨光解的能量为零；再由初始位移为零得到解为零。磨光极限给出唯一性。
+\end{proof}
+
+外力 \(F\in L^1(0,T;L^2)\) 可用 Duhamel 积分加入。速度和梯度的频率旋转估计给出
+\[
+ \sqrt{2E(t)}\leq\sqrt{2E(0)}+\int_0^t\|F(s)\|_2\,\mathrm{d}s,
+\]
+而位移用 \(\|S_n(t-s)F(s)\|_2\leq(t-s)\|F(s)\|_2\) 控制。先对简单外力定义积分再取范数极限，重复\cref{b2:thm:09-energy-solution}的功积分极限论证，便得到非齐次能量恒等式。该构造不要求逐个空间点定义外力的值。
 
 \subsection{支集性质}
 \label{b2:subsec:110304}
 
-待填充。
+Fourier 公式在所有频率上积分，有限传播在其中并不直观。支集信息可由共同光滑数据类上的几何表示传入能量极限：对支撑在闭集 \(A\) 内的数据先截断，再用半径 \(\varepsilon\) 的空间磨光核逼近。近似数据只扩大到 \(A\) 的 \(\varepsilon\) 邻域；经典有限传播与能量范数收敛使极限在 \(\operatorname{dist}(x,A)>ct\) 的开集上为零。因此，对每个固定时间，能量解仍满足同样的本性支集包含关系。
+
+\ProseParagraphBreak
+
+若 \(n\geq3\) 为奇数，光滑近似还满足壳层支集；初值支撑在 \(\overline B_R\) 时，先用半径 \(R+\varepsilon\) 的壳层，再令 \(\varepsilon\downarrow0\)，便得到\eqref{b2:eq:11-shell}的任意奇维能量版本。一般 \(H^1\) 数据在高维球面上未必具有公式所需的所有经典导数；壳层结论来自范数极限，不来自把某个任意代表直接限制到球面。
+
+\ProseParagraphBreak
+
+有限传播与频率局部化也须区别。若先把数据投影到一段频带，投影算子的空间卷积核通常有非紧支集，投影后的数据已经在远处留下尾部。下一节估计这种频带数据的逐点衰减，不能把投影造成的空间尾部归咎于波方程失去有限传播速度。几何支集陈述针对原始的完整演化，频带估计则针对先经一个非局部算子处理的数据。
+
