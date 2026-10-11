@@ -1,0 +1,79 @@
+% !TeX root = ../../Book2.tex
+\section{Bochner--Riesz 核与衰减阈值}
+\label{b2:sec:A203}
+
+把频率限制在一个球内，会在物理空间产生长尾振荡；在频率边界加入消失因子，可以改善尾部衰减。Bessel 函数把这种关系写成精确公式。本节只处理核的计算及可积性，精细的 \(L^p\) 乘子范围仍属于第二十四章的问题。
+
+\subsection{球内幂权的变换}
+\label{b2:subsec:A20301}
+
+给定 \(\delta>-1\)，定义可积函数
+\[m_\delta(\xi)=(1-|\xi|^2)_+^\delta,\]
+其中在球外取零，球内取正实幂；球面上的取值不影响积分。\(\delta<0\) 时它在频率边界奇异，所以不能未经检查把它当作有界乘子。其逆 Fourier 变换记为 \(K_\delta\)。
+
+\begin{theorem}[Bochner--Riesz 核]
+\label{b2:thm:A2-bochner-riesz}
+设整数 \(d\ge1\)、\(\delta>-1\)。对 \(x\ne0\)，有
+\[
+ K_\delta(x)=\frac{\Gamma(\delta+1)}{\pi^\delta}
+       |x|^{-d/2-\delta}J_{d/2+\delta}(2\pi|x|).
+\]
+它连续延拓到原点，且
+\[K_\delta(0)=\frac{\pi^{d/2}\Gamma(\delta+1)}{\Gamma(d/2+\delta+1)}.\]
+若频率半径改成 \(R\)，即乘子为 \((1-|\xi|^2/R^2)_+^\delta\)，则核为 \(R^dK_\delta(Rx)\)。
+\end{theorem}
+\begin{proof}
+记 \(\nu=d/2-1\)。先由 Bessel 级数与 Beta 积分证明
+\[
+ \int_0^1(1-s^2)^\delta s^{\nu+1}J_\nu(ts)\,\mathrm ds
+ =2^\delta\Gamma(\delta+1)t^{-\delta-1}J_{\nu+\delta+1}(t).
+\]
+具体地，把 \(J_\nu\) 的第 \(k\) 项代入，所需积分为
+\[\int_0^1s^{2k+2\nu+1}(1-s^2)^\delta\,\mathrm ds
+ =\frac{\Gamma(k+\nu+1)\Gamma(\delta+1)}{2\Gamma(k+\nu+\delta+2)}.\]
+它与级数分母的一项相消，整理后正是右边的级数。固定 \(t\) 时，绝对值级数在 \(0\le s\le1\) 由一个可积的 \(s^{2\nu+1}(1-s^2)^\delta\) 倍数控制，故逐项积分合法。
+
+对径向乘子应用 \cref{b2:thm:A2-radial-fourier}，令 \(t=2\pi|x|\)，代入上式。因径向函数为偶函数，正、负号 Fourier 指数产生相同角积分。外部系数化为 \(\Gamma(\delta+1)\pi^{-\delta}|x|^{-d/2-\delta}\)，得到核公式；一维使用前节的 \(J_{-1/2}\) 版本即可。Bessel 原点首项给出 \(K_\delta(0)\)，也等于球内幂权的直接积分。最后在逆变换中作 \(\xi=R\eta\) 换元，得到尺度公式。
+\end{proof}
+
+例如 \(d=1,\delta=0\) 时，\(K_0(x)=\sin(2\pi x)/(\pi x)\)，原点值为 \(2\)，正是区间 \([-1,1]\) 的长度。\(d=2,\delta=0\) 时，\(K_0(x)=J_1(2\pi|x|)/|x|\)，原点值为 \(\pi\)。这两个低维例子既检查了 \(2\pi\) 的位置，也检查了 Bessel 阶数必须是 \(d/2+\delta\)，而不是球面公式中的 \(d/2-1\)。
+
+\subsection{绝对可积性的准确界限}
+\label{b2:subsec:A20302}
+
+\begin{proposition}[核的可积阈值]
+\label{b2:prop:A2-kernel-integrability}
+对 \(d\ge1\)、\(\delta>-1\)，有
+\[K_\delta\in L^1(\mathbb R^d)\quad\Longleftrightarrow\quad
+ \delta>\frac{d-1}{2}.\]
+更一般地，在无穷远处其领先项为
+\[
+ \frac{\Gamma(\delta+1)}{\pi^{\delta+1}}
+ r^{-(d+1)/2-\delta}
+ \cos\left(2\pi r-\frac{\pi(d/2+\delta)}2-\frac\pi4\right),
+\]
+余项为 \(O(r^{-(d+3)/2-\delta})\)。
+\end{proposition}
+\begin{proof}
+\(d/2+\delta>-1/2\)，故 Bessel 渐近适用，给出所列展开。原点处核连续，无局部可积性障碍；无穷远的绝对积分由 \(\int_1^\infty r^{(d-3)/2-\delta}\,\mathrm dr\) 控制。当 \(\delta>(d-1)/2\) 时，该积分有限。
+
+反之，在每个充分远的单位长度区间内选一个固定长度的子区间，使余弦绝对值至少为 \(3/4\)。余项比主振幅小一个 \(r^{-1}\) 因子，所以在这些子区间上，\(|K_\delta(r)|\ge c r^{-(d+1)/2-\delta}\)。各球壳的绝对积分下界与级数 \(\sum_{n\ge n_0}n^{(d-3)/2-\delta}\) 比较；当 \(\delta\le(d-1)/2\) 时发散。端点相当于调和级数，也不例外。
+\end{proof}
+
+频率边界每增加一阶消失，就使物理核多衰减一阶；球面曲率提供的基本衰减则是 \((d-1)/2\) 阶。两者相加后，还要与物理空间的体积增长比较，才能判断绝对可积性。只观察一条径向曲线上的函数值而忘记 \(r^{d-1}\) 体积因子，会得到错误阈值。
+
+\subsection{可积核与乘子问题的区别}
+\label{b2:subsec:A20303}
+
+若 \(\delta>(d-1)/2\)，Young 不等式给出 \(f\mapsto K_\delta*f\) 在全部 \(L^p\)、\(1\le p\le\infty\) 上有界，范数不超过 \(\lVert K_\delta\rVert_1\)。缩放后 \(\lVert R^dK_\delta(R\cdot)\rVert_1\) 不变。由于核的总积分为 \(m_\delta(0)=1\)，且绝对积分尾部在缩放下消失，它们构成近似恒等族；于是当 \(R\to\infty\) 时，对 \(1\le p<\infty\)，
+\[R^dK_\delta(R\cdot)*f\longrightarrow f\quad\text{于 }L^p.
+\]
+总积分等式可由 \(m_\delta,K_\delta\in L^1\) 的 Fourier 反演在零点得到，\(m_\delta\) 在零点连续。近似恒等的收敛证明则复用本卷前面已经建立的平移连续性和尾部拆分。
+
+\ProseParagraphBreak
+
+若 \(\delta\) 低于这个阈值，失效的是绝对值积分法，不是所有 \(L^p\) 有界性。例如只要 \(\delta\ge0\)，乘子 \(m_\delta\) 有界，Plancherel 立即给出 \(L^2\) 算子范数至多为 \(1\)，即使对应核不属于 \(L^1\)。核中的振荡抵消仍可能产生额外有界性；第二十四章正是研究这些不能由 Young 不等式看出的范围。
+
+\ProseParagraphBreak
+
+因此有三个不能混用的判断：核是否逐点衰减，核是否绝对可积，以及振荡卷积算子在某个 \(L^p\) 上是否有界。Bessel 公式解决前两个问题并提供第三个问题的必要线索，却不能单独替代限制理论、插值和几何反例。

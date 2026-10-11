@@ -4,13 +4,24 @@
 \BookChapterNumber{b2:ch:16}
 % 本章摘要（不计入编号）
 \begin{chapterabstract}
-待填充。
+本章研究能量弱解何时具有更高正则性。差商方法在不预设二阶导数的前提下，建立 Lipschitz 系数方程的内部 \(H^2\) 估计；逐项控制求导误差后，得到高阶 Sobolev 正则性和光滑数据的内部光滑性。边界部分通过平坦化、切向差商和方程恢复法向导数，证明 \(C^{1,1}\) 区域上的 Dirichlet 二阶估计。最后仅用有界可测系数建立 Caccioppoli 不等式及截断迭代的局部有界性，并明确介绍 Harnack 与 Hölder 理论所需的深层输入。
 \end{chapterabstract}
 
 % 本章目标（不计入编号）
 \begin{learninggoals}
-待填充。
+\begin{itemize}
+\item\label{b2:item:16-goal-difference}使用离散分部积分和一致差商界构造二阶弱导数，指出系数导数的作用。
+\item\label{b2:item:16-goal-bootstrap}逐步核验微分后右端的空间，结合 Sobolev 嵌入判断经典正则性。
+\item\label{b2:item:16-goal-boundary}理解边界平坦化、切向估计及纯法向恢复，并用凹角反例检验全局结论。
+\item\label{b2:item:16-goal-low}在可测系数下证明局部能量界和有界性，区分已证结论与 Harnack 理论的深层步骤。
+\end{itemize}
 \end{learninggoals}
+
+上一章的弱解可以没有经典二阶导数，但方程并非只是一条约束：它还把不同方向和不同尺度的变化联系起来。若系数变化受控，差商误差可以吸收，解便得到新的弱导数；若系数只是可测，导数提升可能失败，标量解的高值集合却仍受能量限制。本章分别建立这两类估计，避免把“椭圆正则性”当作无条件的光滑性口号。
+
+\ProseParagraphBreak
+
+本章普通主线承接第十五章的测试等式，使用第一卷第二十四章的 Sobolev 与 Poincaré 不等式。系统参考可读 Lawrence C. Evans 的《Partial Differential Equations》\cite{Evans2010Partial}以及 David Gilbarg 与 Neil S. Trudinger 的《Elliptic Partial Differential Equations of Second Order》\cite{Gilbarg2001Elliptic}。下面对差商、边界 \(H^2\) 与局部有界性给出完整证明；末节的可测系数 Harnack 比较明示为深层结论，不把其证明略去之处隐藏在“标准估计”中。
 
 \input{Part03/Chapter16/Section1601}
 \input{Part03/Chapter16/Section1602}
@@ -18,10 +29,80 @@
 \input{Part03/Chapter16/Section1604}
 % 本章小结（不计入编号）
 \begin{chaptersummary}
-待填充。
+内部高阶正则性从一个与步长无关的差商估计开始。系数的 Lipschitz 控制保证通量差商的误差有界，而更高系数导数保证自举时产生的右端仍在所需空间。Sobolev 嵌入再把积分意义的导数转成经典代表，其指数门槛依赖维数。边界估计还消耗坐标图的正则性；凹角例子说明内部光滑不自动带来全局 \(H^2\)。
+
+\ProseParagraphBreak
+
+仅有界可测系数时，Caccioppoli 不等式仍然成立。截断迭代把高值集合的能量与测度联系起来，完整给出齐次标量弱解的局部有界性。Harnack 比较进一步控制振荡，但需要另行建立超解的正性传播；从比较到 Hölder 衰减的推论则可直接迭代得到。至此，变分存在性、弱型可解性与正则性三项任务已各有明确的假设和证明。
 \end{chaptersummary}
 
 
 \BookExercises
 
-待填充。
+各题均为本书自拟。题目分别改变尺度、系数、数据与边界，检验不同正则性结论的边界；最后一题使用本章明示的深层 Harnack 结论。
+
+% 自拟：差商平移约定与离散能量恒等式。
+\begin{exercise}\label{b2:ex:16-discrete-energy}
+对 \(u\in H^1(\mathbb R^d)\) 证明 \(D_h^ku\to\partial_ku\) 于 \(L^2\)，并证明
+\[\int_{\mathbb R^d}u(-D_{-h}^kD_h^ku)=\lVert D_h^ku\rVert_2^2.\]
+说明为何差商测试中使用负的 \(D_{-h}^k\)。
+\end{exercise}
+\begin{solution}
+对光滑紧支集函数，线段积分公式和导数的平移连续性给出强收敛。一般 \(u\) 先取 \(H^1\) 光滑逼近，利用差商统一界 \(\lVert D_h^k(u-v)\rVert_2\le\lVert\partial_k(u-v)\rVert_2\)，三角不等式把结论推广。恒等式由离散分部积分得到：\(\int u(-D_{-h}^kw)=\int(D_h^ku)w\)，取 \(w=D_h^ku\) 即可。若漏掉负号，主项就成为负的平方范数，无法使用椭圆正性吸收误差。
+\end{solution}
+
+% 自拟：系数Lipschitz但不具二阶正则性的明确反例。
+\begin{exercise}\label{b2:ex:16-lipschitz-not-h3}
+在 \((-1,1)\) 上令 \(u(x)=\int_0^x(1+|t|)^{-1}\,\mathrm dt\)。证明 \(-((1+|x|)u')'=0\) 弱成立，\(u\in H^2(-1,1)\)，但 \(u\notin H^3(-1,1)\)。
+\end{exercise}
+\begin{solution}
+通量恒为 \(1\)，故与任意测试函数导数的积分为零。\(u'=(1+|x|)^{-1}\) 连续且 Lipschitz，其弱导数在两侧分别为 \((1-x)^{-2}\)（\(x<0\)）与 \(-(1+x)^{-2}\)（\(x>0\)），有界，故 \(u\in H^2\)。\(u''\) 从 \(1\) 跳到 \(-1\)，第三分布导数包含 \(-2\delta_0\)，不能属于 \(L^2\)。这说明右端光滑不足以越过系数正则性的限制。
+\end{solution}
+
+% 自拟：全空间常系数二阶估计的Fourier核验。
+\begin{exercise}\label{b2:ex:16-fourier-h2}
+设 \(f\in L^2(\mathbb R^d)\)。用本卷的 \(2\pi\) Fourier 约定求 \((I-\Delta)u=f\) 的唯一 \(L^2\) 分布解，并证明 \(u\in H^2\)、\(\lVert u\rVert_{H^2}\le C_d\lVert f\rVert_2\)。
+\end{exercise}
+\begin{solution}
+定义 \(\widehat u(\xi)=\widehat f(\xi)/(1+4\pi^2|\xi|^2)\)。该函数属于 \(L^2\)，Plancherel 给出 \(u\)，且乘子恒等式验证分布方程。对 \(|\alpha|\le2\)，函数 \((2\pi i\xi)^\alpha/(1+4\pi^2|\xi|^2)\) 有界，故弱导数 \(D^\alpha u\in L^2\)，并有相应范数界；对有限个指标求和得到估计。若另一 \(L^2\) 解存在，差的 Fourier 变换被严格正的 \(1+4\pi^2|\xi|^2\) 乘后为零，故差为零。
+\end{solution}
+
+% 自拟：L2右端在高维不足以保证局部有界。
+\begin{exercise}\label{b2:ex:16-l2-unbounded}
+在 \(\mathbb R^5\) 中取 \(\chi\in C_c^\infty(B_1)\)，在原点附近为 \(1\)，令 \(u(x)=\chi(x)|x|^{-1/4}\)。证明 \(u\in H_0^1(B_1)\)、\(-\Delta u\in L^2(B_1)\)，但 \(u\) 无界。解释为何这不违反本章局部有界性定理。
+\end{exercise}
+\begin{solution}
+原点附近 \(|u|\) 量级为 \(r^{-1/4}\)，梯度量级为 \(r^{-5/4}\)；乘上五维体积因子 \(r^4\) 后，两者平方均可积。截去一个小球并平滑，误差的 \(H^1\) 范数趋零，故紧支集函数 \(u\) 属于 \(H_0^1\)。由 \(\Delta r^\alpha=\alpha(\alpha+3)r^{\alpha-2}\)，主奇性为 \(r^{-9/4}\)，其平方积分近零为 \(\int r^{-1/2}\,\mathrm dr<\infty\)。小球边界通量及测试函数误差趋零，故无额外点质量。于是 \(-\Delta u\in L^2\)，但 \(u\to\infty\)。局部有界性定理讨论齐次方程，此例右端非零；高维中 \(L^2\) 源项不足以支持同一结论。
+\end{solution}
+
+% 自拟：角点指数与Sobolev阈值。
+\begin{exercise}\label{b2:ex:16-corner-threshold}
+设 \(0<\omega<2\pi\)，\(\alpha=\pi/\omega\)，\(v=r^\alpha\sin(\alpha\theta)\) 定义在平面扇形。对 \(\alpha\ne1\)，求它在角点附近属于 \(W^{2,p}\)、\(1\le p<\infty\) 的准确条件，并单独解释 \(\alpha=1\) 的情形。
+\end{exercise}
+\begin{solution}
+若 \(\alpha\ne1\)，二阶导数的平方和在角向上有非零有界因子，径向量级为 \(r^{\alpha-2}\)。因此二阶导数的 \(p\) 次积分有限恰当且仅当 \(p(\alpha-2)+1>-1\)，即 \(p(2-\alpha)<2\)。此条件也保证较低阶项可积；等号时对数发散。若 \(\alpha\ge2\)，该严格不等式对一切有限 \(p\) 自动成立。\(\alpha=1\) 时 \(v=r\sin\theta=y\) 是线性函数，二阶导数恒零，不能用只看形式幂次的阈值排除它。
+\end{solution}
+
+% 自拟：迭代引理的显式小量阈值。
+\begin{exercise}\label{b2:ex:16-iteration-lemma}
+设 \(Y_{n+1}\le Ab^nY_n^{1+\delta}\)，其中 \(A>0\)、\(b>1\)、\(\delta>0\)。证明当 \(Y_0\le A^{-1/\delta}b^{-1/\delta^2}\) 时，\(Y_n\le A^{-1/\delta}b^{-n/\delta-1/\delta^2}\)。说明仅知道 \(Y_0<1\) 为何不总够用。
+\end{exercise}
+\begin{solution}
+初始步正是给定条件。若第 \(n\) 步成立，代入递推式得到 \(A\) 的幂为 \(1-(1+\delta)/\delta=-1/\delta\)，\(b\) 的幂为 \(n-(1+\delta)n/\delta-(1+\delta)/\delta^2=-(n+1)/\delta-1/\delta^2\)，故归纳闭合。特别地序列趋零。小量阈值依赖 \(A,b,\delta\)；若 \(A\) 很大，某个接近 \(1\) 的初值即使小于 \(1\)，第一次递推也可能增大，所以必须通过选择截断高度或归一化满足定量阈值。
+\end{solution}
+
+% 自拟：全空间平方可积齐次解的消失。
+\begin{exercise}\label{b2:ex:16-l2-liouville}
+设 \(A\) 在 \(\mathbb R^d\)、\(d\ge2\) 上有共同一致椭圆上下界，\(u\in H_{\mathrm{loc}}^1(\mathbb R^d)\cap L^2(\mathbb R^d)\) 弱解 \(-\operatorname{div}(A\nabla u)=0\)。不用系数可微性，证明 \(u=0\) 几乎处处。
+\end{exercise}
+\begin{solution}
+对任意中心和半径 \(R\)，局部有界性给出 \(\operatorname*{ess\,sup}_{B_{R/2}}|u|\le C_dR^{-d/2}\lVert u\rVert_{L^2(\mathbb R^d)}\)。固定任意有限球并使 \(R\to\infty\)，右端趋零，因此该有限球内 \(u=0\) 几乎处处。用可数个球覆盖全空间即可。这里全局共同的椭圆常数保证估计中的 \(C_d\) 不随半径增长。
+\end{solution}
+
+% 自拟：深层Harnack输入推出有界解的Liouville性质。
+\begin{optionalexercise}\label{b2:ex:16-bounded-liouville}
+在上一题相同系数假设下，若实弱解 \(u\) 仅假定全局有界，使用本章的深层 Harnack 结论证明 \(u\) 为常数。明确指出本题比上一题多用了哪项输入。
+\end{optionalexercise}
+\begin{solution}
+由正文的振荡收缩，存在与球无关的 \(0<\vartheta<1\)，使 \(\operatorname*{ess\,osc}_{B_R}u\le\vartheta^n\operatorname*{ess\,osc}_{B_{2^nR}}u\le2\vartheta^n\lVert u\rVert_\infty\)。令 \(n\to\infty\)，每个球内本性振荡为零。重叠球的常数相同，故全空间几乎处处为同一常数；取 Hölder 代表即处处为常数。本题使用 Harnack 导出的振荡收缩，上一题只用已经完整证明的局部上界与全局 \(L^2\) 衰减。
+\end{solution}

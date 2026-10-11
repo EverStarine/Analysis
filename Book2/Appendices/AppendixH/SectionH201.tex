@@ -1,0 +1,80 @@
+% !TeX root = ../../Book2.tex
+\section{能量估计与低正则迭代}
+\label{b2:sec:H201}
+
+本节设 \(d\ge2\)，实矩阵场 \(A\) 可测，且 \(A(x)\xi\cdot\xi\ge\lambda|\xi|^2\)、\(|A(x)\xi|\le\Lambda|\xi|\)，其中 \(0<\lambda\le\Lambda<\infty\)。不假设对称性或系数导数存在。实值 \(u\in H^1_{\mathrm{loc}}\) 称为弱次解，若对非负光滑紧支集 \(\varphi\) 有 \(\int A\nabla u\cdot\nabla\varphi\le0\)；由连续性，测试可扩大到非负、紧支撑的 \(H^1\) 函数。
+
+\subsection{Caccioppoli 不等式}
+\label{b2:subsec:H20101}
+
+令 \(w=(u-k)_+\)、\(0\le\eta\le1\) 为光滑截断。以 \(\eta^2w\) 测试次解，链式法则把梯度限制到 \(u>k\)，得到
+\[\lambda\int\eta^2|\nabla w|^2\le2\Lambda\int\eta w|\nabla w||\nabla\eta|
+ \le\frac\lambda2\int\eta^2|\nabla w|^2+C\int w^2|\nabla\eta|^2.\]
+因而
+\begin{equation}\label{b2:eq:H2-level-energy}
+ \int|\nabla(\eta w)|^2\le C\int w^2|\nabla\eta|^2.
+\end{equation}
+等式解可对 \(-u\) 作同样处理。若有右端 \(f\)，测试会多出 \(\int f\eta^2w\)；只有在核验其可积性并控制这一项之后，才可继续下面的齐次迭代。把它直接删除会给出错误的尺度。
+
+\ProseParagraphBreak
+
+截断支持在一个较大球内，并在较小球上等于一，便得到较小球的梯度能量界。常数依赖 \(\lambda,\Lambda\) 和两球间距，却不含 \(\nabla A\)。这说明 Caccioppoli 估计属于弱形式本身，不是经典正则性的推论。第十六章的差商估计还需要 Lipschitz 系数，二者不可混同。
+
+\subsection{De Giorgi 迭代}
+\label{b2:subsec:H20102}
+
+第十六章局部有界性定理已经把 \cref{b2:eq:H2-level-energy} 与 Sobolev 嵌入结合，取半径递减而高度递增的序列，证明
+\[\operatorname*{ess\,sup}_{B_R}u_+\le C\left(R^{-d}\int_{B_{2R}}u_+^2\right)^{1/2}.\]
+其关键不是每次把同一个范数乘以常数，而是出现超线性递推 \(Y_{j+1}\le Cb^jY_j^{1+\alpha}\)、\(\alpha>0\)。选取足够高的起始截断水平，使 \(Y_0\) 小于固定阈值，递推才迫使超水平集上的能量趋零。
+
+\ProseParagraphBreak
+
+这一过程通常称为 \term[DeGiorgiDiedai]{De Giorgi 迭代}[De Giorgi iteration]。它直接处理超水平集，特别适合变分不等式以及没有方便幂函数恒等式的问题。后面的 \(p\) 次增长估计仍沿用这个机制，但指数与能量需一起更换，不能只在最终结果中把数字 \(2\) 换成 \(p\)。
+
+\subsection{Moser 迭代}
+\label{b2:subsec:H20103}
+
+另一条路线逐次提高可积指数，称为 \term[MoserDiedai]{Moser 迭代}[Moser iteration]。先在单位尺度工作，令 \(\chi=d/(d-2)\) 当 \(d>2\)，\(\chi=2\) 当 \(d=2\)。两种情形均有支撑在 \(B_2\) 中的函数满足 \(\lVert z\rVert_{2\chi}\le C\lVert\nabla z\rVert_2\)；二维可先用低于维数的 Sobolev 指数再作 Hölder 比较。
+
+\begin{lemma}[幂函数能量估计]
+\label{b2:lem:H2-power-energy}
+若非负 \(u\) 为 \(B_2\) 中的弱次解，\(q\ge2\)，且 \(u\in L^q(B_s)\)，\(1\le r<s\le2\)，则
+\[\lVert u\rVert_{L^{q\chi}(B_r)}\le
+ \left(\frac{Cq^2}{(s-r)^2}\right)^{1/q}\lVert u\rVert_{L^q(B_s)}.
+\]
+\end{lemma}
+\begin{proof}
+幂函数不是全局 Lipschitz 测试，故先截断。对 \(L>0\)、\(t\ge0\) 令 \(h_L(t)=t\min(t,L)^{q-2}\)，并令 \(w_L(t)=t\min(t,L)^{(q-2)/2}\)。两者均 Lipschitz 且零点取零；\(h_L'\ge0\)。在 \(t<L\) 及 \(t>L\) 分别求导，得
+\[\frac{h_L(t)^2}{h_L'(t)}\le w_L(t)^2,
+ \qquad |w_L'(t)|^2\le q^2h_L'(t),\]
+零点处按连续极限理解第一式。用 \(\eta^2h_L(u)\) 测试，主项至少为 \(\lambda\int\eta^2h_L'(u)|\nabla u|^2\)，交叉项用带权 Young 不等式吸收一半，余项由 \(C\int w_L(u)^2|\nabla\eta|^2\) 控制。因此
+\[\int|\nabla(\eta w_L(u))|^2\le Cq^2\int w_L(u)^2|\nabla\eta|^2.\]
+取 \(\eta=1\) 于 \(B_r\)、支撑于 \(B_s\)、\(|\nabla\eta|\le C/(s-r)\)。Sobolev 不等式给出左边对应的 \(L^{2\chi}\) 范数界；右端 \(w_L(u)^2\le u^q\)。令 \(L\to\infty\)，Fatou 引理给出 \(u^{q/2}\) 的 \(L^{2\chi}\) 界，再取 \(q/2\) 次根，得到结论。全过程只要求本轮已知的 \(L^q\) 可积性。
+\end{proof}
+
+\begin{theorem}[正幂迭代的局部上界]
+\label{b2:thm:H2-moser-upper}
+上述非负次解满足
+\[\operatorname*{ess\,sup}_{B_R}u\le C\left(R^{-d}\int_{B_{2R}}u^2\right)^{1/2},\]
+常数只依赖维数及椭圆常数。
+\end{theorem}
+\begin{proof}
+先缩放到 \(R=1\)。取 \(q_j=2\chi^j\)、\(r_j=1+2^{-j}\)，逐次使用引理，得到范数乘积的对数至多为
+\[\sum_{j=0}^\infty\frac{\log C+2\log q_j+2(j+1)\log2}{q_j}<\infty.\]
+故 \(\lVert u\rVert_{L^{q_j}(B_1)}\le C\lVert u\rVert_{L^2(B_2)}\) 一致成立。若某正测度集合上 \(u\) 大于此界，则其 \(L^{q_j}\) 范数在 \(j\to\infty\) 时给出矛盾，于是得到本性上确界。换元回半径 \(R\)，\(L^2\) 范数带出 \(R^{-d/2}\)，即所列公式。
+\end{proof}
+
+对有符号解的正部、负部分别使用定理，可以控制绝对值。这里两条迭代路线到达相同的局部上界，但中间控制的对象不同：一个控制超水平能量，一个控制越来越高的幂。具体问题中的测试可行性决定哪条路线更自然。
+
+\subsection{De Giorgi--Nash--Moser 理论与 Harnack 不等式}
+\label{b2:subsec:H20104}
+
+正幂迭代不能单独比较一个正解在不同点的值。即使所有正幂平均已受控，也没有自动得到本性下确界。第十六章的 \cref{b2:thm:16-measurable-harnack} 明确陈述并以证明概要说明了额外的正性传播步骤；相关公开论文 \cite[Theorems 1.1--1.3]{Li2017Harnack} 给出齐次散度型线性方程的 Harnack 论证。调用该结果时须保留实标量、非负解、内球和一致椭圆假设。
+
+\ProseParagraphBreak
+
+完整结论为 \(\operatorname*{ess\,sup}_{B_R}u\le C\operatorname*{ess\,inf}_{B_R}u\)，前提是 \(u\ge0\) 在 \(B_{2R}\) 解方程。它与局部上界共同构成低正则理论的核心。对一般有符号解，用 \(u-m\) 和 \(M-u\) 两个非负解，便可把正解比较变为严格振荡收缩；第十六章已经逐项完成这一代数步骤及几何尺度迭代，得到局部 Hölder 代表。
+
+\ProseParagraphBreak
+
+这个框架通常合称 \term[DeGiorgiNashMoserLilun]{De Giorgi--Nash--Moser 理论}[De Giorgi--Nash--Moser theory]。其中局部有界、Harnack 比较与 Hölder 正则性是相互衔接的不同结论，不应因名字连在一起而省略中间桥梁。对于椭圆系统、复值方程或一般非齐次方程，标量正部测试、序结构或齐次缩放可能失效，因而不能无条件照搬本节。

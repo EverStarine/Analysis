@@ -2,24 +2,110 @@
 \section{Euler–Lagrange 方程}
 \label{b2:sec:1402}
 
-% TODO: 撰写本节正文。
+第一变分为零是函数空间中的驻点条件。它通常以积分等式出现；把扰动的导数移到系数上，才能读出微分方程。这个步骤也同时产生边界项，因此方程与边界条件不能分开猜测。本节先在光滑函数类中推导，下一章再把积分等式本身作为解的定义。
 
 \subsection{一维问题}
 \label{b2:subsec:140201}
 
-待填充。
+设 \(a<b\)，考虑端点固定为 \(u(a)=A\)、\(u(b)=B\) 的实函数，及泛函
+\[J(u)=\int_a^b F(x,u(x),u'(x))\,\mathrm dx.\]
+允许扰动满足 \(h(a)=h(b)=0\)。如果 \(u\) 为极小点，\cref{b2:prop:14-gateaux-minimum,b2:prop:14-smooth-integral-variation}给出
+\[\int_a^b\bigl(F_z(x,u,u')h+F_p(x,u,u')h'\bigr)\,\mathrm dx=0.\]
+
+\begin{theorem}[一维 Euler--Lagrange 方程]
+\label{b2:thm:14-euler-lagrange-one}
+设 \(F\in C^2([a,b]\times\mathbb R^2)\)，\(u\in C^2([a,b])\) 是上述固定端点泛函在 \(C^1\) 范数下的局部极小点。则
+\[F_z(x,u,u')-\frac{\mathrm d}{\mathrm dx}F_p(x,u,u')=0\quad(a<x<b).\]
+更一般地，对任意 \(u\in C^2([a,b])\)，该方程与所有零端点扰动的第一变分为零等价。
+\end{theorem}
+\begin{proof}
+分部积分把第一变分写成 \(\int_a^b q(x)h(x)\,\mathrm dx\)，其中 \(q=F_z-\frac{\mathrm d}{\mathrm dx}F_p\) 连续。若某点 \(q(x_0)>0\)，连续性保证一个小区间内 \(q>0\)；在其中选非负且不恒零的光滑紧支集扰动，便使积分为正，矛盾。对 \(q(x_0)<0\) 同理。因此 \(q=0\)。反向只须把方程代回分部积分等式，边界项因扰动端点为零而消失。
+\end{proof}
+
+曲线的弧长对应 \(F=\sqrt{1+p^2}\)，于是 \(\frac{\mathrm d}{\mathrm dx}(u'/\sqrt{1+(u')^2})=0\)。由于 \(p\mapsto p/\sqrt{1+p^2}\) 严格单调，\(u'\) 为常数，驻曲线只能是连接两端点的线段。它确为全局极小曲线，可以再由 \(p\mapsto\sqrt{1+p^2}\) 的凸性证明：以线段斜率 \(m\) 处的切线作下界，积分后线性修正项为 \(\frac{m}{\sqrt{1+m^2}}\int_a^b(u'-m)=0\)。这里微分方程找出候选者，凸性才完成极小性的判断。
+
+\ProseParagraphBreak
+
+若 \(F\) 不显含 \(x\)，沿任何 \(C^2\) 驻曲线有
+\[
+ \frac{\mathrm d}{\mathrm dx}(F-u'F_p)
+ =u'\left(F_z-\frac{\mathrm d}{\mathrm dx}F_p\right)=0.
+\]
+这给出一个一阶守恒量，常比二阶方程更易使用。但若原式包含 \(x\)，右端还要加上 \(F_x\)，不能继续断言守恒。即便有守恒量，也须重新代入端点条件；局部的一阶积分并不保证全局可解。
 
 \subsection{多维问题}
 \label{b2:subsec:140202}
 
-待填充。
+多维区域中，导数向量 \(\nabla h\) 的分部积分产生散度。于是梯度型能量自然对应散度型方程，这也是弱解理论优先采用散度形式的原因。
+
+\begin{theorem}[多维 Euler--Lagrange 方程]
+\label{b2:thm:14-euler-lagrange-many}
+设 \(\Omega\subset\mathbb R^d\) 是有界开集，\(F\in C^2(\overline\Omega\times\mathbb R\times\mathbb R^d)\)，\(u\in C^2(\Omega)\cap C^1(\overline\Omega)\)。则 \(J(u)=\int_\Omega F(x,u,\nabla u)\,\mathrm dx\) 对每个 \(h\in C_c^\infty(\Omega)\) 的第一变分为零，当且仅当
+\[F_z(x,u,\nabla u)-\operatorname{div}\bigl(F_p(x,u,\nabla u)\bigr)=0\quad\text{于 }\Omega.\]
+特别地，任一允许这些紧支集扰动的光滑局部极小点都满足此方程。
+\end{theorem}
+\begin{proof}
+第一变分公式对紧支集扰动成立。逐坐标分部积分，边界项为零，得到连续函数 \(F_z-\operatorname{div}F_p\) 与任意测试函数的乘积积分为零。若此函数在一点非零，在小球内选同号的非负凸起函数便产生矛盾，故函数处处为零。反向由同一分部积分恒等式立即得到。
+\end{proof}
+
+例如图像面积泛函 \(\int_\Omega\sqrt{1+|\nabla u|^2}\,\mathrm dx\) 的驻点满足
+\[\operatorname{div}\frac{\nabla u}{\sqrt{1+|\nabla u|^2}}=0.\]
+当梯度很小时，分母接近 \(1\)，线性化给出 \(\Delta u=0\)。这解释了调和函数为何可以描述小斜率的平衡曲面，同时也说明二次 Dirichlet 能量只是面积能量在小梯度附近的近似：大梯度下两者的增长速度和紧性要求不同。
+
+\ProseParagraphBreak
+
+还有一种常见误读：把 \(F_p(x,u,\nabla u)\) 看成只依赖 \(x\) 的显式系数，而漏掉链式法则。以 \(F=\tfrac12a(u)|\nabla u|^2\) 为例，方程是
+\[\tfrac12a'(u)|\nabla u|^2-\operatorname{div}(a(u)\nabla u)=0,\]
+若展开散度，等价于 \(a(u)\Delta u+\tfrac12a'(u)|\nabla u|^2=0\)，绝不是单纯的 \(a(u)\Delta u=0\)。在粗糙系数或弱正则性情形，保留散度形式通常更可靠。
 
 \subsection{自然边界条件}
 \label{b2:subsec:140203}
 
-待填充。
+边界值若预先固定，扰动在边界为零，边界项便不参与驻点条件；边界值若可以自由变化，边界项必须自己消失，由此得到 \term[ziran-bianjie-tiaojian]{自然边界条件}[natural boundary condition]。考虑 \(C^2\) 有界区域和边界能量
+\[
+ J(u)=\int_\Omega F(x,u,\nabla u)\,\mathrm dx
+       +\int_{\partial\Omega}B(x,u)\,\mathrm dS.
+\]
+假定 \(F\) 为 \(C^2\)、\(B\) 对第二变量为 \(C^1\)，并且所有相关函数光滑到边界。散度公式给出
+\[
+ DJ(u)h=\int_\Omega(F_z-\operatorname{div}F_p)h\,\mathrm dx
+       +\int_{\partial\Omega}(F_p\cdot\nu+B_z)h\,\mathrm dS.
+\]
+先取紧支集扰动得到内部方程，再允许任意光滑边界迹。边界上的光滑函数可以在局部边界坐标中延拓并用单位分解拼接；用局部同号凸起函数即可推出
+\[F_p(x,u,\nabla u)\cdot\nu+B_z(x,u)=0\quad\text{于 }\partial\Omega.\]
+这里 \(\nu\) 始终是外单位法向。
+
+\ProseParagraphBreak
+
+取 \(F=\tfrac12|p|^2-fz\)、\(B=\tfrac12\beta z^2-gz\)，就得到
+\[-\Delta u=f\quad\text{于 }\Omega,\qquad \partial_\nu u+\beta u=g\quad\text{于 }\partial\Omega.\]
+当 \(\beta=0\) 时，这是 Neumann 条件。特别地，完全自由的纯 Dirichlet 能量给出零法向导数，而不是零边界值。若只在一部分边界固定函数值，则在该部分扰动为零，在其余部分产生自然条件；交界处的正则性是另一问题，形式推导不自动保证解在那里光滑。
+
+\ProseParagraphBreak
+
+一维的符号尤其值得核对。对 \(\int_a^bF(x,u,u')\,\mathrm dx+B_a(u(a))+B_b(u(b))\)，两端自由时条件分别为
+\[-F_p(a,u(a),u'(a))+B_a'(u(a))=0,\qquad F_p(b,u(b),u'(b))+B_b'(u(b))=0.\]
+左端的负号来自外法向朝左。若遗漏它，带弹簧或外力的边界模型就会产生相反的力平衡。
 
 \subsection{向量值问题}
 \label{b2:subsec:140204}
 
-待填充。
+现在令 \(u=(u^1,\ldots,u^m):\Omega\to\mathbb R^m\)，把梯度视为矩阵 \(P=(p_i^\alpha)\)，其中 \(p_i^\alpha=\partial_i u^\alpha\)。对实 \(C^2\) 密度 \(F(x,z,P)\)，第一变分为
+\[
+ DJ(u)h=\int_\Omega\sum_{\alpha=1}^m
+ \left(F_{z^\alpha}h^\alpha+\sum_{i=1}^dF_{p_i^\alpha}\partial_i h^\alpha\right)\,\mathrm dx.
+\]
+各分量扰动可以独立选择。因此，若 \(u\) 光滑且对所有紧支集向量扰动驻定，则逐分量的基本引理给出系统
+\[
+ F_{z^\alpha}(x,u,Du)-\sum_{i=1}^d\partial_iF_{p_i^\alpha}(x,u,Du)=0,
+ \qquad \alpha=1,\ldots,m.
+\]
+推导只使用上一证明的逐分量分部积分，无须另加各分量彼此独立的假设；它们的耦合已经包含在密度 \(F\) 中。
+
+\ProseParagraphBreak
+
+例如 \(F=\tfrac12\sum_\alpha|\nabla u^\alpha|^2+W(u)\) 给出 \(-\Delta u^\alpha+\partial_\alpha W(u)=0\)。若 \(W(z)=\tfrac12z^{\mathsf T}Mz\)，其中 \(M\) 为实对称矩阵，则为 \(-\Delta u+Mu=0\)。若写入一个非对称矩阵 \(M\)，二次型 \(z^{\mathsf T}Mz\) 实际只保留对称部分；相应变分绝不产生整个非对称矩阵。这一简单计算已经预示：一般线性椭圆方程虽可用双线性型求解，却未必是某个标量二次能量的极值方程。
+
+\ProseParagraphBreak
+
+还须区别值域约束。例如要求 \(|u|=1\) 时，可行的一阶扰动必须满足 \(u\cdot h=0\)。此时只能推出 Euler--Lagrange 向量与所有切向扰动正交，故它沿法向 \(u\)；不能把每个分量直接置零。具体的约束乘子及正则性需要另行分析，本章的无约束系统不包含这一额外结论。

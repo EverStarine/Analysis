@@ -1,0 +1,117 @@
+% !TeX root = ../../Book2.tex
+\section{球谐函数与特征函数展开}
+\label{b2:sec:B203}
+
+Legendre 多项式只描述三维球面上的轴对称部分。一般角向函数需要按所有方向分解；齐次调和多项式的球面限制提供了相应有限维模态。先从欧氏空间多项式构造这些空间，再证明正交性和完备性，就不必预先假定球面 Laplace 算子的谱已经齐全。
+
+\subsection{极坐标下的 Laplace 算子}
+\label{b2:subsec:B20301}
+
+设 \(d\ge2\)，写 \(x=r\omega\)、\(r>0\)、\(\omega\in S^{d-1}\)。对球面光滑函数 \(Y\)，沿半径保持常值延拓到一个球壳，并把欧氏梯度在 \(r=1\) 的切向部分记为 \(\nabla_SY\)。球面散度与该切向梯度配对定义 \(\Delta_S\)。等价地，径向常值延拓 \(\widetilde Y\) 满足 \(\Delta_SY=(\Delta\widetilde Y)|_{r=1}\)。
+
+\begin{proposition}[极坐标 Laplace 公式]
+\label{b2:prop:B2-polar-laplacian}
+对球壳内光滑函数 \(u(r,\omega)\)，
+\[\Delta u=\partial_r^2u+\frac{d-1}r\partial_ru+\frac1{r^2}\Delta_Su.
+\]
+球面上有 Green 恒等式
+\[\int_{S^{d-1}}(-\Delta_SY)\overline Z\,\mathrm d\sigma
+ =\int_{S^{d-1}}\nabla_SY\cdot\overline{\nabla_SZ}\,\mathrm d\sigma.
+\]
+\end{proposition}
+\begin{proof}
+微分一个径向位移与切向位移，得到正交分解 \(\nabla u=\omega\partial_ru+r^{-1}\nabla_Su\)。在球壳上把 \(\int\nabla u\cdot\overline{\nabla v}\) 写为极坐标积分。径向项带权 \(r^{d-1}\)，分部积分产生 \(r^{1-d}\partial_r(r^{d-1}\partial_ru)\)；切向项带权 \(r^{d-3}\)，按球面散度定义分部积分产生 \(r^{-2}\Delta_Su\)。先对紧支撑于球壳的测试函数验证，得到分布等式；两边光滑，故逐点成立。对只依赖角向的函数重复同一计算，球面没有边界，切向分部积分即为所列 Green 恒等式。
+\end{proof}
+
+例如在 \(S^2\) 上，球坐标面积元为 \(\sin\theta\,\mathrm d\theta\,\mathrm d\varphi\)，因而
+\[\Delta_S=\frac1{\sin\theta}\partial_\theta(\sin\theta\,\partial_\theta)
+              +\frac1{\sin^2\theta}\partial_\varphi^2.
+\]
+若函数只依赖 \(t=\cos\theta\)，第一项化为 \((1-t^2)\partial_t^2-2t\partial_t\)，第二项为零，恢复 Legendre 方程中的微分表达式。坐标系数在极点发散，算子本身作为球面内在对象却没有奇点。
+
+\subsection{齐次调和多项式}
+\label{b2:subsec:B20302}
+
+记 \(\mathcal P_\ell\) 为 \(d\) 个变量的 \(\ell\) 次齐次复多项式空间，\(\mathcal H_\ell=\{P\in\mathcal P_\ell:\Delta P=0\}\)。它们在单位球面的限制称为 \(\ell\) 阶 \term[qiuxie-hanshu]{球谐函数}[spherical harmonic]，相应空间记为 \(\mathcal Y_\ell\)。齐次性保证球面限制为零的多项式处处为零，所以 \(\mathcal H_\ell\) 与 \(\mathcal Y_\ell\) 同维。
+
+\begin{proposition}[齐次多项式的调和分解]
+\label{b2:prop:B2-harmonic-decomposition}
+对 \(\ell\ge0\)，有唯一分解
+\[\mathcal P_\ell=\mathcal H_\ell\oplus|x|^2\mathcal P_{\ell-2},\]
+其中负阶空间取零。反复分解得到每个齐次多项式的唯一表达
+\[P=\sum_{j=0}^{\lfloor\ell/2\rfloor}|x|^{2j}H_{\ell-2j},\qquad
+ H_{\ell-2j}\in\mathcal H_{\ell-2j}.
+\]
+\end{proposition}
+\begin{proof}
+直接使用乘积法则及 Euler 齐次恒等式 \(x\cdot\nabla H_m=mH_m\)，对调和齐次 \(H_m\) 得到
+\[\Delta(|x|^{2k}H_m)=2k(2m+d+2k-2)|x|^{2k-2}H_m.\]
+对 \(\ell=0,1\) 分解显然。归纳假设 \(\mathcal P_{\ell-2}\) 已分解成 \(|x|^{2j}\mathcal H_{\ell-2-2j}\) 的直和。上式说明 \(\Delta\) 从 \(|x|^2\mathcal P_{\ell-2}\) 到 \(\mathcal P_{\ell-2}\) 在各分量上乘以严格正的常数，因此是线性同构。给定 \(P\in\mathcal P_\ell\)，唯一取 \(Q\in|x|^2\mathcal P_{\ell-2}\)，使 \(\Delta Q=\Delta P\)，便有 \(P-Q\in\mathcal H_\ell\)。同构的单射性又保证两个直和分量交集为零，完成归纳。
+\end{proof}
+
+于是
+\[N_\ell=\dim\mathcal Y_\ell
+ =\binom{\ell+d-1}{d-1}-\binom{\ell+d-3}{d-1},\]
+第二项在 \(\ell<2\) 时取零。三维为 \(N_\ell=2\ell+1\)，二维除 \(N_0=1\) 外均为 \(2\)，对应圆周上的正弦、余弦两种模态。低阶例子中，常数是零阶，坐标函数是一阶；二阶调和多项式是迹为零的二次型，如 \(x_1^2-x_2^2\) 和 \(x_1x_2\)。
+
+\subsection{球面谱与完备性}
+\label{b2:subsec:B20303}
+
+若 \(P(r\omega)=r^\ell Y(\omega)\) 且 \(P\) 调和，极坐标公式给出
+\[-\Delta_SY=\ell(\ell+d-2)Y.\]
+不同 \(\ell\) 的特征值严格递增，因此由球面 Green 恒等式，\(\mathcal Y_\ell\) 两两正交。每个空间选择一组标准正交基 \(Y_{\ell,1},\ldots,Y_{\ell,N_\ell}\)。
+
+\begin{theorem}[球谐展开]
+\label{b2:thm:B2-spherical-expansion}
+上述全部球谐基组成 \(L^2(S^{d-1},\mathrm d\sigma)\) 的标准正交基。对 \(f\in L^2(S^{d-1})\)，
+\[f=\sum_{\ell=0}^\infty\sum_{j=1}^{N_\ell}c_{\ell,j}Y_{\ell,j},\qquad
+ c_{\ell,j}=\int_{S^{d-1}}f\overline{Y_{\ell,j}}\,\mathrm d\sigma,
+\]
+且 \(\lVert f\rVert_2^2=\sum_{\ell,j}|c_{\ell,j}|^2\)，级数按 \(L^2\) 意义收敛。
+\end{theorem}
+\begin{proof}
+正交性已证，只须证明有限球谐和稠密。任一多项式可拆成齐次部分，每个齐次部分再按调和分解展开；在球面上 \(|x|=1\)，所以其限制是有限球谐和。
+
+多项式限制在球面连续函数中一致稠密。为给出具体依据，先把连续球面函数沿半径延拓到球壳，再乘一个在原点附近为零的径向截断，得到包住球面的立方体上的连续函数。将立方体缩放到 \([0,1]^d\)，采用各坐标 Bernstein 权重的乘积。权重和为 \(1\)，各坐标的平均平方偏差至多为 \(1/(4n)\)，故偏离给定点超过 \(\varepsilon\) 的总权重至多为 \(d/(4n\varepsilon^2)\)。结合一致连续性，逼近误差至多为连续模加上 \(2\lVert f\rVert_\infty d/(4n\varepsilon^2)\)，先取小 \(\varepsilon\) 再取大 \(n\)，即得一致逼近。限制回球面便得到所需多项式逼近。
+
+球面面积是有限 Radon 测度，连续函数在其 \(L^2\) 中稠密。因此有限球谐和在 \(L^2\) 中稠密，标准正交展开定理给出展开与 Parseval 等式。
+\end{proof}
+
+这里完备性由多项式分解与逼近证明，并未从已经假定完整的球面谱反推。对光滑 \(f\)，还可多次用 Green 恒等式，得到
+\[\langle(-\Delta_S)^kf,Y_{\ell,j}\rangle
+ =[\ell(\ell+d-2)]^kc_{\ell,j}.\]
+Parseval 因而给出加权系数平方可和。这样的估计描述高阶角向光滑性；普通 \(L^2\) 函数则只具有未加权的平方可和，不能据此随意逐项求导。
+
+\subsection{加法公式与球内调和延拓}
+\label{b2:subsec:B20304}
+
+三维时，正交投影到 \(\mathcal Y_\ell\) 的核为
+\[Z_\ell(\omega,\eta)=\sum_{j=1}^{2\ell+1}Y_{\ell,j}(\omega)\overline{Y_{\ell,j}(\eta)}.
+\]
+核不依赖所选正交基，并同时旋转不变。固定 \(\eta\) 后，绕该轴的旋转不变性使它只依赖 \(t=\omega\cdot\eta\)；它还是 \(\ell\) 阶球谐多项式，故满足 Legendre 方程。规则多项式解是一维的，由最高次系数递推可见，所以它是 \(P_\ell(t)\) 的常数倍。对角值由旋转不变性为常数，且积分等于投影的维数 \(2\ell+1\)，得到 \term[qiuxie-jiafa-gongshi]{球谐加法公式}[spherical harmonic addition formula]
+\[Z_\ell(\omega,\eta)=\frac{2\ell+1}{4\pi}P_\ell(\omega\cdot\eta).
+\]
+这一推导同时解释了 Legendre 多项式为什么只需一个变量，却能汇集整个 \(2\ell+1\) 维角向空间。
+
+\ProseParagraphBreak
+
+在一般维数，对角核同理为 \(\sum_j|Y_{\ell,j}(\omega)|^2=N_\ell/|S^{d-1}|\)。因此给定 \(f\in L^2(S^{d-1})\)，级数
+\[u(r\omega)=\sum_{\ell,j}r^\ell c_{\ell,j}Y_{\ell,j}(\omega),\qquad0\le r<1,\]
+在每个 \(r\le\rho<1\) 上一致收敛。事实上，Cauchy--Schwarz 不等式给出
+\[
+ \left|\sum_jr^\ell c_{\ell,j}Y_{\ell,j}(\omega)\right|
+ \le r^\ell\left(\sum_j|c_{\ell,j}|^2\right)^{1/2}
+       \sqrt{\frac{N_\ell}{|S^{d-1}|}}.
+\]
+维数只按多项式增长，而 \(\rho^\ell\) 几何衰减，因此各阶项的上界可求和。各部分和是调和多项式，一致局部极限保留均值性质，故 \(u\) 在球内调和。
+
+\ProseParagraphBreak
+
+又由 Parseval，\(\lVert u(r\cdot)-f\rVert_{L^2(S^{d-1})}^2=\sum_{\ell,j}|r^\ell-1|^2|c_{\ell,j}|^2\to0\)，支配收敛保证边界数据按 \(L^2\) 意义恢复。这个构造与第十三章球内 Poisson 核相容：两者对光滑边界数据给出同一调和函数，再由 \(L^2\) 连续性延拓。若要求逐点边界收敛，还需额外的边界点或数据假设，不能只凭这个平方范数极限得到。
+
+\ProseParagraphBreak
+
+对于 Helmholtz 方程，代入单个角向模态 \(u(r,\omega)=v(r)Y_{\ell,j}(\omega)\)，径向方程为
+\[v''+\frac{d-1}rv'+\left(\kappa^2-\frac{\ell(\ell+d-2)}{r^2}\right)v=0.
+\]
+令 \(v=r^{-(d-2)/2}w(\kappa r)\)，便得到阶数 \(\ell+(d-2)/2\) 的 Bessel 方程。于是本附录的角向展开与附录 A 的径向函数共同完成球形几何中的分离变量，阶数中多出的 \((d-2)/2\) 来自径向体积因子，而不是任意选择。

@@ -4,13 +4,15 @@
 \BookChapterNumber{b3:ch:21}
 % 本章摘要（不计入编号）
 \begin{chapterabstract}
-待填充。
+阶乘的延拓同时具有积分、递推和整函数乘积三种描述。本章从 Euler 积分建立 Gamma 函数，用对数凸性刻画其正实轴取值，再确定亚纯延拓、零极点与经典恒等式。最后把正半轴上的 Mellin 变换化为对数坐标下的 Fourier 变换，明确反演所需的可积条件。
 \end{chapterabstract}
 
 % 本章目标（不计入编号）
 \begin{learninggoals}
-待填充。
+能够由积分证明全纯性和递推，区分亚纯延拓与原积分收敛；掌握 Gamma 乘积、反射与乘法公式的规范化常数；能够确定 Mellin 收敛带，并在给定权重下验证反演假设。
 \end{learninggoals}
+
+整数阶乘同时记录乘法递推和积分矩。将参数连续化后，这两种解释为何仍相容，是本章首先解决的问题。后面的 Mellin 方法则让同一积分成为伸缩问题中的变换工具。所需基础是全纯函数的局部一致极限、无穷乘积及实积分的极限交换；\chapref{b3:ch:20}的正弦乘积用于反射公式。Stein、Shakarchi 的《Complex Analysis》\cite{Stein2003Complex}将这些特殊函数与后续的 \(\zeta\) 函数联系起来，可据本章的具体恒等式继续阅读。
 
 \input{Part04/Chapter21/Section2101}
 \input{Part04/Chapter21/Section2102}
@@ -19,10 +21,83 @@
 \input{Part04/Chapter21/Section2105}
 % 本章小结（不计入编号）
 \begin{chaptersummary}
-待填充。
+Gamma 函数由正实轴的递推、规范化和对数凸性唯一确定；其全平面延拓有一串已知留数的单极点，而倒数是具有显式乘积的整函数。Mellin 变换将这些极点解释为原点渐近项，并把伸缩转成参数乘子。使用反演与围道移动时，仍须分别核验竖线可积性和横边衰减。
 \end{chaptersummary}
 
 
 \BookExercises
 
-待填充。
+% 以下八题均自拟：分别训练参数微分、归一化、极点抵消、乘积展开与Mellin权重；非正文命题复述。
+\begin{exercise}\label{b3:ex:21-1}
+对正整数 \(n\)，以密度 \(t^{n-1}e^{-t}/\Gamma(n)\) 在 \((0,\infty)\) 上取加权平均。求 \(\log t\) 的平均值及方差，并证明方差随 \(n\) 趋于无穷而趋于零。
+\end{exercise}
+\begin{solution}
+参数积分可微两次：在任何紧参数区间，原点由 \(t^{a-1}(1+|\log t|^2)\)、无穷远由指数衰减控制。于是平均为 \(\psi(n)=\Gamma'(n)/\Gamma(n)=H_{n-1}-\gamma\)，其中 \(H_0=0\)；二阶矩为 \(\Gamma''(n)/\Gamma(n)\)。减去平均的平方，方差等于
+\[
+\psi'(n)=\sum_{k=0}^{\infty}\frac1{(n+k)^2}.
+\]
+当 \(n\ge2\) 时积分比较给该和不超过 \(1/(n-1)\)，故趋于零。这里方差消失描述的是对数变量的集中，而非 \(t\) 本身的方差。
+\end{solution}
+\begin{exercise}\label{b3:ex:21-2}
+设 \(a>0\)、\(b\in\mathbb R\)、\(c>0\)。计算 \(\int_0^\infty x^{c-1}e^{-ax}\cos(bx)\,\mathrm{d}x\)，并写成实三角函数形式。
+\end{exercise}
+\begin{solution}
+对右半平面参数 \(w\)，积分 \(I(w)=\int_0^\infty x^{c-1}e^{-wx}\,\mathrm{d}x\) 在紧集上由 \(x^{c-1}e^{-\delta x}\) 控制而全纯。正实 \(w\) 上换元给 \(I(w)=\Gamma(c)w^{-c}\)；右半平面取实轴为实值的对数，恒等定理使公式处处成立。令 \(w=a-\mathrm{i}b\) 并取实部，得到
+\[
+\int_0^\infty x^{c-1}e^{-ax}\cos(bx)\,\mathrm{d}x
+=\Gamma(c)(a^2+b^2)^{-c/2}
+\cos\bigl(c\arctan(b/a)\bigr).
+\]
+积分绝对收敛，故取实部与积分可交换。
+\end{solution}
+\begin{exercise}\label{b3:ex:21-3}
+确定 \(\Gamma(z)/\Gamma(z-n)\) 的全部奇点，其中 \(n\) 为正整数。
+\end{exercise}
+\begin{solution}
+先在避开极点处递推得 \(\prod_{k=1}^n(z-k)\)。因此商的全部表观奇点均可去，延拓为首一多项式，零点为 \(1,\ldots,n\)。不能把分子分母同时无穷当成未定义而遗漏可去延拓。
+\end{solution}
+\begin{exercise}\label{b3:ex:21-4}
+求 \(\lim_{z\to0}\bigl(\Gamma(z)\Gamma(-z)+z^{-2}\bigr)\)。为何不能先把两个 Gamma 因子各自取极限？
+\end{exercise}
+\begin{solution}
+递推与反射式给
+\[
+\Gamma(z)\Gamma(-z)
+=-\frac{\pi}{z\sin\pi z}
+=-\frac1{z^2}-\frac{\pi^2}{6}+O(z^2).
+\]
+所求极限为 \(-\pi^2/6\)。两个因子在原点都有极点，各自没有有限极限；先乘出 Laurent 展开，才能辨认题中二阶主部的抵消，不能以无穷值的形式直接代数运算。
+\end{solution}
+\begin{exercise}\label{b3:ex:21-5}
+求 \(f(x)=x^a\mathbf1_{(0,1)}(x)+x^{-b}\mathbf1_{[1,\infty)}(x)\) 的 Mellin 收敛带，其中 \(a,b\) 为实数。
+\end{exercise}
+\begin{solution}
+原点要求 \(\operatorname{Re}s>-a\)，无穷远要求 \(\operatorname{Re}s<b\)。若 \(-a<b\)，变换为 \(1/(s+a)+1/(b-s)\)；否则绝对收敛带为空。该有理表达式的存在不能补救原积分没有公共收敛带的问题。
+\end{solution}
+\begin{exercise}\label{b3:ex:21-6}
+求 \(e^{-x}-e^{-2x}\) 的 Mellin 变换，并说明原点抵消怎样扩大收敛域。
+\end{exercise}
+\begin{solution}
+差在原点为 \(x+O(x^2)\)，无穷远指数下降，故收敛域为 \(\operatorname{Re}s>-1\)。在 \(\operatorname{Re}s>0\) 上分别积分得 \((1-2^{-s})\Gamma(s)\)。零点因子消去 \(s=0\) 的单极点，恒等定理将公式扩展到整个收敛域，该点值为 \(\log2\)。
+\end{solution}
+\begin{exercise}\label{b3:ex:21-7}
+设 \(h=\mathbf1_{(0,1)}\)。计算 \(h\) 的 \(m\) 次 Mellin 卷积 \(h^{*_M m}\)，并求其 Mellin 变换，其中 \(m\ge1\) 为整数。
+\end{exercise}
+\begin{solution}
+结果为
+\[
+h^{*_M m}(x)=\frac{(-\log x)^{m-1}}{(m-1)!}\mathbf1_{(0,1)}(x).
+\]
+当 \(m=1\) 时即定义。若公式对 \(m\) 成立，对 \(0<x<1\) 再卷积一次，积分区间为 \(x<y<1\)；令 \(v=\log(y/x)\)，积分变为 \(\int_0^{-\log x}v^{m-1}\,\mathrm{d}v/(m-1)!\)，给出归纳式。\(x\ge1\) 时没有满足两因子支集条件的 \(y\)，所以为零。对 \(\operatorname{Re}s>0\)，令 \(u=-\log x\) 得 Mellin 积分为 \(\Gamma(m)/((m-1)!s^m)=s^{-m}\)；若 \(\operatorname{Re}s\le0\)，绝对积分发散。
+\end{solution}
+\begin{exercise}\label{b3:ex:21-8}
+证明 \(\Gamma(x+\sqrt{x})/(x^{\sqrt{x}}\Gamma(x))\to e^{1/2}\)，其中 \(x\to+\infty\)。这说明固定平移的 Gamma 比值渐近为什么不能直接用于增长的平移量？
+\end{exercise}
+\begin{solution}
+令 \(a=\sqrt x\)。正实轴 Stirling 公式应用于 \(x\) 与 \(x+a\)，取比值的对数后得到
+\[
+\log\frac{\Gamma(x+a)}{x^a\Gamma(x)}
+=\left(x+a-\frac12\right)\log(1+a/x)-a+o(1).
+\]
+因 \(a/x=x^{-1/2}\)，将对数展开至二次，三次余项乘以 \(x+a-1/2\) 后为 \(O(x^{-1/2})\)。上式于是等于 \(a^2/(2x)+O(x^{-1/2})+o(1)\to1/2\)。指数化即得。固定平移时被忽略的 \(a^2/x\) 项此处保持为一，所以固定参数的渐近不是对所有增长平移量一致成立。
+\end{solution}

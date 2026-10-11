@@ -2,24 +2,100 @@
 \section{增长阶与型}
 \label{b3:sec:1902}
 
-% TODO: 撰写本节正文。
+以幂函数衡量 \(\log M\) 的增长，可以同时比较指数函数与更快的整函数。阶先确定指数尺度，型再比较相同尺度上的系数。
 
 \subsection{阶}
 \label{b3:subsec:190201}
 
-待填充。
+非恒定整函数的\term[zengzhang-jie]{增长阶}[order of growth]为
+\[
+\rho(f)=\limsup_{r\to\infty}\frac{\log\log M(r,f)}{\log r},
+\]
+允许为零和无穷。常数函数约定阶为零。阶有限时，对每个 \(\varepsilon>0\) 在充分大半径有 \(\log M(r)\le r^{\rho+\varepsilon}\)；这个上界不能无说明地把 \(\varepsilon\) 删除。
 
 \subsection{型}
 \label{b3:subsec:190202}
 
-待填充。
+当 \(0<\rho<\infty\)，定义该阶的\term[zengzhang-xing]{型}[type]为 \(\tau=\limsup r^{-\rho}\log M(r)\)。\(\tau=0\)、有限正数、无穷分别对应最小型、正常型和最大型。零阶时这一公式不能给有用的统一型分类；多项式与某些超越整函数都可能是零阶。
+
+若 \(\tau<\infty\)，则对每个 \(\varepsilon>0\) 有 \(M(r)\le C_\varepsilon e^{(\tau+\varepsilon)r^\rho}\)。常数依赖 \(\varepsilon\)，并不允许据此取同一常数覆盖所有 \(\varepsilon\downarrow0\)。
 
 \subsection{基本例子}
 \label{b3:subsec:190203}
 
-待填充。
+函数 \(e^{az^m}\)、\(a\ne0\)、整数 \(m\ge1\)，具有 \(M(r)=e^{|a|r^m}\)，故阶 \(m\)、型 \(|a|\)。\(\sin z\) 与 \(\cos z\) 阶一、型一：上界由指数表达式，下界在虚轴由 \(\sinh r\)、\(\cosh r\) 得到。
+
+函数 \(e^{e^z}\) 无穷阶，因为在正实轴 \(\log\log|f(r)|=r\)，除以 \(\log r\) 发散。多项式阶零，因为 \(\log M(r)=d\log r+O(1)\)。这些例子说明阶衡量的是指数增长层次，不是多项式的次数。
 
 \subsection{导数增长}
 \label{b3:subsec:190204}
 
-待填充。
+\begin{proposition}\label{b3:prop:19-derivative-order}
+非常值有限阶整函数的导数具有相同增长阶。
+\end{proposition}
+\begin{proof}
+对 \(|z|\le r\)，在半径 \(r\) 的周围小圆用 Cauchy 估计，得 \(M(r,f')\le M(2r,f)/r\)，所以 \(\rho(f')\le\rho(f)\)。沿线段积分又有 \(M(r,f)\le|f(0)|+rM(r,f')\)，给反向不等式。若导数常数，则原函数线性，两者阶均零。
+\end{proof}
+这只证明阶相同。精确型或某条射线上的指标需要更细的估计，不能从粗略半径倍增直接读取。
+
+
+\ProseParagraphBreak
+
+阶的定义还有等价估计形式：\(\rho\) 是所有满足 \(M(r)\le C e^{Cr^s}\) 的指数 \(s>0\) 的下确界。若有这样的估计，取两次对数得阶不超过 \(s\)；若 \(s>\rho\)，定义本身给大半径的估计，再扩大常数覆盖有限半径。下确界可能不被取得，所以有限阶 \(\rho\) 不保证在 \(s=\rho\) 已有一个有限常数。最大型函数正是临界尺度常数无穷的情形。
+
+\ProseParagraphBreak
+
+Taylor 系数也完整确定增长阶。设超越整函数 \(f(z)=\sum_{n\ge0}c_nz^n\)，忽略 \(c_n=0\) 的项，则
+\[
+\rho(f)=\limsup_{n\to\infty}\frac{n\log n}{\log(1/|c_n|)}.
+\]
+整性使 \(|c_n|^{1/n}\to0\)，故分母最终正。下面把两个方向分别证明，而不从系数快速衰减的直观直接读出阶。
+
+\begin{proof}
+若 \(s>\rho(f)\)，有 \(M(r)\le Ce^{r^s}\)。Cauchy 系数界取 \(r=(n/s)^{1/s}\)，给
+\[
+\log(1/|c_n|)\ge\frac ns\log n-\frac ns(1+\log s)-\log C.
+\]
+故系数右端上极限不超过 \(s\)，再令 \(s\downarrow\rho\)。反过来，若该上极限小于 \(s\)，最终 \(|c_n|\le n^{-n/s}\)。将模级数分为 \(n\le(2r)^s\) 和后面的部分。后面各项不超过 \(2^{-n}\)；前面每项的对数 \(n\log r-(n/s)\log n\) 对正实 \(n\) 的最大值为 \(r^s/(es)\)，所以有限头部总量至多 \((2r)^s e^{r^s/(es)}\)，再加固定多项式与有界尾部。于是 \(\log M(r)=O(r^s)\)，阶不超过 \(s\)。使 \(s\) 趋向系数上极限即得反向结论；零阶和无穷阶按同样的估计解释。
+\end{proof}
+
+\ProseParagraphBreak
+
+对已知 \(0<\rho<\infty\) 的函数，还可读出型：
+\[
+\limsup_n n^{1/\rho}|c_n|^{1/n}=(e\rho\tau)^{1/\rho}.
+\]
+若 \(\tau<\infty\)，取 \(M(r)\le C_\varepsilon e^{(\tau+\varepsilon)r^\rho}\)，在 \(r^\rho=n/(\rho(\tau+\varepsilon))\) 应用 Cauchy 即给左侧不超过右侧。反向令左侧为 \(L<\infty\)，最终 \(|c_n|\le((L+\varepsilon)n^{-1/\rho})^n\)。模级数的每项对数最多 \(((L+\varepsilon)r)^\rho/(e\rho)\)，截断在 \(n>(2(L+\varepsilon)r)^\rho\) 后尾部几何可和，前面只有 \(O(r^\rho)\) 项，其项数对数除以 \(r^\rho\) 趋零。故型不超过 \((L+\varepsilon)^\rho/(e\rho)\)。令 \(\varepsilon\downarrow0\) 即得等式；\(L=0\) 或无穷由同一不等式处理。
+
+\ProseParagraphBreak
+
+这给任意正实数阶的明确例子：
+\[
+F_s(z)=\sum_{n\ge0}\frac{z^n}{(n!)^{1/s}},\qquad s>0.
+\]
+系数根趋零，所以它整。积分比较 \(\int_1^n\log t\,\mathrm{d}t\le\log n!\le\int_1^n\log t\,\mathrm{d}t+\log n\) 给 \(\log n!=n\log n-n+O(\log n)\)，不需要尚未建立的 Stirling 精细公式。代入系数判据得到阶 \(s\)、型 \(1/s\)。非整数阶不是抽象分类中的空位；例如 \(s=1/2\) 给 \(\sum z^n/(n!)^2\)，阶二分之一，型二。
+
+\ProseParagraphBreak
+
+阶和型对加法、乘法有简单上界，但一般没有等式。由 \(M(f+g)\le M(f)+M(g)\)、\(M(fg)\le M(f)M(g)\)，两者的阶至多为较大的输入阶。如果两函数阶不同，和的阶必为较大者：否则由 \(f=(f+g)-g\) 的同一估计产生矛盾。阶相同时可能完全抵消，例如 \(e^z+(-e^z+1)=1\)；乘积也可能从阶一降为零，例如 \(e^ze^{-z}=1\)。不允许把“取最大阶”不加条件当作代数运算规则。
+
+\ProseParagraphBreak
+
+零阶并不只包含多项式。考虑正系数整函数
+\[
+ F(z)=\sum_{n=0}^\infty e^{-n^2}z^n.
+\]
+系数根 \(e^{-n}\) 趋零，所以收敛半径无穷。令 \(t=\log r\)，则
+\[
+ M(r,F)=F(r)=e^{t^2/4}\sum_{n\ge0}e^{-(n-t/2)^2}.
+\]
+最后的和有与 \(t\ge1\) 无关的上下正常数界：下界选距 \(t/2\) 最近的非负整数，上界按距该数的整数距离用高斯尾和控制。因此 \(\log M(r)=\tfrac14(\log r)^2+O(1)\)。它超过每个固定的 \(d\log r\)，所以不是多项式，却比每个 \(r^\varepsilon\) 慢，因而阶为零。这一例子把零阶定义中两次对数的作用具体显现出来。
+\ProseParagraphBreak
+阶对坐标平移不敏感。令 \(g(z)=f(az+b)\)，\(a\ne0\)。由圆盘包含关系，在大半径有
+\[
+ M(|a|r-|b|,f)\le M(r,g)\le M(|a|r+|b|,f).
+\]
+外侧半径与 \(|a|r\) 的比趋于一，故 \(g\) 与 \(f\) 阶相同；有限正阶 \(\rho\) 下，型满足 \(\tau(g)=|a|^\rho\tau(f)\)。平移只改变低阶半径误差，缩放则按阶产生确定幂次。这个结论要求使用圆盘最大值而非仅在一条射线上比较，因为平移后的圆心已经改变。
+\ProseParagraphBreak
+导数的型也可用较细的半径估计控制。若 \(f\) 的阶为 \(0<\rho<\infty\)，对固定 \(\varepsilon>0\)，Cauchy 估计给
+\(M(r,f')\le M((1+\varepsilon)r,f)/(\varepsilon r)\)。取对数、除以 \(r^\rho\) 并取上极限，得 \(\tau(f')\le(1+\varepsilon)^\rho\tau(f)\)，再令 \(\varepsilon\downarrow0\)。反向由 \(M(r,f)\le|f(0)|+rM(r,f')\) 得 \(\tau(f)\le\tau(f')\)。所以同一有限正阶下二者的型也相等，包括零型与无穷型的延伸解释。前面半径倍增只足以给阶；这里让半径比趋于一，才恢复精确型。

@@ -2,23 +2,99 @@
 \section{一般二阶椭圆算子}
 \label{b2:sec:1504}
 
-% TODO: 撰写本节正文。
+Poisson 方程的证明只用到梯度型的有界性与正性，因而可以推广到系数随位置变化的算子。困难主要来自两处：低阶项可能破坏正性，非对称主部使极小化不再适用。本节先得到移位后的可解性，再在选读小节中借紧性解释原问题的有限维障碍。
 
 \subsection{散度型算子}
 \label{b2:subsec:150401}
 
-待填充。
+设 \(\Omega\subset\mathbb R^d\) 有界，考虑
+\[Lu=-\operatorname{div}(A\nabla u)+b\cdot\nabla u+cu,\]
+其中矩阵 \(A\)、向量 \(b\) 和实函数 \(c\) 均有界可测。其 \term[sandu-xing-suanzi]{散度型算子}[divergence-form operator]主部用通量 \(A\nabla u\) 定义，不必对系数求经典导数。对应型为
+\[a(u,v)=\int_\Omega A\nabla u\cdot\nabla v
+       +\int_\Omega(b\cdot\nabla u)v+\int_\Omega cuv.
+\]
+弱 Dirichlet 问题是在 \(H_0^1(\Omega)\) 中求 \(u\)，使 \(a(u,v)=\langle f,v\rangle\) 对所有 \(v\in H_0^1\) 成立。
+
+\ProseParagraphBreak
+
+假设存在 \(\lambda>0\)，使对几乎处处的 \(x\) 和全部实向量 \(\xi\) 有
+\[\xi^{\mathsf T}A(x)\xi\ge\lambda|\xi|^2.\]
+这称为一致椭圆性。由于反对称部分的二次型为零，它等价于对称部分的相同下界；但方程本身仍保留全部矩阵。若 \(A\) 不可微，不能把 \(-\partial_i(a_{ij}\partial_j u)\) 改成 \(-a_{ij}\partial_{ij}u\) 并丢掉系数导数，这两种形式是不同的方程类别。
 
 \subsection{有界可测系数}
 \label{b2:subsec:150402}
 
-待填充。
+设 \(\lVert A(x)\rVert\le\Lambda\)、\(\lVert b\rVert_\infty=B\)、\(\lVert c\rVert_\infty=C_0\)。逐项应用 Hölder 与 Poincaré 不等式，得到
+\[|a(u,v)|\le(\Lambda+BC_P+C_0C_P^2)\lVert\nabla u\rVert_2\lVert\nabla v\rVert_2.\]
+所以有界可测系数已经足够定义连续弱型。若 \(b=0\)、\(c\ge0\)，椭圆性还给出 \(a(u,u)\ge\lambda\lVert\nabla u\rVert_2^2\)。由 Lax--Milgram，对每个 \(f\in H^{-1}\) 唯一可解，且
+\[\lVert\nabla u\rVert_2\le\lambda^{-1}\lVert f\rVert_{H^{-1}}.\]
+这些结论没有要求矩阵对称。
+
+\ProseParagraphBreak
+
+系数粗糙时，解的导数可能在界面跳跃，\cref{b2:prop:15-interface-flux} 已给出最简单的例子。这说明存在性定理与下一章的 \(H^2\) 正则性定理必须使用不同假设：前者只要系数有界可测，后者的差商证明需要系数具有 Lipschitz 控制。不能因为方程是“椭圆的”，就把所有正则性结论一并附加上去。
+
+\ProseParagraphBreak
+
+对于非齐次边界数据，仍写 \(u=g+w\)。右端变成 \(f-a(g,\cdot)\)；由同样的积分估计，它是 \(H_0^1\) 上的连续泛函。因此齐次问题的结论立即推广。需要注意，估计 \(a(g,v)\) 时 \(g\) 不属于 \(H_0^1\)，不能对 \(g\) 使用零边界 Poincaré 不等式，而应保留其完整 \(H^1\) 范数。
 
 \subsection{Gårding 不等式}
 \label{b2:subsec:150403}
 
-待填充。
+\begin{proposition}[Gårding 不等式]
+\label{b2:prop:15-garding}
+设 \(\Omega\) 有界，\(A,b,c\) 如上有界可测，且 \(A\) 以常数 \(\lambda>0\) 一致椭圆。令
+\[\beta=\frac{\lVert b\rVert_\infty^2}{2\lambda}+\lVert c_-\rVert_\infty,
+ \qquad c_- =\max\{-c,0\}.\]
+则对所有 \(u\in H_0^1(\Omega)\)，
+\[a(u,u)\ge\frac\lambda2\lVert\nabla u\rVert_2^2-\beta\lVert u\rVert_2^2.\]
+因而 \(a_\mu(u,v)=a(u,v)+\mu\int_\Omega uv\) 在每个 \(\mu\ge\beta\) 时强制；方程 \((L+\mu I)u=f\) 对每个 \(f\in H^{-1}\) 唯一弱可解。
+\end{proposition}
+\begin{proof}
+主部下界是 \(\lambda\lVert\nabla u\rVert_2^2\)。一阶项由 Young 不等式满足
+\[\left|\int(b\cdot\nabla u)u\right|
+ \le B\lVert\nabla u\rVert_2\lVert u\rVert_2
+ \le\frac\lambda2\lVert\nabla u\rVert_2^2+\frac{B^2}{2\lambda}\lVert u\rVert_2^2.\]
+零阶项下界为 \(-\lVert c_-\rVert_\infty\lVert u\rVert_2^2\)。相加即得不等式；加上 \(\mu\lVert u\rVert_2^2\) 后，强制常数至少为 \(\lambda/2\)。有界性已证明，故应用 \cref{b2:thm:15-lax-milgram} 得到最后结论。
+\end{proof}
+
+上述估计称为 \term[garding-budengshi]{Gårding 不等式}[Gårding inequality]。它不是原型的强制性，而是允许减去一个较低阶的 \(L^2\) 项。移位恢复正性，却也改变了方程：解 \((L+\mu I)u=f\) 并不能直接宣称已经解了 \(Lu=f\)。去掉移位需要额外论证，下一小节用紧嵌入完成这一步。
+
+\ProseParagraphBreak
+
+有时漂移项可以更精确处理。若 \(b\) 足够光滑，且 \(u\in H_0^1\)，则密度和分部积分给出 \(\int(b\cdot\nabla u)u=-\tfrac12\int(\operatorname{div}b)u^2\)。若 \(c-\tfrac12\operatorname{div}b\ge0\)，原型已强制，无须移位。对于仅有界可测的 \(b\)，散度未必是可比较的函数，此时前面的 Young 估计才是无需额外正则性的可靠结论。
 
 \OptionalSubsection{Fredholm 择一定理}{b2:subsec:150404}
 
-待填充。
+本小节只使用第一卷已经完整证明的紧算子 Fredholm 理论。应用的紧性来自第一卷推论 25.2.5：任意有界开集上的 \(H_0^1(\Omega)\hookrightarrow L^2(\Omega)\) 紧嵌入。它不需要 Lipschitz 边界，因为零延拓与平移紧性已经控制了边界附近的质量。
+
+\begin{theorem}[椭圆边值问题的有限维障碍]
+\label{b2:thm:15-fredholm-elliptic}
+在 \cref{b2:prop:15-garding} 的假设下，令
+\[
+ \begin{aligned}
+ N&=\{u\in H_0^1:a(u,v)=0\ \text{对所有 }v\in H_0^1\},\\
+ N^*&=\{w\in H_0^1:a(v,w)=0\ \text{对所有 }v\in H_0^1\}.
+ \end{aligned}
+\]
+则两空间有限维且维数相等。对 \(f\in H^{-1}\)，弱问题 \(a(u,v)=\langle f,v\rangle\) 有解，当且仅当
+\[\langle f,w\rangle=0\qquad(w\in N^*).\]
+有解时全部解为 \(u_0+N\)。特别地，齐次问题只有零解，当且仅当任意右端都有唯一解。
+\end{theorem}
+\begin{proof}
+记 \(H=H_0^1\)，以梯度为内积。分别用算子 \(T,T_\mu,M:H\to H\) 表示型 \(a,a_\mu\) 及 \(\int uv\)。选 \(\mu\ge\beta\)，Lax--Milgram 使 \(T_\mu\) 成为有界可逆算子。又 \(T=T_\mu-\mu M=T_\mu(I-K)\)，其中 \(K=\mu T_\mu^{-1}M\)。
+
+为证 \(M\) 紧，取 \(H\) 中有界列 \((u_n)\)。紧嵌入给出在 \(L^2\) 中收敛的子列；且
+\[\lVert M(u_n-u_k)\rVert_H
+ =\sup_{\lVert v\rVert_H\le1}\left|\int(u_n-u_k)v\right|
+ \le C_P\lVert u_n-u_k\rVert_2,\]
+所以像子列在 \(H\) 中收敛。由此 \(K\) 紧。第一卷定理 C.4.4 说明 \(I-K\) 有闭值域、有限维核与余核，二者维数相等；左乘可逆算子后，\(T\) 保留这些性质。
+
+在 Hilbert 空间中，闭值域满足 \(\operatorname{ran}T=(\ker T^*)^\perp\)。而 \(\ker T=N\)、\(\ker T^*=N^*\)，因为 \(\langle Tv,w\rangle_H=a(v,w)\)。将右端 \(f\) 用 Riesz 向量表示，可解性即等价于它与 \(N^*\) 正交，也就是所列对偶配对为零。两个解之差恰在 \(N\) 内，得到所有结论。
+\end{proof}
+
+对称型的 \(N^*\) 就是 \(N\)；非对称型必须检查伴随核，不能用原核替代。例如有限维非对称矩阵的值域正交于转置矩阵的核，而未必正交于自身的核，这里的区别完全相同。定理中的相容条件只有有限多个，可以对 \(N^*\) 的一组基逐个检验。
+
+\ProseParagraphBreak
+
+在 \((0,\pi)\) 上取 \(L=-\frac{\mathrm d^2}{\mathrm dx^2}-1\) 和零端点条件。齐次核为 \(\operatorname{span}\{\sin x\}\)，故 \(Lu=f\) 可解恰当且仅当 \(\int_0^\pi f(x)\sin x\,\mathrm dx=0\)。源项 \(f=\sin x\) 因此不可解，而 \(f=\sin2x\) 有解 \(u=\frac13\sin2x+c\sin x\)。这个例子同时显示：一致椭圆主部并不排除共振；移位后的唯一可解性与原问题的有限维障碍可以同时成立。

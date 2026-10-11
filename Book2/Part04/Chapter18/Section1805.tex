@@ -2,24 +2,109 @@
 \section{典型算子}
 \label{b2:sec:1805}
 
-% TODO: 撰写本节正文。
+Hilbert 变换的符号区分正负频率。高维中，每个方向的 Riesz 变换把频率向量归一化，它把奇异积分与梯度、调和延拓及椭圆方程联系起来。
 
 \subsection{Riesz 变换}
 \label{b2:subsec:180501}
 
-待填充。
+\begin{definition}\label{b2:thm:18-riesz-definition}
+对 \(f\in L^2(\mathbb R^d)\)，定义\term[riesz-bianhuan]{Riesz 变换}[Riesz transform] \(R_j\) 为乘子
+\[
+ \widehat{R_jf}(\xi)\coloneqq-\mathrm i\dfrac{\xi_j}{|\xi|}\widehat f(\xi),
+ \qquad 1\leq j\leq d,
+\]
+\symidx{\(R_jf\)：第 \(j\) 个 Riesz 变换}
+零频处任意补值。
+\end{definition}
+其 \(L^2\) 范数至多一，且 \(\sum_jR_j^2=-I\)。对应主值核为
+\[
+ k_j(x)=c_d\dfrac{x_j}{|x|^{d+1}},\qquad
+ c_d=\dfrac{\Gamma((d+1)/2)}{\pi^{(d+1)/2}}.
+\]
+为核对常数，使用本卷的 Poisson 核
+\[
+ P_t(x)=c_d\dfrac{t}{(t^2+|x|^2)^{(d+1)/2}},\quad
+ Q_{j,t}(x)=c_d\dfrac{x_j}{(t^2+|x|^2)^{(d+1)/2}}.
+\]
+有 \(\partial_tQ_{j,t}=\partial_jP_t\)。对 \(t\) 从无穷积分回来，并使用 \(\widehat P_t=e^{-2\pi t|\xi|}\)，得到 \(\widehat Q_{j,t}=-\mathrm i\xi_j|\xi|^{-1}e^{-2\pi t|\xi|}\)。等式按温和分布理解，因 \(Q_{j,t}\) 并非全空间绝对可积。
+
+\ProseParagraphBreak
+
+令 \(t\downarrow0\)，奇性使近原点的常数项抵消，差 \(f(x-y)-f(x)\) 提供一阶可积因子；远场对 Schwartz 输入绝对可积。故 \(Q_{j,t}*f\) 的极限正是上述核的主值。大小和一阶差分条件直接由核求导得到，Calderón–Zygmund 定理遂给出所有 \(1<p<\infty\) 的有界性。
 
 \subsection{共轭函数}
 \label{b2:subsec:180502}
 
-待填充。
+在一维上半平面，令 \(u(x,t)=P_t*f(x)\)、\(v(x,t)=Q_{1,t}*f(x)\)。前面的核恒等式给出
+\[
+ \partial_tv=\partial_xu,\qquad
+ \partial_xv=-\partial_tu.
+\]
+因此 \(u+\mathrm iv\) 关于 \(x+\mathrm it\) 满足 Cauchy--Riemann 方程。若把共轭核改成 \(-Q_{1,t}\)，则应相应使用 \(u-\mathrm iv\)。这类符号在边界共轭函数和解析信号的讨论中必须与核约定共同核对。
+
+\ProseParagraphBreak
+
+圆周上的对应核是 \(\cot(t/2)\)，积分采用 \(\mathrm dt/(2\pi)\) 时共轭算子的频率符号仍为 \(-\mathrm i\operatorname{sgn}n\)。零频送到零，所以平方等于 \(-I\) 加上常数投影，而不是实直线的 \(-I\)。周期空间存在非零可积常函数，正是这个差别的原因。
+
+% 扩写定位：b2:subsec:180502
+在实直线上，Hilbert 变换还给出正负频率的有界投影。零频单点不影响 \(L^2\) 定义，置
+\[
+ P_+=\frac{I+\mathrm iH}{2},\qquad P_-=\frac{I-\mathrm iH}{2}.
+\]
+它们在 \(L^2\) 上的乘子分别为 \(\mathbf1_{\{\xi>0\}}\) 与 \(\mathbf1_{\{\xi<0\}}\)，因而 \(P_++P_-=I\)、\(P_\pm^2=P_\pm\)、\(P_+P_-=0\)。在 \(1<p<\infty\) 中，由 Hilbert 变换有界性与稠密性得到同样的代数恒等式。这是在一个不光滑频率集合上实现有界乘子的具体例子。
+
+\ProseParagraphBreak
+
+若 \(\widehat f\) 只支于正半轴，则 \(Hf=-\mathrm if\)，所以 Poisson 延拓满足 \(v=-\mathrm iu\)，其复变量表达来自正频率指数的衰减。在一般输入上，\(P_+\) 抽取的部分正是这种边界数据。不能由此声称每个 \(L^p\) 函数都具有解析延拓；得到解析边界分量所用的正频率投影是关键。
+
+\ProseParagraphBreak
+
+还可把频率半轴移到任意阈值 \(a\)。令 \(\mathcal M_a f(x)=e^{2\pi\mathrm iax}f(x)\)，则
+\(\mathcal M_aP_+\mathcal M_{-a}\) 的符号为 \(\mathbf1_{\{\xi>a\}}\)，范数与 \(P_+\) 相同。于是任意区间 \((a,b)\) 的 Fourier 投影是两个这样的算子的差，在 \(1<p<\infty\) 上具有与区间长度、位置无关的界。对高维矩形可逐坐标应用 Fubini 和这一估计，范数至多为一维常数的 \(d\) 次方。球面边界的方向随位置变化，矩形的这套逐坐标分解不再适用；后面的球面乘子问题由此出现新的几何条件。
+
+\ProseParagraphBreak
+
+正频率投影还产生一个可计算的非线性恒等式。对实值 \(f,g\in L^4(\mathbb R)\)，有
+\[
+ H(f\,Hg+g\,Hf)=Hf\,Hg-fg.
+\]
+先取 Fourier 变换光滑紧支撑且避开零频的实输入。函数 \(F=f+\mathrm iHf\)、\(G=g+\mathrm iHg\) 都只含正频率，它们的乘积仍只含正频率，因此 \(H(FG)=-\mathrm iFG\)。写
+\(FG=(fg-Hf\,Hg)+\mathrm i(f\,Hg+g\,Hf)\)，比较实部与虚部就得到所示公式。一般 \(L^4\) 输入可由这类函数逼近：高低频光滑截断均在 \(L^4\) 中重构，Hilbert 变换连续，Hölder 使各乘积在 \(L^2\) 中收敛，再使用 \(H\) 的平方连续性取极限。
+
+\ProseParagraphBreak
+
+这个恒等式不是把 \(H\) 当作普通乘法导数。它利用的是正频率在乘法下封闭，以及 Hilbert 符号在正半轴上为固定常数；右端还出现了额外的 \(-fg\)。取 \(f=g\) 就得到 \(2H(fHf)=(Hf)^2-f^2\)，可以用来检查解析边界分量的乘积结构。若把输入改成复值，直接比较实虚部的上述论证不再原样适用，应先分解成实输入再整理复线性恒等式。
+
+\ProseParagraphBreak
+
+范数范围也已经被明确指定：\(L^4\) 的两个因子使右端和括号中的输入处于 \(L^2\)，从而可以使用已建立的 Hilbert 平方界。若仅令 \(f,g\in L^2\)，乘积只保证 \(L^1\)，此时 Hilbert 强积分端点失效，不能不加说明地沿用同一范数极限证明。这种乘法公式与空间范围的配合，在后面的非线性时空估计中也会反复出现。
 
 \subsection{Poisson 延拓}
 \label{b2:subsec:180503}
 
-待填充。
+对于 \(f\in L^p\)、\(1<p<\infty\)，\(u=P_t*f\) 和 \(v_j=P_t*R_jf\) 都具有受控的 \(L^p\) 范数，并在 \(t\downarrow0\) 时分别范数趋于 \(f\)、\(R_jf\)。Fourier 关系给出
+\[
+ \partial_tv_j=\partial_ju,\qquad
+ \sum_j\partial_jv_j=-\partial_tu,\qquad
+ \partial_iv_j=\partial_jv_i.
+\]
+求导可以先在 Schwartz 类进行；对一般 \(f\)，固定 \(t>0\) 的核导数可积，故通过 \(L^p\) 逼近传递。
+
+\ProseParagraphBreak
+
+这组关系以标量 \(u\) 的法向变化和向量 \(v\) 的散度配对，是高维共轭结构。\(R_j\) 自身不平滑边界输入；它只是零阶算子。真正的内部光滑化来自 \(t>0\) 的 Poisson 核，不能把两者的作用混为一谈。
 
 \subsection{椭圆型偏微分方程应用}
 \label{b2:subsec:180504}
 
-待填充。
+设 \(f\in C_c^\infty(\mathbb R^d)\)，\(u=\Phi_d*f\)，其中 \(\Phi_d\) 是\chapref{b2:ch:05}的负 Laplace 基本解。则
+\[
+ \partial_i\partial_ju=R_iR_jf,\qquad
+ \|\partial_i\partial_ju\|_p\leq C_p\|f\|_p
+ \quad(1<p<\infty).
+\]
+第一项在温和分布中由 Fourier 乘子计算得到：\(-\Delta\) 的符号是 \(4\pi^2|\xi|^2\)，二阶导数的符号是 \(-4\pi^2\xi_i\xi_j\)。\(u\) 在低维可能不属于 \(L^p\)，但二阶导数的乘子仍有明确意义；不能据这个局部或齐次估计宣称整个非齐次 \(W^{2,p}\) 范数受控。
+
+\ProseParagraphBreak
+
+对一般区域，先用截断函数局部化，再处理截断的交换项；边界正则性还要使用区域几何。全空间乘子计算只处理恒系数算子的内部导数，不自动解决非光滑系数、粗糙边界或端点 \(p=1,\infty\) 的估计。它展示了微分方程中二阶导数虽有不可积形式核，却能因抵消得到 \(L^p\) 控制。

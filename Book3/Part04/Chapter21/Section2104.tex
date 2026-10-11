@@ -2,24 +2,86 @@
 \section{经典公式}
 \label{b3:sec:2104}
 
-% TODO: 撰写本节正文。
+乘积能把相反参数联系起来；凸性则能把相差有理数的参数联系起来。增长估计另需考察积分质量集中的位置，不能只由函数方程猜测。
 
 \subsection{反射公式}
 \label{b3:subsec:210401}
 
-待填充。
+\begin{theorem}[Euler 反射公式]\label{b3:thm:21-reflection}
+对 \(z\notin\mathbb Z\)，有 \(\Gamma(z)\Gamma(1-z)=\pi/\sin\pi z\)。
+\end{theorem}
+\begin{proof}
+对 \(1/\Gamma(z)\) 与 \(1/\Gamma(-z)\) 的正规乘积相乘，指数因子相消，得
+\[
+\frac1{\Gamma(z)\Gamma(-z)}=-z^2\prod_{n\ge1}(1-z^2/n^2)
+=-\frac{z\sin\pi z}{\pi}.
+\]
+最后一步使用\secref{b3:sec:2005}已证的正弦乘积。由 \(\Gamma(1-z)=-z\Gamma(-z)\) 即得公式。
+\end{proof}
+这称为\term[euler-fanshe-gongshi]{Euler 反射公式}[Euler reflection formula]。取 \(z=1/2\)，积分的正性确定 \(\Gamma(1/2)=\sqrt\pi\)，排除平方根符号的不确定性。
 
 \subsection{倍增公式}
 \label{b3:subsec:210402}
 
-待填充。
+\begin{theorem}[Legendre 倍增公式]\label{b3:thm:21-duplication}
+作为亚纯恒等式，有
+\[
+\Gamma(z)\Gamma(z+1/2)=2^{1-2z}\sqrt\pi\,\Gamma(2z).
+\]
+\end{theorem}
+\begin{proof}
+对 \(x>0\) 定义 \(F(x)=2^{x-1}\Gamma(x/2)\Gamma((x+1)/2)/\sqrt\pi\)。直接递推得 \(F(x+1)=xF(x)\)，且 \(F(1)=1\)。函数 \(\log F\) 为两个凸函数与线性函数之和，因此凸。Bohr--Mollerup 定理给 \(F(x)=\Gamma(x)\)；令 \(x=2z\)，先在正实轴成立，再由亚纯恒等定理扩展。
+\end{proof}
+该式称为\term[legendre-beizeng-gongshi]{Legendre 倍增公式}[Legendre duplication formula]。例如它把半整数阶乘写成
+\(\Gamma(n+1/2)=(2n)!\sqrt\pi/(4^nn!)\)，便于精确计算高斯积分的偶数矩。
 
 \subsection{乘法公式}
 \label{b3:subsec:210403}
 
-待填充。
+对整数 \(m\ge1\)，\term[gauss-chengfa-gongshi]{Gauss 乘法公式}[Gauss multiplication formula]为
+\begin{equation}\label{b3:eq:21-multiplication}
+\prod_{k=0}^{m-1}\Gamma(z+k/m)
+=(2\pi)^{(m-1)/2}m^{1/2-mz}\Gamma(mz).
+\end{equation}
+先用与倍增公式相同的方法，令
+\(F(x)=C m^x\prod_{k=0}^{m-1}\Gamma((x+k)/m)\)。相邻乘积约去后得到 \(F(x+1)=xF(x)\)，且对数凸，选 \(C\) 使 \(F(1)=1\) 即知它等于 \(\Gamma(x)\)。求常数时，将反射公式对 \(k=1,\ldots,m-1\) 相乘，使用
+\[
+\prod_{k=1}^{m-1}\sin(\pi k/m)=m/2^{m-1}.
+\]
+这个有限恒等式来自 \((X^m-1)/(X-1)\) 在 \(X=1\) 的值：各非平凡单位根与一的距离为 \(2\sin(\pi k/m)\)，取模即可。故
+\(\prod_{k=1}^{m-1}\Gamma(k/m)=(2\pi)^{(m-1)/2}/\sqrt m\)，平方根取正值。代回 \(C\)，得到所示常数。
 
 \subsection{Stirling 公式}
 \label{b3:subsec:210404}
 
-待填充。
+\begin{theorem}[Stirling]\label{b3:thm:21-stirling}
+当实数 \(x\to+\infty\) 时，
+\[
+\Gamma(x)=\sqrt{2\pi}\,x^{x-1/2}e^{-x}(1+o(1)).
+\]
+\end{theorem}
+\begin{proof}
+在 \(\Gamma(x+1)\) 的积分中令 \(t=x+u\sqrt x\)，提出 \(x^xe^{-x}\sqrt x\)。剩余积分为
+\[
+I_x=\int_{-\sqrt x}^{\infty}\exp\left[x\left(\log(1+u/\sqrt x)-u/\sqrt x\right)\right]\,\mathrm{d}u.
+\]
+固定 \(u\) 时指数趋于 \(-u^2/2\)。对 \(|v|\le1/2\)，Taylor 定理及二阶导数给 \(\log(1+v)-v\le-cv^2\)，故中部由 \(e^{-cu^2}\) 控制。设 \(h(v)=v-\log(1+v)\)。对 \(v\ge1/2\)，有 \(h'(v)=v/(1+v)\ge1/3\)，于是右尾积分不超过
+\(3x^{-1/2}e^{-xh(1/2)}\)。对 \(-1<v\le-1/2\)，\(h'(v)\le-1\)，左尾同样不超过 \(x^{-1/2}e^{-xh(-1/2)}\)。先用支配收敛处理扩大的中部，再用这两个指数小界删去尾部，得 \(I_x\to\int_{\mathbb R}e^{-u^2/2}\,\mathrm{d}u=\sqrt{2\pi}\)。最后除以 \(x\) 即得结论。
+\end{proof}
+这给出\term[stirling-gongshi]{Stirling 公式}[Stirling formula]的正实轴版本。证明解释了平方根因子：积分主要来自峰值 \(t=x\) 周围宽度为 \(\sqrt x\) 的区间。它不声称在穿过负实轴的复扇形上一致成立；复参数渐近展开还必须指定对数分支及与负实轴的角距离。NIST 的《Digital Library of Mathematical Functions》\cite[Sections 5.5 and 5.11]{NationalInstituteofStandardsNIST}分别列出上述函数关系和复参数渐近版本，使用时应保留其区域条件。
+
+
+\ProseParagraphBreak
+
+反射公式能给虚方向上的精确模值，而不需要复 Stirling 公式。对实 \(t\ne0\)，利用共轭关系与递推，有
+\[
+ |\Gamma(\mathrm{i}t)|^2=\frac{\pi}{t\sinh\pi t},\qquad
+ |\Gamma(1+\mathrm{i}t)|^2=\frac{\pi t}{\sinh\pi t}.
+\]
+确实，反射式在 \(z=\mathrm{i}t\) 给分母 \(\sin\pi\mathrm{i}t=\mathrm{i}\sinh\pi t\)，而 \(\Gamma(1-\mathrm{i}t)=-\mathrm{i}t\Gamma(-\mathrm{i}t)\)；移项后得到第一式，第二式再乘 \(t^2\)。当 \(t\to0\)，第二式趋于一，恰与 \(\Gamma(1)=1\) 相符；当 \(|t|\to\infty\)，它给 \(|\Gamma(1+\mathrm{i}t)|\sim\sqrt{2\pi|t|}e^{-\pi|t|/2}\)。这是一条竖线上完整的衰减结论，不被误写为全扇形的统一渐近。
+\ProseParagraphBreak
+在半整数竖线上，同理可直接将 \(z=1/2+\mathrm{i}t\) 代入反射公式，得到
+\[
+ |\Gamma(1/2+\mathrm{i}t)|^2=\frac\pi{\cosh\pi t}.
+\]
+再对实部作整数递推，便能得到所有整数或半整数竖线上的精确乘积表达式。这些特殊线已经足以检验很多 Mellin 反演中的绝对收敛。若需要任意实部的统一估计，则必须另作插值或扇形分析，当前几条特殊线的公式并不自动包含这一推广。

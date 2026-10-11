@@ -2,4 +2,303 @@
 \chapter{伪微分算子、Fourier 积分算子与微局部分析}
 \label{b2:app:G}
 
-% TODO: 按计划纲要展开本附录。
+\begin{chapterabstract}
+
+伪微分算子把位置依赖的符号与高频方向结合，波前集进一步记录奇性的方向。本附录给出符号、量子化、非对角核光滑性与波前集的完整基础证明；一般合成、椭圆参数逆及主型传播定理明确标为深层演算，并以微分算子和半波模型解释其几何。
+
+\end{chapterabstract}
+
+\begin{learninggoals}\begin{itemize}
+\item\label{b2:item:app-G-goal-1}辨认零阶符号、左量子化及支集外核的光滑性。
+\item\label{b2:item:app-G-goal-2}计算微分与乘法的次序，并区分参数子与全局逆。
+\item\label{b2:item:app-G-goal-3}定义波前集并验证截断独立性和奇性投影。
+\item\label{b2:item:app-G-goal-4}解释典范关系、Hamilton 曲线与实主型传播定理的假设。
+\end{itemize}\end{learninggoals}
+
+
+\chapref{b2:ch:22}的 Fourier 乘子只依赖频率；变系数方程还需要符号依赖位置。\chapref{b2:ch:21}的 Fourier 积分算子又允许相位把输入方向运输到新的位置。以下始终区分这两类算子，并说明每一条微局部结论的适用假设。
+
+\section{符号类与量子化}
+
+\label{b2:sec:app-G-1}
+
+
+\begin{definition}\label{b2:def:G-symbol}
+符号类 \(S^m_{1,0}\) 由光滑函数 \(a(x,\xi)\) 构成，满足对所有多重指标
+\[
+ |\partial_x^\alpha\partial_\xi^\beta a(x,\xi)|
+ \le C_{\alpha\beta}(1+|\xi|)^{m-|\beta|}.
+\]
+其左量子化为
+\[
+ a(x,D)f(x)=\int e^{2\pi\mathrm ix\cdot\xi}a(x,\xi)\widehat f(\xi)\,\mathrm d\xi,
+ \qquad f\in\mathcal S.
+\]
+\end{definition}
+对 Schwartz 输入，上式及每个固定阶的 \(x\) 导数都绝对收敛，因为符号至多多项式增长而 \(\widehat f\) 快速衰减。导数也会作用在符号上，不能仅把 \(\partial_x\) 当作频率乘法。
+若 \(a\) 不依赖 \(x\)，退化为 Fourier 乘子；若 \(a(x,\xi)=c(x)(2\pi\mathrm i\xi)^\alpha\)，就是 \(c(x)\partial^\alpha f\)。
+
+\ProseParagraphBreak
+因量子化顺序固定，\(c(x)\partial_j\) 与 \(\partial_j(c(x)\,\cdot)\) 有不同符号，后者还多出 \(\partial_jc\)。
+一般伴随也不只是把符号取共轭，除非没有位置依赖或采用另外一种对称量子化。
+对紧支撑的平方可积符号，核的 Hilbert–Schmidt 范数为
+\(\|a\|_{L^2_{x,\xi}}\)：在固定 \(x\) 上对 \(x-y\) 使用 Plancherel，再对 \(x\) 积分。这给出一个完整的有限相空间模型；一般零阶符号的 \(L^2\) 有界性则是另一个深层定理，不能由这个有限体积计算直接推出。
+
+
+\section{核与伪局部性}
+
+\label{b2:sec:app-G-2}
+
+
+形式核为
+\(K(x,y)=\int e^{2\pi\mathrm i(x-y)\cdot\xi}a(x,\xi)\mathrm d\xi\)。
+先乘频率截断，再用
+\[
+ e^{2\pi\mathrm i(x-y)\cdot\xi}
+ =\frac{(x-y)\cdot\nabla_\xi}
+        {2\pi\mathrm i|x-y|^2}e^{2\pi\mathrm i(x-y)\cdot\xi}
+\]
+反复分部积分。每个频率导数降低符号阶数；取足够多次后，积分绝对收敛。因此 \(x\ne y\) 时核是光滑函数，且在离对角线的紧集上所有导数都一致收敛。原点对角线附近仍需按分布解释，不能把同一个公式当绝对积分。
+
+\begin{proposition}[伪局部性]\label{b2:prop:G-pseudolocal}
+对具有上述符号的局部适当支撑伪微分算子 \(A\) 及分布 \(u\)，
+\(\operatorname{sing\,supp}(Au)\subset\operatorname{sing\,supp}u\)。
+\end{proposition}
+\begin{proof}
+在 \(u\) 光滑的一个邻域内，选择空间截断 \(\chi\)，在更小邻域等于1。分成 \(u=\chi u+(1-\chi)u\)。
+第一项为紧支撑光滑函数，量子化积分及求导绝对收敛，所以输出光滑。
+第二项的输入支撑与所观察输出小邻域分离，非对角核在两处光滑；局部适当支撑保证配对只涉及输入的紧集，因此分布与核及各阶输出导数的配对均合法，产生光滑输出。
+这两项都光滑，证明结论。
+\end{proof}
+适当支撑指核支撑在任一侧紧集上的投影仍落在另一侧紧集。对全空间温和分布也可采用有受控远场的量子化，但不能对任意分布与一个无衰减远场核直接配对。
+
+
+\section{合成、椭圆性与参数逆}
+
+\label{b2:sec:app-G-3}
+
+
+在上述左量子化中，合成的形式展开为
+\[
+ a\# b\sim
+ \sum_\alpha\frac{(2\pi\mathrm i)^{-|\alpha|}}{\alpha!}
+                  \partial_\xi^\alpha a\,\partial_x^\alpha b.
+\]
+其常数可由微分算子检查：取 \(a=2\pi\mathrm i\xi_j\)、\(b=c(x)\)，前两项为
+\(2\pi\mathrm i\xi_jc+\partial_jc\)，正好对应 \(\partial_j(c f)\)。
+推导从振荡积分
+\(\iint e^{-2\pi\mathrm iy\cdot\eta}a(x,\xi+\eta)b(x+y,\xi)\mathrm dy\mathrm d\eta\)
+开始，对 \(b\) 在 \(y=0\) 作 Taylor 展开，再把 \(y^\alpha\) 转成 \(\eta\) 导数并分部积分。
+
+\begin{theorem}[深层结构定理：符号演算与椭圆参数逆]\label{b2:thm:G-calculus}
+局部适当支撑的 \(S^m_{1,0}\) 与 \(S^n_{1,0}\) 算子合成具有
+\(S^{m+n}_{1,0}\) 符号，上式截到 \(|\alpha|<N\) 的余项属于
+\(S^{m+n-N}_{1,0}\)。
+若符号在某位置频率锥上满足
+\(|a(x,\xi)|\ge c(1+|\xi|)^m\)、高频 \(|\xi|\ge R\)，则可在更小位置频率锥上构造阶 \(-m\) 参数逆，左右合成与恒等之差为光滑核算子。
+\end{theorem}
+\begin{proofsketch}
+Taylor 积分余项配合频率及位置变量的分部积分，控制每个符号半范数。椭圆区域先取带截断的 \(a^{-1}\)，用合成展开逐阶消去误差，再以渐近求和拼成一个真实符号；无限阶余项有光滑核。
+本附录仅推导展开的形式和微分模型常数，完整余项半范数控制与渐近求和在此略去。正式专著的伪微分算子部分见 \cite[pp.~63--179]{Hrmander2007AnalysisIII}；此处的页码按出版社正式目录核验，不据此声称已核对该专著的全部证明。
+\end{proofsketch}
+参数逆不是严格全空间逆。低频、边界及有限维核都可能留下误差；椭圆性给局部高频正则性，不自动给带边界方程的全局可解性。\chapref{b2:ch:15}和\chapref{b2:ch:16}的能量、边界条件与正则估计处理这些独立问题。
+
+
+\section{波前集的定义与基本例子}
+
+\label{b2:sec:app-G-4}
+
+
+\begin{definition}\label{b2:def:G-wavefront}
+对分布 \(u\)，若存在 \(\chi\in C_c^\infty\)、\(\chi(x_0)\ne0\)，以及含 \(\xi_0\ne0\) 的开锥 \(\Gamma\)，使
+\[
+ |\widehat{\chi u}(\xi)|\le C_N(1+|\xi|)^{-N}
+ \quad(\xi\in\Gamma)
+\]
+对每个 \(N\) 成立，则称 \((x_0,\xi_0)\) 不属于
+\term[boqian-ji]{波前集}[wave front set] \(\mathrm{WF}(u)\)。
+\end{definition}
+\symidx{\(\mathrm{WF}(u)\)：分布的波前集}
+由于紧支撑分布的 Fourier 变换至多多项式增长，这个定义有明确的全频率基础。锥只记录方向，乘正数不改变波前方向；零余切向量不进入定义。
+
+\begin{proposition}\label{b2:prop:G-cutoff}
+将观察位置邻域与频率锥缩小后，定义中的快速衰减不依赖最初截断的选择。
+\end{proposition}
+\begin{proof}
+在 \(\chi\ne0\) 的小邻域内，另一截断 \(\chi_1\) 满足
+\(\chi_1u=(\chi_1/\chi)(\chi u)\)，故 Fourier 变换是 Schwartz 函数与 \(\widehat{\chi u}\) 的卷积。
+选闭包位于 \(\Gamma\) 内的较小锥 \(\Gamma_1\)。卷积积分中，若被积频率仍在 \(\Gamma\)，用该频率上的任意阶衰减与 Schwartz 核控制；若在外部，锥分离给出
+\(|\xi-\eta|\ge c(|\xi|+|\eta|)\)、\(\xi\in\Gamma_1\)，用卷积核的任意阶衰减吸收分布 Fourier 变换的多项式增长。
+两项都在 \(\Gamma_1\) 任意阶衰减，证明独立性。
+\end{proof}
+波前集在位置上的投影等于奇异支撑。一个方向上光滑不等于在该位置所有方向都光滑；但若所有方向都光滑，单位球面的有限覆盖及上述截断命题给出整个频率空间的快速衰减，Fourier 反演的带权导数公式就使局部函数光滑。
+
+\ProseParagraphBreak
+对于 \(\delta_{x_0}\)，任何在 \(x_0\) 非零的截断的 Fourier 模都为常数，故波前集是该点所有非零方向。
+对于 \(H(x_1)=\mathbf1_{\{x_1>0\}}\)，波前只在 \(x_1=0\) 的法向 \((\xi_1,0,\ldots,0)\)、\(\xi_1\ne0\)。切向方向可沿 \(x'\) 任意次分部积分；法向方向上截断 Fourier 主项为 \(\chi(0)/(2\pi\mathrm i\xi_1)\)，只有一个衰减幂次，不能快速衰减。这区分了点质量与超平面跳跃的方向结构。
+
+
+\section{椭圆正则与 Fourier 积分算子}
+
+\label{b2:sec:app-G-5}
+
+
+椭圆参数逆与伪局部性一起给出：在符号椭圆的位置方向上，
+\((x,\xi)\in\mathrm{WF}(u)\) 当且仅当
+\((x,\xi)\in\mathrm{WF}(Au)\)。
+更一般地，伪微分算子不能创造新的波前方向，非椭圆方向则可能隐藏输入奇性。这里调用的是上一节明示的深层参数逆演算，不能仅凭核在对角外光滑推出方向上的结论。
+
+\ProseParagraphBreak
+Fourier 积分算子与此不同。核相位 \(\Psi(x,y,\theta)\) 的驻点集
+\(\partial_\theta\Psi=0\) 定义典范关系
+\((x,\partial_x\Psi;\ y,-\partial_y\Psi)\)，可把输入波前运输到新的位置与方向。
+\chapref{b2:ch:21}已经计算半波相位的典范关系。相位无驻点的位置方向可反复分部积分，所以不会产生对应奇性；一般精确的波前映射结论还需要振幅类、适当支撑及非退化相位的演算，见 \cite{Hrmander2009AnalysisIV}。
+
+
+\section{主型传播的思想与边界}
+
+\label{b2:sec:app-G-6}
+
+
+对实主符号 \(p(x,\xi)\)，Hamilton 向量场为
+\[
+ H_p=\sum_j\left(\partial_{\xi_j}p\,\partial_{x_j}
+                      -\partial_{x_j}p\,\partial_{\xi_j}\right).
+\]
+它的积分曲线在特征集 \(p=0\) 上称为双特征曲线。
+对于波主符号 \(\tau^2-|\xi|^2\)，它投影为空间时间中的直线光射线；对于椭圆符号 \(|\xi|^2\)，非零特征集为空，因而没有需要沿其传播的高频奇性。
+
+\begin{theorem}[深层结构定理：实主型奇性传播]\label{b2:thm:G-propagation}
+设 \(X\) 为无边界光滑区域，\(P\) 为适当支撑的经典伪微分算子，其实主符号 \(p(x,\xi)\) 光滑且对 \(\xi\ne0\) 正齐次。在讨论的特征锥上假设 \(\mathrm dp\ne0\)，且 Hamilton 向量场不沿余切纤维的纯径向方向。对 \(u\in\mathcal D'(X)\)，集合
+\(\mathrm{WF}(u)\setminus\mathrm{WF}(Pu)\) 位于 \(\{p=0\}\)，并在 \(\mathrm{WF}(Pu)\) 的补集中沿 \(H_p\) 的积分曲线局部不变。这是本附录采用的实主型范围。
+\end{theorem}
+\begin{proofsketch}
+原始证明先以椭圆算子将阶数归一化到一，再构造齐次典范变换把局部主符号化为一个坐标频率；用 Fourier 积分算子实现该变换，并逐阶消去低阶误差。所得局部模型为 \(D_n\)，其前向、后向基本解直接说明奇性沿坐标直线传播；变换回原坐标便得到 Hamilton 曲线。
+完整的典范变换实现及低阶误差消去在此略去。已核验的正式原文是 \cite[Section 6.1, Theorem 6.1.1, pp.~196--201]{DuistermaatHormander1972FIOII}；后续系统理论见 \cite{Hrmander2009AnalysisIV}。
+这条内部传播定理不含反射边界、掠射线、粗系数或非实主型情形，不能未经附加分析用于它们。
+\end{proofsketch}
+这个框架解释了为什么椭圆方程倾向于局部磨光，而双曲方程可以保留并运输奇性。它不取代\chapref{b2:ch:16}在低正则系数下的能量估计；符号演算要求光滑性，粗系数问题需要另一套工具。
+
+
+
+传播模型可以直接在一个超平面点质量上验证。在 \(x=(x',x_d)\in\mathbb R^{d-1}\times\mathbb R\) 中，令 \(u=\delta_0(x')\otimes1\)，并取 \(P=(2\pi\mathrm i)^{-1}\partial_{x_d}\)。则 \(Pu=0\)，而
+\[
+ \mathrm{WF}(u)=
+ \{(0,x_d;\xi',0):x_d\in\mathbb R,\ \xi'\ne0\}.
+\]
+为核对这个等式，取乘积截断 \(\chi'(x')\chi_d(x_d)\)。截断分布的 Fourier 变换为 \(\chi'(0)\widehat{\chi_d}(\xi_d)\)，与 \(\xi'\) 无关。当方向中 \(\xi_d\ne0\) 时，\(|\xi_d|\) 在一个小锥中与总频率可比，Schwartz 衰减给出微局部光滑。对于 \(\xi_d=0,\xi'\ne0\)，选择 \(\chi_d\) 非负且在观察点附近非零，沿 \(\xi'=\lambda\eta'\)、\(\xi_d=0\) 的值为一个非零常数，所以不可能快速衰减。截断独立性把这个计算推广到定义中任意允许的截断，给出全部法向波前。
+
+\ProseParagraphBreak
+
+主符号 \(p=\xi_d\) 的 Hamilton 向量场是 \(\partial_{x_d}\)。刚才计算的波前沿 \(x_d\) 直线不变，正好落在特征集 \(\xi_d=0\)。该解在横向始终奇异，却在运输方向没有增加新的频率奇性；传播描述的是既有奇性的位置移动，不是把分布变成光滑函数。
+
+\ProseParagraphBreak
+
+如果在这个解上乘时间方向截断 \(\eta(x_d)\)，就有 \(P(\eta u)=(2\pi\mathrm i)^{-1}\eta' u\)。在 \(\eta'\ne0\) 的过渡区，右端自身携带同样的法向波前，因此传播定理不允许跨越这一有源区作无条件延拓。一个局部解的截断并不继续满足原来的齐次方程；计算新增源项，正是应用传播结论前必须完成的假设核对。
+
+\begin{chaptersummary}
+符号阶数描述频率导数的增长，波前集同时记录奇性的位置和方向。支集外核、局部截断与椭圆参数子连接了两种语言。完整证明覆盖模型计算、伪局部性与波前集基本性质；一般符号演算和实主型传播保留为深层结构结论，其证明提纲指出另需的渐近求和、典范变换与误差消去步骤。
+\end{chaptersummary}
+
+\BookExercises
+
+% 自拟：检查本附录的已建工具及其假设边界。
+
+\begin{exercise}\label{b2:ex:app-G-1}
+
+写出 \(c(x)\partial_j\) 与 \(\partial_j(c(x)\,\cdot)\) 的左量子化符号。
+
+\end{exercise}
+
+\begin{solution}
+
+分别为 \(2\pi\mathrm i c(x)\xi_j\) 和 \(2\pi\mathrm i c(x)\xi_j+\partial_jc(x)\)。后一项来自乘积求导，也是合成展开的一阶修正。
+
+\end{solution}
+
+% 自拟：检查本附录的已建工具及其假设边界。
+
+\begin{exercise}\label{b2:ex:app-G-2}
+证明任意非零、平移不变的有界算子 \(T:L^2(\mathbb R^d)\to L^2(\mathbb R^d)\) 都不紧。由此解释全空间光滑卷积核为何不自动产生紧算子。
+\end{exercise}
+\begin{solution}
+选 \(g\) 使 \(Tg\ne0\)，并取 \(g_n(x)=g(x-ne_1)\)。平移保持范数，且 \(g_n\rightharpoonup0\)：对紧支集平方可积测试函数和紧支集 \(g\) 时，支集最终分离；两侧再作 \(L^2\) 稠密逼近，便得到一般结论。
+若 \(T\) 紧，像列有强收敛子列，其弱极限因 \(T\) 连续而为零，故强极限也为零。但平移不变使
+\(\|Tg_n\|_2=\|Tg\|_2>0\)，矛盾。核局部光滑与全空间紧性不同；后者还要阻止序列的平移逃逸。
+\end{solution}
+
+% 自拟：检查本附录的已建工具及其假设边界。
+
+\begin{exercise}\label{b2:ex:app-G-3}
+设 \(c\in L^2(\mathbb R^d)\)、\(k\in L^1\cap L^2(\mathbb R^d)\)。证明
+\(Af(x)=c(x)(k*f)(x)\) 是 Hilbert--Schmidt 算子，求其范数；与上一题的 \(c=1\) 比较。
+\end{exercise}
+\begin{solution}
+核为 \(K(x,y)=c(x)k(x-y)\)。Tonelli 与平移换元给出
+\[
+ \iint|K(x,y)|^2\,\mathrm dx\,\mathrm dy
+ =\|c\|_2^2\|k\|_2^2.
+\]
+所以 Hilbert--Schmidt 范数为两范数的乘积。也可在符号 \(c(x)\widehat k(\xi)\) 上使用正文的相空间 Plancherel 公式。取 \(c=1\) 时位置因子不再平方可积；若卷积算子非零，上一题排除紧性，更不可能是 Hilbert--Schmidt。空间局部化在这里承担了不可省去的作用。
+\end{solution}
+
+% 自拟：检查本附录的已建工具及其假设边界。
+
+\begin{exercise}\label{b2:ex:app-G-4}
+对多重指标 \(\alpha\)，证明非零点质量导数 \(\partial^\alpha\delta_{x_0}\) 在 \(x_0\) 的全部非零方向都有波前。即使其 Fourier 多项式在某条射线上为零，为什么也不能删去该方向？
+\end{exercise}
+\begin{solution}
+选择在 \(x_0\) 附近恒为一的截断，局部 Fourier 变换为
+\((2\pi\mathrm i\xi)^\alpha e^{-2\pi\mathrm ix_0\cdot\xi}\)。
+对任一开锥，非零多项式 \(\xi^\alpha\) 不可能在整锥内恒零，所以可选该锥内一条射线使其为非零；沿此射线按 \(\lambda^{|\alpha|}\) 增长，快速衰减失败。定义需要在一个开锥中一致衰减，单条射线上的零值不足。截断独立性排除其他截断造成的假象，其他位置则可避开点质量。
+\end{solution}
+
+% 自拟：检查本附录的已建工具及其假设边界。
+
+\begin{exercise}\label{b2:ex:app-G-5}
+在直线上取光滑温和函数 \(u(x)=e^{\pi\mathrm ix^2}\)。证明其波前集为空，但其全空间 Fourier 变换没有无穷远衰减。说明波前集为什么必须先作空间截断。
+\end{exercise}
+\begin{solution}
+任意紧支撑光滑截断乘 \(u\) 仍为紧支撑光滑函数，其 Fourier 变换在全部方向快速衰减，所以波前集为空。Gaussian 正则化与二次相位 Fourier 公式给出温和分布恒等式
+\[
+ \widehat u(\xi)=e^{\pi\mathrm i/4}e^{-\pi\mathrm i\xi^2},
+\]
+模恒为一。这个全局非衰减来自整个空间的振荡，而不是某个有限位置的局部奇性；用未截断的 Fourier 衰减代替波前定义会误判该光滑函数。
+\end{solution}
+
+% 自拟：检查本附录的已建工具及其假设边界。
+
+\begin{exercise}\label{b2:ex:app-G-6}
+对二维主符号 \(p(x,\xi)=c(x_1)\xi_1\)、\(c>0\) 光滑，计算 Hamilton 向量场。检验 \(u=1\otimes\delta_0(x_2)\) 的波前在该特征流下不变。
+\end{exercise}
+\begin{solution}
+求偏导得到
+\[
+ H_p=c(x_1)\partial_{x_1}
+       -c'(x_1)\xi_1\partial_{\xi_1}.
+\]
+特征集为 \(\xi_1=0\)，在其上频率保持、\(x_2\) 保持、\(x_1\) 按正速度 \(c(x_1)\) 移动。正文的乘积截断计算给出
+\(\mathrm{WF}(u)=\{(x_1,0;0,\xi_2):\xi_2\ne0\}\)，它对该流局部不变。左量子化的 \(P=c(x_1)(2\pi\mathrm i)^{-1}\partial_{x_1}\) 也直接满足 \(Pu=0\)。流的全局存在另需增长条件，本题只使用内部局部传播。
+\end{solution}
+
+% 自拟：检查本附录的已建工具及其假设边界。
+
+\begin{exercise}\label{b2:ex:app-G-7}
+在周期为一的圆周上令 \(P=-\partial_x^2\)。利用 Fourier 级数构造 \(Q\)，使
+\(QP=PQ=I-\Pi_0\)，其中 \(\Pi_0\) 为常数投影。说明这为何是一个有光滑余项、却不是全局逆的具体模型。
+\end{exercise}
+\begin{solution}
+对 Fourier 模 \(e^{2\pi\mathrm inx}\)，\(P\) 的特征值为 \(4\pi^2n^2\)。
+定义 \(Q\) 在 \(n\ne0\) 模上乘 \((4\pi^2n^2)^{-1}\)，在零模上为零，逐模计算即得两个合成等式，测试函数和分布的级数意义下均成立。余项 \(\Pi_0f=\int_0^1f\) 的核恒为一，因而光滑。非零常数仍处于 \(P\) 的核中，所以不存在双边全局逆；方程 \(Pu=f\) 还要求右端零平均。高频可逆性与零频自由度在这一例子中清楚分开。
+\end{solution}
+
+% 自拟：检查本附录的已建工具及其假设边界。
+
+\begin{exercise}\label{b2:ex:app-G-8}
+取全空间光滑卷积核 \(k(x)=e^{-|x|^2}\)。说明它不能按普通卷积公式作用于每个 \(u\in\mathcal D'(\mathbb R^d)\)：使用 \(u(x)=e^{2|x|^2}\)。这一例子与适当支撑假设有何关系？
+\end{exercise}
+\begin{solution}
+该 \(u\) 局部可积，确实定义一个分布，但不是温和分布。在 \(x=0\)，普通卷积成为
+\(\int e^{-|y|^2}e^{2|y|^2}\,\mathrm dy=\infty\)。
+光滑且快速衰减的核仍不足以与任意增长的全空间分布作配对。此核的支撑是全部位置对，固定一个输出紧集后输入投影无界，因而不是适当支撑核。适当支撑确保局部输出只与输入紧集配对，正是正文伪局部性证明处理一般 \(\mathcal D'\) 的基础条件；若限定温和输入，则可改用相应远场衰减的另一个框架。
+\end{solution}

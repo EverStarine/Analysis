@@ -2,29 +2,93 @@
 \section{Abel 求和}
 \label{b3:sec:2503}
 
-% TODO: 撰写本节正文。
+算术函数通常不光滑，但它的部分和是简单的阶梯函数。将系数求和转成阶梯函数的积分，可以把振荡信息与平滑权重分开估计。
 
 \subsection{分部求和}
 \label{b3:subsec:250301}
 
-待填充。
+置 \(A(N)=\sum_{n\le N}a_n\)。有限恒等式为
+\[
+\sum_{n=1}^Na_nb_n=A(N)b_N+\sum_{n=1}^{N-1}A(n)(b_n-b_{n+1}).
+\]
+证明只需代入 \(a_n=A(n)-A(n-1)\)，两项错位相减。这称为\term[abel-qiuhe]{Abel 求和}[Abel summation]。有限恒等式不要求数列收敛，故适用于复数和带符号系数。
 
 \subsection{部分求和}
 \label{b3:subsec:250302}
 
-待填充。
+令 \(A(x)=\sum_{n\le x}a_n\)，对 \(f\in C^1([1,x])\) 有
+\begin{equation}\label{b3:eq:25-partial-summation}
+\sum_{n\le x}a_nf(n)=A(x)f(x)-\int_1^x A(t)f'(t)\,\mathrm{d}t.
+\end{equation}
+每个 \([n,n+1)\) 上 \(A(t)=A(n)\)，将积分拆开并望远镜相消即可；当 \(x\) 非整数，最后短区间与 \(A(x)f(x)\) 的差恰补为 \(A(\lfloor x\rfloor)f(\lfloor x\rfloor)\)。这种端点处理避免在整数跳跃处遗漏一项。
 
 \subsection{加权和}
 \label{b3:subsec:250303}
 
-待填充。
+取 \(f(t)=t^{-s}\)，有
+\[
+\sum_{n\le x}a_nn^{-s}=A(x)x^{-s}+s\int_1^x A(t)t^{-s-1}\,\mathrm{d}t.
+\]
+若 \(A(x)=O(x^\alpha)\)，则右侧在 \(\operatorname{Re}s>\alpha\) 有极限，尾部为 \(O((1+|s|/(\operatorname{Re}s-\alpha))x^{\alpha-\operatorname{Re}s})\)。在该半平面的紧集上界一致，所以所得级数全纯。
+
+\ProseParagraphBreak
+
+例如 \(a_n=(-1)^{n-1}\) 的部分和有界，故交错 Dirichlet 级数在 \(\operatorname{Re}s>0\) 局部一致收敛；它并不在整个半平面绝对收敛。估计使用的是部分和抵消，而不是单项大小。
 
 \subsection{积分比较}
 \label{b3:subsec:250304}
 
-待填充。
+对 \(a_n=1\)，\(A(t)=\lfloor t\rfloor=t-\{t\}\)。因此当 \(\operatorname{Re}s>1\) 时
+\begin{equation}\label{b3:eq:25-zeta-integral}
+\sum_{n\ge1}n^{-s}=\frac{s}{s-1}-s\int_1^\infty\{t\}t^{-s-1}\,\mathrm{d}t.
+\end{equation}
+右端的积分已在 \(\operatorname{Re}s>0\) 全纯，因为分数部分有界；这预示了下一章的延拓。对实 \(s=1\) 的截断计算也给 \(H_N=\log N+\gamma+O(1/N)\)，误差可由每个区间中 \(1/n-\int_n^{n+1}\mathrm{d}t/t\) 的尾和控制。
+
+\ProseParagraphBreak
+
+这里常数 \(\gamma\) 的存在也可不借助积分延拓直接说明。数列 \(H_N-\log N\) 为正且递减，因为
+\[
+ \log(1+1/N)=\int_N^{N+1}\frac{\mathrm dt}{t}
+ \ge\frac1{N+1}.
+\]
+其相邻差不超过 \(1/N-1/(N+1)\)，所以从第 \(N\) 项到极限的距离不超过 \(1/N\)。这个误差在下面把调和和代入带参数的计数公式时尤其有用。
+
+\begin{proposition}[除数个数的平均值]
+\label{b3:prop:25-divisor-average}
+当 \(x\ge2\) 时，
+\[
+ \sum_{n\le x}d(n)=x\log x+(2\gamma-1)x+O(\sqrt x).
+\]
+\end{proposition}
+\begin{proof}
+左侧计数第一象限内满足 \(ab\le x\) 的整点。令 \(y=\lfloor\sqrt x\rfloor\)。每个这样的点至少有一个坐标不超过 \(y\)，否则 \(ab\ge(y+1)^2>x\)。两种坐标条件的交集是边长 \(y\) 的整数方块，故精确地有
+\[
+ \sum_{n\le x}d(n)=2\sum_{a\le y}\left\lfloor\frac xa\right\rfloor-y^2
+ =2xH_y-y^2+O(y).
+\]
+由刚证的调和和估计，\(H_y=\log y+\gamma+O(1/y)\)。又
+\(y=\sqrt x+O(1)\)，所以 \(2\log y=\log x+O(x^{-1/2})\)、\(y^2=x+O(\sqrt x)\)。逐项代入即得所示主项、线性次项及误差。
+\end{proof}
+
+直接把 \(\sum_{a\le x}\lfloor x/a\rfloor\) 中每项替为 \(x/a\)，会累积 \(O(x)\) 的取整误差，因而看不见线性次项。利用双曲线的对称性后，只需估计约 \(\sqrt x\) 项，误差便缩小到平方根尺度。主项和误差并非来自不同的计数对象，而来自对同一个有限和安排了不同的分割位置。
+
+\ProseParagraphBreak
+
+部分求和也能把已有平均值换成新的权重。例如将上述结论记为 \(D(x)=x\log x+(2\gamma-1)x+O(\sqrt x)\)，取权重 \(1/n\)，得
+\[
+ \sum_{n\le x}\frac{d(n)}n=\frac{D(x)}x+
+              \int_1^x\frac{D(t)}{t^2}\,\mathrm dt
+ =\frac12(\log x)^2+2\gamma\log x+O(1).
+\]
+误差积分有界，因为 \(\int_1^\infty t^{-3/2}\,\mathrm dt<\infty\)。这里不必重新研究每个 \(d(n)\)，也没有把单项估计强行相加；真正传递到新权重中的是部分和的主项与误差。
 
 \subsection{素数计数函数的应用}
 \label{b3:subsec:250305}
 
-待填充。
+设 \(\pi(x)=\sum_{p\le x}1\)、\(\vartheta(x)=\sum_{p\le x}\log p\)。将仅在素数处非零的系数代入\eqref{b3:eq:25-partial-summation}，可得
+\[
+\vartheta(x)=\pi(x)\log x-\int_2^x\frac{\pi(t)}t\,\mathrm{d}t,
+\quad
+\pi(x)=\frac{\vartheta(x)}{\log x}+\int_2^x\frac{\vartheta(t)}{t(\log t)^2}\,\mathrm{d}t.
+\]
+下端取 \(2^-\) 的部分和零，故无需另加素数二的补偿项。第二式把对数权重去掉，是从 \(\vartheta(x)\sim x\) 推到素数定理的具体步骤。

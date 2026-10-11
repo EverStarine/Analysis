@@ -2,24 +2,93 @@
 \section{二平方和与四平方和}
 \label{b3:sec:2404}
 
-% TODO: 撰写本节正文。
+二平方和可以从 Gaussian 整数的唯一分解得到；四平方和的精确计数则可利用 theta 乘积的对数导数。后者需要一个半周期差值恒等式，下面将它从前章的椭圆函数推出来。
 
 \subsection{二平方和定理}
 \label{b3:subsec:240401}
 
-待填充。
+\begin{theorem}[二平方和]\label{b3:thm:24-two-squares}
+正整数 \(n\) 可表示为两个整数平方之和，当且仅当每个 \(p\equiv3\pmod4\) 的素因子在 \(n\) 中的指数为偶数。计数公式为
+\(r_2(n)=4\sum_{d\mid n}\chi_4(d)\)，其中 \(\chi_4(d)=0\) 对偶数，\(\chi_4(d)=(-1)^{(d-1)/2}\) 对奇数。
+\end{theorem}
+\begin{proof}
+先说明所需代数。Gaussian 整数 \(\mathbb Z[\mathrm{i}]\) 的范数为 \(a^2+b^2\)。对商的实虚部各取最近整数，可使除法余项的范数至多为除数范数的一半，因此存在 Euclid 算法、最大公因子和 Bézout 恒等式。若不可约元整除积，Bézout 恒等式证明它整除某个因子，继而按范数归纳得到唯一分解。
+有理素数 \(p\equiv3\pmod4\) 仍不可约：若分解，其因子范数只能为 \(p\)，但平方模四不可能相加得三。对 \(p\equiv1\pmod4\)，Wilson 配对证明 \((p-1)!\equiv-1\pmod p\)，又有 \((p-1)!\equiv(-1)^{(p-1)/2}(((p-1)/2)!)^2\)，所以存在 \(u^2\equiv-1\pmod p\)。若 \(p\) 在 Gaussian 整数中不可约，它整除 \((u+\mathrm{i})(u-\mathrm{i})\) 就会整除一因子，这在虚部为 \(\pm1\) 时不可能。于是 \(p=\pi\overline\pi\)，其中 \(N\pi=p\)，两因子不相伴。素数二则为 \(-\mathrm{i}(1+\mathrm{i})^2\)。
+设 \(n=2^a\prod_{p\equiv1(4)}p^{a_p}\prod_{q\equiv3(4)}q^{b_q}\)。若 \(N\alpha=n\)，每个惰性素数 \(q\) 在范数中的指数必须偶；反之这些指数偶时，可以给 \(\alpha\) 选 \(q^{b_q/2}\)、\((1+\mathrm{i})^a\)，并对每个分裂素数在 \(\pi\) 与 \(\overline\pi\) 间分配共 \(a_p\) 个因子。因此表示数为 \(4\prod(a_p+1)\)，前面的四为四个单位。约数和 \(\sum_{d\mid n}\chi_4(d)\) 按素数幂相乘：二贡献一，分裂素数贡献 \(a_p+1\)，惰性素数贡献一或零，恰好得到公式。
+\end{proof}
 
 \subsection{Jacobi 四平方和定理}
 \label{b3:subsec:240402}
 
-待填充。
+\begin{theorem}[Jacobi 四平方和]\label{b3:thm:24-four-squares}
+对每个正整数 \(n\)，有
+\[
+r_4(n)=8\sum_{d\mid n,\ 4\nmid d}d.
+\]
+特别地，每个正整数均为四个整数平方之和。
+\end{theorem}
+证明将在紧接的两小节完成。这里最后一句来自约数一总在求和范围内，故表示数严格为正；不能把所有项为非负误当成已知总和不为零。该定理称为\term[jacobi-sipingfanghe]{Jacobi 四平方和定理}[Jacobi four-square theorem]。
 
 \subsection{\texorpdfstring{\(\theta\)}{\AnalysisPdfTheta} 函数证明}
 \label{b3:subsec:240403}
 
-待填充。
+取格 \(\Lambda=\pi\mathbb Z+\pi\tau\mathbb Z\)，记 \(e_1=\wp(\pi/2)\)、\(e_3=\wp(\pi\tau/2)\)。由准周期性，\(-\mathrm{d}^2\log\theta_1(z)/\mathrm{d}z^2\) 双周期；在格点主部为 \(z^{-2}\)。与 \(\wp\) 相减是整椭圆函数，所以
+\(\wp(z)=-(\log\theta_1(z))''+C\)。平移级数得 \(\theta_1(z+\pi/2)=\theta_2(z)\)，以及
+\(\theta_1(z+\pi\tau/2)=\mathrm{i}q^{-1/4}e^{-\mathrm{i}z}\theta_4(z)\)。三个偶函数在原点导数为零，因此
+\[
+e_1-e_3=\frac{\theta_4''(0)}{\theta_4}-\frac{\theta_2''(0)}{\theta_2}.
+\]
+另一方面，函数
+\(F(z)=(\theta_1'(0)/\theta_2)^2(\theta_2(z)/\theta_1(z))^2\) 双周期，在原点主部为 \(z^{-2}\)，并在 \(\pi/2\) 有二重零点；故 \(F=\wp-e_1\)。再代入 \(z=\pi\tau/2\)，利用
+\(\theta_2(z+\pi\tau/2)=q^{-1/4}e^{-\mathrm{i}z}\theta_3(z)\) 和\eqref{b3:eq:24-derivative-identity}，得到 \(e_3-e_1=-\theta_3^4\)。于是
+\[
+\frac{\theta_4''(0)}{\theta_4}-\frac{\theta_2''(0)}{\theta_2}=\theta_3^4.
+\]
+每个 theta 级数还满足 \(q\partial_q\theta_j=-\tfrac14\partial_z^2\theta_j\)，直接逐项微分即可核对。因此
+\begin{equation}\label{b3:eq:24-log-derivative}
+4q\frac{\mathrm{d}}{\mathrm{d}q}\log(\theta_2/\theta_4)=\theta_3^4.
+\end{equation}
+整个推导中的除法由三重积保证分母非零，椭圆函数的比较则只比较同一格下的主部和一个零点，故不存在未确定的比例常数。
 
 \subsection{生成函数方法}
 \label{b3:subsec:240404}
 
-待填充。
+\begin{proof}[\cref{b3:thm:24-four-squares}的证明]
+对 \(\theta_2/\theta_4\) 的乘积取对数导数，由\eqref{b3:eq:24-log-derivative}得
+\[
+\theta_3^4=1+16\sum_{n\ge1}\frac{nq^{2n}}{1+q^{2n}}
++8\sum_{m\ge1,\ m\text{ odd}}\frac{mq^m}{1-q^m}.
+\]
+恒等式 \(x/(1+x)=x/(1-x)-2x^2/(1-x^2)\) 将偶数部分改写为
+\(8\sum_{d\text{ even}}d q^d/(1-q^d)-32\sum_{n\ge1}nq^{4n}/(1-q^{4n})\)。与奇数部分相合，即为
+\[
+\theta_3^4=1+8\sum_{d\ge1,\ 4\nmid d}\frac{dq^d}{1-q^d}.
+\]
+在 \(|q|\le r<1\) 上所有对数导数级数和几何展开都绝对一致收敛，因为 \(\sum d r^d/(1-r^d)<\infty\)。故可把 \(q^d/(1-q^d)=\sum_{m\ge1}q^{dm}\) 代入并收集系数，得到所述约数和。最后与\secref{b3:sec:2403}中的生成函数比较。
+\end{proof}
+例如奇素数 \(p\) 的四平方和表示数为 \(8(p+1)\)；\(n=4\) 时为 \(8(1+2)=24\)，包括八个仅一个坐标为 \(\pm2\) 的表示与十六个四坐标均为 \(\pm1\) 的表示。这个核算检验了符号、顺序及排除四倍约数的三个约定。
+
+\ProseParagraphBreak
+
+半周期比较中的主部与常数值得再逐点核验。由于 \(\theta_1\) 在0单零，\(\theta_1(z)=\theta_1'(0)z+O(z^3)\)；偶函数 \(\theta_2(z)=\theta_2+O(z^2)\)。因此
+\((\theta_1'(0)/\theta_2)^2(\theta_2(z)/\theta_1(z))^2=z^{-2}+O(1)\)，没有一阶极项。平方后的商在两周期下的符号和指数相消，确为椭圆函数。它与 \(\wp\) 的差因主部相同而整，故为常数；在 \(z=\pi/2\) 时分子为 \(\theta_1(\pi)=0\)，分母为 \(\theta_2\ne0\)，常数恰为 \(-e_1\)。这一步同时用到了零点的位置、单重性及常数非零，三者均由前面的级数或乘积给出。
+\ProseParagraphBreak
+在另一半周期，平移公式逐项给
+\(\theta_2(\pi\tau/2)=q^{-1/4}\theta_3\) 与
+\(\theta_1(\pi\tau/2)=\mathrm{i}q^{-1/4}\theta_4\)。代入平方商，先得到比值平方 \(-\theta_3^2/\theta_4^2\)，再乘
+\((\theta_1'(0)/\theta_2)^2=\theta_3^2\theta_4^2\)，最后才得到 \(-\theta_3^4\)。负号来自 \(\mathrm{i}^2=-1\)，不是法向或周期方向的约定；四次方来自两个平方因子的相乘。明确这些步骤后，热方程的负四分之一因子也与最后的正号一致。
+\ProseParagraphBreak
+从乘积到 Lambert 级数同样可逐类追踪。\(\theta_2/\theta_4\) 中公共的 \(1-q^{2n}\) 全部消去，剩下常数 \(2q^{1/4}\)、偶幂的 \((1+q^{2n})^2\) 和奇幂的 \((1-q^{2n-1})^{-2}\)。乘上 \(4q\mathrm{d}/\mathrm{d}q\) 后，第一项给一，偶幂项给 \(16nq^{2n}/(1+q^{2n})\)，奇幂项给 \(8(2n-1)q^{2n-1}/(1-q^{2n-1})\)。把偶数项改写后，其中全部四的倍数恰被减掉一次。若忘记平方因子或 \(q^{1/4}\)，会分别造成表示数少一倍或漏掉 \(r_4(0)=1\)；前几项计数可以迅速检查这些错误。
+\ProseParagraphBreak
+例如 \(r_4(2)=24\)：选择两个非零位置有六种，各自符号有四种。\(r_4(3)=32\)：选择零坐标有四种，其余三个符号有八种。对 \(n=9\)，一类表示为 \((\pm3,0,0,0)\) 的排列，共八个；另一类是 \((\pm2,\pm2,\pm1,0)\)，零位置四种、绝对值一的位置三种、三个非零符号八种，共九十六个。总数一百零四，正好是 \(8(1+3+9)\)。相同绝对值坐标的置换不能再重复乘一个阶乘，否则会过计。
+\ProseParagraphBreak
+四平方公式还能给比体积法更细的累计误差。设 \(X\ge1\)，交换有限约数和得到
+\[
+ \sum_{1\le n\le X}r_4(n)=8\sum_{m\le X}\sum_{d\le X/m,\,4\nmid d}d.
+\]
+由 \(\sum_{d\le Y}d=Y^2/2+O(Y)\)，扣去四的倍数后内和为 \(3Y^2/8+O(Y)\)。于是总和为
+\[
+ 3X^2\sum_{m\le X}m^{-2}+O\left(X\sum_{m\le X}m^{-1}\right)
+ =\frac{\pi^2}{2}X^2+O(X\log(X+2)).
+\]
+最后使用正弦乘积比较所得 \(\sum m^{-2}=\pi^2/6\)，尾和为 \(O(1/X)\)。主项正是四维单位球体积 \(\pi^2/2\)，因此复分析推导的精确系数与实几何计数相符。此处取的是累计和；不能把其误差逐项作差就得到每个 \(r_4(n)\) 的同等精度。

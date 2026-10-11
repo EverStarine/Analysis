@@ -2,19 +2,84 @@
 \section{Tauber 型方法}
 \label{b3:sec:2704}
 
-% TODO: 撰写本节正文。
+从系数渐近推出变换奇性通常较容易，反过来则要防止振荡藏在平均之下。单调性提供所需约束，而频率截断把边界全纯性转成可控制的局部平均。
 
 \subsection{Abel 型与 Tauber 型定理}
 \label{b3:subsec:270401}
 
-待填充。
+若非负累积量 \(A(x)\sim cx\)，则部分求和预示 \(\int x^{-s}\,\mathrm{d}A(x)\) 在 \(s=1\) 有主部 \(c/(s-1)\)。这种由原函数推向变换的结果称为 Abel 型；由变换反推原函数渐近称为\term[tauber-xing-dingli]{Tauber 型定理}[Tauberian theorem]。反向结论需要额外假设，例如单调性或受控振荡，不能只由一个极点形式无条件推出。
 
 \subsection{Wiener–Ikehara 定理}
 \label{b3:subsec:270402}
 
-待填充。
+\begin{theorem}[Wiener--Ikehara：解析边界版本]\label{b3:thm:27-wiener-ikehara}
+设 \(A:[1,\infty)\to[0,\infty)\) 右连续且非递减，令 \(A(1^-)=0\)。假设
+\(F(s)=\int_{1^-}^\infty x^{-s}\,\mathrm{d}A(x)\) 在 \(\operatorname{Re}s>1\) 收敛，且对某个 \(c\ge0\)，\(F(s)-c/(s-1)\) 全纯延拓到闭半平面 \(\operatorname{Re}s\ge1\) 的一个开邻域。则 \(A(x)\sim cx\) 当 \(c>0\)；一般地 \(A(x)/x\to c\)。
+\end{theorem}
+\begin{proof}
+先估计增长。对 \(T\ge1\)，非负测度给
+\(F(1+1/T)\ge e^{-T-1}A(e^T)\)。极点假设给 \(F(1+1/T)=cT+O(1)\)，故 \(h(T)=e^{-T}A(e^T)=O(T+1)\)。令 \(h(t)=0\) 于负半轴。分部积分表明
+\[
+\int_0^\infty h(t)e^{-st}\,\mathrm{d}t=\frac{F(1+s)}{1+s},\quad\operatorname{Re}s>0.
+\]
+因此 \(r(t)=h(t)-c\mathbf1_{[0,\infty)}(t)\) 的 Laplace 变换 \(G(s)=F(1+s)/(1+s)-c/s\) 全纯越过整个虚轴。
+接着构造一个非负、积分为一的 Schwartz 核 \(\phi\)，使它具有紧频率表示。取非零的非负函数 \(\chi\in C_c^\infty(\mathbb R)\)，置
+\[
+ v(t)=\int_{\mathbb R}\chi(\xi)e^{2\pi\mathrm it\xi}\,\mathrm d\xi,
+ \qquad K=\int_{\mathbb R}|v(t)|^2\,\mathrm dt,
+ \qquad\phi(t)=|v(t)|^2/K.
+\]
+反复分部积分证明 \(v\) 是 Schwartz 函数；又 \(v(0)=\int\chi>0\)，故 \(0<K<\infty\)。展开平方并在两个紧区间上使用 Fubini，可得
+\[
+ \phi(t)=\int_{\mathbb R}q(\xi)e^{2\pi\mathrm it\xi}\,\mathrm d\xi,
+ \qquad q(\xi)=\frac1K\int_{\mathbb R}\chi(\xi+\eta)\overline{\chi(\eta)}\,\mathrm d\eta.
+\]
+函数 \(q\) 光滑且紧支集，\(\phi\ge0\)、\(\int\phi=1\)，并且 \(\phi\) 在原点附近严格为正。以上表示直接由有限积分得到，采用全书统一的 \(2\pi\) 归一化。
 
-\subsection{对 \texorpdfstring{\(\psi(x)\)}{(x)} 的应用}
+对 \(\varepsilon>0\)，\(r(u)e^{-\varepsilon u}\) 在正半轴绝对可积，故再次用 Fubini 得
+\[
+\int_{\mathbb R}r(u)e^{-\varepsilon u}\phi(T-u)\,\mathrm{d}u
+=\int q(\xi)G(\varepsilon+2\pi\mathrm{i}\xi)e^{2\pi\mathrm{i}T\xi}\,\mathrm{d}\xi,
+\]
+左侧只在 \(u\ge0\) 非零。对固定 \(T\)，\(r(u)=O(u+1)\) 与 Schwartz 衰减允许令 \(\varepsilon\downarrow0\)；右侧在固定紧频率集上由全纯延拓一致趋于边界值。因此
+\[
+ (r*\phi)(T)=\int q(\xi)G(2\pi\mathrm i\xi)e^{2\pi\mathrm iT\xi}\,\mathrm d\xi
+ \longrightarrow0.
+\]
+最后一步也可直接证明：振幅 \(q(\xi)G(2\pi\mathrm i\xi)\) 光滑紧支集，分部积分一次给 \(O(T^{-1})\)，端点项为零。由于
+\((\mathbf1_{[0,\infty)}*\phi)(T)=\int_{-\infty}^T\phi(v)\,\mathrm dv\to1\)，故 \((h*\phi)(T)\to c\)。平移、反射和缩放 \(\phi\) 仍满足同样的非负性、单位质量及紧频率表示，因而对任何这类核都有
+\(\int h(T+v)\phi(v)\,\mathrm dv\to c\)。
+由单调性，对 \(0\le v\le\delta\) 有 \(h(T+v)\ge e^{-\delta}h(T)\)。取一个固定正核在这段上有正质量，平均的有限极限先给 \(h(T)\) 对大 \(T\) 有界；连同紧区间局部有界性得全局界 \(0\le h\le B\)。现在将正核缩放并平移到 \(\delta/2\)，使其在 \((0,\delta)\) 的质量至少 \(1-\eta\)。平均极限给
+\(\limsup h(T)\le ce^\delta/(1-\eta)\)。再把核集中到 \((-\delta,0)\)。在此区间有 \(h(T+v)\le e^\delta h(T)\)，外部质量的贡献不超过 \(B\eta\)，所以
+\(\liminf h(T)\ge e^{-\delta}(c-B\eta)\)。依次令 \(\eta\downarrow0\)、\(\delta\downarrow0\)，两界合为 \(h(T)\to c\)。换回 \(x=e^T\) 即得结论。
+\end{proof}
+这给出\term[wiener-ikehara-dingli]{Wiener--Ikehara 定理}[Wiener--Ikehara theorem]的解析边界版本。更一般的边界分布假设也有相应定理，本章没有把这些较弱假设混入陈述。证明中正性先给粗增长，再给有界性，最后才把平均极限变成点态极限，三个步骤不能互相替代。
+
+\ProseParagraphBreak
+
+夹逼过程中使用的核始终具有整个实轴上的尾部，不能直接当作紧支集核。先取得 \(h\le B\) 后，才能用 \(B\eta\) 控制核在目标区间以外的质量。如果只保留先前的 \(h(T)=O(T)\)，即使核的尾质量很小，这部分误差仍可能随 \(T\) 增大。因此证明必须先固定一个正核取得有界性，然后再改变核的集中程度。
+
+\ProseParagraphBreak
+
+同样，核越来越集中时，其紧频率支集会越来越大。证明对每个固定核先令 \(T\to\infty\)，这时只需边界上一个固定紧段的延拓；最后再令 \(\eta\) 和 \(\delta\) 趋零。若交换这些极限，就需要关于所有高度的一致边界估计，而本定理没有提供这种假设。由此也能看出为什么当前证明自然给定性的极限，而没有自动给出有效误差速率。
+
+\begin{remark}[仅有一个边界点的信息不足]
+\label{b3:rem:27-one-boundary-point}
+取 \(0<\varepsilon<1/\sqrt2\)，令
+\[
+ A(x)=x\bigl(1+\varepsilon\sin(\log x)\bigr),\qquad x\ge1,
+ \quad A(1^-)=0.
+\]
+它非负且严格递增，因为
+\(A'(x)=1+\varepsilon\sin\log x+\varepsilon\cos\log x>0\)。不过 \(A(x)/x\) 始终振荡。由部分积分及正弦的 Laplace 积分，
+\[
+ F(s)=\frac{s}{s-1}
+       +\frac{\varepsilon s}{(s-1)^2+1},\qquad\operatorname{Re}s>1.
+\]
+因此 \(F(s)-1/(s-1)\) 在一附近全纯，却在 \(1\pm\mathrm i\) 有极点。这个例子同时保留了非负性、单调性和线性增长，只缺少整条边界的延拓，仍无法得到渐近。可见要求整条边界并非证明措辞上的冗余。
+\end{remark}
+
+\subsection{对 \texorpdfstring{\(\psi(x)\)}{\AnalysisPdfPsi(x)} 的应用}
 \label{b3:subsec:270403}
 
-待填充。
+取 \(A(x)=\psi(x)\)，其 Stieltjes 测度为 \(\sum\Lambda(n)\delta_n\)，非负且在有限区间质量有限。变换为 \(F=-\zeta'/\zeta\)，前节已经逐点排除边界零点，并由单极点展开消去一处的主部。故定理中 \(c=1\)，得到 \(\psi(x)/x\to1\)。这一应用的全部假设均来自此前正文，未把素数定理本身当作增长输入。

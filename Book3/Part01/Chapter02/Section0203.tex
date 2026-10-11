@@ -2,19 +2,100 @@
 \section{Cauchy 积分公式}
 \label{b3:sec:0203}
 
-% TODO: 撰写本节正文。
+积分为零的结论本身不直接给出点值。把函数除以 \(\zeta-z\)，就产生一个受控奇点；围道留下的贡献恰好是被求的函数值。第一章的圆盘公式因此可以扩展为较一般的边界表示。
 
 \subsection{基本公式}
 \label{b3:subsec:020301}
 
-待填充。
+\begin{theorem}[Cauchy 积分公式]\label{b3:thm:02-cauchy-formula}
+设 \(V\) 是有界单连通区域，其边界是一条正向分段光滑 Jordan 曲线，\(f\) 在 \(\overline V\) 的一个开邻域上全纯。则对 \(z\in V\)，
+\[
+ f(z)=\frac1{2\pi\mathrm{i}}\int_{\partial V}\frac{f(\zeta)}{\zeta-z}\,\mathrm{d}\zeta.
+\]
+\end{theorem}
+\begin{proof}
+定义 \(g(\zeta)=(f(\zeta)-f(z))/(\zeta-z)\)，并在 \(z\) 处补为 \(f'(z)\)。Taylor 展开说明补后的 \(g\) 全纯。邻域可缩小成包含 \(\overline V\) 的单连通区域，或将边界轻微移入 \(V\) 后取极限；Cauchy 定理给出 \(\int_{\partial V}g=0\)。对于多边形边界，在内部挖去以 \(z\) 为中心的小圆，并用细分三角形消去其余边，得到
+\(\int_{\partial V}(\zeta-z)^{-1}\,\mathrm{d}\zeta=2\pi\mathrm{i}\)。一般分段光滑 Jordan 边界用多边形近似：边界邻域的有限圆盘覆盖可使每段近似与原段相差一个局部原函数的端点差；故两个围道的积分完全相同。将 \(f(\zeta)=f(z)+(\zeta-z)g(\zeta)\) 代回即可。
+\end{proof}
+“在闭区域的邻域全纯”使边界上的积分有定义。若只知道 \(f\) 在 \(V\) 内全纯，仍可在内部小圆上使用公式，却不能直接把任意边界值代入。边界没有光滑性时，应该改用内部围道，而不是默认边界长度有限。
+
+\ProseParagraphBreak
+
+多连通区域的边界表示要保留内边界的方向。以圆环 \(r<|\zeta|<R\) 为例，若函数在闭环邻域全纯，且 \(r<|z|<R\)，则外圆逆时针、内圆顺时针时，两条边界合起来仍给 \(f(z)\)。若坚持两个圆都逆时针，公式中内圆应出现负号：
+\[
+ f(z)=\frac1{2\pi\mathrm{i}}\int_{|\zeta|=R}\frac{f(\zeta)}{\zeta-z}\,\mathrm{d}\zeta-
+ \frac1{2\pi\mathrm{i}}\int_{|\zeta|=r}\frac{f(\zeta)}{\zeta-z}\,\mathrm{d}\zeta.
+\]
+证明可沿一条不经过 \(z\) 的径向线切开圆环，切口两侧相消。对 \(f(\zeta)=1/\zeta\)，内圆贡献不会自动消失；圆环中心不在定义域中，所以不能用单连通区域的一个外边界公式抹掉孔洞。这一表示将在 Laurent 展开的证明中逐项展开。
 
 \subsection{导数公式}
 \label{b3:subsec:020302}
 
-待填充。
+\begin{proposition}[Cauchy 导数公式]\label{b3:prop:02-cauchy-derivatives}
+在前一定理的条件下，对每个整数 \(n\ge0\) 和 \(z\in V\)，
+\[
+ f^{(n)}(z)=\frac{n!}{2\pi\mathrm{i}}\int_{\partial V}\frac{f(\zeta)}{(\zeta-z)^{n+1}}\,\mathrm{d}\zeta.
+\]
+\end{proposition}
+\begin{proof}
+固定内部紧集 \(K\)，它与边界的距离为正。核函数及任意固定阶的 \(z\) 导数在 \(K\times\partial V\) 上连续且一致有界。差商在该紧集上一致趋向核的导数，所以可将极限移入有限长度曲线积分，先得到一阶公式，再归纳。求导 \((\zeta-z)^{-1}\) 时两个负号相消，产生正的 \(n!\)，不能误写成 \((-1)^n n!\)。
+\end{proof}
+例如 \(f(\zeta)=e^\zeta\)，在任何包围 \(z\) 的圆周上，\(\int e^\zeta/(\zeta-z)^3\,\mathrm{d}\zeta=\pi\mathrm{i}e^z\)。围道半径改变不影响数值，只要奇点仍被包围且定义域容许变形。
+
+\ProseParagraphBreak
+
+含参积分也能构造全纯函数。设 \(\gamma\) 是固定的有限长度曲线，\(g\) 在其像上连续，\(W\) 是与该像不相交的开集。定义
+\[
+ H(z)=\int_\gamma\frac{g(\zeta)}{\zeta-z}\,\mathrm{d}\zeta,\qquad z\in W.
+\]
+对 \(W\) 内紧集，分母有共同正下界，核差商一致收敛，所以 \(H\) 全纯，且各阶导数是核各阶导数的积分。函数 \(g\) 不要求全纯，因为全纯变量在核的 \(z\) 中。相反，若把参数也放入 \(g(\zeta,z)\)，必须核对它在 \(z\) 的全纯性以及共同控制，不能因积分号看起来相同就自动求导。
+
+\ProseParagraphBreak
+
+取单位圆与 \(g\equiv1\)，上述 \(H\) 在圆内恒为 \(2\pi\mathrm{i}\)，圆外恒为0。每个连通分支上都全纯，但跨圆周发生跳变。这说明积分参数域 \(W\) 不能穿过核的奇点，也说明“积分产生全纯函数”并不保证它跨越积分曲线延拓。
 
 \subsection{Cauchy 估计}
 \label{b3:subsec:020303}
 
-待填充。
+\term[cauchy-guji]{Cauchy 估计}[Cauchy estimates]把边界值的大小变成内部导数的大小。
+\begin{theorem}[Cauchy 估计]\label{b3:thm:02-cauchy-estimate}
+设 \(f\) 在 \(\overline{D(a,r)}\) 的开邻域上全纯，\(M_r=\max_{|z-a|=r}|f(z)|\)。则
+\[
+ |f^{(n)}(a)|\le\frac{n!M_r}{r^n},\qquad n\ge0.
+\]
+\end{theorem}
+\begin{proof}
+在导数公式中分母的模为 \(r^{n+1}\)，曲线长度为 \(2\pi r\)。应用\cref{b3:prop:02-ml}，消去 \(2\pi\) 后即得结论。
+\end{proof}
+若 \(f\) 只在开圆盘 \(D(a,R)\) 上全纯，对每个 \(r<R\) 使用估计即可。若整个圆盘上 \(|f|\le M\)，令 \(r\uparrow R\) 得到 \(|f^{(n)}(a)|\le n!M/R^n\)，即使函数没有边界延拓也成立。
+
+\ProseParagraphBreak
+
+估计是局部的。若紧集 \(K\) 与定义域边界距离至少为 \(\delta\)，而 \(f\) 在其 \(\delta\) 邻域内模不超过 \(M\)，则 \(K\) 上 \(|f'|\le2M/\delta\)。这将使局部有界函数族在紧集上等度连续；第四章的紧性来自这一控制，而非逐点有界本身。
+
+\ProseParagraphBreak
+
+估计中的常数 \(n!\) 不能普遍减小。取 \(f(z)=M((z-a)/r)^n\)，边界模恒为 \(M\)，中心 \(n\) 阶导数的模恰为 \(n!M/r^n\)。取等例子随阶数变化，因此估计同时涉及整个函数、取导阶数和采样半径，不能仅把它当作一个没有量纲的“导数小于函数”结论。
+
+\ProseParagraphBreak
+
+若只知道邻域内 \(|f|\le M\)，要估计 \(a\) 附近 \(f(z)-f(a)\) 的大小，可以先用 Cauchy 估计控制导数，再沿短线段积分。另一种办法直接从 Taylor 系数得出：当 \(|z-a|<r\) 时，
+\[
+ |f(z)-f(a)|\le M\sum_{n\ge1}\left(\frac{|z-a|}{r}\right)^n
+ =\frac{M|z-a|}{r-|z-a|}.
+\]
+这是从整个圆周共同上界推出的内部变化估计，靠近取样圆时分母趋零，提醒读者局部控制需要与边界保持距离。
+
+\begin{proposition}\label{b3:prop:02-taylor-remainder}
+设 \(f\) 在闭圆盘 \(\overline{D(a,R)}\) 的邻域全纯，边界上 \(|f|\le M\)。若 \(|z-a|\le r<R\)，则 Taylor 多项式 \(T_N\) 满足
+\[
+ |f(z)-T_N(z)|\le \frac{M(r/R)^{N+1}}{1-r/R}.
+\]
+\end{proposition}
+\begin{proof}
+Cauchy 估计给 \(|f^{(n)}(a)|/n!\le M/R^n\)。将从 \(N+1\) 起的 Taylor 系数逐项估计，再求几何级数即得结论；Taylor 展开在圆盘中成立已由第1章证明。
+\end{proof}
+这个估计同时解释了为什么计算中心附近的函数值比较容易。固定 \(r/R<1\) 时误差随次数几何下降；若把 \(r\) 推近 \(R\)，相同的次数可能完全不够。Cauchy 估计控制的是到已知全纯边界的距离，而非一个与区域无关的误差常数。以 \(1/(1-z)\) 为例，截断误差恰为 \(z^{N+1}/(1-z)\)，靠近边界点1时分母揭示了这一限制。
+
+\ProseParagraphBreak
+若只知道 \(f\) 在开圆盘中全纯，不能直接取最外圆周；应先用任意 \(\rho<R\) 的圆周。很多把边界半径代入的公式因此需要额外的连续延拓或邻域全纯假设。对 \(f(z)=1/(R-z)\)，最外圆周连积分本身都没有通常意义。证明中使用内部圆周，最后再在已有界的条件下取极限，能够避免把未知的边界行为混入内点结论。

@@ -1,0 +1,71 @@
+% !TeX root = ../../Book2.tex
+\section{Legendre 多项式与角向方程}
+\label{b2:sec:B202}
+
+球面上的轴对称函数只依赖极角，令 \(t=\cos\theta\) 后，其微分方程变成带系数 \(1-t^2\) 的一维方程。这个系数在两端为零，反映了球坐标在两极的退化。Legendre 多项式既给出规则解，也形成区间上无权测度的正交基。
+
+\subsection{Rodrigues 公式与范数}
+\label{b2:subsec:B20201}
+
+定义 \term[legendre-duoxiangshi]{Legendre 多项式}[Legendre polynomial]
+\[P_n(t)=\frac1{2^nn!}\frac{\mathrm d^n}{\mathrm dt^n}(t^2-1)^n.\]
+它的首系数为 \((2n)!/[2^n(n!)^2]\)，并满足 \(P_n(1)=1\)、\(P_n(-t)=(-1)^nP_n(t)\)。第一个端点值可直接在 \((t-1)^n(t+1)^n\) 的 \(n\) 阶导数中取 \(t=1\)：只有把全部 \(n\) 次微分作用于 \((t-1)^n\) 的项保留下来。
+
+\begin{proposition}[Legendre 正交基]
+\label{b2:prop:B2-legendre-orthogonal}
+有
+\[\int_{-1}^1P_n(t)P_m(t)\,\mathrm dt=\frac2{2n+1}\delta_{nm}.\]
+归一化函数 \(\sqrt{(2n+1)/2}\,P_n\) 构成 \(L^2(-1,1)\) 的标准正交基。
+\end{proposition}
+\begin{proof}
+对次数小于 \(n\) 的多项式 \(q\)，把 Rodrigues 公式分部积分 \(n\) 次。\((t^2-1)^n\) 在两端具有 \(n\) 阶零点，所以全部边界项为零；最后 \(q^{(n)}=0\)，得到 \(\int P_nq=0\)。这给出不同阶数正交。若 \(q=P_n\)，则 \(P_n^{(n)}=(2n)!/(2^nn!)\)，所以
+\[\int_{-1}^1P_n^2=\frac{(2n)!}{2^{2n}(n!)^2}\int_{-1}^1(1-t^2)^n\,\mathrm dt.
+\]
+附录 A 的 Beta 积分给出后一积分为 \(2^{2n+1}(n!)^2/(2n+1)!\)，于是范数等于 \(2/(2n+1)\)。
+
+由于阶数和首系数不退化，\(P_n\) 张成全部多项式。多项式在 \(C[-1,1]\) 中一致稠密，例如把区间线性变到 \([0,1]\)，使用 Bernstein 多项式；其权重和为 \(1\)，离均值超过 \(\varepsilon\) 的权重总量由方差 \(t(1-t)/N\) 控制，因此一致连续性给出一致逼近。连续函数又在 \(L^2\) 中稠密，故正交系完备。
+\end{proof}
+
+前几项为 \(P_0=1\)、\(P_1=t\)、\(P_2=(3t^2-1)/2\)、\(P_3=(5t^3-3t)/2\)。与 Hermite 情形相比，这里区间有限且权重为 \(1\)，归一化常数完全不同。同样叫作“正交多项式”，并不意味着可以交换其积分区间与权重。
+\symidx{\(P_n(t)\)：满足 \(P_n(1)=1\) 的 Legendre 多项式}
+
+\subsection{微分方程与三项递推}
+\label{b2:subsec:B20202}
+
+\begin{proposition}[Legendre 方程]
+\label{b2:prop:B2-legendre-equation}
+Legendre 多项式满足
+\[(1-t^2)P_n''-2tP_n'+n(n+1)P_n=0,\]
+以及对 \(n\ge1\) 的递推
+\[(2n+1)tP_n=(n+1)P_{n+1}+nP_{n-1}.
+\]
+\end{proposition}
+\begin{proof}
+令 \(Lq=-((1-t^2)q')'\)。它把次数不超过 \(n\) 的多项式映到同一空间，并把首项 \(a_nt^n\) 映成首项 \(n(n+1)a_nt^n\)。故 \(Q=LP_n-n(n+1)P_n\) 次数小于 \(n\)。对任意低次多项式 \(q\)，两次分部积分时边界项都由 \(1-t^2=0\) 消失，得 \(\int Qq=\int P_nLq-n(n+1)\int P_nq=0\)。取 \(q=Q\) 得 \(Q=0\)，即微分方程。
+
+展开 \(tP_n\) 于 \(P_0,\ldots,P_{n+1}\)。对 \(m\le n-2\)，\(\int tP_nP_m=\int P_n(tP_m)=0\)，因为 \(tP_m\) 次数小于 \(n\)；奇偶性又排除 \(P_n\) 项。因此只剩 \(P_{n+1}\) 与 \(P_{n-1}\)。比较首系数得前者系数 \((n+1)/(2n+1)\)，在 \(t=1\) 取值使两系数和为 \(1\)，得到后者系数 \(n/(2n+1)\)。
+\end{proof}
+
+这个证明没有对 Rodrigues 公式作冗长展开，而是利用对称微分算子保持多项式次数的事实。正交性、微分方程与递推不是三张互不相关的公式表；它们来自同一有限维多项式结构。
+
+\ProseParagraphBreak
+
+方程的端点仍须认真处理。\(n=0\) 时除常数解外，还有 \(\frac12\log((1+t)/(1-t))\)，它在 \(t=\pm1\) 发散。两极对应球面上普通点，平滑角向函数不能容纳这种坐标奇性。因此在球面应用中选择规则的多项式解，是几何正则性而非任意约定。若改在不含端点的子区间求初值问题，第二支完全合法，不能因为它不是多项式就将其删除。
+
+\subsection{Legendre 展开及其收敛意义}
+\label{b2:subsec:B20203}
+
+对 \(f\in L^2(-1,1)\)，有
+\[f=\sum_{n=0}^\infty c_nP_n,\qquad
+ c_n=\frac{2n+1}{2}\int_{-1}^1f(t)P_n(t)\,\mathrm dt,\]
+且 Parseval 等式为 \(\lVert f\rVert_2^2=\sum 2|c_n|^2/(2n+1)\)。这是 \(L^2\) 收敛，不应自动解释为每点或端点的一致收敛。若具有更多光滑性，可以借微分方程把系数中的导数移到 \(f\) 上，取得更快衰减，但须同时核验边界项。
+
+\ProseParagraphBreak
+
+例如 \(f\in C^2[-1,1]\) 时，\((1-t^2)f'\) 在两端为零。对 \(n\ge1\)，分部积分给出
+\[n(n+1)\int fP_n=\int Lf\,P_n.\]
+因此归一化系数 \(\langle f,\sqrt{(2n+1)/2}P_n\rangle\) 不超过 \(\lVert Lf\rVert_2/[n(n+1)]\)。如果要反复使用这个等式，就应确认 \(L^jf\) 的端点行为和可积性，而不能只根据“\(f\) 有几阶导数”口头省去条件。
+
+\ProseParagraphBreak
+
+在三维球面上，轴对称函数写成 \(F(\theta)=f(\cos\theta)\)，面积积分为 \(2\pi\int_{-1}^1f(t)\,\mathrm dt\)。因此上述无权 Legendre 展开恰与轴对称球面展开匹配；若错误保留 \(\mathrm d\theta\) 而漏掉 \(\sin\theta\)，就会得到另一种正交问题。

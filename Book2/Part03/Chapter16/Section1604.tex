@@ -1,25 +1,113 @@
 % !TeX root = ../../Book2.tex
-\section{Caccioppoli 不等式与低正则理论入口}
+\section{Caccioppoli 不等式与低正则理论初步}
 \label{b2:sec:1604}
 
-% TODO: 撰写本节正文。
+有界可测系数不足以支持前面的差商估计，却仍保留椭圆性带来的能量控制。对实标量方程，截断与 Sobolev 不等式还能把积分控制逐步变成点态控制。本节完整证明局部有界性，随后明确区分已经完成的能量论证和通向 Harnack、Hölder 理论的深层步骤。
 
 \subsection{Caccioppoli 不等式}
 \label{b2:subsec:160401}
 
-待填充。
+以下矩阵 \(A\) 仅假定可测，满足 \(\lVert A\rVert_\infty\le\Lambda\) 和 \(\xi^{\mathsf T}A(x)\xi\ge\lambda|\xi|^2\)。系数不需要一阶导数。
+
+\begin{proposition}[内部能量估计]
+\label{b2:prop:16-caccioppoli}
+设 \(B_R\Subset\Omega\)，\(u\in H^1(B_R)\) 弱解 \(-\operatorname{div}(A\nabla u)=f\)，\(f\in L^2(B_R)\)。则对 \(0<r<R\) 和任意常数 \(c\in\mathbb R\)，
+\[
+ \int_{B_r}|\nabla u|^2\le
+ \frac{C}{(R-r)^2}\int_{B_R}|u-c|^2
+       +C(R-r)^2\int_{B_R}|f|^2,
+\]
+其中 \(C\) 只依赖 \(d,\lambda,\Lambda\)。
+\end{proposition}
+\begin{proof}
+取 \(\eta\in C_c^\infty(B_R)\)，在 \(B_r\) 上为 \(1\)，满足 \(0\le\eta\le1\)、\(|\nabla\eta|\le C_d/(R-r)\)。函数 \(\eta^2(u-c)\) 是合法测试函数。展开并用椭圆性，得
+\[\lambda\int\eta^2|\nabla u|^2
+ \le2\Lambda\int\eta|\nabla u||u-c||\nabla\eta|
+       +\int|f|\eta^2|u-c|.\]
+第一项由 Young 不等式吸收一半左端，余下是 \(C\int|u-c|^2|\nabla\eta|^2\)。对第二项使用带尺度的 Young 不等式，界为 \(C(R-r)^2\int|f|^2+C(R-r)^{-2}\int|u-c|^2\)。整理并利用 \(\eta=1\) 于内球即可。
+\end{proof}
+
+这项 \term[caccioppoli-budengshi]{Caccioppoli 不等式}[Caccioppoli inequality]以较大区域内函数的大小控制较小区域内的梯度。取常数 \(c\) 可以去掉与方程无关的整体平移；齐次方程中常取 \(c\) 为球平均值，以突出振荡而不是绝对高度。估计方向与 Poincaré 不等式相反，但需要解满足方程，因此不能对任意 \(H^1\) 函数成立。
 
 \subsection{反向估计}
 \label{b2:subsec:160402}
 
-待填充。
+对于齐次解，在 \(B_{2r}\) 上取 \(c=u_{B_{2r}}\)。Caccioppoli 与球上的 Sobolev--Poincaré 不等式结合，给出一个梯度的反向 Hölder 型估计。例如 \(d>2\) 时取 \(q=2d/(d+2)<2\)，有
+\[
+ \left(\frac1{|B_r|}\int_{B_r}|\nabla u|^2\right)^{1/2}
+ \le C\left(\frac1{|B_{2r}|}\int_{B_{2r}}|\nabla u|^q\right)^{1/q}.
+\]
+这里积分除以球的体积，均取平均值。证明中先用能量估计将左端界为
+\[
+ \frac Cr\left(\frac1{|B_{2r}|}\int_{B_{2r}}|u-u_{B_{2r}}|^2\right)^{1/2},
+\]
+再用 Sobolev--Poincaré 将这一项界为右端。二维可选任意固定 \(1<q<2\)，由对应有限指数嵌入及 Hölder 不等式得到同样形式。
+
+\ProseParagraphBreak
+
+通常 Hölder 不等式以较高指数范数控制较低指数范数；这里对解的梯度出现相反方向，代价是扩大球。它暗示梯度具有比任意 \(L^2\) 函数更强的分布控制。由此继续推出高于 \(2\) 的可积指数，需要反向 Hölder 不等式的自改进定理；本节没有证明这一步，因而也不把更高可积性写成已经建立的结论。
+
+\ProseParagraphBreak
+
+局部有界性的迭代使用另一种增强：把能量估计应用于超过某个高度的部分。称 \(u\in H^1\) 为弱次解，是指 \(\int A\nabla u\cdot\nabla\varphi\le0\) 对所有非负紧支集测试函数成立。取 \(w=(u-k)_+\)，经截断逼近可用 \(\eta^2w\) 测试，得到
+\[\int\eta^2|\nabla w|^2\le C\int w^2|\nabla\eta|^2.\]
+在 \(\{u\le k\}\) 上 \(\nabla w=0\)，在其余部分 \(\nabla w=\nabla u\)，所以与前面的吸收步骤完全相同。高度 \(k\) 可以随迭代改变，这为同时控制高值集合的大小和函数值提供了自由度。
 
 \subsection{局部有界性的动机}
 \label{b2:subsec:160403}
 
-待填充。
+\begin{theorem}[弱次解的局部上界]
+\label{b2:thm:16-local-boundedness}
+设 \(d\ge2\)，\(A\) 在 \(B_R\) 上有界可测且一致椭圆，\(u\in H^1(B_R)\) 是实弱次解。则
+\[\operatorname*{ess\,sup}_{B_{R/2}}u_+
+ \le C\left(\frac1{|B_R|}\int_{B_R}u_+^2\right)^{1/2},\]
+其中 \(C\) 只依赖 \(d,\lambda,\Lambda\)。齐次弱解同时满足相应的 \(|u|\) 局部上界。
+\end{theorem}
+\begin{proof}
+先缩放到 \(R=1\)。对支撑在单位球的 \(H_0^1\) 函数，选 \(\chi=d/(d-2)>1\)（\(d>2\)）或 \(\chi=2\)（\(d=2\)），Sobolev 不等式给出 \(\lVert v\rVert_{2\chi}^2\le C\lVert\nabla v\rVert_2^2\)。固定待选高度 \(K>0\)，令
+\[r_n=\tfrac12+2^{-n-1},\qquad k_n=K(1-2^{-n}),\qquad
+ Y_n=\int_{B_{r_n}}(u-k_n)_+^2.\]
+选截断 \(\eta_n=1\) 于 \(B_{r_{n+1}}\)，支集在 \(B_{r_n}\)，且 \(|\nabla\eta_n|\le C2^n\)。令 \(w_n=(u-k_n)_+\)，截断能量估计连同乘积导数公式给出
+\[\lVert\eta_nw_n\rVert_{2\chi}^2
+ \le C\lVert\nabla(\eta_nw_n)\rVert_2^2\le C4^nY_n.\]
+在集合 \(E_{n+1}=B_{r_{n+1}}\cap\{u>k_{n+1}\}\) 上，\(w_n\ge k_{n+1}-k_n=K2^{-n-1}\)。所以 \(|E_{n+1}|\le4^{n+1}K^{-2}Y_n\)。再用 Hölder 不等式，记 \(\theta=1-1/\chi>0\)，得
+\[Y_{n+1}\le\lVert\eta_nw_n\rVert_{2\chi}^2|E_{n+1}|^\theta
+ \le Cb^nK^{-2\theta}Y_n^{1+\theta},\]
+其中 \(b>1\) 为固定常数。
 
-\subsection{De Giorgi–Nash–Moser 理论的接口}
+令 \(Z_n=Y_n/K^2\)，则 \(Z_{n+1}\le Cb^nZ_n^{1+\theta}\)。若
+\[Z_0\le C^{-1/\theta}b^{-1/\theta^2},\]
+归纳可证 \(Z_n\le C^{-1/\theta}b^{-n/\theta-1/\theta^2}\)：代入递推式后，常数幂及 \(b\) 的指数恰好得到下一项。因此 \(Y_n\to0\)。取 \(K\) 为 \(\lVert u_+\rVert_{L^2(B_1)}\) 的足够大固定倍数即可满足初始小量条件；零范数情形结论显然。因为 \((u-K)_+^2\) 在 \(B_{1/2}\) 上的积分不超过每个 \(Y_n\)，故 \(u\le K\) 几乎处处。缩放回半径 \(R\) 得到平均形式的估计。对于解，\(u\) 与 \(-u\) 都是次解，分别估计正部即可。
+\end{proof}
+
+这一证明称为截断迭代。它没有控制系数的导数，也没有先假设解有界；有界性由高值集合的递推衰减产生。迭代中的超线性指数 \(1+\theta>1\) 来自 Sobolev 积分增益，正是小量逐步改善的原因。若只得到线性递推 \(Y_{n+1}\le Cb^nY_n\)，几何增长的常数会使论证失败。
+
+\ProseParagraphBreak
+
+一维可以直接使用 \(H^1\) 函数的绝对连续代表和基本定理获得局部控制，无须上述多维迭代。对于含源项的方程，截断估计会多出源项积分；要保留局部上界，源项需具有与维数相容的可积性。例如一般高维 \(L^2\) 源项未必足够。这里的齐次假设不能只从定理标题中读过而在应用时忘掉。
+
+\subsection{De Giorgi–Nash–Moser 理论简介}
 \label{b2:subsec:160404}
 
-待填充。
+局部有界性还没有保证振荡随半径缩小而消失。实标量一致椭圆方程的更强结论是：非负解在较小球内的最大值与最小值可相互比较，任意实解因而具有 Hölder 连续代表。De Giorgi、Nash 和 Moser 的工作从不同方向建立了这一低正则理论。本小节介绍结论及其逻辑联系；其中 Harnack 比较的深层步骤不冒充为上一迭代已经证明。
+
+\begin{theorem}[可测系数的 Harnack 比较，深层结论]
+\label{b2:thm:16-measurable-harnack}
+设 \(A\) 在 \(B_{2R}\subset\mathbb R^d\) 上为实有界可测矩阵，满足固定的一致椭圆上下界。若 \(u\in H^1(B_{2R})\) 为非负弱解 \(-\operatorname{div}(A\nabla u)=0\)，则
+\[\operatorname*{ess\,sup}_{B_R}u\le C\operatorname*{ess\,inf}_{B_R}u,\]
+其中 \(C\) 只依赖维数和椭圆上下界。
+\end{theorem}
+\begin{proofsketch}
+上一小节已经完整证明次解的局部上界。余下的核心是超解的正性传播：一定比例的点上具有正下界，可以转成较小区域上的统一正下界。用负幂或对数测试建立这一性质，再结合覆盖分解，可以得到一个小正指数的弱 Harnack 下界；将它与相应指数的局部上界结合，就得到所列比较。这里省略正性传播和覆盖迭代的证明，故这一段只是证明路线。Dongsheng Li 与 Kai Zhang 的论文 \cite[Theorem 1.1 and Section 2]{Li2017Harnack} 给出可测系数的比较定理，并说明局部上界、正性传播与比较之间的关系；系统理论可参阅 \cite[Chapter 8]{Gilbarg2001Elliptic}。本章此前的 \(H^2\) 定理和局部有界性均不依赖此深层结论。
+\end{proofsketch}
+
+为了看出比较如何控制振荡，设 \(u\) 是 \(B_{2R}\) 内的任意有界实解，记在外球上的本性上、下界为 \(M,m\)，在内球上的为 \(M_1,m_1\)。函数 \(u-m\) 与 \(M-u\) 均为非负解。对二者应用 Harnack 比较，并将两项不等式相加，得到
+\[(M-m)+(M_1-m_1)\le C\bigl((M-m)-(M_1-m_1)\bigr).\]
+因此
+\[\operatorname*{ess\,osc}_{B_R}u\le\vartheta\operatorname*{ess\,osc}_{B_{2R}}u,
+ \qquad\vartheta=\frac{C-1}{C+1}<1.\]
+在同心球上迭代，得到振荡按半径的某个正幂衰减。取每点缩小球平均值的极限，振荡衰减保证极限存在；重叠球比较保证这些值满足局部 Hölder 估计，并与原函数几乎处处一致。若 \(C=1\)，解在内球为常数，结论更直接。
+
+\ProseParagraphBreak
+
+这套结论的对象是实标量二阶散度方程。一般椭圆系统缺少同样的序结构，不能直接对向量解作正部截断，也不能把标量 Harnack 定理逐分量套用到耦合系统上。系数虽可跳跃，标量解仍可能 Hölder 连续；其梯度却未必连续，甚至不一定有平方可积的二阶导数。低正则理论改善的是解的振荡，与前面依赖系数导数的高阶 Sobolev 理论相互补充。

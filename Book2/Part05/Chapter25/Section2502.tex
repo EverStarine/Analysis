@@ -2,19 +2,72 @@
 \section{横截性}
 \label{b2:sec:2502}
 
-% TODO: 撰写本节正文。
+横截性把方向分离量写成一个可核对的下界。最完整的横截模型是 \(d\) 个法向张成环境空间，此时平直曲面已经有非平凡的乘积估计，而不需要曲率。
 
 \subsection{横截性}
 \label{b2:subsec:250201}
 
-待填充。
+设 \(S_j\) 为 \(d\) 个超曲面片，单位法向为 \(n_j(\xi_j)\)。一致横截条件是
+\[
+ |\det(n_1(\xi_1),\ldots,n_d(\xi_d))|\ge\nu>0
+\]
+对各片的任意点成立。它比“法向两两不同”强；在三维，三个互不平行的向量仍可能共面。下界 \(\nu\) 进入估计常数，不能在方向趋于共面时忽略。
+
+\ProseParagraphBreak
+对于参数曲面 \(\Sigma_j:U_j\to\mathbb R^d\)，也可用切向偏导的楔积 \(Y_j\) 代替单位法向。此时 determinant 下界同时包含参数测度与面测度的 Jacobi 因子，陈述必须说明采用哪一种归一化。
 
 \subsection{几何非退化性}
 \label{b2:subsec:250202}
 
-待填充。
+下面采用\term[loomis-whitney-budengshi]{Loomis--Whitney 不等式}[Loomis--Whitney inequality]的下述版本。
+
+\begin{theorem}[Loomis--Whitney 不等式]\label{b2:thm:25-loomis-whitney}
+设 \(\pi_j:\mathbb R^d\to\mathbb R^{d-1}\) 删除第 \(j\) 个坐标，\(F_j\ge0\) 可积。则
+\[
+ \int_{\mathbb R^d}\prod_{j=1}^dF_j(\pi_jx)^{1/(d-1)}\,\mathrm dx
+ \le\prod_{j=1}^d\left(\int_{\mathbb R^{d-1}}F_j\right)^{1/(d-1)}.
+\]
+\end{theorem}
+\begin{proof}
+对维数归纳。\(d=2\) 时恰好是 Fubini 乘积分离。
+设结论在 \(d-1\) 维成立。先对 \(x_d\) 积分，对其余 \(d-1\) 个因子用 Hölder，令
+\(G_j=\int F_j\,\mathrm dx_d\)、\(j<d\)；它们各依赖 \(x'=(x_1,\ldots,x_{d-1})\) 中除第 \(j\) 个以外的坐标。于是左侧至多
+\[
+ \int_{\mathbb R^{d-1}}F_d(x')^{1/(d-1)}
+                     \prod_{j<d}G_j(\pi'_jx')^{1/(d-1)}\,\mathrm dx'.
+\]
+对这两个部分再用指数 \(d-1\) 与 \((d-1)/(d-2)\) 的 Hölder，得到
+\[
+ \left(\int F_d\right)^{1/(d-1)}
+ \left[\int\prod_{j<d}G_j(\pi'_jx')^{1/(d-2)}\,\mathrm dx'\right]^{(d-2)/(d-1)}.
+\]
+归纳假设与 \(\int G_j=\int F_j\) 给出结论。截断与单调收敛保证所有非负积分的处理合法。
+\end{proof}
+这条不等式并非普通 Hölder 的同域版本，因为每个因子在一个方向上恒定，其全空间积分会无限大。删除坐标的互补几何是有界性的来源。
 
 \subsection{多线性增益}
 \label{b2:subsec:250203}
 
-待填充。
+\begin{proposition}[平直横截延拓]\label{b2:prop:25-flat-extension}
+设 \(H_j=n_j^\perp\)、\(n_j\) 为单位向量，矩阵
+\(N=(n_1,\ldots,n_d)\) 可逆。以 \(H_j\) 上的欧氏面测度定义延拓，则
+\[
+ \left\|\prod_{j=1}^dE_jg_j\right\|_{L^{2/(d-1)}(\mathbb R^d)}
+ \le|\det N|^{-1/2}\prod_j\|g_j\|_{L^2(H_j)}.
+\]
+\end{proposition}
+\begin{proof}
+令 \(x=Ny\)。由于 \(E_jg_j\) 沿 \(n_j\) 方向不变，它在 \(y\) 坐标中不依赖 \(y_j\)。
+记其平方模为 \(F_j(\pi_jy)\)，应用 Loomis–Whitney。
+在截面 \(y_j=0\) 上，向 \(H_j\) 正交投影的 Jacobi 因子是 \(|\det N|\)：把其他列投影到 \(H_j\)，再以单位列 \(n_j\) 补齐 determinant 即可。
+因此由 \(H_j\) 上的 Plancherel，
+\(\int F_j=|\det N|^{-1}\|g_j\|_2^2\)。
+空间换元贡献 \(|\det N|\)，合并得
+\[
+ \int\prod_j|E_jg_j|^{2/(d-1)}
+ \le|\det N|^{-1/(d-1)}
+             \prod_j\|g_j\|_2^{2/(d-1)}.
+\]
+取 \((d-1)/2\) 次幂即得。当输出指数小于1时按该积分定义准范数，证明仍成立。
+\end{proof}
+平面没有曲率，却在完整横截乘积中有这个界。线性限制中的平面失败因此不能用来否定多线性横截估计。二者保留的几何信息不同。

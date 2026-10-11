@@ -2,24 +2,112 @@
 \section{留数}
 \label{b3:sec:0303}
 
-% TODO: 撰写本节正文。
+Laurent 展开的所有系数记录局部行为，闭曲线积分却只挑出 \(-1\) 次项。将多个孤立奇点围起来时，各个局部贡献相加，这使许多实积分也可以转化为有限次代数计算。
 
 \subsection{留数}
 \label{b3:subsec:030301}
 
-待填充。
+\begin{definition}\label{b3:def:03-residue}
+设 \(a\) 是全纯函数 \(f\) 的孤立奇点。其 Laurent 系数 \(c_{-1}\) 称为 \(f\) 在 \(a\) 的\term[liushu]{留数}[residue]，记为 \(\operatorname{Res}(f,a)\)。
+\end{definition}
+\symidx{\(\operatorname{Res}(f,a)\)：孤立奇点处的留数}
+\begin{proposition}\label{b3:prop:03-residue-formulas}
+若 \(a\) 是 \(m\) 阶极点，则
+\[
+ \operatorname{Res}(f,a)=\frac1{(m-1)!}\left.\frac{\mathrm{d}^{m-1}}{\mathrm{d}z^{m-1}}\bigl((z-a)^mf(z)\bigr)\right|_{z=a}.
+\]
+特别地，若 \(f=g/h\)，\(g,h\) 在 \(a\) 附近全纯，\(h(a)=0\)、\(h'(a)\ne0\)，则 \(\operatorname{Res}(f,a)=g(a)/h'(a)\)。
+\end{proposition}
+\begin{proof}
+令 \(G=(z-a)^mf\)。其 Taylor 展开的 \((m-1)\) 次系数，除以 \((z-a)^m\) 后就是 \(-1\) 次系数。单零分母写成 \(h(z)=(z-a)H(z)\)，\(H(a)=h'(a)\)，故 \((z-a)f\) 在中心值为 \(g(a)/h'(a)\)。即使 \(g(a)=0\)，公式仍给留数0，此时奇点可能已经可去。
+\end{proof}
+对本性奇点仍可用级数提取留数，例如 \(e^{1/z}\) 在0的留数为1；有限阶求导公式却没有可用的整数 \(m\)。留数为零不意味着奇点可去，\(1/z^2\) 就是一例。
+
+\ProseParagraphBreak
+
+留数在合法的局部换元下属于同一个微分量。
+\begin{proposition}[留数的坐标不变性]\label{b3:prop:03-residue-coordinate}
+设 \(z=\psi(w)\) 是 \(b\) 附近的双全纯坐标，\(\psi(b)=a\)，而 \(f\) 在 \(a\) 有孤立奇点。则
+\[
+ \operatorname{Res}(f,a)=\operatorname{Res}\bigl(f(\psi(w))\cdot\psi'(w),b\bigr).
+\]
+\end{proposition}
+\begin{proof}
+取足够小的正向 \(w\) 圆，其像是包围 \(a\) 的正向简单闭曲线；全纯非零导数保持方向。曲线换元使两个微分积分相同。像曲线与一个小 \(z\) 圆在去心邻域之间可变形，Cauchy 定理使积分相同。两边各除以 \(2\pi\mathrm{i}\)，得到留数相等。
+\end{proof}
+因此只把 \(f(\psi(w))\) 拿来算留数通常是错误的，必须乘 \(\psi'(w)\)。例如 \(z=2w\)、\(f(z)=1/z\)，合成函数留数是 \(1/2\)，合成微分乘2后才是1。无穷远留数的 \(-w^{-2}\) 因子就是这一坐标规则的具体实例。
+
+\ProseParagraphBreak
+
+一个全纯函数的导数在任意孤立奇点处留数为零。将 Laurent 展开逐项微分，要产生 \(z^{-1}\) 项只能来自原来的 \(z^0\) 项，但它的导数系数为0。反向对同心环域也成立：留数为零时可逐项积分得到原函数。留数检测的是一个微分是否有非零局部周期，而不只是函数值增长快慢。
 
 \subsection{留数定理}
 \label{b3:subsec:030302}
 
-待填充。
+\term[liushu-dingli]{留数定理}[residue theorem]先以简单围道版本建立。
+\begin{theorem}[留数]\label{b3:thm:03-residue}
+设 \(V\) 是有界 Jordan 区域，边界正向且分段光滑。若 \(f\) 在 \(\overline V\) 的邻域内除有限个内部孤立奇点 \(a_1,\ldots,a_N\) 外全纯，则
+\[
+ \int_{\partial V}f(z)\,\mathrm{d}z=2\pi\mathrm{i}\sum_{j=1}^N\operatorname{Res}(f,a_j).
+\]
+\end{theorem}
+\begin{proof}
+在每个奇点周围选互不相交、闭包包含于 \(V\) 的小圆盘。将挖去这些圆盘的区域沿有限条连接弧切开，再按有限小片细分；各小片上有局部原函数，其边界积分为零。内部边和切口两侧相消，留下外边界及顺时针小圆。故外边界积分等于各个逆时针小圆积分之和。小圆上 Laurent 展开一致收敛，逐项积分只有 \(-1\) 次项留下 \(2\pi\mathrm{i}\)，即得结论。若连接弧或边界不是多边形，可先在局部原函数圆盘中更换为多边形代表，端点公式保持积分。
+\end{proof}
+定理的有限性来自奇点与边界分离。若奇点向边界积聚，不能未经收敛核对就把有限和改成无穷和。自交闭曲线则需要把每个奇点的绕数作为权重，精确形式在\chapref{b3:ch:10}建立。
 
 \subsection{实积分}
 \label{b3:subsec:030303}
 
-待填充。
+计算实积分时，先说明所选围道和附加弧积分为何消失。以
+\[
+ I=\int_{-\infty}^{\infty}\frac{\mathrm{d}x}{x^2+1}
+\]
+为例，在上半平面取半径 \(R>2\) 的半圆，内部仅有极点 \(\mathrm{i}\)，留数为 \(1/(2\mathrm{i})\)。半圆上的函数模不超过 \(1/(R^2-1)\)，弧长为 \(\pi R\)，其积分趋于0。实轴截断积分单调趋于反常积分，故 \(I=\pi\)。
+
+\ProseParagraphBreak
+
+若再有振荡因子 \(e^{\mathrm{i}tz}\)，\(t>0\)，在上半平面其模为 \(e^{-t\operatorname{Im}z}\le1\)。同一弧估计仍适用，留数变为 \(e^{-t}/(2\mathrm{i})\)，得到
+\[
+ \int_{-\infty}^{\infty}\frac{e^{\mathrm{i}tx}}{x^2+1}\,\mathrm{d}x=\pi e^{-t}.
+\]
+负 \(t\) 时选下半平面，或对称换元，得到 \(\pi e^{-|t|}\)。如果分母只衰减如 \(1/z\)，上述弧长估计并不趋于0，须另外证明振荡提供的衰减，不能直接援引“半圆消失”。
+
+\ProseParagraphBreak
+
+对 \(\int_0^{2\pi}R(\cos\theta,\sin\theta)\,\mathrm{d}\theta\)，置 \(z=e^{\mathrm{i}\theta}\)，则 \(\cos\theta=(z+z^{-1})/2\)、\(\sin\theta=(z-z^{-1})/(2\mathrm{i})\)、\(\mathrm{d}\theta=\mathrm{d}z/(\mathrm{i}z)\)。最后的微分因子不可遗漏，单位圆上有极点时则不能直接使用通常留数定理。
+
+围道选择须同时控制奇点和大圆弧。对 \(\int_{\mathbb R}e^{\mathrm{i}ax}/(x^2+1)\,\mathrm{d}x\)，当 \(a>0\) 时闭向上半平面，因为 \(|e^{\mathrm{i}az}|=e^{-a\operatorname{Im}z}\le1\)；当 \(a<0\) 时应闭向下半平面，并记下顺时针的负号。若不随 \(a\) 改变半平面，大圆弧上的指数会增长，留数计算虽形式正确却不能代表原积分。最终两种选择都给 \(\pi e^{-|a|}\)，而 \(a=0\) 可以由有理函数估计直接处理。
+
+\ProseParagraphBreak
+实轴上有极点时还须说明积分的意义。通常的广义积分、Cauchy 主值以及绕开奇点的小半圆贡献并不相同。留数定理只计算闭围道积分，不会替读者选择其中一种意义。先标明每段截断积分和小圆弧的方向，再取极限，才能看清哪些项趋于零、哪些项留下半留数贡献。
 
 \subsection{无穷远点}
 \label{b3:subsec:030304}
 
-待填充。
+无穷远点用坐标 \(w=1/z\) 检查函数奇点：研究 \(f(1/w)\) 在 \(w=0\) 的分类。留数属于微分 \(f(z)\,\mathrm{d}z\)，换元又给出额外的 \(-w^{-2}\)：
+\begin{definition}\label{b3:def:03-infinity-residue}
+若 \(f\) 在某个大圆之外全纯，定义
+\[
+ \operatorname{Res}(f,\infty)\coloneqq-\operatorname{Res}\left(\frac{f(1/w)}{w^2},0\right).
+\]
+\end{definition}
+例如 \(f(z)=1/z\) 在无穷远作为函数可去，中心值为0，但微分的无穷远留数为 \(-1\)。函数的奇点分类和微分的留数不是同一问题。
+\begin{proposition}\label{b3:prop:03-global-residue}
+对有理函数 \(f\)，所有有限极点留数与无穷远留数之和为零。
+\end{proposition}
+\begin{proof}
+选大圆包围全部有限极点，有限留数和为大圆积分除以 \(2\pi\mathrm{i}\)。换元 \(w=1/z\) 把逆时针大圆变成顺时针小圆，微分为 \(-w^{-2}\,\mathrm{d}w\)。根据定义，该积分是 \(-2\pi\mathrm{i}\operatorname{Res}(f,\infty)\)，故留数总和为零。
+\end{proof}
+计算无穷远留数时也可直接取 \(f\) 在大圆外 Laurent 展开的 \(z^{-1}\) 系数再加负号。例如 \(z^2/(z^3-1)\) 的这一系数为1，所以无穷远留数为 \(-1\)。
+
+\ProseParagraphBreak
+
+扩充平面上的亚纯函数实际上全部是有理函数。
+\begin{theorem}\label{b3:thm:03-sphere-rational}
+若 \(f\) 在扩充复平面上亚纯，则存在多项式 \(P,Q\)，\(Q\) 不恒零，使 \(f=P/Q\)。
+\end{theorem}
+\begin{proof}
+极点在球面上离散，而球面紧，故极点有限；否则无限点列有聚点，与该处亚纯局部模型矛盾。先在每个有限极点减去其有限 Laurent 主部，所得函数 \(g\) 在整个有限平面全纯。在无穷远，原函数与减去的有理主部仍亚纯，故 \(g(1/w)\) 在0可去或有有限阶极点。于是存在整数 \(m\ge0\)，使大 \(|z|\) 时 \(|g(z)|\le C|z|^m\)。由第二章的增长版 Liouville 推论，\(g\) 是多项式。加回有限个有理主部，得到有理函数。
+\end{proof}
+这一定理利用了无穷远也亚纯的条件。整函数 \(e^z\) 在有限平面无极点，却在无穷远有本性奇点，所以不是反例。它也说明有理函数在球面只需有限多局部数据，整函数的无穷远增长则可能包含无限信息。

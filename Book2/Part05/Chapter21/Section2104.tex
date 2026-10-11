@@ -2,24 +2,94 @@
 \section{振荡积分算子}
 \label{b2:sec:2104}
 
-% TODO: 撰写本节正文。
+标量积分的衰减不自动给出算子范数衰减，因为输入函数也会随参数改变，并可抵消一部分振荡。算子理论通过比较两个输出点，使不能同时抵消的相位差显现出来。
 
 \subsection{算子核}
 \label{b2:subsec:210401}
 
-待填充。
+考虑
+\[
+ T_\lambda f(x)=\int_{\mathbb R^d}e^{2\pi\mathrm i\lambda\Phi(x,y)}a(x,y)f(y)\,\mathrm dy,
+ \qquad a\in C_c^\infty(\mathbb R^{2d}).
+\]
+固定 \(x\) 后对核应用驻相法，只适用于足够光滑且导数受控的 \(f\)。\(L^2\) 单位球中的函数不满足这种控制，所以需要另一个方法。
+若 \(\Phi(x,y)=\psi(x)+\theta(y)\)，则输入可取
+\(f(y)=e^{-2\pi\mathrm i\lambda\theta(y)}g(y)\)，完全消去 \(y\) 振荡；输出只是固定非振荡积分乘一个模为 \(1\) 的因子，范数不衰减。
+
+\ProseParagraphBreak
+混合 Hesse 矩阵 \(\partial_x\partial_y\Phi\) 正是排除这种分离相位的量。它描述改变输出点时，输入变量中的相位梯度如何改变。对于双线性相位 \(x\cdot y\)，算子等于缩放后的 Fourier 变换，Plancherel 给出准确的 \(\lambda^{-d/2}\) 范数。
 
 \subsection{\texorpdfstring{\(TT^*\)}{TT*} 方法}
 \label{b2:subsec:210402}
 
-待填充。
+伴随为
+\[
+ T_\lambda^*g(y)=\int e^{-2\pi\mathrm i\lambda\Phi(x,y)}
+                      \overline{a(x,y)}g(x)\,\mathrm dx,
+\]
+故 \(T_\lambda T_\lambda^*\) 的核是
+\[
+ K_\lambda(x,z)=\int e^{2\pi\mathrm i\lambda(\Phi(x,y)-\Phi(z,y))}
+                          a(x,y)\overline{a(z,y)}\,\mathrm dy.
+\]
+Hilbert 空间恒等式 \(\|T_\lambda\|_{2\to2}^2
+=\|T_\lambda T_\lambda^*\|_{2\to2}\) 可由
+\(\|T^*g\|^2=\langle TT^*g,g\rangle\) 与 \(\|T\|=\|T^*\|\) 直接证明。
+此时核的主对角线 \(x=z\) 不振荡，但离开对角线后相位差可有统一梯度下界。估计目标因此是一个宽度约 \(\lambda^{-1}\) 的对角邻域。
+
+\ProseParagraphBreak
+若 \(\sup_x\int|K(x,z)|\,\mathrm dz\le A\) 且
+\(\sup_z\int|K(x,z)|\,\mathrm dx\le B\)，则 Schur 估计给出
+\(\|K\|_{2\to2}\le\sqrt{AB}\)。证明是先对
+\(\int |K(x,z)||g(z)|\,\mathrm dz\) 用带权 Cauchy–Schwarz，再交换非负积分。这里绝对值估计发生在已经利用振荡得到衰减之后；若一开始对原核取绝对值，振荡增益便消失了。
 
 \subsection{\texorpdfstring{\(L^2\)}{L2} 估计}
 \label{b2:subsec:210403}
 
-待填充。
+\begin{theorem}[非退化振荡算子的局部 \(L^2\) 估计]\label{b2:thm:21-oscillatory-l2}
+若 \(\det\partial_x\partial_y\Phi(x_0,y_0)\ne0\)，则存在该点的邻域，使支撑在此邻域内的光滑振幅满足
+\[
+ \|T_\lambda f\|_2\le C\lambda^{-d/2}\|f\|_2,\qquad \lambda\ge1.
+\]
+若混合 Hesse 矩阵 在一个固定紧支撑附近处处可逆，同样的结论成立。
+\end{theorem}
+\begin{proof}
+先取支撑足够小，使混合 Hesse 矩阵 一致接近固定可逆矩阵 \(H_0\)。由均值公式，
+\[
+ \nabla_y\Phi(x,y)-\nabla_y\Phi(z,y)
+ =\left[\int_0^1\partial_x\nabla_y\Phi(z+t(x-z),y)\,\mathrm dt\right](x-z),
+\]
+其长度至少 \(c|x-z|\)。把相位差除以 \(|x-z|\) 后，该相位的有限阶 \(y\) 导数一致有界，梯度一致有正下界。多维非驻相估计给出
+\[
+ |K_\lambda(x,z)|\le C_N(1+\lambda|x-z|)^{-N}.
+\]
+当 \(\lambda|x-z|\le1\) 时用振幅的积分上界补上这个式子即可。取 \(N>d\)，两侧积分均不超过 \(C\lambda^{-d}\)，Schur 估计和 \(TT^*\) 恒等式得出结论。
+一般紧支撑由有限个小矩形覆盖，以光滑分割写成有限个局部算子。每个局部算子满足相同幂次的估计，三角不等式给出整体结论；只改变常数。
+\end{proof}
+这个局部化步骤很必要：处处可逆的矩阵沿一段线段积分后未必仍可逆。证明中的固定矩阵近似只在小片内成立，不能在大支撑上直接使用。
 
 \subsection{参数依赖性}
 \label{b2:subsec:210404}
 
-待填充。
+在一个参数族中，若混合 Hesse 矩阵 最小奇异值一致大于 \(c>0\)，相位与振幅的所需导数一致有界，支撑处于同一紧集，则有限覆盖可统一选择，上述常数也统一。若非退化下界趋于零，必须显示其依赖。
+例如 \(\Phi_\epsilon(x,y)=\epsilon x\cdot y\)，在有效振荡范围 \(\lambda\epsilon\ge1\) 中，缩放 Fourier 变换给出 \((\lambda\epsilon)^{-d/2}\)；当 \(\lambda\epsilon<1\) 时，振幅的普通积分上界更合适。
+
+\ProseParagraphBreak
+若两侧维数不同，混合 Hesse 矩阵 不再是方阵，可逆条件也失去意义。此时应考虑其秩以及余下变量中的几何关系，不能沿用 \(\lambda^{-d/2}\) 的公式。例如把上述算子乘一个无振荡的额外变量积分，新增维度并不会增加衰减。这种秩与曲率的配合将在限制问题和多线性问题中再次出现。
+
+% 扩写定位：b2:subsec:210404
+统一常数在使用 \(TT^*\) 时有两个来源。第一是局部相位梯度差的下界，需要混合矩阵与某个固定可逆矩阵足够接近；第二是分部积分中各个振幅和倒梯度系数的导数界。仅给出行列式不为零还不够得到一族算子的统一常数，例如矩阵 \(\operatorname{diag}(\epsilon,\epsilon^{-1})\) 的行列式恒为一，但导数大小和最小奇异值都失去控制。
+
+\ProseParagraphBreak
+
+在有限阶估计中，实际上只需相位和振幅的有限多个导数；取 \(TT^*\) 的非驻相次数 \(N>d\) 后，所需阶数由 \(N,d\) 决定。若要全部阶的渐近展开，则应有全部相应阶导数。两种命题虽然都常写为“光滑”，对参数族的要求并不相同。记录常数时应说明固定了哪些半范数，而不能把全部依赖藏在一个无法随参数核对的 \(C\) 中。
+
+\ProseParagraphBreak
+
+该 \(\lambda^{-d/2}\) 幂次在一般非退化算子中不能改善。取 \(\Phi(x,y)=x\cdot y\)、振幅 \(a(x,y)=\chi(x)\eta(y)\)，其中 \(\chi,\eta\) 在零点附近不为零。固定 \(g\in C_c^\infty\) 满足 \(\eta g\not\equiv0\)，令输入为 \(g\)。则
+\[
+ T_\lambda g(x)=\chi(x)\widehat{\eta g}(-\lambda x),\qquad
+ \|T_\lambda g\|_2^2=
+ \lambda^{-d}\int|\chi(v/\lambda)|^2|\widehat{\eta g}(-v)|^2\,\mathrm dv.
+\]
+支配收敛给出 \(\lambda^d\|T_\lambda g\|_2^2\to|\chi(0)|^2\|\eta g\|_2^2>0\)。因而算子范数至少是 \(c\lambda^{-d/2}\)。这个例子直接测试了上界的幂次，所用输入不必依赖于 \(\lambda\)。

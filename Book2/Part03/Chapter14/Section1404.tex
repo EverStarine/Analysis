@@ -2,29 +2,104 @@
 \section{直接方法}
 \label{b2:sec:1404}
 
-% TODO: 撰写本节正文。
+先推导 Euler--Lagrange 方程再求解，有时会把存在性问题变得更难。直接方法反过来考察能量本身：取能量趋近下确界的序列，控制它的大小，抽取极限，再证明极限没有丢失边界条件和能量下界。第一卷定理 9.5.9 已在自反 Banach 空间中证明这一抽象原则。本节不重复该证明，而逐项核验积分能量满足条件的具体原因。
 
 \subsection{强制性}
 \label{b2:subsec:140401}
 
-待填充。
+在 Banach 空间 \(X\) 的约束集 \(K\) 上，泛函的强制性指
+\[J(v)\longrightarrow+\infty\qquad(v\in K,\ \lVert v\rVert_X\to\infty).\]
+它保证能量有界的候选者不能逃到范数无穷远处。在零边界空间 \(H_0^1(\Omega)\) 上，Poincaré 不等式和 Cauchy--Schwarz 不等式给出
+\[
+ \frac12\lVert\nabla v\rVert_2^2-\int_\Omega fv
+ \ge\frac12\lVert\nabla v\rVert_2^2-C_P\lVert f\rVert_2\lVert\nabla v\rVert_2.
+\]
+右端是开口向上的二次式，故这项能量强制。若允许非零边界数据，写成 \(u=g+v\)，交叉项 \(\int\nabla g\cdot\nabla v\) 仍只按 \(\lVert\nabla v\rVert_2\) 线性增长，因此同样得到强制性。
+
+\ProseParagraphBreak
+
+边界限制不能从这个论证中删除。在 \(H^1(\Omega)\) 全空间中，常函数的梯度能量为零，故单靠梯度无法控制范数。若 \(\int_\Omega f\ne0\)，沿适当符号的常函数甚至能让总能量趋向 \(-\infty\)。Neumann 问题因此需要相容条件和一个固定常数的归一化；零均值空间上的 Poincaré 不等式才是相应替代物。
 
 \subsection{极小化序列}
 \label{b2:subsec:140402}
 
-待填充。
+若 \(m=\inf_KJ\) 是有限实数，可以按下确界的定义选取 \(u_n\in K\)，满足 \(m\le J(u_n)<m+1/n\)。这样的序列称为极小化序列。选取过程既不要求驻点已存在，也不要求每个 \(u_n\) 近似满足 Euler--Lagrange 方程。
+
+\ProseParagraphBreak
+
+控制能量后，强制性使序列有界，但有界不等于强收敛。无限维 Hilbert 空间中的标准正交序列有界，却没有强收敛子列；它仅弱收敛到零。这就是直接方法引入弱拓扑的实质理由。另一方面，若约束集不是弱闭的，弱极限可能不再可行；若能量不是弱下半连续的，极限能量可能突然升高。序列有界、约束保留与能量比较分别承担不同任务，不能用一句“由紧性”全部略去。
+
+\ProseParagraphBreak
+
+二次能量还有一个可直接看见的特殊现象。若 \(u_n\) 和 \(u_k\) 满足同一边界数据，则
+\[
+ E\left(\frac{u_n+u_k}{2}\right)
+ =\frac{E(u_n)+E(u_k)}2-\frac18\lVert\nabla(u_n-u_k)\rVert_2^2.
+\]
+左端不小于下确界 \(m\)。因此极小化序列事实上在梯度范数下为 Cauchy 序列，借完备性可以直接得到强极限。一般非二次能量不一定有这个精确恒等式，弱紧性的方法因而更具普遍性。
 
 \subsection{弱紧性}
 \label{b2:subsec:140403}
 
-待填充。
+设 \(1<p<\infty\)。空间 \(W^{1,p}(\Omega)\) 可以等距嵌入 \((L^p(\Omega))^{d+1}\)，其像由弱导数关系确定，是闭子空间。有限个自反空间的乘积及其闭子空间仍自反；故第一卷定理 9.4.7 给出：每个有界 \(W^{1,p}\) 序列有弱收敛子列。具体而言，沿同一子列有
+\[u_n\rightharpoonup u\ \text{于 }L^p,\qquad \partial_i u_n\rightharpoonup\partial_i u\ \text{于 }L^p.\]
+弱导数关系可以直接验证：对测试函数 \(\varphi\)，在 \(\int u_n\partial_i\varphi=-\int(\partial_i u_n)\varphi\) 中取极限即可。
+
+\ProseParagraphBreak
+
+仿射边界类 \(g+W_0^{1,p}(\Omega)\) 是强闭凸集，因而弱闭。这里用的是第一卷定理 9.5.2 的闭凸集结论，完全不要求逐点读取边界值。若约束还包含 \(u\ge\psi\) 几乎处处，它也是强闭凸约束：强收敛子列可进一步逐点几乎处处收敛，从而保留不等式；闭凸性再给出弱闭性。
+
+\ProseParagraphBreak
+
+端点 \(p=1\) 与 \(p=\infty\) 不在上述自反性结论内。例如在 \((0,1)\) 上，\(u_n(x)=\min\{nx,1\}\) 的 \(W^{1,1}\) 范数有界，但导数集中到越来越短的边界层中，不能在 \(L^1\) 内取得弱收敛子列。其极限在内部是常数 \(1\)，左端数据却已丢失。处理线性增长能量时往往需要有界变差函数和测度导数；不能把 \(p>1\) 的论证直接搬到这个端点。
 
 \subsection{弱下半连续性}
 \label{b2:subsec:140404}
 
-待填充。
+第一卷定理 9.5.8 说明：凸泛函的范数下半连续性等价于弱下半连续性。对积分泛函，一个常用核验顺序是先证强收敛下的下半连续，再证凸性。设 \(F(x,z,p)\ge0\) 对 \((z,p)\) 连续且凸，对 \(x\) 可测，则
+\[I(u)=\int_\Omega F(x,u,\nabla u)\,\mathrm dx\]
+是允许取 \(+\infty\) 的凸泛函。若 \(u_n\to u\) 于 \(W^{1,p}\)，先抽取实现能量下极限的子列，再从中抽取函数与全部一阶导数几乎处处收敛的子列。连续性与 Fatou 引理给出 \(I(u)\le\liminf I(u_n)\)。因此 \(I\) 强下半连续，继而弱下半连续。
+
+\ProseParagraphBreak
+
+非负性可放宽为统一的可积下界，因为减去该下界不改变论证。又若 \(\ell\in(W^{1,p})^*\)，线性项在弱收敛下连续，所以 \(I-\ell\) 仍弱下半连续。这个证明覆盖了 \(\tfrac1p\int|\nabla u|^p\) 及许多非负凸势能，却没有覆盖任意非凸密度。特别是向量值问题中，关于梯度的普通凸性虽为充分条件，却远非最一般的下半连续性条件；本章不把更深的条件隐含在这里。
+
+\ProseParagraphBreak
+
+以 \(\ell^2\) 上的 \(J(x)=-\lVert x\rVert^2\) 为例，\(J\) 范数连续，但对标准正交序列 \(e_n\rightharpoonup0\) 有 \(J(0)=0>-1=\lim J(e_n)\)。所以范数连续本身不能代替弱下半连续；前面的凸性在改变拓扑时起了决定作用。
 
 \subsection{极小元的存在性}
 \label{b2:subsec:140405}
 
-待填充。
+下面把这些核验汇集到一个非线性模型。它既包含 Dirichlet 能量，也说明直接方法并不依赖显式解或线性叠加。
+
+\begin{theorem}[梯度幂能量的极小元]
+\label{b2:thm:14-p-energy-minimum}
+设 \(\Omega\subset\mathbb R^d\) 是有界开集，\(1<p<\infty\)，\(g\in W^{1,p}(\Omega)\)，\(f\in L^{p'}(\Omega)\)，其中 \(p'=p/(p-1)\)。则
+\[
+ J(u)=\frac1p\int_\Omega|\nabla u|^p\,\mathrm dx-\int_\Omega fu\,\mathrm dx
+\]
+在 \(g+W_0^{1,p}(\Omega)\) 上有唯一极小元 \(u\)。它满足
+\[
+ \int_\Omega|\nabla u|^{p-2}\nabla u\cdot\nabla h\,\mathrm dx
+     =\int_\Omega fh\,\mathrm dx\qquad(h\in W_0^{1,p}(\Omega)),
+\]
+其中在 \(\nabla u=0\) 处约定 \(|\nabla u|^{p-2}\nabla u=0\)。
+\end{theorem}
+\begin{proof}
+令 \(u=g+v\)。由三角不等式和 Poincaré 不等式，\(\lVert\nabla v\rVert_p\le\lVert\nabla u\rVert_p+\lVert\nabla g\rVert_p\)，且
+\[\left|\int_\Omega fu\right|\le\lVert f\rVert_{p'}\bigl(\lVert g\rVert_p+C_P\lVert\nabla v\rVert_p\bigr).\]
+因此 \(J(g+v)\) 的下界由一个正的 \(\lVert\nabla u\rVert_p^p\) 项减去线性项构成。当 \(\lVert v\rVert_{W^{1,p}}\to\infty\) 时，\(\lVert\nabla u\rVert_p\to\infty\)，而 \(p>1\)，故泛函强制且有有限下界。可行集非空、弱闭；上一小节已核验梯度幂积分弱下半连续，而 \(f\) 的配对弱连续。于是自反性及第一卷定理 9.5.9 给出极小元。
+
+若 \(u_1,u_2\) 都极小，由 \(\xi\mapsto|\xi|^p\) 的严格凸性，除非 \(\nabla u_1=\nabla u_2\) 几乎处处，中点能量就严格更小。故梯度相等；差属于 \(W_0^{1,p}\)，Poincaré 不等式推出差为零。
+
+最后固定 \(h\in W_0^{1,p}\)。沿线段求导时，\(|t|\le1\) 的导数被
+\[C_p\bigl(|\nabla u|^{p-1}+|\nabla h|^{p-1}\bigr)|\nabla h|\]
+支配；该函数由 Hölder 不等式可积。支配收敛允许交换求导与积分，得第一变分公式。极小点的正负方向都可行，故第一变分为零，即所列等式。
+\end{proof}
+
+当 \(p=2\) 时，这就是 Poisson 方程的弱形式。一般 \(p\) 则对应 \(-\operatorname{div}(|\nabla u|^{p-2}\nabla u)=f\)，通常称为 \(p\)-Laplace 方程。上述存在性并没有证明极小元是 \(C^2\) 函数；能写出弱方程与能把它逐点展开，是两个不同层次的结论。
+
+\ProseParagraphBreak
+
+如果再加上非负连续凸势能 \(\int_\Omega\Psi(u)\)，只要某个可行函数具有有限能量，同样的直接方法仍给出极小元；严格凸的梯度项保留唯一性。但要写出 \(\Psi'(u)\) 的弱方程，还须补充可微性和增长条件，确保扰动可积并允许积分下求导。存在性所需的下半连续性通常比推导经典微分方程所需的光滑性弱得多，这也是直接方法的重要优势。

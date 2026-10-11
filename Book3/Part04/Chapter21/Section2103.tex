@@ -2,19 +2,81 @@
 \section{乘积表示}
 \label{b3:sec:2103}
 
-% TODO: 撰写本节正文。
+上一节确定了全部极点，但还没有排除复零点。有限乘积的极限既给出零点信息，也解释 Euler 常数为什么出现在 Gamma 函数中。
 
 \subsection{Weierstrass 乘积}
 \label{b3:subsec:210301}
 
-待填充。
+\begin{lemma}[Euler 极限]\label{b3:lem:21-euler-limit}
+在 \(\operatorname{Re}z>0\) 上局部一致地有
+\[
+\Gamma(z)=\lim_{N\to\infty}\frac{N!N^z}{z(z+1)\cdots(z+N)}.
+\]
+\end{lemma}
+\begin{proof}
+连续分部积分给
+\(\int_0^1 t^{z-1}(1-t)^N\,\mathrm{d}t=N!/[z(z+1)\cdots(z+N)]\)。乘以 \(N^z\)，换元 \(u=Nt\)，所得积分为
+\(\int_0^N u^{z-1}(1-u/N)^N\,\mathrm{d}u\)。在 \(0<u<N\) 上有 \((1-u/N)^N\le e^{-u}\)，而它逐点趋于 \(e^{-u}\)。对紧集 \(a\le\operatorname{Re}z\le b\)，用 \((u^{a-1}+u^{b-1})e^{-u}\) 控制。将积分分成固定紧区间与共同小尾部，即得对 \(z\) 的局部一致收敛。
+\end{proof}
+这个证明同时保留复参数与一致性，避免只在实数处建立公式后未经说明就逐项微分。有限分部积分使用的端点条件来自 \(\operatorname{Re}z>0\)。
 
 \subsection{Euler 常数}
 \label{b3:subsec:210302}
 
-待填充。
+记 \(H_N=\sum_{n=1}^N1/n\)。序列 \(H_N-\log N\) 单调递减，因为
+\(1/(N+1)\le\log(1+1/N)\)，并由积分比较有下界零，故极限存在，记为\term[euler-changshu]{Euler 常数}[Euler constant] \(\gamma\)。把有限乘积写为
+\[
+\frac{z(z+1)\cdots(z+N)}{N!N^z}
+=z\exp\bigl(z(H_N-\log N)\bigr)
+\prod_{n=1}^N(1+z/n)e^{-z/n}.
+\]
+紧集上，尾部对数 \(\log(1+z/n)-z/n=O_K(n^{-2})\) 一致可和；前面有限个因子无需取对数。于是右侧在全平面局部一致收敛为整函数。
 
 \subsection{\texorpdfstring{\(1/\Gamma\)}{1/\AnalysisPdfGamma} 作为整函数}
 \label{b3:subsec:210303}
 
-待填充。
+\begin{theorem}[Gamma 函数的 Weierstrass 乘积]\label{b3:thm:21-product}
+Gamma 函数没有零点，并且
+\[
+\frac1{\Gamma(z)}=ze^{\gamma z}\prod_{n=1}^\infty(1+z/n)e^{-z/n}.
+\]
+右端整函数的零点恰为非正整数，且均为单零点。
+\end{theorem}
+\begin{proof}
+设右端为 \(P(z)\)。Euler 极限与相应的有限倒数乘积在右半平面都局部一致收敛，它们的乘积恒为一，取极限得 \(P\Gamma=1\)，不必事先假设 \(\Gamma\ne0\)。尾部指数的和在避开有限个头部零点的邻域全纯，因此尾乘积不为零；全部零点正是所列的线性因子零点，重数为一。亚纯恒等定理把 \(P\Gamma=1\) 延拓到全平面，给出结论。
+\end{proof}
+对数导数在避开极点的紧集可逐项求导。若记 \(\psi_0(z)=\Gamma'(z)/\Gamma(z)\)，则
+\[
+\psi_0(z)=-\gamma-\frac1z+\sum_{n=1}^\infty\left(\frac1n-\frac1{n+z}\right).
+\]
+这里用下标避免与后文的素数计数函数 \(\psi(x)\) 混淆。代入 \(z=1\) 得 \(\Gamma'(1)=-\gamma\)，再用递推得 \(\psi_0(n)=H_{n-1}-\gamma\)。整数点的导数遂由同一个调和和描述。
+
+\ProseParagraphBreak
+
+在零点附近展开对数乘积，可以得到 Gamma 的局部 Taylor 系数。对 \(|z|<1\)，\(\Gamma(1+z)\) 无零点且在0点等于一，取在那里为零的对数。利用 \(\Gamma(1+z)=z\Gamma(z)\)，有
+\[
+ \log\Gamma(1+z)=-\gamma z+
+   \sum_{k=2}^\infty\frac{(-1)^k}{k}
+       \left(\sum_{n=1}^\infty\frac1{n^k}\right)z^k.
+\]
+证明中的换序来自 \(|z|\le r<1\) 时
+\(\sum_n\sum_{k\ge2}|z/n|^k/k\le C_r\sum_n n^{-2}\)。内层数列以后记为 \(\zeta(k)\)，当前只需把它看成收敛的正项数列。常数项与一次项已经分别由 \(\Gamma(1)=1\) 和 Euler 常数决定，二次项才开始包含这些幂和。
+\ProseParagraphBreak
+特别地，\(\Gamma''(1)=\gamma^2+\sum n^{-2}\)。与积分微分公式比较，就得到
+\[
+ \int_0^\infty e^{-t}\log t\,\mathrm{d}t=-\gamma,
+ \qquad
+ \int_0^\infty e^{-t}(\log t)^2\,\mathrm{d}t
+ =\gamma^2+\sum_{n\ge1}n^{-2}.
+\]
+第二式减去第一式的平方，正好是前面概率解释中 \(x=1\) 的方差。乘积的系数、参数积分的矩和凸性的二阶导数在同一恒等式中相遇。
+\ProseParagraphBreak
+对正实 \(x\)，对数导数还给出
+\[
+ \psi_0'(x)=\sum_{n=0}^\infty\frac1{(n+x)^2},\qquad
+ \psi_0^{(j)}(x)=(-1)^{j+1}j!\sum_{n=0}^\infty(n+x)^{-j-1}\quad(j\ge1).
+\]
+这些级数在任何 \(x\ge a>0\) 的紧区间上一致可微，因而 \(\psi_0'\) 正，后续导数交替符号。对数凸性的严格性由此再次可见。用递减函数的积分比较还有
+\(1/x\le\psi_0'(x)\le1/x+1/x^2\)，它量化了大参数时曲率逐渐减小的速度。
+\ProseParagraphBreak
+有限乘积中的指数修正也有必要性。若直接写 \(\prod_{n\ge1}(1+z/n)\)，对正实 \(z\) 其对数含发散的 \(z\sum1/n\)，因而不会趋于有限非零值。乘 \(e^{-z/n}\) 消去这一不可和的一次项，剩下二次误差才可和；前面的 \(e^{\gamma z}\) 则记录有限乘积正规化的极限。把该因子删去会保留零点，却破坏与 Euler 积分的对应及递推常数。

@@ -2,19 +2,110 @@
 \section{Bochner–Riesz 乘子}
 \label{b2:sec:2401}
 
-% TODO: 撰写本节正文。
+球形频率截断与矩形截断具有不同的几何。Bochner–Riesz 平均在球边界加入消失因子，使硬截断变成带光滑度参数的族。问题是需要多少边界平滑，才能在给定 \(L^p\) 上得到一致范数界与逼近。
 
 \subsection{定义}
 \label{b2:subsec:240101}
 
-待填充。
+对 \(\delta\ge0\)、\(R>0\)，定义
+\[
+ B_R^\delta f=\mathcal F^{-1}\!\left[
+       (1-|\xi|^2/R^2)_+^\delta\widehat f(\xi)\right].
+\]
+\symidx{\(B_R^\delta f\)：Bochner--Riesz 平均}
+在 \(\delta=0\) 时取球特征函数，边界值无关。先在 \(L^2\) 或 Schwartz 函数上定义，再问其 \(L^p\) 延拓。记单位半径核为 \(K_\delta\)。正参数 \(\delta\) 保证符号在边界连续，却不保证任意阶光滑；若 \(\delta\) 非整数，跨边界导数的阶数受到限制。
+
+\ProseParagraphBreak
+Bochner–Riesz 平均不是简单的曲面平均，它包含球内部的频率；但边界附近的薄壳是最难控制的部分。远离球边界的符号可用一个固定光滑截断处理，其核属于 Schwartz 空间，所有 \(L^p\) 上都无困难。
 
 \subsection{缩放}
 \label{b2:subsec:240102}
 
-待填充。
+缩放给出
+\[
+ K_{\delta,R}(x)=R^dK_\delta(Rx),\qquad
+ B_R^\delta=D_RB_1^\delta D_{1/R}.
+\]
+因此同指数 \(L^p\) 范数独立于 \(R\)，前提是单位半径算子确实在该空间有界。变换归一化中的 \(2\pi\) 保留在核公式中。
+
+\ProseParagraphBreak
+若已知 \(B_1^\delta\in M_p\)、\(1<p<\infty\)，则
+\(B_R^\delta f\to f\) 在 \(L^p\) 中成立。证明先取频率紧支撑的 Schwartz 函数：符号在这个紧集上随着 \(R\to\infty\) 连同所需导数趋于 \(1\)，所以逆变换误差在 Schwartz 范数中趋零。这样的函数在 \(L^p\) 中稠密，统一算子界再把结论推广到所有输入。
+这一论证不涉及逐点极大算子；范数收敛与几乎处处全参数收敛是不同问题。
+
+% 扩写定位：b2:subsec:240102
+平均阶数增加时，有界性具有一个精确的单调传递原理。
+\begin{proposition}\label{b2:prop:24-order-monotonicity}
+设 \(0\leq\delta_1<\delta_2\)、\(\eta=\delta_2-\delta_1\)。则
+\[
+ B_R^{\delta_2}f=
+ \frac1{\mathrm B(\delta_1+1,\eta)}
+ \int_0^1 B_{R\sqrt t}^{\delta_1}f\,
+ t^{\delta_1}(1-t)^{\eta-1}\,\mathrm dt.
+\]
+若 \(\sup_R\|B_R^{\delta_1}\|_{p\to p}\leq C\)、\(1\leq p<\infty\)，则同一界对 \(\delta_2\) 成立。极大算子的点态上界也满足
+\(\sup_R|B_R^{\delta_2}f|\leq\sup_R|B_R^{\delta_1}f|\)，只要右侧由共同的测试函数定义或已延拓的极大算子解释。
+\end{proposition}
+\begin{proof}
+先对 Schwartz 输入在 Fourier 侧验证。令 \(a=|\xi|^2/R^2\)。当 \(a<1\)，右侧符号为
+\[
+ \frac1{\mathrm B(\delta_1+1,\eta)}
+ \int_a^1(t-a)^{\delta_1}(1-t)^{\eta-1}\,\mathrm dt
+ =(1-a)^{\delta_1+\eta},
+\]
+换元 \(t=a+(1-a)u\) 就得到 beta 积分。若 \(a\geq1\)，两边都为零。归一化权的总积分为一，因而 Minkowski 给出算子界，逐点绝对值给出极大界。有限 \(p\) 的连续延拓可由测试函数稠密性得到；在有界输入上需要明确采用核、弱对偶或其他已经指定的延拓，而不是依赖不存在的 Schwartz 范数稠密性。
+\end{proof}
+因此若某个阶数已给出一致 \(L^p\) 有界性，所有更高阶也有界。但这个结论只在阶数方向向上推，不能从可积核的大阶数反推临界附近的界。其权在 \(\eta\downarrow0\) 时集中于 \(t=1\)，没有提供将平滑程度降低的逆算子。
+
+\ProseParagraphBreak
+
+这个公式同时解释了“平均”的一层含义：高阶 Bochner--Riesz 是较低阶频率截断按半径作正权平均。正的是半径平均的权，并不意味着最后得到的实空间卷积核处处非负。频率截断自身已经有振荡核，正权平均也可能保留符号变化。
+
+\ProseParagraphBreak
+
+阶数与半径若同时变化，还会出现不同的极限模型。令 \(\delta_n\to\infty\)、\(R_n\to\infty\)，并假定 \(\delta_n/R_n^2\to a\in[0,\infty)\)。对每个固定频率，
+\[
+ (1-|\xi|^2/R_n^2)_+^{\delta_n}\longrightarrow e^{-a|\xi|^2}.
+\]
+这是对数展开的结果：\(\log(1-v)=-v+O(v^2)\)，而在比例有界时 \(\delta_n/R_n^4\to0\)。所有符号都介于零和一之间，故 Plancherel 与支配收敛给出在 \(L^2\) 上的强算子极限。\(a=0\) 是恒等；\(a>0\) 是时间 \(a/(4\pi^2)\) 的热算子。
+
+\ProseParagraphBreak
+
+若比例 \(\delta_n/R_n^2\to\infty\)，则每个非零频率上的符号由
+\((1-v)^{\delta_n}\leq e^{-\delta_n v}\) 控制而趋零，同样得到 \(L^2\) 强极限零算子。零频单点不影响平方密度。因此“半径趋于无穷便逼近恒等”需要阶数固定或至少记录其增长；两个参数改变时不能忽略彼此的尺度关系。
+
+\ProseParagraphBreak
+
+特别取 \(R=\sqrt\delta\)，就由球内多项式平均得到 Gaussian 热模型。这是在 Fourier 侧的平方极限，不是每个有限阶实空间核已经为正的断言。有限阶 Bessel 核仍有正负振荡；极限的正性与近似对象逐个正性是不同问题。类似地，平方收敛本身没有证明全体 \(L^p\) 的统一算子界，应在需要其他指数时另行核对。
+
+\ProseParagraphBreak
+
+全体输入的范数收敛反过来也会强迫一致有界性。假设每个 \(B_R^\delta\) 已在 \(L^p\)、\(1\leq p<\infty\) 上连续定义，并且对每个 \(f\) 都有 \(B_R^\delta f\to f\)。收敛控制大半径；在紧半径区间，缩放公式与 \(L^p\) 拉回的强连续性使每个输入的像连续，故也有界。第一卷定理 8.3.3 的一致有界原理于是给出 \(R\geq1\) 的统一算子界；半径缩放又说明各半径同指数范数相同，因此得到整个族的一致界。
+
+\ProseParagraphBreak
+
+这个推论需要“每个输入”与“已连续定义”两项条件。仅在 Schwartz 类上收敛没有给整个 Banach 空间的逐点有界性；一个不有界的形式乘子在测试函数上也可能表现出良好近似。因而证明一般输入的收敛时，先建立统一算子界，再用稠密性；反向用一致有界原理时，则必须已经拥有全部输入上的收敛。这两条路线互为检验，而不是可以循环引用的证明。
+
+\ProseParagraphBreak
+
+对于高维硬球，Fefferman 定理排除了非二指数的连续同指数算子，因此也排除了这一意义下对全部 \(L^p\) 输入的一致范数求和方案。它并不声称每个具体函数都失败，更不声称每个平滑测试函数失败。算子结论以全部输入和统一常数为量词，单个输入的偶然收敛不能否定它。
 
 \subsection{核表示}
 \label{b2:subsec:240103}
 
-待填充。
+\begin{proposition}[Bochner--Riesz 核]\label{b2:prop:24-kernel}
+对 \(\delta>-1\)，符号在球内可积，逆变换为连续有界径向函数，且
+\[
+ K_\delta(x)=\Gamma(\delta+1)\pi^{-\delta}
+     |x|^{-d/2-\delta}J_{d/2+\delta}(2\pi|x|),\qquad x\ne0.
+\]
+在原点，
+\[
+ K_\delta(0)=\frac{\pi^{d/2}\Gamma(\delta+1)}
+                    {\Gamma(\delta+d/2+1)}.
+\]
+\end{proposition}
+\begin{proof}
+由\cref{b2:thm:A2-bochner-riesz}在本卷 Fourier 归一化下的径向核公式直接得到；该处已用 Bessel 级数和 beta 积分给出完整推导。原点值取该级数首项，亦可直接积分球内符号。
+\end{proof}
+本章只把 \(\delta\ge0\) 当作通常平均；\(-1<\delta<0\) 的核恒等式用于说明解析族，并不意味着符号是 \(L^2\) 有界乘子。

@@ -4,13 +4,25 @@
 \BookChapterNumber{b2:ch:15}
 % 本章摘要（不计入编号）
 \begin{chapterabstract}
-待填充。
+本章把散度型方程写成 Hilbert 空间中的测试等式。先明确 Sobolev 边界条件与负阶源项，再完整证明 Lax--Milgram 定理，并以 Poisson 方程说明存在性、唯一性、稳定性和有限维近似。一般有界可测系数无需具有经典导数；一致椭圆性控制主部，Gårding 不等式处理低阶项。最后借紧嵌入与第一卷的 Fredholm 理论，刻画原方程可能出现的有限维核及伴随相容条件。
 \end{chapterabstract}
 
 % 本章目标（不计入编号）
 \begin{learninggoals}
-待填充。
+\begin{itemize}
+\item\label{b2:item:15-goal-weak}辨认测试空间所编码的内部方程与边界条件，正确使用 \(H^{-1}\) 数据。
+\item\label{b2:item:15-goal-lax}分别核验型的有界性、强制性与空间完备性，掌握 Lax--Milgram 的闭值域证明。
+\item\label{b2:item:15-goal-stability}用能量等式证明唯一性、比较和数据稳定性，并处理非齐次边界延拓。
+\item\label{b2:item:15-goal-general}说明有界可测系数已足以给出弱存在性，区别原问题与移位问题。
+\item\label{b2:item:15-goal-fredholm}在选读范围内，用伴随核写出 Fredholm 相容条件。
+\end{itemize}
 \end{learninggoals}
+
+设一根杆的导热系数在接头处突然变化。平衡温度不应跳跃，穿过接头的热通量也应保持一致，但温度斜率可以不同。若只寻找处处二次可微的解，便会把这样的基本模型排除在外。弱形式保留可积梯度和通量平衡，把经典导数无法直接表达的问题放进一个完备的函数空间。
+
+\ProseParagraphBreak
+
+上一章用极小化构造对称能量的解；本章直接求解双线性等式，从而允许非对称系数。Hilbert 空间表示与紧算子的抽象结论采用第一卷第八章和附录 C 的证明，Sobolev 边界与紧嵌入采用第一卷第二十二至二十五章。相关理论的系统参考包括 Haim Brezis 的《Functional Analysis, Sobolev Spaces and Partial Differential Equations》\cite{Brezis2011Functional}与 Lawrence C. Evans 的《Partial Differential Equations》\cite{Evans2010Partial}。
 
 \input{Part03/Chapter15/Section1501}
 \input{Part03/Chapter15/Section1502}
@@ -18,10 +30,88 @@
 \input{Part03/Chapter15/Section1504}
 % 本章小结（不计入编号）
 \begin{chaptersummary}
-待填充。
+弱形式减少了未知函数所需的导数阶数，却没有丢掉方程：紧支集测试辨认内部散度，测试空间和边界类决定所解的边值问题，界面项记录通量平衡。负阶空间把函数源项与散度型源项放在同一连续对偶中。Lax--Milgram 用有界性构造算子，以强制性控制逆，再排除值域的正交补，得到无需对称性的存在与稳定性。
+
+\ProseParagraphBreak
+
+一般椭圆主部只需有界可测系数即可定义能量弱解；低阶项可能使原型失去强制性，但加上足够大的零阶移位可恢复它。去掉移位时，紧嵌入将问题化为恒等算子的紧扰动，可解性由伴随核的有限个条件决定。整个论证首先产生 \(H^1\) 解；要得到 \(H^2\)、连续梯度乃至经典解，下一章还须逐项增加系数、数据和边界的正则性。
 \end{chaptersummary}
 
 
 \BookExercises
 
-待填充。
+各题均为本书自拟。前几题核验空间和数据，随后比较近似、系数扰动与共振；最后一题使用选读小节的相容条件。
+
+% 自拟：一维点源的精确对偶范数。
+\begin{exercise}\label{b2:ex:15-point-source}
+在 \((0,1)\) 上，以梯度范数定义 \(H^{-1}\)。对 \(0<s<1\)，求点质量 \(\delta_s\) 的精确范数，并说明哪个函数达到对偶上确界。
+\end{exercise}
+\begin{solution}
+令 \(G_s(x)=(1-s)x\)（\(x\le s\)）、\(G_s(x)=s(1-x)\)（\(x\ge s\)）。正文已验证 \(v(s)=\int G_s'v'\)。因此 \(|v(s)|\le\lVert G_s'\rVert_2\lVert v'\rVert_2\)，且取 \(v=G_s/\lVert G_s'\rVert_2\) 达到上界。直接计算 \(\lVert G_s'\rVert_2^2=s(1-s)^2+(1-s)s^2=s(1-s)\)，所以范数为 \(\sqrt{s(1-s)}\)。
+\end{solution}
+
+% 自拟：高维点质量的尺度障碍。
+\begin{exercise}\label{b2:ex:15-high-dimensional-point}
+设 \(B(0,1)\subset\Omega\subset\mathbb R^d\) 有界。证明当 \(d\ge2\) 时点质量 \(\delta_0\notin H^{-1}(\Omega)\)。二维可使用在 \(r\le\varepsilon\) 等于 \(1\)、在 \(\varepsilon<r<1\) 等于 \(\log r/\log\varepsilon\)、在 \(r\ge1\) 等于零的径向截断。
+\end{exercise}
+\begin{solution}
+若点质量属于该对偶，应有 \(|\varphi(0)|\le C\lVert\nabla\varphi\rVert_2\) 对所有光滑紧支集函数成立。\(d>2\) 时取 \(\varphi_\varepsilon(x)=\varphi(x/\varepsilon)\)，其中 \(\varphi(0)=1\)、支集在单位球；梯度范数平方为 \(\varepsilon^{d-2}\lVert\nabla\varphi\rVert_2^2\to0\)，矛盾。二维的题设截断 \(w_\varepsilon\) 有 \(w_\varepsilon(0)=1\)，且
+\[\int|\nabla w_\varepsilon|^2=\frac{2\pi}{|\log\varepsilon|^2}\int_\varepsilon^1\frac{\mathrm dr}{r}=\frac{2\pi}{|\log\varepsilon|}\to0.\]
+可先把外半径换成固定小于 \(1\) 的数，再用半径小于 \(\varepsilon/2\) 的磨光核平滑。中心仍等于 \(1\)，支集仍紧含于单位球，梯度范数不增；故得到同样矛盾。二维必须使用对数截断，简单缩放的梯度范数恰好不变。
+\end{solution}
+
+% 自拟：分段材料的显式有效导热。
+\begin{exercise}\label{b2:ex:15-layered-material}
+令 \(a=1\) 于 \((0,1/2)\)、\(a=4\) 于 \((1/2,1)\)。求 \(-(au')'=0\)、\(u(0)=0,u(1)=1\) 的弱解，计算左右斜率及总能量，并判断它是否属于 \(H^2(0,1)\)。
+\end{exercise}
+\begin{solution}
+通量为常数 \(q\)，且 \(1=\int_0^1u'=q(1/2+1/8)=5q/8\)，所以 \(q=8/5\)。左斜率为 \(8/5\)，右斜率为 \(2/5\)，解是通过 \((0,0),(1/2,4/5),(1,1)\) 的分段仿射函数。能量 \(\tfrac12\int a|u'|^2=\tfrac12q\int u'=4/5\)。一阶导数在中点有非零跳跃，二阶分布导数含点质量，故不属于 \(L^2\)，解不在 \(H^2\)。
+\end{solution}
+
+% 自拟：一般强制型的Galerkin误差而非对称投影。
+\begin{exercise}\label{b2:ex:15-cea}
+设 \(a\) 满足 Lax--Milgram 条件，常数为 \(M,\alpha\)，\(V\subset H\) 有限维。若 \(u\in H\)、\(u_V\in V\) 分别解全空间与限制测试方程，证明
+\[\lVert u-u_V\rVert_H\le\frac M\alpha\inf_{v\in V}\lVert u-v\rVert_H.\]
+说明非对称情形为何不能直接引用正交投影的勾股恒等式。
+\end{exercise}
+\begin{solution}
+限制型仍强制，故 \(u_V\) 存在唯一。误差 \(e=u-u_V\) 满足 \(a(e,w)=0\) 对所有 \(w\in V\)。于是对 \(v\in V\)，
+\[\alpha\lVert e\rVert^2\le a(e,e)=a(e,u-v)+a(e,v-u_V)=a(e,u-v)
+ \le M\lVert e\rVert\lVert u-v\rVert.\]
+误差为零时显然，否则约去并取下确界即可。非对称型一般不是内积，测试正交并不等于 Hilbert 内积正交，故正文 Poisson 问题的勾股公式不能直接套用。
+\end{solution}
+
+% 自拟：系数在L无穷范数下的稳定性。
+\begin{exercise}\label{b2:ex:15-coefficient-stability}
+设 \(A_n,A\) 有共同椭圆下界 \(\lambda>0\)，且 \(\lVert A_n-A\rVert_\infty\to0\)。同一 \(f\in H^{-1}\) 对应的零边界解为 \(u_n,u\)。证明 \(u_n\to u\) 于 \(H_0^1\)，并给出定量估计。
+\end{exercise}
+\begin{solution}
+以 \(A_n\) 为左端，两方程相减得 \(\int A_n\nabla(u_n-u)\cdot\nabla v=\int(A-A_n)\nabla u\cdot\nabla v\)。取 \(v=u_n-u\)，利用椭圆性与 Hölder 不等式，得到
+\[\lVert\nabla(u_n-u)\rVert_2\le\lambda^{-1}\lVert A_n-A\rVert_\infty\lVert\nabla u\rVert_2
+ \le\lambda^{-2}\lVert A_n-A\rVert_\infty\lVert f\rVert_{H^{-1}}.\]
+右端趋零，Poincaré 不等式再给出完整 \(H^1\) 收敛。
+\end{solution}
+
+% 自拟：Neumann归一化与相容性。
+\begin{exercise}\label{b2:ex:15-neumann}
+设 \(\Omega\) 为连通有界 Lipschitz 区域，\(f\in L^2(\Omega)\)。使用零均值 Poincaré 不等式，证明 \(\int\nabla u\cdot\nabla v=\int fv\) 对所有 \(v\in H^1(\Omega)\) 可解，当且仅当 \(\int f=0\)。证明指定 \(\int u=0\) 后解唯一。
+\end{exercise}
+\begin{solution}
+取 \(v=1\) 得必要条件。反之在闭空间 \(H=\{v\in H^1:\int v=0\}\) 上，梯度范数因零均值 Poincaré 不等式而等价于 \(H^1\) 范数，故 Lax--Milgram 给出唯一零均值解。对一般测试函数减去平均值即可落入 \(H\)，而右端常数部分因 \(\int f=0\) 消失，故方程对全部 \(H^1\) 成立。任意两个解之差梯度为零，连通性使其为常数，零均值再使该常数为零。
+\end{solution}
+
+% 自拟：漂移项的反对称结构。
+\begin{exercise}\label{b2:ex:15-divergence-free-drift}
+设 \(b\in C^1(\overline\Omega;\mathbb R^d)\)、\(\operatorname{div}b=0\)，\(A\) 有界且一致椭圆。证明零边界问题 \(-\operatorname{div}(A\nabla u)+b\cdot\nabla u=f\) 对任意 \(f\in H^{-1}\) 唯一可解，其能量估计不含 \(\lVert b\rVert_\infty\)。
+\end{exercise}
+\begin{solution}
+对紧支集光滑 \(u\)，有 \(\int(b\cdot\nabla u)u=\tfrac12\int b\cdot\nabla(u^2)=0\)。双线性连续性和 \(H_0^1\) 密度把该等式推广到全部 \(H_0^1\)。所以型虽可能不对称，却满足 \(a(u,u)\ge\lambda\lVert\nabla u\rVert_2^2\)。有界性仍含 \(\lVert b\rVert_\infty\)，但强制常数不含它。Lax--Milgram 给出 \(\lVert\nabla u\rVert_2\le\lambda^{-1}\lVert f\rVert_{H^{-1}}\) 及唯一性。
+\end{solution}
+
+% 自拟：不同共振频率的相容条件与全体解。
+\begin{optionalexercise}\label{b2:ex:15-resonance}
+在 \((0,\pi)\) 上求解零端点问题 \(-u''-4u=\sin x+q\sin2x\)。确定哪些 \(q\in\mathbb R\) 允许弱解，并在可解时写出全部解。
+\end{optionalexercise}
+\begin{solution}
+型对称，齐次核是 \(\operatorname{span}\{\sin2x\}\)。与核配对得相容条件 \(q\int_0^\pi\sin^22x=0\)，即 \(q=0\)。此时特解为 \(-\tfrac13\sin x\)，故全部解为 \(-\tfrac13\sin x+c\sin2x\)。核的刻画可由一维分布方程先推出 \(u''=-4u\in L^2\)，再由常系数常微分方程及端点条件得到，亦可直接使用正弦展开。因此没有遗漏较粗糙的能量解。
+\end{solution}

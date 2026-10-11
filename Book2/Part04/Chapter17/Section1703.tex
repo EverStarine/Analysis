@@ -2,24 +2,145 @@
 \section{Marcinkiewicz 插值}
 \label{b2:sec:1703}
 
-% TODO: 撰写本节正文。
+次线性算子无法使用线性叠加，但其输出仍受各部分输出之和控制。把大值部分和小值部分放入不同端点空间，是弱型估计产生中间强型估计的原因。
 
 \subsection{次线性算子}
 \label{b2:subsec:170301}
 
-待填充。
+设 \(T\) 定义在一类可测函数上，输出可测函数。若 \( |T(f+g)|\leq |Tf|+|Tg|\) 且 \( |T(cf)|=|c|\cdot|Tf|\)，则称它是\term[cixianxing-suanzi]{次线性算子}[sublinear operator]。输出等式均按几乎处处理解。极大算子满足这两个条件；线性算子的绝对值也满足它们。
+
+\ProseParagraphBreak
+
+关键是分解 \(f=f\mathbf1_{\{|f|>a\}}+f\mathbf1_{\{|f|\leq a\}}\)。若 \(p_0<p<p_1\)，则大值部分属于 \(L^{p_0}\)，小值部分属于 \(L^{p_1}\)，因为
+\[
+ \int_{|f|>a}|f|^{p_0}\leq a^{p_0-p}\|f\|_p^p,
+ \qquad\int_{|f|\leq a}|f|^{p_1}\leq a^{p_1-p}\|f\|_p^p.
+\]
+仅把这两项代入弱估计会给出中间弱型；要得到强型，还需先对输出高度积分，再换序计算，不能提前用以上粗界。
 
 \subsection{弱型估计}
 \label{b2:subsec:170302}
 
-待填充。
+假设 \(T\) 在两个端点分别满足
+\[
+ d_{Tf}(t)\leq \left(\dfrac{A_i\|f\|_{p_i}}{t}\right)^{p_i},\qquad i=0,1.
+\]
+对 \(f=f_0+f_1\)，次线性意味着 \(\{|Tf|>t\}\subset\{|Tf_0|>t/2\}\cup\{|Tf_1|>t/2\}\)。集合包含不依赖输出的符号，也不要求 \(Tf=Tf_0+Tf_1\)。
+
+\ProseParagraphBreak
+
+若端点 \(p_1=\infty\)，应使用 \(\|Tf_1\|_\infty\leq A_1\|f_1\|_\infty\)。取 \(a=t/(2A_1)\) 后小值部分的超水平集合为空。端点为无穷时没有把一个发散指数形式代入分布函数公式。
 
 \subsection{Marcinkiewicz 插值}
 \label{b2:subsec:170303}
 
-待填充。
+下面给出同指数的版本；这是本卷奇异积分和极大函数最常使用的形式。
+下面采用\term[marcinkiewicz-chazhi]{Marcinkiewicz 插值定理}[Marcinkiewicz interpolation theorem]的下述版本。
+
+\begin{theorem}[Marcinkiewicz]\label{b2:thm:17-marcinkiewicz}
+设 \(1\leq p_0<p_1\leq\infty\)，\(T\) 是定义在 \(L^{p_0}+L^{p_1}\) 上的次线性算子，在两个端点均为弱型 \((p_i,p_i)\)，无穷端点理解为强型。则对 \(p_0<p<p_1\)，有
+\[
+ \|Tf\|_p\leq C(p,p_0,p_1,A_0,A_1)\|f\|_p.
+\]
+\end{theorem}
+\begin{proof}
+先设 \(p_1<\infty\)，在高度 \(t\) 处以 \(a=t\) 分割 \(f\)。由上段集合估计，
+\[
+ d_{Tf}(t)\leq(2A_0/t)^{p_0}\int_{|f|>t}|f|^{p_0}
+ +(2A_1/t)^{p_1}\int_{|f|\leq t}|f|^{p_1}.
+\]
+将右侧乘 \(pt^{p-1}\)，对 \(t>0\) 积分，Tonelli 将第一项的高度积分变为 \(\int_0^{|f(x)|}t^{p-p_0-1}\,\mathrm dt\)，第二项变为 \(\int_{|f(x)|}^\infty t^{p-p_1-1}\,\mathrm dt\)。两项分别等于 \( |f(x)|^{p-p_0}/(p-p_0)\) 和 \( |f(x)|^{p-p_1}/(p_1-p)\)。所以
+\[
+ \|Tf\|_p^p\leq p\left(\dfrac{(2A_0)^{p_0}}{p-p_0}+\dfrac{(2A_1)^{p_1}}{p_1-p}\right)\|f\|_p^p.
+\]
+若 \(p_1=\infty\)、\(A_1>0\)，取 \(a=t/(2A_1)\)，则 \(d_{Tf}(t)\leq(2A_0/t)^{p_0}\int_{|f|>t/(2A_1)}|f|^{p_0}\)。高度积分的上限为 \(2A_1|f(x)|\)，给出有限常数。如果 \(A_1=0\)，先用任意正的较大端点常数，再令其趋零；或者直接观察有界函数的输出为零并使用分解。
+\end{proof}
+常数在接近端点时通常变大，证明没有推出端点强型。对只先定义在稠密类上的线性算子，强型估计产生唯一连续延拓；一般次线性算子的延拓还要有 \( |Tf-Tg|\leq|T(f-g)|\) 等连续性条件，不能仅由抽象次线性自动声称唯一。
+
+% 扩写定位：b2:subsec:170303
+同指数不是分布函数方法的限制。下面的异指数版本足以解释局部势算子的一种可积性改善，也展示为什么求和指数必须参与换序。
+\begin{proposition}\label{b2:prop:17-off-diagonal}
+设 \(1\leq r<\infty\)，次线性算子 \(T\) 满足弱型 \((1,r)\)，常数为 \(A\)，以及强型 \((\infty,\infty)\)，常数为 \(B>0\)。对 \(1<p<\infty\)，有
+\[
+ \|Tf\|_{pr}\leq C_{p,r}A^{1/p}B^{1-1/p}\|f\|_p.
+\]
+\end{proposition}
+\begin{proof}
+对输出高度 \(t\)，取 \(f_0=f\mathbf1_{\{|f|>t/(2B)\}}\)。小值部分输出不超过 \(t/2\)，故
+\[
+ d_{Tf}(t)\leq(2A/t)^r
+ \left(\int_{|f|>t/(2B)}|f(x)|\,\mathrm dx\right)^r.
+\]
+令 \(q=pr\)。按层蛋糕积分并取 \(1/r\) 次方，右侧需要估计
+\[
+ \left(\int_0^\infty t^{q-r-1}
+ \left[\int |f(x)|\mathbf1_{\{t<2B|f(x)|\}}\,\mathrm dx\right]^r\mathrm dt\right)^{1/r}.
+\]
+对测度 \(t^{q-r-1}\mathrm dt\) 使用 Minkowski；因 \(r\geq1\)，得到上界
+\[
+ \int |f(x)|
+ \left(\int_0^{2B|f(x)|}t^{q-r-1}\mathrm dt\right)^{1/r}\mathrm dx
+ =\frac{(2B)^{p-1}}{(q-r)^{1/r}}\|f\|_p^p.
+\]
+结合前面的因子 \(q^{1/r}(2A)\)，再取 \(1/p\) 次方，即得到所述常数。若端点只在稠密类上给定，须用同一估计先构造强型延拓；对于已经在和空间定义的算子，截断分解直接适用。
+\end{proof}
+例如令 \(k(x)=|x|^{-\beta}\mathbf1_{\{|x|<1\}}\)，\(0<\beta<d\)。核既可积，又属于弱 \(L^{d/\beta}\)。上一节的集合积分范数与 Tonelli 给出
+\(N_{d/\beta}(k*f)\leq N_{d/\beta}(k)\|f\|_1\)，故卷积具有弱型 \((1,d/\beta)\)；Young 又给出 \(L^\infty\) 端点。上述命题于是导出 \(L^p\to L^{pd/\beta}\) 的强型改善。这个结论是局部核的一种充分范围，未声称是所有指数的最优范围。若删除核的截断，远场不再可积，所使用的无穷端点便不存在；全空间分数积分需要下一章的另一条证明路线。
+
+\ProseParagraphBreak
+
+该证明还说明插值参数的读取方式。对 \((1,r)\) 与 \((\infty,\infty)\)，以 \(\theta=1-1/p\) 计算倒数，有 \(1/q=(1-\theta)/r=1/(pr)\)。常数则为 \(A^{1-\theta}B^\theta\)。然而只有这个参数计算没有证明强型结论；真正避免端点发散的是把输入的大值部分保留在高度积分内部，并在正确的指数上使用 Minkowski。若 \(r<1\)，这里所用的 Minkowski 已经失效，不能把公式形式相同当作证明继续成立。
 
 \subsection{极大算子应用}
 \label{b2:subsec:170304}
 
-待填充。
+\begin{corollary}\label{b2:thm:17-maximal-strong}
+对 \(1<p\leq\infty\)，中心、非中心及二进极大算子在 \(L^p(\mathbb R^d)\) 上有界。
+\end{corollary}
+\begin{proof}
+三个算子都有弱型 \((1,1)\) 估计，而平均不超过本性上确界，所以均是 \(L^\infty\) 压缩。应用\cref{b2:thm:17-marcinkiewicz}，再用 \(M_u\leq2^dM\)。
+\end{proof}
+对 \(f\in L^p\)，上述分解的大值部分属于 \(L^1\)，小值部分属于 \(L^\infty\)，故极大函数的定义与定理的和空间完全相容。下一章将对同一个坏函数同时利用平均为零和 \(L^1\) 大小；本章只用输入的大小，尚未使用核的抵消。
+
+% 扩写定位：b2:subsec:170304
+极大函数估计的另一个作用，是把正则化收敛提升到逐点收敛。下面的条件容许 Poisson 核、热核，以及很多不保持正性的光滑核。
+\begin{proposition}\label{b2:prop:17-approximate-identity}
+设 \(\psi\in L^1(\mathbb R^d)\)，\(\int\psi=1\)，并存在 \(\varepsilon>0\) 使
+\(|\psi(x)|\leq C(1+|x|)^{-d-\varepsilon}\)。置 \(\psi_t(x)=t^{-d}\psi(x/t)\)。则对 \(f\in L^p\)、\(1\leq p<\infty\)，有 \(\psi_t*f\to f\) 于 \(L^p\)。此外，
+\[
+ \sup_{t>0}|\psi_t*f(x)|\leq C' M f(x),
+\]
+且在 \(f\) 的每个 Lebesgue 点，\(\psi_t*f(x)\to f(x)\)。
+\end{proposition}
+\begin{proof}
+在 \(|y|<t\) 及 \(2^{j-1}t\leq|y|<2^jt\)、\(j\geq1\)，分别用核上界和球平均得到
+\[
+ \int |\psi_t(y)|\,|f(x-y)|\,\mathrm dy
+ \leq C\left(1+\sum_{j\geq1}2^{-j\varepsilon}\right)Mf(x).
+\]
+范数收敛由 Minkowski 写成
+\(\|\psi_t*f-f\|_p\leq\int|\psi(z)|\|f(\,\cdot-tz)-f\|_p\,\mathrm dz\)；平移连续性和上界 \(2\|f\|_p|\psi(z)|\) 允许支配收敛。
+
+固定一个 Lebesgue 点 \(x\)，令
+\(A(r)=|B(x,r)|^{-1}\int_{B(x,r)}|f(y)-f(x)|\,\mathrm dy\)。
+则 \(A(r)\to0\)，且 \(\sup_{r>0}A(r)<\infty\)：小半径由微分性质控制；大半径用 \(L^p\) 的 Hölder 界，在 \(p=1\) 时直接用全空间积分。对差卷积重复环带估计，得到
+\[
+ |\psi_t*f(x)-f(x)|
+ \leq C A(t)+C\sum_{j\geq1}2^{-j\varepsilon}A(2^jt).
+\]
+先使级数尾部一致小，再令有限多个半径趋零，就得逐点结论。
+\end{proof}
+注意此处用的是某个代表元在 Lebesgue 点的取值。一个 \(L^p\) 等价类没有预先指定所有点的值；近似恒等算子给出的结论是在几乎处选择与微分定理一致的代表元。
+
+\ProseParagraphBreak
+
+还可以追踪 \(M\) 的范数在 \(p\downarrow1\) 时的增长。分解
+\(f=f\mathbf1_{\{|f|>t/2\}}+f\mathbf1_{\{|f|\leq t/2\}}\)，小值部分的极大函数不超过 \(t/2\)，故
+\[
+ |\{Mf>t\}|\leq \frac{2C_d}{t}\int_{|f|>t/2}|f|.
+\]
+层蛋糕换序给出
+\(\|Mf\|_p^p\leq C_d p\,2^p(p-1)^{-1}\|f\|_p^p\)。
+这种发散有实际原因。在一维取 \(f=\mathbf1_{[0,1]}\)，则 \(x>2\) 时 \(Mf(x)\geq(2x)^{-1}\)；所以
+\(\|Mf\|_p^p\geq 2^{-p}2^{1-p}/(p-1)\)。
+当 \(1<p\leq2\) 时，上下界共同说明范数至少具有 \(p\downarrow1\) 的 \(1/(p-1)\) 量级。其精确最佳常数依赖中心、非中心或二进的选择，本证明只需要统一的量级。

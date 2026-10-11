@@ -2,24 +2,67 @@
 \section{位置与频率}
 \label{b2:sec:2001}
 
-% TODO: 撰写本节正文。
+一个窄的脉冲需要很宽的频率带才能表示。这个判断可以指位置和频率的方差，也可以指支集或近似集中的区域；不同形式有不同假设，不能把它们当作同一条不等式。
 
 \subsection{Fourier 对偶性}
 \label{b2:subsec:200101}
 
-待填充。
+本章使用单位能量归一化 \(\|f\|_2=1\)。位置测量的概率密度为 \(|f(x)|^2\)，频率测量的概率密度为 \(|\widehat f(\xi)|^2\)，二者总质量因 Plancherel 都为一。平移位置不改变频率密度，只改变变换的相位；乘 \(e^{2\pi\mathrm ib\cdot x}\) 则将频率密度平移到 \(b\)。
+
+\ProseParagraphBreak
+
+因此“中心在原点”是可通过对称调整的条件，“同时窄”则不是。缩放 \(f_\lambda(x)=\lambda^{d/2}f(\lambda x)\) 保持能量，把位置宽度除以 \(\lambda\)，把频率宽度乘以 \(\lambda\)。任何无尺度的测不准乘积必须在这一变换下保持不变。
 
 \subsection{位置方差}
 \label{b2:subsec:200102}
 
-待填充。
+若 \(|x|f\in L^2\)，定义位置中心和方差
+\[
+ a=\int x|f(x)|^2\,\mathrm dx,\qquad
+ \sigma_x^2\coloneqq\int|x-a|^2|f(x)|^2\,\mathrm dx.
+\]
+中心积分由 Cauchy–Schwarz 绝对收敛。展开平方给出 \(\int|x-c|^2|f|^2=\sigma_x^2+|c-a|^2\)，故中心确实使二阶矩最小。
+
+\ProseParagraphBreak
+
+位置方差不是支集半径。一个遍布全空间的 Gaussian 有有限方差；一个很小质量的远端尖峰则可以使方差很大，即使绝大部分质量集中在中心。后节的集合集中量正是为了区分这两类判断。
 
 \subsection{频率方差}
 \label{b2:subsec:200103}
 
-待填充。
+若 \(|\xi|\widehat f\in L^2\)，定义频率中心 \(b=\int\xi|\widehat f|^2\) 和 \(\sigma_\xi^2=\int|\xi-b|^2|\widehat f|^2\)。这等价于 \(f\) 具有平方可积弱梯度。令 \(g(x)=e^{-2\pi\mathrm ib\cdot x}f(x)\)，则
+\[
+ \|\nabla g\|_2^2=4\pi^2\sigma_\xi^2.
+\]
+这里导数因子为 \(2\pi\)，所以测不准常数必须与本卷变换约定一致。
+
+\ProseParagraphBreak
+
+若 \(f\) 跳跃，弱导数可能是边界分布而不属于 \(L^2\)，频率方差便为无穷。此时下界仍可解释，但不能用一个不存在的平方梯度作积分分部。
 
 \subsection{Heisenberg 不等式}
 \label{b2:subsec:200104}
 
-待填充。
+下面采用\term[heisenberg-budengshi]{Heisenberg 不等式}[Heisenberg inequality]的下述版本。
+
+\begin{theorem}[Heisenberg]\label{b2:thm:20-heisenberg}
+设 \(f\in L^2(\mathbb R^d)\)、\(\|f\|_2=1\)，位置与频率二阶矩有限。则
+\[
+ \sigma_x\sigma_\xi\geq\dfrac d{4\pi}.
+\]
+\end{theorem}
+\begin{proof}
+通过平移和调制，把两中心移到零。对光滑紧支集函数，
+\[
+ d\|f\|_2^2=-2\operatorname{Re}\int
+ x f(x)\cdot\overline{\nabla f(x)}\,\mathrm dx
+ \leq2\||x|f\|_2\cdot\|\nabla f\|_2.
+\]
+第一项由 \(\operatorname{div}(x|f|^2)\) 积分为零得到，第二项是向量 Cauchy–Schwarz。对题设一般输入，先乘趋于一的光滑截断，额外梯度项由 \(R^{-1}\|f\mathbf1_{\{|x|>R\}}\|_2\) 控制；位置加权范数也由尾部收敛。再以磨光函数逼近，梯度在 \(L^2\) 收敛，而
+\[
+ x(\rho_\varepsilon*f)
+ =\rho_\varepsilon*(xf)+(x\rho_\varepsilon)*f
+\]
+使加权误差不超过趋零的常数倍 \(\|f\|_2\)。因此积分恒等式和不等式传到一般输入。代入 \(\|\nabla f\|_2=2\pi\sigma_\xi\) 即得结论。
+\end{proof}
+若仅考察一个坐标方向，同样的积分分部给出该方向两个标准差的乘积至少 \(1/(4\pi)\)。全维结论使用方差的和，而不是把每个方向的方差任意相乘。

@@ -2,19 +2,105 @@
 \section{能量泛函}
 \label{b2:sec:1403}
 
-% TODO: 撰写本节正文。
+同一个偏微分方程可以通过能量的驻点条件出现，但“能量”一词并不总表示待极小化的非负量。椭圆方程常对应空间能量的极小值；波动方程对应时空作用量的驻点，同时另有随时间守恒的正能量。本节用这两个模型把几种不同作用区分开。
 
 \subsection{Dirichlet 能量}
 \label{b2:subsec:140301}
 
-待填充。
+设 \(\Omega\subset\mathbb R^d\) 是有界开集，记 \(H_0^1(\Omega)=W_0^{1,2}(\Omega)\)。第一卷定义 22.2.1 将它定义为 \(C_c^\infty(\Omega)\) 在 \(H^1\) 中的闭包，这一定义不要求边界光滑。由第一卷定理 24.1.2 的零边界 Poincaré 不等式，\(\lVert v\rVert_2\le C_P\lVert\nabla v\rVert_2\)，所以 \(\lVert\nabla v\rVert_2\) 是这个空间上的等价 Hilbert 范数。
+
+\ProseParagraphBreak
+
+给定 \(f\in L^2(\Omega)\) 和 \(g\in H^1(\Omega)\)，把允许函数写为 \(g+H_0^1(\Omega)\)，考虑 \term[dirichlet-nengliang]{Dirichlet 能量}[Dirichlet energy]及线性外力项组成的泛函
+\[
+ E(u)=\frac12\int_\Omega|\nabla u|^2\,\mathrm dx-\int_\Omega fu\,\mathrm dx.
+\]
+仿射空间的写法精确表达“\(u\) 与 \(g\) 具有相同边界数据”：即使边界粗糙到尚未定义逐点边界迹，也可以使用它。
+
+\begin{proposition}[二次能量的驻点与极小点]
+\label{b2:prop:14-dirichlet-minimum}
+在上述假设下，\(u\in g+H_0^1(\Omega)\) 是 \(E\) 的极小点，当且仅当
+\[
+ \int_\Omega\nabla u\cdot\nabla h\,\mathrm dx=\int_\Omega fh\,\mathrm dx
+ \qquad(h\in H_0^1(\Omega)).
+\]
+这样的极小点至多有一个，且对每个 \(h\in H_0^1(\Omega)\) 都有
+\[E(u+h)-E(u)=\tfrac12\lVert\nabla h\rVert_2^2.\]
+\end{proposition}
+\begin{proof}
+Cauchy--Schwarz 不等式保证所有积分有限。直接展开平方得
+\[
+ E(u+h)-E(u)=\int_\Omega\nabla u\cdot\nabla h-\int_\Omega fh
+              +\tfrac12\lVert\nabla h\rVert_2^2.
+\]
+其中前两项构成连续线性泛函，最后一项是二阶余项，故一阶导数正是前两项。极小点的双侧变分为零，得到所列积分等式。反之，积分等式使能量差等于非负的梯度平方，所以 \(u\) 为全局极小点。若另一点 \(u+h\) 也极小，则 \(\nabla h=0\)；Poincaré 不等式推出 \(h=0\)。
+\end{proof}
+
+这一命题暂时没有断言极小点存在；它说明一旦构造出驻点，就无须再排查鞍点。二次展开还给出误差的精确解释：任何满足同一边界数据的近似函数，其能量超额恰为梯度误差平方的一半。与一般的第二变分局部判别相比，这是全局恒等式，原因在于能量严格二次且对允许方向一致凸。
+
+\ProseParagraphBreak
+
+在区间 \((0,1)\) 上取 \(f=1\)、\(g=0\)。函数 \(u(x)=x(1-x)/2\) 满足 \(-u''=1\) 和零端点条件；对光滑紧支集扰动分部积分，再用密度推广到 \(H_0^1\)，即可验证积分等式。因此它是唯一极小点，能量为 \(-1/24\)。负能量并不矛盾：梯度项非负，外力项却可以降低总泛函值；强制性要求的是大范数下的增长，而不是每一点的非负性。
 
 \subsection{波动能量}
 \label{b2:subsec:140302}
 
-待填充。
+设 \(\Omega\) 为光滑有界区域，\(c>0\)，并考虑在侧边界取零值的光滑函数 \(u(t,x)\)。时空作用量为
+\[
+ \mathcal A(u)=\frac12\int_0^T\int_\Omega
+       \bigl(|\partial_tu|^2-c^2|\nabla_xu|^2\bigr)\,\mathrm dx\,\mathrm dt.
+\]
+对在初、末时刻和空间边界均为零的扰动 \(h\)，时、空分别分部积分，得到
+\[
+ D\mathcal A(u)h=\int_0^T\int_\Omega
+       (-\partial_t^2u+c^2\Delta_xu)h\,\mathrm dx\,\mathrm dt.
+\]
+所以驻点满足波动方程 \(\partial_t^2u-c^2\Delta u=0\)。这里固定初末值是推导变分方程时对扰动的限制；实际波动初值问题仍由初位移和初速度确定，不能把两种问题混为一谈。
+
+\ProseParagraphBreak
+
+作用量的二次型有正负两部分，一般并不在解处取得极小值。例如取乘积扰动 \(h(t,x)=a(t)b(x)\)，其中两因子均光滑紧支集，则
+\[
+ 2\mathcal A(h)=\lVert a'\rVert_2^2\lVert b\rVert_2^2
+      -c^2\lVert a\rVert_2^2\lVert\nabla b\rVert_2^2.
+\]
+固定空间因子并提高时间振荡频率可得正值；固定时间因子并提高空间振荡频率可得负值。因此在任何驻点附近都有增加和降低作用量的方向。
+
+\begin{proposition}[波动能量守恒]
+\label{b2:prop:14-wave-energy}
+设 \(u\) 在 \([0,T]\times\overline\Omega\) 上足够光滑，满足 \(u_{tt}-c^2\Delta u=0\) 及 \(u|_{\partial\Omega}=0\)。则
+\[
+ \mathcal E(t)=\frac12\int_\Omega
+          \bigl(|u_t(t,x)|^2+c^2|\nabla u(t,x)|^2\bigr)\,\mathrm dx
+\]
+与时间无关。
+\end{proposition}
+\begin{proof}
+对时间求导并对空间分部积分，得
+\[
+ \mathcal E'(t)=\int_\Omega u_t(u_{tt}-c^2\Delta u)\,\mathrm dx
+           +c^2\int_{\partial\Omega}u_t\partial_\nu u\,\mathrm dS=0.
+\]
+内部项由方程为零，边界项由对恒定零边界条件求时间导数所得 \(u_t=0\) 而消失。
+\end{proof}
+
+守恒能量中空间项带正号，作用量中带负号。前者衡量一个时刻的状态，后者比较整段时空运动。若方程加入外力 \(f\)，同一计算给出 \(\mathcal E'(t)=\int_\Omega fu_t\)；若加入阻尼 \(\gamma u_t\)、\(\gamma\ge0\)，则多出 \(-\gamma\lVert u_t\rVert_2^2\)。这些等式将外界做功和耗散分开记录，比单纯记住“能量守恒”更便于迁移到新的方程。
 
 \subsection{PDE 与极值问题}
 \label{b2:subsec:140303}
 
-待填充。
+从微分方程寻找泛函时，最容易检验的是对称性。设 \(H\) 是实 Hilbert 空间，\(a:H\times H\to\mathbb R\) 是有界双线性型，\(\ell\in H^*\)。令
+\[J(u)=\tfrac12a(u,u)-\ell(u).\]
+直接展开可得
+\[DJ(u)h=\tfrac12\bigl(a(u,h)+a(h,u)\bigr)-\ell(h).\]
+因此仅当 \(a\) 对称时，驻点条件才是 \(a(u,h)=\ell(h)\)。反对称部分在 \(a(u,u)\) 中完全消失，却可能实质影响方程的解。
+
+\ProseParagraphBreak
+
+例如 \(H=\mathbb R^2\)，令 \(Au=(u_1-u_2,u_1+u_2)\)，\(a(u,h)=(Au)\cdot h\)。尽管 \(a(u,u)=|u|^2\) 严格为正，极小化 \(\tfrac12|u|^2-f\cdot u\) 得到的是 \(u=f\)，而原方程是 \(Au=f\)。两者一般不同。下一章的 Lax--Milgram 定理直接求解有界强制双线性型，无须先把它变成能量；这正是从变分极小化过渡到一般弱解方法时必须增加的能力。
+
+\ProseParagraphBreak
+
+另一个区别是驻点与动力学。若 \(E(u)=\tfrac12\int|\nabla u|^2\)，形式上的 \(L^2\) 梯度为 \(-\Delta u\)。沿最陡下降运动 \(u_t=-\operatorname{grad}E(u)\)，得到热方程 \(u_t=\Delta u\)，而平衡点满足 Laplace 方程。对光滑零边界解，分部积分给出
+\[\frac{\mathrm d}{\mathrm dt}E(u(t))=-\int_\Omega|u_t|^2\,\mathrm dx\le0.\]
+这项恒等式说明热演化趋向降低能量，却不在这里自动证明长时间收敛；还需要轨道紧性、极限点的识别等信息。变分结构可以提供估计和候选极限，但不能代替这些额外步骤。

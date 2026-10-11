@@ -1,24 +1,63 @@
 % !TeX root = ../../Book3.tex
 \OptionalSection{Newman 的简化解析证明}{b3:sec:2706}
 
-% TODO: 撰写本节正文。
+Newman 的方法用一个带端点消去因子的 Cauchy 积分直接证明 Laplace 变换的 Tauber 结论。它可用素数的一次幂权和完成另一个证明，避免一般的正核论证。
 
 \subsection{解析准备}
 \label{b3:subsec:270601}
 
-待填充。
+\begin{theorem}[Newman 解析引理]\label{b3:thm:27-newman}
+设 \(f:[0,\infty)\to\mathbb C\) 有界且局部可积，\(g(z)=\int_0^\infty f(t)e^{-zt}\,\mathrm{d}t\) 于 \(\operatorname{Re}z>0\) 定义。若 \(g\) 全纯延拓越过整个虚轴，则 \(\int_0^T f(t)\,\mathrm{d}t\to g(0)\)。
+\end{theorem}
+这一结果称为\term[newman-jiexi-yinli]{Newman 解析引理}[Newman's analytic lemma]。这里结论为广义积分收敛，不要求绝对可积。以下围道证明可核对 Zagier 的《Newman's Short Proof of the Prime Number Theorem》\cite[pp. 707--708]{Zagier1997Newman}。
 
 \subsection{围道论证}
 \label{b3:subsec:270602}
 
-待填充。
+\begin{proof}[\cref{b3:thm:27-newman}的证明]
+记 \(|f|\le B\)、\(g_T(z)=\int_0^T f(t)e^{-zt}\,\mathrm{d}t\)。固定 \(R>0\)，由虚轴紧段的延拓可取 \(\delta>0\)，使 \(g\) 在圆盘 \(|z|\le R\) 与 \(\operatorname{Re}z\ge-\delta\) 的交集及边界邻域全纯。沿这一区域正向边界 \(C\)，Cauchy 公式给
+\[
+g(0)-g_T(0)=\frac1{2\pi\mathrm{i}}\int_C(g(z)-g_T(z))e^{Tz}
+\left(1+\frac{z^2}{R^2}\right)\frac{\mathrm{d}z}{z}.
+\]
+在右半圆 \(z=Re^{\mathrm{i}\theta}\) 上，
+\(|g-g_T|\le Be^{-T\operatorname{Re}z}/\operatorname{Re}z\)，而 \(|1+z^2/R^2|=2|\cos\theta|\)，故整个被积函数模不超过 \(2B/R^2\)，积分贡献至多 \(B/R\)。端点处按连续极限理解这一相消后的界。
+在左侧路径，将 \(g\) 与 \(g_T\) 分开。因为 \(g_T\) 整且左侧变形不跨零，含 \(g_T\) 的路径可改成完整左半圆。对 \(\operatorname{Re}z<0\)，有
+\(|g_T(z)e^{Tz}|\le B/|\operatorname{Re}z|\)，相同因子相消再次给至多 \(B/R\)。剩下的 \(g\) 积分沿固定左路径，其上除两个端点外实部严格负，故 \(e^{Tz}\to0\)。路径不经过零，\(g(z)(1+z^2/R^2)/z\) 连续有界，且 \(|e^{Tz}|\le1\)，支配收敛使这一积分趋零。由此
+\(\limsup_{T\to\infty}|g(0)-g_T(0)|\le2B/R\)。任意增大 \(R\) 即得结论；延拓宽度 \(\delta\) 可随 \(R\) 缩小，不影响先取 \(T\) 极限的次序。
+\end{proof}
 
 \subsection{初等 Tauber 型归约}
 \label{b3:subsec:270603}
 
-待填充。
+若非递减函数 \(A(x)\) 满足 \(\int_1^\infty(A(x)-x)x^{-2}\,\mathrm{d}x\) 收敛，则 \(A(x)/x\to1\)。若存在任意大 \(x\) 使 \(A(x)\ge\lambda x\)、\(\lambda>1\)，则在 \([x,\lambda x]\) 上
+\[
+\int_x^{\lambda x}\frac{A(t)-t}{t^2}\,\mathrm{d}t
+\ge\int_1^\lambda\frac{\lambda-u}{u^2}\,\mathrm{d}u>0,
+\]
+与收敛积分尾段趋零矛盾。若 \(A(x)\le\lambda x\)、\(0<\lambda<1\)，则在 \([\lambda x,x]\) 上用 \(A(t)\le A(x)\)，得到一个固定严格负上界，同样矛盾。这一步只使用单调性，并不要求 \(A\) 连续或可微。
+
+\ProseParagraphBreak
+
+两个固定差距可以分别算成
+\[
+ \int_1^\lambda\frac{\lambda-u}{u^2}\,\mathrm du
+       =\lambda-1-\log\lambda>0\quad(\lambda>1),
+\]
+以及
+\[
+ \int_\lambda^1\frac{\lambda-u}{u^2}\,\mathrm du
+       =1-\lambda+\log\lambda<0\quad(0<\lambda<1).
+\]
+严格符号来自 \(\log\lambda<\lambda-1\)。积分收敛意味着任意两个同时趋于无穷的端点之间，带符号积分也趋零；所以只要比值 \(A(x)/x\) 与一保持一个固定距离，单调性就会把这一次偏离延续成一个乘法区间上的固定积分偏差。这是这里由平均恢复逐点渐近的全部实变量内容。
 
 \subsection{素数定理的另一种证明}
 \label{b3:subsec:270604}
 
-待填充。
+令 \(P(s)=\sum_p(\log p)p^{-s}\)。高次幂部分
+\(H(s)=\sum_{p,r\ge2}(\log p)p^{-rs}\) 在 \(\operatorname{Re}s>1/2\) 局部一致绝对收敛，故 \(P=F-H\) 在直线一上除一处主部外全纯延拓。Abel 求和给
+\[
+\frac{P(1+z)}{1+z}-\frac1z
+=\int_0^\infty\bigl(e^{-t}\vartheta(e^t)-1\bigr)e^{-zt}\,\mathrm{d}t.
+\]
+括号内函数由 Chebyshev 界有界；左侧在虚轴全纯，因为一处的单极点已抵消，其他点由无零点性保证。Newman 引理遂给 \(\int_1^\infty(\vartheta(x)-x)x^{-2}\,\mathrm{d}x\) 收敛。上一小节推出 \(\vartheta(x)\sim x\)，再去掉对数权即得素数定理。此证法同样不能仅凭无零点性给出定量误差，其围道半径是先固定、最后才趋无穷的。

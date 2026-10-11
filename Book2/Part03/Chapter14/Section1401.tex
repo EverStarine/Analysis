@@ -2,24 +2,127 @@
 \section{泛函与变分}
 \label{b2:sec:1401}
 
-% TODO: 撰写本节正文。
+固定两端的曲线可以改变形状，而端点条件保持不变。若用函数 \(u\) 表示曲线，一次允许的微小改变便写成 \(u+th\)，其中 \(h\) 在端点为零。长度、面积和能量都是作用于整条曲线的函数；考察它们随 \(t\) 的变化，就把极值问题带回了一元微积分。不过，在函数空间中，沿每个方向分别求导与对所有小扰动作统一估计并不是同一件事。本节先辨明这一差别，再说明积分泛函的变分怎样计算。
 
 \subsection{Gâteaux 导数}
 \label{b2:subsec:140101}
 
-待填充。
+设 \(X\) 是实 Banach 空间，\(U\subset X\) 是开集，\(J:U\to\mathbb R\)。给定 \(u\in U\) 和 \(h\in X\)，若极限存在，记
+\[
+ \delta J(u;h)=\lim_{t\to0}\frac{J(u+th)-J(u)}{t}.
+\]
+这里的参数 \(t\) 取实数；当未知函数取复值而泛函取实值时，也应把函数空间看作实线性空间。比如 \(J(u)=\lVert u\rVert^2\) 的变分含有内积的实部，并不是复线性泛函。
+
+\begin{definition}[Gâteaux 可微]
+\label{b2:def:14-gateaux}
+设 \(X\) 是实 Banach 空间，\(J\) 定义在 \(u\) 的开邻域上。若各方向的变分都存在，且存在连续线性泛函 \(A\in X^*\)，使得 \(\delta J(u;h)=Ah\) 对所有 \(h\in X\) 成立，则称 \(J\) 在 \(u\) 处 \term[gateaux-kewei]{Gâteaux 可微}[Gâteaux differentiable]，并称 \(A\) 为其 \term[gateaux-daoshu]{Gâteaux 导数}[Gâteaux derivative]，记作 \(D_GJ(u)\)。
+\end{definition}
+
+定义中的线性性不是由方向极限自动保证的。在 \(\mathbb R^2\) 上令
+\[
+ F(x,y)=\begin{cases}x^3/(x^2+y^2),&(x,y)\ne(0,0),\\0,&(x,y)=(0,0).\end{cases}
+\]
+沿方向 \((a,b)\ne(0,0)\) 的导数是 \(a^3/(a^2+b^2)\)。这个表达式关于方向不是线性的，故 \(F\) 虽有所有方向导数，却不满足这里的 Gâteaux 可微定义。不同文献有时把“方向导数均存在”也称为 Gâteaux 可微；使用结论时，应核对是否同时要求导数为连续线性映射。
+
+\begin{proposition}[极小点的必要条件]
+\label{b2:prop:14-gateaux-minimum}
+设 \(X\) 是实 Banach 空间，\(V\subset X\) 是线性子空间，\(J\) 定义在 \(u\in X\) 的邻域内。若 \(u\) 是 \(J\) 在仿射空间 \(u+V\) 上的局部极小点，且 \(\delta J(u;h)\) 对每个 \(h\in V\) 都存在，则
+\[\delta J(u;h)=0\qquad(h\in V).\]
+\end{proposition}
+\begin{proof}
+固定 \(h\in V\)。当 \(t\) 的绝对值充分小时，\(J(u+th)-J(u)\ge0\)。除以正的 \(t\) 再令 \(t\downarrow0\)，得变分非负；除以负的 \(t\) 再令 \(t\uparrow0\)，得变分非正。两个单侧极限相同，故变分为零。
+\end{proof}
+
+此处真正起作用的是正负两个方向都可行。若要求 \(u\ge0\)，在接触零值的区域只能作某些单侧扰动，必要条件一般变成不等式。类似地，固定端点要求扰动在端点消失；固定积分则要求扰动的积分为零。求第一变分之前，先写清允许的扰动，比形式地求导更为重要。
 
 \subsection{Fréchet 导数}
 \label{b2:subsec:140102}
 
-待填充。
+第一章在有限维空间中讨论过 Fréchet 导数；同一定义适用于 Banach 空间。泛函 \(J\) 在 \(u\) 处 Fréchet 可微，意味着存在 \(A\in X^*\)，使
+\[
+ J(u+h)=J(u)+Ah+r(h),\qquad
+ \frac{|r(h)|}{\lVert h\rVert_X}\longrightarrow0\quad(h\to0).
+\]
+这里的余项估计对所有小方向统一成立。因此 Fréchet 可微必然蕴含 Gâteaux 可微，且两种导数相同；反过来则需要额外条件。
+
+\begin{proposition}[导数连续时的统一逼近]
+\label{b2:prop:14-continuous-gateaux}
+设 \(X\) 是实 Banach 空间，\(J\) 在 \(u\) 的一个开邻域内 Gâteaux 可微。若 \(v\mapsto D_GJ(v)\) 在 \(u\) 处关于 \(X^*\) 的算子范数连续，则 \(J\) 在 \(u\) 处 Fréchet 可微，且 \(DJ(u)=D_GJ(u)\)。
+\end{proposition}
+\begin{proof}
+给定 \(\varepsilon>0\)，选取 \(r>0\)，使 \(\lVert v-u\rVert_X<r\) 时有 \(\lVert D_GJ(v)-D_GJ(u)\rVert_{X^*}<\varepsilon\)。对 \(\lVert h\rVert_X<r\)，在 \([0,1]\) 上考察
+\[g(t)=J(u+th)-J(u)-tD_GJ(u)h.\]
+它在区间上连续、内部可微，且 \(|g'(t)|\le\varepsilon\lVert h\rVert_X\)。一元中值定理给出 \(|g(1)|\le\varepsilon\lVert h\rVert_X\)，正是所需的统一余项估计。
+\end{proof}
+
+即便 Gâteaux 导数在一点是零映射，原函数也未必在该点连续。例如令
+\[
+ J(x,y)=\begin{cases}\displaystyle\frac{x^3y}{x^6+y^2},&(x,y)\ne(0,0),\\0,&(x,y)=(0,0).\end{cases}
+\]
+沿 \((a,b)\) 作扰动；若 \(b\ne0\)，则
+\[\frac{J(ta,tb)}{t}=\frac{t a^3b}{t^4a^6+b^2}\longrightarrow0,\]
+而 \(b=0\) 时商恒为零。所以 \(D_GJ(0)=0\)。但沿 \(y=x^3\) 趋向原点时，\(J(x,x^3)=1/2\)。方向逐个固定的极限看不见这条弯曲路径，这正说明算子范数意义的连续性不能被随意省去。
 
 \subsection{第一变分}
 \label{b2:subsec:140103}
 
-待填充。
+泛函对扰动的一阶线性响应称为 \term[diyi-bianfen]{第一变分}[first variation]。对积分泛函，常见计算是“把导数移入积分号”。这一计算需要一致的支配或余项估计；下面先在 \(C^1\) 空间内证明一个便于直接使用的版本。
+
+\begin{proposition}[光滑积分泛函的第一变分]
+\label{b2:prop:14-smooth-integral-variation}
+设 \(\Omega\subset\mathbb R^d\) 是有界开集。实函数 \(F(x,z,p)\) 以及对 \((z,p)\in\mathbb R\times\mathbb R^d\) 的一阶偏导数在 \(\overline\Omega\times\mathbb R\times\mathbb R^d\) 上连续。赋予 \(C^1(\overline\Omega)\) 以函数及一阶导数的一致范数。则
+\[J(u)=\int_\Omega F(x,u(x),\nabla u(x))\,\mathrm dx\]
+为 Fréchet 可微泛函，且
+\[
+ DJ(u)h=\int_\Omega\bigl(F_z(x,u,\nabla u)h+
+             F_p(x,u,\nabla u)\cdot\nabla h\bigr)\,\mathrm dx.
+\]
+其导数关于 \(u\) 在算子范数下连续。
+\end{proposition}
+\begin{proof}
+固定 \(u\)。当 \(\lVert h\rVert_{C^1}\le1\) 且 \(0\le t\le1\) 时，\((x,u(x)+th(x),\nabla u(x)+t\nabla h(x))\) 落在一个固定紧集内。在这个紧集上，\((z,p)\) 的一阶偏导数一致连续；以 \(\omega(s)\) 表示相应连续模，其中 \(\omega(s)\to0\)。沿 \((h,\nabla h)\) 应用一元微积分基本定理，得
+\[
+ \begin{split}
+ &F(x,u+h,\nabla u+\nabla h)-F(x,u,\nabla u)\\
+ &\quad-F_z(x,u,\nabla u)h-F_p(x,u,\nabla u)\cdot\nabla h\\
+ &=\int_0^1\bigl[D_{(z,p)}F(x,u+th,\nabla u+t\nabla h)
+              -D_{(z,p)}F(x,u,\nabla u)\bigr]\cdot(h,\nabla h)\,\mathrm dt.
+ \end{split}
+\]
+积分后，余项的绝对值不超过
+\(C_d|\Omega|\cdot\omega(C_d\lVert h\rVert_{C^1})\cdot\lVert h\rVert_{C^1}\)。所写的一阶项是有界线性泛函，故它就是 Fréchet 导数。用同一个紧集上的连续模比较 \(DJ(u+k)\) 与 \(DJ(u)\)，再对 \(\lVert h\rVert_{C^1}\le1\) 取上确界，就得到导数的算子范数连续性。
+\end{proof}
+
+例如 \(F(x,z,p)=\tfrac12|p|^2-f(x)z\) 给出
+\[DJ(u)h=\int_\Omega\nabla u\cdot\nabla h\,\mathrm dx-\int_\Omega fh\,\mathrm dx.\]
+但若改在 \(H^1(\Omega)\) 上讨论，上一命题不能原样使用：\(H^1\) 范数一般不控制函数的一致范数，非线性项的增长速度必须与 Sobolev 嵌入相容。特别是，写下 \(\int |u|^q\) 之前，须先确认每个允许的 \(u\) 确有这一可积性。对于二次能量，有界性可以直接由 Cauchy--Schwarz 不等式得到；本章后面将以此处理弱拓扑中的极小化。
 
 \subsection{第二变分}
 \label{b2:subsec:140104}
 
-待填充。
+当导数映射本身 Fréchet 可微时，其导数 \(D^2J(u)\) 是有界双线性型。对同一方向两次求导所得的
+\[\delta^2J(u;h)=D^2J(u)[h,h]\]
+称为 \term[dier-bianfen]{第二变分}[second variation]。若 \(J\) 在 \(u\) 附近二次连续 Fréchet 可微，则沿线段积分两次得到
+\[
+ J(u+h)-J(u)-DJ(u)h
+ =\int_0^1(1-t)D^2J(u+th)[h,h]\,\mathrm dt.
+\]
+二阶项反映驻点附近的弯曲方向；它提供必要条件，也在具有统一正下界时提供充分条件。
+
+\begin{theorem}[第二变分判别]
+\label{b2:thm:14-second-variation-test}
+设 \(X\) 是实 Banach 空间，\(V\subset X\) 是闭线性子空间，\(J\) 在 \(u\) 的邻域内二次连续 Fréchet 可微。若 \(u\) 是 \(J\) 在 \(u+V\) 上的局部极小点，则
+\[DJ(u)h=0,\qquad D^2J(u)[h,h]\ge0\quad(h\in V).\]
+反之，若 \(DJ(u)|_V=0\)，且存在 \(c>0\)，使
+\[D^2J(u)[h,h]\ge c\lVert h\rVert_X^2\quad(h\in V),\]
+则 \(u\) 是 \(J\) 在 \(u+V\) 上的严格局部极小点。
+\end{theorem}
+\begin{proof}
+必要性由一元函数 \(t\mapsto J(u+th)\) 的一、二阶极值条件得到。证明充分性时，利用 \(D^2J\) 的算子范数连续性，取 \(r>0\)，使 \(\lVert v-u\rVert_X<r\) 时 \(\lVert D^2J(v)-D^2J(u)\rVert<c/2\)。对 \(h\in V\)、\(0<\lVert h\rVert_X<r\)，上面的积分余项公式给出
+\[
+ J(u+h)-J(u)\ge\int_0^1(1-t)\frac c2\lVert h\rVert_X^2\,\mathrm dt
+ =\frac c4\lVert h\rVert_X^2>0.
+\]
+\end{proof}
+
+仅有非负第二变分并不足以判别极小：\(t^4\) 与 \(-t^4\) 在零点的第一、第二导数都为零，却有相反的极值性质。在无限维空间里，即使对每个非零 \(h\) 都有 \(D^2J(u)[h,h]>0\)，也不能直接得到定理要求的统一常数 \(c\)。后面处理 Dirichlet 能量时，正是 Poincaré 不等式把梯度能量转成整个函数空间范数的控制，从而弥补这一差别。

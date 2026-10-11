@@ -2,19 +2,71 @@
 \section{Calderón–Zygmund 分解}
 \label{b2:sec:1802}
 
-% TODO: 撰写本节正文。
+核的奇性不能靠输入处处小来控制，因为一个 \(L^1\) 函数可能具有任意高的尖峰。Calderón–Zygmund 分解把尖峰限制在可计量的坏区域，并使每块坏函数的总质量为零。
 
 \subsection{好/坏分解}
 \label{b2:subsec:180201}
 
-待填充。
+下面采用\term[calderon-zygmund-fenjie]{Calderón--Zygmund 分解}[Calderón--Zygmund decomposition]的下述版本。
+
+\begin{theorem}[Calderón--Zygmund 分解]\label{b2:thm:18-cz-decomposition}
+设 \(f\in L^1(\mathbb R^d)\)、\(\alpha>0\)。存在互不相交的二进立方体 \(Q_j\) 以及 \(f=g+\sum_jb_j\)，使
+\[
+ \sum_j|Q_j|\leq\alpha^{-1}\|f\|_1,\quad
+ \|g\|_\infty\leq2^d\alpha,\quad \|g\|_1\leq\|f\|_1,
+\]
+\[
+ b_j=(f-f_{Q_j})\mathbf1_{Q_j},\quad
+ \int b_j=0,\quad
+ \sum_j\|b_j\|_1\leq2\|f\|_1,
+\]
+其中 \(f_Q=|Q|^{-1}\int_Q f\)，级数在 \(L^1\) 中收敛。
+\end{theorem}
+\begin{proof}
+对 \(\{M_{\mathcal D}f>\alpha\}\) 取\cref{b2:thm:17-dyadic-level}的极大立方体。定义 \(g=f\) 在其并的补集上，\(g=f_{Q_j}\) 在每个 \(Q_j\) 内。立方体平均上界和二进微分结论分别控制内、外的本性上确界。\(\int_{Q_j}|g|\leq\int_{Q_j}|f|\)，所以 \(L^1\) 界成立。坏块积分为零，且 \(\|b_j\|_1\leq2\int_{Q_j}|f|\)。不交性给出范数和与收敛，逐点除坏区域外全部项为零，坏区域内至多一项非零，故分解等式成立。
+\end{proof}
+复值 \(f\) 的平均仍是复数，控制来自 \(|f_Q|\leq(|f|)_Q\)，不需要把正部负部分别分解。如果原函数还属于 \(L^2\)，则 \(g\in L^2\)，而坏块级数也在 \(L^2\) 中收敛：其尾部平方积分等于不交支集上平方积分的尾和。
+
+\ProseParagraphBreak
+
+好函数的名称只表示它有受控的高度，并不意味着连续或光滑。坏函数虽保留尖峰，却拥有零平均；这个条件会在远场去掉核的常数项。
 
 \subsection{弱型 \texorpdfstring{\((1,1)\)}{(1,1)}}
 \label{b2:subsec:180202}
 
-待填充。
+\begin{lemma}\label{b2:thm:18-cancellation-tail}
+设 \(b\in L^1\) 支撑于边长 \(\ell\)、中心 \(c\) 的立方体 \(Q\)，且 \(\int b=0\)。若核满足
+\[
+ |K(x,y)-K(x,c)|\leq C\dfrac{|y-c|^\delta}{|x-c|^{d+\delta}}
+ \quad(|x-c|\geq2|y-c|)
+\]
+其中 \(\delta>0\)，则在 \(Q^*=8\sqrt d\,Q\) 外有
+\[
+ \int_{\mathbb R^d\setminus Q^*}
+ \left|\int_QK(x,y)b(y)\,\mathrm dy\right|\,\mathrm dx
+ \leq C_{d,\delta}\|b\|_1.
+\]
+\end{lemma}
+\begin{proof}
+零平均使积分等于 \(\int_Q(K(x,y)-K(x,c))b(y)\,\mathrm dy\)。在扩大立方体外，\(|x-c|\geq4\sqrt d\,\ell\)，而 \(|y-c|\leq\sqrt d\,\ell/2\)，故差分假设适用。先对 \(y\) 取绝对积分，再对 \(x\) 用极坐标，尾核积分为
+\[
+ C\ell^\delta\int_{|x-c|\geq4\sqrt d\,\ell}|x-c|^{-d-\delta}\,\mathrm dx
+ \leq C_{d,\delta}.
+\]
+Tonelli 完成积分交换。
+\end{proof}
+若不减去 \(K(x,c)\)，大小条件只有 \(|x-c|^{-d}\)，其远场绝对积分发散。这说明分解中的零平均不是方便的附属性质，而是端点估计中不可替代的衰减来源。扩大倍数的具体值只为了保证差分假设，后续常数允许依赖维数。
 
 \subsection{插值}
 \label{b2:subsec:180203}
 
-待填充。
+将好部分交给 \(L^2\) 理论、坏部分交给上段尾估计，就能得到弱 \((1,1)\)。设暂时 \(f\in L^1\cap L^2\)，\(T\) 在 \(L^2\) 上有界，取 \(\alpha=t\)。好部分满足
+\[
+ |\{|Tg|>t/2\}|\leq4t^{-2}\|T\|_{2\to2}^2\|g\|_2^2
+ \leq C t^{-1}\|f\|_1,
+\]
+因为 \(\|g\|_2^2\leq\|g\|_\infty\cdot\|g\|_1\)。坏立方体扩大后的并也有不超过 \(C t^{-1}\|f\|_1\) 的测度。在其补集上，核差分给出 \(\int|T\sum_jb_j|\leq C\sum_j\|b_j\|_1\)。对这项使用 \(L^1\) Chebyshev 即得同一界。
+
+\ProseParagraphBreak
+
+若坏块有无穷多个，先对有限和应用尾估计，再使用 \(L^2\) 收敛抽取几乎处处收敛子列和 Fatou。不能假定算子输出的无穷级数先在 \(L^1\) 中收敛；结论只在坏区域的补集上有该积分控制。下一节把核与算子的准确假设固定下来。

@@ -1,0 +1,92 @@
+% !TeX root = ../../Book2.tex
+\section{Hermite 函数与谐振子}
+\label{b2:sec:B201}
+
+指数函数适合平移不变算子，带有二次势能的算子却同时涉及位置和频率。Hermite 函数把多项式与 Gauss 衰减结合起来，既形成全空间的正交基，又使谐振子和 Fourier 变换具有简单的谱表示。归一化必须与 Fourier 指数中的 \(2\pi\) 分开核对。
+
+\subsection{多项式、正交性与完备性}
+\label{b2:subsec:B20101}
+
+定义 \term[hermite-duoxiangshi]{Hermite 多项式}[Hermite polynomial]
+\[H_n(x)=(-1)^ne^{x^2}\frac{\mathrm d^n}{\mathrm dx^n}e^{-x^2},\qquad n=0,1,2,\ldots.\]
+这是权重为 \(e^{-x^2}\) 的常用约定；概率论中权重 \(e^{-x^2/2}\) 的同名多项式需要缩放。由定义求导得到 \(H_{n+1}=2xH_n-H_n'\)，故 \(H_n\) 是首项 \(2^nx^n\) 的 \(n\) 次多项式。前几项为 \(1,2x,4x^2-2,8x^3-12x\)。
+
+\begin{proposition}[Hermite 正交基]
+\label{b2:prop:B2-hermite-basis}
+令
+\[\widetilde h_n(x)=\frac{H_n(x)e^{-x^2/2}}{(2^nn!\sqrt\pi)^{1/2}}.\]
+则 \((\widetilde h_n)_{n\ge0}\) 是 \(L^2(\mathbb R)\) 的标准正交基。
+\end{proposition}
+\begin{proof}
+分部积分 \(n\) 次，所有边界项都因多项式乘 Gauss 衰减而为零，得
+\[\int_\mathbb R H_nH_m e^{-x^2}\,\mathrm dx
+ =\int_\mathbb R e^{-x^2}H_m^{(n)}\,\mathrm dx.
+\]
+若 \(m<n\)，右端为零；\(m=n\) 时为 \(2^nn!\sqrt\pi\)。交换指标处理另一半，得到标准正交性。
+
+为证完备性，设 \(g\in L^2\) 与全部 \(\widetilde h_n\) 正交。由于 \(H_n\) 的阶数逐次增加且首系数非零，它们张成全部多项式，故 \(\int g(x)e^{-x^2/2}x^n\,\mathrm dx=0\) 对每个 \(n\) 成立。对固定实数 \(t\)，Cauchy--Schwarz 不等式保证
+\[\int|g(x)|e^{-x^2/2}e^{|t||x|}\,\mathrm dx<\infty.\]
+因此可以把 \(e^{-itx}\) 的幂级数逐项积分，得到 \(g e^{-x^2/2}\) 的 Fourier 变换在所有实频率为零。该乘积属于 \(L^1\)，本卷已经证明的 Fourier 唯一性推出它几乎处处为零，继而 \(g=0\)。正交补为零即完备。
+\end{proof}
+
+函数 \(\widetilde h_n\) 是另一种尺度归一化的 Hermite 函数；与第五章的归一化之间的关系将在本节末写明。证明中的正交性来自反复分部积分，完备性却依赖对全部频率的唯一性；前者不能替代后者。仅计算出许多正交模态，尚不足以断言它们可以展开任意平方可积函数。
+\symidx{\(\widetilde h_n\)：谐振子尺度的 Hermite 函数}
+
+\subsection{升降算子与二次势能}
+\label{b2:subsec:B20102}
+
+在 Schwartz 函数上定义
+\[a=\frac1{\sqrt2}\left(x+\frac{\mathrm d}{\mathrm dx}\right),\qquad
+ a^*=\frac1{\sqrt2}\left(x-\frac{\mathrm d}{\mathrm dx}\right).
+\]
+星号与 \(L^2\) 伴随关系相容，因为分部积分把微分变号。直接展开给出 \(aa^*-a^*a=I\)，以及
+\[\mathcal L=-\frac{\mathrm d^2}{\mathrm dx^2}+x^2=2a^*a+I.\]
+算子 \(\mathcal L\) 称为 \term[xiezhenzi]{谐振子}[harmonic oscillator]；此处固定无量纲系数，物理质量与频率可通过缩放恢复。
+
+\begin{proposition}[谐振子的特征函数]
+\label{b2:prop:B2-oscillator-eigenfunctions}
+Hermite 函数满足
+\[a\widetilde h_n=\sqrt n\,\widetilde h_{n-1},\qquad a^*\widetilde h_n=\sqrt{n+1}\,\widetilde h_{n+1},\qquad
+ \mathcal L\widetilde h_n=(2n+1)\widetilde h_n,\]
+其中 \(a\widetilde h_0=0\)。
+\end{proposition}
+\begin{proof}
+由 \(H_{n+1}=2xH_n-H_n'\) 直接得到升算子公式。又 \(a\widetilde h_0=0\)，而 \([a,a^*]=I\) 推出 \(a(a^*)^n=(a^*)^na+n(a^*)^{n-1}\)。反复使用升算子公式得到 \(\widetilde h_n=(a^*)^n\widetilde h_0/\sqrt{n!}\)，代入即得降算子公式。最后由 \(\mathcal L=2a^*a+I\) 得到特征值。
+\end{proof}
+
+对任意 \(f\in L^2\)，写 \(f=\sum c_n\widetilde h_n\)。可以精确定义自伴实现为
+\[
+ D(\mathcal L)=\left\{f:\sum_{n=0}^\infty(2n+1)^2|c_n|^2<\infty\right\},\qquad
+ \mathcal Lf=\sum_{n=0}^\infty(2n+1)c_n\widetilde h_n.
+\]
+这个定义域不是全部 \(L^2\)。系数表示把算子变成实数序列的乘法；伴随泛函有界的充要条件恰是同一个加权平方可和条件，因此它自伴。对 Schwartz 函数，分部积分与特征函数公式说明该实现等于微分表达式。有限 Hermite 和在图范数中稠密，因此由算子在有限和上的作用及其闭性，就能恢复整个自伴实现。
+
+\ProseParagraphBreak
+
+逆算子 \((\mathcal L+I)^{-1}\) 的特征值为 \((2n+2)^{-1}\to0\)，截断为前 \(N\) 项后，算子范数误差为 \((2N+4)^{-1}\)。因此该逆是紧算子。二次势能把函数的质量限制在有限位置，离散特征值趋向无穷；这与全空间自由 Laplace 算子的连续 Fourier 频率形成不同的谱结构。
+
+\subsection{本卷 Fourier 约定下的特征基}
+\label{b2:subsec:B20103}
+
+对本卷的 \(2\pi\) Fourier 变换，定义缩放后的标准正交基
+\[\psi_n(x)=(2\pi)^{1/4}\widetilde h_n(\sqrt{2\pi}\,x).\]
+其中 \(\psi_0(x)=2^{1/4}e^{-\pi x^2}\)，正好由 Gauss Fourier 公式保持不变。这里的 \(\psi_n\) 就是第五章记作 \(h_n\) 的归一化；本附录用 \(\widetilde h_n\) 区分谐振子尺度，避免在两种高斯指数之间混用公式。
+
+\begin{theorem}[Fourier 变换的 Hermite 特征展开]
+\label{b2:thm:B2-fourier-hermite}
+对所有 \(n\ge0\)，有 \(\widehat\psi_n=(-i)^n\psi_n\)。因此若 \(f=\sum c_n\psi_n\) 于 \(L^2(\mathbb R)\)，则
+\[\widehat f=\sum_{n=0}^\infty(-i)^nc_n\psi_n\quad\text{于 }L^2.\]
+\end{theorem}
+\begin{proof}
+缩放后的升算子与 \(2\pi x-\frac{\mathrm d}{\mathrm dx}\) 成正比。Fourier 微分公式给出
+\[\mathcal F\left(\left(2\pi x-\frac{\mathrm d}{\mathrm dx}\right)f\right)
+ =-i\left(2\pi\xi-\frac{\mathrm d}{\mathrm d\xi}\right)\widehat f.
+\]
+从 \(\widehat\psi_0=\psi_0\) 出发，逐次使用升算子得到全部特征值。对有限和结论已成立，利用 Fourier 的 \(L^2\) 连续性和正交展开取极限，即得一般形式。
+\end{proof}
+
+由此再次看到 \(\mathcal F^4=I\)，以及偶、奇模态分别对应反射的正、负特征值。但每个 Fourier 特征值都有无穷多个模态：\(n\) 相差 \(4\) 时相位相同，故 Fourier 变换的四个特征空间都无限维。谐振子的特征值则逐阶区分这些模态，两个谱展开虽共用一组函数，却表达不同算子的信息。
+
+\ProseParagraphBreak
+
+在 \(\mathbb R^d\) 上取张量积 \(\widetilde h_\alpha(x)=\prod_{j=1}^d \widetilde h_{\alpha_j}(x_j)\)。Fubini 和一维完备性逐坐标应用，给出 \(L^2(\mathbb R^d)\) 的标准正交基。算子 \(-\Delta+|x|^2\) 的特征值为 \(2|\alpha|+d\)，所以第 \(n\) 层的重数是满足 \(|\alpha|=n\) 的多重指标个数 \(\binom{n+d-1}{d-1}\)。这一简并来自不同坐标方向分配同一总阶数，与球谐展开按角动量分类的方式不同。

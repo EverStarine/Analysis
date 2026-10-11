@@ -2,24 +2,111 @@
 \section{一维振荡积分}
 \label{b2:sec:2101}
 
-% TODO: 撰写本节正文。
+正积分的大小由振幅总量决定，振荡积分还受到相位变化的制约。令
+\[
+ I_\lambda(a,\phi)=\int_\alpha^\beta e^{2\pi\mathrm i\lambda\phi(t)}a(t)\,\mathrm dt,
+ \qquad \lambda\ge1.
+\]
+这里相位为实函数，振幅允许取复值。衰减估计中的常数必须说明依赖哪些导数与非退化下界；若这些量随参数恶化，单写一个与参数无关的 \(O(\lambda^{-1})\) 就失去了内容。
 
 \subsection{分部积分}
 \label{b2:subsec:210101}
 
-待填充。
+假设 \(\phi'\ne0\)，并令 \(a\) 绝对连续。由
+\[
+ e^{2\pi\mathrm i\lambda\phi}
+ =\frac1{2\pi\mathrm i\lambda\phi'}\frac{\mathrm d}{\mathrm dt}e^{2\pi\mathrm i\lambda\phi}
+\]
+得到边界项与余项的准确分离：
+\[
+ I_\lambda=\left[\frac{e^{2\pi\mathrm i\lambda\phi}a}{2\pi\mathrm i\lambda\phi'}\right]_\alpha^\beta
+ -\frac1{2\pi\mathrm i\lambda}\int_\alpha^\beta e^{2\pi\mathrm i\lambda\phi}
+       \left(\frac a{\phi'}\right)'\,\mathrm dt.
+\]
+若振幅在两端消失，第一项为零；若不消失，就必须保留它。对于线性相位与常数振幅，全部积分恰好由边界给出。这也说明增加振幅的光滑性而不处理边界，通常不能得到任意阶衰减。
+
+\ProseParagraphBreak
+在 \(|\phi'|\ge c>0\) 时，上式给出的上界为
+\[
+ |I_\lambda|\le\frac1{2\pi\lambda}
+ \left[c^{-1}\bigl(|a(\alpha)|+|a(\beta)|+\|a'\|_1\bigr)
+       +c^{-2}\int |a\phi''|\right].
+\]
+分母中出现的是相位导数；大的相位本身并不保证振荡，例如加上任意常数只改变整体复相位。
 
 \subsection{非驻相}
 \label{b2:subsec:210102}
 
-待填充。
+\begin{proposition}[非驻相衰减]\label{b2:prop:21-nonstationary-one}
+若 \(a\in C_c^\infty((\alpha,\beta))\)、\(\phi\in C^\infty\)，且在振幅支撑的一个邻域内 \(|\phi'|\ge c>0\)，则对每个整数 \(N\ge1\)，
+\[
+ |I_\lambda|\le C_N\lambda^{-N}.
+\]
+常数只依赖该邻域上 \(c^{-1}\)、相位的有限阶导数及振幅的有限阶导数。
+\end{proposition}
+\begin{proof}
+把上一个公式反复用于振幅，定义
+\(a_0=a\)、\(a_{j+1}=-(a_j/\phi')'\)。
+每个 \(a_j\) 仍紧支撑于同一个集合，因此没有边界项，且
+\(I_\lambda=(2\pi\mathrm i\lambda)^{-N}\int e^{2\pi\mathrm i\lambda\phi}a_N\)。
+对 \(a_N\) 取 \(L^1\) 范数即得结论。商的每次求导只增加有限阶相位导数及 \(\phi'\) 的负幂，说明了常数依赖。
+\end{proof}
+紧支撑应理解为支撑远离正在使用公式的积分域边界。把光滑函数硬截断在一个区间上，会产生新的边界项，不能直接套用此命题。
 
 \subsection{van der Corput 引理}
 \label{b2:subsec:210103}
 
-待填充。
+下面采用\term[van-der-corput-yinli]{van der Corput 引理}[van der Corput lemma]的下述版本。
+
+\begin{theorem}[van der Corput 引理]\label{b2:thm:21-vdc}
+设 \(a\) 绝对连续，\(\phi\in C^k([\alpha,\beta])\)。若 \(k=1\)，假设 \(|\phi'|\ge1\) 且 \(\phi'\) 单调；若 \(k\ge2\)，假设 \(|\phi^{(k)}|\ge1\)。则
+\[
+ |I_\lambda|\le C_k\lambda^{-1/k}
+ \bigl(\|a\|_\infty+\|a'\|_1\bigr).
+\]
+\end{theorem}
+\begin{proof}
+先取振幅为 \(1\)。\(k=1\) 时分部积分，单调性给出
+\(\int|(\phi')^{-2}\phi''|\le2\)，故任意子区间上的积分不超过 \(C\lambda^{-1}\)。
+下面证明所需的次水平集估计：若 \(|h^{(r)}|\ge1\)，则
+\[
+ |\{t:|h(t)|\le\delta\}|\le C_r\delta^{1/r}.
+\]
+记左边为 \(L>0\)。按该集合的累积测度选择 \(r+1\) 个点，使任意两相邻点的距离至少 \(L/(2r)\)；可先以略低于 \(L\) 的测度作选择，再取极限。插值多项式的最高次系数为
+\(\sum_{j=0}^r h(t_j)/\prod_{\ell\ne j}(t_j-t_\ell)\)，绝对值至多 \(C_r\delta L^{-r}\)。
+逐次应用 Rolle 定理，某点的 \(h^{(r)}/r!\) 等于这个系数，得到所需估计。
+
+对 \(h=\phi'\)、\(r=k-1\) 应用它。集合 \(|\phi'|\le\delta\) 上的积分至多 \(C_k\delta^{1/(k-1)}\)。其补集可分成有限个 \(\phi'\) 单调且 \(|\phi'|>\delta\) 的区间：\(\phi^{(k)}\) 无零点，Rolle 定理说明 \(\phi''\) 至多有 \(k-2\) 个零点；每个单调区间再按 \(\pm\delta\) 切分。第一阶估计在这些区间给出总上界 \(C_k(\lambda\delta)^{-1}\)。
+取 \(\delta=\lambda^{-(k-1)/k}\)，两项均为 \(C_k\lambda^{-1/k}\)。
+
+最后设 \(F(t)=\int_\alpha^t e^{2\pi\mathrm i\lambda\phi(s)}\,\mathrm ds\)。
+上面的证明适用于每个子区间，所以 \(\|F\|_\infty\le C_k\lambda^{-1/k}\)。
+公式 \(I_\lambda=a(\beta)F(\beta)-\int a'F\) 给出一般振幅的结论。
+\end{proof}
+第一阶中单调性不能删除。相位导数始终非零但反复变化时，分部积分会积累导数的总变差；只有下界而没有该变差控制，便不能保证统一常数。
 
 \subsection{衰减估计}
 \label{b2:subsec:210104}
 
-待填充。
+若相位的第 \(k\) 阶导数下界为 \(c\)，对 \(\lambda c\) 应用定理，可得到 \(C_k(\lambda c)^{-1/k}\) 的上界。因此相位趋于退化时，常数会变大。以
+\(\phi(t)=t^k\)、振幅在原点等于 \(1\) 为例，令 \(s=\lambda^{1/k}t\)，便出现自然尺度 \(\lambda^{-1/k}\)。对于二次相位，该尺度确实达到；更高阶时适当选取单侧振幅也可避免两侧抵消。
+
+\ProseParagraphBreak
+常数下界与有限类型条件也可局部使用。若紧支撑上每一点至少有某个 \(1\le j\le k\) 满足 \(|\phi^{(j)}|\ge c\)，有限覆盖与光滑分割把积分分成若干项。第一阶部分还需细分成有受控变差的区间；其余部分可直接使用 van der Corput 引理。这里有限覆盖的大小、分割函数导数和非退化下界都进入常数。有限类型给出一个统一衰减率，并不说明每个点都以最坏的 \(k\) 阶速度贡献。
+
+% 扩写定位：b2:subsec:210104
+有限型估计在临界点碰撞时比逐点驻相更稳定。取
+\[
+ I(\lambda,s)=\int e^{2\pi\mathrm i\lambda(t^3-st)}a(t)\,\mathrm dt,
+ \qquad a\in C_c^\infty(\mathbb R).
+\]
+三阶导数恒为六，因此 van der Corput 给出
+\(|I(\lambda,s)|\leq C_a\lambda^{-1/3}\)，常数与 \(s\) 无关。若 \(s>0\)，两个临界点为 \(\pm\sqrt{s/3}\)，二阶导数大小为 \(2\sqrt{3s}\)；分别使用驻相会出现 \(s^{-1/4}\lambda^{-1/2}\) 的因子，不能在 \(s\downarrow0\) 时保持统一。
+
+\ProseParagraphBreak
+
+换元 \(t=\lambda^{-1/3}u\) 后，相位成为 \(u^3-(s\lambda^{2/3})u\)。因此碰撞区域的自然参数是 \(s\lambda^{2/3}\)，自然宽度是 \(s\asymp\lambda^{-2/3}\)。在这个区域，两点驻相的分离距离已经与波动尺度相当，应保持三次相位整体；当 \(s\lambda^{2/3}\) 很大时，才适合分别围绕两个临界点分析。这里的统一估计无需写出 Airy 函数，但缩放已经解释了为什么二次渐近在碰撞附近失效。
+
+\ProseParagraphBreak
+
+非驻相区域也需要与支撑相配合。若 \(s<0\)，则 \(\phi_s'(t)=3t^2+|s|\geq|s|\)，固定的负 \(s\) 给出任意阶衰减，但分部积分常数会随 \(|s|\downarrow0\) 增长；统一三阶界仍然有效。若振幅支撑远离零点，则即使 \(s\) 接近零，一阶导数也有统一下界，此时可以恢复快速衰减。由此可见，退化不是相位公式本身的孤立属性，必须连同振幅支撑和参数范围一起判断。

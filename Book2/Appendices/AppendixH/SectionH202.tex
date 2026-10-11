@@ -1,0 +1,111 @@
+% !TeX root = ../../Book2.tex
+\section{非线性通量与变分解}
+\label{b2:sec:H202}
+
+当通量是梯度的非线性函数时，线性叠加一般不再成立，凸性和单调性取代了许多线性代数工具。本节固定 \(1<p<\infty\)，从一般 \(p\) 次增长的局部估计开始，再对最基本的凸能量完整证明边值解的存在、唯一与比较。
+
+\subsection{拟线性椭圆方程}
+\label{b2:subsec:H20201}
+
+设 \(a(x,\xi)\) 对 \(x\) 可测、对 \(\xi\) 连续，且几乎处处满足
+\[a(x,\xi)\cdot\xi\ge\lambda|\xi|^p,
+ \qquad |a(x,\xi)|\le\Lambda|\xi|^{p-1}.\]
+这类 \term[NixianxingTuoyuanFangcheng]{拟线性椭圆方程}[quasilinear elliptic equation] 的散度型弱形式为
+\[\int_\Omega a(x,\nabla u)\cdot\nabla\varphi=0,
+ \qquad\varphi\in C_c^\infty(\Omega),\quad u\in W^{1,p}_{\mathrm{loc}}(\Omega).\]
+增长条件使通量局部属于 \(L^{p'}\)，其中 \(p'=p/(p-1)\)，所以积分有意义并可延拓到紧支撑的 \(W^{1,p}\) 测试。这里的条件不含 \(u\) 自身或低阶项；更一般方程须为新增项另列增长与可积性假设。
+
+\begin{proposition}[非线性截断估计]
+\label{b2:prop:H2-p-caccioppoli}
+若 \(u\) 为上述方程的弱次解，\(w=(u-k)_+\)，则任意 \(0\le\eta\le1\) 光滑紧支集截断满足
+\[\int\eta^p|\nabla w|^p\le C\int w^p|\nabla\eta|^p,
+ \qquad \int|\nabla(\eta w)|^p\le C\int w^p|\nabla\eta|^p.\]
+\end{proposition}
+\begin{proof}
+用 \(\eta^pw\) 测试。梯度仅在 \(u>k\) 出现，主项由强制条件控制为 \(\lambda\int\eta^p|\nabla w|^p\)，交叉项的绝对值不超过
+\[p\Lambda\int(\eta|\nabla w|)^{p-1}w|\nabla\eta|.\]
+对共轭指数 \(p',p\) 使用带参数的 Young 不等式，吸收主项的一半，得到第一式；再由 \(|\nabla(\eta w)|^p\le C_p(\eta^p|\nabla w|^p+w^p|\nabla\eta|^p)\) 得第二式。若 \(k<0\)，论证仍成立，因为方程通量不依赖 \(u\) 的值。
+\end{proof}
+
+\begin{theorem}[非线性次解的局部有界性]
+\label{b2:thm:H2-p-bounded}
+上述次解在 \(B_{2R}\) 中满足
+\[\operatorname*{ess\,sup}_{B_R}u_+\le C\left(R^{-d}\int_{B_{2R}}u_+^p\right)^{1/p}.\]
+常数只依赖 \(d,p,\lambda,\Lambda\)。
+\end{theorem}
+\begin{proof}
+先缩放至单位球；变换后的通量保持相同增长常数。若 \(p<d\)，取 \(\chi=d/(d-p)>1\)，若 \(p\ge d\)，取任意固定 \(\chi>1\)，例如 \(2\)。对紧支撑于 \(B_2\) 的 \(z\)，均有 \(\lVert z\rVert_{p\chi}\le C\lVert\nabla z\rVert_p\)：临界及超临界情形可选择 \(q<d\) 使 \(q^*=p\chi\)，再用有界球上 \(L^p\) 控制 \(L^q\)。一维直接由积分基本定理控制上确界，以下只需考虑 \(d\ge2\)。
+
+设 \(r_j=1+2^{-j}\)、\(k_j=K(1-2^{-j})\)、\(Y_j=\int_{B_{r_j}}(u-k_j)_+^p\)。在两相邻球间取截断，并应用上个命题和 Sobolev 不等式。由于集合 \(E_{j+1}=B_{r_{j+1}}\cap\{u>k_{j+1}\}\) 的测度至多为 \((k_{j+1}-k_j)^{-p}Y_j\)，Hölder 不等式给出
+\[Y_{j+1}\le C2^{pj}Y_j\cdot|E_{j+1}|^{1-1/\chi}
+ \le Cb^jK^{-p\alpha}Y_j^{1+\alpha},\qquad\alpha=1-1/\chi>0,\]
+其中 \(b>1\) 只依赖固定指数。令 \(Z_j=Y_j/K^p\)，则 \(Z_{j+1}\le Cb^jZ_j^{1+\alpha}\)。若 \(Z_0\le C^{-1/\alpha}b^{-1/\alpha^2}\)，归纳可得 \(Z_j\le C^{-1/\alpha}b^{-j/\alpha-1/\alpha^2}\)，从而趋零。选 \(K\) 为 \(\lVert u_+\rVert_{L^p(B_2)}\) 的固定倍数即可满足该条件。极限说明 \((u-K)_+=0\) 于 \(B_1\)，最后恢复空间尺度即得结论。
+\end{proof}
+
+这里没有使用通量的严格单调性；局部能量与增长已经足以建立上界。唯一性却需要比较两个不同梯度，只有单点强制条件无法保证，因此须增加下面的单调结构。
+
+\subsection{\texorpdfstring{\(p\)}{p}-Laplace 方程}
+\label{b2:subsec:H20202}
+
+基本模型为 \term[pLaplaceSuanzi]{\(p\)-Laplace 算子}[p-Laplace operator]
+\[\Delta_pu\coloneqq\operatorname{div}(|\nabla u|^{p-2}\nabla u).\]
+在零梯度处把通量定义为零；\(p>1\) 保证这个延拓连续。记 \(F(\xi)=|\xi|^{p-2}\xi\)，它是严格凸函数 \(|\xi|^p/p\) 的梯度。
+
+\begin{lemma}[通量的严格单调性]
+\label{b2:lem:H2-monotonicity}
+若 \(\xi\ne\eta\)，则 \((F(\xi)-F(\eta))\cdot(\xi-\eta)>0\)。更具体地，存在 \(c_p>0\) 使
+\[(F(\xi)-F(\eta))\cdot(\xi-\eta)\ge
+ \begin{cases}c_p|\xi-\eta|^p,&p\ge2,\\
+ c_p(|\xi|+|\eta|)^{p-2}|\xi-\eta|^2,&1<p<2.
+ \end{cases}\]
+第二式在两向量均为零时理解为零。
+\end{lemma}
+\begin{proof}
+令 \(h=\xi-\eta\)。对非零 \(z\)，矩阵 \(DF(z)\) 在径向及切向的特征值分别为 \((p-1)|z|^{p-2}\) 与 \(|z|^{p-2}\)。沿线段积分得到
+\[(F(\xi)-F(\eta))\cdot h\ge\min(1,p-1)|h|^2\int_0^1|\eta+th|^{p-2}\,\mathrm dt.\]
+线段穿过零点时可能出现 \(|t-t_0|^{p-2}\)，它因 \(p>1\) 可积，故可分段取极限；\(h=0\) 情形显然。若 \(p<2\)，\(|\eta+th|\le|\xi|+|\eta|\) 且指数为负，直接得到所列下界。若 \(p\ge2\)，投影到 \(h\) 的方向，\(|\eta+th|\ge|h||t+c|\)。区间长度为一时，\(\int_0^1|t+c|^{p-2}\,\mathrm dt\) 的最小值在中心对称位置达到，等于 \(2^{2-p}/(p-1)\)。代入即得正的常数倍 \(|h|^p\)。
+\end{proof}
+
+当 \(p=2\) 时通量线性，回到 Laplace 方程。\(p>2\) 时零梯度处线性化退化，\(1<p<2\) 时其系数在零梯度附近奇异。因此，不能先形式微分，再把所得方程当成具有统一有界系数的线性方程。即便解已经局部有界，梯度的上、下界仍未由此获得。
+
+\subsection{非线性变分问题}
+\label{b2:subsec:H20203}
+
+设 \(\Omega\) 有界，\(a\) 可测且 \(0<a_0\le a(x)\le a_1\)。令 \(g\in W^{1,p}(\Omega)\)，\(X=W_0^{1,p}(\Omega)\) 以梯度范数赋范，\(\ell\in X^*\)。在仿射类 \(g+X\) 上定义
+\[J(g+w)\coloneqq\frac1p\int_\Omega a(x)|\nabla(g+w)|^p\,\mathrm dx-\ell(w).\]
+这里仅对零边界增量施加泛函，因此不必先把 \(\ell\) 延拓到整个 \(W^{1,p}\)。不同延拓只改变固定边界类上的常数，不改变极小元。
+
+\begin{theorem}[加权 \(p\) 次能量的 Dirichlet 解]
+\label{b2:thm:H2-variational}
+上述能量有唯一极小元 \(u\in g+X\)，它是该边界类中唯一满足
+\[\int_\Omega a(x)|\nabla u|^{p-2}\nabla u\cdot\nabla\varphi=\ell(\varphi)
+ \quad(\varphi\in X)\]
+的弱解。若 \(g=0\)，还有 \(\lVert\nabla u\rVert_p^{p-1}\le a_0^{-1}\lVert\ell\rVert_{X^*}\)。
+\end{theorem}
+\begin{proof}
+由 \(|\nabla w|^p\le2^{p-1}(|\nabla(g+w)|^p+|\nabla g|^p)\)，能量下界为 \(c\lVert\nabla w\rVert_p^p-\lVert\ell\rVert\lVert\nabla w\rVert_p-C_g\)，故极小序列在 \(X\) 有界。\(1<p<\infty\) 保证自反性，因而可取弱收敛子列。积分项为凸泛函，且强连续：基本不等式
+\[\bigl||\xi|^p-|\eta|^p\bigr|\le p(|\xi|+|\eta|)^{p-1}|\xi-\eta|\]
+与 Hölder 不等式给出该连续性。凸强连续泛函弱下半连续，连续线性项弱连续，所以第十四章直接法的论证给出极小元。
+
+对任意 \(\varphi\in X\)，能量沿 \(u+t\varphi\) 可微。差商由常数倍 \((|\nabla u|+|\nabla\varphi|)^{p-1}|\nabla\varphi|\) 控制，此函数可积；控制收敛给出所列弱等式。反之，凸函数的切平面不等式说明满足弱等式者使能量全局最小。若有两个解，以差测试两式之差，上一引理及 \(a\ge a_0\) 迫使梯度相等，零迹差的 Poincaré 不等式给出函数相等。最后在零边界情形以 \(u\) 测试，有 \(a_0\lVert\nabla u\rVert_p^p\le\lVert\ell\rVert\lVert\nabla u\rVert_p\)，约去即可。
+\end{proof}
+
+同一单调性也给出比较原理。若两解边界有序、源项有序，用正部差测试即可推出解有序，完整计算见本附录习题。存在性证明使用了能量的势结构；一般单调通量未必等于某个势的梯度，不能因此宣称上面的极小化证明已经覆盖全部拟线性方程。
+
+\subsection{径向解与低正则理论的边界}
+\label{b2:subsec:H20204}
+
+设 \(u(x)=U(r)\)、\(r=|x|>0\)。径向散度计算给出
+\[\Delta_pu=r^{1-d}\frac{\mathrm d}{\mathrm dr}\bigl(r^{d-1}|U'|^{p-2}U'\bigr).\]
+于是穿孔区域的非恒定径向 \(p\)-调和函数为
+\[U(r)=A+Br^{(p-d)/(p-1)}\quad(p\ne d),\qquad
+ U(r)=A+B\log r\quad(p=d).\]
+计算从恒定径向通量开始，先解 \(|U'|^{p-2}U'=Cr^{1-d}\)，再积分即可。公式中的常数 \(B\) 已吸收指数与通量之间的非线性关系，不能把 \(B\) 直接认作源点质量。
+
+\ProseParagraphBreak
+
+这个例子还区分了“穿孔域中解方程”和“在原点两侧弱解方程”。非零径向通量穿过每个小球面的总量为同一非零常数；即使 \(p>d\) 时函数在原点有有限极限，它在全球中仍携带点源。此时梯度的 \(p\) 次径向积分为常数倍 \(\int_0^1r^{-(d-1)/(p-1)}\,\mathrm dr\)，恰因 \(p>d\) 而有限，所以这是具有点源的 Sobolev 解，不能把点源忽略。\(p\le d\) 时该能量发散，与同一函数不属于全球自然能量空间一致。
+
+\ProseParagraphBreak
+
+对于一般 \(p\) 次增长方程，进一步的正解 Harnack 不等式、局部 Hölder 连续及更精细的梯度正则性需要额外论证。这里已经证明截断能量、局部有界和凸势模型的边值存在唯一性，尚未用线性 Harnack 代替这些非线性步骤。阅读非线性势论时，应逐项查看方程是否齐次、是否有低阶项、右端是函数还是测度，以及结论针对解本身还是梯度；这些差别会改变自然尺度与有效指数。

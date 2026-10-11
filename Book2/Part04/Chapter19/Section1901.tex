@@ -2,19 +2,68 @@
 \section{Riesz 势}
 \label{b2:sec:1901}
 
-% TODO: 撰写本节正文。
+卷积核 \(|x|^{\alpha-d}\) 在原点可积，但在无穷远不可积。它改善可积指数而不是保持原来的指数；这种改善由核的齐次尺度决定。
 
 \subsection{分数积分}
 \label{b2:subsec:190101}
 
-待填充。
+\begin{definition}\label{b2:thm:19-potential-definition}
+设 \(0<\alpha<d\)。对适当的可测 \(f\)，定义\term[riesz-shi]{Riesz 势}[Riesz potential]
+\[
+ I_\alpha f(x)\coloneqq c_{d,\alpha}\int_{\mathbb R^d}
+ |x-y|^{\alpha-d}f(y)\,\mathrm dy,\qquad
+ c_{d,\alpha}=\dfrac{\Gamma((d-\alpha)/2)}
+ {2^\alpha\pi^{d/2}\Gamma(\alpha/2)}.
+\]
+\symidx{\(I_\alpha f\)：Riesz 势}
+正函数时允许取无穷值；一般函数先要求绝对积分存在。
+\end{definition}
+此参数 \(\alpha\) 是增加的光滑阶数，不是核中负幂的大小。为了核对 Fourier 常数，利用热核 \(G_t(x)=(4\pi t)^{-d/2}e^{-|x|^2/(4t)}\) 写成
+\[
+ c_{d,\alpha}|x|^{\alpha-d}
+ =\dfrac1{\Gamma(\alpha/2)}
+ \int_0^\infty t^{\alpha/2-1}G_t(x)\,\mathrm dt.
+\]
+换元 \(s=|x|^2/(4t)\) 直接得到右侧的 Gamma 积分。对测试函数的配对可以用截断热积分再取极限；Fourier 热符号给出
+\[
+ \widehat{I_\alpha f}(\xi)=(2\pi|\xi|)^{-\alpha}\widehat f(\xi).
+\]
+低频奇性局部可积恰由 \(\alpha<d\) 保证。对非负紧支集输入，空间积分定义与分布定义相同，不需额外的零平均条件。
 
 \subsection{缩放}
 \label{b2:subsec:190102}
 
-待填充。
+若 \(f_\lambda(x)=f(\lambda x)\)、\(\lambda>0\)，换元给出
+\[
+ I_\alpha f_\lambda(x)=\lambda^{-\alpha}(I_\alpha f)(\lambda x).
+\]
+假如存在尺度一致的 \(L^p\to L^q\) 估计，非零测试函数代入后必须满足
+\[
+ \dfrac1q=\dfrac1p-\dfrac\alpha d.
+\]
+这只是必要条件，不给出有界性。特别是同指数 \(L^p\to L^p\) 的全空间估计与齐次尺度不相容；加上低频正则化的 Bessel 势则是另一种非齐次算子。
+
+\ProseParagraphBreak
+
+对 \(f\geq0\) 紧支集且质量非零，远场 \(I_\alpha f(x)\) 与 \(|x|^{\alpha-d}\) 同阶。对 \(p=1\) 的临界目标 \(q=d/(d-\alpha)\)，这个尾部的 \(q\) 次积分正好是对数发散。尺度关系允许的端点仍可能只有弱估计。
 
 \subsection{核估计}
 \label{b2:subsec:190103}
 
-待填充。
+下面采用\term[hedberg-guji]{Hedberg 估计}[Hedberg inequality]的下述版本。
+
+\begin{lemma}[Hedberg 估计]\label{b2:thm:19-hedberg}
+设 \(1\leq p<d/\alpha\)，\(f\in L^p(\mathbb R^d)\)。则
+\[
+ I_\alpha|f|(x)\leq C
+ \|f\|_p^{\alpha p/d}\cdot
+ (Mf(x))^{1-\alpha p/d}
+\]
+在 \(Mf(x)<\infty\) 处成立。
+\end{lemma}
+\begin{proof}
+对任意 \(R>0\)，近场分成 \(2^{-k-1}R<|x-y|\leq2^{-k}R\) 的环带。每带不超过 \(C(2^{-k}R)^\alpha Mf(x)\)，求和得 \(CR^\alpha Mf(x)\)。远场若 \(p>1\)，Hölder 与极坐标给出 \(CR^{\alpha-d/p}\|f\|_p\)；条件 \(\alpha p<d\) 正好保证远尾核属于 \(L^{p'}\)。当 \(p=1\)，直接用远场核的上界得到相同形式。
+
+若 \(Mf(x)>0\)、\(\|f\|_p>0\)，令 \(R=(\|f\|_p/Mf(x))^{p/d}\)，两个部分同阶。若 \(Mf(x)=0\)，所有中心球上 \(|f|\) 积分为零，递增球穷尽全空间，故 \(f=0\) 几乎处处。零范数同样直接处理。
+\end{proof}
+近场使用局部平均，远场使用全域可积性。只估计其中一边，不能得到尺度正确的势估计。这个平衡将在临界与非临界指数之间反复出现。

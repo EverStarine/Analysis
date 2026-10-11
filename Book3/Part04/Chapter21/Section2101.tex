@@ -2,24 +2,85 @@
 \section{Euler \texorpdfstring{\(\Gamma\)}{\AnalysisPdfGamma} 函数}
 \label{b3:sec:2101}
 
-% TODO: 撰写本节正文。
+阶乘满足递推关系，但把整数变量改成复变量后，递推本身并不决定函数。Euler 积分给出一个在右半平面全纯的候选；正实轴上的凸性将排除额外的周期因子。
 
 \subsection{Euler 积分}
 \label{b3:subsec:210101}
 
-待填充。
+\begin{definition}\label{b3:def:21-gamma}
+对 \(\operatorname{Re}z>0\)，定义\term[gamma-hanshu]{Gamma 函数}[gamma function]
+\[
+\Gamma(z)\coloneqq\int_0^\infty e^{-t}t^{z-1}\,\mathrm{d}t,
+\quad t^{z-1}=\exp((z-1)\log t).
+\]
+\end{definition}
+\symidx{\(\Gamma(z)\)：Gamma 函数}
+积分两端的性质不同。对紧集 \(K\subset\{\operatorname{Re}z>0\}\)，选 \(0<a\le\operatorname{Re}z\le b\)。在 \((0,1)\) 上，模由 \(t^{a-1}\) 控制；在 \([1,\infty)\) 上，由 \(e^{-t}t^{b-1}\) 控制。加入任意固定次 \(|\log t|\) 后仍可积，所以截断积分局部一致收敛，且可逐次微分：
+\[
+\Gamma^{(k)}(z)=\int_0^\infty e^{-t}t^{z-1}(\log t)^k\,\mathrm{d}t.
+\]
+这同时证明全纯性和后面微分公式的合法性。沿实轴趋近零时，原点端积分发散；这不是函数无法延拓，而是这一积分表示的适用域已经到达边界。
 
 \subsection{函数方程}
 \label{b3:subsec:210102}
 
-待填充。
+\begin{proposition}\label{b3:prop:21-recurrence}
+在右半平面有 \(\Gamma(z+1)=z\Gamma(z)\)，并且 \(\Gamma(1)=1\)。因此 \(\Gamma(n+1)=n!\) 对每个非负整数 \(n\) 成立。
+\end{proposition}
+\begin{proof}
+在 \([\varepsilon,R]\) 上分部积分。边界项为 \(-e^{-t}t^z\)，其在 \(R\to\infty\) 时趋零，在 \(\varepsilon\downarrow0\) 时因 \(\operatorname{Re}z>0\) 也趋零。两项积分的绝对收敛允许取极限，得递推。直接积分 \(e^{-t}\) 得 \(\Gamma(1)=1\)。
+\end{proof}
+函数 \(\Gamma(z)(1+\varepsilon\sin2\pi z)\) 也满足同一递推及整数点取值。这说明离散插值并不唯一，甚至加上全纯性也不够。要确定 Euler 的函数，需要另一个反映积分结构的性质。
 
 \subsection{对数凸性}
 \label{b3:subsec:210103}
 
-待填充。
+\begin{proposition}\label{b3:prop:21-logconvex}
+实函数 \(x\mapsto\log\Gamma(x)\) 在 \((0,\infty)\) 上严格凸。
+\end{proposition}
+\begin{proof}
+取 \(x\ne y\)、\(0<\lambda<1\)。把被积函数写为
+\((e^{-t}t^{x-1})^\lambda(e^{-t}t^{y-1})^{1-\lambda}\)，用 Hölder 不等式得
+\(\Gamma(\lambda x+(1-\lambda)y)\le\Gamma(x)^\lambda\Gamma(y)^{1-\lambda}\)。取等要求两个正函数成比例，即 \(t^{x-y}\) 几乎处处常数，这与 \(x\ne y\) 矛盾。取对数即得严格凸性。
+\end{proof}
+也可把二阶导数理解为概率方差。以 \(e^{-t}t^{x-1}/\Gamma(x)\) 为密度，\((\log\Gamma)''(x)\) 等于随机变量 \(\log t\) 的方差，严格为正。积分归一化在这里很关键；直接写 \(\Gamma''>0\) 只能证明普通凸性，不能代替对数凸性。
 
 \subsection{Bohr–Mollerup 定理}
 \label{b3:subsec:210104}
 
-待填充。
+以下结果称为\term[bohr-mollerup]{Bohr--Mollerup 定理}[Bohr--Mollerup theorem]。
+\begin{theorem}[Bohr--Mollerup]\label{b3:thm:21-bohr-mollerup}
+若 \(F:(0,\infty)\to(0,\infty)\) 满足 \(F(1)=1\)、\(F(x+1)=xF(x)\)，且 \(\log F\) 凸，则 \(F=\Gamma\)。
+\end{theorem}
+\begin{proof}
+令 \(h=\log F\)。对 \(0<x\le1\) 和整数 \(n\ge2\)，凸函数割线斜率的单调性给出
+\[
+x\log(n-1)\le h(n+x)-h(n)\le x\log n.
+\]
+递推给 \(F(n)=(n-1)!\) 和 \(F(n+x)=F(x)x(x+1)\cdots(x+n-1)\)，因而
+\[
+\frac{(n-1)!(n-1)^x}{x(x+1)\cdots(x+n-1)}
+\le F(x)\le
+\frac{(n-1)!n^x}{x(x+1)\cdots(x+n-1)}.
+\]
+左右端的比趋于一。同样的界适用于已经证明对数凸的 \(\Gamma\)，故 \(F(x)/\Gamma(x)\) 夹在 \(((n-1)/n)^x\) 与其倒数之间，极限为一。递推把结论从 \((0,1]\) 扩展到全部正实轴。
+\end{proof}
+定理的实变量条件不直接断言复平面上的唯一性；若另有全纯函数在正实轴满足这些条件，恒等定理才将实轴识别推广到连通的全纯区域。这个两步过程在特殊函数的规范化中经常出现。
+
+\ProseParagraphBreak
+
+对数凸性不仅用于唯一性，还给一族有实际误差控制的比值估计。设 \(x>0\)、\(0<a<1\)。把 \(x+a\) 写成 \(x,x+1\) 的凸组合，得到 \(\Gamma(x+a)\le x^a\Gamma(x)\)。再把 \(x+1\) 写成 \(x+a,x+a+1\) 的凸组合，得 \(\Gamma(x+1)\le(x+a)^{1-a}\Gamma(x+a)\)。合并便有
+\[
+ \left(\frac{x}{x+a}\right)^{1-a}
+ \le\frac{\Gamma(x+a)}{x^a\Gamma(x)}\le1.
+\]
+两端随 \(x\to\infty\) 都趋于一，且偏差为 \(O_a(1/x)\)。所以无需 Stirling 公式，已经得到 \(\Gamma(x+a)/\Gamma(x)\sim x^a\)。任意固定实 \(a\) 都可先减去一个整数使余数落在 \([0,1)\)，再用有限次递推推广这一渐近，只需保证所有 Gamma 参数最终为正。
+\ProseParagraphBreak
+例如半整数递推给
+\[
+ \Gamma\left(n+\frac12\right)=\frac{(2n)!}{4^n n!}\sqrt\pi.
+\]
+代入上面的 \(a=1/2\) 比值渐近，便得中心二项式系数
+\(\binom{2n}{n}\sim4^n/\sqrt{\pi n}\)。这里 \(\Gamma(1/2)=\sqrt\pi\) 可独立由 Gaussian 积分证明：令 \(t=u^2\)，再把 \((\int_{\mathbb R}e^{-u^2}\,\mathrm{d}u)^2\) 改为极坐标，平方为 \(\pi\)，取正根。这样不会用尚待证明的 Stirling 常数反过来确定 Gaussian 积分。
+\ProseParagraphBreak
+递推与凸性也解释了为何只指定整数值不足。若 \(P(x)>0\) 是一周期函数且 \(P(1)=1\)，那么 \(P(x)\Gamma(x)\) 仍插值全部阶乘。若 \(P\) 非常数，它不可能同时保持本定理的对数凸性；这不是凭图像看波动得出的判断，而是 Bohr--Mollerup 唯一性直接排除的结果。特殊函数的正规化通常包含额外的正性或增长条件，离散取值只是其中一部分。

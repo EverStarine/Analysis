@@ -2,19 +2,69 @@
 \section{自举法}
 \label{b2:sec:1602}
 
-% TODO: 撰写本节正文。
+得到二阶弱导数后，方程可以合法地再作分布微分。但每次微分都会同时作用于系数，产生新的右端。自举的关键不是一句“反复求导”，而是证明这些新项具有足够的可积性，使上一节的估计能够再次使用。
 
 \subsection{系数正则性}
 \label{b2:subsec:160201}
 
-待填充。
+以 \(-\operatorname{div}(A\nabla u)=f\) 为例，形式求 \(x_k\) 导数得到
+\[
+ -\operatorname{div}(A\nabla\partial_ku)
+ =\partial_kf+\operatorname{div}((\partial_kA)\nabla u).
+\]
+若只有 \(A\in W^{1,\infty}\)、\(f\in L^2\)，右端一般只属于 \(H^{-1}\)，不能再次套用要求 \(L^2\) 右端的二阶定理。若进一步 \(A\in W^{2,\infty}\)、\(f\in H^1\)，并且已经知道 \(u\in H^2\)，则 \((\partial_kA)\nabla u\in H^1\)，其散度属于 \(L^2\)，因而可以把 \(\partial_ku\) 提高到 \(H^2\)。
+
+\ProseParagraphBreak
+
+系数的这一级额外导数不可随意省略。例如在一维取正的 Lipschitz 系数 \(a(x)=1+|x|\)，令 \(u'(x)=1/a(x)\)。则 \(-(au')'=0\)，\(u\in H_{\mathrm{loc}}^2\)，但 \(u''\) 在零点有跳跃，故 \(u\notin H_{\mathrm{loc}}^3\)。右端已光滑，解仍受到系数不光滑的限制。这个例子精确对应上一行中对 \(\partial_kA\) 再求导的需要。
+
+\ProseParagraphBreak
+
+本节所列 \(W^{m+1,\infty}\) 条件是便于统一证明的一组充分条件，并非每个具体方程的最弱假设。常系数的导数项全部消失；若某些系数仅沿特定方向变化，也可能先在其他方向取得更高正则性。使用定理时可以利用这些特殊结构，但需要重做相应的乘积估计，不能把一般结论的假设凭经验删除。
 
 \subsection{高阶 Sobolev 正则性}
 \label{b2:subsec:160202}
 
-待填充。
+\begin{theorem}[内部高阶正则性]
+\label{b2:thm:16-higher-regularity}
+设 \(m\) 为非负整数，\(A\in W_{\mathrm{loc}}^{m+1,\infty}(\Omega;\mathbb R^{d\times d})\) 局部有界且一致椭圆，\(f\in H_{\mathrm{loc}}^m(\Omega)\)。若 \(u\in H_{\mathrm{loc}}^1(\Omega)\) 弱解 \(-\operatorname{div}(A\nabla u)=f\)，则 \(u\in H_{\mathrm{loc}}^{m+2}(\Omega)\)。对 \(U\Subset V\Subset\Omega\)，有
+\[\lVert u\rVert_{H^{m+2}(U)}
+ \le C\bigl(\lVert f\rVert_{H^m(V)}+\lVert u\rVert_{H^1(V)}\bigr),\]
+其中 \(C\) 依赖区域间距、椭圆下界和 \(A\) 在 \(V\) 上的相应系数范数。
+\end{theorem}
+\begin{proof}
+\(m=0\) 是 \cref{b2:thm:16-interior-h2} 及有限覆盖的结论。归纳假设已给出 \(u\in H_{\mathrm{loc}}^{m+1}\)。对 \(|\beta|=m\)，令 \(w=D^\beta u\in H_{\mathrm{loc}}^1\)。分布的乘积法则给出
+\[
+ -\operatorname{div}(A\nabla w)
+ =D^\beta f+\sum_{0<\gamma\le\beta}\binom\beta\gamma
+       \operatorname{div}\bigl((D^\gamma A)\nabla D^{\beta-\gamma}u\bigr).
+\]
+当 \(\beta=0\) 时和为空，已经处理。对和内每一项，系数 \(D^\gamma A\) 及其一阶导数有界，而 \(\nabla D^{\beta-\gamma}u\) 及其一阶导数的阶数最多为 \(m+1\)，故属于局部 \(L^2\)。乘积因此属于局部 \(H^1\)，其散度属于局部 \(L^2\)。右端第一项也由 \(f\in H^m\) 属于局部 \(L^2\)。将二阶定理应用于 \(w\)，得 \(D^\beta u\in H_{\mathrm{loc}}^2\)，即 \(u\in H_{\mathrm{loc}}^{m+2}\)。
+
+为得到定量界，在 \(U,V\) 之间选取有限个逐层嵌套的开集。每步二阶估计的右端由前一步已经控制的 \(H^{j+1}\) 范数、\(f\) 的 \(H^j\) 范数及系数的 \(W^{j+1,\infty}\) 范数控制。依次代入归纳估计并合并有限个常数，得到所列不等式。乘积法则可以先局部磨光，再在相应 Sobolev 范数中取极限，所以没有预设经典高阶导数。
+\end{proof}
+
+对常系数 Laplace 方程，上述论证尤其直接：\(-\Delta D^\beta u=D^\beta f\)。一般变系数方程的额外项只含较低阶的解导数，正是归纳能够闭合的原因；若求导后又在右端出现尚未控制的最高阶导数，就必须先把它保留在主部，不能把它当成已知数据。
+
+\ProseParagraphBreak
+
+若包含低阶项且 \(b,c\) 具有相应有界导数，同样的归纳适用。对非线性方程则须额外检查复合函数的 Sobolev 正则性：从 \(u\in H^2\) 不能在所有维数自动推出 \(F(u)\in H^1\) 或 \(H^2\)。例如含高次幂的项，其导数是 \(F'(u)\nabla u\)，必须先用嵌入定理保证乘积可积。自举是一系列空间之间的合法映射，而不是只按形式导数计数。
 
 \subsection{从弱解到经典解}
 \label{b2:subsec:160203}
 
-待填充。
+Sobolev 正则性最终通过嵌入转成经典正则性。第一卷定理 24.4.3 及处理正整数差的命题 24.4.4，在局部截断后给出：若整数 \(s>k+d/2\)，则 \(H_{\mathrm{loc}}^s\) 函数有 \(C^k\) 代表元；更精细地，可取得所有满足 \(k+\alpha<s-d/2\)、\(0<\alpha<1\) 的局部 \(C^{k,\alpha}\) 正则性。严格不等号不能随意替成等号。
+
+\begin{corollary}[光滑数据的内部光滑性]
+\label{b2:cor:16-smooth-interior}
+设 \(A,f\in C^\infty(\Omega)\)，\(A\) 在每个紧子集附近一致椭圆。若 \(u\in H_{\mathrm{loc}}^1(\Omega)\) 弱解 \(-\operatorname{div}(A\nabla u)=f\)，则 \(u\) 有 \(C^\infty(\Omega)\) 代表元，并逐点满足方程。
+\end{corollary}
+\begin{proof}
+固定 \(U\Subset\Omega\)。光滑系数在稍大紧集上的各阶导数有界，高阶正则性定理给出任意阶的局部 \(H^s\) 正则性。给定 \(k\)，选整数 \(s>k+d/2\)，嵌入得到 \(C^k\) 代表元；各代表元因几乎处处相同且连续而彼此一致，故得到单一 \(C^\infty\) 代表元。该代表元对应的微分表达式连续，与零分布相等，所以处处为零。
+\end{proof}
+
+若只知道 \(f\in L^2\)，在 \(d=2,3\) 时 \(H_{\mathrm{loc}}^2\) 已给出一定 Hölder 连续性，却一般不给出连续一阶导数；在 \(d\ge4\) 时甚至不能单凭这一 Sobolev 结论推出连续性。维数越高，要通过平方可积导数达到同一经典阶数，就需要越多次提升。低正则椭圆理论提供了另一条路：即使没有系数导数，也能对实标量方程控制解的振荡；这将在本章最后说明。
+
+\ProseParagraphBreak
+
+“弱解变成经典解”还需要明确所指区域。这里所有结论均为内部结论：边界值不光滑、区域有角点时，解可能在每个内部点都光滑，却在靠近边界处出现不可积的二阶导数。下一节将通过边界坐标和一个扇形反例说明这种差别。

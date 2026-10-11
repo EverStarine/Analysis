@@ -1,0 +1,103 @@
+% !TeX root = ../../Book2.tex
+\section{球面测度与径向 Fourier 变换}
+\label{b2:sec:A202}
+
+本卷 Fourier 变换固定为 \(\widehat f(\xi)=\int e^{-2\pi i x\cdot\xi}f(x)\,\mathrm dx\)。球面测度采用通常面积测度，既不除以球面积，也不把 \(2\pi\) 吸收到频率中。径向公式中的常数全部由这两项约定决定。
+
+\subsection{球面角积分}
+\label{b2:subsec:A20201}
+
+设 \(d\ge2\)，\(\sigma\) 为单位球面 \(S^{d-1}\) 的面积测度。旋转不变性说明 \(\widehat\sigma(\xi)\) 只依赖 \(\rho=|\xi|\)。记 \(\nu=d/2-1\)。
+
+\begin{theorem}[球面测度的 Fourier 变换]
+\label{b2:thm:A2-sphere-fourier}
+对 \(\rho>0\)，有
+\[
+ \widehat\sigma(\xi)=2\pi\rho^{-\nu}J_\nu(2\pi\rho),
+ \qquad\widehat\sigma(0)=|S^{d-1}|=\frac{2\pi^{d/2}}{\Gamma(d/2)}.
+\]
+等价地，若指数使用参数 \(t\) 而非 \(2\pi\rho\)，则
+\[\int_{S^{d-1}}e^{-it\omega_1}\,\mathrm d\sigma(\omega)
+ =(2\pi)^{d/2}t^{1-d/2}J_{d/2-1}(t).\]
+\end{theorem}
+\begin{proof}
+先由全空间 Gauss 积分的直角坐标与极坐标两种计算得到球面积公式。按第一坐标 \(s=\omega_1\) 分层，球面的面积元给出
+\[
+ \int_{S^{d-1}}F(\omega_1)\,\mathrm d\sigma
+ =|S^{d-2}|\int_{-1}^1F(s)(1-s^2)^{(d-3)/2}\,\mathrm ds.
+\]
+\(d=2\) 时 \(|S^0|=2\)，权重为 \((1-s^2)^{-1/2}\)，同一公式由圆的上下两个半周得到。令 \(F(s)=e^{-its}\)，Poisson 积分表示适用于 \(\nu=d/2-1>-1/2\)。代入球面积常数并化简，得到第二式。再令 \(t=2\pi\rho\)，得第一式；在零点用 Bessel 首项求极限，与总面积一致。
+\end{proof}
+
+大频率渐近说明
+\[|\widehat\sigma(\xi)|\le C_d(1+|\xi|)^{-(d-1)/2}.\]
+衰减指数是球面的维数的一半，恰与驻相公式中每个非退化切向变量贡献半阶衰减一致。两个驻点分别是面向和背向频率方向的极点，它们叠加成一个余弦，因此不能把模长处处替换成严格正的同阶下界。
+
+\ProseParagraphBreak
+
+二维时公式为 \(2\pi J_0(2\pi\rho)\)，三维时为 \(2\sin(2\pi\rho)/\rho\)。三维在 \(\rho=0\) 的极限是 \(4\pi\)，可快速检查面积归一化是否正确。半径 \(R\) 球面的面积测度 \(\sigma_R\) 满足 \(\widehat\sigma_R(\xi)=R^{d-1}\widehat\sigma(R\xi)\)；若使用概率测度，则还须除以 \(|S^{d-1}|R^{d-1}\)。
+
+\subsection{径向函数的变换}
+\label{b2:subsec:A20202}
+
+\begin{theorem}[径向 Fourier 公式]
+\label{b2:thm:A2-radial-fourier}
+设 \(d\ge2\)，\(f(x)=f_0(|x|)\in L^1(\mathbb R^d)\)。则 \(\widehat f(\xi)=F_0(|\xi|)\)，且对 \(\rho>0\)，
+\[
+ F_0(\rho)=2\pi\rho^{-\nu}\int_0^\infty
+             f_0(r)J_\nu(2\pi r\rho)r^{\nu+1}\,\mathrm dr,
+ \qquad \nu=d/2-1.
+\]
+该积分按球面角积分的原始形式绝对收敛；\(\rho=0\) 时取 \(F_0(0)=|S^{d-1}|\int_0^\infty f_0(r)r^{d-1}\,\mathrm dr\)。
+\end{theorem}
+\begin{proof}
+对正交变换 \(Q\) 换元，\(\widehat f(Q\xi)=\widehat f(\xi)\)，故变换径向。极坐标与 Fubini 给出
+\[\widehat f(\xi)=\int_0^\infty f_0(r)r^{d-1}
+       \left(\int_{S^{d-1}}e^{-2\pi i r\omega\cdot\xi}\,\mathrm d\sigma(\omega)\right)\mathrm dr.
+\]
+角积分的绝对值不超过球面积，外层由 \(f\in L^1\) 可积。代入球面公式，整理 \(r\) 的幂次，得到结论。
+\end{proof}
+
+一维径向函数就是偶函数，对应公式为 \(\widehat f(\rho)=2\int_0^\infty f_0(r)\cos(2\pi r\rho)\,\mathrm dr\)。利用 \(J_{-1/2}\) 的显式表达，这也可写成上式取 \(\nu=-1/2\) 的形式。对于一般 \(L^2\) 径向函数，积分未必绝对收敛，应通过稠密的径向光滑函数和 Plancherel 定理定义其变换，而不把条件收敛积分当作先验公式。
+
+\ProseParagraphBreak
+
+例如 \(f_0(r)=e^{-\pi a r^2}\)、\(a>0\)，全空间 Gauss 公式给出 \(F_0(\rho)=a^{-d/2}e^{-\pi\rho^2/a}\)。将它代回径向公式，就得到一族 Bessel--Gauss 积分恒等式。这样可以用已知 Fourier 变换核对 Bessel 积分中的常数，而无需每次从特殊函数表重新开始计算。
+
+\subsection{Hankel 变换的几何归一化}
+\label{b2:subsec:A20203}
+
+对阶数 \(\nu\) 和适当函数 \(g\)，定义 \term[hankel-bianhuan]{Hankel 变换}[Hankel transform]
+\[(\mathcal H_\nu g)(s)=\int_0^\infty g(r)J_\nu(rs)r\,\mathrm dr.
+\]
+本节在几何阶数 \(\nu=d/2-1\)、整数 \(d\ge1\) 时完整证明其 \(L^2\) 理论；其他实阶的同类理论需要相应的一维谱论，不由整数维 Fourier 变换自动推出。设 \(g(r)=r^\nu f_0(r)\)，径向公式成为
+\[F_0(\rho)=2\pi\rho^{-\nu}(\mathcal H_\nu g)(2\pi\rho).\]
+\symidx{\(\mathcal H_\nu\)：以 \(r\,\mathrm dr\) 为测度的 Hankel 变换}
+
+\begin{theorem}[几何阶数的 Hankel 等距与反演]
+\label{b2:thm:A2-hankel}
+若 \(\nu=d/2-1\)、\(d\ge1\) 为整数，则 \(\mathcal H_\nu\) 从 \(C_c^\infty(0,\infty)\) 唯一延拓为 \(L^2((0,\infty),r\,\mathrm dr)\) 上的酉算子，且
+\[\lVert\mathcal H_\nu g\rVert_{L^2(s\,\mathrm ds)}=\lVert g\rVert_{L^2(r\,\mathrm dr)},
+ \qquad\mathcal H_\nu^2g=g.
+\]
+反演等式在一般情形按 \(L^2\) 意义理解。
+\end{theorem}
+\begin{proof}
+先取 \(g\) 光滑紧支撑且离开零点，则 \(f_0=r^{-\nu}g\) 给出径向光滑紧支集函数。径向 Plancherel 恒等式消去公共球面积后为
+\[\int_0^\infty|f_0(r)|^2r^{2\nu+1}\,\mathrm dr
+  =\int_0^\infty|F_0(\rho)|^2\rho^{2\nu+1}\,\mathrm d\rho.
+\]
+左端是 \(\int|g|^2r\,\mathrm dr\)；右端代入径向公式并令 \(s=2\pi\rho\)，正是 \(\int|\mathcal H_\nu g(s)|^2s\,\mathrm ds\)。稠密性给出唯一等距延拓。
+
+Fourier 变换保持径向闭子空间，且它的平方在径向函数上为恒等，因为一般平方对应反射。写出同一径向反演公式并作 \(s=2\pi\rho\) 换元，得到 \(g(r)=\int_0^\infty(\mathcal H_\nu g)(s)J_\nu(rs)s\,\mathrm ds\)，先对良好函数成立，再由等距延拓在 \(L^2\) 中成立。因此算子平方为恒等，故它满射且酉。
+\end{proof}
+
+标准一维 Fourier 变换使用 Lebesgue 测度 \(\mathrm dr\)，这里使用 \(r\,\mathrm dr\)。若希望改用 \(\mathrm dr\)，必须同时把核换成 \(\sqrt{rs}J_\nu(rs)\)；只改积分测度而不改核，就会破坏等距常数。不同参考书的 Hankel 变换看似不一致时，应先核对这一点。
+
+\ProseParagraphBreak
+
+径向 Laplace 算子为 \(f_0''+(d-1)r^{-1}f_0'\)。代入 \(f_0=r^{-\nu}g\)，得到
+\[-\left(f_0''+\frac{d-1}rf_0'\right)
+ =r^{-\nu}\left(-g''-\frac1rg'+\frac{\nu^2}{r^2}g\right).
+\]
+Bessel 方程说明括号内算子的广义特征函数是 \(J_\nu(rs)\)，特征值为 \(s^2\)。在远离零点紧支撑的测试函数上分部积分，边界项为零，可直接验证 \(\mathcal H_\nu\) 把该微分表达式变成乘以 \(s^2\)。若要扩展到非紧支撑的算子定义域，还必须规定零点与无穷远的边界行为；一个形式对角化公式并不自动确定自伴算子。

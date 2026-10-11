@@ -2,19 +2,109 @@
 \section{核的渐近}
 \label{b2:sec:2402}
 
-% TODO: 撰写本节正文。
+核的大距离渐近决定可积性阈值。Bessel 定义、渐近与基础可积性已在\appref{b2:app:A}完整建立；这里另外解释一维端点振荡怎样显示球边界的消失阶与空间衰减之间的对应，并将这些事实用于乘子问题。
 
 \subsection{Bessel 表示}
 \label{b2:subsec:240201}
 
-待填充。
+令 \(r=|x|\)、\(\alpha=\delta+(d-1)/2\)。先对与 \(x\) 正交的坐标积分，得到
+\[
+ K_\delta(r)=
+ \frac{\pi^{(d-1)/2}\Gamma(\delta+1)}
+      {\Gamma(\delta+(d+1)/2)}
+ \int_{-1}^1 e^{2\pi\mathrm irt}(1-t^2)^\alpha\,\mathrm dt.
+\]
+当 \(d=1\) 时前面的系数为 \(1\)，公式仍成立。
+这个表示与 Bessel 公式相等，可以由幂级数逐项积分再次确认。它把球内积分变成两个端点附近的贡献；区间内部振幅光滑，非驻相法将其降到任意阶。
+
+\ProseParagraphBreak
+正参数 \(\delta\) 增加了端点消失阶 \(\alpha\)。每增加一个单位的边界消失阶，就给空间核增加一个衰减幂次。几何中的 \(d-1\) 个横向变量已经通过横截面体积提供 \((d-1)/2\) 的消失阶。
+
+一维模型可以把这些归一化算到初等函数。置 \(t=2\pi x\)。零阶平均的核为
+\[
+ K_0(x)=\frac{2\sin t}{t},
+\]
+在 \(x=0\) 连续取值二。对一阶平均，两次对 \(t\) 求导消去频率平方，得到
+\[
+ K_1(x)=\frac{4(\sin t-t\cos t)}{t^3},\qquad K_1(0)=\frac43.
+\]
+这些原点值就是分别对区间上 \(1\) 和 \(1-\xi^2\) 的积分。第一个核以 \(1/|x|\) 衰减，不可积；第二个以 \(1/|x|^2\) 衰减，可积但在 \(t=2\pi\) 为负。这个明确的负值排除了把一阶平均理解成一个正核概率平均。
+
+\ProseParagraphBreak
+
+一维硬截断在 \(1<p<\infty\) 上仍有界，因为区间乘子已由两个调制的 Hilbert 投影构造；正阶平均再由阶数单调公式得到同一区间的有界性。两端 \(p=1,\infty\) 则需要 \(\delta>0\)，由核可积性阈值取得。这给出了维数一中完整的普通指数图景，不需要调用高维曲率几何。
+
+\ProseParagraphBreak
+
+在三维，硬球核恰为
+\(4\pi(\sin t-t\cos t)/t^3\)。它与刚才的一维一阶核只差常数，但空间积分的径向测度从 \(\mathrm dr\) 变成 \(r^2\mathrm dr\)。同一衰减表达式因此在两种维数下有不同可积性，不能只看函数式子的幂而忘记底空间维数。更一般地，核衰减来自边界振荡，可积性阈值则还必须加上空间体积增长。
 
 \subsection{驻相}
 \label{b2:subsec:240202}
 
-待填充。
+所需的一维端点公式是：对 \(\beta>-1\) 及原点附近光滑的紧支撑 \(\chi\)，
+\[
+ \int_0^\infty e^{-2\pi\mathrm irs}s^\beta\chi(s)\,\mathrm ds
+ =\Gamma(\beta+1)(2\pi r)^{-\beta-1}
+       e^{-\mathrm i\pi(\beta+1)/2}\chi(0)+O(r^{-\beta-2}).
+\]
+为证明它，先给 \(s^\beta\) 加 Abel 因子 \(e^{-\epsilon s}\)，其完整半轴积分为
+\(\Gamma(\beta+1)(\epsilon+2\pi\mathrm ir)^{-\beta-1}\)。
+减去远离原点的截断部分后，反复分部积分：取阶数 \(N>\beta+2\)，尾部的第 \(N\) 阶导数可积，边界因 Abel 因子消失，取极限得到 \(O(r^{-N})\)。
+再把 \(\chi(s)\) 写成 \(\chi(0)\chi_0(s)+s\chi_1(s)\)，后项使用指数 \(\beta+1\) 的同一计算，即得余项。对任意有限阶 Taylor 展开重复此过程，可得完整端点渐近。
+
+\ProseParagraphBreak
+在 \(t=1\) 附近令 \(s=1-t\)，则
+\((1-t^2)^\alpha=2^\alpha s^\alpha(1-s/2)^\alpha\)。
+另一端给出共轭项。合并常数得到
+\[
+ K_\delta(r)=
+ \frac{\Gamma(\delta+1)}{\pi^{\delta+1}}
+ r^{-\delta-(d+1)/2}
+ \cos\!\left(2\pi r-\frac{\pi(d+1+2\delta)}4\right)
+ +O(r^{-\delta-(d+3)/2}).
+\]
+此式不仅给出上界，还在固定比例的径向区间上给出非零下界，因而能用于必要条件。只写 \(O\) 上界不能推出不有界性。
 
 \subsection{空间衰减}
 \label{b2:subsec:240203}
 
-待填充。
+\begin{theorem}[可积核范围]\label{b2:thm:24-integrable}
+设 \(\delta\ge0\)。则 \(K_\delta\in L^1(\mathbb R^d)\) 当且仅当
+\(\delta>(d-1)/2\)。在这一范围，
+\[
+ \sup_{R>0}\|B_R^\delta f\|_p\le\|K_\delta\|_1\|f\|_p,
+ \qquad 1\le p\le\infty.
+\]
+对 \(p<\infty\)，\(B_R^\delta f\to f\) 在 \(L^p\) 中；对有界一致连续函数，一致收敛成立。
+\end{theorem}
+\begin{proof}
+基础可积性阈值由\cref{b2:prop:A2-kernel-integrability}得到；该处同时利用渐近主项的非零下界排除了临界等号。Young 不等式给出有界性，缩放不改变核的 \(L^1\) 范数。
+
+由于核可积，其 Fourier 变换连续且等于给定符号，因此
+\(\int K_\delta=m(0)=1\)。缩放核的质量在任何固定零点邻域之外趋零，且 \(L^1\) 范数一致有界；这是一个可以有符号的逼近恒等。
+写 \(K_{\delta,R}*f-f=\int K_\delta(y)[f(\,\cdot-y/R)-f]\,\mathrm dy\)，使用 \(L^p\) 平移连续性及支配收敛即得范数收敛。对于有界一致连续函数，同一公式在一致范数中成立。
+\end{proof}
+这里没有要求核非负。若使用正核的点态单调论证，需要另行验证正性；Bochner–Riesz 核一般有振荡，不能照搬热核的所有性质。
+
+% 扩写定位：b2:subsec:240203
+可积核范围还给出实际的逐点求和结论。令
+\(\epsilon=\delta-(d-1)/2>0\)。核在原点有界且在远场满足
+\(|K_\delta(x)|\leq C(1+|x|)^{-d-\epsilon}\)。
+\cref{b2:prop:17-approximate-identity}因此直接给出
+\[
+ \sup_{R>0}|B_R^\delta f(x)|\leq C Mf(x).
+\]
+对 \(f\in L^p\)、\(1\leq p<\infty\)，在每个 Lebesgue 点有 \(B_R^\delta f(x)\to f(x)\)；极大算子在 \(p>1\) 上强有界，在 \(p=1\) 上弱有界。这里不需要单独建立深层球面极大估计，原因正是核的径向衰减已在可和范围内。
+
+\ProseParagraphBreak
+
+若把 \(\delta\) 降到阈值，环带的几何权不再可和，上述极大函数控制的证明便停止。即使固定半径算子仍然在某个中间 \(L^p\) 上有界，也不能据此宣布全参数逐点收敛；极大族要求同时处理所有半径及其相互作用。范数求和、子列几乎处收敛和全参数几乎处收敛，应当分别说明。
+
+\ProseParagraphBreak
+
+对任何可积卷积核 \(K\)，在 \(L^1\) 上的算子范数恰为 \(\|K\|_1\)，不仅有 Young 的上界。取非负积分一的光滑近似恒等输入 \(\rho_n\)，其 \(L^1\) 范数为一，且 \(K*\rho_n\to K\) 于 \(L^1\)，于是算子范数至少是 \(\|K\|_1\)。在 \(L^\infty\) 上也相等：给定零点，取有界输入 \(f(-y)=\overline{\operatorname{sgn}K(y)}\)，便有 \((K*f)(0)=\int|K|\)。为使本性上确界也取得这一界，可以先截断输入，再利用 \(L^1\) 核的平移连续性使输出连续，最后取极限。
+
+\ProseParagraphBreak
+
+故在可积核范围中，Bochner--Riesz 的两个端点范数正好是 \(\|K_\delta\|_1\)，半径缩放并不改变它。这一范数一般大于一，因为核有正负振荡，而总积分为一。相反，热核和 Poisson 核非负且总质量为一，在两个端点都是压缩。只用“归一化积分为一”不能推出压缩性质。

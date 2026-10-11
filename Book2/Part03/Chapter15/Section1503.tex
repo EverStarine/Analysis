@@ -2,24 +2,111 @@
 \section{Poisson 方程}
 \label{b2:sec:1503}
 
-% TODO: 撰写本节正文。
+现在把抽象定理用于最基本的边值问题。区域只需有界，源项只需属于 \(H^{-1}\)；无需显式 Green 函数，也无需预先知道解的二阶导数。存在性、稳定性与边界数据的处理都在同一个能量空间中完成。
 
 \subsection{弱解存在性}
 \label{b2:subsec:150301}
 
-待填充。
+\begin{theorem}[Dirichlet 问题的弱可解性]
+\label{b2:thm:15-poisson-existence}
+设 \(\Omega\subset\mathbb R^d\) 为有界开集，\(f\in H^{-1}(\Omega)\)。则存在唯一 \(u\in H_0^1(\Omega)\)，使
+\[\int_\Omega\nabla u\cdot\nabla v\,\mathrm dx=\langle f,v\rangle
+ \qquad(v\in H_0^1(\Omega)).\]
+并且 \(\lVert\nabla u\rVert_2\le\lVert f\rVert_{H^{-1}}\)。
+\end{theorem}
+\begin{proof}
+取 \(H=H_0^1(\Omega)\)，内积为 \(\langle u,v\rangle_H=\int\nabla u\cdot\nabla v\)。由 Poincaré 不等式，它与完整 Sobolev 范数等价，故 \(H\) 完备。型 \(a(u,v)=\langle u,v\rangle_H\) 的有界常数与强制常数均为 \(1\)，右端按 \(H^{-1}\) 定义连续。\cref{b2:thm:15-lax-milgram} 因而给出存在、唯一性及估计。
+\end{proof}
+
+本例中 Lax--Milgram 退化为 Riesz 表示；一般系数时，同一个定理才显出更大的作用。该弱解也恰为 \(\tfrac12\lVert\nabla v\rVert_2^2-\langle f,v\rangle\) 的唯一极小元：只要将上一章的二次展开中的 \(L^2\) 配对换成对偶配对，证明逐字成立。两种构造在对称情形相遇，但弱型方法还可以继续处理非对称问题。
+
+\ProseParagraphBreak
+
+对 \(\Omega=(0,1)\)、\(f=\delta_s\)、\(0<s<1\)，解为
+\[
+ u(x)=\begin{cases}(1-s)x,&0\le x\le s,\\s(1-x),&s\le x\le1.\end{cases}
+\]
+它连续、分段仿射，导数在 \(s\) 处向下跳 \(1\)。两段分部积分给出 \(\int_0^1u'v'=v(s)\)，先对光滑 \(v\) 成立，再由点值的连续性推广。因此点源产生一个合法弱解，却不产生经典 \(C^2\) 解；这不是存在性定理的缺陷，而是数据本身的粗糙性。
 
 \subsection{唯一性}
 \label{b2:subsec:150302}
 
-待填充。
+唯一性的能量论证值得单独保留，因为它不依赖解是如何构造的。若 \(u_1,u_2\) 具有同一数据，差 \(w\in H_0^1\) 满足 \(\int\nabla w\cdot\nabla v=0\)。取 \(v=w\)，得到 \(\nabla w=0\)；Poincaré 不等式推出 \(w=0\)。这个结论对不连通区域也成立，因为零边界约束在每个分支上排除了常数自由度。
+
+\ProseParagraphBreak
+
+内部方程则没有唯一性。例如任一调和函数都可加到 Poisson 方程的一个局部解上，而不改变源项。纯 Neumann 问题即使规定通量，仍允许每个连通分支上的加法常数。因而“取差再测试”最后得出梯度为零之后，还必须指出究竟由哪项边界条件或归一化排除了常数，不能直接省略最后一步。
+
+\begin{proposition}[弱比较原理]
+\label{b2:prop:15-weak-comparison}
+设 \(u_1,u_2\in H_0^1(\Omega)\) 分别解 \(-\Delta u_i=f_i\)，且 \(\langle f_1-f_2,v\rangle\le0\) 对每个非负 \(v\in H_0^1(\Omega)\) 成立。则 \(u_1\le u_2\) 几乎处处。
+\end{proposition}
+\begin{proof}
+令 \(w=u_1-u_2\)。Sobolev 截断性质保证 \(w_+=\max\{w,0\}\in H_0^1\)，且 \(\nabla w_+=\mathbf1_{\{w>0\}}\nabla w\)。以它测试差方程，得
+\[\lVert\nabla w_+\rVert_2^2=\langle f_1-f_2,w_+\rangle\le0.\]
+故 \(w_+=0\)，即所需结论。截断性质可先用光滑 Lipschitz 逼近正部函数、链式法则和 \(H^1\) 极限得到，再对 \(H_0^1\) 使用零边界逼近；这里没有要求解逐点可微。
+\end{proof}
+
+特别地，非负源项与零边界数据给出非负弱解，与第十三章经典最大值原理的符号一致。比较的结论是几乎处处关系；在尚未得到连续代表元之前，不应改说“每个点都非负”。
 
 \subsection{能量估计}
 \label{b2:subsec:150303}
 
-待填充。
+取解自身作测试，Cauchy--Schwarz 的对偶形式给出
+\[\lVert\nabla u\rVert_2^2=\langle f,u\rangle
+ \le\lVert f\rVert_{H^{-1}}\lVert\nabla u\rVert_2.\]
+若梯度非零可约去一因子；若为零估计显然成立。因此解映射 \(H^{-1}\to H_0^1\) 连续。对于两组数据，同一计算给出
+\[\lVert\nabla(u_1-u_2)\rVert_2\le\lVert f_1-f_2\rVert_{H^{-1}}.\]
+特别地，平滑数据的近似会在能量范数中产生相应解的收敛，这为从光滑近似过渡到粗糙数据提供了稳定性依据。
+
+\ProseParagraphBreak
+
+若 \(f\in L^2\)，进一步有 \(\lVert\nabla u\rVert_2\le C_P\lVert f\rVert_2\)、\(\lVert u\rVert_2\le C_P^2\lVert f\rVert_2\)。注意区域放大时 \(C_P\) 也会变化：在 \(r\Omega\) 上换元表明 \(C_P\) 按长度尺度增长。这与二阶方程解相对于源项多出两个长度因子的事实一致，估计中的几何依赖不能无故删除。
+
+\begin{proposition}[有限维近似的最佳误差]
+\label{b2:prop:15-galerkin-poisson}
+设 \(V\subset H_0^1(\Omega)\) 是有限维子空间，\(u\) 为 \cref{b2:thm:15-poisson-existence} 的解。则存在唯一 \(u_V\in V\) 满足 \(\int\nabla u_V\cdot\nabla v=\langle f,v\rangle\) 对所有 \(v\in V\) 成立，而且
+\[\lVert\nabla(u-u_V)\rVert_2=\inf_{v\in V}\lVert\nabla(u-v)\rVert_2.\]
+\end{proposition}
+\begin{proof}
+限制到 \(V\) 后型仍有界、强制，故有限维方程唯一可解。两式相减得 \(\int\nabla(u-u_V)\cdot\nabla v=0\) 对所有 \(v\in V\) 成立。对任意 \(v\in V\)，分解 \(u-v=(u-u_V)+(u_V-v)\)，两项在梯度内积下正交，故误差平方等于两项范数平方之和。最小值恰在 \(v=u_V\) 达到。
+\end{proof}
+
+这个结论不宣称任一有限维空间都给出好的逼近；它说解离该空间有多近，近似解就有多好。若一列子空间递增且其并在 \(H_0^1\) 中稠密，最佳误差便趋零。递增性可改成对每个固定函数都能沿整个序列逼近的条件，但只有并集稠密不够，例如在良好空间之间反复插入零空间便会破坏收敛。存在性、离散方程的可解性与近似空间的逼近能力仍是三个可以分别核验的事实。
+
+\ProseParagraphBreak
+
+在区间 \((0,1)\) 上，这个结论可以算得很具体。取均匀节点 \(x_j=jh\)、\(h=1/N\)，令 \(V_h\) 为节点间分段仿射、两端为零的连续函数空间。基函数 \(\phi_j\) 在 \(x_j\) 取值一，在其余节点取值零。每个基函数只有相邻两段上的斜率非零，直接积分得
+\[\int_0^1\phi_j'^2=\frac2h,\qquad
+ \int_0^1\phi_j'\phi_{j+1}'=-\frac1h,\qquad
+ \int_0^1\phi_j'\phi_k'=0\quad(|j-k|>1).\]
+因此弱解的有限维近似由三对角线性方程组确定。矩阵的正定性并不需要另作行列式计算：任意系数向量对应的二次型就是分段仿射函数的梯度平方积分，零值只可能对应零函数。
+
+\ProseParagraphBreak
+
+例如取 \(f=1\)，精确弱解为 \(u(x)=x(1-x)/2\)。它在各小区间的导数平均等于两端函数值之差除以 \(h\)，而任意 \(v_h\in V_h\) 的导数在该段为常数。故 \(u\) 的节点线性插值 \(I_hu\) 满足 \(\int(u'- (I_hu)')v_h'=0\)，由唯一性即知 \(u_h=I_hu\)。在长度 \(h\) 的一段上，导数误差是以中点为零的线性函数，其平方积分为 \(h^3/12\)；函数误差则为 \((x-x_j)(x_{j+1}-x)/2\)。逐段积分并相加得到
+\[\lVert u'-u_h'\rVert_2=\frac h{\sqrt{12}},\qquad
+ \lVert u-u_h\rVert_2=\frac{h^2}{\sqrt{120}}.\]
+这里第二个收敛速度比第一个快，来自二次函数的具体结构，不能仅从抽象存在定理读出。一般数据下的误差阶还需要解的正则性和近似空间的逼近估计；下一章提供其中的正则性工具。
+
+\ProseParagraphBreak
+
+弱解的误差也可以用残差直接测量。对任意 \(w\in H_0^1\) 定义 \(r=f+\Delta w\in H^{-1}\)，则 \(\langle r,v\rangle=\int\nabla(u-w)\cdot\nabla v\)。对单位梯度范数的测试函数取上确界，Cauchy--Schwarz 给出上界，而在误差非零时取 \(v=(u-w)/\lVert\nabla(u-w)\rVert_2\) 达到该界。因此 \(\lVert r\rVert_{H^{-1}}=\lVert\nabla(u-w)\rVert_2\)。对分段仿射近似，残差可能含节点通量跳跃，不能只计算每段内为零的二阶导数；负范数恰好保留这些分布贡献。
 
 \subsection{非齐次边界数据}
 \label{b2:subsec:150304}
 
-待填充。
+给定 \(g\in H^1(\Omega)\)，令 \(u=g+w\)，其中 \(w\in H_0^1\)。方程等价于
+\[\int_\Omega\nabla w\cdot\nabla v
+  =\langle f,v\rangle-\int_\Omega\nabla g\cdot\nabla v\qquad(v\in H_0^1).\]
+右端属于 \(H^{-1}\)，范数不超过 \(\lVert f\rVert_{H^{-1}}+\lVert\nabla g\rVert_2\)。因此齐次理论给出唯一 \(w\)，从而给出唯一满足 \(u-g\in H_0^1\) 的解；并有
+\[\lVert\nabla w\rVert_2\le\lVert f\rVert_{H^{-1}}+\lVert\nabla g\rVert_2.\]
+完整 \(H^1\) 估计还要加上 \(g\) 的 \(L^2\) 范数。
+
+\ProseParagraphBreak
+
+若另一个延拓 \(\widetilde g\) 与 \(g\) 相差 \(H_0^1\) 函数，两者给出的仿射可行集完全相同；由唯一性得到同一个 \(u\)。所以解依赖边界类，而不依赖人为选择的延拓。若要比较两组边界数据，先选择它们差的一个延拓，再把上面的稳定性估计应用于差方程；优化延拓的范数便自然引出商空间形式的迹范数。
+
+\ProseParagraphBreak
+
+例如在单位球上给定仿射边界数据 \(g(x)=a\cdot x+b\)，且 \(f=0\)。由于 \(\int a\cdot\nabla v=0\) 对 \(v\in H_0^1\) 成立，齐次修正为零，故 \(u=g\)。这里无需使用球的 Poisson 核；而对一般边界数据，弱方法仍给出存在性，之后才可能借第十三章的表示公式识别它。不同构造的解一旦处于同一能量边界类，就由唯一性自动一致。

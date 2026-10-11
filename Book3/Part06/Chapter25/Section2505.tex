@@ -2,29 +2,101 @@
 \section{Euler 乘积}
 \label{b3:sec:2505}
 
-% TODO: 撰写本节正文。
+算术基本定理把整数分解成素数幂，绝对收敛把这个有限分解提升为无穷乘积。对数再把乘法拆成加法，素数幂便成为自然的级数指标。
 
 \subsection{可乘系数的 Euler 乘积}
 \label{b3:subsec:250501}
 
-待填充。
+\begin{theorem}[Euler 乘积]\label{b3:thm:25-euler-product}
+设 \(a\) 可乘，\(\sum|a(n)|n^{-\sigma}<\infty\)。则
+\[
+D_a(s)=\prod_p\left(\sum_{r\ge0}a(p^r)p^{-rs}\right),\quad\operatorname{Re}s=\sigma.
+\]
+若 \(a\) 完全可乘，则各因子为 \((1-a(p)p^{-s})^{-1}\)。
+\end{theorem}
+\begin{proof}
+有限多个素数的局部级数相乘，绝对收敛允许展开，所得系数正是所有仅含这些素因子的整数项。随素数集合扩大，任何固定整数最终纳入，剩余项的绝对和趋零。因此有限乘积趋于 \(D_a\)。完全可乘时局部绝对级数的收敛迫使 \(|a(p)|p^{-\sigma}<1\)，再用几何和公式。
+\end{proof}
+这一表示称为\term[euler-chengji]{Euler 乘积}[Euler product]。一般可乘函数的某个局部因子可能为零，故不能仅凭“有 Euler 乘积”就宣称函数无零点。几何因子情形还需证明无穷非零因子乘积不坍缩到零。
 
 \subsection{唯一性}
 \label{b3:subsec:250502}
 
-待填充。
+\begin{proposition}\label{b3:prop:25-uniqueness}
+两个在某个右半平面绝对收敛的 Dirichlet 级数，若代表同一函数，则对应系数相等。
+\end{proposition}
+\begin{proof}
+对差级数，令 \(m\) 为首个非零系数指标。沿实轴 \(s=\sigma\to\infty\)，等式乘以 \(m^\sigma\) 得
+\(0=a(m)+\sum_{n>m}a(n)(m/n)^\sigma\)。选绝对收敛点 \(\sigma_0\)，尾项被 \(m^{\sigma_0}|a(n)|n^{-\sigma_0}\) 控制，且逐项趋零。支配收敛得 \(a(m)=0\)，矛盾。
+\end{proof}
+所以解析乘法等式可以反向识别系数，但须处在确有收敛表示的公共区域。延拓后的函数值本身并不意味着原级数也在那里收敛。
 
 \subsection{Euler 乘积的对数}
 \label{b3:subsec:250503}
 
-待填充。
+对 \(a(n)=1\)，\(\sum_p\sum_{r\ge1}|p^{-rs}|/r\) 在 \(\sigma>1\) 局部一致收敛，因为被常数倍的 \(\sum_p p^{-\sigma}\) 控制。于是定义
+\[
+L(s)=\sum_p\sum_{r\ge1}\frac{p^{-rs}}r,
+\quad \zeta(s)=e^{L(s)}.
+\]
+等式先由有限乘积对数成立，再在局部一致极限中保持。因此 \(\zeta\ne0\) 于 \(\sigma>1\)，并且 \(L\) 是在实轴取实值的全纯对数。无零点性来自这个收敛的指数表示，不能从每个单独因子非零直接推断。
 
 \subsection{对数导数}
 \label{b3:subsec:250504}
 
-待填充。
+对紧集 \(\sigma\ge1+\delta\)，导数项的绝对和
+\(\sum_{p,r}(\log p)p^{-r\sigma}\) 有界：先求 \(r\) 的几何和，再与 \(\sum_{n\ge2}(\log n)n^{-1-\delta}\) 比较。因此可求导，得到
+\begin{equation}\label{b3:eq:25-log-derivative}
+-\frac{\zeta'(s)}{\zeta(s)}=\sum_p\sum_{r\ge1}(\log p)p^{-rs}
+=\sum_{n\ge1}\frac{\Lambda(n)}{n^s},\quad\operatorname{Re}s>1.
+\end{equation}
+还可由有限卷积恒等式得到同一结论：\(-\zeta'(s)=D_{\log}(s)\)，而 \(\mathbf1*\Lambda=\log\)，故 \(D_\Lambda\zeta=-\zeta'\)。两条路线分别检验乘积常数与系数权重。
 
-\subsection{\texorpdfstring{\(\Lambda(n)\)}{(n)} 出现的机制}
+\subsection{对数导数中的 \texorpdfstring{\(\Lambda(n)\)}{\AnalysisPdfCapitalLambda(n)}}
 \label{b3:subsec:250505}
 
-待填充。
+对数本身在素数幂 \(p^r\) 处给权重 \(1/r\)；求负导数后乘上 \(r\log p\)，留下 \(\log p\)。这解释了 \(\Lambda\) 为何在所有正次素数幂处取相同值。若只保留素数一次项，所得到的不是 \(-\zeta'/\zeta\)，而会遗漏可估计但不恒零的高次幂项。
+
+\ProseParagraphBreak
+
+作为另一例，\(\sum\mu(n)n^{-s}=\prod_p(1-p^{-s})=1/\zeta(s)\) 在 \(\sigma>1\) 成立。它与卷积逆元 \(\mu*\mathbf1=\varepsilon\) 相符。后面若试图把这一表示向临界带推进，就必须控制 Möbius 部分和；单凭右侧已经延拓不能保证左侧条件收敛。算术抵消与解析延拓之间的区别在素数问题中尤其重要。
+
+\begin{proposition}[平方自由整数与互素整数对的密度]
+\label{b3:prop:25-two-densities}
+设 \(x\ge2\)。有
+\[
+ \sum_{n\le x}\mu(n)^2=\frac{x}{\zeta(2)}+O(\sqrt x),
+ \qquad
+ \sum_{n\le x}\varphi(n)=\frac{x^2}{2\zeta(2)}+O(x\log x).
+\]
+其中 \(1/\zeta(2)=6/\pi^2\)。
+\end{proposition}
+\begin{proof}
+由平方自由筛选恒等式，先交换有限和，得到
+\[
+ \sum_{n\le x}\mu(n)^2
+ =\sum_{d\le\sqrt x}\mu(d)\left\lfloor\frac{x}{d^2}\right\rfloor
+ =x\sum_{d\le\sqrt x}\frac{\mu(d)}{d^2}+O(\sqrt x).
+\]
+因为 \(|\mu(d)|\le1\)，把最后有限级数延到无穷的误差至多
+\(x\sum_{d>\sqrt x}d^{-2}=O(\sqrt x)\)。绝对收敛的 Euler 乘积给无穷和为 \(1/\zeta(2)\)，于是得到第一式。
+
+再令 \(N=\lfloor x\rfloor\)，计数 \(1\le a,b\le N\) 中互素的有序整数对。把 \(\sum_{d\mid\gcd(a,b)}\mu(d)\) 代入其示性函数，得
+\[
+ C(N)=\sum_{d\le N}\mu(d)\left\lfloor\frac Nd\right\rfloor^2.
+\]
+对 \(u\ge1\)，有 \(|\lfloor u\rfloor^2-u^2|\le2u\)，所以
+\[
+ C(N)=N^2\sum_{d\le N}\frac{\mu(d)}{d^2}
+          +O\left(N\sum_{d\le N}\frac1d\right)
+      =\frac{N^2}{\zeta(2)}+O(N\log N).
+\]
+对角线上互素的点只有 \((1,1)\)；直线 \(a=b\) 两侧由交换坐标对应。固定较大的坐标 \(n\ge2\)，其下方互素点有 \(\varphi(n)\) 个，故
+\(C(N)=1+2\sum_{n=2}^N\varphi(n)=2\sum_{n=1}^N\varphi(n)-1\)。代入并把 \(N^2\) 换成 \(x^2+O(x)\)，得到第二式。\(\zeta(2)\) 的数值由前面已证的正弦乘积或相应留数计算给出。
+\end{proof}
+
+同一个常数出现在两种不同计数中，原因都可由素数局部条件解释：平方自由性要求不被 \(p^2\) 整除，互素性要求两个坐标不同时被 \(p\) 整除，两者的局部排除比例均为 \(p^{-2}\)。不过无限多个局部条件的密度不能仅凭直觉相乘。上面的有限反演、取整误差及绝对收敛尾界，才把这种解释变成有效证明。
+
+\ProseParagraphBreak
+
+这些平均计数不需要素数定理。它们使用 \(\sum\mu(d)/d^2\) 的绝对收敛，不要求估计 \(\sum_{d\le x}\mu(d)\) 的相消。相较之下，把 \(1/\zeta(s)\) 的 Dirichlet 级数推进到靠近实部一的边界，需要更精细的算术信息。读者应从所用权重和收敛域判断一个推导实际有多强，而不能只看公式中是否出现 Möbius 函数或素数乘积。

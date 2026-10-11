@@ -2,24 +2,83 @@
 \section{其他测不准原理}
 \label{b2:sec:2003}
 
-% TODO: 撰写本节正文。
+方差假设不能回答“两个支集能否都小”或“两个函数能否都按 Gaussian 以上的速度衰减”。本节分别给出衰减、精确支集和近似集中三种形式。
 
 \subsection{Hardy 测不准原理}
 \label{b2:subsec:200301}
 
-待填充。
+\begin{lemma}[临界条带增长]\label{b2:thm:20-hardy-entire-lemma}
+设整函数 \(G\) 满足 \(|G(x+\mathrm iy)|\leq C e^{Ax^2}\)，且实轴上 \(|G(x)|\leq C\)，其中 \(A>0\)。则 \(G\) 为常数。
+\end{lemma}
+\begin{proof}
+先记录扇形最大值方法。若扇形开角 \(\theta_0<\pi/2\)，全纯函数在两条边界射线有界，且增长至多 \(e^{CR^2}\)，选 \(2<\rho<\pi/\theta_0\)，乘
+\(\exp(-\delta e^{-\mathrm i\rho\theta_0/2}z^\rho)\)。
+在扇形内所减指数的实部至少为正的常数倍 \(\delta|z|^\rho\)，外圆弧的增长因而消失。对截断扇形用最大模原理，令外半径趋无穷，再令 \(\delta\downarrow0\)，得到内部同样有界。分数幂在该扇形选择连续辐角；原点可用小圆弧逼近处理。
+
+现在在第一象限取 \(G_\varepsilon(z)=G(z)e^{\mathrm i\varepsilon z^2}\)。其模不超过 \(C e^{Ax^2-2\varepsilon xy}\)。选择 \(\theta_0=\arctan(A/(2\varepsilon))<\pi/2\)，在辐角至少 \(\theta_0\) 的区域已有界；在实轴和射线 \(\theta_0\) 上也有界。上述扇形论证补齐剩下区域。因此 \(|G(z)|\leq C e^{2\varepsilon xy}\)。令 \(\varepsilon\downarrow0\)，第一象限的界为 \(C\)。其他象限选择相应正负二次相位重复，得到全平面有界。Liouville 定理使它为常数；该定理由 Cauchy 导数估计 \(|G'(z)|\leq C/R\) 令 \(R\to\infty\) 得到。
+\end{proof}
+下面采用\term[hardy-buquedingxing]{Hardy 不确定性定理}[Hardy uncertainty theorem]的下述版本。
+
+\begin{theorem}[Hardy]\label{b2:thm:20-hardy}
+设 \(f\) 可测，\(|f(x)|\leq C e^{-\pi a|x|^2}\)、\(|\widehat f(\xi)|\leq C e^{-\pi b|\xi|^2}\)，其中 \(a,b>0\)。若 \(ab>1\)，则 \(f=0\) 几乎处处；若 \(ab=1\)，则 \(f(x)=c e^{-\pi a|x|^2}\)；若 \(ab<1\)，存在无穷多线性无关的非零输入满足这些界。
+\end{theorem}
+\begin{proof}
+先取一维。Gaussian 支配使 \(F(z)=\int f(x)e^{-2\pi\mathrm ixz}\,\mathrm dx\) 为整函数，配方给出 \(|F(x+\mathrm iy)|\leq C'e^{\pi y^2/a}\)。当 \(b=1/a\) 时，\(G(z)=e^{\pi z^2/a}F(z)\) 满足上一引理的增长与实轴界，故 \(F(z)=c'e^{-\pi z^2/a}\)。反演得到题设 Gaussian。若 \(b>1/a\)，先用较弱的临界界推导同一形式，再比较严格更快的频率衰减，迫使常数为零。
+
+高维中 \(F\) 在每个复变量全纯，其增长为 \(C'e^{\pi|\operatorname{Im}z|^2/a}\)。固定其他实变量，逐个使用一维引理，使 \(F(\xi)e^{\pi|\xi|^2/a}\) 对每个坐标为常数，得到同样结论。若 \(ab<1\)，选择 \(a<c<1/b\)，任何多项式乘 \(e^{-\pi c|x|^2}\) 都满足位置界，其 Fourier 变换为多项式乘 \(e^{-\pi|\xi|^2/c}\)，也满足严格留有余量的频率界。这些输入线性无关。
+\end{proof}
+这里使用的是点态 Gaussian 上界，不是仅有二阶矩。临界取等分类与方差极值相呼应，但两个定理不能用同一组假设相互替代。
 
 \subsection{支集型原理}
 \label{b2:subsec:200302}
 
-待填充。
+若 \(f\) 的位置支集紧，Fourier 变换可延拓为整函数。若频率支集也紧，变换在某个实开集为零，解析唯一性给出 \(f=0\)。这个经典论证要求紧支集；有限测度集合可能无界，不能据此声称已经证明有限测度版本。
+下面采用\term[benedicks-dingli]{Benedicks 定理}[Benedicks theorem]的下述版本。
+
+\begin{theorem}[Benedicks]\label{b2:thm:20-benedicks}
+若 \(f\in L^2(\mathbb R^d)\)，且 \(f\) 与 \(\widehat f\) 的本性支集都有有限 Lebesgue 测度，则 \(f=0\)。
+\end{theorem}
+\begin{proof}
+记两个支集为 \(E,F\)。先证明同时支撑于 \(E\) 和频率集合 \(U\) 的 \(L^2\) 空间维数不超过 \(|E|\cdot|U|\)。算子 \(A=\mathbf1_E\mathcal F^{-1}\mathbf1_U\mathcal F\) 的 Hilbert–Schmidt 范数平方为 \(|E|\cdot|U|\)，因为从频率到位置的核为 \(\mathbf1_E(x)e^{2\pi\mathrm ix\cdot\xi}\mathbf1_U(\xi)\)。若 \(g_1,\ldots,g_N\) 是上述空间的标准正交族，\(Ag_j=g_j\)，于是 \(N\leq\|A\|_{\mathrm{HS}}^2\)。
+
+假设 \(f\ne0\)。由示性函数的 \(L^1\) 平移连续性，可以选取互异实数 \(t_j\to0\)，使 \(|(F+t_je_1)\setminus F|<2^{-j}\)。令 \(U=F\cup\bigcup_j(F+t_je_1)\)，则 \(|U|\leq|F|+1\)。所有 \(e^{2\pi\mathrm it_jx_1}f(x)\) 都支撑于 \(E\)，Fourier 支集包含于 \(U\)。它们线性无关：若有限线性组合为零，则指数多项式在 \(\{f\ne0\}\) 上为零；Fubini 说明其一维零集有正测度。一维解析唯一性使指数多项式恒零，再用互异频率的 Vandermonde 导数矩阵得到全部系数为零。因此上述空间无限维，与有限 Hilbert–Schmidt 界矛盾。
+\end{proof}
+这个证明先以积分核限制空间维数，再用很小的频率平移制造任意多个独立输入。集合的有限测度只在核平方积分和平移连续性中使用，不要求其边界规则。
 
 \subsection{定性形式}
 \label{b2:subsec:200303}
 
-待填充。
+对有限测度 \(E,F\)，定义位置投影 \(P_Ef=\mathbf1_Ef\) 与频率投影 \(Q_Ff=\mathcal F^{-1}(\mathbf1_F\widehat f)\)。前段说明 \(P_EQ_F\) 是紧算子。实际上其算子范数 \(\rho\) 严格小于一：若等于一，紧算子会取得范数，两个正交投影的等号条件给出一个非零函数同时具有上述两个支集，与 Benedicks 矛盾。
+\begin{corollary}\label{b2:thm:20-annihilating-pair}
+存在依赖 \(E,F\) 的有限常数，使
+\[
+ \|f\|_2\leq C(E,F)\left(
+ \|f\mathbf1_{E^c}\|_2+\|\widehat f\mathbf1_{F^c}\|_2\right).
+\]
+\end{corollary}
+\begin{proof}
+有 \(\|f-P_EQ_Ff\|_2\leq\|f-P_Ef\|_2+\|P_E(f-Q_Ff)\|_2\)，后一项不超过频率尾部。另一方面 \(\|f-P_EQ_Ff\|_2\geq(1-\rho)\|f\|_2\)，取 \(C=(1-\rho)^{-1}\)。
+\end{proof}
+这是依赖具体集合的定量结论，常数没有被估计成只依赖体积。Benjamin Ricaud 与 Bruno Torrésani 的《A Survey of Uncertainty Principles and Some Signal Processing Applications》\cite[Section 3.3.2]{Ricaud2013Survey}讨论支集集中与这类不等式；本章的维数论证独立给出有限测度版本。
 
 \subsection{定量形式}
 \label{b2:subsec:200304}
 
-待填充。
+下面采用\term[donoho-stark-budengshi]{Donoho--Stark 不等式}[Donoho--Stark inequality]的下述版本。
+
+\begin{theorem}[Donoho--Stark 型估计]\label{b2:thm:20-donoho-stark}
+设 \(\|f\|_2=1\)，有限测度集合 \(E,F\) 满足
+\[
+ \|f\mathbf1_{E^c}\|_2\leq\varepsilon_E,\qquad
+ \|\widehat f\mathbf1_{F^c}\|_2\leq\varepsilon_F.
+\]
+则 \(|E|\cdot|F|\geq(1-\varepsilon_E-\varepsilon_F)_+^2\)。
+\end{theorem}
+\begin{proof}
+三角不等式给出 \(\|P_EQ_Ff\|_2\geq1-\varepsilon_E-\varepsilon_F\)。核平方积分又给出 \(\|P_EQ_F\|_{2\to2}\leq\sqrt{|E|\cdot|F|}\)，合并得到结论。
+\end{proof}
+它只记录面积乘积，因此比依具体集合的严格谱界粗一些，却可以直接用于近似频带和观测窗口。若两个误差之和超过一，下界退化为零；这不是失败，而是输入尚未同时高度集中。
+
+\ProseParagraphBreak
+
+熵、分数阶矩和观测集合上的传播估计提供其他定量形式。使用时必须重新列出空间、归一化与指数，不能把 Heisenberg 的常数移植过去。Gerald B. Folland 与 Alladi Sitaram 的《The Uncertainty Principle: A Mathematical Survey》\cite{Folland1997Uncertainty}提供较广的正式综述；此处不把综述中未展开的全部形式列为已经证明的结论。

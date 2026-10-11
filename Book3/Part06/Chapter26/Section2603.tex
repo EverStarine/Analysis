@@ -2,23 +2,79 @@
 \section{解析延拓}
 \label{b3:sec:2603}
 
-% TODO: 撰写本节正文。
+两种延拓方法各有用处。部分求和能迅速跨过直线一；theta 方法则一次得到全平面延拓和对称形式。
 
 \OptionalSubsection{Euler–Maclaurin 方法}{b3:subsec:260301}
 
-待填充。
+由\eqref{b3:eq:25-zeta-integral}，在 \(\operatorname{Re}s>0\) 有
+\(\zeta(s)=s/(s-1)-s\int_1^\infty\{t\}t^{-s-1}\,\mathrm{d}t\)。把 \(\{t\}\) 的平均值 \(1/2\) 分出，记周期函数 \(B_1(t)=\{t\}-1/2\)。其均值为零，故可选一个有界周期原函数 \(B_2(t)/2\)；这里在每个单位区间 \(B_2(t)=\{t\}^2-\{t\}+1/6\)。分部积分将余项的收敛域推到 \(\operatorname{Re}s>-1\)。重复使用有界周期原函数，每次增加一次负幂衰减，即得到 Euler--Maclaurin 方法。
+
+\ProseParagraphBreak
+
+具体地，在正整数 \(N\) 处截断并作 \(m\) 次成对分部积分，可得
+\[
+\zeta(s)=\sum_{n<N}n^{-s}+\frac{N^{1-s}}{s-1}+\frac{N^{-s}}2
++\sum_{r=1}^m\frac{B_{2r}}{(2r)!}(s)_{2r-1}N^{-s-2r+1}+R_m(s,N),
+\]
+其中 \((s)_j=s(s+1)\cdots(s+j-1)\)，而
+\(R_m=-(s)_{2m}(2m)!^{-1}\int_N^\infty \widetilde B_{2m}(t)t^{-s-2m}\,\mathrm{d}t\)。周期 Bernoulli 多项式按 \(B_j'=jB_{j-1}\)、\(\int_0^1B_j=0\) 递推定义，\(\widetilde B_j(t)=B_j(\{t\})\)。在 \(\operatorname{Re}s>1-2m\) 上余项积分全纯，因为周期因子有界。这个公式可用于数值估计；本章的整体延拓由下面的对称积分承担。
+
+\begin{proof}[截断公式的推导]
+先在 \(\sigma>1\) 操作，使无穷端点的项确实消失。将每个单位区间的积分分别与其左端点的值比较，或者对 \(\lfloor t\rfloor=t-1/2-B_1(t)\) 部分求和，得到
+\[
+ \sum_{n\ge N}n^{-s}
+ =\frac{N^{1-s}}{s-1}+\frac12N^{-s}
+       -s\int_N^\infty\widetilde B_1(t)t^{-s-1}\,\mathrm dt.
+\]
+首轮分部积分用 \((B_2/2)'=B_1\)，其下端点给 \(B_2sN^{-s-1}/2!\)，余项为
+\[
+ -\frac{(s)_2}{2!}\int_N^\infty\widetilde B_2(t)t^{-s-2}\,\mathrm dt.
+\]
+这里常数 \(B_2\) 表示 \(B_2(0)=1/6\)，应与周期函数分开。
+
+递推定义还保证 \(B_j(1)=B_j(0)\) 对 \(j\ge2\) 成立，因为两端之差为 \(j\int_0^1B_{j-1}=0\)。由导数和零平均值的唯一性可归纳得 \(B_j(1-x)=(-1)^jB_j(x)\)，于是奇数 \(j\ge3\) 的两端值均为零。对偶数阶余项再分部积分两次时，第一轮没有端点贡献，第二轮恰产生下一个偶数 Bernoulli 项。每个单位区间的内部端点因两端值相等而相消。如此归纳，得到所列的有限和与带负号的 \(R_m\)。
+
+最后，\(\widetilde B_{2m}\) 有界。若 \(\sigma>1-2m\)，则
+\[
+ |R_m(s,N)|\le
+ \frac{|(s)_{2m}|}{(2m)!}
+ \frac{\|B_{2m}\|_{L^\infty(0,1)}}{\sigma+2m-1}
+ N^{1-\sigma-2m}.
+\]
+对该半平面的紧集，导数中多出的对数因子仍可积，故余项全纯。由恒等定理，最初在 \(\sigma>1\) 得到的公式延伸到所述更大范围。
+\end{proof}
+
+当 \(m=1\) 时，\(B_2(x)=x^2-x+1/6\)，所以 \(\|B_2\|_\infty=1/6\)，上式化为
+\[
+ |R_1(s,N)|\le
+   \frac{|s(s+1)|}{12(\sigma+1)}N^{-\sigma-1},\qquad\sigma>-1.
+\]
+这给出了一个可直接使用的截断误差。若 \(s\) 的虚部很大，分子也会随之增长，因此固定 \(N\) 的误差并不对整个竖直半平面一致。计算时应同时考虑高度、截断位置和保留的 Bernoulli 项数。
 
 \subsection{\texorpdfstring{\(\theta\)}{\AnalysisPdfTheta} 方法}
 \label{b3:subsec:260302}
 
-待填充。
+将 Mellin 积分在一处分开，在 \((0,1)\) 上代入 theta 反演并令 \(u=1/t\)，得到
+\begin{equation}\label{b3:eq:26-completed-integral}
+\pi^{-s/2}\Gamma(s/2)\zeta(s)
+=-\frac1s-\frac1{1-s}
++\int_1^\infty h(t)\left(t^{s/2-1}+t^{(1-s)/2-1}\right)\,\mathrm{d}t.
+\end{equation}
+最初推导于 \(\operatorname{Re}s>1\)；其中显式项来自 \(\frac12\int_0^1(t^{-1/2}-1)t^{s/2-1}\,\mathrm{d}t=1/(s-1)-1/s\)。符号可以在 \(s>1\) 处检查，而不能因想要对称性就猜测。
 
 \subsection{亚纯延拓}
 \label{b3:subsec:260303}
 
-待填充。
+\begin{theorem}\label{b3:thm:26-continuation}
+Riemann zeta 函数唯一亚纯延拓到全平面；唯一极点为 \(s=1\) 的单极点，其留数为一。
+\end{theorem}
+\begin{proof}
+当 \(t\ge1\) 时，\(h(t)\le C e^{-\pi t}\)。对任意参数紧集，积分核及任意 \(s\) 导数由指数衰减乘固定幂次和对数幂控制，故\eqref{b3:eq:26-completed-integral}右侧积分为整函数。右侧只在零、一处有单极点。将其乘以整函数 \(\pi^{s/2}/\Gamma(s/2)\)：在零处，\(1/\Gamma(s/2)=s/2+O(s^2)\)，恰消去极点；在一处乘子值为一，极点留数为一。其他点没有新极点。这一亚纯函数与原级数在右半平面相等，唯一性由恒等定理。
+\end{proof}
 
 \subsection{\texorpdfstring{\(s=1\)}{s=1} 处的极点}
 \label{b3:subsec:260304}
 
-待填充。
+还可以精确识别常数项。部分求和公式给
+\(\zeta(s)-1/(s-1)=1-s\int_1^\infty\{t\}t^{-s-1}\,\mathrm{d}t\)。在 \(s=1\) 连续取值得到 \(1-\int_1^\infty\{t\}t^{-2}\,\mathrm{d}t=\gamma\)，最后等式由对整数截断的调和和计算得到。因此
+\(\zeta(s)=1/(s-1)+\gamma+O(s-1)\)。同一 Euler 常数出现在 Gamma 乘积与 zeta 的 Laurent 展开中，但两个出现位置分别由调和和的两种极限得到。

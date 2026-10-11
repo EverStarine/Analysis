@@ -2,29 +2,78 @@
 \section{素数计数函数}
 \label{b3:sec:2701}
 
-% TODO: 撰写本节正文。
+素数定理首先是一个计数断言。解析方法直接控制的是对数权和及素数幂的和，因此需要先说明三种计数函数为何具有等价的首项渐近，并建立一个独立于定理的粗上界。
 
 \subsection{\texorpdfstring{\(\pi(x)\)}{\AnalysisPdfPi(x)}}
 \label{b3:subsec:270101}
 
-待填充。
+记 \(\pi(x)=\#\{p\le x:p\text{ 为素数}\}\)，\(x\ge1\)。本章始终包含端点处的素数，使函数右连续。若改用严格小于，差至多一，不改变最终渐近，但会影响精确的 Stieltjes 积分端点约定。
 
-\subsection{\texorpdfstring{\(\vartheta(x)\)}{(x)}}
+\subsection{\texorpdfstring{\(\vartheta(x)\)}{\AnalysisPdfVarTheta(x)}}
 \label{b3:subsec:270102}
 
-待填充。
+定义 \(\vartheta(x)=\sum_{p\le x}\log p\)。乘法形式为 \(e^{\vartheta(x)}=\prod_{p\le x}p\)。
+\begin{lemma}[Chebyshev 上界]\label{b3:lem:27-chebyshev}
+有 \(\vartheta(x)=O(x)\)。
+\end{lemma}
+\begin{proof}
+每个 \(n<p\le2n\) 的素数整除 \(\binom{2n}{n}\)，所以
+\(\vartheta(2n)-\vartheta(n)\le\log\binom{2n}{n}\le2n\log2\)。对任意实数 \(x\)，取邻近整数处理端点，得 \(\vartheta(x)-\vartheta(x/2)\le Cx\)：长度至多二的剩余区间至多含两个整数，各贡献不超过 \(\log(x+2)\)。沿 \(x,x/2,x/4,\ldots\) 累加，几何级数给 \(\vartheta(x)\le2Cx+O(1)\)。
+\end{proof}
+这个界没有给渐近常数一，却足够控制以后 Laplace 变换中的函数。若先用素数定理推出该界，再把它放进素数定理的证明，就会形成循环。
 
-\subsection{\texorpdfstring{\(\psi(x)\)}{(x)}}
+\subsection{\texorpdfstring{\(\psi(x)\)}{\AnalysisPdfPsi(x)}}
 \label{b3:subsec:270103}
 
-待填充。
+定义 \(\psi(x)=\sum_{n\le x}\Lambda(n)=\sum_{p^r\le x}\log p\)。按幂次分组，
+\[
+\psi(x)=\sum_{r\ge1}\vartheta(x^{1/r}),\qquad
+0\le\psi(x)-\vartheta(x)\le C\sqrt x\log(x+2).
+\]
+因为仅有 \(r\le\log_2x\) 的项，每个 \(r\ge2\) 的项由 Chebyshev 界不超过 \(C\sqrt x\)。于是 \(\psi(x)=O(x)\)，并且高次素数幂相对于 \(x\) 是低阶项。
+\symidx{\(\pi(x)\)：素数计数函数}
+\symidx{\(\vartheta(x)\)：素数对数权和}
+\symidx{\(\psi(x)\)：素数幂对数权和}
 
 \subsection{von Mangoldt 函数}
 \label{b3:subsec:270104}
 
-待填充。
+前面的上界可以与另一个初等二项式估计结合，得到正确的增长数量级。中心二项式系数是 \((1+1)^{2n}\) 展开中的最大项，所以
+\[
+ \binom{2n}{n}\ge\frac{4^n}{2n+1}.
+\]
+它的素数 \(p\) 指数为
+\[
+ \sum_{j\ge1}\left(\left\lfloor\frac{2n}{p^j}\right\rfloor
+                   -2\left\lfloor\frac n{p^j}\right\rfloor\right).
+\]
+每个括号是零或一，并且 \(p^j>2n\) 时为零。因此取对数得到
+\[
+ \psi(2n)\ge\log\binom{2n}{n}
+       \ge2n\log2-\log(2n+1).
+\]
+对一般大实数 \(x\)，取 \(n=\lfloor x/2\rfloor\) 并用单调性，便知存在常数 \(c_0>0\)，使 \(\psi(x)\ge c_0x\)。扣去高次幂的 \(o(x)\) 误差，\(\vartheta(x)\) 也具有同样形式的下界。
+
+\ProseParagraphBreak
+
+于是对充分大的 \(x\)，存在正常数 \(c_1,C_1\)，使
+\[
+ c_1\frac{x}{\log x}\le\pi(x)\le C_1\frac{x}{\log x}.
+\]
+下界由 \(\vartheta(x)\le\pi(x)\log x\) 得到。对于上界，先分开 \(p\le\sqrt x\) 的至多 \(\sqrt x\) 个素数；其余每个 \(\log p\ge\tfrac12\log x\)，故个数不超过 \(2\vartheta(x)/\log x\)。这说明初等估计已经找到正确尺度。素数定理增加的内容是把上下界的两个不同常数收紧到同一个精确常数一。
+
+\ProseParagraphBreak
+
+von Mangoldt 函数的非负性使 \(\psi\) 单调。这一点将在 Tauber 步骤中把平均信息变成点态渐近；符号改变的系数即使有相同的解析极点，也可能有很大的振荡。这里的 \(\Lambda\) 是\secref{b3:sec:2501}的算术函数，不是上一章的完备 zeta 函数。
 
 \subsection{基本渐近等价式}
 \label{b3:subsec:270105}
 
-待填充。
+\begin{proposition}\label{b3:prop:27-equivalences}
+三个断言 \(\psi(x)\sim x\)、\(\vartheta(x)\sim x\)、\(\pi(x)\sim x/\log x\) 两两等价。
+\end{proposition}
+\begin{proof}
+前两个由高次幂误差 \(o(x)\) 等价。若 \(\vartheta(t)\sim t\)，部分求和给
+\(\pi(x)=\vartheta(x)/\log x+\int_2^x\vartheta(t)/(t\log^2t)\,\mathrm{d}t\)。由 \(\vartheta(t)=O(t)\)，将积分在 \(\sqrt x\) 分开，可得它为 \(O(\sqrt x)+O(x/\log^2x)=o(x/\log x)\)，于是得到 \(\pi\) 的渐近。
+反之若 \(\pi(x)\sim x/\log x\)，则 \(\vartheta(x)=\pi(x)\log x-\int_2^x\pi(t)/t\,\mathrm{d}t\)。\(\pi(t)=O(t/\log t)\)，同样在 \(\sqrt x\) 分割得积分 \(O(\sqrt x\log x)+O(x/\log x)=o(x)\)，所以 \(\vartheta(x)\sim x\)。
+\end{proof}

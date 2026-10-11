@@ -2,4 +2,522 @@
 \chapter{集中紧性原理}
 \label{b2:app:F}
 
-% TODO: 按计划纲要展开本附录。
+\begin{chapterabstract}
+
+集中紧性把逃向无穷远、分裂及局部消失分成可检验的模式。本附录证明概率密度的三分法和 Sobolev 消失引理，并以质量次临界变分问题完整说明严格次可加性如何恢复模平移紧性。
+
+\end{chapterabstract}
+
+\begin{learninggoals}\begin{itemize}
+\item\label{b2:item:app-F-goal-1}证明质量序列的紧性、消失和分裂三分法。
+\item\label{b2:item:app-F-goal-2}由局部 Sobolev 控制建立消失情形的强范数衰减。
+\item\label{b2:item:app-F-goal-3}计算质量约束能量的缩放与严格次可加性。
+\item\label{b2:item:app-F-goal-4}在次临界模型中排除两种紧性损失并证明极小元存在。
+\end{itemize}\end{learninggoals}
+
+局部紧嵌入不等于整个欧氏空间上的紧性。平移、尺度变化以及多个远离峰的分裂都能破坏强收敛；集中紧性先描述这些损失，再用目标问题的结构排除不允许的模式。以下使用第一卷定理 24.2.5 的全空间 Sobolev 不等式及推论 25.2.5 的零边界紧嵌入，其他质量与能量论证在此展开。
+% 跨卷定位：b1:thm:sobolev-subcritical-embedding，24.2.5；b1:cor:rellich-zero-boundary，25.2.5。
+
+\section{对称性与紧性损失}
+
+\label{b2:sec:app-F-1}
+
+对固定非零光滑紧支撑 \(u\)，平移 \(u_n(x)=u(x-ne_1)\) 保持所有常用平移不变范数，却在每个固定紧集上趋于零。若尺度缩放也保持目标范数，则
+\(u_n(x)=\lambda_n^{d/p}u(\lambda_nx)\) 还能集中到一个点或扩散到无限大尺度。两个相距越来越远的平移峰则产生分裂。
+
+\ProseParagraphBreak
+归一化位置只能处理平移，不能自动处理尺度。固定一个输出峰的中心也不保证全部质量在该中心附近，因为第二个峰可能继续逃逸。变分证明必须核对被固定的范数、对称群及其余项的质量，而不能只依赖“选一个非零弱极限”。
+
+\section{质量三分法}
+
+\label{b2:sec:app-F-2}
+
+\begin{theorem}[Lions 质量三分法]\label{b2:thm:F-trichotomy}
+设 \(\rho_n\ge0\)、\(\int\rho_n=1\)。取子列后有以下一种模式：
+局部消失，即每个固定 \(R\) 上
+\(\sup_y\int_{B(y,R)}\rho_n\to0\)；
+模平移紧性，即存在 \(y_n\)，对每个 \(\epsilon>0\) 可选固定 \(R\) 使
+\(\int_{B(y_n,R)}\rho_n\ge1-\epsilon\) 对充分大 \(n\) 成立；
+或分裂，即存在 \(0<\alpha<1\) 与两部分密度，其质量趋于 \(\alpha,1-\alpha\)，支撑距离趋无穷，剩余密度的 \(L^1\) 范数趋零。
+\end{theorem}
+\begin{proof}
+令 \(Q_n(R)=\sup_y\int_{B(y,R)}\rho_n\)。在整数 \(R\) 上作对角子列，使
+\(Q_n(R)\to Q(R)\)。\(Q\) 单调有界，设
+\(\alpha=\lim_{R\to\infty}Q(R)\)。
+若 \(\alpha=0\)，单调性给出每个固定实半径上的消失。
+
+若 \(\alpha=1\)，先固定 \(R_0\) 使 \(Q(R_0)>3/4\)，选择 \(y_n\) 使相应球质量大于 \(2/3\)。
+对给定小 \(\epsilon\)，另选固定 \(R_\epsilon\) 使 \(Q(R_\epsilon)>1-\epsilon/2\)，再选质量大于 \(1-\epsilon\) 的球。
+两球必相交（总质量大于1），其中心距离不超过两半径之和。故后一球包含于
+\(B(y_n,R_0+2R_\epsilon)\)，证明同一个中心列的紧性。
+
+若 \(0<\alpha<1\)，取 \(\epsilon_k\downarrow0\)、\(R_k\to\infty\)，使
+\(|Q(R_k)-\alpha|<\epsilon_k\)。再选 \(S_k\gg R_k\)，并取足够大的子列指标 \(n_k\)，使 \(Q_{n_k}(R_k)\) 与 \(Q(R_k)\)、\(Q_{n_k}(S_k)\) 与 \(Q(S_k)\) 的差都小于 \(\epsilon_k\)。
+选择中心 \(y_k\) 使内球质量至少 \(\alpha-3\epsilon_k\)。
+外球质量至多 \(\alpha+\epsilon_k\)，所以两球间环带质量至多 \(4\epsilon_k\)。
+以内球和外球补集截取 \(\rho_{n_k}\)，两部分质量分别趋于 \(\alpha\) 与 \(1-\alpha\)，支撑距离至少 \(S_k-R_k\to\infty\)，环带剩余质量趋零。这完成三种情况。
+\end{proof}
+分裂的叙述是对密度而言，不自动给出函数导数的能量解耦。用于 Sobolev 变分时，还须加入光滑截断并估计导数误差。正式的集中紧性体系见 Lions 的《The Concentration-Compactness Principle in the Calculus of Variations》局部紧情形第一篇与临界情形第二篇\cite{Lions1984Concentration,Lions1985Concentration}；这里的基本质量三分法已独立证明。
+
+\ProseParagraphBreak
+三分法中各个量词不能互换。模平移紧性先选一个中心列 \(y_n\)，
+然后对每个误差 \(\epsilon\) 选半径 \(R_\epsilon\)，最后才允许舍去有限项。
+半径可以依赖 \(\epsilon\)，却不能随着 \(n\) 任意增长：
+每个概率密度都能用某个随 \(n\) 增长的球圈住，而这种陈述不提供统一尾部控制。
+消失则固定每个半径以后看上确界，允许最大质量球的中心逐项改变。
+一个固定中心处质量趋零并不足以排除平移逃逸的完整质量峰。
+
+\ProseParagraphBreak
+分裂证明实际提供比两部分密度更方便的球结构：沿子列有
+\(R_n\to\infty\)、\(S_n/R_n\to\infty\) 和中心 \(y_n\)，使
+\[
+ \int_{B(y_n,R_n)}\rho_n\longrightarrow\alpha,
+ \quad
+ \int_{B(y_n,S_n)}\rho_n\longrightarrow\alpha,
+ \quad
+ \int_{R_n<|x-y_n|<S_n}\rho_n\longrightarrow0.
+\]
+这是在证明中预先把 \(S_k\) 选得足够大取得的，并非对所有半径序列都成立。
+内外半径之间既有足够空间放置平滑过渡，又有足够小的质量承受过渡误差。
+没有导数的概率密度可直接乘示性函数；\(H^1\) 函数则必须把这个几何结构
+转化为光滑分割，不能沿球面硬截断后仍认为一阶弱导数留在 \(L^2\)。
+
+\section{消失与 Sobolev 范数}
+
+\label{b2:sec:app-F-3}
+
+\begin{lemma}[Sobolev 消失引理]\label{b2:lem:F-vanishing}
+设 \(d\ge3\)、\(u_n\) 在 \(H^1(\mathbb R^d)\) 有界，且某个固定 \(R>0\) 满足
+\(\sup_y\int_{B(y,R)}|u_n|^2\to0\)。
+则 \(\|u_n\|_q\to0\)，对每个 \(2<q<2^*=2d/(d-2)\) 成立。
+\end{lemma}
+\begin{proof}
+用固定大小立方体 \(Q\) 覆盖空间，取稍大的立方体 \(Q^*\)，扩大族有有限重叠。
+在 \(Q^*\) 内选一个等于一于 \(Q\) 的光滑截断 \(\chi_Q\)，其导数由固定尺度控制。
+把 \(\chi_Qu\) 补零后应用第一卷定理 24.2.5，取得
+\(\|u\|_{L^{2^*}(Q)}\le C_R\|u\|_{H^1(Q^*)}\)，常数对平移后的全部立方体一致。
+令 \(q_0=2+4/d\)。Hölder 和该局部控制给出
+\[
+ \int_Q|u|^{q_0}
+ \le\left(\int_Q|u|^2\right)^{2/d}
+       \left(\int_Q|u|^{2^*}\right)^{(d-2)/d}
+ \le C\left(\int_Q|u|^2\right)^{2/d}
+             \|u\|_{H^1(Q^*)}^2.
+\]
+对覆盖求和，局部质量上确界趋零，全局 \(H^1\) 范数有界，故 \(q_0\) 范数趋零。
+在 \(2,q_0,2^*\) 之间插值，便得到全部严格中间指数。固定球的消失蕴含所选小立方体上的消失；若须扩大，只需用有限个该半径球覆盖。
+\end{proof}
+低维可用任意合适的有限 Sobolev 指数或一维 \(L^\infty\) 嵌入调整证明。严格的上端指数不能直接包含：在临界 Sobolev 缩放下，质量可能集中而临界范数保持，固定尺度质量测试与临界能量测量并不相同。
+
+\ProseParagraphBreak
+消失引理的估计还给出定量形式。固定小球尺度后，记
+\(\delta(u)=\sup_y\int_{B(y,R)}|u|^2\)，则覆盖证明给出
+\[
+ \|u\|_{2+4/d}^{2+4/d}
+ \le C_R\delta(u)^{2/d}\|u\|_{H^1}^2.
+\]
+一旦知道全局 \(H^1\) 上界，这个式子就把局部质量的消失速度转成一个
+严格中间范数的消失速度。其他中间指数再由插值取得相应幂次。
+这里局部 Sobolev 的常数来自固定尺度的扩大立方体，
+所以若让测试半径同时趋零，不能再保持同一个 \(C_R\)。
+
+\ProseParagraphBreak
+上端指数的失败有一个准确模型。对非零 \(v\in C_c^\infty(\mathbb R^d)\)，令
+\(u_\lambda(x)=\lambda^{(d-2)/2}v(\lambda x)\)、\(\lambda\to\infty\)。
+换元得到
+\[
+ \|u_\lambda\|_2^2=\lambda^{-2}\|v\|_2^2,
+ \qquad \|\nabla u_\lambda\|_2=\|\nabla v\|_2,
+ \qquad \|u_\lambda\|_{2^*}=\|v\|_{2^*}.
+\]
+于是整个 \(L^2\) 质量都趋零，更不用说任意固定球上的质量，
+但临界范数保持非零。该列说明局部质量与临界导数集中检测的是不同尺度。
+在固定正质量的变分列中，也可把这样的小质量尖峰与另一个质量部分相加；
+仅有质量紧性仍不自动保证临界范数强收敛。
+
+\section{一个质量次临界变分问题}
+
+\label{b2:sec:app-F-4}
+
+以下 \(d\ge3\)、\(2<q<2+4/d\)。令
+\[
+ \mathcal E(u)=\tfrac12\|\nabla u\|_2^2-\tfrac1q\|u\|_q^q,\qquad
+ I(m)=\inf_{\|u\|_2^2=m}\mathcal E(u),\quad m>0.
+\]
+Sobolev 插值给出
+\(\|u\|_q^q\le C\|u\|_2^{q-\theta}\|\nabla u\|_2^\theta\)，
+\(\theta=d(q-2)/2<2\)。
+固定质量时能量有下界，极小化列的梯度有界。取一个固定输入作保持质量的空间扩散，梯度项按 \(\lambda^2\) 缩放，负项按 \(\lambda^\theta\) 缩放；\(\lambda\downarrow0\) 时负项占优势，所以 \(I(m)<0\)。
+
+\ProseParagraphBreak
+质量缩放还给出精确关系
+\[
+ I(m)=m^\gamma I(1),\qquad
+ b=\frac{q-2}{4-d(q-2)},\qquad\gamma=1+2b>1.
+\]
+证明对单位质量 \(v\) 取
+\(u(x)=m^{(1+bd)/2}v(m^bx)\)。质量变成 \(m\)，梯度项与非线性项均乘同一个 \(m^\gamma\)，且这个变换可逆，所以对下确界也相等。
+因 \(I(1)<0\)，有严格次可加性
+\[
+ I(m)<I(a)+I(m-a),\qquad0<a<m.
+\]
+严格号的方向来自负的 \(I(1)\)；若忘记负号，容易把分裂排除条件写反。
+
+\ProseParagraphBreak
+梯度有界所用的强制性可逐项看清。固定 \(m\) 后，令
+\(K=\|\nabla u\|_2\)，有
+\(\mathcal E(u)\ge K^2/2-C_mK^\theta\)。
+因为 \(\theta<2\)，可用 Young 不等式把后项吸收为
+\(K^2/4+C_m'\)，所以
+\[
+ \mathcal E(u)\ge\tfrac14\|\nabla u\|_2^2-C_m'.
+\]
+任意能量有共同上界的固定质量列都有共同 \(H^1\) 上界；
+不必在取得极小化列时另假设它已经有界。
+另一方面 \(I(m)<0\) 排除零函数作为可能极限，
+严格次可加性进一步说明把正质量拆成两个远离部分会付出确定的能量差。
+对固定 \(0<a<m\)，差值
+\(I(a)+I(m-a)-I(m)>0\)，并且对充分接近 \(a\) 的质量仍保持正下界，
+因为精确缩放公式保证 \(I\) 连续。所需的是固定内点质量，
+不能把这个正下界误称为对 \(a\downarrow0\) 仍然统一。
+
+\section{模平移紧性与极小值达到}
+
+\label{b2:sec:app-F-5}
+
+先把能量分裂中需要的局部化事实独立证明。以下分割均为实值，
+函数 \(u_n\) 可以是复值。
+
+\begin{lemma}[平滑质量分裂与 IMS 误差]\label{b2:lem:F-ims-split}
+设 \(u_n\) 在 \(H^1(\mathbb R^d)\) 有界、\(d\ge3\)，存在
+\(R_n\to\infty\)、\(S_n/R_n\to\infty\) 及 \(y_n\)，满足
+\[
+ \int_{B(y_n,R_n)}|u_n|^2\to a,\quad
+ \int_{B(y_n,S_n)}|u_n|^2\to a,\quad 0<a<m,
+ \qquad \|u_n\|_2^2=m.
+\]
+对 \(2<q<2^*\)，可选光滑 \(0\le\eta_{j,n}\le1\)、\(j=0,1,2\)，
+使平方和等于1，内外两部分的支撑距离趋无穷，且
+\[
+ \|\eta_{1,n}u_n\|_2^2\to a,\qquad
+ \|\eta_{2,n}u_n\|_2^2\to m-a,\qquad
+ \mathcal E(u_n)\ge
+ \mathcal E(\eta_{1,n}u_n)+\mathcal E(\eta_{2,n}u_n)-o(1).
+\]
+\end{lemma}
+\begin{proof}
+舍去有限项使 \(S_n>4R_n\)，记 \(r=|x-y_n|\)。
+取固定光滑角函数从0过渡到 \(\pi/2\)，在端点邻域常值。
+令 \(\vartheta_1(r)\) 在 \([R_n,2R_n]\) 内完成这一过渡，
+\(\vartheta_2(r)\) 在 \([S_n/2,S_n]\) 内完成这一过渡。
+在内过渡区定义 \((\eta_1,\eta_0,\eta_2)=(\cos\vartheta_1,\sin\vartheta_1,0)\)；
+在两个过渡区之间定义为 \((0,1,0)\)；
+在外过渡区定义为 \((0,\cos\vartheta_2,\sin\vartheta_2)\)。
+\(r\le R_n\) 时定义为 \((1,0,0)\)，\(r\ge S_n\) 时定义为 \((0,0,1)\)。
+端点附近的常值性保证拼接光滑；原点附近恒定，径向坐标也不造成奇点。
+如此平方和等于1，且
+\[
+ \sum_{j=0}^2|\nabla\eta_{j,n}|^2
+ \le C(R_n^{-2}+S_n^{-2}),
+ \quad
+ \operatorname{supp}\eta_{1,n}\subset\overline B(y_n,2R_n),
+ \quad \eta_{2,n}=0\text{ 于 }B(y_n,S_n/2).
+\]
+支撑间距至少 \(S_n/2-2R_n\to\infty\)。
+两给定球之间的环带 \(\Omega_n\) 质量趋零，因而中间部分的质量趋零，
+内外部分的质量有声明的极限。
+
+展开 \(\nabla(\eta_j u)=\eta_j\nabla u+u\nabla\eta_j\)。
+交叉项相加含有 \(\sum_j\eta_j\nabla\eta_j
+=\tfrac12\nabla\sum_j\eta_j^2=0\)，所以精确恒等式为
+\[
+ \sum_j\|\nabla(\eta_j u_n)\|_2^2
+ =\|\nabla u_n\|_2^2+
+    \int\sum_j|\nabla\eta_j|^2|u_n|^2.
+\]
+最后一项至多 \(Cm(R_n^{-2}+S_n^{-2})\to0\)。
+此式称为 \term[ims-jubuhua-hengdengshi]{IMS 局部化恒等式}[IMS localization formula]，既控制误差，也给出所有局部化部分的梯度有界。
+
+非线性项另行估计。令 \(1/q=\beta/2+(1-\beta)/2^*\)，\(0<\beta<1\)，
+空间 Hölder 与全局 Sobolev 有界性给出
+\[
+ \int_{\Omega_n}|u_n|^q
+ \le\left(\int_{\Omega_n}|u_n|^2\right)^{\beta q/2}
+      \left(\int_{\Omega_n}|u_n|^{2^*}\right)^{(1-\beta)q/2}
+ \longrightarrow0.
+\]
+平方分割并不使 \(q\) 次幂相加等于1，但 \(q>2\) 给出
+\(0\le1-\sum_j\eta_j^q\le1\)，且该差只支于过渡环带。
+因此
+\[
+ 0\le\|u_n\|_q^q-\sum_j\|\eta_ju_n\|_q^q
+ \le\int_{\Omega_n}|u_n|^q=o(1).
+\]
+中间部分本身也满足 \(\|\eta_0u_n\|_q^q=o(1)\)，
+故 \(\mathcal E(\eta_0u_n)\ge-o(1)\)。
+把上述两种误差代入能量定义并舍去中间的非负梯度贡献，
+即得所需下界。此处没有假设导数能量在环带上也趋零。
+\end{proof}
+密度分裂只控制质量；这个引理把小质量与全局导数上界结合，
+才将它升级为目标能量的近似分裂。两个误差分别来自导数过渡和非线性幂，
+其趋零理由不同。
+
+\ProseParagraphBreak
+
+\begin{theorem}\label{b2:thm:F-minimizer}
+上述质量次临界问题的任意极小化列，在取子列并平移后于 \(H^1\) 强收敛到一个极小值函数。
+\end{theorem}
+\begin{proof}
+对密度 \(\rho_n=|u_n|^2/m\) 应用三分法。
+消失时 Sobolev 消失引理使 \(\|u_n\|_q\to0\)，能量极限非负，与 \(I(m)<0\) 矛盾。
+
+分裂时，三分法证明中构造的内外半径满足
+\cref{b2:lem:F-ims-split}，其中 \(a=m\alpha\in(0,m)\)。
+因此
+\[
+ \mathcal E(u_n)\ge
+ I(\|\eta_{1,n}u_n\|_2^2)+I(\|\eta_{2,n}u_n\|_2^2)-o(1).
+\]
+两质量分别趋于 \(a\) 与 \(m-a\)，精确缩放公式使 \(I\) 在正质量处连续。
+取极限便有 \(I(m)\ge I(a)+I(m-a)\)，与严格次可加性矛盾。
+
+只剩模平移紧性。令 \(v_n(x)=u_n(x+y_n)\)，其 \(H^1\) 范数与能量不变。
+取弱收敛子列 \(v_n\rightharpoonup v\)。在每个固定球上选一个等于一的光滑紧支截断，
+局部化后的列属于稍大球的 \(H_0^1\) 且有界。
+第一卷推论 25.2.5 的零边界紧嵌入给出局部 \(L^2\) 强收敛；
+在整数球上作对角选取，其局部极限必与弱极限 \(v\) 相同。
+% 跨卷定位：b1:cor:rellich-zero-boundary，Book1.aux 当前编号 25.2.5。
+
+给定 \(\epsilon>0\)，紧性先给一个固定 \(R\)，使充分大 \(n\) 有
+\(\int_{|x|>R}|v_n|^2\le\epsilon\)。
+弱下半连续性同样给 \(\int_{|x|>R}|v|^2\le\epsilon\)，于是
+\[
+ \|v_n-v\|_2^2
+ \le\int_{|x|\le R}|v_n-v|^2+4\epsilon.
+\]
+先令 \(n\to\infty\)，再令 \(\epsilon\downarrow0\)，得到全局 \(L^2\) 强收敛及
+\(\|v\|_2^2=m\)。全局 \(L^{2^*}\) 有界与插值给出 \(L^q\) 强收敛。
+梯度弱下半连续性使 \(\mathcal E(v)\le I(m)\)，质量条件与下确界定义又给出反向不等式，
+故 \(v\) 达到极小值。最后
+\[
+ \tfrac12\|\nabla v_n\|_2^2
+ =\mathcal E(v_n)+\tfrac1q\|v_n\|_q^q
+ \longrightarrow I(m)+\tfrac1q\|v\|_q^q
+ =\tfrac12\|\nabla v\|_2^2.
+\]
+梯度的弱收敛加范数收敛给出强收敛，连同 \(L^2\) 强收敛便得到 \(H^1\) 强收敛。
+\end{proof}
+这条证明使用质量次临界性两次：保证下界与梯度控制，以及让小质量部分的非线性消失。在临界或超临界情形，缩放可能保持或破坏能量，不能无条件沿用同一个结论。
+
+\ProseParagraphBreak
+结论是模平移的序列紧性，未断言整个极小化列在原坐标中收敛。
+如果 \(v\) 已是极小元，\(v(x-ne_1)\) 仍是极小化列，原坐标中没有强收敛子列；
+选中心并平移正是定理必须保留的步骤。
+结论也未包括极小元唯一性。复值问题还具有常相位对称性，
+旋转、平移或其他对称可能把一个极小元变成另一个；
+存在性与唯一性需要分别证明。
+
+\ProseParagraphBreak
+次临界条件不能只在结论末尾笼统说明。
+若 \(q=2+4/d\)，保持质量的空间缩放使两项都按 \(\lambda^2\) 缩放，
+不再能以 \(\lambda\downarrow0\) 强迫负项压倒梯度项。
+若某个固定质量输入具有负能量，则令 \(\lambda\to\infty\) 已使能量趋于
+\(-\infty\)，因而本模型中有限负下确界与梯度有界的证明不能原样成立。
+超临界 \(q>2+4/d\)、仍在 Sobolev 可定义范围内时，负项的缩放幂大于2，
+同样可能产生无界下能量。临界阈值、最优常数和其他约束的作用须另作分析。
+
+\section{限制极值与轮廓}
+
+\label{b2:sec:app-F-6}
+
+\chapref{b2:ch:23}的延拓极值问题具有环境平移对应的曲面调制，以及小帽集中带来的局部重标度。质量三分法提供初步诊断，但曲面输入的集中与输出空间中的逃逸并不是同一个密度问题。
+更精细的轮廓分解记录不同平移、调制与尺度参数，把相互远离的轮廓与一个在目标范数中消失的余项分开。
+
+\ProseParagraphBreak
+若输出指数 \(q>2\)，两个解耦轮廓的输入平方质量分别为 \(a\) 和 \(1-a\)，其输出 \(q\) 次范数之和受
+\(\mathcal C^q[a^{q/2}+(1-a)^{q/2}]\) 控制，严格小于 \(\mathcal C^q\)。
+但应用前必须证明输入能量与输出范数解耦，并排除帽缩放产生的其他极限问题。附录的完整变分模型展示了这条逻辑链的每个环节；它不自动证明任意曲面的极值函数存在。
+
+\ProseParagraphBreak
+轮廓方法与本附录的三分法可以这样衔接：先以某个非零局部输出找到一个参数列，
+用逆对称变换取得非零弱极限；减去该轮廓后，
+证明输入平方范数的余项分裂以及目标输出的幂次分裂，再对余项重复提取。
+即便每次都找到一个非零轮廓，也还需要证明无限次提取后的余项在目标范数中消失。
+若存在尺度集中，轮廓可能属于一个局部极限曲面的问题，
+其最优常数必须与原问题比较；仅排除两个同类平移轮廓并不排除这种模式。
+本附录不陈述一般轮廓分解定理，因而这些步骤在限制极值应用中仍是需要单独建立的前置。
+
+\begin{chaptersummary}
+弱紧性之外，质量还可能逃走、变稀或分裂。三分法把这些模式量化；局部消失引理和能量的严格次可加性分别排除消失与分裂。在所给次临界模型中，余下的模平移紧性已提升为强收敛，从而得到极小元；限制问题仍需自己的轮廓与尺度分析。
+\end{chaptersummary}
+
+\BookExercises
+
+% 自拟：检查本附录的已建工具及其假设边界。
+
+\begin{exercise}\label{b2:ex:app-F-1}
+
+构造 \(H^1\) 有界、具有非零弱极限而质量没有完全保留的序列，
+说明非零弱极限本身不足以取得强收敛。
+
+\end{exercise}
+
+\begin{solution}
+
+取 \(v\in C_c^\infty\)、\(\|v\|_2=1\)，固定 \(0<a<1\)，令
+\(u_n=\sqrt a\,v+\sqrt{1-a}\,v(\cdot-ne_1)\)。
+两支撑最终不交，故 \(\|u_n\|_2^2=1\)，并且 \(H^1\) 范数有共同上界。
+平移项与任何紧支光滑函数的 \(H^1\) 内积最终为零；其稠密性与统一范数界使结论推广到全部 \(H^1\) 测试输入，
+得到弱极限 \(\sqrt a\,v\)。其质量仅为 \(a\)，
+而剩余项的 \(L^2\) 范数恒为 \(\sqrt{1-a}\)，所以不存在对该极限的全局强收敛。
+
+\end{solution}
+
+% 自拟：检查本附录的已建工具及其假设边界。
+
+\begin{exercise}\label{b2:ex:app-F-2}
+
+对密度 \(\rho_n(x)=n^{-d}\rho(x/n)\)、\(\int\rho=1\)、\(\rho\) 有界紧支撑，判断三分法模式。
+
+\end{exercise}
+
+\begin{solution}
+
+每个固定球质量至多 \(\|\rho\|_\infty n^{-d}|B_R|\to0\)，所以是消失。总质量仍为1，说明局部消失不是全局 \(L^1\) 范数趋零。
+
+\end{solution}
+
+% 自拟：检查本附录的已建工具及其假设边界。
+
+\begin{exercise}\label{b2:ex:app-F-3}
+
+取支于 \(B(0,R_0)\) 的单位质量密度 \(\rho\)，令
+\(\rho_n=a\rho(\cdot-ne_1)+(1-a)\rho(\cdot+ne_1)\)、\(0<a<1\)。
+对固定 \(R>R_0\) 求 \(Q_n(R)\) 的极限，并解释三分法参数。
+
+\end{exercise}
+
+\begin{solution}
+
+充分大 \(n\) 时，一个固定半径球至多与一峰的支撑相交，
+故其质量至多 \(\max(a,1-a)\)。以相应峰中心为球心又可包住完整峰，
+所以 \(Q_n(R)=\max(a,1-a)\) 最终成立。
+对所有 \(R>R_0\) 均如此，因此三分法证明选出的
+\(\alpha=\max(a,1-a)\in(0,1)\)，属于分裂。
+两部分质量仍是 \(a,1-a\)，\(\alpha\) 只是选择较大峰后确定的次序。
+
+\end{solution}
+
+% 自拟：检查本附录的已建工具及其假设边界。
+
+\begin{exercise}\label{b2:ex:app-F-4}
+
+在三维设 \(\|u_n\|_{H^1}\le C\)，且固定球局部质量上确界
+\(\delta_n\le n^{-6}\)。利用消失引理的定量形式，给出 \(L^3\) 范数的衰减速度。
+
+\end{exercise}
+
+\begin{solution}
+
+三维 \(q_0=10/3\)，定量式给
+\(\|u_n\|_{10/3}\le C\delta_n^{1/5}\)。
+由于 \(1/3=(1/6)/2+(5/6)/(10/3)\)，插值取得
+\(\|u_n\|_3\le\|u_n\|_2^{1/6}\|u_n\|_{10/3}^{5/6}
+\le C\delta_n^{1/6}\le Cn^{-1}\)。
+常数依赖固定球尺度及共同 \(H^1\) 上界，与 \(n\) 无关。
+
+\end{solution}
+
+% 自拟：检查本附录的已建工具及其假设边界。
+
+\begin{exercise}\label{b2:ex:app-F-5}
+
+在次临界范围，取单位质量 Gaussian
+\(v(x)=\pi^{-d/4}e^{-|x|^2/2}\)，用
+\(u(x)=\sqrt m\lambda^{d/2}v(\lambda x)\) 优化 \(\lambda\)，
+得到显式的负上界 \(I(m)\le-C_{d,q}m^\gamma\)。
+
+\end{exercise}
+
+\begin{solution}
+
+Gaussian 积分给 \(\|\nabla v\|_2^2=d/2\)、
+\(\|v\|_q^q=\pi^{-dq/4}(2\pi/q)^{d/2}\)。
+令 \(a=d/4\)、\(b=\|v\|_q^q/q\)、\(\theta=d(q-2)/2\)，则测试能量为
+\(am\lambda^2-bm^{q/2}\lambda^\theta\)。
+其极小参数满足
+\(\lambda^{2-\theta}=\theta b\,m^{q/2-1}/(2a)\)。
+代入得
+\[
+ I(m)\le-
+ \frac{a(2-\theta)}{\theta}
+ \left(\frac{\theta b}{2a}\right)^{2/(2-\theta)}
+ m^{1+(q-2)/(2-\theta)}.
+\]
+括号外的常数为正，质量幂等于正文的 \(\gamma\)。
+测试上界并不声称 Gaussian 已是极小元。
+
+\end{solution}
+
+% 自拟：检查本附录的已建工具及其假设边界。
+
+\begin{exercise}\label{b2:ex:app-F-6}
+
+固定总质量1，令
+\(D(a)=I(a)+I(1-a)-I(1)\)。求 \(a\downarrow0\) 时 \(D(a)/a\) 的极限，
+说明严格分裂能量差为何不能对所有分裂质量统一取正下界。
+
+\end{exercise}
+
+\begin{solution}
+
+由 \(I(m)=I(1)m^\gamma\)，
+\(D(a)=|I(1)|[1-a^\gamma-(1-a)^\gamma]\)。
+\(\gamma>1\) 给 \(a^\gamma=o(a)\)，Taylor 展开给
+\((1-a)^\gamma=1-\gamma a+o(a)\)，因此
+\(D(a)/a\to\gamma|I(1)|\)。
+每个固定 \(a\in(0,1)\) 的差为正，但当一部分质量趋零时差也趋零。
+
+\end{solution}
+
+% 自拟：检查本附录的已建工具及其假设边界。
+
+\begin{exercise}\label{b2:ex:app-F-7}
+
+设 \(u_n\rightharpoonup u\) 于 \(H^1\)、\(u_n\to u\) 于 \(L^2\)，
+并额外有 \(\|\nabla u_n\|_2\to\|\nabla u\|_2\)。
+证明这时也有临界 \(L^{2^*}\) 强收敛，\(d\ge3\)。
+
+\end{exercise}
+
+\begin{solution}
+
+弱梯度收敛使 \(\langle\nabla u_n,\nabla u\rangle\to\|\nabla u\|_2^2\)。
+展开平方差，范数收敛给 \(\|\nabla(u_n-u)\|_2\to0\)。
+齐次 Sobolev 界于是给 \(\|u_n-u\|_{2^*}\le C\|\nabla(u_n-u)\|_2\to0\)。
+该附加条件排除了保有梯度能量的临界小质量尖峰，
+所以它比只有 \(L^2\) 强收敛及梯度有界强。
+
+\end{solution}
+
+% 自拟：检查本附录的已建工具及其假设边界。
+
+\begin{exercise}\label{b2:ex:app-F-8}
+
+设某延拓极值列已经取得轮廓分解，输入平方质量为 \(a_j\ge0\)、
+\(\sum_ja_j\le1\)，余项的输出范数趋零，输出 \(q\) 次范数解耦。
+若每个轮廓的输出不超过 \(\mathcal C\sqrt{a_j}\)，\(q>2\)，
+证明达到最优值 \(\mathcal C\) 的列只能有一个质量1的非零轮廓。
+
+\end{exercise}
+
+\begin{solution}
+
+由解耦和轮廓估计，\(1\le\sum_ja_j^{q/2}\)。
+另一方面，每个 \(0\le a_j\le1\) 且 \(q/2>1\)，故
+\(\sum_ja_j^{q/2}\le\sum_ja_j\le1\)。
+全部等号成立；若某个 \(a_j\in(0,1)\)，则该项的严格号已经使总和严格减小，矛盾。
+所以非零质量只能为1，并且至多一项。这个推论以输入与输出解耦、余项消失为前提，
+没有代替轮廓分解及不同尺度极限问题的证明。
+
+\end{solution}

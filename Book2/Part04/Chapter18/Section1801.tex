@@ -2,24 +2,102 @@
 \section{Hilbert 变换}
 \label{b2:sec:1801}
 
-% TODO: 撰写本节正文。
+在实直线上，核 \(1/x\) 的绝对积分在原点和无穷远都发散。然而它是奇函数，原点两侧的对称截断可以相互抵消。Hilbert 变换把这种抵消写成一个 Fourier 乘子，是研究奇异积分的第一个完整模型。
 
 \subsection{主值}
 \label{b2:subsec:180101}
 
-待填充。
+对 \(f\in\mathcal S(\mathbb R)\)，定义\term[hilbert-bianhuan]{Hilbert 变换}[Hilbert transform]
+\[
+ Hf(x)\coloneqq\lim_{\varepsilon\downarrow0}
+ \dfrac1\pi\int_{|x-y|>\varepsilon}\dfrac{f(y)}{x-y}\,\mathrm dy.
+\]
+\symidx{\(Hf\)：Hilbert 变换}
+这里的极限称为\term[zhuzhi-jifen]{主值积分}[principal value integral]。换元 \(t=x-y\) 后，近原点的积分可以写成
+\[
+ \int_{\varepsilon<|t|<1}\dfrac{f(x-t)-f(x)}{t}\,\mathrm dt.
+\]
+均值定理使差商有界，所以极限存在；远处因 \(f\) 快速衰减而绝对可积。减去 \(f(x)\) 只在对称区间上进行，不能对一个无穷的常数积分作没有解释的减法。
+
+\ProseParagraphBreak
+
+若 \(f=\mathbf1_{(0,1)}\)，避开两个端点可直接计算
+\[
+ Hf(x)=\dfrac1\pi\log\left|\dfrac{x}{x-1}\right|.
+\]
+在区间内部，原点附近的对称抵消仍给出同一公式；在两个端点主值发散。这个例子同时显示主值不是绝对积分，以及有界输入可以产生无界输出。函数的单个点值改变不影响积分，但主值是否存在是对观察点而言的条件。
 
 \subsection{Fourier 乘子}
 \label{b2:subsec:180102}
 
-待填充。
+考虑有限截断核 \(h_{\varepsilon,R}(t)=\mathbf1_{\{\varepsilon<|t|<R\}}/(\pi t)\)。其 Fourier 变换为
+\[
+ \widehat h_{\varepsilon,R}(\xi)
+ =-\dfrac{2\mathrm i}{\pi}\int_\varepsilon^R\dfrac{\sin(2\pi\xi t)}t\,\mathrm dt.
+\]
+变换的符号由本卷负号指数决定。正、负频率得到相反的虚数值，不存在额外的 \(2\pi\) 幅值因子。
+\begin{lemma}\label{b2:thm:18-dirichlet-integral}
+上述乘子对 \(\varepsilon,R,\xi\) 一致有界，且在 \(\xi\ne0\) 时当 \(\varepsilon\downarrow0\)、\(R\uparrow\infty\) 收敛到 \(-\mathrm i\operatorname{sgn}\xi\)。
+\end{lemma}
+\begin{proof}
+换元把积分化为 \(\int_a^b\sin u/u\,\mathrm du\)。在 \((0,1)\) 上被积函数的模不超过一；在 \((1,\infty)\) 上分部积分，使任意尾段的积分模不超过 \(3/a\)。这同时给出一致有界性和尾积分收敛。为计算全积分，先加入 \(e^{-\delta u}\)，对频率参数 \(s\) 求导得到
+\[
+ \dfrac{\mathrm d}{\mathrm ds}\int_0^\infty
+ e^{-\delta u}\dfrac{\sin(su)}u\,\mathrm du
+ =\int_0^\infty e^{-\delta u}\cos(su)\,\mathrm du
+ =\dfrac{\delta}{\delta^2+s^2}.
+\]
+零参数处积分为零，故在 \(s=1\) 为 \(\arctan(1/\delta)\)。分部积分同样控制有阻尼和无阻尼的远尾，先固定尾端再令 \(\delta\downarrow0\)，得到 \(\pi/2\)。负频率由奇性得到负号。
+\end{proof}
+乘子在零点的取值不影响 \(L^2\) 算子；这与核在原点的截断约定是两个不同层次的无关零测修改。
 
 \subsection{\texorpdfstring{\(L^2\)}{L2} 有界性}
 \label{b2:subsec:180103}
 
-待填充。
+\begin{theorem}\label{b2:thm:18-hilbert-l2}
+Hilbert 变换具有唯一的 \(L^2(\mathbb R)\) 延拓，满足
+\[
+ \widehat{Hf}(\xi)=-\mathrm i\operatorname{sgn}(\xi)\widehat f(\xi),
+ \qquad \|Hf\|_2=\|f\|_2.
+\]
+有限截断 \(h_{\varepsilon,R}*f\) 在 \(L^2\) 中趋于 \(Hf\)。
+\end{theorem}
+\begin{proof}
+由 Plancherel 和上一引理，乘子的绝对值有共同上界，且几乎处处趋于绝对值为一的极限。对 \( |\widehat f|^2\) 使用支配收敛，得到截断在 \(L^2\) 中收敛及等距性。对 Schwartz 函数，主值积分已逐点存在，\(L^2\) 收敛抽出的几乎处处收敛子列识别两种定义。Schwartz 稠密性给出唯一延拓。
+\end{proof}
+因此 \(H^2f=-f\) 在 \(L^2\) 中成立，且 Hilbert 空间伴随为 \(-H\)。它不是正算子：不交区间之间的核可能为正也可能为负；其有界性来自 Fourier 符号和空间抵消，不能用正核的积分大小证明。
 
 \subsection{\texorpdfstring{\(L^p\)}{Lp} 有界性}
 \label{b2:subsec:180104}
 
-待填充。
+核 \(K(x,y)=1/(\pi(x-y))\) 满足
+\[
+ |K(x,y)|\leq C|x-y|^{-1},\qquad
+ |K(x,y)-K(x,y')|\leq C\dfrac{|y-y'|}{|x-y|^2}
+\]
+当 \(|y-y'|\leq|x-y|/2\) 时成立。第二项由差分分母直接计算。对于紧支集输入，在支集外不需要主值，\(Hf\) 等于普通核积分。这三项事实——\(L^2\) 有界、远离对角线的核表达、核差分控制——是稍后一般定理的全部输入。
+
+\ProseParagraphBreak
+
+由\cref{b2:thm:18-cz-lp}得到 \(1<p<\infty\) 的 \(L^p\) 有界性。这里是后文同章定理的应用位置，证明将在\secref{b2:sec:1804}完成。对任意 \(L^p\) 输入，连续延拓首先定义等价类；主值表示则需要控制截断的最大值，不能从强范数有界性独自推出。对本模型，这项控制在该节末尾给出。
+
+\ProseParagraphBreak
+
+无穷端点不能补上：区间示性函数的对数奇性已经否定 \(L^\infty\to L^\infty\)。在 \(L^1\) 端点，其远处渐近为 \(1/(\pi x)\)，也不绝对可积。后面的弱 \((1,1)\) 结论允许这样的尾部。
+
+% 扩写定位：b2:subsec:180104
+Hilbert 变换的两个端点都可以用一个函数看出障碍。对于 \(\mathbf1_{(0,1)}\)，已计算的主值是
+\(\pi^{-1}\log|x/(x-1)|\)。在 \(x=0,1\) 附近，它具有对数无界性，故 Hilbert 变换不能把全部 \(L^\infty\) 输入送入 \(L^\infty\)。在 \(|x|\to\infty\) 时，展开 \(\log(1+1/(x-1))\) 得到 \(H\mathbf1_{(0,1)}(x)=1/(\pi x)+O(x^{-2})\)，所以其绝对值不可积，否定强型 \((1,1)\)。
+
+\ProseParagraphBreak
+
+两个失败来自不同的区域：无穷端点失败出现在输入跳跃的边缘，积分端点失败出现在远场。函数本身既可积又有界，不能通过要求输入同时属于两个端点来消去这些障碍。弱型 \((1,1)\) 仍然允许 \(1/x\) 的尾部，而 \(1<p<\infty\) 时对数奇性和 \(1/x\) 尾部都可以积到 \(p\) 次；这解释了强型区间的几何位置。
+
+\ProseParagraphBreak
+
+若输入同时具有零积分，远场的第一项会消失。例如取 \(f=\mathbf1_{(0,1)}-\mathbf1_{(1,2)}\)，则 \(Hf(x)=O(x^{-2})\) 于无穷处。一般紧支集 \(f\) 且 \(\int f=0\) 时，
+\[
+ Hf(x)=\frac1\pi\int f(y)
+ \left(\frac1{x-y}-\frac1x\right)\mathrm dy,
+\]
+当 \(|x|\) 大于支集半径的两倍，绝对值不超过 \(C|x|^{-2}\int|y f(y)|\,\mathrm dy\)。这就是坏块尾估计的一维具体形式。不过零积分没有消除区间端点的对数奇性，仍不能恢复 \(L^\infty\) 强型。为讨论这类局部平均振荡，需要\appref{b2:app:C}的 BMO 空间。

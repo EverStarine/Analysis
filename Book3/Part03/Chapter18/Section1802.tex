@@ -2,19 +2,163 @@
 \section{Jensen 公式}
 \label{b3:sec:1802}
 
-% TODO: 撰写本节正文。
+除掉圆盘内的零点，剩余函数的对数模调和。中心平均等式因此会留下每个零点的一个对数距离项，这就是 Jensen 公式。
 
 \subsection{Jensen 公式}
 \label{b3:subsec:180201}
 
-待填充。
+\term[jensen-gongshi]{Jensen 公式}[Jensen's formula]的归一化以圆周平均 \(\mathrm{d}t/(2\pi)\) 为准。
+\begin{theorem}[Jensen]\label{b3:thm:18-jensen}
+设 \(f\) 在闭圆盘 \(\overline{B(0,R)}\) 邻域全纯，\(f(0)\ne0\)，边界无零点。内零点按重数记为 \(a_1,\ldots,a_N\)。则
+\[
+\frac1{2\pi}\int_0^{2\pi}\log|f(Re^{\mathrm{i}t})|\,\mathrm{d}t
+=\log|f(0)|+\sum_{j=1}^N\log\frac R{|a_j|}.
+\]
+\end{theorem}
+\begin{proof}
+令 \(g=f/\prod(z-a_j)\)，它在闭圆盘无零点，故 \(\log|g|\) 调和。每个因子满足圆周平均 \(\log|Re^{\mathrm{i}t}-a|=\log R\)：写成 \(\log R+\operatorname{Re}\log(1-(a/R)e^{-\mathrm{i}t})\)，收敛级数的每个非零角频率平均零。于是边界平均为 \(\log|g(0)|+N\log R\)，而 \(\log|g(0)|=\log|f(0)|-\sum\log|a_j|\)，得公式。
+\end{proof}
+边界零点的对数奇性可积；用相邻半径与局部零点分解可把公式延伸到这样的半径。原点为零点时，用 \(f=z^m g\)、\(g(0)\ne0\)，中心常数改成 \(\log|g(0)|\)，并增加 \(m\log R\)。
 
 \subsection{Poisson–Jensen 公式}
 \label{b3:subsec:180202}
 
-待填充。
+\begin{theorem}[Poisson--Jensen]\label{b3:thm:18-poisson-jensen}
+在上述条件下，对非零点 \(z\in B(0,R)\)，有
+\[
+\log|f(z)|=\frac1{2\pi}\int_0^{2\pi}P_R(z,t)\log|f(Re^{\mathrm{i}t})|\,\mathrm{d}t
+-\sum_jg_{B(0,R)}(z,a_j).
+\]
+\end{theorem}
+\begin{proof}
+加上各个正 Green 核后，函数 \(\log|f|+\sum_jg(\cdot,a_j)\) 在每个零点的 \(m\log|z-a_j|\) 奇性完全抵消，成为调和函数。Green 核边界零，所以边值仍为 \(\log|f|\)。圆盘 Poisson 唯一性给表示。零点处两侧均按极限解释为负无穷。
+\end{proof}
+亚纯函数的版本在每个极点添加对应的正 Green 项：\(\log|f|\) 的 Laplace 测度为零点质量减极点质量。中心公式因此是零点积分计数减极点积分计数。
 
 \subsection{零点分布估计}
 \label{b3:subsec:180203}
 
-待填充。
+\begin{corollary}\label{b3:cor:18-zero-estimate}
+若 \(f\) 在 \(B(0,R)\) 全纯，\(f(0)\ne0\)，\(M(S)=\max_{|z|=S}|f(z)|\)，则 \(0<r<S<R\) 时
+\[
+n(r)\log\frac Sr\le\log M(S)-\log|f(0)|.
+\]
+\end{corollary}
+\begin{proof}
+半径 \(r\) 内每个零点向半径 \(S\) 的 Jensen 和贡献至少 \(\log(S/r)\)。平均对数不超过最大对数，代入公式即得。边界零点用稍移半径处理。
+\end{proof}
+圆盘上有界全纯函数的零点满足 Blaschke 条件 \(\sum(1-|a_j|)<\infty\)：令 \(S\uparrow1\)，Jensen 和有界，再用 \(-\log t\ge1-t\)。有界性因而不允许零点过快地向整个圆周拥挤。
+
+
+\ProseParagraphBreak
+
+边界零点的延伸可写得更明确。设在 \(|a|=R\) 有一个因子 \((z-a)^m\)，余函数在该点不为零。边界局部参数 \(t=t_0+h\) 时，\(|Re^{\mathrm{i}t}-a|\) 与 \(|h|\) 相比，故 \(\log\) 奇性由常数加 \(m\log|h|\) 控制，而 \(\int_{-\delta}^{\delta}|\log|h||\,\mathrm{d}h<\infty\)。其平均仍为 \(\log R\)：先在 \(|a|<R\) 得到等式，再使 \(a\) 沿半径趋向边界，局部负部的积分可由该对数估计一致控制。Jensen 和中该零点贡献 \(\log(R/|a|)=0\)，因此公式在边界零点半径保持正确。这里需要的是对数的积分收敛，不能只凭逐点极限使用有界收敛定理。
+
+\ProseParagraphBreak
+
+一阶函数已把公式的几何意义展示出来。对 \(f(z)=1-az\)、\(a\ne0\)，有
+\[
+\frac1{2\pi}\int_0^{2\pi}\log|1-aRe^{\mathrm{i}t}|\,\mathrm{d}t
+=\max(0,\log(|a|R)).
+\]
+当 \(|a|R<1\) 时，圆盘无零点，平均等于中心对数零；当 \(|a|R>1\) 时，一个零点进入圆盘，平均变成 \(\log(|a|R)\)。临界半径仍连续，只有对 \(\log R\) 的斜率发生跳跃。更一般地，对多项式 \(c\prod(z-a_j)\)，边界平均为 \(\log|c|+\sum_j\log\max(R,|a_j|)\)。这可用于不求全部积分而从根的位置直接计算平均。
+
+\ProseParagraphBreak
+
+Jensen 公式控制的是平均对数，不是模的算术平均。由对数凹性，
+\[
+ \exp\left(\frac1{2\pi}\int_0^{2\pi}\log|f(re^{\mathrm{i}t})|\,\mathrm{d}t\right)
+ \le\frac1{2\pi}\int_0^{2\pi}|f(re^{\mathrm{i}t})|\,\mathrm{d}t.
+\]
+左侧是几何平均。边界上可能有很小的函数值，也可能有很大的值；几何平均仍把所有内部零点贡献准确相加。例如 \(f(z)=e^{az}\) 没有零点，其对数平均为零，而模的平均一般大于一。零点资料完全看不见指数整函数中的调和对数模，正好与上一章 Riesz 测度的自由度相符。
+
+\ProseParagraphBreak
+
+Poisson--Jensen 公式的单个零点项也能显式核验。在单位圆盘，取 \(f(z)=z-a\)，\(|a|<1\)，则
+\[
+\log|z-a|+g_{\mathbb D}(z,a)=\log|1-\overline az|.
+\]
+右边无零点且调和，边界上两项对数模相等。因而 Poisson 延拓的是 \(\log|1-\overline az|\)，减去 Green 核后才恢复真正的 \(\log|z-a|\)。若直接对边界 \(\log|f|\) 作 Poisson 积分并宣称得到内部 \(\log|f|\)，就遗漏了零点的负对数奇性。错误在内部零点附近最明显：Poisson 解有限，原对数模却趋负无穷。
+
+\ProseParagraphBreak
+
+亚纯版本可通过有限因子分解完整证明。设 \(f\) 在闭圆盘邻域亚纯，边界无零点、极点，中心既不是零点也不是极点。内零点为 \(a_j\)、极点为 \(b_k\)，均按重数重复。将 \(f\) 乘 \(\prod(z-b_k)\) 再除 \(\prod(z-a_j)\)，所得函数在闭圆盘无零点全纯。对它应用调和平均，分别计算因子平均，得到
+\[
+\frac1{2\pi}\int\log|f(Re^{\mathrm{i}t})|\,\mathrm{d}t
+=\log|f(0)|+\sum_j\log(R/|a_j|)-\sum_k\log(R/|b_k|).
+\]
+对一般内部点同样加零点 Green 核、减极点 Green 核，奇性抵消后使用 Poisson 表示即可。中心为零点或极点时，先提出整数次幂，指数允许为负。这个公式精确记录零点与极点的差，但它们数量同时很大时可能抵消，所以并不单独控制两类总量。
+
+\ProseParagraphBreak
+
+零点估计中选取半径比会决定常数。取 \(S=2r\) 得 \(n(r)\le(\log M(2r)-\log|f(0)|)/\log2\)；若取 \(S=(1+\varepsilon)r\)，分母 \(\log(1+\varepsilon)\) 很小，估计通常变弱。若 \(f\) 只在固定圆盘全纯，不能为了得到方便的二倍半径超出定义域。靠近外边界时，应选仍在域中的 \(S\)，并保留其实际系数。
+
+\ProseParagraphBreak
+
+作为精确的禁止条件，假设单位圆盘有界非恒零全纯函数的零点为 \(a_n=1-1/n\)、\(n\ge2\)。因为 \(\sum(1-|a_n|)=\sum1/n\) 发散，这种函数不存在；但没有有界性限制时，该点列在圆盘内部无聚点，仍可通过区域上的零点构造实现。当前整平面 Weierstrass 定理尚不能直接用于这类边界聚点，须使用区域版本，或者取 \(\sin(\pi/(1-z))\) 在圆盘上的明确函数，它确有这些零点并在接近边界时无界。这把解析存在性与有界函数的增长限制分开。
+
+
+\ProseParagraphBreak
+
+有限零点还能给逐点估计。对 \(a\in\mathbb D\setminus\{0\}\) 定义
+\[
+b_a(z)=\frac{|a|}{a}\frac{a-z}{1-\overline az},
+\qquad b_0(z)=z.
+\]
+它在 \(a\) 有单零点，圆周模一，圆盘内部模小于一。若 \(|f|\le1\)，将任意有限批零点提出，\(F=f/\prod b_{a_j}\) 在圆盘全纯。在 \(|z|=r\uparrow1\) 上，有限乘积的模一致趋一，故最大模原理给 \(|F(z)|\le1\)。因此
+\[
+|f(z)|\le\prod_j|b_{a_j}(z)|.
+\]
+原点处即 \(|f(0)|\le\prod|a_j|\)，与 Jensen 完全一致；在零点以外的其他观察点，这个估计保留了角位置，通常比只按半径计数的信息更多。若原点是零点，则先提出原点因子，不能在原点两边同时为零的平凡不等式中读取其他零点数量。
+
+\ProseParagraphBreak
+
+对于任意离散零点列，Blaschke 条件在单位圆盘也是有界实现的充分条件。这可以在当前章独立构造，毋须将下一章的整平面乘积定理倒用。设 \(\sum(1-|a_j|)<\infty\)，只需先分离原点的有限重数。写 \(a=re^{\mathrm{i}\theta}\)，则
+\[
+1-b_a(z)=(1-r)\frac{1+e^{-\mathrm{i}\theta}z}{1-r e^{-\mathrm{i}\theta}z},
+\quad
+\sup_{|z|\le s}|1-b_a(z)|\le\frac{1+s}{1-s}(1-r),\ s<1.
+\]
+尾部因此在每个内部紧集上有可和误差。取误差充分小的尾因子，用原点附近的对数级数 \(\log(1+w)\)，其模不超过 \(2|w|\)，所以对数和局部一致收敛，指数给非零尾乘积。有限头部保留准确零点及重数，所有部分乘积模不超过一，极限也是有界整于圆盘的函数。乘积在原点为 \(\prod|a_j|>0\)：从足够大的 \(j\) 起，\(-\log|a_j|\le2(1-|a_j|)\)，故对数和有限。这证明极限不恒零。必要性与充分性由此在当前范围完整配对。
+
+\ProseParagraphBreak
+
+注意该乘积是单位圆盘全纯函数，一般不能延拓为整个复平面的整函数。其分母的零点在 \(1/\overline a_j\)，可能向圆周聚集；构造只在内部紧集上收敛。称为 Blaschke 乘积时，应把定义域和模界一起记住。条件 \(\sum(1-|a_j|)<\infty\) 也不保证普通边界每一点的连续性，径向边界理论将由后面的函数空间条件进一步研究。
+
+\ProseParagraphBreak
+
+例如 \(a_j=1-2^{-j}\) 满足条件，给一个无穷零点且有界的圆盘全纯函数。点列只有边界聚点一，故不违反恒等定理。若改成 \(a_j=1-j^{-1}\)，条件失去，可在圆盘全纯但必须无界的函数中实现。若将每个 \(1-2^{-j}\) 重复 \(2^j\) 次，按不同零点看仍是原点列，但带重数的缺陷和变成 \(\sum1\)，再次不能有界实现。重数在有界零点判据中的作用不亚于位置。
+
+\ProseParagraphBreak
+
+即使没有统一最大模上界，圆周上的模积分也能控制零点。若某个 \(p>0\) 满足
+\[
+\sup_{0<r<1}\frac1{2\pi}\int_0^{2\pi}|f(re^{\mathrm{i}t})|^p\,\mathrm{d}t\le A<\infty,
+\]
+对数凹性给 \((2\pi)^{-1}\int\log|f|\le p^{-1}\log A\)，先以正截断避免零点，再取极限。Jensen 的零点和仍有统一上界，所以非恒零函数继续满足 Blaschke 条件。这一推导解释为何后面的 \(H^p\) 空间即使含有无界函数，零点仍受同一个可和性限制。此处已给所需零点论证，不把后面的空间名称当成未建立的前置。
+
+\ProseParagraphBreak
+
+假设中 \(p>0\) 不能简单换成“平均 \(\log|f|\) 有有限值”：每个固定内部圆周的平均对数本来就是有限的，只有对所有半径的共同上界才能控制边界零点和。量词的差别在 \(\sin(\pi/(1-z))\) 上可看出，它在每个内部圆周的平均都有限，但随着半径逼近一，越来越多零点进入，累计对数和无界。逐个半径的良定义不等于统一增长控制。
+
+\ProseParagraphBreak
+
+有界函数的零点分解还可以连同余因子的模界一起得到。设 \(f\not\equiv0\)、\(|f|\le1\)，取含全部零点的 Blaschke 乘积 \(B\)，包括原点的有限幂。每个有限部分乘积除出后，前面已经证明所得函数的模不超过一。在不含零点的紧集上令部分乘积趋于 \(B\)，便有 \(|f/B|\le1\)；在共同零点处，重数恰好相同，所以商的奇点可去。故
+\[
+ f=B F,\qquad F\text{ 在圆盘全纯、无零点，且 }|F|\le1.
+\]
+无零点并不意味着常数。正调和函数 \(-\log|F|\) 记录全部零点之后仍剩下的自由度。
+\ProseParagraphBreak
+若再设 \(f(0)\ne0\)，Harnack 不等式可把中心值变成内部下界。由于 \(|B(0)|\le1\)，有 \(|F(0)|\ge|f(0)|\)。对 \(|z|\le r<1\)，令 \(v=-\log|F|\ge0\)，便得
+\[
+ |F(z)|=e^{-v(z)}\ge |F(0)|^{(1+r)/(1-r)}
+                  \ge |f(0)|^{(1+r)/(1-r)}.
+\]
+因此 \(|f(z)|\ge|B(z)|\,|f(0)|^{(1+r)/(1-r)}\)。这个估计保留了每个零点对观察点的伪双曲距离；若 \(z\) 靠近零点，\(|B(z)|\) 自然趋零，估计不会错误地宣称函数处处远离零。若已知某个紧集与零点保持分离，再估计其中的乘积，才能得到实际的正下界。
+\ProseParagraphBreak
+一个特别有启发性的无零点余因子是
+\[
+ S(z)=\exp\left(-\frac{1+z}{1-z}\right),\qquad
+ -\log|S(z)|=\frac{1-|z|^2}{|1-z|^2}.
+\]
+右端是边界点1的 Poisson 核，所以在圆盘正，\(|S|<1\)，且无零点。对每个 \(e^{\mathrm{i}\theta}\ne1\)，径向边界模趋于一；沿正实轴趋向1时，函数模却趋于零。Jensen 平均始终为 \(\log|S(0)|=-1\)。如果只把几乎处处的边界模一代入平均，就会得到零，丢失了集中到单个边界点的质量。这说明内部 Poisson 表示与边界极限交换需要可积控制，也说明零点资料不能决定一个有界全纯函数。

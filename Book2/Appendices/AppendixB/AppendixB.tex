@@ -2,4 +2,115 @@
 \chapter{Hermite、Legendre 与球谐函数}
 \label{b2:app:B}
 
-% TODO: 按计划纲要展开本附录。
+\begin{chapterabstract}
+本附录构造三组常用特征函数。Hermite 多项式乘 Gauss 权形成实线上的正交基，同时对角化谐振子与适当归一化的 Fourier 变换。Legendre 多项式解决区间上的奇异端点方程，并对应三维球面的轴对称模态。一般球谐函数则由齐次调和多项式构造；通过调和分解和多项式逼近证明其完备性，进一步得到加法公式、球内调和延拓及球形 Helmholtz 方程的径向 Bessel 阶数。
+\end{chapterabstract}
+\begin{learninggoals}
+\begin{itemize}
+\item\label{b2:item:B2-goal-hermite}从 Rodrigues 公式证明 Hermite 正交性与完备性，并核对两种常用 Gauss 归一化。
+\item\label{b2:item:B2-goal-oscillator}用升降算子求谐振子谱，区分微分表达式与自伴算子定义域。
+\item\label{b2:item:B2-goal-legendre}由正交结构推导 Legendre 方程、范数和递推，保留端点及收敛意义。
+\item\label{b2:item:B2-goal-spherical}构造球谐空间并证明谱完备，联系极坐标 Laplace 算子与 Bessel 径向方程。
+\end{itemize}
+\end{learninggoals}
+
+分离变量法的第一步是找到若干特征函数，最后一步却是说明这些函数是否足以表示一般数据。二者之间有不可省略的完备性证明。本附录选取三种可以把这一证明完整写出的模型：实线上的 Gauss 权、有限区间上的无权积分，以及紧球面上的面积测度。它们各自的几何与权重决定了归一化和特征值。
+
+\ProseParagraphBreak
+
+正文只用本卷的 Fourier 唯一性、Plancherel 与常微分方程基础，并复用附录 A 的 Gamma、Beta 积分。相关特殊函数的标准公式可参阅 \cite[Chapters 14 and 18]{NationalInstituteofStandardsNIST}；这里把正交、完备、算子作用与应用逐项展开，不将表中公式代替函数展开所需的证明。
+
+\input{Appendices/AppendixB/SectionB201}
+\input{Appendices/AppendixB/SectionB202}
+\input{Appendices/AppendixB/SectionB203}
+
+\begin{chaptersummary}
+Hermite 体系把多项式的代数与 Gauss 衰减结合，提供谐振子的离散谱及 Fourier 变换的特征基。Legendre 体系通过端点消失的 Rodrigues 因子获得无权正交性，再由对称微分算子推出方程与递推。两种体系的完备性都另有证明，不能从形式特征关系自动得到。
+
+\ProseParagraphBreak
+
+球谐空间来自齐次多项式的唯一调和分解，其正交性由球面 Green 公式给出，完备性由多项式逼近给出。角向特征值与径向体积项共同确定 Bessel 阶数；加法公式则把一个角向特征空间压缩为旋转不变的投影核。所有展开首先具有明确的 \(L^2\) 意义，更强收敛及逐项求导须另用正则性估计。
+\end{chaptersummary}
+\BookExercises
+
+各题均为本书自拟，要求把本附录的基函数与投影、数据和具体算子结合。
+
+% 自拟：Fourier四个特征空间的投影。
+\begin{exercise}\label{b2:ex:B2-fourier-projections}
+在 \(L^2(\mathbb R)\) 上，对 \(k=0,1,2,3\) 定义 \(P_k=\tfrac14\sum_{j=0}^3 i^{kj}\mathcal F^j\)。证明它是到 \(\operatorname{span}\{\psi_n:n\equiv k\pmod4\}\) 的闭包上的正交投影，并写出 \(\sum_kP_k\) 与 \(P_kP_l\)。
+\end{exercise}
+\begin{solution}
+对 \(\psi_n\)，有 \(P_k\psi_n=\tfrac14\sum_{j=0}^3i^{(k-n)j}\psi_n\)，系数在 \(n\equiv k\pmod4\) 时为 \(1\)，否则为零。由于 \(\psi_n\) 是标准正交基且各算子有界，结论推广到全部 \(L^2\)。它在系数上保留对应剩余类，故自伴且幂等，\(\sum_kP_k=I\)、\(P_kP_l=0\)（\(k\ne l\)）。
+\end{solution}
+
+% 自拟：谐振子的基态与不确定性下界。
+\begin{exercise}\label{b2:ex:B2-ground-state}
+设 \(f\in\mathcal S(\mathbb R)\)。证明
+\[\int_\mathbb R(|f'|^2+x^2|f|^2)\,\mathrm dx\ge\lVert f\rVert_2^2,\]
+并刻画等号。再求 \(-\alpha\frac{\mathrm d^2}{\mathrm dx^2}+\beta x^2\)、\(\alpha,\beta>0\) 的最小特征值与归一化基态。
+\end{exercise}
+\begin{solution}
+因 \(\mathcal L=2a^*a+I\)，左端等于 \(2\lVert af\rVert_2^2+\lVert f\rVert_2^2\)。等号当且仅当 \(f'+xf=0\)，即 \(f=Ce^{-x^2/2}\)。对一般系数令 \(s=(\beta/\alpha)^{1/4}\)、\(y=sx\)，算子变成 \(\sqrt{\alpha\beta}(-D_y^2+y^2)\)。最小特征值为 \(\sqrt{\alpha\beta}\)，归一化基态是 \(s^{1/2}\pi^{-1/4}e^{-s^2x^2/2}\)，相差模为 \(1\) 的常数不影响归一化。
+\end{solution}
+
+% 自拟：热半群的Hermite系数构造与误差。
+\begin{exercise}\label{b2:ex:B2-oscillator-semigroup}
+对 \(f=\sum c_n\widetilde h_n\in L^2\) 定义 \(T_tf=\sum e^{-(2n+1)t}c_n\widetilde h_n\)、\(t\ge0\)。证明半群关系、强连续性以及 \(\lVert T_t\rVert=e^{-t}\)，并证明当 \(t>0\) 时像属于 \(D(\mathcal L^m)\) 对每个整数 \(m\ge1\) 成立。
+\end{exercise}
+\begin{solution}
+系数相乘给出 \(T_sT_t=T_{s+t}\)。由 \(|e^{-(2n+1)t}-1|\le2\) 及 \(\sum|c_n|^2<\infty\)，支配收敛给出 \(T_tf\to f\)。算子范数是系数模的上确界 \(e^{-t}\)，并在 \(\widetilde h_0\) 上取等。固定 \(t>0\) 时，\(\sup_{\lambda\ge1}\lambda^{2m}e^{-2t\lambda}<\infty\)，故加权系数平方和有限，得到所列定义域性质。这是谱意义的平滑作用。
+\end{solution}
+
+% 自拟：有限Legendre投影的显式误差。
+\begin{exercise}\label{b2:ex:B2-legendre-projection}
+把 \(t^4\) 展成 \(P_0,P_2,P_4\) 的线性组合，求它在次数至多为 \(2\) 的多项式空间中的最佳 \(L^2(-1,1)\) 逼近及误差范数。
+\end{exercise}
+\begin{solution}
+由 \(P_2=(3t^2-1)/2\)、\(P_4=(35t^4-30t^2+3)/8\)，解得
+\[t^4=\frac15P_0+\frac47P_2+\frac8{35}P_4.\]
+前两项是到二次多项式空间的正交投影（奇项系数为零）。误差范数为 \(\frac8{35}\sqrt{2/9}=\frac{8\sqrt2}{105}\)。最优性来自正交投影定理，而不只是比较某几个候选多项式。
+\end{solution}
+
+% 自拟：三维二次与四次齐次多项式的调和分解。
+\begin{exercise}\label{b2:ex:B2-harmonic-parts}
+在 \(\mathbb R^3\) 中分别分解 \(x_3^2\) 与 \(x_3^4\) 为 \(\sum_j|x|^{2j}H_{\ell-2j}\)，并说明限制到球面后与 Legendre 展开的关系。
+\end{exercise}
+\begin{solution}
+记 \(r=|x|\)。二次分解为 \(x_3^2=(x_3^2-r^2/3)+r^2/3\)。四次分解为
+\[x_3^4=\left(x_3^4-\frac67r^2x_3^2+\frac3{35}r^4\right)
+ +\frac67r^2\left(x_3^2-\frac13r^2\right)+\frac15r^4.
+\]
+逐项计算 Laplace，或使用正文的 \(\Delta(r^{2k}H_m)\) 公式，验证括号内分别为四阶、二阶调和多项式。限制到 \(r=1\) 后，它们分别与 \(P_4(x_3)\)、\(P_2(x_3)\) 成比例，恰恢复上一题的 Legendre 系数。
+\end{solution}
+
+% 自拟：球面均值、一次模态及最佳近似。
+\begin{exercise}\label{b2:ex:B2-sphere-projection}
+对 \(f\in L^2(S^{d-1})\)，求它在常数与坐标函数张成的空间中的正交投影。写出系数的积分公式，并解释余项的零均值和零一阶矩条件。
+\end{exercise}
+\begin{solution}
+由对称性，常数与各坐标正交，\(\int\omega_i\omega_j=(|S^{d-1}|/d)\delta_{ij}\)。因此投影为 \(a+b\cdot\omega\)，其中
+\[a=\frac1{|S^{d-1}|}\int f,\qquad b_i=\frac d{|S^{d-1}|}\int f(\omega)\omega_i\,\mathrm d\sigma.\]
+余项与零阶、一次球谐空间均正交，恰好表示其均值及全部一阶矩为零。对复值 \(f\)，同一公式成立，因为坐标函数为实值，内积仍对第一个变量线性。
+\end{solution}
+
+% 自拟：利用球谐次数给出非平凡边界多项式延拓。
+\begin{exercise}\label{b2:ex:B2-ball-quartic}
+在三维单位球上求边界数据 \(f(\omega)=\omega_3^4\) 的调和延拓，写成直角坐标多项式，并求球心值。
+\end{exercise}
+\begin{solution}
+上面的调和分解在球面给出四阶、二阶和常数三项。向球内延拓时分别保留对应齐次调和多项式，得到
+\[u(x)=x_3^4-\frac67|x|^2x_3^2+\frac3{35}|x|^4
+       +\frac67\left(x_3^2-\frac13|x|^2\right)+\frac15.
+\]
+它调和且边界值正确，由球内连续 Dirichlet 唯一性即为所求。中心值为 \(1/5\)，也等于球面上 \(\omega_3^4\) 的归一化平均。
+\end{solution}
+
+% 自拟：角向模态改变径向Bessel阶数与边界频率。
+\begin{exercise}\label{b2:ex:B2-helmholtz-ball}
+对单位球内 \(-\Delta u=\kappa^2u\)、零边界条件，固定 \(\ell\) 阶球谐函数 \(Y\)。求原点正则的分离变量解形式，并说明允许的正 \(\kappa\) 满足什么方程；不要据此直接宣称整个 Dirichlet 谱已经完备。
+\end{exercise}
+\begin{solution}
+径向化给出阶数 \(\mu=\ell+(d-2)/2\) 的 Bessel 方程。原点正则支为
+\[u(r,\omega)=C r^{-(d-2)/2}J_\mu(\kappa r)Y(\omega),\]
+其领先行为为常数乘 \(r^\ell Y\)，与齐次调和多项式相容；第二类支在原点具有不允许的奇性。零边界要求 \(J_\mu(\kappa)=0\)。这构造了一族特征函数，但径向不同零点模态的完备性仍需奇异 Sturm--Liouville 或球上自伴紧逆理论，不能只由球谐角向完备性推出。
+\end{solution}

@@ -1,0 +1,120 @@
+% !TeX root = ../../Book2.tex
+\section{Bessel 方程及其标准解}
+\label{b2:sec:A201}
+
+对径向函数作 Fourier 变换时，角向积分不再是一个指数函数，而会产生随半径振荡的特殊函数。同一函数也出现在圆盘振动的分离变量法中：角向模态固定后，径向方程多出一个反平方势项。Bessel 方程正是连接这两种计算的常微分方程。
+
+\subsection{级数解与原点行为}
+\label{b2:subsec:A20101}
+
+对 \(r>0\)，\term[bessel-fangcheng]{Bessel 方程}[Bessel equation]为
+\[r^2y''+ry'+(r^2-\nu^2)y=0.\]
+本附录主要处理实阶参数；先取 \(\nu>-1\)。第六章已经定义正实参数的 Gamma 积分。分部积分给出 \(\Gamma(s+1)=s\Gamma(s)\)、\(\Gamma(1)=1\)，Gauss 积分给出 \(\Gamma(1/2)=\sqrt\pi\)。这些等式足以处理下面全部实阶级数与几何常数。
+
+\begin{definition}[第一类 Bessel 函数]
+\label{b2:def:A2-bessel-j}
+对 \(\nu>-1\)、\(r>0\)，定义
+\[
+ J_\nu(r)=\sum_{k=0}^\infty
+ \frac{(-1)^k}{k!\,\Gamma(k+\nu+1)}\left(\frac r2\right)^{2k+\nu}.
+\]
+称它为 \term[diyilei-bessel-hanshu]{第一类 Bessel 函数}[Bessel function of the first kind]。实幂在正半轴取通常正值。
+\end{definition}
+\symidx{\(J_\nu(r)\)：第一类 Bessel 函数}
+
+\begin{proposition}[级数与微分关系]
+\label{b2:prop:A2-bessel-series}
+上述级数在正半轴每个紧区间上连同任意阶导数一致收敛，并满足 Bessel 方程。原点附近有
+\[J_\nu(r)=\frac{(r/2)^\nu}{\Gamma(\nu+1)}(1+O(r^2)).\]
+此外，对相应参数范围，有
+\[\frac{\mathrm d}{\mathrm dr}(r^{-\nu}J_\nu(r))=-r^{-\nu}J_{\nu+1}(r),\qquad
+ \frac{\mathrm d}{\mathrm dr}(r^{\nu+1}J_{\nu+1}(r))=r^{\nu+1}J_\nu(r).\]
+\end{proposition}
+\begin{proof}
+相邻项绝对值之比为 \(r^2/[4(k+1)(k+\nu+1)]\)，在有界 \(r\) 区间趋零。任意固定次微分只增加关于 \(k\) 的多项式因子，所以正半轴紧区间上的导数级数同样一致收敛。设第 \(k\) 项为 \(c_kr^{2k+\nu}\)，代入方程后系数递推为 \(4k(k+\nu)c_k+c_{k-1}=0\)，恰由 Gamma 递推满足。首项非零，余下从 \(r^{\nu+2}\) 开始，给出原点展开。逐项求导，并在第一式中把索引减一、使用 \(\Gamma(k+\nu+2)=(k+\nu+1)\Gamma(k+\nu+1)\)，即可分别得到两条公式。
+\end{proof}
+
+例如 \(J_0(r)=1-r^2/4+r^4/64-\cdots\)、\(J_1(r)=r/2-r^3/16+\cdots\)。由半整数 Gamma 值可逐项比较得到
+\[J_{-1/2}(r)=\sqrt{\frac2{\pi r}}\cos r,\qquad
+ J_{1/2}(r)=\sqrt{\frac2{\pi r}}\sin r.\]
+它们解释了三维径向 Fourier 公式为何最终只含正弦。一旦阶数不是半整数，保留 Bessel 记号通常比反复展开级数更清楚。
+
+\ProseParagraphBreak
+
+对于 \(\nu\ge0\)，原点有界的这一支与圆盘中心的正则性相容。方程在 \(r=0\) 有奇点，不能像普通初值问题那样任意指定 \(y(0),y'(0)\)。在每个离开零点的区间上，二阶常微分方程仍具有通常的两维解空间；另一支将在大参数归一化后构造。
+
+\subsection{积分表示}
+\label{b2:subsec:A20102}
+
+\begin{proposition}[Poisson 积分表示]
+\label{b2:prop:A2-poisson-bessel}
+若 \(\nu>-1/2\)、\(r>0\)，则
+\[
+ J_\nu(r)=\frac{(r/2)^\nu}{\sqrt\pi\,\Gamma(\nu+1/2)}
+       \int_{-1}^1e^{irt}(1-t^2)^{\nu-1/2}\,\mathrm dt.
+\]
+\end{proposition}
+\begin{proof}
+先由二重 Gamma 积分作变量代换 \(x=su,y=s(1-u)\)，Jacobi 因子为 \(s\)，得到
+\[\int_0^1u^{a-1}(1-u)^{b-1}\,\mathrm du
+   =\frac{\Gamma(a)\Gamma(b)}{\Gamma(a+b)}\qquad(a,b>0).\]
+这里被积函数非负，换序由 Tonelli 定理合法。接着在有限区间上展开指数函数，其级数被 \(e^r(1-t^2)^{\nu-1/2}\) 支配；奇数项因对称性消失。偶数项的积分经 \(u=t^2\) 换元为
+\[\int_{-1}^1t^{2k}(1-t^2)^{\nu-1/2}\,\mathrm dt
+ =\frac{\Gamma(k+1/2)\Gamma(\nu+1/2)}{\Gamma(k+\nu+1)}.\]
+再用 \(\Gamma(k+1/2)/(2k)!=\sqrt\pi/(4^kk!)\)，恰好恢复定义中的级数。
+\end{proof}
+
+积分表示立即给出 \(|J_\nu(r)|\le (r/2)^\nu/\Gamma(\nu+1)\)，但这个界在大 \(r\) 时丢失了振荡抵消，不能用来判断 Fourier 核的衰减。要读出精确衰减，需要分析端点 \(t=\pm1\)；它们对应球面上法向与频率方向平行的两个驻点。
+
+\subsection{大参数渐近与第二类解}
+\label{b2:subsec:A20103}
+
+以下渐近均固定阶数 \(\nu\)，令正实变量 \(r\to\infty\)；常数可以依赖阶数，不能据此处理 \(\nu\) 与 \(r\) 同时增大的情形。先记录端点积分的基本计算。若 \(a>-1\)、\(b\) 在零点附近光滑且紧支撑于 \([0,\infty)\)，则
+\[
+ \int_0^\infty e^{-irt}t^ab(t)\,\mathrm dt
+ =\Gamma(a+1)e^{-i\pi(a+1)/2}b(0)r^{-a-1}+O(r^{-a-2}).
+\]
+为核验该式，先在 \(t^a\) 上加 \(e^{-\varepsilon t}\)。令 \(F(r)=\int_0^\infty t^ae^{-(\varepsilon+ir)t}\,\mathrm dt\)，微分及分部积分给出 \(F'(r)=-i(a+1)F(r)/(\varepsilon+ir)\)，而正实 Gamma 积分给出 \(F(0)=\Gamma(a+1)\varepsilon^{-a-1}\)。解这个实参数微分方程，得到 \(F(r)=\Gamma(a+1)(\varepsilon+ir)^{-a-1}\)，幂取右半平面的连续辐角；再令 \(\varepsilon\downarrow0\)。乘上在零点等于 \(1\) 的截断，只改变一个离开零点的光滑尾部；对尾部作多于 \(a+2\) 次分部积分，导数可积，故其贡献比所列误差更小。写 \(b=b(0)\chi+tb_1\)，余项在 \(t\le r^{-1}\) 直接积分得 \(O(r^{-a-2})\)，在其余部分配合尺度 \(r^{-1}\) 的光滑截断并作足够多次分部积分，得到同一界。这也说明误差常数只用到有限个振幅导数，所有 Abel 极限均在离开频率零点处成立。
+
+\begin{theorem}[实轴 Bessel 渐近]
+\label{b2:thm:A2-bessel-asymptotic}
+对固定 \(\nu>-1/2\)，令 \(\omega_\nu(r)=r-\pi\nu/2-\pi/4\)。则
+\[
+ J_\nu(r)=\sqrt{\frac2{\pi r}}\cos\omega_\nu(r)+O(r^{-3/2}),\qquad
+ J_\nu'(r)=-\sqrt{\frac2{\pi r}}\sin\omega_\nu(r)+O(r^{-3/2}).
+\]
+对 \(\nu\ge0\)，存在唯一 Bessel 解 \(Y_\nu\)，满足
+\[
+ Y_\nu(r)=\sqrt{\frac2{\pi r}}\sin\omega_\nu(r)+O(r^{-3/2}),\qquad
+ Y_\nu'(r)=\sqrt{\frac2{\pi r}}\cos\omega_\nu(r)+O(r^{-3/2}).
+\]
+\end{theorem}
+\begin{proof}
+在 Poisson 表示的两个端点附近分割积分，其余部分可反复分部积分。在 \(t=1\) 附近令 \(s=1-t\)，振幅为 \(s^{\nu-1/2}(2-s)^{\nu-1/2}\)，相位为 \(e^{ir}e^{-irs}\)。端点公式的首系数为 \(2^{\nu-1/2}\Gamma(\nu+1/2)e^{-i\pi(\nu+1/2)/2}\)。另一端贡献为其共轭。乘上 Poisson 表示的前因子，得到所列余弦式及误差。对积分表示求导，振幅多出 \(it\)，再对前因子求导；同样的端点计算得到导数式，故没有对未经控制的余项作形式求导。
+
+为构造第二个解，令 \(w=\sqrt r\,y\)、\(q=\nu^2-1/4\)。方程成为 \(w''+w=q r^{-2}w\)。在充分大的 \([R,\infty)\) 上，考虑
+\[w(r)=\sqrt{2/\pi}\sin\omega_\nu(r)
+       +\int_r^\infty\sin(t-r)\frac q{t^2}w(t)\,\mathrm dt.\]
+积分算子在有界连续函数空间中的范数至多 \(|q|/R<1\)，故收缩原理给出唯一有界解。积分式及其一阶导数使余项均为 \(O(r^{-1})\)，二次求导则验证微分方程。因此 \(y=w/\sqrt r\) 满足所列两项渐近。常微分方程的初值唯一性将它延拓到整个正半轴。
+
+若有另一个解满足同样两项渐近，两者之差对应的 \(w,w'\) 在无穷远趋零。常数变易公式从 \(r\) 积到 \(T\)，再令 \(T\to\infty\)，给出不含自由项的同一积分方程；收缩性迫使差在大半轴为零，再由初值唯一性处处为零。
+\end{proof}
+
+以这一渐近条件归一化的解称为 \term[dierlei-bessel-hanshu]{第二类 Bessel 函数}[Bessel function of the second kind]。它与常用 \(Y_\nu\) 约定一致；本附录使用正实轴的解及其归一化，不需要为复变量选择支路。定义、积分表示和固定阶渐近的标准记法可对照 \cite[\S\S10.2, 10.9, 10.17]{NationalInstituteofStandardsNIST}。
+\symidx{\(Y_\nu(r)\)：第二类 Bessel 函数}
+
+\begin{proposition}[Wronski 行列式与原点的第二支]
+\label{b2:prop:A2-bessel-wronskian}
+对 \(\nu\ge0\)、\(r>0\)，有
+\[J_\nu(r)Y_\nu'(r)-J_\nu'(r)Y_\nu(r)=\frac2{\pi r}.\]
+因此二者线性无关。原点附近，\(\nu>0\) 时
+\[Y_\nu(r)=-\frac{\Gamma(\nu)}\pi\left(\frac2r\right)^\nu(1+o(1)),\]
+而 \(Y_0(r)=\frac2\pi\log r+O(1)\)。
+\end{proposition}
+\begin{proof}
+对两解的 Wronski 行列式 \(W\) 求导，方程给出 \(W'=-W/r\)，所以 \(rW\) 为常数。用无穷远渐近计算该常数为 \(2/\pi\)。原点附近 \(J_\nu\) 不为零，故
+\[\left(\frac{Y_\nu}{J_\nu}\right)'=\frac2{\pi rJ_\nu(r)^2}.\]
+将 \(J_\nu(r)=ar^\nu(1+O(r^2))\)、\(a=2^{-\nu}/\Gamma(\nu+1)\) 代入并积分。\(\nu>0\) 时主项为 \(-1/(\pi\nu a^2)\cdot r^{-2\nu}\)，乘回 \(J_\nu\) 得所列式；误差相对主项趋零，即使某些阶数产生对数也不改变领先项。\(\nu=0\) 时被积函数为 \(2/(\pi r)+O(r)\)，积分给出对数及有界余项。
+\end{proof}
+
+这两个端点性质对应不同的选择原则：原点正则性通常选 \(J_\nu\)，无穷远的出入射条件则会选择 \(J_\nu\pm iY_\nu\) 的组合。圆盘边值问题与外部散射问题因此不能使用同一条“去掉奇解”的规则。此处只固定标准解，并不预先为所有边界问题选择其中一支。

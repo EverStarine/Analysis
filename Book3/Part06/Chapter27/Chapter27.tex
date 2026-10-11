@@ -4,13 +4,15 @@
 \BookChapterNumber{b3:ch:27}
 % 本章摘要（不计入编号）
 \begin{chapterabstract}
-待填充。
+素数定理的解析证明分为两个问题：排除 zeta 在实部一上的零点，再把变换的单极点转成单调计数函数的渐近。本章建立粗 Chebyshev 界和三种计数的等价性，完整证明正性无零点论证与解析边界版 Wiener--Ikehara 定理，并在末节给出 Newman 围道方法的另一证明。
 \end{chapterabstract}
 
 % 本章目标（不计入编号）
 \begin{learninggoals}
-待填充。
+能够区分素数、对数权和与素数幂计数，追踪正性在无零点和 Tauber 步骤中的作用；能核对边界延拓条件，并说明主项渐近与定量误差之间尚差哪些估计。
 \end{learninggoals}
+
+Euler 乘积说明素数决定 \(\zeta\)，但这种决定首先只在右半平面成立。素数定理需要把信息推到边界：一处的单极点产生线性主项，其他高度若有零点则会阻碍这个主项稳定出现。前两章提供级数和延拓，本章补上正性与单调性这两项实变量约束。Newman 的《Simple Analytic Proof of the Prime Number Theorem》\cite{Newman1980Simple}是末节方法的原始文献；所给围道细节按 Zagier 的《Newman's Short Proof of the Prime Number Theorem》\cite{Zagier1997Newman}的正式发表说明核对。
 
 \input{Part06/Chapter27/Section2701}
 \input{Part06/Chapter27/Section2702}
@@ -20,10 +22,70 @@
 \input{Part06/Chapter27/Section2706}
 % 本章小结（不计入编号）
 \begin{chaptersummary}
-待填充。
+三角多项式的非负性排除边界零点，变换去极点后的解析性则使局部平均趋于常数。非负累积量的单调性把这个平均极限变为 \(\psi(x)/x\to1\)，部分求和最终给出 \(\pi(x)\sim x/\log x\)。Newman 方法以围道上的消去因子达到同一 Tauber 目的，两条证明都保留了从定性渐近到定量误差的边界。
 \end{chaptersummary}
 
 
 \BookExercises
 
-待填充。
+% 八题自拟：渐近转换、短区间边界、Tauber假设及积分权重。
+\begin{exercise}\label{b3:ex:27-1}
+对每个固定 \(\lambda>1\)，证明
+\[
+ \sum_{x<p\le\lambda x}\frac1p\sim\frac{\log\lambda}{\log x}.
+\]
+\end{exercise}
+\begin{solution}
+对区间部分求和，左侧为
+\[
+ \frac{\pi(\lambda x)}{\lambda x}-\frac{\pi(x)}x
+       +\int_x^{\lambda x}\frac{\pi(t)}{t^2}\,\mathrm dt.
+\]
+前两项之差为 \(O((\log x)^{-2})+o((\log x)^{-1})\)。素数定理的相对误差在所有 \(t\ge x\) 上一致趋零，因此积分等于
+\((1+o(1))\int_x^{\lambda x}\mathrm dt/(t\log t)\)，其主项为
+\(\log(\log(\lambda x)/\log x)\sim\log\lambda/\log x\)。这比直接相减两个仅有 \(o(\log\log x)\) 误差的倒数和公式更精确；后者的误差尺度不足以处理当前区间。
+\end{solution}
+\begin{exercise}\label{b3:ex:27-2}
+设 \(p_n\) 为第 \(n\) 个素数。证明 \(p_n\sim n\log n\)。
+\end{exercise}
+\begin{solution}
+由 \(n=\pi(p_n)\sim p_n/\log p_n\)，取对数得 \(\log n=\log p_n-\log\log p_n+o(1)\)，故 \(\log n/\log p_n\to1\)。代回即得结论。
+\end{solution}
+\begin{exercise}\label{b3:ex:27-3}
+证明 \(\sum_{p\le x}\log p/p=\log x+o(\log x)\)。
+\end{exercise}
+\begin{solution}
+部分求和给 \(\vartheta(x)/x+\int_2^x\vartheta(t)t^{-2}\,\mathrm{d}t\)。用 \(\vartheta(t)=t+o(t)\)，误差积分在固定大点处分割，尾部不超过 \(\varepsilon\log x\)，有限头部除以 \(\log x\) 消失，结论成立。
+\end{solution}
+\begin{exercise}\label{b3:ex:27-4}
+若 \(A(x)/x\to c\)，证明
+\((s-1)\int_{1^-}^\infty x^{-s}\,\mathrm{d}A(x)\to c\)
+当实 \(s\downarrow1\)，假定 \(A\) 右连续、非负非递减，并约定 \(A(1^-)=0\)。
+\end{exercise}
+\begin{solution}
+部分求和写成 \(s(s-1)\int_1^\infty A(x)x^{-s-1}\,\mathrm{d}x\)。以 \(cx\) 替代的主项为 \(cs\to c\)。误差在固定 \(X\) 前乘 \(s-1\) 后趋零，在 \(X\) 后由 \(\varepsilon x\) 控制，其总贡献至多 \(s\varepsilon\)，再令 \(\varepsilon\to0\)。
+\end{solution}
+\begin{exercise}\label{b3:ex:27-5}
+构造有界函数 \(h(t)\) 无极限，但其 Laplace 变换仅在零点附近扣去简单主部后全纯。
+\end{exercise}
+\begin{solution}
+取 \(h(t)=1+\sin t\)。变换为 \(1/s+1/(s^2+1)\)，在零点附近减去 \(1/s\) 后全纯，然而函数振荡无极限。额外极点位于 \(\pm\mathrm{i}\)，说明 Tauber 定理为什么要求整个边界，而非仅一个边界点。
+\end{solution}
+\begin{exercise}\label{b3:ex:27-6}
+证明 \(\sum_{p^r\le x,r\ge2}\log p=O(\sqrt x+ x^{1/3}\log x)\)。
+\end{exercise}
+\begin{solution}
+单列 \(r=2\) 项，用 Chebyshev 界得 \(O(\sqrt x)\)。其余至多 \(\log_2x\) 项，每项不超过 \(Cx^{1/3}\)，得所示界。这比正文粗界更细，但仍不需要素数定理。
+\end{solution}
+\begin{optionalexercise}\label{b3:ex:27-7}
+在 Newman 引理中，若只要求 \(f(t)=O(t)\)，原结论是否仍能用相同围道估计推出？说明失败位置。
+\end{optionalexercise}
+\begin{solution}
+右半圆的尾界会出现 \(e^{-T\sigma}(T/\sigma+1/\sigma^2)\)。乘消去因子后仍有随 \(T\) 增长及端点 \(1/\sigma\) 的项，不能得到 \(2B/R\) 的统一界。这说明原证明失效，不单凭此断言所有加权版本都不成立；需要更强核或额外假设。
+\end{solution}
+\begin{exercise}\label{b3:ex:27-8}
+令 \(\operatorname{Li}(x)=\int_2^x\mathrm{d}t/\log t\)。证明 \(\operatorname{Li}(x)\sim x/\log x\)，从而素数定理也可写成 \(\pi(x)\sim\operatorname{Li}(x)\)。
+\end{exercise}
+\begin{solution}
+分部积分得 \(\operatorname{Li}(x)=x/\log x-2/\log2+\int_2^x\mathrm{d}t/\log^2t\)。将余项在 \(\sqrt x\) 分割，得 \(O(\sqrt x)+O(x/\log^2x)=o(x/\log x)\)。这只比较主项，不能据此把 \(\pi(x)-x/\log x\) 与 \(\pi(x)-\operatorname{Li}(x)\) 的误差当作等价。
+\end{solution}

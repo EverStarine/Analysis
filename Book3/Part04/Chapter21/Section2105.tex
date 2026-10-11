@@ -2,29 +2,86 @@
 \section{Mellin 变换}
 \label{b3:sec:2105}
 
-% TODO: 撰写本节正文。
+Fourier 变换将平移变成乘子，Mellin 变换对伸缩做同一件事。正半轴的乘法群通过对数坐标变成实轴的加法群，变换的积分测度与反演直线都由这个换元决定。
 
 \subsection{定义}
 \label{b3:subsec:210501}
 
-待填充。
+\begin{definition}\label{b3:def:21-mellin}
+对可测函数 \(f:(0,\infty)\to\mathbb C\)，在积分绝对收敛的参数处定义\term[mellin-bianhuan]{Mellin 变换}[Mellin transform]
+\[
+\mathcal Mf(s)\coloneqq\int_0^\infty f(x)x^{s-1}\,\mathrm{d}x.
+\]
+\end{definition}
+\symidx{\(\mathcal Mf\)：Mellin 变换}
+若在实部 \(a,b\) 处绝对收敛，\(a<b\)，则在中间闭带也收敛：在 \((0,1)\) 用指数 \(a\)，在 \((1,\infty)\) 用指数 \(b\)。取稍大的内闭带，\(|\log x|^k\) 被两端的少量幂次吸收，因而变换在开带内全纯。这里的“收敛带”由原点和无穷远两端共同决定，一端的估计不能代替另一端。
 
 \subsection{缩放}
 \label{b3:subsec:210502}
 
-待填充。
+换元直接给出，对 \(a>0\)、\(\lambda\in\mathbb C\)，在相应收敛带内有
+\[
+\mathcal M[f(a\,\cdot)](s)=a^{-s}\mathcal Mf(s),\qquad
+\mathcal M[x^\lambda f(x)](s)=\mathcal Mf(s+\lambda).
+\]
+若 \(f\) 连续可微，\(x^sf(x)\) 在两端趋零，且两项积分绝对收敛，则分部积分给
+\(\mathcal M[xf'](s)=-s\mathcal Mf(s)\)。这揭示了伸缩的无穷小生成元 \(x\,\mathrm{d}/\mathrm{d}x\)；它对应乘子 \(-s\)，不是普通导数在 Fourier 变换下的同一个乘子。
 
 \subsection{与 Gamma 函数的关系}
 \label{b3:subsec:210503}
 
-待填充。
+Euler 积分正是 \(\mathcal M[e^{-x}](s)=\Gamma(s)\)。因此
+\[
+\mathcal M[e^{-a x^p}](s)=\frac1p a^{-s/p}\Gamma(s/p),
+\quad a,p>0,\quad \operatorname{Re}s>0.
+\]
+在零点附近做 Taylor 扣除还能读出延拓：对 \(e^{-x}\)，从 \((0,1)\) 的积分减去前 \(N\) 项，得到一个在 \(\operatorname{Re}s>-N\) 全纯的余项，以及
+\(\sum_{k=0}^{N-1}(-1)^k/[k!(s+k)]\)。这从 Mellin 角度再次给出 Gamma 的全部极点和留数。
 
 \subsection{Mellin 反演}
 \label{b3:subsec:210504}
 
-待填充。
+\begin{theorem}[Mellin 反演]\label{b3:thm:21-mellin-inversion}
+设实数 \(c\) 满足 \(\int_0^\infty|f(x)|x^{c-1}\,\mathrm{d}x<\infty\)，且 \(t\mapsto\mathcal Mf(c+\mathrm{i}t)\) 可积。则 \(f\) 几乎处处等于连续函数
+\[
+\frac1{2\pi}\int_{\mathbb R}\mathcal Mf(c+\mathrm{i}t)x^{-c-\mathrm{i}t}\,\mathrm{d}t.
+\]
+若 \(f\) 连续，等式处处成立。
+\end{theorem}
+\begin{proof}
+令 \(g(u)=e^{cu}f(e^u)\)，则 \(g\in L^1(\mathbb R)\)，且
+\(\mathcal Mf(c+\mathrm{i}t)=\int g(u)e^{\mathrm{i}tu}\,\mathrm{d}u\)。为说明所需 Fourier 反演，可先乘 \(e^{-\varepsilon t^2}\)，用 Fubini 将逆积分变为 \(g\) 与单位质量高斯核的卷积。在 \(g\) 的每个 Lebesgue 点，逼近恒等使卷积趋于 \(g\)；另一方面频率函数可积，支配收敛使逆积分趋于不带高斯的积分。两者相等。频率可积还由支配收敛保证逆积分连续，故若 \(f\) 连续，几乎处处相等升级为处处相等。最后取 \(u=\log x\)，再乘 \(e^{-cu}\)。
+\end{proof}
+积分也写作 \((2\pi\mathrm{i})^{-1}\int_{c-\mathrm{i}\infty}^{c+\mathrm{i}\infty}\mathcal Mf(s)x^{-s}\,\mathrm{d}s\)。其中直线方向由下到上；\(\mathrm{d}s=\mathrm{i}\,\mathrm{d}t\) 解释常数。移动直线需要额外的水平边估计，不能仅凭变换有亚纯延拓便丢去连接两条竖线的边。
 
 \subsection{对数坐标下的 Fourier 变换}
 \label{b3:subsec:210505}
 
-待填充。
+本书连续 Fourier 变换使用核 \(e^{-2\pi\mathrm{i}u\xi}\)。以上换元精确地写成
+\[
+\mathcal Mf(c+\mathrm{i}t)=\widehat g(-t/(2\pi)).
+\]
+所以每条竖线对应一个不同的加权函数 \(g\)。当改变 \(c\) 时，既改变积分核的衰减，也改变实轴函数的权重；只有相关权重可积时才能继续使用反演。
+
+\ProseParagraphBreak
+
+例如 \(f=\mathbf1_{(0,1)}\) 的变换为 \(1/s\)，收敛域为 \(\operatorname{Re}s>0\)，但竖线上 \(1/(c+\mathrm{i}t)\) 不属于 \(L^1\)。因此本节的绝对反演定理不直接适用，尽管对称截断有更精细的反演结果。反之，若 \(g\) 二次可微且 \(g,g',g''\) 可积、端点边界项消失，两次分部积分给 \(|\widehat g(\xi)|\le C/(1+\xi^2)\)，即可满足本节假设。这是应用前容易核对的充分条件。
+
+\ProseParagraphBreak
+
+Mellin 变换的乘法结构也由对数换元确定。对适当函数定义乘法卷积
+\[
+ (f*_Mg)(x)=\int_0^\infty f(t)g(x/t)\frac{\mathrm{d}t}{t}.
+\]
+若 \(\int|f(t)|t^{c-1}\,\mathrm{d}t\) 与 \(\int|g(t)|t^{c-1}\,\mathrm{d}t\) 都有限，则 Tonelli 与 \(x=tu\) 给卷积的同一加权范数不超过两者乘积。Fubini 随之合法，并给
+\(\mathcal M(f*_Mg)(c+\mathrm{i}y)=\mathcal Mf(c+\mathrm{i}y)\mathcal Mg(c+\mathrm{i}y)\)。测度 \(\mathrm{d}t/t\) 不可换成 \(\mathrm{d}t\)：前者对伸缩不变，也正是 \(t=e^u\) 后的 Lebesgue 测度。
+\ProseParagraphBreak
+作为反演的直接应用，对 \(f(x)=e^{-x}\) 取 \(c=1\)。加权可积性显然，上一节的精确模值说明 \(\Gamma(1+\mathrm{i}t)\) 沿竖线绝对可积，故
+\[
+ e^{-x}=\frac1{2\pi\mathrm{i}}
+       \int_{1-\mathrm{i}\infty}^{1+\mathrm{i}\infty}\Gamma(s)x^{-s}\,\mathrm{d}s,
+ \qquad x>0.
+\]
+这已经是普通绝对收敛积分，不需要先借留数求和“猜出”结果。若以后移动围道经过 \(0,-1,\ldots\)，这些极点的留数确会生成 \(1,-x,x^2/2!,\ldots\)；但完成移线仍须逐条估计水平边与新竖线。变换反演和留数展开可以互相核对，它们不是同一个未经证明的步骤。
+\ProseParagraphBreak
+最后看端点渐近与极点的普遍联系。设 \(f\) 在0附近有有限展开 \(\sum_{j=0}^{N-1}c_jx^{\alpha_j}+O(x^A)\)，其中 \(\operatorname{Re}\alpha_j<A\)，并假定无穷远端积分在所考察参数域收敛。将 \((0,1)\) 积分中的各主项扣除，余项在 \(\operatorname{Re}s>-A\) 全纯，而每项主部产生 \(c_j/(s+\alpha_j)\)。若主项带 \((\log x)^m\)，则积分是 \((-1)^m m!/(s+\alpha_j)^{m+1}\)。因此幂次决定极点位置，对数幂决定极点重数。这个结论由普通收敛积分逐项推出，也是后面 theta 积分构造 zeta 延拓时所使用的局部机制。

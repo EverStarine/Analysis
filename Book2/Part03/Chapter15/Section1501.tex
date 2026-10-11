@@ -2,24 +2,75 @@
 \section{弱形式}
 \label{b2:sec:1501}
 
-% TODO: 撰写本节正文。
+分段材料中的温度可以连续而斜率发生跳跃；此时逐点写二阶导数会掩盖界面上的通量条件。弱形式把微分移到测试函数上，使未知函数只需具有有限能量，同时仍保留方程及界面平衡。本节将第一章的局部弱解概念与上一章的 Sobolev 边界类结合起来，并为比 \(L^2\) 更粗糙的源项确定合适空间。
 
 \subsection{测试函数}
 \label{b2:subsec:150101}
 
-待填充。
+在开集 \(\Omega\subset\mathbb R^d\) 中，测试函数取自 \(C_c^\infty(\Omega)\)。它们的支集离边界有正距离，因此分部积分不会引入尚未定义的边界值。若 \(u\in H_{\mathrm{loc}}^1(\Omega)\)、\(A\in L_{\mathrm{loc}}^\infty(\Omega;\mathbb R^{d\times d})\)，则
+\[\langle-\operatorname{div}(A\nabla u),\varphi\rangle
+ =\int_\Omega A\nabla u\cdot\nabla\varphi\,\mathrm dx\]
+定义了一个分布。矩阵约定为 \((A\nabla u)_i=\sum_j a_{ij}\partial_j u\)，因而散度作用于通量的第一个指标。
+
+\ProseParagraphBreak
+
+局部测试函数足以辨认内部方程，但能量估计常须取 \(\varphi=u\)、截断后的 \(u\) 或差商。它们通常不光滑，也不紧支集。合法性依靠的是密度与连续延拓：若左右两边对 \(H_0^1\) 范数连续，而 \(C_c^\infty\) 在该空间稠密，则测试等式自动推广到整个 \(H_0^1\)。若只知道局部 \(H^1\)，便先乘紧支集截断函数，在较小区域完成同样步骤。不能在未建立这些连续性之前直接“取测试函数为解”。
 
 \subsection{弱解}
 \label{b2:subsec:150102}
 
-待填充。
+以下主要讨论实函数，复函数可分别作用于实部与虚部。给定有界矩阵场 \(A\) 和源项 \(f\)，称 \(u\in H^1(\Omega)\) 满足散度方程的弱形式，是指
+\[\int_\Omega A\nabla u\cdot\nabla\varphi=\langle f,\varphi\rangle
+ \qquad(\varphi\in C_c^\infty(\Omega)).\]
+这与第一章的定义一致；边界条件尚未包含在此等式中。如果 \(A,u\) 光滑到足以分部积分，它与经典方程等价；粗糙情形则以这个等式本身为准。
+
+\begin{proposition}[一维界面的通量条件]
+\label{b2:prop:15-interface-flux}
+设 \(-1<s<1\)，\(a\) 在 \((-1,s)\)、\((s,1)\) 上分别为正常数，\(u\) 在两闭子区间上分别为 \(C^2\)，且在 \(s\) 处连续。若 \(-(au')'=f\) 在两侧经典成立，其中 \(f\in L^2(-1,1)\)，则 \(u\) 在整个区间为弱解，当且仅当
+\[a(s-)u'(s-)=a(s+)u'(s+).\]
+\end{proposition}
+\begin{proof}
+分段光滑且连续的 \(u\) 属于 \(H^1\)，其弱导数就是分段的一阶导数。在两段分别积分，外端因测试函数紧支集而消失，内端得到
+\[\int_{-1}^1 au'\varphi'=\int_{-1}^1 f\varphi
+  +\bigl(a(s-)u'(s-)-a(s+)u'(s+)\bigr)\varphi(s).\]
+测试函数在 \(s\) 处可取任意值，因此等式对全部测试函数成立恰当且仅当括号为零。
+\end{proof}
+
+例如 \(a=1\) 于左半区间、\(a=2\) 于右半区间，令 \(u(x)=x\)（\(x\le0\)）、\(u(x)=x/2\)（\(x\ge0\)）。其导数跳跃，但通量恒为 \(1\)，所以 \(-(au')'=0\) 弱成立。若误要求 \(u'\) 连续，就会排除这个正确的平衡解；若允许 \(u\) 本身跳跃，又会产生分布导数中的点质量，通常已不属于所选能量空间。
 
 \subsection{Sobolev 边界条件}
 \label{b2:subsec:150103}
 
-待填充。
+对任意有界开集，齐次 Dirichlet 条件定义为 \(u\in H_0^1(\Omega)\)；非齐次数据由一个延拓 \(g\in H^1(\Omega)\) 表示，条件为 \(u-g\in H_0^1(\Omega)\)。第一卷定理 23.1.6 说明，在有界 Lipschitz 区域上，这恰好等价于 Sobolev 迹满足 \(\operatorname{Tr}u=\operatorname{Tr}g\)。粗糙区域上仍可使用闭包定义，但不能未经证明把它等同于某个朴素逐点边界条件。
 
-\subsection{负阶 Sobolev 空间 初步}
+\ProseParagraphBreak
+
+自然边界条件的写法不同。以 Poisson 方程为例，在 \(H^1(\Omega)\) 的全部方向测试时，光滑情形的 Green 公式是
+\[\int_\Omega\nabla u\cdot\nabla v
+  =\int_\Omega fv+\int_{\partial\Omega}g_N\operatorname{Tr}v\,\mathrm dS.\]
+它编码 \(\partial_\nu u=g_N\)，而不是要求 \(u\) 在边界为零。取 \(v=1\) 立刻得到相容条件 \(\int_\Omega f+\int_{\partial\Omega}g_N=0\)。测试空间不同，编码的边界问题便不同；仅看内部方程无法辨认二者。
+
+\ProseParagraphBreak
+
+即使区域光滑，也不宜把任意边界函数都当作合法 \(H^1\) Dirichlet 数据。数据应当处于迹空间，并存在 \(H^1\) 延拓；第一卷第二十三章在 Lipschitz 图中用分数阶范数刻画这种要求。本章直接给定延拓 \(g\)，从而把数据的合法性写进假设，不需要在每个存在性证明里重新构造延拓算子。
+
+\subsection{负阶 Sobolev 空间初步}
 \label{b2:subsec:150104}
 
-待填充。
+设 \(\Omega\) 有界，以梯度范数赋予 \(H_0^1(\Omega)\) Hilbert 结构。定义
+\[H^{-1}(\Omega)=(H_0^1(\Omega))^*,\qquad
+ \lVert f\rVert_{H^{-1}}=\sup_{\lVert\nabla v\rVert_2\le1}|\langle f,v\rangle|.
+\]
+这是本章使用的 \term[fujie-sobolev-kongjian]{负阶 Sobolev 空间}[negative-order Sobolev space]的第一种情形。换成全 \(H^1\) 范数会得到等价范数；双空间本身不变。由 Poincaré 不等式，\(L^2\) 连续嵌入 \(H^{-1}\)。更一般地，若 \(F\in L^2(\Omega;\mathbb R^d)\)，则 \(-\operatorname{div}F\in H^{-1}\)，且其范数不超过 \(\lVert F\rVert_2\)。
+
+\begin{proposition}[负阶数据的通量表示]
+\label{b2:prop:15-negative-representation}
+对每个 \(f\in H^{-1}(\Omega)\)，存在 \(F\in L^2(\Omega;\mathbb R^d)\)，使
+\[\langle f,v\rangle=\int_\Omega F\cdot\nabla v\,\mathrm dx
+ \quad(v\in H_0^1(\Omega)),\qquad \lVert F\rVert_2=\lVert f\rVert_{H^{-1}}.\]
+\end{proposition}
+\begin{proof}
+映射 \(v\mapsto\nabla v\) 把 \(H_0^1\) 等距嵌入 \(L^2(\Omega;\mathbb R^d)\)，其像因完备性而闭。在线性子空间上定义 \(\Lambda(\nabla v)=\langle f,v\rangle\)；Poincaré 不等式保证定义无歧义。Hahn--Banach 定理将其等范数延拓到整个向量值 \(L^2\)。第一卷定理 8.4.7 的 Hilbert 空间 Riesz 表示给出向量 \(F\)，其范数等于泛函范数，恰得所列公式。
+\end{proof}
+
+这种表示未必唯一，因为与所有梯度正交的通量可以自由加到 \(F\) 上。负阶空间描述的是通量的散度，而不是某个唯一的通量。它也确实容纳比函数更粗糙的数据：在一维有界区间内，点值由 \(H_0^1\) 范数控制，故点质量属于 \(H^{-1}\)；在二维及更高维，一般不再如此。后面的习题用缩放说明这一维数差异，避免把一维直觉直接移到高维。

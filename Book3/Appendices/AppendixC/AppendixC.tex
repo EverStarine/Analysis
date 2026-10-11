@@ -1,5 +1,215 @@
 % !TeX root = ../../Book3.tex
 \chapter{Nevanlinna 理论}
 \label{b3:app:C}
+\begin{chapterabstract}
+Jensen 公式把一个值的原像数与圆周上的对数平均联系起来。Nevanlinna 理论将这一关系同时用于多个值，用同一个特征函数衡量亚纯函数的总体增长。本附录完整证明第一基本定理，并在明确接受对数导数引理这一深层输入后，推导第二基本定理及亏值关系。计数是否包含重数、异常半径集合和有理函数情形均单独说明。
+\end{chapterabstract}
+\begin{learninggoals}
+\begin{itemize}
+\item\label{b3:item:C-goal-1}从零极点计算计数函数、接近函数与特征函数。
+\item\label{b3:item:C-goal-2}用 Jensen 公式证明第一基本定理。
+\item\label{b3:item:C-goal-3}辨认第二基本定理中导数和重数的作用。
+\item\label{b3:item:C-goal-4}由有限值集的不等式推出亏值总和的限制。
+\end{itemize}
+\end{learninggoals}
+前置内容为第十八章的 Poisson--Jensen 公式与第十九章的增长比较。这里的函数总在整个复平面上亚纯；圆盘上的局部版本需要把半径趋于无穷改成趋于边界，误差也随之改变。本附录不作这种替换。
 
-% TODO: 按计划纲要展开本附录。
+\section{三个增长量}
+\label{b3:sec:C01}
+
+设 \(f\) 非常数，\(a\in\widehat{\mathbb C\kern0pt}\)。以 \(n(r,a;f)\) 表示 \(|z|\le r\) 中 \(a\)-点的数目，按重数计；\(a=\infty\) 时数极点。\term[jishu-hanshu]{计数函数}[counting function]为
+\[
+ N(r,a;f)=n(0,a;f)\log r+
+ \int_0^r\frac{n(t,a;f)-n(0,a;f)}t\,\mathrm{d}t.
+\]
+等价地，每个非零 \(a\)-点 \(z_j\) 贡献 \(m_j\log(r/|z_j|)\)，只对 \(|z_j|\le r\) 求和。这样定义消除了原点可能带来的发散。半径恰经过原像点时，新项的贡献为零，所以 \(N\) 仍连续。把每个点的重数改为一，得到约化计数函数 \(\overline N(r,a;f)\)。
+\ProseParagraphBreak
+记 \(\log^+x=\max(\log x,0)\)。\term[jiejin-hanshu]{接近函数}[proximity function]与\term[tezheng-hanshu]{特征函数}[characteristic function]定义为
+\[
+ \begin{aligned}
+ m(r,\infty;f)&=\frac1{2\pi}\int_0^{2\pi}\log^+|f(re^{\mathrm{i}t})|\,\mathrm{d}t,\\
+ m(r,a;f)&=m\left(r,\infty;\frac1{f-a}\right),\\
+ T(r,f)&=m(r,\infty;f)+N(r,\infty;f).
+ \end{aligned}
+\]
+圆周上的有限多个零极点只产生可积的对数奇性，不必排除这些半径。\(N\) 记录已经取到该值的次数；\(m\) 记录边界上接近该值的程度。两者的总和才具有对值的近似对称性。
+
+\begin{proposition}[基本运算]\label{b3:prop:C-operations}
+对亚纯函数 \(f,g\) 及 \(r\ge1\)，有
+\[
+ T(r,fg)\le T(r,f)+T(r,g),\qquad
+ T(r,f+g)\le T(r,f)+T(r,g)+\log2.
+\]
+对固定 \(a\in\mathbb C\)，有 \(T(r,f-a)=T(r,f)+O(1)\)。
+\end{proposition}
+\begin{proof}
+乘积的正对数不超过正对数之和，极点重数也不超过两函数极点重数之和。由于 \(r\ge1\)，原点极点的权 \(\log r\) 非负，故重数比较也给出积分计数的比较。加法使用 \(|f+g|\le2\max(|f|,|g|)\)，其极点重数至多为两者中较大的一个。平移不改变极点，在圆周上应用 \(|f-a|\le(1+|a|)\max(1,|f|)\) 以及交换 \(f,f-a\) 后的不等式即得双向界。
+\end{proof}
+对于多项式 \(P\) 次数 \(d\ge1\)，大圆周上一致有 \(\log|P(z)|=d\log r+O(1)\)，故 \(T(r,P)=d\log r+O(1)\)。若 \(R=P/Q\) 且分子分母互素，次数分别为 \(p,q\)，则极点计数为 \(q\log r+O(1)\)，接近函数为 \(\max(p-q,0)\log r+O(1)\)，所以
+\[
+ T(r,R)=\max(p,q)\log r+O(1).
+\]
+对 \(e^z\)，没有极点，直接积分正半圆的 \(r\cos t\) 得 \(T(r,e^z)=r/\pi\)。这两个例子分别代表对数增长和正幂增长。
+
+\section{第一基本定理与球面解释}
+\label{b3:sec:C02}
+
+Jensen 公式中的边界项可以写成两个接近函数之差。这样做使零点与极点在同一等式中出现。
+
+\begin{theorem}[第一基本定理]\label{b3:thm:C-first-main}
+对固定 \(a\in\widehat{\mathbb C\kern0pt}\)，当 \(r\ge1\) 时，
+\[
+ m(r,a;f)+N(r,a;f)=T(r,f)+O(1).
+\]
+常数可以依赖 \(f,a\)，不依赖 \(r\)。
+\end{theorem}
+\begin{proof}
+先设 \(f(z)=z^ku(z)\)，其中 \(u(0)\ne0,\infty\)，\(k\in\mathbb Z\)。亚纯 Jensen 公式给
+\[
+ \frac1{2\pi}\int\log|f(re^{\mathrm{i}t})|\,\mathrm{d}t
+ =\log|u(0)|+N(r,0;f)-N(r,\infty;f).
+\]
+原点贡献 \(k\log r\) 已包括在两个 \(N\) 之差中。由 \(\log x=\log^+x-\log^+(1/x)\)，移项得
+\[
+ T(r,1/f)=T(r,f)-\log|u(0)|.
+\]
+对 \(f-a\) 应用此式，再用命题~\ref{b3:prop:C-operations}的平移估计即得有限 \(a\) 的结论。\(a=\infty\) 是定义中的恒等式。
+\end{proof}
+因此任一固定 Möbius 变换 \(M\) 都满足 \(T(r,M\circ f)=T(r,f)+O(1)\)：平移、非零常数倍与取倒数生成全部这类变换。特征函数的主量不依赖在目标球面上选哪一点作为无穷远。
+\ProseParagraphBreak
+为严格处理增长与亏值，可把这种近似不变性写成一个精确的面积量。取本卷第十四章的球面导数 \(f^\#=|f'|/(1+|f|^2)\)，置
+\[
+ A_f(t)=\frac1\pi\int_{|z|<t}(f^\#)^2\,\mathrm{d}A,
+ \qquad T_0(r,f)=\int_0^r A_f(t)\frac{\mathrm{d}t}{t}.
+\]
+局部取互素全纯表示 \(f=g/h\)，有
+\(\Delta\log\sqrt{|g|^2+|h|^2}=2(f^\#)^2\)。这由两次微分展开而得；分子为 \(|g'h-gh'|^2\)。在没有极点的图中取 \(h=1\)，在极点周围减去 \(\log|h|\) 后再用圆盘的 Green 平均公式，得到
+\[
+ T_0(r,f)=\frac1{2\pi}\int\log\sqrt{1+|f(re^{\mathrm{i}t})|^2}\,\mathrm{d}t
+       +N(r,\infty;f)-C_f.
+\]
+原点为极点时用局部坐标先去极点，常数 \(C_f\) 随之调整。因为
+\(0\le\log\sqrt{1+x^2}-\log^+x\le\tfrac12\log2\)，故 \(T_0=T+O(1)\)。\(A_f\) 非递减，因而 \(T_0\) 是 \(\log r\) 的凸函数。这也说明对非恒定 \(f\)，特征函数必趋于无穷。
+
+\begin{lemma}[超越增长]\label{b3:lem:C-transcendental-growth}
+若 \(f\) 为超越亚纯函数，则 \(T(r,f)/\log r\to\infty\)。
+\end{lemma}
+\begin{proof}
+若 \(A_f(t)\to\infty\)，对任意 \(B\) 取 \(t_B\) 使 \(A_f(t)\ge B\) 当 \(t\ge t_B\)，则 \(T_0(r)\ge B\log(r/t_B)\)，结论成立。反之，若 \(A_f\) 有界，则上式给 \(T(r)=O(\log r)\)。第一基本定理于是说明每个有限值的原像数一致有界：任取其中 \(m\) 个固定原像，\(N(r,a)\ge m\log r-O(1)\)，而右侧的 \(T\) 上界系数与 \(a\) 无关。因此 \(f\) 不能在无穷远有本性奇点，因为第十四章的大 Picard 定理保证除至多两个球面值外均有无穷多个原像。故 \(f\) 在球面上亚纯，是有理函数，与假设矛盾。
+\end{proof}
+这段增长判据使用了已经独立证明的 Picard 定理。下文再由值分布推回 Picard 结论，是说明另一条理论解释；它不被用作第十四章原证明的前提。
+
+\section{对数导数与第二基本定理}
+\label{b3:sec:C03}
+
+多个值之间的限制来自导数：一个重 \(m\) 的有限值点至少消耗 \(f'\) 的 \(m-1\) 个零点。先把本附录唯一未完整展开的分析估计单列。
+
+\begin{lemma}[对数导数引理，深层输入]\label{b3:lem:C-logarithmic-derivative}
+设 \(f\) 为非零亚纯函数。存在 \(E\subset[1,\infty)\)，\(\int_E\mathrm{d}r<\infty\)，使
+\[
+ m\left(r,\infty;\frac{f'}f\right)
+ =O\bigl(\log^+T(r,f)+\log r\bigr),\qquad r\notin E.
+\]
+\end{lemma}
+\begin{proofsketch}
+对 Poisson--Jensen 公式求导，把导数分为边界核与零极点核；对后者先取小于一的幂再作圆周积分。所得估计含外半径的特征函数及两半径之差。增长引理允许在有限长度的例外集之外选择邻近外半径，最终得到所示对数误差。这里不补写增长引理和核的统一积分估计，因而该引理是明确的外部输入。可核对 Goldberg--Ostrovskii《Value Distribution of Meromorphic Functions》第三章第1节、定理1.3及其证明\cite[pp.~91--93]{GoldbergOstrovskii2008Value}。
+\end{proofsketch}
+下文把有限次这种误差的和记作 \(S(r,f)\)。每次固定有限个目标值后才合并例外集；不把无穷多个例外集直接相加。
+
+\begin{theorem}[约化形式的第二基本定理]\label{b3:thm:C-second-main}
+设 \(a_1,\ldots,a_q\) 为互异球面值，\(q\ge3\)，则在某个有限长度集合之外，
+\[
+ (q-2)T(r,f)\le\sum_{j=1}^q\overline N(r,a_j;f)
+       +O\bigl(\log^+T(r,f)+\log r\bigr).
+\]
+\end{theorem}
+\begin{proof}
+先设值集包含 \(\infty\)，其余为 \(a_1,\ldots,a_{q-1}\)。取小于这些有限值两两距离一半的 \(d>0\)。每一点至多有一个 \(|f-a_j|<d\)。对这个可能的指标使用
+\(1/|f-a_j|=|f'/(f-a_j)|/|f'|\)，其余正对数统一有界，便得
+\[
+ \begin{aligned}
+ \sum_{j<q}m(r,a_j;f)
+ &\le m(r,\infty;1/f')+\sum_{j<q}m\left(r,\infty;\frac{f'}{f-a_j}\right)+O(1)\\
+ &\le m(r,\infty;1/f')+S(r,f).
+ \end{aligned}
+\]
+零点 \(f'=0\) 造成的逐点无穷只位于离散集；不等式以几乎处处的积分意义成立。Jensen 公式给
+\[
+ m(r,\infty;1/f')=m(r,\infty;f')+N(r,\infty;f')-N(r,0;f')+O(1).
+\]
+又有 \(m(r,f')\le m(r,f)+m(r,f'/f)\)，而每个 \(m\) 阶极点在导数中变为 \(m+1\) 阶，故
+\(N(r,\infty;f')=N(r,\infty;f)+\overline N(r,\infty;f)\)。加入 \(m(r,\infty;f)\) 后得到
+\[
+ \sum_{j=1}^q m(r,a_j;f)
+ \le 2T(r,f)-N(r,\infty;f)+\overline N(r,\infty;f)
+                -N(r,0;f')+S(r,f).
+\]
+用第一基本定理替换左侧，并利用
+\[
+ N(r,0;f')\ge\sum_{j<q}\bigl(N(r,a_j;f)-\overline N(r,a_j;f)\bigr),
+\]
+即得结论。若原值集不含无穷远，取 Möbius 变换把其中一个值送到无穷远。各原像的重数不变，特征函数只差有界项，于是归约到已证情形。
+\end{proof}
+不计重数的 \(\overline N\) 比 \(N\) 更小，故这一定理也衡量分歧的代价。若某个值的所有原像重数至少为 \(m\)，就有 \(\overline N\le N/m\)；多个高度分歧的值因此不能任意共存。
+
+\section{亏值与例子}
+\label{b3:sec:C04}
+
+定义值 \(a\) 的\term[kuizhi]{亏值}[deficiency]为
+\[
+ \delta(a,f)=1-\limsup_{r\to\infty}\frac{N(r,a;f)}{T(r,f)}.
+\]
+第一基本定理给 \(0\le\delta\le1\)。被省略的值亏值为一；逆命题一般不成立，因为亏值只比较渐近频率，并不要求完全没有原像。
+
+\begin{theorem}[亏值关系]\label{b3:thm:C-defect-relation}
+对非恒定亚纯函数，\(\sum_{a\in\widehat{\mathbb C\kern0pt}}\delta(a,f)\le2\)，其中不可数和指所有有限子集之和的上确界。特别地，正亏值只有至多可数多个。
+\end{theorem}
+\begin{proof}
+若 \(f\) 超越，对固定有限值集使用第二基本定理，并以 \(\overline N\le N\) 放宽右侧。由引理~\ref{b3:lem:C-transcendental-growth}，误差除以 \(T\) 后沿例外集之外趋零。对任意 \(\varepsilon>0\)，由各项上极限的定义，在所有充分大半径上都有
+\(N(r,a_j)/T(r)\le1-\delta(a_j,f)+\varepsilon\)。于是
+\(q-2\le q-\sum_j\delta(a_j,f)+q\varepsilon\)，令 \(\varepsilon\downarrow0\)。若 \(f\) 是次数 \(d\) 的有理函数，球面上每个值恰有 \(d\) 个原像；仅 \(a=f(\infty)\) 在有限平面中少去无穷远局部重数 \(e\)。因此该值的亏值为 \(e/d\le1\)，其余均为零。最后，亏值至少 \(1/n\) 的值至多 \(2n\) 个；对 \(n\) 取可数并即得可数性。
+\end{proof}
+一个亚纯函数若省略三个球面值，亏值和至少为三，故必为常数；整函数已省略无穷远，因此非常数整函数至多再省略一个有限值。这正是 Picard 小定理的值分布形式。
+\ProseParagraphBreak
+对 \(e^z\)，\(0\) 与 \(\infty\) 均省略，所以两个亏值都为一。对任意 \(a\ne0\)，方程 \(e^z=a\) 的解为 \(\log a+2\pi\mathrm{i}k\)，计数 \(n(r,a)=r/\pi+O(1)\)，积分给 \(N(r,a)=r/\pi+O(\log r)\)，与 \(T=r/\pi\) 同主项；其余亏值全为零。对多项式，只有无穷远亏值为一。可见“增长快慢”和“哪些值短缺”是不同资料：\(e^{z^m}\) 的增长阶随 \(m\) 改变，却仍有同样两个省略值。
+
+\begin{chaptersummary}
+第一基本定理说明单个值的计数与接近程度可以相互补偿。第二基本定理把多个值同时放进不等式，导数的零点消去重数，形成约化计数。亏值关系只控制渐近比例；它既推广省略值现象，也保留了比 Picard 定理更细的频率信息。
+\end{chaptersummary}
+\BookExercises
+\begin{exercise}\label{b3:ex:C-1}
+计算 \(T(r,z^m)\)、\(T(r,z^{-m})\) 在 \(r\ge1\) 时的精确值。
+\end{exercise}
+\begin{solution}
+前者无极点且圆周正对数为 \(m\log r\)；后者的接近函数为零，原点极点贡献 \(m\log r\)。故两者同为 \(m\log r\)。
+\end{solution}
+\begin{exercise}\label{b3:ex:C-2}
+求 \(f(z)=e^{z^m}\) 的特征函数，并判断其阶。
+\end{exercise}
+\begin{solution}
+圆周正对数为 \(r^m\max(\cos mt,0)\)。一个周期正部分积分为2，平均为 \(1/\pi\)，故 \(T=r^m/\pi\)，特征增长阶为 \(m\)。
+\end{solution}
+\begin{exercise}\label{b3:ex:C-3}
+设 \(f\) 超越且有 \(q\) 个值，其每个原像均至少二重。证明 \(q\le4\)。
+\end{exercise}
+\begin{solution}
+第二基本定理及 \(\overline N\le N/2\) 给 \((q-2)T\le qT/2+o(T)\)，故 \(q-2\le q/2\)。若某值省略，约化计数为零，仍可纳入同一估计。
+\end{solution}
+\begin{exercise}\label{b3:ex:C-4}
+求有理函数 \(f(z)=(z^2+1)/z^2\) 的所有正亏值。
+\end{exercise}
+\begin{solution}
+次数为2，无穷远映为1，且 \(f-1=z^{-2}\) 在无穷远有二阶零。值1没有有限原像，亏值为1；其他球面值的有限原像按重数均为2，亏值为零。
+\end{solution}
+\begin{exercise}\label{b3:ex:C-5}
+若超越亚纯函数的互异值 \(a_j\) 的原像重数均至少 \(m_j\ge2\)，证明 \(\sum_j(1-1/m_j)\le2\)，先讨论有限值集。
+\end{exercise}
+\begin{solution}
+对超越函数，第二基本定理右侧至多 \(\sum_jN(r,a_j)/m_j\)，再由第一基本定理估计并除以 \(T\) 得结论。再对有限子集取上确界，即得无限值集的解释。
+\end{solution}
+\begin{exercise}\label{b3:ex:C-6}
+证明对非零常数 \(c\)，\(m(r,\infty;cf)-m(r,\infty;f)\) 的绝对值不超过 \(|\log|c||\)，并解释为何亏值不依赖目标坐标的 Möbius 选择。
+\end{exercise}
+\begin{solution}
+函数 \(u\mapsto\max(u,0)\) 为1-Lipschitz，对 \(u=\log|f|\) 加常数 \(\log|c|\) 后积分即可。Möbius 变换由平移、倍乘、取倒数组成，\(T\) 仅差有界项且原像计数原封不动；因 \(T\to\infty\)，定义中的上极限不变。
+\end{solution}

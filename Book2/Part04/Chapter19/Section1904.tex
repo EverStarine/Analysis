@@ -2,24 +2,140 @@
 \section{平方函数}
 \label{b2:sec:1904}
 
-% TODO: 撰写本节正文。
+平方函数把每个频带的振幅合成一个位置函数。它不要求频带输出逐点正交；随机符号使抵消的平均能够准确记录平方大小。
 
 \subsection{Littlewood--Paley 平方函数}
 \label{b2:subsec:190401}
 
-待填充。
+定义\term[pingfang-hanshu]{平方函数}[square function]
+\[
+ Sf(x)\coloneqq\left(\sum_{j\in\mathbb Z}|\Delta_jf(x)|^2\right)^{1/2}.
+\]
+\symidx{\(Sf\)：Littlewood--Paley 平方函数}
+级数先以单调极限解释，暂时允许无穷值。取独立符号 \(\varepsilon_j=\pm1\)，两值等概率。对任意有限复数族 \(a_j\)，有 Khintchine 估计
+\[
+ c_p\left(\sum_j|a_j|^2\right)^{p/2}
+ \leq\mathbb E\left|\sum_j\varepsilon_ja_j\right|^p
+ \leq C_p\left(\sum_j|a_j|^2\right)^{p/2}.
+\]
+为看清常数与项数无关，先取实数族。乘积公式和 \(\cosh s\leq e^{s^2/2}\) 给出
+\(\mathbb E e^{t\sum\varepsilon_ja_j}\leq e^{t^2\sum a_j^2/2}\)；
+优化 \(t\) 得到 Gaussian 尾界，再按层蛋糕积分得到所有有限 \(p\) 的上界。平方期望为 \(A^2=\sum a_j^2\)，四次期望不超过 \(3A^4\)。在 \(\{|X|^2>A^2/2\}\) 上用 Cauchy–Schwarz，得到该集合概率至少 \(1/12\)，遂给出下界。复数族分别处理实部、虚部，其中一个平方和至少总和的一半，常数只多一个固定因子。
 
 \subsection{\texorpdfstring{\(L^p\)}{Lp} 等价性}
 \label{b2:subsec:190402}
 
-待填充。
+下面采用\term[littlewood-paley-budengshi]{Littlewood--Paley 不等式}[Littlewood--Paley inequality]的下述版本。
+
+\begin{theorem}[Littlewood--Paley]\label{b2:thm:19-square-function}
+对 \(1<p<\infty\)，存在只依赖 \(p,d,\chi\) 的正常数，使
+\[
+ c_p\|f\|_p\leq\|Sf\|_p\leq C_p\|f\|_p
+ \quad(f\in L^p(\mathbb R^d)).
+\]
+\end{theorem}
+\begin{proof}
+对有限指标集 \(J\) 和任意符号，令 \(T_\varepsilon=\sum_{j\in J}\varepsilon_j\Delta_j\)。其乘子一致有界，故 \(L^2\) 范数一致有界。核为 \(\sum_{j\in J}\varepsilon_j2^{jd}\check\varphi(2^jx)\)。利用 Schwartz 衰减，按 \(2^j|x|\leq1\) 与 \(>1\) 分开几何级数，分别得到
+\[
+ |K_\varepsilon(x)|\leq C|x|^{-d},\quad
+ |\nabla K_\varepsilon(x)|\leq C|x|^{-d-1},
+\]
+常数与 \(J,\varepsilon\) 无关。每项有限，支集外表示直接成立，Calderón–Zygmund 定理给出一致 \(L^p\) 界。Khintchine 与 Tonelli 得到有限平方和的上界，再以单调收敛推广到全部指标。
+
+取实偶光滑环带函数 \(\widetilde\varphi\)，在 \(\varphi\) 的支集上为一，记对应投影为 \(\widetilde\Delta_j\)。同一个随机核论证给出 \(\widetilde Sg\) 的上界。对 Schwartz \(f,g\)，频率分割和 Plancherel 给出
+\[
+ \int f\overline g
+ =\sum_j\int\Delta_jf\,\overline{\widetilde\Delta_jg}.
+\]
+先取有限和再取极限，或者用 \(Sf\cdot\widetilde Sg\) 的可积性控制级数。逐点 Cauchy–Schwarz 和 Hölder 给出配对不超过 \(C_{p'}\|Sf\|_p\cdot\|g\|_{p'}\)。对 \(g\) 取对偶上确界，得到下界；密度与已有上界推广到 \(L^p\)。
+\end{proof}
+因此有界性不依赖尺度数量，逐带得到的常数不会在无穷求和时积累。
+
+% 扩写定位：b2:subsec:190402
+平方函数还给出级数重构的无条件性质。若 \(f\in L^p\)、\(1<p<\infty\)，则
+\[
+ \sum_{j\in\mathbb Z}c_j\Delta_jf,\qquad |c_j|\leq1,
+\]
+按任意指标排列均在 \(L^p\) 中收敛，并且其范数至多 \(C_p\|f\|_p\)。这里系数固定后，不能把原级数的极限仍说成 \(f\)；只有全部 \(c_j=1\) 才重构原函数。
+
+\ProseParagraphBreak
+
+证明的要点是控制任何有限尾集 \(J\)，而不是只控制对称截断。对 \(g\in L^{p'}\)，在配对中插入等于一的环带投影，得到
+\[
+ \left|\int\sum_{j\in J}c_j\Delta_jf\,\overline g\right|
+ \leq \left\|\left(\sum_{j\in J}|\Delta_jf|^2\right)^{1/2}\right\|_p
+       \|\widetilde Sg\|_{p'}.
+\]
+因而有限尾和的范数由对应平方尾控制。\(Sf\in L^p\)，且平方尾在逐点上趋零，支配收敛说明这种控制一致趋零。于是所有排列都是 Cauchy；完整平方函数上界给出统一范数。对于满足同样有限重叠环带支撑的任意函数族 \(u_j\)，同一配对也给出
+\[
+ \left\|\sum_j u_j\right\|_p
+ \leq C_p\left\|\left(\sum_j|u_j|^2\right)^{1/2}\right\|_p
+\]
+的有限和版本，只要所插入的环带投影在各个支撑上为一。这正是合成算子的有界性；单独知道每个 \(u_j\) 的 \(L^p\) 大小并不能保证右端可积。
+
+\ProseParagraphBreak
+
+具体地，若各个频块在同一个位置区域上叠加，平方求和比绝对求和节省了大量信息；若各块分别位于远离的区域，则空间积分又会记录它们的位置分离。Besov 范数先取每个频块的全空间大小，已经不再保留第二种位置关系；Triebel--Lizorkin 范数先逐点合成，仍然能区别这两种情形。这解释了为什么两种范数在 \(p=q\) 时相同，而在其他指数中并没有简单的逐项互换。
 
 \subsection{向量值估计}
 \label{b2:subsec:190403}
 
-待填充。
+下面记录后续空间估计使用的向量版本。若 \(A_j\) 的核 \(k_j\) 都满足统一大小和一阶差分条件，且每个 \(A_j\) 的 \(L^2\) 范数一致有界，则
+\[
+ \left\|\left(\sum_{j=1}^N|A_jf_j|^2\right)^{1/2}\right\|_p
+ \leq C_p\left\|\left(\sum_{j=1}^N|f_j|^2\right)^{1/2}\right\|_p,
+ \quad1<p<\infty,
+\]
+常数与 \(N\) 无关。这里核条件指对角矩阵核的算子范数，即 \(\sup_j|k_j|\) 和对应差分。该版本的证明可直接重做上一章分解：对向量 \(F=(f_j)\) 的 Euclidean 模作二进选块，块内减去向量平均。好函数模受平均模控制，坏函数的向量积分为零；尾估计只用矩阵核范数，平方估计则按分量相加。弱型插值与 Euclidean 对偶给出同一 \(L^p\) 结论，没有维数为 \(N\) 的常数。
+
+\ProseParagraphBreak
+
+对 \(A_j=\Delta_j\)，核的缩放使这些统一界成立。这项向量估计比“每个投影分别有界”更强：后者只能逐项相加，可能产生随频带数增长的常数。它还说明把随机化用于一个向量族时，应检查其共同核界，而不只检查每个标量算子。
 
 \subsection{Sobolev 范数}
 \label{b2:subsec:190404}
 
-待填充。
+在平方可积的 Sobolev 空间中，频率权重直接给出阶数。对 \(s\in\mathbb R\)，以
+\[
+ \|f\|_{H^s}^2\coloneqq
+ \int(1+4\pi^2|\xi|^2)^s|\widehat f(\xi)|^2\,\mathrm d\xi
+\]
+定义非齐次 \(H^s\)。令 \(P_0=\chi(D)\)，\(P_j=\Delta_j\) 对 \(j\geq1\)。则
+\[
+ \|f\|_{H^s}^2\asymp
+ \|P_0f\|_2^2+\sum_{j\geq1}2^{2js}\|P_jf\|_2^2.
+\]
+这里 \(\asymp\) 表示双向不等式，常数只依赖固定参数和分割。证明在每个环带上比较 \(1+4\pi^2|\xi|^2\) 与 \(2^{2j}\)，再用有限重叠的平方上下界；低频由 \(P_0\) 单独处理。整数阶 \(s=k\geq0\) 时，这与弱导数定义的 \(H^k\) 范数等价，但系数和多重指标计数可能不同，不能写成数值完全相等。
+
+\ProseParagraphBreak
+
+对一般 \(p\)，空间平方合成应放在 \(L^p\) 范数内部。把 \(\sum2^{2js}\|P_jf\|_p^2\) 当成同一个范数会改变求和与积分的次序。这两种次序正是下一节两族函数空间的区别。
+
+\ProseParagraphBreak
+
+一个简单的频率分割还给出平方 Sobolev 范数的插值不等式。设 \(s>d/2\)、\(u\in\mathcal S\)。按半径 \(R\) 分开 Fourier 积分，Cauchy--Schwarz 给出
+\[
+ \|\widehat u\|_1\leq C_dR^{d/2}\|u\|_2
+ +C_{d,s}R^{d/2-s}\|(-\Delta)^{s/2}u\|_2.
+\]
+第一项使用球体积，第二项使用 \(\int_{|\xi|>R}|\xi|^{-2s}\mathrm d\xi<\infty\)，严格条件 \(s>d/2\) 就用于此处。反演控制 \(\|u\|_\infty\)，取 \(R^s\) 与两个平方范数的比值相平衡，得到
+\[
+ \|u\|_\infty\leq C
+ \|u\|_2^{1-d/(2s)}
+ \|(-\Delta)^{s/2}u\|_2^{d/(2s)}.
+\]
+若最高阶范数为零，Fourier 支集只能落在原点，平方输入因而为零，可以单独处理。
+
+\ProseParagraphBreak
+
+再把 \(L^2\) 与 \(L^\infty\) 用 Hölder 插值，可得对 \(2\leq q\leq\infty\)
+\[
+ \|u\|_q\leq C
+ \|u\|_2^{1-\theta}\|(-\Delta)^{s/2}u\|_2^\theta,
+ \qquad \theta=\frac d s\left(\frac12-\frac1q\right).
+\]
+这是一种明确范围的 Gagliardo--Nirenberg 不等式。此处采用的最高阶大于半维数，所以证明可以直接通过绝对 Fourier 反演完成；更低阶或更广指数版本需要前面 Sobolev 嵌入及其他插值，不能把该推导的条件自行删去。
+
+\ProseParagraphBreak
+
+低频平方大小与高频导数大小承担不同职责。若只保留高频项，就会失去函数整体振幅和大尺度分布的控制；若只保留低频项，又不能约束尖峰。选取平衡半径正是让这两种信息在同一尺度相遇，这与分数积分证明中的近场、远场平衡具有相同的优化结构。

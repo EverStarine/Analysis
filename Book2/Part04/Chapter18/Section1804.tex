@@ -2,24 +2,136 @@
 \section{\texorpdfstring{\(L^p\)}{Lᵖ} 有界性}
 \label{b2:sec:1804}
 
-% TODO: 撰写本节正文。
+分解给出弱型，插值给出下半段指数，伴随再给出上半段。三个步骤各使用不同的假设；把它们连起来才得到完整的 \(L^p\) 范围。
 
 \subsection{\texorpdfstring{\(L^2\)}{L2} 假设}
 \label{b2:subsec:180401}
 
-待填充。
+全章的主要假设是 \(L^2\) 有界性。对卷积算子，它通常由有界 Fourier 乘子得到；对非平移不变的算子，需要另外的估计或测试条件。标准核条件只控制远场差分，不能单独排除局部能量增长。
+
+\ProseParagraphBreak
+
+在分解中，\(L^2\) 只用于好函数：其高度有限，且 \(L^1\) 范数有限，所以它落在 \(L^2\)。这样将原输入的 \(L^1\) 大小与平方估计连接起来。坏函数并没有更好的平方范数，若把整个 \(f\) 直接代入 \(L^2\) 估计，会失去所需的端点常数。
 
 \subsection{弱型 \texorpdfstring{\((1,1)\)}{(1,1)}}
 \label{b2:subsec:180402}
 
-待填充。
+\begin{theorem}[Calderón--Zygmund 弱型]\label{b2:thm:18-cz-weak}
+设 \(T\) 满足\cref{b2:thm:18-cz-operator-definition}。则对 \(f\in L^1\cap L^2\)、\(t>0\)，有
+\[
+ |\{|Tf|>t\}|\leq C t^{-1}\|f\|_1,
+\]
+其中常数只依赖维数、光滑指数、核常数和 \(L^2\) 算子范数。\(T\) 有唯一的 \(L^1\to L^{1,\infty}\) 连续延拓。
+\end{theorem}
+\begin{proof}
+取高度 \(t\) 的分解。好部分、扩大坏区域及补集上的坏部分估计已经在\secref{b2:sec:1802}完成，其和给出结论。对一般 \(L^1\) 输入取 \(f_n\in L^1\cap L^2\) 范数逼近。弱估计用于差 \(f_n-f_m\)，使 \(Tf_n\) 在每个有限测度集合上依测度 Cauchy。通过选择差的超水平集合测度可求和的子列，在整数半径球上同时得到几乎处处极限；这些局部极限在交集上一致，拼成可测函数 \(Tf\)。Fatou 的集合版本把弱界传给极限。对任意另一逼近列，同样的差估计使极限相等几乎处处，因此延拓唯一。这里没有把弱拟范数误当成满足常数一的三角不等式。
+\end{proof}
+弱端点一般不能升级为 \(L^1\) 有界，Hilbert 变换已给反例。下一步只在开区间内插值。
 
 \subsection{\texorpdfstring{\(1<p<\infty\)}{1<p<∞}}
 \label{b2:subsec:180403}
 
-待填充。
+\begin{theorem}[Calderón--Zygmund]\label{b2:thm:18-cz-lp}
+设 \(T\) 满足\cref{b2:thm:18-cz-operator-definition}。则对所有 \(1<p<\infty\)，有唯一的有界延拓 \(T:L^p\to L^p\)，且
+\[
+ \|Tf\|_p\leq C_p\|f\|_p.
+\]
+\end{theorem}
+\begin{proof}
+在 \(1<p<2\) 时，弱 \((1,1)\) 与强 \((2,2)\) 经\cref{b2:thm:17-marcinkiewicz}得到所需界。\(T^*\) 也是标准核算子，所以同样在 \(1<p'<2\) 有界。对 \(p>2\) 的 \(f\in L^p\cap L^2\) 与测试 \(g\in L^{p'}\cap L^2\)，
+\[
+ \left|\int Tf\,\overline g\right|
+ =\left|\int f\,\overline{T^*g}\right|
+ \leq C_{p'}\|f\|_p\cdot\|g\|_{p'}.
+\]
+对测试 \(g\) 取上确界得到 \(L^p\) 界；稠密性给出唯一延拓。公共输入上的各个延拓由 \(L^2\) 或局部依测度极限识别，因此它们是一个兼容算子的不同空间实现。
+\end{proof}
+核是否齐次、算子是否卷积都没有进入这项证明。其可迁移的部分是大小、光滑、局部平方理论和零平均分解，而不是某一个特定 Fourier 符号。
 
 \subsection{对偶性}
 \label{b2:subsec:180404}
 
-待填充。
+最后说明主值的点态问题。若 \(T_\varepsilon\) 在 \(L^2\) 中实现 \(T\)，定义 \(T_*f=\sup_{\varepsilon>0}|T_\varepsilon f|\)。对 \(1<q<\infty\)，核差分和 \(T\) 的 \(L^q\) 有界性给出
+\begin{proposition}\label{b2:thm:18-maximal-truncation}
+在上述主值实现条件下，
+\[
+ T_*f(x)\leq C_q\left[
+ M(|Tf|^q)(x)^{1/q}+M(|f|^q)(x)^{1/q}\right]
+\]
+几乎处处成立。因此 \(T_*\) 在每个 \(L^p\)、\(1<p<\infty\) 上有界。
+\end{proposition}
+\begin{proof}
+固定 \(\varepsilon\)，写 \(f=f_1+f_2\)，其中 \(f_1=f\mathbf1_{B(x,2\varepsilon)}\)。对 \(z\in B(x,\varepsilon/4)\)，\(Tf_2(z)\) 是支集外的核积分。比较它与 \(T_\varepsilon f(x)\)，中间环带的积分由大小条件控制为 \(C Mf(x)\)；远场核差分分成半径 \(2^k\varepsilon\) 的环带，每带不超过 \(C2^{-k\delta}Mf(x)\)，可求和。故
+\[
+ |T_\varepsilon f(x)|\leq |Tf(z)|+|Tf_1(z)|+CMf(x).
+\]
+对 \(z\) 取 \(q\) 次平均并用 Minkowski。第一项被 \(M(|Tf|^q)^{1/q}\) 控制；第二项由 \(L^q\) 有界性不超过
+\[
+ C\varepsilon^{-d/q}\|f\mathbf1_{B(x,2\varepsilon)}\|_q
+ \leq C M(|f|^q)(x)^{1/q}.
+\]
+用 Hölder 将 \(Mf\) 吸收到同一项，再对截断半径取上确界。对给定 \(p>1\)，选 \(1<q<p\)，极大算子在 \(L^{p/q}\) 上有界，而 \(T\) 在 \(L^p\) 上有界，得到结论。
+\end{proof}
+若某个稠密测试类上截断逐点收敛，以上最大估计使截断差的振荡集合由逼近误差控制，按\cref{b2:thm:17-differentiation}的相同误差集合方法得到一般 \(L^p\) 输入几乎处处收敛；范数极限识别它为 \(Tf\)。这适用于 Hilbert 变换。弱 \(L^1\) 的最大截断理论需要额外端点论证，留在\appref{b2:app:C}讨论。
+
+% 扩写定位：b2:subsec:180404
+后面的平方函数需要一次处理许多输出。逐个标量估计再求平方和，通常会产生与输出个数有关的常数，因而不足以处理无限频带。
+\begin{proposition}\label{b2:prop:18-hilbert-valued-cz}
+设 \(\mathcal H_1,\mathcal H_2\) 为有限维 Hilbert 空间。令 \(T:L^2(\mathbb R^d;\mathcal H_1)\to L^2(\mathbb R^d;\mathcal H_2)\) 有界，核 \(K(x,y)\) 为两空间之间的线性映射，满足统一的算子范数大小与两变量 Hölder 条件，并在支集外表示 \(T\)。则 \(T\) 满足弱型 \((1,1)\) 和所有 \(1<p<\infty\) 的强型估计；常数只依赖上述界、\(p,d,\delta\)，不依赖 Hilbert 空间维数。
+\end{proposition}
+\begin{proof}
+对标量函数 \(\|f(x)\|_{\mathcal H_1}\) 作二进坏立方体选择。好函数在每个坏块内取 Bochner 平均 \(f_Q\)，坏函数为 \(b_Q=(f-f_Q)\mathbf1_Q\)。凸性给出
+\(\|g\|_\infty\leq2^d\lambda\)、\(\|g\|_1\leq\|f\|_1\)，从而
+\(\|g\|_2^2\leq2^d\lambda\|f\|_1\)。
+且 \(\int b_Q=0\)、\(\sum_Q\|b_Q\|_1\leq2\|f\|_1\)，坏块的测度总和不超过 \(\|f\|_1/\lambda\)。
+
+在放大的坏块外，把积分写成
+\[
+ Tb_Q(x)=\int_Q[K(x,y)-K(x,c_Q)]b_Q(y)\,\mathrm dy.
+\]
+先取 Hilbert 范数再用算子范数控制核差，得到
+\(\int_{\mathbb R^d\setminus Q^*}\|Tb_Q(x)\|\,\mathrm dx\leq C\|b_Q\|_1\)。
+好部分用 \(L^2\) Chebyshev，坏部分用刚才的积分界和 \(L^1\) Chebyshev，便重复得到弱型估计。每一步常数只来自标量几何与给定的算子范数界。
+
+对 \(1<p<2\)，将输出的 Hilbert 范数作为次线性输出；输入按 \(\|f(x)\|\) 的高低截断，本章之前的插值证明仍逐行成立。对 \(p>2\)，在 Hilbert 对偶配对中使用伴随算子；其核为 \(K(y,x)^*\)，具有同一组界。因而得到全部指数。
+\end{proof}
+例如，若 \(T_j\) 是一族具有统一常数的卷积型 Calderón--Zygmund 算子，则对任意有限族 \(f_j\)，
+\[
+ \left\|\left(\sum_j|T_jf_j|^2\right)^{1/2}\right\|_p
+ \leq C_p\left\|\left(\sum_j|f_j|^2\right)^{1/2}\right\|_p.
+\]
+取对角算子 \(T(f_j)_j=(T_jf_j)_j\)：其核的算子范数为 \(\sup_j|k_j(x-y)|\)，其 \(L^2\) 界由逐项 Plancherel 或逐项 \(L^2\) 界相加得到。有限维一致常数和单调收敛允许推广到可数族。这里只要求对角核统一；一般矩阵核不能以每个矩阵元有界代替算子范数有界，因为矩阵大小会影响其范数。
+
+\ProseParagraphBreak
+
+这一证明也适用于坏块估计中只给出统一积分 Hörmander 条件的情形，前提是算子及伴随都满足对应条件。最大截断的 Cotlar 估计仍需另外检查点态条件或其他替代工具；抽象 \(L^p\) 有界性与主值几乎处收敛是两件不同的事。
+
+无穷输入端点也存在一个可完整验证的替代估计。对局部可积 \(h\)，记
+\(\|h\|_{\mathrm{BMO}}=\sup_Q|Q|^{-1}\int_Q|h-h_Q|\)，其中上确界取所有立方体，且 \(h_Q\) 为平均。该空间将在\appref{b2:app:C}系统定义；这里先证明与本章核条件直接相关的结论。
+\begin{proposition}\label{b2:prop:18-infinity-bmo}
+标准 Calderón--Zygmund 算子 \(T\) 对每个有界紧支集 \(f\) 满足
+\(\|Tf\|_{\mathrm{BMO}}\leq C\|f\|_\infty\)，常数与输入支集大小无关。
+\end{proposition}
+\begin{proof}
+固定立方体 \(Q\)、中心 \(c_Q\)，取充分大的固定扩大块 \(Q^*\)。分解 \(f=f_1+f_2\)，其中 \(f_1=f\mathbf1_{Q^*}\)。局部部分由平方界控制：
+\[
+ \frac1{|Q|}\int_Q|Tf_1|
+ \leq |Q|^{-1/2}\|T\|_{2\to2}\|f_1\|_2
+ \leq C\|f\|_\infty.
+\]
+远场在 \(Q\) 内具有支集外核表示。取比较常数
+\(c=\int_{(Q^*)^c}K(c_Q,y)f(y)\,\mathrm dy\)，该积分因紧支集及离开对角线而有限。核的第一变量光滑性给出
+\[
+ |Tf_2(x)-c|
+ \leq C\|f\|_\infty\ell(Q)^\delta
+ \int_{|y-c_Q|>c_d\ell(Q)}|y-c_Q|^{-d-\delta}\,\mathrm dy
+ \leq C'\|f\|_\infty.
+\]
+故 \(Q\) 上相对于常数 \(c\) 的平均振荡受控。换成真正平均 \((Tf)_Q\) 至多增加因子二，取全部 \(Q\) 的上确界即可。
+\end{proof}
+两个核变量的职责在此再次分开：弱积分端点的坏块需要输入变量的差分，无穷端点的局部振荡需要输出变量的差分。仅给其中一种光滑性，不能把另一方向的结论也视为已经证明。
+
+\ProseParagraphBreak
+
+当输入仅有界而不紧支集时，上面常数 \(c\) 的远场积分可能发散。不过差
+\(\int[K(x,y)-K(c_Q,y)]f(y)\,\mathrm dy\) 仍绝对收敛，因其多一个衰减幂。由此可以按模常数构造局部相容的输出；附录中的 BMO 对偶也自然只见到模常数的对象。这个归一化说明了为什么端点的正确目标是平均振荡，而不是一个具有绝对数值的全局有界函数。

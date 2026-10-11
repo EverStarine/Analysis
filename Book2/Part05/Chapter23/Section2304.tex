@@ -2,24 +2,128 @@
 \section{Stein–Tomas 定理}
 \label{b2:sec:2304}
 
-% TODO: 撰写本节正文。
+单位球面的锐利 \(L^2\) 输入限制范围可由一个显式解析族证明。下面同时说明核的估计为何在复参数下仍然有效，避免把只针对实阶 Bessel 函数的渐近式直接用于一条复竖线。
 
 \subsection{球面测度的 Fourier 衰减}
 \label{b2:subsec:230401}
 
-待填充。
+由\cref{b2:thm:A2-sphere-fourier}，采用\cref{b2:def:A2-bessel-j}的 Bessel 函数归一化，有
+\[
+ \check\sigma(x)=2\pi |x|^{1-d/2}J_{d/2-1}(2\pi|x|).
+\]
+原点处按连续极限解释。由\cref{b2:thm:A2-bessel-asymptotic}的实阶渐近或\chapref{b2:ch:21}直接驻相，得到
+\(|\check\sigma(x)|\lesssim(1+|x|)^{-(d-1)/2}\)。
+这个指数取决于曲面维数，而不是环境维数的一半；球面有 \(d-1\) 个切向振荡变量。
+
+\ProseParagraphBreak
+在小 \(r\) 时，\(J_\nu(r)\sim(r/2)^\nu/\Gamma(\nu+1)\)，故上式有有限极限，等于球面面积。大 \(r\) 时则有两个相反法向驻点的贡献。将小尺度与大尺度分开，是后面的解析族核界能够在整个空间成立的原因。
 
 \subsection{\texorpdfstring{\(TT^*\)}{TT*}}
 \label{b2:subsec:230402}
 
-待填充。
+定义分布解析族
+\[
+ G_z(\xi)=\frac{(1-|\xi|^2)_+^z}{\Gamma(z+1)},\qquad
+ T_zf=\mathcal F^{-1}(G_z\widehat f).
+\]
+先对 \(\operatorname{Re}z>-1\) 定义积分，再在径向变量 \(t=1-r^2\) 中反复分部积分延拓：\(t_+^z/\Gamma(z+1)\) 的分布导数是
+\(t_+^{z-1}/\Gamma(z)\)，所以没有 Gamma 极点造成的障碍。
+在 \(z=-1\) 时 \(G_{-1}=\delta(1-|\xi|^2)=\tfrac12\mathrm d\sigma\)。
+对 \(\operatorname{Re}z=0\)，Plancherel 给出
+\[
+ \|T_{it}\|_{2\to2}\le|\Gamma(1+it)|^{-1}.
+\]
+\cref{b2:thm:A2-bochner-riesz}的积分与幂级数计算在复参数的收敛半平面中同样成立，给出
+\[
+ \check G_z(x)=\pi^{-z}|x|^{-d/2-z}J_{d/2+z}(2\pi|x|).
+\]
+两侧先在积分收敛的半平面相等，再由分布解析性延拓。
+
+\ProseParagraphBreak
+令 \(a=(d+1)/2\)。在 \(\operatorname{Re}z=-a\) 上，Bessel 阶为
+\(\nu=-1/2+it\)。我们需要
+\(\sup_x|\check G_{-a+it}(x)|\le C e^{C(1+t^2)}\)。
+对 \(0<r\le1\)，使用幂级数
+\[
+ r^{-\nu}J_\nu(2\pi r)
+ =\pi^\nu\sum_{k\ge0}\frac{(-\pi^2r^2)^k}{k!\Gamma(k+\nu+1)}.
+\]
+因 \(|\ell+1/2+it|\ge\ell+1/2\)，Gamma 递推控制整个级数及其 \(r\) 导数。Weierstrass 乘积中
+\(\log(1+t^2/n^2)\le t^2/n^2\) 给出
+\(|\Gamma(1/2+it)|^{-1}+|\Gamma(1+it)|^{-1}\le C e^{C(1+t^2)}\)。
+对 \(r\ge1\)，令 \(w(r)=r^{1/2}J_\nu(2\pi r)\)，Bessel 方程化为
+\[
+ w''+(2\pi)^2w=(\nu^2-\tfrac14)r^{-2}w.
+\]
+用正能量 \(|w'|^2+(2\pi)^2|w|^2\) 求导并积分，Gronwall 不等式与
+\(\int_1^\infty r^{-2}\,\mathrm dr=1\) 控制 \(w,w'\)，常数至多再乘 \(e^{C(1+t^2)}\)。
+因此 \(|J_\nu(2\pi r)|\le C e^{C(1+t^2)}r^{-1/2}\)；与前面的 \(r^{1/2}\) 因子相消，得到所需核界。
 
 \subsection{Stein–Tomas 定理}
 \label{b2:subsec:230403}
 
-待填充。
+下面采用\term[stein-tomas-dingli]{Stein--Tomas 定理}[Stein--Tomas theorem]的下述版本。
+
+\begin{theorem}[Stein--Tomas 定理：球面]\label{b2:thm:23-stein-tomas}
+设 \(d\ge2\)、\(S=S^{d-1}\)。若
+\[
+ 1\le p\le p_*=\frac{2(d+1)}{d+3},
+\]
+则 \(\|\widehat f|_S\|_2\le C_{d,p}\|f\|_p\)。
+对偶地，\(E:L^2(S)\to L^q(\mathbb R^d)\) 对全部
+\(q\ge q_*=2(d+1)/(d-1)\) 有界。
+\end{theorem}
+\begin{proof}
+在带 \(-a\le\operatorname{Re}z\le0\) 中对 \(T_z\) 使用\chapref{b2:ch:17}解析族插值。
+先乘标量因子 \(e^{\kappa z^2}\)，选 \(\kappa\) 大于上述竖线增长常数，使两侧算子范数在虚部方向有界；在固定实插值点这个因子只是一个有限非零常数。
+右边界有 \(L^2\to L^2\) 界，左边界由有界卷积核有 \(L^1\to L^\infty\) 界。
+目标 \(z=-1\) 从右边界到左边界的比例为
+\(\theta=1/a=2/(d+1)\)。插值给出
+\[
+ \frac1p=\frac{1-\theta}{2}+\theta
+       =\frac{d+3}{2(d+1)},\qquad
+ \frac1q=\frac{1-\theta}{2}=\frac{d-1}{2(d+1)}.
+\]
+因此 \(T_{-1}=\tfrac12 ER\) 有界 \(L^{p_*}\to L^{p_*'}\)。
+上一节的正二次型给出端点限制界。与显然的
+\(L^1\to L^2(S)\) 界插值得到 \(1\le p\le p_*\)。
+对偶及延拓输出的 \(L^\infty\) 界给出全部 \(q\ge q_*\)。
+解析配对先在 Schwartz 函数上定义；分布族的增长经同一标量因子控制，故解析族插值的适用条件已经核验。
+\end{proof}
+Knapp 例子说明在 \(L^2(S)\) 输入这一条线上，\(q_*\) 不能减小。这是针对固定输入指数的锐利性，不意味着整个限制问题已解决。
+
+% 扩写定位：b2:subsec:230403
+解析族的分布意义也应当在整条带上说明。以法向变量 \(u=1-|\xi|^2\) 为例，基本的一维族
+\(u_+^z/\Gamma(z+1)\) 最初只在 \(\operatorname{Re}z>-1\) 定义。对测试函数 \(F\) 在零点作 \(N-1\) 阶 Taylor 减法，零点附近的配对写为
+\[
+ \frac1{\Gamma(z+1)}
+ \left[\int_0^1u^z
+ \left(F(u)-\sum_{k=0}^{N-1}\frac{F^{(k)}(0)}{k!}u^k\right)\mathrm du
+ +\sum_{k=0}^{N-1}\frac{F^{(k)}(0)}{k!(z+k+1)}\right].
+\]
+积分在 \(\operatorname{Re}z>-N-1\) 中解析；显示的简单极点被 \(1/\Gamma(z+1)\) 在负整数的零点消去。零点以外的部分没有局部可积性障碍。增大 \(N\) 就得到整个复平面上的分布解析延拓。
+
+\ProseParagraphBreak
+
+在 \(z=-1\) 时，只有 \(k=0\) 的极点贡献非零极限，因而得到 \(\delta_0\)；换到球的法向坐标时，正的测度因子为 \(1/|\nabla(1-|\xi|^2)|=1/2\)，所以 \(G_{-1}=\sigma/2\)。这解释了端点证明中的二分之一，不能把它吸收后仍声称得到了原归一化的最佳常数。
+
+\ProseParagraphBreak
+
+Taylor 减法还给出带上的增长界。在一个固定有限实部区间中，选定足够大的 \(N\)，积分由测试函数的有限个半范数控制，分母 \(z+k+1\) 的奇点与 Gamma 零点共同解释为解析函数。前面 Gamma 乘积给出的界允许至多 \(e^{C(1+|\operatorname{Im}z|^2)}\) 增长。于是乘上 \(e^{\kappa z^2}\)，选 \(\kappa>C\)，在竖直方向得到足够的衰减。对 Schwartz 输入输出的配对，所得族满足三线引理的增长条件。这个检查补足了仅验证两条边界算子范数还不足以自动进行解析插值的一步。
+
+\ProseParagraphBreak
+
+对一般非零曲率紧致曲面，其 \(L^2\) 延拓端点与球面一致，但上述径向解析族不能原样使用。局部法向分布、振幅和曲率需要重新组织。正式发表的 Bourgain--Demeter 论文\cite{BourgainDemeter2015Proof}的 Theorem 2.1 也明确列出这项经典端点作为背景工具；本节一般曲面的证明提纲保持深层结论状态，而完整球面证明已经独立给出。
 
 \subsection{非零曲率超曲面}
 \label{b2:subsec:230404}
 
-待填充。
+\begin{theorem}[深层结构定理：非零曲率超曲面的 Stein--Tomas 估计]\label{b2:thm:23-curved-tomas}
+设 \(S\) 是光滑超曲面，\(a\,\mathrm d\sigma\) 为紧支撑光滑密度，且支撑上 Gaussian 曲率处处非零。则同样的
+\(L^{p_*}(\mathbb R^d)\to L^2(S,a\,\mathrm d\sigma)\) 估计成立（正密度情形）。
+\end{theorem}
+\begin{proofsketch}
+在小片上用图形坐标，构造沿法向的分布解析族，使目标参数成为曲面测度。一个边界由符号的有界性给出 \(L^2\) 界；另一个边界对法向变量作 Fourier 变换，再在 \(d-1\) 个切向变量中用一致驻相估计，给出有界核。插值与正二次型完成证明，有限分割再拼接各片。
+本节完整证明了球面的显式族；一般曲面中法向分布族、切向驻相余项的联合参数控制不在此展开，不能仅凭实参数核衰减代替这一环节。完整一般理论见 \cite{Stein1993Harmonic,Sogge2017Fourier}。
+\end{proofsketch}
+这里的选取是有意的：核心球面模型不依赖这个深层输入，后面的球面 Bochner–Riesz 讨论也只使用已完整证明的球面定理。一般曲面的陈述用于界定理论范围，并不作为未证明的隐含前置。

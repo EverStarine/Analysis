@@ -2,24 +2,104 @@
 \section{Weierstrass \texorpdfstring{\(\wp\)}{℘} 函数}
 \label{b3:sec:2203}
 
-% TODO: 撰写本节正文。
+直接相加 \((z-\omega)^{-2}\) 的常数尾项只有临界的二次衰减。减去 \(\omega^{-2}\) 后，衰减提高一次，得到可在紧集上求导的格和。
 
 \subsection{定义与收敛性}
 \label{b3:subsec:220301}
 
-待填充。
+\begin{definition}\label{b3:def:22-wp}
+对格 \(\Lambda\)，定义\term[weierstrass-wp-hanshu]{Weierstrass 椭圆函数}[Weierstrass elliptic function]
+\[
+\wp(z)=\frac1{z^2}+\sum_{0\ne\omega\in\Lambda}
+\left(\frac1{(z-\omega)^2}-\frac1{\omega^2}\right).
+\]
+\end{definition}
+\symidx{\(\wp(z;\Lambda)\)：Weierstrass 椭圆函数}
+若 \(|z|\le R\)、\(|\omega|>2R\)，括号内的模不超过 \(C_R|\omega|^{-3}\)。因此避开格点的紧集上正规收敛。在每个格点恰有一个二阶极点，主部为到该格点距离的倒数平方。把 \(\omega\) 与 \(-\omega\) 配对证明 \(\wp\) 为偶函数，且原点 Laurent 展开为
+\[
+\wp(z)=z^{-2}+3G_4z^2+5G_6z^4+7G_8z^6+\cdots,
+\quad G_{2k}=\sum_{\omega\ne0}\omega^{-2k}.
+\]
+此式先在最短非零周期以内的圆盘成立，由几何级数展开和绝对收敛换序得到。
 
-\subsection{\texorpdfstring{\(\wp'\)}{'}}
+\subsection{\texorpdfstring{\(\wp'\)}{\AnalysisPdfWeierstrassP'}}
 \label{b3:subsec:220302}
 
-待填充。
+逐项求导后，\(\wp'(z)=-2\sum_{\omega\in\Lambda}(z-\omega)^{-3}\)。这个级数绝对正规收敛，平移后可直接重排，因此 \(\wp'\) 双周期。对每个基周期 \(\omega_j\)，差 \(\wp(z+\omega_j)-\wp(z)\) 为常数；取 \(z=-\omega_j/2\)，两点均非格点，偶性使常数为零。两基周期生成全部格，故 \(\wp\) 也双周期。
+
+\ProseParagraphBreak
+
+这一论证解释为何不直接在原级数中重排两个各自发散的二次格和。正规收敛只对扣除后的整项成立；先求导得到绝对收敛的三次格和，再积分回常数，是避免错误重排的关键。
 
 \subsection{微分方程}
 \label{b3:subsec:220303}
 
-待填充。
+定义 \(g_2=60G_4\)、\(g_3=140G_6\)。
+\begin{theorem}[Weierstrass 微分方程]\label{b3:thm:22-wp-equation}
+函数 \(\wp\) 满足 \((\wp')^2=4\wp^3-g_2\wp-g_3\)。
+\end{theorem}
+\begin{proof}
+写 \(\wp=z^{-2}+az^2+bz^4+O(z^6)\)，其中 \(a=3G_4\)、\(b=5G_6\)。展开得
+\((\wp')^2-4\wp^3=-20az^{-2}-28b+O(z^2)\)。因此
+\((\wp')^2-4\wp^3+g_2\wp+g_3\) 在原点可去且值为零。周期性使它在每个格点可去，其他点本来全纯；整椭圆函数必常数，原点值又使常数为零。
+\end{proof}
+再次求导并先在 \(\wp'\ne0\) 处约去，再用恒等定理，得到 \(\wp''=6\wp^2-g_2/2\)。它与初始主部一起递推确定全部 Laurent 系数，也给出下一节代数曲线的切线斜率。
 
 \subsection{零点与极点}
 \label{b3:subsec:220304}
 
-待填充。
+模 \(\Lambda\) 的三个非零半周期为 \(\omega_1/2,\omega_2/2,(\omega_1+\omega_2)/2\)。奇性与周期性使 \(\wp'\) 在这三点为零。由于 \(\wp'\) 的唯一极点阶数为三，零点计数说明三点均为单零点，没有其他零点。
+
+\ProseParagraphBreak
+
+记它们的 \(\wp\) 值为 \(e_1,e_2,e_3\)。这些值两两不同：若两点具有同一值，则 \(\wp-e_j\) 在各点至少二阶消失，零点总数至少四，与其次数二矛盾。因此
+\[
+4X^3-g_2X-g_3=4(X-e_1)(X-e_2)(X-e_3),
+\quad e_1+e_2+e_3=0.
+\]
+一般值的两个原像恰为 \(z,-z\)。若 \(\wp(z)=\wp(w)\)，\(\wp-\wp(w)\) 的次数二已经被 \(w,-w\) 耗尽；在半周期时这两个点合为一个二重点。这是后面证明解析表示单射的依据。
+
+\ProseParagraphBreak
+
+把 \(-\wp\) 积分一次会产生\term[weierstrass-zeta-hanshu]{Weierstrass zeta 函数}[Weierstrass zeta function]。为避免与后面的 Riemann zeta 函数混淆，记
+\[
+ Z_\Lambda(z)=\frac1z+\sum_{\omega\in\Lambda\setminus\{0\}}
+ \left(\frac1{z-\omega}+\frac1\omega+\frac z{\omega^2}\right).
+\]
+在任意避开格点的紧集上，括号内为 \(O_K(|\omega|^{-3})\)，所以级数正规收敛且可逐项微分，得到 \(Z_\Lambda'=-\wp\)。对称配对 \(\omega,-\omega\) 说明它是奇函数。由于导数周期，
+\(Z_\Lambda(z+\omega_j)-Z_\Lambda(z)=\eta_j\) 为常数，称为相应准周期。这两个准周期不可能同时为零，否则会得到只有一个单极点的椭圆函数，违反留数和。
+\ProseParagraphBreak
+对不经过格点、内部恰含一个格点的基本平行四边形积分 \(Z_\Lambda\)，留数定理给 \(2\pi\mathrm{i}\)。把上边与下边、右边与左边分别配对，准周期差给
+\begin{equation}\label{b3:eq:22-legendre-relation}
+ \eta_1\omega_2-\eta_2\omega_1=2\pi\mathrm{i}.
+\end{equation}
+这里基的方向为正。反转基顺序会同时反转围道方向和左侧符号。这一常数不是任意正规化，而是一个单位留数沿基本区域累计的结果。
+\ProseParagraphBreak
+再定义整函数
+\[
+ \Sigma_\Lambda(z)=z\prod_{\omega\ne0}
+ \left(1-\frac z\omega\right)
+ \exp\left(\frac z\omega+\frac{z^2}{2\omega^2}\right).
+\]
+每个尾因子的对数从三次项开始，所以格点三次幂和保证正规收敛。零点恰为格点且均单，原点导数为一，直接微分得 \(\Sigma_\Lambda'/\Sigma_\Lambda=Z_\Lambda\)。奇性也由 \(Z_\Lambda\) 的奇性确定：\(-\Sigma_\Lambda(-z)\) 与 \(\Sigma_\Lambda(z)\) 具有相同对数导数及原点导数，故相等。这就是\term[weierstrass-sigma-hanshu]{Weierstrass sigma 函数}[Weierstrass sigma function]，此处用大写符号避免与算术函数的约数和记号冲突。
+\ProseParagraphBreak
+对数导数的准周期性给商
+\(\Sigma_\Lambda(z+\omega_j)/(e^{\eta_jz}\Sigma_\Lambda(z))\) 为非零常数。取 \(z=-\omega_j/2\)，用奇性及半周期不是格点，确定该常数为 \(-e^{\eta_j\omega_j/2}\)。于是
+\[
+ \Sigma_\Lambda(z+\omega_j)
+ =-e^{\eta_j(z+\omega_j/2)}\Sigma_\Lambda(z).
+\]
+这条公式同时保留了指数和负号。若仅比较导数，会遗漏乘法常数；后面构造双周期商时，漏掉负号就可能产生错误的半周期。
+
+\begin{theorem}[椭圆除数的实现]\label{b3:thm:22-divisor-realization}
+设有限点列 \(a_1,\ldots,a_d\)、\(b_1,\ldots,b_d\) 按重数重复，且两列模格不相交。存在零点恰为前一列、极点恰为后一列的椭圆函数，当且仅当
+\(\sum a_j-\sum b_j\in\Lambda\)。该函数相差一个非零常数唯一。
+\end{theorem}
+\begin{proof}
+必要性已由基本区域的除数关系证明。对充分性，写 \(D=\sum a_j-\sum b_j=m\omega_1+n\omega_2\)，取 \(c=m\eta_1+n\eta_2\)，令
+\[
+ f(z)=e^{cz}\prod_{j=1}^d\frac{\Sigma_\Lambda(z-a_j)}{\Sigma_\Lambda(z-b_j)}.
+\]
+在平移 \(\omega_i\) 时，分子分母各有 \(d\) 个负号，恰好相消；总乘子为 \(e^{c\omega_i-\eta_iD}\)。由式~\eqref{b3:eq:22-legendre-relation}，指数在 \(i=1\) 时为 \(-2\pi\mathrm{i}n\)，在 \(i=2\) 时为 \(2\pi\mathrm{i}m\)，所以两乘子都为一。零极点由整乘积的单零点完全确定。若有两个实现函数，其商无零点、无极点且双周期，故为非零常数。
+\end{proof}
+构造中改变某个点的格代表，会改变指数因子与前面的常数，却不改变最终除数和按常数唯一的函数。给定零极点的总和条件因此是商环面上的条件，不能依赖选取平行四边形时的偶然代表。

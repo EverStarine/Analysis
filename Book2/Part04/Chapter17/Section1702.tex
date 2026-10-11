@@ -2,19 +2,156 @@
 \section{弱 \texorpdfstring{\(L^p\)}{Lᵖ} 空间}
 \label{b2:sec:1702}
 
-% TODO: 撰写本节正文。
+在端点问题中，函数超过高度 \(t\) 的区域往往比函数范数更容易估计。本节把高度与区域大小之间的关系写成函数空间语言。底空间可以是一般测度空间，重排部分以无原子的 Lebesgue 空间为例。
 
 \subsection{分布函数}
 \label{b2:subsec:170201}
 
-待填充。
+设 \(f\) 可测，其\term[fenbu-hanshu]{分布函数}[distribution function]定义为 \(d_f(t)\coloneqq\mu\{|f|>t\}\)，\(t>0\)。它单调不增；对递减高度 \(t_n\downarrow t\)，集合 \(\{|f|>t_n\}\) 递增到 \(\{|f|>t\}\)，所以 \(d_f(t_n)\to d_f(t)\)。严格不等号保证这里的右连续性。
+\symidx{\(d_f(t)\)：函数的分布函数}
+\begin{proposition}[层蛋糕公式]\label{b2:thm:17-layer-cake}
+对 \(0<p<\infty\) 和可测 \(f\)，有允许无穷值的恒等式
+\[
+ \int|f|^p\,\mathrm d\mu=p\int_0^\infty t^{p-1}d_f(t)\,\mathrm dt.
+\]
+\end{proposition}
+\begin{proof}
+逐点使用 \(|f(x)|^p=\int_0^\infty p t^{p-1}\mathbf1_{\{t<|f(x)|\}}\,\mathrm dt\)，再用 Tonelli 换序。非负性使此式在两端都无穷时仍有明确意义。
+\end{proof}
+在有限测度空间上，常函数的分布函数是一个阶梯函数；在 \(\mathbb R^d\) 上，\(|x|^{-d/p}\mathbf1_{\{|x|<1\}}\) 的高水平尾部则正好具有 \(t^{-p}\) 的尺度。这两类对象分别说明有界函数与临界奇性的分布图形。
 
 \subsection{弱型 \texorpdfstring{\(L^p\)}{Lp}}
 \label{b2:subsec:170202}
 
-待填充。
+对 \(0<p<\infty\)，若
+\[
+ \|f\|_{p,\infty}\coloneqq\sup_{t>0}t\cdot d_f(t)^{1/p}<\infty,
+\]
+则称 \(f\) 属于\term[ruo-lp-kongjian]{弱 \(L^p\) 空间}[weak Lp space]，记为 \(L^{p,\infty}\)。这里给出的是拟范数：由 \(\{|f+g|>t\}\subset\{|f|>t/2\}\cup\{|g|>t/2\}\) 得到带常数的三角不等式，不宣称常数为一。
+\begin{proposition}\label{b2:thm:17-weak-inclusions}
+有 \(\|f\|_{p,\infty}\leq\|f\|_p\)。若 \(p>1\)、\(\mu(E)<\infty\)，则
+\[
+ \int_E|f|\,\mathrm d\mu\leq\dfrac{p}{p-1}\|f\|_{p,\infty}\cdot\mu(E)^{1-1/p}.
+\]
+反之，在半有限测度空间中，若所有有限测度 \(E\) 都满足右式中某个固定常数的估计，则 \(f\in L^{p,\infty}\)。
+\end{proposition}
+\begin{proof}
+第一项由 Chebyshev 得到。记 \(A=\|f\|_{p,\infty}\)、\(m=\mu(E)\)。在 \(m=0\) 或 \(A=0\) 时结论直接成立；否则按层蛋糕公式，积分不超过 \(\int_0^\infty\min\{m,A^pt^{-p}\}\,\mathrm dt\)。在 \(t=A m^{-1/p}\) 分开积分即得。反向在 \(E=\{|f|>t\}\) 上使用 \(t\mu(E)\leq\int_E|f|\)，若集合测度无穷，先取其中有限测度子集；在半有限空间上便推出 \(t\mu(E)^{1/p}\leq C\)。本卷的 Lebesgue 空间满足这一条件。
+\end{proof}
+积分集合刻画解释了为什么 \(p>1\) 时弱空间中的函数仍局部可积，而 \(p=1\) 时不能作同样断言。
+
+\ProseParagraphBreak
+
+若算子 \(T\) 满足 \(\|Tf\|_{q,\infty}\leq A\|f\|_p\)，称它为\term[ruoxing-guji]{弱型估计}[weak type estimate]的 \((p,q)\) 版本；强型把目标换为 \(L^q\)。当 \(q=\infty\) 时这里直接使用本性上确界，不另定义分布函数拟范数。
+
+% 扩写定位：b2:subsec:170202
+在 Lebesgue 空间上，集合积分刻画还给出一个真正的范数。设 \(1<p<\infty\)，定义
+\[
+ N_p(f)\coloneqq\sup_{0<|E|<\infty}|E|^{-1/p'}\int_E|f|.
+\]
+这里可以只取有界可测集合：一般集合与球相交后逐步逼近即可。由上一命题，
+\[
+ \|f\|_{p,\infty}\leq N_p(f)\leq p'\|f\|_{p,\infty}.
+\]
+左侧来自超水平集合及其有限测度子集。绝对齐次性、三角不等式和 \(N_p(f)=0\) 蕴含 \(f=0\) 几乎处都直接由定义得到。因而在这个指数范围内，弱空间可以赋予与原拟范数等价的 Banach 范数。
+\begin{proposition}\label{b2:prop:17-weak-complete}
+\(L^{p,\infty}(\mathbb R^d)\) 关于 \(N_p\) 完备。若 \(k\in L^1\)，则卷积具有连续延拓，并满足
+\[
+ N_p(k*f)\leq\|k\|_1N_p(f).
+\]
+\end{proposition}
+\begin{proof}
+设 \(f_n\) 在 \(N_p\) 中 Cauchy。在每个有限球 \(B\) 上，
+\(\|f_n-f_m\|_{L^1(B)}\leq |B|^{1/p'}N_p(f_n-f_m)\)，故得到相容的局部 \(L^1\) 极限 \(f\)。取沿所有整数球几乎处收敛的对角子列。对任意有限测度集合 \(E\)，Fatou 给出
+\(\int_E|f_n-f|\leq\liminf_m\int_E|f_n-f_m|\)；先固定足够大的 \(n\)，再对 \(E\) 取上确界，得到 \(N_p(f_n-f)\to0\)。这同时证明 \(f\) 的范数有限。
+
+对卷积，Tonelli 和平移不变性给出
+\[
+ \int_E\int |k(y)|\,|f(x-y)|\,\mathrm dy\,\mathrm dx
+ \leq |E|^{1/p'}\|k\|_1N_p(f).
+\]
+右端有限，故积分在每个有限球上几乎处绝对收敛；其绝对值控制 \(|k*f|\)，再取上确界便得结论。
+\end{proof}
+例如，临界势核的弱范数可以在与一个可积平滑核卷积后保持同一指数。这里并不需要卷积核正定，也不要求 \(f\) 本身可积；用局部集合积分而不是全空间 \(L^1\) 积分，正好避免了这一障碍。
+
+\ProseParagraphBreak
+
+完备性不能误读成平滑紧支集函数在弱范数下稠密。令 \(f(x)=|x|^{-d/p}\mathbf1_{\{|x|<1\}}\)，并令 \(g\) 有界。在足够小的球上，\(|f-g|\geq |f|/2\)；高水平集合的尺度于是给出 \(\|f-g\|_{p,\infty}\geq c_{d,p}>0\)。有界截断 \(f\mathbf1_{\{|f|\leq N\}}\) 因此也不收敛到 \(f\) 的弱范数。处理算子的弱空间延拓时，需要使用已证明的积分定义，或者指定额外的收敛方式，不能照搬强 \(L^p\) 的稠密性论证。
 
 \subsection{Lorentz 空间 初步}
 \label{b2:subsec:170203}
 
-待填充。
+定义递减重排 \(f^*(s)\coloneqq\inf\{t\geq0:d_f(t)\leq s\}\)，\(s>0\)，下确界为空时取无穷。它把函数值按大小重新排列，而不保留位置。\term[lorentz-kongjian]{Lorentz 空间}[Lorentz space]通过
+\[
+ \|f\|_{L^{p,q}}\coloneqq
+ \left(\int_0^\infty \bigl(s^{1/p}f^*(s)\bigr)^q\dfrac{\mathrm ds}{s}\right)^{1/q}
+ \quad(0<q<\infty)
+\]
+衡量整个高度分布，\(q=\infty\) 时改为上确界。这里仍用拟范数约定。重排与原函数具有相同分布，故层蛋糕公式给出 \(\|f\|_{L^{p,p}}=\|f\|_p\)，而 \(L^{p,\infty}\) 与上段定义一致。
+\symidx{\(f^*(s)\)：递减重排}
+
+\ProseParagraphBreak
+
+对 \(1<p<\infty\)，若 \(f\in L^{p,1}\)、\(g\in L^{p',\infty}\)，则
+\[
+ \int|fg|\leq\|f\|_{L^{p,1}}\cdot\|g\|_{L^{p',\infty}}.
+\]
+确实，写 \(f=\int_0^\infty\mathbf1_{\{|f|>t\}}\,\mathrm dt\)，集合积分的重排界为 \(\int_E|g|\leq\int_0^{|E|}g^*(s)\,\mathrm ds\)。这个界由层蛋糕和 \( |E\cap\{|g|>u\}|\leq\min\{|E|,d_g(u)\}\) 得到。换序后得到 \(\int|fg|\leq\int_0^\infty f^*(s)g^*(s)\,\mathrm ds\)，再代入 \(g^*(s)\leq\|g\|_{p',\infty}s^{-1/p'}\)。这是把一个临界弱估计与更细的输入空间配对的基本方式。
+
+\ProseParagraphBreak
+
+例如令 \(f^*(s)\) 在充分小的 \(s>0\) 上等于 \(s^{-1/p}\bigl(\log(e/s)\bigr)^{-\beta}\)，其余部分取单调有限支集延拓。其 \(L^{p,q}\) 积分在 \(s=0\) 收敛当且仅当 \(\beta q>1\)，弱 \(L^p\) 只要求 \(\beta\geq0\)。第二个指数记录了强空间 \(L^p\) 所不能区分的端点细节。
+
+% 扩写定位：b2:subsec:170203
+几种分布尾部可以帮助区分这些空间。首先，函数在有限测度集合上有界，并不能说明其重排在大 \(s\) 上怎样；当函数支集也有限时，重排在支集测度之后为零。其次，一个幂次奇性在小球上产生高水平的幂次尾部，决定局部的可积临界；同一幂次放在球外，则产生低水平的大测度尾部，决定远场的可积临界。两种限制可以落在相反方向，因此全空间上的空间包含关系不能只看一个局部模型。
+
+\ProseParagraphBreak
+
+具体地，若 \(f(x)=|x|^{-a}\mathbf1_{\{|x|<1\}}\)，径向积分说明 \(f\in L^p\) 当且仅当 \(ap<d\)，临界 \(ap=d\) 只有弱 \(L^p\)。若 \(g(x)=|x|^{-a}\mathbf1_{\{|x|>1\}}\)，则 \(g\in L^p\) 当且仅当 \(ap>d\)，临界同样只有弱空间。把两部分加在一起得到纯幂次 \(|x|^{-a}\)；它属于临界弱空间，却不属于任何全空间强 \(L^p\)。这不是弱空间定义的反常现象，而是它准确记录了在每个高度上超水平球的尺度。
+
+\ProseParagraphBreak
+
+有时输入的第二指数需要比弱空间更严格。设 \(f^*(s)\) 在 \(s\downarrow0\) 时具有下列量级：
+\[
+ f^*(s)\asymp s^{-1/p}(\log(e/s))^{-\beta}.
+\]
+在其余部分作单调的有限支集延拓。代入 Lorentz 定义，换元 \(v=\log(e/s)\)，所得尾积分为 \(\int^\infty v^{-\beta q}\,\mathrm dv\)。因此固定 \(p\) 后，\(q\) 越小要求越强；例如在 \(\beta=1/p\) 时恰好不属于 \(L^p\)，但可能属于具有更大第二指数的空间。这里说的是原点附近的量级，若 \(\beta\) 大，原显示公式在整个区间上未必递减，应以这种局部模型加单调延拓来实现重排。
+
+\ProseParagraphBreak
+
+前述端点配对中，\(L^{p,1}\) 一般不能放宽为 \(L^p\)。取临界重排
+\[
+ g^*(s)=s^{-1/p'}\mathbf1_{\{0<s<1\}}.
+\]
+它属于弱 \(L^{p'}\)。若 \(f^*(s)=s^{-1/p}(\log(e/s))^{-\beta}\) 且 \(1/p<\beta\leq1\)，则 \(f\in L^p\)，但同位置递减模型的乘积积分归结为
+\[
+ \int_0^1s^{-1}(\log(e/s))^{-\beta}\,\mathrm ds=\infty.
+\]
+取 \(\beta>1\) 则 \(f\in L^{p,1}\)，前面证明的配对界保证收敛。于是把 \(L^{p,1}\) 换成 \(L^p\) 一般会破坏结论，这个反例直接指出第二指数在临界积分中的作用。
+
+\ProseParagraphBreak
+
+在有限测度区域 \(E\) 上，若 \(0<q<p\)，同样按层蛋糕把高度在 \(\|f\|_{p,\infty}|E|^{-1/p}\) 处分开，可得
+\[
+ \|f\|_{L^q(E)}
+ \leq\left(\frac p{p-q}\right)^{1/q}|E|^{1/q-1/p}\|f\|_{p,\infty}.
+\]
+这不是弱 \(L^p\) 的强端点；它降低了目标指数，同时用到了区域测度。若 \(q=p\)，高度积分再次成为对数发散；若 \(|E|=\infty\)，所显示的区域因子不提供有限上界。因而使用这一局部提升时，指数严格性与区域有限性都必须保留。
+
+\ProseParagraphBreak
+
+还有一种较弱的输入端点，只先在集合指示函数上检验算子。若线性算子 \(T\) 在有限支集简单函数上定义，并满足
+\(\|T\mathbf1_E\|_{q,\infty}\leq A|E|^{1/p}\)、\(1\leq p<\infty\)、\(1<q<\infty\)，称这是一项限制弱型估计。它并不直接给出全部 \(L^p\) 输入的弱型界，但足以推出
+\[
+ N_q(Tf)\leq C_{p,q}A\|f\|_{L^{p,1}}.
+\]
+对非负简单函数，层蛋糕是有限个集合指示函数的正线性组合。范数三角不等式与弱范数等价给出
+\[
+ N_q(Tf)\leq q'A\int_0^\infty d_f(t)^{1/p}\,\mathrm dt
+ =\frac{q'A}{p}\|f\|_{L^{p,1}}.
+\]
+最后的等式由 Tonelli 对重排的层蛋糕积分得到。一般复简单函数分解为实部与虚部的正负部分，常数只增加一个固定因子。
+
+\ProseParagraphBreak
+
+有限支集简单函数在 \(L^{p,1}\) 中稠密：先截去位置尾部、大值尾部和极小值尾部，重排积分的可积性保证误差趋零，再在剩余有界有限测度区域作简单逼近。因 \(N_q\) 完备，以上估计产生唯一连续延拓。这个结果说明限制弱型端点自然对应更细的 \(L^{p,1}\) 输入，而不能在没有新论证的情况下换成所有 \(L^p\)。当目标 \(q=1\) 时，本段使用的等价 Banach 范数已不存在，仍需另一种处理。

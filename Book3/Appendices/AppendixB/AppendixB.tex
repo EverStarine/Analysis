@@ -1,5 +1,258 @@
 % !TeX root = ../../Book3.tex
-\chapter{拟共形映射与 Teichmüller 理论入口}
+\chapter{拟共形映射与 Teichmüller 理论初步}
 \label{b3:app:B}
+\begin{chapterabstract}
+共形映射的微分把小圆变成小圆。拟共形映射允许小圆变成椭圆，但控制其长短轴之比。本附录从实线性微分推导复膨胀、复合公式与模量估计，再说明可测 Beltrami 方程怎样产生新的复结构。可测存在理论与 Teichmüller 极值理论涉及本书之外的分析工具，证明状态分别标明；可直接计算的仿射、径向与环面例子则给出完整推导。
+\end{chapterabstract}
+\begin{learninggoals}
+\begin{itemize}
+\item\label{b3:item:B-goal-1}从 \(f_z,f_{\bar z}\) 计算伸缩比与 Beltrami 系数。
+\item\label{b3:item:B-goal-2}用具体映射检验模量畸变及归一化条件。
+\item\label{b3:item:B-goal-3}区分光滑微分计算与一般可测存在定理。
+\item\label{b3:item:B-goal-4}理解标记曲面、Teichmüller 空间和模空间的不同资料。
+\end{itemize}
+\end{learninggoals}
 
-% TODO: 按计划纲要展开本附录。
+所需基础是实二元微分、弱导数与局部 Sobolev 空间，以及本卷第八章的极值长度。弱导数与一阶 Sobolev 空间分别见第一卷定义20.4.1、21.1.1；\(W^{1,2}_{\mathrm{loc}}\) 指每个相对紧小区域上属于该空间。
+% 跨卷定义：Book1/Part04/Chapter20/Section2004 b1:def:weak-derivative；Book1/Part04/Chapter21/Section2101 b1:def:sobolev-first-order。编号来自现有 Book1.aux。
+先在 \(C^1\) 映射上计算，再给出一般定义，有助于看清几乎处处微分与每一点微分的区别。
+
+\section{椭圆畸变与复膨胀}
+\label{b3:sec:B01}
+
+对 \(C^1\) 映射 \(f=u+\mathrm{i}v\)，定义
+\[
+ f_z=\tfrac12(f_x-\mathrm{i}f_y),\qquad
+ f_{\bar z}=\tfrac12(f_x+\mathrm{i}f_y).
+\]
+实微分为 \(\mathrm{d}f=f_z\,\mathrm{d}z+f_{\bar z}\,\mathrm{d}\bar z\)。一般实线性映射可唯一写成 \(L(h)=ah+b\bar h\)；这不是假设它复线性，而是把四个实系数组织成两个复数。
+
+\begin{proposition}[微分的伸缩]\label{b3:prop:B-linear-dilatation}
+若 \(|a|>|b|\)，则 \(L(h)=ah+b\bar h\) 保持定向，其最大、最小单位方向伸缩分别为 \(|a|+|b|\)、\(|a|-|b|\)，Jacobi 行列式为 \(|a|^2-|b|^2\)。
+\end{proposition}
+\begin{proof}
+令 \(h=e^{\mathrm{i}\theta}\)，有
+\[
+ |L(h)|=|a+b e^{-2\mathrm{i}\theta}|.
+\]
+随 \(\theta\) 变化，后一表达式是圆 \(a+b\mathbb T\) 上点到0的距离，最大与最小值为上述两数，且都能达到。直接在 \(h=x+\mathrm{i}y\) 中展开实矩阵，行列式为 \(|a|^2-|b|^2>0\)。其两个奇异值之积等于此行列式，也与两项伸缩的乘积一致。
+\end{proof}
+因此局部长短轴比为
+\[
+ K_f(z)=\frac{|f_z|+|f_{\bar z}|}{|f_z|-|f_{\bar z}|},\qquad
+ \mu_f(z)=\frac{f_{\bar z}}{f_z},\qquad
+ K_f=\frac{1+|\mu_f|}{1-|\mu_f|}.
+\]
+\term[beltrami-xishu]{Beltrami 系数}[Beltrami coefficient]或复膨胀 \(\mu_f\) 同时记录大小与方向。\(|\mu|\) 决定椭圆轴比，\(\arg\mu\) 决定轴的方向；只保存一个实数 \(K\) 会丢掉方向资料。\(\mu=0\) 恰给 Cauchy--Riemann 方程。
+
+\begin{definition}[解析意义的拟共形映射]\label{b3:def:B-quasiconformal}
+区域之间保持定向的同胚 \(f:U\to V\)，若 \(f\in W^{1,2}_{\mathrm{loc}}(U)\)，并且有 \(0\le k<1\) 使
+\[
+ |f_{\bar z}|\le k|f_z|\quad\text{几乎处处},
+\]
+就称为\term[ni-gongxing-yingshe]{拟共形映射}[quasiconformal map]。其最大膨胀记为 \(K(f)=(1+k_f)/(1-k_f)\)，其中 \(k_f\) 是使不等式成立的最小本性界。在 \(f_z=0\) 的点，可令 \(\mu_f=0\)，因为那里不等式也迫使 \(f_{\bar z}=0\)。
+\end{definition}
+这里弱导数不需要在每一点存在经典微分；同胚条件则保证这是全局的映射，而不是允许折叠的弱方程解。比如 \(z^2\) 的 \(f_{\bar z}=0\)，但在包含0的圆盘上不是同胚，所以不能据此称为拟共形映射。若 \(K(f)=1\)，弱 \(\bar\partial\) 方程的局部正则性给 \(f\) 全纯，再由单射性得到双全纯；这一步是弱方程的正则性事实，光滑情形直接由 Cauchy--Riemann 方程可知。
+
+\symidx{\(\mu_f\)：映射的 Beltrami 系数}\symidx{\(K(f)\)：拟共形映射的最大膨胀}
+
+\section{复合、逆与坐标变换}
+\label{b3:sec:B02}
+
+\begin{proposition}[光滑复合公式]\label{b3:prop:B-composition}
+设 \(f,g\) 为保持定向的 \(C^1\) 微分同胚，\(h=g\circ f\)。置 \(\theta=\overline{f_z}/f_z\)，则
+\[
+ \mu_h=
+ \frac{\mu_f+\theta\cdot(\mu_g\circ f)}
+ {1+\theta\overline{\mu_f}\cdot(\mu_g\circ f)},\qquad
+ K(h)\le K(g)K(f).
+\]
+逆映射满足 \(K(f^{-1})=K(f)\)。
+\end{proposition}
+\begin{proof}
+实链式法则给
+\[
+ h_z=(g_z\circ f)f_z+(g_{\bar z}\circ f)\overline{f_{\bar z}},\quad
+ h_{\bar z}=(g_z\circ f)f_{\bar z}+(g_{\bar z}\circ f)\overline{f_z}.
+\]
+提出 \((g_z\circ f)f_z\) 并取商即得系数公式，分母非零来自保持定向的微分可逆。对实线性微分，最大伸缩满足 \(M(AB)\le M(A)M(B)\)，最小伸缩满足 \(m(AB)\ge m(A)m(B)\)。相除后取上确界得膨胀乘积估计。逆矩阵的最大、最小伸缩为 \(1/m\)、\(1/M\)，比值仍相同。
+\end{proof}
+在一般拟共形情形，逆与复合仍拟共形并满足这些估计，但需要弱链式法则、面积变换和零测集控制，不能只把经典链式法则逐点写下去。可测理论的正式处理见下面引用的原始论文。
+
+\ProseParagraphBreak
+后复合双全纯映射时 \(\mu\) 不变；前复合双全纯 \(\phi\) 时
+\[
+ \mu_{f\circ\phi}=(\mu_f\circ\phi)\cdot\frac{\overline{\phi'}}{\phi'}.
+\]
+模不变，方向随坐标旋转。因而曲面上的 Beltrami 系数应按这一规律在各坐标中组织；它不是任意不变的标量函数。对原点附近的旋转 \(\phi(z)=e^{\mathrm{i}t}z\)，系数乘 \(e^{-2\mathrm{i}t}\)，这也解释椭圆轴的角度以二倍角进入表达式。
+
+\section{可计算的模型与模量}
+\label{b3:sec:B03}
+
+常系数方程 \(f_{\bar z}=\mu f_z\)、\(|\mu|<1\)，有实仿射解 \(f(z)=z+\mu\bar z\)。它是整个平面的同胚，因其行列式为 \(1-|\mu|^2>0\)。除以 \(1+\mu\) 后得到固定0、1、无穷远的归一化解。这个例子没有紧支集的系数，归一化解在无穷远一般也不是 \(z+O(1/z)\)。固定三点与无穷远主项为 \(z\) 是不同的归一化。
+
+\begin{proposition}[径向伸缩]\label{b3:prop:B-radial-stretch}
+对 \(\alpha>0\)，映射 \(F_\alpha(0)=0\)、\(F_\alpha(z)=z|z|^{\alpha-1}\) 是平面拟共形同胚，且
+\[
+ \mu_{F_\alpha}(z)=\frac{\alpha-1}{\alpha+1}\frac z{\bar z},\qquad
+ K(F_\alpha)=\max\{\alpha,\alpha^{-1}\}.
+\]
+\end{proposition}
+\begin{proof}
+极坐标中 \((r,\theta)\mapsto(r^\alpha,\theta)\)，连续双射且逆为 \(F_{1/\alpha}\)，故为同胚。对 \(z\ne0\) 直接求导得
+\[
+ (F_\alpha)_z=\frac{\alpha+1}2 r^{\alpha-1},\qquad
+ (F_\alpha)_{\bar z}=\frac{\alpha-1}2 r^{\alpha-1}e^{2\mathrm{i}\theta}.
+\]
+导数模的平方在0附近可积，因为 \(\int_0^\varepsilon r^{2\alpha-2}r\,\mathrm{d}r<\infty\)。在去心圆盘积分分部，内边界项模至多为常数乘 \(\varepsilon^{\alpha+1}\)，趋于0，所以这些表达式也给整个圆盘上的弱导数。系数本性模小于1，代入膨胀公式便得结论。
+\end{proof}
+当 \(0<\alpha<1\)，经典导数在0附近无界，仍符合局部 Sobolev 定义。这个例子说明一般理论不能用处处 \(C^1\) 定义替代。圆环 \(A(r,R)\) 被映到 \(A(r^\alpha,R^\alpha)\)，所以
+\[
+ \operatorname{mod}F_\alpha(A)=\alpha\operatorname{mod}A.
+\]
+若 \(\alpha=K\) 或 \(1/K\)，环域模量畸变达到两个端点。
+
+\ProseParagraphBreak
+第八章完整证明了光滑 \(K\) 拟共形微分同胚对曲线族极值长度的控制
+\[
+ K^{-1}\lambda(\Gamma)\le\lambda(f\Gamma)\le K\lambda(\Gamma).
+\]
+一般拟共形同胚也满足此式。这项延伸需要处理某些曲线上的绝对连续性失败：弱导数控制几乎处处的平面点，不能直接推出每条曲线上的长度链式法则。以曲线族模量衡量的例外族及面积变换定理补上这个缺口。这里把一般版本作为可测拟共形理论的输入，光滑计算及径向模型已足够展示常数、方向和尖锐性。
+
+\ProseParagraphBreak
+模量还给否定存在性的工具。若某个 \(K\) 拟共形映射把一个很厚的环域映成模量极小的环域，畸变不等式立即矛盾。对于边界固定的四边形也是如此。它不要求先求出映射，只使用两个曲线族的几何资料。边界标记必须随映射对应；把不同的两对边作连接族会把模量变成其倒数，改变所写不等式的含义。
+
+\section{Beltrami 方程与复结构}
+\label{b3:sec:B04}
+
+\term[kece-riemann-yingzhao]{可测 Riemann 映射定理}[measurable Riemann mapping theorem]把可测椭圆资料转为归一化坐标。
+
+\begin{theorem}[可测 Riemann 映射定理，深层输入]\label{b3:thm:B-measurable-riemann}
+设 \(\mu:\mathbb C\to\mathbb C\) 可测，\(\|\mu\|_{L^\infty}<1\)。存在唯一的拟共形同胚 \(f:\widehat{\mathbb C\kern0pt}\to\widehat{\mathbb C\kern0pt}\)，满足
+\[
+ f_{\bar z}=\mu f_z\quad\text{几乎处处},\qquad
+ f(0)=0,\quad f(1)=1,\quad f(\infty)=\infty.
+\]
+它的膨胀至多为 \((1+\|\mu\|_\infty)/(1-\|\mu\|_\infty)\)。
+\end{theorem}
+\begin{proofsketch}
+存在性需要奇异积分的 \(L^p\) 估计、弱方程求解及解的同胚性，此处不证明。正式来源为 Lars V. Ahlfors 与 Lipman Bers 的《Riemann's Mapping Theorem for Variable Metrics》\cite{AhlforsBers1960VariableMetrics}，特别是 §4.1 的 Theorem 6（396页）。其方法先解适当支集下的方程，再以系数分解得到一般归一化解。唯一性来自两解的复合成为球面自同构，固定三点后只能为恒等；弱复合的合法性是该理论的一部分。
+\end{proofsketch}
+若系数只在一个平面区域给定，可在外部置0，先求全平面解再限制。不同的外部延伸会改变目标区域，但在原区域所得坐标的转换全纯。于是 Beltrami 系数决定新的局部复坐标相容类。这是从实曲面上的椭圆方向资料构造复结构的一种方式。
+
+\ProseParagraphBreak
+方程在 \(|\mu|=1\) 时会退化。常系数 \(\mu=1\) 的模型 \(z+\bar z=2x\) 把平面压到直线，不是同胚；不能把严格小于1的条件删去。系数可测则没有经典意义的连续椭圆轴场，定理的力量就在于仅凭本性界仍能构造坐标。同样，若只给任意弱解而没有同胚性，不能把它直接当成新坐标。
+
+\ProseParagraphBreak
+若 \(\mu\) 紧支集，解在无穷远附近全纯，可进一步选择主归一化 \(f(z)=z+O(1/z)\)。此时整体平移和复伸缩用来固定该主项；这通常不同时固定0与1。若 \(\mu\) 不紧支集，不能依据局部 Laurent 展开宣称有此主归一化，因为无穷远附近的方程尚未变成全纯方程。文献中的不同归一化必须按其系数假设分别使用。
+
+\section{标记曲面与 Teichmüller 空间}
+\label{b3:sec:B05}
+
+固定一个定向拓扑曲面 \(S\)。一张标记 Riemann 曲面是 \((X,h)\)，其中 \(h:S\to X\) 是保持定向的拟共形同胚。两个标记 \((X_0,h_0)\)、\((X_1,h_1)\) 等价，若有双全纯 \(F:X_0\to X_1\)，使 \(F\circ h_0\) 与 \(h_1\) 同伦；有边界或穿孔时须固定约定的标记点和边界资料。这些等价类组成 \term[teichmuller-kongjian]{Teichmüller 空间}[Teichmüller space]。忘掉标记再按曲面同构取商，得到模空间，两个商保留的资料不同。
+
+\ProseParagraphBreak
+在同伦类中考虑最小畸变，定义
+\[
+ d_T([X_0,h_0],[X_1,h_1])=
+ \frac12\inf_F\log K(F),
+\]
+\symidx{\(d_T\)：Teichmüller 距离候选表达式}其中 \(F\) 跑遍满足 \(F\circ h_0\simeq h_1\) 的拟共形同胚。式子在代表变换下不变，因为前后复合双全纯映射不改变最大膨胀。逆映射有相同膨胀，所以对称；复合的膨胀乘积估计给三角不等式：分别选任意逼近两个下确界的映射，复合后相加对数，再让误差趋于0。距离为0只在等价类相同时成立，以及极值映射的存在性，都需要紧致性和 Teichmüller 极值理论，此处不把这些深层结论当作由上述三个代数步骤已经证明。
+
+\ProseParagraphBreak
+标记环面提供直观模型。把选定的两条同伦基圈的周期归一化为 \(1,\tau\)，其中 \(\operatorname{Im}\tau>0\)，得 \(X_\tau=\mathbb C/(\mathbb Z+\tau\mathbb Z)\)。保留基圈的标记使上半平面的不同 \(\tau\) 保留不同资料。若忘掉标记，换一组保持定向的整数基使参数经 \(\mathrm{PSL}_2(\mathbb Z)\) 的分式线性变换改变，而环面可以仍同构。这里“改变周期基”与“曲面自身发生变形”必须区分。
+
+\begin{proposition}[环面间的仿射候选映射]\label{b3:prop:B-torus-affine}
+对 \(\tau,\sigma\) 在上半平面，存在唯一实线性映射 \(L(z)=az+b\bar z\)，使 \(L(1)=1\)、\(L(\tau)=\sigma\)。它下降为保留这组标记的拟共形环面同胚，且
+\[
+ a=\frac{\sigma-\bar\tau}{\tau-\bar\tau},\qquad
+ b=\frac{\tau-\sigma}{\tau-\bar\tau}.
+\]
+\end{proposition}
+\begin{proof}
+解方程 \(a+b=1\)、\(a\tau+b\bar\tau=\sigma\) 得两系数。实矩阵把有向平行四边形 \((1,\tau)\) 映到 \((1,\sigma)\)，其行列式为 \(\operatorname{Im}\sigma/\operatorname{Im}\tau>0\)，所以 \(|a|>|b|\)。它把一个格点群双射到另一个，故在商上给同胚，并有常数膨胀 \((|a|+|b|)/(|a|-|b|)\)。
+\end{proof}
+于是这个候选映射给 \(d_T\le\frac12\log K(L)\)。要宣布它达到下确界，还需要对同一标记类的全部映射建立反向估计；仅展示一个仿射映射不能证明极值性。Teichmüller 理论正是把这类极值问题系统化，并将其与全纯二次微分联系。二次微分局部写作 \(q(z)\,\mathrm{d}z^2\)，坐标变化带两个导数因子；在无零区域选积分坐标后，经典极值模型成为沿两个正交方向的固定伸缩。零点和全局拼接使一般情形比平面仿射例子复杂。
+
+\ProseParagraphBreak
+Lars V. Ahlfors 的《Lectures on Quasiconformal Mappings》\cite{Ahlfors2006Lectures}适合继续学习几何定义、可测方程和极值问题。对本书后续应用，最基本的资料是严格的 \(\|\mu\|_\infty<1\)、边界及标记约定、归一化，以及所用模量族的对应。拟共形放宽了角度保持要求，同时仍以统一的伸缩比控制整体共形几何。
+
+
+\section{假设边界与使用范围}
+\label{b3:sec:B06}
+
+可测方程的系数属于 \(L^\infty\) 等价类，在零测集上改值不影响方程和归一化解。这个说法针对几乎处处的弱方程，不表示沿任意一条曲线的系数值都可随意用于经典微分方程。若要把解的路径长度与点态椭圆轴相连，应使用一般拟共形理论的绝对连续性及曲线族例外控制，或先在光滑模型中计算。定义、存在理论和几何长度之间需要这些桥梁，不能只靠同一符号 \(\mu\) 就省略。
+
+\ProseParagraphBreak
+全局解的唯一性也需要固定足够的自由度。平面同胚的两个解相差一个复仿射后变换；球面上则相差 Möbius 后变换。固定0、1、无穷远消去球面三点自由度，固定两个点但不固定无穷远一般还不够。若在曲面上只求局部坐标，坐标之间允许全纯转换，恰是复结构图册的相容条件，无需也不可能在每张图上统一固定同一组三个全局点。
+
+\ProseParagraphBreak
+还可以从实仿射椭圆直接读出系数的方向。写 \(a=|a|e^{\mathrm{i}\alpha}\)、\(b=|b|e^{\mathrm{i}\beta}\)，最大伸缩方向满足 \(2\theta=\beta-\alpha\) 模 \(2\pi\)。此时 \(a e^{\mathrm{i}\theta}\) 与 \(b e^{-\mathrm{i}\theta}\) 同向相加；最小伸缩方向与它垂直，两项反向相减。这不是把复膨胀的辐角直接当成椭圆轴角，而是先除去全纯部分的旋转，再取半角。坐标变换公式中的二倍角正与此计算一致。
+
+\ProseParagraphBreak
+一般 Teichmüller 极值映射的系数在二次微分不为零的地方具有 \(\mu=k\overline q/|q|\) 的经典形状，其中 \(0\le k<1\)。这给定模的伸缩和由 \(q\) 决定的方向；零点处须另行作可测延伸。此处只说明极值理论所研究的模型，不证明每个标记类都存在或唯一具有此形式的极值映射，也不由仿射环面例子推断任意曲面的极值性。完整理论需要二次微分、紧致性和全局变分论证。
+
+\ProseParagraphBreak
+在实际比较两个区域时，可先明确边界对应和标记，再寻找具体候选映射取得距离或膨胀上界，最后用环域、四边形模量或其他不变量取得下界。上下界相等才证明候选极值；只有上界就只说明该畸变可以做到。可测 Riemann 映射定理提供一个解，模量估计限制任何解的几何行为，Teichmüller 理论研究指定同伦资料下最好的解，这三项问题有不同的量词。
+
+\begin{chaptersummary}
+复膨胀 \(\mu\) 是实微分中反全纯部分与全纯部分的比，最大膨胀由其模决定。光滑链式法则给复合公式，奇异值给乘积估计。径向伸缩展示弱正则性与模量估计的尖锐性。可测 Riemann 映射定理提供全局归一化坐标，属于本附录明确列出的深层输入。Teichmüller 空间保留标记并研究其同伦类内的最小畸变；模空间则忘掉标记。
+\end{chaptersummary}
+\BookExercises
+% 本附录题组自拟。涉及一般可测理论时，使用正文明确列出的输入，不要求把证明纲要补成未学过的奇异积分理论。
+
+\begin{exercise}\label{b3:ex:B-1}
+计算 \(f(x+\mathrm{i}y)=2x+\mathrm{i}y\) 的 \(f_z,f_{\bar z},\mu_f,K(f)\)。
+\end{exercise}
+\begin{solution}
+\(f_z=3/2\)、\(f_{\bar z}=1/2\)，故 \(\mu_f=1/3\)、\(K(f)=(1+1/3)/(1-1/3)=2\)。两个主伸缩是2和1，行列式2，与公式一致。
+\end{solution}
+
+\begin{exercise}\label{b3:ex:B-2}
+证明两个常系数仿射映射的膨胀乘积估计可以取等号，也可以严格。
+\end{exercise}
+\begin{solution}
+令 \(L(x+\mathrm{i}y)=Kx+\mathrm{i}y\)、\(K>1\)。\(L\circ L\) 的两轴伸缩为 \(K^2,1\)，膨胀 \(K^2\)，等于乘积。若第二个映射取 \(L^{-1}\)，两个膨胀仍均为 \(K\)，复合恒等，膨胀1，严格小于 \(K^2\)。轴的方向和伸缩配合决定是否达到上界。
+\end{solution}
+
+\begin{exercise}\label{b3:ex:B-3}
+求 \(F_\alpha\circ F_\beta\) 与 \(F_\alpha^{-1}\)，并判断 \(\alpha\ge1\)、\(0<\beta\le1\) 时何时膨胀乘积取等号。
+\end{exercise}
+\begin{solution}
+极坐标给复合 \(F_{\alpha\beta}\)，逆为 \(F_{1/\alpha}\)。乘积为 \(\alpha/\beta\)，复合膨胀为 \(\max(\alpha\beta,1/(\alpha\beta))\)。若 \(\alpha\beta\ge1\)，等号要求 \(\beta=1\)；若 \(\alpha\beta\le1\)，等号要求 \(\alpha=1\)。两者都严格在不同方向抵消伸缩的情形下发生。
+\end{solution}
+
+\begin{exercise}\label{b3:ex:B-4}
+给定 \(|\mu|<1\) 为常数，写出固定0、1、无穷远的 Beltrami 方程解。若 \(\mu\ne0\)，它能否同时满足 \(f(z)=z+O(1/z)\)？
+\end{exercise}
+\begin{solution}
+归一化解为 \((z+\mu\bar z)/(1+\mu)\)。它固定三点，保持定向且满足方程。沿正实轴该式等于 \(z\)，沿纯虚轴则是 \((1-\mu)z/(1+\mu)\)，当 \(\mu\ne0\) 时与 \(z\) 有一阶差，所以不能满足该无穷远主归一化。
+\end{solution}
+
+\begin{exercise}\label{b3:ex:B-5}
+设 \(f\) 为 \(K\) 拟共形环域同胚，源与目标模量为 \(m,n\)。由模量畸变给 \(K\) 的下界，并说明同心环的径向伸缩何时达到它。
+\end{exercise}
+\begin{solution}
+\(m/K\le n\le Km\) 给 \(K\ge\max(n/m,m/n)\)。对同心环先缩放内半径，再用 \(r\mapsto r^{n/m}\)，最后缩放目标半径，径向伸缩的膨胀就是 \(\max(n/m,m/n)\)，达到下界。这里比较连接两端的同一类曲线，允许交换两端也不改变环域模量。
+\end{solution}
+
+\begin{exercise}\label{b3:ex:B-6}
+在 \(X_{\mathrm{i}}\) 与 \(X_{2\mathrm{i}}\) 之间计算正文仿射映射，并给 Teichmüller 距离上界。
+\end{exercise}
+\begin{solution}
+解周期条件得 \(a=3/2\)、\(b=-1/2\)，映射为 \(x+\mathrm{i}y\mapsto x+2\mathrm{i}y\)，膨胀2。因此 \(d_T\le\frac12\log2\)。这个计算没有对全部同伦类映射建立反向估计，单凭它不能宣称等号。
+\end{solution}
+
+\begin{exercise}\label{b3:ex:B-7}
+设 \(\phi\) 双全纯，证明前复合 \(\phi\) 不改变 \(\mu\) 的本性上界，并解释为何 \(\mu\) 本身可能改变。
+\end{exercise}
+\begin{solution}
+变换式为 \((\mu\circ\phi)\overline{\phi'}/\phi'\)，后一因子模1；双全纯映射及其逆在紧子集局部光滑且保持零测集，故本性上界相同。辐角因子一般不是1，椭圆轴相对于新坐标旋转，所以系数本身变而其模界不变。
+\end{solution}
+
+\begin{exercise}\label{b3:ex:B-8}
+说明弱不等式 \(|f_{\bar z}|\le k|f_z|\) 为什么必须与同胚条件一起使用。分别给出常值与分歧的例子。
+\end{exercise}
+\begin{solution}
+常值函数的两个弱导数都是0，满足任意这样的不等式，但不是区域间同胚。\(f(z)=z^2\) 满足 \(f_{\bar z}=0\)，在含0的圆盘中既非局部同胚又非单射。这些例子说明弱方程约束微分的方向，不能单独排除常值、重叠和分歧；拟共形定义中的全局同胚条件不能省去。
+\end{solution}

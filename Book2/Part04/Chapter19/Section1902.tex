@@ -2,19 +2,153 @@
 \section{Hardy–Littlewood–Sobolev 不等式}
 \label{b2:sec:1902}
 
-% TODO: 撰写本节正文。
+势估计把几何核的尺度转为函数的可积指数。它也给出 Sobolev 不等式的一种 Fourier 证明，但此证明在 \(p=1\) 的端点需要另换工具。
 
 \subsection{Hardy--Littlewood--Sobolev 不等式}
 \label{b2:subsec:190201}
 
-待填充。
+下面采用\term[hardy-littlewood-sobolev-budengshi]{Hardy--Littlewood--Sobolev 不等式}[Hardy--Littlewood--Sobolev inequality]的下述版本。
+
+\begin{theorem}[Hardy--Littlewood--Sobolev]\label{b2:thm:19-hls}
+设 \(0<\alpha<d\)、\(1<p<d/\alpha\)，且 \(q=dp/(d-\alpha p)\)。则
+\[
+ \|I_\alpha f\|_q\leq C_{d,\alpha,p}\|f\|_p.
+\]
+当 \(p=1\) 时，有 \(I_\alpha:L^1\to L^{d/(d-\alpha),\infty}\) 的弱型估计。
+\end{theorem}
+\begin{proof}
+由 \(|I_\alpha f|\leq I_\alpha|f|\) 和 Hedberg，取 \(q\) 次方后，极大函数的指数为 \((1-\alpha p/d)q=p\)。应用 \(M\) 的强 \(L^p\) 有界性，得到
+\[
+ \|I_\alpha f\|_q
+ \leq C\|f\|_p^{\alpha p/d}\cdot
+ \|Mf\|_p^{1-\alpha p/d}
+ \leq C\|f\|_p.
+\]
+这同时保证空间绝对积分几乎处处有限。\(p=1\) 时，势超过 \(t\) 的集合包含于
+\(\{Mf>c(t/\|f\|_1^{\alpha/d})^{d/(d-\alpha)}\}\)；
+极大弱型给出测度不超过 \(C(\|f\|_1/t)^{d/(d-\alpha)}\)。
+\end{proof}
+非零非负紧支集输入的远尾否定强 \(L^1\) 端点。另一方面，在 \(p=d/\alpha\) 处，远场 Hölder 的核指数成为临界，证明中的径向积分发散，不能把 \(q=\infty\) 直接代入结论。
 
 \subsection{Sobolev 不等式的 Fourier 证明}
 \label{b2:subsec:190202}
 
-待填充。
+\begin{theorem}[Sobolev 不等式的 Fourier 推导]\label{b2:thm:19-sobolev}
+设 \(d\geq2\)、\(1<p<d\)，\(u\in C_c^\infty(\mathbb R^d)\)。则
+\[
+ \|u\|_{dp/(d-p)}\leq C_{d,p}\|\nabla u\|_p.
+\]
+\end{theorem}
+\begin{proof}
+在 Fourier 空间中，\(\sum_jR_j\partial_ju\) 的符号是 \(2\pi|\xi|\widehat u(\xi)\)，故
+\[
+ u=I_1\left(\sum_jR_j\partial_ju\right)
+\]
+按温和分布成立。括号内函数属于 \(L^p\)，因为 Riesz 变换在这个指数上有界。HLS 给出该势属于 \(L^{dp/(d-p)}\)，分布等式于是也是几乎处处的函数等式。对每个分量估计，再用 \(|\partial_ju|\leq|\nabla u|\)，得到结论。
+\end{proof}
+这个证明把一阶导数先组合成径向 Fourier 符号，再以一阶势抵消。它不覆盖 \(p=1\)，因为 Riesz 变换一般不在 \(L^1\) 有界；一阶端点 Sobolev 不等式本身成立，但需要几何或坐标积分的另一种证明。对零边界闭包可以通过光滑紧支集逼近传递，任意区域的非零边界函数还需要延拓或额外零阶项。
+
+% 扩写定位：b2:subsec:190202
+分数积分的弱端点与一阶 Sobolev 的强端点应当区别。单独应用 \(I_1:L^1\to L^{d/(d-1),\infty}\) 只给出弱结论；梯度各分量来自同一个函数，这个附加结构允许得到强结论。
+\begin{theorem}\label{b2:thm:19-sobolev-l1}
+设 \(d\geq2\)。对 \(u\in C_c^1(\mathbb R^d)\)，有
+\[
+ \|u\|_{d/(d-1)}
+ \leq\prod_{j=1}^d\|\partial_ju\|_1^{1/d}
+ \leq d^{-1}\sum_{j=1}^d\|\partial_ju\|_1.
+\]
+因此此式通过 \(W^{1,1}\) 的紧支集光滑逼近推广到 \(W^{1,1}(\mathbb R^d)\)。在 \(d=1\) 时相应的结论为 \(\|u\|_\infty\leq\|u'\|_1\)。
+\end{theorem}
+\begin{proof}
+沿第 \(j\) 个坐标用微积分基本定理，有
+\[
+ |u(x)|\leq F_j(\widehat x_j),\qquad
+ F_j(\widehat x_j)=\int_{\mathbb R}|\partial_ju(x_1,\ldots,t,\ldots,x_d)|\,\mathrm dt.
+\]
+这里 \(\widehat x_j\) 表示删去第 \(j\) 个坐标，因而 \(F_j\) 与该坐标无关。需要的积分不等式是
+\[
+ \int_{\mathbb R^d}\prod_{j=1}^d F_j(\widehat x_j)^{1/(d-1)}\,\mathrm dx
+ \leq\prod_{j=1}^d\left(\int_{\mathbb R^{d-1}}F_j\right)^{1/(d-1)}.
+\]
+给出归纳证明：\(d=2\) 是 Fubini。对 \(d\geq3\)，先积分 \(x_d\)，对前 \(d-1\) 个因子用指数 \(d-1\) 的 Hölder；得到
+\(F_d(x')^{1/(d-1)}\prod_{j<d}G_j(\widehat x'_j)^{1/(d-1)}\)，其中 \(G_j=\int F_j\,\mathrm dx_d\)。
+在 \(x'\in\mathbb R^{d-1}\) 上再用指数 \(d-1\) 与 \((d-1)/(d-2)\) 的 Hölder，把 \(F_d\) 分离出来；剩下的积分由 \(d-1\) 维归纳假设估计。所有因子非负，Tonelli 允许先截断再取极限，故不预设乘积可积。
+
+逐点有 \(|u|^{d/(d-1)}\leq\prod_jF_j^{1/(d-1)}\)，代入上述不等式，再取 \((d-1)/d\) 次方即得第一项；第二项是算术--几何平均。对 \(W^{1,1}\) 的逼近序列，差函数也满足所证明的估计，所以它在目标强空间中 Cauchy；其局部 \(L^1\) 极限与原函数一致，得到推广。
+\end{proof}
+这一证明利用坐标方向，并未把核的 \(L^1\) 映射性质加强。它也说明若只留下一个任意 \(L^1\) 输入，便失去了为什么能够有强端点的理由。对有界区域上的函数，若没有零边界值，还需加上低阶项或减去平均；常函数就是不能省去这一条件的直接反例。
+
+\ProseParagraphBreak
+
+从上述端点还可独立恢复 \(1<p<d\) 的强 Sobolev 估计。对 \(|u|^\gamma\) 使用端点，令 \(\gamma=p(d-1)/(d-p)>1\)。链式法则给出
+\[
+ \bigl\||u|^\gamma\bigr\|_{d/(d-1)}
+ \leq C\gamma\int |u|^{\gamma-1}|\nabla u|
+ \leq C\gamma\|u\|_{dp/(d-p)}^{\gamma-1}\|\nabla u\|_p,
+\]
+因为 \((\gamma-1)p'=dp/(d-p)\)。左端是目标范数的 \(\gamma\) 次方。非零输入可以消去公共因子；零输入直接满足结论。复值输入用模长的 Lipschitz 链式法则，或先以 \((|u|^2+\eta^2)^{1/2}-\eta\) 正则化后取极限。这个坐标证明与前面的 Fourier 势证明得到相同指数，但只有前者已经处理了 \(p=1\)。
 
 \subsection{势估计}
 \label{b2:subsec:190203}
 
-待填充。
+势算子也产生双线性估计。若 \(1<p,r<\infty\) 且 \(1/p+1/r=1+\alpha/d\)，则
+\[
+ \left|\int (I_\alpha f)g\right|
+ \leq C\|f\|_p\cdot\|g\|_r.
+\]
+确实取 \(q=r'\)，HLS 与 Hölder 的指数正好相容。这种形式在能量泛函中常比输出范数更方便；复函数的配对按本卷的双线性分布约定书写，绝对值估计相同。
+
+\ProseParagraphBreak
+
+在临界指数取 \(f(x)=|x|^{-\alpha}(\log(e/|x|))^{-\beta}\mathbf1_{\{|x|<1/2\}}\)。若 \(p=d/\alpha\) 且 \(1/p<\beta\leq1\)，则 \(f\in L^p\)，但 \(I_\alpha f(0)=\infty\)。两个积分分别归结为 \(\int^\infty s^{-\beta p}\,\mathrm ds\) 和 \(\int^\infty s^{-\beta}\,\mathrm ds\)。单点发散不直接否定本性有界；由于核和输入非负，Fatou 还说明 \(I_\alpha f(x)\to\infty\) 当 \(x\to0\)，因此每个足够高的水平都有正测度的超水平集合，确实否定 \(L^\infty\) 目标。
+
+超过维数的梯度可积性则导致连续性，而不再是某个有限指数的改善。下面给出一个直接的局部积分证明，说明临界 \(p=d\) 为什么仍然需要另外处理。
+\begin{proposition}\label{b2:prop:19-morrey}
+若 \(p>d\) 且 \(u\in W^{1,p}(\mathbb R^d)\)，则存在连续代表，使
+\[
+ |u(x)-u(y)|\leq C_{d,p}|x-y|^{1-d/p}\|\nabla u\|_p
+ \qquad(x,y\in\mathbb R^d).
+\]
+\end{proposition}
+\begin{proof}
+先设 \(u\) 光滑。对含 \(x\) 的凸球 \(B\)、半径 \(r\)，沿从 \(x\) 到 \(z\in B\) 的线段积分，再对 \(z\) 平均。以 \(w=x+t(z-x)\) 换元，球包含关系及 \(t^{-d}\) 的积分给出
+\[
+ |u(x)-u_B|\leq C_d\int_B
+ \frac{|\nabla u(w)|}{|x-w|^{d-1}}\,\mathrm dw.
+\]
+具体地，一个固定 \(w\) 只有在 \(t\geq|w-x|/(2r)\) 时可能出现；换元后系数为
+\(|B|^{-1}|w-x|\int_{|w-x|/(2r)}^1t^{-d-1}\,\mathrm dt
+\leq C_d|w-x|^{1-d}\)，这补足了平均线段的计算。
+
+Hölder 给出右端至多
+\[
+ C\|\nabla u\|_{L^p(B)}
+ \left(\int_{|v|<2r}|v|^{-(d-1)p'}\,\mathrm dv\right)^{1/p'}
+ \leq C_{d,p}r^{1-d/p}\|\nabla u\|_{L^p(B)}.
+\]
+径向积分收敛恰需 \((d-1)p'<d\)，即 \(p>d\)。对 \(x,y\)，取同时包含二者且半径 \(2|x-y|\) 的球，以同一个平均 \(u_B\) 比较两点便得结论。
+
+一般 Sobolev 输入取全空间光滑逼近。差函数的上述估计与其 \(L^p\) 平均控制，保证逼近列在每个紧球上一致 Cauchy；一致极限为连续代表，且局部 \(L^p\) 收敛使它与 \(u\) 几乎处相同。最后把点差估计传到极限。
+\end{proof}
+临界 \(p=d\) 使核的 Hölder 积分成为对数发散，本证明不能给出零阶 Hölder 连续性。即使非临界时，连续代表也不是原来任意选定的点值代表；修改零测集上的值可以人为破坏连续性。把 Sobolev 等价类提升为一个连续函数，是上述逼近和局部一致控制共同得到的结论。
+
+\ProseParagraphBreak
+
+局部版本在一个较大球内控制较小球上的点差，常数同时记录两球的间距。若靠近区域边界，需要延拓性质或边界坐标的规则性；单独知道区域内部的梯度可积，并不足以跨过一个断裂或尖细边界比较任意两点。势理论、区域几何与函数空间的区别在这里仍然不能省略。
+
+\ProseParagraphBreak
+
+临界梯度指数也有一个直接的函数反例，无需诉诸势的表示。设 \(d\geq2\)，在半径 \(1/2\) 的球内取
+\[
+ u(x)=\log\log(e/|x|),
+\]
+再乘一个在更小球上为一的光滑截断。它趋于无穷，但处于 \(W^{1,d}(\mathbb R^d)\)。函数本身的 \(d\) 次方可积，因为换元 \(v=\log(e/r)\) 后径向积分含有指数衰减因子；梯度的关键积分则为
+\[
+ \int_0^{1/2}\frac{\mathrm dr}
+ {r(\log(e/r))^d}<\infty.
+\]
+截断的导数只在离原点的环带产生光滑可积项。弱导数公式可以先在去掉小球的区域分部积分，再令小球半径趋零；边界贡献至多为 \(r^{d-1}\log\log(e/r)\)，当 \(d\geq2\) 时趋零。因此没有在原点偷偷增加一个分布点质量。
+
+\ProseParagraphBreak
+
+这个例子排除了 \(W^{1,d}\subset L^\infty\)，也排除了从该范数直接控制连续代表的结论。将 \(u\) 截为 \(\min(u,N)\) 并作紧支撑光滑逼近，可以得到梯度和函数的 \(L^d\) 范数一致有界、而上确界趋无穷的一列光滑函数。这里链式法则使截断梯度不增加；适当小的卷积保留接近最高平台的值。因此失败不限于一个粗糙等价类，也存在于光滑检验函数上。维数一的临界指数为一，绝对连续函数可由导数积分控制上确界，情形不同，不能把这个高维对数反例直接搬到直线上。

@@ -2,24 +2,96 @@
 \section{Dirichlet 问题}
 \label{b3:sec:1601}
 
-% TODO: 撰写本节正文。
+给定边界温度，怎样确定内部平衡状态？圆盘上的答案可以写成积分；一般区域中，边界形状决定这个答案是否真的连续达到所有指定值。
 
 \subsection{边值问题}
 \label{b3:subsec:160101}
 
-待填充。
+设 \(D\) 为有界区域、\(\varphi\in C(\partial D)\)。\term[dirichlet-wenti]{Dirichlet 问题}[Dirichlet problem]要求寻找 \(u\in C(\overline D)\)，使 \(u\) 在 \(D\) 调和且 \(u|_{\partial D}=\varphi\)。解至多一个，因为两解之差在边界为零。存在性不能仅靠这个唯一性结论：去心圆盘的小孔已经会造成失败。
+
+实值连续边界数据是本章的基本范围。复值数据分成实部、虚部处理；不连续数据需要另定达到边界的意义，不能把相应积分解自动称为闭包上的连续解。
 
 \subsection{圆盘 Poisson 核}
 \label{b3:subsec:160102}
 
-待填充。
+\term[poisson-he]{Poisson 核}[Poisson kernel]在圆盘上为
+\[
+P_R(z,t)=\frac{R^2-|z|^2}{|Re^{\mathrm{i}t}-z|^2}
+=1+2\operatorname{Re}\sum_{n\ge1}\left(\frac zR\right)^ne^{-\mathrm{i}nt}.
+\]
+级数在内部紧集连同各阶导数一致收敛，故核调和，且关于 \(t\) 的平均为一。核始终为正；固定 \(\xi=Re^{\mathrm{i}\theta}\) 和弧外距离 \(\delta>0\)，当 \(z\to\xi\) 时，弧外分母有正下界，而分子趋零。因此边界极限中的质量集中在 \(\xi\) 附近，而不是均匀消失。
 
 \subsection{Poisson 积分}
 \label{b3:subsec:160103}
 
-待填充。
+\begin{theorem}[圆盘 Dirichlet 问题]\label{b3:thm:16-poisson}
+圆周上连续函数 \(\varphi\) 的唯一连续调和延拓为
+\[
+u(z)=\frac1{2\pi}\int_0^{2\pi}P_R(z,t)\cdot\varphi(Re^{\mathrm{i}t})\,\mathrm{d}t.
+\]
+\end{theorem}
+\begin{proof}
+内部微分由紧集上核导数的统一界合法，得到调和性。把 \(u(z)-\varphi(\xi)\) 写成核乘边值差的积分。近 \(\xi\) 的弧上，一致连续性使差小于 \(\varepsilon\)，核总质量一给该部分不超过 \(\varepsilon\)。剩余弧上的边值差有界而核一致趋零，故积分趋零。唯一性由最大值原理。
+\end{proof}
+边值 \(\cos(nt)\) 的延拓为 \((r/R)^n\cos(n\theta)\)，\(\sin(nt)\) 同样得到正弦。这些计算说明高频边界振荡向内部迅速衰减，中心只保留边值的平均。
 
 \subsection{调和测度}
 \label{b3:subsec:160104}
 
-待填充。
+固定 \(z\)，测度 \(\mathrm{d}\omega^z(Re^{\mathrm{i}t})=P_R(z,t)\mathrm{d}t/(2\pi)\) 是概率测度，称为圆盘的\term[diaohe-cedu]{调和测度}[harmonic measure]。它将边界数据映为内部值：\(u(z)=\int\varphi\,\mathrm{d}\omega^z\)。中心处等于归一化弧长，非中心处却不均匀。
+
+对于一段弧 \(I\)，\(\omega^z(I)\) 表示该弧在点 \(z\) 的影响权重。端点有零质量，所以指示数据可用连续函数上下逼近得到相同积分。这里把概率测度用于权重表示，还没有引入随机过程。
+
+
+\ProseParagraphBreak
+
+Poisson 积分的边界收敛证明还给出一致收敛。设边值的连续模为
+\[
+ \omega(\delta)=\sup_{\substack{\xi,\eta\in\partial D(0,R)\\|\xi-\eta|\le\delta}}
+                    |\varphi(\xi)-\varphi(\eta)|.
+\]
+沿半径 \(z=r\xi/R\)，将边界分成距 \(\xi\) 小于 \(\delta\) 和大于 \(\delta\) 两部分，得到
+\[
+|u(r\xi/R)-\varphi(\xi)|\le\omega(\delta)+C_R\|\varphi\|_\infty(R-r)/\delta^2
+\]
+对充分接近 \(R\) 的 \(r\) 成立，常数与 \(\xi\) 无关。先固定 \(\delta\)，再令 \(r\uparrow R\)，最后令 \(\delta\downarrow0\)，即得圆周上的一致收敛。连续性的作用在这个顺序中十分明确；有界可测边值没有统一趋零的连续模。
+
+\ProseParagraphBreak
+
+例如单位圆周边值在上半圆为一、下半圆为零，其内部积分是上半圆的调和测度。在弧内部的边界点，近弧差值恒零，所以极限分别为一和零；在两个端点，径向极限为二分之一，但从不同内部方向接近时可能得到不同极限。解在内部调和、介于零与一之间，却不属于 \(C(\overline D)\)。端点值怎样赋予不会改变积分，因为弧长测度看不见单点；这与连续 Dirichlet 问题指定每一点边值的含义不同。
+
+\ProseParagraphBreak
+
+圆盘与上半平面之间的 Möbius 变换给另一个明确核。设 \(z=x+\mathrm{i}y\)、\(y>0\)，有界连续实轴数据 \(\psi\) 的 Poisson 积分为
+\[
+U(x,y)=\frac1\pi\int_{\mathbb R}\frac{y\,\psi(t)}{(x-t)^2+y^2}\,\mathrm{d}t.
+\]
+核积分为一，内部调和由微分与局部统一可积控制得到。对固定 \(x_0\)，近 \(x_0\) 的连续性和远部估计 \(\int_{|t-x_0|>\delta}y/((x-t)^2+y^2)\,\mathrm{d}t=O(y/\delta)\) 给连续取实轴边值。若 \(\psi\) 在全实轴一致连续，这一估计还给 \(\sup_x|U(x,y)-\psi(x)|\to0\)。有界连续性本身只保证逐点边界收敛。
+
+\ProseParagraphBreak
+
+这个无界域上的唯一性必须限定有界解。若有界调和函数 \(W\) 在实轴连续为零，将它拉回圆盘，得到有界调和函数，除对应无穷远的一个边界点外边值均零。用该点附近小弧的 Poisson 积分作上、下控制：固定内部点，弧长趋零时该弧的调和测度趋零，故 \(|W|\) 被任意小的数控制。于是 \(W=0\)。此证明不要求在无穷远已有一个共同极限；有界性使未指定的单点边界能被小弧控制。若允许无界解，\(y\) 与零解具有相同实轴边值，唯一性立即失去。
+
+\ProseParagraphBreak
+
+Poisson 核对每个角频率的作用也可精确计算。单位圆中，几何级数给
+\[
+ P_r(t)=\frac{1-r^2}{1-2r\cos t+r^2}
+       =1+2\sum_{n\ge1}r^n\cos(nt),\qquad 0\le r<1.
+\]
+在 \(r\le r_0<1\) 上级数绝对一致收敛，故边值 \(e^{\mathrm{i}nt}\) 的 Poisson 延拓为 \(r^{|n|}e^{\mathrm{i}nt}\)。正频率延拓为 \(z^n\)，负频率延拓为 \(\bar z^{|n|}\)。实边值的共轭系数配对保证结果实值，却不要求只有正频率。这解释了调和函数的边界资料为何比全纯函数的边界资料更自由。
+\ProseParagraphBreak
+高频在内部受到更强压制。若连续边值的 Fourier 系数为 \(c_n\)，则内部任意较小圆盘上
+\[
+ u(re^{\mathrm{i}\theta})=\sum_{n\in\mathbb Z}c_n r^{|n|}e^{\mathrm{i}n\theta}.
+\]
+这里不必假定边值 Fourier 级数本身逐点收敛：\(|c_n|\le\|\varphi\|_\infty\)，乘 \(r^{|n|}\) 后已经绝对收敛；对 Poisson 核的正常收敛展开积分，就能直接得到等式。附加有限阶导数只增加 \(|n|\) 的幂，仍被几何衰减控制，因此解在内部具有所有阶导数。
+\ProseParagraphBreak
+边值更规则时可给定量逼近。设 \(|\varphi(e^{\mathrm{i}(\theta+t)})-\varphi(e^{\mathrm{i}\theta})|\le H|t|^\alpha\)，\(0<\alpha<1\)，\(|t|\le\pi\)。写 \(\varepsilon=1-r\)，当 \(r\ge1/2\) 时有
+\(P_r(t)\le C\varepsilon/(\varepsilon^2+t^2)\)，故
+\[
+ |u(re^{\mathrm{i}\theta})-\varphi(e^{\mathrm{i}\theta})|
+ \le CH\int_0^\pi\frac{\varepsilon t^\alpha}{\varepsilon^2+t^2}\,\mathrm{d}t
+ \le C_\alpha H\varepsilon^\alpha.
+\]
+最后令 \(t=\varepsilon v\)，积分 \(\int_0^\infty v^\alpha/(1+v^2)\,\mathrm{d}v\) 有限。端点 \(\alpha=1\) 时相同估计给 \(O(\varepsilon\log(1/\varepsilon))\)，不能把依赖 \(\alpha\) 的常数直接取到一。即使边值有统一连续模，不同光滑程度也会产生不同的逼近速度。

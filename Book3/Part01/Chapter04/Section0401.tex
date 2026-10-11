@@ -2,24 +2,89 @@
 \section{局部一致收敛}
 \label{b3:sec:0401}
 
-% TODO: 撰写本节正文。
+函数列逐点收敛，未必保留连续性；即使极限全纯，也未必可以逐项求导。Cauchy 积分公式给出的控制恰好说明，复分析应采用紧集上的一致收敛，而不是仅固定每个点观察。
 
 \subsection{紧一致收敛}
 \label{b3:subsec:040101}
 
-待填充。
+\begin{definition}\label{b3:def:04-compact-convergence}
+设 \(U\) 为开集，\(f_n,f:U\rightarrow\mathbb C\)。若对每个紧集 \(K\subset U\) 都有 \(\sup_K|f_n-f|\rightarrow0\)，则称 \(f_n\) 在 \(U\) 上\term[jubu-yizhi-shoulian]{局部一致收敛}[locally uniform convergence]于 \(f\)，也称紧一致收敛。
+\end{definition}
+开集可由递增紧集穷尽，例如取
+\[
+ K_j=\{\,z\in U\mid |z|\le j,\ \operatorname{dist}(z,\mathbb C\setminus U)\ge1/j\,\}.
+\]
+空的早期集合可略去，\(U=\mathbb C\) 时只取闭圆盘。每个 \(K_j\) 闭有界，且任意 \(U\) 内紧集最终包含于其中；因此在这一列紧集上检验一致收敛就足够。
+
+\ProseParagraphBreak
+
+函数列 \(z^n\) 在 \(\mathbb D\) 上局部一致趋于0，因为 \(|z|\le r<1\) 时误差不超过 \(r^n\)；却不在整个开圆盘上一致趋于0，其上确界始终是1。局部一致性不对趋近边界的点给共同误差。后续紧性抽取也只在这一拓扑中进行。
+
+\ProseParagraphBreak
+
+紧集穷尽并不是把开集改成一个闭区域。对于有孔且无界的区域，\(K_j\) 同时截断无穷远，并远离每个孔的边界；一个固定小盘最终包含其中，但随着 \(j\) 增大，仍可能出现新的边界附近部分。若某个 \(K_j\) 为空，不需要为它另设特殊函数空间。穷尽所要求的是每个内部紧集最终被包含，而不是每一步都有非空内部。
+
+\ProseParagraphBreak
+
+局部一致收敛也不会自动控制随指标移动的点。若 \(z_n\) 始终位于同一个紧集且 \(z_n\rightarrow z\)，则
+\[
+ |f_n(z_n)-f(z)|\le\sup_K|f_n-f|+|f(z_n)-f(z)|\longrightarrow0.
+\]
+第一项用一致收敛，第二项用极限连续。若 \(z_n\) 逃向边界，这个共同紧集不复存在。取 \(f_n(z)=z^n\)、\(z_n=1-1/n\)，便有 \(f_n(z_n)\rightarrow e^{-1}\)，而固定点处极限为0。两种量词不能交换。
 
 \subsection{全纯极限}
 \label{b3:subsec:040102}
 
-待填充。
+\begin{proposition}\label{b3:prop:04-holomorphic-limit}
+设 \(f_n\) 在开集 \(U\) 上全纯，且局部一致收敛于 \(f\)。则 \(f\) 在 \(U\) 上全纯。
+\end{proposition}
+\begin{proof}
+先在每个小闭圆盘上用连续函数的一致极限得 \(f\) 连续。固定 \(\overline{D(a,r)}\subset U\)，每个 \(f_n\) 的 Cauchy 公式为
+\(f_n(z)=(2\pi\mathrm{i})^{-1}\int_{|\zeta-a|=r}f_n(\zeta)/(\zeta-z)\,\mathrm{d}\zeta\)。圆周上一致收敛使积分在每个较小闭圆盘上一致趋于相同的 \(f\) 核积分。核积分可按 \(z\) 微分，因分母与零保持正距离，所以右端全纯。由 \(z\in D(a,r)\) 时的点值极限，它恰为 \(f(z)\)。小圆盘覆盖 \(U\)，因此处处全纯。
+\end{proof}
+这里既没有先求 \(f_n'\) 的逐点极限，也没有从实变量可微函数列的性质类推。连续性与全纯性是通过积分表示先后获得的。
 
 \subsection{导数收敛}
 \label{b3:subsec:040103}
 
-待填充。
+\begin{proposition}\label{b3:prop:04-derivative-convergence}
+在上一命题的条件下，对每个固定整数 \(k\ge1\)，\(f_n^{(k)}\) 在 \(U\) 上局部一致趋于 \(f^{(k)}\)。
+\end{proposition}
+\begin{proof}
+固定紧集 \(K\subset U\)，选 \(\delta>0\)，使所有以 \(z\in K\) 为中心、半径 \(\delta\) 的闭圆盘都在 \(U\) 中。它们的并闭包含于一个紧集 \(K'\subset U\)。对全纯差 \(f_n-f\) 使用 Cauchy 估计，得到
+\[
+ \sup_K|f_n^{(k)}-f^{(k)}|\le k!\delta^{-k}\sup_{K'}|f_n-f|\longrightarrow0.
+\]
+选取同一个 \(\delta\) 是紧性的用途，因而结论对 \(K\) 上全部点一致成立。
+\end{proof}
+导数阶 \(k\) 必须固定；因子 \(k!\delta^{-k}\) 随阶数增长，不能由这一结论让 \(k\) 与 \(n\) 同时趋于无穷。以 \(z^n\) 为例，它在较小圆盘的一阶导数 \(nz^{n-1}\) 仍趋于0，但第 \(n\) 阶导数为 \(n!\)。
+
+\ProseParagraphBreak
+
+反向也有一个带归一化的积分判据。若区域中的 \(f_n'\) 局部一致趋于 \(g\)，且某个基点值 \(f_n(a)\) 收敛，则 \(f_n\) 局部一致收敛。证明时在一个紧集的有限圆盘覆盖中，用从基点到各圆盘中心的有限条固定多边形路径，再在盘内接短线段。积分差由路径长度与导数差控制；有限路径保证同一个误差对整紧集有效。极限函数的导数为 \(g\)，由局部差商或原函数端点式即可核对。
+
+\ProseParagraphBreak
+
+基点值的条件不可省略，常值函数列 \(f_n=n\) 的导数全部为0，却没有有限局部极限。若定义域不连通，应每个分支固定一个值；一个基点不能控制其他分支上的加法常数。这个反向判据把“积分一次多出常数”落实为收敛中的具体条件。
 
 \subsection{Weierstrass 定理}
 \label{b3:subsec:040104}
 
-待填充。
+前两项通常合称\term[weierstrass-shoulian-dingli]{Weierstrass 收敛定理}[Weierstrass convergence theorem]。
+\begin{theorem}[Weierstrass]\label{b3:thm:04-weierstrass}
+全纯函数列的局部一致有限极限全纯，且任意固定阶导数局部一致收敛至极限函数的相应导数。若全纯函数项级数在每个紧集上一致收敛，则其和全纯，并可任意固定阶逐项微分。
+\end{theorem}
+\begin{proof}
+函数列结论是前两命题。函数项级数取有限部分和，它们全纯；导数部分和的局部一致极限就是和函数的导数，因此逐项微分合法。
+\end{proof}
+若 \(\sum_n\sup_K|g_n|<\infty\) 对每个紧集成立，Weierstrass 判别法保证所需的一致收敛。例子 \(\sum_{n\ge1}e^{-n}z^n\) 在 \(|z|<e\) 局部一致收敛；在更大区域则不能借每项整函数声称和仍整。级数收敛域是另外必须核对的数据。
+
+紧集一致收敛还保持局部积分恒等式。若 \(f_n\rightarrow f\) 在紧集上一致，\(\gamma\) 是区域中一条固定分段光滑曲线，则
+\[
+ \left|\int_\gamma(f_n-f)\,\mathrm{d}z\right|
+ \le L(\gamma)\sup_{\gamma}|f_n-f|\longrightarrow0.
+\]
+曲线的像是紧集，长度又固定，两个条件都在这里被使用。如果曲线随 \(n\) 增长或靠近边界，上式右端未必趋于0。对单位圆盘中的 \(z^n\)，紧集一致趋于0，但在 \(|z|=1\) 上模恒为1，不能把内点极限自动延伸到闭圆盘。
+
+\ProseParagraphBreak
+另一个有用例子是 \(f_n(z)=n\sin(z/n)\)。Taylor 展开在每个固定圆盘上给 \(f_n(z)=z+O(1/n^2)\)，误差常数依赖于圆盘半径。因此 \(f_n\) 紧集一致趋于恒等映射，所有阶导数也有相应极限；但它们在整个平面上的增长与零点分布很不相同。这里的收敛只控制固定的观察窗口，远处的零点可以随 \(n\) 逃向无穷远。

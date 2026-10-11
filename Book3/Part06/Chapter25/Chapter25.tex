@@ -4,13 +4,15 @@
 \BookChapterNumber{b3:ch:25}
 % 本章摘要（不计入编号）
 \begin{chapterabstract}
-待填充。
+整数的唯一素分解对应可乘函数，约数求和对应 Dirichlet 卷积，部分和估计对应复参数级数的收敛半平面。本章建立这三种对应，严格说明无穷求和和乘积所需的绝对收敛，并从 Euler 乘积推导带 von Mangoldt 系数的对数导数。
 \end{chapterabstract}
 
 % 本章目标（不计入编号）
 \begin{learninggoals}
-待填充。
+能够用素数幂计算常见算术函数，构造卷积逆元并进行 Möbius 反演；能够通过 Abel 求和估计加权和及收敛横坐标；能区分 Euler 乘积、全纯对数及无零点性的不同证明义务。
 \end{learninggoals}
+
+复分析处理的是连续变量，素数却形成离散且不规则的集合。把算术权重 \(a(n)\) 放入 \(n^{-s}\) 的级数，便能用实部调节远端权重，用虚部记录振荡。但这种表示只有在求和顺序和收敛域明确后才可靠。本章不先假设素数的渐近密度；所有算术恒等式从有限分解建立，再进入解析级数。Apostol 的《Introduction to Analytic Number Theory》\cite{Apostol1976Introduction}可供继续练习算术函数和部分求和。
 
 \input{Part06/Chapter25/Section2501}
 \input{Part06/Chapter25/Section2502}
@@ -19,10 +21,68 @@
 \input{Part06/Chapter25/Section2505}
 % 本章小结（不计入编号）
 \begin{chaptersummary}
-待填充。
+Dirichlet 卷积的局部有限性使算术恒等式无需收敛假设；把它变成函数恒等式则要增加绝对收敛。Abel 求和利用部分和的抵消拓宽收敛域，Euler 乘积利用唯一分解说明素数的位置。\(-\zeta'/\zeta\) 的系数为 \(\Lambda\)，将把下一章的解析延拓与最后一章的素数计数联系起来。
 \end{chaptersummary}
 
 
 \BookExercises
 
-待填充。
+% 八题自拟：卷积逆、平均计数、系数抵消和局部Euler因子。
+\begin{exercise}\label{b3:ex:25-1}
+求完全可乘函数 \(a\) 的 Dirichlet 卷积逆元。
+\end{exercise}
+\begin{solution}
+逆元为 \(\mu a\)。其卷积在 \(n\) 处为 \(a(n)\sum_{d\mid n}\mu(d)\)，对 \(n>1\) 为零，一处为一。即使某些 \(a(p)=0\)，同一有限和证明仍成立。
+\end{solution}
+\begin{exercise}\label{b3:ex:25-2}
+令 \(d_3(n)\) 为有序三元组 \((a,b,c)\) 满足 \(abc=n\) 的个数。证明
+\[
+ \sum_{n\le x}d_3(n)=\tfrac12x(\log x)^2+O(x\log x),\qquad x\ge2.
+\]
+\end{exercise}
+\begin{solution}
+记 \(D(y)=\sum_{n\le y}d(n)=y\log y+O(y)\)，此估计可调整常数使其对所有 \(y\ge1\) 成立。固定第一个因子，左侧等于
+\[
+ \sum_{a\le x}D(x/a)
+ =x\log x\sum_{a\le x}\frac1a
+   -x\sum_{a\le x}\frac{\log a}{a}+O(x\log x).
+\]
+调和和为 \(\log x+O(1)\)。函数 \(\log t/t\) 在 \(t\ge e\) 递减，积分比较给
+\(\sum_{a\le x}(\log a)/a=\tfrac12(\log x)^2+O(1)\)。代入便得结论。三个因子有序，所以无需再除以排列数。
+\end{solution}
+\begin{exercise}\label{b3:ex:25-3}
+若 \(A(x)=O(1)\)，证明 \(\sum a_n/n\) 收敛，且尾部 \(O(1/N)\)。
+\end{exercise}
+\begin{solution}
+对区间 \((N,M]\) 作部分求和，端点项不超过 \(C/N+C/M\)，积分尾部不超过 \(C\int_N^M t^{-2}\,\mathrm{d}t\)。令 \(M\to\infty\) 即得绝对常数倍 \(N^{-1}\) 的尾界；这不要求 \(\sum|a_n|/n\) 收敛。
+\end{solution}
+\begin{exercise}\label{b3:ex:25-4}
+证明 \(\sum_{d\mid n}\mu(d)\log d=-\Lambda(n)\)。
+\end{exercise}
+\begin{solution}
+由 \(\Lambda=\mu*\log\)，右侧展开为 \(\sum\mu(d)(\log n-\log d)\)。当 \(n>1\) 时第一项为零，得公式；\(n=1\) 时两侧均零。
+\end{solution}
+\begin{exercise}\label{b3:ex:25-5}
+求平方自由整数的 Dirichlet 级数，并说明最初成立的半平面。
+\end{exercise}
+\begin{solution}
+其示性函数为 \(\mu(n)^2\)，可乘，局部因子为 \(1+p^{-s}\)。在 \(\sigma>1\) 绝对收敛，故乘积为 \(\prod_p(1-p^{-2s})/(1-p^{-s})=\zeta(s)/\zeta(2s)\)。这个表达式的更大延拓域不等于原级数的绝对收敛域。
+\end{solution}
+\begin{exercise}\label{b3:ex:25-6}
+若 \(a(n)\ge0\) 且 \(A(x)=O(x^\alpha)\)，证明级数在 \(\sigma>\alpha\) 绝对收敛；说明删去非负性后为什么结论改变。
+\end{exercise}
+\begin{solution}
+非负时 \(\sum|a(n)|n^{-\sigma}=\sum a(n)n^{-\sigma}\)，部分求和给收敛。交错系数 \((-1)^{n-1}\) 的部分和有界，却在 \(0<\sigma\le1\) 不绝对收敛，故非负性不能删去。
+\end{solution}
+\begin{exercise}\label{b3:ex:25-7}
+证明 \(\sum_p1/p\) 发散。
+\end{exercise}
+\begin{solution}
+若该和有限，则 \(\sum_{p,r\ge1}p^{-r\sigma}/r\) 对所有实 \(\sigma>1\) 有共同上界：一次项由假设控制，\(r\ge2\) 部分由 \(2\sum_{n\ge2}n^{-2}\) 控制。于是 \(\zeta(\sigma)\) 有界。然而 \(\sum n^{-\sigma}\ge\int_1^\infty t^{-\sigma}\,\mathrm{d}t=1/(\sigma-1)\)，矛盾。
+\end{solution}
+\begin{exercise}\label{b3:ex:25-8}
+设 \(a,b\) 可乘且其局部因子在每个素数处相等。证明 \(a=b\)，并解释是否需要解析收敛。
+\end{exercise}
+\begin{solution}
+将局部因子视为形式幂级数 \(\sum_{r\ge0}a(p^r)X^r\)，相等意味着每个素数幂系数相等。可乘性于是确定全部整数值。这个有限分解论证无需任何解析收敛；若只知道某些复参数处的乘积函数相等，则须另外用级数唯一性及公共收敛域。
+\end{solution}

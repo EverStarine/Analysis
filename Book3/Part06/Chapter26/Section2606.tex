@@ -1,29 +1,96 @@
 % !TeX root = ../../Book3.tex
 \OptionalSection{\texorpdfstring{\(\xi\)}{\AnalysisPdfXi} 函数与 Hadamard 乘积}{b3:sec:2606}
 
-% TODO: 撰写本节正文。
+Gamma 因子消去平凡零点后，只剩两个显式极点。再乘一个二次多项式便得到整函数，因而可以应用整函数增长与典范乘积理论。
 
-\subsection{Riemann \texorpdfstring{\(\xi\)}{m} 函数}
+\subsection{Riemann \texorpdfstring{\(\xi\)}{\AnalysisPdfXi} 函数}
 \label{b3:subsec:260601}
 
-待填充。
+定义\term[riemann-xi-hanshu]{Riemann xi 函数}[Riemann xi function]
+\[
+\xi(s)\coloneqq\frac12s(s-1)\Lambda_\zeta(s).
+\]
+\symidx{\(\xi(s)\)：Riemann xi 函数}
+它是整函数，\(\xi(0)=\xi(1)=1/2\)，满足 \(\xi(s)=\xi(1-s)\) 和共轭对称。其零点恰为非平凡零点，重数相同。负偶数处的 Gamma 单极点与 zeta 单零点抵消，并留下非零值，故这些点不在 \(\xi\) 的零点集合内。
 
 \subsection{整函数的阶}
 \label{b3:subsec:260602}
 
-待填充。
+\begin{proposition}\label{b3:prop:26-xi-order}
+整函数 \(\xi\) 的增长阶恰为一，且有无穷多个零点。
+\end{proposition}
+\begin{proof}
+在 \(|s|\le r\) 上，延拓积分给
+\[
+ |\xi(s)|\le C(1+r)^2\left[1+
+    \int_1^\infty e^{-\pi t}\bigl(t^{(r+1)/2}+1\bigr)\,\mathrm{d}t\right].
+\]
+右侧由 Gamma 积分控制，其对数为 \(O(r\log(r+2))\)，由正实轴 Stirling 公式得到，所以阶至多一。沿实轴 \(s\to+\infty\)，\(\zeta(s)\to1\)，Stirling 给
+\[
+ \log\xi(s)=\frac{s}{2}\log s+O(s),
+\]
+故阶至少一。
+若只有有限零点，\cref{b3:thm:20-hadamard}使 \(\xi(s)=P(s)e^{as+b}\)，沿正实轴对数模仅为 \(O(s+\log s)\)，与上一渐近矛盾。因此零点无限多。
+\end{proof}
 
 \subsection{Hadamard 乘积}
 \label{b3:subsec:260603}
 
-待填充。
+增长上界与正实轴下界在这里承担不同作用。上界保证可以使用阶一的典范因子，并控制零点总数；下界排除有限零点乘一个线性指数的可能。仅有上界不能证明零点无限多，例如 \(e^s\) 也是阶一整函数，却没有零点。由于本章已经排除实区间内的零点，而平凡零点又被 Gamma 因子抵消，所得无穷多个零点确实都是非实的非平凡零点。
+
+\ProseParagraphBreak
+
+将零点按重数列为 \(\rho\)，Hadamard 分解给
+\[
+\xi(s)=e^{A+Bs}\prod_\rho(1-s/\rho)e^{s/\rho}.
+\]
+零点不存在于原点，故没有额外的 \(s^m\) 因子。收敛意义为属一典范乘积的正规收敛；\(\sum|\rho|^{-2}<\infty\) 由阶一零点估计得到。若要去掉指数修正，必须规定对称配对并另外证明配对和收敛，不应直接删除。
 
 \subsection{零点分布}
 \label{b3:subsec:260604}
 
-待填充。
+乘积中的两个常数也有局部意义。取 \(s=0\)，每个典范因子等于一，因此可取 \(e^A=1/2\)。由于每个因子的对数导数在零点为零，\(B=\xi'(0)/\xi(0)\)。利用 Gamma 在零处的对数导数
+\(\Gamma'(z)/\Gamma(z)=-1/z-\gamma+O(z)\)，以及上一节求得的 \(\zeta'(0)\)，有
+\[
+ \frac{\xi'(s)}{\xi(s)}
+ =\frac1s+\frac1{s-1}-\frac12\log\pi
+   +\frac12\frac{\Gamma'(s/2)}{\Gamma(s/2)}
+   +\frac{\zeta'(s)}{\zeta(s)}.
+\]
+其中 \(1/s\) 与 Gamma 项的主部相消。取极限，得到
+\[
+ B=\log2+\frac12\log\pi-1-\frac\gamma2.
+\]
+这一步只确定乘积的指数因子，不提供单个零点的位置。它也是检验 Gamma 因子、\(1/2\) 常数和极点消去是否一致的一种方法。
+
+\ProseParagraphBreak
+
+Jensen 公式结合 \(\log M(r,\xi)=O(r\log(r+2))\) 给 \(N(r)=O(r\log(r+2))\)，其中 \(N(r)\) 为圆盘内零点总数。具体取外半径 \(2r\)，每个 \(|\rho|\le r\) 在 Jensen 和中贡献至少 \(\log2\)，故 \(N(r)\log2\le\log M(2r)-\log|\xi(0)|\)。这只是上界；精确的 Riemann--von Mangoldt 渐近还需要控制辐角，本章不由增长上界宣称该渐近已经成立。
+
+\begin{proposition}[关于中点配对的乘积]
+\label{b3:prop:26-centered-product}
+置 \(F(z)=\xi(1/2+z)\)。从每一对非零零点 \(\alpha,-\alpha\) 中取一项，并保留重数，则
+\[
+ F(z)=F(0)\prod_{\{\alpha,-\alpha\}}
+           \left(1-\frac{z^2}{\alpha^2}\right).
+\]
+该乘积在紧集上正规收敛，且不依赖各对之间的排列。
+\end{proposition}
+\begin{proof}
+函数方程给 \(F(-z)=F(z)\)，故零点按相同重数成对。又 \(\zeta(1/2)<0\)、\(\Gamma(1/4)>0\) 且 \((1/2)(-1/2)<0\)，所以 \(F(0)>0\)，没有中心零点。平移不改变增长阶，对 \(F\) 使用 Hadamard 分解。每一对属一因子的乘积为
+\[
+ E_1(z/\alpha)E_1(-z/\alpha)=1-z^2/\alpha^2.
+\]
+由零点计数上界，\(\sum|\alpha|^{-2}<\infty\)，所以配对乘积正规收敛，并且可以任意重排各对。于是 \(F(z)=e^{a+bz}P(z)\)，其中 \(P\) 为偶函数且 \(P(0)=1\)。在原点附近 \(P\) 非零，\(F\) 的偶性给 \(e^{bz}=e^{-bz}\)。对此在零点求导得 \(b=0\)，再取值确定 \(e^a=F(0)\)。
+\end{proof}
+
+这种配对是在平移后的中点坐标中进行的，不能把它误读成原变量中任意顺序的 \(\prod_\rho(1-s/\rho)\)。配对收敛所依赖的是平方倒数可和，而单个倒数的绝对可和并未建立。乘积看起来更短，实际增加的是明确的对称分组规则。
 
 \subsection{显式公式观点}
 \label{b3:subsec:260605}
 
-待填充。
+对典范乘积在避开零点的紧集取对数导数，有
+\[
+\frac{\xi'(s)}{\xi(s)}=B+\sum_\rho\left(\frac1{s-\rho}+\frac1\rho\right).
+\]
+每个括号为 \(O_K(|\rho|^{-2})\)，故正规收敛。另一方面，定义式将它写成 \(\zeta'/\zeta\)、Gamma 对数导数与有理项之和。素数幂级数与零点部分分式由此描述同一个亚纯函数。在反演围道中，跨越零点会取到由其重数决定的留数，这便是显式公式的基本机制；具体无穷零点求和还必须指定截断和误差，不能只把有限留数定理中的省略号延长到无穷。

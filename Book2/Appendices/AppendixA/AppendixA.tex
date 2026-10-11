@@ -2,4 +2,110 @@
 \chapter{Bessel 函数与径向 Fourier 分析}
 \label{b2:app:A}
 
-% TODO: 按计划纲要展开本附录。
+\begin{chapterabstract}
+本附录从级数构造第一类 Bessel 函数，以积分表示推导固定实阶的大参数渐近，再由无穷远归一化构造第二类解。球面角积分把 Bessel 函数带入本卷的径向 Fourier 公式，并在几何阶数上给出 Hankel 变换的等距与反演。最后计算 Bochner--Riesz 核的全部常数，证明其绝对可积性的准确阈值，说明核衰减与乘子有界性之间的区别。
+\end{chapterabstract}
+\begin{learninggoals}
+\begin{itemize}
+\item\label{b2:item:A2-goal-bessel}核验 Bessel 级数、递推及两类解的归一化，区分原点与无穷远的选择原则。
+\item\label{b2:item:A2-goal-radial}在固定 \(2\pi\) 约定下计算球面测度和径向函数的 Fourier 变换。
+\item\label{b2:item:A2-goal-hankel}辨认 Hankel 变换的积分测度，并从径向 Plancherel 推出几何阶数的 \(L^2\) 理论。
+\item\label{b2:item:A2-goal-kernel}推导 Bochner--Riesz 核，检查振荡渐近、体积因子与可积性阈值。
+\end{itemize}
+\end{learninggoals}
+
+球与圆具有旋转对称性，但这种对称并不会把 Fourier 积分变成普通的一维 Fourier 变换：角向变量的积分留下一个新的振荡核。它在二维叫作 \(J_0\)，在更高维出现不同阶数，在三维又简化为正弦除以半径。把它们放在同一个 Bessel 方程中，可以同时解释圆盘模态、球面衰减和球形频率截断。
+
+\ProseParagraphBreak
+
+本附录以实变量为主，先独立证明后续需要的级数、积分与渐近公式，所用基础是 Gamma 正实积分、常微分方程、Fourier 反演及 Plancherel。标准记法与更广泛的复参数公式可查 \cite[Chapter 10]{NationalInstituteofStandardsNIST}；本附录明确限定固定实阶渐近和几何阶数的 Hankel 酉性，不把这些证明误当作任意复阶或阶数同时增长时的统一估计。
+
+\input{Appendices/AppendixA/SectionA201}
+\input{Appendices/AppendixA/SectionA202}
+\input{Appendices/AppendixA/SectionA203}
+
+\begin{chaptersummary}
+Bessel 级数确定原点附近的正则支，积分表示把其大参数行为化为两个端点的振荡叠加；第二类解由无穷远的正弦相位归一化，并与第一类解组成基本解组。球面角积分固定了径向 Fourier 公式中的阶数和常数，Hankel 变换则是在适当幂权与测度下的一维表达。
+
+\ProseParagraphBreak
+
+Bochner--Riesz 核的衰减同时记录球面曲率和频率边界的消失阶。绝对可积时可直接用 Young 不等式与近似恒等理论；不可积时仍可能依靠振荡得到 \(L^p\) 有界性。判断具体结论时，应把归一化、积分测度、参数范围和收敛意义一并保留。
+\end{chaptersummary}
+\BookExercises
+
+下列题目均为本书自拟，围绕具体积分、零点、径向维数变化及演化问题组织。
+
+% 自拟：渐近给出无穷零点，ODE排除重零点。
+\begin{exercise}\label{b2:ex:A2-zeros}
+设 \(\nu\ge0\)。证明 \(J_\nu\) 有无穷多个正零点，每个正零点均为单零点，而且 \(J_\nu\) 与 \(J_{\nu+1}\) 不共享正零点。
+\end{exercise}
+\begin{solution}
+在余弦相位等于整数倍 \(\pi\) 的充分大点上，渐近主项交替正负，余项比主幅小一个 \(r^{-1}\) 因子，因此每对相邻点间至少有一个零点。若正点同时满足 \(J_\nu=J_\nu'=0\)，普通初值唯一性使该解在正半轴恒为零，与原点首项矛盾，故零点简单。导数公式给出 \(J_\nu'=\nu J_\nu/r-J_{\nu+1}\)；若两个相邻阶数共享正零点，也会迫使导数为零，矛盾。
+\end{solution}
+
+% 自拟：不同Bessel零点的正交和范数，包含参数微分。
+\begin{exercise}\label{b2:ex:A2-bessel-orthogonality}
+设 \(\nu\ge0\)，\(j\ne k\) 是 \(J_\nu\) 的两个正零点。证明
+\[\int_0^1rJ_\nu(jr)J_\nu(kr)\,\mathrm dr=0,\qquad
+ \int_0^1rJ_\nu(jr)^2\,\mathrm dr=\tfrac12J_{\nu+1}(j)^2.\]
+\end{exercise}
+\begin{solution}
+令 \(L_\nu v=-(rv')'+\nu^2v/r\)。函数 \(v_\lambda(r)=J_\nu(\lambda r)\) 满足 \(L_\nu v_\lambda=\lambda^2rv_\lambda\)。交叉相乘相减并积分，边界项在 \(r=1\) 由两个零点消失，在 \(r=0\) 由级数首项及下一项消失，得 \((j^2-k^2)\int rv_jv_k=0\)。再对参数 \(\lambda\) 求导，记 \(w=\partial_\lambda v_\lambda\)，则 \(L_\nu w=\lambda^2rw+2\lambda rv_\lambda\)。与原方程作同样的 Green 相减，在 \(\lambda=j\) 时得到 \(2j\int rv_j^2=jJ_\nu'(j)^2\)。前题递推式给出 \(J_\nu'(j)=-J_{\nu+1}(j)\)，即范数公式。参数微分和原点边界项均由局部一致收敛级数保证。
+\end{solution}
+
+% 自拟：球面二阶矩与变换的低频展开。
+\begin{exercise}\label{b2:ex:A2-sphere-moment}
+设 \(\sigma\) 为单位球面面积测度。求 \(\int\omega_i\omega_j\,\mathrm d\sigma\)，并由此证明
+\[\widehat\sigma(\xi)=|S^{d-1}|\left(1-\frac{2\pi^2}{d}|\xi|^2+O(|\xi|^4)\right).\]
+\end{exercise}
+\begin{solution}
+反射对称性使不同指标的积分为零，旋转对称性使对角项相等；它们的和是 \(\int|\omega|^2\,\mathrm d\sigma=|S^{d-1}|\)，故每项为球面积除以 \(d\)。将指数展开到三阶，奇次项积分为零，二次项为 \(-2\pi^2\int(\omega\cdot\xi)^2=-2\pi^2|S^{d-1}||\xi|^2/d\)。球面紧致，四阶余项可统一积分。也可用 \(J_{d/2-1}\) 的前两项核对常数。
+\end{solution}
+
+% 自拟：Hankel变换下的带幂高斯。
+\begin{exercise}\label{b2:ex:A2-gaussian}
+设 \(a>0\)、\(\nu>-1\)、\(s>0\)。直接证明
+\[\int_0^\infty e^{-ar^2}r^{\nu+1}J_\nu(sr)\,\mathrm dr
+ =\frac{s^\nu}{(2a)^{\nu+1}}e^{-s^2/(4a)}.\]
+\end{exercise}
+\begin{solution}
+把级数代入。第 \(k\) 项所需的高斯矩是 \(\tfrac12a^{-k-\nu-1}\Gamma(k+\nu+1)\)，与 Bessel 分母相消。因此积分级数等于 \(s^\nu(2a)^{-\nu-1}\sum_{k\ge0}(-s^2/(4a))^k/k!\)。绝对值积分级数也收敛，因为它对应正指数级数 \(e^{s^2/(4a)}\)，故 Fubini 合法。求和即得结论。
+\end{solution}
+
+% 自拟：同一径向剖面在相差二维中的变换。
+\begin{exercise}\label{b2:ex:A2-dimension-raising}
+设光滑紧支集剖面 \(f_0\) 在各维产生径向光滑函数，记其 \(d\) 维变换为 \(F_d(\rho)\)。对 \(d\ge1\)、\(\rho>0\)，证明
+\[F_{d+2}(\rho)=-\frac1{2\pi\rho}F_d'(\rho).\]
+\end{exercise}
+\begin{solution}
+令 \(\nu=d/2-1\)。对径向公式求导，并使用 \(\frac{\mathrm d}{\mathrm d\rho}(\rho^{-\nu}J_\nu(2\pi r\rho))=-2\pi r\rho^{-\nu}J_{\nu+1}(2\pi r\rho)\)，得到 \(F_d'=-4\pi^2\rho^{-\nu}\int f_0(r)J_{\nu+1}(2\pi r\rho)r^{\nu+2}\,\mathrm dr\)。与维数 \(d+2\) 的公式比较即得。紧支撑保证求导与积分交换合法；\(d=1\) 可用半整数表达，结论仍成立。
+\end{solution}
+
+% 自拟：球形频率环带的显式核和缩放。
+\begin{exercise}\label{b2:ex:A2-shell-kernel}
+设 \(0<a<b\)，求乘子 \(\mathbf1_{\{a<|\xi|<b\}}\) 的逆 Fourier 变换，并求其原点值。说明该算子在 \(L^2\) 上为何是正交投影，尽管核会改变符号。
+\end{exercise}
+\begin{solution}
+记 \(K_0\) 为单位频率球核，则所求为 \(b^dK_0(bx)-a^dK_0(ax)\)，即两项已知 Bessel 公式之差。原点值为 \(|B_1|(b^d-a^d)\)。乘子实值且平方等于自身，因此在 Plancherel 识别下对应自伴幂等算子，正是正交投影。核变号与投影性质无关；正交投影的正性指 \(\langle Tf,f\rangle\ge0\)，不是指核逐点非负。
+\end{solution}
+
+% 自拟：小球面平均与Laplace的系数。
+\begin{exercise}\label{b2:ex:A2-small-sphere-average}
+设 \(f\in C^4\) 于 \(x\) 的邻域。证明归一化球面平均满足
+\[\frac1{|S^{d-1}|}\int_{S^{d-1}}f(x+R\omega)\,\mathrm d\sigma
+ =f(x)+\frac{R^2}{2d}\Delta f(x)+O(R^4).\]
+说明在 Fourier 侧相同系数怎样出现。
+\end{exercise}
+\begin{solution}
+对 \(f(x+R\omega)\) 作三阶 Taylor 展开，余项由邻域内四阶导数上界统一控制为 \(O(R^4)\)。奇次项因反射对称消失，二阶项用前题矩公式得到 \(R^2\Delta f/(2d)\)。Fourier 侧的归一化乘子是 \(\widehat\sigma(R\xi)/|S^{d-1}|=1-2\pi^2R^2|\xi|^2/d+O(R^4|\xi|^4)\)，而 \(\Delta\) 的符号为 \(-4\pi^2|\xi|^2\)，两者一致。
+\end{solution}
+
+% 自拟：Hankel谱表示中的径向热演化。
+\begin{exercise}\label{b2:ex:A2-radial-heat}
+设 \(d\ge2\)，\(f\in L^2(\mathbb R^d)\) 径向，\(\nu=d/2-1\)，\(g=r^\nu f_0\)。用 \(\mathcal H_\nu\) 表示初值为 \(f\) 的热演化，并证明其 \(L^2\) 范数不增且当 \(t\downarrow0\) 时回到初值。
+\end{exercise}
+\begin{solution}
+热演化的 Fourier 乘子为 \(e^{-4\pi^2t\rho^2}\)。令 \(s=2\pi\rho\)，径向变换公式给出
+\[u_0(t,r)=r^{-\nu}\mathcal H_\nu\bigl(e^{-ts^2}\mathcal H_\nu g(s)\bigr)(r),\]
+等式按相应 \(L^2\) 意义理解。Hankel 酉性及 \(|e^{-ts^2}|\le1\) 给出带权径向范数不增，乘以公共球面积后就是全空间 \(L^2\) 收缩。由支配收敛，\((e^{-ts^2}-1)\mathcal H_\nu g\to0\) 于 \(L^2(s\,\mathrm ds)\)，再经逆变换得到初值收敛。
+\end{solution}
