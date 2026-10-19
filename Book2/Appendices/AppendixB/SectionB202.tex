@@ -2,70 +2,460 @@
 \section{Legendre 多项式与角向方程}
 \label{b2:sec:B202}
 
-球面上的轴对称函数只依赖极角，令 \(t=\cos\theta\) 后，其微分方程变成带系数 \(1-t^2\) 的一维方程。这个系数在两端为零，反映了球坐标在两极的退化。Legendre 多项式既给出规则解，也形成区间上无权测度的正交基。
+在三维单位球面 \(S^2\) 上，绕固定轴旋转不变的函数只依赖极角。取
+\[
+ \omega(\theta,\varphi)
+ =(\sin\theta\cos\varphi,\sin\theta\sin\varphi,\cos\theta),
+ \quad 0<\theta<\pi,
+\]
+其中 \(\varphi\) 按 \(2\pi\) 周期变化。两个坐标方向正交，
+\(|\partial_\theta\omega|=1\)、\(|\partial_\varphi\omega|=\sin\theta\)，所以面积元为
+\(\sin\theta\,\mathrm d\theta\,\mathrm d\varphi\)。
+光滑轴对称函数 \(U(\omega)=F(\theta)\) 的切向梯度
+\(\nabla_{S^2}U\)，即沿球面切向方向求导所得的梯度，只有极角分量，大小为
+\(|F'(\theta)|\)。对支集离开两极的光滑轴对称测试函数
+\(V(\omega)=G(\theta)\)，沿极角分部积分给出
+\[
+\begin{aligned}
+ \int_{S^2}\nabla_{S^2}U\cdot\overline{\nabla_{S^2}V}\,\mathrm d\sigma
+ &=2\pi\int_0^\pi F'(\theta)\overline{G'(\theta)}
+                       \sin\theta\,\mathrm d\theta\\
+ &=-2\pi\int_0^\pi
+    \frac1{\sin\theta}\frac{\mathrm d}{\mathrm d\theta}
+        \bigl(\sin\theta F'(\theta)\bigr)
+    \overline{G(\theta)}\sin\theta\,\mathrm d\theta.
+\end{aligned}
+\]
+因而轴对称函数的球面 Laplace 表达式是
+\(\dfrac1{\sin\theta}(\sin\theta F')'\)。这一计算只使用球面的长度与面积元，不预设球面上已经有完备的特征函数系。
 
-\subsection{Rodrigues 公式与范数}
+\ProseParagraphBreak
+
+令 \(t=\cos\theta\)、\(F(\theta)=f(t)\)。链式法则给出
+\[
+\begin{aligned}
+ F'(\theta)&=-\sin\theta\,f'(t),\\
+ \frac1{\sin\theta}\frac{\mathrm d}{\mathrm d\theta}
+       \bigl(\sin\theta F'(\theta)\bigr)
+ &=(1-t^2)f''(t)-2tf'(t)
+ =\frac{\mathrm d}{\mathrm dt}\bigl((1-t^2)f'(t)\bigr).
+\end{aligned}
+\]
+因此角向特征方程 \(-\Delta_{S^2}U=\lambda U\) 化为
+\[
+ -\bigl((1-t^2)f'(t)\bigr)'=\lambda f(t),
+ \quad -1<t<1.
+\]
+系数 \(1-t^2\) 在两端为零，反映了极角坐标在两极的退化。
+本节先构造规则的多项式解，再由正交结构求出其特征值
+\(n(n+1)\)，最后证明这些多项式足以展开一般平方可积剖面。它们形成的是区间上无权测度的正交基，因为
+\(\sin\theta\,\mathrm d\theta=-\mathrm dt\)。
+
+\subsection{Legendre 的 Rodrigues 公式与正交基}
 \label{b2:subsec:B20201}
 
-定义 \term[legendre-duoxiangshi]{Legendre 多项式}[Legendre polynomial]
-\[P_n(t)=\frac1{2^nn!}\frac{\mathrm d^n}{\mathrm dt^n}(t^2-1)^n.\]
-它的首系数为 \((2n)!/[2^n(n!)^2]\)，并满足 \(P_n(1)=1\)、\(P_n(-t)=(-1)^nP_n(t)\)。第一个端点值可直接在 \((t-1)^n(t+1)^n\) 的 \(n\) 阶导数中取 \(t=1\)：只有把全部 \(n\) 次微分作用于 \((t-1)^n\) 的项保留下来。
+对实变量 \(t\in\mathbb R\) 和整数 \(n\ge0\)，定义
+\term[legendre-duoxiangshi]{Legendre 多项式}[Legendre polynomial]
+\[
+ P_n(t)\coloneqq
+ \frac1{2^nn!}\frac{\mathrm d^n}{\mathrm dt^n}(t^2-1)^n.
+\]
+选择这个构造有两个理由：微分后的次数恰为 \(n\)，而微分前的多项式在两端各有 \(n\) 阶零点，使连续 \(n\) 次分部积分都没有边界贡献。分母固定了端点归一化，而不只是为了简化记号。
 
+\ProseParagraphBreak
+
+从 \((t^2-1)^n\) 的最高次项 \(t^{2n}\) 可读出
+\[
+ P_n(t)=a_nt^n+\text{低次项},
+ \quad a_n=\frac{(2n)!}{2^n(n!)^2}.
+\]
+原多项式是偶函数，微分 \(n\) 次后有
+\(P_n(-t)=(-1)^nP_n(t)\)。又在
+\((t-1)^n(t+1)^n\) 的 \(n\) 阶导数中取 \(t=1\)，只有把全部
+\(n\) 次微分作用于 \((t-1)^n\) 的项保留下来。其值为
+\(n!2^n\)，故 \(P_n(1)=1\)，并有 \(P_n(-1)=(-1)^n\)。
+
+\Needspace{6\baselineskip}
 \begin{proposition}[Legendre 正交基]
 \label{b2:prop:B2-legendre-orthogonal}
-有
-\[\int_{-1}^1P_n(t)P_m(t)\,\mathrm dt=\frac2{2n+1}\delta_{nm}.\]
-归一化函数 \(\sqrt{(2n+1)/2}\,P_n\) 构成 \(L^2(-1,1)\) 的标准正交基。
+对每个非负整数 \(n\)，令
+\[
+ P_n(t)=\frac1{2^nn!}\frac{\mathrm d^n}{\mathrm dt^n}(t^2-1)^n,
+ \quad -1\le t\le1.
+\]
+则对非负整数 \(n,m\)，
+\[
+ \int_{-1}^1P_n(t)P_m(t)\,\mathrm dt
+ =\frac2{2n+1}\delta_{nm}.
+\]
+归一化函数
+\(e_n(t)\coloneqq\sqrt{(2n+1)/2}\,P_n(t)\)
+构成复 Hilbert 空间 \(L^2((-1,1),\mathrm dt;\mathbb C)\) 的标准正交基。
 \end{proposition}
 \begin{proof}
-对次数小于 \(n\) 的多项式 \(q\)，把 Rodrigues 公式分部积分 \(n\) 次。\((t^2-1)^n\) 在两端具有 \(n\) 阶零点，所以全部边界项为零；最后 \(q^{(n)}=0\)，得到 \(\int P_nq=0\)。这给出不同阶数正交。若 \(q=P_n\)，则 \(P_n^{(n)}=(2n)!/(2^nn!)\)，所以
-\[\int_{-1}^1P_n^2=\frac{(2n)!}{2^{2n}(n!)^2}\int_{-1}^1(1-t^2)^n\,\mathrm dt.
+先设 \(n\ge1\)，并记 \(v_n(t)=(t^2-1)^n\)。
+由于 \(v_n\) 在每个端点都有 \(n\) 阶零点，
+\[
+ v_n^{(j)}(1)=v_n^{(j)}(-1)=0
+ \quad(0\le j<n).
 \]
-附录 A 的 Beta 积分给出后一积分为 \(2^{2n+1}(n!)^2/(2n+1)!\)，于是范数等于 \(2/(2n+1)\)。
+对任意多项式 \(q\)，连续分部积分的边界项可以合写为
+\[
+\begin{aligned}
+ \int_{-1}^1 q\,v_n^{(n)}\,\mathrm dt
+ &=
+ \left[\sum_{j=0}^{n-1}(-1)^j
+      q^{(j)}v_n^{(n-1-j)}\right]_{-1}^1
+ +(-1)^n\int_{-1}^1q^{(n)}v_n\,\mathrm dt\\
+ &=(-1)^n\int_{-1}^1q^{(n)}v_n\,\mathrm dt.
+\end{aligned}
+\]
+这里每个边界项所含 \(v_n\) 的导数阶数都至多为 \(n-1\)，所以全部为零。若 \(\deg q<n\)，则 \(q^{(n)}=0\)，由此得到
+\(\int P_nq=0\)，特别是不同阶数的 \(P_n\) 正交。
 
-由于阶数和首系数不退化，\(P_n\) 张成全部多项式。多项式在 \(C[-1,1]\) 中一致稠密，例如把区间线性变到 \([0,1]\)，使用 Bernstein 多项式；其权重和为 \(1\)，离均值超过 \(\varepsilon\) 的权重总量由方差 \(t(1-t)/N\) 控制，因此一致连续性给出一致逼近。连续函数又在 \(L^2\) 中稠密，故正交系完备。
+若取 \(q=P_n\)，最高次系数给出
+\(P_n^{(n)}=(2n)!/(2^nn!)\)。再用
+\((-1)^nv_n=(1-t^2)^n\)，可得
+\[
+ \int_{-1}^1P_n(t)^2\,\mathrm dt
+ =\frac{(2n)!}{2^{2n}(n!)^2}
+      \int_{-1}^1(1-t^2)^n\,\mathrm dt.
+\]
+令 \(t=2u-1\)，并使用\cref{b2:lem:A2-beta-integral}的正实参数 Beta 公式，
+\[
+\begin{aligned}
+ \int_{-1}^1(1-t^2)^n\,\mathrm dt
+ &=2^{2n+1}\int_0^1u^n(1-u)^n\,\mathrm du\\
+ &=2^{2n+1}\frac{\Gamma(n+1)^2}{\Gamma(2n+2)}
+ =\frac{2^{2n+1}(n!)^2}{(2n+1)!}.
+\end{aligned}
+\]
+代回即得范数 \(2/(2n+1)\)。\(n=0\) 时 \(P_0=1\)，范数为
+\(2\)，也符合公式。
+
+下面证明完备性。由于每个 \(P_n\) 的次数恰为 \(n\)，首系数又非零，依次消去最高次项即可把任意多项式写成有限个
+\(P_n\) 的线性组合。因此只须证明多项式在 \(L^2(-1,1)\) 中稠密。
+
+先证明连续函数的一致逼近。对 \(h\in C[-1,1]\)，令
+\(H(x)=h(2x-1)\)、\(0\le x\le1\)，并对正整数 \(N\) 定义
+\[
+ B_NH(x)=\sum_{k=0}^NH(k/N)b_{N,k}(x),
+ \quad
+ b_{N,k}(x)=\binom Nk x^k(1-x)^{N-k}.
+\]
+二项式公式及其一、二阶导数给出
+\[
+\begin{aligned}
+ &\sum_{k=0}^N b_{N,k}(x)=1,\quad
+   \sum_{k=0}^N k\,b_{N,k}(x)=Nx,\\
+ &\sum_{k=0}^N k(k-1)b_{N,k}(x)=N(N-1)x^2.
+\end{aligned}
+\]
+从而
+\[
+ \sum_{k=0}^N(k/N-x)^2b_{N,k}(x)
+ =\frac{x(1-x)}N\le\frac1{4N}.
+\]
+定义连续模
+\[
+ \omega_H(\varepsilon)
+ =\sup_{\substack{x,y\in[0,1]\\|x-y|\le\varepsilon}}
+       |H(x)-H(y)|.
+\]
+将求和分为 \(|k/N-x|\le\varepsilon\) 与其补集。前者的误差不超过
+\(\omega_H(\varepsilon)\)，后者的总权重不超过
+\(1/(4N\varepsilon^2)\)，于是对 \(0<\varepsilon\le1\)，
+\[
+ \|B_NH-H\|_\infty
+ \le\omega_H(\varepsilon)
+      +\frac{\|H\|_\infty}{2N\varepsilon^2}.
+\]
+例如取 \(\varepsilon=N^{-1/4}\)，右侧为
+\(\omega_H(N^{-1/4})+\|H\|_\infty/(2\sqrt N)\)，由一致连续性趋零。将 \(x\) 换回 \((t+1)/2\)，就得到 \(h\) 的多项式一致逼近。
+
+最后，连续函数在此有限区间的 \(L^2\) 中稠密。具体地，先以有限简单函数逼近给定 \(L^2\) 函数；利用 Lebesgue 测度正则性，把其中每个可测集合的示性函数以有限个区间的示性函数作
+\(L^2\) 逼近，因为二者的平方距离就是对称差的测度。再在各区间端点附近用连续的线性过渡代替跳跃，只在任意小测度的集合上改变取值，便得到连续逼近。结合
+\(\|h-q\|_2\le\sqrt2\,\|h-q\|_\infty\)，得到多项式的
+\(L^2\) 稠密性，因而该正交系完备。
 \end{proof}
 
-前几项为 \(P_0=1\)、\(P_1=t\)、\(P_2=(3t^2-1)/2\)、\(P_3=(5t^3-3t)/2\)。与 Hermite 情形相比，这里区间有限且权重为 \(1\)，归一化常数完全不同。同样叫作“正交多项式”，并不意味着可以交换其积分区间与权重。
+前几项为
+\[
+\begin{aligned}
+ P_0(t)&=1,& P_1(t)&=t,\\
+ P_2(t)&=\frac{3t^2-1}{2},&
+ P_3(t)&=\frac{5t^3-3t}{2}.
+\end{aligned}
+\]
+例如 \(P_2\) 中的常数项恰使其在 \([-1,1]\) 上的积分为零。
+与 Hermite 情形相比，这里区间有限且权重为 \(1\)，归一化常数完全不同。同样叫作正交多项式，并不意味着可以交换其积分区间与权重。
 \symidx{\(P_n(t)\)：满足 \(P_n(1)=1\) 的 Legendre 多项式}
 
 \subsection{微分方程与三项递推}
 \label{b2:subsec:B20202}
 
+Rodrigues 公式负责构造与正交性；角向方程可以从这些正交关系中恢复，而不必把高阶导数全部展开。关键是微分表达式
+\(-((1-t^2)q')'\) 保持有限次多项式空间，而且在多项式之间分部积分时两端没有边界贡献。
+
+\Needspace{6\baselineskip}
 \begin{proposition}[Legendre 方程]
 \label{b2:prop:B2-legendre-equation}
-Legendre 多项式满足
-\[(1-t^2)P_n''-2tP_n'+n(n+1)P_n=0,\]
-以及对 \(n\ge1\) 的递推
-\[(2n+1)tP_n=(n+1)P_{n+1}+nP_{n-1}.
+令
+\(P_n(t)=(2^nn!)^{-1}\frac{\mathrm d^n}{\mathrm dt^n}(t^2-1)^n\)，
+\(n\) 为非负整数。则
+\[
+ (1-t^2)P_n''(t)-2tP_n'(t)+n(n+1)P_n(t)=0.
 \]
+此外，对 \(n\ge1\)，有三项递推
+\[
+ (2n+1)tP_n(t)=(n+1)P_{n+1}(t)+nP_{n-1}(t),
+\]
+而初始关系为 \(tP_0=P_1\)。
 \end{proposition}
 \begin{proof}
-令 \(Lq=-((1-t^2)q')'\)。它把次数不超过 \(n\) 的多项式映到同一空间，并把首项 \(a_nt^n\) 映成首项 \(n(n+1)a_nt^n\)。故 \(Q=LP_n-n(n+1)P_n\) 次数小于 \(n\)。对任意低次多项式 \(q\)，两次分部积分时边界项都由 \(1-t^2=0\) 消失，得 \(\int Qq=\int P_nLq-n(n+1)\int P_nq=0\)。取 \(q=Q\) 得 \(Q=0\)，即微分方程。
+记 \(p(t)=1-t^2\)，并令 \(Lq=-(pq')'\)。
+直接计算单项式得
+\[
+ L(t^k)=k(k+1)t^k-k(k-1)t^{k-2},
+\]
+其中 \(k=0,1\) 时第二项为零。这说明 \(L\) 把次数不超过
+\(n\) 的多项式映入同一空间，且首项 \(a_nt^n\) 的系数变为
+\(n(n+1)a_n\)。因此
+\(Q=LP_n-n(n+1)P_n\) 的次数小于 \(n\)；\(n=0\) 时可直接看出
+\(LP_0=0\)。
 
-展开 \(tP_n\) 于 \(P_0,\ldots,P_{n+1}\)。对 \(m\le n-2\)，\(\int tP_nP_m=\int P_n(tP_m)=0\)，因为 \(tP_m\) 次数小于 \(n\)；奇偶性又排除 \(P_n\) 项。因此只剩 \(P_{n+1}\) 与 \(P_{n-1}\)。比较首系数得前者系数 \((n+1)/(2n+1)\)，在 \(t=1\) 取值使两系数和为 \(1\)，得到后者系数 \(n/(2n+1)\)。
+对任意次数小于 \(n\) 的多项式 \(q\)，两次分部积分给出
+\[
+\begin{aligned}
+ \int_{-1}^1(LP_n)q\,\mathrm dt
+ &=[-pP_n'q]_{-1}^1+\int_{-1}^1pP_n'q'\,\mathrm dt\\
+ &=[p(P_nq'-P_n'q)]_{-1}^1
+       +\int_{-1}^1P_nLq\,\mathrm dt\\
+ &=\int_{-1}^1P_nLq\,\mathrm dt.
+\end{aligned}
+\]
+多项式与其导数在两端均有限，且 \(p(\pm1)=0\)，这才使边界项为零。
+又因 \(\deg Lq<n\)，正交性说明最后的积分为零，并且
+\(\int P_nq=0\)。故 \(\int Qq=0\)。多项式 \(Q\) 为实值，取
+\(q=Q\) 得 \(\int Q^2=0\)，于是 \(Q=0\)，即得微分方程。
+
+再将 \(tP_n\) 展开于 \(P_0,\ldots,P_{n+1}\)。当
+\(m\le n-2\) 时，
+\[
+ \int_{-1}^1tP_nP_m\,\mathrm dt
+ =\int_{-1}^1P_n(tP_m)\,\mathrm dt=0,
+\]
+因为 \(\deg(tP_m)<n\)。奇偶性又使 \(tP_n\) 与 \(P_n\) 正交，因此只剩
+\[
+ tP_n=A_nP_{n+1}+B_nP_{n-1}.
+\]
+比较最高次系数，
+\[
+ A_n=\frac{a_n}{a_{n+1}}=\frac{n+1}{2n+1}.
+\]
+在 \(t=1\) 取值并使用全部 \(P_j(1)=1\)，得到
+\(A_n+B_n=1\)，故 \(B_n=n/(2n+1)\)。这就是所列递推。
 \end{proof}
 
-这个证明没有对 Rodrigues 公式作冗长展开，而是利用对称微分算子保持多项式次数的事实。正交性、微分方程与递推不是三张互不相关的公式表；它们来自同一有限维多项式结构。
+例如取 \(n=1\)，递推给出 \(3t^2=2P_2+1\)；再取 \(n=2\)，得到
+\[
+ tP_2=\frac35P_3+\frac25P_1.
+\]
+因此乘以坐标 \(t\) 只把一个模态送到相邻两个模态。
+这个证明利用了对称微分表达式保持多项式次数的事实。正交性、微分方程与递推来自同一有限维结构，并非三张互不相关的公式表。
 
 \ProseParagraphBreak
 
-方程的端点仍须认真处理。\(n=0\) 时除常数解外，还有 \(\frac12\log((1+t)/(1-t))\)，它在 \(t=\pm1\) 发散。两极对应球面上普通点，平滑角向函数不能容纳这种坐标奇性。因此在球面应用中选择规则的多项式解，是几何正则性而非任意约定。若改在不含端点的子区间求初值问题，第二支完全合法，不能因为它不是多项式就将其删除。
+端点处必须保留刚才实际使用的有界性。以 \(n=0\) 为例，方程
+\((pf')'=0\) 先给出 \(pf'=C\)，再积分得到两个线性无关的解
+\[
+ 1,\quad
+ Q_0(t)=\frac12\log\frac{1+t}{1-t}.
+\]
+第二支在 \(t=\pm1\) 发散，但仍属于 \(L^2(-1,1)\)，因为
+\(\int_0^\varepsilon|\log s|^2\,\mathrm ds<\infty\)。
+其导数满足
+\[
+ p(t)Q_0'(t)=1,\quad
+ \int_{-1}^1p(t)|Q_0'(t)|^2\,\mathrm dt
+ =\int_{-1}^1\frac{\mathrm dt}{1-t^2}=\infty.
+\]
+所以 \(p(\pm1)=0\) 并不意味着 \(pf'\) 在端点趋零；仅要求
+\(f\) 与开区间内的 \(Lf\) 平方可积，也不能排除 \(Q_0\)，因为此时
+\(LQ_0=0\)。若未经检查就把多项式上的分部积分规则用于它，会丢掉非零边界项。
+
+\ProseParagraphBreak
+
+这种现象不只出现在零阶。在 \(t=1\) 的一个小邻域内，
+\(P_n(1)=1\) 保证 \(P_n\ne0\)。将另一个解写成
+\(y=P_nv\)，代入方程并消去 \(LP_n=n(n+1)P_n\)，可得
+\[
+ (pP_n^2v')'=0.
+\]
+于是可取局部第二支
+\[
+ y(t)=P_n(t)\int_{t_0}^t
+          \frac{\mathrm ds}{(1-s^2)P_n(s)^2}.
+\]
+由于 \(P_n(s)=1+O(1-s)\)，被积函数为
+\(\bigl(2(1-s)\bigr)^{-1}+O(1)\)，从而
+\[
+ y(t)=-\frac12\log(1-t)+O(1)
+ \quad(t\uparrow1).
+\]
+它在该端点附近仍平方可积。在 \(-1\) 附近用
+\(P_n(-1)=(-1)^n\) 作同样的局部计算，也得到对数型第二支。
+这段公式只在 \(P_n\) 不为零的端点邻域使用，不跨过其内部零点作无条件积分。
+
+\ProseParagraphBreak
+
+球面上的两极是普通点，平滑角向函数不能容纳这种发散。因此球面应用中的规则性排除了对数支。反之，在不含端点的子区间上求常微分方程初值问题时，第二支完全合法，不能因它不是多项式就删除。若要把
+\(Lf=-((1-t^2)f')'\) 作为 \(L^2(-1,1)\) 中的无界算子，还须给出定义域与端点要求；本节在多项式及下面的 \(C^2[-1,1]\) 函数上使用分部积分，并未把微分表达式本身当成一个已指定的自伴算子。
 
 \subsection{Legendre 展开及其收敛意义}
 \label{b2:subsec:B20203}
 
-对 \(f\in L^2(-1,1)\)，有
-\[f=\sum_{n=0}^\infty c_nP_n,\qquad
- c_n=\frac{2n+1}{2}\int_{-1}^1f(t)P_n(t)\,\mathrm dt,\]
-且 Parseval 等式为 \(\lVert f\rVert_2^2=\sum 2|c_n|^2/(2n+1)\)。这是 \(L^2\) 收敛，不应自动解释为每点或端点的一致收敛。若具有更多光滑性，可以借微分方程把系数中的导数移到 \(f\) 上，取得更快衰减，但须同时核验边界项。
+完备性给出的是 Hilbert 空间展开。对复值
+\(f\in L^2(-1,1)\)，记
+\[
+\begin{aligned}
+ \alpha_n&=\langle f,e_n\rangle
+       =\int_{-1}^1f(t)e_n(t)\,\mathrm dt,\\
+ c_n&=\frac{2n+1}{2}\int_{-1}^1f(t)P_n(t)\,\mathrm dt
+       =\sqrt{\frac{2n+1}{2}}\,\alpha_n.
+\end{aligned}
+\]
+这里 \(P_n,e_n\) 都是实值，故积分中不必另写共轭。
+归一化系数 \(\alpha_n\) 用于直接比较平方能量，系数
+\(c_n\) 则使展开保留 \(P_n(1)=1\) 的常用归一化。二者不能混用同一个 Parseval 常数。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[Legendre 部分和与平方误差]
+\label{b2:prop:B2-legendre-l2-error}
+设 \(f\in L^2((-1,1),\mathrm dt;\mathbb C)\)，
+\(P_n(t)=(2^nn!)^{-1}\frac{\mathrm d^n}{\mathrm dt^n}(t^2-1)^n\)，并令
+\[
+ c_n=\frac{2n+1}{2}\int_{-1}^1f(t)P_n(t)\,\mathrm dt,
+ \quad
+ S_Nf=\sum_{n=0}^Nc_nP_n
+ \quad(N\ge0).
+\]
+则 \(S_Nf\to f\) 于 \(L^2(-1,1)\)，且
+\[
+\begin{aligned}
+ \|f\|_2^2&=\sum_{n=0}^\infty\frac{2|c_n|^2}{2n+1},\\
+ \|f-S_Nf\|_2^2
+ &=\sum_{n>N}\frac{2|c_n|^2}{2n+1}.
+\end{aligned}
+\]
+\(S_Nf\) 是次数至多为 \(N\) 的复多项式中唯一的最佳
+\(L^2\) 逼近。若进一步 \(f\in C^2([-1,1];\mathbb C)\)，记
+\[
+ Lf=-\bigl((1-t^2)f'(t)\bigr)',
+\]
+则对 \(n\ge1\)，
+\[
+ n(n+1)\int_{-1}^1f(t)P_n(t)\,\mathrm dt
+ =\int_{-1}^1Lf(t)P_n(t)\,\mathrm dt,
+\]
+并且对每个 \(N\ge0\)，
+\[
+ \|f-S_Nf\|_2
+ \le\frac{\|Lf\|_2}{(N+1)(N+2)}.
+\]
+\end{proposition}
+\begin{proof}
+由\cref{b2:prop:B2-legendre-orthogonal}，\(e_n\) 是标准正交基，因此
+\(S_Nf=\sum_{n=0}^N\alpha_ne_n\) 的平方范数收敛、Parseval 等式与尾和等式均成立。若 \(q\) 是次数至多为 \(N\) 的多项式，则
+\(S_Nf-q\) 在 \(e_0,\ldots,e_N\) 的张成空间内，而
+\(f-S_Nf\) 与此空间正交。所以
+\[
+ \|f-q\|_2^2
+ =\|f-S_Nf\|_2^2+\|S_Nf-q\|_2^2.
+\]
+这证明最优性，且只有 \(q=S_Nf\) 时第二项为零。
+
+再设 \(f\in C^2[-1,1]\)。\(f,f'\) 在闭区间有界，
+\(P_n,P_n'\) 也是如此。用 \(p=1-t^2\)，实际的分部积分关系为
+\[
+\begin{aligned}
+ \int_{-1}^1(Lf)P_n\,\mathrm dt
+ -\int_{-1}^1f(LP_n)\,\mathrm dt
+ =\left[p(fP_n'-f'P_n)\right]_{-1}^1=0.
+\end{aligned}
+\]
+这里同时消去了含 \(f'\) 与含 \(P_n'\) 的两种边界项。
+利用 \(LP_n=n(n+1)P_n\)，得到所列系数等式。
+
+记 \(\beta_n=\langle Lf,e_n\rangle\)，则对全部 \(n\ge0\)，
+\[
+ \beta_n=n(n+1)\alpha_n.
+\]
+\(n=0\) 时这也成立，因为
+\(\int_{-1}^1Lf=-[pf']_{-1}^1=0\)。
+由于 \(Lf\) 连续而属于 \(L^2\)，Parseval 给出
+\(\sum|\beta_n|^2=\|Lf\|_2^2\)。故
+\[
+\begin{aligned}
+ \|f-S_Nf\|_2^2
+ &=\sum_{n>N}
+      \frac{|\beta_n|^2}{n^2(n+1)^2}\\
+ &\le\frac1{(N+1)^2(N+2)^2}
+      \sum_{n>N}|\beta_n|^2\\
+ &\le\frac{\|Lf\|_2^2}{(N+1)^2(N+2)^2}.
+\end{aligned}
+\]
+开平方即得结论。
+\end{proof}
+
+例如，取 \(f(t)=\operatorname{sgn}t\)，其在 \(t=0\) 的值任意。
+奇偶性给出 \(c_0=0\)，而
+\[
+ c_1=\frac32\int_{-1}^1|t|\,\mathrm dt=\frac32.
+\]
+因此它的最佳一次逼近是 \(S_1f=3t/2\)。由平方尾和，也可直接算出
+\[
+ \|f-S_1f\|_2^2
+ =2-\left(\frac32\right)^2\frac23=\frac12.
+\]
+这是对全部一次多项式的最优结论，不只是某个候选函数的误差计算。
+后续部分和仍在 \(L^2\) 中趋于 \(f\)，但连续多项式不可能在整个闭区间上一致趋于这个有跳跃的函数。平方收敛并不决定每个点，尤其不决定端点处的取值。
 
 \ProseParagraphBreak
 
-例如 \(f\in C^2[-1,1]\) 时，\((1-t^2)f'\) 在两端为零。对 \(n\ge1\)，分部积分给出
-\[n(n+1)\int fP_n=\int Lf\,P_n.\]
-因此归一化系数 \(\langle f,\sqrt{(2n+1)/2}P_n\rangle\) 不超过 \(\lVert Lf\rVert_2/[n(n+1)]\)。如果要反复使用这个等式，就应确认 \(L^jf\) 的端点行为和可积性，而不能只根据“\(f\) 有几阶导数”口头省去条件。
+对于 \(C^2[-1,1]\) 数据，上面的分部积分还逐项给出
+\[
+ |\alpha_n|
+ \le\frac{\|Lf\|_2}{n(n+1)}
+ \quad(n\ge1).
+\]
+截断误差则利用了全部 \(\beta_n\) 的平方和，而不只是把这个单项上界逐项相加，因此得到了
+\(O(N^{-2})\) 的平方范数误差。
+若整数 \(k\ge1\)、\(f\in C^{2k}[-1,1]\)，则
+\(L^jf\in C^{2k-2j}[-1,1]\) 对 \(0\le j\le k\) 成立：
+\(L\) 是二阶微分表达式，其系数在闭区间上为多项式。
+故在每次把 \(L\) 移到 \(f\) 一侧时，\(j<k\) 保证
+\(L^jf\) 及其一阶导数在端点有限，边界项仍由 \(p(\pm1)=0\) 消失。由同一论证得到
+\[
+ \|f-S_Nf\|_2
+ \le\frac{\|L^kf\|_2}{\bigl((N+1)(N+2)\bigr)^k}.
+\]
+这个充分条件明确包含闭区间端点的正则性；不能只说开区间内有若干阶导数，就略去边界行为。
 
 \ProseParagraphBreak
 
-在三维球面上，轴对称函数写成 \(F(\theta)=f(\cos\theta)\)，面积积分为 \(2\pi\int_{-1}^1f(t)\,\mathrm dt\)。因此上述无权 Legendre 展开恰与轴对称球面展开匹配；若错误保留 \(\mathrm d\theta\) 而漏掉 \(\sin\theta\)，就会得到另一种正交问题。
+回到三维球面，轴对称函数
+\(U(\theta,\varphi)=f(\cos\theta)\) 满足
+\[
+\begin{aligned}
+ \int_{S^2}U\,\mathrm d\sigma
+ &=2\pi\int_{-1}^1f(t)\,\mathrm dt,\\
+ \|U\|_{L^2(S^2)}^2
+ &=2\pi\int_{-1}^1|f(t)|^2\,\mathrm dt.
+\end{aligned}
+\]
+因此无权 Legendre 展开恰与轴对称球面展开匹配。若只保留
+\(\mathrm d\theta\) 而漏掉 \(\sin\theta\)，就会改变内积与正交问题。
+本节的逼近结论首先都是 \(L^2\) 结论；下一节将从球谐加法公式独立得到
+\(|P_n(t)|\le1\)，再在\cref{b2:prop:B2-legendre-uniform}中结合系数估计证明
+\(C^2\) 数据的一致收敛与一致误差。那个更强结果不作为本节完备性或平方误差证明的前提。

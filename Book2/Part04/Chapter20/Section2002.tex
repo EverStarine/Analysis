@@ -2,43 +2,434 @@
 \section{极值情形}
 \label{b2:sec:2002}
 
-不等式取等意味着积分分部中的两个向量函数彼此成比例，并且复内积没有产生相位损失。这个条件不是任意 Gaussian 都自动满足；位置和频率的额外相关也会增大乘积。
+Heisenberg 不等式的证明经过两个估计：先取复内积的实部，再用向量 Cauchy--Schwarz。要识别极值函数，必须同时追踪这两步的等号条件。这样得到的微分方程还说明了两种不同的损失：不同方向的宽度不一致会破坏向量比例关系，二次相位则会使位置与频率产生相关。
 
 \subsection{等号情形}
 \label{b2:subsec:200201}
 
-\begin{proposition}\label{b2:thm:20-equality}
-在\cref{b2:thm:20-heisenberg}的假设下取等，当且仅当
+\Needspace{6\baselineskip}
+\begin{proposition}[Heisenberg 等号情形]\label{b2:thm:20-equality}
+设 \(d\geq1\)，\(f\in L^2(\mathbb R^d;\mathbb C)\)、\(\|f\|_2=1\)，且 \(|x|f\)、\(|\xi|\widehat f\) 都属于 \(L^2\)，其中 \(\widehat f\) 为负号 \(2\pi\) 归一化的 Plancherel 变换。定义
 \[
- f(x)=C e^{-\pi a_0|x-a|^2}e^{2\pi\mathrm ib\cdot x},
- \qquad a_0>0,
+ \begin{aligned}
+ a&=\int_{\mathbb R^d}x|f(x)|^2\,\mathrm dx,
+ \quad
+ b=\int_{\mathbb R^d}\xi|\widehat f(\xi)|^2\,\mathrm d\xi,\\
+ \sigma_x^2&=\int_{\mathbb R^d}|x-a|^2\cdot|f(x)|^2\,\mathrm dx,\\
+ \sigma_\xi^2&=\int_{\mathbb R^d}|\xi-b|^2\cdot
+       |\widehat f(\xi)|^2\,\mathrm d\xi.
+ \end{aligned}
 \]
-其中 \(|C|\) 由单位能量确定。
+则 \(\sigma_x\sigma_\xi=d/(4\pi)\)，当且仅当存在 \(a_0>0\) 和常数 \(C\in\mathbb C\)，使
+\[
+ f(x)=C e^{-\pi a_0|x-a|^2}e^{2\pi\mathrm i b\cdot x}
+ \quad
+ |C|=(2a_0)^{d/4}
+\]
+几乎处处成立。
 \end{proposition}
 \begin{proof}
-先将中心移到零。向量 Cauchy–Schwarz 取等与实部取最大同时要求 \(\nabla f=-cxf\)，其中 \(c>0\) 是一个与位置和方向无关的实数。若 \(c=0\)，函数为常数，不可能是单位能量的全空间输入。令 \(h=e^{c|x|^2/2}f\)，在每个有界区域其弱梯度为零。沿坐标线的绝对连续代表，或用局部磨光，说明零弱梯度函数在连通空间上为常数。因此 \(f=C e^{-c|x|^2/2}\)。反向直接求导检验取等，最后恢复平移和调制。
+先把两个中心移到零。令
+\[
+ g(y)=e^{-2\pi\mathrm i b\cdot(y+a)}\cdot f(y+a).
+\]
+平移与调制保持 \(L^2\) 范数，并将位置中心和频率中心分别移到零。有限频率二阶矩保证 \(g\in H^1(\mathbb R^d)\)，且
+\[
+ \||y|g\|_2=\sigma_x,
+ \quad
+ \|\nabla g\|_2=2\pi\sigma_\xi.
+\]
+在复 Hilbert 空间 \(L^2(\mathbb R^d;\mathbb C^d)\) 中，取
+\[
+ X(y)=y\cdot g(y),
+ \quad
+ Y(y)=\nabla g(y),
+ \quad
+ \langle X,Y\rangle
+ =\int_{\mathbb R^d}X(y)\cdot\overline{Y(y)}\,\mathrm dy.
+\]
+这里内积对第一个变量线性。由\cref{b2:lem:20-weighted-smooth-density}，位置权重与弱梯度的平方可积性允许积分分部，得到
+\[
+ \operatorname{Re}\langle X,Y\rangle=-\frac d2.
+\]
+因此 \(X,Y\) 均非零，原不等式恰来自
+\[
+ \frac d2
+ =-\operatorname{Re}\langle X,Y\rangle
+ \leq|\langle X,Y\rangle|
+ \leq\|X\|_2\cdot\|Y\|_2.
+\]
+
+若取等，第二步的等号给出 \(Y=\lambda X\)，其中 \(\lambda\) 是一个常复数。这是整个向量 Hilbert 空间中的线性相关，不是允许每个位置或每个坐标分别选择比例因子。确切地说，令
+\[
+ \lambda=\frac{\langle Y,X\rangle}{\|X\|_2^2},
+\]
+则
+\[
+ \|Y-\lambda X\|_2^2
+ =\|Y\|_2^2-\frac{|\langle X,Y\rangle|^2}{\|X\|_2^2}=0.
+\]
+第一步的等号又要求 \(\langle X,Y\rangle\) 为负实数。由于
+\(\langle X,Y\rangle=\overline\lambda\|X\|_2^2=-d/2\)，存在 \(c>0\)，使
+\[
+ \nabla g(y)=-c\,y\cdot g(y)
+\]
+在弱导数意义下成立。
+
+这个弱方程已经足以确定函数，无须先假设 \(g\) 经典可微。令
+\[
+ u(y)=e^{c|y|^2/2}\cdot g(y).
+\]
+在每个有界球内，指数及其一阶导数有界，故 \(u\in H^1_{\mathrm{loc}}\)，弱乘积公式给出 \(\nabla u=0\)。固定一个球，在稍大的球内将 \(u\) 磨光；所得光滑函数在原球内梯度为零，因此为常数。磨光函数在 \(L^1\) 局部收敛到 \(u\)，这些常数也收敛，因为两个常数之差的 \(L^1\) 范数等于球的体积乘其绝对值。于是 \(u\) 在每个球上几乎处处为常数。取递增的同心球，常数在交叠处一致，得到
+\[
+ g(y)=C e^{-c|y|^2/2}.
+\]
+令 \(a_0=c/(2\pi)\)，再恢复平移与调制，就是所述形式。由
+\[
+ \int_{\mathbb R^d}e^{-2\pi a_0|y|^2}\,\mathrm dy
+ =(2a_0)^{-d/2}
+\]
+和 \(\|g\|_2=1\)，可得 \(|C|=(2a_0)^{d/4}\)。
+
+反过来，所述 Gaussian 具有有限的两个二阶矩。中心化后有
+\(\nabla g=-2\pi a_0\,y g\)，故上面两步估计都取等；它的位置中心为零，频率密度也是关于零对称的 Gaussian。恢复平移与调制后，两中心正是 \(a,b\)，方差乘积仍为 \(d/(4\pi)\)。
 \end{proof}
-若 Gaussian 的指数含有非标量正定矩阵，方向上的宽度不同，向量比例常数无法统一，全维方差乘积一般严格增大。若额外乘二次相位，梯度出现虚数线性项，实部步骤也有损失。
+
+极值族允许任意位置中心、频率中心、整体相位和共同宽度，却不允许不同方向使用不同的宽度。后一个限制来自同一个向量比例常数。下一组计算会把这种限制写成协方差矩阵的关系。
 
 \subsection{Gaussian 函数}
 \label{b2:subsec:200202}
 
-令 \(f_a(x)=C_a e^{-\pi a|x|^2}\)，\(a>0\)，其中 \(C_a=(2a)^{d/4}\) 使能量为一。利用一维 Gaussian 积分对 \(a\) 求导，得到
+先看每个方向宽度相同的情形。对 \(t>0\)，令
 \[
- \sigma_x^2=\dfrac d{4\pi a},\qquad
- \sigma_\xi^2=\dfrac{da}{4\pi}.
+ f_t(x)=(2t)^{d/4}e^{-\pi t|x|^2}.
 \]
-两标准差的乘积恒为 \(d/(4\pi)\)。缩放改变两个宽度，却不改变极值。归一化只影响振幅，不能独自改变不确定程度。
+一维 Gaussian 积分的乘积给出 \(\|f_t\|_2=1\)，而 Gaussian 变换公式给出
+\[
+ \widehat f_t(\xi)
+ =(2t)^{d/4}t^{-d/2}e^{-\pi|\xi|^2/t}
+ =f_{1/t}(\xi).
+\]
+两个密度均为偶函数，故中心为零。为计算方差，对
+\[
+ \int_{\mathbb R}e^{-\pi s u^2}\,\mathrm du=s^{-1/2}
+\]
+关于 \(s>0\) 求导，得到
+\[
+ \int_{\mathbb R}u^2e^{-\pi s u^2}\,\mathrm du
+ =\frac1{2\pi s^{3/2}}.
+\]
+求导的合法性可在任意固定 \(s_0>0\) 的小邻域核验：被积函数导数的绝对值由常数倍
+\(u^2e^{-\pi s_0u^2/2}\) 控制，后者可积。代入 \(s=2t\)，再对其余坐标积分，每个位置坐标的方差都是 \(1/(4\pi t)\)。利用 \(\widehat f_t=f_{1/t}\)，得到
+\[
+ \sigma_x^2=\frac d{4\pi t},
+ \quad
+ \sigma_\xi^2=\frac{dt}{4\pi},
+ \quad
+ \sigma_x\sigma_\xi=\frac d{4\pi}.
+\]
+增大 \(t\) 会缩窄位置密度，同时加宽频率密度；二者的乘积保持不变。
 
-\ProseParagraphBreak
+不同方向的宽度由实对称正定矩阵描述。若非负密度 \(p\) 满足 \(\int p=1\)、\(\int xp=0\) 及 \(\int|x|^2p(x)\,\mathrm dx<\infty\)，它的\term[xiefangcha-juzhen]{协方差矩阵}[covariance matrix]是
+\(\int xx^{\mathsf T}p(x)\,\mathrm dx\)：对角元记录各坐标的方差，非对角元记录位置坐标之间的相关。这里的矩阵与稍后涉及位置和频率的相关量用途不同。
 
-更一般的 \(e^{-\pi x^{\mathsf T}Ax}\) 具有位置协方差 \((4\pi)^{-1}A^{-1}\) 和频率协方差 \((4\pi)^{-1}A\)，其中 \(A\) 实对称正定。全方差的乘积平方为 \((16\pi^2)^{-1}\operatorname{tr}A\cdot\operatorname{tr}A^{-1}\)，其下界由正特征值的 Cauchy–Schwarz 给出，等号恰在所有特征值相等时成立。这个例子把方向偏好与整体尺度区分开来。
+\Needspace{6\baselineskip}
+\begin{proposition}[Gaussian 的协方差]\label{b2:prop:20-gaussian-covariance}
+设 \(d\geq1\)，\(A\) 是 \(d\times d\) 实对称正定矩阵，令
+\[
+ f_A(x)=\det(2A)^{1/4}e^{-\pi x^{\mathsf T}Ax},
+ \quad
+ x\in\mathbb R^d.
+\]
+则 \(f_A\) 的 \(L^2\) 范数为一，其负号 \(2\pi\) 归一化 Fourier 变换为
+\[
+ \widehat f_A(\xi)
+ =\det(2A)^{1/4}(\det A)^{-1/2}
+       e^{-\pi\xi^{\mathsf T}A^{-1}\xi}.
+\]
+位置中心和频率中心均为零，协方差矩阵满足
+\[
+ \begin{aligned}
+ \Sigma_x
+ &\coloneqq\int_{\mathbb R^d}xx^{\mathsf T}|f_A(x)|^2\,\mathrm dx
+ =\frac1{4\pi}A^{-1},\\
+ \Sigma_\xi
+ &\coloneqq\int_{\mathbb R^d}\xi\xi^{\mathsf T}
+                |\widehat f_A(\xi)|^2\,\mathrm d\xi
+ =\frac1{4\pi}A.
+ \end{aligned}
+\]
+因而总方差满足
+\[
+ \sigma_x^2\sigma_\xi^2
+ =\frac{\operatorname{tr}A\cdot\operatorname{tr}A^{-1}}{16\pi^2}
+ \geq\frac{d^2}{16\pi^2},
+\]
+等号当且仅当 \(A=tI\)，其中 \(t>0\)。
+\end{proposition}
+\begin{proof}
+实对称矩阵的正交对角化给出
+\[
+ A=O^{\mathsf T}\Lambda O,
+ \quad
+ \Lambda=\operatorname{diag}(\lambda_1,\ldots,\lambda_d),
+ \quad
+ \lambda_j>0,
+ \quad
+ O^{\mathsf T}O=I.
+\]
+在变量 \(y=Ox\) 下，Lebesgue 测度不变，二次型成为
+\(\sum_j\lambda_jy_j^2\)。故
+\[
+ \int_{\mathbb R^d}e^{-2\pi x^{\mathsf T}Ax}\,\mathrm dx
+ =\prod_{j=1}^d(2\lambda_j)^{-1/2}
+ =\det(2A)^{-1/2},
+\]
+这正好解释归一化因子的选择。
+
+Fourier 积分绝对收敛。在同一换元下，\(x\cdot\xi=y\cdot(O\xi)\)，所以逐坐标应用一维 Gaussian 变换公式，得到
+\[
+ \begin{aligned}
+ \int_{\mathbb R^d}
+ e^{-\pi x^{\mathsf T}Ax}e^{-2\pi\mathrm i x\cdot\xi}\,\mathrm dx
+ &=\prod_{j=1}^d
+   \left[\lambda_j^{-1/2}
+   e^{-\pi(O\xi)_j^2/\lambda_j}\right]\\
+ &=(\det A)^{-1/2}e^{-\pi\xi^{\mathsf T}A^{-1}\xi}.
+ \end{aligned}
+\]
+乘回振幅即得变换公式；其振幅也等于
+\(\det(2A^{-1})^{1/4}\)，因此 \(\widehat f_A=f_{A^{-1}}\)。
+
+在 \(y\) 坐标中，位置密度是
+\[
+ \prod_{j=1}^d
+ \left[(2\lambda_j)^{1/2}e^{-2\pi\lambda_jy_j^2}\right].
+\]
+每个因子积分为一且为偶函数，因此一阶矩及不同坐标之间的混合二阶矩为零。前面的矩计算给出第 \(j\) 个对角元为 \(1/(4\pi\lambda_j)\)。换回 \(x=O^{\mathsf T}y\)，得到
+\[
+ \Sigma_x
+ =\frac1{4\pi}O^{\mathsf T}\Lambda^{-1}O
+ =\frac1{4\pi}A^{-1}.
+\]
+将同一公式用于 \(\widehat f_A=f_{A^{-1}}\)，便得到
+\(\Sigma_\xi=(4\pi)^{-1}A\)。
+
+总方差等于协方差矩阵的迹，故只需估计
+\[
+ \left(\sum_{j=1}^d\lambda_j\right)
+ \cdot
+ \left(\sum_{j=1}^d\lambda_j^{-1}\right)
+ \geq
+ \left(\sum_{j=1}^d
+       \sqrt{\lambda_j}\cdot\lambda_j^{-1/2}\right)^2
+ =d^2.
+\]
+这是有限维 Cauchy--Schwarz；等号要求两个正向量
+\((\sqrt{\lambda_j})_j\) 与 \((\lambda_j^{-1/2})_j\) 成比例，即所有 \(\lambda_j\) 相同。正交对角化随即给出 \(A=tI\)。
+\end{proof}
+
+例如在二维取 \(A=\operatorname{diag}(t,t^{-1})\)，则
+\[
+ \Sigma_x=\frac1{4\pi}
+ \begin{pmatrix}t^{-1}&0\\0&t\end{pmatrix},
+ \quad
+ \Sigma_\xi=\frac1{4\pi}
+ \begin{pmatrix}t&0\\0&t^{-1}\end{pmatrix},
+ \quad
+ \sigma_x\sigma_\xi=\frac{t+t^{-1}}{4\pi}.
+\]
+每一个坐标方向都达到自己的一维下界，但全维下界 \(1/(2\pi)\) 只有在 \(t=1\) 时达到。原因是求总方差时先分别相加，再取乘积：一个方向在位置上窄、另一个方向在频率上窄，并不能让两个总方差同时最小。
+
+再看二次相位。它不改变位置密度，却会改变弱导数，因而改变频率方差。一维中可以保留复配对的虚部，得到精确记录这一增量的不等式。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[含相关项的不确定性不等式]\label{b2:prop:20-correlated-uncertainty}
+设 \(f\in L^2(\mathbb R;\mathbb C)\)、\(\|f\|_2=1\)，且 \(xf\)、\(\xi\widehat f\in L^2\)，其中 \(\widehat f\) 为负号 \(2\pi\) 归一化的 Plancherel 变换。令
+\[
+ \begin{aligned}
+ a&=\int_{\mathbb R}x|f(x)|^2\,\mathrm dx,
+ \quad
+ b=\int_{\mathbb R}\xi|\widehat f(\xi)|^2\,\mathrm d\xi,\\
+ \sigma_x^2&=\int_{\mathbb R}(x-a)^2|f(x)|^2\,\mathrm dx,\\
+ \sigma_\xi^2&=\int_{\mathbb R}(\xi-b)^2
+                    |\widehat f(\xi)|^2\,\mathrm d\xi.
+ \end{aligned}
+\]
+有限频率二阶矩使弱导数 \(f'\) 属于 \(L^2\)。定义
+\[
+ Df=\frac1{2\pi\mathrm i}f',
+ \quad
+ \kappa=\operatorname{Re}\int_{\mathbb R}
+       (x-a)\cdot f(x)\,\overline{(D-b)f(x)}\,\mathrm dx.
+\]
+则
+\[
+ \sigma_x^2\sigma_\xi^2
+ \geq\kappa^2+\frac1{16\pi^2}.
+\]
+等号当且仅当存在 \(a_0>0\)、\(c\in\mathbb R\) 及常数 \(C\in\mathbb C\)，使
+\[
+ f(x)=C e^{-\pi(a_0+\mathrm ic)(x-a)^2}
+           e^{2\pi\mathrm i bx},
+ \quad
+ |C|=(2a_0)^{1/4}
+\]
+几乎处处成立。对这些函数，
+\[
+ \sigma_x^2=\frac1{4\pi a_0},
+ \quad
+ \sigma_\xi^2=\frac{a_0^2+c^2}{4\pi a_0},
+ \quad
+ \kappa=-\frac{c}{4\pi a_0}.
+\]
+\end{proposition}
+\begin{proof}
+令 \(g(y)=e^{-2\pi\mathrm i b(y+a)}\cdot f(y+a)\)。它的两个中心为零，且
+\[
+ \|yg\|_2=\sigma_x,
+ \quad
+ \|Dg\|_2=\sigma_\xi,
+ \quad
+ \operatorname{Re}\int_{\mathbb R}yg\,\overline{Dg}\,\mathrm dy
+ =\kappa.
+\]
+第二个等式使用 Plancherel 和 \(\widehat{Dg}(\xi)=\xi\widehat g(\xi)\)。所有配对都由 Cauchy--Schwarz 绝对可积。设
+\[
+ I=\int_{\mathbb R}y\cdot g(y)\cdot\overline{g'(y)}\,\mathrm dy.
+\]
+对 \(g\) 应用\cref{b2:lem:20-weighted-smooth-density}的一维情形，得到 \(\operatorname{Re}I=-1/2\)。注意复共轭会改变 \(D\) 中虚数因子的符号，因此
+\[
+ J\coloneqq\int_{\mathbb R}yg\,\overline{Dg}\,\mathrm dy
+ =\frac{\mathrm i}{2\pi}I
+ =\kappa-\frac{\mathrm i}{4\pi}.
+\]
+对 \(yg\) 和 \(Dg\) 应用复 Cauchy--Schwarz，得到
+\[
+ \kappa^2+\frac1{16\pi^2}
+ =|J|^2
+ \leq\|yg\|_2^2\cdot\|Dg\|_2^2
+ =\sigma_x^2\sigma_\xi^2.
+\]
+
+由于 \(\operatorname{Im}J\neq0\)，两个向量均非零，等号当且仅当存在常复数 \(z\)，使 \(Dg=z\,yg\)。此时
+\[
+ \overline z\,\sigma_x^2=J
+ =\kappa-\frac{\mathrm i}{4\pi},
+ \quad
+ \operatorname{Re}z=\frac{\kappa}{\sigma_x^2},
+ \quad
+ \operatorname{Im}z=\frac1{4\pi\sigma_x^2}>0.
+\]
+将 \(z=-c+\mathrm i a_0\) 写开，其中 \(a_0>0\)、\(c\in\mathbb R\)，弱微分方程变成
+\[
+ g'(y)=2\pi\mathrm i z\,y\cdot g(y).
+\]
+在每个有界区间中乘以光滑函数 \(e^{-\pi\mathrm i zy^2}\)，弱乘积公式说明 \(e^{-\pi\mathrm i zy^2}\cdot g(y)\) 的弱导数为零。用\cref{b2:thm:20-equality}证明中的局部磨光论证识别常数，得到
+\[
+ g(y)=C e^{\pi\mathrm i zy^2}
+     =C e^{-\pi(a_0+\mathrm ic)y^2}.
+\]
+单位范数给出 \(|C|=(2a_0)^{1/4}\)，恢复中心后即得所述形式。
+
+反过来，对这个归一化 Gaussian，
+\[
+ Dg=(-c+\mathrm i a_0)\,yg,
+ \quad
+ |g(y)|^2=(2a_0)^{1/2}e^{-2\pi a_0y^2}.
+\]
+其位置中心为零；由 Plancherel，
+\[
+ \int_{\mathbb R}\xi|\widehat g(\xi)|^2\,\mathrm d\xi
+ =\int_{\mathbb R}Dg(y)\cdot\overline{g(y)}\,\mathrm dy
+ =(-c+\mathrm i a_0)\int_{\mathbb R}y|g(y)|^2\,\mathrm dy=0.
+\]
+位置矩计算给出 \(\sigma_x^2=1/(4\pi a_0)\)。再取 \(Dg\) 的平方范数及它与 \(yg\) 的配对，得到
+\[
+ \sigma_\xi^2
+ =|{-c+\mathrm i a_0}|^2\cdot\sigma_x^2
+ =\frac{a_0^2+c^2}{4\pi a_0},
+ \quad
+ \kappa=-c\,\sigma_x^2=-\frac{c}{4\pi a_0}.
+\]
+这三个量满足所述等式。平移与调制恢复 \(a,b\)，不改变这些中心化量，证明完成。
+\end{proof}
+
+因此带二次相位的 Gaussian 都使加强式取等，而原来的 Heisenberg 下界还要求 \(\kappa=0\)，即 \(c=0\)。这里的相关量由两个 \(L^2\) 向量的复配对定义；位置密度和频率密度各在自己的变量空间中，不能把它们相乘来代替这个配对。
 
 \subsection{Fourier 自对偶性}
 \label{b2:subsec:200203}
 
-在本卷归一化下，\(e^{-\pi|x|^2}\) 的 Fourier 变换仍是它自身。一般 \(a\) 则变成 \(a^{-d/2}e^{-\pi|\xi|^2/a}\)：只有宽度参数 \(a=1\) 同时数值自对偶，其他 Gaussian 仍然是测不准极值。
+本卷归一化下，\(e^{-\pi|x|^2}\) 的 Fourier 变换仍为自身。上面的归一化族满足 \(\widehat f_t=f_{1/t}\)，所以 \(t=1\) 恰是这个族的自对偶宽度；但每个 \(t>0\) 都是 Heisenberg 极值。自对偶要求变换前后函数相同，极值只要求位置与频率宽度的乘积最小，这两个条件并不等价。
 
-\ProseParagraphBreak
+反方向的区别也可用一个显式函数看到。只在一维，记 \(q(x)=e^{-\pi x^2}\)。它属于 Schwartz 空间且 \(\widehat q=q\)，故可逐次微分 Fourier 积分，得到
+\[
+ \widehat{x^nq}(\xi)
+ =\left(\frac{\mathrm i}{2\pi}\right)^n q^{(n)}(\xi).
+\]
+对 \(q\) 求二阶和四阶导数，可直接算得
+\[
+ \begin{aligned}
+ \widehat{x^2q}(\xi)
+ &=\left(\frac1{2\pi}-\xi^2\right)q(\xi),\\
+ \widehat{x^4q}(\xi)
+ &=\left(\xi^4-\frac3\pi\xi^2+\frac3{4\pi^2}\right)q(\xi).
+ \end{aligned}
+\]
+因此对
+\[
+ H(x)=(16\pi^2x^4-24\pi x^2+3)e^{-\pi x^2},
+\]
+有
+\[
+ \begin{aligned}
+ \widehat H(\xi)
+ &=\left[
+ 16\pi^2\left(\xi^4-\frac3\pi\xi^2+\frac3{4\pi^2}\right)
+ -24\pi\left(\frac1{2\pi}-\xi^2\right)+3
+ \right]q(\xi)\\
+ &=(16\pi^2\xi^4-24\pi\xi^2+3)q(\xi)=H(\xi).
+ \end{aligned}
+\]
+这里的自对偶性由两次多项式计算得到，不需要预先使用 Fourier 变换的特征函数理论。
 
-Fourier 自对偶也不能反向刻画所有测不准极值，更不能断言任意自对偶函数都是 Gaussian。例如 Hermite 系列的某些高阶项具有变换特征值一，却有更大的方差。极值由微分比例条件决定，自对偶只给出一个谱对称。两种问题的假设和结论不同。
+还可以把它的方差完全算出。设
+\[
+ M_n=\int_{\mathbb R}x^{2n}e^{-2\pi x^2}\,\mathrm dx.
+\]
+Gaussian 衰减使分部积分的边界项为零，对 \(n\geq1\) 有
+\[
+ 0=\int_{\mathbb R}
+ \frac{\mathrm d}{\mathrm dx}
+ \left(x^{2n-1}e^{-2\pi x^2}\right)\,\mathrm dx
+ =(2n-1)M_{n-1}-4\pi M_n.
+\]
+结合 \(M_0=1/\sqrt2\)，这给出
+\[
+ M_n=\frac{(2n-1)!!}{(4\pi)^n\sqrt2},
+\]
+其中 \(n=0\) 时的空乘积取一。平方多项式为
+\[
+ (16\pi^2x^4-24\pi x^2+3)^2
+ =256\pi^4x^8-768\pi^3x^6
+   +672\pi^2x^4-144\pi x^2+9.
+\]
+逐项代入上述矩公式，得到
+\[
+ \|H\|_2^2=12\sqrt2,
+ \quad
+ \int_{\mathbb R}x^2|H(x)|^2\,\mathrm dx
+ =\frac{27\sqrt2}{\pi}.
+\]
+于是归一化函数
+\begin{equation}\label{b2:eq:20-nongaussian-selfdual}
+ h(x)=\frac{(16\pi^2x^4-24\pi x^2+3)e^{-\pi x^2}}
+             {\sqrt{12\sqrt2}}
+\end{equation}
+满足 \(\widehat h=h\) 和 \(\|h\|_2=1\)。它是偶函数，两中心为零；自对偶性又使两个方差相同，故
+\[
+ \sigma_x^2=\sigma_\xi^2=\frac9{4\pi},
+ \quad
+ \sigma_x\sigma_\xi=\frac9{4\pi}>\frac1{4\pi}.
+\]
+多项式在 \(x=0\) 时为正，在 \(x^2=3/(4\pi)\) 时为负，故 \(h\) 有零点并变号，不属于前述非零 Gaussian 极值族。这个例子把自对偶与极值的区别具体化：Fourier 变换保持函数本身，并不保证这个函数已经具有最小的方差乘积。

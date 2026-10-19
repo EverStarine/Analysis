@@ -3,112 +3,382 @@
 \label{b2:app:H}
 
 \begin{chapterabstract}
-粗糙系数使微分方程的逐项求导失效，截断测试却仍能把椭圆性转化为能量不等式。本附录接续第十六章，完整推导 Moser 正幂迭代，说明它与 De Giorgi 截断及 Harnack 不等式的不同作用；随后在具有 \(p\) 次增长的散度型方程中建立截断估计、局部有界性、比较原理和变分存在性。径向解展示退化、奇异与尺度变化，使线性低正则理论与非线性能量方法具有明确的接点。
+可测系数通常不能逐项求导，非线性通量的线性化也可能在零梯度处退化。弱形式仍保留一个可用的结构：把解的截断或适当幂函数作为测试，通量的正性就转化为能量控制。本附录先补齐线性齐次方程从 Moser 上界、对数能量到 Harnack 比较的证明，再建立一般 \(p\) 次增长通量的截断估计与局部有界性。在具有凸势的加权 \(p\)-Laplace 模型中，直接法、单调性和序结构分别给出存在、唯一、比较与稳定性。最后用径向解和点源说明穿孔域方程、分布通量与自然能量解的区别。
 \end{chapterabstract}
+
 \begin{learninggoals}
 \begin{itemize}
-\item\label{b2:item:H2-goal-test}选择合法的截断与幂函数测试，逐项追踪梯度能量及截断误差。
-\item\label{b2:item:H2-goal-iteration}区分局部上界、正解比较和振荡衰减，不把正幂迭代单独误认作 Harnack 证明。
-\item\label{b2:item:H2-goal-p}核验 \(p\)-Laplace 方程的弱形式、增长条件、单调性和自然函数空间。
-\item\label{b2:item:H2-goal-variation}以直接法构造非线性 Dirichlet 解，并用严格单调性证明唯一性和比较性。
+\item\label{b2:item:H2-goal-test}说明截断、幂函数和倒数测试的合法性，分清当前可积性与本轮估计新得到的可积性。
+\item\label{b2:item:H2-goal-iteration}串联局部上界、对数平均振荡与正负小幂，证明线性 Harnack 比较，并辨认它与 Hölder 正则性的接口。
+\item\label{b2:item:H2-goal-p}检查非线性通量的增长、强制和单调性，追踪缩放后的方程与能量指数。
+\item\label{b2:item:H2-goal-variation}在明确的边界类和源项对偶空间中构造变分解，并用比较、稳定性和径向点源检验结论的范围。
 \end{itemize}
 \end{learninggoals}
 
-一块材料的导热系数可以跨界面跳跃，非线性介质的通量也可能随梯度大小改变。在这两种情况下，把方程微分一次都会引入尚不存在或失去一致控制的系数。弱形式所保留的积分结构反而更稳定：把解的截断放回测试位置，通量与梯度之间的正性便成为一个局部能量界。
+一块材料的导热系数可以跨界面跳跃，非线性介质的通量也可能随梯度大小变化。前一种问题不允许对系数随意微分，后一种问题则不允许把不同解相加后仍当作解。两者却都保留了弱形式：测试函数的梯度与通量配对，而通量沿解梯度的分量具有正的能量下界。以下从这个共同结构出发，分别说明还能取得哪些结论。
 
 \ProseParagraphBreak
+本附录只处理实值标量方程。\chapref{b2:ch:15}的能量解与\chapref{b2:ch:16}的可测系数局部估计提供先修；Sobolev 链式法则、Poincaré 不等式及临界嵌入按各处需要恢复具体形式。线性 Harnack 的证明还使用\secref{b2:sec:app-C-2}已证的局部 John--Nirenberg 指数尾。该结果由立方体停止分解建立，不依赖这里的椭圆正则性，所以这条证明路线没有循环。
 
-本附录采用实值标量方程。第十六章已给出线性截断迭代及由 Harnack 推出 Hölder 连续的论证，这里以幂迭代和 \(p\) 次能量作补充。非线性势论的更广范围可参阅 \cite{Heinonen2006Nonlinear}；本文使用的增长、单调性与变分论证均在下文展开，未把一般退化方程的 Harnack 理论当作已经证明的工具。
+\ProseParagraphBreak
+两节的职责不同。第一节补全第十六章所述的线性正解比较；正幂迭代只能得到上界，必须再连接负幂平均才能控制下界。第二节从一般通量的局部能量估计转到一个有凸势的边值模型；局部上界只需增长和强制条件，唯一性另需比较两个梯度的单调性，极小化存在性又需要能量结构。\cite{Heinonen2006Nonlinear}提供非线性势论的进一步阅读方向，本附录不会把一般非线性 Harnack 或梯度正则性作为已经建立的结论。
 
 \input{Appendices/AppendixH/SectionH201}
 \input{Appendices/AppendixH/SectionH202}
 
 \begin{chaptersummary}
-一致椭圆性不要求系数可微，因而 Caccioppoli 估计、截断测试与幂迭代可以越过经典微分法的正则性限制。正幂迭代提高可积指数并给出局部上界；连接上界和正下界还需要额外的正性传播，这是完整 Harnack 理论中的实质步骤。
+弱形式中的截断测试先把通量的正性变成局部能量界，再由 Sobolev 增益推动迭代。在线性齐次方程中，正幂上界、对数能量、指数尾和倒数次解各有职责：它们依次提供上界、平均振荡控制、正负平均连接和下界，最终得到不要求系数可微的 Harnack 比较。
+
+\ProseParagraphBreak
+非线性问题还须分清局部估计、边值可解性与精细正则性。\(p\) 次增长支持截断迭代，凸能量支持直接法，定量单调性则控制唯一性与源项稳定性。径向通量和点值测试说明，原点处连续不等于原点处齐次：点源的强度由球面通量决定，而它能否进入自然对偶空间由 \(p\) 与维数的关系决定。一般非线性正解比较和梯度理论仍需在这些工具之后继续建立。
+\end{chaptersummary}
+
+\BookExercises
+
+以下八题为本书自拟，分别考察边界类、缩放、障碍约束、点源以及非线性解算子的性质。题中的函数、测试函数和对偶泛函均取实值。
+
+% 自拟：径向通量的边界归一化，并以迹和严格单调性排除非径向解。
+\Needspace{6\baselineskip}
+\begin{exercise}\label{b2:ex:H2-annulus}
+设 \(d\ge2\)、\(1<p<\infty\)、\(0<a<b\)，并令
+\(\Omega=\{\,x\in\mathbb R^d\mid a<|x|<b\,\}\)。给定 \(A,B\in\mathbb R\)，求 \(\Omega\) 中径向的弱 \(p\)-调和函数，其内、外边界迹分别为常数 \(A,B\)。证明所得函数在所有具有这两个边界迹的 \(W^{1,p}(\Omega)\) 弱解中唯一；竞争者不必径向。
+\end{exercise}
+\begin{solution}
+径向解 \(u(x)=U(|x|)\) 的通量守恒要求
+\(r^{d-1}|U'(r)|^{p-2}U'(r)\) 为常数。因此先令
+\[
+ I=\int_a^b t^{-(d-1)/(p-1)}\,\mathrm dt,
+ \quad
+ U(r)=A+\frac{B-A}{I}\int_a^r t^{-(d-1)/(p-1)}\,\mathrm dt.
+\]
+这里 \(I>0\)，且 \(U(a)=A\)、\(U(b)=B\)。当 \(p\ne d\) 时，记 \(\gamma=(p-d)/(p-1)\)，积分给出
+\[
+ U(r)=A+(B-A)\frac{r^\gamma-a^\gamma}{b^\gamma-a^\gamma}.
+\]
+当 \(p=d\) 时，相应公式为
+\[
+ U(r)=A+(B-A)\frac{\log(r/a)}{\log(b/a)}.
+\]
+这些公式也包含 \(A=B\) 的常值情形。
+
+令 \(c=(B-A)/I\)。由 \(U'(r)=cr^{-(d-1)/(p-1)}\)，有
+\[
+ r^{d-1}|U'(r)|^{p-2}U'(r)=|c|^{p-2}c.
+\]
+环域离开原点，故 \(u\) 在闭环域上光滑，属于 \(W^{1,p}(\Omega)\)，其迹就是上述边界值。非恒定情形的梯度不为零，径向散度公式给出 \(\Delta_pu=0\)；常值情形的通量恒为零。对紧支撑光滑测试分部积分，再利用通量属于 \(L^{p'}(\Omega)\) 和测试函数的稠密性，即得对全部 \(\varphi\in W_0^{1,p}(\Omega)\) 的弱等式。
+
+若 \(v\in W^{1,p}(\Omega)\) 是另一弱解且迹相同，光滑环域上的零迹刻画保证 \(v-u\in W_0^{1,p}(\Omega)\)。以 \(v-u\) 测试两式之差，得到
+\[
+ \int_\Omega
+ \bigl(|\nabla v|^{p-2}\nabla v-|\nabla u|^{p-2}\nabla u\bigr)
+ \cdot(\nabla v-\nabla u)\,\mathrm dx=0.
+\]
+\cref{b2:lem:H2-monotonicity}说明被积函数非负，且只有两个梯度相同时才为零。因此 \(\nabla(v-u)=0\) 几乎处处，零迹 Poincaré 不等式给出 \(v=u\)。唯一性由此覆盖全部弱解，而不以径向对称为附加条件。
+\end{solution}
+
+% 自拟：先在弱形式中缩放，再区分函数源和自然对偶源。
+\Needspace{6\baselineskip}
+\begin{exercise}\label{b2:ex:H2-scaling}
+设 \(d\ge1\)、\(1<p<\infty\)，\(\Omega\subset\mathbb R^d\) 为开集，\(f\in L^1_{\mathrm{loc}}(\Omega)\)，且 \(u\in W^{1,p}_{\mathrm{loc}}(\Omega)\) 满足
+\[
+ \int_\Omega |\nabla u|^{p-2}\nabla u\cdot\nabla\varphi\,\mathrm dy
+ =\int_\Omega f\varphi\,\mathrm dy
+ \quad(\varphi\in C_c^\infty(\Omega)).
+\]
+给定 \(x_0\in\mathbb R^d\)、\(a,r>0\)，令
+\(\Omega_r=(\Omega-x_0)/r\)、\(v(x)=a\cdot u(x_0+rx)\)。求 \(v\) 的方程右端，并写出可测集 \(E\subset\Omega_r\) 上梯度能量的换元公式。若 \(\Omega\) 有界、\(u\in W^{1,p}(\Omega)\)，原右端改为 \(\ell\in(W_0^{1,p}(\Omega))^*\) 且弱式对全部零迹测试成立，缩放后的右端泛函应如何定义？
+\end{exercise}
+\begin{solution}
+线性换元的 Sobolev 链式法则给出
+\(\nabla v(x)=ar\cdot(\nabla u)(x_0+rx)\)。取 \(\varphi\in C_c^\infty(\Omega_r)\)，令 \(\psi(y)=\varphi((y-x_0)/r)\)。于是 \(\psi\in C_c^\infty(\Omega)\)，且 \(\nabla\psi(y)=r^{-1}(\nabla\varphi)((y-x_0)/r)\)。逐项换元得
+\begin{align*}
+ \int_{\Omega_r}|\nabla v|^{p-2}\nabla v\cdot\nabla\varphi\,\mathrm dx
+ &=a^{p-1}r^{p-d}
+   \int_\Omega|\nabla u|^{p-2}\nabla u\cdot\nabla\psi\,\mathrm dy\\
+ &=a^{p-1}r^{p-d}\int_\Omega f\psi\,\mathrm dy\\
+ &=\int_{\Omega_r}a^{p-1}r^p\cdot f(x_0+rx)\cdot\varphi(x)\,\mathrm dx.
+\end{align*}
+故新方程为
+\[
+ -\Delta_pv=a^{p-1}r^p\cdot f(x_0+rx)
+ \quad\text{于 }\Omega_r.
+\]
+右端仍局部可积，计算没有使用二阶导数。梯度能量满足
+\[
+ \int_E|\nabla v|^p\,\mathrm dx
+ =a^pr^{p-d}\int_{x_0+rE}|\nabla u|^p\,\mathrm dy.
+\]
+任意可测 \(E\) 均可使用此非负积分公式；\(E\) 相对紧时两端有限。
+
+对自然对偶中的源项，不能写成点态复合 \(\ell(x_0+rx)\)。正确的泛函是
+\[
+ \widetilde\ell(\varphi)
+ =a^{p-1}r^{p-d}\cdot
+  \ell\bigl(\varphi((\cdot-x_0)/r)\bigr),
+ \quad \varphi\in W_0^{1,p}(\Omega_r).
+\]
+由光滑紧支撑函数的逼近，测试函数的换元把 \(W_0^{1,p}(\Omega_r)\) 映到 \(W_0^{1,p}(\Omega)\)，并有
+\[
+ \bigl\|\nabla[\varphi((\cdot-x_0)/r)]\bigr\|_{L^p(\Omega)}
+ =r^{d/p-1}\|\nabla\varphi\|_{L^p(\Omega_r)}.
+\]
+这证明 \(\widetilde\ell\) 连续，前面的计算也在零迹测试类中成立。源项随幅度按 \(a^{p-1}\) 变化，能量则按 \(a^p\) 变化；两者分别对应通量和它的凸势。
+\end{solution}
+
+% 自拟：可测加权一维通量的积分常数，由端点条件唯一确定。
+\Needspace{6\baselineskip}
+\begin{exercise}\label{b2:ex:H2-ordered-source}
+设 \(1<p<\infty\)，\(a:(0,1)\to\mathbb R\) 可测，且
+\(0<a_0\le a(x)\le a_1<\infty\) 几乎处处。构造
+\[
+ -(a(x)|u'|^{p-2}u')'=1,
+ \quad u\in W_0^{1,p}(0,1)
+\]
+的弱解，把未知积分常数化为一个严格单调的标量方程，并证明解唯一。若 \(a(x)=\kappa>0\) 为常数，求闭式并检查解的非负性。
+\end{exercise}
+\begin{solution}
+记通量为 \(q=a|u'|^{p-2}u'\)。弱方程给出分布等式 \(q'=-1\)，所以 \(q+x\) 在区间上为常数，即 \(q(x)=C-x\)。由于 \(a\ge a_0>0\)，可以逐点反解为
+\[
+ u'(x)=\operatorname{sgn}(C-x)
+       \left|\frac{C-x}{a(x)}\right|^{1/(p-1)}.
+\]
+取左端点值为零后，只需确定右端点值。令
+\[
+ H(C)=\int_0^1\operatorname{sgn}(C-t)
+                   \left|\frac{C-t}{a(t)}\right|^{1/(p-1)}\,\mathrm dt.
+\]
+在任意有界的 \(C\) 区间上，被积函数由一个常数控制；它又逐点连续，故控制收敛说明 \(H\) 连续。若 \(C_1<C_2\)，函数 \(s\mapsto\operatorname{sgn}(s)|s|^{1/(p-1)}\) 的严格递增性和 \(a(t)>0\) 说明两个被积函数几乎处处严格有序，因此 \(H(C_1)<H(C_2)\)。同时 \(H(0)<0<H(1)\)，所以恰有一个 \(C\in(0,1)\) 满足 \(H(C)=0\)。
+
+用此常数定义
+\[
+ u(x)=\int_0^x\operatorname{sgn}(C-t)
+                   \left|\frac{C-t}{a(t)}\right|^{1/(p-1)}\,\mathrm dt.
+\]
+其导数有界，端点值都为零，故 \(u\in W_0^{1,p}(0,1)\)。通量等于 \(C-x\)，任取 \(\varphi\in W_0^{1,p}(0,1)\)，利用绝对连续代表及端点值可得
+\[
+ \int_0^1a|u'|^{p-2}u'\varphi'\,\mathrm dx
+ =\int_0^1(C-x)\varphi'\,\mathrm dx
+ =\int_0^1\varphi\,\mathrm dx.
+\]
+这验证了弱形式。反过来，任何弱解的通量均为 \(C-x\)，而零边界条件都要求 \(H(C)=0\)，所以解唯一。
+
+在 \((0,C)\) 上 \(u'>0\)，在 \((C,1)\) 上 \(u'<0\)，并且两个端点值为零，因此 \(u\ge0\)。常系数时，被积函数关于 \(t=1/2\) 反对称，故唯一的常数是 \(C=1/2\)。直接积分得到
+\[
+ u(x)=\kappa^{-1/(p-1)}\frac{p-1}{p}
+       \left[2^{-p/(p-1)}-|x-1/2|^{p/(p-1)}\right].
+\]
+括号内非负，与前面的单调性判断一致。
+\end{solution}
+
+% 自拟：闭凸障碍类的直接法和单侧变分，不借用光滑边界。
+\Needspace{6\baselineskip}
+\begin{exercise}\label{b2:ex:H2-obstacle}
+设 \(d\ge1\)、\(1<p<\infty\)，\(\Omega\subset\mathbb R^d\) 是有界非空开集，\(X=W_0^{1,p}(\Omega)\) 取梯度范数，\(\ell\in X^*\)。给定可测函数 \(\psi:\Omega\to\mathbb R\)，假设
+\[
+ K=\{\,v\in X\mid v\ge\psi\ \text{几乎处处}\,\}\ne\varnothing.
+\]
+在 \(K\) 上极小化
+\[
+ J(v)=\frac1p\int_\Omega|\nabla v|^p\,\mathrm dx-\ell(v)
+\]
+是一个\term[ZhangaiWenti]{障碍问题}[obstacle problem]。证明它有唯一极小元 \(u\)，并证明 \(u\in K\) 为极小元的充要条件是
+\[
+ \int_\Omega|\nabla u|^{p-2}\nabla u\cdot\nabla(v-u)\,\mathrm dx
+ \ge\ell(v-u)\quad(v\in K).
+\]
+证明中不得添加边界光滑假设。
+\end{exercise}
+\begin{solution}
+集合 \(K\) 凸。若 \(v_n\in K\) 且 \(v_n\to v\) 于 \(X\)，零边界 Poincaré 不等式给出 \(L^p\) 强收敛。选取几乎处处收敛的子列，便有 \(v\ge\psi\) 几乎处处，所以 \(K\) 强闭。闭凸集又是弱闭集：位于其外的点可用连续线性泛函分离，而该泛函在弱拓扑中仍连续。这一步只用函数空间的凸性结构，不要求为 \(\partial\Omega\) 定义逐点法向或迹。
+
+由对偶范数的定义，
+\[
+ J(v)\ge\frac1p\|\nabla v\|_p^p
+           -\|\ell\|_{X^*}\cdot\|\nabla v\|_p.
+\]
+因为 \(p>1\)，右端随梯度范数趋于无穷而趋于无穷，并有有限下界。选取一个 \(v_0\in K\)，则 \(\inf_KJ\le J(v_0)<\infty\)，从而存在有界极小序列。空间 \(X\) 自反，故可抽取弱收敛子列，其极限 \(u\) 由弱闭性仍在 \(K\) 中。梯度的 \(L^p\) 范数弱下半连续，\(\ell\) 弱连续，故 \(J(u)\le\liminf J(v_n)=\inf_KJ\)。若两个不同的函数同为极小元，零迹 Poincaré 不等式保证其梯度不可能几乎处处相同；\(|\xi|^p\) 的严格凸性就使中点的能量严格更小，矛盾。因此极小元唯一。
+
+固定 \(v\in K\)，令 \(h=v-u\)。对 \(0\le t\le1\)，凸性保证 \(u+th\in K\)，于是 \(J(u+th)\ge J(u)\)。差商中积分项的导数由
+\[
+ C_p\bigl(|\nabla u|+|\nabla h|\bigr)^{p-1}\cdot|\nabla h|
+\]
+控制；该函数由 Hölder 不等式可积。因此可以把右导数移入积分，得到
+\[
+ 0\le\left.\frac{\mathrm d}{\mathrm dt}J(u+th)\right|_{t=0+}
+ =\int_\Omega|\nabla u|^{p-2}\nabla u\cdot\nabla h\,\mathrm dx-\ell(h),
+\]
+即题中的不等式。
+
+反之，若 \(u\in K\) 满足该不等式，凸函数的切平面不等式给出
+\[
+ \frac{|\nabla v|^p-|\nabla u|^p}{p}
+ \ge |\nabla u|^{p-2}\nabla u\cdot(\nabla v-\nabla u).
+\]
+积分并减去 \(\ell(v-u)\)，便得 \(J(v)-J(u)\ge0\) 对所有 \(v\in K\) 成立。可行变分只保证 \(t\ge0\) 的方向，故得到单侧不等式；一般不能再用负方向把它变为等式。
+\end{solution}
+
+% 自拟：点值泛函的连续性与精确范数，一维点源的通量跳跃。
+\Needspace{6\baselineskip}
+\begin{exercise}\label{b2:ex:H2-point-source}
+设 \(1<p<\infty\)，\(X=W_0^{1,p}(-1,1)\) 取范数 \(\|v'\|_p\)。证明点值泛函 \(\delta_0(v)=v(0)\) 属于 \(X^*\)，并求其范数。求解
+\[
+ -(|u'|^{p-2}u')'=\delta_0,
+ \quad u\in X,
+\]
+直接验证弱形式，并证明所得函数是
+\(J(v)=p^{-1}\int_{-1}^1|v'|^p\,\mathrm dx-v(0)\)
+在 \(X\) 上的唯一极小元。
+\end{exercise}
+\begin{solution}
+一维 \(W^{1,p}\) 函数有唯一的绝对连续代表，以下点值均指此代表。对 \(v\in X\)，端点值为零，因而
+\[
+ |v(0)|=\left|\int_{-1}^0v'\,\mathrm dx\right|
+       =\left|-\int_0^1v'\,\mathrm dx\right|.
+\]
+在两个长度为一的半区间分别使用 Hölder 不等式，得到
+\[
+ |v(0)|^p\le\int_{-1}^0|v'|^p\,\mathrm dx,
+ \quad
+ |v(0)|^p\le\int_0^1|v'|^p\,\mathrm dx.
+\]
+相加可知 \(|v(0)|\le2^{-1/p}\|v'\|_p\)。函数 \(v(x)=1-|x|\) 取等，故 \(\|\delta_0\|_{X^*}=2^{-1/p}\)。点源虽不是普通可积函数，这里仍是自然能量空间上的连续输入。
+
+令 \(c=2^{-1/(p-1)}\)，取 \(u(x)=c(1-|x|)\)。该函数属于 \(X\)，通量在 \((-1,0)\) 上为 \(c^{p-1}=1/2\)，在 \((0,1)\) 上为 \(-1/2\)。任取 \(\varphi\in X\)，由绝对连续性有
+\begin{align*}
+ \int_{-1}^1|u'|^{p-2}u'\varphi'\,\mathrm dx
+ &=\frac12\bigl(\varphi(0)-\varphi(-1)\bigr)
+   -\frac12\bigl(\varphi(1)-\varphi(0)\bigr)\\
+ &=\varphi(0).
+\end{align*}
+这正是方程的弱形式，通量向下跳跃一的大小给出右端的单位点源。
+
+对任意 \(v\in X\)，凸性给出
+\[
+ J(v)-J(u)\ge
+ \int_{-1}^1|u'|^{p-2}u'(v'-u')\,\mathrm dx-(v(0)-u(0))=0.
+\]
+最后一个等号是以 \(v-u\) 测试所得的弱等式，因而 \(u\) 是极小元。严格凸性说明另一极小元必须具有相同导数，零端点值再给出函数相等。特别地，能量最小性与分布中的通量跳跃在同一个自然空间内一致。
+\end{solution}
+
+% 自拟：全空间 L^p 假设与能量截断，不调用非线性 Harnack。
+\Needspace{6\baselineskip}
+\begin{exercise}\label{b2:ex:H2-liouville}
+设 \(d\ge1\)、\(1<p<\infty\)，实值函数
+\(u\in W^{1,p}_{\mathrm{loc}}(\mathbb R^d)\cap L^p(\mathbb R^d)\)
+满足 \(\Delta_pu=0\) 的弱形式。证明 \(u=0\) 几乎处处。本题不使用非线性 Harnack 定理。
+\end{exercise}
+\begin{solution}
+对 \(R>0\)，取 \(\eta_R\in C_c^\infty(B_{2R})\)，使
+\(0\le\eta_R\le1\)、\(\eta_R=1\) 于 \(B_R\)，且
+\(|\nabla\eta_R|\le C/R\)。函数 \(\eta_R^p\cdot u\) 属于 \(W_0^{1,p}(B_{2R})\)，其支集紧含于该球。由于通量属于 \(L^{p'}(B_{2R})\)，用光滑紧支撑函数在 \(W^{1,p}\) 中逼近，便可把它代入弱式。这里不要求 \(p\) 为整数：函数 \(t\mapsto t^p\) 在 \([0,1]\) 上具有有界导数，链式法则已经足够。
+
+展开测试函数的梯度并移项，得到
+\[
+ \int\eta_R^p|\nabla u|^p
+ =-p\int\eta_R^{p-1}\cdot u\cdot
+       |\nabla u|^{p-2}\nabla u\cdot\nabla\eta_R.
+\]
+右端的绝对值至多为
+\[
+ p\int(\eta_R|\nabla u|)^{p-1}\cdot|u|\cdot|\nabla\eta_R|
+ \le\frac12\int\eta_R^p|\nabla u|^p
+       +C_p\int|u|^p\cdot|\nabla\eta_R|^p.
+\]
+这里使用共轭指数 \(p'=p/(p-1)\)、\(p\) 的带参数 Young 不等式。吸收第一项，并利用截断梯度只出现在环带内，得到
+\[
+ \int_{B_R}|\nabla u|^p\,\mathrm dx
+ \le\frac{C_p}{R^p}\int_{B_{2R}\setminus B_R}|u|^p\,\mathrm dx
+ \le\frac{C_p}{R^p}\|u\|_{L^p(\mathbb R^d)}^p.
+\]
+固定 \(\rho>0\)，令 \(R\ge\rho\) 趋于无穷，可知 \(\int_{B_\rho}|\nabla u|^p=0\)。因此梯度在全空间几乎处处为零。球上的 Poincaré 不等式说明 \(u\) 在每个球中为常数，重叠球又使这些常数一致。全空间的测度无穷，而 \(u\in L^p(\mathbb R^d)\)，故唯一可能的常数是零。
+\end{solution}
+
+% 自拟：线性化计算之外加入明确的 p=4 非叠加模型。
+\Needspace{6\baselineskip}
+\begin{exercise}\label{b2:ex:H2-linearization}
+设 \(d\ge2\)、\(1<p<\infty\)，令 \(F(\xi)=|\xi|^{p-2}\xi\)。对 \(\xi\ne0\)，求 \(DF(\xi)\) 的切向、径向特征值，并说明当 \(p\ne2\) 时，特征值比有界为何仍不能保证对所有非零梯度具有固定的一致椭圆常数。
 
 \ProseParagraphBreak
 
-对于 \(p\) 次增长的通量，测试函数、Sobolev 指数和缩放都随 \(p\) 改变，但能量方法的骨架仍然清楚。凸能量给出存在性，严格单调性给出唯一性和比较性；退化或奇异的线性化说明为何这些结论不能简单套用线性一致椭圆定理。径向计算把各个假设的作用显示在可以直接核验的公式中。
-\end{chaptersummary}
-\BookExercises
-
-以下八题为本书自拟，分别检验边界数据、缩放、能量与比较方法。
-
-% 自拟：由径向通量求环域边值解。
-\begin{exercise}\label{b2:ex:H2-annulus}
-设 \(0<a<b\)、\(1<p<\infty\)。求环域 \(a<|x|<b\) 中径向 \(p\)-调和函数，其内、外边界值分别为 \(A,B\)，并证明它是具有这两个边界值的弱解中唯一的一个。
+再令 \(p=4\)、\(d=2\)，在环域 \(\Omega=\{\,x\in\mathbb R^2\mid1/2<|x|<2\,\}\) 上考虑
+\(u(x)=|x|^{2/3}\)、\(v(x)=x_1\)。证明二者均为弱 \(4\)-调和函数，而 \(u+v\) 不是。
 \end{exercise}
 \begin{solution}
-令 \(\gamma=(p-d)/(p-1)\)。若 \(p\ne d\)，答案是
-\[u(r)=A+(B-A)\frac{r^\gamma-a^\gamma}{b^\gamma-a^\gamma};\]
-若 \(p=d\)，把分式改为 \(\log(r/a)/\log(b/a)\)。直接求导得 \(r^{d-1}|u'|^{p-2}u'\) 为常数，因此散度为零。环域远离原点，函数光滑且属于所需 Sobolev 空间。任意另一弱解减去它，以差作为零迹测试，严格单调性迫使两者梯度相同；零边界迹再排除非零常数，故唯一。
+对分量逐一求导得
+\[
+ DF(\xi)=|\xi|^{p-2}I+(p-2)|\xi|^{p-4}\xi\otimes\xi.
+\]
+若 \(h\perp\xi\)，则第二项作用于 \(h\) 为零，故切向特征值是 \(|\xi|^{p-2}\)；在 \(\xi\) 的方向上，两项相加给出径向特征值 \((p-1)|\xi|^{p-2}\)。最大、最小特征值之比为
+\[
+ \frac{\max(1,p-1)}{\min(1,p-1)}.
+\]
+它只依赖 \(p\)，但线性一致椭圆性还要求共同幅度有固定的正下界与有限上界。当 \(p>2\) 时，共同因子 \(|\xi|^{p-2}\) 在 \(\xi\to0\) 时趋零，在 \(|\xi|\to\infty\) 时趋于无穷；当 \(1<p<2\) 时两个极限方向相反。因此椭圆比本身不足以给出全梯度范围的统一常数。只有 \(p=2\) 时 \(DF=I\) 恒定。
+
+对于第二问，径向散度公式给出
+\[
+ r\,|u'(r)|^2u'(r)
+ =r\left(\frac23r^{-1/3}\right)^3=\frac8{27},
+\]
+故 \(\Delta_4u=0\)。函数 \(v=x_1\) 的梯度恒定，也满足 \(\Delta_4v=0\)。两者在环域上光滑，因而经典等式同时给出弱等式。
+
+令 \(w=u+v\)。对光滑函数，直接展开散度有
+\[
+ \Delta_4w=|\nabla w|^2\Delta w
+                 +2\,D^2w[\nabla w,\nabla w].
+\]
+在 \(x=(0,1)\) 处，径向函数的导数给出
+\[
+ \nabla w=(1,2/3),\quad
+ D^2w=\begin{pmatrix}2/3&0\\0&-2/9\end{pmatrix},\quad
+ \Delta w=4/9.
+\]
+于是
+\[
+ \Delta_4w(0,1)
+ =\frac{13}{9}\cdot\frac49
+   +2\left(\frac23-\frac29\cdot\frac49\right)
+ =\frac{16}{9}\ne0.
+\]
+由于该散度连续，它在一个小邻域内保持正值，用非负且非零的紧支撑测试即可否定齐次弱等式。非线性通量确实破坏了调和函数的叠加性，即使所有参与的函数都光滑。
 \end{solution}
 
-% 自拟：源项缩放与能量量纲。
-\begin{exercise}\label{b2:ex:H2-scaling}
-若 \(-\Delta_p u=f\) 在 \(\Omega\) 中弱成立，\(a,r>0\)，令 \(v(x)=a\cdot u(x_0+rx)\)。求新区域中的右端，并写出梯度能量在换元下的关系。
-\end{exercise}
-\begin{solution}
-有 \(\nabla v=ar\cdot(\nabla u)(x_0+rx)\)，所以新右端为 \(a^{p-1}r^p\cdot f(x_0+rx)\)。此计算也可把 \(\varphi((y-x_0)/r)\) 代入原弱形式并换元得到，因而不要求经典二阶导数。对 \(E\subset(\Omega-x_0)/r\)，
-\[\int_E|\nabla v|^p\,\mathrm dx=a^pr^{p-d}\int_{x_0+rE}|\nabla u|^p\,\mathrm dy.\]
-源项缩放是 \(a^{p-1}\)，能量缩放是 \(a^p\)，二者相差一次变分所消耗的幅度因子。
-\end{solution}
-
-% 自拟：有序源项的比较。
-\begin{exercise}\label{b2:ex:H2-ordered-source}
-设 \(a_0\le a(x)\le a_1\)，\(a_0>0\)，\(u,v\in W^{1,p}(\Omega)\) 满足
-\[-\operatorname{div}(a(x)|\nabla u|^{p-2}\nabla u)=f,\qquad
- -\operatorname{div}(a(x)|\nabla v|^{p-2}\nabla v)=g.\]
-假设 \((u-v)_+\in W_0^{1,p}(\Omega)\)，且对所有非负零迹测试函数 \(\phi\) 有 \(\langle f-g,\phi\rangle\le0\)。证明 \(u\le v\) 几乎处处。
-\end{exercise}
-\begin{solution}
-两式相减后测试 \((u-v)_+\)，左端是集合 \(u>v\) 上的
-\[\int a(x)\bigl(|\nabla u|^{p-2}\nabla u-|\nabla v|^{p-2}\nabla v\bigr)\cdot(\nabla u-\nabla v).\]
-严格单调性使被积量非负，且仅在梯度相等时为零；右端非正。因此 \(\nabla(u-v)_+=0\)，Poincaré 不等式给出 \((u-v)_+=0\)。测试函数的合法性来自 Sobolev 正部链式法则和题设零迹条件。
-\end{solution}
-
-% 自拟：障碍约束下的单侧变分。
-\begin{exercise}\label{b2:ex:H2-obstacle}
-在有界区域中令 \(K=\{u\in W_0^{1,p}(\Omega):u\ge\psi\text{ 几乎处处}\}\) 非空，其中 \(\psi\) 可测。证明 \(J(u)=p^{-1}\int|\nabla u|^p-\ell(u)\) 在 \(K\) 上有唯一极小元，且其特征为
-\[\int|\nabla u|^{p-2}\nabla u\cdot\nabla(v-u)\ge\ell(v-u)\quad(v\in K).\]
-\end{exercise}
-\begin{solution}
-\(K\) 凸且强闭：强收敛子列几乎处处收敛，保留不等式；闭凸集弱闭。能量强制且弱下半连续，故直接法给出极小元，严格凸性给出唯一性。沿 \(u+t(v-u)\)、\(0\le t\le1\) 求右导数得所列不等式。反过来，凸函数的切平面不等式给出 \(J(v)\ge J(u)+J'(u)(v-u)\ge J(u)\)，所以它足以保证极小性。不能在接触障碍处任意取正负变分，这正是等式变为不等式的原因。
-\end{solution}
-
-% 自拟：一维点源的精确弱解。
-\begin{exercise}\label{b2:ex:H2-point-source}
-在 \((-1,1)\) 求解 \(-(|u'|^{p-2}u')'=\delta_0\)、\(u(-1)=u(1)=0\)。直接验证其弱形式与能量最小性。
-\end{exercise}
-\begin{solution}
-取 \(c=2^{-1/(p-1)}\)，令 \(u(x)=c(1-|x|)\)。通量在左半段为 \(c^{p-1}=1/2\)，右半段为 \(-1/2\)，故任意零边界测试函数满足
-\[\int_{-1}^1|u'|^{p-2}u'\varphi'=\tfrac12\bigl(\varphi(0)-\varphi(-1)\bigr)-\tfrac12\bigl(\varphi(1)-\varphi(0)\bigr)=\varphi(0).\]
-区间上 \(|\varphi(0)|\le\int_{-1}^0|\varphi'|\le\lVert\varphi'\rVert_p\)，点值是连续泛函。严格凸能量 \(p^{-1}\int|v'|^p-v(0)\) 的变分方程正是上述弱形式，因而 \(u\) 为唯一极小元。
-\end{solution}
-
-% 自拟：无穷远增长与局部估计。
-\begin{exercise}\label{b2:ex:H2-liouville}
-设 \(u\in W^{1,p}_{\mathrm{loc}}(\mathbb R^d)\) 为弱 \(p\)-调和函数，且 \(u\in L^p(\mathbb R^d)\)。证明 \(u=0\)。本题不允许调用非线性 Harnack 定理。
-\end{exercise}
-\begin{solution}
-取 \(\eta_R=1\) 于 \(B_R\)、支撑于 \(B_{2R}\)、\(|\nabla\eta_R|\le C/R\)，在弱形式中用 \(\eta_R^pu\) 测试。Young 不等式吸收交叉项后得
-\[\int_{B_R}|\nabla u|^p\le C R^{-p}\int_{B_{2R}}|u|^p.\]
-令 \(R\to\infty\)，对每个固定球其梯度积分为零，故连通性使 \(u\) 为常数；全空间 \(L^p\) 可积性使该常数为零。证明只用了能量与总体可积性，不能据此删去 \(L^p\) 假设。
-\end{solution}
-
-% 自拟：线性化椭圆比和绝对椭圆常数。
-\begin{exercise}\label{b2:ex:H2-linearization}
-对 \(F(\xi)=|\xi|^{p-2}\xi\)、\(\xi\ne0\)，求 \(DF(\xi)\) 的切向与径向特征值。解释特征值比有界为何仍不能保证在所有梯度上满足线性一致椭圆条件。
-\end{exercise}
-\begin{solution}
-\(DF(\xi)=|\xi|^{p-2}I+(p-2)|\xi|^{p-4}\xi\otimes\xi\)。垂直于 \(\xi\) 的特征值是 \(|\xi|^{p-2}\)，沿 \(\xi\) 的是 \((p-1)|\xi|^{p-2}\)。比值只依赖 \(p\)，但共同幅度在 \(\xi\to0\) 时于 \(p>2\) 趋零、于 \(p<2\) 趋于无穷；在无穷远又反向变化。线性定理要求固定的正下界和有限上界，不能只检查椭圆比。
-\end{solution}
-
-% 自拟：非线性能量解对源项的稳定性。
+% 自拟：定量单调性的源差估计，以及幅度缩放对指数的限制。
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b2:ex:H2-stability}
-设 \(p\ge2\)，\(u_f,u_g\in W_0^{1,p}(\Omega)\) 分别为 \(-\Delta_p u=f,g\) 的弱解。证明存在只依赖 \(p\) 的 \(C\)，使
-\[\lVert\nabla(u_f-u_g)\rVert_p\le C\lVert f-g\rVert_{(W_0^{1,p},\lVert\nabla\cdot\rVert_p)^*}^{1/(p-1)}.\]
+设 \(d\ge1\)、\(2\le p<\infty\)，\(\Omega\subset\mathbb R^d\) 是有界非空开集，\(X=W_0^{1,p}(\Omega)\) 取梯度范数，\(f,g\in X^*\)。令 \(u_f,u_g\in X\) 分别为 \(-\Delta_pu=f,g\) 的弱解。证明存在只依赖 \(p\) 的常数 \(C_p\)，使
+\[
+ \|\nabla(u_f-u_g)\|_p
+ \le C_p\|f-g\|_{X^*}^{1/(p-1)}.
+\]
+再证明：在包含零源项的任意邻域中，不能把右端幂指数 \(1/(p-1)\) 提高为更大的数，同时保持常数与 \(f,g\) 无关。
 \end{exercise}
 \begin{solution}
-令 \(w=u_f-u_g\)，两式相减后以 \(w\) 测试。正文的定量单调性给出 \(c_p\lVert\nabla w\rVert_p^p\le\langle f-g,w\rangle\le\lVert f-g\rVert\lVert\nabla w\rVert_p\)。若梯度范数为零结论显然，否则约去一次幂再开 \((p-1)\) 次方即可。\(p=2\) 时退化为线性 Lipschitz 稳定性，\(p>2\) 时显示自然的 Hölder 幅度。
+本题的存在唯一性由\cref{b2:thm:H2-variational}取权重为一、边界数据为零得到。令 \(w=u_f-u_g\in X\)，两弱式相减并以 \(w\) 测试。由\cref{b2:lem:H2-monotonicity}中 \(p\ge2\) 的定量下界，有
+\begin{align*}
+ c_p\|\nabla w\|_p^p
+ &\le\int_\Omega
+   \bigl(|\nabla u_f|^{p-2}\nabla u_f
+          -|\nabla u_g|^{p-2}\nabla u_g\bigr)
+       \cdot\nabla w\,\mathrm dx\\
+ &=\langle f-g,w\rangle
+ \le\|f-g\|_{X^*}\cdot\|\nabla w\|_p.
+\end{align*}
+若 \(\|\nabla w\|_p=0\)，结论成立；否则约去一次幂，再取 \((p-1)\) 次方根即可，常数可取 \(C_p=c_p^{-1/(p-1)}\)。
+
+为检验幂指数，取一个非零 \(z\in C_c^\infty(\Omega)\)，并定义
+\[
+ f_0(\varphi)=\int_\Omega|\nabla z|^{p-2}\nabla z\cdot\nabla\varphi\,\mathrm dx
+ \quad(\varphi\in X).
+\]
+Hölder 不等式说明 \(f_0\in X^*\)，且
+\(f_0(z)=\|\nabla z\|_p^p>0\)，所以 \(f_0\ne0\)。对任意 \(t>0\)，通量的齐次性和唯一性给出
+\[
+ u_{tf_0}=t^{1/(p-1)}z,\quad u_0=0.
+\]
+假如在零附近存在指数 \(\beta>1/(p-1)\) 和统一常数 \(C\)，使题中估计的右端可换成 \(C\|f-g\|_{X^*}^\beta\)，那么取 \(f=tf_0\)、\(g=0\)，对充分小的 \(t\) 有
+\[
+ t^{1/(p-1)}\|\nabla z\|_p
+ \le C t^\beta\|f_0\|_{X^*}^\beta.
+\]
+约去左侧的 \(t\) 次幂并令 \(t\downarrow0\)，便迫使 \(\|\nabla z\|_p=0\)，与所选 \(z\) 矛盾。因此幂指数不能提高。特别地，\(p=2\) 时得到线性 Lipschitz 稳定性；\(p>2\) 时，零源项附近的解算子一般只能具有这里的 Hölder 幅度。
 \end{solution}

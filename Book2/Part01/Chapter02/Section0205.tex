@@ -8,7 +8,7 @@ Fourier 系数唯一决定可积函数，并不意味着对称部分和在每种
 \label{b2:subsec:020501}
 
 \begin{theorem}[Dini 判据]\label{b2:thm:02-dini}
-设 \(f\in L^1(\mathbb T)\)，\(A\in\mathbb C\)。若存在 \(0<\delta<1/2\) 使
+设 \(f\in L^1(\mathbb T)\)，\(x\in\mathbb T\)、\(A\in\mathbb C\)。若存在 \(0<\delta<1/2\) 使
 \[
  \int_0^\delta\dfrac{|f(x+t)+f(x-t)-2A|}{t}\,\mathrm{d}t<\infty,
 \]
@@ -55,14 +55,28 @@ Fourier 系数唯一决定可积函数，并不意味着对称部分和在每种
  \sum_{k\in\mathbb Z}r^{|k|}e^{2\pi\mathrm{i}kx}
  =\dfrac{1-r^2}{1-2r\cos(2\pi x)+r^2}.
 \]
-这个核记为 \(P_r(x)\)，称为圆周上的\term[poisson-he]{Poisson 核}[Poisson kernel]。它非负、积分为 \(1\)，离开 \(0\) 后一致趋零，因而也是正逼近恒等。其权重呈指数下降，作用在 \(L^1\) 函数上后可逐项求任意阶导数。
+这个核记为 \(P_r(x)\)，称为圆周上的\term[poisson-he]{Poisson 核}[Poisson kernel]。对每个 \(0<r<1\)，它非负、积分为 \(1\)。这里的逼近方向是 \(r\uparrow1\)：对任意固定的 \(0<\delta<1/2\)，分母可写成 \((1-r)^2+2r(1-\cos(2\pi x))\)，所以
+\[
+ \sup_{\mathrm d_{\mathbb T}(x,0)\geq\delta}P_r(x)
+ \leq\frac{1-r^2}{2r(1-\cos(2\pi\delta))}
+ \longrightarrow0\quad(r\uparrow1).
+\]
+圆周的总测度为一，此估计也控制原点以外的尾部质量。因此任取 \(r_j\in(0,1)\)、\(r_j\to1\)，特别是任取 \(r_j\uparrow1\)，序列 \((P_{r_j})\) 都满足\cref{b2:def:02-positive-identity}。由\cref{b2:prop:02-positive-approximation}，\(P_r*f\to f\) 对连续周期函数一致成立，对 \(f\in L^p(\mathbb T)\)、\(1\leq p<\infty\) 按 \(L^p\) 范数成立。因为任意趋于一的参数序列都得到同一极限，这些结论是完整的 \(r\uparrow1\) 极限，不只针对某一个预先选定的序列。
 \symidx{\(P_r\)：圆周 Poisson 核}
+
+\ProseParagraphBreak
+
+固定 \(0<r<1\) 时，Poisson 平均还提高了光滑性。对实值或复值 \(f\in L^1(\mathbb T)\)，核的绝对一致收敛级数允许交换求和与积分，给出
+\[
+ (P_r*f)(x)=\sum_{k\in\mathbb Z}r^{|k|}\widehat f(k)e^{2\pi\mathrm i kx}.
+\]
+系数满足 \(|\widehat f(k)|\leq\|f\|_1\)，而对每个整数 \(m\geq0\)，都有 \(\sum_k(1+|k|)^m r^{|k|}<\infty\)：正负频率的尾部都由比值极限为 \(r<1\) 的级数控制。因此各阶形式导数级数绝对一致收敛。先把有限部分和的导数积分回原函数，再取一致极限，就识别出这些极限是实际导数。于是 \(P_r*f\in C^\infty(\mathbb T)\)。固定 \(r<1\) 的光滑化与 \(r\uparrow1\) 时恢复原函数，是两个不同的结论；其导数界可以随 \(r\) 趋于一而增大。
 
 \subsection{光滑性与 Fourier 系数衰减}
 \label{b2:subsec:020504}
 
 \begin{proposition}\label{b2:prop:02-smooth-decay}
-若 \(f\) 是 \(C^m\) 周期函数，则
+设 \(m\geq1\) 为整数。若 \(f\) 是周期为一的 \(C^m\) 实值或复值函数，则
 \[
  \widehat {f^{(m)}}(k)=(2\pi\mathrm{i}k)^m\widehat f(k),
  \quad |\widehat f(k)|\leq\dfrac{\|f^{(m)}\|_1}{(2\pi|k|)^m}\quad(k\ne0).
@@ -81,3 +95,46 @@ Fourier 系数唯一决定可积函数，并不意味着对称部分和在每种
 \end{proof}
 
 因而 \(C^1\) 已足以保证绝对一致收敛，尽管对每个系数分别估计只给出 \(O(1/|k|)\)。改善来自把全部导数系数一起放进平方和，而不是逐个使用相同上界。若在周期拼接处发生跳跃，分部积分会留下边界项，通常正是 \(1/k\) 衰减的来源。
+
+\ProseParagraphBreak
+
+把一个可跟算的折角例子与上一节的锯齿比较。令 \(v(x)=|x|\) 于 \([-1/2,1/2]\)，再作周期延拓。它连续，原点和半整数处有折角，但没有跳跃。偶性使正弦系数为零，且 \(\widehat v(0)=1/4\)。对非零整数 \(k\)，两次一元积分给出
+\[
+ \begin{aligned}
+ \widehat v(k)&=2\int_0^{1/2}x\cos(2\pi kx)\,\mathrm dx\\
+ &=\left[\frac{x\sin(2\pi kx)}{\pi k}
+          +\frac{\cos(2\pi kx)}{2\pi^2k^2}\right]_0^{1/2}
+ =\frac{(-1)^k-1}{2\pi^2k^2}.
+ \end{aligned}
+\]
+这里积分边界的正弦项消失，而斜率在端点的变化留下 \(k^{-2}\) 项。由于系数绝对可和，\cref{b2:prop:02-absolute}给出每个点都成立的展开
+\[
+ v(x)=\frac14-\frac2{\pi^2}
+       \sum_{\substack{k\geq1\\k\text{ 奇}}}\frac{\cos(2\pi kx)}{k^2}.
+\]
+在原点代入得 \(\sum_{k\geq1,\,k\text{ 奇}}k^{-2}=\pi^2/8\)。连续折角对应的平方衰减比锯齿跳跃的 \(1/k\) 快，但形式导数的系数仍只有 \(1/k\)；在折角处不能据原级数的一致收敛断言可微。判断衰减时，函数值的跳跃与导数的跳跃需要分别计入。
+
+\ProseParagraphBreak
+
+\cref{b2:tab:02-summation-convergence}集中比较三种求和的条件与结论。表中均使用总质量为一的圆周 Lebesgue 测度，函数可取实值或复值；点态行固定 \(x\in\mathbb T\)，局部值和单侧极限应对所选代表理解。条件的强弱不能只按名字排列：局部变差控制普通部分和的抵消，正核则能在不要求局部变差的情况下给出有限 \(p\) 的范数逼近。
+
+\begin{table}[htbp]
+\centering
+\caption[三种 Fourier 求和的条件与收敛方式]{三种 Fourier 求和的条件与收敛方式。每行只列已经建立的充分条件；点态、范数和一致收敛分别判断。}
+\label{b2:tab:02-summation-convergence}
+\begin{tabularx}{\textwidth}{@{}p{0.13\textwidth}p{0.29\textwidth}p{0.28\textwidth}>{\raggedright\arraybackslash}X@{}}
+\toprule
+求和方法 & 条件 & 收敛方式与极限 & 适用范围及端点限制 \\
+\midrule
+\(S_Nf\) & \(f\in L^2(\mathbb T)\) & \(\|S_Nf-f\|_2\to0\) & 平方范数收敛本身不指定逐点极限，也不提供 \(L^1\) 或 \(L^\infty\) 范数结论。 \\
+\addlinespace
+\(S_Nf(x)\) & \(f\in L^1(\mathbb T)\)，所选代表在 \(x\) 两侧局部有界变差；或\cref{b2:thm:02-dini}的积分条件对某个 \(A\in\mathbb C\) 成立 & 前一条件给出 \((f(x+)+f(x-))/2\)；后一条件给出 \(A\) & 改动单点不改变部分和；跳跃点的极限不由任意指定的 \(f(x)\) 决定。 \\
+\addlinespace
+\(\sigma_Nf\) & \(f\in C(\mathbb T)\)；或 \(f\in L^p(\mathbb T)\)、\(1\leq p<\infty\) & 分别一致趋于 \(f\)、按 \(L^p\) 范数趋于 \(f\)；\(L^1\) 代表在 \(x\) 连续时还在该点收敛 & 不能把有限 \(p\) 的结论扩到全部 \(L^\infty\)；跳跃函数与连续平均的本性上确界距离可保持正值。 \\
+\addlinespace
+\(P_r*f\) & \(f\in C(\mathbb T)\)；或 \(f\in L^p(\mathbb T)\)、\(1\leq p<\infty\)，参数 \(0<r<1\)、\(r\uparrow1\) & 分别一致趋于 \(f\)、按 \(L^p\) 范数趋于 \(f\)；固定 \(0<r<1\) 时为光滑函数 & 这里取核参数极限；对跳跃函数，\(L^\infty\) 范数逼近同样会失败。 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+表中最后两行的 \(L^\infty\) 限制可用同一个例子核验：若 \(f=\mathbf1_{(0,1/2)}\)，任一连续周期函数与它的本性上确界距离至少为 \(1/2\)。Fejér 平均和固定 \(0<r<1\) 的 Poisson 平均都连续，因此即使它们在每个有限 \(p\) 的范数中逼近 \(f\)，也不能在 \(L^\infty\) 范数中逼近。对普通部分和，若还要求一致或绝对收敛，应另查本节的模连续度积分条件或系数绝对可和条件，不能从平方范数收敛直接推出。

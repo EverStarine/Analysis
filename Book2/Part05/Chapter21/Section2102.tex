@@ -2,50 +2,296 @@
 \section{驻相法}
 \label{b2:sec:2102}
 
-一阶导数消失后，分部积分的分母发生奇异，主要贡献便集中在驻点附近。非退化驻点的尺度是 \(\lambda^{-1/2}\)，其领先系数由 Hesse 矩阵 决定。以下把 Fourier 指数中的 \(2\pi\) 保留在相位内，以便与全卷的变换约定一致。
+一阶导数消失后，非驻相分部积分的分母发生奇异，主要贡献便可能集中在驻点附近。若驻点 \(x_0\) 的二次项非退化，位移 \(h\) 使相位变化约为 \(\lambda h^{\mathsf T}Hh/2\)；在各特征值固定且非零时，变化为常数量级的位移尺度是 \(\lambda^{-1/2}\)。这解释了每个非退化方向为何贡献半个衰减幂次。本节先把远离驻点的部分除去，再用可逆换元将驻点附近的相位精确化为二次型，最后计算其常数与余项。
 
 \subsection{非退化临界点}
 \label{b2:subsec:210201}
 
+\Needspace{6\baselineskip}
 \begin{definition}\label{b2:def:21-critical}
-若 \(\nabla\phi(x_0)=0\)，称 \(x_0\) 为驻点；若同时
+设整数 \(d\geq1\)，\(U\subset\mathbb R^d\) 为开集，\(\phi\in C^2(U;\mathbb R)\)，\(x_0\in U\)。若 \(\nabla\phi(x_0)=0\)，称 \(x_0\) 为驻点；若同时
 \(\det D^2\phi(x_0)\ne0\)，称其为\term[fei-tuihua-zhudian]{非退化驻点}[nondegenerate critical point]。
 \end{definition}
 逆函数定理用于映射 \(\nabla\phi\)，说明非退化驻点在一个小邻域内是唯一的。反过来，孤立驻点未必非退化：\(t^4\) 的原点就是例子。第二种情形的衰减阶由更高阶项决定，不能套用二次驻相公式。
 
 \ProseParagraphBreak
-在一个紧集上，若所有驻点非退化，则驻点只有有限个。否则驻点列有聚点，连续性使聚点仍为驻点，与局部孤立性矛盾。于是可以分别计算各驻点贡献，再对剩余部分使用非驻相法；不同贡献的复相位可能抵消，因此各项上界之和只是上界。
-
-\subsection{Hesse 矩阵}
-\label{b2:subsec:210202}
-
-对实对称可逆矩阵 \(H\)，记其正特征值数减负特征值数为 \(\operatorname{sgn}H\)。在非退化驻点附近存在光滑坐标 \(u\)，使
-\[
- \phi(x)=\phi(x_0)+\tfrac12\sum_{j=1}^d\varepsilon_j u_j^2,
- \qquad \varepsilon_j\in\{1,-1\}.
-\]
-这是局部 Morse 归约。为说明它所用的事实，先平移驻点并作固定线性变换，使 Hesse 矩阵 对角化。Taylor 积分余项写成
-\(\phi(x)-\phi(0)=\tfrac12x^{\mathsf T}H(x)x\)，其中
-\(H(x)=2\int_0^1(1-t)D^2\phi(tx)\,\mathrm dt\) 光滑，且 \(H(0)\) 可逆。
-在足够小的邻域内，按固定顺序作对称消元，各主元仍不为零。由消元得到光滑的 \(L(x)D(x)L(x)^{\mathsf T}\) 分解；各主元的符号不变，把其绝对值的平方根吸收到三角矩阵内，便有
-\(H(x)=B(x)^{\mathsf T}S B(x)\)，\(S=\operatorname{diag}(\varepsilon_j)\)。
-令 \(u=B(x)x\)，其在原点的导数可逆，逆函数定理完成归约。
+设相位在紧集 \(K\) 的一个开邻域内光滑。若 \(K\) 中所有驻点非退化，则其中驻点只有有限个。否则一列互异驻点在 \(K\) 内有聚点，梯度的连续性使聚点仍为驻点，与局部孤立性矛盾。于是可以分别计算各驻点贡献，再对剩余部分使用非驻相法；不同贡献的复相位可能抵消，因此各项上界之和只是上界。
 
 \ProseParagraphBreak
-坐标变换的 Jacobi 因子满足
+
+先把后一步所需的多维工具在此证明。不能直接在多个坐标中同时除以各个偏导数，因为梯度非零并不保证每一个偏导数都非零。沿梯度方向微分，则只需除以整个梯度的平方长度。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[多维非驻相衰减]\label{b2:prop:21-nonstationary-multi}
+设整数 \(d\geq1\)，\(U\subset\mathbb R^d\) 开，\(a\in C_c^\infty(U;\mathbb C)\)，\(\phi\in C^\infty(U;\mathbb R)\)。设在 \(K=\operatorname{supp}a\) 的一个邻域 \(W\Subset U\) 内有 \(|\nabla\phi|\geq c>0\)。对每个整数 \(N\geq1\) 及 \(\lambda\geq1\)，
 \[
- \left|\det\frac{\partial x}{\partial u}(0)\right|
-      =|\det D^2\phi(x_0)|^{-1/2}.
+ \left|\int_U e^{2\pi\mathrm i\lambda\phi(x)}
+                   \cdot a(x)\,\mathrm dx\right|
+ \leq C_N\lambda^{-N}
+       \sum_{|\alpha|\leq N}\|\partial^\alpha a\|_{L^1(U)}.
 \]
-这个因子不是可忽略的规范化。一个 Hesse 矩阵 特征值变小时，对应方向的驻点邻域变宽，领先系数也随之增大。
+常数 \(C_N\) 只依赖 \(d,N,c^{-1}\) 及 \(\phi\) 在 \(W\) 上至多 \(N+1\) 阶导数的上界。因而固定支撑、相同梯度下界与这些导数的一致界给出一致的估计。
+\end{proposition}
+\begin{proof}
+在 \(W\) 内令
+\[
+ V(x)=\frac{\nabla\phi(x)}{|\nabla\phi(x)|^2},
+ \quad
+ Ta=-\operatorname{div}(Va).
+\]
+因为 \(V\cdot\nabla\phi=1\)，有
+\[
+ V\cdot\nabla e^{2\pi\mathrm i\lambda\phi}
+ =2\pi\mathrm i\lambda e^{2\pi\mathrm i\lambda\phi}.
+\]
+振幅紧支于 \(W\)，散度积分没有边界项，故
+\[
+ \int e^{2\pi\mathrm i\lambda\phi}\cdot a
+ =(2\pi\mathrm i\lambda)^{-1}
+   \int e^{2\pi\mathrm i\lambda\phi}\cdot Ta.
+\]
+这里使用双线性积分分部，\(T\) 是 \(V\cdot\nabla\) 的形式转置；没有对振幅取复共轭。具体地，
+\[
+ Ta=-V\cdot\nabla a-(\operatorname{div}V)a.
+\]
+每个 \(T^ja\) 的支撑仍包含于 \(K\)，故可以重复 \(N\) 次，得到
+\[
+ \int e^{2\pi\mathrm i\lambda\phi}\cdot a
+ =(2\pi\mathrm i\lambda)^{-N}
+   \int e^{2\pi\mathrm i\lambda\phi}\cdot T^Na.
+\]
+用乘积公式归纳，\(T^Na\) 是 \(\partial^\alpha a\)、\(|\alpha|\leq N\)，乘上 \(V\) 的至多 \(N\) 阶导数所组成的有限和。对 \(V=\nabla\phi/|\nabla\phi|^2\) 求导，分母只有 \(|\nabla\phi|\) 的负幂，分子只用到 \(\phi\) 的至多 \(N+1\) 阶导数。题设因此给出这些系数的统一上界，取各项的 \(L^1\) 范数即得结论。
+\end{proof}
+
+在驻点附近选一个等于一的光滑截断后，剩余振幅仍紧支撑；若其支撑上没有驻点，紧性便给出梯度的正下界。这正是下面把远离驻点的部分吸收到任意阶余项中的依据。对有边界的积分域，必须另行保留边界项，本命题不适用于直接的示性函数截断。
+
+\subsection{Morse 归约与相位二次型}
+\label{b2:subsec:210202}
+
+对实对称可逆矩阵 \(H\)，记其正特征值数减负特征值数为 \(\operatorname{sgn}H\)，称为这里使用的符号差。Taylor 展开只说明相位近似于一个二次型；\term[morse-yinli]{Morse 引理}[Morse lemma]给出更强的局部事实：通过改变坐标，可以把所有高阶项吸收到坐标与振幅中，使新相位精确成为二次型。
+
+\Needspace{6\baselineskip}
+\begin{lemma}[Morse 局部归约]\label{b2:lem:21-morse-normal-form}
+设整数 \(d\geq1\)，\(U\subset\mathbb R^d\) 开，\(\phi\in C^\infty(U;\mathbb R)\)，\(x_0\in U\) 满足 \(\nabla\phi(x_0)=0\) 且 \(H_0=D^2\phi(x_0)\) 可逆。则存在 \(x_0\) 的邻域 \(U_0\)、原点的邻域 \(V_0\)，以及光滑微分同胚 \(u=\kappa(x):U_0\longrightarrow V_0\)，使 \(\kappa(x_0)=0\) 且
+\[
+ \phi(x)=\phi(x_0)+\frac12u^{\mathsf T}Su,
+ \quad
+ S=\operatorname{diag}(\varepsilon_1,\ldots,\varepsilon_d),
+ \quad \varepsilon_j\in\{1,-1\}.
+\]
+其中 \(\sum_j\varepsilon_j=\operatorname{sgn}H_0\)。记逆映射为 \(x=X(u)\)，则
+\[
+ |\det DX(0)|=|\det H_0|^{-1/2}.
+\]
+\end{lemma}
+\begin{proof}
+先平移 \(x_0\) 到原点，再作一个固定正交换元，将 \(H_0\) 化为
+\(\operatorname{diag}(\mu_1,\ldots,\mu_d)\)，其中每个 \(\mu_j\neq0\)。这两次换元的 Jacobi 因子绝对值都为一。暂用 \(x\) 表示变换后的坐标。在足够小的球内，线段 \(tx\)、\(0\leq t\leq1\)，都留在相位定义域中。带积分余项的 Taylor 公式给出精确恒等式
+\[
+ \phi(x)-\phi(0)=\frac12x^{\mathsf T}G(x)x,
+ \quad
+ G(x)=2\int_0^1(1-t)D^2\phi(tx)\,\mathrm dt.
+\]
+矩阵 \(G(x)\) 实对称、光滑，且 \(G(0)=H_0\)。这里把高阶项保留在矩阵函数中，并没有把它们丢进误差。
+
+先看二维的配方。若
+\[
+ G(x)=
+ \begin{pmatrix}p(x)&q(x)\\q(x)&r(x)\end{pmatrix},
+\]
+则在 \(p\neq0\) 的区域有
+\[
+ x^{\mathsf T}G(x)x
+ =p(x)\left(x_1+\frac{q(x)}{p(x)}x_2\right)^2
+  +\left(r(x)-\frac{q(x)^2}{p(x)}\right)x_2^2.
+\]
+在原点，两个新系数分别为 \(\mu_1,\mu_2\)，因而缩小邻域后都非零且符号不变。把它们绝对值的平方根分别乘入括号，就得到两个新的坐标表达式。系数依赖于原变量 \(x\) 并不破坏这个逐点恒等式；剩下要核验的是这些表达式合起来是否真的可作坐标。
+
+一般维数按同一规则逐步配方。第一步以 \(p_1(x)=G_{11}(x)\) 为主元，提出
+\[
+ p_1(x)\left(x_1+\sum_{k>1}
+                     \frac{G_{1k}(x)}{p_1(x)}x_k\right)^2,
+\]
+余下变量的对称系数矩阵为
+\[
+ G^{(2)}_{kl}(x)
+ =G_{kl}(x)-\frac{G_{k1}(x)G_{1l}(x)}{p_1(x)}
+ \quad(k,l>1).
+\]
+由于 \(G(0)\) 已经对角化，\(p_1(0)=\mu_1\)，且
+\(G^{(2)}(0)=\operatorname{diag}(\mu_2,\ldots,\mu_d)\)。下一步以 \(G^{(2)}_{22}\) 为主元，重复同一配方。归纳可知，第 \(j\) 步主元 \(p_j\) 在原点等于 \(\mu_j\)，所以每一步都可以在一个更小邻域内继续。只有有限步，最后取这些邻域的公共部分，所有主元均不为零、符号固定，且全部商与平方根都光滑。
+
+因此得到一个光滑可逆的上三角矩阵函数 \(B(x)\)，使
+\[
+ G(x)=B(x)^{\mathsf T}S B(x),
+ \quad
+ S=\operatorname{diag}\bigl(\operatorname{sgn}\mu_1,\ldots,
+                            \operatorname{sgn}\mu_d\bigr).
+\]
+这里 \(B\) 的对角元为 \(\sqrt{|p_j|}\)，其余系数来自上述配方。令
+\(u=\kappa(x)=B(x)x\)，则已经有精确的相位恒等式。还需注意：矩阵 \(B(x)\) 逐点可逆，本身不等于映射 \(x\mapsto B(x)x\) 已知可逆。真正的依据是在原点
+\[
+ D\kappa(0)=B(0),
+\]
+因为对 \(B\) 求导后乘上的 \(x\) 在原点为零。矩阵 \(B(0)\) 可逆，逆函数定理于是给出光滑局部逆映射。
+
+在驻点处对相位恒等式求两次导数，得到
+\[
+ H_0=D\kappa(0)^{\mathsf T}S D\kappa(0).
+\]
+取行列式绝对值，并用 \(|\det S|=1\)，便有
+\[
+ |\det D\kappa(0)|^2=|\det H_0|,
+ \quad
+ |\det DX(0)|=|\det H_0|^{-1/2}.
+\]
+恢复原来的正交坐标后，这一绝对值公式不变。符号差由原点的对角化已经确定，故等于 \(\operatorname{sgn}H_0\)。
+\end{proof}
+
+预先对角化的作用是保证固定消元顺序中的主元不消失。仅有矩阵可逆不够：\(\left(\begin{smallmatrix}0&1\\1&0\end{smallmatrix}\right)\) 可逆，却不能直接把左上角作为第一个主元。本证明只在一个固定矩阵上选择正交坐标，随后用连续性工作；没有要求在一个矩阵族中光滑地选择所有特征向量。
+
+\ProseParagraphBreak
+
+例如
+\[
+ \phi(x_1,x_2)=\frac12\left[x_1^2+2x_1x_2+(2+x_1)x_2^2\right]
+ =\frac12\left[(x_1+x_2)^2+(1+x_1)x_2^2\right].
+\]
+在原点附近可取 \(u_1=x_1+x_2\)、\(u_2=\sqrt{1+x_1}\,x_2\)。其在原点的导数行列式为一，故确为局部坐标，并将含三次项的相位精确化为 \((u_1^2+u_2^2)/2\)。原 Hesse 矩阵为
+\(\left(\begin{smallmatrix}1&1\\1&2\end{smallmatrix}\right)\)，行列式也为一，与 Jacobi 公式相符。
+
+\ProseParagraphBreak
+
+换元以后振幅成为 \(a(X(u))|\det DX(u)|\)，不能只替换函数自变量而忽略体积因子。一个 Hesse 特征值变小时，对应方向的驻点尺度变宽，\(|\det H_0|^{-1/2}\) 也可能增大；这是非退化下界必须进入估计常数的原因。
 
 \subsection{驻相引理}
 \label{b2:subsec:210203}
 
-下面采用\term[zhuxiang-gongshi]{驻相公式}[stationary phase formula]的下述版本。
+二次振荡核没有绝对可积性，不能直接把实 Gaussian 积分中的正参数换成纯虚数。先在实部为正的参数域计算，再取边界极限，便能同时确定常数与复平方根的分支。
 
+\Needspace{6\baselineskip}
+\begin{proposition}[复 Gaussian 的 Fourier 变换]\label{b2:prop:21-complex-gaussian}
+设 \(a\in\mathbb C\)、\(\operatorname{Re}a>0\)、\(\xi\in\mathbb R\)。则下列积分绝对收敛，且
+\[
+ F(a,\xi)=\int_{\mathbb R}e^{-\pi a x^2}e^{-2\pi\mathrm ix\xi}\,\mathrm dx
+ =a^{-1/2}e^{-\pi\xi^2/a}.
+\]
+这里 \(a^{-1/2}=|a|^{-1/2}e^{-\mathrm i\arg(a)/2}\)，
+\(-\pi/2<\arg(a)<\pi/2\)；在正实轴上取正平方根。
+\end{proposition}
+\begin{proof}
+固定 \(\varepsilon>0\)，写 \(a=\varepsilon+\mathrm it\)。任意有限 \(t,\xi\) 区间上的参数导数由多项式乘 \(e^{-\pi\varepsilon x^2}\) 控制，故可以在积分号下求导；下面的实轴分部积分也没有无穷远边界项。积分
+\(\partial_x(e^{-\pi a x^2-2\pi\mathrm ix\xi})\) 得到
+\(\int x e^{-\pi a x^2-2\pi\mathrm ix\xi}\,\mathrm dx=-\mathrm i\xi F/a\)，所以
+\(\partial_\xi F=-(2\pi\xi/a)F\)。解这个实变量一阶方程可得
+\(F(a,\xi)=F(a,0)e^{-\pi\xi^2/a}\)。
+
+再积分 \(\partial_x(xe^{-\pi a x^2})\)，得到
+\(\int x^2e^{-\pi a x^2}\,\mathrm dx=F(a,0)/(2\pi a)\)。于是
+\(\partial_tF(\varepsilon+\mathrm it,0)=-\mathrm iF/(2a)\)。实 Gaussian 公式给初值 \(F(\varepsilon,0)=\varepsilon^{-1/2}\)，上述连续分支的 \((\varepsilon+\mathrm it)^{-1/2}\) 满足同一方程和初值，故两者相等。整个计算只沿实轴作分部积分，复平方根由初值连续确定。
+\end{proof}
+由于 \(\operatorname{Re}(1/a)>0\)，此公式还有
+\( |F(a,\xi)|\leq |a|^{-1/2}\)。在纯二次振荡的正则化中取
+\(a=\varepsilon/\pi-\mathrm i\lambda\varepsilon_j\)、\(\varepsilon_j=\pm1\)，则模上界为 \(\lambda^{-1/2}\)，与正则化参数无关。高维对角二次型逐坐标相乘即可；乘上可积的 \(\widehat b\) 后，这正是下面支配收敛所需的共同控制。
+
+先把二次型与光滑振幅的配对写成一个可绝对积分的 Fourier 表达式。这不仅给出首项，也给出每个更高阶系数及可检查的余项。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[二次驻相展开]\label{b2:prop:21-quadratic-expansion}
+设整数 \(d\geq1\)，\(S=\operatorname{diag}(\varepsilon_1,\ldots,\varepsilon_d)\)，其中 \(\varepsilon_j\in\{1,-1\}\)，且 \(b\in C_c^\infty(\mathbb R^d;\mathbb C)\)。采用负号 \(2\pi\) Fourier 归一化，并令
+\[
+ D_S=\sum_{k=1}^d\varepsilon_k\partial_{u_k}^2.
+\]
+对 \(\lambda\geq1\)，有精确恒等式
+\begin{equation}\label{b2:eq:21-quadratic-fourier}
+ \int_{\mathbb R^d}e^{\pi\mathrm i\lambda u^{\mathsf T}Su}
+                 \cdot b(u)\,\mathrm du
+ =\lambda^{-d/2}e^{\mathrm i\pi\operatorname{sgn}S/4}
+   \int_{\mathbb R^d}e^{-\pi\mathrm i\eta^{\mathsf T}S\eta/\lambda}
+                 \cdot\widehat b(\eta)\,\mathrm d\eta.
+\end{equation}
+对任意整数 \(N\geq1\)，因而有
+\[
+ \begin{aligned}
+ \int e^{\pi\mathrm i\lambda u^{\mathsf T}Su}\cdot b(u)\,\mathrm du
+ &=\lambda^{-d/2}e^{\mathrm i\pi\operatorname{sgn}S/4}
+   \left[
+   \sum_{j=0}^{N-1}\frac1{j!}
+     \left(\frac{\mathrm i}{4\pi\lambda}\right)^j
+     D_S^jb(0)+R_N(\lambda)
+   \right],\\
+ |R_N(\lambda)|
+ &\leq\frac{\pi^N}{N!}\lambda^{-N}
+      \int_{\mathbb R^d}|\eta|^{2N}\cdot
+                        |\widehat b(\eta)|\,\mathrm d\eta.
+ \end{aligned}
+\]
+若 \(\operatorname{supp}b\subset K\)，其中 \(K\) 为固定紧集，则对任意整数 \(M>2N+d\)，右端积分至多为
+\[
+ C_{K,M,N}\sum_{|\alpha|\leq M}
+                    \|\partial^\alpha b\|_\infty.
+\]
+\end{proposition}
+\begin{proof}
+先在左侧乘 \(e^{-\epsilon|u|^2}\)，其中 \(\epsilon>0\)。由 Schwartz 函数的 Fourier 反演，
+\[
+ b(u)=\int_{\mathbb R^d}e^{2\pi\mathrm i u\cdot\eta}
+                  \cdot\widehat b(\eta)\,\mathrm d\eta.
+\]
+阻尼 Gaussian 在 \(u\) 上可积，\(\widehat b\) 在 \(\eta\) 上可积，因此可用 Fubini 交换两个积分。内层积分分成 \(d\) 个一维积分，在\cref{b2:prop:21-complex-gaussian}中分别取
+\[
+ a_k=\epsilon/\pi-\mathrm i\lambda\varepsilon_k,
+ \quad \xi=-\eta_k.
+\]
+由于 \(\operatorname{Re}(1/a_k)>0\)，每一因子的模不超过
+\(|a_k|^{-1/2}\leq\lambda^{-1/2}\)。所以交换后的被积函数统一由
+\(\lambda^{-d/2}|\widehat b(\eta)|\) 控制。让 \(\epsilon\downarrow0\) 时，
+\[
+ a_k^{-1/2}\longrightarrow
+        \lambda^{-1/2}e^{\mathrm i\pi\varepsilon_k/4},
+ \quad
+ e^{-\pi\eta_k^2/a_k}\longrightarrow
+        e^{-\pi\mathrm i\varepsilon_k\eta_k^2/\lambda}.
+\]
+左侧则由可积函数 \(|b|\) 控制。两侧分别使用支配收敛，便得到\cref{b2:eq:21-quadratic-fourier}。这一步只对正则化积分及可积配对取极限，并未把没有阻尼的振荡核当作绝对可积函数。
+
+对实数 \(t\)，Taylor 积分余项给出
+\[
+ \left|e^{\mathrm it}
+       -\sum_{j=0}^{N-1}\frac{(\mathrm it)^j}{j!}\right|
+ \leq\frac{|t|^N}{N!}.
+\]
+在\cref{b2:eq:21-quadratic-fourier}中取
+\(t=-\pi\eta^{\mathsf T}S\eta/\lambda\)，并用
+\(|\eta^{\mathsf T}S\eta|\leq|\eta|^2\)，得到所列余项界。各个多项式项可以积分，因为 \(\widehat b\) 是 Schwartz 函数。Fourier 求导公式给出
+\[
+ \int_{\mathbb R^d}(\eta^{\mathsf T}S\eta)^j
+                   \cdot\widehat b(\eta)\,\mathrm d\eta
+ =(-4\pi^2)^{-j}D_S^jb(0).
+\]
+将这一因子与 \((-\pi\mathrm i/\lambda)^j\) 相乘，正好得到
+\((\mathrm i/(4\pi\lambda))^j\)，从而确定次项的符号和常数。
+
+最后估计所需的 Fourier 矩。对 \(|\eta|\geq1\)，选择
+\(|\eta_k|\geq|\eta|/\sqrt d\)，沿第 \(k\) 个坐标分部积分 \(M\) 次，得到
+\[
+ |\widehat b(\eta)|
+ \leq C_{d,M}|\eta|^{-M}\cdot\|\partial_k^Mb\|_1.
+\]
+对 \(|\eta|\leq1\) 用 \(|\widehat b(\eta)|\leq\|b\|_1\)。固定紧支撑使这些 \(L^1\) 范数由 \(L^\infty\) 半范数控制，故
+\[
+ |\widehat b(\eta)|
+ \leq C_{K,M}(1+|\eta|)^{-M}
+       \sum_{|\alpha|\leq M}\|\partial^\alpha b\|_\infty.
+\]
+条件 \(M>2N+d\) 保证乘上 \(|\eta|^{2N}\) 后仍可积，证明完成。
+\end{proof}
+
+下面采用\term[zhuxiang-gongshi]{驻相公式}[stationary phase formula]的下述版本。指数固定为 \(e^{2\pi\mathrm i\lambda\phi}\)：相位中二次项的系数是 \(1/2\)，因此归约后的指数是 \(e^{\pi\mathrm i\lambda u^{\mathsf T}Su}\)。
+
+\Needspace{6\baselineskip}
 \begin{theorem}[驻相公式]\label{b2:thm:21-stationary-phase}
-设 \(a\in C_c^\infty(\mathbb R^d)\)、\(\phi\) 在支撑附近光滑，支撑内只有一个驻点 \(x_0\)，且该点非退化。记 \(H=D^2\phi(x_0)\)，则
+设整数 \(d\geq1\)，\(U\subset\mathbb R^d\) 开，\(a\in C_c^\infty(U;\mathbb C)\)，\(\phi\in C^\infty(U;\mathbb R)\)。假定 \(\operatorname{supp}a\) 中只有一个驻点 \(x_0\)，且 \(H=D^2\phi(x_0)\) 可逆。则当 \(\lambda\to+\infty\) 时，
 \[
  \int e^{2\pi\mathrm i\lambda\phi(x)}a(x)\,\mathrm dx
  =e^{2\pi\mathrm i\lambda\phi(x_0)}
@@ -55,32 +301,58 @@
 \]
 \end{theorem}
 \begin{proof}
-分割振幅使一部分支撑于 Morse 坐标邻域，剩余部分由非驻相法降到任意阶。换坐标后只需处理
-\(\int e^{\pi\mathrm i\lambda u^{\mathsf T}Su}b(u)\,\mathrm du\)。
-对角矩阵 \(S\) 的每个分量应用复 Gaussian 积分，先加因子 \(e^{-\epsilon|u|^2}\)，再令 \(\epsilon\downarrow0\)，得到分布恒等式
+由\cref{b2:lem:21-morse-normal-form}，在 \(x_0\) 附近选择 Morse 坐标 \(u=\kappa(x)\)，逆映射记为 \(X\)。取一个支撑于该坐标邻域的光滑截断 \(\chi\)，在 \(x_0\) 的更小邻域内等于一，分解
+\(a=\chi a+(1-\chi)a\)。第二部分的紧支撑上没有驻点，所以梯度有正下界；\cref{b2:prop:21-nonstationary-multi}使其积分为 \(O(\lambda^{-M})\)，其中整数 \(M\) 可以任意选取。
+
+第一部分换元后成为
 \[
- \int e^{\pi\mathrm i\lambda u^{\mathsf T}Su}b(u)\,\mathrm du
- =\lambda^{-d/2}e^{\mathrm i\pi\operatorname{sgn}S/4}
-   \int e^{-\pi\mathrm i\eta^{\mathsf T}S\eta/\lambda}\widehat b(\eta)\,\mathrm d\eta.
+ e^{2\pi\mathrm i\lambda\phi(x_0)}
+ \int e^{\pi\mathrm i\lambda u^{\mathsf T}Su}
+                   \cdot b(u)\,\mathrm du,
+ \quad
+ b(u)=(\chi a)(X(u))\cdot|\det DX(u)|.
 \]
-Gaussian 积分在 \(\epsilon>0\) 时绝对收敛；配方所得 Fourier 变换的模有统一上界，乘上 Schwartz 函数 \(\widehat b\) 后可用支配收敛。这说明取极限与配对都是合法的。
-右侧指数等于 \(1+O(|\eta|^2/\lambda)\)，而
-\(\int\widehat b=b(0)\)，\(\int|\eta|^2|\widehat b|<\infty\)。
-再代入 \(b(0)=a(x_0)|\det H|^{-1/2}\)，结论成立。
+由于 \(\chi a\) 的支撑紧包含于坐标邻域，\(b\) 向坐标像外延零后属于 \(C_c^\infty(\mathbb R^d)\)，没有人为造成的边界跳跃。Morse 引理给出
+\[
+ b(0)=a(x_0)|\det H|^{-1/2},
+ \quad
+ \operatorname{sgn}S=\operatorname{sgn}H.
+\]
+对\cref{b2:prop:21-quadratic-expansion}取 \(N=1\)，再在非驻相部分取 \(M>d/2+1\)，便得到所述主项和余项。
 \end{proof}
+二次模型的误差已由有限个振幅导数控制。Morse 换元把 \(b\) 写成原振幅与 Jacobi 因子的乘积，有限次链式法则又将这些导数化成相位、振幅及逆映射的有限阶导数。因此参数族的统一性需要控制支撑、Hesse 最小奇异值、所用导数，以及远离驻点部分的梯度下界；单独记录每个参数的行列式非零不够。
+
 该公式是固定振幅、固定相位下的渐近式。若振幅支撑随 \(\lambda\) 缩小或导数增长，余项常数可能增长；此时应先把自然尺度规范化。
 
 % 扩写定位：b2:subsec:210203
 边界还会改变驻相的首项。考虑一个临界点恰好位于积分端点的模型
 \[
  J(\lambda)=\int_0^\infty e^{\pi\mathrm i\lambda t^2}a(t)\,\mathrm dt,
- \qquad a\in C_c^\infty([0,\infty)).
+ \quad a\in C_c^\infty([0,\infty)).
 \]
 此处光滑是指可延拓到零点邻域的光滑函数。若 \(a(0)\ne0\)，则
 \[
  J(\lambda)=\frac12e^{\pi\mathrm i/4}a(0)\lambda^{-1/2}+O(\lambda^{-1}).
 \]
-取在零点附近为一的偶截断 \(\chi\)，把 \(a=a(0)\chi+t b\) 分解。第一项是全直线二次 Gaussian 积分的一半，其远离零点部分可反复分部积分；第二项令 \(v=t^2\)，成为 \(\frac12\int_0^\infty e^{\pi\mathrm i\lambda v}b(\sqrt v)\,\mathrm dv\)。该振幅的导数在零点至多有 \(v^{-1/2}\) 奇性，仍可积，分部积分得到 \(O(\lambda^{-1})\)。这就证明了首项中的一半。
+取在零点附近为一的偶截断 \(\chi\in C_c^\infty(\mathbb R)\)，在半直线上分解
+\[
+ a(t)=a(0)\chi(t)+t b(t).
+\]
+分子在零点消失，商 \(b(t)=[a(t)-a(0)\chi(t)]/t\) 因而可光滑延拓到零点，并且仍紧支撑。第一项的半直线积分由偶性恰为全直线截断二次积分的一半；\cref{b2:prop:21-quadratic-expansion}给出它的主项
+\(\tfrac12e^{\pi\mathrm i/4}a(0)\lambda^{-1/2}\)。
+第二项令 \(v=t^2\)，成为
+\[
+ \frac12\int_0^\infty e^{\pi\mathrm i\lambda v}
+                         \cdot b(\sqrt v)\,\mathrm dv.
+\]
+新振幅在零点连续，且对 \(v>0\)，其导数为
+\(b'(\sqrt v)/(2\sqrt v)\)，绝对积分恰为
+\(\int_0^\infty|b'(t)|\,\mathrm dt\)。因此它绝对连续，虽有可能的 \(v^{-1/2}\) 导数奇性，仍可作一阶分部积分，得到界
+\[
+ \frac1{2\pi\lambda}
+       \left[|b(0)|+\int_0^\infty|b'(t)|\,\mathrm dt\right].
+\]
+这证明了余项为 \(O(\lambda^{-1})\)，也确定了首项中的一半来自端点几何，而不是 Fourier 归一化的改变。
 
 \ProseParagraphBreak
 
@@ -89,27 +361,97 @@ Gaussian 积分在 \(\epsilon>0\) 时绝对收敛；配方所得 Fourier 变换�
 \subsection{渐近展开}
 \label{b2:subsec:210204}
 
-上一个证明还给出任意阶展开。令 \(D_S=\sum_j\varepsilon_j\partial_{u_j}^2\)，则
+\Cref{b2:prop:21-quadratic-expansion}已经给出二次模型的任意阶展开。一般光滑相位先经 Morse 换元，每个系数便由新振幅 \(b\) 在原点的有限阶导数确定：第 \(j\) 项用到 \(D_S^jb(0)\)，因而需要新振幅的至多 \(2j\) 阶导数。若相位原本就是 \(x^{\mathsf T}Hx/2\)，其中 \(H\) 实对称可逆，则只需固定线性换元。这时记
 \[
- \int e^{\pi\mathrm i\lambda u^{\mathsf T}Su}b(u)\,\mathrm du
- =\lambda^{-d/2}e^{\mathrm i\pi\operatorname{sgn}S/4}
- \left[\sum_{j=0}^{N-1}\frac{(\mathrm i/(4\pi\lambda))^j}{j!}
-              D_S^j b(0)+O(\lambda^{-N})\right].
+ D_H=\sum_{k,l=1}^d(H^{-1})_{kl}\partial_{x_k}\partial_{x_l},
 \]
-证明是在指数的 Taylor 余项上使用
-\(|e^{\mathrm it}-\sum_{j<N}(\mathrm it)^j/j!|\le C_N|t|^N\)，再利用 Fourier 求导恒等式
-\(\int(\eta^{\mathsf T}S\eta)^j\widehat b
- =(-4\pi^2)^{-j}D_S^j b(0)\)。
-因此第 \(j\) 个系数由驻点处至多 \(2j\) 阶的振幅导数及坐标变换导数决定。
+可将前两项直接写成
+\[
+ \begin{aligned}
+ \int e^{\pi\mathrm i\lambda x^{\mathsf T}Hx}
+                  \cdot a(x)\,\mathrm dx
+ ={}&\frac{\lambda^{-d/2}e^{\pi\mathrm i\operatorname{sgn}H/4}}
+             {|\det H|^{1/2}}\\
+ &{}\times
+ \left[a(0)+\frac{\mathrm i}{4\pi\lambda}D_Ha(0)
+               +O(\lambda^{-2})\right],
+ \quad a\in C_c^\infty(\mathbb R^d).
+ \end{aligned}
+\]
+具体地，若 \(x=Tu\) 且 \(T^{\mathsf T}HT=S\)，则
+\(H^{-1}=TST^{\mathsf T}\)。链式法则把 \(D_S\) 化为上面的 \(D_H\)，线性换元的 Jacobi 因子为常数 \(|\det H|^{-1/2}\)。这一步不能直接推广为非二次相位的次项公式，因为非线性换元的 Jacobi 因子也会变化。
 
 \ProseParagraphBreak
-领先系数为零并不意味着整个积分为零。例如一维二次相位配以偶振幅 \(a(t)=t^2\chi(t)\)，首项消失，第二项通常非零，衰减变成 \(\lambda^{-3/2}\)。若振幅为奇函数、截断也对称，积分则确实为零。前者是局部消失阶带来的增益，后者是全局对称性抵消；两种机制应分清。
+领先系数为零并不意味着整个积分为零。例如一维二次相位配以偶振幅 \(a(t)=t^2\chi(t)\)，其中 \(\chi\in C_c^\infty(\mathbb R)\) 偶且在零点附近为一。此时 \(a(0)=0\)、\(a''(0)=2\)，所以
+\[
+ \int e^{\pi\mathrm i\lambda t^2}\cdot t^2\chi(t)\,\mathrm dt
+ =\frac{\mathrm i e^{\pi\mathrm i/4}}{2\pi}
+        \lambda^{-3/2}+O(\lambda^{-5/2}).
+\]
+若改用奇振幅 \(t\chi(t)\)，积分则由对称性恒为零。前者是局部消失阶带来的增益，后者是全局对称性抵消；两种机制应分清。
+
+\ProseParagraphBreak
+
+实际应用常把 Fourier 方向、曲面上的位置或另一个积分变量当作参数。此时逐个参数都能使用驻相还不够，还须知道邻域、余项及其参数导数可以统一选择。下面给出一个固定紧支撑的版本。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[含参数的驻相展开]\label{b2:prop:21-parametric-stationary}
+设整数 \(d,m\geq1\)，\(U\subset\mathbb R^d\)、\(V\subset\mathbb R^m\) 开，\(K\Subset U\) 为紧集。设
+\(\phi\in C^\infty(U\times V;\mathbb R)\)、
+\(a\in C^\infty(U\times V;\mathbb C)\)，且每个 \(v\in V\) 都满足
+\(\operatorname{supp}_x a(\,\cdot\,,v)\subset K\)。假定对每个 \(v\in V\)，\(\phi(\,\cdot\,,v)\) 在 \(K\) 中恰有一个驻点 \(x_0(v)\)，并且
+\[
+ H(v)=D_x^2\phi(x_0(v),v)
+\]
+可逆。令
+\[
+ c(v)=\phi(x_0(v),v),
+ \quad
+ I(\lambda,v)=\int_U e^{2\pi\mathrm i\lambda\phi(x,v)}
+                              \cdot a(x,v)\,\mathrm dx.
+\]
+则 \(x_0,c\) 光滑，存在光滑系数 \(c_j(v)\)，使对任意整数 \(N\geq1\)、
+紧集 \(P\Subset V\) 及参数多重指标 \(\beta\)，
+\[
+ \begin{aligned}
+ e^{-2\pi\mathrm i\lambda c(v)}\lambda^{d/2}I(\lambda,v)
+ &=\sum_{j=0}^{N-1}\lambda^{-j}c_j(v)+R_N(\lambda,v),\\
+ \sup_{v\in P}|\partial_v^\beta R_N(\lambda,v)|
+ &\leq C_{P,N,\beta}\lambda^{-N}
+ \quad(\lambda\geq1).
+ \end{aligned}
+\]
+首项为
+\[
+ c_0(v)=e^{\pi\mathrm i\operatorname{sgn}H(v)/4}
+           \frac{a(x_0(v),v)}{|\det H(v)|^{1/2}}.
+\]
+\end{proposition}
+\begin{proof}
+固定 \(\lambda\) 时，公共紧支撑保证可以在积分号下对参数任意次求导。先核验驻点随参数连续。若 \(v_n\to v\)，则 \(x_0(v_n)\in K\) 的任意收敛子列极限仍在 \(K\)，梯度的连续性使它成为参数 \(v\) 的驻点。唯一性迫使这个极限为 \(x_0(v)\)。紧性于是给出整个驻点列的收敛。在
+\(\nabla_x\phi(x,v)=0\) 上应用含参数的隐函数定理，由 \(H(v)\) 可逆得到 \(x_0(v)\) 光滑，\(c(v)\) 也随之光滑。
+
+固定 \(v_*\in V\)，先把 \(x_0(v)\) 平移到原点。选择一个固定正交矩阵将 \(H(v_*)\) 对角化，而不随 \(v\) 选择特征向量。参数接近 \(v_*\) 且空间变量足够小时，\cref{b2:lem:21-morse-normal-form}证明中的全部消元主元仍非零且符号固定。因此同一配方给出光滑依赖 \((x,v)\) 的 Morse 映射。含参数的逆函数定理使逆映射 \(X(u,v)\) 同样光滑，二次矩阵 \(S\) 在这一参数片上固定。
+
+对紧参数集 \(P\) 取有限个这样的参数片，并在每片中选随 \(x_0(v)\) 平移的截断。必要时缩小各片，使截断后的新振幅支撑都包含于一个固定 \(u\) 紧集，而且每个预先指定阶的 \(u,v\) 导数一致有界。这来自光滑映射在稍小的紧集上的有界性。在临界点处，Hesse 最小奇异值的正下界保证逆映射的一阶导数受控；反复微分逆映射恒等式，便把更高阶导数界归结为相位的相应有限阶导数。
+
+去掉临界值因子后，局部积分正是一个固定二次相位配光滑参数振幅 \(b(u,v)\)。对\cref{b2:prop:21-quadratic-expansion}及其余项估计应用 \(\partial_v^\beta\)，只需把 \(b\) 换成 \(\partial_v^\beta b\)。于是每片上的系数光滑，余项连同该阶参数导数均为 \(O(\lambda^{-N})\)。在重叠参数片上，系数相同：将两种展开相减，先令 \(\lambda\to\infty\) 比较常数项，再依次乘以 \(\lambda\) 比较下一项，便逐项得到唯一性。因此这些局部系数可拼成 \(V\) 上的光滑函数。
+
+还须控制截断之外的部分。它在 \(K\times P\) 内远离驻点图像，且没有其他驻点，故全梯度 \(|\nabla_x\phi|\) 有统一正下界。对归一化后的非驻相积分求 \(\beta\) 阶参数导数，最多产生 \(|\beta|\) 个 \(\lambda\) 因子，外面另有 \(\lambda^{d/2}\)。预先将\cref{b2:prop:21-nonstationary-multi}中的积分分部次数取为大于 \(N+|\beta|+d/2\) 的整数，这一部分仍为 \(O(\lambda^{-N})\)。有限个参数片上的常数取最大值，即得结论。
+\end{proof}
+
+命题中的紧性把非退化条件转为统一下界。若参数范围不紧，或相位族不在公共邻域光滑，必须另行假定固定支撑、Hesse 的统一非退化下界、所需有限阶导数界，以及远离驻点区域的梯度下界。特别要先去掉迅速变化的临界值因子：直接微分 \(e^{2\pi\mathrm i\lambda c(v)}\) 会产生 \(\lambda\)，不能把未归一化积分的参数导数误当作与函数值具有同一衰减阶。
 
 % 扩写定位：b2:subsec:210204
-驻相公式也适用于一个临界子流形，前提是法向二次型非退化。这里可以给出一个明确的局部版本，无需提前使用 Fourier 积分算子理论。
-\begin{proposition}\label{b2:prop:21-clean-stationary}
-设局部坐标为 \((y,z)\in\mathbb R^{d-r}\times\mathbb R^r\)，临界集为 \(z=0\)。假定在振幅的一个固定紧支撑附近有
-\(\mathrm d\phi(y,0)=0\)，法向 Hesse 矩阵 \(H(y)=\partial_z^2\phi(y,0)\) 一致可逆，且无其他临界点。若该片临界集连通，则 \(\phi(y,0)=c\) 为常数。对 \(a\in C_c^\infty\)，
+驻相公式也适用于一个临界子流形，前提是垂直于临界片的二次型非退化。在坐标已经把临界片拉直为 \(z=0\) 时，可以把切向变量 \(y\) 当作参数，再在法向变量 \(z\) 上应用刚才的统一结论。若这些坐标来自先前的一次换元，体积的 Jacobi 因子须已经吸收到下面的振幅 \(a\) 中。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[非退化法向临界片]\label{b2:prop:21-clean-stationary}
+设整数 \(d\geq1\)、\(0\leq r\leq d\)，\(Y\subset\mathbb R^{d-r}\) 是非空连通开集，\(Z\subset\mathbb R^r\) 是包含原点的开集。设
+\(\phi\in C^\infty(Y\times Z;\mathbb R)\)、
+\(a\in C_c^\infty(Y\times Z;\mathbb C)\)，且对所有 \(y\in Y\) 都有
+\(\mathrm d\phi(y,0)=0\)。假定 \(\operatorname{supp}a\) 中除 \(z=0\) 外没有其他全梯度驻点。当 \(r\geq1\) 时，进一步假定法向 Hesse 矩阵
+\(H(y)=\partial_z^2\phi(y,0)\) 对所有 \(y\in Y\) 可逆，其最小奇异值在振幅的 \(y\) 投影附近有统一正下界。则 \(\phi(y,0)=c\) 为常数，且当 \(\lambda\to+\infty\) 时，
 \[
  \int e^{2\pi\mathrm i\lambda\phi(y,z)}a(y,z)\,\mathrm dy\,\mathrm dz
  =e^{2\pi\mathrm i\lambda c}\lambda^{-r/2}
@@ -117,30 +459,53 @@ Gaussian 积分在 \(\epsilon>0\) 时绝对收敛；配方所得 Fourier 变换�
  \frac{a(y,0)}{|\det H(y)|^{1/2}}\,\mathrm dy
  +O(\lambda^{-r/2-1}).
 \]
+约定 \(\mathbb R^0=\{0\}\)，零维积分取函数在该点的值。\(r=0\) 时取空矩阵行列式为一、符号差为零，公式成为没有余项的恒等式；\(r=d\) 时没有 \(y\) 变量，公式即孤立驻点情形。
 \end{proposition}
 \begin{proof}
-临界条件使沿 \(y\) 方向的一阶导数为零，所以相位在连通临界片上常值。对每个固定 \(y\)，在法向 \(z\) 上作 Taylor 展开和前面构造的 Morse 坐标变换。Hesse 矩阵 的一致可逆性与紧支撑允许在有限个参数邻域中统一选择坐标；矩阵分解、逆函数定理和振幅导数都具有统一的有限阶界。在这些片上，法向驻相公式的余项一致为 \(O(\lambda^{-r/2-1})\)。对 \(y\) 积分并加上有限分割便得结论。远离 \(z=0\) 的部分梯度具有正下界，反复分部积分把它放入任意小的幂次余项中。
+临界条件使函数 \(y\mapsto\phi(y,0)\) 的各一阶导数为零，故它局部常值；连通性使其在 \(Y\) 上为同一个常数。若 \(r=0\)，全部变量都是切向变量，相位处处为 \(c\)，直接提出指数因子即得恒等式。若 \(r=d\) 且原点在振幅支撑中，命题就是前面的驻相公式；若原点不在支撑中，则主项为零，\cref{b2:prop:21-nonstationary-multi}给出任意阶衰减。以下设 \(1\leq r<d\)。
+
+振幅的 \(y\) 投影为紧集。在其中每一点附近，将 \(y\) 当作参数，\(\partial_z\phi(y,0)=0\) 与 \(H(y)\) 可逆保证 \(z=0\) 在一个共同的小法向邻域内是唯一的法向驻点。取有限个这样的参数片与光滑分割，并在各片内加一个支撑于该法向邻域、在零点附近为一的截断。\Cref{b2:prop:21-parametric-stationary}于是适用于每片的 \(z\) 积分，给出
+\[
+ e^{2\pi\mathrm i\lambda c}\lambda^{-r/2}
+ e^{\pi\mathrm i\operatorname{sgn}H(y)/4}
+ \frac{a_{\mathrm{loc}}(y,0)}{|\det H(y)|^{1/2}}
+ +O(\lambda^{-r/2-1}),
+\]
+其中余项对该片的 \(y\) 一致。它们的 \(y\) 支撑均在固定紧集中，故可对 \(y\) 积分，余项保持同阶；在 \(z=0\) 上各截断之和为一，主项相加就是题中积分。
+
+剩余振幅紧支撑且远离 \(z=0\)。题设排除了此处的全梯度驻点，紧性给出 \(|\nabla_{y,z}\phi|\) 的正下界。用\cref{b2:prop:21-nonstationary-multi}在全部 \(d\) 个变量上分部积分，可取得任意阶衰减。这里不能仅凭全梯度非零，就对每个固定 \(y\) 在 \(z\) 中分部积分：远处可能有 \(\partial_z\phi=0\) 而 \(\partial_y\phi\neq0\)。先局部处理法向驻点，再对余部使用全梯度，才覆盖了题设允许的情况。
 \end{proof}
 衰减幂次由真正振荡的法向维数 \(r\) 决定，而不是积分空间的总维数。例如 \(\phi(y,z)=|z|^2/2\) 与乘积振幅 \(a=b(y)c(z)\)，对 \(y\) 的积分没有任何 \(\lambda\) 衰减；只有 \(z\) 变量贡献 \(\lambda^{-r/2}\)。圆柱曲面的 Fourier 变换也体现这种秩信息：弯曲方向提供驻相增益，平直方向是否衰减取决于振幅和 Fourier 方向，不能从总维数套用球面的公式。
 
 \ProseParagraphBreak
 
-这一局部公式不是任意退化临界点的公式。若 Hesse 矩阵 在法向也退化，Morse 坐标不再存在；若临界集有交叉或尖点，也不能选成单一光滑片。比如 \(t^4\) 在零点的衰减为 \(\lambda^{-1/4}\)，已与任何一维非退化二次型的 \(\lambda^{-1/2}\) 不同。所需的是有限型分析，而不是把行列式的零值放进分母。
+这一局部公式不是任意退化临界点的公式。若 Hesse 矩阵在法向也退化，Morse 坐标不再存在；若临界集有交叉或尖点，也不能选成单一光滑片。比如 \(t^4\) 在零点的衰减为 \(\lambda^{-1/4}\)，已与任何一维非退化二次型的 \(\lambda^{-1/2}\) 不同。所需的是有限型分析，而不是把行列式的零值放进分母。
 
 \ProseParagraphBreak
 
-非二次相位的下一项并不只取决于振幅的二阶导数。这个差别可以用一维局部计算明确看到。将驻点移到零，并归一化 \(\phi''(0)=1\)，写
+非二次相位的下一项并不只取决于振幅的二阶导数。这个差别可以用一维局部计算明确看到。为固定常数，假设
+\(\phi(0)=\phi'(0)=0\)、\(\phi''(0)=1\)，记
+\(c_3=\phi'''(0)\)、\(c_4=\phi^{(4)}(0)\)，于是
 \[
- \phi(t)=\frac{t^2}2+\frac c6t^3+\frac d{24}t^4+O(t^5).
+ \phi(t)=\frac{t^2}2+\frac{c_3}6t^3+\frac{c_4}{24}t^4+O(t^5).
 \]
-Morse 变量为 \(y=t\sqrt{2\phi(t)/t^2}\)。在零点取使导数为正的一支，逐项展开再反解得到
+商 \(2\phi(t)/t^2\) 在零点有光滑延拓且值为一，所以在足够小的邻域取正平方根，定义
 \[
- t=y-\frac c6y^2+\left(\frac{5c^2}{72}-\frac d{24}\right)y^3+O(y^4).
+ y=t\sqrt{\frac{2\phi(t)}{t^2}}
+   =t+\frac{c_3}{6}t^2
+       +\left(\frac{c_4}{24}-\frac{c_3^2}{72}\right)t^3+O(t^4).
 \]
-新振幅是 \(b(y)=a(t(y))t'(y)\)，而不只是 \(a(t(y))\)。计算其二阶导数得到
+其导数在零点等于一，故有光滑逆映射。把待定的三次 Taylor 多项式代回上式、逐项比较，得到
 \[
- b''(0)=a''(0)-c\,a'(0)
- +\left(\frac{5c^2}{12}-\frac d4\right)a(0).
+ t=y-\frac{c_3}6y^2+
+           \left(\frac{5c_3^2}{72}-\frac{c_4}{24}\right)y^3+O(y^4).
+\]
+逆映射在此保持方向，因此新振幅是
+\(b(y)=a(t(y))\cdot t'(y)\)。若记逆映射的二次、三次系数分别为 \(\alpha,\beta\)，则 \(b\) 的二次系数是
+\(a''(0)/2+3\alpha a'(0)+3\beta a(0)\)。代入这两个系数，得到
+\[
+ b''(0)=a''(0)-c_3a'(0)
+ +\left(\frac{5c_3^2}{12}-\frac{c_4}4\right)a(0).
 \]
 二次模型的展开于是给出
 \[
@@ -148,20 +513,11 @@ Morse 变量为 \(y=t\sqrt{2\phi(t)/t^2}\)。在零点取使导数为正的一�
  \left[a(0)+\frac{\mathrm i}{4\pi\lambda}b''(0)
  +O(\lambda^{-2})\right],
 \]
-这里假设相位在该局部片只有这个驻点，远离它的部分已用非驻相法处理。
+这里振幅光滑紧支于该局部片，或已用截断把其余非驻相部分分开。若未减去原来的临界值，整个右侧还须乘以 \(e^{2\pi\mathrm i\lambda\phi(0)}\)。
 
 \ProseParagraphBreak
 
 即使原振幅在驻点附近为常数，三次和四次相位也会改变次项，因为坐标变换的体积因子不是常数。若只把二次公式中的 \(a''(0)\) 原样用于任意相位，就会遗漏这些项。计算首项时只需变换在驻点的一阶微分；计算更高项则需要相位与变换的更高阶 Taylor 数据。这解释了为什么完整渐近展开的导数假设随所需阶数增加。
-
-\ProseParagraphBreak
-
-参数族的微分也应先去掉迅速振荡的临界值。设相位和振幅光滑依赖参数 \(v\)，唯一非退化临界点 \(x_0(v)\) 位于固定片内，并有统一下界与支撑。隐函数定理使 \(x_0(v)\) 光滑。把积分乘以
-\(e^{-2\pi\mathrm i\lambda\phi(x_0(v),v)}\lambda^{d/2}\)，则该归一化量具有以 \(\lambda^{-1}\) 为幂的渐近展开，系数光滑依赖 \(v\)，并在紧参数集上连同每个固定阶参数导数一致成立。
-
-\ProseParagraphBreak
-
-证明仍用含参数的 Morse 坐标：矩阵分解和逆映射都光滑依赖参数，新振幅的所需导数因此一致有界。二次 Fourier 计算的 Taylor 余项可以在这些半范数下统一估计。对远离临界点的部分，参数微分可能带来若干 \(\lambda\) 因子，但预先增加相应次数的非驻相分部积分即可吸收。因此“对参数一致的函数值余项”与“对参数一致的全部所需导数余项”要分别核对；只有前者不足以支持后续对参数求导。
 
 \ProseParagraphBreak
 
@@ -182,7 +538,7 @@ Morse 变量为 \(y=t\sqrt{2\phi(t)/t^2}\)。在零点取使导数为正的一�
 
 \ProseParagraphBreak
 
-首项中的行列式与体积因子也有坐标无关的含义。设 \(x=F(y)\) 是局部光滑换元，\(F(y_0)=x_0\)，且 \(B=DF(y_0)\) 可逆。在驻点处一阶相位导数为零，二阶链式法则中的变换二阶导数项消失，因而新 Hesse 矩阵 为 \(B^{\mathsf T}HB\)，新振幅为 \(a(x_0)|\det B|\)。于是
+首项中的行列式与体积因子也有坐标无关的含义。设 \(x=F(y)\) 是局部光滑换元，\(F(y_0)=x_0\)，且 \(B=DF(y_0)\) 可逆。在驻点处一阶相位导数为零，二阶链式法则中的变换二阶导数项消失，因而新 Hesse 矩阵为 \(B^{\mathsf T}HB\)，新振幅为 \(a(x_0)|\det B|\)。于是
 \[
  \frac{a(x_0)|\det B|}
  {|\det(B^{\mathsf T}HB)|^{1/2}}

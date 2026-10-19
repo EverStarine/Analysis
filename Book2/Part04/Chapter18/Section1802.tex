@@ -2,71 +2,246 @@
 \section{Calderón–Zygmund 分解}
 \label{b2:sec:1802}
 
-核的奇性不能靠输入处处小来控制，因为一个 \(L^1\) 函数可能具有任意高的尖峰。Calderón–Zygmund 分解把尖峰限制在可计量的坏区域，并使每块坏函数的总质量为零。
+一个 \(L^1\) 函数的总质量虽有限，高度却可能任意大。若直接用已有的 \(L^2\) 算子界处理它，高尖峰就会造成困难。Calderón--Zygmund 分解的做法是先选出局部平均过大的区域，把其中的函数压到受控高度；被削下来的部分仍保留在原区域内，但总积分被安排为零。这两部分分别适合不同的估计：高度控制使好部分进入 \(L^2\)，零平均使坏部分经过奇异积分后在远处衰减得更快。
 
 \subsection{好/坏分解}
 \label{b2:subsec:180201}
 
-下面采用\term[calderon-zygmund-fenjie]{Calderón--Zygmund 分解}[Calderón--Zygmund decomposition]的下述版本。
+沿用上一章的标准半开二进立方体网格 \(\mathcal D\)。对局部可积函数 \(f\)，记
+\[
+ f_Q=\frac1{|Q|}\int_Q f(y)\,\mathrm dy.
+\]
+选择坏区域时要看 \(|f|\) 的平均，避免正负抵消掩盖尖峰；替换函数值时则取 \(f\) 本身的平均。两种平均的作用不同。下面给出\term[calderon-zygmund-fenjie]{Calderón--Zygmund 分解}[Calderón--Zygmund decomposition]的精确形式。
 
+\Needspace{6\baselineskip}
 \begin{theorem}[Calderón--Zygmund 分解]\label{b2:thm:18-cz-decomposition}
-设 \(f\in L^1(\mathbb R^d)\)、\(\alpha>0\)。存在互不相交的二进立方体 \(Q_j\) 以及 \(f=g+\sum_jb_j\)，使
+设 \(d\geq1\) 为整数，\(f\in L^1(\mathbb R^d;\mathbb C)\)，\(\alpha>0\)。存在至多可数个互不相交的半开二进立方体 \(Q_j\)，令 \(E=\bigcup_jQ_j\)，并定义
 \[
- \sum_j|Q_j|\leq\alpha^{-1}\|f\|_1,\quad
- \|g\|_\infty\leq2^d\alpha,\quad \|g\|_1\leq\|f\|_1,
+ g(x)=\begin{cases}
+ f(x),&x\notin E,\\
+ f_{Q_j},&x\in Q_j,
+ \end{cases}
+ \quad b_j=(f-f_{Q_j})\cdot\mathbf1_{Q_j}.
 \]
+则 \(f=g+\sum_jb_j\) 几乎处处，级数在 \(L^1\) 中收敛，并有
 \[
- b_j=(f-f_{Q_j})\mathbf1_{Q_j},\quad
- \int b_j=0,\quad
- \sum_j\|b_j\|_1\leq2\|f\|_1,
+ \begin{gathered}
+ \alpha<\frac1{|Q_j|}\int_{Q_j}|f|\leq2^d\alpha,
+ \quad \sum_j|Q_j|\leq\alpha^{-1}\|f\|_1,\\
+ \|g\|_\infty\leq2^d\alpha,
+ \quad\|g\|_1\leq\|f\|_1,
+ \quad\int b_j=0,
+ \quad\sum_j\|b_j\|_1\leq2\|f\|_1.
+ \end{gathered}
 \]
-其中 \(f_Q=|Q|^{-1}\int_Q f\)，级数在 \(L^1\) 中收敛。
+若另外 \(f\in L^2(\mathbb R^d)\)，则 \(g\in L^2\)，\(\sum_jb_j\) 也在 \(L^2\) 中收敛，并且
+\[
+ \|g\|_2^2\leq2^d\alpha\|f\|_1,
+ \quad \|f\|_2^2=\|g\|_2^2+\sum_j\|b_j\|_2^2.
+\]
 \end{theorem}
 \begin{proof}
-对 \(\{M_{\mathcal D}f>\alpha\}\) 取\cref{b2:thm:17-dyadic-level}的极大立方体。定义 \(g=f\) 在其并的补集上，\(g=f_{Q_j}\) 在每个 \(Q_j\) 内。立方体平均上界和二进微分结论分别控制内、外的本性上确界。\(\int_{Q_j}|g|\leq\int_{Q_j}|f|\)，所以 \(L^1\) 界成立。坏块积分为零，且 \(\|b_j\|_1\leq2\int_{Q_j}|f|\)。不交性给出范数和与收敛，逐点除坏区域外全部项为零，坏区域内至多一项非零，故分解等式成立。
+用\cref{b2:thm:17-dyadic-level}选择满足
+\(|Q|^{-1}\int_Q|f|>\alpha\) 的极大二进立方体。回忆该选择的理由：二进立方体相交时必有一个包含另一个；沿祖先向上，平均值不超过 \(\|f\|_1/|Q|\)，所有足够大的祖先都不再超水平。在仍超水平的有限多个祖先中取最大的一个，就得到所需的极大者。这些极大者互不相交，其二进父立方体 \(\widetilde Q_j\) 的平均不超过 \(\alpha\)。因此
+\[
+ \int_{Q_j}|f|>\alpha|Q_j|,
+ \quad \int_{Q_j}|f|\leq\int_{\widetilde Q_j}|f|
+ \leq\alpha|\widetilde Q_j|=2^d\alpha|Q_j|.
+\]
+对第一式求和得到坏区域的测度界。对 \(E\) 外的点，所有二进平均都不超过 \(\alpha\)；由上一章已经证明的二进微分结论，\(|f|\leq\alpha\) 在该处几乎处处成立。
+
+按陈述定义 \(g\)。在 \(E\) 内，
+\[
+ |f_{Q_j}|\leq\frac1{|Q_j|}\int_{Q_j}|f|\leq2^d\alpha,
+ \quad \int_{Q_j}|g|=|Q_j|\cdot|f_{Q_j}|
+                          \leq\int_{Q_j}|f|.
+\]
+结合 \(E\) 外的结论，得到 \(g\) 的两个范数界。每个坏块满足
+\[
+ \int b_j=\int_{Q_j}f-|Q_j|\cdot f_{Q_j}=0,
+ \quad \|b_j\|_1\leq\int_{Q_j}|f|+|Q_j|\cdot|f_{Q_j}|
+                         \leq2\int_{Q_j}|f|.
+\]
+故 \(\sum_j\|b_j\|_1\leq2\|f\|_1\)，级数在 \(L^1\) 中绝对收敛。不交性还说明每个点至多落在一个坏块中，因而逐点表达与 \(L^1\) 极限相同，给出分解等式。这些论证同样适用于复值函数，并未使用 \(f\) 的正负部分。
+
+若 \(f\in L^2\)，则
+\[
+ \|g\|_2^2\leq\|g\|_\infty\cdot\|g\|_1
+                         \leq2^d\alpha\|f\|_1.
+\]
+又 \(b=f-g\in L^2\)，且 \(b_j=b\cdot\mathbf1_{Q_j}\)。不交性给出
+\(\sum_j\|b_j\|_2^2=\|b\|_2^2\)，所以坏块级数的尾部 \(L^2\) 范数趋于零。更精确地，在每个 \(Q_j\) 上，常数函数 \(f_{Q_j}\) 与 \(b_j\) 正交，因为
+\[
+ \int_{Q_j}b_j\overline{f_{Q_j}}
+ =\overline{f_{Q_j}}\int_{Q_j}b_j=0.
+\]
+在各块上使用平方范数的勾股恒等式，再与 \(E\) 外的积分合并，便得到陈述中的精确 \(L^2\) 恒等式。
 \end{proof}
-复值 \(f\) 的平均仍是复数，控制来自 \(|f_Q|\leq(|f|)_Q\)，不需要把正部负部分别分解。如果原函数还属于 \(L^2\)，则 \(g\in L^2\)，而坏块级数也在 \(L^2\) 中收敛：其尾部平方积分等于不交支集上平方积分的尾和。
+为什么必须用平均值替换坏块，而不是简单地将它置零？若在 \(Q\) 上用常数 \(a\) 替换，剩余部分的积分为
+\(\int_Qf-a|Q|\)。使其为零的唯一选择正是 \(a=f_Q\)。因此，好部分保留了每块的总质量，坏部分只保留块内相对于平均值的变化。若改用 \((|f|)_Q\)，一般就失去了这一抵消。好函数的名称仅指高度受控，并不表示它连续或光滑。
 
 \ProseParagraphBreak
 
-好函数的名称只表示它有受控的高度，并不意味着连续或光滑。坏函数虽保留尖峰，却拥有零平均；这个条件会在远场去掉核的常数项。
+以一维函数 \(f=4\cdot\mathbf1_{[0,1/4)}\) 和高度 \(\alpha=1\) 为例。区间 \([0,1/2)\) 上的平均为 \(2\)，其二进父区间 \([0,1)\) 上的平均恰为 \(1\)；所有更大的祖先平均更小。因此唯一的极大坏区间是 \(Q=[0,1/2)\)，分解为
+\[
+ g=2\cdot\mathbf1_{[0,1/2)},
+ \quad b=2\cdot\mathbf1_{[0,1/4)}
+             -2\cdot\mathbf1_{[1/4,1/2)}.
+\]
+\Cref{b2:fig:18-cz-step-model}显示，削去的正面积由右半块的负面积抵消。这里
+\(\|f\|_1=\|g\|_1=\|b\|_1=1\)，而平方范数分别为 \(4,2,2\)，可直接验证定理中的恒等式。坏块并没有变得处处小；它获得的是零平均。
 
-\subsection{弱型 \texorpdfstring{\((1,1)\)}{(1,1)}}
+\begin{figure}[htbp]
+ \centering
+ \begin{tikzpicture}[x=3.6cm,y=0.38cm,font=\small]
+  \begin{scope}
+   \fill[AnalysisBlueLight] (0,0) rectangle (0.25,4);
+   \draw[AnalysisBlue,thick] (0,0)--(0,4)--(0.25,4)--(0.25,0)--(0.72,0);
+   \draw[->,AnalysisGray] (-0.03,0)--(0.77,0);
+   \draw[->,AnalysisGray] (0,-2.3)--(0,4.7);
+   \node[above] at (0.35,5) {原函数 \(f\)};
+   \node[left] at (0,4) {\(4\)};
+   \foreach \x/\lab in {0/0,0.25/{1/4},0.5/{1/2}} {
+    \draw (\x,0.12)--(\x,-0.12);
+    \node at (\x,-2.8) {\(\lab\)};
+   }
+  \end{scope}
+  \begin{scope}[xshift=3.8cm]
+   \fill[AnalysisBlueLight] (0,0) rectangle (0.5,2);
+   \draw[AnalysisBlue,thick] (0,0)--(0,2)--(0.5,2)--(0.5,0)--(0.72,0);
+   \draw[->,AnalysisGray] (-0.03,0)--(0.77,0);
+   \draw[->,AnalysisGray] (0,-2.3)--(0,4.7);
+   \node[above] at (0.35,5) {好部分 \(g\)};
+   \node[left] at (0,2) {\(2\)};
+   \foreach \x/\lab in {0/0,0.25/{1/4},0.5/{1/2}} {
+    \draw (\x,0.12)--(\x,-0.12);
+    \node at (\x,-2.8) {\(\lab\)};
+   }
+  \end{scope}
+  \begin{scope}[xshift=7.6cm]
+   \fill[AnalysisBlueLight] (0,0) rectangle (0.25,2);
+   \fill[AnalysisGrayLight] (0.25,0) rectangle (0.5,-2);
+   \draw[AnalysisBlue,thick] (0,0)--(0,2)--(0.25,2)--(0.25,-2)--(0.5,-2)--(0.5,0)--(0.72,0);
+   \draw[->,AnalysisGray] (-0.03,0)--(0.77,0);
+   \draw[->,AnalysisGray] (0,-2.3)--(0,4.7);
+   \node[above] at (0.35,5) {坏部分 \(b\)};
+   \node[left] at (0,2) {\(2\)};
+   \node[left] at (0,-2) {\(-2\)};
+   \foreach \x/\lab in {0/0,0.25/{1/4},0.5/{1/2}} {
+    \draw (\x,0.12)--(\x,-0.12);
+    \node at (\x,-2.8) {\(\lab\)};
+   }
+  \end{scope}
+ \end{tikzpicture}
+ \caption[阶梯函数的好坏分解]{在标准二进网格中，对 \(f=4\cdot\mathbf1_{[0,1/4)}\) 取 \(\alpha=1\)。坏区间为 \([0,1/2)\)，以平均值 \(2\) 替换后得到 \(g\)；剩余的 \(b\) 有等量的正、负面积，故 \(\int b=0\)。图中只画出非零部分附近，三者在所示区间外均为零。}
+ \label{b2:fig:18-cz-step-model}
+\end{figure}
+
+\subsection{零平均与远场估计}
 \label{b2:subsec:180202}
 
+设观察点 \(x\) 离坏块很远。此时 \(K(x,y)\) 随块内变量 \(y\) 的变化较小，可以先把它近似为块中心处的常数 \(K(x,c)\)。这个常数乘上坏块的总积分，恰好为零；真正需要估计的仅是核的变化量。下面的引理把这一思路量化，并保留核差分常数的依赖。
+
+\Needspace{6\baselineskip}
 \begin{lemma}\label{b2:thm:18-cancellation-tail}
-设 \(b\in L^1\) 支撑于边长 \(\ell\)、中心 \(c\) 的立方体 \(Q\)，且 \(\int b=0\)。若核满足
+设 \(d\geq1\) 为整数，\(Q\subset\mathbb R^d\) 是边长 \(\ell>0\)、中心 \(c\) 的轴平行立方体。设 \(b\in L^1(\mathbb R^d;\mathbb C)\) 在 \(Q\) 外几乎处处为零，且 \(\int b=0\)。设复值 Borel 可测核 \(K\) 在 \(x\ne y\) 上取有限值，并存在 \(\delta>0\) 和 \(A_K\geq0\)，使
 \[
- |K(x,y)-K(x,c)|\leq C\dfrac{|y-c|^\delta}{|x-c|^{d+\delta}}
- \quad(|x-c|\geq2|y-c|)
+ |K(x,y)-K(x,c)|
+ \leq A_K\frac{|y-c|^\delta}{|x-c|^{d+\delta}}
+ \quad\text{当 }x\ne c,\ |x-c|\geq2|y-c|.
 \]
-其中 \(\delta>0\)，则在 \(Q^*=8\sqrt d\,Q\) 外有
+令 \(Q^*=8\sqrt d\,Q\) 表示同中心、边长为 \(8\sqrt d\,\ell\) 的立方体。则对 \(x\notin Q^*\)，普通积分 \(\int_QK(x,y)\cdot b(y)\,\mathrm dy\) 绝对收敛，而且
 \[
  \int_{\mathbb R^d\setminus Q^*}
- \left|\int_QK(x,y)b(y)\,\mathrm dy\right|\,\mathrm dx
- \leq C_{d,\delta}\|b\|_1.
+ \left|\int_QK(x,y)\cdot b(y)\,\mathrm dy\right|\,\mathrm dx
+ \leq C_{d,\delta}A_K\|b\|_1,
 \]
+其中 \(C_{d,\delta}\) 只依赖 \(d,\delta\)，与 \(Q,b,K\) 无关。
 \end{lemma}
 \begin{proof}
-零平均使积分等于 \(\int_Q(K(x,y)-K(x,c))b(y)\,\mathrm dy\)。在扩大立方体外，\(|x-c|\geq4\sqrt d\,\ell\)，而 \(|y-c|\leq\sqrt d\,\ell/2\)，故差分假设适用。先对 \(y\) 取绝对积分，再对 \(x\) 用极坐标，尾核积分为
+若 \(x\notin Q^*\)、\(y\in Q\)，则
 \[
- C\ell^\delta\int_{|x-c|\geq4\sqrt d\,\ell}|x-c|^{-d-\delta}\,\mathrm dx
- \leq C_{d,\delta}.
+ |x-c|\geq4\sqrt d\,\ell,
+ \quad |y-c|\leq\frac{\sqrt d\,\ell}{2}.
 \]
-Tonelli 完成积分交换。
+因此差分假设适用。固定这样的 \(x\)，\(K(x,c)\) 有限，核差分在 \(Q\) 上有界，故 \(K(x,\cdot)b\) 绝对可积。零平均给出合法的恒等式
+\[
+ \int_QK(x,y)\cdot b(y)\,\mathrm dy
+ =\int_Q\bigl(K(x,y)-K(x,c)\bigr)\cdot b(y)\,\mathrm dy.
+\]
+取绝对值，并对非负积分使用 Tonelli，得到所求左端不超过
+\[
+ A_K\left(\frac{\sqrt d\,\ell}{2}\right)^\delta\|b\|_1
+ \int_{|x-c|\geq4\sqrt d\,\ell}|x-c|^{-d-\delta}\,\mathrm dx.
+\]
+记单位球面的面积为 \(\sigma_{d-1}\)；在 \(d=1\) 时取 \(\sigma_0=2\)。极坐标计算最后一项为
+\[
+ \sigma_{d-1}\int_{4\sqrt d\,\ell}^\infty r^{-1-\delta}\,\mathrm dr
+ =\frac{\sigma_{d-1}}\delta(4\sqrt d\,\ell)^{-\delta}.
+\]
+这正好消去前面的 \(\ell^\delta\)，给出常数
+\(C_{d,\delta}=\sigma_{d-1}/(\delta8^\delta)\) 的一个可用选择。
 \end{proof}
-若不减去 \(K(x,c)\)，大小条件只有 \(|x-c|^{-d}\)，其远场绝对积分发散。这说明分解中的零平均不是方便的附属性质，而是端点估计中不可替代的衰减来源。扩大倍数的具体值只为了保证差分假设，后续常数允许依赖维数。
-
-\subsection{插值}
-\label{b2:subsec:180203}
-
-将好部分交给 \(L^2\) 理论、坏部分交给上段尾估计，就能得到弱 \((1,1)\)。设暂时 \(f\in L^1\cap L^2\)，\(T\) 在 \(L^2\) 上有界，取 \(\alpha=t\)。好部分满足
-\[
- |\{|Tg|>t/2\}|\leq4t^{-2}\|T\|_{2\to2}^2\|g\|_2^2
- \leq C t^{-1}\|f\|_1,
-\]
-因为 \(\|g\|_2^2\leq\|g\|_\infty\cdot\|g\|_1\)。坏立方体扩大后的并也有不超过 \(C t^{-1}\|f\|_1\) 的测度。在其补集上，核差分给出 \(\int|T\sum_jb_j|\leq C\sum_j\|b_j\|_1\)。对这项使用 \(L^1\) Chebyshev 即得同一界。
+这里有两个值得分开的量：坏块的 \(L^1\) 大小决定估计的规模，核变化的快慢决定远场能否积分。若只用大小界 \(|K(x,y)|\lesssim|x-c|^{-d}\)，径向积分会出现 \(\int^\infty\mathrm dr/r\)，无法得到有限上界。减去常数项后，多出的 \(|x-c|^{-\delta}\) 才使它收敛。\(\delta>0\) 正是这一计算所需的条件；尾界对 \(A_K\) 的线性依赖，也使后文能够分别跟踪算子的 \(L^2\) 范数和核的光滑常数。
 
 \ProseParagraphBreak
 
-若坏块有无穷多个，先对有限和应用尾估计，再使用 \(L^2\) 收敛抽取几乎处处收敛子列和 Fatou。不能假定算子输出的无穷级数先在 \(L^1\) 中收敛；结论只在坏区域的补集上有该积分控制。下一节把核与算子的准确假设固定下来。
+扩大立方体并不改变坏函数，也不使它产生额外抵消。它只将靠近坏块、不能使用核差分的观察点暂时排除。扩大倍数的具体数值并不重要，只要保证观察距离比块的直径大一个固定倍数；相应的测度代价只依赖维数。
+
+\subsection{弱型估计的分解策略}
+\label{b2:subsec:180203}
+
+现在把两个估计合在一起。为清楚看出每项假设的用途，暂设 \(T\) 是 \(L^2(\mathbb R^d)\) 上的有界复线性算子，记 \(B=\|T\|_{2\to2}\)。还假设它在每个紧支集 \(L^2\) 输入的支集外，几乎处处由核 \(K\) 的普通积分表示；核对每个立方体中心都满足上一引理的差分条件，且使用共同的 \(\delta,A_K\)。下一节会把这些条件组织成标准算子定义。
+
+\ProseParagraphBreak
+
+给定 \(f\in L^1\cap L^2\) 和输出阈值 \(t>0\)，在高度 \(\alpha=t\) 分解 \(f=g+b\)。好部分使用 \(L^2\) Chebyshev 不等式：
+\[
+ \begin{aligned}
+ |\{|Tg|>t/2\}|
+ &\leq\frac4{t^2}\|Tg\|_2^2
+ \leq\frac{4B^2}{t^2}\|g\|_2^2\\
+ &\leq\frac{2^{d+2}B^2}{t}\|f\|_1.
+ \end{aligned}
+\]
+这一步不要求 \(f\) 本身有由 \(t\|f\|_1\) 控制的平方积分，只有分解后的 \(g\) 才有这样的估计。
+
+\ProseParagraphBreak
+
+对坏部分，先丢弃扩大坏区域
+\[
+ E^*=\bigcup_jQ_j^*,
+ \quad |E^*|\leq(8\sqrt d)^d\sum_j|Q_j|
+          \leq\frac{(8\sqrt d)^d}{t}\|f\|_1.
+\]
+原来的 \(Q_j\) 互不相交，扩大的 \(Q_j^*\) 可能重叠；这里用的是并集测度不超过测度之和，不需要扩大后仍然不交。
+
+\ProseParagraphBreak
+
+在 \((E^*)^c\) 上使用坏块的零平均。先取有限和 \(b^{(N)}=\sum_{j=1}^Nb_j\)。每个 \(b_j\) 属于 \(L^2\) 且支撑于一个有界立方体，因而支集外核表示与远场引理给出
+\[
+ \begin{aligned}
+ \int_{(E^*)^c}|Tb^{(N)}(x)|\,\mathrm dx
+ &\leq\sum_{j=1}^N\int_{(Q_j^*)^c}|Tb_j(x)|\,\mathrm dx\\
+ &\leq C_{d,\delta}A_K\sum_{j=1}^N\|b_j\|_1
+ \leq2C_{d,\delta}A_K\|f\|_1.
+ \end{aligned}
+\]
+若坏块有无穷多个，定理保证 \(b^{(N)}\to b\) 于 \(L^2\)，于是 \(Tb^{(N)}\to Tb\) 于 \(L^2\)。抽出几乎处处收敛的子列，再对 \((E^*)^c\) 使用 Fatou 引理，得到
+\[
+ \int_{(E^*)^c}|Tb(x)|\,\mathrm dx
+ \leq2C_{d,\delta}A_K\|f\|_1.
+\]
+这不要求 \(\sum_jTb_j\) 在全空间的 \(L^1\) 中收敛。我们得到的仅是远离坏区域后的积分控制，正好足够用于 Chebyshev 不等式：
+\[
+ |\{x\notin E^*:|Tb(x)|>t/2\}|
+ \leq\frac{4C_{d,\delta}A_K}{t}\|f\|_1.
+\]
+
+由 \(Tf=Tg+Tb\)，其 \(t\) 超水平集包含在好部分的 \(t/2\) 超水平集、扩大坏区域，以及坏部分在其外的 \(t/2\) 超水平集三者之并中。合并以上估计即得
+\[
+ |\{|Tf|>t\}|
+ \leq\frac{C_{d,\delta}(1+B^2+A_K)}t\|f\|_1
+ \quad(f\in L^1\cap L^2,\ t>0),
+\]
+其中最后的 \(C_{d,\delta}\) 可以增大以吸收各项维数常数。好部分靠 \(L^2\) 有界性，坏区域靠测度控制，坏部分的远场靠零平均与核差分；三条估计承担着不同任务。由稠密性把算子延拓到全部 \(L^1\)，以及由弱端点推出 \(L^p\) 强型的步骤，将在\secref{b2:sec:1804}完成。

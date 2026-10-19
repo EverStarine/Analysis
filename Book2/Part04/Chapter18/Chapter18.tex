@@ -3,22 +3,30 @@
 \label{b2:ch:18}
 \BookChapterNumber{b2:ch:18}
 \begin{chapterabstract}
-Hilbert 与 Riesz 变换说明奇核可以通过对称主值形成有界算子。本章由二进平均构造 Calderón–Zygmund 分解，用坏块零平均改善远场衰减，再由平方理论、弱型插值及伴随取得全部开区间指数。截断的最大估计进一步把空间延拓与点态主值联系起来，最后讨论共轭函数与椭圆导数估计。
+若卷积核在原点附近像距离的负维数次幂那样增长，取绝对值后的积分通常发散，Young 不等式便不能直接使用。然而，核的正负部分可能相互抵消，使对称截断仍有极限。本章从 Hilbert 变换的具体计算出发，说明怎样把这种抵消转化为范数估计：先将输入分成有界的好部与零平均的坏块，再把坏块的零平均移到核的差分上。由此得到弱端点、中间指数的有界性与主值实现，最后用于共轭调和函数和椭圆方程的二阶导数估计。
 \end{chapterabstract}
 
 \begin{learninggoals}\begin{itemize}
-\item\label{b2:item:18-goal-1}核对 Hilbert 主值、Fourier 符号与平方范数的归一化。
-\item\label{b2:item:18-goal-2}构造好坏分解并把零平均用于核差分。
-\item\label{b2:item:18-goal-3}区分标准核条件、平方有界性与主值实现。
-\item\label{b2:item:18-goal-4}完成弱型、插值、伴随与最大截断的推导。
-\item\label{b2:item:18-goal-5}用 Riesz 变换表达 Poisson 共轭结构和二阶椭圆导数。
+\item\label{b2:item:18-goal-1}计算 Hilbert 变换的主值与 Fourier 符号，区分平方范数有界和点态极限。
+\item\label{b2:item:18-goal-2}构造 Calderón--Zygmund 分解，说明坏块的零平均怎样改善远场衰减。
+\item\label{b2:item:18-goal-3}核对标准核的大小、光滑性及离支集表示，并辨认平方有界性这一独立假设。
+\item\label{b2:item:18-goal-4}完成弱型、插值、伴随与极大截断的论证，把稠密类上的主值传给一般输入。
+\item\label{b2:item:18-goal-5}用 Riesz 变换描述 Poisson 共轭结构、频率投影与椭圆二阶估计。
 \end{itemize}\end{learninggoals}
 
-对区间示性函数作 Hilbert 变换，答案是一个对数。原函数有界，答案在端点却无界；原函数可积，答案远处又只按倒数衰减。与此同时，Fourier 符号的模恒为一，所以平方范数完全保持。端点失败与中间指数有界同时存在，原因必须在局部抵消中寻找。
+对区间示性函数作 Hilbert 变换，答案是一个对数。输入有界且可积，输出却在区间端点无界，并在无穷远只按倒数衰减。另一方面，它的 Fourier 符号模长为一，平方范数完全保持。同一个算子为什么能够同时具有这些性质？要回答这个问题，必须分清两个作用：绝对值估计控制大小，正负抵消则能消去绝对值估计中最危险的部分。
 
 \ProseParagraphBreak
 
-本章使用\chapref{b2:ch:17}的二进微分、大小分解插值和对偶范数公式。Elias M. Stein 的《Singular Integrals and Differentiability Properties of Functions》\cite{Stein1970Singular}系统讨论核抵消；Loukas Grafakos 的《Classical Fourier Analysis》\cite{Grafakos2014Classical}提供奇异积分与乘子的教材背景。下面给出本章所需标准核版本的完整证明。除末节的周期比较外，底空间固定为欧氏空间的 Lebesgue 测度。
+\chapref{b2:ch:17}已经准备了三件工具。二进微分定理让局部平均反映函数值，极大立方体分解把大平均的位置收集起来，Marcinkiewicz 插值则把弱端点与平方有界性接成中间的强型估计。本章调用它们时仍会写出所需版本及输入条件。Fourier 部分沿用\secref{b2:sec:0401}的 Plancherel 延拓，归一化固定为 \(e^{-2\pi\mathrm i x\cdot\xi}\)；涉及分布时，只使用\chapref{b2:ch:05}中的测试函数配对、分布导数和 Fourier 变换。除\subsecref{b2:subsec:180502}的周期比较外，底空间均为带 Lebesgue 测度的 \(\mathbb R^d\)。
+
+\ProseParagraphBreak
+
+首次阅读可先沿 Hilbert 变换、好坏分解、标准核、弱型证明这一顺序走到\subsecref{b2:subsec:180403}。这样先看清一个具体核怎样进入一般定理。随后读极大截断与主值传递，再到\secref{b2:sec:1805}看 Riesz 变换的实现和应用。向量值估计与 BMO 端点解释的是同一方法怎样服务于后续章节，可以在掌握标量证明后回读；它们不作为本章标量 \(L^p\) 有界性的前提。
+
+\ProseParagraphBreak
+
+进一步阅读可参考 Elias M. Stein 的《Singular Integrals and Differentiability Properties of Functions》\cite{Stein1970Singular}与 Loukas Grafakos 的《Classical Fourier Analysis》\cite{Grafakos2014Classical}。前者适合继续理解核抵消与微分性质的联系，后者可用于扩展奇异积分、乘子与函数空间的背景。本章采用的标准核版本在正文中证明，较弱核条件下的进一步结论另行说明出处和适用范围。
 
 \input{Part04/Chapter18/Section1801}
 \input{Part04/Chapter18/Section1802}
@@ -27,71 +35,418 @@ Hilbert 与 Riesz 变换说明奇核可以通过对称主值形成有界算子�
 \input{Part04/Chapter18/Section1805}
 
 \begin{chaptersummary}
-标准核控制支集外的空间变化，平方有界性控制好函数的能量，坏块零平均使远场绝对积分收敛。三者合用才产生弱端点和中间强型。主值公式还有截断极限的责任，不能由核表达或范数延拓单独替代。Riesz 变换则把零阶奇异积分放入调和共轭和二阶微分估计中，其全空间结论需要与区域及边界问题分别使用。
+Calderón--Zygmund 分解在每个坏立方体上保留平均值，把剩余部分变成零平均函数。远离这个立方体时，核可以减去中心值；核差分比核本身多衰减一个正幂次，于是坏部的远场可以绝对积分。好部由平方估计控制，坏区由体积估计控制，这三项合起来得到弱 \((1,1)\)。再经插值与伴随，标准 Calderón--Zygmund 算子在全部 \(1<p<\infty\) 上有兼容的延拓。
+
+\ProseParagraphBreak
+
+使用这一结论时，还要分别核对核条件、\(L^2\) 有界性和截断实现。离支集核并不决定算子在对角线上的作用，\(L^p\) 范数延拓也不自动等于逐点主值。极大截断提供统一的误差控制，具体核在光滑稠密类上的收敛提供起点，两者结合才把主值传给一般输入。Hilbert 与 Riesz 变换满足这些条件，它们的零阶 Fourier 符号又把共轭调和结构和二阶椭圆估计连接起来。区域问题仍须经过截断和局部化，所得估计中的低阶项不能在没有额外条件时删去。
 \end{chaptersummary}
 
 \BookExercises
 
-% 自拟：围绕本章已经建立的工具，改变条件或组合方法。
+
+% 自拟：由区间模型精算分布函数与弱范数，训练端点的定量判断。
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b2:ex:18-new-1}
-令 \(f=\mathbf1_{(0,1)}\)。计算 \(Hf\) 在 \((0,1)\) 内的符号变化，证明它属于所有有限 \(p>1\) 的 \(L^p(\mathbb R)\)，但不属于 \(L^1\) 或 \(L^\infty\)。
+在带 Lebesgue 测度的 \(\mathbb R\) 上，令
+\[
+ h=H\mathbf1_{(0,1)},\quad
+ h(x)=\frac1\pi\log\left|\frac{x}{x-1}\right|\quad(x\ne0,1),
+\]
+并在两个端点任意补有限值。对 \(t>0\)，求出 \(\{|h|>t\}\) 的区间组成，证明其分布函数与弱 \(L^1\) 准范数分别为
+\[
+ d_h(t)=\frac2{\sinh(\pi t)},
+ \quad \|h\|_{L^{1,\infty}}
+       \coloneqq\sup_{t>0}t\cdot d_h(t)=\frac2\pi.
+\]
+分别解释 \(t\downarrow0\) 和 \(t\uparrow\infty\) 的分布行为，并据此判断 \(h\) 的有限指数可积性。
 \end{exercise}
 \begin{solution}
-公式为 \(\pi^{-1}\log|x/(x-1)|\)，在 \(x<1/2\) 为负，在 \(x>1/2\) 为正。端点附近只有对数奇性，\(\int_0^{1/2}|\log x|^p\,\mathrm dx<\infty\)，可用 \(x=e^{-s}\) 换元验证。无穷远为 \(1/(\pi x)+O(x^{-2})\)，所以尾部 \(p\) 次积分恰在 \(p>1\) 收敛。对数无界又排除无穷端点。
+固定 \(t>0\)，记 \(q=e^{\pi t}>1\)。条件 \(|h(x)|>t\) 等价于
+\[
+ \left|\frac{x}{x-1}\right|<q^{-1}
+ \quad\text{或}\quad
+ \left|\frac{x}{x-1}\right|>q.
+\]
+在 \(x<0\) 上，比值的绝对值为 \(-x/(1-x)<1\)，第一项不等式给出
+\(-1/(q-1)<x<0\)。在 \(0<x<1\) 上，比值为 \(x/(1-x)\)，两项分别给出
+\(0<x<1/(q+1)\) 和 \(q/(q+1)<x<1\)。在 \(x>1\) 上，比值为 \(x/(x-1)>1\)，第二项给出
+\(1<x<q/(q-1)\)。因此，忽略有限多个点后，超水平集就是
+\[
+ \left(-\frac1{q-1},\frac1{q+1}\right)
+ \ \cup\
+ \left(\frac q{q+1},\frac q{q-1}\right).
+\]
+两段长度之和为
+\[
+ d_h(t)=2\left(\frac1{q-1}+\frac1{q+1}\right)
+       =\frac{4q}{q^2-1}=\frac2{\sinh(\pi t)}.
+\]
+由 \(\sinh s\geq s\)（\(s>0\)），有 \(t\cdot d_h(t)\leq2/\pi\)；又由
+\(\sinh s/s\to1\)（\(s\downarrow0\)），这个上界在极限中达到。所以弱范数等于 \(2/\pi\)，其上确界无需在某个正高度取到。
+
+更具体地，低高度时 \(d_h(t)\sim2/(\pi t)\)，记录的是远处 \(1/x\) 尾部占据的长区间；高高度时 \(d_h(t)\sim4e^{-\pi t}\)，记录的是两个对数奇点附近迅速缩小的区域。用分布函数恒等式
+\[
+ \|h\|_p^p=p\int_0^\infty t^{p-1}\cdot d_h(t)\,\mathrm dt
+ \quad(0<p<\infty),
+\]
+无穷端因指数衰减总可积，零端则等价于 \(\int_0^1t^{p-2}\,\mathrm dt\)。故恰在 \(p>1\) 时 \(h\in L^p\)，在 \(0<p\leq1\) 时不属于 \(L^p\)。此外高高度的分布函数始终为正，故 \(h\notin L^\infty\)。
 \end{solution}
 
-% 自拟：围绕本章已经建立的工具，改变条件或组合方法。
+% 自拟：将 Hilbert 变换的代数恒等式与正负频率结合，判断可逆性及精确平方范数。
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b2:ex:18-new-2}
-证明所有 \(1<p<\infty\) 上 \(H^2=-I\)，并推出若 \(Hf=0\)，则 \(f=0\) 几乎处处。
+设 \(1<p<\infty\)，\(a,b\in\mathbb C\)，\(H\) 取本章兼容的 \(L^p(\mathbb R;\mathbb C)\) 延拓。证明 \(A=aI+bH\) 为可逆有界算子，当且仅当 \(a^2+b^2\ne0\)，并在可逆时求其逆。再在 \(L^2\) 上证明
+\[
+ \|A\|_{2\to2}=\max\{|a-\mathrm ib|,|a+\mathrm ib|\},
+ \quad
+ \|A^{-1}\|_{2\to2}
+ =\frac1{\min\{|a-\mathrm ib|,|a+\mathrm ib|\}}.
+\]
+必要性与范数下界须给出实际输入，不能只在一个频率点上检验符号。
 \end{exercise}
 \begin{solution}
-在 \(L^2\) 中乘子平方为 \(-1\) 几乎处处。对 \(f\in L^p\) 取 Schwartz 范数逼近 \(f_n\)。Hilbert 的 \(L^p\) 有界性使 \(H^2f_n\to H^2f\)，而 \(-f_n\to-f\)，所以等式传递。若 \(Hf=0\)，再作用一次 \(H\) 得 \(-f=0\)。不能因形式核两次卷积而省略极限问题。
+先将正文的平方恒等式传到所用空间。在 \(L^2\) 中已有 \(H^2=-I\)。对 \(\varphi\in\mathcal S\)，其 \(L^2\) 与 \(L^p\) 实现相容，且 \(H\varphi\in L^2\cap L^p\)，所以该恒等式也在 \(L^p\) 中成立。对一般 \(f\in L^p\)，取 \(\varphi_n\in\mathcal S\) 在 \(L^p\) 中逼近；两次使用 \(H\) 的有界性，就得到 \(H^2f=-f\)。因此
+\[
+ (aI+bH)(aI-bH)=(aI-bH)(aI+bH)=(a^2+b^2)I.
+\]
+若 \(a^2+b^2\ne0\)，则
+\[
+ A^{-1}=\frac{aI-bH}{a^2+b^2}
+\]
+是所需的有界双侧逆。
+
+由于 \(a^2+b^2=(a-\mathrm ib)(a+\mathrm ib)\)，退化时至少有一个因子为零。取非零 \(\psi_+\in C_c^\infty\bigl((1,2)\bigr)\)，令 \(f_+=\mathcal F^{-1}\psi_+\in\mathcal S\)。其频率全为正，故
+\(Hf_+=-\mathrm if_+\)，从而 \(Af_+=(a-\mathrm ib)f_+\)。同样取非零频率测试函数支撑于 \((-2,-1)\)，得到 \(f_-\in\mathcal S\) 且
+\(Af_-=(a+\mathrm ib)f_-\)。每个 Schwartz 函数都属于当前的 \(L^p\)，所以任一因子为零都使 \(A\) 有非零核，不能可逆。
+
+在 \(L^2\) 中，Plancherel 给出
+\[
+ \|Af\|_2^2
+ =|a-\mathrm ib|^2\int_{\xi>0}|\widehat f(\xi)|^2\,\mathrm d\xi
+  +|a+\mathrm ib|^2\int_{\xi<0}|\widehat f(\xi)|^2\,\mathrm d\xi.
+\]
+这给出最大值所对应的上界，而选取 \(f_+\) 或 \(f_-\) 就得到相应下界。可逆时，逆算子在两个半轴上的符号分别为
+\((a-\mathrm ib)^{-1}\) 和 \((a+\mathrm ib)^{-1}\)，用同样的输入得到其精确范数。正、负半轴都是正测度集，所以这些范数由真正的 \(L^2\) 函数实现。
 \end{solution}
 
-% 自拟：围绕本章已经建立的工具，改变条件或组合方法。
+% 自拟：区分算子范数最优与非零函数能否取等，训练频率集中构造。
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b2:ex:18-new-3}
-对 \(a>0\) 和 \(\tau_bf(x)=f(x-b)\)，证明 \(H(f(a\,\cdot))(x)=Hf(ax)\)，且 \(H\tau_b=\tau_bH\)。说明这两种对称不意味着 \(H\) 保持非负性。
+设整数 \(d\geq2\)、\(1\leq j\leq d\)，\(R_j\) 为乘子
+\(-\mathrm i\xi_j/|\xi|\) 定义的 \(L^2(\mathbb R^d;\mathbb C)\) Riesz 变换。证明
+\(\|R_j\|_{2\to2}=1\)，但每个非零 \(f\in L^2\) 都满足
+\(\|R_jf\|_2<\|f\|_2\)。构造范数为一的 Schwartz 函数族，使其输出范数趋于一。
 \end{exercise}
 \begin{solution}
-对 Schwartz 输入，在主值积分中分别作 \(s=at\) 与平移换元，截断下限相应从 \(\varepsilon\) 变为 \(a\varepsilon\)，极限得到等式。稠密性推广到 \(L^p\)。上一题示性函数在半个区间上的输出为负，所以两种对称均不能推出正性。
+由 Plancherel，
+\[
+ \|f\|_2^2-\|R_jf\|_2^2
+ =\int_{\mathbb R^d}
+   \frac{\sum_{k\ne j}\xi_k^2}{|\xi|^2}
+       \cdot|\widehat f(\xi)|^2\,\mathrm d\xi\geq0.
+\]
+权重只在第 \(j\) 条坐标轴上为零，原点处的补值不影响积分。由于 \(d\geq2\)，这条轴的 \(d\) 维 Lebesgue 测度为零。若 \(f\ne0\)，则 \(|\widehat f|>0\) 的集合有正测度，故上式严格为正。特别地，范数等式不能由某个非零输入取到。
+
+为逼近上界，记 \(e_j\) 为第 \(j\) 个单位坐标向量，取非零
+\(\psi\in C_c^\infty\bigl(B(0,1)\bigr)\)。对 \(0<\varepsilon<1/2\)，定义
+\[
+ \widehat f_\varepsilon(\xi)
+ =\frac{\varepsilon^{-d/2}}{\|\psi\|_2}
+       \cdot\psi\left(\frac{\xi-e_j}{\varepsilon}\right).
+\]
+该函数光滑且紧支撑，所以 \(f_\varepsilon\in\mathcal S\)；换元给出
+\(\|f_\varepsilon\|_2=1\)。在其频率支集上，\(\xi_j\geq1-\varepsilon\)、\(|\xi|\leq1+\varepsilon\)，所以
+\[
+ \left(\frac{1-\varepsilon}{1+\varepsilon}\right)^2
+ \leq\|R_jf_\varepsilon\|_2^2\leq1.
+\]
+令 \(\varepsilon\downarrow0\)，输出范数便趋于一。这说明最优算子范数可以由集中族逼近，即使没有任何非零取等函数。维数条件也有实质作用：在一维，\(R_1=H\) 在全部 \(L^2\) 上等距。
 \end{solution}
 
-% 自拟：围绕本章已经建立的工具，改变条件或组合方法。
+% 自拟：将坏块零平均推广到有限阶矩消失，并用有限差分构造精确阶数。
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b2:ex:18-new-4}
-设 \(b\) 为紧支集可积函数，\(\int b=0\)。对 Hilbert 变换证明 \(Hb(x)=O(x^{-2})\) 当 \(|x|\to\infty\)，并写出第一非零矩所产生的首项。
+设 \(m\geq0\) 为整数、\(R>0\)，\(b\in L^1(\mathbb R;\mathbb C)\) 在 \([-R,R]\) 外几乎处处为零。定义
+\[
+ \mu_\ell\coloneqq\int_{\mathbb R}y^\ell\cdot b(y)\,\mathrm dy
+ \quad(0\leq\ell\leq m),
+\]
+并假设 \(\mu_\ell=0\) 对 \(0\leq\ell<m\) 成立。当 \(m=0\) 时这一组消失条件为空。此题只在支集外定义普通绝对积分
+\[
+ Hb(x)\coloneqq\frac1\pi\int_{\mathbb R}\frac{b(y)}{x-y}\,\mathrm dy
+ \quad(|x|>R),
+\]
+不预设一般 \(L^1\) 输入在支集内的主值。证明当 \(|x|>2R\) 时，
+\[
+ \left|Hb(x)-\frac{\mu_m}{\pi x^{m+1}}\right|
+ \leq\frac{2R^{m+1}}{\pi|x|^{m+2}}\|b\|_1.
+\]
+再对
+\[
+ b_m(y)=\sum_{k=0}^m(-1)^k\binom mk\cdot\mathbf1_{(k,k+1)}(y)
+\]
+证明前 \(m\) 个矩为零，而 \(\mu_m=(-1)^m m!\)，从而该尾部阶数可以实际出现。
 \end{exercise}
 \begin{solution}
-若支集在 \([-R,R]\)，\(|x|>2R\) 时 \(1/(x-y)=1/x+y/x^2+y^2/(x^2(x-y))\)。常数项因零质量消失，故 \(Hb(x)=(\pi x^2)^{-1}\int yb(y)\,\mathrm dy+O(|x|^{-3}\int y^2|b(y)|\,\mathrm dy)\)。紧支集使这些矩有限，首项可能仍为零；题目没有声称它总是非零。
+紧支集保证每个所用的矩都绝对收敛。在 \(|x|>2R\)、\(|y|\leq R\) 时，有限几何展开给出恒等式
+\[
+ \frac1{x-y}=\sum_{\ell=0}^m\frac{y^\ell}{x^{\ell+1}}
+                  +\frac{y^{m+1}}{x^{m+1}(x-y)}.
+\]
+乘 \(b(y)\) 积分，前 \(m\) 项因矩条件消失。余项中
+\(|x-y|\geq|x|/2\)，故
+\[
+ \begin{aligned}
+ \left|Hb(x)-\frac{\mu_m}{\pi x^{m+1}}\right|
+ &\leq\frac2{\pi|x|^{m+2}}
+             \int|y|^{m+1}\cdot|b(y)|\,\mathrm dy\\
+ &\leq\frac{2R^{m+1}}{\pi|x|^{m+2}}\|b\|_1.
+ \end{aligned}
+\]
+估计对正、负两侧的 \(x\) 都成立，首项的符号保留在 \(x^{m+1}\) 中。
+
+对给定的 \(b_m\)，它支撑于 \([0,m+1]\)，因而属于 \(L^1\)。将每个区间换元为 \(y=z+k\)，得到
+\[
+ \int y^\ell\cdot b_m(y)\,\mathrm dy
+ =\int_0^1\sum_{k=0}^m(-1)^k\binom mk(z+k)^\ell\,\mathrm dz.
+\]
+记前向差分为 \(\Delta P(z)=P(z+1)-P(z)\)。反复展开可得
+\[
+ \Delta^mP(z)=\sum_{k=0}^m(-1)^{m-k}\binom mk\cdot P(z+k).
+\]
+差分每次将多项式次数降低一，且把最高次系数乘以原来的次数。因此对 \(P(z)=z^\ell\)，\(\ell<m\) 时 \(\Delta^mP=0\)，\(\ell=m\) 时 \(\Delta^mP=m!\)。上面的矩积分于是分别为零和 \((-1)^m m!\)；\(m=0\) 时同样得到 \(\mu_0=1\)。由于第 \(m\) 个矩非零，所得尾部的首项确为 \(x^{-(m+1)}\) 阶，而非仅有一个可能不尖锐的上界。
 \end{solution}
 
-% 自拟：围绕本章已经建立的工具，改变条件或组合方法。
+% 自拟：从离支集局部性识别对角线自由度，补足零核乘法例子的结构解释。
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b2:ex:18-new-5}
-令 \(T_af=a(x)f(x)\)，其中 \(a\in L^\infty\)。证明它是标准核定义中核为零的算子；解释为什么“核为零”不能推出 \(T_a=0\)。
+设整数 \(d\geq1\)，\(T_1,T_2\) 是 \(L^2(\mathbb R^d;\mathbb C)\) 上的有界复线性算子。设可测核 \(K\) 在 \(x\ne y\) 上满足
+\(|K(x,y)|\leq A|x-y|^{-d}\)，其中 \(A<\infty\)；并且对每个紧集 \(F\) 与每个在 \(F\) 外几乎处处为零的 \(f\in L^2\)，有
+\[
+ T_1f(x)=T_2f(x)=\int_FK(x,y)\cdot f(y)\,\mathrm dy
+ \quad\text{对几乎处处的 }x\notin F.
+\]
+证明差算子 \(S=T_1-T_2\) 必为乘法算子：存在唯一的 \(a\in L^\infty(\mathbb R^d)\) 等价类，使
+\[
+ Sf=a\cdot f\quad(f\in L^2),
+ \quad\|S\|_{2\to2}=\|a\|_\infty.
+\]
+证明中须从紧支集输入出发，解释为什么 \(S\) 对任意可测集合都保持支撑，而不能只对开集作形式判断。
 \end{exercise}
 \begin{solution}
-有 \(\|T_af\|_2\leq\|a\|_\infty\|f\|_2\)，且支集外 \(T_af=0\)，与零核积分相同。大小及差分常数均可取零。但若 \(a\) 在正测度集合上非零，选该集合内有限测度子集的示性函数，乘法输出不为零。支集外表示未记录对角线的作用，硬截断零核也全部为零。
+若 \(f\) 支撑于紧集 \(F\)，共同核表示相减便知 \(Sf=0\) 在 \(F\) 外几乎处处成立。先把这个局部性推广到任意 Lebesgue 可测集 \(E\)。设 \(f\in L^2\) 在 \(E\) 外几乎处处为零，选定有限值可测代表，并令
+\[
+ E_n=E\cap B(0,n)\cap\{|f|\leq n\}.
+\]
+这些集合递增且覆盖 \(f\) 的非零部分，至多相差零测集。由有限测度集合的内正则性，选紧集 \(K_n\subset E_n\)，使
+\(|E_n\setminus K_n|<n^{-4}\)。令 \(f_n=f\cdot\mathbf1_{K_n}\)，则
+\[
+ \|f-f_n\|_2^2
+ \leq\int_{E\setminus E_n}|f|^2+n^2|E_n\setminus K_n|
+ \leq\int_{E\setminus E_n}|f|^2+n^{-2}\longrightarrow0.
+\]
+每个 \(Sf_n\) 都在 \(K_n\subset E\) 外为零，且 \(Sf_n\to Sf\) 于 \(L^2\)。乘以 \(\mathbf1_{E^c}\) 是有界算子，故极限 \(Sf\) 也在 \(E\) 外为零。这里不要求 \(K_n\) 递增。
+
+对任意 \(f\in L^2\)，将它分成 \(\mathbf1_E\cdot f\) 与 \(\mathbf1_{E^c}\cdot f\)，两部分的输出分别留在 \(E\) 与 \(E^c\)。因此
+\[
+ S(\mathbf1_E\cdot f)=\mathbf1_E\cdot Sf.
+\]
+现在令 \(D_n=(-n,n)^d\)、\(a_n=S\mathbf1_{D_n}\)。当 \(m<n\) 时，
+\[
+ \mathbf1_{D_m}\cdot a_n
+ =S(\mathbf1_{D_m}\cdot\mathbf1_{D_n})
+ =S\mathbf1_{D_m}=a_m.
+\]
+取去掉可数个零测例外集的共同满测集，这些函数就在各 \(D_n\) 上相容，可以拼成一个可测函数 \(a\)，满足 \(a=a_n\) 于 \(D_n\)。对每个可测 \(E\subset D_n\)，又有
+\[
+ S\mathbf1_E=\mathbf1_E\cdot a,
+ \quad\|a\cdot\mathbf1_E\|_2
+      \leq\|S\|_{2\to2}\cdot|E|^{1/2}.
+\]
+若 \(\{|a|>\|S\|_{2\to2}+\varepsilon\}\cap D_n\) 有正测度，以上式中的 \(E\) 取为此集合，平方后就与 \(L^2\) 积分下界矛盾。因此对每个 \(n\) 和 \(\varepsilon>0\)，该集合测度为零，得到 \(\|a\|_\infty\leq\|S\|_{2\to2}\)。
+
+由线性，\(Sf=a\cdot f\) 对支撑在某个 \(D_n\) 内的简单函数成立。这样的简单函数在 \(L^2\) 中稠密：先截去空间远尾和过高幅度，再将有界的复值范围作有限网格近似。两边均为有界算子，故等式推广到全部 \(L^2\)。反向不等式
+\(\|S\|_{2\to2}=\|M_a\|_{2\to2}\leq\|a\|_\infty\)
+来自直接积分，于是范数相等。若另一个 \(\widetilde a\) 给出相同乘法算子，作用于各 \(\mathbf1_{D_n}\) 即得 \(a=\widetilde a\) 几乎处处，证明唯一性。可见离支集核所遗漏的，恰好是这样的有界乘法项。
 \end{solution}
 
-% 自拟：围绕本章已经建立的工具，改变条件或组合方法。
+% 自拟：组合方向乘子得到向量投影，连接奇异积分与无散条件。
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b2:ex:18-new-6}
-在 \(L^2(\mathbb R^d)\) 中证明 \(\sum_j\|R_jf\|_2^2=\|f\|_2^2\)。再证明对 Schwartz 输入 \(\partial_iR_jf=\partial_jR_if\)。
+设整数 \(d\geq2\)、\(1<p<\infty\)，\(R_j\) 取本章兼容的 \(L^p(\mathbb R^d;\mathbb C)\) Riesz 变换。对向量函数 \(F=(F_1,\ldots,F_d)\in L^p(\mathbb R^d;\mathbb C^d)\)，定义
+\[
+ (\mathbb PF)_i=F_i+\sum_{j=1}^dR_iR_jF_j
+ \quad(1\leq i\leq d),
+\]
+其中向量范数采用逐点欧氏范数。证明 \(\mathbb P\) 在该向量值 \(L^p\) 空间上有界，\(\mathbb P^2=\mathbb P\)，且
+\(\operatorname{div}(\mathbb PF)=0\) 于分布意义；对每个 \(\varphi\in\mathcal S(\mathbb R^d)\)，还有 \(\mathbb P\nabla\varphi=0\)。再证明在 \(p=2\) 时，\(\mathbb P\) 是到闭子空间
+\[
+ \mathcal V=\{F\in L^2(\mathbb R^d;\mathbb C^d):
+                         \operatorname{div}F=0\text{ 于分布意义}\}
+\]
+的正交投影，且 \(\|\mathbb P\|_{2\to2}=1\)。
 \end{exercise}
 \begin{solution}
-Plancherel 把范数和变为 \(\int\sum_j\xi_j^2|\xi|^{-2}|\widehat f|^2=\int|\widehat f|^2\)。导数的两个符号分别为 \(2\pi\xi_i\xi_j/|\xi|\) 与 \(2\pi\xi_j\xi_i/|\xi|\)，相等；温和分布逆变换给出结论。总范数等式并非每个方向各自等距。
+先看有界性。每个分量的 \(L^p\) 范数不超过 \(\|F\|_{L^p(\mathbb C^d)}\)，且 \(R_i,R_j\) 均为有界 \(L^p\) 算子。有限次使用三角不等式，例如
+\[
+ \begin{aligned}
+ \|\mathbb PF\|_{L^p(\mathbb C^d)}
+ &\leq\sum_{i=1}^d\|(\mathbb PF)_i\|_p\\
+ &\leq\sum_i\|F_i\|_p
+   +\sum_{i,j}\|R_i\|_{p\to p}\cdot\|R_j\|_{p\to p}\cdot\|F_j\|_p\\
+ &\leq C_{d,p}\|F\|_{L^p(\mathbb C^d)},
+ \end{aligned}
+\]
+就给出足够的界，不要求这个常数最优。
+
+在 \(L^2\) 中，\(R_iR_j\) 的符号为 \(-\xi_i\xi_j/|\xi|^2\)，所以 \(\mathbb P\) 的矩阵符号是
+\[
+ P(\xi)=I-\frac{\xi\xi^{\mathsf T}}{|\xi|^2}
+ \quad(\xi\ne0).
+\]
+它是到 \(\xi^\perp\subset\mathbb C^d\) 的欧氏正交投影，因此
+\(P(\xi)^2=P(\xi)=P(\xi)^*\)、\(\xi^{\mathsf T}P(\xi)=0\)，且矩阵范数不超过一。Plancherel 把这些等式传给 \(\mathbb P\)，得到幂等性、自伴性、平方范数上界及无散性。
+
+还须识别投影的像。对 \(F\in L^2\)，分布恒等式 \(\operatorname{div}F=0\) 等价于
+\(\xi\cdot\widehat F(\xi)=0\) 几乎处处：Fourier 变换将散度化为 \(2\pi\mathrm i\xi\cdot\widehat F\)，后者局部可积，一个局部可积函数给出零分布当且仅当它几乎处处为零。这样的 \(F\) 满足 \(P(\xi)\widehat F=\widehat F\)，即 \(\mathbb PF=F\)。而任意输出已经无散，所以像恰为 \(\mathcal V\)。若一列无散向量在 \(L^2\) 中收敛，与每个紧支集光滑测试函数的梯度配对都收敛，极限仍无散，故 \(\mathcal V\) 闭。结合自伴与幂等，得到所述正交投影。
+
+范数确实为一，而不只是至多一。取 \(\psi\in C_c^\infty(\mathbb R^d)\)，使
+\((\partial_1\psi,\partial_2\psi)\) 不恒为零，并令
+\[
+ G=(\partial_2\psi,-\partial_1\psi,0,\ldots,0).
+\]
+混合偏导相等使 \(\operatorname{div}G=0\)，且 \(G\ne0\)，故 \(\mathbb PG=G\) 给出下界一。另一方面，\(\widehat{\nabla\varphi}=2\pi\mathrm i\xi\cdot\widehat\varphi\) 沿 \(\xi\) 方向，矩阵 \(P(\xi)\) 将其消去，所以 \(\mathbb P\nabla\varphi=0\) 在 \(L^2\) 中成立。
+
+最后处理一般 \(p\)。对 Schwartz 向量，上述等式先在 \(L^2\) 成立；它和其中的 \(\mathbb P\) 输出均属于 \(L^2\cap L^p\)，各个 Riesz 变换的相容性使幂等式也在 \(L^p\) 中成立。取 Schwartz 向量在 \(L^p\) 中逼近任意 \(F\)，利用有界性即可传递 \(\mathbb P^2=\mathbb P\)。对每个紧支集光滑测试函数，其梯度属于 \(L^{p'}\)，所以输出的无散分布等式也能在该极限中传递。梯度消去公式同样由相容性成立。这里的正交性与范数一专指 \(p=2\)，未对其他指数作相同断言。
 \end{solution}
 
-% 自拟：围绕本章已经建立的工具，改变条件或组合方法。
+% 自拟：把热核积分、预解方程与二阶 Riesz 乘子连接，并区分有质量与零质量估计。
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b2:ex:18-new-7}
-设 \(-\Delta u=f\) 在全空间，\(u=\Phi_d*f\)、\(f\in C_c^\infty\)。核对 \(\partial_i\partial_ju=R_iR_jf\) 的符号，并由求和恢复方程。
+设整数 \(d\geq1\)、\(1<p<\infty\)、\(\lambda>0\)，\(f\in L^p(\mathbb R^d;\mathbb C)\)。令
+\[
+ H_t(x)=(4\pi t)^{-d/2}e^{-|x|^2/(4t)},
+ \quad u_\lambda=\int_0^\infty e^{-\lambda t}\cdot(H_t*f)\,\mathrm dt,
+\]
+时间积分按 \(L^p\) 范数中的积分理解。证明它收敛，且
+\[
+ (\lambda-\Delta)u_\lambda=f\text{ 于分布意义},
+ \quad\|u_\lambda\|_p\leq\lambda^{-1}\|f\|_p.
+\]
+先对 \(f\in\mathcal S\) 求出 \(\widehat u_\lambda\) 并证明 \(u_\lambda\in\mathcal S\)，再由
+\[
+ \partial_i\partial_ju_\lambda
+ =R_iR_j(f-\lambda u_\lambda)
+\]
+证明全部二阶分布导数属于 \(L^p\)，且
+\[
+ \sum_{i,j=1}^d\|\partial_i\partial_ju_\lambda\|_p
+ \leq C_{d,p}\|f\|_p,
+\]
+其中常数与 \(\lambda>0\) 无关。最后用缩放说明不存在对所有 \(u\in C_c^\infty(\mathbb R^d)\) 都成立的统一估计
+\(\|u\|_p\leq C\|\Delta u\|_p\)。
 \end{exercise}
 \begin{solution}
-二阶导数乘子为 \(-\xi_i\xi_j/|\xi|^2\)，与两个 \(-\mathrm i\) 的乘积相同，因此是 \(R_iR_jf\)，没有额外负号。对 \(i=j\) 求和得到 \(\Delta u=\sum_iR_i^2f=-f\)。同样的计算在二维对数势仍对导数成立，不要求势函数自身可积。
+先核对时间积分的连续性。固定 \(t_0>0\)，当 \(t_0/2\leq t\leq2t_0\) 时，热核的显式公式给出共同可积控制 \(C_{d,t_0}e^{-|x|^2/(8t_0)}\)。支配收敛说明 \(\|H_t-H_{t_0}\|_1\to0\)，Young 不等式因而给出
+\[
+ \|H_t*f-H_{t_0}*f\|_p
+ \leq\|H_t-H_{t_0}\|_1\cdot\|f\|_p\longrightarrow0.
+\]
+零时的 \(L^p\) 连续性由\cref{b2:thm:12-heat-convolution}给出。热核非负且积分为一，Young 不等式还给出
+\[
+ \|H_t*f\|_p\leq\|f\|_p,
+ \quad\int_0^\infty e^{-\lambda t}\|H_t*f\|_p\,\mathrm dt
+                  \leq\lambda^{-1}\|f\|_p.
+\]
+因而可先在紧时间区间内积分，再放开两端，得到收敛的 \(L^p\) 值积分及所求零阶界。特别地，\(f\mapsto u_\lambda\) 是范数不超过 \(\lambda^{-1}\) 的线性算子。
+
+若 \(f\in\mathcal S\)，还可在 \(L^1\) 中作同一积分，因为
+\(\int_0^\infty e^{-\lambda t}\|H_t*f\|_1\,\mathrm dt<\infty\)。Fubini 因而允许先取 Fourier 变换，得到
+\[
+ \widehat u_\lambda(\xi)
+ =\int_0^\infty e^{-t(\lambda+4\pi^2|\xi|^2)}
+                 \cdot\widehat f(\xi)\,\mathrm dt
+ =\frac{\widehat f(\xi)}{\lambda+4\pi^2|\xi|^2}.
+\]
+分母严格为正，其倒数是光滑函数，各阶导数至多作多项式增长，所以乘上 Schwartz 函数仍为 Schwartz 函数。Fourier 反变换说明 \(u_\lambda\in\mathcal S\)，并立即给出
+\((\lambda-\Delta)u_\lambda=f\)。
+
+记 \(g=f-\lambda u_\lambda\)。由刚求出的公式，
+\[
+ \widehat g(\xi)=\frac{4\pi^2|\xi|^2}{\lambda+4\pi^2|\xi|^2}
+                       \cdot\widehat f(\xi).
+\]
+两个 Riesz 符号相乘为 \(-\xi_i\xi_j/|\xi|^2\)，故
+\[
+ \widehat{R_iR_jg}(\xi)
+ =-\frac{4\pi^2\xi_i\xi_j}{\lambda+4\pi^2|\xi|^2}
+                       \cdot\widehat f(\xi)
+ =\widehat{\partial_i\partial_ju_\lambda}(\xi).
+\]
+零频处任意补值不影响等式。使用 \(R_iR_j\) 的 \(L^p\) 有界性与零阶界，有
+\[
+ \begin{aligned}
+ \sum_{i,j}\|\partial_i\partial_ju_\lambda\|_p
+ &\leq C_{d,p}\|f-\lambda u_\lambda\|_p\\
+ &\leq C_{d,p}(\|f\|_p+\lambda\|u_\lambda\|_p)
+ \leq2C_{d,p}\|f\|_p.
+ \end{aligned}
+\]
+吸收因子二即可得到与 \(\lambda\) 无关的常数。
+
+对一般 \(f\in L^p\)，取 \(f_n\in\mathcal S\) 在 \(L^p\) 中逼近。零阶界使对应的 \(u_{\lambda,n}\to u_\lambda\) 于 \(L^p\)，而
+\(R_iR_j(f_n-\lambda u_{\lambda,n})\)
+也在 \(L^p\) 中收敛到 \(R_iR_j(f-\lambda u_\lambda)\)。对任意 \(\varphi\in C_c^\infty\)，Hölder 不等式保证
+\[
+ \int u_{\lambda,n}\cdot\partial_i\partial_j\varphi
+ \longrightarrow\int u_\lambda\cdot\partial_i\partial_j\varphi.
+\]
+所以二阶分布导数的极限正是 \(\partial_i\partial_ju_\lambda\)，并由上述 \(L^p\) 极限表示。对方程作同样的测试配对，得到其分布版本；范数估计也随 \(L^p\) 收敛传递。
+
+零质量参数不能提供同样的零阶控制。固定非零 \(\phi\in C_c^\infty\)，使 \(\Delta\phi\ne0\)，令 \(v_R(x)=\phi(x/R)\)、\(R>0\)。换元给出
+\[
+ \|v_R\|_p=R^{d/p}\|\phi\|_p,
+ \quad\|\Delta v_R\|_p=R^{d/p-2}\|\Delta\phi\|_p.
+\]
+若存在所述统一常数，则 \(R^2\|\phi\|_p\leq C\|\Delta\phi\|_p\) 对所有 \(R\) 成立，与 \(R\uparrow\infty\) 矛盾。二阶估计中相同的缩放因子可以相消，零阶估计却不能，这解释了 \(\lambda>0\) 在前一估计中的作用。
 \end{solution}
 
-% 自拟：围绕本章已经建立的工具，改变条件或组合方法。
+% 自拟：用光滑乘法系数的差消去对角线奇性，比较差核的逐点极限与平方范数极限。
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b2:ex:18-new-8}
-设 \(f\in L^p\)、\(1<p<\infty\)，并已知最大截断在 \(L^p\) 有界且 Schwartz 输入的截断收敛。证明一般输入的截断几乎处处收敛，明确说明逼近误差的作用。
+设 \(d\geq1\) 为整数，\(T\) 是 \(\mathbb R^d\) 上\cref{b2:thm:18-cz-operator-definition}的标准 Calder\'on--Zygmund 算子，核为 \(K\)。另设硬截断
+\[
+ T_\epsilon g(x)=\int_{|x-y|>\epsilon}K(x,y)\cdot g(y)\,\mathrm dy
+\]
+对每个 \(g\in C_c^\infty(\mathbb R^d;\mathbb C)\)，当 \(\epsilon\downarrow0\) 时在 \(L^2\) 中趋于 \(Tg\)。给定 \(a,f\in C_c^\infty(\mathbb R^d;\mathbb C)\)，令 \(C_af=a\cdot Tf-T(a\cdot f)\)。证明
+\[
+ C_af(x)=\int_{\mathbb R^d}\bigl(a(x)-a(y)\bigr)\cdot K(x,y)\cdot f(y)\,\mathrm dy
+\]
+几乎处处成立，且右端对每个 \(x\) 都绝对收敛；解释乘法系数的差如何改善对角线附近的奇性。再证明对每个 \(1<p<\infty\)，有
+\[
+ \|C_af\|_p\leq2\|a\|_\infty\cdot\|T\|_{L^p\to L^p}\cdot\|f\|_p.
+\]
+这里 \(T\) 的 \(L^p\) 实现取\cref{b2:thm:18-cz-lp}的兼容延拓，不预先假定 \(T_\epsilon f\) 单独几乎处处收敛。
 \end{exercise}
 \begin{solution}
-取 Schwartz \(g\) 逼近 \(f\)。截断振荡 \(\limsup_{\varepsilon,\eta\downarrow0}|T_\varepsilon f-T_\eta f|\leq2T_*(f-g)\)，因 \(g\) 的振荡为零。于是振荡超过 \(2t\) 的集合测度不超过 \(C_pt^{-p}\|f-g\|_p^p\)。令逼近误差趋零，再对正有理 \(t\) 合并例外集，得到振荡为零。截断值在某个固定尺度有限，Cauchy 条件给出有限极限；最后与范数极限抽出的子列比较，识别为 \(Tf\)。
+设核的大小常数为 \(A\)，\(a\) 的全局 Lipschitz 常数为 \(L_a\)。当 \(|x-y|<1\) 时，
+\[
+ \Bigl|\bigl(a(x)-a(y)\bigr)\cdot K(x,y)\cdot f(y)\Bigr|
+ \leq A L_a\|f\|_\infty\cdot|x-y|^{1-d}.
+\]
+这在单位球上可积，径向积分为 \(\int_0^1\mathrm dr\)；系数之差提供的 \(|x-y|\) 消去了一阶奇性。在 \(|x-y|\geq1\) 时，绝对积分不超过 \(2A\|a\|_\infty\cdot\|f\|_1\)。因此对每个 \(x\)，差核的全积分绝对收敛，并且
+\[
+ a(x)\cdot T_\epsilon f(x)-T_\epsilon(a\cdot f)(x)
+ =\int_{|x-y|>\epsilon}\bigl(a(x)-a(y)\bigr)\cdot K(x,y)\cdot f(y)\,\mathrm dy
+\]
+随 \(\epsilon\downarrow0\) 趋于该积分。另一方面，\(f,a\cdot f\in C_c^\infty\)，题设的 \(L^2\) 收敛及乘法算子的有界性使左端在 \(L^2\) 中趋于 \(a\cdot Tf-T(a\cdot f)\)。从任意趋零截断序列中抽取一个 \(L^2\) 收敛的逐点子列，就把后者与已存在的全参数差核极限识别，得到所求几乎处处等式。这一步只比较两项之差，没有预设两项各自的逐点极限。
+
+最后利用 \(T\) 的 \(L^p\) 有界性及 \(L^2\)、\(L^p\) 实现的相容性，
+\[
+ \|a\cdot Tf-T(a\cdot f)\|_p
+ \leq\|a\|_\infty\cdot\|Tf\|_p+\|T(a\cdot f)\|_p
+ \leq2\|a\|_\infty\cdot\|T\|_{L^p\to L^p}\cdot\|f\|_p.
+\]
+绝对积分表示使用了 \(a\) 的 Lipschitz 正则性，而这个范数估计只用其有界性，两项结论的假设作用不同。
 \end{solution}

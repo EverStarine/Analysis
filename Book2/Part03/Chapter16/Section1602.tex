@@ -25,39 +25,119 @@
 \subsection{高阶 Sobolev 正则性}
 \label{b2:subsec:160202}
 
+\Needspace{6\baselineskip}
 \begin{theorem}[内部高阶正则性]
 \label{b2:thm:16-higher-regularity}
-设 \(m\) 为非负整数，\(A\in W_{\mathrm{loc}}^{m+1,\infty}(\Omega;\mathbb R^{d\times d})\) 局部有界且一致椭圆，\(f\in H_{\mathrm{loc}}^m(\Omega)\)。若 \(u\in H_{\mathrm{loc}}^1(\Omega)\) 弱解 \(-\operatorname{div}(A\nabla u)=f\)，则 \(u\in H_{\mathrm{loc}}^{m+2}(\Omega)\)。对 \(U\Subset V\Subset\Omega\)，有
+设 \(d\) 为正整数，\(\Omega\subset\mathbb R^d\) 为非空开集，\(m\) 为非负整数。设实矩阵场
+\[
+ A\in W_{\mathrm{loc}}^{m+1,\infty}(\Omega;\mathbb R^{d\times d})
+\]
+在每个紧含子域上有椭圆下界：对任意非空开集 \(V\Subset\Omega\)，存在 \(\lambda_V>0\)，使 \(\xi^{\mathsf T}A(x)\xi\geq\lambda_V|\xi|^2\) 对几乎处处 \(x\in V\)、全部 \(\xi\in\mathbb R^d\) 成立。设实值 \(f\in H_{\mathrm{loc}}^m(\Omega;\mathbb R)\)、\(u\in H_{\mathrm{loc}}^1(\Omega;\mathbb R)\) 满足
+\[
+ \int_\Omega A\nabla u\cdot\nabla\varphi=\int_\Omega f\varphi
+ \qquad(\varphi\in C_c^\infty(\Omega;\mathbb R)).
+\]
+则 \(u\in H_{\mathrm{loc}}^{m+2}(\Omega)\)。对非空开集 \(U\Subset V\Subset\Omega\)，有
 \[\lVert u\rVert_{H^{m+2}(U)}
  \le C\bigl(\lVert f\rVert_{H^m(V)}+\lVert u\rVert_{H^1(V)}\bigr),\]
-其中 \(C\) 依赖区域间距、椭圆下界和 \(A\) 在 \(V\) 上的相应系数范数。
+其中 \(C\) 只依赖 \(d,m\)、\(\operatorname{dist}(U,\partial V)^{-1}\)、椭圆下界 \(\lambda_V\) 和 \(A\) 在 \(V\) 上的 \(W^{m+1,\infty}\) 范数。
 \end{theorem}
 \begin{proof}
-\(m=0\) 是 \cref{b2:thm:16-interior-h2} 及有限覆盖的结论。归纳假设已给出 \(u\in H_{\mathrm{loc}}^{m+1}\)。对 \(|\beta|=m\)，令 \(w=D^\beta u\in H_{\mathrm{loc}}^1\)。分布的乘积法则给出
+\(m=0\) 时，\cref{b2:thm:16-interior-h2}及\subsecref{b2:subsec:160103}的有界重叠覆盖已经同时给出正则性和所需估计。下面设 \(m\geq1\)，并假设第 \(m-1\) 阶的正则性与定量估计都已建立。
+
+固定 \(U\Subset V\Subset\Omega\)，在两者之间选取开集
+\[
+ U\Subset W\Subset V.
+\]
+例如记 \(\delta=\operatorname{dist}(U,\partial V)>0\)，可取
+\(W=\{x:\operatorname{dist}(x,\overline U)<\delta/3\}\)；两层间距均由 \(\delta\) 的固定比例控制。因为现有系数和数据满足第 \(m-1\) 阶的假设，归纳结论先给出 \(u\in H_{\mathrm{loc}}^{m+1}\)，并在 \(W,V\) 上给出
+\[
+ \|u\|_{H^{m+1}(W)}
+ \leq C_{m-1,W,V}
+       \bigl(\|f\|_{H^{m-1}(V)}+\|u\|_{H^1(V)}\bigr).
+\]
+现在才对 \(|\beta|=m\) 令 \(w=D^\beta u\)，故 \(w\in H^1(W)\) 已有依据。弱导数的 Leibniz 法则给出
 \[
  -\operatorname{div}(A\nabla w)
  =D^\beta f+\sum_{0<\gamma\le\beta}\binom\beta\gamma
        \operatorname{div}\bigl((D^\gamma A)\nabla D^{\beta-\gamma}u\bigr).
 \]
-当 \(\beta=0\) 时和为空，已经处理。对和内每一项，系数 \(D^\gamma A\) 及其一阶导数有界，而 \(\nabla D^{\beta-\gamma}u\) 及其一阶导数的阶数最多为 \(m+1\)，故属于局部 \(L^2\)。乘积因此属于局部 \(H^1\)，其散度属于局部 \(L^2\)。右端第一项也由 \(f\in H^m\) 属于局部 \(L^2\)。将二阶定理应用于 \(w\)，得 \(D^\beta u\in H_{\mathrm{loc}}^2\)，即 \(u\in H_{\mathrm{loc}}^{m+2}\)。
+关键在于和内每一项都少用至少一个解的导数，却要消耗系数的导数。将其中一个散度明确展开：
+\[
+ \begin{aligned}
+ &\operatorname{div}\bigl((D^\gamma A)\nabla D^{\beta-\gamma}u\bigr)\\
+ &\quad=\sum_{i,j=1}^d
+ \bigl((\partial_iD^\gamma a_{ij})\,\partial_jD^{\beta-\gamma}u
+       +(D^\gamma a_{ij})\,\partial_{ij}D^{\beta-\gamma}u\bigr).
+ \end{aligned}
+\]
+这里 \(1\leq|\gamma|\leq m\)。系数导数的阶数最多为 \(m+1\)，在 \(W\) 上有本性上界；解导数的阶数分别为 \(m-|\gamma|+1\) 和 \(m-|\gamma|+2\)，最多为 \(m+1\)，已由归纳控制。因此 Sobolev 乘积法则使该通量属于 \(H^1(W;\mathbb R^d)\)，并给出具体界
+\[
+ \left\|\operatorname{div}\bigl((D^\gamma A)
+              \nabla D^{\beta-\gamma}u\bigr)\right\|_{L^2(W)}
+ \leq C_{d,m}\|A\|_{W^{m+1,\infty}(W)}
+                    \cdot\|u\|_{H^{m+1}(W)}.
+\]
+右端 \(D^\beta f\) 也在 \(L^2(W)\)，所以方程的整个新右端是 \(L^2(W)\) 数据。上述等式只使用已有 Sobolev 导数的乘积法则，可由内部磨光和相应乘积的 \(L^2\) 极限核验，不涉及任意分布与粗糙系数的乘法。
 
-为得到定量界，在 \(U,V\) 之间选取有限个逐层嵌套的开集。每步二阶估计的右端由前一步已经控制的 \(H^{j+1}\) 范数、\(f\) 的 \(H^j\) 范数及系数的 \(W^{j+1,\infty}\) 范数控制。依次代入归纳估计并合并有限个常数，得到所列不等式。乘积法则可以先局部磨光，再在相应 Sobolev 范数中取极限，所以没有预设经典高阶导数。
+将内部 \(H^2\) 估计应用于这个 \(w\)，得到归纳所需的完整接口：
+\[
+ \begin{aligned}
+ \|D^\beta u\|_{H^2(U)}
+ \leq C_{U,W,A}\Bigl(&\|D^\beta f\|_{L^2(W)}
+                   +\|D^\beta u\|_{H^1(W)}\\
+ &+\sum_{0<\gamma\leq\beta}\binom\beta\gamma
+ \left\|\operatorname{div}\bigl((D^\gamma A)
+                 \nabla D^{\beta-\gamma}u\bigr)\right\|_{L^2(W)}
+                         \Bigr).
+ \end{aligned}
+\]
+这里 \(C_{U,W,A}\) 按上一节的二阶估计选取。对有限个 \(|\beta|=m\) 求和，并将较低阶导数纳入 \(\|u\|_{H^{m+1}(W)}\)，便得
+\[
+ \|u\|_{H^{m+2}(U)}
+ \leq C\Bigl(\|f\|_{H^m(W)}
+       +(1+\|A\|_{W^{m+1,\infty}(W)})
+                    \cdot\|u\|_{H^{m+1}(W)}\Bigr).
+\]
+最后代入开头在 \(W,V\) 上的第 \(m-1\) 阶估计，再用
+\(\|f\|_{H^{m-1}(V)}\leq\|f\|_{H^m(V)}\)，就得到所列第 \(m\) 阶估计。各层间距可按固定比例预留，只有 \(m\) 次有限归纳；所有系数范数都由 \(V\) 上的 \(W^{m+1,\infty}\) 范数控制，因而常数仅有陈述中列出的依赖。这一步同时证明正则性提升与定量界，没有把前者代替后者。
 \end{proof}
 
 对常系数 Laplace 方程，上述论证尤其直接：\(-\Delta D^\beta u=D^\beta f\)。一般变系数方程的额外项只含较低阶的解导数，正是归纳能够闭合的原因；若求导后又在右端出现尚未控制的最高阶导数，就必须先把它保留在主部，不能把它当成已知数据。
 
 \ProseParagraphBreak
 
-若包含低阶项且 \(b,c\) 具有相应有界导数，同样的归纳适用。对非线性方程则须额外检查复合函数的 Sobolev 正则性：从 \(u\in H^2\) 不能在所有维数自动推出 \(F(u)\in H^1\) 或 \(H^2\)。例如含高次幂的项，其导数是 \(F'(u)\nabla u\)，必须先用嵌入定理保证乘积可积。自举是一系列空间之间的合法映射，而不是只按形式导数计数。
+若方程还包含低阶项 \(b\cdot\nabla u+cu\)，第 \(m\) 步可要求实系数
+\(b\in W_{\mathrm{loc}}^{m,\infty}(\Omega;\mathbb R^d)\)、
+\(c\in W_{\mathrm{loc}}^{m,\infty}(\Omega;\mathbb R)\)；\(m=0\) 时只需局部本性有界。将低阶项移到右端后，Leibniz 法则对每个 \(|\beta|\leq m\) 给出
+\[
+ \|D^\beta(b\cdot\nabla u+cu)\|_{L^2(W)}
+ \leq C_{d,m}
+ \bigl(\|b\|_{W^{m,\infty}(W)}+\|c\|_{W^{m,\infty}(W)}\bigr)
+                    \cdot\|u\|_{H^{m+1}(W)}.
+\]
+解导数仍不超过归纳中已经控制的 \(m+1\) 阶，因此同一归纳接口可继续使用，常数另依赖这些低阶系数范数。对非线性方程则须额外检查复合函数的 Sobolev 正则性：从 \(u\in H^2\) 不能在所有维数自动推出 \(F(u)\in H^1\) 或 \(H^2\)。例如含高次幂的项，其导数是 \(F'(u)\nabla u\)，必须先用嵌入定理保证乘积可积。自举是一系列空间之间的合法映射，而不是只按形式导数计数。
+
+例如设 \(\Omega\subset\mathbb R^3\) 为开集，实值 \(u\in H^1_{\mathrm{loc}}(\Omega)\) 在分布意义下满足 \(-\Delta u=u^3\)，可以作如下具体提升。在紧含区域的球上先用截断和 \(H^1\hookrightarrow L^6\)，得 \(u^3\in L^2\)，内部二阶估计给出 \(u\in H^2\)。在更小的球上，\(H^2\hookrightarrow L^\infty\)，于是
+\[\|3u^2\nabla u\|_2\le3\|u\|_\infty^2\cdot\|\nabla u\|_2,\]
+以截断磨光核验链式法则后得 \(u^3\in H^1\)，再次提升为 \(H^3\)。若要继续到下一步，二阶复合导数为 \(6u\,\partial_i u\,\partial_j u+3u^2\partial_{ij}u\)；在更小球上 \(H^3\) 已使 \(\nabla u\) 有界，两项都属于 \(L^2\)，所以 \(u^3\in H^2\)、\(u\in H^4\)。每一步都在稍小的球上使用上一项估计，有限多步可在给定紧子集与外部球之间预留足够多层。
+
+同样的起步在五维不能直接照抄：\(H^1\) 只给 \(L^{10/3}\)，其三次幂仅保证 \(L^{10/9}\)，并不保证二阶定理所需的 \(L^2\)。这里没有断言五维方程一定存在奇异解，而是指出该条自举路线的第一处缺口。非线性项的次数、维数与起始空间必须一起核验。
 
 \subsection{从弱解到经典解}
 \label{b2:subsec:160203}
 
-Sobolev 正则性最终通过嵌入转成经典正则性。第一卷定理 24.4.3 及处理正整数差的命题 24.4.4，在局部截断后给出：若整数 \(s>k+d/2\)，则 \(H_{\mathrm{loc}}^s\) 函数有 \(C^k\) 代表元；更精细地，可取得所有满足 \(k+\alpha<s-d/2\)、\(0<\alpha<1\) 的局部 \(C^{k,\alpha}\) 正则性。严格不等号不能随意替成等号。
+Sobolev 正则性最终通过嵌入转成经典正则性。第一卷定理 24.4.3 及处理正整数差的命题 24.4.4，在局部截断后给出：设整数 \(d\geq1\)、\(k\geq0\)、\(s\geq0\)，\(\Omega\subset\mathbb R^d\) 为开集。若 \(s>k+d/2\)，则实值或复值的 \(H_{\mathrm{loc}}^s(\Omega)\) 函数有 \(C^k(\Omega)\) 代表元；更精细地，可取得所有满足 \(k+\alpha<s-d/2\)、\(0<\alpha<1\) 的局部 \(C^{k,\alpha}\) 正则性。严格不等号不能随意替成等号。
 
+\Needspace{6\baselineskip}
 \begin{corollary}[光滑数据的内部光滑性]
 \label{b2:cor:16-smooth-interior}
-设 \(A,f\in C^\infty(\Omega)\)，\(A\) 在每个紧子集附近一致椭圆。若 \(u\in H_{\mathrm{loc}}^1(\Omega)\) 弱解 \(-\operatorname{div}(A\nabla u)=f\)，则 \(u\) 有 \(C^\infty(\Omega)\) 代表元，并逐点满足方程。
+设整数 \(d\geq1\)，\(\Omega\subset\mathbb R^d\) 为非空开集，\(A\in C^\infty(\Omega;\mathbb R^{d\times d})\)、\(f\in C^\infty(\Omega;\mathbb R)\)。假设对每个非空开集 \(V\Subset\Omega\)，存在 \(\lambda_V>0\)，使 \(\xi^{\mathsf T}A(x)\xi\geq\lambda_V|\xi|^2\) 对全部 \(x\in V\)、\(\xi\in\mathbb R^d\) 成立。若实值 \(u\in H_{\mathrm{loc}}^1(\Omega;\mathbb R)\) 满足
+\[
+ \int_\Omega A\nabla u\cdot\nabla\varphi=\int_\Omega f\varphi
+ \qquad(\varphi\in C_c^\infty(\Omega;\mathbb R)),
+\]
+则 \(u\) 有 \(C^\infty(\Omega;\mathbb R)\) 代表元，并逐点满足方程 \(-\operatorname{div}(A\nabla u)=f\)。
 \end{corollary}
 \begin{proof}
 固定 \(U\Subset\Omega\)。光滑系数在稍大紧集上的各阶导数有界，高阶正则性定理给出任意阶的局部 \(H^s\) 正则性。给定 \(k\)，选整数 \(s>k+d/2\)，嵌入得到 \(C^k\) 代表元；各代表元因几乎处处相同且连续而彼此一致，故得到单一 \(C^\infty\) 代表元。该代表元对应的微分表达式连续，与零分布相等，所以处处为零。

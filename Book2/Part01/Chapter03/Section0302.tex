@@ -8,7 +8,7 @@
 \label{b2:subsec:030201}
 
 \begin{theorem}[Riemann--Lebesgue]\label{b2:thm:03-riemann-lebesgue}
-Fourier 变换将 \(L^1(\mathbb R^d)\) 连续地映入 \(C_0(\mathbb R^d)\)，且
+设 \(d\) 为正整数。Fourier 变换将复值空间 \(L^1(\mathbb R^d;\mathbb C)\) 连续地映入 \(C_0(\mathbb R^d;\mathbb C)\)，且对每个 \(f\in L^1(\mathbb R^d;\mathbb C)\) 有
 \[
  \|\widehat f\|_\infty\leq\|f\|_1.
 \]
@@ -26,15 +26,27 @@ Fourier 变换将 \(L^1(\mathbb R^d)\) 连续地映入 \(C_0(\mathbb R^d)\)，�
 
 该结论沿用\subsecref{b2:subsec:020202}的 Riemann--Lebesgue 名称。对 \(f_n\to f\) 于 \(L^1\)，变换在全部频率上一致收敛，而不只是每个固定频率分别收敛。
 
-\subsection{连续性}
+\subsection{一致连续性与频率正则性}
 \label{b2:subsec:030202}
 
-实际上 \(\widehat f\) 一致连续。定义式给出
+前一小节已经证明了变换的连续性。现在进一步考察：频率改变一个小增量时，变换的变化能否在所有频率中心处同时变小？设 \(f\in L^1(\mathbb R^d;\mathbb C)\)。对任意 \(\xi,h\in\mathbb R^d\)，定义式给出
 \[
  |\widehat f(\xi+h)-\widehat f(\xi)|
- \leq\int|f(x)|\cdot|e^{-2\pi\mathrm{i}x\cdot h}-1|\,\mathrm{d}x.
+ \leq\int_{\mathbb R^d}|f(x)|\cdot|e^{-2\pi\mathrm{i}x\cdot h}-1|\,\mathrm{d}x.
 \]
-右侧不依赖 \(\xi\)，并由控制收敛趋零。若又有 \(\int|x|\cdot|f(x)|\,\mathrm{d}x<\infty\)，则可将右侧进一步估计为 \(2\pi|h|\int|x|\cdot|f(x)|\,\mathrm{d}x\)，得到 Lipschitz 控制。
+右侧不依赖 \(\xi\)。其中被积函数随 \(h\to0\) 逐点趋零，并由可积函数 \(2|f|\) 控制，故整个积分趋零。这就得到 \(\widehat f\) 的一致连续性，而不仅是在每个固定频率处的连续性。
+
+若还满足一阶绝对矩条件 \(\int_{\mathbb R^d}|x|\cdot|f(x)|\,\mathrm{d}x<\infty\)，利用 \(|e^{\mathrm i t}-1|\leq|t|\) 及 \(|x\cdot h|\leq|x||h|\)，可将同一估计写成
+\[
+ |\widehat f(\xi+h)-\widehat f(\xi)|
+ \leq 2\pi|h|\int_{\mathbb R^d}|x|\cdot|f(x)|\,\mathrm{d}x.
+\]
+这给出了明确的 Lipschitz 常数。更一般地，\cref{b2:prop:03-moments}说明：若 \(m\) 是非负整数，且 \(f,|x|^m f\in L^1(\mathbb R^d)\)，则 \(\widehat f\in C^m\)，对每个 \(|\alpha|\leq m\) 有
+\[
+ \|\partial_\xi^\alpha\widehat f\|_\infty
+ \leq(2\pi)^{|\alpha|}\|x^\alpha f\|_1.
+\]
+空间矩因而控制变换在频率变量上的光滑程度及导数大小。这些估计描述的是频率改变时函数值如何变化；是否能进一步控制整个函数族在高频处的大小，还须另作判断。
 
 \ProseParagraphBreak
 
@@ -44,15 +56,108 @@ Fourier 变换将 \(L^1(\mathbb R^d)\) 连续地映入 \(C_0(\mathbb R^d)\)，�
 \label{b2:subsec:030203}
 
 \begin{proposition}\label{b2:prop:03-no-uniform-decay}
-在 \(L^1(\mathbb R^d)\) 的单位球上，不存在只依赖 \(|\xi|\)、并在无穷远处趋零的共同上界 \(|\widehat f(\xi)|\leq r(|\xi|)\)。
+设 \(d\) 为正整数。在 \(L^1(\mathbb R^d;\mathbb C)\) 的单位球上，不存在只依赖 \(|\xi|\)、并在无穷远处趋零的共同上界 \(|\widehat f(\xi)|\leq r(|\xi|)\)。即使另外要求函数族的每一阶空间绝对矩各有一个一致的上界，也不能保证统一的高频衰减。
 \end{proposition}
 \begin{proof}
-取非负单位积分的 \(g\in L^1\)。对任意 \(\eta\)，函数 \(M_\eta g\) 的范数仍为 \(1\)，而 \(\widehat{M_\eta g}(\eta)=\widehat g(0)=1\)。令 \(|\eta|\) 任意大，便与共同趋零上界矛盾。
+固定一个非负函数 \(g\in C_c^\infty(\mathbb R^d)\)，使 \(\int_{\mathbb R^d}g=1\)。对每个 \(\eta\in\mathbb R^d\)，令
+\[
+ f_\eta(x)\coloneqq e^{2\pi\mathrm i\eta\cdot x}g(x)=M_\eta g(x).
+\]
+因为复指数的模为 \(1\)，\(\|f_\eta\|_1=1\)；而且对任意非负整数 \(m\)，都有
+\[
+ \int_{\mathbb R^d}|x|^m|f_\eta(x)|\,\mathrm dx
+ =\int_{\mathbb R^d}|x|^m g(x)\,\mathrm dx<\infty.
+\]
+右侧可依赖于 \(m\)，但不依赖于 \(\eta\)。因此这个族同时满足每一固定阶绝对矩的一致有界性。
+
+另一方面，\subsecref{b2:subsec:030103}的调制公式给出
+\[
+ \widehat{f_\eta}(\xi)=\widehat g(\xi-\eta),
+ \qquad \widehat{f_\eta}(\eta)=\widehat g(0)=1.
+\]
+令 \(|\eta|\to\infty\)，便与任何共同趋零上界矛盾。更明确地，对每个 \(A>0\)，先取 \(|\eta|\geq A\)，再在 \(\xi=\eta\) 处取值，结合范数界可得
+\[
+ \sup_{\eta\in\mathbb R^d}\ \sup_{|\xi|\geq A}|\widehat{f_\eta}(\xi)|=1.
+\]
 \end{proof}
 
-Riemann--Lebesgue 引理逐个控制固定函数，并没有统一控制整个单位球。若增加导数范数或矩的上界，才可能提取定量信息。例如当所有 \(m\) 阶纯坐标弱导数都可积时，选取最大的频率坐标，由\cref{b2:prop:03-derivative}可得
+每个固定的 \(f_\eta\) 仍然满足 Riemann--Lebesgue 引理。这里失败的是对全族统一选取高频阈值：调制不改变空间中的绝对值，却把频率中的峰移到了 \(\eta\) 附近。因此，空间矩的一致控制可以给出一致的频率正则性，却不能单独保证统一的高频衰减。
+
+\ProseParagraphBreak
+
+高频衰减的定量估计来自另一类假设，即空间导数的 \(L^1\) 控制。一阶公式已在\cref{b2:prop:03-derivative}证明。高阶情形若只知道最高阶纯弱导数可积，不能直接反复套用一阶公式，因为尚未假设中间各阶弱导数也可积。下面直接把全部导数移到一个光滑紧支集测试函数上，保留这个较弱的假设。
+
+\begin{proposition}\label{b2:prop:03-higher-derivative-decay}
+设 \(d,m\) 为正整数，\(f\in L^1(\mathbb R^d;\mathbb C)\)。假设对每个 \(j=1,\ldots,d\)，\(f\) 的分布意义下的纯坐标弱导数 \(g_j\coloneqq\partial_j^m f\) 属于 \(L^1(\mathbb R^d)\)。则对每个 \(\xi\in\mathbb R^d\) 有
 \[
- |\widehat f(\xi)|\leq C_{d,m}|\xi|^{-m}\sum_{j=1}^d\|\partial_j^m f\|_1
+ \widehat{g_j}(\xi)=(2\pi\mathrm i\xi_j)^m\widehat f(\xi),
+ \qquad 1\leq j\leq d,
+\]
+并且
+\[
+ |\widehat f(\xi)|
+ \leq\frac{d^{m/2}}{(2\pi)^m}|\xi|^{-m}
+       \sum_{j=1}^d\|\partial_j^m f\|_1
  \quad(\xi\ne0).
 \]
-这也说明变换衰减的常数应明确由哪些原函数量控制。
+\end{proposition}
+\begin{proof}
+最高阶弱导数的假设是指：对每个 \(\varphi\in C_c^\infty(\mathbb R^d)\)，有
+\[
+ \int_{\mathbb R^d}g_j(x)\varphi(x)\,\mathrm dx
+ =(-1)^m\int_{\mathbb R^d}f(x)\partial_j^m\varphi(x)\,\mathrm dx.
+\]
+这里采用不加共轭的分布配对；复值测试函数由实部、虚部分别测试即可。指数函数本身不紧支集，不能直接代入这个恒等式，所以先作空间截断。
+
+取 \(\chi\in C_c^\infty(\mathbb R^d)\)，满足 \(0\leq\chi\leq1\)、在单位球上等于 \(1\)，并令 \(\chi_R(x)\coloneqq\chi(x/R)\)，其中 \(R\geq1\)。固定 \(\xi\in\mathbb R^d\) 及一个坐标 \(j\)，把
+\[
+ \varphi_R(x)\coloneqq\chi_R(x)e^{-2\pi\mathrm i x\cdot\xi}
+\]
+代入弱导数恒等式。由 Leibniz 公式，
+\[
+ \partial_j^m\varphi_R(x)
+ =\sum_{k=0}^m\binom{m}{k}R^{-k}
+   (\partial_j^k\chi)(x/R)
+   (-2\pi\mathrm i\xi_j)^{m-k}e^{-2\pi\mathrm i x\cdot\xi}.
+\]
+其中 \(k=0\) 项给出所需乘子；把其他项分别记为
+\[
+ \begin{aligned}
+ E_{R,k}\coloneqq{}&(-1)^m\binom{m}{k}
+ (-2\pi\mathrm i\xi_j)^{m-k}R^{-k}\\
+ &{}\times\int_{\mathbb R^d}f(x)(\partial_j^k\chi)(x/R)
+                   e^{-2\pi\mathrm i x\cdot\xi}\,\mathrm dx,
+ \qquad 1\leq k\leq m.
+ \end{aligned}
+\]
+于是
+\[
+ \begin{aligned}
+ &\int_{\mathbb R^d}g_j(x)\chi_R(x)e^{-2\pi\mathrm i x\cdot\xi}\,\mathrm dx\\
+ &\qquad=(2\pi\mathrm i\xi_j)^m
+   \int_{\mathbb R^d}f(x)\chi_R(x)e^{-2\pi\mathrm i x\cdot\xi}\,\mathrm dx
+   +\sum_{k=1}^m E_{R,k}.
+ \end{aligned}
+\]
+每个截断误差都有单独的估计
+\[
+ |E_{R,k}|
+ \leq\binom{m}{k}(2\pi|\xi_j|)^{m-k}R^{-k}
+       \|\partial_j^k\chi\|_\infty\|f\|_1
+ \longrightarrow0\qquad(R\to\infty).
+\]
+当 \(k=m\) 时，频率因子为 \(1\)。这里先固定 \(\xi\)，故有限个误差项都趋零；估计只用到了 \(f\in L^1\)，没有调用任何中间阶弱导数的可积性。又因为 \(\chi_R\to1\) 逐点成立、\(|\chi_R|\leq1\)，左右两个主项分别由 \(|g_j|\)、\(|f|\) 控制。控制收敛便给出
+\[
+ \widehat{g_j}(\xi)=(2\pi\mathrm i\xi_j)^m\widehat f(\xi).
+\]
+
+最后，对 \(\xi\ne0\)，至少有一个坐标 \(j\) 满足 \(|\xi_j|\geq|\xi|/\sqrt d\)。在这个坐标上使用刚证的公式及 \(|\widehat{g_j}(\xi)|\leq\|g_j\|_1\)，得到
+\[
+ |\widehat f(\xi)|
+ \leq(2\pi|\xi_j|)^{-m}\|g_j\|_1
+ \leq\frac{d^{m/2}}{(2\pi)^m}|\xi|^{-m}\|g_j\|_1.
+\]
+再以所有 \(\|g_j\|_1\) 的和控制这一项，即得所述估计。
+\end{proof}
+
+因此，当一个函数族的这些最高阶纯弱导数范数之和有共同上界时，就得到全族的 \(|\xi|^{-m}\) 高频衰减估计。常数由维数、阶数和指定的导数范数控制；空间矩则继续承担上一小节所说明的频率正则性作用。

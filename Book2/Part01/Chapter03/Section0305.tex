@@ -8,7 +8,7 @@
 \label{b2:subsec:030501}
 
 \begin{lemma}\label{b2:lem:03-gaussian-inversion}
-若 \(f\in L^1(\mathbb R^d)\)、\(\varepsilon>0\)，则每个 \(x\) 满足
+设 \(d\) 为正整数，\(f\in L^1(\mathbb R^d;\mathbb C)\)、\(\varepsilon>0\)，并令 \(G_\varepsilon(y)=\varepsilon^{-d}e^{-\pi|y|^2/\varepsilon^2}\)（\(y\in\mathbb R^d\)）。则每个 \(x\in\mathbb R^d\) 满足
 \begin{equation}\label{b2:eq:03-gaussian-inversion}
  \int_{\mathbb R^d}\widehat f(\xi)\cdot e^{-\pi\varepsilon^2|\xi|^2}e^{2\pi\mathrm{i}x\cdot\xi}\,\mathrm{d}\xi
  =(f*G_\varepsilon)(x).
@@ -18,11 +18,79 @@
 左侧绝对收敛，因为 \(\widehat f\) 有界而 Gauss 因子可积。代入变换定义，重积分绝对值的积分为 \(\|f\|_1\int e^{-\pi\varepsilon^2|\xi|^2}\,\mathrm{d}\xi<\infty\)，故可用 Fubini。内层正号积分由 Gauss 变换公式及偶性等于 \(G_\varepsilon(x-y)\)，从而得到右侧。
 \end{proof}
 
+为何先采用 Gauss 因子，可以与一维的硬截断作比较。对 \(R>0\) 定义
+\[
+ T_Rf(x)=\int_{-R}^R\widehat f(\xi)\cdot e^{2\pi\mathrm i x\xi}\,\mathrm d\xi.
+\]
+这个积分对 \(f\in L^1(\mathbb R)\) 有定义。代入变换后，绝对积分至多为 \(2R\|f\|_1\)，故交换次序合法，并得到
+\[
+ T_Rf(x)=\int_{\mathbb R}f(y)\cdot K_R(x-y)\,\mathrm dy,
+ \quad K_R(z)=\frac{\sin(2\pi Rz)}{\pi z},\quad K_R(0)=2R.
+\]
+这里的卷积逐点绝对收敛，因为 \(|K_R(z)|\leq2R\)，故被积函数的绝对积分至多为 \(2R\|f\|_1\)。但是对每个 \(R>0\)，\(K_R\) 本身不属于 \(L^1(\mathbb R)\)。令 \(u=2\pi Rz\)，则
+\[
+ \int_{1/(2R)}^\infty|K_R(z)|\,\mathrm dz
+ =\frac1\pi\int_\pi^\infty\frac{|\sin u|}{u}\,\mathrm du,
+ \quad
+ \int_{n\pi}^{(n+1)\pi}\frac{|\sin u|}{u}\,\mathrm du
+ \geq\frac{2}{(n+1)\pi}\quad(n\geq1).
+\]
+最后一个下界使用每个半波的 \(|\sin u|\) 积分等于 \(2\)；把这些下界相加便得到发散的调和级数。因此硬截断核连单个核的绝对可积性都不满足，不能应用\cref{b2:thm:03-approximate-identity}直接推出 \(T_Rf\to f\)。Gauss 因子的逆积分则为非负核，并由上一节的归一化满足 \(\|G_\varepsilon\|_1=\int G_\varepsilon=1\)；其固定半径之外的质量随 \(\varepsilon\downarrow0\) 趋零，故满足逼近恒等的全部条件。两种方法在每个固定 \(R>0\) 或 \(\varepsilon>0\) 下都能合法换序，区别在于让 \(R\uparrow\infty\) 或 \(\varepsilon\downarrow0\) 时，是否已有可用的极限控制。
+
+\ProseParagraphBreak
+
+\Cref{b2:fig:03-hard-cutoff-gaussian-kernels}用一维的实际核比较这两种形状。取 \(R=2\)、\(\varepsilon=1/4\)，两核在原点的值都为 \(4\)，并使用同一组横、纵坐标刻度。硬截断核的正负旁瓣来自锐利的频率边界；Gauss 核始终非负，离开原点后迅速降低。有限画幅不能判断整条实线上的绝对积分是否有限，这一点仍由上面的半波下界和 Gauss 单位质量公式决定。
+
+% 自拟函数图：同峰值4、同横纵尺度；sinc分两侧绘制并显式补入连续延拓值，避免零点商式。
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=1.65cm,y=0.70cm,font=\small]
+ \begin{scope}
+  \draw[gray!60] (-1.5,-1) rectangle (1.5,4.2);
+  \draw[gray!55] (-1.5,0)--(1.5,0);
+  \foreach \xt in {-1.5,-1,-0.5,0,0.5,1,1.5}{
+   \draw (\xt,-1)--(\xt,-0.90);
+   \node[below] at (\xt,-1.35) {\(\xt\)};
+  }
+  \foreach \yt in {-1,0,1,2,3,4}{
+   \draw (-1.5,\yt)--(-1.43,\yt);
+   \node[left] at (-1.54,\yt) {\(\yt\)};
+  }
+  \draw[thick,AnalysisBlue] plot[domain=-1.5:-0.001,samples=181]
+   (\x,{sin(720*\x)/(pi*\x)});
+  \draw[thick,AnalysisBlue] plot[domain=0.001:1.5,samples=181]
+   (\x,{sin(720*\x)/(pi*\x)});
+  \draw[thick,AnalysisBlue] (-0.001,{sin(-0.72)/(-0.001*pi)})
+   --(0,4)--(0.001,{sin(0.72)/(0.001*pi)});
+  \node[anchor=south west] at (-1.5,4.4) {\(K_2(x)=\dfrac{\sin(4\pi x)}{\pi x}\)};
+  \node[below right] at (1.5,-1.90) {\(x\)};
+ \end{scope}
+ \begin{scope}[xshift=6.2cm]
+  \draw[gray!60] (-1.5,-1) rectangle (1.5,4.2);
+  \draw[gray!55] (-1.5,0)--(1.5,0);
+  \foreach \xt in {-1.5,-1,-0.5,0,0.5,1,1.5}{
+   \draw (\xt,-1)--(\xt,-0.90);
+   \node[below] at (\xt,-1.35) {\(\xt\)};
+  }
+  \foreach \yt in {-1,0,1,2,3,4}{
+   \draw (-1.5,\yt)--(-1.43,\yt);
+   \node[left] at (-1.54,\yt) {\(\yt\)};
+  }
+  \draw[thick,AnalysisBlue] plot[domain=-1.5:1.5,samples=201]
+   (\x,{4*exp(-16*pi*\x*\x)});
+  \node[anchor=south west] at (-1.5,4.4) {\(G_{1/4}(x)=4e^{-16\pi x^2}\)};
+  \node[below right] at (1.5,-1.90) {\(x\)};
+ \end{scope}
+\end{tikzpicture}
+\caption[硬频率截断核与 Gauss 核]{硬频率截断核与 Gauss 核。一维取 \(R=2\)、\(\varepsilon=1/4\)，两核在原点均为 \(4\)，均绘于 \(-1.5\leq x\leq1.5\)，纵坐标尺度相同。左图在原点采用连续延拓值，并有正负旁瓣；右图非负。图只显示有限范围内的形状，不代替正文对无穷远尾部的论证。}
+\label{b2:fig:03-hard-cutoff-gaussian-kernels}
+\end{figure}
+
 \begin{proposition}\label{b2:prop:03-smooth-inversion}
-若 \(f\in C_c^\infty(\mathbb R^d)\)，则 \(\widehat f\in L^1\)，并有处处成立的绝对收敛反演公式 \(f=\check {\widehat f}\)。
+设 \(d\) 为正整数。若 \(f\in C_c^\infty(\mathbb R^d;\mathbb C)\)，则 \(\widehat f\in L^1(\mathbb R^d;\mathbb C)\)，并有在 \(\mathbb R^d\) 上处处成立的绝对收敛反演公式 \(f=\check {\widehat f}\)。
 \end{proposition}
 \begin{proof}
-取整数 \(m>d\)。纯坐标高阶导数可积，故\cref{b2:prop:03-derivative}及最大坐标估计给出 \(|\widehat f(\xi)|\leq C(1+|\xi|)^{-m}\)，于是变换可积。在\eqref{b2:eq:03-gaussian-inversion}左侧以 \(|\widehat f|\) 控制，得到 \(\check {\widehat f}(x)\)；右侧由有界一致连续函数的逼近恒等结论一致趋于 \(f\)。
+取整数 \(m>d\)。对每个坐标 \(j\)，\(f\) 及中间导数 \(\partial_j^k f\)（\(1\leq k\leq m\)）都光滑、紧支集，因而可积。逐次应用\cref{b2:prop:03-derivative}，再在非零频率处选取绝对值最大的坐标，得到 \(|\widehat f(\xi)|\leq C|\xi|^{-m}\)。结合 \(|\widehat f|\leq\|f\|_1\)，便有全空间估计 \(|\widehat f(\xi)|\leq C'(1+|\xi|)^{-m}\)，于是变换可积。在\eqref{b2:eq:03-gaussian-inversion}左侧以 \(|\widehat f|\) 控制，得到 \(\check {\widehat f}(x)\)；右侧由有界一致连续函数的逼近恒等结论一致趋于 \(f\)。
 \end{proof}
 
 此证明只用到已有的 Gauss 积分、导数变换与逼近恒等，没有预设一般反演。因此它也提供了以后在测试函数空间上建立变换的起点。
@@ -31,44 +99,86 @@
 \label{b2:subsec:030502}
 
 \begin{theorem}[Fourier 反演]\label{b2:thm:03-inversion}
-若 \(f\in L^1(\mathbb R^d)\) 且 \(\widehat f\in L^1(\mathbb R^d)\)，则
+设 \(d\) 为正整数，\(f\in L^1(\mathbb R^d;\mathbb C)\) 且 \(\widehat f\in L^1(\mathbb R^d;\mathbb C)\)。对每个 \(x\in\mathbb R^d\)，绝对收敛积分
 \[
- f(x)=\int_{\mathbb R^d}\widehat f(\xi)\cdot e^{2\pi\mathrm{i}x\cdot\xi}\,\mathrm{d}\xi
+ g(x)\coloneqq\int_{\mathbb R^d}\widehat f(\xi)\cdot e^{2\pi\mathrm{i}x\cdot\xi}\,\mathrm{d}\xi
 \]
-几乎处处成立。右侧定义一个属于 \(C_0\) 的代表；若 \(f\) 在某一点连续，则该点也成立。
+定义了 \(f\) 的唯一连续代表 \(g\in C_0(\mathbb R^d;\mathbb C)\)，即 \(g=f\) 几乎处处。若事先指定的有限值可测代表 \(f_0\colon\mathbb R^d\to\mathbb C\) 在某一点 \(x_0\in\mathbb R^d\) 连续，则 \(f_0(x_0)=g(x_0)\)。
 \end{theorem}
 \begin{proof}
-由控制收敛，\eqref{b2:eq:03-gaussian-inversion}左侧一致趋于 \(g=\check {\widehat f}\)，因为误差不超过
+首先，绝对收敛给出 \(|g(x)|\leq\|\widehat f\|_1\)，而 \(g(x)=\widehat{\widehat f}(-x)\) 使 Riemann--Lebesgue 引理可用于可积函数 \(\widehat f\)，从而 \(g\in C_0(\mathbb R^d)\)。由控制收敛，\eqref{b2:eq:03-gaussian-inversion}左侧一致趋于 \(g=\check {\widehat f}\)，因为误差不超过
 \[
  \int|\widehat f(\xi)|\cdot|e^{-\pi\varepsilon^2|\xi|^2}-1|\,\mathrm{d}\xi\longrightarrow0.
 \]
-右侧在 \(L^1\) 中趋于 \(f\)。选一列尺度使右侧还有几乎处处收敛子列，便得 \(f=g\) 几乎处处。由 Riemann--Lebesgue 引理，\(g\in C_0\)。若 \(f\) 在 \(x\) 连续，则可取趋向 \(x\)、避开相等关系的零测例外集的一列点；利用两个函数的连续性，得到 \(f(x)=g(x)\)。
+右侧由\cref{b2:thm:03-approximate-identity}在 \(L^1\) 中趋于 \(f\)。这与左侧的一致收敛如何合起来识别原函数，可以先在一个有限测度的球 \(B=B(0,N)\) 中比较：
+\[
+ \int_B|f-g|
+ \leq\|f-G_\varepsilon*f\|_1
+       +|B|\cdot\|G_\varepsilon*f-g\|_\infty
+ \longrightarrow0.
+\]
+因此 \(f=g\) 在每个这样的球中几乎处处成立。让 \(N\) 遍历正整数，可数个零测例外集的并仍为零测集，便得到全空间的几乎处处等式。
+
+若另有连续代表 \(h=f\) 几乎处处，则连续函数 \(h-g\) 几乎处处为零。如果它在某点不为零，连续性就给出一个球，使其绝对值在该球上有严格正的下界；球的 Lebesgue 测度为正，与几乎处处为零矛盾。这证明了连续代表的唯一性。
+
+最后设 \(f_0\) 是已指定的代表，并在 \(x_0\) 连续。记 \(E=\{\,y\mid f_0(y)\ne g(y)\,\}\)，则 \(E\) 为零测集。每个球 \(B(x_0,1/n)\) 都有正测度，因此可选 \(y_n\in B(x_0,1/n)\setminus E\)。于是 \(y_n\to x_0\) 且 \(f_0(y_n)=g(y_n)\)。分别使用 \(f_0\) 在 \(x_0\) 的连续性和 \(g\) 的连续性，得到 \(f_0(x_0)=g(x_0)\)。
 \end{proof}
 
-这称为\term[fourier-fanyan-gongshi]{Fourier 反演公式}[Fourier inversion formula]。条件 \(\widehat f\in L^1\) 保证普通反演积分绝对收敛；它不是所有形式的反演都成立的必要条件。尤其对区间示性函数，此条件失败，但仍可讨论带正则化因子的反演。
+这称为\term[fourier-fanyan-gongshi]{Fourier 反演公式}[Fourier inversion formula]。条件 \(\widehat f\in L^1\) 保证普通反演积分绝对收敛；它不是所有形式的反演都成立的必要条件。尤其对区间示性函数，此条件失败，但仍可讨论带正则化因子的反演。代表的区别也有实际内容：把零函数只在原点改成 \(1\)，变换仍恒为零，反演积分给出的仍是处处为零的连续代表，不会恢复在原点另行指定的值。
 
 \subsection{点态反演}
 \label{b2:subsec:030503}
 
-沿用第一卷定义 14.4.1：若 \(f\) 在 \(x\) 的小球内满足
+沿用第一卷定义 14.4.1：设 \(d\) 为正整数，对 \(f\in L^1_{\mathrm{loc}}(\mathbb R^d;\mathbb C)\) 指定一个有限值可测代表 \(f_0\colon\mathbb R^d\to\mathbb C\)。若在 \(x\in\mathbb R^d\) 的小球内满足
 \[
- \dfrac1{|B(x,r)|}\int_{B(x,r)}|f(y)-f(x)|\,\mathrm{d}y\longrightarrow0,
+ \dfrac1{|B(x,r)|}\int_{B(x,r)}|f_0(y)-f_0(x)|\,\mathrm{d}y\longrightarrow0,
 \]
 则 \(x\) 为该代表的 Lebesgue 点。第一卷命题 14.4.6 证明了非负径向非增单位质量核在 Lebesgue 点处的逼近；本章以 \(f\in L^1\) 满足该命题对非紧支集核要求的全局可积性。Gauss 核和本章 Poisson 核均满足核的条件。
 
 \begin{corollary}[Gauss 正则化反演]\label{b2:cor:03-pointwise-inversion}
-若 \(f\in L^1(\mathbb R^d)\)，则在每个 Lebesgue 点 \(x\) 有
+设 \(d\) 为正整数，\(f\in L^1(\mathbb R^d;\mathbb C)\)，并指定一个有限值可测代表 \(f_0\colon\mathbb R^d\to\mathbb C\)。则在 \(f_0\) 的每个 Lebesgue 点 \(x\in\mathbb R^d\) 有
 \[
- f(x)=\lim_{\varepsilon\downarrow0}
+ f_0(x)=\lim_{\varepsilon\downarrow0}
  \int\widehat f(\xi)\cdot e^{-\pi\varepsilon^2|\xi|^2}e^{2\pi\mathrm{i}x\cdot\xi}\,\mathrm{d}\xi.
 \]
 特别地，该结论几乎处处成立。
 \end{corollary}
 \begin{proof}
-由\eqref{b2:eq:03-gaussian-inversion}，积分就是 \(G_\varepsilon*f(x)\)。应用上述第一卷命题，再用第一卷定理 14.4.2 的几乎处处 Lebesgue 点结论。
+由\eqref{b2:eq:03-gaussian-inversion}，积分就是 \((G_\varepsilon*f_0)(x)\)。可以应用上述第一卷命题；为说明局部平均条件如何控制本章这个无限支集核，这里写出相应的估计。固定 \(f_0\) 的一个 Lebesgue 点 \(x\)，记
+\[
+ A(r)=\int_{|y|<r}|f_0(x-y)-f_0(x)|\,\mathrm dy,
+ \quad g_\varepsilon(r)=\varepsilon^{-d}e^{-\pi r^2/\varepsilon^2}.
+\]
+给定 \(\eta>0\)，存在 \(\delta>0\)，使 \(A(r)\leq\eta\cdot\omega_dr^d\) 对 \(0<r\leq\delta\) 成立，其中 \(\omega_d\) 是单位球体积。在球内使用
+\(g_\varepsilon(|y|)=g_\varepsilon(\delta)+\int_{|y|}^{\delta}(-g_\varepsilon'(r))\,\mathrm dr\)，由非负积分的 Tonelli 换序得
+\[
+ \begin{aligned}
+ &\int_{|y|<\delta}G_\varepsilon(y)\cdot|f_0(x-y)-f_0(x)|\,\mathrm dy\\
+ &\quad=g_\varepsilon(\delta)A(\delta)
+       +\int_0^\delta(-g_\varepsilon'(r))A(r)\,\mathrm dr\\
+ &\quad\leq\eta\left(g_\varepsilon(\delta)\cdot\omega_d\delta^d
+       +\int_0^\delta(-g_\varepsilon'(r))\cdot\omega_dr^d\,\mathrm dr\right)\\
+ &\quad=\eta\int_{|y|<\delta}G_\varepsilon(y)\,\mathrm dy\leq\eta.
+ \end{aligned}
+\]
+括号中的最后等式把同一个分层积分用于常函数 \(1\)。球外含 \(f_0\) 和含常数 \(f_0(x)\) 的两部分，分别由
+\[
+ \varepsilon^{-d}e^{-\pi\delta^2/\varepsilon^2}\|f\|_1,
+ \qquad |f_0(x)|\int_{|y|\geq\delta}G_\varepsilon(y)\,\mathrm dy
+\]
+控制；两者在 \(\varepsilon\downarrow0\) 时都趋零。先固定 \(\eta,\delta\)，取尺度极限，再令 \(\eta\downarrow0\)，就得 \((G_\varepsilon*f_0)(x)\to f_0(x)\)。最后用第一卷定理 14.4.2 的几乎处处 Lebesgue 点结论。
 \end{proof}
 
 这项结论不要求 \(\widehat f\) 可积，但不能把 Gauss 因子直接删去，也不能未经证明改成任意频率截断形状。一个有两个单侧极限的一维函数，在跳跃点经偶核正则化时趋向中点值：近处分别用左右极限，远处用核在离原点固定距离外的一致衰减估计。点本身的任意赋值不会被积分恢复。
+
+\ProseParagraphBreak
+
+例如对 \(f=\mathbf1_{(0,1)}\)，卷积可以完整算成
+\[
+ (G_\varepsilon*f)(x)
+ =\int_{(x-1)/\varepsilon}^{x/\varepsilon}e^{-\pi z^2}\,\mathrm dz.
+\]
+当 \(0<x<1\) 时，两端分别趋于负、正无穷，极限为 \(1\)；当 \(x<0\) 或 \(x>1\) 时，积分区间进入同一侧尾部，极限为零。在 \(x=0,1\) 处，偶性使极限为 \(1/2\)。区间端点处的值不论补成什么，都不影响变换；正则化恢复的是左右平均。另一方面，原变换是指数相位乘 sinc 函数，其绝对积分发散，所以这个例子没有满足无正则化反演的假设。
 
 \ProseParagraphBreak
 
@@ -78,11 +188,26 @@
 \]
 两侧连续，所以最初的几乎处处等式提升为处处等式。
 
-\subsection{唯一性定理}
+反演建立以后，还能证明与卷积定理互相对应的乘积公式。这里把可积条件列在陈述内，避免把两个只属于 \(L^1\) 的函数相乘后默认仍可积。
+
+\begin{proposition}\label{b2:prop:03-product-transform}
+设 \(d\) 为正整数，\(f,g\in L^1(\mathbb R^d;\mathbb C)\)，且 \(\widehat g\in L^1(\mathbb R^d;\mathbb C)\)。选取反演给出的 \(g\) 的有界连续代表，则 \(fg\in L^1(\mathbb R^d;\mathbb C)\)，并有对每个 \(\xi\in\mathbb R^d\) 都成立的公式
+\[
+ \widehat{fg}(\xi)=\int_{\mathbb R^d}\widehat f(\xi-\eta)\cdot\widehat g(\eta)\,\mathrm d\eta.
+\]
+右侧的卷积积分绝对收敛。
+\end{proposition}
+\begin{proof}
+反演给出 \(\|g\|_\infty\leq\|\widehat g\|_1\)，所以 \(\|fg\|_1\leq\|f\|_1\cdot\|\widehat g\|_1\)。将 \(g(x)=\int\widehat g(\eta)e^{2\pi\mathrm i x\cdot\eta}\,\mathrm d\eta\) 代入 \(fg\) 的变换。双重积分的绝对积分为 \(\|f\|_1\cdot\|\widehat g\|_1\)，故可用 Fubini 交换次序；内层对 \(x\) 的积分恰为 \(\widehat f(\xi-\eta)\)。反演最初若只几乎处处成立，也不改变乘积的等价类。最后用 \(\|\widehat f\|_\infty\leq\|f\|_1\) 保证所写卷积处处绝对收敛。
+\end{proof}
+
+乘积截断会在频率中产生卷积，空间卷积则变成频率乘积。这两个操作都是局部化的方法，但对频率的影响不同：把一个函数限在某一区域，通常会把其频率分散；用一个平滑核平均，则按该核的变换压低频率。后面讨论频率局部化时还会反复使用这两个公式的差别。
+
+\subsection{唯一性与正则性的频率判据}
 \label{b2:subsec:030504}
 
 \begin{corollary}[唯一性]\label{b2:cor:03-uniqueness}
-若 \(f,g\in L^1(\mathbb R^d)\) 且 \(\widehat f=\widehat g\)，则 \(f=g\) 几乎处处。
+设 \(d\) 为正整数。若 \(f,g\in L^1(\mathbb R^d;\mathbb C)\) 且 \(\widehat f=\widehat g\)，则 \(f=g\) 在 \(\mathbb R^d\) 上几乎处处成立。
 \end{corollary}
 \begin{proof}
 差 \(h=f-g\) 的变换恒为零，特别属于 \(L^1\)，故 Fourier 反演使 \(h=0\) 几乎处处。
@@ -93,7 +218,7 @@
 
 
 \begin{proposition}\label{b2:prop:03-inverse-regularity}
-若 \(f\in L^1\)，且 \(\int(1+|\xi|)^m|\widehat f(\xi)|\,\mathrm{d}\xi<\infty\)，其中 \(m\) 为非负整数，则 \(f\) 有一个 \(C^m\) 代表，且其不超过 \(m\) 阶的每个导数都连续并在无穷远趋零。
+设 \(d\) 为正整数，\(m\) 为非负整数，\(f\in L^1(\mathbb R^d;\mathbb C)\)，且 \(\int_{\mathbb R^d}(1+|\xi|)^m|\widehat f(\xi)|\,\mathrm{d}\xi<\infty\)。则 \(f\) 有一个代表 \(g\in C^m(\mathbb R^d;\mathbb C)\)，且对每个满足 \(|\alpha|\leq m\) 的多重指标 \(\alpha\in\mathbb N_0^d\)，都有 \(\partial^\alpha g\in C_0(\mathbb R^d;\mathbb C)\)。
 \end{proposition}
 \begin{proof}
 零阶权已保证反演适用，取连续代表 \(g=\check {\widehat f}\)。每次对 \(x_j\) 求导，只给频率被积函数增加 \(2\pi\mathrm{i}\xi_j\)。所有相应差商都由假设中的可积矩控制，所以可逐阶求导，得到

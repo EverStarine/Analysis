@@ -2,79 +2,458 @@
 \section{能量估计与低正则迭代}
 \label{b2:sec:H201}
 
-本节设 \(d\ge2\)，实矩阵场 \(A\) 可测，且 \(A(x)\xi\cdot\xi\ge\lambda|\xi|^2\)、\(|A(x)\xi|\le\Lambda|\xi|\)，其中 \(0<\lambda\le\Lambda<\infty\)。不假设对称性或系数导数存在。实值 \(u\in H^1_{\mathrm{loc}}\) 称为弱次解，若对非负光滑紧支集 \(\varphi\) 有 \(\int A\nabla u\cdot\nabla\varphi\le0\)；由连续性，测试可扩大到非负、紧支撑的 \(H^1\) 函数。
+系数只有可测性时，不能把方程逐项微分，却仍可以改变测试函数。截去低于某个高度的部分，可以观察高值集合；提高解的幂次，可以逐步增强可积性；取倒数或对数，则能接近正解的下界。这些操作都发生在弱形式的一阶导数之内。本节先把测试的合法性说清楚，再沿正幂、对数和倒数三条线建立线性 Harnack 比较。
+
+\ProseParagraphBreak
+
+以下讨论实标量方程。设 \(d\geq2\)，\(\Omega\subset\mathbb R^d\) 开，实矩阵场 \(A:\Omega\to\mathbb R^{d\times d}\) 可测，并满足
+\[
+ A(x)\xi\cdot\xi\geq\lambda|\xi|^2,
+ \quad |A(x)\xi|\leq\Lambda|\xi|
+ \quad(\xi\in\mathbb R^d)
+\]
+于几乎处处的 \(x\)，其中 \(0<\lambda\leq\Lambda<\infty\)。不要求 \(A\) 对称，也不使用系数的导数。实函数 \(u\in H^1_{\mathrm{loc}}(\Omega)\) 是齐次方程的弱次解，是指
+\[
+ \int_\Omega A\nabla u\cdot\nabla\varphi\leq0
+ \quad(0\leq\varphi\in C_c^\infty(\Omega));
+\]
+若对全部实值 \(\varphi\in C_c^\infty(\Omega)\) 等式成立，则称为弱解。这个符号约定对应 \(-\operatorname{div}(A\nabla u)\leq0\)。下文的上、下界均先按几乎处处的意义理解，直到最后使用连续代表。
 
 \subsection{Caccioppoli 不等式}
 \label{b2:subsec:H20101}
 
-令 \(w=(u-k)_+\)、\(0\le\eta\le1\) 为光滑截断。以 \(\eta^2w\) 测试次解，链式法则把梯度限制到 \(u>k\)，得到
-\[\lambda\int\eta^2|\nabla w|^2\le2\Lambda\int\eta w|\nabla w||\nabla\eta|
- \le\frac\lambda2\int\eta^2|\nabla w|^2+C\int w^2|\nabla\eta|^2.\]
-因而
+把解本身或它的正部放到测试位置时，所得函数通常不光滑。弱形式可以接受这种测试，但理由来自 Sobolev 逼近以及通量的平方可积性，不能只靠形式上的分部积分。
+
+\Needspace{6\baselineskip}
+\begin{lemma}[非负 Sobolev 测试与正部]
+\label{b2:lem:H2-sobolev-tests}
+设 \(d\geq2\)，\(\Omega\subset\mathbb R^d\) 开，\(A:\Omega\to\mathbb R^{d\times d}\) 可测，且对几乎处处的 \(x\) 和全部 \(\xi\in\mathbb R^d\)，有
+\[
+ A(x)\xi\cdot\xi\geq\lambda|\xi|^2,
+ \quad |A(x)\xi|\leq\Lambda|\xi|,
+ \quad 0<\lambda\leq\Lambda<\infty.
+\]
+若实函数 \(u\in H^1_{\mathrm{loc}}(\Omega)\) 满足
+\(\int_\Omega A\nabla u\cdot\nabla\varphi\leq0\) 对所有非负 \(\varphi\in C_c^\infty(\Omega)\) 成立，则同一不等式对每个非负、具有紧支集的 \(\varphi\in H^1(\Omega)\) 成立。对任意 \(k\in\mathbb R\)，函数 \((u-k)_+\) 也满足这一弱次解不等式。
+\end{lemma}
+\begin{proof}
+先设非负 \(\varphi\in H^1(\Omega)\) 的支集包含于 \(K\Subset\Omega\)。在 \(K\) 附近取等于一的光滑紧支集函数，将 \(\varphi\) 乘以它再零延拓，便得到 \(H^1(\mathbb R^d)\) 函数。用非负磨光核卷积，得到 \(\varphi_\delta\geq0\)。当 \(\delta\) 足够小时，这些光滑函数的支集都落在同一个 \(U\Subset\Omega\) 内，并且 \(\varphi_\delta\to\varphi\) 于 \(H^1(U)\)。由于
+\[
+ \left|\int_U A\nabla u\cdot\nabla(\varphi_\delta-\varphi)\right|
+ \leq\Lambda\|\nabla u\|_{L^2(U)}
+       \cdot\|\nabla(\varphi_\delta-\varphi)\|_{L^2(U)},
+\]
+弱次解不等式可取极限。若原来是弱解，同一逼近不需要保留符号，因而允许任意实值的紧支撑 \(H^1\) 测试。
+
+再令 \(v=(u-k)_+\)。Sobolev 截断链式法则给出
+\(\nabla v=\mathbf1_{\{u>k\}}\cdot\nabla u\)。固定非负 \(\psi\in C_c^\infty(\Omega)\)，取分段线性函数
+\[
+ \theta_\delta(t)=
+ \begin{cases}
+ 0,&t\leq0,\\
+ t/\delta,&0<t<\delta,\\
+ 1,&t\geq\delta.
+ \end{cases}
+\]
+函数 \(\theta_\delta(u-k)\cdot\psi\) 是合法的非负 Sobolev 测试。代入后得到
+\[
+ \int\theta_\delta(u-k)A\nabla u\cdot\nabla\psi
+ +\int\psi\cdot\theta_\delta'(u-k)
+                      A\nabla u\cdot\nabla u\leq0.
+\]
+第二项非负，故可从左边删除。第一项由紧支集上的
+\(\Lambda|\nabla u|\cdot|\nabla\psi|\) 控制，这是可积函数；令 \(\delta\downarrow0\)，得到
+\(\int A\nabla v\cdot\nabla\psi\leq0\)。分段函数折点上的导数取值不影响结果：Sobolev 函数在每个固定水平集上的梯度几乎处处为零，这也是截断链式法则的一部分。
+\end{proof}
+
+正部保留次解性质，使高度截断可以反复使用。下面的估计把弱形式中的椭圆性变成梯度控制；截断函数的导数记录了局部化所付的代价。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[水平截断的 Caccioppoli 估计]
+\label{b2:prop:H2-level-caccioppoli}
+设 \(d\geq2\)，\(\Omega\subset\mathbb R^d\) 开，\(A:\Omega\to\mathbb R^{d\times d}\) 为可测实矩阵场，且
+\(A(x)\xi\cdot\xi\geq\lambda|\xi|^2\)、\(|A(x)\xi|\leq\Lambda|\xi|\) 对几乎处处的 \(x\) 及全部 \(\xi\in\mathbb R^d\) 成立，其中 \(0<\lambda\leq\Lambda<\infty\)。设实函数 \(u\in H^1_{\mathrm{loc}}(\Omega)\) 满足
+\(\int A\nabla u\cdot\nabla\varphi\leq0\) 对每个非负 \(\varphi\in C_c^\infty(\Omega)\) 成立。对 \(k\in\mathbb R\)、\(w=(u-k)_+\) 及 \(0\leq\eta\leq1\)、\(\eta\in C_c^\infty(\Omega)\)，有
+\[
+ \int_\Omega\eta^2|\nabla w|^2
+ \leq4\frac{\Lambda^2}{\lambda^2}
+          \int_\Omega w^2|\nabla\eta|^2
+\]
+以及
 \begin{equation}\label{b2:eq:H2-level-energy}
- \int|\nabla(\eta w)|^2\le C\int w^2|\nabla\eta|^2.
+ \int_\Omega|\nabla(\eta\cdot w)|^2
+ \leq C\int_\Omega w^2|\nabla\eta|^2,
 \end{equation}
-等式解可对 \(-u\) 作同样处理。若有右端 \(f\)，测试会多出 \(\int f\eta^2w\)；只有在核验其可积性并控制这一项之后，才可继续下面的齐次迭代。把它直接删除会给出错误的尺度。
+其中 \(C\) 只依赖 \(\lambda,\Lambda\)。特别地，若
+\(0<r<s\)、\(B_s=B(x_0,s)\Subset\Omega\)，则
+\[
+ \int_{B_r}|\nabla(u-k)_+|^2
+ \leq\frac{C}{(s-r)^2}\int_{B_s}(u-k)_+^2.
+\]
+\end{proposition}
+\begin{proof}
+由上一引理，可用 \(\eta^2\cdot w\) 测试。在 \(w>0\) 处有 \(\nabla w=\nabla u\)，在其余部分 \(w=0\)、\(\nabla w=0\) 几乎处处，所以
+\[
+ \lambda\int\eta^2|\nabla w|^2
+ \leq2\Lambda\int\eta w|\nabla w|\cdot|\nabla\eta|
+ \leq\frac\lambda2\int\eta^2|\nabla w|^2
+       +\frac{2\Lambda^2}{\lambda}\int w^2|\nabla\eta|^2.
+\]
+把梯度项移回左边即得第一式。再由
+\[
+ |\nabla(\eta\cdot w)|^2
+ \leq2\eta^2|\nabla w|^2+2w^2|\nabla\eta|^2
+\]
+得到 \eqref{b2:eq:H2-level-energy}。最后取 \(\eta=1\) 于 \(B_r\)，支撑于 \(B_s\)，并使 \(|\nabla\eta|\leq C_d/(s-r)\)，即得两球估计。
+\end{proof}
+
+对齐次弱解，\(-u\) 也是解，因而负部可按相同方式估计；若改用 \(\eta^2\cdot(u-c)\) 测试，还可估计整个梯度。这一能量界不含 \(\nabla A\)，而\chapref{b2:ch:16}中的差商论证需要额外的系数正则性。两者控制的对象不同：这里从函数的局部大小控制一阶能量，差商方法则试图产生二阶弱导数。
 
 \ProseParagraphBreak
 
-截断支持在一个较大球内，并在较小球上等于一，便得到较小球的梯度能量界。常数依赖 \(\lambda,\Lambda\) 和两球间距，却不含 \(\nabla A\)。这说明 Caccioppoli 估计属于弱形式本身，不是经典正则性的推论。第十六章的差商估计还需要 Lipschitz 系数，二者不可混同。
+齐次假设也有实际作用。若 \(-\operatorname{div}(A\nabla u)=f\)，测试会多出 \(\int f\eta^2w\)。必须先说明该积分有意义，再估计它；只有这样才能把源项的可积指数和缩放带入迭代。将这一项删除，会把含源项方程误当成齐次方程。
 
 \subsection{De Giorgi 迭代}
 \label{b2:subsec:H20102}
 
-第十六章局部有界性定理已经把 \cref{b2:eq:H2-level-energy} 与 Sobolev 嵌入结合，取半径递减而高度递增的序列，证明
-\[\operatorname*{ess\,sup}_{B_R}u_+\le C\left(R^{-d}\int_{B_{2R}}u_+^2\right)^{1/2}.\]
-其关键不是每次把同一个范数乘以常数，而是出现超线性递推 \(Y_{j+1}\le Cb^jY_j^{1+\alpha}\)、\(\alpha>0\)。选取足够高的起始截断水平，使 \(Y_0\) 小于固定阈值，递推才迫使超水平集上的能量趋零。
+\cref{b2:thm:16-local-boundedness}已经对有界可测一致椭圆系数的实弱次解，完整证明了
+\[
+ \operatorname*{ess\,sup}_{B_R}u_+
+ \leq C\left(R^{-d}\int_{B_{2R}}u_+^2\right)^{1/2}.
+\]
+该证明只使用水平截断能量、Sobolev 不等式及一个数列迭代，不需要 Harnack 比较。即使解只属于局部 \(H^1\)，也可先在稍小的外球上应用结论，再把外半径增大；若右侧有限，单调性给出所列形式。
 
 \ProseParagraphBreak
 
-这一过程通常称为 \term[DeGiorgiDiedai]{De Giorgi 迭代}[De Giorgi iteration]。它直接处理超水平集，特别适合变分不等式以及没有方便幂函数恒等式的问题。后面的 \(p\) 次增长估计仍沿用这个机制，但指数与能量需一起更换，不能只在最终结果中把数字 \(2\) 换成 \(p\)。
+这一过程称为 \term[DeGiorgiDiedai]{De Giorgi 迭代}[De Giorgi iteration]。它同时收缩半径、提高截断高度。若第 \(j\) 轮的高度为 \(k_j\)，则下一轮高值集合上有
+\((u-k_j)_+\geq k_{j+1}-k_j\)，所以旧的能量还能控制新集合的测度。把这一测度界与 Sobolev 的积分增益结合，归一化后的能量满足
+\[
+ Y_{j+1}\leq Cb^jY_j^{1+\alpha},
+ \quad b>1,\quad\alpha>0.
+\]
+起始高度由初始平方平均选择，使 \(Y_0\) 足够小，才会得到 \(Y_j\to0\)。超线性幂 \(1+\alpha\) 是小量改善的来源；若只有 \(Y_{j+1}\leq Cb^jY_j\)，这条论证不能迫使高值部分消失。
+
+\ProseParagraphBreak
+
+本节不重复这条已完成的高度迭代。下面改用幂函数，以便进一步接入倒数和对数测试。两种路线的区别也解释了方法的选择：障碍问题天然允许单侧高度截断；正解比较则需要把函数的大值与小值联系起来，幂函数的正、负方向更便于配合。
 
 \subsection{Moser 迭代}
 \label{b2:subsec:H20103}
 
-另一条路线逐次提高可积指数，称为 \term[MoserDiedai]{Moser 迭代}[Moser iteration]。先在单位尺度工作，令 \(\chi=d/(d-2)\) 当 \(d>2\)，\(\chi=2\) 当 \(d=2\)。两种情形均有支撑在 \(B_2\) 中的函数满足 \(\lVert z\rVert_{2\chi}\le C\lVert\nabla z\rVert_2\)；二维可先用低于维数的 Sobolev 指数再作 Hölder 比较。
+逐次提高可积指数的路线称为 \term[MoserDiedai]{Moser 迭代}[Moser iteration]。形式上，用 \(u^{q-1}\) 测试会出现 \(u^{q-2}|\nabla u|^2\)，它正是 \(u^{q/2}\) 的梯度平方乘以一个常数。但本轮只知道 \(u\in L^q\)，并不知道这个幂已属于 \(H^1\)。因此必须先把幂函数截成全局 Lipschitz 函数，取得独立于截断高度的估计，再放开截断。
 
+\ProseParagraphBreak
+
+先记下本节使用的 Sobolev 指数：当 \(d>2\) 时取 \(\chi=d/(d-2)\)，当 \(d=2\) 时取 \(\chi=2\)。对 \(z\in H_0^1(B(0,2))\)，有
+\(\|z\|_{2\chi}^2\leq C_d\|\nabla z\|_2^2\)。二维情形可先用零延拓后的 \(W^{1,4/3}\) 到 \(L^4\) 的 Sobolev 不等式，再用有限体积上的 Hölder 不等式把梯度的 \(L^{4/3}\) 范数界为 \(L^2\) 范数。缩放回任意 \(B_{2R}=B(x_0,2R)\)，所得形式是
+\begin{equation}\label{b2:eq:H2-scaled-sobolev}
+ \left(R^{-d}\int_{B_{2R}}|z|^{2\chi}\right)^{1/\chi}
+ \leq C_dR^{2-d}\int_{B_{2R}}|\nabla z|^2
+ \quad(z\in H_0^1(B_{2R})).
+\end{equation}
+这一个式子包含了两个维数范围。特别是在二维，若改写成未归一化的范数，右侧会带一个 \(R\)；不能把单位球常数原样用于任意半径。
+
+\Needspace{6\baselineskip}
 \begin{lemma}[幂函数能量估计]
 \label{b2:lem:H2-power-energy}
-若非负 \(u\) 为 \(B_2\) 中的弱次解，\(q\ge2\)，且 \(u\in L^q(B_s)\)，\(1\le r<s\le2\)，则
-\[\lVert u\rVert_{L^{q\chi}(B_r)}\le
- \left(\frac{Cq^2}{(s-r)^2}\right)^{1/q}\lVert u\rVert_{L^q(B_s)}.
+设 \(d\geq2\)，\(x_0\in\mathbb R^d\)、\(R>0\)，记 \(B_t=B(x_0,t)\)。可测实矩阵场 \(A\) 在 \(B_{2R}\) 中满足
+\(A(x)\xi\cdot\xi\geq\lambda|\xi|^2\)、\(|A(x)\xi|\leq\Lambda|\xi|\)，其中 \(0<\lambda\leq\Lambda<\infty\)，两式对几乎处处的 \(x\) 和全部 \(\xi\in\mathbb R^d\) 成立。设实函数 \(u\in H^1_{\mathrm{loc}}(B_{2R})\) 几乎处处非负，且
+\(\int A\nabla u\cdot\nabla\varphi\leq0\) 对所有非负 \(\varphi\in C_c^\infty(B_{2R})\) 成立。取 \(q\geq2\)、\(R\leq r<s\leq2R\)，并假定 \(u\in L^q(B_s)\)。令 \(\chi=d/(d-2)\) 当 \(d>2\)，\(\chi=2\) 当 \(d=2\)。则
+\[
+ \left(R^{-d}\int_{B_r}u^{q\chi}\right)^{1/(q\chi)}
+ \leq
+ \left(\frac{Cq^2R^2}{(s-r)^2}\right)^{1/q}
+ \left(R^{-d}\int_{B_s}u^q\right)^{1/q},
 \]
+其中 \(C\) 只依赖 \(d,\lambda,\Lambda\)。
 \end{lemma}
 \begin{proof}
-幂函数不是全局 Lipschitz 测试，故先截断。对 \(L>0\)、\(t\ge0\) 令 \(h_L(t)=t\min(t,L)^{q-2}\)，并令 \(w_L(t)=t\min(t,L)^{(q-2)/2}\)。两者均 Lipschitz 且零点取零；\(h_L'\ge0\)。在 \(t<L\) 及 \(t>L\) 分别求导，得
-\[\frac{h_L(t)^2}{h_L'(t)}\le w_L(t)^2,
- \qquad |w_L'(t)|^2\le q^2h_L'(t),\]
-零点处按连续极限理解第一式。用 \(\eta^2h_L(u)\) 测试，主项至少为 \(\lambda\int\eta^2h_L'(u)|\nabla u|^2\)，交叉项用带权 Young 不等式吸收一半，余项由 \(C\int w_L(u)^2|\nabla\eta|^2\) 控制。因此
-\[\int|\nabla(\eta w_L(u))|^2\le Cq^2\int w_L(u)^2|\nabla\eta|^2.\]
-取 \(\eta=1\) 于 \(B_r\)、支撑于 \(B_s\)、\(|\nabla\eta|\le C/(s-r)\)。Sobolev 不等式给出左边对应的 \(L^{2\chi}\) 范数界；右端 \(w_L(u)^2\le u^q\)。令 \(L\to\infty\)，Fatou 引理给出 \(u^{q/2}\) 的 \(L^{2\chi}\) 界，再取 \(q/2\) 次根，得到结论。全过程只要求本轮已知的 \(L^q\) 可积性。
+固定 \(L>0\)。当 \(q>2\) 时，对 \(t\geq0\) 定义
+\[
+ h_L(t)=t\min(t,L)^{q-2},
+ \quad w_L(t)=t\min(t,L)^{(q-2)/2};
+\]
+当 \(q=2\) 时直接定义 \(h_L(t)=w_L(t)=t\)。这样零点处没有 \(0^0\) 的约定问题。两函数在 \([0,\infty)\) 上 Lipschitz，零点取零，并可延拓为实轴上的 Lipschitz 函数。对于 \(q>2\)，其两支导数为
+\[
+ \begin{array}{c|cc}
+ &0<t<L&t>L\\ \hline
+ h_L'(t)&(q-1)t^{q-2}&L^{q-2}\\
+ w_L'(t)&\dfrac q2t^{(q-2)/2}&L^{(q-2)/2}.
+ \end{array}
+\]
+由这两行直接得到
+\[
+ h_L(t)^2\leq w_L(t)^2\cdot h_L'(t),
+ \quad |w_L'(t)|^2\leq q^2\cdot h_L'(t),
+ \quad h_L'(t)\geq0.
+\]
+第一式采用不含除法的形式，因而在 \(t=0\) 时仍有意义；\(q=2\) 时三式同样成立。折点 \(t=L\) 的导数值任取一侧即可，因为 \(\nabla u=0\) 几乎处处于 \(\{u=L\}\)。
+
+取 \(0\leq\eta\leq1\)、\(\eta\in C_c^\infty(B_s)\)，且 \(\eta=1\) 于 \(B_r\)、\(|\nabla\eta|\leq C_d/(s-r)\)。对固定 \(L\)，函数 \(\eta^2\cdot h_L(u)\) 是合法的非负 Sobolev 测试。弱次解不等式给出
+\[
+ \begin{aligned}
+ \lambda\int\eta^2h_L'(u)|\nabla u|^2
+ &\leq2\Lambda\int\eta\cdot h_L(u)
+                        |\nabla u|\cdot|\nabla\eta|\\
+ &\leq\frac\lambda2\int\eta^2h_L'(u)|\nabla u|^2
+       +\frac{2\Lambda^2}{\lambda}
+                    \int w_L(u)^2|\nabla\eta|^2.
+ \end{aligned}
+\]
+这里使用了 \(h_L\leq w_L\sqrt{h_L'}\)，再对两个非负因子使用 Young 不等式。吸收左边的一半，并用 \(|w_L'|^2\leq q^2h_L'\)，得到
+\[
+ \int|\nabla(\eta\cdot w_L(u))|^2
+ \leq Cq^2\int w_L(u)^2|\nabla\eta|^2
+ \leq\frac{Cq^2}{(s-r)^2}\int_{B_s}u^q.
+\]
+最后一步来自 \(w_L(u)^2\leq u^q\)。对 \(\eta\cdot w_L(u)\in H_0^1(B_{2R})\) 使用 \eqref{b2:eq:H2-scaled-sobolev}，得到
+\[
+ \left(R^{-d}\int_{B_r}w_L(u)^{2\chi}\right)^{1/\chi}
+ \leq\frac{Cq^2R^2}{(s-r)^2}
+              R^{-d}\int_{B_s}u^q.
+\]
+当 \(L\to\infty\) 时，\(w_L(u)\to u^{q/2}\) 几乎处处。左边用 Fatou 引理，右边保持不变，再取 \(q\) 次根即得结论。整个过程只使用本轮已有的 \(L^q\) 可积性，没有预设下一轮幂函数的梯度可积。
 \end{proof}
 
+\Needspace{6\baselineskip}
 \begin{theorem}[正幂迭代的局部上界]
 \label{b2:thm:H2-moser-upper}
-上述非负次解满足
-\[\operatorname*{ess\,sup}_{B_R}u\le C\left(R^{-d}\int_{B_{2R}}u^2\right)^{1/2},\]
-常数只依赖维数及椭圆常数。
+设 \(d\geq2\)，\(x_0\in\mathbb R^d\)、\(R>0\)，记 \(B_t=B(x_0,t)\)。可测实矩阵场 \(A\) 在 \(B_{2R}\) 上满足
+\(A(x)\xi\cdot\xi\geq\lambda|\xi|^2\)、\(|A(x)\xi|\leq\Lambda|\xi|\)，其中 \(0<\lambda\leq\Lambda<\infty\)，两式对几乎处处的 \(x\) 和全部实 \(\xi\) 成立。设实函数 \(u\in H^1_{\mathrm{loc}}(B_{2R})\cap L^2(B_{2R})\) 几乎处处非负，并满足
+\(\int A\nabla u\cdot\nabla\varphi\leq0\) 对所有非负 \(\varphi\in C_c^\infty(B_{2R})\) 成立。则
+\[
+ \operatorname*{ess\,sup}_{B_R}u
+ \leq C\left(R^{-d}\int_{B_{2R}}u^2\right)^{1/2},
+\]
+其中 \(C\) 只依赖 \(d,\lambda,\Lambda\)。
 \end{theorem}
 \begin{proof}
-先缩放到 \(R=1\)。取 \(q_j=2\chi^j\)、\(r_j=1+2^{-j}\)，逐次使用引理，得到范数乘积的对数至多为
-\[\sum_{j=0}^\infty\frac{\log C+2\log q_j+2(j+1)\log2}{q_j}<\infty.\]
-故 \(\lVert u\rVert_{L^{q_j}(B_1)}\le C\lVert u\rVert_{L^2(B_2)}\) 一致成立。若某正测度集合上 \(u\) 大于此界，则其 \(L^{q_j}\) 范数在 \(j\to\infty\) 时给出矛盾，于是得到本性上确界。换元回半径 \(R\)，\(L^2\) 范数带出 \(R^{-d/2}\)，即所列公式。
+置 \(v(y)=u(x_0+Ry)\)、\(\widetilde A(y)=A(x_0+Ry)\)。在弱形式中换元，出现的共同正因子 \(R^{d-2}\) 可以约去；\(\widetilde A\) 保留同一组椭圆界。因此先证 \(R=1\)、\(x_0=0\) 的结论即可。
+
+令 \(\chi\) 如幂函数能量估计所定，并取
+\[
+ q_j=2\chi^j,
+ \quad r_j=1+2^{-j}
+ \quad(j=0,1,2,\ldots).
+\]
+从 \(q_0=2\)、\(r_0=2\) 开始，上一引理逐次保证下一轮所需的可积性，而且
+\[
+ \|u\|_{L^{q_{j+1}}(B_{r_{j+1}})}
+ \leq\left(Cq_j^2\cdot2^{2j+2}\right)^{1/q_j}
+          \|u\|_{L^{q_j}(B_{r_j})}.
+\]
+把各轮相乘。因为
+\[
+ \sum_{j=0}^\infty
+ \frac{\log C+2\log q_j+(2j+2)\log2}{q_j}<\infty,
+\]
+乘积被一个只依赖 \(d,\lambda,\Lambda\) 的常数控制。于是
+\(\|u\|_{L^{q_j}(B_1)}\leq K\)，其中 \(K=C\|u\|_{L^2(B_2)}\)，与 \(j\) 无关。若存在 \(t>K\) 使 \(E=\{x\in B_1:u(x)>t\}\) 具有正测度，则
+\[
+ K\geq\|u\|_{L^{q_j}(B_1)}\geq t|E|^{1/q_j}
+ \longrightarrow t,
+\]
+产生矛盾。因此 \(u\leq K\) 几乎处处。换元回原来的球，
+\(\|v\|_{L^2(B_2)}=R^{-d/2}\|u\|_{L^2(B_{2R})}\)，即得所列估计。
 \end{proof}
 
-对有符号解的正部、负部分别使用定理，可以控制绝对值。这里两条迭代路线到达相同的局部上界，但中间控制的对象不同：一个控制超水平能量，一个控制越来越高的幂。具体问题中的测试可行性决定哪条路线更自然。
+对有符号弱次解，可先由\cref{b2:lem:H2-sobolev-tests}取正部；对弱解再分别处理 \(u_+\) 和 \((-u)_+\)，便得到绝对值的局部上界。到这里，幂迭代已到达与 De Giorgi 迭代相同的结论。下一步需要把平方平均换成很小的正幂平均，因为对数的指数可积性只会产生一个小指数。
+
+\Needspace{6\baselineskip}
+\begin{lemma}[局部上界的低次平均版本]
+\label{b2:lem:H2-small-power}
+设 \(d\geq2\)，\(x_0\in\mathbb R^d\)、\(R>0\)，记 \(B_t=B(x_0,t)\)。可测实矩阵场 \(A\) 在 \(B_{2R}\) 中满足
+\(A(x)\xi\cdot\xi\geq\lambda|\xi|^2\)、\(|A(x)\xi|\leq\Lambda|\xi|\)，其中 \(0<\lambda\leq\Lambda<\infty\)，两式对几乎处处的 \(x\) 和全部实 \(\xi\) 成立。实函数 \(u\in H^1_{\mathrm{loc}}(B_{2R})\) 几乎处处非负，并且
+\(\int A\nabla u\cdot\nabla\varphi\leq0\) 对所有非负 \(\varphi\in C_c^\infty(B_{2R})\) 成立。对每个 \(a>0\)，有
+\[
+ \operatorname*{ess\,sup}_{B_R}u
+ \leq C_a\left(R^{-d}\int_{B_{2R}}u^a\right)^{1/a},
+\]
+其中 \(C_a\) 只依赖 \(a,d,\lambda,\Lambda\)；右侧为无穷时按通常的扩展实数意义理解。
+\end{lemma}
+\begin{proof}
+只需考虑右侧有限的情形，并缩放到 \(R=1\)。当 \(a\geq2\) 时，有限体积上的 Hölder 不等式保证 \(u\in L^2(B_2)\)，由上一项平方平均上界即得结论。
+
+设 \(0<a<2\)，记 \(M(r)=\operatorname*{ess\,sup}_{B_r}u\)。首先，\(M(3/2)<\infty\)：用有限个较小球覆盖 \(\overline{B_{3/2}}\)，使每个球的二倍球都紧包含于 \(B_2\)，再逐球使用平方平均上界。所需平方积分来自 \(u\in H^1_{\mathrm{loc}}(B_2)\)。这个有限性先于后面的吸收步骤。
+
+对 \(1\leq r<s\leq3/2\)，在 \(\overline{B_r}\) 各点放置半径 \(\rho=(s-r)/4\) 的球，其二倍球均在 \(B_s\) 内。取有限子覆盖，在每个球上使用已证估计，得
+\[
+ \begin{aligned}
+ M(r)&\leq C(s-r)^{-d/2}\|u\|_{L^2(B_s)}\\
+ &\leq C(s-r)^{-d/2}M(s)^{1-a/2}
+               \left(\int_{B_{3/2}}u^a\right)^{1/2}.
+ \end{aligned}
+\]
+若 \(M(s)=0\)，结论已成立。否则令
+\(U=(\int_{B_{3/2}}u^a)^{1/a}\)，对上式用指数 \(2/(2-a)\) 与 \(2/a\) 的带参数 Young 不等式。即使 \(a<1\)，这个积分幂量仍有意义，且此处不使用范数三角不等式。对任意 \(0<\vartheta<1\)，得到
+\[
+ M(r)\leq\vartheta M(s)
+       +C_{a,\vartheta}(s-r)^{-d/a}U.
+\]
+取 \(r_j=3/2-2^{-j-1}\)，于是 \(r_0=1\)，且
+\(r_{j+1}-r_j=2^{-j-2}\)。反复代入可得
+\[
+ M(1)\leq\vartheta^nM(r_n)
+   +C_{a,\vartheta}2^{2d/a}U
+        \sum_{j=0}^{n-1}\left(\vartheta2^{d/a}\right)^j.
+\]
+选择 \(\vartheta<2^{-d/a}\)，级数可和；由于
+\(M(r_n)\leq M(3/2)<\infty\)，第一项趋零。故
+\(M(1)\leq C_aU\)，扩大右侧积分域到 \(B_2\)，再恢复尺度即得结论。这里没有把未知的无穷上确界移到不等式另一边。
+\end{proof}
+
+仅有正幂估计仍然不能给出正下界。对正解取对数后，加法常数对应原函数的乘法大小，而平均振荡消去了这个常数。因此，对数能量适合连接正幂与负幂：先控制与整体高度无关的振荡，再用指数可积性把它还原成两个方向的平均。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[对数能量与正负平均连接]
+\label{b2:prop:H2-log-bridge}
+设 \(d\geq2\)，\(\Omega\subset\mathbb R^d\) 开，\(A:\Omega\to\mathbb R^{d\times d}\) 为可测实矩阵场，且
+\(A(x)\xi\cdot\xi\geq\lambda|\xi|^2\)、\(|A(x)\xi|\leq\Lambda|\xi|\) 对几乎处处的 \(x\) 和全部实 \(\xi\) 成立，其中 \(0<\lambda\leq\Lambda<\infty\)。设实函数 \(u\in H^1_{\mathrm{loc}}(\Omega)\) 几乎处处非负，且
+\(\int A\nabla u\cdot\nabla\varphi=0\) 对每个实值 \(\varphi\in C_c^\infty(\Omega)\) 成立。若 \(Q\) 为轴平行立方体，\(4Q\Subset\Omega\)，则存在只依赖 \(d,\lambda,\Lambda\) 的 \(a_0>0\)，使每个 \(\varepsilon>0\)、\(v=u+\varepsilon\) 满足
+\[
+ \left(\frac1{|Q|}\int_Qv^{a_0}\right)
+ \left(\frac1{|Q|}\int_Qv^{-a_0}\right)\leq9.
+\]
+此外，对每个实值 \(\eta\in C_c^\infty(\Omega)\)，有
+\[
+ \int_\Omega\eta^2|\nabla\log v|^2
+ \leq4\frac{\Lambda^2}{\lambda^2}
+                  \int_\Omega|\nabla\eta|^2.
+\]
+这里 \(4Q\) 表示与 \(Q\) 同中心、边长为四倍的立方体。
+\end{proposition}
+\begin{proof}
+常数平移不改变梯度，所以 \(v\) 仍为齐次弱解。因为 \(v\geq\varepsilon\)，倒数函数在其取值范围内及其一阶导数都有界，\(\eta^2/v\) 属于紧支撑的 \(H^1\)，可作为测试。又有 \(\log v\in H^1_{\mathrm{loc}}(\Omega)\)：负部由 \(\varepsilon\) 控制，正部可由 \(u\) 加一个依赖 \(\varepsilon\) 的常数控制，而链式法则给出 \(\nabla\log v=\nabla u/v\)。弱方程因此给出
+\[
+ \begin{aligned}
+ \lambda\int\eta^2|\nabla\log v|^2
+ &\leq2\Lambda\int|\eta|\cdot|\nabla\log v|
+                                  \cdot|\nabla\eta|\\
+ &\leq\frac\lambda2\int\eta^2|\nabla\log v|^2
+                  +\frac{2\Lambda^2}{\lambda}
+                             \int|\nabla\eta|^2.
+ \end{aligned}
+\]
+吸收后得到对数能量界，常数与 \(\varepsilon\) 无关。
+
+令 \(b=\log v\)。对 \(Q\) 的任意轴平行子立方体 \(P\)，包括 \(P=Q\)，取在 \(P\) 上为一、支撑于 \(2P\) 的截断，且梯度不超过 \(C_d/\ell(P)\)。所有 \(2P\) 都包含于 \(3Q\)，所以这些测试统一合法。能量界给出
+\[
+ \int_P|\nabla b|^2\leq C\ell(P)^{d-2}.
+\]
+立方体的 Poincaré 不等式和 Cauchy--Schwarz 不等式于是给出
+\[
+ \begin{aligned}
+ \frac1{|P|}\int_P|b-b_P|
+ &\leq\left(\frac1{|P|}\int_P|b-b_P|^2\right)^{1/2}\\
+ &\leq C_d\ell(P)
+          \left(\frac1{|P|}\int_P|\nabla b|^2\right)^{1/2}
+ \leq M,
+ \end{aligned}
+\]
+其中可选 \(M>0\) 只依赖 \(d,\lambda,\Lambda\)。注意，所得界控制了 \(Q\) 内每个子立方体，而不只是 \(Q\) 本身；这正是下一步所需的信息。
+
+现在使用\cref{b2:cor:C-local-john-nirenberg}。其假设是初始立方体内的局部可积性，以及所有二进子立方体上的同一平均振荡界。这里 \(b\in H^1(Q)\subset L^1(Q)\)，而刚证得的界对全部轴平行子立方体成立，因而满足该假设。取推论中的维数常数 \(c_d>0\)，令
+\(a_0=c_d/(2M)\)，便有
+\[
+ \frac1{|Q|}\int_Qe^{\pm a_0(b-b_Q)}\leq3.
+\]
+分别乘回 \(e^{a_0b_Q}\) 和 \(e^{-a_0b_Q}\)，再将两个平均相乘，未知常数因子抵消，得到所列乘积界。附录 C 的局部推论从停止立方体和指数尾的积分直接得到；它的证明不使用 Harnack 比较，因此此处没有循环依赖。
+\end{proof}
+
+有了正负平均的连接，只差把负幂平均变成下界。最方便的做法是对倒数使用已证的次解上界，而不是重新进行一遍负幂迭代。
+
+\Needspace{6\baselineskip}
+\begin{theorem}[线性正解比较的补充完整证明]
+\label{b2:thm:H2-linear-harnack}
+设 \(d\geq2\)，\(x_0\in\mathbb R^d\)、\(R>0\)，记 \(B_t=B(x_0,t)\)。可测实矩阵场 \(A\) 在 \(B_{2R}\) 中满足
+\(A(x)\xi\cdot\xi\geq\lambda|\xi|^2\)、\(|A(x)\xi|\leq\Lambda|\xi|\)，其中 \(0<\lambda\leq\Lambda<\infty\)，两式对几乎处处的 \(x\) 和全部 \(\xi\in\mathbb R^d\) 成立。若实函数 \(u\in H^1_{\mathrm{loc}}(B_{2R})\) 几乎处处非负，并且
+\(\int A\nabla u\cdot\nabla\varphi=0\) 对所有实值 \(\varphi\in C_c^\infty(B_{2R})\) 成立，则
+\[
+ \operatorname*{ess\,sup}_{B_R}u
+ \leq C\operatorname*{ess\,inf}_{B_R}u,
+\]
+其中 \(C\) 只依赖 \(d,\lambda,\Lambda\)。
+\end{theorem}
+\begin{proof}
+先固定 \(\varepsilon>0\)，令 \(v=u+\varepsilon\)。其倒数 \(w=v^{-1}\) 属于局部 \(H^1\)，而且是非负弱次解。为确认不等式方向，在 \(v\) 的弱方程中使用
+\(v^{-2}\cdot\varphi\)，其中 \(0\leq\varphi\in C_c^\infty(B_{2R})\)。这个测试合法，因为 \(v\geq\varepsilon\)。展开导数，得到
+\[
+ \begin{aligned}
+ \int A\nabla w\cdot\nabla\varphi
+ &=-\int v^{-2}A\nabla v\cdot\nabla\varphi\\
+ &=-2\int v^{-3}\varphi A\nabla v\cdot\nabla v\leq0.
+ \end{aligned}
+\]
+最后一项可积，因为 \(v^{-3}\) 有界、\(\nabla v\) 局部平方可积；其符号只使用椭圆性，不要求矩阵对称。
+
+取 \(4Q\Subset B_{2R}\)。低次平均上界可从球转到立方体：在 \(\overline{Q/2}\) 各点放置半径 \(\ell(Q)/16\) 的球，二倍球仍在 \(Q\) 内，并选有限子覆盖。逐球使用\cref{b2:lem:H2-small-power}，球尺度因子与 \(|Q|^{-1}\) 只相差一个维数常数。因此，对上一个命题给出的同一个 \(a_0>0\)，有
+\[
+ \begin{aligned}
+ \operatorname*{ess\,sup}_{Q/2}v
+ &\leq C\left(\frac1{|Q|}\int_Qv^{a_0}\right)^{1/a_0},\\
+ \operatorname*{ess\,sup}_{Q/2}v^{-1}
+ &\leq C\left(\frac1{|Q|}\int_Qv^{-a_0}\right)^{1/a_0}.
+ \end{aligned}
+\]
+这里 \(v\) 和 \(v^{-1}\) 都是非负次解。相乘后使用对数连接，得到
+\[
+ \operatorname*{ess\,sup}_{Q/2}v
+ \leq H\operatorname*{ess\,inf}_{Q/2}v,
+\]
+其中 \(H\geq1\) 只依赖 \(d,\lambda,\Lambda\)。左边乘积可以改写成上、下界之比，是因为 \(v\geq\varepsilon\)，且它在 \(Q/2\) 上已有有限上界。
+
+下面把这些小立方体的比较接成整球比较。缩放到 \(R=1\)、\(x_0=0\)，取
+\(\ell=1/(10\sqrt d)\)、\(h=\ell/16\)。在 \(\overline{B_1}\) 选一个极大的有限 \(h\)-分离点集 \(c_1,\ldots,c_N\)。极大性说明每个点到某个 \(c_i\) 的距离不超过 \(h\)；而两两不交的球 \(B(c_i,h/2)\) 都在 \(B_{1+h/2}\) 内，所以
+\(N\leq(1+2/h)^d\)。令 \(Q_i\) 为中心 \(c_i\)、边长 \(\ell\) 的轴平行立方体。各 \(4Q_i\) 都紧包含于 \(B_2\)，各 \(E_i=Q_i/2\) 覆盖 \(\overline{B_1}\)。
+
+把距离不超过 \(3h\) 的两个中心连成边。所得有限图连通：任取两个中心，沿它们之间位于 \(\overline{B_1}\) 的线段，以不超过 \(h\) 的步长取点，再把每个取样点换成距离不超过 \(h\) 的某个中心；相邻中心的距离便不超过 \(3h\)。每一条边对应的 \(E_i,E_j\) 有正测度重叠，因为
+\(3h<\ell/2\)。记
+\(S_i=\operatorname*{ess\,sup}_{E_i}v\)、
+\(m_i=\operatorname*{ess\,inf}_{E_i}v\)。各片上有 \(S_i\leq Hm_i\)，相邻片的重叠又给出 \(m_i\leq S_j\)。于是沿一条不重复顶点的链，得到
+\(S_i\leq H^Nm_j\)。这个论证只比较几乎处处的上下界；有限多个零测例外的并仍为零测集。
+
+选择使 \(S_i\) 最大和使 \(m_j\) 最小的两片，再利用覆盖，便得
+\[
+ \operatorname*{ess\,sup}_{B_1}v
+ \leq\max_iS_i
+ \leq H^N\min_jm_j
+ \leq H^N\operatorname*{ess\,inf}_{B_1}v.
+\]
+因为 \(N\) 只受维数控制，常数仍只依赖 \(d,\lambda,\Lambda\)。恢复尺度后，令 \(\varepsilon\downarrow0\)。本性上确界和本性下确界在加常数时都平移同一常数，因此得到 \(u\) 的结论，即使其下确界为零也不例外。
+\end{proof}
+
+证明中的加常数步骤避免了预先假设解严格为正。它还显示，正幂上界、倒数次解和对数振荡承担不同任务：前者给局部最大值，倒数把同一个结论转成最小值，对数连接则保证两边平均可以相消。只完成其中的正幂迭代，还不足以得到 Harnack 不等式。
 
 \subsection{De Giorgi--Nash--Moser 理论与 Harnack 不等式}
 \label{b2:subsec:H20104}
 
-正幂迭代不能单独比较一个正解在不同点的值。即使所有正幂平均已受控，也没有自动得到本性下确界。第十六章的 \cref{b2:thm:16-measurable-harnack} 明确陈述并以证明概要说明了额外的正性传播步骤；相关公开论文 \cite[Theorems 1.1--1.3]{Li2017Harnack} 给出齐次散度型线性方程的 Harnack 论证。调用该结果时须保留实标量、非负解、内球和一致椭圆假设。
+本节补全了\cref{b2:thm:16-measurable-harnack}中的线性比较路线。相关公开论文 \cite[Theorems 1.1--1.3 and Section 2]{Li2017Harnack}讨论了局部上界、正性传播与 Harnack 比较之间的关系；这里实际使用的指数尾则由\appref{b2:app:C}在书内证明。上述论证始终保留了实标量、非负解、内球和一致椭圆假设。
 
 \ProseParagraphBreak
 
-完整结论为 \(\operatorname*{ess\,sup}_{B_R}u\le C\operatorname*{ess\,inf}_{B_R}u\)，前提是 \(u\ge0\) 在 \(B_{2R}\) 解方程。它与局部上界共同构成低正则理论的核心。对一般有符号解，用 \(u-m\) 和 \(M-u\) 两个非负解，便可把正解比较变为严格振荡收缩；第十六章已经逐项完成这一代数步骤及几何尺度迭代，得到局部 Hölder 代表。
+Harnack 比较对有符号解的作用，要通过减去常数来显现。在外球上记 \(M=\operatorname*{ess\,sup}u\)、\(m=\operatorname*{ess\,inf}u\)，则 \(u-m\) 和 \(M-u\) 是两个非负弱解。分别应用比较并相加，便得到较小球上的严格振荡收缩；\subsecref{b2:subsec:160404}已经给出收缩因子、二进半径迭代以及从本性上下界构造 Hölder 连续代表的完整步骤。现在该推导所需的比较也已在本节证明，无须再把连续性当作额外输入。
 
 \ProseParagraphBreak
 
-这个框架通常合称 \term[DeGiorgiNashMoserLilun]{De Giorgi--Nash--Moser 理论}[De Giorgi--Nash--Moser theory]。其中局部有界、Harnack 比较与 Hölder 正则性是相互衔接的不同结论，不应因名字连在一起而省略中间桥梁。对于椭圆系统、复值方程或一般非齐次方程，标量正部测试、序结构或齐次缩放可能失效，因而不能无条件照搬本节。
+正解比较还有一个可以直接读出的后果：非负解若在某个小球上具有零的本性下界，就必须在该球上消失；连通性将这种消失传到整个区域。这是标量方程中强最大值原理的一种内部形式。
+
+\Needspace{6\baselineskip}
+\begin{corollary}[连通区域中的正性与强最大值原理]
+\label{b2:cor:H2-connected-positivity}
+设 \(d\geq2\)，\(\Omega\subset\mathbb R^d\) 为连通开集，\(A:\Omega\to\mathbb R^{d\times d}\) 为可测实矩阵场，并满足
+\(A(x)\xi\cdot\xi\geq\lambda|\xi|^2\)、\(|A(x)\xi|\leq\Lambda|\xi|\) 对几乎处处的 \(x\) 和全部实 \(\xi\) 成立，其中 \(0<\lambda\leq\Lambda<\infty\)。若实函数 \(u\in H^1_{\mathrm{loc}}(\Omega)\) 几乎处处非负，且
+\(\int A\nabla u\cdot\nabla\varphi=0\) 对全部实值 \(\varphi\in C_c^\infty(\Omega)\) 成立，则或者 \(u=0\) 几乎处处，或者对每个 \(B_{2r}(x)\Subset\Omega\)，都有
+\[
+ \operatorname*{ess\,inf}_{B_r(x)}u>0.
+\]
+因而，非零解的局部 Hölder 连续代表在 \(\Omega\) 中处处为正。更一般地，若实弱解 \(z\in H^1_{\mathrm{loc}}(\Omega)\) 满足 \(z\leq M\) 几乎处处，其中 \(M\in\mathbb R\)，且其连续代表在某个内点取值 \(M\)，则 \(z=M\) 几乎处处，其连续代表处处等于 \(M\)。
+\end{corollary}
+\begin{proof}
+令 \(Z\) 为所有具有一个邻域、使 \(u\) 在该邻域上几乎处处为零的点。按定义，\(Z\) 是相对开集。它也相对闭：若 \(x\in\overline Z\cap\Omega\)，取 \(B_{2r}(x)\Subset\Omega\)。球 \(B_r(x)\) 与 \(Z\) 的交集含有非空开集，所以 \(u\) 在一个正测度子集上为零；由非负性，\(\operatorname*{ess\,inf}_{B_r(x)}u=0\)。Harnack 比较给出 \(u=0\) 几乎处处于 \(B_r(x)\)，故 \(x\in Z\)。连通性说明 \(Z\) 为空或等于 \(\Omega\)；后一情形用可数子覆盖合并零测例外，得到 \(u=0\) 几乎处处于整个区域。
+
+若 \(u\) 不是零函数，\(Z\) 必为空。任意 \(B_{2r}(x)\Subset\Omega\) 的内球若有零的本性下界，Harnack 比较会使该内球成为 \(Z\) 的一部分，矛盾。因此本性下界严格为正。连续代表与原函数几乎处处相等，故在内球上也不能低于这一正下界；否则连续性会给出一个正测度的违反集合。
+
+最后对 \(u=M-z\) 应用这个二择结论。它是非负弱解，其连续代表在指定内点为零，因而不可能属于处处严格为正的情形。于是 \(z=M\) 几乎处处；连续性再把等式延伸到每一点。
+\end{proof}
+
+上述局部有界、正解比较和 Hölder 正则性通常合称 \term[DeGiorgiNashMoserLilun]{De Giorgi--Nash--Moser 理论}[De Giorgi--Nash--Moser theory]。名字相连并不意味着三个结论可以互相省略。对于椭圆系统、复值方程或一般非齐次方程，标量正部测试、序结构或齐次缩放可能失效。下一节转向 \(p\) 次增长方程时，会重新建立相应的截断估计和局部上界，而不把本节的线性 Harnack 定理直接套入。

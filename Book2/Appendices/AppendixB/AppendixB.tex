@@ -3,114 +3,352 @@
 \label{b2:app:B}
 
 \begin{chapterabstract}
-本附录构造三组常用特征函数。Hermite 多项式乘 Gauss 权形成实线上的正交基，同时对角化谐振子与适当归一化的 Fourier 变换。Legendre 多项式解决区间上的奇异端点方程，并对应三维球面的轴对称模态。一般球谐函数则由齐次调和多项式构造；通过调和分解和多项式逼近证明其完备性，进一步得到加法公式、球内调和延拓及球形 Helmholtz 方程的径向 Bessel 阶数。
+分离变量法给出的特征函数，只有在归一化、完备性和算子定义域明确以后，才能用于一般数据。本附录比较三个模型：Hermite 函数把实线上的二次势转成离散谱，Legendre 多项式把三维轴对称角向问题转成有限区间上的正交展开，球谐函数则容纳全部角向模态。Hermite 基从第五章经酉缩放接入，重点转向自伴域与能量；Legendre 和球谐的完备性由多项式逼近建立。球谐加法公式进一步给出基函数估计，并把角向展开与球内调和延拓、径向 Bessel 方程联系起来。
 \end{chapterabstract}
 \begin{learninggoals}
 \begin{itemize}
-\item\label{b2:item:B2-goal-hermite}从 Rodrigues 公式证明 Hermite 正交性与完备性，并核对两种常用 Gauss 归一化。
-\item\label{b2:item:B2-goal-oscillator}用升降算子求谐振子谱，区分微分表达式与自伴算子定义域。
-\item\label{b2:item:B2-goal-legendre}由正交结构推导 Legendre 方程、范数和递推，保留端点及收敛意义。
-\item\label{b2:item:B2-goal-spherical}构造球谐空间并证明谱完备，联系极坐标 Laplace 算子与 Bessel 径向方程。
+\item\label{b2:item:B2-goal-hermite}核对 Rodrigues 公式与两种 Gauss 归一化，说明酉缩放为何同时保留正交性和完备性。
+\item\label{b2:item:B2-goal-oscillator}以 Hermite 系数刻画谐振子的作用、定义域和能量，区分形式微分表达式与自伴算子。
+\item\label{b2:item:B2-goal-legendre}由正交结构推导 Legendre 方程、范数和递推，解释端点条件及平方范数收敛与一致收敛的差别。
+\item\label{b2:item:B2-goal-spherical}从齐次调和多项式构造全部角向模态，掌握投影核、球内延拓与 Bessel 径向阶数的来源。
 \end{itemize}
 \end{learninggoals}
 
-分离变量法的第一步是找到若干特征函数，最后一步却是说明这些函数是否足以表示一般数据。二者之间有不可省略的完备性证明。本附录选取三种可以把这一证明完整写出的模型：实线上的 Gauss 权、有限区间上的无权积分，以及紧球面上的面积测度。它们各自的几何与权重决定了归一化和特征值。
+对平移不变方程，Fourier 指数把微分变成频率乘法；出现二次势或球形边界后，位置与方向也参与算子作用，单一平面波不再适合边界或势能。寻找新的特征函数，要同时回答两个问题：哪些函数使方程简化，以及任意给定数据是否能由它们表示。一个特征值计算只能回答前一个问题，后一个问题还需要正交补为零或稠密性的证明。
 
 \ProseParagraphBreak
 
-正文只用本卷的 Fourier 唯一性、Plancherel 与常微分方程基础，并复用附录 A 的 Gamma、Beta 积分。相关特殊函数的标准公式可参阅 \cite[Chapters 14 and 18]{NationalInstituteofStandardsNIST}；这里把正交、完备、算子作用与应用逐项展开，不将表中公式代替函数展开所需的证明。
+三个模型的测度不能混用。Hermite 多项式以 Gauss 权正交，乘以半个权重以后才成为无权实线上的 Hermite 函数；Legendre 多项式在 \([-1,1]\) 上以 \(\mathrm dt\) 正交；球谐函数使用未归一化的球面面积测度。三维轴对称换元 \(t=\cos\theta\) 给出 \(2\pi\,\mathrm dt\)，所以 Legendre 与球谐之间仍留有面积常数。下面每次换尺度或换测度都保留这些因子。
+
+\ProseParagraphBreak
+
+本附录按基础工具补充阅读。所需分析工具是复 Hilbert 空间的正交展开、Fourier 唯一性与 Plancherel、分布导数、常微分方程，以及\appref{b2:app:A}的 Gamma、Beta 积分和 Bessel 函数。Hermite 部分需要\subsecref{b2:subsec:050204}已经证明的正交完备性；先前略过该选读专题的读者，应先回读，再看本附录的尺度与算子域。Legendre 和球谐部分可以从各自的多项式构造开始。NIST 的《Digital Library of Mathematical Functions》\cite[Chapters 14 and 18]{NationalInstituteofStandardsNIST}提供相关特殊函数的定义及公式对照；本附录所用完备性、极限交换和边界条件均在相应论证中说明。
 
 \input{Appendices/AppendixB/SectionB201}
 \input{Appendices/AppendixB/SectionB202}
 \input{Appendices/AppendixB/SectionB203}
 
 \begin{chaptersummary}
-Hermite 体系把多项式的代数与 Gauss 衰减结合，提供谐振子的离散谱及 Fourier 变换的特征基。Legendre 体系通过端点消失的 Rodrigues 因子获得无权正交性，再由对称微分算子推出方程与递推。两种体系的完备性都另有证明，不能从形式特征关系自动得到。
+Hermite 的升降关系把微分计算转为系数移动，自伴域则要求特征值加权后的系数仍平方可和。这个条件约束无穷展开，不能由每个基函数光滑来代替。Fourier 变换与谐振子可以使用同一尺度下的基，但前者只有四个特征值，后者的特征值逐阶增长，二者保留的谱信息不同。
 
 \ProseParagraphBreak
 
-球谐空间来自齐次多项式的唯一调和分解，其正交性由球面 Green 公式给出，完备性由多项式逼近给出。角向特征值与径向体积项共同确定 Bessel 阶数；加法公式则把一个角向特征空间压缩为旋转不变的投影核。所有展开首先具有明确的 \(L^2\) 意义，更强收敛及逐项求导须另用正则性估计。
+Legendre 的正交性来自 Rodrigues 因子在端点的高阶消失；微分方程和递推可由多项式空间中的正交结构推出。平方可积本身不能排除对数端点支，也不能保证展开的端点收敛。对光滑数据，实际检查 Green 边界项、取得加权系数估计，再结合球谐加法公式给出的基函数界，才能提升收敛方式。
+
+\ProseParagraphBreak
+
+球谐空间由唯一的调和分解构造，正交性来自球面 Green 公式，完备性来自多项式逼近。角向投影核同时记录模态维数与面积归一化。球内延拓中的 \(r^\ell\) 抑制高阶模态，使平方可积边界数据产生内部光滑的调和函数；临近边界时仍须区分平方范数恢复与更强的边界正则性。Helmholtz 方程再把每阶角向特征值带入径向方程，确定阶数为 \(\ell+(d-2)/2\) 的 Bessel 函数。
 \end{chaptersummary}
 \BookExercises
 
-各题均为本书自拟，要求把本附录的基函数与投影、数据和具体算子结合。
+各题均为本书自拟。前三题使用 Hermite 系数处理投影、能量和演化，随后两题练习有限维正交投影与调和分解，最后三题把角向模态用于球面数据和球内方程。
 
-% 自拟：Fourier四个特征空间的投影。
+% 自拟：四个Fourier特征空间的投影、正交能量分解及不保正的Gauss反例。
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b2:ex:B2-fourier-projections}
-在 \(L^2(\mathbb R)\) 上，对 \(k=0,1,2,3\) 定义 \(P_k=\tfrac14\sum_{j=0}^3 i^{kj}\mathcal F^j\)。证明它是到 \(\operatorname{span}\{\psi_n:n\equiv k\pmod4\}\) 的闭包上的正交投影，并写出 \(\sum_kP_k\) 与 \(P_kP_l\)。
+在复 \(L^2(\mathbb R)\) 上取负号 \(2\pi\) Fourier 变换 \(\mathcal F\)，并令
+\[
+ P_k=\frac14\sum_{j=0}^3 i^{kj}\mathcal F^j,
+ \quad k=0,1,2,3.
+\]
+证明 \(P_k\) 是到 \(\operatorname{span}\{\psi_n:n\equiv k\pmod4\}\) 的闭包上的正交投影，求 \(\sum_kP_k\)、\(P_kP_l\) 及 \(\sum_k\|P_kf\|_2^2\)。用反射算子 \(Rf(x)=f(-x)\) 表示 \(P_0+P_2\) 与 \(P_1+P_3\)。最后对 \(a>1\)、\(g_a(x)=e^{-\pi ax^2}\)，求 \(P_2g_a\) 并证明它变号，说明正交投影未必把非负函数映为非负函数。
 \end{exercise}
 \begin{solution}
-对 \(\psi_n\)，有 \(P_k\psi_n=\tfrac14\sum_{j=0}^3i^{(k-n)j}\psi_n\)，系数在 \(n\equiv k\pmod4\) 时为 \(1\)，否则为零。由于 \(\psi_n\) 是标准正交基且各算子有界，结论推广到全部 \(L^2\)。它在系数上保留对应剩余类，故自伴且幂等，\(\sum_kP_k=I\)、\(P_kP_l=0\)（\(k\ne l\)）。
+由 \(\mathcal F\psi_n=(-i)^n\psi_n\)，有
+\[
+ P_k\psi_n=\frac14\sum_{j=0}^3i^{(k-n)j}\psi_n
+ =\begin{cases}\psi_n,&n\equiv k\pmod4,\\0,&n\not\equiv k\pmod4.\end{cases}
+\]
+有限几何和在比值为 \(1\) 时等于 \(4\)，在其余四次单位根处为零。各 \(P_k\) 是有界算子，且 \((\psi_n)\) 完备，故这个系数计算在全部 \(L^2\) 上成立。因而 \(P_k^*=P_k=P_k^2\)，并且
+\[
+ \sum_{k=0}^3P_k=I,\quad P_kP_l=\delta_{kl}P_k,
+ \quad \sum_{k=0}^3\|P_kf\|_2^2=\|f\|_2^2.
+\]
+利用 \(\mathcal F^2=R\)，直接相加有限算子和得
+\[
+ P_0+P_2=\frac{I+R}{2},\quad
+ P_1+P_3=\frac{I-R}{2}.
+\]
+它们分别抽取偶部和奇部。
+
+函数 \(g_a\) 为偶函数，故 \(\mathcal F^2g_a=g_a\)、\(\mathcal F^3g_a=\mathcal Fg_a\)。Gauss 变换公式给出
+\[
+ P_2g_a(x)=\frac12\left(e^{-\pi ax^2}
+                  -a^{-1/2}e^{-\pi x^2/a}\right).
+\]
+在 \(x=0\) 处它为 \((1-a^{-1/2})/2>0\)。两项之比为 \(a^{1/2}e^{-\pi(a-a^{-1})x^2}\)，当 \(|x|\to\infty\) 时趋零，所以充分远处函数为负。这个反例的输入处处为正；失败的是输出正性，与投影的自伴性或范数不超过 \(1\) 无矛盾。
 \end{solution}
 
-% 自拟：谐振子的基态与不确定性下界。
+% 自拟：基态下界、正交补上的最优谱隙与尺度优化所得不确定性。
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b2:ex:B2-ground-state}
-设 \(f\in\mathcal S(\mathbb R)\)。证明
-\[\int_\mathbb R(|f'|^2+x^2|f|^2)\,\mathrm dx\ge\lVert f\rVert_2^2,\]
-并刻画等号。再求 \(-\alpha\frac{\mathrm d^2}{\mathrm dx^2}+\beta x^2\)、\(\alpha,\beta>0\) 的最小特征值与归一化基态。
+设 \(f\in\mathcal S(\mathbb R;\mathbb C)\)，记
+\[
+ q(f)=\int_{\mathbb R}(|f'|^2+x^2|f|^2)\,\mathrm dx,
+ \quad c_0=\langle f,\widetilde h_0\rangle.
+\]
+证明 \(q(f)\ge\|f\|_2^2\) 并刻画等号；进一步证明最优估计
+\[
+ \|f-c_0\widetilde h_0\|_2^2
+ \le\frac12\bigl(q(f)-\|f\|_2^2\bigr).
+\]
+求 \(-\alpha\partial_x^2+\beta x^2\)、\(\alpha,\beta>0\) 的最小特征值及归一化基态。通过选择尺度证明
+\[
+ \|f'\|_2\cdot\|xf\|_2\ge\frac12\|f\|_2^2,
+\]
+并对非零 \(f\) 刻画最后一式的等号。
 \end{exercise}
 \begin{solution}
-因 \(\mathcal L=2a^*a+I\)，左端等于 \(2\lVert af\rVert_2^2+\lVert f\rVert_2^2\)。等号当且仅当 \(f'+xf=0\)，即 \(f=Ce^{-x^2/2}\)。对一般系数令 \(s=(\beta/\alpha)^{1/4}\)、\(y=sx\)，算子变成 \(\sqrt{\alpha\beta}(-D_y^2+y^2)\)。最小特征值为 \(\sqrt{\alpha\beta}\)，归一化基态是 \(s^{1/2}\pi^{-1/4}e^{-s^2x^2/2}\)，相差模为 \(1\) 的常数不影响归一化。
+在 Schwartz 空间中可以分部积分，\(\mathcal L=2a^*a+I\) 给出
+\(q(f)=2\|af\|_2^2+\|f\|_2^2\)。等号当且仅当 \(f'+xf=0\)，即 \(f=Ce^{-x^2/2}\)，其中 \(C\) 可以为零。
+
+再展开 \(f=\sum c_n\widetilde h_n\)。因为 \(f\in D(\mathcal L)\)，Parseval 与分部积分给出
+\[
+ q(f)-\|f\|_2^2=\sum_{n\ge1}2n|c_n|^2
+ \ge2\sum_{n\ge1}|c_n|^2.
+\]
+右端是 \(2\|f-c_0\widetilde h_0\|_2^2\)。取 \(f=\widetilde h_1\) 可知常数 \(1/2\) 不能减小；一般等号恰在 \(f\in\operatorname{span}\{\widetilde h_0,\widetilde h_1\}\) 时成立。特别地，若 \(f\perp\widetilde h_0\)，则 \(q(f)\ge3\|f\|_2^2\)。
+
+对一般系数，置 \(s=(\beta/\alpha)^{1/4}\)、\(f(x)=s^{1/2}g(sx)\)。这一换元保持平方范数，并将算子变成 \(\sqrt{\alpha\beta}(-\partial_y^2+y^2)\)。最小特征值为 \(\sqrt{\alpha\beta}\)，归一化基态为
+\[
+ f_0(x)=s^{1/2}\pi^{-1/4}e^{-s^2x^2/2},
+\]
+也可以乘任意模为 \(1\) 的常数。
+
+令 \(A=\|f'\|_2^2\)、\(B=\|xf\|_2^2\)、\(M=\|f\|_2^2\)。非零 Schwartz 函数满足 \(A,B>0\)：若 \(A=0\)，函数是常数且属于 \(L^2\)，只能为零；若 \(B=0\)，则 \(f\) 几乎处处为零。前面的加权下界对任意 \(t>0\) 给出 \(tA+t^{-1}B\ge M\)。取 \(t=\sqrt{B/A}\)，得到 \(2\sqrt{AB}\ge M\)。在这个最优尺度等号成立，当且仅当 \(f(x)=Ce^{-\gamma x^2/2}\)，其中 \(C\ne0\)、\(\gamma>0\)。反代可验证全部这样的函数取等；因本题未作平移或频率中心化，不能任意加入平移与调制后仍声称等号成立。
 \end{solution}
 
-% 自拟：热半群的Hermite系数构造与误差。
+% 自拟：热演化的强连续与范数不连续、精确截断误差以及生成元的实际定义域。
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b2:ex:B2-oscillator-semigroup}
-对 \(f=\sum c_n\widetilde h_n\in L^2\) 定义 \(T_tf=\sum e^{-(2n+1)t}c_n\widetilde h_n\)、\(t\ge0\)。证明半群关系、强连续性以及 \(\lVert T_t\rVert=e^{-t}\)，并证明当 \(t>0\) 时像属于 \(D(\mathcal L^m)\) 对每个整数 \(m\ge1\) 成立。
+在复 \(L^2(\mathbb R)\) 中，对 \(f=\sum c_n\widetilde h_n\) 定义
+\[
+ T_tf=\sum_{n\ge0}e^{-(2n+1)t}c_n\widetilde h_n,
+ \quad t\ge0.
+\]
+证明半群关系、强连续性和 \(\|T_t\|=e^{-t}\)。设 \(\Pi_N\) 是到前 \(N+1\) 个 Hermite 模态的正交投影，求 \(\|T_t-T_t\Pi_N\|\)，并证明对每个 \(t>0\) 有 \(\|T_t-I\|=1\)。证明 \(T_tf\in D(\mathcal L^m)\) 对所有整数 \(m\ge1\)、\(t>0\) 成立，并且 \(\partial_tT_tf=-\mathcal LT_tf\) 在 \(L^2\) 中成立。最后证明右差商 \((T_tf-f)/t\) 在 \(t\downarrow0\) 时有 \(L^2\) 极限，当且仅当 \(f\in D(\mathcal L)\)。
 \end{exercise}
 \begin{solution}
-系数相乘给出 \(T_sT_t=T_{s+t}\)。由 \(|e^{-(2n+1)t}-1|\le2\) 及 \(\sum|c_n|^2<\infty\)，支配收敛给出 \(T_tf\to f\)。算子范数是系数模的上确界 \(e^{-t}\)，并在 \(\widetilde h_0\) 上取等。固定 \(t>0\) 时，\(\sup_{\lambda\ge1}\lambda^{2m}e^{-2t\lambda}<\infty\)，故加权系数平方和有限，得到所列定义域性质。这是谱意义的平滑作用。
+写 \(\lambda_n=2n+1\)。平方可和保证定义有效，系数相乘给 \(T_sT_t=T_{s+t}\)；又因 \(|e^{-t\lambda_n}-1|\le2\)，在可和序列 \(4|c_n|^2\) 的控制下取极限，得 \(T_tf\to f\)。半群关系给其他时刻的右连续性；左连续性也由同一系数支配论证得到。系数乘法算子的范数为系数模的上确界，故
+\[
+ \|T_t\|=e^{-t},\quad
+ \|T_t-T_t\Pi_N\|=e^{-(2N+3)t}.
+\]
+第一式在 \(\widetilde h_0\) 上取等，第二式在 \(\widetilde h_{N+1}\) 上取等。对 \(t>0\)，\(1-e^{-t\lambda_n}\uparrow1\)，所以 \(\|T_t-I\|=1\)。这不妨碍每个固定输入的强连续性；取上确界时可以让输入的模态随 \(t\) 改变。
+
+按系数定义
+\[
+ D(\mathcal L^m)=\left\{\sum c_n\widetilde h_n:
+                 \sum\lambda_n^{2m}|c_n|^2<\infty\right\}.
+\]
+对固定 \(t>0\)，有
+\[
+ \|\mathcal L^mT_tf\|_2
+ \le\sup_{\lambda\ge1}(\lambda^me^{-t\lambda})\,\|f\|_2
+ \le\left(\frac m{et}\right)^m\|f\|_2.
+\]
+最后一个上界来自在全部 \(\lambda\ge0\) 上取最大值；它说明小时间的平滑代价。固定 \(t_0>0\)，当 \(|h|<t_0/2\) 时，指数函数的差商受 \(\lambda_ne^{-t_0\lambda_n/2}\) 控制。其平方乘以 \(|c_n|^2\) 可求和，故逐系数求导可以在平方范数下取极限，得到 \(\partial_tT_tf=-\mathcal LT_tf\)。
+
+若 \(f\in D(\mathcal L)\)，则
+\[
+ \left|\frac{e^{-t\lambda_n}-1}{t}\right|\le\lambda_n,
+\]
+用 \(\sum\lambda_n^2|c_n|^2<\infty\) 控制差商，即得极限 \(-\mathcal Lf\)。反之，若差商在 \(L^2\) 中收敛于 \(g\)，对每个固定 \(n\) 取内积，必有 \(\langle g,\widetilde h_n\rangle=-\lambda_nc_n\)。Parseval 说明 \(\sum\lambda_n^2|c_n|^2=\|g\|_2^2<\infty\)，故 \(f\) 属于该定义域。仅凭所有正时间的输出光滑，不能越过这个初始时刻的域条件。
 \end{solution}
 
-% 自拟：有限Legendre投影的显式误差。
+% 自拟：有限Legendre最佳逼近与端点取值泛函的精确增长。
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b2:ex:B2-legendre-projection}
-把 \(t^4\) 展成 \(P_0,P_2,P_4\) 的线性组合，求它在次数至多为 \(2\) 的多项式空间中的最佳 \(L^2(-1,1)\) 逼近及误差范数。
+把 \(t^4\) 展成 \(P_0,P_2,P_4\) 的线性组合，求其在次数至多为 \(2\) 的多项式空间中的最佳 \(L^2(-1,1)\) 逼近及误差范数。对一般 \(N\ge0\)，求次数至多为 \(N\) 的复多项式满足的端点不等式
+\[
+ |p(1)|\le C_N\|p\|_{L^2(-1,1)}
+\]
+的最小常数，并构造 \(p_N(1)=1\) 而 \(\|p_N\|_2\to0\) 的多项式序列。解释为什么这不与光滑函数 Legendre 展开的一致收敛矛盾。
 \end{exercise}
 \begin{solution}
-由 \(P_2=(3t^2-1)/2\)、\(P_4=(35t^4-30t^2+3)/8\)，解得
-\[t^4=\frac15P_0+\frac47P_2+\frac8{35}P_4.\]
-前两项是到二次多项式空间的正交投影（奇项系数为零）。误差范数为 \(\frac8{35}\sqrt{2/9}=\frac{8\sqrt2}{105}\)。最优性来自正交投影定理，而不只是比较某几个候选多项式。
+由 \(P_2=(3t^2-1)/2\)、\(P_4=(35t^4-30t^2+3)/8\)，有
+\[
+ t^4=\frac15P_0+\frac47P_2+\frac8{35}P_4.
+\]
+奇项系数为零，前两项是到二次多项式空间的正交投影，误差范数为 \(\frac8{35}\sqrt{2/9}=8\sqrt2/105\)。对任一二次多项式 \(q\)，误差与投影之差正交，Pythagoras 等式证明这是唯一最佳逼近。
+
+置 \(e_n=\sqrt{(2n+1)/2}\,P_n\)。若 \(p=\sum_{n=0}^Na_ne_n\)，则
+\[
+ |p(1)|^2\le\sum_{n=0}^N|a_n|^2
+                 \cdot\sum_{n=0}^N\frac{2n+1}{2}
+ =\frac{(N+1)^2}{2}\|p\|_2^2.
+\]
+令
+\[
+ K_N(t,1)=\sum_{n=0}^Ne_n(t)e_n(1)
+          =\frac12\sum_{n=0}^N(2n+1)P_n(t).
+\]
+这个多项式在上面的 Cauchy--Schwarz 不等式中取等，而且
+\[
+ K_N(1,1)=\|K_N(\cdot,1)\|_2^2=\frac{(N+1)^2}{2}.
+\]
+因此最小常数是 \(C_N=(N+1)/\sqrt2\)。取
+\(p_N=K_N(\cdot,1)/K_N(1,1)\)，就有 \(p_N(1)=1\)、\(\|p_N\|_2=\sqrt2/(N+1)\to0\)。端点取值不由平方范数连续控制。这里 \(p_N\) 是变化的数据；一致收敛定理针对固定的 \(C^2\) 数据，并使用其 \(Lf\) 范数控制尾项，两者的假设与量词不同。
 \end{solution}
 
-% 自拟：三维二次与四次齐次多项式的调和分解。
+% 自拟：三维显式分解推广到任意维数，并核对角向阶数与Legendre常数。
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b2:ex:B2-harmonic-parts}
-在 \(\mathbb R^3\) 中分别分解 \(x_3^2\) 与 \(x_3^4\) 为 \(\sum_j|x|^{2j}H_{\ell-2j}\)，并说明限制到球面后与 Legendre 展开的关系。
+在 \(\mathbb R^3\) 中，将 \(x_3^2\)、\(x_3^4\) 分解成 \(\sum_j|x|^{2j}H_{\ell-2j}\)，并与球面上的 Legendre 展开比较。将这一计算推广到任意整数 \(d\ge2\) 的 \(x_d^2\)、\(x_d^4\)，求四阶调和部分的显式系数。
 \end{exercise}
 \begin{solution}
-记 \(r=|x|\)。二次分解为 \(x_3^2=(x_3^2-r^2/3)+r^2/3\)。四次分解为
-\[x_3^4=\left(x_3^4-\frac67r^2x_3^2+\frac3{35}r^4\right)
- +\frac67r^2\left(x_3^2-\frac13r^2\right)+\frac15r^4.
+写 \(r=|x|\)。在 \(d\) 维中，\(\Delta x_d^2=2\)、\(\Delta r^2=2d\)，所以
+\[
+ H_2=x_d^2-\frac{r^2}{d},\quad x_d^2=H_2+\frac{r^2}{d}.
 \]
-逐项计算 Laplace，或使用正文的 \(\Delta(r^{2k}H_m)\) 公式，验证括号内分别为四阶、二阶调和多项式。限制到 \(r=1\) 后，它们分别与 \(P_4(x_3)\)、\(P_2(x_3)\) 成比例，恰恢复上一题的 Legendre 系数。
+对四阶部分，乘积法则给
+\[
+ \Delta x_d^4=12x_d^2,\quad
+ \Delta(r^2x_d^2)=2(d+4)x_d^2+2r^2,
+ \quad \Delta r^4=4(d+2)r^2.
+\]
+先消去 \(x_d^2\) 项，再消去 \(r^2\) 项，得到
+\[
+ H_4=x_d^4-\frac6{d+4}r^2x_d^2
+                +\frac3{(d+2)(d+4)}r^4.
+\]
+展开右端系数可以核验
+\[
+ x_d^4=H_4+\frac6{d+4}r^2H_2
+                  +\frac3{d(d+2)}r^4.
+\]
+各项的调和次数分别为 \(4,2,0\)；唯一性由正文的调和分解保证。
+
+取 \(d=3\)，有
+\[
+ \begin{aligned}
+ x_3^4={}&\left(x_3^4-\frac67r^2x_3^2+\frac3{35}r^4\right)\\
+ &+\frac67r^2\left(x_3^2-\frac13r^2\right)+\frac15r^4.
+ \end{aligned}
+\]
+在 \(r=1\) 上，\(H_2=(2/3)P_2(x_3)\)、\(H_4=(8/35)P_4(x_3)\)，恢复前题中的 \(1/5,4/7,8/35\) 三个 Legendre 系数。
+
 \end{solution}
 
-% 自拟：球面均值、一次模态及最佳近似。
+% 自拟：零、一、二阶球谐投影及四阶球面矩，训练面积常数与复对称系数。
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b2:ex:B2-sphere-projection}
-对 \(f\in L^2(S^{d-1})\)，求它在常数与坐标函数张成的空间中的正交投影。写出系数的积分公式，并解释余项的零均值和零一阶矩条件。
-\end{exercise}
-\begin{solution}
-由对称性，常数与各坐标正交，\(\int\omega_i\omega_j=(|S^{d-1}|/d)\delta_{ij}\)。因此投影为 \(a+b\cdot\omega\)，其中
-\[a=\frac1{|S^{d-1}|}\int f,\qquad b_i=\frac d{|S^{d-1}|}\int f(\omega)\omega_i\,\mathrm d\sigma.\]
-余项与零阶、一次球谐空间均正交，恰好表示其均值及全部一阶矩为零。对复值 \(f\)，同一公式成立，因为坐标函数为实值，内积仍对第一个变量线性。
-\end{solution}
-
-% 自拟：利用球谐次数给出非平凡边界多项式延拓。
-\begin{exercise}\label{b2:ex:B2-ball-quartic}
-在三维单位球上求边界数据 \(f(\omega)=\omega_3^4\) 的调和延拓，写成直角坐标多项式，并求球心值。
-\end{exercise}
-\begin{solution}
-上面的调和分解在球面给出四阶、二阶和常数三项。向球内延拓时分别保留对应齐次调和多项式，得到
-\[u(x)=x_3^4-\frac67|x|^2x_3^2+\frac3{35}|x|^4
-       +\frac67\left(x_3^2-\frac13|x|^2\right)+\frac15.
+设整数 \(d\ge2\)，\(f\in L^2(S^{d-1},\mathrm d\sigma;\mathbb C)\)，并记 \(s_d=|S^{d-1}|\)。求 \(f\) 到常数与坐标函数张成空间的正交投影，解释余项的矩消失条件。进一步将投影空间扩为全部次数不超过 \(2\) 的多项式在球面上的限制，证明投影可唯一写成
+\[
+ a+b\cdot\omega+\omega^{\mathsf T}C\omega,
+ \quad C^{\mathsf T}=C,\quad\operatorname{tr}C=0,
 \]
-它调和且边界值正确，由球内连续 Dirichlet 唯一性即为所求。中心值为 \(1/5\)，也等于球面上 \(\omega_3^4\) 的归一化平均。
-\end{solution}
-
-% 自拟：角向模态改变径向Bessel阶数与边界频率。
-\begin{exercise}\label{b2:ex:B2-helmholtz-ball}
-对单位球内 \(-\Delta u=\kappa^2u\)、零边界条件，固定 \(\ell\) 阶球谐函数 \(Y\)。求原点正则的分离变量解形式，并说明允许的正 \(\kappa\) 满足什么方程；不要据此直接宣称整个 Dirichlet 谱已经完备。
+并求 \(a,b,C\) 的积分公式与此投影的平方范数。
 \end{exercise}
 \begin{solution}
-径向化给出阶数 \(\mu=\ell+(d-2)/2\) 的 Bessel 方程。原点正则支为
-\[u(r,\omega)=C r^{-(d-2)/2}J_\mu(\kappa r)Y(\omega),\]
-其领先行为为常数乘 \(r^\ell Y\)，与齐次调和多项式相容；第二类支在原点具有不允许的奇性。零边界要求 \(J_\mu(\kappa)=0\)。这构造了一族特征函数，但径向不同零点模态的完备性仍需奇异 Sturm--Liouville 或球上自伴紧逆理论，不能只由球谐角向完备性推出。
+反射与坐标置换不改变面积测度，故 \(\int\omega_i=0\)、\(\int\omega_i\omega_j=(s_d/d)\delta_{ij}\)。常数与一次项相互正交，投影系数为
+\[
+ a=\frac1{s_d}\int f\,\mathrm d\sigma,
+ \quad b_i=\frac d{s_d}\int f(\omega)\omega_i\,\mathrm d\sigma.
+\]
+余项与常数及各坐标正交，恰说明其均值和一阶矩为零。
+
+为求二次部分，先算四阶矩。含某个奇数次坐标的积由反射对称积分为零。记 \(A_4=\int\omega_1^4\)、\(B_4=\int\omega_1^2\omega_2^2\)。将第一坐标旋转为 \((\omega_1+\omega_2)/\sqrt2\)，得 \(A_4=(2A_4+6B_4)/4\)，故 \(A_4=3B_4\)。再积分 \((\sum_i\omega_i^2)^2=1\)，得到
+\[
+ B_4=\frac{s_d}{d(d+2)},\quad
+ \int\omega_i\omega_j\omega_k\omega_l\,\mathrm d\sigma
+ =\frac{s_d}{d(d+2)}
+ (\delta_{ij}\delta_{kl}+\delta_{ik}\delta_{jl}+\delta_{il}\delta_{jk}).
+\]
+于是对迹为零的复对称矩阵 \(C,D\)，
+\[
+ \int(\omega^{\mathsf T}C\omega)
+       \overline{(\omega^{\mathsf T}D\omega)}\,\mathrm d\sigma
+ =\frac{2s_d}{d(d+2)}\sum_{i,j}C_{ij}\overline{D_{ij}}.
+\]
+这种二次型与常数正交，因为其均值是 \((s_d/d)\operatorname{tr}C=0\)；它又与一次项正交，因为三阶矩为零。
+
+所求系数为
+\[
+ C=\frac{d(d+2)}{2s_d}
+      \int f(\omega)\left(\omega\omega^{\mathsf T}-\frac Id\right)
+                       \,\mathrm d\sigma.
+\]
+这个矩阵对称且迹为零。与任意迹零对称矩阵 \(D\) 配对，前面的四阶矩公式说明 \(\omega^{\mathsf T}C\omega\) 和 \(f\) 对 \(\omega^{\mathsf T}D\omega\) 的内积相同，故它就是二阶正交投影。上一题的迹分解说明常数、一次项与这类二次型覆盖了全部所求空间。各阶正交，且二次型的平方范数为正定矩阵范数的常数倍，所以表示唯一，并有
+\[
+ \begin{aligned}
+ \|a+b\cdot\omega+\omega^{\mathsf T}C\omega\|_2^2
+ ={}&s_d|a|^2+\frac{s_d}{d}\sum_i|b_i|^2\\
+ &+\frac{2s_d}{d(d+2)}\sum_{i,j}|C_{ij}|^2.
+ \end{aligned}
+\]
+扩大的投影余项还满足全部二阶矩为零；迹部分已经由零均值条件包括在内。
+\end{solution}
+
+% 自拟：显式边界多项式延拓与一般L2数据的Dirichlet能量判据、无穷能量反例。
+\Needspace{6\baselineskip}
+\begin{exercise}\label{b2:ex:B2-ball-quartic}
+在三维单位球内，求边界数据 \(f(\omega)=\omega_3^4\) 的调和延拓，写成直角坐标多项式并求球心值。对一般整数 \(d\ge2\)，设 \(f=\sum_{\ell,j}c_{\ell,j}Y_{\ell,j}\in L^2(S^{d-1})\)，令
+\[
+ u(r\omega)=\sum_{\ell,j}r^\ell c_{\ell,j}Y_{\ell,j}(\omega),
+ \quad 0\le r<1.
+\]
+证明允许两边为无穷的能量恒等式
+\[
+ \int_{|x|<1}|\nabla u(x)|^2\,\mathrm dx
+ =\sum_{\ell,j}\ell|c_{\ell,j}|^2.
+\]
+由此构造一个平方可积的边界数据，其调和延拓在内部处处光滑，却具有无穷能量。
+\end{exercise}
+\begin{solution}
+三维四次分解在球面上给出四阶、二阶与常数三项。向球内延拓时保留对应齐次调和多项式，得到
+\[
+ \begin{aligned}
+ u(x)={}&x_3^4-\frac67|x|^2x_3^2+\frac3{35}|x|^4\\
+       &+\frac67\left(x_3^2-\frac13|x|^2\right)+\frac15.
+ \end{aligned}
+\]
+各阶项调和，且在 \(|x|=1\) 上恢复 \(x_3^4\)。球内连续 Dirichlet 问题的唯一性说明这就是所求解；\(u(0)=1/5\)，也等于边界数据的球面平均。直接把边界表达式 \(x_3^4\) 延续到内部并不调和，因为其 Laplace 为 \(12x_3^2\)。
+
+先取有限球谐和。因 \(\Delta u=0\)，在半径 \(R<1\) 的球上分部积分，得到
+\[
+ \begin{aligned}
+ \int_{|x|<R}|\nabla u|^2\,\mathrm dx
+ &=R^{d-1}\int_{S^{d-1}}\partial_ru(R\omega)
+                         \overline{u(R\omega)}\,\mathrm d\sigma\\
+ &=\sum_{\ell,j}\ell R^{2\ell+d-2}|c_{\ell,j}|^2.
+ \end{aligned}
+\]
+对一般平方可和系数，在 \(R\) 与 \(1\) 之间取固定半径 \(\rho\)。正文的球谐核估计使部分和在 \(|x|\le\rho\) 一致收敛；对部分和之差应用\cref{b2:prop:13-interior-derivatives}，因两个闭球之间有正距离，一阶导数在 \(|x|\le R\) 上也一致收敛。因而上式可由有限和取极限，且对每个 \(R<1\) 两边有限。最后令 \(R\uparrow1\)，左端由球域递增而单调收敛，右端每项也单调增加；零阶项始终为零，故得到包括无穷值的恒等式。
+
+每个 \(\ell\ge1\) 选择一个归一化球谐函数 \(Y_{\ell,1}\)，取
+\[
+ f=\sum_{\ell=1}^\infty\frac1{\ell+1}Y_{\ell,1}.
+\]
+因为 \(\sum(\ell+1)^{-2}<\infty\)，它定义 \(L^2\) 数据；但 \(\sum\ell/(\ell+1)^2=\infty\)。相应延拓由正文的内部收敛论证在球内光滑，而其梯度平方积分发散。内部正则性与到边界的总能量是两个不同要求。
+\end{solution}
+
+% 自拟：规则径向支、不同角阶与不同零点的正交，以及三维径向谱的可跟算模型。
+\Needspace{6\baselineskip}
+\begin{exercise}\label{b2:ex:B2-helmholtz-ball}
+设整数 \(d\ge2\)、\(\ell\ge0\)、\(\kappa>0\)，\(Y\ne0\) 是 \(\ell\) 阶球谐函数。对单位球内 \(-\Delta u=\kappa^2u\)、零边界条件，求原点光滑的分离变量解 \(u(r,\omega)=v(r)Y(\omega)\) 的形式及允许的 \(\kappa\)。证明不同角阶的这些模态正交；固定角阶和角函数时，证明对应不同正 \(\kappa\) 的径向模态正交。最后在三维 \(\ell=0\) 时给出允许频率及径向函数的初等表达式，讨论 \(\kappa=0\)。说明这些计算尚未证明哪一项完备性。
+\end{exercise}
+\begin{solution}
+写 \(a=(d-2)/2\)、\(\mu=\ell+a\)。径向方程经 \(v(r)=r^{-a}w(\kappa r)\) 化为阶数 \(\mu\) 的 Bessel 方程。原点规则支为
+\[
+ u(r,\omega)=C r^{-a}J_\mu(\kappa r)Y(\omega).
+\]
+由 Bessel 级数，它可写成 \(r^\ell Y(\omega)\) 乘以 \(r^2\) 的收敛幂级数，故在原点光滑。若 \(\mu>0\)，另一支领先为 \(r^{-\ell-d+2}Y(\omega)\)，在原点不允许；唯一的 \(\mu=0\) 情形是 \(d=2,\ell=0\)，第二支为对数，也不光滑。非零解的零边界条件是 \(J_\mu(\kappa)=0\)。
+
+不同角阶在每个球面上正交，乘以径向体积因子积分后仍正交。同阶的两个不同角基函数也有同样结论。对固定非零 \(Y\)，取两个不同正频率 \(\kappa_1,\kappa_2\) 及对应实径向函数 \(v_1,v_2\)。方程写成
+\[
+ -(r^{d-1}v_i')'+\ell(\ell+d-2)r^{d-3}v_i
+      =\kappa_i^2r^{d-1}v_i.
+\]
+交叉相乘相减，在 \((\varepsilon,1)\) 积分，得到
+\[
+ (\kappa_1^2-\kappa_2^2)
+ \int_\varepsilon^1v_1v_2r^{d-1}\,\mathrm dr
+ =\left[r^{d-1}(v_1v_2'-v_1'v_2)\right]_\varepsilon^1.
+\]
+外端因两函数为零而消失。内端可用 \(v_i=r^\ell(A_i+O(r^2))\) 及对应可求导级数：领先项在差中抵消，括号连同权重为 \(O(r^{2\ell+d})\)，故也趋零。由于频率平方不同，得到带权径向正交性，从而得到球内的平方内积为零。
+
+当 \(d=3,\ell=0\) 时，\(\mu=1/2\)，由 \(J_{1/2}(z)=\sqrt{2/(\pi z)}\sin z\)，径向函数是 \(\sin(\kappa r)/r\) 的常数倍，原点值按极限定义。允许频率为 \(\kappa=m\pi\)、\(m=1,2,\ldots\)。此时径向正交直接化为 \(\int_0^1\sin(m\pi r)\sin(n\pi r)\,\mathrm dr=0\)，权重 \(r^2\) 恰好抵消分母。若 \(\kappa=0\)，规则径向解为 \(Cr^\ell\)，零边界迫使 \(C=0\)；对任意光滑调和解，同样可由零边界唯一性排除非零解。
+
+角向完备性已由球谐展开建立，但上述计算只构造并正交化了径向候选。对于每个固定角阶，是否能用全部正零点对应的径向函数表示任意带权平方可积数据，还需要额外的完备性论证；不能由角向完备性或特征关系直接推断整个球的 Dirichlet 谱已经齐全。
 \end{solution}

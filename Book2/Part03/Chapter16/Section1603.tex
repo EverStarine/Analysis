@@ -11,6 +11,34 @@
 \[x=\Phi(y)=(y',y_d+\psi(y')),\qquad y_d>0\]
 把半球或半盒映到区域内部。映射及其逆一阶导数有界，二阶弱导数也有界；因此它们保留局部 \(H^1\)、\(H^2\) 正则性，并给出相应范数的双向控制。
 
+\cref{b2:fig:16-boundary-flattening}把这一局部坐标与差商方向放在一起：切向移位留在同一个半盒内，法向移位却可能跨过零边界，所以后面须先估切向导数，再从方程恢复法向导数。
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm]
+\begin{scope}[shift={(-2.8,0)}]
+\fill[AnalysisBlue!10] (-1.4,.3) .. controls (-.5,-.05) and (.4,.6) .. (1.4,.25)--(1.4,1.7)--(-1.4,1.7)--cycle;
+\draw[AnalysisBlue,thick] (-1.4,.3) .. controls (-.5,-.05) and (.4,.6) .. (1.4,.25);
+\node at (0,1.2){\(x_d>\psi(x')\)};
+\node[below] at (0,-.25){\(x_d=\psi(x')\)};
+\node at (0,-1.25){曲边界坐标块};
+\end{scope}
+\draw[->,thick] (.7,.9)--(-.7,.9) node[midway,above]{\(\Phi\)};
+\begin{scope}[shift={(2.8,0)}]
+\fill[AnalysisBlue!10] (-1.4,0) rectangle(1.4,1.7);
+\draw[AnalysisBlue,thick] (-1.4,0)--(1.4,0);
+\node at (0,1.35){\(y_d>0\)};
+\draw[->,thick] (-.9,.55)--(.1,.55) node[midway,above]{切向};
+\draw[->,dashed] (.7,.35)--(.7,-.25);
+\node[anchor=west,align=left,text width=1.35cm] at (1.05,-.4){法向\\越界};
+\node[below] at (-.55,-.12){\(y_d=0\)};
+\node at (0,-1.25){拉平后的半盒};
+\end{scope}
+\end{tikzpicture}
+\caption[边界平坦化与切向差商]{局部边界坐标示意，不按比例。图中箭头 \(\Phi\) 的公式把右侧的 \(y\) 坐标送到左侧的 \(x\) 坐标；沿切向平移保持 \(y_d\)，负法向平移则可能越界。差商还须配合截断以避开半盒的其他边。图不表示一个覆盖整个区域的坐标。}
+\label{b2:fig:16-boundary-flattening}
+\end{figure}
+
 \ProseParagraphBreak
 
 若 \(v(y)=u(\Phi(y))\)、\(\zeta(y)=\varphi(\Phi(y))\)，链式法则和换元把型写成
@@ -27,16 +55,34 @@
 
 只有 Lipschitz 边界时，\(D\Phi\) 一般只有本性有界性，变换后的系数未必具有有界一阶导数。此时切向差商中的系数误差便不再受控。边界光滑性不是为了画图方便，而是通过坐标系数直接进入估计。
 
+这里保留二阶范数的说法可以展开成两个乘积估计。先对光滑函数计算
+\[
+ \partial_{y_i}v=\sum_j(\partial_{x_j}u)\circ\Phi\,\partial_i\Phi_j,
+\quad
+ \partial_{y_i y_k}v=
+ \sum_{j,l}(\partial_{x_jx_l}u)\circ\Phi\,\partial_i\Phi_j\partial_k\Phi_l
+ +\sum_j(\partial_{x_j}u)\circ\Phi\,\partial_{ik}\Phi_j.
+\]
+换元中的体积因子在上下界之间，而 \(D\Phi,D^2\Phi\) 有界，故局部有
+\(\|v\|_{H^2}\le C(\|u\|_{H^2}+\|u\|_{H^1})\)。对逆映射作同一计算给出反向不等式。对于尚只有 \(H^1\) 的弱解，只先使用一阶式和测试函数换元；等半空间估计产生 \(H^2\) 后，再用二阶式把正则性带回去，不能在证明开始时就把第二式当作已经存在的导数。弱链式法则通过较小坐标块内的光滑逼近取得：将函数先截断在大块中，使用 Sobolev 磨光，换元后的范数界使两端同时收敛；坐标的二阶导数只需本性有界，不要求逐点连续。
+
+以二维图像为例，\(D\Phi=\bigl(\begin{smallmatrix}1&0\\\psi'&1\end{smallmatrix}\bigr)\)。即便原系数为单位矩阵，拉平后也变成
+\[\widetilde A=\begin{pmatrix}1&-\psi'\\-\psi'&1+(\psi')^2\end{pmatrix},\qquad
+ \xi^{\mathsf T}\widetilde A\xi=(\xi_1-\psi'\xi_2)^2+\xi_2^2.\]
+这个平方和给出椭圆性，其下界常数依赖 \(\|\psi'\|_\infty\)；而系数的一阶导数又含 \(\psi''\)。故原来的常系数方程在弯曲坐标中已经带上几何系数。这一具体矩阵同时显示，为何控制斜率只解决椭圆性，控制斜率的变化才解决差商误差。
+
 \subsection{Dirichlet 问题}
 \label{b2:subsec:160302}
 
 先考虑半球 \(B_2^+=B(0,2)\cap\{x_d>0\}\)。设 \(u\in H^1(B_2^+)\) 在平坦部分的迹为零，且弱解 \(-\operatorname{div}(A\nabla u)=f\)。测试函数可以支撑到平坦部分，但须在那里取零迹，并在球面部分附近消失。这样的测试等式由原 Dirichlet 弱形式经局部化得到。
 
+\Needspace{6\baselineskip}
 \begin{lemma}[边界切向估计]
 \label{b2:lem:16-tangential-estimate}
-设 \(A\in W^{1,\infty}(B_2^+)\) 有界且一致椭圆，\(f\in L^2(B_2^+)\)，\(u\) 如上具有零平坦边界迹。则对 \(k<d\) 及 \(j\le d\)，\(\partial_k\partial_j u\in L^2(B_1^+)\)，且
+设整数 \(d\geq2\)，\(B_r^+=B(0,r)\cap\{x_d>0\}\)，\(A\in W^{1,\infty}(B_2^+;\mathbb R^{d\times d})\)。设 \(0<\lambda\leq\Lambda<\infty\)，\(\|A\|_\infty\leq\Lambda\)，且 \(\xi^{\mathsf T}A(x)\xi\geq\lambda|\xi|^2\) 对几乎处处 \(x\in B_2^+\)、全部 \(\xi\in\mathbb R^d\) 成立。实函数 \(f\in L^2(B_2^+)\)、\(u\in H^1(B_2^+)\) 满足：\(u\) 在平坦边界的迹为零，且弱解 \(-\operatorname{div}(A\nabla u)=f\)；这里测试函数允许接触平坦边界，取零迹且在球面部分附近消失。则对 \(1\leq k<d\) 及 \(1\leq j\leq d\)，\(\partial_k\partial_j u\in L^2(B_1^+)\)，且
 \[\sum_{k<d,j\le d}\lVert\partial_k\partial_j u\rVert_{L^2(B_1^+)}
  \le C\bigl(\lVert f\rVert_{L^2(B_2^+)}+\lVert u\rVert_{H^1(B_2^+)}\bigr).\]
+其中 \(C\) 只依赖 \(d,\lambda,\Lambda\) 及 \(\|\nabla A\|_\infty\)。
 \end{lemma}
 \begin{proof}
 取在 \(B_1\) 上为 \(1\)、支集在 \(B_{3/2}\) 内的光滑截断 \(\eta\)。对切向方向 \(e_k\)，平移不改变 \(x_d\)，所以 \(D_h^ku\) 的平坦边界迹仍为零。于是 \(-D_{-h}^k(\eta^2D_h^ku)\) 是合法零迹测试函数；它在曲面边界附近为零，没有额外边界项。
@@ -44,34 +90,79 @@
 在半球上重复内部估计的离散分部积分。所有平移都沿切向，故积分换元不越过平坦边界；截断又避免了球面边界。主项仍有椭圆下界，系数差商仍由 \(\lVert\nabla A\rVert_\infty\) 控制，右端仍由差商的 \(H^1\) 界控制。因此 \(\eta\nabla D_h^ku\) 的 \(L^2\) 范数独立于 \(h\) 有界。差商引理在半球内部测试并取极限，得到所列切向及混合导数及范数界。
 \end{proof}
 
-现在只缺 \(\partial_{dd}u\)。在分布意义展开方程，得
+现在只缺 \(\partial_{dd}u\)，但尚不能把它当作函数与 \(a_{dd}\) 相乘再相除。改从已经属于 \(L^2(B_1^+)\) 的法向通量
+\[q=a_{dd}\partial_du\]
+出发。原方程在分布意义给出
 \[
- a_{dd}\partial_{dd}u
- =-f-\sum_{(i,j)\ne(d,d)}a_{ij}\partial_{ij}u
-       -\sum_{i,j}(\partial_i a_{ij})\partial_j u.
+ \partial_dq=-f
+ -\sum_{\substack{i<d\\j\leq d}}\partial_i(a_{ij}\partial_ju)
+ -\sum_{j<d}\partial_d(a_{dj}\partial_ju).
 \]
-右端各项均属于 \(L^2(B_1^+)\)：所有非纯法向二阶项已由引理控制，系数导数有界，解的一阶导数平方可积。又 \(a_{dd}\ge\lambda>0\)，故除以它得到 \(\partial_{dd}u\in L^2\)。展开与除法均可在分布中合法进行，因为 \(a_{dd}\) 及其倒数是局部 Lipschitz 乘子。至此得到局部边界 \(H^2\) 估计。
+右端每一项都已能确认为 \(L^2\) 函数：第一组只含切向微分，第二组的二阶导数为 \(\partial_d\partial_ju=\partial_j\partial_du\)，也由切向引理控制。这里使用的是如下有适用对象的乘积法则：若 \(v,\partial_iv\in L^2\)、\(a\in W^{1,\infty}\)，则
+\[\partial_i(av)=(\partial_i a)v+a\partial_iv\in L^2.\]
+其证明是把 \(v\) 的弱导数恒等式由光滑测试函数连续延拓到 \(H_0^1\) 测试函数，再代入 \(a\varphi\) 并展开一阶导数。它只要求这一方向的弱导数已属于 \(L^2\)，没有把任意分布与 Lipschitz 函数相乘。
+
+同一乘积法则还给出 \(q\) 的全部切向导数
+\[\partial_kq=(\partial_ka_{dd})\partial_du+a_{dd}\partial_k\partial_du
+ \in L^2(B_1^+),\qquad k<d.\]
+因此 \(q\in H^1(B_1^+)\)，其范数由 \(\|f\|_{L^2(B_2^+)}+\|u\|_{H^1(B_2^+)}\) 控制。椭圆性给出 \(a_{dd}\geq\lambda\)，故 \(a_{dd}^{-1}\in W^{1,\infty}\)。此时才能对两个已经具有所需正则性的对象使用 Sobolev 乘积法则：
+\[
+ \begin{aligned}
+ \partial_du&=a_{dd}^{-1}q\in H^1(B_1^+),\\
+ \partial_{dd}u&=a_{dd}^{-1}\partial_dq
+       -a_{dd}^{-2}(\partial_da_{dd})q\in L^2(B_1^+).
+ \end{aligned}
+\]
+这也给出纯法向导数的同类范数界，完成局部边界 \(H^2\) 估计。
 
 \ProseParagraphBreak
 
-这一步没有沿法向把 \(u\) 随意平移，也没有先把 \(u\) 作二阶可微延拓。零迹保证切向测试合法，椭圆性保证纯法向最高阶项的系数可逆，两者承担不同职责。一维时没有切向方向，最后的方程直接恢复二阶导数，恰与一维计算一致。
+这一步没有沿法向把 \(u\) 随意平移，也没有先把 \(u\) 作二阶可微延拓。零迹保证切向测试合法，椭圆性保证通量中的系数可逆，两者承担不同职责。一维时没有切向方向，直接令 \(q=au'\)：由 \(q'=-f\in L^2\) 先得 \(q\in H^1\)，再由 \(u'=a^{-1}q\in H^1\) 恢复二阶导数。
 
 \subsection{边界 \texorpdfstring{\(H^2\)}{H2} 估计}
 \label{b2:subsec:160303}
 
+\Needspace{6\baselineskip}
 \begin{theorem}[全局 Dirichlet 二阶正则性]
 \label{b2:thm:16-boundary-h2}
-设 \(\Omega\subset\mathbb R^d\) 是有界 \(C^{1,1}\) 区域，\(A\in W^{1,\infty}(\Omega)\) 有界且一致椭圆，\(f\in L^2(\Omega)\)。若 \(u\in H_0^1(\Omega)\) 弱解 \(-\operatorname{div}(A\nabla u)=f\)，则 \(u\in H^2(\Omega)\)，且
+设整数 \(d\geq1\)，\(\Omega\subset\mathbb R^d\) 是非空有界 \(C^{1,1}\) 开集，\(A\in W^{1,\infty}(\Omega;\mathbb R^{d\times d})\)。设 \(0<\lambda\leq\Lambda<\infty\)，\(\|A\|_\infty\leq\Lambda\)，且 \(\xi^{\mathsf T}A(x)\xi\geq\lambda|\xi|^2\) 对几乎处处 \(x\in\Omega\)、全部 \(\xi\in\mathbb R^d\) 成立。若实函数 \(f\in L^2(\Omega)\)、\(u\in H_0^1(\Omega)\) 满足
+\[\int_\Omega A\nabla u\cdot\nabla\varphi
+ =\int_\Omega f\varphi\qquad(\varphi\in H_0^1(\Omega;\mathbb R)),\]
+则 \(u\in H^2(\Omega)\)，且
 \[\lVert u\rVert_{H^2(\Omega)}\le C\bigl(\lVert f\rVert_2+\lVert u\rVert_{H^1(\Omega)}\bigr)\le C'\lVert f\rVert_2.\]
 常数依赖区域的有限边界坐标、系数上界与 Lipschitz 范数及椭圆下界。
 \end{theorem}
 \begin{proof}
-覆盖 \(\partial\Omega\) 的有限个 \(C^{1,1}\) 坐标把方程变成上一小节的半球模型。坐标变换保留零迹、\(L^2\) 右端及 Lipschitz 椭圆系数；切向估计与恢复纯法向导数给出每个较小边界坐标内的 \(H^2\) 界。余下的紧内部区域由有限个球覆盖，应用内部二阶估计。将有限个局部积分相加，并使用坐标变换的双向范数控制，得到第一项不等式。上一章的能量估计与 Poincaré 不等式控制 \(\lVert u\rVert_{H^1}\le C\lVert f\rVert_2\)，得到第二项。
+当 \(d\geq2\) 时，覆盖 \(\partial\Omega\) 的有限个 \(C^{1,1}\) 坐标把方程变成上一小节的半球模型。坐标变换保留零迹、\(L^2\) 右端及 Lipschitz 椭圆系数；切向估计与恢复纯法向导数给出每个较小边界坐标内的 \(H^2\) 界。余下的紧内部区域由有限个球覆盖，应用\cref{b2:thm:16-interior-h2}。\(d=1\) 时在各区间直接使用 \(q=au'\)、\(q'=-f\) 的通量证明，得到同类估计。将有限个局部积分相加，并使用坐标变换的双向范数控制，得到第一项不等式。上一章的能量估计与 Poincaré 不等式控制 \(\lVert u\rVert_{H^1}\le C\lVert f\rVert_2\)，得到第二项。
 \end{proof}
 
-对非齐次边界，若给定延拓 \(g\in H^2(\Omega)\)，令 \(w=u-g\)。右端变为 \(f+\operatorname{div}(A\nabla g)\in L^2\)，故
-\[\lVert u\rVert_{H^2}\le C\bigl(\lVert f\rVert_2+\lVert g\rVert_{H^2}\bigr).\]
-这里比弱存在性所需的 \(g\in H^1\) 多一阶正则性。若只有粗糙边界数据，内部解仍可能光滑，但上述全局二阶结论不再由本定理保证。
+非齐次边界不能只说“减去一个函数”：减去的函数必须具有与所求二阶正则性相配的延拓性质，且解的迹确实与它相同。
+
+\Needspace{6\baselineskip}
+\begin{corollary}[非齐次 Dirichlet 数据的全局二阶正则性]
+\label{b2:cor:16-nonhomogeneous-boundary-h2}
+设整数 \(d\geq1\)，\(\Omega\subset\mathbb R^d\) 是非空有界 \(C^{1,1}\) 开集，\(A\in W^{1,\infty}(\Omega;\mathbb R^{d\times d})\)。设 \(0<\lambda\leq\Lambda<\infty\)，\(\|A\|_\infty\leq\Lambda\)，且 \(\xi^{\mathsf T}A(x)\xi\geq\lambda|\xi|^2\) 对几乎处处 \(x\in\Omega\)、全部 \(\xi\in\mathbb R^d\) 成立。给定实函数 \(f\in L^2(\Omega)\)、\(g\in H^2(\Omega)\)。若实函数 \(u\in H^1(\Omega)\) 满足 \(\operatorname{Tr}u=\operatorname{Tr}g\) 及
+\[\int_\Omega A\nabla u\cdot\nabla\varphi
+ =\int_\Omega f\varphi\qquad(\varphi\in H_0^1(\Omega;\mathbb R)),\]
+则 \(u\in H^2(\Omega)\)，且
+\[\|u\|_{H^2(\Omega)}
+ \leq C\bigl(\|f\|_{L^2(\Omega)}+\|g\|_{H^2(\Omega)}\bigr).\]
+其中 \(C\) 只依赖区域的有限 \(C^{1,1}\) 边界坐标、\(d,\lambda,\Lambda\) 及 \(\|\nabla A\|_\infty\)。
+\end{corollary}
+\begin{proof}
+\(C^{1,1}\) 开集也是 Lipschitz 开集。由第一卷定理~23.1.6 的零迹刻画，\(w=u-g\) 属于 \(H_0^1(\Omega)\)。一阶 Sobolev 乘积法则给出
+\[
+ \operatorname{div}(A\nabla g)
+ =\sum_{i,j}\bigl((\partial_i a_{ij})\partial_jg
+                  +a_{ij}\partial_{ij}g\bigr)\in L^2(\Omega),
+\]
+且其 \(L^2\) 范数不超过 \(C_d\|A\|_{W^{1,\infty}}\cdot\|g\|_{H^2}\)。因此 \(w\) 是零边界方程
+\[-\operatorname{div}(A\nabla w)
+       =f+\operatorname{div}(A\nabla g)\]
+的弱解。应用\cref{b2:thm:16-boundary-h2}并用 \(u=w+g\) 的三角不等式，即得结论。
+\end{proof}
+
+这里比弱存在性所需的 \(g\in H^1\) 多一阶正则性。若只有粗糙边界数据，内部解仍可能光滑，但上述全局二阶结论不再由本推论保证。
 
 \ProseParagraphBreak
 

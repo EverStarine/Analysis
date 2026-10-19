@@ -1,62 +1,337 @@
 % !TeX root = ../../Book2.tex
-\section{现代方法}
+\section{多线性限制的几何与尺度方法}
 \label{b2:sec:2505}
 
-本节将几个现代工具放在明确的尺度框架内。完整初等模型已在本章证明；深层结果只以核验过的定理作为外部输入，方法概述不承担未完成的证明义务。
+前面的横截模型解释了不同方向怎样改善乘积估计。把这种增益用于许多帽和许多空间区域，还需要尺度递推、波包分解以及对几何组合的控制。本节先证明其中可直接计算的步骤，再陈述抛物面解耦这一深层输入。递推式的证明、单帽展开和多帽组合是不同的任务，应分别检查它们需要的条件。
 
 \subsection{尺度归纳}
 \label{b2:subsec:250501}
 
-设 \(A(R)\) 表示半径 \(R\) 球上的规范化最佳常数。一种尺度归纳希望建立
+设 \(A(R)\) 表示半径 \(R\) 球上的某个规范化最佳常数；若定理允许任意球心或一族曲面，便应先对这些参数取上确界。尺度归纳希望把 \(A(R)\) 与较小尺度的常数联系起来。一种常见模型是
 \[
- A(R)\le C_\eta R^\eta A(R^{1/2})
+ A(R)\leq C_\eta R^\eta A(R^{1/2}).
 \]
-或更细的多尺度递推。重复后有
-\(R^{\eta(1+1/2+\cdots)}\le R^{2\eta}\)，而迭代次数约为 \(\log\log R\)；固定常数的累积仍需纳入预算。
-为得到任意 \(\epsilon\) 损失，可以先选择足够小的 \(\eta\)，再控制有限初始尺度。一个未带系数的“归纳到小尺度”并不能保证最终常数独立于 \(R\)。
+右侧不只有幂次损失：每迭代一次，还会多出一个 \(C_\eta\)。下面把两者都算出。
+
+\Needspace{6\baselineskip}
+\begin{lemma}[平方根尺度递推]\label{b2:lem:25-scale-iteration}
+设 \(A:[1,\infty)\to[0,\infty)\) 为有限值函数，满足
+\[
+ M\coloneqq\sup_{1\leq R\leq2}A(R)<\infty.
+\]
+假设对每个 \(\eta>0\)，存在与 \(R\) 无关的有限常数 \(C_\eta\geq1\)，使
+\[
+ A(R)\leq C_\eta R^\eta A(R^{1/2})\quad(R>2).
+\]
+则对每个 \(\varepsilon>0\)，存在有限常数 \(K_\varepsilon\)，使
+\[
+ A(R)\leq K_\varepsilon R^\varepsilon\quad(R\geq1).
+\]
+常数 \(K_\varepsilon\) 可以依赖 \(M\) 及相应的 \(C_\eta\)，不要求它在 \(\varepsilon\downarrow0\) 时保持有界。
+\end{lemma}
+\begin{proof}
+固定 \(\eta>0\) 及 \(R>2\)，令 \(m\) 为满足 \(R^{2^{-m}}\leq2\) 的最小正整数。前 \(m\) 步均可应用递推，故
+\[
+ \begin{aligned}
+ A(R)
+ &\leq C_\eta^m
+       R^{\eta(1+2^{-1}+\cdots+2^{-(m-1)})}
+       A(R^{2^{-m}})\\
+ &\leq M C_\eta^m R^{2\eta}.
+ \end{aligned}
+\]
+另一方面，
+\[
+ m\leq1+\log_2\!\left(\frac{\log R}{\log2}\right).
+\]
+记 \(b_\eta=\log_2 C_\eta\geq0\)，则
+\[
+ C_\eta^m
+ \leq C_\eta\left(\frac{\log R}{\log2}\right)^{b_\eta}.
+\]
+所以固定 \(\eta\) 后，全部常数累积只是一个固定的对数幂。
+
+现在给定 \(\varepsilon>0\)，先取 \(\eta=\varepsilon/4\)。这样 \(C_\eta\) 和 \(b_\eta\) 已经固定。函数
+\((\log R)^{b_\eta}R^{-\varepsilon/2}\)
+在 \(R\geq2\) 上有界：令 \(t=\log R\)，它就是 \(t^{b_\eta}e^{-\varepsilon t/2}\)，指数衰减控制固定幂次。因此
+\[
+ A(R)\leq K_\varepsilon
+          R^{2\eta+\varepsilon/2}
+       =K_\varepsilon R^\varepsilon.
+\]
+初始区间 \(1\leq R\leq2\) 由 \(M\) 控制，增大常数即可。
+\end{proof}
+
+顺序在这里很重要：先选 \(\eta\)，再吸收由 \(C_\eta\) 决定的对数幂。若让 \(\eta\) 随 \(R\) 改变，却不知道 \(C_\eta\) 怎样增长，上述吸收便没有统一常数。这个引理也不负责证明具体限制问题所需的递推式；它只说明一旦递推和初始尺度界成立，怎样正确结束迭代。
 
 \ProseParagraphBreak
-归纳的每一步还需保持曲面参数化的导数界和横截下界。抛物面缩放保持标准模型，一般曲面的小片重标度则有受控误差。若参数类在归纳中变化，必须明确它仍属于同一个允许类。
+每一步还必须留在同一允许的曲面类中，包括参数化的导数界、支集大小和横截下界。\cref{b2:prop:25-parabolic-rescaling}给出抛物面的精确重标度；一般曲面的小片重标度则要控制偏离二次模型的误差。如果归纳后曲率或横截常数不断恶化，就不能把下一步仍写成同一个 \(A(R^{1/2})\)，更不能只凭幂次几何级数断言得到任意小损失。
 
 \subsection{波包}
 \label{b2:subsec:250502}
 
-在半径 \(R\) 上将频率切成 \(R^{-1/2}\) 帽，再按切向空间格点展开，得到长度 \(R\)、宽度 \(R^{1/2}\) 的波包。系数的平方和由输入 \(L^2\) 范数控制；每个波包在对应管外快速衰减。
-曲面法向决定长轴方向，调制决定管的位置。一个帽可以包含许多平行管，横截条件是不同帽族之间的方向条件，不是同族内必须分离。
+在空间半径 \(R\) 上，一个宽度 \(R^{-1/2}\) 的频率帽对应宽约 \(R^{1/2}\)、长约 \(R\) 的管。这与\cref{b2:fig:23-cap-tube}及\cref{b2:prop:23-parabolic-packet}的尺度一致，但单个光滑帽函数还不代表一般 \(L^2\) 输入。下面用帽内 Fourier 级数把一般输入拆成位置不同的波包，并保留系数的平方能量。
 
 \ProseParagraphBreak
-空间截断后出现的误差通常是 \(R^{-N}\) 乘输入范数，需选 \(N\) 足够大并核对波包总数的增长。用一个模糊的“误差很小”代替可求和阶数，在多个尺度或多个胞腔求和后可能失效。
+为使归一化可直接检查，这一构造使用抛物面的参数测度；面积测度的光滑密度在固定参数片上可以吸收到输入中，但相应的范数比较应随之注明。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[单帽的波包展开]\label{b2:prop:25-single-cap-packets}
+设整数 \(n\geq1\)，\(R\geq1\)、\(\delta=R^{-1/2}\)，且 \(\xi_0\in\mathbb R^n\)、\(|\xi_0|\leq1\)。取
+\[
+ g\in L^2(\mathbb R^n),\quad
+ \operatorname{supp}g\subset
+       \xi_0+\delta[-1/2,1/2]^n,
+\]
+并以参数测度定义
+\[
+ E_{\mathrm{par}}g(x',t)
+ =\int_{\mathbb R^n}
+       e^{2\pi\mathrm i(x'\cdot\xi+t|\xi|^2)}
+       \cdot g(\xi)\,\mathrm d\xi.
+\]
+固定 \(\rho\in C_c^\infty((-1,1)^n)\)，在 \([-1/2,1/2]^n\) 上恒为一。则存在系数 \(c_k\)、\(k\in\mathbb Z^n\)，及只依赖 \(\xi_0,\delta,\rho,k\) 的频率函数 \(\psi_k\)，使
+\[
+ g=\sum_{k\in\mathbb Z^n}c_k\psi_k
+       \quad\text{于 }L^2(\mathbb R^n),\quad
+ \sum_k|c_k|^2=\|g\|_2^2.
+\]
+若 \(W_k=E_{\mathrm{par}}\psi_k\)，则按有限立方格点部分和取极限时，
+\[
+ E_{\mathrm{par}}g=\sum_kc_kW_k
+\]
+在整个 \(\mathbb R^{n+1}\) 上一致收敛。对每个 \(N>0\)，在 \(|t|\leq R\) 内还有
+\[
+ |W_k(x',t)|
+ \leq C_{N,n,\rho}\delta^{n/2}
+  \left(1+\left|\delta(x'+2t\xi_0)+k/2\right|\right)^{-N}.
+\]
+可选一个只依赖维数的固定 \(A_0\)，使对任意 \(L>0\)，
+\[
+ \sup_{|(x',t)|\leq R}
+ \left|E_{\mathrm{par}}g(x',t)
+       -\sum_{|k|\leq A_0\sqrt R}c_kW_k(x',t)\right|
+ \leq C_{L,n,\rho}R^{-L}\|g\|_2.
+\]
+所有常数均与 \(R,\xi_0,g\) 无关。
+\end{proposition}
+\begin{proof}
+将帽拉回单位盒，令 \(h(u)=g(\xi_0+\delta u)\)。它在
+\(Q=[-1,1]^n\) 上支于较小的盒 \([-1/2,1/2]^n\)。正交基
+\[
+ e_k(u)=2^{-n/2}e^{\pi\mathrm i k\cdot u},\quad k\in\mathbb Z^n,
+\]
+给出 Fourier 级数
+\[
+ h=\sum_ka_ke_k\quad\text{于 }L^2(Q),\quad
+ \sum_k|a_k|^2=\|h\|_{L^2(Q)}^2
+             =\delta^{-n}\|g\|_2^2.
+\]
+令
+\[
+ c_k=\delta^{n/2}a_k,\quad
+ \psi_k(\xi)=2^{-n/2}\delta^{-n/2}
+       \rho\!\left(\frac{\xi-\xi_0}{\delta}\right)
+       \cdot e^{\pi\mathrm i k\cdot(\xi-\xi_0)/\delta}.
+\]
+由于 \(\rho\cdot h=h\)，把 Fourier 级数乘以有界函数 \(\rho\)，再作换元，就得到所述 \(L^2\) 重构与精确系数能量。每个频率函数支于放大一倍的帽，且
+\[
+ \|\psi_k\|_2=2^{-n/2}\|\rho\|_2.
+\]
+它们有固定的 \(L^2\) 大小，但并不因这个归一化就彼此正交；系数能量等式来自乘 \(\rho\) 之前的正交 Fourier 基。
+
+换元 \(\xi=\xi_0+\delta u\) 给出原波包的具体公式
+\[
+ \begin{aligned}
+ W_k(x',t)
+ ={}&2^{-n/2}\delta^{n/2}
+       e^{2\pi\mathrm i(x'\cdot\xi_0+t|\xi_0|^2)}\\
+ &{}\cdot
+ \int_{\mathbb R^n}\rho(u)\cdot
+       e^{2\pi\mathrm i[
+          \delta(x'+2t\xi_0)\cdot u
+          +t\delta^2|u|^2+k\cdot u/2]}\,\mathrm du.
+ \end{aligned}
+\]
+频率部分和的误差支于固定的放大帽，其 \(L^2\) 范数趋零，故其 \(L^1\) 范数也趋零。延拓积分核的模为一，因此输出误差的一致范数至多为这个 \(L^1\) 误差。这证明全空间的一致收敛，并没有假定一般 \(L^2\) 函数的 Fourier 级数逐点收敛。
+
+若 \(|t|\leq R\)，则 \(|t\delta^2|\leq1\)。振幅
+\(\rho(u)\cdot e^{2\pi\mathrm i t\delta^2|u|^2}\)
+的支集固定，各固定阶导数一致有界。对剩余的线性频率
+\[
+ z+k/2,\quad z=\delta(x'+2t\xi_0),
+\]
+反复分部积分，即得所述任意阶衰减。
+
+还需把这些尾部实际求和。对任意 \(z\in\mathbb R^n\)，格点间距固定，半径 \(2^j\) 的球内至多有 \(C_n2^{jn}\) 个点。因此当 \(2N>n\) 时，
+\[
+ \sup_z\sum_{k\in\mathbb Z^n}
+       (1+|z+k/2|)^{-2N}<\infty.
+\]
+离散 Cauchy--Schwarz 与系数能量给出
+\[
+ \sum_k|c_k|\cdot|W_k(x',t)|
+ \leq C_{N,n,\rho}\delta^{n/2}\|g\|_2
+ \quad(|t|\leq R).
+\]
+所以该时间片内的波包和还逐点绝对收敛。
+
+在球 \(|(x',t)|\leq R\) 内，因 \(|\xi_0|\leq1\)，有
+\(|z|\leq3\sqrt R\)。取固定 \(A_0\geq12\)，若 \(|k|>A_0\sqrt R\)，则
+\[
+ |z+k/2|\geq|k|/4.
+\]
+同样按格点环带求和，得到
+\[
+ \begin{aligned}
+ \sum_{|k|>A_0\sqrt R}|c_k|\cdot|W_k(x',t)|
+ &\leq C_{N,n,\rho}\delta^{n/2}\|g\|_2
+        R^{n/4-N/2}\\
+ &=C_{N,n,\rho}R^{-N/2}\|g\|_2.
+ \end{aligned}
+\]
+取 \(N>\max\{n/2,2L\}\)，便得到命题的局部误差界。
+\end{proof}
+
+在这个构造中，主要管区域为
+\[
+ |x'+2t\xi_0+k/(2\delta)|\lesssim\delta^{-1},\quad
+ |t|\leq R.
+\]
+其宽度约为 \(R^{1/2}\)，长度约为 \(R\)，长轴沿抛物面的法向 \((-2\xi_0,1)\)。帽的中心决定方向，格点 \(k\) 决定位置；同一帽中的管彼此平行。空间球内只需保留 \(O(R^{n/2})\) 个位置指标，其余项可以按任意预先指定的负幂控制。
+
+\ProseParagraphBreak
+这里有三个不同的结论。频率重构在 \(L^2\) 中成立；紧频率支集又使延拓部分和在全空间一致收敛；管外快速衰减及上述有限格点截断则限于 \(|t|\leq R\) 或 \(|(x',t)|\leq R\)。最后一项不能无条件推广到任意大时间。波包并非管的示性函数：公式中的相位与系数仍须保留，截到粗管时产生的尾部也须按需要的阶数求和。
+
+\ProseParagraphBreak
+这只是单张帽的展开。若把许多帽相加，各帽之间有不同的法向，不能从一张帽的系数能量等式推出 BCT 或解耦。为了估计这些组合，接下来需要同时看管与空间分区的关系，以及不同帽输出的范数怎样相加。
 
 \subsection{多项式分割}
 \label{b2:subsec:250503}
 
-多项式分割产生许多胞腔与零集邻域。一个不位于零集内的直线与次数 \(D\) 多项式零集至多有 \(D\) 个交点，因此横穿胞腔的管只能访问受控数目的胞腔；贴近零集的管则没有这项直接控制，需要切向几何。
-将延拓输入按这两类组织，可以把胞腔质量分配与低维结构结合。
-相关正式出版应用见 \cite{Guth2016Restriction}。
+多项式分割选择一个多项式，把大部分空间分成若干胞腔，并将零集的邻域单独保留。它希望让各胞腔承担可控的质量，同时利用管的穿越次数限制重复计算。选择分割多项式及控制各胞腔质量属于额外的存在性结论，不能由直线的根数直接推出。
 
 \ProseParagraphBreak
-多项式次数既增加胞腔数，也增加交点预算与零集邻域复杂度。它是要在递推中选择的参数，不是可以免费趋于无穷大的量。本章没有重建分割定理或其限制范围证明，因此不把这段几何说明当作额外的已证算子估计。
+\cref{b2:lem:23-polynomial-line-crossing}证明：次数至多 \(D\) 的非零多项式，其零集之外的胞腔，至多有 \(D+1\) 个能被同一条不全含于零集的直线经过。对于半径为 \(\rho\) 的粗管，要把胞腔缩到与零集距离大于 \(\rho\) 的部分，才能把管的相遇转回中心直线的穿越。原因是管中这样的点到中心线的连接线段避开零集，故其中心线点仍在同一胞腔。未经缩减的胞腔与零集邻域，不由这个次数界控制。
+
+即使多项式只有一次，零集邻域中的管也会表现出两种不同情形。平面模型足以把角度和停留长度算清。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[管与平面厚邻域]\label{b2:prop:25-plane-wall}
+设整数 \(d\geq2\)，\(\nu,v\in S^{d-1}\)，\(a\in\mathbb R^d\)、\(b\in\mathbb R\)，且 \(L,r,\rho>0\)。令
+\[
+ H=\{\,x:x\cdot\nu=b\,\},\quad
+ W_r(H)=\{\,x:|x\cdot\nu-b|\leq r\,\},
+\]
+\[
+ \gamma(s)=a+sv\quad(0\leq s\leq L),\quad
+ T_\rho=\bigcup_{0\leq s\leq L}\overline{B(\gamma(s),\rho)}.
+\]
+记可能与平面厚邻域相遇的轴参数集合为
+\[
+ I=\{\,s\in[0,L]:
+       \overline{B(\gamma(s),\rho)}\cap W_r(H)\neq\varnothing\,\}.
+\]
+以一维 Lebesgue 测度记 \(|I|\)。若 \(v\cdot\nu\neq0\)，则
+\[
+ |I|\leq\min\left\{L,\frac{2(r+\rho)}{|v\cdot\nu|}\right\}.
+\]
+若 \(v\cdot\nu=0\)，则 \(I=[0,L]\) 或 \(I=\varnothing\)，前一种情形恰好对应 \(|a\cdot\nu-b|\leq r+\rho\)。特别地，若轴线在 \(H\) 内且 \(\rho\leq r\)，则整条管 \(T_\rho\) 都包含于 \(W_r(H)\)。
+\end{proposition}
+\begin{proof}
+球 \(\overline{B(\gamma(s),\rho)}\) 与平面厚邻域相遇，当且仅当其球心到平面的距离至多为 \(r+\rho\)。于是
+\[
+ I=\{\,s\in[0,L]:
+       |a\cdot\nu-b+s(v\cdot\nu)|\leq r+\rho\,\}.
+\]
+若斜率 \(v\cdot\nu\neq0\)，不等式在整个实轴上给出长度
+\(2(r+\rho)/|v\cdot\nu|\) 的区间，与 \([0,L]\) 相交后得到所述上界。若斜率为零，条件与 \(s\) 无关，所以参数集合全有或全无。轴线位于平面内时，管中每点到该平面的距离不超过 \(\rho\)，最后一项随即成立。
+\end{proof}
+
+若 \(\vartheta\) 是管轴与平面的夹角，则 \(|v\cdot\nu|=|\sin\vartheta|\)。取波包尺度 \(L=R\)、\(r\) 与 \(\rho\) 都约为 \(R^{1/2}\)，固定正角度给出的停留长度只有 \(O(R^{1/2})\)；当角度小到 \(R^{-1/2}\) 的量级时，上界可以达到整条管的长度 \(R\)。平行而贴墙的管更可能一直留在墙内，不能把它作为普通横穿管处理。
+
+\ProseParagraphBreak
+这说明零集邻域中的分析不能只问“中心线与零集交了几次”。横穿部分可利用角度下界缩短停留区域；近切向部分则可能沿低维几何聚集，需要不同的估计。对高次零集，局部切平面会随位置改变，还会有奇点及多个局部片，平面模型本身不处理这些困难。
+
+\ProseParagraphBreak
+Guth 的《A Restriction Estimate Using Polynomial Partitioning》\cite{Guth2016Restriction}给出了这种方法的正式限制应用。多项式次数一方面增加胞腔数，另一方面也增加穿越预算和零集邻域的复杂度，必须放进尺度递推中选择。本节没有重建分割定理、切向管分析或完整限制范围证明，因而不从上述次数与角度计算推出新的线性限制估计。
 
 \subsection{解耦}
 \label{b2:subsec:250504}
 
-下面采用\term[jieou-dingli]{解耦定理}[decoupling theorem]的下述版本。
+单帽波包保留帽内的相干性；解耦则控制许多帽叠加后的输出。下面采用\term[jieou-dingli]{解耦定理}[decoupling theorem]的抛物面临界版本。帽的尺度、分割函数和空间权都属于陈述的一部分。
 
+\Needspace{6\baselineskip}
 \begin{theorem}[深层结构定理：抛物面临界解耦]\label{b2:thm:25-decoupling}
-设 \(d\geq2\)、\(R\geq1\)，\(S=\{(\xi',|\xi'|^2):|\xi'|\le1\}\subset\mathbb R^d\)，
-\(p_c=2(d+1)/(d-1)\)，将其切成大小 \(R^{-1/2}\) 的有限重叠帽 \(\theta\)。
-对每个 \(\epsilon>0\)，
+设整数 \(d\geq2\)、\(R\geq1\)，令
+\[
+ S=\{\,(\xi',|\xi'|^2):|\xi'|\leq1\,\}\subset\mathbb R^d,\quad
+ p_c=\frac{2(d+1)}{d-1},\quad \delta=R^{-1/2}.
+\]
+曲面取面积测度 \(\sigma\)，并定义
+\[
+ Eg(x)=\int_Se^{2\pi\mathrm i x\cdot\xi}
+       \cdot g(\xi)\,\mathrm d\sigma(\xi)
+ \quad(g\in L^2(S,\sigma)).
+\]
+在参数域上取尺度 \(\delta\) 的规则方格帽覆盖，并固定非负光滑单位分解 \((\chi_\theta)_\theta\)：每个 \(\chi_\theta\) 支于相应方格的固定倍数放大，其支集重叠次数一致有界，
+\[
+ \sum_\theta\chi_\theta=1\quad\text{于 }S,\quad
+ |\partial^\alpha\chi_\theta|\leq C_\alpha\delta^{-|\alpha|}.
+\]
+导数在参数坐标中计算，\(C_\alpha\) 与 \(R,\theta\) 无关。记
+\[
+ E_\theta g\coloneqq E(\chi_\theta\cdot g).
+\]
+若 \(B_R=B(c,R)\subset\mathbb R^d\)，令
+\[
+ w_{B_R}(x)=\left(1+\frac{|x-c|}{R}\right)^{-10d},\quad
+ \|F\|_{L^{p_c}(w_{B_R})}
+ =\left(\int_{\mathbb R^d}|F(x)|^{p_c}
+          w_{B_R}(x)\,\mathrm dx\right)^{1/p_c}.
+\]
+则对每个 \(\varepsilon>0\)，存在 \(C_\varepsilon<\infty\)，使
 \[
  \|Eg\|_{L^{p_c}(B_R)}
- \le C_\epsilon R^\epsilon
-       \left(\sum_\theta\|E_\theta g\|_{L^{p_c}(w_{B_R})}^2\right)^{1/2},
+ \leq C_\varepsilon R^\varepsilon
+       \left(\sum_\theta
+          \|E_\theta g\|_{L^{p_c}(w_{B_R})}^2
+       \right)^{1/2}.
 \]
-其中 \(w_{B_R}(x)=(1+|x-c(B_R)|/R)^{-10d}\)，改变为等价快速衰减权只改变常数。
+常数可以依赖 \(d,\varepsilon\) 及固定分割的重叠、导数界，与 \(R,c,g\) 无关。
 \end{theorem}
 \begin{proofsketch}
-频率薄邻域中的全空间解耦经空间局部化得到上述延拓形式。证明结合多线性限制、抛物重标度和反复尺度迭代，保留任意小幂次损失。完整迭代在此略去。
-正式来源为
-\cite[Theorem 1.1; equation (7), pp.~352--355]{BourgainDemeter2015Proof}，
-其正定第二基本形式条件及临界指数已核验。这里的抛物面满足该条件；不能将同一陈述未经修改套到任意符号不定曲面。
+频率薄邻域中的全空间解耦经空间局部化得到上述延拓形式；固定的光滑帽分割用于定义各项，有限重叠只改变常数。完整证明结合多线性限制、抛物重标度和反复尺度迭代，最后保留任意小幂次损失。这里略去具体的多尺度递推与闭合，不能仅凭\cref{b2:lem:25-scale-iteration}替代那些步骤。
+
+正式来源为 Bourgain 与 Demeter 的《The Proof of the \(\ell^2\) Decoupling Conjecture》%
+\cite[Theorem 1.1; equation (7), pp.~352--355]{BourgainDemeter2015Proof}。
+该版本要求正定第二基本形式，临界指数如上。标准抛物面满足这些条件；不能把同一结论未经修改套到第二基本形式不定或退化的曲面。
 \end{proofsketch}
-右侧是各帽输出范数的 \(\ell^2\) 和，不是把所有帽点态平方后取 \(L^{p_c}\) 范数。后者通常是更强的平方函数问题。\(p_c=2\) 以外的解耦不是 Plancherel 的直接结果，这个区分决定它为何是深层输入。
+
+定义中的 \(E_\theta g\) 始终使用 \(\chi_\theta\cdot g\)，所以
+\(Eg=\sum_\theta E_\theta g\) 精确成立。若改用互不相交的可测帽示性函数，应从头采用那种分割的版本；不能既把帽当作重叠覆盖，又让它们的示性函数相加充当一。权 \(w_{B_R}\) 在球内有统一正下界，在球外保留快速衰减尾部，这与波包没有严格管支集相适应。换成双边可比的权只改变常数，不能任意删去球外部分而保持同一陈述。
+
+\ProseParagraphBreak
+还应区分两个容易混写的右端。对有限个函数 \(F_\theta\) 及任意正测度 \(\mu\)，当 \(2\leq p<\infty\) 且各项属于 \(L^p(\mu)\) 时，Minkowski 不等式给出
+\[
+ \begin{aligned}
+ \left\|\left(\sum_\theta|F_\theta|^2\right)^{1/2}\right\|_{L^p(\mu)}^2
+ &=\left\|\sum_\theta|F_\theta|^2\right\|_{L^{p/2}(\mu)}\\
+ &\leq\sum_\theta
+       \bigl\||F_\theta|^2\bigr\|_{L^{p/2}(\mu)}
+ =\sum_\theta\|F_\theta\|_{L^p(\mu)}^2.
+ \end{aligned}
+\]
+因此点态平方函数的范数至多为各函数范数的 \(\ell^2\) 和。把解耦定理右端换成前者，会提出一个通常更强的估计，不能由显示的解耦不等式直接推出。
+
+\ProseParagraphBreak
+一个有限模型可把差别算出。取 \(\mathbb R^d\) 中 \(N\) 个互不相交、体积为一的方块 \(Q_1,\ldots,Q_N\)，令 \(F_j=\mathbf1_{Q_j}\)。则
+\[
+ \left\|\left(\sum_{j=1}^N|F_j|^2\right)^{1/2}\right\|_p=N^{1/p},
+ \quad
+ \left(\sum_{j=1}^N\|F_j\|_p^2\right)^{1/2}=N^{1/2}.
+\]
+在临界 \(p=p_c\) 处，两者的比值为 \(N^{1/(d+1)}\)。这个例子只比较两种范数结构，没有把方块示性函数宣称为曲面帽的延拓。若各个 \(F_j\) 完全相同，两者又相等；差别取决于各项在空间中的分布，不能用一句“正交”概括。
+
+\ProseParagraphBreak
+在 \(p=2\) 时，上述两种范数由积分的线性性相等；非平方指数处则存在实际差距。抛物面临界解耦的内容是以 \(R^\varepsilon\) 控制许多频率方向的叠加，并保留加权球和指定帽尺度。单帽的系数能量、平面穿越计算及尺度递推引理各解决其中一部分问题，不能单独代替这项多帽估计。

@@ -2,6 +2,8 @@
 \section{Fourier 变换法}
 \label{b2:sec:1202}
 
+在全空间中，空间平移不会改变方程，离散特征级数因而换成连续频率积分。变换负责找出核，卷积与逼近恒等负责证明粗初值确实演化成解。外力也可逐时叠加，但积分公式本身并不自动赋予它任意阶的经典导数。
+
 \subsection{热核}
 \label{b2:subsec:120201}
 
@@ -26,17 +28,18 @@
 \subsection{卷积表示}
 \label{b2:subsec:120202}
 
+\Needspace{6\baselineskip}
 \begin{theorem}[全空间热核解]\label{b2:thm:12-heat-convolution}
-设 \(1\leq p\leq\infty\)、\(f\in L^p(\mathbb R^d)\)。则
+设整数 \(d\geq1\)、\(\kappa>0\)，\(H_s(x)=(4\pi s)^{-d/2}e^{-|x|^2/(4s)}\)（\(s>0\)、\(x\in\mathbb R^d\)）。设 \(1\leq p\leq\infty\)、\(f\in L^p(\mathbb R^d;\mathbb C)\)。则
 \begin{equation}\label{b2:eq:12-heat-convolution}
  u(t,x)=\int_{\mathbb R^d}H_{\kappa t}(x-y)\cdot f(y)\,\mathrm{d}y
 \end{equation}
-对 \(t>0\)、\(x\in\mathbb R^d\) 有意义，且在 \((0,\infty)\times\mathbb R^d\) 上光滑，满足 \(u_t=\kappa\Delta u\)。当 \(p<\infty\) 时，\(u(t)\to f\) 于 \(L^p\)；当 \(f\) 有界一致连续时，收敛在一致范数中成立。若有界函数 \(f\) 在 \(x_0\) 连续，则 \(u(t,x_0)\to f(x_0)\)。
+对 \(t>0\)、\(x\in\mathbb R^d\) 有意义，且在 \((0,\infty)\times\mathbb R^d\) 上光滑，满足 \(u_t=\kappa\Delta u\)。当 \(t\downarrow0\) 且 \(p<\infty\) 时，\(u(t)\to f\) 于 \(L^p\)。若选定的代表 \(\widetilde f\) 有界一致连续，则 \(u(t)\to\widetilde f\) 在一致范数中成立；若选定 \(f\) 的一个有界代表 \(\widetilde f\)，且它在 \(x_0\in\mathbb R^d\) 连续，则 \(u(t,x_0)\to\widetilde f(x_0)\)。
 \end{theorem}
 \begin{proof}
 热核及其每阶时空导数属于每个 \(L^r\)、\(1\leq r\leq\infty\)。固定 \(t\) 的正紧区间与 \(x\) 的紧集后，每个导数可由一个平移后仍快速衰减的函数统一控制。对 \(f\in L^p\)，Hölder 不等式给出绝对可积性；对差商使用同一控制，可以把每一阶导数移入积分。因此卷积光滑，且核的微分等式传给 \(u\)。这里在 \(p=1\) 用核导数的一致界，在 \(p=\infty\) 用其绝对可积性，两个端点都被覆盖。
 
-有限 \(p\) 与一致连续情形由\cref{b2:thm:03-approximate-identity}得到。对指定连续点，把 \(f(x_0-y)-f(x_0)\) 的积分分成 \(|y|<\delta\) 与补集。近处由连续性控制，远处由 \(2\|f\|_\infty\) 乘热核尾质量控制，先选 \(\delta\) 再令 \(t\downarrow0\) 即得。
+有限 \(p\) 与一致连续代表的情形由\cref{b2:thm:03-approximate-identity}得到。卷积不因初值在零测集上的修改而改变。对选定代表的连续点，把 \(\widetilde f(x_0-y)-\widetilde f(x_0)\) 的积分分成 \(|y|<\delta\) 与补集。近处由连续性控制，远处由 \(2\sup_x|\widetilde f(x)|\) 乘热核尾质量控制，先选 \(\delta\) 再令 \(t\downarrow0\) 即得。这样取得的点值是所选连续代表的点值，而不是给 \(L^p\) 等价类额外指定一个任意值。
 \end{proof}
 
 初值也可以是一点质量，此时解是 \(H_{\kappa t}(x-y_0)\)，在 \(t\downarrow0\) 时只以测度或分布意义趋于 \(\delta_{y_0}\)。为了区别空间核与时空基本解，令 \(E(t,x)=H_{\kappa t}(x)\) 当 \(t>0\)，在 \(t<0\) 令 \(E=0\)。那么
@@ -47,7 +50,7 @@
 
 \ProseParagraphBreak
 
-对非齐次方程，设 \(1\leq p<\infty\)、\(F\in C([0,T];L^p)\)。由逐时叠加得到
+对非齐次方程，设整数 \(d\geq1\)、\(\kappa,T>0\)、\(1\leq p<\infty\)，\(f\in L^p(\mathbb R^d;\mathbb C)\)、\(F\in C([0,T];L^p(\mathbb R^d;\mathbb C))\)。由逐时叠加得到
 \begin{equation}\label{b2:eq:12-duhamel}
  u(t)=H_{\kappa t}*f+
  \int_0^tH_{\kappa(t-s)}*F(s)\,\mathrm{d}s.
@@ -71,12 +74,29 @@
 
 \ProseParagraphBreak
 
-方向上的扩散速率也可以不同。若 \(B\) 是实对称正定常矩阵，方程为 \(u_t=\sum_{i,j}B_{ij}\partial_i\partial_ju\)，则相应核是
+方向上的扩散速率也可以不同。若整数 \(d\geq1\)，\(B\) 是实对称正定的 \(d\times d\) 常矩阵，方程为 \(u_t=\sum_{i,j=1}^dB_{ij}\partial_i\partial_ju\)，则 \(t>0\) 时的相应核是
 \[
  H_t^B(x)=\dfrac1{(4\pi t)^{d/2}\sqrt{\det B}}
  \exp\left(-\dfrac{x^{\mathsf T}B^{-1}x}{4t}\right).
 \]
-正交对角化 \(B\) 后，各方向分别使用一维扩散核，换元的行列式给出归一化因子。故核仍非负、质量为一，变换为 \(e^{-4\pi^2t\xi^{\mathsf T}B\xi}\)。正定性是每个方向都得到磨光的条件；若某个特征值为零，该方向不发生卷积扩散，不能继续声称所有空间方向光滑。
+正交对角化 \(B\) 后，各方向分别使用一维扩散核，换元的行列式给出归一化因子。故核仍非负、质量为一，变换为 \(e^{-4\pi^2t\xi^{\mathsf T}B\xi}\)。正定性使每个方向都发生扩散。若 \(B\) 仅半正定且有零特征值，\(B^{-1}\) 与 \((\det B)^{-1/2}\) 就没有上述意义，不能在函数密度公式中直接把某个特征值置零。
+
+\ProseParagraphBreak
+
+例如在 \(\mathbb R^2\) 上取 \(B=\operatorname{diag}(1,0)\)，方程成为 \(u_t=u_{xx}\)，没有 \(y\) 方向的扩散。此时传播核是乘积测度
+\[
+ H_t^{(1)}(x)\otimes\delta_0(y),\qquad
+ H_t^{(1)}(x)=(4\pi t)^{-1/2}e^{-x^2/(4t)},\quad t>0,
+\]
+它支撑在直线 \(y=0\) 上，不是相对于二维 Lebesgue 测度的可积函数密度。对 \(f\in L^2(\mathbb R^2;\mathbb C)\)，传播只沿 \(x\) 作卷积：
+\[
+ u(t,x,y)=\int_{\mathbb R}H_t^{(1)}(x-z)f(z,y)\,\mathrm{d}z.
+\]
+Fubini 定理使几乎每个 \(y\) 对应的初值切片属于 \(L^2(\mathbb R_x)\)，故这一维卷积有意义，并在分布意义下满足 \(u_t=u_{xx}\)。但它不提高横向正则性：取非负非零 \(\phi\in C_c^\infty(\mathbb R;\mathbb R)\)，令 \(f(x,y)=\phi(x)\mathbf1_{(0,1)}(y)\)，就有
+\[
+ u(t,x,y)=\bigl(H_t^{(1)}*\phi\bigr)(x)\mathbf1_{(0,1)}(y).
+\]
+前一个因子在 \(t>0\) 时光滑且处处为正，\(y=0,1\) 处的跳跃却仍保留。一般半正定矩阵经正交对角化后也如此：正特征值方向使用 Gaussian 核，零特征值方向保留点质量，不能从正方向的磨光推出全空间光滑化。
 
 \ProseParagraphBreak
 

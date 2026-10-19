@@ -4,66 +4,450 @@
 
 指数函数适合平移不变算子，带有二次势能的算子却同时涉及位置和频率。Hermite 函数把多项式与 Gauss 衰减结合起来，既形成全空间的正交基，又使谐振子和 Fourier 变换具有简单的谱表示。归一化必须与 Fourier 指数中的 \(2\pi\) 分开核对。
 
+\ProseParagraphBreak
+本节接续\cref{b2:thm:05-hermite}：该定理在复 \(L^2(\mathbb R)\) 上，由基态 \(2^{1/4}e^{-\pi x^2}\) 及升降算子完整证明标准正交性、完备性和负号 \(2\pi\) Fourier 变换的特征关系。若先前跳过了选读的\subsecref{b2:subsec:050204}，现在须先回读该小节。本节先将那里已经建立的基缩放为微分表达式 \(-\partial_x^2+x^2\) 所适用的尺度，再独立证明其自伴定义域、分布刻画和紧逆；不重复建立同一组正交基。
+
 \subsection{多项式、正交性与完备性}
 \label{b2:subsec:B20101}
 
-定义 \term[hermite-duoxiangshi]{Hermite 多项式}[Hermite polynomial]
-\[H_n(x)=(-1)^ne^{x^2}\frac{\mathrm d^n}{\mathrm dx^n}e^{-x^2},\qquad n=0,1,2,\ldots.\]
-这是权重为 \(e^{-x^2}\) 的常用约定；概率论中权重 \(e^{-x^2/2}\) 的同名多项式需要缩放。由定义求导得到 \(H_{n+1}=2xH_n-H_n'\)，故 \(H_n\) 是首项 \(2^nx^n\) 的 \(n\) 次多项式。前几项为 \(1,2x,4x^2-2,8x^3-12x\)。
+对实变量 \(x\in\mathbb R\) 和整数 \(n\ge0\)，定义 \term[hermite-duoxiangshi]{Hermite 多项式}[Hermite polynomial]
+\[
+ H_n(x)=(-1)^ne^{x^2}
+ \frac{\mathrm d^n}{\mathrm dx^n}e^{-x^2},
+ \quad n=0,1,2,\ldots.
+\]
+这是权重为 \(e^{-x^2}\) 的常用约定。
+为什么右侧是多项式，可以逐次求导看出：
+\[
+ \begin{aligned}
+ H_n'(x)
+ &=2xH_n(x)+(-1)^ne^{x^2}
+ \frac{\mathrm d^{n+1}}{\mathrm dx^{n+1}}e^{-x^2}\\
+ &=2xH_n(x)-H_{n+1}(x).
+ \end{aligned}
+\]
+从 \(H_0=1\) 出发，递推 \(H_{n+1}=2xH_n-H_n'\) 每次将次数提高一，
+最高次项仅来自 \(2xH_n\)，所以首项为 \(2^nx^n\)。
+前几项为 \(1,2x,4x^2-2,8x^3-12x\)，奇偶性为
+\(H_n(-x)=(-1)^nH_n(x)\)。
+概率论中以 \(e^{-x^2/2}\) 为权的另一约定满足
+\[
+ \operatorname{He}_n(x)=2^{-n/2}H_n(x/\sqrt2);
+\]
+它的前几项是 \(1,x,x^2-1\)。
+两者可以换算，却不能在同一个归一化公式中直接互换。
 
+\ProseParagraphBreak
+为比较两种尺度，定义 \(L^2(\mathbb R)\) 上的伸缩算子
+\begin{equation}\label{b2:eq:B2-hermite-dilation}
+ \begin{aligned}
+ (Ug)(x)&=(2\pi)^{1/4}g(\sqrt{2\pi}\,x),\\
+ (U^{-1}f)(y)&=(2\pi)^{-1/4}
+ f\left(\frac{y}{\sqrt{2\pi}}\right).
+ \end{aligned}
+\end{equation}
+换元 \(y=\sqrt{2\pi}\,x\) 给出
+\[
+ \|Ug\|_2^2
+ =\sqrt{2\pi}\int_{\mathbb R}|g(\sqrt{2\pi}\,x)|^2\,\mathrm dx
+ =\int_{\mathbb R}|g(y)|^2\,\mathrm dy.
+\]
+所以 \(U\) 是酉映射。前面的系数正是用来抵消积分中的尺度因子；
+只替换函数的变量而不乘该系数，便不会保持标准归一化。
+
+\Needspace{6\baselineskip}
 \begin{proposition}[Hermite 正交基]
 \label{b2:prop:B2-hermite-basis}
-令
-\[\widetilde h_n(x)=\frac{H_n(x)e^{-x^2/2}}{(2^nn!\sqrt\pi)^{1/2}}.\]
-则 \((\widetilde h_n)_{n\ge0}\) 是 \(L^2(\mathbb R)\) 的标准正交基。
+在复 Hilbert 空间 \(L^2(\mathbb R)\) 中，对每个整数 \(n\ge0\) 令
+\[
+ \begin{aligned}
+ H_n(x)&=(-1)^ne^{x^2}
+ \frac{\mathrm d^n}{\mathrm dx^n}e^{-x^2},\\
+ \widetilde h_n(x)&=
+ \frac{H_n(x)e^{-x^2/2}}{(2^nn!\sqrt\pi)^{1/2}}.
+ \end{aligned}
+\]
+则 \((\widetilde h_n)_{n\ge0}\) 是 \(L^2(\mathbb R)\) 的标准正交基，并且与\cref{b2:thm:05-hermite}中的函数满足
+\[
+ h_n(x)=(2\pi)^{1/4}\widetilde h_n(\sqrt{2\pi}\,x).
+\]
 \end{proposition}
 \begin{proof}
-分部积分 \(n\) 次，所有边界项都因多项式乘 Gauss 衰减而为零，得
-\[\int_\mathbb R H_nH_m e^{-x^2}\,\mathrm dx
- =\int_\mathbb R e^{-x^2}H_m^{(n)}\,\mathrm dx.
+先核对 Rodrigues 表达确实给出同一组函数。对光滑函数 \(v\)，有
+\[
+ (x-\partial_x)(e^{x^2/2}v)=-e^{x^2/2}v',
 \]
-若 \(m<n\)，右端为零；\(m=n\) 时为 \(2^nn!\sqrt\pi\)。交换指标处理另一半，得到标准正交性。
-
-为证完备性，设 \(g\in L^2\) 与全部 \(\widetilde h_n\) 正交。由于 \(H_n\) 的阶数逐次增加且首系数非零，它们张成全部多项式，故 \(\int g(x)e^{-x^2/2}x^n\,\mathrm dx=0\) 对每个 \(n\) 成立。对固定实数 \(t\)，Cauchy--Schwarz 不等式保证
-\[\int|g(x)|e^{-x^2/2}e^{|t||x|}\,\mathrm dx<\infty.\]
-因此可以把 \(e^{-itx}\) 的幂级数逐项积分，得到 \(g e^{-x^2/2}\) 的 Fourier 变换在所有实频率为零。该乘积属于 \(L^1\)，本卷已经证明的 Fourier 唯一性推出它几乎处处为零，继而 \(g=0\)。正交补为零即完备。
+因而反复使用该恒等式，得到
+\[
+ (x-\partial_x)^ne^{-x^2/2}
+ =(-1)^ne^{x^2/2}\partial_x^ne^{-x^2}
+ =H_n(x)e^{-x^2/2}.
+\]
+记 \(\widetilde a^*=2^{-1/2}(x-\partial_x)\)，则
+\(\widetilde h_n=(\widetilde a^*)^n\widetilde h_0/\sqrt{n!}\)，其中
+\(\widetilde h_0=\pi^{-1/4}e^{-x^2/2}\)。令
+\(a_\pi^*=(4\pi)^{-1/2}(2\pi x-\partial_x)\) 为\cref{b2:thm:05-hermite}的升算子。
+为看清链式法则中的尺度，写 \(s=\sqrt{2\pi}\)，
+则对 Schwartz 函数 \(g\) 有
+\[
+ U(yg)(x)=sx\,(Ug)(x),\quad
+ U(\partial_yg)(x)=s^{-1}\partial_x(Ug)(x).
+\]
+因而
+\[
+ U\widetilde a^*g
+ =\frac1{\sqrt2}(sx-s^{-1}\partial_x)Ug
+ =a_\pi^*Ug.
+\]
+再直接比较两个 Gauss 基态，得到
+\[
+ U\widetilde h_0=h_0,\quad U\widetilde a^*=a_\pi^*U.
+\]
+所以 \(U\widetilde h_n=h_n\)。\cref{b2:thm:05-hermite}已经证明 \((h_n)\) 在整个复 \(L^2(\mathbb R)\) 中标准正交且完备，\eqref{b2:eq:B2-hermite-dilation}的酉映射将这两项性质同时传回 \((\widetilde h_n)\)。
 \end{proof}
 
-函数 \(\widetilde h_n\) 是另一种尺度归一化的 Hermite 函数；与第五章的归一化之间的关系将在本节末写明。证明中的正交性来自反复分部积分，完备性却依赖对全部频率的唯一性；前者不能替代后者。仅计算出许多正交模态，尚不足以断言它们可以展开任意平方可积函数。
+这里调用的是\cref{b2:thm:05-hermite}已经完成的完备性，而不是从微分方程的特征关系猜测完备性；
+在那里，升降关系与分部积分建立正交归一性，矩消失与 Fourier 唯一性才排除了非零正交补。
+Rodrigues 公式在本节的任务是识别尺度与多项式约定。
+例如，已经得到的标准正交性立即转写为
+\[
+ \int_{\mathbb R}H_n(x)H_m(x)e^{-x^2}\,\mathrm dx
+ =2^nn!\sqrt\pi\,\delta_{nm}\quad(n,m\geq0).
+\]
+权 \(e^{-x^2}\) 来自两个函数中各一个 \(e^{-x^2/2}\)，不是额外选择的一种积分测度。
 \symidx{\(\widetilde h_n\)：谐振子尺度的 Hermite 函数}
 
-\subsection{升降算子与二次势能}
+\subsection{谐振子的升降算子、谱与自伴定义域}
 \label{b2:subsec:B20102}
 
-在 Schwartz 函数上定义
-\[a=\frac1{\sqrt2}\left(x+\frac{\mathrm d}{\mathrm dx}\right),\qquad
+在复 Schwartz 空间 \(\mathcal S(\mathbb R)\) 上定义
+\[a=\frac1{\sqrt2}\left(x+\frac{\mathrm d}{\mathrm dx}\right),\quad
  a^*=\frac1{\sqrt2}\left(x-\frac{\mathrm d}{\mathrm dx}\right).
 \]
-星号与 \(L^2\) 伴随关系相容，因为分部积分把微分变号。直接展开给出 \(aa^*-a^*a=I\)，以及
+星号与 \(L^2\) 分部积分相容，因为微分移到另一因子时变号；
+此时尚未声明两个无界算子的伴随定义域。
+写 \(D=\partial_x\)，利用 \(Dx=xD+I\)，得到
+\[
+ a^*a=\tfrac12(-D^2+x^2-I),\quad
+ aa^*=\tfrac12(-D^2+x^2+I).
+\]
+因此 \(aa^*-a^*a=I\)，并且
 \[\mathcal L=-\frac{\mathrm d^2}{\mathrm dx^2}+x^2=2a^*a+I.\]
 算子 \(\mathcal L\) 称为 \term[xiezhenzi]{谐振子}[harmonic oscillator]；此处固定无量纲系数，物理质量与频率可通过缩放恢复。
 
+\Needspace{6\baselineskip}
 \begin{proposition}[谐振子的特征函数]
 \label{b2:prop:B2-oscillator-eigenfunctions}
-Hermite 函数满足
-\[a\widetilde h_n=\sqrt n\,\widetilde h_{n-1},\qquad a^*\widetilde h_n=\sqrt{n+1}\,\widetilde h_{n+1},\qquad
- \mathcal L\widetilde h_n=(2n+1)\widetilde h_n,\]
+设 \(n\geq0\) 为整数，\(H_n(x)=(-1)^ne^{x^2}\frac{\mathrm d^n}{\mathrm dx^n}e^{-x^2}\)，\(\widetilde h_n=H_ne^{-x^2/2}/(2^nn!\sqrt\pi)^{1/2}\)。令 \(a=2^{-1/2}(\partial_x+x)\)、\(a^*=2^{-1/2}(-\partial_x+x)\)、\(\mathcal L=-\partial_x^2+x^2\)。Hermite 函数满足
+\[
+ \begin{aligned}
+ a\widetilde h_n&=\sqrt n\,\widetilde h_{n-1}\quad(n\geq1),\\
+ a^*\widetilde h_n&=\sqrt{n+1}\,\widetilde h_{n+1},\\
+ \mathcal L\widetilde h_n&=(2n+1)\widetilde h_n,
+ \end{aligned}
+\]
 其中 \(a\widetilde h_0=0\)。
 \end{proposition}
 \begin{proof}
-由 \(H_{n+1}=2xH_n-H_n'\) 直接得到升算子公式。又 \(a\widetilde h_0=0\)，而 \([a,a^*]=I\) 推出 \(a(a^*)^n=(a^*)^na+n(a^*)^{n-1}\)。反复使用升算子公式得到 \(\widetilde h_n=(a^*)^n\widetilde h_0/\sqrt{n!}\)，代入即得降算子公式。最后由 \(\mathcal L=2a^*a+I\) 得到特征值。
+若记第5章的降算子为 \(a_\pi=(4\pi)^{-1/2}(\partial_x+2\pi x)\)，链式法则与上面的升算子换算给出
+\[
+ Ua=a_\pi U,\quad Ua^*=a_\pi^*U.
+\]
+由于 \(U\widetilde h_n=h_n\)，\cref{b2:thm:05-hermite}的两条升降公式分别给出本命题的前两式；\(a\widetilde h_0=0\) 也由同样换算得到。最后在 Schwartz 空间上使用 \(\mathcal L=2a^*a+I\)，即得特征值 \(2n+1\)。
 \end{proof}
 
-对任意 \(f\in L^2\)，写 \(f=\sum c_n\widetilde h_n\)。可以精确定义自伴实现为
+把微分表达式写成特征值关系以后，还须确定允许哪些无限展开进入算子域。下面把谱定义与分布定义联系起来。
+\Needspace{6\baselineskip}
+\begin{proposition}[谐振子的自伴定义域]\label{b2:prop:B2-oscillator-domain}
+对每个整数 \(n\geq0\)，令
 \[
- D(\mathcal L)=\left\{f:\sum_{n=0}^\infty(2n+1)^2|c_n|^2<\infty\right\},\qquad
- \mathcal Lf=\sum_{n=0}^\infty(2n+1)c_n\widetilde h_n.
+ \begin{aligned}
+ H_n(x)&=(-1)^ne^{x^2}\frac{\mathrm d^n}{\mathrm dx^n}e^{-x^2},\\
+ \widetilde h_n(x)&=\frac{H_n(x)e^{-x^2/2}}{(2^nn!\sqrt\pi)^{1/2}}.
+ \end{aligned}
 \]
-这个定义域不是全部 \(L^2\)。系数表示把算子变成实数序列的乘法；伴随泛函有界的充要条件恰是同一个加权平方可和条件，因此它自伴。对 Schwartz 函数，分部积分与特征函数公式说明该实现等于微分表达式。有限 Hermite 和在图范数中稠密，因此由算子在有限和上的作用及其闭性，就能恢复整个自伴实现。
+在复 Hilbert 空间 \(L^2(\mathbb R)\) 中取
+\(\langle f,g\rangle=\int f\overline g\)，记
+\(c_n=\langle f,\widetilde h_n\rangle\)、\(\lambda_n=2n+1\)，并定义
+\[
+ \begin{aligned}
+ D(\mathcal L)
+ &=\left\{f\in L^2(\mathbb R):
+ \sum_{n\geq0}\lambda_n^2|c_n|^2<\infty\right\},\\
+ \mathcal Lf&=\sum_{n\geq0}\lambda_nc_n\widetilde h_n
+ \quad\text{于 }L^2.
+ \end{aligned}
+\]
+这是稠密定义的自伴算子。其图范数为
+\begin{equation}\label{b2:eq:B2-oscillator-graph-norm}
+ \|f\|_{D(\mathcal L)}^2
+ =\|f\|_2^2+\|\mathcal Lf\|_2^2
+ =\sum_{n\geq0}(1+\lambda_n^2)|c_n|^2.
+\end{equation}
+有限 Hermite 和在此范数下稠密，即构成图范数核心，并且
+\[
+ D(\mathcal L)=
+ \{f\in L^2(\mathbb R):
+ -f''+x^2f\text{ 在分布意义下属于 }L^2(\mathbb R)\}.
+\]
+在此域内，谱作用等于所列微分表达式。
+\end{proposition}
+\begin{proof}
+系数映射是 \(L^2\) 到 \(\ell^2\) 的酉映射，有限支集序列包含在定义域中且稠密。
+因此先研究实序列乘法算子 \(c\mapsto(\lambda_nc_n)\) 即可。
+若 \(d=(d_n)\in\ell^2\) 在其伴随域内，泛函
+\(c\mapsto\sum\lambda_nc_n\overline{d_n}\) 必须在有限支集单位球上有界。
+对每个 \(N\)，取
+\[
+ c_n=
+ \frac{\lambda_nd_n\cdot\mathbf1_{\{n\leq N\}}}
+ {(\sum_{j=0}^N\lambda_j^2|d_j|^2)^{1/2}},
+\]
+分母为零时不需要测试。这个向量的 \(\ell^2\) 范数为一，泛函值为
+\((\sum_{n=0}^N\lambda_n^2|d_n|^2)^{1/2}\)。
+有界性于是迫使各截断平方和共同有界，故 \((\lambda_nd_n)\in\ell^2\)。
+反之，若该加权序列属于 \(\ell^2\)，则
+\[
+ \left|\sum_{n\geq0}\lambda_nc_n\overline{d_n}\right|
+ \leq\|c\|_{\ell^2}\cdot\|(\lambda_nd_n)\|_{\ell^2},
+\]
+泛函在整个算子域上有界，其表示向量正是 \((\lambda_nd_n)\)。
+因此伴随域恰等于原域，作用相同，证明自伴性。
+
+令 \(f_N=\sum_{n=0}^Nc_n\widetilde h_n\)。对 \(f\in D(\mathcal L)\)，Parseval 给出
+\[
+ \|f-f_N\|_2^2+\|\mathcal Lf-\mathcal Lf_N\|_2^2
+ =\sum_{n>N}(1+\lambda_n^2)|c_n|^2\longrightarrow0.
+\]
+这正是图范数稠密性，而不仅是函数本身的 \(L^2\) 逼近。
+图范数下的完备性也可直接从加权 \(\ell^2\) 空间看出。
+
+先检查谱作用确实延长了 Schwartz 空间上的微分表达式。
+若 \(f\in\mathcal S\)，则 \(g=-f''+x^2f\in L^2\)，
+分部积分给
+\[
+ \langle g,\widetilde h_n\rangle
+ =\langle f,-\widetilde h_n''+x^2\widetilde h_n\rangle
+ =\lambda_nc_n.
+\]
+两端函数及其导数快速衰减，没有边界项。
+对 \(g\) 使用 Parseval，就得到 \(\sum\lambda_n^2|c_n|^2<\infty\) 和谱作用等于 \(g\)。
+对一般 \(f\in D(\mathcal L)\)，其有限和同时满足
+\[
+ f_N\to f,\quad
+ -f_N''+x^2f_N=\mathcal Lf_N\to\mathcal Lf
+ \quad\text{于 }L^2.
+\]
+对任意 \(\varphi\in C_c^\infty(\mathbb R)\)，有
+\[
+ \langle\mathcal Lf_N,\varphi\rangle
+ =\langle f_N,-\varphi''+x^2\varphi\rangle.
+\]
+测试函数右侧仍属于 \(L^2\)，所以可以取极限，得到
+\(-f''+x^2f=\mathcal Lf\) 的分布恒等式。
+
+反过来，设 \(f,g\in L^2\) 且分布等式 \(-f''+x^2f=g\) 成立。
+不能在只允许紧支撑测试函数的定义中直接代入 \(\widetilde h_n\)，
+所以固定 \(n\)，取实函数 \(\chi\in C_c^\infty(\mathbb R)\)，
+\(\chi=1\) 于 \([-1,1]\)，\(\chi=0\) 于 \(|x|\geq2\)。
+令 \(\chi_R(x)=\chi(x/R)\)，用 \(\chi_R\cdot\widetilde h_n\) 测试。
+乘积法则给
+\[
+ \begin{aligned}
+ (-D^2+x^2)(\chi_R\cdot\widetilde h_n)
+ ={}&\lambda_n\chi_R\cdot\widetilde h_n\\
+ &-2\chi_R'\cdot\widetilde h_n'
+ -\chi_R''\cdot\widetilde h_n.
+ \end{aligned}
+\]
+误差只在 \(R\leq|x|\leq2R\) 上出现，而且
+\[
+ \begin{aligned}
+ \|\chi_R'\cdot\widetilde h_n'\|_2
+ &\leq R^{-1}\|\chi'\|_\infty
+ \cdot\|\widetilde h_n'\cdot\mathbf1_{\{|x|\geq R\}}\|_2,\\
+ \|\chi_R''\cdot\widetilde h_n\|_2
+ &\leq R^{-2}\|\chi''\|_\infty
+ \cdot\|\widetilde h_n\cdot\mathbf1_{\{|x|\geq R\}}\|_2.
+ \end{aligned}
+\]
+Hermite 函数及其导数有 Gaussian 尾，所以这些误差趋零；
+同时 \(\chi_R\cdot\widetilde h_n\to\widetilde h_n\) 于 \(L^2\)。
+测试等式取极限后得到
+\(\langle g,\widetilde h_n\rangle=\lambda_nc_n\)。
+这里固定 \(n\) 后让 \(R\to\infty\)，不需要关于所有阶数的一致尾估计。
+最后由 \(g\in L^2\) 及 Parseval，域的加权平方和有限，且谱作用就是 \(g\)。
+\end{proof}
+这个定义域没有把普通 \(L^2\) 初值一律当作可微输入，也没有预先要求微分表达式的两项各自属于 \(L^2\)；它首先核对的是分布组合及其谱条件。
 
 \ProseParagraphBreak
+图范数的区别可以在一个级数上看清。对实数 \(\alpha>1/2\)，令
+\[
+ f_\alpha=\sum_{n=0}^\infty(n+1)^{-\alpha}\widetilde h_n,
+ \quad
+ f_{\alpha,N}=\sum_{n=0}^N(n+1)^{-\alpha}\widetilde h_n.
+\]
+平方系数可和，所以它定义了一个 \(L^2\) 函数。
+但
+\[
+ f_\alpha\in D(\mathcal L)
+ \quad\Longleftrightarrow\quad
+ \sum_{n=0}^\infty(2n+1)^2(n+1)^{-2\alpha}<\infty
+ \quad\Longleftrightarrow\quad \alpha>\tfrac32.
+\]
+例如 \(\alpha=1\) 时 \(f_{1,N}\to f_1\) 于 \(L^2\)，
+而 \(\|\mathcal Lf_{1,N}\|_2^2\sim4N\)，不能同时逼近算子作用。
+当 \(\alpha=2\) 时两者都收敛，积分比较还给出
+\[
+ \|f_2-f_{2,N}\|_2^2\sim\frac1{3N^3},\quad
+ \|f_2-f_{2,N}\|_{D(\mathcal L)}^2\sim\frac4N.
+\]
+同一截断在函数范数下误差很小，在图范数下却慢得多，
+原因是高阶系数作用后多乘了一个增长的特征值。
 
-逆算子 \((\mathcal L+I)^{-1}\) 的特征值为 \((2n+2)^{-1}\to0\)，截断为前 \(N\) 项后，算子范数误差为 \((2N+4)^{-1}\)。因此该逆是紧算子。二次势能把函数的质量限制在有限位置，离散特征值趋向无穷；这与全空间自由 Laplace 算子的连续 Fourier 频率形成不同的谱结构。
+\ProseParagraphBreak
+介于普通 \(L^2\) 与算子域之间，还有只要求一阶能量有限的空间。
+对有限 Hermite 和 \(v\)，分部积分直接给出
+\[
+ \int_{\mathbb R}\bigl(|v'|^2+x^2|v|^2\bigr)\,\mathrm dx
+ =\langle\mathcal Lv,v\rangle
+ =\sum_{n\geq0}(2n+1)|\langle v,\widetilde h_n\rangle|^2.
+\]
+这里权重只有一次特征值，提示能量域应当比 \(D(\mathcal L)\) 大。
+下面说明这一谱条件确实等价于导数和位置权的平方可积性。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[谐振子的二次型域]\label{b2:prop:B2-oscillator-form}
+在复 \(L^2(\mathbb R)\) 中，令
+\[
+ \widetilde h_n(x)=
+ \frac{(-1)^ne^{x^2/2}\partial_x^ne^{-x^2}}
+ {(2^nn!\sqrt\pi)^{1/2}},
+ \quad
+ c_n=\langle f,\widetilde h_n\rangle,\quad \lambda_n=2n+1.
+\]
+定义
+\[
+ Q=\{f\in L^2(\mathbb R):
+ f'\in L^2(\mathbb R)\text{ 为弱导数，且 }xf\in L^2(\mathbb R)\}.
+\]
+则
+\[
+ Q=\left\{f\in L^2:
+ \sum_{n\geq0}\lambda_n|c_n|^2<\infty\right\},
+\]
+并且对所有 \(f\in Q\)，有
+\[
+ \mathfrak q[f]\coloneqq\|f'\|_2^2+\|xf\|_2^2
+ =\sum_{n\geq0}\lambda_n|c_n|^2.
+\]
+因此 \(Q\) 在范数
+\(\|f\|_Q=(\|f\|_2^2+\mathfrak q[f])^{1/2}\) 下完备，
+有限 Hermite 和在此范数下稠密。
+若用谱级数定义
+\(\mathcal L^{1/2}f=\sum_{n\geq0}\lambda_n^{1/2}c_n\widetilde h_n\)，
+则 \(Q=D(\mathcal L^{1/2})\)、\(\mathfrak q[f]=\|\mathcal L^{1/2}f\|_2^2\)。
+此外，\(Q\) 到 \(L^2(\mathbb R)\) 的自然嵌入为紧算子。
+\end{proposition}
+\begin{proof}
+先设 \(\sum\lambda_n|c_n|^2<\infty\)，取
+\(f_N=\sum_{n=0}^Nc_n\widetilde h_n\)。
+对有限和作分部积分，得到
+\[
+ \|f_N'-f_M'\|_2^2+\|x(f_N-f_M)\|_2^2
+ =\sum_{M<n\leq N}\lambda_n|c_n|^2.
+\]
+因此两列 \(f_N'\) 与 \(xf_N\) 分别在 \(L^2\) 中收敛。
+又因 \(f_N\to f\) 于 \(L^2\)，对任意紧支撑光滑测试函数取极限，
+可以识别两个极限分别为弱导数 \(f'\) 与函数 \(xf\)。
+于是 \(f\in Q\)，并且
+\[
+ \|f'\|_2^2+\|xf\|_2^2
+ =\lim_{N\to\infty}
+ \bigl(\|f_N'\|_2^2+\|xf_N\|_2^2\bigr)
+ =\sum_{n\geq0}\lambda_n|c_n|^2.
+\]
+
+反之，设 \(f\in Q\)。对固定 \(n\)，弱导数的分部积分公式给出
+\[
+ \langle f',\widetilde h_n'\rangle
+ +\langle xf,x\widetilde h_n\rangle
+ =\lambda_n\langle f,\widetilde h_n\rangle.
+\]
+要从紧支撑测试推广到这里的 Hermite 函数，
+可先用 \(\chi_R\cdot\widetilde h_n'\) 测试弱导数；
+产生的 \(\chi_R'\cdot\widetilde h_n'\) 项在 \(L^2\) 中趋零，
+其余项由 \(f,f',xf\in L^2\) 和 Hermite 尾部收敛。
+因此所列分部积分不要求 \(f\) 具有经典二阶导数。
+记
+\[
+ \mathfrak q(f,g)=
+ \langle f',g'\rangle+\langle xf,xg\rangle.
+\]
+对有限和 \(f_N\)，上式逐项给出
+\[
+ A_N\coloneqq\sum_{n=0}^N\lambda_n|c_n|^2
+ =\mathfrak q(f,f_N),\quad
+ \mathfrak q[f_N]=A_N.
+\]
+在 \(L^2\oplus L^2\) 中使用 Cauchy--Schwarz，
+\[
+ A_N\leq\mathfrak q[f]^{1/2}\cdot A_N^{1/2}.
+\]
+若 \(A_N>0\)，相除得 \(A_N\leq\mathfrak q[f]\)；
+若 \(A_N=0\)，该结论也成立。
+令 \(N\to\infty\)，便得到谱权条件。
+第一部分已经证明此时 \(f_N\to f\) 于 \(Q\) 且能量恒等式成立，
+所以反向没有只得到一个不等式。
+完备性与有限和稠密性于是归结为加权 \(\ell^2\) 空间的相应事实；
+半幂的定义域与范数也直接由这个级数确定。
+
+最后设一族函数在 \(Q\) 中有界，统一满足
+\(\sum_n\lambda_n|c_n|^2\leq C^2\)。
+令 \(P_Nf=\sum_{n=0}^Nc_n\widetilde h_n\)，则
+\[
+ \|f-P_Nf\|_2^2
+ =\sum_{n>N}|c_n|^2
+ \leq\frac{C^2}{2N+3}.
+\]
+其有限维投影 \(P_Nf\) 形成有界集，因而可用有限个任意小半径的球覆盖。
+先选 \(N\) 使谱尾统一小，再覆盖这个有限维投影，就得到原函数族在 \(L^2\) 中全有界。
+\(L^2\) 完备，因此其闭包紧。这证明所述紧嵌入。
+\end{proof}
+
+上述例子 \(f_\alpha\) 的能量域条件恰为 \(\alpha>1\)。
+所以 \(f_{5/4}\) 具有有限能量，却不在算子域内；一阶能量有限不等于可以在 \(L^2\) 中施加整个二阶算子。
+反过来，谱权 \(\lambda_n\geq1\) 给出
+\(\mathfrak q[f]\geq\|f\|_2^2\)，能量本身已经控制函数范数。
+
+\ProseParagraphBreak
+紧性的两个来源也可在物理空间和频率空间分别辨认：
+\[
+ \begin{aligned}
+ \int_{|x|>R}|f(x)|^2\,\mathrm dx
+ &\leq R^{-2}\|xf\|_2^2,\\
+ \int_{|\xi|>M}|\widehat f(\xi)|^2\,\mathrm d\xi
+ &\leq(2\pi M)^{-2}\|f'\|_2^2
+ \quad(R,M>0,\ f\in Q).
+ \end{aligned}
+\]
+第一式由 \(|x|>R\) 直接得到；第二式使用
+\(\widehat{f'}=2\pi\mathrm i\xi\widehat f\) 和 Plancherel，
+该恒等式也可由上面有限和及其弱导数的 \(L^2\) 收敛传递。
+位置权阻止质量逃向无穷远，导数能量限制高频振荡。
+命题的谱尾证明把这两种控制合并为有限个模态之外的一致小误差。
+
+\ProseParagraphBreak
+谱定义还直接说明核与可逆性。对 \(f\in D(\mathcal L)\)，Parseval 给出
+\(\|\mathcal Lf\|_2^2=\sum(2n+1)^2|c_n|^2\ge\|f\|_2^2\)，所以 \(\ker\mathcal L=\{0\}\)。对任意 \(g=\sum d_n\widetilde h_n\in L^2\)，级数
+\(f=\sum (2n+1)^{-1}d_n\widetilde h_n\) 属于 \(D(\mathcal L)\)，因为其域条件中的加权平方和恰为 \(\sum|d_n|^2\)；并且 \(\mathcal Lf=g\)。因此 \(\mathcal L^{-1}\) 是定义在整个 \(L^2\) 上的有界算子。
+
+\ProseParagraphBreak
+逆算子 \((\mathcal L+I)^{-1}\) 的特征值为 \((2n+2)^{-1}\to0\)，保留 \(0\le n\le N\) 的有限秩截断后，算子范数误差为 \((2N+4)^{-1}\)。因此该逆是紧算子；同理 \(\mathcal L^{-1}\) 的截断误差为 \((2N+3)^{-1}\)，也紧。
+这些误差是被舍去的实对角系数的上确界，在第一个舍去的 Hermite 模态上取到，
+所以不仅是一个随 \(N\) 趋零的定性估计。
+二次势能把函数的质量限制在有限位置，离散特征值趋向无穷；
+这与全空间自由 Laplace 算子的连续 Fourier 频率形成不同的谱结构。
 
 \subsection{本卷 Fourier 约定下的特征基}
 \label{b2:subsec:B20103}
@@ -72,21 +456,151 @@ Hermite 函数满足
 \[\psi_n(x)=(2\pi)^{1/4}\widetilde h_n(\sqrt{2\pi}\,x).\]
 其中 \(\psi_0(x)=2^{1/4}e^{-\pi x^2}\)，正好由 Gauss Fourier 公式保持不变。这里的 \(\psi_n\) 就是第五章记作 \(h_n\) 的归一化；本附录用 \(\widetilde h_n\) 区分谐振子尺度，避免在两种高斯指数之间混用公式。
 
+\Needspace{6\baselineskip}
 \begin{theorem}[Fourier 变换的 Hermite 特征展开]
 \label{b2:thm:B2-fourier-hermite}
-对所有 \(n\ge0\)，有 \(\widehat\psi_n=(-i)^n\psi_n\)。因此若 \(f=\sum c_n\psi_n\) 于 \(L^2(\mathbb R)\)，则
-\[\widehat f=\sum_{n=0}^\infty(-i)^nc_n\psi_n\quad\text{于 }L^2.\]
+设 \(n\geq0\) 为整数，\(H_n(x)=(-1)^ne^{x^2}\frac{\mathrm d^n}{\mathrm dx^n}e^{-x^2}\)，\(\widetilde h_n=H_ne^{-x^2/2}/(2^nn!\sqrt\pi)^{1/2}\)。
+令 \(\psi_n(x)=(2\pi)^{1/4}\widetilde h_n(\sqrt{2\pi}x)\)，
+在复 \(L^2(\mathbb R)\) 上取负号 \(2\pi\) 归一化的 Fourier 酉变换 \(\mathcal F\)。
+对所有 \(n\geq0\)，有 \(\widehat\psi_n=(-\mathrm i)^n\psi_n\)。
+因此若 \(f=\sum c_n\psi_n\) 于 \(L^2(\mathbb R)\)，则
+\[
+ \widehat f=\sum_{n=0}^\infty(-\mathrm i)^nc_n\psi_n
+ \quad\text{于 }L^2.
+\]
 \end{theorem}
 \begin{proof}
-缩放后的升算子与 \(2\pi x-\frac{\mathrm d}{\mathrm dx}\) 成正比。Fourier 微分公式给出
-\[\mathcal F\left(\left(2\pi x-\frac{\mathrm d}{\mathrm dx}\right)f\right)
- =-i\left(2\pi\xi-\frac{\mathrm d}{\mathrm d\xi}\right)\widehat f.
-\]
-从 \(\widehat\psi_0=\psi_0\) 出发，逐次使用升算子得到全部特征值。对有限和结论已成立，利用 Fourier 的 \(L^2\) 连续性和正交展开取极限，即得一般形式。
+\cref{b2:prop:B2-hermite-basis}的尺度比较给出 \(\psi_n=h_n\)，
+所以在负号 \(2\pi\) 归一化下，\cref{b2:thm:05-hermite}的 Fourier 特征关系正是
+\(\widehat\psi_n=(-\mathrm i)^n\psi_n\)。
+对有限展开逐项作用，再用 Fourier 变换在 \(L^2\) 上的酉连续性取极限，
+便得到所列平方范数收敛的级数；这里没有声称逐点收敛。
 \end{proof}
 
-由此再次看到 \(\mathcal F^4=I\)，以及偶、奇模态分别对应反射的正、负特征值。但每个 Fourier 特征值都有无穷多个模态：\(n\) 相差 \(4\) 时相位相同，故 Fourier 变换的四个特征空间都无限维。谐振子的特征值则逐阶区分这些模态，两个谱展开虽共用一组函数，却表达不同算子的信息。
+这个展开精确给出了 Fourier 变换的四个特征空间。对 \(k=0,1,2,3\)，令
+\[
+ \mathcal E_k=\{f\in L^2(\mathbb R):
+ \mathcal Ff=(-\mathrm i)^kf\}.
+\]
+若 \(f=\sum c_n\psi_n\)，比较 Fourier 展开的系数，便有
+\[
+ f\in\mathcal E_k
+ \quad\Longleftrightarrow\quad
+ c_n=0\text{ 对所有 }n\not\equiv k\pmod4.
+\]
+所以
+\[
+ \mathcal E_k=
+ \overline{\operatorname{span}\{\psi_{4m+k}:m\geq0\}}^{\,L^2},
+ \quad
+ L^2(\mathbb R)=\mathcal E_0\oplus\mathcal E_1
+ \oplus\mathcal E_2\oplus\mathcal E_3.
+\]
+各空间由互不相交的基指标生成，因此闭且两两正交；
+每个空间都含有无穷多个标准正交向量，故都是无限维。
+例如 \((\psi_0+\psi_4)/\sqrt2\) 也被 Fourier 变换保持不变，
+自对偶函数并不只有一个 Gauss 基态。
+若非零 \(f\) 满足 \(\mathcal Ff=zf\)，取任一非零系数又得
+\(z=(-\mathrm i)^n\)，所以没有其他特征值。
+
+\ProseParagraphBreak
+逐项作用还给出 \(\mathcal F^4=I\) 和
+\(\mathcal F^2f(x)=f(-x)\)。
+由于 \(\psi_n(-x)=(-1)^n\psi_n(x)\)，
+\(\mathcal E_0\oplus\mathcal E_2\) 正是偶函数空间，
+\(\mathcal E_1\oplus\mathcal E_3\) 正是奇函数空间。
+Fourier 变换只读取阶数模 \(4\) 的信息；
+谐振子的特征值则逐阶区分模态。
+说两种谱展开共用基时，还要保留尺度：
+\(\psi_n=U\widetilde h_n\) 对角化的是
+\[
+ U\mathcal LU^{-1}
+ =-\frac1{2\pi}\partial_x^2+2\pi x^2,
+ \quad D(U\mathcal LU^{-1})=U D(\mathcal L),
+\]
+其特征值仍为 \(2n+1\)。
+这个公式由 \(U\partial_yU^{-1}=(2\pi)^{-1/2}\partial_x\)、
+\(UyU^{-1}=\sqrt{2\pi}\,x\) 得到。
+在本卷 Fourier 归一化下，不能把未缩放的 \(\widetilde h_n\)
+直接当作同一特征基。
 
 \ProseParagraphBreak
 
-在 \(\mathbb R^d\) 上取张量积 \(\widetilde h_\alpha(x)=\prod_{j=1}^d \widetilde h_{\alpha_j}(x_j)\)。Fubini 和一维完备性逐坐标应用，给出 \(L^2(\mathbb R^d)\) 的标准正交基。算子 \(-\Delta+|x|^2\) 的特征值为 \(2|\alpha|+d\)，所以第 \(n\) 层的重数是满足 \(|\alpha|=n\) 的多重指标个数 \(\binom{n+d-1}{d-1}\)。这一简并来自不同坐标方向分配同一总阶数，与球谐展开按角动量分类的方式不同。
+多个坐标可以分别使用一维基。这里张量积的完备性需要利用切片上的一维完备性，
+仅计算两两内积还不足以排除正交补。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[Hermite 张量积基]\label{b2:prop:B2-hermite-tensor}
+设整数 \(d\geq1\)，对 \(n\geq0\) 令
+\[
+ \widetilde h_n(t)=
+ \frac{(-1)^ne^{t^2/2}\partial_t^ne^{-t^2}}
+ {(2^nn!\sqrt\pi)^{1/2}},
+ \quad
+ \psi_n(t)=(2\pi)^{1/4}\widetilde h_n(\sqrt{2\pi}\,t).
+\]
+对多重指标 \(\alpha=(\alpha_1,\ldots,\alpha_d)\in\mathbb N_0^d\)，定义
+\[
+ \widetilde h_\alpha(x)=\prod_{j=1}^d\widetilde h_{\alpha_j}(x_j),
+ \quad
+ \psi_\alpha(x)=\prod_{j=1}^d\psi_{\alpha_j}(x_j).
+\]
+这两族各为复 \(L^2(\mathbb R^d)\) 的标准正交基，且
+\[
+ (-\Delta+|x|^2)\widetilde h_\alpha
+ =(2|\alpha|+d)\widetilde h_\alpha,\quad
+ \widehat{\psi_\alpha}=(-\mathrm i)^{|\alpha|}\psi_\alpha,
+\]
+其中 \(|\alpha|=\alpha_1+\cdots+\alpha_d\)，Fourier 变换取负号 \(2\pi\) 约定。
+固定总阶数 \(n\geq0\) 的 Hermite 层
+\(\operatorname{span}\{\widetilde h_\alpha:|\alpha|=n\}\)
+维数为 \(\binom{n+d-1}{d-1}\)。
+\end{proposition}
+\begin{proof}
+各因子平方可积，Fubini 将两个乘积的内积化为一维内积的乘积，所以标准正交性成立。
+对完备性按 \(d\) 归纳；\(d=1\) 已由\cref{b2:prop:B2-hermite-basis}建立。
+设 \(F\in L^2(\mathbb R^{d-1}\times\mathbb R)\) 与全部乘积正交。
+对固定 \(\beta\in\mathbb N_0^{d-1}\)，定义切片系数
+\[
+ G_\beta(t)=\int_{\mathbb R^{d-1}}
+ F(x',t)\overline{\widetilde h_\beta(x')}\,\mathrm dx'
+ \quad\text{对几乎处处 }t.
+\]
+由 Fubini，几乎每个切片属于 \(L^2(\mathbb R^{d-1})\)；
+对切片用 Cauchy--Schwarz 再积分，得到
+\(\|G_\beta\|_{L^2(\mathbb R)}\leq\|F\|_2\)。
+与全部 \(\widetilde h_\beta(x')\widetilde h_n(t)\) 正交说明
+\(G_\beta\) 与全部一维 Hermite 函数正交，故 \(G_\beta=0\) 几乎处处。
+这一换序合法，因为
+\(F\cdot\overline{\widetilde h_\beta\widetilde h_n}\in L^1\)，
+其积分绝对值由两者的 \(L^2\) 范数乘积控制。
+多重指标 \(\beta\) 只有可数个，因此可以同时删去各个零测例外集。
+在余下每个 \(t\) 上，切片 \(F(\,\cdot\,,t)\) 与全部 \((d-1)\) 维乘积正交；
+归纳假设使这个切片为零，从而 \(F=0\)。
+这证明 \((\widetilde h_\alpha)\) 完备；
+\((\psi_\alpha)\) 则通过逐坐标的酉伸缩得到相同结论。
+
+微分算子分解为
+\(-\Delta+|x|^2=\sum_{j=1}^d(-\partial_{x_j}^2+x_j^2)\)，
+每一项只作用于对应因子，所以特征值相加为
+\(\sum_j(2\alpha_j+1)=2|\alpha|+d\)。
+这些函数均为 Schwartz 函数，其 Fourier 积分可按坐标使用 Fubini，
+一维特征值相乘就得到 \((-\mathrm i)^{|\alpha|}\)。
+最后，把 \(n\) 个相同记号分入 \(d\) 个依次排列的格子，
+等价于在 \(n+d-1\) 个位置中选择 \(d-1\) 个隔板；
+这给出 \(|\alpha|=n\) 的解数
+\(\binom{n+d-1}{d-1}\)。该层的基向量标准正交，其个数就是维数。
+\end{proof}
+
+若以这组基定义 \(-\Delta+|x|^2\) 的谱实现，定义域条件就是
+\[
+ \sum_{\alpha\in\mathbb N_0^d}
+ (2|\alpha|+d)^2
+ |\langle f,\widetilde h_\alpha\rangle|^2<\infty.
+\]
+在系数空间中仍是实序列的乘法算子：
+对伴随域作有限指标集测试，恰得到同一加权平方和条件，
+所以一维自伴性证明也适用于这里。
+比较任一特征向量的系数可知，特征值 \(2n+d\) 的整个特征空间正是总阶数 \(n\) 的 Hermite 层。
+这一简并来自不同坐标方向分配同一总阶数，
+与后文球谐展开按角动量分类的方式不同。

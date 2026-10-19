@@ -2,68 +2,225 @@
 \section{Riesz 势}
 \label{b2:sec:1901}
 
-卷积核 \(|x|^{\alpha-d}\) 在原点可积，但在无穷远不可积。它改善可积指数而不是保持原来的指数；这种改善由核的齐次尺度决定。
+上一章用 Riesz 变换控制解的导数：其 Fourier 符号只依赖频率方向，所以输入与输出处在同一个 \(L^p\) 空间。若要由导数恢复函数，还须除去频率的大小。除以 \(2\pi|\xi|\) 相当于积分一次，除以它的 \(\alpha\) 次方则提示一种不必取整数阶的积分。对应的空间核是 \(|x|^{\alpha-d}\)：它在原点附近可积，在无穷远却不可积。这种长距离作用决定了输出的可积指数必须改变。
 
 \subsection{分数积分}
 \label{b2:subsec:190101}
 
+先把算子定义成普通积分，再用热核解释核的常数和 Fourier 符号。这样可以分清两个问题：给定输入时积分是否存在，以及存在后怎样估计它。
+\Needspace{6\baselineskip}
 \begin{definition}\label{b2:thm:19-potential-definition}
-设 \(0<\alpha<d\)。对适当的可测 \(f\)，定义\term[riesz-shi]{Riesz 势}[Riesz potential]
+设 \(d\geq1\) 为整数，\(0<\alpha<d\)，并令
 \[
- I_\alpha f(x)\coloneqq c_{d,\alpha}\int_{\mathbb R^d}
- |x-y|^{\alpha-d}f(y)\,\mathrm dy,\qquad
- c_{d,\alpha}=\dfrac{\Gamma((d-\alpha)/2)}
- {2^\alpha\pi^{d/2}\Gamma(\alpha/2)}.
+ k_\alpha(x)=c_{d,\alpha}|x|^{\alpha-d}\quad(x\ne0),
+ \quad
+ c_{d,\alpha}=\frac{\Gamma\bigl((d-\alpha)/2\bigr)}
+ {2^\alpha\pi^{d/2}\cdot\Gamma(\alpha/2)}.
+\]
+这里 \(\Gamma(a)=\int_0^\infty t^{a-1}\cdot e^{-t}\,\mathrm dt\)、\(a>0\)。对 Lebesgue 可测函数 \(f:\mathbb R^d\to\mathbb C\)，在下式绝对收敛的点定义\term[riesz-shi]{Riesz 势}[Riesz potential]
+\[
+ I_\alpha f(x)\coloneqq\int_{\mathbb R^d}k_\alpha(x-y)\cdot f(y)\,\mathrm dy.
 \]
 \symidx{\(I_\alpha f\)：Riesz 势}
-正函数时允许取无穷值；一般函数先要求绝对积分存在。
+对非负输入允许积分取 \(+\infty\)；复值输入要求 \(I_\alpha|f|(x)<\infty\)。核在原点的取值不影响积分，可任意指定为有限值。
 \end{definition}
-此参数 \(\alpha\) 是增加的光滑阶数，不是核中负幂的大小。为了核对 Fourier 常数，利用热核 \(G_t(x)=(4\pi t)^{-d/2}e^{-|x|^2/(4t)}\) 写成
+
+参数 \(\alpha\) 表示积分的阶数；核的负幂大小则是 \(d-\alpha\)。记单位球面的面积为 \(\sigma_{d-1}\)，其中 \(\sigma_0=2\)。极坐标给出
 \[
- c_{d,\alpha}|x|^{\alpha-d}
- =\dfrac1{\Gamma(\alpha/2)}
- \int_0^\infty t^{\alpha/2-1}G_t(x)\,\mathrm dt.
+ \int_{|x|<R}|x|^{\alpha-d}\,\mathrm dx
+ =\sigma_{d-1}\int_0^R r^{\alpha-1}\,\mathrm dr
+ =\frac{\sigma_{d-1}}\alpha R^\alpha.
 \]
-换元 \(s=|x|^2/(4t)\) 直接得到右侧的 Gamma 积分。对测试函数的配对可以用截断热积分再取极限；Fourier 热符号给出
+因此 \(\alpha>0\) 保证原点附近的可积性；同一个径向积分在 \(R\to\infty\) 时发散。对于有界紧支集输入，近处用输入的上界，远处用其有限支集，故势在每个点都有限。对 Schwartz 输入也成立，远尾改由快速衰减控制。例如
 \[
- \widehat{I_\alpha f}(\xi)=(2\pi|\xi|)^{-\alpha}\widehat f(\xi).
+ I_\alpha\mathbf1_{B(0,R)}(0)
+ =\frac{c_{d,\alpha}\sigma_{d-1}}\alpha R^\alpha.
 \]
-低频奇性局部可积恰由 \(\alpha<d\) 保证。对非负紧支集输入，空间积分定义与分布定义相同，不需额外的零平均条件。
+这个算例已经显示阶数 \(\alpha\) 怎样进入空间尺度。
+
+\ProseParagraphBreak
+
+定义中的 Gamma 常数不是为估计任意挑选的。它使势在 Fourier 侧恰好对应 \((2\pi|\xi|)^{-\alpha}\)。构造常数的方法是把不同时间的热核叠加起来：热核的频率符号是指数函数，对时间作幂权积分就能得到频率的负幂。
+\Needspace{6\baselineskip}
+\begin{proposition}\label{b2:prop:19-riesz-heat}
+设整数 \(d\geq1\)、\(0<\alpha<d\)，令 \(k_\alpha\) 为\cref{b2:thm:19-potential-definition}中的归一化核，并令
+\[
+ G_t(x)=(4\pi t)^{-d/2}\cdot e^{-|x|^2/(4t)}\quad(t>0).
+\]
+则对 \(x\ne0\)，有
+\[
+ k_\alpha(x)=\frac1{\Gamma(\alpha/2)}
+ \int_0^\infty t^{\alpha/2-1}\cdot G_t(x)\,\mathrm dt.
+\]
+核 \(k_\alpha\) 定义温和分布，且在温和分布意义下
+\[
+ \widehat{k_\alpha}(\xi)=(2\pi|\xi|)^{-\alpha}.
+\]
+右端按局部可积函数解释。对每个 \(f\in\mathcal S(\mathbb R^d;\mathbb C)\)，\(I_\alpha f\) 的普通积分在每个点绝对收敛，并满足
+\[
+ \widehat{I_\alpha f}(\xi)
+ =(2\pi|\xi|)^{-\alpha}\cdot\widehat f(\xi)
+ \quad\text{于 }\mathcal S'(\mathbb R^d).
+\]
+\end{proposition}
+\begin{proof}
+对固定的 \(x\ne0\)，在热积分中令 \(s=|x|^2/(4t)\)，得到
+\[
+ \begin{aligned}
+ &\frac{(4\pi)^{-d/2}}{\Gamma(\alpha/2)}
+ \int_0^\infty t^{(\alpha-d)/2-1}\cdot e^{-|x|^2/(4t)}\,\mathrm dt\\
+ &\quad=\frac{|x|^{\alpha-d}}
+ {2^\alpha\pi^{d/2}\cdot\Gamma(\alpha/2)}
+ \int_0^\infty s^{(d-\alpha)/2-1}\cdot e^{-s}\,\mathrm ds
+ =k_\alpha(x).
+ \end{aligned}
+\]
+这里 \(d-\alpha>0\) 保证最后的 Gamma 积分收敛。核在原点局部可积，在单位球外有界，故它与每个 Schwartz 函数的乘积绝对可积，并定义连续的温和分布。
+
+还须证明在分布配对中可以放开热积分的两端。对 \(\varphi\in\mathcal S\)，由 \(G_t\geq0\)、\(\int G_t=1\) 及热核的上界，
+\[
+ \int G_t(x)\cdot|\varphi(x)|\,\mathrm dx
+ \leq
+ \begin{cases}
+ \|\varphi\|_\infty,&0<t\leq1,\\
+ (4\pi t)^{-d/2}\|\varphi\|_1,&t\geq1.
+ \end{cases}
+\]
+乘 \(t^{\alpha/2-1}\) 后，两个时间区间上的积分分别由 \(\alpha>0\) 和 \(\alpha<d\) 保证收敛。这给出了绝对换序和截断极限所需的控制。
+
+热核的 Fourier 公式为 \(\widehat G_t(\xi)=e^{-4\pi^2t|\xi|^2}\)，归一化与\eqref{b2:eq:12-gauss-heat}一致。对频率测试函数 \(\psi\in\mathcal S\)，同样有
+\[
+ \int e^{-4\pi^2t|\xi|^2}\cdot|\psi(\xi)|\,\mathrm d\xi
+ \leq
+ \begin{cases}
+ \|\psi\|_1,&0<t\leq1,\\
+ C_dt^{-d/2}\|\psi\|_\infty,&t\geq1.
+ \end{cases}
+\]
+因此可先把时间限制在 \([a,b]\subset(0,\infty)\)，取 Fourier 变换，再放开两端。对 \(\xi\ne0\)，换元 \(v=4\pi^2t|\xi|^2\) 给出
+\[
+ \frac1{\Gamma(\alpha/2)}
+ \int_0^\infty t^{\alpha/2-1}\cdot e^{-4\pi^2t|\xi|^2}\,\mathrm dt
+ =(4\pi^2|\xi|^2)^{-\alpha/2}.
+\]
+频率原点附近的负幂可积，因为 \(\alpha<d\)；上述配对控制说明没有遗漏集中在原点的分布项。
+
+最后，\(k_\alpha*f\) 对 Schwartz 输入的绝对收敛已由近远场估计说明。\cref{b2:prop:05-tempered-convolution}适用于温和分布 \(k_\alpha\) 与 Schwartz 函数 \(f\)，故其 Fourier 变换为 \(\widehat{k_\alpha}\cdot\widehat f\)，得到所述恒等式。
+\end{proof}
+在 \(d\geq3\)、\(\alpha=2\) 时，用球面积公式 \(\sigma_{d-1}=2\pi^{d/2}/\Gamma(d/2)\)，并用分部积分给出的 \(\Gamma(a+1)=a\cdot\Gamma(a)\)、\(a>0\)，可得
+\[
+ c_{d,2}=\frac1{(d-2)\sigma_{d-1}}.
+\]
+所以二阶 Riesz 势正是本卷负 Laplace 算子的 Newton 势；三维核为 \(1/(4\pi|x|)\)。二维不能把 \(\alpha=2\) 代入本命题：这已经超出 \(\alpha<d\)，相应基本解是对数核。
+
+\ProseParagraphBreak
+
+命题的 Fourier 公式目前以 Schwartz 输入为条件。一般 \(L^p\) 函数虽可视为温和分布，却不能因此把其 Fourier 变换任意乘上零频处奇异的 \(|\xi|^{-\alpha}\)。下一节先从空间积分证明有界性，再用有限热积分识别需要的 Fourier 等式。
 
 \subsection{缩放}
 \label{b2:subsec:190102}
 
-若 \(f_\lambda(x)=f(\lambda x)\)、\(\lambda>0\)，换元给出
+核的齐次性可以在寻找估计之前确定唯一可能的目标指数。设 \(f_\lambda(x)=f(\lambda x)\)、\(\lambda>0\)。在势绝对收敛的点换元 \(z=\lambda y\)，有
 \[
- I_\alpha f_\lambda(x)=\lambda^{-\alpha}(I_\alpha f)(\lambda x).
+ \begin{aligned}
+ I_\alpha f_\lambda(x)
+ &=c_{d,\alpha}\lambda^{-d}
+   \int|x-z/\lambda|^{\alpha-d}\cdot f(z)\,\mathrm dz\\
+ &=\lambda^{-\alpha}\cdot(I_\alpha f)(\lambda x).
+ \end{aligned}
 \]
-假如存在尺度一致的 \(L^p\to L^q\) 估计，非零测试函数代入后必须满足
+若 \(1\leq p,q\leq\infty\)，并存在对所有光滑紧支集输入成立的估计
+\(\|I_\alpha f\|_q\leq C\|f\|_p\)，其中 \(C\) 不随输入缩放改变，则必有
 \[
- \dfrac1q=\dfrac1p-\dfrac\alpha d.
+ \frac1q=\frac1p-\frac\alpha d,
+ \quad\frac1\infty=0.
 \]
-这只是必要条件，不给出有界性。特别是同指数 \(L^p\to L^p\) 的全空间估计与齐次尺度不相容；加上低频正则化的 Bessel 势则是另一种非齐次算子。
+确实，固定一个非零非负光滑紧支集函数。假定的估计使其势具有有限且非零的目标范数。把缩放式代入估计，得到
+\[
+ \lambda^{-\alpha-d/q}\|I_\alpha f\|_q
+ \leq C\lambda^{-d/p}\|f\|_p\quad(\lambda>0).
+\]
+两边的幂必须相等，否则令 \(\lambda\) 趋零或无穷即可矛盾。这只是必要条件；它还没有控制任何给定输入的势。
 
 \ProseParagraphBreak
 
-对 \(f\geq0\) 紧支集且质量非零，远场 \(I_\alpha f(x)\) 与 \(|x|^{\alpha-d}\) 同阶。对 \(p=1\) 的临界目标 \(q=d/(d-\alpha)\)，这个尾部的 \(q\) 次积分正好是对数发散。尺度关系允许的端点仍可能只有弱估计。
+特别地，\(\alpha>0\) 时不存在这种全空间同指数强估计。Bessel 势的低频行为则不同：其 \(\alpha\) 阶积分符号为
+\[
+ (1+4\pi^2|\xi|^2)^{-\alpha/2},
+\]
+在零频附近有界，高频时才与 Riesz 势的符号同阶。这里出现的常数 \(1\) 选定了一个固定尺度，使齐次缩放不再成立。\Cref{b2:prop:22-bessel-kernel}将用带 \(e^{-t}\) 权的热核构造这一算子，并证明它在全部 \(1\leq p\leq\infty\) 上保持同一指数。那个正核构造对任意 \(\alpha>0\) 都成立；本节 Riesz 势仍限于 \(0<\alpha<d\)。
+
+\ProseParagraphBreak
+
+缩放关系在 \(p=1\) 时给出 \(q_0=d/(d-\alpha)\)，但强估计在此失败。取 \(f\geq0\)、\(f\in L^1\)，支撑在 \(B(0,R_0)\) 内，且 \(m=\int f>0\)。当 \(|x|\geq2R_0\) 时，
+\[
+ \frac{|x|}{2}\leq|x-y|\leq\frac{3|x|}{2}
+ \quad(y\in B(0,R_0)),
+\]
+所以存在只依赖 \(d,\alpha\) 的正数 \(c,C\)，使
+\[
+ cm|x|^{\alpha-d}\leq I_\alpha f(x)
+ \leq Cm|x|^{\alpha-d}.
+\]
+对下界取 \(q_0\) 次方并积分，径向幂恰为
+\[
+ (\alpha-d)q_0+d-1=-1.
+\]
+因而尾积分对数发散。即使输入光滑且非负，也不能得到强 \(L^{q_0}\) 输出；下一节的弱型结论允许这种临界尾部。
 
 \subsection{核估计}
 \label{b2:subsec:190103}
 
-下面采用\term[hedberg-guji]{Hedberg 估计}[Hedberg inequality]的下述版本。
-
+尺度关系告诉我们应当得到哪个指数，却没有提供估计。为控制势，在观察点周围选一个半径 \(R\)：近处的核奇性用局部平均处理，远处用输入的全域 \(L^p\) 范数处理。两部分对 \(R\) 的依赖方向相反，选择它们相等的半径就能消去这个辅助参数。这给出\term[hedberg-guji]{Hedberg 估计}[Hedberg inequality]。
+\Needspace{6\baselineskip}
 \begin{lemma}[Hedberg 估计]\label{b2:thm:19-hedberg}
-设 \(1\leq p<d/\alpha\)，\(f\in L^p(\mathbb R^d)\)。则
+设整数 \(d\geq1\)、\(0<\alpha<d\)、\(1\leq p<d/\alpha\)，且 \(f\in L^p(\mathbb R^d;\mathbb C)\)。令 \(I_\alpha\) 为\cref{b2:thm:19-potential-definition}的 Riesz 势，令
 \[
- I_\alpha|f|(x)\leq C
- \|f\|_p^{\alpha p/d}\cdot
- (Mf(x))^{1-\alpha p/d}
+ Mf(x)=\sup_{r>0}\frac1{|B(x,r)|}\int_{B(x,r)}|f(y)|\,\mathrm dy.
 \]
-在 \(Mf(x)<\infty\) 处成立。
+存在只依赖 \(d,\alpha,p\) 的有限常数 \(C_{d,\alpha,p}\)，使在 \(Mf(x)<\infty\) 的每个点均有
+\[
+ I_\alpha|f|(x)
+ \leq C_{d,\alpha,p}\|f\|_p^{\alpha p/d}\cdot
+       \bigl(Mf(x)\bigr)^{1-\alpha p/d}.
+\]
 \end{lemma}
 \begin{proof}
-对任意 \(R>0\)，近场分成 \(2^{-k-1}R<|x-y|\leq2^{-k}R\) 的环带。每带不超过 \(C(2^{-k}R)^\alpha Mf(x)\)，求和得 \(CR^\alpha Mf(x)\)。远场若 \(p>1\)，Hölder 与极坐标给出 \(CR^{\alpha-d/p}\|f\|_p\)；条件 \(\alpha p<d\) 正好保证远尾核属于 \(L^{p'}\)。当 \(p=1\)，直接用远场核的上界得到相同形式。
+固定 \(x\) 与 \(R>0\)。把 \(0<|x-y|<R\) 分成环带
+\(A_k=\{\,2^{-k-1}R<|x-y|\leq2^{-k}R\,\}\)、\(k\geq0\)。因为 \(\alpha-d<0\)，每带有
+\[
+ \begin{aligned}
+ \int_{A_k}|x-y|^{\alpha-d}\cdot|f(y)|\,\mathrm dy
+ &\leq(2^{-k-1}R)^{\alpha-d}
+       \int_{B(x,2^{-k}R)}|f|\\
+ &\leq C_d2^{d-\alpha}(2^{-k}R)^\alpha\cdot Mf(x).
+ \end{aligned}
+\]
+由于 \(\alpha>0\)，几何级数 \(\sum_{k\geq0}2^{-k\alpha}\) 收敛；包括归一化常数后，近场不超过 \(C_{d,\alpha}R^\alpha\cdot Mf(x)\)。这一步允许先取有限个环带，再用单调收敛，不必预先假定势有限。
 
-若 \(Mf(x)>0\)、\(\|f\|_p>0\)，令 \(R=(\|f\|_p/Mf(x))^{p/d}\)，两个部分同阶。若 \(Mf(x)=0\)，所有中心球上 \(|f|\) 积分为零，递增球穷尽全空间，故 \(f=0\) 几乎处处。零范数同样直接处理。
+若 \(p>1\)，记 \(p'=p/(p-1)\)。Hölder 给出的远场界是
+\[
+ \begin{aligned}
+ \int_{|x-y|\geq R}|x-y|^{\alpha-d}\cdot|f(y)|\,\mathrm dy
+ &\leq\|f\|_p\cdot
+ \left(\sigma_{d-1}\int_R^\infty
+        r^{(\alpha-d)p'+d-1}\,\mathrm dr\right)^{1/p'}\\
+ &=\left(\frac{\sigma_{d-1}}{(d-\alpha)p'-d}\right)^{1/p'}
+       R^{\alpha-d/p}\|f\|_p.
+ \end{aligned}
+\]
+分母为正恰好等价于 \(\alpha p<d\)。若 \(p=1\)，直接用远场的核上界，得到 \(R^{\alpha-d}\|f\|_1\)。因此两种情形都满足
+\[
+ I_\alpha|f|(x)
+ \leq C_{d,\alpha,p}
+ \bigl(R^\alpha\cdot Mf(x)+R^{\alpha-d/p}\|f\|_p\bigr).
+\]
+在 \(0<Mf(x)<\infty\)、\(\|f\|_p>0\) 时，令
+\[
+ R=\left(\frac{\|f\|_p}{Mf(x)}\right)^{p/d}.
+\]
+于是 \(R^{d/p}Mf(x)=\|f\|_p\)，两项具有同一大小，代回即得结论。
+
+若 \(Mf(x)=0\)，所有以 \(x\) 为中心的球上 \(|f|\) 的积分均为零；递增球穷尽全空间，所以 \(f=0\) 几乎处处，势也为零。\(\|f\|_p=0\) 的情形相同。
 \end{proof}
-近场使用局部平均，远场使用全域可积性。只估计其中一边，不能得到尺度正确的势估计。这个平衡将在临界与非临界指数之间反复出现。
+近场的幂 \(R^\alpha\) 随半径增大，远场的幂 \(R^{\alpha-d/p}\) 则随之减小。两个指数的符号解释了为什么可以平衡，也解释了临界 \(p=d/\alpha\) 处这条证明会失效。下一节把此点态估计与\chapref{b2:ch:17}的极大函数范数界结合，得到势的强型和弱型结论。

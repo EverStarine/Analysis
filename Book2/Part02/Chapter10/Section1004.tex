@@ -2,16 +2,28 @@
 \section{广义解与逼近}
 \label{b2:sec:1004}
 
+展开系数能逐个求出，并不保证所得函数可以逐项作两次微分。这里先以有限模态解为出发点，用能量控制它们的差，再让截断阶数趋于无穷。这个过程同时说明初值在哪个空间取得、边界条件以什么形式保留，以及外力怎样进入解。
+
 \subsection{形式级数解}
 \label{b2:subsec:100401}
 
-本节在 \(\mathfrak a(u,u)\geq0\) 的附加假设下讨论演化，故 \(\lambda_n\geq0\)。例如 \(q\geq0\)、所有 Robin 系数非负时即满足此条件。空间仍取上一节的 \(H,V,A\)，时间系数吸收进 \(A\)。对方程
+取有限区间 \(I=(a,b)\)，实连续系数 \(p,w,q\in C([a,b])\)，其中 \(p,w>0\)，令 \(A\) 为\cref{b2:def:10-sl-operator}中具有实分离 Dirichlet 或 Robin 边界条件的算子，\(H=L^2(I,w\,\mathrm{d}x)\)。能量空间 \(V\) 由 \(H^1(I)\) 中满足 Dirichlet 端点条件的函数组成，\(\mathfrak a\) 是\eqref{b2:eq:10-energy-form}定义的含 Robin 边界项的能量形式。由\cref{b2:prop:10-spectral-domains}的能量展开，对每个 \(v\in V\) 有
+\[
+ \mathfrak a(v,v)=\sum_{n\geq1}\lambda_n|v_n|^2,
+ \quad v_n=\langle v,e_n\rangle_H.
+\]
+由于特征值按递增次序排列，能量的非负性有准确的谱判据：
+\begin{equation}\label{b2:eq:10-nonnegative-spectrum}
+ \mathfrak a(v,v)\geq0\quad(\forall v\in V)
+ \quad\Longleftrightarrow\quad\lambda_1\geq0.
+\end{equation}
+正向可取 \(v=e_1\) 验证，反向则因每一项非负而成立。本节在这个非负性假设下讨论演化。条件 \(q\geq0\)、所有 Robin 系数非负只是一个便于直接检查的充分条件；某些系数为负时，也可能由其余正项补偿而仍有 \(\lambda_1\geq0\)。时间系数吸收进 \(A\)。对方程
 \[
  u_{tt}+Au=0,
  \quad u(0)=f,
  \quad u_t(0)=g,
 \]
-逐模态的候选为
+以 \(f_n=\langle f,e_n\rangle_H\)、\(g_n=\langle g,e_n\rangle_H\) 表示初值的谱系数，逐模态的候选为
 \begin{equation}\label{b2:eq:10-wave-series}
  u(t)=\sum_n\left(f_n\cos(\sqrt{\lambda_n}t)
  +g_n s_n(t)\right)e_n,
@@ -21,15 +33,16 @@
  t,&\lambda_n=0.
  \end{cases}
 \end{equation}
-而 \(u_t+Au=0\)、\(u(0)=f\) 的候选为 \(\sum_ne^{-\lambda_nt}f_ne_n\)。每个有限截断都可逐项求导，它满足方程及截断后的数据。现在的问题是：这些有限解以什么方式趋近一个满足原数据的解？
+而 \(u_t+Au=0\)、\(u(0)=f\) 的候选为 \(\sum_ne^{-\lambda_nt}f_ne_n\)。每个有限模态截断都属于 \(D(A)\)，并可在时间变量中逐项求导，因此在 \(H\) 值意义下满足演化方程及截断后的初值。这里使用的是空间算子 \(A\)，并未要求特征函数有经典二阶空间导数：在仅假设 \(p\) 连续时，\(pu'\in H^1\) 控制的是通量的弱导数，不能把 \((pu')'\) 任意拆成 \(pu''+p'u'\)。现在的问题是：这些有限解以什么方式趋近一个满足原数据的解？
 
 \subsection{不可逐项经典求导时的处理}
 \label{b2:subsec:100402}
 
 取正弦系，若 \(f_n=n^{-2}\)、\(g_n=0\)，则 \(\sum_n\lambda_n|f_n|^2<\infty\)，但 \(\sum_n\lambda_n^2|f_n|^2=\infty\)。这给出有限能量初位移，却不属于 \(D(A)\)。因此波方程在初始时刻不必有 \(H\) 值二阶时间导数；把 \(-\lambda_nf_n\) 的级数硬作 \(L^2\) 函数会失去收敛。合理的做法是把空间导数移到检验函数上。
 
+\Needspace{6\baselineskip}
 \begin{definition}\label{b2:def:10-energy-wave}
-设 \(f\in V\)、\(g\in H\)。若 \(u\in C([0,T];V)\)、\(u_t\in C([0,T];H)\)，初值分别为 \(f,g\)，并且对每个 \(v\in V\)、\(\eta\in C_c^\infty(0,T)\) 有
+设 \(I=(a,b)\) 为有限区间，\(p,w,q\in C([a,b];\mathbb R)\)，\(p,w>0\)；\(Au=w^{-1}(-(pu')'+qu)\) 取两端各一个实分离 Dirichlet 或 Robin 条件，定义域如\cref{b2:def:10-sl-operator}，\(H=L^2(I,w\,\mathrm dx)\)。令 \(V\subset H^1(I)\) 由 Dirichlet 端点值为零限定，\(R\) 为 Robin 端点集合，\(h_s\in\mathbb R\)，\(\mathfrak a(u,v)=\int_I(pu'\overline{v'}+qu\overline v)\,\mathrm dx+\sum_{s\in R}h_su(s)\overline{v(s)}\)。并假设 \(\mathfrak a(v,v)\geq0\) 对所有 \(v\in V\) 成立，\(T>0\)。设 \(f\in V\)、\(g\in H\)。若 \(u\in C([0,T];V)\cap C^1([0,T];H)\)，初值 \(u(0)=f\)、\(u_t(0)=g\) 分别在 \(V,H\) 中取得，并且对每个 \(v\in V\)、\(\eta\in C_c^\infty(0,T)\) 有
 \[
  \int_0^T\left(-\langle u_t(t),v\rangle_H\eta'(t)
  +\mathfrak a(u(t),v)\eta(t)\right)\,\mathrm{d}t=0,
@@ -39,8 +52,9 @@
 
 条件 \(u(t)\in V\) 保存 Dirichlet 端点值。Robin 通量一般不能对能量解逐点求值，其边界信息已包含在 \(\mathfrak a\) 中。正则性提高到 \(D(A)\) 时，分部积分又恢复原来的通量条件。因此这种定义保留了边界约束的作用，并没有要求所有弱解都有经典边界导数。
 
+\Needspace{6\baselineskip}
 \begin{theorem}[波动问题的能量极限]\label{b2:thm:10-wave-energy-limit}
-对每个 \(f\in V\)、\(g\in H\)，式\eqref{b2:eq:10-wave-series}在每个有限时间区间上给出唯一能量解。它的有限截断在 \(C([0,T];V)\) 中收敛，时间导数在 \(C([0,T];H)\) 中收敛，并满足
+设 \(I=(a,b)\) 为有限区间，\(p,w,q\in C([a,b];\mathbb R)\)，\(p,w>0\)；\(Au=w^{-1}(-(pu')'+qu)\) 取两端各一个实分离 Dirichlet 或 Robin 条件，定义域如\cref{b2:def:10-sl-operator}，\(H=L^2(I,w\,\mathrm dx)\)。令 \(V\subset H^1(I)\) 由 Dirichlet 端点值为零限定，\(R\) 为 Robin 端点集合，\(h_s\in\mathbb R\)，\(\mathfrak a(u,v)=\int_I(pu'\overline{v'}+qu\overline v)\,\mathrm dx+\sum_{s\in R}h_su(s)\overline{v(s)}\)。并假设 \(\mathfrak a(v,v)\geq0\) 对所有 \(v\in V\) 成立，\(T>0\)。对每个 \(f\in V\)、\(g\in H\)，式\eqref{b2:eq:10-wave-series}在每个有限时间区间上给出唯一能量解。它的有限截断在 \(C([0,T];V)\) 中收敛，时间导数在 \(C([0,T];H)\) 中收敛，并满足
 \begin{equation}\label{b2:eq:10-wave-energy}
  \dfrac12\|u_t(t)\|_H^2+\dfrac12\mathfrak a(u(t),u(t))
  =\dfrac12\|g\|_H^2+\dfrac12\mathfrak a(f,f).
@@ -63,7 +77,92 @@
 
 有限截断满足定义中的检验恒等式；\(\mathfrak a\) 在 \(V\times V\) 连续，所以可以传递到极限。能量等式也由范数收敛传递。对任一能量解，取 \(v=e_n\)，得到系数 \(c_n\) 的标量微分方程及初值；其分布二阶导数为连续函数 \(-\lambda_nc_n\)，积分两次后即为经典方程，故系数唯一。完备性再给出解的唯一性。
 
-若初值更正则，将刚才的标量恒等式乘以 \(\lambda_n\)，加上原等式和 \(H\) 分量控制，便得到 \(\sum r_n^2|c_n(t)|^2\)、\(\sum r_n|c_n'(t)|^2\) 的统一可和尾界。由\cref{b2:prop:10-spectral-domains}得前三个空间的连续性，且 \(u_{tt}=-Au\) 于 \(H\) 中连续。
+\textbf{较高正则性。}
+现在设 \(f\in D(A)\)、\(g\in V\)，取\cref{b2:lem:10-form-coercive}允许的 \(\sigma\geq1\)，令 \(r_n=\lambda_n+\sigma\)。将标量能量恒等式乘以 \(\lambda_n\)，得到
+\[
+ \lambda_n|c_n'(t)|^2+\lambda_n^2|c_n(t)|^2
+ =\lambda_n|g_n|^2+\lambda_n^2|f_n|^2.
+\]
+这一步没有控制零模态的位置，因为 \(\lambda_n=0\) 时等式两端均为零。须另外保留 \(c_n(t)=f_n+\int_0^tc_n'(s)\,\mathrm{d}s\)。由原来的标量能量守恒，对 \(0\leq t\leq T\) 有
+\[
+ |c_n(t)|^2\leq2|f_n|^2
+     +2T^2\bigl(|g_n|^2+\lambda_n|f_n|^2\bigr).
+\]
+特别地，零模态的 \(c_n(t)=f_n+tg_n\) 也受这一估计控制。
+
+为清楚看到所需的尾部一致性，记
+\[
+ \begin{aligned}
+ A_N&=\sum_{n>N}|f_n|^2,\\
+ B_N&=\sum_{n>N}\bigl(|g_n|^2+\lambda_n|f_n|^2\bigr),\\
+ D_N&=\sum_{n>N}\bigl(\lambda_n|g_n|^2+\lambda_n^2|f_n|^2\bigr).
+ \end{aligned}
+\]
+利用 \(r_n^2\leq2\lambda_n^2+2\sigma^2\)，将刚才三个估计相加可得
+\begin{equation}\label{b2:eq:10-wave-higher-tail}
+ \begin{aligned}
+ &\sup_{0\leq t\leq T}\sum_{n>N}
+ \bigl(r_n^2|c_n(t)|^2+r_n|c_n'(t)|^2\bigr)\\
+ &\qquad\leq3D_N+4\sigma^2 A_N
+                 +(4\sigma^2T^2+\sigma)B_N\\
+ &\qquad\leq C_{T,\sigma}\sum_{n>N}
+            \bigl(r_n^2|f_n|^2+r_n|g_n|^2\bigr)
+ \longrightarrow0.
+ \end{aligned}
+\end{equation}
+这里最后的可和性正是\cref{b2:prop:10-spectral-domains}对 \(f\in D(A)\)、\(g\in V\) 的刻画，常数与尾部起点 \(N\) 无关。于是有限截断 \(u_N\) 在 \(C([0,T];D(A))\) 中一致收敛，\(u_N'\) 在 \(C([0,T];V)\) 中一致收敛。由 \(\lambda_n^2\leq r_n^2\)，二阶时间导数级数
+\[
+ u_N''(t)=-\sum_{n\leq N}\lambda_nc_n(t)e_n
+\]
+也在 \(C([0,T];H)\) 中一致收敛到 \(-Au\)。最后将
+\[
+ u_N(t)=P_Nf+\int_0^tu_N'(s)\,\mathrm{d}s,
+ \quad
+ u_N'(t)=P_Ng+\int_0^tu_N''(s)\,\mathrm{d}s
+\]
+分别在 \(V\) 与 \(H\) 中取极限。连续的被积函数使这两个等式给出真正的强时间导数，故 \(u\in C^1([0,T];V)\cap C^2([0,T];H)\)，且 \(u_{tt}+Au=0\) 在 \(H\) 中成立。
+\end{proof}
+
+\Needspace{6\baselineskip}
+\begin{proposition}[一般外力的波动解]\label{b2:prop:10-forced-wave-energy}
+设 \(I=(a,b)\) 为有限区间，\(p,w,q\in C([a,b];\mathbb R)\)，\(p,w>0\)；\(Au=w^{-1}(-(pu')'+qu)\) 取两端各一个实分离 Dirichlet 或 Robin 条件，定义域如\cref{b2:def:10-sl-operator}，\(H=L^2(I,w\,\mathrm dx)\)。令 \(V\subset H^1(I)\) 由 Dirichlet 端点值为零限定，\(R\) 为 Robin 端点集合，\(h_s\in\mathbb R\)，\(\mathfrak a(u,v)=\int_I(pu'\overline{v'}+qu\overline v)\,\mathrm dx+\sum_{s\in R}h_su(s)\overline{v(s)}\)。并假设 \(\mathfrak a(v,v)\geq0\) 对所有 \(v\in V\) 成立，\(T>0\)。设 \(f\in V\)、\(g\in H\)，且 \(F\in L^1((0,T);H)\)。令 \((e_n,\lambda_n)\) 为 \(A\) 的标准正交谱基，\(f_n=\langle f,e_n\rangle_H\)、\(g_n=\langle g,e_n\rangle_H\)，\(s_n(t)=\sin(\sqrt{\lambda_n}t)/\sqrt{\lambda_n}\) 当 \(\lambda_n>0\)，而 \(s_n(t)=t\) 当 \(\lambda_n=0\)。记 \(F_n(s)=\langle F(s),e_n\rangle_H\)。则
+\[
+ u(t)=\sum_n\left(f_n\cos(\sqrt{\lambda_n}t)+g_ns_n(t)
+ +\int_0^ts_n(t-s)F_n(s)\,\mathrm{d}s\right)e_n
+\]
+在 \(C([0,T];V)\) 中收敛，其时间导数在 \(C([0,T];H)\) 中收敛。它是具有给定初值的唯一受迫能量解，即能量解定义中检验恒等式的右端改为
+\(\int_0^T\langle F(t),v\rangle_H\eta(t)\,\mathrm{d}t\)。此外，令
+\(Q(t)=(\|u_t(t)\|_H^2+\mathfrak a(u(t),u(t)))^{1/2}\)，则
+\[
+ Q(t)\leq Q(0)+\int_0^t\|F(s)\|_H\,\mathrm{d}s,
+\]
+且
+\[
+ \dfrac12Q(t)^2=\dfrac12Q(0)^2
+ +\operatorname{Re}\int_0^t\langle F(s),u_t(s)\rangle_H\,\mathrm{d}s.
+\]
+\end{proposition}
+\begin{proof}
+先将数据和外力投影到前 \(N\) 个特征向量。标量 Duhamel 公式给出有限和 \(u_N\)，其速度连续，二阶时间导数局部可积。对有限和作能量计算，得到几乎处处成立的等式
+\[
+ \dfrac{\mathrm{d}}{\mathrm{d}t}\dfrac12Q_N(t)^2
+ =\operatorname{Re}\langle P_NF(t),u_N'(t)\rangle_H.
+\]
+为了包括 \(Q_N=0\) 的时刻，对 \((Q_N^2+\varepsilon^2)^{1/2}\) 求导；其导数不超过 \(\|P_NF\|_H\)。积分后令 \(\varepsilon\downarrow0\)，便有上述不等式的有限和版本。
+
+对 \(u_N-u_M\) 作同一计算，其初值为投影尾部，外力为 \((P_N-P_M)F\)。初值的能量尾趋于零，而
+\[
+ \int_0^T\|(I-P_M)F(s)\|_H\,\mathrm{d}s\longrightarrow0
+\]
+由逐点的 \(H\) 收敛与控制函数 \(\|F(s)\|_H\) 得到。因此速度和 \(\mathfrak a\) 能量都一致 Cauchy。再用
+\[
+ \|u_N(t)-u_M(t)\|_H
+ \leq\|(P_N-P_M)f\|_H
+ +T\sup_{s\leq T}\|u_N'(s)-u_M'(s)\|_H
+\]
+补上零模态，利用 \(\mathfrak a_\sigma\) 的范数等价性即得 \(V\) 中一致收敛。时间积分恒等式把极限速度识别为 \(u_t\)。
+
+有限和的弱方程可由上述收敛传到极限。能量等式右端也收敛：速度一致有界且一致收敛，外力在 \(L^1((0,T);H)\) 中收敛，所以内积积分的差趋于零。最后，对任一受迫能量解取 \(v=e_n\)，其系数满足 \(c_n''+\lambda_nc_n=F_n\) 和同一初值；两解之差满足齐次标量方程，故各系数相同。特征向量的完备性给出唯一性。
 \end{proof}
 
 \subsection{能量极限解释}
@@ -71,8 +170,9 @@
 
 热方程允许更粗的初值，因为每个正频率都有指数衰减。为了将此结论用于\chapref{b2:ch:12}，先给出不依赖逐点求导的版本。
 
+\Needspace{6\baselineskip}
 \begin{proposition}[热方程的平方能量极限]\label{b2:prop:10-heat-energy-limit}
-对 \(f\in H\)，级数
+设 \(I=(a,b)\) 为有限区间，\(p,w,q\in C([a,b];\mathbb R)\)，\(p,w>0\)；\(Au=w^{-1}(-(pu')'+qu)\) 取两端各一个实分离 Dirichlet 或 Robin 条件，定义域如\cref{b2:def:10-sl-operator}，\(H=L^2(I,w\,\mathrm dx)\)。令 \(V\subset H^1(I)\) 由 Dirichlet 端点值为零限定，\(R\) 为 Robin 端点集合，\(h_s\in\mathbb R\)，\(\mathfrak a(u,v)=\int_I(pu'\overline{v'}+qu\overline v)\,\mathrm dx+\sum_{s\in R}h_su(s)\overline{v(s)}\)。并假设 \(\mathfrak a(v,v)\geq0\) 对所有 \(v\in V\) 成立，\(T>0\)。对 \(f\in H\)，令 \((e_n,\lambda_n)\) 为 \(A\) 的标准正交谱基，\(f_n=\langle f,e_n\rangle_H\)。级数
 \[
  u(t)=\sum_ne^{-\lambda_nt}f_ne_n
 \]
@@ -104,4 +204,29 @@
 
 \ProseParagraphBreak
 
-若原算子有负特征值，谱展开仍成立，但波动中的相应三角函数变为双曲函数，热方程相应项按 \(e^{|\lambda_n|t}\) 增长。只有有限个负模态，故有限时间内的解理论仍可逐项处理；收缩性、非负能量和趋向平衡等结论却必须重新检查。本章单独陈述非负情形的结论，后续讨论扩散与振动模型时将用到这些结果。
+若原算子有负特征值，谱展开仍成立，但其时间行为应按\cref{b2:tab:10-spectral-time-evolution}区分。对 \(\lambda<0\)，记 \(\mu=\sqrt{-\lambda}>0\)，波动系数为
+\[
+ c(t)=\frac12\left(a+\frac b\mu\right)e^{\mu t}
+     +\frac12\left(a-\frac b\mu\right)e^{-\mu t},
+ \quad a=c(0),\quad b=c'(0).
+\]
+负特征值提供了可能增长的方向，不意味着所有初值都增长。例如 \(b=-\mu a\) 时，增长分量恰好消失；初值在这个负特征方向的分量均为零时，该模态根本不出现。热方程的负模态也只有在相应初始系数非零时才有指数增长。
+
+\begin{table}[htbp]
+\centering
+\small
+\setlength{\tabcolsep}{5pt}
+\caption[谱符号与波、热方程的时间行为]{谱符号与波、热方程的时间行为。固定实特征值 \(\lambda\)，\(a,b\in\mathbb C\) 为初始系数，\mbox{\(\omega,\mu>0\)}；波动列满足 \(c(0)=a,c'(0)=b\)，热方程列满足 \(c(0)=a\)，时间取 \(t\geq0\)。}
+\label{b2:tab:10-spectral-time-evolution}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{2.5cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.9cm}@{}}
+\toprule
+特征值 & 波方程 \(c''+\lambda c=0\) & 热方程 \(c'+\lambda c=0\) \\
+\midrule
+\(\lambda=\omega^2>0\) & \(a\cos(\omega t)+(b/\omega)\sin(\omega t)\)：三角振荡 & \(ae^{-\lambda t}\)：非零模态指数衰减 \\
+\(\lambda=0\) & \(a+bt\)：保留零模态位移与速度 & \(a\)：保持常数 \\
+\(\lambda=-\mu^2<0\) & \(a\cosh(\mu t)+(b/\mu)\sinh(\mu t)\)：一般含增长分量 & \(ae^{\mu^2t}\)：非零模态指数增长 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+由于负特征值只有有限个，有限时间内仍可将这些模态单独求解，再与非负谱部分合并；但此时不能继续套用本节的非负能量估计或热演化的收缩结论。决定本节假设是否适用的是最低特征值 \(\lambda_1\)，而不是逐个系数的符号。

@@ -8,7 +8,7 @@
 \label{b2:subsec:030101}
 
 \begin{definition}\label{b2:def:03-fourier-transform}
-设 \(f\in L^1(\mathbb R^d)\)。函数
+设 \(d\) 为正整数，\(f\in L^1(\mathbb R^d;\mathbb C)\)。函数
 \begin{equation}\label{b2:eq:03-fourier-definition}
  \widehat f(\xi)\coloneqq\mathcal Ff(\xi)
  =\int_{\mathbb R^d}f(x)\cdot e^{-2\pi\mathrm{i}x\cdot\xi}\,\mathrm{d}x
@@ -26,7 +26,7 @@
 
 \ProseParagraphBreak
 
-在一维，区间示性函数给出一个可直接计算的模型：
+在一维，取 \(a>0\)，区间示性函数给出一个可直接计算的模型：
 \[
  \widehat{\mathbf1_{[-a,a]}}(\xi)=\dfrac{\sin(2\pi a\xi)}{\pi\xi}\quad(\xi\ne0),
  \quad \widehat{\mathbf1_{[-a,a]}}(0)=2a.
@@ -37,10 +37,22 @@
 \]
 这些公式同时提供了后面检验常数和反演条件的例子。
 
+上面的连续频率可以用有限区间的级数作具体比较。在一维，设 \(f\) 连续且支撑在 \([-A,A]\)，并取 \(L>2A\)。将 \(f\) 在 \([-L/2,L/2]\) 上周期延拓，长度 \(L\) 的归一化 Fourier 系数为
+\[
+ c_L(k)=\frac1L\int_{-L/2}^{L/2}f(x)\cdot e^{-2\pi\mathrm i kx/L}\,\mathrm dx
+       =\frac1L\widehat f(k/L).
+\]
+因此保留 \(|k|\leq RL\) 的有限频率和是
+\[
+ \frac1L\sum_{|k|\leq\lfloor RL\rfloor}
+ \widehat f(k/L)\cdot e^{2\pi\mathrm i xk/L}.
+\]
+对固定 \(R>0\) 与 \(x\)，变换定义及控制收敛给出被求和函数在 \([-R,R]\) 连续；这一个和在 \(L\to\infty\) 时是频率步长 \(1/L\) 的 Riemann 和，趋于 \(\int_{-R}^R\widehat f(\xi)e^{2\pi\mathrm i x\xi}\,\mathrm d\xi\)。有限频带的极限只解释了积分为何自然出现；随后再令 \(R\to\infty\) 需要单独的收敛依据，不能从这个计算直接推出反演。归一化中的 \(1/L\) 正好成为频率积分元，所以采用 \(2\pi\) 后不再出现额外常数。
+
 \subsection{平移}
 \label{b2:subsec:030102}
 
-沿用第一卷的平移约定 \(\tau_hf(x)\coloneqq f(x-h)\)。变量替换 \(y=x-h\) 给出
+对 \(f\in L^1(\mathbb R^d;\mathbb C)\)、\(h\in\mathbb R^d\)，沿用第一卷的平移约定 \(\tau_hf(x)\coloneqq f(x-h)\)。变量替换 \(y=x-h\) 给出
 \[
  \widehat{\tau_hf}(\xi)=e^{-2\pi\mathrm{i}h\cdot\xi}\cdot\widehat f(\xi).
 \]
@@ -50,7 +62,7 @@
 \subsection{调制}
 \label{b2:subsec:030103}
 
-对 \(\eta\in\mathbb R^d\)，算子
+对 \(\eta\in\mathbb R^d\)、\(f\in L^1(\mathbb R^d;\mathbb C)\)，算子
 \[
  M_\eta f(x)\coloneqq e^{2\pi\mathrm{i}\eta\cdot x}\cdot f(x)
 \]
@@ -65,7 +77,7 @@
 \label{b2:subsec:030104}
 
 \begin{proposition}\label{b2:prop:03-linear-change}
-设 \(A\) 是可逆实 \(d\times d\) 矩阵，\(g(x)=f(Ax)\)，则
+设 \(d\) 为正整数，\(f\in L^1(\mathbb R^d;\mathbb C)\)，\(A\) 是可逆实 \(d\times d\) 矩阵，\(g(x)=f(Ax)\)，则
 \[
  \widehat g(\xi)=|\det A|^{-1}\cdot\widehat f(A^{-\mathsf T}\xi).
 \]
@@ -79,7 +91,7 @@
 
 
 \begin{proposition}\label{b2:prop:03-symmetries}
-若 \(f\in L^1\)，则 \(\widehat{\overline f}(\xi)=\overline{\widehat f(-\xi)}\)。实值偶函数的变换为实值偶函数；若 \(f\) 在所有正交变换下不变，则其变换也有同样的不变性。
+设 \(d\) 为正整数，\(f\in L^1(\mathbb R^d;\mathbb C)\)，则 \(\widehat{\overline f}(\xi)=\overline{\widehat f(-\xi)}\)。若 \(f\) 实值且 \(f(-x)=f(x)\) 几乎处处，则其变换为实值偶函数。若对每个实正交矩阵 \(Q\) 都有 \(f(Qx)=f(x)\) 几乎处处，则 \(\widehat f(Q\xi)=\widehat f(\xi)\) 对每个 \(Q\) 及所有 \(\xi\in\mathbb R^d\) 成立。
 \end{proposition}
 \begin{proof}
 第一式由对定义积分取共轭得到。偶性由反射换元得到，再与第一式组合即知实偶函数的变换为实值。对正交矩阵 \(Q\)，线性换元公式中的绝对行列式为 \(1\)、逆转置为 \(Q\)。若 \(f(Qx)=f(x)\)，便有 \(\widehat f(Q\xi)=\widehat f(\xi)\)。
@@ -95,22 +107,23 @@
 \label{b2:subsec:030105}
 
 \begin{proposition}\label{b2:prop:03-moments}
-若 \(f\in L^1(\mathbb R^d)\) 且 \(|x|^m f\in L^1\)，则 \(\widehat f\in C^m\)，并对 \(|\alpha|\leq m\) 有
+设 \(d\) 为正整数，\(m\) 为非负整数。若 \(f\in L^1(\mathbb R^d;\mathbb C)\) 且 \(|x|^m f\in L^1(\mathbb R^d)\)，则 \(\widehat f\in C^m(\mathbb R^d;\mathbb C)\)，并对 \(|\alpha|\leq m\) 有
 \[
  \partial_\xi^\alpha\widehat f(\xi)
  =(-2\pi\mathrm{i})^{|\alpha|}\mathcal F(x^\alpha f)(\xi).
 \]
+单独考虑一个坐标 \(1\leq j\leq d\) 时，只要 \(f,x_jf\in L^1(\mathbb R^d;\mathbb C)\)，就有连续的偏导数 \(\partial_{\xi_j}\widehat f=-2\pi\mathrm{i}\mathcal F(x_jf)\)，无须假设其他坐标的一阶矩可积。
 \end{proposition}
 \begin{proof}
-一阶差商中指数之差除以步长的模不超过 \(2\pi|x_j|\)。因此 \(|x_jf|\) 提供共同的可积控制，可以把差商极限移入积分。导数的连续性由相同控制下的控制收敛得到。迭代时，每次增加一个坐标因子；所有不超过 \(m\) 阶的单项式都由常数乘 \(1+|x|^m\) 控制，故每一步都合法。
+一阶差商中指数之差除以步长的模不超过 \(2\pi|x_j|\)。因此 \(|x_jf|\) 提供共同的可积控制，可以把差商极限移入积分。导数的连续性由相同控制下的控制收敛得到，这就证明了仅需一个坐标矩的结论。若具有 \(m\) 阶绝对矩，迭代时每次增加一个坐标因子；所有不超过 \(m\) 阶的单项式都由常数乘 \(1+|x|^m\) 控制，故每一步都合法。
 \end{proof}
 
 \begin{proposition}\label{b2:prop:03-derivative}
-若 \(f\in C^1(\mathbb R^d)\)，且 \(f,\partial_jf\in L^1\)，则
+设 \(d\) 为正整数，\(1\leq j\leq d\)。若 \(f\in C^1(\mathbb R^d;\mathbb C)\)，且 \(f,\partial_jf\in L^1(\mathbb R^d)\)，则
 \[
  \mathcal F(\partial_jf)(\xi)=2\pi\mathrm{i}\xi_j\widehat f(\xi).
 \]
-若存在可积弱导数，公式也成立。
+若 \(f\in L^1(\mathbb R^d;\mathbb C)\) 且其第 \(j\) 个弱导数属于 \(L^1(\mathbb R^d;\mathbb C)\)，公式也成立。
 \end{proposition}
 \begin{proof}
 取光滑紧支集函数 \(\chi\)，在单位球上等于 \(1\)，并令 \(\chi_R(x)=\chi(x/R)\)。先对紧支集函数 \(\chi_Rf\) 分部积分，得到

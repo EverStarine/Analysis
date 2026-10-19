@@ -2,83 +2,238 @@
 \section{限制算子}
 \label{b2:sec:2301}
 
-Fourier 变换在 \(L^2\) 中是一个等价类，而光滑曲面在环境空间中具有零 Lebesgue 测度。因此“把 \(L^2\) Fourier 变换代入曲面”没有天然意义。限制问题问的是：从 Schwartz 函数开始的曲面取值操作，是否能由某个环境 \(L^p\) 范数控制，从而连续延拓。
+如果 \(f\in L^1(\mathbb R^d)\)，其 Fourier 变换是一个确定的连续函数，可以在任何曲面上取值。若只知道 \(f\in L^2\)，Plancherel 给出的却是相对于 \(d\) 维 Lebesgue 测度的等价类。一个光滑超曲面的 \(d\) 维测度为零，在这个集合上任意改值都不改变等价类。因此，限制问题首先是一个定义问题：是否存在一个连续算子，与光滑输入的曲面取值一致？
+
+\ProseParagraphBreak
+这个问题与通常的迹问题相似，但所控制的范数不同。频率变量的 Sobolev 正则性可以产生迹；限制定理则希望只用原函数的普通 \(L^p\) 范数，并由曲面的振荡几何取得额外控制。两种办法的条件和作用不能混用。
 
 \subsection{\texorpdfstring{\(\widehat f|_S\)}{Fourier 变换在 S 上的限制} 的意义}
 \label{b2:subsec:230101}
 
-对紧致光滑超曲面 \(S\subset\mathbb R^d\)、\(d\ge2\)，先定义
+先设 \(d\geq2\)，\(S\subset\mathbb R^d\) 是非空紧致光滑嵌入超曲面，取面积测度 \(\sigma\)。仍用
+\(\widehat f(\xi)=\int f(x)e^{-2\pi\mathrm i x\cdot\xi}\,dx\)。
+对 \(f\in\mathcal S(\mathbb R^d)\)，定义
 \[
- Rf=\widehat f|_S,\qquad f\in\mathcal S(\mathbb R^d).
+ Rf\coloneqq\widehat f|_S.
 \]
 \symidx{\(Rf\)：曲面 Fourier 限制}
-一个限制估计是
-\(\|Rf\|_{L^r(S,\mathrm d\sigma)}\le C\|f\|_{L^p(\mathbb R^d)}\)。
-若 \(p<\infty\)，稠密性给出唯一的 \(L^p\to L^r(S)\) 延拓。这个延拓是 \(L^r(S)\) 中的极限，并非对每个输入都先选择一个 Fourier 代表再逐点代入。
+一个 \(L^p\) 到 \(L^r\) 的\term[fourier-xianzhi]{Fourier 限制估计}[Fourier restriction estimate]是指
+\[
+ \|Rf\|_{L^r(S,d\sigma)}\leq C\|f\|_{L^p(\mathbb R^d)},
+ \quad f\in\mathcal S(\mathbb R^d).
+\]
+这里 \(1\leq p<\infty\)、\(1\leq r\leq\infty\)，常数与 \(f\) 无关。对于带紧支撑光滑密度的局部曲面片，也使用同一定义，只需把面积测度换成指定的有限测度。
 
 \ProseParagraphBreak
-不能从 Plancherel 直接得到 \(p=r=2\)。取一个曲面坐标邻域，令
-\(\widehat f_\epsilon(\xi)=b(\xi)\chi(\rho(\xi)/\epsilon)\)，其中 \(\rho=0\) 定义曲面，\(b|_S\ne0\)、\(\chi(0)=1\)。
-曲面限制范数不随 \(\epsilon\) 变化，而
-\(\|f_\epsilon\|_2=\|\widehat f_\epsilon\|_2=O(\epsilon^{1/2})\)。
-这排除了 \(L^2\to L^2(S)\) 界，也显示环境等价类在零测集取值的困难具有真实的范数后果。
-
-若额外要求空间矩可积，普通平方迹也可以成立。这个模型有助于把限制定理与传统迹定理区别开来。
-\begin{proposition}\label{b2:prop:23-moment-trace}
-对 Schwartz 输入 \(f\)，有
+为什么这个估计足以解决定义问题？若 \(f_n\in\mathcal S\) 在 \(L^p\) 中趋于 \(f\)，则
 \[
- \|\widehat f|_{S^{d-1}}\|_2^2
- \leq C_d\|f\|_2\bigl(\|f\|_2+\||x|f\|_2\bigr).
+ \|Rf_n-Rf_m\|_r\leq C\|f_n-f_m\|_p\longrightarrow0.
 \]
-右侧有限的加权 \(L^2\) 空间因而有连续的球面迹延拓。
+目标 \(L^r(S)\) 是 Banach 空间，包括 \(r=\infty\) 的情形，故有极限。用同一不等式比较两组逼近，极限不依赖选择，从而定义了唯一的有界延拓 \(R:L^p\to L^r(S)\)。这个 \(Rf\) 是曲面测度意义下的等价类；它并不要求先给环境 Fourier 等价类选一个逐点代表。
+
+\ProseParagraphBreak
+最简单的估计来自绝对积分：
+\[
+ |\widehat f(\xi)|\leq\|f\|_1,\quad
+ \|Rf\|_r\leq\sigma(S)^{1/r}\|f\|_1,
+\]
+其中 \(1/\infty=0\)。所以 \(p=1\) 对所有目标指数都成立。一般 \(p\) 的延拓若已建立，则对 \(f\in L^1\cap L^p\) 仍与连续 Fourier 变换的取值一致：选同时在两种范数中逼近的 Schwartz 函数，\(L^1\) 收敛使 Fourier 变换在整个频率空间一致收敛，而限制估计给出曲面范数收敛，两种极限必相同。
+
+\ProseParagraphBreak
+相反，\(p=2\) 的困难不能仅靠选一个较弱的曲面范数消除。下面把薄壳反例写成实际的 Schwartz 函数，避免仅从零测集问题作形式判断。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[薄壳输入]\label{b2:prop:23-thin-shell}
+设 \(d\geq2\)，\(S\subset\mathbb R^d\) 是非空光滑嵌入超曲面，取面积测度。对任意 \(1\leq r\leq\infty\)，不存在常数 \(C\)，使
+\[
+ \|\widehat f|_S\|_{L^r(S)}\leq C\|f\|_2
+ \quad\text{对全部 }f\in\mathcal S(\mathbb R^d)\text{ 成立}.
+\]
+即使只要求控制 \(S\) 上一个非空的小坐标片，也没有这样的界。
 \end{proposition}
 \begin{proof}
-对每个方向 \(\omega\)，令 \(F(r)=\widehat f(r\omega)\)，在 \(1/2<r<3/2\) 上使用微积分基本定理。把起点 \(s\) 在这个区间平均，得到
+经平移和正交变换，可把一小片写成
+\(S=\{(\eta,h(\eta)):\eta\in U\}\)，其中 \(U\subset\mathbb R^{d-1}\) 开，\(h\) 光滑。在这一局部表示中选非零
+\(b\in C_c^\infty(U)\)，再取 \(\chi\in C_c^\infty(\mathbb R)\)，使 \(\chi(0)=1\)。对充分小的 \(\epsilon>0\)，令
 \[
- |F(1)|^2\leq C\int_{1/2}^{3/2}|F(r)|^2\,\mathrm dr
- +C\int_{1/2}^{3/2}|F(r)|\,|F'(r)|\,\mathrm dr.
+ \widehat f_\epsilon(\eta,\xi_d)
+ =b(\eta)\chi\bigl((\xi_d-h(\eta))/\epsilon\bigr),
 \]
-对球面方向积分，并注意此半径区间的 \(r^{d-1}\) 与一可比。Cauchy--Schwarz 将第二项控制为
-\(C\|\widehat f\|_{L^2(\text{壳})}\|\nabla\widehat f\|_{L^2(\text{壳})}\)。
-Plancherel 及 \(\partial_{\xi_j}\widehat f=-2\pi\mathrm i\widehat{x_jf}\) 就给出结论。光滑紧支集逼近在带矩的平方范数中成立，估计保证其迹为 Cauchy，完成延拓。
+并在该坐标邻域外延零。支撑可选在邻域内部，故这确实是一个全空间的光滑紧支撑函数，\(f_\epsilon\in\mathcal S\)。
+在曲面片上的值恒为 \(b(\eta)\)，因此其 \(L^r\) 范数是一个不随 \(\epsilon\) 变化的正数。
+
+另一方面，作 \(\xi_d=h(\eta)+\epsilon t\) 换元，Jacobi 因子为 \(\epsilon\)，Plancherel 给出
+\[
+ \|f_\epsilon\|_2^2
+ =\|\widehat f_\epsilon\|_2^2
+ =\epsilon\|b\|_{L^2(\mathbb R^{d-1})}^2
+       \cdot\|\chi\|_{L^2(\mathbb R)}^2.
+\]
+假定的限制界会把固定正数控制为 \(O(\epsilon^{1/2})\)，令 \(\epsilon\downarrow0\) 即矛盾。
 \end{proof}
-这条迹界仍是平方理论，但输入空间额外记录位置衰减或矩。Stein--Tomas 改用更小的普通 Lebesgue 指数，从而不要求输入有空间矩；它用曲面的振荡几何换取迹的控制。把上述带矩界写成无条件 \(L^2\) 限制，就会重新遇到薄壳反例，不能省去右侧的矩范数。
+
+薄壳越来越窄，环境平方质量趋零，曲面上的值却没有变小。若增加空间矩的控制，频率函数便获得法向正则性，情况就不同了。下面的球面模型把两种理论的差别显示出来。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[带空间矩的平方迹]\label{b2:prop:23-moment-trace}
+设 \(d\geq2\)，单位球面 \(S^{d-1}\) 取面积测度。对每个
+\(f\in\mathcal S(\mathbb R^d)\)，有
+\[
+ \|\widehat f|_{S^{d-1}}\|_2^2
+ \leq C_d\|f\|_2\cdot
+       \bigl(\|f\|_2+\||x|f\|_2\bigr).
+\]
+因此球面限制唯一连续延拓到
+\[
+ X\coloneqq\{f\in L^2(\mathbb R^d):|x|f\in L^2(\mathbb R^d)\},
+ \quad \|f\|_X=\|f\|_2+\||x|f\|_2,
+\]
+并保持上述估计。
+\end{proposition}
+\begin{proof}
+对固定 \(\omega\in S^{d-1}\)，令 \(F(r)=\widehat f(r\omega)\)。
+对任意 \(s\in(1/2,3/2)\)，微积分基本定理给出
+\[
+ |F(1)|^2\leq |F(s)|^2+
+      2\int_{1/2}^{3/2}|F(r)|\cdot|F'(r)|\,dr.
+\]
+把 \(s\) 在长度为一的区间上积分，再对 \(\omega\) 积分。因为
+\(r^{d-1}\) 在这个区间有正的统一上下界，并且
+\(|F'(r)|\leq|\nabla\widehat f(r\omega)|\)，在壳
+\(A=\{\xi:1/2<|\xi|<3/2\}\) 上得到
+\[
+ \|\widehat f|_{S^{d-1}}\|_2^2
+ \leq C_d\|\widehat f\|_{L^2(A)}^2
+       +C_d\|\widehat f\|_{L^2(A)}
+                \cdot\|\nabla\widehat f\|_{L^2(A)}.
+\]
+Plancherel 和
+\(\partial_{\xi_j}\widehat f=-2\pi\mathrm i\,\widehat{x_jf}\)
+给出
+\(\|\nabla\widehat f\|_2=2\pi\||x|f\|_2\)，即得估计。
+
+最后，\(C_c^\infty\) 在 \(X\) 中稠密。先截断 \(f\) 的空间支撑，由两项平方可积性控制尾部；对紧支撑输入再卷积光滑近似恒等核。此时
+\[
+ x_j(\rho_\epsilon*f)
+ =\rho_\epsilon*(x_jf)+(x_j\rho_\epsilon)*f,
+\]
+后一个核的 \(L^1\) 范数为 \(O(\epsilon)\)，故两项加权范数都收敛。估计应用于逼近差，使球面迹为 Cauchy 列，完成延拓。
+\end{proof}
+
+带矩范数提供的是 \(\widehat f\) 在频率变量中的一阶平方正则性。
+Stein–Tomas 定理将改用一个小于 \(2\) 的普通 Lebesgue 指数，不要求空间矩。
+这两种输入条件并不相互等同：在无限测度空间上，单纯改变 \(p\) 不能直接替代位置权重。
 
 \subsection{曲面测度}
 \label{b2:subsec:230102}
 
-若 \(S\) 局部写成 \(\xi_d=h(\xi')\)，则
+曲面限制必须指定相对于哪一个测度计算范数。在图形坐标
+\(\xi=(\eta,h(\eta))\) 中，面积测度为
 \[
- \mathrm d\sigma=\sqrt{1+|\nabla h|^2}\,\mathrm d\xi'.
+ d\sigma(\xi)=\sqrt{1+|\nabla h(\eta)|^2}\,d\eta.
 \]
-对光滑正密度 \(a\)，也可使用 \(\mathrm d\mu=a\,\mathrm d\sigma\)；在 \(a\) 有正上下界的紧片上，两种范数等价。若密度在某点消失，某些必要条件可能改变，所以陈述锐利估计时应明确测度。
+这个因子是切向面积的 Jacobi 因子。若改用
+\(d\mu=a\,d\sigma\)，其中 \(a\geq0\) 光滑且紧支撑，则在 \(a\) 有正上下界的紧片上，两个有限指数范数等价。密度若消失，反例的集中质量可能随之变小，不能仍按恒定正密度计算必要条件。以后局部化曲面时，都把密度和面积因子写进振幅中。
 
 \ProseParagraphBreak
-余面积公式与频率薄壳联系紧密。对于球面，极坐标给出
+球面的极坐标公式具体说明了面测度怎样由薄壳得到：
 \[
- \int_{\mathbb R^d}F(\xi)\,\mathrm d\xi
-   =\int_0^\infty r^{d-1}\int_{S^{d-1}}F(r\omega)\,\mathrm d\sigma(\omega)\,\mathrm dr.
+ \int_{\mathbb R^d}F(\xi)\,d\xi
+ =\int_0^\infty r^{d-1}
+       \int_{S^{d-1}}F(r\omega)\,d\sigma(\omega)\,dr.
 \]
-在半径 \(1\) 的薄壳中，\(r^{d-1}\) 是有统一上下界的因子。曲面取值可以视为频率薄壳平均在厚度趋零时的极限，但没有范数控制时，这个极限仍可能发散。
+例如对连续紧支撑的 \(F\)，有
+\[
+ \lim_{\epsilon\downarrow0}
+ \frac1{2\epsilon}\int_{1-\epsilon<|\xi|<1+\epsilon}F(\xi)\,d\xi
+ =\int_{S^{d-1}}F(\omega)\,d\sigma(\omega).
+\]
+证明只需在固定紧壳上用一致连续性，并注意
+\(r^{d-1}\to1\) 一致成立。这里已经除以厚度 \(2\epsilon\)；
+没有这个归一化，壳积分本身趋于零。
+
+\ProseParagraphBreak
+对于一般定义函数 \(\rho\)，假设 \(\nabla\rho\neq0\) 于
+\(S=\{\rho=0\}\) 附近，沿法向换元得到分布记号
+\[
+ \int F(\xi)\delta(\rho(\xi))\,d\xi
+ =\int_S\frac{F(\xi)}{|\nabla\rho(\xi)|}\,d\sigma(\xi).
+\]
+它可先在坐标片内将 \(\rho\) 作为一个坐标验证，再用有限单位分解拼接。
+特别地，
+\(\delta(1-|\xi|^2)=\sigma/2\) 在单位球面上成立。
+后面解析族出现的二分之一来自此处的换元，不来自 Fourier 归一化。
+上述公式对测试函数成立，并不自动控制任意 \(L^p\) 输入的薄壳极限；取得这种控制仍需要限制估计。
 
 \subsection{曲率}
 \label{b2:subsec:230103}
 
-本章首先以单位球面为模型，其 Gaussian 曲率处处非零。图形曲面的曲率条件可在驻点处通过 \(D^2h\) 的行列式表达；\chapref{b2:ch:21}已经解释它怎样产生 \((d-1)/2\) 个衰减幂次。
-曲率对限制估计的作用并非单纯保证 Fourier 衰减。小曲面帽的法向方向还形成细长的相干管束；所有帽的叠加会产生比单个核估计复杂得多的几何问题。
+对图形曲面 \((\eta,h(\eta))\)，选定单位法向后，其 Gaussian 曲率为
+\[
+ K(\eta)=\frac{\det D^2h(\eta)}
+                 {(1+|\nabla h(\eta)|^2)^{(d+1)/2}},
+\]
+符号可能随法向约定改变，但非零性不变。因此本章使用的条件是
+\(\det D^2h\neq0\)，并不要求所有主曲率同号。
+在一个紧支撑片上，行列式绝对值有正下界；这使第21章的非退化驻相估计具有统一常数。
+球面在每个点都满足这个条件。
 
 \ProseParagraphBreak
-平面完全不同：对 \(\xi_d=0\)，限制是输入沿 \(x_d\) 积分后在其余变量上 Fourier 变换。把输入写为 \(g(x')h(x_d/L)\)，曲面限制含一个 \(L\) 因子，而 \(L^p\) 范数只含 \(L^{1/p}\)。让 \(L\to\infty\) 排除任何 \(p>1\) 的统一界（取固定非零 \(g,h\)）。这不是一个曲率不足的小损失，而是沿平面法向可以无限相干。
+曲率的作用有两个方面。对于光滑密度，\(d-1\) 个切向变量的二次振荡带来
+\((1+|x|)^{-(d-1)/2}\) 衰减。对于小帽数据，曲面离开切平面的高度却只有帽半径的平方，这允许输出在法向保持更长距离的相干。前者用于证明充分估计，后者产生必要条件；两者是同一二次几何的不同后果。
+
+\ProseParagraphBreak
+平面上的局部问题已经能显示曲率消失的影响。取
+\[
+ S_0=\{(\eta,0):|\eta|<1\}\subset\mathbb R^d
+\]
+及其面积测度。选 \(g\in\mathcal S(\mathbb R^{d-1})\)，使
+\(\widehat g\) 在该片上不恒为零，另选 \(h\in\mathcal S(\mathbb R)\)，使
+\(\int h\neq0\)。令
+\[
+ f_L(x',x_d)=g(x')h(x_d/L),\quad L\geq1.
+\]
+对 \(1<p<\infty\)，
+\[
+ \|f_L\|_p=L^{1/p}\|g\|_p\cdot\|h\|_p,\quad
+ \widehat f_L(\eta,0)=L\widehat g(\eta)\int h.
+\]
+任何固定 \(1\leq r\leq\infty\) 的限制范数都按 \(L\) 增长，比输入的
+\(L^{1/p}\) 快。故这个有界平面片也没有 \(p>1\) 的限制界。
+无穷大的平面面积不是反例的原因；法向上没有振荡损失才是关键。
 
 \subsection{缩放}
 \label{b2:subsec:230104}
 
-令 \(S_R=RS\)，则面测度缩放为 \(R^{d-1}\mathrm d\sigma\)。
-若单位曲面的 \(L^p\to L^r\) 估计成立，换元得到
+单位球面不是尺度不变对象。把它放大时，既改变面测度，又改变 Fourier 变换中的空间尺度，两个因子都要保留。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[曲面半径的缩放]\label{b2:prop:23-surface-scaling}
+设 \(d\geq2\)，\(S\) 是紧致光滑超曲面，\(1\leq p<\infty\)、
+\(1\leq r\leq\infty\)。假设相对于面积测度的限制算子
+\(L^p(\mathbb R^d)\to L^r(S)\) 的最佳常数为 \(C\)。对 \(R>0\)，
+\(S_R=RS\) 也取面积测度，则其最佳常数恰为
 \[
- \|\widehat f\|_{L^r(S_R)}\le
- C R^{(d-1)/r-d/p'}\|f\|_p.
+ C_R=C R^{(d-1)/r-d/p'},
+ \quad \frac1p+\frac1{p'}=1.
 \]
-证明取 \(g(x)=f(x/R)\)，则 \(\widehat g(\xi)=R^d\widehat f(R\xi)\)，
-\(\|g\|_p=R^{d/p}\|f\|_p\)，再代入面测度因子。
-这一式子把半径依赖写清楚；单位球面本身不是尺度不变对象，不能把不同半径的常数都无条件设成同一个数。
+\end{proposition}
+\begin{proof}
+取 \(g(x)=f(x/R)\)。直接换元给出
+\[
+ \widehat g(\xi)=R^d\widehat f(R\xi),
+ \quad \|g\|_p=R^{d/p}\|f\|_p.
+\]
+同时 \(d\sigma_R(R\xi)=R^{d-1}d\sigma(\xi)\)，所以
+\[
+ \|\widehat f\|_{L^r(S_R)}
+ =R^{(d-1)/r-d}\|\widehat g\|_{L^r(S)}
+ \leq C R^{(d-1)/r-d/p'}\|f\|_p.
+\]
+\(r=\infty\) 时第一因子按 \(R^0\) 理解。缩放是 Schwartz 类的双射，
+反向代入近乎达到最佳常数的输入，便知这个因子不只是一个上界。
+\end{proof}
+
+例如三维球面 Stein–Tomas 端点的 \(p=4/3,r=2\) 将产生
+\(R^{1/4}\)，而不是与半径无关的常数。这是尚待证明的单位球面估计成立后的尺度推论，不是用缩放证明了单位球面的有界性。若把面测度改为总质量一的概率测度，还须再乘
+\(R^{-(d-1)/r}\)；使用不同测度归一化的公式时，应先对齐这一约定。

@@ -2,127 +2,527 @@
 \section{Mihlin–Hörmander 定理}
 \label{b2:sec:2202}
 
-导数条件的作用是使每个频率环带上的核有足够快的衰减，再让环带总和满足奇异积分的抵消估计。证明须同时使用符号的有界性来建立 \(L^2\) 起点；核的大小条件本身不能替代这个起点。
+有界符号在 \(L^2\) 上的作用已经由 Plancherel 完全描述；要得到其他指数上的界，还须控制不同频率的输出如何在空间中叠加。本节用两种条件完成这一步。Mihlin 条件逐点控制符号导数，先得到核的大小与梯度估计；Hörmander 条件只控制每个环带上的 Sobolev 范数，得到的是核差分的积分估计。两条路线都以 \(L^2\) 有界性为起点，再使用\chapref{b2:ch:18}的分解与插值方法。
 
 \subsection{符号导数}
 \label{b2:subsec:220201}
 
-设 \(N\) 为整数。常用的尺度不变符号界为
+设 \(d\geq1\)，\(N\) 为非负整数，\(m\) 是定义在 \(\mathbb R^d\setminus\{0\}\) 上的复值 \(C^N\) 函数。尺度不变的导数条件写成
 \[
- |\partial^\alpha m(\xi)|\le A|\xi|^{-|\alpha|},
- \qquad 0\le|\alpha|\le N,\quad \xi\ne0.
+ |\xi|^{|\alpha|}\cdot|\partial^\alpha m(\xi)|\leq A,
+ \quad 0\leq|\alpha|\leq N,\quad \xi\ne0.
 \]
-零阶包含 \(|m|\le A\)。例如 \(\xi_j/|\xi|\) 的各阶导数都是相应次数的齐次函数，在单位球面连续有界，因此满足任意有限阶条件。相反，\(|\xi|^{-\alpha}\) 在零频无界，不能成为 \(L^2\) 上的有界零阶乘子。
+这里 \(\alpha=(\alpha_1,\ldots,\alpha_d)\) 是多重指标，\(|\alpha|=\alpha_1+\cdots+\alpha_d\)，\(\partial^\alpha=\partial_1^{\alpha_1}\cdots\partial_d^{\alpha_d}\)。零阶条件就是 \(|m|\leq A\)。若观察半径约为 \(2^j\) 的频率环带，把它缩放到单位尺度后，一阶导数带来 \(2^j\)，而假设中的 \(|\xi|^{-1}\) 恰好抵消这个因子；更高阶导数遵循同一规律。
 
 \ProseParagraphBreak
-若 \(m(\xi)=b(\log|\xi|)\)，而 \(b\) 的有限阶导数有界，则链式法则给出同样的尺度界。符号不需要在零点有极限，甚至可以沿尺度持续振荡。这里对零点的忽略不影响 \(L^p\) 算子，却提醒我们不能把定理误述成“符号在闭空间上光滑”。
+例如 \(m(\xi)=\xi_\ell/|\xi|\) 是零次齐次的：\(m(t\xi)=m(\xi)\)，\(t>0\)。将此式对 \(\xi\) 求导可得
+\[
+ (\partial^\alpha m)(t\xi)
+ =t^{-|\alpha|}\cdot(\partial^\alpha m)(\xi).
+\]
+每个导数在单位球面上连续，因此任意固定有限阶的尺度导数界都成立。这里常数可以随阶数增长，并不要求一个常数同时控制所有阶导数。
+
+\ProseParagraphBreak
+另一个例子是 \(m(\xi)=b(\log|\xi|)\)，其中 \(b\in C^N(\mathbb R;\mathbb C)\)，并且 \(b,b',\ldots,b^{(N)}\) 全部有界。链式法则把 \(\partial^\alpha m\) 写成若干项之和，每一项都是 \(|\xi|^{-|\alpha|}\)、单位方向的有界光滑函数和某个 \(b^{(r)}(\log|\xi|)\) 的乘积，所以也满足尺度导数界。这样的符号可以沿尺度持续振荡，在原点不必有极限。乘子由几乎处处的符号决定，原点的取值不影响算子；定理要求的是离开原点后的光滑性。
+
+\ProseParagraphBreak
+尺度因子也划定了本节的范围。对 \(\alpha>0\)，\(|\xi|^{-\alpha}\) 在零频无界，因而不能是 \(L^2\) 上的有界零阶乘子；它适合放到改变可积性或正则性的分数次积分理论中。另一方面，普通的“各阶导数有界”未必包含高频处所需的衰减，不能直接代替尺度导数条件。
 
 \subsection{二进分解}
 \label{b2:subsec:220202}
 
-使用\chapref{b2:ch:19}的环带分割 \(\varphi(2^{-j}\xi)\)，令
+先恢复\chapref{b2:ch:19}所用的分割。取实值径向函数 \(\chi\in C_c^\infty(\mathbb R^d)\)，使 \(0\leq\chi\leq1\)，在 \(|\xi|\leq1\) 时等于 \(1\)，在 \(|\xi|\geq2\) 时等于 \(0\)，并沿半径不增。令
 \[
- m_j(\xi)=m(\xi)\varphi(2^{-j}\xi),\qquad
- k_j(x)=2^{jd}h_j(2^jx),\quad
- h_j=\mathcal F^{-1}\bigl[m(2^j\,\cdot)\varphi\bigr].
+ \varphi(\xi)=\chi(\xi)-\chi(2\xi).
 \]
-在固定环带上，归一化符号的有限阶导数一致有界。对 Fourier 积分分部积分，并分别选择绝对值最大的坐标，可得
+于是 \(\varphi\geq0\)，其支撑包含于 \(\{\,1/2\leq|\xi|\leq2\,\}\)。有限和的望远镜恒等式为
 \[
- |h_j(x)|+|\nabla h_j(x)|\le C A(1+|x|)^{-N}.
+ \sum_{j=-M}^{N}\varphi(2^{-j}\xi)
+ =\chi(2^{-N}\xi)-\chi(2^{M+1}\xi).
 \]
-梯度估计只是把符号乘上有界环带中的 \(2\pi\mathrm i\xi_\ell\)，仍使用相同阶数的符号导数；不需要额外的一阶 \(m\) 导数。该估计对所有 \(j\) 一致。
+对每个 \(\xi\ne0\)，令 \(M,N\) 趋于无穷便得到 \(\sum_{j\in\mathbb Z}\varphi(2^{-j}\xi)=1\)。每个非零频率只落在有限个相邻环带中，而且任何有限指标集 \(J\subset\mathbb Z\) 都满足
+\[
+ 0\leq\sum_{j\in J}\varphi(2^{-j}\xi)\leq1.
+\]
+最后这个不等式将在取算子极限时提供共同的 \(L^2\) 控制。
 
 \ProseParagraphBreak
-当 \(N>d+1\)，在 \(x\ne0\) 上绝对求和：
+把符号局部化后，令
 \[
- \sum_j|k_j(x)|\le CA|x|^{-d},\qquad
- \sum_j|\nabla k_j(x)|\le CA|x|^{-d-1}.
+ \begin{aligned}
+  m_j(\xi)&=m(\xi)\cdot\varphi(2^{-j}\xi),\\
+  b_j(\zeta)&=m(2^j\zeta)\cdot\varphi(\zeta),\\
+  h_j&=\mathcal F^{-1}b_j,\quad
+  k_j(x)=2^{jd}\cdot h_j(2^jx).
+ \end{aligned}
 \]
-例如第一式把 \(2^j|x|\le1\) 与 \(>1\) 分开，分别求等比级数
-\(\sum2^{jd}\) 和 \(|x|^{-N}\sum2^{j(d-N)}\)。
-第二式同理需要 \(N>d+1\)。这些级数在离原点的紧集上一致收敛，从而其和 \(K\) 是那里的一阶光滑函数。
+这里第二行把所有频率环带送到同一个固定环带；Fourier 变量换元给出 \(k_j=\mathcal F^{-1}m_j\)。这样就可以先证明一个不依赖尺度的估计，再把尺度因子放回去。
+
+\Needspace{6\baselineskip}
+\begin{lemma}[固定环带上的有限导数核估计]\label{b2:lem:22-annular-kernel}
+设 \(d\geq1\)，\(N\) 为非负整数，\(a\in C_c^N(\mathbb R^d;\mathbb C)\) 的支撑包含于 \(\{\,1/2\leq|\xi|\leq2\,\}\)，且
+\[
+ \max_{|\alpha|\leq N}\|\partial^\alpha a\|_\infty\leq M.
+\]
+则 \(h=\mathcal F^{-1}a\) 是光滑函数，并满足
+\[
+ |h(x)|+|\nabla h(x)|
+ \leq C_{d,N}\cdot M(1+|x|)^{-N},
+ \quad x\in\mathbb R^d.
+\]
+这里空间变量的一阶导数不要求符号具有 \(N+1\) 阶导数。
+\end{lemma}
+\begin{proof}
+由于 \(a\) 支撑有界，任何多项式乘以 \(a\) 都可积。因此可以在逆 Fourier 积分内对 \(x\) 任意多次求导；这说明 \(h\) 光滑。在 \(|x|\leq1\) 时，直接估计积分给出 \(|h(x)|\leq C_dM\)。对 \(|x|>1\)，选取满足 \(|x_\ell|\geq|x|/\sqrt d\) 的坐标，分部积分 \(N\) 次：
+\[
+ h(x)=(-2\pi\mathrm i x_\ell)^{-N}
+ \int_{\mathbb R^d}e^{2\pi\mathrm i x\cdot\xi}
+ \cdot\partial_\ell^Na(\xi)\,\mathrm d\xi.
+\]
+边界项为零，因为 \(a\) 及所需低阶导数都紧支撑。积分区域的体积固定，于是
+\[
+ |h(x)|\leq C_{d,N}\cdot M|x|^{-N}.
+\]
+结合 \(|x|\leq1\) 的估计得到第一项的结论。
+
+对于 \(\partial_{x_r}h\)，其频率符号是 \(2\pi\mathrm i\xi_r\cdot a(\xi)\)。在固定环带上，Leibniz 公式表明这个符号截至 \(N\) 阶的导数仍由 \(C_{d,N}M\) 控制：落在坐标 \(\xi_r\) 上的导数最多一次，落在 \(a\) 上的导数不超过 \(N\) 次。将刚才的估计用于该符号，再对 \(r=1,\ldots,d\) 求和，即得梯度界。
+\end{proof}
+
+现在对归一化符号 \(b_j\) 使用这个引理。Leibniz 公式明确给出
+\[
+ \partial^\alpha b_j(\zeta)
+ =\sum_{\beta\leq\alpha}\binom{\alpha}{\beta}
+ 2^{j|\beta|}\cdot(\partial^\beta m)(2^j\zeta)
+ \cdot\partial^{\alpha-\beta}\varphi(\zeta).
+\]
+在 \(\varphi\) 的支撑上，\(|\zeta|\) 介于 \(1/2\) 与 \(2\) 之间，因而
+\[
+ 2^{j|\beta|}\cdot|(\partial^\beta m)(2^j\zeta)|
+ \leq A|\zeta|^{-|\beta|}
+ \leq 2^{|\beta|}A.
+\]
+所以 \(b_j\) 的 \(C^N\) 界与 \(j\) 无关。引理给出
+\[
+ \begin{aligned}
+ |k_j(x)|&\leq C A\,2^{jd}(1+2^j|x|)^{-N},\\
+ |\nabla k_j(x)|&\leq C A\,2^{j(d+1)}(1+2^j|x|)^{-N}.
+ \end{aligned}
+\]
+本节中分割函数 \(\chi,\varphi\) 一经选定便保持不变，与它们有关的常数并入 \(C\)。
+
+\ProseParagraphBreak
+在 \(x\ne0\) 处，选整数 \(j_0\)，使 \(2^{j_0}|x|\leq1<2^{j_0+1}|x|\)。低频部分不需要衰减因子，高频部分则使用它。若 \(N>d\)，两段大小估计分别为
+\[
+ \begin{aligned}
+ \sum_{j\leq j_0}2^{jd}
+ &\leq C_d\,2^{j_0d}\leq C_d|x|^{-d},\\
+ |x|^{-N}\sum_{j>j_0}2^{j(d-N)}
+ &\leq C_{d,N}|x|^{-N}\cdot2^{j_0(d-N)}
+ \leq C_{d,N}|x|^{-d}.
+ \end{aligned}
+\]
+梯度估计的计算完全由同样两个级数给出，只需把其中的 \(d\) 改成 \(d+1\)，故要求 \(N>d+1\)。于是
+\[
+ \sum_{j\in\mathbb Z}|k_j(x)|\leq C A|x|^{-d},
+ \quad
+ \sum_{j\in\mathbb Z}|\nabla k_j(x)|
+ \leq C A|x|^{-d-1}.
+\]
+在任意离开原点的紧集上，低频尾可由 \(\sum2^{jd}\) 与 \(\sum2^{j(d+1)}\) 一致控制，高频尾可由相应的衰减级数一致控制。因此核及其一阶导数的级数都局部一致收敛，
+\[
+ K(x)=\sum_{j\in\mathbb Z}k_j(x),\quad x\ne0,
+\]
+是 \(\mathbb R^d\setminus\{0\}\) 上的 \(C^1\) 函数，并满足上述大小与梯度界。这里没有断言 \(K\) 在原点附近可积；它将作为给定 \(L^2\) 算子的支撑外核使用。
 
 \subsection{Mihlin 乘子定理}
 \label{b2:subsec:220203}
 
-下面采用\term[mihlin-chengzi-dingli]{Mihlin 乘子定理}[Mihlin multiplier theorem]的下述版本。
+核的梯度界要求本证明选取 \(N>d+1\)。为避免在陈述中反复保留整数参数，以下采用 \(N=d+2\)。这得到\term[mihlin-chengzi-dingli]{Mihlin 乘子定理}[Mihlin multiplier theorem]的一种方便版本。
 
+\Needspace{6\baselineskip}
 \begin{theorem}[Mihlin 乘子定理的有限导数版本]\label{b2:thm:22-mihlin}
-设 \(m\in C^{d+2}(\mathbb R^d\setminus\{0\})\)，且对
-\(|\alpha|\le d+2\) 满足上述尺度导数界。则
+设 \(d\geq1\)，\(m\in C^{d+2}(\mathbb R^d\setminus\{0\};\mathbb C)\)，且
 \[
- \|T_mf\|_p\le C_{d,p}A\|f\|_p,\qquad1<p<\infty.
+ \sup_{\xi\ne0}|\xi|^{|\alpha|}\cdot|\partial^\alpha m(\xi)|
+ \leq A<\infty,\quad |\alpha|\leq d+2.
 \]
-该导数数目是本证明使用的方便充分条件，并不声称最优。
+在原点任意指定 \(m\) 的值，并由
+\(\widehat{T_mf}=m\cdot\widehat f\) 定义 \(L^2(\mathbb R^d;\mathbb C)\) 上的乘子。则对每个 \(1<p<\infty\)，\(T_m\) 唯一延拓为有界算子 \(L^p\to L^p\)，并且
+\[
+ \|T_mf\|_p\leq C_{d,p}\cdot A\|f\|_p.
+\]
+不同指数的延拓在相应空间的交集上一致。它还具有弱型 \((1,1)\) 延拓，弱型常数不超过 \(C_dA\)。此处的导数数目是本证明的充分条件，不声称最优。
 \end{theorem}
 \begin{proof}
-Plancherel 给出 \(L^2\) 范数至多 \(A\)。有限环带和的符号在几乎处处频率上趋于 \(m\)，且一致有界，因此对应算子在 \(L^2\) 中趋于 \(T_m\)。
-取紧支撑 \(f\in L^2\)，其支撑之外的任意紧集到支撑的距离为正。前述核级数在那里一致绝对可积，可交换求和和积分，得到
-\(T_mf(x)=\int K(x-y)f(y)\,\mathrm dy\)。
-更准确地，先在两个不交支撑的测试函数之间配对，再取 \(L^2\) 极限，即确认这就是给定算子的支撑外核，而不是另行定义的算子。
+若 \(A=0\)，则 \(m=0\) 几乎处处，结论直接成立。以下设 \(A>0\)。零阶条件和\cref{b2:prop:22-l2}给出 \(\|T_m\|_{2\to2}\leq A\)。按前一小节构造 \(k_j\) 与 \(K\)，得到
+\[
+ |K(z)|\leq C A|z|^{-d},
+ \quad |\nabla K(z)|\leq C A|z|^{-d-1},
+ \quad z\ne0.
+\]
+还须证明这个 \(K\) 确实表示已经由 Fourier 变换定义的算子。令
+\[
+ m^{(L)}(\xi)=m(\xi)\cdot
+ \sum_{|j|\leq L}\varphi(2^{-j}\xi),
+ \quad K_L=\sum_{|j|\leq L}k_j.
+\]
+每个 \(k_j\) 都属于 \(L^1\)，故 \(T_{m^{(L)}}f=K_L*f\) 在 \(L^2\) 中成立。有限分割和介于 \(0\) 与 \(1\) 之间，且在非零频率趋于 \(1\)，于是
+\[
+ \|T_{m^{(L)}}f-T_mf\|_2^2
+ =\int_{\mathbb R^d}|m^{(L)}-m|^2\cdot|\widehat f|^2
+ \,\mathrm d\xi\longrightarrow0.
+\]
+这里共同控制函数是 \(4A^2\cdot|\widehat f|^2\)，可由支配收敛处理。
 
-核的大小与梯度界满足\chapref{b2:ch:18}的标准 Calderón--Zygmund 条件，且卷积核的两变量差分由同一个梯度界控制。\cref{b2:thm:18-cz-lp}因而给出所有 \(1<p<\infty\) 上的界。对 \(L^2\cap L^p\) 的界先建立，再以该空间在 \(L^p\) 中的稠密性定义唯一延拓。
+取紧支撑的 \(f\in L^2\)，并取紧集 \(E\subset\mathbb R^d\setminus\operatorname{supp}f\)。此时 \(f\in L^1\)，而所有差 \(x-y\)，其中 \(x\in E\)、\(y\in\operatorname{supp}f\)，组成离开原点的紧集 \(D\)。因此
+\[
+ \sup_{x\in E}\left|
+ (K_L*f)(x)-\int K(x-y)\cdot f(y)\,\mathrm dy
+ \right|
+ \leq\|f\|_1\cdot\sup_{z\in D}|K_L(z)-K(z)|
+ \longrightarrow0.
+\]
+另一方面，\(L^2\) 收敛有一个几乎处处收敛的子列。比较两个极限，得到 \(T_mf(x)=\int K(x-y)\cdot f(y)\,\mathrm dy\) 对 \(E\) 中几乎处处的 \(x\) 成立。以可数个这样的紧集穷尽支撑补集，便确认支撑外表示；该积分在支撑外绝对收敛。
+
+把两变量核记为 \(\mathcal K(x,y)=K(x-y)\)。当 \(|x-x'|\leq|x-y|/2\) 时，连接 \(x-y\) 与 \(x'-y\) 的线段离原点至少 \(|x-y|/2\)，故微积分基本定理给出
+\[
+ |\mathcal K(x,y)-\mathcal K(x',y)|
+ \leq C A\,\frac{|x-x'|}{|x-y|^{d+1}}.
+\]
+改变 \(y\) 得到另一变量的同样估计。于是 \(\mathcal K\) 满足标准 Calderón--Zygmund 核的大小与双变量光滑性条件，\(T_m\) 又已有 \(L^2\) 界。将\cref{b2:thm:18-cz-weak}和\cref{b2:thm:18-cz-lp}应用于 \(A^{-1}T_m\)，其核常数与 \(L^2\) 常数只依赖维数，得到所述弱型界与强型界。后者先在 \(L^2\cap L^p\) 上成立，再由该子空间在 \(L^p\) 中的稠密性唯一延拓；不同 \(p\) 的延拓用同一截断逼近识别。
 \end{proof}
-证明实际上还给出弱型 \((1,1)\)，但通常没有强型 \((1,1)\) 或 \(L^\infty\to L^\infty\) 界。Hilbert 变换的区间输入产生对数尾和边界对数奇性，已分别说明这两个端点为何不能由定理自动补齐。
+
+支撑外核的识别不能省略。例如常数符号 \(m=1\) 给出恒等算子，其分布核集中在原点，支撑外核却是零。一般地，支撑外核无法独自决定一个乘法项。本证明从 \(L^2\) 乘子出发，再核对它的支撑外表示，所以这种集中在对角线上的部分仍由 \(L^2\) 算子保留。
 
 \ProseParagraphBreak
-有限频率环带上的导数条件也可使用：若 \(m\) 支撑在固定环带并有 \(d+1\) 阶导数，则它的核属于 \(L^1\)，从而包括端点在内都可有界。真正造成端点困难的是无限尺度叠加，不能把单个环带的 Young 估计在没有可求和常数时直接相加。
+定理通常不能补上强型 \((1,1)\) 或 \(L^\infty\to L^\infty\) 两个端点。\chapref{b2:ch:18}的 Hilbert 变换给出了同时满足尺度导数条件而端点失败的例子。另一方面，若符号是支撑于一个固定环带的 \(C_c^{d+1}\) 函数，\cref{b2:lem:22-annular-kernel}已经使其核属于 \(L^1\)，Young 不等式便给出全部 \(1\leq p\leq\infty\) 的界。无限尺度之所以不同，是因为每个环带核的 \(L^1\) 范数虽一致有界，却未必对环带指标可求和。
 
 \subsection{Hörmander 条件}
 \label{b2:subsec:220204}
 
-导数的逐点控制可改为环带上的 Sobolev 控制。固定 \(\eta\in C_c^\infty\)，在 \(\varphi\) 支撑邻域等于 \(1\)，令
-\[
- B_s(m)=\sup_{j\in\mathbb Z}\|m(2^j\,\cdot)\eta\|_{H^s(\mathbb R^d)}.
-\]
-这里 \(H^s\) 的变量是频率变量本身；此处的 Sobolev 范数不是输入 \(f\) 的范数。
-下面采用\term[hormander-chengzi-dingli]{Hörmander 乘子定理}[Hörmander multiplier theorem]的下述版本。
+上面的论证把符号导数转成核的逐点衰减。若只知道导数的平方积分，仍能通过 Plancherel 得到核的带权平方积分；只要权足够强，就能控制核尾部的 \(L^1\) 积分。这条路线允许用非整数阶的光滑性，并避免要求极限核存在逐点梯度界。
 
+\ProseParagraphBreak
+本小节的 \(H^s\) 范数作用在符号的频率变量上。为免混淆，把该变量写成 \(\zeta\)，其对偶变量写成 \(x\)。对 \(s\geq0\)，采用
+\[
+ \|q\|_{H^s_\zeta}^2
+ =\int_{\mathbb R^d}(1+4\pi^2|x|^2)^s
+ \cdot|\mathcal F_\zeta q(x)|^2\,\mathrm dx.
+\]
+这是已经建立的 \(p=2\) Sobolev 范数；这里不需要、也不预先使用下一节的一般 \(L^p\) Bessel 势空间识别。权关于 \(x\) 对称，因此用逆 Fourier 变换替代 \(\mathcal F_\zeta q\) 得到同一范数。
+
+\Needspace{6\baselineskip}
+\begin{lemma}[Sobolev 范数中的光滑截断]\label{b2:lem:22-sobolev-cutoff}
+设 \(d\geq1\)，\(s\geq0\)，\(\psi\in C_c^\infty(\mathbb R^d;\mathbb C)\)。则乘法 \(q\mapsto\psi\cdot q\) 是 \(H^s(\mathbb R^d;\mathbb C)\) 上的有界算子，且
+\[
+ \|\psi\cdot q\|_{H^s}\leq C_{d,s,\psi}\cdot\|q\|_{H^s}.
+\]
+\end{lemma}
+\begin{proof}
+令 \(w_s(x)=(1+|x|)^s\)，它与 \((1+4\pi^2|x|^2)^{s/2}\) 等价。三角不等式蕴含
+\[
+ w_s(x)\leq w_s(x-y)\cdot w_s(y).
+\]
+先取 \(q\) 为 Schwartz 函数。乘积的 Fourier 变换是卷积，所以
+\[
+ w_s(x)\cdot|\widehat{\psi\cdot q}(x)|
+ \leq
+ \bigl((w_s\cdot|\widehat\psi|)*(w_s\cdot|\widehat q|)\bigr)(x).
+\]
+由于 \(\widehat\psi\) 是 Schwartz 函数，\(\|w_s\cdot\widehat\psi\|_1<\infty\)。Young 不等式给出
+\[
+ \|w_s\cdot\widehat{\psi\cdot q}\|_2
+ \leq\|w_s\cdot\widehat\psi\|_1
+ \cdot\|w_s\cdot\widehat q\|_2,
+\]
+即所需估计。
+
+一般 \(q\in H^s\) 可在 \(H^s\) 中用 Schwartz 函数 \(q_n\) 逼近：在 Fourier 一侧先截断到有界区域，再以紧支撑光滑函数逼近，权在每个有界区域上与常数等价，逆变换即得所需 \(q_n\)。上式使 \(\psi\cdot q_n\) 在 \(H^s\) 中为 Cauchy 列；同时 \(q_n\to q\) 于 \(L^2\)，而 \(\psi\) 有界，所以 \(\psi\cdot q_n\to\psi\cdot q\) 于 \(L^2\)。两个极限一致，从而估计延续到 \(q\)。
+\end{proof}
+
+还需要把核的积分差分条件接到弱型估计上。为便于以后复用，下面单独给出卷积核版本。这个结果只要求支撑外表示和核差分积分有界，不要求核本身满足逐点大小条件。
+
+\Needspace{6\baselineskip}
+\begin{lemma}[积分 Hörmander 条件与弱型估计]\label{b2:lem:22-integral-hormander-weak}
+设 \(d\geq1\)，\(T\) 是复线性有界算子 \(L^2(\mathbb R^d)\to L^2(\mathbb R^d)\)，\(\|T\|_{2\to2}\leq M\)。设 Borel 函数 \(K\in L^1_{\mathrm{loc}}(\mathbb R^d\setminus\{0\})\) 具有下列支撑外表示：对每个紧支撑的 \(f\in L^2\)，
+\[
+ Tf(x)=\int_{\mathbb R^d}K(x-y)\cdot f(y)\,\mathrm dy
+\]
+在 \(\operatorname{supp}f\) 外几乎处处成立，且右侧在这些点绝对收敛。若
+\[
+ H\coloneqq\sup_{v\ne0}
+ \int_{|x|>2|v|}|K(x-v)-K(x)|\,\mathrm dx<\infty,
+\]
+则对 \(f\in L^1\cap L^2\) 和 \(t>0\)，
+\[
+ \bigl|\{\,x:|Tf(x)|>t\,\}\bigr|
+ \leq \frac{C_d(M+H)}{t}\cdot\|f\|_1.
+\]
+因此 \(T\) 唯一延拓为与原 \(L^2\) 算子相容的弱型 \((1,1)\) 算子。
+\end{lemma}
+\begin{proof}
+记 \(B=M+H\)。若 \(B=0\)，则 \(T=0\) 于 \(L^2\)，结论成立。设 \(B>0\)，并对 \(f\in L^1\cap L^2\) 在高度 \(\alpha=t/B\) 使用\cref{b2:thm:18-cz-decomposition}。该结果适用于复值函数，给出
+\[
+ f=g+\sum_Qb_Q,\quad
+ \|g\|_2^2\leq 2^d\alpha\cdot\|f\|_1,\quad
+ \sum_Q|Q|\leq\alpha^{-1}\cdot\|f\|_1,
+\]
+其中所选二进立方体两两不交，\(b_Q\) 支撑于 \(Q\)，\(\int b_Q=0\)，并且
+\[
+ \sum_Q\|b_Q\|_1\leq2\|f\|_1.
+\]
+每个坏块属于 \(L^2\)，坏块级数在 \(L^2\) 中收敛。这个收敛性质随后使有限坏块估计可以传到算子作用下的极限。
+
+把每个 \(Q\) 关于其中心 \(c_Q\) 放大 \(8\sqrt d\) 倍，所得立方体记为 \(Q^*\)，并令
+\[
+ \Omega^*=\bigcup_QQ^*,\quad G=\mathbb R^d\setminus\Omega^*.
+\]
+由体积估计，
+\[
+ |\Omega^*|\leq C_d\cdot\frac{B}{t}\cdot\|f\|_1.
+\]
+好部用 \(L^2\) 有界性和 Chebyshev 不等式处理：
+\[
+ \bigl|\{\,|Tg|>t/2\,\}\bigr|
+ \leq\frac{4M^2}{t^2}\cdot\|g\|_2^2
+ \leq C_d\cdot\frac{M^2}{Bt}\cdot\|f\|_1
+ \leq C_d\cdot\frac{B}{t}\cdot\|f\|_1.
+\]
+
+坏部所需的抵消正是积分条件发挥作用的地方。对 \(x\notin Q^*\)，支撑外表示和 \(\int b_Q=0\) 给出
+\[
+ Tb_Q(x)=\int_Q
+ [K(x-y)-K(x-c_Q)]\cdot b_Q(y)\,\mathrm dy
+\]
+几乎处处成立。如果 \(y\in Q\) 且 \(x\notin Q^*\)，则 \(|x-c_Q|>2|y-c_Q|\)。令 \(z=x-c_Q\)、\(v=y-c_Q\)，Tonelli 定理和积分假设因此给出
+\[
+ \begin{aligned}
+ \int_{\mathbb R^d\setminus Q^*}|Tb_Q(x)|\,\mathrm dx
+ &\leq\int_Q|b_Q(y)|\cdot
+   \left(\int_{\mathbb R^d\setminus Q^*}
+    |K(x-y)-K(x-c_Q)|\,\mathrm dx\right)\,\mathrm dy\\
+ &\leq H\|b_Q\|_1.
+ \end{aligned}
+\]
+当 \(y=c_Q\) 时差分为零，其余点由 \(|z|>2|v|\) 的积分控制；不需为该单点另设条件。
+
+枚举坏块并令 \(b^{(n)}\) 为前 \(n\) 项之和。在共同区域 \(G\) 上，有限和满足
+\[
+ \int_G|Tb^{(n)}(x)|\,\mathrm dx
+ \leq H\sum_Q\|b_Q\|_1\leq2H\|f\|_1.
+\]
+由 \(b^{(n)}\to b=f-g\) 于 \(L^2\)，有 \(Tb^{(n)}\to Tb\) 于 \(L^2\)。选取几乎处处收敛的子列，再用 Fatou 引理，得到 \(\int_G|Tb|\leq2H\|f\|_1\)。于是
+\[
+ \bigl|\{\,x\in G:|Tb(x)|>t/2\,\}\bigr|
+ \leq\frac{4H}{t}\cdot\|f\|_1.
+\]
+把这一界、好部界和 \(|\Omega^*|\) 相加，得到 \(L^1\cap L^2\) 上的弱型估计。
+
+最后说明延拓的含义。对 \(f\in L^1\)，选有界紧支撑 \(f_n\)，使 \(\|f_n-f\|_1\leq2^{-3n}\)。对差 \(f_{n+1}-f_n\) 使用刚证的估计，可得
+\[
+ \sum_{n=1}^{\infty}
+ \bigl|\{\,|Tf_{n+1}-Tf_n|>2^{-n}\,\}\bigr|<\infty.
+\]
+几乎每点最终都避开这些集合，故 \(Tf_n\) 几乎处处收敛。以其极限定义 \(Tf\)，再对 \(|Tf_n-Tf_m|\) 的分布估计令 \(m\to\infty\)，得到
+\[
+ \bigl|\{\,|Tf_n-Tf|>t\,\}\bigr|
+ \leq\frac{C_dB}{t}\cdot\|f_n-f\|_1.
+\]
+同样的极限过程把弱型界传给 \(f\)，并说明不同逼近所得极限相同。用两组逼近的和与数乘可验证线性。若 \(f\in L^1\cap L^2\)，可选同时在 \(L^1,L^2\) 中逼近的截断，所得极限又与原算子的 \(L^2\) 极限相同。这给出相容性与弱型延拓的唯一性。
+\end{proof}
+
+固定 \(\eta\in C_c^\infty(\mathbb R^d\setminus\{0\})\)，使它在闭环带 \(\{\,1/2\leq|\zeta|\leq2\,\}\) 的一个邻域等于 \(1\)。对可测有界符号 \(m\)，令
+\[
+ B_s(m)\coloneqq\sup_{j\in\mathbb Z}
+ \|m(2^j\,\cdot)\cdot\eta\|_{H^s}.
+\]
+固定截断 \(\eta\) 留出了一点环带边界余量，使 \(\varphi\) 和坐标乘以 \(\varphi\) 都能作为光滑乘法作用于被测量的对象。以下是\term[hormander-chengzi-dingli]{Hörmander 乘子定理}[Hörmander multiplier theorem]的环带版本。
+
+\Needspace{6\baselineskip}
 \begin{theorem}[Hörmander 环带条件]\label{b2:thm:22-hormander}
-若 \(s>d/2\)、\(m\in L^\infty\) 且 \(B_s(m)<\infty\)，则 \(m\in M_p\)、\(1<p<\infty\)，算子范数不超过
-\(C_{d,p,s}(\|m\|_\infty+B_s(m))\)。
+设 \(d\geq1\)，\(s>d/2\)，\(m\in L^\infty(\mathbb R^d;\mathbb C)\)。固定 \(\eta\in C_c^\infty(\mathbb R^d\setminus\{0\})\)，使它在 \(\{\,1/2\leq|\xi|\leq2\,\}\) 的邻域等于 \(1\)，并假设
+\[
+ B_s(m)=\sup_{j\in\mathbb Z}
+ \|m(2^j\,\cdot)\cdot\eta\|_{H^s(\mathbb R^d)}<\infty.
+\]
+则 \(L^2\) 乘子 \(T_m\) 对每个 \(1<p<\infty\) 唯一延拓为有界算子 \(L^p\to L^p\)，且
+\[
+ \|T_mf\|_p\leq C_{d,p,s,\eta}
+ \bigl(\|m\|_\infty+B_s(m)\bigr)\cdot\|f\|_p.
+\]
+它还具有与 \(L^2\) 定义相容的弱型 \((1,1)\) 延拓，弱型常数不超过
+\(C_{d,s,\eta}\bigl(\|m\|_\infty+B_s(m)\bigr)\)。
 \end{theorem}
 \begin{proof}
-设 \(h_j\) 如上一小节。Sobolev 范数经 Plancherel 等价于
-\(\|(1+|x|)^s h_j\|_2\)；固定光滑截断的乘法在 \(H^s\) 有界，故这些范数一致受 \(CB_s\) 控制。
-证明这一乘法事实，只需把乘积的 Fourier 变换写为卷积，使用
-\((1+|x|)^s\le C_s(1+|x-y|)^s(1+|y|)^s\) 及 Schwartz 核的带权 \(L^1\) 范数。
-同样，乘上环带中的坐标 \(\xi_\ell\) 表明
-\(\|(1+|x|)^s\nabla h_j\|_2\le CB_s\)。
-由 Cauchy–Schwarz，
+仍用本节固定的 \(\varphi\)，并记
 \[
- \|h_j\|_1+\|\nabla h_j\|_1\le CB_s,\qquad
- \int_{|x|>R}|h_j(x)|\,\mathrm dx\le CB_sR^{-(s-d/2)}
- \quad(R\ge1).
+ q_j(\zeta)=m(2^j\zeta)\cdot\eta(\zeta),\quad
+ b_j=\varphi\cdot q_j,\quad h_j=\mathcal F^{-1}b_j,\quad
+ k_j(x)=2^{jd}\cdot h_j(2^jx).
 \]
-
-记 \(\gamma=s-d/2>0\)。对位移 \(v\ne0\)，低频环带 \(2^j|v|\le1\) 满足
-\(\|k_j(\,\cdot-v)-k_j\|_1\le CB_s2^j|v|\)。
-高频环带 \(2^j|v|>1\) 在 \(|x|>2|v|\) 上用两个尾积分，得到
+因为 \(\eta=1\) 于 \(\operatorname{supp}\varphi\) 的邻域，\(b_j=m(2^j\,\cdot)\cdot\varphi\)，与二进分解中的符号相同。\cref{b2:lem:22-sobolev-cutoff}分别用于截断 \(\varphi\) 和 \(2\pi\mathrm i\zeta_r\cdot\varphi(\zeta)\)，给出
 \[
+ \|b_j\|_{H^s}+\sum_{r=1}^{d}
+ \|2\pi\mathrm i\zeta_r\cdot b_j\|_{H^s}
+ \leq C_{d,s,\eta}\cdot B_s(m).
+\]
+Plancherel 与 Sobolev 范数的定义因此说明
+\[
+ \|(1+|x|)^s\cdot h_j\|_2
+ +\|(1+|x|)^s\cdot\nabla h_j\|_2
+ \leq C\cdot B_s(m).
+\]
+这些 \(h_j\) 是光滑函数：\(b_j\) 有界且紧支撑，任何多项式乘以 \(b_j\) 都属于 \(L^1\)，可以在逆变换中对空间变量求导。这里没有对 \(m\) 作经典意义的微分。
+
+令 \(\gamma=s-d/2>0\)。由 Cauchy--Schwarz 不等式，
+\[
+ \|h_j\|_1+\|\nabla h_j\|_1
+ \leq C\cdot B_s(m)\cdot
+ \left(\int_{\mathbb R^d}(1+|x|)^{-2s}\,\mathrm dx\right)^{1/2}
+ \leq C_{d,s,\eta}\cdot B_s(m).
+\]
+更精确地，对 \(R\geq1\)，极坐标给出
+\[
+ \int_{|x|>R}(1+|x|)^{-2s}\,\mathrm dx
+ \leq C_d\int_R^\infty r^{d-1-2s}\,\mathrm dr
+ =\frac{C_d}{2s-d}\cdot R^{d-2s},
+\]
+所以
+\[
+ \int_{|x|>R}|h_j(x)|\,\mathrm dx
+ \leq C_{d,s,\eta}\cdot B_s(m)R^{-\gamma}.
+\]
+这一步把带权 \(L^2\) 信息变成了两个不同用途的 \(L^1\) 信息：梯度的全空间积分控制小位移，核的尾积分控制大位移。
+
+取有限指标集 \(J\subset\mathbb Z\)，令
+\[
+ K_J=\sum_{j\in J}k_j,\quad
+ m_J(\xi)=m(\xi)\cdot\sum_{j\in J}\varphi(2^{-j}\xi),
+ \quad T_Jf=K_J*f.
+\]
+每个 \(k_j\in L^1\)，故 \(K_J\in L^1\)，卷积与 \(L^2\) 乘子 \(T_{m_J}\) 一致。分割的非负性保证 \(|m_J|\leq\|m\|_\infty\)，因而
+\[
+ \|T_J\|_{2\to2}\leq\|m\|_\infty
+\]
+与有限集 \(J\) 无关。下一步证明积分 Hörmander 常数也与 \(J\) 无关。
+
+固定 \(v\ne0\)。若 \(2^j|v|\leq1\)，由
+\[
+ k_j(x-v)-k_j(x)
+ =-\int_0^1v\cdot\nabla k_j(x-tv)\,\mathrm dt
+\]
+及平移不变性可得
+\[
+ \begin{aligned}
  \int_{|x|>2|v|}|k_j(x-v)-k_j(x)|\,\mathrm dx
- \le CB_s(2^j|v|)^{-\gamma}.
+ &\leq|v|\cdot\|\nabla k_j\|_1\\
+ &=2^j|v|\cdot\|\nabla h_j\|_1
+ \leq C\cdot B_s(m)\cdot2^j|v|.
+ \end{aligned}
 \]
-两段等比级数可求和，故每个有限环带和的核及其伴随都满足一致的积分 Hörmander 条件。
-
-\chapref{b2:ch:18}弱型证明中，坏块的估计只用该积分条件：用零平均把核减去块中心的值，再把差分积分界乘以块的 \(L^1\) 范数。好部仍用一致的 \(L^2\) 范数。因此同一证明给出有限和的一致弱型界；Marcinkiewicz 插值和伴随对偶给出一致的 \(L^p\) 界。
-有限和在 \(L^2\) 中趋于 \(T_m\)，取几乎处处子列并用 Fatou，便将 \(L^p\) 界传到极限，最后用稠密性延拓。
-这条证明不要求极限核有逐点梯度界，因而确实比上一版本弱。
-\end{proof}
-严格条件 \(s>d/2\) 用于尾积分中的正指数 \(\gamma\)。在等号处，高频环带级数不再衰减；这说明本证明失效的位置，不能把失效本身当作等号处任何可能强化的反例。
-
-% 扩写定位：b2:subsec:220204
-有限阶条件中的尺度因子不可删除。若在频率 \(\xi\) 附近的变化尺度是 \(|\xi|\)，则一次求导自然带来 \(|\xi|^{-1}\)；Mihlin 假设以 \(|\xi|^{|\alpha|}\) 恢复这个尺度。普通的“全部导数有界”在无穷频率未必提供这种衰减，也就不能直接控制重缩放后的二进核。
-
-\ProseParagraphBreak
-
-例如 \(m(\xi)=e^{2\pi\mathrm ia\cdot\xi}\) 的乘子是平移，故在每个 \(L^p\) 上都是等距。但其导数在无穷处不衰减，除非 \(a=0\)，不满足 Mihlin 的尺度导数条件。这个例子表明定理提供的是充分条件，而不是所有有界乘子的分类。反过来，把一个任意有界但高度不规则的符号放入 \(L^\infty\)，只能保证 \(L^2\) 有界，不能得到其他指数。
-
-\ProseParagraphBreak
-
-还应区分单个乘子和一族乘子的界。若 \(m_\nu\) 的 Mihlin 常数一致，则标量算子范数一致；若要在位置上先对输出求平方和，需要更强的向量论证。不过在此处统一符号条件已经足以给出这一论证：对有限族取对角乘子 \(\operatorname{diag}(m_\nu)\)，归一化后的核的算子范数由各个标量核上界的上确界控制，\(L^2(\ell^2)\) 界由逐项 Plancherel 相加得到。\cref{b2:prop:18-hilbert-valued-cz}于是给出
+若 \(2^j|v|>1\)，则在 \(|x|>2|v|\) 上同时有 \(|x|>|v|\) 与 \(|x-v|>|v|\)。分别在两个积分中换元，使用上面的尾积分界，得到
 \[
- \left\|\left(\sum_\nu|T_{m_\nu}f_\nu|^2\right)^{1/2}\right\|_p
- \leq C_p\left\|\left(\sum_\nu|f_\nu|^2\right)^{1/2}\right\|_p.
+ \begin{aligned}
+ &\int_{|x|>2|v|}|k_j(x-v)-k_j(x)|\,\mathrm dx\\
+ &\quad\leq
+ \int_{|z|>2^j|v|}|h_j(z)|\,\mathrm dz+
+ \int_{|z|>2^j|v|}|h_j(z)|\,\mathrm dz
+ \leq C\cdot B_s(m)\cdot(2^j|v|)^{-\gamma}.
+ \end{aligned}
 \]
-该常数与族的大小无关。若只知道各个算子的 \(L^p\) 范数一致，而不知道统一核或其他向量结构，则不能凭空推出上述平方和界。这也是前面 Bessel 平方函数识别时应核对的额外条件。
+选择 \(j_0\) 满足 \(2^{j_0}|v|\leq1<2^{j_0+1}|v|\)。两部分级数满足
+\[
+ \sum_{j\leq j_0}2^j|v|\leq2,\quad
+ \sum_{j>j_0}(2^j|v|)^{-\gamma}
+ \leq\frac{1}{1-2^{-\gamma}}.
+\]
+对任意有限 \(J\) 取子和不会增大这些上界，所以
+\[
+ \sup_{v\ne0}\int_{|x|>2|v|}
+ |K_J(x-v)-K_J(x)|\,\mathrm dx
+ \leq C_{d,s,\eta}B_s(m).
+\]
+
+有限和核是光滑的 \(L^1\) 函数，满足所需支撑外表示。于是\cref{b2:lem:22-integral-hormander-weak}给出所有 \(T_J\) 的一致弱型界。其 \(L^2\) 伴随的核为
+\[
+ K_J^*(x)=\overline{K_J(-x)}.
+\]
+变量替换 \(x\mapsto-x\)、\(v\mapsto-v\) 表明 \(K_J^*\) 具有同一个积分条件，伴随的 \(L^2\) 范数也相同，所以 \(T_J^*\) 具有同样的弱型界。记 \(D=\|m\|_\infty+B_s(m)\)；若 \(D=0\) 则结论平凡，否则先对 \(D^{-1}T_J\) 使用\cref{b2:thm:17-marcinkiewicz}，由弱型 \((1,1)\) 和强型 \((2,2)\) 得到 \(1<p<2\) 的界。对 \(D^{-1}T_J^*\) 作相同插值，再由 \(p'\in(1,2)\) 的对偶性得到 \(2<p<\infty\) 的界。因此
+\[
+ \|T_Jf\|_p\leq C_{d,p,s,\eta}\cdot D\|f\|_p,
+ \quad1<p<\infty,
+\]
+常数与 \(J\) 的大小和位置无关。
+
+最后令 \(J=\{\,-L,\ldots,L\,\}\)。分割恒等式和 \(|m_J|\leq\|m\|_\infty\) 使 \(T_Jf\to T_mf\) 于 \(L^2\)。对 \(f\in L^p\cap L^2\)，选取几乎处处收敛的子列，再用 Fatou 引理，将统一 \(L^p\) 界传到 \(T_mf\)。在 \(L^1\cap L^2\) 上也可把弱型分布估计传到极限：先把阈值 \(t\) 降为任意 \(t'<t\)，使用几乎处处收敛和 Fatou，再令 \(t'\uparrow t\)。强型延拓由 \(L^p\cap L^2\) 的稠密性得到，弱型延拓由前一引理证明末尾的逼近步骤得到；所有这些延拓与原 \(L^2\) 算子相容。
+\end{proof}
+
+严格不等式 \(s>d/2\) 在两处承担同一任务：使逆权 \((1+|x|)^{-s}\) 属于 \(L^2\)，并使尾积分指数 \(\gamma=s-d/2\) 为正。在 \(s=d/2\) 时，当前尾积分计算出现对数发散，高频环带级数也不再衰减。这指出了本证明不能到达端点的原因；证明失效本身并不构成某个附加条件下端点结论的反例。
+
+\ProseParagraphBreak
+整个论证始终先处理有限环带和，再在 \(L^2\) 中取极限，因此没有假设粗糙符号的无限核级数逐点收敛。与 Mihlin 证明相比，保留下来的是足以估计坏块的核差分积分，而不是逐点梯度。这正是 Sobolev 环带条件可以降低光滑性要求的原因。
+
+\ProseParagraphBreak
+还可用平移乘子看清“充分条件”的含义。若 \(a\in\mathbb R^d\)，则 \(m(\xi)=e^{2\pi\mathrm i a\cdot\xi}\) 给出 \(T_mf(x)=f(x+a)\)，它在每个 \(L^p\) 上等距。但当 \(a\ne0\) 时，至少一个一阶导数的模恒为非零常数，乘上 \(|\xi|\) 后无界，所以不满足 Mihlin 条件。定理并未分类所有有界乘子；它提供的是可由符号直接验证、并且在尺度分解下保持一致的一组条件。
+
+\ProseParagraphBreak
+最后给出下一节所需的一族乘子版本。标量算子范数一致有界并不能单独推出先在位置上求平方和的估计；此处统一的 Mihlin 条件还提供统一核结构，因而可以调用\cref{b2:prop:18-hilbert-valued-cz}。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[统一 Mihlin 条件下的平方和估计]\label{b2:prop:22-uniform-mihlin-square}
+设 \(d\geq1\)，\(1<p<\infty\)，\(I\) 是有限或可数指标集。对每个 \(\nu\in I\)，设 \(m_\nu\in C^{d+2}(\mathbb R^d\setminus\{0\};\mathbb C)\)，并假设
+\[
+ \sup_{\nu\in I}\sup_{\xi\ne0}
+ |\xi|^{|\alpha|}\cdot|\partial^\alpha m_\nu(\xi)|
+ \leq A<\infty,\quad|\alpha|\leq d+2.
+\]
+以各自 \(L^2\) 定义的相容 \(L^p\) 延拓记 \(T_{m_\nu}\)。则对任意复值函数族 \((f_\nu)_{\nu\in I}\)，只要右侧有限，就有
+\[
+ \left\|\left(\sum_{\nu\in I}|T_{m_\nu}f_\nu|^2\right)^{1/2}\right\|_p
+ \leq C_{d,p}\cdot A
+ \left\|\left(\sum_{\nu\in I}|f_\nu|^2\right)^{1/2}\right\|_p.
+\]
+常数与指标集的大小无关。
+\end{proposition}
+\begin{proof}
+先设 \(I=\{1,\ldots,n\}\)，并令 \(H=\mathbb C^n\)，赋予 Euclidean 范数。在 \(L^2(\mathbb R^d;H)\) 上定义对角算子
+\[
+ \mathbb T(f_1,\ldots,f_n)
+ =(T_{m_1}f_1,\ldots,T_{m_n}f_n).
+\]
+逐坐标 Plancherel 给出
+\[
+ \|\mathbb Tf\|_{L^2(H)}^2
+ =\sum_{\nu=1}^{n}\int|m_\nu(\xi)|^2
+ \cdot|\widehat f_\nu(\xi)|^2\,\mathrm d\xi
+ \leq A^2\cdot\|f\|_{L^2(H)}^2.
+\]
+对每个符号，用本节二进分解构造支撑外核 \(K_\nu\)。全部符号共享常数 \(A\)，因此核的大小、梯度和支撑外表示也共享同一组常数。令
+\[
+ \mathbb K(z)=\operatorname{diag}
+ \bigl(K_1(z),\ldots,K_n(z)\bigr),\quad z\ne0.
+\]
+对角矩阵在 \(H\) 上的算子范数等于对角元模的最大值，故
+\[
+ \|\mathbb K(z)\|_{H\to H}
+ =\max_{1\leq\nu\leq n}|K_\nu(z)|
+ \leq C A|z|^{-d}.
+\]
+当 \(|h|\leq|z|/2\) 时，各坐标的梯度界还给出
+\[
+ \|\mathbb K(z+h)-\mathbb K(z)\|_{H\to H}
+ \leq C A\,\frac{|h|}{|z|^{d+1}}.
+\]
+对两变量核 \(\mathbb K(x-y)\)，改变任一变量都满足相应差分估计。支撑外表示由有限个坐标的表示逐项组合；此处有限维 Bochner 积分就是坐标积分。
+
+这样，\(\mathbb T\) 满足\cref{b2:prop:18-hilbert-valued-cz}的全部条件：有 \(L^2(H)\) 起点、算子范数意义的标准核估计，以及紧支撑输入的支撑外表示。该命题的常数不依赖 Hilbert 空间的维数。应用它并对 \(A\) 归一化，即得
+\[
+ \|\mathbb Tf\|_{L^p(H)}
+ \leq C_{d,p}\cdot A\|f\|_{L^p(H)},
+\]
+这正是有限族的平方和估计。先对 \(L^2(H)\cap L^p(H)\) 输入应用，再由稠密性推广，得到陈述中的相容 \(L^p\) 算子。
+
+若 \(I\) 可数，枚举其元素并对前 \(n\) 项使用已证估计。右侧的有限平方和由完整平方和控制；左侧随着 \(n\) 增大逐点单调增加。对其 \(p\) 次方使用单调收敛定理，得到可数族结论。
+\end{proof}
+
+这个向量论证的前置是\chapref{b2:ch:18}的 Hilbert 空间值奇异积分结果。\chapref{b2:ch:19}的平方函数定理则先对固定光滑环带核证明统一估计，再借助随机符号完成；那里的证明并未使用本章的 Mihlin 定理。因此下一节可以把本命题与已经建立的平方函数理论结合，用来识别 Bessel 势范数，而不产生循环依赖。

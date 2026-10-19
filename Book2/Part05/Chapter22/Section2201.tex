@@ -2,69 +2,313 @@
 \section{乘子算子}
 \label{b2:sec:2201}
 
-平移不变算子在 Fourier 一侧表现为逐点乘法。本章讨论怎样从符号的局部光滑性得到整个 \(L^p\) 范数界，并区别阶数为零的有界乘子、改变可积指数的分数积分和具有导数损失的微分算子。
+常系数微分算子经过 Fourier 变换成为多项式乘法，卷积算子则成为其核的 Fourier 变换所给出的乘法。求解方程时，还会遇到多项式的倒数、平方根或更一般的函数。因此，一个共同的问题是：对每个频率分别乘上 \(m(\xi)\)，所得操作能否在原来的函数空间中保持有界？
+
+\ProseParagraphBreak
+在 \(L^2\) 上，Plancherel 等式直接回答这个问题；在其他 \(L^p\) 上，频率之间的叠加不能由平方和完全描述，符号的振荡和不连续性便会产生影响。本节先把算子的定义和基本运算说清，再说明平移不变性为何引出乘子。下一节的尺度不变光滑性条件，将给出容易应用的一类充分判据。
 
 \subsection{Fourier 乘子}
 \label{b2:subsec:220101}
 
-\begin{definition}\label{b2:def:22-multiplier}
-对可测函数 \(m\)，先在使乘积有意义的测试函数上定义
+本章沿用
 \[
- T_m f=\mathcal F^{-1}(m\widehat f).
+ \widehat f(\xi)=\int_{\mathbb R^d}
+ f(x)e^{-2\pi\mathrm i x\cdot\xi}\,dx
 \]
-若该算子延拓为 \(L^p(\mathbb R^d)\) 上的有界算子，称 \(m\) 为 \(L^p\) Fourier 乘子，并记其算子范数为 \(\|m\|_{M_p}\)。
+的归一化。若 \(m\) 只是可测函数，一般不能把 \(m\widehat f\) 解释为任意两个分布的乘积。先取 \(m\in L^\infty(\mathbb R^d)\)，便可对每个 \(f\in L^2\) 定义
+\[
+ T_m f\coloneqq\mathcal F^{-1}(m\widehat f)\in L^2.
+\]
+这一步不要求 \(m\) 连续，也不要求它有普通函数意义下的逆 Fourier 变换。
+
+\Needspace{6\baselineskip}
+\begin{definition}[Fourier 乘子]\label{b2:def:22-multiplier}
+设 \(d\geq1\)、\(1\leq p<\infty\)，且
+\(m\in L^\infty(\mathbb R^d)\)。若存在常数 \(C\)，使以上在
+\(L^2\) 中定义的算子对全部 \(f\in\mathcal S(\mathbb R^d)\) 满足
+\[
+ \|T_m f\|_p\leq C\|f\|_p,
+\]
+称 \(m\) 为 \(L^p\) \term[fourier-chengzi]{Fourier 乘子}[Fourier multiplier]，记 \(m\in M_p\)。该算子唯一延拓到
+\(L^p\)，其范数记为 \(\|m\|_{M_p}\)。
+对于 \(p=\infty\)，本章约定
+\[
+ m\in M_\infty\quad\Longleftrightarrow\quad
+ \overline m\in M_1,
+\]
+并把 \(T_m\) 定义为 \(T_{\overline m}:L^1\to L^1\) 在
+\(\langle f,g\rangle=\int f\overline g\) 配对下的伴随；
+记 \(\|m\|_{M_\infty}=\|\overline m\|_{M_1}\)。
 \end{definition}
-乘子在零测集上的值不影响算子。对于一般有多项式增长的光滑 \(m\)，乘法可在 Schwartz 空间与温和分布之间解释；对于仅可测的有界 \(m\)，最稳妥的起点是 \(L^2\)。
-若 \(m=\widehat k\)、\(k\in L^1\)，则 \(T_mf=k*f\)，Young 不等式给出所有 \(1\le p\le\infty\) 上的有界性。
+
+当 \(p<\infty\) 时，唯一性来自 Schwartz 函数在 \(L^p\) 中的稠密性。
+若 \(f\in L^2\cap L^p\)，先截断再作光滑化，可以找到在这两个范数中同时趋近 \(f\) 的 Schwartz 函数。因此，延拓后的 \(T_m f\) 与原来的 \(L^2\) 定义相同：两种范数收敛各自给出依测度收敛的子列，极限必一致。以后在共同定义域内使用 Fourier 计算，依据的就是这一相容性。
 
 \ProseParagraphBreak
-乘法和卷积的对应不意味着每个乘子都有普通可积核。恒等乘子的核为 \(\delta_0\)，Hilbert 乘子的核为主值分布。推导核估计时应先局部化频率，再在原点外重构普通函数；原点上的分布项要由已有的 \(L^2\) 定义处理。
+\(L^\infty\) 的情形必须另作说明。Schwartz 函数并不在其中范数稠密，例如常数 \(1\) 到任意趋于零的连续函数的 \(L^\infty\) 距离都不小于 \(1\)。上述伴随约定选出与 \(L^1\) 配对相容的 \WeakStar{}连续算子；它在 \(L^\infty\cap L^2\) 上也与 \(L^2\) 定义一致。事实上，对 \(g\in L^1\cap L^2\)，Plancherel 等式给出
+\[
+ \langle T_m f,g\rangle
+ =\langle f,T_{\overline m}g\rangle,
+\]
+这个配对确定了同一个函数。以后涉及端点 \(\infty\) 的乘子，均采用此约定，而不从 Schwartz 类上的范数估计声称得到了任意意义下的唯一延拓。
+
+\ProseParagraphBreak
+最直接的例子来自卷积。若 \(k\in L^1\)、\(m=\widehat k\)，则
+\[
+ T_m f=k*f,\quad
+ \|m\|_{M_p}\leq\|k\|_1,\quad 1\leq p\leq\infty.
+\]
+这里先在 Schwartz 类上用 Fubini 验证 Fourier 恒等式，再应用 Young 不等式。对于有限复 Borel 测度 \(\mu\)，同样有
+\[
+ m(\xi)=\int e^{-2\pi\mathrm i y\cdot\xi}\,d\mu(y),
+ \quad T_m f(x)=\int f(x-y)\,d\mu(y),
+ \quad \|m\|_{M_p}\leq|\mu|(\mathbb R^d).
+\]
+因此，常数符号 \(1\) 的核为 \(\delta_0\)，指数符号
+\(e^{-2\pi\mathrm i y\cdot\xi}\) 对应平移。可积核只是乘子的一部分；Hilbert 变换的核则要用主值分布解释。下一节从局部化符号重构核时，首先得到的是原点外的普通函数，原点处可能存在的分布项仍由 \(L^2\) 定义确定。
 
 \subsection{\texorpdfstring{\(L^2\)}{L2} 理论}
 \label{b2:subsec:220102}
 
+微分算子的符号通常无界，仍可在 \(L^2\) 的稠密子空间上定义。为准确地区别无界算子与有界乘子，对任意几乎处处有限的可测 \(m\)，令
+\[
+ D_m\coloneqq\{f\in L^2:m\widehat f\in L^2\},
+ \quad T_m f=\mathcal F^{-1}(m\widehat f),\quad f\in D_m.
+\]
+该定义域稠密：把任意 \(\widehat f\in L^2\) 乘上
+\(\mathbf1_{\{|\xi|\leq n,\ |m(\xi)|\leq n\}}\)，再令 \(n\to\infty\)，即可由支配收敛得到 \(L^2\) 逼近。
+
+\Needspace{6\baselineskip}
 \begin{proposition}\label{b2:prop:22-l2}
-可测 \(m\) 是 \(L^2\) 乘子当且仅当 \(m\in L^\infty\)，且
-\(\|m\|_{M_2}=\|m\|_\infty\)。
+设 \(m:\mathbb R^d\to\mathbb C\) 可测且几乎处处有限。在自然定义域
+\(D_m\) 上定义的 \(T_m\) 能延拓为 \(L^2\) 有界算子，当且仅当
+\(m\in L^\infty\)。此时
+\[
+ \|m\|_{M_2}=\|m\|_\infty.
+\]
 \end{proposition}
 \begin{proof}
-Plancherel 给出充分性及范数上界。若算子范数为 \(C\)，在任意有限测度集合 \(E\) 上选 \(\widehat f=\mathbf1_E\)，得
-\(\int_E|m|^2\le C^2|E|\)。若 \(|m|>C+\epsilon\) 的集合有正测度，取其中有限测度的正测度子集就矛盾。因此 \(|m|\le C\) 几乎处处，得到必要性和等号。
+若 \(m\in L^\infty\)，Plancherel 等式直接给出
+\[
+ \|T_m f\|_2^2=\int|m(\xi)|^2\cdot|\widehat f(\xi)|^2\,d\xi
+ \leq\|m\|_\infty^2\|f\|_2^2.
+\]
+反过来，设在 \(D_m\) 上有界，范数上界为 \(C\)。对任意有限测度集合 \(E\)，令
+\[
+ E_n=E\cap\{|\xi|\leq n,\ |m(\xi)|\leq n\}.
+\]
+取 \(\widehat f=\mathbf1_{E_n}\) 时确有 \(f\in D_m\)，故
+\(\int_{E_n}|m|^2\leq C^2|E_n|\)。由单调收敛，
+\(\int_E|m|^2\leq C^2|E|\)。
+如果 \(\{|m|>C+\epsilon\}\) 有正测度，取其中有限正测度子集代入，就产生矛盾。
+因此 \(\|m\|_\infty\leq C\)，与充分性合起来得到范数等式。
 \end{proof}
-对 \(|m|=1\) 的符号，算子在 \(L^2\) 上等距；这并不提供其他 \(p\) 上的范数控制。即使每个频率只发生相位旋转，不同频率叠加后的空间集中仍可能发生变化。
+
+例如 \(|m|=1\) 时，\(T_m\) 在 \(L^2\) 上等距；若 \(m=\mathbf1_E\)，则 \(T_m\) 是频率集合 \(E\) 上的正交投影。无论 \(E\) 的边界多么复杂，这个 \(L^2\) 结论都成立。其他 \(p\) 的困难不在逐点乘法本身，而在 Fourier 变换不能再把原空间范数等同于频率空间的 \(L^p\) 范数。
 
 \ProseParagraphBreak
-若 \(m_1,m_2\in M_p\)，则 \(m_1m_2\in M_p\)，且范数不超过两范数之积。先在 \(L^2\cap L^p\) 上验证 \(T_{m_1m_2}=T_{m_1}T_{m_2}\)，再用稠密性延拓即可。相似地，乘子空间对一致算子范数有界的点态极限封闭：在 \(L^2\cap L^p\) 上先取 \(L^2\) 极限及几乎处处子列，再用 Fatou，最后延拓。这是处理光滑截断极限的常用办法。
+有界符号的最大值还是任何乘子范数的下界。证明的办法是把 Fourier 质量集中在一个频率附近：在空间侧用越来越缓慢变化的函数，再乘上一个固定频率的指数。此处不能直接代入 \(e^{2\pi\mathrm i x\cdot\xi_0}\)，因为它不属于有限指数的 \(L^p(\mathbb R^d)\)。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[符号的必要界]\label{b2:prop:22-symbol-bound}
+设 \(d\geq1\)、\(1\leq p\leq\infty\)，且 \(m\in M_p\)，其中
+\(M_\infty\) 采用\cref{b2:def:22-multiplier}的伴随约定。则
+\[
+ \|m\|_\infty\leq\|m\|_{M_p}.
+\]
+\end{proposition}
+\begin{proof}
+先设 \(1<p<\infty\)，\(p'=p/(p-1)\)。取
+\(f(x)=e^{-\pi|x|^2}\)、\(g(x)=f(x)^{p-1}\)，并在 \(m\) 的 Lebesgue 点
+\(\xi_0\) 处定义
+\[
+ f_\epsilon(x)=\epsilon^{d/p}e^{2\pi\mathrm i x\cdot\xi_0}f(\epsilon x),
+ \quad
+ g_\epsilon(x)=\epsilon^{d/p'}e^{2\pi\mathrm i x\cdot\xi_0}g(\epsilon x).
+\]
+两者的相应范数不随 \(\epsilon\) 改变。变换变量和 Plancherel 配对给出
+\[
+ \langle T_m f_\epsilon,g_\epsilon\rangle
+ =\int m(\xi_0+\epsilon\eta)\widehat f(\eta)
+       \overline{\widehat g(\eta)}\,d\eta.
+\]
+两个 Fourier 变换都是正 Gaussian 函数；其乘积除以积分后是一个
+Gaussian 近似恒等核。Lebesgue 点性质因此使右端趋于
+\(m(\xi_0)\int f\overline g\)。另一方面，左端的绝对值不超过
+\(\|m\|_{M_p}\cdot\|f\|_p\cdot\|g\|_{p'}\)。
+所选 \(g\) 恰使
+\(\int f\overline g=\|f\|_p\cdot\|g\|_{p'}\)，故
+\(|m(\xi_0)|\leq\|m\|_{M_p}\)。
+
+当 \(p=1\) 时，仍取同一个 \(f\)，改用
+\(g_\delta(x)=e^{-\pi\delta|x|^2}\)，其中 \(\delta>0\)。
+对每个固定 \(\delta\)，以上计算以及 \(\|g_\delta\|_\infty=1\) 给出
+\[
+ |m(\xi_0)|\int f g_\delta\leq\|m\|_{M_1}\cdot\|f\|_1.
+\]
+再令 \(\delta\downarrow0\)，由支配收敛得到所需不等式。
+\(p=\infty\) 的结论应用于 \(\overline m\in M_1\) 即得。
+\end{proof}
+
+这里从 Lebesgue 点得到的是几乎处处的结论，恰好对应本质上确界。
+某个频率点上的任意赋值不影响乘子。这个下界通常不是充分条件：
+\(L^2\) 的特殊性正是只凭它就能完全刻画有界性。
 
 \subsection{\texorpdfstring{\(L^p\)}{Lp} 乘子问题}
 \label{b2:subsec:220103}
 
-若 \(m\in M_p\)、\(1<p<\infty\)，其 Banach 伴随在 \(L^{p'}\) 上的符号为 \(\overline m\)，范数相同。若 \(m\) 实值，就得到对偶指数上的相同范数。与 \(L^2\) 界插值，可控制 \(p\) 和 \(2\) 之间的全部指数，但不能越过尚未建立的端点。
+在判别具体符号以前，先整理三种常用操作。它们使有限频率截断的计算能够进入无穷尺度的结论，也说明何时可以把两个已经构造的算子复合。
 
-\ProseParagraphBreak
-缩放不改变乘子范数。若 \(D_rf(x)=f(rx)\)，则
-\(T_{m(r\,\cdot)}=D_{1/r}T_mD_r\)，而两个缩放范数相消。
-正交变换与频率平移也保持范数：前者对应空间坐标旋转，后者对应调制。符号乘上 \(e^{-2\pi\mathrm i y\cdot\xi}\) 则对应输出平移。这些等距对称使乘子条件应具有尺度不变性；要求所有导数在整个频率空间绝对有界，并不是适合齐次问题的条件。
-
-\ProseParagraphBreak
-一个不光滑却有界的例子是一维区间特征函数。半轴投影可用恒等算子与 Hilbert 变换表示，两个频率平移后的半轴投影之差就是区间投影，因此在 \(1<p<\infty\) 上一致有界。由此不能推断高维球的特征函数同样有界。符号边界的几何维数与曲率会参与问题，\chapref{b2:ch:24}将专门说明这一障碍。
-
-% 扩写定位：b2:subsec:220103
-Fourier 乘子并不是凭空选出的一类算子；在 \(L^2\) 上，它们正好是与所有平移交换的有界线性算子。
-\begin{proposition}\label{b2:prop:22-translation-multiplier}
-若 \(T:L^2(\mathbb R^d)\to L^2(\mathbb R^d)\) 有界，且 \(T\tau_y=\tau_yT\) 对全部 \(y\) 成立，其中 \(\tau_yf(x)=f(x-y)\)，则存在唯一的 \(m\in L^\infty\)，使 \(T=T_m\)，并且 \(\|T\|_{2\to2}=\|m\|_\infty\)。
+\Needspace{6\baselineskip}
+\begin{proposition}[乘子的运算、对偶与极限]\label{b2:prop:22-multiplier-calculus}
+设 \(d\geq1\)，并采用\cref{b2:def:22-multiplier}中的乘子定义。
+\begin{enumerate}
+ \item 对 \(1\leq p\leq\infty\)，若 \(m_1,m_2\in M_p\)，则
+ \(m_1+m_2,m_1m_2\in M_p\)，且
+ \[
+ T_{m_1m_2}=T_{m_1}T_{m_2},\quad
+ \|m_1m_2\|_{M_p}\leq\|m_1\|_{M_p}\cdot\|m_2\|_{M_p}.
+ \]
+ 加法满足相应的三角不等式。
+ \item 若 \(1<p<\infty\)，则
+ \(m\in M_p\) 当且仅当 \(\overline m\in M_{p'}\)，并且
+ \(\|m\|_{M_p}=\|\overline m\|_{M_{p'}}\)。
+ 两个算子在复 \(L^p\) 对偶下互为伴随。
+ \item 对固定 \(1\leq p\leq\infty\)，若
+ \(m_n\in M_p\)、\(\sup_n\|m_n\|_{M_p}\leq C\)，且
+ \(m_n\to m\) 几乎处处，则 \(m\in M_p\)，
+ \(\|m\|_{M_p}\leq C\)。
+\end{enumerate}
 \end{proposition}
 \begin{proof}
-令 \(A=\mathcal FT\mathcal F^{-1}\)。平移变成乘法 \(e^{-2\pi\mathrm iy\cdot\xi}\)，故 \(A\) 与所有这些乘法算子交换。对任意 \(\varphi\in C_c^\infty\)，Fourier 反演把 \(\varphi\) 写成这些指数乘法的 \(L^1\) 加权积分；其在 \(L^2\) 上的强积分与 \(A\) 交换。于是 \(A\) 与乘法 \(M_\varphi\) 交换。
-
-由光滑函数的有界几乎处逼近，\(A\) 也与任意可测集合的投影 \(M_{\mathbf1_E}\) 交换。可以先对有界集合用 Lebesgue 正则性与卷积逼近得到 \(0\leq\varphi_n\leq1\)、\(\varphi_n\to\mathbf1_E\) 几乎处，支配收敛给出强算子收敛；再以球截断推广到一般集合。
-
-取递增的有限测度立方体 \(Q_n\) 覆盖全空间。在 \(Q_n\) 上定义 \(m_n=A\mathbf1_{Q_n}\)。若 \(n<k\)，交换投影给出
-\(\mathbf1_{Q_n}m_k=A(\mathbf1_{Q_n}\mathbf1_{Q_k})=m_n\)，所以拼成可测函数 \(m\)。对 \(E\subset Q_n\)，有
+先取 \(p<\infty\)。对 \(f\in L^2\cap L^p\)，
+\(T_{m_2}f\) 仍在这两个空间内，故 Fourier 乘法可以连续使用两次：
 \[
- A\mathbf1_E=\mathbf1_E m,\qquad
+ \widehat{T_{m_1}T_{m_2}f}=m_1m_2\widehat f.
+\]
+两种延拓的相容性及 \(L^2\cap L^p\) 的稠密性给出算子恒等式与范数界。
+加法的论证相同。
+
+对第二条，在 \(f,g\in\mathcal S\) 上先用 \(L^2\) 配对写成
+\[
+ \langle T_m f,g\rangle
+ =\int m\widehat f\,\overline{\widehat g}
+ =\langle f,T_{\overline m}g\rangle.
+\]
+若 \(T_m\) 在 \(L^p\) 上有界，则右端作为 \(f\) 的泛函范数不超过
+\(\|m\|_{M_p}\cdot\|g\|_{p'}\)。由 \(L^p\) 对偶性，
+\(T_{\overline m}g\) 属于 \(L^{p'}\) 并满足相应界；
+交换 \(p,p'\) 后得到范数等式。端点 \(p=\infty\) 的第一条则由
+\(L^1\) 算子的伴随得到，注意标量乘子可交换，所以取伴随时复合次序的反转不改变结果。
+
+对第三条，\cref{b2:prop:22-symbol-bound}先给出
+\(\|m_n\|_\infty\leq C\)，因而 \(|m|\leq C\) 几乎处处。
+当 \(f\in\mathcal S\) 时，支配收敛和 Plancherel 等式给出
+\[
+ \|T_{m_n}f-T_mf\|_2^2
+ =\int|m_n-m|^2\cdot|\widehat f|^2\longrightarrow0.
+\]
+选取几乎处处收敛的子列。对于 \(p<\infty\)，Fatou 引理给出
+\(\|T_mf\|_p\leq C\|f\|_p\)，正好是乘子定义所需的估计。
+对于 \(p=\infty\)，把已经证明的 \(p=1\) 情形应用于
+\(\overline{m_n}\)，再取伴随即可。
+\end{proof}
+
+极限结论只保证有界性，不保证算子范数收敛；即使符号逐点收敛，也可能在不断远移的频率处保留很大的差异。若 \(m\) 实值，对偶性给出 \(p\) 与 \(p'\) 的相同乘子范数。再与 \(L^2\) 界插值，可以得到已知指数与 \(2\) 之间的全部指数；这不能自动推出 \(1\) 或 \(\infty\) 端点。
+
+\ProseParagraphBreak
+乘子范数还具有若干精确的对称性。令
+\[
+ D_rf(x)=f(rx),\quad M_\eta f(x)=e^{2\pi\mathrm i\eta\cdot x}f(x),
+ \quad \tau_yf(x)=f(x-y),\quad r>0.
+\]
+直接计算 Fourier 变换可得
+\[
+ \begin{aligned}
+ T_{m(r\,\cdot)}&=D_{1/r}T_mD_r,\\
+ T_{m(\,\cdot-\eta)}&=M_\eta T_mM_{-\eta},\\
+ T_{e^{-2\pi\mathrm i y\cdot\xi}m(\xi)}&=\tau_yT_m.
+ \end{aligned}
+\]
+\(D_r\) 的范数为 \(r^{-d/p}\)，其中 \(d/\infty=0\)，所以两个缩放范数相消。
+调制和平移都是等距同构；把恒等式反向使用，得到这些操作都保持
+\(\|m\|_{M_p}\)。正交坐标变换也有相同性质。对于端点 \(\infty\)，上述算子均与 \(L^1\) 配对相容，恒等式可由伴随验证。
+这解释了下一节为什么估计
+\(|\xi|^{|\alpha|}\partial^\alpha m(\xi)\)：缩放频率时，导数产生的尺度因子恰被前面的幂抵消。
+
+\ProseParagraphBreak
+一个不光滑但确实有界的例子是一维区间投影。Hilbert 变换 \(H\) 的符号为
+\(-\mathrm i\,\operatorname{sgn}\xi\)，所以
+\[
+ P_+\coloneqq\tfrac12(I+\mathrm i H)
+\]
+在零点以外的符号为 \(\mathbf1_{(0,\infty)}\)。由第18章的
+\(L^p\) 有界性，\(P_+\) 对 \(1<p<\infty\) 有界。若 \(a<b\)，则
+\[
+ T_{\mathbf1_{(a,b)}}=
+ M_aP_+M_{-a}-M_bP_+M_{-b},
+ \quad
+ \|\mathbf1_{(a,b)}\|_{M_p}\leq2\|P_+\|_{p\to p},
+\]
+与区间的位置和长度无关。符号光滑性因此是充分条件而非必要条件；
+也不能把这个一维结论直接推广到高维球的特征函数。边界曲率带来的困难将在\chapref{b2:ch:24}说明。
+
+\ProseParagraphBreak
+最后说明乘子与平移不变性的准确关系。卷积与平移交换很直观；
+下面的反向结论说明，在 \(L^2\) 上，除此以外没有另一类有界平移不变算子。
+
+\Needspace{6\baselineskip}
+\begin{proposition}\label{b2:prop:22-translation-multiplier}
+设 \(d\geq1\)。若复线性算子
+\(T:L^2(\mathbb R^d)\to L^2(\mathbb R^d)\) 有界，且
+\(T\tau_y=\tau_yT\) 对全部 \(y\in\mathbb R^d\) 成立，
+其中 \(\tau_yf(x)=f(x-y)\)，则存在在几乎处处意义下唯一的
+\(m\in L^\infty(\mathbb R^d)\)，使
+\[
+ T=T_m,\quad \|T\|_{2\to2}=\|m\|_\infty.
+\]
+反过来，每个有界 \(L^2\) 乘子都与所有平移交换。
+\end{proposition}
+\begin{proof}
+令 \(A=\mathcal FT\mathcal F^{-1}\)。平移变成乘法
+\(e^{-2\pi\mathrm i y\cdot\xi}\)，故 \(A\) 与所有这些乘法算子交换。
+对任意 \(\varphi\in C_c^\infty\)，Fourier 反演把 \(\varphi\) 写成这些指数函数的
+\(L^1\) 加权积分。更具体地，对每个 \(h\in L^2\)，
+\[
+ \varphi h=\int_{\mathbb R^d}
+  (\mathcal F^{-1}\varphi)(y)e^{-2\pi\mathrm i y\cdot\xi}h(\xi)\,dy
+\]
+是 \(L^2\) 中的强积分，被积函数的范数不超过
+\(|(\mathcal F^{-1}\varphi)(y)|\cdot\|h\|_2\)。
+有界算子可移入这个积分，因而 \(A\) 与乘法 \(M_\varphi\) 交换。
+
+接着把光滑截断换成可测集投影。若 \(E\) 有界，将 \(\mathbf1_E\) 与非负光滑近似恒等核卷积，可得
+\(0\leq\varphi_n\leq1\)、\(\varphi_n\in C_c^\infty\)，且
+\(\varphi_n\to\mathbf1_E\) 几乎处处。对每个 \(h\in L^2\)，
+支配收敛说明 \(M_{\varphi_n}h\to M_{\mathbf1_E}h\)。
+故 \(A\) 也与 \(M_{\mathbf1_E}\) 交换。再令有界截断集合递增到任意可测集，就得到一般情形。
+
+取递增的有限测度立方体 \(Q_n\) 覆盖全空间。
+由交换投影，\(A\mathbf1_{Q_n}\) 支持在 \(Q_n\) 内；记它为 \(m_n\)。
+若 \(n<k\)，则
+\[
+ \mathbf1_{Q_n}m_k
+ =A(\mathbf1_{Q_n}\mathbf1_{Q_k})=m_n.
+\]
+删去可数个零测集后，这些函数可以拼成可测函数 \(m\)。
+对任意可测 \(E\subset Q_n\)，又有
+\[
+ A\mathbf1_E=\mathbf1_E m,\quad
  \int_E|m|^2\leq\|A\|^2|E|.
 \]
-若 \(\{|m|>\|A\|+\epsilon\}\cap Q_n\) 有正测度，将其代入即矛盾。因此 \(\|m\|_\infty\leq\|A\|\)。有限支集简单函数的稠密性说明 \(A=M_m\)，反向范数与唯一性由本节的 \(L^2\) 乘子结论得到。
+取 \(E=\{|m|>\|A\|+\epsilon\}\cap Q_n\) 可知
+\(\|m\|_\infty\leq\|A\|\)。由有限测度支集简单函数在 \(L^2\) 中的稠密性，
+\(A=M_m\)。范数等式来自\cref{b2:prop:22-l2}；若两个符号给出同一算子，
+将其差乘以任意有限测度集的特征函数，即得二者几乎处处相等。
+反向结论只需注意两个逐点乘法算子可交换。
 \end{proof}
-该结论只建立在 \(L^2\) 上。若算子只在 \(L^p\) 给定，还不能通过一次 Fourier 变换就把它视为 \(L^2\) 有界乘子；需先说明它在共同稠密类上的作用及其额外的平方界。另一方面，具有不连续符号的平移不变算子在 \(L^2\) 上完全没有困难；真正的乘子问题是同一个算子能否保持其他 \(L^p\)。
+
+该证明使用了 \(T\) 的平方界，尤其使用 Fourier 变换在 \(L^2\) 上的酉性。
+若某算子最初只在另一个 \(L^p\) 空间给定，不能未经说明便把它搬到
+\(L^2\) 上应用此命题。实际应用通常从一个有界符号出发，先建立
+\(L^2\) 算子，再通过核估计证明它在其他 \(L^p\) 上也有界；这正是下面采用的顺序。

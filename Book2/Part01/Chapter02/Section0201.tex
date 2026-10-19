@@ -15,10 +15,10 @@
 \symidx{\(\mathbb T\)：单位周期圆周}
 \symidx{\(e_k\)：圆周上的指数函数}
 
-令 \(e_k(x)\coloneqq e^{2\pi\mathrm{i}kx}\)。直接积分给出 \(\langle e_k,e_l\rangle=\delta_{kl}\)。若 Hilbert 空间中的一族向量满足这一关系，称其为\term[biaozhun-zhengjiao-xi]{标准正交系}[orthonormal system]；不要求每个向量具有单位长度时，只称正交系。此处的“标准”正好消去投影系数中的长度分母。
+令 \(e_k(x)\coloneqq e^{2\pi\mathrm{i}kx}\)。直接积分给出 \(\langle e_k,e_l\rangle=\delta_{kl}\)。若实或复 Hilbert 空间 \(H\) 中一族向量 \((e_k)_{k\in J}\) 满足 \(\langle e_k,e_l\rangle=\delta_{kl}\)，称其为\term[biaozhun-zhengjiao-xi]{标准正交系}[orthonormal system]；不要求每个向量具有单位长度时，只称正交系。此处的“标准”正好消去投影系数中的长度分母。
 
 \begin{definition}\label{b2:def:02-fourier-coefficient}
-设 \(f\in L^1(\mathbb T)\)。对每个 \(k\in\mathbb Z\)，积分
+取 \(\mathbb T=\mathbb R/\mathbb Z\) 的归一化 Lebesgue 测度，\(f\in L^1(\mathbb T;\mathbb C)\)，并令 \(e_k(x)=e^{2\pi\mathrm i kx}\)。对每个 \(k\in\mathbb Z\)，积分
 \[
  \widehat f(k)\coloneqq\int_{\mathbb T}f(x)\cdot e^{-2\pi\mathrm{i}kx}\,\mathrm{d}x
 \]
@@ -34,7 +34,7 @@
 下列误差恒等式同时给出\term[bessel-budengshi]{Bessel 不等式}[Bessel's inequality]及有限维逼近的几何意义。
 
 \begin{proposition}[Bessel]\label{b2:prop:02-bessel}
-设 \((u_j)_{j\geq1}\) 是 Hilbert 空间 \(H\) 中的标准正交系。对 \(v\in H\)、有限集 \(F\subset\mathbb N\) 及任意标量 \((a_j)_{j\in F}\)，有
+设 \((u_j)_{j\geq1}\) 是 实或复 Hilbert 空间 \(H\)（复数时内积对第一变量线性） 中的标准正交系。对 \(v\in H\)、有限集 \(F\subset\mathbb N\) 及任意标量 \((a_j)_{j\in F}\)，有
 \[
  \left\|v-\sum_{j\in F}a_ju_j\right\|^2
  =\|v\|^2-\sum_{j\in F}|\langle v,u_j\rangle|^2
@@ -48,15 +48,15 @@
 
 只知道一组方向互相垂直，并不能断言它们能恢复所有向量。例如只取偶数频率 \((e_{2k})_{k\in\mathbb Z}\)，函数 \(e_1\) 的全部相应系数都为零。Bessel 不等式没有失效，而是这组方向遗漏了整个正交补。
 
-\subsection{Parseval 恒等式}
+\subsection{抽象正交展开与 Parseval 定理}
 \label{b2:subsec:020103}
 
 \begin{definition}\label{b2:def:02-complete-system}
-设 \((u_j)\) 是 \(H\) 中的标准正交系。若其有限线性组合在 \(H\) 中稠密，则称它是\term[wanbei-zhengjiao-xi]{完备正交系}[complete orthonormal system]，也称\term[biaozhun-zhengjiao-ji]{标准正交基}[orthonormal basis]。
+设 \(H\) 为实或复 Hilbert 空间，\((u_j)_{j\geq1}\) 是其中的标准正交系。若其有限线性组合在 \(H\) 中稠密，则称它是\term[wanbei-zhengjiao-xi]{完备正交系}[complete orthonormal system]，也称\term[biaozhun-zhengjiao-ji]{标准正交基}[orthonormal basis]。
 \end{definition}
 
 \begin{theorem}[正交展开与 Parseval]\label{b2:thm:02-abstract-parseval}
-设 \((u_j)_{j\geq1}\) 是标准正交系，\(M\) 是其线性张成空间的闭包。对任意 \(v\in H\)，级数 \(\sum_j\langle v,u_j\rangle u_j\) 在 \(H\) 中收敛到唯一满足 \(w\in M\)、\(v-w\perp M\) 的向量 \(w\)。该系完备当且仅当每个 \(v\in H\) 都满足
+设 \(H\) 为实或复 Hilbert 空间（复数时内积对第一变量线性），\((u_j)_{j\geq1}\) 是其中的标准正交系，\(M\) 是其线性张成空间的闭包。对任意 \(v\in H\)，级数 \(\sum_j\langle v,u_j\rangle u_j\) 在 \(H\) 中收敛到唯一满足 \(w\in M\)、\(v-w\perp M\) 的向量 \(w\)。该系完备当且仅当每个 \(v\in H\) 都满足
 \[
  \|v\|^2=\sum_{j\geq1}|\langle v,u_j\rangle|^2.
 \]
@@ -75,11 +75,29 @@ Bessel 不等式使系数的平方和收敛。两段部分和之差的范数平�
 \subsection{正交投影}
 \label{b2:subsec:020104}
 
-上面的映射 \(v\mapsto w\) 称为到 \(M\) 的\term[zhengjiao-touying]{正交投影}[orthogonal projection]。其线性性可从系数公式直接看出；勾股恒等式给出 \(\|w\|\leq\|v\|\)。对任意 \(z\in M\)，还有
+前一定理用可数标准正交系构造了到其闭线性张成空间的投影。一般闭子空间的存在性则由第一卷定理 8.4.6 保证：取标量域 \(\mathbb K=\mathbb R\) 或 \(\mathbb C\)，设 \(H\) 为 \(\mathbb K\) 上的 Hilbert 空间、\(M\subseteq H\) 为闭线性子空间，复情形内积仍对第一变量线性。每个 \(v\in H\) 都有唯一分解
 \[
- \|v-z\|^2=\|v-w\|^2+\|w-z\|^2.
+ v=P_Mv+(v-P_Mv),\quad P_Mv\in M,\quad v-P_Mv\in M^\perp.
 \]
-因此 \(w\) 是 \(M\) 中唯一的最佳逼近。这里的距离来自 Hilbert 范数；换成一致范数，最佳逼近一般不再由 Fourier 系数直接给出。
+映射 \(P_M:H\to M\) 称为到 \(M\) 的\term[zhengjiao-touying]{正交投影}[orthogonal projection]。所引定理先以距离最小化和平行四边形恒等式建立最近点，再证明误差正交，因此不要求 \(M\) 已经由某个可数正交系生成。
+% 跨卷引用：第一卷定理8.4.6，b1:thm:hilbert-projection，Book1/Part02/Chapter08/Section0804.tex。
+
+\ProseParagraphBreak
+
+线性性可以直接从分解的唯一性读出。对任意 \(v_1,v_2\in H\) 与 \(a,b\in\mathbb K\)，向量 \(aP_Mv_1+bP_Mv_2\) 属于 \(M\)，而
+\[
+ (av_1+bv_2)-(aP_Mv_1+bP_Mv_2)
+ =a(v_1-P_Mv_1)+b(v_2-P_Mv_2)\in M^\perp.
+\]
+最后的包含关系来自内积对第一变量的线性性：右端与任意 \(m\in M\) 的内积都为零。由唯一性，\(P_M(av_1+bv_2)=aP_Mv_1+bP_Mv_2\)。勾股恒等式再给出
+\[
+ \|v\|^2=\|P_Mv\|^2+\|v-P_Mv\|^2,
+\]
+故 \(\|P_Mv\|\leq\|v\|\)。对任意 \(z\in M\)，误差 \(v-P_Mv\) 与 \(P_Mv-z\) 正交，因而
+\[
+ \|v-z\|^2=\|v-P_Mv\|^2+\|P_Mv-z\|^2.
+\]
+因此 \(P_Mv\) 是 \(M\) 中唯一的最佳逼近。这里的距离来自 Hilbert 范数；换成一致范数，最佳逼近一般不再由 Fourier 系数直接给出。
 
 \ProseParagraphBreak
 

@@ -1,55 +1,174 @@
 % !TeX root = ../../Book2.tex
 \OptionalSection{Fourier 积分算子初步}{b2:sec:2105}
 
-本节介绍 Fourier 积分算子的几何语言。这里完整说明定义、基本模型与坐标不变性，不建立一般的算子演算；后者需要符号估计和微局部局部化，见\appref{b2:app:G}及 \cite{Hrmander2009AnalysisIV}。
+前几节从相位的导数得到积分或算子范数估计。本节进一步问：输入在某个位置、某个频率方向的振荡，会传到输出的哪里？Fourier 积分算子的相位可以同时记录这两类信息。这里建立基本表示、驻点关系及两种可直接核验的相位变换；一般符号演算与传播定理不作为本章普通主线的前置。相关背景可参阅\appref{b2:app:G}及专著 \cite{Hrmander2009AnalysisIV}。
 
 \subsection{非退化相位}
 \label{b2:subsec:210501}
 
-形式
+先考虑不会产生收敛困难的表示。设 \(U\subset\mathbb R^d\) 开，实值 \(\phi\) 光滑，\(a\in C_c^\infty(U\times\mathbb R^d)\)，\(f\in\mathcal S(\mathbb R^d)\)。由 Fourier 变换的定义及 Fubini 定理，
 \[
- Af(x)=\iint e^{2\pi\mathrm i(\phi(x,\theta)-y\cdot\theta)}
-                         a(x,\theta)f(y)\,\mathrm dy\,\mathrm d\theta
-       =\int e^{2\pi\mathrm i\phi(x,\theta)}a(x,\theta)\widehat f(\theta)\,\mathrm d\theta
+ \begin{aligned}
+ Af(x)
+ &=\iint e^{2\pi\mathrm i(\phi(x,\theta)-y\cdot\theta)}
+          a(x,\theta)f(y)\,\mathrm dy\,\mathrm d\theta\\
+ &=\int e^{2\pi\mathrm i\phi(x,\theta)}
+          a(x,\theta)\widehat f(\theta)\,\mathrm d\theta.
+ \end{aligned}
 \]
-称为一种 Fourier 积分算子表示。若振幅不紧支撑，积分先以频率截断解释，再要求在分布意义下收敛。通常相位对 \(\theta\) 正齐次一次，且相应驻点方程的微分具有最大秩；“非退化相位”在这个框架中指的是驻点方程的几何正则性，而不是 \(\partial_\theta^2\phi\) 可逆。齐次性本身会使某些 Hesse 矩阵 方向退化，不能混用两种非退化概念。
+频率支撑紧时，对 \(x,y\) 作任意次微分都可以移入核积分，所以核光滑。这个情形适合先检查相位和换元，但一般 Fourier 积分算子的奇性来自无界频率，不能由紧频率核本身看出。
 
 \ProseParagraphBreak
-对于 \(\phi(x,\theta)=x\cdot\theta\)，上述算子就是左量子化的伪微分算子；若 \(a\equiv1\)，则是恒等算子。对于
-\(\phi(x,\theta)=x\cdot\theta+t|\theta|\)，则得到半波传播
-\(e^{2\pi\mathrm i t|D|}\)。这两个模型分别描述局部频率调节与奇性传播。
+例如 \(\phi(x,\theta)=x\cdot\theta\) 给出左量子化的伪微分表示。取 \(a\equiv1\) 后，积分对 Schwartz 输入仍绝对收敛，由 Fourier 反演得到恒等算子。若用 \(\chi(\theta/R)\) 截断，其中 \(\chi\in C_c^\infty\) 在零点附近等于一，则各个截断核都光滑，而它们只在分布意义下趋于 \(\delta(x-y)\)。这是光滑核序列产生奇异极限的一个基本例子。
+
+\ProseParagraphBreak
+另一个模型是
+\[
+ \phi_t(x,\theta)=x\cdot\theta+t|\theta|,
+ \quad
+ A_tf=\mathcal F^{-1}\bigl(e^{2\pi\mathrm i t|\theta|}\widehat f(\theta)\bigr).
+\]
+这个 Fourier 乘子定义了半波算子 \(e^{2\pi\mathrm i t|D|}\)。它的乘子模为一，故由 Plancherel 延拓为 \(L^2\) 上的酉算子。其相位只在 \(\theta\ne0\) 光滑；低频部分将另行处理。以下的齐次相位描述均针对非零频率。
+
+\Needspace{6\baselineskip}
+\begin{definition}[齐次非退化相位]\label{b2:def:21-nondegenerate-phase}
+设整数 \(d\ge1\)，\(U,V\subset\mathbb R^d\) 开，\(\Gamma\subset\mathbb R^k\setminus\{0\}\) 为开锥，\(k\ge1\)。实值光滑函数 \(\Psi(x,y,\theta)\) 若满足
+\(\Psi(x,y,r\theta)=r\Psi(x,y,\theta)\)（\(r>0\)），且在临界集合
+\[
+ C_\Psi\coloneqq\{(x,y,\theta):\partial_\theta\Psi(x,y,\theta)=0\}
+\]
+上，\(k\) 个微分
+\(\mathrm d_{x,y,\theta}(\partial_{\theta_j}\Psi)\)
+线性无关，则称为\term[qi-ci-fei-tui-hua-xiang-wei]{齐次非退化相位}[homogeneous nondegenerate phase]。本节只在
+\(\partial_x\Psi\ne0\)、\(\partial_y\Psi\ne0\)
+的部分讨论输入、输出均为非零的余切方向。
+\end{definition}
+
+这里的非退化是驻点方程作为约束的正则性。隐函数定理说明 \(C_\Psi\) 的维数为 \(2d\)，因为总变量数为 \(2d+k\)，有 \(k\) 个独立约束。它并不要求频率 Hesse 矩阵\(\partial_\theta^2\Psi\)可逆。事实上，Euler 齐次恒等式及其微分给出
+\[
+ \Psi=\theta\cdot\partial_\theta\Psi,
+ \quad (\partial_\theta^2\Psi)\theta=0;
+\]
+因而频率 Hesse 矩阵总有径向零方向。
+
+\ProseParagraphBreak
+对于混合表示 \(\Psi=\phi(x,\theta)-y\cdot\theta\)，约束微分中的 \(y\) 分块是 \(-I\)，所以这组约束自动独立。若再要求 \(\partial_x\partial_\theta\phi\) 可逆，才可从
+\(y=\partial_\theta\phi(x,\theta)\) 局部解出 \(x\)，将所得关系写成输入到输出的局部图。前几节还有另一种条件：标量驻相要求积分变量上的二阶 Hesse 矩阵可逆。三种条件分别服务于驻相渐近、\(L^2\) 算子估计和驻点集合的几何，使用时必须说明求导变量。
 
 \subsection{典范关系}
 \label{b2:subsec:210502}
 
-更一般地，核写成 \(\int e^{2\pi\mathrm i\Psi(x,y,\theta)}a\,\mathrm d\theta\)。
-其\term[dianfan-guanxi]{典范关系}[canonical relation]由
+\Needspace{6\baselineskip}
+\begin{definition}[相位所生成的典范关系]\label{b2:def:21-canonical-relation}
+在\cref{b2:def:21-nondegenerate-phase}的条件下，相位 \(\Psi\) 所生成的\term[dianfan-guanxi]{典范关系}[canonical relation]是集合
 \[
- \partial_\theta\Psi=0,\qquad
- (x,\partial_x\Psi;\ y,-\partial_y\Psi)
+ \mathcal C_\Psi\coloneqq
+ \bigl\{(x,\partial_x\Psi;\ y,-\partial_y\Psi):
+       (x,y,\theta)\in C_\Psi\bigr\},
 \]
-组成，并除去零余切向量。负号来自核中输入端的相位约定。
-在半波模型，驻点方程给出
-\(y=x+t\theta/|\theta|\)，输出与输入余切向量均为 \(\theta\)。
-因此输入的某个方向在时间 \(t\) 后沿该方向的直线到达输出点（传播正负方向随演化指数的符号而变）。
+并只保留两端余切向量均非零的部分。这里 \((x,\xi)\) 表示输出位置及频率，\((y,\eta)\) 表示输入位置及频率。
+\end{definition}
+
+输入端的负号来自核的约定。若输入局部含有正频率振荡
+\(e^{2\pi\mathrm i y\cdot\eta}\)，则总相位对 \(y\) 的驻点条件为
+\(\partial_y\Psi+\eta=0\)，而输出相位梯度是 \(\partial_x\Psi\)。因此上式记录的正是可能相互耦合的输入和输出频率。
 
 \ProseParagraphBreak
-这种描述携带位置和方向两类信息。普通奇异支撑只记录在哪些位置不光滑；典范关系还说明哪个频率方向的奇性能够到达哪个方向。这也是 Fourier 积分算子与单纯积分核大小估计之间的区别。
+非退化条件也保证上述参数化在局部没有额外的切向冗余。若 \(C_\Psi\) 上一个切向量在 \((x,\partial_x\Psi;y,-\partial_y\Psi)\) 下的像为零，则其 \(\delta x,\delta y\) 均为零，并且
+\[
+ \Psi_{x\theta}\delta\theta=0,
+ \quad\Psi_{y\theta}\delta\theta=0,
+ \quad\Psi_{\theta\theta}\delta\theta=0.
+\]
+最后一个等式来自临界约束的微分。把三个式子合并，就是约束微分矩阵的转置作用于 \(\delta\theta\) 为零；其行满秩迫使 \(\delta\theta=0\)。这说明关系具有正确的局部维数，但不排除不同参数点给出同一像。Euler 恒等式又使 \(\Psi\) 在 \(C_\Psi\) 上等于零，从而沿该集合有
+\(\partial_x\Psi\cdot\mathrm dx+\partial_y\Psi\cdot\mathrm dy=0\)。这些恒等式是进一步几何理论的出发点，本节不需要引入完整的辛几何语言。
+
+\ProseParagraphBreak
+恒等相位 \(\Psi=(x-y)\cdot\theta\) 的约束为 \(x=y\)，所以
+\[
+ \mathcal C_\Psi=\{(x,\theta;x,\theta):\theta\ne0\}.
+\]
+半波相位则给出
+\[
+ \Psi_t=(x-y)\cdot\theta+t|\theta|,
+ \quad x-y+t\frac{\theta}{|\theta|}=0,
+\]
+于是
+\[
+ \mathcal C_{\Psi_t}
+ =\left\{\left(y-t\frac{\theta}{|\theta|},\theta;\ y,\theta\right):
+          \theta\ne0\right\}.
+\]
+对本节采用的正指数 \(e^{2\pi\mathrm i t|D|}\)，输出位置为
+\(x=y-t\theta/|\theta|\)；若改成负指数，方向反转。位置与频率必须同时记录，单凭空间中的球面无法恢复这个符号信息。
 
 \subsection{相位等价}
 \label{b2:subsec:210503}
 
-若在频率变量中作光滑可逆换元 \(\theta=\Theta(\eta)\)，相位变为
-\(\Psi(x,y,\Theta(\eta))\)，振幅乘上 \(|\det D\Theta|\)。
-由链式法则，新的驻点方程等价于原方程；在驻点上对 \(x,y\) 的导数也相同，故典范关系不变。坐标变换的 Jacobi 因子必须吸收到振幅中，否则得到的是另一个算子。
+首先看真正的频率坐标变换。设
+\(\theta=\Theta(x,y,\eta)\) 对每个 \((x,y)\) 都是两个开锥之间的光滑微分同胚，并且对 \(\eta\) 正齐次一次。换元后的相位及振幅为
+\[
+ \widetilde\Psi(x,y,\eta)=\Psi(x,y,\Theta(x,y,\eta)),
+ \quad
+ \widetilde a=a(x,y,\Theta(x,y,\eta))
+              |\det D_\eta\Theta|.
+\]
+对于紧频率支撑，这是普通换元公式。其驻点方程为
+\[
+ \partial_\eta\widetilde\Psi
+ =(D_\eta\Theta)^{\mathsf T}\partial_\theta\Psi=0,
+\]
+与原约束等价。在临界集合上，对 \(x,y\) 微分时由 \(\Theta\) 产生的额外项均乘着 \(\partial_\theta\Psi=0\)，故两端余切向量相同。约束的微分也只多乘可逆矩阵及作坐标变换，因此非退化性与典范关系都保持不变。Jacobi 因子则必须保留，否则积分算子会改变。
 
 \ProseParagraphBreak
-一个更简单的等价表示是给相位增加一个非退化二次辅助变量。积分掉这个变量后，驻相公式给出一个明确常数及阶数变化；相位的驻点几何不变，但振幅的阶需要随之调整。一般相位等价理论把这类操作系统化。本节只使用可以直接通过换元或 Gaussian 积分核验的情形，不把一般等价定理作为未证明的后续前置。
+增加辅助二次变量也能产生等价表示，但需要顾及齐次性。直接加 \(|\eta|^2/2\) 会破坏一次齐次；在 \(\theta\ne0\) 上应改用
+\[
+ \widetilde\Psi(x,y,\theta,\eta)
+ =\Psi(x,y,\theta)+\frac{|\eta|^2}{2|\theta|},
+ \quad\eta\in\mathbb R^m.
+\]
+它对 \((\theta,\eta)\) 同时伸缩为一次齐次。新的约束先给出 \(\eta=0\)，再给出旧约束 \(\partial_\theta\Psi=0\)，所以典范关系相同；新约束的 \(\eta\) 分块为 \(|\theta|^{-1}I\)，保证其独立性。
+
+\ProseParagraphBreak
+为核对算子而不只核对驻点集合，可先把 \(\theta\) 限制在远离零的紧集。\cref{b2:prop:21-complex-gaussian}逐坐标给出 Abel 正则化积分
+\[
+ \lim_{\epsilon\downarrow0}\int_{\mathbb R^m}
+ e^{\pi\mathrm i|\eta|^2/|\theta|}
+ e^{-\pi\epsilon|\eta|^2}\,\mathrm d\eta
+ =e^{\mathrm i\pi m/4}|\theta|^{m/2}.
+\]
+因此把振幅换成
+\(e^{-\mathrm i\pi m/4}|\theta|^{-m/2}a(x,y,\theta)\)，再加入这组辅助变量，正则化后恰恢复原核。该等式在固定的紧频率集上一致，允许把极限移入 \(\theta\) 积分。对于无界频率，因子 \(|\theta|^{-m/2}\) 还会改变振幅的阶；必须连同符号条件及分布极限一起处理。这里证明的是这两个具体变换，不把一般相位等价定理隐含为已证结论。
 
 \subsection{微局部观点}
 \label{b2:subsec:210504}
 
-微局部观察先用空间截断确定位置，再用一个锥形频率截断确定方向。若某个方向的相位没有驻点，反复分部积分说明该方向不会产生奇性。相位驻点的投影则给出可能的传播路径；是否真的出现奇性还取决于振幅是否在相应位置消失。
+微局部观察先用空间截断选定位置，再用锥形频率截断选定方向。相位在该方向没有驻点时，可以通过反复分部积分排除相应核奇性。为了说明这句话在无界频率中为什么成立，需要把每个有限频率壳层的估计求和，而不是直接把紧支撑非驻相公式套在整个频率空间上。
 
 \ProseParagraphBreak
-例如恒等算子的核是 \(\delta(x-y)\)，只在对角线上奇异；半波算子的核则沿相应光锥出现驻相贡献。低频部分经光滑截断后有光滑核，高频部分承载传播几何。在研究局部正则性时先分离低频，可以避免把 \(|\theta|\) 在零点的不光滑误当作高频传播现象。完整的波前集定义、伪微分椭圆正则性与传播定理留在\appref{b2:app:G}中分别说明其证明层次。
+具体地，在一个固定的 \((x,y)\) 紧邻域及频率开锥内，设 \(\Psi\) 是一次齐次光滑相位，并且在紧包含于该开锥的单位球面截面内的角向支撑上
+\( |\partial_\theta\Psi|\ge c>0\)。设高频振幅 \(a\) 满足：对所有多重指标 \(\alpha,\beta\)，存在常数使
+\[
+ |\partial_{x,y}^\alpha\partial_\theta^\beta a(x,y,\theta)|
+ \le C_{\alpha\beta}(1+|\theta|)^{m-|\beta|},
+ \quad |\theta|\ge1.
+\]
+把频率分为 \(|\theta|\asymp2^j\) 的光滑壳层，令 \(\theta=2^j\omega\)。壳层核变成固定环域上的振荡积分，其参数为 \(2^j\)，Jacobi 因子为 \(2^{jk}\)，振幅规模至多为 \(2^{jm}\)。对 \((x,y)\) 作 \(|\alpha|\) 次微分，最坏再增加 \(2^{j|\alpha|}\)。利用非驻相估计任意 \(N\) 次，便得到
+\[
+ |\partial_{x,y}^\alpha K_j(x,y)|
+ \le C_{\alpha,N}\,2^{j(k+m+|\alpha|-N)}.
+\]
+取 \(N>k+m+|\alpha|\)，右端可求和。对每个微分阶数分别如此选择 \(N\)，壳层级数及其全部导数一致收敛，所以这个位置、方向片上的核光滑。
+
+\ProseParagraphBreak
+在恒等算子模型，\(\partial_\theta\Psi=x-y\)，上述论证解释了核在对角线外光滑。在半波模型，条件变为
+\(x-y+t\theta/|\theta|\ne0\)，因此高频贡献只能在满足传播关系的方向上产生核奇性。存在驻点只是可能产生奇性的条件；振幅若在相关位置消失，相应贡献仍可能消失。一般的波前集映射需要进一步的局部化论证，不能只由这一单向判别替代。
+
+\ProseParagraphBreak
+半波的低频核可直接处理。若 \(\chi\) 紧支撑于零点附近，则
+\[
+ K_{t,\mathrm{low}}(x,y)
+ =\int e^{2\pi\mathrm i((x-y)\cdot\theta+t|\theta|)}
+          \chi(\theta)\,\mathrm d\theta
+\]
+对 \(x,y\) 的任何微分只引入频率多项式，仍是绝对可积函数，故核光滑。这里无需声称 \(e^{2\pi\mathrm i t|\theta|}\) 在零点光滑；真正使用的是有限频率支撑使所有频率矩都可积。分离低频之后，零点的不光滑与高频传播的几何便不会混淆。完整波前集定义、伪微分椭圆正则性与传播定理见\appref{b2:app:G}，其中分别说明各结论的证明范围。

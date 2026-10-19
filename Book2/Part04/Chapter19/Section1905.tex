@@ -1,164 +1,323 @@
 % !TeX root = ../../Book2.tex
 \OptionalSection{Besov 与 Triebel–Lizorkin 空间}{b2:sec:1905}
 
-齐次频带只记录非零频率，因而会丢掉多项式和低频信息。本节使用非齐次分解，在一个低频块之外只保留正整数尺度，以明确空间定义和边界问题的范围。
+同样一组频率块，可以记录两种不同的信息。先量每一块在整个空间中的大小，再比较不同尺度，得到一个数列范数；先在每个位置比较各尺度，再对位置积分，得到另一种范数。\subsecref{b2:subsec:190404}的平方空间已经采用了后一种次序。本节允许尺度指数变化，并通过差分、乘积和平坦边界的迹，说明这个指数为什么不能省略。一般空间可以选读；\chapref{b2:ch:22}的普通乘子正文只需要上一节已经建立的平方情形。
 
 \subsection{二进定义}
 \label{b2:subsec:190501}
 
-令 \(P_0=\chi(D)\)、\(P_j=\Delta_j\) 对 \(j\geq1\)，则 \(\sum_{j\geq0}P_j=I\)。对 \(s\in\mathbb R\)、\(1\leq p<\infty\)、\(1\leq q\leq\infty\)，定义
+先把分割固定下来，使后面的每个范数都有确定含义。低频块的作用也必须保留：所有齐次环带都消去多项式，而非齐次分解还能记录零频附近的信息。
+
+\Needspace{6\baselineskip}
+\begin{definition}\label{b2:def:19-besov-triebel-lizorkin}
+设整数 \(d\geq1\)，取实径向函数 \(\chi\in C_c^\infty(\mathbb R^d)\)，满足 \(0\leq\chi\leq1\)，在 \(|\xi|\leq1\) 为一、\(|\xi|\geq2\) 为零，并沿半径单调不增。令 \(\varphi=\chi-\chi(2\,\cdot)\)。对复值温和分布 \(f\in\mathcal S'(\mathbb R^d)\)，定义
+\[
+ P_0f=\mathcal F^{-1}(\chi\cdot\widehat f),
+ \quad P_jf=\mathcal F^{-1}\bigl(\varphi(2^{-j}\,\cdot)\cdot\widehat f\bigr)
+ \quad(j\geq1).
+\]
+设 \(s\in\mathbb R\)、\(1\leq p,q\leq\infty\)。满足
 \[
  \|f\|_{B^s_{p,q}}
- \coloneqq\left\|\{2^{js}\|P_jf\|_p\}_{j\geq0}\right\|_{\ell^q},
- \qquad
- \|f\|_{F^s_{p,q}}
- \coloneqq\left\|\left(\sum_{j\geq0}|2^{js}P_jf|^q\right)^{1/q}\right\|_p,
+ \coloneqq\left\|\bigl\{2^{js}\|P_jf\|_p\bigr\}_{j\geq0}\right\|_{\ell^q}<\infty
 \]
-当 \(q=\infty\) 时用上确界。这些条件在温和分布中定义相应空间。每个频带输出是光滑函数，但其全空间 \(L^p\) 范数可能无穷；只有满足上述有限性条件的分布才属于该空间。
-
-\subsection{Sobolev 空间 的重新解释}
-\label{b2:subsec:190502}
-
-平方函数定理给出 \(F^0_{p,2}=L^p\) 且范数等价，\(1<p<\infty\)；上一节给出 \(B^s_{2,2}=F^s_{2,2}=H^s\)。前者要将低频块加入齐次平方函数，使用低频卷积的 \(L^p\) 有界性及分割重构；后者直接由 Plancherel。
+的温和分布组成\term[besov-kongjian]{Besov 空间}[Besov space]，记为 \(B^s_{p,q}(\mathbb R^d)\)。当 \(1\leq p<\infty\)、\(1\leq q\leq\infty\) 时，满足
+\[
+ \|f\|_{F^s_{p,q}}
+ \coloneqq\left\|\left\|\bigl\{2^{js}P_jf(x)\bigr\}_{j\geq0}\right\|_{\ell^q}\right\|_{L^p_x}<\infty
+\]
+的温和分布记为 \(F^s_{p,q}(\mathbb R^d)\)，称为一般的 Triebel--Lizorkin 空间。序列指数 \(q=\infty\) 时，\(\ell^q\) 范数取上确界；Besov 定义中的 \(p=\infty\) 取空间本性上确界。
+\end{definition}
+\symidx{\(B^s_{p,q}\)：非齐次 Besov 空间}
+\symidx{\(F^s_{p,q}\)：非齐次 Triebel--Lizorkin 空间}
+这里的块正是\cref{b2:def:19-inhomogeneous-square}中的块。每个块都是光滑函数，但未必有有限的全空间范数；定义的有限性不是自动得到的。由于
+\[
+ P_0f+\sum_{j=1}^NP_jf
+ =\mathcal F^{-1}\bigl(\chi(2^{-N}\,\cdot)\cdot\widehat f\bigr)
+ \longrightarrow f\quad\text{于 }\mathcal S',
+\]
+这些范数为零时所有块为零，继而 \(f=0\)。三角不等式分别来自 \(L^p\) 与 \(\ell^q\) 的三角不等式，所以在本节的指数范围内它们确实是范数。
 
 \ProseParagraphBreak
 
-一般 \(p\) 的 Bessel 势空间定义为 \(J^sf\in L^p\)，其中 \(J^s\) 的符号是 \((1+4\pi^2|\xi|^2)^{s/2}\)。把它与 \(F^s_{p,2}\) 识别，需要统一控制环带上的归一化符号及其逆。这个乘子步骤将在\chapref{b2:ch:22}建立；此处的平方可积识别已经独立完成，不把未证明的乘子结论藏进定义。
+三个参数分别回答三个问题：\(s\) 规定高频块要乘多大的尺度权；\(p\) 规定怎样量空间大小；\(q\) 规定允许多少个尺度同时显著。只写光滑阶数而不写后两个指数，通常不能判断函数是否属于该空间。完整空间理论还包含更广的指数范围，本节不把那些结论隐含在上述定义中。
+
+\subsection{Sobolev 空间的重新解释}
+\label{b2:subsec:190502}
+
+\Cref{b2:prop:19-inhomogeneous-identification}已证明
+\[
+ F^0_{p,2}(\mathbb R^d)=L^p(\mathbb R^d)
+ \quad(1<p<\infty),
+ \quad F^s_{2,2}(\mathbb R^d)=H^s(\mathbb R^d)
+ \quad(s\in\mathbb R),
+\]
+等号指空间相同、范数等价。前一识别包括反向的函数代表问题：若温和分布的非齐次平方函数属于 \(L^p\)，合成估计使其块和在 \(L^p\) 中收敛，分布重构再将极限识别为原分布。不能只对已知属于 \(L^p\) 的函数证明不等式，就宣布对所有温和分布完成了空间识别。
+
+\ProseParagraphBreak
+
+在 \(p=q=2\) 时，Tonelli 允许交换位置积分与尺度求和，直接给出 \(B^s_{2,2}=F^s_{2,2}=H^s\)。一般 \(p=q<\infty\) 也有定义范数完全相等的恒等式
+\[
+ \sum_{j\geq0}2^{jsp}\|P_jf\|_p^p
+ =\int_{\mathbb R^d}\sum_{j\geq0}2^{jsp}|P_jf(x)|^p\,\mathrm dx.
+\]
+这一次是两个积分次序的交换；\(H^s\) 与频块范数的比较还涉及频率权重，所以通常只有等价而不是数值相等。
+
+\ProseParagraphBreak
+
+另一个常用描述从符号 \((1+4\pi^2|\xi|^2)^{s/2}\) 定义 \(J^s\)，再要求 \(J^sf\in L^p\)。该符号光滑、各阶导数至多作多项式增长，因而可作用于温和分布。对于 \(1<p<\infty\)，把这个条件与 \(F^s_{p,2}\) 识别，需要统一控制环带上的归一化符号及其逆；这一乘子论证见\cref{b2:prop:22-bessel-square}。本章的平方可积情形已由 Plancherel 独立完成。齐次势 \(I_\alpha\) 在零频奇异，而 \(J^{-\alpha}\) 的符号在那里有限；这种低频差别正是全空间同指数估计不同的原因，不能把二者混作同一个算子。
 
 \subsection{Besov 空间}
 \label{b2:subsec:190503}
 
-满足第一项范数有限的空间称为\term[besov-kongjian]{Besov 空间}[Besov space]。参数 \(q\) 衡量不同尺度的幅值如何求和。对 \(p=q\)，Tonelli 使 \(B^s_{p,p}\) 与 \(F^s_{p,p}\) 的定义范数相同；当两指数不同时，求和顺序一般不能交换。
+先说明所选分割如何影响 Besov 范数。若 \((\widetilde P_k)\) 来自另一套满足定义条件的截断，则高频新块只与固定个数的旧块相交，低频处也只有固定个数的例外。分布重构因此给出有限和
+\[
+ \widetilde P_kf=\sum_{j\sim k}\widetilde P_kP_jf.
+\]
+这里 \(j\sim k\) 表示 \(|j-k|\leq L\)，可增大固定整数 \(L\) 以覆盖低频例外。新块卷积核的 \(L^1\) 范数一致有界，且在这些指标上 \(2^{ks}\) 与 \(2^{js}\) 可比，故
+\[
+ 2^{ks}\|\widetilde P_kf\|_p
+ \leq C_s\sum_{j\sim k}2^{js}\|P_jf\|_p.
+\]
+对序列取 \(\ell^q\) 范数，有限次平移不改变该范数，便得到一个方向的界；交换新旧分割即得反向界。这个证明覆盖 \(1\leq p,q\leq\infty\)，常数依赖两套固定截断。
 
 \ProseParagraphBreak
 
-例如取频率分别位于半径 \(2^j\) 的不交小球的函数 \(f_j\)，归一化为 \(\|f_j\|_2=1\)。函数 \(\sum_ja_j2^{-js}f_j\) 的 \(B^s_{2,q}\) 大小与 \(\{a_j\}\) 的 \(\ell^q\) 大小可比，有限重叠只改变固定常数。因此 \(q=1,2,\infty\) 分别要求绝对和、平方和或统一有界，不能单由光滑指数 \(s\) 判断空间关系。
+为了具体看见第二指数，取 \(s>0\)，在彼此相隔固定个数二进尺度的频率小球内选 \(f_n\in\mathcal S\)，使 \(\|f_n\|_2=1\)。记相应尺度为 \(j_n=Ln\)，其中固定 \(L\) 足够大。令
+\[
+ f=\sum_{n\geq1}a_n2^{-j_ns}f_n,
+\]
+并先设 \((a_n)\) 有界。不同球互不相交，正 \(s\) 使级数在 \(L^2\) 中收敛。每个球只与固定个数的频块相交，不同球对应的指标组互不交叠；在每组中，分割和为一，至少有一个块记录了固定比例的平方大小。Plancherel 和有限个数项的范数等价因此给出
+\[
+ \|f\|_{B^s_{2,q}}\asymp\|(a_n)\|_{\ell^q}.
+\]
+于是 \(a_n=1/n\) 给出属于 \(B^s_{2,2}\) 而不属于 \(B^s_{2,1}\) 的函数；\(a_n=1\) 给出属于 \(B^s_{2,\infty}\) 而不属于 \(H^s\) 的函数。频率位置相同的尺度权并不能替代尺度之间的可和性。
 
-% 扩写定位：b2:subsec:190503
-对 \(0<s<1\)，Besov 的差分描述可以在有限指数中完整验证。以下使用非齐次范数，因而低频项必须保留。
+\ProseParagraphBreak
+
+当光滑阶数小于一时，还可以不用 Fourier 变换来辨认一种 Besov 范数。频率块在步长远小于其波长时变化较小，在步长较大时只能用两倍振幅控制；下面的两段几何级数正来自这一区别。
+
+\Needspace{6\baselineskip}
 \begin{proposition}\label{b2:prop:19-besov-difference}
-设 \(0<s<1\)、\(1\leq p<\infty\)。对 \(f\in L^p(\mathbb R^d)\)，有
+设整数 \(d\geq1\)、\(0<s<1\)、\(1\leq p<\infty\)，采用\cref{b2:def:19-besov-triebel-lizorkin}的非齐次块。对每个 \(f\in L^p(\mathbb R^d;\mathbb C)\)，有
 \[
  \|f\|_{B^s_{p,p}}\asymp
  \|f\|_p+
  \left(\int_{\mathbb R^d}
  \frac{\|f(\,\cdot+h)-f\|_p^p}{|h|^{d+sp}}\,\mathrm dh\right)^{1/p}.
 \]
-因此此处的 Besov 空间与按 Gagliardo 差分定义的分数 Sobolev 空间相同，范数等价。
+允许两边同时为无穷；比较常数只依赖 \(d,s,p\) 与固定截断。因此该 Besov 空间与按右侧差分范数定义的分数 Sobolev 空间相同。
 \end{proposition}
 \begin{proof}
-先取光滑输入，记 \(u_j=P_jf\)、\(a_j=2^{js}\|u_j\|_p\)。Bernstein 与平移不变性给出
+先设左边有限，记 \(u_j=P_jf\)、\(a_j=2^{js}\|u_j\|_p\)。由于 \(s>0\)，Hölder 的序列形式（\(p=1\) 时直接求和）给出
+\[
+ \sum_{j\geq0}\|u_j\|_p
+ =\sum_{j\geq0}2^{-js}a_j
+ \leq C_{s,p}\|(a_j)\|_{\ell^p}.
+\]
+所以块和在 \(L^p\) 中绝对收敛；分布重构说明其和就是 \(f\)，并且已经得到所需的 \(\|f\|_p\) 界。
+
+沿线段积分及 Bernstein 估计给出 \(\|u_j(\cdot+h)-u_j\|_p\leq C2^j|h|\cdot\|u_j\|_p\)；平移不变性另给出两倍函数范数的界。因此
 \[
  \|u_j(\,\cdot+h)-u_j\|_p
- \leq C\min\{1,2^j|h|\}\|u_j\|_p.
+ \leq C\min\{1,2^j|h|\}\cdot\|u_j\|_p.
 \]
-对 \(2^{-k-1}<|h|\leq2^{-k}\)、\(k\geq0\)，于是
+在 \(2^{-k-1}<|h|\leq2^{-k}\)、\(k\geq0\) 上，对绝对重构求差并相加，得到
 \[
  2^{ks}\|f(\,\cdot+h)-f\|_p
  \leq C\sum_{j\leq k}2^{-(k-j)(1-s)}a_j
        +C\sum_{j>k}2^{-(j-k)s}a_j.
 \]
-两边对尺度取 \(\ell^p\)；右侧是与两个可和几何序列卷积，离散 Young 不等式给出 \(\ell^p\) 界。每个环带的 \(|h|^{-d}\mathrm dh\) 积分是固定常数，故这就是小步长差分积分的上界。大步长部分由 \(\|f(\cdot+h)-f\|_p\leq2\|f\|_p\) 与 \(s>0\) 控制。
+右边是两段可和几何序列与 \((a_j)\) 的卷积，离散 Young 不等式控制其 \(\ell^p_k\) 范数。每个步长环带上的 \(\int|h|^{-d}\,\mathrm dh\) 相同，且 \(|h|^{-sp}\) 与 \(2^{ksp}\) 可比，所以这个序列界正给出 \(|h|\leq1\) 的差分积分。\(|h|>1\) 的部分由 \(2\|f\|_p\) 以及 \(\int_{|h|>1}|h|^{-d-sp}\,\mathrm dh<\infty\) 控制。
 
-反向利用 \(j\geq1\) 时 \(\int\check\varphi=0\)。置 \(k_j(h)=2^{jd}\check\varphi(2^jh)\)，则
+反向设右边有限。对 \(j\geq1\)，令 \(k_j(h)=2^{jd}\check\varphi(2^jh)\)。其积分为零，因此在 \(L^p\) 中有
 \[
- P_jf(x)=\int k_j(h)[f(x-h)-f(x)]\,\mathrm dh.
+ P_jf=\int k_j(h)\cdot\bigl(f(\,\cdot-h)-f\bigr)\,\mathrm dh.
 \]
-Hölder 的加权形式给出
-\(\|P_jf\|_p^p\leq\|k_j\|_1^{p-1}\int|k_j(h)|\|f(\cdot-h)-f\|_p^p\,\mathrm dh\)，在 \(p=1\) 时同式直接成立。Schwartz 衰减和几何级数说明
+Minkowski 后对测度 \(|k_j(h)|\,\mathrm dh\) 使用 Hölder，得到
 \[
- \sum_{j\geq1}2^{jsp}|k_j(h)|\leq C|h|^{-d-sp},\qquad h\ne0.
+ \|P_jf\|_p^p
+ \leq\|k_j\|_1^{p-1}
+       \int|k_j(h)|\cdot\|f(\,\cdot-h)-f\|_p^p\,\mathrm dh.
 \]
-将 \(2^j|h|\) 在一的两侧分开求和即可；高频侧取衰减次数大于 \(d+sp\)。Tonelli 得到高频 Besov 范数的上界，低频 \(P_0\) 由 Young 控制。
-
-还需控制右式中的 \(\|f\|_p\)。有限 Besov 范数保证
-\(\sum_{j\geq1}\|P_jf\|_p=\sum2^{-js}a_j\leq C_s\|\{a_j\}\|_{\ell^p}\)。
-因此重构级数绝对收敛于 \(L^p\)，并按温和分布分割恒等式等于 \(f\)。前面的估计可由频率截断和 Fatou 推广到全部输入，而不依赖未证明的点态级数收敛。
+\(p=1\) 时同式直接成立。Schwartz 衰减又给出
+\[
+ \sum_{j\geq1}2^{jsp}|k_j(h)|\leq C|h|^{-d-sp}\quad(h\ne0).
+\]
+具体地，写 \(r=|h|\)，每项至多为 \(Cr^{-d-sp}(2^jr)^{d+sp}(1+2^jr)^{-N}\)。在 \(2^jr\leq1\) 与 \(>1\) 两侧分别求几何级数，取 \(N>d+sp\) 即可。乘以差分范数后用 Tonelli，便控制全部高频项；低频块用 \(\|P_0f\|_p\leq\|\check\chi\|_1\cdot\|f\|_p\)。两向证明都直接适用于所给输入，没有假定逐点频率级数收敛。
 \end{proof}
-范围 \(0<s<1\) 的两端都有原因：\(s>0\) 使高频重构及大步长积分收敛；\(s<1\) 使低于步长尺度的几何序列可和。若 \(s\geq1\)，应使用更高阶差分，不能原样沿用一阶差分公式。在 \(s=1\) 时，一阶差分积分的临界径向因子是 \(\mathrm dr/r\)，一般非零梯度已使它发散。
+\(s<1\) 保证小步长对低频块的几何衰减可和，\(s>0\) 保证高频重构与大步长积分收敛。若 \(s\geq1\)，一般必须换用更高阶差分；对非零光滑梯度，\(s=1\) 的一阶差分积分已经出现 \(\mathrm dr/r\) 的发散。
 
 \ProseParagraphBreak
 
-例如，对一个有光滑边界的有界区域 \(E\)，平移使指示函数的变化发生在厚度约 \(|h|\) 的边界层，因此
-\(\|\mathbf1_E(\cdot+h)-\mathbf1_E\|_p^p\leq C|h|\)；
-在边界具有一块非平坦或平坦图形且取一组横穿该图形的方向时，也有相应下界 \(c|h|\)。径向差分积分于是归结为 \(\int_0^1r^{-sp}\,\mathrm dr\)，给出 \(\mathbf1_E\in B^s_{p,p}\) 当且仅当 \(sp<1\)。这与跳跃穿过一条余维一边界的事实相符：无论区域多么光滑，函数本身的跳跃仍然限制其分数光滑性。
-
-% 扩写定位：b2:subsec:190503
-Besov 的绝对尺度求和在非线性问题中有一个直接用途。Bernstein 给出
-\(\|P_jf\|_\infty\leq C2^{jd/p}\|P_jf\|_p\)；
-因此 \(B^{d/p}_{p,1}\) 连续嵌入有界连续函数空间。每个块连续，且其上确界范数绝对可和，故重构级数一致收敛。这里第二指数 \(1\) 正好允许绝对求和；只知道尺度序列有界并不足以宣布一致收敛。
-\begin{proposition}\label{b2:prop:19-besov-algebra}
-设 \(1\leq p<\infty\)、\(s>d/p\)。则 \(B^s_{p,1}\) 是一个乘法代数，并有
+这个判别可以在一个跳跃函数上精算。取单位立方体 \(Q=(0,1)^d\)。当每个 \(|h_i|<1\) 时，交集体积为 \(\prod_i(1-|h_i|)\)，因而对任意有限 \(p\geq1\)，
 \[
- \|fg\|_{B^s_{p,1}}\leq C\|f\|_{B^s_{p,1}}\|g\|_{B^s_{p,1}}.
+ \|\mathbf1_Q(\,\cdot+h)-\mathbf1_Q\|_p^p
+ =|Q\mathbin{\triangle}(Q-h)|
+ =2\left(1-\prod_{i=1}^d(1-|h_i|)\right).
 \]
+若 \(|h|<1/2\)，括号介于 \(\max_i|h_i|\) 与 \(\sum_i|h_i|\) 之间，故与 \(|h|\) 可比。小步长积分于是与 \(\int_0^{1/2}r^{-sp}\,\mathrm dr\) 同时收敛。得到精确条件
+\[
+ \mathbf1_Q\in B^s_{p,p}\quad\Longleftrightarrow\quad sp<1
+ \quad(0<s<1,\ 1\leq p<\infty).
+\]
+区域内外的函数都很简单，限制光滑阶数的是跨越边界时保留的跳跃。
+
+\ProseParagraphBreak
+
+绝对尺度求和还控制函数乘积。由 Bernstein，
+\[
+ \sum_{j\geq0}\|P_jf\|_\infty
+ \leq C\sum_{j\geq0}2^{jd/p}\|P_jf\|_p
+ =C\|f\|_{B^{d/p}_{p,1}}.
+\]
+所以 \(B^{d/p}_{p,1}\) 有一个有界连续代表：每块连续，上确界范数绝对可和，故块和一致收敛；分布重构识别这个代表。这也说明为什么临界处的序列指数一有特殊作用。
+
+\Needspace{6\baselineskip}
+\begin{proposition}\label{b2:prop:19-besov-algebra}
+设整数 \(d\geq1\)、\(1\leq p<\infty\)、\(s\geq d/p\)，采用\cref{b2:def:19-besov-triebel-lizorkin}的非齐次 Besov 空间。则它的元素具有有界连续代表，其逐点乘积满足
+\[
+ \|fg\|_{B^s_{p,1}}
+ \leq C_{d,s,p,\chi}\|f\|_{B^s_{p,1}}\cdot\|g\|_{B^s_{p,1}}.
+\]
+特别地，\(B^s_{p,1}(\mathbb R^d)\) 在乘法下封闭。
 \end{proposition}
 \begin{proof}
-置 \(f_k=P_kf\)、\(g_l=P_lg\)。两者在 \(L^p\) 和 \(L^\infty\) 中均绝对求和，所以双级数表示的乘积收敛于 \(L^p\)，且与逐点乘积相同。乘积 \(f_kg_l\) 的频率支撑包含在半径 \(C2^{\max\{k,l\}}\) 的球中；这是 Fourier 卷积的支集包含关系，先对光滑输入验证，再在所用范数下逼近。因而 \(P_j(f_kg_l)=0\) 当 \(j>\max\{k,l\}+C_0\)。
+令 \(f_k=P_kf\)、\(g_l=P_lg\)。因为 \(s\geq d/p>0\)，两组块都在 \(L^p\) 和 \(L^\infty\) 中绝对求和，前述嵌入给出有界连续代表。双级数 \(\sum_{k,l}f_kg_l\) 在 \(L^p\) 中绝对收敛，并等于 \(fg\)。
 
-对 \(k\geq l\)，Young 和 Hölder 给出
+每项乘积的 Fourier 支集包含于两频率球之和，故在半径 \(C2^{\max\{k,l\}}\) 的球内。这一支集规则可以对紧支集频率分布作卷积来理解；也可先用相同频率截断将 \(L^p\) 光滑逼近保持在略大的固定频带内，再把 Schwartz 函数的卷积公式传到分布极限。因而存在固定整数 \(L\)，使 \(P_j(f_kg_l)=0\) 当 \(j>\max\{k,l\}+L\)。
+
+若 \(k\geq l\)，由块核的统一 \(L^1\) 界及 \(s>0\)，
 \[
- \sum_j2^{js}\|P_j(f_kg_l)\|_p
- \leq C_s2^{ks}\|f_k\|_p\|g_l\|_\infty.
+ \begin{aligned}
+ \sum_{j\geq0}2^{js}\|P_j(f_kg_l)\|_p
+ &\leq C\sum_{0\leq j\leq k+L}2^{js}\|f_k\|_p\cdot\|g_l\|_\infty\\
+ &\leq C_s2^{ks}\|f_k\|_p\cdot\|g_l\|_\infty.
+ \end{aligned}
 \]
-这里 \(\sum_{0\leq j\leq k+C_0}2^{js}\leq C_s2^{ks}\)，使用了 \(s>0\)。对 \(l>k\) 交换两个函数。把所有指标相加得到
+\(l>k\) 时交换两因子。先对有限双和估计，再用 \(L^p\) 收敛及 Fatou，得到
 \[
- \|fg\|_{B^s_{p,1}}\leq C_s
- \left(\sum_k2^{ks}\|f_k\|_p\right)\left(\sum_l\|g_l\|_\infty\right)
- +C_s\left(\sum_k\|f_k\|_\infty\right)
- \left(\sum_l2^{ls}\|g_l\|_p\right).
+ \begin{aligned}
+ \|fg\|_{B^s_{p,1}}
+ \leq C_s&\left(\sum_k2^{ks}\|f_k\|_p\right)
+          \left(\sum_l\|g_l\|_\infty\right)\\
+ +C_s&\left(\sum_k\|f_k\|_\infty\right)
+          \left(\sum_l2^{ls}\|g_l\|_p\right).
+ \end{aligned}
 \]
-由先前嵌入，两个上确界范数和都受各自 \(B^s_{p,1}\) 范数控制。频率截断与 Fatou 把有限和估计推广到全部输入。
+两组上确界范数和均由对应 Besov 范数控制，即得结论。证明只用了 \(s\geq d/p\) 与 \(s>0\)，所以包括 \(s=d/p\) 的临界情形。
 \end{proof}
-这段证明已经出现低频与高频相互作用的基本分类。若 \(k\) 明显大于 \(l\)，乘积的尺度仍约为 \(2^k\)，低频因子可以放在上确界范数；若 \(k,l\) 接近，高频可能相互抵消并产生低频，但求和 \(j\leq k+C_0\) 已把这些输出一并控制。只保留高低项而丢掉相近频带，会遗漏非线性乘积的重要部分。
-
-\ProseParagraphBreak
-
-例如，在这个空间中 \(f^2,f^3\) 都保持相同光滑阶数，其范数由 \(\|f\|_{B^s_{p,1}}^2,\|f\|_{B^s_{p,1}}^3\) 控制。它并不说明任意低光滑输入的乘积都在同一空间，更不说明任意两个分布可以相乘。可相乘的关键是已经建立的有界代表与绝对重构；在较低光滑阶数上，应重新分配两因子的可积指数或使用更精细的频率乘积分解。
+若两个相乘的块频率相差很大，输出仍以较高频为主；若二者频率接近，却可能相互抵消而产生低频。上面求和的是所有 \(j\leq\max\{k,l\}+L\)，已经把这些低频输出包括在内，不能只保留高低频相互作用。这项乘积结论依赖已得到的函数代表，不能推及任意两个温和分布。
 
 \subsection{Triebel--Lizorkin 空间}
 \label{b2:subsec:190504}
 
-满足第二项范数有限的空间称为\term[triebel-lizorkin-kongjian]{Triebel--Lizorkin 空间}[Triebel--Lizorkin space]。它先在每个位置合成频率块，再作空间积分。平方函数的 \(F^s_{p,2}\) 属于这一族，而把每块 \(L^p\) 范数先算出来的 Besov 形式属于另一族。
+这类范数先在位置 \(x\) 处比较不同频率，再作空间积分。若许多块集中在同一小区域，点态序列范数会同时记录它们；若这些块分布在彼此远离的区域，同一位置只见到少数项。先把每块的全空间范数算成一个数，会丢掉这种位置关系。两种次序可以比较，却通常不能交换。
 
-\ProseParagraphBreak
-
-在所给有限指数范围中，换用另一套光滑分割得到等价范数：每个新块与有限个相邻旧块相交；旧分割恒等式把新块写成这些项的和，归一化卷积核一致 \(L^1\) 有界。Besov 情形直接在序列上用有限重叠；Triebel–Lizorkin 情形还需相应的向量卷积估计。平方序列 \(q=2\) 已由上一节矩阵核论证覆盖；一般 \(q\) 的完整分割独立性属于该理论的进一步部分，不能仅靠标量 Young 不等式宣布。Hans Triebel 的《Theory of Function Spaces》\cite{Triebel1983Theory}系统处理这些更广指数。
-
-% 扩写定位：b2:subsec:190504
-求和与积分的顺序也产生一组基本嵌入。对有限 \(p,q\)，置 \(a_j(x)=2^{js}|P_jf(x)|\)。若 \(p\geq q\)，Minkowski 在指数 \(p/q\) 中给出
+\Needspace{6\baselineskip}
+\begin{proposition}\label{b2:prop:19-besov-triebel-embeddings}
+设整数 \(d\geq1\)、\(s\in\mathbb R\)、\(1\leq p<\infty\)、\(1\leq q\leq\infty\)，所有空间使用\cref{b2:def:19-besov-triebel-lizorkin}中的同一分割。则有连续嵌入
+\[
+ B^s_{p,\min\{p,q\}}\subset F^s_{p,q}
+ \subset B^s_{p,\max\{p,q\}}.
+\]
+此外，对 \(1\leq p\leq r\leq\infty\)、\(1\leq q\leq\infty\)、\(s\in\mathbb R\)，有
+\[
+ B^s_{p,q}\subset B^{s-d(1/p-1/r)}_{r,q},
+\]
+其中 \(1/\infty=0\)。
+\end{proposition}
+\begin{proof}
+先对有限个块令 \(a_j(x)=2^{js}|P_jf(x)|\)。若 \(q\leq p\)，Minkowski 在 \(L^{p/q}\) 中给出
 \[
  \left\|\sum_j a_j^q\right\|_{p/q}
  \leq\sum_j\|a_j^q\|_{p/q},
 \]
-即 \(\|f\|_{F^s_{p,q}}\leq\|f\|_{B^s_{p,q}}\)；而逐点 \(\ell^p\) 范数不超过 \(\ell^q\) 范数，给出
-\(\|f\|_{B^s_{p,p}}\leq\|f\|_{F^s_{p,q}}\)。
-若 \(p\leq q\)，对向量值积分应用 Minkowski，得到
+即 \(\|f\|_{F^s_{p,q}}\leq\|f\|_{B^s_{p,q}}\)。逐点的 \(\ell^p\leq\ell^q\) 又给出 \(\|f\|_{B^s_{p,p}}\leq\|f\|_{F^s_{p,q}}\)。若 \(p\leq q<\infty\)，Minkowski 在序列空间 \(\ell^{q/p}\) 中给出
 \[
  \left(\sum_j\left[\int a_j^p\right]^{q/p}\right)^{p/q}
- \leq\int\left(\sum_j a_j^q\right)^{p/q};
+ \leq\int\left(\sum_j a_j^q\right)^{p/q},
 \]
-另一方向由逐点 \(\ell^q\leq\ell^p\) 得到。因此两种情形可合写为
+从而 \(\|f\|_{B^s_{p,q}}\leq\|f\|_{F^s_{p,q}}\)；逐点的 \(\ell^q\leq\ell^p\) 给出另一边。\(q=\infty\) 时直接使用
 \[
- B^s_{p,\min\{p,q\}}\ \subset\ F^s_{p,q}\
- \subset\ B^s_{p,\max\{p,q\}}.
+ \sup_j\|a_j\|_p\leq\|\sup_j a_j\|_p
+ \leq\left(\sum_j\|a_j\|_p^p\right)^{1/p}.
 \]
-当 \(q=\infty\) 时，把有限序列上确界取极限也得到同样结论。这里显示的是连续嵌入；是否严格还取决于空间、参数和函数族，不能从一个方向的范数不等式直接宣布所有情况都严格。
+有限块数趋于无穷，单调收敛证明第一组嵌入。
+
+第二组嵌入对每个块使用 Bernstein：
+\[
+ 2^{j[s-d(1/p-1/r)]}\|P_jf\|_r
+ \leq C2^{js}\|P_jf\|_p.
+\]
+低频块尺度为一，满足同样估计。取 \(\ell^q\) 范数即得结论，包括两个无穷端点。
+\end{proof}
+这些都是范数不等式；只有另有严格性例子时，才可把包含号改成真包含。\(p=q\) 时第一组嵌入就是前面由 Tonelli 得到的相等，因而不可能一概宣称严格。
 
 \ProseParagraphBreak
 
-改变可积指数时，Bernstein 还给出
-\[
- B^s_{p,q}\subset B^{s-d(1/p-1/r)}_{r,q},
- \qquad1\leq p\leq r\leq\infty.
-\]
-证明只需在每个块上使用 \(\|P_jf\|_r\leq C2^{jd(1/p-1/r)}\|P_jf\|_p\)，再按所给 \(q\) 求和。低频块也满足同样界，因为其频率尺度为一。这个嵌入损失的光滑阶数完全由空间缩放决定；若不损失该阶数，缩放一个固定高频函数便会使候选不等式的两侧具有不同增长幂。
+分割独立性也要区分指数。对 \(q=2\)、\(1<p<\infty\)，写
+\(\widetilde P_kf=\sum_{|j-k|\leq L}\widetilde P_kP_jf\)，并将有限个相邻偏移分别处理。每个固定偏移对应一族 \(\widetilde P_k\)：其缩放核有统一的标准核常数，平方范数一致有界，所以\cref{b2:prop:18-hilbert-valued-cz}控制 \(L^p(\ell^2)\) 范数。权重 \(2^{ks}\) 与 \(2^{js}\) 在相邻指标上可比，得到新旧 \(F^s_{p,2}\) 范数等价。\(p=1\) 或一般 \(q\) 不在这一 Hilbert 值强型论证的范围内。这里的定义仍使用固定分割，前面的差分、嵌入和例子也均已在声明的分割下证明；一般 Triebel--Lizorkin 分割独立性的进一步理论可参看 Hans Triebel 的《Theory of Function Spaces》\cite{Triebel1983Theory}，不能用标量 Young 不等式代替其中的向量估计。
 
-\subsection{迹理论 的联系}
+\subsection{Besov 空间的平面迹与延拓}
 \label{b2:subsec:190505}
 
-频率块也解释边界迹的阶数损失。若一个 \(d\) 维块的频率大小为 \(2^j\)，在法向上把厚度 \(2^{-j}\) 的区域压到边界，\(L^p\) 大小会损失 \(2^{j/p}\)。因此一阶空间的迹阶数为 \(1-1/p\)，一般 \(s\) 阶的自然目标为 \(s-1/p\)。
+最后考虑在 \(x_d=0\) 上取边界值。一个频率为 \(2^j\) 的块，在法向上可变化的长度约为 \(2^{-j}\)。把这一层的 \(d\) 维积分变成边界的 \((d-1)\) 维积分，函数范数会出现 \(2^{j/p}\)，因此 \(s\) 阶的自然边界阶数为 \(s-1/p\)。下面把这项尺度计算落实为一个有界迹与右逆，范围限定为平坦边界、序列指数一。
 
-\ProseParagraphBreak
+\Needspace{6\baselineskip}
+\begin{proposition}[平坦边界的 Besov 迹与延拓]
+\label{b2:prop:19-flat-besov-trace}
+设整数 \(d\geq2\)、\(1\leq p<\infty\)、\(s>1/p\)。在 \(\mathbb R^d\) 与 \(\mathbb R^{d-1}\) 上各固定\cref{b2:def:19-besov-triebel-lizorkin}的一套非齐次分割。Schwartz 函数上的限制 \(u\mapsto u(\,\cdot,0)\) 有唯一有界线性延拓
+\[
+ \operatorname{Tr}:B^s_{p,1}(\mathbb R^d)
+ \longrightarrow B^{s-1/p}_{p,1}(\mathbb R^{d-1}),
+\]
+并存在有界线性算子 \(E\) 从目标空间映回 \(B^s_{p,1}(\mathbb R^d)\)，满足 \(\operatorname{Tr}Eg=g\)。各常数只依赖固定参数和截断。
+\end{proposition}
+\begin{proof}
+令 \(u_j=P_ju\)。其法向频率不超过 \(C2^j\)。取一维 Schwartz 函数 \(k\)，使 \(\widehat k=1\) 于 \([-C,C]\)，则由法向频率截断，
+\[
+ u_j(x',0)=\int_{\mathbb R}2^jk(-2^jt)\cdot u_j(x',t)\,\mathrm dt.
+\]
+对每个 \(x'\) 使用 Hölder，\(p'=p/(p-1)\) 给出核的 \(L^{p'}\) 范数 \(2^{j/p}\|k\|_{p'}\)；\(p=1\) 时使用 \(p'=\infty\)。再积分切向变量，得到
+\[
+ \|u_j(\,\cdot,0)\|_{L^p(\mathbb R^{d-1})}
+ \leq C2^{j/p}\|u_j\|_{L^p(\mathbb R^d)}.
+\]
+卷积表示给出所用的法向连续代表；频率块本身光滑，因此这就是其普通限制。边界频率仍在半径 \(C2^j\) 的球内。记边界块为 \(P'_k\)，其核的 \(L^1\) 范数一致有界，而且 \(P'_k[u_j(\cdot,0)]=0\) 当 \(k>j+L\)。于是
+\[
+ \begin{aligned}
+ \|u_j(\,\cdot,0)\|_{B^{s-1/p}_{p,1}}
+ &\leq C\sum_{0\leq k\leq j+L}2^{k(s-1/p)}
+              \cdot2^{j/p}\|u_j\|_p\\
+ &\leq C_s2^{js}\|u_j\|_p.
+ \end{aligned}
+\]
+最后的几何级数使用了 \(s-1/p>0\)。对 \(j\) 求和，边界块的限制之和在 \(L^p\) 中绝对收敛，记为 \(\operatorname{Tr}u\)；逐个边界块取极限并用 Fatou，得到目标 Besov 界。
 
-这只是尺度说明，不能代替迹算子的构造、分割独立性或边界坐标变换估计。通常的非齐次迹结论需要 \(s>1/p\) 和适当规则边界；临界等号处还要记录序列指数，不能直接给出所有空间统一的边界值。第一卷的弱导数迹理论与这里的频率语言描述相同的阶数损失，但数学对象及端点必须逐项对应。本附节不以一个尺度计算冒称完整的 Besov 迹定理。
+补足延拓的唯一性。因为序列指数为一，有限频率和在 \(B^s_{p,1}\) 中稠密：对剩余块使用有限重叠及统一卷积界，其范数受原尺度序列的尾和控制。若一个有限频率和 \(v\in L^p\) 的频率支集在固定球内，选光滑紧频率乘子 \(\eta\)，在该球邻域内为一。取 \(h_n\in C_c^\infty\) 在 \(L^p\) 中逼近 \(v\)，则 \(\eta(D)h_n\in\mathcal S\)，且
+\[
+ \|\eta(D)h_n-v\|_p
+ \leq\|\check\eta\|_1\cdot\|h_n-v\|_p\longrightarrow0.
+\]
+误差有共同有界频带，故只含有限个非齐次块，\(L^p\) 收敛也给出 \(B^s_{p,1}\) 收敛。由此证明 Schwartz 类稠密。对 Schwartz 函数，非齐次截断在 Schwartz 拓扑中趋于原函数，边界限制与所定义的块和相同，所以所得连续延拓唯一。
+
+为构造右逆，将 \(g\) 分解为边界块 \(g_j=P'_jg\)。选一维 Schwartz 函数 \(\rho\)，使 \(\rho(0)=1\) 且 \(\widehat\rho\) 紧支撑，令
+\[
+ v_j(x',t)=g_j(x')\cdot\rho(2^jt),
+ \quad Eg=\sum_{j\geq0}v_j.
+\]
+每项 Fourier 支集在半径 \(C2^j\) 的球内，且
+\[
+ \|v_j\|_{L^p(\mathbb R^d)}
+ =2^{-j/p}\|g_j\|_{L^p(\mathbb R^{d-1})}\cdot\|\rho\|_{L^p(\mathbb R)}.
+\]
+对体内输出块再求和，由 \(s>0\) 得
+\[
+ \|v_j\|_{B^s_{p,1}(\mathbb R^d)}
+ \leq C_s2^{js}\|v_j\|_p
+ \leq C2^{j(s-1/p)}\|g_j\|_p.
+\]
+右侧可和，所以 \(\sum v_j\) 在 \(L^p\) 中收敛，并由块估计与 Fatou 得到 \(Eg\in B^s_{p,1}\) 及相应范数界；同一尾和估计也证明级数在 Besov 范数中收敛。每个 \(v_j\) 只有有限多个体内频率块，其块和就是本身，故由定义 \(\operatorname{Tr}v_j=v_j(\cdot,0)=g_j\)。连续性将有限和等式传给极限，得到 \(\operatorname{Tr}Eg=\sum_jg_j=g\)。
+\end{proof}
+临界 \(s=1/p\) 时，边界输出尺度的求和不再有几何衰减，不能由本证明得到同样的 Besov 目标；但是只求边界 \(L^p\) 范数时，绝对求和还能保留一个临界版本，见\cref{b2:ex:19-new-3}。曲边界则另需坐标变换的有界性，不能把平面上的公式直接搬到任意区域。迹的尺度损失、序列指数与边界几何，各自承担不同的条件。

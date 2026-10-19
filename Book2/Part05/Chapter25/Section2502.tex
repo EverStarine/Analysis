@@ -2,72 +2,200 @@
 \section{横截性}
 \label{b2:sec:2502}
 
-横截性把方向分离量写成一个可核对的下界。最完整的横截模型是 \(d\) 个法向张成环境空间，此时平直曲面已经有非平凡的乘积估计，而不需要曲率。
+横截性把方向分离写成一个定量下界。对 \(d\) 个超曲面片，最完整的情形是各取一个法向后，它们始终张成整个环境空间。这个条件控制不同方向共同形成的体积；即使各片完全平直，也能产生单个因子所没有的乘积估计。
 
 \subsection{横截性}
 \label{b2:subsec:250201}
 
-设 \(S_j\) 为 \(d\) 个超曲面片，单位法向为 \(n_j(\xi_j)\)。一致横截条件是
+\Needspace{6\baselineskip}
+\begin{definition}[完整横截的超曲面片]\label{b2:def:25-transversality}
+设整数 \(d\geq2\)，\(S_1,\ldots,S_d\subset\mathbb R^d\) 为 \(C^1\) 超曲面片，在各片上选单位法向 \(n_j\)。若存在 \(\nu>0\)，使对任意 \(\xi_j\in S_j\) 都有
 \[
- |\det(n_1(\xi_1),\ldots,n_d(\xi_d))|\ge\nu>0
+ \bigl|\det(n_1(\xi_1),\ldots,n_d(\xi_d))\bigr|\geq\nu,
 \]
-对各片的任意点成立。它比“法向两两不同”强；在三维，三个互不平行的向量仍可能共面。下界 \(\nu\) 进入估计常数，不能在方向趋于共面时忽略。
+则称这些片满足一致的\term[hengjie-xing]{横截性}[transversality]条件，或称它们完整横截。法向的列次序和各自取向不影响这个绝对值条件。
+\end{definition}
+
+行列式是法向所张平行多面体的体积。在二维，它等于两法向夹角的正弦的绝对值；在三维，仅有两两夹角远离零还不足以排除三个方向共面。条件中的量词也不能只落在每片的中心：估计面对的是整片输入，需要同时控制所有可能的法向组合。
 
 \ProseParagraphBreak
-对于参数曲面 \(\Sigma_j:U_j\to\mathbb R^d\)，也可用切向偏导的楔积 \(Y_j\) 代替单位法向。此时 determinant 下界同时包含参数测度与面测度的 Jacobi 因子，陈述必须说明采用哪一种归一化。
 
-\subsection{几何非退化性}
+若曲面由 \(\Sigma_j:U_j\subset\mathbb R^{d-1}\to\mathbb R^d\) 参数化，切向偏导的外积可用其法向向量 \(Y_j\) 表示，方向由参数次序选定，而
+\[
+ |Y_j(u)|=
+ \sqrt{\det\bigl(D\Sigma_j(u)^{\mathsf T}D\Sigma_j(u)\bigr)}.
+\]
+这个量是参数测度变成面积测度的 Jacobi 因子，满足
+\[
+ \mathrm d\sigma_j(\Sigma_j(u))=|Y_j(u)|\,\mathrm du,
+ \quad
+ Y_j(u)=|Y_j(u)|\,n_j(\Sigma_j(u)).
+\]
+因而
+\[
+ \begin{aligned}
+ &\bigl|\det(Y_1(u_1),\ldots,Y_d(u_d))\bigr|\\
+ &\quad=\left(\prod_j|Y_j(u_j)|\right)
+    \bigl|\det(n_1(\Sigma_1(u_1)),\ldots,n_d(\Sigma_d(u_d)))\bigr|.
+ \end{aligned}
+\]
+当各 Jacobi 因子有固定正上下界时，这两种横截条件可以互换；常数必须带上这些界。参数被压缩时，原始向量 \(Y_j\) 的长度可能变小，即使单位法向完全不变。因此采用参数测度的定理与采用面积测度的定理应先完成这个换算。
+
+\ProseParagraphBreak
+
+抛物面 \(\Sigma(\xi)=(\xi,|\xi|^2)\)、\(\xi\in\mathbb R^{d-1}\)，提供了可直接计算的例子。其一个未归一化法向是 \(Y(\xi)=(-2\xi,1)\)。在三维，三个参数点 \(\xi_1,\xi_2,\xi_3\in\mathbb R^2\) 满足
+\[
+ \bigl|\det(Y(\xi_1),Y(\xi_2),Y(\xi_3))\bigr|
+ =4\bigl|\det(\xi_2-\xi_1,\xi_3-\xi_1)\bigr|.
+\]
+从后两列减去第一列，再沿最后一行展开便得到这个公式。因此完整横截要求参数三角形具有定量面积，而不只是三个顶点两两分离。曲率让同一曲面的法向发生变化，但取出的方向是否张成空间，仍须单独判断。
+
+\subsection{Loomis–Whitney 不等式}
 \label{b2:subsec:250202}
 
-下面采用\term[loomis-whitney-budengshi]{Loomis--Whitney 不等式}[Loomis--Whitney inequality]的下述版本。
+先把法向取为坐标轴。此时沿第 \(j\) 个法向不变的函数，只依赖删去 \(x_j\) 后的坐标。普通 Hölder 不能直接使用这些函数的全空间积分，因为每个因子都沿一个方向无限延伸；需要利用不同缺失方向互相补足的结构。
 
+\Needspace{6\baselineskip}
 \begin{theorem}[Loomis--Whitney 不等式]\label{b2:thm:25-loomis-whitney}
-设 \(\pi_j:\mathbb R^d\to\mathbb R^{d-1}\) 删除第 \(j\) 个坐标，\(F_j\ge0\) 可积。则
+设整数 \(d\geq2\)，\(\pi_j:\mathbb R^d\to\mathbb R^{d-1}\) 删除第 \(j\) 个坐标。对非负可积函数 \(F_j\) 有\term[loomis-whitney-budengshi]{Loomis--Whitney 不等式}[Loomis--Whitney inequality]
 \[
- \int_{\mathbb R^d}\prod_{j=1}^dF_j(\pi_jx)^{1/(d-1)}\,\mathrm dx
- \le\prod_{j=1}^d\left(\int_{\mathbb R^{d-1}}F_j\right)^{1/(d-1)}.
+ \int_{\mathbb R^d}\prod_{j=1}^d
+      F_j(\pi_jx)^{1/(d-1)}\,\mathrm dx
+ \leq\prod_{j=1}^d
+      \left(\int_{\mathbb R^{d-1}}F_j\right)^{1/(d-1)}.
 \]
+其中常数一是最佳常数。
 \end{theorem}
 \begin{proof}
-对维数归纳。\(d=2\) 时恰好是 Fubini 乘积分离。
-设结论在 \(d-1\) 维成立。先对 \(x_d\) 积分，对其余 \(d-1\) 个因子用 Hölder，令
-\(G_j=\int F_j\,\mathrm dx_d\)、\(j<d\)；它们各依赖 \(x'=(x_1,\ldots,x_{d-1})\) 中除第 \(j\) 个以外的坐标。于是左侧至多
+对维数归纳。当 \(d=2\) 时，两个因子分别只依赖 \(x_2,x_1\)，Tonelli 使左侧恰好等于右侧。现设 \(d\geq3\)，并已知 \(d-1\) 维结论。先对 \(x_d\) 积分。第 \(d\) 个因子与它无关，对其余 \(d-1\) 个因子使用等指数 Hölder，令
+\[
+ G_j(\pi'_jx')=
+ \int_{\mathbb R}F_j(\pi_j(x',x_d))\,\mathrm dx_d
+ \quad(1\leq j<d),
+\]
+其中 \(x'=(x_1,\ldots,x_{d-1})\)，\(\pi'_j\) 从这 \(d-1\) 个坐标中删去第 \(j\) 个。每个 \(G_j\) 是 \(\mathbb R^{d-2}\) 上的非负可积函数。于是原积分至多为
 \[
  \int_{\mathbb R^{d-1}}F_d(x')^{1/(d-1)}
-                     \prod_{j<d}G_j(\pi'_jx')^{1/(d-1)}\,\mathrm dx'.
+                  \prod_{j<d}G_j(\pi'_jx')^{1/(d-1)}\,\mathrm dx'.
 \]
-对这两个部分再用指数 \(d-1\) 与 \((d-1)/(d-2)\) 的 Hölder，得到
+对 \(F_d\) 因子与其余乘积使用指数 \(d-1\) 和 \((d-1)/(d-2)\) 的 Hölder，得到
 \[
  \left(\int F_d\right)^{1/(d-1)}
- \left[\int\prod_{j<d}G_j(\pi'_jx')^{1/(d-2)}\,\mathrm dx'\right]^{(d-2)/(d-1)}.
+ \left[\int_{\mathbb R^{d-1}}
+       \prod_{j<d}G_j(\pi'_jx')^{1/(d-2)}\,\mathrm dx'\right]^{(d-2)/(d-1)}.
 \]
-归纳假设与 \(\int G_j=\int F_j\) 给出结论。截断与单调收敛保证所有非负积分的处理合法。
-\end{proof}
-这条不等式并非普通 Hölder 的同域版本，因为每个因子在一个方向上恒定，其全空间积分会无限大。删除坐标的互补几何是有界性的来源。
+方括号由归纳假设控制，随后用 Tonelli 所给的
+\(\int G_j=\int F_j\)，正好得到所求右侧。也可先将输入截断为有界紧支撑函数，再用单调收敛去掉截断；这样每个中间积分都由相应的有限量控制。
 
-\subsection{多线性增益}
+为证明最佳性，取非零、非负可积函数 \(h_i:\mathbb R\to[0,\infty)\)，并令
+\[
+ F_j(\pi_jx)=\prod_{i\ne j}h_i(x_i).
+\]
+左侧乘积中每个 \(h_i\) 出现 \(d-1\) 次，所以被积函数为 \(\prod_i h_i(x_i)\)，积分等于 \(\prod_i\int h_i\)。右侧也是同一个数。因此常数不能小于一。
+\end{proof}
+
+在三维中，这个式子写成
+\[
+ \int_{\mathbb R^3}
+   \bigl[F_1(x_2,x_3)F_2(x_1,x_3)F_3(x_1,x_2)\bigr]^{1/2}\,\mathrm dx
+ \leq\prod_{j=1}^3\left(\int F_j\right)^{1/2}.
+\]
+每一对坐标都出现一次，正是缺失方向相互补足的方式。全空间尺度也完全平衡：把所有坐标放大 \(r\)，两侧都产生 \(r^d\) 的体积因子。
+
+\ProseParagraphBreak
+
+把输入取为截面的重数函数，还能得到一个最直接的管束模型。它只处理每族内部完全平行、各族方向恰为坐标轴的管，尚未允许方向在帽内变化。
+
+\Needspace{6\baselineskip}
+\begin{corollary}[坐标方向平行管的重数估计]\label{b2:cor:25-parallel-tubes}
+设整数 \(d\geq2\)、\(r>0\)。对每个 \(j\)，取有限族
+\[
+ T_{j,\alpha}=\{x\in\mathbb R^d:
+                \pi_jx\in z_{j,\alpha}+[-r,r]^{d-1}\},
+ \quad a_{j,\alpha}\geq0,
+\]
+并令 \(N_j(x)=\sum_\alpha a_{j,\alpha}\mathbf1_{T_{j,\alpha}}(x)\)。则
+\[
+ \int_{\mathbb R^d}\prod_{j=1}^dN_j(x)^{1/(d-1)}\,\mathrm dx
+ \leq(2r)^d\prod_{j=1}^d
+                      \left(\sum_\alpha a_{j,\alpha}\right)^{1/(d-1)}.
+\]
+若把每条管再截短为任意有限线段所对应的子集，同一个上界仍然成立。
+\end{corollary}
+\begin{proof}
+将 \(F_j\) 取为相应截面立方体示性函数的加权和，则
+\(\int F_j=(2r)^{d-1}\sum_\alpha a_{j,\alpha}\)。代入 Loomis--Whitney 不等式即得结论。截短只会减小每个非负重数函数，故不改变上界的有效性。
+\end{proof}
+
+这里同族内的管可以完全重叠，输入的权重总和已经计算了这种重数。它说明横截估计控制的是不同族的共同聚集，而不是要求每一族自行具有不交性。一般多线性 Kakeya 理论还需要处理每族的方向变化，不能由这个固定方向模型直接取极限得到。
+
+\subsection{平直横截延拓估计}
 \label{b2:subsec:250203}
 
+平面延拓沿法向不变，可以通过线性换元变成上面的删坐标结构。换元的体积因子与各平面上的面积因子不同，必须分别计算；准确的行列式幂次就来自这两项。
+
+\Needspace{6\baselineskip}
 \begin{proposition}[平直横截延拓]\label{b2:prop:25-flat-extension}
-设 \(H_j=n_j^\perp\)、\(n_j\) 为单位向量，矩阵
-\(N=(n_1,\ldots,n_d)\) 可逆。以 \(H_j\) 上的欧氏面测度定义延拓，则
+设整数 \(d\geq2\)，\(n_1,\ldots,n_d\in\mathbb R^d\) 为单位向量，
+\(N=(n_1,\ldots,n_d)\) 可逆。令 \(H_j=n_j^\perp\)，\(\sigma_j\) 为其欧氏面积测度。先对
+\(g_j\in L^1(H_j;\mathbb C)\cap L^2(H_j;\mathbb C)\) 定义
 \[
- \left\|\prod_{j=1}^dE_jg_j\right\|_{L^{2/(d-1)}(\mathbb R^d)}
- \le|\det N|^{-1/2}\prod_j\|g_j\|_{L^2(H_j)}.
+ E_jg_j(x)=\int_{H_j}e^{2\pi\mathrm i x\cdot\xi}
+                          g_j(\xi)\,\mathrm d\sigma_j(\xi).
 \]
+令 \(q=2/(d-1)\)，则乘积映射连续延拓到全部 \(L^2(H_j)\) 输入，并满足最佳常数估计
+\[
+ \left\|\prod_{j=1}^dE_jg_j\right\|_{L^q(\mathbb R^d)}
+ \leq|\det N|^{-1/2}\prod_j\|g_j\|_{L^2(H_j)}.
+\]
+当 \(q<1\) 时，左侧指 \((\int|\prod_jE_jg_j|^q)^{1/q}\) 的准范数。一般平方输入的单个延拓由平面上的逆 Fourier 变换再沿法向保持常值来解释。
 \end{proposition}
 \begin{proof}
-令 \(x=Ny\)。由于 \(E_jg_j\) 沿 \(n_j\) 方向不变，它在 \(y\) 坐标中不依赖 \(y_j\)。
-记其平方模为 \(F_j(\pi_jy)\)，应用 Loomis–Whitney。
-在截面 \(y_j=0\) 上，向 \(H_j\) 正交投影的 Jacobi 因子是 \(|\det N|\)：把其他列投影到 \(H_j\)，再以单位列 \(n_j\) 补齐 determinant 即可。
-因此由 \(H_j\) 上的 Plancherel，
-\(\int F_j=|\det N|^{-1}\|g_j\|_2^2\)。
-空间换元贡献 \(|\det N|\)，合并得
+记 \(D=|\det N|>0\)，令 \(P_j\) 为到 \(H_j\) 的正交投影。平面上的逆 Fourier 变换 \(v_j=\mathcal F_{H_j}^{-1}g_j\) 满足
 \[
- \int\prod_j|E_jg_j|^{2/(d-1)}
- \le|\det N|^{-1/(d-1)}
-             \prod_j\|g_j\|_2^{2/(d-1)}.
+ E_jg_j(x)=v_j(P_jx),
+ \quad \|v_j\|_{L^2(H_j)}=\|g_j\|_{L^2(H_j)}.
 \]
-取 \((d-1)/2\) 次幂即得。当输出指数小于1时按该积分定义准范数，证明仍成立。
+第一式在初始可积输入上是普通积分；平方输入由平面上的 Plancherel 定义 \(v_j\)。满射线性投影的零测集逆像仍为零测集，所以拉回函数的几乎处处代表不影响乘积。
+
+令 \(x=Ny\)。因 \(P_jn_j=0\)，映射 \(P_jNy\) 不依赖 \(y_j\)。把剩下 \(d-1\) 个坐标组成的线性映射记为
+\[
+ M_j:\mathbb R^{d-1}\to H_j,
+ \quad
+ M_j(\pi_jy)=\sum_{\ell\ne j}P_jn_\ell\,y_\ell.
+\]
+它的面积 Jacobi 因子为 \(D\)。事实上，以这些投影列向量和单位法向 \(n_j\) 组成的体积，在将列 \(P_jn_\ell\) 换回 \(n_\ell\) 时不变，因为二者相差 \(n_j\) 的倍数；最后所得行列式就是原行列式，至多相差列置换的符号。这也证明 \(M_j\) 可逆。
+
+令 \(F_j(\pi_jy)=|v_j(M_j(\pi_jy))|^2\)。面积换元与 Plancherel 给出
+\[
+ \int_{\mathbb R^{d-1}}F_j
+ =D^{-1}\|v_j\|_2^2=D^{-1}\|g_j\|_2^2.
+\]
+空间换元 \(x=Ny\) 却贡献 \(D\)，因此 Loomis--Whitney 给出
+\[
+ \begin{aligned}
+ \int_{\mathbb R^d}\prod_j|E_jg_j(x)|^{2/(d-1)}\,\mathrm dx
+ &=D\int_{\mathbb R^d}\prod_jF_j(\pi_jy)^{1/(d-1)}\,\mathrm dy\\
+ &\leq D^{-1/(d-1)}\prod_j\|g_j\|_2^{2/(d-1)}.
+ \end{aligned}
+\]
+取 \((d-1)/2\) 次幂，就得到所求行列式常数。这个推导直接适用于一般平方输入的 \(v_j\)，无须预设延拓积分绝对收敛。
+
+乘积映射的连续性也可从同一估计得出：两个输入组的乘积之差按逐个替换因子展开为 \(d\) 项，每一项应用已经证明的界。若 \(q\geq1\)，使用三角不等式；若 \(0<q<1\)，则先使用
+\(\|\sum_\ell h_\ell\|_q^q\leq\sum_\ell\|h_\ell\|_q^q\)。稠密类上的逼近因而有唯一极限，且与上面用 \(v_j\) 定义的乘积一致。
+
+最后，在 \(y\) 坐标中选
+\[
+ F_j(\pi_jy)=\prod_{i\ne j}e^{-2\pi y_i^2},
+ \quad v_j(z)=F_j(M_j^{-1}z)^{1/2}.
+\]
+这些 \(v_j\) 为非零 Gaussian 函数，逆向取其 Fourier 变换得到可积且平方可积的 \(g_j\)。Loomis--Whitney 中恰好取等，其余步骤都是等式，所以 \(D^{-1/2}\) 确实为最佳常数。
 \end{proof}
-平面没有曲率，却在完整横截乘积中有这个界。线性限制中的平面失败因此不能用来否定多线性横截估计。二者保留的几何信息不同。
+
+在二维，两个法向夹角为 \(\vartheta\) 时，常数为
+\(|\sin\vartheta|^{-1/2}\)。方向靠近时的发散是准确的，不能通过改进证明消去。在三维，三个法向可以两两保持明显分离而逐渐共面，行列式仍会趋于零；这说明完整横截下界具有不可替代的作用。
+
+\ProseParagraphBreak
+
+各平面还可以平移为仿射平面 \(H_j+\xi_j^0\)。用平移后的密度定义延拓，只会在 \(E_jg_j\) 前乘
+\(e^{2\pi\mathrm i x\cdot\xi_j^0}\)，所以乘积的模和最佳常数不变。这项估计只需要相互横截，不需要曲率；曲率在后续曲面问题中的作用，是让同一曲面的不同片提供不同方向，并在局部重标度之后控制法向的变化。

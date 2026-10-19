@@ -8,7 +8,7 @@
 \label{b2:subsec:030301}
 
 \begin{definition}\label{b2:def:03-convolution}
-对可测函数 \(f,g\)，若积分绝对收敛，定义它们在 \(x\) 处的\term[juanji]{卷积}[convolution]为
+设 \(d\) 为正整数。对可测函数 \(f,g:\mathbb R^d\to\mathbb C\) 和 \(x\in\mathbb R^d\)，若积分绝对收敛，定义它们在 \(x\) 处的\term[juanji]{卷积}[convolution]为
 \[
  (f*g)(x)\coloneqq\int_{\mathbb R^d}f(x-y)\cdot g(y)\,\mathrm{d}y.
 \]
@@ -16,7 +16,7 @@
 \symidx{\(f*g\)：欧氏空间卷积}
 
 \begin{proposition}\label{b2:prop:03-l1-algebra}
-若 \(f,g\in L^1(\mathbb R^d)\)，则卷积几乎处处存在，属于 \(L^1\)，且
+设 \(d\) 为正整数。若 \(f,g\in L^1(\mathbb R^d;\mathbb C)\)，则卷积几乎处处绝对收敛，属于 \(L^1(\mathbb R^d;\mathbb C)\)，且
 \[
  \|f*g\|_1\leq\|f\|_1\cdot\|g\|_1.
 \]
@@ -41,27 +41,61 @@
 \label{b2:subsec:030302}
 
 \begin{theorem}[Young，卷积形式]\label{b2:thm:03-young}
-设 \(1\leq p,q,r\leq\infty\) 且 \(1/p+1/q=1+1/r\)，其中 \(1/\infty=0\)。若 \(f\in L^p\)、\(g\in L^q\)，则卷积几乎处处存在，并且
+设 \(d\) 为正整数，\(1\leq p,q,r\leq\infty\) 且 \(1/p+1/q=1+1/r\)，其中 \(1/\infty=0\)。若 \(f\in L^p(\mathbb R^d;\mathbb C)\)、\(g\in L^q(\mathbb R^d;\mathbb C)\)，则卷积几乎处处绝对收敛，并且
 \[
  \|f*g\|_r\leq\|f\|_p\cdot\|g\|_q.
 \]
 \end{theorem}
 \begin{proof}
-若 \(r=\infty\)，指数 \(p,q\) 共轭，对每个 \(x\) 使用 Hölder 即得积分的绝对收敛与一致上界。
+固定 \(f,g\) 的有限值 Borel 可测代表，使被积函数关于 \((x,y)\) 联合可测。对实部和虚部的正负部分分别使用 Tonelli，可知参数积分在绝对收敛处可测；在其余点赋零仍为可测函数。对每个固定的 \(x\)，改变代表只会在 \(y\) 的零测集上改变被积函数，因此不影响存在的卷积积分。若 \(r=\infty\)，指数 \(p,q\) 共轭，对每个 \(x\) 使用 Hölder 即得积分的绝对收敛与一致上界。以下设 \(r<\infty\)；若某个范数为零，卷积处处为零，故只须处理两个范数均为正的情形。
 
-若 \(r<\infty\)，则 \(p,q\leq r\)。先对有界紧支集函数计算，把绝对值乘积拆成
+指数关系给出
+\[
+ \frac1p-\frac1r=1-\frac1q\geq0,
+ \qquad
+ \frac1q-\frac1r=1-\frac1p\geq0.
+\]
+因此 \(p,q\leq r<\infty\)。所要使用的三个 Hölder 指数的倒数是
+\[
+ \frac1r,\qquad \frac1p-\frac1r,\qquad \frac1q-\frac1r;
+ \qquad
+ \frac1r+\left(\frac1p-\frac1r\right)
+             +\left(\frac1q-\frac1r\right)=1.
+\]
+它们非负，因而确实给出合法的 Hölder 指数。下面先确定哪些 \(x\) 可以使用这一步。令
+\[
+ I(x)=\int_{\mathbb R^d}|f(x-y)|^p\cdot|g(y)|^q\,\mathrm dy.
+\]
+被积函数联合可测且非负，Tonelli 定理允许先对 \(x\) 积分；平移不变性给出
+\[
+ \int_{\mathbb R^d}I(x)\,\mathrm dx
+ =\int_{\mathbb R^d}|g(y)|^q
+    \left(\int_{\mathbb R^d}|f(x-y)|^p\,\mathrm dx\right)\mathrm dy
+ =\|f\|_p^p\cdot\|g\|_q^q<\infty.
+\]
+所以 \(I(x)<\infty\) 对几乎处处的 \(x\) 成立。对这样的 \(x\)，把绝对值乘积拆成
 \[
  |f(x-y)|\cdot|g(y)|
  =\bigl(|f(x-y)|^p\cdot|g(y)|^q\bigr)^{1/r}
     |f(x-y)|^{1-p/r}\cdot|g(y)|^{1-q/r}.
 \]
-Hölder 的三个倒指数为 \(1/r\)、\(1/p-1/r\)、\(1/q-1/r\)，和为 \(1\)。某个倒指数为零时相应因子为 \(1\)，将其省去。于是
+若第二或第三个倒指数为零，则相应的 \(1-p/r\) 或 \(1-q/r\) 也为零；此时直接省去该幂因子，等价于在 Hölder 中使用常数 \(1\) 这个 \(L^\infty\) 因子，其范数为 \(1\)。这里无须给零的零次幂赋值，也没有取函数的无穷次幂。当 \(p<r\) 时，第二因子的 Hölder 指数为 \(pr/(r-p)\)，其对应范数就是 \(\|f\|_p^{1-p/r}\)；第三因子同理，首因子的 \(L^r\) 范数则为 \(I(x)^{1/r}\)。于是
 \[
- |f*g(x)|^r
- \leq\left(\int |f(x-y)|^p\cdot|g(y)|^q\,\mathrm{d}y\right)
-       \|f\|_p^{r-p}\cdot\|g\|_q^{r-q}.
+ \int_{\mathbb R^d}|f(x-y)|\cdot|g(y)|\,\mathrm dy
+ \leq I(x)^{1/r}\cdot\|f\|_p^{1-p/r}\cdot\|g\|_q^{1-q/r}<\infty.
 \]
-对 \(x\) 积分，Tonelli 给出右侧为 \(\|f\|_p^r\cdot\|g\|_q^r\)。一般函数先对绝对值作幅值和区域的递增截断，所得非负卷积由单调收敛及该统一范数界确定一个有限的 \(L^r\) 函数。这保证原复值积分几乎处处绝对收敛，积分三角不等式再给出所需估计。零范数的情形直接成立。
+例如 \(p=1,q=r\) 时第三因子省去；\(q=1,p=r\) 时第二因子省去。若 \(r=1\)，则 \(p=q=1\)，两个因子都省去，这一步就是对 \(I(x)\) 的恒等估计。
+
+至此原复值卷积在上述满测集上绝对收敛。积分三角不等式再给出
+\[
+ |(f*g)(x)|^r
+ \leq I(x)\cdot\|f\|_p^{r-p}\cdot\|g\|_q^{r-q}.
+\]
+在剩余零测集上赋值为零，对 \(x\) 积分并代入已算出的 \(\int I\)，得到
+\[
+ \|f*g\|_r^r\leq\|f\|_p^r\cdot\|g\|_q^r.
+\]
+取 \(r\) 次方根即得所求估计。
 \end{proof}
 
 这称为\term[young-juanji-budengshi]{Young 卷积不等式}[Young's convolution inequality]，与标量乘积的 Young 不等式区别在于对象和指数关系。常用情形是 \(L^1*L^p\subset L^p\)，以及 \(L^p*L^{p'}\subset L^\infty\)。后一种情形还可利用平移连续性推出连续代表。
@@ -72,22 +106,46 @@ Hölder 的三个倒指数为 \(1/r\)、\(1/p-1/r\)、\(1/q-1/r\)，和为 \(1\)
 第一卷引理 13.4.5 已证明：若 \(1\leq p<\infty\)，则 \(\|\tau_hf-f\|_p\to0\)。该结论首先对连续紧支集函数成立，再由平移等距性和稠密性推广。无穷端点不在其中；区间示性函数的小平移在 \(L^\infty\) 中始终保持误差 \(1\)。
 
 \begin{proposition}\label{b2:prop:03-convolution-continuity}
-若 \(1<p<\infty\)、\(f\in L^p\)、\(g\in L^{p'}\)，则卷积具有有界一致连续的代表。\(L^1*L^\infty\) 的卷积也有这一性质。
+设 \(d\) 为正整数，\(1\leq p<\infty\)，\(p'\) 为共轭指数，即 \(1/p+1/p'=1\)，其中 \(p=1\) 时 \(p'=\infty\)。若 \(f\in L^p(\mathbb R^d;\mathbb C)\)、\(g\in L^{p'}(\mathbb R^d;\mathbb C)\)，则对任意固定的有限值可测代表 \(f_0,g_0\)，积分
+\[
+ F(x)=\int_{\mathbb R^d}f_0(x-y)\cdot g_0(y)\,\mathrm dy
+ \qquad(x\in\mathbb R^d)
+\]
+处处绝对收敛。它不依赖代表的选择，本身就是卷积等价类的有界一致连续代表，并且
+\[
+ \sup_{x\in\mathbb R^d}|F(x)|\leq\|f\|_p\cdot\|g\|_{p'}.
+\]
 \end{proposition}
 \begin{proof}
-Hölder 保证每个点的积分绝对收敛。由变量替换，
+对每个 \(x\)，反射和平移保持 \(L^p\) 范数，故 Hölder 给出
 \[
- \|\tau_h(f*g)-f*g\|_\infty
- \leq\|\tau_hf-f\|_p\cdot\|g\|_{p'}\longrightarrow0.
+ \int_{\mathbb R^d}|f_0(x-y)|\cdot|g_0(y)|\,\mathrm dy
+ \leq\|f\|_p\cdot\|g\|_{p'}.
 \]
-在 \(L^1*L^\infty\) 情形，将平移放在 \(L^1\) 因子上即可。
+这同时证明处处绝对收敛和普通上确界的估计。若换用另一对代表，对每个固定的 \(x\)，被积函数只在 \(g_0\) 的零测例外集与 \(f_0\) 的零测例外集经反射平移所得的集合上改变，故 \(F(x)\) 不变。
+
+沿用本章 \(\tau_hf(u)=f(u-h)\) 的约定，有
+\[
+ \begin{aligned}
+ |F(x+h)-F(x)|
+ &\leq\int_{\mathbb R^d}
+ |f_0(x+h-y)-f_0(x-y)|\cdot|g_0(y)|\,\mathrm dy\\
+ &\leq\|\tau_{-h}f-f\|_p\cdot\|g\|_{p'}.
+ \end{aligned}
+\]
+右侧与 \(x\) 无关，且由第一卷引理 13.4.5 的有限指数平移连续性趋于零。因此
+\[
+ \sup_{x\in\mathbb R^d}|F(x+h)-F(x)|\longrightarrow0
+ \qquad(h\to0),
+\]
+逐点积分定义的 \(F\) 本身便有界一致连续。它与 Young 不等式给出的几乎处处卷积相同，因而确为所需代表。整个论证包括 \(p=1,p'=\infty\)；此时使用的是 \(L^1\) 因子的平移连续性。
 \end{proof}
 
 连续性在这里由两个因子的整体平移行为取得，并非因为原函数本身连续。另一方面，\(L^1*L^1\) 一般只有可积性，不能仅凭卷积符号就称所得函数光滑。若某一因子为光滑紧支集函数，才可将导数移到该因子，并由可积控制证明结果光滑。
 
 
 \begin{corollary}\label{b2:cor:03-convolution-c0}
-若 \(1<p<\infty\)、\(f\in L^p\)、\(g\in L^{p'}\)，则 \(f*g\in C_0(\mathbb R^d)\)。
+设 \(d\) 为正整数。若 \(1<p<\infty\)、\(p'=p/(p-1)\)、\(f\in L^p(\mathbb R^d;\mathbb C)\)、\(g\in L^{p'}(\mathbb R^d;\mathbb C)\)，则卷积的逐点积分代表属于 \(C_0(\mathbb R^d;\mathbb C)\)。
 \end{corollary}
 \begin{proof}
 取连续紧支集函数 \(f_n\to f\) 于 \(L^p\)、\(g_n\to g\) 于 \(L^{p'}\)。可取两列范数有界。由 Hölder 型卷积界，
@@ -101,11 +159,39 @@ Hölder 保证每个点的积分绝对收敛。由变量替换，
 
 两个指数都有限，使两边都能用紧支集函数逼近。端点 \(L^1*L^\infty\) 不保证在无穷远消失：取 \(g=1\)，则卷积恒为 \(\int f\)。这与已经证明的有界一致连续性不矛盾。卷积的“平滑作用”应拆成可积性、连续性、无穷远行为和可微性分别判断，不能把这些性质合成一个没有条件的结论。
 
+卷积不是无条件的连续化操作。取一维非负函数 \(f(x)=x^{-a}\mathbf1_{(0,1)}(x)\)，其中 \(1/2<a<1\)。两因子都可积；当 \(0<x<1\) 时，令 \(y=xt\)，得到
+\[
+ (f*f)(x)=\int_0^x(x-y)^{-a}y^{-a}\,\mathrm dy
+ =x^{1-2a}\int_0^1(1-t)^{-a}t^{-a}\,\mathrm dt.
+\]
+最后的常数有限且正，因为两个端点的幂指数都大于 \(-1\)。因此卷积在 \(x\downarrow0\) 时无界，却仍属于 \(L^1\)：新奇点的指数 \(1-2a\) 大于 \(-1\)，而一般范数结论已控制全部积分。这个例子同时保留了 \(L^1*L^1\) 的结论并排除了有界性的误读。
+
+\ProseParagraphBreak
+
+若一因子有足够的光滑性，就可以取得真正的光滑化。下面说明求导与估计如何同时发生。
+
+\begin{proposition}\label{b2:prop:03-smooth-convolution}
+设 \(d\) 为正整数，\(1\leq p\leq\infty\)，\(p'\) 为共轭指数，\(1/p+1/p'=1\)，其中 \(1/\infty=0\)；\(f\in L^p(\mathbb R^d;\mathbb C)\)，\(\rho\in C_c^\infty(\mathbb R^d;\mathbb C)\)。则 \(\rho*f\) 具有 \(C^\infty(\mathbb R^d;\mathbb C)\) 代表，且每个多重指标 \(\alpha\) 满足
+\[
+ \partial^\alpha(\rho*f)=(\partial^\alpha\rho)*f,\quad
+ \|\partial^\alpha(\rho*f)\|_\infty
+ \leq\|\partial^\alpha\rho\|_{p'}\cdot\|f\|_p.
+\]
+若 \(f\) 几乎处处支撑在紧集 \(K\)，则该代表支撑在 \(K+\operatorname{supp}\rho\)。
+\end{proposition}
+\begin{proof}
+把卷积写成 \(\int\rho(x-y)\cdot f(y)\,\mathrm dy\)。Hölder 不等式使每个点的积分有限，并给出所写范数界。对 \(x_j\) 求差商时，核的差商在 \(L^{p'}\) 中趋于 \(\partial_j\rho\)，包括 \(p'=1,\infty\)：微积分基本定理把差商误差写为
+\[
+ \int_0^1\bigl(\partial_j\rho(\cdot+the_j)-\partial_j\rho\bigr)\,\mathrm dt.
+\]
+当 \(|h|\leq1\) 时，这些函数有共同紧支集；\(\partial_j\rho\) 一致连续，故误差在上确界范数以及每个有限指数范数中都趋零。Hölder 再使卷积差商在全部 \(x\) 上一致趋于 \((\partial_j\rho)*f\)。同样的平移估计说明这一导数连续。对每个 \(\partial^\alpha\rho\) 重复这个论证，得到任意阶求导公式。最后选取在 \(K\) 外为零的代表；若 \(x\notin K+\operatorname{supp}\rho\)，被积函数恒为零。由于这个和为紧集，支集结论成立。
+\end{proof}
+
 \subsection{Fourier 变换与卷积}
 \label{b2:subsec:030304}
 
 \begin{theorem}[卷积定理]\label{b2:thm:03-convolution-transform}
-若 \(f,g\in L^1(\mathbb R^d)\)，则
+设 \(d\) 为正整数。若 \(f,g\in L^1(\mathbb R^d;\mathbb C)\)，则对每个 \(\xi\in\mathbb R^d\) 有
 \[
  \widehat{f*g}(\xi)=\widehat f(\xi)\cdot\widehat g(\xi).
 \]
@@ -114,4 +200,4 @@ Hölder 保证每个点的积分绝对收敛。由变量替换，
 定义积分中的绝对值重积分等于 \(\|f\|_1\cdot\|g\|_1\)，故可交换次序。令 \(z=x-y\)，指数分解为 \(e^{-2\pi\mathrm{i}z\cdot\xi}e^{-2\pi\mathrm{i}y\cdot\xi}\)，两个积分分别为 \(\widehat f\) 与 \(\widehat g\)。
 \end{proof}
 
-这个\term[juanji-dingli]{卷积定理}[convolution theorem]将叠加平移的操作对角化。现在也可补足单位元不存在的论证：若 \(e*f=f\)，固定频率 \(\xi\) 后取单位质量非负函数的调制，使 \(\widehat f(\xi)=1\)，便有 \(\widehat e(\xi)=1\)。这与 \(\widehat e\in C_0\) 不相容。下一节改用一族核逐渐接近单位作用。
+这个\term[juanji-dingli]{卷积定理}[convolution theorem]将叠加平移的操作对角化。现在也可补足单位元不存在的论证：若存在 \(e\in L^1(\mathbb R^d)\) 使对所有 \(f\in L^1(\mathbb R^d)\) 都有 \(e*f=f\)，固定频率 \(\xi\) 后取单位质量非负函数的调制，使 \(\widehat f(\xi)=1\)，便有 \(\widehat e(\xi)=1\)。这与 \(\widehat e\in C_0\) 不相容。下一节改用一族核逐渐接近单位作用。

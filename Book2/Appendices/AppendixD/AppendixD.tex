@@ -3,502 +3,1911 @@
 \label{b2:app:D}
 
 \begin{chapterabstract}
-
-半群把线性演化的时间组合律转化为算子结构。本附录证明增长界、生成元的闭性和稠密性、Laplace 预解式及压缩型 Hille–Yosida 定理，并以热半群和非齐次演化说明强解与温和解的区别。
-
+热流、平移与乘法衰减都满足时间组合律，但它们允许求导的初值并不相同。强连续半群把这种组合律组织成算子结构，生成元的定义域则记录零时强求导的条件。本附录建立增长界、生成元的稠密闭性与 Laplace 预解式，并用 Yosida 逼近证明压缩型 Hille--Yosida 定理。随后通过热半群和谱演化比较磨光、守恒与长期行为，最后构造非齐次温和解，说明空间定义域或时间正则性怎样使它成为强解。
 \end{chapterabstract}
 
 \begin{learninggoals}\begin{itemize}
-\item\label{b2:item:app-D-goal-1}从强连续性取得统一增长界并构造闭生成元。
-\item\label{b2:item:app-D-goal-2}验证 Laplace 预解公式与压缩半群的 Hille--Yosida 定理。
-\item\label{b2:item:app-D-goal-3}辨认热半群、酉群及各自生成元的定义域。
-\item\label{b2:item:app-D-goal-4}构造非齐次温和解，并核对提升为强解的附加条件。
+\item\label{b2:item:app-D-goal-1}从强连续性取得统一增长界，构造闭生成元并准确识别其定义域。
+\item\label{b2:item:app-D-goal-2}验证 Laplace 预解式及其幂界，由 Yosida 逼近证明压缩型 Hille--Yosida 定理。
+\item\label{b2:item:app-D-goal-3}比较热半群与酉群的生成元、正时间正则性及谱所决定的长期行为。
+\item\label{b2:item:app-D-goal-4}构造可积外力下的温和解，证明变常数公式，并核对提升为强解的附加条件。
 \end{itemize}\end{learninggoals}
 
-以下 \(X\) 为 Banach 空间。每次写无界算子都同时给出定义域；一个形式表达式如 \(\Delta\) 还不是生成元，必须指定它作用在哪个空间及允许哪些输入。平移模型采用第一卷定义 21.1.1 的一阶 Sobolev 空间，一维代表承接第一卷定理 20.4.6。
+本附录承接\chapref{b2:ch:12}的热半群，所需泛函分析基础是 Banach 空间的一致有界原理、闭图像定理和有界算子的指数级数。平移模型使用第一卷定义21.1.1的一阶 Sobolev 空间，以及定理20.4.6的一维局部绝对连续代表。对一般非负自伴算子的讨论还需要无界谱定理与 Borel 函数演算；那一段会单独说明外部先修，前面的 Fourier 热模型和生成定理不依赖它。
 % 跨卷定位：b1:def:sobolev-first-order，21.1.1；b1:thm:one-dimensional-weak-ac，20.4.6。
 
-\section{强连续半群与增长}
+\ProseParagraphBreak
 
+阅读时须始终把算子与其定义域放在一起。形式表达式 \(\partial_x\) 或 \(\Delta\) 没有指定底空间和边界条件，还不能确定时间演化。前两节从已有半群识别生成元；第三节反过来从预解式构造半群；最后两节把这些结构用于具体模型和非齐次方程。若只想理解热方程的半群写法，可以先读前两节及后两节，再返回生成定理的构造。
+
+\section{强连续半群与增长}
 \label{b2:sec:app-D-1}
 
-\begin{definition}\label{b2:def:D-semigroup}
-族 \(T(t)\in\mathcal B(X)\)、\(t\ge0\)，满足
-\(T(0)=I\)、\(T(t+s)=T(t)T(s)\)，且对每个 \(x\in X\)，
-\(\|T(t)x-x\|\to0\)（\(t\downarrow0\)），称为
-\chapref{b2:ch:12}中的强连续半群，也称 \(C_0\)-半群。
-\end{definition}
-强连续与算子范数连续不同。平移半群在 \(L^p(\mathbb R)\)、\(p<\infty\)，由平移连续性强连续；但对任意非零平移，可选支撑很小的函数使两支撑不交，因此范数差不能趋零。它在 \(L^\infty\) 上甚至不强连续，例如阶跃函数的任意小平移仍产生一致范数为1的差。
+线性自治演化从初值 \(x\) 出发，经过时间 \(t\) 到达 \(T(t)x\)。先演化 \(s\)，再演化 \(t\)，应与一次演化 \(t+s\) 得到同一状态。这条时间组合律不要求时间可逆：热扩散可以向前作用于一般初值，反向恢复却未必给出同一空间上的有界算子。因此本附录先只取非负时间，并把连续性的要求放在每个固定初值的轨道上。
 
-\begin{proposition}\label{b2:prop:D-growth}
-任意 \(C_0\)-半群有 \(\|T(t)\|\le Me^{\omega t}\) 的增长界，并在每个 \(t\ge0\) 强连续。
-\end{proposition}
-\begin{proof}
-先证明某个固定 \(\delta>0\) 上存在算子一致界。否则可选
-\(t_n\downarrow0\)，使 \(\|T(t_n)\|\to\infty\)。强连续使每个
-\(x\) 的列 \(T(t_n)x\) 收敛，因而有界；一致有界原理与算子范数发散矛盾。
-于是 \(\sup_{0\le t\le\delta}\|T(t)\|\le M_0\)，可取 \(M_0\ge1\)。
-写 \(t=n\delta+s\)、\(0\le s<\delta\)，组合律给出
+\Needspace{6\baselineskip}
+\begin{definition}\label{b2:def:D-semigroup}
+设 \(X\) 为实或复 Banach 空间，\(\mathcal B(X)\) 为其有界线性算子空间。若族 \((T(t))_{t\geq0}\subset\mathcal B(X)\) 满足
 \[
- \|T(t)\|\le M_0^{n+1}\le
- M_0\exp\bigl((\log M_0)t/\delta\bigr).
+ T(0)=I,\quad T(t+s)=T(t)T(s)\quad(t,s\geq0),
 \]
-因此任意有限时间区间也有统一界。
-右连续由 \(T(t+h)x-T(t)x=T(t)[T(h)x-x]\)；左连续由
-\(T(t)x-T(t-h)x=T(t-h)[T(h)x-x]\) 及局部一致界得到。
-\end{proof}
-若 \(\|T(t)\|\le1\)，称为压缩半群。以下完整的生成定理以这类为模型；一般 \(Me^{\omega t}\) 版本还需对应的预解式幂界，不能只改一个符号而忽略 \(M\)。
+并且对每个 \(x\in X\)，
+\[
+ \lim_{t\downarrow0}\|T(t)x-x\|=0,
+\]
+就称它为\term[qiang-lianxu-banqun]{强连续半群}[strongly continuous semigroup]，也称 \(C_0\)-半群。
+\end{definition}
+这是\chapref{b2:ch:12}已经用于热流的定义。下标 \(0\) 指零时的强连续性，与函数空间 \(C_0(\mathbb R^d)\) 中的无穷远消失条件不同。定义只在零时要求右连续；全部时间的轨道连续性将由组合律推出。虽然同一个半群内有 \(T(t)T(s)=T(s)T(t)\)，这不意味着两个不同半群的算子也互相交换。
 
 \ProseParagraphBreak
-增长界中的 \(M\) 允许短时间放大；只有 \(M=1,\omega\le0\) 才立即给出压缩。
-例如在 Euclidean 空间 \(\mathbb C^2\) 上取
+
+强连续与算子范数连续的区别在于取极限和取上确界的顺序。前者允许达到给定误差所需的时间依赖输入 \(x\)；后者要求
 \[
- A_N=\begin{pmatrix}-1&N\\0&-1\end{pmatrix},\qquad
+ \|T(t)-I\|=\sup_{\|x\|\leq1}\|T(t)x-x\|\longrightarrow0,
+\]
+即同时控制整个单位球。在有限维空间，有限组基向量上的收敛已经控制算子范数，所以两者等价。无限维空间没有这样的有限组输入，平移就显示了差别。
+
+\ProseParagraphBreak
+
+取实值或复值 \(L^p(\mathbb R)\)，其中 \(1\leq p<\infty\)，令
+\[
+ T(t)f(x)=f(x+t),\quad t\geq0.
+\]
+换元给出 \(\|T(t)f\|_p=\|f\|_p\)，组合律由平移参数相加得到。对光滑紧支函数，平移差由共同紧集上的一致收敛趋于零；再以这样的函数在 \(L^p\) 中稠密，以及平移的等距性，便得每个 \(f\) 的强连续性。具体地，对逼近函数 \(g\)，
+\[
+ \|T(t)f-f\|_p\leq2\|f-g\|_p+\|T(t)g-g\|_p.
+\]
+先固定 \(g\) 令 \(t\downarrow0\)，再让逼近误差趋零，便完成论证。
+
+\ProseParagraphBreak
+
+然而，对每个固定 \(t>0\)，取支撑在 \((0,t/2)\) 内且 \(L^p\) 范数为一的函数 \(f_t\)。它与 \(T(t)f_t\) 的支撑不交，因此
+\[
+ \|T(t)f_t-f_t\|_p=2^{1/p},\quad
+ \|T(t)-I\|_{p\to p}\geq2^{1/p}.
+\]
+这里输入随 \(t\) 改变，正是算子范数的上确界允许的选择。在 \(L^\infty(\mathbb R)\) 上，情况更弱：固定 \(f=\mathbf1_{(0,\infty)}\)，每个 \(t>0\) 都有 \(\|T(t)f-f\|_\infty=1\)，连强连续性也失败。同一个演化公式是否构成 \(C_0\)-半群，取决于所选状态空间及其范数。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[局部一致界与指数增长]\label{b2:prop:D-growth}
+设 \(X\) 为实或复 Banach 空间，\((T(t))_{t\geq0}\) 为 \(X\) 上的 \(C_0\)-半群。则存在 \(M\geq1\) 和 \(\omega\in\mathbb R\)，使
+\[
+ \|T(t)\|\leq Me^{\omega t}\quad(t\geq0).
+\]
+特别地，对每个 \(\tau<\infty\)，\(\sup_{0\leq t\leq\tau}\|T(t)\|<\infty\)。每个轨道 \(t\mapsto T(t)x\) 在 \([0,\infty)\) 上连续。
+\end{proposition}
+\begin{proof}
+先取得某个零时邻域的算子一致界。若任意 \(\delta>0\) 上的算子范数都无界，就能递归选 \(t_n\downarrow0\)，使 \(\|T(t_n)\|\geq n\)。对每个固定 \(x\)，强连续性使 \(T(t_n)x\to x\)，故这列向量有界。一致有界原理适用于 Banach 空间 \(X\) 上的算子族 \(\{T(t_n)\}\)，于是 \(\sup_n\|T(t_n)\|<\infty\)，与选择矛盾。因此存在 \(\delta>0\) 和 \(M_0\geq1\)，使
+\[
+ \sup_{0\leq t\leq\delta}\|T(t)\|\leq M_0.
+\]
+这里先对固定向量使用强连续性，再用一致有界原理，才把逐个输入的界提升成算子界。
+
+给定 \(t\geq0\)，写 \(t=n\delta+s\)，其中 \(n\) 为非负整数、\(0\leq s<\delta\)。由组合律，
+\[
+ \|T(t)\|=\|T(\delta)^nT(s)\|
+ \leq M_0^{n+1}
+ \leq M_0\exp\left(\frac{\log M_0}{\delta}t\right).
+\]
+取 \(M=M_0\)、\(\omega=(\log M_0)/\delta\) 即得一组增长常数。某个具体半群也可能允许更小、甚至为负的 \(\omega\)。
+
+最后证明各个时间点的连续性。对 \(h\downarrow0\)，
+\[
+ T(t+h)x-T(t)x=T(t)(T(h)x-x)\longrightarrow0.
+\]
+若 \(t>0\) 且 \(0<h<t\)，则
+\[
+ T(t)x-T(t-h)x=T(t-h)(T(h)x-x).
+\]
+右端的输入趋于零，而 \(T(t-h)\) 在固定有限时间区间上一致有界，因此左极限也成立。零点只有右连续的要求。
+\end{proof}
+增长界是半群组合律与 Banach 空间完备性共同给出的结果，不需要先知道生成元。它使后面的时间积分有共同的范数控制，也使逐个输入的近似能够推广到稠密类之外。这里的指数界是一种可用的上界，并未断言所得 \(\omega\) 是最优增长率。
+
+\ProseParagraphBreak
+
+对实或复 Banach 空间 \(X\) 上的强连续半群，若每个 \(t\geq0\) 都满足 \(\|T(t)\|\leq1\)，称为\term[yasuo-banqun]{压缩半群}[contraction semigroup]。这里允许范数等于一。若已有 \(\|T(t)\|\leq Me^{\omega t}\)，令 \(S(t)=e^{-\omega t}T(t)\)，可以去掉指数因子，却只得到 \(\|S(t)\|\leq M\)；当 \(M>1\) 时，不能因此称 \(S\) 为压缩半群。后面的压缩型生成定理与一般增长版本的预解式条件正是在此处有所区别。
+
+\ProseParagraphBreak
+
+增长常数 \(M\) 也容纳短时间放大。取带 Euclidean 范数的 \(\mathbb C^2\)，以及参数 \(N>0\)，令
+\[
+ A_N=\begin{pmatrix}-1&N\\0&-1\end{pmatrix},
+ \quad
  T_N(t)=e^{-t}\begin{pmatrix}1&Nt\\0&1\end{pmatrix}.
 \]
-矩阵相乘直接验证组合律。全部特征值等于 \(-1\)，而
-\(\|T_N(1)e_2\|=e^{-1}\sqrt{1+N^2}\)，当 \(N>\sqrt{e^2-1}\) 时大于1。
-另一方面 \(e^{-t}(1+Nt)\) 在半轴有界，所以该演化最终衰减而可能先放大。
-这里增长来自非正交的特征结构；把自伴非负算子的谱结论直接用于任意矩阵，
-会遗漏这个现象。若更换范数，压缩性也可能改变，故必须说明所用空间范数。
+若 \(E_{12}\) 表示仅第一行第二列为一的矩阵，则 \(E_{12}^2=0\)，所以
+\(e^{tA_N}=e^{-t}(I+NtE_{12})=T_N(t)\)。矩阵相乘也直接验证组合律。全部特征值都等于 \(-1\)，但
+\[
+ \|T_N(1)e_2\|=e^{-1}\sqrt{1+N^2}
+\]
+在 \(N>\sqrt{e^2-1}\) 时大于一。放大甚至能从零时立刻开始：取单位向量 \(v=(1,1)/\sqrt2\)，直接微分平方范数得到
+\[
+ \left.\frac{\mathrm d}{\mathrm dt}\|T_N(t)v\|^2\right|_{t=0}
+ =2\operatorname{Re}\langle A_Nv,v\rangle=N-2.
+\]
+因此 \(N>2\) 时，小正时间已经有 \(\|T_N(t)v\|>1\)。
+
+\ProseParagraphBreak
+
+另一方面，
+\[
+ \|T_N(t)\|\leq e^{-t}(1+Nt)\longrightarrow0
+ \quad(t\to\infty).
+\]
+对每个 \(0<a<1\)，利用 \(\sup_{t\geq0}t e^{-(1-a)t}=1/(e(1-a))\)，还得到
+\[
+ \|T_N(t)\|
+ \leq\left(1+\frac{N}{e(1-a)}\right)e^{-at}.
+\]
+这个半群既会短时放大，又会长期衰减。原因是上三角的非对角项把第二个分量传入第一个分量；矩阵不是正规算子，不能用特征值实部直接读取每个时间的 Euclidean 算子范数。这里同样需要保留所用范数，因为更换等价范数可能改变压缩性和增长前因子。
 
 \section{生成元与定义域}
-
 \label{b2:sec:app-D-2}
 
-定义
+半群直接给出每段时间的演化，生成元则试图读取零时的变化率。对矩阵指数，这个变化率对全部初值存在；对平移，求变化率就是求空间导数，因而只能对具有相应正则性的输入成立。生成元的定义域负责记录这种差别，不能把它从算子的形式表达式中删去。
+
+\Needspace{6\baselineskip}
+\begin{definition}\label{b2:def:D-generator}
+设 \(X\) 为实或复 Banach 空间，\((T(t))_{t\geq0}\) 为其上的 \(C_0\)-半群。定义
 \[
- D(A)=\left\{x:\lim_{h\downarrow0}\frac{T(h)x-x}{h}
-                    \text{在 }X\text{ 中存在}\right\},\qquad
- Ax=\lim_{h\downarrow0}\frac{T(h)x-x}{h}.
+ \begin{aligned}
+ D(A)&=\left\{\,x\in X\ \middle|\
+       \lim_{h\downarrow0}\frac{T(h)x-x}{h}
+       \text{ 在 }X\text{ 中存在}\,\right\},\\
+ Ax&=\lim_{h\downarrow0}\frac{T(h)x-x}{h},
+ \quad x\in D(A).
+ \end{aligned}
 \]
-称 \(A\) 为无穷小生成元。若 \(x\in D(A)\)，组合律使
-\(T(t)x\in D(A)\)、\(AT(t)x=T(t)Ax\)，轨道可微，且
+线性算子 \(A:D(A)\subset X\to X\) 称为半群的\term[shengchengyuan]{生成元}[generator]，也称无穷小生成元。
+\end{definition}
+差商的线性说明 \(D(A)\) 是线性子空间，且 \(A\) 在线性组合上保持线性。这个极限必须按 \(X\) 的范数取得；逐点导数或某个更弱拓扑中的导数不能代替它。约定 \(u'=Au\) 时，热流的生成元是 \(\Delta\)，非负算子 \(-\Delta\) 则出现在 \(u'+(-\Delta)u=0\) 中，符号取决于方程的写法。
+
+\ProseParagraphBreak
+
+以下先说明所用向量积分。若 \(f:[a,b]\to X\) 连续，紧区间上的一致连续性使足够细的分割产生的 Riemann 和在 \(X\) 中成为 Cauchy 族；完备性因而给出积分 \(\int_a^bf(s)\,\mathrm ds\)。它满足
 \[
+ \left\|\int_a^bf(s)\,\mathrm ds\right\|
+ \leq\int_a^b\|f(s)\|\,\mathrm ds,
+\]
+有界线性算子可移入积分，并且
+\[
+ \frac1h\int_t^{t+h}f(s)\,\mathrm ds\longrightarrow f(t)
+\]
+在区间内按双侧、在端点按相应单侧成立。最后一式由平均误差不超过相邻小区间上 \(\|f(s)-f(t)\|\) 的上确界得到，因而也给出向量值微积分基本定理。
+
+\ProseParagraphBreak
+
+这些连续函数积分也是 Bochner 强积分。无需假设整个 \(X\) 可分：连续像 \(f([a,b])\) 是紧的度量空间，有限网的可数并给出它的可数稠密子集；而沿有限分割取样得到的阶梯函数又能一致逼近 \(f\)。因此每条连续轨道本身具有强积分所需的可测与可积性质。下面所有有限区间上的连续轨道积分都可按上述 Riemann 和直接理解。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[定义域不变性与轨道导数]\label{b2:prop:D-generator-orbit}
+设 \(X\) 为实或复 Banach 空间，\((T(t))_{t\geq0}\) 为其上的 \(C_0\)-半群，生成元为 \(A:D(A)\subset X\to X\)。若 \(x\in D(A)\)，则对所有 \(t\geq0\)，
+\[
+ T(t)x\in D(A),\quad AT(t)x=T(t)Ax.
+\]
+轨道在正时间连续可微，在零时有右导数，并满足
+\[
+ \frac{\mathrm d}{\mathrm dt}T(t)x=T(t)Ax=AT(t)x.
+\]
+特别地，对 \(t\geq0\)，
+\begin{equation}\label{b2:eq:D-orbit-integral}
  T(t)x-x=\int_0^tT(s)Ax\,\mathrm ds.
-\]
-积分是 Banach 空间中的强积分；轨道连续所以存在。
-
-\begin{proposition}\label{b2:prop:D-generator-closed}
-生成元 \(A\) 是闭算子，且 \(D(A)\) 在 \(X\) 中稠密。
+\end{equation}
 \end{proposition}
 \begin{proof}
-令 \(x_h=h^{-1}\int_0^hT(s)x\,\mathrm ds\)。强连续使 \(x_h\to x\)。
-对差商换元得到
-\(Ax_h=(T(h)x-x)/h\)，故 \(x_h\in D(A)\)，证明稠密性。
-若 \(x_n\to x\)、\(Ax_n\to y\)，对上面的轨道积分式取极限，得到
-\(T(t)x-x=\int_0^tT(s)y\,\mathrm ds\)；除以 \(t\) 后令 \(t\downarrow0\)，右侧趋于 \(y\)。所以 \(x\in D(A)\)、\(Ax=y\)，证明闭性。
+固定 \(t\geq0\)。由半群律，
+\[
+ \frac{T(h)T(t)x-T(t)x}{h}
+ =T(t)\frac{T(h)x-x}{h}\longrightarrow T(t)Ax.
+\]
+这既证明 \(T(t)x\in D(A)\)，也给出交换关系。把同一等式读成轨道的时间差商，就得到右导数。若 \(t>0\)，左差商为
+\[
+ \frac{T(t)x-T(t-h)x}{h}
+ =T(t-h)\frac{T(h)x-x}{h}.
+\]
+令 \(q_h=(T(h)x-x)/h\)。其与 \(T(t)Ax\) 的差可写成
+\[
+ T(t-h)(q_h-Ax)+(T(t-h)-T(t))Ax.
+\]
+第一项由局部一致算子界与 \(q_h\to Ax\) 趋零，第二项由固定输入 \(Ax\) 的轨道连续性趋零。因此两侧导数相同，且导数 \(T(t)Ax\) 随时间连续。向量值微积分基本定理随即给出\eqref{b2:eq:D-orbit-integral}。
 \end{proof}
-闭不等于有界：图形闭性允许真子域。只有定义域是整个 Banach 空间时，闭图形定理才迫使算子有界。演化的微分方程只对 \(D(A)\) 中的初值直接给强导数；普通 \(X\) 初值仍可由连续轨道定义温和解。
+域不变性允许对已经在域中的初值沿轨道求导，却尚未说明这个域足够大。下一步对任意初值做时间积分：虽然 \(T(s)x\) 未必逐个属于 \(D(A)\)，它在一段时间上的积分总会进入定义域。证明使用的是半群作用与时间平移，不能预先把无界算子 \(A\) 移到积分号内。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[积分轨道进入定义域]\label{b2:prop:D-integrated-orbit}
+设 \(X\) 为实或复 Banach 空间，\((T(t))_{t\geq0}\) 为其上的 \(C_0\)-半群，生成元为 \(A\)。对任意 \(x\in X\) 和 \(t\geq0\)，令
+\[
+ I_t x=\int_0^tT(s)x\,\mathrm ds.
+\]
+则
+\begin{equation}\label{b2:eq:D-integrated-orbit}
+ I_t x\in D(A),\quad AI_t x=T(t)x-x.
+\end{equation}
+对 \(h>0\)，时间平均
+\[
+ x_h=\frac1h I_hx
+\]
+满足 \(x_h\in D(A)\)、\(x_h\to x\)，且
+\begin{equation}\label{b2:eq:D-time-average-generator}
+ Ax_h=\frac{T(h)x-x}{h}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+当 \(t=0\) 时，积分向量为零，结论成立。对 \(t>0\) 和 \(h>0\)，有界算子 \(T(h)\) 可以移入连续积分，随后用半群律并换元，得到
+\[
+ \begin{aligned}
+ T(h)I_t x-I_t x
+ &=\int_h^{t+h}T(s)x\,\mathrm ds-\int_0^tT(s)x\,\mathrm ds\\
+ &=\int_t^{t+h}T(s)x\,\mathrm ds-\int_0^hT(s)x\,\mathrm ds.
+ \end{aligned}
+\]
+除以 \(h\)，连续函数的短区间平均给出
+\[
+ \frac{T(h)I_t x-I_t x}{h}\longrightarrow T(t)x-x.
+\]
+生成元定义于是证明\eqref{b2:eq:D-integrated-orbit}。再把积分上限取为 \(h\)，利用线性性就得到\eqref{b2:eq:D-time-average-generator}。最后，
+\[
+ \|x_h-x\|
+ \leq\frac1h\int_0^h\|T(s)x-x\|\,\mathrm ds
+ \leq\sup_{0\leq s\leq h}\|T(s)x-x\|\longrightarrow0.
+\]
+时间平均的收敛只用到固定初值的强连续性。
+\end{proof}
+这项构造在域外初值与域内微分之间建立了桥梁。它也说明，不能由 \(Ax_h=(T(h)x-x)/h\) 就断言 \(Ax_h\) 收敛：右端正是原初值可能没有极限的生成元差商。所有初值都能被域内向量逼近，与所有初值都在定义域中，是两件不同的事。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[生成元的稠密定义与闭性]\label{b2:prop:D-generator-closed}
+设 \(X\) 为实或复 Banach 空间，\((T(t))_{t\geq0}\) 为 \(X\) 上的 \(C_0\)-半群，\(A:D(A)\subset X\to X\) 为其生成元。则 \(D(A)\) 在 \(X\) 中稠密，且 \(A\) 为闭算子：若 \(x_n\in D(A)\)、\(x_n\to x\) 以及 \(Ax_n\to y\) 均在 \(X\) 中成立，则 \(x\in D(A)\) 且 \(Ax=y\)。
+\end{proposition}
+\begin{proof}
+对每个 \(x\in X\)，\cref{b2:prop:D-integrated-orbit}构造的 \(x_h\) 属于 \(D(A)\) 并趋于 \(x\)，故定义域稠密。
+
+现设 \(x_n\to x\)、\(Ax_n\to y\)。对每个固定 \(t>0\)，\eqref{b2:eq:D-orbit-integral}给出
+\[
+ T(t)x_n-x_n=\int_0^tT(s)Ax_n\,\mathrm ds.
+\]
+左边由 \(T(t)\) 有界而趋于 \(T(t)x-x\)。右边的误差满足
+\[
+ \left\|\int_0^tT(s)(Ax_n-y)\,\mathrm ds\right\|
+ \leq t\sup_{0\leq s\leq t}\|T(s)\|\cdot\|Ax_n-y\|
+ \longrightarrow0.
+\]
+因此
+\[
+ T(t)x-x=\int_0^tT(s)y\,\mathrm ds.
+\]
+除以 \(t\) 后令 \(t\downarrow0\)，右端的平均趋于 \(y\)。这正说明生成元差商有极限，且 \(Ax=y\)。
+\end{proof}
+闭性控制的是输入和输出同时收敛的情形，不等同于有界性。闭线性算子可以只定义在真子空间上；只有当定义域等于整个 Banach 空间时，闭图形定理才迫使它有界。为了在定义域内部同时控制输入与生成元作用，需要把这两项合成一个范数。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[图像范数的完备性]\label{b2:prop:D-graph-norm}
+设 \(X,Y\) 为同一实或复标量域上的 Banach 空间，\(A:D(A)\subset X\to Y\) 为闭线性算子。定义其\term[tuxiang-fanshu]{图像范数}[graph norm]，亦称图形范数，为
+\[
+ \|x\|_A=\|x\|_X+\|Ax\|_Y,\quad x\in D(A).
+\]
+则 \((D(A),\|\cdot\|_A)\) 是 Banach 空间，包含映射 \(D(A)\to X\) 及算子 \(A:D(A)\to Y\) 在此范数下均有界。
+\end{proposition}
+\begin{proof}
+范数公理由 \(A\) 的线性和两项范数的性质得到，正定性由第一项保证。若 \((x_n)\) 在图像范数下为 Cauchy 列，则分别有 \(x_n\to x\) 于 \(X\)、\(Ax_n\to y\) 于 \(Y\)。闭性说明 \(x\in D(A)\)、\(Ax=y\)，两项收敛合起来便是 \(\|x_n-x\|_A\to0\)。两个映射的有界性直接来自它们各自的范数不超过 \(\|x\|_A\)。
+\end{proof}
+\symidx{\(\lVert x\rVert_A\)：生成元的图像范数}
+特别地，对 \(C_0\)-半群的生成元，域不变性与交换关系给出
+\[
+ \|T(t)x\|_A
+ =\|T(t)x\|+\|T(t)Ax\|
+ \leq\|T(t)\|\cdot\|x\|_A.
+\]
+若 \(x\in D(A)\)，则 \(T(t)x\to x\) 与 \(T(t)Ax\to Ax\) 同时成立，所以受限半群在图像范数下也强连续。它让域内轨道和域内近似使用同一个完备空间。
+
+\Needspace{6\baselineskip}
+\begin{lemma}[闭算子与图像范数积分]\label{b2:lem:D-graph-integral}
+设 \(X,Y\) 为同一实或复标量域上的 Banach 空间，\(A:D(A)\subset X\to Y\) 为闭线性算子，\(0<\tau<\infty\)。设 \(F:[0,\tau]\to D(A)\) 可以在图像范数的积分意义下由 \(D(A)\) 值可测简单函数 \(F_n\) 逼近，即
+\[
+ \int_0^\tau\|F_n(s)-F(s)\|_A\,\mathrm ds\longrightarrow0.
+\]
+则 \(F\) 作为 \(X\) 值函数、\(AF\) 作为 \(Y\) 值函数均强可积，并有
+\begin{equation}\label{b2:eq:D-graph-integral}
+ \int_0^\tau F(s)\,\mathrm ds\in D(A),\quad
+ A\int_0^\tau F(s)\,\mathrm ds
+ =\int_0^\tau AF(s)\,\mathrm ds.
+\end{equation}
+特别地，任何关于图像范数连续的 \(F:[0,\tau]\to D(A)\) 都满足上述条件。
+\end{lemma}
+\begin{proof}
+图像范数控制两部分误差，因此 \(F_n\to F\) 于 \(L^1([0,\tau];X)\)，且 \(AF_n\to AF\) 于 \(L^1([0,\tau];Y)\)。这给出两个强积分，分别记为 \(z\) 和 \(w\)。对简单函数，积分是有限个函数值的线性组合，所以
+\[
+ z_n=\int_0^\tau F_n(s)\,\mathrm ds\in D(A),\quad
+ Az_n=\int_0^\tau AF_n(s)\,\mathrm ds.
+\]
+积分范数不等式给出 \(z_n\to z\)、\(Az_n\to w\)，闭性于是说明 \(z\in D(A)\)、\(Az=w\)。若 \(F\) 在图像范数下连续，有限分割产生的阶梯函数在此范数下一致逼近它，因而满足所需积分逼近。
+\end{proof}
+引理中的简单函数逼近就是这里所需的图像范数强可积性。对一般连续 \(X\) 值函数，它的值未必落在 \(D(A)\)，即使逐点落在域中，也未必能积分控制 \(AF\)；不能仅凭 \(A\) 闭就任意交换算子与积分。\cref{b2:prop:D-integrated-orbit}处理域外初值时采用了独立的差商论证，恰好避开了这个障碍。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[生成元决定半群]\label{b2:prop:D-generator-uniqueness}
+设 \(X\) 为实或复 Banach 空间，\((T(t))_{t\geq0}\) 与 \((S(t))_{t\geq0}\) 是其上的两个 \(C_0\)-半群。若两者的生成元具有同一个定义域 \(D(A)\)，并且在此域上的作用均为 \(A\)，则
+\[
+ T(t)=S(t)\quad(t\geq0).
+\]
+\end{proposition}
+\begin{proof}
+固定 \(t>0\) 和 \(x\in D(A)\)，考察
+\[
+ F(s)=S(t-s)T(s)x,\quad 0\leq s\leq t.
+\]
+两条轨道的连续性与有限时间算子界使 \(F\) 连续。对 \(0<s<t\)，\cref{b2:prop:D-generator-orbit}保证 \(T(s)x\in D(A)\)，并给出两个因子的轨道导数。因此
+\[
+ \begin{aligned}
+ F'(s)
+ &=-S(t-s)AT(s)x+S(t-s)AT(s)x\\
+ &=0.
+ \end{aligned}
+\]
+这里的乘积求导只使用固定域内向量的半群导数。具体地，可把差商拆成
+\[
+ \begin{aligned}
+ \frac{F(s+h)-F(s)}h
+ &=S(t-s-h)\frac{T(s+h)x-T(s)x}{h}\\
+ &\quad+\frac{S(t-s-h)-S(t-s)}h\,T(s)x.
+ \end{aligned}
+\]
+第一项用局部一致界控制变化中的差商输入，第二项在固定向量 \(T(s)x\in D(A)\) 上求导，便得到上式；无需假设两个半群互相交换。
+
+于是 \(F\) 为常值，端点给出 \(T(t)x=S(t)x\)。生成元域稠密，两个时间 \(t\) 的算子又有界，故等式由稠密子空间推广到全部 \(X\)。零时等式由定义成立。
+\end{proof}
+这个结论中的“同一个生成元”包括定义域相同。两个微分算子若形式表达式相同而边界条件不同，就未必有同一生成元，也不能由这个命题推出演化相同。后面的生成定理因而必须同时识别构造出的算子作用与定义域。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[范数连续与有界生成元]\label{b2:prop:D-uniform-continuity}
+设 \(X\) 为实或复 Banach 空间，\((T(t))_{t\geq0}\) 为其上的 \(C_0\)-半群，生成元为 \(A:D(A)\subset X\to X\)。则
+\[
+ \lim_{t\downarrow0}\|T(t)-I\|=0
+\]
+当且仅当 \(D(A)=X\) 且 \(A\in\mathcal B(X)\)。此时
+\[
+ T(t)=e^{tA}
+ =\sum_{n=0}^{\infty}\frac{t^nA^n}{n!}\quad(t\geq0),
+\]
+级数在算子范数中收敛，半群在全部时间按算子范数连续。
+\end{proposition}
+\begin{proof}
+先设零时算子范数连续。半群律给出
+\[
+ \begin{aligned}
+ \|T(t+h)-T(t)\|
+ &\leq\|T(t)\|\cdot\|T(h)-I\|,\\
+ \|T(t)-T(t-h)\|
+ &\leq\|T(t-h)\|\cdot\|T(h)-I\|,
+ \quad 0<h<t.
+ \end{aligned}
+\]
+局部一致界于是保证全部时间的算子范数连续。现在可以在 Banach 空间 \(\mathcal B(X)\) 中定义
+\[
+ B_h=\frac1h\int_0^hT(s)\,\mathrm ds.
+\]
+算子范数积分与先作用于固定 \(x\) 再积分相容，故 \(B_hx=x_h\)，其中 \(x_h\) 是前面的时间平均。又有
+\[
+ \|B_h-I\|\leq\sup_{0\leq s\leq h}\|T(s)-I\|\longrightarrow0.
+\]
+取充分小的 \(h>0\)，使 \(\|I-B_h\|<1\)，则 Neumann 级数使 \(B_h\) 在 \(X\) 上可逆。\cref{b2:prop:D-integrated-orbit}同时给出
+\[
+ B_hX\subset D(A),\quad
+ AB_h=\frac{T(h)-I}{h}.
+\]
+因为 \(B_hX=X\)，定义域只能是整个 \(X\)，并且
+\[
+ A=\frac{T(h)-I}{h}B_h^{-1}
+\]
+是有界算子的复合，故有界。这一步说明为什么算子范数连续比逐个输入连续强：它使时间平均作为算子接近恒等，从而获得满射性。
+
+反向设 \(D(A)=X\)、\(A\) 有界。指数级数在算子范数中绝对收敛，可在有界时间区间逐项微分。对任意 \(x\in X\)，已有轨道导数公式给出
+\[
+ \frac{\mathrm d}{\mathrm dt}
+       \bigl(e^{-tA}T(t)x\bigr)
+ =-Ae^{-tA}T(t)x+e^{-tA}AT(t)x=0.
+\]
+\(A\) 与自己的指数交换，故两项确实抵消，初值为 \(x\)。乘回 \(e^{tA}\) 就得 \(T(t)x=e^{tA}x\)。最后，
+\[
+ \|T(t)-I\|\leq e^{t\|A\|}-1\longrightarrow0.
+\]
+指数级数或前面的增量估计给出全部时间的算子范数连续性。
+\end{proof}
+生成元的闭性还说明，判据中的 \(D(A)=X\) 本身已迫使 \(A\) 有界；陈述同时列出两项，是为了明确指数级数的适用对象。仅说“无界算子在其定义域上有界”容易混淆所用范数：所有闭算子在图像范数下都连续，而这里要求的是原空间 \(X\) 的范数。
 
 \ProseParagraphBreak
-定义域可通过平移这个可算模型准确识别。以下只在一维讨论，避免把一个方向的导数误写成全部一阶导数。
 
+现在把抽象定义落实到平移。以下只在一维讨论，避免把一个方向的差商误认为全部空间方向的正则性。采用第一卷定义 21.1.1 的一阶 Sobolev 空间：\(f\in W^{1,p}(\mathbb R)\) 指 \(f\in L^p(\mathbb R)\) 且存在 \(g\in L^p(\mathbb R)\)，满足
+\[
+ \int_{\mathbb R}f\cdot\phi'
+ =-\int_{\mathbb R}g\cdot\phi
+ \quad\bigl(\phi\in C_c^\infty(\mathbb R)\bigr).
+\]
+此时 \(g=f'\) 是弱导数。第一卷定理 20.4.6 说明，一维函数具有局部绝对连续代表，且该代表的通常导数几乎处处等于弱导数。
+% 跨卷定位：b1:def:sobolev-first-order，21.1.1；b1:thm:one-dimensional-weak-ac，20.4.6。
+
+\Needspace{6\baselineskip}
 \begin{proposition}[平移生成元]\label{b2:prop:D-translation-generator}
-在 \(L^p(\mathbb R)\)、\(1\le p<\infty\) 上令
-\(T(t)f(x)=f(x+t)\)。其生成元为弱导数，且
+设 \(1\leq p<\infty\)，\(L^p(\mathbb R)\) 取 Lebesgue 测度，允许实值或复值函数。在该空间上令
 \[
- D(A)=W^{1,p}(\mathbb R),\qquad Af=f'.
+ T(t)f(x)=f(x+t),\quad t\geq0.
+\]
+此 \(C_0\)-半群的生成元恰为
+\[
+ D(A)=W^{1,p}(\mathbb R),\quad Af=f'.
 \]
 \end{proposition}
 \begin{proof}
-若 \(f\in W^{1,p}\)，第一卷定理 20.4.6 给出的局部绝对连续代表满足
-\(f(x+t)-f(x)=\int_0^t f'(x+s)\,\mathrm ds\)。
-以 \(L^p\) 强积分理解同一等式，由平移连续性有
+先设 \(f\in W^{1,p}(\mathbb R)\)。前述一维绝对连续代表给出
 \[
+ f(x+t)-f(x)=\int_0^tf'(x+s)\,\mathrm ds.
+\]
+对每个固定 \(t>0\)，这也是 \(L^p\) 中的向量积分等式：平移后的 \(f'\) 连续取值于 \(L^p\)，而其积分的函数代表由 Fubini 定理在有界空间区间内识别。于是
+\[
+ \begin{aligned}
  \left\|\frac{T(t)f-f}{t}-f'\right\|_p
- \le\frac1t\int_0^t\|T(s)f'-f'\|_p\,\mathrm ds\longrightarrow0.
+ &\leq\frac1t\int_0^t\|T(s)f'-f'\|_p\,\mathrm ds\\
+ &\longrightarrow0.
+ \end{aligned}
 \]
-反之，若差商在 \(L^p\) 中趋于 \(g\)，对任意
-\(\phi\in C_c^\infty(\mathbb R)\) 换元得
+这里使用的是 \(f'\in L^p\) 的平移连续性，所以 \(f\in D(A)\)、\(Af=f'\)。
+
+反向设差商在 \(L^p\) 中趋于某个 \(g\in L^p\)。固定 \(\phi\in C_c^\infty(\mathbb R)\)，Hölder 不等式保证 \(L^p\) 收敛可与 \(\phi\) 配对；在 \(p=1\) 时用 \(\phi\) 有界即可。换元得到
 \[
- \int g\phi
- =\lim_{t\downarrow0}\int f(y)
-            \frac{\phi(y-t)-\phi(y)}t\,\mathrm dy
- =-\int f\phi'.
+ \begin{aligned}
+ \int_{\mathbb R}g\cdot\phi
+ &=\lim_{t\downarrow0}\int_{\mathbb R}
+       \frac{f(x+t)-f(x)}t\cdot\phi(x)\,\mathrm dx\\
+ &=\lim_{t\downarrow0}\int_{\mathbb R}
+       f(y)\cdot\frac{\phi(y-t)-\phi(y)}t\,\mathrm dy\\
+ &=-\int_{\mathbb R}f\cdot\phi'.
+ \end{aligned}
 \]
-测试函数差商在一个共同紧集上一致趋于 \(-\phi'\)，
-\(f\) 在该集可积，故取极限合法。这正是弱导数定义，所以
-\(f\in W^{1,p}\)、\(f'=g\)。
+当 \(0<t<1\) 时，测试函数差商支撑在一个共同紧集上，并一致趋于 \(-\phi'\)。函数 \(f\) 在该集可积，故最后一次取极限合法。这就是弱导数定义，因而 \(f\in W^{1,p}\)、\(f'=g\)，证明了定义域的必要性。
 \end{proof}
-在 \(\mathbb R^d\) 上只平移第一坐标时，定义域是
-\(\{f\in L^p:\partial_1f\in L^p\}\)，并不要求其他方向的弱导数存在。
-平移方向若改成 \(x-t\)，生成元相应变成 \(-f'\)；这个符号与传输方程的传播方向一致。
+平移保持全部 \(L^p\) 初值，但只有具有一个 \(L^p\) 弱导数的初值允许在零时强求导。若在 \(\mathbb R^d\) 中只平移第一坐标，同样的测试函数差商与沿直线积分给出定义域
+\[
+ \{\,f\in L^p(\mathbb R^d)\mid\partial_1f\in L^p(\mathbb R^d)\,\},
+\]
+无需其余方向的弱导数。平移方向若改为 \(x-t\)，一维生成元则变成 \(-f'\)。方向、作用空间与定义域三者都进入生成元的识别。
 
 \ProseParagraphBreak
-另一个模型不需要空间导数。设 \(V\ge0\) 是几乎处处有限的可测函数，在
-\(L^p\)、\(p<\infty\) 上定义 \(T(t)f=e^{-tV}f\)。
-支配收敛给出强连续，乘法给出半群律，并且
-\[
- D(A)=\{f\in L^p:Vf\in L^p\},\qquad Af=-Vf.
-\]
-若 \(Vf\in L^p\)，不等式 \(|(e^{-tV}-1)/t|\le V\) 使差商由支配收敛趋于
-\(-Vf\)。若差商有 \(L^p\) 极限，取几乎处处收敛子列，其点态极限仍为
-\(-Vf\)，因此 \(Vf\in L^p\)。这也证明了定义域的必要性。
-在有界 \(V\) 情形生成元有界，且 \(\|T(t)-I\|\le t\|V\|_\infty\)；
-在无界 \(V\) 情形，该范数一般不趋零，即便每个固定输入都有强连续轨道。
-由此可见，定义域记录的是输入在大 \(V\) 区域的可积性，而不是一个任意附加限制。
 
-\section{预解式与 Hille–Yosida}
+另一个可直接核验的模型把定义域解释成加权可积性。每个点以自身的速率 \(V\) 衰减；速率无界时，演化仍可有界，但零时变化率要求输入在大 \(V\) 区域衰减得足够快。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[非负乘法模型]\label{b2:prop:D-multiplication-generator}
+设 \((M,\mathcal A,\mu)\) 为测度空间，\(1\leq p<\infty\)，\(V:M\to[0,\infty)\) 为几乎处处有限的可测函数。在实或复 \(L^p(M,\mu)\) 上定义
+\[
+ T(t)f=e^{-tV}\cdot f,\quad t\geq0.
+\]
+则 \((T(t))_{t\geq0}\) 为压缩 \(C_0\)-半群，其生成元为
+\[
+ D(A)=\{\,f\in L^p(M,\mu)\mid Vf\in L^p(M,\mu)\,\},
+ \quad Af=-Vf.
+\]
+这里不要求测度空间有限或 \(\sigma\) 有限。
+\end{proposition}
+\begin{proof}
+因 \(0\leq e^{-tV}\leq1\)，乘法算子有界且为压缩；指数相乘给出组合律。\(V\) 几乎处处有限保证 \(e^{-tV}\to1\) 几乎处处，而
+\[
+ |(e^{-tV}-1)\cdot f|^p\leq |f|^p\in L^1.
+\]
+支配收敛于是给出零时强连续性。
+
+若 \(Vf\in L^p\)，对 \(t>0\) 有
+\[
+ \left|\frac{e^{-tV}-1}{t}\right|\leq V,\quad
+ \frac{e^{-tV}-1}{t}\cdot f\longrightarrow -Vf
+ \quad\text{几乎处处}.
+\]
+差商误差的 \(p\) 次方由 \(2^p|Vf|^p\) 控制，所以它在 \(L^p\) 中趋于 \(-Vf\)。这证明候选定义域包含于生成元域。
+
+反向若差商在 \(L^p\) 中趋于 \(g\)，选 \(t_n\downarrow0\)，再抽取差商几乎处处趋于 \(g\) 的子列。这个子列事实不需要测度空间 \(\sigma\) 有限：可使各步 \(L^p\) 误差的 \(p\) 次方可求和，然后由 Tonelli 定理得误差逐点趋零于一个满测集。另一方面，标量差商的逐点极限只能是 \(-Vf\)。因此 \(g=-Vf\) 几乎处处，从而 \(Vf\in L^p\)，必要性也得到证明。
+\end{proof}
+若 \(V\in L^\infty\)，则 \(D(A)=L^p\)，且
+\[
+ \|T(t)-I\|_{p\to p}\leq t\|V\|_\infty.
+\]
+无界势可以产生完全不同的算子范数行为。例如在 Lebesgue 空间 \(L^p((0,\infty))\) 上取 \(V(s)=s\)。对每个 \(t>0\)，乘子 \(1-e^{-ts}\) 的模不超过一，而把单位范数输入支撑在 \((n,n+1)\) 上，误差范数至少为 \(1-e^{-tn}\)。令 \(n\to\infty\)，便得
+\[
+ \|T(t)-I\|_{p\to p}=1\quad(t>0).
+\]
+每个固定输入的轨道仍强连续。这里失去统一速度的是不断移向高衰减区域的输入，生成元域 \(\{f:sf\in L^p\}\) 则准确记录了零时可微所需的加权可积性。
+
+\section{Laplace 预解式与压缩型 Hille–Yosida 定理}
 
 \label{b2:sec:app-D-3}
 
-若 \(\operatorname{Re}\lambda>\omega\)，Laplace 积分
-\[
- R(\lambda)x=\int_0^\infty e^{-\lambda t}T(t)x\,\mathrm dt
-\]
-绝对强收敛，范数至多 \(M/(\operatorname{Re}\lambda-\omega)\)。
-先把左边的半群作用移入积分并换元：
-\[
- T(h)R(\lambda)x
- =e^{\lambda h}\int_h^\infty e^{-\lambda s}T(s)x\,\mathrm ds.
-\]
-减去 \(R(\lambda)x\)，除以 \(h\)，利用零点强连续，右侧趋于
-\(\lambda R(\lambda)x-x\)。这直接证明
-\(R(\lambda)x\in D(A)\) 及 \((\lambda-A)R(\lambda)x=x\)，
-无需在证明开始就假设能把无界 \(A\) 移过无穷积分。
-若 \(x\in D(A)\)，可对可微轨道在 \([0,R]\) 上分部积分；
-边界项 \(e^{-\lambda R}T(R)x\) 因增长界趋零，于是
-\(R(\lambda)(\lambda-A)x=x\)。
-两侧逆关系同时成立，故这个积分就是预解式 \((\lambda-A)^{-1}\)。
+生成元描述轨道在零时刻的导数，但给定一个闭算子以后，未必已经有轨道可供求导。
+本节先沿已有半群作 Laplace 积分，把演化方程转为静态方程
+\(\lambda u-Au=x\)；再反过来，只从这些静态方程的可解性和一致估计构造半群。
+这两个方向分别回答“半群的生成元必须满足什么条件”和“这些条件是否已经足够”。
 
-\ProseParagraphBreak
-预解式幂还保留同一个增长常数 \(M\)。对实数 \(\lambda>\omega\)、整数 \(n\ge1\)，有
+设 \(A:D(A)\subset X\to X\) 是实或复 Banach 空间上的闭线性算子。
+使 \(\lambda I-A:D(A)\to X\) 为双射，且其逆作为从 \(X\) 到 \(X\) 的算子有界的标量
+\(\lambda\)，组成 \(A\) 的\term[yujie-ji]{预解集}[resolvent set]，记为
+\(\rho(A)\)。相应的有界算子
 \[
- R(\lambda)^n x=
+ R_\lambda\coloneqq(\lambda I-A)^{-1}
+\]
+称为\term[yujie-shi]{预解式}[resolvent]。
+\symidx{\(\rho(A)\)：闭算子的预解集}
+\symidx{\(R_\lambda=(\lambda I-A)^{-1}\)：预解式}
+逆算子的值域恰是 \(D(A)\)，这是以后识别生成元定义域所需的信息。
+当 \(X\) 为实空间时，本节的预解参数只取实数；当 \(X\) 为复空间时，才使用复参数。
+以下写 \(\lambda-A\) 时，仍指 \(\lambda I-A\)。
+
+先看已有半群的情形。若 \(T(t)x\) 的大小至多按 \(e^{\omega t}\) 增长，
+乘上衰减更快的 \(e^{-\lambda t}\) 就能在整个半轴积分。
+形式上对 \(e^{-\lambda t}T(t)x\) 分部积分会产生 \(\lambda-A\)，
+但对于任意 \(x\in X\)，并不知道 \(x\in D(A)\)。
+因此首先用半群差商证明积分结果属于定义域，再验证两侧逆关系。
+所得表示称为\term[laplace-yujie-gongshi]{Laplace 预解公式}[Laplace resolvent formula]。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[Laplace 预解公式]\label{b2:prop:D-laplace-resolvent}
+设 \(X\) 为实或复 Banach 空间，\((T(t))_{t\ge0}\) 为 \(X\) 上的
+\(C_0\)-半群，生成元为 \(A:D(A)\subset X\to X\)。
+假设存在 \(M\ge1\)、\(\omega\in\mathbb R\)，使
+\(\|T(t)\|\le Me^{\omega t}\) 对所有 \(t\ge0\) 成立。
+那么每个实数 \(\lambda>\omega\) 都属于 \(\rho(A)\)，且
+\[
+ R_\lambda x=\int_0^\infty e^{-\lambda t}T(t)x\,\mathrm dt,
+ \quad
+ \|R_\lambda\|\le\frac{M}{\lambda-\omega}.
+\]
+对每个整数 \(n\ge1\)，还有
+\[
+ R_\lambda^n x=
  \frac1{(n-1)!}\int_0^\infty
        t^{n-1}e^{-\lambda t}T(t)x\,\mathrm dt,
- \qquad
- \|R(\lambda)^n\|\le\frac M{(\lambda-\omega)^n}.
+ \quad
+ \|R_\lambda^n\|\le\frac{M}{(\lambda-\omega)^n}.
 \]
-证明按 \(n\) 归纳：乘上一次 Laplace 积分，以半群律把
-\(T(s)T(t)\) 换成 \(T(s+t)\)，再沿 \(s+t=r\) 积分。
-单纯形内的积分为 \(r^{n-1}/(n-1)!\)；增长界保证强 Fubini 所需的绝对可积性。
-最后使用 Gamma 积分取得范数界。这比机械地把单次界取 \(n\) 次方得到
-\(M^n(\lambda-\omega)^{-n}\) 强，正是一般 Hille--Yosida 条件的来源。
-不同参数的恒等式
+所有积分均为 \(X\) 中的强积分。若 \(X\) 为复 Banach 空间，
+以上结论还适用于 \(\operatorname{Re}\lambda>\omega\)，
+其中两个范数界的分母分别改为
+\(\operatorname{Re}\lambda-\omega\) 及其 \(n\) 次幂。
+\end{proposition}
+\begin{proof}
+先取实数 \(\lambda>\omega\)，并把待验证的积分暂记为 \(L_\lambda x\)。
+被积函数连续，而且
 \[
- R(\lambda)-R(\mu)=(\mu-\lambda)R(\lambda)R(\mu)
+ \int_0^\infty
+ \|e^{-\lambda t}T(t)x\|\,\mathrm dt
+ \le M\cdot\|x\|\int_0^\infty e^{-(\lambda-\omega)t}\,\mathrm dt
+ =\frac{M}{\lambda-\omega}\cdot\|x\|.
 \]
-则由两侧逆关系在公共定义域上相减得到，也说明所有预解式互相交换。
+因此积分绝对强收敛，并定义了一个有界线性算子。
+有界算子 \(T(h)\) 可移入强积分，半群律和变量代换给出
+\[
+ T(h)L_\lambda x
+ =e^{\lambda h}\int_h^\infty e^{-\lambda s}T(s)x\,\mathrm ds.
+\]
+于是
+\[
+ \frac{T(h)L_\lambda x-L_\lambda x}{h}
+ =\frac{e^{\lambda h}-1}{h}L_\lambda x
+ -e^{\lambda h}\frac1h\int_0^h e^{-\lambda s}T(s)x\,\mathrm ds.
+\]
+零时刻的强连续性使右端趋于 \(\lambda L_\lambda x-x\)。
+这按生成元定义证明了
+\[
+ L_\lambda x\in D(A),
+ \quad
+ AL_\lambda x=\lambda L_\lambda x-x,
+ \quad
+ (\lambda I-A)L_\lambda x=x.
+\]
+这里未曾把无界算子 \(A\) 移过无穷积分。
 
+反过来，若 \(x\in D(A)\)，上一节的域不变性和轨道求导公式给出
+\[
+ \frac{\mathrm d}{\mathrm dt}
+       \left(e^{-\lambda t}T(t)x\right)
+ =e^{-\lambda t}T(t)(A-\lambda I)x.
+\]
+先在有限区间 \([0,b]\) 上积分，得到
+\[
+ \int_0^b e^{-\lambda t}T(t)(\lambda I-A)x\,\mathrm dt
+ =x-e^{-\lambda b}T(b)x.
+\]
+末项的范数不超过
+\(Me^{-(\lambda-\omega)b}\cdot\|x\|\)，故在 \(b\to\infty\) 时趋零。
+所以 \(L_\lambda(\lambda I-A)x=x\)。
+前一个逆关系给出满射性，后一个给出单射性；
+故 \(\lambda\in\rho(A)\)，且 \(L_\lambda=R_\lambda\)。
+
+幂公式按 \(n\) 归纳。\(n=1\) 已证。
+若公式对 \(n\) 成立，再乘一次 \(R_\lambda\)，利用半群律可写成
+\[
+ R_\lambda^{n+1}x
+ =\frac1{(n-1)!}\int_0^\infty\int_0^\infty
+    t^{n-1}e^{-\lambda(s+t)}T(s+t)x\,\mathrm ds\,\mathrm dt.
+\]
+二重被积函数的范数由
+\[
+ M\cdot\|x\|\,
+ t^{n-1}e^{-(\lambda-\omega)(s+t)}
+\]
+控制，而这个标量函数在第一象限可积。因此强 Fubini 定理和换元
+\(r=s+t\) 均可应用。固定 \(r\) 后，\(t\) 从0变化到 \(r\)，从而
+\[
+ R_\lambda^{n+1}x
+ =\frac1{(n-1)!}\int_0^\infty
+   e^{-\lambda r}T(r)x
+   \left(\int_0^r t^{n-1}\,\mathrm dt\right)\mathrm dr
+ =\frac1{n!}\int_0^\infty r^ne^{-\lambda r}T(r)x\,\mathrm dr.
+\]
+最后，反复分部积分给出
+\[
+ \int_0^\infty t^{n-1}e^{-(\lambda-\omega)t}\,\mathrm dt
+ =\frac{(n-1)!}{(\lambda-\omega)^n},
+\]
+于是取得所述幂界。若 \(X\) 为复空间且
+\(\operatorname{Re}\lambda>\omega\)，同样的差商、分部积分和换元仍成立；
+只需在绝对可积控制中使用
+\(|e^{-\lambda t}|=e^{-\operatorname{Re}\lambda\,t}\)，
+便得到复参数的结论。
+\end{proof}
+
+这个幂公式比单纯反复使用算子范数不等式保留了更多信息。
+后者只能从一次界得到 \(M^n(\lambda-\omega)^{-n}\)，
+而强积分中的 \(n\) 个半群因子先合并为一个 \(T(t)\)，所以最后只出现一次 \(M\)。
+接下来还要比较不同参数的预解式；其交换性来自它们是同一个算子的逆，
+并不要求一般有界算子彼此交换。
+
+\Needspace{6\baselineskip}
+\begin{lemma}[预解式恒等式]\label{b2:lem:D-resolvent-identity}
+设 \(X\) 为实或复 Banach 空间，
+\(A:D(A)\subset X\to X\) 为闭线性算子，\(\lambda,\mu\in\rho(A)\)。
+记 \(R_\lambda=(\lambda I-A)^{-1}\)、\(R_\mu=(\mu I-A)^{-1}\)，则
+\[
+ R_\lambda-R_\mu=(\mu-\lambda)R_\lambda R_\mu,
+ \quad
+ R_\lambda R_\mu=R_\mu R_\lambda.
+\]
+此外，\(AR_\lambda=\lambda R_\lambda-I\) 是定义在全部 \(X\) 上的有界算子，
+并且对 \(x\in D(A)\) 有
+\[
+ AR_\lambda x=R_\lambda Ax.
+\]
+\end{lemma}
+\begin{proof}
+对 \(x\in X\)，向量 \(R_\mu x\) 属于 \(D(A)\)，故两侧逆关系允许写成
+\[
+ \begin{aligned}
+ R_\lambda x-R_\mu x
+ &=R_\lambda
+   \left((\mu I-A)-(\lambda I-A)\right)R_\mu x\\
+ &=(\mu-\lambda)R_\lambda R_\mu x.
+ \end{aligned}
+\]
+交换 \(\lambda,\mu\) 再作一次计算。
+当 \(\lambda\ne\mu\) 时比较所得等式便得交换性；参数相同时交换性本身即为恒等式。
+由 \((\lambda I-A)R_\lambda=I\) 得
+\(AR_\lambda=\lambda R_\lambda-I\)。
+对 \(x\in D(A)\)，另一个逆关系又给
+\(R_\lambda Ax=\lambda R_\lambda x-x\)，两式相等。
+最后这个等式只在 \(D(A)\) 上使用 \(R_\lambda A\)，没有把 \(A\) 当成全空间算子。
+\end{proof}
+
+\ProseParagraphBreak
+现在反过来从预解式构造演化。\(\lambda R_\lambda\) 将整个 \(X\) 送入 \(D(A)\)，
+而在正实预解式满足压缩型估计时，它在 \(\lambda\to\infty\) 的意义下逼近恒等算子。
+因此先作这一步正则化，再作用 \(A\)，便得到可以在全空间取指数的有界算子。
+下面的\term[hille-yosida-dingli]{Hille--Yosida 定理}[Hille--Yosida theorem]
+说明这些有界演化的极限恰由原算子生成。
+
+\Needspace{6\baselineskip}
 \begin{theorem}[Hille--Yosida：压缩型]\label{b2:thm:D-hille-yosida}
-稠密定义的闭算子 \(A\) 生成一个 \(C_0\) 压缩半群，当且仅当每个实数 \(\lambda>0\) 属于预解集，且
-\(\|(\lambda-A)^{-1}\|\le1/\lambda\)。
+设 \(X\) 为实或复 Banach 空间，
+\(A:D(A)\subset X\to X\) 为线性算子，其中 \(D(A)\) 是线性子空间。
+以下两条件等价：
+\begin{enumerate}
+\item \(A\) 连同其定义域是 \(X\) 上一个 \(C_0\) 压缩半群的生成元。
+\item \(A\) 为闭算子，\(D(A)\) 在 \(X\) 中稠密，
+每个实数 \(\lambda>0\) 都属于 \(\rho(A)\)，且
+\[
+ \|(\lambda I-A)^{-1}\|\le\frac1\lambda.
+\]
+\end{enumerate}
+满足这些条件时，所生成的半群唯一。
 \end{theorem}
 \begin{proof}
-必要性由上述 Laplace 积分取 \(M=1,\omega=0\)。
-反向记 \(R_\lambda=(\lambda-A)^{-1}\)，
-\(A_\lambda=\lambda^2R_\lambda-\lambda I\)。
-因为 \(\|\lambda R_\lambda\|\le1\)，有
-\[
- e^{tA_\lambda}=e^{-\lambda t}
-       \sum_{n\ge0}\frac{(\lambda t)^n}{n!}(\lambda R_\lambda)^n,
- \qquad \|e^{tA_\lambda}\|\le1.
-\]
-预解式恒等式说明所有 \(R_\lambda\) 互相交换，并在 \(D(A)\) 上与 \(A\) 交换。
-对 \(x\in D(A)\)，
-\(\lambda R_\lambda x-x=R_\lambda Ax\to0\)；
-统一范数界与稠密性使该收敛对全部 \(x\) 成立。
-\(D(A^2)\) 也稠密：先以 \(D(A)\) 逼近，再用
-\(\lambda R_\lambda x\in D(A^2)\) 逼近 \(x\in D(A)\)。
+若 \(A\) 是 \(C_0\) 压缩半群的生成元，
+\cref{b2:prop:D-generator-closed}给出闭性和定义域稠密性。
+将 \(M=1,\omega=0\) 代入\cref{b2:prop:D-laplace-resolvent}，
+得到全部正实参数的预解式及所需估计。这证明必要性。
 
-对 \(x\in D(A^2)\)，有
-\(\|A_\lambda x-Ax\|=\|R_\lambda A^2x\|\le\|A^2x\|/\lambda\)。
-两个有界且交换的近似生成元满足
+反向假设第二个条件成立。对实数 \(\lambda>0\)，记
 \[
- e^{tA_\lambda}x-e^{tA_\mu}x
- =\int_0^t e^{(t-s)A_\lambda}e^{sA_\mu}
-                         (A_\lambda-A_\mu)x\,\mathrm ds,
+ R_\lambda=(\lambda I-A)^{-1},
+ \quad
+ J_\lambda\coloneqq\lambda R_\lambda,
+ \quad
+ A_\lambda\coloneqq AJ_\lambda
+          =\lambda^2R_\lambda-\lambda I.
 \]
-故其轨道在每个有限时间区间一致 Cauchy。压缩界与稠密性把结论推广到全部 \(X\)，定义极限 \(T(t)\)。
-一致强收敛保持组合律、压缩界和强连续性。
-对 \(x\in D(A)\)，近似积分式及 \(A_\lambda x\to Ax\) 给出
-\(T(t)x-x=\int_0^tT(s)Ax\,\mathrm ds\)，所以极限生成元 \(G\) 扩张 \(A\)。
-但 \(G\) 的正实预解式也存在。对任意 \(y\)，\(x=R_\lambda y\) 属于 \(D(A)\)，故
-\((\lambda-G)x=y\)；其逆唯一，得到
-\((\lambda-G)^{-1}=R_\lambda\)，于是两个定义域及作用相同，\(G=A\)。
+这里 \(J_\lambda X\subset D(A)\)，所以中间的复合有定义；
+最后的表达式说明 \(A_\lambda\) 是全空间上的有界算子，且
+\(\|A_\lambda\|\le2\lambda\)。
+这族 \(A_\lambda\) 称为 \(A\) 的
+\term[yosida-bijin]{Yosida 逼近}[Yosida approximation]。
+\symidx{\(A_\lambda=\lambda^2(\lambda I-A)^{-1}-\lambda I\)：Yosida 逼近}
+首先证明 \(J_\lambda\) 强收敛于 \(I\)。
+对 \(x\in D(A)\)，预解式恒等关系给出
+\[
+ J_\lambda x-x=R_\lambda Ax,
+ \quad
+ \|J_\lambda x-x\|\le\frac{\|Ax\|}{\lambda}\longrightarrow0.
+\]
+对任意 \(x\in X\) 和 \(y\in D(A)\)，由 \(\|J_\lambda\|\le1\) 有
+\[
+ \|J_\lambda x-x\|
+ \le2\|x-y\|+\frac{\|Ay\|}{\lambda}.
+\]
+先用稠密性选取接近 \(x\) 的 \(y\)，再令 \(\lambda\to\infty\)，
+就得到对全部 \(x\in X\) 的强收敛。
+因此在 \(D(A)\) 上还成立
+\[
+ A_\lambda x=J_\lambda Ax\longrightarrow Ax.
+\]
+这里是逐个定义域向量的收敛，不是无界算子 \(A\) 的算子范数逼近。
+
+由于 \(A_\lambda\) 有界，可以定义 \(T_\lambda(t)=e^{tA_\lambda}\)。
+标量倍数的恒等算子与 \(J_\lambda\) 交换，故指数级数给出
+\[
+ T_\lambda(t)=e^{-\lambda t}
+   \sum_{n=0}^\infty\frac{(\lambda t)^n}{n!}J_\lambda^n,
+ \quad t\ge0.
+\]
+级数在算子范数中收敛，且每个 \(\|J_\lambda^n\|\le1\)，于是
+\[
+ \|T_\lambda(t)\|
+ \le e^{-\lambda t}\sum_{n=0}^\infty\frac{(\lambda t)^n}{n!}=1.
+\]
+这一步给出独立于 \(\lambda\) 的压缩界；
+单用 \(\|e^{tA_\lambda}\|\le e^{t\|A_\lambda\|}\) 则会丢失这一关键性质。
+
+为证明 \(T_\lambda(t)x\) 收敛，先比较两个参数。
+由\cref{b2:lem:D-resolvent-identity}，\(A_\lambda,A_\mu\) 交换，
+因而它们的指数也与二者交换。
+固定 \(t\ge0\)，对 \(s\in[0,t]\) 定义
+\(F(s)=T_\lambda(t-s)T_\mu(s)x\)。
+有界算子的指数在算子范数中可微，所以
+\[
+ F'(s)=T_\lambda(t-s)T_\mu(s)(A_\mu-A_\lambda)x.
+\]
+端点是 \(F(0)=T_\lambda(t)x\)、\(F(t)=T_\mu(t)x\)。
+因此对导数取负积分，得到正确方向的差公式
+\[
+ T_\lambda(t)x-T_\mu(t)x
+ =\int_0^t T_\lambda(t-s)T_\mu(s)
+                      (A_\lambda-A_\mu)x\,\mathrm ds.
+\]
+若 \(x\in D(A)\)，对任意有限的 \(\tau>0\)，压缩界给出
+\[
+ \sup_{0\le t\le\tau}
+ \|T_\lambda(t)x-T_\mu(t)x\|
+ \le\tau\cdot\|(A_\lambda-A_\mu)x\|
+ \longrightarrow0
+ \quad(\lambda,\mu\to\infty).
+\]
+最后的极限来自 \(A_\lambda x\to Ax\)。
+若 \(x\) 是任意 \(X\) 中的向量，则对 \(y\in D(A)\) 同样有
+\[
+ \sup_{0\le t\le\tau}
+ \|T_\lambda(t)x-T_\mu(t)x\|
+ \le2\|x-y\|+\tau\cdot\|(A_\lambda-A_\mu)y\|.
+\]
+先近似输入，再使两个参数充分大，便得到全体输入的时间一致 Cauchy 性。
+由 \(C([0,\tau];X)\) 的完备性，可定义
+\[
+ T(t)x=\lim_{\lambda\to\infty}T_\lambda(t)x,
+\]
+且对每个固定 \(x\)，收敛在有限时间区间上一致。
+
+逐点强极限保留线性和压缩界，因此 \(T(t)\in\mathcal B(X)\)，
+\(\|T(t)\|\le1\)。轨道的一致极限连续，且 \(T(0)x=x\)。
+半群律需要同时处理算子和输入的极限。固定 \(s,t\ge0\)，有
+\[
+ \begin{aligned}
+ &T_\lambda(t)T_\lambda(s)x-T(t)T(s)x\\
+ &\quad=T_\lambda(t)\bigl(T_\lambda(s)x-T(s)x\bigr)
+       +\bigl(T_\lambda(t)-T(t)\bigr)T(s)x.
+ \end{aligned}
+\]
+第一项由压缩界和输入收敛趋零，第二项是对固定向量 \(T(s)x\) 的强收敛。
+再由 \(T_\lambda(t)T_\lambda(s)=T_\lambda(t+s)\)，
+得到 \(T(t+s)=T(t)T(s)\)。
+所以 \((T(t))_{t\ge0}\) 确实是 \(C_0\) 压缩半群。
+
+设这个极限半群的生成元为 \(G\)。
+对 \(x\in D(A)\)，有界生成元的积分恒等式是
+\[
+ T_\lambda(t)x-x=\int_0^tT_\lambda(s)A_\lambda x\,\mathrm ds.
+\]
+在任意 \([0,\tau]\) 上，
+\[
+ \begin{aligned}
+ &\sup_{0\le s\le\tau}
+   \|T_\lambda(s)A_\lambda x-T(s)Ax\|\\
+ &\quad\le\|A_\lambda x-Ax\|
+       +\sup_{0\le s\le\tau}\|T_\lambda(s)Ax-T(s)Ax\|
+       \longrightarrow0.
+ \end{aligned}
+\]
+故可对积分取极限，得到
+\[
+ T(t)x-x=\int_0^tT(s)Ax\,\mathrm ds.
+\]
+除以 \(t\)，再令 \(t\downarrow0\)，右端平均值趋于 \(Ax\)。
+于是 \(x\in D(G)\)、\(Gx=Ax\)，即目前只证明了 \(A\subset G\)。
+
+最后排除定义域变大的可能。固定一个 \(\lambda>0\)。
+极限半群的压缩性和\cref{b2:prop:D-laplace-resolvent}保证
+\((\lambda I-G)^{-1}\) 存在。对任意 \(y\in X\)，令 \(x=R_\lambda y\)。
+则 \(x\in D(A)\subset D(G)\)，并且
+\[
+ (\lambda I-G)x=(\lambda I-A)x=y.
+\]
+由 \(\lambda I-G\) 的单射性，
+\((\lambda I-G)^{-1}y=R_\lambda y\)。
+因此两个预解式相同，且取值域便得
+\[
+ D(G)=(\lambda I-G)^{-1}X=R_\lambda X=D(A).
+\]
+结合已经证明的作用相同，可得 \(G=A\)，包括完整定义域。
+生成元相同的两个 \(C_0\)-半群由
+\cref{b2:prop:D-generator-uniqueness}相等，故所构造半群唯一。
 \end{proof}
-一般指数有界半群的版本使用
-\(\|(\lambda-A)^{-n}\|\le M(\lambda-\omega)^{-n}\)、所有 \(n\ge1\)；该幂条件与单个预解式范数条件不同。完整一般理论见 Pazy 的《Semigroups of Linear Operators and Applications to Partial Differential Equations》\cite{Pazy1983Semigroups}。
+
+上述构造还给出有额外定义域正则性的输入上的误差速度。
+设 \(A\) 是 \(X\) 上的压缩半群生成元，记
+\[
+ D(A^2)\coloneqq\{\,x\in D(A):Ax\in D(A)\,\}.
+\]
+对 \(x\in D(A^2)\)，把预解关系应用于 \(Ax\)，得到
+\[
+ A_\lambda x-Ax=R_\lambda A^2x,
+ \quad
+ \|A_\lambda x-Ax\|\le\frac{\|A^2x\|}{\lambda}.
+\]
+因此证明中的差公式给出
+\[
+ \sup_{0\le t\le\tau}\|T_\lambda(t)x-T_\mu(t)x\|
+ \le\tau\left(\frac1\lambda+\frac1\mu\right)\cdot\|A^2x\|.
+\]
+令 \(\mu\to\infty\)，即得
+\[
+ \sup_{0\le t\le\tau}\|T_\lambda(t)x-T(t)x\|
+ \le\frac{\tau}{\lambda}\cdot\|A^2x\|.
+\]
+这个输入类也在 \(X\) 中稠密：对 \(x\in D(A)\)，
+\(AR_\lambda x=R_\lambda Ax\in D(A)\)，故
+\(J_\lambda x\in D(A^2)\)，而 \(J_\lambda x\to x\)；
+再用 \(D(A)\) 的稠密性即可。
+定性构造只需 \(D(A)\)，两阶定义域则提供可读出的逼近速度。
+
+\ProseParagraphBreak
+压缩型陈述只要求一次预解式界，是因为
+\(\|R_\lambda\|\le\lambda^{-1}\) 已自动给出
+\(\|R_\lambda^n\|\le\lambda^{-n}\) 对所有 \(n\ge1\) 成立。
+一般增长常数 \(M>1\) 时则不同：
+\(\|R_\lambda\|\le M/\lambda\) 只能推出
+\(\|(\lambda R_\lambda)^n\|\le M^n\)。
+仅看增长指数 \(\omega=0\) 的情形，这种界代入近似指数级数只能给出
+\[
+ \|T_\lambda(t)\|
+ \le e^{-\lambda t}\sum_{n=0}^\infty
+          \frac{(\lambda t)^nM^n}{n!}
+ =e^{(M-1)\lambda t},
+\]
+它在固定正时间上不能提供与 \(\lambda\) 无关的控制。
+若已知的是全部幂满足 \(\|(\lambda R_\lambda)^n\|\le M\)，
+同一计算才会给出
+\[
+ \|T_\lambda(t)\|
+ \le e^{-\lambda t}\left(1+M(e^{\lambda t}-1)\right)\le M.
+\]
+这说明在一般版本中，所有幂共用同一个常数是一项实质条件。
+相应的完整条件写作
+\(\|(\lambda I-A)^{-n}\|\le M(\lambda-\omega)^{-n}\)，
+其中实数 \(\lambda>\omega\)、整数 \(n\ge1\) 都要满足同一个 \(M\)。
+
+一次界不足以代替全部幂界，还有一个有限维例子。在带 Euclidean 范数的
+\(\mathbb C^2\) 上令
+\[
+ N=\begin{pmatrix}0&1\\0&0\end{pmatrix},
+ \quad A=\mathrm iI+N.
+\]
+因为 \(N^2=0\)、\(\|N\|=1\)，对每个实数 \(\lambda>0\)，
+\[
+ (\lambda I-A)^{-1}
+ =\frac1{\lambda-\mathrm i}I+\frac1{(\lambda-\mathrm i)^2}N,
+ \quad
+ \|(\lambda I-A)^{-1}\|
+ \le\frac1{\sqrt{\lambda^2+1}}+\frac1{\lambda^2+1}
+ \le\frac{3}{2\lambda}.
+\]
+最后一步使用 \(\sqrt{\lambda^2+1}\ge\lambda\) 及
+\(\lambda^2+1\ge2\lambda\)。
+然而有界生成元所给出的唯一半群为
+\(e^{tA}=e^{\mathrm it}(I+tN)\)，并且
+\(\|e^{tA}(0,1)\|=\sqrt{1+t^2}\)，所以它在半轴上没有统一范数界。
+即使算子有界、定义域是全空间，全部正实参数的一次预解式估计仍不能单独保证有界演化。
+
+本节不证明一般指数有界版本的充分性。
+一般半群理论的进一步阅读可见 Amnon Pazy 的
+《Semigroups of Linear Operators and Applications to Partial Differential Equations》
+\cite{Pazy1983Semigroups}。
 
 \section{热半群及谱观点}
 
 \label{b2:sec:app-D-4}
 
-对 \(1\le p<\infty\)，热核
+热方程提供一个生成元无界、演化却在每个正时间有界的模型。
+\secref{b2:sec:1204}已从核公式建立热半群；本节把它与前面的生成元理论连接起来，
+并比较热演化与酉演化的定义域、正则性及长期行为。
+全空间部分只使用 Fourier 变换和已建立的积分工具。
+一般非负自伴算子的讨论另需无界谱定理，进入该部分时将明确说明这项先修。
+
+\subsection{热核给出的强连续半群}
+\label{b2:subsec:D-heat-c0}
+
+固定整数 \(d\ge1\)，采用本书的 Fourier 约定
+\(\widehat f(\xi)=\int_{\mathbb R^d}f(x)e^{-2\pi\mathrm i x\cdot\xi}\,\mathrm dx\)。
+本节把扩散系数取为一；一般系数 \(\kappa>0\) 只需将时间换成 \(\kappa t\)。
+令
 \[
- H_t(x)=(4\pi t)^{-d/2}e^{-|x|^2/(4t)},\qquad
- T(t)f=H_t*f,\quad t>0,
+ H_t(x)=(4\pi t)^{-d/2}e^{-|x|^2/(4t)},
+ \quad T(t)f=H_t*f\quad(t>0),
+ \quad T(0)=I.
 \]
-与 \(T(0)=I\) 构成压缩 \(C_0\)-半群。
-卷积 Gaussian 或 Fourier 变换验证组合律；
-\(\widehat H_t(\xi)=e^{-4\pi^2t|\xi|^2}\)。
-Young 给出压缩，逼近恒等给出强连续。
-在 \(L^2\) 上，生成元的准确域为
+核非负、质量为一，并满足缩放关系
+\(H_t(x)=t^{-d/2}H_1(x/\sqrt t)\)。
+质量负责范数控制，缩放负责零时集中，两个性质分别用于下面的证明。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[全空间热半群]\label{b2:prop:D-heat-c0}
+设整数 \(d\ge1\)，\(H_t(x)=(4\pi t)^{-d/2}e^{-|x|^2/(4t)}\)，并令 \(T(t)f=H_t*f\)、\(t>0\)，以及 \(T(0)=I\)。对 \(1\le p<\infty\)，\((T(t))_{t\ge0}\) 是
+\(L^p(\mathbb R^d;\mathbb C)\) 上的压缩 \(C_0\)-半群。
+具体地，对 \(s,t\ge0\) 及 \(f\in L^p\)，有
 \[
- D(\Delta)=\{f\in L^2:|\xi|^2\widehat f\in L^2\}=H^2,
- \qquad\widehat{\Delta f}=-4\pi^2|\xi|^2\widehat f.
+ T(t+s)f=T(t)T(s)f,
+ \quad \|T(t)f\|_p\le\|f\|_p,
+ \quad \lim_{t\downarrow0}\|T(t)f-f\|_p=0.
 \]
-充分性由不等式
-\(|(e^{-t a}-1)/t|\le a\)、\(a=4\pi^2|\xi|^2\)，及支配收敛控制差商。
-反之，若差商在 \(L^2\) 中有极限，Plancherel 将它转到 Fourier 侧；
-取几乎处处收敛子列，其点态极限只能是 \(-4\pi^2|\xi|^2\widehat f\)，
-因此此函数属于 \(L^2\)。这证明定义域的必要性。
-其他 \(p\) 的定义域可用分布 Laplacian 与椭圆乘子理论识别，不能仅照抄这个平方范数证明。
+当 \(p=\infty\) 时，前两项仍成立，但最后一项一般不成立。
+\end{proposition}
+\begin{proof}
+Gaussian 的 Fourier 变换给出
+\[
+ \widehat H_t(\xi)=e^{-4\pi^2t|\xi|^2},
+ \quad \widehat{H_t*H_s}(\xi)
+ =e^{-4\pi^2(t+s)|\xi|^2}.
+\]
+当 \(s,t>0\) 时，由 \(L^1\) Fourier 唯一性得到
+\(H_t*H_s=H_{t+s}\)，再用卷积结合律得到半群律；
+零参数的情形由 \(T(0)=I\) 直接成立。
+Young 不等式与 \(\|H_t\|_1=1\) 给出压缩性。
+对 \(p=\infty\)，卷积结合律也合法，因为被积绝对值可由
+\(\|f\|_\infty\) 乘两个核的质量控制。
+
+设 \(p<\infty\)。利用缩放及 Minkowski 积分不等式，有
+\[
+ \|T(t)f-f\|_p
+ \le\int_{\mathbb R^d}H_1(z)
+       \cdot\|f(\,\cdot-\sqrt t\,z)-f\|_p\,\mathrm dz.
+\]
+对每个固定 \(z\)，平移连续性使右边范数趋零；它又不超过
+\(2\|f\|_p\)。由于 \(H_1\) 可积，支配收敛得到零时强连续。
+半群律随后给出
+\[
+ \|T(t+h)f-T(t)f\|_p\le\|T(h)f-f\|_p,
+\]
+而当 \(0<h\le t\) 时，左差也由同一右端控制，所以轨道在全部时间连续。
+
+最后取 \(f=\mathbf1_{\{x_1>0\}}\in L^\infty\)。沿第一坐标积分可见
+\(T(t)f(x)\) 是平滑的阶跃：在 \(x_1\downarrow0\) 时趋于 \(1/2\)，
+在负半轴有对称的误差。两侧误差均小于 \(1/2\)，
+又在正测度的窄带上任意接近 \(1/2\)，故
+\(\|T(t)f-f\|_\infty=1/2\) 对每个 \(t>0\) 成立。
+\end{proof}
+
+压缩界本身没有排除零时的不连续；上面的端点例子正好说明这一点。
+若把 \(L^\infty\) 缩小为有界一致连续函数空间，
+同一个积分估计可用一致连续性取代 \(L^p\) 平移连续性，
+便恢复上确界范数下的强连续性。
+热核的正性还说明非负初值保持非负。
+这些是核公式带来的性质，不能仅从抽象 Hilbert 空间中的非负自伴性推出全部
+\(L^p\) 空间上的相同结论，参见\subsecref{b2:subsec:120402}。
+
+\subsection{平方可积生成元的准确定义域}
+\label{b2:subsec:D-heat-domain}
+
+以下在 \(L^2(\mathbb R^d;\mathbb C)\) 上工作。
+形式等式 \(\partial_tT(t)f=\Delta T(t)f\) 只提示生成元可能是什么，
+零时差商是否收敛还要由初值决定。
+记 \(a(\xi)=4\pi^2|\xi|^2\)，则
+\(\widehat{T(t)f}=e^{-ta}\widehat f\)。
+
+\Needspace{6\baselineskip}
+\begin{theorem}[热生成元及其定义域]\label{b2:thm:D-heat-generator}
+设整数 \(d\ge1\)，在 \(L^2(\mathbb R^d;\mathbb C)\) 上令 \(T(t)f=H_t*f\)、\(t>0\)，其中 \(H_t(x)=(4\pi t)^{-d/2}e^{-|x|^2/(4t)}\)，且 \(T(0)=I\)。该热半群的生成元为
+\[
+ A=\Delta,
+ \quad D(A)=\{f\in L^2:|\xi|^2\widehat f\in L^2\}
+           =H^2(\mathbb R^d),
+ \quad \widehat{Af}(\xi)=-4\pi^2|\xi|^2\widehat f(\xi).
+\]
+这里 \(H^2\) 要求所有不超过二阶的弱导数均平方可积。
+对 \(\lambda>0\)，预解式的 Fourier 乘子为
+\[
+ \widehat{(\lambda I-A)^{-1}f}(\xi)
+ =\frac{\widehat f(\xi)}{\lambda+4\pi^2|\xi|^2}.
+\]
+\end{theorem}
+\begin{proof}
+先设 \(a\widehat f\in L^2\)。对 \(h>0\)，有
+\[
+ \left|\frac{e^{-ha}-1}{h}\right|\le a,
+ \quad \frac{e^{-ha}-1}{h}\widehat f\longrightarrow-a\widehat f
+ \quad\text{逐点几乎处处}.
+\]
+差商与极限之差的绝对值不超过 \(2a\cdot|\widehat f|\)，
+其平方可积。支配收敛及 Plancherel 定理因此给出
+\((T(h)f-f)/h\to\mathcal F^{-1}(-a\widehat f)\) 于 \(L^2\)。
+这证明定义域的充分性及生成元的作用。
+
+反过来，设差商在 \(L^2\) 中趋于 \(g\)。
+Plancherel 把这个收敛转到 Fourier 侧。
+从任意趋零的正时间列中，取一个变换差商几乎处处收敛到
+\(\widehat g\) 的子列；另一方面，完整差商的点态极限已经是
+\(-a\widehat f\)。因此
+\(\widehat g=-a\widehat f\) 几乎处处，特别地
+\(a\widehat f\in L^2\)。这里是先利用差商的强极限，
+再推出频率权重可积，不能只以形式微分宣布定义域。
+
+由\cref{b2:thm:04-weak-derivative}，二阶弱导数对应乘子
+\((2\pi\mathrm i\xi_j)(2\pi\mathrm i\xi_k)\)。
+不等式 \(|\xi_j\xi_k|\le|\xi|^2\) 控制全部二阶项，
+\(|\xi_j|\le1+|\xi|^2\) 控制一阶项，
+所以 \(f,|\xi|^2\widehat f\in L^2\) 推出 \(f\in H^2\)。
+反向由 \(|\xi|^2\widehat f=\sum_j\xi_j^2\widehat f\in L^2\) 得到。
+这也把上述 Fourier 生成元与分布 Laplacian 识别为同一个算子。
+
+最后，乘子 \((\lambda+a)^{-1}\) 有界，且
+\(a/(\lambda+a)\le1\)，所以它把 \(L^2\) 映入已经识别的定义域。
+分别在 \(L^2\) 与 \(D(A)\) 上乘回 \(\lambda+a\)，
+便验证两个逆关系。
+\end{proof}
+
+这个预解式也与\secref{b2:sec:app-D-3}的 Laplace 公式吻合：
+\[
+ \int_0^\infty e^{-\lambda t}e^{-ta(\xi)}\,\mathrm dt
+ =\frac1{\lambda+a(\xi)}.
+\]
+指数权重保证强积分收敛，乘子计算可先在有限时间上进行再取极限。
+因此由核得到的具体生成元，与抽象预解式刻画相互一致。
+对于其他 \(p\)，相应定义域的识别还涉及分布 Laplacian 及椭圆估计；
+本节的 Plancherel 证明只给出了 \(p=2\) 的结论。
 
 \ProseParagraphBreak
-若 \(L\ge0\) 为自伴算子，谱演算定义 \(e^{-tL}\) 为压缩半群，生成元为 \(-L\)，定义域由 \(\int\lambda^2\,\mathrm d\langle E_\lambda f,f\rangle<\infty\) 给出。
-若改成 \(e^{itL}\)，则是酉群而非平滑热半群。两者来自同一个谱，但模衰减与相位旋转提供不同正则效应；酉性本身不产生热型磨光。
+强连续也没有变成算子范数连续。
+对每个 \(t>0\)，乘子 \(1-e^{-ta(\xi)}\) 的本性上确界等于一，故
+\[
+ \|T(t)-I\|_{2\to2}=1.
+\]
+对于固定输入，其高频尾部可以先由平方可积性压小；
+若在整个单位球上取上确界，输入却可以随 \(t\) 集中到更高的频率。
+这解释了逐输入的强连续与上式为何同时成立。
+
+\subsection{谱测度与两种指数演化}
+\label{b2:subsec:D-spectral-calculus}
+
+下面给出一般非负自伴算子的谱观点。这一段额外接受无界自伴算子的谱定理及 Borel 函数演算作为外部先修；它强于第一卷已经证明的紧自伴算子的离散特征展开，本附录也不证明一般谱定理。所用版本见 Walter Rudin 的《Functional Analysis》\cite[13.24 Theorem, pp. 362--364; 13.30 Theorem, pp. 368--369; 13.31 Theorem(a), p. 369]{Rudin1991Functional}。\chapref{b2:ch:12}和本节前面的全空间热半群已经由 Fourier 乘子独立建立，未准备这项先修的读者可以暂时跳过这一段。
+% 实读核实：Rudin, Functional Analysis, 2nd ed. (1991), 13.24 Theorem (pp. 362--364),
+% 13.30 Theorem (pp. 368--369), 13.31 Theorem(a) (p. 369)；前者给可测函数演算及定义域，
+% 后两者给一般自伴谱测度与非负谱支集，不以第一卷的紧自伴谱定理替代。
+% 实际读取的正式版扫描：uomustansiriyah.edu.iq/media/lectures/9/9_2017_09_30!12_05_09_PM.pdf，PDF 378--380、384--385页（零基页序）。
+% 以上实读定位及来源注释沿用原稿记录，本次扩写未重新读取该扫描。
+
+具体地，设 \(H\) 为复 Hilbert 空间，
+\(L:D(L)\subset H\to H\) 为稠密定义的自伴算子，
+并且 \(\langle Lf,f\rangle\ge0\) 对每个 \(f\in D(L)\) 成立。
+上述外部定理提供 \([0,\infty)\) 上的投影值谱测度 \(E\)。
+每个 Borel 集 \(B\) 对应一个正交投影 \(E(B)\)，
+\(E([0,\infty))=I\)，并有
+\(E(B)E(C)=E(B\cap C)\) 及强意义的可列可加性。
+对 \(f\in H\)，定义有限正测度
+\[
+ \mu_f(B)=\langle E(B)f,f\rangle=\|E(B)f\|^2,
+ \quad \mu_f([0,\infty))=\|f\|^2.
+\]
+这些投影把输入分解到不同谱区间；区间内可以有连续谱，
+不必能把分解写成特征向量级数。
+
+所需的函数演算规则为
+\begin{equation}\label{b2:eq:D-spectral-domain}
+ L=\int_{[0,\infty)}\lambda\,\mathrm dE(\lambda),
+ \quad
+ D(\phi(L))=
+ \left\{f\in H:\int_{[0,\infty)}|\phi(\lambda)|^2
+                       \,\mathrm d\mu_f(\lambda)<\infty\right\},
+\end{equation}
+以及对该定义域中的 \(f\)，
+\begin{equation}\label{b2:eq:D-spectral-norm}
+ \|\phi(L)f\|^2
+ =\int_{[0,\infty)}|\phi(\lambda)|^2\,\mathrm d\mu_f(\lambda).
+\end{equation}
+这里 \(\phi\) 是有限值 Borel 函数。
+取 \(\phi(\lambda)=\lambda\) 就得到
+\(D(L)=\{f:\int\lambda^2\,\mathrm d\mu_f<\infty\}\)。
+有界 \(\phi\) 的定义域是全部 \(H\)，算子范数至多
+\(\sup_{\lambda\ge0}|\phi(\lambda)|\)。
+有界函数之间的乘法对应算子乘法；与无界函数相乘时，
+还必须检查式\eqref{b2:eq:D-spectral-domain}中的积分条件。
+以下每次对 \(L\) 或其幂求导，都将保留这项条件。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[谱热半群与酉群]\label{b2:prop:D-spectral-evolutions}
+设 \(H\) 为复 Hilbert 空间，\(L:D(L)\subset H\to H\) 为稠密定义的非负自伴算子，\(E\) 为其在 \([0,\infty)\) 上的谱测度。定义
+\[
+ T_L(t)=e^{-tL}=\int e^{-t\lambda}\,\mathrm dE(\lambda)
+ \quad(t\ge0),
+ \quad
+ U_L(t)=e^{\mathrm itL}=\int e^{\mathrm it\lambda}\,\mathrm dE(\lambda)
+ \quad(t\in\mathbb R).
+\]
+则 \(T_L\) 是压缩 \(C_0\)-半群，生成元恰为 \(-L\)，定义域为 \(D(L)\)。
+族 \(U_L\) 是强连续酉群，生成元恰为 \(\mathrm iL\)，定义域仍为 \(D(L)\)。
+对于 \(f\in D(L)\)，两类轨道分别满足
+\[
+ \frac{\mathrm d}{\mathrm dt}T_L(t)f=-LT_L(t)f,
+ \quad
+ \frac{\mathrm d}{\mathrm dt}U_L(t)f=\mathrm iLU_L(t)f.
+\]
+\end{proposition}
+\begin{proof}
+有界乘法规则给出两种组合律以及零时的恒等算子。
+因 \(|e^{-t\lambda}|\le1\)，式\eqref{b2:eq:D-spectral-norm}给出热演化的压缩性。
+因 \(|e^{\mathrm it\lambda}|=1\)，同一公式给出
+\(\|U_L(t)f\|=\|f\|\)；又有 \(U_L(-t)U_L(t)=I\)，故它是酉算子。
+对于固定 \(f\in H\)，两个指数在 \(t\to0\) 时逐点趋于一，
+而与一的差的平方不超过四。
+有限测度 \(\mu_f\) 上的支配收敛于是给出零时强连续，
+组合律再把连续性传到各个时间。
+
+若 \(f\in D(L)\)，利用
+\[
+ \left|\frac{e^{-h\lambda}-1}{h}\right|\le\lambda
+ \quad(h>0),
+ \quad
+ \left|\frac{e^{\mathrm ih\lambda}-1}{h}\right|\le\lambda
+ \quad(h\ne0),
+\]
+以及各自的点态极限 \(-\lambda\)、\(\mathrm i\lambda\)，
+对谱范数公式应用支配收敛，便得零时差商极限 \(-Lf\)、\(\mathrm iLf\)。
+第二个极限是双侧极限。
+
+还须证明没有更大的生成元定义域。
+若热差商在 \(H\) 中收敛，则其范数在充分小的正时间有界。
+选 \(h_n\downarrow0\)，由 Fatou 引理得到
+\[
+ \int\lambda^2\,\mathrm d\mu_f
+ \le\liminf_{n\to\infty}
+ \int\left|\frac{e^{-h_n\lambda}-1}{h_n}\right|^2\,
+               \mathrm d\mu_f
+ =\liminf_{n\to\infty}
+ \left\|\frac{T_L(h_n)f-f}{h_n}\right\|^2<\infty.
+\]
+因此 \(f\in D(L)\)。酉群完全同样：把被积函数换为
+\(|(e^{\mathrm ih_n\lambda}-1)/h_n|^2\)，
+其点态极限仍为 \(\lambda^2\)。所以即使只假设酉群的右差商收敛，
+也已经迫使 \(f\in D(L)\)，再由前一步取得双侧极限。
+
+最后，两个有界指数乘子都保持 \(D(L)\)，并在该域上与 \(L\) 交换。
+对任意时间使用组合律，将零时差商作用于演化后的输入，
+便得到所述轨道导数公式。
+\end{proof}
+
+全空间模型与这个表述完全相容，但它无需一般谱定理才能构造。
+在 Fourier 表示下，\(L=-\Delta\) 就是乘以 \(a(\xi)\)，
+相应谱投影可以直接写成
+\[
+ \widehat{E(B)f}(\xi)=\mathbf1_{\{a(\xi)\in B\}}\widehat f(\xi),
+ \quad
+ \mu_f(B)=\int_{\{a(\xi)\in B\}}|\widehat f(\xi)|^2\,\mathrm d\xi.
+\]
+这些公式直接验证投影及积分规则，热指数给回原先的核半群。
+注意符号：\(U_L(t)=e^{\mathrm it(-\Delta)}\) 的乘子是
+\(e^{4\pi^2\mathrm it|\xi|^2}\)，生成元为 \(-\mathrm i\Delta\)；
+若写 \(e^{\mathrm it\Delta}=U_L(-t)\)，乘子才是
+\(e^{-4\pi^2\mathrm it|\xi|^2}\)，生成元相应为 \(\mathrm i\Delta\)。
+
+\subsection{正时间磨光与酉演化的正则性保持}
+\label{b2:subsec:D-spectral-smoothing}
+
+对于 \(s\ge0\)，按上述函数演算定义 \(L^s\)，其中 \(L^0=I\)。
+当 \(s>0\) 时，定义域由 \(\int\lambda^{2s}\,\mathrm d\mu_f<\infty\) 决定。
+热指数在大谱值处衰减，酉指数只改变相位。
+这一区别可以直接写成定义域结论。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[磨光与定义域不变性]\label{b2:prop:D-spectral-smoothing}
+设 \(H\) 为复 Hilbert 空间，\(L:D(L)\subset H\to H\) 为稠密定义的非负自伴算子，按谱函数演算定义 \(T_L(t)=e^{-tL}\)、\(U_L(t)=e^{\mathrm itL}\) 及 \(L^s\)，其中 \(L^0=I\)。对 \(s\ge0\)、\(t>0\)、\(f\in H\)，有
+\[
+ T_L(t)f\in D(L^s),
+ \quad
+ \|L^sT_L(t)f\|\le C_s t^{-s}\cdot\|f\|,
+ \quad
+ C_s=\begin{cases}(s/e)^s,&s>0,\\1,&s=0.\end{cases}
+\]
+而对每个 \(t\in\mathbb R\)，
+\[
+ U_L(t)f\in D(L^s)\quad\Longleftrightarrow\quad f\in D(L^s),
+ \quad
+ \|L^sU_L(t)f\|=\|L^sf\|\quad(f\in D(L^s)).
+\]
+因此酉群保持每一阶已有的谱正则性，也保留该阶正则性的缺失。
+\end{proposition}
+\begin{proof}
+谱投影与有界指数函数交换，故
+\[
+ \mathrm d\mu_{T_L(t)f}(\lambda)=e^{-2t\lambda}\,\mathrm d\mu_f(\lambda),
+ \quad
+ \mathrm d\mu_{U_L(t)f}(\lambda)=\mathrm d\mu_f(\lambda).
+\]
+例如第一式在 Borel 集 \(B\) 上来自
+\(\|E(B)T_L(t)f\|^2=\int_Be^{-2t\lambda}\,\mathrm d\mu_f\)。
+对 \(s>0\)，初等求极值给出
+\[
+ \sup_{\lambda\ge0}\lambda^se^{-t\lambda}
+ =t^{-s}\sup_{r\ge0}r^se^{-r}
+ =t^{-s}(s/e)^s.
+\]
+所以 \(\int\lambda^{2s}\,\mathrm d\mu_{T_L(t)f}\)
+不超过 \(C_s^2t^{-2s}\cdot\|f\|^2\)，
+同时证明了定义域归属和范数估计；\(s=0\) 就是压缩性。
+对酉群，相应的谱测度完全不变，
+定义域积分的有限性和积分值均不变，得到第二部分。
+\end{proof}
+
+于是任意 \(f\in H\) 的热轨道在 \(t>0\) 有所有阶的强时间导数：
+\[
+ \frac{\mathrm d^m}{\mathrm dt^m}T_L(t)f=(-L)^mT_L(t)f
+ \quad(m=1,2,\ldots).
+\]
+可固定 \(t_0>0\)，先在时间 \(t_0/2\) 使输入进入全部整数幂的定义域，
+再对余下的半群轨道反复使用生成元导数公式。
+所得估计在 \(t\downarrow0\) 时可能发散，
+所以正时间可微仍不能代替初值属于 \(D(L)\) 的条件。
 
 \ProseParagraphBreak
-热半群在正时间确实获得导数。对任意实数 \(k\ge0\)，Plancherel 给出
-\[
+回到 \(L=-\Delta\)，对任意实数 \(k\ge0\)，
+把 \((-\Delta)^{k/2}\) 具体理解为 Fourier 乘子 \((2\pi|\xi|)^k\)，则
+\begin{equation}\label{b2:eq:D-heat-smoothing}
  \|(-\Delta)^{k/2}T(t)f\|_2
- \le C_k t^{-k/2}\|f\|_2,\qquad t>0.
+ \le C_{k/2}t^{-k/2}\cdot\|f\|_2,
+ \quad t>0.
+\end{equation}
+这里也能完全绕开一般函数演算：令 \(r=2\pi\sqrt t\,|\xi|\)，
+直接求乘子
+\((2\pi|\xi|)^ke^{-4\pi^2t|\xi|^2}
+=t^{-k/2}r^ke^{-r^2}\) 的上确界即可。
+取各个整数阶，结合低频处的 \(L^2\) 控制，
+得到 \(T(t)f\in H^m(\mathbb R^d)\) 对每个整数 \(m\ge0\) 成立。
+\chapref{b2:ch:12}由热核求导给出的正时间空间光滑性，与这些平方范数估计相吻合。
+
+对酉乘子 \(e^{-4\pi^2\mathrm it|\xi|^2}\)，
+每个弱导数对应的频率权重的模都保持不变，
+因此 \(e^{\mathrm it\Delta}\) 保持整数阶 \(H^m\) 范数，
+且输出属于 \(H^m\) 当且仅当输入属于 \(H^m\)。
+例如一维 \(f=\mathbf1_{(0,1)}\) 不属于 \(H^1\)，
+因为它没有局部绝对连续代表；热演化使它在每个正时间进入 \(H^2\)，
+而酉演化在任何固定时间都不能使它进入 \(H^1\)。
+这里讨论的是固定时间的全空间 Sobolev 正则性，
+不涉及另加空间局部化或时间积分后的其他估计。
+
+\subsection{零谱投影、谱隙与长期极限}
+\label{b2:subsec:D-spectral-longtime}
+
+磨光估计控制大谱值；长时间行为则由零附近的谱决定。
+记 \(P_0=E(\{0\})\)。零谱部分的热指数恒为一，
+其余每个固定正谱值上的指数都趋于零。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[热演化的长期极限]\label{b2:prop:D-spectral-longtime}
+设 \(H\) 为复 Hilbert 空间，\(L:D(L)\subset H\to H\) 为稠密定义的非负自伴算子，\(E\) 为其谱测度。令 \(T_L(t)=e^{-tL}\)、\(t\ge0\)，以及 \(P_0=E(\{0\})\)。则 \(P_0\) 是到 \(\ker L\) 的正交投影，且
+\[
+ \lim_{t\to\infty}\|T_L(t)f-P_0f\|=0
+ \quad(f\in H).
 \]
-因为乘子模为 \((2\pi|\xi|)^k e^{-4\pi^2t|\xi|^2}\)，
-换元 \(r=2\pi\sqrt t|\xi|\) 后其上确界是
-\(t^{-k/2}\sup_{r\ge0}r^ke^{-r^2}<\infty\)。
-将 \(k=2\) 代入可见每个 \(L^2\) 初值在正时间进入 \(D(\Delta)\)，
-但估计在 \(t\downarrow0\) 时发散；不能据此断言初始点有强导数。
-同一计算对酉乘子 \(e^{-4\pi^2\mathrm it|\xi|^2}\) 不给出有界高频权重。
-它保持已有的 Sobolev 范数，却不替缺少导数的输入创造固定时间的全空间导数。
+若存在 \(a>0\) 使 \(E((0,a))=0\)，则有一致估计
+\[
+ \|T_L(t)f-P_0f\|\le e^{-at}\cdot\|(I-P_0)f\|,
+ \quad \|T_L(t)-P_0\|\le e^{-at}.
+\]
+若相反，对每个 \(\varepsilon>0\) 都有 \(E((0,\varepsilon))\ne0\)，则
+\(\|T_L(t)-P_0\|=1\) 对每个 \(t>0\) 成立。
+\end{proposition}
+\begin{proof}
+若 \(f=P_0f\)，其谱测度集中于零，故
+\(\int\lambda^2\,\mathrm d\mu_f=0\)，从而 \(f\in D(L)\)、\(Lf=0\)。
+反之，若 \(f\in D(L)\) 且 \(Lf=0\)，则
+\(\int\lambda^2\,\mathrm d\mu_f=0\)，所以 \(\mu_f((0,\infty))=0\)。
+因此 \(f=P_0f\)，证明投影的像恰为核。
+
+由谱范数公式，
+\begin{equation}\label{b2:eq:D-spectral-decay}
+ \|T_L(t)f-P_0f\|^2
+ =\int_{(0,\infty)}e^{-2t\lambda}\,\mathrm d\mu_f(\lambda).
+\end{equation}
+被积函数在 \((0,\infty)\) 上逐点趋零并由一控制，
+有限测度上的支配收敛给出逐输入的强极限。
+若 \(E((0,a))=0\)，积分中的非零部分只在 \([a,\infty)\) 上，
+故右端不超过 \(e^{-2at}\cdot\|(I-P_0)f\|^2\)，得到一致估计。
+
+最后设任意小的正谱区间都有非零投影。
+固定 \(t>0\) 及 \(\varepsilon>0\)，从
+\(E((0,\varepsilon))H\) 中选单位向量 \(f_\varepsilon\)。
+它与 \(\ker L\) 正交，并满足
+\[
+ \|(T_L(t)-P_0)f_\varepsilon\|^2
+ =\int_{(0,\varepsilon)}e^{-2t\lambda}\,
+                      \mathrm d\mu_{f_\varepsilon}(\lambda)
+ \ge e^{-2t\varepsilon}.
+\]
+令 \(\varepsilon\downarrow0\)，得到算子范数至少为一；
+式\eqref{b2:eq:D-spectral-decay}又给出至多为一，故恰好相等。
+\end{proof}
+
+条件 \(E((0,a))=0\) 表示零谱与其余谱之间有宽度至少为 \(a\) 的谱隙。
+它允许 \(\ker L\ne\{0\}\)：有谱隙时，衰减的是与平衡空间正交的部分。
+若进一步 \(\ker L=\{0\}\)，便得到
+\(\|e^{-tL}\|\le e^{-at}\)。
+只知道 \(\ker L=\{0\}\) 而没有谱隙，则只能直接推出每个固定输入趋于零，
+不能把这个结论提升为统一的算子范数衰减。
+
+\ProseParagraphBreak
+全空间 \(L^2\) 热半群给出了后一种情形。
+其零谱投影的 Fourier 乘子是 \(\mathbf1_{\{\xi=0\}}\)，
+单点是零测集，故 \(P_0=0\)。
+每个集合 \(\{\xi:0<4\pi^2|\xi|^2<\varepsilon\}\) 都有正测度，
+所以不存在正谱隙。
+于是对每个固定 \(f\in L^2(\mathbb R^d)\)，
+\[
+ \|T(t)f\|_2\longrightarrow0,
+ \quad\text{但}\quad \|T(t)\|_{2\to2}=1\quad(t>0).
+\]
+归一化的低频输入可以在任意给定的长时间内仍保留接近全部范数；
+这与高频迅速被压低、正时间立即磨光并不冲突。
+
+有限区间上的结论还要带上边界域。
+如\subsecref{b2:subsec:120403}所述，
+生成元是 \(-L\)，其中 \(L\) 取\cref{b2:def:10-sl-operator}规定的边界定义域。
+例如 \((0,\ell)\) 上的 \(-\partial_x^2\)，
+零 Dirichlet 边界的最低特征值为 \((\pi/\ell)^2\)，因而整体指数衰减；
+零 Neumann 边界的核由常数构成，热流趋于初值的平均，
+均值为零的部分才按正谱隙指数衰减。
+这些离散展开已由\chapref{b2:ch:12}建立，不需重新用一般无界谱定理证明。
+相同微分表达式配上不同边界域，改变了零谱投影，也改变了长期平衡。
+
+\ProseParagraphBreak
+下一节加入外力后，谱隙还决定能否稳定地求解平衡方程。
+当 \(\ker L=\{0\}\) 且有正谱隙时，\(L^{-1}\) 有界，
+由\cref{b2:prop:D-laplace-resolvent}对生成元 \(A=-L\) 取参数零，得到
+\(L^{-1}F_0=\int_0^\infty e^{-sL}F_0\,\mathrm ds\)。它属于 \(D(L)\)，并满足 \(-Lu+F_0=0\)，因而是常外力对应的平衡。
+若 \(P_0\ne0\)，下一节的变常数公式投影到核上则给出
+\(P_0u(t)=P_0u(0)+tP_0F_0\)，
+所以平衡存在至少要求 \(P_0F_0=0\)。
+若只有逐输入的强衰减而无谱隙，如全空间热半群，
+则 \(\int_0^\infty T_L(s)F_0\,\mathrm ds\) 对任意外力的收敛并无保证。
+稳定解的构造需要核查的正是这些低频条件。
 
 \section{抽象演化与变常数公式}
-
 \label{b2:sec:app-D-5}
 
-对 \(x\in D(A)\)，\(u(t)=T(t)x\) 满足强方程
-\(u'=Au\)、\(u(0)=x\)。
-强解唯一：若 \(v\) 为零初值强解，固定 \(t\)，对
-\(s\mapsto T(t-s)v(s)\) 求导，两项相消，故该函数常值，得到 \(v(t)=0\)。
-求导合法需 \(v(s)\in D(A)\)、\(Av(s)\) 连续；不能对任意连续轨道直接作这一步。
+生成元把轨道的零时导数变成一个可能无界的算子。要把这种关系写成初值问题，必须先说明解在哪个空间连续、何时落在定义域中，以及方程以哪种意义成立。下面把时间区间记为 \([0,\tau]\)，将半群仍记为 \(T(t)\)，以免把终止时间和算子混作同一个符号。
 
 \ProseParagraphBreak
-对连续 \(F:[0,T]\to X\)，定义温和解
+
+向量值外力的积分按强积分理解。在有限区间上，\(L^1(0,\tau;X)\) 表示强可测且满足 \(\int_0^\tau\|F(s)\|\,\mathrm ds<\infty\) 的函数；强可测是指几乎处处为可测简单函数的点态极限。用简单函数的 \(L^1\) 逼近定义积分，范数不等式
 \[
- u(t)=T(t)x+\int_0^tT(t-s)F(s)\,\mathrm ds.
+ \left\|\int_a^bF(s)\,\mathrm ds\right\|
+ \leq\int_a^b\|F(s)\|\,\mathrm ds
 \]
-它连续且满足组合形式的变常数恒等式。
-若 \(x\in D(A)\)、\(F\) 连续取值于 \(D(A)\)，并在图形范数
-\(\|y\|+\|Ay\|\) 中连续，则闭性允许把 \(A\) 移入积分，得到强方程 \(u'=Au+F\)。较弱的 \(F\) 也可在特定半群中得到强解，但需要额外平滑或时间正则性，不能由公式本身推出。
+保证极限存在并与逼近无关。有界线性算子可以移过这种积分，绝对可积的二重向量积分可以换序；这些性质先对简单函数成立，再由同一范数估计取极限。连续向量函数属于这一类，不要求整个 Banach 空间可分。
+
+\Needspace{6\baselineskip}
+\begin{definition}[抽象初值问题的两种解]
+\label{b2:def:D-solution-classes}
+设 \(X\) 为实或复 Banach 空间，\(T(t)\) 为其上的 \(C_0\)-半群，生成元为 \(A:D(A)\subset X\to X\)。给定 \(\tau>0\)、\(x\in X\) 和 \(F\in L^1(0,\tau;X)\)。若 \(u\in C([0,\tau];X)\) 满足
+\begin{equation}\label{b2:eq:D-mild-formula}
+ u(t)=T(t)x+\int_0^tT(t-s)F(s)\,\mathrm ds
+ \quad(0\leq t\leq\tau),
+\end{equation}
+则称 \(u\) 为方程 \(u'=Au+F\)、\(u(0)=x\) 的\term[wenhe-jie]{温和解}[mild solution]。
 
 \ProseParagraphBreak
-对于热方程，温和解公式结合热核估计给出空间磨光；对于 Schrödinger 演化，酉性只控制能量，时间空间可积性需要\appref{b2:app:E} 的色散估计。半群语言统一时间组合，却不会把各个方程的具体正则理论自动统一。
 
-\ProseParagraphBreak
-变常数公式也有可直接核验的时间一致界。增长条件给出
+若进一步 \(F\in C([0,\tau];X)\)，本节所称的强解要求
 \[
- \|u(t)\|\le Me^{\omega t}\|x\|
-       +M\int_0^t e^{\omega(t-s)}\|F(s)\|\,\mathrm ds.
+ u\in C^1([0,\tau];X),\quad
+ u(t)\in D(A),\quad
+ u'(t)=Au(t)+F(t),\quad u(0)=x.
 \]
-这使公式能先在 \(L^1([0,T];X)\) 输入上连续延拓。
-若 \(F_n\to F\) 于该空间，卷积输出在 \(C([0,T];X)\) 中一致收敛，
-因为有限时间增长因子有共同上界。连续性可先对阶梯或连续输入验证，
-再用一致极限保留；在仅有可积外力时，不宜重新逐点求导。
+端点导数取相应单侧导数。特别地，\(Au=u'-F\) 连续，且初值必须属于 \(D(A)\)。这里采用逐时刻满足方程的解类；仅要求绝对连续及几乎处处满足方程的其他强解版本，须另行说明。
+\end{definition}
 
-\ProseParagraphBreak
-在一维平移模型中，这个公式写成
+温和公式使用的算子 \(T(t-s)\) 都有界，因而可以作用于一般 \(X\) 值外力。强方程中的 \(Au(t)\) 则要求已经核准定义域；写下同一个微分方程符号并不会自动补足这一条件。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[强解的变常数公式]
+\label{b2:prop:D-classical-variation}
+设 \(X\) 为实或复 Banach 空间，\(T(t)\) 为 \(C_0\)-半群，生成元为 \(A\)。设 \(\tau>0\)、\(F\in C([0,\tau];X)\)，且 \(u\) 是\cref{b2:def:D-solution-classes}意义下的强解，初值为 \(x\in D(A)\)。则 \(u\) 满足\eqref{b2:eq:D-mild-formula}。因此给定初值及连续外力，强解至多有一个；齐次问题对每个 \(x\in D(A)\) 的唯一强解为 \(T(t)x\)。
+\end{proposition}
+\begin{proof}
+固定 \(0<t\leq\tau\)，考察 \(v(s)=T(t-s)u(s)\)、\(0\leq s\leq t\)。对内点 \(s\)，把差分拆为
 \[
- u(t,x)=f(x+t)+\int_0^t F(s,x+t-s)\,\mathrm ds.
+ \begin{aligned}
+ v(s+h)-v(s)
+ &=T(t-s-h)\bigl(u(s+h)-u(s)\bigr)\\
+ &\quad+\bigl(T(t-s-h)-T(t-s)\bigr)u(s).
+ \end{aligned}
 \]
-它对应 \(u_t=u_x+F\)。若 \(f\in W^{1,p}\)，且 \(F\) 具备上面的图形范数连续性，
-可以逐项求导；若 \(f=\mathbf1_{[0,1]}\)，齐次轨道仍在 \(L^p\) 中连续，
-但初值不属于生成元域。对于 \(p>1\)，差商的 \(L^p\) 范数为
-\(2^{1/p}t^{1/p-1}\)（\(0<t<1\)），趋于无穷；对于 \(p=1\)，
-差商范数恒为2而分布极限是两个端点的点质量，仍不可能在 \(L^1\) 中收敛。
-温和解因而是先由连续演化定义的对象，不能由写下同一个方程符号就改称强解。
+第一项除以 \(h\) 后，由局部算子一致界、\(u\) 的强可微性和半群的强连续性，趋于 \(T(t-s)u'(s)\)。第二项的输入 \(u(s)\) 已固定且属于 \(D(A)\)，生成元的轨道求导公式使其趋于 \(-T(t-s)Au(s)\)。于是
+\[
+ v'(s)=T(t-s)\bigl(u'(s)-Au(s)\bigr)=T(t-s)F(s).
+\]
+右侧连续，端点也有相应单侧极限；向量值微积分基本定理给出
+\[
+ u(t)-T(t)x=v(t)-v(0)=\int_0^tT(t-s)F(s)\,\mathrm ds.
+\]
+任意两个强解因此具有同一个表达式。齐次情形的轨道 \(T(t)x\) 已由生成元性质满足强方程，所以存在且唯一。
+\end{proof}
+
+这个证明只对落在 \(D(A)\) 中的轨道求导。下一步构造温和解时不作这一假设，而是先利用连续性与积分估计。记
+\[
+ K_\tau=Me^{\max\{\omega,0\}\tau}
+ \quad\text{当 }\|T(t)\|\leq Me^{\omega t}.
+\]
+它控制整个 \([0,\tau]\) 上的算子范数。
+
+\Needspace{6\baselineskip}
+\begin{theorem}[可积外力与积分型方程]
+\label{b2:thm:D-mild-integrable}
+设 \(X\) 为实或复 Banach 空间，\(T(t)\) 为生成元为 \(A\) 的 \(C_0\)-半群，并满足 \(\|T(t)\|\leq Me^{\omega t}\)、\(M\geq1\)、\(\omega\in\mathbb R\)。对每个 \(\tau>0\)、\(x\in X\)、\(F\in L^1(0,\tau;X)\)，\eqref{b2:eq:D-mild-formula}定义唯一的温和解。它满足
+\[
+ \|u(t)\|\leq Me^{\omega t}\|x\|
+       +M\int_0^t e^{\omega(t-s)}\|F(s)\|\,\mathrm ds,
+\]
+以及对 \(0\leq r\leq t\leq\tau\) 的重启公式
+\begin{equation}\label{b2:eq:D-restart}
+ u(t)=T(t-r)u(r)+\int_r^tT(t-s)F(s)\,\mathrm ds.
+\end{equation}
+令 \(K_\tau=Me^{\max\{\omega,0\}\tau}\)。若 \(v\) 对应初值 \(y\in X\) 和外力 \(G\in L^1(0,\tau;X)\)，则
+\[
+ \sup_{0\leq t\leq\tau}\|u(t)-v(t)\|
+ \leq K_\tau\left(\|x-y\|+\|F-G\|_{L^1(0,\tau;X)}\right).
+\]
+此外，\(u\) 是唯一满足下列积分型方程的连续函数：对每个 \(t\in[0,\tau]\)，
+\begin{equation}\label{b2:eq:D-integrated-equation}
+ \int_0^tu(s)\,\mathrm ds\in D(A),\quad
+ u(t)=x+A\int_0^tu(s)\,\mathrm ds+\int_0^tF(s)\,\mathrm ds.
+\end{equation}
+\end{theorem}
+\begin{proof}
+对固定 \(t\)，\(s\mapsto T(t-s)F(s)\) 强可测：先对简单函数的每个固定向量使用强连续轨道，再取点态极限。其范数被 \(K_\tau\|F(s)\|\) 控制，所以积分存在。范数估计与数据差估计直接来自积分三角不等式。
+
+为了证明时间连续性，先设 \(F=y\mathbf1_{(a,b)}\)。令
+\(S(q)y=\int_0^qT(s)y\,\mathrm ds\)、\(q\geq0\)，则非齐次部分为
+\[
+ S((t-a)_+)y-S((t-b)_+)y,
+ \quad r_+=\max\{r,0\}.
+\]
+连续轨道的积分使这个表达式连续。有限个区间阶梯函数的线性组合也成立。它们在 \(L^1(0,\tau;X)\) 中稠密：先取简单函数逼近，再利用有限区间上 Lebesgue 测度的正则性，将各可测集合按测度逼近为有限个区间的并。数据差估计使相应卷积输出一致收敛，故一般 \(F\) 的输出仍连续。初始齐次轨道也连续，得到 \(u\in C([0,\tau];X)\)。温和解的表达式已经确定其唯一性。把积分在 \(r\) 处分开，并将有界的 \(T(t-r)\) 移入前半段，半群律即给出\eqref{b2:eq:D-restart}。
+
+现在核对积分型方程。\cref{b2:prop:D-integrated-orbit}给出
+\[
+ S(q)X\subset D(A),\quad AS(q)=T(q)-I.
+\]
+所以在 \(0\leq q\leq\tau\) 上，\(S(q)\) 从 \(X\) 到图像范数空间 \(D(A)\) 有统一界：其两部分分别由 \(\tau K_\tau\) 与 \(K_\tau+1\) 控制。向量 Fubini 所需的绝对范数积分有限，故
+\[
+ U(t)\coloneqq\int_0^tu(s)\,\mathrm ds
+ =S(t)x+\int_0^tS(t-r)F(r)\,\mathrm dr.
+\]
+最后一个积分在图像范数中也存在：对固定输入 \(y\)，\(S(q)y\) 及 \(AS(q)y=T(q)y-y\) 都随 \(q\) 连续；先以简单函数逼近 \(F\)，再用上述统一界控制两部分误差，便得到图像范数可积性。由\cref{b2:lem:D-graph-integral}可以移入闭算子。因此 \(U(t)\in D(A)\)，且
+\[
+ \begin{aligned}
+ AU(t)
+ &=T(t)x-x+\int_0^t\bigl(T(t-r)-I\bigr)F(r)\,\mathrm dr\\
+ &=u(t)-x-\int_0^tF(r)\,\mathrm dr,
+ \end{aligned}
+\]
+正是\eqref{b2:eq:D-integrated-equation}。
+
+最后设两个连续函数满足同一积分型方程，其差为 \(w\)。令
+\(z(t)=\int_0^tw(s)\,\mathrm ds\)。两式相减给出 \(z(t)\in D(A)\)、\(Az(t)=w(t)\)，而微积分基本定理给出 \(z'=w\)。因此 \(z\) 是零初值齐次强解。由前一命题，\(z=0\)，再取导数得到 \(w=0\)。这证明积分型方程的唯一性，也把不含逐时刻 \(Au(t)\) 的表述与温和公式联系起来。
+\end{proof}
+
+积分型方程中属于定义域的是时间原函数 \(\int_0^tu\)，并非自动是每个 \(u(t)\)。若要直接求 \(u'\)，需要更多条件。下面给出两条常用路线：一条对外力的空间定义域作要求，另一条对它的时间导数作要求。
+
+\Needspace{6\baselineskip}
+\begin{theorem}[温和解提升为强解]
+\label{b2:thm:D-classical-regularity}
+设 \(X\) 为实或复 Banach 空间，\(T(t)\) 为生成元为 \(A\) 的 \(C_0\)-半群，\(\tau>0\)、\(x\in D(A)\)。若 \(F\) 满足下列任一条件，则\eqref{b2:eq:D-mild-formula}给出的温和解为\cref{b2:def:D-solution-classes}意义下的唯一强解：
+\begin{enumerate}
+ \item \(F:[0,\tau]\to D(A)\) 在图像范数 \(\|y\|+\|Ay\|\) 中连续；
+ \item \(F\in C^1([0,\tau];X)\)，不要求 \(F(t)\in D(A)\)。
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+齐次项 \(T(t)x\) 已经是强解，只须处理
+\(v(t)=\int_0^tT(t-s)F(s)\,\mathrm ds\)。
+
+在第一种条件下，\(T(t-s)\) 保持 \(D(A)\)，并在该域上与 \(A\) 交换。因 \(F\) 与 \(AF\) 均连续，积分在图像范数中存在，故
+\[
+ v(t)\in D(A),\quad Av(t)=\int_0^tT(t-s)AF(s)\,\mathrm ds.
+\]
+右侧连续。对 \(t\) 求导时，上端点贡献 \(F(t)\)，积分内的导数为 \(T(t-s)AF(s)\)。后者的范数由 \(K_\tau\sup_s\|AF(s)\|\) 共同控制；先在固定积分区间取差商，再处理长度趋零的端点区间，就得到
+\[
+ v'(t)=F(t)+\int_0^tT(t-s)AF(s)\,\mathrm ds=F(t)+Av(t).
+\]
+端点用单侧差商，证明相同。
+
+在第二种条件下，先写
+\(F(s)=F(0)+\int_0^sF'(r)\,\mathrm dr\)，以向量 Fubini 换序，得到
+\[
+ v(t)=S(t)F(0)+\int_0^tS(t-r)F'(r)\,\mathrm dr.
+\]
+由 \(S(q)X\subset D(A)\) 和 \(AS(q)=T(q)-I\)，这个积分在图像范数中存在，并有
+\[
+ \begin{aligned}
+ Av(t)
+ &=(T(t)-I)F(0)+\int_0^t(T(t-r)-I)F'(r)\,\mathrm dr\\
+ &=T(t)F(0)+\int_0^tT(t-r)F'(r)\,\mathrm dr-F(t).
+ \end{aligned}
+\]
+另一方面，对每个固定向量 \(y\)，\(\frac{\mathrm d}{\mathrm dt}S(t)y=T(t)y\)。半群的有限时间界控制差商，因此可对上面的积分表达求导，且 \(S(0)=0\) 使端点项为零，得到
+\[
+ v'(t)=T(t)F(0)+\int_0^tT(t-r)F'(r)\,\mathrm dr.
+\]
+它连续，且等于 \(Av(t)+F(t)\)。加上齐次项即得强解；唯一性由强解的变常数公式得到。
+\end{proof}
+
+常外力说明第二条路线确有额外用途。即使 \(F_0\notin D(A)\)，零初值下仍有
+\[
+ u(t)=S(t)F_0\in D(A),\quad
+ Au(t)=T(t)F_0-F_0,\quad u'(t)=T(t)F_0.
+\]
+时间积分使输出进入定义域，不必先把外力本身放进定义域。但这依赖外力的时间结构，不能仅因一般 \(F\) 连续，就照写同一个求导论证。
 
 \ProseParagraphBreak
-相反，有界生成元的定义域是整个 \(X\)，其指数级数在算子范数中收敛，
-所以每个初值都产生可微轨道。半群的抽象理论把这个常微分方程模型
-与导数、乘法势能等无界模型放在同一组合律之下，
-但闭定义域和正时间估计负责区分各模型实际可用的微分操作。
+
+平移模型把抽象式变回特征线公式。在 \(X=L^p(\mathbb R)\)、\(1\leq p<\infty\) 中取 \(T(t)f(x)=f(x+t)\)，则
+\[
+ u(t,x)=f(x+t)+\int_0^tF(s,x+t-s)\,\mathrm ds,
+\]
+对应 \(u_t=u_x+F\)。这个等式首先作为 \(L^p\) 等价类及强积分成立；选择可测代表后，可以按 Fubini 在相应的几乎处处意义下书写。若 \(f\in W^{1,p}\)，而外力满足上一定理的任一条件，就得到 \(L^p\) 意义下的强方程。
+
+\ProseParagraphBreak
+
+取零外力和 \(f=\mathbf1_{[0,1]}\)，轨道仍连续，但对 \(0<h<1\)，
+\[
+ \left\|\frac{T(h)f-f}{h}\right\|_p
+ =2^{1/p}h^{1/p-1}.
+\]
+对 \(p>1\)，这已经发散；对 \(p=1\)，虽然范数恒为二，差商的分布极限却为两个端点的点质量之差，不可能是在 \(L^1\) 中的强极限。因此轨道在初值处不能强求导。由于平移保持同样的跳跃，这个例子在正时间也不会获得导数；热半群的正时间磨光是一项额外结构。
+
+\ProseParagraphBreak
+
+对非齐次热方程，外力在接近观察时刻的区域还会进入卷积，不能只凭齐次热核的磨光就无条件把积分内每个高阶导数积起来；必须核对相应的 \((t-s)\) 奇性是否可积。对 Schrödinger 演化，酉性保持已有的平方与 Sobolev 范数，更精细的时间空间估计需用\appref{b2:app:E}的色散理论。半群方法先给出演化的定义、稳定性及唯一性，具体的正则增益仍由各个算子决定。
 
 \begin{chaptersummary}
-生成元的稠密定义域、闭性和预解公式连接了时间演化与静态算子。压缩情形的 Hille--Yosida 充分性通过 Yosida 逼近完整建立；热模型给出可核对的生成元。温和解只要求积分表达，强解则还要求定义域与时间正则性，二者的区别决定能否直接微分。
+强连续性逐个控制输入，一致有界原理再把这种控制变成有限时间的算子界。生成元从零时差商出发，时间平均证明其定义域稠密，轨道积分式证明其闭性；具体的平移、乘法和热模型表明，定义域必须随底空间、微分表达式与边界条件一起确定。
+
+\ProseParagraphBreak
+
+Laplace 变换把演化转化为预解式。压缩型 Hille--Yosida 定理反过来用预解式构造有界 Yosida 近似，再以时间一致的强极限得到半群，并核准极限生成元的全部定义域。一般无界自伴谱演算在本附录中仍为已标明来源的外部先修；采用这一输入后，热演化的衰减、谱投影及酉演化的守恒可以直接由谱测度计算。
+
+\ProseParagraphBreak
+
+变常数公式对一般初值与可积外力给出连续的温和解，也等价于不逐时刻要求 \(Au(t)\) 存在的积分型方程。把它提升为强解，需要初值属于生成元域，并核对外力的空间或时间正则性。正时间磨光、零时可微及长期衰减是三个不同问题，各自需要相应的估计。
 \end{chaptersummary}
 
 \BookExercises
 
-% 自拟：检查本附录的已建工具及其假设边界。
-
+% 自拟：非交换有界生成元的变分恒等式与算子范数稳定性。
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b2:ex:app-D-1}
-
-设 \(A,B\in\mathcal B(X)\)，不假设两者交换。证明
+设 \(X\) 为实或复 Banach 空间，\(A,B\in\mathcal B(X)\)，不假设两者交换。证明对 \(t\geq0\)，
 \[
- e^{tB}-e^{tA}=\int_0^t e^{(t-s)A}(B-A)e^{sB}\,\mathrm ds,
+ e^{tB}-e^{tA}
+ =\int_0^t e^{(t-s)A}(B-A)e^{sB}\,\mathrm ds,
 \]
-并给出由 \(\|A-B\|\) 控制的有限时间稳定性界。
-
+并给出有限时间的稳定性界。若 \(\|e^{tA}\|\leq1\) 且 \(\|e^{tB}\|\leq1\) 对全部 \(t\geq0\) 成立，证明该界可改进为 \(t\|A-B\|\)。
 \end{exercise}
-
 \begin{solution}
+有界算子的指数级数及其导数在每个有限时间区间按算子范数一致收敛。固定 \(t\)，对 \(V(s)=e^{(t-s)A}e^{sB}\) 求导，得到
+\[
+ \begin{aligned}
+ V'(s)
+ &=-Ae^{(t-s)A}e^{sB}+e^{(t-s)A}Be^{sB}\\
+ &=e^{(t-s)A}(B-A)e^{sB}.
+ \end{aligned}
+\]
+这里只将 \(A\) 与它自己的指数交换，未交换 \(A\) 与 \(B\)。两端为 \(V(0)=e^{tA}\)、\(V(t)=e^{tB}\)，积分即得恒等式。
 
-有界算子的指数级数可在算子范数中逐项求导。对
-\(s\mapsto e^{(t-s)A}e^{sB}\) 求导，得到
-\(e^{(t-s)A}(B-A)e^{sB}\)；这里只把 \(A\) 与自己的指数交换，
-没有把 \(A\) 与 \(B\) 交换。积分端点即得恒等式。
-由于 \(\|e^{tA}\|\le e^{t\|A\|}\)，范数差不超过
-\(t\|A-B\|e^{t\max(\|A\|,\|B\|)}\)。
-因此对共同有界的生成元族，算子范数扰动控制任意固定时间区间上的演化差。
-
+由 \(\|e^{rA}\|\leq e^{r\|A\|}\)、\(\|e^{rB}\|\leq e^{r\|B\|}\)，
+\[
+ \begin{aligned}
+ \|e^{tB}-e^{tA}\|
+ &\leq\|B-A\|\int_0^te^{(t-s)\|A\|+s\|B\|}\,\mathrm ds\\
+ &\leq t e^{t\max\{\|A\|,\|B\|\}}\cdot\|B-A\|.
+ \end{aligned}
+\]
+因此在 \(0\leq t\leq\tau\) 上可用 \(\tau e^{\tau\max\{\|A\|,\|B\|\}}\) 作为统一系数。若两个指数族都压缩，积分中两端的算子范数均不超过一，立即得到 \(t\|A-B\|\)。这是使用实际演化界的改进，不需要用生成元范数的指数上界代替它。
 \end{solution}
 
-% 自拟：检查本附录的已建工具及其假设边界。
-
+% 自拟：有界生成元的局部截断误差及 Euler 迭代的全时间误差。
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b2:ex:app-D-2}
-
-证明若 \(C_0\)-半群在算子范数下连续，则生成元有界。
-
-\end{exercise}
-
-\begin{solution}
-
-令 \(B_h=h^{-1}\int_0^hT(s)\mathrm ds\)。范数连续使 \(B_h\to I\)，小 \(h\) 时可逆；又 \(B_hX\subset D(A)\)、\(AB_h=(T(h)-I)/h\) 有界。由于 \(B_h\) 满射，\(D(A)=X\)，且 \(A=[(T(h)-I)/h]B_h^{-1}\) 有界。
-
-\end{solution}
-
-% 自拟：检查本附录的已建工具及其假设边界。
-
-\begin{exercise}\label{b2:ex:app-D-3}
-
-在 \(L^2(\mathbb R^d)\) 上取 \(b\in\mathbb R^d\)、\(c\ge0\)，令
-\(T(t)f(x)=e^{-ct}(H_t*f)(x+tb)\)。证明它是压缩强连续半群，
-并识别生成元及定义域。
-
-\end{exercise}
-
-\begin{solution}
-
-平移与热卷积交换，两个半群律及标量指数相乘给出组合律。
-三者在 \(L^2\) 上均强连续，且各自范数不超过1。
-Fourier 符号为
-\(\exp[t(-4\pi^2|\xi|^2+2\pi\mathrm ib\cdot\xi-c)]\)，
-故候选生成元为 \(\Delta+b\cdot\nabla-c\)。
-若 \(f\in H^2\)，差商以
-\((4\pi^2|\xi|^2+2\pi|b||\xi|+c)|\widehat f|\) 控制，
-支配收敛取得生成元极限。
-反之，差商的 \(L^2\) 极限与点态符号极限一致，
-而候选符号的模至少为 \(4\pi^2|\xi|^2+c\)，所以
-\(|\xi|^2\widehat f\in L^2\)。定义域恰为 \(H^2\)，漂移只改变一阶项而不改变此域。
-
-\end{solution}
-
-% 自拟：检查本附录的已建工具及其假设边界。
-
-\begin{exercise}\label{b2:ex:app-D-4}
-
-对一维平移生成元 \(Af=f'\)，证明正实预解式为
+设 \(X\) 为实或复 Banach 空间，\(A\in\mathcal B(X)\)。证明对 \(h>0\)，
 \[
- R_\lambda f(x)=\int_0^\infty e^{-\lambda t}f(x+t)\,\mathrm dt.
+ \left\|\frac{e^{hA}-I}{h}-A\right\|
+ \leq\frac h2\|A\|^2e^{h\|A\|}.
 \]
-验证它是方程 \(\lambda u-u'=f\) 的唯一 \(W^{1,p}\) 解，\(1\le p<\infty\)。
-
+进一步证明对整数 \(n\geq1\)、\(t\geq0\)，
+\[
+ \left\|\left(I+\frac tnA\right)^n-e^{tA}\right\|
+ \leq\frac{t^2\|A\|^2}{2n}e^{t\|A\|}.
+\]
+说明这里的收敛为何比逐个固定输入的强收敛更强。
 \end{exercise}
-
 \begin{solution}
+指数级数减去零次与一次项，得到
+\[
+ \|e^{hA}-I-hA\|
+ \leq\sum_{k=2}^\infty\frac{h^k\|A\|^k}{k!}
+ \leq\frac{h^2\|A\|^2}{2}e^{h\|A\|},
+\]
+其中用了 \(k!\geq2(k-2)!\)。除以 \(h\) 得到第一式。
 
-Minkowski 给出 \(\|R_\lambda f\|_p\le\|f\|_p/\lambda\)。
-先对光滑紧支 \(f\) 求导并在 \(t\) 上分部积分，取得
-\((R_\lambda f)'=\lambda R_\lambda f-f\)。
-以光滑输入逼近一般 \(f\)，函数及这个导数都在 \(L^p\) 中收敛；
-弱导数的闭性使一般输出属于 \(W^{1,p}\)，并满足同一方程。
-若两个解之差为 \(v\)，其局部绝对连续代表满足 \(v'=\lambda v\)，
-因此 \(v(x)=Ce^{\lambda x}\)。正 \(\lambda\) 时它除零函数外不属于全线 \(L^p\)，
-所以解唯一，积分确实给出预解式。
-
+对 \(t>0\)，令 \(h=t/n\)、\(P=I+hA\)、\(Q=e^{hA}\)。代数恒等式
+\[
+ P^n-Q^n=\sum_{j=0}^{n-1}P^{n-1-j}(P-Q)Q^j
+\]
+可逐项展开消去中间项，即使不预设交换也成立。因为
+\(\|P\|\leq1+h\|A\|\leq e^{h\|A\|}\)、\(\|Q\|\leq e^{h\|A\|}\)，第一部分给出
+\[
+ \begin{aligned}
+ \|P^n-Q^n\|
+ &\leq n e^{(n-1)h\|A\|}\cdot
+           \frac{h^2\|A\|^2}{2}e^{h\|A\|}\\
+ &=\frac{t^2\|A\|^2}{2n}e^{t\|A\|}.
+ \end{aligned}
+\]
+\(Q^n=e^{tA}\)，而 \(t=0\) 时两边差为零，所以所有情形都成立。该界在每个有限时间区间一致，并同时控制单位球上的全部初值；强收敛只固定一个初值后取极限。对于无界生成元，\(I+(t/n)A\) 未必定义在全部空间上，更不能直接套用这里的范数估计。
 \end{solution}
 
-% 自拟：检查本附录的已建工具及其假设边界。
+% 自拟：扩散、漂移与衰减共同作用时的定义域，并检验零扩散边界。
+\Needspace{6\baselineskip}
+\begin{exercise}\label{b2:ex:app-D-3}
+在 \(L^2(\mathbb R^d)\) 上取 \(\kappa\geq0\)、\(b\in\mathbb R^d\)、\(c\geq0\)。当 \(\kappa>0\) 时令
+\[
+ T(t)f(x)=e^{-ct}(H_{\kappa t}*f)(x+tb),\quad t>0,
+\]
+其中 \(H_s\) 是正文的热核，且 \(T(0)=I\)；当 \(\kappa=0\) 时令 \(T(t)f(x)=e^{-ct}f(x+tb)\)。证明它是压缩强连续半群，识别生成元，并比较 \(\kappa>0\) 与 \(\kappa=0\) 时的定义域。
+\end{exercise}
+\begin{solution}
+热卷积、平移和标量衰减互相交换，各自满足半群律且范数不超过一。强连续性由各因子的强连续性和统一范数界得到。也可以直接在 Fourier 侧写成
+\[
+ \widehat{T(t)f}(\xi)=e^{t m(\xi)}\widehat f(\xi),\quad
+ m(\xi)=-4\pi^2\kappa|\xi|^2+2\pi\mathrm i\,b\cdot\xi-c.
+\]
+因为 \(\operatorname{Re}m\leq0\)，乘子模不超过一且逐点趋于一，支配收敛给出同样的结论。
 
+恒等式 \((e^{tm}-1)/t=m\int_0^1e^{stm}\,\mathrm ds\) 给出差商模不超过 \(|m|\)。因此若 \(m\widehat f\in L^2\)，差商在平方范数中趋于 \(m\widehat f\)。反过来，若差商在 \(L^2\) 中收敛，Fourier 侧的几乎处处收敛子列与逐点差商极限比较，强迫 \(m\widehat f\in L^2\)。故生成元的域准确地是
+\[
+ D(A)=\{f\in L^2:m\widehat f\in L^2\},\quad
+ Af=\kappa\Delta f+b\cdot\nabla f-cf
+\]
+（后一个等式按分布解释）。
+
+若 \(\kappa>0\)，则
+\[
+ |m(\xi)|\geq4\pi^2\kappa|\xi|^2+c,
+ \quad |m(\xi)|\leq C_{\kappa,b,c}(1+|\xi|^2).
+\]
+上下两界及 \(f\in L^2\) 说明域恰为 \(H^2\)。若 \(\kappa=0\)，则
+\(|m|^2=c^2+4\pi^2|b\cdot\xi|^2\)，所以域变成
+\[
+ D(A)=\{f\in L^2:(b\cdot\xi)\widehat f\in L^2\}
+      =\{f\in L^2:b\cdot\nabla f\in L^2\}.
+\]
+当 \(b=0\) 时这是整个 \(L^2\)；当 \(b\ne0\) 时只要求漂移方向的一阶弱导数。让扩散系数降到零会改变定义域，不能继续保留正扩散时的 \(H^2\) 结论。
+\end{solution}
+
+% 自拟：在半直线上加入入流边界；替换与正文 Laplace 公式重复的全线测试。
+\Needspace{6\baselineskip}
+\begin{exercise}\label{b2:ex:app-D-4}
+设 \(1\leq p<\infty\)，在 \(L^p(0,\infty)\) 上定义
+\[
+ S(t)f(x)=
+ \begin{cases}f(x-t),&x>t,\\0,&0<x\leq t.\end{cases}
+\]
+证明它是压缩 \(C_0\)-半群，生成元为
+\[
+ Af=-f',\quad D(A)=\{f\in W^{1,p}(0,\infty):f(0)=0\},
+\]
+其中边界值由局部绝对连续代表取到。对 \(\lambda>0\)，证明
+\[
+ (\lambda-A)^{-1}f(x)=\int_0^x e^{-\lambda(x-y)}f(y)\,\mathrm dy.
+\]
+说明若省去 \(f(0)=0\) 这一域条件，相应预解方程为何不再唯一。
+\end{exercise}
+\begin{solution}
+把 \(f\) 在负半轴补零，记为 \(\widetilde f\)。\(S(t)f\) 就是 \(\widetilde f(x-t)\) 在正半轴的限制。它的 \(L^p\) 范数等于 \(\|f\|_p\)，两次右移并在新露出的区间补零给出半群律；全线平移连续性给出强连续。
+
+若 \(f\in W^{1,p}(0,\infty)\) 且 \(f(0)=0\)，零延拓属于 \(W^{1,p}(\mathbb R)\)，其弱导数为 \(f'\) 的零延拓。这个事实可直接在测试函数上分部积分验证，零边界值使原点处没有点质量。全线负向平移的差商趋于 \(-\widetilde f'\)，限制到半轴后，得到 \(f\in D(A)\) 及 \(Af=-f'\)。
+
+反向设 \((S(h)f-f)/h\to g\) 于 \(L^p(0,\infty)\)。对任意支撑远离零点的光滑测试函数换元，得到 \(g=-f'\) 的分布关系，故 \(f\in W^{1,p}(0,\infty)\)。其一维绝对连续代表在零点有有限右极限：因为 \(f'\in L^1(0,R)\)，积分表达可连续延伸到端点。假如该值非零，则对充分小的 \(h\)，\(|f(x)|\geq|f(0)|/2\) 在 \((0,h)\) 上成立，所以
+\[
+ \left\|\frac{S(h)f-f}{h}\right\|_{L^p(0,h)}
+ \geq\frac{|f(0)|}{2}h^{1/p-1}.
+\]
+但差商在 \(L^p\) 中收敛时，其在收缩区间 \((0,h)\) 上的范数必趋零：用到极限 \(g\) 的积分绝对连续性，再加上差商与 \(g\) 的全空间误差即可。这与上式矛盾，对 \(p=1\) 同样成立。因此 \(f(0)=0\)，域的必要性得证。
+
+令题设积分为 \(u\)。将它看成零延拓与 \(e^{-\lambda x}\mathbf1_{(0,\infty)}\) 的卷积，Young 不等式给出 \(\|u\|_p\leq\lambda^{-1}\|f\|_p\)。也有
+\[
+ u(x)=e^{-\lambda x}\int_0^xe^{\lambda y}f(y)\,\mathrm dy,
+\]
+故 \(u\) 局部绝对连续，\(u(0)=0\)，且 \(u'=f-\lambda u\in L^p\)。这说明 \(u\in D(A)\)、\((\lambda-A)u=\lambda u+u'=f\)。任何两个解之差满足 \(v'=-\lambda v\)，所以 \(v=Ce^{-\lambda x}\)；零边界值强迫 \(C=0\)。若删除边界条件，这些非零齐次解仍属于 \(W^{1,p}(0,\infty)\)，预解方程便不唯一。同一个微分表达式因此不足以确定生成元。
+\end{solution}
+
+% 自拟：两阶定义域下的预解渐近与取消一阶误差的组合。
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b2:ex:app-D-5}
-
-设 \(A\) 是压缩半群生成元、\(x\in D(A^2)\)。证明二阶预解逼近
+设 \(A\) 为实或复 Banach 空间上压缩 \(C_0\)-半群的生成元，\(R_\lambda=(\lambda-A)^{-1}\)、\(\lambda>0\)。对 \(x\in D(A^2)\)，证明
 \[
  \left\|\lambda R_\lambda x-x-\frac{Ax}{\lambda}\right\|
- \le\frac{\|A^2x\|}{\lambda^2}.
+ \leq\frac{\|A^2x\|}{\lambda^2}.
 \]
-
-\end{exercise}
-
-\begin{solution}
-
-第一次用预解关系得到 \(\lambda R_\lambda x-x=R_\lambda Ax\)。
-对 \(Ax\in D(A)\) 再用一次，得
-\(R_\lambda Ax=Ax/\lambda+R_\lambda A^2x/\lambda\)。
-最后以 \(\|R_\lambda\|\le1/\lambda\) 控制余项。
-一阶收敛对全部输入成立，二阶速度则使用了两阶定义域条件。
-
-\end{solution}
-
-% 自拟：检查本附录的已建工具及其假设边界。
-
-\begin{exercise}\label{b2:ex:app-D-6}
-
-令 \(C_b(\mathbb R)\) 为有界连续函数空间、\(BUC(\mathbb R)\) 为其有界一致连续子空间，
-都取上确界范数。证明平移在 \(BUC\) 上强连续，
-但在 \(C_b\) 上不强连续。可测试 \(f(x)=\sin(x^2)\)。
-
-\end{exercise}
-
-\begin{solution}
-
-一致连续性使 \(\sup_x|f(x+t)-f(x)|\to0\)。
-一致极限保留有界一致连续性，所以 \(BUC\) 是闭 Banach 子空间，平移保持该空间。
-对 \(f(x)=\sin(x^2)\)，取
-\(x_n=(2\pi n+\pi/2)^{1/2}\)、
-\(t_n=(2\pi n+3\pi/2)^{1/2}-x_n\to0\)。
-此时 \(f(x_n)=1\)、\(f(x_n+t_n)=-1\)，
-故任意这些小时间上的上确界差为2，强连续性失败。
-有界连续还不足以替代一致连续。
-
-\end{solution}
-
-% 自拟：检查本附录的已建工具及其假设边界。
-
-\begin{exercise}\label{b2:ex:app-D-7}
-
-假设 \(\|T(t)\|\le Me^{-at}\)、\(a>0\)，外力恒为 \(F_0\in X\)。
-证明温和解收敛到 \(u_*=-A^{-1}F_0\)，并给出收敛速度。
-
-\end{exercise}
-
-\begin{solution}
-
-增长指数可取 \(-a\)，故 \(0\) 属于预解集，
-\(u_*=R(0)F_0=\int_0^\infty T(s)F_0\,\mathrm ds\in D(A)\)，
-且 \(Au_*=-F_0\)。轨道积分恒等式给出
-\(T(t)u_*-u_*=-\int_0^tT(s)F_0\,\mathrm ds\)。
-在温和公式中换元，于是
-\(u(t)-u_*=T(t)(x-u_*)\)，其范数至多
-\(Me^{-at}\|x-u_*\|\)。稳定性与零参数预解式共同给出平衡及收敛，
-不要求 \(x\) 初始时属于 \(D(A)\)。
-
-\end{solution}
-
-% 自拟：检查本附录的已建工具及其假设边界。
-
-\begin{exercise}\label{b2:ex:app-D-8}
-
-对任意 \(C_0\)-半群和常外力 \(F_0\in X\)，零初值温和解
-\(u(t)=\int_0^tT(s)F_0\,\mathrm ds\) 是否一定为强解？
-给出定义域和导数的直接验证。
-
-\end{exercise}
-
-\begin{solution}
-
-它确实为强解。由半群律及换元，
+再令 \(Q_\lambda=4\lambda R_{2\lambda}-\lambda R_\lambda\)。证明
 \[
- \frac{T(h)u(t)-u(t)}h
- =\frac1h\left(\int_t^{t+h}T(s)F_0\,\mathrm ds
-                    -\int_0^hT(s)F_0\,\mathrm ds\right)
- \longrightarrow T(t)F_0-F_0.
+ Q_\lambda x-x=-R_{2\lambda}R_\lambda A^2x,
+ \quad \|Q_\lambda x-x\|\leq\frac{\|A^2x\|}{2\lambda^2}.
 \]
-因此 \(u(t)\in D(A)\)、\(Au(t)=T(t)F_0-F_0\)，而直接对连续积分求导得到
-\(u'(t)=T(t)F_0\)。所以 \(u'=Au+F_0\)，且两项均连续。
-这种额外时间结构保证了强解；普通连续外力的一般结论仍需另行核对。
+\end{exercise}
+\begin{solution}
+先对 \(x\in D(A)\) 使用 \(R_\lambda(\lambda-A)x=x\)，再对 \(Ax\in D(A)\) 使用同一关系，得到
+\[
+ \lambda R_\lambda x-x=R_\lambda Ax
+ =\frac{Ax}{\lambda}+\frac{R_\lambda A^2x}{\lambda}.
+\]
+以 \(\|R_\lambda\|\leq\lambda^{-1}\) 控制最后一项，便得第一式。
 
+将 \(Q_\lambda\) 写成 \(2(2\lambda R_{2\lambda})-\lambda R_\lambda\)。分别应用上面的精确展开，常数项相减后留下一份 \(x\)，而两个一阶项 \(2Ax/(2\lambda)\) 与 \(Ax/\lambda\) 恰好消去，故
+\[
+ Q_\lambda x-x
+ =\frac1\lambda(R_{2\lambda}-R_\lambda)A^2x.
+\]
+预解式恒等式给出 \(R_{2\lambda}-R_\lambda=-\lambda R_{2\lambda}R_\lambda\)，所以得到所求精确式。最后
+\[
+ \|R_{2\lambda}R_\lambda A^2x\|
+ \leq\frac1{2\lambda}\cdot\frac1\lambda\cdot\|A^2x\|.
+\]
+两阶速度使用了 \(x\in D(A^2)\)；虽然 \(Q_\lambda x\to x\) 可由预解逼近对全部 \(x\in X\) 推出，这个带 \(A^2x\) 的误差界不能推广给没有两阶定义域正则性的输入。
+\end{solution}
+
+% 自拟：在 Cb 内准确辨认强连续平移所允许的最大子空间。
+\Needspace{6\baselineskip}
+\begin{exercise}\label{b2:ex:app-D-6}
+令 \(C_b(\mathbb R)\) 为有界连续函数空间，\(BUC(\mathbb R)\) 为有界一致连续函数子空间，均取上确界范数。对 \(T(t)f(x)=f(x+t)\)，证明
+\[
+ \lim_{t\downarrow0}\|T(t)f-f\|_\infty=0
+ \quad\Longleftrightarrow\quad f\in BUC(\mathbb R)
+ \quad(f\in C_b(\mathbb R)).
+\]
+证明 \(BUC\) 是平移不变的闭 Banach 子空间，并用 \(f(x)=\sin(x^2)\) 给出 \(C_b\) 上强连续性失败的显式序列。
+\end{exercise}
+\begin{solution}
+一致连续性按定义给出所有足够小平移的统一差界，所以推出左侧极限。反向先注意，对 \(t>0\)，变量替换给出
+\[
+ \sup_x|f(x-t)-f(x)|=\sup_x|f(x+t)-f(x)|.
+\]
+因此右侧小时间的收敛也控制所有小的负平移。给定 \(\varepsilon>0\)，取 \(\delta>0\)，使 \(|h|<\delta\) 时 \(\sup_x|f(x+h)-f(x)|<\varepsilon\)。任意 \(|x-y|<\delta\) 可令 \(h=y-x\)，于是 \(|f(y)-f(x)|<\varepsilon\)，这就是一致连续性。
+
+平移不改变一致连续的模，故保持 \(BUC\)。若 \(f_n\in BUC\) 在上确界范数下趋于 \(f\)，先取 \(n\) 使 \(\|f-f_n\|_\infty<\varepsilon/3\)，再用 \(f_n\) 的一致连续性控制第三个误差，得到 \(f\) 一致连续。因此它在 Banach 空间 \(C_b\) 中闭，也完备。
+
+对 \(f(x)=\sin(x^2)\)，取
+\[
+ x_n=(2\pi n+\pi/2)^{1/2},\quad
+ t_n=(2\pi n+3\pi/2)^{1/2}-x_n
+     =\frac\pi{(2\pi n+3\pi/2)^{1/2}+x_n}.
+\]
+有 \(t_n\downarrow0\)、\(f(x_n)=1\)、\(f(x_n+t_n)=-1\)，故
+\(\|T(t_n)f-f\|_\infty=2\)。这个例子有界且处处光滑，但振荡在远处越来越快，仍然不能获得上确界范数的零时连续性。
+\end{solution}
+
+% 自拟：指数稳定半群的平衡及衰减外力的卷积速率，包括共振速率边界。
+\Needspace{6\baselineskip}
+\begin{exercise}\label{b2:ex:app-D-7}
+设实或复 Banach 空间上的 \(C_0\)-半群满足
+\(\|T(t)\|\leq Me^{-at}\)、\(a>0\)，生成元为 \(A\)。对恒定外力 \(F_\infty\in X\)，证明任意 \(x\in X\) 出发的温和解趋于唯一平衡
+\(u_*=-A^{-1}F_\infty\)，并给出指数速度。进一步若
+\[
+ F(t)=F_\infty+G(t),\quad
+ \|G(t)\|\leq Ce^{-bt}\quad(t\geq0),\quad b>0,
+\]
+其中 \(G\) 强可测，求温和解趋于 \(u_*\) 的估计，并分别处理 \(a=b\) 与 \(a\ne b\)。
+\end{exercise}
+\begin{solution}
+增长指数可取 \(-a\)，所以实数 \(0\) 属于生成元的预解集。Laplace 公式给出
+\[
+ u_*=R(0)F_\infty=\int_0^\infty T(s)F_\infty\,\mathrm ds\in D(A),
+ \quad Au_*=-F_\infty.
+\]
+积分由 \(Me^{-as}\|F_\infty\|\) 控制。逆算子的存在也说明平衡唯一。对 \(u_*\) 使用轨道积分式，
+\[
+ T(t)u_*-u_*=-\int_0^tT(s)F_\infty\,\mathrm ds.
+\]
+把温和公式中的常外力积分换元，得到
+\(u(t)-u_*=T(t)(x-u_*)\)，因此
+\[
+ \|u(t)-u_*\|\leq Me^{-at}\|x-u_*\|.
+\]
+这里未要求初值 \(x\) 属于 \(D(A)\)。
+
+有衰减扰动时，多出的项为 \(\int_0^tT(t-s)G(s)\,\mathrm ds\)，故
+\[
+ \|u(t)-u_*\|
+ \leq Me^{-at}\|x-u_*\|+MC\int_0^te^{-a(t-s)}e^{-bs}\,\mathrm ds.
+\]
+若 \(a\ne b\)，最后积分等于
+\[
+ \frac{e^{-bt}-e^{-at}}{a-b},
+\]
+无论 \(a>b\) 或 \(a<b\)，这个商都非负，且至多为
+\(|a-b|^{-1}e^{-\min\{a,b\}t}\)。若 \(a=b\)，积分等于 \(te^{-at}\)。两种情形都趋于零；相同衰减指数时多出的 \(t\) 因子来自整个时间区间的累积，不能从异指数的公式中直接删掉。
+\end{solution}
+
+% 自拟：常外力强解已提升正文；以连续共振外力说明一般连续性不足。
+\Needspace{6\baselineskip}
+\begin{exercise}\label{b2:ex:app-D-8}
+在复 Hilbert 空间 \(\ell^2(\mathbb N)\)、\(\mathbb N=\{1,2,\ldots\}\) 上令
+\[
+ (U(t)x)_n=e^{\mathrm int}x_n,\quad t\in\mathbb R.
+\]
+证明它是强连续酉群，其生成元为
+\[
+ (Ax)_n=\mathrm inx_n,\quad
+ D(A)=\left\{x\in\ell^2:\sum_{n=1}^\infty n^2|x_n|^2<\infty\right\}.
+\]
+取 \(a_n=1/n\)，在 \([0,1]\) 上令 \(F(s)=U(s-1)a\)。证明 \(F\) 连续，但零初值的温和解在每个 \(t>0\) 都不属于 \(D(A)\)，因而不是本节意义下的强解。
+\end{exercise}
+\begin{solution}
+每个乘子模为一，逐坐标相乘给出群律与酉性。对固定 \(x\in\ell^2\)，
+\[
+ \|U(t)x-x\|_2^2=\sum_{n=1}^\infty|e^{\mathrm int}-1|^2|x_n|^2.
+\]
+每项趋零且被 \(4|x_n|^2\) 控制，可求和支配收敛给出强连续。若 \(\sum n^2|x_n|^2<\infty\)，用 \(|(e^{\mathrm inh}-1)/h|\leq n\) 控制差商，即得生成元极限 \((\mathrm inx_n)\)。反过来，若差商在 \(\ell^2\) 中收敛，所有坐标泛函都连续，极限的第 \(n\) 个坐标必为 \(\mathrm inx_n\)；极限属于 \(\ell^2\) 就给出所需定义域条件。
+
+序列 \(a=(1/n)\) 属于 \(\ell^2\) 而不属于 \(D(A)\)。由强连续群性质，\(F(s)=U(s-1)a\) 连续且范数恒为 \(\|a\|_2\)。零初值温和解为
+\[
+ \begin{aligned}
+ u(t)&=\int_0^tU(t-s)U(s-1)a\,\mathrm ds\\
+ &=\int_0^tU(t-1)a\,\mathrm ds=tU(t-1)a.
+ \end{aligned}
+\]
+这里外力的时间相位恰好消去了卷积中的反向相位。对每个 \(t>0\)，
+\[
+ \sum_{n=1}^\infty n^2|u_n(t)|^2
+ =\sum_{n=1}^\infty t^2=\infty.
+\]
+所以 \(u(t)\notin D(A)\)，尽管初值为零且外力连续。外力的时间振荡可以持续激发高频；常外力的特殊积分结构不能推广为“任意连续外力都产生强解”。这不妨碍 \(u\) 连续并满足正文的积分型方程。
 \end{solution}

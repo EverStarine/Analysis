@@ -3,330 +3,1678 @@
 \label{b2:app:C}
 
 \begin{chapterabstract}
-
-强型 \(L^1\) 与 \(L^\infty\) 端点失效后，原子 Hardy 空间和 BMO 提供保留抵消的替代空间。本附录证明 John–Nirenberg 指数尾、原子空间的 BMO 对偶与奇异积分的原子界，并介绍极大截断、\(T1\) 思想及 \(A_p\) 权的定义和必要性。
-
+奇异积分在 \(1<p<\infty\) 的有界性不能直接延伸到两个强型端点。原子 Hardy 空间在输入中保留局部抵消，BMO 则用平均振荡描述输出。本附录从极大截断的主值传递出发，证明 John--Nirenberg 指数尾、原子空间的 BMO 对偶及奇异积分的端点界；随后改变积分的密度，证明 \(A_p\) 权恰好刻画极大函数的加权强型有界性。\(T1\) 判据与更深的加权奇异积分理论只说明问题和所需条件。
 \end{chapterabstract}
 
 \begin{learninggoals}\begin{itemize}
-\item\label{b2:item:app-C-goal-1}用极大截断的振荡估计证明主值存在性的稠密性传递。
-\item\label{b2:item:app-C-goal-2}证明 BMO 的指数尾并解释模常数的对偶对象。
-\item\label{b2:item:app-C-goal-3}构造原子级数空间，验证 BMO 配对和奇异积分延拓。
-\item\label{b2:item:app-C-goal-4}检验权的局部可积性、\(A_p\) 必要条件与幂权范围，并证明 \(A_1\) 子类的充分界。
+\item\label{b2:item:app-C-goal-1}回顾极大截断怎样把光滑类的主值传给一般输入，并辨认端点处还缺少的估计。
+\item\label{b2:item:app-C-goal-2}由逐代停止立方体证明 BMO 的指数尾，理解模常数与局部版本。
+\item\label{b2:item:app-C-goal-3}构造原子级数空间，证明 BMO 配对的表示无关性及奇异积分的端点延拓。
+\item\label{b2:item:app-C-goal-4}检验幂权的可积范围，用加权二进极大函数证明一般 \(A_p\) 强界与 \(A_1\) 弱端点。
 \end{itemize}\end{learninggoals}
 
-
-本附录沿用\chapref{b2:ch:17}和\chapref{b2:ch:18}的极大函数与奇异积分约定。为使端点论证自足，先以平方可积原子定义 Hardy 空间；它与各种极大函数定义的等价是另一个深层结构问题，不在证明过程中预设。
+本附录需要\chapref{b2:ch:17}的极大函数、覆盖和插值方法，以及\chapref{b2:ch:18}的标准核与 \(L^2\) 起点。对偶证明还用到 Hilbert 空间的 Riesz 表示。前四节依次处理逐点极限、平均振荡、原子配对和算子作用；最后一节的加权极大函数论证可以单独阅读。为使端点论证有明确的起点，这里直接用平方可积原子定义 Hardy 空间。它与 Poisson 极大函数等定义的等价需要另行证明的原子分解定理，本附录不预设这一结论。
 
 \section{极大截断与端点空间}
-
 \label{b2:sec:app-C-1}
 
-
-\chapref{b2:ch:18}的极大截断 \(T^*f=\sup_{\epsilon>0}|T_\epsilon f|\) 控制整个主值族。若截断在 \(L^2\) 中实现给定算子，且 \(T^*\) 在某个 \(L^p\)、\(p>1\) 上有界，便可从光滑稠密输入的主值存在性推广到全部 \(L^p\)。关键是
-\[
- \limsup_{\epsilon,\delta\downarrow0}|T_\epsilon f-T_\delta f|
- \le2T^*(f-g)+
-   \limsup_{\epsilon,\delta\downarrow0}|T_\epsilon g-T_\delta g|.
-\]
-先选光滑 \(g\) 逼近，再估计右侧异常集合。这是振荡与稠密性结合的证明，不能仅由各个截断分别有界推出全参数极限。
+先区分三个问题：一个算子能否按范数连续延拓，截断积分是否逐点收敛，以及逐点极限是否就是指定的延拓。\chapref{b2:ch:18}先由 \(L^2\) 有界性和标准核得到 \(L^p\) 延拓，再以极大截断控制所有半径的误差。这两个步骤处理的对象不同；尤其不能从单个截断的估计直接读出全参数主值。
 
 \ProseParagraphBreak
-对于端点 \(L^1\)，主值与弱型理论仍可讨论，但强型范数不成立。原子空间在输入中加入局部零平均，BMO 则允许输出有不可避免的对数振荡。它们保留的是抵消，而不是简单地改变一个可积指数。
+
+设 \(T\) 是\cref{b2:thm:18-cz-operator-definition}的标准 Calderón--Zygmund 算子，核为 \(K(x,y)\)，并固定 \(1<p<\infty\)。这意味着已经给定一个 \(L^2\) 有界线性算子，其支集外作用由核表示，核还满足大小与两个变量的 Hölder 差分条件。对 \(f\in L^p(\mathbb R^d)\)，令
+\[
+ T_\epsilon f(x)=\int_{|x-y|>\epsilon}K(x,y)\cdot f(y)\,\mathrm dy,
+ \quad T_*f(x)=\sup_{\epsilon>0}|T_\epsilon f(x)|.
+\]
+核的大小界和 Hölder 不等式保证每个正半径的积分绝对收敛；对固定 \(x\)，截断随正半径连续，所以取有理半径的上确界已经足够，\(T_*f\) 因而可测。\Cref{b2:thm:18-maximal-truncation}给出
+\[
+ \|T_*f\|_p\leq C_p\|f\|_p.
+\]
+常数依赖维数、核的标准常数、光滑指数及给定算子的 \(L^2\) 范数。若回看该估计的证明，会见到辅助指数 \(1<q<p\) 和 \(M(|f|^q)^{1/q}\)；这一选择在 \(p=1\) 时已经不再可用。
+
+\ProseParagraphBreak
+
+现在另加光滑类的识别条件：对每个 \(g\in C_c^\infty(\mathbb R^d)\)，硬截断的全参数极限几乎处处存在且等于 \(Tg\)。Hilbert 变换和 Riesz 变换在\chapref{b2:ch:18}中分别完成了这一步。一种常用核验方式是先由核的抵消证明光滑类逐点收敛，再证明同一截断到 \(Tg\) 的 \(L^2\) 收敛；后一个收敛的几乎处处子列识别前一个极限。两种收敛在这里各负其责。
+
+\ProseParagraphBreak
+
+先看主值存在性。对任意光滑逼近 \(g\)，三角不等式给出
+\[
+ \limsup_{\epsilon,\delta\downarrow0}|T_\epsilon f-T_\delta f|
+ \leq 2T_*(f-g)+
+       \limsup_{\epsilon,\delta\downarrow0}|T_\epsilon g-T_\delta g|.
+\]
+最后一项几乎处处为零。固定 \(a>0\)，左端超过 \(a\) 的集合测度至多为
+\[
+ \left(\frac{2C_p}{a}\right)^p\cdot\|f-g\|_p^p.
+\]
+左侧集合由 \(f\) 确定，不随逼近函数改变。令 \(g\to f\) 于 \(L^p\)，再对 \(a=1/n\) 取可数并，便知截断几乎处处满足 Cauchy 条件；\(T_*f<\infty\) 又保证极限有限。这里控制的是任意两个足够小的半径，不只是某条预先选定的半径序列。
+
+\ProseParagraphBreak
+
+若还要识别极限，使用正文的\eqref{b2:eq:18-principal-value-transfer}更直接。设 \(T_p\) 为与 \(L^2\) 算子兼容的 \(L^p\) 延拓，则
+\[
+ \limsup_{\epsilon\downarrow0}|T_\epsilon f-T_pf|
+ \leq T_*(f-g)+|T_p(f-g)|.
+\]
+两个右端项都有 \(L^p\) 界。同样先固定误差阈值，再让 \(\|f-g\|_p\to0\)，得到 \(T_\epsilon f\to T_pf\) 几乎处处。由于
+\[
+ |T_\epsilon f-T_pf|\leq T_*f+|T_pf|\in L^p,
+\]
+对差的 \(p\) 次幂应用支配收敛，还得到 \(L^p\) 收敛。不能删去光滑类的识别条件：乘法算子 \(Tf=a f\)、\(a\in L^\infty\)，具有零支集外核，全部核截断都为零，却可能 \(T\ne0\)。离开对角线的核看不见这一局部作用。
+
+\ProseParagraphBreak
+
+端点的困难可用一个具体输入看清。在直线上，Hilbert 变换的归一化为
+\[
+ Hf(x)=\frac1\pi\operatorname{p.v.}\int_{\mathbb R}\frac{f(y)}{x-y}\,\mathrm dy.
+\]
+取 \(f=\mathbf1_{(0,1)}\)，对 \(x\ne0,1\) 直接积分，区间内按对称主值消去奇性，得到
+\[
+ Hf(x)=\frac1\pi\log\left|\frac{x}{x-1}\right|.
+\]
+它在两个端点附近有对数奇性，因而不是有界函数；在 \(|x|\to\infty\) 时又有 \(Hf(x)=1/(\pi x)+O(|x|^{-2})\)，所以不属于 \(L^1\)。同一个有界可积输入同时显示了两个强型端点的障碍。若紧支集输入满足 \(\int f=0\)，远处展开中的 \(1/x\) 项会消失；若输出只按局部振荡衡量，对数奇性又可以被允许。这分别引出原子的零平均条件和 BMO。
+
+\ProseParagraphBreak
+
+以下始终以 \(T_*\) 表示极大截断，\(T^*\) 表示线性伴随。算子 \(T\)、极大截断 \(T_*\) 与 Hardy--Littlewood 极大算子 \(M\) 的弱型 \((1,1)\) 是三个不同结论。本附录使用\cref{b2:thm:18-cz-weak}中 \(T\) 的弱端点来识别原子延拓；不使用 \(T_*\) 的弱端点。后者的外部出处及截断版本见\subsecref{b2:subsec:180404}。接下来的 BMO 定义首先说明，允许对数奇性后仍能保留怎样的统一局部控制。
+
 
 
 \section{BMO 与指数尾}
-
 \label{b2:sec:app-C-2}
 
+端点估计常会留下对数型的无界函数。若仍要求函数本身有统一的逐点上界，就会排除这些自然输出；另一方面，一个函数在不同尺度上的平均值缓慢漂移，并不意味着它在每个局部区域内都有很大的振荡。BMO 固定一个立方体，把该立方体上的平均值当作参照，只控制偏离这个参照的平均幅度。零平均原子与函数配对时，参照常数自动消失，这也解释了下一节为什么会出现模常数的函数空间。
 
+\Needspace{6\baselineskip}
 \begin{definition}\label{b2:def:C-bmo}
-对 \(b\in L^1_{\mathrm{loc}}(\mathbb R^d)\)，定义
+设 \(d\geq1\) 为整数，\(b\in L^1_{\mathrm{loc}}(\mathbb R^d;\mathbb C)\)。对任意边长为正且有限的轴平行立方体 \(Q\)，以 \(|Q|\) 表示其 Lebesgue 测度，并记
 \[
- \|b\|_{\mathrm{BMO}}=\sup_Q\frac1{|Q|}\int_Q|b-b_Q|,
- \qquad b_Q=\frac1{|Q|}\int_Q b,
+ b_Q=\frac1{|Q|}\int_Qb(x)\,\mathrm dx,
+ \quad
+ \|b\|_{\mathrm{BMO}}
+ =\sup_Q\frac1{|Q|}\int_Q|b(x)-b_Q|\,\mathrm dx.
 \]
-上确界取所有轴平行立方体。有限者构成
-\term[youjie-pingjun-zhendang]{有界平均振荡空间}[bounded mean oscillation]，常数函数视为同一个零类。
+上确界取所有这样的立方体。半范数有限的函数构成有界平均振荡空间，记为 \(\mathrm{BMO}(\mathbb R^d)\)。两个函数若几乎处处相差一个常数，就代表同一个模常数的元素。
 \end{definition}
 \symidx{\(\mathrm{BMO}\)：有界平均振荡空间，按模常数解释}
-这是半范数；若半范数为零，每个立方体上函数等于一个常数，重叠立方体使这些常数相同，故函数几乎处处为常数。任意有界函数有 BMO 半范数不超过 \(2\|b\|_\infty\)，但反向不成立。
+实值函数构成其中的实线性子空间。以下仍把具体函数的半范数和商空间上的范数都记为 \(\|\cdot\|_{\mathrm{BMO}}\)，使用时由上下文区分。定义中的局部可积性保证每个 \(b_Q\) 都有意义；它没有要求 \(b\) 在整个空间可积，也没有固定某个全局的参照常数。
 
-下面采用\term[john-nirenberg-budengshi]{John--Nirenberg 不等式}[John--Nirenberg inequality]的下述版本。
+\Needspace{6\baselineskip}
+\begin{proposition}[平均振荡的基本比较]\label{b2:prop:C-bmo-basic}
+设 \(d\geq1\)，\(b\in L^1_{\mathrm{loc}}(\mathbb R^d;\mathbb C)\)。对任意轴平行立方体 \(Q\) 及任意 \(z\in\mathbb C\)，有
+\begin{equation}\label{b2:eq:C-oscillation-constant}
+ \begin{aligned}
+ |b_Q-z|&\leq\frac1{|Q|}\int_Q|b-z|,\\
+ \frac1{|Q|}\int_Q|b-b_Q|
+ &\leq\frac2{|Q|}\int_Q|b-z|.
+ \end{aligned}
+\end{equation}
+BMO 半范数满足齐次性与三角不等式，且为零当且仅当 \(b\) 几乎处处为常数。若 \(b\in L^\infty(\mathbb R^d)\)，则
+\[
+ \|b\|_{\mathrm{BMO}}\leq2\|b\|_\infty.
+\]
+平移及正的等比伸缩不改变 BMO 半范数。若 \(\Phi:\mathbb C\to\mathbb C\) 是 Lipschitz 常数为 \(L\geq0\) 的映射，则
+\[
+ \|\Phi\circ b\|_{\mathrm{BMO}}\leq2L\|b\|_{\mathrm{BMO}}.
+\]
+最后，若 \(b\in\mathrm{BMO}\) 且 \(Q\subset R\) 为两个轴平行立方体，则
+\begin{equation}\label{b2:eq:C-nested-means}
+ |b_Q-b_R|\leq\frac{|R|}{|Q|}\|b\|_{\mathrm{BMO}}.
+\end{equation}
+特别地，令 \(2^kQ\) 表示与 \(Q\) 同中心、边长为其 \(2^k\) 倍的立方体，则对每个整数 \(k\geq1\)，
+\[
+ |b_Q-b_{2^kQ}|\leq k2^d\|b\|_{\mathrm{BMO}}.
+\]
+\end{proposition}
+\begin{proof}
+第一式是积分的三角不等式。再写
+\(|b-b_Q|\leq|b-z|+|z-b_Q|\)，取平均，就得第二式。由于平均是线性的，齐次性和三角不等式随即成立。半范数为零时，取一列递增并覆盖全空间的立方体；函数在每个立方体上几乎处处等于其平均值，而相邻两个立方体的包含关系使这些平均值相同。反向由定义直接得到。以 \(z=0\) 应用第二式给出有界函数的估计。
 
+对 \(x\mapsto b(a+s x)\)，其中 \(a\in\mathbb R^d\)、\(s>0\)，换元把全部轴平行立方体一一对应到同类立方体，平均振荡因而不变。Lipschitz 条件先给出
+\(|\Phi(b)|\leq|\Phi(0)|+L|b|\)，所以复合函数仍局部可积。以 \(\Phi(b_Q)\) 作比较常数，有
+\[
+ \frac1{|Q|}\int_Q|\Phi(b)-(\Phi(b))_Q|
+ \leq\frac2{|Q|}\int_Q|\Phi(b)-\Phi(b_Q)|
+ \leq\frac{2L}{|Q|}\int_Q|b-b_Q|.
+\]
+对 \(Q\) 取上确界即得所需界。对包含的两个立方体，
+\[
+ |b_Q-b_R|
+ \leq\frac1{|Q|}\int_Q|b-b_R|
+ \leq\frac{|R|}{|Q|}\cdot
+       \frac1{|R|}\int_R|b-b_R|,
+\]
+给出\eqref{b2:eq:C-nested-means}。沿 \(Q,2Q,\ldots,2^kQ\) 逐项相加，每一步的体积比都是 \(2^d\)，便得最后一式。
+\end{proof}
+比较式也说明，若在定义中用 \(\inf_{z\in\mathbb C}|Q|^{-1}\int_Q|b-z|\) 代替以 \(b_Q\) 为中心的平均振荡，所得半范数只相差至多因子二。不过实际证明中保留平均值更方便，因为嵌套立方体之间可以直接比较。最后一个估计则允许平均值随尺度级数 \(k\) 线性增长，也就是随边长比的对数增长。
+
+\ProseParagraphBreak
+
+基本比较还解释了实值截断的作用。映射 \(s\mapsto\max\{-N,\min\{s,N\}\}\) 的 Lipschitz 常数为一，故截断函数的 BMO 半范数至多为原来的两倍，界与 \(N\) 无关。对复值函数分别截断实部和虚部，也得到与截断高度无关的控制。下一节在识别原子配对时会用到这一点。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[模常数后的完备性]\label{b2:prop:C-bmo-complete}
+对每个整数 \(d\geq1\)，复值 BMO 空间按几乎处处相差常数取商后，以 BMO 范数成为 Banach 空间。
+\end{proposition}
+\begin{proof}
+设 \((b_j)\) 在 BMO 半范数下为 Cauchy 列。固定一个单位立方体 \(Q_*\)，从每个 \(b_j\) 减去 \((b_j)_{Q_*}\)，使其在 \(Q_*\) 上的平均值为零。对包含 \(Q_*\) 的任意固定立方体 \(R\)，令 \(f=b_j-b_k\)。因为 \(f_{Q_*}=0\)，有
+\[
+ |f_R|\leq\frac1{|Q_*|}\int_{Q_*}|f-f_R|
+ \leq\frac{|R|}{|Q_*|}\|f\|_{\mathrm{BMO}},
+\]
+从而
+\[
+ \|f\|_{L^1(R)}
+ \leq |R|\left(1+\frac{|R|}{|Q_*|}\right)
+       \cdot\|f\|_{\mathrm{BMO}}.
+\]
+取递增立方体 \(R\) 覆盖全空间，\(L^1\) 的完备性给出相容的局部极限 \(b\in L^1_{\mathrm{loc}}\)。固定 \(\varepsilon>0\)，选 \(N\)，使 \(j,k\geq N\) 时 \(\|b_j-b_k\|_{\mathrm{BMO}}\leq\varepsilon\)。对任意立方体 \(Q\)，局部 \(L^1\) 收敛同时给出平均值及平均振荡的收敛，于是令 \(k\to\infty\)，得到
+\[
+ \frac1{|Q|}\int_Q|(b_j-b)-(b_j-b)_Q|\leq\varepsilon
+ \quad(j\geq N).
+\]
+对所有 \(Q\) 取上确界，便知 \(b-b_j\in\mathrm{BMO}\) 且半范数至多为 \(\varepsilon\)。因此 \(b\in\mathrm{BMO}\)，并且原 Cauchy 列在商空间中收敛于它。
+\end{proof}
+定义只给出一阶平均振荡。直接用 Chebyshev 不等式，在固定立方体内只能得到 \(t^{-1}\) 的尾界。BMO 的额外信息是同一个控制在每一个更小的立方体上仍然成立。利用这一可重复性，把偏差大的区域一代代筛出来，就能得到下面的\term[john-nirenberg-budengshi]{John--Nirenberg 不等式}[John--Nirenberg inequality]。
+
+\Needspace{6\baselineskip}
 \begin{theorem}[John--Nirenberg]\label{b2:thm:C-john-nirenberg}
-存在只依赖维数的 \(c,C>0\)，使
+设 \(d\geq1\) 为整数，\(b\in\mathrm{BMO}(\mathbb R^d;\mathbb C)\)，并记 \(B=\|b\|_{\mathrm{BMO}}>0\)。令
 \[
+ A_d=2^{d+1},\quad c_d=\frac{\log2}{A_d}.
+\]
+对任意轴平行立方体 \(Q\) 及任意 \(t>0\)，有
+\begin{equation}\label{b2:eq:C-john-nirenberg-tail}
  |\{x\in Q:|b(x)-b_Q|>t\}|
- \le C|Q|e^{-ct/\|b\|_{\mathrm{BMO}}}.
-\]
-特别地，对每个 \(1\le r<\infty\)，
-\[
+ \leq2|Q|\exp\left(-\frac{c_dt}{B}\right).
+\end{equation}
+对每个实数 \(1\leq r<\infty\)，还存在只依赖维数的常数 \(C_d\)，使
+\begin{equation}\label{b2:eq:C-finite-oscillation}
  \left(\frac1{|Q|}\int_Q|b-b_Q|^r\right)^{1/r}
- \le C_{d,r}\|b\|_{\mathrm{BMO}}.
-\]
+ \leq C_drB.
+\end{equation}
+若 \(B=0\)，函数几乎处处为常数，正阈值的尾集为空，所有平均振荡也为零。
 \end{theorem}
 \begin{proof}
-归一化半范数为1。在 \(Q\) 内，对 \(|b-b_Q|\) 作二进极大立方体分解，阈值取 \(\lambda>2\)。坏立方体总测度至多 \(|Q|/\lambda\)，好集上函数绝对值至多 \(\lambda\)，且每个坏块 \(Q_j\) 的平均绝对值不超过 \(2^d\lambda\)，所以
-\(|b_{Q_j}-b_Q|\le2^d\lambda\)。
-在每个坏块上对 \(b-b_{Q_j}\) 重复同样操作。第 \(k\) 代坏集测度至多 \(\lambda^{-k}|Q|\)；离开这代坏集的点，通过逐代平均值差的望远镜相加，满足
-\(|b-b_Q|\le k2^d\lambda\)（调整初始常数即可）。
-因此在 \(t\) 的相邻整数代之间选 \(k\)，得到指数尾。零半范数情形已单独说明。
-最后用层蛋糕
-\(\int_Q|b-b_Q|^r=r\int_0^\infty t^{r-1}|\{|b-b_Q|>t\}|\,\mathrm dt\)，指数积分有限，便得到所有有限阶矩。
+先在一个立方体 \(P\) 内做一代分解。把 \(P\) 逐次等分为 \(2^d\) 个子立方体，得到它的二进子立方体族。在所有满足
+\[
+ \frac1{|R|}\int_R|b-b_P|>2B
+\]
+的真二进子立方体中，选取按包含关系极大的立方体 \(R\)。根立方体 \(P\) 上的平均振荡至多为 \(B\)，所以 \(P\) 不满足严格超水平条件；每个候选立方体到 \(P\) 之间只有有限个祖先，因而都包含在某个极大立方体内。极大立方体两两不交，至多在零测的边界相遇，并且
+\begin{equation}\label{b2:eq:C-stopping-half}
+ \sum_R|R|
+ \leq\frac1{2B}\int_P|b-b_P|
+ \leq\frac12|P|.
+\end{equation}
+设 \(\widehat R\) 是 \(R\) 的直接二进父立方体。它可能是 \(P\)，也可能严格包含于 \(P\)；由极大性，它不满足上述超水平条件。因此
+\[
+ 2B<\frac1{|R|}\int_R|b-b_P|
+ \leq2^d\cdot\frac1{|\widehat R|}
+                 \int_{\widehat R}|b-b_P|
+ \leq A_dB.
+\]
+特别地，
+\begin{equation}\label{b2:eq:C-stopping-mean-jump}
+ |b_R-b_P|\leq A_dB.
+\end{equation}
+在这些极大立方体的并之外，每个以该点为成员的二进子立方体，其 \(|b-b_P|\) 平均都不超过 \(2B\)。对局部可积函数应用 Lebesgue 微分定理，便得
+\begin{equation}\label{b2:eq:C-stopping-good}
+ |b-b_P|\leq2B
+ \quad\text{于好集上几乎处处}.
+\end{equation}
+这里沿包含该点的二进立方体微分即可：它们的直径趋于零，与以该点为中心的包围球有统一体积比，所以通常的 Lebesgue 点结论适用。
+
+现在从 \(P=Q\) 出发，在每个选出的坏立方体中重复这一过程。若当前的父停止立方体是 \(P\)，这一代分解的对象始终是 \(|b-b_P|\)；进入它的某个坏立方体 \(R\) 后，下一代便改用 \(|b-b_R|\)。直接二进父立方体 \(\widehat R\) 只用于控制这一代的平均值跳跃，不能替代父停止立方体 \(P\) 作为参照。正是每代都重新减去本立方体的均值，才使\eqref{b2:eq:C-stopping-half}可以反复使用。
+
+记 \(G_0=Q\)，\(G_k\) 为第 \(k\) 代坏立方体的并。逐代相加得到
+\begin{equation}\label{b2:eq:C-stopping-generations}
+ G_{k+1}\subset G_k,\quad |G_k|\leq2^{-k}|Q|.
+\end{equation}
+所有出现的立方体至多可数，故可删去一个共同零测集，使各次微分结论同时成立。若 \(x\in Q\setminus G_k\)，它在某个第 \(j\) 次分解时离开坏集，其中 \(1\leq j\leq k\)。设此前经过的停止立方体链为
+\(P_0=Q\supset P_1\supset\cdots\supset P_{j-1}\)。好集估计与逐项平均值差给出
+\[
+ \begin{aligned}
+ |b(x)-b_Q|
+ &\leq |b(x)-b_{P_{j-1}}|
+        +\sum_{i=1}^{j-1}|b_{P_i}-b_{P_{i-1}}|\\
+ &\leq2B+(j-1)A_dB
+ \leq kA_dB.
+ \end{aligned}
+\]
+因此，除零测集外，\(\{|b-b_Q|>kA_dB\}\subset G_k\)。给定 \(t>0\)，取
+\(k=\lfloor t/(A_dB)\rfloor\)。若 \(k\geq1\)，用上述包含关系和\eqref{b2:eq:C-stopping-generations}；若 \(k=0\)，直接用集合测度不超过 \(|Q|\)。两种情形都得到
+\[
+ |\{|b-b_Q|>t\}|
+ \leq2^{-k}|Q|
+ \leq2|Q|\exp\left(-\frac{(\log2)t}{A_dB}\right),
+\]
+即所需指数尾。
+
+最后，Tonelli 定理给出层蛋糕公式；即使事先不知道 \(r\) 次方可积，也可先按非负积分使用它。由尾界，
+\[
+ \begin{aligned}
+ \frac1{|Q|}\int_Q|b-b_Q|^r
+ &=\frac r{|Q|}\int_0^\infty
+ t^{r-1}|\{x\in Q:|b-b_Q|>t\}|\,\mathrm dt\\
+ &\leq2r\int_0^\infty t^{r-1}e^{-c_dt/B}\,\mathrm dt\\
+ &=2\Gamma(r+1)\left(\frac B{c_d}\right)^r.
+ \end{aligned}
+\]
+为看清对 \(r\) 的依赖，在 \(\Gamma(r+1)=\int_0^\infty u^re^{-u}\,\mathrm du\) 中，用
+\(\sup_{u\geq0}u^re^{-u/2}=(2r/e)^r\)，得到
+\(\Gamma(r+1)\leq2(2r/e)^r\)。取 \(r\) 次根即可得到\eqref{b2:eq:C-finite-oscillation}，常数只依赖 \(d\)。
 \end{proof}
-函数 \(\log|x|\) 是典型无界 BMO 例子。若立方体远离原点，梯度 \(|x|^{-1}\) 与边长的乘积有界；若立方体靠近原点，按边长缩放，把常数 \(\log\ell(Q)\) 减去后，问题落在固定大小、位于固定有界区域的立方体上。那里 \(|\log|x||\) 可积，平均振荡统一有界。这个函数的指数尾与定理相符；它不属于 \(L^\infty\)。
+若把定义中的一阶平均振荡换成 \(r\) 阶平均振荡，再对立方体取上确界，Hölder 不等式给出一阶量不超过 \(r\) 阶量；定理给出反向的 \(C_dr\) 倍控制。因此每个有限 \(r\) 都定义同一个 BMO 空间。这里不能把 \(r\) 直接换成 \(\infty\)：估计中的常数随 \(r\) 增长，而下文的对数函数仍在每个含原点的立方体内无界。
+
+\ProseParagraphBreak
+
+上述证明实际上只使用了初始立方体内部的信息。尤其在偏微分方程中，能量估计常只给出某个内立方体及其子立方体上的平均振荡控制，不会先给出整个空间上的 BMO 函数。把这一局部结论独立列出，可以避免额外延拓假设。
+
+\Needspace{6\baselineskip}
+\begin{corollary}[局部指数可积与正负小幂]\label{b2:cor:C-local-john-nirenberg}
+设 \(d\geq1\)，\(Q_0\subset\mathbb R^d\) 为轴平行立方体，\(b\in L^1(Q_0;\mathbb C)\)，\(M>0\)。假定对 \(Q_0\) 的每个二进子立方体 \(P\)，包括 \(Q_0\) 本身，都有
+\[
+ \frac1{|P|}\int_P|b-b_P|\leq M.
+\]
+令 \(c_d\) 如\cref{b2:thm:C-john-nirenberg}所定，则对所有 \(t>0\)，
+\[
+ |\{x\in Q_0:|b-b_{Q_0}|>t\}|
+ \leq2|Q_0|e^{-c_dt/M}.
+\]
+对每个 \(0<\beta<c_d\)，有
+\begin{equation}\label{b2:eq:C-local-exponential}
+ \frac1{|Q_0|}\int_{Q_0}
+       \exp\left(\frac{\beta|b-b_{Q_0}|}{M}\right)
+ \leq1+\frac{2\beta}{c_d-\beta}.
+\end{equation}
+若 \(b\) 为实值，则对 \(0<a\leq c_d/(2M)\)，
+\begin{equation}\label{b2:eq:C-positive-negative-exponential}
+ \left(\frac1{|Q_0|}\int_{Q_0}e^{ab}\right)
+ \left(\frac1{|Q_0|}\int_{Q_0}e^{-ab}\right)\leq9.
+\end{equation}
+若假设中的界为 \(M=0\)，则 \(b=b_{Q_0}\) 几乎处处；任意正参数的指数振荡平均为一，实值情形的正负指数平均之积也为一。
+\end{corollary}
+\begin{proof}
+在 \(Q_0\) 内完全重复上一证明，把 \(B\) 换成 \(M\)。每一个父停止立方体都是 \(Q_0\) 的二进子立方体，故一代分解所需的平均振荡界始终可用；不需要 \(Q_0\) 外的任何信息。
+
+记 \(X=|b-b_{Q_0}|/M\)。由
+\(e^{\beta X}=1+\int_0^X\beta e^{\beta s}\,\mathrm ds\) 和 Tonelli 定理，
+\[
+ \begin{aligned}
+ \frac1{|Q_0|}\int_{Q_0}e^{\beta X}
+ &=1+\frac{\beta}{|Q_0|}\int_0^\infty
+       e^{\beta s}|\{x\in Q_0:X>s\}|\,\mathrm ds\\
+ &\leq1+2\beta\int_0^\infty e^{-(c_d-\beta)s}\,\mathrm ds
+ =1+\frac{2\beta}{c_d-\beta}.
+ \end{aligned}
+\]
+取 \(\beta=c_d/2\)，右端为三。若 \(b\) 为实值且 \(aM\leq c_d/2\)，则
+\[
+ \frac1{|Q_0|}\int_{Q_0}e^{\pm a(b-b_{Q_0})}
+ \leq\frac1{|Q_0|}\int_{Q_0}e^{a|b-b_{Q_0}|}\leq3.
+\]
+分别乘回 \(e^{ab_{Q_0}}\) 和 \(e^{-ab_{Q_0}}\)，再将两个平均相乘，常数因子抵消，即得\eqref{b2:eq:C-positive-negative-exponential}。零界情形已由 \(Q_0\) 本身的平均振荡为零得到。
+\end{proof}
+若假设对 \(Q_0\) 的所有轴平行子立方体成立，当然也对其二进子立方体成立，而且可以从任意选定的子立方体重新开始证明。局部结论的输入只是 \(L^1\) 可积性及统一的平均振荡界，不包含任何 Harnack 不等式。
+
+\ProseParagraphBreak
+
+特别地，设 \(v>0\) 几乎处处且 \(\log v\in L^1(Q_0)\)。若 \(\log v\) 满足推论的振荡假设，令 \(b=\log v\)，就得到
+\[
+ \left(\frac1{|Q_0|}\int_{Q_0}v^a\right)
+ \left(\frac1{|Q_0|}\int_{Q_0}v^{-a}\right)\leq9
+ \quad\left(0<a\leq\frac{c_d}{2M}\right).
+\]
+它把正小幂平均与负小幂平均联系起来。\appref{b2:app:H}中，对数的能量估计和 Poincaré 不等式先提供振荡界，再使用这里已经证明的局部结论；指数参数只由该振荡界和维数决定。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[无界的对数例子]\label{b2:prop:C-log-bmo}
+对每个整数 \(d\geq1\)，函数 \(b(x)=\log|x|\) 属于 \(\mathrm{BMO}(\mathbb R^d)\)，其中在原点的值可任意指定。它不属于 \(L^\infty(\mathbb R^d)\)，减去任意常数后仍然如此。
+\end{proposition}
+\begin{proof}
+原点以外函数连续，而
+\(\int_0^1r^{d-1}|\log r|\,\mathrm dr=1/d^2<\infty\)，故极坐标积分给出局部可积性。给定中心为 \(c\)、边长为 \(\ell>0\) 的立方体 \(Q\)，分远离原点和靠近原点两种情形估计。
+
+若 \(|c|\geq\sqrt d\,\ell\)，则从 \(c\) 到任意 \(x\in Q\) 的线段上，各点距原点至少为 \(|c|/2\)。由 \(|\nabla\log|x||=|x|^{-1}\)，
+\[
+ |\log|x|-\log|c||
+ \leq\frac2{|c|}\cdot|x-c|
+ \leq\frac{\sqrt d\,\ell}{|c|}\leq1.
+\]
+在\eqref{b2:eq:C-oscillation-constant}中取比较常数 \(\log|c|\)，得到 \(Q\) 上的平均振荡至多为二。
+
+若 \(|c|<\sqrt d\,\ell\)，作换元 \(x=\ell z\)，以 \(\log\ell\) 为比较常数。缩放后的立方体 \(Q/\ell\) 体积为一，并包含于半径 \(3\sqrt d/2\) 的固定球内，因此
+\[
+ \begin{aligned}
+ \frac1{|Q|}\int_Q|\log|x|-\log\ell|\,\mathrm dx
+ &=\int_{Q/\ell}|\log|z||\,\mathrm dz\\
+ &\leq\int_{|z|\leq3\sqrt d/2}|\log|z||\,\mathrm dz
+ <\infty.
+ \end{aligned}
+\]
+最后一个量只依赖维数。再次由比较常数的估计，得到统一的平均振荡界。两种情形覆盖所有立方体，故 \(b\in\mathrm{BMO}\)。原点附近的任意大负值集都有正测度，已足以排除本质有界性；减去常数不能改变这一事实。
+\end{proof}
+这一例子还能显示指数尾的量级。在一维立方体 \(Q=(0,1)\) 内，\(b(x)=\log x\) 的平均值为 \(-1\)。对 \(t\geq1\)，正向偏差不可能超过 \(t\)，所以
+\[
+ |\{x\in(0,1):|\log x+1|>t\}|
+ =|\{0<x<e^{-t-1}\}|=e^{-t-1}.
+\]
+因此一般 BMO 函数的尾部确实可能按指数衰减，不能统一改成高斯尾；相应的指数可积性也只保证一个由振荡大小决定的小参数范围。与此同时，所有有限阶平均振荡仍然有界，这正是 BMO 允许局部无界而保留端点估计的方式。
 
 
 \section{原子 Hardy 空间及其对偶}
-
 \label{b2:sec:app-C-3}
 
+奇异积分的强 \(L^1\) 估计遇到的困难，不只是输入可能很高，还包括远场缺少抵消。一个小区域中的正负质量若相互抵消，核的常数部分就不再贡献；\chapref{b2:ch:18}的坏块估计已经使用了这个机制。原子空间把这种局部抵消直接放进输入的定义，再用可求和系数组合不同位置和尺度上的基本块。
 
+\ProseParagraphBreak
+
+平方归一化也有具体作用。若 \(a\) 支撑于立方体 \(Q\)，则
+\(\|a\|_1\le |Q|^{1/2}\cdot\|a\|_2\)。把后一项限制为 \(1\)，既使每个块的总绝对质量统一有界，又保留了可以使用平方算子界的条件。原子不要求点态有界。
+
+\Needspace{6\baselineskip}
 \begin{definition}\label{b2:def:C-atom}
-一个\term[pingfang-keji-yuanzi]{平方可积原子}[L2 atom] \(a\) 支撑于某立方体 \(Q\)，满足
-\(\int a=0\)、\(\|a\|_2\le|Q|^{-1/2}\)。
-对在 \(L^1\) 中可写成绝对可求和原子级数的函数定义范数
-\(\|f\|_{\mathrm{at}}=\inf\sum|\lambda_j|\)，其中
-\(f=\sum\lambda_ja_j\)、\(\sum|\lambda_j|<\infty\)；这些函数组成\term[yuanzi-hardy-kongjian]{原子 Hardy 空间}[atomic Hardy space]，记为 \(H^1_{\mathrm{at}}\)。
+设 \(d\ge1\) 为整数。在 \(\mathbb R^d\) 上，一个
+\term[pingfang-keji-yuanzi]{平方可积原子}[L2 atom]
+是复值函数 \(a\in L^2(\mathbb R^d)\)：存在有限正边长的轴平行立方体
+\(Q\)，使 \(a=0\) 在 \(Q\) 外几乎处处成立，且
+\[
+ \int_{\mathbb R^d}a(x)\,\mathrm dx=0,
+ \quad
+ \|a\|_2\le |Q|^{-1/2}.
+\]
+若 \(f\in L^1(\mathbb R^d;\mathbb C)\) 可以写为
+\[
+ f=\sum_{j=1}^\infty\lambda_ja_j
+ \quad\text{于 }L^1,\quad
+ \sum_{j=1}^\infty|\lambda_j|<\infty,
+\]
+其中 \(a_j\) 为平方原子、\(\lambda_j\in\mathbb C\)，则称
+\(f\) 属于\term[yuanzi-hardy-kongjian]{原子 Hardy 空间}[atomic Hardy space]，
+记为 \(H^1_{\mathrm{at}}(\mathbb R^d)\)，并定义
+\[
+ \|f\|_{\mathrm{at}}
+ \coloneqq\inf\left\{\,
+       \sum_j|\lambda_j|:
+       f=\sum_j\lambda_ja_j\text{ 于 }L^1
+       \,\right\}.
+\]
+下确界遍及全部这样的表示，包括有限原子和。
 \end{definition}
 \symidx{\(H^1_{\mathrm{at}}\)：原子 Hardy 空间}
-每个原子有 \(\|a\|_1\le1\)，所以原子范数控制 \(L^1\) 范数，且每个元素积分为零。这个空间完备：对原子范数 Cauchy 列，取相邻差范数之和有限的快速子列，每个差选择系数和不超过其范数加一个可求和误差的表示。把首项与全部差的级数合并，得到一个绝对可求和原子表示；它同时给出 \(L^1\) 极限，并使余项原子范数趋零。有限原子和在此空间稠密，因为每个表示的系数尾和趋零。范数为零蕴含 \(L^1\) 范数为零，三角不等式由合并级数得到。
 
-\begin{theorem}[原子空间的 BMO 对偶]\label{b2:thm:C-atomic-duality}
-通过原子和上的配对 \(\Lambda_b(f)=\int fb\)，
-\((H^1_{\mathrm{at}})^*\) 与 \(\mathrm{BMO}/\{\text{常数}\}\) 等价同构，范数相互控制。
+零平均使常数函数不能被原子检测到：\(\int a(b+c)=\int ab\)。
+因此原子空间的对偶自然应当按模常数理解。另一方面，这个定义只规定了平方原子与可求和级数；与 Poisson 极大函数等其他定义的关系，需要另外的结构定理。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[原子范数与完备性]
+\label{b2:prop:C-atomic-banach}
+设整数 \(d\ge1\)，\(H^1_{\mathrm{at}}(\mathbb R^d)\) 采用
+\cref{b2:def:C-atom}的复值平方原子与 \(L^1\) 级数定义。
+则 \(\|\cdot\|_{\mathrm{at}}\) 是范数，且该空间完备。对每个
+\(f\in H^1_{\mathrm{at}}\)，
+\[
+ \|f\|_1\le\|f\|_{\mathrm{at}},
+ \quad \int_{\mathbb R^d}f=0.
+\]
+有限原子和在此空间稠密。若 \(h\in L^2(\mathbb R^d;\mathbb C)\)
+支撑于轴平行立方体 \(Q\)，且 \(\int h=0\)，则
+\[
+ \|h\|_{\mathrm{at}}\le |Q|^{1/2}\cdot\|h\|_2.
+\]
+\end{proposition}
+\begin{proof}
+对每个原子，Cauchy--Schwarz 给出
+\(\|a\|_1\le |Q|^{1/2}\cdot\|a\|_2\le1\)。所以任一原子表示都在
+\(L^1\) 中绝对收敛，并有
+\(\|f\|_1\le\sum|\lambda_j|\)。取下确界即得范数控制。
+积分是 \(L^1\) 上的连续泛函，每个有限部分和的积分为零，故极限的积分也为零。
+
+若 \(\|f\|_{\mathrm{at}}=0\)，则 \(\|f\|_1=0\)，所以 \(f=0\)
+作为等价类成立。合并 \(f\) 与 \(g\) 的两个表示，再分别让系数和趋近各自下确界，得到三角不等式。对非零复数 \(z\)，将所有系数乘以
+\(z\) 给出 \(\|zf\|_{\mathrm{at}}\le |z|\cdot\|f\|_{\mathrm{at}}\)，再用
+\(1/z\) 得到反向不等式；零数乘的情形直接成立。因此这确是范数。
+
+为证明完备性，设 \((f_n)\) 为原子范数 Cauchy 列。
+选取子列 \((f_{n_k})\)，使
+\[
+ \|f_{n_{k+1}}-f_{n_k}\|_{\mathrm{at}}\le2^{-k}
+ \quad(k\ge1).
+\]
+为首项 \(f_{n_1}\) 选一个系数和有限的原子表示；为每个差
+\(f_{n_{k+1}}-f_{n_k}\) 选一个系数和不超过 \(2^{1-k}\) 的表示。
+这是在范数下确界之外允许一个 \(2^{-k}\) 误差，不要求下确界被达到。
+将首项与全部差的原子级数按可数次序合并，总系数和有限，所以它在
+\(L^1\) 中收敛于某个 \(f\in H^1_{\mathrm{at}}\)。望远镜求和给出
+\[
+ \|f-f_{n_m}\|_{\mathrm{at}}
+ \le\sum_{k=m}^\infty2^{1-k}\longrightarrow0.
+\]
+故子列在原子范数中收敛；原列的 Cauchy 性再说明全列收敛于同一个
+\(f\)。
+
+对一个固定表示 \(f=\sum\lambda_ja_j\)，其尾部本身就是原子表示，因而
+\[
+ \left\|f-\sum_{j=1}^N\lambda_ja_j\right\|_{\mathrm{at}}
+ \le\sum_{j>N}|\lambda_j|\longrightarrow0.
+\]
+这证明有限原子和稠密。最后，若 \(h\ne0\) 支撑于 \(Q\) 且零平均，则
+\[
+ a=\frac{h}{|Q|^{1/2}\cdot\|h\|_2}
+\]
+是一个原子。把 \(h\) 写成这一原子的倍数，即得最后的估计。
+\(h=0\) 时结论也成立。
+\end{proof}
+
+有限原子和同时属于 \(L^1\cap L^2\)，但上述稠密性指原子范数，不自动保证某个表示的部分和在 \(L^2\) 中收敛。这一区别将在下一节识别奇异积分输出时用到。
+
+\ProseParagraphBreak
+
+以下复线性对偶采用双线性积分配对
+\(\Lambda_b(f)=\int fb\)：对固定 \(b\)，它关于 \(f\) 复线性。
+Hilbert 空间内积仍对第一变量线性，写成
+\(\langle f,u\rangle=\int f\overline u\)。因此用 Riesz 表示得到一个内积代表后，要取其复共轭，才能变为这里的积分代表。以下
+\(b_Q\) 始终只表示平均值 \(|Q|^{-1}\int_Qb\)，局部表示函数另记为
+\(u_Q\)。
+
+\Needspace{6\baselineskip}
+\begin{theorem}[原子空间的 BMO 对偶]
+\label{b2:thm:C-atomic-duality}
+设整数 \(d\ge1\)。在 \(\mathbb R^d\) 上取
+\cref{b2:def:C-atom}的复值平方原子空间
+\(H^1_{\mathrm{at}}\)，并取\cref{b2:def:C-bmo}的复值 BMO 空间。
+对 \(b\in\mathrm{BMO}\)，有限原子和上的配对
+\[
+ \Lambda_b(f)=\int_{\mathbb R^d}f(x)b(x)\,\mathrm dx
+\]
+唯一延拓为 \(H^1_{\mathrm{at}}\) 上的连续复线性泛函。每个连续复线性泛函均可如此表示，且表示函数恰在相差一个复常数的意义下唯一。
+存在只依赖 \(d\) 的常数 \(C_d\)，使
+\[
+ \|b\|_{\mathrm{BMO}}
+ \le\|\Lambda_b\|_{(H^1_{\mathrm{at}})^*}
+ \le C_d\|b\|_{\mathrm{BMO}}.
+\]
+因此 \((H^1_{\mathrm{at}})^*\) 与按模常数解释的
+\(\mathrm{BMO}\) 等价同构。一般 \(f\) 的配对由连续延拓定义，不预先要求
+\(fb\in L^1\)。
 \end{theorem}
 \begin{proof}
-John–Nirenberg 的 \(r=2\) 结论和零平均给出
+先由 BMO 函数构造泛函。\cref{b2:thm:C-john-nirenberg}的
+\(r=2\) 结论说明 \(b\in L^2_{\mathrm{loc}}\)，并给出
 \[
- |\int ab|=|\int_Q a(b-b_Q)|
- \le\|a\|_2\|b-b_Q\|_2\le C\|b\|_{\mathrm{BMO}}.
+\begin{aligned}
+ \left|\int ab\right|
+ &=\left|\int_Qa(b-b_Q)\right|\\
+ &\le\|a\|_2\cdot\|b-b_Q\|_{L^2(Q)}
+ \le C_d\|b\|_{\mathrm{BMO}}.
+\end{aligned}
 \]
-对原子级数，定义 \(\Lambda_b(f)=\sum_j\lambda_j\int a_jb\)，上界保证绝对收敛。还需检查表示无关性。先对实 \(b\) 作有界截断 \(b_N=\max\{-N,\min\{b,N\}\}\)。截断为一 Lipschitz 函数，故 \(\|b_N\|_{\mathrm{BMO}}\leq2\|b\|_{\mathrm{BMO}}\)：以截断后的 \(b_Q\) 作比较常数，再换成真正平均至多再损失因子二。对复 \(b\) 分别截断实部、虚部，常数仍统一。若一个原子级数在 \(L^1\) 中和为零，则对有界 \(b_N\) 的配对为零；逐个原子用局部 \(L^2\) 收敛，全部级数用统一原子界与可和系数，令 \(N\to\infty\)，得到其对 \(b\) 的配对也为零。因此定义不依赖表示。再取系数和的下确界，得到连续泛函。一般配对如此定义，不要求任意 \(fb\) 的绝对积分预先有意义。
+因此对任何原子表示 \(f=\sum_j\lambda_ja_j\)，数值级数
+\(\sum_j\lambda_j\int a_jb\) 绝对收敛。不过，同一个 \(f\) 可能有不同表示，单有这个上界还不够。
 
-反向设 \(\Lambda\) 为连续泛函。对支撑于 \(Q\)、零平均的 \(f\in L^2\)，把 \(f\) 除以 \(|Q|^{1/2}\|f\|_2\) 就是原子，所以
-\(|\Lambda(f)|\le\|\Lambda\||Q|^{1/2}\|f\|_2\)。
-在 \(L^2_0(Q)\) 上的 Riesz 表示给出一个局部 \(L^2\) 函数 \(b_Q\)，使 \(\Lambda(f)=\int fb_Q\)，并有
-\(\|b_Q-(b_Q)_Q\|_2\le\|\Lambda\||Q|^{1/2}\)。
-对包含关系 \(Q\subset Q'\)，两表示在 \(L^2_0(Q)\) 上相同，所以其差在 \(Q\) 上为常数。选一列递增立方体覆盖全空间，逐个调整常数，就拼成一个 \(b\in L^2_{\mathrm{loc}}\)。
-对任意立方体，用同一 Riesz 界和 Cauchy–Schwarz 得
-\(|Q|^{-1}\int_Q|b-b_Q|\le\|\Lambda\|\)，故 \(b\in\mathrm{BMO}\)。配对在所有原子上相同，因此在整个空间相同。若两个 \(b\) 表示同一泛函，其差在每个立方体与所有零平均 \(L^2\) 函数正交，故为全局常数。
+先处理截断。对实数定义
+\(\tau_N(t)=\max\{-N,\min\{t,N\}\}\)，它是一 Lipschitz 函数。
+若 \(v\) 为实值 BMO 函数，以 \(\tau_N(v_Q)\) 作比较常数，得
+\[
+\begin{aligned}
+ \frac1{|Q|}\int_Q
+       |\tau_N(v)-(\tau_N(v))_Q|
+ &\le\frac2{|Q|}\int_Q|\tau_N(v)-\tau_N(v_Q)|\\
+ &\le\frac2{|Q|}\int_Q|v-v_Q|.
+\end{aligned}
+\]
+第一步用了平均值与任何比较常数之间的距离不超过相应平均绝对偏差。
+因此截断满足
+\[
+ \|\tau_N(v)\|_{\mathrm{BMO}}\le2\|v\|_{\mathrm{BMO}}.
+\]
+对复值 \(b\)，令
+\[
+ b^{(N)}=\tau_N(\operatorname{Re}b)
+           +\mathrm i\,\tau_N(\operatorname{Im}b).
+\]
+实部、虚部的 BMO 半范数分别不超过 \(\|b\|_{\mathrm{BMO}}\)，所以
+\[
+ \|b^{(N)}\|_{\mathrm{BMO}}\le4\|b\|_{\mathrm{BMO}}.
+\]
+同时 \(b^{(N)}\) 有界，逐点趋于 \(b\)，且
+\(|b^{(N)}-b|\le |b|\)。由局部平方可积性与支配收敛，
+\(b^{(N)}\to b\) 于每个立方体的 \(L^2\)，从而对每个固定原子
+\(\int a_jb^{(N)}\to\int a_jb\)。
+
+现在设一个绝对可求和的原子级数在 \(L^1\) 中和为零。
+对每个固定 \(N\)，有界函数 \(b^{(N)}\) 可以与 \(L^1\) 极限配对，故
+\[
+ \sum_j\lambda_j\int a_jb^{(N)}=0.
+\]
+各项又被
+\(4C_d|\lambda_j|\cdot\|b\|_{\mathrm{BMO}}\) 统一控制，且这个控制序列可求和。先截去系数尾部，再对有限项令 \(N\to\infty\)，便得
+\(\sum_j\lambda_j\int a_jb=0\)。把同一函数的两个表示相减，正是这种零级数。因此配对与表示无关。合并表示证明线性，取系数和的下确界得
+\[
+ |\Lambda_b(f)|\le C_d\|b\|_{\mathrm{BMO}}\cdot\|f\|_{\mathrm{at}}.
+\]
+在有限原子和上，它就是普通积分，因为此时 \(f\) 有有界支集且平方可积，而 \(b\) 局部平方可积；有限原子和的稠密性给出延拓的唯一性。
+
+反向设 \(\Lambda\in(H^1_{\mathrm{at}})^*\)，记其范数为 \(M\)。
+对每个轴平行立方体 \(Q\)，考虑闭 Hilbert 子空间
+\[
+ E_Q=\left\{\,h\in L^2(Q;\mathbb C):
+                   \int_Qh=0\,\right\}.
+\]
+它是闭的，因为 \(\left|\int_Qh\right|\le |Q|^{1/2}\cdot\|h\|_2\)。
+把 \(h\) 在 \(Q\) 外补零后，前一命题给出
+\[
+ |\Lambda(h)|\le M\cdot|Q|^{1/2}\cdot\|h\|_2.
+\]
+在 \(E_Q\) 上应用 Hilbert 空间的 Riesz 表示，得到唯一
+\(v_Q\in E_Q\)，使
+\(\Lambda(h)=\int_Qh\overline{v_Q}\)，且
+\(\|v_Q\|_2\le M\cdot|Q|^{1/2}\)。
+令 \(u_Q=\overline{v_Q}\)，就有
+\[
+ \int_Qu_Q=0,\quad
+ \Lambda(h)=\int_Qhu_Q,\quad
+ \|u_Q\|_2\le M\cdot|Q|^{1/2}.
+\]
+这样保留了所需的双线性配对，而不把 Riesz 内积中的共轭漏掉。
+
+若 \(Q\subset Q'\)，则 \(u_{Q'}|_Q-u_Q\) 与 \(E_Q\) 中全部函数的双线性配对为零。写
+\(w=u_{Q'}|_Q-u_Q\)，取
+\(h=\overline{w-w_Q}\in E_Q\)，得到
+\(\int_Q|w-w_Q|^2=0\)。故两个局部代表在 \(Q\) 上只差一个常数。
+取递增立方体
+\(Q_k=(-2^k,2^k)^d\)，覆盖全空间。先固定 \(u_{Q_1}\) 的常数，再逐次调整
+\(u_{Q_{k+1}}\) 的常数，使它在 \(Q_k\) 上等于前一个已调整代表。
+由于只有可数次拼接，可以除去一个共同零测集，得到
+\(b\in L^2_{\mathrm{loc}}(\mathbb R^d)\)。
+
+必须在任意立方体上取得平均振荡界，而不只是在这列 \(Q_k\) 上。
+给定任意 \(Q\)，取 \(k\) 使 \(Q\subset Q_k\)。在 \(E_Q\) 上，
+\(b|_Q\) 与 \(u_Q\) 表示同一个 \(\Lambda\)，所以二者仍只差常数。
+又因 \(\int_Qu_Q=0\)，必有
+\[
+ b-b_Q=u_Q\quad\text{在 }Q\text{ 上几乎处处}.
+\]
+于是
+\[
+ \frac1{|Q|}\int_Q|b-b_Q|
+ \le |Q|^{-1/2}\cdot\|u_Q\|_2\le M.
+\]
+这证明 \(b\in\mathrm{BMO}\)，且 \(\|b\|_{\mathrm{BMO}}\le M\)。
+对任意原子，局部表示给出 \(\Lambda(a)=\int ab=\Lambda_b(a)\)；
+再由有限原子和的稠密性，得到 \(\Lambda=\Lambda_b\)。
+
+若 \(b,\widetilde b\) 表示同一泛函，则 \(b-\widetilde b\) 在每个
+\(Q\) 上与全部 \(E_Q\) 配对为零。用同样的
+\(\overline{w-w_Q}\) 测试，说明差在每个 \(Q\) 上为常数，再由递增立方体覆盖得到一个全局常数。反之，常数与所有原子配对为零。
+最后将反向构造用于 \(\Lambda_b\)，所得代表与原来的 \(b\) 只差常数，因此
+\(\|b\|_{\mathrm{BMO}}\le\|\Lambda_b\|\)，完成两侧范数估计。
 \end{proof}
-经典实变量 \(H^1\) 也可由 Poisson 极大函数或 Riesz 变换定义。其与上述原子空间的等价需要原子分解定理；本附录将它作为进一步阅读方向，见 \cite{Stein1993Harmonic,Grafakos2014Modern}，而不把该等价偷偷用在已证对偶中。
+
+经典实变量 \(H^1\) 也可由 Poisson 极大函数或 Riesz 变换定义。
+其与上述原子空间的等价需要原子分解定理。本附录将它作为进一步阅读方向，可查
+Elias M. Stein 的《Harmonic Analysis: Real-Variable Methods, Orthogonality, and Oscillatory Integrals》\cite{Stein1993Harmonic}与
+Loukas Grafakos 的《Modern Fourier Analysis》\cite{Grafakos2014Modern}；该等价没有作为刚才对偶证明的前提。
+
+\ProseParagraphBreak
+
+一个显式原子可以显示尺度抵消如何工作。在直线上令
+\[
+ a_r(x)=\frac1{2r}
+       \bigl(\mathbf1_{(0,r)}-\mathbf1_{(r,2r)}\bigr),
+ \quad r>0.
+\]
+它支撑于 \((0,2r)\)，积分为零，且
+\(\|a_r\|_2=(2r)^{-1/2}\)，故为平方原子。对
+\(b(x)=\log|x|\)，用原函数 \(x\log x-x\) 得
+\[
+\begin{aligned}
+ \int_0^r\log x\,\mathrm dx&=r\log r-r,\\
+ \int_r^{2r}\log x\,\mathrm dx
+ &=2r\log(2r)-r\log r-r,\\
+ \int_{\mathbb R}a_r(x)b(x)\,\mathrm dx&=-\log2.
+\end{aligned}
+\]
+虽然 \(b\) 在原点无界且 \(a_r\) 随 \(r\downarrow0\) 越来越高，配对不随尺度增长；公共的 \(\log r\) 项恰因零平均消失。
+若去掉负半块，只留下 \((2r)^{-1}\mathbf1_{(0,r)}\)，配对就变为
+\((\log r-1)/2\)。这时失去的正是原子的零平均条件。
 
 
-\section{奇异积分原子界与 \(T1\) 思想}
-
+\section{奇异积分原子界与 \texorpdfstring{\(T1\)}{T1} 思想}
 \label{b2:sec:app-C-4}
 
+原子的平方归一化适合控制支集附近，零平均适合控制远场。
+将这两部分分开，可以得到普通 \(L^1\) 输入未必具有的可积输出。
+这里从一个已经在 \(L^2\) 上有界的算子出发；本节末尾的
+\(T1\) 思想才讨论怎样反过来建立这个平方界。
 
-\begin{proposition}\label{b2:prop:C-atom-cz}
-\chapref{b2:ch:18}的标准 Calderón–Zygmund 算子满足
-\(\|Ta\|_1\le C\)，其中 \(a\) 为任意上述原子。故
-\(T:H^1_{\mathrm{at}}\to L^1\) 有界。
+\Needspace{6\baselineskip}
+\begin{proposition}[奇异积分的原子界]
+\label{b2:prop:C-atom-cz}
+设整数 \(d\ge1\)、\(0<\delta\le1\)。设
+\(T:L^2(\mathbb R^d;\mathbb C)\to L^2(\mathbb R^d;\mathbb C)\)
+为复线性算子，\(\|T\|_{2\to2}\le N<\infty\)。
+其对角线外的可测核 \(K\) 满足标准条件
+\[
+ |K(x,y)|\le A_0|x-y|^{-d}\quad(x\ne y),
+\]
+\[
+\begin{aligned}
+ &|K(x,y)-K(x',y)|+|K(y,x)-K(y,x')|\\
+ &\quad\le A_1\frac{|x-x'|^\delta}{|x-y|^{d+\delta}}
+ \quad\left(|x-x'|\le\frac{|x-y|}{2},\ x\ne y\right),
+\end{aligned}
+\]
+其中 \(A_0,A_1\ge0\) 有限。假设对每个紧支集
+\(h\in L^2\)，在其支集外几乎处处有
+\(Th(x)=\int K(x,y)\cdot h(y)\,\mathrm dy\)。
+则对\cref{b2:def:C-atom}的每个平方原子 \(a\)，
+\[
+ \|Ta\|_1\le C_{d,\delta}(N+A_1).
+\]
+\cref{b2:thm:18-cz-weak}给出的唯一弱型延拓
+\(T_1:L^1\to L^{1,\infty}\) 在原子空间上满足
+\[
+ \|T_1f\|_1\le C_{d,\delta}(N+A_1)\|f\|_{\mathrm{at}}
+ \quad(f\in H^1_{\mathrm{at}}).
+\]
+它的原子级数输出与表示无关，并在
+\(H^1_{\mathrm{at}}\cap L^2\) 上等于原来的 \(L^2\) 算子。
 \end{proposition}
 \begin{proof}
-在固定扩大立方体 \(Q^*\) 内，
-\(\int_{Q^*}|Ta|\le|Q^*|^{1/2}\|T\|_{2\to2}\|a\|_2\le C\)。
-在外部用原子零平均减去中心核：
+设原子 \(a\) 支撑于边长 \(\ell\)、中心 \(c_Q\) 的立方体 \(Q\)，取同中心扩大立方体
+\(Q^*=8\sqrt d\,Q\)。在近区用 Cauchy--Schwarz 与平方算子界：
 \[
- Ta(x)=\int_Q[K(x,y)-K(x,c_Q)]a(y)\,\mathrm dy.
+\begin{aligned}
+ \int_{Q^*}|Ta(x)|\,\mathrm dx
+ &\le |Q^*|^{1/2}\cdot\|Ta\|_2\\
+ &\le N\cdot|Q^*|^{1/2}\cdot\|a\|_2\\
+ &\le N\left(\frac{|Q^*|}{|Q|}\right)^{1/2}
+ \le C_dN.
+\end{aligned}
 \]
-核光滑条件积分后给出
-\(\int_{(Q^*)^c}|Ta|\le C\|a\|_1\le C\)。
-对有限原子和得范数界。为了确认绝对原子级数的输出与表示无关，可用 \(L^2\) 伴随测试：对 \(\varphi\in C_c^\infty\)，原子界给出 \(|\int a\,T^*\varphi|\leq C\|\varphi\|_\infty\)。具体地，在任意 \(Q\) 上令 \(b=T^*\varphi-(T^*\varphi)_Q\)，选原子 \(a=\overline b/(|Q|^{1/2}\|b\|_2)\)（零函数另处理），就得到 \(|Q|^{-1/2}\|b\|_2\leq C\|\varphi\|_\infty\)。Cauchy--Schwarz 因而直接给出 \(T^*\varphi\) 的 BMO 界。此处不预设一个已在整个原子空间上定义的泛函。若输入原子级数在 \(L^1\) 中和为零，其与该 BMO 函数的配对为零，故输出级数与所有测试函数配对为零。输出在 \(L^1\) 中绝对收敛，因此等于零。这建立表示无关性和有界延拓；在有限原子和上它与给定 \(L^2\) 算子相同。
+最后一步表明输入所在立方体的尺度已经相消。
+
+若 \(x\notin Q^*\)、\(y\in Q\)，则
+\[
+ |x-c_Q|\ge4\sqrt d\,\ell,
+ \quad |y-c_Q|\le\frac{\sqrt d}{2}\ell
+ \le\frac{|x-c_Q|}{8}.
+\]
+因此输入变量的核差分条件可以用于 \(y\) 与 \(c_Q\)。
+支集外表示及 \(\int a=0\) 给出
+\[
+ Ta(x)=\int_Q[K(x,y)-K(x,c_Q)]\cdot a(y)\,\mathrm dy
+\]
+几乎处处成立，且
+\[
+ |Ta(x)|
+ \le C_dA_1\frac{\ell^\delta}{|x-c_Q|^{d+\delta}}\|a\|_1.
+\]
+把补集放大为相应球的外部，再作径向积分，
+\[
+\begin{aligned}
+ \int_{(Q^*)^c}|Ta(x)|\,\mathrm dx
+ &\le C_dA_1\ell^\delta\cdot\|a\|_1
+       \int_{4\sqrt d\,\ell}^\infty r^{-1-\delta}\,\mathrm dr\\
+ &\le C_{d,\delta}A_1\|a\|_1
+ \le C_{d,\delta}A_1.
+\end{aligned}
+\]
+正的 \(\delta\) 使无穷远的积分收敛。
+若只保留核的大小条件，所得积分会是
+\(\int^\infty r^{-1}\,\mathrm dr\)；零平均带来的核差分正好补上这一缺口。
+合并近、远两区即得原子界。
+
+现在固定一个原子表示
+\(f=\sum_j\lambda_ja_j\)，并令
+\(f_m=\sum_{j=1}^m\lambda_ja_j\)。
+原子界说明 \(\sum_j\lambda_jTa_j\) 在 \(L^1\) 中绝对收敛，记其和为 \(G\)。
+另一方面，\(\|a_j\|_1\le1\) 说明 \(f_m\to f\) 于 \(L^1\)，且每个
+\(f_m\in L^1\cap L^2\)。
+本命题的核及支集外表示条件，正是\cref{b2:thm:18-cz-weak}所需条件。
+使用该定理已经构造的延拓，有
+\[
+ Tf_m=T_1f_m\longrightarrow T_1f
+ \quad\text{于 }L^{1,\infty}.
+\]
+这里不要求 \(f_m\) 在 \(L^2\) 中收敛，也不重新构造另一套原子延拓。
+
+为识别两个输出极限，记\chapref{b2:ch:18}的弱型常数为
+\(W=C_{d,\delta}(N+A_0+A_1)\)。对任意 \(\varepsilon>0\)，
+\[
+\begin{aligned}
+ |\{\,|G-T_1f|>\varepsilon\,\}|
+ &\le |\{\,|G-Tf_m|>\varepsilon/2\,\}|\\
+ &\quad+|\{\,|T_1f_m-T_1f|>\varepsilon/2\,\}|\\
+ &\le\frac2\varepsilon\|G-Tf_m\|_1
+       +\frac{2W}{\varepsilon}\|f_m-f\|_1
+ \longrightarrow0.
+\end{aligned}
+\]
+故 \(G=T_1f\) 几乎处处。任何原子表示都必须得到这个相同输出，从而
+\[
+ \|T_1f\|_1\le C_{d,\delta}(N+A_1)\sum_j|\lambda_j|.
+\]
+对系数和取下确界即得所需界。
+最后 \(H^1_{\mathrm{at}}\subset L^1\)，而\chapref{b2:ch:18}的 \(T_1\) 在
+\(L^1\cap L^2\) 上等于原算子，所以在
+\(H^1_{\mathrm{at}}\cap L^2\) 上也一致。
 \end{proof}
-对偶路线提示 \(L^\infty\) 输出应由 BMO 控制，但要精确定义 \(T\) 对非衰减输入的作用，通常须减去远场常数，并按模常数解释。这一规范化不是普通绝对积分。
+
+大小常数 \(A_0\) 用来保证支集分离时核积分的合法性，弱型识别也保留了它；
+原子强 \(L^1\) 估计本身则只使用平方范数 \(N\) 与光滑常数 \(A_1\)。
+这些作用分开后，才能看清范数怎样随算子的倍数缩放。
 
 \ProseParagraphBreak
-\(T1\) 思想反过来问：能否由核的标准条件、局部弱有界性以及 \(T1,T^*1\) 的 BMO 行为推出 \(L^2\) 有界性？其中常数输入检测低频抵消，弱有界性检测对角附近的局部作用，核条件检测支撑分离后的行为。三个部分相互补充。一般 \(T1\) 定理的完整算子演算不在此建立，系统理论可参看 \cite{Stein1993Harmonic}；不能只验证 \(T1=0\) 就认定所有必要假设已满足。
+
+另一端是有界输入。对 \(f\in L^\infty(\mathbb R^d)\)，远场核通常不是绝对可积的，因此不能直接把 \(Tf(x)\) 写成全空间普通积分。
+但是 BMO 只比较局部振荡；把远场在一个参考点处的值减掉，核差分便重新可积。以下直接构造这个模常数输出。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[有界输入的 BMO 输出]
+\label{b2:prop:C-linfty-bmo}
+设整数 \(d\ge1\)、\(0<\delta\le1\)。设 \(T\) 为
+\cref{b2:thm:18-cz-operator-definition}所定义的标准
+Calderón--Zygmund 算子：它在复 \(L^2(\mathbb R^d)\) 上有界，
+\(\|T\|_{2\to2}\le N\)，核的大小、两个变量的
+\(\delta\)-Hölder 常数分别为有限的 \(A_0,A_1\)，并对每个紧支集
+\(L^2\) 输入具有支集外核表示。
+对每个 \(f\in L^\infty(\mathbb R^d;\mathbb C)\)，存在自然的模常数输出
+\(\widetilde Tf\in\mathrm{BMO}/\{\text{常数}\}\)，使
+\[
+ \|\widetilde Tf\|_{\mathrm{BMO}}
+ \le C_{d,\delta}(N+A_1)\|f\|_\infty.
+\]
+具体地，对任意轴平行立方体 \(Q\)，令 \(c_Q\) 为其中心、
+\(Q^*=8\sqrt d\,Q\)。输出在 \(Q\) 上的代表可取
+\[
+\begin{aligned}
+ F_Q(x)&=T(f\cdot\mathbf1_{Q^*})(x)\\
+ &\quad+\int_{(Q^*)^c}[K(x,y)-K(c_Q,y)]\cdot f(y)\,\mathrm dy
+ \quad(x\in Q).
+\end{aligned}
+\]
+不同立方体上的这些代表在重叠处只差常数，可以拼接成一个局部平方可积函数。
+该模常数映射复线性；若 \(f\in L^\infty\cap L^2\)，它与原来的
+\(Tf\) 相差一个全局常数。
+\end{proposition}
+\begin{proof}
+首先验证公式有意义。局部输入 \(f\cdot\mathbf1_{Q^*}\) 属于 \(L^2\)，故其
+\(T\) 像属于 \(L^2\)。对 \(x\in Q\)、\(y\notin Q^*\)，第一变量的光滑条件给出
+\[
+ |K(x,y)-K(c_Q,y)|
+ \le A_1\frac{|x-c_Q|^\delta}{|y-c_Q|^{d+\delta}}.
+\]
+与原子远场相同的径向积分说明
+\[
+ \sup_{x\in Q}
+ \int_{(Q^*)^c}|K(x,y)-K(c_Q,y)|\cdot|f(y)|\,\mathrm dy
+ \le C_{d,\delta}A_1\|f\|_\infty.
+\]
+因此远场绝对收敛且在 \(Q\) 上有界，\(F_Q\in L^2(Q)\)。
+又由平均振荡至多为平均绝对值的两倍，
+\[
+\begin{aligned}
+ \frac1{|Q|}\int_Q|F_Q-(F_Q)_Q|
+ &\le\frac2{|Q|}\int_Q|F_Q|\\
+ &\le2|Q|^{-1/2}N\|f\cdot\mathbf1_{Q^*}\|_2
+        +C_{d,\delta}A_1\|f\|_\infty\\
+ &\le C_{d,\delta}(N+A_1)\|f\|_\infty.
+\end{aligned}
+\]
+此时得到了各局部公式的振荡界，还须说明它们属于同一个全局模常数函数。
+
+取两个立方体 \(Q,P\)，以及足够大的有界立方体 \(D\)，使
+\(Q^*\cup P^*\subset D\)。对 \(x\in Q\)，支集外表示给出
+\[
+\begin{aligned}
+ T(f\cdot\mathbf1_D)(x)
+ &-\int_{D\setminus Q^*}K(c_Q,y)\cdot f(y)\,\mathrm dy\\
+ &=T(f\cdot\mathbf1_{Q^*})(x)
+   +\int_{D\setminus Q^*}
+        [K(x,y)-K(c_Q,y)]\cdot f(y)\,\mathrm dy.
+\end{aligned}
+\]
+这里对每个有限 \(D\)，只对有界支集输入使用了 \(T\)，全部核积分离开对角线。
+让 \(D\) 沿同一列大立方体增至全空间，右侧趋于 \(F_Q\)，且远场尾在
+\(Q\) 上一致趋零。对 \(P\) 使用同一 \(D\)，在 \(Q\cap P\) 上相减，得到
+\[
+\begin{aligned}
+ F_Q(x)-F_P(x)
+ =\int_{\mathbb R^d}
+ &\left[\mathbf1_{(P^*)^c}(y)K(c_P,y)\right.\\
+ &\left.\quad-\mathbf1_{(Q^*)^c}(y)K(c_Q,y)\right]
+ f(y)\,\mathrm dy.
+\end{aligned}
+\]
+这整个差分积分绝对收敛：每个参考点附近由相应的外部示性函数删去了奇性，
+有界的剩余区域使用大小条件；充分远处则成为
+\(K(c_P,y)-K(c_Q,y)\)，由光滑性取得额外的
+\(|y|^{-\delta}\) 衰减。右侧与 \(x\) 无关，所以两个代表在重叠处只差常数。
+
+现在取一列递增立方体覆盖全空间，逐次调整各 \(F_Q\) 的加法常数，使相邻代表在较小立方体上相同。这与上一节局部 Riesz 代表的拼接一样，得到
+\(F\in L^2_{\mathrm{loc}}\)。任意另一个立方体 \(P\) 都包含于穷竭中的某个立方体，所以上述相容性使 \(F|_P\) 与 \(F_P\) 只差常数。
+局部振荡估计因而对每个 \(P\) 都适用，给出
+\(\|F\|_{\mathrm{BMO}}\le C_{d,\delta}(N+A_1)\|f\|_\infty\)。
+不同穷竭和初始常数所得函数仍在每个立方体上只差常数，由覆盖可知是同一个全局常数。以该等价类定义 \(\widetilde Tf\)。
+局部公式关于 \(f\) 复线性，因此模常数映射也复线性。
+
+最后设 \(f\in L^\infty\cap L^2\)。固定 \(Q\)，让 \(D\) 增大时，
+\(T(f\cdot\mathbf1_D)\to Tf\) 于 \(L^2\)。
+上面的减常数表达式又在 \(L^2(Q)\) 中趋于 \(F_Q\)，因为其远场尾一致趋零。
+因此两个极限的差 \(Tf-F_Q\) 在 \(Q\) 上是常数：常数函数组成
+\(L^2(Q)\) 中的闭一维子空间。拼接后即知 \(Tf-F\) 是全局常数。
+\end{proof}
+
+这个构造只减去远场常数。靠近对角线的部分仍由已经给定的
+\(L^2\) 算子定义，没有把一个一般核积分强行解释为主值。
+特别地，常数输入 \(f=1\) 得到的是一个 BMO 类，通常没有由此指定绝对的点值归一化。
+
+\ProseParagraphBreak
+
+伴随的角色也可以说明清楚。若 \(T^*\) 是复 \(L^2\) 内积下的伴随，
+则其核为
+\[
+ K^*(x,y)=\overline{K(y,x)}.
+\]
+两个变量的标准光滑条件在这里互换，因此同样的原子界适用于
+\(T^*\)。若用双线性积分检验 \(Tf\)，自然出现的转置是
+\[
+ T^{\mathrm t}a=\overline{T^*(\overline a)}.
+\]
+对 \(f\in L^\infty\cap L^2\) 和有限原子和 \(a\)，Hilbert 伴随关系给出
+\[
+ \int (Tf)a=\int f(T^{\mathrm t}a).
+\]
+右侧受
+\(\|f\|_\infty\cdot\|T^{\mathrm t}a\|_1\) 控制，所以原子对偶与刚才的
+BMO 输出界相吻合。这里分别写出伴随和转置，是为了保留复共轭的位置；双线性配对不能直接写成一个未经共轭调整的 Hilbert 伴随公式。
+
+\ProseParagraphBreak
+
+\(T1\) 思想反过来问：若一开始只给定测试函数上的算子及其对角线外标准核，能否由局部测试与常数输入的抵消性质推出 \(L^2\) 有界性？
+此时有三种不同的信息需要核对。标准核条件控制输入、输出支集分离后的行为，却不决定对角线上的局部作用。例如添加一个乘法算子，会改变算子而不改变支集外核。局部弱有界性正是检验这种近区作用：对支撑在同一立方体 \(Q\)、由固定尺度光滑函数伸缩得到的归一化测试函数
+\(\varphi_Q,\psi_Q\)，常用测试具有
+\[
+ \left|\left\langle T\varphi_Q,\overline{\psi_Q}\right\rangle\right|
+ \le C|Q|
+\]
+这样的尺度。归一化包括统一的支集与所需有限阶导数控制；尖括号在输出还只是分布时按分布配对解释。
+
+\ProseParagraphBreak
+
+第三种信息是 \(T1\) 与 \(T^*1\) 的 BMO 行为。它们分别检测算子及其形式伴随对常数背景的响应，因而两个方向都要保留。由于 \(1\) 没有紧支集，必须先用截断与远场减常数说明这些分布如何定义，再核查它们是否具有 BMO 代表。反向判据中不能调用本节已经以 \(L^2\) 有界性为前提证明的输出结论，否则会形成循环。核条件、弱有界性与两个常数输入测试分别承担远区、近区和低频抵消的作用，不能只验证 \(T1=0\) 就认定其余假设成立。
+
+\ProseParagraphBreak
+
+这里给出的是判据所需信息的概念导引，没有证明一般
+\(T1\) 定理的充分性及其完整分解。系统理论可继续阅读
+Elias M. Stein 的《Harmonic Analysis: Real-Variable Methods, Orthogonality, and Oscillatory Integrals》\cite{Stein1993Harmonic}。
 
 
-\section{权、\(A_p\) 条件与加权理论}
-
+\section{\texorpdfstring{\(A_p\)}{Aₚ} 权与加权极大函数}
 \label{b2:sec:app-C-5}
 
-
-权 \(w\) 指几乎处处正、局部可积的函数，
-\(\|f\|_{L^p(w)}^p=\int|f|^pw\)。对 \(1<p<\infty\)，定义
-\[
- [w]_{A_p}=\sup_Q
- \left(\frac1{|Q|}\int_Qw\right)
- \left(\frac1{|Q|}\int_Qw^{-1/(p-1)}\right)^{p-1}<\infty.
-\]
-\symidx{\([w]_{A_p}\)：Muckenhoupt 权常数}
-这称为\term[muckenhoupt-quan]{Muckenhoupt 权}[Muckenhoupt weight]条件。
-\(A_1\) 则定义为 \(Mw\le Cw\) 几乎处处（使用一致的立方体极大算子）。
-
-\begin{proposition}\label{b2:prop:C-ap-necessary}
-若非中心极大算子在 \(L^p(w)\) 上有界，\(1<p<\infty\)，则 \(w\in A_p\)。
-\end{proposition}
-\begin{proof}
-在立方体 \(Q\) 上取 \(f=w^{-1/(p-1)}\mathbf1_Q\)，先取 \(f_N=\min(w^{-1/(p-1)},N)\mathbf1_Q\)。它满足 \(f_N^{p-1}w\leq1\)，所以 \(\int f_N^pw\leq\int f_N\)；在有限 \(Q\) 上两者均有限。对 \(x\in Q\)，有 \(Mf(x)\ge |Q|^{-1}\int_Qf\)。
-代入范数界得到
-\[
- |Q|^{-p}\left(\int_Qw^{-1/(p-1)}\right)^p\int_Qw
- \le C^p\int_Qw^{-1/(p-1)}.
-\]
-截断极限用单调收敛，先确认该逆权积分有限：令 \(F_N=\int_Qf_N\)，截断界给出 \(|Q|^{-p}F_N^p w(Q)\leq C^pF_N\)。因 \(w(Q)>0\)，除去 \(F_N>0\) 后可得 \(F_N\) 的统一上界。除去正因子即得到 \(A_p\) 条件。
-\end{proof}
-对于幂权 \(w(x)=|x|^\alpha\)，条件恰为
-\(-d<\alpha<d(p-1)\)。
-必要性来自原点附近权与逆权的局部可积性。充分性分两类立方体：远离原点者上 \(|x|\) 彼此可比，两个平均的幂相消；靠近原点者包含于半径 \(C\ell(Q)\) 的球，积分分别至多
-\(C\ell(Q)^{d+\alpha}\) 与
-\(C\ell(Q)^{d-\alpha/(p-1)}\)，除以体积后乘积也有统一界。
+无权极大函数把邻域中的质量平均到观察点，再用 Lebesgue 测度衡量输出的大小。若空间的不同位置具有不同的重要性，可以改用密度 \(w\) 来计算输入和输出范数。不过算子内部仍是原来的无权平均：输入集中在权很小的地方时，平均可能把它传播到权很大的地方。加权估计要限制的正是这种失衡，而不只是要求 \(w\) 为正。
 
 \ProseParagraphBreak
-一个更强但易于核验的权条件，可以直接给出充分性。设 \(w>0\) 几乎处，局部可积，并且对全部球 \(B\) 有
+
+本节固定整数 \(d\geq1\)。权是满足 \(0<w(x)<\infty\) 几乎处处的局部可积实函数，记
 \[
- \frac1{|B|}\int_Bw\leq A\,\operatorname*{ess\,inf}_B w.
+ w(E)=\int_Ew(x)\,\mathrm dx,\quad
+ \|f\|_{L^p(w)}
+       =\left(\int_{\mathbb R^d}|f(x)|^pw(x)\,\mathrm dx\right)^{1/p}.
 \]
-称它满足球形式的 \(A_1\) 条件。球与立方体的固定倍包含关系使其与立方体定义等价，常数只差维数因子。对立方体形式，直接以本性下确界估计逆权平均，可得 \([w]_{A_p}\leq[w]_{A_1}\)、\(p>1\)。所以这是全部开区间权条件的一种充分子类。
-\begin{proposition}\label{b2:prop:C-a1-maximal}
-若 \(w\) 满足上述条件，则中心极大函数满足
+每个有界立方体都具有有限且严格为正的权测度。权测度与 Lebesgue 测度的零集相同，因此两者的本性上确界相同；它们的积分大小通常并不等价。尤其一般 \(f\in L^p(w)\) 未必无权局部可积，后面将在真正使用无权平均之前补上这一步。
+
+\ProseParagraphBreak
+
+以 \(M_\mdlgwhtsquare\) 表示所有包含观察点的轴平行立方体所给出的非中心极大算子：
 \[
- \int_{\{Mf>\lambda\}}w\leq \frac{C_dA}{\lambda}\int|f|w.
+ M_\mdlgwhtsquare f(x)=\sup_{Q\ni x}\frac1{|Q|}\int_Q|f(y)|\,\mathrm dy.
 \]
-故对每个 \(1<p<\infty\)，\(M\) 在 \(L^p(w)\) 上有界。
+本卷原有的 \(M\) 表示中心球极大算子，非中心球版本记为 \(M_u\)。球与轴平行立方体的固定倍包含关系，以及
+\(B(a,r)\subset B(x,2r)\) 当 \(x\in B(a,r)\)，给出这三种算子之间只差维数常数的点态比较。比较使用的都是 Lebesgue 平均，所以也可以直接用于加权范数；本节不会在不同版本之间静默改变平均所用的测度。
+
+\subsection{权条件、逆权与局部正性}
+\label{b2:subsec:C-weight-conditions}
+
+\Needspace{6\baselineskip}
+\begin{definition}[\(A_p\) 与 \(A_1\) 权]
+\label{b2:def:C-ap-weight}
+设整数 \(d\geq1\)，\(w\) 为 \(\mathbb R^d\) 上几乎处处有限且严格为正的局部可积实函数。对 \(1<p<\infty\)，令
+\[
+ [w]_{A_p}
+ =\sup_Q
+       \left(\frac{w(Q)}{|Q|}\right)
+       \left(\frac1{|Q|}\int_Qw^{-1/(p-1)}\,\mathrm dx\right)^{p-1},
+\]
+其中上确界取全部有界轴平行立方体，逆权积分允许先取无穷值。若该常数有限，称 \(w\) 满足
+\term[muckenhoupt-quan]{Muckenhoupt 权}[Muckenhoupt weight]条件，记为 \(w\in A_p\)。
+
+\ProseParagraphBreak
+
+若存在有限常数 \(A\)，使
+\[
+ \frac{w(Q)}{|Q|}
+       \leq A\,\operatorname*{ess\,inf}_Qw
+       \quad\text{对每个轴平行立方体 }Q,
+\]
+则称 \(w\in A_1\)，满足此条件的最小常数记为 \([w]_{A_1}\)。
+\end{definition}
+\symidx{\([w]_{A_p}\)：Muckenhoupt 权常数}
+
+当 \(w\in A_p\)、\(1<p<\infty\) 时，记逆权
+\[
+ \sigma=w^{-1/(p-1)},\quad p'=\frac p{p-1}.
+\]
+因为 \(w(Q)>0\)，有限的 \(A_p\) 常数强迫每个 \(\sigma(Q)\) 有限；因此 \(\sigma\) 也为正局部可积密度。两个权在 Hölder 配对中恰好抵消：
+\[
+ \begin{aligned}
+ |Q|
+ &=\int_Qw^{1/p}\sigma^{1/p'}\,\mathrm dx\\
+ &\leq w(Q)^{1/p}\cdot\sigma(Q)^{1/p'}.
+ \end{aligned}
+\]
+所以 \([w]_{A_p}\geq1\)。同样，对 \(f\in L^p(w)\)，
+\[
+ \int_Q|f|
+ \leq
+ \left(\int_Q|f|^pw\right)^{1/p}
+ \cdot\sigma(Q)^{1/p'}<\infty,
+\]
+从而无权极大函数已在这个输入类上良好定义，尽管其值是否有限仍须后面的估计判断。
+
+\ProseParagraphBreak
+
+\(A_1\) 条件等价于
+\[
+ M_\mdlgwhtsquare w\leq[w]_{A_1}w
+       \quad\text{几乎处处}.
+\]
+从这条点态不等式出发，对固定 \(Q\) 取本性下确界即可得到平均条件。反向需要统一零集：先只取有理中心、有理边长的可数立方体族，每个平均条件只排除一个零集，合并后仍为零集。任意立方体都可由这一族中稍大的立方体逼近；局部可积性使积分与体积同时收敛，于是其极大平均与全体立方体的上确界相同。这就得到一条对所有平均都有效的几乎处处不等式。
+
+\ProseParagraphBreak
+
+若 \(w\in A_1\)，对每个有界立方体有
+\[
+ \operatorname*{ess\,inf}_Qw
+       \geq\frac{w(Q)}{[w]_{A_1}|Q|}>0.
+\]
+这是局部的正下界，不要求全空间存在同一个下界。令该下界为 \(m_Q\)，则
+\[
+ \frac1{|Q|}\int_Qw^{-1/(p-1)}
+       \leq m_Q^{-1/(p-1)},
+\]
+故 \([w]_{A_p}\leq[w]_{A_1}\) 对每个 \(p>1\) 成立。把立方体改成球定义 \(A_1\)，也得到同一类权：把球包含于体积至多固定倍的立方体，或反过来包含，再比较平均与本性下确界即可；两种 \(A_1\) 常数只差维数因子。
+
+\subsection{极大函数有界性的必要条件与幂权}
+\label{b2:subsec:C-ap-tests}
+
+\Needspace{6\baselineskip}
+\begin{proposition}[\(A_p\) 的必要性]
+\label{b2:prop:C-ap-necessary}
+设整数 \(d\geq1\)、\(1<p<\infty\)，\(w\) 为几乎处处有限且严格为正的局部可积实函数。若非中心立方体极大算子满足
+\[
+ \|M_\mdlgwhtsquare f\|_{L^p(w)}\leq K\|f\|_{L^p(w)}
+\]
+对所有有界紧支撑可测函数 \(f\) 成立，则 \(w\in A_p\)，且
+\([w]_{A_p}\leq K^p\)。因而任一中心或非中心球极大算子的
+\(L^p(w)\) 有界性也蕴含 \(w\in A_p\)。
 \end{proposition}
 \begin{proof}
-先取紧支集输入，且 \(\int|f|w<\infty\)。每个有限球的权平均为正，\(A_1\) 因而给出该球上正的本性下界，所以输入局部无权可积。对超水平集合的紧子集取平均超过 \(\lambda\) 的有限球覆盖，选出两两不交的球 \(B_j\)，其五倍球覆盖原紧集。权条件给出
+固定立方体 \(Q\)，形式上最能检测失衡的输入为
+\(w^{-1/(p-1)}\mathbf1_Q\)，但此时尚不知道逆权局部可积。必须先取
+\[
+ f_N=\min\{w^{-1/(p-1)},N\}\cdot\mathbf1_Q,\quad
+ F_N=\int_Qf_N\,\mathrm dx.
+\]
+这个输入有界且支撑有界，\(0<F_N<\infty\)，并满足
+\[
+ f_N^{p-1}w\leq1\quad\text{于 }Q,
+ \quad
+ \int_Qf_N^pw\leq F_N.
+\]
+对 \(x\in Q\)，同一个立方体的平均给出
+\(M_\mdlgwhtsquare f_N(x)\geq F_N/|Q|\)。代入假设得到
+\[
+ \frac{F_N^p}{|Q|^p}\cdot w(Q)\leq K^pF_N,
+\]
+即
+\[
+ \frac{w(Q)}{|Q|^p}F_N^{p-1}\leq K^p.
+\]
+由于 \(w(Q)>0\)，这首先给出 \(F_N\) 的统一有限上界。现在才可由单调收敛断言
+\[
+ \sigma(Q)=\int_Qw^{-1/(p-1)}\,\mathrm dx
+       =\lim_{N\to\infty}F_N<\infty.
+\]
+在最后一个不等式中取极限，得到
+\(w(Q)\cdot\sigma(Q)^{p-1}/|Q|^p\leq K^p\)。对 \(Q\) 取上确界即得结论。整个过程只除去了有限的正数 \(F_N\)，没有对尚未确定的无穷逆权积分作约分。
+
+球与立方体极大函数的点态比较把球版本的范数界转成上述假设，常数只多一个维数因子，因此也给出必要性。
+\end{proof}
+
+\Needspace{6\baselineskip}
+\begin{proposition}[幂权的准确范围]
+\label{b2:prop:C-power-weight}
+设整数 \(d\geq1\)、\(1<p<\infty\)、\(\alpha\in\mathbb R\)，在非零点令 \(w(x)=|x|^\alpha\)，在原点任选一个正的有限值。则
+\[
+ w\in A_p
+       \quad\Longleftrightarrow\quad
+       -d<\alpha<d(p-1).
+\]
+\end{proposition}
+\begin{proof}
+对任意实数 \(\gamma\)，原点附近
+\(|x|^\gamma\) 可积当且仅当 \(\gamma>-d\)；极坐标积分为
+\[
+ \int_{B(0,R)}|x|^\gamma\,\mathrm dx
+       =\frac{|S^{d-1}|}{d+\gamma}R^{d+\gamma}
+       \quad(\gamma>-d).
+\]
+\(\gamma=-d\) 时径向积分为 \(\int_0^Rr^{-1}\,\mathrm dr\)，已经发散。权本身与逆权
+\(|x|^{-\alpha/(p-1)}\) 均须局部可积，因此两个严格不等式都是必要的。
+
+现假设它们成立，记 \(\beta=-\alpha/(p-1)>-d\)。对中心为 \(c\)、边长为 \(\ell\) 的立方体 \(Q\)，令
+\(r=\sqrt d\,\ell/2\)，则 \(Q\subset B(c,r)\)。若
+\(|c|\geq2r\)，所有 \(x\in Q\) 满足
+\[
+ \frac{|c|}{2}\leq|x|\leq\frac{3|c|}{2}.
+\]
+因此两个平均分别至多为
+\(C_\alpha|c|^\alpha\) 与 \(C_\beta|c|^\beta\)，而
+\(\alpha+(p-1)\beta=0\)，其 \(A_p\) 乘积有统一上界。
+
+若 \(|c|<2r\)，则 \(Q\subset B(0,3r)\)。对
+\(\gamma=\alpha,\beta\) 分别使用球积分公式，
+\[
+ \frac1{|Q|}\int_Q|x|^\gamma\,\mathrm dx
+       \leq C_{d,\gamma}\ell^\gamma.
+\]
+这对负指数同样成立，因为使用的是整个原点球上的积分上界。相乘后 \(\ell\) 的幂再次消去，得到与 \(Q\) 无关的上界，证明充分性。常数可以依赖 \(\alpha,d,p\)，不声称在两个临界指数附近一致。
+\end{proof}
+
+这个例子同时检验局部可积性与平均失衡。正幂过大时，权在原点附近过小，逆权不再可积；负幂过小时，权本身已不构成局部有限密度。仅仅说“幂函数处处非负”，不能替代这两项检查。
+
+\subsection{\texorpdfstring{\(A_1\)}{A₁} 权的弱端点}
+\label{b2:subsec:C-a1-endpoint}
+
+\Needspace{6\baselineskip}
+\begin{proposition}[\(A_1\) 加权极大函数界]
+\label{b2:prop:C-a1-maximal}
+设整数 \(d\geq1\)，\(w\) 为几乎处处有限且严格为正的局部可积实函数。假设存在有限常数 \(A\)，使每个球 \(B\subset\mathbb R^d\) 满足
+\[
+ \frac{w(B)}{|B|}
+       \leq A\,\operatorname*{ess\,inf}_Bw.
+\]
+令 \(M\) 为中心球极大算子。则对 \(f\in L^1(w)\)、\(\lambda>0\)，
+\[
+ w(\{Mf>\lambda\})
+       \leq\frac{C_dA}{\lambda}\int_{\mathbb R^d}|f|w.
+\]
+对每个 \(1<p<\infty\)，还存在仅依赖 \(d,p\) 的常数，使
+\[
+ \|Mf\|_{L^p(w)}
+       \leq C_{d,p}A^{1/p}\|f\|_{L^p(w)}.
+\]
+非中心球及立方体极大算子也有相应估计，常数允许改变维数因子。
+\end{proposition}
+\begin{proof}
+每个有界球的权平均为正，故球条件给出该球上严格为正的本性下界。因此 \(f\in L^1(w)\) 在每个球上也无权可积，所使用的极大平均确实有定义。
+
+对超水平集的一个紧子集 \(K\)，为每个 \(x\in K\) 选择中心在 \(x\)、平均超过 \(\lambda\) 的球，再取有限子覆盖。按半径从大到小选球，每次舍去与已选球相交的球，得到两两不交的 \(B_j\)，其五倍球覆盖 \(K\)。球条件给出
 \[
  \begin{aligned}
  w(5B_j)
- &\leq A\,|5B_j|\operatorname*{ess\,inf}_{5B_j}w\\
- &\leq A\,5^d|B_j|\operatorname*{ess\,inf}_{B_j}w
- \leq \frac{A\,5^d}{\lambda}\int_{B_j}|f|w.
+ &\leq A|5B_j|\operatorname*{ess\,inf}_{5B_j}w\\
+ &\leq A5^d|B_j|\operatorname*{ess\,inf}_{B_j}w\\
+ &\leq\frac{A5^d}{\lambda}
+       \int_{B_j}|f|w.
  \end{aligned}
 \]
-相加时不交性使右端不重复计数。用局部有限测度 \(w\,\mathrm dx\) 的正则性取紧集极限，再作输入及位置截断，就得到完整弱型界。无穷端点仍是平均不超过本性上确界；在测度 \(w\,\mathrm dx\) 上应用 Marcinkiewicz 即得强型。
+最后一步使用 \(\lambda|B_j|<\int_{B_j}|f|\)。由于选出的球不交，求和不重复计算右端质量，所以
+\(w(K)\leq A5^d\lambda^{-1}\|f\|_{L^1(w)}\)。
+局部可积密度给出的测度 \(w\,\mathrm dx\) 是 Radon 测度；对超水平集从内部取紧集逼近，再让空间截断增大，就得到弱型界。有限覆盖使这个论证不要求所有候选球的半径有统一上界。
+
+为得到强型，\(L^p(w)\) 输入也先由局部正下界及 Hölder 得到无权局部可积性。对每个高度 \(t>0\)，作大小分解
+\[
+ f=f\cdot\mathbf1_{\{|f|>t/2\}}
+       +f\cdot\mathbf1_{\{|f|\leq t/2\}}.
+\]
+第二项的极大平均不超过 \(t/2\)，第一项属于 \(L^1(w)\)，因为其绝对值至多为
+\((2/t)^{p-1}|f|^p\)。因此弱型界给出
+\[
+ w(\{Mf>t\})
+       \leq\frac{2C_dA}{t}
+            \int_{\{|f|>t/2\}}|f|w.
+\]
+层蛋糕公式和 Tonelli 现在给出
+\[
+ \begin{aligned}
+ \int(Mf)^pw
+ &\leq2C_dAp\int |f(x)|w(x)
+       \left(\int_0^{2|f(x)|}t^{p-2}\,\mathrm dt\right)\mathrm dx\\
+ &=\frac{2^pC_dAp}{p-1}\int|f|^pw.
+ \end{aligned}
+\]
+这证明强型界，也展开了在权测度上使用弱 \((1,1)\) 与强
+\((\infty,\infty)\) 插值的具体步骤。最后应用极大函数之间的点态比较即可处理另外两种几何版本。
 \end{proof}
-这一证明只处理 \(A_1\) 子类，没有完成全部 \(A_p\) 的充分性。一般权需要更精细的自改进或层集论证；标准奇异积分的全部加权界也还需要对应算子工具。进一步阅读见 \cite{Grafakos2014Modern,Duoandikoetxea2001Fourier}。任意正权都给出一个 \(L^p(w)\) 空间，却远非任意正权都允许原来的算子界；幂权和 \(A_1\) 条件提供了两种可以实际核验的检验。
+
+此处的覆盖论证只用了 \(A_1\) 的平均与本性下界关系。一般 \(A_p\) 权没有这样的逐点下界比较，因此下面改用两个不同权测度下的二进平均，而不把这个特殊证明直接照搬过去。
+
+\subsection{任意权测度的二进平均与相邻格}
+\label{b2:subsec:C-weighted-dyadic}
+
+\Needspace{6\baselineskip}
+\begin{lemma}[加权二进极大算子]
+\label{b2:lem:C-weighted-dyadic-maximal}
+设整数 \(d\geq1\)，\(\mathcal D\) 是一个嵌套的二进立方体格，\(v\) 为几乎处处有限且严格为正的局部可积密度。对 \(h\in L^1_{\mathrm{loc}}(v\,\mathrm dx)\)，定义
+\[
+ M_v^{\mathcal D}h(x)
+       =\sup_{\substack{Q\in\mathcal D\\x\in Q}}
+          \frac1{v(Q)}\int_Q|h|v.
+\]
+则对 \(h\in L^1(v)\)、\(t>0\)，
+\[
+ v(\{M_v^{\mathcal D}h>t\})
+       \leq\frac1t\|h\|_{L^1(v)}.
+\]
+对每个 \(1<r<\infty\)，有
+\[
+ \|M_v^{\mathcal D}h\|_{L^r(v)}
+       \leq C_r\|h\|_{L^r(v)},
+ \quad C_r=\left(\frac{2^rr}{r-1}\right)^{1/r}.
+\]
+常数与密度及二进格无关；不要求 \(v\) 倍增，也不要求
+\(v(\mathbb R^d)=\infty\)。
+\end{lemma}
+\begin{proof}
+每个格块的 \(v\) 测度有限且为正，故平均中的除法合法。先只保留尺度
+\(-N\leq j\leq N\)，边长约定为 \(2^{-j}\)，所得算子记为
+\(M_{v,N}^{\mathcal D}\)。在超水平格块中选择按包含关系极大的块。因为可用的祖先尺度只有有限个，每个超水平块都能被某个极大块包含；同一二进格中的两个块要么嵌套、要么不交，所以不同极大块互不相交。可数性使超水平集恰为这些块的并。
+
+每个选中块 \(Q_j\) 满足
+\(t\,v(Q_j)<\int_{Q_j}|h|v\)，相加即得
+\[
+ v(\{M_{v,N}^{\mathcal D}h>t\})
+       \leq\frac1t\int|h|v.
+\]
+令 \(N\to\infty\)，截断算子单调增加到全尺度算子，超水平集也单调增加，因此得到全尺度弱型界。这里不能预先假设大祖先上的 \(v\) 平均趋零：若全空间 \(v\) 质量有限，这种断言可能不成立。有限尺度分解正好绕开了这一障碍，而且从未比较父块与子块的测度。
+
+每个平均都不超过 \(\|h\|_{L^\infty(v)}\)。对
+\(h\in L^r(v)\)，在高度 \(t/2\) 作大小分解，大值部分属于 \(L^1(v)\)，于是
+\[
+ v(\{M_v^{\mathcal D}h>t\})
+       \leq\frac2t\int_{\{|h|>t/2\}}|h|v.
+\]
+按照前一命题的层蛋糕计算，
+\[
+ \int(M_v^{\mathcal D}h)^rv
+       \leq\frac{2^rr}{r-1}\int|h|^rv.
+\]
+这给出所列 \(C_r\)，也证明输出几乎处处有限。这里只需要 \(r>1\) 使高度积分的原点可积，常数不含任何关于 \(v\) 的正则性参数。
+\end{proof}
+
+还需把任意立方体的平均放进有限个真正嵌套的二进格。固定平移一个标准格不足以避免所有尺度的边界；下面交替选择偏移，使嵌套性和包围性同时成立。
+
+\Needspace{6\baselineskip}
+\begin{lemma}[有限相邻二进格]
+\label{b2:lem:C-adjacent-dyadic}
+设整数 \(d\geq1\)。对
+\(\alpha\in\{0,1/3,2/3\}^d\)，令
+\[
+ \mathcal D_\alpha
+ =\left\{\,
+       2^{-j}\bigl(k+[0,1)^d+(-1)^j\alpha\bigr)
+       :j\in\mathbb Z,\ k\in\mathbb Z^d
+   \,\right\}.
+\]
+每个 \(\mathcal D_\alpha\) 都是嵌套二进格。任意轴平行立方体
+\(Q\) 都包含于某个 \(\mathcal D_\alpha\) 的格块 \(R\)，并有
+\(|R|\leq6^d|Q|\)。因此，对非负局部可积函数 \(f\)，
+\[
+ M_\mdlgwhtsquare f
+       \leq6^d\max_\alpha M^{\mathcal D_\alpha}f
+       \leq6^d\sum_\alpha M^{\mathcal D_\alpha}f,
+\]
+其中 \(M^{\mathcal D_\alpha}\) 使用无权平均。
+\end{lemma}
+\begin{proof}
+先核对嵌套。固定尺度 \(j\)，记 \(s=(-1)^j\)，以
+\(2^{-j}\) 为长度单位。细格的每个坐标边界为
+\(\mathbb Z+s\alpha_i\)，粗一层的边界为
+\(2\mathbb Z-2s\alpha_i\)。因为 \(3s\alpha_i\in\mathbb Z\)，每个粗边界都属于细边界集合。因此粗块恰为 \(2^d\) 个细块的并，任意两个尺度也由逐层嵌套相容。这一步说明交替符号并非装饰。
+
+设 \(Q\) 的边长为 \(\ell>0\)。选择二进长度 \(L\)，满足
+\[
+ 3\ell<L\leq6\ell.
+\]
+可取严格大于 \(3\ell\) 的最小二进长度。在这一尺度，每个坐标上三种偏移的边界合在一起，恰为间隔 \(L/3\) 的点列。由于 \(\ell<L/3\)，\(Q\) 在该坐标上的闭投影至多遇到其中一个边界点，因而至少有一种偏移的全部边界都避开这条闭区间。选取这种偏移，投影就严格落在一个长度为 \(L\) 的格区间内。
+
+逐坐标选择 \(\alpha_i\)，得到某个
+\(\alpha\in\{0,1/3,2/3\}^d\) 及包含 \(Q\) 的格块 \(R\)。
+闭投影避开边界的选择也消除了半开格块的端点歧义。其体积满足
+\(|R|/|Q|=(L/\ell)^d\leq6^d\)，所以对 \(x\in Q\)，
+\[
+ \frac1{|Q|}\int_Qf
+       \leq6^d\frac1{|R|}\int_Rf
+       \leq6^dM^{\mathcal D_\alpha}f(x).
+\]
+对全部 \(Q\ni x\) 取上确界，便得到算子比较。
+\end{proof}
+
+\subsection{一般 \texorpdfstring{\(A_p\)}{Aₚ} 充分性与集合控制}
+\label{b2:subsec:C-ap-sufficiency}
+
+\Needspace{6\baselineskip}
+\begin{theorem}[加权极大函数界]
+\label{b2:thm:C-ap-maximal}
+设整数 \(d\geq1\)、\(1<p<\infty\)，\(w\) 为几乎处处有限且严格为正的局部可积实函数，并满足 \(w\in A_p\)。则对任意
+\(f\in L^p(\mathbb R^d,w\,\mathrm dx)\)，
+\[
+ \|M_\mdlgwhtsquare f\|_{L^p(w)}
+       \leq C_{d,p}[w]_{A_p}^{1/(p-1)}
+             \|f\|_{L^p(w)}.
+\]
+中心与非中心球极大算子也满足同样形式的界，常数只改变维数因子。
+\end{theorem}
+\begin{proof}
+只须处理 \(f\geq0\)，一般输入先取绝对值。令
+\[
+ \sigma=w^{-1/(p-1)},\quad p'=\frac p{p-1}.
+\]
+\(A_p\) 假设已保证 \(\sigma\) 局部可积，以及
+\(f\) 无权局部可积。固定一个二进格 \(\mathcal D\)，写
+\[
+ F=\frac f\sigma.
+\]
+由于 \(\sigma^{1-p}=w\)，恰有
+\[
+ \int F^p\sigma=\int f^pw.
+\]
+因此 \(F\in L^p(\sigma)\)，引理给出
+\(G=M_\sigma^{\mathcal D}F\in L^p(\sigma)\)。这里第一次极大运算使用逆权测度，并不使用原来的 Lebesgue 平均。
+
+对任意格块 \(Q\)，平均恒等式为
+\[
+ \frac1{|Q|}\int_Qf
+       =\frac{\sigma(Q)}{|Q|}
+          \frac1{\sigma(Q)}\int_QF\sigma.
+\]
+另一方面，
+\[
+ \left(\frac{\sigma(Q)}{|Q|}\right)^{p-1}
+       \leq[w]_{A_p}\frac{|Q|}{w(Q)}.
+\]
+在 \(Q\) 内，\(G\) 不小于 \(F\) 的这个 \(\sigma\) 平均；将其提高到正数 \(p-1\) 次幂，再在 \(Q\) 上按 Lebesgue 测度积分，得到
+\[
+ \begin{aligned}
+ \left(\frac1{|Q|}\int_Qf\right)^{p-1}
+ &\leq[w]_{A_p}\frac{|Q|}{w(Q)}
+       \left(\frac1{\sigma(Q)}\int_QF\sigma\right)^{p-1}\\
+ &\leq\frac{[w]_{A_p}}{w(Q)}
+       \int_QG^{p-1}\,\mathrm dx.
+ \end{aligned}
+\]
+这一推理也适用于 \(1<p<2\)：这里只使用正幂的单调性，没有把小于一的幂当作凸函数。
+
+为了把最后一个 Lebesgue 积分变成 \(w\) 平均，令
+\[
+ H=\frac{G^{p-1}}w.
+\]
+它确实属于所需的空间，因为
+\[
+ (p-1)p'=p,\quad w^{1-p'}=\sigma,
+\]
+从而
+\[
+ \|H\|_{L^{p'}(w)}^{p'}
+       =\int G^{(p-1)p'}w^{1-p'}
+       =\int G^p\sigma<\infty.
+\]
+在平均不等式中代入 \(H\)，并对所有包含 \(x\) 的格块取上确界，
+\[
+ (M^{\mathcal D}f)^{p-1}
+       \leq[w]_{A_p}M_w^{\mathcal D}H.
+\]
+第二次极大运算现在使用原权测度。取 \(L^{p'}(w)\) 范数，利用
+\((p-1)p'=p\)，有
+\[
+ \|M^{\mathcal D}f\|_{L^p(w)}^{p-1}
+ \leq[w]_{A_p}\,
+       \|M_w^{\mathcal D}H\|_{L^{p'}(w)}
+ \leq[w]_{A_p}C_{p'}\|H\|_{L^{p'}(w)}.
+\]
+将它提高到 \(1/(p-1)\) 次幂，并使用
+\[
+ \|H\|_{L^{p'}(w)}^{1/(p-1)}
+       =\left(\int G^p\sigma\right)^{1/p},
+\]
+就得到
+\[
+ \begin{aligned}
+ \|M^{\mathcal D}f\|_{L^p(w)}
+ &\leq[w]_{A_p}^{1/(p-1)}
+       C_{p'}^{1/(p-1)}\|G\|_{L^p(\sigma)}\\
+ &\leq C_pC_{p'}^{1/(p-1)}
+       [w]_{A_p}^{1/(p-1)}\|f\|_{L^p(w)}.
+ \end{aligned}
+\]
+这正是两个权测度、两个输入指数 \(p\) 与 \(p'\) 的配合。所有加权平均的分母均为有限正数；引理已通过有限尺度极限建立所用强界，因此没有另行假设密度倍增或祖先平均衰减。
+
+最后，\cref{b2:lem:C-adjacent-dyadic}把 \(M_\mdlgwhtsquare\) 控制在
+\(3^d\) 个二进极大算子的和之下。每个格上的 \(A_p\) 表达都不超过全体立方体的 \([w]_{A_p}\)，故逐个使用刚证的界，再以有限和的三角不等式相加，就得到结论。球平均由固定维数的球块包含关系控制。
+\end{proof}
+
+结合必要性，\(A_p\) 准确刻画了 \(p>1\) 时非中心极大函数的有界权。这个证明还保留了 \([w]_{A_p}^{1/(p-1)}\) 的定量依赖；本节没有证明该幂次的最优性，也没有把极大函数结论自动推广成所有奇异积分的加权界。权的反向 Hölder 性质和自改进理论未被用作前提。
+
+\Needspace{6\baselineskip}
+\begin{corollary}[权测度下界与倍增]
+\label{b2:cor:C-ap-measure-control}
+设整数 \(d\geq1\)、\(1<p<\infty\)，\(w\in A_p(\mathbb R^d)\)。对任意轴平行立方体 \(Q\) 及可测集合 \(E\subset Q\)，有
+\[
+ \left(\frac{|E|}{|Q|}\right)^p
+       \leq[w]_{A_p}\frac{w(E)}{w(Q)}.
+\]
+若 \(\lambda Q\) 表示同心扩大 \(\lambda\geq1\) 倍的立方体，则
+\[
+ w(\lambda Q)
+       \leq\lambda^{dp}[w]_{A_p}\,w(Q).
+\]
+特别地，\(w(2Q)\leq2^{dp}[w]_{A_p}\cdot w(Q)\)。
+\end{corollary}
+\begin{proof}
+令 \(\sigma=w^{-1/(p-1)}\)。在集合 \(E\) 上使用 Hölder，
+\[
+ |E|
+       =\int_Ew^{1/p}\sigma^{1/p'}
+       \leq w(E)^{1/p}\cdot\sigma(E)^{1/p'}
+       \leq w(E)^{1/p}\cdot\sigma(Q)^{1/p'}.
+\]
+提高到 \(p\) 次幂，再使用 \(A_p\) 条件，得到
+\[
+ \frac{|E|^p}{|Q|^p}
+       \leq\frac{w(E)\cdot\sigma(Q)^{p-1}}{|Q|^p}
+       \leq[w]_{A_p}\frac{w(E)}{w(Q)}.
+\]
+这一步无需预设 \(w(E)>0\)，所以也覆盖零测集。把外立方体换成
+\(\lambda Q\)、内部集合取为 \(Q\)，并使用
+\(|Q|/|\lambda Q|=\lambda^{-d}\)，便得到倍增界。
+\end{proof}
+
+这个集合估计给出的是相对权质量的下界：占据一定 Lebesgue 比例的集合，不能只有任意小的权质量。倍增性则只比较同心相邻尺度，它弱于完整 \(A_p\) 条件。例如在直线上，取 \(w(x)=x^2\)，并在原点修改为一个正值。对中心为 \(c\)、长度为 \(\ell\) 的区间 \(I\)，
+\[
+ w(I)=\ell c^2+\frac{\ell^3}{12},\quad
+ w(2I)=2\ell c^2+\frac{8\ell^3}{12}\leq8w(I).
+\]
+所以它倍增；但 \(w^{-1}=x^{-2}\) 在原点附近不可积，故它不属于 \(A_2\)。有限尺度的加权二进引理既不需要这种倍增性，倍增性本身也不能反过来替代逆权的积分要求。
+
+\ProseParagraphBreak
+
+% 进一步阅读沿用来源记录中已核实的出版信息与目录；不以此声称已逐页核验其中具体证明。
+加权奇异积分与更深的权理论可继续参看 Loukas Grafakos 的《Modern Fourier Analysis》\cite{Grafakos2014Modern}及 Javier Duoandikoetxea 的《Fourier Analysis》\cite{Duoandikoetxea2001Fourier}。本节的必要充分关系已由截断测试、加权二进平均与有限相邻格完整建立；进一步理论还须分析算子的抵消怎样与权相互作用。
 
 
 \begin{chaptersummary}
-极大截断把范数估计转化为逐点主值信息；BMO 记录局部平均振荡，原子的零平均使它与端点 Hardy 空间形成对偶。指数尾、原子配对的表示无关性及算子延拓均已证明。加权部分建立了 \(A_p\) 必要条件、幂权范围及 \(A_1\) 子类的充分界；全部加权充分性与极大函数原子等价仍是进一步理论。
+极大截断控制全部半径上的逼近误差；识别光滑类主值后，这种控制才能把指定算子的作用传给一般 \(L^p\) 输入。端点处，BMO 的平均振荡通过停止立方体产生指数尾，原子的零平均则消去局部常数与远场首项。原子空间的 BMO 对偶和奇异积分的 \(H^1_{\mathrm{at}}\to L^1\)、\(L^\infty\to\mathrm{BMO}/\mathbb C\) 作用体现了同一种抵消机制。
+
+\ProseParagraphBreak
+
+加权问题改变的是测量大小的密度。\(A_p\) 条件同时约束 \(w\) 与 \(w^{-1/(p-1)}\) 的局部平均；必要性来自局部测试，充分性来自两次加权二进极大估计及有限组相邻网格。\(A_1\) 给出弱型端点，但一般 \(A_p\) 定理只对 \(p>1\) 陈述。原子与极大函数定义的等价、完整 \(T1\) 定理、权的反向 Hölder 性质及加权奇异积分界，仍需进一步理论。
 \end{chaptersummary}
 
 \BookExercises
 
-% 自拟：检查本附录的已建工具及其假设边界。
-
+% 自拟：尺度归一化及其对原子范数的影响；不重复原子空间完备性证明。
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b2:ex:app-C-1}
-设 \(a\) 为平方可积原子，\(y\in\mathbb R^d\)、\(r>0\)。证明
-\(a_{y,r}(x)=r^{-d}a((x-y)/r)\) 仍是原子，并推出该变换在 \(H^1_{\mathrm{at}}\) 上等距。
+设 \(a\) 是 \(\mathbb R^d\) 上的平方可积原子，\(y\in\mathbb R^d\)、\(r>0\)。证明
+\[
+ U_{y,r}a(x)=r^{-d}a\left(\frac{x-y}{r}\right)
+\]
+仍是原子，并证明 \(U_{y,r}\) 在 \(H^1_{\mathrm{at}}\) 上等距。若改成平方范数归一化 \(V_{y,r}f(x)=r^{-d/2}f((x-y)/r)\)，计算其原子范数。
 \end{exercise}
 \begin{solution}
-新支撑为 \(y+rQ\)，积分仍为零，且
-\(\|a_{y,r}\|_2=r^{-d/2}\|a\|_2\leq|rQ|^{-1/2}\)。
-对原子级数逐项变换，系数不变、\(L^1\) 收敛不变，故新原子范数不超过原范数。逆变换的参数为 \((-y/r,1/r)\)，同样给出反向不等式，范数因而相等。振幅 \(r^{-d}\) 保持积分规模；若改用平方归一化 \(r^{-d/2}\)，就不再是这一等距变换。
+设 \(a\) 支撑于 \(Q\)。换元 \(x=y+rz\) 给出
+\[
+ \operatorname{supp}U_{y,r}a\subset y+rQ,\quad
+ \int U_{y,r}a=\int a=0,
+\]
+以及
+\[
+ \|U_{y,r}a\|_2^2=r^{-d}\|a\|_2^2
+ \leq r^{-d}|Q|^{-1}=|y+rQ|^{-1}.
+\]
+因此这三个原子条件均成立。对任意 \(L^1\) 函数，同一换元给出 \(\|U_{y,r}f\|_1=\|f\|_1\)，故原子级数的 \(L^1\) 收敛在变换下保持。如果 \(f=\sum_j\lambda_ja_j\)，那么 \(U_{y,r}f=\sum_j\lambda_jU_{y,r}a_j\)，系数和不变。对所有表示取下确界，得到
+\(\|U_{y,r}f\|_{\mathrm{at}}\leq\|f\|_{\mathrm{at}}\)。
+
+逆变换是 \(U_{-y/r,1/r}\)。将同一不等式应用于 \(U_{y,r}f\)，得到反向界，因而范数相等。最后 \(V_{y,r}=r^{d/2}U_{y,r}\)，由范数齐次性，
+\[
+ \|V_{y,r}f\|_{\mathrm{at}}=r^{d/2}\|f\|_{\mathrm{at}}.
+\]
+平方归一化保持 \(L^2\) 规模，原子空间的等距归一化则保持 \(L^1\) 规模；二者使用同一个变量伸缩，但振幅不同。
 \end{solution}
 
-% 自拟：检查本附录的已建工具及其假设边界。
-
+% 自拟：将正文指数积分用于不对称的两个平均，把 BMO 与 Ap 条件相连。
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b2:ex:app-C-2}
-记 \(B=\|b\|_{\mathrm{BMO}}>0\)。若 John--Nirenberg 尾界为
-\(|\{|b-b_Q|>t\}|\leq C|Q|e^{-ct/B}\)，证明对 \(0<\epsilon<c\)，
+设 \(b\in\mathrm{BMO}(\mathbb R^d)\) 为实值，\(B=\|b\|_{\mathrm{BMO}}>0\)，John--Nirenberg 尾界写为
 \[
- \frac1{|Q|}\int_Q e^{\epsilon|b-b_Q|/B}
- \leq1+\frac{C\epsilon}{c-\epsilon}.
+ |\{x\in Q:|b-b_Q|>t\}|\leq C|Q|e^{-ct/B}.
 \]
+正文由这个尾界得到：对 \(0<\epsilon<c\)，
+\[
+ \frac1{|Q|}\int_Qe^{\epsilon|b-b_Q|/B}
+ \leq 1+\frac{C\epsilon}{c-\epsilon}.
+\]
+设 \(1<p<\infty\)。利用这一估计证明，只要
+\( |\tau|B<c\min\{1,p-1\}\)，就有 \(e^{\tau b}\in A_p\)，并给出由上述常数决定的特征上界。再对 \(b(x)=\log|x|\) 求使 \(e^{\tau b}\in A_p\) 的全部参数，说明参数限制确有必要。
 \end{exercise}
 \begin{solution}
-对 \(u\geq0\)，有 \(e^{\epsilon u}=1+\epsilon\int_0^u e^{\epsilon s}\,\mathrm ds\)。
-将 \(u=|b-b_Q|/B\) 代入，以 Tonelli 换序，再用题设尾界，得到
-\(1+C\epsilon\int_0^\infty e^{-(c-\epsilon)s}\,\mathrm ds\)，即所需常数。严格条件 \(\epsilon<c\) 使最后积分收敛；仅有所有有限阶矩可积，并不能省略指数参数的检查。
+记 \(F(s)=1+Cs/(c-s)\)、\(0\leq s<c\)。实值性使 \(w=e^{\tau b}\) 正且几乎处处有限。对固定 \(Q\)，分别提出常数因子 \(e^{\tau b_Q}\) 与 \(e^{-\tau b_Q/(p-1)}\)，题设中的指数积分估计说明 \(w\) 和 \(w^{-1/(p-1)}\) 均局部可积，且
+\[
+ \begin{aligned}
+ \left(\frac1{|Q|}\int_Qw\right)
+ \left(\frac1{|Q|}\int_Qw^{-1/(p-1)}\right)^{p-1}
+ &\leq F(|\tau|B)\cdot
+       F\left(\frac{|\tau|B}{p-1}\right)^{p-1}.
+ \end{aligned}
+\]
+两个平均中的常数指数恰好消去，右端与 \(Q\) 无关，就是所求特征上界。\(\tau=0\) 时权为一，结论同样成立。
+
+对 \(b(x)=\log|x|\)，有 \(e^{\tau b(x)}=|x|^\tau\)。幂权判据给出的精确范围是
+\[
+ -d<\tau<d(p-1).
+\]
+在左端点，权本身不局部可积；在右端点，对偶密度不局部可积。因此一般结论中对指数参数大小的限制不能完全删除。由 John--Nirenberg 常数取得的充分区间不必等于这个具体函数的最大区间。
 \end{solution}
 
-% 自拟：检查本附录的已建工具及其假设边界。
-
+% 自拟：检验 BMO 的非线性运算边界，以伸缩分离增长项。
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b2:ex:app-C-3}
-正文已证明 \(\log|x|\in\mathrm{BMO}(\mathbb R^d)\)。证明其平方
-\((\log|x|)^2\) 不在 BMO 中，说明 BMO 不在普通乘法下封闭。
+正文已证明 \(\log|x|\in\mathrm{BMO}(\mathbb R^d)\)。证明 \((\log|x|)^2\) 虽然局部可积，却不属于 BMO，从而 BMO 不在普通乘法下封闭。
 \end{exercise}
 \begin{solution}
-固定远离原点的立方体 \(Q=(1,2)^d\)，令 \(\ell(z)=\log|z|\)。它在 \(Q\) 上非常数，故
-\(A=|Q|^{-1}\int_Q|\ell-\ell_Q|>0\)，并令
-\(D=|Q|^{-1}\int_Q|\ell^2-(\ell^2)_Q|<\infty\)。
-在 \(rQ\) 上换元 \(x=rz\)，平方函数减去平均后成为
+原点附近的可积性由极坐标归结为
+\(\int_0^1 r^{d-1}|\log r|^2\,\mathrm dr<\infty\)，换元 \(s=-\log r\) 后这是 \(\int_0^\infty s^2e^{-ds}\,\mathrm ds\)；其余紧集上没有奇性。
+
+取 \(Q=(1,2)^d\)，令 \(\ell(z)=\log|z|\)。该函数在 \(Q\) 上连续且非常数，所以
 \[
- 2\log r\,(\ell-\ell_Q)+\ell^2-(\ell^2)_Q.
+ A=\frac1{|Q|}\int_Q|\ell-\ell_Q|>0,\quad
+ D=\frac1{|Q|}\int_Q|\ell^2-(\ell^2)_Q|<\infty.
 \]
-反三角不等式使平均绝对振荡至少为 \(2|\log r|A-D\)，随 \(r\downarrow0\) 趋于无穷。因此不存在统一 BMO 半范数。常数项 \((\log r)^2\) 已被平均消去，真正增长的是与非恒定局部振荡相乘的一阶项。
+令 \(b(x)=(\log|x|)^2\)。在立方体 \(rQ\) 上换元 \(x=rz\)，有
+\[
+ b(rz)-b_{rQ}
+ =2\log r\cdot(\ell(z)-\ell_Q)
+   +\ell(z)^2-(\ell^2)_Q.
+\]
+积分并使用反三角不等式，得到
+\[
+ \frac1{|rQ|}\int_{rQ}|b-b_{rQ}|
+ \geq2|\log r|\cdot A-D.
+\]
+令 \(r\downarrow0\)，右端无界。平均已经消去了 \((\log r)^2\) 这一常数项，但仍留下随尺度增长的一阶振荡；这正是平方运算破坏 BMO 界的原因。
 \end{solution}
 
-% 自拟：检查本附录的已建工具及其假设边界。
-
+% 自拟：零积分 L1 函数与定量原子抵消的区别；用有界测试避免非法乘积配对。
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b2:ex:app-C-4}
 在直线上令
 \[
- f(x)=\frac{\mathbf1_{(0,e^{-2})}(x)}
- {x(\log(1/x))^2}-\frac12\mathbf1_{(1,2)}(x).
+ f(x)=\frac{\mathbf1_{(0,e^{-2})}(x)}{x(\log(1/x))^2}
+       -\frac12\mathbf1_{(1,2)}(x).
 \]
 证明 \(f\in L^1\)、\(\int f=0\)，但 \(f\notin H^1_{\mathrm{at}}\)。可使用正文的 BMO 对偶与有界截断。
 \end{exercise}
 \begin{solution}
-换元 \(s=\log(1/x)\)，第一项积分为 \(\int_2^\infty s^{-2}\,\mathrm ds=1/2\)，故两个断言成立。取 \(b(x)=\log|x|\in\mathrm{BMO}\)，令 \(b_N\) 为它在 \([-N,N]\) 上的截断。正文给出 \(b_N\) 的 BMO 半范数一致有界。若 \(f\in H^1_{\mathrm{at}}\)，有界配对等于普通积分，故对偶界使 \(\int f b_N\) 一致有界。
-然而对 \(N>2\)，正奇性部分的配对为
+换元 \(s=\log(1/x)\)，正部分的积分为
 \[
- -\int_2^\infty\frac{\min(s,N)}{s^2}\,\mathrm ds
- =-\log(N/2)-1,
+ \int_0^{e^{-2}}\frac{\mathrm dx}{x(\log(1/x))^2}
+ =\int_2^\infty\frac{\mathrm ds}{s^2}=\frac12.
 \]
-另一段的积分固定有限，故总配对趋于负无穷，矛盾。零积分只是原子空间的必要条件，不能替代局部抵消的定量控制。
+负部分也有质量 \(1/2\)，两部分支集不交，故 \(\|f\|_1=1\)、\(\int f=0\)。
+
+设 \(b(x)=\log|x|\)，取实值截断
+\(b_N=\max\{-N,\min\{b,N\}\}\)。正文对 Lipschitz 截断的估计给出 \(\|b_N\|_{\mathrm{BMO}}\leq2\|b\|_{\mathrm{BMO}}\)。若 \(f\) 属于原子空间，对偶定理将使 \(|\Lambda_{b_N}(f)|\) 一致有界。因为每个 \(b_N\) 有界，原子级数在 \(L^1\) 中收敛，\(\Lambda_{b_N}(f)\) 确实等于普通积分 \(\int fb_N\)，没有使用可能发散的 \(\int fb\)。
+
+当 \(N>2\) 时，奇性部分的配对为
+\[
+ \begin{aligned}
+ -\int_2^\infty\frac{\min\{s,N\}}{s^2}\,\mathrm ds
+ &=-\int_2^N\frac{\mathrm ds}{s}
+   -N\int_N^\infty\frac{\mathrm ds}{s^2}\\
+ &=-\log(N/2)-1.
+ \end{aligned}
+\]
+在 \((1,2)\) 上截断不起作用，另一项为固定的
+\(-\tfrac12\int_1^2\log x\,\mathrm dx=-(2\log2-1)/2\)。因此 \(\int fb_N\to-\infty\)，与统一对偶界矛盾。零积分只约束总质量；它没有控制这道题中不断靠近原点的正质量与远处负质量之间的尺度分离。
 \end{solution}
 
-% 自拟：检查本附录的已建工具及其假设边界。
-
+% 自拟：把幂权的局部可积性与 A1 本性下确界条件同时检验。
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b2:ex:app-C-5}
-证明幂权 \(w(x)=|x|^\alpha\) 属于 \(A_1\) 当且仅当
-\(-d<\alpha\leq0\)，并说明这一结果为何可以产生全部 \(p>1\) 上的加权极大函数界。
+设 \(d\geq1\)、\(\alpha\in\mathbb R\)，在原点以外令 \(w(x)=|x|^\alpha\)，原点的值任意指定为正数。证明 \(w\in A_1\) 当且仅当 \(-d<\alpha\leq0\)，并说明所得极大函数界对哪些 \(p\) 成立。
 \end{exercise}
 \begin{solution}
-权须局部可积，所以 \(\alpha>-d\)。若 \(\alpha>0\)，含原点的球中本性下确界为零，平均却为正，违反 \(A_1\) 球条件。若 \(\alpha=0\)，常数权显然满足条件。
-对于 \(-d<\alpha<0\)，球心距原点至少为两倍半径时，球内距离可比，平均不超过本性下确界的固定倍数。其余球包含于半径至多三倍原半径的原点球，平均至多 \(Cr^\alpha\)；而球内距离至多 \(3r\)，因幂为负，本性下确界至少为 \((3r)^\alpha\)。两类都满足统一条件。正文的 \(A_1\) 弱型与插值随后给出每个 \(p>1\) 的强型界；常数允许依赖 \(\alpha,d,p\)。
+权必须局部可积，极坐标给出必要条件 \(\alpha>-d\)。如果 \(\alpha>0\)，任意以原点为中心的球内，\(w\) 的本性下确界为零，平均却严格为正，不能满足球版本的 \(A_1\) 条件。\(\alpha=0\) 时权为常数，特征为一。
+
+设 \(-d<\alpha<0\)，取球 \(B(c,r)\)。当 \(|c|\geq2r\) 时，对 \(x\in B(c,r)\) 有
+\[
+ |c|/2\leq |x|\leq3|c|/2.
+\]
+所以球内最大、最小权值的比不超过 \(3^{-\alpha}\)，平均不超过本性下确界的这一倍数。当 \(|c|<2r\) 时，球包含于 \(B(0,3r)\)，因而
+\[
+ \frac1{|B(c,r)|}\int_{B(c,r)}|x|^\alpha\,\mathrm dx
+ \leq\frac{d\,3^{d+\alpha}}{d+\alpha}\,r^\alpha.
+\]
+另一方面 \(|x|\leq3r\)，负指数使 \(|x|^\alpha\geq(3r)^\alpha\) 几乎处处。相除得到平均至多为本性下确界的 \(d3^d/(d+\alpha)\) 倍。两类球都满足统一常数的条件；球与立方体版本等价，故 \(w\in A_1\)。
+
+由\cref{b2:prop:C-a1-maximal}，极大算子在 \(L^1(w)\) 上满足弱型 \((1,1)\)。它在 \(L^\infty(w)\) 上范数至多为一，插值便给出每个 \(1<p<\infty\) 的 \(L^p(w)\) 强界。这里 \(w>0\) 几乎处处，所以加权与未加权的本性上确界相同；结论不包含 \(p=1\) 的强型界。
 \end{solution}
 
-% 自拟：检查本附录的已建工具及其假设边界。
-
+% 自拟：指数单调性及严格包含；用临界幂权辨认方向。
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b2:ex:app-C-6}
-若 \(1<p<q<\infty\)，证明 \(A_p\subset A_q\)，且
-\([w]_{A_q}\leq[w]_{A_p}\)。
+若 \(1<p<q<\infty\)，证明 \(A_p\subset A_q\)，且 \([w]_{A_q}\leq[w]_{A_p}\)。给出 \(\mathbb R^d\) 上属于 \(A_q\) 而不属于 \(A_p\) 的显式权。
 \end{exercise}
 \begin{solution}
-置 \(\theta=(p-1)/(q-1)\in(0,1)\)、\(v=w^{-1/(p-1)}\)。
-对立方体上的归一化测度，Hölder 或凹函数 Jensen 给出
+置 \(\theta=(p-1)/(q-1)\in(0,1)\)、\(v=w^{-1/(p-1)}\)。在立方体上的归一化测度下，凹函数 Jensen 不等式给出
 \[
  \frac1{|Q|}\int_Qv^\theta
  \leq\left(\frac1{|Q|}\int_Qv\right)^\theta.
 \]
-将它提高到 \(q-1\) 次幂并乘 \(w\) 的平均，就被 \(A_p\) 表达控制；对 \(Q\) 取上确界得到结论。这是增大输入指数方向的包含，不允许由 \(A_q\) 反推较小的 \(A_p\)。幂权范围可直接给出反向不成立的例子。
+右端有限，故 \(w^{-1/(q-1)}=v^\theta\) 也局部可积。将不等式提高到 \(q-1\) 次幂，乘上 \(w\) 的平均，得到
+\[
+ \left(\frac1{|Q|}\int_Qw\right)
+ \left(\frac1{|Q|}\int_Qw^{-1/(q-1)}\right)^{q-1}
+ \leq
+ \left(\frac1{|Q|}\int_Qw\right)
+ \left(\frac1{|Q|}\int_Qw^{-1/(p-1)}\right)^{p-1}.
+\]
+对所有 \(Q\) 取上确界即得结论。
+
+取 \(w(x)=|x|^{d(p-1)}\)。由于 \(-d<d(p-1)<d(q-1)\)，正文的幂权判据给出 \(w\in A_q\)；但其 \(A_p\) 对偶密度为 \(|x|^{-d}\)，在原点附近对数发散，故 \(w\notin A_p\)。这里取到的正是较小指数的临界幂，说明包含关系在每一对 \(p<q\) 上都是严格的。
 \end{solution}
 
-% 自拟：检查本附录的已建工具及其假设边界。
-
+% 自拟：对偶权特征与按 Lebesgue 积分的加权对偶范数，不只交换形式指数。
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b2:ex:app-C-7}
-
-设 \(w\in A_p\)，证明 \(w^{-1/(p-1)}\in A_{p'}\)，并计算特征常数。
-
+设 \(1<p<\infty\)、\(p'=p/(p-1)\)，\(w\in A_p\)，令 \(\sigma=w^{-1/(p-1)}\)。证明
+\[
+ \sigma\in A_{p'},\quad [\sigma]_{A_{p'}}=[w]_{A_p}^{1/(p-1)}.
+\]
+进一步对 \(f\in L^p(w)\) 证明
+\[
+ \|f\|_{L^p(w)}=
+ \sup_{\|g\|_{L^{p'}(\sigma)}\leq1}\left|\int_{\mathbb R^d}fg\right|.
+\]
+复值情形仍用双线性积分，须明确取等函数的相位。
 \end{exercise}
-
 \begin{solution}
+权 \(\sigma\) 正且局部可积，这是 \(A_p\) 条件的一部分。由于
+\(p'-1=1/(p-1)\)，有 \(\sigma^{-1/(p'-1)}=w\)。因此每个立方体上的表达为
+\[
+ \left(\frac1{|Q|}\int_Q\sigma\right)
+ \left(\frac1{|Q|}\int_Qw\right)^{1/(p-1)}
+ =\left[
+ \left(\frac1{|Q|}\int_Qw\right)
+ \left(\frac1{|Q|}\int_Q\sigma\right)^{p-1}
+ \right]^{1/(p-1)}.
+\]
+正幂与上确界可交换，得到特征的精确等式。
 
-记 \(v=w^{-1/(p-1)}\)，因 \(p'-1=1/(p-1)\)，有 \(v^{-1/(p'-1)}=w\)。交换两个平均后，\(A_{p'}\) 表达为原 \(A_p\) 表达的 \(1/(p-1)\) 次幂，故 \([v]_{A_{p'}}=[w]_{A_p}^{1/(p-1)}\)。
-
+恒等式 \(w^{1/p}\sigma^{1/p'}=1\) 使加权 Hölder 估计成为
+\[
+ \int|fg|=\int\bigl(|f|w^{1/p}\bigr)
+                     \cdot\bigl(|g|\sigma^{1/p'}\bigr)
+ \leq\|f\|_{L^p(w)}\cdot\|g\|_{L^{p'}(\sigma)}.
+\]
+这也证明积分绝对收敛，所求上确界至多为左端范数。若 \(f\ne0\)，记 \(A=\|f\|_{L^p(w)}\)，并令
+\[
+ g(x)=A^{1-p}|f(x)|^{p-1}w(x)\frac{\overline{f(x)}}{|f(x)|}
+\]
+在 \(f(x)\ne0\) 处成立，在零点取零。因为 \((p-1)p'=p\)、\(w^{p'}\sigma=w\)，有
+\[
+ \int|g|^{p'}\sigma=A^{-p}\int|f|^pw=1,
+ \quad \int fg=A^{1-p}\int|f|^pw=A.
+\]
+这给出反向不等式；\(f=0\) 时结论直接成立。对偶密度的负幂来自按 Lebesgue 测度配对这一约定，若改写成 \(\int fhw\)，测试空间与测试函数也必须一起换算。
 \end{solution}
 
-% 自拟：检查本附录的已建工具及其假设边界。
-
+% 自拟：分布核看不见对角微分作用，以明确反例检验 T1 条件的职责。
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b2:ex:app-C-8}
-
-为什么 \(T1=0\) 不能代替奇异积分的 \(L^2\) 起点？
-
+在 \(\mathbb R^d\) 上先对 \(f\in C_c^\infty\) 定义 \(Df=\partial_1f\)。证明其支集外核可以取 \(K=0\)，且分布意义下 \(D1=D^*1=0\)，但 \(D\) 没有有界的 \(L^2\) 延拓。再取固定光滑紧支集函数 \(\varphi,\psi\)，置
+\[
+ \varphi_{x_0,r}(x)=\varphi((x-x_0)/r),\quad
+ \psi_{x_0,r}(x)=\psi((x-x_0)/r).
+\]
+证明可以选择这两个函数，使局部测试量
+\( |\int D\varphi_{x_0,r}\cdot\overline{\psi_{x_0,r}}|\)
+不能被与 \(r\) 无关的 \(Cr^d\) 控制。解释为何这不与本附录的奇异积分端点定理矛盾。
 \end{exercise}
-
 \begin{solution}
+微分不扩大光滑函数的支集，因此在 \(\operatorname{supp}f\) 外有 \(Df=0=\int K(x,y)f(y)\,\mathrm dy\)。零核满足任意阶的支集外大小和光滑性估计。分部积分给出形式伴随 \(D^*=-\partial_1\)，二者作用于常数分布均为零。
 
-这个等式只检测一个常数输入的抵消，既未控制一般 \(L^2\) 输入，也未控制对角局部作用和伴随。一般 \(T1\) 判据还含标准核、弱有界性、\(T^*1\) 的BMO条件及作用定义。缺少这些条件不能应用该判据。
+取非零 \(\eta\in C_c^\infty(\mathbb R^d)\)，令 \(f_n(x)=e^{\mathrm inx_1}\eta(x)\)。输入平方范数不变，而
+\[
+ Df_n=e^{\mathrm inx_1}(\mathrm in\eta+\partial_1\eta),\quad
+ \|Df_n\|_2\geq n\|\eta\|_2-\|\partial_1\eta\|_2.
+\]
+右端趋于无穷，所以不可能存在一个有界 \(L^2\) 算子与所有这些光滑输入上的 \(D\) 一致。
 
+选实值 \(\varphi\in C_c^\infty\)，使 \(\partial_1\varphi\not\equiv0\)，令 \(\psi=\partial_1\varphi\)。换元给出
+\[
+ \left|\int D\varphi_{x_0,r}\cdot\overline{\psi_{x_0,r}}\right|
+ =r^{d-1}\int|\partial_1\varphi|^2.
+\]
+若有统一的 \(Cr^d\) 界，便要求正数 \(\int|\partial_1\varphi|^2\leq Cr\) 对所有 \(r>0\) 成立，与 \(r\downarrow0\) 矛盾。把 \(\varphi,\psi\) 分别乘固定小常数，可使任意指定有限阶的导数归一化界成立，仍不改变这一反例。
+
+本附录的标准 Calderón--Zygmund 算子一开始就要求 \(L^2\) 有界，\(D\) 不属于这一类。\(T1\) 理论则试图从支集外核及额外测试条件推出 \(L^2\) 有界；本例表明即使 \(T1=T^*1=0\)，局部弱有界性仍不可省略。支集分离时看不到的对角作用，必须由局部测试加以限制。
 \end{solution}

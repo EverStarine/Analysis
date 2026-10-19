@@ -7,8 +7,9 @@
 \subsection{Kirchhoff 公式}
 \label{b2:subsec:110201}
 
+\Needspace{6\baselineskip}
 \begin{theorem}[Kirchhoff]\label{b2:thm:11-kirchhoff}
-设 \(f\in C^3(\mathbb R^3)\)、\(g\in C^2(\mathbb R^3)\)。三维齐次初值问题 \(u_{tt}-c^2\Delta u=0\)、\(u(0)=f\)、\(u_t(0)=g\) 的经典解为
+设 \(c>0\)、\(\mathbb K\in\{\mathbb R,\mathbb C\}\)，\(M_rh(x)=(4\pi)^{-1}\int_{S^2}h(x+r\theta)\,\mathrm dS_\theta\)，\(r\in\mathbb R\)，\(f\in C^3(\mathbb R^3;\mathbb K)\)、\(g\in C^2(\mathbb R^3;\mathbb K)\)。三维齐次初值问题 \(u_{tt}-c^2\Delta u=0\)、\(u(0)=f\)、\(u_t(0)=g\) 在 \(\mathbb R_t\times\mathbb R_x^3\) 上的唯一 \(\mathbb K\) 值 \(C^2\) 经典解为
 \begin{equation}\label{b2:eq:11-kirchhoff}
  u(t,x)=\partial_t\bigl(tM_{ct}f(x)\bigr)+tM_{ct}g(x).
 \end{equation}
@@ -40,6 +41,19 @@
 
 \ProseParagraphBreak
 
+两项对符号的影响也不同。若初始位移为零、初速度为实值非负函数 \(g\in C^2(\mathbb R^3)\)，则对 \(t\geq0\)，初速度响应 \(tM_{ct}g\) 非负，因为它只是非负函数的球面平均乘以非负时间。初位移响应却含时间导数，球面平均本身非负并不能控制它的变化率。例如记 \(s_+=\max\{s,0\}\)，取非负紧支集函数
+\[
+ f(x)=(1-|x|^2)_+^4\in C^3(\mathbb R^3),\qquad g=0.
+\]
+在 \(0<ct<1\) 时，原点的球面平均为 \(M_{ct}f(0)=(1-c^2t^2)^4\)，从而
+\[
+ u(t,0)=\partial_t\bigl(t(1-c^2t^2)^4\bigr)
+       =(1-c^2t^2)^3(1-9c^2t^2).
+\]
+当 \(1/3<ct<1\) 时，位移已经为负。三维波方程因此不保持非负初位移的符号，即使初速度为零；这个反例具有紧空间支集，现象并非来自无穷远的数据。\cref{b2:ex:11-positivity-failure}将进一步训练在指定位置和时刻控制这一符号变化。
+
+\ProseParagraphBreak
+
 例如取 \(f(x)=|x|^2\)、\(g=0\)。由 \(M_{ct}f=|x|^2+c^2t^2\)，得到 \(u=|x|^2+3c^2t^2\)。它满足 \(u_{tt}=6c^2=c^2\Delta u\)。这份数据不具有有限总能量，却仍可使用局部球面公式。对空间常初速度 \(g=1\)、\(f=0\)，公式给出 \(u=t\)，再次核对了单位质量归一化。
 
 \subsection{传播速度}
@@ -52,22 +66,32 @@
 \]
 局部守恒式为 \(\partial_te=c^2\operatorname{div}\operatorname{Re}(\overline{u_t}\nabla u)\)。球面随时间以法向速度 \(-c\) 收缩，因此出现一个符号有利的面积项。
 
+\Needspace{6\baselineskip}
 \begin{proposition}[波方程的局部能量]\label{b2:prop:11-local-energy}
-设 \(n\geq1\)，\(u\) 为收缩球锥邻域中的经典齐次解。则
+设 \(n\geq1\) 为整数，\(c>0\)、\(t_0>0\)、\(x_0\in\mathbb R^n\)、\(\mathbb K\in\{\mathbb R,\mathbb C\}\)。设开集 \(U\subset\mathbb R\times\mathbb R^n\) 包含闭锥 \(\{(t,x):0\leq t\leq t_0,\ |x-x_0|\leq c(t_0-t)\}\)，\(u\in C^2(U;\mathbb K)\) 满足 \(u_{tt}-c^2\Delta u=0\)。令 \(e=(|u_t|^2+c^2|\nabla u|^2)/2\)、\(E_B(t)=\int_{B_{c(t_0-t)}(x_0)}e\,\mathrm dx\) 于 \(0\leq t<t_0\)，并令 \(E_B(t_0)=0\)。对 \(0<t<t_0\)，以 \(\nu\) 表示正半径球面的外法向，有
 \[
  E_B'(t)=\int_{\partial B_{c(t_0-t)}(x_0)}
  \bigl(c^2\operatorname{Re}(\partial_\nu u\,\overline{u_t})-c\cdot e\bigr)
  \,\mathrm{d}\sigma\leq0.
 \]
-若初始位移和速度在底球上为零，则 \(u\) 在整个锥内为零。因此任意维全空间经典初值问题至多有一个解，且其传播速度不超过 \(c\)。
+这里 \(n=1\) 时球为区间，边界积分是两个端点的求和。函数 \(E_B\) 连续且在整个 \([0,t_0]\) 上不增。若初始位移和速度在底球 \(\overline{B_{ct_0}(x_0)}\) 上为零，则 \(u\) 在整个闭锥内为零。因此任意维全空间经典初值问题至多有一个解，且其传播速度不超过 \(c\)。
 \end{proposition}
 \begin{proof}
-对移动球积分求导并使用散度公式得到所示等式。将梯度分成法向分量和切向分量，积分被积函数等于
+在 \(0<t<t_0\) 时，球半径严格为正，对移动球积分求导并使用散度公式得到所示等式。将梯度分成法向分量和切向分量，积分被积函数等于
 \[
  -\dfrac c2|u_t-c\partial_\nu u|^2
  -\dfrac{c^3}{2}|\nabla_{\mathrm{tan}}u|^2.
 \]
-所以局部能量不增。零初值使初始梯度和速度为零，因此能量恒为零。内部的 \(u_t\) 和 \(\nabla u\) 随之为零，沿留在锥内的竖直线积分到零时刻得到 \(u=0\)，边界由连续性补上。对两个解作差并让 \(x_0,t_0\) 任意，得到唯一性。比较局部相同的数据，同样给出球内依赖和有限传播。
+当 \(n=1\) 时，左右端点的外法向分别为 \(-1\)、\(1\)，同一计算就是区间上的分部积分与两个移动端点的求导，此时切向梯度为零。因而每个维数下的局部能量都在开时间区间内不增。
+
+还需处理两个时间端点。记 \(r(t)=c(t_0-t)\)，换元得到
+\[
+ E_B(t)=r(t)^n\int_{B_1(0)}e\bigl(t,x_0+r(t)y\bigr)\,\mathrm{d}y,
+ \qquad 0\leq t<t_0.
+\]
+能量密度在闭锥上连续且有界，所示表达式在 \(t<t_0\) 时连续，并在 \(t\uparrow t_0\) 时趋于零。因此定义的 \(E_B(t_0)=0\) 给出闭区间上的连续函数；将开区间中的单调不等式取端点极限，便得到 \([0,t_0]\) 上的单调性，无须给退化球面指定法向。
+
+零初值使底球内部的初始梯度和速度为零，因此初始能量为零。非负性与刚证的单调性使以后能量仍为零。锥内部的 \(u_t\) 和 \(\nabla u\) 随之为零，沿留在锥内的竖直线积分到零时刻得到 \(u=0\)，侧边界与顶点由连续性补上。对两个解作差并让 \(x_0,t_0\) 任意，得到正时间的唯一性；负时间作时间反演 \(t\mapsto-t\) 后使用同一论证。比较局部相同的数据，同样给出球内依赖和有限传播。
 \end{proof}
 
 具有外力时，只在局部能量导数中增加 \(\operatorname{Re}\int F\overline{u_t}\)。若两个解的外力在过去锥内相等，其差仍满足上述齐次论证。因此一般外力的影响也沿速度不超过 \(c\) 的路径传递，不能从一个源点瞬时到达远处。
@@ -77,8 +101,9 @@
 
 一般能量方法允许初始数据在整个底球上起作用；三维 Kirchhoff 公式却只读取球面上的数据及位移的一阶导数。这一更强的无尾传播性质称为\term[huygens-yuanli]{Huygens 原理}[Huygens' principle]，本章使用它的强形式：固定正时间的初速度传播核支撑在传播球面上，而非整个球内。
 
+\Needspace{6\baselineskip}
 \begin{corollary}[三维无尾传播]\label{b2:cor:11-huygens}
-若三维齐次初值 \(f,g\) 光滑并支撑在 \(\overline{B_R(0)}\) 内，则对 \(t>0\)，
+设 \(c>0\)、\(R>0\)、\(\mathbb K\in\{\mathbb R,\mathbb C\}\)，\(f,g\in C_c^\infty(\mathbb R^3;\mathbb K)\) 均支撑在 \(\overline{B_R(0)}\) 内。令 \(u\in C^2(\mathbb R\times\mathbb R^3;\mathbb K)\) 为 \(u_{tt}-c^2\Delta u=0\)、\(u(0)=f\)、\(u_t(0)=g\) 的经典解。则对 \(t>0\)，
 \begin{equation}\label{b2:eq:11-shell}
  \operatorname{supp}u(t,\cdot)\subseteq
  \{\,x:\max\{0,ct-R\}\leq |x|\leq ct+R\,\}.

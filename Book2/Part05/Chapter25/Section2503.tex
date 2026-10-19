@@ -1,50 +1,329 @@
 % !TeX root = ../../Book2.tex
-\section{双线性振荡积分}
+\section{曲线的双线性延拓估计}
 \label{b2:sec:2503}
 
-二维曲线的双线性估计可以用一个可逆的频率和映射完整计算。这给出横截增益的直接模型，并显示常数如何随方向靠近而恶化。
+两个延拓函数的乘积保留了两片频率怎样相遇的信息。对二维曲线，两个参数的总维数恰好等于输出频率空间的维数；若频率和映射可以换元，乘积的 Fourier 密度就能直接写出。这样得到的平方范数公式不仅证明一个上界，还能读出横截常数、参数测度和多重覆盖各自的作用。
 
-\subsection{双线性振荡积分}
+\subsection{抛物线延拓的频率和映射}
 \label{b2:subsec:250301}
 
-令 \(\gamma(t)=(t,t^2)\)，
+令 \(\gamma(t)=(t,t^2)\)。对有限区间 \(I\) 和复函数
+\(f\in L^2(I)\)，定义
 \[
  E_If(x,y)=\int_I e^{2\pi\mathrm i(xt+yt^2)}f(t)\,\mathrm dt.
 \]
-对两个不交紧区间 \(I,J\)，乘积的 Fourier 侧对应映射
+这里采用参数测度 \(\mathrm dt\)，不是抛物线的弧长测度。
+由于
+\(\|f\|_{L^1(I)}\leq |I|^{1/2}\cdot\|f\|_{L^2(I)}\)，
+积分绝对收敛，并给出一个有界连续函数；连续性来自支配收敛。
+它也可以理解为有限复测度 \(\gamma_*(f\,\mathrm dt)\) 的逆 Fourier 变换。
+
+取两个不交紧区间 \(I,J\)，先设 \(I\) 位于 \(J\) 左侧。Fubini 给出
 \[
- \Psi(t,s)=(t+s,t^2+s^2),\qquad
- |\det D\Psi|=2|s-t|.
+ E_If(x,y)\,E_Jg(x,y)
+ =\int_{I\times J}
+ e^{2\pi\mathrm i[(t+s)x+(t^2+s^2)y]}f(t)g(s)
+ \,\mathrm dt\,\mathrm ds.
 \]
-由于 \(t\in I\)、\(s\in J\) 的顺序固定，和与平方和确定无序对 \(\{t,s\}\)，顺序又确定有序对，所以映射在该矩形内一对一。
-这项一对一性不能只由 Jacobi 行列式非零推出；后者仅保证局部可逆。
+因此要研究的是参数乘积测度经过映射
+\[
+ \Psi(t,s)=(t+s,t^2+s^2)
+\]
+以后是否具有平方可积密度。这一步把空间侧的乘积变成频率侧的和，尚未使用任何振荡估计。
+
+\ProseParagraphBreak
+写 \(u=t+s\)、\(v=t^2+s^2\)，则
+\[
+ 2v-u^2=(s-t)^2,\quad
+ t=\frac{u-\sqrt{2v-u^2}}2,\quad
+ s=\frac{u+\sqrt{2v-u^2}}2.
+\]
+在 \(I\times J\) 上，正平方根的选择由 \(t<s\) 决定。
+所以和与平方和先确定无序对 \(\{t,s\}\)，两个区间的先后次序再确定有序对。
+这说明 \(\Psi\) 在整个输入矩形上一对一；它不是仅从局部逆函数定理得到的结论。
+另一方面，
+\[
+ D\Psi(t,s)=
+ \begin{pmatrix}1&1\\2t&2s\end{pmatrix},
+ \quad
+ |\det D\Psi(t,s)|=2(s-t).
+\]
+若两个区间至少相隔 \(\rho>0\)，这个行列式至少为 \(2\rho\)。
+两类信息缺一不可：非零行列式负责局部换元，全局一对一负责避免把不同逆像的贡献遗漏。
 
 \subsection{双线性估计}
 \label{b2:subsec:250302}
 
+\Needspace{6\baselineskip}
 \begin{theorem}[分离抛物线片的双线性估计]\label{b2:thm:25-parabola-bilinear}
-若 \(\operatorname{dist}(I,J)\ge\rho>0\)，则
+设 \(I,J\subset\mathbb R\) 为长度有限的紧区间，
+\(\operatorname{dist}(I,J)\geq\rho>0\)，
+\(f\in L^2(I;\mathbb C)\)、\(g\in L^2(J;\mathbb C)\)。
+对 \((x,y)\in\mathbb R^2\)，令
 \[
+ \begin{aligned}
+ E_If(x,y)&=\int_Ie^{2\pi\mathrm i(xt+yt^2)}f(t)\,\mathrm dt,\\
+ E_Jg(x,y)&=\int_Je^{2\pi\mathrm i(xs+ys^2)}g(s)\,\mathrm ds.
+ \end{aligned}
+\]
+则乘积属于 \(L^2(\mathbb R^2)\)，并且
+\[
+ \begin{split}
  \|E_If\,E_Jg\|_{L^2(\mathbb R^2)}^2
- =\int_{I\times J}\frac{|f(t)|^2|g(s)|^2}{2|t-s|}\,\mathrm dt\,\mathrm ds
- \le(2\rho)^{-1}\|f\|_2^2\|g\|_2^2.
+ &=\int_{I\times J}
+ \frac{|f(t)|^2\cdot|g(s)|^2}{2|t-s|}
+ \,\mathrm dt\,\mathrm ds\\
+ &\leq(2\rho)^{-1}
+ \cdot\|f\|_{L^2(I)}^2\cdot\|g\|_{L^2(J)}^2.
+ \end{split}
 \]
 \end{theorem}
 \begin{proof}
-先取光滑紧支撑输入。换元 \(u=\Psi(t,s)\) 后，乘积为某个密度 \(h(u)\) 的逆 Fourier 变换，且
-\(h(\Psi(t,s))=f(t)g(s)/(2|t-s|)\)。
-Plancherel 与换元给出
-\(\|h\|_2^2=\int |f|^2|g|^2/(2|t-s|)\)，这就是等式。
-右侧由分离下界控制。一般 \(L^2\) 输入以光滑函数逼近，两项延拓乘积在 \(L^2\) 中 Cauchy；同时每个延拓在点态积分意义下连续依赖于 \(L^1\) 输入，有限区间上的 \(L^2\) 逼近也给出 \(L^1\) 逼近，故极限确为目标乘积。
+交换两个区间不改变结论，所以设 \(t<s\)。
+先取光滑输入。上一小节的逆映射和换元公式说明，
+\(\Psi_*(f(t)g(s)\,\mathrm dt\,\mathrm ds)\) 的密度为
+\[
+ h(u,v)=
+ \begin{cases}
+ \displaystyle\frac{f(t(u,v))g(s(u,v))}
+ {2[s(u,v)-t(u,v)]},&(u,v)\in\Psi(I\times J),\\[6pt]
+ 0,&(u,v)\notin\Psi(I\times J).
+ \end{cases}
+\]
+边界上的取值不影响积分。这个公式的含义可以用任意有界可测函数
+\(\varphi\) 检验：
+\begin{equation}\label{b2:eq:25-curve-pushforward}
+ \int_{\mathbb R^2}\varphi(u,v)h(u,v)\,\mathrm du\,\mathrm dv
+ =\int_{I\times J}\varphi(\Psi(t,s))f(t)g(s)
+ \,\mathrm dt\,\mathrm ds.
+\end{equation}
+对绝对值同样换元，得到
+\(\|h\|_1=\|f\|_1\cdot\|g\|_1\)，因此 \(h\) 的逆 Fourier 积分有意义。
+在\cref{b2:eq:25-curve-pushforward}中取
+\(\varphi(u,v)=e^{2\pi\mathrm i(xu+yv)}\)，便得到
+\(\check h(x,y)=E_If(x,y)E_Jg(x,y)\)。
+再作一次换元，
+\[
+ \|h\|_2^2
+ =\int_{I\times J}
+ \frac{|f(t)|^2\cdot|g(s)|^2}{4(s-t)^2}
+ \,2(s-t)\,\mathrm dt\,\mathrm ds
+ =\int_{I\times J}
+ \frac{|f(t)|^2\cdot|g(s)|^2}{2(s-t)}
+ \,\mathrm dt\,\mathrm ds.
+\]
+分母的下界证明 \(h\in L^2\)，Plancherel 给出所需等式和上界。
+
+最后说明一般输入的逼近为何得到同一个乘积。
+取 \(f_n\to f\) 于 \(L^2(I)\)、\(g_n\to g\) 于 \(L^2(J)\)，其中
+\(f_n,g_n\) 光滑。已证估计给出
+\[
+ \begin{split}
+ \|E_If_nE_Jg_n-E_If_mE_Jg_m\|_2
+ \leq(2\rho)^{-1/2}\bigl(
+ &\|f_n-f_m\|_2\cdot\|g_n\|_2\\
+ &+\|f_m\|_2\cdot\|g_n-g_m\|_2\bigr).
+ \end{split}
+\]
+所以乘积在 \(L^2\) 中收敛。同时有限区间上的 \(L^2\) 收敛蕴含
+\(L^1\) 收敛，而
+\(\sup_{x,y}|E_I(f_n-f)(x,y)|\leq\|f_n-f\|_1\)；
+两个延拓分别一致收敛，且一致有界，故乘积也一致收敛到
+\(E_IfE_Jg\)。从 \(L^2\) 收敛列取几乎处处收敛子列，便识别了这两个极限。
+等式右侧也收敛：有
+\[
+ \bigl\||f_n|^2-|f|^2\bigr\|_1
+ \leq\|f_n-f\|_2\cdot(\|f_n\|_2+\|f\|_2),
+\]
+对 \(g_n\) 同理，而权 \(1/(2|t-s|)\) 有界。
+于是等式和不等式均传递到一般 \(L^2\) 输入。
 \end{proof}
-这个定理估计乘积而非单个函数。它没有断言 \(E_I:L^2(I)\to L^4(\mathbb R^2)\) 在允许片自相互作用时成立；对角线 \(t=s\) 的 Jacobi 行列式退化正是该推断的障碍。
 
-\subsection{曲率相互作用}
-\label{b2:subsec:250303}
-
-对一般曲线 \(\gamma\)，和映射 Jacobi 行列式为
-\(\det(\gamma'(t),\gamma'(s))\)。在足够小且方向分离的两片上，若此 determinant 有正下界、映射具有受控有限重数，同一换元与 Plancherel 给出对应估计，常数还包含重数。
-对于抛物线，曲率使不同参数的切向方向改变；对于两条本来就横截的直线，则不需要曲率。
+这个公式可以算到具体数值。取 \(a>0\)、\(\rho>0\)，令
+\[
+ I=[0,a],\quad J=[a+\rho,2a+\rho],\quad
+ f=a^{-1/2}\mathbf1_I,\quad g=a^{-1/2}\mathbf1_J.
+\]
+两个输入的平方范数均为一。先对 \(t\) 积分，
+\[
+ \int_0^a\frac{\mathrm dt}{s-t}
+ =\log s-\log(s-a).
+\]
+再对 \(s\in[a+\rho,2a+\rho]\) 积分，得到
+\[
+ \|E_If\,E_Jg\|_2^2
+ =\frac{(2a+\rho)\log(2a+\rho)
+ -2(a+\rho)\log(a+\rho)+\rho\log\rho}{2a^2}.
+\]
+其中各项的线性部分恰好抵消。令 \(\lambda=\rho/a\)，也可写成
+\[
+ \frac{(2+\lambda)\log(2+\lambda)
+ -2(1+\lambda)\log(1+\lambda)+\lambda\log\lambda}{2a}.
+\]
+固定 \(a\) 而令 \(\rho\downarrow0\)，这个数趋于 \((\log2)/a\)。
+因此方向分离的统一上界随 \(\rho\) 恶化，并不表示每一对固定形状的输入都以相同速度发散；
+统一估计必须兼顾可随分离尺度改变、向最近端点集中的输入。
 
 \ProseParagraphBreak
-因此双线性理论中的曲率与横截性各有角色。横截性直接保证频率和映射的 Jacobi 行列式，曲率决定同一曲面的不同片能否形成横截方向。高维中两个超曲面的和映射通常有正维纤维，需要沿纤维积分，不能照搬二维的一对一公式。
+定理控制的是两个分离片的乘积。它没有断言同一片的延拓属于全空间
+\(L^4\)：同片乘积会包含 \(t=s\) 附近的参数对，那里
+\(2|t-s|\) 不能用正数统一控制。第23章预告的横截增益在这里已经成为精确公式，
+但把分离乘积重新组合成一个线性估计，还需要处理对角附近各个尺度。
+
+\subsection{切向横截与频率和映射}
+\label{b2:subsec:250303}
+
+对两条参数曲线，抛物线的特殊公式可以换成
+\[
+ \Psi(t,s)=\gamma_1(t)+\gamma_2(s),\quad
+ \mathcal J(t,s)=
+ |\det(\gamma_1'(t),\gamma_2'(s))|.
+\]
+分母现在衡量两条切向的横截程度。曲线不一定有曲率，也不必属于同一条曲线。
+若参数域由多个片组成，同一个输出频率还可能有多个逆像；这时应先把各支的复密度相加，再取平方。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[有限重数的曲线双线性估计]\label{b2:prop:25-finite-multiplicity}
+设 \(K_1,K_2\subset\mathbb R\) 各为有限个紧区间之并，
+\(\gamma_j\) 是 \(K_j\) 的开邻域上取值于 \(\mathbb R^2\) 的 \(C^1\) 映射。
+令 \(\Psi(t,s)=\gamma_1(t)+\gamma_2(s)\)，并假设
+\[
+ \mathcal J(t,s)=|\det(\gamma_1'(t),\gamma_2'(s))|
+ \geq\nu>0\quad((t,s)\in K_1\times K_2).
+\]
+设整数 \(M\geq1\)，且几乎每个 \(z\in\mathbb R^2\) 在
+\(K_1\times K_2\) 中至多有 \(M\) 个 \(\Psi\)-逆像。
+对复函数 \(f\in L^2(K_1)\)、\(g\in L^2(K_2)\)，定义
+\[
+ E_1f(x)=\int_{K_1}e^{2\pi\mathrm ix\cdot\gamma_1(t)}f(t)\,\mathrm dt,
+ \quad
+ E_2g(x)=\int_{K_2}e^{2\pi\mathrm ix\cdot\gamma_2(s)}g(s)\,\mathrm ds.
+\]
+则乘积的 Fourier 密度为
+\[
+ h(z)=\sum_{\substack{(t,s)\in K_1\times K_2\\\Psi(t,s)=z}}
+ \frac{f(t)g(s)}{\mathcal J(t,s)}
+ \quad\text{几乎处处},
+\]
+且
+\[
+ \begin{split}
+ \|E_1f\,E_2g\|_{L^2(\mathbb R^2)}^2
+ &=\|h\|_2^2\\
+ &\leq M\int_{K_1\times K_2}
+ \frac{|f(t)|^2\cdot|g(s)|^2}{\mathcal J(t,s)}
+ \,\mathrm dt\,\mathrm ds\\
+ &\leq\frac M\nu
+ \cdot\|f\|_{L^2(K_1)}^2\cdot\|g\|_{L^2(K_2)}^2.
+ \end{split}
+\]
+若和映射在输入域上一对一，则第一项不等式成为不带 \(M\) 的等式。
+\end{proposition}
+\begin{proof}
+逆函数定理给输入域中每一点一个开邻域，使 \(\Psi\) 在该邻域上为
+\(C^1\) 微分同胚。输入域紧，所以只需有限个这样的邻域
+\(V_1,\ldots,V_L\)。令
+\[
+ A_1=(K_1\times K_2)\cap V_1,\quad
+ A_\ell=((K_1\times K_2)\cap V_\ell)
+ \setminus\bigcup_{k<\ell}V_k.
+\]
+这些不交可测块覆盖输入域，每一块都落在一个逆函数坐标内。
+在 \(A_\ell\) 上作普通换元，得到一项由该支逆像定义的密度。
+把有限项相加，就得到陈述中的 \(h\)；同一个参数对只属于一块，因此不会重复计算。
+参数函数取不同的几乎处处代表也不改变输出密度的几乎处处等价类，
+因为这些 \(C^1\) 坐标变换及其逆在局部紧块上把零测集送到零测集。
+
+绝对值积分满足
+\[
+ \int_{\mathbb R^2}|h(z)|\,\mathrm dz
+ \leq\int_{K_1\times K_2}|f(t)|\cdot|g(s)|\,\mathrm dt\,\mathrm ds
+ =\|f\|_1\cdot\|g\|_1<\infty.
+\]
+因此逐块换元与 Fubini 对一般 \(L^2\) 输入已经合法，并直接给出
+\(\check h=E_1fE_2g\)。
+在几乎每个输出点，对至多 \(M\) 项用 Cauchy--Schwarz，
+\[
+ |h(z)|^2
+ \leq M\sum_{\Psi(t,s)=z}
+ \frac{|f(t)|^2\cdot|g(s)|^2}{\mathcal J(t,s)^2}.
+\]
+随后对每支换回参数变量，每项的体积因子为 \(\mathcal J(t,s)\)，故
+\[
+ \|h\|_2^2
+ \leq M\int_{K_1\times K_2}
+ \frac{|f(t)|^2\cdot|g(s)|^2}{\mathcal J(t,s)}
+ \,\mathrm dt\,\mathrm ds.
+\]
+横截下界说明右侧有限；Plancherel 和 \(\mathcal J\geq\nu\) 完成证明。
+一对一时逆像和只有一项，不需要 Cauchy--Schwarz，因而得到精确等式。
+\end{proof}
+
+重数因子可能实际出现。取
+\[
+ K_1=\bigcup_{k=0}^{M-1}[2k,2k+1],\quad K_2=[0,1],
+\]
+在第 \(k\) 个参数片上令
+\(\gamma_1(t)=(t-2k,0)\)，并令 \(\gamma_2(s)=(0,s)\)。
+这些公式各自在参数片的开邻域内光滑，且 \(\mathcal J=1\)。
+单位正方形内部的每个点恰有 \(M\) 个逆像。
+取 \(f=M^{-1/2}\mathbf1_{K_1}\)、\(g=\mathbf1_{K_2}\)，则
+\[
+ \|f\|_2=\|g\|_2=1,\quad
+ h=M^{1/2}\mathbf1_{[0,1]^2},\quad
+ \|E_1f\,E_2g\|_2^2=M.
+\]
+各支的相位在同一个输出频率处完全相同，所以密度先叠加，再产生平方。
+若将平方范数误写成各支平方的直接和，就会漏掉这个 \(M\)。
+
+\ProseParagraphBreak
+另一个例子把横截常数与曲率分开。令
+\[
+ \gamma_1(t)=(t,0),\quad
+ \gamma_2(s)=(s\cos\vartheta,s\sin\vartheta),
+ \quad 0<\vartheta<\pi.
+\]
+在任意两个有限参数区间上，和映射是可逆线性映射，
+\(\mathcal J=|\sin\vartheta|\)。因此
+\[
+ \|E_1f\,E_2g\|_2
+ =|\sin\vartheta|^{-1/2}
+ \cdot\|f\|_2\cdot\|g\|_2.
+\]
+两条曲线的曲率都为零，但夹角仍给出精确的乘积界；
+夹角趋零时常数真实发散。抛物线中的曲率则保证相隔的参数点能够产生不同切向。
+
+\ProseParagraphBreak
+若输入按曲线弧长给定，测度因子也必须进入密度。
+具体地，设 \(K_j\) 为有限个紧区间之并，
+\(\gamma_j\) 在其开邻域上为 \(C^1\) 单射浸入，
+两片单位切向的行列式绝对值有一致正下界。
+令 \(\mathrm d\sigma_j=|\gamma_j'|\,\mathrm dt\)，取
+\(a_j\in L^2(\gamma_j(K_j),\sigma_j;\mathbb C)\)，并定义
+\[
+ E_{\sigma_j}a_j(x)=\int_{\gamma_j(K_j)}
+ e^{2\pi\mathrm ix\cdot\xi}a_j(\xi)\,\mathrm d\sigma_j(\xi).
+\]
+对应的参数输入为
+\[
+ f(t)=a_1(\gamma_1(t))|\gamma_1'(t)|,\quad
+ g(s)=a_2(\gamma_2(s))|\gamma_2'(s)|.
+\]
+当和映射一对一时，令
+\(\tau_j=\gamma_j'/|\gamma_j'|\) 为单位切向，精确公式变成
+\[
+ \|E_{\sigma_1}a_1\,E_{\sigma_2}a_2\|_2^2
+ =\int_{\gamma_1(K_1)\times\gamma_2(K_2)}
+ \frac{|a_1(\xi)|^2\cdot|a_2(\eta)|^2}
+ {|\det(\tau_1(\xi),\tau_2(\eta))|}
+ \,\mathrm d\sigma_1(\xi)\,\mathrm d\sigma_2(\eta).
+\]
+这是因为
+\(\mathcal J=|\gamma_1'|\cdot|\gamma_2'|\cdot|\det(\tau_1,\tau_2)|\)，
+约去一次速度因子后，剩下两次弧长微分。
+参数式与几何式是同一个计算，分母中使用的横截量却有不同归一化。
+
+二维计算由有限个逆像组成。若在 \(\mathbb R^d\)、\(d>2\) 中改用两个超曲面，
+两个参数的总维数是 \(2(d-1)>d\)；即使和映射具有满秩微分，其典型纤维仍有维数 \(d-2\)。
+此时必须沿纤维积分，不能照抄上面的有限逆像求和。
+下一节用 \(d\) 个独立法向说明高维乘积的另一种横截结构。

@@ -2,92 +2,226 @@
 \section{二进分解}
 \label{b2:sec:1903}
 
-势用一个齐次核同时处理所有频率。二进分解则把频率空间拆成比例相同的环带，每带对应一种尺度；它适合记录平滑阶数，并允许不同尺度以平方而非绝对和的方式合成。
+势的 Fourier 符号同时作用于全部频率。若想看清一个函数的粗轮廓与细节分别有多大，可以先把频率拆成许多环带：第 \(j\) 带的频率大小约为 \(2^j\)，对应的位置尺度约为 \(2^{-j}\)。每带都由同一个模型缩放得到，所以导数、卷积核及范数的尺度可以统一计算。本节先完成这种分块及其重构；下一节再回答各块的大小怎样合成为原函数的范数。
 
 \subsection{频率局部化}
 \label{b2:subsec:190301}
 
-取实值、径向、光滑函数 \(\chi\)，满足 \(0\leq\chi\leq1\)，在 \(|\xi|\leq1\) 时为一，在 \(|\xi|\geq2\) 时为零，且沿半径单调。令 \(\varphi(\xi)=\chi(\xi)-\chi(2\xi)\)。它支撑于 \(1/2\leq|\xi|\leq2\)，并满足
-\[
- \sum_{j\in\mathbb Z}\varphi(2^{-j}\xi)=1\quad(\xi\ne0).
-\]
-等式由有限和的望远镜消去得到，不能在零频同样成立。频率定位的空间代价是失去紧支集：\(\check\varphi\) 是快速衰减函数，但一般遍布全空间。
+直接乘环带的示性函数虽然能精确切开频率，却在环带边界产生不光滑的符号，其空间核未必可积。我们改用光滑过渡，并允许相邻频带重叠。取整数 \(d\geq1\)，选择实径向函数 \(\chi\in C_c^\infty(\mathbb R^d)\)，满足 \(0\leq\chi\leq1\)，在 \(|\xi|\leq1\) 时为一，在 \(|\xi|\geq2\) 时为零，且沿半径单调不增。这样的函数可由一维光滑截断作用于 \(|\xi|^2\) 构造。
 
 \ProseParagraphBreak
 
-一个位置紧支集而又频率紧支集的非零光滑函数不存在。Fourier 积分在紧频带时延拓为整函数，若它在位置上的开区间或开球外为零，唯一性迫使恒为零。后章的波包因此使用快速衰减的空间局部化，而不要求两种支集同时精确紧致。
+\(\chi(\xi)\) 保留半径二以内的低频，\(\chi(2\xi)\) 则只保留更小的低频范围。两者之差
+\[
+ \varphi(\xi)=\chi(\xi)-\chi(2\xi)
+\]
+因此挑出中间的一圈频率。它非负，支撑包含于 \(\{\,\xi:1/2\leq|\xi|\leq2\,\}\)，并在原点的一个邻域内恒为零。对任意非负整数 \(M,N\)，逐项写出相邻两项的差，得到
+\begin{equation}\label{b2:eq:19-dyadic-telescope}
+ \sum_{j=-M}^N\varphi(2^{-j}\xi)
+ =\chi(2^{-N}\xi)-\chi(2^{M+1}\xi).
+\end{equation}
+若 \(\xi\ne0\)，令 \(M,N\to\infty\)，右侧两项分别趋于一与零。因此
+\[
+ \sum_{j\in\mathbb Z}\varphi(2^{-j}\xi)=1
+ \quad(\xi\ne0).
+\]
+每个非零频率只落在固定数目的环带中，所以这里的逐点求和实际上只有有限个非零项。在 \(\xi=0\) 处，每一项却都是零；这个例外将决定齐次重构需要什么函数空间。
+
+\ProseParagraphBreak
+
+光滑频率定位的空间核是 \(\check\varphi=\mathcal F^{-1}\varphi\)。它属于 Schwartz 类，因而快速衰减、绝对可积，但一般不具有紧支集。这个代价不能通过另选一个更巧的非零核完全消除：一个平方可积函数若同时具有紧的位置支集和紧的 Fourier 支集，就只能为零。
+
+\ProseParagraphBreak
+
+这里用到的解析性可以直接从 Fourier 积分看出。紧频带中的平方可积变换也可积；把一个位置坐标换成复变量 \(z\)，指数的 Taylor 级数在每个紧参数集上一致收敛，故可逐项积分，得到处处收敛的幂级数。若这个函数在一个实区间上为零，则在区间内部的任一点，所有 Taylor 系数均为零，整个幂级数恒为零。高维时，位置紧支集的外部含有一个实开盒；固定其他坐标，先沿第一个坐标使用上述结论，再逐个处理其余坐标，便知函数在全部实空间为零。Fourier 唯一性随后给出原输入为零。这里起作用的是紧频带带来的解析性；普通光滑函数可以在开集上为零而不恒为零。后续波包正是允许位置上的快速衰减，才兼顾了两种局部化。
 
 \subsection{Littlewood--Paley 投影}
 \label{b2:subsec:190302}
 
-定义\term[littlewood-paley-touying]{Littlewood--Paley 投影}[Littlewood--Paley projection]
+\Needspace{6\baselineskip}
+\begin{definition}\label{b2:def:19-dyadic-block}
+设 \(d\geq1\) 为整数，\(\chi\in C_c^\infty(\mathbb R^d)\) 为实径向函数，\(0\leq\chi\leq1\)，在 \(|\xi|\leq1\) 时为一、\(|\xi|\geq2\) 时为零，沿半径单调不增。令 \(\varphi(\xi)=\chi(\xi)-\chi(2\xi)\)。对复温和分布 \(f\in\mathcal S'(\mathbb R^d)\) 和整数 \(j\)，定义\term[littlewood-paley-touying]{Littlewood--Paley 投影}[Littlewood--Paley projection]
 \[
  \Delta_jf\coloneqq\mathcal F^{-1}
- \bigl(\varphi(2^{-j}\,\cdot)\widehat f\bigr)
- =2^{jd}\check\varphi(2^j\,\cdot)*f.
+ \bigl(\varphi(2^{-j}\,\cdot)\cdot\widehat f\bigr).
 \]
-\symidx{\(\Delta_jf\)：Littlewood--Paley 频率投影}
-这里的 \(\Delta_j\) 是频率投影记号，不是 Laplace 算子，也不是第一卷的有限差分 \(\Delta_h\)。下标的整数或向量类型区别其含义。
-\begin{proposition}\label{b2:thm:19-lp-resolution}
-若 \(1<p<\infty\)，则对 \(f\in L^p(\mathbb R^d)\)，有
+其卷积核为
 \[
- f=\lim_{N\to\infty}\sum_{j=-N}^N\Delta_jf
- \quad\text{在 }L^p\text{ 中}.
+ \kappa_j(x)=2^{jd}\cdot\check\varphi(2^jx),
+ \quad \Delta_jf=\kappa_j*f,
 \]
+后一等式对温和分布按 Schwartz 核卷积解释；对 \(L^p\) 输入按通常卷积解释。
+\end{definition}
+\symidx{\(\Delta_jf\)：Littlewood--Paley 频率投影}
+
+光滑符号可以乘温和分布，而 \(\kappa_j\in\mathcal S\)。\Cref{b2:prop:05-tempered-convolution}因此保证每个块是一个光滑函数，其导数至多多项式增长。对 \(1\leq p\leq\infty\) 的 \(L^p\) 输入，Young 不等式还给出
+\[
+ \|\Delta_jf\|_p\leq\|\kappa_j\|_1\cdot\|f\|_p
+ =\|\check\varphi\|_1\cdot\|f\|_p.
+\]
+这个单块界与 \(j\) 无关，但把它对无穷多个 \(j\) 直接相加并不能证明重构。\(\Delta_j\) 也不是 Laplace 算子或第一卷的有限差分 \(\Delta_h\)；这里的整数下标表示频率尺度。
+
+\ProseParagraphBreak
+
+所有 \(\kappa_j\) 的积分都为零，因为 \(\varphi(0)=0\)。更一般地，\(\varphi\) 在零频附近恒为零，故 \(\kappa_j\) 的全部多项式矩都为零。将多项式 \(P(x-y)\) 按 \(y\) 展开，就得到 \(\Delta_jP=0\)。尤其常函数一的每个频率块均为零。这说明在任意温和分布上，不能直接写 \(\sum_j\Delta_jf=f\)；至少所有多项式信息都被这一分解消去了。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[有限指数上的齐次重构]\label{b2:thm:19-lp-resolution}
+设 \(d\geq1\) 为整数，\(\chi\in C_c^\infty(\mathbb R^d)\) 为实径向函数，\(0\leq\chi\leq1\)，在 \(|\xi|\leq1\) 时为一、\(|\xi|\geq2\) 时为零，沿半径单调不增。令 \(\varphi=\chi-\chi(2\cdot)\)，并以核 \(2^{jd}\check\varphi(2^j\cdot)\) 定义 \(\Delta_j\)。对 \(1<p<\infty\)、\(f\in L^p(\mathbb R^d;\mathbb C)\)，有
+\[
+ \sum_{j=-M}^N\Delta_jf\longrightarrow f
+ \quad\text{于 }L^p,
+ \quad M,N\longrightarrow\infty.
+\]
+两个截断参数可以独立趋于无穷；特别地可取 \(M=N\)。
 \end{proposition}
 \begin{proof}
-有限和乘子为 \(\chi(2^{-N}\xi)-\chi(2^{N+1}\xi)\)。第一项的空间核是积分一的 Schwartz 逼近恒等，故范数趋于 \(f\)。第二项是极低频平均。先对 \(f\in L^1\cap L^p\)，Young 不等式给出其 \(L^p\) 范数不超过 \(C2^{-(N+1)d(1-1/p)}\|f\|_1\)，趋于零。其卷积核的 \(L^1\) 范数一致有界，再以稠密性推广到一般 \(f\in L^p\)。在 \(p=1\) 时指数为零，不能使用这个结论。
+令 \(\psi=\check\chi\)，则 \(\psi\in\mathcal S\)、\(\int\psi=\chi(0)=1\)。对整数 \(n\)，记
+\[
+ A_nf=2^{nd}\psi(2^n\cdot)*f.
+\]
+由\eqref{b2:eq:19-dyadic-telescope}，有限和等于 \(A_Nf-A_{-M-1}f\)。因此须分别证明高频截断 \(A_Nf\to f\) 和极低频项 \(A_{-M-1}f\to0\)。
+
+第一步使用 \(L^p\) 平移连续性。换元后，
+\[
+ \|A_Nf-f\|_p
+ \leq\int_{\mathbb R^d}|\psi(z)|\cdot
+       \|f(\cdot-2^{-N}z)-f\|_p\,\mathrm dz.
+\]
+对每个固定 \(z\)，第二个因子趋于零；它不超过 \(2\|f\|_p\)。控制函数 \(2|\psi(z)|\cdot\|f\|_p\) 可积，故支配收敛证明第一步。核可以变号，所用条件是积分一与绝对可积，并不要求它非负。
+
+第二步先取 \(f\in L^1\cap L^p\)。Young 不等式与缩放给出
+\[
+ \begin{aligned}
+ \|A_{-M-1}f\|_p
+ &\leq\bigl\|2^{-(M+1)d}\psi(2^{-M-1}\cdot)\bigr\|_p
+                 \cdot\|f\|_1\\
+ &=2^{-(M+1)d(1-1/p)}\|\psi\|_p\cdot\|f\|_1
+ \longrightarrow0.
+ \end{aligned}
+\]
+这里必须有 \(p>1\)。对一般 \(f\in L^p\)，取 \(h\in L^1\cap L^p\) 逼近它，并利用
+\[
+ \|A_{-M-1}(f-h)\|_p
+ \leq\|\psi\|_1\cdot\|f-h\|_p.
+\]
+先使逼近误差小，再令 \(M\to\infty\)，便得第二步。两项各有独立的极限，故也证明两个参数可以独立变化。
 \end{proof}
+
+重构的两端承担不同任务：\(N\to\infty\) 恢复越来越细的高频细节，\(M\to\infty\) 消去越来越宽的大尺度平均。\(p=1\) 时，后一项不一定趋零。例如对 \(f\in\mathcal S\)、\(\int f\ne0\)，每个 \(\Delta_jf\) 的积分都是零，有限和若在 \(L^1\) 中趋于 \(f\)，就会迫使 \(\int f=0\)。\(p=\infty\) 时常函数一已经是反例。对于上述有限的开区间指数，非零多项式本来就不属于 \(L^p\)，因而没有这类残余信息。
 
 \subsection{二进环带}
 \label{b2:subsec:190303}
 
-每个 \(\Delta_jf\) 的频率支撑在半径约 \(2^j\) 的环带，相邻环带只有有限重叠。若 \(|j-k|>2\)，则 \(\Delta_j\Delta_k=0\)。投影并不是两两正交，也一般不是幂等；名称表示光滑频率定位，不能把它们当成 Hilbert 空间的正交投影。
-下面采用\term[bernstein-budengshi]{Bernstein 不等式}[Bernstein inequality]的下述版本。
-
-\begin{proposition}[Bernstein 估计]\label{b2:thm:19-bernstein}
-若 \(f\in L^p\)、\(1\leq p\leq q\leq\infty\)，且 Fourier 支撑包含于 \(B(0,C2^j)\)，则对非负整数 \(k\)，
-\[
- \|D^kf\|_q\leq C_{k,p,q}2^{j(k+d(1/p-1/q))}\|f\|_p.
-\]
-\end{proposition}
-\begin{proof}
-取光滑紧支集乘子 \(\eta\)，在该频带上为一。于是 \(D^kf=D^k(2^{jd}\check\eta(2^j\,\cdot))*f\)。令 \(1+1/q=1/p+1/r\)，核的 \(L^r\) 范数由换元等于 \(C2^{j(k+d(1-1/r))}\)。Young 不等式给出公式。恒等式先按分布成立，右侧卷积是所需范数中的函数，故也给出导数的函数代表。
-\end{proof}
-只知道 Fourier 支集半径还不能得到导数的反向界，因为低频函数可能落在球中心；反向估计需要环带避开零频。
-
-% 扩写定位：b2:subsec:190303
-环带避开原点时，一阶导数确实能反向控制函数。设 Fourier 支撑在
-\(\{c2^j\leq|\xi|\leq C2^j\}\)，取光滑 \(\eta\) 在此环带上为一且支集仍避开零频。令
-\[
- a_\ell(\zeta)=\frac{\eta(\zeta)\zeta_\ell}{2\pi\mathrm i|\zeta|^2}.
-\]
-则 \(\sum_\ell a_\ell(2^{-j}\xi)\,(2\pi\mathrm i\xi_\ell)=2^j\) 于该支集，故
-\[
- f=2^{-j}\sum_{\ell=1}^d a_\ell(2^{-j}D)\partial_\ell f,\qquad
- \|f\|_p\leq C2^{-j}\sum_\ell\|\partial_\ell f\|_p
- \quad(1\leq p\leq\infty).
-\]
-每个 \(a_\ell\) 光滑紧支集，其逆 Fourier 核可积，缩放保持核 \(L^1\) 范数，因而只用 Young 即可证明这一界。这里并未提前调用后面的 Mihlin 定理；环带上的紧频率符号与全空间零次齐次符号有不同的核可积性。
+每个 \(\Delta_jf\) 的 Fourier 支撑包含于 \(\{\,\xi:2^{j-1}\leq|\xi|\leq2^{j+1}\,\}\)。当 \(|j-k|>2\) 时，两个符号的支集不交，所以 \(\Delta_j\Delta_k=0\)。相邻块却会重叠，且 \(\varphi^2\) 一般不等于 \(\varphi\)，故这些“投影”既不两两正交，也不必幂等；这个名称表示光滑频率定位。
 
 \ProseParagraphBreak
 
-把这一步重复 \(k\) 次，或者直接以多指标配分 \(|\xi|^{2k}\)，得到
+频率尺度还决定求导的代价。若 \(g\in\mathcal S\) 的频率集中在一个固定环带，令 \(g_j(x)=2^{jd/p}\cdot g(2^jx)\)、\(1\leq p<\infty\)，则直接换元得到 \(\|g_j\|_p=\|g\|_p\)，而 \(\|\nabla g_j\|_p=2^j\|\nabla g\|_p\)。下面的\term[bernstein-budengshi]{Bernstein 不等式}[Bernstein inequality]把这个缩放计算推广到所有具有相应频率支撑的输入。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[Bernstein 估计]\label{b2:thm:19-bernstein}
+设 \(d\geq1\) 为整数、\(R_0>0\)、\(j\in\mathbb Z\)、\(1\leq p\leq q\leq\infty\)，\(k\geq0\) 为整数。若 \(f\in L^p(\mathbb R^d;\mathbb C)\) 的温和分布 Fourier 支撑包含于 \(\{\,\xi:|\xi|\leq R_0 2^j\,\}\)，则其全部 \(k\) 阶分布导数都有 \(L^q\) 代表，且
 \[
- \|f\|_p\leq C_k2^{-jk}\sum_{|\alpha|=k}\|\partial^\alpha f\|_p.
+ \|D^kf\|_q
+ \leq C_{d,k,p,q,R_0}\,2^{j[k+d(1/p-1/q)]}\|f\|_p.
 \]
-它与正向 Bernstein 共同说明：一个纯环带函数的一阶导数，尺度就是 \(2^j\)；频率越高，相同函数范数所需的梯度越大。一个低频常数则不能满足这样的反向不等式，因为它的梯度为零。非齐次 Sobolev 范数中的低频 \(L^p\) 项正是为了补回这一信息。
+这里 \(|D^kf|=(\sum_{|\alpha|=k}|\partial^\alpha f|^2)^{1/2}\)，约定 \(D^0f=f\)、\(1/\infty=0\)。常数与 \(j,f\) 无关。
+\end{proposition}
+\begin{proof}
+取 \(\eta\in C_c^\infty(\mathbb R^d)\)，在闭球 \(\{\,|\xi|\leq R_0\,\}\) 的一个邻域内为一。令 \(\eta_j(\xi)=\eta(2^{-j}\xi)\)。由于 \(\eta_j\) 在 \(\operatorname{supp}\widehat f\) 附近为一，分布乘法给出 \(\eta_j\widehat f=\widehat f\)。因此对 \(|\alpha|=k\)，
+\[
+ \partial^\alpha f
+ =\partial^\alpha\bigl(2^{jd}\check\eta(2^j\cdot)\bigr)*f.
+\]
+令 \(1+1/q=1/p+1/r\)，则 \(1\leq r\leq\infty\)。链式法则与换元给出
+\[
+ \bigl\|\partial^\alpha
+       \bigl(2^{jd}\check\eta(2^j\cdot)\bigr)\bigr\|_r
+ =2^{j[k+d(1-1/r)]}\|\partial^\alpha\check\eta\|_r.
+\]
+Young 不等式控制每个导数，再对有限多个多重指标求和，即得所述估计。等式先在分布意义成立，右端卷积属于 \(L^q\)，所以同时证明了导数代表的存在。频带半径 \(R_0\) 决定截断 \(\eta\)，也就进入常数。
+\end{proof}
+
+球形频带仍含有任意小的频率，因而单靠上界不能反过来用导数控制函数。若频率始终离开原点，除法符号就变为一个光滑紧支集乘子，只需可积核的卷积界便能取得反向估计。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[环带上的导数尺度]\label{b2:prop:19-annular-bernstein}
+设 \(d\geq1\)、\(k\geq1\) 为整数，\(0<r_0<R_0<\infty\)、\(1\leq p\leq\infty\)、\(j\in\mathbb Z\)。若 \(f\in L^p(\mathbb R^d;\mathbb C)\) 的温和分布 Fourier 支撑包含于
+\(\{\,\xi:r_0 2^j\leq|\xi|\leq R_0 2^j\,\}\)，则
+\[
+ c_{d,k,p,r_0,R_0}\,2^{jk}\|f\|_p
+ \leq\|D^kf\|_p
+ \leq C_{d,k,p,r_0,R_0}\,2^{jk}\|f\|_p,
+\]
+其中两个常数为正且与 \(j,f\) 无关。
+\end{proposition}
+\begin{proof}
+上界已由 Bernstein 得到。取 \(\eta\in C_c^\infty(\mathbb R^d\setminus\{0\})\)，在闭环带 \(r_0\leq|\zeta|\leq R_0\) 的邻域内为一。先看 \(k=1\)，令
+\[
+ a_\ell(\zeta)=\frac{\eta(\zeta)\zeta_\ell}
+                         {2\pi\mathrm i|\zeta|^2}.
+\]
+这些符号在原点附近补零后都光滑紧支撑，并有
+\[
+ \sum_{\ell=1}^d a_\ell(2^{-j}\xi)
+                       \cdot(2\pi\mathrm i\xi_\ell)
+ =2^j\eta(2^{-j}\xi).
+\]
+这里记 \(m(D)f=\mathcal F^{-1}(m\widehat f)\)，字母 \(D\) 仅是乘子记号。将上式作用于 \(\widehat f\)，得到
+\[
+ f=2^{-j}\sum_{\ell=1}^d a_\ell(2^{-j}D)\partial_\ell f.
+\]
+各 \(a_\ell(2^{-j}D)\) 的核都是同一 Schwartz 核的缩放，\(L^1\) 范数与 \(j\) 无关。Young 因而给出 \(\|f\|_p\leq C2^{-j}\sum_\ell\|\partial_\ell f\|_p\)。
+
+一般 \(k\) 也可直接写出除法。由多项式公式
+\[
+ |\zeta|^{2k}
+ =\sum_{|\alpha|=k}\frac{k!}{\alpha!}\zeta^{2\alpha},
+\]
+令
+\[
+ a_\alpha(\zeta)=\frac{k!}{\alpha!}
+ \frac{\eta(\zeta)\zeta^\alpha}{(2\pi\mathrm i)^k|\zeta|^{2k}}.
+\]
+便有 \(\sum_{|\alpha|=k}a_\alpha(2^{-j}\xi)\cdot(2\pi\mathrm i\xi)^\alpha=2^{jk}\eta(2^{-j}\xi)\)。同一卷积论证得到
+\[
+ \|f\|_p\leq C2^{-jk}\sum_{|\alpha|=k}\|\partial^\alpha f\|_p
+ \leq C'2^{-jk}\|D^kf\|_p.
+\]
+最后一步只使用有限多个分量的范数比较。各导数已由正向 Bernstein 属于 \(L^p\)，所以每一次卷积都有相应定义域。全程没有使用后面的 Mihlin 定理。
+\end{proof}
+
+低频失败也可以在有限 \(p\) 中看清。取非零 \(g\in\mathcal S\)，令其 Fourier 支撑在单位球内。缩放 \(g(\varepsilon x)\) 后，梯度范数与函数范数之比为 \(\varepsilon\|\nabla g\|_p/\|g\|_p\)，趋于零；这些频率仍留在同一个固定球内。因此不能把上一个命题的环带换成球。非齐次 Sobolev 范数中单独保留低频项，正是为了控制导数看不见的大尺度部分。
 
 \subsection{近似正交性}
 \label{b2:subsec:190304}
 
-在 \(L^2\) 中，由 Plancherel，
+平方空间中，每个频率的重叠次数已经足够控制全部块。对 \(f\in L^2(\mathbb R^d)\)，Plancherel 与非负求和给出
 \[
  \sum_j\|\Delta_jf\|_2^2
- =\int\left(\sum_j|\varphi(2^{-j}\xi)|^2\right)|\widehat f(\xi)|^2\,\mathrm d\xi.
+ =\int_{\mathbb R^d}
+   \left(\sum_j|\varphi(2^{-j}\xi)|^2\right)
+                       \cdot|\widehat f(\xi)|^2\,\mathrm d\xi.
 \]
-分割非负且和为一，重叠次数不超过固定整数 \(L\)，故括号在非零频处介于 \(1/L\) 与一之间。这给出平方和与 \(L^2\) 范数的等价，常数依赖所选分割而不是输入。
+记每个非零频率处的重叠次数上界为 \(L\)。分割非负且和为一，所以 Cauchy--Schwarz 给出
+\[
+ \frac1L\leq\sum_j|\varphi(2^{-j}\xi)|^2
+ \leq\left(\sum_j\varphi(2^{-j}\xi)\right)^2=1
+ \quad(\xi\ne0).
+\]
+零点不影响 \(L^2\) 积分，从而
+\[
+ L^{-1}\|f\|_2^2
+ \leq\sum_j\|\Delta_jf\|_2^2\leq\|f\|_2^2.
+\]
+通常得到的是等价而非等距：在两个光滑块都严格介于零与一的区域，平方和会严格小于它们的和。
 
 \ProseParagraphBreak
 
-若一列函数分别具有相互分离的频率支集，则其平方范数可以相加；若支集只有限重叠，就在重叠次数内损失一个常数。这是\term[ji-hu-zhengjiao]{几乎正交性}[almost orthogonality]的最基本版本。对 \(L^p\) 不能直接使用 Plancherel，下一节用随机符号与奇异积分把同样的尺度信息传递到全部开区间指数。
+更一般地，对有限族 \(u_j\in L^2(\mathbb R^d;\mathbb C)\)，若其 Fourier 本性支集两两不交，则 Plancherel 给出精确的平方范数相加。若这些支集在几乎每个频率处至多重叠 \(N_0\) 次，则逐频率使用 Cauchy--Schwarz，得到
+\[
+ \left\|\sum_j u_j\right\|_2^2
+ \leq N_0\sum_j\|u_j\|_2^2.
+\]
+这称为\term[ji-hu-zhengjiao]{几乎正交性}[almost orthogonality]的一种基本形式。它记录的是频率支集的重叠，而不是每个位置处函数值正交。在一般 \(L^p\) 中，Plancherel 不再直接适用；下一节将用随机符号的平均和\chapref{b2:ch:18}的统一奇异积分界恢复平方结构。

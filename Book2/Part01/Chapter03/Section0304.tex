@@ -8,7 +8,7 @@
 \label{b2:subsec:030401}
 
 \begin{definition}\label{b2:def:03-approximate-identity}
-设 \((K_\varepsilon)_{\varepsilon>0}\subset L^1(\mathbb R^d)\)。若
+设 \(d\) 为正整数，\((K_\varepsilon)_{\varepsilon>0}\subset L^1(\mathbb R^d;\mathbb C)\)。若
 \begin{enumerate}
 \item\label{b2:item:03-identity-mass}\(\int K_\varepsilon=1\)；
 \item\label{b2:item:03-identity-bound}\(\sup_{\varepsilon>0}\|K_\varepsilon\|_1<\infty\)；
@@ -19,11 +19,11 @@
 
 确实，若 \(K\in L^1\)、\(\int K=1\)，取 \(K_\varepsilon(x)=\varepsilon^{-d}\cdot K(x/\varepsilon)\)，前三个量分别由换元化为 \(1\)、\(\|K\|_1\) 和 \(\int_{|z|\geq\delta/\varepsilon}|K(z)|\,\mathrm{d}z\)。最后一项因可积性趋零。固定核允许正负抵消；一般核族则必须另写统一 \(L^1\) 界，不能由积分等于 \(1\) 推出。
 
-\subsection{\texorpdfstring{\(L^p\)}{Lᵖ} 逼近}
+\subsection{逼近恒等的收敛与误差估计}
 \label{b2:subsec:030402}
 
 \begin{theorem}\label{b2:thm:03-approximate-identity}
-设 \((K_\varepsilon)\) 满足上述条件。若 \(1\leq p<\infty\)、\(f\in L^p\)，则 \(\|K_\varepsilon*f-f\|_p\to0\)。若 \(f\) 有界且一致连续，则 \(K_\varepsilon*f\to f\) 一致成立。
+设 \(d\) 为正整数，\((K_\varepsilon)_{\varepsilon>0}\subset L^1(\mathbb R^d;\mathbb C)\) 是逼近恒等：\(\int K_\varepsilon=1\)、\(\sup_{\varepsilon>0}\|K_\varepsilon\|_1<\infty\)，且对每个 \(\delta>0\)，\(\int_{|x|\geq\delta}|K_\varepsilon(x)|\,\mathrm dx\to0\) 当 \(\varepsilon\downarrow0\)。若 \(1\leq p<\infty\)、\(f\in L^p(\mathbb R^d;\mathbb C)\)，则 \(\|K_\varepsilon*f-f\|_p\to0\)。若 \(f\colon\mathbb R^d\to\mathbb C\) 有界且一致连续，则 \(K_\varepsilon*f\to f\) 一致成立。
 \end{theorem}
 \begin{proof}
 记 \(A=\sup_\varepsilon\|K_\varepsilon\|_1\)。利用积分为 \(1\)，将误差写成 \(\int K_\varepsilon(y)(\tau_yf-f)\,\mathrm{d}y\)。对归一化正权 \(|K_\varepsilon|/\|K_\varepsilon\|_1\) 使用 Jensen，再对 \(x\) 积分，得到
@@ -38,11 +38,20 @@
 
 \ProseParagraphBreak
 
-磨光函数是这种方法的常见实例。取非负 \(\rho\in C_c^\infty\)、\(\int\rho=1\)，则 \(\rho_\varepsilon*f\to f\) 于有限指数的 \(L^p\)，而卷积光滑。若还先对 \(f\) 做空间截断，就得到光滑紧支集逼近。对同时属于 \(L^1\) 和 \(L^2\) 的函数，可先用同一个有界紧支集截断，再把磨光尺度取得足够小，使两种范数误差同时趋零；下一章将使用这个共同稠密类。
+\textbf{共同光滑逼近。}磨光函数是这种方法的常见实例。取非负 \(\rho\in C_c^\infty(\mathbb R^d)\)、\(\int\rho=1\)，则 \(\rho_\varepsilon*f\to f\) 于有限指数的 \(L^p\)；\cref{b2:prop:03-smooth-convolution}证明了卷积光滑及其求导公式。要把局部光滑化进一步变成光滑紧支集逼近，还需要先做空间截断。下面把两个指数同时逼近的选择写清楚，供下一章延拓使用。
 
+\begin{proposition}\label{b2:prop:03-common-smooth-density}
+设 \(d\) 为正整数。若 \(1\leq p,q<\infty\) 且 \(f\in L^p(\mathbb R^d;\mathbb C)\cap L^q(\mathbb R^d;\mathbb C)\)，则存在同一列 \(f_n\in C_c^\infty(\mathbb R^d;\mathbb C)\)，同时在 \(L^p(\mathbb R^d;\mathbb C)\) 与 \(L^q(\mathbb R^d;\mathbb C)\) 中趋于 \(f\)。
+\end{proposition}
+\begin{proof}
+令 \(v_n=f\cdot\mathbf1_{\{|x|\leq n,\,|f(x)|\leq n\}}\)。对 \(r=p,q\)，截掉部分的 \(r\) 次方由 \(|f|^r\) 控制，并几乎处处趋零，故 \(\|v_n-f\|_r\to0\)。每个 \(v_n\) 有界且紧支集。对固定 \(n\)，前一定理使 \(\rho_\varepsilon*v_n\to v_n\) 在两种范数中成立。选 \(0<\varepsilon_n<1/n\)，使两种误差都小于 \(1/n\)，再令 \(f_n=\rho_{\varepsilon_n}*v_n\)。前一节的光滑卷积命题给出 \(f_n\in C_c^\infty\)，支集至多扩大一个 \(O(\varepsilon_n)\) 的距离；三角不等式分别给出两种收敛。这里每次只需满足两个条件，因此可选同一个尺度，不能把两列互不相关的近似直接当作同一列。
+\end{proof}
+
+
+\textbf{一阶误差估计。}上一定理只保证误差趋零，没有给出趋零的速度。若核由同一个可积函数缩放得到，并且它的一阶绝对矩有限，就能把平移误差中的距离因子积分，得到与尺度 \(\varepsilon\) 成正比的上界。
 
 \begin{proposition}\label{b2:prop:03-first-moment-error}
-设 \(K\in L^1\)、\(\int K=1\)，且 \(M_1=\int|z|\cdot|K(z)|\,\mathrm{d}z<\infty\)。若 \(f\in C_c^1(\mathbb R^d)\)、\(1\leq p\leq\infty\)，则
+设 \(d\) 为正整数，\(\varepsilon>0\)，\(K\in L^1(\mathbb R^d;\mathbb C)\)，\(K_\varepsilon(x)=\varepsilon^{-d}K(x/\varepsilon)\)、\(\int_{\mathbb R^d}K=1\)，且 \(M_1=\int_{\mathbb R^d}|z|\cdot|K(z)|\,\mathrm{d}z<\infty\)。若 \(f\in C_c^1(\mathbb R^d;\mathbb C)\)、\(1\leq p\leq\infty\)，则
 \[
  \|K_\varepsilon*f-f\|_p
  \leq\varepsilon M_1\bigl\||\nabla f|\bigr\|_p.
@@ -54,7 +63,7 @@
  f(x-\varepsilon z)-f(x)
  =-\varepsilon\int_0^1 z\cdot\nabla f(x-s\varepsilon z)\,\mathrm{d}s.
 \]
-对绝对值以 \(\varepsilon|z||\nabla f|\) 控制，随后用权重 \(|z||K(z)|\,\mathrm{d}z\,\mathrm{d}s/M_1\) 的 Jensen 不等式并对 \(x\) 积分。平移保持梯度范数，得到误差的 \(p\) 次方至多为 \((\varepsilon M_1)^p\bigl\||\nabla f|\bigr\|_p^p\)。无穷端点直接在梯度上取上确界。\(M_1=0\) 对单位积分的普通可积核不可能发生；若只看零误差情形，也可单独处理。
+对绝对值以 \(\varepsilon|z||\nabla f|\) 控制，随后用权重 \(|z||K(z)|\,\mathrm{d}z\,\mathrm{d}s/M_1\) 的 Jensen 不等式并对 \(x\) 积分。平移保持梯度范数，得到误差的 \(p\) 次方至多为 \((\varepsilon M_1)^p\bigl\||\nabla f|\bigr\|_p^p\)。无穷端点直接在梯度上取上确界。若 \(M_1=0\)，则 \(K\) 在原点外几乎处处为零，而原点为零测集，故 \(\int K=0\)，与归一化矛盾；因此 \(M_1>0\)，上述归一化权合法。
 \end{proof}
 
 这个估计把定性逼近转成一次阶误差，并说明常数由核的一阶绝对矩和函数梯度控制。若核为偶函数，线性项的积分可能相消；但要把这种相消转成更高阶的范数误差，还需控制二阶余项。后面的 Gauss 核习题会具体计算这一改进。
@@ -63,7 +72,7 @@
 \label{b2:subsec:030403}
 
 \begin{theorem}[Gauss 函数的 Fourier 变换]\label{b2:thm:03-gaussian}
-令 \(G(x)=e^{-\pi|x|^2}\)。则 \(\int_{\mathbb R^d}G=1\)，且 \(\widehat G=G\)。因而
+设 \(d\) 为正整数，定义实值函数 \(G\colon\mathbb R^d\to\mathbb R\)，\(G(x)=e^{-\pi|x|^2}\)。则 \(G\in L^1(\mathbb R^d;\mathbb R)\)、\(\int_{\mathbb R^d}G=1\)，且 \(\widehat G=G\)。因而对每个 \(\varepsilon>0\)，有
 \[
  G_\varepsilon(x)\coloneqq\varepsilon^{-d}e^{-\pi|x|^2/\varepsilon^2},
  \quad \widehat {G_\varepsilon}(\xi)=e^{-\pi\varepsilon^2|\xi|^2}.
@@ -79,7 +88,7 @@
 高维时 \(G(x)=\prod_j e^{-\pi x_j^2}\)，绝对可积性和 Fubini 将变换分解为一维结果的乘积。最后使用伸缩公式。
 \end{proof}
 
-函数 \(G_\varepsilon\) 称为归一化\term[gauss-he]{Gauss 核}[Gaussian kernel]。它有无限支集，但尾部因指数衰减而可控。其 Fourier 变换仍为同类函数，使空间磨光与频率截断之间出现一个可精确计算的对应。
+函数 \(G_\varepsilon\) 称为归一化\term[gauss-he]{Gauss 核}[Gaussian kernel]。它有无限支集，但尾部因指数衰减而可控。其 Fourier 变换仍为同类函数，使空间磨光与高频抑制之间出现一个可精确计算的对应：乘子 \(e^{-\pi\varepsilon^2|\xi|^2}\) 在每个有限频率处都严格为正，因而压低高频却不把它直接置零。这与只保留某个有界频率区间、在区间外取零的硬截断不同；下一节反演时将比较两者。
 \symidx{\(G_\varepsilon\)：单位质量 Gauss 核}
 
 \subsection{Poisson 核}

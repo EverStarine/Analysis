@@ -4,26 +4,35 @@
 
 变换已经有两个端点估计：可积函数变为有界函数，平方可积函数保持平方范数。中间指数的控制将通过一个连续参数把这两端连起来。这里给出 Fourier 变换所需的完整插值论证，一般算子形式留在\secref{b2:sec:1704}。
 
-\subsection{\texorpdfstring{\(L^1\to L^\infty\)}{L¹→L∞}}
+\subsection{已知端点与相容定义}
+\label{b2:subsec:04-fourier-endpoints}
+% 以下两个旧标签兼容曾分别介绍端点的旧稿；合并后均指本小节。
+% 标签后缀不决定打印编号；新引用用语义标签，不把旧040202移给插值小节。
 \label{b2:subsec:040201}
-
-由积分三角不等式，\(\|\widehat f\|_\infty\leq\|f\|_1\)。该端点常数为 \(1\)，非负函数在零频率处取等。它强调总质量对每个频率的控制；若只知道 \(L^1\) 范数，就没有进一步统一的频率衰减率。
-
-\subsection{\texorpdfstring{\(L^2\to L^2\)}{L²→L²}}
 \label{b2:subsec:040202}
 
-Plancherel 给出另一个端点 \(\|\mathcal F_2f\|_2=\|f\|_2\)。两种定义在交集上一致，才有可能对同一个算子作插值。对有限测度支集的简单函数，它既是绝对收敛积分，也是平方范数变换；下面先在这类共同对象上完成估计。
+先把待连接的两个端点和它们的共同定义域列清楚。在本卷 \(e^{-2\pi\mathrm ix\cdot\xi}\) 的约定下，对 \(f\in L^1(\mathbb R^d)\)，积分三角不等式给出 \(\|\widehat f\|_\infty\leq\|f\|_1\)；对 \(f\in L^2(\mathbb R^d)\)，Plancherel 延拓给出 \(\|\mathcal F_2f\|_2=\|f\|_2\)。第一个端点的常数为 \(1\)，非负可积函数在零频率处取等；第二个端点则对每个平方可积函数保持范数。
+
+\ProseParagraphBreak
+
+这里的 \(L^1\) 端点只控制每个频率处的大小，不能给出整个 \(L^1\) 单位球的统一衰减率，见\cref{b2:prop:03-no-uniform-decay}。其局部解释是：把一个非负单位积分的 \(\varphi\in C_c^\infty(\mathbb R^d)\) 调制成 \(f_\eta(x)=e^{2\pi\mathrm ix\cdot\eta}\varphi(x)\)，并不改变 \(L^1\) 范数，却使 \(\widehat f_\eta(\eta)=1\)，而 \(|\eta|\) 可以任意大。这与\cref{b2:thm:03-riemann-lebesgue}对每个固定函数的趋零结论相容：这里允许输入随所测的频率改变。
+
+\ProseParagraphBreak
+
+连接两个端点还需要相容性：\cref{b2:thm:04-plancherel-extension}说明，对每个 \(f\in L^1\cap L^2\)，平方范数变换 \(\mathcal F_2f\) 与绝对积分定义的 \(\widehat f\) 几乎处处相同。因此下面是在改变同一个算子的输入指数。有限测度支集的简单函数同时属于这两个空间；对它们使用复参数改变各个非零取值的幅度，两个边界分别落入 \(L^1\) 与 \(L^2\)，便能在共同定义域内完成插值。所得估计之后再用于一般 \(L^p\) 函数的延拓。
 
 \subsection{Riesz--Thorin 思想}
+\label{b2:subsec:04-complex-interpolation}
+% 保留旧标识的数学含义，不按当前小节显示序号重新分配。
 \label{b2:subsec:040203}
 
 先准备所需的复参数估计。这里的整函数只用于一个辅助引理；下面出现的函数都是有限指数和，因而可由处处收敛的幂级数直接理解。
 
 \begin{lemma}[三线引理的有界形式]\label{b2:lem:04-three-lines}
-设整函数 \(F\) 在闭带 \(0\leq\operatorname{Re}z\leq1\) 上有界，并满足 \(|F(\mathrm{i}t)|\leq1\)、\(|F(1+\mathrm{i}t)|\leq1\)。则 \(|F(\theta)|\leq1\) 对 \(0\leq\theta\leq1\) 成立。
+设整函数 \(F:\mathbb C\to\mathbb C\) 在闭带 \(0\leq\operatorname{Re}z\leq1\) 上有界，并对每个 \(t\in\mathbb R\) 满足 \(|F(\mathrm{i}t)|\leq1\)、\(|F(1+\mathrm{i}t)|\leq1\)。则 \(|F(\theta)|\leq1\) 对 \(0\leq\theta\leq1\) 成立。
 \end{lemma}
 \begin{proof}
-先回顾幂级数的最大模原理。在某个内点达到模的局部最大值时，把函数乘以常数相位，使中心值为非负实数。幂级数在小圆上的平均等于中心值；而圆上实部不超过该最大值，所以连续的非负差只能处处为零。圆上函数遂为同一常数，逐频率积分又使所有正阶幂级数系数为零。函数在邻域内常值，并由重叠圆盘延拓到连通域。因此非恒定解析函数在紧矩形上的最大模出现在边界。
+先回顾幂级数的最大模原理。若中心的最大模为零，函数已在邻域内为零；否则把函数乘以常数相位，使中心值为正实数 \(A\)。在足够小的圆上，幂级数一致绝对收敛，逐项平均合法，所得平均为中心值 \(A\)。圆上实部至多为模，模又至多为 \(A\)，所以连续非负函数 \(A-\operatorname{Re}F\) 的圆周积分为零，它处处为零。此时 \(|F|\leq A\) 还迫使虚部为零，故圆上函数恒为 \(A\)。将圆周值乘以各个负频率后逐项积分，可见所有正阶幂级数系数为零。函数在邻域内常值，并由重叠圆盘延拓到连通域。因此非恒定解析函数在紧矩形上的最大模出现在边界。
 
 给定 \(\varepsilon>0\)，考虑 \(F(z)e^{\varepsilon z^2}\)。在两条竖边上，其模至多为 \(e^\varepsilon\)。若 \(|F|\leq M\)，在高度为 \(\pm R\) 的两条横边上，模至多为 \(Me^{\varepsilon(1-R^2)}\)，对充分大的 \(R\) 也不超过 \(e^\varepsilon\)。在矩形上用刚证明的最大模原理，得 \(|F(\theta)|e^{\varepsilon\theta^2}\leq e^\varepsilon\)。最后令 \(\varepsilon\downarrow0\)。
 \end{proof}
@@ -31,40 +40,126 @@ Plancherel 给出另一个端点 \(\|\mathcal F_2f\|_2=\|f\|_2\)。两种定义�
 这一估计是\term[sanxian-yinli]{三线引理}[three-lines lemma]的特殊形式。它把两条边界上的控制传递到中间，下面让边界对应两种不同的积分指数。
 
 \begin{theorem}[Hausdorff--Young]\label{b2:thm:04-hausdorff-young}
-设 \(1\leq p\leq2\)，\(q=p'\)，即 \(1/p+1/q=1\)。若 \(f\) 为有界且有限测度支集的简单函数，则
+设 \(d\) 为正整数，\(1\leq p\leq2\)，\(q=p'\)，即 \(1/p+1/q=1\)，其中 \(p=1\) 时 \(q=\infty\)。若 \(f\in L^1(\mathbb R^d;\mathbb C)\cap L^p(\mathbb R^d;\mathbb C)\)，则
 \[
  \|\widehat f\|_q\leq\|f\|_p.
 \]
 \end{theorem}
 \begin{proof}
-端点已证，以下设 \(1<p<2\)，并令 \(\theta=2(1-1/p)\)。先归一化 \(\|f\|_p=1\)，再取任意有限测度支集的简单函数 \(g\)，满足 \(\|g\|_p=1\)。记非零复数 \(w\) 的相位为 \(w/|w|\)，零处定义为零。设
+端点已证，以下设 \(1<p<2\)，于是 \(2<q<\infty\) 且 \(q'=p\)。先设 \(f\) 为有界有限测度支集的简单函数。零函数直接满足结论；否则除以其 \(L^p\) 范数，先证明 \(\|f\|_p=1\) 的情形。再取任意同类简单函数 \(g\)，满足 \(\|g\|_p=1\)。我们尚不知道 \(\widehat f\in L^q\)，所以先估计配对 \(\int\widehat f g\)，随后在有限球上从这些配对恢复局部 \(L^q\) 范数，最后才扩大到全空间。测试函数的指数是 \(p=q'\)，因此可以对 \(f\) 和 \(g\) 使用相同的变幂构造。
+
+现在说明幂指数如何由目标决定。设幅度的指数取实系数仿射函数 \(a(z)=A+Bz\)，因而在非零取值处，复幂 \(|f|^{a(z)}\) 的模为 \(|f|^{a(\operatorname{Re}z)}\)。要使两条边界恰好使用 \(L^1\) 与 \(L^2\) 端点，并在某个实数 \(0<\theta<1\) 处恢复原函数，必须同时满足
+\[
+ \begin{aligned}
+  \operatorname{Re}z=0:&\quad a(0)=p,
+       &&\text{使 }|f_z|=|f|^p,\quad\|f_z\|_1=1;\\
+  \operatorname{Re}z=1:&\quad 2a(1)=p,
+       &&\text{使 }|f_z|^2=|f|^p,\quad\|f_z\|_2=1;\\
+  z=\theta:&\quad a(\theta)=1,
+       &&\text{使 }f_\theta=f.
+ \end{aligned}
+\]
+前两式确定 \(A=p\)、\(B=-p/2\)，第三式再确定 \(\theta=2(1-1/p)\)，在 \(1<p<2\) 时确有 \(0<\theta<1\)。于是所需指数正是 \(a(z)=p(1-z/2)\)，并非额外猜出的选择；\(g\) 的三组条件完全相同。
+
+记非零复数 \(w\) 的相位为 \(\operatorname{phase}(w)=w/|w|\)，零处定义为零。令
 \[
  f_z(x)=\operatorname{phase}(f(x))\,|f(x)|^{p(1-z/2)},
  \quad g_z(\xi)=\operatorname{phase}(g(\xi))\,|g(\xi)|^{p(1-z/2)},
 \]
-零值处仍取零，复幂使用正数 \(|f|\) 的实对数。由于函数各只有有限个非零取值，
+零值处仍取零，复幂使用正数 \(|f|\) 和 \(|g|\) 的实对数。对每个 \(z\)，这两个函数仍有界并分别支于原来的有限测度集合，因而下式的绝对值二重积分为 \(\|f_z\|_1\cdot\|g_z\|_1<\infty\)，可按 Fubini 写为 \(\int\widehat {f_z}g_z\)。定义
 \[
  F(z)=\int\!\int e^{-2\pi\mathrm{i}x\cdot\xi}f_z(x)\cdot g_z(\xi)\,\mathrm{d}x\,\mathrm{d}\xi
 \]
-是有限指数和。其指数中的系数为实数，故在闭带上有界；每个积分的绝对可积性由两个有限测度支集保证。
+因为函数各只有有限个非零取值，\(F\) 是有限指数和。具体地，将非零取值写成 \(f=\sum_j a_j\mathbf1_{E_j}\)、\(g=\sum_\ell b_\ell\mathbf1_{H_\ell}\)，其中各集合在相应变量中互不相交。令
+\[
+ c_{j\ell}=\int_{E_j}\int_{H_\ell}e^{-2\pi\mathrm{i}x\cdot\xi}\,\mathrm{d}\xi\,\mathrm{d}x,
+ \quad |c_{j\ell}|\leq |E_j|\cdot|H_\ell|.
+\]
+则 \(F(z)\) 是 \(c_{j\ell}\operatorname{phase}(a_j)\operatorname{phase}(b_\ell)\exp(p(1-z/2)(\log|a_j|+\log|b_\ell|))\) 的有限和。因对数均为实数，每一项沿带的虚方向只改变相位，该项的模仅取决于 \(\operatorname{Re}z\)；对有限项使用三角不等式，便给出 \(F\) 在整个闭带上的统一上界。这同时验证了整性与三线引理要求的全带有界性；仅仅知道两条边上的估计，还不能省略后一条件。
 
-当 \(\operatorname{Re}z=0\) 时，\(\|f_z\|_1=\|g_z\|_1=1\)，由 \(L^1\to L^\infty\) 端点知 \(|F(z)|\leq1\)。当 \(\operatorname{Re}z=1\) 时，\(\|f_z\|_2=\|g_z\|_2=1\)，由 Plancherel 和 Cauchy--Schwarz 也有 \(|F(z)|\leq1\)。三线引理给出 \(|F(\theta)|\leq1\)；而 \(p(1-\theta/2)=1\)，所以
+\cref{b2:fig:04-interpolation-strip}把三个指数条件放在同一条带上：虚方向只改变相位，左右边界的幅度分别恢复归一化的 \(L^1\) 与 \(L^2\) 范数。下面逐一验证边界上的配对估计，再用三线引理传到 \(z=\theta\)。
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm,font=\small]
+ \fill[AnalysisBlue!7] (0,-1.1) rectangle (9,1.1);
+ \draw[->,AnalysisGray] (-0.5,0)--(9.7,0) node[right] {\(\operatorname{Re}z\)};
+ \draw[<->,thick,AnalysisBlue] (0,-1.2)--(0,1.2);
+ \draw[<->,thick,AnalysisBlue] (9,-1.2)--(9,1.2);
+ \draw[<->,dashed,AnalysisBlue] (4.5,-1.2)--(4.5,1.2);
+ \node[above left] at (0,1.2) {\(\operatorname{Im}z\)};
+ \node[below left] at (0,0) {\(0\)};
+ \fill[AnalysisBlue] (4.5,0) circle (1.5pt);
+ \node[below right] at (4.5,0) {\(\theta\)};
+ \node[below right] at (9,0) {\(1\)};
+ \node[align=center,anchor=south] at (0,1.65)
+   {\(\|f_{\mathrm it}\|_1=\|g_{\mathrm it}\|_1=1\)\\\(L^1\longrightarrow L^\infty\)};
+ \node[align=center,anchor=south] at (4.5,1.65)
+   {\(f_\theta=f,\quad g_\theta=g\)\\\(\|f\|_p=\|g\|_p=1\)};
+ \node[align=center,anchor=south] at (9,1.65)
+   {\(\|f_{1+\mathrm it}\|_2=\|g_{1+\mathrm it}\|_2=1\)\\\(L^2\longrightarrow L^2\)};
+ \node[below] at (0,-1.35) {\(|F(\mathrm it)|\leq1\)};
+ \node[below] at (9,-1.35) {\(|F(1+\mathrm it)|\leq1\)};
+ \draw[->,AnalysisBlue] (0.8,-0.65)--(3.35,-0.65);
+ \draw[->,AnalysisBlue] (8.2,-0.65)--(5.65,-0.65);
+ \node[fill=white,inner sep=3pt] at (4.5,-0.65) {\(|F(\theta)|\leq1\)};
+\end{tikzpicture}
+\caption[复插值带与端点范数]{复插值带与端点范数。这里只画出无限高带状区域的一段，\(\theta\) 的横向位置仅作示意；两条边界上的估计由三线引理传递到中间。}
+\label{b2:fig:04-interpolation-strip}
+\end{figure}
+
+当 \(z=\mathrm{i}t\) 时，\(|f_z|=|f|^p\)，故 \(\|f_z\|_1=\int|f|^p=1\)，\(g_z\) 同理。于是
+\[
+ |F(\mathrm{i}t)|\leq\|\widehat {f_{\mathrm{i}t}}\|_\infty\cdot\|g_{\mathrm{i}t}\|_1\leq1.
+\]
+当 \(z=1+\mathrm{i}t\) 时，\(|f_z|^2=|f|^p\)，所以 \(\|f_z\|_2=\|g_z\|_2=1\)。利用交空间上的 Plancherel 等式，
+\[
+ |F(1+\mathrm{i}t)|\leq\|\widehat {f_{1+\mathrm{i}t}}\|_2\cdot\|g_{1+\mathrm{i}t}\|_2=1.
+\]
+三线引理给出 \(|F(\theta)|\leq1\)；而 \(p(1-\theta/2)=1\)，所以
 \[
  \left|\int\widehat f(\xi)g(\xi)\,\mathrm{d}\xi\right|\leq1.
 \]
-对这些 \(g\) 取上确界即得 \(\|\widehat f\|_q\leq1\)。这里即使尚未知道 \(\widehat f\in L^q\)，对偶范数判别仍合法：先在有限测度区域、有限幅值范围内取其共轭相位乘以 \(|\widehat f|^{q-1}\)，再用简单函数逼近并归一化；得到每个截断的 \(L^q\) 范数不超过 \(1\)，最后用单调收敛。去掉归一化，便得一般结论。
+下面从配对估计恢复范数。若直接写全空间 \(L^q\) 的对偶表示，就预先假设了正在证明的 \(\widehat f\in L^q\)。改在有限球上测试可以避开这一点：记 \(h=\widehat f\)，由 \(f\in L^1\) 已知 \(h\) 有界，故对每个 \(R>0\)，它自动属于 \(L^q(B_R)\)，即使尚不知道全空间的积分是否有限。令
+\[
+ A_R=\left(\int_{B_R}|h|^q\right)^{1/q}.
+\]
+若 \(A_R=0\) 则已有 \(A_R\leq1\)。否则，为使配对恰好恢复 \(A_R\)，按 Hölder 取等的形式选测试函数：其相位取 \(h\) 相位的共轭以消去振荡，幅度取 \(|h|^{q-1}\)，再除以使 \(L^p\) 范数为 \(1\) 的常数。具体取
+\[
+ g_R=\frac{\overline{\operatorname{phase}(h)}\,|h|^{q-1}\mathbf1_{B_R}}{A_R^{q-1}}.
+\]
+因为 \((q-1)p=q\)，直接计算得 \(\|g_R\|_p=1\)、\(\int hg_R=A_R\)。函数 \(g_R\) 有界并支于有限球，可以用同一球上的简单函数在 \(L^p\) 中逼近。此时 \(h\in L^q(B_R)\)，Hölder 不等式保证配对收敛；逼近函数的范数也趋于 \(1\)，归一化后可用已经证明的简单函数估计。因此 \(A_R\leq1\)。最后令 \(R\uparrow\infty\)，单调收敛给出 \(\int|h|^q\leq1\)。去掉最初的归一化，便得简单函数的结论。
+
+最后设 \(f\in L^1\cap L^p\)。先同时截断空间与幅值，再对截断函数量化取值，可得到简单函数 \(s_n\) 同时在 \(L^1\) 与 \(L^p\) 中趋于 \(f\)。第一个收敛使 \(\widehat s_n\) 一致趋于普通变换 \(\widehat f\)，第二个使 \(\|s_n\|_p\to\|f\|_p\)。Fatou 引理遂给出
+\[
+ \int|\widehat f|^q\leq\liminf_n\int|\widehat s_n|^q
+ \leq\lim_n\|s_n\|_p^q=\|f\|_p^q.
+\]
+这一步在定义一般 \(L^p\) 延拓之前，已把不等式建立在整个交空间上。
 \end{proof}
 
 上述证明体现\term[riesz-thorin-chazhi]{Riesz--Thorin 插值}[Riesz--Thorin interpolation]的方法：变动的是函数幅值的幂，使两个边界恰好落在已知空间。结果称为\term[hausdorff-young-budengshi]{Hausdorff--Young 不等式}[Hausdorff--Young inequality]。本章得到可用常数 \(1\)，不宣称中间指数的最佳常数也等于 \(1\)。
 
 \subsection{\texorpdfstring{\(1\leq p\leq2\)}{1≤p≤2}}
+\label{b2:subsec:04-lp-fourier-extension}
 \label{b2:subsec:040204}
 
 \begin{corollary}\label{b2:cor:04-lp-extension}
-对每个 \(1<p<2\)，Fourier 变换唯一延拓为连续线性映射 \(\mathcal F_p:L^p\to L^{p'}\)，且 \(\|\mathcal F_pf\|_{p'}\leq\|f\|_p\)。它在 \(L^1\cap L^p\) 上与可积变换一致，在 \(L^2\cap L^p\) 上与 Plancherel 变换一致。
+设 \(d\) 为正整数，\(1<p<2\)，\(p'=p/(p-1)\)，各函数空间均为 \(\mathbb R^d\) 上的复值 Lebesgue 空间。Fourier 变换唯一延拓为连续线性映射 \(\mathcal F_p:L^p(\mathbb R^d;\mathbb C)\to L^{p'}(\mathbb R^d;\mathbb C)\)，且 \(\|\mathcal F_pf\|_{p'}\leq\|f\|_p\)。它在 \(L^1\cap L^p\) 上与可积变换一致，在 \(L^2\cap L^p\) 上与 Plancherel 变换一致。
 \end{corollary}
 \begin{proof}
-取简单函数在 \(L^p\) 中逼近，前一定理使变换在 \(L^{p'}\) 中为 Cauchy 列。其极限不依赖逼近列，线性、连续性和唯一性与 \(L^2\) 延拓的证明相同。对交空间中的函数，可先同时截断空间与幅值，再用简单函数同时逼近两种范数。在 \(L^1\) 一端，变换一致收敛；在 \(L^2\) 一端，按平方范数收敛。有限测度区域上的依测度极限唯一，故新延拓与原变换几乎处处一致。
+取有界有限测度支集的简单函数 \(s_n\to f\) 于 \(L^p\)。前一定理作用于差，给出
+\[
+ \|\widehat s_n-\widehat s_m\|_{p'}\leq\|s_n-s_m\|_p.
+\]
+故变换是 \(L^{p'}\) Cauchy 列，以其极限定义 \(\mathcal F_pf\)。两个逼近列的差趋于零，使定义独立于选择；对线性组合选择相应逼近列，再取范数极限，得到线性性及范数界。稠密性保证连续延拓唯一。
+
+若 \(f\in L^p\cap L^r\)、\(r=1\) 或 \(2\)，\cref{b2:prop:03-common-smooth-density}提供同时在两个范数中逼近的 \(C_c^\infty\) 列 \(v_n\)。它们的变换在 \(L^{p'}\) 中趋于 \(\mathcal F_pf\)，在 \(r=1\) 时一致趋于可积变换，在 \(r=2\) 时以平方范数趋于 \(\mathcal F_2f\)。对任意有限球 \(B\)，Chebyshev 不等式使每种有限指数范数收敛都推出依测度收敛，例如
+\[
+ |\{\xi\in B:|\widehat v_n-\mathcal F_pf|>\delta\}|
+ \leq\delta^{-p'}\|\widehat v_n-\mathcal F_pf\|_{p'}^{p'}\longrightarrow0.
+\]
+若两个极限分别记为 \(H_1,H_2\)，则集合 \(\{|H_1-H_2|>2\delta\}\cap B\) 包含于相应两个误差集合的并，因而测度为零。令 \(\delta\downarrow0\)，再让有限球穷尽空间，得到几乎处处相等。这完成了交空间的一致性核对。
 \end{proof}
 
 因此在共同定义域上可以继续使用 \(\widehat f\) 这个记号。若 \(1<p<2\)，变换属于 \(L^{p'}\)，但 \(p'>2\)，不能简单地再对变换使用同一个 Hausdorff--Young 定理来反演；反演的正确表达要看它是否另外满足可积性、平方可积性，或采用后面的分布框架。
@@ -78,6 +173,10 @@ Plancherel 给出另一个端点 \(\|\mathcal F_2f\|_2=\|f\|_2\)。两种定义�
  d/2<\alpha<d/p<\beta<d,
 \]
 并取 \(f(x)=|x|^{-\alpha}\mathbf1_{\{|x|<1\}}+(1+|x|)^{-\beta}\mathbf1_{\{|x|\geq1\}}\)。原点附近由 \(\alpha p<d\) 保证 \(p\) 次可积，无穷远由 \(\beta p>d\) 保证，所以 \(f\in L^p\)。但原点奇性使它不平方可积，无穷远尾部使它不可积。因而它既不能整体代入\chapref{b2:ch:03}的绝对积分，也不能整体代入 Plancherel 定义；Hausdorff--Young 延拓确实增加了对象。
+
+\ProseParagraphBreak
+
+具体的积分检验是 \(\int_0^1 r^{d-1-\alpha p}\,\mathrm{d}r<\infty\) 与 \(\int_1^\infty r^{d-1-\beta p}\,\mathrm{d}r<\infty\)。把指数分别换成 \(2\) 与 \(1\)，第一个积分因 \(2\alpha>d\) 发散，第二个因 \(\beta<d\) 发散。例如一维取 \(p=3/2\)、\(\alpha=3/5\)、\(\beta=4/5\)，就得到可直接检验的具体函数。这里原点与远处是两种不同的障碍，仅靠一次空间截断无法同时移除；逼近时需要空间截断和幅值截断共同作用。
 
 \ProseParagraphBreak
 

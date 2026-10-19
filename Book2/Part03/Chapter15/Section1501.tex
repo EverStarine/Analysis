@@ -19,14 +19,34 @@
 \subsection{弱解}
 \label{b2:subsec:150102}
 
-以下主要讨论实函数，复函数可分别作用于实部与虚部。给定有界矩阵场 \(A\) 和源项 \(f\)，称 \(u\in H^1(\Omega)\) 满足散度方程的弱形式，是指
+以下主要讨论实函数；实系数方程的复值版本可分别作用于实部与虚部。设整数 \(d\geq1\)，\(\Omega\subset\mathbb R^d\) 为开集，\(A\in L^\infty(\Omega;\mathbb R^{d\times d})\)，\(f\in\mathcal D'(\Omega;\mathbb R)\)。本章主要研究有限全局能量的弱解，因此称 \(u\in H^1(\Omega;\mathbb R)\) 满足散度方程的弱形式，是指
 \[\int_\Omega A\nabla u\cdot\nabla\varphi=\langle f,\varphi\rangle
  \qquad(\varphi\in C_c^\infty(\Omega)).\]
-这与第一章的定义一致；边界条件尚未包含在此等式中。如果 \(A,u\) 光滑到足以分部积分，它与经典方程等价；粗糙情形则以这个等式本身为准。
+第一章的局部弱解只要求 \(u\in H_{\mathrm{loc}}^1(\Omega)\)，使用的是同一个测试恒等式；本处的 \(H^1(\Omega)\) 要求更强，还控制整个区域上的函数与梯度平方积分。全局能量弱解必为局部弱解，反向一般不成立。两者都尚未包含边界条件；零 Dirichlet 条件还要在下一小节另行加入。对于 \(A\in C^1(\Omega;\mathbb R^{d\times d})\)、\(u\in C^2(\Omega)\) 及连续函数 \(f\)，分部积分和测试函数基本引理使该恒等式与经典方程等价；粗糙情形则以积分等式本身为准。
 
+\ProseParagraphBreak
+
+这个空间差别已经出现在三维的去心球上。取
+\[
+ \Omega=B(0,1)\setminus\{0\}\subset\mathbb R^3,\qquad u(x)=|x|^{-1}.
+\]
+函数在 \(\Omega\) 内光滑；径向公式给出
+\(\Delta u=u''(r)+2u'(r)/r=2r^{-3}-2r^{-3}=0\)。
+每个紧含于 \(\Omega\) 的子集都离原点有正距离，所以 \(u\in H_{\mathrm{loc}}^1(\Omega)\)，并对所有紧支集测试函数满足 \(-\Delta u=0\)。但球坐标计算给出
+\[
+ \begin{aligned}
+ \int_\Omega |u|^2\,\mathrm dx&=4\pi\int_0^1\mathrm dr=4\pi,\\
+ \int_{\{\varepsilon<|x|<1\}}|\nabla u|^2\,\mathrm dx
+ &=4\pi\int_\varepsilon^1r^{-2}\,\mathrm dr\\
+ &=4\pi(\varepsilon^{-1}-1)\longrightarrow+\infty.
+ \end{aligned}
+\]
+故它是局部弱解，却不属于本章的全局能量解类。这里原点已从区域删去，测试函数接触不到原点；不能把在整个球内的点源方程与去心球上的齐次方程混同。
+
+\Needspace{6\baselineskip}
 \begin{proposition}[一维界面的通量条件]
 \label{b2:prop:15-interface-flux}
-设 \(-1<s<1\)，\(a\) 在 \((-1,s)\)、\((s,1)\) 上分别为正常数，\(u\) 在两闭子区间上分别为 \(C^2\)，且在 \(s\) 处连续。若 \(-(au')'=f\) 在两侧经典成立，其中 \(f\in L^2(-1,1)\)，则 \(u\) 在整个区间为弱解，当且仅当
+设 \(-1<s<1\)，实系数 \(a\) 在 \((-1,s)\)、\((s,1)\) 上分别为正常数，实函数 \(u\) 在两闭子区间上分别为 \(C^2\)，且在 \(s\) 处连续。若 \(-(au')'=f\) 在两侧经典成立，其中实值 \(f\in L^2(-1,1)\)，则 \(u\in H^1(-1,1)\) 在整个区间满足 \(-(au')'=f\) 的弱形式，当且仅当
 \[a(s-)u'(s-)=a(s+)u'(s+).\]
 \end{proposition}
 \begin{proof}
@@ -45,10 +65,10 @@
 
 \ProseParagraphBreak
 
-自然边界条件的写法不同。以 Poisson 方程为例，在 \(H^1(\Omega)\) 的全部方向测试时，光滑情形的 Green 公式是
+自然边界条件的写法不同。以非空有界 \(C^1\) 开集 \(\Omega\subset\mathbb R^d\) 为例，若实函数 \(u\) 在 \(\overline\Omega\) 的某开邻域内为 \(C^2\)，记 \(f=-\Delta u\)、\(g_N=\partial_\nu u\)，则在 \(H^1(\Omega;\mathbb R)\) 的全部方向测试时，Green 公式是
 \[\int_\Omega\nabla u\cdot\nabla v
   =\int_\Omega fv+\int_{\partial\Omega}g_N\operatorname{Tr}v\,\mathrm dS.\]
-它编码 \(\partial_\nu u=g_N\)，而不是要求 \(u\) 在边界为零。取 \(v=1\) 立刻得到相容条件 \(\int_\Omega f+\int_{\partial\Omega}g_N=0\)。测试空间不同，编码的边界问题便不同；仅看内部方程无法辨认二者。
+这条公式先对光滑 \(v\) 成立，再由 \(H^1\) 光滑逼近和迹算子的连续性推广到全部 \(H^1\) 测试函数。它编码 \(\partial_\nu u=g_N\)，而不是要求 \(u\) 在边界为零。取 \(v=1\) 得到必要相容条件 \(\int_\Omega f+\int_{\partial\Omega}g_N=0\)；若区域不连通，还须在每个连通分支上分别成立，见\cref{b2:prop:13-neumann-compatibility}。测试空间不同，编码的边界问题便不同；仅看内部方程无法辨认二者。
 
 \ProseParagraphBreak
 
@@ -57,20 +77,99 @@
 \subsection{负阶 Sobolev 空间初步}
 \label{b2:subsec:150104}
 
-设 \(\Omega\) 有界，以梯度范数赋予 \(H_0^1(\Omega)\) Hilbert 结构。定义
+设整数 \(d\geq1\)，\(\Omega\subset\mathbb R^d\) 是非空有界开集，以梯度内积
+\(\langle u,v\rangle_{H_0^1}=\int_\Omega\nabla u\cdot\nabla v\)
+赋予实空间 \(H_0^1(\Omega;\mathbb R)\) Hilbert 结构。第一卷定理24.1.2的零边界 Poincaré 不等式给出
+\(\|v\|_2\leq C_P\|\nabla v\|_2\)，所以梯度范数与完整 \(H^1\) 范数等价，这个空间仍完备。定义
 \[H^{-1}(\Omega)=(H_0^1(\Omega))^*,\qquad
  \lVert f\rVert_{H^{-1}}=\sup_{\lVert\nabla v\rVert_2\le1}|\langle f,v\rangle|.
 \]
-这是本章使用的 \term[fujie-sobolev-kongjian]{负阶 Sobolev 空间}[negative-order Sobolev space]的第一种情形。换成全 \(H^1\) 范数会得到等价范数；双空间本身不变。由 Poincaré 不等式，\(L^2\) 连续嵌入 \(H^{-1}\)。更一般地，若 \(F\in L^2(\Omega;\mathbb R^d)\)，则 \(-\operatorname{div}F\in H^{-1}\)，且其范数不超过 \(\lVert F\rVert_2\)。
+这是本章使用的 \term[fujie-sobolev-kongjian]{负阶 Sobolev 空间}[negative-order Sobolev space]的第一种情形。换成全 \(H^1\) 范数会得到等价的对偶范数；连续对偶中的元素不变，但下面的精确范数等式使用的是梯度范数约定。每个对偶元素 \(f\in H^{-1}(\Omega)\) 限制到 \(C_c^\infty(\Omega)\) 都给出分布：对支集落在固定紧集 \(K\Subset\Omega\) 内的 \(\varphi\)，有
+\[
+ |\langle f,\varphi\rangle|
+ \leq\|f\|_{H^{-1}}\,|K|^{1/2}\sup_K|\nabla\varphi|,
+\]
+所以配对在测试函数拓扑下连续。密度保证这个限制是单射，因此也可以把 \(H^{-1}\) 看作一类分布。
 
+实值函数 \(f\in L^2(\Omega)\) 通过 \(\langle f,v\rangle=\int_\Omega fv\) 进入这个对偶，因为
+\[
+ |\langle f,v\rangle|\leq \|f\|_2\|v\|_2
+                 \leq C_P\|f\|_2\|\nabla v\|_2.
+\]
+更一般地，若 \(F\in L^2(\Omega;\mathbb R^d)\)，则
+\(\langle-\operatorname{div}F,v\rangle=\int_\Omega F\cdot\nabla v\)
+在 \(H_0^1\) 上连续，范数不超过 \(\|F\|_2\)。后一个例子并不要求散度本身是一项 \(L^2\) 函数；它只要求给出的测试作用有能量范数上界。
+
+\Needspace{6\baselineskip}
 \begin{proposition}[负阶数据的通量表示]
 \label{b2:prop:15-negative-representation}
-对每个 \(f\in H^{-1}(\Omega)\)，存在 \(F\in L^2(\Omega;\mathbb R^d)\)，使
-\[\langle f,v\rangle=\int_\Omega F\cdot\nabla v\,\mathrm dx
- \quad(v\in H_0^1(\Omega)),\qquad \lVert F\rVert_2=\lVert f\rVert_{H^{-1}}.\]
+设整数 \(d\geq1\)，\(\Omega\subset\mathbb R^d\) 为非空有界开集，\(H_0^1(\Omega;\mathbb R)\) 取梯度内积，\(H^{-1}(\Omega)=(H_0^1(\Omega;\mathbb R))^*\) 取对偶范数
+\(\|f\|_{H^{-1}}=\sup_{\|\nabla v\|_2\leq1}|\langle f,v\rangle|\)。
+对每个 \(f\in H^{-1}(\Omega)\)，存在唯一 \(w\in H_0^1(\Omega;\mathbb R)\) 使
+\[
+ \langle f,v\rangle=\int_\Omega\nabla w\cdot\nabla v\,\mathrm dx
+ \qquad(v\in H_0^1(\Omega;\mathbb R)).
+\]
+因而 \(F_0=\nabla w\in L^2(\Omega;\mathbb R^d)\) 是 \(f=-\operatorname{div}F_0\) 的通量表示，且
+\(\|F_0\|_2=\|f\|_{H^{-1}}\)。
+任一其他通量表示恰为 \(F=F_0+G\)，其中 \(G\in L^2(\Omega;\mathbb R^d)\)、\(\operatorname{div}G=0\) 于 \(\mathcal D'(\Omega)\)，并满足
+\[
+ \|F\|_2^2=\|F_0\|_2^2+\|G\|_2^2.
+\]
+特别地，\(F_0\) 是所有通量表示中唯一的最小 \(L^2\) 范数表示。
 \end{proposition}
 \begin{proof}
-映射 \(v\mapsto\nabla v\) 把 \(H_0^1\) 等距嵌入 \(L^2(\Omega;\mathbb R^d)\)，其像因完备性而闭。在线性子空间上定义 \(\Lambda(\nabla v)=\langle f,v\rangle\)；Poincaré 不等式保证定义无歧义。Hahn--Banach 定理将其等范数延拓到整个向量值 \(L^2\)。第一卷定理 8.4.7 的 Hilbert 空间 Riesz 表示给出向量 \(F\)，其范数等于泛函范数，恰得所列公式。
+Poincaré 不等式使梯度内积给出完备的 Hilbert 空间。直接在这个空间上应用第一卷定理8.4.7的 Riesz 表示，得到唯一 \(w\) 及所列配对，且
+\[
+ \|f\|_{H^{-1}}=\|w\|_{H_0^1}=\|\nabla w\|_2.
+\]
+取 \(F_0=\nabla w\) 就得到通量表示；这一步只使用 Hilbert 空间的表示定理，不预用后面尚未建立的 Lax--Milgram 定理。
+
+若 \(F\) 也表示 \(f\)，则 \(G=F-F_0\) 满足
+\(\int_\Omega G\cdot\nabla v=0\) 对全部 \(v\in H_0^1\) 成立。特别取紧支集光滑 \(v\)，便知 \(\operatorname{div}G=0\) 于分布意义。反过来，若 \(G\in L^2\) 的分布散度为零，等式先对紧支集测试函数成立；由于其左端对梯度范数连续，密度使它对全部 \(H_0^1\) 成立，所以 \(F_0+G\) 仍表示 \(f\)。最后取 \(v=w\)，有 \(\int_\Omega G\cdot F_0=0\)，展开平方即得范数恒等式；等号 \(\|F\|_2=\|F_0\|_2\) 当且仅当 \(G=0\)，证明最小范数表示的唯一性。
 \end{proof}
 
-这种表示未必唯一，因为与所有梯度正交的通量可以自由加到 \(F\) 上。负阶空间描述的是通量的散度，而不是某个唯一的通量。它也确实容纳比函数更粗糙的数据：在一维有界区间内，点值由 \(H_0^1\) 范数控制，故点质量属于 \(H^{-1}\)；在二维及更高维，一般不再如此。后面的习题用缩放说明这一维数差异，避免把一维直觉直接移到高维。
+因此负阶数据确定的是通量的散度；最小范数准则才从所有通量中选出梯度通量。可以自由叠加的 \(G\) 与全部零边界梯度正交，但这个条件只等价于分布散度为零，不能在未定义法向迹时再解释为逐点零法向通量。
+
+这个空间也确实容纳比函数更粗糙的数据，但是否容纳点源取决于维数。以下直接检查点值泛函；所需的不是“点质量是分布”，而是它对能量范数连续。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[点质量与能量对偶]\label{b2:prop:15-point-mass-dimension}
+设整数 \(d\geq1\)，\(\Omega\subset\mathbb R^d\) 为非空有界开集，\(H^{-1}(\Omega)\) 表示实空间 \(H_0^1(\Omega;\mathbb R)\) 在梯度范数下的连续对偶。对 \(x_0\in\Omega\)，点质量分布定义为 \(\langle\delta_{x_0},\varphi\rangle=\varphi(x_0)\)、\(\varphi\in C_c^\infty(\Omega)\)。若 \(d=1\)、\(\Omega=I=(a,b)\) 为有限开区间，则 \(\delta_{x_0}\in H^{-1}(I)\)；若 \(d\geq2\)，则 \(\delta_{x_0}\notin H^{-1}(\Omega)\)。
+\end{proposition}
+\begin{proof}
+在 \(I=(a,b)\) 上，对光滑零边界函数由
+\(\varphi(x_0)=\int_a^{x_0}\varphi'\) 得
+\(|\varphi(x_0)|\leq\sqrt{b-a}\|\varphi'\|_2\)。密度把点值泛函延拓到 \(H_0^1(I)\)，其值与绝对连续代表的点值一致：第一卷命题21.4.1给出一维 \(H^1\) 函数的绝对连续代表，而上述增量估计保证零边界光滑逼近的点值趋于该代表的点值。
+
+高维先平移并缩放一个紧含于 \(\Omega\) 的球，使观察点为零、球半径为一；这个固定换元只改变范数常数。若 \(d>2\)，取 \(\eta\in C_c^\infty(B(0,1))\)、\(\eta(0)=1\)，令 \(\eta_\varepsilon(x)=\eta(x/\varepsilon)\)。其点值为一，梯度范数平方却是 \(\varepsilon^{d-2}\|\nabla\eta\|_2^2\to0\)。不存在同时控制这些点值的能量常数。
+
+二维的简单缩放使梯度范数不变，须改用较缓的对数过渡。取 \(0<\varepsilon<1/2\)，令径向函数 \(w_\varepsilon\) 在 \(r\leq\varepsilon^2\) 等于一，在 \(\varepsilon^2<r<\varepsilon\) 等于 \(\log(\varepsilon/r)/\log(1/\varepsilon)\)，在 \(r\geq\varepsilon\) 等于零。它连续、分段光滑，且
+\[
+ \|\nabla w_\varepsilon\|_2^2
+ =\frac{2\pi}{\log(1/\varepsilon)^2}
+   \int_{\varepsilon^2}^{\varepsilon}\frac{\mathrm dr}{r}
+ =\frac{2\pi}{\log(1/\varepsilon)}\longrightarrow0.
+\]
+以非负单位质量磨光核在半径小于 \(\varepsilon^2/2\) 的尺度卷积，得到光滑紧支集函数：中心邻域仍恒为一，支集仍在单位球内，Young 不等式使梯度范数不增。因此光滑测试函数同样违反 \(|\varphi(0)|\leq C\|\nabla\varphi\|_2\)。这正是否定点质量属于对偶所需的结论。
+\end{proof}
+一维点源的精确范数将在习题中进一步计算；高维的替代训练则计算小球平均源的能量如何发散。\Cref{b2:tab:15-source-classes}把本节已证的源项范围放在一起，便于应用后面的存在性定理前先核对数据。
+
+\begin{table}[htbp]
+\centering
+\small
+\caption[四类源项与能量对偶]{四类源项与能量对偶。固定整数 \(d\geq1\) 和非空有界开集 \(\Omega\subset\mathbb R^d\)，所有空间取实数域，\(H^{-1}(\Omega)=(H_0^1(\Omega;\mathbb R))^*\) 使用梯度对偶范数，\(C_P\) 为 \(\Omega\) 的零边界 Poincaré 常数。点质量两行另按所列维数和位置取数据；结论均已在正文证明。}
+\label{b2:tab:15-source-classes}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{3.8cm}>{\centering\arraybackslash}p{1.5cm}>{\raggedright\arraybackslash}X@{}}
+\toprule
+数据形式及条件 & 属于 \(H^{-1}\) & 连续性估计或障碍 \\
+\midrule
+\(f\in L^2(\Omega)\) & 是 & \(\|f\|_{H^{-1}}\leq C_P\|f\|_2\)，使用零边界 Poincaré 不等式 \\
+\(-\operatorname{div}F\)，\(F\in L^2(\Omega;\mathbb R^d)\) & 是 & \(\|-\operatorname{div}F\|_{H^{-1}}\leq\|F\|_2\)；不要求散度是普通函数 \\
+\(d=1\)，\(\Omega=(a,b)\)，\(a<s<b\) 时的 \(\delta_s\) & 是 & \(|v(s)|\leq\sqrt{b-a}\|v'\|_2\)，点值取绝对连续代表 \\
+\(d\geq2\)，\(x_0\in\Omega\) 时的 \(\delta_{x_0}\) & 否 & 测试函数点值固定为一，梯度能量可趋零；高于二维用缩放，二维用对数截断 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+后面的零 Dirichlet 弱存在性定理只适用于已核验属于 \(H^{-1}\) 的数据，不能把任意点源自动代入；点质量的分布意义本身并不提供能量对偶中的连续性。

@@ -12,7 +12,7 @@
 \begin{itemize}
 \item\label{b2:item:15-goal-weak}辨认测试空间所编码的内部方程与边界条件，正确使用 \(H^{-1}\) 数据。
 \item\label{b2:item:15-goal-lax}分别核验型的有界性、强制性与空间完备性，掌握 Lax--Milgram 的闭值域证明。
-\item\label{b2:item:15-goal-stability}用能量等式证明唯一性、比较和数据稳定性，并处理非齐次边界延拓。
+\item\label{b2:item:15-goal-stability}用能量等式证明唯一性、比较和数据稳定性，区分 Galerkin 最佳与准最佳逼近，并处理非齐次边界延拓。
 \item\label{b2:item:15-goal-general}说明有界可测系数已足以给出弱存在性，区别原问题与移位问题。
 \item\label{b2:item:15-goal-fredholm}在选读范围内，用伴随核写出 Fredholm 相容条件。
 \end{itemize}
@@ -22,7 +22,7 @@
 
 \ProseParagraphBreak
 
-上一章用极小化构造对称能量的解；本章直接求解双线性等式，从而允许非对称系数。Hilbert 空间表示与紧算子的抽象结论采用第一卷第八章和附录 C 的证明，Sobolev 边界与紧嵌入采用第一卷第二十二至二十五章。相关理论的系统参考包括 Haim Brezis 的《Functional Analysis, Sobolev Spaces and Partial Differential Equations》\cite{Brezis2011Functional}与 Lawrence C. Evans 的《Partial Differential Equations》\cite{Evans2010Partial}。
+上一章用极小化构造对称能量的解；本章直接求解双线性等式，从而允许非对称系数。Hilbert 空间表示与紧算子的抽象结论采用第一卷第八章和附录 C 的证明，Sobolev 边界与紧嵌入采用第一卷第二十二至二十五章。有关多维 Sobolev 空间与椭圆边值问题的变分表述，可参阅 Haim Brezis 的《Functional Analysis, Sobolev Spaces and Partial Differential Equations》\cite[Chapter 9]{Brezis2011Functional}；Lax--Milgram、能量估计与 Fredholm 择一的进一步阅读见 Lawrence C. Evans 的《Partial Differential Equations》\cite[Section 6.2]{Evans2010Partial}。本章将先完成这些结果在所用空间中的证明，再讨论有限维近似与粗糙系数；进一步阅读不承担正文缺失的证明步骤。
 
 \input{Part03/Chapter15/Section1501}
 \input{Part03/Chapter15/Section1502}
@@ -40,50 +40,97 @@
 
 \BookExercises
 
-各题均为本书自拟。前几题核验空间和数据，随后比较近似、系数扰动与共振；最后一题使用选读小节的相容条件。
+各题均为本书自拟，函数空间均取实数域。题中的 \(H^{-1}(\Omega)\) 是以梯度范数赋予 \(H_0^1(\Omega;\mathbb R)\) 后的连续对偶；一维端点与点值取第一卷命题21.4.1的绝对连续代表。前几题核验空间和数据，随后比较近似、系数扰动与共振；最后一题使用选读小节的相容条件。
 
 % 自拟：一维点源的精确对偶范数。
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b2:ex:15-point-source}
-在 \((0,1)\) 上，以梯度范数定义 \(H^{-1}\)。对 \(0<s<1\)，求点质量 \(\delta_s\) 的精确范数，并说明哪个函数达到对偶上确界。
+在 \(I=(0,1)\) 上，令 \(H^{-1}(I)=(H_0^1(I;\mathbb R))^*\)，对偶范数对应 \(\|v'\|_2\)。对 \(0<s<1\)，以绝对连续代表定义 \(\langle\delta_s,v\rangle=v(s)\)。求 \(\delta_s\) 的精确对偶范数，并说明哪个单位范数函数达到对偶上确界。
 \end{exercise}
 \begin{solution}
-令 \(G_s(x)=(1-s)x\)（\(x\le s\)）、\(G_s(x)=s(1-x)\)（\(x\ge s\)）。正文已验证 \(v(s)=\int G_s'v'\)。因此 \(|v(s)|\le\lVert G_s'\rVert_2\lVert v'\rVert_2\)，且取 \(v=G_s/\lVert G_s'\rVert_2\) 达到上界。直接计算 \(\lVert G_s'\rVert_2^2=s(1-s)^2+(1-s)s^2=s(1-s)\)，所以范数为 \(\sqrt{s(1-s)}\)。
+令 \(G_s(x)=(1-s)x\)（\(x\le s\)）、\(G_s(x)=s(1-x)\)（\(x\ge s\)）。对 \(v\in H_0^1(0,1)\) 的绝对连续代表，零端点值给出
+\[
+ \int_0^1G_s'v'=(1-s)\int_0^sv'-s\int_s^1v'
+ =(1-s)v(s)+sv(s)=v(s).
+\]
+因此 \(|v(s)|\le\lVert G_s'\rVert_2\lVert v'\rVert_2\)，且取 \(v=G_s/\lVert G_s'\rVert_2\) 达到上界。直接计算 \(\lVert G_s'\rVert_2^2=s(1-s)^2+(1-s)s^2=s(1-s)\)，所以范数为 \(\sqrt{s(1-s)}\)。
 \end{solution}
 
-% 自拟：高维点质量的尺度障碍。
+% 自拟：点质量维数结论已移入正文；改求平均点源的精确能量。
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b2:ex:15-high-dimensional-point}
-设 \(B(0,1)\subset\Omega\subset\mathbb R^d\) 有界。证明当 \(d\ge2\) 时点质量 \(\delta_0\notin H^{-1}(\Omega)\)。二维可使用在 \(r\le\varepsilon\) 等于 \(1\)、在 \(\varepsilon<r<1\) 等于 \(\log r/\log\varepsilon\)、在 \(r\ge1\) 等于零的径向截断。
+设整数 \(d\ge2\)、\(0<\varepsilon<1\)，\(B=B(0,1)\subset\mathbb R^d\)，记 \(s_d=|S^{d-1}|\)。令 \(H^{-1}(B)=(H_0^1(B;\mathbb R))^*\)，对偶范数对应 \(\|\nabla v\|_2\)。在单位球上取单位质量源
+\(f_\varepsilon=\frac{d}{s_d\varepsilon^d}\cdot\mathbf1_{B(0,\varepsilon)}\)。求 \(-\Delta u_\varepsilon=f_\varepsilon\)、零 Dirichlet 边界的径向弱解，并证明
+\[
+ \|f_\varepsilon\|_{H^{-1}}^2
+ =\frac1{s_d}\left(\frac{\varepsilon^{2-d}}{d+2}
+                  +\int_\varepsilon^1r^{1-d}\,\mathrm dr\right).
+\]
+分别写出二维与高维的发散速度，解释它与 \(f_\varepsilon\to\delta_0\) 的分布收敛是否矛盾。
 \end{exercise}
 \begin{solution}
-若点质量属于该对偶，应有 \(|\varphi(0)|\le C\lVert\nabla\varphi\rVert_2\) 对所有光滑紧支集函数成立。\(d>2\) 时取 \(\varphi_\varepsilon(x)=\varphi(x/\varepsilon)\)，其中 \(\varphi(0)=1\)、支集在单位球；梯度范数平方为 \(\varepsilon^{d-2}\lVert\nabla\varphi\rVert_2^2\to0\)，矛盾。二维的题设截断 \(w_\varepsilon\) 有 \(w_\varepsilon(0)=1\)，且
-\[\int|\nabla w_\varepsilon|^2=\frac{2\pi}{|\log\varepsilon|^2}\int_\varepsilon^1\frac{\mathrm dr}{r}=\frac{2\pi}{|\log\varepsilon|}\to0.\]
-可先把外半径换成固定小于 \(1\) 的数，再用半径小于 \(\varepsilon/2\) 的磨光核平滑。中心仍等于 \(1\)，支集仍紧含于单位球，梯度范数不增；故得到同样矛盾。二维必须使用对数截断，简单缩放的梯度范数恰好不变。
+径向方程为 \(-(r^{d-1}u')'=r^{d-1}f_\varepsilon\)。在零点不留附加点源，先从零积分，得到 \(u'=-r/(s_d\varepsilon^d)\) 于内球，\(u'=-1/(s_dr^{d-1})\) 于外环。令
+\[
+ u_\varepsilon(r)=
+ \begin{cases}
+ \displaystyle\frac1{s_d}\int_\varepsilon^1t^{1-d}\,\mathrm dt
+            +\frac{\varepsilon^2-r^2}{2s_d\varepsilon^d},&r\leq\varepsilon,\\[3pt]
+ \displaystyle\frac1{s_d}\int_r^1t^{1-d}\,\mathrm dt,&\varepsilon\leq r\leq1.
+ \end{cases}
+\]
+函数及径向通量在分界面相接，零点附近为光滑二次函数，边界值为零；分区积分便验证弱方程。由能量唯一性，它就是所求弱解。等式 \(\langle f_\varepsilon,v\rangle=\int\nabla u_\varepsilon\cdot\nabla v\) 与 Cauchy--Schwarz 给对偶范数上界，取 \(v=u_\varepsilon/\|\nabla u_\varepsilon\|_2\) 达到上界。径向积分故给
+\[
+ \|f_\varepsilon\|_{H^{-1}}^2
+ =s_d\int_0^1|u_\varepsilon'(r)|^2r^{d-1}\,\mathrm dr
+ =\frac1{s_d}\left(\frac{\varepsilon^{2-d}}{d+2}
+                  +\int_\varepsilon^1r^{1-d}\,\mathrm dr\right).
+\]
+二维结果为 \((2\pi)^{-1}(1/4+\log(1/\varepsilon))\)；当 \(d>2\) 时为
+\(s_d^{-1}[\varepsilon^{2-d}/(d+2)+(\varepsilon^{2-d}-1)/(d-2)]\)，范数分别按 \(\sqrt{\log(1/\varepsilon)}\) 与 \(\varepsilon^{(2-d)/2}\) 发散。另一方面，对固定光滑测试函数，球内平均趋于其中心值，所以源项在分布意义下趋于点质量。这种弱得多的收敛不要求能量对偶范数有界，因而没有矛盾。
 \end{solution}
 
 % 自拟：分段材料的显式有效导热。
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b2:ex:15-layered-material}
-令 \(a=1\) 于 \((0,1/2)\)、\(a=4\) 于 \((1/2,1)\)。求 \(-(au')'=0\)、\(u(0)=0,u(1)=1\) 的弱解，计算左右斜率及总能量，并判断它是否属于 \(H^2(0,1)\)。
+令 \(a=1\) 于 \((0,1/2)\)、\(a=4\) 于 \((1/2,1)\)。在实空间 \(H^1(0,1)\) 中求 \(-(au')'=0\)、\(u(0)=0,u(1)=1\) 的弱解（端点取绝对连续代表），计算左右斜率及能量 \(E(u)=\frac12\int_0^1a|u'|^2\)，并判断它是否属于 \(H^2(0,1)\)。
 \end{exercise}
 \begin{solution}
 通量为常数 \(q\)，且 \(1=\int_0^1u'=q(1/2+1/8)=5q/8\)，所以 \(q=8/5\)。左斜率为 \(8/5\)，右斜率为 \(2/5\)，解是通过 \((0,0),(1/2,4/5),(1,1)\) 的分段仿射函数。能量 \(\tfrac12\int a|u'|^2=\tfrac12q\int u'=4/5\)。一阶导数在中点有非零跳跃，二阶分布导数含点质量，故不属于 \(L^2\)，解不在 \(H^2\)。
 \end{solution}
 
-% 自拟：一般强制型的Galerkin误差而非对称投影。
+% 自拟：Céa引理已在正文证明；改用二维模型检验误差常数的最优性。
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b2:ex:15-cea}
-设 \(a\) 满足 Lax--Milgram 条件，常数为 \(M,\alpha\)，\(V\subset H\) 有限维。若 \(u\in H\)、\(u_V\in V\) 分别解全空间与限制测试方程，证明
-\[\lVert u-u_V\rVert_H\le\frac M\alpha\inf_{v\in V}\lVert u-v\rVert_H.\]
-说明非对称情形为何不能直接引用正交投影的勾股恒等式。
+设 \(H=\mathbb R^2\) 取欧氏内积，\(\beta\in\mathbb R\)，并令
+\[
+ \begin{gathered}
+ B_\beta=\begin{pmatrix}1&-\beta\\\beta&1\end{pmatrix},\qquad
+ a_\beta(x,y)=(B_\beta x)\cdot y,\\
+ \ell_\beta(y)=(-\beta,1)\cdot y,\qquad
+ V=\operatorname{span}\{(1,0)\}.
+ \end{gathered}
+\]
+求使 \(|a_\beta(x,y)|\le M\cdot|x|\cdot|y|\)、\(a_\beta(x,x)\ge\alpha|x|^2\) 对全部 \(x,y\) 成立的最小 \(M\) 和最大 \(\alpha\)。求满足 \(a_\beta(u,y)=\ell_\beta(y)\) 对全部 \(y\in H\) 成立的解 \(u\)，以及满足 \(a_\beta(u_V,y)=\ell_\beta(y)\) 对全部 \(y\in V\) 成立的解 \(u_V\in V\)，并计算
+\[
+ \frac{|u-u_V|}{\inf_{v\in V}|u-v|}.
+\]
+据此说明\cref{b2:prop:15-cea}中的常数 \(M/\alpha\) 对一般非对称强制型不能统一减小；当 \(\beta\ne0\) 时，指出 Galerkin 解与欧氏正交投影的区别。
 \end{exercise}
 \begin{solution}
-限制型仍强制，故 \(u_V\) 存在唯一。误差 \(e=u-u_V\) 满足 \(a(e,w)=0\) 对所有 \(w\in V\)。于是对 \(v\in V\)，
-\[\alpha\lVert e\rVert^2\le a(e,e)=a(e,u-v)+a(e,v-u_V)=a(e,u-v)
- \le M\lVert e\rVert\lVert u-v\rVert.\]
-误差为零时显然，否则约去并取下确界即可。非对称型一般不是内积，测试正交并不等于 Hilbert 内积正交，故正文 Poisson 问题的勾股公式不能直接套用。
+由 \(B_\beta^{\mathsf T}B_\beta=(1+\beta^2)I\)，有 \(|B_\beta x|=\sqrt{1+\beta^2}|x|\)，故最小有界常数为 \(M=\sqrt{1+\beta^2}\)；取单位 \(y=B_\beta x/|B_\beta x|\) 可达到算子范数。又 \(a_\beta(x,x)=|x|^2\)，故最大强制常数为 \(\alpha=1\)。
+
+全空间方程等价于 \(B_\beta u=(-\beta,1)\)，所以 \(u=(0,1)\)。写 \(u_V=(s,0)\) 并用 \((1,0)\) 测试，得到 \(s=-\beta\)。因此
+\[
+ e=u-u_V=(\beta,1),\qquad |e|=\sqrt{1+\beta^2},\qquad
+ \inf_{v\in V}|u-v|=1,
+\]
+最后的下确界在欧氏投影 \(v=(0,0)\) 达到。误差比正好等于 \(M/\alpha\)，所以一般 Céa 估计中的该常数确实可以达到。另一方面，\(B_\beta e=(0,1+\beta^2)\)，故 \(a_\beta(e,w)=0\) 对全部 \(w\in V\) 成立，但 \(e\cdot(1,0)=\beta\)。当 \(\beta\ne0\) 时，这一测试正交性不是欧氏正交性，\(u_V\) 也不是欧氏最佳逼近；非对称型的准最佳逼近不能改写成 Poisson 梯度内积下的等距投影结论。
 \end{solution}
 
 % 自拟：系数在L无穷范数下的稳定性。
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b2:ex:15-coefficient-stability}
-设 \(A_n,A\) 有共同椭圆下界 \(\lambda>0\)，且 \(\lVert A_n-A\rVert_\infty\to0\)。同一 \(f\in H^{-1}\) 对应的零边界解为 \(u_n,u\)。证明 \(u_n\to u\) 于 \(H_0^1\)，并给出定量估计。
+设整数 \(d\ge1\)，\(\Omega\subset\mathbb R^d\) 为非空有界开集，\(A_n,A\in L^\infty(\Omega;\mathbb R^{d\times d})\) 满足共同椭圆下界 \(\xi^{\mathsf T}A_n(x)\xi,\xi^{\mathsf T}A(x)\xi\ge\lambda|\xi|^2\)（\(\lambda>0\)），对几乎处处 \(x\) 和全部 \(\xi\in\mathbb R^d\) 成立，且 \(\lVert A_n-A\rVert_\infty\to0\)，这里矩阵取欧氏算子范数。令 \(f\in H^{-1}(\Omega)=(H_0^1(\Omega;\mathbb R))^*\)，其对偶范数对应梯度范数；\(u_n,u\in H_0^1(\Omega;\mathbb R)\) 分别弱解 \(-\operatorname{div}(A_n\nabla u_n)=f\) 与 \(-\operatorname{div}(A\nabla u)=f\)。证明 \(u_n\to u\) 于 \(H_0^1\)，并给出定量估计。
 \end{exercise}
 \begin{solution}
 以 \(A_n\) 为左端，两方程相减得 \(\int A_n\nabla(u_n-u)\cdot\nabla v=\int(A-A_n)\nabla u\cdot\nabla v\)。取 \(v=u_n-u\)，利用椭圆性与 Hölder 不等式，得到
@@ -93,24 +140,27 @@
 \end{solution}
 
 % 自拟：Neumann归一化与相容性。
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b2:ex:15-neumann}
-设 \(\Omega\) 为连通有界 Lipschitz 区域，\(f\in L^2(\Omega)\)。使用零均值 Poincaré 不等式，证明 \(\int\nabla u\cdot\nabla v=\int fv\) 对所有 \(v\in H^1(\Omega)\) 可解，当且仅当 \(\int f=0\)。证明指定 \(\int u=0\) 后解唯一。
+令 \(\Omega=(0,1)\cup(2,3)\)，求解类为 \(H^1(\Omega;\mathbb R)\)，纯 Neumann 通量为零，即 \(\int_\Omega u'v'=\int_\Omega fv\) 对每个 \(v\in H^1(\Omega;\mathbb R)\) 成立。证明源项在两个分支分别等于 \(1,-1\) 时，虽然总积分为零，仍无弱解。若源项改为 \(f(x)=2x-1\) 于第一分支、\(f(x)=2(x-2)-1\) 于第二分支，写出全部解，并说明只要求全域零均值为何仍不唯一。
 \end{exercise}
 \begin{solution}
-取 \(v=1\) 得必要条件。反之在闭空间 \(H=\{v\in H^1:\int v=0\}\) 上，梯度范数因零均值 Poincaré 不等式而等价于 \(H^1\) 范数，故 Lax--Milgram 给出唯一零均值解。对一般测试函数减去平均值即可落入 \(H\)，而右端常数部分因 \(\int f=0\) 消失，故方程对全部 \(H^1\) 成立。任意两个解之差梯度为零，连通性使其为常数，零均值再使该常数为零。
+第一种数据用第一分支的示性函数测试；它在不连通开集上属于 \(H^1\)，梯度为零，右端积分为 \(1\)，所以矛盾。第二种数据在每个分支积分为零。以局部坐标 \(s\in(0,1)\) 积分 \(-u''=2s-1\) 得 \(u'=s-s^2\)，满足两端零通量；再积分得 \(u=s^2/2-s^3/3+c_j\)，\(j=1,2\)。局部多项式均值为 \(1/12\)，全域零均值只给 \(c_1+c_2=-1/6\)，留下一个自由参数。分别要求两个分支零均值才确定 \(c_1=c_2=-1/12\)。这与正文的连通假设相吻合。
 \end{solution}
 
 % 自拟：漂移项的反对称结构。
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b2:ex:15-divergence-free-drift}
-设 \(b\in C^1(\overline\Omega;\mathbb R^d)\)、\(\operatorname{div}b=0\)，\(A\) 有界且一致椭圆。证明零边界问题 \(-\operatorname{div}(A\nabla u)+b\cdot\nabla u=f\) 对任意 \(f\in H^{-1}\) 唯一可解，其能量估计不含 \(\lVert b\rVert_\infty\)。
+设整数 \(d\ge1\)，\(\Omega\subset\mathbb R^d\) 为非空有界开集，\(b\in W^{1,\infty}(\Omega;\mathbb R^d)\) 且 \(\operatorname{div}b=0\) 几乎处处，\(A\in L^\infty(\Omega;\mathbb R^{d\times d})\)，并对几乎处处 \(x\)、全部 \(\xi\in\mathbb R^d\) 有 \(\xi^{\mathsf T}A(x)\xi\ge\lambda|\xi|^2\)，其中 \(\lambda>0\)。令 \(H^{-1}(\Omega)=(H_0^1(\Omega;\mathbb R))^*\) 的范数对应梯度范数。证明零边界问题 \(-\operatorname{div}(A\nabla u)+b\cdot\nabla u=f\) 对任意 \(f\in H^{-1}(\Omega)\) 在 \(H_0^1(\Omega;\mathbb R)\) 中唯一弱可解，其能量估计不含 \(\lVert b\rVert_\infty\)。
 \end{exercise}
 \begin{solution}
 对紧支集光滑 \(u\)，有 \(\int(b\cdot\nabla u)u=\tfrac12\int b\cdot\nabla(u^2)=0\)。双线性连续性和 \(H_0^1\) 密度把该等式推广到全部 \(H_0^1\)。所以型虽可能不对称，却满足 \(a(u,u)\ge\lambda\lVert\nabla u\rVert_2^2\)。有界性仍含 \(\lVert b\rVert_\infty\)，但强制常数不含它。Lax--Milgram 给出 \(\lVert\nabla u\rVert_2\le\lambda^{-1}\lVert f\rVert_{H^{-1}}\) 及唯一性。
 \end{solution}
 
 % 自拟：不同共振频率的相容条件与全体解。
+\Needspace{6\baselineskip}
 \begin{optionalexercise}\label{b2:ex:15-resonance}
-在 \((0,\pi)\) 上求解零端点问题 \(-u''-4u=\sin x+q\sin2x\)。确定哪些 \(q\in\mathbb R\) 允许弱解，并在可解时写出全部解。
+给定 \(q\in\mathbb R\)，在 \(H_0^1(0,\pi;\mathbb R)\) 中求解零端点问题 \(-u''-4u=\sin x+q\sin2x\)。这里弱形式是 \(\int_0^\pi(u'v'-4uv)=\int_0^\pi(\sin x+q\sin2x)v\) 对全部 \(v\in H_0^1(0,\pi;\mathbb R)\) 成立。确定哪些 \(q\) 允许弱解，并在可解时写出全部解。
 \end{optionalexercise}
 \begin{solution}
 型对称，齐次核是 \(\operatorname{span}\{\sin2x\}\)。与核配对得相容条件 \(q\int_0^\pi\sin^22x=0\)，即 \(q=0\)。此时特解为 \(-\tfrac13\sin x\)，故全部解为 \(-\tfrac13\sin x+c\sin2x\)。核的刻画可由一维分布方程先推出 \(u''=-4u\in L^2\)，再由常系数常微分方程及端点条件得到，亦可直接使用正弦展开。因此没有遗漏较粗糙的能量解。

@@ -2,6 +2,8 @@
 \section{分离变量法}
 \label{b2:sec:1201}
 
+有限杆的温度既由初温决定，也由端点如何交换热量决定。空间模态要先满足端点约束，其时间衰减再由相应特征值决定。本节把分离变量所得级数放进已经建立的能量空间，随后用镜像表示及具体边界数据检验它的含义。
+
 \subsection{有界区间}
 \label{b2:subsec:120101}
 
@@ -38,8 +40,9 @@
 \end{equation}
 其中 \(f_n,g_n\) 分别为正弦和非零余弦系数。常数项来自零模态；它不随时间衰减。
 
+\Needspace{6\baselineskip}
 \begin{proposition}[正时间的经典解]\label{b2:prop:12-interval-smooth}
-若 \(f\in L^2(0,\ell)\)，上面两个级数及其任意有限阶 \(x,t\) 导数在 \([\delta,T]\times[0,\ell]\) 上绝对一致收敛，其中 \(0<\delta<T\)。因此它们在正时间光滑，满足各自方程和边界条件。
+设 \(\ell,\kappa>0\)，\(u_D,u_N\) 分别为零 Dirichlet 和零 Neumann 边界的热模态级数\eqref{b2:eq:12-dirichlet-series}、\eqref{b2:eq:12-neumann-series}，系数取初值的标准正交正弦、余弦系数。若 \(f\in L^2((0,\ell);\mathbb C)\)，上面两个级数及其任意有限阶 \(x,t\) 导数在 \([\delta,T]\times[0,\ell]\) 上绝对一致收敛，其中 \(0<\delta<T\)。因此它们在正时间光滑，满足各自方程和边界条件。
 \end{proposition}
 \begin{proof}
 求 \(j\) 次空间导数及 \(m\) 次时间导数只会把第 \(n\) 项乘以至多 \(C_{j,m}n^{j+2m}\)。Cauchy--Schwarz 给出统一可和上界
@@ -91,26 +94,156 @@
 
 \ProseParagraphBreak
 
-Robin 条件的解仍用式\eqref{b2:eq:12-interval-expansion}。热量是否守恒取决于通量：常系数时
+非齐次端温还可给出一个完全显式的周期响应。在半直线 \(x>0\) 上取端温 \(u(t,0)=\cos(\omega t)\)，其中 \(\omega>0\)。令 \(\alpha=\sqrt{\omega/(2\kappa)}\)，则
 \[
- \dfrac{\mathrm{d}}{\mathrm{d}t}\int_0^\ell u
- =\kappa\left(u_x(t,\ell)-u_x(t,0)\right).
+ u(t,x)=e^{-\alpha x}\cos(\omega t-\alpha x)
 \]
-Neumann 的两项为零；Robin 的两项给出端点散热；Dirichlet 固定端温却不固定通量，不能由齐次边界推出总热量不变。
+满足热方程与这个边界条件。验证时先用复值函数 \(e^{\mathrm{i}\omega t-(1+\mathrm{i})\alpha x}\)：其时间导数乘以 \(\mathrm{i}\omega\)，二阶空间导数乘以 \((1+\mathrm{i})^2\alpha^2=\mathrm{i}\omega/\kappa\)，再取实部即可。它的初温是 \(e^{-\alpha x}\cos(\alpha x)\)，因此此式描述已经建立的周期响应；若改给另一份初温，还须加上零端温差解，不能直接沿用同一式子。距离增加既压低振幅，也使相位推迟。振幅降为端点的 \(e^{-1}\) 倍所需距离为 \(\alpha^{-1}=\sqrt{2\kappa/\omega}\)，所以快速变化的端温主要影响靠近端点的一段区域。
+
+\ProseParagraphBreak
+
+Robin 条件的解仍用式\eqref{b2:eq:12-interval-expansion}，但总热量还受内部损耗影响。为将边界通量写得有意义，取有限区间 \(I=(a,b)\)、实连续系数 \(p,w,q\in C([a,b])\)、\(p,w>0\)。在开时间区间 \(J\subset(0,\infty)\) 上，设
+\[
+ u\in C^1(J;L^2(I,w\,\mathrm{d}x))\cap C(J;H^1(I)),
+ \qquad pu_x\in C(J;H^1(I)),
+\]
+并在 \(L^2(I)\) 中满足 \(wu_t=(pu_x)_x-qu\)。此时通量 \(pu_x\) 有绝对连续代表及两个端点的迹，而积分是 \(L^2(I,w\,\mathrm{d}x)\) 上的连续线性泛函。因此可以先对时间求导，再用空间基本定理，得到
+\begin{equation}\label{b2:eq:12-weighted-heat-balance}
+ \frac{\mathrm{d}}{\mathrm{d}t}\int_a^b w(x)u(t,x)\,\mathrm{d}x
+ =[p(x)u_x(t,x)]_a^b-\int_a^b q(x)u(t,x)\,\mathrm{d}x,
+ \qquad t\in J.
+\end{equation}
+前面的谱解在任意闭正时间带上具有这些强解性质：指数衰减控制 \(Au\) 及 \(u_t\) 的 \(H\) 范数连续性。由\cref{b2:lem:10-form-coercive}及 \((pv')'=qv-wAv\)，还有
+\[
+ \|v\|_{H^1(I)}+\|pv'\|_{H^1(I)}
+ \leq C\bigl(\|v\|_H+\|Av\|_H\bigr),\qquad v\in D(A).
+\]
+其中第一项先由移位能量控制，通量的零阶范数再由 \(v'\) 控制，一阶范数由所示方程控制。因此 \(u\) 与通量也具有刚才要求的 \(H^1\) 时间连续性。这里不需要把仅连续的 \(p\) 作经典微分，也不要求一般初温在零时具有边界导数。
+
+\ProseParagraphBreak
+
+式\eqref{b2:eq:12-weighted-heat-balance}的第一项是边界净输入，第二项是内部吸收或产生。Neumann 条件只消除前一项；即使边界绝热，内部反应也会改变总热量。例如在 \((0,\ell)\) 上取 \(p=w=q=1\)、齐次 Neumann 条件及初温 \(f=1\)，则 \(u(t,x)=e^{-t}\)，加权总热量为 \(\ell e^{-t}\)，并不守恒。
+
+对无内部反应的纯热方程，取 \(w=1\)、\(p=\kappa>0\)、\(q=0\)，才得到
+\[
+ \frac{\mathrm{d}}{\mathrm{d}t}\int_0^\ell u(t,x)\,\mathrm{d}x
+ =\kappa\bigl(u_x(t,\ell)-u_x(t,0)\bigr).
+\]
+零 Neumann 条件使总热量守恒。若使用 \(-\kappa u_x(t,0)+h_0u(t,0)=0\)、\(\kappa u_x(t,\ell)+h_\ell u(t,\ell)=0\)，其中 \(h_0,h_\ell\geq0\)，右端为 \(-h_0u(t,0)-h_\ell u(t,\ell)\)；它对非负温度不大于零。Dirichlet 固定端温却不固定通量，不能由齐次边界推出总热量不变。
 
 \subsection{长时间行为}
 \label{b2:subsec:120104}
 
+\Needspace{6\baselineskip}
 \begin{proposition}[趋向零模态]\label{b2:prop:12-long-time}
-设本节的空间算子非负，\(P_0\) 为到零特征空间的正交投影；若没有零特征值则 \(P_0=0\)。记最小正特征值为 \(\lambda_+\)。则
+设 \(I=(a,b)\) 为有限区间，\(p,w,q\in C([a,b];\mathbb R)\)、\(p,w>0\)，令 \(A\) 为\cref{b2:def:10-sl-operator}中每端取一个实分离 Dirichlet 或 Robin 条件的算子，其作用为 \(Au=w^{-1}(-(pu')'+qu)\)，\(H=L^2(I,w\,\mathrm dx;\mathbb C)\)，并假设 \(A\geq0\)。对 \(f\in H\)，令 \(u(t)=e^{-tA}f=\sum_ne^{-\lambda_nt}\langle f,e_n\rangle_He_n\)，其中 \((e_n,\lambda_n)\) 是按特征值递增排列的标准正交谱基。\(P_0\) 为到 \(\ker A\) 的正交投影；若没有零特征值则 \(P_0=0\)。记最小正特征值为 \(\lambda_+\)。则对 \(t\geq0\)，
 \[
  \|u(t)-P_0f\|_H\leq e^{-\lambda_+t}\|f-P_0f\|_H.
 \]
-常系数 Dirichlet 情形 \(P_0f=0\)，Neumann 情形 \(P_0f=\overline f\)；两者 \(\lambda_+=\kappa\pi^2/\ell^2\)。
+对给定初值 \(f\)，热解趋于零当且仅当 \(P_0f=0\)。所有 \(f\in H\) 的热解都趋于零，当且仅当 \(\ker A=\{0\}\)，这在当前非负正则有限区间条件下等价于 \(\lambda_1>0\)。特别地，对 \(I=(0,\ell)\)、\(A=-\kappa\partial_x^2\)、\(\ell,\kappa>0\)，零 Dirichlet 情形 \(P_0f=0\)，零 Neumann 情形 \(P_0f=\overline f=\ell^{-1}\int_0^\ell f\)；两者 \(\lambda_+=\kappa\pi^2/\ell^2\)。
 \end{proposition}
 \begin{proof}
-将零模态从展开中分离，剩余每个系数的平方都乘以不大于 \(e^{-2\lambda_+t}\) 的因子，求和即得。最小正特征值存在由\cref{b2:thm:10-sl-spectral}保证。
+将零模态从展开中分离，剩余每个系数的平方都乘以不大于 \(e^{-2\lambda_+t}\) 的因子，求和即得。最小正特征值存在由\cref{b2:thm:10-sl-spectral}保证。于是 \(u(t)\to P_0f\)，给定初值趋零的判据随之成立。若要求所有初值都趋零，取非零 \(f\in\ker A\) 就会得到不动解 \(u(t)=f\)，所以必须核为零；反向由已得估计成立。谱从最低特征值开始且趋于正无穷，非负性下核为零恰好意味着 \(\lambda_1>0\)。纯热 Dirichlet、Neumann 的结论由各自显式谱得到。
 \end{proof}
 
-对常系数区间，这还给出 \(t\geq1\) 时的一致收敛：先演化至 \(t-1\)，再由固定时间一的核把 \(L^2\) 误差送到一致范数；Cauchy--Schwarz 与正时间可和尾给出固定的 \(L^2\to L^\infty\) 界。若初值恰与最低正模态正交，衰减速度由下一项非零系数决定。正 Robin 系数排除常数零模态，故最终冷却到零；出现负特征值时却可有指数增长，不能继续使用本命题。
+对上述常系数 Dirichlet、Neumann 区间，这还给出 \(t\geq1\) 时的一致收敛：先演化至 \(t-1\)，再由固定时间一的核把 \(L^2\) 误差送到一致范数；Cauchy--Schwarz 与正时间可和尾给出固定的 \(L^2\to L^\infty\) 界。若初值恰与最低正模态正交，衰减速度由下一项非零系数决定。出现负特征值时，相应非零初始系数会产生指数增长，不能继续使用本命题。
+
+\ProseParagraphBreak
+
+对于一般连续系数，判断是否趋于零应检查整个零空间。一个容易核验的充分条件是：\(q\geq0\)、所有 Robin 系数 \(h_s\geq0\)，且至少有一个 Dirichlet 端点或一个严格正的 Robin 系数。事实上，若 \(v\in\ker A\)，则
+\[
+ 0=\langle Av,v\rangle_H
+  =\int_a^b\bigl(p|v'|^2+q|v|^2\bigr)\,\mathrm{d}x
+    +\sum_{s\in R}h_s|v(s)|^2.
+\]
+各项非负，\(p>0\) 使 \(v'=0\) 几乎处处，故 \(v\) 为常数。Dirichlet 端点的零值或严格正的 Robin 边界项迫使这个常数为零。因此核为零，由命题得到所有初温的指数衰减。这个论证用到了 \(q\geq0\)，不能仅留下正 Robin 条件而删去对内部系数的控制。
+
+下面的例子说明原因。取 \(I=(0,1)\)、\(p=w=1\)，令
+\[
+ v_0(x)=1+x(1-x)>0,\qquad
+ q(x)=\frac{v_0''(x)}{v_0(x)}=-\frac2{1+x(1-x)},
+\]
+并在两端取严格正 Robin 系数 \(h_0=h_1=1\)，即
+\[
+ -v'(0)+v(0)=0,\qquad v'(1)+v(1)=0.
+\]
+函数 \(v_0\) 满足这两个条件，而且 \(Av_0=-v_0''+qv_0=0\)。还需核验这个例子没有违反非负性假设。对任意 \(v\in H^1(0,1;\mathbb C)\)，令 \(z=v/v_0\)。由于 \(v_0\) 光滑且有正下界，\(z\in H^1(0,1)\)，绝对连续函数的乘积法则给出
+\[
+ |v'|^2+\frac{v_0''}{v_0}|v|^2
+ =v_0^2|z'|^2+\bigl(v_0v_0'|z|^2\bigr)'.
+\]
+对 \(x\) 积分，导数项成为
+\[
+ \left[\frac{v_0'}{v_0}|v|^2\right]_0^1
+ =-|v(1)|^2-|v(0)|^2,
+\]
+恰好抵消能量形式中的两个正边界项。因此
+\begin{equation}\label{b2:eq:12-robin-zero-mode-factorization}
+ \begin{aligned}
+ \mathfrak a(v,v)
+ &=\int_0^1\bigl(|v'|^2+q|v|^2\bigr)\,\mathrm{d}x
+       +|v(0)|^2+|v(1)|^2\\
+ &=\int_0^1v_0^2\left|\left(\frac v{v_0}\right)'\right|^2\,\mathrm{d}x
+ \geq0.
+ \end{aligned}
+\end{equation}
+所以 \(A\geq0\)，却仍有非恒定零模态。取初温 \(f=v_0\)，就得到永不衰减的解 \(u(t,x)=v_0(x)\)。正 Robin 系数排除了非零常数零模态，但允许 \(q\) 有负值时，不能据此排除所有零模态。
+
+\ProseParagraphBreak
+
+最后回到 \((0,\ell)\) 上 \(u_t=\kappa u_{xx}\)、\(\kappa,\ell>0\) 的纯热模型，把边界的几种作用放在一起比较。周期边界把两个端点耦合为
+\[
+ u(t,0)=u(t,\ell),\qquad u_x(t,0)=u_x(t,\ell),
+\]
+因而不属于前面的分离边界条件，不能直接套用其特征值单重的编号。对 \(f\in L^2((0,\ell);\mathbb C)\)，将区间视为周长 \(\ell\) 的圆，独立使用圆周 Fourier 理论：令
+\[
+ e_k(x)=\ell^{-1/2}e^{2\pi\mathrm{i}kx/\ell},\qquad
+ f_k=\int_0^\ell f(x)\overline{e_k(x)}\,\mathrm{d}x,
+ \qquad k\in\mathbb Z.
+\]
+周期热解为
+\begin{equation}\label{b2:eq:12-periodic-heat-series}
+ u_{\mathrm{per}}(t,x)=\sum_{k\in\mathbb Z}
+       f_ke^{-\kappa(2\pi k/\ell)^2t}e_k(x),\qquad t\geq0.
+\end{equation}
+Parseval 等式及控制收敛使它在零时以 \(L^2\) 范数取得初值；任意正时间带上的指数尾又允许所需的逐项微分。零频率给出 \(\overline f=\ell^{-1}\int_0^\ell f\)，其余频率至少为 \(2\pi/\ell\)，所以
+\[
+ \|u_{\mathrm{per}}(t)-\overline f\|_2
+ \leq e^{-4\kappa\pi^2t/\ell^2}\|f-\overline f\|_2.
+\]
+周期边界的两个端点通量相消，因此总热量守恒。保正性也可独立看出：周期化 Gaussian
+\[
+ P_\ell(t,z)=\sum_{m\in\mathbb Z}
+  \frac1{\sqrt{4\pi\kappa t}}
+  e^{-(z+m\ell)^2/(4\kappa t)},\qquad t>0,
+\]
+严格为正，且 \(\int_0^\ell P_\ell(t,z)\,\mathrm{d}z=1\)。把 Fourier 系数的积分按周期换元，再用 Gaussian 的变换，得到其第 \(k\) 个系数为 \(\ell^{-1}e^{-\kappa(2\pi k/\ell)^2t}\)；这里系数采用 \(\ell^{-1}\int_0^\ell P_\ell(t,z)e^{-2\pi\mathrm{i}kz/\ell}\,\mathrm{d}z\) 的非单位约定。因此式\eqref{b2:eq:12-periodic-heat-series}也等于 \(\int_0^\ell P_\ell(t,x-y)f(y)\,\mathrm{d}y\)，非负初温产生非负解。
+
+分离边界的纯热模型同样保正，但原因并非仅为谱非负。对实值解令 \(u_-=\max\{-u,0\}\)，在 Dirichlet 端点有 \(u_-=0\)，在 Robin 端点使用 \(-\kappa u_x(0)+h_0u(0)=\kappa u_x(\ell)+h_\ell u(\ell)=0\)，其中 \(h_0,h_\ell\geq0\)，Neumann 对应 \(h_s=0\)。负部属于 \(H^1\)，且其弱导数为 \(-u_x\mathbf1_{\{u<0\}}\)。对正时间强解，将方程与负部配对并分部积分，得到
+\[
+ \frac12\frac{\mathrm{d}}{\mathrm{d}t}\|u_-\|_2^2
+ =-\kappa\|(u_-)_x\|_2^2
+      -\sum_{s\in R}h_s|u_-(t,s)|^2\leq0.
+\]
+时间链式法则可由 \(s\mapsto s_-^2/2\) 的 Lipschitz 导数及 \(L^2\) 时间可微性验证；空间分部积分只用通量和负部的一阶弱导数。从 \(\varepsilon>0\) 积分到 \(t\)，再用 \(u(\varepsilon)\to f\) 及负部映射的 \(L^2\) 连续性令 \(\varepsilon\downarrow0\)，就得到非负初温始终非负。\secref{b2:sec:1203}将对负部方法及最大值原理作进一步说明。
+
+\begin{table}[htbp]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\caption[纯热方程的边界、热量与长期平衡]{纯热方程的边界、热量与长期平衡。固定 \(\ell,\kappa>0\)，方程为 \(u_t=\kappa u_{xx}\)，初温 \(f\in L^2((0,\ell);\mathbb R)\)；总热量指 \(\int_0^\ell u\)，长期极限按 \(L^2\) 范数理解，\(\overline f=\ell^{-1}\int_0^\ell f\)。保正指 \(f\geq0\) 时 \(u(t)\geq0\)。Robin 采用正文的含 \(\kappa\) 通量约定。}
+\label{b2:tab:12-boundary-heat-equilibrium}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{3.5cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{1.1cm}>{\raggedright\arraybackslash}p{1.8cm}@{}}
+\toprule
+边界条件 & 总热量 & 保正 & 长期极限 \\
+\midrule
+两端零 Dirichlet & 一般不守恒 & 是 & \(0\) \\
+两端零 Neumann & 守恒 & 是 & \(\overline f\) \\
+Robin：\(h_0,h_\ell\geq0\)，至少一端严格正 & 非负初温时不增 & 是 & \(0\) \\
+周期边界 & 守恒 & 是 & \(\overline f\) \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\Cref{b2:tab:12-boundary-heat-equilibrium}只比较无内部反应的纯热方程。质量守恒、保正性与长期趋零是三个不同的问题：加入 \(q(x)u\) 后，须分别重新检查加权热量平衡、解的符号及 \(\ker A\) 和谱下界，不能仅凭某一个边界系数作判断。
 

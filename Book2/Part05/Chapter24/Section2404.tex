@@ -2,103 +2,432 @@
 \section{与限制问题的关系}
 \label{b2:sec:2404}
 
-球面限制控制薄壳上的 Fourier 质量，Bochner–Riesz 符号则把不同薄壳加权求和。两者共享曲率与频率集中，但混合指数界和同指数乘子界不同，不能仅凭一个球面定理直接宣称整个乘子猜想成立。
+球面限制控制薄壳上的 Fourier 质量，Bochner--Riesz 符号则把不同球面层加权求和。两者共享曲率与频率集中，但限制估计首先产生输入、输出指数不同的界。本节把这条联系中的测度与缩放写清，再用空间局部化和多面体逼近说明：从混合指数估计到同指数乘子估计，还缺少哪些控制。
 
 \subsection{球面 Fourier 变换}
 \label{b2:subsec:240401}
 
-极坐标给出层分解
+先取 \(d\geq2\)，单位球面 \(S^{d-1}\) 的面积测度记为 \(\sigma\)，半径 \(r>0\) 的球面面积测度记为 \(\sigma_r\)。它们满足
 \[
- B_1^\delta f(x)=\int_0^1(1-r^2)^\delta r^{d-1}
-        \int_{S^{d-1}}e^{2\pi\mathrm i r x\cdot\omega}
-                  \widehat f(r\omega)\,\mathrm d\sigma(\omega)\,\mathrm dr.
+ \int_{rS^{d-1}}h(\xi)\,\mathrm d\sigma_r(\xi)
+ =r^{d-1}\int_{S^{d-1}}h(r\omega)\,\mathrm d\sigma(\omega).
 \]
-在 Schwartz 输入上换序合法，因为球内符号可积。内层正是半径 \(r\) 的球面限制再延拓。
-球面本身的 Fourier 变换在径向尾部衰减，径向权的边界消失再增加 \(\delta+1\) 的振荡增益；这与核渐近的总阶数一致。
+右侧的 \(r^{d-1}\) 来自曲面面积的缩放。这里没有把球面测度归一化成概率测度，也没有把它吸收入径向微分 \(\mathrm dr\)。
+
+对 \(f\in\mathcal S(\mathbb R^d)\)，定义单位参数下的球面层算子
+\[
+ T_rf(x)\coloneqq
+ \int_{S^{d-1}}e^{2\pi\mathrm i r x\cdot\omega}
+       \cdot\widehat f(r\omega)\,\mathrm d\sigma(\omega).
+\]
+以真实面积测度积分的限制再延拓算子则是 \(r^{d-1}T_r\)。因此极坐标给出
+\begin{equation}\label{b2:eq:24-layer-measure}
+ \begin{aligned}
+ B_1^\delta f(x)
+ &=\int_0^1(1-r^2)^\delta
+       \int_{rS^{d-1}}e^{2\pi\mathrm i x\cdot\xi}
+          \cdot\widehat f(\xi)\,\mathrm d\sigma_r(\xi)\,\mathrm dr\\
+ &=\int_0^1(1-r^2)^\delta r^{d-1}T_rf(x)\,\mathrm dr,
+ \quad \delta>-1.
+ \end{aligned}
+\end{equation}
+对 \(\delta\geq0\)，这就是\cref{b2:def:24-bochner-riesz}中的平均；对 \(-1<\delta<0\)，此处先按球内可积符号的逆 Fourier 积分解释。测试函数的 Fourier 变换有界，而
+\(\int_0^1(1-r^2)^\delta r^{d-1}\,\mathrm dr<\infty\)，所以换序绝对合法。这个公式中若使用 \(\sigma_r\)，就不应再另乘一次 \(r^{d-1}\)。
 
 \ProseParagraphBreak
-若只把内层绝对值估计后对 \(r\) 积分，就会丢失不同半径之间的抵消。某些混合指数估计仍可由这一办法直接证明，但锐利同指数乘子问题往往需要保留空间与径向的振荡。
+内层算子只保留一个频率半径，径向积分才恢复球内部的频率。球面 Fourier 变换的振荡尾部提供 \((d-1)/2\) 阶衰减；径向权在 \(r=1\) 的消失阶又在端点振荡积分中提供 \(\delta+1\) 阶增益，合起来与本章核的 \(\delta+(d+1)/2\) 阶衰减一致。若先对每一层取绝对值，再对半径求和，不同半径之间的抵消便不再可用。下面先看这种直接估计究竟能够证明什么。
 
 \subsection{限制估计}
 \label{b2:subsec:240402}
 
-令 \(p_*=2(d+1)/(d+3)\)、\(q_*=p_*'\)。对薄壳
-\(\Omega_\epsilon=\{1-\epsilon<|\xi|<1+\epsilon\}\)，球面限制的缩放给出
+本处需要\cref{b2:thm:23-stein-tomas}的球面端点版本。设
 \[
- \|\mathbf1_{\Omega_\epsilon}\widehat f\|_2
-       \le C\epsilon^{1/2}\|f\|_{p_*},\qquad0<\epsilon<1/2.
+ p_*=\frac{2(d+1)}{d+3},\quad
+ q_*=p_*'=\frac{2(d+1)}{d-1}.
 \]
-证明是将平方范数写成半径积分，逐半径应用限制界；半径在固定紧区间，其缩放常数一致。
-与对偶估计复合，或直接逐半径限制再延拓，得到
+对单位球面及面积测度，限制算子 \(Rf=\widehat f|_{S^{d-1}}\) 满足
 \[
- \|\mathcal F^{-1}(\mathbf1_{\Omega_\epsilon}\widehat f)\|_{q_*}
-       \le C\epsilon\|f\|_{p_*}.
+ \|Rf\|_{L^2(S^{d-1})}\leq A_d\|f\|_{p_*}.
 \]
-第一式控制一个频率 \(L^2\) 范数；第二式是 \(L^{p_*}\to L^{q_*}\) 的混合指数界，不是 \(L^{p_*}\to L^{p_*}\)。
+其有界伴随为
+\[
+ Eg(x)=\int_{S^{d-1}}e^{2\pi\mathrm i x\cdot\omega}
+        \cdot g(\omega)\,\mathrm d\sigma(\omega),\quad
+ \|Eg\|_{q_*}\leq A_d\|g\|_2.
+\]
+这里对一般 \(L^{p_*}\) 输入的限制按连续延拓定义，并不是任意 Fourier 代表的逐点取值。球面为有限正测度，故\cref{b2:prop:23-ttstar}也给出 \(ER:L^{p_*}\to L^{q_*}\) 及其范数上界 \(A_d^2\)。
 
 \ProseParagraphBreak
-对薄壳内一个非负径向权 \(w(r)\)，同样有算子范数至多
-\(C\int|w(r)|\,\mathrm dr\)。在边界距离约 \(2^{-j}\) 的壳层上，Bochner–Riesz 权大小约 \(2^{-j\delta}\)，得到混合指数贡献 \(C2^{-j(\delta+1)}\)。因此在这条混合指数线上，壳层求和对 \(\delta>-1\) 可收敛；这与负参数不属于 \(L^2\) 有界乘子并不矛盾。
-
-把半径趋零的缩放也保留下来，可以完整证明一个全平均的混合指数界。
-\begin{proposition}\label{b2:prop:24-mixed-bound}
-设 \(d\geq2\)、\(p_*=2(d+1)/(d+3)\)、\(q_*=p_*'\)。对任意 \(\delta>-1\)，以球内可积符号在 Schwartz 类上定义的 \(B_1^\delta\) 有唯一连续延拓
+半径改变时，需要同时缩放输入和输出。令 \(f_r(y)=f(y/r)\)，则
 \[
- B_1^\delta:L^{p_*}(\mathbb R^d)\longrightarrow L^{q_*}(\mathbb R^d).
+ \widehat{f_r}(\omega)=r^d\widehat f(r\omega),\quad
+ \|f_r\|_{p_*}=r^{d/p_*}\|f\|_{p_*}.
 \]
+因此
+\[
+ \|\widehat f(r\,\cdot)\|_{L^2(S^{d-1})}
+ \leq A_dr^{-d/q_*}\|f\|_{p_*},
+\]
+\[
+ T_rf(x)=r^{-d}(ERf_r)(rx),\quad
+ \|T_rf\|_{q_*}
+ \leq A_d^2r^{-2d/q_*}\|f\|_{p_*}.
+\]
+最后一个幂也等于 \(d/p_*-d/q_*-d\)。在\eqref{b2:eq:24-layer-measure}中乘以真实面积因子 \(r^{d-1}\) 后，层算子的界便带有
+\[
+ r^{d-1-2d/q_*}=r^\alpha,\quad
+ \alpha\coloneqq\frac{d-1}{d+1}.
+\]
+这一幂次在零半径处仍然可积，稍后将用于全平均。
+
+\ProseParagraphBreak
+把逐半径估计先用于非负权，可以同时得到频率平方界与混合指数界。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[非负径向权的限制界]\label{b2:prop:24-radial-weight}
+设整数 \(d\geq2\)，
+\[
+ p_*=\frac{2(d+1)}{d+3},\quad
+ q_*=\frac{2(d+1)}{d-1},\quad
+ \alpha=\frac{d-1}{d+1}.
+\]
+设 \(w:(0,\infty)\to[0,\infty)\) 可测且
+\[
+ I_w\coloneqq\int_0^\infty w(r)r^\alpha\,\mathrm dr<\infty.
+\]
+对 \(f\in\mathcal S(\mathbb R^d)\)，定义
+\[
+ A_wf(\xi)=w(|\xi|)^{1/2}\cdot\widehat f(\xi),\quad
+ S_wf=\mathcal F^{-1}\!\left[w(|\xi|)\cdot\widehat f(\xi)\right].
+\]
+则这两个算子分别唯一连续延拓为
+\[
+ A_w:L^{p_*}(\mathbb R^d)\longrightarrow L^2(\mathbb R^d),\quad
+ S_w:L^{p_*}(\mathbb R^d)\longrightarrow L^{q_*}(\mathbb R^d),
+\]
+并有
+\[
+ \|A_wf\|_2\leq A_d I_w^{1/2}\|f\|_{p_*},\quad
+ \|S_wf\|_{q_*}\leq A_d^2 I_w\|f\|_{p_*}.
+\]
+常数 \(A_d\) 可取单位球面 Stein--Tomas 限制界的常数，与 \(w,f\) 无关。
 \end{proposition}
 \begin{proof}
-记 \(T_r f(x)=\int_{S^{d-1}}e^{2\pi\mathrm irx\cdot\omega}
-\widehat f(r\omega)\,\mathrm d\sigma(\omega)\)。设 \(f_r(y)=f(y/r)\)，则
-\(\widehat f(r\omega)=r^{-d}\widehat{f_r}(\omega)\)，因而
+先取 Schwartz 输入。极坐标、非负性和刚才的半径限制估计给出
 \[
- T_r f(x)=r^{-d}(ERf_r)(rx),\qquad
- \|T_r f\|_{q_*}\leq C r^{d/p_*-d/q_*-d}\|f\|_{p_*}.
+ \begin{aligned}
+ \|A_wf\|_2^2
+ &=\int_0^\infty w(r)r^{d-1}
+       \|\widehat f(r\,\cdot)\|_{L^2(S^{d-1})}^2\,\mathrm dr\\
+ &\leq A_d^2\|f\|_{p_*}^2
+       \int_0^\infty w(r)r^{d-1-2d/q_*}\,\mathrm dr
+ =A_d^2 I_w\|f\|_{p_*}^2.
+ \end{aligned}
 \]
-层分解中的体积权 \(r^{d-1}\) 使最后指数成为
-\(d/p_*-d/q_*-1=(d-1)/(d+1)>-1\)。
-于是 Minkowski 与限制端点给出
+这就给出第一项连续延拓。第二项的测试函数定义也有意义：在 \(r\leq1\) 时 \(r^{d-1}\leq r^\alpha\)；在 \(r\geq1\) 时，\(\widehat f\) 的任意阶衰减控制 \(r^{d-1-\alpha}\)。所以 \(w(|\xi|)\cdot\widehat f(\xi)\) 绝对可积。
+
+将 \(S_wf\) 与另一 Schwartz 函数 \(h\) 配对，Fubini 给出
 \[
- \|B_1^\delta f\|_{q_*}\leq C\|f\|_{p_*}
- \int_0^1(1-r^2)^\delta r^{(d-1)/(d+1)}\,\mathrm dr.
+ \langle S_wf,h\rangle
+ =\int_{\mathbb R^d}w(|\xi|)\cdot
+       \widehat f(\xi)\overline{\widehat h(\xi)}\,\mathrm d\xi
+ =\langle A_wf,A_wh\rangle.
 \]
-积分在 \(r=0\) 的幂次可积，在 \(r=1\) 可积恰需 \(\delta>-1\)。稠密性完成延拓。
+于是
+\[
+ |\langle S_wf,h\rangle|
+ \leq A_d^2 I_w\|f\|_{p_*}\cdot\|h\|_{p_*}.
+\]
+\(L^{p_*}\) 的对偶为 \(L^{q_*}\)，所以这个分布由一个 \(L^{q_*}\) 函数表示，并得到第二项估计。最后由 Schwartz 类在 \(L^{p_*}\) 中稠密，完成唯一连续延拓。
 \end{proof}
-这条命题包括负参数，但改变了输出指数，因此不与负参数符号在边界无界矛盾。对任意有界同指数 \(L^2\) 乘子，Plancherel 需要符号本性有界；这里使用的是较强可积性输入换取较弱的全空间输出，根本没有提出平方到平方的界。
+
+这里的平方配对就是 \(TT^*\) 方法，但已经在实际使用的径向权上重新给出了论证，未要求这个加权测度具有紧支集。权的非负性保证 \(\langle S_wf,f\rangle\geq0\)；它不保证逆 Fourier 核处处非负。对复值径向权，只要以 \(|w|\) 定义的 \(I_{|w|}\) 有限，同样把配对中的相位因子放在两个平方因子之间，仍得到第二项上界。
+
+\Needspace{6\baselineskip}
+\begin{corollary}[薄球壳的两种上界]\label{b2:cor:24-thin-shell}
+设整数 \(d\geq2\)，\(p_*=2(d+1)/(d+3)\)、\(q_*=p_*'\)，且 \(0<\varepsilon<1/2\)。记
+\[
+ \Omega_\varepsilon
+ =\{\,\xi\in\mathbb R^d:1-\varepsilon<|\xi|<1+\varepsilon\,\},\quad
+ \Pi_\varepsilon f
+ =\mathcal F^{-1}\!\left[\mathbf1_{\Omega_\varepsilon}\cdot\widehat f\right]
+\]
+先定义于 Schwartz 类。则
+\[
+ \|\mathbf1_{\Omega_\varepsilon}\cdot\widehat f\|_2
+ \leq C_d\varepsilon^{1/2}\|f\|_{p_*},\quad
+ \|\Pi_\varepsilon f\|_{q_*}
+ \leq C_d\varepsilon\|f\|_{p_*}.
+\]
+两项分别按上述范数具有唯一连续延拓。
+\end{corollary}
+\begin{proof}
+在\cref{b2:prop:24-radial-weight}中取
+\(w=\mathbf1_{(1-\varepsilon,1+\varepsilon)}\)。
+由于 \(1/2<r<3/2\)，有
+\[
+ I_w=\int_{1-\varepsilon}^{1+\varepsilon}r^{(d-1)/(d+1)}\,\mathrm dr
+ \leq C_d\varepsilon.
+\]
+分别代入频率平方界与混合指数界，即得两项估计及延拓。
+\end{proof}
+
+第一式中的 \(\varepsilon^{1/2}\) 来自径向积分后开平方；第二式中的 \(\varepsilon\) 来自限制与伴随各提供一次平方根。它们控制的输出空间不同，不能仅因第二项也是频率投影，就把它读成 \(L^{p_*}\) 上的投影范数。
 
 \ProseParagraphBreak
+更一般地，若 \(w\geq0\) 支于固定半径区间 \([1/2,3/2]\)，则混合算子范数至多为
+\(C_d\int w(r)\,\mathrm dr\)。在离球边界约 \(2^{-j}\) 的壳层上，\((1-r^2)^\delta\) 大小约为 \(2^{-j\delta}\)，壳层厚度约为 \(2^{-j}\)，因此该层的混合指数贡献至多为
+\(C_{d,\delta}2^{-j(\delta+1)}\)。只要 \(\delta>-1\)，这些边界层就可求和。要把它用于整个球，还必须处理半径趋零的部分。
 
-半径 \(R\) 的相同混合界还会带缩放因子
-\(R^{d(1/p_*-1/q_*)}\)，不像同指数乘子范数那样独立于 \(R\)。如果在转述中删除这个因子，便会把不同类型的尺度关系混在一起。对固定单位半径的估计，缩放检查仍然有价值：它可以迅速发现体积权、曲面测度与 Fourier 归一化中的遗漏。
+\Needspace{6\baselineskip}
+\begin{proposition}[全平均的混合指数界]\label{b2:prop:24-mixed-bound}
+设整数 \(d\geq2\)，\(p_*=2(d+1)/(d+3)\)、\(q_*=p_*'\)，\(\delta>-1\)、\(R>0\)。对复值 Schwartz 函数，定义
+\[
+ B_R^\delta f(x)
+ =\int_{|\xi|<R}e^{2\pi\mathrm i x\cdot\xi}
+       (1-|\xi|^2/R^2)^\delta
+       \cdot\widehat f(\xi)\,\mathrm d\xi.
+\]
+则它有唯一连续延拓
+\[
+ B_R^\delta:L^{p_*}(\mathbb R^d)\longrightarrow L^{q_*}(\mathbb R^d),
+\]
+并满足
+\[
+ \|B_R^\delta f\|_{q_*}
+ \leq\frac{A_d^2}{2}
+       \mathrm B\!\left(\frac d{d+1},\delta+1\right)
+       R^{2d/(d+1)}\|f\|_{p_*}.
+\]
+其中 \(A_d\) 为单位球面面积测度的 \(L^{p_*}(\mathbb R^d)\to L^2(S^{d-1})\) 限制常数，\(\mathrm B\) 为 beta 函数。
+\end{proposition}
+\begin{proof}
+先令 \(R=1\)，在径向权命题中令 \(w(r)=(1-r^2)^\delta\) 对 \(0<r<1\) 成立，在其余半径取零。
+相应的积分为
+\[
+ I_w=\int_0^1(1-r^2)^\delta r^{(d-1)/(d+1)}\,\mathrm dr
+ =\frac12\,\mathrm B\!\left(\frac d{d+1},\delta+1\right).
+\]
+最后一步令 \(t=r^2\)。零端的参数 \(d/(d+1)>0\)，球面边界端的参数 \(\delta+1>0\)，所以两端均可积。这里并未假定 \(T_r\) 的范数在 \(r\downarrow0\) 时一致有界：它实际上按 \(r^{-2d/q_*}\) 增大，是体积权 \(r^{d-1}\) 把总幂次变成了 \((d-1)/(d+1)>-1\)。
+
+对任意 \(R>0\)，直接在径向权中取
+\[
+ w_R(r)=
+ \begin{cases}
+  (1-r^2/R^2)^\delta,&0<r<R,\\
+  0,&r\geq R.
+ \end{cases}
+\]
+换元 \(r=Rs\) 后，
+\[
+ I_{w_R}=R^{\,1+(d-1)/(d+1)}I_w
+        =R^{2d/(d+1)}I_w.
+\]
+再次应用径向权命题即得所述界。测试函数稠密性给出唯一延拓。
+\end{proof}
+
+对 \(\delta\geq0\)，这里的算子与本章原定义一致；负参数只在本命题明确规定的积分与连续延拓意义下使用。若 \(-1<\delta<0\)，其符号在球面附近本性无界，因而不是有界的 \(L^2\) 同指数乘子。这与命题不矛盾，因为输入、输出空间已经改变。
+
+\ProseParagraphBreak
+半径因子也能用一般缩放核对：
+\[
+ d\left(\frac1{p_*}-\frac1{q_*}\right)=\frac{2d}{d+1}.
+\]
+同指数时两个范数的尺度因子相消；这里并不相消。对单位半径证明的混合估计，不能在推广到任意半径时删掉这个幂次。
 
 \subsection{乘子估计}
 \label{b2:subsec:240403}
 
-若要求同指数 \(L^p\)，上述输出 \(q_*>p_*\) 不能通过无限测度空间上的包含关系改成 \(p_*\)。一种方法是在空间中再按尺度局部化核，使用限制界控制一部分项、核尾部控制另一部分项，然后在壳层间建立可求和的界。这个过程涉及局部球的体积因子与几乎正交，不是形式上的指数替换。
+在无限测度空间 \(\mathbb R^d\) 上，\(L^{q_*}\) 不包含 \(L^{p_*}\)。例如选
+\[
+ \frac d{q_*}<a\leq\frac d{p_*},
+\]
+则 \((1+|x|)^{-a}\) 属于 \(L^{q_*}\)，却不属于 \(L^{p_*}\)。因而前面的混合界没有一个免费的输出空间嵌入，可以把它改成同指数界。
 
 \ProseParagraphBreak
-\chapref{b2:ch:19}平方函数处理互相分离的频率环带，而本章的壳层都贴近同一个球面。它们在频率上可不交，却仍可能在空间中沿相近方向高度相干。普通 Plancherel 正交只给 \(p=2\)，其他指数上的组合需额外曲率或多线性控制。
-现代解耦和限制方法正是组织这种相干的重要工具，具体结果必须按已出版定理核对。
+把输出局部化到空间球，可以明确看见缺失的常数。对半径 \(L>0\) 的球 \(B(0,L)\)，Hölder 给出
+\[
+ \|F\|_{L^{p_*}(B(0,L))}
+ \leq |B(0,L)|^{1/p_*-1/q_*}
+       \|F\|_{L^{q_*}(B(0,L))}
+ =c_d L^{2d/(d+1)}\|F\|_{L^{q_*}(B(0,L))}.
+\]
+随着空间球增大，这个体积因子也增大。薄壳投影因此只能直接给出
+\[
+ \|\Pi_\varepsilon f\|_{L^{p_*}(B(0,L))}
+ \leq C_d\varepsilon L^{2d/(d+1)}\|f\|_{p_*}.
+\]
+例如取 \(L=\varepsilon^{-1}\)，右侧的系数是
+\(\varepsilon^{-(d-1)/(d+1)}\)，并未随壳厚趋零而减小。这只是球内估计；球外输出尚未处理，不能把它宣布为全空间乘子界。
+
+\ProseParagraphBreak
+有限个壳层也能呈现同一问题。设
+\[
+ \Lambda_j
+ =\{\,\xi:1-2^{-j}<|\xi|<1-2^{-j-1}\,\},\quad
+ Q_jf=\mathcal F^{-1}(\mathbf1_{\Lambda_j}\cdot\widehat f),
+ \quad j\geq1.
+\]
+由径向权估计，对任意有限 \(N\) 和复系数 \(a_1,\ldots,a_N\)，有
+\[
+ \left\|\sum_{j=1}^N a_jQ_jf\right\|_{q_*}
+ \leq C_d\left(\sum_{j=1}^N|a_j|2^{-j}\right)\|f\|_{p_*}.
+\]
+即使 \(a_j=1\)，右侧也对 \(N\) 一致；但换成空间球上的 \(p_*\) 范数时，仍须乘 \(L^{2d/(d+1)}\)。当 \(a_j\) 的大小为 \(2^{-j\delta}\) 时，混合范数中的可和条件是 \(\delta>-1\)。这个求和没有提供足以取消体积因子的额外信息。
+
+\ProseParagraphBreak
+频率局限于同一固定薄壳也不能恢复所缺的嵌入。固定 \(0<\varepsilon<1/2\)，取非零
+\(\widehat\phi\in C_c^\infty(\Omega_\varepsilon)\)，于是 \(\phi\in\mathcal S\) 且 \(\Pi_\varepsilon\phi=\phi\)。对正整数 \(N\) 与距离参数 \(L\)，令
+\[
+ F_{N,L}(x)=\sum_{k=1}^N\phi(x-kLe_1).
+\]
+它的 Fourier 支集仍在同一薄壳内。固定 \(N\)，当 \(L\to\infty\) 时，对 \(s=p_*\) 与 \(s=q_*\) 分别有
+\[
+ \|F_{N,L}\|_s\longrightarrow N^{1/s}\|\phi\|_s.
+\]
+证明只需先把 \(\phi\) 在 \(L^s\) 中逼近为紧支撑函数；距离充分大时，各平移的紧支撑互不相交，范数的 \(s\) 次方便准确相加。原函数与近似函数的和相差至多 \(N\) 倍单项误差；对固定 \(N\) 再令误差趋零，即得极限。
+
+\ProseParagraphBreak
+所以在这些薄壳频率函数上，
+\[
+ \frac{\|F_{N,L}\|_{p_*}}{\|F_{N,L}\|_{q_*}}
+ \longrightarrow
+ N^{1/p_*-1/q_*}\frac{\|\phi\|_{p_*}}{\|\phi\|_{q_*}}
+ =N^{2/(d+1)}\frac{\|\phi\|_{p_*}}{\|\phi\|_{q_*}}.
+\]
+先取大 \(N\)，再取足够大的有限距离，就能使比值任意大。这是一个有限平移模型，说明即使只考察同一频率壳层内的输出，也没有统一的 \(L^{q_*}\to L^{p_*}\) 范数转换。它不是薄壳投影同指数不有界性的独立证明；它排除的是从已有混合估计直接转换指数的那一步。
+
+\ProseParagraphBreak
+要研究同指数 \(L^p\) 界，通常还需按空间尺度分解核，把限制估计与核尾部估计结合，再控制各壳层的组合。\chapref{b2:ch:19}的 Littlewood--Paley 分解把以原点为中心、大小按倍数变化的频率环带组织起来；这里的各层都贴近同一单位球面，径向宽度不断缩小，不能不加说明地套用同一平方函数结论。不交频率在 Plancherel 中确实正交，但这只给 \(p=2\) 的平方范数，其他指数还要处理方向与空间位置上的相干。
 
 \subsection{曲率}
 \label{b2:subsec:240404}
 
-球、椭球与平面多面体提供三种可比较几何。固定非退化线性换元把椭球变成球，因此同指数有界性范围及算子范数相同；各方向导数的估计则可能依赖换元矩阵。矩形可拆成各坐标区间投影，硬截断在 \(1<p<\infty\) 上有界。球面法向连续变化，硬截断则受 Fefferman 定理阻碍。
+球、椭球和多面体有助于分清局部几何与全局组合。先看线性换元：它改变球面在欧氏坐标中的形状，却不改变同指数乘子范数。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[可逆线性换元下的乘子共轭]\label{b2:prop:24-linear-conjugacy}
+设整数 \(d\geq1\)，\(A\) 为实可逆 \(d\times d\) 矩阵，\(m\in L^\infty(\mathbb R^d)\)，并令
+\[
+ T_mf=\mathcal F^{-1}(m\cdot\widehat f),\quad
+ U_Af(x)=f(A^{\mathsf T}x).
+\]
+若 \(1<p,q<\infty\)，则 \(T_m:L^p\to L^q\) 有界，当且仅当 \(T_{m\circ A}:L^p\to L^q\) 有界；在有界情形下，
+\[
+ T_{m\circ A}=U_A^{-1}T_mU_A,\quad
+ \|T_{m\circ A}\|_{p\to q}
+ =|\det A|^{1/q-1/p}\cdot\|T_m\|_{p\to q}.
+\]
+这里算子均指从 Schwartz 类的连续延拓。
+\end{proposition}
+\begin{proof}
+Fourier 换元公式与空间范数换元分别为
+\[
+ \widehat{U_Af}(\xi)=|\det A|^{-1}\cdot\widehat f(A^{-1}\xi),\quad
+ \|U_Af\|_s=|\det A|^{-1/s}\cdot\|f\|_s
+ \quad(1\leq s<\infty).
+\]
+因此 \(U_A^{-1}T_mU_A\) 的符号为 \(m(A\xi)\)，得到共轭恒等式。若 \(T_m\) 有界，两个拉回范数给出
+\[
+ \|T_{m\circ A}\|_{p\to q}
+ \leq|\det A|^{1/q-1/p}\cdot\|T_m\|_{p\to q}.
+\]
+反向对 \(A^{-1}\) 和符号 \(m\circ A\) 应用同一结论，得到逆向不等式及有界性的等价。测试函数稠密性使共轭关系保持到两个 Banach 空间之间。
+\end{proof}
+
+取 \(m(\xi)=(1-|\xi|^2)_+^\delta\)、\(\delta\geq0\)，就得到椭球符号
+\((1-|A\xi|^2)_+^\delta\) 的平均。在同指数 \(p=q\) 时，行列式因子完全相消；因此固定椭球与球具有相同的有界性范围和算子范数。在不同指数上则保留这个因子，与前面球半径的缩放一致。若另外估计各欧氏方向导数，矩阵与其逆矩阵会进入导数公式；这种正则性常数的依赖不能与纯 \(L^p\) 乘子范数混为一谈。
 
 \ProseParagraphBreak
-曲率既能改善单个振荡核衰减，也能产生大量不同方向的集中管。前一种效应使正平滑平均有较好的核估计，后一种效应使硬球乘子失败。它们并不矛盾，因为核尾部的单输入检验和多方向向量值检验衡量不同机制。
-阅读乘子范围时，应明确平滑量、输入是否径向、空间是否局部、半径是否统一及是否有尺度损失；这些条件决定一个结论能否被用于普通 \(L^p(\mathbb R^d)\) 平均。
+平面边界提供另一种可直接构造的模型。需要恢复的前章工具是一维 Hilbert 变换：
+\[
+ \widehat{Hf}(\xi)=-\mathrm i\,\operatorname{sgn}(\xi)
+                  \cdot\widehat f(\xi),\quad
+ \|Hf\|_{L^p(\mathbb R)}\leq C_{H,p}\|f\|_{L^p(\mathbb R)}
+ \quad(1<p<\infty).
+\]
+其平方定义见\cref{b2:thm:18-hilbert-l2}；核 \(1/(\pi x)\) 的大小与差分满足 Calderón--Zygmund 条件，所以\cref{b2:thm:18-cz-lp}给出中间指数有界性及与平方定义的兼容。由于 \(\mathrm iH\) 的符号为 \(\operatorname{sgn}\xi\)，负半轴投影为 \((I-\mathrm iH)/2\)。在高维中沿固定方向应用这个一维算子，Fubini 保持同一个 \(L^p\) 上界。
 
-曲率条件的比较还可以作成实际的变换。若 \(A\) 为可逆矩阵，椭球符号 \((1-|A\xi|^2)_+^\delta\) 的算子由 Fourier 换元与空间线性拉回共轭于球平均。拉回在 \(L^p\) 的范数因子为 \(|\det A|^{1/p}\) 或其逆，共轭时两者相消；同指数算子范数因此与标准球相同。若改变的同时还使用不同的空间欧氏导数范数，其正则性常数才会依赖矩阵的条件数。乘子有界性与导数估计的矩阵依赖不能混为一谈。
+\Needspace{6\baselineskip}
+\begin{proposition}[有限半空间交的投影]\label{b2:prop:24-polytope-projection}
+设整数 \(d\geq1\)，\(1<p<\infty\)，正整数 \(N\)，单位向量
+\(\nu_1,\ldots,\nu_N\in S^{d-1}\) 及实数 \(b_1,\ldots,b_N\) 给出
+\[
+ P=\bigcap_{j=1}^N\{\,\xi\in\mathbb R^d:\xi\cdot\nu_j<b_j\,\}.
+\]
+令 \(T_Pf=\mathcal F^{-1}(\mathbf1_P\cdot\widehat f)\) 先在 Schwartz 类上定义。则 \(T_P\) 唯一连续延拓为 \(L^p(\mathbb R^d)\) 上的有界算子，并且
+\[
+ \|T_P\|_{p\to p}\leq
+ \left(\frac{1+C_{H,p}}2\right)^N.
+\]
+这里 \(C_{H,p}\) 是一维 Hilbert 变换的 \(L^p\) 范数上界；常数不依赖法向与各平面的位置。集合 \(P\) 可以无界，空集情形也包括在内。
+\end{proposition}
+\begin{proof}
+对单位向量 \(\nu\)，用旋转把一维 Hilbert 变换放到该方向，记作 \(H_\nu\)。它在平方空间的符号为
+\(-\mathrm i\,\operatorname{sgn}(\xi\cdot\nu)\)，且 Fubini 给出
+\(\|H_\nu\|_{p\to p}\leq C_{H,p}\)。于是
+\[
+ Q_{\nu,0}=\frac{I-\mathrm iH_\nu}{2}
+\]
+在 \(L^2\) 上是 \(\{\xi\cdot\nu<0\}\) 的投影，在 \(L^p\) 上有界至多 \((1+C_{H,p})/2\)。令
+\[
+ M_{b\nu}f(x)=e^{2\pi\mathrm i b\nu\cdot x}\cdot f(x).
+\]
+调制在 \(L^p\) 上等距，且
+\(Q_{\nu,b}=M_{b\nu}Q_{\nu,0}M_{-b\nu}\)
+的符号为 \(\mathbf1_{\{\xi\cdot\nu<b\}}\)。
+
+在 \(L^2\) 上，这些算子都是 Fourier 乘法，因此彼此交换，有限复合的符号为
+\[
+ \prod_{j=1}^N\mathbf1_{\{\xi\cdot\nu_j<b_j\}}=\mathbf1_P.
+\]
+每项的 \(L^p\) 延拓与其 \(L^2\) 定义在交集上一致，所以对 Schwartz 输入，复合既等于 \(T_P\)，又有上述 \(N\) 个常数的乘积界。由 \(L^p\) 稠密性完成延拓。边界包含在有限个超平面中，Lebesgue 测度为零，故使用开或闭半空间不改变乘子。
+\end{proof}
+
+矩形是这个结论的一个特例，也可以直接逐坐标使用区间投影。一般有限凸多面体的各个平面方向可以不同，但有限次复合仍有界。这个证明给出的是随面数积累的上界，尚未说明它在越来越多面时是否真的必须变大。下面用逼近球的有限模型回答后一问题。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[逼近球的多面体范数发散]\label{b2:prop:24-polytope-divergence}
+设整数 \(d\geq2\)，\(1<p<\infty\)、\(p\neq2\)。取 \(0<\eta_k<1\)、\(\eta_k\to0\)，并取单位球面的有限 \(\eta_k\)-网 \(V_k\subset S^{d-1}\)，即每个单位向量到 \(V_k\) 某点的欧氏距离小于 \(\eta_k\)。定义外切凸多面体
+\[
+ P_k=\bigcap_{\nu\in V_k}\{\,\xi:\xi\cdot\nu<1\,\},\quad
+ T_{P_k}f=\mathcal F^{-1}(\mathbf1_{P_k}\cdot\widehat f).
+\]
+则每个 \(T_{P_k}\) 都在 \(L^p(\mathbb R^d)\) 上有界，但
+\[
+ \|T_{P_k}\|_{p\to p}\longrightarrow\infty.
+\]
+\end{proposition}
+\begin{proof}
+有限网由单位球面的紧致性取得。单位开球包含于 \(P_k\)。若 \(\xi\in P_k\)、\(\xi\neq0\)，令 \(u=\xi/|\xi|\)，并选 \(\nu\in V_k\) 满足 \(|u-\nu|<\eta_k\)。单位向量的恒等式给出
+\[
+ u\cdot\nu=1-\frac{|u-\nu|^2}{2}
+ >1-\frac{\eta_k^2}{2}.
+\]
+结合 \(\xi\cdot\nu<1\)，得到
+\[
+ B(0,1)\subset P_k
+ \subset B\!\left(0,(1-\eta_k^2/2)^{-1}\right).
+\]
+所以各 \(P_k\) 有界，且其示性函数在单位球面之外逐点趋于 \(\mathbf1_{B(0,1)}\)。球面是 Lebesgue 零测集，故符号几乎处处收敛。
+
+每个多面体投影的有界性已由\cref{b2:prop:24-polytope-projection}证明。若所述范数不趋于无穷，则存在一个子列，其范数统一不超过某个有限 \(M\)。对任意固定 \(f\in\mathcal S\)，符号差的模至多为一，且 \(\widehat f\in L^1\)，故支配收敛给出
+\[
+ \|( \mathbf1_{P_k}-\mathbf1_{B(0,1)})\cdot\widehat f\|_1\longrightarrow0.
+\]
+因而这一子列的 \(T_{P_k}f\) 一致收敛到硬球投影 \(B_1^0f\)。Fatou 引理于是给出
+\[
+ \|B_1^0f\|_p^p
+ \leq\liminf_k\|T_{P_k}f\|_p^p
+ \leq M^p\|f\|_p^p.
+\]
+稠密性将硬球投影延拓为有界 \(L^p\) 算子，与\cref{b2:thm:24-fefferman}在 \(d\geq2\)、\(p\neq2\) 时的结论矛盾。
+\end{proof}
+
+这个发散结论使用了本章明确标出的深层球乘子定理，但由它到有限多面体模型的极限步骤都已写出。它没有提供关于面数的定量发散速度；在 \(p=2\) 时，各个非空多面体投影的范数反而恒为一。几何区域逐点逼近球，并不能提供非二指数上一致的算子常数。
 
 \ProseParagraphBreak
-
-多面体的情况并非只由“没有曲率”决定。一个固定有界凸多面体是有限个半空间的交，每个半空间乘子可通过旋转、调制和一维 Hilbert 投影在 \(1<p<\infty\) 上实现；这些 Fourier 乘法算子彼此交换，有限次复合就得到多面体指示函数乘子。其界可能随面数积累，所以用越来越多面的多面体逼近球，并没有产生球乘子的一致界。几何对象的逐点逼近若缺少一致算子常数，不能用于转移有界性。
-
-\ProseParagraphBreak
-
-球面边界有连续的一族法向方向，Fefferman 的反例正是把越来越多方向一起测试。另一方面，对一个固定方向的单个驻相片，非零曲率又能提供核衰减。分析某个新频率区域时，应同时询问局部片的衰减怎样、总共有多少片、不同片怎样组合；只有第一项回答得很好，仍可能在全局组合时失败。限制理论、多线性横截性和解耦就是为这种组合问题提供额外结构。
+曲率的两种作用因此需要分开理解。对一张固定的驻相片，非零曲率能改善振荡核衰减；当越来越多方向共同出现时，输出又可能形成多方向集中。前一种效应服务于正平滑平均的核估计，后一种效应参与硬球投影的失败。分析新的频率区域时，应同时考察单片衰减、片的数量以及各片怎样组合；只有局部衰减还不够。
 
 \ProseParagraphBreak
-
-本章保留的必要条件与充分范围因此承担不同职责。尾部检验排除不可能的指数，可积核与解析插值提供完整可复核的充分区间，限制端点给出另一类混合指数界，深层球乘子定理解释零阶硬截断的特殊障碍。对某个尚未覆盖的正阶参数，这些结果共同界定问题所在，但没有自动给出结论。阅读研究文献中的改进时，应把其参数和模型放回这些已经明确的坐标中，才能判断它究竟改善了哪一段范围。
+本章各项结果也各有明确的适用范围：尾部检验给出必要条件，可积核与解析插值给出同指数充分范围，球面限制给出本节的混合指数界，球乘子定理排除高维硬截断的非二指数。应用文献中的进一步估计时，还应核对输入是否径向、空间是否局部、半径是否统一及是否允许尺度损失，不能把改变了其中条件的结论直接填入普通全空间 \(L^p\) 乘子问题。

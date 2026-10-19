@@ -1,86 +1,311 @@
 % !TeX root = ../../Book2.tex
 \OptionalSection{极值问题}{b2:sec:2305}
 
-算子有界以后，可以进一步研究最佳常数及达到它的输入。极值问题比有界性多出一个紧性要求；对称群常使普通的紧性失效。本节给出可核验的框架，不宣称所有曲面和指数都存在极值函数。
+算子有界以后，可以进一步研究最佳常数及达到它的输入。极值问题比有界性多出一个紧性要求：极值化序列可能因调制而在输出空间中平移，也可能在输入曲面上集中。本节先证明非零弱极限如何恢复强紧性，再利用这一机制取得严格高于 Stein--Tomas 指数时的极值函数。临界指数处的尺度集中需要额外分析，不能由同一个论证自动解决。
 
 \subsection{最佳常数}
 \label{b2:subsec:230501}
 
-固定一个已证的界 \(E:L^2(S)\to L^q\)、\(q<\infty\)，令
+本节固定紧致光滑超曲面 \(S\subset\mathbb R^d\)，取非零面积测度 \(\sigma\)；同样的论证适用于紧支撑的非零非负光滑曲面密度。记
 \[
- \mathcal C=\sup_{\|g\|_2=1}\|Eg\|_q.
+ Eg(x)=\int_S e^{2\pi\mathrm i x\cdot\xi}g(\xi)\,\mathrm d\sigma(\xi).
 \]
-当测度非零时 \(\mathcal C>0\)，有界性使其有限。若存在单位向量达到上确界，称为极值函数。最佳常数的数值、是否达到及所有极值函数的分类是三个不同问题，不应混成一个陈述。
+除非另有说明，假设已经建立 \(E:L^2(S)\to L^q(\mathbb R^d)\) 的有界性，其中 \(2<q<\infty\)。曲率不用于下面的条件紧性论证；它在前面的延拓估计以及后面的具体应用中出现。
+
+\Needspace{6\baselineskip}
+\begin{definition}[最佳常数与极值函数]\label{b2:def:23-extremizer}
+设 \(d\geq2\)，\(S\subset\mathbb R^d\) 为非空紧致光滑超曲面，取面积测度 \(\sigma\)，并设 \(2<q<\infty\)。假设延拓算子
+\[
+ Eg(x)=\int_S e^{2\pi\mathrm i x\cdot\xi}g(\xi)\,\mathrm d\sigma(\xi)
+\]
+从 \(L^2(S,\sigma)\) 到 \(L^q(\mathbb R^d)\) 有界。其最佳常数为
+\[
+ \mathcal C_q=\sup_{\|g\|_{L^2(S)}=1}\|Eg\|_{L^q(\mathbb R^d)}.
+\]
+若单位向量 \(g\) 满足 \(\|Eg\|_q=\mathcal C_q\)，称它为归一化极值函数。若 \(\|g_n\|_2=1\) 且 \(\|Eg_n\|_q\to\mathcal C_q\)，则称 \((g_n)\) 为极值化序列。
+\end{definition}
+
+有界性给出 \(\mathcal C_q<\infty\)。取 \(g=\sigma(S)^{-1/2}\)，则 \(Eg(0)=\sigma(S)^{1/2}>0\)；输出连续，所以在原点附近也不为零，故 \(\mathcal C_q>0\)。最佳常数的数值、是否达到及所有极值函数的分类是三个不同问题。证明存在性并不同时计算常数，更不自动给出分类。
 
 \ProseParagraphBreak
-即使算子范数有限，也未必有极值向量。例如 \(\ell^2\) 上的对角算子
-\((x_n)\mapsto((1-1/n)x_n)\)（从 \(n=2\) 开始）范数为 \(1\)，但每个非零向量的范数都严格变小。单位坐标向量构成极值化序列，却没有强收敛子列。这个模型提醒我们必须寻找实际的紧性机制。
+即使算子范数有限，也未必有极值向量。例如 \(\ell^2(\{2,3,\ldots\})\) 上的对角算子
+\[
+ T(x_n)_{n\geq2}=\bigl((1-1/n)x_n\bigr)_{n\geq2}
+\]
+范数为 \(1\)，因为 \(\|Te_n\|_2=1-1/n\to1\)。但是对每个非零 \(x\)，至少一个非零坐标的平方被严格缩小，因而 \(\|Tx\|_2<\|x\|_2\)。单位坐标向量构成极值化序列，弱收敛到零，却没有强收敛子列。延拓问题必须找到排除这类损失的具体机制。
 
 \subsection{极值化序列}
 \label{b2:subsec:230502}
 
-按上确界定义，可选 \(\|g_n\|_2=1\)、\(\|Eg_n\|_q\to\mathcal C\)。
-Hilbert 空间弱紧性提供弱收敛子列，但弱极限可能为零。对于固定 \(x\)，曲面指数函数属于 \(L^2(S)\)，所以 \(g_n\rightharpoonup g\) 蕴含 \(Eg_n(x)\to Eg(x)\)；然而逐点收敛仍不保证 \(L^q\) 强收敛。
+上确界定义保证极值化序列存在。Hilbert 空间的弱紧性给出子列 \(g_n\rightharpoonup g\)，但可能 \(g=0\)，也可能 \(\|g\|_2<1\)。弱收敛在延拓端提供了比一般有界算子更多的局部信息。
 
-\ProseParagraphBreak
-一个方便的充分判据是：若经对称归一化后 \(g_n\to g\) 在 \(L^2(S)\) 中强收敛，则连续性给出
-\(\|g\|_2=1\)、\(\|Eg\|_q=\mathcal C\)。
-该判据的证明很短，困难全在证明归一化后的强紧性，而不是上确界的形式定义。
+\Needspace{6\baselineskip}
+\begin{lemma}[弱输入收敛与局部延拓紧性]\label{b2:lem:23-local-extension-compactness}
+设 \(d\geq2\)，\(S\subset\mathbb R^d\) 为非空紧致光滑超曲面，取面积测度 \(\sigma\)，并定义
+\[
+ Ef(x)=\int_S e^{2\pi\mathrm i x\cdot\xi}f(\xi)\,\mathrm d\sigma(\xi)
+ \quad(f\in L^2(S,\sigma)).
+\]
+若 \(g_n\rightharpoonup g\) 于 \(L^2(S,\sigma)\)，则对每个非负整数 \(k\)，有
+\[
+ Eg_n\longrightarrow Eg\quad\text{于 }C^k_{\mathrm{loc}}(\mathbb R^d).
+\]
+这里的结论只使用曲面测度有限且支集紧致，不要求全空间 \(L^q\) 估计。
+\end{lemma}
+\begin{proof}
+弱收敛序列有界。对每个多重指标 \(\alpha\)，积分可以逐阶求导，并且
+\[
+ \partial_x^\alpha Eg_n(x)
+ =\int_S(2\pi\mathrm i\xi)^\alpha
+       e^{2\pi\mathrm i x\cdot\xi}g_n(\xi)\,\mathrm d\sigma(\xi),
+\]
+\[
+ |\partial_x^\alpha Eg_n(x)|
+ \leq(2\pi)^{|\alpha|}
+       \left(\int_S|\xi^\alpha|^2\,\mathrm d\sigma(\xi)\right)^{1/2}
+       \cdot\|g_n\|_2.
+\]
+紧支集使右侧有限且对 \(n,x\) 一致。固定 \(x\) 时，积分中的测试函数属于 \(L^2(S)\)，所以弱收敛给出全部导数的逐点收敛。再用高一阶导数的一致界，得到各阶导数的一致 Lipschitz 界。
+
+固定紧球及一个导数阶数，取该球的有限 \(\eta\)-网。网格各点的差在 \(n\) 充分大时同时趋于零；任意点到最近网格点的差由统一 Lipschitz 常数乘 \(\eta\) 控制。先取小 \(\eta\)，再取大 \(n\)，便得到这个导数在球上的一致收敛。对有限个 \(|\alpha|\leq k\) 重复即可。
+\end{proof}
+
+局部一致收敛仍然允许质量在越来越远的区域出现，因此不能直接推出全空间 \(L^q\) 强收敛。另一方面，若已经得到输入的强收敛 \(g_n\to g\)，则
+\[
+ \|g\|_2=1,\quad
+ \|Eg_n-Eg\|_q\leq\mathcal C_q\|g_n-g\|_2\longrightarrow0,
+\]
+所以极限就是极值函数。真正需要解决的是如何从弱紧性恢复全部输入范数。
 
 \subsection{对称性}
 \label{b2:subsec:230503}
 
-球面的正交旋转保持输入及输出范数；乘一个常数相位也保持范数。环境平移由曲面调制实现，所以
-\(g_n(\xi)=e^{-2\pi\mathrm ia_n\cdot\xi}g(\xi)\) 在 \(|a_n|\to\infty\) 时可使输出逃向无穷远。
-在曲面局部放大极限中，还可能出现小帽集中，极限几何是切平面附近的抛物面；这不是单位球面精确的缩放对称，却是紧性分析中的真实损失机制。
+球面上的精确对称可以直接代入积分验证。若 \(U\) 为正交矩阵、\(|c|=1\)，定义
+\[
+ R_Ug(\xi)=g(U^{-1}\xi),\quad
+ M_ag(\xi)=e^{-2\pi\mathrm i a\cdot\xi}g(\xi).
+\]
+则
+\[
+ E(cR_Ug)(x)=c\,Eg(U^{\mathsf T}x),\quad
+ E(M_ag)(x)=Eg(x-a).
+\]
+这些变换都保持输入 \(L^2\) 范数和输出 \(L^q\) 范数。调制对应于环境空间的平移；它对一般曲面密度仍是精确对称，而旋转只有在测度本身保持不变时才是对称。
 
 \ProseParagraphBreak
-归一化应分别处理精确对称与逼近尺度。除以相位、旋转、调制并不自动排除帽集中；排除帽集中也不自动排除多个远离的输出峰。每一种紧性损失都需要独立估计。
+在球面上，若 \(g\in L^2(S)\) 固定且 \(|a_n|\to\infty\)，则 \(M_{a_n}g\rightharpoonup0\)。事实上，对任意 \(h\in L^2(S)\)，乘积 \(g\overline h\in L^1(S)\)。先以光滑函数在 \(L^1(S)\) 中逼近这个乘积；光滑曲面密度的 Fourier 变换由驻相估计趋于零，逼近误差则由其 \(L^1\) 范数一致控制。因此
+\[
+ \int_S e^{-2\pi\mathrm i a_n\cdot\xi}
+      g(\xi)\overline{h(\xi)}\,\mathrm d\sigma(\xi)\longrightarrow0.
+\]
+若 \(g\) 已经是极值函数，便得到一个弱极限为零的极值化序列。极值函数的存在与所有极值化序列原样强紧，显然是不同的结论。
+
+\ProseParagraphBreak
+另一种损失发生在输入曲面。设 \(\theta_\delta\) 为球面上以固定点为中心、直径趋于零的帽，令
+\[
+ g_\delta=\sigma(\theta_\delta)^{-1/2}\mathbf1_{\theta_\delta}.
+\]
+它的 \(L^2\) 范数为一，而对每个 \(h\in L^2(S)\)，
+\[
+ |\langle g_\delta,h\rangle|
+ \leq\left(\int_{\theta_\delta}|h|^2\,\mathrm d\sigma\right)^{1/2}
+ \longrightarrow0.
+\]
+所以它也弱收敛到零。帽测度约为 \(\delta^{d-1}\) 时，Knapp 管给出的输出下界为
+\[
+ \|Eg_\delta\|_q
+ \gtrsim \delta^{(d-1)/2-(d+1)/q}.
+\]
+在 \(q_*=2(d+1)/(d-1)\) 处，右侧不趋于零。这并未证明这组帽就是极值化序列，却说明临界估计不能仅凭帽变小而忽略它。
+
+帽的局部放大趋于抛物面几何，但这不是单位球面的精确缩放对称。归一化必须区别两种操作：调制、相位与旋转在原问题内保持范数；帽重标度可能带来另一个极限曲面问题。消除精确对称并不自动排除尺度集中，也不自动排除多个远离的输出峰。
 
 \subsection{极值函数}
 \label{b2:subsec:230504}
 
-若极值函数存在，在适当可微的范围 \(q>2\) 下，对变分 \(g+\epsilon h\) 求导可得到 Euler–Lagrange 方程
-\[
- E^*(|Eg|^{q-2}Eg)=\mathcal C^qg
- \qquad(\|g\|_2=1).
-\]
-左侧按 \(L^{q'}\to L^2(S)\) 的伴随估计解释；因为
-\(|Eg|^{q-2}Eg\in L^{q'}\)，该表达确实属于 \(L^2(S)\)。
-求导时对复函数分别取实部方向和虚部方向，才能得到完整的复 Hilbert 空间等式。
+先假设极值函数存在。它满足一个可以在现有算子范围内严格解释的变分方程。
 
-\ProseParagraphBreak
-这个方程是必要条件，不能反过来把任意解都称为全局极值函数。它还可能有局部临界点或鞍点；确认最佳常数仍需比较整个单位球。对于特殊曲面和特殊指数，卷积几何可能使常数与极值分类可显式计算，但本章不把这类特殊结论推广到一般情形。
+\Needspace{6\baselineskip}
+\begin{proposition}[极值函数的 Euler--Lagrange 方程]\label{b2:prop:23-extremizer-euler}
+设 \(d\geq2\)，\(S\subset\mathbb R^d\) 为非空紧致光滑超曲面，取面积测度；\(E\) 为\cref{b2:def:23-extremizer}中定义的延拓算子。设 \(2<q<\infty\)，\(E:L^2(S)\to L^q(\mathbb R^d)\) 有界，并记其最佳常数为
+\(\mathcal C_q=\sup_{\|f\|_2=1}\|Ef\|_q\)。
+若 \(\|g\|_2=1\)、\(\|Eg\|_q=\mathcal C_q\)，则
+\[
+ E^*(|Eg|^{q-2}Eg)=\mathcal C_q^q g
+ \quad\text{于 }L^2(S).
+\]
+这里 \(E^*:L^{q'}(\mathbb R^d)\to L^2(S)\) 为有界伴随算子。
+\end{proposition}
+\begin{proof}
+首先
+\[
+ \bigl\||Eg|^{q-2}Eg\bigr\|_{q'}
+ =\|Eg\|_q^{q-1}<\infty,
+\]
+所以左侧有定义。固定 \(h\in L^2(S)\)，对实参数 \(t\) 考察
+\[
+ F(t)=\frac{\|E(g+th)\|_q^q}{\|g+th\|_2^q}.
+\]
+分母在零附近不为零，且极值性给出 \(F(t)\leq F(0)=\mathcal C_q^q\)。对 \(u,v\in\mathbb C\) 及 \(|t|\leq1\)，差商的模由
+\[
+ C_q\bigl(|u|^{q-1}\cdot|v|+|v|^q\bigr)
+\]
+控制。代入 \(u=Eg(x)\)、\(v=Eh(x)\)，由 Hölder 不等式可积，因而允许在积分号下求导。分子与分母在零点的导数分别为
+\[
+ q\,\operatorname{Re}\int_{\mathbb R^d}
+       |Eg|^{q-2}\overline{Eg}\,Eh\,\mathrm dx,\quad
+ q\,\operatorname{Re}\int_S\overline g\,h\,\mathrm d\sigma.
+\]
+由 \(F'(0)=0\) 及 \(\|g\|_2=1\)，得到
+\[
+ \operatorname{Re}\int_{\mathbb R^d}
+       |Eg|^{q-2}\overline{Eg}\,Eh\,\mathrm dx
+ =\mathcal C_q^q\operatorname{Re}
+       \int_S\overline g\,h\,\mathrm d\sigma.
+\]
+再把 \(h\) 换成 \(\mathrm i h\)，便得到对应的虚部等式。有界伴随的定义遂给出所述 \(L^2(S)\) 等式。
+\end{proof}
+
+这里的 \(E^*\) 按有界算子对偶定义，不是对任意 \(L^{q'}\) 代表逐点取 Fourier 限制。这个方程只是必要条件：它的解还可能是其他临界点，不能仅凭方程就断言达到全局最佳常数。特殊曲面和特殊指数有时允许用卷积几何计算最佳常数与极值分类，但这需要进一步证明。
 
 \subsection{集中紧性}
 \label{b2:subsec:230505}
 
-集中紧性方法先寻找有正量的局部输出，再通过对称群把它移回固定区域；随后分离一个非零轮廓与余项，并用范数解耦判断余项能否继续携带极值量。\appref{b2:app:F}将说明消失、分裂和紧性三种模式，以及它们在变分问题中的作用。
+极值化序列的有利之处在于：一旦找到非零弱极限，严格的幂次不等式便有机会排除剩余质量。应用它之前，必须先证明输出范数确实分裂。下面给出本节所需的完整形式。
+
+\Needspace{6\baselineskip}
+\begin{lemma}[幂次范数分裂]\label{b2:lem:23-power-splitting}
+设 \((X,\mu)\) 为测度空间，\(1<q<\infty\)，\(u_n\in L^q(X,\mu)\)，\(u\) 为可测函数。若 \(u_n\to u\) \(\mu\)-几乎处处，且 \(\sup_n\|u_n\|_{L^q(X,\mu)}<\infty\)，则 \(u\in L^q(X,\mu)\)，并且
+\[
+ \|u_n\|_q^q-\|u_n-u\|_q^q\longrightarrow\|u\|_q^q.
+\]
+\end{lemma}
+\begin{proof}
+Fatou 引理给出 \(u\in L^q\)。先注意，对每个 \(\varepsilon>0\)，存在 \(C_{\varepsilon,q}\)，使所有复数 \(a,b\) 满足
+\[
+ \bigl||a+b|^q-|a|^q\bigr|
+ \leq\varepsilon|a|^q+C_{\varepsilon,q}|b|^q.
+\]
+当 \(|b|\leq\eta|a|\) 时，沿线段用实变量微分估计，左侧至多为
+\(q(1+\eta)^{q-1}\eta|a|^q\)，取小 \(\eta\) 即可；在其余情形，\(|a|\leq\eta^{-1}|b|\)，两项都由常数乘 \(|b|^q\) 控制。
+
+记 \(v_n=u_n-u\) 及
+\[
+ D_n=|u_n|^q-|v_n|^q-|u|^q.
+\]
+则 \(D_n\to0\) 几乎处处，并有
+\[
+ \bigl(|D_n|-\varepsilon|v_n|^q\bigr)_+
+ \leq(C_{\varepsilon,q}+1)|u|^q.
+\]
+左侧也几乎处处趋于零。支配收敛与 \(\sup_n\|v_n\|_q<\infty\) 给出
+\[
+ \limsup_n\int|D_n|
+ \leq\varepsilon\sup_n\|v_n\|_q^q.
+\]
+令 \(\varepsilon\downarrow0\)，便得到 \(D_n\to0\) 于 \(L^1\)，特别得到所述积分等式。
+\end{proof}
+
+\Needspace{6\baselineskip}
+\begin{proposition}[非零弱极限恢复全部质量]\label{b2:prop:23-nonzero-profile}
+设 \(d\geq2\)，\(S\subset\mathbb R^d\) 为非空紧致光滑超曲面，取面积测度；\(E\) 为\cref{b2:def:23-extremizer}中的延拓算子。设 \(2<q<\infty\)，\(E:L^2(S)\to L^q(\mathbb R^d)\) 有界，并记
+\(\mathcal C_q=\sup_{\|f\|_2=1}\|Ef\|_q\)。
+若 \(\|g_n\|_2=1\)、\(\|Eg_n\|_q\to\mathcal C_q\)，且
+\[
+ g_n\rightharpoonup g\neq0\quad\text{于 }L^2(S),
+\]
+则 \(g_n\to g\) 强收敛于 \(L^2(S)\)，且 \(g\) 为归一化极值函数。
+\end{proposition}
+\begin{proof}
+令 \(r_n=g_n-g\)、\(a=\|g\|_2^2\)。弱收敛与 Hilbert 空间范数展开给出
+\[
+ 0<a\leq1,\quad \|r_n\|_2^2\longrightarrow1-a.
+\]
+由\cref{b2:lem:23-local-extension-compactness}，有 \(Eg_n(x)\to Eg(x)\)；有界性使输出在 \(L^q\) 中有界。于是\cref{b2:lem:23-power-splitting}给出
+\[
+ \|Eg_n\|_q^q=\|Eg\|_q^q+\|Er_n\|_q^q+o(1).
+\]
+对两项分别使用同一个最佳常数，
+\[
+ \mathcal C_q^q
+ \leq\mathcal C_q^q\bigl[a^{q/2}+(1-a)^{q/2}\bigr].
+\]
+若 \(0<a<1\)，则因 \(q/2>1\)，有
+\[
+ a^{q/2}+(1-a)^{q/2}<a+(1-a)=1,
+\]
+与 \(\mathcal C_q>0\) 矛盾。因此 \(a=1\)、\(\|r_n\|_2\to0\)。算子连续性再给出 \(\|Eg\|_q=\mathcal C_q\)。
+\end{proof}
+
+这个命题证明了所需的输入平方范数分裂和输出幂次范数分裂，数值上的严格不等式才因此可以使用。非零弱极限对于任意有界序列并不足以推出强收敛；这里还使用了极值化性质及 \(q>2\)。它把极值存在问题归结为一个具体目标：通过允许的归一化找到非零弱极限。
+
+\Needspace{6\baselineskip}
+\begin{theorem}[较大输出指数下的极值存在]\label{b2:thm:23-supercritical-extremizer}
+设 \(d\geq2\)，\(S\subset\mathbb R^d\) 为非空紧致光滑超曲面，取面积测度；\(E\) 为\cref{b2:def:23-extremizer}中的延拓算子。假设对某个 \(2<q_0<\infty\) 及有限常数 \(A\)，有
+\[
+ \|Eg\|_{q_0}\leq A\|g\|_2.
+\]
+则对每个有限 \(q>q_0\)，\(E:L^2(S)\to L^q(\mathbb R^d)\) 有界，且其最佳常数
+\(\mathcal C_q=\sup_{\|f\|_2=1}\|Ef\|_q\)
+都能达到。更确切地，每个满足 \(\|g_n\|_2=1\)、\(\|Eg_n\|_q\to\mathcal C_q\) 的序列，在适当调制和常数相位变换后，具有强 \(L^2(S)\) 收敛子列。
+\end{theorem}
+\begin{proof}
+有限测度给出 \(\|Eg\|_\infty\leq\sigma(S)^{1/2}\|g\|_2\)，与假设插值得到目标 \(L^q\) 有界性。对单位极值化序列，有
+\[
+ \|Eg_n\|_q^q
+ \leq\|Eg_n\|_\infty^{q-q_0}\cdot\|Eg_n\|_{q_0}^{q_0}
+ \leq A^{q_0}\|Eg_n\|_\infty^{q-q_0}.
+\]
+左侧趋于正数 \(\mathcal C_q^q\)，因此丢掉有限项后，存在与 \(n\) 无关的 \(\kappa>0\)，可选 \(x_n\in\mathbb R^d\) 满足 \(|Eg_n(x_n)|\geq\kappa\)。选择 \(|c_n|=1\)，使 \(c_nEg_n(x_n)\) 为非负实数，并令
+\[
+ h_n(\xi)=c_ne^{2\pi\mathrm i x_n\cdot\xi}g_n(\xi).
+\]
+则
+\[
+ Eh_n(x)=c_nEg_n(x+x_n),\quad
+ Eh_n(0)\geq\kappa,\quad \|h_n\|_2=1.
+\]
+它仍为同一问题的极值化序列。取弱收敛子列 \(h_n\rightharpoonup h\)，由于常数函数属于 \(L^2(S)\)，有
+\[
+ Eh(0)=\lim_n Eh_n(0)\geq\kappa.
+\]
+所以 \(h\neq0\)。\cref{b2:prop:23-nonzero-profile}给出 \(h_n\to h\) 的强收敛与极值性质。
+\end{proof}
+
+对球面，取 \(q_0=q_*=2(d+1)/(d-1)\)，便得到每个有限 \(q>q_*\) 的极值存在。证明同样适用于紧支撑的非零非负光滑曲面密度，因而一般紧曲率片也可使用\cref{b2:thm:23-curved-tomas}给出的 \(L^2\) 延拓界。上述论证的关键是正指数 \(q-q_0\)；当 \(q=q_0\) 时，它完全不给出统一的点态下界，所以没有同时解决临界极值问题。
 
 \ProseParagraphBreak
-一个典型的排除分裂原理是 \(q>2\) 时
-\(a^{q/2}+(1-a)^{q/2}<1\)、\(0<a<1\)。
-若两个轮廓在输出端充分分离、输入平方范数分别为 \(a\) 与 \(1-a\)，则两输出的 \(q\) 次范数之和至多
-\(\mathcal C^q[a^{q/2}+(1-a)^{q/2}]\)，严格小于最优值。
-使用这项原理之前必须证明轮廓解耦与没有其他损失；仅写这条数值不等式不能替代集中紧性的完整证明。
+前面的归一化小帽在 \(q>q_*\) 时也显示出这一区别：其 \(L^\infty\) 输出至多为 \(\sigma(\theta_\delta)^{1/2}\to0\)，而 \(L^{q_*}\) 输出一致有界，故同一插值不等式给出 \(\|Eg_\delta\|_q\to0\)。因此这组单帽不能在较大指数处极值化；在临界指数处，该消失结论不再成立。
 
-% 扩写定位：b2:subsec:230505
-有一个可以完整证明的条件紧性判据，它把“输出没有逃走”与“输入达到极值”直接连接起来。设 \(S\) 紧致，\(E:L^2(S)\to L^q(\mathbb R^d)\) 有界，\(2<q<\infty\)，并有极值化序列 \(\|g_n\|_2=1\)。若在适当对称归一化后，
+还有一个直接以全空间输出尾部表达的紧性判据。它的假设较强，但在具体问题中有时比寻找轮廓更易核验。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[统一输出尾部判据]\label{b2:prop:23-extremizer-tail}
+设 \(d\geq2\)，\(S\subset\mathbb R^d\) 为非空紧致光滑超曲面，取面积测度；\(E\) 为\cref{b2:def:23-extremizer}中的延拓算子。设 \(2<q<\infty\)，\(E:L^2(S)\to L^q(\mathbb R^d)\) 有界，并记
+\(\mathcal C_q=\sup_{\|f\|_2=1}\|Ef\|_q\)。
+假设 \(\|g_n\|_2=1\)、\(\|Eg_n\|_q\to\mathcal C_q\)。若在保持输入与输出范数的对称归一化后，
 \[
  \lim_{R\to\infty}\sup_n\int_{|x|>R}|Eg_n(x)|^q\,\mathrm dx=0,
 \]
-则它具有强 \(L^2(S)\) 收敛子列，其极限为极值函数。
-
-\ProseParagraphBreak
-
-证明如下。取弱收敛子列 \(g_n\rightharpoonup g\)。由于 \(S\) 紧致，各阶导数都满足
+则归一化后的序列具有强 \(L^2(S)\) 收敛子列，其极限为极值函数。
+\end{proposition}
+\begin{proof}
+取弱收敛子列 \(g_n\rightharpoonup g\)。局部延拓紧性给出每个球上的一致收敛，因而也给出球内的 \(L^q\) 强收敛。Fatou 引理给出
 \[
- |\partial_x^\alpha Eg_n(x)|
- \leq(2\pi)^{|\alpha|}
- \left(\int_S|\xi^\alpha|^2\,\mathrm d\sigma(\xi)\right)^{1/2}.
+ \int_{|x|>R}|Eg(x)|^q\,\mathrm dx
+ \leq\liminf_n\int_{|x|>R}|Eg_n(x)|^q\,\mathrm dx.
 \]
-因而输出在每个紧球上统一有界且等度连续。弱收敛给出逐点极限 \(Eg\)，Arzelà--Ascoli 及有限覆盖遂使 \(Eg_n\to Eg\) 在每个紧球上一致收敛。假设的统一尾部小性与 Fatou 控制极限尾部，故全空间 \(L^q\) 中也强收敛。于是 \(\|Eg\|_q=\mathcal C\)。弱下半连续性给出 \(\|g\|_2\leq1\)，而算子最佳界给出 \(\mathcal C\leq\mathcal C\|g\|_2\)；在非零算子情形 \(\mathcal C>0\)，所以 \(\|g\|_2=1\)。Hilbert 空间中弱收敛加范数收敛意味着强收敛，命题得证。
+把全空间分成球内与球外，再用
+\(|u-v|^q\leq2^{q-1}(|u|^q+|v|^q)\)，先取大 \(R\)，再取大 \(n\)，即得 \(Eg_n\to Eg\) 于全空间 \(L^q\)。于是
+\[
+ \|Eg\|_q=\mathcal C_q,\quad
+ \mathcal C_q\leq\mathcal C_q\|g\|_2,\quad
+ \|g\|_2\leq1.
+\]
+由 \(\mathcal C_q>0\)，得到 \(\|g\|_2=1\)。Hilbert 空间中弱收敛加范数收敛便给出强收敛。
+\end{proof}
+
+每个固定 \(Eg_n\) 可积，并不保证尾部对全部 \(n\) 一致变小。调制造成的平移、帽集中造成的长管尺度，都可能破坏这个统一条件。因而尾部判据提供的是可检验的紧性目标，不能据此无条件断言临界曲面的极值存在。
 
 \ProseParagraphBreak
-
-这一判据的假设很强，也明确指出了还需证明什么。调制产生的平移会破坏统一尾部；帽集中可能产生尺度越来越大的管，也可能破坏尾部。仅证明每个固定 \(n\) 的 \(Eg_n\) 可积，并不能把其尾部界变成对全部 \(n\) 一致的小量。因此上面的命题没有无条件断言一般曲面的极值函数存在，而是为具体问题提供一个可核对的紧性目标。
+\appref{b2:app:F}说明消失、分裂和紧性的区分；其中\cref{b2:sec:app-F-6}还说明限制问题的轮廓分析需要什么额外输入。对于临界限制问题，可能必须先证明一个精细延拓估计，以找到带有位置和尺度参数的非零轮廓，再证明余项在目标范数中消失。如果帽缩放产生抛物面轮廓，还需比较局部极限问题与原曲面问题的最佳常数。本节已完整处理同一延拓算子下的非零弱极限及其强收敛机制，没有把这些额外步骤含混地包入一个未经证明的一般轮廓分解。

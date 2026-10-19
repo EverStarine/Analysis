@@ -4,7 +4,7 @@
 
 主符号的惯性告诉我们可以期待哪一种模型，坐标变换则把这一判断落实为计算。本节区分三种任务：常系数主部在整个坐标域中的标准化，变系数主部在一点的标准化，以及利用特征曲线在一个邻域中构造坐标。三者使用的条件不同，结论也不相同。
 
-\subsection{二维标准型}
+\subsection{二维标准型与坐标可积性}
 \label{b2:subsec:080301}
 
 \begin{theorem}\label{b2:thm:08-constant-canonical}
@@ -43,28 +43,111 @@
 
 上述论证适用于常系数。若每一点分别对 \(A(x,y)\) 选一个对角化矩阵，并不能立即把这些矩阵拼成坐标变换的导数：一个候选矩阵场必须满足混合偏导的相容条件。特别是把位置依赖的向量场平方，会额外产生系数导数；不能把变系数算子当成常系数多项式直接配方而忽略这些项。
 
+\begin{proposition}[候选坐标导数的相容性]\label{b2:prop:08-coordinate-integrability}
+设 \(n\) 为正整数，\(V\subset\mathbb R^n\) 为关于 \(z_0\in V\) 星形的开集，\(B=(B^k_j)\in C^1(V;\mathbb R^{n\times n})\)。存在 \(F\in C^2(V;\mathbb R^n)\) 满足 \(DF=B\)，当且仅当
+\[
+ \partial_iB^k_j=\partial_jB^k_i\quad(1\leq i,j,k\leq n).
+\]
+若还要求 \(\det B\ne0\)，所得 \(F\) 在每一点附近是微分同胚，但未必在整个 \(V\) 上单射。
+\end{proposition}
+\begin{proof}
+必要性是各个分量 \(F^k\) 的混合偏导相等。反之，令 \(h=z-z_0\)，定义
+\[
+ F^k(z)=\int_0^1\sum_jB^k_j(z_0+th)h_j\,\mathrm{d}t.
+\]
+线段包含于开集，局部共同紧邻域允许积分求导。对 \(z_i\) 求导并用相容条件，得到
+\[
+ \begin{aligned}
+ \partial_iF^k(z)
+ &=\int_0^1\left(B^k_i(z_0+th)
+       +t\sum_jh_j\partial_iB^k_j(z_0+th)\right)\,\mathrm{d}t\\
+ &=\int_0^1\frac{\mathrm{d}}{\mathrm{d}t}
+       \left(tB^k_i(z_0+th)\right)\,\mathrm{d}t=B^k_i(z).
+ \end{aligned}
+\]
+由于 \(B\in C^1\)，这个等式使 \(F\in C^2\)。行列式非零时，用逆函数定理得到局部可逆性。
+\end{proof}
+
+例如 \(A=\operatorname{diag}(1,e^{-2x})\) 在每一点都可用 \(B=\operatorname{diag}(1,e^x)\) 化成 \(BAB^{\mathsf T}=I\)。但若 \(B=DF\)，第二行会要求 \(F^2_x=0\)、\(F^2_y=e^x\)，其混合偏导分别为 \(0\)、\(e^x\)，矛盾。这只排除这一候选矩阵场，不排除另外求解坐标方程的可能性。即使相容性成立，全局单射还须另核：\(F(x,y)=(e^x\cos y,e^x\sin y)\) 的行列式处处为 \(e^{2x}>0\)，却以 \(2\pi\) 为周期重复覆盖。局部与全域标准化都不能只靠逐点矩阵运算完成。
+
 \subsection{特征坐标}
 \label{b2:subsec:080302}
 
-先处理一个双曲邻域。假定 \(a,b,c\in C^2\)、\(a\ne0\)、\(D=b^2-ac>0\)。二维特征斜率为
+先处理一个双曲邻域。假定 \(U\subset\mathbb R^2\) 开，\(a,b,c\in C^2(U;\mathbb R)\)，且在 \(U\) 上 \(a\ne0\)、\(D=b^2-ac>0\)。二维特征斜率为
 \[
  m_\pm=\frac{b\pm\sqrt D}{a}.
 \]
-两族曲线分别由 \(y'=m_\pm(x,y)\) 给出。\chapref{b2:ch:07}的局部流与初值可微依赖保证：以横截直线 \(x=x_0\) 上的交点作为标签，可构造局部函数 \(\xi,\eta\)，使
+两族曲线分别由 \(y'=m_\pm(x,y)\) 给出。以横截直线 \(x=x_0\) 上交点的 \(y\) 坐标为标签，可以沿曲线构造新坐标；为对方程使用二阶链式法则，必须同时证明这些标签为 \(C^2\)。下面把标签的构造和这一步正则性一起写出。
+
+对每一族，令 \(Y_\pm(x;s)\) 解
+\[
+ \partial_xY_\pm=m_\pm(x,Y_\pm),\quad Y_\pm(x_0;s)=s.
+\]
+由于 \(m_\pm\in C^2\)，可把 \(x\) 加入状态，令其导数为 \(1\)，再用\cref{b2:thm:07-local-ode,b2:thm:07-flow-derivative}。在 \((x_0,y_0)\) 附近，所有邻近标签 \(s\) 的解因而在共同短区间上存在，并对 \((x,s)\) 为 \(C^1\)。先固定一族，暂写 \(m,Y\)，记 \(P=Y_s\)。一阶变分方程为
+\[
+ P_x=m_y(x,Y)P,\quad P(x_0;s)=1,
+ \quad
+ P(x;s)=\exp\!\left(\int_{x_0}^x m_y(r,Y(r;s))\,\mathrm dr\right)>0.
+\]
+二阶初值导数的候选值 \(Q\) 由线性方程
+\[
+ Q_x=m_y(x,Y)Q+m_{yy}(x,Y)P^2,
+ \quad Q(x_0;s)=0
+\]
+确定；积分因子给出它的具体表达
+\[
+ Q(x;s)=P(x;s)\int_{x_0}^x m_{yy}(r,Y(r;s))P(r;s)\,\mathrm dr.
+\]
+零初值来自 \(Y(x_0;s)=s\)，其对独立标签 \(s\) 的二阶导数为零。
+
+验证 \(Q=Y_{ss}\) 时，在共同短区间内令 \(Y_\varepsilon(x)=Y(x;s+\varepsilon)\)，并对 \(P\) 作差商
+\[
+ D_\varepsilon(x)=\frac{P(x;s+\varepsilon)-P(x;s)}{\varepsilon}.
+\]
+从两个一阶变分方程相减，得到
+\[
+ (D_\varepsilon)_x
+ =m_y(x,Y_\varepsilon)D_\varepsilon
+  +\frac{m_y(x,Y_\varepsilon)-m_y(x,Y)}{\varepsilon}P,
+ \quad D_\varepsilon(x_0)=0.
+\]
+一阶 \(C^1\) 依赖保证 \((Y_\varepsilon-Y)/\varepsilon\to P\) 在紧 \(x\) 区间上一致成立。中值积分又给出
+\[
+ \frac{m_y(x,Y_\varepsilon)-m_y(x,Y)}{\varepsilon}
+ =\int_0^1m_{yy}\bigl(x,Y+\theta(Y_\varepsilon-Y)\bigr)
+       \frac{Y_\varepsilon-Y}{\varepsilon}\,\mathrm d\theta.
+\]
+缩小邻域，使所有曲线及连接线段留在 \(U\) 内的同一个紧集上。\(m_{yy}\) 在此一致连续，因此该差商一致趋于 \(m_{yy}(x,Y)P\)。将 \(D_\varepsilon\) 与 \(Q\) 的积分方程相减，系数有共同界，非齐次余项一致趋零，Gronwall 估计便给出 \(D_\varepsilon\to Q\) 一致。再对邻近的 \(s\) 比较 \(Q\) 的线性方程，同一估计说明 \(Q\) 对 \((x,s)\) 连续。于是 \(Y_{ss}=Q\) 存在且连续；在 \(x<x_0\) 的区间上反转积分方向即可作同样的估计。
+
+余下的二阶导数由原方程直接得到：
+\[
+ Y_{xx}=m_x(x,Y)+m_y(x,Y)Y_x,
+ \quad Y_{xs}=m_y(x,Y)P.
+\]
+它们也连续，所以 \(Y\) 对 \((x,s)\) 联合为 \(C^2\)。由 \(P>0\)，映射 \((x,s)\mapsto(x,Y_\pm(x;s))\) 的行列式非零，\cref{b2:thm:01-inverse}给出局部逆 \(s=S_\pm(x,y)\)。原映射为 \(C^2\)，逆微分公式使逆的导数为 \(C^1\)，故 \(S_\pm\in C^2\)。
+
+取 \(\xi=S_+\)、\(\eta=S_-\)，它们分别在两族特征线上保持常值，称为\term[tezheng-zuobiao]{特征坐标}[characteristic coordinates]。沿轨道求导以及对逆坐标求导，分别给出
 \[
  \xi_x+m_+\xi_y=0,\quad
- \eta_x+m_-\eta_y=0,\quad \xi_y\ne0,\ \eta_y\ne0.
+ \eta_x+m_-\eta_y=0,\quad
+ \xi_y=\frac1{\partial_sY_+}>0,\quad
+ \eta_y=\frac1{\partial_sY_-}>0.
 \]
-它们分别在两族特征线上保持常值，称为\term[tezheng-zuobiao]{特征坐标}[characteristic coordinates]。系数为 \(C^2\) 时，流也是 \(C^2\)：对其一阶变分方程再求一次初值导数，所得二阶导数满足线性方程，其非齐次项为速度的二阶导数作用于两个一阶变分；局部一致连续性控制差商余项，再用 Gronwall 不等式得到导数存在且连续。因此这里的坐标变换符合二阶链式法则的要求。
+后两式中的分母在各自的逆坐标处取值。这保证了两个非零导数，不能任取两个特征方程解便断言它们构成坐标。
 
 \begin{proposition}\label{b2:prop:08-hyperbolic-coordinates}
-上述 \((\xi,\eta)\) 在充分小的邻域内构成 \(C^2\) 微分同胚，并把方程化为
+设 \(U\subset\mathbb R^2\) 为开集，\(a,b,c\in C^2(U;\mathbb R)\)，\(a\ne0\)、\(D=b^2-ac>0\) 在 \(U\) 上成立。设 \(d_1,d_2,k\in C(U;\mathbb R)\)，\(\mathbb K\in\{\mathbb R,\mathbb C\}\)，\(f\in C(U;\mathbb K)\)，并记
+\[
+ Lu=au_{xx}+2bu_{xy}+cu_{yy}+d_1u_x+d_2u_y+ku.
+\]
+对任意 \((x_0,y_0)\in U\)，以直线 \(x=x_0\) 上交点的 \(y\) 坐标为标签，分别沿 \(y'=(b\pm\sqrt D)/a\) 构造 \(\xi,\eta\)。存在该点的开邻域 \(W\subset U\)，使 \(F=(\xi,\eta):W\to\widetilde W=F(W)\) 为 \(C^2\) 微分同胚。对 \(u\in C^2(W;\mathbb K)\) 及 \(v=u\circ F^{-1}\)，方程 \(Lu=f\) 等价于
 \[
  \gamma(\xi,\eta)v_{\xi\eta}
  +\beta_1(\xi,\eta)v_\xi+\beta_2(\xi,\eta)v_\eta
- +\kappa(\xi,\eta)v=\widetilde f,
- \quad \gamma\ne0.
+ +\kappa(\xi,\eta)v=\widetilde f(\xi,\eta),
+ \quad \gamma\ne0,
 \]
+其中 \(\gamma,\beta_1,\beta_2,\kappa\in C(\widetilde W;\mathbb R)\)，\(\widetilde f=f\circ F^{-1}\in C(\widetilde W;\mathbb K)\)，各系数均由下面的完整链式公式确定。
 \end{proposition}
 \begin{proof}
 坐标的行列式为
@@ -72,14 +155,48 @@
  \xi_x\eta_y-\xi_y\eta_x
  =(m_--m_+)\xi_y\eta_y\ne0,
 \]
-因此可用逆函数定理。由特征方程，\(p(\nabla\xi)=p(\nabla\eta)=0\)，新矩阵的两个对角元为零。其混合系数为
+因此可用逆函数定理。所有 \(v\) 的导数在 \(F(x,y)\) 处取值时，对 \(i,j\in\{x,y\}\) 有
 \[
- \gamma=2\bigl(a\xi_x\eta_x+b(\xi_x\eta_y+\xi_y\eta_x)+c\xi_y\eta_y\bigr).
+ \begin{aligned}
+ u_i&=v_\xi\xi_i+v_\eta\eta_i,\\
+ u_{ij}&=v_{\xi\xi}\xi_i\xi_j
+       +v_{\xi\eta}(\xi_i\eta_j+\eta_i\xi_j)
+       +v_{\eta\eta}\eta_i\eta_j
+       +v_\xi\xi_{ij}+v_\eta\eta_{ij}.
+ \end{aligned}
 \]
-合同变换保持矩阵可逆，而 \(\left(\begin{smallmatrix}0&\gamma/2\\\gamma/2&0\end{smallmatrix}\right)\) 可逆恰好要求 \(\gamma\ne0\)。一阶与零阶系数按\cref{b2:prop:08-coordinate-change}保留，即得所述方程。
+由特征方程，\(p((x,y),\mathrm d\xi)=p((x,y),\mathrm d\eta)=0\)，新主矩阵的两个对角元为零。混合导数系数满足
+\[
+ \gamma\circ F
+ =2\bigl(a\xi_x\eta_x+b(\xi_x\eta_y+\xi_y\eta_x)+c\xi_y\eta_y\bigr).
+\]
+合同变换保持矩阵可逆，而 \(\left(\begin{smallmatrix}0&\gamma/2\\\gamma/2&0\end{smallmatrix}\right)\) 可逆恰好要求 \(\gamma\ne0\)。按\cref{b2:prop:08-coordinate-change}，其余系数为
+\[
+ \begin{aligned}
+ \beta_1\circ F&=a\xi_{xx}+2b\xi_{xy}+c\xi_{yy}
+                    +d_1\xi_x+d_2\xi_y,\\
+ \beta_2\circ F&=a\eta_{xx}+2b\eta_{xy}+c\eta_{yy}
+                    +d_1\eta_x+d_2\eta_y,\\
+ \kappa&=k\circ F^{-1},\quad \widetilde f=f\circ F^{-1}.
+ \end{aligned}
+\]
+这些表达式的右侧均已在原坐标中确定，再通过 \(F^{-1}\) 视为新坐标的函数。坐标为 \(C^2\)，低阶系数与源项连续，故所得系数和右端连续，逐项代入便得到等价方程。
 \end{proof}
 
-例如在 \(x>0\) 上，方程 \(u_{xx}-x^2u_{yy}=0\) 的两族特征为 \(y\pm x^2/2\) 恒定。取 \(\xi=y+x^2/2\)、\(\eta=y-x^2/2\)，其行列式为 \(2x\ne0\)。两次求导得到
+也可直接计算这一混合系数。由 \(m_++m_-=2b/a\)、\(m_+m_-=c/a\)，代入梯度关系得到
+\[
+ \gamma\circ F=2\xi_y\eta_y\bigl(am_+m_--b(m_++m_-)+c\bigr)
+ =-\frac{4D}{a}\xi_y\eta_y.
+\]
+因此在给定双曲邻域内它明确非零，可以把整个变换后方程除以 \(\gamma\)，得到
+\[
+ v_{\xi\eta}+\frac{\beta_1}{\gamma}v_\xi
+ +\frac{\beta_2}{\gamma}v_\eta+\frac{\kappa}{\gamma}v
+ =\frac{\widetilde f}{\gamma}.
+\]
+这里全部商都是 \((\xi,\eta)\) 的函数，右端也必须同步相除。接近 \(D=0\) 的退化边界时，这种除法的统一界却可能消失；规范化后的低阶系数可能变大，点态标准型不附带全域估计常数。
+
+两个特征标签可以交换命名。例如在 \(x>0\) 上，方程 \(u_{xx}-x^2u_{yy}=0\) 的两族特征为 \(y\pm x^2/2\) 恒定。取 \(\xi=y+x^2/2\)、\(\eta=y-x^2/2\)，其行列式为 \(2x\ne0\)。两次求导得到
 \[
  u_{xx}-x^2u_{yy}=-4x^2v_{\xi\eta}+v_\xi-v_\eta.
 \]
@@ -87,7 +204,7 @@
 
 \ProseParagraphBreak
 
-若 \(D=0\) 在整个邻域成立，且 \(a\ne0\)，令 \(\beta=b/a\)、\(V=\partial_x+\beta\partial_y\)，则
+另设 \(U\subset\mathbb R^2\) 为开集，\(a,b,c\in C^2(U;\mathbb R)\)，\(a\) 处处非零，且 \(D=b^2-ac\equiv0\)。低阶系数取 \(d_1,d_2,k\in C(U;\mathbb R)\)，源项取 \(f\in C(U;\mathbb K)\)，其中 \(\mathbb K\in\{\mathbb R,\mathbb C\}\)，仍对 \(C^2\) 的 \(\mathbb K\) 值函数考虑同样形式的 \(Lu=f\)。令 \(\beta=b/a\)、\(V=\partial_x+\beta\partial_y\)，则
 \[
  a\partial_x^2+2b\partial_x\partial_y+c\partial_y^2
  =aV^2-a(\partial_x\beta+\beta\partial_y\beta)\partial_y.
@@ -100,11 +217,49 @@
 
 \ProseParagraphBreak
 
+例如 \(u_{xx}-yu_y=0\) 在整个平面上有同一个秩一主矩阵。在 \(y>0\) 上，方程可写成 \(u_y=y^{-1}u_{xx}\)，沿增大的 \(y\) 是正扩散；在 \(y<0\) 上同一方向却给出负扩散；在 \(y=0\) 上，法向一阶系数也消失，不能用相同除法解出 \(u_y\)。类型名称没有变化，演化解释的符号和退化位置却都发生了变化。低阶项在这种问题中承担了最高时间导数的职责。
+
+\subsection{椭圆主部的特殊坐标与极坐标}
+\label{b2:subsec:08-elliptic-polar-coordinates}
+
 椭圆型没有两族实特征线，因此上述沿实轨道找坐标的方法不适用。一般变系数椭圆主部的邻域标准化需要另解坐标方程，本章不把它当作已证工具；本节已经完整建立的是常系数标准型及一点处冻结系数的标准型。某些特殊系数可直接处理，例如在全平面上取 \(r=e^x\)、\(s=y\)，有
 \[
  u_{xx}+e^{2x}u_{yy}=r^2(v_{rr}+v_{ss})+r v_r.
 \]
 这个映射是全平面到半平面的微分同胚。除以 \(r^2\) 后主部化为 Laplace 算子，但保留了 \(r^{-1}v_r\)；所获表达式的定义域也随坐标改变。
+
+\ProseParagraphBreak
+
+极坐标是另一个必须保留低阶项的例子。在不穿过原点且选定角度分支的区域中，令 \(x=r\cos\theta\)、\(y=r\sin\theta\)，\(u(x,y)=v(r,\theta)\)。逆坐标导数给出
+\[
+ \partial_x=\cos\theta\,\partial_r-\frac{\sin\theta}r\partial_\theta,
+ \quad\partial_y=\sin\theta\,\partial_r+\frac{\cos\theta}r\partial_\theta.
+\]
+平方时必须让导数也作用于系数。例如
+\[
+ \partial_x\cos\theta=\frac{\sin^2\theta}r,
+ \quad\partial_x\left(-\frac{\sin\theta}r\right)
+ =\frac{2\sin\theta\cos\theta}{r^2}.
+\]
+所以
+\[
+ \begin{aligned}
+ u_{xx}
+ &=\cos^2\theta\,v_{rr}-\frac{2\sin\theta\cos\theta}r v_{r\theta}
+   +\frac{\sin^2\theta}{r^2}v_{\theta\theta}\\
+ &\quad+\frac{\sin^2\theta}r v_r
+   +\frac{2\sin\theta\cos\theta}{r^2}v_\theta.
+ \end{aligned}
+\]
+\(u_{yy}\) 的表达式可由上式交换 \(\sin^2\theta\) 与 \(\cos^2\theta\)，并将混合导数项与 \(v_\theta\) 项变号得到。相加得到
+\begin{equation}\label{b2:eq:08-polar-laplacian}
+ \Delta u=v_{rr}+r^{-1}v_r+r^{-2}v_{\theta\theta}.
+\end{equation}
+若只把常系数方向导数的平方机械相加，就会漏掉 \(r^{-1}v_r\)。
+
+\ProseParagraphBreak
+
+在环域内寻找径向调和函数，方程为 \((rv_r)'=0\)，所以 \(v=C\log r+D\)。若取角模态 \(v=R(r)\cos(k\theta)\)、\(k\geq1\) 为整数，则得到 \(r^2R''+rR'-k^2R=0\)。令 \(s=\log r\)、\(W(s)=R(e^s)\)，有 \(W''-k^2W=0\)，故 \(R=Ar^k+Br^{-k}\)。这些模式在环域都合法；若要求连续延伸到原点，负幂和对数项就必须排除。这里角变量的周期为 \(2\pi\)，因此角模态写成 \(\cos(k\theta)\)，与单位周期变量下写 \(e^{2\pi\mathrm{i}kx}\) 的约定相容。坐标奇性、函数奇性和频率归一化须分别核对。
 
 \subsection{高维主符号}
 \label{b2:subsec:080303}
@@ -113,21 +268,48 @@
 
 \ProseParagraphBreak
 
-例如 \(\partial_1^2+\partial_2^2-\partial_3^2-\partial_4^2\) 的惯性为 \((2,2,0)\)。它既不椭圆，也不属于只有一个异号方向的双曲类型，更不是抛物型。又如三变量算子 \(\partial_1^2\) 的惯性为 \((1,0,2)\)，有两个完全缺失的二阶方向。对这些算子只说“判别式非正”没有明确含义；一个行列式也不能恢复全部惯性信息。
+例如 \(\partial_1^2+\partial_2^2-\partial_3^2-\partial_4^2\) 的惯性为 \((2,2,0)\)。它既不椭圆，也不属于只有一个异号方向的双曲类型，更不是抛物型。本章把非退化且正、负惯性指数均至少为 \(2\) 的主部称为\term[chaoshuangquxing]{超双曲型}[ultrahyperbolic]，以区别只有一个异号方向的双曲型；这一范围可对照 Walter A. Strauss 的《Partial Differential Equations: An Introduction》\cite[Section 1.6, pp. 30--31]{Strauss2008Partial}。又如三变量算子 \(\partial_1^2\) 的惯性为 \((1,0,2)\)，有两个完全缺失的二阶方向。对这些算子只说“判别式非正”没有明确含义；一个行列式也不能恢复全部惯性信息。
 
 \ProseParagraphBreak
 
-变系数时，可以在任意固定点 \(z_0\) 选一个线性坐标使 \(A(z_0)\) 标准化。邻近点的矩阵通常只是接近标准矩阵。若该点主部非退化，连续性使惯性在足够小邻域内保持不变；理由是单位球上可逆矩阵的最小伸缩量有正下界，小扰动不可能使某个特征值穿过零。秩退化情形没有这样的稳定性，任意小的系数扰动都可能改变类型。
+变系数时，可以在任意固定点 \(z_0\) 选一个线性坐标使 \(A(z_0)\) 标准化。邻近点的矩阵通常只是接近标准矩阵。非退化点附近的类型稳定，可由下面的定量矩阵论证得到。
+
+\begin{lemma}[惯性的小扰动稳定性]\label{b2:lem:08-inertia-perturbation}
+设 \(n\) 为正整数，\(A_0\in\mathbb R^{n\times n}\) 为可逆实对称矩阵，\(\mu>0\) 为其各特征值绝对值的最小值，\(\|\cdot\|\) 为欧氏算子范数。若实对称矩阵 \(H\in\mathbb R^{n\times n}\) 满足 \(\|H\|<\mu\)，则 \(A_0+H\) 仍可逆，并具有与 \(A_0\) 相同的惯性。
+\end{lemma}
+\begin{proof}
+令 \(E_+,E_-\) 分别为 \(A_0\) 的正、负特征子空间。对 \(v\in E_+\)，有
+\[
+ v^{\mathsf T}(A_0+H)v\geq(\mu-\|H\|)|v|^2>0\quad(v\ne0),
+\]
+所以新矩阵至少有 \(\dim E_+\) 个正特征值。这里使用\secref{b2:sec:0801}中正定子空间最大维数的刻画。对 \(v\in E_-\) 同样有 \(v^{\mathsf T}(A_0+H)v\leq-(\mu-\|H\|)|v|^2\)，故至少有 \(\dim E_-\) 个负特征值。由于 \(A_0\) 可逆，这两个下界的和已为总维数，因此新矩阵没有零特征值，正、负个数也不能再增加，惯性相同。
+\end{proof}
+
+连续系数在 \(z_0\) 附近使 \(\|A(z)-A(z_0)\|<\mu/2\)，故类型稳定。对于正定矩阵，以上证明还直接给出最小特征值的局部下界 \(\mu/2\)。秩退化情形没有这样的稳定性：\(\operatorname{diag}(1,\varepsilon)\) 在任意小的正、负 \(\varepsilon\) 下分别椭圆和双曲，而 \(\varepsilon=0\) 时秩为一。稳定结论依赖于非零谱与零之间的实际距离。
 
 \subsection{几何意义}
 \label{b2:subsec:080304}
 
-主符号作用在法向上，特征曲线却画在自变量空间里。两者之间的联系可以用一个直接计算辨明。若 \(\nu\ne0\)、\(p(z,\nu)=0\)，则
+主符号作用在余向量上，特征曲线却画在自变量空间里。两者之间的联系可以用一个直接计算辨明。设 \(n\) 为正整数，\(U\subset\mathbb R^n\) 开，\(\phi\in C^1(U;\mathbb R)\)，在 \(z\in U\) 有 \(\nu=\mathrm d\phi(z)\ne0\)。在欧氏坐标中，把余向量的分量写成列，它对切向量 \(w\) 的作用为 \(\nu^{\mathsf T}w\)；等值面 \(\phi=\phi(z)\) 在该点的切空间正是 \(\ker\nu\)。若实对称主矩阵 \(A(z)\) 满足 \(p(z,\nu)=0\)，则
 \[
- \nu\cdot A(z)\nu=0.
+ \nu^{\mathsf T}A(z)\nu=0.
 \]
-所以当 \(A\nu\ne0\) 时，向量 \(A\nu\) 位于法向为 \(\nu\) 的切平面中。对于非退化双曲型，\(A\nu\) 必非零；对于秩退化类型，它可能恰为零。二阶主符号不仅记录符号，也记录哪些方向上二阶约束消失。
+所以当 \(A\nu\ne0\) 时，\(A\nu\) 是等值面内的一个非零切向量。对于非退化双曲型，\(A\nu\) 必非零；对于秩退化类型，它可能恰为零。余向量 \(\nu\) 与向量 \(A\nu\) 的角色不同：前者测试某个方向是否切于等值面，后者是在这个测试下取零的切向量。
 
 \ProseParagraphBreak
 
-在一维波动方程中，特征曲线为 \(x\pm ct\) 恒定，两族曲线把初值上的区间与后来一点联系起来，\chapref{b2:ch:09}将据此推导表示公式。高维波动方程对应实特征锥，\chapref{b2:ch:11}进一步研究其传播区域。热方程的时间方向由一阶项选定，不能把秩退化的零方向画成波动锥；Laplace 方程则没有非零实特征法向。坐标标准化明确了这些差别，具体解的性质仍由后续各章在相应模型中建立。
+例如对 \(c>0\) 的 \(1+1\) 维波动方程 \(u_{tt}-c^2u_{xx}=0\)，固定自变量顺序为 \(z=(t,x)\)，则
+\[
+ A=\begin{pmatrix}1&0\\0&-c^2\end{pmatrix},\quad
+ \phi(t,x)=x-ct,\quad \nu=\mathrm d\phi=(-c,1)^{\mathsf T}.
+\]
+直接计算得到
+\[
+ p(z,\nu)=(-c)^2-c^2=0,\quad
+ A\nu=(-c,-c^2)^{\mathsf T}=-c(1,c)^{\mathsf T}.
+\]
+对固定 \(q\in\mathbb R\)，直线 \(x-ct=q\) 可参数化为 \((t,x)=(r,cr+q)\)；其切向量为 \((1,c)^{\mathsf T}\)，确与 \(A\nu\) 平行。\(\nu\) 记录的是余空间中的特征法向，\(A\nu\) 则给出这条时空直线的切向，二者不能互相替代。
+
+\ProseParagraphBreak
+
+在一维波动方程中，特征曲线为 \(x\pm ct\) 恒定，两族曲线把初值上的区间与后来一点联系起来，\chapref{b2:ch:09}将据此推导表示公式。高维波动方程在余空间中对应实特征锥，\chapref{b2:ch:11}进一步研究它与传播区域的关系。热方程的时间方向由一阶项选定，不能把秩退化的零方向画成波动锥；Laplace 方程则没有非零实特征余向量。坐标标准化明确了这些差别，具体解的性质仍由后续各章在相应模型中建立。

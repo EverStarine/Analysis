@@ -7,7 +7,7 @@
 \subsection{变量替换}
 \label{b2:subsec:010201}
 
-设 \(U,V\subseteq\mathbb R^d\) 为开集，\(\Phi:U\rightarrow V\) 是 \(C^1\) 微分同胚。其导数的行列式为 Jacobi 行列式。体积伸缩使用它的绝对值，记作 \(J_\Phi\coloneqq|\det D\Phi|\)。第一卷定理 7.5.7 给出如下\term[huanyuan-gongshi]{换元公式}[change of variables formula]：对 Lebesgue 可测集 \(E\subseteq U\) 和非负可测函数 \(f\)，
+设 \(U,V\subseteq\mathbb R^d\) 为开集，\(\Phi:U\rightarrow V\) 是 \(C^1\) 微分同胚。其导数的行列式为 Jacobi 行列式。体积伸缩使用它的绝对值，记作 \(J_\Phi\coloneqq|\det D\Phi|\)。第一卷定理 7.5.7 给出如下\term[huanyuan-gongshi]{换元公式}[change of variables formula]：对 Lebesgue 可测集 \(E\subseteq U\) 和 Lebesgue 可测函数 \(f:V\to[0,\infty]\)，
 \[
  \int_{\Phi(E)}f(x)\,\mathrm dx
  =\int_E f\bigl(\Phi(y)\bigr)\cdot J_\Phi(y)\,\mathrm dy.
@@ -34,20 +34,40 @@
 \subsection{曲面积分}
 \label{b2:subsec:010202}
 
-边界通常是 \((d-1)\) 维对象，不能用 \(d\) 维体积测量。对 \(1\leq k\leq d\)，若一个集合局部能用单射 \(C^1\) 参数图 \(X:U\subseteq\mathbb R^k\rightarrow\mathbb R^d\) 描述，\(X\) 到其相对开像是同胚、\(DX\) 的秩恒为 \(k\)，且参数图之间的过渡映射是 \(C^1\) 微分同胚，则称其为 \term[c1-qumian]{\(C^1\) 曲面}[\(C^1\) surface]。这里维数为 \(k\)，不限定为二维。记其 \term[kwei-jacobi-yinzi]{\(k\) 维 Jacobi 因子}[k-dimensional Jacobian]为
+边界通常是 \((d-1)\) 维对象，不能用 \(d\) 维体积测量。先看三维空间中最常见的图面：设 \(U\subset\mathbb R^2\) 开，\(g:U\to\mathbb R\) 为 \(C^1\) 函数，以
+\[
+ X(s,t)=(s,t,g(s,t))
+\]
+描述它。参数方向上的两个切向量为 \(X_s=(1,0,g_s)\)、\(X_t=(0,1,g_t)\)。一个很小的参数矩形经过线性化后，变成由这两个向量张成的平行四边形，其面积伸缩为
+\[
+ |X_s\times X_t|=|(-g_s,-g_t,1)|
+ =\sqrt{1+g_s^2+g_t^2}.
+\]
+因此图面面积元的计算公式应当是
+\[
+ \mathrm dS=\sqrt{1+|\nabla g(s,t)|^2}\,\mathrm ds\,\mathrm dt.
+\]
+例如对实常数 \(\alpha,\beta\)，斜平面 \(g(s,t)=\alpha s+\beta t\) 上的一块面积，等于它在水平面上的投影面积乘以 \(\sqrt{1+\alpha^2+\beta^2}\)。这个因子测量倾斜带来的伸长，并非取有符号的投影。下面将这一切平面的计算写成适用于一般坐标的形式，再给出面积的坐标无关定义及公式成立的依据。
+
+\ProseParagraphBreak
+
+对 \(1\leq k\leq d\)，若一个集合局部能用定义于开集 \(U\subset\mathbb R^k\) 的单射 \(C^1\) 参数图 \(X:U\rightarrow\mathbb R^d\) 描述，\(X\) 到其相对开像是同胚、\(DX\) 的秩恒为 \(k\)，且参数图之间的过渡映射是 \(C^1\) 微分同胚，则称其为 \term[c1-qumian]{\(C^1\) 曲面}[\(C^1\) surface]。这里维数为 \(k\)，不限定为二维。记其 \term[kwei-jacobi-yinzi]{\(k\) 维 Jacobi 因子}[k-dimensional Jacobian]为
 \[
  J_kX\coloneqq\sqrt{\det\bigl((DX)^{\mathsf T}DX\bigr)}.
 \]
-这是参数小块在切平面中的 \(k\) 维体积伸缩因子。矩阵 \((DX)^{\mathsf T}DX\) 的第 \((i,j)\) 项是两个切向量 \(\partial_iX,\partial_jX\) 的内积；其行列式给出这些向量张成的平行多面体的体积平方。满秩条件保证这个数为正。环境维数大于参数维数时，\(DX\) 不是方阵，不能直接对它取行列式，也不能把曲面的环境体积为零误认为曲面积为零。
+这是参数小块在切平面中的 \(k\) 维体积伸缩因子。矩阵 \((DX)^{\mathsf T}DX\) 的第 \((i,j)\) 项是两个切向量 \(\partial_iX,\partial_jX\) 的内积，称为 Gram 矩阵；其行列式给出这些向量张成的平行多面体的体积平方。满秩条件保证这个数为正。在三维的二维情形，它就是上面用过的 \(|X_s\times X_t|\)；在平面曲线情形，它是参数速度 \(|X'|\)。环境维数大于参数维数时，\(DX\) 不是方阵，不能直接对它取行列式，也不能把曲面的环境体积为零误认为曲面积为零。
 
 \begin{definition}\label{b2:def:01-vector-surface-integral}
-对上述曲面 \(S\)，沿用第一卷定义 15.1.2 的\term[hausdorff-cedu]{Hausdorff 测度}[Hausdorff measure] \(\mathcal H^k\)，其归一化使它在 \(k\) 维仿射平面上等于 \(k\) 维 Lebesgue 测度。以限制 \(\mathcal H^k\llcorner S\) 作为面积测度，简写其积分元为 \(\mathrm dS\)。可测函数 \(h:S\rightarrow\mathbb R\) 的\term[qumian-jifen]{曲面积分}[surface integral]定义为
+设 \(S\subseteq\mathbb R^d\) 为 \(k\) 维 \(C^1\) 曲面，\(1\leq k\leq d\)。对这个曲面，沿用第一卷定义 15.1.2 的\term[hausdorff-cedu]{Hausdorff 测度}[Hausdorff measure] \(\mathcal H^k\)，其归一化使它在 \(k\) 维仿射平面上等于 \(k\) 维 Lebesgue 测度。以限制 \(\mathcal H^k\llcorner S\) 作为面积测度，在一般维数公式中简写其积分元为 \(\mathrm dS\)。可测函数 \(h:S\rightarrow\mathbb R\) 的\term[qumian-jifen]{曲面积分}[surface integral]定义为
 \[
  \int_Sh\,\mathrm dS\coloneqq\int_Sh\,\mathrm d\mathcal H^k,
 \]
 其中要求 \(h\geq0\)，或 \(\int_S|h|\,\mathrm d\mathcal H^k<\infty\)。复值函数按实部和虚部分别积分，并要求绝对可积。
 \symidx{\(\mathrm dS\)：曲面面积元}
 \end{definition}
+
+本节凡同时出现曲面和它的边界曲线时，二维曲面的面积元写作 \(\mathrm dS\)，一维曲线的弧长元改写作 \(\mathrm d\ell\)。两者分别是相应对象上的 \(\mathcal H^2\) 与 \(\mathcal H^1\)，从记号即可辨认积分的维数；这不改变一般维数公式中的测度约定。
+\symidx{\(\mathrm d\ell\)：曲线弧长元}
 
 第一卷推论 17.3.11（局部面积公式）的单射情形说明，对一张参数图及可测参数集 \(A\subseteq U\)，有
 \begin{equation}\label{b2:eq:01-vector-surface-param}
@@ -58,12 +78,7 @@
 
 \ProseParagraphBreak
 
-在三维中，二维参数图满足 \(J_2X=|X_s\times X_t|\)。对图面 \(X(s,t)=(s,t,g(s,t))\)，有
-\[
- X_s\times X_t=(-g_s,-g_t,1),\quad
- \mathrm dS=\sqrt{1+|\nabla g|^2}\,\mathrm ds\,\mathrm dt.
-\]
-选定曲面的连续单位法向 \(n\) 后，向量场 \(F\) 沿该方向的\term[tongliang]{通量}[flux]为 \(\int_SF\cdot n\,\mathrm dS\)，要求被积函数绝对可积。若 \(n=(X_s\times X_t)/|X_s\times X_t|\)，通量就是 \(\int (F\circ X)\cdot(X_s\times X_t)\,\mathrm ds\,\mathrm dt\)。反转 \(n\) 改变通量的符号，不改变标量曲面积分。
+对开头的图面，\eqref{b2:eq:01-vector-surface-param}现在严格给出了 \(\mathrm dS=\sqrt{1+|\nabla g|^2}\,\mathrm ds\,\mathrm dt\)。在三维空间的二维曲面上，选定连续单位法向 \(n\) 后，向量场 \(F\) 沿该方向的\term[tongliang]{通量}[flux]为 \(\int_SF\cdot n\,\mathrm dS\)，要求被积函数绝对可积。若 \(n=(X_s\times X_t)/|X_s\times X_t|\)，通量就是 \(\int (F\circ X)\cdot(X_s\times X_t)\,\mathrm ds\,\mathrm dt\)。反转 \(n\) 改变通量的符号，不改变标量曲面积分。
 
 \ProseParagraphBreak
 
@@ -84,7 +99,7 @@
 单侧条件不能略去：从空间删去一张超平面后，区域在该平面的两侧都有点，因而不存在上述意义的外侧。
 
 \begin{theorem}[Gauss 散度定理]\label{b2:thm:01-vector-gauss}
-设 \(d\geq1\)，\(\Omega\subseteq\mathbb R^d\) 有界且具有 \(C^1\) 边界，\(F\) 是 \(\overline\Omega\) 某开邻域上的 \(C^1\) 向量场。则有\term[gauss-sandu-dingli]{Gauss 散度定理}[Gauss divergence theorem]
+设 \(d\geq1\)，\(\Omega\subseteq\mathbb R^d\) 是有界开集且具有 \(C^1\) 边界，\(F\) 是 \(\overline\Omega\) 某开邻域上的实 \(d\) 维 \(C^1\) 向量场，\(\nu\) 是外单位法向，\(\mathrm dS\) 是边界面积测度（一维为计数测度）。则有\term[gauss-sandu-dingli]{Gauss 散度定理}[Gauss divergence theorem]
 \begin{equation}\label{b2:eq:01-vector-gauss}
  \int_\Omega\operatorname{div}F\,\mathrm dx
  =\int_{\partial\Omega}F\cdot\nu\,\mathrm dS.
@@ -102,7 +117,7 @@
 \[
  d\cdot|B(0,R)|=R\cdot\mathcal H^{d-1}\bigl(\partial B(0,R)\bigr).
 \]
-有孔区域的内边界同样要计入通量；它的外法向指向孔内。\cref{b2:fig:01-vector-annulus}同时给出稍后平面 Green 公式所用的切向方向。
+有孔区域的内边界同样要计入通量；它的外法向指向孔内。\cref{b2:fig:01-vector-annulus}同时给出稍后平面 Green 定理所用的切向方向。
 
 \ProseParagraphBreak
 
@@ -130,13 +145,13 @@
 \label{b2:fig:01-vector-annulus}
 \end{figure}
 
-\subsection{Green 公式}
+\subsection{Green 恒等式与平面 Green 定理}
 \label{b2:subsec:010204}
 
-记 \(\partial_\nu u\coloneqq\nabla u\cdot\nu\)，称为沿外法向的\term[faxiang-daoshu]{法向导数}[normal derivative]。以下先对实值函数陈述；复值函数可以分解为实部、虚部使用，能量计算时则需显式加入共轭。
+设 \(\Omega\subset\mathbb R^d\) 是 \(C^1\) 开域，\(\nu\) 为其外单位法向，\(u\) 在 \(\overline\Omega\) 的邻域内为 \(C^1\) 函数。记 \(\partial_\nu u\coloneqq\nabla u\cdot\nu\)，称为沿外法向的\term[faxiang-daoshu]{法向导数}[normal derivative]。以下先对实值函数陈述；复值函数可以分解为实部、虚部使用，能量计算时则需显式加入共轭。
 
 \begin{corollary}[Green 第一与第二公式]\label{b2:cor:01-vector-green}
-在\cref{b2:thm:01-vector-gauss}的区域条件下，设 \(u,v\) 在 \(\overline\Omega\) 的某开邻域内为 \(C^2\) 函数。则\term[green-diyi-gongshi]{Green 第一公式}[Green's first identity]为
+设 \(\Omega\subseteq\mathbb R^d\) 有界且具有 \(C^1\) 边界，\(\nu\) 为外单位法向；设实值或复值函数 \(u,v\) 在 \(\overline\Omega\) 的某开邻域内为 \(C^2\) 函数。则\term[green-diyi-gongshi]{Green 第一公式}[Green's first identity]为
 \begin{equation}\label{b2:eq:01-vector-green-first}
  \int_\Omega\bigl(\nabla u\cdot\nabla v+u\cdot\Delta v\bigr)\,\mathrm dx
  =\int_{\partial\Omega}u\cdot\partial_\nu v\,\mathrm dS,
@@ -163,7 +178,7 @@
 
 \ProseParagraphBreak
 
-另一个重要选择是让其中一个函数 \(\varphi\) 的支集紧含 \(\Omega\)。此时边界项消失，得到
+设 \(\Omega\subset\mathbb R^d\) 开，\(u\in C^2(\Omega)\)、\(\varphi\in C_c^\infty(\Omega)\)，两者实值或复值。另一个重要选择是让测试函数的支集紧含 \(\Omega\)。此时边界项消失，得到
 \[
  \int_\Omega(-\Delta u)\cdot\varphi\,\mathrm dx
  =\int_\Omega\nabla u\cdot\nabla\varphi\,\mathrm dx.
@@ -172,13 +187,13 @@
 
 \ProseParagraphBreak
 
-平面向量场还有另一种常用写法。设 \(D\subseteq\mathbb R^2\) 为有界 \(C^1\) 区域，\(P,Q\) 在 \(\overline D\) 附近为 \(C^1\)。在每个边界分支上取单位切向 \(\tau=(-\nu_2,\nu_1)\)，并定义
+Green 第一、第二恒等式把标量函数的导数在区域内部与边界之间转移；平面 Green 定理则把二维向量场的旋度积分写成边界环流。它们都从散度定理推出，但被积对象及使用目的不同。为得到后一种形式，设 \(D\subseteq\mathbb R^2\) 为有界 \(C^1\) 区域，\(P,Q\) 在 \(\overline D\) 附近为 \(C^1\)。在每个边界分支上取单位切向 \(\tau=(-\nu_2,\nu_1)\)，并定义
 \[
  \int_{\partial D}P\,\mathrm dx+Q\,\mathrm dy
- \coloneqq\int_{\partial D}(P,Q)\cdot\tau\,\mathrm dS.
+ \coloneqq\int_{\partial D}(P,Q)\cdot\tau\,\mathrm d\ell.
 \]
-\begin{theorem}[平面 Green 公式]\label{b2:thm:01-vector-green-plane}
-在上述区域、函数和方向约定下，有\term[pingmian-green-gongshi]{平面 Green 公式}[Green's theorem in the plane]
+\begin{theorem}[平面 Green 定理]\label{b2:thm:01-vector-green-plane}
+设 \(D\subseteq\mathbb R^2\) 为有界 \(C^1\) 区域，\(P,Q\) 在 \(\overline D\) 的某开邻域上为 \(C^1\) 函数。边界取单位切向 \(\tau=(-\nu_2,\nu_1)\)，其中 \(\nu\) 是外单位法向。则有\term[pingmian-green-gongshi]{平面 Green 定理}[Green's theorem in the plane]
 \begin{equation}\label{b2:eq:01-vector-green-plane}
  \int_{\partial D}P\,\mathrm dx+Q\,\mathrm dy
  =\int_D(\partial_xQ-\partial_yP)\,\mathrm dx\,\mathrm dy.
@@ -193,7 +208,7 @@
 \subsection{Stokes 公式}
 \label{b2:subsec:010205}
 
-在 \(\mathbb R^3\) 中，向量场 \(F=(F_1,F_2,F_3)\) 的\term[xuandu]{旋度}[curl]定义为
+在开集 \(U\subset\mathbb R^3\) 中，向量场 \(F=(F_1,F_2,F_3)\in C^1(U;\mathbb R^3)\) 的\term[xuandu]{旋度}[curl]定义为
 \[
  \operatorname{curl}F\coloneqq
  (\partial_2F_3-\partial_3F_2,
@@ -205,22 +220,81 @@
 \[
  \tau=n\times\eta.
 \]
-于是 \(\eta\times\tau=n\)，即“外侧方向在前”的约定。这里 \(\eta\) 仍在曲面内，不能与曲面法向 \(n\) 混淆。沿定向曲线的积分由参数表达 \(\int F(\gamma(t))\cdot\gamma'(t)\,\mathrm dt\) 定义，等价于 \(\int F\cdot\tau\,\mathrm dS\)；一维换元保证同向参数变换不改变它。
+于是 \(\eta\times\tau=n\)，即“外侧方向在前”的约定。这里 \(\eta\) 仍在曲面内，不能与曲面法向 \(n\) 混淆。沿定向曲线的积分由参数表达 \(\int F(\gamma(t))\cdot\gamma'(t)\,\mathrm dt\) 定义，等价于 \(\int F\cdot\tau\,\mathrm d\ell\)；一维换元保证同向参数变换不改变它。\cref{b2:fig:01-vector-stokes-orientation}将这三个互相垂直的方向放在同一点比较：先确定曲面法向，再找到切平面内的外侧方向，边界切向才随之确定。
 
-\ProseParagraphBreak
+% 自拟局部定向示意：只画切平面中的半片和三个方向，不表示曲面的全局形状。
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x={(1cm,0cm)},y={(0.55cm,0.40cm)},z={(0cm,1cm)},>=stealth]
+ \fill[AnalysisBlue!10] (-3,-1,0)--(0,-1,0)--(0,1.5,0)--(-3,1.5,0)--cycle;
+ \draw[AnalysisGray] (-3,-1,0)--(0,-1,0);
+ \draw[AnalysisGray] (-3,-1,0)--(-3,1.5,0)--(0,1.5,0);
+ \draw[thick] (0,-1,0)--(0,1.65,0) node[above right] {\(\partial S\)};
+ \node at (-1.7,0,0) {曲面内侧};
+ \node at (1.65,-1,0) {外侧};
+ \fill (0,0,0) circle (1.5pt);
+ \node[below left] at (0,0,0) {\(p\)};
+ \draw[->,very thick,AnalysisBlue] (0,0,0)--(0,0,1.65) node[above] {\(n\)};
+ \draw[->,very thick] (0,0,0)--(1.8,0,0) node[right] {\(\eta\)};
+ \draw[->,very thick] (0,0,0)--(0,1.45,0) node[above left] {\(\tau\)};
+\end{tikzpicture}
+\caption[曲面定向与诱导边界方向]{曲面定向与诱导边界方向。浅色半片是边界点 \(p\) 处的切平面示意，粗线表示边界的切线方向；\(n\) 垂直于切平面，\(\eta\) 留在切平面内并指向外侧，\(\tau=n\times\eta\) 沿边界。箭头长度不按单位长度绘制。}
+\label{b2:fig:01-vector-stokes-orientation}
+\end{figure}
 
 每张参数图都能由叉积给出局部法向，但这些选择未必能在整张曲面上相容。定向要求在重叠处一致，沿图表绕行一周后也不改变符号；因此它是一项整体假设。选定定向后可调整参数次序，使每张图都满足 \(X_s\times X_t\) 与 \(n\) 同向。相容图之间的过渡行列式为正，正向的曲线积分才能在不同坐标中接起来。
 
+\ProseParagraphBreak
+
+从一张参数图推广到整张曲面，需要让局部计算在图的人工边缘处自动消失。下面先建立所需工具；它只处理截断函数，不使用 Stokes 公式。
+
+\begin{lemma}[紧致曲面的局部化]\label{b2:lem:01-surface-localization}
+设 \(S\subset\mathbb R^3\) 为紧致二维 \(C^2\) 曲面，允许有 \(C^2\) 边界，\(W\subset\mathbb R^3\) 为包含 \(S\) 的开集。给定覆盖 \(S\) 的参数图 \(X_\alpha:Q_\alpha\to S\cap O_\alpha\)，其中 \(O_\alpha\subset\mathbb R^3\) 为环境开集；内部图的 \(Q_\alpha\) 是开矩形，边界图的 \(Q_\alpha\) 是半矩形 \((-a_\alpha,a_\alpha)\times[0,b_\alpha)\)，\(a_\alpha,b_\alpha>0\)。边界图的底边对应 \(\partial S\)，参数图延至底边附近为 \(C^2\) 映射。则可选有限个图 \(\alpha_j\)，并找到实函数 \(\rho_j\in C_c^\infty(W\cap O_{\alpha_j})\)，在 \(W\) 中补零后满足
+\[
+ \rho_j\geq0,\qquad \sum_j\rho_j=1
+ \quad\text{于 }S\text{ 的某个环境开邻域}.
+\]
+每个 \(\rho_j\) 在 \(S\) 上的支集紧含对应参数图；其参数表达在内部矩形的所有边缘附近为零，在边界半矩形的两条侧边及上边附近为零，但不要求在代表 \(\partial S\) 的底边附近为零。
+\end{lemma}
+\begin{proof}
+先在环境空间中构造一个光滑截断。令
+\[
+ h(t)=\begin{cases}e^{-1/t},&t>0,\\0,&t\leq0,\end{cases}
+ \qquad q(t)=\frac{h(t)}{h(t)+h(1-t)}.
+\]
+\(h\) 在 \(t>0\) 处的各阶导数都是关于 \(1/t\) 的多项式乘 \(e^{-1/t}\)，在 \(t\downarrow0\) 时均趋于零，所以 \(h\) 光滑。分母处处为正，故 \(q\) 光滑，且 \(0\leq q\leq1\)，在 \(t\leq0\) 时为零，在 \(t\geq1\) 时为一。
+
+每个 \(p\in S\) 都能选取 \(r_p>0\)，使闭球 \(\overline{B(p,2r_p)}\) 留在 \(W\) 及指定的环境图邻域中；必要时先缩小图邻域。由紧致性，有限个小球 \(B(p_j,r_j)\) 覆盖 \(S\)。定义
+\[
+ \chi_j(x)=q\left(\frac{4r_j^2-|x-p_j|^2}{3r_j^2}\right),
+ \qquad G(x)=\sum_j\chi_j(x).
+\]
+于是 \(\chi_j=1\) 于 \(\overline{B(p_j,r_j)}\)，在 \(B(p_j,2r_j)\) 外为零，且 \(G\geq1\) 于 \(S\)。归一化前还须处理 \(G\) 可能为零的位置。令
+\[
+ R(s)=\begin{cases}q(4s-1)/s,&s>0,\\0,&s\leq0,\end{cases}
+ \qquad \rho_j(x)=\chi_j(x)R(G(x)).
+\]
+由于 \(q(4s-1)=0\) 于 \(s\leq1/4\)，函数 \(R\) 在零点附近恒为零，因而也是光滑函数。每个 \(\rho_j\) 都是非负光滑函数，支集仍留在对应的闭球内，并且
+\[
+ \sum_j\rho_j=q(4G-1)=1\quad\text{于 }\{G>1/2\}\supset S.
+\]
+这给出要求的环境单位分解，也使后面使用的 \(\nabla\rho_j\) 有明确含义。
+
+最后，\(\operatorname{supp}\rho_j\cap S\) 是紧含图像中的紧集，其参数原像也紧。内部图的参数域是开矩形，所以该紧集与四条边保持正距离；边界图的底边属于半矩形本身，只有侧边和上边是人工边缘，紧性只要求远离后三条边。因此参数系数可以在人工边缘附近补零，不会给真正的曲面边界加上消失条件。
+\end{proof}
+
 \begin{theorem}[Stokes]\label{b2:thm:01-vector-stokes}
-设 \(S\subseteq\mathbb R^3\) 是紧致、已定向的二维 \(C^2\) 曲面，允许有 \(C^2\) 边界；\(F\) 在 \(S\) 的某开邻域内为 \(C^1\) 向量场。取上述相容的 \(n,\tau\)，则有\term[stokes-gongshi]{Stokes 公式}[Stokes' theorem]
+设 \(S\subseteq\mathbb R^3\) 是紧致、已定向的二维 \(C^2\) 曲面，允许有 \(C^2\) 边界；\(W\subset\mathbb R^3\) 为包含 \(S\) 的开集，\(F\in C^1(W;\mathbb R^3)\)。取与定向相符的单位法向 \(n\)，沿边界取 \(\tau=n\times\eta\)，其中 \(\eta\) 是曲面内指向外侧、垂直于边界的单位向量，则有\term[stokes-gongshi]{Stokes 公式}[Stokes' theorem]
 \begin{equation}\label{b2:eq:01-vector-stokes}
  \int_S\operatorname{curl}F\cdot n\,\mathrm dS
- =\int_{\partial S}F\cdot\tau\,\mathrm dS.
+ =\int_{\partial S}F\cdot\tau\,\mathrm d\ell.
 \end{equation}
 若 \(\partial S=\varnothing\)，右边为零。
 \end{theorem}
 \begin{proof}
-先在正向参数图 \(X(s,t)\) 上计算，令
+证明分成三个阶段。先建立参数图上的导数恒等式，再核对平面 Green 定理传递的边界方向，最后用\cref{b2:lem:01-surface-localization}把局部等式相加。
+
+第一阶段，在正向参数图 \(X(s,t)\) 上计算。令
 \[
  A=(F\circ X)\cdot X_s,\quad B=(F\circ X)\cdot X_t.
 \]
@@ -234,18 +308,30 @@
  &=(\operatorname{curl}F)\circ X\cdot(X_s\times X_t).
  \end{aligned}
 \]
-第一行中 \(F\circ X\) 乘混合二阶导数的两项因 \(X_{st}=X_{ts}\) 抵消；把其余六项按 \((i,j)=(1,2),(2,3),(3,1)\) 配对，即为第二行。若参数图覆盖一个有边界的整块，平面 Green 公式把此积分变成 \(\int A\,\mathrm ds+B\,\mathrm dt\)，链式法则又把它变为像边界上的曲线积分。正向参数图把参数域外侧映到曲面外侧，因而其边界方向与 \(\eta\times\tau=n\) 一致。
+第一行中 \(F\circ X\) 乘混合二阶导数的两项因 \(X_{st}=X_{ts}\) 抵消；把其余六项按 \((i,j)=(1,2),(2,3),(3,1)\) 配对，即为第二行。正向性与面积公式又给出 \(n\,\mathrm dS=(X_s\times X_t)\,\mathrm ds\,\mathrm dt\)。因此曲面旋度通量的被积表达，正是参数平面中的 \(\partial_sB-\partial_tA\)。
 
-一般曲面需把这个计算局部化。先取参数域为矩形或半矩形的图，再以有限个较小图覆盖 \(S\)。在对应的环境开邻域中取光滑函数 \(\chi_j\geq0\)，其支集留在各图邻域，且 \(\sum_j\chi_j>0\) 于 \(S\) 附近。这样的函数可由有限个小球上的光滑截断函数取得；缩小的同心球覆盖紧集 \(S\)，每个截断在缩小球上取 \(1\)。其存在可从 \(t>0\) 时为 \(e^{-1/t}\)、\(t\leq0\) 时为零的光滑函数出发，把它的平移、反射之和用作正分母，构成由 \(1\) 平滑过渡到 \(0\) 的函数，再与到球心距离的平方复合。令 \(\rho_j=\chi_j/\sum_i\chi_i\)，则 \(\sum_j\rho_j=1\) 于 \(S\) 附近。
+第二阶段，取闭包留在参数图内的矩形参数块 \(Q\)，边界图的块允许有一条边落在 \(t=0\) 上；此时使用参数图在底边附近的 \(C^2\) 延拓。因此 \(A,B\) 在闭块附近均为 \(C^1\)，前面直接证明的矩形版 Green 公式给出
+\[
+ \int_Q(\partial_sB-\partial_tA)\,\mathrm ds\,\mathrm dt
+ =\int_{\partial Q}A\,\mathrm ds+B\,\mathrm dt.
+\]
+对边界参数曲线 \(c\)，链式法则说明右端等于 \(\int F(X(c))\cdot(X\circ c)'\)，即像曲线上的积分。还须核对方向，而不能只核对被积函数。设 \(v=(v_1,v_2)\) 是参数边上的外单位法向，\(w=(-v_2,v_1)\) 是正向单位切向。则
+\[
+ (DXv)\times(DXw)=\det(v,w)(X_s\times X_t)
+ =X_s\times X_t.
+\]
+\(DXv\) 指向像参数块的外侧，却未必垂直于像边界；将它减去沿 \(DXw\) 的分量，再取单位化，才得到曲面内的外单位向量 \(\eta\)。减去这个切向分量不改变上式叉积，故单位像切向 \(\tau=DXw/|DXw|\) 满足 \(\eta\times\tau=n\)，也就是 \(\tau=n\times\eta\)。参数角点只有有限个，不贡献弧长积分。对于下侧为 \(t=0\)、内部为 \(t>0\) 的半矩形，\(v=(0,-1)\)、\(w=(1,0)\)，所以真正边界沿 \(s\) 增大的方向行进。
 
-对 \(F_j=\rho_j\cdot F\) 应用局部计算。内部图可缩成矩形，系数 \(A_j,B_j\) 在其边缘附近为零，故边界积分为零。边界图可缩成半矩形，系数仅可能在代表 \(\partial S\) 的一边不为零；矩形版 Green 公式留下的恰是该边的曲线积分。各图外侧的人工边界均无贡献。最后把所有等式相加，由
+第三阶段，在 \(F\) 的定义邻域 \(W\) 中应用\cref{b2:lem:01-surface-localization}，选取有限个 \(\rho_j\)，并在各图上把 \(F\) 换成 \(F_j=\rho_j F\)。内部矩形的参数系数 \(A_j,B_j\) 在全部人工边缘附近为零，可以补零后用第二阶段的公式，边界积分为零。边界半矩形的系数在侧边和上边附近为零，只有代表 \(\partial S\) 的底边可能留下积分。因而人工边界各自不贡献任何项，无需另外选择一套互不重叠的曲面分块。
+
+最后把有限个局部等式相加。由于 \(\sum_j\rho_j=1\) 不仅在 \(S\) 上、而且在它的一个环境邻域内成立，\(\sum_j\nabla\rho_j=0\)，所以
 \[
  \sum_j\operatorname{curl}(\rho_j\cdot F)
  =\sum_j\bigl(\nabla\rho_j\times F
                    +\rho_j\cdot\operatorname{curl}F\bigr)
  =\operatorname{curl}F
 \]
-及边界上的 \(\sum_j\rho_j=1\)，得到所求公式。紧致性和图上连续性同时保证各积分有限。
+成立。边界积分也因 \(\sum_j\rho_j=1\) 合为 \(\int_{\partial S}F\cdot\tau\,\mathrm d\ell\)，得到所求公式。若曲面无边界，全部图只留下消失的人工边界项。紧致性和图上连续性保证各个积分有限。
 \end{proof}
 
 作为\eqref{b2:eq:01-vector-stokes}的符号核对，取平面单位圆盘、向上法向 \(n=(0,0,1)\) 及 \(F=(-y/2,x/2,0)\)。旋度恒为 \(n\)，面积积分为 \(\pi\)；沿 \(\gamma(t)=(\cos t,\sin t,0)\) 逆时针积分也为 \(\int_0^{2\pi}1/2\,\mathrm dt=\pi\)。反转曲面定向时，边界方向必须同时反转。后面使用分部积分时，正则性决定公式是否可用，方向约定则决定边界项的符号。

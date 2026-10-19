@@ -2,55 +2,328 @@
 \section{多维振荡积分}
 \label{b2:sec:2103}
 
-多维情况下既可能完全没有驻点，也可能只在某些方向振荡。估计的有效维数取决于可利用的非退化方向数，而不单由积分变量的个数决定。
+多维积分中，可利用的振荡方向数未必等于变量个数。相位梯度不为零时，只需沿一个合适的向量场积分分部；非退化驻点附近，每个二次方向提供半个幂次的衰减；若某些方向完全平直，它们只贡献普通积分。本节把这些方法用于参数振幅和曲面 Fourier 变换，并说明统一估计需要怎样局部化。
 
 \subsection{相位函数}
 \label{b2:subsec:210301}
 
-若 \(\nabla\phi\ne0\)，定义
+\cref{b2:prop:21-nonstationary-multi}已经建立多维非驻相估计。恢复本处所需条件：相位 \(\phi\) 是开集 \(U\subset\mathbb R^d\) 上的实光滑函数，振幅 \(a\in C_c^\infty(U;\mathbb C)\)，并且 \(|\nabla\phi|\geq c>0\) 在振幅支撑的一个邻域成立。相应的向量场及微分算子为
 \[
- L=\frac{\nabla\phi\cdot\nabla}{2\pi\mathrm i\lambda|\nabla\phi|^2},
- \qquad Le^{2\pi\mathrm i\lambda\phi}=e^{2\pi\mathrm i\lambda\phi}.
+ V(x)=\frac{\nabla\phi(x)}{|\nabla\phi(x)|^2},
+ \quad
+ L=\frac1{2\pi\mathrm i\lambda}V\cdot\nabla,
+ \quad
+ Le^{2\pi\mathrm i\lambda\phi}
+ =e^{2\pi\mathrm i\lambda\phi}.
 \]
-对紧支撑振幅反复转移 \(L\) 的形式伴随，可得任意阶 \(\lambda^{-N}\) 衰减。
-展开伴随时出现的每一项都是相位有限阶导数、\(|\nabla\phi|^{-1}\) 的幂与振幅导数的乘积。在 \(|\nabla\phi|\ge c\) 的紧集上这些系数有界，故证明和一维完全相同，只是导数变成多重指标。
+在这里转移的是双线性积分中的微分算子，而不是带复共轭的 Hilbert 伴随。由散度公式，其形式转置作用于振幅为
+\[
+ L^{\mathrm t}a
+ =-\frac1{2\pi\mathrm i\lambda}\operatorname{div}(Va)
+ =-\frac1{2\pi\mathrm i\lambda}
+   \bigl(V\cdot\nabla a+(\operatorname{div}V)a\bigr).
+\]
+因此即使原振幅局部为常数，相位的变化也会通过 \(\operatorname{div}V\) 进入下一次振幅。具体地，
+\[
+ \operatorname{div}V
+ =\frac{\Delta\phi}{|\nabla\phi|^2}
+  -2\,\frac{(D^2\phi\,\nabla\phi)\cdot\nabla\phi}
+               {|\nabla\phi|^4}.
+\]
+梯度下界控制分母；相位的有限阶导数控制分子。反复转移 \(N\) 次后，得到 \(\lambda^{-N}\) 乘以振幅至多 \(N\) 阶导数的有限线性组合，其系数由相位至多 \(N+1\) 阶导数与梯度倒数控制。
 
 \ProseParagraphBreak
-若积分域有边界，散度定理同时产生边界积分。比如平直立方体上的线性相位，即使内域完全无驻点，某些面上的切向梯度仍可能为零。这解释了为什么光滑截断与特征函数截断的 Fourier 衰减差别很大。
+
+这个描述也给出使用参数族时的核对方法。若 \(z\) 遍历某个参数集合，\(a_z\) 的支撑都在同一紧集 \(K\Subset U\) 内，所需导数的 \(L^1\) 范数一致有界，\(\phi_z\) 在同一邻域上满足统一梯度下界和相位导数界，那么任意固定次数的非驻相估计就对 \(z\) 一致。参数集合是否紧只是获得这些界的一种途径；实际使用的是这些定量条件。
+
+\ProseParagraphBreak
+
+紧支撑负责消除积分域边界，不能被“相位在内部没有驻点”替代。对光滑有界区域 \(\Omega\)，一次散度积分分部会出现
+\[
+ \begin{aligned}
+ \int_\Omega e^{2\pi\mathrm i\lambda\phi}\cdot a\,\mathrm dx
+ &=
+ \frac1{2\pi\mathrm i\lambda}
+ \int_{\partial\Omega}
+ e^{2\pi\mathrm i\lambda\phi}\cdot a(V\cdot n)\,\mathrm d\sigma\\
+ &\hspace{1em}
+ -\frac1{2\pi\mathrm i\lambda}
+ \int_\Omega e^{2\pi\mathrm i\lambda\phi}\cdot
+                    \operatorname{div}(Va)\,\mathrm dx,
+ \end{aligned}
+\]
+其中 \(n\) 是外单位法向。边界积分是否衰减，取决于相位限制在边界后的切向变化。平直立方体上的线性相位甚至可以在某些面上恒定。例如
+\[
+ \int_{[0,1]^d}e^{2\pi\mathrm i\lambda x_1}\,\mathrm dx
+ =\frac{e^{2\pi\mathrm i\lambda}-1}{2\pi\mathrm i\lambda}.
+\]
+其余 \(d-1\) 个变量只提供体积一，并没有增加衰减。这与光滑紧支撑振幅的快速衰减没有矛盾。
 
 \subsection{振幅}
 \label{b2:subsec:210302}
 
-振幅支撑的大小、光滑性和消失阶都参与估计。给定 \(a_\lambda(x)=a(\lambda^\theta x)\)，其第 \(j\) 阶导数有 \(\lambda^{j\theta}\) 的增长；直接套用固定振幅定理会把这些增长藏进余项。先换变量 \(u=\lambda^\theta x\)，新的相位参数变为 \(\lambda^{1-2\theta}\)（二次相位），才看得清有效振荡尺度。
+振幅的支撑、导数和在驻点处的消失阶都参与估计。尤其当振幅依赖于 \(\lambda\) 时，不能把它当作固定函数代入渐近公式，再把增长中的导数藏在余项常数里。一个完整可算的模型是
+\[
+ I_\lambda
+ =\int_{\mathbb R^d}e^{\pi\mathrm i\lambda|x|^2}
+                    \cdot a(\lambda^\theta x)\,\mathrm dx,
+ \quad
+ a\in C_c^\infty(\mathbb R^d;\mathbb C),
+ \quad \theta\geq0.
+\]
+这里 \(\lambda\geq1\)，\(\theta\) 固定。换元 \(u=\lambda^\theta x\) 得
+\[
+ I_\lambda=\lambda^{-d\theta}
+ \int_{\mathbb R^d}e^{\pi\mathrm i\tau|u|^2}
+                       \cdot a(u)\,\mathrm du,
+ \quad
+ \tau=\lambda^{1-2\theta}.
+\]
+振幅的尺度归一化后，真正需要比较的是 \(\tau\) 与一的大小。
 
 \ProseParagraphBreak
-振幅可以包含较慢的参数，但必须统一控制其支撑和导数。一个常用情形是 \(a(x,z)\) 支撑于固定紧集，\(z\) 属于紧参数集，并且所需 \(x\) 导数一致有界。若相位也具有统一非退化下界，所有前述估计都可对 \(z\) 一致成立。参数集不紧时应另行核对这些界。
+
+当 \(0\leq\theta<1/2\) 时，\(\tau\to\infty\)。在原点附近用二次驻相公式，其余部分用非驻相估计，得到
+\[
+ I_\lambda
+ =e^{\pi\mathrm i d/4}\lambda^{-d/2}
+   \left[a(0)+O\bigl(\lambda^{-(1-2\theta)}\bigr)\right].
+\]
+因子 \(\lambda^{-d\theta}\tau^{-d/2}\) 恰好等于 \(\lambda^{-d/2}\)。此时振幅变化尺度比驻相尺度宽，首项仍只看 \(a(0)\)，但相对于首项的余项是 \(\lambda^{-(1-2\theta)}\)，已不是固定振幅时的 \(\lambda^{-1}\)。若 \(a(0)=0\)，须继续看更高阶项，不能从此式断言首项非零。
+
+\ProseParagraphBreak
+
+当 \(\theta=1/2\) 时，\(\tau=1\)，于是有精确等式
+\[
+ I_\lambda
+ =\lambda^{-d/2}
+   \int_{\mathbb R^d}e^{\pi\mathrm i|u|^2}
+                       \cdot a(u)\,\mathrm du.
+\]
+系数依赖整个振幅，通常不能用 \(e^{\pi\mathrm i d/4}a(0)\) 代替。振幅与驻点邻域在同一尺度变化，归一化后的积分已没有一个趋于无穷的参数。
+
+\ProseParagraphBreak
+
+当 \(\theta>1/2\) 时，\(\tau\to0\)。利用
+\(|e^{\mathrm it}-1|\leq|t|\) 与 \(a\) 的紧支撑，得到
+\[
+ I_\lambda
+ =\lambda^{-d\theta}
+   \left[
+   \int_{\mathbb R^d}a(u)\,\mathrm du
+   +O\bigl(\lambda^{1-2\theta}\bigr)
+   \right].
+\]
+这里误差由
+\(\pi\tau\int|u|^2\cdot|a(u)|\,\mathrm du\)
+控制。衰减主要来自支撑体积缩小，而不是相位在该支撑上产生越来越多的波动。这三个范围也说明，同一条固定振幅驻相公式不能在支撑尺度穿过 \(\lambda^{-1/2}\) 时原样保持。
+
+\ProseParagraphBreak
+
+非驻相区域也有类似的导数代价。设 \(\delta\geq0\) 固定。若相位固定、梯度在固定紧集附近有正下界，而 \(a_\lambda\) 支撑于该紧集，并满足
+\[
+ \|\partial^\gamma a_\lambda\|_1
+ \leq A_\gamma\lambda^{\delta|\gamma|},
+ \quad \lambda\geq1,
+\]
+则转移 \(N\) 次导数后至多得到
+\[
+ |I_\lambda(a_\lambda,\phi)|
+ \leq C_N\lambda^{-N(1-\delta)}.
+\]
+当 \(0\leq\delta<1\)，且每个所需阶数都有上述控制时，仍能通过增加 \(N\) 得到任意固定的负幂。若 \(\delta\geq1\)，这套估计本身不再提供衰减；例如振幅中包含 \(e^{-2\pi\mathrm i\lambda\phi}\) 时，原来的振荡可以被完全消去。
 
 \subsection{曲率}
 \label{b2:subsec:210303}
 
-设光滑超曲面在局部写成 \(x_d=h(x')\)。曲面测度的 Fourier 变换在方向 \(\omega\) 上具有相位
-\(\phi_\omega(x')=-\omega'\cdot x'-\omega_d h(x')\)。
-驻点条件说明 \(\omega\) 平行于曲面的法向；驻点处 Hesse 矩阵 为
-\(-\omega_dD^2h\)。在相应坐标中 Gaussian 曲率非零，等价于这个 Hesse 矩阵 可逆。因此紧支撑光滑曲面密度满足
+曲面 Fourier 变换把几何曲率转成相位的二阶导数。先在一个图形坐标片中写
 \[
- |\widehat{a\,\mathrm d\sigma}(\xi)|\le C(1+|\xi|)^{-(d-1)/2}
+ F(y)=(y,h(y)),
+ \quad y\in U\subset\mathbb R^{d-1},
+ \quad h\in C^\infty(U;\mathbb R).
 \]
-（假设支撑上 Gaussian 曲率处处非零）。
-对方向单位球面作有限覆盖，分出驻点邻域与非驻点区域，驻相公式和非驻相法分别控制它们，便得到方向一致的常数。
+曲面体积元为
+\[
+ \mathrm d\sigma(F(y))
+ =J(y)\,\mathrm dy,
+ \quad
+ J(y)=\sqrt{1+|\nabla h(y)|^2}.
+\]
+这个因子来自切向基向量
+\(\partial_jF=e_j+(\partial_jh)e_d\)
+的 Gram 矩阵 \(G=I+\nabla h(\nabla h)^{\mathsf T}\)：其行列式为 \(1+|\nabla h|^2\)，体积元是行列式的平方根。忽略这个因子会改变曲面测度，也会改变驻相系数。
 
 \ProseParagraphBreak
-若曲面是平面，沿法向相位是常数，便没有这样的衰减。若曲率只有 \(r\) 个非零方向，局部二次模型只有 \(r\) 个振荡变量，通常只能期待 \(|\xi|^{-r/2}\)。柱面是一个直接例子：圆周方向提供曲率，轴向仍可保持相干。仅说“曲面光滑”不足以推出球面型衰减。
+
+取上向单位法向
+\(n=(-\nabla h,1)/J\)。
+第二基本形式在此切向基下的矩阵为 \(B=D^2h/J\)，因为
+\(\partial_{ij}F\cdot n=(\partial_{ij}h)/J\)。
+Gaussian 曲率是形算子 \(G^{-1}B\) 的行列式，故
+\[
+ \mathcal K(y)
+ =\frac{\det D^2h(y)}
+        {\bigl(1+|\nabla h(y)|^2\bigr)^{(d+1)/2}}.
+\]
+法向选择可能改变曲率的符号约定，但是否为零及其绝对值不受影响。下面只用其非零性与绝对值。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[非零曲率曲面密度的 Fourier 衰减]\label{b2:prop:21-curved-surface-decay}
+设 \(d\geq2\) 为整数，\(\Sigma\subset\mathbb R^d\) 是光滑嵌入超曲面，\(a\in C_c^\infty(\Sigma;\mathbb C)\)，且 \(\Sigma\) 在 \(\operatorname{supp}a\) 附近没有边界。假设 \(\Sigma\) 的 Gaussian 曲率在 \(\operatorname{supp}a\) 上处处非零。定义有限复测度 \(\mu=a\,\mathrm d\sigma\)，其中 \(\mathrm d\sigma\) 为诱导曲面测度，并取
+\[
+ \widehat\mu(\xi)
+ =\int_\Sigma e^{-2\pi\mathrm i x\cdot\xi}
+                  \cdot a(x)\,\mathrm d\sigma(x).
+\]
+则存在仅依赖曲面在该紧支撑附近的几何及振幅的常数 \(C\)，使
+\[
+ |\widehat\mu(\xi)|
+ \leq C(1+|\xi|)^{-(d-1)/2},
+ \quad \xi\in\mathbb R^d.
+\]
+\end{proposition}
+\begin{proof}
+由支撑的紧性，可用有限个经过刚性运动得到的图形坐标片覆盖，并取其上的光滑分割。曲率连续且在支撑上不为零，故可将坐标片略微缩小，使相应紧集附近仍有非零曲率。刚性运动中的平移只给 Fourier 变换乘一个模为一的因子，正交变换只改变方向。因此只需估计每个图形片上的积分
+\[
+ \int_U e^{2\pi\mathrm i\rho\phi_\omega(y)}
+                   \cdot b(y)\,\mathrm dy,
+ \quad
+ \phi_\omega(y)=-\omega'\cdot y-\omega_dh(y),
+\]
+其中 \(\rho=|\xi|\)、\(\omega=\xi/|\xi|\in S^{d-1}\)，
+\[
+ b(y)=\eta(F(y))\cdot a(F(y))\cdot J(y)
+\]
+是光滑紧支撑振幅，\(\eta\) 为所选分割函数。记 \(K=\operatorname{supp}b\Subset U\)。
+
+先检查任意方向上的驻点。由
+\[
+ \nabla_y\phi_\omega
+ =-\omega'-\omega_d\nabla h,
+ \quad
+ D_y^2\phi_\omega=-\omega_dD^2h,
+\]
+若 \(\nabla_y\phi_\omega(y)=0\)，则
+\(\omega'=-\omega_d\nabla h(y)\)。
+因为 \(|\omega|=1\)，必有
+\[
+ |\omega_d|=\frac1{J(y)}>0.
+\]
+这正说明 \(\omega\) 平行于曲面法向。非零曲率又使 \(D^2h(y)\) 可逆，所以驻点处 \(D_y^2\phi_\omega\) 可逆。
+
+为了使常数对方向一致，需要同时在位置和方向上局部化。考虑紧集 \(K\times S^{d-1}\)。对其中每一对 \((y_0,\omega_0)\)，分两种情形。若相位梯度不为零，连续性给出一个乘积邻域，在其中
+\(|\nabla_y\phi_\omega|\geq c_0>0\)。
+若它为零，先在方向球面上取局部坐标，再由刚才的 Hesse 矩阵可逆性对方程
+\(\nabla_y\phi_\omega(y)=0\)
+应用含参数的隐函数定理：在足够小的方向邻域内，驻点 \(y_*(\omega)\) 光滑依赖 \(\omega\)，并在一个固定的位置邻域内唯一。进一步缩小邻域，可使其 Hesse 矩阵的最小奇异值有统一正下界，同时保证所有用到的相位导数一致有界。还可在此位置邻域内选一个共同紧集，既包含后面分割振幅的支撑，也包含这些方向下的全部驻点 \(y_*(\omega)\)。
+
+上述乘积邻域覆盖 \(K\times S^{d-1}\)，紧性给出有限子覆盖。可在各片中取位置和方向的光滑截断之积，再除以其总和，构造该紧集附近的有限光滑分割
+\(\sum_\nu\chi_\nu(y,\omega)=1\)。
+有限性及紧支撑保证分割函数所需的 \(y\) 导数一致有界。于是 \(b\chi_\nu\) 仍支撑于固定紧集，而其导数界不随 \(\omega\) 改变。
+
+对第一类片，\cref{b2:prop:21-nonstationary-multi}给出任意固定阶的 \(O(\rho^{-N})\)，常数对方向一致。对第二类片，\cref{b2:prop:21-parametric-stationary}适用于移动驻点 \(y_*(\omega)\)：固定位置邻域、统一可逆的 Hesse 矩阵、相位与振幅的有限阶导数界均已建立。因此这些片的积分一致为 \(O(\rho^{-(d-1)/2})\)。驻点即使落在某个分割振幅的零区，其首项也只会消失，不影响此上界。取 \(N\geq(d-1)/2\)，对有限片相加，得到 \(\rho\geq1\) 时所需结论。
+
+最后，当 \(|\xi|\leq1\)，直接使用
+\[
+ |\widehat\mu(\xi)|
+ \leq\int_\Sigma|a|\,\mathrm d\sigma<\infty.
+\]
+调整常数便得到整个频率空间上的估计。
+\end{proof}
+
+驻相系数还展示了曲面体积元为何必不可少。记 \(n=d-1\)，在图形片的驻点处，
+\[
+ |\det D_y^2\phi_\omega|
+ =|\omega_d|^n\cdot|\det D^2h|
+ =|\mathcal K|\cdot J^2.
+\]
+因此原图形振幅的几何部分满足
+\[
+ \frac{\eta(F(y))\cdot a(F(y))\cdot J(y)}
+      {|\det D_y^2\phi_\omega(y)|^{1/2}}
+ =\frac{\eta(F(y))\cdot a(F(y))}
+      {|\mathcal K(y)|^{1/2}}.
+\]
+Jacobi 因子与 Hesse 行列式中的坐标因子恰好抵消。这与\secref{b2:sec:2102}中驻相首项的坐标不变性一致，也说明曲率下界趋于零时为何不能指望同一常数继续适用。
+
+\ProseParagraphBreak
+
+曲率退化必须按具体模型判断。若曲面是平面，沿法向的相位恒定，非零密度的 Fourier 变换可完全没有衰减。取整数 \(1\leq r<n\)，若局部相位恰为
+\[
+ \phi(u,v)=\frac{|u|^2}{2},
+ \quad
+ (u,v)\in\mathbb R^r\times\mathbb R^{n-r},
+\]
+且振幅是 \(b(u)c(v)\)，其中
+\(b\in C_c^\infty(\mathbb R^r;\mathbb C)\)、
+\(c\in C_c^\infty(\mathbb R^{n-r};\mathbb C)\)，则积分精确分解成
+\[
+ \left(\int_{\mathbb R^{n-r}}c(v)\,\mathrm dv\right)
+ \left(\int_{\mathbb R^r}e^{\pi\mathrm i\lambda|u|^2}
+                    \cdot b(u)\,\mathrm du\right).
+\]
+当 \(b(0)\int c\ne0\)，二次驻相公式给出非零的
+\(\lambda^{-r/2}\) 主项。这个秩模型中，只有 \(r\) 个变量产生二次振荡；其余变量确实完全平直。圆柱曲面沿适当法向的局部模型具有这种性质。
+
+\ProseParagraphBreak
+
+不能把上述结论推广为“驻点 Hesse 矩阵的秩总能决定衰减”。例如对 \(m\geq2\)，相位
+\[
+ \phi(u,v)=\frac{|u|^2}{2}+v^{2m},
+ \quad u\in\mathbb R^r,\quad v\in\mathbb R,
+\]
+在原点的 Hesse 矩阵仍只有秩 \(r\)，但最后一个变量并非平直。对乘积振幅，二次估计和 \(2m\) 阶 van der Corput 引理给出
+\(O(\lambda^{-r/2-1/(2m)})\)。
+同一个点上的二阶秩没有记录这个额外增益。一般退化曲率问题还要研究高阶项、驻点集合形状及频率方向；只有具备明确的法向非退化结构时，才可应用已证明的临界子流形公式。
 
 \subsection{局部化}
 \label{b2:subsec:210304}
 
-局部化需要同时记录所选覆盖和每片的非退化下界。若 \(\chi_j\) 构成振幅支撑附近的有限光滑分割，则
+局部化的目的不是简单地把积分切小，而是让所需下界和导数界在每一片中同时成立。若 \(\chi_j\) 是振幅支撑附近的有限光滑分割，则
 \[
- I_\lambda(a,\phi)=\sum_j I_\lambda(a\chi_j,\phi).
+ I_\lambda(a,\phi)
+ =\sum_j I_\lambda(a\chi_j,\phi).
 \]
-在非驻相片使用梯度下界，在驻相片使用 Hesse 矩阵 下界；余项的阶数可以统一选取，再将有限项相加。
-对于一个逼近退化曲面的参数族，片数或下界可能变化。此时统一估计需要新的尺度分解，不能仅把每个固定参数的驻相公式相加。
+在非驻相片中记录梯度下界，在驻相片中记录 Hesse 矩阵的最小奇异值下界；分割函数导数进入新振幅。有限个固定片可以相加，但参数变化时，还必须检查能否保持同一覆盖和这些下界。曲面命题中的 \(K\times S^{d-1}\) 紧性，正是使方向分割和全部估计常数能够统一的原因。
 
 \ProseParagraphBreak
-以 \(\phi_s(t)=t^3-st\) 为例，\(s>0\) 时有两个非退化驻点，\(s=0\) 时合并为三阶驻点，\(s<0\) 时没有驻点。两个驻点的 Hesse 矩阵 在 \(s\downarrow0\) 时趋于零，分别使用二次公式的常数会发散。令 \(t=\lambda^{-1/3}u\)，可见转变发生在 \(s\lambda^{2/3}\) 为常数量级时。这个例子说明统一渐近式为何需要将参数与空间尺度一起组织。
+
+一个方向逐渐变平的二次模型可以把这种依赖完全算清。取
+\[
+ J_{\lambda,\varepsilon}
+ =\iint_{\mathbb R^2}
+ e^{\pi\mathrm i\lambda(x^2+\varepsilon y^2)}
+       \cdot a(x)b(y)\,\mathrm dx\,\mathrm dy,
+ \quad \lambda\geq1,\quad\varepsilon\geq0,
+\]
+其中 \(a,b\in C_c^\infty(\mathbb R;\mathbb C)\) 固定。令
+\[
+ A(\lambda)=\int_{\mathbb R}e^{\pi\mathrm i\lambda x^2}
+                           \cdot a(x)\,\mathrm dx,
+ \quad
+ B(\tau)=\int_{\mathbb R}e^{\pi\mathrm i\tau y^2}
+                           \cdot b(y)\,\mathrm dy.
+\]
+Fubini 定理给出 \(J_{\lambda,\varepsilon}=A(\lambda)B(\lambda\varepsilon)\)。
+对 \(A\) 用二阶 van der Corput，对 \(B\) 同时用普通积分界和二阶估计，可得统一上界
+\[
+ |J_{\lambda,\varepsilon}|
+ \leq C_{a,b}\lambda^{-1/2}
+ \begin{cases}
+  1,&0\leq\lambda\varepsilon\leq1,\\
+  (\lambda\varepsilon)^{-1/2},&\lambda\varepsilon\geq1.
+ \end{cases}
+\]
+这条估计在 \(\varepsilon=0\) 也有意义。固定 \(\varepsilon>0\) 时，两个二次方向最终都产生衰减，得到
+\(O(\lambda^{-1}\varepsilon^{-1/2})\)；
+若 \(\lambda\varepsilon\) 很小，第二个方向尚未形成有效振荡，只能保留第一方向的 \(\lambda^{-1/2}\)。
+
+\ProseParagraphBreak
+
+若进一步取 \(a(0)\ne0\)、\(\int b\ne0\)，并令 \(\varepsilon=\lambda^{-2}\)，则
+\[
+ \lambda^{1/2}J_{\lambda,\lambda^{-2}}
+ \longrightarrow
+ e^{\pi\mathrm i/4}a(0)\int_{\mathbb R}b(y)\,\mathrm dy\ne0.
+\]
+这里第一因子用二次驻相首项，第二因子用 \(\tau=\lambda^{-1}\to0\) 时的控制收敛。因此即使每个正 \(\varepsilon\) 都给出可逆 Hesse 矩阵，也不存在对这些参数统一的 \(C\lambda^{-1}\) 界。这个例子直接检验了常数的退化，而没有改变驻点数目。后面的振荡积分算子中，混合 Hesse 矩阵的下界也必须按同样原则与有效参数一起追踪。

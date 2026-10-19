@@ -2,49 +2,237 @@
 \section{多线性积分形式}
 \label{b2:sec:2501}
 
-多线性估计保留多个输入之间的相互作用。当几个频率片的法向彼此分离时，乘积可能比单个延拓函数有更好的可积性；若相位可分别吸收到各输入中，则再大的参数也没有统一振荡增益。
+多线性估计保留多个输入之间的相互作用。同样一个相位，在不同的投影族下可能表现完全不同：有些振荡能够分别吸收到输入中，有些则把不同变量耦合起来。讨论衰减之前，需要先辨认积分的定义域、输入范数以及允许输入怎样随参数变化。
 
 \subsection{多线性型}
 \label{b2:subsec:250101}
 
-一个基本模型为
+设 \(d,k,d_1,\ldots,d_k\) 为正整数，\(\pi_j:\mathbb R^d\to\mathbb R^{d_j}\) 为满射线性映射，\(P:\mathbb R^d\to\mathbb R\) 为实相位，\(a\in C_c^\infty(\mathbb R^d;\mathbb C)\)。先对有界可测输入定义
 \[
- \Lambda_\lambda(f_1,\ldots,f_k)
- =\int_{\mathbb R^d}e^{2\pi\mathrm i\lambda P(x)}a(x)
-                 \prod_{j=1}^k f_j(\pi_jx)\,\mathrm dx,
+ \Lambda_\lambda^P(f_1,\ldots,f_k)
+ \coloneqq\int_{\mathbb R^d}e^{2\pi\mathrm i\lambda P(x)}
+             a(x)\prod_{j=1}^k f_j(\pi_jx)\,\mathrm dx.
 \]
-其中 \(\pi_j\) 是固定线性投影，\(a\) 是紧支撑光滑振幅。讨论前应先用 Hölder 或具体投影几何确认积分有意义，再问是否有 \(\lambda^{-\epsilon}\) 的增益。
-输出是多线性标量型，与\chapref{b2:ch:21}一个输入一个输出的算子不同。改变投影维数，会改变可允许的输入指数。
+紧支撑振幅保证此时绝对收敛。满射性也有一个测度上的用途：输入在零测集上改变代表，只会在其逆像上改变被积函数，而该逆像由线性换元与 Fubini 可知仍是零测集。因而这个积分首先是输入等价类上的多线性标量型。
 
 \ProseParagraphBreak
-若投影相同，所有输入可先相乘，问题退化为单输入积分；若投影互补，输入的不同方向会限制相位抵消。多线性估计因而不仅依赖相位 Hesse 矩阵，还依赖它与整个投影族的关系。
+
+要把定义扩展到 \(L^{p_j}\) 输入，不能只因振幅紧支撑就认为乘积可积。例如在二维取两个相同投影 \(\pi_1(x,y)=\pi_2(x,y)=x\)，两个局部可积函数的乘积仍可能不可积。实际需要先建立
+\[
+ \int |a(x)|\prod_j|f_j(\pi_jx)|\,\mathrm dx
+ \leq C\prod_j\|f_j\|_{p_j},
+\]
+或者先在稠密测试类上证明振荡型的有界估计，再按该估计定义延拓。后一个延拓未必还能解释为每个输入的绝对收敛积分。若某个输入指数为无穷，也不能使用有限指数的范数稠密论证。
+
+\ProseParagraphBreak
+
+投影几何在最简单的例子中已经可见。对坐标投影 \(\pi_1(x,y)=x\)、\(\pi_2(x,y)=y\)，若振幅支撑于 \(I\times J\)，则
+\[
+ |\Lambda_\lambda^P(f,g)|
+ \leq \|a\|_\infty
+       \left(\int_I|f|\right)\left(\int_J|g|\right).
+\]
+有限区间上的 Hölder 把它转成任意 \(1\leq p,q\leq\infty\) 的局部界。若两个投影都等于 \(x\)，则需要直接控制 \(f(x)g(x)\)，指数关系随之改变。相位完全相同，并不能消除这种输入几何的差别。
 
 \subsection{相位相互作用}
 \label{b2:subsec:250102}
 
-若相位可以写成 \(P=\sum_jP_j\circ\pi_j\)，则取
-\(f_j(y)=e^{-2\pi\mathrm i\lambda P_j(y)}g_j(y)\) 就完全消去振荡，且各输入范数不变。若某些固定 \(g_j\) 使非振荡积分非零，就不可能有对所有输入一致的正幂次参数衰减。这称为相对于投影族的相位退化。
+相位中的一元项可以藏到某一个输入中。这里的“一元”是相对于投影而言，并不限于实数变量上的函数。
 
-\ProseParagraphBreak
-例如 \(\pi_1(x,y)=x\)、\(\pi_2(x,y)=y\)，相位 \(x^2+y^2\) 在这个意义下退化，虽然作为二维标量相位的 Hesse 矩阵 可逆。相位 \(xy\) 则不能写成纯 \(x\) 项加纯 \(y\) 项；其混合导数非零，并与\chapref{b2:ch:21}的 Fourier 型算子相联系。这个例子直接区分标量非退化与多线性非退化。
+\Needspace{6\baselineskip}
+\begin{definition}[相对于投影族的退化相位]\label{b2:def:25-degenerate-phase}
+设 \(d,k,d_1,\ldots,d_k\) 为正整数，\(\pi_j:\mathbb R^d\to\mathbb R^{d_j}\) 为给定满射线性映射，\(\Omega\subset\mathbb R^d\) 为开集，\(P\) 为其上的实可测函数。若存在实可测函数 \(P_j\)，定义于 \(\pi_j(\Omega)\)，使
+\[
+ P(x)=\sum_{j=1}^k P_j(\pi_jx)
+ \quad\text{对几乎所有 }x\in\Omega,
+\]
+则称 \(P\) 在 \(\Omega\) 上是相对于该投影族的\term[tuihua-xiangwei]{退化相位}[degenerate phase]。若限定研究多项式相位及多项式分解，应另行把 \(P,P_j\) 都限定为多项式。
+\end{definition}
+
+\Needspace{6\baselineskip}
+\begin{proposition}[可吸收相位与统一衰减]\label{b2:prop:25-phase-absorption}
+设 \(d,k,d_1,\ldots,d_k\) 为正整数，\(\Omega\subset\mathbb R^d\) 为开集，\(a\in C_c^\infty(\Omega;\mathbb C)\)，\(\pi_j:\mathbb R^d\to\mathbb R^{d_j}\) 为满射线性映射。设 \(P,Q:\Omega\to\mathbb R\)、\(P_j:\pi_j(\Omega)\to\mathbb R\) 为可测函数，且在 \(\Omega\) 上几乎处处有
+\[
+ P=Q+\sum_jP_j\circ\pi_j.
+\]
+对实数 \(\lambda\) 和有界紧支撑复输入，定义
+\[
+ \Lambda_\lambda^P(f_1,\ldots,f_k)
+ =\int_\Omega e^{2\pi\mathrm i\lambda P(x)}
+                  a(x)\prod_jf_j(\pi_jx)\,\mathrm dx,
+\]
+\(\Lambda_\lambda^Q\) 同样定义。令
+\(M_{j,\lambda}f_j=e^{2\pi\mathrm i\lambda P_j}\cdot f_j\)，并在 \(\pi_j(\Omega)\) 外任意延拓相位。则
+\[
+ \Lambda_\lambda^P(f_1,\ldots,f_k)
+ =\Lambda_\lambda^Q(M_{1,\lambda}f_1,\ldots,M_{k,\lambda}f_k).
+\]
+各 \(M_{j,\lambda}\) 在每个 \(L^{p_j}\)、\(1\leq p_j\leq\infty\) 上都是可逆等距映射。因此两型在该测试类上具有相同的最佳范数常数。特别地，若 \(Q=0\)，且存在固定有界紧支撑输入 \(g_j\) 使
+\[
+ \int a(x)\prod_jg_j(\pi_jx)\,\mathrm dx\ne0,
+\]
+便不可能有 \(C|\lambda|^{-\epsilon}\prod_j\|f_j\|_{p_j}\) 型的统一上界，其中 \(C\) 与输入、\(|\lambda|\geq1\) 无关，\(\epsilon>0\)。
+\end{proposition}
+\begin{proof}
+把指数中相位之和拆成乘积，就得到型的恒等式。乘子模为一，其逆为相反相位，所以输入范数及可取输入集合不变，最佳常数相同。
+
+在最后的情形取 \(f_{j,\lambda}=e^{-2\pi\mathrm i\lambda P_j}\cdot g_j\)。所得输出等于题设非零积分，输入范数则与 \(\lambda\) 无关。若有正幂次衰减，令 \(|\lambda|\to\infty\) 就会使这个非零数的模趋于零，产生矛盾。这里使用的是随参数变化的一族输入；统一算子界本来就必须同时控制它们。
+\end{proof}
+
+在坐标投影 \((x,y)\mapsto x,y\) 下，\(x^2+y^2\) 是退化相位，尽管它作为二维标量相位的 Hesse 矩阵可逆。反之，\(xy\) 不能写成纯 \(x\) 项与纯 \(y\) 项之和。若 \(P\in C^2(I\times J)\)，其中 \(I,J\) 为开区间，则这种分解恰好对应 \(\partial_x\partial_yP=0\)。充分性可由矩形上的积分恒等式看出：
+\[
+ \begin{aligned}
+ P(x,y)-P(x,y_0)-P(x_0,y)+P(x_0,y_0)
+ =\int_{x_0}^x\int_{y_0}^y
+       \partial_x\partial_yP(u,v)\,\mathrm dv\,\mathrm du.
+ \end{aligned}
+\]
+必要性不要求先知道分解项可微：分解使矩形差分几乎处处为零，再由 \(P\) 的连续性推广到所有矩形；对差分取极限即可。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[混合二次相位的平方估计]\label{b2:prop:25-mixed-phase}
+设 \(\lambda\in\mathbb R\setminus\{0\}\)，对复 Schwartz 函数定义
+\[
+ \mathcal L_\lambda(f,g)
+ =\int_{\mathbb R^2}e^{2\pi\mathrm i\lambda xy}
+                       f(x)g(y)\,\mathrm dx\,\mathrm dy.
+\]
+它唯一连续延拓为 \(L^2(\mathbb R)\times L^2(\mathbb R)\) 上的双线性型，且最佳常数为
+\[
+ |\mathcal L_\lambda(f,g)|
+ \leq|\lambda|^{-1/2}\|f\|_2\cdot\|g\|_2.
+\]
+\end{proposition}
+\begin{proof}
+先在 Schwartz 类上使用 Fubini，得到
+\[
+ \mathcal L_\lambda(f,g)=\int f(x)\widehat g(-\lambda x)\,\mathrm dx.
+\]
+Cauchy--Schwarz、换元与 Plancherel 给出
+\(\|\widehat g(-\lambda\,\cdot)\|_2=|\lambda|^{-1/2}\|g\|_2\)，从而得到估计。以 Schwartz 函数分别逼近两个 \(L^2\) 输入，双线性差分及此界保证型的极限存在且与逼近无关。
+
+任取非零 Schwartz 函数 \(g\)，再取
+\(f(x)=\overline{\widehat g(-\lambda x)}\)，便在 Cauchy--Schwarz 中取等。因此显示的常数不能减小。一般平方输入上的值由一维配对定义；不要求原来的二维积分绝对收敛。
+\end{proof}
+
+这项计算给出了真正的参数增益。若另乘分离振幅 \(a_1(x)a_2(y)\)，则先把它们吸收到 \(f,g\) 中，上界再乘 \(\|a_1\|_\infty\cdot\|a_2\|_\infty\)。给相位添加任意纯 \(x\) 项、纯 \(y\) 项不会改变相位型的最佳常数。一般多投影问题需要相应的非退化条件；单凭“不能分解”并没有在此建立适用于所有维数、相位和指数的统一定理。
 
 \subsection{缩放}
 \label{b2:subsec:250103}
 
-对无振幅的全空间齐次模型，令 \(f_j(y)\) 缩放为 \(f_j(ry)\)。左侧积分产生 \(r^{-d}\)，输入范数的乘积产生
-\(r^{-\sum_j d_j/p_j}\)。尺度不变界因此要求
-\(\sum_jd_j/p_j=d\)，其中 \(d_j\) 是第 \(j\) 个输入空间维数。
-有固定紧支撑振幅时，尺度条件未必作为必要等式出现，但局部放大仍能检验极端集中。
+缩放先约束无振荡的绝对积分，也帮助辨认局部化后的尺度因子。对于固定紧支撑振幅，全空间的缩放等式通常会被截断打破，不能不加区别地搬用。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[投影积分的维数必要条件]\label{b2:prop:25-dimension-necessary}
+设 \(d,d_j,k\) 为正整数，\(\pi_j:\mathbb R^d\to\mathbb R^{d_j}\) 为满射线性映射，\(1\leq p_j\leq\infty\)，约定 \(1/\infty=0\)。若存在有限常数 \(C\)，使对全部非负有界紧支撑输入都有
+\[
+ \int_{\mathbb R^d}\prod_{j=1}^k f_j(\pi_jx)\,\mathrm dx
+ \leq C\prod_j\|f_j\|_{p_j},
+\]
+则
+\[
+ d=\sum_j\frac{d_j}{p_j},
+ \quad
+ \dim V\leq\sum_j\frac{\dim\pi_j(V)}{p_j}
+ \quad\text{对每个线性子空间 }V\subset\mathbb R^d.
+\]
+\end{proposition}
+\begin{proof}
+取各输入为相应空间中单位球的示性函数。所有投影的核的公共交若非零，左侧在该方向不变且在原点附近为一，积分即无穷，与假设矛盾。公共核为零时，映射 \(x\mapsto(\pi_1x,\ldots,\pi_kx)\) 单射，有限维范数比较保证共同逆像有界。因此这组输入的积分有限且严格为正。
+
+将它们换成 \(f_j(r\,\cdot)\)。左侧乘 \(r^{-d}\)，右侧乘 \(r^{-\sum_jd_j/p_j}\)。同一个常数须对所有 \(r>0\) 有效；分别令 \(r\downarrow0\) 和 \(r\to\infty\)，得到维数等式。
+
+再固定子空间 \(V\)，记 \(m=\dim V\)、\(V_j=\pi_j(V)\)、\(m_j=\dim V_j\)。对 \(R\geq1\)，考虑
+\[
+ \mathcal T_R=\{v+w:v\in V,\ |v|\leq R,\ 
+                      w\in V^\perp,\ |w|\leq1\}.
+\]
+其体积为 \(c_VR^m\)。映射 \(\pi_j\) 的线性有界性说明，\(\pi_j(\mathcal T_R)\) 包含于某个以 \(V_j\) 为长方向的盒状区域：沿 \(V_j\) 长度至多 \(C_jR\)，沿 \(V_j^\perp\) 厚度至多 \(C_j\)。取该区域示性函数为 \(f_j\)，其 \(L^{p_j}\) 范数至多为 \(C'_jR^{m_j/p_j}\)，无穷指数时为一。原积分在 \(\mathcal T_R\) 上被积函数为一，故
+\[
+ c_VR^m\leq C'\,R^{\sum_jm_j/p_j}.
+\]
+令 \(R\to\infty\)，得到子空间不等式。零维分量按体积因子一解释，不影响论证。
+\end{proof}
+
+只检查总维数是不够的。例如在 \(\mathbb R^2\) 上取两个相同投影到 \(x\) 轴，并取 \(p_1=p_2=1\)，虽然总维数等式成立，竖直直线却违反子空间条件；沿该直线没有任何输入提供衰减。本命题只证明必要性，没有把这些条件的充分性作为未经证明的工具。
 
 \ProseParagraphBreak
-抛物面还具有非各向同性缩放。切向频率缩小 \(\delta\)，法向频率变化 \(\delta^2\)，空间变量分别放大 \(\delta^{-1}\) 与 \(\delta^{-2}\)。多线性管束与解耦中的尺度都来自这一关系；在频率帽与空间球之间来回换算时，应始终保留平方关系。
+
+曲面延拓还具有非各向同性缩放。抛物面的切向频率变化为 \(\delta\)，法向变化为 \(\delta^2\)，相应空间尺度必须分别记录。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[抛物面的重标度]\label{b2:prop:25-parabolic-rescaling}
+设 \(n\geq1\)，对紧支撑的 \(g\in L^1(\mathbb R^n;\mathbb C)\) 定义参数测度下的延拓
+\[
+ E_{\mathrm{par}}g(x',t)
+ =\int_{\mathbb R^n}e^{2\pi\mathrm i(x'\cdot\xi+t|\xi|^2)}
+                       g(\xi)\,\mathrm d\xi.
+\]
+取 \(\xi_0\in\mathbb R^n\)、\(\delta>0\)，令
+\[
+ h(u)=g(\xi_0+\delta u),
+ \quad
+ T_{\delta,\xi_0}(x',t)
+ =\bigl(\delta(x'+2t\xi_0),\,\delta^2t\bigr).
+\]
+则
+\[
+ E_{\mathrm{par}}g(x',t)
+ =\delta^n e^{2\pi\mathrm i(x'\cdot\xi_0+t|\xi_0|^2)}
+       E_{\mathrm{par}}h\bigl(T_{\delta,\xi_0}(x',t)\bigr).
+\]
+对任意可测区域 \(\Omega\subset\mathbb R^{n+1}\) 和 \(0<q\leq\infty\)，有
+\[
+ \|E_{\mathrm{par}}g\|_{L^q(\Omega)}
+ =\delta^{\,n-(n+2)/q}
+       \|E_{\mathrm{par}}h\|_{L^q(T_{\delta,\xi_0}\Omega)}.
+\]
+无穷指数按 \(1/q=0\) 解释；有限指数等式也允许两侧同为无穷。若 \(g\in L^p\)、\(1\leq p\leq\infty\)，则另有
+\(\|g\|_p=\delta^{n/p}\|h\|_p\)。
+\end{proposition}
+\begin{proof}
+在延拓积分中令 \(\xi=\xi_0+\delta u\)，把相位展开为常数项与
+\(\delta(x'+2t\xi_0)\cdot u+\delta^2t|u|^2\)，便得第一个等式。线性映射 \(T_{\delta,\xi_0}\) 是剪切与两个不同膨胀的复合，其行列式为 \(\delta^{n+2}\)。对绝对值的 \(q\) 次方换元并取 \(q\) 次根，得到有限指数公式；无穷指数由可逆线性映射保持零测集得到。输入范数等式是 \(n\) 维的普通换元。
+\end{proof}
+
+例如一张 \(\delta\) 帽经过重标度变成固定大小的参数片，但半径 \(R\) 的空间球变成一个剪切后的椭球：切向尺度约为 \(\delta R\)，时间尺度为 \(\delta^2R\)。不能把两者都写成 \(\delta^2R\)。若要在重标度后继续使用球上的定理，尚需覆盖这些区域，并计入求和因子。\cref{b2:prop:23-parabolic-packet}进一步处理了光滑单帽的衰减；本章后面用 Fourier 级数把一般输入分成这样的局部波包。
 
 \subsection{近似正交性}
 \label{b2:subsec:250104}
 
-若函数 \(u_j\) 的 Fourier 支撑有限重叠，则 Plancherel 给出
-\(\|\sum_j u_j\|_2^2\le L\sum_j\|u_j\|_2^2\)。
-对乘积 \(u_jv_k\)，Fourier 支撑位于两支撑的 Minkowski 和；即使原支撑互不相交，这些和仍可能重叠。因此多线性近似正交应核对输出支撑的重叠数，不能只核对各输入支撑。
+平方理论中的正交性发生在输出频率上。下面把乘积情形直接写入陈述，避免只检查原输入而遗漏相互作用。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[输出频率和的有限重叠]\label{b2:prop:25-output-overlap}
+设有限族 \(u_\alpha,v_\alpha\) 为 \(\mathbb R^d\) 上的 Schwartz 函数，且
+\(\operatorname{supp}\widehat u_\alpha\subset A_\alpha\)、
+\(\operatorname{supp}\widehat v_\alpha\subset B_\alpha\)，其中 \(A_\alpha,B_\alpha\) 为紧集。若几乎处处有
+\[
+ \sum_\alpha\mathbf1_{A_\alpha+B_\alpha}(\xi)\leq L,
+\]
+则
+\[
+ \left\|\sum_\alpha u_\alpha v_\alpha\right\|_2^2
+ \leq L\sum_\alpha\|u_\alpha v_\alpha\|_2^2.
+\]
+更一般地，任意有限族 \(L^2\) 函数的 Fourier 支撑若至多 \(L\) 重叠，也有同一个平方和估计。
+\end{proposition}
+\begin{proof}
+Fourier 乘积公式给出
+\(\widehat{u_\alpha v_\alpha}=\widehat u_\alpha*\widehat v_\alpha\)，其支撑包含于 \(A_\alpha+B_\alpha\)。在几乎每个频率点，至多有 \(L\) 个非零项，有限维 Cauchy--Schwarz 因而给出
+\[
+ \left|\sum_\alpha\widehat{u_\alpha v_\alpha}(\xi)\right|^2
+ \leq L\sum_\alpha|\widehat{u_\alpha v_\alpha}(\xi)|^2.
+\]
+积分并使用 Plancherel，即得结论。这个最后的论证只使用平方可积性和支撑重叠，因此也证明了第二个断言。
+\end{proof}
+
+输入频率片互不相交，不保证它们的和集合互不相交。例如四片分别靠近 \(0,1,2,3\)，两组和 \(0+3\) 与 \(1+2\) 仍靠近同一个频率。乘积输出因而可能同相叠加。对许多项求和时，重叠数 \(L\) 是必须计算的量。
 
 \ProseParagraphBreak
-在局部空间球上，乘光滑截断又会使 Fourier 支撑稍微膨胀。于是通常使用快速衰减权与有限扩大后的重叠数，而不是严格的全空间支撑等式。随机符号与平方函数提供另一种组合工具，但也要保持相关的算子常数一致。
+
+空间局部化也会改变这个数。若选 \(\psi\in\mathcal S(\mathbb R^d)\) 且 \(\operatorname{supp}\widehat\psi\subset B(0,c)\)，令 \(\psi_R(x)=\psi(x/R)\)，则 \(\psi_Ru_\alpha v_\alpha\) 的 Fourier 支撑包含于
+\[
+ A_\alpha+B_\alpha+B(0,c/R).
+\]
+因此前面的证明给出局部化平方估计，但所需的是这些扩大集合的重叠数。可以选 \(\psi\) 使其在单位球上模有正下界，从而控制空间球上的范数。若改用空间紧支撑的光滑截断，它的 Fourier 变换通常没有紧支撑，只具有快速衰减尾部；此时应按尾部求和，不能把“稍微扩大支撑”当作精确等式。

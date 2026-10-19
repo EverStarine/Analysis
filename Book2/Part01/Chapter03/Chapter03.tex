@@ -10,11 +10,15 @@
 \begin{learninggoals}
 \begin{itemize}
 \item\label{b2:item:03-goal-normalization}按统一的 \(2\pi\) 约定计算平移、调制、线性变换及微分公式，说明每个公式的可积条件。
-\item\label{b2:item:03-goal-decay}理解固定函数的频率衰减与整个函数族的统一衰减有何区别。
+\item\label{b2:item:03-goal-decay}说明空间矩控制频率正则性、空间导数控制高频衰减，区分固定函数的衰减与整个函数族的统一衰减。
 \item\label{b2:item:03-goal-convolution}证明卷积的存在、等价类良定义及指数估计，核对换序所需的绝对可积性。
 \item\label{b2:item:03-goal-inversion}用 Gauss 正则化建立反演和唯一性，说明函数代表的选择以及连续点、Lebesgue 点条件在反演中的作用。
 \end{itemize}
 \end{learninggoals}
+
+周期越长，相邻振动频率之间的距离越小。把一个紧支集函数限制在长度为 \(L\) 的区间内，再作周期延拓，它的第 \(k\) 个系数是原函数在频率 \(k/L\) 处的积分除以 \(L\)。当 \(L\) 增大时，频率网格逐渐变密，离散叠加提示了连续频率积分。另一方面，若一个过程把不同位置的输入按同一种规则平均，所得输出是卷积；将卷积变成频率上的乘法，就能把这个过程逐频率分析。本章要证明这些对应关系确实保留原函数，而非只作形式替换。
+
+\ProseParagraphBreak
 
 本章在 \(\mathbb R^d\) 上使用 Lebesgue 测度。第一卷的连续紧支集稠密性、有限指数的平移连续性及 Lebesgue 点理论，在使用时给出相应编号；多元换元和积分号下求导沿用\chapref{b2:ch:01}。卷积的基本估计在本章按所需的一般指数完整推导。
 
@@ -46,7 +50,7 @@ Sheldon Axler 的《Measure, Integration \& Real Analysis》\cite[Section 11C]{A
 
 % 自拟：积分三角不等式的取等条件与调制相联系。
 \begin{exercise}\label{b2:ex:03-phase-equality}
-设 \(0\ne f\in L^1\)。证明 \(|\widehat f(\xi_0)|=\|f\|_1\) 当且仅当存在 \(|c|=1\)，使 \(f(x)=c e^{2\pi\mathrm{i}x\cdot\xi_0}|f(x)|\) 几乎处处。若 \(f\geq0\)，证明对每个 \(\xi_0\ne0\) 都有严格不等式。
+设 \(d\) 为正整数，\(0\ne f\in L^1(\mathbb R^d;\mathbb C)\)，\(\xi_0\in\mathbb R^d\)。证明 \(|\widehat f(\xi_0)|=\|f\|_1\) 当且仅当存在 \(c\in\mathbb C\)、\(|c|=1\)，使 \(f(x)=c e^{2\pi\mathrm{i}x\cdot\xi_0}|f(x)|\) 几乎处处。若 \(f\geq0\)，证明对每个 \(\xi_0\ne0\) 都有严格不等式。
 \end{exercise}
 \begin{solution}
 令 \(h(x)=f(x)\cdot e^{-2\pi\mathrm{i}x\cdot\xi_0}\)。若积分模等于绝对积分，选 \(c\) 使 \(\overline c\int h=\int|h|\)。非负函数 \(|h|-\operatorname{Re}(\overline ch)\) 的积分为零，故它几乎处处为零。这迫使 \(h=c|h|\)，反向由代入得到。若 \(f\geq0\) 且 \(\xi_0\ne0\)，取等要求 \(e^{-2\pi\mathrm{i}x\cdot\xi_0}\) 在 \(\{f>0\}\) 上几乎处处固定。其任一水平集包含于可数个平行超平面，Lebesgue 测度为零；而非零非负可积函数的正集具有正测度，矛盾。
@@ -65,7 +69,7 @@ Sheldon Axler 的《Measure, Integration \& Real Analysis》\cite[Section 11C]{A
 
 % 自拟：逼近恒等的绝对质量界不可由总质量和尾部替代。
 \begin{optionalexercise}\label{b2:ex:03-signed-kernel}
-在一维设
+在一维，令 \(G_\varepsilon(x)=\varepsilon^{-1}e^{-\pi x^2/\varepsilon^2}\)，平移约定为 \(\tau_hu(x)=u(x-h)\)，并设
 \[
  K_\varepsilon=G_\varepsilon+\varepsilon^{-1}(\tau_\varepsilon G_\varepsilon-G_\varepsilon),
  \quad0<\varepsilon<1.
@@ -89,8 +93,10 @@ Sheldon Axler 的《Measure, Integration \& Real Analysis》\cite[Section 11C]{A
 \end{solution}
 
 % 自拟：利用消失的一阶矩改进逼近误差阶。
+% 为题头及首个公式预留空间，避免超链接锚点滞留前页。
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b2:ex:03-gaussian-error}
-设 \(f\in C^2(\mathbb R^d)\) 有界，且 Hesse 矩阵的算子范数至多为 \(M\)。证明
+设 \(d\) 为正整数，\(M\geq0\)，\(f\in C^2(\mathbb R^d;\mathbb C)\) 有界，且每一点的 Hesse 矩阵的算子范数至多为 \(M\)。对 \(\varepsilon>0\)，记 \(G_\varepsilon(x)=\varepsilon^{-d}e^{-\pi|x|^2/\varepsilon^2}\)。证明
 \[
  \|G_\varepsilon*f-f\|_\infty\leq\dfrac{dM}{4\pi}\varepsilon^2.
 \]
@@ -102,15 +108,15 @@ Taylor 公式给出 \(|f(x-y)-f(x)+\nabla f(x)\cdot y|\leq M|y|^2/2\)。Gauss �
 
 % 自拟：反演与唯一性建立后计算Poisson半群。
 \begin{exercise}\label{b2:ex:03-poisson-semigroup}
-在一维证明 \(P_t*P_s=P_{t+s}\)，并证明 \(u(t,x)=P_t*f(x)\) 对 \(f\in L^1(\mathbb R)\) 满足 \(u_{tt}+u_{xx}=0\) 于 \(t>0\)，同时 \(u(t,\cdot)\to f\) 于 \(L^1\)。
+在一维令 \(P_t(x)=t/[\pi(t^2+x^2)]\)，\(t>0\)。证明对任意 \(t,s>0\) 都有 \(P_t*P_s=P_{t+s}\)，并证明 \(u(t,x)=P_t*f(x)\) 对 \(f\in L^1(\mathbb R;\mathbb C)\) 满足 \(u_{tt}+u_{xx}=0\) 于 \(t>0\)，同时 \(u(t,\cdot)\to f\) 于 \(L^1\)。
 \end{exercise}
 \begin{solution}
-三个核都可积。它们的变换分别为 \(e^{-2\pi t|\xi|}\)、\(e^{-2\pi s|\xi|}\)、\(e^{-2\pi(t+s)|\xi|}\)，由卷积定理与唯一性得到半群式。对每个 \(t\geq\varepsilon>0\) 的局部范围，\(P_t\) 的二阶 \(t,x\) 导数都由一个有限常数控制，故可在与 \(f\) 的卷积中求导。直接求导有 \((\partial_t^2+\partial_x^2)P_t(x)=0\)，从而得到方程。初值收敛由逼近恒等定理给出，不要求 \(f\) 有逐点边界值。
+三个核都可积。它们的变换分别为 \(e^{-2\pi t|\xi|}\)、\(e^{-2\pi s|\xi|}\)、\(e^{-2\pi(t+s)|\xi|}\)，由卷积定理与唯一性先得到半群式几乎处处成立。又因 \(P_t\in L^1\)、\(P_s\in L^\infty\)，\cref{b2:prop:03-convolution-continuity}说明左侧的逐点卷积连续；右侧 \(P_{t+s}\) 也连续，所以等式处处成立。对每个 \(t\geq\varepsilon>0\) 的局部范围，\(P_t\) 的二阶 \(t,x\) 导数都由一个有限常数控制，故可在与 \(f\) 的卷积中求导。直接求导有 \((\partial_t^2+\partial_x^2)P_t(x)=0\)，从而得到方程。初值收敛由逼近恒等定理给出，不要求 \(f\) 有逐点边界值。
 \end{solution}
 
 % 自拟：卷积幂等元与频率空间的连通性。
 \begin{exercise}\label{b2:ex:03-idempotent}
-证明若 \(f\in L^1(\mathbb R^d)\) 满足 \(f*f=f\)，则 \(f=0\) 几乎处处。与圆周上的常函数比较，说明底空间改变后哪一步不同。
+设 \(d\) 为正整数。证明若 \(f\in L^1(\mathbb R^d;\mathbb C)\) 满足 \(f*f=f\)，则 \(f=0\) 几乎处处。与圆周上的常函数比较，说明底空间改变后哪一步不同。
 \end{exercise}
 \begin{solution}
 变换给出 \(\widehat f(\xi)^2=\widehat f(\xi)\)，所以每个值为 \(0\) 或 \(1\)。连续函数从连通空间 \(\mathbb R^d\) 映入这两个点，只能为常数；又因无穷远趋零，它恒为零。最后用唯一性。圆周上的频率空间为离散的 \(\mathbb Z\)，系数可以在某些频率上取 \(1\)、其余取 \(0\)；常函数 \(1\) 就满足周期卷积幂等，而不违反任何连通性结论。
@@ -118,7 +124,7 @@ Taylor 公式给出 \(|f(x-y)-f(x)+\nabla f(x)\cdot y|\leq M|y|^2/2\)。Gauss �
 
 % 自拟：Gauss磨光的单射性与逆操作的不稳定性。
 \begin{optionalexercise}\label{b2:ex:03-unstable-deconvolution}
-在一维令 \(f_n(x)=e^{-\pi x^2}e^{2\pi\mathrm{i}nx}\)。计算 \(G*f_n\)，证明 \(\|f_n\|_1=1\) 而 \(\|G*f_n\|_1\to0\)。据此说明，即使 Gauss 卷积是单射，也不存在常数 \(C\) 使 \(\|f\|_1\leq C\|G*f\|_1\) 对所有 \(f\in L^1\) 成立。
+在一维令 \(G(x)=e^{-\pi x^2}\)，\(f_n(x)=e^{-\pi x^2}e^{2\pi\mathrm{i}nx}\)，\(n=1,2,\ldots\)。计算 \(G*f_n\)，证明 \(\|f_n\|_1=1\) 而 \(\|G*f_n\|_1\to0\)。据此说明，即使 Gauss 卷积是单射，也不存在常数 \(C\) 使 \(\|f\|_1\leq C\|G*f\|_1\) 对所有 \(f\in L^1(\mathbb R;\mathbb C)\) 成立。
 \end{optionalexercise}
 \begin{solution}
 在卷积积分中写 \(y=x/2+z\)，平方项满足 \((x-y)^2+y^2=x^2/2+2z^2\)。用 Gauss 的已知变换，得到
@@ -130,7 +136,7 @@ Taylor 公式给出 \(|f(x-y)-f(x)+\nabla f(x)\cdot y|\leq M|y|^2/2\)。Gauss �
 
 % 自拟：卷积支集估计与几何重叠，避免把包含误认为等号。
 \begin{exercise}\label{b2:ex:03-support-convolution}
-设 \(f,g\in L^1(\mathbb R^d)\) 分别几乎处处支撑在紧集 \(A,B\) 内。证明 \(f*g\) 几乎处处支撑在 \(A+B=\{a+b:a\in A,b\in B\}\) 内。若 \(f,g\) 是非负连续紧支集函数，证明其支集恰为两支集的 Minkowski 和。
+设 \(d\) 为正整数，\(f,g\in L^1(\mathbb R^d;\mathbb C)\) 分别几乎处处支撑在紧集 \(A,B\subset\mathbb R^d\) 内。证明 \(f*g\) 几乎处处支撑在 \(A+B=\{a+b:a\in A,b\in B\}\) 内。若 \(f,g\) 是非负连续紧支集函数，证明其支集恰为两支集的 Minkowski 和。
 \end{exercise}
 \begin{solution}
 若 \(x\notin A+B\)，则不可能同时有 \(y\in B\) 与 \(x-y\in A\)，所以选取在相应紧集外为零的代表后，卷积积分为零。一般代表给出相同的等价类，故得到第一项。

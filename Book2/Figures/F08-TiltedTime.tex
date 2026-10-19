@@ -1,0 +1,31 @@
+% 本书原创：统一使用横轴 x_1/c、纵轴 t，比较三种倾斜时间面的余法向符号。
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=.9cm,y=.9cm,>=stealth,every node/.style={font=\small},line width=.65pt]
+\foreach \offset/\slope/\ktxt/\psign in {
+  0/.5/{\kappa=\dfrac{1}{2c}}/{p(\mathrm{d}T)>0},
+  4.4/1/{\kappa=\dfrac1c}/{p(\mathrm{d}T)=0},
+  8.8/1.5/{\kappa=\dfrac{3}{2c}}/{p(\mathrm{d}T)<0}}{
+ \begin{scope}[shift={(\offset,0)}]
+  \begin{scope}
+   \clip (-1.25,-1.25) rectangle (1.25,1.25);
+   \draw[gray,dashed] (-1.25,-1.25)--(1.25,1.25);
+   \draw[gray,dashed] (-1.25,1.25)--(1.25,-1.25);
+   \draw[AnalysisBlue,very thick,domain=-1.25:1.25,samples=2,variable=\q]
+     plot ({\q},{-\slope*\q});
+  \end{scope}
+  \draw[->,gray] (-1.4,0)--(1.45,0) node[below right] {\(x_1/c\)};
+  \draw[->,gray] (0,-1.4)--(0,1.45) node[above] {\(t\)};
+  \draw[->,orange!70!black,thick] (0,0)--({.6*\slope},.6)
+     node[above right,fill=white,inner sep=1pt] {\(\mathrm{d}T\)};
+  \node at (0,2.5) {\(\ktxt\)};
+  \node at (0,-1.8) {\(\psign\)};
+ \end{scope}
+}
+\node[align=center,text width=12cm] at (4.4,-2.65)
+ {蓝线：等 \(T\) 数据面 \(T=0\)；灰虚线：\(t=\pm x_1/c\)；\par
+ 箭头：余法向 \(\mathrm{d}T\) 的欧氏表示。};
+\end{tikzpicture}
+\caption[倾斜时间面与特征线]{倾斜时间面与特征线。波动算子为 \(\partial_t^2-c^2\Delta_x\)，\(c>0\)，\(T=t+\kappa x_1\)。三图采用相同的横纵尺度；\(\kappa<0\) 时左右反射。这里是 \(1+1\) 维截面，右图的非特征法向在 \(1+1\) 维仍严格双曲；至少两个空间变量时的失败还须使用正文中的横向频率。}
+\label{b2:fig:08-tilted-time}
+\end{figure}

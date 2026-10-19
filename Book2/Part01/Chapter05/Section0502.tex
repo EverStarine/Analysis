@@ -16,7 +16,7 @@ Fourier 变换连续地映 \(\mathcal S(\mathbb R^d)\) 到自身。对任意多�
 \]
 \end{theorem}
 \begin{proof}
-\chapref{b2:ch:03}的矩与导数公式适用于每一阶，所以变换光滑且公式成立。进一步，\(\xi^\beta\partial_\xi^\alpha\widehat\varphi\) 是常数乘 \(\mathcal F(\partial^\beta(x^\alpha\varphi))\)。其上确界由原函数的 \(L^1\) 范数控制；用 Leibniz 展开，再以足够高的 Schwartz 半范数控制积分，即得
+\chapref{b2:ch:03}的矩与导数公式适用于每一阶，所以变换光滑且公式成立。进一步，\(\xi^\beta\partial_\xi^\alpha\widehat\varphi\) 是常数乘 \(\mathcal F(\partial^\beta(x^\alpha\varphi))\)。其上确界由原函数的 \(L^1\) 范数控制。用 Leibniz 展开时，每项均为常数乘 \(x^{\alpha-\gamma}\partial^{\beta-\gamma}\varphi\)，其中 \(\gamma\leq\alpha,\beta\)。取 \(M\geq|\alpha|+|\beta|+d+1\)，则各项的绝对值都由 \(C p_M(\varphi)(1+|x|)^{-d-1}\) 控制；右侧可积。因而得到
 \[
  \sup_\xi|\xi^\beta\partial_\xi^\alpha\widehat\varphi(\xi)|
  \leq C_{\alpha,\beta,d}\cdot p_M(\varphi)
@@ -59,8 +59,9 @@ Gauss 函数 \(e^{-\pi|x|^2}\) 的每个导数都等于多项式乘该函数，�
 
 John K. Hunter 与 Bruno Nachtergaele 的《Applied Analysis》\cite[pp. 303--304]{Hunter2001Applied}也用正定二次型说明这组变换。该书将 \((2\pi)^{-d/2}\) 放在积分前并使用不同的指数，比较公式时必须先转换归一化；本书始终沿用\chapref{b2:ch:03}的约定。
 
-\subsection{Hermite 函数}
-\label{b2:subsec:050204}
+\OptionalSubsection{Hermite 函数}{b2:subsec:050204}
+
+本小节是一条可以单独选读的支线：它把 Fourier 变换的四种特征值变成具体的正交展开，不是后面定义温和分布或证明其 Fourier 运算规则的前提。初次沿 PDE 主线阅读时可以暂时跳过；学习\secref{b2:sec:B201}的谐振子时再回到这里。本书把 Hermite 系的正交性、完备性及 Fourier 特征关系的完整证明集中在本小节，附录只作尺度换算并进一步讨论算子定义域。
 
 Gauss 函数不只是一个特例，它可以生成 Fourier 变换的一组完整特征函数。先在一维引入作用于 \(\mathcal S(\mathbb R)\) 的两个算子
 \[
@@ -77,7 +78,7 @@ Gauss 函数不只是一个特例，它可以生成 Fourier 变换的一组完�
 \symidx{\(h_n\)：归一化 Hermite 函数}
 
 \begin{theorem}\label{b2:thm:05-hermite}
-函数系 \((h_n)_{n\geq0}\) 是 \(L^2(\mathbb R)\) 的标准正交基，且
+在 \(\mathbb R\) 上令 \(a=(4\pi)^{-1/2}(\partial_x+2\pi x)\)、\(a^*=(4\pi)^{-1/2}(-\partial_x+2\pi x)\)，\(h_0(x)=2^{1/4}e^{-\pi x^2}\)，\(h_n=(a^*)^nh_0/\sqrt{n!}\)。函数系 \((h_n)_{n\geq0}\) 是 \(L^2(\mathbb R)\) 的标准正交基，且
 \[
  ah_n=\sqrt n\,h_{n-1}\ (n\geq1),\quad
  a^*h_n=\sqrt{n+1}\,h_{n+1},\quad
@@ -106,3 +107,34 @@ Gauss 函数不只是一个特例，它可以生成 Fourier 变换的一组完�
 \end{proof}
 
 多维时取乘积 \(h_\alpha(x)=\prod_{j=1}^dh_{\alpha_j}(x_j)\)，Fubini 给出标准正交性及特征值 \((-\mathrm{i})^{|\alpha|}\)。其完备性可沿上述矩证明逐坐标进行：若与所有乘积正交，乘以多维 Gauss 后的全部混合矩为零，展开 \(e^{z\cdot x}\) 再用多维变换唯一性。Hermite 展开把连续频率变换与离散特征函数联系起来，也为后续谐振子提供了具体模型。
+
+\ProseParagraphBreak
+
+上升算子怎样产生多项式，可以直接写出来。若 \(h_n=P_nh_0\)，则
+\[
+ P_{n+1}(x)=\frac{4\pi xP_n(x)-P_n'(x)}{\sqrt{4\pi(n+1)}}.
+\]
+乘以 \(x\) 的项提高次数，求导项降低次数，所以 \(P_n\) 的次数确为 \(n\)，首项系数为 \((4\pi)^{n/2}/\sqrt{n!}\)。因此 \(P_0,\ldots,P_N\) 与 \(1,x,\ldots,x^N\) 张成相同的空间，完备性证明中从 Hermite 正交转到全部矩为零的步骤就有了明确的三角变换。
+
+\ProseParagraphBreak
+
+平移 Gauss 函数给出一个可求出全部系数的展开。固定实数 \(b\)，置 \(g_b(x)=h_0(x-b)\)。由于
+\[
+ ag_b=\sqrt\pi\,b\,g_b,
+ \quad\langle g_b,h_0\rangle
+ =\sqrt2\int e^{-\pi((x-b)^2+x^2)}\,\mathrm{d}x
+ =e^{-\pi b^2/2},
+\]
+在 Schwartz 函数间反复分部积分，有
+\[
+ \langle g_b,h_n\rangle
+ =\frac{\langle a^ng_b,h_0\rangle}{\sqrt{n!}}
+ =e^{-\pi b^2/2}\frac{(\sqrt\pi b)^n}{\sqrt{n!}}.
+\]
+标准正交基的完备性因而给出
+\[
+ h_0(x-b)=e^{-\pi b^2/2}
+ \sum_{n=0}^\infty\frac{(\sqrt\pi b)^n}{\sqrt{n!}}h_n(x)
+ \quad\text{于 }L^2.
+\]
+系数平方和为 \(e^{-\pi b^2}\sum_n(\pi b^2)^n/n!=1\)，与平移保持范数一致。取 Fourier 变换后，每项系数乘以 \((-\mathrm{i})^n\)，而左侧变为 \(e^{-2\pi\mathrm{i}b\xi}h_0(\xi)\)。这是同一个调制 Gauss 函数的 Hermite 展开；Fourier 酉性允许对平方范数收敛的级数逐项作用，并不需要先证明逐点级数收敛。

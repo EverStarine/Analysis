@@ -7,19 +7,19 @@
 \subsection{Duhamel 原理}
 \label{b2:subsec:090201}
 
-先把零位移、给定速度的解算子记为
+取 \(c>0\)、\(h\in C(\mathbb R;\mathbb C)\)、\(t\in\mathbb R\)。先把零位移、给定速度的解算子记为
 \[
  S_c(t)h(x)\coloneqq\dfrac1{2c}\int_{x-ct}^{x+ct}h(y)\,\mathrm{d}y.
 \]
-它满足 \(S_c(0)h=0\)、\(\partial_tS_c(0)h=h\)。若时刻 \(s\) 的力为 \(F(s,\cdot)\)，它在时长 \(t-s\) 内产生的响应是 \(S_c(t-s)F(s,\cdot)\)。对这些响应积分的做法称为\term[duhamel-yuanli]{Duhamel 原理}[Duhamel's principle]。
+负时间按有向积分解释。它满足 \(S_c(0)h=0\)、\(\partial_tS_c(0)h=h\)。若时刻 \(s\) 的力为 \(F(s,\cdot)\)，它在时长 \(t-s\) 内产生的响应是 \(S_c(t-s)F(s,\cdot)\)。对这些响应积分的做法称为\term[duhamel-yuanli]{Duhamel 原理}[Duhamel's principle]。
 \symidx{\(S_c(t)\)：一维波方程的初速度传播算子}
 
 \begin{theorem}[Duhamel，一维波方程]\label{b2:thm:09-duhamel}
-设 \(T>0\)，\(f\in C^2(\mathbb R)\)、\(g\in C^1(\mathbb R)\)、\(F\in C^1([0,T]\times\mathbb R)\)。问题
+设 \(c>0\)、\(T>0\)，\(f\in C^2(\mathbb R;\mathbb C)\)、\(g\in C^1(\mathbb R;\mathbb C)\)、\(F\in C^1([0,T]\times\mathbb R;\mathbb C)\)。问题
 \[
  u_{tt}-c^2u_{xx}=F,\quad u(0)=f,\quad u_t(0)=g
 \]
-有唯一经典解；它等于\eqref{b2:eq:09-dalembert}的齐次解加上
+在 \([0,T]\times\mathbb R\) 上有唯一 \(C^2\) 经典解；它等于\eqref{b2:eq:09-dalembert}的齐次解加上
 \begin{equation}\label{b2:eq:09-duhamel}
  w(t,x)=\int_0^tS_c(t-s)F(s,\cdot)(x)\,\mathrm{d}s
  =\dfrac1{2c}\int_0^t\int_{x-c(t-s)}^{x+c(t-s)}F(s,y)\,\mathrm{d}y\,\mathrm{d}s.
@@ -36,18 +36,114 @@
 
 外力项的积分区域是观察点向过去展开的三角形。对固定 \(s\)，水平截面宽度为 \(2c(t-s)\)：较早施加的力能够从较远的位置传来，刚施加的力只能从观察点附近传来。这一几何结构比公式中的常数更有普遍性，后面的高维问题将把区间改成球。
 
-\subsection{外力项}
-\label{b2:subsec:090202}
-
-若 \(F(s,y)=a(s)\) 与空间无关，且初值为零，公式化为
+\Needspace{6\baselineskip}
+\begin{proposition}[初速度传播的平方范数界]\label{b2:prop:09-velocity-propagator}
+设 \(c>0\)，\(t\in\mathbb R\)，\(h\in L^2(\mathbb R;\mathbb C)\)。记 \(H^1(\mathbb R;\mathbb C)=\{v\in L^2(\mathbb R;\mathbb C):v'\in L^2(\mathbb R;\mathbb C)\}\)，其中导数为弱导数。以有向积分定义
 \[
- u(t,x)=\int_0^t(t-s)a(s)\,\mathrm{d}s.
+ S_c(t)h(x)=\frac1{2c}\int_{x-ct}^{x+ct}h(y)\,\mathrm dy.
 \]
-因此恒力产生 \(u=at^2/2\)，恰与没有空间变化时的常微分方程 \(u_{tt}=a\) 一致。常数 \(1/(2c)\) 被区间长度中的 \(2c\) 抵消，这也是检查归一化的一种简便方法。
+则 \(S_c(t)h\in H^1(\mathbb R)\)，并有
+\[
+ \|S_c(t)h\|_2\leq|t|\|h\|_2,
+ \quad c\|\partial_xS_c(t)h\|_2\leq\|h\|_2.
+\]
+映射 \(t\mapsto S_c(t)h\) 属于 \(C(\mathbb R;H^1)\cap C^1(\mathbb R;L^2)\)，且
+\[
+ \partial_tS_c(t)h=\frac{h(\cdot+ct)+h(\cdot-ct)}2,
+ \quad\partial_xS_c(t)h=\frac{h(\cdot+ct)-h(\cdot-ct)}{2c}.
+\]
+\end{proposition}
+\begin{proof}
+在有限区间上，\(L^2\) 函数属于 \(L^1\)，故区间积分不依赖几乎处处代表。对 \(t>0\)，它是与 \((2c)^{-1}\mathbf1_{[-ct,ct]}\) 的卷积，此核的 \(L^1\) 范数为 \(t\)，Young 不等式给出零阶界；负时间由有向积分给出相同的 \(|t|\) 界。
+
+先对光滑函数作端点求导，得到所述两式。以 \(C_c^\infty\) 函数在 \(L^2\) 中逼近 \(h\)，平移的等距性使两式右侧在 \(L^2\) 中收敛。空间分部积分取极限，识别第二式为弱导数，给出其范数界。对于时间导数，也可直接在 \(L^2\) 中写成
+\[
+ S_c(t)h=\frac12\int_0^t
+ \bigl(h(\cdot+cs)+h(\cdot-cs)\bigr)\,\mathrm{d}s.
+\]
+平移强连续性使被积函数在 \(L^2\) 中连续，向量值微积分基本定理给出第一式。空间导数公式的平移连续性又给出 \(H^1\) 连续性，包含 \(t=0\) 时空间导数为零的结论。
+\end{proof}
+
+对 \(c>0\)、\(f\in L^2(\mathbb R;\mathbb C)\)，定义初位移算子
+\[
+ C_c(t)f=\frac{f(\cdot+ct)+f(\cdot-ct)}2,\quad t\in\mathbb R.
+\]
+平移的等距性给出 \(\|C_c(t)f\|_2\leq\|f\|_2\)，平移强连续性给出 \(t\mapsto C_c(t)f\) 的 \(L^2\) 连续性。若 \(f\in H^1(\mathbb R;\mathbb C)\)，平移与弱导数交换，故还有
+\[
+ \partial_xC_c(t)f=C_c(t)f',\quad
+ \|C_c(t)f\|_{H^1}\leq\|f\|_{H^1},\quad
+ \partial_tC_c(t)f=\frac c2\bigl(f'(\cdot+ct)-f'(\cdot-ct)\bigr).
+\]
+这里 \(H^1\) 范数平方为 \(\|f\|_2^2+\|f'\|_2^2\)。第一式可将平移后的函数与光滑紧支集测试函数配对，再换元和分部积分验证；它与平移连续性一起给出 \(H^1\) 连续性。最后一式是在 \(L^2\) 中的强导数：\cref{b2:prop:04-difference-quotients}说明，具有平方可积弱导数的函数，其差商在 \(L^2\) 中趋于该弱导数，且范数由 \(\|f'\|_2\) 控制。将差商分别用于两个平移即得所示时间导数；不能对一般等价类直接作逐点求导。
 
 \ProseParagraphBreak
 
-外力的大小受到控制，并不意味着位移在所有时间上一致有界。取 \(k>0\)、\(\omega=ck\)，令
+对粗外力，只要求时间上的可积性。记 \(F\in L^1((0,T);L^2(\mathbb R;\mathbb C))\) 是指 \(F\) 为强可测的 \(L^2\) 值函数，且 \(\int_0^T\|F(s)\|_2\,\mathrm{d}s<\infty\)。这里强可测意为几乎处处是有限值简单函数列的范数极限；向量值积分由简单函数在积分范数中的逼近定义，积分三角不等式使它不依赖逼近的选择。传播算子恰好把这一外力空间送入后面能量方法所需的解空间。
+
+\Needspace{6\baselineskip}
+\begin{corollary}[表示式的正则性与数据连续依赖]\label{b2:cor:09-propagator-regularity}
+设 \(c>0\)、\(T>0\)，\(f\in H^1(\mathbb R;\mathbb C)\)、\(g\in L^2(\mathbb R;\mathbb C)\)，且 \(F\in L^1((0,T);L^2(\mathbb R;\mathbb C))\)。定义
+\[
+ u(t)=C_c(t)f+S_c(t)g+w(t),\quad
+ w(t)=\int_0^tS_c(t-s)F(s)\,\mathrm{d}s,
+\]
+其中 \(C_c(t)f=(f(\cdot+ct)+f(\cdot-ct))/2\)，\(S_c(t)h=(2c)^{-1}\int_{\cdot-ct}^{\cdot+ct}h(y)\,\mathrm{d}y\)，外力积分在 \(H^1\) 中取值。则
+\[
+ u\in C([0,T];H^1(\mathbb R;\mathbb C))\cap C^1([0,T];L^2(\mathbb R;\mathbb C)),
+\]
+且其强时间导数为
+\[
+ u_t(t)=\frac c2\bigl(f'(\cdot+ct)-f'(\cdot-ct)\bigr)
+       +C_c(t)g+\int_0^tC_c(t-s)F(s)\,\mathrm{d}s.
+\]
+特别，\(u(0)=f\)、\(u_t(0)=g\)。对 \(0\leq t\leq T\)，有
+\[
+ \begin{aligned}
+ \|u(t)\|_2&\leq\|f\|_2+t\|g\|_2
+               +\int_0^t(t-s)\|F(s)\|_2\,\mathrm{d}s,\\
+ \|u_x(t)\|_2&\leq\|f'\|_2+c^{-1}\|g\|_2
+               +c^{-1}\int_0^t\|F(s)\|_2\,\mathrm{d}s,\\
+ \|u_t(t)\|_2&\leq c\|f'\|_2+\|g\|_2
+               +\int_0^t\|F(s)\|_2\,\mathrm{d}s.
+ \end{aligned}
+\]
+因此表示式给出从 \(H^1\times L^2\times L^1((0,T);L^2)\) 到所列解空间的连续线性映射；解空间采用 \(\sup_{0\leq t\leq T}(\|u(t)\|_{H^1}+\|u_t(t)\|_2)\) 范数。
+\end{corollary}
+\begin{proof}
+初位移与初速度两项的结论已由上述平移计算和\cref{b2:prop:09-velocity-propagator}得到。只需证明外力积分的正则性。对 \(0\leq s\leq t\leq T\)，
+\[
+ \|S_c(t-s)F(s)\|_{H^1}
+ \leq\bigl(T+c^{-1}\bigr)\|F(s)\|_2.
+\]
+用 \(L^2\) 值简单函数逼近 \(F\)，再利用 \(S_c\) 的强连续性，得到被积函数的 \(H^1\) 强可测性；所示可积控制保证积分存在。这里 \(H^1\) 完备：若函数和弱导数分别在 \(L^2\) 中收敛，对测试函数分部积分取极限，便识别出极限的弱导数。因而简单函数积分的 Cauchy 极限仍在 \(H^1\) 中。
+
+比较两个相邻时刻，在公共积分区间上使用 \(S_c\) 的 \(H^1\) 强连续性和上述可积控制，在新增或删去的短区间上使用 \(\int\|F(s)\|_2\) 的绝对连续性，得到 \(w\in C([0,T];H^1)\)。时间导数为
+\[
+ w_t(t)=\frac12\int_0^t
+ \bigl(F(s,\cdot+c(t-s))+F(s,\cdot-c(t-s))\bigr)\,\mathrm{d}s
+ \quad\text{于 }L^2.
+\]
+具体地，设时间增量为 \(\delta\)。在公共积分区间上，\(S_c(t+\delta-s)-S_c(t-s)\) 除以 \(\delta\) 后作用于 \(F(s)\)，由传播算子的强导数公式趋于 \(C_c(t-s)F(s)\)。差商的 \(L^2\) 范数不超过 \(\|F(s)\|_2\)：把它写为 \(C_c(r)F(s)\) 在长度 \(|\delta|\) 的时间区间上的平均即可。因此可在积分中取极限。在新增或删去的短区间上，\(S_c\) 的时间参数满足 \(|\tau|\leq|\delta|\)，由 \(\|S_c(\tau)F(s)\|_2\leq|\tau|\|F(s)\|_2\)，该部分除以 \(|\delta|\) 后的范数至多为短区间上的 \(\int\|F(s)\|_2\)，趋于零。于是正、负差商给出同一个导数；端点使用单侧差商。
+
+所得导数中，\(C_c(t-s)F(s)\) 对 \(t\) 在 \(L^2\) 中强连续，范数仍由 \(\|F(s)\|_2\) 控制。再次分拆公共区间与短区间，得到 \(w_t\in C([0,T];L^2)\)，故 \(w\in C^1([0,T];L^2)\)。初值由 \(S_c(0)=0\)、\(C_c(0)=I\) 及积分在零时刻消失得到。
+
+最后对三项分别使用传播算子界与积分三角不等式，得到所列三个估计。把同一估计用于两组数据之差，并令 \(t\leq T\)，便得到解及其空间、时间导数在整个时间区间上的一致范数连续依赖。整个论证只用传播算子，没有使用能量恒等式。
+\end{proof}
+
+这一步不要求 \(F\) 有时间导数；粗数据对应的二阶时间导数将在\secref{b2:sec:0903}的分布方程中解释。上述正则性先为该节的截断能量计算提供适用条件，随后再由能量方法证明解的唯一性与更精确的稳定性估计。
+
+\subsection{外力项}
+\label{b2:subsec:090202}
+
+设 \(c>0\)、\(T>0\)、\(a\in C^1([0,T];\mathbb C)\)。若 \(F(s,y)=a(s)\) 与空间无关，且初值为零，公式化为
+\[
+ u(t,x)=\int_0^t(t-s)a(s)\,\mathrm{d}s.
+\]
+因此常数外力 \(a(s)\equiv a_0\) 产生 \(u=a_0t^2/2\)，恰与没有空间变化时的常微分方程 \(u_{tt}=a_0\) 一致。常数 \(1/(2c)\) 被区间长度中的 \(2c\) 抵消，这也是检查归一化的一种简便方法。本例属于不要求有限总能量的经典解情形：非零空间常数不属于 \(L^2(\mathbb R)\)，故只要 \(a\not\equiv0\)，连续外力 \(F\) 就不属于 \(L^1((0,T);L^2(\mathbb R))\)；相应位移在取非零常数值的时刻也不属于 \(H^1(\mathbb R)\)。
+
+\ProseParagraphBreak
+
+外力的大小受到控制，并不意味着位移在所有时间上一致有界。取 \(c>0\)、\(k>0\)、\(\omega=ck\)，令
 \[
  F(t,x)=\cos(\omega t)\cos(kx),\quad f=g=0.
 \]
@@ -59,7 +155,7 @@
 
 \ProseParagraphBreak
 
-若仅需有限时间的逐点控制，\eqref{b2:eq:09-duhamel}直接给出
+若 \(c>0\)、\(T>0\)，且 \(F\in C^1([0,T]\times\mathbb R;\mathbb C)\) 在该时间带上一致有界，零初值响应 \(w\) 由\eqref{b2:eq:09-duhamel}直接满足
 \[
  \|w(t)\|_\infty\leq\int_0^t(t-s)\|F(s)\|_\infty\,\mathrm{d}s.
 \]
@@ -68,7 +164,7 @@
 \subsection{有限传播速度}
 \label{b2:subsec:090203}
 
-给定 \(t_0>0\)、\(x_0\in\mathbb R\)，记过去的传播区域为
+给定传播速度 \(c>0\)、\(t_0>0\)、\(x_0\in\mathbb R\)，记过去的传播区域为
 \[
  K_{t_0,x_0}\coloneqq
  \{\,(s,y):0\leq s\leq t_0,\ |y-x_0|\leq c(t_0-s)\,\}.
@@ -76,17 +172,49 @@
 若称某个区域为观察点的\term[yilai-quyu]{依赖区域}[domain of dependence]，意思是该处的解只由区域内的数据确定。相反，从一个初始位置出发可能受到影响的未来区域称为\term[yingxiang-quyu]{影响区域}[domain of influence]。这两个说法分别固定终点和起点，不能把箭头方向混同。
 
 \begin{proposition}[有限传播速度]\label{b2:prop:09-finite-speed}
-设两个经典解具有相同波速。若它们的初始位移、初始速度在 \([x_0-ct_0,x_0+ct_0]\) 上分别相等，外力在 \(K_{t_0,x_0}\) 上相等，则两解在整个 \(K_{t_0,x_0}\) 上相等。特别，若初值及每个时刻的外力都支撑在固定闭集 \(A\) 内，则
+设 \(c>0\)、\(T>0\)、\(0\leq t_0\leq T\)、\(x_0\in\mathbb R\)，记 \(K_{t_0,x_0}=\{(t,x):0\leq t\leq t_0,\ |x-x_0|\leq c(t_0-t)\}\)。设开集 \(U\subset\mathbb R^2\) 包含该闭三角形，\(u,\widetilde u\in C^2(U;\mathbb C)\) 分别满足
+\[
+ u_{tt}-c^2u_{xx}=F,\quad
+ \widetilde u_{tt}-c^2\widetilde u_{xx}=\widetilde F,
+\]
+其中 \(F,\widetilde F\in C(U;\mathbb C)\)。若两解的初始位移、初始速度在 \(I=[x_0-ct_0,x_0+ct_0]\) 上分别相等，且 \(F=\widetilde F\) 于 \(K_{t_0,x_0}\)，则两解在整个 \(K_{t_0,x_0}\) 上相等。
+
+\ProseParagraphBreak
+
+特别，设 \(u\in C^2([0,T]\times\mathbb R;\mathbb C)\) 满足全空间方程 \(u_{tt}-c^2u_{xx}=F\)，\(F\) 连续。若其初始位移、初始速度及每个时刻的外力都支撑在固定闭集 \(A\subset\mathbb R\) 内，则
 \[
  \operatorname{supp}u(t,\cdot)\subseteq
  \{\,x:\operatorname{dist}(x,A)\leq ct\,\},\quad 0\leq t\leq T.
 \]
 \end{proposition}
 \begin{proof}
-对两解作差。区域中任一点 \((s,y)\) 的初始依赖区间包含在 \([x_0-ct_0,x_0+ct_0]\) 内，而它的过去三角形包含在 \(K_{t_0,x_0}\) 内：这两点都由三角不等式
-\(|z-x_0|\leq|z-y|+|y-x_0|\) 得出。因此 d'Alembert 公式中的两端点值与区间积分为零，Duhamel 积分也为零。
+当 \(t_0=0\) 时，结论就是给定的初始位移相等。以下设 \(t_0>0\)，记 \(v=u-\widetilde u\)、\(G=F-\widetilde F\)，并在 \(U\) 上令
+\[
+ p=v_t+cv_x,\quad q=v_t-cv_x.
+\]
+由混合偏导可交换，
+\[
+ p_t-cp_x=G,\quad q_t+cq_x=G.
+\]
+取任意 \((t,x)\in K_{t_0,x_0}\)。对 \(0\leq s\leq t\)，有
+\[
+ |x\pm c(t-s)-x_0|
+ \leq|x-x_0|+c(t-s)\leq c(t_0-s).
+\]
+所以从该点向初值线追踪的两条特征线段始终留在原三角形内，无须把局部解延拓到全实线。沿 \(s\mapsto(s,x+c(t-s))\) 和 \(s\mapsto(s,x-c(t-s))\) 分别积分，得到
+\[
+ \begin{aligned}
+ p(t,x)&=p(0,x+ct)+\int_0^tG(s,x+c(t-s))\,\mathrm{d}s,\\
+ q(t,x)&=q(0,x-ct)+\int_0^tG(s,x-c(t-s))\,\mathrm{d}s.
+ \end{aligned}
+\]
+底边上 \(v(0,\cdot)=0\)，故其空间导数在 \(I\) 内部为零，并由连续性在两端点也为零；又有 \(v_t(0,\cdot)=0\)，于是 \(p(0,\cdot)=q(0,\cdot)=0\) 于 \(I\)。特征线上的 \(G\) 也为零，因此 \(p=q=0\) 于整个三角形，进而 \(v_t=v_x=0\)。对所取点，竖直线段 \(\{(s,x):0\leq s\leq t\}\) 也留在三角形内，故
+\[
+ v(t,x)=v(0,x)+\int_0^tv_t(s,x)\,\mathrm{d}s=0.
+\]
+这就直接证明了局部结论，并未调用全空间表示定理或后面的能量方法。
 
-若 \(\operatorname{dist}(x,A)>ct\)，则过去三角形的任何截面都不与 \(A\) 相交，故解在该点为零。距离函数连续，使这个零值结论在点的邻域也成立；于是得到所陈述的支集包含关系。
+对于支集结论，将全空间解与零解比较。若 \(\operatorname{dist}(x,A)>ct\)，则该点过去三角形的每个截面都不与 \(A\) 相交，故底边初值和三角形内外力均为零，刚证的局部结论给出 \(u(t,x)=0\)。当 \(A\ne\varnothing\) 时，距离函数连续，使这一结论在 \(x\) 的空间邻域也成立；若 \(A=\varnothing\)，数据全为零，同一局部结论直接给出零解，并约定到空集的距离为 \(+\infty\)。于是均得到所陈述的支集包含关系。
 \end{proof}
 
 \cref{b2:fig:09-cone}画出了同一个区域的两种用途：计算 \((t_0,x_0)\) 的位移时读取过去的数据；证明唯一性时则比较一整个收缩区间上的能量。第二种方式不依赖显式公式，因而能够推广到其他维数。

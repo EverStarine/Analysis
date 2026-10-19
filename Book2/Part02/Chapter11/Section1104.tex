@@ -1,12 +1,12 @@
 % !TeX root = ../../Book2.tex
-\OptionalSection{分散性观点}{b2:sec:1104}
+\OptionalSection{色散衰减与频率局部化}{b2:sec:1104}
 
 能量守恒不排斥某些逐点振幅随时间减小：相同的平方能量可以分布在越来越大的区域上。为了看清波动传播中的振荡抵消，本节只证明三维、固定频带上的一个衰减估计。频带和空间正则性是结论的一部分；不能删掉频率限制而仍保持同一个 \(L^1\) 数据范数。
 
-\subsection{\texorpdfstring{\(L^1\to L^\infty\)}{L¹→L∞} 衰减}
+\subsection{三维频带上的 \texorpdfstring{\(L^1\to L^\infty\)}{L¹→L∞} 衰减}
 \label{b2:subsec:110401}
 
-在 \(\mathbb R^3\) 上定义一支波传播算子
+取 \(c>0\)、\(t\in\mathbb R\)、\(h\in L^2(\mathbb R^3;\mathbb C)\)，定义一支波传播算子
 \[
  U_c(t)h\coloneqq\mathcal F_2^{-1}
  \left(e^{2\pi\mathrm{i}ct|\xi|}\widehat h(\xi)\right).
@@ -17,8 +17,9 @@
 \]
 把频率局部化到大小为 \(N\) 的环带。这里称为\term[pinlv-jubuhua]{频率局部化}[frequency localization]，其空间作用是卷积，并不是把函数截断到某个空间区域。
 
+\Needspace{6\baselineskip}
 \begin{theorem}[三维频带衰减]\label{b2:thm:11-localized-decay}
-存在仅依赖 \(c\)、\(\chi\) 的常数 \(C\)，使任意 \(N>0\)、\(t\in\mathbb R\)、\(h\in L^1(\mathbb R^3)\) 满足
+设 \(c>0\)、\(\chi\in C_c^\infty((1/2,2))\)，\(U_c(t)P_N\) 是符号 \(e^{2\pi\mathrm ict|\xi|}\chi(|\xi|/N)\) 的 Fourier 乘子。存在仅依赖 \(c\)、\(\chi\) 的常数 \(C\)，使任意 \(N>0\)、\(t\in\mathbb R\)、\(h\in L^1(\mathbb R^3;\mathbb C)\) 满足
 \begin{equation}\label{b2:eq:11-localized-decay}
  \|U_c(t)P_Nh\|_\infty
  \leq C N^3(1+N|t|)^{-1}\|h\|_1.
@@ -51,16 +52,35 @@
 一般 \(N\) 时换元 \(\xi=N\eta\)，有 \(K_N(t,x)=N^3K(Nt,Nx)\)。核的上确界遂满足\eqref{b2:eq:11-localized-decay}中的系数。最后对 \(K_N*h\) 使用绝对积分界，得到算子估计。
 \end{proof}
 
-当 \(N|t|\geq1\) 时，右端不超过 \(C|t|^{-1}N^2\|h\|_1\)。两个频率幂说明，全频率估计必须支付相应的空间正则性代价。例如对适当频带分解，若 \(h=\sum_jh_j\)、\(h_j\) 的频率支撑在大小为 \(2^j\) 的环带，且
+对于所有 \(N>0\)、\(t\ne0\)，都有 \(N^3(1+N|t|)^{-1}\leq |t|^{-1}N^2\)。两个频率幂说明，全频率估计必须支付相应的空间正则性代价。具体地，设 \((h_j)_{j\in\mathbb Z}\subset L^1(\mathbb R^3;\mathbb C)\)，其 Fourier 变换满足
+\[
+ \operatorname{supp}\widehat h_j\subseteq
+ \{\xi:2^{j-1}\leq|\xi|\leq2^{j+1}\},
+\]
+并且
 \[
  \sum_j2^{2j}\|h_j\|_1<\infty,
 \]
-则用一个在每个环带上等于一的稍宽光滑截断，逐项应用核估计，得到
+每个 \(\widehat h_j\) 有界且紧支撑，因而也属于 \(L^2\)；由 Fourier 变换的 \(L^1\) 与 \(L^2\) 版本相容，\(h_j\) 也属于 \(L^2\)，所以此前定义的 \(U_c(t)h_j\) 有意义。取 \(\widetilde\chi\in C_c^\infty((1/4,4))\)，使其在 \([1/2,2]\) 上恒等于一。前面核估计的证明只用截断光滑且紧支撑在正半轴内，对这一稍宽环带同样适用；将截断取为 \(\widetilde\chi(|\xi|/2^j)\)，它在 \(\widehat h_j\) 的支集上为一。逐项应用核估计，得到
 \[
  \left\|\sum_jU_c(t)h_j\right\|_\infty
  \leq\dfrac C{|t|}\sum_j2^{2j}\|h_j\|_1,\quad t\ne0.
 \]
-右侧使传播后的级数绝对一致收敛；若初始分解同时在分布意义下恢复 \(h\)，这个和就是完整演化。这里只给出一个明确的充分条件，不把加权频带和擅自替换为没有导数的 \(L^1\) 范数。
+因此对每个固定的 \(t\ne0\)，传播后的级数在 \(L^\infty\) 中绝对收敛。此时首先得到的是一个由这些频带数据确定的有界函数，并未仅凭频带和就在任意温和分布上定义完整半波算子。
+
+\ProseParagraphBreak
+
+若另有 \(h\in L^2(\mathbb R^3;\mathbb C)\)，且对称部分和 \(H_M=\sum_{|j|\leq M}h_j\) 在 \(L^2\) 中趋于 \(h\)，则上述级数的和确实等于此前的 \(U_c(t)h\)。证明要同时识别两种范数极限。记 \(V_M=\sum_{|j|\leq M}U_c(t)h_j\)，\(v=\lim_M V_M\) 为 \(L^\infty\) 极限。由 \(U_c(t)\) 的线性与 \(L^2\) 等距性，
+\[
+ V_M=U_c(t)H_M\longrightarrow U_c(t)h\quad\text{于 }L^2.
+\]
+对任意半径 \(R>0\)，两种收敛给出
+\[
+ \|v-U_c(t)h\|_{L^2(B_R)}
+ \leq |B_R|^{1/2}\|v-V_M\|_\infty
+       +\|V_M-U_c(t)h\|_2\longrightarrow0.
+\]
+故在每个球上两个极限几乎处处相同；对正整数半径的球合并零测例外，便有 \(v=U_c(t)h\) 几乎处处成立于全空间。这里初始部分和的 \(L^2\) 收敛同时控制了高频与低频的截断极限。仅有初始频带和在分布意义下收敛还不足以作这一步；当 \(t\ne0\) 时，符号 \(e^{2\pi\mathrm{i}ct|\xi|}\) 在原点不光滑，不能无条件与任意温和分布相乘。这里只给出上述明确的充分条件，不把加权频带和替换为没有导数的 \(L^1\) 范数。
 
 \subsection{色散}
 \label{b2:subsec:110402}
@@ -83,7 +103,7 @@
 \subsection{Strichartz 估计的动机}
 \label{b2:subsec:110403}
 
-非线性波方程中的外力依赖解本身，仅有每个时刻的能量界往往不够控制 Duhamel 积分。需要同时记录时间和空间的可积性，例如
+非线性波方程中的外力依赖解本身，仅有每个时刻的能量界往往不够控制 Duhamel 积分。对区间 \(I\subset\mathbb R\)、可测 \(u:I\times\mathbb R^n\to\mathbb C\) 及 \(1\le q,r\le\infty\)，需要同时记录时间和空间的可积性，例如
 \[
  \|u\|_{L^q_tL^r_x(I\times\mathbb R^n)}
  =\left(\int_I\left(\int_{\mathbb R^n}|u(t,x)|^r\,\mathrm{d}x\right)^{q/r}
@@ -93,5 +113,5 @@
 
 \ProseParagraphBreak
 
-本节只证明了单个频带上的核估计。时间积分的端点、频带求和和数据的正则性都需要额外论证。陶哲轩的《Nonlinear Dispersive Equations: Local and Global Analysis》\cite{Tao2006Nonlinear}将此类时空估计用于非线性色散方程的局部与整体分析；本卷\appref{b2:app:E}将进一步讨论相应的时空估计。前面各节的球面表示、有限传播与能量解不依赖本选读节。
+本节只证明了单个频带上的核估计。时间积分的端点、频带求和和数据的正则性都需要额外论证。陶哲轩的《Nonlinear Dispersive Equations: Local and Global Analysis》\cite[Section 2.3]{Tao2006Nonlinear}将此类时空估计用于非线性色散方程的局部与整体分析；本卷\appref{b2:app:E}将进一步讨论相应的时空估计。前面各节的球面表示、有限传播与能量解不依赖本选读节。
 

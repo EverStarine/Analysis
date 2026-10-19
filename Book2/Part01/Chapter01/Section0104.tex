@@ -30,13 +30,13 @@
 
 方程必须先化简再判断阶数，不能把彼此抵消的高阶项计入。最高阶系数在某些点为零，则可能造成局部退化。例如 \(xu_{xx}+u_y=0\) 在 \(x\neq0\) 时含有二阶项，而在 \(x=0\) 处这一项消失。这种退化会影响后面的理论，不能仅凭“二阶”二字判断。
 
-\subsection{线性、半线性、拟线性}
+\subsection{偏微分方程的线性与非线性类型}
 \label{b2:subsec:010402}
 
 分类时应先看最高阶导数怎样出现，再看系数依赖哪些量。以下讨论已经写成明确表达式的标量方程；乘以处处非零的已知函数不改变其解，但不能通过除以可能为零的表达式随意改变方程。
 
 \begin{definition}\label{b2:def:01-pde-linearity}
-对一个 \(k\) 阶方程，约定如下。
+设 \(\Omega\subset\mathbb R^n\) 开，\(k\ge1\) 为整数，\(u:\Omega\to\mathbb R\) 是未知函数。对含有至多 \(k\) 阶形式导数的实标量偏微分方程，系数与右端均为定义在相应位置或导数变量上的给定实函数，约定如下。
 \begin{enumerate}
 \item\label{b2:item:01-pde-linear}若可写成
 \[
@@ -59,7 +59,7 @@ Lu\coloneqq\sum_{|\alpha|\leq k}a_\alpha(x)\partial^\alpha u=f(x),
 \end{enumerate}
 \end{definition}
 
-按这一定义，线性方程属于半线性方程，半线性方程属于拟线性方程。说明一个具体方程的类型时，通常给出其中最精确的一类。线性算子中
+按这一定义，线性方程属于半线性方程，半线性方程属于拟线性方程。说明一个具体方程的类型时，通常给出其中最精确的一类。对开集 \(\Omega\subset\mathbb R^n\) 上的 \(k\) 阶线性算子 \(L=\sum_{|\alpha|\le k}a_\alpha(x)\partial^\alpha\)，其中 \(k\ge1\) 为整数、\(a_\alpha\) 为给定实值或复值系数，表达式
 \[
 \sum_{|\alpha|=k}a_\alpha(x)\partial^\alpha
 \]
@@ -116,6 +116,14 @@ u&=g &&\text{于 }\partial\Omega,\\
 \end{align*}
 它们依次称为\term[dirichlet-bianjie-tiaojian]{Dirichlet 边界条件}[Dirichlet boundary condition]、\term[neumann-bianjie-tiaojian]{Neumann 边界条件}[Neumann boundary condition]和\term[robin-bianjie-tiaojian]{Robin 边界条件}[Robin boundary condition]。这里 \(g,h,\sigma\) 都是给定的边界函数。前一种指定函数值，第二种指定法向变化率，第三种联系二者。
 
+\ProseParagraphBreak
+
+若实值函数 \(u\) 表示温度，且在边界附近连续可微，常数热导率 \(\kappa>0\) 对应的物理热通量为 \(q=-\kappa\nabla u\)。因此，\(\partial_\nu u=h\) 中的 \(h\) 是外法向导数数据，外向热通量则为
+\[
+ j\coloneqq q\cdot\nu=-\kappa\partial_\nu u=-\kappa h.
+\]
+负号表示热量沿温度降低的方向流动：温度沿外法向上升时，热量反而向域内流。若直接给定外向热通量 \(j\)，就应换成 \(h=-j/\kappa\) 再使用本节的 Neumann 写法；本章把常数热导率归一化为 \(\kappa=1\) 时，\(j=-h\)，二者仍相差一个负号。
+
 \begin{proposition}\label{b2:prop:01-poisson-boundary}
 设 \(\Omega\subset\mathbb R^n\) 是有界、连通的 \(C^1\) 域，考虑 \(-\Delta u=f\)，并只讨论能在 \(\overline\Omega\) 的某开邻域内成为 \(C^2\) 函数的实值解。
 \begin{enumerate}
@@ -144,7 +152,14 @@ u&=g &&\text{于 }\partial\Omega,\\
 即\eqref{b2:eq:01-neumann-compatibility}。
 \end{proof}
 
-相容条件反映了内部源项与边界通量的平衡。例如 \(f\equiv1\)、\(h\equiv0\) 时，上式不可能成立，故不存在这样的解。至多一个解和确有一个解是两项不同任务；上述能量计算证明的是唯一性与存在的必要条件，并未给出任意数据的存在定理。
+相容条件反映了内部源项与边界通量的平衡。在归一化的实值热传导模型中，外向热通量为 \(j=-h\)，所以\eqref{b2:eq:01-neumann-compatibility}等价于 \(\int_\Omega f\,\mathrm dx=\int_{\partial\Omega}j\,\mathrm dS\)：内部产生的总热量等于流出边界的总热量。例如 \(f\equiv1\)、\(h\equiv0\) 时，上式不可能成立，故不存在这样的解。至多一个解和确有一个解是两项不同任务；上述能量计算证明的是唯一性与存在的必要条件，并未给出任意数据的存在定理。
+
+在一维区间 \((0,L)\) 上，可以直接看出相容条件如何参与构造。给定连续的 \(f\)，把左、右端的外法向导数分别记为 \(h_0,h_L\)。因为左端外法向为 \(-1\)，所需条件是 \(u'(0)=-h_0\)、\(u'(L)=h_L\)。对 \(-u''=f\) 积分两次得到
+\[
+ u'(x)=-h_0-\int_0^x f(s)\,\mathrm ds,\quad
+ u(x)=C-h_0x-\int_0^x(x-s)\cdot f(s)\,\mathrm ds.
+\]
+右端条件恰好要求 \(\int_0^L f+h_0+h_L=0\)。满足它时，任意常数 \(C\) 都给出一个解；不满足时，没有选择 \(C\) 能修正导数条件。例如取 \(f=1\)、\(h_0=0\)、\(h_L=-L\)，解族为 \(C-x^2/2\)。给定两端函数值则能确定两次积分产生的两个常数，得到唯一解。这两种构造解释了为何 Neumann 问题需要总量平衡，而且只能确定到一个常数。
 
 \subsection{经典解、强解与弱解}
 \label{b2:subsec:010405}
@@ -153,13 +168,13 @@ u&=g &&\text{于 }\partial\Omega,\\
 
 \ProseParagraphBreak
 
-先回顾\term[ruo-daoshu]{弱导数}[weak derivative]的积分定义：对 \(u,g\in L^1_{\mathrm{loc}}(\Omega)\)，若
+设 \(\Omega\subset\mathbb R^d\) 是开集，\(\alpha\in\mathbb N_0^d\)。先回顾\term[ruo-daoshu]{弱导数}[weak derivative]的积分定义：对 \(u,g\in L^1_{\mathrm{loc}}(\Omega)\)，若
 \[
 \int_\Omega u\partial^\alpha\varphi\,\mathrm{d}x
 =(-1)^{|\alpha|}\int_\Omega g\varphi\,\mathrm{d}x
 \quad\bigl(\varphi\in C_c^\infty(\Omega)\bigr),
 \]
-则称 \(g\) 为 \(u\) 的 \(\alpha\) 阶弱导数。空间 \(C_c^\infty(\Omega)\) 由支集紧含于 \(\Omega\) 的光滑函数组成，这些函数称为\term[ceshi-hanshu]{测试函数}[test function]。\term[sobolev-kongjian]{Sobolev 空间}[Sobolev space] \(W^{k,p}\) 要求函数及所有不超过 \(k\) 阶的弱导数属于 \(L^p\)；下标 \(\mathrm{loc}\) 表示只在每个紧含的开子域上作此要求。这些约定见第一卷定义 20.4.1、定义 21.1.1 和定义 21.1.2，弱导数的唯一性等基本性质也在第一卷相应小节中建立。本节还记 \(H^1=W^{1,2}\)。
+则称 \(g\) 为 \(u\) 的 \(\alpha\) 阶弱导数。空间 \(C_c^\infty(\Omega)\) 由支集紧含于 \(\Omega\) 的光滑函数组成，这些函数称为\term[ceshi-hanshu]{测试函数}[test function]。\term[sobolev-kongjian]{Sobolev 空间}[Sobolev space] \(W^{k,p}(\Omega)\)，其中 \(k\in\mathbb N_0\)、\(1\le p\le\infty\)、\(\Omega\subset\mathbb R^d\) 开，由函数及所有不超过 \(k\) 阶的弱导数均属于 \(L^p(\Omega)\) 的实值或复值函数组成；下标 \(\mathrm{loc}\) 表示只在每个紧含的开子域上作此要求。这些约定见第一卷定义 20.4.1、定义 21.1.1 和定义 21.1.2，弱导数的唯一性等基本性质也在第一卷相应小节中建立。本节还记 \(H^1=W^{1,2}\)。
 % 跨卷引用：b1:def:weak-derivative，Book1/Part04/Chapter20/Section2004.tex；b1:def:sobolev-first-order、b1:def:sobolev-higher-order，Book1/Part04/Chapter21/Section2101.tex。
 
 \symidx{\(C_c^\infty(\Omega)\)：光滑紧支集测试函数空间}
@@ -167,7 +182,7 @@ u&=g &&\text{于 }\partial\Omega,\\
 \symidx{\(H^1(\Omega)\)：\(W^{1,2}(\Omega)\)}
 
 \begin{definition}\label{b2:def:01-classical-strong}
-对 \(\Omega\) 上的 \(k\) 阶方程，若 \(u\in C^k(\Omega)\)，方程在每个点成立，则称 \(u\) 为\term[jingdian-jie]{经典解}[classical solution]。若还讨论初值或边值，则另要求相应导数连续延伸到指定部分，并满足那些附加条件。
+设 \(\Omega\subseteq\mathbb R^n\) 为开集，\(k\geq1\) 为整数，讨论实值或复值未知函数的 \(k\) 阶偏微分方程。若 \(u\in C^k(\Omega)\)，方程在每个点成立，则称 \(u\) 为\term[jingdian-jie]{经典解}[classical solution]。若还讨论初值或边值，则另要求相应导数连续延伸到指定部分，并满足那些附加条件。
 
 \ProseParagraphBreak
 
@@ -177,7 +192,7 @@ u&=g &&\text{于 }\partial\Omega,\\
 “强解”的用法依赖所研究的方程与空间；例如演化方程还可能分别规定时间和空间的正则性。本节给出的约定用于比较经典导数、弱导数及几乎处处成立的方程，不把它当作所有文献统一的定义。
 
 \begin{definition}\label{b2:def:01-divergence-weak}
-设矩阵函数 \(A\in L^\infty_{\mathrm{loc}}(\Omega;\mathbb R^{n\times n})\)，\(f\in L^2_{\mathrm{loc}}(\Omega)\)。若 \(u\in H^1_{\mathrm{loc}}(\Omega)\) 满足
+设 \(n\geq1\) 为整数、\(\Omega\subseteq\mathbb R^n\) 为开集，实矩阵函数 \(A\in L^\infty_{\mathrm{loc}}(\Omega;\mathbb R^{n\times n})\)。函数 \(u,f\) 同取实值或同取复值，且 \(f\in L^2_{\mathrm{loc}}(\Omega)\)。若 \(u\in H^1_{\mathrm{loc}}(\Omega)\) 满足
 \begin{equation}\label{b2:eq:01-weak-divergence}
 \int_\Omega A\nabla u\cdot\nabla\varphi\,\mathrm{d}x
 =\int_\Omega f\varphi\,\mathrm{d}x
@@ -186,7 +201,18 @@ u&=g &&\text{于 }\partial\Omega,\\
 则称 \(u\) 是方程 \(-\operatorname{div}(A\nabla u)=f\) 的\term[ruo-jie]{弱解}[weak solution]。
 \end{definition}
 
-所有积分都在测试函数的紧支集附近进行，局部有界的 \(A\) 和局部平方可积的 \(\nabla u,f\) 保证其有限。若 \(A\in C^1\)、\(u\in C^2\)、\(f\) 连续，分部积分说明经典解满足\eqref{b2:eq:01-weak-divergence}。反过来，在这些光滑性条件下若弱等式成立，连续函数 \(r=-\operatorname{div}(A\nabla u)-f\) 与每个测试函数的积分都为零。倘若 \(r(x_0)>0\)，它在某小球内有正下界，取该球内非负且不恒为零的光滑测试函数，就得到正积分而矛盾；\(r(x_0)<0\) 同理。所以 \(r=0\) 处处成立。
+所有积分都在测试函数的紧支集附近进行，局部有界的 \(A\) 和局部平方可积的 \(\nabla u,f\) 保证其有限。复值情形仍采用\eqref{b2:eq:01-weak-divergence}中的双线性积分配对；改用共轭测试函数不会改变解类，因为测试函数空间对取共轭封闭。
+
+\ProseParagraphBreak
+
+设进一步有 \(A\in C^1(\Omega;\mathbb R^{n\times n})\)、\(u\in C^2(\Omega)\)、\(f\in C(\Omega)\)，其中 \(u,f\) 同取实值或复值。分部积分说明经典解满足\eqref{b2:eq:01-weak-divergence}。反过来，在这些光滑性条件下若弱等式成立，连续函数 \(r=-\operatorname{div}(A\nabla u)-f\) 与每个测试函数的积分都为零。对实值测试函数分别取实部、虚部，得到
+\[
+ \int_\Omega\operatorname{Re}r\cdot\varphi\,\mathrm dx=0,
+ \quad
+ \int_\Omega\operatorname{Im}r\cdot\varphi\,\mathrm dx=0
+ \quad\bigl(\varphi\in C_c^\infty(\Omega;\mathbb R)\bigr).
+\]
+令 \(h\) 分别为 \(\operatorname{Re}r\) 与 \(\operatorname{Im}r\)。倘若 \(h(x_0)>0\)，它在某个紧含于 \(\Omega\) 的小球内有正下界，取该球内非负且不恒为零的实值光滑测试函数，就得到正积分而矛盾；\(h(x_0)<0\) 同理。因此实部、虚部都处处为零，故 \(r=0\) 处处成立。这个证明同时覆盖实值与复值的弱解。
 
 \ProseParagraphBreak
 
@@ -212,11 +238,56 @@ a(x)=\begin{cases}1,&x<0,\\2,&x\geq0,\end{cases}
 \quad
 w(x)=\begin{cases}x,&x<0,\\x/2,&x\geq0.\end{cases}
 \]
-函数 \(w\) 连续且分段仿射，其弱导数为左右两段的斜率。因此 \(aw'=1\) 几乎处处，故对任意紧支集测试函数，\(\int aw'\varphi'=\int\varphi'=0\)。这给出 \(-(aw')'=0\) 的弱解，尽管 \(w\) 在零点有折角。它没有局部可积的二阶弱导数：分段积分给出
+函数 \(w\) 连续且分段仿射，其弱导数为左右两段的斜率。因此 \(aw'=1\) 几乎处处，故对任意紧支集测试函数，\(\int aw'\varphi'=\int\varphi'=0\)。这给出 \(-(aw')'=0\) 的弱解，尽管 \(w\) 在零点有折角。\Cref{b2:tab:01-interface-flux}把系数、斜率与它们的乘积并列；系数加倍时，斜率恰好减半，通量因而不变。
+
+\begin{table}[htbp]
+\centering
+\caption[分段系数、斜率与通量]{分段系数、斜率与通量。这里 \(aw'\) 是方程中的数学通量；若 \(a\) 表示热导率，物理热通量为 \(-aw'\)。}
+\label{b2:tab:01-interface-flux}
+\begin{tabularx}{\textwidth}{@{}p{0.30\textwidth}*{2}{>{\centering\arraybackslash}X}@{}}
+\toprule
+量 & \(-1<x<0\) & \(0<x<1\) \\
+\midrule
+系数 \(a\) & \(1\) & \(2\) \\
+斜率 \(w'\) & \(1\) & \(\dfrac{1}{2}\) \\
+数学通量 \(aw'\) & \(1\) & \(1\) \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+函数 \(w\) 没有局部可积的二阶弱导数：分段积分给出
 \[
 -\int_{-1}^1 w'\varphi'\,\mathrm{d}x=-\frac12\varphi(0).
 \]
 若右端可以写为某个局部可积函数与 \(\varphi\) 的积分，取 \(\varphi_\varepsilon(x)=\eta(x/\varepsilon)\)，其中 \(\eta\in C_c^\infty((-1,1))\)、\(0\leq\eta\leq1\)、\(\eta(0)=1\)，则积分绝对连续性使左述表示趋于零，而 \(-\varphi_\varepsilon(0)/2=-1/2\)，矛盾。弱方程保留的是通量 \(aw'\) 的平衡，并不要求 \(w\) 的所有二阶弱导数都是函数。
+
+\ProseParagraphBreak
+
+上述折角例子可以推广为界面条件的计算。设 \(n\geq2\) 为整数、\(V\subseteq\mathbb R^{n-1}\) 为非空开集，\(\Omega=(-1,1)\times V\)；取正常数 \(a_-,a_+\)，系数矩阵 \(A\) 在 \(x_1<0\) 和 \(x_1>0\) 分别为 \(a_-I_n\)、\(a_+I_n\)，界面本身的取值不影响积分。给定实数 \(b,m_-,m_+\)，取连续的分段仿射函数
+\[
+ u(x)=\begin{cases}b+m_-x_1,&x_1<0,\\b+m_+x_1,&x_1\geq0.\end{cases}
+\]
+连续性使一阶弱导数就是两侧的通常梯度，没有界面上的附加项。令 \(\varphi\in C_c^\infty(\Omega)\)，在 \(x_1\) 方向分别积分，再用 Fubini 定理，有
+\[
+ \int_\Omega A\nabla u\cdot\nabla\varphi\,\mathrm dx
+ =(a_-m_--a_+m_+)\int_V\varphi(0,x')\,\mathrm dx'.
+\]
+所有被积函数都限于一个共同紧集，因而换序合法。这个积分对全部测试函数为零，当且仅当 \(a_-m_-=a_+m_+\)：必要性可取分离变量测试函数，其界面积分不为零；充分性由所写等式直接得到。因此无源弱方程要求通量连续，而非斜率连续。这个计算也是把分部积分用于分段光滑对象时检查内部边界项的方式。
+
+\ProseParagraphBreak
+
+若两侧通量不等，上式右端描述集中在界面 \(\Sigma=\{0\}\times V\) 上的源。为准确表达它，用 \(\delta_\Sigma\) 表示作用在测试函数上的界面积分规则
+\[
+ \langle\delta_\Sigma,\varphi\rangle\coloneqq
+ \int_V\varphi(0,x')\,\mathrm dx'
+ \quad\bigl(\varphi\in C_c^\infty(\Omega)\bigr).
+\]
+于是
+\[
+ -\operatorname{div}(A\nabla u)
+ =(a_-m_--a_+m_+)\delta_\Sigma
+\]
+在分布意义下成立；这里的“分布”允许右端是一个对测试函数的积分规则，不要求它由普通函数表示。非零的 \(\delta_\Sigma\) 不能由 \(L^2_{\mathrm{loc}}(\Omega)\) 函数表示：取 \(\eta\in C_c^\infty((-1,1))\)、\(\eta(0)=1\)，再取非负且不恒为零的 \(\theta\in C_c^\infty(V)\)，令 \(\varphi_\varepsilon(x)=\eta(x_1/\varepsilon)\theta(x')\)。界面积分恒为 \(\int_V\theta>0\)；任何局部平方可积函数与 \(\varphi_\varepsilon\) 的积分，却因局部可积性及积分绝对连续性而趋于零，二者不可能相同。因此通量不匹配时，这个等式超出了\cref{b2:def:01-divergence-weak}的 \(L^2_{\mathrm{loc}}\) 右端框架；该定义在这个模型中只包含通量匹配的无源情形。删去界面后得到的几乎处处等式不能消除这个源。后面的分布理论将系统处理这种右端。
 
 \subsection{叠加原理}
 \label{b2:subsec:010406}

@@ -26,7 +26,7 @@
 \subsection{部分和算子}
 \label{b2:subsec:020202}
 
-圆周上的\term[zhouqi-juanji]{周期卷积}[periodic convolution]记为
+取 \(\mathbb T=\mathbb R/\mathbb Z\) 的归一化 Lebesgue 测度，\(f,g\in L^1(\mathbb T;\mathbb C)\)。圆周上的\term[zhouqi-juanji]{周期卷积}[periodic convolution]记为
 \[
  (f*g)(x)\coloneqq\int_{\mathbb T}f(x-t)\cdot g(t)\,\mathrm{d}t,
 \]
@@ -53,26 +53,80 @@
 \subsection{Dirichlet--Jordan 定理}
 \label{b2:subsec:020203}
 
-先说明处理有界变差所需的抵消估计。区间上函数的变差是所有有限分割下相邻函数值差的绝对值之和的上确界；上确界有限时称为\term[youjie-biancha-hanshu]{有界变差函数}[function of bounded variation]。实值有界变差函数可写成两个有界单调函数之差：若 \(V(t)\) 是从左端到 \(t\) 的累积变差，取 \((V+g)/2\) 与 \((V-g)/2\) 即可。这同时保证单侧极限存在。复值情形按实部、虚部分别处理。
+先说明处理有界变差所需的抵消估计。有限闭区间 \([a,b]\)、\(a<b\) 上实值或复值函数的变差是所有有限分割下相邻函数值差的绝对值之和的上确界；上确界有限时称为\term[youjie-biancha-hanshu]{有界变差函数}[function of bounded variation]。开区间上的变差也取全部落在区间内部的有限分割，不要求端点属于函数的定义域。这里使用的是一个指定代表的点值变差，不是在等价类中对代表取下确界。
+
+所需估计的核心可以先概括如下：Dirichlet 核虽然正负振荡，但它在任意子区间上的积分有同一个常数界。若 \(g\) 是阶梯函数，分部求和就把 \(\int gD_N\) 改写成一个端点值与各次跳变量乘以这些核积分；跳变量的绝对值之和受总变差控制。对于一般有界变差函数，再用阶梯函数逼近即可。最后缩小原点附近的区间：\(g(0+)=0\) 使端点值趋零，有限总变差则使小区间中的变差趋零。下面依次实现这几个步骤。
+
+先说明下文出现的单侧极限确实存在。有界变差的实值函数在一个区间中可固定内点 \(c\)，令 \(V(t)=\operatorname{Var}_{[c,t]}g\) 于 \(t>c\)，\(V(c)=0\)，\(V(t)=-\operatorname{Var}_{[t,c]}g\) 于 \(t<c\)。相邻区间的变差可加，故 \((V+g)/2\) 与 \((V-g)/2\) 都是有界非减函数，其差为 \(g\)。这证明可测性，也保证内部点及区间端点的单侧极限存在。复值函数的实部、虚部各自有界变差，因而有相同性质；不需要预先把函数改成右连续代表。
 
 \begin{lemma}\label{b2:lem:02-bv-oscillation}
-设 \(0<\delta<1/2\)，\(g\) 在 \((0,\delta)\) 上有界变差且 \(g(0+)=0\)。存在与 \(N\)、\(g\) 和 \(\delta\) 无关的常数 \(C\)，使
+设 \(0<\delta_0<1/2\)，实值或复值函数 \(g:(0,\delta_0)\to\mathbb C\) 满足 \(\operatorname{Var}_{(0,\delta_0)}g<\infty\) 及 \(g(0+)=0\)。存在与 \(g,\delta_0,N,\delta\) 无关的常数 \(C\)，使每个整数 \(N\geq0\) 及 \(0<\delta\leq\delta_0\) 都满足
 \[
  \left|\int_0^\delta g(t)\cdot D_N(t)\,\mathrm{d}t\right|
  \leq C\bigl(|g(\delta-)|+\operatorname{Var}_{(0,\delta)}g\bigr).
 \]
-右侧随 \(\delta\downarrow0\) 趋于零。
+其中 \(g(\delta-)\) 是从区间内部取得的左极限。对同一个函数 \(g\) 缩小 \(\delta\) 时，右侧趋于零，因而左侧对全部 \(N\) 一致趋零。
 \end{lemma}
 \begin{proof}
-记 \(\lambda=(2N+1)\pi\)。先估计 \(\int_a^bD_N(t)\,\mathrm{d}t\)，其中 \(0\leq a<b\leq1/2\)。在 \(0<t<1/\lambda\) 上，\(|\sin(\lambda t)|\leq\lambda t\)、\(\sin(\pi t)\geq2t\)，故这部分绝对积分至多 \(1/2\)。在 \(t\geq1/\lambda\) 的区间上，对单调递减函数 \(1/\sin(\pi t)\) 分部积分；\(\sin(\lambda t)\) 的任意区间原函数差不超过 \(2/\lambda\)，所得界至多 \(C/(\lambda a)\)（下端取 \(a\geq1/\lambda\)）。因此所有上述区间积分有同一个绝对常数界。
+先证明核积分的一致界。记 \(\lambda=(2N+1)\pi\)。在 \(0<t<1/\lambda\) 上，\(|\sin(\lambda t)|\leq\lambda t\)、\(\sin(\pi t)\geq2t\)，所以任何落在这段内的子区间，其 \(|D_N|\) 积分至多 \(1/2\)。若 \(1/\lambda\leq u<v\leq1/2\)，令
+\[
+ w(t)=\frac1{\sin(\pi t)},\qquad
+ A(t)=\int_u^t\sin(\lambda s)\,\mathrm ds.
+\]
+此时 \(w\) 为正且单调不增，\(|A(t)|\leq2/\lambda\)。普通分部积分给出
+\[
+ \begin{aligned}
+ \left|\int_u^vD_N(t)\,\mathrm dt\right|
+ &=\left|w(v)A(v)-\int_u^vw'(t)A(t)\,\mathrm dt\right|\\
+ &\leq\frac2\lambda\left(w(v)+\int_u^v|w'(t)|\,\mathrm dt\right)\\
+ &=\frac{2w(u)}\lambda\leq\frac1{\lambda u}\leq1.
+ \end{aligned}
+\]
+把一个任意区间在 \(1/\lambda\) 处分开，得到
+\[
+ \left|\int_a^bD_N(t)\,\mathrm dt\right|\leq C_0
+ \qquad(0\leq a<b\leq1/2),
+\]
+其中可取绝对常数 \(C_0=2\)，与 \(N,a,b\) 均无关。
 
-为把这个界用于 \(g\)，可将其选为右连续代表。单调分解把 \(g\) 的增量表示为有限符号 Stieltjes 测度的质量；这一测度由半开区间上的增量先定义，再按测度延拓得到。其全变差不超过函数的变差。对固定 \(N\)，核有界，故有限测度下的换序合法；将 \(g(t)\) 写成端点值与增量积分，得到通常的 Stieltjes 分部积分式。前一步对核原函数的统一界于是给出所需估计。若原代表并非右连续，仅在至多可数个不连续点改变它，不影响 Lebesgue 积分。
+接着固定 \(0<a<b<\delta\)，只用这个闭区间上的点值，不改换 \(g\) 的代表。把 \([a,b]\) 等分为 \(a=t_0<\cdots<t_m=b\)，令阶梯函数 \(q_m(t)=g(t_{j-1})\) 于 \(t_{j-1}<t<t_j\)，有限个分点处的值不影响积分。由变差定义，
+\[
+ \|q_m-g\|_{L^1(a,b)}
+ \leq\frac{b-a}{m}\sum_{j=1}^m
+       \operatorname{Var}_{[t_{j-1},t_j]}g
+ =\frac{b-a}{m}\operatorname{Var}_{[a,b]}g\longrightarrow0.
+\]
+这里用到变差在相邻闭区间上可加：把分割在公共端点处分开给出一个方向，把两个分割接起来给出另一个方向。这个论证对复数值同样成立，因为只使用模的三角不等式。
 
-最后，累积变差对应一个有限正测度。在不包含端点 \(0\) 的递减区间 \((0,\delta)\) 上，其质量趋于零；加上 \(g(0+)=0\)，即得最后的断言。复值情形把实、虚部的估计相加。
+令 \(P_N(t)=\int_a^tD_N(s)\,\mathrm ds\)，则 \(P_N(a)=0\)、\(|P_N|\leq C_0\)。有限求和的相消给出精确恒等式
+\[
+ \begin{aligned}
+ \int_a^b q_m(t)D_N(t)\,\mathrm dt
+ &=\sum_{j=1}^m g(t_{j-1})\bigl(P_N(t_j)-P_N(t_{j-1})\bigr)\\
+ &=g(t_{m-1})P_N(b)
+   -\sum_{j=1}^{m-1}\bigl(g(t_j)-g(t_{j-1})\bigr)P_N(t_j).
+ \end{aligned}
+\]
+把 \(g(t_{m-1})\) 写成 \(g(b)+(g(t_{m-1})-g(b))\)，最后一个增量与求和中的增量一起受总变差控制，故上式的模不超过
+\(C_0(|g(b)|+\operatorname{Var}_{[a,b]}g)\)。对固定 \(N\)，\(D_N\) 有界，上述 \(L^1\) 逼近允许令 \(m\to\infty\)，从而
+\[
+ \left|\int_a^b g(t)D_N(t)\,\mathrm dt\right|
+ \leq C_0\bigl(|g(b)|+\operatorname{Var}_{[a,b]}g\bigr).
+\]
+再令 \(a\downarrow0\)、\(b\uparrow\delta\)。\(g\) 在 \((0,\delta_0)\) 上有界，因而对固定 \(N\) 积分收敛；\(g(b)\to g(\delta-)\)，且 \(\operatorname{Var}_{[a,b]}g\leq\operatorname{Var}_{(0,\delta)}g\)。这就得到引理所列的、对全部 \(N\) 统一的估计。证明没有使用右连续代表，也没有给未定义的端点 \(0,\delta\) 任意赋值；\(g(0+)\) 和 \(g(\delta-)\) 都是实际的单侧极限。
+
+最后核对小区间变差确实趋零。取固定 \(c\in(0,\delta_0)\)，令
+\(V(t)=\operatorname{Var}_{[t,c]}g\)、\(0<t<c\)。随 \(t\downarrow0\)，\(V(t)\) 单调增加且有上界，故有有限极限 \(L\)。当 \(0<a<b<\delta<c\) 时，相邻区间的可加性给出
+\[
+ \operatorname{Var}_{[a,b]}g=V(a)-V(b)
+ \leq L-V(\delta).
+\]
+对全部内部有限分割取上确界，得到
+\(\operatorname{Var}_{(0,\delta)}g\leq L-V(\delta)\to0\)。这也控制原代表在孤立点的跳动，不必先删除这些点。另一方面，\(g(0+)=0\) 使 \(g(\delta-)\to0\)，于是右侧随 \(\delta\downarrow0\) 趋零。
 \end{proof}
 
 \begin{theorem}[Dirichlet--Jordan]\label{b2:thm:02-dirichlet-jordan}
-设 \(f\in L^1(\mathbb T)\)，且某一代表在点 \(x\) 两侧的一个邻域内有界变差，则
+设 \(f\in L^1(\mathbb T;\mathbb C)\)，\(x\in\mathbb T\)，且某一周期代表在点 \(x\) 两侧的一个邻域内有界变差，则
 \[
  S_Nf(x)\longrightarrow\dfrac{f(x+)+f(x-)}2.
 \]
@@ -82,7 +136,7 @@
 \[
  g(t)=f(x+t)+f(x-t)-2A.
 \]
-利用核的偶性及积分为 \(1\)，\eqref{b2:eq:02-dirichlet-convolution}给出 \(S_Nf(x)-A=\int_0^{1/2}g(t)\cdot D_N(t)\,\mathrm{d}t\)。在 \((0,\delta)\) 上，\(g\) 有界变差且右极限为零；由前一引理，这部分对全部 \(N\) 一致趋小。在 \([\delta,1/2]\) 上，\(g(t)/\sin(\pi t)\) 可积，\cref{b2:lem:02-oscillation}使其与 \(\sin((2N+1)\pi t)\) 的积分趋零。先固定 \(\delta\) 令 \(N\to\infty\)，再令 \(\delta\downarrow0\)。
+利用核的偶性及积分为 \(1\)，\eqref{b2:eq:02-dirichlet-convolution}给出 \(S_Nf(x)-A=\int_0^{1/2}g(t)\cdot D_N(t)\,\mathrm{d}t\)。取固定的 \(0<\delta_0<1/2\)，使所选代表在 \((x-\delta_0,x)\) 与 \((x,x+\delta_0)\) 上的变差有限；圆周坐标在这里按周期延伸理解。则 \(g\) 在 \((0,\delta_0)\) 上的变差不超过这两个变差之和，且 \(g(0+)=f(x+)+f(x-)-2A=0\)。因此前一引理使 \((0,\delta)\) 上的积分在 \(\delta\downarrow0\) 时对全部 \(N\) 一致趋小。在 \([\delta,1/2]\) 上，\(g(t)/\sin(\pi t)\) 可积，\cref{b2:lem:02-oscillation}使其与 \(\sin((2N+1)\pi t)\) 的积分趋零。先固定 \(\delta\) 令 \(N\to\infty\)，再令 \(\delta\downarrow0\)。
 \end{proof}
 
 定理名称\term[dirichlet-jordan]{Dirichlet--Jordan 定理}[Dirichlet--Jordan theorem]对应的是局部有界变差条件。远处只需可积性，点 \(x\) 本身被赋予什么值也不影响结论；跳跃点恢复的是两侧值的平均。

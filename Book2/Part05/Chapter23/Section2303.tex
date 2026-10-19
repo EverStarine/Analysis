@@ -2,98 +2,306 @@
 \section{延拓算子}
 \label{b2:sec:2303}
 
-延拓算子把曲面数据变成环境空间的振荡函数。对偶性把无法直接解释的曲面取值，转化为一个处处有意义的积分，并为 \(TT^*\) 方法提供起点。
+限制算子的难点是在零测集上解释 Fourier 变换，而延拓算子从一开始就是绝对收敛的曲面积分。对偶性把两者联系起来；当曲面目标是平方范数时，再作一次复合，就把问题转为环境空间的卷积估计。本节逐步建立这两座桥，并说明插值实际能给出哪些指数。
 
 \subsection{对偶限制}
 \label{b2:subsec:230301}
 
-\begin{proposition}\label{b2:prop:23-duality}
-对于 \(1\le p,r<\infty\)，估计 \(R:L^p\to L^r(S)\) 等价于
-\(E:L^{r'}(S)\to L^{p'}(\mathbb R^d)\)，两者最佳常数相同。
+以下配对统一采用
+\(\langle u,v\rangle=\int u\overline v\)，对第一变量线性。
+设 \(S\subset\mathbb R^d\) 紧致，取面积测度。对于
+\(g\in L^1(S)\)，定义
+\[
+ Eg(x)=\int_S e^{2\pi\mathrm i x\cdot\xi}g(\xi)\,d\sigma(\xi).
+\]
+因为指数因子的模为一，
+\(\|Eg\|_\infty\leq\|g\|_1\)；支配收敛还给出 \(Eg\) 连续。
+这些事实不需要曲率条件。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[限制与延拓的对偶]\label{b2:prop:23-duality}
+设 \(d\geq2\)，\(S\subset\mathbb R^d\) 为非空紧致光滑超曲面，
+取面积测度 \(\sigma\)。令
+\(Rf=\widehat f|_S\) 先定义在 \(\mathcal S(\mathbb R^d)\) 上，
+\(Eg(x)=\int_S e^{2\pi\mathrm i x\cdot\xi}g(\xi)\,d\sigma(\xi)\)。
+对于 \(1\leq p,r<\infty\)，
+下列两个估计等价，且最佳常数相同：
+\[
+ \|Rf\|_{L^r(S)}\leq C\|f\|_{L^p(\mathbb R^d)}
+       \quad(f\in\mathcal S),
+\]
+\[
+ \|Eg\|_{L^{p'}(\mathbb R^d)}
+       \leq C\|g\|_{L^{r'}(S)}
+       \quad(g\in L^{r'}(S)).
+\]
+其中 \(p'\)、\(r'\) 为共轭指数；第一式也等价于 \(R\) 的唯一有界
+延拓 \(L^p(\mathbb R^d)\to L^r(S)\)。
 \end{proposition}
 \begin{proof}
-对 Schwartz 函数与曲面光滑函数，Fubini 给出
+由于 \(\sigma(S)<\infty\)，每个 \(g\in L^{r'}(S)\) 都属于
+\(L^1(S)\)，包括 \(r'= \infty\)。对 \(f\in\mathcal S\)，
+二重积分的绝对值由 \(\|f\|_1\cdot\|g\|_1\) 控制，
+所以 Fubini 给出
 \[
- \int_S\widehat f(\xi)\overline{g(\xi)}\,\mathrm d\sigma
- =\int_{\mathbb R^d} f(x)\overline{Eg(x)}\,\mathrm dx.
+ \langle Rf,g\rangle_{S}
+       =\langle f,Eg\rangle_{\mathbb R^d}.
 \]
-一侧估计配以 Hölder 不等式，再对另一侧单位球取上确界，得到反向算子的估计。有限指数时稠密性完成延拓；出现无穷对偶指数时使用通常的 \(L^1\) 对偶 \(L^\infty\) 即可。最佳常数由两次同样操作相等。
+若第一式成立，则
+\[
+ |\langle f,Eg\rangle|
+       \leq C\|f\|_p\cdot\|g\|_{r'}.
+\]
+先把这个配对看成 Schwartz 类上的有界泛函，再由其在有限指数
+\(L^p\) 中的稠密性延拓。\(L^p\) 对偶表示说明表示函数属于
+\(L^{p'}\)，范数至多为 \(C\|g\|_{r'}\)；\(p=1\) 时使用
+\((L^1)^*=L^\infty\)。表示函数与原来的有界连续积分 \(Eg\)
+在全部测试函数上配对相同，因而几乎处处相等。这便证明第二式。
+
+反过来，由第二式和 Hölder 不等式，
+\[
+ |\langle Rf,g\rangle|
+       \leq C\|f\|_p\cdot\|g\|_{r'}.
+\]
+对 \(L^{r'}(S)\) 单位球取上确界，利用 \(L^r\) 范数的对偶公式，
+得到第一式。对 \(r=1\)，这个上确界取遍 \(L^\infty(S)\) 单位球，
+仍是通常的 \(L^1\) 范数公式。两次推导没有增大常数，所以最佳常数相同。
+最后由\subsecref{b2:subsec:230101}的稠密延拓论证，得到 \(R\)
+在全部 \(L^p\) 上的定义。
 \end{proof}
-由于曲面有限测度，\(Eg\) 对 \(g\in L^1(S)\) 绝对收敛且有界连续。若 \(g\) 更粗，先在已建立的范数估计下通过稠密极限定义输出；不能把所有延拓数据都假定光滑。
+
+这里没有使用光滑函数在 \(L^\infty(S)\) 中的范数稠密性；这样的稠密性一般不成立。处理无穷对偶指数的关键，是有限曲面测度已经保证积分对全部输入有意义，再直接使用配对与对偶范数。后面若把 \(E\) 写成 \(R^*\)，指的正是这个复配对下的伴随关系。
 
 \subsection{Fourier 衰减}
 \label{b2:subsec:230302}
 
-光滑曲面密度的 Fourier 衰减由\chapref{b2:ch:21}的驻相公式给出。在非零曲率紧片上，
-\(|\widehat{\mathrm d\mu}(x)|\lesssim(1+|x|)^{-(d-1)/2}\)。
-若 \(g\) 光滑，则同样结论成立，但常数含有 \(g\) 的导数。\(L^2(S)\) 单位球不控制这些导数，因此不能把这个逐输入衰减直接当作 \(L^2\to L^q\) 算子界。
+若 \(S\) 的 Gaussian 曲率在紧支撑片上处处非零，
+\cref{b2:prop:21-curved-surface-decay}给出光滑曲面密度的衰减：
+\[
+ \left|\int_S e^{2\pi\mathrm i x\cdot\xi}a(\xi)\,d\sigma(\xi)\right|
+       \leq C_a(1+|x|)^{-(d-1)/2},
+ \quad a\in C_c^\infty(S).
+\]
+所用条件包括非退化切向 Hessian、紧支撑和有限阶振幅导数的控制。
+常数 \(C_a\) 因而包含 \(a\) 的导数，不能只换成 \(C\|a\|_2\)。
+若作这种替换，会把对每个固定光滑输入的衰减，误当成整个
+\(L^2(S)\) 单位球上的统一算子界。
 
 \ProseParagraphBreak
-平移环境变量对应曲面调制：
+平移对称性提供了一个直接反证。设 \(a\in\mathbb R^d\)，则
 \[
- E(e^{-2\pi\mathrm ia\cdot\xi}g)(x)=Eg(x-a).
+ E(e^{-2\pi\mathrm i a\cdot\xi}g)(x)=Eg(x-a),
+ \quad
+ \|e^{-2\pi\mathrm i a\cdot\xi}g\|_2=\|g\|_2.
 \]
-于是固定 \(L^2\) 范数的输入可使输出峰值移到任意远处，排除一个仅由 \(\|g\|_2\) 控制、固定以原点为中心的逐点衰减界。算子估计必须容许这种平移对称性。
+取 \(g=1\)，在 \(x=a\) 处输出恒为 \(\sigma(S)>0\)。
+如果有只由输入平方范数控制的界
+\[
+ |Eh(x)|\leq C\|h\|_2(1+|x|)^{-\beta},
+ \quad \beta>0,
+\]
+将 \(h=e^{-2\pi\mathrm i a\cdot\xi}\)、\(x=a\) 代入并令
+\(|a|\to\infty\)，便矛盾。问题不是这些输入缺少光滑性；它们全都光滑，
+只是导数随调制参数增大。
+
+\ProseParagraphBreak
+这不妨碍证明平移不变的 \(L^q\) 估计：平移峰值不会改变环境范数。
+同时，对每个固定 \(g\in L^1(S)\)，在上述曲率条件下仍有
+\(Eg(x)\to0\) 当 \(|x|\to\infty\)。事实上，取光滑 \(g_n\) 在
+\(L^1(S)\) 中逼近 \(g\)，则
+\(\|Eg-Eg_n\|_\infty\leq\|g-g_n\|_1\)；
+每个 \(Eg_n\) 都趋于零，故其一致极限也趋于零。
+这个论证没有给出仅依赖 \(\|g\|_1\) 的统一衰减速度。
 
 \subsection{\texorpdfstring{\(L^p\to L^q\)}{Lp→Lq} 估计}
 \label{b2:subsec:230303}
 
-显然 \(\|Eg\|_\infty\le\|g\|_1\)。若已经得到
-\(\|Eg\|_{q_0}\le C\|g\|_2\)，曲面有限测度还给出
-\(\|Eg\|_\infty\le |S|^{1/2}\|g\|_2\)。对输出两个范数插值，可得到每个 \(q\ge q_0\) 上的 \(L^2\to L^q\) 界。
-对输入指数也可与 \(L^1\to L^\infty\) 插值，产生一个三角范围；这些是已证估计的推论，不能据此覆盖全部必要条件范围。
-
-\ProseParagraphBreak
-在球面上，曲面函数 \(g=1\) 的尾部检验已经说明输出不属于任意小的 \(q\)。紧曲面只在输入端是有限测度空间，输出端仍然在整个 \(\mathbb R^d\)。将两端都按有限测度嵌入处理会得到错误的范围。
-
-% 扩写定位：b2:subsec:230303
-一旦建立 \(L^2(S)\to L^{q_*}\) 的延拓估计，基本插值就给出一片完整的指数区域。另一方面，曲面测度有限，
-\(\|Eg\|_\infty\leq\|g\|_1\)。对 \(0\leq\theta\leq1\)，在这两个端点间使用 Riesz--Thorin，得到
+本小节说明一个端点估计一旦成立，会自动产生怎样的范围。
+所需端点将在下一节独立证明；此处的插值不是该端点的证明。
+设 \(S\) 是有限面积的紧曲面，并已知
 \[
- \frac1s=1-\frac\theta2,\qquad
- \frac1q=\frac\theta{q_*},\qquad
- \|Eg\|_q\leq C_\theta\|g\|_s.
+ \|Eg\|_{q_*}\leq C_*\|g\|_2,\quad
+ q_*=\frac{2(d+1)}{d-1}.
 \]
-故对 \(1\leq s\leq2\)，证明了直线
-\(1/q=\frac{d-1}{d+1}(1-1/s)\) 上的估计。再与同一输入指数的 \(L^\infty\) 界插值，可增大输出 \(q\)。对 \(s>2\)，有限曲面测度使 \(L^s(S)\subset L^2(S)\)，于是仍得到所有 \(q\geq q_*\) 的估计。这后一范围来自输入空间包含，不是把刚才的直线延长到 \(\theta>1\)。
-
-\ProseParagraphBreak
-
-对偶地，从 \(L^{p_*}(\mathbb R^d)\to L^2(S)\) 与 \(L^1(\mathbb R^d)\to L^\infty(S)\) 得到
+另一个始终可用的端点是 \(L^1(S)\to L^\infty(\mathbb R^d)\)，常数为一。
+两个算子都是同一个曲面积分，因而在输入空间交集上一致。
+Riesz--Thorin 插值给出
 \[
- \frac1p=1-\frac{\theta}{q_*},\qquad \frac1r=\frac\theta2.
+ \frac1s=1-\frac\theta2,\quad
+ \frac1q=\frac\theta{q_*},\quad
+ \|Eg\|_q\leq C_*^\theta\|g\|_s,
+ \quad 0\leq\theta\leq1.
 \]
-这使一个端点定理同时控制较小输入指数和较大曲面输出指数。曲面测度有限，可以把输出指数降低；环境空间测度无穷，却不能据此任意提高输入 \(p\)。这两个方向在实际引用时很容易混淆，必须先区分哪一侧是有限测度空间。
+消去 \(\theta\)，得到
+\[
+ \frac1q=\frac{d-1}{d+1}\left(1-\frac1s\right),
+ \quad 1\leq s\leq2.
+\]
+这恰是这一段输入指数对应的 Knapp 边界。对固定 \(s\)，再用
+\(\|Eg\|_\infty\leq\sigma(S)^{1-1/s}\|g\|_s\)
+对输出范数插值，可把 \(q\) 增大。若 \(s>2\)，使用有限测度包含
+\[
+ \|g\|_2\leq\sigma(S)^{1/2-1/s}\|g\|_s
+\]
+则得到所有 \(q\geq q_*\) 的估计。这里不能把原来的公式延长到
+\(\theta>1\)：插值定理只控制两端之间的参数。
 
 \ProseParagraphBreak
+例如三维球面有 \(q_*=4\)。由平方端点和绝对积分界，可以推出
+\(L^{4/3}(S^2)\to L^8(\mathbb R^3)\)，因为取 \(\theta=1/2\)。
+对 \(L^4(S^2)\) 输入，直接包含只能给出 \(L^4(\mathbb R^3)\)
+及更大的输出指数。必要条件却仅要求 \(q>3\) 且 \(q\geq8/3\)，
+所以 \(3<q<4\) 仍没有由这次插值解决。
+这个例子显示了已证范围与必要范围之间的实际空缺。
 
-上述区域仍然只是一个已证明的充分区域。Knapp 管的必要条件对更一般 \(s,q\) 仍适用，径向尾部则给出另外的严格限制；两者之间是否还有空缺，需要新的估计。把插值区域画到必要条件所在边界并不会填补该空缺。指数图的作用是帮助核对已知界，而不是替代其证明。
+\ProseParagraphBreak
+在限制形式中，平方端点是
+\[
+ p_*=q_*'=\frac{2(d+1)}{d+3},\quad
+ R:L^{p_*}(\mathbb R^d)\longrightarrow L^2(S).
+\]
+与 \(R:L^1(\mathbb R^d)\to L^\infty(S)\) 插值，得
+\[
+ \frac1p=1-\frac\theta{q_*},\quad
+ \frac1r=\frac\theta2,\quad 0\leq\theta\leq1.
+\]
+这些恰是前述延拓指数的共轭关系。曲面目标可以借有限测度降低指数
+\(r\)，但环境输入不能仅凭指数大小随意改变。
+例如把某个 \(L^{p_*}\) 输入换成 \(L^p\)、\(p>p_*\)，并不能由
+无限测度空间上的包含关系完成。
 
 \subsection{\texorpdfstring{\(TT^*\)}{TT*} 表述}
 \label{b2:subsec:230304}
 
-在测试函数上，
+当曲面范数取 \(L^2\) 时，可以把限制算子与延拓算子相接。
+令
 \[
- ERf=f*\check\sigma,\qquad
- \|Rf\|_2^2=\langle f*\check\sigma,f\rangle.
+ K(x)=\check\sigma(x)=\int_S e^{2\pi\mathrm i x\cdot\xi}\,d\sigma(\xi),
+ \quad Af=f*K.
 \]
-因此若卷积算子 \(T=f*\check\sigma\) 有界 \(L^p\to L^{p'}\)，就有
-\(\|Rf\|_2\le\|T\|^{1/2}\|f\|_p\)。
-反过来，限制界与其对偶延拓界复合也给出同一个卷积界。这里 \(TT^*\) 的实质是一个正的二次型，即便卷积核本身不是非负函数。
+核 \(K\) 有界，故 \(Af\) 对 Schwartz 输入绝对收敛。
+下面的等价关系还适用于任意有限正紧支撑测度；测度的正性正是平方范数能够出现的原因。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[平方限制与卷积]\label{b2:prop:23-ttstar}
+设 \(\mu\) 是 \(\mathbb R^d\) 上的有限正紧支撑 Borel 测度，
+\(1\leq p<\infty\)，并置
+\[
+ R_\mu f=\widehat f\quad\text{作为 }L^2(\mu)\text{ 中的函数},\quad
+ E_\mu g(x)=\int e^{2\pi\mathrm i x\cdot\xi}g(\xi)\,d\mu(\xi).
+\]
+令 \(K=\check\mu\)，\(Af=f*K\) 先定义于 \(\mathcal S(\mathbb R^d)\)。
+以下三个有界性等价：
+\[
+ R_\mu:L^p\to L^2(\mu),\quad
+ E_\mu:L^2(\mu)\to L^{p'},\quad
+ A:L^p\to L^{p'}.
+\]
+其中第一、第三项指从 Schwartz 类唯一连续延拓。
+若这些界成立，则有准确的范数关系
+\[
+ \|A\|_{L^p\to L^{p'}}
+       =\|R_\mu\|_{L^p\to L^2(\mu)}^2
+       =\|E_\mu\|_{L^2(\mu)\to L^{p'}}^2.
+\]
+对 Schwartz 函数还恒有
+\[
+ Af=E_\mu R_\mu f,\quad
+ \langle Af,f\rangle=\|R_\mu f\|_{L^2(\mu)}^2\geq0.
+\]
+\end{proposition}
+\begin{proof}
+对偶等价的证明与\cref{b2:prop:23-duality}完全相同：
+有限性使 \(L^2(\mu)\subset L^1(\mu)\)，Fubini 给出
+\(\langle R_\mu f,g\rangle_\mu=\langle f,E_\mu g\rangle\)，
+两侧取对偶范数即可，且两算子范数相等。
+
+对 \(f\in\mathcal S\)，再用 Fubini，
+\[
+ \begin{aligned}
+ E_\mu R_\mu f(x)
+ &=\int e^{2\pi\mathrm i x\cdot\xi}
+       \left(\int f(y)e^{-2\pi\mathrm i y\cdot\xi}\,dy\right)d\mu(\xi)\\
+ &=\int f(y)K(x-y)\,dy=Af(x).
+ \end{aligned}
+\]
+绝对可积性由 \(\mu(\mathbb R^d)\|f\|_1\) 保证。将它再与 \(f\)
+配对，二重空间积分由 \(\mu(\mathbb R^d)\|f\|_1^2\) 控制，得到
+\[
+ \langle Af,f\rangle
+ =\int|\widehat f(\xi)|^2\,d\mu(\xi).
+\]
+若 \(A\) 有界，Hölder 立即给出
+\[
+ \|R_\mu f\|_2^2
+       \leq\|Af\|_{p'}\cdot\|f\|_p
+       \leq\|A\|\|f\|_p^2,
+\]
+所以 \(R_\mu\) 有界且 \(\|R_\mu\|^2\leq\|A\|\)。
+反之，若 \(R_\mu\) 有界，其伴随 \(E_\mu\) 也有界，复合算子
+\(E_\mu R_\mu\) 在测试函数上等于 \(A\)，故
+\(\|A\|\leq\|E_\mu\|\cdot\|R_\mu\|=\|R_\mu\|^2\)。
+由稠密性完成延拓，并得到范数等式。
+所有步骤在 \(p=1,p'=\infty\) 时仍成立；这里只要求输入端的稠密性。
+\end{proof}
+
+通常把这称为 \(TT^*\) 方法：若把延拓算子记作 \(T\)，则
+\(T^*=R_\mu\)、\(TT^*=A\)。本节另用 \(A\) 记卷积算子，是为了分清三个映射的定义域。二次型非负并不说 \(K(x)\geq0\)，也不说 \(A\) 把非负函数映成非负函数；球面核本身就会振荡变号。
 
 \ProseParagraphBreak
-若只取核绝对值并使用 Hardy–Littlewood–Sobolev，核的衰减阶 \((d-1)/2\) 会给出较差的指数。Stein–Tomas 的改进保留核的振荡和 Fourier 侧的曲面结构。下一节用解析族把这两类信息放到不同边界线上，再插值合并。
+先看只保留核绝对值能走多远。在非零曲率的紧光滑片上，
+\[
+ |K(x)|\leq C(1+|x|)^{-\beta}\leq C|x|^{-\beta},
+ \quad \beta=\frac{d-1}{2}.
+\]
+右侧是阶
+\(\alpha=d-\beta=(d+1)/2\) 的分数积分核，满足 \(0<\alpha<d\)。
+由\cref{b2:thm:19-hls}，要取得 \(A:L^p\to L^{p'}\)，须令
+\[
+ \frac1p-\frac1{p'}=\frac{\alpha}{d}
+       =\frac{d+1}{2d}.
+\]
+解得
+\[
+ p=\frac{4d}{3d+1},\quad p'=\frac{4d}{d-1}.
+\]
+此处 \(1<p<d/\alpha\)，符合 HLS 的强型条件。因此
+\(TT^*\) 已给出 \(E:L^2\to L^{4d/(d-1)}\)。
+但
+\[
+ \frac{4d}{d-1}>
+       \frac{2(d+1)}{d-1}\quad(d\geq2),
+\]
+所以它比所求临界输出指数大。三维中，这个办法只能到 \(q=6\)，
+而帽例子允许的端点是 \(q=4\)。
+下一节把核的振荡与 Fourier 侧的曲面结构放在解析族的两条边界上，
+正是为了补回取绝对值时丢掉的信息。
 
-球面延拓还有一个简单的偏微分方程解释。对 \(g\in L^2(S^{d-1})\)，有限曲面测度使 \(g\in L^1(S)\)，因此可以逐阶对 \(x\) 求导，并有全部导数的统一上界。直接计算得到
+\ProseParagraphBreak
+最后说明平方范数的位置。对球面上的 \(g\in L^2(S^{d-1})\)，
+有限测度使 \(g\in L^1\)。频率支集紧致，允许逐阶对积分求导，且
+\[
+ \partial^\gamma Eg(x)
+       =\int_S(2\pi\mathrm i\xi)^\gamma
+                  e^{2\pi\mathrm i x\cdot\xi}g(\xi)\,d\sigma(\xi).
+\]
+各阶导数都有只依赖该阶数和 \(\|g\|_1\) 的上界，特别地
 \[
  (-\Delta-4\pi^2)Eg=0.
 \]
-这是一族光滑的 Helmholtz 解，频率恰好集中于单位能量面。光滑性来自频率支集紧致，而衰减及全空间可积性则需要曲率和输入性质；两者不可混同。
+这是光滑的 Helmholtz 解，其频率集中在单位球面。
+光滑性来自紧频率支集，全空间的可积性则是另一件事。
 
 \ProseParagraphBreak
-
-任何非零的这种解都不属于全空间 \(L^2\)。若 \(Eg\in L^2\)，其 Fourier 变换由 Plancherel 为一个 \(L^2\) 密度；另一方面，温和分布 Fourier 计算给出 \(g\,\mathrm d\sigma\)，支于 Lebesgue 零测的球面。一个绝对连续平方密度若只支于这个零测集只能为零，故 \(g=0\)。如果 \(Eg\in L^q\)、\(q<2\)，又因它有界，插值也会给出 \(L^2\)，同样不可能。限制估计的对偶输出因而自然位于大于二的指数，而不是一个通常的平方能量空间。
-
-\ProseParagraphBreak
-
-这也解释了 \(TT^*\) 中的平方空间究竟在哪里：平方范数落在曲面数据上，环境输出使用较大的 \(q\)。将两者都误写成全空间 \(L^2\)，会把曲面测度与 Lebesgue 测度之间的区别抹掉。用于散射和谱问题时，球面延拓是一种固定能量的广义波，而不是一个具有有限全空间平方质量的束缚态。
+事实上，非零 \(g\) 的这个输出不属于 \(L^2(\mathbb R^d)\)。
+若 \(Eg\in L^2\)，Plancherel 说明其 Fourier 变换由一个
+\(L^2\) 函数表示。另一方面，对测试函数使用 Fubini 可知该变换就是测度
+\(g\,d\sigma\)，支于 Lebesgue 零测的球面。一个绝对连续的 \(L^2\)
+分布若支于零测集只能为零，所以 \(g=0\)，矛盾。
+若 \(1\leq q<2\) 且 \(Eg\in L^q\)，再利用有界性，
+\[
+ \int|Eg|^2\leq\|Eg\|_\infty^{\,2-q}\int|Eg|^q<\infty,
+\]
+也得同一矛盾。因而 \(TT^*\) 中的平方空间位于曲面数据端；
+环境输出使用较大的指数。将这两种测度下的平方空间混在一起，
+就会失去限制理论的核心区别。

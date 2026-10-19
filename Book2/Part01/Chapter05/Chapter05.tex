@@ -6,17 +6,21 @@
 % Schwartz半范数、双线性配对、归一化转换与正定Gauss公式分别核对。
 % 本章自足证明Hermite完备性、S'自同构和各维负Laplace基本解。
 \begin{chapterabstract}
-Fourier 变换要容纳常函数、点质量和可积函数以外的对象，需要一个在变换下保持不变的测试空间。本章先构造 Schwartz 空间，证明半范数完备性及微分、多项式乘法、卷积和变换的连续性，并以 Hermite 函数展示变换的离散特征结构。随后把变换转移到连续对偶，得到温和分布上的统一理论。最后将常系数微分方程化为频率乘法，构造带正零阶项及各维负 Laplace 算子的基本解。
+Fourier 变换要容纳常函数、点质量和可积函数以外的对象，需要一个在变换下保持不变的测试空间。本章先构造 Schwartz 空间，证明半范数完备性及微分、多项式乘法、卷积和变换的连续性，并在选读专题中以 Hermite 函数展示变换的离散特征结构。随后把变换转移到连续对偶，得到温和分布上的统一理论。最后将常系数微分方程化为频率乘法，构造带正零阶项及各维负 Laplace 算子的基本解。
 \end{chapterabstract}
 \begin{learninggoals}
 \begin{itemize}
 \item\label{b2:item:05-goal-schwartz}使用具体半范数检查快速下降、收敛和连续操作，区分 Schwartz 收敛与共同紧支集的测试函数收敛。
-\item\label{b2:item:05-goal-hermite}由 Gauss 函数构造 Hermite 系，理解其正交性、完备性和 Fourier 特征值。
+\item\label{b2:item:05-goal-hermite}选读进阶目标：在\subsecref{b2:subsec:050204}中由 Gauss 函数构造 Hermite 系，理解其正交性、完备性和 Fourier 特征值；这不是分布与基本解主线的前置。
 \item\label{b2:item:05-goal-tempered}用连续泛函定义温和分布，保持双线性配对与既有微分符号一致。
 \item\label{b2:item:05-goal-examples}计算 Dirac 测度、多项式、导数与齐次分布的变换，判断普通积分何时不能再用。
 \item\label{b2:item:05-goal-fundamental}将常系数算子转为多项式符号，计算不同维数的基本解，并说明原点奇性和边界定向在证明中的作用。
 \end{itemize}
 \end{learninggoals}
+
+一单位质量集中在原点时，普通函数无法同时表示它的总质量和无限集中程度。另一个看似相反的对象是常函数 \(1\)：它均匀铺满空间，却应只含零频率。两者的 Fourier 变换应彼此对应；要把这句话变成计算规则，需要先找到对二者都可测试、又在变换下保持不变的函数空间。本章构造这个空间，然后用点质量的方程 \(-\Delta E=\delta_0\) 说明广义对象怎样产生可用的解。
+
+\ProseParagraphBreak
 
 本章使用\chapref{b2:ch:03}的变换公式与反演、\chapref{b2:ch:04}的平方能量理论，以及\chapref{b2:ch:01}的分部积分和 Green 公式。第一卷定义 20.2.1 的普通分布作为比较对象：其测试函数紧支集，故不要求控制无穷远；温和分布则须连续作用于全部 Schwartz 函数。二者的范围不同，不能只因名称相似就互相替换。
 
@@ -30,7 +34,7 @@ Fourier 变换要容纳常函数、点质量和可积函数以外的对象，需
 \input{Part01/Chapter05/Section0504}
 
 \begin{chaptersummary}
-Schwartz 空间用所有阶导数和所有多项式权重控制函数。Fourier 变换在其中交换微分与乘法，反演使它成为连续自同构；Hermite 基则把这一变换的四种特征值具体呈现出来。温和分布通过作用于测试函数定义，双线性配对把已有的变换公式连续延伸到 Dirac 测度、多项式以及全部 \(L^p\) 函数。
+Schwartz 空间用所有阶导数和所有多项式权重控制函数。Fourier 变换在其中交换微分与乘法，反演使它成为连续自同构；Hermite 选读专题则以正交基把这一变换的四种特征值具体呈现出来。温和分布通过作用于测试函数定义，双线性配对把已有的变换公式连续延伸到 Dirac 测度、多项式以及全部 \(L^p\) 函数。
 
 \ProseParagraphBreak
 
@@ -39,19 +43,22 @@ Schwartz 空间用所有阶导数和所有多项式权重控制函数。Fourier 
 
 \BookExercises
 
-以下题目把半范数、差商和频率符号用于具体对象。前几题强调收敛与符号，后几题处理奇性、频率特征结构和方程。
+以下题目把半范数、差商和频率符号用于具体对象。前几题强调收敛与符号，后几题处理奇性、频率特征结构和方程。\Cref{b2:ex:05-hermite-oscillator}对应选读的 Hermite 专题；\cref{b2:ex:05-polynomial-comb}比较离散测度的多项式增长与指数增长，最后的\cref{b2:ex:05-cutoff-laplace-kernel}考察截断基本解后出现的壳层余项。
 
 % 自拟：所有导数一致趋零仍不控制多项式权重。
+% 预留题头及首个公式所需空间，避免题头换页后超链接锚点仍在前页。
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b2:ex:05-schwartz-convergence}
-设非零 \(\rho\in C_c^\infty(\mathbb R)\)，令 \(\varphi_n(x)=n^{-1}\rho(x/n)\)。证明每个固定阶导数都一致趋于零，但 \(\varphi_n\) 不在 \(\mathcal S\) 中趋零。它作为温和分布是否趋零？
+设非零 \(\rho\in C_c^\infty(\mathbb R;\mathbb C)\)，对正整数 \(n\) 令 \(\varphi_n(x)=n^{-1}\rho(x/n)\)。证明每个固定阶导数都在 \(\mathbb R\) 上一致趋于零，但 \(\varphi_n\) 不在 \(\mathcal S(\mathbb R;\mathbb C)\) 中趋零。它作为温和分布是否逐测试函数配对趋于零？
 \end{exercise}
 \begin{solution}
 有 \(\|\varphi_n^{(k)}\|_\infty=n^{-k-1}\|\rho^{(k)}\|_\infty\to0\)。选 \(x_0\ne0\) 使 \(\rho(x_0)\ne0\)，则 \(p_1(\varphi_n)\geq n^{-1}(1+n|x_0|)|\rho(x_0)|\)，下极限为正，故不按 Schwartz 半范数趋零。另一方面，对 \(\psi\in\mathcal S\)，\(|\int\varphi_n\psi|\leq n^{-1}\|\rho\|_\infty\cdot\|\psi\|_1\to0\)，所以在 \(\mathcal S'\) 中趋零。
 \end{solution}
 
 % 自拟：差分点质量的极限与傅里叶符号同时核对。
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b2:ex:05-delta-differences}
-在一维求下列分布列的极限，并计算极限的 Fourier 变换：
+对正整数 \(n\)，在 \(\mathcal S'(\mathbb R;\mathbb C)\) 中按逐测试函数配对收敛求下列分布列的极限，并计算极限的 Fourier 变换，其中 \(\delta_a\) 表示位于 \(a\in\mathbb R\) 的 Dirac 测度：
 \[
  n(\delta_{1/n}-\delta_0),\quad
  n^2(\delta_{1/n}+\delta_{-1/n}-2\delta_0).
@@ -62,21 +69,23 @@ Schwartz 空间用所有阶导数和所有多项式权重控制函数。Fourier 
 \end{solution}
 
 % 自拟：乘以x的核及原点导数项，训练分布除法。
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b2:ex:05-x-times-distribution}
-在 \(\mathcal S'(\mathbb R)\) 中证明 \(xT=0\) 当且仅当 \(T=c\delta_0\)。再求方程 \(xT=\delta_0\) 的全部解。
+设 \(T\in\mathcal S'(\mathbb R;\mathbb C)\)。证明 \(xT=0\) 当且仅当存在 \(c\in\mathbb C\) 使 \(T=c\delta_0\)。再求方程 \(xT=\delta_0\) 在同一空间中的全部解。
 \end{exercise}
 \begin{solution}
 取 \(\rho\in C_c^\infty\)，在原点附近为 \(1\)。任意 \(\varphi\in\mathcal S\) 可写成 \(\varphi=\varphi(0)\rho+x\psi\)，其中 \(\psi=(\varphi-\varphi(0)\rho)/x\) 在原点用光滑延拓，远处除以 \(x\) 保持快速下降，所以 \(\psi\in\mathcal S\)。若 \(xT=0\)，便有 \(\langle T,\varphi\rangle=\varphi(0)\langle T,\rho\rangle\)，即 \(T=c\delta_0\)。反向直接成立。又因 \(\langle x\delta_0',\varphi\rangle=-(x\varphi)'(0)=-\varphi(0)\)，一个特解为 \(-\delta_0'\)。全部解因而为 \(-\delta_0'+c\delta_0\)。
 \end{solution}
 
 % 自拟：主值分布、奇偶性和一阶分布方程组合得到变换常数。
+\Needspace{6\baselineskip}
 \begin{optionalexercise}\label{b2:ex:05-principal-value}
-证明
+证明对每个 \(\varphi\in\mathcal S(\mathbb R;\mathbb C)\)，公式
 \[
  \langle T,\varphi\rangle
  =\lim_{\varepsilon\downarrow0}\int_{|x|>\varepsilon}\dfrac{\varphi(x)}x\,\mathrm{d}x
 \]
-定义温和分布，称为 \(\operatorname{pv}(1/x)\)。证明 \(xT=1\)，并计算 \(\widehat T\)。
+定义 \(T\in\mathcal S'(\mathbb R;\mathbb C)\)，称为 \(\operatorname{pv}(1/x)\)。证明 \(xT=1\)，其中右侧是常函数 \(1\) 给出的分布，并计算 \(\widehat T\)。
 \end{optionalexercise}
 \begin{solution}
 在 \(|x|<1\) 内减去 \(\varphi(0)\)，常数项因对称性抵消，剩余绝对值由 \(\|\varphi'\|_\infty\) 控制；在 \(|x|\geq1\) 内用 \(p_2(\varphi)(1+|x|)^{-2}/|x|\) 控制。因此极限存在且满足有限半范数界。代入 \(x\varphi\) 得 \(xT=1\)，并可换元看出 \(T\) 为奇分布。
@@ -85,32 +94,39 @@ Schwartz 空间用所有阶导数和所有多项式权重控制函数。Fourier 
 \end{solution}
 
 % 自拟：求Hermite低阶式，并把频率特征关系与谐振子联系。
-\begin{exercise}\label{b2:ex:05-hermite-oscillator}
-求 \(h_1,h_2\) 的显式公式，证明
+\Needspace{6\baselineskip}
+\begin{optionalexercise}\label{b2:ex:05-hermite-oscillator}
+在 \(\mathbb R\) 上令 \(h_0(x)=2^{1/4}e^{-\pi x^2}\)、\(a^*=(4\pi)^{-1/2}(-\partial_x+2\pi x)\)，并对 \(n\in\mathbb N_0\) 令 \(h_n=(a^*)^nh_0/\sqrt{n!}\)，即采用\subsecref{b2:subsec:050204}的归一化。求 \(h_1,h_2\) 的显式公式，证明对每个 \(n\in\mathbb N_0\) 有
 \[
  \left(-\dfrac{\mathrm{d}^2}{\mathrm{d}x^2}+4\pi^2x^2\right)h_n
  =(4n+2)\pi h_n,
 \]
 并把 \(x^2h_0\) 展成 Hermite 函数的有限线性组合。
-\end{exercise}
+\end{optionalexercise}
 \begin{solution}
-从上升算子计算得 \(h_1=\sqrt{4\pi}\,xh_0\)、\(h_2=2^{-1/2}(4\pi x^2-1)h_0\)。展开算子有 \(4\pi a^*a=-\mathrm{d}^2/\mathrm{d}x^2+4\pi^2x^2-2\pi\)。由 \(a^*ah_n=nh_n\) 得到特征方程。第二个显式公式给出 \(x^2h_0=(h_0+\sqrt2h_2)/(4\pi)\)。其变换为 \((h_0-\sqrt2h_2)/(4\pi)\)，也可与两次频率求导公式核对。
+从上升算子计算得 \(h_1=\sqrt{4\pi}\,xh_0\)、\(h_2=2^{-1/2}(4\pi x^2-1)h_0\)。记下降算子 \(a=(4\pi)^{-1/2}(\partial_x+2\pi x)\)，展开算子有 \(4\pi a^*a=-\mathrm{d}^2/\mathrm{d}x^2+4\pi^2x^2-2\pi\)。由 \(a^*ah_n=nh_n\) 得到特征方程。第二个显式公式给出 \(x^2h_0=(h_0+\sqrt2h_2)/(4\pi)\)。其变换为 \((h_0-\sqrt2h_2)/(4\pi)\)，也可与两次频率求导公式核对。
 \end{solution}
 
 % 自拟：有界光滑乘子若导数失控，可以破坏S。
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b2:ex:05-fast-multiplier}
-在一维令 \(a(x)=e^{\mathrm{i}e^{x^2}}\)、\(\varphi(x)=e^{-x^2}\)。证明 \(a\) 光滑且有界，\(\varphi\in\mathcal S\)，但 \(a\varphi\notin\mathcal S\)。比较乘子 \(b(x)=e^{\mathrm{i}x^3}\) 的行为。
+在 \(\mathbb R\) 上令 \(a(x)=e^{\mathrm{i}e^{x^2}}\)、\(\varphi(x)=e^{-x^2}\)。证明 \(a\colon\mathbb R\to\mathbb C\) 光滑且有界，\(\varphi\in\mathcal S(\mathbb R;\mathbb C)\)，但 \(a\varphi\notin\mathcal S(\mathbb R;\mathbb C)\)。再判断乘以 \(b(x)=e^{\mathrm{i}x^3}\) 是否给出 \(\mathcal S(\mathbb R;\mathbb C)\) 的连续自同构，并说明其逆。
 \end{exercise}
 \begin{solution}
 直接求导得 \((a\varphi)'=a(-2xe^{-x^2}+2\mathrm{i}x)\)，其模随 \(|x|\) 无界，故不满足 Schwartz 条件。对 \(b\)，每个导数都是一个多项式乘 \(b\)，因而至多多项式增长。由正文的乘法命题，乘以 \(b\) 连续保持 \(\mathcal S\)；其逆乘子 \(\overline b\) 也有相同性质，所以还给出连续自同构。
 \end{solution}
 
 % 自拟：尺度决定屏蔽算子的基本解与L1质量。
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b2:ex:05-resolvent-scale}
-设 \(E\) 为正文构造的 \(1-\Delta\) 基本解。对 \(a>0\)，证明 \(E_a(x)=a^{d/2-1}E(\sqrt a\,x)\) 是 \(a-\Delta\) 的可积基本解，求其变换和 \(L^1\) 范数。若 \(f\in L^p\)，证明 \(\|E_a*f\|_p\leq a^{-1}\|f\|_p\)。
+设 \(d\) 为正整数，\(E\in L^1(\mathbb R^d;\mathbb R)\) 为几乎处处由
+\[
+ E(x)=\int_0^\infty e^{-t}(4\pi t)^{-d/2}e^{-|x|^2/(4t)}\,\mathrm dt
+\]
+给出的非负等价类；允许这个积分在原点取无穷值。对 \(a>0\)，在几乎处处意义下令 \(E_a(x)=a^{d/2-1}E(\sqrt a\,x)\)。证明 \(E_a\) 是 \(a-\Delta\) 的可积基本解，求其变换和 \(L^1(\mathbb R^d)\) 范数。若 \(1\leq p\leq\infty\)、\(f\in L^p(\mathbb R^d;\mathbb C)\)，证明 \(\|E_a*f\|_p\leq a^{-1}\|f\|_p\)。
 \end{exercise}
 \begin{solution}
-尺度公式给出
+\Cref{b2:prop:05-bessel-fundamental}已证明 \(E\) 的质量为 \(1\)，且 \(\widehat E(\xi)=(1+4\pi^2|\xi|^2)^{-1}\)。尺度公式给出
 \[
  \widehat E_a(\xi)=a^{-1}\widehat E(\xi/\sqrt a)
  =\dfrac1{a+4\pi^2|\xi|^2}.
@@ -119,8 +135,13 @@ Schwartz 空间用所有阶导数和所有多项式权重控制函数。Fourier 
 \end{solution}
 
 % 自拟：离散测度的温和性及其不可微函数式解释。
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b2:ex:05-polynomial-comb}
-设 \((c_k)_{k\in\mathbb Z^d}\) 满足 \(|c_k|\leq C(1+|k|)^M\)。证明 \(T=\sum_{k\in\mathbb Z^d}c_k\delta_k\) 由绝对收敛配对定义温和分布，且立方体内的有限截断在 \(\mathcal S'\) 中趋向 \(T\)。
+设 \(d\) 为正整数，\(c_k\in\mathbb C\)（\(k\in\mathbb Z^d\)），并存在与 \(k\) 无关的常数 \(C,M\geq0\)，使 \(|c_k|\leq C(1+|k|)^M\)。证明 \(T=\sum_{k\in\mathbb Z^d}c_k\delta_k\) 由绝对收敛配对定义温和分布，且截断 \(T_N=\sum_{|k|_\infty\leq N}c_k\delta_k\) 在 \(\mathcal S'(\mathbb R^d;\mathbb C)\) 中逐测试函数配对趋向 \(T\)，其中 \(N\) 遍历正整数，\(|k|_\infty=\max_j|k_j|\)。再在 \(d=1\) 时证明正测度
+\[
+ \mu=\sum_{k\in\mathbb Z}e^{|k|}\delta_k
+\]
+虽给出紧支集测试函数上的普通分布，却不能延拓为 \(\mathcal S'(\mathbb R;\mathbb C)\) 中的元素。可选取非负 \(\rho\in C_c^\infty(\mathbb R;\mathbb R)\)，使 \(\operatorname{supp}\rho\subset(-1/2,1/2)\)、\(\rho(0)=1\)，检查 \(\varphi_n(x)=e^{-n/2}\rho(x-n)\) 的全部 Schwartz 半范数与 \(\int\varphi_n\,\mathrm d\mu\)。
 \end{exercise}
 \begin{solution}
 选整数 \(N>M+d\)。则
@@ -129,4 +150,82 @@ Schwartz 空间用所有阶导数和所有多项式权重控制函数。Fourier 
  \leq C p_N(\varphi)\sum_k(1+|k|)^{M-N}<\infty.
 \]
 最后的格点级数可按整数半径或二进环带比较体积：半径约 \(2^j\) 的点数至多为 \(C_d2^{jd}\)，所以所得几何级数收敛。这同时给出有限半范数界。对每个固定测试函数，绝对收敛级数的截断尾部趋零，正好是 \(\mathcal S'\) 收敛。
+
+指数权测度在每个紧集上只有有限个格点，故局部有限；对有共同紧支集的测试函数，积分由该紧集上的有限质量乘函数的上确界控制，所以它确实定义普通分布。取题中 \(\rho\) 和正整数 \(n\)。对每个固定非负整数 \(m\)，\(\varphi_n\) 的支集在 \((n-1/2,n+1/2)\) 内，其各阶导数都是 \(e^{-n/2}\) 乘相应平移导数。因此
+\[
+ p_m(\varphi_n)
+ \leq C_{m,\rho}\cdot e^{-n/2}(1+n)^m\longrightarrow0.
+\]
+故 \(\varphi_n\to0\) 于 \(\mathcal S(\mathbb R;\mathbb C)\)。另一方面，支集中只有整数 \(n\)，所以
+\[
+ \int\varphi_n\,\mathrm d\mu
+ =e^n\cdot e^{-n/2}\rho(0)=e^{n/2}\longrightarrow\infty.
+\]
+若存在延拓到 \(\mathcal S\) 的连续泛函，它在这些紧支集测试函数上的值必须保持上述积分值，却又应由连续性趋于零，矛盾。这不只是说明某个增长判别不能套用，而是直接排除了连续延拓。
+\end{solution}
+
+% 自拟：移动Laplace极点并截断空间，求平滑壳层余项及其总质量；不重复正文未截断核的验证题。
+\Needspace{6\baselineskip}
+\begin{exercise}\label{b2:ex:05-cutoff-laplace-kernel}
+设 \(d\in\{2,3\}\)、\(a\in\mathbb R^d\)、\(R>0\)。对 \(x\ne a\)，令
+\[
+ \Phi_{d,a}(x)=
+ \begin{cases}
+ -\dfrac1{2\pi}\log|x-a|,&d=2,\\[4pt]
+ \dfrac1{4\pi|x-a|},&d=3.
+ \end{cases}
+\]
+在 \(x=a\) 处任意赋一个有限值。取实值 \(\chi\in C_c^\infty(\mathbb R^d;\mathbb R)\)，使 \(\chi=1\) 于 \(B(0,1)\)、\(\chi=0\) 于 \(\{|x|\geq2\}\)，并令 \(\chi_R(x)=\chi((x-a)/R)\)、\(K(x)=\chi_R(x)\cdot\Phi_{d,a}(x)\)。
+\begin{enumerate}
+\item\label{b2:item:05-shifted-harmonic-flux} 证明 \(\Phi_{d,a}\) 在 \(\mathbb R^d\setminus\{a\}\) 上调和，且对每个 \(\varepsilon>0\)，
+\[
+ -\int_{\partial B(a,\varepsilon)}\partial_n\Phi_{d,a}\,\mathrm dS=1,
+\]
+其中 \(n\) 是小球的外单位法向。说明删去小球后，剩余区域在内边界处的外法向为何取相反方向。
+\item\label{b2:item:05-cutoff-shell-remainder} 证明 \(K\in L^1(\mathbb R^d;\mathbb R)\) 且紧支集。对 \(x\ne a\) 令
+\[
+ q(x)=-2\nabla\chi_R(x)\cdot\nabla\Phi_{d,a}(x)
+       -(\Delta\chi_R(x))\cdot\Phi_{d,a}(x).
+\]
+证明 \(q\) 在 \(a\) 附近补成零后属于 \(C_c^\infty(\mathbb R^d;\mathbb R)\)，支集包含于 \(\{\,x\mid R\leq|x-a|\leq2R\,\}\)，并通过删球积分和极限证明
+\[
+ -\Delta K=\delta_a+q\quad\text{于 }\mathcal S'(\mathbb R^d;\mathbb C).
+\]
+\item\label{b2:item:05-shell-mass} 证明 \(\int_{\mathbb R^d}q=-1\)。解释为何把基本解截成紧支集后，不能仍只留下一个点质量而没有额外余项。
+\end{enumerate}
+\end{exercise}
+\begin{solution}
+记 \(r=|x-a|\)、\(\sigma_1=2\pi\)、\(\sigma_2=4\pi\)。两种维数下径向导数均为
+\[
+ \Phi_{d,a}'(r)=-\frac1{\sigma_{d-1}r^{d-1}}.
+\]
+再求一次导数，便有 \(\Phi_{d,a}''+(d-1)\Phi_{d,a}'/r=0\)，所以原点移至 \(a\) 后，核仍在极点外调和。在球的外法向 \(n=e_r\) 下，通量为
+\[
+ \int_{\partial B(a,\varepsilon)}\partial_n\Phi_{d,a}\,\mathrm dS
+ =-\frac1{\sigma_{d-1}\varepsilon^{d-1}}
+      \cdot\sigma_{d-1}\varepsilon^{d-1}=-1.
+\]
+因此带负号的通量等于 \(1\)。对删球后的区域，穿过内边界向区域外走是朝向被删去的球心，故它的外法向为 \(-e_r\)，不是 \(e_r\)。
+
+核在极点附近绝对可积：二维只需 \(\int_0^1r|\log r|\,\mathrm dr<\infty\)，三维只需 \(\int_0^1r\,\mathrm dr<\infty\)。乘上 \(\chi_R\) 后支集包含于 \(\overline{B(a,2R)}\)，故 \(K\in L^1\)。\(\chi_R\) 的所有正阶导数在 \(B(a,R)\) 内及 \(B(a,2R)\) 外都为零，因此 \(q\) 只在远离极点的壳层上可能非零，在那里各因子均光滑。补零后 \(q\) 全局光滑且紧支集。极点外使用普通乘积求导公式，得 \(-\Delta K=q\)；点质量则必须另从边界极限中算出。
+
+取任意 \(\varphi\in C_c^\infty(\mathbb R^d;\mathbb C)\)，选足够大的外球包含 \(K\) 和 \(\varphi\) 的支集，再删去 \(\overline{B(a,\varepsilon)}\)，其中 \(0<\varepsilon<\min\{R,1\}\)。外球边界的项全为零。内球附近 \(K=\Phi_{d,a}\)，并且剩余区域的法向为 \(-e_r\)，Green 公式于是给出
+\[
+ \begin{aligned}
+ &\int_{|x-a|>\varepsilon}K(x)(-\Delta\varphi(x))\,\mathrm dx\\
+ &\quad=\int_{\mathbb R^d}q(x)\varphi(x)\,\mathrm dx
+       +\int_{|x-a|=\varepsilon}
+        \left(-\varphi\,\partial_r\Phi_{d,a}
+                     +\Phi_{d,a}\partial_r\varphi\right)\,\mathrm dS.
+ \end{aligned}
+\]
+第一项已可在全空间积分，因为 \(q\) 支撑于 \(|x-a|\geq R\)。边界上含 \(-\partial_r\Phi_{d,a}\) 的项正是 \(\varphi\) 的球面平均，趋于 \(\varphi(a)\)。另一项的模由 \(\|\nabla\varphi\|_\infty\) 乘 \(C\varepsilon|\log\varepsilon|\)（二维）或 \(C\varepsilon\)（三维）控制，故趋零。左侧由 \(K\) 的局部可积性趋于 \(\int K(-\Delta\varphi)\)，得到 \(-\Delta K=\delta_a+q\) 在紧支集测试函数上的等式。\(K\in L^1\)、\(q\in C_c^\infty\) 和 \(\delta_a\) 都定义温和分布，再由 \(C_c^\infty\) 在 \(\mathcal S\) 中稠密，将等式推广到 \(\mathcal S'\)。
+
+最后取 \(\eta\in C_c^\infty(\mathbb R^d;\mathbb R)\)，在 \(\overline{B(a,2R)}\) 的一个邻域内等于 \(1\)。\(\Delta\eta\) 在 \(K\) 的支集上为零，而 \(\eta\) 在 \(q\) 的支集上及 \(a\) 点均为 \(1\)，故
+\[
+ 0=\langle-\Delta K,\eta\rangle
+  =\eta(a)+\int_{\mathbb R^d}q(x)\eta(x)\,\mathrm dx
+  =1+\int_{\mathbb R^d}q.
+\]
+于是余项的总质量为 \(-1\)，恰好抵消点质量的总质量。空间截断保留了极点附近的单位通量，却必须在截断变化的壳层中产生这项补偿。
 \end{solution}

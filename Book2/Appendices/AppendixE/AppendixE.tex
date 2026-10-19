@@ -3,514 +3,1878 @@
 \label{b2:app:E}
 
 \begin{chapterabstract}
-
-色散估计把酉演化的振荡转化为空间衰减，\(TT^*\) 再产生时间空间混合范数界。本附录完整证明欧氏 Schrödinger 的非端点 Strichartz 估计及同指数非齐次版本，并用驻相和平方函数完成波方程一个明确非端点范围的全频率估计，最后构造一维三次非线性方程的局部温和解。能量端点的深层求和另行标明。
-
+Schrödinger 演化保持平方范数，却能使局部集中的振幅随时间散开。色散界描述这种振荡效应，Strichartz 估计则把空间可积性与时间可积性结合起来。本附录从 Gaussian 正则化推导核公式，以 \(TT^*\) 和时间分数积分证明非端点估计，并建立推迟积分的连续延拓。半波演化还需先作频率局部化，再以平方函数合成；能量端点所需的深层双线性求和另行标源。最后用已证的非端点工具构造一维三次方程的温和解，通过保质量的频率截断把守恒律传给平方可积初值，完成全局延拓。
 \end{chapterabstract}
 
 \begin{learninggoals}\begin{itemize}
-\item\label{b2:item:app-E-goal-1}从 Fresnel 核取得 Schrödinger 色散估计及其尺度。
-\item\label{b2:item:app-E-goal-2}完整推导非端点 \(TT^*\) 与同指数推迟积分估计。
-\item\label{b2:item:app-E-goal-3}推导半波的频带衰减并以平方函数完成非端点全频率合成。
-\item\label{b2:item:app-E-goal-4}以已证时空估计构造一维三次方程的局部解。
+\item\label{b2:item:app-E-goal-1}从正则化核公式取得色散界，区分固定时间范数与时间空间混合范数。
+\item\label{b2:item:app-E-goal-2}完成非端点 \(TT^*\) 对偶论证，并在适当外力空间中定义推迟积分。
+\item\label{b2:item:app-E-goal-3}由环带驻相、频率尺度和平方函数合成推出明确范围的半波估计。
+\item\label{b2:item:app-E-goal-4}构造一维三次方程的局部解，利用频率截断证明质量守恒、全局延拓与连续依赖。
 \end{itemize}\end{learninggoals}
 
-固定 \(\widehat f(\xi)=\int e^{-2\pi ix\cdot\xi}f(x)\mathrm dx\)，令 \(U(t)=e^{it\Delta}\)。这与热半群 \(e^{t\Delta}\) 不同：前者在 \(L^2\) 上酉，核有振荡而不为非负可积概率核。
-
-\section{Schrödinger 色散与混合范数}
-
-\label{b2:sec:app-E-1}
-
-Fourier 符号为 \(e^{-4\pi^2it|\xi|^2}\)。以 Gaussian 正则化求逆变换，\(t\ne0\) 时得到
-\[
- U(t)f(x)=(4\pi it)^{-d/2}
-       \int e^{i|x-y|^2/(4t)}f(y)\,\mathrm dy.
-\]
-复幂按连续的 Gaussian 极限选择，其模为 \((4\pi|t|)^{-d/2}\)。因此
-\[
- \|U(t)f\|_\infty\le(4\pi|t|)^{-d/2}\|f\|_1,
- \qquad \|U(t)f\|_2=\|f\|_2.
-\]
-对 Schwartz 输入公式来自绝对收敛正则化的极限；对 \(L^1\) 输入振荡积分仍绝对收敛，连续延拓得到第一式。与酉性插值可得
-\[
- \|U(t)f\|_r\le C|t|^{-\alpha}\|f\|_{r'},
- \qquad \alpha=d(1/2-1/r),\quad2\le r\le\infty.
-\]
-这是固定非零时间的色散界，常数在 \(t\to0\) 时发散。
+所需基础是本卷的 Plancherel 定理与复插值、\chapref{b2:ch:19}的分数积分和平方函数，以及\chapref{b2:ch:21}的复 Gaussian 积分与驻相法。\appref{b2:app:D}解释了酉群、生成元和温和解的关系；本附录仍会明确给出 Fourier 乘子和积分意义，避免把无界算子的形式求导当作粗糙初值的证明。空间函数取复值，测度均为相应 Euclidean 空间的 Lebesgue 测度，Fourier 约定保持为 \(e^{-2\pi\mathrm i x\cdot\xi}\)。
 
 \ProseParagraphBreak
-混合范数记为
-\(\|u\|_{L^q_tL^r_x}=(\int\|u(t,\cdot)\|_r^q\mathrm dt)^{1/q}\)。
-时间积分与空间积分次序属于定义的一部分。通过缩放
-\(u_\lambda(t,x)=\lambda^{d/2}u(\lambda^2t,\lambda x)\)，能量保持，而混合范数缩放因子为
-\(\lambda^{d/2-d/r-2/q}\)。因此能量型估计的自然关系是
+
+前两节先建立 Schrödinger 的线性估计，第三节说明波方程为何多出频率权重，第四节区分本附录已经证明的非端点范围与另需深层理论的端点。最后一节的非线性应用只依赖前两节的完整证明，因此可以先读这条路线，再返回波估计和端点。局部收缩、质量守恒和全局解各有不同的论证任务：时间空间估计提供收缩所需的范数，逼近使守恒律对一般初值成立，统一的局部存在时间才允许反复延拓。
+
+\section{Schrödinger 色散与混合范数}
+\label{b2:sec:app-E-1}
+
+热演化通过频率乘子的模衰减压低高频；自由 Schrödinger 演化的乘子则始终具有单位模。它保存平方能量，却仍可能使一个局部波包的峰值下降。这里要估计的正是振荡相位造成的空间分散，再把这种固定时间的估计与时间积分结合起来。先从 Fourier 定义出发，可以避免把不绝对可积的振荡核误当成热核使用。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[酉群与色散核]\label{b2:prop:E-dispersive-kernel}
+设整数 \(d\geq1\)，所有函数均为复值，空间测度为 \(\mathbb R^d\) 上的 Lebesgue 测度。采用
+\[
+ \widehat f(\xi)=\int_{\mathbb R^d}
+       e^{-2\pi\mathrm ix\cdot\xi}\cdot f(x)\,\mathrm dx
+\]
+及其 Plancherel 延拓 \(\mathcal F_2\)。对 \(f\in L^2(\mathbb R^d)\) 定义
+\[
+ U(t)f=\mathcal F_2^{-1}
+       \left(e^{-4\pi^2\mathrm it|\xi|^2}\mathcal F_2f\right),
+ \quad t\in\mathbb R.
+\]
+则 \(U\) 为强连续酉群，且
+\[
+ U(t+s)=U(t)U(s),\quad U(t)^*=U(-t),\quad
+ \|U(t)f\|_2=\|f\|_2.
+\]
+对固定 \(t\ne0\)，令
+\begin{equation}\label{b2:eq:E-fresnel-kernel}
+ \begin{aligned}
+ K_t(x)&=(4\pi\mathrm it)^{-d/2}
+               \exp\left(\frac{\mathrm i|x|^2}{4t}\right),\\
+ (4\pi\mathrm it)^{-d/2}
+ &=(4\pi|t|)^{-d/2}
+       \exp\left(-\frac{\mathrm i\pi d}{4}\operatorname{sgn}t\right).
+ \end{aligned}
+\end{equation}
+对 \(f\in L^1\cap L^2\)，有 \(U(t)f=K_t*f\) 几乎处处。卷积公式还定义从 \(L^1\) 到 \(L^\infty\) 的有界算子，满足
+\[
+ \|U(t)f\|_\infty\leq(4\pi|t|)^{-d/2}\|f\|_1.
+\]
+它与 \(L^2\) 上的酉群在共同定义域相容。对 \(2\leq r\leq\infty\)，令 \(r'\) 为共轭指数，则相容插值还给出
+\begin{equation}\label{b2:eq:E-dispersive-interpolation}
+ \|U(t)f\|_r\leq C_{d,r}|t|^{-\alpha}\|f\|_{r'},
+ \quad
+ \alpha=d\left(\frac12-\frac1r\right),\quad t\ne0.
+\end{equation}
+\end{proposition}
+\begin{proof}
+乘子的模为一，Plancherel 定理给出等距性；乘子相乘和取共轭分别给出群律与伴随公式。特别地，\(U(-t)\) 是逆，所以算子是酉的。对 \(h\to0\)，
+\[
+ \|(U(t+h)-U(t))f\|_2^2
+ =\int_{\mathbb R^d}
+   |e^{-4\pi^2\mathrm ih|\xi|^2}-1|^2
+        \cdot|\mathcal F_2f(\xi)|^2\,\mathrm d\xi.
+\]
+被积函数逐点趋零，并由 \(4|\mathcal F_2f|^2\) 控制，支配收敛给出全部时间的强连续性。
+
+为取得核，固定 \(\varepsilon>0\)，把乘子改成
+\[
+ m_{\varepsilon,t}(\xi)
+ =e^{-4\pi^2(\varepsilon+\mathrm it)|\xi|^2}.
+\]
+它在频率空间可积。逐坐标使用\cref{b2:prop:21-complex-gaussian}，参数取 \(a=4\pi(\varepsilon+\mathrm it)\)，频率取 \(-x_j\)。该命题要求 \(\operatorname{Re}a>0\)，这里由 \(\varepsilon>0\) 保证；平方根在右半平面选择与正实轴正平方根连续相接的分支。因此逆变换为
+\begin{equation}\label{b2:eq:E-regularized-kernel}
+ K_{\varepsilon,t}(x)
+ =[4\pi(\varepsilon+\mathrm it)]^{-d/2}
+       \exp\left(-\frac{|x|^2}{4(\varepsilon+\mathrm it)}\right).
+\end{equation}
+对每个 \(\varepsilon>0\)，指数实部为负的二次型，所以 \(K_{\varepsilon,t}\in L^1\)，卷积与 Fourier 乘子定义相容。先在 Schwartz 函数上由绝对积分验证，再由 Young 不等式、Plancherel 和稠密性，便得到 \(L^2\) 输入上的相容性。
+
+现在固定 \(t\ne0\)，令 \(\varepsilon\downarrow0\)。复数 \(\varepsilon+\mathrm it\) 的辐角趋于 \((\pi/2)\operatorname{sgn}t\)，所以复幂趋于\eqref{b2:eq:E-fresnel-kernel}规定的分支；指数趋于 \(\exp(\mathrm i|x|^2/(4t))\)。另外，
+\[
+ |K_{\varepsilon,t}(x)|
+ =[4\pi|\varepsilon+\mathrm it|]^{-d/2}
+       \exp\left(-\frac{\varepsilon|x|^2}
+                       {4(\varepsilon^2+t^2)}\right)
+ \leq(4\pi|t|)^{-d/2}.
+\]
+于是对 \(f\in L^1\cap L^2\) 和每个固定 \(x\)，卷积积分由
+\((4\pi|t|)^{-d/2}|f(y)|\) 控制，故
+\[
+ (K_{\varepsilon,t}*f)(x)\longrightarrow(K_t*f)(x).
+\]
+另一方面，频率侧乘子逐点趋于 \(e^{-4\pi^2\mathrm it|\xi|^2}\)，差平方由 \(4|\widehat f|^2\) 控制。因此相同的正则化算子在 \(L^2\) 中趋于 \(U(t)f\)。选一个几乎处处收敛的子列，便把逐点卷积极限与酉群极限识别为同一函数。
+
+对一般 \(L^1\) 输入，\(K_t\) 的模是常数，故 \(\int K_t(x-y)\cdot f(y)\,\mathrm dy\) 对每个 \(x\) 绝对收敛，并给出所述 \(L^\infty\) 界。用 \(L^1\cap L^2\) 输入在 \(L^1\) 中逼近，也得到同一个延拓。最后在这个 \(L^1\to L^\infty\) 算子与 \(L^2\to L^2\) 酉算子之间应用 Riesz--Thorin 插值。取插值参数 \(2/r\)，则输入指数为 \(r'\)，输出指数为 \(r\)，时间幂为
+\[
+ \frac d2\left(1-\frac2r\right)
+ =d\left(\frac12-\frac1r\right).
+\]
+这就得到\eqref{b2:eq:E-dispersive-interpolation}。两个端点算子在交空间上一致，正是这一步插值所需的相容性。
+\end{proof}
+核 \(K_t\) 自身在全空间的绝对积分发散，但它与一个 \(L^1\) 输入的卷积仍绝对收敛。这两件事并不矛盾。群律来自 Fourier 乘子，不能未经核验就把两个非可积振荡核作普通绝对卷积来证明它。以上论证也先固定了 \(t\ne0\)，再去掉 Gaussian 正则化；所得控制在 \(t\to0\) 时并不一致。
+
+\ProseParagraphBreak
+
+固定时间的色散界把较强的输入可积性换成输出的空间范数。它本身还不能处理只有 \(L^2\) 的初值：一般 \(L^2\) 函数不属于 \(L^{r'}\)，而非线性方程中的初值常只能由平方能量控制。要取得这类输入的空间可积性，就必须同时衡量它在时间上出现的程度。
+
+\Needspace{6\baselineskip}
+\begin{definition}\label{b2:def:E-mixed-norm}
+设整数 \(d\geq1\)，\(I\subset\mathbb R\) 为区间，\(u:I\times\mathbb R^d\to\mathbb C\) 为 Lebesgue 可测函数。对 \(1\leq q,r<\infty\)，定义\term[hunhe-fanshu]{混合范数}[mixed norm]
+\[
+ \|u\|_{L^q_tL^r_x(I\times\mathbb R^d)}
+ =\left(\int_I
+     \left(\int_{\mathbb R^d}|u(t,x)|^r\,\mathrm dx\right)^{q/r}
+                   \mathrm dt\right)^{1/q}.
+\]
+当 \(r=\infty\) 时，内层范数改为关于 \(x\) 的本性上确界；当 \(q=\infty\) 时，外层范数改为关于 \(t\) 的本性上确界。范数有限者组成 \(L^q_tL^r_x(I\times\mathbb R^d)\)，也记为 \(L^q(I;L^r(\mathbb R^d))\)。
+当 \(r=\infty\) 时，此记号按可测函数的迭代范数解释，不额外要求取值于 \(L^\infty\) 的映射具有 Bochner 强可测性；下文需要稠密性与强积分的论证均另行给出适用指数。
+\end{definition}
+\symidx{\(L^q_tL^r_x\)：先取空间范数、再取时间范数的混合空间}
+这里的次序是先在一个固定时刻计算空间大小，再把这条随时间变化的大小曲线放入 \(L^q(I)\)。若 \(u(t,x)=a(t)b(x)\)，则
+\[
+ \|u\|_{L^q_tL^r_x}=\|a\|_{L^q(I)}\cdot\|b\|_{L^r(\mathbb R^d)}.
+\]
+当 \(q=r\) 时，Tonelli 定理使它等于通常的时空 \(L^q\) 范数；不同指数时，一般不能直接交换两个范数的次序。非线性乘积也必须分两步估计：先核对每个时间的空间 Hölder 指数，再核对所得时间函数的 Hölder 指数。
+
+\ProseParagraphBreak
+
+例如，\(\|u\|_{L^\infty_tL^2_x}\) 要求几乎每个时刻都有共同的能量界；有限的 \(q\) 则允许个别时段的空间范数很大，只要其 \(q\) 次方在时间上可积。对于连续 \(L^2\) 轨道，时间本性上确界等于通常的上确界，而一般 \(L^q_tL^r_x\) 元素只按几乎处处意义定义，不能自动给每个时刻赋予一个 \(L^r\) 值。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[Schrödinger 缩放]\label{b2:prop:E-schrodinger-scaling}
+设整数 \(d\geq1\)，\(f\in L^2(\mathbb R^d;\mathbb C)\)，\(U(t)=e^{\mathrm it\Delta}\) 采用\cref{b2:prop:E-dispersive-kernel}的 Fourier 定义。对 \(\lambda>0\)，令
+\[
+ f_\lambda(x)=\lambda^{d/2}f(\lambda x),\quad u(t)=U(t)f.
+\]
+则 \(\|f_\lambda\|_2=\|f\|_2\)，并且
+\[
+ U(t)f_\lambda(x)
+ =u_\lambda(t,x)
+ =\lambda^{d/2}u(\lambda^2t,\lambda x).
+\]
+对 \(1\leq q,r\leq\infty\) 和任意时间区间 \(I\)，有
+\begin{equation}\label{b2:eq:E-schrodinger-scaling}
+ \|u_\lambda\|_{L^q_tL^r_x(I)}
+ =\lambda^{d/2-d/r-2/q}
+       \|u\|_{L^q_tL^r_x(\lambda^2I)},
+\end{equation}
+其中 \(1/\infty=0\)。因此，若存在与 \(f\) 无关的全时间估计
+\[
+ \|U(t)f\|_{L^q_tL^r_x(\mathbb R\times\mathbb R^d)}
+ \leq C\|f\|_2
+ \quad(f\in L^2),
+\]
+则必有
 \[
  \frac2q+\frac dr=\frac d2.
 \]
-满足它、\(q,r\ge2\) 的指数称为 Schrödinger 可容许对；端点还需另加排除条件。
-
-\ProseParagraphBreak
-Gaussian 初值显示这里的衰减是空间扩散而非能量损失。取
-\(f(x)=e^{-|x|^2}\)，复 Gaussian 积分给出
-\[
- U(t)f(x)=(1+4\mathrm it)^{-d/2}
-                  \exp\!\left(-\frac{|x|^2}{1+4\mathrm it}\right),
-\]
-因此
-\[
- |U(t)f(x)|=(1+16t^2)^{-d/4}
-                  \exp\!\left(-\frac{|x|^2}{1+16t^2}\right).
-\]
-峰高下降，典型宽度按 \((1+16t^2)^{1/2}\) 增长；换元可核验其 \(L^2\) 范数不变。
-更一般地，\(L^r\) 范数与
-\((1+16t^2)^{-d(1/2-1/r)/2}\) 成比例。
-在大时间区间，\(q\) 次方的可积性要求
-\(q\alpha>1\)，而可容许关系给出 \(q\alpha=2\)。
-这个例子检查了衰减与混合范数的相容性，却不能替代对全部 \(L^2\) 初值的算子证明。
-
-\ProseParagraphBreak
-固定时间的 \(L^2\) 酉性也不能单独给出 \(L^2\to L^r\)、\(r>2\) 的有界性。
-否则 \(U(t)\) 在 \(L^2\) 上满射，会推出全部 \(L^2\) 函数属于 \(L^r\)，
-与紧支撑尖峰反例矛盾。Strichartz 估计允许空间范数在部分时刻很大，
-它控制的是这些时刻在整个时间积分中所占的大小；这一点决定了 \(TT^*\) 必须同时保留时间变量。
-
-\section{非端点 \(TT^*\) 证明}
-
-\label{b2:sec:app-E-2}
-
-\begin{theorem}[非端点 Schrödinger Strichartz]\label{b2:thm:E-schrodinger-nonendpoint}
-若 \(2<q<\infty\)、\(2\le r<\infty\)、\(2/q+d/r=d/2\)，则
-\[
- \|U(t)f\|_{L^q_tL^r_x(\mathbb R\times\mathbb R^d)}
- \le C\|f\|_2.
-\]
-此外 \((q,r)=(\infty,2)\) 由能量恒等式成立。
-\end{theorem}
-\begin{proof}
-设 \(Tf(t)=U(t)f\)，对紧支撑光滑 \(F\) 定义
-\(T^*F=\int U(-s)F(s)\,\mathrm ds\)。
-于是
-\[
- TT^*F(t)=\int U(t-s)F(s)\,\mathrm ds.
-\]
-色散界与 Minkowski 给出
-\(\|TT^*F(t)\|_r\le C\int|t-s|^{-\alpha}\|F(s)\|_{r'}\mathrm ds\)，
-其中 \(\alpha=2/q\in(0,1)\)。
-一维 Hardy–Littlewood–Sobolev 定理（\chapref{b2:ch:19}）适用于阶 \(1-\alpha\)，因为
-\(1/q=1/q'-(1-\alpha)\)，故
-\[
- \|TT^*F\|_{L^qL^r}\le C\|F\|_{L^{q'}L^{r'}}.
-\]
-对同一个 \(F\) 配对得到
-\(\|T^*F\|_2^2=\langle TT^*F,F\rangle\le C\|F\|_{L^{q'}L^{r'}}^2\)。
-再对偶得到 \(T\) 的界。所有换序先在紧支撑光滑数据上作，所获连续界与稠密性再定义一般输入及全时间积分；不要求一般 \(F\) 在时间上先以 \(L^2_x\) 绝对可积。
-\end{proof}
-当 \(q=2\) 时 \(\alpha=1\)，时间核成为 \(|t-s|^{-1}\)，不属于该 HLS 范围。这是当前证明的端点障碍，不是端点估计一概失败的证明。
-
-\begin{proposition}[同对非齐次估计]\label{b2:prop:E-retarded}
-对上述非端点对及任意时间区间 \(I\)，
-\[
- \left\|\int_{s<t,\ s\in I}U(t-s)F(s)\,\mathrm ds\right\|_{L^q_tL^r_x(I)}
- \le C\|F\|_{L^{q'}_tL^{r'}_x(I)}.
-\]
-同一个输出也满足 \(L^\infty_tL^2_x\) 界，常数独立于区间长度。
 \end{proposition}
 \begin{proof}
-截断的色散绝对上界小于全时间的 HLS 正核，因此混合范数证明不变。
-对每个 \(t\)，酉性与上一证明的 \(T^*\) 界给出
-\(\|\int_{s<t}U(-s)F(s)\mathrm ds\|_2
-\le C\|F\mathbf1_{\{s<t\}}\|_{L^{q'}L^{r'}}\)，得到能量界。
-时间连续性由输入在短时间区间上的范数趋零及酉群强连续性推出。
-\end{proof}
-这里直接证明的是同一个可容许对，不是任意两对的所有端点组合。把全时间积分自动换成迟滞积分，在一般算子族中还需要额外论证；本证明之所以可行，是因为使用了可积指数范围内的正时间核控制。
+空间换元给出初值范数不变，而 Fourier 换元给出
+\(\widehat{f_\lambda}(\xi)=\lambda^{-d/2}\widehat f(\xi/\lambda)\)。把 \(\xi=\lambda\eta\) 代入演化乘子，就得到所述二次时间缩放。先对 Schwartz 初值计算，再由酉性和 \(L^2\) 稠密性推广。
 
-\section{波方程与频率尺度}
+固定时间的空间范数产生因子 \(\lambda^{d/2-d/r}\)，随后在时间积分中令 \(s=\lambda^2t\)，再产生因子 \(\lambda^{-2/q}\)。无穷指数直接按本性上确界换元，得到同一公式。
+
+为证明必要性，假设给定的全时间界成立，选一个非零 Gaussian 初值 \(f\)。其输出混合范数由假设有限，并且大于零。把估计应用于每个 \(f_\lambda\)，得到
+\[
+ \lambda^{d/2-d/r-2/q}\|U(t)f\|_{L^q_tL^r_x}
+ \leq C\|f\|_2\quad(\lambda>0).
+\]
+若幂指数非零，令 \(\lambda\to\infty\) 或 \(\lambda\downarrow0\)，左端就会发散。因此该幂只能为零。
+\end{proof}
+必要性使用的是全时间区间及与缩放无关的常数。在固定有限区间上，缩放同时把区间变成 \(\lambda^2I\)，所以不能删去区间变化后仍照搬同一论证。指数关系也只筛选候选估计，并不提供充分性证明。
+
+\Needspace{6\baselineskip}
+\begin{definition}\label{b2:def:E-admissible}
+设整数 \(d\geq1\)。若 \(2\leq q,r\leq\infty\)，
+\[
+ \frac2q+\frac dr=\frac d2,\quad(q,r,d)\ne(2,\infty,2),
+\]
+其中 \(1/\infty=0\)，就称 \((q,r)\) 为 \(d\) 维的\term[schrodinger-kerongxu-dui]{Schrödinger 可容许对}[Schrödinger admissible pair]。
+\end{definition}
+例如一维的 \((8,4)\)、二维的 \((4,4)\) 以及三维的 \((4,3)\) 都满足关系式。能量对 \((\infty,2)\) 在每个维数都可用。下面完整证明的范围是 \(2<q<\infty\)、\(r<\infty\)，另加能量对；可容许对的定义本身并没有把其余边界情形一并证明。
+
+\ProseParagraphBreak
+
+Gaussian 初值可以把衰减与能量保存放在同一个算式中。取 \(f(x)=e^{-|x|^2}\)，复 Gaussian 公式给出
+\[
+ U(t)f(x)=(1+4\mathrm it)^{-d/2}
+        \exp\left(-\frac{|x|^2}{1+4\mathrm it}\right),
+\]
+故
+\[
+ |U(t)f(x)|=(1+16t^2)^{-d/4}
+        \exp\left(-\frac{|x|^2}{1+16t^2}\right).
+\]
+峰高下降，典型宽度却按 \((1+16t^2)^{1/2}\) 增长。对 \(2\leq r<\infty\) 直接作空间换元，得到
+\[
+ \|U(t)f\|_r
+ =\left(\frac\pi r\right)^{d/(2r)}
+        (1+16t^2)^{-\alpha/2},
+ \quad \alpha=d\left(\frac12-\frac1r\right).
+\]
+\(r=2\) 时，时间幂为零，范数保持为 \((\pi/2)^{d/4}\)；\(r=\infty\) 时直接取峰值得到相应极限公式。对有限 \(q\)，大时间的 \(q\) 次方可积要求 \(q\alpha>1\)，而可容许关系给出 \(q\alpha=2\)。这个算例验证了候选估计与传播尺度相容，尚不能代替对所有 \(L^2\) 初值的证明。
+
+\ProseParagraphBreak
+
+最后，任何固定时间的酉性都不会自行给出 \(L^2\to L^r\)、\(r>2\) 的有界算子。若有这样的界，利用 \(U(t)\) 在 \(L^2\) 上满射，就会得到 \(\|g\|_r\leq C\|g\|_2\) 对所有 \(g\in L^2\) 成立。取一个非零光滑紧支函数，按 \(g_\lambda(x)=\lambda^{d/2}g(\lambda x)\) 缩放，右端保持不变而左端按 \(\lambda^{d(1/2-1/r)}\) 增长，产生矛盾。Strichartz 估计能成立，正因为它保留了时间积分，没有要求每一个固定时刻都具备这种不可能的空间映射界。
+
+\section{非端点 \texorpdfstring{\(TT^*\)}{TT*} 证明}
+\label{b2:sec:app-E-2}
+
+现在希望从平方可积初值取得有限指数的时空范数。直接对 \(U(t)f\) 套用色散界会要求 \(f\in L^{r'}\)，与给定初值不符。\(TT^*\) 方法先把时空测试函数送回 \(L^2\)，再把两个时间之间的演化写成 \(U(t-s)\)。这样空间色散恰好作用于测试函数的 \(L^{r'}\) 范数，而时间变量留下一个可由分数积分控制的正核。
+
+\ProseParagraphBreak
+
+本节的复内积取第一变量线性：
+\[
+ \langle f,g\rangle_{L^2}
+ =\int_{\mathbb R^d}f(x)\cdot\overline{g(x)}\,\mathrm dx.
+\]
+时空配对也按 \(\int F\cdot\overline G\) 排列。有限指数 \(1<q,r<\infty\) 时，混合 Hölder 不等式先在空间、再在时间给出
+\[
+ \left|\int_{\mathbb R}\int_{\mathbb R^d}
+                u\cdot\overline F\,\mathrm dx\,\mathrm dt\right|
+ \leq\|u\|_{L^q_tL^r_x}\cdot\|F\|_{L^{q'}_tL^{r'}_x}.
+\]
+对应的范数对偶公式可以先限制在有限时空区域内，用两次 Hölder 的取等方向得到，再以截断和光滑逼近扩展到全空间。因而控制所有紧支光滑测试函数的配对，可以检测 \(L^q_tL^r_x\) 范数；不必事先假设待估计函数已有有限的全时间范数。
+
+\Needspace{6\baselineskip}
+\begin{theorem}[非端点 Schrödinger Strichartz]\label{b2:thm:E-schrodinger-nonendpoint}
+设整数 \(d\geq1\)，
+\[
+ U(t)f=\mathcal F_2^{-1}
+       \left(e^{-4\pi^2\mathrm it|\xi|^2}\mathcal F_2f\right),
+ \quad f\in L^2(\mathbb R^d;\mathbb C).
+\]
+若 \(2<q<\infty\)、\(2\leq r<\infty\) 且 \(2/q+d/r=d/2\)，则
+\begin{equation}\label{b2:eq:E-homogeneous-strichartz}
+ \|U(t)f\|_{L^q_tL^r_x(\mathbb R\times\mathbb R^d)}
+ \leq C_{d,q,r}\|f\|_2.
+\end{equation}
+此外，\((q,r)=(\infty,2)\) 时有能量恒等式。对上述有限指数对，令 \(q',r'\) 为共轭指数；在紧支光滑函数上定义的算子
+\[
+ T^*F=\int_{\mathbb R}U(-s)F(s)\,\mathrm ds
+\]
+唯一连续延拓为从 \(L^{q'}(\mathbb R;L^{r'}(\mathbb R^d))\) 到 \(L^2(\mathbb R^d)\) 的算子，且
+\begin{equation}\label{b2:eq:E-adjoint-bound}
+ \|T^*F\|_2\leq C_{d,q,r}\|F\|_{L^{q'}_tL^{r'}_x}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+先只取 \(F\in C_c^\infty(\mathbb R\times\mathbb R^d)\)。其时间支撑紧，且 \(s\mapsto F(s)\) 连续取值于 \(L^2\)，所以 \(T^*F\) 作为 \(L^2\) 值强积分已经有定义；此处没有使用待证的时空估计。记
+\[
+ V_F(t)=U(t)T^*F
+       =\int_{\mathbb R}U(t-s)F(s)\,\mathrm ds.
+\]
+后一个等式来自有界算子移入强积分与群律。对光滑紧支输入，它也是每个固定时间的 \(L^r\) 积分；可以先在 Schwartz 类逐项计算，再使用下述可积的上界。
+
+令
+\[
+ \alpha=d\left(\frac12-\frac1r\right)=\frac2q.
+\]
+由 \(q>2\) 得 \(0<\alpha<1\)。色散插值界\eqref{b2:eq:E-dispersive-interpolation}与 Minkowski 不等式给出
+\begin{equation}\label{b2:eq:E-ttstar-positive-kernel}
+ \|V_F(t)\|_r
+ \leq C\int_{\mathbb R}|t-s|^{-\alpha}
+                     \|F(s)\|_{r'}\,\mathrm ds.
+\end{equation}
+对紧支光滑输入，时间奇点局部可积，右端逐点有意义。把时间看成一维空间，核 \(|t|^{-\alpha}\) 是阶 \(\beta=1-\alpha\) 的分数积分核，差一个固定正常数。\cref{b2:thm:19-hls}适用，因为
+\[
+ 0<\beta<1,\quad
+ 1<q'<\frac1\beta,\quad
+ \frac1q=\frac1{q'}-\beta.
+\]
+中间的不等式可由 \(\beta q'=(q-2)/(q-1)<1\) 直接核验。因此
+\begin{equation}\label{b2:eq:E-ttstar-bound}
+ \|V_F\|_{L^q_tL^r_x}
+ \leq C\|F\|_{L^{q'}_tL^{r'}_x}.
+\end{equation}
+
+下一步才取得 \(T^*\) 的界。按第一变量线性的内积约定，酉性给出
+\[
+ \begin{aligned}
+ \|T^*F\|_2^2
+ &=\int_{\mathbb R}
+      \langle U(t)T^*F,F(t)\rangle_{L^2}\,\mathrm dt\\
+ &\leq \|V_F\|_{L^q_tL^r_x}
+              \cdot\|F\|_{L^{q'}_tL^{r'}_x}\\
+ &\leq C\|F\|_{L^{q'}_tL^{r'}_x}^2.
+ \end{aligned}
+\]
+第一行也可把 \(U(t)\) 移到第二变量，再由强积分直接核验；时间紧支与 \(L^2\) 有界性保证换序合法。由于 \(q',r'\) 都有限，紧支光滑函数在输入混合空间中稠密，所以这个估计唯一地定义一般 \(F\) 的 \(T^*F\)。一般输入不需要预先属于 \(L^1_tL^2_x\)。
+
+最后取 Schwartz 初值 \(f\)。对上述光滑测试函数，
+\[
+ \int_{\mathbb R}
+       \langle U(t)f,F(t)\rangle_{L^2}\,\mathrm dt
+ =\langle f,T^*F\rangle_{L^2}.
+\]
+右端的绝对值至多为
+\(C\|f\|_2\cdot\|F\|_{L^{q'}L^{r'}}\)。应用混合范数对偶公式，先在有限时空区域内估计，再扩大区域，得到\eqref{b2:eq:E-homogeneous-strichartz}，没有预设 \(T:f\mapsto U(t)f\) 的有界性。
+
+对一般 \(f\in L^2\)，取 Schwartz 函数 \(f_n\to f\)。已经得到的界使 \(U(t)f_n\) 在 \(L^qL^r\) 中 Cauchy。酉性又给出
+\[
+ \sup_{t\in\mathbb R}\|U(t)f_n-U(t)f\|_2
+ =\|f_n-f\|_2\longrightarrow0.
+\]
+两个极限在紧支光滑时空测试函数上的配对相同，因而在分布意义、进而几乎处处意义下相同。所构造的混合空间元素就是原先定义的酉轨道。能量对则直接由酉性成立。
+\end{proof}
+证明的次序是：先对光滑测试函数定义 \(T^*\)，再以色散和 HLS 控制 \(U(t)T^*F\)，从二次配对取得有界 \(T^*\)，最后对偶得到 \(T\)。符号 \(TT^*\) 描述的是最终算子结构；若一开始便假设 \(T\) 已有目标有界性，就会把待证结论放进前提。
+
+\ProseParagraphBreak
+
+当 \(q=2\) 时，\(\alpha=1\)，正时间核变成 \(|t-s|^{-1}\)，不再处于上述一维 HLS 的阶数范围。这说明当前取绝对值的证明不能达到该端点，并不证明所有端点估计都失败。有限空间指数也是本次对偶证明的一项条件；例如一维可容许对 \((4,\infty)\) 未包含在本定理的有限指数结论中。全时间齐次界限制到任意区间仍成立，且时间平移给出
+\[
+ \|U(t-a)f\|_{L^q_tL^r_x(I)}\leq C\|f\|_2
+ \quad(a\in\mathbb R),
+\]
+常数不依赖 \(I\) 或起点 \(a\)。
+
+\ProseParagraphBreak
+
+非齐次演化只累计早于观察时刻的外力。对光滑输入可以写出通常的迟滞积分；对一般 \(L^{q'}_tL^{r'}_x\) 输入，其每个时间的空间值未必属于 \(L^2\)，所以不能预先把同一个符号解释为 \(L^2\) 值绝对积分。先使用已经建立的 \(T^*\) 延拓，可以同时定义每个时间的输出并选择连续的 \(L^2\) 代表。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[同对非齐次估计]\label{b2:prop:E-retarded}
+设整数 \(d\geq1\)，\(U(t)\) 为符号 \(e^{-4\pi^2\mathrm it|\xi|^2}\) 的 Schrödinger 酉群。设 \(2<q<\infty\)、\(2\leq r<\infty\)、\(2/q+d/r=d/2\)，且 \(q',r'\) 为共轭指数。令 \(I\subset\mathbb R\) 为任意区间，\(F\in L^{q'}(I;L^{r'}(\mathbb R^d;\mathbb C))\)，并记 \(\widetilde F\) 为在 \(I\) 外补零的函数。以\cref{b2:thm:E-schrodinger-nonendpoint}中由光滑强积分延拓的算子 \(T^*\)，定义
+\[
+ B_F(t)=T^*\left(\mathbf1_{(-\infty,t)}\cdot\widetilde F\right),
+ \quad \mathcal R_I F(t)=U(t)B_F(t).
+\]
+则 \(\mathcal R_I F\in C_b(\mathbb R;L^2)\cap L^q(\mathbb R;L^r)\)，并且
+\begin{equation}\label{b2:eq:E-retarded-bound}
+ \|\mathcal R_I F\|_{L^\infty_tL^2_x(\mathbb R)}
+ +\|\mathcal R_I F\|_{L^q_tL^r_x(\mathbb R)}
+ \leq C\|F\|_{L^{q'}_tL^{r'}_x(I)}.
+\end{equation}
+它是光滑输入上迟滞积分
+\[
+ \mathcal R_I F(t)=\int_{s<t,\ s\in I}
+                         U(t-s)F(s)\,\mathrm ds
+\]
+的连续延拓。对任意有限 \(a\in\mathbb R\)，还可定义有限起点的有向积分
+\begin{equation}\label{b2:eq:E-finite-start-duhamel}
+ \begin{aligned}
+ \mathcal D_aF(t)
+ &\coloneqq U(t)(B_F(t)-B_F(a))\\
+ &=\mathcal R_I F(t)-U(t-a)\mathcal R_I F(a).
+ \end{aligned}
+\end{equation}
+光滑情形它等于 \(\int_a^tU(t-s)\widetilde F(s)\,\mathrm ds\)，当 \(t<a\) 时按负的反向积分解释。它具有相同的 \(C_bL^2\) 与 \(L^qL^r\) 控制，常数仍只依赖 \(d,q,r\)。特别地，限制到 \(I\) 后，所有界都与区间长度及有限起点无关，且 \(\mathcal D_aF(a)=0\)。
+\end{proposition}
+\begin{proof}
+由\eqref{b2:eq:E-adjoint-bound}及酉性，对每个 \(t\) 有
+\[
+ \|\mathcal R_I F(t)\|_2
+ \leq C\|\mathbf1_{(-\infty,t)}\cdot\widetilde F
+                         \|_{L^{q'}L^{r'}}
+ \leq C\|F\|_{L^{q'}L^{r'}(I)}.
+\]
+若 \(h\to0\)，两次截断的差只支撑在 \(t\) 与 \(t+h\) 之间，因而
+\[
+ \|B_F(t+h)-B_F(t)\|_2
+ \leq C\|\mathbf1_{(\min\{t,t+h\},\max\{t,t+h\})}
+                       \cdot\widetilde F\|_{L^{q'}L^{r'}}
+ \longrightarrow0.
+\]
+最后的收敛来自 \(\|\widetilde F(s)\|_{r'}^{q'}\) 的积分绝对连续性，而不是外力逐点连续。再写
+\[
+ \begin{aligned}
+ \mathcal R_I F(t+h)-\mathcal R_I F(t)
+ &=U(t+h)(B_F(t+h)-B_F(t))\\
+ &\quad+(U(t+h)-U(t))B_F(t).
+ \end{aligned}
+\]
+第一项由酉性趋零，第二项是固定 \(L^2\) 向量的群轨道差。因此所得输出在全部实时间连续，包括原区间的有限端点。
+
+为证明混合范数界，先取 \(G\in C_c^\infty(\mathbb R\times\mathbb R^d)\)。普通迟滞积分满足
+\[
+ \left\|\int_{s<t}U(t-s)G(s)\,\mathrm ds\right\|_r
+ \leq C\int_{s<t}|t-s|^{-\alpha}\|G(s)\|_{r'}\,\mathrm ds
+ \leq C\int_{\mathbb R}|t-s|^{-\alpha}\|G(s)\|_{r'}\,\mathrm ds.
+\]
+同一个 HLS 估计因而适用，常数不随截断位置改变。现在选光滑紧支 \(G_n\to\widetilde F\) 于 \(L^{q'}L^{r'}\)。该混合范数界使迟滞输出在 \(L^qL^r\) 中收敛；前面的逐时能量界又使它们一致收敛到已经定义的 \(\mathcal R_I F\)，收敛发生在 \(C_b(\mathbb R;L^2)\) 中。两个极限在时空分布配对中一致，故混合范数极限也是这个连续代表。这同时证明了延拓的唯一性与\eqref{b2:eq:E-retarded-bound}。
+
+对有限起点，由\eqref{b2:eq:E-finite-start-duhamel}，第二项是一条以 \(\mathcal R_I F(a)\in L^2\) 为初值的自由轨道。齐次估计与酉性给出
+\[
+ \begin{aligned}
+ \|\mathcal D_aF\|_{L^\infty L^2}
+ +\|\mathcal D_aF\|_{L^qL^r}
+ &\leq C\left(\|F\|_{L^{q'}L^{r'}(I)}
+                       +\|\mathcal R_I F(a)\|_2\right)\\
+ &\leq C'\|F\|_{L^{q'}L^{r'}(I)}.
+ \end{aligned}
+\]
+连续性和起点值直接从定义得到。对光滑输入，两个过去积分相减恰是从 \(a\) 到 \(t\) 的有向积分；一般输入由上述连续延拓保持这个记号与含义。
+\end{proof}
+同一个定义还给出重启恒等式。对命题中的外力及任意有限 \(a,b,t\)，将 \(B_F(t)-B_F(a)\) 在 \(B_F(b)\) 处分开，便得到
+\begin{equation}\label{b2:eq:E-duhamel-restart}
+ \mathcal D_aF(t)
+ =U(t-b)\mathcal D_aF(b)+\mathcal D_bF(t).
+\end{equation}
+因此 \(u(t)=U(t-a)f+\mathcal D_aF(t)\) 满足
+\[
+ u(t)=U(t-b)u(b)+\mathcal D_bF(t).
+\]
+所有值都取上面构造的连续 \(L^2\) 代表，所以可以在任意有限时刻重启，包括把较晚时刻当作起点向后求解。若只关心某一子区间，积分只使用起点与观察时刻之间的外力，区间外如何延拓不会改变该段的输出。
+
+\ProseParagraphBreak
+
+这里直接证明的是同一个可容许对的输入输出估计。迟滞截断之所以保留界，是因为 \(0<\alpha<1\) 时可以用同一个 HLS 正核控制其绝对值；不能把这个步骤推广为“任意全时间算子界都自动保持迟滞截断”，也不能据此宣布任意两对或所有端点组合成立。
+
+\ProseParagraphBreak
+
+应用中还会遇到时间可积、空间平方可积的误差。它与上面的对偶混合空间没有普遍包含关系，但可以直接使用酉性和齐次估计处理。下面的结果也说明，在两种外力空间同时适用时，Duhamel 记号代表同一个对象。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[时间可积的平方可积外力]\label{b2:prop:E-l1l2-forcing}
+设整数 \(d\geq1\)，\(U(t)\) 为符号 \(e^{-4\pi^2\mathrm it|\xi|^2}\) 的 Schrödinger 酉群。取 \(2<q<\infty\)、\(2\leq r<\infty\) 且 \(2/q+d/r=d/2\)。设 \(I\subset\mathbb R\) 为区间，\(F:I\to L^2(\mathbb R^d;\mathbb C)\) 强可测且
+\(\int_I\|F(s)\|_2\,\mathrm ds<\infty\)，并将 \(F\) 在 \(I\) 外补零为 \(\widetilde F\)。则
+\[
+ \mathcal R_I F(t)=\int_{s<t}U(t-s)\widetilde F(s)\,\mathrm ds,
+ \quad
+ \mathcal D_aF(t)=\int_a^tU(t-s)\widetilde F(s)\,\mathrm ds
+\]
+都可直接按 \(L^2\) 值强积分定义，其中 \(a\in\mathbb R\) 有限，第二个积分按方向取符号。两者均属于 \(C_b(\mathbb R;L^2)\cap L^q(\mathbb R;L^r)\)，且
+\begin{equation}\label{b2:eq:E-l1l2-forcing}
+ \begin{aligned}
+ \|\mathcal R_I F\|_{L^\infty L^2}
+ +\|\mathcal R_I F\|_{L^qL^r}
+ &\leq C\|F\|_{L^1(I;L^2)},\\
+ \|\mathcal D_aF\|_{L^\infty L^2}
+ +\|\mathcal D_aF\|_{L^qL^r}
+ &\leq C\|F\|_{L^1(I;L^2)}.
+ \end{aligned}
+\end{equation}
+常数与 \(I,a\) 无关。在 \(L^1_tL^2_x\) 与 \(L^{q'}_tL^{r'}_x\) 的交空间上，这些定义与\cref{b2:prop:E-retarded}的连续延拓一致。
+\end{proposition}
+\begin{proof}
+酉性使积分中每个向量的范数等于 \(\|\widetilde F(s)\|_2\)，所以强积分绝对收敛，且两个输出的 \(L^\infty L^2\) 范数各自至多为 \(\|F\|_{L^1L^2}\)。写成
+\[
+ \mathcal R_I F(t)
+ =U(t)\int_{-\infty}^tU(-s)\widetilde F(s)\,\mathrm ds,
+\]
+内部积分随上限在 \(L^2\) 中连续；酉群强连续性再给出输出连续。有限起点完全相同。
+
+先对光滑紧支外力作混合范数估计。Minkowski 不等式及齐次 Strichartz 界给出
+\[
+ \begin{aligned}
+ \|\mathcal R_I F\|_{L^q_tL^r_x}
+ &\leq\int_I
+       \|\mathbf1_{\{t>s\}}\cdot U(t-s)F(s)
+                              \|_{L^q_tL^r_x}\,\mathrm ds\\
+ &\leq C\int_I\|F(s)\|_2\,\mathrm ds.
+ \end{aligned}
+\]
+时间截断只缩小自由轨道的混合范数，而平移 \(t\mapsto t-s\) 不改变全时间齐次常数。由紧支光滑函数在 \(L^1(\mathbb R;L^2)\) 中的稠密性，这个估计定义一般输入的 \(L^qL^r\) 极限；酉性下的积分误差同时给出一致 \(L^2\) 收敛，因此两个极限正是同一强积分输出。
+
+有限起点的积分等于
+\(\mathcal R_I F(t)-U(t-a)\mathcal R_I F(a)\)。第二项的混合范数由齐次估计控制，能量范数由酉性控制，得到相同类型的统一界。最后，若 \(F\) 同时属于两种输入空间，先作时空截断，再用光滑化，可以在两种范数中同时逼近它。光滑输入上的定义一致，而两侧各有已证连续界，故交空间上的极限也一致。
+\end{proof}
+因此可处理写成 \(F=F_1+F_2\) 的外力，其中
+\[
+ F_1\in L^{q'}_tL^{r'}_x(I),\quad
+ F_2\in L^1_tL^2_x(I).
+\]
+定义 \(\mathcal D_aF=\mathcal D_aF_1+\mathcal D_aF_2\)，交空间上的相容性保证它与分解无关，并有
+\[
+ \|\mathcal D_aF\|_{C_bL^2\cap L^qL^r}
+ \leq C\left(\|F_1\|_{L^{q'}L^{r'}(I)}
+                  +\|F_2\|_{L^1L^2(I)}\right),
+\]
+交空间范数取两项范数之和。后面的非线性构造把主要非线性放入第一类空间；平方可积的时间误差则可由第二类空间控制。两种输入都给出连续的 \(L^2\) 输出，但只有第二种定义预先具有 \(L^2\) 值绝对积分的意义。
+
+\section{波方程的频带衰减与非端点 Strichartz 估计}
 
 \label{b2:sec:app-E-3}
 
-以下 \(d\ge2\)，记 \(|D|=\sqrt{-\Delta}\)，其符号是 \(2\pi|\xi|\)。
-半波 \(V(t)=e^{\mathrm it|D|}\) 在 \(L^2\) 上酉，
-但无界频率空间的完整核不能当作统一的有界函数核。
-取实偶 \(\psi\in C_c^\infty\)，支于 \(1/4\le|\xi|\le4\)，
-先把频率固定在一个环带；一般平滑环带分割只改变常数。
-
-\begin{lemma}[环带半波核]\label{b2:lem:E-half-wave-kernel}
-记 \(P_j\) 的符号为 \(\psi(2^{-j}\xi)\)，则
-\[
- \|V(t)P_j\|_{L^1\to L^\infty}
- \le C_\psi 2^{jd}(1+2^j|t|)^{-(d-1)/2}.
-\]
-常数与 \(t,j\) 无关，同一结论适用于 \(\psi^2\)。
-\end{lemma}
-\begin{proof}
-核换元为 \(K_j(t,x)=2^{jd}K_0(2^jt,2^jx)\)，其中
-\[
- K_0(t,x)=\int e^{2\pi\mathrm i(x\cdot\xi+t|\xi|)}
-                      \psi(\xi)\,\mathrm d\xi.
-\]
-若 \(|t|\le1\)，积分的绝对值由 \(\|\psi\|_1\) 控制。
-设 \(|t|>1\)。当 \(|x|<|t|/2\) 或 \(|x|>2|t|\) 时，
-相位梯度 \(x+t\xi/|\xi|\) 的模至少为
-\(c(|x|+|t|)\)。把相位除以 \(|x|+|t|\) 后，
-其有限阶导数在固定环带一致有界，梯度一致有正下界。
-用梯度方向的分部积分算子反复积分，得到任意阶的
-\(C_N(|x|+|t|)^{-N}\) 衰减；没有边界项，因为振幅紧支。
-
-剩下 \(|t|/2\le|x|\le2|t|\)。写 \(\xi=r\omega\)，
-\(1/4\le r\le4\)、\(\omega\in S^{d-1}\)。角向相位为
-\(r x\cdot\omega\)，只有朝向及背向 \(x\) 的两个驻点，
-其切向 Hesse 矩阵的绝对特征值均与 \(r|x|\) 同阶。
-对球面作有限光滑分割，在两个极点片用
-\cref{b2:thm:21-stationary-phase}，其他片用非驻相法。
-旋转把 \(x/|x|\) 固定后，旋转后的振幅有限阶导数仍一致有界，
-而 \(r\) 处于固定紧区间，因此取得方向及 \(r\) 一致的角积分界
-\(C|x|^{-(d-1)/2}\)。再对 \(r\) 作绝对积分，
-得到 \(C|t|^{-(d-1)/2}\)。缩放回第 \(j\) 带即得结论。
-\end{proof}
-光锥附近的径向相位仍可能相干，只有 \(d-1\) 个角向曲率方向提供衰减。
-这说明波演化的衰减阶与 Schrödinger 二次相位的 \(d\) 个曲率方向不同。
+波方程的频率相位与 Schrödinger 方程不同：它对 \(|\xi|\) 是一次齐次的，
+沿径向没有二次曲率。因此先前直接写全频率有界函数核的方法不能照搬。
+先把输入限制在一个环带，角向曲率便提供一致衰减；
+随后把每个频带的时空估计按平方和合成，才能恢复恰当的 Sobolev 初值范数。
 
 \ProseParagraphBreak
-波可容许关系一般写为
+以下 \(d\ge2\)，令 \(|D|=\sqrt{-\Delta}\)，其 Fourier 符号为 \(2\pi|\xi|\)。
+对 \(f\in L^2(\mathbb R^d;\mathbb C)\)、\(t\in\mathbb R\)，定义半波群
 \[
- \frac1q+\frac{d-1}{2r}\le\frac{d-1}{4},\qquad q,r\ge2,
+ V(t)f\coloneqq
+ \mathcal F_2^{-1}\left(e^{2\pi\mathrm it|\xi|}\widehat f(\xi)\right),
+ \quad V(t)=e^{\mathrm it|D|}.
 \]
-并须处理维数相关的端点。下面讨论边界非端点范围；其他可容许对和非齐次组合另需相应论证。
-齐次阶数按波缩放计算为
-\(s=d(1/2-1/r)-1/q\)。在这一范围 \(0<s<d/2\)，
-以频率远离零点的光滑输入在范数
-\[
- \|f\|_{\dot H^s}^2=
- \int(2\pi|\xi|)^{2s}|\widehat f(\xi)|^2\,\mathrm d\xi
-\]
-下的完备化解释初值。对 Schwartz 测试函数用加权 Cauchy--Schwarz，
-低频积分 \(\int_{|\xi|<1}|\xi|^{-2s}\mathrm d\xi\) 有限，
-所以该完备化同时给出温和分布；此处无需在零频附加多项式。
+乘子模为一，所以 \(V(t)\) 在 \(L^2\) 上酉，且
+\(V(t)V(s)=V(t+s)\)、\(V(t)^*=V(-t)\)。
+这里的速度尺度是 \(x\) 与 \(t\) 同时缩放，
+不同于 Schrödinger 演化中 \(t\) 按空间尺度的平方缩放。
 
+\Needspace{6\baselineskip}
+\begin{lemma}[环带半波核]\label{b2:lem:E-half-wave-kernel}
+设整数 \(d\ge2\)，\(V(t)\) 为 \(\mathbb R^d\) 上符号
+\(e^{2\pi\mathrm it|\xi|}\) 的半波群。
+取实偶函数 \(\psi\in C_c^\infty(\mathbb R^d)\)，满足
+\(\operatorname{supp}\psi\subset\{\,\xi:1/4\le|\xi|\le4\,\}\)；
+对 \(j\in\mathbb Z\)，令 \(P_j\) 为符号 \(\psi(2^{-j}\xi)\) 的 Fourier 乘子。
+则对所有 \(t\in\mathbb R\)，有
+\[
+ \|V(t)P_j\|_{L^1(\mathbb R^d)\to L^\infty(\mathbb R^d)}
+ \le C_{d,\psi}2^{jd}(1+2^j|t|)^{-(d-1)/2}.
+\]
+常数与 \(j,t\) 无关；将截断函数 \(\psi\) 换为 \(\psi^2\) 后结论仍成立。
+\end{lemma}
+\begin{proof}
+紧支撑平滑乘子给出普通卷积核。换元 \(\xi=2^j\eta\) 得
+\[
+ K_j(t,x)=2^{jd}K_0(2^jt,2^jx),
+ \quad
+ K_0(t,x)=\int_{\mathbb R^d}
+ e^{2\pi\mathrm i(x\cdot\xi+t|\xi|)}\cdot\psi(\xi)\,\mathrm d\xi.
+\]
+所以只需证明
+\(\sup_x|K_0(t,x)|\le C(1+|t|)^{-(d-1)/2}\)。
+若 \(|t|\le1\)，直接以 \(\|\psi\|_1\) 控制积分即可。
+
+设 \(|t|>1\)。先考虑 \(|x|<|t|/2\) 或 \(|x|>2|t|\)。
+相位的梯度为
+\[
+ \nabla_\xi(x\cdot\xi+t|\xi|)
+ =x+t\frac{\xi}{|\xi|},
+\]
+其模至少为 \(\bigl||x|-|t|\bigr|\)，在这两个区域又至少为
+\((|x|+|t|)/3\)。
+记 \(L=|x|+|t|\)，把相位写为 \(L\phi(\xi)\)。
+在固定环带上，\(\phi\) 的所需有限阶导数一致有界，
+且 \(|\nabla\phi|\ge1/3\)。
+因此沿 \(\nabla\phi\) 方向使用分部积分算子
+\[
+ \frac{\nabla\phi\cdot\nabla_\xi}
+      {2\pi\mathrm iL|\nabla\phi|^2}
+\]
+反复积分，便得到任意固定整数 \(N\) 所对应的界
+\(|K_0(t,x)|\le C_{N,d,\psi}L^{-N}\)。
+振幅紧支撑，没有边界项；导数控制与梯度下界说明常数不依赖 \(x,t\)。
+
+剩下 \(|t|/2\le|x|\le2|t|\)。写 \(\xi=\rho\omega\)，其中
+\(1/4\le\rho\le4\)、\(\omega\in S^{d-1}\)，得到
+\[
+ K_0(t,x)=\int_{1/4}^4 e^{2\pi\mathrm it\rho}\rho^{d-1}
+ \left(\int_{S^{d-1}}e^{2\pi\mathrm i\rho x\cdot\omega}
+             \cdot\psi(\rho\omega)\,\mathrm d\omega\right)\mathrm d\rho.
+\]
+须对内层角积分取得同时关于 \(\rho\) 和方向 \(x/|x|\) 的一致界。
+对每个非零 \(x\)，任选正交变换 \(O\) 使 \(Oe_d=x/|x|\)，再令
+\(\omega=O\theta\)。角向相位成为 \(\rho|x|\theta_d\)，
+振幅成为 \(\psi(\rho O\theta)\)。
+不需要让 \(O\) 随 \(x/|x|\) 连续选择：
+正交矩阵的系数有界，\(\rho\) 位于固定紧区间，
+故这些振幅在球面固定坐标中的有限阶导数具有同一上界。
+
+函数 \(\theta\mapsto\theta_d\) 在球面上只有南北两极驻点。
+取与 \(O,\rho,x\) 无关的固定光滑分割，
+在两个极点附近分别用坐标
+\(\theta=(z,\pm\sqrt{1-|z|^2})\)。
+相位的 Hesse 矩阵在 \(z=0\) 为 \(\mp I_{d-1}\)，
+因而行列式绝对值为一；坐标邻域、面积因子及其导数也都固定。
+当参数 \(\rho|x|\ge1\) 时，
+\cref{b2:thm:21-stationary-phase}及其后说明的有限阶导数控制给出
+\(C(\rho|x|)^{-(d-1)/2}\) 的界。
+其余球面片上切向梯度有统一正下界，可用非驻相分部积分取得更快衰减。
+若 \(\rho|x|<1\)，则在当前区域中 \(|x|\) 仍有正下界且有统一上界，
+绝对积分也可纳入同一个 \(C|x|^{-(d-1)/2}\) 界。
+由 \(\rho\in[1/4,4]\)，最终得到
+\[
+ \left|\int_{S^{d-1}}e^{2\pi\mathrm i\rho x\cdot\omega}
+                    \cdot\psi(\rho\omega)\,\mathrm d\omega\right|
+ \le C_{d,\psi}|x|^{-(d-1)/2}.
+\]
+对 \(\rho\) 作绝对积分，再用 \(|x|\ge|t|/2\)，便得所需时间衰减。
+缩放回第 \(j\) 个环带，并以卷积核的上确界控制
+\(L^1\to L^\infty\) 范数，完成证明。
+\end{proof}
+
+这个估计保留了两个尺度。当 \(2^j|t|\lesssim1\) 时，核的大小至多是频带体积
+\(2^{jd}\)；当 \(2^j|t|\gg1\) 时，角向振荡才产生衰减。
+在光锥 \(|x|\approx|t|\) 附近，径向相位仍可能相干，
+所以衰减指数来自 \(d-1\) 个角向曲率方向。
+Schrödinger 的二次相位则有 \(d\) 个非退化方向；
+这一区别随后表现为不同的时间空间指数关系。
+
+\ProseParagraphBreak
+波可容许关系通常写成
+\[
+ \frac1q+\frac{d-1}{2r}\le\frac{d-1}{4},
+ \quad q,r\ge2,
+\]
+并另行处理维数相关的端点。
+本节完整证明等号成立且 \(q,r\) 都为有限非端点指数的范围。
+先计算初值应具有多少阶正则性。
+对频率远离零的光滑 \(f\)，令
+\(f_\lambda(x)=\lambda^{d/2-s}f(\lambda x)\)、\(\lambda>0\)。
+则其齐次 \(s\) 阶范数不变，而半波缩放给出
+\[
+ V(t)f_\lambda(x)
+ =\lambda^{d/2-s}(V(\lambda t)f)(\lambda x),
+ \quad
+ \|V(t)f_\lambda\|_{L^q_tL^r_x}
+ =\lambda^{d/2-s-d/r-1/q}\|V(t)f\|_{L^q_tL^r_x}.
+\]
+因此全尺度估计所对应的阶数是
+\[
+ s=d\left(\frac12-\frac1r\right)-\frac1q.
+\]
+速度在波解公式中还要经过一次 \(|D|^{-1}\)，所以它应放在低一阶的空间中。
+下面把这一低阶空间连同低频含义一起明确下来。
+
+\Needspace{6\baselineskip}
+\begin{definition}[本节的齐次 Sobolev 数据空间]\label{b2:def:E-homogeneous-data}
+设整数 \(d\ge1\)、实数 \(\sigma<d/2\)，记
+\[
+ \mathcal D_0=
+ \{\,\mathcal F^{-1}h:h\in C_c^\infty(\mathbb R^d\setminus\{0\};\mathbb C)\,\}.
+\]
+在 \(\mathcal D_0\) 上置
+\[
+ \|f\|_{\dot H^\sigma}^2
+ \coloneqq\int_{\mathbb R^d}
+       (2\pi|\xi|)^{2\sigma}|\widehat f(\xi)|^2\,\mathrm d\xi.
+\]
+其完备化记为 \(\dot H^\sigma(\mathbb R^d)\)，称为本节所用的
+\term[qici-sobolev-kongjian]{齐次 Sobolev 空间}[homogeneous Sobolev space]。
+\symidx{\(\dot H^\sigma\)：齐次 Sobolev 空间}
+\end{definition}
+这一完备化有具体的温和分布实现。
+加权平方可积函数可先截断在远离零点的有界环带，再用光滑函数逼近，
+因此其 Fourier 侧恰是满足
+\((2\pi|\xi|)^\sigma h\in L^2\) 的可测函数 \(h\)，按几乎处处相等识别。
+对任意 \(\phi\in\mathcal S(\mathbb R^d)\)，加权 Cauchy--Schwarz 给出
+\[
+ \left|\int_{\mathbb R^d}h(\xi)\cdot\phi(\xi)\,\mathrm d\xi\right|
+ \le\|(2\pi|\xi|)^\sigma h\|_2
+       \cdot\|(2\pi|\xi|)^{-\sigma}\phi\|_2.
+\]
+第二个因子在零点附近有限，正因为 \(2\sigma<d\)；
+在无穷远处则由 Schwartz 衰减控制，并可由有限个 Schwartz 半范数估计。
+所以 \(h\) 定义温和分布，完备化中的极限也唯一给出其逆 Fourier 变换。
+这里没有额外任意选择的零频多项式。
+不等式同时说明该完备化连续嵌入 \(\mathcal S'\)。
+
+\ProseParagraphBreak
+负阶情形也使用同一定义，并不要求输入先属于 \(L^2\)。
+例如 \(\dot H^{-1/2}\) 的条件是
+\((2\pi|\xi|)^{-1/2}\widehat g\in L^2\)，
+它允许某些没有通常平方可积性的高频数据，
+同时仍对低频施加相应的加权限制。
+乘子 \(|D|^{-1}\) 在 \(\mathcal D_0\) 上满足
+\[
+ \||D|^{-1}g\|_{\dot H^s}=\|g\|_{\dot H^{s-1}}.
+\]
+因此只要 \(s<d/2\)，它就唯一延拓为
+\(\dot H^{s-1}\to\dot H^s\) 的等距映射。
+这是波初速度公式中逆导数的定义，不是在任意分布上未经说明地除以 \(|\xi|\)。
+
+\Needspace{6\baselineskip}
 \begin{theorem}[全频率边界非端点半波估计]\label{b2:thm:E-wave-nonendpoint}
-若 \(d\ge2\)、\(2<q<\infty\)、\(2<r<\infty\)，且
+设整数 \(d\ge2\)，\(2<q<\infty\)、\(2<r<\infty\)，且
 \[
  \frac2q+(d-1)\left(\frac1r-\frac12\right)=0,
- \qquad s=d\left(\frac12-\frac1r\right)-\frac1q,
+ \quad
+ s=d\left(\frac12-\frac1r\right)-\frac1q.
 \]
-则 \(\|V(t)f\|_{L^q_tL^r_x}\le C\|f\|_{\dot H^s}\)。
-相应的齐次波方程 \(u_{tt}-\Delta u=0\)、\(u(0)=f\)、\(u_t(0)=g\) 满足
+令 \(V(t)\) 为 Fourier 符号 \(e^{2\pi\mathrm it|\xi|}\) 的半波算子，
+\(\dot H^\sigma(\mathbb R^d)\) 按\cref{b2:def:E-homogeneous-data}的完备化定义。
+此时 \(0<s<1\) 且 \(s<d/2\)，对每个 \(f\in\dot H^s(\mathbb R^d)\)，有
 \[
- \|u\|_{L^q_tL^r_x}
- \le C\bigl(\|f\|_{\dot H^s}+\|g\|_{\dot H^{s-1}}\bigr).
+ \|V(t)f\|_{L^q(\mathbb R;L^r(\mathbb R^d))}
+ \le C_{d,q,r}\|f\|_{\dot H^s}.
 \]
+若另有 \(g\in\dot H^{s-1}(\mathbb R^d)\)，则由半波公式定义的波解
+\[
+ u(t)=\frac12\bigl(V(t)+V(-t)\bigr)f
+ +\frac1{2\mathrm i}\bigl(V(t)-V(-t)\bigr)|D|^{-1}g
+\]
+满足 \(u_{tt}-\Delta u=0\)，
+\(u\in C(\mathbb R;\dot H^s)\)、\(u_t\in C(\mathbb R;\dot H^{s-1})\)，
+并有 \(u(0)=f\)、\(u_t(0)=g\) 及估计
+\[
+ \|u\|_{L^q(\mathbb R;L^r(\mathbb R^d))}
+ \le C_{d,q,r}
+       \left(\|f\|_{\dot H^s}+\|g\|_{\dot H^{s-1}}\right).
+\]
+方程按时空分布理解，初值按上述两个空间的连续性理解。
 \end{theorem}
 \begin{proof}
-记 \(a=1/2-1/r\)、\(\alpha=(d-1)a=2/q\in(0,1)\)。
-与 \(L^2\) 界插值，由核引理得到
+记 \(a=1/2-1/r\)。指数关系给出
 \[
- \|V(t)P_j^2\|_{L^{r'}\to L^r}
- \le C2^{2jda}(1+2^j|t|)^{-\alpha}
- \le C2^{j(2da-\alpha)}|t|^{-\alpha}.
+ \alpha=(d-1)a=\frac2q\in(0,1),
+ \quad
+ s=\frac{d+1}{2}a.
 \]
-因 \(2da-\alpha=2s\)，对 \(T_jf(t)=V(t)P_jf\) 重复前面的
-\(TT^*\) 及一维 HLS 证明，取得
-\(\|T_jf\|_{L^qL^r}\le C2^{js}\|f\|_2\)。
-所有常数在环带缩放中保持一致。
+又因 \(a<1/2\) 且 \(a<1/(d-1)\)，有
+\[
+ 0<s<\min\left(\frac{d+1}{4},\frac{d+1}{2(d-1)}\right).
+\]
+当 \(d=2\) 时右端为 \(3/4\)，当 \(d=3\) 时为1，
+当 \(d\ge4\) 时小于1；故 \(0<s<1\) 且 \(s<d/2\)，
+两个数据空间均在前面定义的范围内。
 
-使用\cref{b2:thm:19-square-function}证明中的合成界。
-对有限指标集 \(J\)，若 \(u_j\) 的 Fourier 支撑位于第 \(j\) 环带，
-在配对中插入等于一的扩大环带投影，逐点 Cauchy--Schwarz 与
-对偶平方函数上界给出
+先作单个频带的估计。取核引理中的实偶截断 \(\psi\)，
+令 \(T_jh(t)=V(t)P_jh\)。
+在紧支撑光滑时空测试函数上，
+\[
+ T_j^*F=\int_{\mathbb R}P_jV(-\tau)F(\tau)\,\mathrm d\tau,
+ \quad
+ T_jT_j^*F(t)=
+ \int_{\mathbb R}V(t-\tau)P_j^2F(\tau)\,\mathrm d\tau.
+\]
+实值符号保证 \(P_j^*=P_j\)，而所有 Fourier 乘子彼此交换。
+核引理应用于 \(\psi^2\) 给出 \(L^1\to L^\infty\) 界，
+Plancherel 则给出与 \(j,t\) 无关的 \(L^2\to L^2\) 界。
+两者插值的色散权重为 \(1-2/r=2a\)，所以
+\[
+ \begin{aligned}
+ \|V(t)P_j^2\|_{L^{r'}\to L^r}
+ &\le C2^{2jda}(1+2^j|t|)^{-\alpha}\\
+ &\le C2^{j(2da-\alpha)}|t|^{-\alpha}
+ =C2^{2js}|t|^{-\alpha},
+ \quad t\ne0.
+ \end{aligned}
+\]
+这里 \(2da-\alpha=2da-2/q=2s\)，
+正是频率代价与尺度计算相接的位置。
+Minkowski 不等式及一维 Hardy--Littlewood--Sobolev 定理给出
+\[
+ \|T_jT_j^*F\|_{L^q_tL^r_x}
+ \le C2^{2js}\|F\|_{L^{q'}_tL^{r'}_x}.
+\]
+所用分数积分阶数为 \(1-\alpha\in(0,1)\)，
+且 \(1/q=1/q'-(1-\alpha)\)，故正处于强型适用范围。
+再对 \(F\) 配对，有
+\[
+ \begin{aligned}
+ \|T_j^*F\|_2^2
+ &=\langle T_jT_j^*F,F\rangle\\
+ &\le C2^{2js}\|F\|_{L^{q'}_tL^{r'}_x}^2.
+ \end{aligned}
+\]
+开平方，再作对偶，得到
+\[
+ \|V(t)P_jh\|_{L^q_tL^r_x}\le C2^{js}\|h\|_2.
+\]
+不能把 \(TT^*\) 的常数 \(2^{2js}\) 原样当成 \(T_j\) 的常数。
+上述恒等式先对测试函数使用强积分和 \(L^2\) 配对，
+再由所获界及有限指数混合空间的对偶性延拓；
+延拓的输出与原来的半波在分布配对中一致。
+
+现在合成所有频带。选取第19章的实径向分割
+\(\varphi=\chi-\chi(2\cdot)\)，
+\(\Delta_jf=\mathcal F^{-1}(\varphi(2^{-j}\xi)\widehat f)\)。
+其支撑位于固定倍数的第 \(j\) 个环带，且在 \(\xi\ne0\) 上
+\(\sum_j\varphi(2^{-j}\xi)=1\)，各点只有有限个非零项。
+取上面的 \(\psi\) 在 \(\operatorname{supp}\varphi\) 上等于一，
+则 \(P_j\Delta_j=\Delta_j\)。
+由频带估计，对 \(u_j(t)=V(t)\Delta_jf\) 有
+\[
+ \|u_j\|_{L^q_tL^r_x}\le C2^{js}\|\Delta_jf\|_2.
+\]
+先考虑 \(f\in\mathcal D_0\) 和有限指标集 \(J\)。
+\cref{b2:thm:19-square-function,b2:prop:19-square-synthesis}的环带合成界给出
 \[
  \left\|\sum_{j\in J}u_j(t)\right\|_r
  \le C_r\left\|\left(\sum_{j\in J}|u_j(t)|^2\right)^{1/2}\right\|_r.
 \]
-先在空间 \(L^{r/2}\)，再在时间 \(L^{q/2}\) 用 Minkowski，得到
+这里恢复其关键理由：在与 \(h\in L^{r'}\) 配对时，
+可在 \(h\) 上插入对第 \(j\) 环带等于一的扩大投影 \(\widetilde\Delta_j\)；
+逐点序列 Cauchy--Schwarz 和对偶平方函数界给出
 \[
- \left\|\sum_{j\in J}u_j\right\|_{L^qL^r}
- \le C_r\left(\sum_{j\in J}\|u_j\|_{L^qL^r}^2\right)^{1/2}.
+ \left|\sum_{j\in J}\int u_j(t,x)\cdot\overline{h(x)}\,\mathrm dx\right|
+ \le C_r
+ \left\|\left(\sum_{j\in J}|u_j(t)|^2\right)^{1/2}\right\|_r
+ \cdot\|h\|_{r'}.
 \]
-现在令 \(u_j=V(t)\Delta_jf\)。选 \(P_j\) 在 \(\Delta_j\) 的支撑上为一，
-上一频带估计给出 \(\|u_j\|_{L^qL^r}\le C2^{js}\|\Delta_jf\|_2\)。
-Plancherel 及有限重叠说明
+在 \(L^{r'}\) 单位球上取上确界即得合成不等式。
+因为 \(q/2,r/2>1\)，空间和时间中的 Minkowski 不等式又给出
 \[
- \sum_j2^{2js}\|\Delta_jf\|_2^2\le C\|f\|_{\dot H^s}^2.
+ \begin{aligned}
+ \left\|\left(\sum_{j\in J}|u_j|^2\right)^{1/2}\right\|_{L^q_tL^r_x}^2
+ &=\left\|\sum_{j\in J}|u_j|^2\right\|_{L^{q/2}_tL^{r/2}_x}\\
+ &\le\sum_{j\in J}\||u_j|^2\|_{L^{q/2}_tL^{r/2}_x}
+ =\sum_{j\in J}\|u_j\|_{L^q_tL^r_x}^2.
+ \end{aligned}
 \]
-同一估计作用于任意有限尾集，证明全频率级数在 \(L^qL^r\) 中 Cauchy。
-对频率远离零点的光滑数据，这个级数重构半波；再用完备化定义一般数据。
-最后以两个半波表示波解：
+于是
 \[
- u=\tfrac12\bigl(V(t)+V(-t)\bigr)f
-   +\tfrac1{2\mathrm i}\bigl(V(t)-V(-t)\bigr)|D|^{-1}g.
+ \left\|\sum_{j\in J}V(t)\Delta_jf\right\|_{L^q_tL^r_x}
+ \le C\left(\sum_{j\in J}2^{2js}\|\Delta_jf\|_2^2\right)^{1/2}.
 \]
-并且 \(\||D|^{-1}g\|_{\dot H^s}=\|g\|_{\dot H^{s-1}}\)，
-故由两个半波界取得波方程结论。
+在第 \(j\) 环带上 \(2^{js}\) 与 \((2\pi|\xi|)^s\) 可比，
+Plancherel 及有限重叠因而给出
+\[
+ \begin{aligned}
+ \sum_j2^{2js}\|\Delta_jf\|_2^2
+ &=\int\left(\sum_j2^{2js}|\varphi(2^{-j}\xi)|^2\right)
+                    |\widehat f(\xi)|^2\,\mathrm d\xi\\
+ &\le C\|f\|_{\dot H^s}^2.
+ \end{aligned}
+\]
+对 \(\mathcal D_0\) 输入只涉及有限个非零频带，
+故求和重构 \(V(t)f\)，并取得定理的半波界。
+
+对一般 \(f\in\dot H^s\)，先由 Fourier 侧的单位模乘子定义
+\(V(t)f\in\dot H^s\)。支配收敛说明轨道在该空间连续。
+取 \(f_n\in\mathcal D_0\) 趋于 \(f\)，已证估计使
+\(V(t)f_n\) 在 \(L^q_tL^r_x\) 中 Cauchy；
+同时它们在每个有限时间区间上一致趋于 \(V(t)f\) 于 \(\dot H^s\)。
+前面证明的 \(\dot H^s\to\mathcal S'\) 连续嵌入将两个极限识别为同一时空分布，
+因而得到一般输入的估计。
+也可以直接对任意有限尾指标集应用合成界：
+上式平方和的尾部趋零，所以全频率级数在 \(L^q_tL^r_x\) 中无条件收敛。
+
+最后令 \(h=|D|^{-1}g\in\dot H^s\)。
+波解公式只含 \(f,h\) 的四个半波，时间反向不改变全线混合范数，
+故由三角不等式取得所述估计。
+该公式在 \(\mathcal D_0\) 输入上可直接求导，并给出
+\(u_{tt}+|D|^2u=0\)、\(u(0)=f\)、\(u_t(0)=g\)。
+对一般数据，\(|D|:\dot H^\sigma\to\dot H^{\sigma-1}\) 是等距映射，
+而对实数 \(\delta\ne0\)、\(\xi\ne0\) 有
+\[
+ \left|\frac{e^{2\pi\mathrm i\delta|\xi|}-1}{2\pi\delta|\xi|}\right|\le1.
+\]
+因此 Fourier 侧的支配收敛使半波求导在低一阶空间中成立。
+于是 \(u_t\in C(\mathbb R;\dot H^{s-1})\)，
+二阶方程在 \(\dot H^{s-2}\) 及分布意义下成立，
+初值也随连续性传到极限。
 \end{proof}
-频带之间的 Plancherel 正交只直接控制初值；输出的空间指数通常不是2，
-所以合成界中的平方函数不可删去。若逐带绝对求和，右侧会变成
-\(\sum_j2^{js}\|\Delta_jf\|_2\)，那是更强的初值要求，
-不能再标成同一个 \(\dot H^s\) 估计。
+
+输入的频带正交只直接控制平方范数。
+输出空间通常是 \(L^r\)、\(r\ne2\)，因此必须用平方函数把输出求和转回可控的平方和。
+若改为逐带三角不等式，右端会成为
+\(\sum_j2^{js}\|\Delta_jf\|_2\)；
+它要求的是更强的频带可和性，不能再称为同一个 \(\dot H^s\) 估计。
 
 \ProseParagraphBreak
-例如三维 \((q,r)=(4,4)\) 满足上述边界关系，所得阶数为 \(s=1/2\)：
-初始位移需要 \(\dot H^{1/2}\)，初始速度需要 \(\dot H^{-1/2}\)。
-二维若取 \(r=4\)，则 \(q=8\)、\(s=3/8\)，不能照搬三维的时间指数。
-当三维 \(q\downarrow2\) 时边界 \(r\uparrow\infty\)，
-既越过 HLS 所用的 \(\alpha<1\)，又失去有限指数平方函数输入；
-这两个障碍应分别辨认。系统的其他可容许范围和端点处理见
-Keel 与陶哲轩的论文《Endpoint Strichartz Estimates》\cite{Keel1998Endpoint}。
+三维的 \((q,r)=(4,4)\) 满足边界关系，且 \(s=1/2\)。
+因此位移在 \(\dot H^{1/2}\)、速度在 \(\dot H^{-1/2}\) 时，
+波解属于 \(L^4(\mathbb R;L^4(\mathbb R^3))\)。
+这里负阶速度按加权 Fourier 完备化理解，仍有确定的
+\(C_t\dot H^{-1/2}\) 初速度迹。
+二维取 \(r=4\) 时则有 \(q=8\)、\(s=3/8\)；
+相同空间指数不能保留三维的时间指数。
 
-\section{端点现象的准确层次}
+\ProseParagraphBreak
+边界也显示出两种不同障碍。
+三维沿上述指数关系令 \(q\downarrow2\) 时，\(r\uparrow\infty\)：
+既有时间 HLS 中 \(\alpha\uparrow1\) 的障碍，
+又离开有限空间指数的平方函数范围。
+四维的候选边界 \((q,r)=(2,6)\)、\(s=5/6\) 则仍有有限的空间指数，
+但时间 HLS 障碍依旧存在，所以也不在本节已证定理内。
+本节没有把这些证明边界当成统一的失败结论；
+系统的其他可容许范围和端点处理见 Keel 与陶哲轩的论文
+《Endpoint Strichartz Estimates》\cite{Keel1998Endpoint}。
+
+\section{Schrödinger 能量端点与双线性求和}
 
 \label{b2:sec:app-E-4}
 
+在 Schrödinger 可容许关系 \(2/q+d/r=d/2\) 中令 \(q=2\)，
+便得到 \(r=2d/(d-2)\)。当 \(d\ge3\) 时，这是一个有限空间指数；
+但是前面的时间 HLS 证明仍然失效，因为色散插值后的时间幂变成了 \(|t-s|^{-1}\)。
+失败的是这条正核估计路线。实际的欧氏自由演化仍满足下面的齐次端点结论，
+其证明要保留算子配对，并在多个时间尺度之间作双线性求和。
+
+\Needspace{6\baselineskip}
 \begin{theorem}[深层结构定理：欧氏 Schrödinger 能量端点]\label{b2:thm:E-endpoint}
-若 \(d\ge3\)，则
+设整数 \(d\ge3\)，\(f\in L^2(\mathbb R^d;\mathbb C)\)，并令
 \[
- \|U(t)f\|_{L^2_tL^{2d/(d-2)}_x}\le C_d\|f\|_2.
+ U(t)f=\mathcal F_2^{-1}
+       \left(e^{-4\pi^2\mathrm it|\xi|^2}\widehat f(\xi)\right),
+ \quad t\in\mathbb R.
 \]
-二维候选 \((q,r)=(2,\infty)\) 不在此结论中。
+则存在只依赖 \(d\) 的常数 \(C_d\)，使
+\[
+ \|U(t)f\|_{L^2(\mathbb R;L^{2d/(d-2)}(\mathbb R^d))}
+ \le C_d\|f\|_2.
+\]
+二维候选对 \((q,r)=(2,\infty)\) 不属于本定理的结论。
 \end{theorem}
 \begin{proofsketch}
-把 \(TT^*\) 配对按时间间隔作二进分解，在非端点指数附近取得不同方向的双线性界，再以适当插值与序列求和恢复端点；不能对 \(|t-s|^{-1}\) 直接使用强型 HLS。
-完整端点求和在此略去。正式来源是 Keel 与陶哲轩的
-《Endpoint Strichartz Estimates》\cite[Theorem 1.2, p.~956; Corollary 1.4, p.~958; Sections 4--6]{Keel1998Endpoint}。
-该论文先在抽象能量与色散假设下证明定理，再应用到欧氏 Schrödinger 演化。
+这里使用 Keel--Tao 抽象定理的齐次端点特例，先明确其所需假设。
+设 \(\mathcal H\) 为复 Hilbert 空间，\((Y,\nu)\) 为
+\(\sigma\)-有限测度空间，\(W(t):\mathcal H\to L^2(Y,\nu)\) 是可测算子族。
+所需的两个一致估计为
+\[
+ \|W(t)h\|_{L^2(Y)}\le C_E\|h\|_{\mathcal H},
+\]
+以及对 \(t\ne s\)、\(v\in L^1(Y)\cap L^2(Y)\) 成立的
+\[
+ \|W(t)W(s)^*v\|_{L^\infty(Y)}
+ \le C_D|t-s|^{-\sigma}\|v\|_{L^1(Y)}.
+\]
+其中时间变量取遍 \(\mathbb R\)，\(\sigma>1\)，
+\(C_E,C_D\) 不依赖 \(s,t,h,v\)。
+这里的可测性包括所讨论的 \(W(t)h\) 时空函数可测；
+\(W(s)^*:L^2(Y)\to\mathcal H\) 由第一条有界性定义。
+抽象结果在这些假设下给出
+\[
+ \|W(t)h\|_{L^2_tL^{r_\sigma}(Y)}
+ \le C\|h\|_{\mathcal H},
+ \quad r_\sigma=\frac{2\sigma}{\sigma-1}.
+\]
+这正是尖锐指数关系
+\(1/q+\sigma/r=\sigma/2\) 在 \(q=2\) 时的有限空间指数端点。
+完整抽象定理还处理其他指数；本处只取上述特例。
+
+对当前问题，取
+\(\mathcal H=L^2(\mathbb R^d)\)、\(Y=\mathbb R^d\)、\(\nu=\mathrm dx\)、
+\(W(t)=U(t)\)。Plancherel 给出能量界 \(C_E=1\)，
+强连续性给出所需可测性。
+又因 \(U(s)^*=U(-s)\) 及群律，
+\[
+ W(t)W(s)^*=U(t-s).
+\]
+本附录首节证明的 Fresnel 核界给出
+\[
+ \|U(t-s)v\|_\infty
+ \le(4\pi|t-s|)^{-d/2}\|v\|_1,
+ \quad t\ne s.
+\]
+所以可取 \(\sigma=d/2>1\)，从而
+\(r_\sigma=2d/(d-2)\)，与定理中的指数一致。
+这一应用核对的是全部时间差的色散界，并非只在大时间成立的衰减。
+
+抽象端点定理的证明把 \(TT^*\) 配对按时间间隔作二进分解，
+利用邻近空间指数的局部双线性估计，再以双线性插值和尺度序列求和得到临界界。
+这些局部界的完整适用邻域和端点插值步骤在此不重证，
+也不能用对 \(|t-s|^{-1}\) 直接套用强型 HLS 代替。
+正式来源是 Keel 与陶哲轩的
+《Endpoint Strichartz Estimates》
+\cite[Theorem 1.2, p.~956; Corollary 1.4, p.~958; Sections 4--6]{Keel1998Endpoint}。
+其中抽象定理提供能量与色散假设下的结论，
+相应推论将它应用到欧氏 Schrödinger 演化。
 陶哲轩的《Nonlinear Dispersive Equations: Local and Global Analysis》
 \cite[Section 2.3]{Tao2006Nonlinear}亦给出相应背景。
-本附录的非线性模型只调用已完整证明的非端点界，不以该深层输入作为隐含前置。
+本附录的非线性模型只调用已经完整证明的非端点界，
+不以这里略去的端点求和作为隐含前置。
 \end{proofsketch}
-“端点”必须说明是哪条指数边界。输出空间 \(r=\infty\)、时间指数 \(q=2\)、双端点非齐次估计是不同问题。一个成立的齐次端点不自动保证所有迟滞双端点组合成立。
+
+两个假设在应用中各有作用。能量界使 \(W(s)^*\) 有意义，
+并控制没有空间可积性改善时的演化；色散界则改善空间指数，但在对角线 \(t=s\) 附近发散。
+抽象定理把这两种控制联合起来。
+在欧氏模型中，酉性和群律让 \(W(t)W(s)^*\) 化为单个时间差的演化，
+因此前面已经建立的核估计正好满足所需形式；
+不能仅凭某个算子族有 \(L^1\to L^\infty\) 衰减就省略对其伴随乘积的核对。
 
 \ProseParagraphBreak
-端点的难处可以在时间分解中看见。把 \(t-s\) 按
-\(2^k\le|t-s|<2^{k+1}\) 划带，时间核 \(|t-s|^{-1}\) 在每带的积分均为常数阶。
-对带逐项取绝对值并相加便累积无穷多个常数，而不是一个可求和的几何级数。
-端点证明必须利用两输入指数的联合变化取得跨带求和，
-并保留算子配对结构，不能靠在奇点附近删去一个小区间取得与删去尺度无关的强界。
-这也解释了为何非端点证明十分短，却不能通过令 \(q\to2\) 自动取得统一端点常数。
+下面具体说明尺度分解为何是实质步骤，而不把这一说明当作端点证明。
+置 \(r_*=2d/(d-2)\)，则 \(r_*'=2d/(d+2)\)。
+对 \(F,G\in C_c^\infty(\mathbb R\times\mathbb R^d;\mathbb C)\)，考虑双线性配对
+\[
+ B(F,G)=\int_{s<t}
+ \langle U(t-s)F(s),G(t)\rangle_{L^2_x}\,\mathrm ds\,\mathrm dt.
+\]
+这里内积约定对第一个变量复线性，故复标量下 \(B\) 对第二个变量共轭线性；
+双线性求和沿用这一通常的复配对约定。
+当前测试函数的时间支撑紧，能量界已保证这一双积分存在；
+端点问题是能否仅用
+\(L^2_tL^{r_*'}_x\) 范数取得与支撑大小无关的估计。
+把上半时间平面按间距分为
+\[
+ B(F,G)=\sum_{k\in\mathbb Z}B_k(F,G),
+ \quad
+ B_k(F,G)=
+ \int_{2^k\le t-s<2^{k+1}}
+ \langle U(t-s)F(s),G(t)\rangle_{L^2_x}\,\mathrm ds\,\mathrm dt.
+\]
+对测试函数，能量界也使这个分解合法；
+困难在于求和后的目标范数控制。
 
-\section{一维三次非线性模型}
+\ProseParagraphBreak
+色散与能量插值在 \(r_*\) 处恰给
+\[
+ \|U(t-s)h\|_{r_*}\le C|t-s|^{-1}\|h\|_{r_*'}.
+\]
+记 \(f(s)=\|F(s)\|_{r_*'}\)、\(g(t)=\|G(t)\|_{r_*'}\)，
+则每一带都受正时间核
+\[
+ H_k(\tau)=\frac{\mathbf1_{[2^k,2^{k+1})}(\tau)}{\tau},
+ \quad
+ \|H_k\|_{L^1(\mathbb R)}=\log2
+\]
+控制。Young 不等式和时间 Cauchy--Schwarz 因而给出
+\[
+ |B_k(F,G)|
+ \le C\|H_k*f\|_2\cdot\|g\|_2
+ \le C\|F\|_{L^2_tL^{r_*'}_x}
+        \cdot\|G\|_{L^2_tL^{r_*'}_x}.
+\]
+每个尺度得到的常数都相同；逐带相加便失去可和性。
+如果先删去 \(|t-s|<\varepsilon\)，再用正核证明，
+仅在 \(\varepsilon<|t-s|<1\) 内就会出现
+\(\int_\varepsilon^1\tau^{-1}\,\mathrm d\tau=\log(1/\varepsilon)\)。
+因此这种删去不能给出独立于 \(\varepsilon\) 的端点常数。
+它揭示的是绝对值估计丢掉了所需结构，
+并没有否定原振荡算子本身的有界性。
+
+\ProseParagraphBreak
+原典的双线性方法同时允许两个空间指数变化。
+为使用两个输入各自的局部时间范数，还把 \(s<t\) 区域分成时间矩形
+\(I\times J\)，使两区间的长度与彼此间距同阶。
+将长度为 \(2^k\) 的这些矩形贡献合在一起，记为 \(\mathcal B_k\)。
+这是对整个双线性配对的另一种分解；
+它保留了前面每个时间间距同阶的性质，又使每个输入各自限于一个时间区间。
+以 \(\sigma=d/2\) 表示衰减维数，其局部估计在端点附近的适当指数
+\(a,b\) 上具有如下尺度形式：
+\[
+ |\mathcal B_k(F,G)|
+ \le C_{a,b}2^{-k\beta(a,b)}
+       \|F\|_{L^2_tL^{a'}_x}
+       \cdot\|G\|_{L^2_tL^{b'}_x},
+ \quad
+ \beta(a,b)=\sigma-1-\frac{\sigma}{a}-\frac{\sigma}{b}.
+\]
+这条局部双线性估计及其可用指数邻域属于上述原典的证明内容，
+这里仅用它解释求和机制，并未将它作为本书已经补证的引理。
+在 \(a=b=r_*\) 时 \(\beta=0\)；
+改变两个指数，可使尺度权重向不同方向衰减。
+仅仅在每个尺度先插值回端点，仍会回到 \(\beta=0\) 而没有解决求和。
+直接给每个尺度选取较小的邻近指数界也不够：
+目标输入只具有临界范数，在整个 \(\mathbb R^d\) 上，
+它并不自动属于所有邻近的空间 \(L^{a'}\)、\(L^{b'}\)。
+因此还须把输入的大小层次、两个指数的插值和尺度序列的求和放在同一论证中。
+原典第4—6节完成的正是这些步骤。
+
+\ProseParagraphBreak
+所得双线性控制再返回 Hilbert 空间范数。
+对 \(T^*F=\int U(-s)F(s)\,\mathrm ds\)，群律和伴随关系给出
+\[
+ \|T^*F\|_2^2
+ =\int_{\mathbb R^2}
+       \langle U(t-s)F(s),F(t)\rangle\,\mathrm ds\,\mathrm dt
+ =2\operatorname{Re}B(F,F).
+\]
+由端点双线性求和得到
+\(\|T^*F\|_2^2\le C\|F\|_{L^2_tL^{r_*'}_x}^2\)，
+开平方并对偶即为齐次端点估计。
+这一收尾与非端点 \(TT^*\) 相同；
+新增的深层工作集中在从各个 \(B_k\) 取得整个 \(B\) 的统一界。
+
+\ProseParagraphBreak
+结论的范围可以用几个指数核对。
+三维得到 \(L^2_tL^6_x\)，四维得到 \(L^2_tL^4_x\)；
+二者都没有空间 \(L^\infty\) 端点。
+二维对应 \(\sigma=1\)，抽象尖锐指数关系给出的
+\((q,r,\sigma)=(2,\infty,1)\) 正是原定理排除的组合，
+所以不能把三维公式中的 \(d\) 直接改成2。
+一维则不存在满足 Schrödinger 尺度关系的 \(q=2\)、\(r\ge2\) 指数对。
+上一节半波的频带衰减维数为 \((d-1)/2\)，
+并另带频率代价，也不能将本节的 Schrödinger 端点原样用于波演化。
+
+\ProseParagraphBreak
+齐次端点可直接限制到任意时间区间 \(I\)，常数与区间长度无关。
+它的对偶还给出
+\[
+ \left\|\int_{\mathbb R}U(-s)F(s)\,\mathrm ds\right\|_2
+ \le C_d\|F\|_{L^2(\mathbb R;L^{r_*'}(\mathbb R^d))},
+\]
+其中一般输入的积分按测试函数稠密延拓解释。
+将齐次算子与这个对偶算子复合，还可得到全时间 \(TT^*\) 的相应界。
+但全时间积分与 \(s<t\) 的迟滞积分是不同算子；
+不能因为前者有界，就仅凭写入时间示性函数断言全部非齐次端点组合成立。
+输出空间 \(r=\infty\)、时间指数 \(q=2\)、两个可容许对同时取端点，
+也分别是不同的问题。
+本附录随后的一维非线性应用使用已完整证明的非端点同对估计，
+其存在性论证不需要在这些未展开的组合之间作选择。
+
+\section{一维三次 Schrödinger 方程的 \texorpdfstring{\(L^2\)}{L²} 全局解}
 
 \label{b2:sec:app-E-5}
 
-考虑一维初值问题
+现在用已经证明的非端点估计构造非线性演化。
+在一维空间中固定 \(\mu\in\{-1,1\}\)，考虑
 \[
- i\partial_tu+\Delta u=\pm|u|^2u,\qquad u(0)=u_0\in L^2(\mathbb R).
+ \mathrm i\partial_tu+\partial_x^2u=\mu|u|^2u,
+ \quad u(0)=u_0\in L^2(\mathbb R;\mathbb C).
 \]
-温和形式为
-\[
- u(t)=U(t)u_0\mp i\int_0^tU(t-s)(|u|^2u)(s)\,\mathrm ds.
-\]
-一维可容许对 \((q,r)=(8,4)\) 处于已证非端点范围。令
-\(X_T=C([0,T];L^2)\cap L^8([0,T];L^4)\)，取两范数之和。
-Hölder 给出
-\[
- \||u|^2u\|_{L^{8/7}_tL^{4/3}_x}
- \le T^{1/2}\|u\|_{L^8_tL^4_x}^3.
-\]
-时间因子来自 \(1/(8/7)-3/8=1/2\)。
-同理，两输入的非线性差受
-\[
- CT^{1/2}(\|u\|_{L^8L^4}^2+\|v\|_{L^8L^4}^2)
-                 \|u-v\|_{L^8L^4}
-\]
-控制。
+符号 \(\mu\) 区分两种非线性，但以下局部收缩和质量守恒对两者都成立。
+主要困难是三次项并不把全部 \(L^2\) 映到 \(L^2\)。
+我们给解增加一个时间空间混合范数，用线性估计取得这个范数，
+再把非线性送入线性非齐次估计允许的输入空间。
 
-\begin{theorem}\label{b2:thm:E-cubic-local}
-对每个一维 \(L^2\) 初值，存在 \(T>0\)，使上述积分方程在 \(X_T\) 的适当闭球中有唯一解，且解连续依赖初值。
+\subsection{解空间与三次估计}
+\label{b2:subsec:E-cubic-space}
+
+一维可容许对 \((q,r)=(8,4)\) 满足
+\(2/8+1/4=1/2\)，处于\cref{b2:thm:E-schrodinger-nonendpoint}的范围。
+对有限闭区间 \(I=[a,b]\)、\(a<b\)，记
+\[
+ \begin{aligned}
+ X(I)&\coloneqq C(I;L^2(\mathbb R;\mathbb C))
+                   \cap L^8(I;L^4(\mathbb R;\mathbb C)),\\
+ \|u\|_{X(I)}&\coloneqq\sup_{t\in I}\|u(t)\|_2
+                     +\|u\|_{L^8(I;L^4)},\\
+ Y(I)&\coloneqq L^{8/7}(I;L^{4/3}(\mathbb R;\mathbb C)).
+ \end{aligned}
+\]
+交空间中的两个代表须在时间空间上几乎处处相同。
+其中连续的 \(L^2\) 代表决定每个时刻的初值，
+而 \(L^4\) 值只需在几乎每个时刻存在。
+当 \(I=[0,T]\) 时仍写 \(X_T=X(I)\)。
+
+设 \(U(t)\) 为 Fourier 乘子 \(e^{-4\pi^2\mathrm it\xi^2}\) 定义的酉群。
+\Cref{b2:prop:E-retarded}把光滑输入上的算子
+\[
+ \mathcal D_aF(t)\coloneqq\int_a^tU(t-s)F(s)\,\mathrm ds
+\]
+连续延拓为 \(Y(I)\to X(I)\) 的有界算子。
+结合齐次估计，有与 \(a,b\) 无关的常数 \(C_0,C_1\ge1\)，使
+\begin{equation}\label{b2:eq:E-cubic-linear-bounds}
+ \|U(\,\cdot-a)f\|_{X(I)}\le C_0\|f\|_2,
+ \quad \|\mathcal D_aF\|_{X(I)}\le C_1\|F\|_{Y(I)}.
+\end{equation}
+这里一般的 \(F\) 只属于 \(Y(I)\)，不预先假设
+\(F\in L^1(I;L^2)\)。后面所有这类 Duhamel 积分均取上述连续延拓的意义，
+其输出仍有连续的 \(L^2\) 代表，并在 \(t=a\) 取零值。
+
+\Needspace{6\baselineskip}
+\begin{lemma}[三次项的解空间估计]\label{b2:lem:E-cubic-space}
+设 \(I=[a,b]\subset\mathbb R\)、\(a<b\)，
+\(X(I)=C(I;L^2(\mathbb R;\mathbb C))\cap L^8(I;L^4(\mathbb R;\mathbb C))\)
+取两范数之和，\(Y(I)=L^{8/7}(I;L^{4/3}(\mathbb R;\mathbb C))\)。
+则 \(X(I)\) 完备。对 \(u,v\in X(I)\)，令 \(\mathcal N(u)=|u|^2u\)，有
+\begin{equation}\label{b2:eq:E-cubic-nonlinear-bounds}
+ \begin{aligned}
+ \|\mathcal N(u)\|_{Y(I)}
+ &\le |I|^{1/2}\cdot\|u\|_{L^8(I;L^4)}^3,\\
+ \|\mathcal N(u)-\mathcal N(v)\|_{Y(I)}
+ &\le 2|I|^{1/2}
+    \left(\|u\|_{L^8(I;L^4)}^2+\|v\|_{L^8(I;L^4)}^2\right)
+    \cdot\|u-v\|_{L^8(I;L^4)}.
+ \end{aligned}
+\end{equation}
+\end{lemma}
+\begin{proof}
+若 \((u_n)\) 在和范数中是 Cauchy 列，两个 Banach 空间分别给出极限
+\(u\in C(I;L^2)\) 与 \(v\in L^8(I;L^4)\)。
+对任意光滑紧支撑测试函数 \(\phi\)（时间支集位于 \((a,b)\)），有
+\[
+ \left|\int_I\int_{\mathbb R}(u_n-u)\phi\,\mathrm dx\,\mathrm dt\right|
+ \le\|u_n-u\|_{C(I;L^2)}\cdot\|\phi\|_{L^1(I;L^2)}\longrightarrow0.
+\]
+用 \(L^8L^4\) 与 \(L^{8/7}L^{4/3}\) 配对，同一积分也收敛到以 \(v\) 代替 \(u\) 的值。
+因此两个局部可积函数作为分布相同，从而几乎处处相等。
+于是连续代表 \(u\) 同时属于两个空间，且 \(u_n\to u\) 于和范数，证明完备性。
+
+对几乎每个 \(t\)，空间 Hölder 给出
+\(\|\mathcal N(u(t))\|_{4/3}=\|u(t)\|_4^3\)。
+三次方先属于时间空间 \(L^{8/3}(I)\)，再由有限区间上的 Hölder 不等式得到
+\[
+ \bigl\|\|u(t)\|_4^3\bigr\|_{L^{8/7}(I)}
+ \le |I|^{7/8-3/8}\cdot
+       \bigl\|\|u(t)\|_4^3\bigr\|_{L^{8/3}(I)}
+ =|I|^{1/2}\cdot\|u\|_{L^8(I;L^4)}^3.
+\]
+对复数 \(z,w\)，把差写成
+\(|z|^2(z-w)+(|z|^2-|w|^2)w\)，可得
+\[
+ \bigl||z|^2z-|w|^2w\bigr|
+ \le2(|z|^2+|w|^2)\cdot|z-w|.
+\]
+先在空间用指数 \(2,4\) 的 Hölder 不等式，
+再在时间用 \(4,8\) 把两个因子乘入 \(L^{8/3}(I)\)，
+最后使用同一个 \(|I|^{1/2}\) 嵌入因子，就得到差估计。
+\end{proof}
+
+对初值 \(f\in L^2\)，所求温和方程是
+\begin{equation}\label{b2:eq:E-cubic-mild}
+ u(t)=U(t-a)f-\mathrm i\mu\mathcal D_a\mathcal N(u)(t),
+ \quad t\in[a,b].
+\end{equation}
+这里 \(\mathcal N(u)\in Y(I)\) 已由引理保证，故右端是定义良好的 \(X(I)\) 元素。
+若 \(a\le c\le t\le b\)，同一解满足重启恒等式
+\begin{equation}\label{b2:eq:E-cubic-restart}
+ u(t)=U(t-c)u(c)-\mathrm i\mu\int_c^tU(t-s)\mathcal N(u)(s)\,\mathrm ds.
+\end{equation}
+对光滑外力先把积分在 \(c\) 处分开，再用群律即可验证；
+在 \(Y(I)\) 中逼近外力，式\eqref{b2:eq:E-cubic-linear-bounds}保证输出在
+\(C(I;L^2)\) 中收敛，因此恒等式也对当前的积分意义成立。
+后面从端点继续解时，使用的是这个恒等式。
+
+\subsection{共同寿命与整个解类中的唯一性}
+\label{b2:subsec:E-cubic-local}
+
+把式\eqref{b2:eq:E-cubic-mild}的右端看成映射 \(\Phi_f\)。
+线性自由轨道的大小由初值质量控制；
+三次项的差比线性项多出两个解的范数，
+所以要用 \(T^{1/2}\) 抵消这两个因子。
+这会给出只依赖初值范数上界的共同时间，而不依赖初值的频率分布。
+
+\Needspace{6\baselineskip}
+\begin{theorem}[一维三次模型的局部温和解]\label{b2:thm:E-cubic-local}
+固定 \(\mu\in\{-1,1\}\)，令 \(U(t)\) 为
+\(L^2(\mathbb R;\mathbb C)\) 上符号为 \(e^{-4\pi^2\mathrm it\xi^2}\) 的酉群。
+存在绝对常数 \(c_0,C>0\)，使对任意 \(M>0\)、\(a\in\mathbb R\) 及
+\(f\in L^2(\mathbb R;\mathbb C)\)、\(\|f\|_2\le M\)，
+令 \(T_M=c_0M^{-4}\)、\(I=[a,a+T_M]\)，则方程
+\[
+ u(t)=U(t-a)f-\mathrm i\mu\int_a^tU(t-s)(|u|^2u)(s)\,\mathrm ds
+\]
+在 \(X(I)=C(I;L^2(\mathbb R;\mathbb C))\cap L^8(I;L^4(\mathbb R;\mathbb C))\)
+中有唯一解，并有 \(\|u\|_{X(I)}\le CM\)。
+积分按\cref{b2:prop:E-retarded}从 \(L^{8/7}(I;L^{4/3})\) 连续延拓的意义理解。
+若 \(g\in L^2\)、\(\|g\|_2\le M\)，相同符号和起点对应的解 \(v\) 满足
+\[
+ \|u-v\|_{X(I)}\le C\|f-g\|_2.
+\]
 \end{theorem}
 \begin{proof}
-齐次估计和酉性给自由解的 \(X_T\) 范数至多 \(C\|u_0\|_2\)。
-取半径 \(2C\|u_0\|_2\)（零输入直接取零解），非齐次同对估计与能量界使积分映射的非线性部分至多 \(CT^{1/2}\) 乘半径的三次方。
-选 \(T\) 使 \(CT^{1/2}\) 乘半径平方小于 \(1/4\)，则映射保持闭球且为压缩。Banach 不动点给解。
-同一差估计配以两个自由解之差，得到局部 Lipschitz 依赖。时间连续性来自已证非齐次能量结论。
-唯一性首先在构造球中成立；若另一个 \(X_T\) 解具有相同初值，在足够短的子区间上其 \(L^8L^4\) 范数小，差估计再次成为压缩，逐区间推进即可得到整个共同存在区间上的唯一性。
-\end{proof}
-这是一条局部温和解结论。全局延拓、质量守恒和更高正则性还需逼近与先验估计，本附录没有因形式方程具有守恒律就把这些步骤省去。
-
-\ProseParagraphBreak
-连续依赖中的时间可以对有界初值集统一选择。若
-\(\|u_0\|_2,\|v_0\|_2\le M\)，取共同半径 \(R=2CM\) 和
-满足 \(CT^{1/2}R^2\le1/4\) 的 \(T\)。对两个不动点相减，已有差估计给出
+式\eqref{b2:eq:E-cubic-linear-bounds}与式\eqref{b2:eq:E-cubic-nonlinear-bounds}%
+给出一个与区间无关的 \(K\ge1\)，使在长度为 \(T\) 的区间上
 \[
- \|u-v\|_{X_T}\le C\|u_0-v_0\|_2+\tfrac12\|u-v\|_{X_T},
- \qquad
- \|u-v\|_{X_T}\le2C\|u_0-v_0\|_2.
+ \begin{aligned}
+ \|\Phi_f(u)\|_{X(I)}
+ &\le C_0M+KT^{1/2}\cdot\|u\|_{X(I)}^3,\\
+ \|\Phi_f(u)-\Phi_f(v)\|_{X(I)}
+ &\le KT^{1/2}\left(\|u\|_{X(I)}^2+\|v\|_{X(I)}^2\right)
+                  \cdot\|u-v\|_{X(I)}.
+ \end{aligned}
 \]
-因此这里实际得到统一时间区间上的局部 Lipschitz 连续依赖。
-零初值也可置于任意正半径的共同球内，不会造成时间选择的除零问题。
-对任意两个 \(X_T\) 解，短区间上的 \(L^8L^4\) 范数随区间长度趋零，
-由同一个差估计先在第一段得到相等，再从相同的端点初值逐段延续。
-区间覆盖可以有限选取，因为两个范数的八次方均可积。
+取 \(R=2C_0M\)，并选绝对常数 \(c_0>0\)，使
+\(2KT_M^{1/2}R^2\le1/2\)。
+因为 \(T_M^{1/2}R^2=4C_0^2c_0^{1/2}\)，
+这个选择同时适用于所有 \(M>0\)。
+在闭球 \(\|u\|_{X(I)}\le R\) 中，映射的像范数至多
+\(R/2+R/4\)，差估计的系数至多 \(1/2\)。
+由完备性和 Banach 不动点定理，闭球中有唯一不动点。
+对初值 \(f,g\) 的两个不动点相减，又有
+\[
+ \|u-v\|_{X(I)}
+ \le C_0\|f-g\|_2+\tfrac12\|u-v\|_{X(I)},
+\]
+吸收后得到 \(2C_0\|f-g\|_2\) 的差界。
+
+还须排除球外的其他 \(X(I)\) 解。
+设 \(u,v\in X(I)\) 满足同一温和方程，且在某个左端点 \(c\) 取同值。
+在 \(J=[c,d]\subset I\) 上使用重启式，得到
+\[
+ \|u-v\|_{X(J)}
+ \le K|J|^{1/2}
+   \left(\|u\|_{L^8(J;L^4)}^2+\|v\|_{L^8(J;L^4)}^2\right)
+   \cdot\|u-v\|_{X(J)}.
+\]
+两个全区间混合范数都有限，故可取统一的小段长，使右侧系数小于一。
+把 \(I\) 分成有限个这样的闭区间，第一段从共同初值开始，
+差估计使两解相等；连续性给出下一段左端点也相等。
+有限次推进证明整个 \(I\) 上唯一。
+同一论证适用于任意有限共同存在区间，因此唯一性不限于构造所用的闭球。
+\end{proof}
+
+零初值的解为零；需要把它与非零数据比较时，可以把两者一起放进任意正的质量上界 \(M\) 中。
+时间平移不改变常数，因而从任何时刻的 \(L^2\) 值重新开始，都有相同的局部结论。
+对于一个在 \([0,T_*)\) 上逐紧区间属于 \(X\) 的温和解，若 \(T_*<\infty\)
+且存在 \(t_n\uparrow T_*\) 使 \(\|u(t_n)\|_2\le M\)，
+则从 \(t_n\) 出发的共同寿命 \(T_M\) 在充分大 \(n\) 时越过 \(T_*\)。
+重叠区间上的唯一性使新解接续原解，故 \(T_*\) 不能是最大存在时间。
+因此有限最大端点只能伴随 \(L^2\) 范数趋于无穷；下面的质量守恒将排除这种情形。
+
+\subsection{频率投影与带限方程}
+\label{b2:subsec:E-cubic-truncation}
+
+仅从 \(u\in X(I)\) 出发，不能直接把微分方程乘以 \(\overline u\) 后分部积分。
+先把频率限制在有界区间，使空间导数成为有界算子，并保留投影的自伴性；
+后者使近似方程仍然严格守恒质量。
+
+\Needspace{6\baselineskip}
+\begin{lemma}[一维区间频率投影]\label{b2:lem:E-frequency-projection}
+对 \(N>0\)，令 \(P_N\) 为 \(L^2(\mathbb R;\mathbb C)\) 上 Fourier 乘子
+\(\mathbf1_{[-N,N]}\) 对应的正交投影。
+对每个 \(1<p<\infty\)，它有兼容的 \(L^p(\mathbb R;\mathbb C)\) 延拓，满足
+\[
+ \sup_{N>0}\|P_N\|_{L^p\to L^p}\le C_p,
+ \quad \|P_Nf-f\|_p\longrightarrow0\quad(N\to\infty)
+ \quad(f\in L^p).
+\]
+若 \(I\) 是有限闭区间、\(1\le q<\infty\)，则对
+\(F\in L^q(I;L^p)\) 也有 \(P_NF\to F\) 于该混合范数。
+对 \(F\in C(I;L^2)\)，收敛在 \(t\in I\) 上按 \(L^2\) 范数一致。
+\end{lemma}
+\begin{proof}
+由\subsecref{b2:subsec:180502}可知，正频投影为
+\(P_+=(I+\mathrm iH)/2\)，其中 \(H\) 是 Hilbert 变换。
+其 \(L^p\) 界来自\cref{b2:thm:18-cz-lp}在一维 Hilbert 核上的应用，
+并在 \(L^2\cap L^p\) 上与正半轴 Fourier 乘子一致。
+调制 \(M_af(x)=e^{2\pi\mathrm iax}f(x)\) 是每个 \(L^p\) 上的等距算子，且
+\[
+ P_N=M_{-N}P_+M_N-M_NP_+M_{-N}.
+\]
+右端两个乘子分别是 \(\mathbf1_{\{\xi>-N\}}\) 与
+\(\mathbf1_{\{\xi>N\}}\)，端点单点在平方空间中无影响。
+所以 \(\|P_N\|_{p\to p}\le2\|P_+\|_{p\to p}\)，常数与 \(N\) 无关。
+
+具有光滑紧支撑 Fourier 变换的 Schwartz 函数在 \(L^p\) 中稠密。
+具体地，先用 Schwartz 函数逼近一般 \(L^p\) 输入；
+再对其变换乘上 \(\chi(\xi/R)\)，其中 \(\chi\in C_c^\infty\) 在零附近等于一。
+由 Schwartz 尾部及截断函数各阶导数的缩放，所得函数随 \(R\to\infty\)
+在 Schwartz 拓扑、从而在 \(L^p\) 中趋于原函数。
+对于固定的此类函数，充分大 \(N\) 时 \(P_Nf=f\)。
+结合统一 \(L^p\) 界，就把强收敛推广到全部 \(L^p\)。
+
+对混合范数输入，几乎每个 \(t\) 上已有空间强收敛，且
+\[
+ \|(P_N-I)F(t)\|_p^q
+ \le(C_p+1)^q\cdot\|F(t)\|_p^q.
+\]
+右边在时间上可积，支配收敛便给出混合范数结论。
+最后，连续映射 \(F:I\to L^2\) 的像为紧集。
+在该像上取有限 \(\varepsilon\)-网，
+利用 \(\|P_N-I\|_{2\to2}\le2\) 控制网点以外的误差，
+再对有限个网点使用强收敛，得到时间一致收敛。
+\end{proof}
+
+区间投影使用了一维 Hilbert 变换，不能把任意维数的球形硬截断直接代入这一步。
+本节需要的空间指数只有 \(4\) 与 \(4/3\)，两者都在该引理的强型范围内。
+此外，\(P_N\) 与 \(U(t)\) 交换；它在 \(Y(I)\) 和 \(X(I)\) 上均有一致界，
+所以与 \(\mathcal D_a\) 的交换关系也能从光滑外力通过连续延拓得到。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[带限近似的全局解与质量]\label{b2:prop:E-truncated-mass}
+设 \(N>0\)、\(\mu\in\{-1,1\}\)、\(f\in L^2(\mathbb R;\mathbb C)\)，
+\(P_N\) 为符号 \(\mathbf1_{[-N,N]}\) 的正交投影，
+\(\mathcal H_N=P_NL^2(\mathbb R;\mathbb C)\)。
+则初值问题
+\[
+ \mathrm i\partial_tu_N+\partial_x^2u_N
+      =\mu P_N(|u_N|^2u_N),
+ \quad u_N(0)=P_Nf
+\]
+有唯一解 \(u_N\in C^1(\mathbb R;\mathcal H_N)\)，方程在 \(L^2\) 中成立。
+对全部 \(t\in\mathbb R\)，有
+\[
+ \|u_N(t)\|_2=\|P_Nf\|_2.
+\]
+在每个有限闭区间上，它还属于 \(C_tL^2_x\cap L^8_tL^4_x\)。
+\end{proposition}
+\begin{proof}
+闭子空间 \(\mathcal H_N\) 是 Banach 空间，通常仍是无穷维的。
+对 \(h\in\mathcal H_N\)，Fourier 反演及 Cauchy--Schwarz 给出
+\[
+ \|h\|_\infty\le\|\widehat h\|_1
+       \le(2N)^{1/2}\cdot\|h\|_2,
+ \quad \|\partial_x^2h\|_2\le4\pi^2N^2\cdot\|h\|_2.
+\]
+由点态三次差估计及这个一致范数界，
+\[
+ \|P_N(\mathcal N(h)-\mathcal N(k))\|_2
+ \le C N\left(\|h\|_2^2+\|k\|_2^2\right)\cdot\|h-k\|_2
+ \quad(h,k\in\mathcal H_N).
+\]
+因此向量场
+\(h\mapsto\mathrm i\partial_x^2h-\mathrm i\mu P_N\mathcal N(h)\)
+在每个有界球上有界且为 Lipschitz 的，值仍在 \(\mathcal H_N\) 中。
+在连续曲线空间中对该向量场的时间积分作收缩：
+先以向量场的球上界选时间保证映射留在球内，
+再以该球上的 Lipschitz 常数缩短时间保证差的收缩。
+这给出一个局部解；因右端连续，解属于 \(C^1_t\mathcal H_N\)。
+
+采用对第一变量线性的内积 \(\langle h,k\rangle=\int h\overline k\)。
+带限性使一阶和二阶导数均在 \(L^2\) 中，且 \(u_N\in L^4\)。
+由 Plancherel、自伴性及 \(P_Nu_N=u_N\)，
+\[
+ \begin{aligned}
+ \langle\partial_x^2u_N,u_N\rangle
+ &=-4\pi^2\int\xi^2|\widehat{u_N}(\xi)|^2\,\mathrm d\xi,\\
+ \langle P_N(|u_N|^2u_N),u_N\rangle
+ &=\langle|u_N|^2u_N,P_Nu_N\rangle
+   =\int|u_N|^4\,\mathrm dx.
+ \end{aligned}
+\]
+这两个数均为实数，故
+\[
+ \frac{\mathrm d}{\mathrm dt}\|u_N(t)\|_2^2
+ =2\operatorname{Re}
+   \left(\mathrm i\langle\partial_x^2u_N,u_N\rangle
+       -\mathrm i\mu\langle P_N(|u_N|^2u_N),u_N\rangle\right)=0.
+\]
+对固定 \(N\)，守恒范数给出始终相同的球。
+上述局部收缩的时间只依赖 \(N\) 和这个球的半径，
+因此可向两个方向重复延拓，不会在有限时间终止。
+同时，\(\|h\|_4\le\|h\|_\infty^{1/2}\cdot\|h\|_2^{1/2}
+\le(2N)^{1/4}\cdot\|h\|_2\)，
+所以解在每个有限时间区间属于 \(L^8_tL^4_x\)。
+\end{proof}
+
+这里先固定截断参数得到全局正则解；上述 \(L^4\) 界随 \(N\) 增大，
+不能用它直接取极限。
+下一步返回 Strichartz 估计，取得不依赖 \(N\) 的短时间控制。
+
+\subsection{质量守恒的极限与全局拼接}
+\label{b2:subsec:E-cubic-global}
+
+\Needspace{6\baselineskip}
+\begin{theorem}[一维三次模型的质量守恒与全局延拓]
+\label{b2:thm:E-cubic-global}
+设 \(u_0\in L^2(\mathbb R;\mathbb C)\)、\(\mu\in\{-1,1\}\)，
+\(U(t)\) 为符号 \(e^{-4\pi^2\mathrm it\xi^2}\) 的酉群。
+温和方程
+\[
+ u(t)=U(t)u_0-\mathrm i\mu\int_0^tU(t-s)(|u|^2u)(s)\,\mathrm ds
+\]
+有唯一的全局解
+\[
+ u\in C(\mathbb R;L^2(\mathbb R;\mathbb C))
+       \cap L^8_{\mathrm{loc}}(\mathbb R;L^4(\mathbb R;\mathbb C)),
+ \quad \|u(t)\|_2=\|u_0\|_2\quad(t\in\mathbb R).
+\]
+积分在每个有限时间区间上按\cref{b2:prop:E-retarded}的连续延拓解释，
+负时间使用有向积分及时间反演。
+这个解延拓\cref{b2:thm:E-cubic-local}给出的局部解；两种符号均适用。
+\end{theorem}
+\begin{proof}
+取 \(M>0\) 使 \(\|u_0\|_2\le M\)，并令 \(u_N\) 为
+\cref{b2:prop:E-truncated-mass}的带限解。
+在 \(\mathcal H_N\) 中，线性算子 \(\partial_x^2\) 有界，
+可对 \(U(-t)u_N(t)\) 在 \(L^2\) 中求导再积分，得到
+\[
+ u_N(t)=U(t)P_Nu_0-\mathrm i\mu
+        \int_0^tU(t-s)P_N\mathcal N(u_N(s))\,\mathrm ds.
+\]
+此处带限非线性是连续的 \(L^2\) 值函数，故这个积分本身为强积分，
+并与它在 \(Y([0,T])\) 上的连续延拓一致。
+
+为把所有截断放到同一个空间中比较，记
+\[
+ \mathcal N_N(v)\coloneqq P_N\mathcal N(P_Nv),
+ \quad
+ \Phi_N(v)=U(\,\cdot)P_Nu_0-\mathrm i\mu\mathcal D_0\mathcal N_N(v).
+\]
+\Cref{b2:lem:E-frequency-projection}在 \(L^4\) 与 \(L^{4/3}\) 上的统一界，
+连同三次差估计，给出与 \(N\) 无关的 \(K_*\)，使
+\[
+ \begin{aligned}
+ \|\mathcal N_N(v)\|_{Y(I)}
+ &\le K_*|I|^{1/2}\cdot\|v\|_{L^8(I;L^4)}^3,\\
+ \|\mathcal N_N(v)-\mathcal N_N(w)\|_{Y(I)}
+ &\le K_*|I|^{1/2}
+   \left(\|v\|_{L^8(I;L^4)}^2+\|w\|_{L^8(I;L^4)}^2\right)
+   \cdot\|v-w\|_{L^8(I;L^4)}.
+ \end{aligned}
+\]
+因此可在共同闭球 \(\|v\|_{X([0,\delta_M])}\le2C_0M\) 上，
+选择 \(\delta_M=c_*M^{-4}\le T_M\)，使所有 \(\Phi_N\) 及未截断的 \(\Phi_{u_0}\)
+都保持该球，且收缩系数至多 \(1/2\)。
+所得 \(\Phi_N\) 的不动点自动带限：\(P_N\) 与 \(U\)、\(\mathcal D_0\) 交换，
+对其不动点方程作用 \(P_N\)，右端不变。
+另一方面，已构造的 ODE 解 \(u_N\) 属于每个有限区间上的 \(X\)，
+并满足同一个积分方程。
+用上面的统一差估计重复局部定理中的分段唯一性论证，
+便知 ODE 解等于这个不动点。
+所以 \(u_N\) 与原方程的局部解 \(u\) 都处于同一个有界球中。
+
+现在固定这个 \(u\)，在 \(I=[0,\delta_M]\) 上有
+\(P_Nu\to u\) 于 \(L^8(I;L^4)\)。将误差分成
+\[
+ \mathcal N_N(u)-\mathcal N(u)
+ =P_N\bigl(\mathcal N(P_Nu)-\mathcal N(u)\bigr)+(P_N-I)\mathcal N(u).
+\]
+第一项由 \(L^{4/3}\) 上的一致投影界、三次差估计及
+\(P_Nu\to u\) 控制而趋零；第二项由 \(\mathcal N(u)\in Y(I)\)
+及混合范数中的投影强收敛而趋零。
+因此
+\(\|\mathcal N_N(u)-\mathcal N(u)\|_{Y(I)}\to0\)。
+两个不动点方程相减，把依赖 \(u_N-u\) 的一项吸收，得到
+\[
+ \|u_N-u\|_{X(I)}
+ \le2C_0\|P_Nu_0-u_0\|_2
+       +2C_1\|\mathcal N_N(u)-\mathcal N(u)\|_{Y(I)}
+ \longrightarrow0.
+\]
+特别地，收敛在整个闭区间上按 \(L^2\) 范数一致。
+由近似解的质量守恒及 \(P_Nu_0\to u_0\) 于 \(L^2\)，
+对每个 \(t\in[0,\delta_M]\) 有
+\[
+ \|u(t)\|_2=\lim_{N\to\infty}\|u_N(t)\|_2
+          =\lim_{N\to\infty}\|P_Nu_0\|_2=\|u_0\|_2.
+\]
+这包括右端点，故从 \(\delta_M\) 重新起算时，初值仍满足相同的质量上界。
+上述局部构造与守恒证明对任意 \(L^2\) 初值都成立，
+所以可以用同一个 \(\delta_M>0\) 逐段继续。
+重启恒等式保证拼接后的轨道满足原始温和方程，
+局部唯一性保证重叠段相同。
+任意有限正时间区间只涉及有限段，故保留 \(L^2\) 连续性与 \(L^8L^4\) 可积性。
+
+负时间可直接由共轭反演构造。
+先以 \(\overline{u_0}\) 为初值、同一个 \(\mu\) 构造正向解 \(v\)，
+再对 \(t\le0\) 令 \(u(t)=\overline{v(-t)}\)。
+Fourier 公式给出 \(\overline{U(s)h}=U(-s)\overline h\)；
+对光滑输入变换积分并换元，再用 \(Y\to X\) 的连续延拓，
+得到所需的负时间有向温和公式。
+它在零时与正向解一致，并保持同一质量。
+最后，对任意两个全局解，在每个有限共同区间应用已证唯一性，得到全局唯一性。
+\end{proof}
+
+频率截断在这里承担两项不同工作：固定截断后允许严格微分质量，
+而截断参数无关的混合范数估计允许取极限。
+传递守恒使用了 \(C_tL^2_x\) 中的强收敛；
+若只有弱收敛，通常只能得到范数下半连续性，不能从近似质量相等直接取得等式。
+
+\subsection{有限时间稳定性与结论的范围}
+\label{b2:subsec:E-cubic-stability}
+
+\Needspace{6\baselineskip}
+\begin{corollary}[有限时间上的连续依赖]\label{b2:cor:E-cubic-finite-time-stability}
+固定 \(\mu\in\{-1,1\}\)、\(M>0\) 与 \(\tau>0\)。
+若 \(f,g\in L^2(\mathbb R;\mathbb C)\)、\(\|f\|_2,\|g\|_2\le M\)，
+\(u,v\in C(\mathbb R;L^2)\cap L^8_{\mathrm{loc}}(\mathbb R;L^4)\)
+分别为 \(\mathrm i u_t+u_{xx}=\mu|u|^2u\) 从 \(f,g\) 出发的全局温和解，
+则存在仅依赖 \(M,\tau\) 的常数 \(C_{M,\tau}\)，使
+\[
+ \sup_{|t|\le\tau}\|u(t)-v(t)\|_2
+ +\|u-v\|_{L^8([ -\tau,\tau];L^4)}
+ \le C_{M,\tau}\|f-g\|_2.
+\]
+\end{corollary}
+\begin{proof}
+质量守恒使两解在每个重启时刻的 \(L^2\) 范数均不超过 \(M\)。
+把 \([0,\tau]\) 分成 \(m\) 段，每段长度不超过局部定理的共同寿命 \(T_M\)。
+设局部差界的常数为 \(L\ge1\)。第一段的 \(X\) 差至多
+\(L\|f-g\|_2\)，因此下一段的初值差也满足该界。
+逐段应用局部定理，得第 \(j\) 段的差至多
+\(L^j\|f-g\|_2\)。
+全区间连续范数取各段的最大值，混合范数的八次方则是各段八次方之和，
+故两者之和至多 \((1+m^{1/8})L^m\cdot\|f-g\|_2\)。
+负时间使用共轭反演，作相同估计；两半区间合并即得结论。
+\end{proof}
+
+这一定理组的解类是 \(C_tL^2_x\cap L^8_{\mathrm{loc},t}L^4_x\)。
+它没有另外证明仅假设 \(C_tL^2_x\) 的任意分布解都自动属于这个类，
+也没有把分布方程本身当作温和公式的充分依据。
+对于本节构造的解，初值、重启和唯一性均由连续延拓的积分方程确定。
 
 \ProseParagraphBreak
-这个模型使用的是时间小因子与非端点同对估计，正负号不影响局部收缩。
-若希望继续证明全局解，必须另取得质量守恒或先验界，
-并说明从光滑解到 \(L^2\) 解的极限过程；本附录未用一次局部收缩代替这些工作。
-对于更高维或不同幂次，空间乘积的对偶指数和时间小因子都可能改变，
-应重新计算 \(\|\,|u|^{p-1}u\|\) 所需的混合空间，再选择可容许对。
+全局存在表示每个有限时间区间都能继续求解；
+质量守恒只统一控制 \(L^2\) 范数，
+没有给出整个时间轴上的有限 \(L^8_tL^4_x\) 范数或非线性外力的可积尾部。
+因此本节不据此推出散射或统一的长期衰减。
+一维三次模型的共同寿命来自正的时间小因子 \(T^{1/2}\)；
+更改非线性幂次或空间维数时，须重新核对空间乘积的对偶指数和时间嵌入因子，
+不能只沿用质量守恒便照搬这个全局论证。
 
 \begin{chaptersummary}
-色散控制空间传播，\(TT^*\) 把它与时间分数积分配合成非端点时空估计。推迟积分在本附录的同指数范围中已有独立证明，并用于一维三次 Schrödinger 的收缩构造。环带驻相、同尺度的算子估计与平方函数合成给出了所述边界非端点波估计。Schrödinger 能量端点另需深层双线性求和，已列明正式来源。
+色散界把振荡转成固定时间的空间范数控制，\(TT^*\) 再把这项控制与时间分数积分结合，得到非端点 Strichartz 估计。对偶论证同时给出外力积分的定义和能量界；推迟积分必须独立核对，不能只从全时间算子的有界性删去半个积分域。半波估计先保留环带尺度，再用平方函数把各带的平方和重新合成。端点的正时间核失去可求和性，所引双线性理论保留了取绝对值会丢掉的信息。一维三次模型则展示了另一条组合：统一局部收缩与保质量的正则逼近相接，使平方可积初值得到唯一的全局温和解。
 \end{chaptersummary}
 
 \BookExercises
 
-% 自拟：检查本附录的已建工具及其假设边界。
-
+% 自拟：将外力尺度与非线性幂次联系起来，而不只重做齐次缩放。
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b2:ex:app-E-1}
-
-在含外力的方程 \(\mathrm i u_t+\Delta u=F\) 中，以
-\(u_\lambda(t,x)=\lambda^{d/2}u(\lambda^2t,\lambda x)\) 缩放。
-求 \(F_\lambda\)，并验证同一 Schrödinger 可容许对的
-\(L^{q'}_tL^{r'}_x\) 外力范数保持不变。
-
+设整数 \(d\geq1\)，\(u,F\) 为 \(\mathbb R\times\mathbb R^d\) 上满足 \(\mathrm i u_t+\Delta u=F\) 的光滑复值函数。对 \(\lambda>0\)，令
+\[
+ u_\lambda(t,x)=\lambda^{d/2}u(\lambda^2t,\lambda x).
+\]
+求相应外力 \(F_\lambda\)，并证明每个 Schrödinger 可容许对 \((q,r)\) 的对偶外力范数 \(L^{q'}_tL^{r'}_x\) 在此缩放下不变，时间均取全实轴。
+再对 \(p>1\) 的方程 \(\mathrm i u_t+\Delta u=\mu|u|^{p-1}u\)、\(\mu\in\{-1,1\}\)，求保持方程的振幅指数：令 \(u_\lambda=\lambda^\beta u(\lambda^2t,\lambda x)\)，应取什么 \(\beta\)？由
+\(\|f\|_{\dot H^s}=\|(2\pi|\xi|)^s\widehat f\|_2\) 计算临界阶数 \(s_c\)，并判断质量尺度对应的临界幂次。
 \end{exercise}
-
 \begin{solution}
+时间导数与二阶空间导数各增加因子 \(\lambda^2\)，所以
+\[
+ F_\lambda(t,x)=\lambda^{d/2+2}F(\lambda^2t,\lambda x).
+\]
+对一般振幅 \(\lambda^a\)，先在空间换元，再在时间换元，混合范数的缩放因子为 \(\lambda^{a-d/r'-2/q'}\)。本题的指数等于
+\[
+ \frac d2+2-\frac d{r'}-\frac2{q'}
+ =-\frac d2+\frac dr+\frac2q=0.
+\]
+这里用到 \(1/r'=1-1/r\)、\(1/q'=1-1/q\) 及可容许关系；无穷指数由本性上确界的换元同样得到。若时间只取区间 \(I\)，对应区间必须同时变为 \(\lambda^{-2}I\)，不能固定两个不同尺度的区间却宣称范数恒等。
 
-两项导数都增加 \(\lambda^2\)，故
-\(F_\lambda(t,x)=\lambda^{d/2+2}F(\lambda^2t,\lambda x)\)。
-外力混合范数的幂为
-\(d/2+2-d/r'-2/q'=-d/2+d/r+2/q=0\)，
-最后一步使用 \(2/q+d/r=d/2\)。所以齐次初值与同对非齐次外力的尺度一致。
-
+对幂次方程，左侧缩放为 \(\lambda^{\beta+2}\)，非线性缩放为 \(\lambda^{p\beta}\)。故要求
+\[
+ \beta+2=p\beta,\quad \beta=\frac2{p-1}.
+\]
+令 \(f_\lambda(x)=\lambda^\beta f(\lambda x)\)。其 Fourier 变换为 \(\lambda^{\beta-d}\widehat f(\xi/\lambda)\)，从而
+\[
+ \|f_\lambda\|_{\dot H^s}
+ =\lambda^{\beta+s-d/2}\|f\|_{\dot H^s}.
+\]
+该式先对频率远离零的 Schwartz 函数计算，故无须预设任意齐次空间的实现方式。使幂为零的阶数是
+\[
+ s_c=\frac d2-\frac2{p-1}.
+\]
+质量范数对应 \(s=0\)，所以临界幂次为 \(p=1+4/d\)。当 \(1<p<1+4/d\) 时称为质量次临界；此时 \(s_c<0\)，\(L^2\) 所给正则性高于尺度临界阶数。这是尺度判断，本身不证明局部或全局存在。
 \end{solution}
 
-% 自拟：检查本附录的已建工具及其假设边界。
-
+% 自拟：窄角频带构造检验波可容许关系的必要性。
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b2:ex:app-E-2}
-
-在四维固定时间指数 \(q=4\)，分别求 Schrödinger 可容许空间指数、
-边界波可容许空间指数及后者的初始位移 Sobolev 阶数。
-
+设整数 \(d\geq2\)、\(2\leq q,r\leq\infty\)，\(V(t)\) 为 Fourier 符号 \(e^{2\pi\mathrm it|\xi|}\) 的半波算子。假设存在与 \(f\) 无关的常数 \(C\)，使所有 Fourier 支撑在 \(1/2\leq|\xi|\leq3\) 中的 Schwartz 函数都满足
+\[
+ \|V(t)f\|_{L^q(\mathbb R;L^r(\mathbb R^d))}\leq C\|f\|_2.
+\]
+取 \(\xi=(\xi_1,\xi')\in\mathbb R\times\mathbb R^{d-1}\)，用支撑在 \(1\leq\xi_1\leq2\)、\(|\xi'|\leq\delta\) 的非负光滑 Fourier 数据，证明必要条件
+\[
+ \frac1q+\frac{d-1}{2r}\leq\frac{d-1}{4}.
+\]
+说明这项测试为什么对任何固定阶数的环带 \(\dot H^s\) 右端也适用。
 \end{exercise}
-
 \begin{solution}
+取非零非负 \(\chi\in C_c^\infty((1,2))\)、\(\eta\in C_c^\infty(\mathbb R^{d-1})\)，令 \(\eta\) 支于单位球，并定义
+\[
+ \widehat f_\delta(\xi)=\chi(\xi_1)\cdot\eta(\xi'/\delta),
+ \quad 0<\delta<\tfrac14.
+\]
+数据的 Fourier 支撑确实位于题设环带。Plancherel 及横向换元给出
+\[
+ \|f_\delta\|_2=C_0\delta^{(d-1)/2},\quad C_0>0.
+\]
+半波相位可写为
+\[
+ x\cdot\xi+t|\xi|
+ =(x_1+t)\xi_1+x'\cdot\xi'
+       +t(|\xi|-\xi_1).
+\]
+在支撑上，\(0\leq|\xi|-\xi_1=|\xi'|^2/(|\xi|+\xi_1)\leq\delta^2/2\)。取充分小且固定的 \(c>0\)，在区域
+\[
+ 0\leq t\leq c\delta^{-2},\quad
+ |x_1+t|\leq c,\quad |x'|\leq c\delta^{-1}
+\]
+上，完整相位 \(2\pi(x\cdot\xi+t|\xi|)\) 的绝对值不超过 \(\pi/3\)。因为振幅非负，积分的实部至少是振幅积分的一半，故
+\[
+ |V(t)f_\delta(x)|\geq c_1\delta^{d-1}.
+\]
+每个上述时刻的空间截面体积是常数乘 \(\delta^{-(d-1)}\)，时间长度是常数乘 \(\delta^{-2}\)。于是
+\[
+ \|V(t)f_\delta\|_{L^qL^r}
+ \geq c_2\delta^{d-1-(d-1)/r-2/q}.
+\]
+无穷指数按对应上确界解释，公式仍成立。与题设上界比较，并令 \(\delta\downarrow0\)，左边的幂不能小于 \((d-1)/2\)。整理即得所求关系。
 
-Schrödinger 关系为 \(1/2+4/r=2\)，给 \(r=8/3\)。
-波边界关系为 \(1/2+3/r=3/2\)，给 \(r=3\)。
-波初值阶数为 \(s=4(1/2-1/3)-1/4=5/12\)。
-相同时间指数下，曲率方向数不同，空间指数和所需初值也不同。
-
+在固定环带上，\((2\pi|\xi|)^s\) 对任意固定实数 \(s\) 都有与 \(\delta\) 无关的正上下界，所以 \(\|f_\delta\|_{\dot H^s}\) 与 \(\|f_\delta\|_2\) 一致等价。这项构造检测的是角向集中，不能用增加固定环带内的径向 Sobolev 权重消除。
 \end{solution}
 
-% 自拟：检查本附录的已建工具及其假设边界。
-
+% 自拟：量化混合范数的次序，避免将时间空间积分随意交换。
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b2:ex:app-E-3}
-
-对 \(0<\alpha<1\)，说明时间核 \(|t|^{-\alpha}\) 为什么不能直接按全线
-\(L^1\) Young 卷积定理处理，而 HLS 可以在本附录的指数中使用。
-
+设整数 \(d\geq1\)，\(u:\mathbb R\times\mathbb R^d\to\mathbb C\) 可测，且 \(1\leq r\leq q<\infty\)。证明
+\[
+ \|u\|_{L^q_tL^r_x}\leq\|u\|_{L^r_xL^q_t}.
+\]
+当 \(q>r\) 时，构造一族有界、有限测度支撑的函数，证明不存在与 \(u\) 无关的常数 \(C\)，使相反方向的估计
+\(\|u\|_{L^r_xL^q_t}\leq C\|u\|_{L^q_tL^r_x}\) 对所有这样的函数成立。解释 \(q=r\) 的情形。
 \end{exercise}
-
 \begin{solution}
+将 \(|u|^r\) 视为关于 \(x\) 积分、取值于时间空间 \(L^{q/r}\) 的非负函数。Minkowski 积分不等式给出
+\[
+ \begin{aligned}
+ \|u\|_{L^q_tL^r_x}^r
+ &=\left\|\int_{\mathbb R^d}|u(\,\cdot,x)|^r\,\mathrm dx\right\|_{L^{q/r}_t}\\
+ &\leq\int_{\mathbb R^d}
+       \bigl\||u(\,\cdot,x)|^r\bigr\|_{L^{q/r}_t}\,\mathrm dx
+ =\|u\|_{L^r_xL^q_t}^r.
+ \end{aligned}
+\]
+若右端可能无穷，先对幅值和支撑作有限截断，再由单调收敛得到同一结论。
 
-核在 \(|t|<1\) 可积，但 \(\int_1^R t^{-\alpha}\mathrm dt\to\infty\)，
-所以不属于全线 \(L^1\)。截断一个有限区间后使用 Young 的常数会随长度增长，
-无法直接取得全时间界。
-HLS 把它作为阶 \(1-\alpha\) 的分数积分，采用
-\(1/q=1/q'-(1-\alpha)\)，即 \(\alpha=2/q\)。
-所需 \(1<q'<q<\infty\) 与 \(0<1-\alpha<1\) 在 \(q>2\) 时成立。
-
+为否定反向估计，取互不相交、各长一的时间区间 \(I_1,\ldots,I_N\)，以及互不相交、各体积一的空间立方体 \(Q_1,\ldots,Q_N\)，令
+\[
+ u_N(t,x)=\sum_{k=1}^N\mathbf1_{I_k}(t)\cdot\mathbf1_{Q_k}(x).
+\]
+固定属于某个 \(I_k\) 的时间时，空间 \(L^r\) 范数为一；固定属于某个 \(Q_k\) 的空间点时，时间 \(L^q\) 范数为一。因此
+\[
+ \|u_N\|_{L^q_tL^r_x}=N^{1/q},\quad
+ \|u_N\|_{L^r_xL^q_t}=N^{1/r}.
+\]
+比值 \(N^{1/r-1/q}\) 在 \(q>r\) 时无界。若 \(q=r\)，两范数相等，由 Tonelli 定理都等于整个乘积空间的 \(L^q\) 范数。这说明积分次序属于估计的内容，不能把一般 Strichartz 混合范数写成不分次序的双重积分。
 \end{solution}
 
-% 自拟：检查本附录的已建工具及其假设边界。
-
+% 自拟：将端点正核的对数下界加强为确切算子范数。
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b2:ex:app-E-4}
-
-令 \(k_R(t)=|t|^{-1}\mathbf1_{\{1\le|t|\le R\}}\)、\(R>2\)。
-证明卷积 \(k_R*\) 在 \(L^2(\mathbb R)\) 上的算子范数至少为
-\(c\log R\)。这说明哪一种端点取绝对值路线会失败？
-
+设 \(R>2\)，在实时间轴上定义
+\[
+ k_R(t)=|t|^{-1}\cdot\mathbf1_{\{1\leq|t|\leq R\}}(t).
+\]
+证明卷积算子 \(K_Rf=k_R*f\) 在复 \(L^2(\mathbb R)\) 上的算子范数恰为 \(2\log R\)。再求
+\(h_\varepsilon(t)=|t|^{-1}\cdot\mathbf1_{\{\varepsilon\leq|t|\leq1\}}(t)\)、\(0<\varepsilon<1\)，所定义卷积算子的范数。说明这些结论反驳的是端点证明中的哪一步，是否已经反驳 Schrödinger 齐次端点估计。
 \end{exercise}
-
 \begin{solution}
+核非负且 \(\|k_R\|_1=2\log R\)，Young 不等式先给 \(\|K_R\|_{2\to2}\leq2\log R\)。取 \(L>R\) 并令 \(f_L=\mathbf1_{[-L,L]}\)。当 \(|t|\leq L-R\) 时，对核支撑内的每个 \(s\) 都有 \(t-s\in[-L,L]\)，所以
+\[
+ (k_R*f_L)(t)=2\log R.
+\]
+故
+\[
+ \frac{\|K_Rf_L\|_2}{\|f_L\|_2}
+ \geq2\log R\sqrt{\frac{L-R}{L}}.
+\]
+固定 \(R\) 后令 \(L\to\infty\)，得到匹配的下界，因而范数确为 \(2\log R\)。选长区间是为了使远离边界的输入几乎保持常值；不需要常值函数本身属于 \(L^2\)。
 
-取 \(f_R=\mathbf1_{[-2R,2R]}\)。对 \(|t|\le R\)，核的整个支撑平移后仍落在输入区间，
-故 \((k_R*f_R)(t)=2\log R\)。输出范数至少
-\(2\sqrt{2R}\log R\)，输入范数为 \(2\sqrt R\)，比值至少
-\(\sqrt2\log R\)。
-因此即使先删去零点附近的奇性，正核的长时间各带仍不能取得一致强界。
-它反驳的是端点正核绝对值控制路线，未反驳保留振荡结构的端点演化估计。
-
+对 \(h_\varepsilon\)，其质量为 \(2\log(1/\varepsilon)\)，支撑包含于 \([-1,1]\)。同样用 \(f_L\)、\(L>1\)，在 \(|t|\leq L-1\) 上取得全部核质量，再令 \(L\to\infty\)，得到
+\[
+ \|h_\varepsilon*\|_{2\to2}=2\log(1/\varepsilon).
+\]
+两式分别显示长时间与短时间尺度累积的对数代价。若端点 \(TT^*\) 证明把算子配对全数取绝对值后只剩 \(|t-s|^{-1}\)，这些截断不可能给出与截断尺度无关的强 \(L^2\) 界。但正核上界丢掉了振荡与两输入的配对结构；它的失败不推出原演化算子端点估计失败。
 \end{solution}
 
-% 自拟：检查本附录的已建工具及其假设边界。
-
+% 自拟：从三次模型推广局部收缩的指数计算，并检验质量临界边界。
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b2:ex:app-E-5}
-
-比较一维三次模型的 \((8,4)\) 与五次非线性 \(|u|^4u\) 所配的 \((6,6)\)。
-检查两对均可容许，计算各自从乘积时间空间到对偶输入空间所产生的时间小因子。
-
+设 \(1<p\leq5\)、\(\mu\in\{-1,1\}\)，考虑实线上的复值方程
+\[
+ \mathrm i u_t+u_{xx}=\mu|u|^{p-1}u,\quad u(0)=u_0\in L^2(\mathbb R).
+\]
+取 \(r=p+1\)，求使 \((q,r)\) 成为 Schrödinger 可容许对的 \(q\)。在 \([0,T]\) 上计算
+\(\||u|^{p-1}u\|_{L^{q'}L^{r'}}\) 由 \(\|u\|_{L^qL^r}^p\) 控制时的时间因子，并证明相应的两输入差估计。当 \(p<5\) 时，说明本附录的收缩法如何给出只依赖初值 \(L^2\) 范数的正存在时间；当 \(p=5\) 时，这一论证的哪项控制消失？
 \end{exercise}
-
 \begin{solution}
+由 \(2/q+1/(p+1)=1/2\)，得到
+\[
+ q=\frac{4(p+1)}{p-1},\quad r'=\frac{p+1}{p}.
+\]
+在所给范围内 \(6\leq q<\infty\)、\(2<r\leq6\)，都位于已经证明的非端点有限指数范围。空间 Hölder 给出
+\(\||u(t)|^{p-1}u(t)\|_{r'}=\|u(t)\|_r^p\)。时间上先得到 \(L^{q/p}\)；因为
+\[
+ \theta\coloneqq\frac1{q'}-\frac pq
+ =1-\frac{p+1}{q}=\frac{5-p}{4}\geq0,
+\]
+有限区间上的 Hölder 不等式给
+\[
+ \||u|^{p-1}u\|_{L^{q'}L^{r'}}
+ \leq T^\theta\|u\|_{L^qL^r}^p.
+\]
+把复平面视为 \(\mathbb R^2\)，映射 \(z\mapsto|z|^{p-1}z\) 的实导数范数至多 \(p|z|^{p-1}\)。沿 \(w\) 到 \(z\) 的线段积分，便有
+\[
+ \bigl||z|^{p-1}z-|w|^{p-1}w\bigr|
+ \leq C_p\bigl(|z|^{p-1}+|w|^{p-1}\bigr)\cdot|z-w|.
+\]
+分别对空间与时间应用 Hölder，再用上面的区间嵌入，得到
+\[
+ \begin{aligned}
+ &\bigl\||u|^{p-1}u-|v|^{p-1}v\bigr\|_{L^{q'}L^{r'}}\\
+ &\quad\leq C_p T^\theta
+   \bigl(\|u\|_{L^qL^r}^{p-1}+\|v\|_{L^qL^r}^{p-1}\bigr)
+   \cdot\|u-v\|_{L^qL^r}.
+ \end{aligned}
+\]
+若 \(p<5\)，则 \(\theta>0\)。在 \(C_tL^2\cap L^q_tL^r_x\) 中取半径 \(R=2C_pM\)、\(\|u_0\|_2\leq M\)、\(M>0\)。已有齐次和非齐次界表明，选 \(T\) 使 \(C_pT^\theta R^{p-1}\) 足够小，即得到保球和压缩。可取 \(T=c_p M^{-4(p-1)/(5-p)}\)，其中小常数吸收各线性估计常数。零初值可直接取零解，或置于任意 \(M>0\) 的共同球内。
 
-有 \(2/8+1/4=1/2\)、\(2/6+1/6=1/2\)。
-三次空间乘积落在 \(L^{4/3}\)，时间落在 \(L^{8/3}\)，
-嵌入 \(L^{8/7}\) 产生 \(T^{7/8-3/8}=T^{1/2}\)。
-五次乘积直接落在 \(L^{6/5}_tL^{6/5}_x\)，已等于对偶输入空间，
-相应幂为 \(T^{5/6-5/6}=1\)。
-因而五次模型不能仅缩短时间就把固定全范数球上的同一个系数变小；
-需要额外利用给定自由解在短区间的范数或其他结构。
-
+当 \(p=3\) 时，\((q,r)=(8,4)\)、\(\theta=1/2\)；当 \(p=5\) 时，\((q,r)=(6,6)\)、\(\theta=0\)。五次情形缩短区间不会使这个固定半径球上的系数 \(C_pR^{p-1}\) 变小。这个结论只指出当前保球选择的限制；对给定初值还可利用自由解在短区间的 \(L^6L^6\) 范数趋零，不能据此断言临界方程没有局部解。
 \end{solution}
 
-% 自拟：检查本附录的已建工具及其假设边界。
-
+% 自拟：同时排除任意正阶的固定时间正则增益。
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b2:ex:app-E-6}
-
-给出具体的 \(L^2\setminus H^1\) 初值，证明自由 Schrödinger 演化在任何固定时间仍不属于 \(H^1\)。
-
+设整数 \(d\geq1\)、\(s\geq0\)，定义 \(H^s(\mathbb R^d)\) 的范数为
+\[
+ \|f\|_{H^s}^2=\int_{\mathbb R^d}
+       (1+4\pi^2|\xi|^2)^s|\widehat f(\xi)|^2\,\mathrm d\xi.
+\]
+构造一个 \(f\in H^s\)，使它不属于任何 \(H^{s+\varepsilon}\)、\(\varepsilon>0\)。证明 \(U(t)=e^{\mathrm it\Delta}\) 对此初值在每个固定实时间也不产生任何正阶的额外 Sobolev 正则性，并解释这与非端点 Strichartz 估计是否矛盾。
 \end{exercise}
-
 \begin{solution}
+令
+\[
+ \widehat f(\xi)=\mathbf1_{\{|\xi|\geq e\}}(\xi)
+       \cdot|\xi|^{-s-d/2}(\log|\xi|)^{-1}.
+\]
+因 \(s\geq0\)，该函数平方可积，Plancherel 因而定义唯一的 \(f\in L^2\)。在 \(|\xi|\geq e\) 上，Bessel 权重与 \(|\xi|^{2s}\) 相比只有正的固定常数因子。极坐标积分于是给
+\[
+ \|f\|_{H^s}^2\asymp\int_e^\infty\frac{\mathrm d\rho}{\rho(\log\rho)^2}<\infty.
+\]
+对任意 \(\varepsilon>0\)，增加的权重使积分变为
+\[
+ \int_e^\infty\frac{\rho^{2\varepsilon-1}}{(\log\rho)^2}\,\mathrm d\rho
+ =\int_1^\infty\frac{e^{2\varepsilon y}}{y^2}\,\mathrm dy=\infty,
+\]
+其中最后用 \(y=\log\rho\)。因此同一个输入同时排除了所有正的正则增益。
 
-取 \(\widehat f(\xi)=(1+|\xi|)^{-(d+1)/2}\)。
-大半径处平方积分的径向幂为 \(r^{-2}\)，故 \(\widehat f\in L^2\)；
-加入 \(|\xi|^2\) 后径向被积函数为常数阶，故 \(f\notin H^1\)。
-演化只乘模为1的相位，带权 Fourier 积分不变，所以 \(U(t)f\notin H^1\) 对每个 \(t\) 成立。
-
+演化的 Fourier 乘子模恒为一，故每一个上述加权平方积分在每个 \(t\) 都保持原值，包括其无穷性。于是 \(U(t)f\notin H^{s+\varepsilon}\) 对所有 \(t\in\mathbb R\)、\(\varepsilon>0\) 成立。Strichartz 估计控制的是混合可积性，并没有声称输出具有额外空间导数；它与这个例子相容。
 \end{solution}
 
-% 自拟：检查本附录的已建工具及其假设边界。
-
+% 自拟：由对偶估计得到附加外力可积性下的散射，区分全局存在与散射。
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b2:ex:app-E-7}
-
-在已证边界非端点波范围中，证明若对全频率初值有
-\(\|V(t)f\|_{L^qL^r}\le C\|f\|_{\dot H^\sigma}\)，
-且常数与缩放无关，则必有 \(\sigma=d(1/2-1/r)-1/q\)。
-
+设整数 \(d\geq1\)，\(U(t)=e^{\mathrm it\Delta}\)，\(2<q<\infty\)、\(2\leq r<\infty\)、\(2/q+d/r=d/2\)。设 \(u_0\in L^2(\mathbb R^d)\)，外力满足 \(F\in L^{q'}([0,\infty);L^{r'}(\mathbb R^d))\)，令
+\[
+ u(t)=U(t)u_0-\mathrm i\int_0^tU(t-s)F(s)\,\mathrm ds,
+\]
+积分取本附录已经建立的连续延拓意义。证明存在唯一 \(u_+\in L^2\)，使
+\[
+ \|u(t)-U(t)u_+\|_2\longrightarrow0\quad(t\to\infty),
+\]
+并给出由 \(F\) 的尾部范数控制的误差界。作为应用，说明一维三次全局解若另满足 \(u\in L^{24/7}([0,\infty);L^4)\)，便有上述自由渐近状态；质量守恒是否已足以验证这个附加条件？
 \end{exercise}
-
 \begin{solution}
+由 \(T^*\) 估计，有限 \(R>S\geq0\) 时有
+\[
+ \left\|\int_S^RU(-s)F(s)\,\mathrm ds\right\|_2
+ \leq C\|F\|_{L^{q'}([S,R];L^{r'})}.
+\]
+这是对偶外力的积分，不预先要求被积函数逐时刻属于 \(L^2\)。有限 \(q'\) 下，右端在 \(S\to\infty\) 时一致趋零，故 \(\int_0^R U(-s)F(s)\,\mathrm ds\) 在 \(L^2\) 中为 Cauchy 族。记其极限为 \(h_\infty\)，定义
+\[
+ u_+=u_0-\mathrm i h_\infty.
+\]
+把温和公式乘以有界的 \(U(-t)\)，可先对光滑外力验证，再由连续延拓得到
+\[
+ U(-t)u(t)-u_+=\mathrm i\int_t^\infty U(-s)F(s)\,\mathrm ds.
+\]
+酉性与同一尾部估计给出
+\[
+ \|u(t)-U(t)u_+\|_2
+ \leq C\|F\|_{L^{q'}([t,\infty);L^{r'})}\longrightarrow0.
+\]
+若另一个 \(v_+\) 也满足渐近关系，则酉性和三角不等式使
+\(\|u_+-v_+\|_2\leq\|U(t)u_+-u(t)\|_2+\|u(t)-U(t)v_+\|_2\to0\)，所以状态唯一。这种渐近性质称为向前散射到自由解。
 
-选非零、Fourier 支撑远离零点的光滑输入，其已证混合范数有限且非零。
-令 \(f_N(x)=N^{d/2}f(Nx)\)。半波的一次时间缩放给出
-\(V(t)f_N(x)=N^{d/2}(V(Nt)f)(Nx)\)，
-故输出范数为 \(N^{d/2-d/r-1/q}\) 乘原范数，初值范数为
-\(N^\sigma\|f\|_{\dot H^\sigma}\)。
-不等式须同时容许 \(N\to0\) 和 \(N\to\infty\)，两个幂只能相等。
-
+一维三次情形取 \((q,r)=(8,4)\)。空间乘积恒等式给
+\(\||u(t)|^2u(t)\|_{4/3}=\|u(t)\|_4^3\)，因而
+\[
+ \||u|^2u\|_{L^{8/7}L^{4/3}}
+ =\|u\|_{L^{24/7}L^4}^3.
+\]
+所给附加条件正好使外力 \(\mu|u|^2u\) 满足前面的全正时间假设。质量守恒只给每个时刻的 \(L^2\) 范数，局部理论只给有限区间的 \(L^8L^4\) 范数；二者都没有给出这个全时间可积性，故此处是条件性结论，不能把它读成全部三次解都散射。
 \end{solution}
 
-% 自拟：检查本附录的已建工具及其假设边界。
-
+% 自拟：在温和积分上证明Galilean协变，避免先假设粗糙解可逐点求导。
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b2:ex:app-E-8}
-
-对有限区间上的同对输入 \(F\in L^{q'}_tL^{r'}_x\)，
-令 \(w(t)=\int_0^tU(t-s)F(s)\,\mathrm ds\)。
-证明重新起算恒等式
-\(w(t)=U(t-t_0)w(t_0)+\int_{t_0}^tU(t-s)F(s)\,\mathrm ds\)，
-并由它取得 \(L^2\) 时间连续性。
-
+设 \(\mu\in\{-1,1\}\)，\(u\in C(\mathbb R;L^2(\mathbb R))\cap L^8_{\mathrm{loc}}(\mathbb R;L^4(\mathbb R))\) 是一维方程 \(\mathrm i u_t+u_{xx}=\mu|u|^2u\) 的温和解，初值为 \(u_0\)。对实数 \(v\)，令
+\[
+ u_v(t,x)=e^{\mathrm i(vx-v^2t)}u(t,x-2vt).
+\]
+直接从 Fourier 群和温和公式证明它是同号方程、初值 \(e^{\mathrm ivx}u_0\) 对应的解。核验其质量及有限时间混合范数，并判断这个变换是否保持初值的 \(H^1\) 半范数。
 \end{exercise}
-
 \begin{solution}
+记 \(M_vf(x)=e^{\mathrm ivx}f(x)\)，以及
+\(G_v(t)g(x)=e^{\mathrm i(vx-v^2t)}g(x-2vt)\)。在 Schwartz 输入上，调制把 Fourier 频率平移 \(v/(2\pi)\)，而
+\[
+ -4\pi^2t\left(\xi+\frac v{2\pi}\right)^2
+ =-4\pi^2t\xi^2-4\pi tv\xi-tv^2.
+\]
+在逆变换中换频率变量便得到
+\[
+ U(t)M_v=G_v(t)U(t).
+\]
+两侧在 \(L^2\) 上均有界，故由稠密性推广到全部平方可积输入。再用群律，有
+\[
+ G_v(t)U(t-s)=U(t-s)G_v(s).
+\]
+对光滑且紧支撑的外力，等式可移入有限时间积分。一般 \(L^{8/7}_tL^{4/3}_x\) 外力以这种数据逼近；\(G_v\) 在每个时间保持空间范数，也保持对应混合范数，已有非齐次连续界遂将恒等式推广到本题的积分意义。
 
-先对光滑输入按 \([0,t_0]\) 与 \([t_0,t]\) 分开积分，用群律即得恒等式。
-一般输入可在对偶混合空间中由光滑函数逼近；非齐次能量界使输出在
-\(L^\infty_tL^2_x\) 中一致逼近，因此恒等式延拓成立。
-第一项在 \(t\to t_0\) 时由酉群强连续性趋于 \(w(t_0)\)，
-第二项范数不超过 \(C\|F\mathbf1_{[t_0,t]}\|_{L^{q'}L^{r'}}\to0\)。
-反向的小区间同理，所以取得每个时间的连续代表。
+由于单位模乘法和空间平移都与三次非线性相容，
+\[
+ G_v(s)(|u(s)|^2u(s))=|G_v(s)u(s)|^2G_v(s)u(s).
+\]
+对原温和公式作用 \(G_v(t)\)，即得
+\[
+ u_v(t)=U(t)M_vu_0-\mathrm i\mu
+       \int_0^tU(t-s)(|u_v|^2u_v)(s)\,\mathrm ds.
+\]
+对负时间使用同一有向积分恒等式。时间依赖的平移在 \(L^2\) 上强连续，结合 \(u\) 的连续性说明 \(u_v\in C_tL^2\)；空间范数保持还给出任意时间区间 \(I\) 上的
+\[
+ \|u_v(t)\|_2=\|u(t)\|_2,\quad
+ \|u_v\|_{L^q(I;L^r)}=\|u\|_{L^q(I;L^r)}
+\]
+（双方均可为无穷）。因此它属于本题解类，由唯一性也是变换后初值的全局解。
 
+若 \(u_0\in H^1\)，则
+\[
+ (M_vu_0)'=e^{\mathrm ivx}(u_0'+\mathrm ivu_0),\quad
+ \|(M_vu_0)'\|_2=\|u_0'+\mathrm ivu_0\|_2.
+\]
+这一般不等于 \(\|u_0'\|_2\)。例如对非零实值 Gaussian 初值，交叉项的实部为零，平方半范数增加 \(v^2\|u_0\|_2^2\)。相位变换保持质量，却会改变导数中的频率中心。
 \end{solution}

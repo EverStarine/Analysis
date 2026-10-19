@@ -7,7 +7,7 @@
 \label{b2:subsec:060401}
 
 \begin{definition}\label{b2:def:06-lattice}
-若 \(A\) 是可逆实 \(d\times d\) 矩阵，则集合 \(\Lambda=A\mathbb Z^d\) 称为 \(\mathbb R^d\) 中的\term[ge]{格}[lattice]，本节均指全秩格。集合 \(A[0,1)^d\) 为一个基本区域，其体积
+设 \(d\geq1\) 为整数。若 \(A\) 是可逆实 \(d\times d\) 矩阵，则集合 \(\Lambda=A\mathbb Z^d\) 称为 \(\mathbb R^d\) 中的\term[ge]{格}[lattice]，本节均指全秩格。集合 \(A[0,1)^d\) 为一个基本区域，其体积
 \[
  v(\Lambda)\coloneqq|\det A|
 \]
@@ -20,13 +20,13 @@
 \symidx{\(v(\Lambda)\)：格的基本区域体积}
 
 \begin{proposition}\label{b2:prop:06-dual-lattice}
-有 \(\Lambda^*=A^{-\mathsf T}\mathbb Z^d\)、\((\Lambda^*)^*=\Lambda\) 和 \(v(\Lambda^*)=v(\Lambda)^{-1}\)。基本区域体积不依赖格基的选择。
+设 \(d\geq1\) 为整数，\(A\) 是可逆实 \(d\times d\) 矩阵，\(\Lambda=A\mathbb Z^d\)，\(\Lambda^*=\{\,\xi\in\mathbb R^d:\xi\cdot v\in\mathbb Z\ (v\in\Lambda)\,\}\)，\(v(\Lambda)=|\det A|\)。则 \(\Lambda^*=A^{-\mathsf T}\mathbb Z^d\)、\((\Lambda^*)^*=\Lambda\) 和 \(v(\Lambda^*)=v(\Lambda)^{-1}\)。基本区域体积不依赖格基的选择。
 \end{proposition}
 \begin{proof}
 条件 \(\xi\cdot An\in\mathbb Z\) 对全部整数向量 \(n\) 成立，等价于 \(A^{\mathsf T}\xi\) 的每个坐标都是整数，所以得到对偶格公式。再次取逆转置和行列式便得其余两个等式。若另一基矩阵为 \(B\)，则 \(U=A^{-1}B\) 及 \(U^{-1}\) 都是整数矩阵，因此其行列式为互为倒数的整数，只能为 \(\pm1\)。故 \(|\det B|=|\det A|\)。
 \end{proof}
 
-对角矩阵给出矩形格，边长分别为 \(a_j\) 时，对偶边长为 \(a_j^{-1}\)。非正交基也遵循逆转置，而不是把每个基向量分别除以其长度；内积的整数条件才是定义。
+对角矩阵给出矩形格，边长分别为正数 \(a_j\) 时，对偶边长为 \(a_j^{-1}\)。非正交基也遵循逆转置，而不是把每个基向量分别除以其长度；内积的整数条件才是定义。
 
 \Cref{b2:fig:06-dual-lattice}用一个非正交格显示逆转置的作用。箭头端点的内积满足 \(b_i\cdot b_j^*=\delta_{ij}\)，不能用逐个基向量取倒长度代替这一条件。
 \input{Figures/F06-DualLattice}
@@ -35,7 +35,7 @@
 \label{b2:subsec:060402}
 
 \begin{theorem}[全秩格上的 Poisson 求和]\label{b2:thm:06-lattice-poisson}
-若 \(f\in\mathcal S(\mathbb R^d)\)、\(\Lambda\) 为全秩格，则
+设 \(d\geq1\) 为整数，\(f\in\mathcal S(\mathbb R^d;\mathbb C)\)，\(\Lambda=A\mathbb Z^d\)，其中 \(A\) 是可逆实 \(d\times d\) 矩阵。令 \(v(\Lambda)=|\det A|\)，\(\Lambda^*=A^{-\mathsf T}\mathbb Z^d\)。则
 \[
  \sum_{v\in\Lambda}f(v)
  =\dfrac1{v(\Lambda)}\sum_{\xi\in\Lambda^*}\widehat f(\xi).
@@ -43,18 +43,24 @@
 两侧都绝对收敛。
 \end{theorem}
 \begin{proof}
-先取 \(\Lambda=\mathbb Z^d\)。逐坐标应用一维 Poisson 公式；固定其他坐标时，一维切片为 Schwartz 函数，部分 Fourier 变换在其余坐标及变换后的坐标上仍满足快速下降估计。后一事实由\chapref{b2:ch:05}的不变性证明逐个坐标作同样的积分估计得到。因此，每一步产生的混合求和与积分都受 \(C\prod_j(1+|x_j|)^{-2}\) 或对应整数级数控制，可以交换，依次得到 \(\sum_{n\in\mathbb Z^d}f(n)=\sum_{k\in\mathbb Z^d}\widehat f(k)\)。
+先取 \(\Lambda=\mathbb Z^d\)。逐坐标应用一维 Poisson 公式；固定其他坐标时，一维切片为 Schwartz 函数。为核对每步的共同控制，先看第一个坐标的部分变换
+\[
+ g(\eta,x')=\int_{\mathbb R}f(x_1,x')e^{-2\pi\mathrm{i}x_1\eta}\,\mathrm{d}x_1.
+\]
+对 \(\eta\) 求导在积分内产生 \(x_1\) 的幂；乘以 \(\eta\) 的幂可改成 \(x_1\) 方向的导数，再分部积分；对 \(x'\) 的导数与权重则直接保留。这样每个目标加权导数都是某个 \(f\) 的加权导数在 \(x_1\) 上的积分。用足够高的原半范数，可使被积量由 \(C(1+|x_1|)^{-2}\) 控制，同时保留任意指定阶的 \(\eta,x'\) 权重。因此 \(g\) 仍为全部 \(d\) 个变量上的 Schwartz 函数。后续坐标变换重复同一论证。
+
+在每一个中间阶段，进一步取足够高的权重，便可用 \(C\prod_j(1+|y_j|)^{-2}\) 控制混合变量函数；\(y_j\) 可以是待积分的实变量，也可以是已取样的整数指标。连续积分和离散级数均可和，故 Fubini 与绝对收敛重排适用。每次一维求和只把一个坐标的整数采样移到该坐标的频率侧，依次得到 \(\sum_{n\in\mathbb Z^d}f(n)=\sum_{k\in\mathbb Z^d}\widehat f(k)\)。
 
 一般情形令 \(g(x)=f(Ax)\)，则 \(g\in\mathcal S\)，且 \(\widehat g(k)=|\det A|^{-1}\cdot\widehat f(A^{-\mathsf T}k)\)。对 \(g\) 使用整数格公式，即得结论。绝对收敛由可逆映射的长度比较及任意高阶的快速下降保证。
 \end{proof}
 
-基本区域体积因子不能省略。例如在一维取 \(\Lambda=h\mathbb Z\)，对偶格为 \(h^{-1}\mathbb Z\)，公式恰好恢复 \(\sum_nf(hn)=h^{-1}\sum_k\widehat f(k/h)\)。高维中的行列式就是这个因子的体积版本。
+基本区域体积因子不能省略。例如在一维取 \(h>0\)、\(\Lambda=h\mathbb Z\)，对偶格为 \(h^{-1}\mathbb Z\)，公式恰好恢复 \(\sum_nf(hn)=h^{-1}\sum_k\widehat f(k/h)\)。高维中的行列式就是这个因子的体积版本。
 
 \subsection{格的 \texorpdfstring{\(\theta\)}{\AnalysisPdfTheta} 级数}
 \label{b2:subsec:060403}
 
 \begin{definition}\label{b2:def:06-lattice-theta}
-对全秩格 \(\Lambda\) 与 \(t>0\)，定义它的\term[ge-theta-jishu]{格 \(\theta\) 级数}[lattice theta series]为
+设 \(d\geq1\) 为整数，\(\Lambda\subset\mathbb R^d\) 为全秩格。对 \(t>0\)，定义它的\term[ge-theta-jishu]{格 \(\theta\) 级数}[lattice theta series]为
 \[
  \Theta_\Lambda(t)\coloneqq\sum_{v\in\Lambda}e^{-\pi t|v|^2}.
 \]
@@ -62,13 +68,110 @@
 \symidx{\(\Theta_\Lambda\)：全秩格的 \(\theta\) 级数}
 
 \begin{corollary}\label{b2:cor:06-lattice-theta}
-对所有 \(t>0\)，
+设 \(d\geq1\) 为整数，\(\Lambda=A\mathbb Z^d\)，其中 \(A\) 是可逆实 \(d\times d\) 矩阵，\(\Lambda^*=A^{-\mathsf T}\mathbb Z^d\) 为其对偶格，\(v(\Lambda)=|\det A|\)。对全秩格 \(L\subset\mathbb R^d\)，记 \(\Theta_L(u)=\sum_{v\in L}e^{-\pi u|v|^2}\)（\(u>0\)）。这些级数收敛，且对每个 \(t>0\)，
 \[
  \Theta_\Lambda(t)=v(\Lambda)^{-1}t^{-d/2}\Theta_{\Lambda^*}(1/t).
 \]
 \end{corollary}
 \begin{proof}
-在格上的 Poisson 公式中取 \(f(x)=e^{-\pi t|x|^2}\)。其变换为 \(t^{-d/2}e^{-\pi|\xi|^2/t}\)，代入即得。
+在\cref{b2:thm:06-lattice-poisson}中取 \(f(x)=e^{-\pi t|x|^2}\)。对 \(t>0\)，这个函数属于 \(\mathcal S(\mathbb R^d)\)，其变换为 \(t^{-d/2}e^{-\pi|\xi|^2/t}\)。该定理保证两侧级数绝对收敛，代入即得。
 \end{proof}
 
-若 \(\Lambda=\mathbb Z^d\)，则 \(\Theta_\Lambda=\vartheta^d\)。一般格要同时把参数取倒数、把格换成对偶格，并保留基本区域体积；只对自对偶格才可将两边写成同一个格的级数。若用二次型矩阵表示格，\(|An|^2=n^{\mathsf T}A^{\mathsf T}An\)，相应的频率二次型由逆矩阵给出。这为第三卷的二次型 \(\theta\) 级数提供几何来源，但不要求在这里提前引入整数性或模形式的附加结构。
+若 \(\Lambda=\mathbb Z^d\)，则对 \(t>0\) 有 \(\Theta_\Lambda(t)=\vartheta(t)^d\)。一般的变换公式同时涉及倒数参数、对偶格及基本区域体积。满足 \(\Lambda^*=\Lambda\) 的格称为\term[ziduiou-ge]{自对偶格}[self-dual lattice]；此时由体积互反可知 \(v(\Lambda)=1\)，两侧直接成为同一个格的级数。自对偶是做到这一点的充分条件。
+
+\ProseParagraphBreak
+
+更一般地，设 \(d\geq1\) 为整数，\(\Lambda\subset\mathbb R^d\) 为全秩格，\(c>0\)，\(U\) 是实 \(d\times d\) 正交矩阵，即 \(U^{\mathsf T}U=I_d\)，并假设 \(\Lambda^*=cU\Lambda\)。正交变换保持长度，伸缩将平方长度乘以 \(c^2\)，所以对 \(u>0\)，由格点的一一对应得到
+\[
+ \Theta_{\Lambda^*}(u)
+ =\sum_{v\in\Lambda}e^{-\pi u c^2|Uv|^2}
+ =\Theta_\Lambda(c^2u).
+\]
+体积也受这一假设约束：由 \(|\det U|=1\)，
+\[
+ v(\Lambda)^{-1}=v(\Lambda^*)=c^dv(\Lambda),
+ \quad v(\Lambda)=c^{-d/2}.
+\]
+代入\cref{b2:cor:06-lattice-theta}，对每个 \(t>0\) 得
+\[
+ \Theta_\Lambda(t)
+ =v(\Lambda)^{-1}t^{-d/2}\Theta_\Lambda(c^2/t)
+ =c^{d/2}t^{-d/2}\Theta_\Lambda(c^2/t).
+\]
+当 \(c=1\) 时，只要对偶格与原格正交等距，就有 \(\Theta_{\Lambda^*}(t)=\Theta_\Lambda(t)\) 和 \(v(\Lambda)=1\)，从而得到同一格的倒数参数公式；不要求两个格作为点集相同。
+
+\ProseParagraphBreak
+
+例如二维矩形格
+\[
+ \Lambda=2\mathbb Z\times\tfrac12\mathbb Z,
+ \quad \Lambda^*=\tfrac12\mathbb Z\times2\mathbb Z
+\]
+并不相同，因为 \((0,1/2)\in\Lambda\) 而 \((0,1/2)\notin\Lambda^*\)。交换坐标的正交矩阵 \(U=\left(\begin{smallmatrix}0&1\\1&0\end{smallmatrix}\right)\) 将 \(\Lambda\) 映到 \(\Lambda^*\)，且 \(v(\Lambda)=2\cdot(1/2)=1\)。因此虽然这个格不自对偶，仍有
+\[
+ \Theta_\Lambda(t)=t^{-1}\Theta_\Lambda(1/t)\quad(t>0).
+\]
+
+对可逆实 \(d\times d\) 基矩阵 \(A\)，若用 Gram 矩阵 \(Q=A^{\mathsf T}A\) 表示长度，则对每个 \(n\in\mathbb Z^d\)，
+\[
+ |An|^2=n^{\mathsf T}Qn,
+ \quad |A^{-\mathsf T}n|^2=n^{\mathsf T}Q^{-1}n.
+\]
+整数换基作用在系数 \(n\in\mathbb Z^d\) 上，欧式正交变换作用在格向量 \(An\in\mathbb R^d\) 上。两者作用的对象不同；即使矩阵写法相近，也须区分。这为第三卷的二次型 \(\theta\) 级数提供几何来源，但不要求在这里提前引入整数性或模形式的附加结构。
+
+\ProseParagraphBreak
+
+作为非直角的可算例子，取
+\[
+ A=\begin{pmatrix}\sqrt2&1/\sqrt2\\0&\sqrt{3/2}\end{pmatrix},
+ \quad Q=A^{\mathsf T}A=\begin{pmatrix}2&1\\1&2\end{pmatrix}.
+\]
+格基向量的夹角为 \(\pi/3\)，基本区域体积为 \(\sqrt3\)。对 \(t>0\)，记
+\[
+ B(t)=\sum_{m,n\in\mathbb Z}e^{-2\pi t(m^2+mn+n^2)}.
+\]
+这是该格的 \(\theta\) 级数。取整数基变换矩阵
+\[
+ P=\begin{pmatrix}1&0\\0&-1\end{pmatrix}.
+\]
+它满足 \(P\mathbb Z^2=\mathbb Z^2\)，并且
+\[
+ Q^{-1}=\frac13\begin{pmatrix}2&-1\\-1&2\end{pmatrix}
+ =\frac13P^{\mathsf T}QP.
+\]
+因此对 \(u>0\)，把整数系数 \(k=(m,n)^{\mathsf T}\) 换成 \(Pk=(m,-n)^{\mathsf T}\)，得到
+\[
+ \sum_{k\in\mathbb Z^2}e^{-\pi u k^{\mathsf T}Q^{-1}k}
+ =\sum_{k\in\mathbb Z^2}e^{-\pi(u/3)(Pk)^{\mathsf T}Q(Pk)}
+ =B(u/3).
+\]
+Poisson 公式于是给出
+\[
+ B(t)=\frac1{\sqrt3\,t}
+ \sum_{m,n\in\mathbb Z}e^{-2\pi(m^2-mn+n^2)/(3t)}
+ =\frac1{\sqrt3\,t}B(1/(3t)).
+\]
+这里参数中的 \(1/3\) 来自二次型的尺度，而 \(P\) 只负责将整数系数重新编号。要在实际欧式空间中写出对应的正交变换，可取
+\[
+ U_0=\begin{pmatrix}\sqrt3/2&-1/2\\-1/2&-\sqrt3/2\end{pmatrix}.
+\]
+直接相乘可核对 \(U_0^{\mathsf T}U_0=I_2\) 及 \(A^{-\mathsf T}=3^{-1/2}U_0AP\)。因 \(P\mathbb Z^2=\mathbb Z^2\)，这就说明 \(\Lambda^*=3^{-1/2}U_0\Lambda\)。相似尺度 \(c=1/\sqrt3\) 给出 \(c^2/t=1/(3t)\)，体积关系给出 \(v(\Lambda)=c^{-1}=\sqrt3\)，与上式的两个因子分别相符。
+
+\ProseParagraphBreak
+
+最短非零向量由 \(m^2+mn+n^2=1\) 给出。写成 \((m+n/2)^2+3n^2/4\)，可先知 \(|n|\leq1\)，再逐个求出六组解 \((\pm1,0),(0,\pm1),(1,-1),(-1,1)\)。为明确其余项的统一误差，记 \(q(m,n)=m^2+mn+n^2\)。其余非零向量满足整数条件 \(q(m,n)\geq2\)，并且 \(q(m,n)\geq(m^2+n^2)/2\)。故对 \(t\geq1\)，
+\[
+ \sum_{q(m,n)\geq2}e^{-2\pi t q(m,n)}
+ \leq e^{-4\pi t}\sum_{q(m,n)\geq2}e^{-2\pi(q(m,n)-2)}.
+\]
+右端的固定级数由二维 Gauss 级数控制而收敛。因此
+\[
+ B(t)=1+6e^{-2\pi t}+O(e^{-4\pi t})\quad(t\to\infty).
+\]
+把这一式用于倒数参数，得到
+\[
+ B(t)=\frac1{\sqrt3\,t}
+ \left(1+6e^{-2\pi/(3t)}+O(e^{-4\pi/(3t)})\right)
+ \quad(t\downarrow0).
+\]
+大参数修正读取最短格向量，小参数修正读取最短对偶格向量；主项读取基本区域体积。这三种几何数据在公式中各有确定位置。

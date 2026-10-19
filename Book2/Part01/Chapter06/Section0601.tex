@@ -4,11 +4,13 @@
 
 \chapref{b2:ch:02}用离散频率描述周期函数，\chapref{b2:ch:03}用连续频率描述欧氏空间上的函数。将一个快速下降函数反复平移并相加，就能从后一种对象构造前一种对象。计算这个周期化函数的 Fourier 系数，便会把两种变换联系起来。
 
+本节先证明周期化、Poisson 求和与缩放公式，并由此估计数值求积误差。最后的\subsecref{b2:subsec:060105}是带限采样的选读专题，另用周期 \(L^2\) 展开解释离散样本如何恢复连续函数，以及频率混叠为何妨碍恢复。沿 PDE 路线阅读时可以先略过这一专题，直接进入\secref{b2:sec:0602}；后面的热核与 \(\theta\) 函数不以采样定理为前提。
+
 \subsection{周期化}
 \label{b2:subsec:060101}
 
 \begin{definition}\label{b2:def:06-periodization}
-对 \(f\in\mathcal S(\mathbb R)\)，定义其\term[zhouqihua]{周期化}[periodization]为
+对复值 Schwartz 函数 \(f\in\mathcal S(\mathbb R;\mathbb C)\)，定义其\term[zhouqihua]{周期化}[periodization]为
 \[
  (\mathcal Pf)(x)\coloneqq\sum_{n\in\mathbb Z}f(x+n).
 \]
@@ -16,10 +18,10 @@
 \symidx{\(\mathcal Pf\)：单位周期的周期化函数}
 
 \begin{proposition}\label{b2:prop:06-periodization-smooth}
-上述级数及其每个固定阶的导数级数在 \([0,1]\) 上绝对一致收敛。所得函数光滑、周期为 \(1\)，并可逐项求任意阶导数。
+设 \(f\in\mathcal S(\mathbb R;\mathbb C)\)。级数 \(\sum_{n\in\mathbb Z}f(x+n)\)及其每个固定阶的导数级数在 \([0,1]\) 上绝对一致收敛。所得函数光滑、周期为 \(1\)，并可逐项求任意阶导数。
 \end{proposition}
 \begin{proof}
-固定导数阶 \(j\)，选 \(M\geq j\)、\(M>1\)。当 \(x\in[0,1]\) 时，存在绝对常数使 \(1+|x+n|\geq(1+|n|)/3\)，因此
+固定非负整数导数阶 \(j\)，选整数 \(M\geq j\)、\(M>1\)。当 \(x\in[0,1]\) 时，存在绝对常数使 \(1+|x+n|\geq(1+|n|)/3\)，因此
 \[
  |f^{(j)}(x+n)|\leq3^M p_M(f)(1+|n|)^{-M}.
 \]
@@ -32,7 +34,7 @@
 \label{b2:subsec:060102}
 
 \begin{proposition}\label{b2:prop:06-periodic-coefficients}
-对每个 \(k\in\mathbb Z\)，周期化函数的第 \(k\) 个 Fourier 系数恰为连续变换的采样值 \(\widehat f(k)\)。
+设 \(f\in\mathcal S(\mathbb R;\mathbb C)\)，\(\mathcal Pf(x)=\sum_{n\in\mathbb Z}f(x+n)\)。对每个 \(k\in\mathbb Z\)，周期化函数的第 \(k\) 个 Fourier 系数恰为连续变换的采样值 \(\widehat f(k)\)。
 \end{proposition}
 \begin{proof}
 有 \(\sum_n\int_0^1|f(x+n)|\,\mathrm{d}x=\|f\|_1\)，故可以交换求和与积分。对第 \(n\) 项令 \(y=x+n\)，因 \(e^{2\pi\mathrm{i}kn}=1\)，得到
@@ -46,13 +48,13 @@
 半开区间的端点没有积分贡献，且这些区间穷尽实线。
 \end{proof}
 
-连续频率只在整数处被读取，是因为周期已经固定为 \(1\)。这是一种精确的采样关系；若改变周期，采样间距必须随之改变，下一小节将把这个尺度写明。
+连续频率只在整数处被读取，是因为周期已经固定为 \(1\)。这是一种精确的采样关系；若改变周期，采样间距必须随之改变，\subsecref{b2:subsec:060104}将把这个尺度写明。
 
 \subsection{Poisson 求和}
 \label{b2:subsec:060103}
 
 \begin{theorem}[Poisson 求和]\label{b2:thm:06-poisson}
-若 \(f\in\mathcal S(\mathbb R)\)，则
+若 \(f\in\mathcal S(\mathbb R;\mathbb C)\)，则
 \begin{equation}\label{b2:eq:06-poisson-periodic}
  \sum_{n\in\mathbb Z}f(x+n)
  =\sum_{k\in\mathbb Z}\widehat f(k)e^{2\pi\mathrm{i}kx}
@@ -64,12 +66,32 @@
 \]
 \end{theorem}
 \begin{proof}
-左侧已由周期化命题得到光滑函数。由于 \(\widehat f\in\mathcal S\)，整数采样值绝对可和，所以右侧定义连续周期函数，且可逐项积分取得 Fourier 系数 \(\widehat f(k)\)。两侧的全部系数相同，由\chapref{b2:ch:02}的系数唯一性几乎处处相等；两者连续，故处处相等。取 \(x=0\) 得到求和式。
+左侧已由周期化命题得到光滑函数。由于 \(\widehat f\in\mathcal S\)，整数采样值绝对可和，所以右侧定义连续周期函数，且可逐项积分取得 Fourier 系数 \(\widehat f(k)\)。两侧的全部系数相同，由\cref{b2:cor:02-uniqueness}的系数唯一性几乎处处相等；两者连续，故处处相等。取 \(x=0\) 得到求和式。
 \end{proof}
 
 这称为\term[poisson-qiuhe-gongshi]{Poisson 求和公式}[Poisson summation formula]。整数点的函数值必须通过有正则性的代表取得；若只把 \(f\) 当作 \(L^1\) 等价类，在所有整数点上任意改值不改变变换，却会改变左侧和式。因而公式中的采样条件不能只写“可积”。
 
-\ProseParagraphBreak
+\begin{proposition}[有限阶衰减条件]\label{b2:prop:06-finite-decay-poisson}
+若 \(f\in C^1(\mathbb R;\mathbb C)\)，并且存在常数 \(\delta>0\)、\(C>0\)，使对所有 \(x\in\mathbb R\) 都有
+\[
+ |f(x)|+|f'(x)|\leq C(1+|x|)^{-1-\delta},
+\]
+则周期化级数与其一阶导数级数在任一固定有界区间上绝对一致收敛，\(\mathcal Pf\in C^1(\mathbb T)\)，并且 Poisson 求和公式\eqref{b2:eq:06-poisson-periodic}仍成立，频率侧级数在整条实线上绝对一致收敛。
+\end{proposition}
+\begin{proof}
+在任意固定有界区间 \(I\) 上，\(A=\sup_{x\in I}|x|<\infty\)，且 \(1+|n|\leq(1+A)(1+|x+n|)\)。因此可用 \((1+A)^{1+\delta}(1+|n|)^{-1-\delta}\) 控制 \((1+|x+n|)^{-1-\delta}\)，得到函数及导数级数的一致收敛和逐项求导。\(f\in L^1\) 保证系数计算依然合法，故周期化的系数为 \(c_k=\widehat f(k)\)。由于 \(\mathcal Pf\in C^1\)，其导数属于 \(L^2(\mathbb T)\)，周期分部积分与 Parseval 给出
+\[
+ \sum_{k\in\mathbb Z}k^2|c_k|^2
+ =\frac1{4\pi^2}\| (\mathcal Pf)'\|_2^2<\infty.
+\]
+对非零指标使用 Cauchy--Schwarz，
+\[
+ \sum_{k\ne0}|c_k|
+ \leq\left(\sum_{k\ne0}k^{-2}\right)^{1/2}
+       \left(\sum_{k\ne0}k^2|c_k|^2\right)^{1/2}<\infty.
+\]
+频率级数遂绝对一致收敛，再由系数唯一性与连续性，得到处处相等。这里并没有要求 \(\widehat f\) 在连续频率上快速下降，所需的是它的整数采样值可和。
+\end{proof}
 
 还可用温和分布表达这项对称。格点测度 \(\mathrm{III}=\sum_{n\in\mathbb Z}\delta_n\)，也称 Dirac 梳，对每个 Schwartz 函数绝对可和，并由 \(p_2\) 控制，所以温和。对测试函数 \(\varphi\) 使用求和公式，
 \[
@@ -80,11 +102,11 @@
 因此整数格点测度在本书归一化下自对偶。这个等式不能读成一个普通函数的积分计算，它在连续测试配对中成立。
 \symidx{\(\mathrm{III}\)：单位整数格点测度}
 
-\subsection{缩放形式}
+\subsection{缩放求和与数值求积}
 \label{b2:subsec:060104}
 
 \begin{corollary}\label{b2:cor:06-scaled-poisson}
-若 \(h>0\)、\(a,b\in\mathbb R\)、\(f\in\mathcal S(\mathbb R)\)，则
+若 \(h>0\)、\(a,b\in\mathbb R\)、\(f\in\mathcal S(\mathbb R;\mathbb C)\)，则
 \[
  \sum_{n\in\mathbb Z}f(hn+a)e^{2\pi\mathrm{i}b(hn+a)}
  =\dfrac1h\sum_{k\in\mathbb Z}e^{2\pi\mathrm{i}ka/h}\widehat f(k/h-b).
@@ -95,17 +117,51 @@
 对 \(g(x)=f(hx+a)e^{2\pi\mathrm{i}b(hx+a)}\) 应用 Poisson 求和。函数 \(g\) 仍属于 \(\mathcal S\)。在变换积分中令 \(y=hx+a\)，得到 \(\widehat g(k)=h^{-1}e^{2\pi\mathrm{i}ka/h}\widehat f(k/h-b)\)，代入即得。
 \end{proof}
 
-这还给出整条实线梯形求积的误差。固定任意整数 \(M>1\)，由 \(\widehat f\) 快速下降，在 \(0<h\leq1\) 时有
+这还给出整条实线梯形求积的误差。设 \(f\in\mathcal S(\mathbb R;\mathbb C)\)，固定任意整数 \(M>1\)，由 \(\widehat f\) 快速下降，在 \(0<h\leq1\) 时有
 \[
  \left|h\sum_nf(hn)-\int_{\mathbb R}f(x)\,\mathrm{d}x\right|
  \leq\sum_{k\ne0}|\widehat f(k/h)|\leq C_{f,M}h^M.
 \]
 因此误差比任意预先指定的幂次都快地趋零，常数可依赖 \(f,M\)。结论不表示对所有 Schwartz 函数存在同一个误差常数，也不涉及将无穷求和截断后产生的空间尾部误差。
 
+\ProseParagraphBreak
 
+若要得到有限计算的误差，必须同时决定网格间距与保留的空间窗口。对 \(f\in\mathcal S(\mathbb R;\mathbb C)\)，记 \(Q_{h,J}(f)=h\sum_{|n|\leq J}f(hn)\)，其中 \(0<h\leq1\)、\(J\) 为非负整数。对整数 \(r,s\geq2\)，分部积分给出 \(|\widehat f(\xi)|\leq(2\pi|\xi|)^{-r}\|f^{(r)}\|_1\)、\(\xi\ne0\)，因而
+\[
+ \sum_{k\ne0}|\widehat f(k/h)|
+ \leq 2(2\pi)^{-r}\left(\sum_{k=1}^\infty k^{-r}\right)
+       h^r\|f^{(r)}\|_1
+ \leq C_r h^r p_{r+2}(f).
+\]
+空间尾部则由单调函数的积分比较得到
+\[
+ \begin{aligned}
+ h\sum_{|n|>J}|f(hn)|
+ &\leq2hp_s(f)\sum_{n=J+1}^\infty(1+hn)^{-s}\\
+ &\leq\frac{2p_s(f)}{s-1}(1+hJ)^{1-s}.
+ \end{aligned}
+\]
+合并两项可得
+\[
+ |Q_{h,J}(f)-\textstyle\int f|
+ \leq C_r h^rp_{r+2}(f)
+       +\frac{2p_s(f)}{s-1}(1+hJ)^{1-s}.
+\]
+第一项由高频衰减控制，第二项由空间窗口 \(hJ\) 控制。对固定的 \(f\in\mathcal S\)，若 \(h\downarrow0\)，并选非负整数 \(J=J(h)\)，使 \(hJ(h)\to\infty\)，则上界的两项都趋零，因而 \(Q_{h,J(h)}(f)\to\int f\)。这是保证一般 Schwartz 函数收敛的一组充分条件。若已知 \(\operatorname{supp}f\subset[-A,A]\)、\(A>0\)，只须在 \(h\downarrow0\) 的过程中令 \(hJ(h)\geq A\)，空间尾部就恒为零，不必让窗口继续增大。
+
+这个窗口条件并不是每个固定函数都必须满足的条件。例如非紧支集的奇函数 \(f(x)=xe^{-\pi x^2}\) 满足 \(\int f=0\)，而对任意 \(h>0\) 和非负整数 \(J\)，对称求和都给出 \(Q_{h,J}(f)=0\)。即使始终取 \(J=0\)，求积值也已等于积分。反过来，对没有这种抵消的一般函数，保持 \(J\) 固定而令 \(h\downarrow0\) 会使窗口缩到原点，不能由越来越密的网格保证总积分被恢复；实际计算必须同时控制空间尾部。
+
+\OptionalSubsection{带限采样与频率混叠}{b2:subsec:060105}
+
+下面的问题与求积不同：给定离散样本，能否恢复整条实线上的函数？答案取决于允许的频率范围。这里使用\cref{b2:cor:02-parseval}的周期平方范数展开与\cref{b2:thm:04-plancherel-extension}的酉变换，不是后面周期热核的前置内容。
 
 \begin{theorem}[带限采样]\label{b2:thm:06-sampling}
-设 \(h>0\)、\(f\in L^2(\mathbb R)\)，且 \(\widehat f\) 几乎处处支撑于 \([-1/(2h),1/(2h)]\)。取其连续反演代表，则
+设 \(h>0\)、\(f\in L^2(\mathbb R;\mathbb C)\)，\(\widehat f\) 为酉 Fourier 变换，且在 \(I_h=[-1/(2h),1/(2h)]\) 外几乎处处为零。以连续反演代表
+\[
+ f(x)=\int_{I_h}\widehat f(\xi)e^{2\pi\mathrm{i}x\xi}\,\mathrm{d}\xi
+ \quad(x\in\mathbb R)
+\]
+取得采样值，则
 \[
  h\sum_{n\in\mathbb Z}|f(nh)|^2=\|f\|_2^2,
 \]
@@ -117,22 +173,107 @@
 其中分式在零点补为 \(1\)，对称部分和按 \(L^2\) 范数和在整条实线上的一致范数收敛。
 \end{theorem}
 \begin{proof}
-频率函数在有限区间上可积，故反演给出连续代表。在 \([-1/2,1/2]\) 上令 \(g(t)=h^{-1/2}\widehat f(t/h)\)。换元给出 \(\|g\|_2=\|\widehat f\|_2\)，其第 \(k\) 个周期系数为
+频带长度为 \(|I_h|=1/h\)，Cauchy--Schwarz 给出 \(\|\widehat f\|_1\leq h^{-1/2}\|\widehat f\|_2<\infty\)。所以反演积分给出连续函数，并由\cref{b2:cor:04-l2-inversion}识别为原 \(L^2\) 等价类的代表。在 \([-1/2,1/2]\) 上令 \(g(t)=h^{-1/2}\widehat f(t/h)\)。换元给出 \(\|g\|_2=\|\widehat f\|_2\)，其第 \(k\) 个周期系数为
 \[
  \int_{-1/2}^{1/2}g(t)e^{-2\pi\mathrm{i}kt}\,\mathrm{d}t
  =h^{1/2}f(-kh).
 \]
-对 \(g\) 用周期 Parseval 即得采样平方和。周期 Fourier 级数在 \(L^2\) 中恢复 \(g\)，还原频率变量后得到
+对 \(g\) 用周期 Parseval，再用 Plancherel 的 \(\|\widehat f\|_2=\|f\|_2\)，即得采样平方和。周期 Fourier 级数在 \(L^2\) 中恢复 \(g\)，将指标 \(k\) 换成 \(-n\)、还原频率变量，得到
 \[
- \widehat f(\xi)=h\sum_{n\in\mathbb Z}f(nh)e^{-2\pi\mathrm{i}nh\xi}
- \quad\left(|\xi|\leq\dfrac1{2h}\right)
+ \widehat f
+ =h\sum_{n\in\mathbb Z}f(nh)e^{-2\pi\mathrm{i}nh\,\cdot}
+ \quad\text{于 }L^2(I_h).
 \]
-的平方范数展开。每个部分和在区间外补零，再作逆变换；区间指数的积分就是所写的 sinc 项。酉性保证部分和按 \(L^2\) 收敛。其误差的频率支集始终在同一个有限区间内，所以
+这里说的是频率侧的平方范数展开，不断言 \(\widehat f\) 的 Fourier 级数在频带内每一点都收敛。具体地，令
+\[
+ G_N(\xi)=h\mathbf1_{I_h}(\xi)
+          \sum_{|n|\leq N}f(nh)e^{-2\pi\mathrm{i}nh\xi},
+ \quad N\in\mathbb N_0.
+\]
+区间外补零后有 \(G_N\to\widehat f\) 于 \(L^2(\mathbb R)\)。每个 \(G_N\) 可积，再作逆变换得到 \(f_N=\mathcal F^{-1}G_N\)；其中
+\[
+ h\int_{I_h}e^{2\pi\mathrm{i}(x-nh)\xi}\,\mathrm{d}\xi
+ =\frac{\sin(\pi(x/h-n))}{\pi(x/h-n)}
+\]
+正是所写的 sinc 项，在 \(x=nh\) 处由连续性补为 \(1\)。酉性保证 \(f_N\to f\) 于 \(L^2(\mathbb R)\)。进一步，误差的频率支集始终在同一个有限区间内，故反演积分与 Cauchy--Schwarz 给出
 \[
  \sup_x|f(x)-f_N(x)|
- \leq h^{-1/2}\|\widehat f-\widehat f_N\|_2\longrightarrow0,
+ \leq\|\widehat f-G_N\|_{L^1(I_h)}
+ \leq h^{-1/2}\|\widehat f-G_N\|_{L^2(I_h)}\longrightarrow0.
 \]
-也得到整条实线上的一致收敛。
+这才把频率侧的 \(L^2\) 收敛提升为整条实线上的一致收敛；关键是频带长度固定，且始终使用连续反演代表。
 \end{proof}
 
 这个\term[caiyang-dingli]{采样定理}[sampling theorem]依靠的是明确的带限条件。它解释了为什么在某一类函数中，离散点值可以恢复整个函数；若允许任意高频，则不同函数可有同样的采样值。采样频率与最高允许频率之间的比例来自有限区间上的正交基，而不是经验性的点数规则。它与 Poisson 求和共享同一个结构：先在一侧作周期展开，再将整数指标解释为另一侧的采样。
+
+\ProseParagraphBreak
+
+恢复不仅唯一，而且在平方能量中稳定。固定 \(h>0\)，给定任意复数列 \(c=(c_n)\in\ell^2(\mathbb Z)\)，令
+\[
+ F_N(x)=\sum_{|n|\leq N}c_n\frac{\sin(\pi(x/h-n))}{\pi(x/h-n)}.
+\]
+各个 sinc 项的变换为 \(h e^{-2\pi\mathrm{i}nh\xi}\mathbf1_{[-1/(2h),1/(2h)]}\)。有限区间的指数正交性使
+\[
+ \|F_N-F_M\|_2^2=h\sum_{M<|n|\leq N}|c_n|^2\quad(N>M).
+\]
+因此 \(F_N\) 在 \(L^2\) 中有极限，且此极限的变换在 \(I_h\) 外仍几乎处处为零。同一频带上的 Cauchy--Schwarz 还使 \(F_N\) 在整条实线上一致 Cauchy，所得连续极限记为 \(F\)；在每个有界区间上，一致收敛也给出 \(L^2\) 收敛，故它就是前述 \(L^2\) 极限的连续代表。在每个采样点 \(nh\) 处，其他整数移位的 sinc 值都为零，令 \(N\to\infty\) 得 \(F(nh)=c_n\)，且 \(\|F\|_2^2=h\sum_n|c_n|^2\)。若采样误差为 \(e\in\ell^2\)，恢复函数的能量误差恰为 \(\sqrt h\|e\|_{\ell^2}\)，一致误差则至多为 \(\|e\|_{\ell^2}\)。后一个界来自频带长度 \(1/h\) 与能量误差的乘积，量纲中的 \(h\) 相消。
+
+\ProseParagraphBreak
+
+一个具体恢复对象是
+\[
+ f(x)=\left(\frac{\sin(\pi x)}{\pi x}\right)^2,
+ \quad f(0)=1.
+\]
+先将每个 sinc 写成 \(\int_{-1/2}^{1/2}e^{2\pi\mathrm{i}x\xi}\,\mathrm{d}\xi\)。两个有限区间的积分绝对可交换，按和变量 \(\eta=\xi_1+\xi_2\) 合并，得到
+\[
+ f(x)=\int_{-1}^1(1-|\eta|)e^{2\pi\mathrm{i}x\eta}\,\mathrm{d}\eta.
+\]
+三角形函数属于 \(L^1\cap L^2\)，所以这是它的酉逆变换，\(\widehat f=(1-|\xi|)_+\)。特别 \(f\) 的频带为 \([-1,1]\)，并有 \(\|f\|_2^2=2\int_0^1(1-\xi)^2\,\mathrm{d}\xi=2/3\)。取临界间距 \(h=1/2\)，样本为
+\[
+ f(n/2)=
+ \begin{cases}
+ 1,&n=0,\\
+ 0,&n\ne0\text{ 为偶数},\\
+ 4/(\pi^2n^2),&n\text{ 为奇数}.
+ \end{cases}
+\]
+采样能量等式因而给出
+\[
+ \frac12\left(1+\frac{32}{\pi^4}\sum_{n\geq1,\ n\text{ 奇}}n^{-4}\right)=\frac23,
+ \quad\sum_{n\geq1,\ n\text{ 奇}}n^{-4}=\frac{\pi^4}{96}.
+\]
+还可从样本尾部算出恢复误差。若仅用 \(|n|\leq N\) 的样本，\(N\geq1\)，则积分比较 \(\sum_{n>N}n^{-4}\leq1/(3N^3)\) 给出
+\[
+ \|f-f_N\|_2^2\leq\frac{16}{3\pi^4N^3},
+ \quad\|f-f_N\|_\infty\leq\frac{4\sqrt{2/3}}{\pi^2N^{3/2}}.
+\]
+这个例子同时核对频带、样本值、能量和有限截断误差。它使用连续反演代表，采样点上的值没有任意选取。
+
+\ProseParagraphBreak
+
+带限假设失效时，采样读取的是重叠后的频率数据。对 \(h>0\)、\(f\in\mathcal S(\mathbb R;\mathbb C)\)，在缩放求和式中取平移参数 \(a=0\)、调制参数 \(b=-\xi\)，得到
+\begin{equation}\label{b2:eq:06-aliasing}
+ h\sum_{n\in\mathbb Z}f(nh)e^{-2\pi\mathrm{i}nh\xi}
+ =\sum_{k\in\mathbb Z}\widehat f(\xi+k/h).
+\end{equation}
+两边都是周期为 \(1/h\) 的光滑函数。频率中相距 \(1/h\) 的部分被折叠到同一周期区间，这称为\term[hundie]{混叠}[aliasing]。若 \(\widehat f\) 支于基本频带 \(I_h\)，则在该频带内部右侧只剩 \(k=0\) 项，因而可以直接读取原来的频率数据。
+
+\Cref{b2:fig:06-sampling-aliases}用明确的光滑紧支集函数展示这些副本。令
+\[
+ \beta(u)=
+ \begin{cases}
+ \exp\!\left(1-\dfrac1{1-u^2}\right),&|u|<1,\\
+ 0,&|u|\geq1,
+ \end{cases}
+ \quad \Phi_B(\xi)=\beta(\xi/B),\quad B>0.
+\]
+其支集为 \([-B,B]\)。在端点附近，\(\beta\) 的每个导数都是指数因子乘以有限阶有理因子的有限和；由 \(t^{-m}e^{-1/t}\to0\)（\(t\downarrow0\)，\(m\) 为任意非负整数），各阶导数在端点补零后连续，所以 \(\Phi_B\in C_c^\infty\)。\Cref{b2:cor:05-schwartz-automorphism}保证 \(f=\mathcal F^{-1}\Phi_B\in\mathcal S\)，图中的每条曲线就是\eqref{b2:eq:06-aliasing}右侧的一个频率平移。\(B<1/(2h)\) 时相邻副本分离；\(B>1/(2h)\) 时，相邻副本在基本频带内也会相加。临界情形 \(B=1/(2h)\) 只在频带端点相接，这些单点不影响 \(L^2\) 等式；对这里的光滑函数，端点值本身也为零。图中只画中心及左右相邻的三个副本；实际样本确定的是这些副本的相加结果。
+
+\input{Figures/F06-SamplingAliases}
+
+若允许频带外的成分，采样还可能完全漏掉一个非零函数。取 \(x_0\notin(h/2)\mathbb Z\) 及 \(g\in C_c^\infty(\mathbb R;\mathbb C)\)，使 \(g(x_0)\ne0\)，并令 \(v(x)=\sin(2\pi x/h)g(x)\)。则 \(v(x_0)\ne0\) 而所有 \(v(nh)=0\)。它的变换为
+\[
+ \widehat v(\xi)=\frac{\widehat g(\xi-1/h)-\widehat g(\xi+1/h)}{2\mathrm{i}},
+\]
+各个折叠项在绝对收敛求和中互相抵消。这个例子给出采样映射的实际核；提高数值精度不能弥补带限假设的缺失。

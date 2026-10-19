@@ -8,7 +8,7 @@
 \label{b2:subsec:020401}
 
 \begin{definition}\label{b2:def:02-fejer-kernel}
-定义\term[fejer-he]{Fejér 核}[Fejér kernel]为
+对非负整数 \(N\)，定义\term[fejer-he]{Fejér 核}[Fejér kernel]为
 \[
  F_N(t)\coloneqq\dfrac1{N+1}\sum_{j=0}^N D_j(t)
  =\sum_{|k|\leq N}\left(1-\dfrac{|k|}{N+1}\right)e^{2\pi\mathrm{i}kt}.
@@ -28,11 +28,50 @@
 \]
 这里不只是质量集中，还得到离开原点后逐点统一变小的估计。
 
+\ProseParagraphBreak
+
+\cref{b2:fig:02-dirichlet-fejer-kernels}把同一截断次数的两个核放在相同坐标尺度下比较。Dirichlet 核依靠正负抵消使积分保持为一；Fejér 核处处非负，它在原点附近的峰与远处的小值共同分配这一个单位的质量。随 \(N\) 增长，后者的质量集中由上面的尾部估计保证。
+
+% 自拟函数图：N=4，直接绘制有限余弦和，避免整数点处商式的0/0。
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=5.3cm,y=0.27cm,>=stealth,font=\small]
+ \begin{scope}
+  \draw[->,AnalysisGray] (-0.53,0)--(0.56,0) node[right] {\(t\)};
+  \draw[->,AnalysisGray] (0,-2.5)--(0,10);
+  \foreach \x/\lab in {-0.5/{-1/2},-0.25/{-1/4},0.25/{1/4},0.5/{1/2}} {
+   \draw[AnalysisGray] (\x,-0.15)--(\x,0.15);
+   \node[AnalysisGray,anchor=north] at (\x,-2.9) {\(\lab\)};
+  }
+  \foreach \y in {-2,5,9}
+   \draw[AnalysisGray] (-0.015,\y)--(0.015,\y) node[left=2pt] {\(\y\)};
+  \draw[thick,AnalysisBlue] plot[domain=-0.5:0.5,samples=201]
+   (\x,{1+2*cos(360*\x)+2*cos(720*\x)+2*cos(1080*\x)+2*cos(1440*\x)});
+  \node[anchor=south west] at (-0.5,9.8) {\(D_4(t)\)};
+ \end{scope}
+ \begin{scope}[xshift=7cm]
+  \draw[->,AnalysisGray] (-0.53,0)--(0.56,0) node[right] {\(t\)};
+  \draw[->,AnalysisGray] (0,-2.5)--(0,10);
+  \foreach \x/\lab in {-0.5/{-1/2},-0.25/{-1/4},0.25/{1/4},0.5/{1/2}} {
+   \draw[AnalysisGray] (\x,-0.15)--(\x,0.15);
+   \node[AnalysisGray,anchor=north] at (\x,-2.9) {\(\lab\)};
+  }
+  \foreach \y in {-2,5,9}
+   \draw[AnalysisGray] (-0.015,\y)--(0.015,\y) node[left=2pt] {\(\y\)};
+  \draw[thick,AnalysisBlue] plot[domain=-0.5:0.5,samples=201]
+   (\x,{1+1.6*cos(360*\x)+1.2*cos(720*\x)+0.8*cos(1080*\x)+0.4*cos(1440*\x)});
+  \node[anchor=south west] at (-0.5,9.8) {\(F_4(t)\)};
+ \end{scope}
+\end{tikzpicture}
+\caption[Dirichlet 核与 Fejér 核的比较]{Dirichlet 核与 Fejér 核的比较。两图均取 \(N=4\)，横轴为一个周期 \([-1/2,1/2]\)，纵轴尺度也相同；两核的积分都为 \(1\)。左图出现负瓣，右图始终非负。图由各核的有限余弦和计算，原点处分别取 \(D_4(0)=9\)、\(F_4(0)=5\)。}
+\label{b2:fig:02-dirichlet-fejer-kernels}
+\end{figure}
+
 \subsection{Cesàro 求和}
 \label{b2:subsec:020402}
 
 \begin{definition}\label{b2:def:02-cesaro}
-对 \(f\in L^1(\mathbb T)\)，记
+对 \(f\in L^1(\mathbb T)\) 和非负整数 \(N\)，记
 \[
  \sigma_Nf\coloneqq\dfrac1{N+1}\sum_{j=0}^N S_jf=f*F_N,
 \]
@@ -54,7 +93,7 @@
 \end{definition}
 
 \begin{proposition}\label{b2:prop:02-positive-approximation}
-对上述核族，\(K_j*f\to f\) 在 \(C(\mathbb T)\) 中一致成立，也在每个 \(L^p(\mathbb T)\)、\(1\leq p<\infty\) 中按范数成立。
+设 \((K_j)_{j\geq1}\) 是 \(\mathbb T\) 上的正逼近恒等，即 \(K_j\in L^1(\mathbb T)\)、\(K_j\geq0\)、\(\int_{\mathbb T}K_j=1\)，且每个 \(\delta>0\) 都有 \(\int_{\mathrm d_{\mathbb T}(t,0)\geq\delta}K_j(t)\,\mathrm dt\to0\)。则\(K_j*f\to f\) 在 \(C(\mathbb T)\) 中一致成立，也在每个 \(L^p(\mathbb T)\)、\(1\leq p<\infty\) 中按范数成立。
 \end{proposition}
 \begin{proof}
 连续情形将
@@ -76,11 +115,11 @@
 最后一项由连续情形趋零，故结论成立。
 \end{proof}
 
-\subsection{连续函数的一致逼近}
+\subsection{Fejér 收敛与 Fourier 系数唯一性}
 \label{b2:subsec:020404}
 
 \begin{theorem}[Fejér]\label{b2:thm:02-fejer}
-若 \(f\in C(\mathbb T)\)，则 \(\sigma_Nf\to f\) 一致成立。若 \(f\in L^p(\mathbb T)\)、\(1\leq p<\infty\)，则 \(\|\sigma_Nf-f\|_p\to0\)。此外，对 \(f\in L^1(\mathbb T)\) 的任一连续点 \(x\)，有 \(\sigma_Nf(x)\to f(x)\)。
+设 \(\mathbb T=\mathbb R/\mathbb Z\) 取总质量为 \(1\) 的 Lebesgue 测度，函数可取实值或复值，\(\sigma_Nf=f*F_N\) 是非负整数 \(N\) 对应的 Fejér 平均。若 \(f\in C(\mathbb T)\)，则 \(\sigma_Nf\to f\) 一致成立。若 \(f\in L^p(\mathbb T)\)、\(1\leq p<\infty\)，则 \(\|\sigma_Nf-f\|_p\to0\)。此外，若 \(f\in L^1(\mathbb T)\)，并选定一个在 \(x\in\mathbb T\) 连续的代表，仍记为 \(f\)，则 \(\sigma_Nf(x)\to f(x)\)。
 \end{theorem}
 \begin{proof}
 Fejér 核满足前一命题的全部条件，故前两项成立。单点结论须另查远处可能无界的函数。给定 \(\varepsilon>0\)，取 \(\delta\) 使 \(|f(x-t)-f(x)|<\varepsilon\) 对 \(|t|<\delta\) 成立。近处误差至多 \(\varepsilon\)；远处误差不超过
@@ -89,6 +128,28 @@ Fejér 核满足前一命题的全部条件，故前两项成立。单点结论�
 \]
 由本节的显式估计趋零。
 \end{proof}
+
+卷积平均在每一点的值只取决于 \(L^1\) 等价类，因为改变零集上的函数值不改变积分。定理的点态结论还指定了连续代表：若只把 \(f(x)\) 单独改成另一个数，平均并不会随之改变，但新代表通常已不在该点连续。
+
+\ProseParagraphBreak
+
+Fejér 核的显式表达还可以量化逼近速度。设 \(n=N+1\)，在 \(0<|t|\leq1/2\) 上同时有
+\[
+ F_N(t)\leq n,\qquad F_N(t)\leq\frac1{4nt^2}.
+\]
+第一式由有限和的平方模得到，第二式使用 \(\sin(\pi t)\geq2|t|\)。若 \(|f(x-t)-f(x)|\leq L|t|^\alpha\)，其中 \(0<\alpha\leq1\)，则卷积误差不超过 \(L\int|t|^\alpha F_N(t)\,\mathrm dt\)。当 \(n\geq2\) 时在 \(t=1/n\) 分段，有
+\[
+ \int_{-1/2}^{1/2}|t|^\alpha F_N(t)\,\mathrm dt
+ \leq 2n\int_0^{1/n}t^\alpha\,\mathrm dt
+       +\frac1{2n}\int_{1/n}^{1/2}t^{\alpha-2}\,\mathrm dt.
+\]
+因此在 \(0<\alpha<1\) 时误差至多为 \(C_\alpha L n^{-\alpha}\)，而在 \(\alpha=1\) 时至多为 \(CL(1+\log n)/n\)。端点的对数来自核尾部的积分，不能把非端点公式中依赖 \(\alpha\) 的常数直接代入 \(\alpha=1\)。这是当前核估计给出的上界；它并未断言每个 Lipschitz 函数都达到这个误差。
+
+\ProseParagraphBreak
+
+例如对 \(f(x)=\cos(2\pi x)\)，平均可以直接算出 \(\sigma_Nf=(1-1/n)f\)，误差正好为 \(1/n\)。这个例子也说明，一般正核逼近的速度估计要同时看核和被逼近函数，统一上界与单个函数的实际误差不同。
+
+\ProseParagraphBreak
 
 这就是\term[fejer-dingli]{Fejér 定理}[Fejér's theorem]。它还给出一个不要求平方可积性的唯一性结论。
 
@@ -99,4 +160,4 @@ Fejér 核满足前一命题的全部条件，故前两项成立。单点结论�
 函数 \(h=f-g\) 的所有 Fejér 平均都为零，而这些平均在 \(L^1\) 中趋于 \(h\)，故 \(\|h\|_1=0\)。
 \end{proof}
 
-对于跳跃函数，\(L^\infty\) 范数逼近仍会失败。例如 \(f=\mathbf1_{(0,1/2)}\)，任何连续函数与它的本性上确界距离至少为 \(1/2\)。若距离小于 \(1/2\)，连续函数在跳跃两侧的值便分别严格小于、严格大于 \(1/2\)，与同一点的连续性矛盾。正核消除了部分和的不稳定，却没有把不连续对象变成连续函数的一致极限。
+对于跳跃函数，\(L^\infty\) 范数逼近仍会失败。例如 \(f=\mathbf1_{(0,1/2)}\)，任何实值或复值连续周期函数 \(g\) 与它的本性上确界距离至少为 \(1/2\)。若 \(\|g-f\|_\infty=\varepsilon<1/2\)，则在跳跃两侧分别有 \(\operatorname{Re}g\geq1-\varepsilon\) 和 \(\operatorname{Re}g\leq\varepsilon\)。这些界先几乎处处成立，由连续性又在两侧开弧上处处成立；趋向同一跳跃点时，\(1-\varepsilon>\varepsilon\) 使两侧界不相容。正核消除了部分和的不稳定，却没有把不连续对象变成连续函数的一致极限。

@@ -2,13 +2,16 @@
 \section{Sturm–Liouville 问题}
 \label{b2:sec:1002}
 
+系数变化以后，空间方程仍是二阶常微分方程，但普通平方积分不再自动给出对称性。本节把密度放入内积、把端点条件放入定义域，先构造一个移位边值问题的逆，再由这个逆确定自伴性。
+
 \subsection{特征值问题}
 \label{b2:subsec:100201}
 
 本节固定有限区间 \(I=(a,b)\)，实函数 \(p,w,q\in C([a,b])\)，并要求 \(p(x)>0\)、\(w(x)>0\) 在闭区间处处成立。连续性与紧性给出正的下界；\(q\) 可以变号。以下定义容许 \(p\) 只有连续性，不把 \((pu')'\) 强行拆成包含未定义的 \(p'\) 的表达式。
 
+\Needspace{6\baselineskip}
 \begin{definition}\label{b2:def:10-sl-operator}
-在每个端点 \(s\in\{a,b\}\) 固定一个条件：或为 \(u(s)=0\)，或为
+设 \(I=(a,b)\) 为有限区间，\(p,w,q\in C([a,b];\mathbb R)\)，\(p(x),w(x)>0\) 对所有 \(x\in[a,b]\) 成立。在每个端点 \(s\in\{a,b\}\) 固定一个条件：或为 \(u(s)=0\)，或为
 \[
  \partial_{\nu,p}u(s)+h_su(s)=0,
  \quad h_s\in\mathbb R,
@@ -17,7 +20,7 @@
 \]
 这些条件各只涉及一个端点，称为\term[fenli-bianjie-tiaojian]{分离边界条件}[separated boundary conditions]。记 \(R\) 为选择第二类表达式的端点集合，\(h_s=0\) 包含 Neumann 条件。令
 \[
- H\coloneqq L^2(I,w\,\mathrm{d}x),
+ H\coloneqq L^2(I,w\,\mathrm{d}x;\mathbb C),
  \quad\langle u,v\rangle_H\coloneqq\int_a^b u\overline v\,w\,\mathrm{d}x,
 \]
 \[
@@ -28,7 +31,25 @@
 \end{definition}
 \symidx{\(L^2(I,w\,\mathrm{d}x)\)：区间上的加权平方可积空间}
 
-由第一卷命题 21.4.1，\(H^1(I)\) 的元素有唯一的绝对连续代表，并连续延至两端；\(pu'\in H^1\) 也有这种代表。因为 \(p\) 连续且不为零，\(u'=(pu')/p\) 有连续代表，故定义中的端点值和通量都有意义。这里 \(H\) 的内积仍对第一变量线性，\(w\) 同时出现在特征方程与正交关系中。若去掉这个权重，一般不会得到所需的对称性。
+定义域中的 \((pu')'\) 是通量 \(pu'\) 的弱导数，要求它属于 \(L^2(I)\)，并不要求 \(u\) 具有经典二阶导数。由第一卷命题 21.4.1，\(H^1(I)\) 的元素有唯一的绝对连续代表，并连续延至两端；\(pu'\in H^1\) 也有这种代表。因为 \(p\) 连续且不为零，\(u'=(pu')/p\) 有连续代表，积分后可知 \(u\) 的绝对连续代表实际上属于 \(C^1([a,b])\)。所以端点值和通量都有意义，而 \(u\in C^2([a,b])\) 并非定义域条件的结论。
+
+\ProseParagraphBreak
+
+这种区别在连续系数下确实存在。取 \(I=(-1,1)\)、\(p(x)=1+|x|\)、\(w=1\)、\(q=0\)，两端均取 Dirichlet 条件。选取实函数 \(\chi\in C_c^\infty((-1,1))\)，使其在原点附近恒等于 \(1\)，并令
+\[
+ U(x)=\int_0^x\frac{\mathrm{d}s}{1+|s|},\qquad u(x)=\chi(x)U(x).
+\]
+此时 \(u\in H^1(I)\) 且在端点为零，通量为 \(pu'=\chi+p\chi'U\)。原点附近它等于常数 \(1\)，其余位置的各因子均光滑，因此通量属于 \(C_c^\infty(I)\subset H^1(I)\)，从而 \(u\in D(A)\)。然而原点两侧的二阶导数极限分别为 \(u''(0-)=1\)、\(u''(0+)=-1\)，所以 \(u\) 在原点不具有经典二阶导数。后面讨论有限模态时，空间算子的作用应以 \(D(A)\) 和 \(H\) 为准；若要断言经典空间二阶可微性，还需另行核对系数与解的正则性。
+
+\ProseParagraphBreak
+
+把空间算子放回演化方程，\(u_{tt}+Au=0\) 与 \(u_t+Au=0\) 分别对应
+\[
+ w(x)u_{tt}-(p(x)u_x)_x+q(x)u=0,
+ \qquad
+ w(x)u_t-(p(x)u_x)_x+q(x)u=0.
+\]
+在算子意义下，时间导数在 \(H\) 中取值，\(u(t)\in D(A)\)，空间通量的导数按弱导数解释；具有足够经典正则性时，上式也可逐点读取。在常见的一维振动模型中，\(w\) 表示密度，\(p\) 表示张力系数，\(q\) 描述与位移成正比的附加线性作用。代入 \(u(t,x)=T(t)X(x)\) 后，空间方程为 \(-(pX')'+qX=\lambda wX\)。密度同样决定动能中的积分 \(\frac12\int_I w|u_t|^2\,\mathrm{d}x\)，因此加权空间 \(H\) 来自原演化模型。它的内积仍对第一变量线性，\(w\) 同时出现在特征方程与正交关系中；这也使算子中的 \(w^{-1}\) 在分部积分时消去。加权内积有物理与方程上的来源，并非为了证明正交性临时选择。
 
 \ProseParagraphBreak
 
@@ -60,8 +81,9 @@
 \end{equation}
 对 \(u\in D(A)\)、\(v\in V\)，一次分部积分给出 \(\mathfrak a(u,v)=\langle Au,v\rangle_H\)。这一步同时检验了两个端点的符号。
 
+\Needspace{6\baselineskip}
 \begin{lemma}[移位能量估计]\label{b2:lem:10-form-coercive}
-存在 \(\sigma>0\) 及 \(c,C>0\)，使
+设 \(I=(a,b)\) 为有限区间，\(p,w,q\in C([a,b];\mathbb R)\)，\(p,w>0\)；\(Au=w^{-1}(-(pu')'+qu)\) 取两端各一个实分离 Dirichlet 或 Robin 条件，定义域如\cref{b2:def:10-sl-operator}，\(H=L^2(I,w\,\mathrm dx)\)。令 \(V\subset H^1(I)\) 由 Dirichlet 端点值为零限定，\(R\) 为 Robin 端点集合，\(h_s\in\mathbb R\)，\(\mathfrak a(u,v)=\int_I(pu'\overline{v'}+qu\overline v)\,\mathrm dx+\sum_{s\in R}h_su(s)\overline{v(s)}\)。存在 \(\sigma>0\) 及 \(c,C>0\)，使
 \[
  c\|u\|_{H^1(I)}^2
  \leq\mathfrak a_\sigma(u,u)
@@ -86,8 +108,9 @@
 
 特别地，\(A+\sigma I\) 的核为零。以下固定满足引理最后条件的 \(\sigma\)，并构造其逆。
 
+\Needspace{6\baselineskip}
 \begin{proposition}[移位 Green 算子]\label{b2:prop:10-green-resolvent}
-存在实连续对称核 \(G_\sigma(x,y)\)，使
+设 \(I=(a,b)\) 为有限区间，\(p,w,q\in C([a,b];\mathbb R)\)，\(p,w>0\)；\(Au=w^{-1}(-(pu')'+qu)\) 取两端各一个实分离 Dirichlet 或 Robin 条件，定义域如\cref{b2:def:10-sl-operator}，\(H=L^2(I,w\,\mathrm dx)\)。令 \(V\subset H^1(I)\) 由 Dirichlet 端点值为零限定，\(R\) 为 Robin 端点集合，\(h_s\in\mathbb R\)，\(\mathfrak a(u,v)=\int_I(pu'\overline{v'}+qu\overline v)\,\mathrm dx+\sum_{s\in R}h_su(s)\overline{v(s)}\)。取 \(\sigma>0\)，使 \(\mathfrak a(u,u)+\sigma\|u\|_H^2\geq\|u\|_H^2\) 且在 \(V\) 上强制。存在实连续对称核 \(G_\sigma(x,y)\)，使
 \[
  (Kf)(x)\coloneqq\int_a^bG_\sigma(x,y)\cdot f(y)w(y)\,\mathrm{d}y
 \]
@@ -114,7 +137,15 @@
  \psi(x)\int_a^x\phi(y)\cdot f(y)w(y)\,\mathrm{d}y
  +\phi(x)\int_x^b\psi(y)\cdot f(y)w(y)\,\mathrm{d}y\right).
 \]
-积分为绝对连续函数，求一阶导数时含 \(f(x)\) 的两项抵消。再次对通量求导得
+记上式中的两个积分分别为 \(I_1(x)\)、\(I_2(x)\)。它们绝对连续，且几乎处处有 \(I_1'=\phi fw\)、\(I_2'=-\psi fw\)。求一阶导数时这两项抵消，故
+\[
+ pu'=\dfrac1W\left(p\psi'I_1+p\phi'I_2\right).
+\]
+两个齐次解的通量导数分别为 \((p\psi')'=(q+\sigma w)\psi\)、\((p\phi')'=(q+\sigma w)\phi\)。所以再次求导时，积分导数产生的项为
+\[
+ \dfrac{p\psi'\phi-p\phi'\psi}{W}\cdot fw=-fw,
+\]
+其中用到了 \(W\) 的定义。其余两项合成 \((q+\sigma w)u\)，从而
 \[
  (pu')'=(q+\sigma w)u-wf
 \]
@@ -133,10 +164,11 @@
 
 \ProseParagraphBreak
 
-对 Hilbert 空间中的稠密定义算子 \(T\)，若存在 \(g\) 使 \(\langle Tu,v\rangle=\langle u,g\rangle\) 对全部 \(u\in D(T)\) 成立，就令 \(v\in D(T^*)\)、\(T^*v=g\)；稠密性保证 \(g\) 唯一。这样得到的 \(T^*\) 称为\term[bansui-suanzi]{伴随算子}[adjoint operator]。若 \(D(T)=D(T^*)\) 且二者作用相同，则称 \(T\) 为\term[zi-ban-suanzi]{自伴算子}[self-adjoint operator]。全空间定义的有界算子是这个定义的特例。
+对实或复 Hilbert 空间 \(H\) 中的稠密定义线性算子 \(T:D(T)\subset H\to H\)，内积对第一变量线性。对 \(v\in H\)，若存在 \(g\in H\) 使 \(\langle Tu,v\rangle=\langle u,g\rangle\) 对全部 \(u\in D(T)\) 成立，就令 \(v\in D(T^*)\)、\(T^*v=g\)；稠密性保证 \(g\) 唯一。这样得到的 \(T^*\) 称为\term[bansui-suanzi]{伴随算子}[adjoint operator]。若 \(D(T)=D(T^*)\) 且二者作用相同，则称 \(T\) 为\term[zi-ban-suanzi]{自伴算子}[self-adjoint operator]。全空间定义的有界算子是这个定义的特例。
 
+\Needspace{6\baselineskip}
 \begin{theorem}[Sturm--Liouville 算子的自伴性]\label{b2:thm:10-self-adjoint}
-\cref{b2:def:10-sl-operator}给出的 \(A\) 是 \(H\) 上稠密定义的闭自伴算子。
+设 \(I=(a,b)\) 为有限区间，\(p,w,q\in C([a,b];\mathbb R)\)，\(p,w>0\)；\(Au=w^{-1}(-(pu')'+qu)\) 取两端各一个实分离 Dirichlet 或 Robin 条件，定义域如\cref{b2:def:10-sl-operator}，\(H=L^2(I,w\,\mathrm dx)\)。\(A\) 是 \(H\) 上稠密定义的闭自伴算子。
 \end{theorem}
 \begin{proof}
 先证明稠密性。若 \(v\perp D(A)=\operatorname{ran}K\)，则 \(\langle Kf,v\rangle_H=\langle f,Kv\rangle_H=0\) 对一切 \(f\) 成立，所以 \(Kv=0\)，由单射性 \(v=0\)。闭性也由逆映射得到：若 \(u_j\to u\)、\(Au_j\to g\) 于 \(H\)，则 \(u_j=K(Au_j+\sigma u_j)\to K(g+\sigma u)\)，故 \(u=K(g+\sigma u)\in D(A)\) 且 \(Au=g\)。
@@ -153,8 +185,9 @@
 \subsection{正交性}
 \label{b2:subsec:100203}
 
+\Needspace{6\baselineskip}
 \begin{proposition}\label{b2:prop:10-real-orthogonal-simple}
-本章的特征值均为实数，不同特征值的特征函数在 \(H\) 中正交，每个特征空间为一维。
+设 \(I=(a,b)\) 为有限区间，\(p,w,q\in C([a,b];\mathbb R)\)，\(p,w>0\)；\(Au=w^{-1}(-(pu')'+qu)\) 取两端各一个实分离 Dirichlet 或 Robin 条件，定义域如\cref{b2:def:10-sl-operator}，\(H=L^2(I,w\,\mathrm dx)\)。\(A\) 的特征值均为实数，不同特征值的特征函数在 \(H\) 中正交，每个特征空间为一维。
 \end{proposition}
 \begin{proof}
 若 \(Au=\lambda u\)，则 \(\lambda\|u\|_H^2=\mathfrak a(u,u)\) 为实数。若再有 \(Av=\mu v\)，自伴性给出 \((\lambda-\mu)\langle u,v\rangle_H=0\)。最后，满足左分离条件的初值 \((u(a),p(a)u'(a))\) 构成二维空间中的一条直线。同一 \(\lambda\) 的任何两个非零解在左端初值成比例，常微分方程唯一性使两解处处成比例。

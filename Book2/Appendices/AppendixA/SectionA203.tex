@@ -2,78 +2,373 @@
 \section{Bochner--Riesz 核与衰减阈值}
 \label{b2:sec:A203}
 
-把频率限制在一个球内，会在物理空间产生长尾振荡；在频率边界加入消失因子，可以改善尾部衰减。Bessel 函数把这种关系写成精确公式。本节只处理核的计算及可积性，精细的 \(L^p\) 乘子范围仍属于第二十四章的问题。
+把频率限制在一个球内，会在物理空间产生长尾振荡；在频率边界加入消失因子，可以改善尾部衰减。前节的球面公式只积分角向变量，这里还要把球内的各层半径叠加起来。Bessel 阶数随这一步径向积分改变，而边界权的阶数最终出现在物理核的衰减幂中。本节计算这两个变化，并区分绝对可积性与乘子有界性；精细的 \(L^p\) 乘子范围仍属于第二十四章的问题。
 
 \subsection{球内幂权的变换}
 \label{b2:subsec:A20301}
 
-给定 \(\delta>-1\)，定义可积函数
-\[m_\delta(\xi)=(1-|\xi|^2)_+^\delta,\]
-其中在球外取零，球内取正实幂；球面上的取值不影响积分。\(\delta<0\) 时它在频率边界奇异，所以不能未经检查把它当作有界乘子。其逆 Fourier 变换记为 \(K_\delta\)。
-
-\begin{theorem}[Bochner--Riesz 核]
-\label{b2:thm:A2-bochner-riesz}
-设整数 \(d\ge1\)、\(\delta>-1\)。对 \(x\ne0\)，有
+取整数 \(d\geq1\) 和实数 \(\delta>-1\)，在开单位球内令
+\(m_\delta(\xi)=(1-|\xi|^2)^\delta\)，球外取零，球面上的取值任意。零阶取球示性函数；正阶使符号在边界趋零，负阶则使它在边界变大。极坐标下，原点附近的体积因子是 \(r^{d-1}\)，而在 \(r=1\) 附近有 \(1-r^2=(1-r)(1+r)\)。因此
 \[
- K_\delta(x)=\frac{\Gamma(\delta+1)}{\pi^\delta}
-       |x|^{-d/2-\delta}J_{d/2+\delta}(2\pi|x|).
+ \int_{|\xi|<1}(1-|\xi|^2)^\delta\,\mathrm d\xi<\infty
+ \quad\Longleftrightarrow\quad \delta>-1.
 \]
-它连续延拓到原点，且
-\[K_\delta(0)=\frac{\pi^{d/2}\Gamma(\delta+1)}{\Gamma(d/2+\delta+1)}.\]
-若频率半径改成 \(R\)，即乘子为 \((1-|\xi|^2/R^2)_+^\delta\)，则核为 \(R^dK_\delta(Rx)\)。
-\end{theorem}
-\begin{proof}
-记 \(\nu=d/2-1\)。先由 Bessel 级数与 Beta 积分证明
+这里的参数范围只保证符号可积；\(\delta<0\) 时不能把它当作有界乘子。
+
+\ProseParagraphBreak
+
+径向 Fourier 公式将球内积分化为一个带 Bessel 因子的幂权积分。先在一般实阶上完成这一步，便能看清阶数的变化来自何处。
+
+\Needspace{6\baselineskip}
+\begin{lemma}[Bessel 幂权积分]\label{b2:lem:A2-power-integral}
+设实数 \(\nu>-1\)、\(\delta>-1\)、\(t>0\)，\(J_\mu\) 采用\cref{b2:def:A2-bessel-j}的级数归一化。则
 \[
  \int_0^1(1-s^2)^\delta s^{\nu+1}J_\nu(ts)\,\mathrm ds
- =2^\delta\Gamma(\delta+1)t^{-\delta-1}J_{\nu+\delta+1}(t).
+ =2^\delta\Gamma(\delta+1)t^{-\delta-1}
+       J_{\nu+\delta+1}(t).
 \]
-具体地，把 \(J_\nu\) 的第 \(k\) 项代入，所需积分为
-\[\int_0^1s^{2k+2\nu+1}(1-s^2)^\delta\,\mathrm ds
- =\frac{\Gamma(k+\nu+1)\Gamma(\delta+1)}{2\Gamma(k+\nu+\delta+2)}.\]
-它与级数分母的一项相消，整理后正是右边的级数。固定 \(t\) 时，绝对值级数在 \(0\le s\le1\) 由一个可积的 \(s^{2\nu+1}(1-s^2)^\delta\) 倍数控制，故逐项积分合法。
+左端绝对收敛，右端阶数 \(\nu+\delta+1>-1\)，仍在上述级数定义的范围内。
+\end{lemma}
+\begin{proof}
+将 \(J_\nu(ts)\) 的第 \(k\) 项代入后，需要的积分是
+\[
+ \begin{aligned}
+ &\int_0^1s^{2k+2\nu+1}(1-s^2)^\delta\,\mathrm ds\\
+ &\hspace{1em}=\frac12B(k+\nu+1,\delta+1)
+ =\frac{\Gamma(k+\nu+1)\Gamma(\delta+1)}
+        {2\Gamma(k+\nu+\delta+2)}.
+ \end{aligned}
+\]
+第一次等号使用 \(u=s^2\)，第二次使用\cref{b2:lem:A2-beta-integral}。两个 Beta 参数为正，正是逐项积分在两端都可积的条件。
 
-对径向乘子应用 \cref{b2:thm:A2-radial-fourier}，令 \(t=2\pi|x|\)，代入上式。因径向函数为偶函数，正、负号 Fourier 指数产生相同角积分。外部系数化为 \(\Gamma(\delta+1)\pi^{-\delta}|x|^{-d/2-\delta}\)，得到核公式；一维使用前节的 \(J_{-1/2}\) 版本即可。Bessel 原点首项给出 \(K_\delta(0)\)，也等于球内幂权的直接积分。最后在逆变换中作 \(\xi=R\eta\) 换元，得到尺度公式。
+还须验证积分与无穷求和可以交换。固定 \(t\) 后，绝对值级数的被积函数之和不超过
+\[
+ \left(\frac t2\right)^\nu
+ s^{2\nu+1}(1-s^2)^\delta
+ \sum_{k=0}^\infty
+       \frac{(t^2/4)^k}{k!\,\Gamma(k+\nu+1)}.
+\]
+数值级数由比值判别收敛，剩下的幂权在 \((0,1)\) 可积。因此 Tonelli 给出绝对可积的和，随后可以逐项积分。消去每项中的 \(\Gamma(k+\nu+1)\)，所得结果为
+\[
+ \frac{\Gamma(\delta+1)}2
+ \sum_{k=0}^\infty
+ \frac{(-1)^k(t/2)^{2k+\nu}}
+      {k!\,\Gamma(k+\nu+\delta+2)}.
+\]
+从 \(J_{\nu+\delta+1}(t)\) 的级数中提出
+\(2^\delta\Gamma(\delta+1)t^{-\delta-1}\)，恰好得到同一表达式。
 \end{proof}
 
-例如 \(d=1,\delta=0\) 时，\(K_0(x)=\sin(2\pi x)/(\pi x)\)，原点值为 \(2\)，正是区间 \([-1,1]\) 的长度。\(d=2,\delta=0\) 时，\(K_0(x)=J_1(2\pi|x|)/|x|\)，原点值为 \(\pi\)。这两个低维例子既检查了 \(2\pi\) 的位置，也检查了 Bessel 阶数必须是 \(d/2+\delta\)，而不是球面公式中的 \(d/2-1\)。
+当 \(\delta=0\) 时，这个恒等式把 \(J_\nu\) 变为 \(J_{\nu+1}\)，与
+\(\frac{\mathrm d}{\mathrm ds}\bigl(s^{\nu+1}J_{\nu+1}(ts)\bigr)
+=t s^{\nu+1}J_\nu(ts)\) 相符。一般 \(\delta\) 不必是整数，Beta 积分仍能把边界幂权准确地转成阶数增加 \(\delta+1\)。
+
+\Needspace{6\baselineskip}
+\begin{theorem}[Bochner--Riesz 核]
+\label{b2:thm:A2-bochner-riesz}
+设整数 \(d\geq1\)、实数 \(\delta>-1\)，在 \(|\xi|<1\) 上令
+\(m_\delta(\xi)=(1-|\xi|^2)^\delta\)，球外取零，零阶取球示性函数。采用
+\(\widehat f(\xi)=\int e^{-2\pi\mathrm i x\cdot\xi}f(x)\,\mathrm dx\)，令
+\[
+ K_\delta(x)\coloneqq
+       \int_{\mathbb R^d}e^{2\pi\mathrm i x\cdot\xi}
+                        m_\delta(\xi)\,\mathrm d\xi.
+\]
+则 \(K_\delta\) 连续、有界、实值且径向。对 \(x\ne0\)，有
+\[
+ K_\delta(x)=\frac{\Gamma(\delta+1)}{\pi^\delta}
+       |x|^{-d/2-\delta}J_{d/2+\delta}(2\pi|x|),
+\]
+而
+\[
+ K_\delta(0)=
+ \frac{\pi^{d/2}\Gamma(\delta+1)}
+      {\Gamma(d/2+\delta+1)}.
+\]
+若频率半径改成 \(R>0\)，即符号为
+\((1-|\xi|^2/R^2)_+^\delta\)，其逆 Fourier 变换为 \(R^dK_\delta(Rx)\)。
+\end{theorem}
+\begin{proof}
+符号的可积性已由边界幂权判定。它直接给出
+\(|K_\delta(x)|\leq\|m_\delta\|_1\)，并允许对 \(x\) 用支配收敛，从而得到连续性。旋转换元证明径向性，\(\xi\) 与 \(-\xi\) 的对称使正弦部分相消，所以核为实值。
+
+记 \(\nu=d/2-1\)、\(r=|x|>0\)。对 \(d\geq2\)，由\cref{b2:thm:A2-radial-fourier}，
+\[
+ K_\delta(x)
+ =2\pi r^{-\nu}\int_0^1
+       (1-s^2)^\delta s^{\nu+1}J_\nu(2\pi rs)\,\mathrm ds.
+\]
+径向符号为偶函数，故正、负号指数给出同一角积分。对 \(d=1\)，用前节
+\(\nu=-1/2\) 的余弦版本得到完全相同的式子。应用上一引理，外部系数化为
+\[
+ \begin{aligned}
+ &2\pi r^{-\nu}\,
+   2^\delta\Gamma(\delta+1)(2\pi r)^{-\delta-1}\\
+ &\hspace{1em}=\Gamma(\delta+1)\pi^{-\delta}
+                   r^{-\nu-\delta-1},
+ \end{aligned}
+\]
+而 \(\nu+\delta+1=d/2+\delta\)，即得核公式。
+
+在原点可以直接积分检查常数：
+\[
+ \begin{aligned}
+ K_\delta(0)
+ &=|S^{d-1}|\int_0^1
+          (1-s^2)^\delta s^{d-1}\,\mathrm ds\\
+ &=\frac{|S^{d-1}|}{2}B(d/2,\delta+1)
+ =\frac{\pi^{d/2}\Gamma(\delta+1)}
+        {\Gamma(d/2+\delta+1)}.
+ \end{aligned}
+\]
+这里 \(d=1\) 时取 \(|S^0|=2\)。由 Bessel 级数首项计算 \(r\downarrow0\) 的极限也得到相同结果，故公式中看似奇异的幂因子在原点可去。最后在逆变换中作 \(\xi=R\eta\)，得到尺度公式。
+\end{proof}
+
+例如 \(d=1,\delta=0\) 时，
+\[
+ K_0(x)=\frac{\sin(2\pi x)}{\pi x},\quad K_0(0)=2;
+\]
+当 \(d=2,\delta=0\) 时，
+\[
+ K_0(x)=\frac{J_1(2\pi|x|)}{|x|},\quad K_0(0)=\pi.
+\]
+原点值分别是区间和圆盘的体积。这些例子也显示，球内核的 Bessel 阶数是
+\(d/2+\delta\)，与球面测度的阶数 \(d/2-1\) 相差一次径向积分所增加的 \(\delta+1\)。
+
+\ProseParagraphBreak
+
+三维频率球的核还可写成初等函数。由两条 Bessel 微分关系消去导数，得到
+\(J_{\nu+1}(s)=2\nu J_\nu(s)/s-J_{\nu-1}(s)\)。取 \(\nu=1/2\)，代入半整数公式，得到
+\[
+ J_{3/2}(s)=\sqrt{\frac2{\pi s}}
+             \left(\frac{\sin s}s-\cos s\right).
+\]
+因此在 \(d=3\)、\(r=|x|>0\) 时，
+\[
+ K_0(x)=
+ \frac{\sin(2\pi r)-2\pi r\cos(2\pi r)}{2\pi^2r^3}.
+\]
+原点处两个一次项抵消，分子为 \((2\pi r)^3/3+O(r^5)\)，所以极限为 \(4\pi/3\)。
+无穷远处却有 \(r^{-2}\) 的余弦主项；乘上球壳体积的 \(r^2\) 因子以后，绝对值不再有可积衰减。判断核的尾部，既要看振荡幅度，也要保留空间维数带来的体积增长。
 
 \subsection{绝对可积性的准确界限}
 \label{b2:subsec:A20302}
 
+大参数渐近给出一个衰减上界，但上界本身只能证明可积，不能证明不可积。
+要得到准确阈值，还须找出一列具有固定相对宽度、主振荡不会相消的球壳。下面把这两步一并完成。
+
+\Needspace{6\baselineskip}
 \begin{proposition}[核的可积阈值]
 \label{b2:prop:A2-kernel-integrability}
-对 \(d\ge1\)、\(\delta>-1\)，有
-\[K_\delta\in L^1(\mathbb R^d)\quad\Longleftrightarrow\quad
- \delta>\frac{d-1}{2}.\]
-更一般地，在无穷远处其领先项为
+设整数 \(d\geq1\)、实数 \(\delta>-1\)，
+\(K_\delta=\mathcal F^{-1}[(1-|\xi|^2)_+^\delta]\)，球外符号取零，Fourier 指数采用 \(2\pi\) 约定。则
 \[
- \frac{\Gamma(\delta+1)}{\pi^{\delta+1}}
- r^{-(d+1)/2-\delta}
- \cos\left(2\pi r-\frac{\pi(d/2+\delta)}2-\frac\pi4\right),
+ K_\delta\in L^1(\mathbb R^d)
+ \quad\Longleftrightarrow\quad \delta>\frac{d-1}{2}.
 \]
-余项为 \(O(r^{-(d+3)/2-\delta})\)。
+具体地，令
+\[
+ a=\frac{d+1}{2}+\delta,\quad
+ c_\delta=\frac{\Gamma(\delta+1)}{\pi^{\delta+1}},\quad
+ \phi=\frac{\pi(d/2+\delta)}2+\frac\pi4.
+\]
+对 \(r=|x|\to\infty\)，有
+\[
+ K_\delta(x)=c_\delta r^{-a}\cos(2\pi r-\phi)
+                    +O(r^{-a-1}).
+\]
+渐近常数允许依赖 \(d,\delta\)，其中 \(a>0\)、\(c_\delta>0\)。
 \end{proposition}
 \begin{proof}
-\(d/2+\delta>-1/2\)，故 Bessel 渐近适用，给出所列展开。原点处核连续，无局部可积性障碍；无穷远的绝对积分由 \(\int_1^\infty r^{(d-3)/2-\delta}\,\mathrm dr\) 控制。当 \(\delta>(d-1)/2\) 时，该积分有限。
+核中的 Bessel 阶数 \(d/2+\delta>-1/2\)，满足\cref{b2:thm:A2-bessel-asymptotic}的条件。由于
+\(\sqrt{2/(\pi\cdot2\pi r)}=1/(\pi\sqrt r)\)，代入核公式便得到所列常数、相位与误差。原点附近核连续，故只需检查尾部。渐近上界给出
+\[
+ \int_{|x|\geq1}|K_\delta(x)|\,\mathrm dx
+ \leq C\int_1^\infty r^{d-1-a}\,\mathrm dr.
+\]
+当 \(a>d\)，也就是 \(\delta>(d-1)/2\) 时，右端有限。
 
-反之，在每个充分远的单位长度区间内选一个固定长度的子区间，使余弦绝对值至少为 \(3/4\)。余项比主振幅小一个 \(r^{-1}\) 因子，所以在这些子区间上，\(|K_\delta(r)|\ge c r^{-(d+1)/2-\delta}\)。各球壳的绝对积分下界与级数 \(\sum_{n\ge n_0}n^{(d-3)/2-\delta}\) 比较；当 \(\delta\le(d-1)/2\) 时发散。端点相当于调和级数，也不例外。
+为证明反向结论，在 \([0,1]\) 中固定一个正长度闭区间 \(I\)，使
+\(|\cos(2\pi r-\phi)|\geq3/4\) 对 \(r\in I\) 成立。余弦的周期为一，同一不等式在每个 \(n+I\) 上成立。取 \(n_0\) 足够大，使渐近误差的绝对值不超过
+\((c_\delta/4)r^{-a}\)。于是
+\[
+ |K_\delta(r)|\geq\frac{c_\delta}{2}r^{-a},
+ \quad r\in n+I,\quad n\geq n_0,
+\]
+其中 \(K_\delta(r)\) 表示径向剖面。对这些互不相交的球壳积分，得到
+\[
+ \int_{\mathbb R^d}|K_\delta(x)|\,\mathrm dx
+ \geq c\sum_{n\geq n_0} n^{d-1-a}.
+\]
+若 \(a\leq d\)，级数发散；临界 \(a=d\) 对应调和级数。这证明了必要性，也解释了为什么不能用“核有振荡”消去绝对积分中的端点发散。
 \end{proof}
 
-频率边界每增加一阶消失，就使物理核多衰减一阶；球面曲率提供的基本衰减则是 \((d-1)/2\) 阶。两者相加后，还要与物理空间的体积增长比较，才能判断绝对可积性。只观察一条径向曲线上的函数值而忘记 \(r^{d-1}\) 体积因子，会得到错误阈值。
+同样的球壳比较还能回答两个常见问题：核的平方何时可积，以及核是否具有足够的绝对矩来控制逼近误差。这里把它们写成一个带权判据。
 
-\subsection{可积核与乘子问题的区别}
+\Needspace{6\baselineskip}
+\begin{corollary}[幂次积分与绝对矩]\label{b2:cor:A2-weighted-integrability}
+设整数 \(d\geq1\)、实数 \(\delta>-1\)，
+\(K_\delta=\mathcal F^{-1}[(1-|\xi|^2)_+^\delta]\)，采用前一命题的球外取零及 \(2\pi\) 约定。若 \(0<p<\infty\)、\(\beta\geq0\)，则
+\[
+ \int_{\mathbb R^d}|x|^\beta\cdot|K_\delta(x)|^p\,\mathrm dx<\infty
+ \quad\Longleftrightarrow\quad
+ p\left(\frac{d+1}{2}+\delta\right)>d+\beta.
+\]
+特别地，一阶绝对矩有限当且仅当 \(\delta>(d+1)/2\)，而
+\(K_\delta\in L^2\) 当且仅当 \(\delta>-1/2\)。
+\end{corollary}
+\begin{proof}
+在原点，\(\beta\geq0\) 与核的有界性给出局部可积性。在无穷远，前一证明的上界与固定球壳下界分别归结为
+\[
+ \int_1^\infty r^{d+\beta-1-pa}\,\mathrm dr
+ \quad\hbox{与}\quad
+ \sum_{n\geq n_0}n^{d+\beta-1-pa},
+ \quad a=(d+1)/2+\delta.
+\]
+两者的收敛条件均为 \(pa>d+\beta\)。代入 \((p,\beta)=(1,1)\) 和 \((2,0)\)，得到两个特例。
+\end{proof}
+
+令 \(s=\delta-(d-1)/2\)。当 \(s>0\) 时，核已在 \(L^1\) 中，但它的 \(\beta\) 阶绝对矩要到 \(s>\beta\) 才有限。更精确地，对固定 \(\beta\geq0\) 和充分大的 \(T\)，上述同一比较给出
+\[
+ \int_{1<|x|<T}|x|^\beta\cdot|K_\delta(x)|\,\mathrm dx
+ \asymp
+ \begin{cases}
+ T^{\beta-s},&\beta>s,\\
+ \log T,&\beta=s,\\
+ 1,&\beta<s.
+ \end{cases}
+\]
+符号 \(\asymp\) 表示两边之比有与 \(T\) 无关的正上、下界。前两行可逐个球壳求和；第三行的上界由可积性给出，下界只需保留一个主项非零的固定球壳。同样，
+\[
+ \int_{|x|>T}|K_\delta(x)|\,\mathrm dx\asymp T^{-s}
+ \quad(s>0).
+\]
+因此临界绝对矩的发散量是对数，而不是任何正幂。下一小节会看到这个对数怎样进入一个自然的误差上界。
+
+\subsection{可积核的逼近性质与乘子有界性}
 \label{b2:subsec:A20303}
 
-若 \(\delta>(d-1)/2\)，Young 不等式给出 \(f\mapsto K_\delta*f\) 在全部 \(L^p\)、\(1\le p\le\infty\) 上有界，范数不超过 \(\lVert K_\delta\rVert_1\)。缩放后 \(\lVert R^dK_\delta(R\cdot)\rVert_1\) 不变。由于核的总积分为 \(m_\delta(0)=1\)，且绝对积分尾部在缩放下消失，它们构成近似恒等族；于是当 \(R\to\infty\) 时，对 \(1\le p<\infty\)，
-\[R^dK_\delta(R\cdot)*f\longrightarrow f\quad\text{于 }L^p.
+首先应用第三章的逼近恒等理论。它要求核的总积分为一、绝对积分一致有界，并且缩放后的绝对尾部消失；不要求核非负。在这里，这三项都能由已求出的核检查。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[可积核的缩放逼近]\label{b2:prop:A2-approximate-identity}
+设整数 \(d\geq1\)、实数 \(\delta>(d-1)/2\)，
+\(K_\delta=\mathcal F^{-1}[(1-|\xi|^2)_+^\delta]\)，Fourier 变换采用 \(2\pi\) 约定。对 \(R>0\)，令
+\[
+ K_{\delta,R}(x)\coloneqq R^dK_\delta(Rx),\quad
+ B_R^\delta f\coloneqq K_{\delta,R}*f.
 \]
-总积分等式可由 \(m_\delta,K_\delta\in L^1\) 的 Fourier 反演在零点得到，\(m_\delta\) 在零点连续。近似恒等的收敛证明则复用本卷前面已经建立的平移连续性和尾部拆分。
+则 \(\int K_{\delta,R}=1\)，并且对 \(1\leq p\leq\infty\)、\(f\in L^p(\mathbb R^d)\)，
+\[
+ \|B_R^\delta f\|_p
+ \leq\|K_\delta\|_1\cdot\|f\|_p.
+\]
+若 \(1\leq p<\infty\)，则 \(B_R^\delta f\to f\) 于 \(L^p\) 当 \(R\to\infty\)。若 \(f\) 有界且一致连续，则该收敛一致成立。
+\end{proposition}
+\begin{proof}
+已有 \(m_\delta,K_\delta\in L^1\)，而 \(m_\delta\) 在零点连续。
+Fourier 反演\cref{b2:thm:03-inversion}在零点给出
+\(\int K_\delta=m_\delta(0)=1\)。换元得到
+\[
+ \int K_{\delta,R}=1,\quad
+ \|K_{\delta,R}\|_1=\|K_\delta\|_1.
+\]
+对任意 \(\varepsilon>0\)，另有
+\[
+ \int_{|x|>\varepsilon}|K_{\delta,R}(x)|\,\mathrm dx
+ =\int_{|y|>R\varepsilon}|K_\delta(y)|\,\mathrm dy
+ \longrightarrow0.
+\]
+这给出\cref{b2:thm:03-approximate-identity}的全部条件，其中小尺度参数为 \(R^{-1}\)。该定理遂给出两种收敛；Young 不等式\cref{b2:thm:03-young}给出范数界。
+\end{proof}
+
+一般 \(L^\infty\) 输入仍不能由此得到范数收敛。这个限制对当前核可以直接看出：取
+\(f=\mathbf1_{\{x_1>0\}}\)，则 \(K_{\delta,R}*f\) 连续，因为其平移差一致受
+\(\|\tau_hK_{\delta,R}-K_{\delta,R}\|_1\) 控制。在分界面 \(x_1=0\) 上，径向偶对称与总积分为一给出卷积值 \(1/2\)；连续性使它在两侧的一个小邻域内仍接近 \(1/2\)。因此其与阶跃函数的本性上确界距离至少为 \(1/2\)，任意 \(R\) 都如此。核是否非负不参与这个论证。
 
 \ProseParagraphBreak
 
-若 \(\delta\) 低于这个阈值，失效的是绝对值积分法，不是所有 \(L^p\) 有界性。例如只要 \(\delta\ge0\)，乘子 \(m_\delta\) 有界，Plancherel 立即给出 \(L^2\) 算子范数至多为 \(1\)，即使对应核不属于 \(L^1\)。核中的振荡抵消仍可能产生额外有界性；第二十四章正是研究这些不能由 Young 不等式看出的范围。
+对于较规则的输入，核的绝对矩给出定量误差。若
+\(\delta>(d+1)/2\)，一阶矩
+\(M_1=\int |y|\cdot|K_\delta(y)|\,\mathrm dy\) 有限。于是对
+\(f\in C_c^1(\mathbb R^d)\)、\(1\leq p\leq\infty\)，
+\cref{b2:prop:03-first-moment-error}在尺度 \(R^{-1}\) 给出
+\[
+ \|B_R^\delta f-f\|_p
+ \leq\frac{M_1}{R}\|\nabla f\|_p.
+\]
+所用平移估计是
+\(\|f(\cdot-h)-f\|_p\leq |h|\cdot\|\nabla f\|_p\)，它来自线段上的微积分基本定理。对 \(1\leq p<\infty\) 的 \(W^{1,p}\) 输入，可用光滑逼近将两边传递到极限。若核的一阶绝对矩发散，同一不等式不能直接对全部 \(y\) 积分；不过，按 \(|y|\leq R\) 与 \(|y|>R\) 分开，仍能得到一个速度。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[平移模给出的逼近速度]\label{b2:prop:A2-approximation-rate}
+设整数 \(d\geq1\)、实数 \(\delta>(d-1)/2\)，令
+\(s=\delta-(d-1)/2>0\)，
+\(K_\delta=\mathcal F^{-1}[(1-|\xi|^2)_+^\delta]\)，并令
+\(B_R^\delta f=R^dK_\delta(R\cdot)*f\)，采用 \(2\pi\) 约定。
+设 \(1\leq p\leq\infty\)、\(0<\alpha\leq1\)、\(f\in L^p(\mathbb R^d)\)，且存在有限常数 \(A\)，使
+\[
+ \|f(\cdot-h)-f\|_p\leq A|h|^\alpha
+ \quad(0<|h|\leq1).
+\]
+则对 \(R\geq2\)，有
+\[
+ \|B_R^\delta f-f\|_p
+ \leq C_{d,\delta,\alpha}\bigl(A+\|f\|_p\bigr)
+ \begin{cases}
+ R^{-s},&0<s<\alpha,\\
+ R^{-\alpha}\log R,&s=\alpha,\\
+ R^{-\alpha},&s>\alpha.
+ \end{cases}
+\]
+\end{proposition}
+\begin{proof}
+由核的总积分为一，将误差写成平移差的积分，再用 Minkowski 不等式，得到
+\[
+ \begin{aligned}
+ \|B_R^\delta f-f\|_p
+ &\leq\int |K_\delta(y)|\cdot
+              \|f(\cdot-y/R)-f\|_p\,\mathrm dy\\
+ &\leq A R^{-\alpha}
+       \int_{|y|\leq R}|y|^\alpha\cdot|K_\delta(y)|\,\mathrm dy\\
+ &\quad+2\|f\|_p
+       \int_{|y|>R}|K_\delta(y)|\,\mathrm dy.
+ \end{aligned}
+\]
+无穷端点直接在积分内取本性上确界，得到同一估计。近处的单位球积分有限；对 \(1\leq|y|\leq R\)，用
+\(|K_\delta(y)|\leq C|y|^{-d-s}\)，归结为
+\[
+ \int_1^R r^{\alpha-s-1}\,\mathrm dr.
+\]
+当 \(s<\alpha\)、\(s=\alpha\)、\(s>\alpha\) 时，此积分分别由
+\(CR^{\alpha-s}\)、\(\log R\)、常数控制。远处积分由 \(CR^{-s}\) 控制。代回前式并合并两项，得到三种速度。
+\end{proof}
+
+这三个上界记录的是绝对值方法能够利用的规则性。在 \(s=\alpha\) 处出现对数，原因是所需的绝对矩恰好临界；它不自动证明每个输入的误差都含有这个对数。额外的消去或频率结构可能改善特定函数类上的速度。
 
 \ProseParagraphBreak
 
-因此有三个不能混用的判断：核是否逐点衰减，核是否绝对可积，以及振荡卷积算子在某个 \(L^p\) 上是否有界。Bessel 公式解决前两个问题并提供第三个问题的必要线索，却不能单独替代限制理论、插值和几何反例。
+最后回到乘子。若 \(\delta\geq0\)，则 \(0\leq m_\delta\leq1\)，所以
+\[
+ \|\mathcal F^{-1}(m_\delta\widehat f)\|_2\leq\|f\|_2
+ \quad(f\in L^2).
+\]
+该算子的范数恰为一：把单位平方范数输入的 Fourier 变换集中在原点的充分小球内，便能让 \(m_\delta\) 在其支集上任意接近一。这不要求
+\(K_\delta\in L^1\)；例如 \(\delta=0\) 的球截断在任意维数都是平方空间上的正交投影。
+
+负阶的情形相反。固定 \(-1<\delta<0\)，尽管 \(K_\delta\) 仍是连续有界函数，频率符号却在球面附近无界。对每个 \(N>1\)，可在球内选一个离球面仍有正距离的薄环带 \(E_N\)，使
+\[
+ N\leq m_\delta(\xi)\leq2N
+ \quad(\xi\in E_N),\quad 0<|E_N|<\infty.
+\]
+令 \(\widehat f_N=|E_N|^{-1/2}\mathbf1_{E_N}\)。由 Plancherel，
+\(\|f_N\|_2=1\)，而
+\[
+ \|\mathcal F^{-1}(m_\delta\widehat f_N)\|_2\geq N.
+\]
+每个测试的乘积都在 \(L^2\) 中，却不存在统一算子界。特别是
+\(-1/2<\delta<0\) 时，核本身已属于 \(L^2\)，卷积算子仍不在 \(L^2\) 上有界。核的平方可积性与平方乘子范数是两件不同的事。
+
+\ProseParagraphBreak
+
+Bessel 公式使三种问题各有明确的判据：逐点衰减来自固定阶渐近；绝对可积性还需计入球壳体积；某个 \(L^p\) 上的乘子有界性则取决于输入空间和振荡抵消。第二十四章从这些核计算继续研究后一个问题，本附录不以那里的限制定理或插值结论反过来证明自己的公式。
