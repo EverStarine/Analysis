@@ -1,202 +1,167 @@
 % !TeX root = ../../Book2.tex
-\chapter{极大函数、弱型估计与插值}
-\label{b2:ch:17}
-\BookChapterNumber{b2:ch:17}
+\chapter{弱解与 Lax–Milgram 方法}
+\label{b2:ch:15}
+\BookChapterNumber{b2:ch:15}
+% 本章摘要（不计入编号）
 \begin{chapterabstract}
-估计一个算子时，我们往往只能先掌握两个指数：一端来自绝对积分，另一端来自平方范数或本性上确界。中间的指数怎样得到？端点的积分发散以后，还能保留什么？本章从局部平均的极大函数出发，用分布函数记录大值出现的范围，再分别通过大小截断与复参数变化建立两种插值方法。弱空间、Lorentz 空间和 \(K\) 泛函说明了这些估计背后的函数空间结构。
+本章把散度型方程写成 Hilbert 空间中的测试等式。先明确 Sobolev 边界条件与负阶源项，再完整证明 Lax--Milgram 定理，并以 Poisson 方程说明存在性、唯一性、稳定性和有限维近似。一般有界可测系数无需具有经典导数；一致椭圆性控制主部，Gårding 不等式处理低阶项。最后借紧嵌入与第一卷的 Fredholm 理论，刻画原方程可能出现的有限维核及伴随相容条件。
 \end{chapterabstract}
 
-\begin{learninggoals}\begin{itemize}
-\item\label{b2:item:17-goal-1}比较中心、非中心与二进平均，并完成弱型估计和微分论证。
-\item\label{b2:item:17-goal-2}由分布函数计算强、弱与 Lorentz 空间的可积条件。
-\item\label{b2:item:17-goal-3}选择大小截断并完成 Marcinkiewicz 的高度积分。
-\item\label{b2:item:17-goal-4}用三线估计证明 Riesz--Thorin，并解释 Fourier 变换的延拓。
-\end{itemize}\end{learninggoals}
+% 本章目标（不计入编号）
+\begin{learninggoals}
+\begin{itemize}
+\item\label{b2:item:15-goal-weak}辨认测试空间所编码的内部方程与边界条件，正确使用 \(H^{-1}\) 数据。
+\item\label{b2:item:15-goal-lax}分别核验型的有界性、强制性与空间完备性，掌握 Lax--Milgram 的闭值域证明。
+\item\label{b2:item:15-goal-stability}用能量等式证明唯一性、比较和数据稳定性，区分 Galerkin 最佳与准最佳逼近，并处理非齐次边界延拓。
+\item\label{b2:item:15-goal-general}说明有界可测系数已足以给出弱存在性，区别原问题与移位问题。
+\item\label{b2:item:15-goal-fredholm}在选读范围内，用伴随核写出 Fredholm 相容条件。
+\end{itemize}
+\end{learninggoals}
 
-单位球的示性函数有有限积分，但其极大平均在远处只按 \(|x|^{-d}\) 衰减。这个简单例子说明：一个自然算子可能在端点失去可积性，同时仍有精确的超水平集合控制。后面的奇异积分也呈现同样现象，只是核的正平均将换成正负抵消。
-
-\ProseParagraphBreak
-
-本章需要 Lebesgue 积分、Hölder 不等式以及 \(L^p\) 收敛的基本知识。遇到无限求和或换序时，我们会指出非负性、可积控制或有限测度截断在哪里使用。极大函数的微分论证还要用连续紧支集函数的 \(L^1\) 稠密性；Fourier 应用则使用\secref{b2:sec:0401}已经建立的 Plancherel 等距性。复插值所需的复分析知识限于全纯函数的局部性质与最大模原理，\secref{b2:sec:1704}先说明其使用方式，再证明条带上的三线引理。
-
-\ProseParagraphBreak
-
-阅读时可先沿“极大函数的弱端点---分布函数的高度积分---中间强型”这一条路线走完\secref{b2:sec:1701}至\secref{b2:sec:1703}，看清为什么保留输入的大值部分能够消除发散。随后学习\secref{b2:sec:1704}，比较线性结构带来的另一种插值。Lorentz 空间的第二指数和最后的 \(K\) 泛函，可以在掌握这两条证明之后再回读；极大函数及同指数插值的证明并不依赖这两个补充视角。\secref{b2:sec:1701}中的二进立方体分解将在\secref{b2:sec:1802}直接用于 Calderón--Zygmund 分解。
+设一根杆的导热系数在接头处突然变化。平衡温度不应跳跃，穿过接头的热通量也应保持一致，但温度斜率可以不同。若只寻找处处二次可微的解，便会把这样的基本模型排除在外。弱形式保留可积梯度和通量平衡，把经典导数无法直接表达的问题放进一个完备的函数空间。
 
 \ProseParagraphBreak
 
-继续阅读可选 Elias M. Stein 的《Singular Integrals and Differentiability Properties of Functions》\cite{Stein1970Singular}，把极大函数与后续奇异积分联系起来；Loukas Grafakos 的《Classical Fourier Analysis》\cite{Grafakos2014Classical}则可用于进一步学习弱型、重排和插值。本章所需的具体估计与证明在正文展开。
+上一章用极小化构造对称能量的解；本章直接求解双线性等式，从而允许非对称系数。Hilbert 空间表示与紧算子的抽象结论采用第一卷第八章和附录 C 的证明，Sobolev 边界与紧嵌入采用第一卷第二十二至二十五章。有关多维 Sobolev 空间与椭圆边值问题的变分表述，可参阅 Haim Brezis 的《Functional Analysis, Sobolev Spaces and Partial Differential Equations》\cite[Chapter 9]{Brezis2011Functional}；Lax--Milgram、能量估计与 Fredholm 择一的进一步阅读见 Lawrence C. Evans 的《Partial Differential Equations》\cite[Section 6.2]{Evans2010Partial}。本章将先完成这些结果在所用空间中的证明，再讨论有限维近似与粗糙系数；进一步阅读不承担正文缺失的证明步骤。
 
 \input{Part04/Chapter17/Section1701}
 \input{Part04/Chapter17/Section1702}
 \input{Part04/Chapter17/Section1703}
 \input{Part04/Chapter17/Section1704}
-
+% 本章小结（不计入编号）
 \begin{chaptersummary}
-极大函数的弱型估计控制的是“大于某个高度的点有多少”。单独一个弱端点仍可能产生对数发散；Marcinkiewicz 方法让输入截断随输出高度改变，再交换积分次序，才得到严格位于两个端点之间的强型估计。二进分解还提供坏块的平均上下界，为下一章利用零平均抵消准备了空间分块。
+弱形式减少了未知函数所需的导数阶数，却没有丢掉方程：紧支集测试辨认内部散度，测试空间和边界类决定所解的边值问题，界面项记录通量平衡。负阶空间把函数源项与散度型源项放在同一连续对偶中。Lax--Milgram 用有界性构造算子，以强制性控制逆，再排除值域的正交补，得到无需对称性的存在与稳定性。
 
 \ProseParagraphBreak
 
-Riesz--Thorin 方法则把端点指数编码在解析测试函数中，由三线引理得到范数常数的几何平均。使用时先核实两端是同一个兼容线性算子，并区分有限指数的稠密延拓与无穷端点的直接论证。Lorentz 空间进一步区分临界幂次下的对数可积性，\(K\) 泛函把分解代价写成重排积分。后面选择哪种方法，取决于手中掌握的是弱型还是强型、算子是否线性，以及是否需要保留尺度参数和第二指数。
+一般椭圆主部只需有界可测系数即可定义能量弱解；低阶项可能使原型失去强制性，但加上足够大的零阶移位可恢复它。去掉移位时，紧嵌入将问题化为恒等算子的紧扰动，可解性由伴随核的有限个条件决定。整个论证首先产生 \(H^1\) 解；要得到 \(H^2\)、连续梯度乃至经典解，下一章还须逐项增加系数、数据和边界的正则性。
 \end{chaptersummary}
+
 
 \BookExercises
 
-% 自拟：围绕本章已经建立的工具，改变条件或组合方法。
+各题均为本书自拟，函数空间均取实数域。题中的 \(H^{-1}(\Omega)\) 是以梯度范数赋予 \(H_0^1(\Omega;\mathbb R)\) 后的连续对偶；一维端点与点值取第一卷命题21.4.1的绝对连续代表。前几题核验空间和数据，随后比较近似、系数扰动与共振；最后一题使用选读小节的相容条件。
+
+% 自拟：一维点源的精确对偶范数。
 \Needspace{6\baselineskip}
-\begin{exercise}\label{b2:ex:17-new-1}
-在带 Lebesgue 测度的 \(\mathbb R\) 上令 \(f=\mathbf1_{(0,1)}\)。求 \(x>1\) 时的中心和非中心极大函数，并由此说明二者不相等。
+\begin{exercise}\label{b2:ex:15-point-source}
+在 \(I=(0,1)\) 上，令 \(H^{-1}(I)=(H_0^1(I;\mathbb R))^*\)，对偶范数对应 \(\|v'\|_2\)。对 \(0<s<1\)，以绝对连续代表定义 \(\langle\delta_s,v\rangle=v(s)\)。求 \(\delta_s\) 的精确对偶范数，并说明哪个单位范数函数达到对偶上确界。
 \end{exercise}
 \begin{solution}
-中心区间半径 \(r\leq x-1\) 时积分为零；\(x-1<r<x\) 时平均为 \((r-x+1)/(2r)\)，随 \(r\) 增大；\(r\geq x\) 时平均为 \(1/(2r)\)，随 \(r\) 减小。所以 \(Mf(x)=1/(2x)\)。包含 \(x\) 的非中心区间若左端为 \(a\in[0,1]\)，平均至多 \((1-a)/(x-a)\leq1/x\)；左端小于零或右端超过 \(x\) 只增大分母。端点极限给出 \(M_uf(x)=1/x\)。
+令 \(G_s(x)=(1-s)x\)（\(x\le s\)）、\(G_s(x)=s(1-x)\)（\(x\ge s\)）。对 \(v\in H_0^1(0,1)\) 的绝对连续代表，零端点值给出
+\[
+ \int_0^1G_s'v'=(1-s)\int_0^sv'-s\int_s^1v'
+ =(1-s)v(s)+sv(s)=v(s).
+\]
+因此 \(|v(s)|\le\lVert G_s'\rVert_2\lVert v'\rVert_2\)，且取 \(v=G_s/\lVert G_s'\rVert_2\) 达到上界。直接计算 \(\lVert G_s'\rVert_2^2=s(1-s)^2+(1-s)s^2=s(1-s)\)，所以范数为 \(\sqrt{s(1-s)}\)。
 \end{solution}
 
-% 自拟：组合两个分布尾部得到弱型乘积界，并检验强型结论的失败。
+% 自拟：点质量维数结论已移入正文；改求平均点源的精确能量。
 \Needspace{6\baselineskip}
-\begin{exercise}\label{b2:ex:17-new-2}
-设 \((X,\mathcal A,\mu)\) 为测度空间，\(0<p,q<\infty\)，并以 \(1/r=1/p+1/q\) 定义 \(r\)。对 \(f\in L^{p,\infty}(X)\)、\(g\in L^{q,\infty}(X)\)，证明
+\begin{exercise}\label{b2:ex:15-high-dimensional-point}
+设整数 \(d\ge2\)、\(0<\varepsilon<1\)，\(B=B(0,1)\subset\mathbb R^d\)，记 \(s_d=|S^{d-1}|\)。令 \(H^{-1}(B)=(H_0^1(B;\mathbb R))^*\)，对偶范数对应 \(\|\nabla v\|_2\)。在单位球上取单位质量源
+\(f_\varepsilon=\frac{d}{s_d\varepsilon^d}\cdot\mathbf1_{B(0,\varepsilon)}\)。求 \(-\Delta u_\varepsilon=f_\varepsilon\)、零 Dirichlet 边界的径向弱解，并证明
 \[
- \|fg\|_{r,\infty}\leq 2^{1/r}\|f\|_{p,\infty}\cdot\|g\|_{q,\infty}.
+ \|f_\varepsilon\|_{H^{-1}}^2
+ =\frac1{s_d}\left(\frac{\varepsilon^{2-d}}{d+2}
+                  +\int_\varepsilon^1r^{1-d}\,\mathrm dr\right).
 \]
-再在 \((0,1)\) 上构造这样的 \(f,g\)，使 \(fg\notin L^r(0,1)\)。不要求求出弱型乘积界的最佳常数。
+分别写出二维与高维的发散速度，解释它与 \(f_\varepsilon\to\delta_0\) 的分布收敛是否矛盾。
 \end{exercise}
 \begin{solution}
-记 \(A=\|f\|_{p,\infty}\)、\(B=\|g\|_{q,\infty}\)。若任一常数为零，相应函数几乎处处为零，结论成立。设 \(A,B>0\)。对任意 \(a,t>0\)，有
+径向方程为 \(-(r^{d-1}u')'=r^{d-1}f_\varepsilon\)。在零点不留附加点源，先从零积分，得到 \(u'=-r/(s_d\varepsilon^d)\) 于内球，\(u'=-1/(s_dr^{d-1})\) 于外环。令
 \[
- \{|fg|>t\}\subset\{|f|>a\}\cup\{|g|>t/a\},
- \quad d_{fg}(t)\leq A^pa^{-p}+B^qa^qt^{-q}.
-\]
-选择 \(a\) 使右边两项相等，即 \(a^{p+q}=A^pt^q/B^q\)。利用 \(r=pq/(p+q)\)，两项都等于 \((AB/t)^r\)，故 \(t\cdot d_{fg}(t)^{1/r}\leq2^{1/r}AB\)。对高度取上确界便得估计。
-
-在 \((0,1)\) 上取 \(f(x)=x^{-1/p}\)、\(g(x)=x^{-1/q}\)。两者的弱拟范数均为一，而 \(|f(x)g(x)|^r=x^{-1}\)，其积分发散。因此两个弱型因子的乘积一般仍只能得到弱型控制。
-\end{solution}
-
-% 自拟：用统一弱型尾部与依测度收敛取得严格低于端点的范数收敛。
-\Needspace{6\baselineskip}
-\begin{exercise}\label{b2:ex:17-new-3}
-设 \((X,\mathcal A,\mu)\) 为有限测度空间，\(0<p<\infty\)，可测函数列 \(f_n\) 满足 \(\sup_n\|f_n\|_{p,\infty}\leq A<\infty\)，且对每个 \(t>0\) 都有 \(\mu\{|f_n|>t\}\to0\)。证明对每个 \(0<r<p\)，都有 \(\|f_n\|_r\to0\)。在 \((0,1)\) 上给出反例，说明一般不能取 \(r=p\)。
-\end{exercise}
-\begin{solution}
-记 \(m=\mu(X)\)，固定 \(R>0\)。层蛋糕公式把范数分成
-\[
- \|f_n\|_r^r
- =r\int_0^R t^{r-1}d_{f_n}(t)\,\mathrm dt
-  +r\int_R^\infty t^{r-1}d_{f_n}(t)\,\mathrm dt.
-\]
-第一段的被积函数逐点趋零，由可积函数 \(rm t^{r-1}\) 控制，因而趋零。第二段不超过
-\[
- rA^p\int_R^\infty t^{r-p-1}\,\mathrm dt
- =\frac{rA^p}{p-r}R^{r-p}.
-\]
-先令 \(n\to\infty\)，再令 \(R\to\infty\)，得到结论。两种假设各有作用：依测度收敛处理有限高度，统一弱型界处理高值尾部。
-
-反例取 \(f_n=n^{1/p}\cdot\mathbf1_{(0,1/n)}\)。它逐点趋零，弱 \(L^p\) 拟范数与强 \(L^p\) 范数都恒为一，而 \(\|f_n\|_r^r=n^{r/p-1}\to0\)。严格不等式 \(r<p\) 不能删除。
-\end{solution}
-
-% 自拟：精算幅度截断在弱Lp与L1中的不同误差。
-\Needspace{6\baselineskip}
-\begin{exercise}\label{b2:ex:17-new-4}
-在 Lebesgue 测度空间 \((0,1)\) 上，设 \(f(x)=x^{-1/p}\)、\(1<p<\infty\)，并令 \(f_N(x)=\min\{f(x),N\}\)、\(N\geq1\)。求 \(f-f_N\) 的弱 \(L^p\) 拟范数；再求 \(\|f-f_N\|_1\) 并判断其极限。解释为什么这两个结论并不矛盾。
-\end{exercise}
-\begin{solution}
-令 \(h_N=f-f_N=(f-N)_+\)。对 \(t>0\)，
-\[
- d_{h_N}(t)=(N+t)^{-p},\quad
- \|h_N\|_{p,\infty}=\sup_{t>0}\frac{t}{N+t}=1.
-\]
-另一方面，层蛋糕公式给出
-\[
- \|h_N\|_1=\int_0^\infty(N+t)^{-p}\,\mathrm dt
- =\frac{N^{1-p}}{p-1}\longrightarrow0.
-\]
-幅度截断消除了越来越少的 \(L^1\) 质量，但在任意高的水平上仍留下同一临界幂次尾部。弱拟范数取遍所有高度的上确界，因此不会随截断误差的积分一起趋零。此题也给出了上一题严格降低目标指数时的一个可算模型。
-\end{solution}
-
-% 自拟：将精细的极大函数尾部界用于LlogL输入的局部可积性。
-\Needspace{6\baselineskip}
-\begin{exercise}\label{b2:ex:17-new-5}
-设 \(d\geq1\)，\(f:\mathbb R^d\to\mathbb C\) 可测且
-\(\int_{\mathbb R^d}|f(x)|\log(e+|f(x)|)\,\mathrm dx<\infty\)。对任意有限 Lebesgue 测度集合 \(E\subset\mathbb R^d\)，证明中心极大函数满足
-\[
- \int_E Mf\leq |E|+C_d\int_{\mathbb R^d}|f|\log(e+|f|).
-\]
-解释这一结论为什么没有推出 \(M:L^1\to L^1\)。
-\end{exercise}
-\begin{solution}
-假设先保证 \(f\in L^1\)。对每个 \(t>0\)，把 \(f\) 分为大于 \(t/2\) 的部分和其余部分。后者的极大函数至多为 \(t/2\)，对前者用\cref{b2:thm:17-maximal-weak}，得
-\[
- |\{Mf>t\}|\leq\frac{2\cdot5^d}{t}\int_{|f|>t/2}|f|.
-\]
-对 \(Mf\) 在 \(E\) 上用层蛋糕公式，高度 \(0<t<1\) 的积分至多为 \(|E|\)。其余部分用上式及非负积分换序，得到
-\[
- \begin{aligned}
- \int_1^\infty |E\cap\{Mf>t\}|\,\mathrm dt
- &\leq2\cdot5^d\int_{|f|>1/2}|f(x)|
-       \int_1^{2|f(x)|}\frac{\mathrm dt}{t}\,\mathrm dx\\
- &=2\cdot5^d\int_{|f|>1/2}|f|\log(2|f|).
- \end{aligned}
-\]
-当 \(s>1/2\) 时，\(\log(2s)\leq2\log(e+s)\)，故取 \(C_d=4\cdot5^d\) 即可。这里一方面对输入增加了对数可积性，另一方面只在有限测度集合上积分输出。即使 \(f\) 是单位球的示性函数，\(Mf\) 的全空间积分仍因远场尾部而发散。
-\end{solution}
-
-% 自拟：围绕本章已经建立的工具，改变条件或组合方法。
-\Needspace{6\baselineskip}
-\begin{exercise}\label{b2:ex:17-new-6}
-设 \(d\geq1\)，\(K\in L^1(\mathbb R^d)\cap L^\infty(\mathbb R^d)\) 是复值核，\(Tf=K*f\)，Fourier 变换采用 \(e^{-2\pi\mathrm ix\cdot\xi}\) 的约定。用两个端点证明，对 \(1\leq p\leq2\) 及 \(f\in L^p(\mathbb R^d)\)，有
-\[
- \|Tf\|_{p'}\leq\|K\|_\infty^{2/p-1}\cdot
- \|\widehat K\|_\infty^{2-2/p}\cdot\|f\|_p.
-\]
-其中 \(1/p+1/p'=1\)；\(K=0\) 时单独理解结论。
-\end{exercise}
-\begin{solution}
-绝对积分给出 \(L^1\to L^\infty\) 常数 \(\|K\|_\infty\)。对 \(f\in L^1\cap L^2\)，卷积公式与 Plancherel 等式给出
-\[
- \|K*f\|_2=\|\widehat K\,\widehat f\|_2
- \leq\|\widehat K\|_\infty\cdot\|f\|_2.
-\]
-由 \(L^2\) 稠密性得到平方端点；它与积分卷积在交空间上一致。对这两个兼容端点应用\cref{b2:thm:17-riesz-thorin}，源指数要求 \(1/p=1-\theta/2\)，故 \(\theta=2-2/p\)。目标倒数为 \(\theta/2=1/p'\)，恰得所需公式。一般输入的卷积还由 \(K\in L^1\) 的 Young 估计定义，它与上述延拓相同。若 \(\|\widehat K\|_\infty=0\)，Fourier 唯一性给出 \(K=0\)；若 \(\|K\|_\infty=0\)，也有同一结论，因而端点没有零的零次幂问题。
-\end{solution}
-
-% 自拟：围绕本章已经建立的工具，改变条件或组合方法。
-\Needspace{6\baselineskip}
-\begin{exercise}\label{b2:ex:17-new-7}
-在测度空间 \((X,\mathcal A,\mu)\) 中，设 \(N\geq1\)，\(Q_1,\ldots,Q_N\) 是两两不交、有限正测度的可测集合，并记 \(U=\bigcup_jQ_j\)。对 \(f\in L^1(U;\mathbb C)\) 定义
-\[
- Pf=\sum_{j=1}^N\left(\frac1{\mu(Q_j)}\int_{Q_j}f\,\mathrm d\mu\right)\cdot\mathbf1_{Q_j}.
-\]
-证明 \(P^2=P\)，且 \(P\) 在每个 \(L^p(U)\)、\(1\leq p\leq\infty\) 上的算子范数恰为一。进一步，若 \(f\in L^2(U)\)，证明 \(Pf\) 是所有在各 \(Q_j\) 上分别为常数的函数中唯一的最佳 \(L^2\) 逼近。
-\end{exercise}
-\begin{solution}
-二次平均不改变常数，所以 \(P^2=P\)。积分三角不等式给出 \(\|Pf\|_1\leq\|f\|_1\)，每个平均不超过本性上确界又给出 \(\|Pf\|_\infty\leq\|f\|_\infty\)。在有限测度空间 \(U\) 上应用\cref{b2:thm:17-riesz-thorin}，所有中间指数的范数也至多为一。实函数可先把同一积分公式作用在复函数上，再限制回实函数。取非零函数 \(\mathbf1_U\)，它被 \(P\) 保持，故范数恰为一。
-
-若 \(v\) 在各块上为常数，则每个块上 \(\int_{Q_j}(f-Pf)=0\)，从而
-\(\int_U(f-Pf)\overline{(Pf-v)}\,\mathrm d\mu=0\)。展开平方模的积分便得
-\[
- \|f-v\|_2^2=\|f-Pf\|_2^2+\|Pf-v\|_2^2.
-\]
-最小值在且仅在 \(v=Pf\) 几乎处处时取得。这同时说明为何平方误差下应取算术平均，而不必另猜每个块上的最优常数。
-\end{solution}
-
-% 自拟：用临界幂函数检验K泛函与Lorentz弱范数等价中的上界常数。
-\Needspace{6\baselineskip}
-\begin{exercise}\label{b2:ex:17-new-8}
-在 Lebesgue 测度空间 \((0,1)\) 上，设 \(1<p<\infty\)、\(p'=p/(p-1)\)、\(f(x)=x^{-1/p}\)。计算 \(K(t,f;L^1,L^\infty)\)、\(t>0\)，并求
-\[
- \sup_{t>0}t^{-1/p'}K(t,f;L^1,L^\infty).
-\]
-由此判断正文中 \(\|f\|_{1/p',\infty;K}\leq p'\|f\|_{p,\infty}\) 的系数 \(p'\) 能否普遍减小。进一步说明该函数为何不属于任何 \(L^{p,q}(0,1)\)、\(0<q<\infty\)。
-\end{exercise}
-\begin{solution}
-此函数可积，重排在 \(0<s<1\) 时为 \(s^{-1/p}\)，在 \(s\geq1\) 时为零。由\cref{b2:prop:17-k-functional}，
-\[
- K(t,f;L^1,L^\infty)=
+ u_\varepsilon(r)=
  \begin{cases}
- p't^{1/p'},&0<t\leq1,\\
- p',&t>1.
+ \displaystyle\frac1{s_d}\int_\varepsilon^1t^{1-d}\,\mathrm dt
+            +\frac{\varepsilon^2-r^2}{2s_d\varepsilon^d},&r\leq\varepsilon,\\[3pt]
+ \displaystyle\frac1{s_d}\int_r^1t^{1-d}\,\mathrm dt,&\varepsilon\leq r\leq1.
  \end{cases}
 \]
-因此所求上确界为 \(p'\)，在每个 \(0<t\leq1\) 处取到，而 \(\|f\|_{p,\infty}=1\)。正文已经对任意输入证明了系数 \(p'\) 的上界，本例又达到该上界，所以这个等价估计的系数确实不能减小。
+函数及径向通量在分界面相接，零点附近为光滑二次函数，边界值为零；分区积分便验证弱方程。由能量唯一性，它就是所求弱解。等式 \(\langle f_\varepsilon,v\rangle=\int\nabla u_\varepsilon\cdot\nabla v\) 与 Cauchy--Schwarz 给对偶范数上界，取 \(v=u_\varepsilon/\|\nabla u_\varepsilon\|_2\) 达到上界。径向积分故给
+\[
+ \|f_\varepsilon\|_{H^{-1}}^2
+ =s_d\int_0^1|u_\varepsilon'(r)|^2r^{d-1}\,\mathrm dr
+ =\frac1{s_d}\left(\frac{\varepsilon^{2-d}}{d+2}
+                  +\int_\varepsilon^1r^{1-d}\,\mathrm dr\right).
+\]
+二维结果为 \((2\pi)^{-1}(1/4+\log(1/\varepsilon))\)；当 \(d>2\) 时为
+\(s_d^{-1}[\varepsilon^{2-d}/(d+2)+(\varepsilon^{2-d}-1)/(d-2)]\)，范数分别按 \(\sqrt{\log(1/\varepsilon)}\) 与 \(\varepsilon^{(2-d)/2}\) 发散。另一方面，对固定光滑测试函数，球内平均趋于其中心值，所以源项在分布意义下趋于点质量。这种弱得多的收敛不要求能量对偶范数有界，因而没有矛盾。
+\end{solution}
 
-若 \(q<\infty\)，则 \(s^{1/p}f^*(s)=1\) 在 \((0,1)\) 上成立，Lorentz 量的 \(q\) 次幂包含 \(\int_0^1\mathrm ds/s=\infty\)。\(K\) 量也表现为所有小尺度上同一个常数：它的上确界有限，但对乘法测度 \(\mathrm dt/t\) 积分便发散。
+% 自拟：分段材料的显式有效导热。
+\Needspace{6\baselineskip}
+\begin{exercise}\label{b2:ex:15-layered-material}
+令 \(a=1\) 于 \((0,1/2)\)、\(a=4\) 于 \((1/2,1)\)。在实空间 \(H^1(0,1)\) 中求 \(-(au')'=0\)、\(u(0)=0,u(1)=1\) 的弱解（端点取绝对连续代表），计算左右斜率及能量 \(E(u)=\frac12\int_0^1a|u'|^2\)，并判断它是否属于 \(H^2(0,1)\)。
+\end{exercise}
+\begin{solution}
+通量为常数 \(q\)，且 \(1=\int_0^1u'=q(1/2+1/8)=5q/8\)，所以 \(q=8/5\)。左斜率为 \(8/5\)，右斜率为 \(2/5\)，解是通过 \((0,0),(1/2,4/5),(1,1)\) 的分段仿射函数。能量 \(\tfrac12\int a|u'|^2=\tfrac12q\int u'=4/5\)。一阶导数在中点有非零跳跃，二阶分布导数含点质量，故不属于 \(L^2\)，解不在 \(H^2\)。
+\end{solution}
+
+% 自拟：Céa引理已在正文证明；改用二维模型检验误差常数的最优性。
+\Needspace{6\baselineskip}
+\begin{exercise}\label{b2:ex:15-cea}
+设 \(H=\mathbb R^2\) 取欧氏内积，\(\beta\in\mathbb R\)，并令
+\[
+ \begin{gathered}
+ B_\beta=\begin{pmatrix}1&-\beta\\\beta&1\end{pmatrix},\qquad
+ a_\beta(x,y)=(B_\beta x)\cdot y,\\
+ \ell_\beta(y)=(-\beta,1)\cdot y,\qquad
+ V=\operatorname{span}\{(1,0)\}.
+ \end{gathered}
+\]
+求使 \(|a_\beta(x,y)|\le M\cdot|x|\cdot|y|\)、\(a_\beta(x,x)\ge\alpha|x|^2\) 对全部 \(x,y\) 成立的最小 \(M\) 和最大 \(\alpha\)。求满足 \(a_\beta(u,y)=\ell_\beta(y)\) 对全部 \(y\in H\) 成立的解 \(u\)，以及满足 \(a_\beta(u_V,y)=\ell_\beta(y)\) 对全部 \(y\in V\) 成立的解 \(u_V\in V\)，并计算
+\[
+ \frac{|u-u_V|}{\inf_{v\in V}|u-v|}.
+\]
+据此说明\cref{b2:prop:15-cea}中的常数 \(M/\alpha\) 对一般非对称强制型不能统一减小；当 \(\beta\ne0\) 时，指出 Galerkin 解与欧氏正交投影的区别。
+\end{exercise}
+\begin{solution}
+由 \(B_\beta^{\mathsf T}B_\beta=(1+\beta^2)I\)，有 \(|B_\beta x|=\sqrt{1+\beta^2}|x|\)，故最小有界常数为 \(M=\sqrt{1+\beta^2}\)；取单位 \(y=B_\beta x/|B_\beta x|\) 可达到算子范数。又 \(a_\beta(x,x)=|x|^2\)，故最大强制常数为 \(\alpha=1\)。
+
+全空间方程等价于 \(B_\beta u=(-\beta,1)\)，所以 \(u=(0,1)\)。写 \(u_V=(s,0)\) 并用 \((1,0)\) 测试，得到 \(s=-\beta\)。因此
+\[
+ e=u-u_V=(\beta,1),\qquad |e|=\sqrt{1+\beta^2},\qquad
+ \inf_{v\in V}|u-v|=1,
+\]
+最后的下确界在欧氏投影 \(v=(0,0)\) 达到。误差比正好等于 \(M/\alpha\)，所以一般 Céa 估计中的该常数确实可以达到。另一方面，\(B_\beta e=(0,1+\beta^2)\)，故 \(a_\beta(e,w)=0\) 对全部 \(w\in V\) 成立，但 \(e\cdot(1,0)=\beta\)。当 \(\beta\ne0\) 时，这一测试正交性不是欧氏正交性，\(u_V\) 也不是欧氏最佳逼近；非对称型的准最佳逼近不能改写成 Poisson 梯度内积下的等距投影结论。
+\end{solution}
+
+% 自拟：系数在L无穷范数下的稳定性。
+\Needspace{6\baselineskip}
+\begin{exercise}\label{b2:ex:15-coefficient-stability}
+设整数 \(d\ge1\)，\(\Omega\subset\mathbb R^d\) 为非空有界开集，\(A_n,A\in L^\infty(\Omega;\mathbb R^{d\times d})\) 满足共同椭圆下界 \(\xi^{\mathsf T}A_n(x)\xi,\xi^{\mathsf T}A(x)\xi\ge\lambda|\xi|^2\)（\(\lambda>0\)），对几乎处处 \(x\) 和全部 \(\xi\in\mathbb R^d\) 成立，且 \(\lVert A_n-A\rVert_\infty\to0\)，这里矩阵取欧氏算子范数。令 \(f\in H^{-1}(\Omega)=(H_0^1(\Omega;\mathbb R))^*\)，其对偶范数对应梯度范数；\(u_n,u\in H_0^1(\Omega;\mathbb R)\) 分别弱解 \(-\operatorname{div}(A_n\nabla u_n)=f\) 与 \(-\operatorname{div}(A\nabla u)=f\)。证明 \(u_n\to u\) 于 \(H_0^1\)，并给出定量估计。
+\end{exercise}
+\begin{solution}
+以 \(A_n\) 为左端，两方程相减得 \(\int A_n\nabla(u_n-u)\cdot\nabla v=\int(A-A_n)\nabla u\cdot\nabla v\)。取 \(v=u_n-u\)，利用椭圆性与 Hölder 不等式，得到
+\[\lVert\nabla(u_n-u)\rVert_2\le\lambda^{-1}\lVert A_n-A\rVert_\infty\lVert\nabla u\rVert_2
+ \le\lambda^{-2}\lVert A_n-A\rVert_\infty\lVert f\rVert_{H^{-1}}.\]
+右端趋零，Poincaré 不等式再给出完整 \(H^1\) 收敛。
+\end{solution}
+
+% 自拟：Neumann归一化与相容性。
+\Needspace{6\baselineskip}
+\begin{exercise}\label{b2:ex:15-neumann}
+令 \(\Omega=(0,1)\cup(2,3)\)，求解类为 \(H^1(\Omega;\mathbb R)\)，纯 Neumann 通量为零，即 \(\int_\Omega u'v'=\int_\Omega fv\) 对每个 \(v\in H^1(\Omega;\mathbb R)\) 成立。证明源项在两个分支分别等于 \(1,-1\) 时，虽然总积分为零，仍无弱解。若源项改为 \(f(x)=2x-1\) 于第一分支、\(f(x)=2(x-2)-1\) 于第二分支，写出全部解，并说明只要求全域零均值为何仍不唯一。
+\end{exercise}
+\begin{solution}
+第一种数据用第一分支的示性函数测试；它在不连通开集上属于 \(H^1\)，梯度为零，右端积分为 \(1\)，所以矛盾。第二种数据在每个分支积分为零。以局部坐标 \(s\in(0,1)\) 积分 \(-u''=2s-1\) 得 \(u'=s-s^2\)，满足两端零通量；再积分得 \(u=s^2/2-s^3/3+c_j\)，\(j=1,2\)。局部多项式均值为 \(1/12\)，全域零均值只给 \(c_1+c_2=-1/6\)，留下一个自由参数。分别要求两个分支零均值才确定 \(c_1=c_2=-1/12\)。这与正文的连通假设相吻合。
+\end{solution}
+
+% 自拟：漂移项的反对称结构。
+\Needspace{6\baselineskip}
+\begin{exercise}\label{b2:ex:15-divergence-free-drift}
+设整数 \(d\ge1\)，\(\Omega\subset\mathbb R^d\) 为非空有界开集，\(b\in W^{1,\infty}(\Omega;\mathbb R^d)\) 且 \(\operatorname{div}b=0\) 几乎处处，\(A\in L^\infty(\Omega;\mathbb R^{d\times d})\)，并对几乎处处 \(x\)、全部 \(\xi\in\mathbb R^d\) 有 \(\xi^{\mathsf T}A(x)\xi\ge\lambda|\xi|^2\)，其中 \(\lambda>0\)。令 \(H^{-1}(\Omega)=(H_0^1(\Omega;\mathbb R))^*\) 的范数对应梯度范数。证明零边界问题 \(-\operatorname{div}(A\nabla u)+b\cdot\nabla u=f\) 对任意 \(f\in H^{-1}(\Omega)\) 在 \(H_0^1(\Omega;\mathbb R)\) 中唯一弱可解，其能量估计不含 \(\lVert b\rVert_\infty\)。
+\end{exercise}
+\begin{solution}
+对紧支集光滑 \(u\)，有 \(\int(b\cdot\nabla u)u=\tfrac12\int b\cdot\nabla(u^2)=0\)。双线性连续性和 \(H_0^1\) 密度把该等式推广到全部 \(H_0^1\)。所以型虽可能不对称，却满足 \(a(u,u)\ge\lambda\lVert\nabla u\rVert_2^2\)。有界性仍含 \(\lVert b\rVert_\infty\)，但强制常数不含它。Lax--Milgram 给出 \(\lVert\nabla u\rVert_2\le\lambda^{-1}\lVert f\rVert_{H^{-1}}\) 及唯一性。
+\end{solution}
+
+% 自拟：不同共振频率的相容条件与全体解。
+\Needspace{6\baselineskip}
+\begin{optionalexercise}\label{b2:ex:15-resonance}
+给定 \(q\in\mathbb R\)，在 \(H_0^1(0,\pi;\mathbb R)\) 中求解零端点问题 \(-u''-4u=\sin x+q\sin2x\)。这里弱形式是 \(\int_0^\pi(u'v'-4uv)=\int_0^\pi(\sin x+q\sin2x)v\) 对全部 \(v\in H_0^1(0,\pi;\mathbb R)\) 成立。确定哪些 \(q\) 允许弱解，并在可解时写出全部解。
+\end{optionalexercise}
+\begin{solution}
+型对称，齐次核是 \(\operatorname{span}\{\sin2x\}\)。与核配对得相容条件 \(q\int_0^\pi\sin^22x=0\)，即 \(q=0\)。此时特解为 \(-\tfrac13\sin x\)，故全部解为 \(-\tfrac13\sin x+c\sin2x\)。核的刻画可由一维分布方程先推出 \(u''=-4u\in L^2\)，再由常系数常微分方程及端点条件得到，亦可直接使用正弦展开。因此没有遗漏较粗糙的能量解。
 \end{solution}

@@ -1,105 +1,733 @@
 % !TeX root = ../../Book3.tex
-\section{Weierstrass \texorpdfstring{\(\wp\)}{℘} 函数}
+\section{Weierstrass 函数与椭圆除数构造}
 \label{b3:sec:2203}
 
-直接相加 \((z-\omega)^{-2}\) 的常数尾项只有临界的二次衰减。减去 \(\omega^{-2}\) 后，衰减提高一次，得到可在紧集上求导的格和。
+前两节限制了椭圆函数可能具有的极点，却还没有构造一个非常值的函数。
+最小的可能情形是在每个格点放置一个无留数的二阶极点。
+直接相加 \((z-\omega)^{-2}\) 时，远处的常数项只有临界的二次衰减；
+减去 \(\omega^{-2}\) 后，尾项提高为三次衰减，才能在紧集上稳定求和。
+下面先完成这个构造，再借它的两个原函数分别实现给定主要部分与给定除数。
 
 \subsection{定义与收敛性}
 \label{b3:subsec:220301}
 
+\Needspace{6\baselineskip}
 \begin{definition}\label{b3:def:22-wp}
-对格 \(\Lambda\)，定义\term[weierstrass-wp-hanshu]{Weierstrass 椭圆函数}[Weierstrass elliptic function]
+设 \(\Lambda\subset\mathbb C\) 为秩二格。
+其\term[weierstrass-wp-hanshu]{Weierstrass 椭圆函数}[Weierstrass elliptic function]定义为
 \[
-\wp(z)=\frac1{z^2}+\sum_{0\ne\omega\in\Lambda}
-\left(\frac1{(z-\omega)^2}-\frac1{\omega^2}\right).
+ \wp(z;\Lambda)\coloneqq\frac1{z^2}
+   +\sum_{\omega\in\Lambda\setminus\{0\}}
+      \left(\frac1{(z-\omega)^2}-\frac1{\omega^2}\right),
+ \quad z\notin\Lambda.
 \]
+格固定时简记为 \(\wp(z)\)。
 \end{definition}
 \symidx{\(\wp(z;\Lambda)\)：Weierstrass 椭圆函数}
-若 \(|z|\le R\)、\(|\omega|>2R\)，括号内的模不超过 \(C_R|\omega|^{-3}\)。因此避开格点的紧集上正规收敛。在每个格点恰有一个二阶极点，主部为到该格点距离的倒数平方。把 \(\omega\) 与 \(-\omega\) 配对证明 \(\wp\) 为偶函数，且原点 Laurent 展开为
+
+括号中的两项必须作为一个整体相加。
+二次格和的绝对值之和发散，不能把这一定义拆成两个无穷和再相减。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[正规收敛与局部极点]\label{b3:prop:22-wp-convergence}
+设 \(\Lambda\) 为秩二格。定义 \(\wp(\cdot;\Lambda)\) 的级数在
+\(\mathbb C\setminus\Lambda\) 的每个紧集上绝对一致收敛。
+对每个 \(R>0\)，存在常数 \(C_{\Lambda,R}\)，使
 \[
-\wp(z)=z^{-2}+3G_4z^2+5G_6z^4+7G_8z^6+\cdots,
-\quad G_{2k}=\sum_{\omega\ne0}\omega^{-2k}.
+ \sup_{|z|\le R}
+ \sum_{\substack{\omega\in\Lambda\\|\omega|>T}}
+ \left|\frac1{(z-\omega)^2}-\frac1{\omega^2}\right|
+ \le\frac{C_{\Lambda,R}}T
+ \quad\bigl(T\ge\max(1,2R)\bigr).
 \]
-此式先在最短非零周期以内的圆盘成立，由几何级数展开和绝对收敛换序得到。
+函数 \(\wp\) 在全平面亚纯，极点恰为 \(\Lambda\)，
+在每个 \(\lambda\in\Lambda\) 的主要部分为 \((z-\lambda)^{-2}\)。
+此外，\(\wp(-z)=\wp(z)\)。
+\end{proposition}
+\begin{proof}
+当 \(|z|\le R\)、\(|\omega|>2R\) 时，
+\[
+ \frac1{(z-\omega)^2}-\frac1{\omega^2}
+ =\frac{z(2\omega-z)}{\omega^2(z-\omega)^2}.
+\]
+因为 \(|z-\omega|\ge|\omega|/2\)，右端的模至多为
+\(10R|\omega|^{-3}\)。
+\cref{b3:prop:22-lattice-estimates}的三次幂和尾界于是给出所述估计。
+在任意紧集上，剩余的近处格点只有有限个；避开它们后，
+这些有理项均全纯且有界，故整个级数绝对一致收敛。
+
+固定 \(\lambda\in\Lambda\)，取一个只含该格点的小圆盘。
+若 \(\lambda\ne0\)，从级数中分出含 \((z-\lambda)^{-2}\) 的那一项；
+若 \(\lambda=0\)，分出最前面的 \(z^{-2}\)。
+其余项在略大的闭圆盘上一致收敛为全纯函数，
+所以该点恰为二阶极点，没有一次负幂项，也没有额外奇点。
+
+最后，在 \(\wp(-z)\) 的级数中用 \(\omega\mapsto-\omega\) 重排。
+格关于原点对称，整项的绝对收敛使这一重排合法，
+重排后的每一项恰与 \(\wp(z)\) 中对应项相同，因而 \(\wp\) 为偶函数。
+\end{proof}
+
+上述尾界还给出直接的截断办法：保留 \(|\omega|\le T\) 的有限格点，
+在固定紧集上误差为 \(O_{\Lambda,R}(T^{-1})\)。
+靠近某个极点时，应先分出对应的主部，再估计其余全纯部分。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[Laurent 系数]\label{b3:prop:22-wp-laurent}
+设 \(\Lambda\) 为秩二格，并令
+\[
+ \delta_\Lambda=\min_{0\ne\omega\in\Lambda}|\omega|,\quad
+ G_{2k}(\Lambda)\coloneqq\sum_{\omega\in\Lambda\setminus\{0\}}\omega^{-2k}
+ \quad(k\ge2).
+\]
+则 \(\delta_\Lambda>0\)，各个 \(G_{2k}\) 绝对收敛；
+在 \(0<|z|<\delta_\Lambda\) 上有
+\[
+ \wp(z)=z^{-2}+\sum_{k=2}^\infty(2k-1)G_{2k}(\Lambda)z^{2k-2}.
+\]
+右端的正幂级数在每个 \(|z|\le r<\delta_\Lambda\) 上绝对一致收敛。
+特别地，
+\[
+ \wp(z)=z^{-2}+3G_4z^2+5G_6z^4+7G_8z^6+O(z^8).
+\]
+\end{proposition}
+\symidx{\(G_{2k}(\Lambda)\)：格上的偶次绝对收敛幂和，\(k\ge2\)}
+\begin{proof}
+格的离散性给出 \(\delta_\Lambda>0\)，幂和收敛由 \(2k>2\) 得到。
+对 \(|z|<|\omega|\)，将几何级数求导，得
+\[
+ \frac1{(z-\omega)^2}-\frac1{\omega^2}
+ =\sum_{r=1}^\infty(r+1)\frac{z^r}{\omega^{r+2}}.
+\]
+为了交换这两个求和次序，固定 \(0<r_0<\delta_\Lambda\)，
+令 \(q=r_0/\delta_\Lambda<1\)。
+在 \(|z|\le r_0\) 上有
+\[
+ \begin{aligned}
+ \sum_{\omega\ne0}\sum_{r=1}^\infty
+       (r+1)\frac{|z|^r}{|\omega|^{r+2}}
+ &\le r_0\sum_{\omega\ne0}|\omega|^{-3}
+       \sum_{r=1}^\infty(r+1)q^{r-1}<\infty.
+ \end{aligned}
+\]
+因此可以逐幂求和。
+当 \(r\) 为奇数时，\(\omega\) 与 \(-\omega\) 的贡献相消；
+当 \(r=2k-2\) 时，系数为 \((2k-1)G_{2k}\)。
+这就给出展开及其闭子圆盘上的绝对一致收敛。
+\end{proof}
+
+没有常数项是定义中扣除 \(\omega^{-2}\) 的结果，
+没有奇次项则来自格的中心对称性。
+这两个事实将在微分方程中分别控制常数和负幂项。
 
 \subsection{\texorpdfstring{\(\wp'\)}{\AnalysisPdfWeierstrassP'}}
 \label{b3:subsec:220302}
 
-逐项求导后，\(\wp'(z)=-2\sum_{\omega\in\Lambda}(z-\omega)^{-3}\)。这个级数绝对正规收敛，平移后可直接重排，因此 \(\wp'\) 双周期。对每个基周期 \(\omega_j\)，差 \(\wp(z+\omega_j)-\wp(z)\) 为常数；取 \(z=-\omega_j/2\)，两点均非格点，偶性使常数为零。两基周期生成全部格，故 \(\wp\) 也双周期。
+原级数适合辨认极点，导数级数更适合验证周期。
+求导后不再出现需要扣除的常数项，整个格和可以直接重排。
 
-\ProseParagraphBreak
+\Needspace{6\baselineskip}
+\begin{proposition}[导数与全部周期]\label{b3:prop:22-wp-periods}
+设 \(\Lambda=\mathbb Z\omega_1+\mathbb Z\omega_2\) 为秩二格，
+\(\wp=\wp(\cdot;\Lambda)\)。则
+\[
+ \wp'(z)=-2\sum_{\omega\in\Lambda}(z-\omega)^{-3}
+ \quad(z\notin\Lambda),
+\]
+级数在避开格点的紧集上绝对一致收敛。
+函数 \(\wp\) 为偶椭圆函数，\(\wp'\) 为奇椭圆函数；
+\(\wp\) 与 \(\wp'\) 的全部周期群均恰为 \(\Lambda\)。
+\end{proposition}
+\begin{proof}
+在避开格点的紧集上，先取稍大的无极点邻域，
+对前一命题的局部一致收敛使用 Cauchy 公式，即可逐项求导。
+远处导数项满足
+\(2|z-\omega|^{-3}\le16|\omega|^{-3}\)，
+故导数级数本身也绝对正规收敛。
+对任意 \(\lambda\in\Lambda\)，平移后令 \(\nu=\omega-\lambda\)，得到
+\[
+ \wp'(z+\lambda)
+ =-2\sum_{\nu\in\Lambda}(z-\nu)^{-3}=\wp'(z).
+\]
+这一步重排的是绝对收敛的三次格和。
 
-这一论证解释为何不直接在原级数中重排两个各自发散的二次格和。正规收敛只对扣除后的整项成立；先求导得到绝对收敛的三次格和，再积分回常数，是避免错误重排的关键。
+对基向量 \(\omega_j\)，考虑
+\(D_j(z)=\wp(z+\omega_j)-\wp(z)\)。
+两个函数在每个格点的主要部分相同，故 \(D_j\) 可去延拓为整函数；
+上一式又给 \(D_j'=0\)，所以 \(D_j\) 为常数。
+因为基向量不属于 \(2\Lambda\)，\(\omega_j/2\notin\Lambda\)。
+在 \(z=-\omega_j/2\) 处，用 \(\wp\) 的偶性得
+\[
+ D_j(-\omega_j/2)=\wp(\omega_j/2)-\wp(-\omega_j/2)=0.
+\]
+因此两个基向量都是 \(\wp\) 的周期，其整数线性组合也都是周期。
+对偶函数求导说明 \(\wp'\) 为奇函数。
+
+还需排除更小的实际周期。
+若 \(\tau\in\mathbb C\) 是 \(\wp\) 的周期，
+则 \(\wp(z+\tau)=\wp(z)\) 的极点集合相同，给
+\(\Lambda-\tau=\Lambda\)，因而 \(\tau\in\Lambda\)。
+\(\wp'\) 在每个格点恰有三阶极点，同一个极点集合论证适用。
+所以两个函数的全部周期群均为 \(\Lambda\)。
+\end{proof}
+
+先证明导数周期，再用偶性确定积分常数，
+保留了原级数的收敛含义。
+若直接把原式写成两个二次格和再平移，
+就会在尚未定义的和之间进行抵消，不能由此证明周期性。
 
 \subsection{微分方程}
 \label{b3:subsec:220303}
 
-定义 \(g_2=60G_4\)、\(g_3=140G_6\)。
+令
+\[
+ g_2(\Lambda)\coloneqq60G_4(\Lambda),\quad
+ g_3(\Lambda)\coloneqq140G_6(\Lambda).
+\]
+\symidx{\(g_2(\Lambda),g_3(\Lambda)\)：格的 Weierstrass 不变量}
+这两个常数来自消去主部所需的准确系数，下面不预先假设任何代数曲线表示。
+
+\Needspace{6\baselineskip}
 \begin{theorem}[Weierstrass 微分方程]\label{b3:thm:22-wp-equation}
-函数 \(\wp\) 满足 \((\wp')^2=4\wp^3-g_2\wp-g_3\)。
+设 \(\Lambda\) 为秩二格，\(\wp=\wp(\cdot;\Lambda)\)，并令
+\[
+ g_2=60\sum_{0\ne\omega\in\Lambda}\omega^{-4},\quad
+ g_3=140\sum_{0\ne\omega\in\Lambda}\omega^{-6}.
+\]
+则在全平面上有亚纯恒等式
+\[
+ (\wp')^2=4\wp^3-g_2\wp-g_3.
+\]
 \end{theorem}
 \begin{proof}
-写 \(\wp=z^{-2}+az^2+bz^4+O(z^6)\)，其中 \(a=3G_4\)、\(b=5G_6\)。展开得
-\((\wp')^2-4\wp^3=-20az^{-2}-28b+O(z^2)\)。因此
-\((\wp')^2-4\wp^3+g_2\wp+g_3\) 在原点可去且值为零。周期性使它在每个格点可去，其他点本来全纯；整椭圆函数必常数，原点值又使常数为零。
+记 \(a=3G_4\)、\(b=5G_6\)。原点附近的展开为
+\[
+ \wp(z)=z^{-2}+az^2+bz^4+O(z^6),\quad
+ \wp'(z)=-2z^{-3}+2az+4bz^3+O(z^5).
+\]
+先分别展开平方与立方，保留全部负幂与常数项：
+\[
+ \begin{aligned}
+ (\wp')^2&=4z^{-6}-8az^{-2}-16b+O(z^2),\\
+ 4\wp^3&=4z^{-6}+12az^{-2}+12b+O(z^2).
+ \end{aligned}
+\]
+于是
+\[
+ (\wp')^2-4\wp^3=-20az^{-2}-28b+O(z^2).
+\]
+注意 \(20a=g_2\)、\(28b=g_3\)，而 \(\wp\) 的常数项为零。
+所以
+\[
+ H(z)=(\wp')^2-4\wp^3+g_2\wp+g_3
+\]
+在原点的负幂项和常数项全部消失，\(H(z)=O(z^2)\)。
+它在原点可去且取值零；周期性把同样的结论传到所有格点。
+格点以外本来没有奇点，因此 \(H\) 是整椭圆函数。
+由\cref{b3:prop:22-entire-constant}，\(H\) 为常数；原点取值使该常数为零。
 \end{proof}
-再次求导并先在 \(\wp'\ne0\) 处约去，再用恒等定理，得到 \(\wp''=6\wp^2-g_2/2\)。它与初始主部一起递推确定全部 Laurent 系数，也给出下一节代数曲线的切线斜率。
 
-\subsection{零点与极点}
+\Needspace{6\baselineskip}
+\begin{corollary}[二阶方程与系数递推]\label{b3:cor:22-wp-second-derivative}
+对任意秩二格 \(\Lambda\)，其 Weierstrass 函数满足
+\[
+ \wp''=6\wp^2-\frac{g_2}{2}.
+\]
+若将原点的展开写为
+\(\wp(z)=z^{-2}+\sum_{n\ge1}a_nz^{2n}\)，则
+\[
+ a_1=\frac{g_2}{20},\quad a_2=\frac{g_3}{28},\quad
+ a_n=\frac{3}{(n-2)(2n+3)}
+       \sum_{j=1}^{n-2}a_j a_{n-1-j}\quad(n\ge3).
+\]
+因而 \(g_2,g_3\) 确定全部 Laurent 系数。
+\end{corollary}
+\begin{proof}
+对一阶方程求导，得到
+\[
+ 2\wp'\wp''=(12\wp^2-g_2)\wp'.
+\]
+函数 \(\wp'\) 有三阶极点，故不恒为零。
+先在 \(\wp'\ne0\) 的开集约分，随后用亚纯恒等定理，
+即可把二阶方程推广到全平面，不必在 \(\wp'\) 的零点处相除。
+
+前两个系数由 \(g_2,g_3\) 的定义给出。
+对 \(n\ge3\)，在二阶方程中比较 \(z^{2n-2}\) 的系数，得
+\[
+ \bigl(2n(2n-1)-12\bigr)a_n
+ =6\sum_{j=1}^{n-2}a_j a_{n-1-j}.
+\]
+左侧括号等于 \(2(n-2)(2n+3)\)，非零，故得递推式。
+右侧只含此前已确定的系数，归纳便确定全部展开。
+\end{proof}
+
+例如 \(a_3=a_1^2/3=g_2^2/1200\)。
+二阶方程在 \(n=2\) 时不能决定 \(a_2\)，
+这正是还需由一阶方程保留常数 \(g_3\) 的位置。
+
+\subsection{半周期、准周期函数与椭圆除数}
 \label{b3:subsec:220304}
 
-模 \(\Lambda\) 的三个非零半周期为 \(\omega_1/2,\omega_2/2,(\omega_1+\omega_2)/2\)。奇性与周期性使 \(\wp'\) 在这三点为零。由于 \(\wp'\) 的唯一极点阶数为三，零点计数说明三点均为单零点，没有其他零点。
-
-\ProseParagraphBreak
-
-记它们的 \(\wp\) 值为 \(e_1,e_2,e_3\)。这些值两两不同：若两点具有同一值，则 \(\wp-e_j\) 在各点至少二阶消失，零点总数至少四，与其次数二矛盾。因此
+先把微分方程中的三个根落实为格上的具体点。
+固定一组正向基 \(\omega_1,\omega_2\)，即
+\(\operatorname{Im}(\omega_2/\omega_1)>0\)，并令
 \[
-4X^3-g_2X-g_3=4(X-e_1)(X-e_2)(X-e_3),
-\quad e_1+e_2+e_3=0.
+ h_1=\omega_1/2,\quad h_2=\omega_2/2,\quad
+ h_3=(\omega_1+\omega_2)/2.
 \]
-一般值的两个原像恰为 \(z,-z\)。若 \(\wp(z)=\wp(w)\)，\(\wp-\wp(w)\) 的次数二已经被 \(w,-w\) 耗尽；在半周期时这两个点合为一个二重点。这是后面证明解析表示单射的依据。
+这三个点模 \(\Lambda\) 互不相同且都非零；
+把整数系数按奇偶分类可见，它们正是满足 \(2[z]=[0]\) 的三个非零点。
 
-\ProseParagraphBreak
-
-把 \(-\wp\) 积分一次会产生\term[weierstrass-zeta-hanshu]{Weierstrass zeta 函数}[Weierstrass zeta function]。为避免与后面的 Riemann zeta 函数混淆，记
+\Needspace{6\baselineskip}
+\begin{proposition}[半周期与三个根]\label{b3:prop:22-half-periods}
+设 \(\Lambda=\mathbb Z\omega_1+\mathbb Z\omega_2\) 为秩二格，令
+\(h_1=\omega_1/2\)、\(h_2=\omega_2/2\)、\(h_3=(\omega_1+\omega_2)/2\)，
+并记 \(e_j=\wp(h_j;\Lambda)\)。
+则 \(\wp'\) 模格的零点恰为这三个半周期，全部为单零点。
+三个数 \(e_1,e_2,e_3\) 两两不同，且
 \[
- Z_\Lambda(z)=\frac1z+\sum_{\omega\in\Lambda\setminus\{0\}}
- \left(\frac1{z-\omega}+\frac1\omega+\frac z{\omega^2}\right).
+ 4X^3-g_2X-g_3=4(X-e_1)(X-e_2)(X-e_3),\quad
+ e_1+e_2+e_3=0.
 \]
-在任意避开格点的紧集上，括号内为 \(O_K(|\omega|^{-3})\)，所以级数正规收敛且可逐项微分，得到 \(Z_\Lambda'=-\wp\)。对称配对 \(\omega,-\omega\) 说明它是奇函数。由于导数周期，
-\(Z_\Lambda(z+\omega_j)-Z_\Lambda(z)=\eta_j\) 为常数，称为相应准周期。这两个准周期不可能同时为零，否则会得到只有一个单极点的椭圆函数，违反留数和。
-\ProseParagraphBreak
-对不经过格点、内部恰含一个格点的基本平行四边形积分 \(Z_\Lambda\)，留数定理给 \(2\pi\mathrm{i}\)。把上边与下边、右边与左边分别配对，准周期差给
+函数 \(\wp-e_j\) 在 \(h_j\) 恰有二阶零点，模格没有其他零点。
+\end{proposition}
+\symidx{\(e_1,e_2,e_3\)：Weierstrass 函数在三个非零半周期的值}
+\begin{proof}
+因 \(2h_j\in\Lambda\)，奇性与周期性给
+\[
+ \wp'(h_j)=\wp'(-h_j)=-\wp'(h_j),
+\]
+所以三个点都是零点。
+\(\wp'\) 模格只有原点一个三阶极点；
+由\cref{b3:prop:22-zero-pole-count}，零点总重数为三。
+已有三个不同零点，因此每个都是单零点，也没有别的零点。
+特别地，\(\wp''(h_j)\ne0\)，Taylor 展开给
+\[
+ \wp(h_j+u)-e_j=\tfrac12\wp''(h_j)u^2+O(u^3).
+\]
+这说明 \(h_j\) 恰是二阶零点。
+\(\wp-e_j\) 模格只有一个二阶极点，零点总数也为二，故无其他零点。
+
+若 \(e_i=e_j\)、\(i\ne j\)，则同一个 \(\wp-e_i\)
+在两个不同点各有至少二阶零点，与总数二矛盾。
+所以三个值互异。
+将 \(h_j\) 代入微分方程，得到
+\(4e_j^3-g_2e_j-g_3=0\)。
+一个首项为 \(4X^3\) 的三次多项式已有三个不同根，
+故恰分解为所示乘积；比较二次项便得三根之和为零。
+\end{proof}
+
+\Needspace{6\baselineskip}
+\begin{proposition}[二重映射的纤维与分歧]\label{b3:prop:22-wp-fibers}
+设 \(\Lambda\) 为秩二格。
+映射 \([z]\mapsto\wp(z;\Lambda)\) 从 \(\mathbb C/\Lambda\)
+全纯地映到黎曼球面，并在每个目标点有总重数为二的纤维。
+对 \(z,w\notin\Lambda\)，
+\[
+ \wp(z)=\wp(w)
+ \quad\Longleftrightarrow\quad z\equiv\pm w\pmod\Lambda.
+\]
+其分歧点恰为 \([0]\)、\([h_1]\)、\([h_2]\) 与 \([h_3]\)，每处的局部次数为二；
+相应的四个分歧值为 \(\infty\)、\(e_1\)、\(e_2\) 与 \(e_3\)，两两不同。
+\end{proposition}
+\begin{proof}
+周期性使映射在商空间上良定义，亚纯性使它作为到球面的映射全纯。
+对任意有限值 \(c\)，\(\wp-c\) 仍有且只有一个模格二阶极点，
+因而其零点总重数为二。
+这同时证明每个有限值都有原像及其纤维的总重数。
+\(\infty\) 的纤维只有 \([0]\)，极点阶数为二。
+
+若 \(w\) 不是半周期，\([w]\) 与 \([-w]\) 不同。
+偶性说明二者都是 \(\wp-\wp(w)\) 的零点，
+已用尽总重数二，故都是单零点且没有其他原像。
+若 \(w\) 是非零半周期，前一命题已证明该纤维只有一个二重点。
+这两种情形给出所述等价关系；反向蕴含也直接来自偶性与周期性。
+
+有限点处的局部次数超过一，当且仅当 \(\wp'\) 在该处为零。
+前一命题及其 Taylor 展开说明这恰发生在三个半周期，局部次数均为二。
+在原点，以 \(v=1/\wp\) 为目标无穷远附近的坐标，由 Laurent 展开有
+\[
+ v(z)=z^2+O(z^6).
+\]
+所以 \([0]\) 的局部次数也为二。
+其余点导数非零，局部次数为一；分歧值的不同由 \(e_j\) 互异得到。
+\end{proof}
+
+为了从极点或零点资料构造其他椭圆函数，
+还需要将 \(-\wp\) 积分一次、再对所得函数作对数积分。
+前者不可能成为椭圆函数：若一个原函数在每个格点都有留数一，
+它就违反基本区域上的留数和为零。
+保留下来的准周期，恰好记录这一障碍。
+
+\Needspace{6\baselineskip}
+\begin{definition}\label{b3:def:22-zeta}
+设 \(\Lambda\) 为秩二格。
+其\term[weierstrass-zeta-hanshu]{Weierstrass zeta 函数}[Weierstrass zeta function]记为
+\[
+ Z_\Lambda(z)\coloneqq\frac1z+
+ \sum_{\omega\in\Lambda\setminus\{0\}}
+ \left(\frac1{z-\omega}+\frac1\omega+\frac z{\omega^2}\right),
+ \quad z\notin\Lambda.
+\]
+这里用大写 \(Z_\Lambda\)，以区别后文的 Riemann zeta 函数。
+\end{definition}
+\symidx{\(Z_\Lambda(z)\)：Weierstrass zeta 函数}
+
+\Needspace{6\baselineskip}
+\begin{proposition}[\texorpdfstring{\(Z_\Lambda\)}{Z} 的导数与准周期]\label{b3:prop:22-zeta-quasiperiods}
+设 \(\Lambda=\mathbb Z\omega_1+\mathbb Z\omega_2\) 为秩二格，
+\(Z_\Lambda\) 为其 Weierstrass zeta 函数。
+定义级数在避开格点的紧集上绝对一致收敛，给出奇亚纯函数，
+其极点恰为格点，各为留数一的单极点，并有 \(Z_\Lambda'=-\wp\)。
+存在加法映射 \(\eta:\Lambda\to\mathbb C\)，使
+\[
+ Z_\Lambda(z+\lambda)=Z_\Lambda(z)+\eta(\lambda)
+ \quad(\lambda\in\Lambda).
+\]
+常数 \(\eta(\lambda)\) 称为对应于 \(\lambda\) 的\term[zhunzhouqi]{准周期}[quasi-period]。
+记 \(\eta_j=\eta(\omega_j)\)，则
+\[
+ \eta(m\omega_1+n\omega_2)=m\eta_1+n\eta_2,\quad
+ \eta_j=2Z_\Lambda(\omega_j/2).
+\]
+若基正向，即 \(\operatorname{Im}(\omega_2/\omega_1)>0\)，还有
 \begin{equation}\label{b3:eq:22-legendre-relation}
- \eta_1\omega_2-\eta_2\omega_1=2\pi\mathrm{i}.
+ \eta_1\omega_2-\eta_2\omega_1=2\pi\mathrm i.
 \end{equation}
-这里基的方向为正。反转基顺序会同时反转围道方向和左侧符号。这一常数不是任意正规化，而是一个单位留数沿基本区域累计的结果。
-\ProseParagraphBreak
-再定义整函数
+\end{proposition}
+\symidx{\(\eta(\lambda),\eta_1,\eta_2\)：Weierstrass zeta 函数的准周期}
+\begin{proof}
+把括号中的整项通分，得到
 \[
- \Sigma_\Lambda(z)=z\prod_{\omega\ne0}
+ \frac1{z-\omega}+\frac1\omega+\frac z{\omega^2}
+ =\frac{z^2}{\omega^2(z-\omega)}.
+\]
+若 \(|z|\le R\)、\(|\omega|>2R\)，其模至多为
+\(2R^2|\omega|^{-3}\)。
+三次格和保证正规收敛，且 \(|\omega|>T\) 的尾部在该圆盘上为
+\(O_{\Lambda,R}(T^{-1})\)。
+分离单个格点对应项可知，局部主要部分恰为 \((z-\lambda)^{-1}\)。
+用 \(\omega\mapsto-\omega\) 重排整个收敛项，得到 \(Z_\Lambda(-z)=-Z_\Lambda(z)\)；
+再在无极点小圆盘上逐项求导，得
+\[
+ Z_\Lambda'(z)
+ =-\frac1{z^2}+\sum_{\omega\ne0}
+     \left(-\frac1{(z-\omega)^2}+\frac1{\omega^2}\right)
+ =-\wp(z).
+\]
+
+对 \(\lambda\in\Lambda\)，差
+\(Z_\Lambda(z+\lambda)-Z_\Lambda(z)\) 的单极点主部相消，
+因而可去延拓为整函数。
+其导数由 \(\wp\) 的周期性等于零，故差为常数，记作 \(\eta(\lambda)\)。
+连续平移 \(\lambda\) 和 \(\mu\) 给
+\[
+ \eta(\lambda+\mu)=\eta(\lambda)+\eta(\mu),
+\]
+所以 \(\eta\) 是加法映射。
+对基向量可在 \(z=-\omega_j/2\) 处取值，奇性便给
+\(\eta_j=2Z_\Lambda(\omega_j/2)\)。
+这里半周期不是格点，取值合法。
+
+最后设基正向，选择平移后的基本平行四边形，
+使边界不经过格点，并依次沿
+\(a,a+\omega_1,a+\omega_1+\omega_2,a+\omega_2,a\) 行进。
+这是逆时针方向，区域内部恰有一个格点。
+将上下两边配对，积分之和为
+\[
+ \int_a^{a+\omega_1}
+     \bigl(Z_\Lambda(z)-Z_\Lambda(z+\omega_2)\bigr)\,\mathrm dz
+ =-\eta_2\omega_1.
+\]
+将右边与左边配对，积分之和为
+\[
+ \int_a^{a+\omega_2}
+     \bigl(Z_\Lambda(z+\omega_1)-Z_\Lambda(z)\bigr)\,\mathrm dz
+ =\eta_1\omega_2.
+\]
+另一方面，内部单极点的留数为一，留数定理给总积分 \(2\pi\mathrm i\)。
+两种计算相等，即得\eqref{b3:eq:22-legendre-relation}。
+\end{proof}
+
+式\eqref{b3:eq:22-legendre-relation}称为\term[legendre-guanxi]{Legendre 关系}[Legendre relation]。
+它说明两个基准周期不可能同时为零。
+它的符号取决于基的方向：交换基的顺序后，
+按同一次序描出的边界成为顺时针，左端与围道积分同时反号。
+
+\ProseParagraphBreak
+下一步构造一个在格点有单零点的整函数。
+前一章的初等因子在这里用到二次扣除：格点的二次绝对幂和发散，
+而三次绝对幂和收敛。
+
+\Needspace{6\baselineskip}
+\begin{definition}\label{b3:def:22-sigma}
+设 \(\Lambda\) 为秩二格，定义
+\[
+ \Sigma_\Lambda(z)\coloneqq z\prod_{\omega\in\Lambda\setminus\{0\}}
  \left(1-\frac z\omega\right)
  \exp\left(\frac z\omega+\frac{z^2}{2\omega^2}\right).
 \]
-每个尾因子的对数从三次项开始，所以格点三次幂和保证正规收敛。零点恰为格点且均单，原点导数为一，直接微分得 \(\Sigma_\Lambda'/\Sigma_\Lambda=Z_\Lambda\)。奇性也由 \(Z_\Lambda\) 的奇性确定：\(-\Sigma_\Lambda(-z)\) 与 \(\Sigma_\Lambda(z)\) 具有相同对数导数及原点导数，故相等。这就是\term[weierstrass-sigma-hanshu]{Weierstrass sigma 函数}[Weierstrass sigma function]，此处用大写符号避免与算术函数的约数和记号冲突。
-\ProseParagraphBreak
-对数导数的准周期性给商
-\(\Sigma_\Lambda(z+\omega_j)/(e^{\eta_jz}\Sigma_\Lambda(z))\) 为非零常数。取 \(z=-\omega_j/2\)，用奇性及半周期不是格点，确定该常数为 \(-e^{\eta_j\omega_j/2}\)。于是
+它称为\term[weierstrass-sigma-hanshu]{Weierstrass sigma 函数}[Weierstrass sigma function]。
+采用大写 \(\Sigma_\Lambda\)，以区别后文算术函数的约数和记号。
+\end{definition}
+\symidx{\(\Sigma_\Lambda(z)\)：Weierstrass sigma 函数}
+
+\Needspace{6\baselineskip}
+\begin{proposition}[整乘积与对数导数]\label{b3:prop:22-sigma-product}
+对任意秩二格 \(\Lambda\)，定义 \(\Sigma_\Lambda\) 的正规乘积
+在全平面局部一致收敛，给出奇整函数。
+其零点恰为 \(\Lambda\)，每个均为单零点，且
+\[
+ \Sigma_\Lambda'(0)=1,\quad
+ \frac{\Sigma_\Lambda'(z)}{\Sigma_\Lambda(z)}=Z_\Lambda(z)
+ \quad(z\notin\Lambda).
+\]
+\end{proposition}
+\begin{proof}
+每个因子是 \(E_2(z/\omega)\)。
+当 \(|w|\le1/2\) 时，在原点值为零的对数分支满足
+\[
+ \log E_2(w)=-\sum_{r=3}^\infty\frac{w^r}{r},\quad
+ |\log E_2(w)|\le2|w|^3.
+\]
+因此在 \(|z|\le R\)、\(T\ge\max(1,2R)\) 时，尾部对数满足
+\[
+ \sum_{|\omega|>T}|\log E_2(z/\omega)|
+ \le2R^3\sum_{|\omega|>T}|\omega|^{-3}
+ \le\frac{C_{\Lambda,R}}T.
+\]
+由\cref{b3:prop:20-fixed-genus-product}，乘积局部一致收敛，
+与格点的枚举顺序无关。
+在每个格点分离出唯一的零因子，其余有限头部与尾部均非零，
+故零点恰为格点且均为单零点。
+各因子在原点取值一，前面的 \(z\) 给 \(\Sigma_\Lambda'(0)=1\)。
+
+在避开格点的紧集上，可以对乘积取对数导数。
+每个因子的贡献为
+\[
+ \frac1{z-\omega}+\frac1\omega+\frac z{\omega^2},
+\]
+加上前面 \(z\) 的对数导数 \(1/z\)，恰得 \(Z_\Lambda\) 的正规级数。
+
+令 \(S(z)=-\Sigma_\Lambda(-z)\)。
+它与 \(\Sigma_\Lambda\) 有同样的单零点，且 \(S'(0)=1\)。
+在格点外，
+\[
+ \frac{S'(z)}{S(z)}=-Z_\Lambda(-z)=Z_\Lambda(z)
+ =\frac{\Sigma_\Lambda'(z)}{\Sigma_\Lambda(z)}.
+\]
+比值 \(S/\Sigma_\Lambda\) 在格点处可去且非零，
+故为导数恒零的整函数；原点导数的比为一，使这个常数等于一。
+于是 \(\Sigma_\Lambda(-z)=-\Sigma_\Lambda(z)\)。
+\end{proof}
+
+\Needspace{6\baselineskip}
+\begin{proposition}[\texorpdfstring{\(\Sigma_\Lambda\)}{Sigma} 的准周期]\label{b3:prop:22-sigma-quasiperiods}
+设 \(\Lambda=\mathbb Z\omega_1+\mathbb Z\omega_2\) 为秩二格，
+基正向，\(\eta_j\) 为 \(Z_\Lambda\) 的相应准周期。
+则对 \(j=1,2\)，有整函数恒等式
 \[
  \Sigma_\Lambda(z+\omega_j)
  =-e^{\eta_j(z+\omega_j/2)}\Sigma_\Lambda(z).
 \]
-这条公式同时保留了指数和负号。若仅比较导数，会遗漏乘法常数；后面构造双周期商时，漏掉负号就可能产生错误的半周期。
+更一般地，对整数 \(m,n\)，令
+\(\lambda=m\omega_1+n\omega_2\)、\(\eta(\lambda)=m\eta_1+n\eta_2\)，则
+\[
+ \Sigma_\Lambda(z+\lambda)
+ =(-1)^{m+n+mn}
+   e^{\eta(\lambda)(z+\lambda/2)}\Sigma_\Lambda(z).
+\]
+\end{proposition}
+\begin{proof}
+对固定的基向量，商
+\[
+ Q_j(z)=\frac{\Sigma_\Lambda(z+\omega_j)}
+              {e^{\eta_jz}\Sigma_\Lambda(z)}
+\]
+在格点处的单零点可相消，故延拓为全平面非零整函数。
+其对数导数为
+\(Z_\Lambda(z+\omega_j)-\eta_j-Z_\Lambda(z)=0\)，所以为常数。
+取 \(z=-\omega_j/2\)，半周期不是格点，奇性给
+\[
+ Q_j(-\omega_j/2)
+ =\frac{\Sigma_\Lambda(\omega_j/2)}
+        {e^{-\eta_j\omega_j/2}\Sigma_\Lambda(-\omega_j/2)}
+ =-e^{\eta_j\omega_j/2}.
+\]
+这同时确定了指数中的常数与负号。
 
+对每个整数 \(m\)，重复第一条平移公式，得
+\[
+ \Sigma_\Lambda(z+m\omega_1)
+ =(-1)^m e^{m\eta_1(z+m\omega_1/2)}\Sigma_\Lambda(z);
+\]
+负整数情形由同一公式反向求解。
+再平移 \(n\omega_2\)，所得指数为
+\[
+ m\eta_1(z+m\omega_1/2)
+ +n\eta_2(z+m\omega_1+n\omega_2/2).
+\]
+它与 \(\eta(\lambda)(z+\lambda/2)\) 的差是
+\[
+ \frac{mn}{2}(\eta_2\omega_1-\eta_1\omega_2)
+ =-\pi\mathrm i mn.
+\]
+由 Legendre 关系，其指数因子为 \((-1)^{mn}\)。
+再乘原来的两个符号 \((-1)^m\)、\((-1)^n\)，即得一般公式。
+\end{proof}
+
+现在可以完成带周期条件的主要部分构造。
+整平面的 Mittag--Leffler 定理不要求周期性；
+在环面上，留数和为零恰好是多出的条件。
+高阶极点由 \(Z_\Lambda\) 的导数产生，一阶极点的准周期则通过留数和抵消。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[椭圆主要部分的实现]\label{b3:prop:22-principal-parts}
+设 \(\Lambda\) 为秩二格，\(a_1,\ldots,a_l\) 模 \(\Lambda\) 互异，
+\(l\ge1\)、\(m_j\ge1\) 为整数。
+在 \(a_j\) 给定主要部分
+\[
+ P_j(z)=\sum_{k=1}^{m_j}c_{j,k}(z-a_j)^{-k},\quad c_{j,k}\in\mathbb C.
+\]
+存在具有这些主要部分且无其他模格极点的 \(\Lambda\)-周期亚纯函数，
+当且仅当 \(\sum_{j=1}^l c_{j,1}=0\)。
+条件满足时，所有实现函数相差常数。
+\end{proposition}
+\begin{proof}
+若函数存在，对一个边界不含极点的基本区域应用
+\cref{b3:prop:22-residue-sum}，立即得到必要性。
+
+反之，设留数和为零，取有限和
+\[
+ F(z)=\sum_{j=1}^l\left[
+ c_{j,1}Z_\Lambda(z-a_j)
+ +\sum_{k=2}^{m_j}
+    \frac{(-1)^{k-1}c_{j,k}}{(k-1)!}
+    Z_\Lambda^{(k-1)}(z-a_j)\right].
+\]
+因为 \(Z_\Lambda(w)=w^{-1}+\)全纯函数，
+其 \((k-1)\) 阶导数的主要部分只有
+\[
+ (-1)^{k-1}(k-1)!w^{-k}.
+\]
+所以每个系数恰被恢复，也没有引入低阶的额外负幂。
+不同的 \(a_j\) 模格互异，在其中一个点展开时其余平移项全纯；
+每个平移项也只在 \(a_j+\Lambda\) 上有极点，所以没有额外极点。
+
+当 \(k\ge2\) 时，\(Z_\Lambda^{(k-1)}\) 为周期函数，
+因为 \(Z_\Lambda'=-\wp\)。
+一次项在平移 \(\omega_i\) 后总共增加
+\(\eta_i\sum_jc_{j,1}=0\)，因此整个 \(F\) 双周期。
+若 \(F_1,F_2\) 都实现这些主要部分，
+差 \(F_1-F_2\) 的所有主部相消，成为整椭圆函数，故为常数。
+\end{proof}
+
+例如 \(Z_\Lambda(z-a)-Z_\Lambda(z-b)\) 在两个不同模格点具有
+留数一与负一，两个准周期恰好抵消。
+若只在原点指定 \(3z^{-4}-2z^{-2}\)，则
+\[
+ F(z)=\tfrac12\wp''(z)-2\wp(z)+C
+\]
+给出所有实现：\(\wp''\) 的主部为 \(6z^{-4}\)，
+\(\wp\) 的主部为 \(z^{-2}\)。
+单独一个留数非零的简单极点则无法实现。
+
+\ProseParagraphBreak
+在单个极点处限制阶数，可以把上述存在性写成有限维空间的显式基。
+这为下一节讨论函数域提供一个可直接计算的入口。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[单极点空间的显式基]\label{b3:prop:22-one-pole-space}
+设 \(\Lambda\) 为秩二格，\(n\ge0\) 为整数。
+令 \(L(n[0])\) 为所有 \(\Lambda\)-周期亚纯函数组成的复向量空间，
+其中函数在 \(\Lambda\) 以外无极点，在原点的极点阶数不超过 \(n\)，
+并包含零函数。
+则 \(L(0[0])=L(1[0])=\mathbb C\)。
+对 \(n\ge2\)，一组基为
+\[
+ 1,\wp,\wp',\ldots,\wp^{(n-2)}.
+\]
+因此 \(\dim L(n[0])=n\) 当 \(n\ge1\)，而 \(\dim L(0[0])=1\)。
+\end{proposition}
+\symidx{\(L(n[0])\)：模格仅在原点有至多 \(n\) 阶极点的椭圆函数空间}
+\begin{proof}
+\(n=0\) 时只有整椭圆函数，故只有常数。
+\(n=1\) 时，唯一可能的主部为 \(c_1/z\)；
+留数和迫使 \(c_1=0\)，仍只剩常数。
+
+设 \(n\ge2\)，并令 \(f\in L(n[0])\)。
+原点的主部为 \(\sum_{k=1}^n c_kz^{-k}\)，其中仍有 \(c_1=0\)。
+由 \(\wp(z)=z^{-2}+\)全纯函数可知
+\[
+ \wp^{(k-2)}(z)
+ =(-1)^{k-2}(k-1)!z^{-k}+\text{全纯函数}.
+\]
+因此
+\[
+ f(z)-\sum_{k=2}^n
+       \frac{(-1)^{k-2}c_k}{(k-1)!}\wp^{(k-2)}(z)
+\]
+的所有极点可去，是整椭圆函数，故为常数。
+这证明所列函数张成 \(L(n[0])\)。
+若它们的线性组合为零，比较最高阶的负幂系数，
+先得最高阶导数的系数为零，再逐阶向下，最后常数也为零。
+故它们线性无关，基中共有 \(1+(n-1)=n\) 个函数。
+\end{proof}
+
+给定除数则是乘法问题。
+\(\Sigma_\Lambda\) 的平移能够在指定点放置单零点，
+其商给出需要的零极点；剩下的指数因子必须消去两个基本准周期。
+
+\Needspace{6\baselineskip}
 \begin{theorem}[椭圆除数的实现]\label{b3:thm:22-divisor-realization}
-设有限点列 \(a_1,\ldots,a_d\)、\(b_1,\ldots,b_d\) 按重数重复，且两列模格不相交。存在零点恰为前一列、极点恰为后一列的椭圆函数，当且仅当
-\(\sum a_j-\sum b_j\in\Lambda\)。该函数相差一个非零常数唯一。
+设 \(\Lambda\) 为秩二格，\(d\ge0\) 为整数。
+两列点 \(a_1,\ldots,a_d\)、\(b_1,\ldots,b_d\) 按重数重复，
+且两列模 \(\Lambda\) 不相交。
+存在非恒零的 \(\Lambda\)-周期亚纯函数，其模格零点与极点及重数
+恰为这两列，当且仅当
+\[
+ \sum_{j=1}^d a_j-\sum_{j=1}^d b_j\in\Lambda.
+\]
+条件满足时，实现函数相差一个非零常数唯一。
 \end{theorem}
 \begin{proof}
-必要性已由基本区域的除数关系证明。对充分性，写 \(D=\sum a_j-\sum b_j=m\omega_1+n\omega_2\)，取 \(c=m\eta_1+n\eta_2\)，令
+必要性由\cref{b3:prop:22-divisor-necessary}给出。
+\(d=0\) 时，条件自动成立，所有非零常数恰为实现函数。
+以下设 \(d\ge1\)，固定正向基 \(\omega_1,\omega_2\)，写成
 \[
- f(z)=e^{cz}\prod_{j=1}^d\frac{\Sigma_\Lambda(z-a_j)}{\Sigma_\Lambda(z-b_j)}.
+ D=\sum_{j=1}^d a_j-\sum_{j=1}^d b_j
+   =m\omega_1+n\omega_2,\quad m,n\in\mathbb Z.
 \]
-在平移 \(\omega_i\) 时，分子分母各有 \(d\) 个负号，恰好相消；总乘子为 \(e^{c\omega_i-\eta_iD}\)。由式~\eqref{b3:eq:22-legendre-relation}，指数在 \(i=1\) 时为 \(-2\pi\mathrm{i}n\)，在 \(i=2\) 时为 \(2\pi\mathrm{i}m\)，所以两乘子都为一。零极点由整乘积的单零点完全确定。若有两个实现函数，其商无零点、无极点且双周期，故为非零常数。
+令 \(c=m\eta_1+n\eta_2\)，定义
+\[
+ f(z)=e^{cz}\prod_{j=1}^d
+          \frac{\Sigma_\Lambda(z-a_j)}{\Sigma_\Lambda(z-b_j)}.
+\]
+指数因子处处非零；每个 \(\Sigma_\Lambda\) 的格点零点均为单零点，
+且两列模格不相交，故零极点及其重数恰为给定数据。
+
+在平移 \(\omega_i\) 时，分子分母各有 \(d\) 个负号，全部相消。
+含 \(z+\omega_i/2\) 的公共指数也相消，得到亚纯恒等式
+\[
+ f(z+\omega_i)=e^{c\omega_i-\eta_iD}f(z).
+\]
+对两个基向量，指数分别为
+\[
+ \begin{aligned}
+ c\omega_1-\eta_1D
+ &=n(\eta_2\omega_1-\eta_1\omega_2)=-2\pi\mathrm i n,\\
+ c\omega_2-\eta_2D
+ &=m(\eta_1\omega_2-\eta_2\omega_1)=2\pi\mathrm i m.
+ \end{aligned}
+\]
+两个指数乘子均为一，因此 \(f\) 为 \(\Lambda\)-周期亚纯函数。
+
+若 \(f_1,f_2\) 实现同一个除数，其商在每个零点或极点处
+都因相同阶数而可去且非零，在其他点也全纯非零。
+所以 \(f_1/f_2\) 是整椭圆函数，必为非零常数。
 \end{proof}
-构造中改变某个点的格代表，会改变指数因子与前面的常数，却不改变最终除数和按常数唯一的函数。给定零极点的总和条件因此是商环面上的条件，不能依赖选取平行四边形时的偶然代表。
+
+改变某个点的格代表，会同时改变 \(D\)、指数因子与常数，
+但新构造仍实现同一个模格除数；由唯一性，所得函数只相差非零常数。
+总和条件因而是商环面上的条件，与选择哪一个基本平行四边形无关。
+主部构造保留各阶负幂系数，除数构造保留零极点的位置与重数；
+两者分别留下加法常数与乘法常数，这也解释了各自的唯一性形式。

@@ -1,175 +1,184 @@
 % !TeX root = ../../Book2.tex
-\section{弱形式}
-\label{b2:sec:1501}
+\section{调和函数}
+\label{b2:sec:1301}
 
-分段材料中的温度可以连续而斜率发生跳跃；此时逐点写二阶导数会掩盖界面上的通量条件。弱形式把微分移到测试函数上，使未知函数只需具有有限能量，同时仍保留方程及界面平衡。本节将第一章的局部弱解概念与上一章的 Sobolev 边界类结合起来，并为比 \(L^2\) 更粗糙的源项确定合适空间。
-
-\subsection{测试函数}
-\label{b2:subsec:150101}
-
-在开集 \(\Omega\subset\mathbb R^d\) 中，测试函数取自 \(C_c^\infty(\Omega)\)。它们的支集离边界有正距离，因此分部积分不会引入尚未定义的边界值。若 \(u\in H_{\mathrm{loc}}^1(\Omega)\)、\(A\in L_{\mathrm{loc}}^\infty(\Omega;\mathbb R^{d\times d})\)，则
-\[\langle-\operatorname{div}(A\nabla u),\varphi\rangle
- =\int_\Omega A\nabla u\cdot\nabla\varphi\,\mathrm dx\]
-定义了一个分布。矩阵约定为 \((A\nabla u)_i=\sum_j a_{ij}\partial_j u\)，因而散度作用于通量的第一个指标。
-
-\ProseParagraphBreak
-
-局部测试函数足以辨认内部方程，但能量估计常须取 \(\varphi=u\)、截断后的 \(u\) 或差商。它们通常不光滑，也不紧支集。合法性依靠的是密度与连续延拓：若左右两边对 \(H_0^1\) 范数连续，而 \(C_c^\infty\) 在该空间稠密，则测试等式自动推广到整个 \(H_0^1\)。若只知道局部 \(H^1\)，便先乘紧支集截断函数，在较小区域完成同样步骤。不能在未建立这些连续性之前直接“取测试函数为解”。
-
-\subsection{弱解}
-\label{b2:subsec:150102}
-
-以下主要讨论实函数；实系数方程的复值版本可分别作用于实部与虚部。设整数 \(d\geq1\)，\(\Omega\subset\mathbb R^d\) 为开集，\(A\in L^\infty(\Omega;\mathbb R^{d\times d})\)，\(f\in\mathcal D'(\Omega;\mathbb R)\)。本章主要研究有限全局能量的弱解，因此称 \(u\in H^1(\Omega;\mathbb R)\) 满足散度方程的弱形式，是指
-\[\int_\Omega A\nabla u\cdot\nabla\varphi=\langle f,\varphi\rangle
- \qquad(\varphi\in C_c^\infty(\Omega)).\]
-第一章的局部弱解只要求 \(u\in H_{\mathrm{loc}}^1(\Omega)\)，使用的是同一个测试恒等式；本处的 \(H^1(\Omega)\) 要求更强，还控制整个区域上的函数与梯度平方积分。全局能量弱解必为局部弱解，反向一般不成立。两者都尚未包含边界条件；零 Dirichlet 条件还要在下一小节另行加入。对于 \(A\in C^1(\Omega;\mathbb R^{d\times d})\)、\(u\in C^2(\Omega)\) 及连续函数 \(f\)，分部积分和测试函数基本引理使该恒等式与经典方程等价；粗糙情形则以积分等式本身为准。
-
-\ProseParagraphBreak
-
-这个空间差别已经出现在三维的去心球上。取
-\[
- \Omega=B(0,1)\setminus\{0\}\subset\mathbb R^3,\qquad u(x)=|x|^{-1}.
-\]
-函数在 \(\Omega\) 内光滑；径向公式给出
-\(\Delta u=u''(r)+2u'(r)/r=2r^{-3}-2r^{-3}=0\)。
-每个紧含于 \(\Omega\) 的子集都离原点有正距离，所以 \(u\in H_{\mathrm{loc}}^1(\Omega)\)，并对所有紧支集测试函数满足 \(-\Delta u=0\)。但球坐标计算给出
-\[
- \begin{aligned}
- \int_\Omega |u|^2\,\mathrm dx&=4\pi\int_0^1\mathrm dr=4\pi,\\
- \int_{\{\varepsilon<|x|<1\}}|\nabla u|^2\,\mathrm dx
- &=4\pi\int_\varepsilon^1r^{-2}\,\mathrm dr\\
- &=4\pi(\varepsilon^{-1}-1)\longrightarrow+\infty.
- \end{aligned}
-\]
-故它是局部弱解，却不属于本章的全局能量解类。这里原点已从区域删去，测试函数接触不到原点；不能把在整个球内的点源方程与去心球上的齐次方程混同。
+热传导达到平衡而区域内部没有热源时，温度应当满足 Laplace 方程。这样的函数在一个小球中心的值由球面或球内平均决定，局部不能凭空出现新的峰值。这种平均结构还会产生光滑性、比较估计和唯一性，远比单独观察一个二阶微分等式更强。
 
 \Needspace{6\baselineskip}
-\begin{proposition}[一维界面的通量条件]
-\label{b2:prop:15-interface-flux}
-设 \(-1<s<1\)，实系数 \(a\) 在 \((-1,s)\)、\((s,1)\) 上分别为正常数，实函数 \(u\) 在两闭子区间上分别为 \(C^2\)，且在 \(s\) 处连续。若 \(-(au')'=f\) 在两侧经典成立，其中实值 \(f\in L^2(-1,1)\)，则 \(u\in H^1(-1,1)\) 在整个区间满足 \(-(au')'=f\) 的弱形式，当且仅当
-\[a(s-)u'(s-)=a(s+)u'(s+).\]
-\end{proposition}
-\begin{proof}
-分段光滑且连续的 \(u\) 属于 \(H^1\)，其弱导数就是分段的一阶导数。在两段分别积分，外端因测试函数紧支集而消失，内端得到
-\[\int_{-1}^1 au'\varphi'=\int_{-1}^1 f\varphi
-  +\bigl(a(s-)u'(s-)-a(s+)u'(s+)\bigr)\varphi(s).\]
-测试函数在 \(s\) 处可取任意值，因此等式对全部测试函数成立恰当且仅当括号为零。
-\end{proof}
+\begin{definition}\label{b2:def:13-harmonic}
+设整数 \(d\geq1\)，\(\Omega\subset\mathbb R^d\) 为开集，\(\mathbb K\in\{\mathbb R,\mathbb C\}\)。若 \(u\in C^2(\Omega;\mathbb K)\) 且 \(\Delta u=0\)，则称 \(u\) 为 \(\Omega\) 上的\term[diaohe-hanshu]{调和函数}[harmonic function]。除另作说明外，本章先取实值函数；复值函数的调和性按实部和虚部分别理解。
+\end{definition}
 
-例如 \(a=1\) 于左半区间、\(a=2\) 于右半区间，令 \(u(x)=x\)（\(x\le0\)）、\(u(x)=x/2\)（\(x\ge0\)）。其导数跳跃，但通量恒为 \(1\)，所以 \(-(au')'=0\) 弱成立。若误要求 \(u'\) 连续，就会排除这个正确的平衡解；若允许 \(u\) 本身跳跃，又会产生分布导数中的点质量，通常已不属于所选能量空间。
+一次函数调和，二次函数 \(x_1^2-x_2^2\) 也调和，但 \(|x|^2\) 的 Laplace 等于 \(2d\)，并不调和。一维调和函数恰为仿射函数；本章涉及球面核和基本解的主要计算固定 \(d\geq2\)。沿用 \(\omega_d=|B(0,1)|\)、\(\sigma_{d-1}=|\partial B(0,1)|=d\omega_d\)，分别表示体积与表面积。
 
-\subsection{Sobolev 边界条件}
-\label{b2:subsec:150103}
-
-对任意有界开集，齐次 Dirichlet 条件定义为 \(u\in H_0^1(\Omega)\)；非齐次数据由一个延拓 \(g\in H^1(\Omega)\) 表示，条件为 \(u-g\in H_0^1(\Omega)\)。第一卷定理 23.1.6 说明，在有界 Lipschitz 区域上，这恰好等价于 Sobolev 迹满足 \(\operatorname{Tr}u=\operatorname{Tr}g\)。粗糙区域上仍可使用闭包定义，但不能未经证明把它等同于某个朴素逐点边界条件。
-
-\ProseParagraphBreak
-
-自然边界条件的写法不同。以非空有界 \(C^1\) 开集 \(\Omega\subset\mathbb R^d\) 为例，若实函数 \(u\) 在 \(\overline\Omega\) 的某开邻域内为 \(C^2\)，记 \(f=-\Delta u\)、\(g_N=\partial_\nu u\)，则在 \(H^1(\Omega;\mathbb R)\) 的全部方向测试时，Green 公式是
-\[\int_\Omega\nabla u\cdot\nabla v
-  =\int_\Omega fv+\int_{\partial\Omega}g_N\operatorname{Tr}v\,\mathrm dS.\]
-这条公式先对光滑 \(v\) 成立，再由 \(H^1\) 光滑逼近和迹算子的连续性推广到全部 \(H^1\) 测试函数。它编码 \(\partial_\nu u=g_N\)，而不是要求 \(u\) 在边界为零。取 \(v=1\) 得到必要相容条件 \(\int_\Omega f+\int_{\partial\Omega}g_N=0\)；若区域不连通，还须在每个连通分支上分别成立，见\cref{b2:prop:13-neumann-compatibility}。测试空间不同，编码的边界问题便不同；仅看内部方程无法辨认二者。
-
-\ProseParagraphBreak
-
-即使区域光滑，也不宜把任意边界函数都当作合法 \(H^1\) Dirichlet 数据。数据应当处于迹空间，并存在 \(H^1\) 延拓；第一卷第二十三章在 Lipschitz 图中用分数阶范数刻画这种要求。本章直接给定延拓 \(g\)，从而把数据的合法性写进假设，不需要在每个存在性证明里重新构造延拓算子。
-
-\subsection{负阶 Sobolev 空间初步}
-\label{b2:subsec:150104}
-
-设整数 \(d\geq1\)，\(\Omega\subset\mathbb R^d\) 是非空有界开集，以梯度内积
-\(\langle u,v\rangle_{H_0^1}=\int_\Omega\nabla u\cdot\nabla v\)
-赋予实空间 \(H_0^1(\Omega;\mathbb R)\) Hilbert 结构。第一卷定理24.1.2的零边界 Poincaré 不等式给出
-\(\|v\|_2\leq C_P\|\nabla v\|_2\)，所以梯度范数与完整 \(H^1\) 范数等价，这个空间仍完备。定义
-\[H^{-1}(\Omega)=(H_0^1(\Omega))^*,\qquad
- \lVert f\rVert_{H^{-1}}=\sup_{\lVert\nabla v\rVert_2\le1}|\langle f,v\rangle|.
-\]
-这是本章使用的 \term[fujie-sobolev-kongjian]{负阶 Sobolev 空间}[negative-order Sobolev space]的第一种情形。换成全 \(H^1\) 范数会得到等价的对偶范数；连续对偶中的元素不变，但下面的精确范数等式使用的是梯度范数约定。每个对偶元素 \(f\in H^{-1}(\Omega)\) 限制到 \(C_c^\infty(\Omega)\) 都给出分布：对支集落在固定紧集 \(K\Subset\Omega\) 内的 \(\varphi\)，有
-\[
- |\langle f,\varphi\rangle|
- \leq\|f\|_{H^{-1}}\,|K|^{1/2}\sup_K|\nabla\varphi|,
-\]
-所以配对在测试函数拓扑下连续。密度保证这个限制是单射，因此也可以把 \(H^{-1}\) 看作一类分布。
-
-实值函数 \(f\in L^2(\Omega)\) 通过 \(\langle f,v\rangle=\int_\Omega fv\) 进入这个对偶，因为
-\[
- |\langle f,v\rangle|\leq \|f\|_2\|v\|_2
-                 \leq C_P\|f\|_2\|\nabla v\|_2.
-\]
-更一般地，若 \(F\in L^2(\Omega;\mathbb R^d)\)，则
-\(\langle-\operatorname{div}F,v\rangle=\int_\Omega F\cdot\nabla v\)
-在 \(H_0^1\) 上连续，范数不超过 \(\|F\|_2\)。后一个例子并不要求散度本身是一项 \(L^2\) 函数；它只要求给出的测试作用有能量范数上界。
+\subsection{平均值性质}
+\label{b2:subsec:130101}
 
 \Needspace{6\baselineskip}
-\begin{proposition}[负阶数据的通量表示]
-\label{b2:prop:15-negative-representation}
-设整数 \(d\geq1\)，\(\Omega\subset\mathbb R^d\) 为非空有界开集，\(H_0^1(\Omega;\mathbb R)\) 取梯度内积，\(H^{-1}(\Omega)=(H_0^1(\Omega;\mathbb R))^*\) 取对偶范数
-\(\|f\|_{H^{-1}}=\sup_{\|\nabla v\|_2\leq1}|\langle f,v\rangle|\)。
-对每个 \(f\in H^{-1}(\Omega)\)，存在唯一 \(w\in H_0^1(\Omega;\mathbb R)\) 使
+\begin{theorem}[调和函数的平均值性质]\label{b2:thm:13-mean-value}
+设整数 \(d\geq1\)，\(\Omega\subset\mathbb R^d\) 开、\(a\in\Omega\)、\(R>0\)。若实值或复值函数 \(u\) 在 \(\Omega\) 上调和，且 \(\overline{B(a,R)}\subset\Omega\)，则对 \(0<r\leq R\)，有
 \[
- \langle f,v\rangle=\int_\Omega\nabla w\cdot\nabla v\,\mathrm dx
- \qquad(v\in H_0^1(\Omega;\mathbb R)).
+ u(a)=\dfrac1{\sigma_{d-1}r^{d-1}}\int_{\partial B(a,r)}u\,\mathrm{d}S
+ =\dfrac1{\omega_dr^d}\int_{B(a,r)}u\,\mathrm{d}x.
 \]
-因而 \(F_0=\nabla w\in L^2(\Omega;\mathbb R^d)\) 是 \(f=-\operatorname{div}F_0\) 的通量表示，且
-\(\|F_0\|_2=\|f\|_{H^{-1}}\)。
-任一其他通量表示恰为 \(F=F_0+G\)，其中 \(G\in L^2(\Omega;\mathbb R^d)\)、\(\operatorname{div}G=0\) 于 \(\mathcal D'(\Omega)\)，并满足
-\[
- \|F\|_2^2=\|F_0\|_2^2+\|G\|_2^2.
-\]
-特别地，\(F_0\) 是所有通量表示中唯一的最小 \(L^2\) 范数表示。
-\end{proposition}
+\end{theorem}
 \begin{proof}
-Poincaré 不等式使梯度内积给出完备的 Hilbert 空间。直接在这个空间上应用第一卷定理8.4.7的 Riesz 表示，得到唯一 \(w\) 及所列配对，且
+将球面平均写到固定单位球面上，记
 \[
- \|f\|_{H^{-1}}=\|w\|_{H_0^1}=\|\nabla w\|_2.
+ M(r)=\dfrac1{\sigma_{d-1}}\int_{\partial B(0,1)}u(a+r\theta)\,\mathrm{d}S_\theta.
 \]
-取 \(F_0=\nabla w\) 就得到通量表示；这一步只使用 Hilbert 空间的表示定理，不预用后面尚未建立的 Lax--Milgram 定理。
-
-若 \(F\) 也表示 \(f\)，则 \(G=F-F_0\) 满足
-\(\int_\Omega G\cdot\nabla v=0\) 对全部 \(v\in H_0^1\) 成立。特别取紧支集光滑 \(v\)，便知 \(\operatorname{div}G=0\) 于分布意义。反过来，若 \(G\in L^2\) 的分布散度为零，等式先对紧支集测试函数成立；由于其左端对梯度范数连续，密度使它对全部 \(H_0^1\) 成立，所以 \(F_0+G\) 仍表示 \(f\)。最后取 \(v=w\)，有 \(\int_\Omega G\cdot F_0=0\)，展开平方即得范数恒等式；等号 \(\|F\|_2=\|F_0\|_2\) 当且仅当 \(G=0\)，证明最小范数表示的唯一性。
+对固定的紧半径区间可在积分下求导。换回半径为 \(r\) 的球面，再用散度定理，得到
+\[
+ M'(r)=\dfrac1{\sigma_{d-1}r^{d-1}}
+          \int_{\partial B(a,r)}\partial_\nu u\,\mathrm{d}S
+       =\dfrac1{\sigma_{d-1}r^{d-1}}\int_{B(a,r)}\Delta u\,\mathrm{d}x=0.
+\]
+所以 \(M\) 为常数，而 \(r\downarrow0\) 时由连续性有 \(M(r)\to u(a)\)，得到球面公式。最后用极坐标沿 \(0<s<r\) 积分，球内积分等于 \(\int_0^r\sigma_{d-1}s^{d-1}u(a)\,\mathrm{d}s=\omega_dr^du(a)\)。
 \end{proof}
 
-因此负阶数据确定的是通量的散度；最小范数准则才从所有通量中选出梯度通量。可以自由叠加的 \(G\) 与全部零边界梯度正交，但这个条件只等价于分布散度为零，不能在未定义法向迹时再解释为逐点零法向通量。
-
-这个空间也确实容纳比函数更粗糙的数据，但是否容纳点源取决于维数。以下直接检查点值泛函；所需的不是“点质量是分布”，而是它对能量范数连续。
+这个\term[pingjunzhi-xingzhi]{平均值性质}[mean-value property]不含导数，因而也可以反过来用于识别调和性。
 
 \Needspace{6\baselineskip}
-\begin{proposition}[点质量与能量对偶]\label{b2:prop:15-point-mass-dimension}
-设整数 \(d\geq1\)，\(\Omega\subset\mathbb R^d\) 为非空有界开集，\(H^{-1}(\Omega)\) 表示实空间 \(H_0^1(\Omega;\mathbb R)\) 在梯度范数下的连续对偶。对 \(x_0\in\Omega\)，点质量分布定义为 \(\langle\delta_{x_0},\varphi\rangle=\varphi(x_0)\)、\(\varphi\in C_c^\infty(\Omega)\)。若 \(d=1\)、\(\Omega=I=(a,b)\) 为有限开区间，则 \(\delta_{x_0}\in H^{-1}(I)\)；若 \(d\geq2\)，则 \(\delta_{x_0}\notin H^{-1}(\Omega)\)。
+\begin{proposition}[平均值性质的逆命题]\label{b2:prop:13-converse-mean}
+设整数 \(d\geq1\)，\(\Omega\subset\mathbb R^d\) 为开集，\(\mathbb K\in\{\mathbb R,\mathbb C\}\)，\(u\in C(\Omega;\mathbb K)\)。若每个闭球包含于 \(\Omega\) 时，球面平均均等于中心值，则 \(u\) 光滑且调和。若 \(u\) 连续并在分布意义下满足 \(\Delta u=0\)，也有同样结论。
 \end{proposition}
 \begin{proof}
-在 \(I=(a,b)\) 上，对光滑零边界函数由
-\(\varphi(x_0)=\int_a^{x_0}\varphi'\) 得
-\(|\varphi(x_0)|\leq\sqrt{b-a}\|\varphi'\|_2\)。密度把点值泛函延拓到 \(H_0^1(I)\)，其值与绝对连续代表的点值一致：第一卷命题21.4.1给出一维 \(H^1\) 函数的绝对连续代表，而上述增量估计保证零边界光滑逼近的点值趋于该代表的点值。
+取非负径向磨光函数 \(\rho\in C_c^\infty(B(0,1))\)，积分为 \(1\)，并令 \(\rho_\varepsilon(x)=\varepsilon^{-d}\rho(x/\varepsilon)\)。球面平均公式按径向权积分，给出 \(u*\rho_\varepsilon=u\)，只要核的支集不触及边界。对任一闭包包含于 \(\Omega\) 的球，可取同一个小 \(\varepsilon\) 使这一等式在该球附近成立。左侧光滑，故 \(u\) 局部光滑。
 
-高维先平移并缩放一个紧含于 \(\Omega\) 的球，使观察点为零、球半径为一；这个固定换元只改变范数常数。若 \(d>2\)，取 \(\eta\in C_c^\infty(B(0,1))\)、\(\eta(0)=1\)，令 \(\eta_\varepsilon(x)=\eta(x/\varepsilon)\)。其点值为一，梯度范数平方却是 \(\varepsilon^{d-2}\|\nabla\eta\|_2^2\to0\)。不存在同时控制这些点值的能量常数。
-
-二维的简单缩放使梯度范数不变，须改用较缓的对数过渡。取 \(0<\varepsilon<1/2\)，令径向函数 \(w_\varepsilon\) 在 \(r\leq\varepsilon^2\) 等于一，在 \(\varepsilon^2<r<\varepsilon\) 等于 \(\log(\varepsilon/r)/\log(1/\varepsilon)\)，在 \(r\geq\varepsilon\) 等于零。它连续、分段光滑，且
+现在对 \(u(a+r\theta)\) 作二阶 Taylor 展开。球面上 \(\theta_j\) 的平均为零，\(\theta_i\theta_j\) 在 \(i\ne j\) 时平均为零，\(\theta_j^2\) 的平均为 \(1/d\)。因此球面平均为
 \[
- \|\nabla w_\varepsilon\|_2^2
- =\frac{2\pi}{\log(1/\varepsilon)^2}
-   \int_{\varepsilon^2}^{\varepsilon}\frac{\mathrm dr}{r}
- =\frac{2\pi}{\log(1/\varepsilon)}\longrightarrow0.
+ u(a)+\dfrac{r^2}{2d}\Delta u(a)+o(r^2).
 \]
-以非负单位质量磨光核在半径小于 \(\varepsilon^2/2\) 的尺度卷积，得到光滑紧支集函数：中心邻域仍恒为一，支集仍在单位球内，Young 不等式使梯度范数不增。因此光滑测试函数同样违反 \(|\varphi(0)|\leq C\|\nabla\varphi\|_2\)。这正是否定点质量属于对偶所需的结论。
+它恒等于 \(u(a)\)，除以 \(r^2\) 再令 \(r\downarrow0\) 可得 \(\Delta u(a)=0\)。
+
+若起初只知分布方程，内部磨光 \(u_\varepsilon=u*\rho_\varepsilon\) 满足经典方程 \(\Delta u_\varepsilon=0\)，因为分布求导与磨光交换。连续性保证 \(u_\varepsilon\to u\) 在紧集上一致成立。对任意固定内部闭球，令 \(\varepsilon\downarrow0\)，便将 \(u_\varepsilon\) 的球面平均公式传给 \(u\)，再应用前半部分。
 \end{proof}
-一维点源的精确范数将在习题中进一步计算；高维的替代训练则计算小球平均源的能量如何发散。\Cref{b2:tab:15-source-classes}把本节已证的源项范围放在一起，便于应用后面的存在性定理前先核对数据。
 
-\begin{table}[htbp]
-\centering
-\small
-\caption[四类源项与能量对偶]{四类源项与能量对偶。固定整数 \(d\geq1\) 和非空有界开集 \(\Omega\subset\mathbb R^d\)，所有空间取实数域，\(H^{-1}(\Omega)=(H_0^1(\Omega;\mathbb R))^*\) 使用梯度对偶范数，\(C_P\) 为 \(\Omega\) 的零边界 Poincaré 常数。点质量两行另按所列维数和位置取数据；结论均已在正文证明。}
-\label{b2:tab:15-source-classes}
-\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{3.8cm}>{\centering\arraybackslash}p{1.5cm}>{\raggedright\arraybackslash}X@{}}
-\toprule
-数据形式及条件 & 属于 \(H^{-1}\) & 连续性估计或障碍 \\
-\midrule
-\(f\in L^2(\Omega)\) & 是 & \(\|f\|_{H^{-1}}\leq C_P\|f\|_2\)，使用零边界 Poincaré 不等式 \\
-\(-\operatorname{div}F\)，\(F\in L^2(\Omega;\mathbb R^d)\) & 是 & \(\|-\operatorname{div}F\|_{H^{-1}}\leq\|F\|_2\)；不要求散度是普通函数 \\
-\(d=1\)，\(\Omega=(a,b)\)，\(a<s<b\) 时的 \(\delta_s\) & 是 & \(|v(s)|\leq\sqrt{b-a}\|v'\|_2\)，点值取绝对连续代表 \\
-\(d\geq2\)，\(x_0\in\Omega\) 时的 \(\delta_{x_0}\) & 否 & 测试函数点值固定为一，梯度能量可趋零；高于二维用缩放，二维用对数截断 \\
-\bottomrule
-\end{tabularx}
-\end{table}
+球面平均与球内平均的归一化不可混用。若将球面的未归一化面积积分直接视为平均，会额外带入 \(\sigma_{d-1}r^{d-1}\)。同样，平均值性质针对整个小球而非某个坐标方向；只要求每条坐标线上的中点值等于端点平均，得到的是另一种更强且不同的条件。
 
-后面的零 Dirichlet 弱存在性定理只适用于已核验属于 \(H^{-1}\) 的数据，不能把任意点源自动代入；点质量的分布意义本身并不提供能量对偶中的连续性。
+有时只知道每个中心附近的平均性质，允许使用的半径还随中心变化。这比刚才对全部内部球的假设弱，不能直接为整个邻域选定同一个卷积尺度。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[局部平均值性质的逆命题]\label{b2:prop:13-local-converse-mean}
+设整数 \(d\geq1\)，\(\Omega\subset\mathbb R^d\) 为开集，\(\mathbb K\in\{\mathbb R,\mathbb C\}\)，\(u\in C(\Omega;\mathbb K)\)。若对每个 \(a\in\Omega\)，存在 \(r_a>0\)，使 \(\overline{B(a,r_a)}\subset\Omega\)，并且对所有 \(0<r<r_a\) 有
+\[
+ u(a)=\frac1{\sigma_{d-1}r^{d-1}}
+           \int_{\partial B(a,r)}u\,\mathrm{d}S,
+ \qquad \sigma_{d-1}=|S^{d-1}|,
+\]
+则 \(u\) 在 \(\Omega\) 内光滑且调和。
+\end{proposition}
+
+证明延后至\subsecref{b2:subsec:13-ball-boundary}，在那里先建立球上连续 Dirichlet 问题的解，再用它将局部均值性质推广到全部内部球。本节此前已经证明的\cref{b2:prop:13-converse-mean}不需要这一步构造。
+
+\subsection{最大值原理}
+\label{b2:subsec:130102}
+
+\Needspace{6\baselineskip}
+\begin{theorem}[调和函数的强最大值原理]\label{b2:thm:13-strong-maximum}
+设整数 \(d\geq1\)，\(\Omega\subset\mathbb R^d\) 为连通开集，\(u\) 为 \(\Omega\) 上的实值调和函数。若 \(u\) 在 \(\Omega\) 内达到它在该区域上的最大值或最小值，则 \(u\) 为常数。
+\end{theorem}
+\begin{proof}
+设最大值 \(M\) 在 \(a\) 处达到。对一个内部小球，非负连续函数 \(M-u\) 的球内平均为零，所以它在整个球上为零：若某点取正值，连续性会给出一个正测度区域，其积分为正。故集合 \(\{u=M\}\) 在 \(\Omega\) 中开；由连续性它也闭，且非空。连通性使它等于 \(\Omega\)。最小值情形对 \(-u\) 使用同一论证。
+\end{proof}
+
+这项\term[diaohe-qiang-zuidazhi-yuanli]{调和函数强最大值原理}[strong maximum principle for harmonic functions]中的“达到”不能改成只有有限上确界。例如 \(u(x_1,x_2)=e^{x_1}\cos x_2\) 在半平面 \(x_1<0\) 上调和且有界，上确界为 \(1\)，却不在内部达到。连通性也不可省去，否则不同连通分支可以取不同常数。
+
+\Needspace{6\baselineskip}
+\begin{corollary}[边界最大值与比较]\label{b2:cor:13-boundary-maximum}
+设整数 \(d\geq1\)，\(\Omega\subset\mathbb R^d\) 为非空有界开集，实值 \(u\in C(\overline\Omega)\) 在 \(\Omega\) 内调和，则
+\[
+ \min_{\partial\Omega}u\leq u(x)\leq\max_{\partial\Omega}u.
+\]
+若两个这样的调和函数在边界满足 \(u\leq v\)，则区域内也满足 \(u\leq v\)。
+\end{corollary}
+\begin{proof}
+连续函数在紧集 \(\overline\Omega\) 上达到最大值。若它严格超过边界最大值，只能在某个内部连通分支达到；强最大值原理使函数在该分支恒定，沿分支内点趋于其边界便与边界条件矛盾。对 \(-u\) 得到下界，对 \(u-v\) 得到比较结论。这里不需要边界光滑。
+\end{proof}
+
+复值调和函数也有模的最大值原理。若 \(|u|\leq M\) 且 \(|u(a)|=M\)，选单位复数 \(c\) 使 \(cu(a)=M\)。实值调和函数 \(\operatorname{Re}(cu)\leq M\) 在内部达到最大值，故恒为 \(M\)；再由 \(|cu|\leq M\) 得虚部为零。于是 \(u\) 为常数。实函数的大小比较和复函数的模比较应分别使用，不能把复数直接放进大小不等式。
+
+\subsection{Harnack 不等式}
+\label{b2:subsec:130103}
+
+最大值原理比较内部和边界。若函数非负，则平均值性质还可以比较两个内部点，而无需事先知道边界数据。
+
+\Needspace{6\baselineskip}
+\begin{lemma}\label{b2:lem:13-local-harnack}
+设整数 \(d\geq1\)，\(a\in\mathbb R^d\)、\(R>0\)，实值 \(u\ge0\) 在 \(B(a,R)\) 上调和。当 \(|x-a|\leq R/4\) 时，
+\[
+ 2^{-d}u(a)\leq u(x)\leq(3/2)^d u(a).
+\]
+\end{lemma}
+\begin{proof}
+包含关系 \(B(a,R/4)\subset B(x,R/2)\subset B(a,3R/4)\) 与非负性给出两个积分比较。对三只球分别使用平均值性质，再除以 \(|B(x,R/2)|\)，即得体积比 \(2^{-d}\) 与 \((3/2)^d\)。所有闭球都留在调和域内部，端点情形可由稍缩半径后取极限得到。
+\end{proof}
+
+\Needspace{6\baselineskip}
+\begin{theorem}[Harnack]\label{b2:thm:13-harnack}
+设整数 \(d\geq1\)，\(a\in\mathbb R^d\)、\(R>0\)。若实值 \(u\ge0\) 在 \(B(a,R)\) 上调和，\(0<r<R\)，则存在只依赖 \(d,r/R\) 的常数 \(C\)，使
+\[
+ \sup_{B(a,r)}u\leq C\inf_{B(a,r)}u.
+\]
+更一般地，若 \(\Omega\subset\mathbb R^d\) 为连通开集、实值 \(u\ge0\) 在 \(\Omega\) 上调和、\(K\Subset\Omega\)，则存在只依赖 \(K,\Omega\) 的相同类型比较常数。
+\end{theorem}
+\begin{proof}
+连接内球中两点的线段完全留在内球。令 \(\delta=R-r\)，将线段分成长度至多 \(\delta/4\) 的有限段；每个分点为中心的半径 \(\delta\) 开球都在原域内。逐段使用局部引理，一步的双向比较均可用 \(2^d\) 控制，段数至多 \(\lceil8r/\delta\rceil+1\)。连乘即得只依赖半径比的常数，最后对两点分别取上、下确界。
+
+一般连通开集中的两点可以用域内折线连接：从一个固定点可用折线到达的集合在域中既开又闭，因此是全域。每条有限折线与边界保持正距离，可以被有限条上述小球链覆盖。对紧集 \(K\)，再选有限个终端小球覆盖它，合并有限条连接链，便得到对全部 \(K\) 统一的常数。比较只用于非负函数，故每次积分包含关系都保留方向。
+\end{proof}
+
+这称为\term[harnack-budengshi]{Harnack 不等式}[Harnack's inequality]。非负条件是实质性的：函数 \(u(x)=x_1\) 调和，但一个包含原点的球中同时有正、负值，不满足这种正比例比较。对非负调和函数，如果在一点取零，Harnack 或强最小值原理都会使它在整个连通域为零。
+
+\Needspace{6\baselineskip}
+\begin{corollary}[Harnack 收敛原理]\label{b2:cor:13-harnack-convergence}
+设整数 \(d\geq1\)，\(\Omega\subset\mathbb R^d\) 为连通开集，\((u_n)\) 为 \(\Omega\) 上逐点递增的实值调和函数列，\(a\in\Omega\)。若 \(u_n(a)\) 在某一点有有限上界，则 \(u_n\) 在每个紧集上一致收敛到调和函数；若该点的值趋于 \(+\infty\)，则在每个紧集上一致趋于 \(+\infty\)。
+\end{corollary}
+\begin{proof}
+第一种情形中，对 \(m>n\) 将 Harnack 应用于非负函数 \(u_m-u_n\)。它在紧集上的上确界由常数乘 \(u_m(a)-u_n(a)\) 控制，故为一致 Cauchy 列。极限连续，球面平均公式按局部一致极限保留，由已证明的\cref{b2:prop:13-converse-mean}知极限调和。第二种情形对 \(u_n-u_1\) 作反向的紧集比较，其下确界随 \(u_n(a)-u_1(a)\) 趋于无穷。
+\end{proof}
+
+\subsection{内部正则性与 Liouville 定理}
+\label{b2:subsec:130104}
+
+\Needspace{6\baselineskip}
+\begin{proposition}[内部导数估计]\label{b2:prop:13-interior-derivatives}
+设整数 \(d\geq1\)，\(a\in\mathbb R^d\)、\(R>0\)，实值或复值 \(u\) 在 \(B(a,2R)\) 上调和，则对每个多重指标 \(\alpha\)，
+\[
+ \sup_{B(a,R)}|\partial^\alpha u|
+ \leq C_{d,\alpha}R^{-d-|\alpha|}\int_{B(a,2R)}|u|\,\mathrm{d}x.
+\]
+\end{proposition}
+\begin{proof}
+先将球面平均按径向磨光权积分。对 \(x\in B(a,R)\)，有 \(u(x)=\int\rho_R(x-y)u(y)\,\mathrm{d}y\)，核支集限于 \(B(a,2R)\)。将导数移到光滑核，\(\|\partial^\alpha\rho_R\|_\infty=R^{-d-|\alpha|}\|\partial^\alpha\rho\|_\infty\)，得到所求估计。等式本身也再次证明了调和函数的任意阶光滑性。
+\end{proof}
+
+\Needspace{6\baselineskip}
+\begin{proposition}[局部可积调和函数的代表]\label{b2:prop:13-harmonic-l1-representative}
+设整数 \(d\geq1\)，\(\Omega\subset\mathbb R^d\) 为开集，\(\mathbb K\in\{\mathbb R,\mathbb C\}\)。若 \(h\in L^1_{\mathrm{loc}}(\Omega;\mathbb K)\)，且 \(\Delta h=0\) 在分布意义下成立，则 \(h\) 有唯一的光滑调和代表。因而内部导数估计也适用于这个代表，右端仍使用原等价类的绝对积分。
+\end{proposition}
+\begin{proof}
+固定 \(\overline{B(a,3R)}\subset\Omega\)，用半径 \(\varepsilon<R/2\) 的磨光核构造 \(h_\varepsilon\)。分布求导与卷积交换，所以 \(h_\varepsilon\) 在 \(B(a,2R)\) 上光滑且调和。局部的 \(L^1\) 逼近恒等给出 \(h_\varepsilon\to h\) 于 \(L^1(B(a,2R))\)。对两个磨光尺度之差使用内部估计，得到
+\[
+ \sup_{B(a,R)}|\partial^\alpha(h_\varepsilon-h_\delta)|
+ \leq C_{d,\alpha}R^{-d-|\alpha|}
+       \|h_\varepsilon-h_\delta\|_{L^1(B(a,2R))}\longrightarrow0.
+\]
+因此任意有限阶导数都在内部小球上一致 Cauchy；逐次使用微积分基本定理，极限是光滑函数，其各阶导数正是相应的一致极限。二阶导数收敛使极限仍调和，零阶 \(L^1\) 收敛又将它识别为 \(h\) 的几乎处处代表。
+
+这些内部球覆盖 \(\Omega\)。两个局部代表在重叠处几乎处处相同，而连续函数若在一个开集上几乎处处为零，便处处为零。因此局部代表能够拼合，且光滑代表唯一。最后对任一内部球使用前一命题，代表与 \(h\) 的绝对积分相同，故估计保留。
+\end{proof}
+
+这一步把分布方程与经典调和性连接起来，所用条件只是局部可积性。磨光函数的每个导数虽各自存在，仅有 \(L^1\) 收敛却原本不足以传递导数；真正提供一致控制的是调和函数的内部估计。
+
+\Needspace{6\baselineskip}
+\begin{theorem}[Liouville]\label{b2:thm:13-liouville}
+设整数 \(d\geq1\)，\(\mathbb K\in\{\mathbb R,\mathbb C\}\)，\(u\) 为整个 \(\mathbb R^d\) 上的 \(\mathbb K\) 值调和函数。若 \(u\) 全局有界，则 \(u\) 为常数。实值 \(u\) 只要有全局上界或下界，也必为常数。若存在 \(C>0\) 和非负整数 \(m\)，使全部 \(x\in\mathbb R^d\) 满足 \(|u(x)|\leq C(1+|x|)^m\)，则 \(u\) 为次数不超过 \(m\) 的调和多项式。
+\end{theorem}
+\begin{proof}
+有界情形对任意点使用一阶内部估计，让 \(R\to\infty\)，得到梯度处处为零。若实函数上有界，取 \(v=M-u\geq0\)。内部估计中的绝对积分等于 \(v\) 的积分，而平均值性质给出 \(\int_{B(a,2R)}v=\omega_d(2R)^dv(a)\)。因此 \(|\nabla v(a)|\leq C_dR^{-1}v(a)\to0\)。下有界时改用 \(u-M\)。
+
+在多项式增长条件下，固定 \(a\)，取 \(|\alpha|=m+1\)。内部估计的右侧为 \(O(R^{-1})\)，故全部 \(m+1\) 阶偏导数为零。对连接原点与任意点的线段使用一元 Taylor 公式，余项中的 \(m+1\) 阶方向导数为零，所以 \(u\) 恰等于在原点的 \(m\) 阶 Taylor 多项式。该多项式仍满足原来的调和方程。
+\end{proof}
+
+上述结论统称调和函数的\term[diaohe-liouville]{Liouville 定理}[Liouville's theorem for harmonic functions]。增长条件不能删除，例如 \(x_1\) 是非常数整调和函数；仅有界于某个真子域时也不能套用全空间结论。后面处理半空间唯一性时，必须同时利用边界条件和适当的增长类。

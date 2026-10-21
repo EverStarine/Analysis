@@ -1,0 +1,232 @@
+% !TeX root = ../../Book2.tex
+\section{变系数输运方程}
+\label{b2:sec:0703}
+
+本节把时间依赖、源项和体积变化同时纳入输运。这里 \(d\) 为正整数，\(T>0\)。为避免轨道在有限时间逃离空间，先假定 \(b\in C^1(\mathbb R^d\times[0,T];\mathbb R^d)\)，并有 \(|b(x,t)|\leq C(1+|x|)\)、\(C\geq0\)。局部版本只需把讨论限制在能够返回初始面的轨道邻域中。
+
+\subsection{时空特征线}
+\label{b2:subsec:070301}
+
+把从时刻 \(s\) 的位置 \(a\) 出发的轨道记为 \(X(t;s,a)\)，即
+\[
+ \partial_tX(t;s,a)=b\bigl(X(t;s,a),t\bigr),\quad X(s;s,a)=a.
+\]
+扩充空间中的向量场 \(B(x,t)=(b(x,t),1)\) 是自治的。对 \(B\) 应用\cref{b2:thm:07-local-ode}与\cref{b2:thm:07-flow-derivative}，再以空间线性增长估计延拓，便得到整个 \([0,T]\) 上的轨道及其 \(C^1\) 依赖。特别地，时间坐标严格按单位速度增加，故轨道与每个等时面恰相交一次。
+\symidx{\(X(t;s,a)\)：从时刻 \(s\)、位置 \(a\) 出发的轨道}
+
+\ProseParagraphBreak
+
+唯一性给出的复合关系现在是
+\[
+ X(t;r,X(r;s,a))=X(t;s,a),\quad
+ X(s;t,X(t;s,a))=a.
+\]
+中间时刻不能省略：一般没有仅由 \(t-s\) 决定的单参数流。固定终点 \((x,t)\) 后，曲线 \(r\mapsto X(r;t,x)\) 描述该粒子的过去，初始位置为 \(X(0;t,x)\)。例如 \(b(x,t)=t x\) 时，
+\[
+ X(t;s,a)=\exp\left(\frac{t^2-s^2}{2}\right)a;
+\]
+从 \(s=0\) 走一个单位时间与从 \(s=1\) 走一个单位时间，伸缩比例不同。
+
+\begin{proposition}[速度扰动的轨道估计]\label{b2:prop:07-speed-stability}
+设 \(d\) 为正整数，\(T>0\)，\(L,\delta\geq0\)，\(b,\widetilde b\in C^1(\mathbb R^d\times[0,T];\mathbb R^d)\) 满足 \(|b(x,t)|+|\widetilde b(x,t)|\leq C(1+|x|)\)（某个 \(C\geq0\)），从 \((a,s)\)、\(a\in\mathbb R^d\) 出发的轨道分别记为 \(X,\widetilde X\)，\(s,t\in[0,T]\)，并且
+\[
+ \sup_{x,t}\|D_xb(x,t)\|\leq L,
+ \quad\sup_{x,t}|b(x,t)-\widetilde b(x,t)|\leq\delta.
+\]
+则从同一时刻、同一点出发的两条轨道满足
+\[
+ |X(t;s,a)-\widetilde X(t;s,a)|
+ \leq\delta|t-s|e^{L|t-s|}.
+\]
+\end{proposition}
+\begin{proof}
+将两条轨道方程相减，在速度差中加减 \(b(\widetilde X,r)\)。中值估计和速度差界给出，若 \(t\geq s\)，
+\[
+ |X(t)-\widetilde X(t)|
+ \leq L\int_s^t|X(r)-\widetilde X(r)|\,\mathrm{d}r+\delta(t-s).
+\]
+对一个固定终点 \(t\)，把右侧最后一项在整个 \([s,t]\) 上放大为常数 \(\delta(t-s)\)，Gronwall 给出所述界。反向时间对反向速度应用相同论证，所以 \(t<s\) 也成立。
+\end{proof}
+
+若同一初值 \(g\in C^1(\mathbb R^d;\mathbb C)\) 有全空间 Lipschitz 常数 \(M\)，分别以这两个速度场求解 \(u_t+b\cdot\nabla u=0\) 与 \(\widetilde u_t+\widetilde b\cdot\nabla\widetilde u=0\)，便有 \(\|u(\cdot,t)-\widetilde u(\cdot,t)\|_\infty\leq M\delta t e^{Lt}\)、\(0\leq t\leq T\)。这里没有源项或零阶项；对终点固定的两条回溯轨道使用命题，再将它们的初始位置代入 \(g\)。例如常速度增加 \(\varepsilon\) 时，相同图形的位置误差为 \(\varepsilon t\)。若初始图形有跳跃，平移再小也可能在上确界范数中产生大小为一的误差；速度稳定性和选择何种数据范数必须同时考虑。
+
+\subsection{源项}
+\label{b2:subsec:070302}
+
+\begin{theorem}\label{b2:thm:07-variable-transport}
+设 \(d\) 为正整数，\(T>0\)，\(b\in C^1(\mathbb R^d\times[0,T];\mathbb R^d)\)，且 \(|b(x,t)|\leq C(1+|x|)\) 对某个 \(C\geq0\) 成立。记 \(X(t;s,a)\) 为 \(\partial_tX=b(X,t)\)、\(X(s;s,a)=a\) 的轨道。设 \(c,f\in C^1(\mathbb R^d\times[0,T];\mathbb C)\)、\(g\in C^1(\mathbb R^d;\mathbb C)\)。初值问题
+\[
+ u_t+b\cdot\nabla u+c\cdot u=f,\quad u(x,0)=g(x)
+\]
+存在唯一的经典解 \(u\in C^1(\mathbb R^d\times[0,T];\mathbb C)\)。记
+\[
+ E(t,r;x)=\exp\left(-\int_r^t c(X(q;t,x),q)\,\mathrm dq\right),
+\]
+则解为
+\begin{equation}\label{b2:eq:07-variable-transport}
+ u(x,t)=E(t,0;x)\cdot g(X(0;t,x))
+ +\int_0^tE(t,r;x)\cdot f(X(r;t,x),r)\,\mathrm dr.
+\end{equation}
+\end{theorem}
+\begin{proof}
+固定 \(a\)，令 \(v(t)=u(X(t;0,a),t)\)，则链式法则把原方程变成
+\[
+ v'(t)+c(X(t;0,a),t)\cdot v(t)=f(X(t;0,a),t),\quad v(0)=g(a).
+\]
+用积分因子求解，再令 \(a=X(0;t,x)\)，即得\eqref{b2:eq:07-variable-transport}。因每条轨道的标量方程唯一，原方程也至多有一个经典解。
+
+反过来，所给公式在紧时空集合上由 \(C^1\) 函数的复合及有限区间积分组成。轨道的连续性使相应轨道集合紧致，因此被积函数及一阶导数均有局部共同界，积分求导合法。沿 \(X(t;0,a)\) 拉回该公式时，复合关系把每条历史轨道化为 \(X(r;0,a)\)，于是恢复刚才的积分因子公式，得到方程和初值。
+\end{proof}
+
+若 \(c\) 为实值且 \(c\geq0\)，因子 \(E\) 介于 \(0\) 与 \(1\) 之间。对于非负实值初值和源项，解始终非负；对于有界复值数据，
+\[
+ \|u(\cdot,t)\|_\infty\leq\|g\|_\infty
+ +\int_0^t\|f(\cdot,r)\|_\infty\,\mathrm dr.
+\]
+对一般复值 \(c\)，若存在 \(C_0\geq0\) 使 \(\operatorname{Re}c\geq-C_0\)，则 \(|E(t,r;x)|\leq e^{C_0(t-r)}\)，只需在上述上界右端补上 \(e^{C_0t}\)。这类估计还可用于两组数据之差，给出固定速度和零阶系数下的稳定性；两种上界均要求右侧的数据范数积分有限。源项按轨道积分，而零阶项以指数积累，二者对解的作用不同。
+
+\subsection{支集传播}
+\label{b2:subsec:070303}
+
+在齐次情形 \(f=0\) 中，指数因子永不为零，因而
+\begin{equation}\label{b2:eq:07-support-flow}
+ \operatorname{supp}u(\cdot,t)
+ =X(t;0,\operatorname{supp}g).
+\end{equation}
+这是闭支集的等式：流是全空间的同胚，它把非零点集合映为非零点集合，也把闭包映为闭包。
+
+\ProseParagraphBreak
+
+有源项时，各时刻产生的数值继续沿轨道传播，但不同来源之间可能抵消。由表示公式只能断言
+\[
+ \operatorname{supp}u(\cdot,t)\subseteq
+ \overline{X(t;0,\operatorname{supp}g)
+ \cup\bigcup_{0\leq r\leq t}X(t;r,\operatorname{supp}f(\cdot,r))}.
+\]
+为核对这一包含，取右侧闭集之外一点及一个与它不交的小邻域。每个邻近终点的回溯轨道都避开初始支集与全部源项支集，表示公式的每一项因此都为零。闭包不能随意去掉，因为不同时间的支集之并一般不闭。
+
+\begin{proposition}\label{b2:prop:07-finite-speed}
+设 \(d\) 为正整数，\(T>0\)，固定速度场 \(b\in C^1(\mathbb R^d\times[0,T];\mathbb R^d)\) 和零阶系数 \(c\in C^1(\mathbb R^d\times[0,T];\mathbb C)\)。设 \(M\geq0\) 且 \(|b(x,t)|\leq M\)，记 \(X(t;s,a)\) 为 \(\partial_tX=b(X,t)\)、\(X(s;s,a)=a\) 的轨道。则对 \(s,t\in[0,T]\)、\(a\in\mathbb R^d\)，有 \(|X(t;s,a)-a|\leq M|t-s|\)。
+
+对 \(j=1,2\)，取 \(g_j\in C^1(\mathbb R^d;\mathbb C)\)、\(f_j\in C^1(\mathbb R^d\times[0,T];\mathbb C)\)，令 \(u_j\in C^1(\mathbb R^d\times[0,T];\mathbb C)\) 为同一组系数下 \((u_j)_t+b\cdot\nabla u_j+cu_j=f_j\)、\(u_j(x,0)=g_j(x)\) 的唯一经典解。对固定的 \((x,t)\in\mathbb R^d\times[0,T]\)，若 \(g_1=g_2\) 在 \(\overline B_{Mt}(x)\) 上成立，且 \(f_1=f_2\) 在回溯圆锥
+\[
+ \{\,(y,r)\mid0\leq r\leq t,\ |y-x|\leq M(t-r)\,\}
+\]
+上成立，则 \(u_1(x,t)=u_2(x,t)\)。因而在固定 \(b,c\) 后，该点的解值仅依赖于初值球内的 \(g\) 和回溯圆锥内的 \(f\)。
+\end{proposition}
+\begin{proof}
+积分轨道方程并取绝对值得到速度界。对每个回溯时刻 \(r\)，该界给出 \(|X(r;t,x)-x|\leq M(t-r)\)，特别是初始位置属于 \(\overline B_{Mt}(x)\)。两解使用同一个流，也使用由同一 \(c\) 决定的积分因子 \(E\)。在\eqref{b2:eq:07-variable-transport}中相减，得到
+\[
+ \begin{aligned}
+ u_1(x,t)-u_2(x,t)
+ &=E(t,0;x)(g_1-g_2)(X(0;t,x))\\
+ &\quad+\int_0^t E(t,r;x)(f_1-f_2)(X(r;t,x),r)\,\mathrm dr=0.
+ \end{aligned}
+\]
+初值项和源项分别因球内和圆锥内的数据相同而为零。
+\end{proof}
+
+实际依赖集通常比这个圆锥小得多：标量输运只读取一条回溯曲线。圆锥的作用是给出不必显式求流的统一上界。线性增长的速度仍保证有限时间的轨道存在，但没有一个对所有起点通用的有限传播速度；例如 \(b(x)=x\) 在远离原点处可以运动得任意快。
+
+\subsection{Jacobi 行列式与质量输运初步}
+\label{b2:subsec:070304}
+
+记
+\[
+ J(t;s,a)\coloneqq\det D_aX(t;s,a).
+\]
+初始时刻 \(J(s;s,a)=1\)。正、逆流的可微性保证导数矩阵一直可逆，所以行列式不能变号。下面的公式进一步说明其大小。
+\symidx{\(J(t;s,a)\)：流对初始位置的 Jacobi 行列式}
+
+\begin{proposition}[Liouville 公式]\label{b2:prop:07-jacobian}
+设 \(d\) 为正整数，\(T>0\)，\(b\in C^1(\mathbb R^d\times[0,T];\mathbb R^d)\)，且 \(|b(x,t)|\leq C(1+|x|)\) 对某个 \(C\geq0\) 成立。记 \(X(t;s,a)\) 为 \(\partial_tX=b(X,t)\)、\(X(s;s,a)=a\) 的轨道。对 \(s,t\in[0,T]\)、\(a\in\mathbb R^d\)，令 \(J(t;s,a)=\det D_aX(t;s,a)\)。
+\begin{equation}\label{b2:eq:07-jacobian}
+ J(t;s,a)=\exp\left(\int_s^t\operatorname{div}_xb(X(r;s,a),r)\,\mathrm dr\right)>0.
+\end{equation}
+\end{proposition}
+\begin{proof}
+令 \(A=D_aX\)、\(B=D_xb(X,t)\)，则可微依赖给出 \(A'=BA\)。对可逆矩阵，行列式的多重线性展开给出
+\(\det(A+H)=\det A\cdot(1+\operatorname{tr}(A^{-1}H)+o(\|H\|))\)。事实上先提出 \(A\)，再展开 \(\det(I+K)\)，所有一次项之和为 \(\operatorname{tr}K\)，其余项至少二次。因此
+\[
+ J'=J\cdot\operatorname{tr}(A^{-1}A')
+ =J\cdot\operatorname{tr}(A^{-1}BA)
+ =J\cdot\operatorname{tr}B.
+\]
+最后一步可由 \(\operatorname{tr}(PQ)=\sum_{i,j}p_{ij}q_{ji}=\operatorname{tr}(QP)\) 验证。解此标量方程，并使用初始值 \(J=1\)，得到结论。
+\end{proof}
+
+这就是流的\term[liouville-gongshi]{Liouville 公式}[Liouville formula]。散度描述局部体积变化率；散度为零的流保持 Lebesgue 体积。密度 \(\rho\) 要抵消体积变化，因此守恒质量的方程应写成\term[lianxuxing-fangcheng]{连续性方程}[continuity equation]
+\begin{equation}\label{b2:eq:07-continuity}
+ \rho_t+\operatorname{div}_x(b\rho)=0,
+ \quad\text{即}\quad
+ \rho_t+b\cdot\nabla\rho+(\operatorname{div}b)\rho=0.
+\end{equation}
+
+\begin{theorem}\label{b2:thm:07-mass-transport}
+设 \(d\) 为正整数，\(T>0\)，\(b\in C^2(\mathbb R^d\times[0,T];\mathbb R^d)\)，\(|b(x,t)|\leq C(1+|x|)\) 对某个 \(C\geq0\) 成立；\(X(t;0,a)\) 为此速度场的轨道，\(J(t;0,a)=\det D_aX(t;0,a)\)。设 \(\rho_0\in C^1(\mathbb R^d;\mathbb C)\)。则初值问题 \(\rho_t+\operatorname{div}_x(b\rho)=0\)、\(\rho(\cdot,0)=\rho_0\) 有唯一的经典解 \(\rho\in C^1(\mathbb R^d\times[0,T];\mathbb C)\)，并满足
+\begin{equation}\label{b2:eq:07-density-jacobian}
+ \rho(X(t;0,a),t)\cdot J(t;0,a)=\rho_0(a).
+\end{equation}
+若 \(\rho_0\) 为非负实值函数，或 \(\rho_0\in L^1(\mathbb R^d;\mathbb C)\)，则对每个 Borel 集 \(E\subseteq\mathbb R^d\) 和 \(t\in[0,T]\)，
+\[
+ \int_{X(t;0,E)}\rho(x,t)\,\mathrm dx=\int_E\rho_0(a)\,\mathrm da.
+\]
+非负情形允许两边为 \(+\infty\)。可积情形还有 \(\|\rho(\cdot,t)\|_1=\|\rho_0\|_1\)。
+\end{theorem}
+\begin{proof}
+因为 \(\operatorname{div}b\in C^1\)，可对\eqref{b2:eq:07-continuity}使用\cref{b2:thm:07-variable-transport}，得到经典解的存在唯一性。沿轨道，\(\rho\) 满足的标量方程与 \(J\) 的方程恰有相反的零阶系数，乘积求导为零，得到\eqref{b2:eq:07-density-jacobian}。对微分同胚 \(a\mapsto X(t;0,a)\) 使用\secref{b2:sec:0102}的换元公式，因为 \(J>0\)，得到积分等式。若初始密度非负，可直接用非负换元；若绝对可积，先对绝对值换元，得到可积性及范数恒等式，再对正、负部或实、虚部分别积分。
+\end{proof}
+
+这里加 \(C^2\) 条件是为了由显式公式得到 \(C^1\) 密度；\cref{b2:prop:07-jacobian}本身只需要 \(b\in C^1\)。对于速度 \(b(x)=x\)，输运标量为 \(u(x,t)=g(e^{-t}x)\)，而守恒密度为 \(\rho(x,t)=e^{-dt}\cdot\rho_0(e^{-t}x)\)。两者的支集作同样的扩张，后者的振幅同时降低。运动几何、所携带的值与密度三者至此有了各自准确的表达式。
+
+\ProseParagraphBreak
+
+\Cref{b2:tab:07-scalar-density}把没有源项时的两种未知量并列比较。表中 \(d\) 为正整数，\(T>0\)，同一实速度场 \(b\in C^2(\mathbb R^d\times[0,T];\mathbb R^d)\) 满足 \(|b(x,t)|\leq C(1+|x|)\)、\(C\geq0\)；记 \(X(t,a)=X(t;0,a)\)、\(J(t,a)=\det D_aX(t;0,a)>0\)。标量初值取 \(g\in C^1(\mathbb R^d;\mathbb C)\)，密度初值取非负的 \(\rho_0\in C^1(\mathbb R^d;\mathbb R)\cap L^1(\mathbb R^d;\mathbb R)\)。表中的“移动区域”是同一群初始粒子 \(E\) 的像 \(X(t,E)\)，其中 \(E\subseteq\mathbb R^d\) 为 Borel 集。
+
+\begin{table}[htbp]
+\centering
+\small
+\renewcommand{\arraystretch}{1.3}
+\caption[输运标量与守恒密度]{输运标量与守恒密度。两列使用同一个流；密度沿轨道的变化抵消了体积因子，标量沿轨道的数值不变则没有这种补偿。}
+\label{b2:tab:07-scalar-density}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{1.5cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\toprule
+ & 输运标量 \(u\) & 守恒密度 \(\rho\) \\
+\midrule
+方程 & \(u_t+b\cdot\nabla u=0\) & \(\rho_t+\operatorname{div}_x(b\rho)=0\) \\
+沿轨道 & \(u(X(t,a),t)=g(a)\) & \(\rho(X(t,a),t)J(t,a)=\rho_0(a)\) \\
+\(b(x)=x\) & \(u(x,t)=g(e^{-t}x)\) & \(\rho(x,t)=e^{-dt}\rho_0(e^{-t}x)\) \\
+保持的量 & 每个粒子携带的函数值；总积分或 \(L^p\) 范数即使有限，也不必保持。 & 随流移动区域内的质量：\(\int_{X(t,E)}\rho=\int_E\rho_0\)。总质量及 \(L^1\) 范数不变。 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+移动区域的质量不变，并不表示每个固定观察区域内的质量也不变；粒子仍可穿过固定区域的边界。这一区别不要求移动区域具有光滑边界，质量恒等式已经由换元对所有 Borel 集给出。
+
+\ProseParagraphBreak
+
+Jacobi 公式同时决定各个积分范数的演化。以下取正整数 \(d\)、\(T>0\)，实速度场 \(b\in C^1(\mathbb R^d\times[0,T];\mathbb R^d)\) 满足 \(|b(x,t)|\leq C(1+|x|)\)、\(C\geq0\)，且 \(c\in C^1(\mathbb R^d\times[0,T];\mathbb R)\)、\(g\in C^1(\mathbb R^d;\mathbb C)\)。对无源问题 \(u_t+b\cdot\nabla u+cu=0\)、\(u(x,0)=g(x)\) 的经典解，沿轨道有
+\[
+ u(X(t;0,a),t)=g(a)\exp\left(-\int_0^tc(X(r;0,a),r)\,\mathrm{d}r\right).
+\]
+对 \(1\leq p<\infty\) 作换元，得到精确式
+\[
+ \|u(\cdot,t)\|_p^p
+ =\int |g(a)|^p\exp\left(\int_0^t
+   (\operatorname{div}b-pc)(X(r;0,a),r)\,\mathrm{d}r\right)\,\mathrm{d}a.
+\]
+若存在实常数 \(D,c_0\)，使整个时空条带上 \(\operatorname{div}b\leq D\)、\(c\geq c_0\)，且 \(g\in L^p(\mathbb R^d;\mathbb C)\)，便有 \(\|u(\cdot,t)\|_p\leq e^{(D/p-c_0)t}\|g\|_p\)。无穷范数不读取体积；若 \(g\in L^\infty\)，直接由表示公式得 \(\|u(\cdot,t)\|_\infty\leq e^{-c_0t}\|g\|_\infty\)。保持同一组 \(b,c\)，在有源情形取 \(f\in C^1(\mathbb R^d\times[0,T];\mathbb C)\)，对每个源时刻用同一换元，再用 Minkowski 不等式，给出
+\[
+ \|u(\cdot,t)\|_p
+ \leq e^{(D/p-c_0)t}\|g\|_p
+ +\int_0^t e^{(D/p-c_0)(t-r)}\|f(\cdot,r)\|_p\,\mathrm{d}r,
+\]
+其中 \(p=\infty\) 按 \(D/p=0\) 解释，并要求右侧有限。
+
+\ProseParagraphBreak
+
+对\cref{b2:thm:07-mass-transport}中 \(b\in C^2\) 所给出的守恒密度，零阶系数是 \(c=\operatorname{div}b\)。它的 \(p\) 次质量因子变为 \((1-p)\operatorname{div}b\)。所以只有 \(p=1\) 对任意体积变化恰好抵消；若 \(1\leq p\leq\infty\)、\(\rho_0\in L^p(\mathbb R^d;\mathbb C)\)，且整个时空条带上 \(|\operatorname{div}b|\leq D\)、\(D\geq0\)，则
+\[
+ \|\rho(\cdot,t)\|_p\leq e^{(1-1/p)Dt}\|\rho_0\|_p.
+\]
+对于 \(b(x)=x\)，还可直接算出 \(\|\rho(\cdot,t)\|_p=e^{-d(1-1/p)t}\|\rho_0\|_p\)，而输运标量的范数为 \(e^{dt/p}\|g\|_p\)。同一流对不同物理量产生不同范数变化，不能把所有输运都当成保持每个 \(L^p\) 范数的平移。

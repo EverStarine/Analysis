@@ -2,100 +2,256 @@
 \section{Cauchy 积分公式}
 \label{b3:sec:0203}
 
-积分为零的结论本身不直接给出点值。把函数除以 \(\zeta-z\)，就产生一个受控奇点；围道留下的贡献恰好是被求的函数值。第一章的圆盘公式因此可以扩展为较一般的边界表示。
+积分定理消去全纯被积函数的闭路积分。要从边界恢复内部一点 \(z\) 的函数值，就把被积函数改成 \(f(\zeta)/(\zeta-z)\)：它在 \(z\) 处留下一个不能消去的贡献。这个贡献可以压缩到任意小的圆周，再由连续性算出。本节先说明一般边界的消边步骤，随后研究对积分中的内部变量求导，以及由此产生的定量估计。
 
 \subsection{基本公式}
 \label{b3:subsec:020301}
 
-\begin{theorem}[Cauchy 积分公式]\label{b3:thm:02-cauchy-formula}
-设 \(V\) 是有界单连通区域，其边界是一条正向分段光滑 Jordan 曲线，\(f\) 在 \(\overline V\) 的一个开邻域上全纯。则对 \(z\in V\)，
+前节的同伦证明适用于连续变形，不必预先给区域剖分。这里处理实际的区域边界时，使用多元微积分中的平面 Green 公式。所需版本如下：若 \(W\) 是有界平面区域，边界由有限条互不相交的分段光滑 Jordan 曲线组成，实函数 \(P,Q\) 在 \(\overline W\) 的开邻域为 \(C^1\)，则
 \[
- f(z)=\frac1{2\pi\mathrm{i}}\int_{\partial V}\frac{f(\zeta)}{\zeta-z}\,\mathrm{d}\zeta.
+ \int_{\partial W}P\,\mathrm{d}x+Q\,\mathrm{d}y
+ =\iint_W(Q_x-P_y)\,\mathrm{d}x\,\mathrm{d}y.
+\]
+这里 Jordan 曲线指除起终点相同外没有自交的闭曲线。边界取正向，即沿边界行走时区域在左侧；因此外边界逆时针，孔洞边界顺时针。第二卷定理 1.2.4 已给出 \(C^1\) 边界版本；本节采用上面允许分段光滑 Jordan 边界的经典 Green 公式作为实变量微积分先修，下面完整写出它在复积分中的应用。第一章的 Goursat 定理和全纯即解析并未依赖这个公式；此时全纯函数已经具有连续偏导数，才可使用这一版本。
+% 跨卷背景定位：Book2/Part01/Chapter01/Section0102.tex，b2:thm:01-vector-green-plane，当前定理1.2.4；该处只承担C1边界版，不冒称已证明本节全部分段光滑Jordan边界版。
+
+\Needspace{6\baselineskip}
+\begin{lemma}[区域边界上的 Cauchy 定理]\label{b3:lem:02-cauchy-boundary}
+设 \(W\subseteq\mathbb C\) 是有界区域，边界由有限条互不相交的分段光滑 Jordan 曲线组成，均按区域在左侧定向。若 \(h\) 在 \(\overline W\) 的一个开邻域上全纯，则
+\[
+ \int_{\partial W}h(\zeta)\,\mathrm{d}\zeta=0,
+\]
+其中左端表示沿所有边界分支的积分之和。
+\end{lemma}
+\begin{proof}
+写 \(h=u+\mathrm{i}v\)、\(\zeta=x+\mathrm{i}y\)。第一章的解析性定理保证 \(u,v\) 为 \(C^1\)，而 Cauchy--Riemann 方程给出 \(u_x=v_y\)、\(u_y=-v_x\)。展开微分式并分别应用实 Green 公式，有
+\[
+ \begin{aligned}
+ \int_{\partial W}h(\zeta)\,\mathrm{d}\zeta
+ &=\int_{\partial W}(u\,\mathrm{d}x-v\,\mathrm{d}y)
+   +\mathrm{i}\int_{\partial W}(v\,\mathrm{d}x+u\,\mathrm{d}y)\\
+ &=\iint_W(-v_x-u_y)\,\mathrm{d}x\,\mathrm{d}y
+   +\mathrm{i}\iint_W(u_x-v_y)\,\mathrm{d}x\,\mathrm{d}y=0.
+ \end{aligned}
+\]
+两个面积积分的被积函数分别为零。孔洞的作用已经包含在正向边界的约定中，不需要把内边界遗漏或改成与外边界同向。
+\end{proof}
+
+这一引理允许直接在一个区域内挖去小圆盘。挖去的圆盘应当闭包含于原区域，函数则须在留下的闭区域附近全纯；原来的奇点可以落在挖去部分。
+
+\Needspace{6\baselineskip}
+\begin{theorem}[Cauchy 积分公式]\label{b3:thm:02-cauchy-formula}
+设 \(V\subseteq\mathbb C\) 是有界单连通区域，其边界是一条正向分段光滑 Jordan 曲线，\(f\) 在 \(\overline V\) 的一个开邻域上全纯。则对每个 \(z\in V\)，
+\[
+ f(z)=\frac1{2\pi\mathrm{i}}\int_{\partial V}
+       \frac{f(\zeta)}{\zeta-z}\,\mathrm{d}\zeta.
 \]
 \end{theorem}
 \begin{proof}
-定义 \(g(\zeta)=(f(\zeta)-f(z))/(\zeta-z)\)，并在 \(z\) 处补为 \(f'(z)\)。Taylor 展开说明补后的 \(g\) 全纯。邻域可缩小成包含 \(\overline V\) 的单连通区域，或将边界轻微移入 \(V\) 后取极限；Cauchy 定理给出 \(\int_{\partial V}g=0\)。对于多边形边界，在内部挖去以 \(z\) 为中心的小圆，并用细分三角形消去其余边，得到
-\(\int_{\partial V}(\zeta-z)^{-1}\,\mathrm{d}\zeta=2\pi\mathrm{i}\)。一般分段光滑 Jordan 边界用多边形近似：边界邻域的有限圆盘覆盖可使每段近似与原段相差一个局部原函数的端点差；故两个围道的积分完全相同。将 \(f(\zeta)=f(z)+(\zeta-z)g(\zeta)\) 代回即可。
+固定 \(z\in V\)，选 \(\varepsilon>0\) 使 \(\overline{D(z,\varepsilon)}\subset V\)。函数 \(h(\zeta)=f(\zeta)/(\zeta-z)\) 在挖去这个圆盘后留下的闭区域附近全纯。前一引理给出
+\[
+ \int_{\partial V}\frac{f(\zeta)}{\zeta-z}\,\mathrm{d}\zeta
+ =\int_{|\zeta-z|=\varepsilon}
+       \frac{f(\zeta)}{\zeta-z}\,\mathrm{d}\zeta,
+\]
+右侧的小圆此时取逆时针方向。负号已经在将顺时针内边界移到等式右侧时消去。
+
+小圆的参数式为 \(\zeta=z+\varepsilon e^{\mathrm{i}t}\)、\(0\le t\le2\pi\)，所以右侧等于
+\[
+ \mathrm{i}\int_0^{2\pi}f(z+\varepsilon e^{\mathrm{i}t})\,\mathrm{d}t.
+\]
+它与 \(2\pi\mathrm{i}f(z)\) 的差的模不超过
+\[
+ 2\pi\max_{|\zeta-z|=\varepsilon}|f(\zeta)-f(z)|,
+\]
+由 \(f\) 在 \(z\) 连续而趋于零。左侧不依赖 \(\varepsilon\)，令 \(\varepsilon\downarrow0\) 即得公式。
 \end{proof}
-“在闭区域的邻域全纯”使边界上的积分有定义。若只知道 \(f\) 在 \(V\) 内全纯，仍可在内部小圆上使用公式，却不能直接把任意边界值代入。边界没有光滑性时，应该改用内部围道，而不是默认边界长度有限。
+
+核的大小在小圆上为 \(1/\varepsilon\)，圆长却为 \(2\pi\varepsilon\)，两者抵消后留下有限的点值贡献。因此不能仅因小圆周长趋零就把其积分删去。若将核换成在 \(z\) 附近有界的函数，长度估计才会使这项积分趋于零。
 
 \ProseParagraphBreak
 
-多连通区域的边界表示要保留内边界的方向。以圆环 \(r<|\zeta|<R\) 为例，若函数在闭环邻域全纯，且 \(r<|z|<R\)，则外圆逆时针、内圆顺时针时，两条边界合起来仍给 \(f(z)\)。若坚持两个圆都逆时针，公式中内圆应出现负号：
+“在闭区域的邻域全纯”保证边界积分有定义，也保证挖洞后可以应用 Green 公式。若只知道 \(f\) 在 \(V\) 内全纯，仍可在闭包含于 \(V\) 的小圆盘上使用第一章的公式；在没有边界值或边界长度不受控制时，不能直接把围道推到 \(\partial V\)。例如 \(1/(1-z)\) 在单位圆盘全纯，但单位圆上的被积式在 \(z=1\) 已经没有通常的连续曲线积分意义。
+
+\ProseParagraphBreak
+
+外边界公式也能计算不以所求点为中心的围道。例如在正向矩形
+\(-2<\operatorname{Re}\zeta<2\)、\(-1<\operatorname{Im}\zeta<1\) 的边界上，
 \[
- f(z)=\frac1{2\pi\mathrm{i}}\int_{|\zeta|=R}\frac{f(\zeta)}{\zeta-z}\,\mathrm{d}\zeta-
- \frac1{2\pi\mathrm{i}}\int_{|\zeta|=r}\frac{f(\zeta)}{\zeta-z}\,\mathrm{d}\zeta.
+ \int\frac{e^\zeta}{\zeta-\tfrac12}\,\mathrm{d}\zeta
+ =2\pi\mathrm{i}e^{1/2}.
 \]
-证明可沿一条不经过 \(z\) 的径向线切开圆环，切口两侧相消。对 \(f(\zeta)=1/\zeta\)，内圆贡献不会自动消失；圆环中心不在定义域中，所以不能用单连通区域的一个外边界公式抹掉孔洞。这一表示将在 Laurent 展开的证明中逐项展开。
+这里无需分别计算四条边；被积式在矩形内只有分母指定的一个异常点。若把分母改成 \(\zeta-3\)，被积函数就在整个闭矩形附近全纯，边界积分为零。点是否位于围道内部是公式的一项条件，不能从分母的形式省略。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[圆环上的 Cauchy 公式]\label{b3:prop:02-annulus-cauchy}
+设 \(a\in\mathbb C\)、\(0<r<R<\infty\)，\(f\) 在闭圆环
+\(\{\,\zeta\in\mathbb C:r\le|\zeta-a|\le R\,\}\) 的开邻域上全纯。若 \(r<|z-a|<R\)，则
+\[
+ f(z)=\frac1{2\pi\mathrm{i}}\int_{|\zeta-a|=R}
+       \frac{f(\zeta)}{\zeta-z}\,\mathrm{d}\zeta
+       -\frac1{2\pi\mathrm{i}}\int_{|\zeta-a|=r}
+       \frac{f(\zeta)}{\zeta-z}\,\mathrm{d}\zeta,
+\]
+其中两个圆周都取逆时针方向。
+\end{proposition}
+\begin{proof}
+在圆环内部挖去闭包含于其中的 \(D(z,\varepsilon)\)。对剩余区域使用\cref{b3:lem:02-cauchy-boundary}，外圆的积分减去内圆的积分，等于绕 \(z\) 的逆时针小圆积分。后一积分按前一定理的参数计算趋于 \(2\pi\mathrm{i}f(z)\)，即得结论。
+\end{proof}
+
+取 \(a=0\)、\(f(\zeta)=1/\zeta\)，可以把孔洞项算得很清楚。由于 \(z\ne0\)，
+\[
+ \frac1{\zeta(\zeta-z)}
+ =\frac1z\left(\frac1{\zeta-z}-\frac1\zeta\right).
+\]
+在外圆上，括号中两项的积分都是 \(2\pi\mathrm{i}\)，故整个外圆积分为零。在内圆上，第一项在圆盘附近全纯，积分为零；第二项的积分为 \(2\pi\mathrm{i}\)，故整个内圆积分为 \(-2\pi\mathrm{i}/z\)。公式恰好由减去内圆贡献恢复 \(1/z\)。若只保留外圆，将错误地得到零。
+
+\ProseParagraphBreak
+
+圆环公式将在下一章产生 Laurent 展开：外圆适合按 \(z-a\) 的正幂展开核，内圆适合按它的负幂展开核。这里先把两条边界及其符号固定下来，后面的级数计算才有正确起点。
 
 \subsection{导数公式}
 \label{b3:subsec:020302}
 
+积分公式把内部变量放在一个简单的有理核中。只要内部点与边界保持正距离，核的差商误差便可在整条边界上一致控制；这正是将求导移入积分号的依据。
+
+\Needspace{6\baselineskip}
 \begin{proposition}[Cauchy 导数公式]\label{b3:prop:02-cauchy-derivatives}
-在前一定理的条件下，对每个整数 \(n\ge0\) 和 \(z\in V\)，
+设 \(V\subseteq\mathbb C\) 是有界单连通区域，其边界是一条正向分段光滑 Jordan 曲线，\(f\) 在 \(\overline V\) 的开邻域上全纯。则对每个整数 \(n\ge0\) 和 \(z\in V\)，
 \[
- f^{(n)}(z)=\frac{n!}{2\pi\mathrm{i}}\int_{\partial V}\frac{f(\zeta)}{(\zeta-z)^{n+1}}\,\mathrm{d}\zeta.
+ f^{(n)}(z)=\frac{n!}{2\pi\mathrm{i}}\int_{\partial V}
+        \frac{f(\zeta)}{(\zeta-z)^{n+1}}\,\mathrm{d}\zeta.
 \]
 \end{proposition}
 \begin{proof}
-固定内部紧集 \(K\)，它与边界的距离为正。核函数及任意固定阶的 \(z\) 导数在 \(K\times\partial V\) 上连续且一致有界。差商在该紧集上一致趋向核的导数，所以可将极限移入有限长度曲线积分，先得到一阶公式，再归纳。求导 \((\zeta-z)^{-1}\) 时两个负号相消，产生正的 \(n!\)，不能误写成 \((-1)^n n!\)。
-\end{proof}
-例如 \(f(\zeta)=e^\zeta\)，在任何包围 \(z\) 的圆周上，\(\int e^\zeta/(\zeta-z)^3\,\mathrm{d}\zeta=\pi\mathrm{i}e^z\)。围道半径改变不影响数值，只要奇点仍被包围且定义域容许变形。
-
-\ProseParagraphBreak
-
-含参积分也能构造全纯函数。设 \(\gamma\) 是固定的有限长度曲线，\(g\) 在其像上连续，\(W\) 是与该像不相交的开集。定义
+固定非空紧集 \(K\subset V\)，记 \(d=\operatorname{dist}(K,\partial V)>0\)。当 \(z\in K\)、\(|h|<d/2\) 时，
 \[
- H(z)=\int_\gamma\frac{g(\zeta)}{\zeta-z}\,\mathrm{d}\zeta,\qquad z\in W.
+ \frac1h\left(\frac1{\zeta-z-h}-\frac1{\zeta-z}\right)
+ =\frac1{(\zeta-z-h)(\zeta-z)}.
 \]
-对 \(W\) 内紧集，分母有共同正下界，核差商一致收敛，所以 \(H\) 全纯，且各阶导数是核各阶导数的积分。函数 \(g\) 不要求全纯，因为全纯变量在核的 \(z\) 中。相反，若把参数也放入 \(g(\zeta,z)\)，必须核对它在 \(z\) 的全纯性以及共同控制，不能因积分号看起来相同就自动求导。
+右端与 \((\zeta-z)^{-2}\) 的差为
+\[
+ \frac{h}{(\zeta-z-h)(\zeta-z)^2},
+\]
+其模至多为 \(2|h|/d^3\)，对所有 \(\zeta\in\partial V\)、\(z\in K\) 同时成立。因此将差商移入积分后，误差的模不超过
+\[
+ \frac{L(\partial V)\cdot\max_{\partial V}|f|}{2\pi}
+       \frac{2|h|}{d^3}\longrightarrow0.
+\]
+这证明一阶公式。
+
+为使归纳步骤同样明确，令 \(m\ge1\)、\(w=\zeta-z\)。把实变量的二阶积分余项公式用于 \(t\mapsto(w-th)^{-m}\)，得到
+\[
+ (w-h)^{-m}-w^{-m}-mh\,w^{-m-1}
+ =m(m+1)h^2\int_0^1(1-t)(w-th)^{-m-2}\,\mathrm{d}t.
+\]
+由 \(|w-th|\ge d/2\)，右端的模至多为
+\[
+ m(m+1)2^{m+1}\frac{|h|^2}{d^{m+2}}.
+\]
+除以 \(h\) 后误差一致趋零，所以核的导数可以再次移入积分。对 \(m=1,2,\ldots\) 依次进行，每步产生正因子 \(m\)，第 \(n\) 阶的总因子为 \(n!\)。任一内部点都可放入这样的紧集，结论因而成立于整个 \(V\)。
+\end{proof}
+
+求导的正号来自内部变量 \(z\)：对 \((\zeta-z)^{-1}\) 求导时，幂函数的负号与内层 \(-z\) 的负号相消。例如对包围 \(a\) 的正向圆周，只要 \(f\) 在闭盘附近全纯，
+\[
+ \int\frac{f(\zeta)}{(\zeta-a)^3}\,\mathrm{d}\zeta
+ =\pi\mathrm{i}f''(a).
+\]
+取 \(f(\zeta)=\zeta e^\zeta\)，有 \(f''(a)=(a+2)e^a\)，于是积分等于 \(\pi\mathrm{i}(a+2)e^a\)。分母的三次幂对应二阶导数及因子 \(2!\)，不是三阶导数。
 
 \ProseParagraphBreak
 
-取单位圆与 \(g\equiv1\)，上述 \(H\) 在圆内恒为 \(2\pi\mathrm{i}\)，圆外恒为0。每个连通分支上都全纯，但跨圆周发生跳变。这说明积分参数域 \(W\) 不能穿过核的奇点，也说明“积分产生全纯函数”并不保证它跨越积分曲线延拓。
+同一估计还说明积分可以用来构造全纯函数。设 \(\gamma:[\alpha,\beta]\to\mathbb C\) 为分段光滑曲线，\(g\) 在其像上连续。在开集 \(W=\mathbb C\setminus\gamma([\alpha,\beta])\) 上定义
+\[
+ H(z)=\int_\gamma\frac{g(\zeta)}{\zeta-z}\,\mathrm{d}\zeta.
+\]
+对每个非空紧集 \(K\subset W\)，距离 \(d=\operatorname{dist}(K,\gamma([\alpha,\beta]))\) 为正，刚才的差商估计仍然适用，故
+\[
+ H^{(n)}(z)=n!\int_\gamma
+          \frac{g(\zeta)}{(\zeta-z)^{n+1}}\,\mathrm{d}\zeta.
+\]
+这里 \(g\) 只需沿曲线连续；所求导的变量出现在核中，并没有要求 \(g\) 延拓为全纯函数。
+
+\ProseParagraphBreak
+
+对正向单位圆与 \(g\equiv1\)，\(H\) 在圆内恒为 \(2\pi\mathrm{i}\)，在圆外恒为零。圆内的值来自积分公式；圆外的值来自被积函数在闭单位圆盘附近全纯。两个连通分支上的全纯性并不提供跨越单位圆的连续性。若在曲线上把数据 \(g\) 改为 \(\widetilde g\)，相应函数之差却有直接控制：
+\[
+ \sup_{z\in K}|H^{(n)}(z)-\widetilde H^{(n)}(z)|
+ \le \frac{n!L(\gamma)}{d^{n+1}}
+       \max_{\zeta\in\gamma}|g(\zeta)-\widetilde g(\zeta)|.
+\]
+因此边界数据的小误差能控制远离曲线处的各阶导数；离曲线越近或求导阶数越高，所需的误差控制越强。
 
 \subsection{Cauchy 估计}
 \label{b3:subsec:020303}
 
-\term[cauchy-guji]{Cauchy 估计}[Cauchy estimates]把边界值的大小变成内部导数的大小。
+\term[cauchy-guji]{Cauchy 估计}[Cauchy estimates]把边界上的函数大小变成内部的导数大小。圆周特别适合这一步，因为中心到各边界点的距离相同。
+
+\Needspace{6\baselineskip}
 \begin{theorem}[Cauchy 估计]\label{b3:thm:02-cauchy-estimate}
-设 \(f\) 在 \(\overline{D(a,r)}\) 的开邻域上全纯，\(M_r=\max_{|z-a|=r}|f(z)|\)。则
+设 \(a\in\mathbb C\)、\(r>0\)，\(f\) 在 \(\overline{D(a,r)}\) 的开邻域上全纯，记 \(M_r=\max_{|z-a|=r}|f(z)|\)。则对每个整数 \(n\ge0\)，
 \[
- |f^{(n)}(a)|\le\frac{n!M_r}{r^n},\qquad n\ge0.
+ |f^{(n)}(a)|\le\frac{n!M_r}{r^n}.
 \]
 \end{theorem}
 \begin{proof}
-在导数公式中分母的模为 \(r^{n+1}\)，曲线长度为 \(2\pi r\)。应用\cref{b3:prop:02-ml}，消去 \(2\pi\) 后即得结论。
-\end{proof}
-若 \(f\) 只在开圆盘 \(D(a,R)\) 上全纯，对每个 \(r<R\) 使用估计即可。若整个圆盘上 \(|f|\le M\)，令 \(r\uparrow R\) 得到 \(|f^{(n)}(a)|\le n!M/R^n\)，即使函数没有边界延拓也成立。
-
-\ProseParagraphBreak
-
-估计是局部的。若紧集 \(K\) 与定义域边界距离至少为 \(\delta\)，而 \(f\) 在其 \(\delta\) 邻域内模不超过 \(M\)，则 \(K\) 上 \(|f'|\le2M/\delta\)。这将使局部有界函数族在紧集上等度连续；第四章的紧性来自这一控制，而非逐点有界本身。
-
-\ProseParagraphBreak
-
-估计中的常数 \(n!\) 不能普遍减小。取 \(f(z)=M((z-a)/r)^n\)，边界模恒为 \(M\)，中心 \(n\) 阶导数的模恰为 \(n!M/r^n\)。取等例子随阶数变化，因此估计同时涉及整个函数、取导阶数和采样半径，不能仅把它当作一个没有量纲的“导数小于函数”结论。
-
-\ProseParagraphBreak
-
-若只知道邻域内 \(|f|\le M\)，要估计 \(a\) 附近 \(f(z)-f(a)\) 的大小，可以先用 Cauchy 估计控制导数，再沿短线段积分。另一种办法直接从 Taylor 系数得出：当 \(|z-a|<r\) 时，
+在中心的导数公式中，分母的模为 \(r^{n+1}\)，圆长为 \(2\pi r\)。长度估计给出
 \[
- |f(z)-f(a)|\le M\sum_{n\ge1}\left(\frac{|z-a|}{r}\right)^n
- =\frac{M|z-a|}{r-|z-a|}.
+ |f^{(n)}(a)|
+ \le\frac{n!}{2\pi}\cdot2\pi r\cdot\frac{M_r}{r^{n+1}}
+ =\frac{n!M_r}{r^n}.
 \]
-这是从整个圆周共同上界推出的内部变化估计，靠近取样圆时分母趋零，提醒读者局部控制需要与边界保持距离。
+\end{proof}
 
-\begin{proposition}\label{b3:prop:02-taylor-remainder}
-设 \(f\) 在闭圆盘 \(\overline{D(a,R)}\) 的邻域全纯，边界上 \(|f|\le M\)。若 \(|z-a|\le r<R\)，则 Taylor 多项式 \(T_N\) 满足
+若 \(f\) 只在 \(D(a,R)\) 上全纯且 \(|f|\le M\)，对任意 \(r<R\) 应用估计，再令 \(r\uparrow R\)，仍得
 \[
- |f(z)-T_N(z)|\le \frac{M(r/R)^{N+1}}{1-r/R}.
+ |f^{(n)}(a)|\le\frac{n!M}{R^n}.
+\]
+这个极限只涉及已经有共同上界的数值，不需要先定义最外圆周上的函数值。估计中的常数不能普遍减小：\(f(z)=M((z-a)/r)^n\) 在取样圆上模恒为 \(M\)，中心的 \(n\) 阶导数恰好达到上界。
+
+\ProseParagraphBreak
+
+把圆心移到待估计的点，就能得到紧集上的统一控制。具体地，设 \(K\) 为非空紧集，\(\delta>0\)，而 \(f\) 在
+\[
+ K_\delta=\{\,z\in\mathbb C:\operatorname{dist}(z,K)<\delta\,\}
+\]
+全纯且 \(|f|\le M\)。每个 \(a\in K\) 都有 \(D(a,\delta)\subset K_\delta\)，故 \(|f'(a)|\le M/\delta\)。还要估计邻近两点的函数差时，应确保连接它们的线段也处于可控范围。若 \(a,b\in K\)、\(|a-b|<\delta/2\)，线段上的每个点到 \(K\) 的距离小于 \(\delta/2\)，以它为中心的半径 \(\delta/2\) 圆盘包含于 \(K_\delta\)。于是沿线段有 \(|f'|\le2M/\delta\)，由端点公式，
+\[
+ |f(b)-f(a)|\le\frac{2M}{\delta}|b-a|.
+\]
+这说明一族函数若在同一邻域有共同上界，就在 \(K\) 上具有共同的连续性控制。第四章的紧性论证将使用这一机制。
+
+\ProseParagraphBreak
+
+半径有时也需要选择。设整函数满足 \(|f(z)|\le A e^{B|z|}\)，其中 \(A,B>0\)，写 \(f(z)=\sum_{n\ge0}c_nz^n\)。对每个 \(r>0\)，
+\[
+ |c_n|\le A\frac{e^{Br}}{r^n}.
+\]
+固定整数 \(n\ge1\)，右端的对数除常数外为 \(Br-n\log r\)。它的导数是 \(B-n/r\)，在 \(r<n/B\) 时为负，在 \(r>n/B\) 时为正，故最佳选择为 \(r=n/B\)，得到
+\[
+ |c_n|\le A\left(\frac{eB}{n}\right)^n.
+\]
+这里先固定求导阶数，再为这一阶选择圆周。对 \(f=e^z\) 得到 \(1/n!\le(e/n)^n\)：估计未恢复精确系数，却已经显示高阶系数快速衰减。后面研究整函数增长时，同样的优化会反复出现。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[Taylor 截断误差]\label{b3:prop:02-taylor-remainder}
+设 \(a\in\mathbb C\)、\(R>0\)、\(M\ge0\)，\(f\) 在闭圆盘 \(\overline{D(a,R)}\) 的邻域全纯，且边界上 \(|f|\le M\)。对整数 \(N\ge0\)，令 \(T_N(z)=\sum_{n=0}^N f^{(n)}(a)(z-a)^n/n!\)。若 \(0\le r<R\)，则
+\[
+ \sup_{|z-a|\le r}|f(z)-T_N(z)|
+ \le \frac{M(r/R)^{N+1}}{1-r/R}.
 \]
 \end{proposition}
 \begin{proof}
-Cauchy 估计给 \(|f^{(n)}(a)|/n!\le M/R^n\)。将从 \(N+1\) 起的 Taylor 系数逐项估计，再求几何级数即得结论；Taylor 展开在圆盘中成立已由第1章证明。
+第一章保证 \(f\) 在圆盘内等于中心 Taylor 级数。Cauchy 估计给出 \(|f^{(n)}(a)|/n!\le M/R^n\)，故截断之后的尾项模不超过 \(M\sum_{n>N}(r/R)^n\)。求几何级数的和即得结论；\(r=0\) 时余项本身为零。
 \end{proof}
-这个估计同时解释了为什么计算中心附近的函数值比较容易。固定 \(r/R<1\) 时误差随次数几何下降；若把 \(r\) 推近 \(R\)，相同的次数可能完全不够。Cauchy 估计控制的是到已知全纯边界的距离，而非一个与区域无关的误差常数。以 \(1/(1-z)\) 为例，截断误差恰为 \(z^{N+1}/(1-z)\)，靠近边界点1时分母揭示了这一限制。
+
+这个界与第一章的误差估计一致，现在可以用来反推所需的截断次数。设 \(M>0\)、\(0<r<R\)，记 \(q=r/R\)，希望误差不超过 \(\varepsilon>0\)。充分条件是
+\[
+ N+1\ge
+ \frac{\log\bigl(M/(\varepsilon(1-q))\bigr)}{\log(1/q)}.
+\]
+若右端为负，任意非负截断次数都满足该充分条件；否则选择满足不等式的整数即可。例如 \(r=R/2\)、\(M=1\)，余项界为 \(2^{-N}\)，取 \(N=10\) 就使误差小于 \(10^{-3}\)。若 \(r\) 接近 \(R\)，相同次数的保证会明显变差，因为几何衰减的比值接近一。
 
 \ProseParagraphBreak
-若只知道 \(f\) 在开圆盘中全纯，不能直接取最外圆周；应先用任意 \(\rho<R\) 的圆周。很多把边界半径代入的公式因此需要额外的连续延拓或邻域全纯假设。对 \(f(z)=1/(R-z)\)，最外圆周连积分本身都没有通常意义。证明中使用内部圆周，最后再在已有界的条件下取极限，能够避免把未知的边界行为混入内点结论。
+
+取 \(N=0\)，还得到 \(|f(z)-f(a)|\le M|z-a|/(R-|z-a|)\)。这与先估计导数再沿线段积分是同一局部控制的两种用法。无论采用哪一种，都要明确函数上界在哪个圆盘成立，以及待估计点与取样边界之间还留下多少距离。

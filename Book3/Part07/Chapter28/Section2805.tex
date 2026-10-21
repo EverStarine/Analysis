@@ -1,0 +1,319 @@
+% !TeX root = ../../Book3.tex
+\section{圆盘上的 Bergman 核}
+\label{b3:sec:2805}
+在面积平方可积的全纯函数中，知道范数能把某个内点的函数值限制到什么程度？上一节给出了一个局部平均上界，正交坐标则能进一步找到最佳上界及取得等号的函数。表示点值的核还会给出一个积分算子：它从任意面积平方可积函数中提取全纯部分。这里依次构造核、计算核、建立投影，最后与 Hardy 空间比较。
+
+\subsection{点值泛函与核的存在性}
+\label{b3:subsec:280501}
+
+固定 \(w\in\mathbb D\)。映射 \(f\mapsto f(w)\) 对 \(f\) 线性，且由\cref{b3:prop:28-area-local-control}连续。我们希望找到某个 \(K_w\in A^2(\mathbb D)\)，使
+\[
+ f(w)=\langle f,K_w\rangle_{A^2}
+ \quad(f\in A^2(\mathbb D)).
+\]
+这就是前面 Hardy 核所具有的再生性质。构造时不必先引入一般 Hilbert 空间上的泛函表示定理：上一节的标准正交基已经给出所需向量的全部坐标。
+
+\ProseParagraphBreak
+
+具体地，写 \(e_n(z)=\sqrt{n+1}\,z^n\)，并设 \(f=\sum_{n\ge0}c_ne_n\)。我们需要内积右端等于 \(\sum_{n\ge0}c_n\cdot e_n(w)\)。因为内积对第二变量共轭线性，核的第 \(n\) 个坐标应取 \(\overline{e_n(w)}\)，而不是 \(e_n(w)\)。这一共轭正是二元核对第一个变量全纯、对第二个变量反全纯的来源。
+
+\begin{proposition}[Bergman 核的正交构造]\label{b3:prop:28-bergman-kernel-construction}
+在归一化面积测度 \(\mathrm{d}A=\mathrm{d}x\,\mathrm{d}y/\pi\) 下，设 \(A^2(\mathbb D)\) 的内积对第一变量线性，且 \(e_n(z)=\sqrt{n+1}\,z^n\)。对每个 \(w\in\mathbb D\)，级数
+\begin{equation}\label{b3:eq:28-bergman-kernel-series}
+ K_w\coloneqq\sum_{n=0}^{\infty}\overline{e_n(w)}e_n
+\end{equation}
+在 \(A^2(\mathbb D)\) 中收敛，并且
+\begin{equation}\label{b3:eq:28-bergman-reproduction}
+ f(w)=\langle f,K_w\rangle_{A^2}
+ \quad(f\in A^2(\mathbb D)).
+\end{equation}
+具有这一性质的 \(K_w\) 唯一。二元函数 \(K(z,w)\coloneqq K_w(z)\) 称为这个空间的\term[bergman-he]{Bergman 核}[Bergman kernel]。
+\end{proposition}
+\symidx{\(K(z,w)=K_w(z)\)：归一化面积圆盘 Bergman 核}
+\begin{proof}
+对固定 \(|w|<1\)，有
+\[
+ \sum_{n=0}^{\infty}|e_n(w)|^2
+ =\sum_{n=0}^{\infty}(n+1)|w|^{2n}
+ =\frac1{(1-|w|^2)^2}<\infty.
+\]
+因此\eqref{b3:eq:28-bergman-kernel-series}的部分和在面积范数中构成 Cauchy 列；\cref{b3:thm:28-bergman-complete}给出 \(K_w\in A^2\)。对于 \(f=\sum c_ne_n\)，内积的连续性和正交性给出
+\[
+ \langle f,K_w\rangle_{A^2}
+ =\sum_{n=0}^{\infty}c_n\cdot e_n(w)=f(w).
+\]
+标量级数绝对收敛，因为 \((c_n)\) 与 \((e_n(w))\) 都平方可和；最后一个等号也与\cref{b3:cor:28-bergman-basis}的局部一致展开相符。
+
+如果另有 \(L_w\in A^2\) 对全部 \(f\) 满足相同再生公式，则 \(\langle f,K_w-L_w\rangle_{A^2}=0\)。取 \(f=K_w-L_w\)，得到 \(\|K_w-L_w\|_{A^2}^2=0\)，所以两个全纯函数处处相等。
+\end{proof}
+
+核不仅是求值公式的记号。把 \(f=K_w\) 代入再生公式，可得 \(K(w,w)=\|K_w\|_{A^2}^2>0\)；把 \(f=K_v\) 代入，其中 \(v\in\mathbb D\)，又得
+\[
+ \langle K_v,K_w\rangle_{A^2}=K_v(w)=K(w,v),
+ \quad K(z,w)=\overline{K(w,z)}.
+\]
+因此核在两个点处的值，还记录了两个点值表示向量之间的内积。第二个等式也可以直接从正交级数逐项取共轭得到。
+
+\subsection{圆盘 Bergman 核的计算}
+\label{b3:subsec:280502}
+
+几何级数在 \(|t|<1\) 内满足 \(\sum_{n\ge0}t^n=1/(1-t)\)。对 \(t/(1-t)=\sum_{n\ge0}t^{n+1}\) 求导，便得
+\[
+ \sum_{n=0}^{\infty}(n+1)t^n=\frac1{(1-t)^2}.
+\]
+在核的正交展开中代入 \(t=z\overline w\)，由于 \(|z|<1\)、\(|w|<1\)，收敛条件确实满足。
+
+\begin{theorem}[圆盘 Bergman 核与最佳点值界]\label{b3:thm:28-bergman-kernel}
+在 \(\mathbb D\) 上取归一化面积 \(\mathrm{d}A=\mathrm{d}x\,\mathrm{d}y/\pi\)。则 \(A^2(\mathbb D)\) 的再生核为
+\begin{equation}\label{b3:eq:28-bergman-kernel-formula}
+ K_w(z)=K(z,w)=\frac1{(1-z\overline w)^2}
+ \quad(z,w\in\mathbb D).
+\end{equation}
+对每个 \(f\in A^2(\mathbb D)\) 和每个 \(w\in\mathbb D\)，有
+\begin{equation}\label{b3:eq:28-bergman-evaluation}
+ \begin{aligned}
+ f(w)=\int_{\mathbb D}\frac{f(z)}{(1-w\overline z)^2}\,\mathrm{d}A(z),
+ \\
+ |f(w)|\le\frac{\|f\|_{A^2}}{1-|w|^2}.
+ \end{aligned}
+\end{equation}
+点值泛函的范数恰为 \(1/(1-|w|^2)\)。不等式取等号，当且仅当 \(f\) 是 \(K_w\) 的复数倍，零函数也包括在内。
+\end{theorem}
+\begin{proof}
+正交级数与上述几何求和给出核的显式公式。将它代入\eqref{b3:eq:28-bergman-reproduction}，注意内积第二变量要取共轭，便得到积分表达式。
+
+由正交展开或再生公式，
+\[
+ \|K_w\|_{A^2}^2=K(w,w)=\frac1{(1-|w|^2)^2}.
+\]
+Cauchy--Schwarz 不等式于是给出
+\[
+ |f(w)|=|\langle f,K_w\rangle_{A^2}|
+ \le\|f\|_{A^2}\cdot\|K_w\|_{A^2}
+ =\frac{\|f\|_{A^2}}{1-|w|^2}.
+\]
+积分中的乘积也因这同一个不等式绝对可积。取单位向量 \(K_w/\|K_w\|_{A^2}\) 时取到上界，故常数不能再减小。由于 \(K_w\ne0\)，Cauchy--Schwarz 的等号条件恰为 \(f\) 与 \(K_w\) 线性相关。
+\end{proof}
+
+在 \(w=0\) 时，核为常数一，再生公式成为 \(f(0)=\int_{\mathbb D}f\,\mathrm{d}A\)，是面积平均公式。一般内点的核会向相应的边界方向集中，最佳点值上界则由原点处的一增大到 \(1/(1-|w|^2)\)。除原点处两个上界相同外，它严格改善了上一节的粗上界 \(1/(1-|w|)\)，但仍允许靠近单位圆周时增长。
+
+\begin{corollary}[指定一点值的最小面积范数]\label{b3:cor:28-bergman-extremal}
+设 \(w\in\mathbb D\)、\(a\in\mathbb C\)，面积测度仍为 \(\mathrm{d}A=\mathrm{d}x\,\mathrm{d}y/\pi\)。在全部满足 \(f\in A^2(\mathbb D)\) 且 \(f(w)=a\) 的函数中，范数的最小值为 \(|a|(1-|w|^2)\)，唯一的极小元为
+\[
+ f_{w,a}(z)=a\,\frac{(1-|w|^2)^2}{(1-z\overline w)^2}.
+\]
+对任意这样的 \(f\)，还成立
+\[
+ \|f\|_{A^2}^2
+ =|a|^2(1-|w|^2)^2+\|f-f_{w,a}\|_{A^2}^2.
+\]
+\end{corollary}
+\begin{proof}
+令 \(f_{w,a}=aK_w/K(w,w)\)，则 \(f_{w,a}(w)=a\)。函数 \(h=f-f_{w,a}\) 满足 \(h(w)=0\)，再生公式给出 \(\langle h,K_w\rangle_{A^2}=0\)。因此 \(h\) 与 \(f_{w,a}\) 正交，展开平方范数即得所述恒等式；其中
+\[
+ \|f_{w,a}\|_{A^2}^2
+ =\frac{|a|^2}{K(w,w)}=|a|^2(1-|w|^2)^2.
+\]
+右边剩余平方范数非负，且仅在 \(h=0\) 时为零，证明了极小值及唯一性。这一论证也涵盖 \(a=0\)。
+\end{proof}
+
+极值函数的形状还可从圆盘自同构理解。对 \(a\in\mathbb D\)，令
+\[
+ \varphi_a(z)=\frac{a-z}{1-\overline a z},
+ \quad
+ \varphi_a'(z)=-\frac{1-|a|^2}{(1-\overline a z)^2}.
+\]
+该映射交换 \(a\) 与原点，且 \(\varphi_a\circ\varphi_a\) 为恒等映射。直接通分给出
+\begin{equation}\label{b3:eq:28-disc-automorphism-identity}
+ 1-\varphi_a(z)\cdot\overline{\varphi_a(w)}
+ =\frac{(1-|a|^2)(1-z\overline w)}
+ {(1-\overline a z)(1-a\overline w)}.
+\end{equation}
+取 \(w=z\) 时，右端为正，故 \(\varphi_a\) 确把圆盘映入自身；配合其自逆性，便知它是圆盘的双全纯自同构。
+
+\begin{proposition}[自同构下的面积范数与核]\label{b3:prop:28-bergman-automorphism}
+设 \(a\in\mathbb D\)、\(\theta\in\mathbb R\)，并令 \(\varphi(z)=e^{\mathrm{i}\theta}(a-z)/(1-\overline a z)\)。在归一化面积 Bergman 空间 \(A^2(\mathbb D)\) 上，算子
+\[
+ (U_\varphi f)(z)\coloneqq\varphi'(z)\cdot f(\varphi(z))
+\]
+是满等距线性映射，其逆为 \(U_{\varphi^{-1}}\)。Bergman 核满足
+\begin{equation}\label{b3:eq:28-bergman-transformation}
+ K(z,w)=\varphi'(z)\cdot\overline{\varphi'(w)}
+ \cdot K(\varphi(z),\varphi(w))
+ \quad(z,w\in\mathbb D).
+\end{equation}
+\end{proposition}
+\begin{proof}
+复导数非零的全纯映射作为实二维映射的 Jacobi 行列式等于 \(|\varphi'|^2\)：若 \(\varphi'=u+\mathrm{i}v\)，其微分矩阵为 \(\left(\begin{smallmatrix}u&-v\\v&u\end{smallmatrix}\right)\)，行列式为 \(u^2+v^2\)。因此换元 \(\zeta=\varphi(z)\) 给出
+\[
+ \int_{\mathbb D}|\varphi'(z)|^2\cdot|f(\varphi(z))|^2\,\mathrm{d}A(z)
+ =\int_{\mathbb D}|f(\zeta)|^2\,\mathrm{d}A(\zeta).
+\]
+这证明算子保范数，也证明它把 \(A^2\) 映入自身。链式法则给出 \(U_\varphi U_{\varphi^{-1}}=U_{\varphi^{-1}}U_\varphi=I\)，从而得到满射性及逆算子。
+
+当 \(\varphi=\varphi_a\) 时，将\eqref{b3:eq:28-disc-automorphism-identity}和导数公式代入核的显式表达，分子分母相消即得\eqref{b3:eq:28-bergman-transformation}。再乘一个旋转 \(e^{\mathrm{i}\theta}\)，既不改变 \(\varphi(z)\cdot\overline{\varphi(w)}\)，也不改变两个导数的乘积 \(\varphi'(z)\cdot\overline{\varphi'(w)}\)，所以等式对所述全部参数成立。
+\end{proof}
+
+面积范数在变量替换时需要导数因子，因为二维面积按 \(|\varphi'|^2\) 伸缩。这个因子也解释了核的二次分母：将原点处的常数极值函数通过 \(U_{\varphi_a}\) 搬到另一点，会出现 \(\varphi_a'\) 所含的 \((1-\overline a z)^{-2}\)。单纯把函数与 \(\varphi_a\) 复合，并不保持当前的面积范数。
+
+\subsection{正交展开与 Bergman 投影}
+\label{b3:subsec:280503}
+
+再生公式的左边只对全纯函数定义，但右边的积分对任何 \(u\in L^2(\mathbb D,\mathrm{d}A)\) 都有意义。这提示我们用同一个核将一般函数变成全纯函数。要证明它确实是正交投影，先从正交系建立算子，再辨认它的积分表达，能把收敛问题处理得更清楚。
+
+\begin{theorem}[Bergman 投影]\label{b3:thm:28-bergman-projection}
+设 \(\mathbb D\) 为单位圆盘，\(\mathrm{d}A=\mathrm{d}x\,\mathrm{d}y/\pi\)，并在复空间 \(L^2(\mathbb D,\mathrm{d}A)\) 上取第一变量线性的内积。对 \(u\in L^2(\mathbb D,\mathrm{d}A)\)，定义
+\begin{equation}\label{b3:eq:28-bergman-projection-series}
+ P_Au\coloneqq\sum_{n=0}^{\infty}\langle u,e_n\rangle_{L^2}e_n,
+ \quad e_n(z)=\sqrt{n+1}\,z^n.
+\end{equation}
+这个级数在 \(A^2(\mathbb D)\) 范数中收敛，并确定从 \(L^2(\mathbb D,\mathrm{d}A)\) 到其闭子空间 \(A^2(\mathbb D)\) 的正交投影，称为\term[bergman-touying]{Bergman 投影}[Bergman projection]。它满足
+\[
+ P_A^2=P_A,
+ \quad \|P_Au\|_{A^2}\le\|u\|_{L^2},
+ \quad \|P_A\|=1,
+\]
+并有对每个 \(w\in\mathbb D\) 成立的点态积分表达式
+\begin{equation}\label{b3:eq:28-bergman-projection-integral}
+ (P_Au)(w)=\int_{\mathbb D}\frac{u(z)}{(1-w\overline z)^2}\,\mathrm{d}A(z).
+\end{equation}
+\end{theorem}
+\symidx{\(P_A\)：从面积 \(L^2\) 到 \(A^2(\mathbb D)\) 的 Bergman 投影}
+\begin{proof}
+记 \(c_n=\langle u,e_n\rangle_{L^2}\)，并令 \(q_N=\sum_{n=0}^Nc_ne_n\)。有限正交展开给出
+\[
+ \|u-q_N\|_{L^2}^2
+ =\|u\|_{L^2}^2-\sum_{n=0}^N|c_n|^2\ge0.
+\]
+所以 \(\sum_{n\ge0}|c_n|^2\le\|u\|_{L^2}^2\)。这就是当前系统所需的 Bessel 不等式，也说明 \((q_N)\) 在 \(A^2\) 中为 Cauchy 列。由其完备性，存在 \(P_Au\in A^2\) 使 \(q_N\to P_Au\) 于面积范数，且
+\[
+ \|P_Au\|_{A^2}^2=\sum_{n=0}^{\infty}|c_n|^2\le\|u\|_{L^2}^2.
+\]
+系数逐项线性以及极限唯一性还证明 \(P_A\) 线性。
+
+对每个 \(n\)，有 \(\langle u-P_Au,e_n\rangle_{L^2}=0\)。任取 \(h\in A^2\)，以它的 Taylor 多项式在面积范数中逼近，并用内积连续性取极限，便得
+\[
+ \langle u-P_Au,h\rangle_{L^2}=0.
+\]
+于是 \(u-P_Au\) 与整个 \(A^2\) 正交。当 \(u\in A^2\) 时，\cref{b3:cor:28-bergman-basis}给出 \(P_Au=u\)，故 \(P_A^2=P_A\)。上面的范数界说明 \(\|P_A\|\le1\)，而 \(P_A1=1\)、\(\|1\|_{L^2}=1\)，给出 \(\|P_A\|\ge1\)。
+
+最后固定 \(w\in\mathbb D\)。核的部分和
+\[
+ K_{w,N}(z)=\sum_{n=0}^N\overline{e_n(w)}\cdot e_n(z)
+\]
+在 \(L^2\) 中趋于 \(K_w\)。另一方面，\(q_N\to P_Au\) 于 \(A^2\)，所以局部控制保证 \(q_N(w)\to(P_Au)(w)\)。由有限和恒等式
+\[
+ q_N(w)=\langle u,K_{w,N}\rangle_{L^2}
+\]
+及 Cauchy--Schwarz 估计
+\[
+ |\langle u,K_{w,N}-K_w\rangle_{L^2}|
+ \le\|u\|_{L^2}\cdot\|K_{w,N}-K_w\|_{L^2}\longrightarrow0,
+\]
+得到 \((P_Au)(w)=\langle u,K_w\rangle_{L^2}\)，即\eqref{b3:eq:28-bergman-projection-integral}。同一不等式也保证该积分绝对收敛。
+\end{proof}
+
+这里通过有限和与 \(L^2\) 极限得到积分公式，没有把任意形式的无穷级数直接搬进积分号。若希望直接检查换序，对固定 \(|w|\le r<1\)，也有
+\[
+ \sum_{n=0}^{\infty}(n+1)|w|^n\cdot|z|^n
+ \le\sum_{n=0}^{\infty}(n+1)r^n=\frac1{(1-r)^2}.
+\]
+由于 \(A(\mathbb D)=1\)，Cauchy--Schwarz 给出 \(\|u\|_{L^1}\le\|u\|_{L^2}\)，故 \(|u(z)|/(1-r)^2\) 是共同可积控制。支配收敛或绝对可积的 Fubini 换序因此可用，而且只保证在固定内部闭圆盘上的一致控制。
+
+\ProseParagraphBreak
+
+正交性使 \(P_Au\) 具有最佳逼近意义。对于任意 \(h\in A^2\)，展开
+\[
+ u-h=(u-P_Au)+(P_Au-h)
+\]
+并利用两项正交，得到
+\[
+ \|u-h\|_{L^2}^2
+ =\|u-P_Au\|_{L^2}^2+\|P_Au-h\|_{A^2}^2.
+\]
+因此 \(P_Au\) 是距离 \(u\) 最近的唯一全纯平方可积函数。它不是对原函数作逐点修补，而是同时利用全盘积分，在面积平方误差中找出最优的全纯近似。
+
+\ProseParagraphBreak
+
+混合单项式可以直接看清这个过程。设 \(p,q\) 为非负整数，取 \(u(z)=z^p\overline z^{\,q}\)。当 \(n\ge0\) 时，
+\[
+ \langle u,e_n\rangle_{L^2}
+ =\sqrt{n+1}\int_{\mathbb D}z^p\overline z^{\,q+n}\,\mathrm{d}A(z).
+\]
+角积分只在 \(p=q+n\) 时非零。若 \(p\ge q\)，唯一留下的指标为 \(n=p-q\)，径向积分为 \(1/(p+1)\)；若 \(p<q\)，则没有非负指标可留下。因此
+\begin{equation}\label{b3:eq:28-projection-mixed-monomial}
+ P_A(z^p\overline z^{\,q})
+ =\begin{cases}
+ \dfrac{p-q+1}{p+1}\,z^{p-q},&p\ge q,\\
+ 0,&p<q.
+ \end{cases}
+\end{equation}
+例如 \(P_A(\overline z)=0\)，而 \(P_A(|z|^2)=1/2\)、\(P_A(z^2\overline z)=2z/3\)。尤其不能把“投影到全纯函数”理解为在表达式中简单删掉每个带 \(\overline z\) 的项；\(|z|^2\) 虽非全纯，却有非零的常数投影。
+
+\subsection{Hardy 核与 Bergman 核的比较}
+\label{b3:subsec:280504}
+
+两个空间都由全纯函数组成，都有单项式基，也都能通过内积再生点值。真正不同的是积分所在的位置。Hardy 空间控制所有径向圆周平均，得到单位圆周上的 \(L^2\) 边界函数；Bergman 空间把这些平均再按 \(2r\,\mathrm{d}r\) 积起来，因而允许平均值在 \(r\uparrow1\) 时无界。\cref{b3:tab:28-hardy-bergman}把已证明的结论放在同一测度约定下比较。
+
+\begin{table}[htbp]
+\centering
+\caption[圆盘 Hardy 与 Bergman 空间]{圆盘 Hardy 与 Bergman 空间。这里 \(f(z)=\sum_{n\ge0}a_nz^n\)，\(\mathrm{d}m=\mathrm{d}\theta/(2\pi)\)，\(\mathrm{d}A=\mathrm{d}x\,\mathrm{d}y/\pi\)；边界收敛一行专指本章已证明的 \(L^2\) 收敛。}
+\label{b3:tab:28-hardy-bergman}
+\small
+\begin{tabularx}{\textwidth}{@{}p{5.5em}XX@{}}
+\toprule
+比较项目 & \(H^2(\mathbb D)\) & \(A^2(\mathbb D)\)\\
+\midrule
+范数的测度 & 圆周 \(\mathrm{d}m\)，对半径取上确界 & 圆盘面积 \(\mathrm{d}A\)\\
+系数范数平方 & \(\sum_{n\ge0}|a_n|^2\) & \(\sum_{n\ge0}|a_n|^2/(n+1)\)\\
+标准正交基 & \(z^n\)，\(n\ge0\) & \(\sqrt{n+1}\,z^n\)，\(n\ge0\)\\
+径向边界 & 有唯一 \(L^2(\mathrm{d}m)\) 边界极限，且保范数 & 面积范数有限不保证有 \(L^2(\mathrm{d}m)\) 边界极限\\
+再生核 & \(k_w(z)=(1-z\overline w)^{-1}\) & \(K_w(z)=(1-z\overline w)^{-2}\)\\
+点值泛函范数 & \((1-|w|^2)^{-1/2}\) & \((1-|w|^2)^{-1}\)\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+表中 Hardy 部分分别来自\cref{b3:thm:28-hardy-coefficients}、\cref{b3:thm:28-hardy-boundary}与\cref{b3:thm:28-hardy-kernel}。边界结论说的是 \(f(re^{\mathrm{i}\theta})\) 在 \(L^2(\mathrm{d}m)\) 中的径向极限；不能仅凭这个范数收敛，把对全部半径的几乎处处逐点极限另当成已经证明的结论。Bergman 核的积分发生在圆盘内部，也不需要先赋予一般 \(A^2\) 函数一个平方可积的边界函数。
+
+\begin{proposition}[两个空间的包含关系]\label{b3:prop:28-hardy-bergman-inclusion}
+在单位圆盘 \(\mathbb D\) 上，Hardy 空间使用归一化圆周测度 \(\mathrm{d}m=\mathrm{d}\theta/(2\pi)\)，Bergman 空间使用归一化面积 \(\mathrm{d}A=\mathrm{d}x\,\mathrm{d}y/\pi\)。恒等映射给出连续、稠密且严格的包含
+\[
+ H^2(\mathbb D)\subsetneq A^2(\mathbb D),
+ \quad \|f\|_{A^2}\le\|f\|_{H^2}\quad(f\in H^2(\mathbb D)).
+\]
+该包含映射的范数为一，而 \(H^2(\mathbb D)\) 在 \(A^2(\mathbb D)\) 的面积范数中不是闭子空间。
+\end{proposition}
+\begin{proof}
+对于 \(f(z)=\sum a_nz^n\in H^2\)，系数范数公式给出
+\[
+ \|f\|_{A^2}^2=\sum_{n=0}^{\infty}\frac{|a_n|^2}{n+1}
+ \le\sum_{n=0}^{\infty}|a_n|^2=\|f\|_{H^2}^2.
+\]
+常数函数一使不等式取等号，故映射范数为一。所有多项式都属于 \(H^2\)，而\cref{b3:thm:28-bergman-coefficients}证明多项式在 \(A^2\) 中稠密，因此包含是稠密的。
+
+为证明严格性，取具体的幂级数
+\[
+ F(z)=\sum_{n=0}^{\infty}\frac{z^n}{\sqrt{n+1}}.
+\]
+它在 \(\mathbb D\) 局部一致收敛，并满足
+\[
+ \|F\|_{A^2}^2=\sum_{n=0}^{\infty}\frac1{(n+1)^2}<\infty,
+ \quad
+ \sum_{n=0}^{\infty}\left|\frac1{\sqrt{n+1}}\right|^2
+ =\sum_{n=0}^{\infty}\frac1{n+1}=\infty.
+\]
+所以 \(F\in A^2\)，但 \(F\notin H^2\)。它的 Taylor 多项式全部在 \(H^2\)，却在面积范数中趋于 \(F\)，同时证明 \(H^2\) 在 \(A^2\) 中不闭。
+\end{proof}
+
+这个反例还能直接排除 \(L^2\) 径向边界极限。它在半径 \(r\) 上的圆周范数满足
+\[
+ \int_0^{2\pi}|F(re^{\mathrm{i}\theta})|^2\,\mathrm{d}m(\theta)
+ =\sum_{n=0}^{\infty}\frac{r^{2n}}{n+1}\longrightarrow\infty
+ \quad(r\uparrow1).
+\]
+若这些径向函数在 \(L^2(\mathrm{d}m)\) 中收敛，其范数必有界，产生矛盾。另一方面，将上式按 \(2r\,\mathrm{d}r\) 积分，得到的正是收敛级数 \(\sum(n+1)^{-2}\)。因此面积平方可积与边界平方可积的差别，在同一个例子中表现为“平均值可以发散，但其径向积分仍有限”。
+
+\ProseParagraphBreak
+
+两个空间在共有函数上的范数也不等价：\(\|z^n\|_{H^2}=1\)，而 \(\|z^n\|_{A^2}=1/\sqrt{n+1}\to0\)。后续使用哪个核，必须由正在控制的范数决定。圆周边界问题使用 Hardy 核，面积正交投影与面积极值问题使用 Bergman 核；相同的解析函数在这两种几何结构下，可以具有不同的大小和不同的极值代表。

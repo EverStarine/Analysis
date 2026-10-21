@@ -2,57 +2,191 @@
 \section{Mellin 变换与 \texorpdfstring{\(\theta\)}{\AnalysisPdfTheta} 函数}
 \label{b3:sec:2602}
 
-Gamma 因子出现的原因不是人为修饰：对一个高斯项做 Mellin 积分，二次尺度自然把参数变为 \(s/2\)，并产生 \(\pi^{-s/2}\Gamma(s/2)\)。
+Dirichlet 级数把整数 \(n\) 配上权重 \(n^{-s}\)，theta 级数则配上高斯权重 \(e^{-\pi n^2t}\)。前者直接显露乘法结构，后者具有参数反演公式。要把后者的对称性传给前者，需要一种能将指数衰减转成幂次的积分；\secref{b3:sec:2105}的 Mellin 变换正好完成这件事。Gamma 因子与 \(s/2\) 的出现都将由一次换元确定。
 
 \subsection{Mellin 变换}
 \label{b3:subsec:260201}
 
-记 \(\vartheta(t)=\sum_{n\in\mathbb Z}e^{-\pi n^2t}\)、\(h(t)=(\vartheta(t)-1)/2=\sum_{n\ge1}e^{-\pi n^2t}\)，\(t>0\)。对 \(\sigma>1\) 可用 Tonelli 估计绝对值并换序：
+先恢复变换的约定。对可测函数 \(f:(0,\infty)\to\mathbb C\)，在积分绝对收敛的参数处，
 \[
-\int_0^\infty h(t)t^{s/2-1}\,\mathrm{d}t
-=\sum_{n\ge1}(\pi n^2)^{-s/2}\Gamma(s/2)
-=\pi^{-s/2}\Gamma(s/2)\zeta(s).
+ \mathcal Mf(w)=\int_0^\infty f(t)t^{w-1}\,\mathrm dt,
+ \quad t^{w-1}=e^{(w-1)\log t},
 \]
-绝对积分为 \(\pi^{-\sigma/2}\Gamma(\sigma/2)\zeta(\sigma)<\infty\)，所以复参数换序并非仅由每一项可积推出。
+其中 \(\log t\) 为实对数。\cref{b3:prop:21-mellin-strip}说明：在一个开竖带内绝对收敛时，变换全纯；参数微分增加 \(\log t\) 因子，所需支配可由稍宽一点的实部区间取得。本节的积分参数为 \(w=s/2\)，不要将它与 \(s\) 混为一谈。
+
+\ProseParagraphBreak
+
+对实数 \(t>0\)，记
+\[
+ \vartheta(t)\coloneqq\sum_{n\in\mathbb Z}e^{-\pi n^2t},
+ \quad h(t)\coloneqq\frac{\vartheta(t)-1}{2}
+                    =\sum_{n=1}^\infty e^{-\pi n^2t}.
+\]
+这里 \(\vartheta(t)=\theta_3(0,\mathrm it)\) 是\secref{b3:sec:2401}的 Gaussian theta 函数在虚轴上的取值；它与\subsecref{b3:subsec:250305}中记作 \(\vartheta(x)=\sum_{p\le x}\log p\) 的素数加权计数函数是不同对象。本节及后面的 Mellin 积分始终采用上述高斯定义。减去一去掉的是 \(n=0\) 项，再除以二把 \(n\) 与 \(-n\) 合并，所以 \(h\) 恰好由正整数编号。
+
+\begin{proposition}[theta 级数的 Mellin 积分]\label{b3:prop:26-theta-mellin}
+设 \(h(t)=\sum_{n\ge1}e^{-\pi n^2t}\)，\(t>0\)，并以实对数解释正实数的复幂。对每个 \(s\in\mathbb C\)、\(\operatorname{Re}s>1\)，有绝对收敛的积分恒等式
+\begin{equation}\label{b3:eq:26-theta-mellin}
+ \int_0^\infty h(t)t^{s/2-1}\,\mathrm dt
+ =\pi^{-s/2}\Gamma(s/2)\zeta(s).
+\end{equation}
+积分与展开后的级数在该半平面的每个紧子集上均可交换；积分作为 \(s\) 的函数全纯。
+\end{proposition}
+\begin{proof}
+固定 \(s\)，令 \(\sigma=\operatorname{Re}s>1\)。对每个正整数 \(n\)，作实变量换元 \(u=\pi n^2t\)。由于 \(\sigma/2>0\)，Gamma 的 Euler 积分收敛，且
+\[
+ \int_0^\infty e^{-\pi n^2t}t^{s/2-1}\,\mathrm dt
+ =(\pi n^2)^{-s/2}\int_0^\infty e^{-u}u^{s/2-1}\,\mathrm du
+ =\pi^{-s/2}n^{-s}\Gamma(s/2).
+\]
+所有底数均为正实数，故拆分复幂不会遇到对数分支问题。
+
+单项可积还不足以交换无穷求和与积分。对绝对值用 Tonelli 定理，有
+\[
+ \sum_{n=1}^\infty\int_0^\infty
+       e^{-\pi n^2t}t^{\sigma/2-1}\,\mathrm dt
+ =\pi^{-\sigma/2}\Gamma(\sigma/2)
+       \sum_{n=1}^\infty n^{-\sigma}<\infty.
+\]
+因此复值函数的级数也绝对可积，Fubini 定理允许换序；求和便给出所述等式。
+
+再取紧集 \(K\subset\{\operatorname{Re}s>1\}\)，选实数 \(1<a<b\)，使 \(a\le\operatorname{Re}s\le b\) 对 \(s\in K\) 成立。在 \(0<t\le1\) 上，积分核的绝对值不超过 \(h(t)t^{a/2-1}\)；在 \(t\ge1\) 上，不超过 \(h(t)t^{b/2-1}\)。两者都由刚才的实参数计算可积，这就给出共同支配。若要对参数求导，取 \(0<\varepsilon<a-1\)，利用 \(|\log t|^k\) 可分别由常数倍 \(t^{-\varepsilon/2}\) 与 \(t^{\varepsilon/2}\) 控制，再用实参数 \(a-\varepsilon\)、\(b+\varepsilon\) 的同一计算。由积分下求导，所得函数全纯。
+\end{proof}
+
+例如在 \(s=2\) 时，\(\Gamma(1)=1\)，故
+\[
+ \int_0^\infty h(t)\,\mathrm dt
+ =\frac{\zeta(2)}\pi=\frac\pi6,
+\]
+其中 \(\zeta(2)=\pi^2/6\) 已见\cref{b3:prop:23-zeta-even-values}。这个例子也检查了指数中的 \(\pi\)、正负整数合并时的因子二以及 Gamma 参数；任意漏掉一个，最后的常数都会改变。
 
 \subsection{Gamma 函数}
 \label{b3:subsec:260202}
 
-Gamma 函数的无零点性使这个乘法不会在右半平面创造新零点。其极点以后却会抵消 \(\zeta\) 的负偶数零点，所以除去 Gamma 因子时必须单独查看局部阶数。特别是 \(s=0\)，Gamma 有极点而 \(\zeta\) 最终并不为零，不能把所有 Gamma 极点一概称为平凡零点的位置。
+Mellin 公式先把 \(\zeta\) 与 Gamma 函数乘在一起。延拓这个乘积以后，还要把 Gamma 因子除回去，所以需要的不只是 Gamma 在正实轴上的积分值。\cref{b3:thm:21-product}已经证明：\(\Gamma(z)\) 在每个非极点处均不为零，\(1/\Gamma(z)\) 是整函数，其零点恰为 \(0,-1,-2,\ldots\)，且全部为单零点。\cref{b3:prop:21-residues}又给出
+\[
+ \Gamma(z)=\frac{(-1)^m}{m!(z+m)}+O(1)
+ \quad(z\to-m,\ m=0,1,2,\ldots).
+\]
+因此在 \(s\to-2m\) 时，
+\begin{equation}\label{b3:eq:26-reciprocal-gamma-local}
+ \frac1{\Gamma(s/2)}
+ =\frac{(-1)^m m!}{2}(s+2m)+O\bigl((s+2m)^2\bigr).
+\end{equation}
+系数中的 \(1/2\) 来自 \(s/2+m=(s+2m)/2\)，不是 Gamma 留数本身的一部分。
+
+\ProseParagraphBreak
+
+这些事实的作用可以分开理解。在 \(\operatorname{Re}s>1\) 中，\(\pi^{-s/2}\Gamma(s/2)\) 全纯且非零，故乘上它不会增添或消去 \(\zeta\) 的零点。把乘积延拓以后，反向乘子
+\[
+ q(s)\coloneqq\frac{\pi^{s/2}}{\Gamma(s/2)}
+\]
+在全平面整，因而不会产生新极点；它却可能在 \(s=0,-2,-4,\ldots\) 消去已有极点，或者产生零点。究竟发生哪一种，要同时看被乘函数的局部阶数。特别是 \(q(s)=s/2+O(s^2)\) 在原点有单零点，而后来出现的乘积在原点有单极点，两者相消后得到一个非零有限值；不能只看 \(q(0)=0\) 就断言 \(\zeta(0)=0\)。
+
+\ProseParagraphBreak
+
+还需一个归一化值。由\cref{b3:prop:21-half-integers}的 Gaussian 积分，\(\Gamma(1/2)=\sqrt\pi\)，所以 \(q(1)=1\)。这会使乘积在一处的留数原样传给 \(\zeta\)。本章这一阶段只用到无零点性、极点阶数和这些局部值，不需要关于复杂参数的 Stirling 渐近式。
 
 \subsection{\texorpdfstring{\(\theta\)}{\AnalysisPdfTheta} 函数}
 \label{b3:subsec:260203}
 
-由\secref{b3:sec:2401}的高斯求和，\(\vartheta(t)=t^{-1/2}\vartheta(1/t)\)。于是
+\cref{b3:lem:24-gaussian-poisson}对实数 \(t>0\) 给出绝对收敛的高斯求和公式。令其中平移与调制参数均为零，就得到
+\begin{equation}\label{b3:eq:26-theta-inversion}
+ \vartheta(t)=t^{-1/2}\vartheta(1/t),
+ \quad
+ h(t)=t^{-1/2}h(1/t)+\frac12\bigl(t^{-1/2}-1\bigr).
+\end{equation}
+这条恒等式把小参数处的很多缓慢衰减项，换成大参数处的少数快速衰减项。为了用于无穷积分，还需要把“快速”写成确切的上界。
+
+\begin{proposition}[theta 函数在两端的估计]\label{b3:prop:26-theta-endpoints}
+令 \(\vartheta(t)=\sum_{n\in\mathbb Z}e^{-\pi n^2t}\)、\(h(t)=(\vartheta(t)-1)/2\)，\(t>0\)。存在绝对常数 \(C>0\)，使
 \[
-h(t)=t^{-1/2}h(1/t)+\frac12(t^{-1/2}-1).
+ 0<h(t)\le Ce^{-\pi t}\quad(t\ge1),
 \]
-这是延拓的关键等式：右侧第一项在 \(t\downarrow0\) 时带指数小因子，另外两项完整记录原点的幂次奇性。只减去常数一还不能使原点积分对所有参数收敛；还必须处理 \(t^{-1/2}\) 项。
+且
+\[
+ h(t)=\frac12t^{-1/2}-\frac12
+       +O\bigl(t^{-1/2}e^{-\pi/t}\bigr)
+ \quad(0<t\le1),
+\]
+其中 \(O\) 项的绝对常数可对整个区间 \((0,1]\) 统一选取。等价地，
+\[
+ \vartheta(t)=t^{-1/2}
+       +O\bigl(t^{-1/2}e^{-\pi/t}\bigr)
+ \quad(0<t\le1).
+\]
+\end{proposition}
+\begin{proof}
+对整数 \(n\ge1\)，有 \(n^2\ge1+3(n-1)\)，因为两边之差为 \((n-1)(n-2)\ge0\)。因此当 \(t\ge1\) 时，
+\[
+ h(t)\le e^{-\pi t}\sum_{n=1}^\infty e^{-3\pi(n-1)t}
+ =\frac{e^{-\pi t}}{1-e^{-3\pi t}}
+ \le\frac{e^{-\pi t}}{1-e^{-3\pi}}.
+\]
+对 \(0<t\le1\)，把这一估计用于 \(1/t\ge1\)，再代入\eqref{b3:eq:26-theta-inversion}，便得到另外两式。
+\end{proof}
+
+这也说明原 Mellin 积分的绝对收敛条件 \(\operatorname{Re}s>1\) 是精确的。无穷端有指数衰减，对任何固定 \(s\) 都不成问题；原点处则有 \(h(t)\sim\tfrac12t^{-1/2}\)，故积分绝对值的主要幂次为 \(t^{\sigma/2-3/2}\)。只有 \(\sigma/2-3/2>-1\)，即 \(\sigma>1\)，它才可积。在边界 \(\sigma=1\) 已出现 \(t^{-1}\) 的对数发散。
+
+\ProseParagraphBreak
+
+另一方面，扣除两个显式项以后的余量，乘上 \(t\) 的任意固定负幂仍可积。这可以由 \(u=1/t\) 化成指数衰减积分来核验。因此延拓的办法不是勉强让原积分在新参数处收敛，而是先把阻碍收敛的两项准确取出，单独计算它们，再保留真正快速衰减的余量。下一节将把这一过程写成全平面的统一表达式。
 
 \subsection{热核观点}
 \label{b3:subsec:260204}
 
-函数 \(\vartheta(t)\) 也可视为圆周高斯热核在原点的值，\(n^2\) 对应离散频率的平方。减去一是在去掉零频率。小时间的 \(t^{-1/2}\) 主项反映一维局部尺度；Mellin 积分把这个幂次转成 \(s=1\) 的极点。这个解释无需将谱语言当作证明，全部常数已由高斯换元确定。
+参数 \(t\) 还可理解为热扩散的时间尺度。不过圆周长度、Fourier 频率和时间若取不同归一化，同一个 theta 函数中的常数也会变化。下面固定周长为一的圆周，也就是把实直线上相差整数的点视为同一点；函数由一周期函数表示。
+
+\begin{proposition}[周期一热核的归一化]\label{b3:prop:26-periodic-heat}
+对 \(\tau>0\)、\(x\in\mathbb R\)，定义
+\[
+ K_\tau(x)\coloneqq
+ \sum_{n\in\mathbb Z}e^{-4\pi^2n^2\tau}e^{2\pi\mathrm inx}.
+\]
+该函数关于 \(x\) 一周期，且有等价的高斯表示
+\begin{equation}\label{b3:eq:26-periodic-heat}
+ K_\tau(x)=\frac1{\sqrt{4\pi\tau}}
+       \sum_{k\in\mathbb Z}e^{-(x+k)^2/(4\tau)}.
+\end{equation}
+对每个 \(\tau>0\)，它为正，\(\int_0^1K_\tau(x)\,\mathrm dx=1\)，并满足 \(\partial_\tau K_\tau=\partial_x^2K_\tau\)。若 \(f:\mathbb R\to\mathbb C\) 连续且一周期，则
+\[
+ u(\tau,x)=\int_0^1 K_\tau(x-y)\cdot f(y)\,\mathrm dy
+\]
+在 \(\tau>0\) 时光滑、满足同一热方程，且当 \(\tau\downarrow0\) 时一致趋于 \(f(x)\)。特别地，
+\[
+ K_\tau(0)=\vartheta(4\pi\tau).
+\]
+\end{proposition}
+\begin{proof}
+在 \(\tau\ge\varepsilon>0\) 上，Fourier 级数的每次空间或时间微分只增加一个 \(n\) 的多项式因子，仍被高斯衰减控制，故可逐项求导。每个模态 \(e^{2\pi\mathrm inx}\) 满足
+\[
+ \partial_x^2e^{2\pi\mathrm inx}=-4\pi^2n^2e^{2\pi\mathrm inx},
+\]
+所以衰减系数恰好使热方程成立。
+
+在\cref{b3:lem:24-gaussian-poisson}中取参数 \(t=1/(4\pi\tau)\)、\(a=x\)、\(b=0\)，再乘 \((4\pi\tau)^{-1/2}\)，就得到\eqref{b3:eq:26-periodic-heat}。右端每项为正。将其在一个周期上积分，并用非负项的 Tonelli 定理将各区间接起来，得
+\[
+ \int_0^1K_\tau(x)\,\mathrm dx
+ =\frac1{\sqrt{4\pi\tau}}\int_{\mathbb R}e^{-v^2/(4\tau)}\,\mathrm dv=1.
+\]
+
+对 \(u\) 的求导可由上述一致收敛与 \(f\) 有界交换。其初值极限也可直接验证：高斯表示和 \(f\) 的周期性给
+\[
+ u(\tau,x)-f(x)
+ =\frac1{\sqrt{4\pi\tau}}\int_{\mathbb R}
+       e^{-v^2/(4\tau)}\bigl(f(x-v)-f(x)\bigr)\,\mathrm dv.
+\]
+给定 \(\epsilon>0\)，由周期连续函数的一致连续性，取 \(\delta>0\) 使 \(|v|<\delta\) 时括号的模对所有 \(x\) 均小于 \(\epsilon\)。这一部分积分的模不超过 \(\epsilon\)。余下部分不超过 \(2\|f\|_\infty\) 乘高斯在 \(|v|\ge\delta\) 的质量；令 \(v=\sqrt\tau\,w\)，该质量是固定可积高斯函数在 \(|w|\ge\delta/\sqrt\tau\) 的尾积分，趋于零。于是收敛关于 \(x\) 一致。最后在 Fourier 表示中取 \(x=0\)，就得到对角值公式。
+\end{proof}
+
+上述论证只用了具体的 Fourier 模态与高斯求和。\(4\pi^2n^2\) 是算子 \(-\partial_x^2\) 在这些模态上的特征值，无须在这里引入一般自伴算子的谱定理。零模态 \(n=0\) 恒为一，表示总质量不随时间改变；取 \(h\) 时去掉这一项，才能使大时间端指数衰减。
 
 \ProseParagraphBreak
 
-为了使热核的归一化完全明确，在周期一的圆周上取 Fourier 模态 \(e^{2\pi\mathrm inx}\)。算子 \(-\partial_x^2\) 的对应特征值为 \(4\pi^2n^2\)，故热核在时间 \(\tau\) 的对角值是
+结合\cref{b3:prop:26-theta-endpoints}的端点估计，
 \[
- K_\tau(0)=\sum_{n\in\mathbb Z}e^{-4\pi^2n^2\tau}
-          =\vartheta(4\pi\tau).
+ K_\tau(0)=(4\pi\tau)^{-1/2}
+     +O\bigl(\tau^{-1/2}e^{-1/(4\tau)}\bigr)
+ \quad(\tau\downarrow0).
 \]
-令 \(t=4\pi\tau\)，才得到前面使用的 \(\vartheta(t)\)。时间参数若不同时缩放，会使 Mellin 变换中的 \(\pi\) 因子发生变化。对角热核的大小与变换公式都可以从 Fourier 级数逐项验证，无需额外假定抽象谱定理。
-
-\ProseParagraphBreak
-
-小时间的余项也有直接界。对 \(u\ge1\)，利用 \(n^2\ge1+3(n-1)\) 可得
-\[
- 0<h(u)\le\frac{e^{-\pi u}}{1-e^{-3\pi u}}
-          \le\frac{e^{-\pi u}}{1-e^{-3\pi}}.
-\]
-代入参数反演，便有
-\[
- \vartheta(t)=t^{-1/2}
-       +O\bigl(t^{-1/2}e^{-\pi/t}\bigr),\qquad0<t\le1.
-\]
-这比仅说余项趋于零强得多。对任意固定的复参数紧集，指数小量乘上 \(t\) 的任意固定负幂仍可积；因此扣去主项后能够穿过任意有限条竖直线。下一节的全平面延拓正是把这一估计写成一条统一的积分公式。
+主项与实直线上热核的原点值相同，表达了小时间扩散只看到附近的一维尺度。Mellin 积分把这个 \(t^{-1/2}\) 幂次变成参数 \(s=1\) 处的极点。这样，极点的位置既可由积分收敛条件计算，也可由热扩散的局部尺度理解；两种说明使用的是同一个明确的归一化。

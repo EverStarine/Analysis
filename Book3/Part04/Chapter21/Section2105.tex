@@ -2,86 +2,451 @@
 \section{Mellin 变换}
 \label{b3:sec:2105}
 
-Fourier 变换将平移变成乘子，Mellin 变换对伸缩做同一件事。正半轴的乘法群通过对数坐标变成实轴的加法群，变换的积分测度与反演直线都由这个换元决定。
+平移问题自然使用 Fourier 变换，伸缩问题则更适合先取对数坐标。正半轴上的乘法 \(x\mapsto ax\) 在 \(u=\log x\) 中变成平移 \(u\mapsto u+\log a\)；测度 \(\mathrm dx/x\) 也恰好变成 \(\mathrm du\)。Mellin 变换由这个换元产生，它的复参数实部选择权重，虚部记录对数变量的振荡。两者承担不同作用，反演时必须同时保留。
 
 \subsection{定义}
 \label{b3:subsec:210501}
 
-\begin{definition}\label{b3:def:21-mellin}
-对可测函数 \(f:(0,\infty)\to\mathbb C\)，在积分绝对收敛的参数处定义\term[mellin-bianhuan]{Mellin 变换}[Mellin transform]
+\Needspace{6\baselineskip}
+\begin{definition}[Mellin 变换与绝对收敛带]\label{b3:def:21-mellin}
+设 \(f:(0,\infty)\to\mathbb C\) 可测。对每个使积分绝对收敛的 \(s\in\mathbb C\)，定义其\term[mellin-bianhuan]{Mellin 变换}[Mellin transform]为
 \[
-\mathcal Mf(s)\coloneqq\int_0^\infty f(x)x^{s-1}\,\mathrm{d}x.
+ \mathcal Mf(s)\coloneqq\int_0^\infty f(x)x^{s-1}\,\mathrm dx,
+ \quad x^{s-1}=\exp((s-1)\log x),
 \]
+其中 \(\log x\) 为正实轴上的实对数。对实数 \(c\)，记
+\[
+ \|f\|_{1,c}\coloneqq\int_0^\infty|f(x)|x^{c-1}\,\mathrm dx,
+ \quad L^1_c=\{\,f:\|f\|_{1,c}<\infty\,\},
+\]
+函数按几乎处处相等识别。若集合 \(I_f=\{\,c\in\mathbb R:\|f\|_{1,c}<\infty\,\}\) 的内部为非空区间 \((a,b)\)，则称 \(a<\operatorname{Re}s<b\) 为 \(f\) 的绝对收敛带；允许 \(a=-\infty\) 或 \(b=+\infty\)。
 \end{definition}
-\symidx{\(\mathcal Mf\)：Mellin 变换}
-若在实部 \(a,b\) 处绝对收敛，\(a<b\)，则在中间闭带也收敛：在 \((0,1)\) 用指数 \(a\)，在 \((1,\infty)\) 用指数 \(b\)。取稍大的内闭带，\(|\log x|^k\) 被两端的少量幂次吸收，因而变换在开带内全纯。这里的“收敛带”由原点和无穷远两端共同决定，一端的估计不能代替另一端。
+\symidx{\(\mathcal Mf(s)\)：Mellin 变换}
+\symidx{\(\lVert f\rVert_{1,c}\)：Mellin 权重的绝对可积范数}
+绝对值满足 \(|x^{s-1}|=x^{\operatorname{Re}s-1}\)，所以是否绝对收敛只取决于实部。若在一个实部收敛，在同一条竖线的每一点都收敛；这与函数在一个开区域全纯是两件不同的事。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[收敛区间与带内全纯性]\label{b3:prop:21-mellin-strip}
+设 \(f:(0,\infty)\to\mathbb C\) 可测。其绝对可积权重集合 \(I_f\) 是一个区间，允许为空、单点及具有任意端点开闭性。若实数 \(a<b\) 满足 \(f\in L^1_a\cap L^1_b\)，则 \(\mathcal Mf\) 在闭带 \(a\le\operatorname{Re}s\le b\) 有界且连续，在开带内全纯，并且对每个非负整数 \(k\)，
+\[
+ (\mathcal Mf)^{(k)}(s)
+ =\int_0^\infty f(x)x^{s-1}(\log x)^k\,\mathrm dx,
+ \quad a<\operatorname{Re}s<b.
+\]
+这些导数积分在开带的紧集上绝对一致收敛。
+\end{proposition}
+\begin{proof}
+若 \(a\le\sigma\le b\)，则在 \(0<x\le1\) 上 \(x^{\sigma-1}\le x^{a-1}\)，在 \(x\ge1\) 上 \(x^{\sigma-1}\le x^{b-1}\)。因此
+\[
+ |f(x)x^{s-1}|
+ \le |f(x)|\bigl(x^{a-1}\cdot\mathbf1_{(0,1]}(x)
+                  +x^{b-1}\cdot\mathbf1_{[1,\infty)}(x)\bigr).
+\]
+右边可积且与 \(s\) 无关。这既证明中间权重均可积，也由支配收敛给出闭带连续性及上界 \(|\mathcal Mf(s)|\le\|f\|_{1,a}+\|f\|_{1,b}\)。所以 \(I_f\) 具有区间性质。
+
+在开带内固定一条较小闭带 \(a+\delta\le\operatorname{Re}s\le b-\delta\)，其中 \(0<2\delta<b-a\)。对任意固定 \(k\)，函数 \(x^\delta|\log x|^k\) 在 \((0,1]\) 有界，\(x^{-\delta}(\log x)^k\) 在 \([1,\infty)\) 有界。因此加入 \((\log x)^k\) 后，仍由上述两个端点权重的常数倍控制。截断到 \([\epsilon,R]\) 的积分是 \(s\) 的整函数，其各阶导数恰由插入 \((\log x)^k\) 得到。可积控制使这些积分及导数在较小闭带上一致收敛，故可取全纯极限并逐次微分。
+\end{proof}
+
+端点不应从带内结论猜测。给定实数 \(c_0\)，函数
+\[
+ f(x)=\frac{x^{-c_0}}{(1+|\log x|)^2}
+\]
+满足 \(I_f=\{c_0\}\)：令 \(u=\log x\)，其加权绝对积分为
+\[
+ \int_{\mathbb R}\frac{e^{(c-c_0)u}}{(1+|u|)^2}\,\mathrm du,
+\]
+仅在 \(c=c_0\) 时有限。它在一条竖线上有变换，却没有非空的绝对收敛开带。相反，若 \(f\) 可积且支集包含于某个 \([\delta,R]\subset(0,\infty)\)，则所有实权重都可积，变换为整函数。端点行为决定参数域，不能只看被积函数中出现的复幂。
 
 \subsection{缩放}
 \label{b3:subsec:210502}
 
-换元直接给出，对 \(a>0\)、\(\lambda\in\mathbb C\)，在相应收敛带内有
+Mellin 变换的换元规则应连同权重一起记忆。正半轴上的伸缩不改变复参数，乘上一个幂则移动参数所在的直线；取倒数坐标会交换原点与无穷远。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[缩放、幂乘与倒数换元]\label{b3:prop:21-mellin-rules}
+设 \(f:(0,\infty)\to\mathbb C\) 可测，\(a>0\)、\(\lambda\in\mathbb C\)。凡右侧积分绝对收敛，下列左侧积分也绝对收敛，且有
 \[
-\mathcal M[f(a\,\cdot)](s)=a^{-s}\mathcal Mf(s),\qquad
-\mathcal M[x^\lambda f(x)](s)=\mathcal Mf(s+\lambda).
+ \begin{aligned}
+ \mathcal M[f(a\,\cdot)](s)&=a^{-s}\mathcal Mf(s),\\
+ \mathcal M[x^\lambda f(x)](s)&=\mathcal Mf(s+\lambda),\\
+ \mathcal M[f(1/x)](s)&=\mathcal Mf(-s).
+ \end{aligned}
 \]
-若 \(f\) 连续可微，\(x^sf(x)\) 在两端趋零，且两项积分绝对收敛，则分部积分给
-\(\mathcal M[xf'](s)=-s\mathcal Mf(s)\)。这揭示了伸缩的无穷小生成元 \(x\,\mathrm{d}/\mathrm{d}x\)；它对应乘子 \(-s\)，不是普通导数在 Fourier 变换下的同一个乘子。
+全部正实数的复幂均用实对数定义。另设实数 \(c\) 和函数 \(f\in C^1((0,\infty))\) 满足
+\[
+ f,\;xf'\in L^1_c,
+ \quad \lim_{x\downarrow0}x^cf(x)=\lim_{x\to\infty}x^cf(x)=0.
+\]
+则在 \(\operatorname{Re}s=c\) 上有
+\begin{equation}\label{b3:eq:21-mellin-euler-operator}
+ \mathcal M[xf'](s)=-s\mathcal Mf(s).
+\end{equation}
+\end{proposition}
+\begin{proof}
+第一式令 \(y=ax\)，有 \(x^{s-1}\,\mathrm dx=a^{-s}y^{s-1}\,\mathrm dy\)；对绝对值作同一换元也验证收敛性。第二式直接合并指数，绝对权重由 \(\operatorname{Re}s\) 移到 \(\operatorname{Re}s+\operatorname{Re}\lambda\)。第三式令 \(y=1/x\)，反转端点后得到 \(x^{s-1}\,\mathrm dx=-y^{-s-1}\,\mathrm dy\)，正是参数 \(-s\) 的积分。
+
+最后在 \([\epsilon,R]\) 分部积分：
+\[
+ \int_\epsilon^R f'(x)x^s\,\mathrm dx
+ =[x^sf(x)]_\epsilon^R-s\int_\epsilon^R f(x)x^{s-1}\,\mathrm dx.
+\]
+因 \(|x^{s-c}|=1\)，端点假设使边界项趋零；两项绝对可积假设允许令 \(\epsilon\downarrow0\)、\(R\to\infty\)，得到\eqref{b3:eq:21-mellin-euler-operator}。
+\end{proof}
+
+算子 \(x\,\mathrm d/\mathrm dx\) 是伸缩在参数原点的导数，因为 \(\left.\mathrm d f(e^u x)/\mathrm du\right|_{u=0}=xf'(x)\)。它对应乘子 \(-s\)。重复使用此式时，每一级函数都必须满足相应加权可积性和边界条件；形式地把微分方程换成代数方程，并不会自动消去端点贡献。
 
 \subsection{与 Gamma 函数的关系}
 \label{b3:subsec:210503}
 
-Euler 积分正是 \(\mathcal M[e^{-x}](s)=\Gamma(s)\)。因此
+Euler 积分就是最基本的 Mellin 变换对：
 \[
-\mathcal M[e^{-a x^p}](s)=\frac1p a^{-s/p}\Gamma(s/p),
-\quad a,p>0,\quad \operatorname{Re}s>0.
+ \mathcal M[e^{-x}](s)=\Gamma(s),\quad \operatorname{Re}s>0.
 \]
-在零点附近做 Taylor 扣除还能读出延拓：对 \(e^{-x}\)，从 \((0,1)\) 的积分减去前 \(N\) 项，得到一个在 \(\operatorname{Re}s>-N\) 全纯的余项，以及
-\(\sum_{k=0}^{N-1}(-1)^k/[k!(s+k)]\)。这从 Mellin 角度再次给出 Gamma 的全部极点和留数。
+原点处 \(e^{-x}\) 趋于一，要求正实部；无穷远的指数衰减则容许任意固定幂权重。再令 \(t=ax^p\)，得到
+\begin{equation}\label{b3:eq:21-mellin-exponential}
+ \mathcal M[e^{-ax^p}](s)=\frac1p a^{-s/p}\Gamma(s/p),
+ \quad a,p>0,\quad \operatorname{Re}s>0.
+\end{equation}
+其中 \(1/p\) 与 \(a^{-s/p}\) 都由微分元和幂权重共同产生，不能只改变 Gamma 的参数而漏掉常数。
+
+\ProseParagraphBreak
+
+一个同时检验两端的例子是 \(f(x)=(1+x)^{-a}\)，其中 \(a>0\) 为实数。原点要求 \(\operatorname{Re}s>0\)，无穷远要求 \(\operatorname{Re}s<a\)。在这条带内作 \(u=x/(1+x)\)，由\cref{b3:prop:21-beta-integral}，
+\begin{equation}\label{b3:eq:21-mellin-beta}
+ \int_0^\infty\frac{x^{s-1}}{(1+x)^a}\,\mathrm dx
+ =B(s,a-s)=\frac{\Gamma(s)\Gamma(a-s)}{\Gamma(a)}.
+\end{equation}
+取 \(a=1\)，反射公式将右边化成 \(\pi/\sin\pi s\)。它延拓为亚纯函数，但原积分依然只在 \(0<\operatorname{Re}s<1\) 绝对收敛；例如在实数 \(s>1\) 时，原积分于无穷远发散，不等于延拓的有限值。
+
+\ProseParagraphBreak
+
+一般的端点扣除也可在此统一说明。局部幂项 \(x^\alpha\) 在 \((0,1)\) 上给 \(1/(s+\alpha)\)，它的对数幂则给更高阶极点。为把这项计算变成延拓结论，必须同时控制扣除后的余项与未改变的无穷远积分。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[端点幂与对数项的 Mellin 延拓]\label{b3:prop:21-mellin-endpoint}
+设 \(f:(0,\infty)\to\mathbb C\) 可测且局部可积。设 \(A,b\in\mathbb R\)，有限个复数 \(\alpha_j\) 满足 \(\operatorname{Re}\alpha_j<A\)，并给定非负整数 \(q_j\) 及复数 \(c_{j,\ell}\)。假设当 \(x\downarrow0\) 时，
+\[
+ f(x)=\sum_{j=1}^J\sum_{\ell=0}^{q_j}
+            c_{j,\ell}x^{\alpha_j}(\log x)^\ell+O(x^A),
+\]
+且对每个实数 \(\sigma<b\)，有
+\[
+ \int_1^\infty|f(x)|x^{\sigma-1}\,\mathrm dx<\infty.
+\]
+当 \(J\ge1\) 时，假设 \(\max_j(-\operatorname{Re}\alpha_j)<b\)；当 \(J=0\) 时，假设 \(-A<b\)。则原变换在 \(J\ge1\) 时于 \(\max_j(-\operatorname{Re}\alpha_j)<\operatorname{Re}s<b\) 绝对收敛，并在 \(-A<\operatorname{Re}s<b\) 有亚纯延拓
+\begin{equation}\label{b3:eq:21-mellin-endpoint-extension}
+ \mathcal Mf(s)=H(s)+\sum_{j=1}^J\sum_{\ell=0}^{q_j}
+       \frac{(-1)^\ell\ell!c_{j,\ell}}{(s+\alpha_j)^{\ell+1}},
+\end{equation}
+其中 \(H\) 在这条较大开带全纯。没有主项时，原变换已经在该较大开带全纯。列出的极点只表示可能的极点；相同位置的系数须先合并，可能发生抵消。
+\end{proposition}
+\begin{proof}
+在 \((0,1)\) 上令
+\[
+ r(x)=f(x)-\sum_{j=1}^J\sum_{\ell=0}^{q_j}
+                   c_{j,\ell}x^{\alpha_j}(\log x)^\ell.
+\]
+原点附近有 \(|r(x)|\le Cx^A\)，而在远离零的紧区间，\(r\) 仍可积。所以
+\[
+ H(s)=\int_0^1r(x)x^{s-1}\,\mathrm dx
+      +\int_1^\infty f(x)x^{s-1}\,\mathrm dx
+\]
+在 \(-A<\operatorname{Re}s<b\) 绝对收敛。每条内闭带都能在左右各留少量幂次余量，从而吸收任意固定次 \(|\log x|\)；与\cref{b3:prop:21-mellin-strip}相同的支配论证给出全纯性。
+
+在原来各主项都可积的开带内，对 \(\operatorname{Re}(s+\alpha_j)>0\)，先积分 \(x^{s+\alpha_j-1}\)，再在参数上微分 \(\ell\) 次，得到
+\[
+ \int_0^1x^{s+\alpha_j-1}(\log x)^\ell\,\mathrm dx
+ =\frac{(-1)^\ell\ell!}{(s+\alpha_j)^{\ell+1}}.
+\]
+参数微分仍由少量幂次余量控制。将有限个主项补回，便在非空的原收敛带得到\eqref{b3:eq:21-mellin-endpoint-extension}，其右端遂给出唯一的亚纯延拓。
+\end{proof}
+
+对 \(e^{-x}\) 扣除 \(N\) 个 Taylor 项，\(N\ge1\)，就是
+\[
+ \Gamma(s)=H_N(s)+\sum_{k=0}^{N-1}\frac{(-1)^k}{k!(s+k)},
+ \quad \operatorname{Re}s>-N,
+\]
+其中 \(H_N\) 全纯。这从 Mellin 角度再次解释了 Gamma 的极点与留数：幂次 \(k\) 产生位置 \(-k\)，Taylor 系数 \((-1)^k/k!\) 变成留数。该例在无穷远有任意幂权重的可积性，因此可将命题分别用于任意大的有限 \(b\)。
+
+\ProseParagraphBreak
+
+这里只证明了“有受控端点展开，因此有这些极点”的方向。反向从极点读取函数渐近时，还须有可用的反演和围道移动估计。一个亚纯表达式本身没有记载积分在高处的增长，不能仅列出留数就宣布已恢复原函数。
 
 \subsection{Mellin 反演}
 \label{b3:subsec:210504}
 
-\begin{theorem}[Mellin 反演]\label{b3:thm:21-mellin-inversion}
-设实数 \(c\) 满足 \(\int_0^\infty|f(x)|x^{c-1}\,\mathrm{d}x<\infty\)，且 \(t\mapsto\mathcal Mf(c+\mathrm{i}t)\) 可积。则 \(f\) 几乎处处等于连续函数
+固定一条绝对收敛竖线 \(\operatorname{Re}s=c\)。令
 \[
-\frac1{2\pi}\int_{\mathbb R}\mathcal Mf(c+\mathrm{i}t)x^{-c-\mathrm{i}t}\,\mathrm{d}t.
+ g_c(u)=e^{cu}f(e^u),\quad u\in\mathbb R.
 \]
-若 \(f\) 连续，等式处处成立。
+对数换元给出精确的范数关系与变换关系：
+\begin{equation}\label{b3:eq:21-mellin-fourier}
+ \begin{aligned}
+ \|g_c\|_{L^1(\mathbb R)}&=\|f\|_{1,c},\\
+ \mathcal Mf(c+\mathrm it)&=\int_{\mathbb R}g_c(u)e^{\mathrm itu}\,\mathrm du
+                         =\widehat g_c(-t/(2\pi)).
+ \end{aligned}
+\end{equation}
+这里 \(\widehat g(\xi)=\int g(u)e^{-2\pi\mathrm iu\xi}\,\mathrm du\) 是本书的 Fourier 归一化。正号 \(e^{\mathrm itu}\) 和因子 \(2\pi\) 决定反演中的符号与常数。
+
+\Needspace{6\baselineskip}
+\begin{theorem}[Mellin 反演]\label{b3:thm:21-mellin-inversion}
+设 \(f:(0,\infty)\to\mathbb C\) 可测，\(c\in\mathbb R\)，且
+\[
+ \int_0^\infty|f(x)|x^{c-1}\,\mathrm dx<\infty,
+ \quad \int_{\mathbb R}|\mathcal Mf(c+\mathrm it)|\,\mathrm dt<\infty,
+\]
+其中 \(\mathcal Mf(s)=\int_0^\infty f(x)e^{(s-1)\log x}\,\mathrm dx\)。则
+\begin{equation}\label{b3:eq:21-mellin-inversion}
+ f(x)=\frac1{2\pi}\int_{\mathbb R}
+               \mathcal Mf(c+\mathrm it)x^{-c-\mathrm it}\,\mathrm dt
+\end{equation}
+对几乎处处的 \(x>0\) 成立，右端定义 \((0,\infty)\) 上的连续函数。若 \(f\) 连续，等式对每个 \(x>0\) 成立。
 \end{theorem}
 \begin{proof}
-令 \(g(u)=e^{cu}f(e^u)\)，则 \(g\in L^1(\mathbb R)\)，且
-\(\mathcal Mf(c+\mathrm{i}t)=\int g(u)e^{\mathrm{i}tu}\,\mathrm{d}u\)。为说明所需 Fourier 反演，可先乘 \(e^{-\varepsilon t^2}\)，用 Fubini 将逆积分变为 \(g\) 与单位质量高斯核的卷积。在 \(g\) 的每个 Lebesgue 点，逼近恒等使卷积趋于 \(g\)；另一方面频率函数可积，支配收敛使逆积分趋于不带高斯的积分。两者相等。频率可积还由支配收敛保证逆积分连续，故若 \(f\) 连续，几乎处处相等升级为处处相等。最后取 \(u=\log x\)，再乘 \(e^{-cu}\)。
-\end{proof}
-积分也写作 \((2\pi\mathrm{i})^{-1}\int_{c-\mathrm{i}\infty}^{c+\mathrm{i}\infty}\mathcal Mf(s)x^{-s}\,\mathrm{d}s\)。其中直线方向由下到上；\(\mathrm{d}s=\mathrm{i}\,\mathrm{d}t\) 解释常数。移动直线需要额外的水平边估计，不能仅凭变换有亚纯延拓便丢去连接两条竖线的边。
+令 \(g(u)=e^{cu}f(e^u)\) 以及 \(F(t)=\mathcal Mf(c+\mathrm it)\)。由\eqref{b3:eq:21-mellin-fourier}，\(g\in L^1(\mathbb R)\)，且 \(F(t)=\int g(v)e^{\mathrm itv}\,\mathrm dv\)。对 \(\epsilon>0\)，在反演积分中暂时插入 Gaussian 因子，定义
+\[
+ J_\epsilon(u)=\frac1{2\pi}\int_{\mathbb R}
+                   F(t)e^{-\epsilon t^2}e^{-\mathrm itu}\,\mathrm dt.
+\]
+代入 \(F\) 后，绝对二重积分由
+\[
+ \|g\|_1\int_{\mathbb R}e^{-\epsilon t^2}\,\mathrm dt<\infty
+\]
+控制，故 Fubini 定理适用。
 
-\subsection{对数坐标下的 Fourier 变换}
+为核对内积分的常数，记 \(A_\epsilon(w)=\int e^{-\epsilon t^2}e^{-\mathrm itw}\,\mathrm dt\)。参数微分及一次分部积分给
+\[
+ A_\epsilon'(w)=-\frac{w}{2\epsilon}A_\epsilon(w),
+ \quad A_\epsilon(0)=\sqrt{\pi/\epsilon}.
+\]
+分部积分的端点项因 Gaussian 衰减而消失；参数微分由 \(|t|e^{-\epsilon t^2}\) 控制。解这个实参数微分方程，得到
+\[
+ \frac1{2\pi}A_\epsilon(w)
+ =K_\epsilon(w)\coloneqq\frac{e^{-w^2/(4\epsilon)}}{\sqrt{4\pi\epsilon}},
+ \quad J_\epsilon=K_\epsilon*g.
+\]
+核 \(K_\epsilon\) 非负、积分为一，是固定的径向非增可积核在尺度 \(\sqrt\epsilon\) 下的缩放。第一卷命题14.4.6说明：这样的核作用于全空间 \(L^1\) 函数，在每个 Lebesgue 点收敛到函数值。这里 \(g\in L^1(\mathbb R)\)，核的全部条件也已核对，所以
+\[
+ J_\epsilon(u)\longrightarrow g(u)
+\]
+在 \(g\) 的几乎所有点成立。采用无限支集的 Gaussian 核时，全空间可积性仍不可省去；只知道核的质量向原点集中，不足以直接套用这一逐点结论。
+
+另一方面，假设 \(F\in L^1\) 允许以 \(|F(t)|\) 作支配函数，得到对每个 \(u\) 都成立的极限
+\[
+ J_\epsilon(u)\longrightarrow
+ J(u)=\frac1{2\pi}\int_{\mathbb R}F(t)e^{-\mathrm itu}\,\mathrm dt.
+\]
+同一个支配收敛论证说明 \(J\) 连续。于是 \(g=J\) 几乎处处；令 \(u=\log x\)，再乘 \(x^{-c}\)，便得\eqref{b3:eq:21-mellin-inversion}。这一换元保持零测集结论，因为指数映射在每个有界区间 Lipschitz，而实轴可被可数个有界区间覆盖。若 \(f\) 连续，两个连续函数几乎处处相等就必处处相等。
+\end{proof}
+
+反演也可写为
+\[
+ f(x)=\frac1{2\pi\mathrm i}
+       \int_{c-\mathrm i\infty}^{c+\mathrm i\infty}\mathcal Mf(s)x^{-s}\,\mathrm ds.
+\]
+直线由下到上，\(\mathrm ds=\mathrm i\,\mathrm dt\)，所以两种记法的常数一致。它是绝对收敛的竖线积分；尚未允许改变直线的位置。
+
+\Needspace{6\baselineskip}
+\begin{corollary}[一条竖线上的唯一性]\label{b3:cor:21-mellin-uniqueness}
+设 \(c\in\mathbb R\)，可测函数 \(f,h\in L^1_c\)。若
+\[
+ \mathcal Mf(c+\mathrm it)=\mathcal Mh(c+\mathrm it),\quad t\in\mathbb R,
+\]
+则 \(f=h\) 几乎处处；若二者连续，则处处相等。
+\end{corollary}
+\begin{proof}
+差 \(f-h\) 属于 \(L^1_c\)，其竖线变换恒为零，因而自动属于 \(L^1(\mathbb R,\mathrm dt)\)。对差应用反演定理，就得到零函数。这里不需要分别假设两个原变换在竖线上可积。
+\end{proof}
+
+竖线上的绝对可积性不是加权可积性的自动后果。例如 \(f=\mathbf1_{(0,1)}\) 在每个 \(c>0\) 属于 \(L^1_c\)，且 \(\mathcal Mf(s)=1/s\)；但 \(1/(c+\mathrm it)\) 的模只按 \(|t|^{-1}\) 衰减，不能直接使用本节的绝对反演定理。对称截断或其他正则化仍可能给出反演，需要另行陈述其收敛方式。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[绝对反演的一个充分条件]\label{b3:prop:21-mellin-inversion-test}
+设 \(c\in\mathbb R\)，\(f:(0,\infty)\to\mathbb C\)，且 \(g(u)=e^{cu}f(e^u)\) 属于 \(C^2(\mathbb R)\)。若 \(g,g',g''\in L^1(\mathbb R)\)，且 \(g(u),g'(u)\to0\) 当 \(u\to\pm\infty\)，则
+\[
+ |\mathcal Mf(c+\mathrm it)|
+ \le\min\{\|g\|_1,\,|t|^{-2}\|g''\|_1\}\quad(t\ne0).
+\]
+因此 \(f\) 满足 Mellin 反演定理的全部条件，且反演处处成立。
+\end{proposition}
+\begin{proof}
+范数关系给出 \(f\in L^1_c\)。在 \(\int g(u)e^{\mathrm itu}\,\mathrm du\) 中分部积分两次，端点项均因假设消失，得到模界 \(|t|^{-2}\|g''\|_1\)；不分部积分则得到 \(\|g\|_1\)。前一个界控制 \(|t|\ge1\)，后一个控制 \(|t|\le1\)，二者合并可积。\(g\) 连续也保证 \(f(x)=x^{-c}g(\log x)\) 连续，故反演处处成立。
+\end{proof}
+
+\subsection{对数坐标、乘法卷积与围道移动}
 \label{b3:subsec:210505}
 
-本书连续 Fourier 变换使用核 \(e^{-2\pi\mathrm{i}u\xi}\)。以上换元精确地写成
+每条竖线对应不同的加权函数 \(g_c\)。改变 \(c\) 时，不只是给同一 Fourier 变换换了记号，而是改变了输入在两端的权重。对于伸缩结构，最自然的卷积同样应使用不变测度 \(\mathrm dt/t\)。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[Mellin 卷积]\label{b3:prop:21-mellin-convolution}
+设 \(c\in\mathbb R\)，可测函数 \(f,h\in L^1_c\)。则积分
 \[
-\mathcal Mf(c+\mathrm{i}t)=\widehat g(-t/(2\pi)).
+ (f*_M h)(x)\coloneqq\int_0^\infty f(t)h(x/t)\,\frac{\mathrm dt}{t}
 \]
-所以每条竖线对应一个不同的加权函数 \(g\)。当改变 \(c\) 时，既改变积分核的衰减，也改变实轴函数的权重；只有相关权重可积时才能继续使用反演。
-
-\ProseParagraphBreak
-
-例如 \(f=\mathbf1_{(0,1)}\) 的变换为 \(1/s\)，收敛域为 \(\operatorname{Re}s>0\)，但竖线上 \(1/(c+\mathrm{i}t)\) 不属于 \(L^1\)。因此本节的绝对反演定理不直接适用，尽管对称截断有更精细的反演结果。反之，若 \(g\) 二次可微且 \(g,g',g''\) 可积、端点边界项消失，两次分部积分给 \(|\widehat g(\xi)|\le C/(1+\xi^2)\)，即可满足本节假设。这是应用前容易核对的充分条件。
-
-\ProseParagraphBreak
-
-Mellin 变换的乘法结构也由对数换元确定。对适当函数定义乘法卷积
+对几乎处处的 \(x>0\) 绝对收敛，定义 \(L^1_c\) 中的函数，并满足
 \[
- (f*_Mg)(x)=\int_0^\infty f(t)g(x/t)\frac{\mathrm{d}t}{t}.
+ \|f*_M h\|_{1,c}\le\|f\|_{1,c}\cdot\|h\|_{1,c}.
 \]
-若 \(\int|f(t)|t^{c-1}\,\mathrm{d}t\) 与 \(\int|g(t)|t^{c-1}\,\mathrm{d}t\) 都有限，则 Tonelli 与 \(x=tu\) 给卷积的同一加权范数不超过两者乘积。Fubini 随之合法，并给
-\(\mathcal M(f*_Mg)(c+\mathrm{i}y)=\mathcal Mf(c+\mathrm{i}y)\mathcal Mg(c+\mathrm{i}y)\)。测度 \(\mathrm{d}t/t\) 不可换成 \(\mathrm{d}t\)：前者对伸缩不变，也正是 \(t=e^u\) 后的 Lebesgue 测度。
-\ProseParagraphBreak
-作为反演的直接应用，对 \(f(x)=e^{-x}\) 取 \(c=1\)。加权可积性显然，上一节的精确模值说明 \(\Gamma(1+\mathrm{i}t)\) 沿竖线绝对可积，故
+在整条 \(\operatorname{Re}s=c\) 上，
+\begin{equation}\label{b3:eq:21-mellin-convolution}
+ \mathcal M(f*_M h)(s)=\mathcal Mf(s)\mathcal Mh(s).
+\end{equation}
+\end{proposition}
+\begin{proof}
+先对绝对值使用 Tonelli 定理，再在内部积分令 \(x=tu\)，得到
 \[
- e^{-x}=\frac1{2\pi\mathrm{i}}
-       \int_{1-\mathrm{i}\infty}^{1+\mathrm{i}\infty}\Gamma(s)x^{-s}\,\mathrm{d}s,
- \qquad x>0.
+ \begin{aligned}
+ &\int_0^\infty\int_0^\infty
+       |f(t)|\cdot|h(x/t)|\,\frac{\mathrm dt}{t}\,x^{c-1}\,\mathrm dx\\
+ &=\int_0^\infty|f(t)|t^{c-1}\,\mathrm dt
+        \int_0^\infty|h(u)|u^{c-1}\,\mathrm du<\infty.
+ \end{aligned}
 \]
-这已经是普通绝对收敛积分，不需要先借留数求和“猜出”结果。若以后移动围道经过 \(0,-1,\ldots\)，这些极点的留数确会生成 \(1,-x,x^2/2!,\ldots\)；但完成移线仍须逐条估计水平边与新竖线。变换反演和留数展开可以互相核对，它们不是同一个未经证明的步骤。
+这先给出卷积的几乎处处绝对存在性，再由三角不等式给出范数界。对 \(s=c+\mathrm iy\)，带复幂的相应二重积分具有同一个绝对值控制，故可以用 Fubini 交换积分。换元后 \(x^{s-1}\,\mathrm dx=t^su^{s-1}\,\mathrm du\)，外层的 \(\mathrm dt/t\) 正好将 \(t^s\) 变为 \(t^{s-1}\,\mathrm dt\)，便得到两个 Mellin 积分的乘积。
+\end{proof}
+
+这一卷积称为\term[mellin-juanji]{Mellin 卷积}[Mellin convolution]。若分别令 \(g_c(u)=e^{cu}f(e^u)\)、\(k_c(u)=e^{cu}h(e^u)\)，则直接换元给
+\[
+ e^{cu}(f*_Mh)(e^u)=(g_c*k_c)(u)
+\]
+几乎处处成立。乘法卷积就是对数坐标下的加法卷积；若把 \(\mathrm dt/t\) 错换成 \(\mathrm dt\)，权重和乘积公式都会随之改变。
+
 \ProseParagraphBreak
-最后看端点渐近与极点的普遍联系。设 \(f\) 在0附近有有限展开 \(\sum_{j=0}^{N-1}c_jx^{\alpha_j}+O(x^A)\)，其中 \(\operatorname{Re}\alpha_j<A\)，并假定无穷远端积分在所考察参数域收敛。将 \((0,1)\) 积分中的各主项扣除，余项在 \(\operatorname{Re}s>-A\) 全纯，而每项主部产生 \(c_j/(s+\alpha_j)\)。若主项带 \((\log x)^m\)，则积分是 \((-1)^m m!/(s+\alpha_j)^{m+1}\)。因此幂次决定极点位置，对数幂决定极点重数。这个结论由普通收敛积分逐项推出，也是后面 theta 积分构造 zeta 延拓时所使用的局部机制。
+
+下面把 Gamma 反演中的围道移动做完整。首先需要控制有限实部条带的全部高处边界，而上一节只给了几条特殊竖线的精确模值。可以直接从 Euler 积分获得足够强的统一衰减，无需调用复参数的 Stirling 公式。
+
+\Needspace{6\baselineskip}
+\begin{lemma}[Gamma 函数在有限条带的竖向衰减]\label{b3:lem:21-gamma-strip-decay}
+设 \(a<b\) 为实数，\(k\ge0\) 为整数。存在常数 \(C_{a,b,k}\)，使 Gamma 函数的亚纯延拓满足
+\[
+ |\Gamma(\sigma+\mathrm it)|\le C_{a,b,k}(1+|t|)^{-k},
+ \quad a\le\sigma\le b,\quad |t|\ge1.
+\]
+\end{lemma}
+\begin{proof}
+先设 \(a>0\)。Euler 积分令 \(x=e^u\)，得到
+\[
+ \Gamma(\sigma+\mathrm it)
+ =\int_{\mathbb R}g_\sigma(u)e^{\mathrm itu}\,\mathrm du,
+ \quad g_\sigma(u)=e^{\sigma u-e^u}.
+\]
+对每个固定 \(j\)，逐次求导可写成
+\[
+ g_\sigma^{(j)}(u)=g_\sigma(u)P_j(\sigma,e^u),
+\]
+其中 \(P_j\) 是多项式。事实上 \(P_0=1\)，递推为
+\[
+ P_{j+1}(\sigma,v)=(\sigma-v)P_j(\sigma,v)
+                         +v\frac{\partial P_j}{\partial v}(\sigma,v).
+\]
+\(\sigma\in[a,b]\) 时系数统一有界。在 \(u\le0\) 上，\(e^u\le1\)，所以每个导数的模由 \(Ce^{au}\) 控制；在 \(u\ge0\) 上，可由 \(Ce^{(b+j)u-e^u}\) 控制。两端均可积，且各阶导数的边界值都为零。分部积分 \(k\) 次，便得到统一的 \(C|t|^{-k}\) 上界。
+
+一般 \(a\) 下，选正整数 \(q\) 使 \(a+q>0\)。递推给
+\[
+ \Gamma(\sigma+\mathrm it)
+ =\frac{\Gamma(\sigma+q+\mathrm it)}
+         {\prod_{j=0}^{q-1}(\sigma+j+\mathrm it)}.
+\]
+当 \(|t|\ge1\) 时，每个分母因子的模至少为 \(|t|\)，分子已有正实部闭带上的任意固定幂次衰减。故所需估计也对整个给定条带成立。所有极点都在实轴上，当前的高处区域不遇到它们。
+\end{proof}
+
+\(e^{-x}\in L^1_c\) 对每个 \(c>0\) 成立，而引理使 \(t\mapsto\Gamma(c+\mathrm it)\) 绝对可积。因此由反演定理，
+\begin{equation}\label{b3:eq:21-exponential-inversion}
+ e^{-x}=\frac1{2\pi\mathrm i}
+       \int_{c-\mathrm i\infty}^{c+\mathrm i\infty}\Gamma(s)x^{-s}\,\mathrm ds,
+ \quad c>0,\quad x>0.
+\end{equation}
+这一步已经独立恢复原函数。下面的留数计算将进一步恢复它的 Taylor 级数，不能把两个步骤互相作为未经证明的依据。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[指数函数反演的移线余项]\label{b3:prop:21-exponential-contour}
+对每个整数 \(N\ge0\) 和实数 \(x>0\)，有
+\[
+ e^{-x}=\sum_{n=0}^N\frac{(-x)^n}{n!}+R_N(x),
+\]
+其中
+\begin{equation}\label{b3:eq:21-exponential-remainder}
+ R_N(x)=\frac1{2\pi\mathrm i}
+       \int_{-N-1/2-\mathrm i\infty}^{-N-1/2+\mathrm i\infty}
+                    \Gamma(s)x^{-s}\,\mathrm ds
+\end{equation}
+绝对收敛。存在与 \(N,x\) 无关的常数 \(C\)，使
+\[
+ |R_N(x)|\le C\frac{x^{N+1/2}}{\Gamma(N+3/2)}.
+\]
+因此余项在每个固定区间 \(0<x\le X<\infty\) 上一致趋于零。
+\end{proposition}
+\begin{proof}
+在\eqref{b3:eq:21-exponential-inversion}中取 \(c=1\)。固定 \(N,x\)，考虑左右边实部分别为 \(-N-1/2\) 与 \(1\)、上下边虚部分别为 \(\pm T\) 的矩形，按正向绕行。其右边由下到上，左边由上到下。矩形内的极点恰为 \(0,-1,\ldots,-N\)，由\secref{b3:sec:2102}的留数计算，
+\[
+ \operatorname{Res}_{s=-n}\bigl(\Gamma(s)x^{-s}\bigr)
+ =\frac{(-1)^nx^n}{n!}.
+\]
+对水平边使用\cref{b3:lem:21-gamma-strip-decay}，取 \(k=2\)。在这个固定实部区间，\(|x^{-s}|=x^{-\operatorname{Re}s}\) 有界，两条水平边的总长固定，所以其积分为 \(O_{N,x}(T^{-2})\)，趋于零。两个竖线积分都绝对收敛，故令 \(T\to\infty\)，留数定理给出所述有限和与余项，符号由上述边界方向确定。
+
+为同时控制 \(N\)，将新竖线上的 Gamma 向右递推 \(N+1\) 次：
+\[
+ |\Gamma(-N-1/2+\mathrm it)|
+ \le\frac{|\Gamma(1/2+\mathrm it)|}
+              {\prod_{j=0}^N(j+1/2)}
+ =\frac{\sqrt\pi}{\Gamma(N+3/2)}
+                         |\Gamma(1/2+\mathrm it)|.
+\]
+上一节的精确模值 \(|\Gamma(1/2+\mathrm it)|^2=\pi/\cosh\pi t\) 表明右端的分子关于 \(t\) 可积，积分为一个固定常数。又新直线上 \(|x^{-s}|=x^{N+1/2}\)，所以得到所示统一余项界。
+
+固定 \(X>0\)，令 \(a_N=X^{N+1/2}/\Gamma(N+3/2)\)。递推给
+\[
+ \frac{a_{N+1}}{a_N}=\frac{X}{N+3/2}\longrightarrow0,
+\]
+故 \(a_N\to0\)。对所有 \(0<x\le X\) 以 \(a_N\) 控制即可得到一致性。这一步甚至不需要再次使用 Stirling 公式。
+\end{proof}
+
+最后把移线估计中真正使用的条件抽出来。它们与函数是否叫作 Gamma 无关，也说明为什么仅有亚纯延拓还不够。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[有限条带内的 Mellin 移线]\label{b3:prop:21-mellin-contour-shift}
+设 \(a<b\) 为实数，\(F\) 在闭条带 \(a\le\operatorname{Re}s\le b\) 的某个开邻域亚纯，在该闭条带内的极点恰为有限个点 \(s_1,\ldots,s_m\)，且边界两条竖线上无极点。假设
+\[
+ \int_{\mathbb R}|F(a+\mathrm it)|\,\mathrm dt<\infty,
+ \quad\int_{\mathbb R}|F(b+\mathrm it)|\,\mathrm dt<\infty,
+\]
+并存在 \(T_j\to\infty\)，使
+\[
+ \sup_{a\le\sigma\le b}|F(\sigma+\mathrm iT_j)|
+ +\sup_{a\le\sigma\le b}|F(\sigma-\mathrm iT_j)|\longrightarrow0.
+\]
+则对每个 \(x>0\)，两个竖线积分绝对收敛，并满足
+\begin{equation}\label{b3:eq:21-mellin-contour-shift}
+ \frac1{2\pi\mathrm i}\int_{b-\mathrm i\infty}^{b+\mathrm i\infty}F(s)x^{-s}\,\mathrm ds
+ =\sum_{\nu=1}^m\operatorname{Res}_{s=s_\nu}\bigl(F(s)x^{-s}\bigr)
+  +\frac1{2\pi\mathrm i}\int_{a-\mathrm i\infty}^{a+\mathrm i\infty}F(s)x^{-s}\,\mathrm ds.
+\end{equation}
+若 \(F\) 在 \(s_0\) 的主要部分为 \(\sum_{k=1}^q A_k(s-s_0)^{-k}\)，则相应留数为
+\[
+ \operatorname{Res}_{s=s_0}\bigl(F(s)x^{-s}\bigr)
+ =x^{-s_0}\sum_{k=1}^q\frac{A_k(-\log x)^{k-1}}{(k-1)!}.
+\]
+\end{proposition}
+\begin{proof}
+取上述两条竖线和高度 \(\pm T_j\) 的正向矩形。\(j\) 充分大时，它包含全部指定极点。水平边上 \(|x^{-s}|\) 至多为 \(\max\{x^{-a},x^{-b}\}\)，所以每条水平边的积分模至多为
+\[
+ (b-a)\max\{x^{-a},x^{-b}\}
+           \sup_{a\le\sigma\le b}|F(\sigma\pm\mathrm iT_j)|,
+\]
+其极限为零。竖线上的绝对可积性使截断积分趋于整个直线积分。留数定理于是给出\eqref{b3:eq:21-mellin-contour-shift}。
+
+在 \(s_0\) 附近展开
+\[
+ x^{-s}=x^{-s_0}\sum_{j=0}^{\infty}
+                   \frac{(-\log x)^j(s-s_0)^j}{j!}.
+\]
+与有限主要部分相乘，选取 \((s-s_0)^{-1}\) 的系数，就得到最后的公式。
+\end{proof}
+
+例如 \(s=-\alpha\) 处的 \(q\) 阶极点贡献 \(x^\alpha\) 乘一个次数至多 \(q-1\) 的 \(\log x\) 多项式，与\cref{b3:prop:21-mellin-endpoint}中的正向计算相互核对。若把直线向左移到 \(a\)，新积分的模至多为
+\[
+ \frac{x^{-a}}{2\pi}\int_{\mathbb R}|F(a+\mathrm it)|\,\mathrm dt.
+\]
+这给 \(x\downarrow0\) 时可读出的余项尺度；向右移线则控制 \(x\to\infty\)，并应按\eqref{b3:eq:21-mellin-contour-shift}重新移项，保留留数符号。端点展开、亚纯极点和反演渐近由此组成一条有条件的双向联系，后续 theta 与 zeta 的积分方法会再次使用它。

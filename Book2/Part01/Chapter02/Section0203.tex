@@ -1,98 +1,49 @@
 % !TeX root = ../../Book2.tex
-\section{\texorpdfstring{\(L^2\)}{L²} 收敛}
-\label{b2:sec:0203}
+\section{线性系统、矩阵指数与变常数}
+\label{b2:sec:ode-linear-systems}
 
-上一节在局部正则性假设下控制单点误差。平方积分理论不要求函数有单侧极限，它把全部误差汇总成一个非负积分。此时困难集中在一个问题：三角多项式是否足以逼近所有平方可积函数。
+线性系统的时间系数即使只有连续性，也能由积分迭代构造唯一解。这里的估计含有阶乘，不必把时间区间缩短到使积分算子成为压缩；后文 Sturm--Liouville 问题的通量系统正需要这个版本。矩阵指数与一般变常数公式仍留待撰写。
 
-\subsection{三角系统的完备性}
-\label{b2:subsec:020301}
+\subsection{连续系数线性系统与积分迭代}
+\label{b2:subsec:070205}
 
-我们先给出一个独立的稠密性证明，使本节不必预用下一节的 Fejér 定理。记 \(\mathrm{d}_{\mathbb T}(x,0)=\min_{k\in\mathbb Z}|x-k|\)。
-
-\begin{lemma}\label{b2:lem:02-trigonometric-density}
-取圆周 \(\mathbb T=\mathbb R/\mathbb Z\) 上总质量为一的 Lebesgue 测度。复三角多项式在 \(C(\mathbb T;\mathbb C)\) 的一致范数中稠密，并在每个 \(L^p(\mathbb T;\mathbb C)\)、\(1\leq p<\infty\) 中稠密。实值输入可以用实值三角多项式逼近。
-\end{lemma}
-\begin{proof}
-取 \(B_m(t)=c_m\cdot\cos^{2m}(\pi t)\)，其中 \(c_m>0\) 使圆周积分为 \(1\)。偶数幂保证它是周期为 \(1\) 的非负三角多项式。对固定 \(0<\delta<1/2\)，比较外侧 \(|t|\geq\delta\) 与内侧 \(|t|\leq\delta/2\)，得到
+\begin{proposition}\label{b2:prop:ode-continuous-linear}
+设 \(n\) 为正整数，\(\mathbb K=\mathbb R\) 或 \(\mathbb C\)，\(\alpha<\beta\)，\(A\in C([\alpha,\beta];\mathbb K^{n\times n})\)。对任意 \(t_0\in[\alpha,\beta]\)、\(y_0\in\mathbb K^n\)，问题
 \[
- \int_{\delta\leq|t|\leq1/2}B_m(t)\,\mathrm{d}t
- \leq\dfrac1\delta
- \left(\dfrac{\cos(\pi\delta)}{\cos(\pi\delta/2)}\right)^{2m}
- \longrightarrow0.
+ Y'(t)=A(t)Y(t),\quad Y(t_0)=y_0
 \]
-若 \(f\in C(\mathbb T)\)，由一致连续性选 \(\delta\) 使 \(|f(x-t)-f(x)|<\varepsilon\) 对全部 \(x\) 及 \(|t|<\delta\) 成立。于是
+在整个 \([\alpha,\beta]\) 上有唯一的 \(C^1\) 解；端点处的导数取相应单侧值。若 \(M=\max_{[\alpha,\beta]}\|A(t)\|\)，其中矩阵范数由 Euclid 范数诱导，则
 \[
- |(f*B_m)(x)-f(x)|
- \leq\varepsilon+2\|f\|_\infty\int_{|t|\geq\delta}B_m(t)\,\mathrm{d}t.
-\]
-右端与 \(x\) 无关，而 \(f*B_m\) 是有限三角多项式，故一致稠密性成立。
-
-对有限 \(p\)，简单函数首先在 \(L^p\) 中稠密。圆周可测集的示性函数可用有限区间并逼近，再在有限个端点附近用连续的线性过渡代替跳跃；过渡只发生在总长度可任意小的区域，函数误差不超过 \(1\)，故其 \(p\) 次积分也可任意小。因而连续周期函数在 \(L^p\) 中稠密。
-
-现在固定 \(1\leq p<\infty\)，给定任意 \(f\in L^p(\mathbb T;\mathbb C)\) 与 \(\varepsilon>0\)。先取 \(g\in C(\mathbb T;\mathbb C)\)，使 \(\|f-g\|_p<\varepsilon/2\)；再由已经证明的一致稠密性取三角多项式 \(q\)，使 \(\|g-q\|_\infty<\varepsilon/2\)。由于圆周测度为一，
-\[
- \|f-q\|_p
- \leq\|f-g\|_p+\|g-q\|_p
- \leq\|f-g\|_p+\|g-q\|_\infty
- <\varepsilon.
-\]
-一致范数这里只用于两个连续函数 \(g,q\) 之差，没有要求原输入 \(f\) 有界或连续。若 \(f\) 实值，最后把 \(q\) 换成 \(\operatorname{Re}q\)，仍是三角多项式，并且逐点有 \(|f-\operatorname{Re}q|\leq|f-q|\)；一致逼近的实值情形也作同样处理。
-\end{proof}
-
-这个构造没有要求预先知道 \(f\) 的 Fourier 级数收敛。它只利用非负质量向原点集中，再通过有限多项式的卷积产生近似函数，因此可以用来证明三角系的完备性。
-
-\subsection{\texorpdfstring{\(L^2\)}{L²} 收敛}
-\label{b2:subsec:020302}
-
-\begin{theorem}\label{b2:thm:02-l2-convergence}
-指数函数系 \((e_k)_{k\in\mathbb Z}\) 是 \(L^2(\mathbb T)\) 的标准正交基。每个 \(f\in L^2(\mathbb T)\) 满足
-\[
- \lim_{N\to\infty}\|S_Nf-f\|_2=0.
-\]
-\end{theorem}
-\begin{proof}
-标准正交性已由直接积分验证，完备性来自\cref{b2:lem:02-trigonometric-density}。也可直接检查误差：给定 \(\varepsilon>0\)，取次数为 \(M\) 的三角多项式 \(q\)，使 \(\|f-q\|_2<\varepsilon\)。对 \(N\geq M\)，\(S_Nq=q\)，且 \(S_N\) 是范数至多为 \(1\) 的正交投影，所以
-\[
- \|f-S_Nf\|_2\leq\|f-q\|_2+\|S_N(q-f)\|_2<2\varepsilon.
-\]
-\end{proof}
-
-范数收敛保证存在几乎处处收敛的子列：可取 \(N_j\) 使 \(\|S_{N_j}f-f\|_2^2\leq2^{-3j}\)，再估计误差大于 \(2^{-j}\) 的集合测度，所得上界 \(2^{-j}\) 可和。删去这些集合的上极限，即得逐点收敛。这个论证只抽出子列，没有证明整列几乎处处收敛。
-
-\subsection{Parseval 恒等式}
-\label{b2:subsec:020303}
-
-\begin{corollary}[Parseval]\label{b2:cor:02-parseval}
-对 \(f,g\in L^2(\mathbb T)\)，有
-\[
- \|f\|_2^2=\sum_{k\in\mathbb Z}|\widehat f(k)|^2,
- \quad
- \langle f,g\rangle=\sum_{k\in\mathbb Z}\widehat f(k)\cdot\overline{\widehat g(k)}.
-\]
-映射 \(f\mapsto(\widehat f(k))_{k\in\mathbb Z}\) 是 \(L^2(\mathbb T)\) 到 \(\ell^2(\mathbb Z)\) 的满射线性等距映射。
-\end{corollary}
-\begin{proof}
-第一式由完备性和\cref{b2:thm:02-abstract-parseval}得到。第二式先对有限部分和成立，再在内积中取极限；右侧的绝对收敛由序列 Cauchy--Schwarz 不等式保证。若 \((a_k)\in\ell^2\)，则有限和 \(\sum_{|k|\leq N}a_ke_k\) 在 \(L^2\) 中为 Cauchy 列。其极限 \(f\) 的每个系数为 \(a_k\)，因为取固定系数是连续线性泛函。这证明满射性。
-\end{proof}
-
-对上一节的锯齿函数，左侧为 \(\int_0^1(x-1/2)^2\,\mathrm{d}x=1/12\)，右侧为 \(2\sum_{k\geq1}(4\pi^2k^2)^{-1}\)。于是得到 \(\sum_{k\geq1}k^{-2}=\pi^2/6\)。这里使用的是平方范数恒等式，完全不必在跳跃点代入 Fourier 级数。
-
-\subsection{最佳逼近}
-\label{b2:subsec:020304}
-
-\begin{proposition}\label{b2:prop:02-best-approximation}
-设 \(N\geq0\) 为整数。若 \(f\in L^2(\mathbb T)\)，则在所有次数不超过 \(N\) 的三角多项式中，\(S_Nf\) 唯一地使平方误差最小，且
-\[
- \|f-S_Nf\|_2^2=\sum_{|k|>N}|\widehat f(k)|^2.
-\]
-若又有 \(\sum_k|k|^{2s}|\widehat f(k)|^2<\infty\)，其中 \(s>0\)，则
-\[
- \|f-S_Nf\|_2
- \leq (N+1)^{-s}\left(\sum_k|k|^{2s}|\widehat f(k)|^2\right)^{1/2}.
+ |Y(t)|\leq e^{M|t-t_0|}\cdot|y_0|.
 \]
 \end{proposition}
 \begin{proof}
-最小性和唯一性来自\cref{b2:prop:02-bessel}的有限误差公式。再由 Parseval 将总能量减去已保留的频率能量，得到尾和。对每个 \(|k|>N\)，有 \(|k|^{-2s}\leq(N+1)^{-2s}\)，代入尾和后取平方根。
+令 \(Y_0(t)=y_0\)，递推定义
+\[
+ Y_{k+1}(t)=y_0+\int_{t_0}^t A(s)Y_k(s)\,\mathrm ds,
+ \quad k\geq0.
+\]
+第一次差满足 \(|Y_1(t)-Y_0(t)|\leq M|t-t_0|\cdot|y_0|\)。反复积分并归纳得到
+\[
+ |Y_{k+1}(t)-Y_k(t)|
+ \leq\frac{M^{k+1}|t-t_0|^{k+1}}{(k+1)!}\cdot|y_0|.
+\]
+当 \(t<t_0\) 时，把积分方向反转后使用同一估计。由于 \(|t-t_0|\leq\beta-\alpha\)，右端的数项级数收敛，故 \(Y_k\) 一致收敛到连续函数 \(Y\)。系数有界，允许在积分方程中取一致极限，得到
+\[
+ Y(t)=y_0+\int_{t_0}^t A(s)Y(s)\,\mathrm ds.
+\]
+被积函数连续，所以 \(Y\in C^1\) 并满足初值问题。把逐次差的估计求和，同时得到 \(|Y(t)|\leq e^{M|t-t_0|}\cdot|y_0|\)。
+
+若 \(Y,\widetilde Y\) 是同初值的两解，令 \(Z=Y-\widetilde Y\)、\(D=\max_{[\alpha,\beta]}|Z|\)。由 \(Z(t)=\int_{t_0}^t A(s)Z(s)\,\mathrm ds\) 反复代入，对每个正整数 \(m\) 都有
+\[
+ |Z(t)|\leq\frac{M^m|t-t_0|^m}{m!}\cdot D.
+\]
+令 \(m\to\infty\) 得 \(Z(t)=0\)，故解唯一。
 \end{proof}
 
-因此高频衰减直接控制有限频率近似的误差。一个函数即使有跳跃，平方误差仍可趋零；但若希望得到更快的逼近率，便需要额外的频率尾部控制。后面将把这个控制与导数联系起来。
+矩阵初值问题可逐列应用本命题。若指定某时刻的初始矩阵，每一列唯一确定，因而整个矩阵解也唯一确定。证明只使用系数连续与紧区间上的有界性，没有对 \(A\) 求导。
+
+\subsection{矩阵指数与变常数公式}
+\label{b2:subsec:070206}
+
+待撰写。拟先处理常系数矩阵指数，再建立基本解矩阵及非齐次系统的变常数公式。前一命题目前只给出连续系数齐次系统的初值理论。

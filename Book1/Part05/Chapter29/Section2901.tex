@@ -1,0 +1,423 @@
+% !TeX root = ../../Book1.tex
+\section{谱与预解算子}
+\label{b1:sec:2901}
+
+有限维矩阵的谱由特征值组成，因而求谱可以归结为求解齐次方程。
+在无穷维空间中，\(T-zI\) 即使没有非零核，也可能不能把整个空间映满。
+本节从非齐次方程
+\[
+ (T-zI)x=y
+\]
+出发，把解的存在、唯一性和对数据的连续依赖放在一起考察。
+随后用对角算子和乘法算子说明：谱既可能由孤立的特征值及其聚点组成，
+也可能充满一个区间，而其中没有任何特征值。
+
+\subsection{谱、预解集与可逆性}
+\label{b1:subsec:290101}
+
+\secref{b1:sec:0805}已经对复 Hilbert 空间上的有界算子定义了谱。
+这个定义不依赖内积，可以直接用于复 Banach 空间。
+以下用 \(\mathcal B(X)=\mathcal B(X,X)\) 表示 \(X\) 上的有界线性算子空间，
+用 \(I\) 表示恒等算子；可逆始终指存在定义在整个空间上的有界双侧逆。
+
+\begin{definition}[预解集与预解算子]
+\label{b1:def:29-resolvent}
+设 \(X\ne\{0\}\) 是复 Banach 空间，\(T\in\mathcal B(X)\)。集合
+\[
+ \rho(T)=\{z\in\mathbb C:T-zI\text{ 可逆}\}
+\]
+称为 \(T\) 的\term[yujie-ji]{预解集}[resolvent set]；它的补集
+\(\sigma(T)=\mathbb C\setminus\rho(T)\) 是 \(T\) 的谱。
+对 \(z\in\rho(T)\)，算子
+\[
+ R_T(z)=(T-zI)^{-1}
+\]
+称为 \(T\) 在 \(z\) 处的\term[yujie-suanzi]{预解算子}[resolvent operator]。
+\footnote{对同一个算子，\((zI-T)^{-1}=-R_T(z)\)。第二卷的半群理论采用
+\((zI-T)^{-1}\) 的写法，因而相应预解恒等式中的系数也要换号；谱和预解集不受影响。}
+\symidx{\(\rho(T)\)：有界算子的预解集}
+\symidx{\(R_T(z)\)：预解算子}
+\end{definition}
+
+由有界逆定理\cref{b1:cor:bounded-inverse}，这里的可逆等价于
+\(T-zI:X\to X\) 是双射。把逆的有界性写入定义，
+是为了同时记录解的稳定性：对任意 \(y\in X\)，唯一解满足
+\[
+ x=R_T(z)y,\qquad \|x\|\leq\|R_T(z)\|\cdot\|y\|.
+\]
+若数据从 \(y\) 改为 \(y+h\)，解的变化至多为
+\(\|R_T(z)\|\cdot\|h\|\)。预解算子的范数因而衡量该参数下方程对误差的放大。
+
+\ProseParagraphBreak
+
+单射只保证解至多有一个。例如，在复空间 \(\ell^2\) 上定义右移算子
+\[
+ S(x_1,x_2,\ldots)=(0,x_1,x_2,\ldots).
+\]
+它满足 \(\|Sx\|_2=\|x\|_2\)，但值域恰为第一坐标等于零的闭子空间，
+所以 \(0\in\sigma(S)\)，尽管 \(Sx=0\) 没有非零解。
+即使已知统一下界，也还需要判断值域是否足够大。
+
+\subsection{Neumann 级数与预解恒等式}
+\label{b1:subsec:290102}
+
+实数的几何级数可以在算子范数中使用，前提是所在算子空间完备。
+\cref{b1:thm:operator-space-complete}保证：若 \(X\) 是 Banach 空间，
+则 \(\mathcal B(X)\) 也是 Banach 空间。
+下面的算子级数称为\term[neumann-jishu]{Neumann 级数}[Neumann series]。
+
+\begin{lemma}[Neumann 级数]
+\label{b1:lem:29-neumann}
+设 \(X\ne\{0\}\) 是复 Banach 空间，\(A\in\mathcal B(X)\)，且 \(\|A\|<1\)。
+则 \(I-A\) 可逆，且
+\[
+ (I-A)^{-1}=\sum_{n=0}^{\infty}A^n,\qquad
+ \|(I-A)^{-1}\|\leq\frac{1}{1-\|A\|},
+\]
+其中级数在算子范数中收敛。
+\end{lemma}
+
+\begin{proof}
+算子范数的乘积估计给出 \(\|A^n\|\leq\|A\|^n\)，
+故 \(\sum_{n=0}^{\infty}\|A^n\|<\infty\)。
+由算子空间的完备性，部分和 \(B_N=\sum_{n=0}^N A^n\) 收敛于某个
+\(B\in\mathcal B(X)\)，并且 \(\|B\|\leq(1-\|A\|)^{-1}\)。
+有限和满足
+\[
+ (I-A)B_N=B_N(I-A)=I-A^{N+1}.
+\]
+由于 \(\|A^{N+1}\|\to0\)，而与一个固定有界算子相乘在算子范数下连续，
+令 \(N\to\infty\) 得 \((I-A)B=B(I-A)=I\)。
+\end{proof}
+
+Neumann 级数既能在大参数处求逆，也能从一个已知可逆的参数出发，处理邻近参数。
+
+\begin{proposition}[预解集的开性与局部展开]
+\label{b1:prop:29-resolvent-local}
+设 \(X\ne\{0\}\) 是复 Banach 空间，\(T\in\mathcal B(X)\)。
+若 \(|z|>\|T\|\)，则 \(z\in\rho(T)\)，且
+\[
+ R_T(z)=-\frac1z\sum_{n=0}^{\infty}\frac{T^n}{z^n},\qquad
+ \|R_T(z)\|\leq\frac{1}{|z|-\|T\|}.
+\]
+若 \(z_0\in\rho(T)\) 且 \(|z-z_0|\cdot\|R_T(z_0)\|<1\)，则
+\(z\in\rho(T)\)，并且
+\[
+ R_T(z)=\sum_{n=0}^{\infty}(z-z_0)^nR_T(z_0)^{n+1}.
+\]
+两个级数均在算子范数中收敛。因此 \(\rho(T)\) 是开集，
+\(\sigma(T)\) 是包含在 \(\{z:|z|\leq\|T\|\}\) 中的闭集。
+\end{proposition}
+
+\begin{proof}
+对 \(|z|>\|T\|\)，分解
+\[
+ T-zI=-z\bigl(I-z^{-1}T\bigr)
+\]
+并把\cref{b1:lem:29-neumann}用于 \(z^{-1}T\)，即得第一个展开及范数估计。
+对第二个结论，记 \(R_0=R_T(z_0)\)，则
+\[
+ T-zI=(T-z_0I)\bigl(I-(z-z_0)R_0\bigr).
+\]
+右边两个因子都可逆，故
+\[
+ R_T(z)=\bigl(I-(z-z_0)R_0\bigr)^{-1}R_0
+       =\sum_{n=0}^{\infty}(z-z_0)^nR_0^{n+1}.
+\]
+这还给出
+\[
+ \|R_T(z)\|\leq
+ \frac{\|R_0\|}{1-|z-z_0|\cdot\|R_0\|}.
+\]
+每个预解点都有一个仍包含在预解集中的开圆盘，故预解集开、谱闭。
+第一个展开则给出谱的有界性。
+\end{proof}
+
+不同参数处的逆还满足一个代数恒等式。
+在下面的约定中，逆取的是 \(T-zI\)，所以右端系数为 \(z-w\)。
+
+\begin{proposition}[预解恒等式]
+\label{b1:prop:29-resolvent-identity}
+设 \(X\ne\{0\}\) 是复 Banach 空间，\(T\in\mathcal B(X)\)，
+\(z,w\in\rho(T)\)。则
+\[
+ R_T(z)-R_T(w)=(z-w)R_T(z)R_T(w),\qquad
+ R_T(z)R_T(w)=R_T(w)R_T(z).
+\]
+特别地，映射 \(z\mapsto R_T(z)\) 在 \(\rho(T)\) 上按算子范数连续。
+\end{proposition}
+
+\begin{proof}
+利用双侧逆直接计算，有
+\[
+ \begin{aligned}
+ R_T(z)-R_T(w)
+ &=R_T(z)\bigl((T-wI)-(T-zI)\bigr)R_T(w)\\
+ &=(z-w)R_T(z)R_T(w).
+ \end{aligned}
+\]
+交换 \(z,w\) 再计算一次，得到同一差等于
+\((z-w)R_T(w)R_T(z)\)。当 \(z\ne w\) 时可约去标量因子；
+当 \(z=w\) 时交换性直接成立。
+固定 \(w\in\rho(T)\)，由\cref{b1:prop:29-resolvent-local}，
+在 \(w\) 的充分小邻域内有 \(\|R_T(z)\|\leq2\|R_T(w)\|\)。因此
+\[
+ \|R_T(z)-R_T(w)\|
+ \leq2|z-w|\cdot\|R_T(w)\|^2\longrightarrow0.
+\]
+\end{proof}
+
+\subsection{自伴算子的谱界}
+\label{b1:subsec:290103}
+
+从这一小节起，空间取为复 Hilbert 空间，内积仍对第一变量线性。
+对于有界自伴算子，内积不仅限制特征值，还能控制全部谱。
+下面先补出从下界估计通向可逆性的步骤。
+
+\begin{lemma}[下界与伴随核]
+\label{b1:lem:29-invertibility}
+设 \(H\ne\{0\}\) 是复 Hilbert 空间，\(A\in\mathcal B(H)\)。
+若存在 \(c>0\)，使 \(\|Ax\|\geq c\|x\|\) 对所有 \(x\in H\) 成立，
+并且 \(\ker A^*=\{0\}\)，则 \(A\) 可逆，且 \(\|A^{-1}\|\leq c^{-1}\)。
+\end{lemma}
+
+\begin{proof}
+下界给出单射性。若 \(Ax_n\to y\)，则
+\[
+ c\|x_n-x_m\|\leq\|Ax_n-Ax_m\|,
+\]
+所以 \((x_n)\) 是 Cauchy 列。空间完备，故 \(x_n\to x\) 于某个 \(x\in H\)；
+由 \(A\) 连续，\(y=Ax\)。因此 \(\operatorname{ran}A\) 闭。
+另一方面，伴随的定义给出
+\[
+ y\in(\operatorname{ran}A)^\perp
+ \quad\Longleftrightarrow\quad
+ \langle Ax,y\rangle=0\ (x\in H)
+ \quad\Longleftrightarrow\quad A^*y=0.
+\]
+因而值域的正交补为零。由 Hilbert 空间的投影定理，
+一个闭子空间与其正交补之和是整个空间，故 \(\operatorname{ran}A=H\)。
+对 \(y=Ax\)，原下界给出 \(\|A^{-1}y\|\leq c^{-1}\|y\|\)。
+\end{proof}
+
+\begin{proposition}[非实参数处的预解估计]
+\label{b1:prop:29-self-adjoint-real-spectrum}
+设 \(H\ne\{0\}\) 是复 Hilbert 空间，\(T\in\mathcal B(H)\) 且 \(T=T^*\)。
+若 \(z\in\mathbb C\setminus\mathbb R\)，则 \(z\in\rho(T)\)，且
+\[
+ \|R_T(z)\|\leq\frac1{|\operatorname{Im}z|}.
+\]
+因此 \(\sigma(T)\subset\mathbb R\)。
+\end{proposition}
+
+\begin{proof}
+自伴性保证 \(\langle Tx,x\rangle\) 为实数。由于内积对第一变量线性，
+\[
+ \operatorname{Im}\langle(T-zI)x,x\rangle
+ =-\operatorname{Im}z\cdot\|x\|^2.
+\]
+取绝对值，再用 Cauchy--Schwarz 不等式，可得
+\[
+ |\operatorname{Im}z|\cdot\|x\|^2
+ \leq\|(T-zI)x\|\cdot\|x\|.
+\]
+对非零 \(x\) 约去 \(\|x\|\)，得到统一下界
+\(\|(T-zI)x\|\geq|\operatorname{Im}z|\cdot\|x\|\)；零向量也满足它。
+又有 \((T-zI)^*=T-\overline zI\)，而 \(\overline z\) 的虚部同样非零，
+所以上述下界也适用于 \(T-\overline zI\)，其核为零。
+\cref{b1:lem:29-invertibility}于是给出可逆性和逆的范数估计。
+\end{proof}
+
+还需要排除谱为空的可能，并说明谱界与算子范数的关系。
+紧自伴情形的\cref{b1:lem:compact-self-adjoint-extreme}曾利用二次型找到近似特征向量，
+再利用紧性取到真正的特征向量。下面只用前一个步骤，因此不要求紧性。
+
+\begin{theorem}[有界自伴算子的谱界]
+\label{b1:thm:29-self-adjoint-spectral-bound}
+设 \(H\ne\{0\}\) 是复 Hilbert 空间，\(T\in\mathcal B(H)\) 且 \(T=T^*\)。
+则 \(\sigma(T)\) 是非空紧集，且
+\[
+ \sigma(T)\subset[-\|T\|,\|T\|],\qquad
+ \max_{t\in\sigma(T)}|t|=\|T\|.
+\]
+此外，\(T\) 的范数可以由二次型恢复：
+\[
+ \|T\|=\sup_{\|x\|=1}|\langle Tx,x\rangle|.
+\]
+\end{theorem}
+
+\begin{proof}
+记 \(q(x)=\langle Tx,x\rangle\) 和
+\(m=\sup_{\|x\|=1}|q(x)|\)。Cauchy--Schwarz 不等式给出 \(m\leq\|T\|\)。
+对任意单位向量 \(x,y\)，自伴性与平行四边形恒等式给出
+\[
+ \begin{aligned}
+ 4\operatorname{Re}\langle Tx,y\rangle&=q(x+y)-q(x-y),\\
+ |\operatorname{Re}\langle Tx,y\rangle|
+ &\leq\frac m4\bigl(\|x+y\|^2+\|x-y\|^2\bigr)=m.
+ \end{aligned}
+\]
+若 \(Tx\ne0\)，取单位向量 \(y=Tx/\|Tx\|\)，得到 \(\|Tx\|\leq m\)；
+若 \(Tx=0\)，这个不等式也成立。对单位向量 \(x\) 取上确界，便有 \(\|T\|=m\)。
+
+若 \(T=0\)，则 \(0\in\sigma(T)\)，而所有非零参数都在预解集中，结论成立。
+以下设 \(C=\|T\|>0\)。由上确界的定义，可取单位向量列 \((x_n)\)，使
+\(|q(x_n)|\to C\)。这些数为实数，取子列后可设
+\(q(x_n)\to\lambda\)，其中 \(\lambda=C\) 或 \(\lambda=-C\)。于是
+\[
+ \begin{aligned}
+ \|(T-\lambda I)x_n\|^2
+ &=\|Tx_n\|^2-2\lambda\cdot q(x_n)+\lambda^2\\
+ &\leq2C^2-2\lambda\cdot q(x_n)\longrightarrow0.
+ \end{aligned}
+\]
+若 \(T-\lambda I\) 有有界逆，则
+\[
+ 1=\|x_n\|\leq\|(T-\lambda I)^{-1}\|\cdot\|(T-\lambda I)x_n\|
+ \longrightarrow0,
+\]
+产生矛盾。因此 \(\lambda\in\sigma(T)\)。
+由\cref{b1:prop:29-resolvent-local,b1:prop:29-self-adjoint-real-spectrum}，
+谱是闭集且包含在实区间 \([-C,C]\) 内，故紧；刚找到的谱点又满足 \(|\lambda|=C\)。
+\end{proof}
+
+谱中的其他点也可以用单位向量上的近似方程来判断。
+
+\begin{corollary}[近似特征向量判别]
+\label{b1:cor:29-approximate-eigenvectors}
+设 \(H\ne\{0\}\) 是复 Hilbert 空间，\(T\in\mathcal B(H)\) 且 \(T=T^*\)，
+\(t\in\mathbb R\)。则 \(t\in\sigma(T)\) 当且仅当存在单位向量列 \((x_n)\)，使
+\[
+ \|(T-tI)x_n\|\longrightarrow0.
+\]
+\end{corollary}
+
+\begin{proof}
+若存在这样的向量列，有界逆会导出上一证明中的矛盾，故 \(t\in\sigma(T)\)。
+反过来，若不存在这样的向量列，则
+\(c=\inf_{\|x\|=1}\|(T-tI)x\|>0\)，否则逐个取使范数小于 \(1/n\) 的单位向量即可。
+由齐次性，\(\|(T-tI)x\|\geq c\|x\|\) 对所有 \(x\in H\) 成立。
+因为 \(t\) 为实数，\(T-tI\) 自伴，其核和伴随的核都为零。
+\cref{b1:lem:29-invertibility}给出 \(t\in\rho(T)\)。
+\end{proof}
+
+上述单位向量列称为 \(t\) 的\term[jinsi-tezheng-xiangliang]{近似特征向量列}[approximate eigenvector sequence]。
+它不必有范数收敛子列，因此存在这种向量列并不保证存在真正的特征向量。
+
+\subsection{离散谱与连续谱的模型}
+\label{b1:subsec:290104}
+
+为了比较不同的失去可逆性的方式，先明确两个名称。
+
+\begin{definition}[点谱与连续谱]
+\label{b1:def:29-point-continuous-spectrum}
+设 \(X\ne\{0\}\) 是复 Banach 空间，\(T\in\mathcal B(X)\)，\(z\in\mathbb C\)。
+若 \(\ker(T-zI)\ne\{0\}\)，则称 \(z\) 属于 \(T\) 的\term[dian-pu]{点谱}[point spectrum]，
+记作 \(z\in\sigma_{\mathrm p}(T)\)。
+若 \(T-zI\) 单射，值域在 \(X\) 中稠密但不等于 \(X\)，
+则称 \(z\) 属于 \(T\) 的\term[lianxu-pu]{连续谱}[continuous spectrum]，
+记作 \(z\in\sigma_{\mathrm c}(T)\)。
+\symidx{\(\sigma_{\mathrm p}(T)\)：点谱}
+\symidx{\(\sigma_{\mathrm c}(T)\)：连续谱}
+\end{definition}
+
+点谱就是特征值的集合。一般有界算子还可能出现单射而值域不稠密的情形，
+前面的右移算子在参数零处就是例子。
+对于有界自伴算子和实数 \(t\)，则有
+\[
+ \bigl(\operatorname{ran}(T-tI)\bigr)^\perp=\ker(T-tI).
+\]
+所以只要 \(t\) 不是特征值，值域就稠密；若它仍是谱点，就属于连续谱。
+结合谱为实集的结论，有界自伴算子的谱由点谱和连续谱组成。
+
+\begin{definition}[离散谱]
+\label{b1:def:29-discrete-spectrum}
+设 \(H\ne\{0\}\) 是复 Hilbert 空间，\(T\in\mathcal B(H)\) 且 \(T=T^*\)。
+若 \(t\in\sigma(T)\) 是 \(\sigma(T)\) 的孤立点，且
+\(0<\dim\ker(T-tI)<\infty\)，则称 \(t\) 是离散谱点。
+这些点组成 \(T\) 的\term[lisan-pu]{离散谱}[discrete spectrum]。
+\end{definition}
+
+这个定义同时要求孤立性和有限重数，不能把任意特征值都称为离散谱点。
+这里只对自伴算子使用这一名称。
+
+\begin{proposition}[趋于零的对角算子]
+\label{b1:examp:29-compact-diagonal-spectrum}
+在复 Hilbert 空间 \(\ell^2\) 上，令
+\[
+ D(x_1,x_2,\ldots)=(x_1,\tfrac12x_2,\tfrac13x_3,\ldots).
+\]
+则 \(D\) 紧且自伴，并且
+\[
+ \sigma(D)=\{0\}\cup\{1/n:n\geq1\},\qquad
+ \sigma_{\mathrm p}(D)=\{1/n:n\geq1\},\qquad
+ \sigma_{\mathrm c}(D)=\{0\}.
+\]
+每个非零谱点都属于离散谱。
+\end{proposition}
+
+\begin{proof}
+\secref{b1:sec:0805}已经证明它紧且自伴。
+每个 \(1/n\) 都是特征值，相应特征空间为 \(\operatorname{span}\{e_n\}\)。
+若 \(z\notin K=\{0\}\cup\{1/n:n\geq1\}\)，则 \(K\) 紧，
+故 \(\delta=\operatorname{dist}(z,K)>0\)。此时
+\[
+ R_D(z)y=\left(\frac{y_n}{1/n-z}\right)_{n\geq1},\qquad
+ \|R_D(z)y\|_2\leq\delta^{-1}\|y\|_2,
+\]
+直接代入可验证它是双侧逆。另一方面，\(D\) 单射，值域包含全部有限支撑序列，
+因而稠密；但 \(y=(1/n)_{n\geq1}\in\ell^2\) 不在值域内，因为它的唯一可能原像
+\((1,1,\ldots)\) 不属于 \(\ell^2\)。所以零属于连续谱，且没有 \(K\) 以外的谱点。
+每个 \(1/n\) 都是孤立的单重特征值，故属于离散谱。
+\end{proof}
+
+谱点零虽然不是特征值，却是这些离散谱点的聚点；
+单位向量 \(e_n\) 满足 \(\|De_n\|_2=1/n\to0\)，给出了它的近似特征向量列。
+
+\begin{proposition}[区间上的乘法算子]
+\label{b1:examp:29-multiplication-spectrum}
+在复空间 \(H=L^2((0,1),\mathrm{d}t)\) 上令 \((Mf)(t)=t\cdot f(t)\)。
+则 \(M\) 有界且自伴，并且
+\[
+ \sigma(M)=\sigma_{\mathrm c}(M)=[0,1],\qquad
+ \sigma_{\mathrm p}(M)=\varnothing.
+\]
+\end{proposition}
+
+\begin{proof}
+由 \(0<t<1\) 得 \(\|Mf\|_2\leq\|f\|_2\)，且
+\(\langle Mf,g\rangle=\langle f,Mg\rangle\)，所以 \(M\) 有界且自伴。
+若 \(z\notin[0,1]\)，则 \(\delta=\operatorname{dist}(z,[0,1])>0\)，而
+\[
+ (R_M(z)g)(t)=\frac{g(t)}{t-z},\qquad
+ \|R_M(z)g\|_2\leq\delta^{-1}\|g\|_2
+\]
+给出有界双侧逆。
+
+固定 \(\lambda\in[0,1]\)。对 \(0<\varepsilon<1\)，记
+\[
+ E_{\lambda,\varepsilon}=(0,1)\cap(\lambda-\varepsilon,\lambda+\varepsilon),
+ \qquad
+ f_\varepsilon=|E_{\lambda,\varepsilon}|^{-1/2}\cdot\mathbf1_{E_{\lambda,\varepsilon}},
+\]
+其中 \(|E|\) 表示 Lebesgue 测度。这个集合即使在 \(\lambda=0,1\) 时也有正测度，且
+\[
+ \|f_\varepsilon\|_2=1,\qquad
+ \|(M-\lambda I)f_\varepsilon\|_2^2
+ =\frac1{|E_{\lambda,\varepsilon}|}
+   \int_{E_{\lambda,\varepsilon}}|t-\lambda|^2\,\mathrm{d}t
+ \leq\varepsilon^2.
+\]
+取 \(\varepsilon\downarrow0\)，由\cref{b1:cor:29-approximate-eigenvectors}可知
+\(\lambda\in\sigma(M)\)。
+
+若 \((M-\lambda I)f=0\)，则 \(f\) 只能在零测集 \(\{t=\lambda\}\) 上非零，
+故 \(f=0\) 于 \(L^2\)。因而 \(M-\lambda I\) 单射，且由自伴性知值域稠密。
+它却不满射：常函数 \(1\) 的原像只能是 \((t-\lambda)^{-1}\)，
+而此函数的平方在 \(\lambda\) 附近不可积，在两个端点处的单侧积分也发散。
+故区间内每个点都属于连续谱，而区间外每个点都属于预解集。
+\end{proof}
+
+这两个模型都可以看作乘法：一个在坐标序列上乘以 \(1/n\)，另一个在函数空间中乘以 \(t\)。
+后续的谱表示将把一般自伴算子化为适当测度空间上的乘法算子，
+从而以同一种运算处理特征向量展开和连续谱。

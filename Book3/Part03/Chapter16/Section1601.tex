@@ -2,96 +2,433 @@
 \section{Dirichlet 问题}
 \label{b3:sec:1601}
 
-给定边界温度，怎样确定内部平衡状态？圆盘上的答案可以写成积分；一般区域中，边界形状决定这个答案是否真的连续达到所有指定值。
+给定边界温度，怎样确定内部平衡状态？第十五章已经用 Poisson 积分解决了圆盘上的连续边值问题。本节从这个解出发，研究边界误差怎样传入内部、不同频率怎样衰减，以及边值不连续时应当采用什么极限。上半平面的公式还会说明，无界区域的唯一性需要另加增长限制。
 
 \subsection{边值问题}
 \label{b3:subsec:160101}
 
-设 \(D\) 为有界区域、\(\varphi\in C(\partial D)\)。\term[dirichlet-wenti]{Dirichlet 问题}[Dirichlet problem]要求寻找 \(u\in C(\overline D)\)，使 \(u\) 在 \(D\) 调和且 \(u|_{\partial D}=\varphi\)。解至多一个，因为两解之差在边界为零。存在性不能仅靠这个唯一性结论：去心圆盘的小孔已经会造成失败。
+设 \(D\subseteq\mathbb C\) 为有界区域，\(\varphi\in C(\partial D;\mathbb R)\)。寻找一个 \(u\in C(\overline D;\mathbb R)\)，使
+\[
+ \Delta u=0\quad\text{于 }D,
+ \quad
+ u=\varphi\quad\text{于 }\partial D,
+\]
+称为给定数据 \(\varphi\) 的\term[dirichlet-wenti]{Dirichlet 问题}[Dirichlet problem]。这里方程要求 \(u|_D\in C^2(D)\)，边界条件则按闭包上的连续性理解；满足这些要求的函数称为经典解。域内没有热源对应 Laplace 方程，边界温度则选择众多调和函数中的一个。
 
-实值连续边界数据是本章的基本范围。复值数据分成实部、虚部处理；不连续数据需要另定达到边界的意义，不能把相应积分解自动称为闭包上的连续解。
+\ProseParagraphBreak
+唯一性与存在性承担不同的任务。若 \(u,v\) 都是同一数据的经典解，则 \(u-v\) 在有界域 \(D\) 调和，连续到 \(\overline D\)，边界值为零。对差及其负号应用最大值原理，得到 \(u=v\)。这个论证不要求边界光滑，却没有构造任何解。去心圆盘上在孤立边界点另指定一个温度，就可能得不到经典解；下一节将给出具体证明。
+
+\ProseParagraphBreak
+比较原理同时给出数据扰动的控制。设 \(\varphi,\psi\in C(\partial D;\mathbb R)\) 分别已有经典解 \(u,v\)，并令
+\[
+ d=\sup_{\partial D}|\varphi-\psi|.
+\]
+函数 \(u-v-d\) 与 \(v-u-d\) 在边界非正，因此
+\[
+ \sup_D|u-v|\le d.
+\]
+若 \(\varphi\le\psi\)，对 \(u-v\) 直接比较还得 \(u\le v\)。所以一旦存在性成立，边界数据的最大误差不会在内部放大。特别地，若一列可解的连续边值一致收敛，则其解在整个闭包上一致 Cauchy；极限的内部调和性可由圆周平均等式传给极限，再用\cref{b3:thm:15-mean-value}的连续函数逆命题得到。
+
+\ProseParagraphBreak
+边界上的同一个公式，不能不加检验地用作内部函数。例如单位圆周上的 \(|z|^2\) 恒等于一，故其调和延拓是常数一；函数 \(|z|^2=x^2+y^2\) 本身满足 \(\Delta|z|^2=4\)，并不是这份边值的解。边界条件只规定圆周上的值，域内公式还必须满足方程。
+
+\ProseParagraphBreak
+实值连续数据是经典问题的基本范围。复值数据可以分别延拓实部、虚部；有界但不连续的数据仍可作 Poisson 积分，不过此时必须逐点说明边界极限，不能预先要求解属于 \(C(\overline D)\)。
 
 \subsection{圆盘 Poisson 核}
 \label{b3:subsec:160102}
 
-\term[poisson-he]{Poisson 核}[Poisson kernel]在圆盘上为
+圆盘中的构造要同时满足两件事：对内部点保持调和性，对接近的边界点集中权重。设 \(R>0\)，\(|z|<R\)。第十五章引入的 Poisson 核为
 \[
-P_R(z,t)=\frac{R^2-|z|^2}{|Re^{\mathrm{i}t}-z|^2}
-=1+2\operatorname{Re}\sum_{n\ge1}\left(\frac zR\right)^ne^{-\mathrm{i}nt}.
+ P_R(z,t)=\frac{R^2-|z|^2}{|Re^{\mathrm i t}-z|^2}
+ =\operatorname{Re}\frac{Re^{\mathrm i t}+z}{Re^{\mathrm i t}-z}.
 \]
-级数在内部紧集连同各阶导数一致收敛，故核调和，且关于 \(t\) 的平均为一。核始终为正；固定 \(\xi=Re^{\mathrm{i}\theta}\) 和弧外距离 \(\delta>0\)，当 \(z\to\xi\) 时，弧外分母有正下界，而分子趋零。因此边界极限中的质量集中在 \(\xi\) 附近，而不是均匀消失。
+右端是关于 \(z\) 的全纯函数的实部，因而调和；左端直接显示它为正。分子中的 \(R^2-|z|^2\) 还给出正确的归一化：
+\[
+ P_R(z,t)=1+2\operatorname{Re}\sum_{n\ge1}
+       \left(\frac zR\right)^n e^{-\mathrm i nt},
+ \quad
+ \frac1{2\pi}\int_{-\pi}^{\pi}P_R(z,t)\,\mathrm dt=1.
+\]
+几何级数在每个较小闭盘上关于 \(t\) 一致收敛，所以可逐项积分；所有非零频率的积分均为零。保持常数与集中质量是核逼近边值时各自需要的性质。
+
+\ProseParagraphBreak
+把 \(z=re^{\mathrm i\theta}\)、\(\rho=r/R\) 代入，可把半径尺度从角变量中分离出来。记
+\[
+ p_\rho(s)\coloneqq
+ \frac{1-\rho^2}{1-2\rho\cos s+\rho^2},
+ \quad 0\le\rho<1.
+\]
+则 \(P_R(re^{\mathrm i\theta},t)=p_\rho(t-\theta)\)，而 \(p_\rho\) 为偶的 \(2\pi\) 周期函数。接近边界时，控制它的尺度是 \(\varepsilon=1-\rho\)，即到边界的径向距离除以 \(R\)。
+
+\Needspace{6\baselineskip}
+\begin{lemma}[Poisson 核的集中估计]\label{b3:lem:16-poisson-localization}
+设 \(1/2\le\rho<1\)，\(\varepsilon=1-\rho\)，并令
+\(p_\rho(t)=(1-\rho^2)/(1-2\rho\cos t+\rho^2)\)。对 \(|t|\le\pi\)，有
+\[
+ \frac{\varepsilon}{\varepsilon^2+t^2}
+ \le p_\rho(t)
+ \le\frac{\pi^2\varepsilon}{\varepsilon^2+t^2}.
+\]
+特别地，对 \(0<\delta\le\pi\)，
+\[
+ \frac1{2\pi}\int_{\delta\le|t|\le\pi}p_\rho(t)\,\mathrm dt
+ \le\frac{\pi\varepsilon}{\delta}.
+\]
+\end{lemma}
+\begin{proof}
+分母可写为
+\[
+ 1-2\rho\cos t+\rho^2
+ =\varepsilon^2+4\rho\sin^2(t/2).
+\]
+在 \(|t|\le\pi\) 上，\(|t|/\pi\le|\sin(t/2)|\le|t|/2\)，故
+\[
+ \frac2{\pi^2}(\varepsilon^2+t^2)
+ \le\varepsilon^2+4\rho\sin^2(t/2)
+ \le\varepsilon^2+t^2.
+\]
+分子为 \(\varepsilon(1+\rho)\)，介于 \(\varepsilon\) 与 \(2\varepsilon\) 之间，得到双边估计。利用偶性和 \(t\ge\delta\) 时 \(\varepsilon^2+t^2\ge t^2\)，进一步有
+\[
+ \frac1{2\pi}\int_{\delta\le|t|\le\pi}p_\rho(t)\,\mathrm dt
+ \le\pi\varepsilon\int_\delta^\infty\frac{\mathrm dt}{t^2}
+ =\frac{\pi\varepsilon}{\delta}.
+\]
+\end{proof}
+
+在中心 \(\rho=0\) 时，核恒等于一。接近边界时，它在 \(t=0\) 的高度为 \((1+\rho)/(1-\rho)\)，在 \(|t|\) 与 \(1-\rho\) 同阶的角区间中仍有相同量级。高度增大、宽度缩小，而总积分保持 \(2\pi\)；任何固定远弧的质量则由上面的估计趋于零。这个尺度关系将同时给出边界收敛速度和跳跃点的极限。
 
 \subsection{Poisson 积分}
 \label{b3:subsec:160103}
 
+用正的归一化核对边界数据加权，便得到圆盘解。下面保留一个可直接引用的 Dirichlet 问题版本；圆盘上的存在性与边界连续性的证明已经在上一章完成。
+
+\Needspace{6\baselineskip}
 \begin{theorem}[圆盘 Dirichlet 问题]\label{b3:thm:16-poisson}
-圆周上连续函数 \(\varphi\) 的唯一连续调和延拓为
+设 \(R>0\)，\(\varphi:\partial B(0,R)\to\mathbb R\) 连续，并令
 \[
-u(z)=\frac1{2\pi}\int_0^{2\pi}P_R(z,t)\cdot\varphi(Re^{\mathrm{i}t})\,\mathrm{d}t.
+ P_R(z,t)=\frac{R^2-|z|^2}{|Re^{\mathrm i t}-z|^2},
+ \quad |z|<R.
 \]
+则存在唯一 \(u\in C(\overline{B(0,R)};\mathbb R)\)，在 \(B(0,R)\) 调和且在边界等于 \(\varphi\)。它在内部由
+\[
+ u(z)=\frac1{2\pi}\int_0^{2\pi}
+ P_R(z,t)\varphi(Re^{\mathrm i t})\,\mathrm dt
+\]
+给出。
 \end{theorem}
 \begin{proof}
-内部微分由紧集上核导数的统一界合法，得到调和性。把 \(u(z)-\varphi(\xi)\) 写成核乘边值差的积分。近 \(\xi\) 的弧上，一致连续性使差小于 \(\varepsilon\)，核总质量一给该部分不超过 \(\varepsilon\)。剩余弧上的边值差有界而核一致趋零，故积分趋零。唯一性由最大值原理。
+\cref{b3:thm:15-poisson-continuous}适用于任意正半径圆盘上的实值连续圆周数据，正是这里的条件。该定理用内部紧集上的核导数界证明积分调和，用近弧上的连续性和远弧上的质量消失证明任意方向的边界连续性，再用有界域最大值原理证明唯一性。因此把其 Poisson 积分用于当前 \(\varphi\)，便得到所述经典解。
 \end{proof}
-边值 \(\cos(nt)\) 的延拓为 \((r/R)^n\cos(n\theta)\)，\(\sin(nt)\) 同样得到正弦。这些计算说明高频边界振荡向内部迅速衰减，中心只保留边值的平均。
 
-\subsection{调和测度}
+记这一延拓为 \(\mathcal P_R\varphi\)。积分直接显示它对数据线性、保持常数并保持大小关系，且
+\[
+ |(\mathcal P_R\varphi)(z)|
+ \le\|\varphi\|_\infty,
+ \quad
+ (\mathcal P_R\varphi)(0)
+ =\frac1{2\pi}\int_0^{2\pi}\varphi(Re^{\mathrm i t})\,\mathrm dt.
+\]
+中心只看到边界平均，其余角向信息随着离开中心逐渐出现。为精确描述这种变化，先把边界数据与各个角频率配对。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[角频率的延拓与衰减]\label{b3:prop:16-poisson-frequencies}
+设 \(R>0\)，\(\varphi:\partial B(0,R)\to\mathbb C\) 为有界 Borel 可测函数，\(u\) 由其 Poisson 积分定义。令
+\[
+ c_n=\frac1{2\pi}\int_0^{2\pi}
+       \varphi(Re^{\mathrm i t})e^{-\mathrm i nt}\,\mathrm dt,
+ \quad n\in\mathbb Z.
+\]
+则对 \(0\le r<R\)，
+\[
+ u(re^{\mathrm i\theta})
+ =\sum_{n\in\mathbb Z}c_n
+       \left(\frac rR\right)^{|n|}e^{\mathrm i n\theta}.
+\]
+该级数在每个内部闭盘上绝对一致收敛，且可按实变量 \(x,y\) 逐项求任意阶导数。其和的实部与虚部均调和。若 \(0<q<1\)、\(N\ge0\) 为整数，则截断到 \(|n|\le N\) 后，在 \(|z|\le qR\) 上的误差不超过
+\[
+ \frac{2\|\varphi\|_\infty q^{N+1}}{1-q}.
+\]
+\end{proposition}
+\begin{proof}
+有界性给出 \(|c_n|\le\|\varphi\|_\infty\)。核的几何级数展开在 \(|z|\le qR\) 上关于 \(t\) 绝对一致收敛，乘以有界可测的边界数据后仍可交换求和与积分。于是
+\[
+ u(z)=c_0+\sum_{n\ge1}
+ \left[c_n\left(\frac zR\right)^n+
+       c_{-n}\left(\frac{\overline z}R\right)^n\right].
+\]
+这与角变量表达相同。在 \(|z|\le qR\) 上，取 \(k\) 阶实偏导数后，每个 \(n\ge k\) 的项可由常数乘以 \(n^kq^{n-k}\) 控制；这个数列可求和。有限个低次项也可直接求导。因此各阶导数级数一致收敛，每项的实部、虚部都调和，故和也调和。最后对 \(|n|>N\) 的项取绝对值并求几何级数，得到所述余项界。
+\end{proof}
+
+系数 \(c_n\) 称为边界数据的\term[fourier-xishu]{Fourier 系数}[Fourier coefficient]。上面的推导只用核的几何级数，不要求边界函数自身的 Fourier 级数在任何边界点收敛。因子 \((r/R)^{|n|}\) 已使内部展开绝对收敛；当 \(r/R\) 固定小于一时，较高频率受到更强的压制。
+
+\ProseParagraphBreak
+对 \(n\ge1\)，数据 \(\cos(nt)\)、\(\sin(nt)\) 分别延拓为
+\[
+ \left(\frac rR\right)^n\cos(n\theta),
+ \quad
+ \left(\frac rR\right)^n\sin(n\theta).
+\]
+正频率 \(e^{\mathrm i nt}\) 对应 \((z/R)^n\)，负频率对应 \((\overline z/R)^{|n|}\)。实数据满足 \(c_{-n}=\overline{c_n}\)，两部分配对成为实函数；调和延拓并不要求负频率消失。
+
+\ProseParagraphBreak
+例如圆周上的数据 \(\varphi(z)=(\operatorname{Re}z)^2\) 可写成
+\[
+ \varphi(Re^{\mathrm i t})
+ =R^2\cos^2t=\frac{R^2}{2}(1+\cos2t).
+\]
+它的调和延拓因而为
+\[
+ u(x+\mathrm i y)=\frac{R^2+x^2-y^2}{2}.
+\]
+在圆周上由 \(x^2+y^2=R^2\) 得 \(u=x^2\)，内部则有 \(\Delta u=0\)。中心值 \(R^2/2\) 是边界平均，不是把边界公式 \(x^2\) 直接代入中心所得的零。
+
+\subsection{Poisson 积分的边界行为与调和测度}
 \label{b3:subsec:160104}
 
-固定 \(z\)，测度 \(\mathrm{d}\omega^z(Re^{\mathrm{i}t})=P_R(z,t)\mathrm{d}t/(2\pi)\) 是概率测度，称为圆盘的\term[diaohe-cedu]{调和测度}[harmonic measure]。它将边界数据映为内部值：\(u(z)=\int\varphi\,\mathrm{d}\omega^z\)。中心处等于归一化弧长，非中心处却不均匀。
+连续边值已经保证任意方向的边界连续性。沿同心圆趋近时，核的尺度估计还能把数据的连续模转成统一误差，说明光滑程度怎样影响逼近速度。
 
-对于一段弧 \(I\)，\(\omega^z(I)\) 表示该弧在点 \(z\) 的影响权重。端点有零质量，所以指示数据可用连续函数上下逼近得到相同积分。这里把概率测度用于权重表示，还没有引入随机过程。
-
-
-\ProseParagraphBreak
-
-Poisson 积分的边界收敛证明还给出一致收敛。设边值的连续模为
+\Needspace{6\baselineskip}
+\begin{proposition}[径向边界误差]\label{b3:prop:16-poisson-boundary-rate}
+设 \(R>0\)，\(\varphi:\partial B(0,R)\to\mathbb R\) 连续，\(u=\mathcal P_R\varphi\)。定义角变量的连续模
 \[
- \omega(\delta)=\sup_{\substack{\xi,\eta\in\partial D(0,R)\\|\xi-\eta|\le\delta}}
-                    |\varphi(\xi)-\varphi(\eta)|.
+ \omega_\varphi(\delta)=
+ \sup_{\substack{\theta\in\mathbb R\\|t|\le\delta}}
+ |\varphi(Re^{\mathrm i(\theta+t)})
+       -\varphi(Re^{\mathrm i\theta})|,
+ \quad 0<\delta\le\pi.
 \]
-沿半径 \(z=r\xi/R\)，将边界分成距 \(\xi\) 小于 \(\delta\) 和大于 \(\delta\) 两部分，得到
+若 \(R/2\le r<R\)，\(\varepsilon=1-r/R\)，则有绝对常数 \(C\)，使
 \[
-|u(r\xi/R)-\varphi(\xi)|\le\omega(\delta)+C_R\|\varphi\|_\infty(R-r)/\delta^2
+ \sup_\theta|u(re^{\mathrm i\theta})-\varphi(Re^{\mathrm i\theta})|
+ \le\omega_\varphi(\delta)
+       +C\|\varphi\|_\infty\frac{\varepsilon}{\delta}.
 \]
-对充分接近 \(R\) 的 \(r\) 成立，常数与 \(\xi\) 无关。先固定 \(\delta\)，再令 \(r\uparrow R\)，最后令 \(\delta\downarrow0\)，即得圆周上的一致收敛。连续性的作用在这个顺序中十分明确；有界可测边值没有统一趋零的连续模。
-
-\ProseParagraphBreak
-
-例如单位圆周边值在上半圆为一、下半圆为零，其内部积分是上半圆的调和测度。在弧内部的边界点，近弧差值恒零，所以极限分别为一和零；在两个端点，径向极限为二分之一，但从不同内部方向接近时可能得到不同极限。解在内部调和、介于零与一之间，却不属于 \(C(\overline D)\)。端点值怎样赋予不会改变积分，因为弧长测度看不见单点；这与连续 Dirichlet 问题指定每一点边值的含义不同。
-
-\ProseParagraphBreak
-
-圆盘与上半平面之间的 Möbius 变换给另一个明确核。设 \(z=x+\mathrm{i}y\)、\(y>0\)，有界连续实轴数据 \(\psi\) 的 Poisson 积分为
+因此左端随 \(r\uparrow R\) 趋于零。若进一步有
 \[
-U(x,y)=\frac1\pi\int_{\mathbb R}\frac{y\,\psi(t)}{(x-t)^2+y^2}\,\mathrm{d}t.
+ |\varphi(Re^{\mathrm i(\theta+t)})
+       -\varphi(Re^{\mathrm i\theta})|
+ \le H|t|^\alpha
+ \quad(\theta\in\mathbb R,\ |t|\le\pi),
 \]
-核积分为一，内部调和由微分与局部统一可积控制得到。对固定 \(x_0\)，近 \(x_0\) 的连续性和远部估计 \(\int_{|t-x_0|>\delta}y/((x-t)^2+y^2)\,\mathrm{d}t=O(y/\delta)\) 给连续取实轴边值。若 \(\psi\) 在全实轴一致连续，这一估计还给 \(\sup_x|U(x,y)-\psi(x)|\to0\)。有界连续性本身只保证逐点边界收敛。
-
-\ProseParagraphBreak
-
-这个无界域上的唯一性必须限定有界解。若有界调和函数 \(W\) 在实轴连续为零，将它拉回圆盘，得到有界调和函数，除对应无穷远的一个边界点外边值均零。用该点附近小弧的 Poisson 积分作上、下控制：固定内部点，弧长趋零时该弧的调和测度趋零，故 \(|W|\) 被任意小的数控制。于是 \(W=0\)。此证明不要求在无穷远已有一个共同极限；有界性使未指定的单点边界能被小弧控制。若允许无界解，\(y\) 与零解具有相同实轴边值，唯一性立即失去。
-
-\ProseParagraphBreak
-
-Poisson 核对每个角频率的作用也可精确计算。单位圆中，几何级数给
+其中 \(H\ge0\)，则当 \(0<\alpha<1\) 时，上述左端至多为
+\(C_\alpha H\varepsilon^\alpha\)；当 \(\alpha=1\) 时，至多为
+\(CH\varepsilon\log(e/\varepsilon)\)。常数与 \(R,r,\varphi,H\) 无关，\(C_\alpha\) 可依赖 \(\alpha\)。
+\end{proposition}
+\begin{proof}
+写 \(\rho=r/R\)。核的归一化与周期性给出
 \[
- P_r(t)=\frac{1-r^2}{1-2r\cos t+r^2}
-       =1+2\sum_{n\ge1}r^n\cos(nt),\qquad 0\le r<1.
+ u(re^{\mathrm i\theta})-\varphi(Re^{\mathrm i\theta})
+ =\frac1{2\pi}\int_{-\pi}^{\pi}p_\rho(t)
+ \bigl[\varphi(Re^{\mathrm i(\theta+t)})
+       -\varphi(Re^{\mathrm i\theta})\bigr]\,\mathrm dt.
 \]
-在 \(r\le r_0<1\) 上级数绝对一致收敛，故边值 \(e^{\mathrm{i}nt}\) 的 Poisson 延拓为 \(r^{|n|}e^{\mathrm{i}nt}\)。正频率延拓为 \(z^n\)，负频率延拓为 \(\bar z^{|n|}\)。实边值的共轭系数配对保证结果实值，却不要求只有正频率。这解释了调和函数的边界资料为何比全纯函数的边界资料更自由。
-\ProseParagraphBreak
-高频在内部受到更强压制。若连续边值的 Fourier 系数为 \(c_n\)，则内部任意较小圆盘上
+在 \(|t|<\delta\) 上，边值差不超过 \(\omega_\varphi(\delta)\)，核质量至多一；其余部分用边值差至多 \(2\|\varphi\|_\infty\) 及\cref{b3:lem:16-poisson-localization}的远弧估计，得到第一式。连续函数在紧圆周上一致连续，故先使 \(\omega_\varphi(\delta)\) 小，再固定 \(\delta\) 令 \(\varepsilon\downarrow0\)，即得一致收敛。
+
+有 Hölder 条件时，不再先固定一条近弧，而在整个积分中保留差值大小。核的上界给
 \[
- u(re^{\mathrm{i}\theta})=\sum_{n\in\mathbb Z}c_n r^{|n|}e^{\mathrm{i}n\theta}.
+ |u(re^{\mathrm i\theta})-\varphi(Re^{\mathrm i\theta})|
+ \le CH\int_0^\pi
+        \frac{\varepsilon t^\alpha}{\varepsilon^2+t^2}\,\mathrm dt.
 \]
-这里不必假定边值 Fourier 级数本身逐点收敛：\(|c_n|\le\|\varphi\|_\infty\)，乘 \(r^{|n|}\) 后已经绝对收敛；对 Poisson 核的正常收敛展开积分，就能直接得到等式。附加有限阶导数只增加 \(|n|\) 的幂，仍被几何衰减控制，因此解在内部具有所有阶导数。
-\ProseParagraphBreak
-边值更规则时可给定量逼近。设 \(|\varphi(e^{\mathrm{i}(\theta+t)})-\varphi(e^{\mathrm{i}\theta})|\le H|t|^\alpha\)，\(0<\alpha<1\)，\(|t|\le\pi\)。写 \(\varepsilon=1-r\)，当 \(r\ge1/2\) 时有
-\(P_r(t)\le C\varepsilon/(\varepsilon^2+t^2)\)，故
+若 \(0<\alpha<1\)，代入 \(t=\varepsilon s\)，右侧至多为
 \[
- |u(re^{\mathrm{i}\theta})-\varphi(e^{\mathrm{i}\theta})|
- \le CH\int_0^\pi\frac{\varepsilon t^\alpha}{\varepsilon^2+t^2}\,\mathrm{d}t
- \le C_\alpha H\varepsilon^\alpha.
+ CH\varepsilon^\alpha
+       \int_0^\infty\frac{s^\alpha}{1+s^2}\,\mathrm ds.
 \]
-最后令 \(t=\varepsilon v\)，积分 \(\int_0^\infty v^\alpha/(1+v^2)\,\mathrm{d}v\) 有限。端点 \(\alpha=1\) 时相同估计给 \(O(\varepsilon\log(1/\varepsilon))\)，不能把依赖 \(\alpha\) 的常数直接取到一。即使边值有统一连续模，不同光滑程度也会产生不同的逼近速度。
+该积分在零附近由 \(s^\alpha\) 控制，在无穷远由 \(s^{\alpha-2}\) 控制，两端均可积。若 \(\alpha=1\)，直接计算得到
+\[
+ \int_0^\pi\frac{\varepsilon t}{\varepsilon^2+t^2}\,\mathrm dt
+ =\frac{\varepsilon}{2}
+     \log\left(1+\frac{\pi^2}{\varepsilon^2}\right)
+ \le C\varepsilon\log(e/\varepsilon),
+\]
+于是得到端点估计。
+\end{proof}
+
+Lipschitz 情形的对数因子一般不能删去。取单位圆周数据
+\(\varphi(e^{\mathrm i t})=|t|\)，其中 \(-\pi\le t\le\pi\)，并作周期延拓。它是到角度零的圆周距离，满足角变量的 Lipschitz 条件。在点 \(1\) 的径向线上，令 \(r=1-\varepsilon\)、\(0<\varepsilon\le1/2\)，则
+\[
+ (\mathcal P_1\varphi)(r)-\varphi(1)
+ =\frac1\pi\int_0^\pi p_r(t)t\,\mathrm dt
+ \ge\frac{\varepsilon}{2\pi}
+       \int_\varepsilon^1\frac{\mathrm dt}{t}
+ =\frac{\varepsilon}{2\pi}\log(1/\varepsilon).
+\]
+这里使用了核的下界及 \(t\ge\varepsilon\) 时
+\(\varepsilon^2+t^2\le2t^2\)。因此对所有 Lipschitz 边值声称误差为 \(O(1-r)\) 并不成立。
+
+\ProseParagraphBreak
+固定 \(R>0\) 与 \(z\in B(0,R)\)，把核当作边界上的密度，定义概率测度
+\[
+ \mathrm d\omega^z(Re^{\mathrm i t})
+ =\frac1{2\pi}P_R(z,t)\,\mathrm dt.
+\]
+它称为圆盘的\term[diaohe-cedu]{调和测度}[harmonic measure]，满足
+\[
+ (\mathcal P_R\varphi)(z)=\int_{\partial B(0,R)}\varphi\,\mathrm d\omega^z.
+\]
+中心处它等于归一化弧长；非中心处则对较近的边界赋予较大权重。这里的测度由显式密度定义，稍后的\cref{b3:sec:1604}将在一般正则域上从解算子构造它。
+
+\ProseParagraphBreak
+对有界 Borel 数据，同一积分仍有意义，并由\cref{b3:prop:16-poisson-frequencies}给出内部调和函数。改变有限个边界点的取值不会改变积分，因为每个点的弧长测度为零。在任何一个数据连续的边界点 \(\xi\)，积分仍任意方向趋于 \(\varphi(\xi)\)：近 \(\xi\) 的弧上只需该点的连续性，远弧上的边值差由统一有界性控制，而核质量趋于零。全边界连续性的丢失，并不妨碍在其余连续点取到正确边值。
+
+\ProseParagraphBreak
+跳跃点处的情况取决于接近方向。下面直接用核的缩放计算这种差别，不需要预先知道某条圆弧的调和测度公式。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[跳跃边值的方向极限]\label{b3:prop:16-poisson-jump}
+设 \(\varphi:\partial B(0,1)\to\mathbb R\) 为有界 Borel 可测函数，\(u=\mathcal P_1\varphi\)。设在某个 \(\theta_0\in\mathbb R\) 处存在单侧极限
+\[
+ A_-=\lim_{t\uparrow0}\varphi(e^{\mathrm i(\theta_0+t)}),
+ \quad
+ A_+=\lim_{t\downarrow0}\varphi(e^{\mathrm i(\theta_0+t)}).
+\]
+对任意固定 \(\lambda\in\mathbb R\)，令
+\(z_\varepsilon=(1-\varepsilon)e^{\mathrm i(\theta_0+\lambda\varepsilon)}\)，其中 \(0<\varepsilon<1/2\)。则
+\[
+ \lim_{\varepsilon\downarrow0}u(z_\varepsilon)
+ =A_-\left(\frac12-\frac{\arctan\lambda}{\pi}\right)
+  +A_+\left(\frac12+\frac{\arctan\lambda}{\pi}\right).
+\]
+特别地，径向极限为 \((A_-+A_+)/2\)。这些极限与
+\(\varphi(e^{\mathrm i\theta_0})\) 本身的取值无关。
+\end{proposition}
+\begin{proof}
+旋转后可设 \(\theta_0=0\)。取 \(0<\delta<\pi/2\)，把积分分成 \(|t|<\delta\) 与其余部分。当 \(\varepsilon\) 足够小时，核的中心角 \(\lambda\varepsilon\) 与零的角距离小于 \(\delta/2\)。远弧到中心的圆周角距离至少为 \(\delta/2\)，所以远弧贡献由集中估计趋于零。
+
+在近弧作换元 \(t=\varepsilon s\)。对每个固定实数 \(s\)，有
+\[
+ \frac{\varepsilon}{2\pi}
+ p_{1-\varepsilon}\bigl(\varepsilon(s-\lambda)\bigr)
+ \longrightarrow\frac1{\pi\bigl(1+(s-\lambda)^2\bigr)}.
+\]
+这是把分子写成 \(\varepsilon(2-\varepsilon)\)，分母写成
+\(\varepsilon^2+2(1-\varepsilon)(1-\cos(\varepsilon(s-\lambda)))\)
+后，使用 \((1-\cos h)/h^2\to1/2\) 得到的。近弧中
+\(|\varepsilon(s-\lambda)|<\pi\)，核上界又给出
+\[
+ \frac{\varepsilon}{2\pi}
+ p_{1-\varepsilon}\bigl(\varepsilon(s-\lambda)\bigr)
+ \le\frac{C}{1+(s-\lambda)^2}.
+\]
+将近弧积分的被积函数在 \(|s|\ge\delta/\varepsilon\) 处补零，右侧乘以 \(\|\varphi\|_\infty\) 就是整条实轴上的共同可积控制。对 \(s<0\)，数据趋于 \(A_-\)；对 \(s>0\)，趋于 \(A_+\)。支配收敛因此给出
+\[
+ \lim_{\varepsilon\downarrow0}u(z_\varepsilon)
+ =\frac{A_-}{\pi}\int_{-\infty}^{0}
+       \frac{\mathrm ds}{1+(s-\lambda)^2}
+  +\frac{A_+}{\pi}\int_{0}^{\infty}
+       \frac{\mathrm ds}{1+(s-\lambda)^2}.
+\]
+两项积分分别为 \(\pi/2-\arctan\lambda\) 与
+\(\pi/2+\arctan\lambda\)，得到结论。单个角度的函数值不影响积分。
+\end{proof}
+
+当 \(A_-\ne A_+\) 时，改变 \(\lambda\) 就得到不同极限，因而解不能连续延拓到这个边界点。径向得到左右平均，是因为此时核关于该点对称；它并没有恢复一份连续边值。圆弧指示函数的端点属于这种情形，具体圆弧和实轴区间的权重将在\cref{b3:sec:1604}中计算。
+
+\ProseParagraphBreak
+虽然有限个点的指定数值不影响 Poisson 积分，但从“两个有界调和函数在其他边界点同值”推出内部相同，仍须一个比较论证。直接使用跳跃的指示数据会在弧端点留下未控制的极限；采用连续的短弧上界，可以在每个边界点应用已证最大值原理。
+
+\Needspace{6\baselineskip}
+\begin{lemma}[有限边界例外集的比较]\label{b3:lem:16-finite-boundary-exceptions}
+设 \(v:B(0,1)\to\mathbb R\) 调和且有上界，\(E\subset\partial B(0,1)\) 为有限集。若
+\[
+ \limsup_{B(0,1)\ni z\to\xi}v(z)\le0
+ \quad(\xi\in\partial B(0,1)\setminus E),
+\]
+则 \(v\le0\) 于圆盘。特别地，若 \(v\) 有界且在除 \(E\) 外的每个边界点均趋于零，则 \(v=0\)。
+\end{lemma}
+\begin{proof}
+取 \(M\ge0\) 使 \(v\le M\)。给定 \(\eta>0\)，用有限条开弧覆盖 \(E\)，使总角长小于 \(\eta\)。在每条弧中取一个连续函数，在相应例外点的小邻弧上等于一，在大弧外等于零，并在中间线性过渡。取这些函数的最大值，得到连续圆周函数 \(\chi_\eta\)，满足
+\[
+ 0\le\chi_\eta\le1,\quad
+ \chi_\eta=1\text{ 于 }E,\quad
+ \int_0^{2\pi}\chi_\eta(e^{\mathrm i t})\,\mathrm dt<\eta.
+\]
+当 \(E\) 为空时直接取 \(\chi_\eta=0\)。令
+\(h_\eta=\mathcal P_1\chi_\eta\)，则 \(h_\eta\ge0\)，且连续取边值 \(\chi_\eta\)。
+
+在 \(E\) 以外，\(\limsup(v-Mh_\eta)\le-M\chi_\eta\le0\)；在 \(E\) 上，由 \(v\le M\) 与 \(h_\eta\to1\)，同样得到上极限不超过零。因此调和函数 \(v-Mh_\eta\) 在有界圆盘的每个边界点均满足上极限条件，\cref{b3:cor:15-boundary-limsup}给出
+\(v\le Mh_\eta\)。固定 \(z\) 后，核满足
+\[
+ 0\le h_\eta(z)
+ \le\frac{1+|z|}{1-|z|}\,\frac{\eta}{2\pi}.
+\]
+令 \(\eta\downarrow0\) 得 \(v(z)\le0\)。最后若 \(v\) 有界且边界极限为零，对 \(v\) 与 \(-v\) 分别应用前一结论，得到 \(v=0\)。
+\end{proof}
+
+上半平面给出这一引理的一个用途：将它映到圆盘后，无穷远只对应一个边界点。实轴上的积分核可以先直接构造。对 \(z=x+\mathrm i y\)、\(y>0\)，函数
+\[
+ \frac1\pi\operatorname{Im}\frac1{t-z}
+ =\frac1\pi\frac{y}{(x-t)^2+y^2}
+\]
+关于 \(z\) 调和且为正。代入 \(t=x+ys\)，它对 \(t\) 的积分成为
+\(\pi^{-1}\int_{\mathbb R}(1+s^2)^{-1}\,\mathrm ds=1\)，所以也能用来延拓有界数据。
+
+\Needspace{6\baselineskip}
+\begin{theorem}[上半平面的 Poisson 积分]\label{b3:thm:16-half-plane-poisson}
+设 \(\psi:\mathbb R\to\mathbb R\) 为有界 Borel 可测函数，定义
+\[
+ U(x,y)=\frac1\pi\int_{\mathbb R}
+       \frac{y\,\psi(t)}{(x-t)^2+y^2}\,\mathrm dt,
+ \quad x\in\mathbb R,\ y>0.
+\]
+则 \(U\) 在上半平面调和，且 \(|U|\le\|\psi\|_\infty\)。若 \(\psi\) 在 \(x_0\in\mathbb R\) 连续，则
+\[
+ U(x,y)\longrightarrow\psi(x_0)
+ \quad\text{当 }(x,y)\to(x_0,0),\ y>0.
+\]
+若 \(\psi\) 在整条实轴连续，则 \(U\) 是唯一有界、在上半平面调和并连续取实轴边值 \(\psi\) 的函数。
+\end{theorem}
+\begin{proof}
+核为正且积分为一，因此积分绝对收敛，并给出 \(|U|\le\|\psi\|_\infty\)。固定上半平面中的紧集 \(K\)。其上的 \(x,y\) 有界，且 \(y\) 有正下界。核及其至多二阶的 \(x,y\) 偏导数，在 \(t\) 的有界区间上统一有界，在 \(|t|\) 足够大时由 \(C_K/(1+t^2)\) 控制；这一点可由核的有理表达直接求导得到。乘以有界的 \(\psi\) 后仍有共同可积控制，故可在积分号下求二阶导数。核本身是关于 \(z\) 的全纯函数的虚部，Laplace 算子为零，因而 \(\Delta U=0\)。
+
+令 \(M=\|\psi\|_\infty\)。固定连续点 \(x_0\) 与 \(\gamma>0\)，取 \(\delta>0\)，使 \(|t-x_0|<\delta\) 时
+\(|\psi(t)-\psi(x_0)|<\gamma\)。若 \(|x-x_0|<\delta/2\)，则远部满足
+\(|t-x|\ge|t-x_0|/2\)，所以
+\[
+ \frac1\pi\int_{|t-x_0|\ge\delta}
+       \frac{y}{(x-t)^2+y^2}\,\mathrm dt
+ \le\frac{4y}{\pi}\int_{|s|\ge\delta}\frac{\mathrm ds}{s^2}
+ =\frac{8y}{\pi\delta}.
+\]
+将 \(U(x,y)-\psi(x_0)\) 按这两部分拆开，近部用核的总质量一，远部用差值至多 \(2M\)，得到
+\[
+ |U(x,y)-\psi(x_0)|
+ \le\gamma+\frac{16My}{\pi\delta}.
+\]
+先令 \((x,y)\to(x_0,0)\)，再令 \(\gamma\downarrow0\)，便得到任意方向的边界极限。
+
+现在假设 \(\psi\) 在整条实轴连续，并取另一有界调和解 \(V\)。差 \(W=V-U\) 有界且连续取零实轴边值。映射
+\[
+ F(\zeta)=\mathrm i\,\frac{1+\zeta}{1-\zeta},
+ \quad |\zeta|<1,
+\]
+将单位圆盘双全纯地映到上半平面，因为
+\[
+ \operatorname{Im}F(\zeta)=\frac{1-|\zeta|^2}{|1-\zeta|^2}>0,
+ \quad
+ F^{-1}(z)=\frac{z-\mathrm i}{z+\mathrm i}.
+\]
+除圆周点 \(1\) 外，\(F\) 连续取有限实轴值。链式法则与 Cauchy--Riemann 方程给出
+\(\Delta(W\circ F)=|F'|^2\cdot(\Delta W)\circ F=0\)，故 \(W\circ F\) 是有界调和函数，并在除 \(1\) 外的所有圆周点趋于零。\cref{b3:lem:16-finite-boundary-exceptions}遂给 \(W\circ F=0\)，从而 \(V=U\)。证明没有要求在无穷远预先存在一个边值。
+
+\end{proof}
+
+有界性在唯一性证明中控制了映到圆周点 \(1\) 的无穷远部分。若放弃这项条件，零函数与 \(U(x,y)=y\) 都连续取零实轴边值，却在内部不同。同一证明还允许在实轴上忽略有限个边界点：若两个有界调和函数在其余每个实点的差都趋于零，拉回后的例外集只是这些点的像再加上 \(1\)，仍为有限集，故两函数相等。
+
+\ProseParagraphBreak
+实轴非紧，各连续点的边界收敛本身不保证全实轴上的一致收敛。
+
+\ProseParagraphBreak
+一些积分值可以通过唯一性计算，而不必直接积分。数据
+\(\psi(t)=1/(1+t^2)\) 的有界调和延拓是
+\[
+ U(x,y)=\frac{1+y}{x^2+(1+y)^2}
+       =-\operatorname{Im}\frac1{x+\mathrm i y+\mathrm i}.
+\]
+右端的极点位于下半平面，在 \(y\ge0\) 上介于零与一之间，并连续取指定边值，故由唯一性就是 Poisson 积分。对数据 \(\cos(\kappa t)\)，其中 \(\kappa\in\mathbb R\)，函数
+\[
+ U(x,y)=e^{-|\kappa|y}\cos(\kappa x)
+\]
+同样直接满足调和方程、有界性和边界条件。频率越高，向上半平面内部的衰减越快；这与圆盘中 \((r/R)^{|n|}\) 的衰减是两个可明确计算的模型。

@@ -2,81 +2,158 @@
 \section{复曲线积分}
 \label{b3:sec:0201}
 
-圆周上的积分已在\subsecref{b3:subsec:010204}用于恢复函数。一般曲线可以绕过孔洞，也可以反复经过同一点；积分必须记住行走方向与次数。下面先把参数曲线、积分估计和端点公式分开处理。
+第一章在圆周上积分，利用边界值恢复了圆盘内的函数。一般曲线可以绕过孔洞，也可以反复经过同一点；只知道曲线画成什么形状，还不足以确定积分。先明确参数记录哪些信息，再讨论何时可以把整条路径的计算压缩为两个端点的函数值。
 
 \subsection{分段光滑曲线}
 \label{b3:subsec:020101}
 
-设 \(\gamma:[a,b]\rightarrow\mathbb C\) 连续。若存在有限分点，使它在每个闭子区间上为 \(C^1\)，就称它为\term[fenduan-guanghua-quxian]{分段光滑曲线}[piecewise smooth curve]。允许某些区间上的导数为零，不要求曲线单射。曲线的长度定义为
-\[
- L(\gamma)=\int_a^b|\gamma'(t)|\,\mathrm{d}t.
-\]
-反向曲线 \(\gamma^-(t)=\gamma(a+b-t)\) 的长度相同；首尾相接的曲线可以拼接，其长度相加。后文的闭曲线包括自交曲线，不能将“闭曲线”与“简单闭曲线”混为一谈。
+设 \(a<b\)，连续映射 \(\gamma:[a,b]\rightarrow\mathbb C\) 表示一条路径，\(\gamma(a)\)、\(\gamma(b)\) 分别是起点和终点。若存在有限分割
+\(a=t_0<t_1<\cdots<t_N=b\)，使 \(\gamma\) 在每个闭子区间 \([t_{j-1},t_j]\) 上为 \(C^1\)，就称它为\term[fenduan-guanghua-quxian]{分段光滑曲线}[piecewise smooth curve]。各段的端点导数按单侧理解；相邻两段可以有不同的切向量。允许导数为零，也允许曲线自交或沿同一段往返。
 
 \ProseParagraphBreak
 
-圆周 \(a+r e^{\mathrm{i}t}\)、\(0\le t\le2\pi\)，规定正向为逆时针。把参数变为 \(2t\) 会把圆周走两遍；它与原曲线有相同的像，却有不同的积分。对非单射曲线，像集不能代替参数化。
+参数区间是行走的时间，像集 \(\gamma([a,b])\) 是走过的点。两者不能混用。例如在 \(0\le t\le1\) 上，
+\[
+ \gamma_1(t)=e^{2\pi\mathrm{i}t},
+ \quad \gamma_2(t)=e^{4\pi\mathrm{i}t},
+ \quad \gamma_3(t)=e^{-2\pi\mathrm{i}t}
+\]
+有相同的像集，但分别逆时针走一圈、逆时针走两圈、顺时针走一圈。它们的起点与终点也相同，仍不是同一次行走。圆周 \(a+re^{\mathrm{i}t}\)、\(0\le t\le2\pi\)，约定逆时针为正向。
+
+\ProseParagraphBreak
+
+分段光滑曲线的长度为
+\[
+ L(\gamma)\coloneqq\sum_{j=1}^N
+ \int_{t_{j-1}}^{t_j}|\gamma'(t)|\,\mathrm{d}t.
+\]
+增加分点不改变这个数值，因此常简记为 \(\int_a^b|\gamma'(t)|\,\mathrm{d}t\)。上面的三个圆周参数化长度依次为 \(2\pi,4\pi,2\pi\)：长度记录重复走过的路程，却不记录方向。线段从 \(p\) 到 \(q\) 的参数化为 \(\gamma(t)=(1-t)p+tq\)、\(0\le t\le1\)，长度是 \(|q-p|\)；记号 \([p,q]\) 用于积分时总带有这个方向。
+
+\ProseParagraphBreak
+
+反向曲线定义为 \(\gamma^-(t)=\gamma(a+b-t)\)。若两条定义在 \([0,1]\) 的路径 \(\gamma,\eta\) 满足 \(\gamma(1)=\eta(0)\)，则依次走完它们的拼接为
+\[
+ (\gamma*\eta)(t)=
+ \begin{cases}
+ \gamma(2t),&0\le t\le1/2,\\
+ \eta(2t-1),&1/2\le t\le1.
+ \end{cases}
+\]
+分段光滑性在反向与有限拼接下保留，长度分别不变与相加。路径称为闭的，是指起点等于终点；称为简单闭曲线，还要求除这一对端点外没有重复点。本章的 Cauchy 积分定理允许闭曲线自交，不能把它的条件缩成简单闭曲线。
 
 \subsection{围道积分}
 \label{b3:subsec:020102}
 
-设 \(f\) 在曲线像上连续，沿 \(\gamma\) 的积分为
+若 \(f:\gamma([a,b])\to\mathbb C\) 连续，沿分段光滑曲线 \(\gamma\) 的积分定义为
 \[
- \int_\gamma f(z)\,\mathrm{d}z=\int_a^b f\bigl(\gamma(t)\bigr)\cdot\gamma'(t)\,\mathrm{d}t.
+ \int_\gamma f(z)\,\mathrm{d}z
+ \coloneqq\sum_{j=1}^N\int_{t_{j-1}}^{t_j}
+ f\bigl(\gamma(t)\bigr)\cdot\gamma'(t)\,\mathrm{d}t.
 \]
-右端按实部与虚部分别积分，有限个分点不影响数值。保持方向的分段 \(C^1\) 换参由实变量换元公式保持积分；反向换参改变符号。闭曲线上的积分也称\term[weidao-jifen]{围道积分}[contour integral]。
+右端按实部与虚部分别积分。这里乘的是复速度 \(\gamma'(t)\)，而非非负速率 \(|\gamma'(t)|\)；这个差别使方向能够进入积分。闭曲线上的积分也称\term[weidao-jifen]{围道积分}[contour integral]。本节仍使用第一章已经引入的复曲线积分记号。
+
+\ProseParagraphBreak
+
+换一个行走速度不应改变积分。设 \(\phi:[c,d]\to[a,b]\) 是严格递增的分段 \(C^1\) 双射，并令 \(\widetilde\gamma=\gamma\circ\phi\)。把 \(\phi\) 的光滑分点以及 \(\gamma\) 各分点的逆像加入分割，链式法则与实变量换元公式给出
+\[
+ \int_c^d f\bigl(\gamma(\phi(s))\bigr)
+ \cdot\gamma'(\phi(s))\phi'(s)\,\mathrm{d}s
+ =\int_a^b f\bigl(\gamma(t)\bigr)\cdot\gamma'(t)\,\mathrm{d}t.
+\]
+所以这种保持方向的换参不改变积分。无需假定 \(\phi'\) 处处非零；例如 \(\phi(s)=s^2\) 在 \([0,1]\) 上改变速度，起点处速度为零，也符合换元公式。把一圈变成两圈则不是这样的换参，因为参数的终点关系与遍历次数已经改变。
+
+\Needspace{6\baselineskip}
 \begin{proposition}\label{b3:prop:02-ml}
-设 \(f\) 在分段光滑曲线 \(\gamma\) 的像上连续。则
+设 \(a<b\)，\(\gamma:[a,b]\to\mathbb C\) 是分段光滑曲线，\(f:\gamma([a,b])\to\mathbb C\) 连续。则
 \[
- \left|\int_\gamma f(z)\,\mathrm{d}z\right|\le L(\gamma)\cdot\max_{z\in\gamma}|f(z)|.
+ \left|\int_\gamma f(z)\,\mathrm{d}z\right|
+ \le L(\gamma)\cdot\max_{z\in\gamma([a,b])}|f(z)|.
 \]
-积分对被积函数线性，对曲线拼接可加，且 \(\int_{\gamma^-}f\,\mathrm{d}z=-\int_\gamma f\,\mathrm{d}z\)。
+积分对被积函数线性，对曲线拼接可加；反向时有
+\(\int_{\gamma^-}f(z)\,\mathrm{d}z=-\int_\gamma f(z)\,\mathrm{d}z\)。
 \end{proposition}
 \begin{proof}
-由实积分的三角不等式，积分模不超过 \(\int_a^b|f(\gamma(t))|\cdot|\gamma'(t)|\,\mathrm{d}t\)。取出连续函数在紧曲线像上的最大值即得估计。线性和拼接从有限区间积分的相应性质得到；反向时令 \(s=a+b-t\)，导数与积分上下限的变化给出负号。
+实积分的三角不等式给出
+\[
+ \left|\int_a^b f(\gamma(t))\cdot\gamma'(t)\,\mathrm{d}t\right|
+ \le\int_a^b|f(\gamma(t))|\cdot|\gamma'(t)|\,\mathrm{d}t.
+\]
+连续函数在紧像集上取得最大模，取出这个上界便得到长度估计。线性性来自区间积分；对拼接的两个半区间分别作线性换元，即得可加性。反向时令 \(s=a+b-t\)，原参数的始末点交换，因而积分变号。
 \end{proof}
-在半径 \(r\) 的正向圆周上，直接参数计算给出
+
+先用圆周核对符号和次数。对 \(r>0\) 及整数 \(n\)，将 \(z=a+re^{\mathrm{i}t}\) 代入，得到
 \[
- \int_{|z-a|=r}(z-a)^n\,\mathrm{d}z=
- \begin{cases}2\pi\mathrm{i},&n=-1,\\0,&n\in\mathbb Z\setminus\{-1\}.\end{cases}
+ \int_{|z-a|=r}(z-a)^n\,\mathrm{d}z
+ =\mathrm{i}r^{n+1}\int_0^{2\pi}e^{\mathrm{i}(n+1)t}\,\mathrm{d}t
+ =\begin{cases}
+ 2\pi\mathrm{i},&n=-1,\\
+ 0,&n\in\mathbb Z\setminus\{-1\}.
+ \end{cases}
 \]
-这项计算不要求负幂在圆盘中心有定义。它将成为 Laurent 系数提取的依据。
+当 \(n\ne-1\) 时，最后一个指数的原函数在两个端点取相同值；当 \(n=-1\) 时，被积函数恒为 \(1\)。负幂只须在圆周上有定义，不必在圆盘中心有定义。
 
 \ProseParagraphBreak
 
-复积分并不是把实积分中的变量符号换成 \(z\)。对任意分段光滑曲线，\(\int_\gamma\overline z\,\mathrm{d}z\) 一般不能写成端点的某个复函数之差。若 \(\gamma\) 是正向简单闭曲线，由 \(z=x+\mathrm{i}y\) 展开，
+有相同端点也不保证积分相同。将 \(\overline z\) 从 \(0\) 积到 \(1+\mathrm{i}\)，沿直线 \(z=(1+\mathrm{i})t\) 得到
 \[
- \overline z\,\mathrm{d}z=x\,\mathrm{d}x+y\,\mathrm{d}y+\mathrm{i}(x\,\mathrm{d}y-y\,\mathrm{d}x).
+ \int_0^1(1-\mathrm{i})t(1+\mathrm{i})\,\mathrm{d}t=1.
 \]
-前两项是 \(\tfrac12\mathrm{d}(x^2+y^2)\)，闭路上为零；后两项由平面 Green 公式等于内部面积的 \(2\mathrm{i}\) 倍。若暂不使用 Green 公式，对圆周直接计算已可看到面积贡献。被积函数不全纯时，内部积分无法用 Cauchy 消边法消去。
+若先沿实轴走到 \(1\)，再沿竖直线走到 \(1+\mathrm{i}\)，则两段分别给出
+\[
+ \int_0^1t\,\mathrm{d}t=\frac12,
+ \quad
+ \int_0^1(1-\mathrm{i}t)\mathrm{i}\,\mathrm{d}t
+ =\frac12+\mathrm{i}.
+\]
+总和是 \(1+\mathrm{i}\)。把第二条路径与第一条的反向拼接，就得到三角形 \(0,1,1+\mathrm{i}\) 的正向边界，其积分为 \(\mathrm{i}\)。全纯性在后面使闭路积分消失；这个计算表明一般的连续函数没有这一性质，即使它作为实函数无限次可微。
 
 \ProseParagraphBreak
 
-长度估计在曲线族随参数变化时也有用，但必须同时控制长度。例如圆 \(|z|=r\) 上的 \(z^{-2}\) 模为 \(r^{-2}\)，长度为 \(2\pi r\)，粗估计随 \(r\downarrow0\) 增大；实际积分却恒为零。这表明长度估计给上界，不自动反映不同相位的抵消。反之，若一段长为 \(\ell_n\) 的曲线上误差上界为 \(\varepsilon_n\)，仅 \(\varepsilon_n\rightarrow0\) 也未必使积分误差趋于0，还需 \(\ell_n\varepsilon_n\rightarrow0\)。
-
-计算路径积分时，先检查被积式有没有单值原函数，常比直接代入参数更有效。例如沿任意从 \(0\) 到 \(1+\mathrm{i}\) 的分段光滑曲线，\(z e^{z^2}\) 的积分均为 \((e^{2\mathrm{i}}-1)/2\)。路径形状可以很复杂，但原函数 \(e^{z^2}/2\) 已把形状信息消去。相反，\(\overline z\) 的积分不能这样处理。在以 \(0,1,1+\mathrm{i},\mathrm{i}\) 为顶点的正向方形上，逐边参数化给积分 \(2\mathrm{i}\)。这个数来自区域的面积，说明仅有连续性与光滑性都不足以保证闭路积分为零。
+沿同一路段往返则总会抵消。例如从 \(0\) 沿实轴走到 \(1\) 再返回，两个积分之和为零，不论连续的被积函数是否全纯。因而某一条闭路积分为零也不能反推全纯性。有限拼接的尖角不产生额外项，每一段的端点只负责连接后续行程。
 
 \ProseParagraphBreak
-参数方向也必须与被积式分开判断。把同一曲线反向走一遍，积分变号；把参数换成一个严格递增的分段光滑参数，积分不变。若参数曲线将某段往返走过，去程与回程相消。以后把区域切开时出现的两条切口边，正是利用这条相消规则。边界上的点值无需处处有导数；分段光滑条件只要求每段参数有连续导数，使积分能够逐段定义。尖角不产生额外项。
+
+长度估计最常用于控制误差。若 \(f_m\) 在一条固定曲线的像上一致趋于 \(f\)，则
+\[
+ \left|\int_\gamma(f_m-f)(z)\,\mathrm{d}z\right|
+ \le L(\gamma)\cdot\max_{z\in\gamma}|f_m(z)-f(z)|
+ \longrightarrow0.
+\]
+这正是第一章逐项积分时所用的控制。若曲线也随 \(m\) 改变，就要同时注意长度：误差上界 \(\varepsilon_m\to0\) 只有再配合 \(L(\gamma_m)\varepsilon_m\to0\)，才能保证相应积分误差趋零。另一方面，估计不一定捕捉到抵消；例如 \(z^{-2}\) 沿 \(|z|=r\) 的积分实际为零，长度估计却只给出 \(2\pi/r\)。
 
 \subsection{原函数}
 \label{b3:subsec:020103}
 
+若被积函数恰好是一个单值全纯函数的导数，就能把各段积分写成端点差。第一章已把满足 \(F'=f\) 的全纯函数 \(F\) 称为 \(f\) 的原函数；这里强调原函数与整个被积路径必须处于同一个定义域。
+
+\Needspace{6\baselineskip}
 \begin{proposition}[原函数的端点公式]\label{b3:prop:02-primitive-endpoints}
-设 \(U\) 为开集，\(F\) 在 \(U\) 上全纯，\(F'=f\)。若 \(\gamma\) 是 \(U\) 内由 \(p\) 到 \(q\) 的分段光滑曲线，则
+设 \(U\subseteq\mathbb C\) 为开集，\(F:U\to\mathbb C\) 全纯，并令 \(f=F'\)。若 \(\gamma:[a,b]\to U\) 是分段光滑曲线，\(p=\gamma(a)\)、\(q=\gamma(b)\)，则
 \[
  \int_\gamma f(z)\,\mathrm{d}z=F(q)-F(p).
 \]
 \end{proposition}
 \begin{proof}
-全纯函数的导数连续已由\cref{b3:thm:01-holomorphic-analytic}得到。在每个光滑参数区间上，链式法则给出 \((F\circ\gamma)'=f(\gamma)\cdot\gamma'\)。分别对实部和虚部应用微积分基本定理，再把有限个区间的端点差相加，中间端点相消。
+由\cref{b3:thm:01-holomorphic-analytic}，全纯函数的导数连续。对每个光滑参数区间，链式法则给出
+\((F\circ\gamma)'(t)=f(\gamma(t))\cdot\gamma'(t)\)。分别对实部和虚部应用微积分基本定理，得到该段的端点差；再把有限个区间的等式相加，所有中间端点都成对消去。
 \end{proof}
-例如 \(z^n\) 在 \(\mathbb C\) 上有原函数 \(z^{n+1}/(n+1)\)，其中 \(n\ge0\)。函数 \(1/z\) 在任何避开零点的小圆盘上都有对数原函数，却在整个 \(\mathbb C\setminus\{0\}\) 上没有原函数：单位圆上的积分为 \(2\pi\mathrm{i}\)，违反端点公式。局部存在与全局存在的差别，来自闭曲线能否收缩而不是函数是否局部光滑。
+
+例如，对整数 \(n\ge0\)，\(z^n\) 在 \(\mathbb C\) 上有原函数 \(z^{n+1}/(n+1)\)。稍复杂的例子是 \(ze^{z^2}\)：因为
+\[
+ \left(\frac12e^{z^2}\right)'=ze^{z^2},
+\]
+它沿任意从 \(0\) 到 \(1+\mathrm{i}\) 的分段光滑路径积分，都等于 \((e^{2\mathrm{i}}-1)/2\)。无论路径绕行或自交多少次，一个定义在全平面的原函数已经把这些差别消去。
 
 \ProseParagraphBreak
 
-为判断路径独立性，可以先在一个具体区域计算闭路周期。例如在右半平面 \(\operatorname{Re}z>0\)，第一章的对数主值满足 \((\operatorname{Log}z)'=1/z\)，所以由 \(p\) 到 \(q\) 的每条路径都给 \(\operatorname{Log}q-\operatorname{Log}p\)。在去心平面，沿从1到 \(-1\) 的上半圆与下半圆积分分别为 \(\pi\mathrm{i}\) 和 \(-\pi\mathrm{i}\)；拼合得到一个单位圆周期。两个端点相同而积分不同，正是不存在单值原函数的具体表现。
+函数 \(1/z\) 说明“局部原函数”与“整个区域上的原函数”有本质区别。在右半平面 \(\operatorname{Re}z>0\)，第一章的对数主值满足 \((\operatorname{Log}z)'=1/z\)，所以由 \(p\) 到 \(q\) 的每条路径都给 \(\operatorname{Log}q-\operatorname{Log}p\)。但在去心平面，从 \(1\) 到 \(-1\) 的上半圆与下半圆分别取
+\[
+ \gamma_+(t)=e^{\mathrm{i}t},
+ \quad \gamma_-(t)=e^{-\mathrm{i}t},
+ \quad 0\le t\le\pi,
+\]
+代入后被积式分别为 \(\mathrm{i}\) 与 \(-\mathrm{i}\)，积分便为 \(\pi\mathrm{i}\) 与 \(-\pi\mathrm{i}\)。所以 \(1/z\) 不可能在整个去心平面有单值原函数。这也与完整单位圆上非零的积分相符。
 
 \ProseParagraphBreak
 
-若定义域不连通，原函数在每个连通分支上可以任意加一个常数，不存在跨分支的端点公式。连通分支在平面开集中仍然是开集；构造原函数时固定的起点应逐分支选择。后文说“原函数相差常数”时，常数的作用域也必须是一个区域，而不是任意开集。
+对同一区域上的两个原函数 \(F_1,F_2\)，有 \((F_1-F_2)'=0\)，由\cref{b3:prop:01-real-valued-holomorphic}中的导数恒零结论，它们相差常数。若开集不连通，常数可以随连通分支改变。下一节要解决的是存在性：怎样从每个小圆盘的原函数出发，证明沿不同路径积累出的值相容。

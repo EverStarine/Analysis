@@ -2,81 +2,331 @@
 \section{乘积表示}
 \label{b3:sec:2103}
 
-上一节确定了全部极点，但还没有排除复零点。有限乘积的极限既给出零点信息，也解释 Euler 常数为什么出现在 Gamma 函数中。
+递推延拓确定了全部极点，却尚未排除非实零点。
+本节先把 Euler 积分写成有限有理函数的局部一致极限，
+再独立证明这些有限函数的倒数收敛为整函数。
+两个极限的乘积等于一，才给出无零点性。
+有限乘积中不可和的一次项同时解释 Euler 常数的来源。
 
-\subsection{Weierstrass 乘积}
+\subsection{Euler 极限}
 \label{b3:subsec:210301}
 
-\begin{lemma}[Euler 极限]\label{b3:lem:21-euler-limit}
-在 \(\operatorname{Re}z>0\) 上局部一致地有
+先固定整数 \(N\ge0\) 和 \(\operatorname{Re}z>0\)，考察
 \[
-\Gamma(z)=\lim_{N\to\infty}\frac{N!N^z}{z(z+1)\cdots(z+N)}.
+ I_N(z)=\int_0^1t^{z-1}(1-t)^N\,\mathrm dt.
+\]
+这里 \(t^{z-1}\) 用正实数的实对数定义。
+当 \(N\ge1\) 时，对 \(t^z/z\) 分部积分：在零端
+\(t^z\to0\)，在一端 \((1-t)^N\to0\)，故
+\[
+ I_N(z)=\frac Nz I_{N-1}(z+1).
+\]
+从 \(I_0(z)=1/z\) 反复递推，得到
+\[
+ I_N(z)=\frac{N!}{z(z+1)\cdots(z+N)}.
+\]
+这一步只涉及有限次积分，不需要预先使用 Beta--Gamma 关系。
+
+\Needspace{6\baselineskip}
+\begin{lemma}[Euler 极限]\label{b3:lem:21-euler-limit}
+设 \(\operatorname{Re}z>0\)，并对整数 \(N\ge1\) 定义
+\[
+ A_N(z)=\frac{N!N^z}{z(z+1)\cdots(z+N)},\quad
+ N^z=\exp(z\log N).
+\]
+则 \(A_N\to\Gamma\) 在右半平面局部一致收敛。
+更具体地，对任意 \(0<a\le b<\infty\)，存在仅依赖 \(a,b\) 的常数
+\(C_{a,b}\)，使
+\[
+ |A_N(z)-\Gamma(z)|\le\frac{C_{a,b}}N
+ \quad(a\le\operatorname{Re}z\le b,\ N\ge1).
 \]
 \end{lemma}
 \begin{proof}
-连续分部积分给
-\(\int_0^1 t^{z-1}(1-t)^N\,\mathrm{d}t=N!/[z(z+1)\cdots(z+N)]\)。乘以 \(N^z\)，换元 \(u=Nt\)，所得积分为
-\(\int_0^N u^{z-1}(1-u/N)^N\,\mathrm{d}u\)。在 \(0<u<N\) 上有 \((1-u/N)^N\le e^{-u}\)，而它逐点趋于 \(e^{-u}\)。对紧集 \(a\le\operatorname{Re}z\le b\)，用 \((u^{a-1}+u^{b-1})e^{-u}\) 控制。将积分分成固定紧区间与共同小尾部，即得对 \(z\) 的局部一致收敛。
+在前述积分中乘以 \(N^z\)，再令 \(u=Nt\)，可得
+\[
+ A_N(z)=\int_0^N u^{z-1}(1-u/N)^N\,\mathrm du.
+\]
+记 \(K_N(u)=(1-u/N)^N\) 当 \(0<u<N\)，在 \(u\ge N\) 时取零。
+不等式 \(\log(1-v)\le-v\) 给 \(0\le K_N(u)\le e^{-u}\)，
+而对固定 \(u>0\)，\(K_N(u)\to e^{-u}\)。
+
+为取得误差，在 \(0<u\le N/2\) 上写
+\[
+ d_N(u)=-N\log(1-u/N)-u
+       =N\sum_{k=2}^\infty\frac{(u/N)^k}{k}.
+\]
+它满足
+\[
+ 0\le d_N(u)\le\frac{u^2}{2N(1-u/N)}\le\frac{u^2}{N}.
+\]
+因此
+\[
+ 0\le e^{-u}-K_N(u)
+ =e^{-u}(1-e^{-d_N(u)})\le\frac{u^2}{N}e^{-u}.
+\]
+在 \(u>N/2\) 上则用
+\(e^{-u}-K_N(u)\le e^{-u}\le(2u/N)e^{-u}\)。
+又当 \(a\le\operatorname{Re}z\le b\) 时，
+\[
+ |u^{z-1}|\le u^{a-1}+u^{b-1}.
+\]
+把两个区间的估计分别积分，再都放大到 \((0,\infty)\)，得到
+\[
+ |A_N(z)-\Gamma(z)|
+ \le\frac1N\int_0^\infty
+ (u^2+2u)(u^{a-1}+u^{b-1})e^{-u}\,\mathrm du.
+\]
+因 \(a>0\)，右端积分有限，给出所需共同常数。
+特别地，对右半平面的每个紧集收敛一致。
 \end{proof}
-这个证明同时保留复参数与一致性，避免只在实数处建立公式后未经说明就逐项微分。有限分部积分使用的端点条件来自 \(\operatorname{Re}z>0\)。
+
+估计在复参数的整个有限实部带上成立，因而当然足以在内部小圆盘上
+使用 Cauchy 公式。各阶导数也局部一致收敛，不能只把逐点的实参数极限
+直接逐次求导。后面建立倒数乘积时，还将同时使用这一极限和有限乘积的准确恒等式。
 
 \subsection{Euler 常数}
 \label{b3:subsec:210302}
 
-记 \(H_N=\sum_{n=1}^N1/n\)。序列 \(H_N-\log N\) 单调递减，因为
-\(1/(N+1)\le\log(1+1/N)\)，并由积分比较有下界零，故极限存在，记为\term[euler-changshu]{Euler 常数}[Euler constant] \(\gamma\)。把有限乘积写为
+记 \(H_N=\sum_{n=1}^N1/n\)、\(H_0=0\)。
+调和和与对数的差有一个有限极限，
+称为\term[euler-changshu]{Euler 常数}[Euler constant]，记为 \(\gamma\)。
+\symidx{\(\gamma\)：Euler 常数}
+下面同时证明极限存在及一个不需要渐近求和公式的误差界。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[Euler 常数与截断误差]\label{b3:prop:21-euler-constant}
+序列 \(\gamma_N=H_N-\log N\)、\(N\ge1\)，单调递减并收敛到
+一个常数 \(0<\gamma<1\)。对每个 \(N\ge1\)，
 \[
-\frac{z(z+1)\cdots(z+N)}{N!N^z}
-=z\exp\bigl(z(H_N-\log N)\bigr)
-\prod_{n=1}^N(1+z/n)e^{-z/n}.
+ \frac1{2(N+1)}\le\gamma_N-\gamma\le\frac1{2N}.
 \]
-紧集上，尾部对数 \(\log(1+z/n)-z/n=O_K(n^{-2})\) 一致可和；前面有限个因子无需取对数。于是右侧在全平面局部一致收敛为整函数。
+特别地，
+\[
+ \gamma_N=\gamma+\frac1{2N}+O(N^{-2}).
+\]
+\end{proposition}
+\begin{proof}
+相邻差为
+\[
+ \gamma_N-\gamma_{N+1}
+ =\log(1+1/N)-\frac1{N+1}>0.
+\]
+积分比较又给 \(H_N>\log(N+1)\)，所以该序列有下界零，存在极限。
+为确定它严格为正，注意
+\(H_N-\log(N+1)\) 单调递增，且第一项为 \(1-\log2>0\)；
+它与 \(\gamma_N\) 的差趋于零，故 \(\gamma\ge1-\log2>0\)。
+严格递减还给 \(\gamma<\gamma_1=1\)。
+
+对每个 \(n\ge1\)，相邻差可写成
+\[
+ d_n=\int_n^{n+1}\left(\frac1t-\frac1{n+1}\right)\,\mathrm dt
+    =\int_n^{n+1}\frac{n+1-t}{t(n+1)}\,\mathrm dt.
+\]
+于是
+\[
+ \frac1{2(n+1)^2}\le d_n\le\frac1{2n(n+1)}.
+\]
+把 \(d_n\) 从 \(n=N\) 求和到无穷，左端用递减函数的积分比较，
+右端用裂项求和，得到
+\[
+ \gamma_N-\gamma=\sum_{n=N}^\infty d_n
+ \ge\frac12\int_{N+1}^\infty t^{-2}\,\mathrm dt
+ =\frac1{2(N+1)},\quad
+ \gamma_N-\gamma\le\frac1{2N}.
+\]
+上下界之差为 \(1/(2N(N+1))\)，也就给出最后的渐近式。
+\end{proof}
+
+Euler 有理函数的倒数现在可以准确地写成
+\begin{equation}\label{b3:eq:21-finite-reciprocal-product}
+ \frac1{A_N(z)}
+ =\frac{z(z+1)\cdots(z+N)}{N!N^z}
+ =z e^{\gamma_Nz}\prod_{n=1}^N(1+z/n)e^{-z/n}.
+\end{equation}
+右端是全平面整函数；在右半平面才直接把它视为 \(A_N\) 的倒数。
+每个因子 \((1+z/n)e^{-z/n}=E_1(-z/n)\) 都已扣掉一次项，
+而有限扣除总量与 \(N^z\) 的差正好由 \(\gamma_N\) 记录。
+
+\ProseParagraphBreak
+如果只取 \(\prod_n(1+z/n)\)，对固定正实 \(z\) 有
+\(\log(1+z/n)=z/n+O(n^{-2})\)，其对数和发散。
+扣掉 \(z/n\) 才留下可和尾部。
+因子 \(e^{\gamma z}\) 则由 Euler 积分的规范化确定；
+只给出相同零点，不能决定这个无零点的指数因子。
 
 \subsection{\texorpdfstring{\(1/\Gamma\)}{1/\AnalysisPdfGamma} 作为整函数}
 \label{b3:subsec:210303}
 
+\Needspace{6\baselineskip}
 \begin{theorem}[Gamma 函数的 Weierstrass 乘积]\label{b3:thm:21-product}
-Gamma 函数没有零点，并且
-\[
-\frac1{\Gamma(z)}=ze^{\gamma z}\prod_{n=1}^\infty(1+z/n)e^{-z/n}.
-\]
-右端整函数的零点恰为非正整数，且均为单零点。
+令 \(\Gamma\) 为 Euler 积分经递推得到的全平面亚纯函数，
+\(\gamma=\lim_{N\to\infty}(H_N-\log N)\)。
+则 \(\Gamma\) 在所有非极点处均不为零，且有整函数恒等式
+\begin{equation}\label{b3:eq:21-gamma-product}
+ \frac1{\Gamma(z)}
+ =z e^{\gamma z}\prod_{n=1}^\infty(1+z/n)e^{-z/n}.
+\end{equation}
+乘积在全平面局部一致收敛。右端的零点恰为
+\(0,-1,-2,\ldots\)，全部为单零点；
+左端在 \(\Gamma\) 的极点处按可去延拓解释。
 \end{theorem}
 \begin{proof}
-设右端为 \(P(z)\)。Euler 极限与相应的有限倒数乘积在右半平面都局部一致收敛，它们的乘积恒为一，取极限得 \(P\Gamma=1\)，不必事先假设 \(\Gamma\ne0\)。尾部指数的和在避开有限个头部零点的邻域全纯，因此尾乘积不为零；全部零点正是所列的线性因子零点，重数为一。亚纯恒等定理把 \(P\Gamma=1\) 延拓到全平面，给出结论。
+先独立构造右端，记为 \(P\)。由于 \(\sum_n n^{-2}<\infty\)，
+\cref{b3:prop:20-fixed-genus-product}给
+\(\prod_n E_1(-z/n)\) 的局部一致收敛。
+有限零因子与非消失的尾部分离，说明其零点恰为负整数且都是单零点。
+前面的 \(z\) 增加原点的一个单零点，\(e^{\gamma z}\) 不增添零点，
+所以 \(P\) 为具有所述零点的整函数。
+
+由 \(\gamma_N\to\gamma\)，
+\eqref{b3:eq:21-finite-reciprocal-product}右端局部一致趋于 \(P\)。
+另一方面，\cref{b3:lem:21-euler-limit}给 \(A_N\to\Gamma\)
+在右半平面局部一致成立。有限的两个表达式的乘积恒为一，
+因此取极限得到 \(P\Gamma=1\)，没有预先假设 \(\Gamma\ne0\)。
+再由亚纯函数的恒等定理，这个恒等式在全平面成立。
+于是 \(\Gamma\) 没有零点，其倒数延拓为已经构造出的 \(P\)。
 \end{proof}
-对数导数在避开极点的紧集可逐项求导。若记 \(\psi_0(z)=\Gamma'(z)/\Gamma(z)\)，则
+
+还可以在固定圆盘上保留有限乘积的误差。
+令 \(P_N\) 为\eqref{b3:eq:21-finite-reciprocal-product}右端。
+当 \(N>2R\) 时，在 \(|z|\le R\) 上有
 \[
-\psi_0(z)=-\gamma-\frac1z+\sum_{n=1}^\infty\left(\frac1n-\frac1{n+z}\right).
+ P(z)=P_N(z)e^{D_N(z)},\quad
+ D_N(z)=(\gamma-\gamma_N)z+
+       \sum_{n>N}\bigl(\log(1+z/n)-z/n\bigr).
 \]
-这里用下标避免与后文的素数计数函数 \(\psi(x)\) 混淆。代入 \(z=1\) 得 \(\Gamma'(1)=-\gamma\)，再用递推得 \(\psi_0(n)=H_{n-1}-\gamma\)。整数点的导数遂由同一个调和和描述。
+尾部对数均取在零点值为零的小圆分支。
+由前一命题和初等因子的估计，
+\[
+ \sup_{|z|\le R}|D_N(z)|
+ \le\frac{R}{2N}+2R^2\sum_{n>N}n^{-2}
+ \le\frac{R/2+2R^2}{N}.
+\]
+因此 \(P-P_N=O_R(N^{-1})\) 一致成立；
+这里用到局部一致收敛已经保证 \(P_N\) 在该圆盘上一致有界。
+表达式 \(P=P_Ne^{D_N}\) 在头部零点处也成立，不需在那里相除。
 
 \ProseParagraphBreak
+乘积还给出对数导数。记
+\[
+ \psi_0(z)\coloneqq\frac{\Gamma'(z)}{\Gamma(z)},
+\]
+\symidx{\(\psi_0(z)\)：Gamma 函数的对数导数}
+其中下标用来区别后文的素数计数函数 \(\psi\)。
+在本节已经证明无零点性之后，这个商的极点只来自 \(\Gamma\) 的极点。
 
-在零点附近展开对数乘积，可以得到 Gamma 的局部 Taylor 系数。对 \(|z|<1\)，\(\Gamma(1+z)\) 无零点且在0点等于一，取在那里为零的对数。利用 \(\Gamma(1+z)=z\Gamma(z)\)，有
+\Needspace{6\baselineskip}
+\begin{proposition}[Gamma 的对数导数]\label{b3:prop:21-log-derivative}
+令 \(\psi_0=\Gamma'/\Gamma\)，并令
+\(z\in\mathbb C\setminus\{0,-1,-2,\ldots\}\)。则
 \[
- \log\Gamma(1+z)=-\gamma z+
-   \sum_{k=2}^\infty\frac{(-1)^k}{k}
-       \left(\sum_{n=1}^\infty\frac1{n^k}\right)z^k.
+ \psi_0(z)=-\gamma-\frac1z+
+       \sum_{n=1}^\infty\left(\frac1n-\frac1{n+z}\right).
 \]
-证明中的换序来自 \(|z|\le r<1\) 时
-\(\sum_n\sum_{k\ge2}|z/n|^k/k\le C_r\sum_n n^{-2}\)。内层数列以后记为 \(\zeta(k)\)，当前只需把它看成收敛的正项数列。常数项与一次项已经分别由 \(\Gamma(1)=1\) 和 Euler 常数决定，二次项才开始包含这些幂和。
-\ProseParagraphBreak
-特别地，\(\Gamma''(1)=\gamma^2+\sum n^{-2}\)。与积分微分公式比较，就得到
+对每个整数 \(j\ge1\)，还有
 \[
- \int_0^\infty e^{-t}\log t\,\mathrm{d}t=-\gamma,
- \qquad
- \int_0^\infty e^{-t}(\log t)^2\,\mathrm{d}t
- =\gamma^2+\sum_{n\ge1}n^{-2}.
+ \psi_0^{(j)}(z)=(-1)^{j+1}j!
+        \sum_{n=0}^\infty(n+z)^{-j-1}.
 \]
-第二式减去第一式的平方，正好是前面概率解释中 \(x=1\) 的方差。乘积的系数、参数积分的矩和凸性的二阶导数在同一恒等式中相遇。
-\ProseParagraphBreak
-对正实 \(x\)，对数导数还给出
+这些级数在避开非正整数的紧集上正规收敛。
+此外，
 \[
- \psi_0'(x)=\sum_{n=0}^\infty\frac1{(n+x)^2},\qquad
- \psi_0^{(j)}(x)=(-1)^{j+1}j!\sum_{n=0}^\infty(n+x)^{-j-1}\quad(j\ge1).
+ \psi_0(z+1)=\psi_0(z)+\frac1z,\quad
+ \Gamma'(1)=-\gamma,\quad
+ \psi_0(n)=H_{n-1}-\gamma\quad(n\ge1).
 \]
-这些级数在任何 \(x\ge a>0\) 的紧区间上一致可微，因而 \(\psi_0'\) 正，后续导数交替符号。对数凸性的严格性由此再次可见。用递减函数的积分比较还有
-\(1/x\le\psi_0'(x)\le1/x+1/x^2\)，它量化了大参数时曲率逐渐减小的速度。
+递推式在两边均有限处成立，也可视为亚纯恒等式。
+\end{proposition}
+\begin{proof}
+在避开乘积零点的紧集上，
+\cref{b3:prop:20-product-log-derivative}允许对
+\eqref{b3:eq:21-gamma-product}取对数导数，得到第一式。
+具体地，尾项
+\(1/n-1/(n+z)=z/(n(n+z))\) 为 \(O_K(n^{-2})\)；
+所以相减后的级数有共同可和控制，不能把两个调和级数分别相加。
+在稍大的无极点紧邻域上用 Cauchy 公式逐项求导，
+即可得到各阶级数；它们的尾项也由相应的可和幂级数控制。
+
+对 \(\Gamma(z+1)=z\Gamma(z)\) 求对数导数给出递推。
+在 \(z=1\) 处，第一式中的和裂项为一，故 \(\psi_0(1)=-\gamma\)；
+又 \(\Gamma(1)=1\)，所以 \(\Gamma'(1)=-\gamma\)。
+反复使用递推即得正整数处的值。
+\end{proof}
+
+现在可以把上一节留下的有限部分写成显式常数。
+\cref{b3:prop:21-finite-part}中的 \(\Gamma'(1)\) 已被识别，
+因此对每个整数 \(m\ge0\)，当复数 \(\varepsilon\to0\) 时，
+\begin{equation}\label{b3:eq:21-pole-finite-part}
+ \Gamma(-m+\varepsilon)
+ =\frac{(-1)^m}{m!}
+   \left(\frac1\varepsilon+H_m-\gamma+O(\varepsilon)\right).
+\end{equation}
+原点的常数项为 \(-\gamma\)，其他极点再由有限调和和修正。
+这一步只是在已证明的局部延拓公式中代入常数，
+不会把下一节的反射或 Stirling 公式放到延拓证明之前。
+
 \ProseParagraphBreak
-有限乘积中的指数修正也有必要性。若直接写 \(\prod_{n\ge1}(1+z/n)\)，对正实 \(z\) 其对数含发散的 \(z\sum1/n\)，因而不会趋于有限非零值。乘 \(e^{-z/n}\) 消去这一不可和的一次项，剩下二次误差才可和；前面的 \(e^{\gamma z}\) 则记录有限乘积正规化的极限。把该因子删去会保留零点，却破坏与 Euler 积分的对应及递推常数。
+在原点附近，乘积的对数还能给出全部局部系数。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[原点附近的对数展开]\label{b3:prop:21-local-log-series}
+对整数 \(k\ge2\)，令 \(S_k=\sum_{n=1}^\infty n^{-k}\)。
+在 \(|z|<1\) 上，取满足 \(\log\Gamma(1)=0\) 的全纯对数，则
+\begin{equation}\label{b3:eq:21-local-log-series}
+ \log\Gamma(1+z)
+ =-\gamma z+\sum_{k=2}^\infty\frac{(-1)^k}{k}S_kz^k.
+\end{equation}
+该级数在每个闭子圆盘上绝对一致收敛。特别地，
+\[
+ \Gamma(1+z)=1-\gamma z+
+       \frac{\gamma^2+S_2}{2}z^2+O(z^3),\quad
+ \Gamma''(1)=\gamma^2+S_2.
+\]
+\end{proposition}
+\begin{proof}
+函数 \(\Gamma(1+z)\) 在单位圆盘全纯无零点，在原点取值一，
+故有唯一在原点值为零的全纯对数。
+由递推与乘积式，
+\[
+ \frac1{\Gamma(1+z)}
+ =e^{\gamma z}\prod_{n=1}^\infty(1+z/n)e^{-z/n}.
+\]
+在 \(|z|\le r<1\) 上，
+\[
+ \sum_{n=1}^\infty\sum_{k=2}^\infty\frac{|z/n|^k}{k}
+ \le\frac{r^2}{1-r}\sum_{n=1}^\infty n^{-2}<\infty.
+\]
+因此对各因子用 \(\log(1+w)\) 的幂级数并交换求和次序合法。
+取负号后即得\eqref{b3:eq:21-local-log-series}。
+指数化到二次项时，一次项的平方还贡献 \(\gamma^2z^2/2\)，
+从而得到后两式。
+\end{proof}
+
+各个 \(S_k\) 此时只需要作为收敛幂和使用，不依赖后文的
+\(\zeta\) 函数理论。
+从上式和递推还可读出
+\[
+ \Gamma(z)=\frac1z-\gamma+\frac{\gamma^2+S_2}{2}z+O(z^2),
+\]
+这比只知道留数多给出两个局部系数。
+结合\secref{b3:sec:2101}的积分求导，有
+\[
+ \int_0^\infty e^{-t}\log t\,\mathrm dt=-\gamma,\quad
+ \int_0^\infty e^{-t}(\log t)^2\,\mathrm dt=\gamma^2+S_2.
+\]
+第二个积分与第一个积分平方之差为 \(S_2>0\)，
+与正实轴上严格对数凸性的积分解释相符。
+
+\ProseParagraphBreak
+对 \(x>0\)，对数导数级数也给
+\[
+ \psi_0'(x)=\sum_{n=0}^\infty(n+x)^{-2}>0,\quad
+ (-1)^{j+1}\psi_0^{(j)}(x)>0\quad(j\ge1).
+\]
+对递减函数 \(t\mapsto(t+x)^{-2}\) 作积分比较，得到
+\[
+ \frac1x\le\psi_0'(x)\le\frac1x+\frac1{x^2}.
+\]
+这些估计定量说明大参数时 \(\log\Gamma\) 的曲率逐渐减小；
+它们来自已证的正规级数，不需要把尚未建立的渐近公式逐次求导。

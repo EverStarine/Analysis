@@ -1,0 +1,417 @@
+% !TeX root = ../../Book1.tex
+% 实读来源：Fremlin, Measure Theory, Vol. 2，作者在线第27章摘本
+% 274A、274H(c)、274I，及第28章285F--G。正式引文按稳定条号定位。
+% 第27章摘本 PDF 第36--37页（274A）、第43页（274H(c)）、第44页（274I）。
+% Fremlin274I经Lindeberg条件调用274G；274H(c)说明其主线不使用特征函数。
+% 以下采用本章自证的特征函数路线。
+% Bass, Real Analysis for Graduate Students, v5，印刷第305--307页，
+% 仅作教学背景。复数幂极限与下述无限方差模型均在正文给出完整推导。
+\section{独立同分布变量的中心极限定理}
+\label{b1:sec:3007}
+
+设独立同分布变量的均值为 \(m\)，前两节的大数律说明
+\((X_1+\cdots+X_n)/n\) 趋于 \(m\)。
+这个结论没有描述平均误差的形状。
+当方差为有限正数 \(\sigma^2\) 时，独立和的方差是 \(n\sigma^2\)，
+因此 \(\sigma\sqrt n\) 是使中心化和保持单位方差的尺度。
+本节证明：在这个尺度下，极限分布只保留均值和方差信息，
+而与原分布是离散还是连续无关。
+
+\subsection{有限方差与特征函数的局部展开}
+\label{b1:subsec:300701}
+
+独立和的特征函数是各项特征函数的乘积。
+标准化又把参数 \(t\) 缩成 \(t/\sqrt n\)，
+所以只需知道原特征函数在零点附近的二阶行为。
+关键是用二阶矩控制余项，不能在 Taylor 展开中暗中加入三阶矩条件。
+
+\begin{proposition}\label{b1:prop:30-characteristic-second-order}
+设 \(X\) 是概率空间 \((\Omega,\mathcal F,\mathbb P)\) 上的实随机变量，
+且 \(\mathbb E(X^2)<\infty\)。
+则特征函数 \(\varphi_X\) 关于实参数属于 \(C^2(\mathbb R;\mathbb C)\)，并满足
+\[
+ \varphi_X'(t)=i\mathbb E(X\cdot e^{itX}),
+ \quad
+ \varphi_X''(t)=-\mathbb E(X^2\cdot e^{itX}).
+\]
+当 \(t\to0\) 时，有
+\begin{equation}\label{b1:eq:30-characteristic-expansion}
+ \varphi_X(t)
+ =1+it\mathbb EX-\frac{t^2}{2}\mathbb E(X^2)+o(t^2).
+\end{equation}
+特别地，若 \(\mathbb EX=0\)、\(\operatorname{Var}(X)=1\)，则
+\(\varphi_X(t)=1-t^2/2+o(t^2)\)。
+\end{proposition}
+\begin{proof}
+由 Cauchy--Schwarz 不等式及 \(\mathbb P(\Omega)=1\)，
+\(\mathbb E|X|\leq(\mathbb E(X^2))^{1/2}<\infty\)。
+对 \(h\ne0\)，有
+\[
+ \left|\frac{e^{i(t+h)X}-e^{itX}}{h}\right|\leq|X|.
+\]
+差商逐点趋于 \(iX\cdot e^{itX}\)，故控制收敛给出一阶导数公式。
+再对该公式求差商，其被积函数的模不超过 \(X^2\)，
+控制收敛给出二阶导数公式。
+当 \(t_j\to t\) 时，两个导数公式中的被积函数分别由
+\(|X|\)、\(X^2\) 控制，故两个导数也都连续。
+
+为了明确二阶余项所需的控制，对每个实数 \(u\)，两次使用微积分基本定理可得
+\[
+ e^{iu}
+ =1+iu-u^2\int_0^1(1-s)e^{isu}\,\mathrm ds
+ =1+iu-\frac{u^2}{2}+u^2\cdot r(u),
+\]
+其中
+\[
+ r(u)=-\int_0^1(1-s)(e^{isu}-1)\,\mathrm ds.
+\]
+这里 \(r(0)=0\)，\(|r(u)|\leq1\)，且 \(r(u)\to0\) 当 \(u\to0\)。
+这些性质分别来自定义、\(|e^{isu}-1|\leq2\) 及区间上的控制收敛。
+这个积分余项对正、负的 \(u\) 都成立，因为积分变量始终是 \(s\in[0,1]\)。
+
+将 \(u=tX\) 代入并取期望，得到
+\[
+ \varphi_X(t)
+ =1+it\mathbb EX-\frac{t^2}{2}\mathbb E(X^2)
+       +t^2\mathbb E\bigl(X^2\cdot r(tX)\bigr).
+\]
+由于 \(X\) 为有限实值随机变量，\(r(tX)\to0\) 逐点成立；
+而
+\[
+ |X^2\cdot r(tX)|\leq X^2
+\]
+给出与 \(t\) 无关的可积控制。
+因此最后一个期望趋于零，证明\eqref{b1:eq:30-characteristic-expansion}。
+在均值零、方差一的情形，\(\mathbb E(X^2)=1\)，即得最后的展开。
+\end{proof}
+
+若改用余项的三次幂上界，再对 \(X\) 积分，就会无端要求
+\(\mathbb E|X|^3<\infty\)。
+上面的证明保留了有界函数 \(r\)，从而只需二阶矩。
+这也是后面中心极限定理恰好适用于有限方差变量的原因。
+
+\subsection{标准化和与 Lindeberg–Lévy 定理}
+\label{b1:subsec:300702}
+
+从单个特征函数的局部展开到独立和，还需要一个复数幂的极限。
+虽然最终极限是正实数，原特征函数的值一般是复数；
+下面直接比较整数次幂和指数，避免选择复对数的分支。
+
+\begin{lemma}\label{b1:lem:30-complex-power-limit}
+设 \((z_n)_{n\geq1}\) 是复数列，\(z\in\mathbb C\)。
+若 \(n(z_n-1)\to z\)，则 \(z_n^n\to e^z\)。
+\end{lemma}
+\begin{proof}
+记 \(w_n=z_n-1\)，则 \(n w_n\to z\)，所以 \(n|w_n|\) 有界。
+这里复指数可以直接由绝对收敛级数
+\(e^w=\sum_{k=0}^\infty w^k/k!\) 定义。
+其乘法公式由绝对收敛级数的乘积和二项式公式得到，
+因而 \((e^w)^n=e^{nw}\)。
+级数还给出
+\[
+ |e^w-1-w|
+ \leq\sum_{k=2}^\infty\frac{|w|^k}{k!}
+ \leq\frac{|w|^2}{2}\cdot e^{|w|},
+ \quad
+ |1+w|\leq e^{|w|},\quad |e^w|\leq e^{|w|}.
+\]
+对 \(a=1+w_n\)、\(b=e^{w_n}\) 使用
+\(a^n-b^n=(a-b)\sum_{j=0}^{n-1}a^{n-1-j}b^j\)，得到
+\[
+ |(1+w_n)^n-e^{n w_n}|
+ \leq\frac n2\cdot|w_n|^2\cdot e^{n|w_n|}.
+\]
+其中 \(e^{n|w_n|}\) 有界，且
+\[
+ n|w_n|^2=\frac{(n|w_n|)^2}{n}\longrightarrow0.
+\]
+另一方面，指数函数的连续性给出 \(e^{n w_n}\to e^z\)，故结论成立。
+\end{proof}
+
+下面的结果称为独立同分布变量的
+\term[zhongxin-jixian-dingli]{中心极限定理}[central limit theorem]，
+这一有限方差版本也称
+\term[lindeberg-levy-dingli]{Lindeberg--Lévy 定理}[Lindeberg--Lévy theorem]。
+其陈述可对照 Fremlin\cite[274I]{Fremlin2016Measure}；
+这里采用前一节建立的特征函数方法证明。
+
+\begin{theorem}[Lindeberg--Lévy]\label{b1:thm:30-iid-clt}
+设 \((X_k)_{k\geq1}\) 是概率空间
+\((\Omega,\mathcal F,\mathbb P)\) 上的独立同分布实随机变量列，且
+\[
+ \mathbb E(X_1^2)<\infty,\quad
+ m=\mathbb EX_1,\quad
+ \sigma^2=\operatorname{Var}(X_1)>0.
+\]
+令 \(S_n=\sum_{k=1}^nX_k\)，并定义
+\[
+ Z_n=\frac{S_n-nm}{\sigma\sqrt n}.
+\]
+则 \(Z_n\) 依分布收敛于 \(N(0,1)\)；等价地，对每个 \(x\in\mathbb R\)，
+\begin{equation}\label{b1:eq:30-clt-cdf}
+ \mathbb P\left(\frac{S_n-nm}{\sigma\sqrt n}\leq x\right)
+ \longrightarrow\Phi(x).
+\end{equation}
+\end{theorem}
+\begin{proof}
+令 \(Y_k=(X_k-m)/\sigma\)。
+可测函数保持独立性，且这些 \(Y_k\) 同分布，
+均满足 \(\mathbb EY_k=0\)、\(\mathbb E(Y_k^2)=1\)。
+记公共特征函数为 \(\chi\)。
+由\cref{b1:prop:30-characteristic-second-order}，
+存在在零点趋于零的函数 \(\eta\)，使
+\[
+ \chi(u)=1-\frac{u^2}{2}+u^2\cdot\eta(u).
+\]
+独立和及伸缩的特征函数公式给出
+\[
+ \varphi_{Z_n}(t)=\left(\chi(t/\sqrt n)\right)^n.
+\]
+固定 \(t\ne0\)，则
+\[
+ n\bigl(\chi(t/\sqrt n)-1\bigr)
+ =-\frac{t^2}{2}+t^2\cdot\eta(t/\sqrt n)
+ \longrightarrow-\frac{t^2}{2}.
+\]
+由复数幂极限引理，
+\(\varphi_{Z_n}(t)\to e^{-t^2/2}\)。
+对 \(t=0\)，两端恒等于一，所以点态收敛在所有实数参数上成立。
+
+由\eqref{b1:eq:30-normal-characteristic}，极限函数是
+\(N(0,1)\) 的特征函数，且在零点连续。
+\cref{b1:thm:30-levy-continuity}于是给出 \(Z_n\) 的分布弱收敛于
+\(N(0,1)\)。
+最后，\(\Phi\) 在每个实数点连续，
+故\cref{b1:prop:cdf-weak-convergence}将弱收敛化为
+\eqref{b1:eq:30-clt-cdf}。
+\end{proof}
+
+中心化消去特征函数的一阶项，平方根尺度使每个因子的二阶项为
+\(-t^2/(2n)\)，而 \(n\) 个独立因子的乘积把这一项累积成
+\(e^{-t^2/2}\)。
+高阶细节在极限中消失；在本证明中，这件事由有限二阶矩下的受控余项完成。
+
+\subsection{退化情形与具体分布模型}
+\label{b1:subsec:300703}
+
+若方差为零，就不能除以 \(\sigma\)。
+这不是另一种波动分布，而是根本没有随机波动。
+对独立同分布列，若
+\(\operatorname{Var}(X_1)=\mathbb E((X_1-m)^2)=0\)，
+则对每个 \(k\)，都有 \(X_k=m\) 几乎必然。
+这些概率一事件的可数交仍有概率一，
+所以在同一个概率一集合上，所有 \(n\) 都满足 \(S_n=nm\)。
+
+\begin{corollary}\label{b1:cor:30-clt-degenerate}
+设 \((X_k)_{k\geq1}\) 是概率空间
+\((\Omega,\mathcal F,\mathbb P)\) 上的独立同分布实随机变量列，
+\(\mathbb E(X_1^2)<\infty\)，并令
+\[
+ m=\mathbb EX_1,\quad \sigma^2=\operatorname{Var}(X_1),
+ \quad S_n=\sum_{k=1}^nX_k.
+\]
+允许 \(\sigma=0\)，则
+\[
+ \frac{S_n-nm}{\sqrt n}\ \Rightarrow\ N(0,\sigma^2).
+\]
+\end{corollary}
+\begin{proof}
+若 \(\sigma=0\)，由平方积分为零及可数交的论证，
+左端对每个 \(n\) 几乎必然为零，其分布为
+\(\delta_0=N(0,0)\)。
+若 \(\sigma>0\)，记中心极限定理中的标准化和为 \(Z_n\)。
+对任意实值 \(f\in C_b(\mathbb R)\)，函数 \(u\mapsto f(\sigma u)\)
+仍有界连续，因此 \(Z_n\Rightarrow N(0,1)\) 给出
+\[
+ \mathbb E f(\sigma Z_n)
+ \longrightarrow\int_{\mathbb R}f(\sigma u)\cdot g_1(u)\,\mathrm du.
+\]
+右端正是 \(f\) 对 \(N(0,\sigma^2)\) 的积分，故得到所需弱收敛。
+\end{proof}
+
+正态分布给出一个每一步都能精确计算的模型。
+设 \(X_k\) 独立同分布于 \(N(m,\sigma^2)\)，其中 \(\sigma>0\)。
+对每个正整数 \(n\)，独立性给出
+\[
+ \varphi_{S_n}(t)
+ =\exp\left(inmt-\frac{n\sigma^2t^2}{2}\right).
+\]
+特征函数唯一性说明 \(S_n\) 的分布恰好是 \(N(nm,n\sigma^2)\)，
+所以 \((S_n-nm)/(\sigma\sqrt n)\) 对每个 \(n\) 已经服从 \(N(0,1)\)。
+中心极限定理则说明，原来的变量无需具有正态分布，
+在极限中仍会出现这个模型。
+
+\ProseParagraphBreak
+
+先看离散模型。设 \(0<p<1\)，\(X_k\) 独立且具有同一 Bernoulli 分布，
+即 \(\mathbb P(X_k=1)=p\)、\(\mathbb P(X_k=0)=1-p\)。
+令 \(K_n=\sum_{k=1}^nX_k\)，它记录前 \(n\) 次试验中取值一的次数。
+对每个 \(r=0,\ldots,n\)，指定一个恰有 \(r\) 项取值一的模式，
+其概率由独立性等于 \(p^r\cdot(1-p)^{n-r}\)。
+这样的互不相交模式共有 \(\binom nr\) 个，故
+\[
+ \mathbb P(K_n=r)=\binom nr p^r\cdot(1-p)^{n-r}.
+\]
+这个分布称为参数 \(n,p\) 的
+\term[erxiang-fenbu]{二项分布}[binomial distribution]。
+由 \(X_k^2=X_k\)，得到
+\(\mathbb EX_k=p\)、\(\operatorname{Var}(X_k)=p(1-p)\)。
+因此
+\[
+ \frac{K_n-np}{\sqrt{np(1-p)}}\ \Rightarrow\ N(0,1).
+\]
+对任意固定实数 \(a<b\)，将两个分布函数的极限相减，得到
+\[
+ \mathbb P\left(
+ a<\frac{K_n-np}{\sqrt{np(1-p)}}\leq b
+ \right)
+ \longrightarrow\Phi(b)-\Phi(a).
+\]
+离散取值并不妨碍分布趋于连续分布。
+若 \(p=0\) 或 \(p=1\)，方差为零，应使用前面的退化结论。
+
+\ProseParagraphBreak
+
+再看连续模型。设 \(a<b\)，\(X_k\) 独立且在 \([a,b]\) 上均匀分布。
+直接按密度积分可得
+\[
+ m=\frac{a+b}{2},\quad
+ \mathbb E((X_k-m)^2)
+ =\frac{1}{b-a}\int_a^b(x-m)^2\,\mathrm dx
+ =\frac{(b-a)^2}{12}.
+\]
+它的特征函数也可以显式写出：
+\[
+ \varphi_{X_k}(t)
+ =e^{itm}\cdot\frac{\sin\bigl(t(b-a)/2\bigr)}{t(b-a)/2},
+\]
+其中 \(t=0\) 处取连续值一。
+对 \(t\ne0\)，这个公式由
+\((b-a)^{-1}\int_a^b e^{itx}\,\mathrm dx\) 直接积分得到。
+中心极限定理给出
+\[
+ \frac{\sqrt{12}}{(b-a)\sqrt n}
+       \left(\sum_{k=1}^nX_k-\frac{n(a+b)}{2}\right)
+ \ \Rightarrow\ N(0,1).
+\]
+Bernoulli 与均匀分布的形状很不同，
+但中心化及单位方差归一化以后，二阶展开给出同一个极限。
+
+\subsection{方差条件、极限方式与反例}
+\label{b1:subsec:300704}
+
+中心极限定理控制有界连续测试函数的积分，
+也控制极限分布的连续性集合的概率。
+它本身没有给出有限 \(n\) 时的误差阶。
+更不能把这一结论理解为任意可测事件的概率都已经接近。
+例如在参数 \(0<p<1\) 的 Bernoulli 模型中，令
+\[
+ A_n=\left\{\frac{r-np}{\sqrt{np(1-p)}}:r=0,\ldots,n\right\}.
+\]
+标准化和的分布在有限集 \(A_n\) 上赋值一，
+而标准正态分布在 \(A_n\) 上赋值零。
+因此，对这些随 \(n\) 改变的集合，两个概率始终相差一。
+
+\ProseParagraphBreak
+
+依分布收敛也不自动成为同一个概率空间上的依概率收敛。
+设 \(X_1,X_2,\ldots\) 是独立标准正态变量，并令
+\[
+ S_n=\sum_{k=1}^nX_k,\quad Z_n=S_n/\sqrt n.
+\]
+每个 \(Z_n\) 的分布都是 \(N(0,1)\)，所以它们的分布当然收敛于
+\(N(0,1)\)。
+但定义
+\[
+ U_n=\frac{S_n}{\sqrt n},\quad
+ V_n=\frac{S_{2n}-S_n}{\sqrt n}.
+\]
+不交分块保持独立，故 \(U_n,V_n\) 独立，且都服从 \(N(0,1)\)。
+于是
+\[
+ Z_{2n}-Z_n
+ =\left(\frac{1}{\sqrt2}-1\right)U_n+\frac{1}{\sqrt2}V_n
+ \quad\text{服从 }N(0,2-\sqrt2).
+\]
+这里分布的认定仍只需特征函数：两个独立标准正态变量的线性组合
+\(cU_n+dV_n\) 的特征函数为 \(e^{-(c^2+d^2)t^2/2}\)，
+唯一性定理给出方差 \(c^2+d^2\) 的正态分布。
+因此对任意固定 \(\varepsilon>0\)，
+\[
+ \mathbb P(|Z_{2n}-Z_n|>\varepsilon)
+ =2\left[1-\Phi\left(\frac{\varepsilon}{\sqrt{2-\sqrt2}}\right)\right]>0,
+\]
+且此值与 \(n\) 无关。
+若存在实随机变量 \(Z\) 使 \(Z_n\to Z\) 依概率成立，则三角不等式给出
+\[
+ \mathbb P(|Z_{2n}-Z_n|>\varepsilon)
+ \leq
+ \mathbb P(|Z_{2n}-Z|>\varepsilon/2)
+ +\mathbb P(|Z_n-Z|>\varepsilon/2)
+ \longrightarrow0,
+\]
+产生矛盾。
+所以这列标准化和不依概率收敛于任何实随机变量，也不几乎必然收敛。
+
+\ProseParagraphBreak
+
+最后考察二阶矩条件。只有有限一阶矩时，大数律仍然成立，
+但 \(\sqrt n\) 尺度的正态极限不再得到保证。
+令
+\[
+ c=\left(\sum_{k=1}^\infty k^{-3}\right)^{-1},\quad
+ \mathbb P(X=k)=\mathbb P(X=-k)=\frac{c}{2k^3}
+ \quad(k=1,2,\ldots).
+\]
+这些概率之和为一，并且
+\[
+ \mathbb E|X|=c\sum_{k=1}^\infty k^{-2}<\infty,\quad
+ \mathbb EX=0,\quad
+ \mathbb E(X^2)=c\sum_{k=1}^\infty k^{-1}=\infty.
+\]
+其中均值为零使用了对称性和绝对可积性。
+由\cref{b1:cor:30-iid-construction}，可以在同一个概率空间上
+构造具有这个分布的独立同分布列 \(X_1,X_2,\ldots\)。
+公共特征函数为
+\[
+ \chi(u)=c\sum_{k=1}^\infty\frac{\cos(ku)}{k^3}.
+\]
+该级数绝对收敛，且 \(\chi\) 为实值连续函数，\(\chi(0)=1\)。
+
+\ProseParagraphBreak
+
+由余弦在零点的二阶展开，可取 \(\delta_0>0\)，使
+\(1-\cos v\geq v^2/4\) 在 \(|v|\leq\delta_0\) 时成立。
+固定 \(t\ne0\)，对充分大的 \(n\)，令
+\[
+ M_n=\left\lfloor\frac{\delta_0\sqrt n}{|t|}\right\rfloor\geq1.
+\]
+由于 \(1-\cos v\geq0\)，可以只保留前 \(M_n\) 项，得到
+\begin{align*}
+ n\bigl(1-\chi(t/\sqrt n)\bigr)
+ &=cn\sum_{k=1}^\infty
+       \frac{1-\cos(kt/\sqrt n)}{k^3}\\
+ &\geq\frac{ct^2}{4}\cdot\sum_{k=1}^{M_n}\frac1k
+ \longrightarrow\infty.
+\end{align*}
+另一方面，\(\chi(t/\sqrt n)\to1\)，并且 \(\chi\leq1\)，
+所以对充分大的 \(n\)，有 \(0<\chi(t/\sqrt n)\leq1\)。
+利用实数不等式 \(1-v\leq e^{-v}\)，可得
+\[
+ 0\leq\bigl(\chi(t/\sqrt n)\bigr)^n
+ \leq\exp\left(-n\bigl(1-\chi(t/\sqrt n)\bigr)\right)
+ \longrightarrow0.
+\]
+若 \(S_n=\sum_{k=1}^nX_k\)，则 \(S_n/\sqrt n\) 的特征函数
+在每个非零 \(t\) 处趋于零，在 \(t=0\) 处恒为一。
+这个点态极限不在零点连续，故由 Lévy 连续性定理的必要方向，
+\(S_n/\sqrt n\) 不存在概率分布意义下的弱极限。
+
+\ProseParagraphBreak
+
+这个例子说明，删去二阶矩条件后，不能对所有可积独立同分布列
+仍坚持平方根归一化并期待正态极限；其他归一化尺度属于进一步理论。
+大数律、中心极限定理和随机变量本身的收敛分别回答不同的问题：
+平均值是否稳定，波动分布在何种尺度下稳定，
+以及同一个概率空间中的样本值是否趋于某个随机变量。
+应用时须先确定所问的问题，再选择相应的假设和极限方式。

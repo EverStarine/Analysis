@@ -2,68 +2,284 @@
 \section{Euler 乘积}
 \label{b3:sec:2505}
 
-算术基本定理把整数分解成素数幂，绝对收敛把这个有限分解提升为无穷乘积。对数再把乘法拆成加法，素数幂便成为自然的级数指标。
+前一节把约数卷积变成函数乘法。本节再利用整数的唯一素分解，把可乘函数的级数拆成各个素数提供的局部因子。于是，整数指标的加法求和与素数指标的乘法表示成为同一个函数的两种写法。不过，无穷乘积的极限、对数的选择和零点的排除各有条件，需要逐步说明。
 
 \subsection{可乘系数的 Euler 乘积}
 \label{b3:subsec:250501}
 
-\begin{theorem}[Euler 乘积]\label{b3:thm:25-euler-product}
-设 \(a\) 可乘，\(\sum|a(n)|n^{-\sigma}<\infty\)。则
+先只看两个素数二和三。可乘性使
 \[
-D_a(s)=\prod_p\left(\sum_{r\ge0}a(p^r)p^{-rs}\right),\quad\operatorname{Re}s=\sigma.
+ \left(\sum_{r\ge0}\frac{a(2^r)}{2^{rs}}\right)
+ \left(\sum_{t\ge0}\frac{a(3^t)}{3^{ts}}\right)
+ =\sum_{r,t\ge0}\frac{a(2^r3^t)}{(2^r3^t)^s},
 \]
-若 \(a\) 完全可乘，则各因子为 \((1-a(p)p^{-s})^{-1}\)。
+只要两侧绝对收敛。右边出现的正整数恰好是仅以二和三为素因子的整数，例如一、二、三、四、六、八、九、十二等。这里没有按整数大小截断：虽然只有两个素数，已经包括任意大的 \(2^r\)。这一区别在取极限时很重要。
+
+\begin{theorem}[Euler 乘积]\label{b3:thm:25-euler-product}
+设 \(a:\mathbb N_{\ge1}\to\mathbb C\) 为可乘函数，即 \(a(1)=1\)，且互素正整数 \(m,n\) 满足 \(a(mn)=a(m)a(n)\)。设 \(\sigma_0\in\mathbb R\)，并假定
+\[
+ \sum_{n\ge1}|a(n)|n^{-\sigma_0}<\infty.
+\]
+用实对数定义 \(n^{-s}=e^{-s\log n}\)。对每个素数 \(p\) 置
+\[
+ F_p(s)=\sum_{r=0}^{\infty}a(p^r)p^{-rs}.
+\]
+则对 \(\operatorname{Re}s\ge\sigma_0\)，
+\begin{equation}\label{b3:eq:25-euler-product}
+ D_a(s)=\sum_{n\ge1}a(n)n^{-s}
+       =\lim_{y\to\infty}\prod_{p\le y}F_p(s).
+\end{equation}
+上述级数和乘积在该闭半平面上一致收敛，并且
+\[
+ \sum_p\sup_{\operatorname{Re}s\ge\sigma_0}|F_p(s)-1|<\infty.
+\]
+若 \(a\) 完全可乘，即对任意正整数 \(m,n\) 都满足乘法等式，则
+\[
+ F_p(s)=\frac1{1-a(p)p^{-s}}.
+\]
 \end{theorem}
 \begin{proof}
-有限多个素数的局部级数相乘，绝对收敛允许展开，所得系数正是所有仅含这些素因子的整数项。随素数集合扩大，任何固定整数最终纳入，剩余项的绝对和趋零。因此有限乘积趋于 \(D_a\)。完全可乘时局部绝对级数的收敛迫使 \(|a(p)|p^{-\sigma}<1\)，再用几何和公式。
+各局部级数绝对收敛，因为它们的绝对值和是已知收敛级数的一部分。将有限多个素数的局部级数相乘，利用绝对收敛展开，再用唯一素分解及可乘性，得到
+\[
+ P_y(s):=\prod_{p\le y}F_p(s)
+ =\sum_{\substack{n\ge1\\p\mid n\Rightarrow p\le y}}a(n)n^{-s}.
+\]
+整数一也在求和中，对应每个局部因子都取常数项。若一个整数没有被纳入右边，它必有某个素因子大于 \(y\)，从而自身也大于 \(y\)。所以对全部 \(\operatorname{Re}s\ge\sigma_0\)，
+\[
+ |D_a(s)-P_y(s)|
+ \le\sum_{\substack{n\ge1\\\exists p>y:\ p\mid n}}|a(n)|n^{-\sigma_0}
+ \le\sum_{n>y}|a(n)|n^{-\sigma_0}\longrightarrow0.
+\]
+这给出乘积极限及其一致性，且没有把 \(P_y\) 错当成到 \(y\) 为止的整数部分和。
+
+另外，不同素数的正次幂彼此不同，因而
+\[
+ \sum_p\sup_{\operatorname{Re}s\ge\sigma_0}|F_p(s)-1|
+ \le\sum_p\sum_{r\ge1}|a(p^r)|p^{-r\sigma_0}
+ \le\sum_{n\ge2}|a(n)|n^{-\sigma_0}<\infty.
+\]
+最后，若 \(a\) 完全可乘，则 \(a(p^r)=a(p)^r\)。局部绝对级数的收敛迫使 \(|a(p)|p^{-\sigma_0}<1\)，于是几何级数求和给出所示倒数。
 \end{proof}
-这一表示称为\term[euler-chengji]{Euler 乘积}[Euler product]。一般可乘函数的某个局部因子可能为零，故不能仅凭“有 Euler 乘积”就宣称函数无零点。几何因子情形还需证明无穷非零因子乘积不坍缩到零。
+
+\eqref{b3:eq:25-euler-product}称为\term[euler-chengji]{Euler 乘积}[Euler product]。这个名称同时包含两件事：局部因子由素数幂系数决定，整体乘积恢复所有整数系数。缺少可乘性时，有限展开中的系数通常就不再是原来的 \(a(n)\)；缺少绝对收敛时，上述重新分组和统一尾界也失去依据。
+
+还应恢复第二十章的无穷乘积结论。由\cref{b3:prop:20-absolute-product}，若 \(\sum_p|F_p(s)-1|<\infty\)，且每个 \(F_p(s)\ne0\)，则乘积非零。理由是尾部各因子足够接近一，可以取满足 \(|\log(1+u)|\le2|u|\) 的小对数，尾部乘积就是一个收敛和的指数；有限头部也非零。因此，在本定理保证的绝对收敛范围内，\(D_a(s)\) 为零当且仅当某个局部因子为零。这个判断不能省略对局部因子的检查。
+
+例如，令 \(a(1)=1,a(2)=-2\)，其余整数处取零。这个函数可乘：互素整数的乘积等于二时只有一和二的组合，其他非平凡组合的两边都为零。它不是完全可乘，因为 \(a(4)=0\ne a(2)^2\)。其 Dirichlet 级数与唯一非平凡局部因子都是
+\[
+ D_a(s)=1-2^{1-s}.
+\]
+它在全平面由有限和定义，却在
+\[
+ s=1+\frac{2\pi\mathrm i k}{\log2},\qquad k\in\mathbb Z,
+\]
+有零点。可乘性本身并不排除零点。完全可乘时，局部因子是非零的几何倒数，才可结合上述乘积判据，在绝对收敛域排除零点。稍后还会写出一个明确的全纯对数，使这一步更加具体。
 
 \subsection{唯一性}
 \label{b3:subsec:250502}
 
-\begin{proposition}\label{b3:prop:25-uniqueness}
-两个在某个右半平面绝对收敛的 Dirichlet 级数，若代表同一函数，则对应系数相等。
+普通幂级数的系数可以在圆心处逐阶求导取出；Dirichlet 级数则可向实轴正方向移动，依次分离最小指标的系数。因为 \(n^{-s}\) 随实数 \(s\to+\infty\) 衰减，较大指标相对于较小指标衰减得更快。
+
+\begin{proposition}[Dirichlet 级数的系数唯一性]\label{b3:prop:25-uniqueness}
+设 \(a,b:\mathbb N_{\ge1}\to\mathbb C\)，并设 \(\sigma_0\in\mathbb R\)，使两个级数 \(\sum a(n)n^{-s}\)、\(\sum b(n)n^{-s}\) 都在 \(\operatorname{Re}s>\sigma_0\) 绝对收敛。若它们在这个半平面代表同一函数，则 \(a(n)=b(n)\) 对每个正整数 \(n\) 成立。
 \end{proposition}
 \begin{proof}
-对差级数，令 \(m\) 为首个非零系数指标。沿实轴 \(s=\sigma\to\infty\)，等式乘以 \(m^\sigma\) 得
-\(0=a(m)+\sum_{n>m}a(n)(m/n)^\sigma\)。选绝对收敛点 \(\sigma_0\)，尾项被 \(m^{\sigma_0}|a(n)|n^{-\sigma_0}\) 控制，且逐项趋零。支配收敛得 \(a(m)=0\)，矛盾。
+设 \(c(n)=a(n)-b(n)\)。若并非处处为零，取第一个非零系数的指标 \(m\)。对实数 \(\sigma>\sigma_0\)，将差级数的等式乘以 \(m^\sigma\)，有
+\[
+ 0=c(m)+\sum_{n>m}c(n)(m/n)^\sigma.
+\]
+固定一个实数 \(\sigma_1>\sigma_0\)。当 \(\sigma\ge\sigma_1\) 时，
+\[
+ |c(n)(m/n)^\sigma|
+ \le m^{\sigma_1}|c(n)|n^{-\sigma_1},\qquad n>m.
+\]
+右侧对 \(n\) 可和，而每个固定 \(n>m\) 的左侧随 \(\sigma\to\infty\) 趋于零。可和控制允许逐项取极限，得到整个尾和趋零，从而 \(c(m)=0\)，矛盾。
 \end{proof}
-所以解析乘法等式可以反向识别系数，但须处在确有收敛表示的公共区域。延拓后的函数值本身并不意味着原级数也在那里收敛。
+
+同一个证明还给出逐项恢复公式。若 \(F(s)=\sum_{n\ge1}a(n)n^{-s}\) 在某个右半平面绝对收敛，则沿实轴有
+\[
+ a(1)=\lim_{\sigma\to\infty}F(\sigma),
+\]
+并且对每个 \(m\ge2\)，在已经知道 \(a(1),\ldots,a(m-1)\) 后，
+\begin{equation}\label{b3:eq:25-coefficient-recovery}
+ a(m)=\lim_{\sigma\to\infty}
+ m^\sigma\left(F(\sigma)-\sum_{n<m}a(n)n^{-\sigma}\right).
+\end{equation}
+这里的极限应在减去前面所有项以后取。若只考察 \(F(\sigma)\) 本身，除了常数项外，其他系数的信息都在极限中消失了。
+
+还可以反过来用唯一性判断可乘性。设 \(a(1)=1\)，其级数在实数 \(\sigma_0\) 处绝对收敛，而且在 \(\operatorname{Re}s\ge\sigma_0\) 等于以 \(a(p^r)\) 构成的局部因子乘积。定义
+\[
+ b(n)=\prod_{p^r\parallel n}a(p^r),\qquad b(1)=1.
+\]
+则 \(b\) 可乘。它的绝对级数收敛，因为有限素数集合的绝对局部乘积有统一上界
+\[
+ \prod_{p\le y}\left(1+\sum_{r\ge1}|a(p^r)|p^{-r\sigma_0}\right)
+ \le\exp\left(\sum_p\sum_{r\ge1}|a(p^r)|p^{-r\sigma_0}\right)<\infty.
+\]
+非负和的单调极限给出 \(\sum|b(n)|n^{-\sigma_0}<\infty\)。Euler 乘积定理遂表明 \(D_b\) 恰为假设中的乘积，与 \(D_a\) 相等；唯一性推出 \(a=b\)，故 \(a\) 可乘。
+
+这个反向论证使用的是一个公共半平面上的函数等式。在某个孤立参数处，两种和碰巧相等，并不能识别所有系数。解析延拓后的函数等式若要用于比较系数，也应先限制到双方确有收敛级数表示的公共区域。
 
 \subsection{Euler 乘积的对数}
 \label{b3:subsec:250503}
 
-对 \(a(n)=1\)，\(\sum_p\sum_{r\ge1}|p^{-rs}|/r\) 在 \(\sigma>1\) 局部一致收敛，因为被常数倍的 \(\sum_p p^{-\sigma}\) 控制。于是定义
+取对数能把素数乘积变成素数幂的和，但复对数具有分支，不能直接对无穷乘积逐项写下一个未指定的 \(\log\)。本节先用收敛幂级数构造对数，再检验它的指数确实是原乘积。
+
+当 \(|z|<1\) 时，从几何级数沿圆盘内路径积分，有
 \[
-L(s)=\sum_p\sum_{r\ge1}\frac{p^{-rs}}r,
-\quad \zeta(s)=e^{L(s)}.
+ \ell(z)=\sum_{r\ge1}\frac{z^r}{r},\qquad
+ \ell'(z)=\frac1{1-z},\qquad \ell(0)=0.
 \]
-等式先由有限乘积对数成立，再在局部一致极限中保持。因此 \(\zeta\ne0\) 于 \(\sigma>1\)，并且 \(L\) 是在实轴取实值的全纯对数。无零点性来自这个收敛的指数表示，不能从每个单独因子非零直接推断。
+因此 \(e^{\ell(z)}=(1-z)^{-1}\)：两边的对数导数相同，在零处也同值。这就选定了 \((1-z)^{-1}\) 的一个对数，无须另行选择带割线的全局分支。
+
+\begin{proposition}[完全可乘级数的全纯对数]\label{b3:prop:25-euler-log}
+设 \(a:\mathbb N_{\ge1}\to\mathbb C\) 完全可乘且 \(a(1)=1\)。设 \(\sigma_0\in\mathbb R\)，并假定 \(\sum_{n\ge1}|a(n)|n^{-\sigma_0}<\infty\)。则
+\[
+ L_a(s)=\sum_p\sum_{r\ge1}\frac{a(p)^r}{r p^{rs}}
+\]
+在 \(\operatorname{Re}s\ge\sigma_0\) 一致绝对收敛，在其内部全纯，且
+\[
+ D_a(s)=e^{L_a(s)}\ne0\qquad(\operatorname{Re}s\ge\sigma_0).
+\]
+沿实轴 \(\sigma\to+\infty\)，有 \(L_a(\sigma)\to0\)。
+\end{proposition}
+\begin{proof}
+记 \(t_p=|a(p)|p^{-\sigma_0}\)。局部几何级数的收敛保证 \(t_p<1\)，而 \(\sum_p t_p<\infty\)。故除有限多个素数外，均有 \(t_p\le1/2\)。对这些素数，
+\[
+ \sum_{r\ge1}\frac{t_p^r}{r}
+ \le\sum_{r\ge1}t_p^r
+ =\frac{t_p}{1-t_p}\le2t_p.
+\]
+有限多个剩余素数各自也给出收敛级数，所以全部双重绝对和有限。这一估计在整个闭半平面有效，证明了一致绝对收敛；内部全纯性来自全纯项的局部一致收敛。
+
+对有限乘积，由刚才构造的 \(\ell\)，有
+\[
+ \prod_{p\le y}(1-a(p)p^{-s})^{-1}
+ =\exp\left(\sum_{p\le y}\ell(a(p)p^{-s})\right).
+\]
+左侧趋于 \(D_a(s)\)，指数内的和趋于 \(L_a(s)\)，连续性给出等式。指数函数没有零点，遂得到非零性。最后，每个素数幂项都随实数 \(\sigma\to\infty\) 趋于零，由刚才的可和控制可知整个和也趋于零。
+\end{proof}
+
+特别地，取 \(a(n)=1\)。对任意 \(\sigma_0>1\) 都能使用命题，因此在整个 \(\operatorname{Re}s>1\) 有
+\begin{equation}\label{b3:eq:25-zeta-log}
+ L(s)=\sum_p\sum_{r\ge1}\frac{p^{-rs}}r,\qquad
+ \zeta(s)=e^{L(s)}\ne0.
+\end{equation}
+实数 \(\sigma>1\) 时 \(L(\sigma)\) 为实数，所以它等于正数 \(\zeta(\sigma)\) 的实对数。若另一个全纯对数也沿实轴趋于零，两者之差是取值于 \(2\pi\mathrm i\mathbb Z\) 的连续函数，在连通半平面上必为常数；极限条件使该常数为零。这说明这里选出的对数有明确的归一化。
+
+这一表示已经能够证明一个初等但重要的素数分布事实。
+
+\begin{proposition}[素数倒数和的发散]\label{b3:prop:25-prime-reciprocals}
+按素数从小到大的顺序求和，级数 \(\sum_p p^{-1}\) 发散。
+\end{proposition}
+\begin{proof}
+假设 \(\sum_p p^{-1}<\infty\)。对每个实数 \(\sigma>1\)，\eqref{b3:eq:25-zeta-log}中 \(r=1\) 的部分便有共同上界。对 \(r\ge2\)，还有
+\[
+ \sum_p\sum_{r\ge2}\frac{p^{-r\sigma}}r
+ \le\sum_{n\ge2}\sum_{r\ge2}n^{-r}
+ =\sum_{n\ge2}\frac1{n(n-1)}=1.
+\]
+于是 \(L(\sigma)\) 有与 \(\sigma>1\) 无关的上界，\(\zeta(\sigma)=e^{L(\sigma)}\) 也有共同上界。但递减正函数的积分比较给出
+\[
+ \zeta(\sigma)=\sum_{n\ge1}n^{-\sigma}
+ \ge\int_1^\infty t^{-\sigma}\,\mathrm dt
+ =\frac1{\sigma-1},
+\]
+当 \(\sigma\downarrow1\) 时趋于无穷，矛盾。
+\end{proof}
+
+这个证明从未把 Euler 乘积直接代入 \(s=1\)。我们只在已证明绝对收敛的实数 \(\sigma>1\) 上建立统一估计，再向边界靠近。由此得到的倒数和发散远弱于素数定理，却已经表明素数不可能稀疏到倒数可和。
 
 \subsection{对数导数}
 \label{b3:subsec:250504}
 
-对紧集 \(\sigma\ge1+\delta\)，导数项的绝对和
-\(\sum_{p,r}(\log p)p^{-r\sigma}\) 有界：先求 \(r\) 的几何和，再与 \(\sum_{n\ge2}(\log n)n^{-1-\delta}\) 比较。因此可求导，得到
-\begin{equation}\label{b3:eq:25-log-derivative}
--\frac{\zeta'(s)}{\zeta(s)}=\sum_p\sum_{r\ge1}(\log p)p^{-rs}
-=\sum_{n\ge1}\frac{\Lambda(n)}{n^s},\quad\operatorname{Re}s>1.
-\end{equation}
-还可由有限卷积恒等式得到同一结论：\(-\zeta'(s)=D_{\log}(s)\)，而 \(\mathbf1*\Lambda=\log\)，故 \(D_\Lambda\zeta=-\zeta'\)。两条路线分别检验乘积常数与系数权重。
+在\eqref{b3:eq:25-zeta-log}中，素数幂 \(p^r\) 的系数为 \(1/r\)。对参数作负导数会产生 \(r\log p\)，与原分母 \(r\) 相消，留下 \(\log p\)。这正是 von Mangoldt 函数在所有正次素数幂处取相同值的原因。
 
-\subsection{对数导数中的 \texorpdfstring{\(\Lambda(n)\)}{\AnalysisPdfCapitalLambda(n)}}
+为了合法地求导，固定 \(\delta>0\)。在 \(\operatorname{Re}s\ge1+\delta\) 上，导数项的绝对和满足
+\[
+ \sum_p\sum_{r\ge1}(\log p)p^{-r\operatorname{Re}s}
+ \le\sum_{n\ge2}\frac{\log n}{n^{1+\delta}}<\infty.
+\]
+第一个不等式利用正次素数幂互不重复，且 \(\log p\le\log(p^r)\)；最后的收敛可由积分比较或 \(\log n=O(n^{\delta/2})\) 得到。因此导数级数在每个内部紧集一致收敛，可以逐项求导。由于 \(\zeta\ne0\)，\(L'=\zeta'/\zeta\)，从而
+\begin{equation}\label{b3:eq:25-log-derivative}
+ \begin{aligned}
+ -\frac{\zeta'(s)}{\zeta(s)}
+ &=\sum_p\sum_{r\ge1}(\log p)p^{-rs}\\
+ &=\sum_{n\ge1}\frac{\Lambda(n)}{n^s},
+ \qquad \operatorname{Re}s>1.
+ \end{aligned}
+\end{equation}
+
+例如，右侧开头为
+\[
+ \frac{\log2}{2^s}+\frac{\log3}{3^s}
+ +\frac{\log2}{4^s}+\frac{\log5}{5^s}
+ +\frac{\log7}{7^s}+\frac{\log2}{8^s}+\cdots.
+\]
+六不是素数幂，所以没有六的项；四和八的权重都是 \(\log2\)，不是 \(\log4\) 或 \(\log8\)。若只保留素数一次项，就会遗漏所有高次素数幂。
+
+也可以从有限卷积验证同一公式。由\cref{b3:prop:25-mangoldt-divisors}，\(\mathbf1*\Lambda=\log\)，其中 \(\log\) 在这里表示算术函数 \(n\mapsto\log n\)。因为 \(0\le\Lambda(n)\le\log n\)，相关级数都在 \(\operatorname{Re}s>1\) 绝对收敛；乘法与逐项求导遂给
+\[
+ \zeta(s)D_\Lambda(s)=D_{\log}(s)=-\zeta'(s).
+\]
+再除以已证非零的 \(\zeta(s)\)，得到\eqref{b3:eq:25-log-derivative}。这一核对同时解释了局部素数幂计算与整体约数恒等式如何一致。
+
+接下来把几个常用商公式一起建立。它们以后会反复出现，所以要在这里写清各自最初有效的范围。
+
+\begin{proposition}[三个算术级数的商表示]\label{b3:prop:25-basic-quotients}
+设 \(\mu\) 为 Möbius 函数、\(\varphi\) 为 Euler 函数，并在 \(\operatorname{Re}s>1\) 以绝对收敛级数定义 \(\zeta(s)=\sum_{n\ge1}n^{-s}\)。则
+\begin{align}
+ \sum_{n\ge1}\frac{\mu(n)}{n^s}
+ &=\frac1{\zeta(s)},&&\operatorname{Re}s>1,
+ \label{b3:eq:25-mobius-series}\\
+ \sum_{n\ge1}\frac{\mu(n)^2}{n^s}
+ &=\frac{\zeta(s)}{\zeta(2s)},&&\operatorname{Re}s>1,
+ \label{b3:eq:25-squarefree-series}\\
+ \sum_{n\ge1}\frac{\varphi(n)}{n^s}
+ &=\frac{\zeta(s-1)}{\zeta(s)},&&\operatorname{Re}s>2.
+ \label{b3:eq:25-totient-series}
+\end{align}
+各式左侧在所示范围均绝对收敛，右侧分母均非零。
+\end{proposition}
+\begin{proof}
+由 \(|\mu(n)|\le1\)，前两个级数在实部大于一时绝对收敛。有限恒等式 \(\mu*\mathbf1=\varepsilon\) 给 \(D_\mu\zeta=1\)，于是得到第一式。
+
+平方自由示性函数 \(\mu^2\) 的局部因子为 \(1+p^{-s}\)。利用
+\[
+ 1+p^{-s}=\frac{1-p^{-2s}}{1-p^{-s}},
+\]
+先对有限素数乘积取商，再令上界趋于无穷，Euler 乘积给出第二式。这里 \(\operatorname{Re}(2s)>2\)，所以分母非零，取商的极限合法。
+
+最后，\(0\le\varphi(n)\le n\) 保证其级数在实部大于二时绝对收敛。上一节已经由 \(\mathbf1*\varphi=\operatorname{id}_1\) 得到 \(\zeta D_\varphi=\zeta(s-1)\)；现在分母非零性补齐了除法的依据。
+\end{proof}
+
+这些公式还没有断言左侧级数在更大的区域收敛。尤其是 \(1/\zeta\) 的进一步延拓与 Möbius 系数的相消是两个相关但不同的问题。若要扩大原级数的收敛域，应回到\cref{b3:prop:25-partial-sum-convergence}，估计 \(M(x)=\sum_{n\le x}\mu(n)\)，而不能只观察商函数在某点有无奇性。
+
+\subsection{von Mangoldt 权重与算术密度}
 \label{b3:subsec:250505}
 
-对数本身在素数幂 \(p^r\) 处给权重 \(1/r\)；求负导数后乘上 \(r\log p\)，留下 \(\log p\)。这解释了 \(\Lambda\) 为何在所有正次素数幂处取相同值。若只保留素数一次项，所得到的不是 \(-\zeta'/\zeta\)，而会遗漏可估计但不恒零的高次幂项。
+对数导数把素数问题转换成 \(\Lambda\) 的部分和问题。为了看清高次素数幂的影响，对实数 \(x\ge2\) 记
+\[
+ \psi(x)=\sum_{n\le x}\Lambda(n),\qquad
+ \vartheta(x)=\sum_{p\le x}\log p.
+\]
+后一个函数在\subsecref{b3:subsec:250305}已经用来与素数个数交换权重。此时
+\[
+ \psi(x)-\vartheta(x)
+ =\sum_{\substack{r\ge2\\p^r\le x}}\log p\ge0.
+\]
+不使用任何素数分布定理也能估计这个差。只可能有 \(r\le\log x/\log2\)，且当 \(r\ge2\) 时 \(p\le x^{1/r}\le\sqrt x\)。对每个 \(r\)，粗略地以全部不超过 \(\sqrt x\) 的正整数代替素数，并以 \(\log x\) 控制权重，得到
+\[
+ 0\le\psi(x)-\vartheta(x)
+ =O\bigl(\sqrt x(\log x)^2\bigr)=o(x).
+\]
+因此 \(\psi(x)\sim x\) 与 \(\vartheta(x)\sim x\) 等价；再结合\cref{b3:prop:25-prime-counting-equivalence}，它们与 \(\pi(x)\sim x/\log x\) 等价。目前建立的是这些陈述之间的等价关系，尚未证明其中任何一个渐近式。第二十七章将用解析信息完成这一步。
 
-\ProseParagraphBreak
-
-作为另一例，\(\sum\mu(n)n^{-s}=\prod_p(1-p^{-s})=1/\zeta(s)\) 在 \(\sigma>1\) 成立。它与卷积逆元 \(\mu*\mathbf1=\varepsilon\) 相符。后面若试图把这一表示向临界带推进，就必须控制 Möbius 部分和；单凭右侧已经延拓不能保证左侧条件收敛。算术抵消与解析延拓之间的区别在素数问题中尤其重要。
+与素数计数相比，有些算术集合的平均密度已经能用本章工具直接求出。下面两种计数虽然对象不同，却会产生同一个常数。
 
 \begin{proposition}[平方自由整数与互素整数对的密度]
 \label{b3:prop:25-two-densities}
-设 \(x\ge2\)。有
+设 \(\mu\) 为 Möbius 函数，\(\varphi(n)=\#\{1\le a\le n:\gcd(a,n)=1\}\) 为 Euler 函数。当实数 \(x\to\infty\)、\(x\ge2\) 时，有
 \[
  \sum_{n\le x}\mu(n)^2=\frac{x}{\zeta(2)}+O(\sqrt x),
  \qquad
@@ -72,31 +288,52 @@ L(s)=\sum_p\sum_{r\ge1}\frac{p^{-rs}}r,
 其中 \(1/\zeta(2)=6/\pi^2\)。
 \end{proposition}
 \begin{proof}
-由平方自由筛选恒等式，先交换有限和，得到
+先由\cref{b3:prop:25-squarefree-filter}的平方自由筛选恒等式，对有限和交换次序，得到
 \[
+ \begin{aligned}
  \sum_{n\le x}\mu(n)^2
- =\sum_{d\le\sqrt x}\mu(d)\left\lfloor\frac{x}{d^2}\right\rfloor
- =x\sum_{d\le\sqrt x}\frac{\mu(d)}{d^2}+O(\sqrt x).
+ &=\sum_{n\le x}\sum_{d^2\mid n}\mu(d)
+ =\sum_{d\le\sqrt x}\mu(d)\left\lfloor\frac{x}{d^2}\right\rfloor\\
+ &=x\sum_{d\le\sqrt x}\frac{\mu(d)}{d^2}+O(\sqrt x).
+ \end{aligned}
 \]
-因为 \(|\mu(d)|\le1\)，把最后有限级数延到无穷的误差至多
-\(x\sum_{d>\sqrt x}d^{-2}=O(\sqrt x)\)。绝对收敛的 Euler 乘积给无穷和为 \(1/\zeta(2)\)，于是得到第一式。
+每个取整误差至多一，共有不超过 \(\sqrt x\) 项，所以最后的误差界不需要 Möbius 相消。将有限级数延到无穷时，新增误差满足
+\[
+ x\left|\sum_{d>\sqrt x}\frac{\mu(d)}{d^2}\right|
+ \le x\sum_{d>\sqrt x}d^{-2}=O(\sqrt x).
+\]
+由\eqref{b3:eq:25-mobius-series}在 \(s=2\) 的绝对收敛等式，无穷和为 \(1/\zeta(2)\)，第一式得证。
 
-再令 \(N=\lfloor x\rfloor\)，计数 \(1\le a,b\le N\) 中互素的有序整数对。把 \(\sum_{d\mid\gcd(a,b)}\mu(d)\) 代入其示性函数，得
+再令 \(N=\lfloor x\rfloor\)，计数 \(1\le a,b\le N\) 中互素的有序整数对。Möbius 约数和给出其示性函数
 \[
- C(N)=\sum_{d\le N}\mu(d)\left\lfloor\frac Nd\right\rfloor^2.
+ \mathbf1_{\gcd(a,b)=1}=\sum_{d\mid\gcd(a,b)}\mu(d).
 \]
-对 \(u\ge1\)，有 \(|\lfloor u\rfloor^2-u^2|\le2u\)，所以
+固定共同因子 \(d\) 后，两个坐标都必须是 \(d\) 的倍数，各有 \(\lfloor N/d\rfloor\) 种选择，因此
 \[
- C(N)=N^2\sum_{d\le N}\frac{\mu(d)}{d^2}
-          +O\left(N\sum_{d\le N}\frac1d\right)
-      =\frac{N^2}{\zeta(2)}+O(N\log N).
+ C(N):=\#\{(a,b)\in\{1,\ldots,N\}^2:\gcd(a,b)=1\}
+ =\sum_{d\le N}\mu(d)\left\lfloor\frac Nd\right\rfloor^2.
 \]
-对角线上互素的点只有 \((1,1)\)；直线 \(a=b\) 两侧由交换坐标对应。固定较大的坐标 \(n\ge2\)，其下方互素点有 \(\varphi(n)\) 个，故
-\(C(N)=1+2\sum_{n=2}^N\varphi(n)=2\sum_{n=1}^N\varphi(n)-1\)。代入并把 \(N^2\) 换成 \(x^2+O(x)\)，得到第二式。\(\zeta(2)\) 的数值由前面已证的正弦乘积或相应留数计算给出。
+对 \(u\ge1\)，有 \(0\le u^2-\lfloor u\rfloor^2\le2u\)。这一次每项的取整误差随 \(N/d\) 增大，故总误差中出现调和和：
+\[
+ \begin{aligned}
+ C(N)
+ &=N^2\sum_{d\le N}\frac{\mu(d)}{d^2}
+       +O\left(N\sum_{d\le N}\frac1d\right)\\
+ &=\frac{N^2}{\zeta(2)}+O(N\log N).
+ \end{aligned}
+\]
+延长主项级数所付出的误差为 \(N^2\sum_{d>N}d^{-2}=O(N)\)，已被最后的误差包含。
+
+现在把这个正方形计数与 \(\varphi\) 联系起来。对角线上互素的点只有 \((1,1)\)；交换坐标把对角线两侧一一对应。对每个较大坐标 \(n\ge2\)，其下方互素点共有 \(\varphi(n)\) 个。因此
+\[
+ C(N)=1+2\sum_{n=2}^N\varphi(n)
+     =2\sum_{n=1}^N\varphi(n)-1.
+\]
+解出所需的和，再用 \(N^2=x^2+O(x)\)，得到第二式。最后，\cref{b3:prop:23-zeta-even-values}已证明 \(\zeta(2)=\pi^2/6\)，给出常数的数值。
 \end{proof}
 
-同一个常数出现在两种不同计数中，原因都可由素数局部条件解释：平方自由性要求不被 \(p^2\) 整除，互素性要求两个坐标不同时被 \(p\) 整除，两者的局部排除比例均为 \(p^{-2}\)。不过无限多个局部条件的密度不能仅凭直觉相乘。上面的有限反演、取整误差及绝对收敛尾界，才把这种解释变成有效证明。
+第一式说明，不超过 \(N\) 的正整数中，平方自由整数所占比例趋于 \(6/\pi^2\)。第二个证明还说明，在 \(\{1,\ldots,N\}\) 中独立等概率选择两个整数，它们互素的概率也趋于 \(6/\pi^2\)。这里每次使用的都是有限集合上的概率，再令 \(N\to\infty\)；不需要假设正整数全体存在均匀概率分布。
 
-\ProseParagraphBreak
+常数相同也有局部解释。平方自由性排除被 \(p^2\) 整除；互素性排除两个坐标同时被 \(p\) 整除。两种情形对单个素数的排除比例均为 \(p^{-2}\)，于是都指向乘积 \(\prod_p(1-p^{-2})\)。但无限多个局部条件的密度不能只凭直觉相乘。证明中的有限反演、取整误差和绝对收敛尾界，才把这种解释变成有效结论。
 
-这些平均计数不需要素数定理。它们使用 \(\sum\mu(d)/d^2\) 的绝对收敛，不要求估计 \(\sum_{d\le x}\mu(d)\) 的相消。相较之下，把 \(1/\zeta(s)\) 的 Dirichlet 级数推进到靠近实部一的边界，需要更精细的算术信息。读者应从所用权重和收敛域判断一个推导实际有多强，而不能只看公式中是否出现 Möbius 函数或素数乘积。
+这些计数只用到 \(\sum\mu(d)/d^2\) 的绝对收敛，甚至在控制误差时完全舍弃了 \(\mu\) 的正负抵消。相比之下，接近实部一的素数问题需要更精细的边界信息。本章由此建立两种不同的工作方式：能在绝对收敛区完成的计算，先用有限恒等式和可和尾界；需要越过这个范围的问题，则保留部分和的相消，并明确指出还缺少什么估计。

@@ -2,78 +2,245 @@
 \section{素数计数函数}
 \label{b3:sec:2701}
 
-素数定理首先是一个计数断言。解析方法直接控制的是对数权和及素数幂的和，因此需要先说明三种计数函数为何具有等价的首项渐近，并建立一个独立于定理的粗上界。
+素数定理首先是一个计数断言，但 Euler 乘积的对数导数直接给出的是带有 \(\log p\) 权重的素数幂之和。要把复分析的结论变成素数个数，必须解释这些权重是否改变首项，以及怎样把它们除去。本节先用二项式系数取得粗增长界，再证明三种渐近陈述等价；这里不预先使用素数定理。
 
 \subsection{\texorpdfstring{\(\pi(x)\)}{\AnalysisPdfPi(x)}}
 \label{b3:subsec:270101}
 
-记 \(\pi(x)=\#\{p\le x:p\text{ 为素数}\}\)，\(x\ge1\)。本章始终包含端点处的素数，使函数右连续。若改用严格小于，差至多一，不改变最终渐近，但会影响精确的 Stieltjes 积分端点约定。
+对于实数 \(x\ge1\)，记
+\[
+ \pi(x)\coloneqq\#\{\,p\le x\mid p\text{ 为素数}\,\}.
+\]
+这个函数计入右端点。例如 \(\pi(2)=1\)、\(\pi(3)=2\)，而在整个半开区间 \([3,5)\) 上它等于二。因此 \(\pi\) 是右连续、非递减的阶梯函数：每遇到一个素数就向上跳一格。本章的其他计数函数也采用包含右端点的约定。
+
+\ProseParagraphBreak
+
+包含端点的约定对渐近结果影响很小，却决定精确恒等式。例如对于实数 \(1\le a<b\)，
+\[
+ \pi(b)-\pi(a)=\#\{\,p\mid a<p\le b\,\}.
+\]
+当 \(a\) 本身是素数时，它已在 \(\pi(a)\) 中被减去。这一点在区间部分求和中仍须保留，不能因为最终只求渐近就任意改动求和端点。
+
+\ProseParagraphBreak
+
+我们希望证明的是 \(\pi(x)\log x/x\to1\)。这里 \(1/\log x\) 可解释为大数附近的平均素数密度，但它不是对每个整数作出的独立随机假设，也不是说每个长度为 \(\log x\) 的区间都有一个素数。严格的计数结论将从下述带权函数出发。
 
 \subsection{\texorpdfstring{\(\vartheta(x)\)}{\AnalysisPdfVarTheta(x)}}
 \label{b3:subsec:270102}
 
-定义 \(\vartheta(x)=\sum_{p\le x}\log p\)。乘法形式为 \(e^{\vartheta(x)}=\prod_{p\le x}p\)。
+对于实数 \(x\ge1\)，记
+\[
+ \vartheta(x)\coloneqq\sum_{p\le x}\log p,
+ \quad
+ e^{\vartheta(x)}=\prod_{p\le x}p,
+\]
+其中 \(p\) 遍历素数，空和为零，空积为一。这个 \(\vartheta\) 是素数的对数权和，与上一章实变量 Gaussian 级数中的 theta 函数不是同一个对象。取对数把素数的乘积变成和，因而整数的整除关系可以用来估计 \(\vartheta\)。
+
 \begin{lemma}[Chebyshev 上界]\label{b3:lem:27-chebyshev}
-有 \(\vartheta(x)=O(x)\)。
+对实数 \(x\ge2\)，令 \(\vartheta(x)=\sum_{p\le x}\log p\)，其中 \(p\) 遍历素数。则
+\[
+ 0\le\vartheta(x)\le4(\log2)x.
+\]
+特别地，\(\vartheta(x)=O(x)\)，其中常数与 \(x\) 无关。
 \end{lemma}
 \begin{proof}
-每个 \(n<p\le2n\) 的素数整除 \(\binom{2n}{n}\)，所以
-\(\vartheta(2n)-\vartheta(n)\le\log\binom{2n}{n}\le2n\log2\)。对任意实数 \(x\)，取邻近整数处理端点，得 \(\vartheta(x)-\vartheta(x/2)\le Cx\)：长度至多二的剩余区间至多含两个整数，各贡献不超过 \(\log(x+2)\)。沿 \(x,x/2,x/4,\ldots\) 累加，几何级数给 \(\vartheta(x)\le2Cx+O(1)\)。
+先取正整数 \(n\)。若 \(n<p\le2n\) 是素数，则 \((2n)!\) 含一个因子 \(p\)，而 \(n!\) 不含因子 \(p\)。这里 \((2n)!\) 中恰有一个 \(p\) 的倍数，是因为 \(2p>2n\)。于是这些互异素数的乘积整除整数 \(\binom{2n}{n}\)，故
+\[
+ \vartheta(2n)-\vartheta(n)
+ \le\log\binom{2n}{n}
+ \le2n\log2.
+\]
+最后一个不等式来自 \(\binom{2n}{n}\le\sum_{j=0}^{2n}\binom{2n}{j}=2^{2n}\)。
+
+为避免把实数 \(x/2\) 当作整数，只在二进尺度上累加。对整数 \(k\ge1\)，依次取 \(n=2^{j-1}\)，其中 \(j=1,\ldots,k\)，便有
+\[
+ \vartheta(2^k)
+ =\sum_{j=1}^k\bigl(\vartheta(2^j)-\vartheta(2^{j-1})\bigr)
+ \le(\log2)\sum_{j=1}^k2^j
+ <2^{k+1}\log2.
+\]
+这里 \(\vartheta(1)=0\)，所以左侧确实是望远镜和。给定任意实数 \(x\ge2\)，选取整数 \(k\ge1\) 使 \(2^{k-1}<x\le2^k\)。单调性及 \(2^k<2x\) 给出
+\[
+ \vartheta(x)\le\vartheta(2^k)<4(\log2)x.
+\]
 \end{proof}
-这个界没有给渐近常数一，却足够控制以后 Laplace 变换中的函数。若先用素数定理推出该界，再把它放进素数定理的证明，就会形成循环。
+
+二项式系数未必接近这些素数的乘积，因而这个证明没有给出精确常数一。它提供的是独立于素数定理的线性上界。以后构造 Laplace 变换时，这个界可保证相应函数有界；若反过来先由素数定理取得该界，再把它放进素数定理的证明，就会形成循环。
 
 \subsection{\texorpdfstring{\(\psi(x)\)}{\AnalysisPdfPsi(x)}}
 \label{b3:subsec:270103}
 
-定义 \(\psi(x)=\sum_{n\le x}\Lambda(n)=\sum_{p^r\le x}\log p\)。按幂次分组，
+再回忆\secref{b3:sec:2501}中的 von Mangoldt 算术函数：当 \(n=p^r\)，其中 \(p\) 为素数、\(r\ge1\) 为整数时，\(\Lambda(n)=\log p\)；在其余正整数处 \(\Lambda(n)=0\)，特别地 \(\Lambda(1)=0\)。对于实数 \(x\ge1\)，置
 \[
-\psi(x)=\sum_{r\ge1}\vartheta(x^{1/r}),\qquad
-0\le\psi(x)-\vartheta(x)\le C\sqrt x\log(x+2).
+ \psi(x)\coloneqq\sum_{n\le x}\Lambda(n)
+ =\sum_{\substack{p^r\le x\\r\ge1}}\log p.
 \]
-因为仅有 \(r\le\log_2x\) 的项，每个 \(r\ge2\) 的项由 Chebyshev 界不超过 \(C\sqrt x\)。于是 \(\psi(x)=O(x)\)，并且高次素数幂相对于 \(x\) 是低阶项。
+这里的 \(\Lambda(n)\) 与上一章的完备 zeta 函数 \(\Lambda_\zeta(s)\) 不同。尤其要注意素数幂 \(p^r\) 的权重是 \(\log p\)，而不是 \(\log(p^r)=r\log p\)：对 Euler 乘积的对数求导，恰好会给出这个权重。
+
+\begin{table}[htbp]
+\centering
+\caption[三种素数计数的低阶取值]{三种素数计数的低阶取值。\(\vartheta\) 只在素数处跳跃，\(\psi\) 还在素数的高次幂处跳跃。}
+\label{b3:tab:27-counting-values}
+\begin{tabular}{c c c c}
+\toprule
+\(x\) & \(\pi(x)\) & \(\vartheta(x)\) & \(\psi(x)\) \\
+\midrule
+\(1\) & \(0\) & \(0\) & \(0\) \\
+\(2\) & \(1\) & \(\log2\) & \(\log2\) \\
+\(3\) & \(2\) & \(\log6\) & \(\log6\) \\
+\(4\) & \(2\) & \(\log6\) & \(\log12\) \\
+\(5\) & \(3\) & \(\log30\) & \(\log60\) \\
+\(8\) & \(4\) & \(\log210\) & \(\log840\) \\
+\(9\) & \(4\) & \(\log210\) & \(\log2520\) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+表中的 \(4,8,9\) 说明 \(\psi\) 多计了哪些项。例如截至八，素数二在 \(2,4,8\) 处各贡献一次 \(\log2\)。不过，高次素数幂虽然无限多，在尺度 \(x\) 上的总贡献仍比 \(x\) 小。
+
+\begin{proposition}[高次素数幂的粗误差]
+\label{b3:prop:27-prime-power-error}
+对实数 \(x\ge2\)，令 \(\vartheta(x)=\sum_{p\le x}\log p\)、\(\psi(x)=\sum_{p^r\le x,\ r\ge1}\log p\)，其中 \(p\) 遍历素数、\(r\) 为正整数。则
+\[
+ \psi(x)=\sum_{r=1}^{\lfloor\log_2x\rfloor}\vartheta(x^{1/r}),
+ \quad
+ 0\le\psi(x)-\vartheta(x)\le4\sqrt x\log x.
+\]
+因此 \(\psi(x)=O(x)\)，且 \(\psi(x)-\vartheta(x)=o(x)\)。
+\end{proposition}
+\begin{proof}
+由于 \(p\ge2\)，若 \(p^r\le x\)，必有 \(r\le\log_2x\)。固定 \(r\) 后，条件等价于 \(p\le x^{1/r}\)，故按幂次分组得到有限和恒等式。对其中的 \(r\ge2\)，有 \(x^{1/r}\le\sqrt x\)；而 \(r\le\log_2x\) 又保证 \(x^{1/r}\ge2\)，所以\cref{b3:lem:27-chebyshev}适用。于是
+\[
+ \sum_{r=2}^{\lfloor\log_2x\rfloor}\vartheta(x^{1/r})
+ \le4(\log2)\sqrt x\lfloor\log_2x\rfloor
+ \le4\sqrt x\log x.
+\]
+当求和下端大于上端时，和为零，不等式仍成立。最后 \(\log x/\sqrt x\to0\)，所以误差为 \(o(x)\)；结合 \(\vartheta(x)=O(x)\)，得 \(\psi(x)=O(x)\)。
+\end{proof}
+
+这个粗误差已足够把 \(\psi(x)\sim x\) 与 \(\vartheta(x)\sim x\) 联系起来。当前无需精细区分平方、立方和更高次幂；保留对所有高次幂都有效的统一估计，能先让主要证明链闭合。
 \symidx{\(\pi(x)\)：素数计数函数}
 \symidx{\(\vartheta(x)\)：素数对数权和}
 \symidx{\(\psi(x)\)：素数幂对数权和}
 
-\subsection{von Mangoldt 函数}
+\subsection{Chebyshev 双边界与非负权重}
 \label{b3:subsec:270104}
 
-前面的上界可以与另一个初等二项式估计结合，得到正确的增长数量级。中心二项式系数是 \((1+1)^{2n}\) 展开中的最大项，所以
+上界告诉我们素数没有多到超过预期尺度。要证明它们也没有少一个数量级，仍可使用同一个二项式系数，只是这次把它的全部素因数计入 \(\psi\)。
+
+\begin{proposition}[Chebyshev 双边界]
+\label{b3:prop:27-chebyshev-two-sided}
+对实数 \(x\ge2\)，令 \(\pi(x)=\#\{\,p\le x\mid p\text{ 为素数}\,\}\)、\(\vartheta(x)=\sum_{p\le x}\log p\)、\(\psi(x)=\sum_{p^r\le x,\ r\ge1}\log p\)，其中 \(p\) 遍历素数、\(r\) 为正整数。存在与 \(x\) 无关的正常数 \(c,C\) 及实数 \(x_0\ge2\)，使每个实数 \(x\ge x_0\) 都满足
+\[
+ cx\le\vartheta(x)\le\psi(x)\le Cx,
+ \quad
+ c\frac{x}{\log x}\le\pi(x)\le C\frac{x}{\log x}.
+\]
+\end{proposition}
+\begin{proof}
+对正整数 \(n\)，中心二项式系数是 \((1+1)^{2n}\) 展开中的最大项。事实上，相邻项之比为 \((2n-j)/(j+1)\)，在到达中心前不小于一，过中心后不大于一。总共 \(2n+1\) 项之和为 \(4^n\)，所以
 \[
  \binom{2n}{n}\ge\frac{4^n}{2n+1}.
 \]
-它的素数 \(p\) 指数为
+需要把这个下界与 \(\psi\) 联系起来。若 \(p\) 是素数，\(N!\) 中因子 \(p\) 的总次数为
 \[
- \sum_{j\ge1}\left(\left\lfloor\frac{2n}{p^j}\right\rfloor
-                   -2\left\lfloor\frac n{p^j}\right\rfloor\right).
+ v_p(N!)=\sum_{j\ge1}\left\lfloor\frac{N}{p^j}\right\rfloor.
 \]
-每个括号是零或一，并且 \(p^j>2n\) 时为零。因此取对数得到
+这是因为 \(1,\ldots,N\) 中每个 \(p\) 的倍数至少贡献一个 \(p\)，每个 \(p^2\) 的倍数再贡献一个，依此类推；某个整数含 \(p\) 的 \(a\) 次幂，就恰好被计数 \(a\) 次。故
 \[
- \psi(2n)\ge\log\binom{2n}{n}
-       \ge2n\log2-\log(2n+1).
+ v_p\binom{2n}{n}
+ =\sum_{j\ge1}
+   \left(\left\lfloor\frac{2n}{p^j}\right\rfloor
+               -2\left\lfloor\frac n{p^j}\right\rfloor\right).
 \]
-对一般大实数 \(x\)，取 \(n=\lfloor x/2\rfloor\) 并用单调性，便知存在常数 \(c_0>0\)，使 \(\psi(x)\ge c_0x\)。扣去高次幂的 \(o(x)\) 误差，\(\vartheta(x)\) 也具有同样形式的下界。
+对任意实数 \(y\)，\(\lfloor2y\rfloor-2\lfloor y\rfloor\) 等于零或一；而 \(p^j>2n\) 时，上式中的对应项为零。对各个素数的指数乘以 \(\log p\) 后相加，得到
+\[
+ 2n\log2-\log(2n+1)
+ \le\log\binom{2n}{n}
+ \le\sum_{p^j\le2n}\log p
+ =\psi(2n).
+\]
+
+对任意实数 \(x\ge2\)，取整数 \(n=\lfloor x/2\rfloor\)。此时 \(x-2<2n\le x\)，由单调性得到
+\[
+ \psi(x)\ge(x-2)\log2-\log(x+1).
+\]
+右侧除以 \(x\) 趋于 \(\log2\)，所以当 \(x\) 充分大时，\(\psi(x)\ge\tfrac12(\log2)x\)。由\cref{b3:prop:27-prime-power-error}，再增大阈值便有
+\[
+ \vartheta(x)\ge\psi(x)-4\sqrt x\log x
+ \ge\tfrac14(\log2)x.
+\]
+\(\vartheta\) 与 \(\psi\) 的上界已经证明。
+
+最后去掉对数权。因为每个 \(p\le x\) 都有 \(\log p\le\log x\)，
+\[
+ \vartheta(x)\le\pi(x)\log x
+\]
+立即给出 \(\pi\) 的下界。求上界时，把素数分成 \(p\le\sqrt x\) 和 \(\sqrt x<p\le x\) 两组。第一组至多有 \(\sqrt x\) 个；第二组的每个对数权至少为 \(\tfrac12\log x\)，故
+\[
+ \pi(x)\le\sqrt x+\frac{2\vartheta(x)}{\log x}
+ \le\sqrt x+8(\log2)\frac{x}{\log x}.
+\]
+由于 \(\sqrt x=o(x/\log x)\)，取足够大的统一阈值，并把上界常数增大、下界常数缩小，即得到所述的 \(c,C,x_0\)。
+\end{proof}
+
+上述结果称为\term[chebyshev-xing-guji]{Chebyshev 型估计}[Chebyshev estimates]。它已经确定 \(\pi(x)\) 的增长尺度是 \(x/\log x\)，却没有证明比值存在极限。素数定理要增加的内容是把两个不相同的常数收紧到精确常数一，而非只再改善某个上界常数。
 
 \ProseParagraphBreak
 
-于是对充分大的 \(x\)，存在正常数 \(c_1,C_1\)，使
-\[
- c_1\frac{x}{\log x}\le\pi(x)\le C_1\frac{x}{\log x}.
-\]
-下界由 \(\vartheta(x)\le\pi(x)\log x\) 得到。对于上界，先分开 \(p\le\sqrt x\) 的至多 \(\sqrt x\) 个素数；其余每个 \(\log p\ge\tfrac12\log x\)，故个数不超过 \(2\vartheta(x)/\log x\)。这说明初等估计已经找到正确尺度。素数定理增加的内容是把上下界的两个不同常数收紧到同一个精确常数一。
-
-\ProseParagraphBreak
-
-von Mangoldt 函数的非负性使 \(\psi\) 单调。这一点将在 Tauber 步骤中把平均信息变成点态渐近；符号改变的系数即使有相同的解析极点，也可能有很大的振荡。这里的 \(\Lambda\) 是\secref{b3:sec:2501}的算术函数，不是上一章的完备 zeta 函数。
+非负性在这里已经出现多次：它使 \(\vartheta\) 和 \(\psi\) 单调，允许从二进整数尺度控制所有实数，也允许把一组素数的贡献放进总和估计。后面的 Tauber 步骤还要用 \(\Lambda(n)\ge0\) 把平均信息还原为点态渐近；如果系数改变符号，某些大的正负振荡可能在变换中相互抵消，这条还原路线就需要额外条件。
 
 \subsection{基本渐近等价式}
 \label{b3:subsec:270105}
 
+从 \(\vartheta\) 到 \(\pi\) 不能直接把每个 \(\log p\) 换成 \(\log x\)，因为较小素数的权重并不接近 \(\log x\)。正确方法是先写一个精确的部分求和公式，再估计其中的积分余项。\cref{b3:prop:25-integral-summation}已证明：若 \(A(t)=\sum_{n\le t}a_n\)，且权重 \(f\) 连续可微，则加权和由 \(A(x)f(x)\) 减去 \(\int A(t)f'(t)\,\mathrm dt\) 给出。
+
+\ProseParagraphBreak
+
+分别取素数处的系数为 \(\log p\) 与一，权重为 \(1/\log t\) 与 \(\log t\)，便得对所有实数 \(x\ge2\) 成立的恒等式
+\begin{equation}\label{b3:eq:27-count-partial-summation}
+ \begin{aligned}
+  \pi(x)&=\frac{\vartheta(x)}{\log x}
+       +\int_2^x\frac{\vartheta(t)}{t\log^2t}\,\mathrm dt,\\
+  \vartheta(x)&=\pi(x)\log x
+       -\int_2^x\frac{\pi(t)}t\,\mathrm dt.
+ \end{aligned}
+\end{equation}
+公式没有漏掉素数二：若先在 \((2,x]\) 上应用区间形式，再把二处的项加回，积分公式的下端补偿项恰好抵消。也可以在 \(x=2\) 直接检查，此时积分均为零，两条恒等式都成立。
+
 \begin{proposition}\label{b3:prop:27-equivalences}
-三个断言 \(\psi(x)\sim x\)、\(\vartheta(x)\sim x\)、\(\pi(x)\sim x/\log x\) 两两等价。
+对实数 \(x\ge2\)，令 \(\pi(x)=\#\{\,p\le x\mid p\text{ 为素数}\,\}\)、\(\vartheta(x)=\sum_{p\le x}\log p\)、\(\psi(x)=\sum_{p^m\le x,\ m\ge1}\log p\)，其中 \(p\) 遍历素数、\(m\) 为正整数。当 \(x\to\infty\) 时，三个断言
+\[
+ \psi(x)\sim x,
+ \quad \vartheta(x)\sim x,
+ \quad \pi(x)\sim\frac{x}{\log x}
+\]
+两两等价。
 \end{proposition}
 \begin{proof}
-前两个由高次幂误差 \(o(x)\) 等价。若 \(\vartheta(t)\sim t\)，部分求和给
-\(\pi(x)=\vartheta(x)/\log x+\int_2^x\vartheta(t)/(t\log^2t)\,\mathrm{d}t\)。由 \(\vartheta(t)=O(t)\)，将积分在 \(\sqrt x\) 分开，可得它为 \(O(\sqrt x)+O(x/\log^2x)=o(x/\log x)\)，于是得到 \(\pi\) 的渐近。
-反之若 \(\pi(x)\sim x/\log x\)，则 \(\vartheta(x)=\pi(x)\log x-\int_2^x\pi(t)/t\,\mathrm{d}t\)。\(\pi(t)=O(t/\log t)\)，同样在 \(\sqrt x\) 分割得积分 \(O(\sqrt x\log x)+O(x/\log x)=o(x)\)，所以 \(\vartheta(x)\sim x\)。
+由\cref{b3:prop:27-prime-power-error}，\((\psi(x)-\vartheta(x))/x\to0\)，所以前两个断言等价。
+
+假设 \(\vartheta(x)\sim x\)。在\eqref{b3:eq:27-count-partial-summation}的第一式中，边界项已是所求主项。由 \(\vartheta(t)\le Ct\)，对 \(x\ge4\) 将积分分成两段，得到
+\[
+ \begin{aligned}
+ 0\le\int_2^{\sqrt x}\frac{\vartheta(t)}{t\log^2t}\,\mathrm dt
+   &\le\frac{C\sqrt x}{\log^22},\\
+ 0\le\int_{\sqrt x}^x\frac{\vartheta(t)}{t\log^2t}\,\mathrm dt
+   &\le\frac{4Cx}{\log^2x}.
+ \end{aligned}
+\]
+第一项除以 \(x/\log x\) 后趋零，第二项除以同一尺度后也趋零。于是积分余项为 \(o(x/\log x)\)，从而 \(\pi(x)\sim x/\log x\)。分在 \(\sqrt x\) 的理由正是：前一段长度较小，后一段的对数分母与 \(\log x\) 可比较。
+
+反过来，假设 \(\pi(x)\sim x/\log x\)。因此存在 \(C'>0\)，使所有 \(t\ge2\) 都满足 \(\pi(t)\le C't/\log t\)；有限的初始区间可通过增大常数吸收。在\eqref{b3:eq:27-count-partial-summation}的第二式中，
+\[
+ \begin{aligned}
+ 0\le\int_2^{\sqrt x}\frac{\pi(t)}t\,\mathrm dt
+   &\le\frac{C'\sqrt x}{\log2},\\
+ 0\le\int_{\sqrt x}^x\frac{\pi(t)}t\,\mathrm dt
+   &\le\frac{2C'x}{\log x}.
+ \end{aligned}
+\]
+两项均为 \(o(x)\)，而 \(\pi(x)\log x\sim x\)，所以 \(\vartheta(x)\sim x\)。
 \end{proof}
+
+这一步把最终目标整理成了适合解析方法处理的形式：只须证明 \(\psi(x)/x\to1\)。粗增长界、素数幂误差和去权重公式都已独立建立。接下来研究 \(-\zeta'/\zeta\) 的边界性质时，可以直接使用这些工具，不必再把素数计数的技术细节夹进复分析证明中。

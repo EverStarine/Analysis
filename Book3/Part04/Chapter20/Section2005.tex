@@ -2,116 +2,406 @@
 \section{Hadamard 分解}
 \label{b3:sec:2005}
 
-一般 Weierstrass 分解中的 \(g\) 可以任意整。若原函数有限阶，增长约束会把它压成多项式；这是 Hadamard 分解比单纯零点存在性更强的部分。
+Weierstrass 定理说明，零点资料留下的全部不确定性是一个无零点因子 \(e^g\)。这里的 \(g\) 可以是任意整函数，因而零点本身不能控制增长。本节加入有限阶条件，证明 \(g\) 必为多项式。困难在于：即使已经知道 \(f\) 与典范乘积 \(P\) 的上界，也不能直接把两者相除来估计 \(e^g=f/P\)。分母在零点附近很小，所需的是某些大圆周上的\emph{下界}。
 
 \subsection{有限阶整函数}
 \label{b3:subsec:200501}
 
-设整函数 \(f\) 阶为 \(\rho<\infty\)，非零零点 \(a_n\)，原点重数 \(m\)，令 \(p=\lfloor\rho\rfloor\)。零点计数 \(n(r)=O_\varepsilon(r^{\rho+\varepsilon})\)，故 \(\sum|a_n|^{-p-1}<\infty\)（取 \(\varepsilon<p+1-\rho\)）。因此 \(P=z^m\prod E_p(z/a_n)\) 存在，且 \(f/P=e^g\)，\(g\) 整。问题归结为证明 \(g\) 的导数高阶消失。
+先恢复\chapref{b3:ch:19}中实际要用的增长信息。非恒零整函数 \(f\) 的阶为 \(\rho<\infty\)，意味着对每个 \(\eta>0\)，存在常数 \(C_\eta\) 和 \(r_\eta\)，使
+\[
+ \log M(r,f)\le C_\eta r^{\rho+\eta},\quad r\ge r_\eta.
+\]
+非零常数和多项式的阶都约定为零。若 \(m\) 是原点零点的重数，把其他零点按重数列成 \(a_n\)，则\cref{b3:prop:19-zero-density}给出
+\[
+ n(t)\coloneqq\#\{\,n:|a_n|\le t\,\}
+ \le C_\eta t^{\rho+\eta},\quad t\ge1.
+\]
+这里可以放大常数以包括有界区间；原点重数 \(m\) 单独保留，不放进涉及负幂的和式。
 
-\subsection{典范乘积}
+\ProseParagraphBreak
+
+令 \(p=\lfloor\rho\rfloor\)。因为 \(p+1>\rho\)，取 \(0<\eta<p+1-\rho\)，利用\cref{b3:prop:19-counting-integral}的计数积分公式可得
+\[
+ \sum_n|a_n|^{-p-1}<\infty.
+\]
+因此固定阶初等因子已经足够，毋须再随 \(n\) 增大因子阶数。乘积
+\[
+ P(z)=z^m\prod_n E_p(z/a_n)
+\]
+正规收敛，并与 \(f\) 具有完全相同的零点和重数。商在共同零点处补上可去值后是无零点整函数，\secref{b3:sec:2003}于是给出 \(f=Pe^g\)，其中 \(g\) 整。本节余下的任务是把 \(g\) 的高阶 Taylor 系数逐一消去。
+
+\ProseParagraphBreak
+
+可以先看没有零点的情形。若 \(f=e^g\)，增长界直接成为 \(\operatorname{Re}g=\log|f|\) 的上界；它还不是 \(|g|\) 的上界，所以不能立刻使用 Cauchy 估计。有零点时，必须先对 \(P\) 取下界，才能回到同样的问题。下面依次完成这两次转换，最后才使用 Cauchy 估计。
+
+\subsection{典范乘积的选圆估计}
 \label{b3:subsec:200502}
 
-先说明所需的乘积估计。对每个小 \(\varepsilon>0\)，可以在每个充分大的区间 \([r,2r]\) 选一个半径 \(R\)，使
-\[
-\log|P(z)|\ge-C_\varepsilon R^{\rho+\varepsilon},\quad |z|=R.
-\]
-选半径时避开所有 \(|a_n|\le4r\) 的半径 \(r^{-\rho-2}\) 邻域；这些禁区总长为 \(O(r^{-2+\varepsilon/4})\)，小于 \(r\)。对内层零点，\(|1-z/a_n|\) 至少为所选间隔除 \(|a_n|\)，故对数下界为 \(-C\log r\)；有限的极小零点也满足同类下界。指数修正的 \(k\) 次项由分部求和控制，\(k\le p\le\rho\)，总量为 \(O(r^{\rho+\varepsilon/4}\log r)\)。外层 \(|a_n|>4r\) 用 \(|\log E_p(z/a_n)|\le2|z/a_n|^{p+1}\)，分部求和同样给 \(O(r^{\rho+\varepsilon/4})\)。最后用 \(\log r=O(r^{\varepsilon/2})\) 吸收对数。上界也由相同的分层估计得到。
+零点处的 \(\log|P|=-\infty\)，故全平面的统一下界不可能成立。不过，在半径区间 \([r,2r]\) 中，只有有限多个零点模长需要回避。给每个模长留出一段很窄的禁区，只要这些禁区的总长度小于 \(r\)，剩下的半径就对应一条同时远离全部相关零点的圆周。
 
-关键不是逐点避开零点，而是选出整条无过近零点的圆周。否则 \(\log|P|\) 在零点处为负无穷，不能估计商的增长。
+\Needspace{6\baselineskip}
+\begin{lemma}[典范乘积的选圆估计]\label{b3:lem:20-product-circles}
+设 \(\sigma\ge0\)，\(m\) 为非负整数，\((a_n)\) 是复平面中非零点组成的有限或无有限聚点的无限点列，允许按有限重数重复；空点列也允许。设其计数函数 \(n(t)=\#\{\,n:|a_n|\le t\,\}\) 满足：对每个 \(\eta>0\)，存在 \(C_\eta\) 使
+\[
+ n(t)\le C_\eta t^{\sigma+\eta},\quad t\ge1.
+\]
+令 \(p=\lfloor\sigma\rfloor\)，并定义
+\[
+ E_p(w)=(1-w)\exp\left(\sum_{k=1}^p\frac{w^k}{k}\right),
+ \quad P(z)=z^m\prod_nE_p(z/a_n),
+\]
+其中空和为零、空积为一。则乘积正规收敛，且对每个 \(\varepsilon>0\)，存在 \(C_\varepsilon,r_\varepsilon>0\)，使每个 \(r\ge r_\varepsilon\) 都能选到 \(R\in[r,2r]\)，满足
+\begin{equation}\label{b3:eq:20-circle-lower}
+ \log|P(z)|\ge-C_\varepsilon R^{\sigma+\varepsilon},
+ \quad |z|=R.
+\end{equation}
+此外，对全部充分大的 \(r\)，有
+\begin{equation}\label{b3:eq:20-product-upper}
+ \log M(r,P)\le C_\varepsilon r^{\sigma+\varepsilon}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+固定 \(\varepsilon>0\)，选择
+\[
+ 0<\delta<\min\{\varepsilon/2,p+1-\sigma,1\},
+ \quad \alpha=\sigma+\delta.
+\]
+于是 \(p<\alpha<p+1\)，且 \(n(t)\le Ct^\alpha\)。计数积分先给出 \(\sum_n|a_n|^{-p-1}<\infty\)，所以乘积存在。以下所有常数均可依赖点列、\(m,p,\delta\)，但不依赖大半径 \(r\)。
+
+把零点分成 \(|a_n|<1\)、\(1\le|a_n|\le4r\) 和 \(|a_n|>4r\) 三组。第一组固定且有限。对 \(|z|\in[r,2r]\)、充分大的 \(r\)，这些因子的线性部分满足
+\[
+ \frac{r}{2|a_n|}\le|1-z/a_n|\le\frac{3r}{|a_n|}.
+\]
+其对数模连同指数修正的实部，总绝对值不超过 \(C(\log r+r^p)\)。原点因子贡献 \(m\log|z|\)，也只增加这一尺度。这样先拿走有限头部，后续估计就不必不断处理小分母。
+
+对中间组每个零点，从半径轴中删去开区间
+\[
+ (|a_n|-h_r,|a_n|+h_r),\quad h_r=r^{-\sigma-2}.
+\]
+这些区间的总长度至多
+\[
+ 2h_r n(4r)\le Cr^{-2+\delta}<r
+\]
+（重数重复计算只会放大这个上界）。所以它们不可能盖住整个 \([r,2r]\)。选一个剩余半径 \(R\)。对\emph{所有} \(|z|=R\) 和中间组零点，都有
+\[
+ |z-a_n|\ge\bigl||z|-|a_n|\bigr|\ge h_r,
+ \quad
+ \log|1-z/a_n|\ge-(\sigma+3)\log r-\log4.
+\]
+共有至多 \(Cr^\alpha\) 项，故线性部分的对数模之和不小于 \(-Cr^\alpha\log r\)。这个估计在整条圆周上同时成立，而非只挑中了一个远离零点的点。
+
+还须控制 \(E_p\) 的指数修正。若 \(1\le k\le p\)，对有限和使用计数分部求和，有
+\[
+ \begin{aligned}
+ \sum_{1\le|a_n|\le4r}|a_n|^{-k}
+ &\le (4r)^{-k}n(4r)
+      +k\int_1^{4r}n(t)t^{-k-1}\,\mathrm{d}t+C\\
+ &\le C_{k,\delta}r^{\alpha-k}.
+ \end{aligned}
+\]
+最后一步用到 \(\alpha>\sigma\ge k\)。因此在 \(|z|\le2r\) 上，
+\[
+ \left|\operatorname{Re}
+   \sum_{1\le|a_n|\le4r}\sum_{k=1}^p\frac{z^k}{k a_n^k}\right|
+ \le\sum_{k=1}^p\frac{(2r)^k}{k}
+       \sum_{1\le|a_n|\le4r}|a_n|^{-k}
+ \le Cr^\alpha.
+\]
+若 \(p=0\)，这一步的两重和为空，毋须另作估计。
+
+外层零点满足 \(|z/a_n|\le1/2\)。取在原点值为零的局部对数，\secref{b3:sec:2002}的尾项界给出
+\[
+ \sum_{|a_n|>4r}|\log E_p(z/a_n)|
+ \le 2(2r)^{p+1}\sum_{|a_n|>4r}|a_n|^{-p-1}.
+\]
+对最后尾和，可以先把每一项写成非负积分，再交换求和与积分：
+\[
+ \begin{aligned}
+ \sum_{|a_n|>4r}|a_n|^{-p-1}
+ &=(p+1)\int_{4r}^{\infty}
+       \bigl(n(t)-n(4r)\bigr)t^{-p-2}\,\mathrm{d}t\\
+ &\le C\int_{4r}^{\infty}t^{\alpha-p-2}\,\mathrm{d}t
+ \le Cr^{\alpha-p-1}.
+ \end{aligned}
+\]
+积分收敛正是 \(\alpha<p+1\) 的作用。因而外层全部对数的绝对值之和为 \(O(r^\alpha)\)，其和的实部也不会产生更大的负贡献。
+
+合并三组和原点因子，选定圆周上有
+\[
+ \log|P(z)|\ge-C\bigl(r^\alpha\log r+r^p+\log r\bigr).
+\]
+因为 \(\delta<\varepsilon\)，\(\log r\le C_\varepsilon r^{\varepsilon-\delta}\)；又 \(p\le\sigma\)、\(r\le R\)，便得\eqref{b3:eq:20-circle-lower}。
+
+上界不需要选择半径。给定任意充分大的 \(r\)，在 \(|z|=r\) 上作同样的三组分拆。中间组用
+\[
+ \log|1-z/a_n|\le\log(1+r)\le C\log r,
+\]
+其余修正项和外层用刚才的绝对值估计即可。即使 \(z\) 恰好是零点，上界仍成立；取最大值得到\eqref{b3:eq:20-product-upper}。
+\end{proof}
+
+选圆引理只使用零点计数，没有预先假设某个函数已经分解。它因而也证明：满足这种计数界的零点列，可以用所选典范乘积实现为阶不超过 \(\sigma\) 的整函数。这里的估计允许任意小的幂次余量，足以确定阶，却不能据此断言临界型有限；型需要更精细的计数和角度信息。
 
 \subsection{Hadamard 分解定理}
 \label{b3:subsec:200503}
 
-\begin{theorem}[Hadamard 分解]\label{b3:thm:20-hadamard}
-非恒零有限阶整函数 \(f\) 满足
+有了分母下界，\(\operatorname{Re}g\) 在选定圆周上就有上界。下一引理解释为什么全纯性能够把这种单边实部控制转换成内部的模控制；中心值必须保留，因为任意大的纯虚常数不会改变实部。
+
+\Needspace{6\baselineskip}
+\begin{lemma}[Borel--Carathéodory 估计]\label{b3:lem:20-borel-caratheodory}
+设 \(R>0\)，\(g\) 在闭圆盘 \(\overline{B(0,R)}\) 的某个开邻域全纯，令
 \[
-f(z)=z^m e^{Q(z)}\prod_nE_p(z/a_n),\quad p=\lfloor\rho(f)\rfloor,
+ A=\max_{|\zeta|\le R}\operatorname{Re}\bigl(g(\zeta)-g(0)\bigr).
 \]
-其中 \(Q\) 为次数不超过 \(\rho(f)\) 的多项式。
-\end{theorem}
+则 \(A\ge0\)，且对每个 \(0<r<R\)，有
+\[
+ \max_{|z|\le r}|g(z)-g(0)|\le\frac{2Ar}{R-r}.
+\]
+\end{lemma}
 \begin{proof}
-在上一小节选出的圆周，\(\operatorname{Re}g=\log|f|-\log|P|\le C_\varepsilon R^{\rho+\varepsilon}\)。调和最大值原理把界传到圆盘内部。
-为把实部界变成模界，令 \(F=g-g(0)\)、\(A=\max_{|z|\le R}\operatorname{Re}F\)。若 \(A=0\)，最大值原理使 \(g\) 常数。若 \(A>0\)，函数 \(F/(2A-F)\) 在圆盘模不超过一，中心为零；Schwarz 引理给半径 \(R/2\) 上模不超过 \(1/2\)，解出 \(|F|\le2A\)。所以 \(\max_{|z|\le R/2}|g(z)|\le C_\varepsilon R^{\rho+\varepsilon}+|g(0)|\)。
-Cauchy 估计对整数 \(k>\rho\) 给 \(|g^{(k)}(0)|\le k!C_\varepsilon R^{\rho+\varepsilon-k}\)。选 \(0<\varepsilon<k-\rho\)，沿选定半径趋无穷，得到导数零。于是 \(g=Q\) 为要求的多项式。
+令 \(F=g-g(0)\)，则 \(F(0)=0\)，所以 \(A\ge0\)。若 \(A=0\)，调和函数 \(\operatorname{Re}F\) 在内部原点取得最大值，强最大值原理使它恒为零。Cauchy--Riemann 方程于是使 \(F\) 为纯虚常数，中心值再给 \(F=0\)。
+
+设 \(A>0\)。把实部不超过 \(A\) 的半平面送入单位圆盘，所用的分式是
+\[
+ H(z)=\frac{F(z)}{2A-F(z)}.
+\]
+分母不为零，因为 \(\operatorname{Re}F\le A<2A\)；而
+\[
+ |2A-F|^2-|F|^2=4A\bigl(A-\operatorname{Re}F\bigr)\ge0.
+\]
+所以 \(|H|\le1\)，且 \(H(0)=0\)。将 \(z\) 按 \(R\) 缩放，对 \(H\) 应用\cref{b3:thm:02-schwarz}，得到 \(|H(z)|\le|z|/R\)。当 \(|z|\le r<R\) 时，解出 \(F=2AH/(1+H)\)，故
+\[
+ |F(z)|\le\frac{2A\cdot|H(z)|}{1-|H(z)|}
+          \le\frac{2Ar}{R-r}.
+\]
 \end{proof}
 
-\subsection{属与阶}
+这就是本节所需的\term[borel-caratheodory]{Borel--Carathéodory 估计}[Borel--Carathéodory estimate]。取 \(r=R/2\) 后右端等于 \(2A\)，常数不随 \(R\) 改变，因此特别适合大圆增长估计。
+
+\Needspace{6\baselineskip}
+\begin{theorem}[Hadamard 分解]\label{b3:thm:20-hadamard}
+设 \(f\) 为复平面上的非恒零整函数，增长阶为 \(0\le\rho<\infty\)。设 \(m\ge0\) 为其原点零点重数，非零零点按重数列为 \((a_n)\)，允许该点列有限或为空。令 \(p=\lfloor\rho\rfloor\)，并令
+\[
+ E_p(w)=(1-w)\exp\left(\sum_{k=1}^p\frac{w^k}{k}\right)
+\]
+（\(p=0\) 时空和为零）。则存在次数不超过 \(\rho\) 的多项式 \(Q\)，使
+\begin{equation}\label{b3:eq:20-hadamard-factorization}
+ f(z)=z^m e^{Q(z)}\prod_nE_p(z/a_n).
+\end{equation}
+乘积在紧集上正规收敛，空积为一。固定这些因子后，\(Q\) 的不确定性仅为加上 \(2\pi\mathrm{i}\) 的整数倍。
+\end{theorem}
+\begin{proof}
+由本节开头的零点计数与固定阶乘积构造，
+\[
+ P(z)=z^m\prod_nE_p(z/a_n)
+\]
+存在且与 \(f\) 有相同零点和重数。由\secref{b3:sec:2003}中无零点整函数的全局对数构造，存在整函数 \(g\) 满足 \(f=Pe^g\)。
+
+固定 \(\varepsilon>0\)，对 \(P\) 应用\cref{b3:lem:20-product-circles}，其中 \(\sigma=\rho\)。在每个充分大的尺度，选到一个 \(R\)，使 \(P\) 在 \(|z|=R\) 上无零点且满足下界。结合 \(f\) 的增长上界，有
+\[
+ \operatorname{Re}g(z)
+ =\log|f(z)|-\log|P(z)|
+ \le C_\varepsilon R^{\rho+\varepsilon},\quad |z|=R.
+\]
+\(g\) 是已在全平面定义的整函数，因此 \(\operatorname{Re}g\) 在整个闭圆盘的邻域调和。调和最大值原理把上界传到圆盘内部，连同 \(f,P\) 原来的共同零点一起包含；在这些点不必再写两个负无穷之差。
+
+用\cref{b3:lem:20-borel-caratheodory}取内部半径 \(R/2\)，得
+\[
+ \max_{|z|\le R/2}|g(z)|
+ \le |g(0)|+2\left(C_\varepsilon R^{\rho+\varepsilon}
+                         +|\operatorname{Re}g(0)|\right).
+\]
+现在才有了使用 Cauchy 估计所需的模界。对每个整数 \(k>\rho\)，另选 \(0<\varepsilon<k-\rho\)，由\cref{b3:thm:02-cauchy-estimate}，
+\[
+ |g^{(k)}(0)|\le
+ \frac{k!}{(R/2)^k}\max_{|z|\le R/2}|g(z)|
+ \le C_{k,\varepsilon}R^{\rho+\varepsilon-k}.
+\]
+取一列趋于无穷的尺度，所选 \(R\) 也趋于无穷，右端趋于零。因此所有 \(k>\rho\) 的导数都为零，\(g\) 的整 Taylor 级数截断成一个次数至多 \(\lfloor\rho\rfloor\) 的多项式 \(Q\)。
+
+若两个多项式 \(Q_1,Q_2\) 都满足同一分解，则 \(e^{Q_1-Q_2}=1\)。连续函数 \(Q_1-Q_2\) 的值在离散集合 \(2\pi\mathrm{i}\mathbb Z\) 内，复平面连通使它为该集合中的一个常数。这也证明了最后的唯一性陈述。
+\end{proof}
+
+\term[hadamard-fenjie]{Hadamard 分解定理}[Hadamard factorization theorem]的证明中有三个不同的控制对象：零点计数控制乘积，乘积下界控制商的对数实部，实部估计再控制该对数的模。跳过其中任一步，都会把“已知函数有限阶”误换成尚未证明的“商自动具有相同增长”。阶不能在分子、分母之间作减法。
+
+\ProseParagraphBreak
+
+上面的证明还保留了一个有用的统一版本。若只知道 \(\rho(f)\le\sigma<\infty\)，就可以用 \(p=\lfloor\sigma\rfloor\) 的共同因子得到同样的分解，且 \(\deg Q\le\sigma\)。事实上，增长与计数上界都可写成 \(C_\varepsilon r^{\sigma+\varepsilon}\)，选圆引理适用于这一 \(\sigma\)，最后消去的正是整数 \(k>\sigma\) 的导数。因子阶数高于最小需要并不妨碍证明，但相应指数多项式会随之改变。
+
+\subsection{属、阶与分解的应用}
 \label{b3:subsec:200504}
 
-整函数的属通常取典范乘积属与 \(Q\) 次数的较大者。上述定理给属不超过有限阶；零点指数与指数多项式共同决定增长，不能只数零点。
-
-作为应用，\(\sin\pi z\) 阶一、零点为全体整数。将正负因子配对，Hadamard 给
+先区分“一个表示中使用的因子阶数”和“函数的最小属”。设 \(p_0\) 是零点列的最小典范乘积属；对有限或空的非零零点列取 \(p_0=0\)。有限阶时 \(p_0\le\lfloor\rho\rfloor\)。从 Hadamard 所用的 \(p\) 降到 \(p_0\)，可以逐项使用
 \[
-\sin\pi z=e^{az+b}z\prod_{n\ge1}\left(1-\frac{z^2}{n^2}\right).
+ E_p(w)=E_{p_0}(w)
+       \exp\left(\sum_{k=p_0+1}^{p}\frac{w^k}{k}\right).
 \]
-两侧的奇性使 \(e^{az}\) 为偶函数，从 \(e^{az}=e^{-az}\) 对零点求导得到 \(a=0\)；再比较原点导数得 \(e^b=\pi\)。因此经典正弦乘积得到完整证明。
+其中每个系数和 \(\sum_n a_n^{-k}\) 绝对收敛：\(k\ge p_0+1\)，而定义 \(p_0\) 的幂和已经收敛；有限头部另计即可。因此有限乘积恒等式取极限后给
+\begin{equation}\label{b3:eq:20-genus-change}
+ \prod_nE_p(z/a_n)
+ =\exp\left(\sum_{k=p_0+1}^{p}\frac{z^k}{k}
+                       \sum_n a_n^{-k}\right)
+      \prod_nE_{p_0}(z/a_n).
+\end{equation}
+把这项有限次数的指数吸收进 \(Q\)，仍得到次数不超过 \(\rho\) 的多项式。没有相应绝对可和性时，不能把无限多个指数修正形式地合并。
 
-
-进一步展开乘积估计中的分部求和。若 \(n(t)\le Ct^a\)、\(a=\rho+\delta\)，则对 \(k\le p\le\rho\)，
+\Needspace{6\baselineskip}
+\begin{definition}[有限阶整函数的属]\label{b3:def:20-entire-genus}
+设 \(f\) 是非恒零有限阶整函数，原点零点重数为 \(m\)，非零零点列按重数记为 \((a_n)\)。令 \(p_0\) 是使 \(\sum_n|a_n|^{-p_0-1}<\infty\) 的最小非负整数；有限或空点列取 \(p_0=0\)。在表示
 \[
-\sum_{1\le|a_n|\le4r}|a_n|^{-k}
-\le (4r)^{-k}n(4r)+k\int_1^{4r}n(t)t^{-k-1}\,\mathrm{d}t
-\le C_{k,\delta}r^{a-k}.
+ f(z)=z^m e^{Q_0(z)}\prod_nE_{p_0}(z/a_n)
 \]
-乘上 \(r^k\) 后每阶修正均为 \(O(r^a)\)。当 \(p=0\) 没有修正项，内层只剩对数因子。对外层，取 \(a<p+1\)，同样得到
+中，\(Q_0\) 为多项式。称
 \[
-\sum_{|a_n|>4r}|a_n|^{-p-1}\le
-(p+1)\int_{4r}^{\infty}n(t)t^{-p-2}\,\mathrm{d}t
-\le C r^{a-p-1}.
+ g(f)\coloneqq\max\{p_0,\deg Q_0\}
 \]
-这解释了为什么一定要先选 \(\delta<p+1-\rho\)：尾积分的指数只有在这个范围才可积。整数阶 \(\rho=p\) 仍有一整次的余量，而不是临界发散。
+为 \(f\) 的\term[zhenghanshu-shu]{属}[genus of an entire function]；在这一约定中，常数多项式（包括零多项式）的次数均按零计。
+\end{definition}
 
-\ProseParagraphBreak
+固定最小因子后，\(Q_0\) 只差一个 \(2\pi\mathrm{i}\) 的整数倍常数，所以这个定义不依赖对数的选择。它也不会把原点的有限重数误算成增长阶。
 
-另一个可能的误用是先估计 \(|f/P|\)，再把分子分母的阶简单相减。整函数的阶并不这样运算；商在零点附近会遇到很小的分母，甚至两个同阶函数相减也可能造成完全抵消。本证明专门选择圆周上的乘积下界，再利用最大值原理，正是为了把分母风险变成可核验的估计。有限阶条件没有直接赋予商同样的阶。
-
-\ProseParagraphBreak
-
-实部转模的步骤是 \term[borel-caratheodory]{Borel--Carathéodory 估计}[Borel--Carathéodory estimate]的特例。更一般地，\(g\) 在闭半径 \(R\) 的圆盘全纯、\(A=\max\operatorname{Re}(g-g(0))\) 时，\(0<r<R\) 上有
+\Needspace{6\baselineskip}
+\begin{proposition}[属与阶的范围]\label{b3:prop:20-genus-order}
+若 \(f\) 是阶为 \(0\le\rho<\infty\) 的非恒零整函数，\(g(f)\) 是其属，则
 \[
-|g(z)-g(0)|\le\frac{2Ar}{R-r}.
+ g(f)\le\rho\le g(f)+1.
 \]
-由同一分式 \(F/(2A-F)\) 与 Schwarz 估计 \(r/R\) 解出即可。此估计不是由 \(|\operatorname{Re}g|\) 控制全部函数；一个纯虚常数仍需由 \(g(0)\) 另外记录。 Hadamard 证明中取 \(r=R/2\)，使这一步的常数不随大半径改变。
-
-\ProseParagraphBreak
-
-有限阶且只有有限零点的整函数现在具有完全明确的形式 \(P e^Q\)。例如 \((z-1)^2e^{3z^2+z}\) 的多项式部分固定两个零点，指数二次项决定阶二、型三，一次项不改变阶和型。无零点整函数 \(e^{z^3}\) 的阶三全部来自指数因子。对 \(\sin\pi z\)，阶一由零点密度和双向指数增长同时确认；它没有附加线性指数因子，原因不是零点本身，而是奇偶对称。
-
-\ProseParagraphBreak
-
-在整数极点的对称例子中，配对能减少扣除。由正弦乘积的对数导数得
+特别地，非整数阶满足 \(g(f)=\lfloor\rho\rfloor\)；正整数阶 \(\rho\) 的属只能为 \(\rho-1\) 或 \(\rho\)。
+\end{proposition}
+\begin{proof}
+Hadamard 分解及\eqref{b3:eq:20-genus-change}表明最小乘积属和相应指数多项式次数均不超过 \(\rho\)，所以 \(g(f)\le\rho\)。另一方面，对每个固定非负整数 \(q\)，都有
 \[
-\pi\cot\pi z=\frac1z+\sum_{n\ge1}\left(\frac1{z-n}+\frac1{z+n}\right)
-=\frac1z+\sum_{n\ge1}\frac{2z}{z^2-n^2}.
+ \log|E_q(w)|\le C_q|w|^{q+1},\quad w\in\mathbb C.
 \]
-最后级数在避开整数的紧集正规收敛，因为尾部为 \(O_K(n^{-2})\)。把 \(z-n\) 与 \(z+n\) 两个极点单独按不对称顺序相加，却只得到 \(O(n^{-1})\) 的尾部。明确的配对是收敛证明的一部分，不能藏在省略号中。这个公式给所有整数留数一，同时把无穷多个局部极点资料汇总成一个周期函数。
-
-\ProseParagraphBreak
-
-最后检验两个同零点有限阶函数之间的关系。若 \(f_1,f_2\) 均非恒零、阶不超过 \(\rho\)，按同一零点列及同一 \(p=\lfloor\rho\rfloor\) 取乘积，分别有 \(f_j=P e^{Q_j}\)，\(\deg Q_j\le\rho\)。所以 \(f_1/f_2=e^{Q_1-Q_2}\)。这里并非先假设商有限阶，而是由两份分解共同推出。特别地，当 \(\rho<1\) 时商只能为常数；当 \(\rho=1\) 时仍可有 \(e^{az}\) 自由度。
-
-\ProseParagraphBreak
-
-阶零也包含非多项式整函数，不能把它误写成“阶零当且仅当多项式”。例如零点 \(a_n=e^{n^2}\) 的属零乘积满足
+在 \(|w|\le1/2\) 上这是局部对数尾界；在 \(|w|>1/2\) 上用
 \[
-\log M(r)\le\sum_{n\ge1}\log(1+r/e^{n^2})=O((\log r)^{3/2}),\quad r\ge e.
+ \log|E_q(w)|\le\log(1+|w|)
+                   +\sum_{k=1}^q\frac{|w|^k}{k}
+                 \le C_q|w|^{q+1}
 \]
-取 \(N=\lfloor\sqrt{\log r}\rfloor\)，前 \(N+1\) 项各不超过 \(\log(1+r)\)，尾部由 \(r\sum_{n>N+1}e^{-n^2}\) 控制为有界量，故得到该估计。于是阶为零，但函数有无穷多个零点而不可能是多项式。Hadamard 在此只断言指数因子为常数；无穷乘积本身仍保留全部零点。有限阶与有限个零点是两项独立条件。
-
-
-\ProseParagraphBreak
-
-Hadamard 定理中的 \(p=\lfloor\rho\rfloor\) 是统一可用的选择，未承诺最小属。若零点临界幂和已经收敛，某些因子可降阶；降阶会改变指数多项式的低次项。例如正整数的属一乘积与一个事先配对的正负整数乘积拥有不同的指数修正，虽然最终零点可相同。比较两种表示时，应先把初等因子的指数差逐项展开，证明相关系数和收敛，再把它吸收进指数多项式。没有可和性就不能把一串指数形式地合并成一个有限系数。
-
-\ProseParagraphBreak
-
-正弦乘积还有一个实变量误差例子。对固定 \(|z|\le r\)，当 \(N>2r\) 时，尾因子 \(1-z^2/n^2\) 的对数绝对值总和不超过 \(2r^2\sum_{n>N}n^{-2}\le2r^2/N\)。于是截断乘积与完整乘积的尾部相对误差不超过 \(e^{2r^2/N}-1\)。离原点和整数零点很近时，函数自身可能小，相对全函数的计算误差还需考虑有限头部；在零点上，只能比较提出零因子后的函数。这给出了从解析恒等式到实际近似之间需要保留的条件。
-
-\ProseParagraphBreak
-
-由正弦乘积与倍角恒等式还可得到余弦乘积。将 \(\sin(2\pi z)/(2\sin\pi z)\) 按可去极点解释为 \(\cos\pi z\)，并在正规收敛的乘积中约去偶数零点因子，得
+即可，\(w=1\) 的负无穷值不妨碍上界。令 \(q=p_0\)，对因子相加得到
 \[
-\cos\pi z=\prod_{n\ge1}\left(1-\frac{4z^2}{(2n-1)^2}\right).
+ \log M\left(r,\prod_nE_{p_0}(z/a_n)\right)
+ \le C_{p_0}r^{p_0+1}\sum_n|a_n|^{-p_0-1}.
 \]
-约因子的合法性先在避开整数的紧集用非零尾部完成，再由全纯恒等定理扩展；不能在每个零点处直接把两个零乘积相除。原点值一确定常数因子，偶性排除一次指数自由度。该例同时展示零点删选、对称性和规范化怎样从一般分解确定一个具体函数。
+再加上 \(m\log r\) 和 \(\max_{|z|=r}\operatorname{Re}Q_0(z)\)，可知 \(\rho\le\max\{p_0+1,\deg Q_0\}\le g(f)+1\)。由于属是整数，两个特别结论随即得到。
+\end{proof}
+
+这个范围不能把零阶函数误判成多项式。例如
+\[
+ P_*(z)=\prod_{n\ge1}\left(1-\frac{z}{e^{n^2}}\right)
+\]
+是属零的整函数。对 \(r\ge e\)，令 \(N=\lceil\sqrt{\log r}\rceil\)。前 \(N\) 个因子的对数上界至多为 \(N\log(1+r)\)；尾部满足
+\[
+ \sum_{n>N}\log(1+re^{-n^2})
+ \le r\sum_{n>N}e^{-n^2}
+ \le\sum_{j\ge1}e^{-2Nj-j^2}\le\sum_{j\ge1}e^{-j}.
+\]
+于是 \(\log M(r,P_*)=O((\log r)^{3/2})\)，阶为零。它有无穷多个零点，故不是多项式；Hadamard 在零阶时限制的是指数因子，只要求它为常数。
+
+\Needspace{6\baselineskip}
+\begin{corollary}[有限零点与无零点的有限阶函数]\label{b3:cor:20-finite-zeros}
+非恒零整函数 \(f\) 具有有限阶且只有有限多个零点，当且仅当
+\[
+ f=P_0e^Q,
+\]
+其中 \(P_0\) 为非零多项式、\(Q\) 为多项式。若 \(Q(z)=a_dz^d+\cdots\)、\(d\ge1\)、\(a_d\ne0\)，则 \(f\) 的阶为 \(d\)，型为 \(|a_d|\)；若 \(Q\) 为常数，\(f\) 的阶为零。特别地，无零点的有限阶整函数恰为指数多项式 \(e^Q\)，其非零阶必为正整数。
+\end{corollary}
+\begin{proof}
+有限零点的 Hadamard 乘积可以降为有限个 \(E_0\) 因子的乘积，其指数修正吸收进 \(Q\)，这给出必要性。反之，这种表示是整函数，指数部分没有零点，而多项式仅有有限零点。
+
+设 \(P_0\) 次数为 \(\ell\)。在所有充分大的圆周上，首项占优给出统一估计
+\[
+ c r^\ell\le|P_0(z)|\le C r^\ell,\quad |z|=r.
+\]
+若 \(d\ge1\)，上界 \(\operatorname{Re}Q(z)\le|a_d|r^d+O(r^{d-1})\) 成立；取角度使 \(a_dz^d=|a_d|r^d\)，又得到同尺度下界。于是
+\[
+ \log M(r,f)=|a_d|r^d+O(r^{d-1}+\log r).
+\]
+由阶与型的定义得出结论。\(Q\) 为常数时只剩非零多项式，阶为零。无零点时 \(P_0\) 也是非零常数，可选一个复对数吸收进 \(Q\)。
+\end{proof}
+
+例如 \((z-1)^2e^{3z^2+z}\) 的二重零点与二阶增长承担不同职责：前者来自多项式，后者来自指数中的二次项，型为三。反过来，\(e^{e^z}\) 没有零点，但在正实轴上 \(\log|e^{e^r}|=e^r\)，其阶无穷；所以有限阶假设确实不能删除。
+
+\Needspace{6\baselineskip}
+\begin{corollary}[同零点有限阶函数的商]\label{b3:cor:20-same-zeros}
+设 \(f_1,f_2\) 是复平面上的非恒零整函数，具有相同的零点和重数，且 \(\rho(f_j)\le\sigma<\infty\)。则商在共同零点处补上可去值后满足
+\[
+ \frac{f_1}{f_2}=e^Q,
+\]
+其中 \(Q\) 为次数不超过 \(\sigma\) 的多项式。若 \(\sigma<1\)，两函数必为非零常数倍。
+\end{corollary}
+\begin{proof}
+用同一零点列、同一原点重数和 \(p=\lfloor\sigma\rfloor\) 构造共同乘积 \(P\)。Hadamard 证明后的统一版本给 \(f_j=Pe^{Q_j}\)，其中 \(\deg Q_j\le\sigma\)。相除得到 \(Q=Q_1-Q_2\)。若 \(\sigma<1\)，该多项式只能为常数。
+\end{proof}
+
+最后用这些工具确定三角函数。由指数定义可知 \(\sin\pi z\) 的零点恰为整数，均为简单零点；且
+\[
+ |\sin\pi z|\le e^{\pi|\operatorname{Im}z|},
+ \quad |\sin(\pi\mathrm{i}r)|=\sinh(\pi r).
+\]
+上、下界给出阶一、型 \(\pi\)。在 \(p=1\) 的乘积中，把 \(n\) 与 \(-n\) 的因子配对，指数修正恰好抵消：
+\[
+ E_1(z/n)E_1(-z/n)=1-z^2/n^2.
+\]
+这种配对合法，是因为原来的初等因子对数尾部绝对可和。Hadamard 分解因而给
+\[
+ \sin\pi z=e^{az+b}z\prod_{n\ge1}(1-z^2/n^2).
+\]
+\(\sin\pi z\) 与 \(z\prod_{n\ge1}(1-z^2/n^2)\) 都是奇函数，故它们的无零点商为偶函数。于是 \(e^{az+b}=e^{-az+b}\)；在原点对两侧求导，得 \(a=0\)。再比较原点的一阶导数，得 \(e^b=\pi\)。这样，零点和增长先把自由度限制为一次指数，对称性和中心归一化再确定它。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[正弦乘积与余切展开]\label{b3:prop:20-sine-product}
+在复平面上有局部一致收敛的乘积恒等式
+\begin{equation}\label{b3:eq:20-sine-product}
+ \sin\pi z=\pi z\prod_{n=1}^{\infty}\left(1-\frac{z^2}{n^2}\right).
+\end{equation}
+在 \(\mathbb C\setminus\mathbb Z\) 上有局部正规收敛的级数恒等式
+\begin{equation}\label{b3:eq:20-cotangent}
+ \pi\cot\pi z=\frac1z+\sum_{n=1}^{\infty}\frac{2z}{z^2-n^2}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+乘积恒等式已由紧接本命题之前的 Hadamard 分解计算得出；其紧集收敛也直接来自 \(\sum_n|z|^2/n^2\) 的局部一致可和性。对避开整数的紧集，选一个略大的、仍避开整数的紧邻域。有限乘积在那里最终远离零，函数及导数局部一致趋于正弦及其导数，故可以取对数导数的极限。
+
+每个成对因子的对数导数为
+\[
+ \frac{-2z/n^2}{1-z^2/n^2}=\frac{2z}{z^2-n^2}
+ =\frac1{z-n}+\frac1{z+n}.
+\]
+在固定紧集上，充分远的项由 \(C_Kn^{-2}\) 控制，所以导数级数也正规收敛，所得正是\eqref{b3:eq:20-cotangent}。
+\end{proof}
+
+余切展开也可以看作一份特殊的 Mittag--Leffler 构造：每个整数的留数为一，正负极点配对后自动消去了原来的调和级数尾部。这个配对必须写在求和规则中；把 \(1/(z-n)\) 按任意不对称顺序累加，不会自动保有同一个和。
+
+\ProseParagraphBreak
+
+正规收敛还给出可量化的截断误差。令
+\[
+ S_N(z)=\pi z\prod_{n=1}^{N}(1-z^2/n^2),
+ \quad T_N(z)=\prod_{n>N}(1-z^2/n^2).
+\]
+对固定 \(r>0\)、整数 \(N>2r\)，外层小对数满足
+\[
+ \sup_{|z|\le r}|\log T_N(z)|
+ \le2r^2\sum_{n>N}n^{-2}\le\frac{2r^2}{N}.
+\]
+因此
+\[
+ \sup_{|z|\le r}|T_N(z)-1|\le e^{2r^2/N}-1,
+ \quad
+ |\sin\pi z-S_N(z)|\le|S_N(z)|\left(e^{2r^2/N}-1\right).
+\]
+后一个绝对误差估计在整个闭圆盘成立，包括整数零点；只有把它写成除以 \(S_N\) 的相对误差时，才须避开这些零点，或先取可去延拓。乘积身份 \(\sin\pi z=S_NT_N\) 本身没有这个除零问题。
+
+\ProseParagraphBreak
+
+从正弦乘积还可删去偶数零点，得到
+\begin{equation}\label{b3:eq:20-cosine-product}
+ \cos\pi z=\prod_{n=1}^{\infty}
+                  \left(1-\frac{4z^2}{(2n-1)^2}\right).
+\end{equation}
+具体地，把 \(\sin(2\pi z)/(2\pi z)\) 的乘积分为偶数和奇数两组；两组的扰动绝对可和，所以可分别取极限。偶数组为 \(\sin(\pi z)/(\pi z)\)。先在 \(|z|<1/2\) 内相除，并用倍角恒等式，便得到\eqref{b3:eq:20-cosine-product}；随后两边都是整函数，恒等定理把它延至全平面。这样约去的是邻域内非零的全纯函数，不是在整数点直接作零除零。
+
+\ProseParagraphBreak
+
+本章的三类结论至此衔接起来：乘积负责指定零点，主部级数负责指定极点数据，有限阶分解则量化了零点之外还能保留多少自由度。对具体函数，最后的常数或指数系数常由奇偶性、中心值或导数确定。下一章的特殊函数也将反复使用这种“局部资料加整体增长”的方法。

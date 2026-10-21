@@ -1,0 +1,163 @@
+% !TeX root = ../../Book2.tex
+\section{二阶线性方程}
+\label{b2:sec:0801}
+
+两个二阶方程可能只差一个符号，解的行为却截然不同。分类首先抓住最高阶导数的组合，把它看成每一点上的二次型。本节使用 \(z=(z_1,\ldots,z_n)\) 表示全部自变量；只有在讨论演化问题时才拆成 \(z=(t,x)\)。因此 \(n\) 不总等于空间维数。
+
+\subsection{主部}
+\label{b2:subsec:080101}
+
+在开集 \(\Omega\subseteq\mathbb R^n\) 上考虑实系数算子
+\begin{equation}\label{b2:eq:08-linear-operator}
+ Lu=\sum_{i,j=1}^n a^{ij}(z)\partial_i\partial_ju
+ +\sum_{i=1}^n b^i(z)\partial_i u+c(z)u.
+\end{equation}
+系数至少连续，经典解至少属于 \(C^2\)。一阶和零阶项称为低阶项；主部已在\secref{b2:sec:0104}引入，此处专指含二阶导数的和式，记为 \(L_2u\)。由于混合偏导相等，把 \(a^{ij}\) 换成 \((a^{ij}+a^{ji})/2\) 不改变算子。以下始终取实对称矩阵 \(A=(a^{ij})\)。
+
+\ProseParagraphBreak
+
+二维中习惯写为
+\[
+ L_2u=a u_{xx}+2b u_{xy}+c u_{yy},\quad
+ A=\begin{pmatrix}a&b\\b&c\end{pmatrix}.
+\]
+混合项前面的 \(2\) 来自矩阵求和中 \((1,2)\) 和 \((2,1)\) 两项。若方程写成 \(u_{xx}+6u_{xy}+u_{yy}=0\)，则矩阵的非对角元为 \(3\)，不是 \(6\)。本节中的 \(a,b,c\) 是二维主部的临时系数，不与\eqref{b2:eq:08-linear-operator}中的向量低阶系数混用。
+
+\ProseParagraphBreak
+
+散度形式也有相同的最高阶矩阵。在 \(a^{ij}\in C^1\) 时，
+\[
+ \sum_{i,j}\partial_i(a^{ij}\partial_ju)
+ =\sum_{i,j}a^{ij}\partial_i\partial_ju
+ +\sum_{i,j}(\partial_i a^{ij})\partial_ju.
+\]
+它与非散度形式在经典分类上相同，但分部积分时低阶项不同；在粗糙系数或弱解问题中，两种写法更不能只凭主部相同便随意交换。
+
+\subsection{主符号}
+\label{b2:subsec:080102}
+
+\begin{definition}\label{b2:def:08-principal-symbol}
+设 \(n\geq1\)，\(\Omega\subset\mathbb R^n\) 为开集，实系数算子 \(L=\sum_{i,j}a^{ij}(z)\partial_{ij}+\sum_i b^i(z)\partial_i+c(z)\) 的系数均连续，且 \(A=(a^{ij})\) 为实对称矩阵场。对 \(z\in\Omega\)，二次齐次多项式
+\[
+ p(z,\xi)\coloneqq\xi^{\mathsf T}A(z)\xi
+ =\sum_{i,j=1}^n a^{ij}(z)\xi_i\xi_j
+ \quad(\xi\in\mathbb R^n)
+\]
+称为 \(L\) 的\term[zhufuhao]{主符号}[principal symbol]。本章不把 Fourier 微分规则中的 \(-4\pi^2\) 因子纳入这个几何记号。
+\end{definition}
+\symidx{\(p(z,\xi)\)：二阶算子的几何主符号}
+
+后一约定与第二编的 \(2\pi\) 归一化相容：对常系数主部，
+\[
+ L_2e^{2\pi\mathrm i z\cdot\xi}
+ =-4\pi^2p(\xi)\cdot e^{2\pi\mathrm i z\cdot\xi}.
+\]
+因此 \(p\) 记录不同频率方向的二阶作用，整个 Fourier 乘子则是 \(-4\pi^2p\)。不同文献可能把这个负号纳入符号定义；判断椭圆性和特征集合时，必须先核对其约定。
+
+\ProseParagraphBreak
+
+更一般地，对光滑实相位 \(\phi\) 与大参数 \(\lambda\)，直接两次求导给出
+\[
+ L\bigl(e^{2\pi\mathrm i\lambda\phi}\bigr)
+ =e^{2\pi\mathrm i\lambda\phi}
+ \left(-4\pi^2\lambda^2p(z,\nabla\phi)
+ +2\pi\mathrm i\lambda\left(\sum_{i,j}a^{ij}\partial_{ij}\phi
+ +\sum_i b^i\partial_i\phi\right)+c\right).
+\]
+在固定紧集上，最高的 \(\lambda^2\) 次项由主符号决定。若该系数为零，通常占主导的二阶作用恰好抵消；特征几何正由这类方向产生。这个计算只是代数恒等式，没有断言任意高频函数就是某个方程的近似解。
+
+\subsection{特征余向量}
+\label{b2:subsec:080103}
+
+\begin{definition}\label{b2:def:08-characteristic-covector}
+设 \(n\geq1\)，\(\Omega\subset\mathbb R^n\) 为开集，实系数算子 \(L=\sum_{i,j}a^{ij}(z)\partial_{ij}+\sum_i b^i(z)\partial_i+c(z)\) 的系数均连续，且 \(A=(a^{ij})\) 为实对称矩阵场。令 \(p(z,\nu)=\nu^{\mathsf T}A(z)\nu\)。在一点 \(z\in\Omega\)，若非零实余向量 \(\nu\in(\mathbb R^n)^*\) 满足 \(p(z,\nu)=0\)，则称它为该点的\term[tezheng-yuxiangliang]{特征余向量}[characteristic covector]。若实值函数 \(\phi\in C^2(V)\) 定义在开集 \(V\subseteq\Omega\) 上，在超曲面 \(\Sigma=\{z\in V:\phi(z)=0\}\) 上处处有 \(\nabla\phi\ne0\)，且 \(p(z,\mathrm d\phi(z))=0\)，则称 \(\Sigma\) 为\term[tezheng-chaqumian]{特征超曲面}[characteristic hypersurface]。在 \(\Sigma\) 上满足 \(p(z,\mathrm d\phi(z))\ne0\) 的点称为该曲面的非特征点。
+\end{definition}
+
+这里的 \(\nu\) 表示余向量，也就是对位移作线性求值的法向数据；借欧氏内积可用列向量表示，但不能把它直接当作曲面的切向。例如，\(\mathrm d\phi(z)\) 对切向量 \(w\) 的作用是 \(\mathrm d\phi(z)[w]=\nabla\phi(z)\cdot w\)，在切平面上等于零。下文计算主符号时，以梯度的列向量表示同一个微分。非零倍数 \(\alpha\nu\) 仍为特征余向量，所以也可以讨论它确定的、忽略非零实倍数的余法向方向；二维特征曲线的切方向则是另一个对象。
+
+\ProseParagraphBreak
+
+换一个定义函数 \(\widetilde\phi=\alpha\phi\)，其中 \(\alpha\) 是曲面附近不为零的 \(C^2\) 实函数，在曲面上有 \(\mathrm d\widetilde\phi=\alpha\,\mathrm d\phi\)。主符号齐次，零值条件不变。一般地，同一光滑超曲面的两个正则定义函数在曲面上的非零微分都有同一个核，即切平面，因而成非零比例；所以特征条件不依赖定义函数的选择。一个曲面也可能只有部分点为特征点，不能从一个点的条件推出整张曲面均为特征。
+
+\ProseParagraphBreak
+
+在二维中，若曲线切向为 \((\mathrm dx,\mathrm dy)\)，则其一个法向与 \((-\mathrm dy,\mathrm dx)\) 平行。特征条件因而写作
+\begin{equation}\label{b2:eq:08-characteristic-differential}
+ a(\mathrm dy)^2-2b\,\mathrm dx\,\mathrm dy+c(\mathrm dx)^2=0.
+\end{equation}
+当 \(\mathrm dx\ne0\) 时，它变为斜率方程 \(am^2-2bm+c=0\)。这解释了为什么这里混合项的符号与主符号 \(a\xi^2+2b\xi\eta+c\eta^2\) 相反：一个写切向，一个写法向。
+
+\ProseParagraphBreak
+
+非特征条件的代数意义是可以解出法向二阶导数。取坐标 \(y_1=\phi(z)\)，补足其余坐标后，\(\partial_{y_1}^2v\) 的系数就是 \(p(z,\nabla\phi)\)。该系数非零时，可以把它移到方程一侧并相除。但这一步只整理了方程，没有证明给定 Cauchy 数据的解存在，也没有得到稳定性。例如对 Laplace 方程，任意非零实法向都是非特征的，而给定函数值和法向导数的 Cauchy 问题仍可能非常不稳定。
+
+\subsection{坐标不变性}
+\label{b2:subsec:080104}
+
+\begin{proposition}\label{b2:prop:08-coordinate-change}
+设 \(n\geq1\)，\(\Omega,\widetilde\Omega\subset\mathbb R^n\) 为开集，实系数算子 \(L=\sum_{i,j}a^{ij}(z)\partial_{ij}+\sum_i b^i(z)\partial_i+c(z)\) 的系数均连续，且 \(A=(a^{ij})\) 为实对称矩阵场。设 \(F:\Omega\to\widetilde\Omega\) 为 \(C^2\) 微分同胚，\(\mathbb K\in\{\mathbb R,\mathbb C\}\)，\(v\in C^2(\widetilde\Omega;\mathbb K)\)，\(y=F(z)\)，\(u(z)=v(F(z))\)，并令 \(B=DF(z)\)。则新坐标中的主部矩阵为
+\begin{equation}\label{b2:eq:08-congruence}
+ \widetilde A(y)=B A(z)B^{\mathsf T},\quad z=F^{-1}(y),
+\end{equation}
+一阶系数为
+\begin{equation}\label{b2:eq:08-lower-transform}
+ \widetilde b^k(y)=\sum_{i,j}a^{ij}(z)\partial_{ij}F^k(z)
+ +\sum_i b^i(z)\partial_iF^k(z).
+\end{equation}
+零阶系数为 \(\widetilde c(y)=c(F^{-1}(y))\)，主符号满足 \(\widetilde p(y,\eta)=p(z,B^{\mathsf T}\eta)\)。因此，对 \(f\in C(\Omega;\mathbb K)\)，方程 \(Lu=f\) 等价于
+\[
+ \sum_{k,l}\widetilde a^{kl}\partial_{kl}v
+ +\sum_k\widetilde b^k\partial_kv+\widetilde c\,v
+ =\widetilde f,
+ \qquad \widetilde f=f\circ F^{-1}.
+\]
+\end{proposition}
+\begin{proof}
+链式法则给出
+\[
+ \partial_i u=\sum_k\partial_kv\cdot\partial_iF^k,
+\quad
+ \partial_{ij}u=\sum_{k,l}\partial_{kl}v\cdot\partial_iF^k\cdot\partial_jF^l
+ +\sum_k\partial_kv\cdot\partial_{ij}F^k.
+\]
+代入算子并按 \(v\) 的导数阶数整理，得到两条系数公式。再把 \(\eta\) 代入二次型，便有
+\(\eta^{\mathsf T}BAB^{\mathsf T}\eta=(B^{\mathsf T}\eta)^{\mathsf T}A(B^{\mathsf T}\eta)\)。
+\end{proof}
+
+实对称矩阵在可逆\term[hetong-bianhuan]{合同变换}[congruence transformation]下保持正、负及零特征值的个数，这三项称为其\term[guanxing]{惯性}[inertia]。为说明这一事实，先由有限维谱定理把矩阵正交对角化。二次型为正定的子空间最大维数恰等于正特征值个数：正特征子空间达到这个维数；任何更大子空间必与非正特征子空间非平凡相交，不可能正定。可逆线性变换保持子空间维数，因而保持该最大值。对负号二次型重复此论证可得负特征值个数不变，最后由总维数得到零特征值个数不变。
+
+\ProseParagraphBreak
+
+所以主部分类不依赖合法坐标，但矩阵的具体特征值和统一常数可能改变。设 \(A(z)\geq\lambda I\)，其中 \(\lambda>0\) 与 \(z\) 无关，则
+\[
+ \eta^{\mathsf T}\widetilde A(F(z))\eta
+ \geq\lambda|B(z)^{\mathsf T}\eta|^2.
+\]
+若还知道 \(\sup_{z\in\Omega}\|B(z)^{-1}\|\leq M<\infty\)，由
+\( |\eta|\leq\|B(z)^{-1}\|\,|B(z)^{\mathsf T}\eta|\)
+得到 \(\widetilde A\geq\lambda M^{-2}I\)。这里均使用欧氏算子范数，且转置不改变该范数。逆导数的一致控制是从 \(A\geq\lambda I\) 这一已知下界推出新下界的充分条件；缺少它时，这一个下界本身不足以保证结论，仍须检查 \(A\) 与 \(B\) 的共同变化。
+
+\ProseParagraphBreak
+
+例如在 \(\mathbb R^2\) 上取
+\[
+ A(x,y)=\begin{pmatrix}1&0\\0&(1+y^2)^2\end{pmatrix},
+ \qquad F(x,y)=(x,\arctan y).
+\]
+这是到 \(\mathbb R\times(-\pi/2,\pi/2)\) 的光滑微分同胚，且
+\[
+ B=\begin{pmatrix}1&0\\0&(1+y^2)^{-1}\end{pmatrix},
+ \qquad \|B^{-1}\|=1+y^2,
+ \qquad BAB^{\mathsf T}=I.
+\]
+逆导数虽然无界，原矩阵在同一方向上的增长却恰好抵消坐标压缩，新矩阵仍有统一正下界。反过来，若保持同一个 \(F\) 而取 \(A=I\)，新矩阵第二个特征值为 \((1+y^2)^{-2}\)，确实没有统一正下界。这两个计算同时说明充分条件的用途和它的适用边界。
+
+\ProseParagraphBreak
+
+还须区分统一正下界与\secref{b2:sec:0802}采用的双侧一致椭圆条件。前一个例子的原矩阵没有统一上界，不能称为该双侧意义下的一致椭圆矩阵。若已知 \(\lambda I\leq A\leq\Lambda I\)，再有 \(\sup\|B\|\leq N\)、\(\sup\|B^{-1}\|\leq M\)，则
+\[
+ \frac{\lambda}{M^2}|\eta|^2
+ \leq\eta^{\mathsf T}\widetilde A\eta
+ \leq\Lambda N^2|\eta|^2,
+\]
+从而双侧条件也被传递。点态坐标不变性与全域定量估计是两个层次。非线性坐标还会产生\eqref{b2:eq:08-lower-transform}中的一阶项，忽略它们会改变原方程。

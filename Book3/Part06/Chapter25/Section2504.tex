@@ -2,59 +2,287 @@
 \section{Dirichlet 级数}
 \label{b3:sec:2504}
 
-一般幂级数以圆盘为收敛区域，Dirichlet 级数以右半平面为基本区域。原因是 \(n^{-s}=e^{-s\log n}\)，增大实部会同时压低全部高指标项。
+前两节中，卷积和反演的每一个系数都由有限和定义；上一节则开始把算术函数的部分和放进含复参数的积分。现在把这些过程联系起来：以 \(n^{-s}\) 为权重求和，什么范围内得到全纯函数？何时可以把两个函数相乘，并把乘积解释成系数卷积？有限卷积中的逆元又是否总能表示解析函数的倒数？这些问题都要求先辨明收敛区域。
+
+一般幂级数的收敛区域是圆盘，Dirichlet 级数的基本收敛区域则是右半平面。增大 \(\operatorname{Re}s\) 会减小 \(n^{-s}=e^{-s\log n}\) 的模。不过，条件收敛利用了系数的相消，不能只比较单项的模就断言它在右边仍然收敛。上一节的部分求和恰好能保留这种相消。
 
 \subsection{收敛横坐标}
 \label{b3:subsec:250401}
 
-\begin{definition}\label{b3:def:25-dirichlet-series}
-形如 \(D_a(s)=\sum_{n\ge1}a(n)n^{-s}\) 的级数称为\term[dirichlet-jishu]{Dirichlet 级数}[Dirichlet series]。
+\begin{definition}[Dirichlet 级数]\label{b3:def:25-dirichlet-series}
+设 \(a:\mathbb N_{\ge1}\to\mathbb C\) 为算术函数。以复数 \(s\) 为变量的级数
+\[
+ D_a(s)=\sum_{n=1}^{\infty}\frac{a(n)}{n^s},
+ \qquad n^{-s}=\exp(-s\log n),
+\]
+称为系数为 \(a\) 的\term[dirichlet-jishu]{Dirichlet 级数}[Dirichlet series]，其中 \(\log n\) 始终取正整数 \(n\) 的实对数。这里的收敛指按自然顺序取有限部分和 \(\sum_{n=1}^N a(n)n^{-s}\) 后令 \(N\to\infty\) 所得的收敛。
 \end{definition}
-若级数在 \(s_0\) 收敛，令 \(b_n=a(n)n^{-s_0}\)。其尾部分和 \(\sum_{M<n\le N}b_n\) 对 \(N\ge M\) 一致趋零。对尾部应用 Abel 求和可知，对任意 \(\operatorname{Re}w>0\)，\(\sum b_nn^{-w}\) 收敛，并在 \(\operatorname{Re}w\ge\delta>0\)、\(|w|\le R\) 一致收敛。因此存在扩展实数 \(\sigma_c\)，使级数在 \(\operatorname{Re}s>\sigma_c\) 收敛且全纯，在 \(\operatorname{Re}s<\sigma_c\) 发散；边界可能随虚部而异。数 \(\sigma_c\) 称为\term[shoulian-hengzuobiao]{收敛横坐标}[abscissa of convergence]。
+
+因为 \(n\) 是正实数，上式没有复对数的分支选择。若 \(s=\sigma+\mathrm it\)，则
+\[
+ a(n)n^{-s}=a(n)n^{-\sigma}e^{-\mathrm it\log n}.
+\]
+实部决定单项的大小，虚部改变其相位；这也解释了为何一般收敛和绝对收敛需要分别讨论。系数只有有限个非零值时称为\term[dirichlet-duoxiangshi]{Dirichlet 多项式}[Dirichlet polynomial]，它在全复平面都有意义。
+
+\begin{proposition}[向右收敛与局部一致性]\label{b3:prop:25-convergence-half-plane}
+设 \(a:\mathbb N_{\ge1}\to\mathbb C\)、\(s_0\in\mathbb C\)，并用实对数定义 \(n^{-s}=\exp(-s\log n)\)。若 \(\sum_{n\ge1}a(n)n^{-s_0}\) 收敛，则 \(\sum_{n\ge1}a(n)n^{-s}\) 在开半平面 \(\operatorname{Re}s>\operatorname{Re}s_0\) 局部一致收敛，其和在这个半平面全纯。
+\end{proposition}
+\begin{proof}
+记 \(b_n=a(n)n^{-s_0}\)、\(w=s-s_0\)。已知的收敛性给出 Cauchy 尾界
+\[
+ \eta_M=\sup_{N\ge M}\left|\sum_{M<n\le N}b_n\right|
+ \longrightarrow0\qquad(M\to\infty).
+\]
+对实数 \(t\ge M\) 置 \(B_M(t)=\sum_{M<n\le t}b_n\)，则 \(|B_M(t)|\le\eta_M\)。这里估计的是整个尾段的和，而非各项绝对值之和。
+
+对整数 \(N>M\ge1\)，用\eqref{b3:eq:25-interval-summation}中的区间部分求和，取权重 \(t^{-w}\)，得到
+\[
+ \sum_{M<n\le N}b_nn^{-w}
+ =B_M(N)N^{-w}
+   +w\int_M^N B_M(t)t^{-w-1}\,\mathrm dt.
+\]
+下端项为零，因为 \(B_M(M)=0\)。若 \(\operatorname{Re}w\ge\delta>0\)、\(|w|\le R\)，则端点项不超过 \(\eta_M M^{-\delta}\)，积分项满足
+\[
+ \left|w\int_M^N B_M(t)t^{-w-1}\,\mathrm dt\right|
+ \le R\eta_M\int_M^{\infty}t^{-\delta-1}\,\mathrm dt
+ =\frac{R}{\delta}\eta_M M^{-\delta}.
+\]
+于是有统一的尾界
+\begin{equation}\label{b3:eq:25-right-cauchy-tail}
+ \left|\sum_{M<n\le N}a(n)n^{-s}\right|
+ \le\eta_M M^{-\delta}\left(1+\frac R\delta\right).
+\end{equation}
+任一紧集 \(K\subset\{\operatorname{Re}s>\operatorname{Re}s_0\}\) 到边界有正距离，且 \(|s-s_0|\) 在 \(K\) 上有界，故可选同一组 \(\delta,R\) 对 \(K\) 中全部参数使用这项估计。这证明了局部一致的 Cauchy 条件。有限部分和是整函数，由\cref{b3:prop:04-holomorphic-limit}，其局部一致极限全纯。
+\end{proof}
+
+命题给的是每个内部紧集上的一致收敛；估计中的 \(R\) 也说明，不能由此直接宣称在整个无界竖直带上一致收敛。更不能令 \(\delta=0\) 来讨论原收敛点所在的边界线：积分中的 \(t^{-1-\delta}\) 正是依靠 \(\delta>0\) 才能积到无穷。
+
+\begin{definition}[收敛横坐标]\label{b3:def:25-convergence-abscissa}
+设 \(a:\mathbb N_{\ge1}\to\mathbb C\)，以实对数定义 Dirichlet 级数 \(D_a(s)=\sum_{n\ge1}a(n)n^{-s}\)。令
+\[
+ E_c=\left\{\operatorname{Re}s:
+       s\in\mathbb C,\ \sum_{n\ge1}a(n)n^{-s}\text{ 收敛}\right\}.
+\]
+其\term[shoulian-hengzuobiao]{收敛横坐标}[abscissa of convergence]定义为 \(\sigma_c=\inf E_c\)，其中 \(E_c=\varnothing\) 时取 \(\sigma_c=+\infty\)，\(E_c\) 无下界时取 \(\sigma_c=-\infty\)。
+\end{definition}
+
+这个下确界确实描述整个半平面。若 \(\operatorname{Re}s>\sigma_c\)，按下确界的定义，可以找到一个收敛点 \(s_0\)，使 \(\operatorname{Re}s_0<\operatorname{Re}s\)；\cref{b3:prop:25-convergence-half-plane}便给出该点 \(s\) 的收敛。对半平面中的紧集，先选 \(\operatorname{Re}s_0\) 小于该紧集上实部的最小值，还得到局部一致收敛与全纯性。若 \(\operatorname{Re}s<\sigma_c\)，则该点不可能收敛，否则它的实部已属于 \(E_c\)。边界 \(\operatorname{Re}s=\sigma_c\) 不由这个结论决定，条件收敛还可能与虚部有关。
+
+两种无穷值也有明确含义。若 \(\sigma_c=-\infty\)，任一复数的左边都有一个收敛点，故原级数在全平面收敛并定义整函数；若 \(\sigma_c=+\infty\)，则原级数无一处收敛。例如有限 Dirichlet 多项式属于前一种情形，\(a(n)=e^{-n}\) 也给出处处绝对收敛的无限级数。反之，取 \(a(n)=n^n\)，则对每个固定 \(s\) 都有 \(|a(n)n^{-s}|=n^{n-\operatorname{Re}s}\not\to0\)，所以它属于后一种情形。
 
 \subsection{绝对收敛}
 \label{b3:subsec:250402}
 
-同样定义\term[juedui-shoulian-hengzuobiao]{绝对收敛横坐标}[abscissa of absolute convergence] \(\sigma_a\)。总有 \(\sigma_c\le\sigma_a\le\sigma_c+1\)，按扩展实数理解。后一个不等式由在 \(s_0\) 收敛推出 \(a(n)n^{-s_0}\) 有界，再与 \(\sum n^{-1-\varepsilon}\) 比较得到。绝对收敛半平面的每个较小闭半平面上有统一主控，因此可以安全乘法和对素数重新分组。
+一般收敛考察复数项相加后的结果；绝对收敛先取模，取消了相消的可能。由于 \(|n^{-s}|=n^{-\operatorname{Re}s}\)，后一问题只依赖实部，同一条竖直线上的所有点具有相同的绝对收敛性。
 
-\ProseParagraphBreak
+\begin{definition}[绝对收敛横坐标]\label{b3:def:25-absolute-abscissa}
+设 \(a:\mathbb N_{\ge1}\to\mathbb C\)。级数 \(\sum_{n\ge1}a(n)n^{-s}\) 的\term[juedui-shoulian-hengzuobiao]{绝对收敛横坐标}[abscissa of absolute convergence]为
+\[
+ \sigma_a=\inf\left\{\sigma\in\mathbb R:
+                 \sum_{n\ge1}|a(n)|n^{-\sigma}<\infty\right\},
+\]
+其中集合为空时取 \(+\infty\)，无下界时取 \(-\infty\)。
+\end{definition}
 
-对普通 \(\sum n^{-s}\)，两横坐标都为一；对交错级数，两者分别为零与一。横坐标为零的必要性可由负实部处单项不趋零看出。一个例子同时说明两横坐标可以不同，也说明一般差距上界一能达到。
+因为各项非负，增大 \(\sigma\) 只会减小各项，故绝对收敛集也是向右延伸的半平面，可能包含其边界。若 \(\sigma_1>\sigma_a\)，则在整个闭半平面 \(\operatorname{Re}s\ge\sigma_1\) 上都有共同控制
+\[
+ |a(n)n^{-s}|\le |a(n)|n^{-\sigma_1},
+ \qquad \sum_{n\ge1}|a(n)|n^{-\sigma_1}<\infty.
+\]
+这里确实得到整个闭半平面上的一致绝对收敛，参数的虚部不必有界。
+
+\begin{proposition}[两个横坐标之间的差距]\label{b3:prop:25-abscissa-gap}
+设 \(a:\mathbb N_{\ge1}\to\mathbb C\)，\(\sigma_c\) 与 \(\sigma_a\) 分别为其 Dirichlet 级数的收敛横坐标和绝对收敛横坐标。则按扩展实数的约定，
+\[
+ \sigma_c\le\sigma_a\le\sigma_c+1.
+\]
+特别地，一者为 \(+\infty\) 或 \(-\infty\) 时，另一者也取同一个无穷值。
+\end{proposition}
+\begin{proof}
+绝对收敛蕴含收敛，所以 \(\sigma_c\le\sigma_a\)。若级数在 \(s_0\) 收敛，其通项趋零，故存在 \(C<\infty\) 使
+\[
+ |a(n)|n^{-\operatorname{Re}s_0}\le C\qquad(n\ge1).
+\]
+对任意 \(\varepsilon>0\)，遂有
+\[
+ \sum_{n\ge1}|a(n)|n^{-\operatorname{Re}s_0-1-\varepsilon}
+ \le C\sum_{n\ge1}n^{-1-\varepsilon}<\infty.
+\]
+因此 \(\sigma_a\le\operatorname{Re}s_0+1\)。若 \(\sigma_c\) 有限，对每个 \(r>\sigma_c\) 都可取实数收敛点 \(s_0=r\)，先得 \(\sigma_a\le r+1\)，再令 \(r\downarrow\sigma_c\)。这里没有假定边界点 \(s=\sigma_c\) 收敛。
+
+若 \(\sigma_c=-\infty\)，上述 \(r\) 可以任意小，故 \(\sigma_a=-\infty\)；若 \(\sigma_c=+\infty\)，由第一个不等式得 \(\sigma_a=+\infty\)。这也覆盖两种无穷情形。
+\end{proof}
+
+两个最常用的例子把差距的两个端点都表现出来。先记
+\begin{equation}\label{b3:eq:25-zeta-series-definition}
+ \zeta(s)=\sum_{n\ge1}\frac1{n^s},\qquad\operatorname{Re}s>1.
+\end{equation}
+右边在这个半平面绝对收敛。正项级数 \(\sum n^{-\sigma}\) 当且仅当实数 \(\sigma>1\) 时收敛，所以它的绝对收敛横坐标为一。普通收敛横坐标也为一：假设在某个 \(\operatorname{Re}s_0<1\) 的复数点收敛，取实数 \(r\) 满足 \(\operatorname{Re}s_0<r<1\)，向右收敛命题便会迫使正项级数 \(\sum n^{-r}\) 收敛，产生矛盾。这个论证说明原级数在实部小于一的每一个复数点都发散，而非仅仅在实轴上发散；边界线上的问题不必在这里一并解决。
+
+再记
+\[
+ \eta(s)=\sum_{n\ge1}\frac{(-1)^{n-1}}{n^s},
+ \qquad\operatorname{Re}s>0.
+\]
+系数部分和只取零或一，由\cref{b3:prop:25-partial-sum-convergence}，上式在实部正的半平面局部一致收敛。若 \(\operatorname{Re}s\le0\)，各项的模 \(n^{-\operatorname{Re}s}\) 不趋零，原级数必发散。因此 \(\sigma_c=0\)，而取绝对值后仍是 \(\sum n^{-\sigma}\)，故 \(\sigma_a=1\)。在 \(0<\operatorname{Re}s\le1\) 的整个区域，这个表示都是条件收敛的；通用差距上界一在此达到。
+
+横坐标也不决定其边界是否纳入。取 \(a(1)=0\)、\(a(n)=(\log n)^{-2}\ (n\ge2)\)，所得级数在实数 \(s=1\) 绝对收敛，这是积分 \(\int_2^{\infty}dt/(t(\log t)^2)<\infty\) 给出的结论。但对任何实数 \(\sigma<1\)，取 \(\epsilon=(1-\sigma)/2\)，则充分大的 \(n\) 满足 \((\log n)^2\le n^{\epsilon}\)，于是
+\[
+ \frac1{n^{\sigma}(\log n)^2}\ge\frac1{n^{(1+\sigma)/2}}.
+\]
+右侧的正项级数发散。再按前例使用向右收敛命题，就有 \(\sigma_c=\sigma_a=1\)。它与 \(\zeta\) 的级数拥有相同的两个横坐标，却在实边界点具有不同的收敛行为。
+
+\cref{b3:tab:25-convergence-meanings}归纳了后面使用公式时必须区分的三种情况。尤其是\eqref{b3:eq:25-zeta-integral}已把 \(\zeta\) 延拓到 \(\operatorname{Re}s>0\) 的大部分区域，但刚才证明的原级数发散性仍然成立；延拓改变的是函数的表示方法。
+
+\begin{table}[htbp]
+\centering
+\caption{Dirichlet 级数的收敛与解析延拓的区别}
+\label{b3:tab:25-convergence-meanings}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{5.8em}>{\raggedright\arraybackslash}p{10.8em}>{\raggedright\arraybackslash}X@{}}
+\toprule
+所讨论的性质 & 对象与已知区域 & 可以据此进行的操作\\
+\midrule
+普通收敛 & 原来的自然顺序部分和；\(\operatorname{Re}s>\sigma_c\) & 内部紧集上取局部一致极限，得到全纯函数；重排与乘法另需依据。\\
+绝对收敛 & 取模后的正项级数；\(\operatorname{Re}s>\sigma_a\) & 绝对控制允许交换无穷求和，并按因数对或素因子重新分组。\\
+解析延拓 & 与原和函数在重叠区域相等的新表示 & 可在延拓域研究该函数；原级数在新区域是否收敛仍须单独判断。\\
+\bottomrule
+\end{tabularx}
+\end{table}
 
 \subsection{乘法}
 \label{b3:subsec:250403}
 
-\begin{proposition}\label{b3:prop:25-product-series}
-若 \(D_a,D_b\) 在 \(\operatorname{Re}s=\sigma\) 都绝对收敛，则
-\(D_a(s)D_b(s)=D_{a*b}(s)\) 在该直线上成立，且右侧绝对收敛。
+两个幂级数相乘时，指数相加，系数按 \(m+n=r\) 组合；Dirichlet 级数中有 \(m^{-s}n^{-s}=(mn)^{-s}\)，所以相应的组合条件成为 \(mn=r\)。这使有限算术卷积成为解析乘法的系数，但仍须保证无穷双重和能够重新分组。
+
+\begin{proposition}[绝对收敛级数的乘法]\label{b3:prop:25-product-series}
+设 \(a,b:\mathbb N_{\ge1}\to\mathbb C\)，\(\sigma_0\in\mathbb R\)，并假定
+\[
+ \sum_{n\ge1}|a(n)|n^{-\sigma_0}<\infty,
+ \qquad\sum_{n\ge1}|b(n)|n^{-\sigma_0}<\infty.
+\]
+令 \(D_a(s)=\sum_{n\ge1}a(n)n^{-s}\)、\(D_b(s)=\sum_{n\ge1}b(n)n^{-s}\)，其中使用实对数；令 \((a*b)(r)=\sum_{mn=r}a(m)b(n)\)。则对全部 \(\operatorname{Re}s\ge\sigma_0\)，级数 \(D_{a*b}(s)\) 绝对收敛，且
+\begin{equation}\label{b3:eq:25-series-convolution}
+ D_a(s)D_b(s)=D_{a*b}(s).
+\end{equation}
 \end{proposition}
 \begin{proof}
-双重绝对和为 \((\sum|a(m)|m^{-\sigma})(\sum|b(n)|n^{-\sigma})<\infty\)。因此可以按积 \(mn=r\) 分组，系数恰为有限和 \(\sum_{m\mid r}a(m)b(r/m)\)。同一个绝对和控制了右侧级数。
+写 \(\sigma=\operatorname{Re}s\ge\sigma_0\)。全部双重项的绝对和为
+\[
+ \sum_{m,n\ge1}|a(m)b(n)|(mn)^{-\sigma}
+ =\left(\sum_{m\ge1}|a(m)|m^{-\sigma}\right)
+  \left(\sum_{n\ge1}|b(n)|n^{-\sigma}\right)<\infty.
+\]
+这既允许把两个极限的乘积写成双重和，也允许按 \(mn=r\) 分组。每组只有有限项，系数恰为 \((a*b)(r)\)。此外，三角不等式给出
+\[
+ \sum_{r\ge1}|(a*b)(r)|r^{-\sigma}
+ \le\sum_{m,n\ge1}|a(m)b(n)|(mn)^{-\sigma}<\infty,
+\]
+所以分组后的级数同样绝对收敛。
 \end{proof}
-仅仅知道两个级数逐点条件收敛，不能引用这个结论；重新分组的合法性需要另证。
 
-\ProseParagraphBreak
+原来的有限卷积恒等式不要求增长条件；把它转成解析乘法时，上面那个双重绝对和才是新出现的条件。两个级数只在某点条件收敛，并不足以直接使用本命题，因为条件收敛本身没有提供任意重排所需的绝对控制。
 
-在绝对收敛半平面内部还可逐项求任意次导数。设 \(\sigma_0>\sigma_a\)，再取 \(\delta>0\)。对每个固定整数 \(k\ge0\)，函数 \((\log t)^kt^{-\delta}\) 在 \(t\ge1\) 上有界。因此在 \(\operatorname{Re}s\ge\sigma_0+\delta\) 上，
+\begin{proposition}[逐项求导]\label{b3:prop:25-series-derivatives}
+设 \(a:\mathbb N_{\ge1}\to\mathbb C\)，\(D_a(s)=\sum_{n\ge1}a(n)n^{-s}\)，其收敛横坐标 \(\sigma_c<+\infty\)，并用实对数定义各项。则对每个整数 \(k\ge1\)，在 \(\operatorname{Re}s>\sigma_c\) 有
+\begin{equation}\label{b3:eq:25-series-derivatives}
+ D_a^{(k)}(s)=(-1)^k\sum_{n\ge1}a(n)(\log n)^k n^{-s},
+\end{equation}
+右侧在该半平面局部一致收敛。若 \(\sigma_a\) 是原级数的绝对收敛横坐标，则右侧还在 \(\operatorname{Re}s>\sigma_a\) 绝对收敛。
+\end{proposition}
+\begin{proof}
+有限部分和在收敛半平面上局部一致趋于全纯函数 \(D_a\)。\cref{b3:prop:04-derivative-convergence}说明，此时各阶导数也在内部紧集上局部一致收敛到 \(D_a\) 的相应导数；其依据是在稍大的内部圆周上使用 Cauchy 积分公式。有限和的 \(k\) 阶导数正是\eqref{b3:eq:25-series-derivatives}右端的有限部分和，因而得证。
+
+为得到绝对收敛，还须估计增加的对数因子。取任意实数 \(\sigma_0>\sigma_a\) 和 \(\delta>0\)。对固定 \(k\)，函数 \((\log t)^kt^{-\delta}\) 在 \(t\ge1\) 有界，因此当 \(\operatorname{Re}s\ge\sigma_0+\delta\) 时，
 \[
- \sum_n|a(n)|(\log n)^k n^{-\operatorname{Re}s}
- \le C_{k,\delta}\sum_n|a(n)|n^{-\sigma_0}<\infty.
+ \sum_{n\ge1}|a(n)|(\log n)^k n^{-\operatorname{Re}s}
+ \le C_{k,\delta}\sum_{n\ge1}|a(n)|n^{-\sigma_0}<\infty.
 \]
-由一致收敛的导数定理，
-\[
- D_a^{(k)}(s)=(-1)^k\sum_{n\ge1}a(n)(\log n)^k n^{-s}.
-\]
-增加对数权重会影响边界收敛，却不改变右半平面内部的全纯性。这个论证说明为什么下一节可以对 Euler 对数求导，也说明每次求导都应在离边界正距离的紧集上进行估计。
+在绝对收敛半平面内任取一个紧集，都可以先向左留出一点距离，再按上式估计。这给所需的绝对收敛及局部一致控制。
+\end{proof}
 
-\ProseParagraphBreak
+导数不会损失开半平面内部的收敛性，但增加的 \(\log n\) 因子可能改变边界上的行为。例如上面的 \(a(n)=(\log n)^{-2}\) 级数在 \(s=1\) 绝对收敛，求一次导数后的绝对级数却成为 \(\sum_{n\ge2}1/(n\log n)\)，由积分比较发散。因此逐项求导的结论必须写明参数处在半平面内部。
 
-Dirichlet 级数也可视为离散测度的 Laplace 变换：将质量 \(a(n)\) 放在 \(\log n\)，则 \(n^{-s}=e^{-s\log n}\)。相应累积质量为 \(A(e^t)\)。在端点项消失的范围，变量代换 \(x=e^t\) 将部分求和写成
+还有一种有用的看法是把乘法尺度改为加法尺度。设 \(A(x)=\sum_{n\le x}a(n)\)，并有 \(A(x)=O(x^{\alpha})\)。由\cref{b3:prop:25-partial-sum-convergence}，当 \(\operatorname{Re}s>\alpha\) 时，部分求和的端点消失，继而由 \(x=e^t\) 得
 \[
- D_a(s)=s\int_0^\infty A(e^t)e^{-st}\,\mathrm dt.
+ D_a(s)=s\int_1^{\infty}A(x)x^{-s-1}\,\mathrm dx
+       =s\int_0^{\infty}A(e^t)e^{-st}\,\mathrm dt.
 \]
-这项表示把整数上的乘法尺度变为实轴上的加法尺度。若已经知道 \(A(x)\) 的增长，积分容易估计；反过来，只知道变换在某点有极点，通常还不能恢复 \(A(x)\) 的渐近。第二十七章将增加非负性与整条边界的延拓条件，完成那个反向问题。
+等式中的增长条件正是用来保证无穷积分收敛及端点消失的。如果把质量 \(a(n)\) 放在实轴上的 \(\log n\) 处，原级数也可以看成这些离散质量的 Laplace 变换。关系 \(\log(mn)=\log m+\log n\) 此时把 Dirichlet 卷积解释成质量位置的相加。第二十七章将讨论反向问题：在增加非负性和边界延拓条件后，如何从变换恢复部分和的渐近。
 
 \subsection{系数卷积}
 \label{b3:subsec:250404}
 
-于是 \(D_d=\zeta^2\)、\(D_{\sigma_\alpha}(s)=\zeta(s)\zeta(s-\alpha)\)，最初分别在 \(\operatorname{Re}s>1\) 与 \(\operatorname{Re}s>\max(1,1+\operatorname{Re}\alpha)\) 由绝对收敛证明。\(\mathbf1*\varphi=\operatorname{id}\) 还给 \(D_\varphi(s)=\zeta(s-1)/\zeta(s)\)，但要作除法须先在此处证明分母非零，下一节的 Euler 乘积将提供这一事实。
+现在可以把本章的有限恒等式逐一放进收敛级数中。记 \(\mathbf1(n)=1\)、\(\operatorname{id}_{\alpha}(n)=n^{\alpha}=e^{\alpha\log n}\)，其中 \(\alpha\in\mathbb C\)。由 \(d=\mathbf1*\mathbf1\) 与 \(\sigma_{\alpha}=\mathbf1*\operatorname{id}_{\alpha}\)，\cref{b3:prop:25-product-series}分别给出
+\begin{align}
+ \sum_{n\ge1}\frac{d(n)}{n^s}
+ &=\zeta(s)^2,
+ &&\operatorname{Re}s>1,\label{b3:eq:25-divisor-series}\\
+ \sum_{n\ge1}\frac{\sigma_{\alpha}(n)}{n^s}
+ &=\zeta(s)\zeta(s-\alpha),
+ &&\operatorname{Re}s>\max(1,1+\operatorname{Re}\alpha).
+ \label{b3:eq:25-divisor-power-series}
+\end{align}
+第一个公式把一个整数的每一种有序因数分解 \(n=uv\) 计数一次；第二个公式还赋予其中一个因子以 \(v^{\alpha}\) 的权重。第二个半平面中的两项条件各有所指：\(\operatorname{Re}s>1\) 控制 \(\mathbf1\) 的级数，\(\operatorname{Re}(s-\alpha)>1\) 控制 \(\operatorname{id}_{\alpha}\) 的级数。
+
+同样，设 \(k\ge1\) 是整数，\(d_k(n)\) 计数 \(n_1\cdots n_k=n\) 的有序正整数 \(k\) 元组。反复使用绝对乘法便得
+\[
+ \sum_{n\ge1}\frac{d_k(n)}{n^s}=\zeta(s)^k,
+ \qquad\operatorname{Re}s>1.
+\]
+这一等式同时证明了左侧在所示范围绝对收敛，不必先另找较粗的 \(d_k(n)\) 逐点上界。
+
+对于 Euler 函数 \(\varphi\)，有 \(0\le\varphi(n)\le n\)，所以 \(D_{\varphi}\) 在 \(\operatorname{Re}s>2\) 绝对收敛。有限恒等式 \(\mathbf1*\varphi=\operatorname{id}_1\) 于是给出
+\[
+ \zeta(s)D_{\varphi}(s)=\zeta(s-1),
+ \qquad\operatorname{Re}s>2.
+\]
+要把它写成 \(D_{\varphi}(s)=\zeta(s-1)/\zeta(s)\)，仍须知道分母非零。下一节将通过 Euler 乘积的收敛对数证明 \(\zeta\) 在 \(\operatorname{Re}s>1\) 无零点，从而在整个 \(\operatorname{Re}s>2\) 完成这个除法。
+
+有限卷积的逆元还提出一个一般问题。\cref{b3:prop:25-inverse}说，只要 \(a(1)\ne0\)，就能逐个整数递推得到卷积逆元；它没有对逆系数的增长作任何保证。下面说明，只要原系数在某个点已经绝对可和，向足够右方移动就能使这个代数逆元变成真正收敛的倒数级数。
+
+\begin{proposition}[卷积逆元的解析表示]\label{b3:prop:25-inverse-series}
+设 \(a:\mathbb N_{\ge1}\to\mathbb C\)、\(a(1)\ne0\)，且存在实数 \(\sigma_0\) 使 \(\sum_{n\ge1}|a(n)|n^{-\sigma_0}<\infty\)。令 \(b\) 为 \(a\) 的 Dirichlet 卷积逆元，即 \(a*b=\varepsilon\)，其中 \(\varepsilon(1)=1\)、\(\varepsilon(n)=0\ (n>1)\)。则存在实数 \(\sigma_1\ge\sigma_0\)，使 \(D_b(s)\) 在 \(\operatorname{Re}s\ge\sigma_1\) 绝对收敛，\(D_a(s)\ne0\)，并且
+\[
+ D_b(s)=\frac1{D_a(s)}\qquad(\operatorname{Re}s\ge\sigma_1).
+\]
+\end{proposition}
+\begin{proof}
+先把常数项分离，写成 \(a=a(1)(\varepsilon+h)\)，其中
+\[
+ h(1)=0,\qquad h(n)=\frac{a(n)}{a(1)}\quad(n\ge2).
+\]
+对在实数 \(\sigma\) 处绝对可和的算术函数 \(u\)，记
+\[
+ \|u\|_{\sigma}=\sum_{n\ge1}|u(n)|n^{-\sigma}.
+\]
+乘法命题证明中的三角不等式给出
+\(\|u*v\|_{\sigma}\le\|u\|_{\sigma}\cdot\|v\|_{\sigma}\)。
+
+当 \(\sigma\to+\infty\) 时，\(\|h\|_{\sigma}\to0\)：对每个 \(n\ge2\)，\(|h(n)|n^{-\sigma}\to0\)，而当 \(\sigma\ge\sigma_0\) 时各项被可和数列 \(|h(n)|n^{-\sigma_0}\) 控制。选择 \(\sigma_1\ge\sigma_0\)，使 \(q=\|h\|_{\sigma_1}<1\)。这一步利用了 \(h(1)=0\)；若留下非零常数项，向右移动并不能把它减小。
+
+仿照几何级数，定义
+\[
+ c=\frac1{a(1)}\sum_{j=0}^{\infty}(-1)^j h^{*j},
+ \qquad h^{*0}=\varepsilon.
+\]
+这里每个固定系数首先就是有限和。因为 \(h(1)=0\)，\(h^{*j}(n)\) 中的非零项只能来自至少为二的 \(j\) 个整数之积，故 \(n<2^j\) 时该系数为零。逐系数作有限几何和的相消，得到 \(a*c=\varepsilon\)；由卷积逆元的唯一性，\(c=b\)。
+
+还须验证新系数能够绝对求和。借助非负双重和与卷积范数估计，得到
+\[
+ \begin{split}
+ \|b\|_{\sigma_1}
+ &\le\frac1{|a(1)|}
+       \sum_{j=0}^{\infty}\|h^{*j}\|_{\sigma_1}\\
+ &\le\frac1{|a(1)|}\sum_{j=0}^{\infty}q^j
+ =\frac1{|a(1)|(1-q)}<\infty.
+ \end{split}
+\]
+于是 \(D_b\) 在 \(\operatorname{Re}s\ge\sigma_1\) 绝对收敛。在这个闭半平面应用\cref{b3:prop:25-product-series}，有 \(D_aD_b=D_{a*b}=D_{\varepsilon}=1\)，同时给出了无零点性和倒数公式。
+\end{proof}
+
+这项命题保证的是某个足够靠右的半平面，不能自动取原级数的整个绝对收敛域。例如令 \(a(1)=a(2)=1\)，其余系数为零，则 \(D_a(s)=1+2^{-s}\) 是整函数；它的卷积逆元满足
+\[
+ b(2^j)=(-1)^j\quad(j\ge0),\qquad
+ b(n)=0\quad(n\text{ 不是二的非负整数次幂}).
+\]
+相应级数为 \(\sum_{j\ge0}(-1)^j2^{-js}\)，只在 \(\operatorname{Re}s>0\) 收敛，并在那里等于 \((1+2^{-s})^{-1}\)。原级数的绝对收敛横坐标为 \(-\infty\)，逆元级数的两个横坐标却都为零。代数逆元始终存在；它作为解析倒数的有效范围必须由收敛性另行确定。

@@ -2,85 +2,286 @@
 \section{Euler \texorpdfstring{\(\Gamma\)}{\AnalysisPdfGamma} 函数}
 \label{b3:sec:2101}
 
-阶乘满足递推关系，但把整数变量改成复变量后，递推本身并不决定函数。Euler 积分给出一个在右半平面全纯的候选；正实轴上的凸性将排除额外的周期因子。
+阶乘满足乘法递推。若要把整数变量换成实变量或复变量，需要先找到一个在整数处给出阶乘、同时又能对参数作分析运算的表达。Euler 积分提供了这样的函数，但递推和整数点取值并不足以唯一确定它。本节先从积分得到全纯性、递推和半整数值，再用正实轴上的对数凸性建立唯一性与平移比值估计。
 
 \subsection{Euler 积分}
 \label{b3:subsec:210101}
 
+积分 \(\int_0^\infty e^{-t}t^n\,\mathrm{d}t\) 中，分部积分会把幂次降低一，并产生因子 \(n\)。为了使递推写成变量本身乘以函数，定义时把幂次取为 \(z-1\)。
+
+\Needspace{6\baselineskip}
 \begin{definition}\label{b3:def:21-gamma}
-对 \(\operatorname{Re}z>0\)，定义\term[gamma-hanshu]{Gamma 函数}[gamma function]
+对 \(z\in\mathbb C\)、\(\operatorname{Re}z>0\)，定义\term[gamma-hanshu]{Gamma 函数}[gamma function]
 \[
-\Gamma(z)\coloneqq\int_0^\infty e^{-t}t^{z-1}\,\mathrm{d}t,
-\quad t^{z-1}=\exp((z-1)\log t).
+ \Gamma(z)\coloneqq\int_0^\infty e^{-t}t^{z-1}\,\mathrm{d}t,
+ \quad t^{z-1}=\exp\bigl((z-1)\log t\bigr),\quad t>0,
 \]
+其中 \(\log t\) 是正实轴上的实对数。
 \end{definition}
 \symidx{\(\Gamma(z)\)：Gamma 函数}
-积分两端的性质不同。对紧集 \(K\subset\{\operatorname{Re}z>0\}\)，选 \(0<a\le\operatorname{Re}z\le b\)。在 \((0,1)\) 上，模由 \(t^{a-1}\) 控制；在 \([1,\infty)\) 上，由 \(e^{-t}t^{b-1}\) 控制。加入任意固定次 \(|\log t|\) 后仍可积，所以截断积分局部一致收敛，且可逐次微分：
+积分变量只取正实数，所以复幂在这里没有绕过原点选择分支的问题。若 \(z=\sigma+\mathrm{i}y\)，则 \(|t^{z-1}|=t^{\sigma-1}\)，虚部只产生模为一的振荡因子。
+
+\ProseParagraphBreak
+
+两端的收敛机制不同。在 \((0,1)\) 上，\(e^{-1}\le e^{-t}\le1\)，所以绝对可积恰好要求 \(\sigma>0\)。在 \([1,\infty)\) 上，指数衰减压过任意固定实次幂，对所有实数 \(\sigma\) 都可积。因此 \(\operatorname{Re}z>0\) 是这个积分的绝对收敛域。要在积分号下对 \(z\) 求导，还须控制每次求导带来的 \(\log t\)。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[全纯性与参数导数]\label{b3:prop:21-euler-derivatives}
+Euler 积分定义的 \(\Gamma\) 在半平面 \(\operatorname{Re}z>0\) 全纯。对每个非负整数 \(k\)，有
 \[
-\Gamma^{(k)}(z)=\int_0^\infty e^{-t}t^{z-1}(\log t)^k\,\mathrm{d}t.
+ \Gamma^{(k)}(z)
+ =\int_0^\infty e^{-t}t^{z-1}(\log t)^k\,\mathrm{d}t,
+ \quad \operatorname{Re}z>0,
 \]
-这同时证明全纯性和后面微分公式的合法性。沿实轴趋近零时，原点端积分发散；这不是函数无法延拓，而是这一积分表示的适用域已经到达边界。
+且这些积分在每个紧参数集上绝对一致收敛。此外，\(\Gamma(x)>0\) 对 \(x>0\) 成立，并且
+\[
+ |\Gamma(\sigma+\mathrm{i}y)|\le\Gamma(\sigma),
+ \quad \sigma>0,\quad y\in\mathbb R.
+\]
+\end{proposition}
+\begin{proof}
+固定紧集 \(K\subset\{\operatorname{Re}z>0\}\)，选 \(0<a\le\operatorname{Re}z\le b\) 对所有 \(z\in K\) 成立。在 \(0<t<1\) 上，
+\[
+ |e^{-t}t^{z-1}(\log t)^k|
+ \le t^{a-1}|\log t|^k.
+\]
+代换 \(u=-\log t\)，再作有限次分部积分，得到
+\[
+ \int_0^1t^{a-1}|\log t|^k\,\mathrm{d}t
+ =\int_0^\infty e^{-au}u^k\,\mathrm{d}u
+ =\frac{k!}{a^{k+1}}<\infty.
+\]
+在 \(t\ge1\) 上，则有
+\[
+ |e^{-t}t^{z-1}(\log t)^k|
+ \le e^{-t}t^{b-1}(\log t)^k
+ \le C_{b,k}e^{-t/2}.
+\]
+最后一个常数存在，因为 \(t^{b-1}(\log t)^k e^{-t/2}\) 在 \([1,\infty)\) 有界。这些控制函数不依赖 \(z\in K\)。
+
+截断积分 \(G_N(z)=\int_{1/N}^{N}e^{-t}t^{z-1}\,\mathrm{d}t\) 是整函数，在有限积分区间可以逐次对参数求导。上述共同控制表明，\(G_N\) 及其各个固定阶导数的积分表达在 \(K\) 上一致收敛。由\cref{b3:prop:04-derivative-convergence}，极限全纯，导数正是陈述中的积分。正实参数时，被积函数处处为正，故 \(\Gamma(x)>0\)。最后，对 Euler 积分使用三角不等式即得竖线上的模估计。
+\end{proof}
+这里的一致性针对紧参数集；当实部趋近零时，共同控制中的 \(a\) 也会趋近零，不能保留同一个可积上界。右半平面上的竖线估计只给出有界性，尚未给出随 \(|y|\) 增大的衰减速度。
 
 \subsection{函数方程}
 \label{b3:subsec:210102}
 
-\begin{proposition}\label{b3:prop:21-recurrence}
-在右半平面有 \(\Gamma(z+1)=z\Gamma(z)\)，并且 \(\Gamma(1)=1\)。因此 \(\Gamma(n+1)=n!\) 对每个非负整数 \(n\) 成立。
+积分定义使变量平移一步恰好对应一次分部积分。端点项是否消失，仍由原点的幂次和无穷远的指数分别控制。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[递推与归一化]\label{b3:prop:21-recurrence}
+对所有 \(z\in\mathbb C\)、\(\operatorname{Re}z>0\)，有
+\[
+ \Gamma(z+1)=z\Gamma(z),\quad \Gamma(1)=1.
+\]
+因此，对每个非负整数 \(n\)，\(\Gamma(n+1)=n!\)。
 \end{proposition}
 \begin{proof}
-在 \([\varepsilon,R]\) 上分部积分。边界项为 \(-e^{-t}t^z\)，其在 \(R\to\infty\) 时趋零，在 \(\varepsilon\downarrow0\) 时因 \(\operatorname{Re}z>0\) 也趋零。两项积分的绝对收敛允许取极限，得递推。直接积分 \(e^{-t}\) 得 \(\Gamma(1)=1\)。
+在 \([\varepsilon,R]\) 上分部积分，得到
+\[
+ \int_\varepsilon^R e^{-t}t^z\,\mathrm{d}t
+ =\bigl[-e^{-t}t^z\bigr]_\varepsilon^R
+  +z\int_\varepsilon^R e^{-t}t^{z-1}\,\mathrm{d}t.
+\]
+设 \(\sigma=\operatorname{Re}z>0\)。无穷远端的边界项模为 \(e^{-R}R^\sigma\to0\)，原点端的模为 \(e^{-\varepsilon}\varepsilon^\sigma\to0\)。两个积分都绝对收敛，所以可分别令 \(R\to\infty\)、\(\varepsilon\downarrow0\)，得到递推式。直接计算 \(\int_0^\infty e^{-t}\,\mathrm{d}t=1\) 给出归一化，再作整数次递推得到阶乘。
 \end{proof}
-函数 \(\Gamma(z)(1+\varepsilon\sin2\pi z)\) 也满足同一递推及整数点取值。这说明离散插值并不唯一，甚至加上全纯性也不够。要确定 Euler 的函数，需要另一个反映积分结构的性质。
+归一化选定了乘法常数，却没有排除一周期因子。例如，固定 \(0<\eta<1\)，函数
+\[
+ F(z)=\Gamma(z)\bigl(1+\eta\sin(2\pi z)\bigr)
+\]
+在右半平面全纯，满足同一递推、同一整数点取值，而且在正实轴仍为正。它与 \(\Gamma\) 不同，因此即使同时要求全纯性和正实轴上的正性，递推仍不能给出唯一性。
+
+\ProseParagraphBreak
+
+递推还把半整数值归约到一个起始值。这个值由 Gaussian 积分确定，适合在讨论渐近公式之前独立算出。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[Gaussian 积分与半整数值]\label{b3:prop:21-half-integers}
+对每个非负整数 \(n\)，有
+\[
+ \Gamma\left(\frac12\right)=\sqrt\pi,
+ \quad
+ \Gamma\left(n+\frac12\right)
+ =\frac{(2n)!}{4^n n!}\sqrt\pi.
+\]
+\end{proposition}
+\begin{proof}
+令 \(I=\int_{\mathbb R}e^{-u^2}\,\mathrm{d}u\)。这个积分有限且为正：在 \(|u|\ge1\) 上可由 \(e^{-|u|}\) 控制，在有限区间被积函数有界。被积函数非负，Tonelli 定理给
+\[
+ I^2=\int_{\mathbb R^2}e^{-(u^2+v^2)}\,\mathrm{d}u\,\mathrm{d}v.
+\]
+在圆环上使用极坐标换元，Jacobi 因子为 \(r\)，再让内半径趋零、外半径趋于无穷。非负性允许用单调收敛取极限，于是
+\[
+ I^2=\int_0^{2\pi}\int_0^\infty e^{-r^2}r\,\mathrm{d}r\,\mathrm{d}\theta
+ =2\pi\cdot\frac12=\pi.
+\]
+由 \(I>0\) 确定 \(I=\sqrt\pi\)。在 Euler 积分中令 \(t=u^2\)，得到
+\[
+ \Gamma\left(\frac12\right)
+ =2\int_0^\infty e^{-u^2}\,\mathrm{d}u=I.
+\]
+最后，重复使用递推式，
+\[
+ \Gamma\left(n+\frac12\right)
+ =\left(\prod_{j=0}^{n-1}\left(j+\frac12\right)\right)\sqrt\pi
+ =\frac{1\cdot3\cdots(2n-1)}{2^n}\sqrt\pi
+ =\frac{(2n)!}{4^n n!}\sqrt\pi.
+\]
+\(n=0\) 时有限乘积为空，公式仍成立。
+\end{proof}
+同一换元给出 Gaussian 偶数矩
+\[
+ \int_{\mathbb R}u^{2n}e^{-u^2}\,\mathrm{d}u
+ =\Gamma\left(n+\frac12\right),\quad n\ge0.
+\]
+奇数矩因被积函数为奇函数而为零；这些积分均绝对收敛。阶乘和半整数值由此分别对应指数权重与 Gaussian 权重下的整数矩。
 
 \subsection{对数凸性}
 \label{b3:subsec:210103}
 
-\begin{proposition}\label{b3:prop:21-logconvex}
-实函数 \(x\mapsto\log\Gamma(x)\) 在 \((0,\infty)\) 上严格凸。
+Euler 积分中的参数出现在指数 \(t^{x-1}\) 上，因此参数的凸组合会变成两个正被积函数的几何平均。Hölder 不等式正好比较这种几何平均的积分。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[严格对数凸性]\label{b3:prop:21-logconvex}
+Euler 积分定义的实函数 \(x\mapsto\log\Gamma(x)\) 在 \((0,\infty)\) 上严格凸。即对 \(x,y>0\)、\(x\ne y\) 和 \(0<\lambda<1\)，
+\[
+ \Gamma(\lambda x+(1-\lambda)y)
+ <\Gamma(x)^\lambda\Gamma(y)^{1-\lambda}.
+\]
 \end{proposition}
 \begin{proof}
-取 \(x\ne y\)、\(0<\lambda<1\)。把被积函数写为
-\((e^{-t}t^{x-1})^\lambda(e^{-t}t^{y-1})^{1-\lambda}\)，用 Hölder 不等式得
-\(\Gamma(\lambda x+(1-\lambda)y)\le\Gamma(x)^\lambda\Gamma(y)^{1-\lambda}\)。取等要求两个正函数成比例，即 \(t^{x-y}\) 几乎处处常数，这与 \(x\ne y\) 矛盾。取对数即得严格凸性。
+令 \(A(t)=e^{-t}t^{x-1}\)、\(B(t)=e^{-t}t^{y-1}\)。二者严格为正且可积，并且
+\[
+ e^{-t}t^{\lambda x+(1-\lambda)y-1}
+ =A(t)^\lambda B(t)^{1-\lambda}.
+\]
+对右边使用指数 \(1/\lambda\) 与 \(1/(1-\lambda)\) 的 Hölder 不等式，得
+\[
+ \int_0^\infty A^\lambda B^{1-\lambda}\,\mathrm{d}t
+ \le\left(\int_0^\infty A\,\mathrm{d}t\right)^\lambda
+      \left(\int_0^\infty B\,\mathrm{d}t\right)^{1-\lambda}.
+\]
+在两个非零正函数之间，等号要求 \(A\) 与 \(B\) 几乎处处成比例，即 \(t^{x-y}\) 几乎处处为常数。但 \(x\ne y\) 时该函数在 \((0,\infty)\) 严格单调，不可能满足这个条件。因此不等式严格，取对数即得结论。
 \end{proof}
-也可把二阶导数理解为概率方差。以 \(e^{-t}t^{x-1}/\Gamma(x)\) 为密度，\((\log\Gamma)''(x)\) 等于随机变量 \(\log t\) 的方差，严格为正。积分归一化在这里很关键；直接写 \(\Gamma''>0\) 只能证明普通凸性，不能代替对数凸性。
+还可以把严格性读成一个二阶导数公式。固定 \(x>0\)，以
+\[
+ w_x(t)=\frac{e^{-t}t^{x-1}}{\Gamma(x)},\quad t>0,
+\]
+作为概率密度，并令 \(m_x=\int_0^\infty(\log t)w_x(t)\,\mathrm{d}t\)。参数导数公式保证这些对数矩有限，且
+\[
+ \frac{\mathrm{d}^2}{\mathrm{d}x^2}\log\Gamma(x)
+ =\frac{\Gamma''(x)}{\Gamma(x)}
+  -\left(\frac{\Gamma'(x)}{\Gamma(x)}\right)^2
+ =\int_0^\infty(\log t-m_x)^2w_x(t)\,\mathrm{d}t>0.
+\]
+最后一项是 \(\log t\) 的方差；密度在整个正半轴严格为正，而 \(\log t\) 不恒定，所以方差严格为正。归一化的分母 \(\Gamma(x)\) 是这一步所必需的，单独观察 \(\Gamma''(x)>0\) 只能得到普通凸性。
 
 \subsection{Bohr–Mollerup 定理}
 \label{b3:subsec:210104}
 
-以下结果称为\term[bohr-mollerup]{Bohr--Mollerup 定理}[Bohr--Mollerup theorem]。
+递推固定了整数点的对数差值，而凸性控制整数之间的割线斜率。把一个未知的 \(F(x)\) 向右递推到 \(F(n+x)\)，再利用相邻整数之间的斜率夹逼，就能让未知量落入相对宽度趋于零的区间。这给出\term[bohr-mollerup]{Bohr--Mollerup 定理}[Bohr--Mollerup theorem]。
+
+\Needspace{6\baselineskip}
 \begin{theorem}[Bohr--Mollerup]\label{b3:thm:21-bohr-mollerup}
-若 \(F:(0,\infty)\to(0,\infty)\) 满足 \(F(1)=1\)、\(F(x+1)=xF(x)\)，且 \(\log F\) 凸，则 \(F=\Gamma\)。
+设 \(F:(0,\infty)\to(0,\infty)\) 满足
+\[
+ F(1)=1,\quad F(x+1)=xF(x)\quad(x>0),
+\]
+并且 \(x\mapsto\log F(x)\) 凸。则对每个 \(x>0\)，\(F(x)=\Gamma(x)\)。
 \end{theorem}
 \begin{proof}
-令 \(h=\log F\)。对 \(0<x\le1\) 和整数 \(n\ge2\)，凸函数割线斜率的单调性给出
+令 \(h=\log F\)。递推与归一化先给 \(F(n)=(n-1)!\)，因而对整数 \(n\ge2\)，
 \[
-x\log(n-1)\le h(n+x)-h(n)\le x\log n.
+ h(n)-h(n-1)=\log(n-1),\quad
+ h(n+1)-h(n)=\log n.
 \]
-递推给 \(F(n)=(n-1)!\) 和 \(F(n+x)=F(x)x(x+1)\cdots(x+n-1)\)，因而
+固定 \(0<x\le1\)。凸函数的割线斜率随区间向右移动而非减，所以
 \[
-\frac{(n-1)!(n-1)^x}{x(x+1)\cdots(x+n-1)}
-\le F(x)\le
-\frac{(n-1)!n^x}{x(x+1)\cdots(x+n-1)}.
+ h(n)-h(n-1)
+ \le\frac{h(n+x)-h(n)}x
+ \le h(n+1)-h(n).
 \]
-左右端的比趋于一。同样的界适用于已经证明对数凸的 \(\Gamma\)，故 \(F(x)/\Gamma(x)\) 夹在 \(((n-1)/n)^x\) 与其倒数之间，极限为一。递推把结论从 \((0,1]\) 扩展到全部正实轴。
+右侧亦可由 \(n+x=(1-x)n+x(n+1)\) 的凸性直接得到。于是
+\[
+ x\log(n-1)\le h(n+x)-h(n)\le x\log n.
+\]
+指数化后，再用 \(F(n+x)=F(x)x(x+1)\cdots(x+n-1)\)，可得
+\[
+ A_n(x)\le F(x)\le B_n(x),
+\]
+其中
+\[
+ A_n(x)=\frac{(n-1)!(n-1)^x}{x(x+1)\cdots(x+n-1)},\quad
+ B_n(x)=\frac{(n-1)!n^x}{x(x+1)\cdots(x+n-1)}.
+\]
+这两个端点都严格为正，且 \(B_n(x)/A_n(x)=(n/(n-1))^x\to1\)。
+
+已经由积分证明的 \(\Gamma\) 同样满足归一化、递推和对数凸性，所以也落在同一个区间 \([A_n(x),B_n(x)]\) 中。两次夹逼相除，得到
+\[
+ \left(\frac{n-1}{n}\right)^x
+ \le\frac{F(x)}{\Gamma(x)}
+ \le\left(\frac n{n-1}\right)^x.
+\]
+令 \(n\to\infty\)，即得 \(F(x)=\Gamma(x)\) 于 \((0,1]\)。任意正实数可写成 \(x+m\)，其中 \(0<x\le1\)、\(m\ge0\) 为整数，再用有限次递推便扩展到全部正实轴。
 \end{proof}
-定理的实变量条件不直接断言复平面上的唯一性；若另有全纯函数在正实轴满足这些条件，恒等定理才将实轴识别推广到连通的全纯区域。这个两步过程在特殊函数的规范化中经常出现。
+证明只要求 \(\log F\) 凸，不预先要求 \(F\) 可微。若另外给定一个在右半平面全纯的候选函数，且它在正实轴满足定理的条件，则先由本定理识别实轴上的值，再由恒等定理识别整个右半平面内的函数。实变量唯一性与复变量唯一性分别由这两步承担。
 
 \ProseParagraphBreak
 
-对数凸性不仅用于唯一性，还给一族有实际误差控制的比值估计。设 \(x>0\)、\(0<a<1\)。把 \(x+a\) 写成 \(x,x+1\) 的凸组合，得到 \(\Gamma(x+a)\le x^a\Gamma(x)\)。再把 \(x+1\) 写成 \(x+a,x+a+1\) 的凸组合，得 \(\Gamma(x+1)\le(x+a)^{1-a}\Gamma(x+a)\)。合并便有
+对数凸性也能给出精确到相对误差的平移比值。这里的自变量始终沿正实轴趋于无穷，平移参数则保持固定。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[固定实平移的比值]\label{b3:prop:21-shift-ratio}
+设 \(x>0\)、\(0\le a\le1\)。则
 \[
  \left(\frac{x}{x+a}\right)^{1-a}
  \le\frac{\Gamma(x+a)}{x^a\Gamma(x)}\le1.
 \]
-两端随 \(x\to\infty\) 都趋于一，且偏差为 \(O_a(1/x)\)。所以无需 Stirling 公式，已经得到 \(\Gamma(x+a)/\Gamma(x)\sim x^a\)。任意固定实 \(a\) 都可先减去一个整数使余数落在 \([0,1)\)，再用有限次递推推广这一渐近，只需保证所有 Gamma 参数最终为正。
-\ProseParagraphBreak
-例如半整数递推给
+特别地，对任意固定的 \(a,b\in\mathbb R\)，当 \(x\to+\infty\) 时有
 \[
- \Gamma\left(n+\frac12\right)=\frac{(2n)!}{4^n n!}\sqrt\pi.
+ \frac{\Gamma(x+a)}{\Gamma(x+b)}
+ =x^{a-b}\bigl(1+O_{a,b}(x^{-1})\bigr).
 \]
-代入上面的 \(a=1/2\) 比值渐近，便得中心二项式系数
-\(\binom{2n}{n}\sim4^n/\sqrt{\pi n}\)。这里 \(\Gamma(1/2)=\sqrt\pi\) 可独立由 Gaussian 积分证明：令 \(t=u^2\)，再把 \((\int_{\mathbb R}e^{-u^2}\,\mathrm{d}u)^2\) 改为极坐标，平方为 \(\pi\)，取正根。这样不会用尚待证明的 Stirling 常数反过来确定 Gaussian 积分。
+后一公式在所有参数 \(x+a,x+b\) 均为正的充分大半轴上使用。
+\end{proposition}
+\begin{proof}
+\(a=0,1\) 时由归一化的比值和递推直接成立。对 \(0<a<1\)，将 \(x+a=(1-a)x+a(x+1)\) 代入对数凸性，得到
+\[
+ \Gamma(x+a)\le\Gamma(x)^{1-a}\Gamma(x+1)^a
+ =x^a\Gamma(x).
+\]
+另一方面，\(x+1=a(x+a)+(1-a)(x+a+1)\)，故
+\[
+ \Gamma(x+1)
+ \le\Gamma(x+a)^a\Gamma(x+a+1)^{1-a}
+ =(x+a)^{1-a}\Gamma(x+a).
+\]
+使用 \(\Gamma(x+1)=x\Gamma(x)\) 并整理，便得下界。固定 \(a\in[0,1]\) 时，下界为 \((1+a/x)^{-(1-a)}=1+O_a(x^{-1})\)，所以
+\[
+ \frac{\Gamma(x+a)}{\Gamma(x)}=x^a\bigl(1+O_a(x^{-1})\bigr).
+\]
+
+任意固定实数 \(c\) 可写成 \(c=k+\theta\)，其中 \(k\in\mathbb Z\)、\(0\le\theta<1\)。若 \(k\ge0\)，有限次递推给
+\[
+ \Gamma(x+c)=\Gamma(x+\theta)
+             \prod_{j=0}^{k-1}(x+\theta+j).
+\]
+若 \(k=-q<0\)，则
+\[
+ \Gamma(x+c)=\frac{\Gamma(x+\theta)}
+ {\prod_{j=0}^{q-1}(x+c+j)}.
+\]
+对充分大的 \(x\)，这些因子均为正；每个因子提出一个 \(x\) 后，有限乘积或其倒数均为 \(1+O_c(x^{-1})\)。结合已经证明的 \(\theta\) 情形，得到 \(\Gamma(x+c)/\Gamma(x)=x^c(1+O_c(x^{-1}))\)。分别取 \(c=a,b\)，再相除，即得一般比值。
+\end{proof}
+误差常数依赖固定的平移参数；这条结论不能直接用于随 \(x\) 增大的平移量。它也没有给出复变量在任意方向趋于无穷的比值渐近。
+
 \ProseParagraphBreak
-递推与凸性也解释了为何只指定整数值不足。若 \(P(x)>0\) 是一周期函数且 \(P(1)=1\)，那么 \(P(x)\Gamma(x)\) 仍插值全部阶乘。若 \(P\) 非常数，它不可能同时保持本定理的对数凸性；这不是凭图像看波动得出的判断，而是 Bohr--Mollerup 唯一性直接排除的结果。特殊函数的正规化通常包含额外的正性或增长条件，离散取值只是其中一部分。
+
+半整数值与比值估计合起来，已经能够确定中心二项式系数的主项。对正整数 \(n\)，
+\[
+ \binom{2n}{n}
+ =\frac{4^n}{\sqrt\pi}
+   \frac{\Gamma(n+1/2)}{\Gamma(n+1)}
+ =\frac{4^n}{\sqrt{\pi n}}\bigl(1+O(n^{-1})\bigr).
+\]
+这里常数 \(\sqrt\pi\) 来自 Gaussian 积分，比值的幂次来自对数凸性与递推。两种信息共同确定了这个离散系数的渐近尺度。

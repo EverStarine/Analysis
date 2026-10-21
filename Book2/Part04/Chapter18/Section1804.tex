@@ -1,406 +1,184 @@
 % !TeX root = ../../Book2.tex
-\section{\texorpdfstring{\(L^p\)}{Lᵖ} 有界性}
-\label{b2:sec:1804}
+\section{Caccioppoli 不等式与低正则理论初步}
+\label{b2:sec:1604}
 
-上一节把核条件与平方有界性分开。本节先把两者用于好坏分解：好函数的高度受控，可以使用平方估计；坏函数的零平均则使支集外的尾部可积。弱端点成立后，大小分解插值给出 \(1<p<2\)，伴随再给出 \(p>2\)。最后才讨论截断是否恢复这个有界算子。
+有界可测系数不足以支持前面的差商估计，却仍保留椭圆性带来的能量控制。对实标量方程，截断与 Sobolev 不等式还能把积分控制逐步变成点态控制。本节完整证明局部有界性，随后明确区分已经完成的能量论证和通向 Harnack、Hölder 理论的深层步骤。
 
-\subsection{\texorpdfstring{\(L^2\)}{L2} 假设}
-\label{b2:subsec:180401}
+\subsection{Caccioppoli 不等式}
+\label{b2:subsec:160401}
 
-设 \(T\) 是标准 Calderón--Zygmund 算子，记其平方算子范数为 \(N\)，大小与光滑常数为 \(C_0,C_1\)。对卷积型例子，\(N\) 可以从有界 Fourier 乘子得到；非平移不变算子则需要另外的平方估计。以下证明不从核条件推导 \(N\)，而是说明已经取得的平方界怎样用于其他指数。
+以下矩阵 \(A\) 仅假定可测，满足 \(\lVert A\rVert_\infty\le\Lambda\) 和 \(\xi^{\mathsf T}A(x)\xi\ge\lambda|\xi|^2\)。系数不需要一阶导数。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[内部能量估计]
+\label{b2:prop:16-caccioppoli}
+设整数 \(d\geq1\)，\(\Omega\subset\mathbb R^d\) 为开集，\(x_0\in\Omega\)、\(R>0\)，记 \(B_s=B(x_0,s)\)，并设 \(B_R\Subset\Omega\)。设 \(A\in L^\infty(B_R;\mathbb R^{d\times d})\)，\(0<\lambda\leq\Lambda<\infty\)，\(\|A\|_\infty\leq\Lambda\)，且 \(\xi^{\mathsf T}A(x)\xi\geq\lambda|\xi|^2\) 对几乎处处 \(x\in B_R\)、全部 \(\xi\in\mathbb R^d\) 成立。实函数 \(u\in H^1(B_R)\)、\(f\in L^2(B_R)\) 满足 \(-\operatorname{div}(A\nabla u)=f\) 的弱形式。则对 \(0<r<R\) 和任意常数 \(c\in\mathbb R\)，
+\[
+ \int_{B_r}|\nabla u|^2\le
+ \frac{C}{(R-r)^2}\int_{B_R}|u-c|^2
+       +C(R-r)^2\int_{B_R}|f|^2,
+\]
+其中 \(C\) 只依赖 \(d,\lambda,\Lambda\)。
+\end{proposition}
+\begin{proof}
+取 \(\eta\in C_c^\infty(B_R)\)，在 \(B_r\) 上为 \(1\)，满足 \(0\le\eta\le1\)、\(|\nabla\eta|\le C_d/(R-r)\)。函数 \(\eta^2(u-c)\) 是合法测试函数。展开并用椭圆性，得
+\[
+ \begin{aligned}
+ \lambda\int\eta^2|\nabla u|^2
+ &\le2\Lambda\int\eta|\nabla u|\cdot|u-c|\cdot|\nabla\eta|\\
+ &\quad+\int\eta^2|f|\cdot|u-c|.
+ \end{aligned}
+\]
+第一项由 Young 不等式吸收一半左端，余下是 \(C\int|u-c|^2|\nabla\eta|^2\)。对第二项使用带尺度的 Young 不等式，界为 \(C(R-r)^2\int|f|^2+C(R-r)^{-2}\int|u-c|^2\)。整理并利用 \(\eta=1\) 于内球即可。
+\end{proof}
+
+这项 \term[caccioppoli-budengshi]{Caccioppoli 不等式}[Caccioppoli inequality]以较大区域内函数的大小控制较小区域内的梯度。取常数 \(c\) 可以去掉与方程无关的整体平移；齐次方程中常取 \(c\) 为球平均值，以突出振荡而不是绝对高度。估计方向与 Poincaré 不等式相反，但需要解满足方程，因此不能对任意 \(H^1\) 函数成立。
+
+\subsection{反向估计}
+\label{b2:subsec:160402}
+
+对于齐次解，在 \(B_{2r}\) 上取 \(c=u_{B_{2r}}\)。Caccioppoli 与球上的 Sobolev--Poincaré 不等式结合，给出一个梯度的反向 Hölder 型估计。例如 \(d>2\) 时取 \(q=2d/(d+2)<2\)，有
+\[
+ \left(\frac1{|B_r|}\int_{B_r}|\nabla u|^2\right)^{1/2}
+ \le C\left(\frac1{|B_{2r}|}\int_{B_{2r}}|\nabla u|^q\right)^{1/q}.
+\]
+这里积分除以球的体积，均取平均值。证明中先用能量估计将左端界为
+\[
+ \frac Cr\left(\frac1{|B_{2r}|}\int_{B_{2r}}|u-u_{B_{2r}}|^2\right)^{1/2},
+\]
+再用 Sobolev--Poincaré 将这一项界为右端。二维可选任意固定 \(1<q<2\)，由对应有限指数嵌入及 Hölder 不等式得到同样形式。
 
 \ProseParagraphBreak
 
-若 \(f\in L^1\cap L^2\)，在高度 \(\alpha>0\) 作上一节的分解 \(f=g+\sum_jb_j\)。好函数满足
-\[
- \|g\|_2^2\leq\|g\|_\infty\cdot\|g\|_1
- \leq2^d\alpha\|f\|_1.
-\]
-坏块虽然可能有很大的平方范数，仍各自属于算子的原定义域。事实上，在不交的 \(Q_j\) 上有
-\[
- \|b_j\|_2^2
- =\int_{Q_j}|f|^2-|Q_j|\cdot|f_{Q_j}|^2
- \leq\int_{Q_j}|f|^2.
-\]
-因此坏块级数在 \(L^2\) 中收敛于 \(b=f-g\)，有限和的算子像也在 \(L^2\) 中趋于 \(Tb\)。这一步使下一段的无穷坏块处理能够从有限和开始；它没有断言 \(Tb\) 在整个空间可积。
+通常 Hölder 不等式以较高指数范数控制较低指数范数；这里对解的梯度出现相反方向，代价是扩大球。它暗示梯度具有比任意 \(L^2\) 函数更强的分布控制。由此继续推出高于 \(2\) 的可积指数，需要反向 Hölder 不等式的自改进定理；本节没有证明这一步，因而也不把更高可积性写成已经建立的结论。
 
-\subsection{弱型 \texorpdfstring{\((1,1)\)}{(1,1)}}
-\label{b2:subsec:180402}
+\ProseParagraphBreak
+
+局部有界性的迭代使用另一种增强：把能量估计应用于超过某个高度的部分。对开集 \(U\) 上的实有界可测椭圆矩阵 \(A\)，称实函数 \(u\in H^1_{\mathrm{loc}}(U)\) 为齐次方程的弱次解，是指 \(\int_U A\nabla u\cdot\nabla\varphi\le0\) 对所有非负 \(\varphi\in C_c^\infty(U)\) 成立。取 \(w=(u-k)_+\)、\(k\in\mathbb R\)，经截断逼近可用 \(\eta^2w\) 测试，得到
+\[\int\eta^2|\nabla w|^2\le C\int w^2|\nabla\eta|^2.\]
+在 \(\{u\le k\}\) 上 \(\nabla w=0\)，在其余部分 \(\nabla w=\nabla u\)，所以与前面的吸收步骤完全相同。高度 \(k\) 可以随迭代改变，这为同时控制高值集合的大小和函数值提供了自由度。
+
+\subsection{截断迭代与局部有界性}
+\label{b2:subsec:160403}
 
 \Needspace{6\baselineskip}
-\begin{theorem}[Calderón--Zygmund 弱型]\label{b2:thm:18-cz-weak}
-设整数 \(d\geq1\)、\(0<\delta\leq1\)，\(C_0,C_1,N\geq0\) 为有限常数。设 \(T:L^2(\mathbb R^d;\mathbb C)\to L^2(\mathbb R^d;\mathbb C)\) 为复线性算子，\(\|T\|_{2\to2}\leq N\)，其离开对角线的可测核 \(K\) 满足
-\[
- |K(x,y)|\leq C_0|x-y|^{-d}\quad(x\ne y),
-\]
-\[
- \begin{aligned}
- &|K(x,y)-K(x',y)|+|K(y,x)-K(y,x')|\\
- &\quad\leq C_1\frac{|x-x'|^\delta}{|x-y|^{d+\delta}}
- \quad\left(x\ne y,\ |x-x'|\leq\frac{|x-y|}2\right).
- \end{aligned}
-\]
-假设对每个紧支集 \(h\in L^2\)，在其支集外几乎处处有
-\(Th(x)=\int K(x,y)\cdot h(y)\,\mathrm dy\)。
-则对 \(f\in L^1(\mathbb R^d)\cap L^2(\mathbb R^d)\)、\(t>0\)，有
-\[
- \bigl|\{\,|Tf|>t\,\}\bigr|\leq
- C_{d,\delta}(N+C_0+C_1)t^{-1}\|f\|_1.
-\]
-算子 \(T\) 有唯一的连续线性延拓
-\(T_1:L^1(\mathbb R^d)\to L^{1,\infty}(\mathbb R^d)\)，目标连续性使用弱 \(L^1\) 拟范数；延拓满足同一个弱型界，并在 \(L^1\cap L^2\) 上等于原算子。
+\begin{theorem}[弱次解的局部上界]
+\label{b2:thm:16-local-boundedness}
+设整数 \(d\geq2\)，\(x_0\in\mathbb R^d\)、\(R>0\)，记 \(B_s=B(x_0,s)\)。设 \(A\in L^\infty(B_R;\mathbb R^{d\times d})\)，\(0<\lambda\leq\Lambda<\infty\)，\(\|A\|_\infty\leq\Lambda\)，且 \(\xi^{\mathsf T}A(x)\xi\geq\lambda|\xi|^2\) 对几乎处处 \(x\in B_R\)、全部 \(\xi\in\mathbb R^d\) 成立。实函数 \(u\in H^1(B_R)\) 满足 \(\int_{B_R}A\nabla u\cdot\nabla\varphi\leq0\) 对每个非负 \(\varphi\in C_c^\infty(B_R)\) 成立。则
+\[\operatorname*{ess\,sup}_{B_{R/2}}u_+
+ \le C\left(\frac1{|B_R|}\int_{B_R}u_+^2\right)^{1/2},\]
+其中 \(C\) 只依赖 \(d,\lambda,\Lambda\)。齐次弱解同时满足相应的 \(|u|\) 局部上界。
 \end{theorem}
 \begin{proof}
-记 \(B=N+C_0+C_1\)。\(B=0\) 时 \(T=0\)，以下设 \(B>0\)，并取分解高度 \(\alpha=t/B\)。由\cref{b2:thm:18-cz-decomposition}，好部分给出
-\[
- \bigl|\{\,|Tg|>t/2\,\}\bigr|
- \leq\frac{4N^2}{t^2}\|g\|_2^2
- \leq C_d\frac{N^2}{Bt}\|f\|_1.
-\]
-取 \(Q_j^*=8\sqrt d\,Q_j\)，记 \(E^*=\bigcup_jQ_j^*\)、\(G=\mathbb R^d\setminus E^*\)。扩大坏区域的测度满足
-\[
- |E^*|\leq(8\sqrt d)^d\sum_j|Q_j|
- \leq C_d\frac B t\|f\|_1.
-\]
-对每个坏块，在 \(Q_j^*\) 外用支集外表示和零平均减去 \(K(x,c_{Q_j})\)。两个相关距离可比，输入变量光滑条件因而满足\cref{b2:thm:18-cancellation-tail}的假设，给出
-\[
- \int_{\mathbb R^d\setminus Q_j^*}|Tb_j(x)|\,\mathrm dx
- \leq C_{d,\delta}C_1\|b_j\|_1.
-\]
-对有限和先积分取三角不等式。坏块在 \(L^2\) 中收敛，故其算子像的某个子列几乎处处趋于 \(Tb\)；在固定的 \(G\) 上用 Fatou，得到
-\[
- \int_G|Tb|
- \leq C_{d,\delta}C_1\sum_j\|b_j\|_1
- \leq2C_{d,\delta}C_1\|f\|_1.
-\]
-这里的可积性只在扩大坏区域之外成立。于是
-\[
- \bigl|\{\,|Tf|>t\,\}\bigr|
- \leq \bigl|\{\,|Tg|>t/2\,\}\bigr|+|E^*|
-       +\frac2t\int_G|Tb|
- \leq C_{d,\delta}\frac B t\|f\|_1,
-\]
-其中使用 \(N^2/B\leq B\)、\(C_1\leq B\)。选择高度 \(t/B\) 也使这个弱型常数随算子大小线性缩放。
+先在 \(B_1=B(0,1)\) 证明，随后写出一般球的缩放。对 \(v\in H_0^1(B_1)\)，选 \(\chi=d/(d-2)>1\)（\(d>2\)）或 \(\chi=2\)（\(d=2\)），Sobolev 不等式给出 \(\lVert v\rVert_{2\chi}^2\le C\lVert\nabla v\rVert_2^2\)。固定待选高度 \(K>0\)，令
+\[r_n=\tfrac12+2^{-n-1},\qquad k_n=K(1-2^{-n}),\qquad
+ Y_n=\int_{B_{r_n}}(u-k_n)_+^2.\]
+选截断 \(\eta_n=1\) 于 \(B_{r_{n+1}}\)，支集在 \(B_{r_n}\)，且 \(|\nabla\eta_n|\le C2^n\)。令 \(w_n=(u-k_n)_+\)，截断能量估计连同乘积导数公式给出
+\[\lVert\eta_nw_n\rVert_{2\chi}^2
+ \le C\lVert\nabla(\eta_nw_n)\rVert_2^2\le C4^nY_n.\]
+在集合 \(E_{n+1}=B_{r_{n+1}}\cap\{u>k_{n+1}\}\) 上，\(w_n\ge k_{n+1}-k_n=K2^{-n-1}\)。所以 \(|E_{n+1}|\le4^{n+1}K^{-2}Y_n\)。再用 Hölder 不等式，记 \(\theta=1-1/\chi>0\)，得
+\[Y_{n+1}\le\lVert\eta_nw_n\rVert_{2\chi}^2\cdot|E_{n+1}|^\theta
+ \le Cb^nK^{-2\theta}Y_n^{1+\theta},\]
+其中 \(b>1\) 为固定常数。
 
-现在构造 \(L^1\) 延拓，记刚才的弱型常数为 \(W=C_{d,\delta}B\)。对 \(f\in L^1\)，取 \(f_n\in L^1\cap L^2\) 使 \(f_n\to f\) 于 \(L^1\)。抽成子列 \(g_n\)，使 \(\|g_{n+1}-g_n\|_1\leq2^{-3n}\)。线性与弱界给出
-\[
- \bigl|\{\,|Tg_{n+1}-Tg_n|>2^{-n}\,\}\bigr|\leq W2^{-2n}.
-\]
-这些测度的和有限，故相应集合的并集尾部测度趋零。除一个零测集外，输出的相邻差最终不超过 \(2^{-n}\)，所以 \(Tg_n\) 逐点为 Cauchy 列并有有限极限，记为 \(T_1f\)。
+令 \(Z_n=Y_n/K^2\)，则 \(Z_{n+1}\le Cb^nZ_n^{1+\theta}\)。若
+\[Z_0\le C^{-1/\theta}b^{-1/\theta^2},\]
+归纳可证 \(Z_n\le C^{-1/\theta}b^{-n/\theta-1/\theta^2}\)：代入递推式后，常数幂及 \(b\) 的指数恰好得到下一项。因此 \(Y_n\to0\)。取 \(K\) 为 \(\lVert u_+\rVert_{L^2(B_1)}\) 的足够大固定倍数即可满足初始小量条件；零范数情形结论显然。因为 \((u-K)_+^2\) 在 \(B_{1/2}\) 上的积分不超过每个 \(Y_n\)，故 \(u\le K\) 几乎处处。
 
-对 \(0<s<t\)，有
-\(\mathbf1_{\{|T_1f|>t\}}\leq\liminf_n\mathbf1_{\{|Tg_n|>s\}}\)。
-Fatou 给出 \(\bigl|\{\,|T_1f|>t\,\}\bigr|\leq W\|f\|_1/s\)，令 \(s\uparrow t\) 即传递弱界。更重要的是，对任一固定的原逼近项 \(f_n\)，对 \(T(f_n-g_m)\) 用同一论证，得
+回到任意球，置 \(v(y)=u(x_0+Ry)\)、\(\widetilde A(y)=A(x_0+Ry)\)。有 \(\nabla_yv=R\nabla_xu\)，弱次解不等式换元后的共同正因子 \(R^{d-2}\) 约去，系数仍满足同一椭圆上下界。单位球结论因此给出
 \[
- \bigl|\{\,|Tf_n-T_1f|>t\,\}\bigr|
- \leq \frac Wt\|f_n-f\|_1.
+ \operatorname*{ess\,sup}_{B_{R/2}(x_0)}u_+
+ \leq C\|v_+\|_{L^2(B_1)}
+ =CR^{-d/2}\|u_+\|_{L^2(B_R(x_0))}.
 \]
-因而原列整体在弱拟范数中趋于 \(T_1f\)，另取任何 \(L^1\cap L^2\) 逼近列也给出同一极限。和与数乘可在公共逼近列上取局部依测度极限，故 \(T_1\) 线性，并有
-\[
- \|T_1f-T_1h\|_{1,\infty}\leq W\|f-h\|_1.
-\]
-对原定义域中的输入可取常值逼近列，说明两种定义一致。稠密性与上述差估计也给出连续延拓的唯一性；这里没有使用弱 \(L^1\) 拟范数的常数一三角不等式。
+由 \(|B_R|=|B_1|R^d\)，把只依赖维数的体积常数并入 \(C\)，即为定理的平均形式。对于齐次弱解，\(u\) 与 \(-u\) 都是次解，分别估计正部即可。
 \end{proof}
 
-弱端点保留的是超水平集合估计。Hilbert 变换的区间输入已有不可积远尾，所以不能把这个结论改成强 \(L^1\) 有界。下面只对严格的中间指数插值。
+这一证明称为截断迭代。它没有控制系数的导数，也没有先假设解有界；有界性由高值集合的递推衰减产生。迭代中的超线性指数 \(1+\theta>1\) 来自 Sobolev 积分增益，正是小量逐步改善的原因。若只得到线性递推 \(Y_{n+1}\le Cb^nY_n\)，几何增长的常数会使论证失败。
 
-\subsection{\texorpdfstring{\(1<p<\infty\)}{1<p<∞}}
-\label{b2:subsec:180403}
+\ProseParagraphBreak
+
+一维可以直接使用 \(H^1\) 函数的绝对连续代表和基本定理获得局部控制，无须上述多维迭代。对于含源项的方程，截断估计会多出源项积分；右端在上述换元下变成 \(R^2f(x_0+Ry)\)，不会自行消失。这里的齐次假设不能只从定理标题中读过而在应用时忘掉。
+
+非齐次理论中，一个常用的充分条件是在 \(d\geq2\) 时要求 \(f\in L^q_{\mathrm{loc}}\)、\(q>d/2\)，并保留实标量弱解、有界可测一致椭圆系数等条件。有限 \(q\) 时，缩放后的源项范数为
+\[\|R^2f(x_0+R\,\cdot)\|_{L^q(B_1)}
+ =R^{2-d/q}\|f\|_{L^q(B_R(x_0))};\]
+\(q=\infty\) 时相应因子为 \(R^2\)。指数 \(2-d/q>0\) 说明这一可积性门槛与小尺度控制相容；完整充分性还需要处理带源项的迭代，本节没有完成该证明，也不把它用于后文的齐次 Harnack 推导。一般高维 \(L^2\) 源项未必足够，例如 \(d=5\) 时 \(2<d/2\)。非齐次局部估计的系统背景可参阅 \cite[Chapter 8]{Gilbarg2001Elliptic}。
+
+截断测试的极限可用平滑单调函数落实。取 \(\theta_\varepsilon(t)=0\) 于 \(t\le0\)，使 \(0\le\theta_\varepsilon'\le1\)，并于 \(t\ge\varepsilon\) 令导数为 \(1\)。先对 \(\eta^2\theta_\varepsilon(u-k)\) 测试，弱链式法则给 \(\nabla\theta_\varepsilon(u-k)=\theta_\varepsilon'(u-k)\nabla u\)。左端对 \(\eta^2\theta_\varepsilon'|\nabla u|^2\) 有正下界。右端交叉项逐点趋于目标项，且由可积函数 \(C\eta|\nabla u|\cdot(u-k)_+\cdot|\nabla\eta|\) 控制；左端用 Fatou，或在 \(u>k\) 上控制收敛。这样取得正部能量不等式，再进行高度迭代。整个过程只对已有的一阶弱导数作有界乘子操作，没有对不可微的折角函数直接进行经典求导。
+
+\subsection{De Giorgi–Nash–Moser 理论简介}
+\label{b2:subsec:160404}
+
+局部有界性还没有保证振荡随半径缩小而消失。实标量一致椭圆方程的更强结论是：非负解在较小球内的最大值与最小值可相互比较，任意实解因而具有 Hölder 连续代表。De Giorgi、Nash 和 Moser 的工作从不同方向建立了这一低正则理论。本小节介绍结论及其逻辑联系；其中 Harnack 比较的深层步骤不冒充为上一迭代已经证明。
+
+要读完整证明，可以先读\secref{b2:sec:app-C-2}的 John--Nirenberg 指数尾，再读\secref{b2:sec:H201}。后者先用正幂测试证明局部上界及小正指数的平均值上界；对 \(\log(u+\varepsilon)\) 的能量估计再给出局部 BMO 控制，由附录 C.2 的指数尾连接正、负幂平均值，最后对 \((u+\varepsilon)^{-1}\) 应用次解上界并令 \(\varepsilon\downarrow0\)。附录 H 在正文中完成了指数尾的积分，不把这一步交给附录习题。这里引用的 C.2 结果并不依赖本节的 Harnack 或 Hölder 结论，因而没有循环。
 
 \Needspace{6\baselineskip}
-\begin{theorem}[Calderón--Zygmund]\label{b2:thm:18-cz-lp}
-设整数 \(d\geq1\)、\(0<\delta\leq1\)，\(C_0,C_1,N\geq0\) 为有限常数。设 \(T:L^2(\mathbb R^d;\mathbb C)\to L^2(\mathbb R^d;\mathbb C)\) 为复线性算子，\(\|T\|_{2\to2}\leq N\)，其离开对角线的可测核 \(K\) 满足
-\[
- |K(x,y)|\leq C_0|x-y|^{-d}\quad(x\ne y),
-\]
-\[
- \begin{aligned}
- &|K(x,y)-K(x',y)|+|K(y,x)-K(y,x')|\\
- &\quad\leq C_1\frac{|x-x'|^\delta}{|x-y|^{d+\delta}}
- \quad\left(x\ne y,\ |x-x'|\leq\frac{|x-y|}2\right).
- \end{aligned}
-\]
-假设对每个紧支集 \(h\in L^2\)，在其支集外几乎处处有
-\(Th(x)=\int K(x,y)\cdot h(y)\,\mathrm dy\)。
-则对每个 \(1<p<\infty\)，原算子在 \(L^2\cap L^p\) 上有唯一有界延拓 \(T_p:L^p(\mathbb R^d)\to L^p(\mathbb R^d)\)，且
-\[
- \|T_pf\|_p\leq C_{d,\delta,p}(N+C_0+C_1)\|f\|_p.
-\]
-这些延拓在任意两个输入空间的交集上一致，并与上述核条件产生的 \(L^1\to L^{1,\infty}\) 连续延拓在 \(L^1\cap L^p\) 上一致。
+\begin{theorem}[可测系数的 Harnack 比较，深层结论]
+\label{b2:thm:16-measurable-harnack}
+设整数 \(d\geq2\)，\(x_0\in\mathbb R^d\)、\(R>0\)，记 \(B_s=B(x_0,s)\)。设 \(A\in L^\infty(B_{2R};\mathbb R^{d\times d})\)，\(0<\lambda\leq\Lambda<\infty\)，\(\|A\|_\infty\leq\Lambda\)，且 \(\xi^{\mathsf T}A(x)\xi\geq\lambda|\xi|^2\) 对几乎处处 \(x\in B_{2R}\)、全部 \(\xi\in\mathbb R^d\) 成立。若实函数 \(u\in H^1(B_{2R})\) 几乎处处非负，并且弱解 \(-\operatorname{div}(A\nabla u)=0\)，则
+\[\operatorname*{ess\,sup}_{B_R}u\le C\operatorname*{ess\,inf}_{B_R}u,\]
+其中 \(C\) 只依赖 \(d,\lambda,\Lambda\)。
 \end{theorem}
-\begin{proof}
-上一条弱型延拓 \(T_1\) 与原算子在 \(L^1\cap L^2\) 上一致，所以
-\(T(f_1+f_2)=T_1f_1+Tf_2\)
-定义了和空间 \(L^1+L^2\) 上的同一个复线性算子，结果与分解无关。弱 \((1,1)\) 与强 \((2,2)\) 于是满足\cref{b2:thm:17-marcinkiewicz}的定义域及端点条件，得到 \(1<p<2\) 的强型界。若 \(B=N+C_0+C_1>0\)，先对 \(T/B\) 插值，两端常数均由 \(d,\delta\) 控制，再还原 \(B\)，便得到陈述中的线性因子；\(B=0\) 时直接成立。
+\begin{proofsketch}
+上一小节已经完整证明次解的局部上界。余下的核心是超解的正性传播：一定比例的点上具有正下界，可以转成较小区域上的统一正下界。用负幂或对数测试建立这一性质，再结合覆盖分解，可以得到一个小正指数的弱 Harnack 下界；将它与相应指数的局部上界结合，就得到所列比较。这里省略正性传播和覆盖迭代的证明，故这一段只是证明路线。Dongsheng Li 与 Kai Zhang 的论文 \cite[Theorem 1.1 and Section 2]{Li2017Harnack} 给出可测系数的比较定理，并说明局部上界、正性传播与比较之间的关系；系统理论可参阅 \cite[Chapter 8]{Gilbarg2001Elliptic}。本章此前的 \(H^2\) 定理和局部有界性均不依赖此结论；上述附录阅读路径的完整终点是\cref{b2:thm:H2-linear-harnack}。
+\end{proofsketch}
 
-当 \(p>2\) 时，\(p'=p/(p-1)\in(1,2)\)。上一节已经证明 \(T^*\) 的核为 \(\overline{K(y,x)}\)，具有相同的大小、光滑常数和平方范数界。因此刚才的结论给出它的 \(L^{p'}\) 界。对 \(f\in L^p\cap L^2\)、\(g\in L^{p'}\cap L^2\)，有
+为了看出比较如何控制振荡，先设实有界可测矩阵 \(A\) 在 \(B_{2R}(x)\) 上满足上述 \(\lambda,\Lambda\) 椭圆界，\(u\) 是其中的有界实齐次弱解。记在外球上的本性上、下界为 \(M,m\)，在内球上的为 \(M_1,m_1\)。函数 \(u-m\) 与 \(M-u\) 均为非负解。对二者应用 Harnack 比较，并将两项不等式相加，得到
+\[(M-m)+(M_1-m_1)\le C\bigl((M-m)-(M_1-m_1)\bigr).\]
+把 Harnack 常数放大到 \(C\geq3\) 不会改变比较的正确性。令
 \[
- \left|\int Tf\cdot\overline g\right|
- =\left|\int f\cdot\overline{T^*g}\right|
- \leq C_{d,\delta,p'}B\|f\|_p\cdot\|g\|_{p'}.
+ \begin{gathered}
+ \omega_x(r)=\operatorname*{ess\,osc}_{B_r(x)}u,\\
+ \vartheta=\frac{C-1}{C+1}\in[1/2,1),
+ \qquad\alpha=-\frac{\log\vartheta}{\log2}\in(0,1].
+ \end{gathered}
 \]
-取有限测度支集的简单 \(g\) 便已足以恢复 \(L^p\) 范数：在有限球内再截断 \(|Tf|\)，沿 \(Tf/|Tf|\) 的相位乘以 \(|Tf|^{p-1}\) 作测试，并归一化、简单逼近，最后穷竭；零点处取零。配对中已有 \(\overline g\)，因此这样选择才产生 \(|Tf|^p\)。这个范数刻画允许原先未知的 \(\|Tf\|_p\) 为无穷；上式的有限右端证明它实际有限。\(L^p\cap L^2\) 的稠密性随后给出唯一有界延拓。
-
-还须识别不同指数上的输出。若 \(f\in L^p\cap L^r\)、\(1<p,r<\infty\)，取
-\(f_n=f\cdot\mathbf1_{\{|x|\leq n,\ |f|\leq n\}}\)。
-它们属于 \(L^2\cap L^p\cap L^r\)，并在后两个空间同时趋于 \(f\)。它们的输出在两个指数上都是原来的 \(Tf_n\)，各自的范数极限都给出每个有限球上的依测度极限，唯一性使 \(T_pf=T_rf\) 几乎处处。若 \(f\in L^1\cap L^p\)，同样的截断还在 \(L^1\) 收敛；弱型差估计也给出局部依测度收敛，故 \(T_1f=T_pf\)。
-\end{proof}
-
-这项证明中，原算子坏块消去常数用的是输入变量的光滑性；得到另一半指数时，伴随坏块需要原核输出变量的光滑性。它不要求核齐次，也不要求算子平移不变。若把点态 Hölder 条件换成积分 Hörmander 条件，相同的弱型、插值及对偶路线仍适用，但必须同时给出核及伴随核的相应积分界。下面的截断和振荡估计继续使用点态条件。
-
-\subsection{极大截断、向量值估计与 \texorpdfstring{\(\mathrm{BMO}\)}{BMO} 端点}
-\label{b2:subsec:180404}
-
-先把截断本身定义清楚。对标准核及 \(f\in L^p\)、\(1\leq p<\infty\)，上一节已经证明每个固定 \(\epsilon>0\) 的积分
+所以上式正是 \(\omega_x(R)\leq\vartheta\omega_x(2R)\)。若 \(u\) 在 \(B_{2R_0}(x)\) 有界，则沿 \(R_0,R_0/2,R_0/4,\ldots\) 逐级应用比较，得
+\[\omega_x(2^{-n}R_0)\leq\vartheta^n\omega_x(R_0)
+       \qquad(n=0,1,2,\ldots).\]
+对 \(0<\rho\leq R_0\)，选 \(n\geq0\) 使 \(2^{-n-1}R_0<\rho\leq2^{-n}R_0\)。振荡对球半径单调，且 \(\vartheta^n=(2^{-n})^\alpha\)，故
 \[
- T_\epsilon f(x)=\int_{|x-y|>\epsilon}K(x,y)\cdot f(y)\,\mathrm dy
+ \omega_x(\rho)\leq2^\alpha
+       \left(\frac{\rho}{R_0}\right)^\alpha\omega_x(R_0).
 \]
-绝对收敛。固定 \(x\)，在 \(\epsilon_0>0\) 附近可用 \(|x-y|>\epsilon_0/2\) 的绝对积分控制，球面又为零测集，所以支配收敛使 \(\epsilon\mapsto T_\epsilon f(x)\) 连续。因此其\term[jida-jieduan]{极大截断}[maximal truncation]
-\[
- T_*f(x)\coloneqq\sup_{\epsilon>0}|T_\epsilon f(x)|
-       =\sup_{\epsilon\in\mathbb Q,\ \epsilon>0}|T_\epsilon f(x)|
-\]
-可测，暂时允许为无穷。\(T^*\) 始终表示线性伴随，与 \(T_*\) 不同。
-
-\Needspace{6\baselineskip}
-\begin{proposition}\label{b2:thm:18-maximal-truncation}
-设整数 \(d\geq1\)、\(0<\delta\leq1\)，\(C_0,C_1,N\geq0\) 为有限常数。设 \(T:L^2(\mathbb R^d;\mathbb C)\to L^2(\mathbb R^d;\mathbb C)\) 为复线性算子，\(\|T\|_{2\to2}\leq N\)，其离开对角线的可测核 \(K\) 满足
-\[
- |K(x,y)|\leq C_0|x-y|^{-d}\quad(x\ne y),
-\]
-\[
- \begin{aligned}
- &|K(x,y)-K(x',y)|+|K(y,x)-K(y,x')|\\
- &\quad\leq C_1\frac{|x-x'|^\delta}{|x-y|^{d+\delta}}
- \quad\left(x\ne y,\ |x-x'|\leq\frac{|x-y|}2\right).
- \end{aligned}
-\]
-假设对每个紧支集 \(h\in L^2\)，在其支集外几乎处处有
-\(Th(x)=\int K(x,y)\cdot h(y)\,\mathrm dy\)。
-令 \(B=N+C_0+C_1\)，对 \(1\leq p<\infty\) 的输入以绝对积分定义
-\(T_\epsilon f(x)=\int_{|x-y|>\epsilon}K(x,y)\cdot f(y)\,\mathrm dy\)，
-并置 \(T_*f=\sup_{\epsilon>0}|T_\epsilon f|\)。若 \(1<q<\infty\)、\(f\in C_c^\infty(\mathbb R^d)\)，则
-\[
- T_*f(x)\leq C_{d,\delta,q}
- \left[M(|Tf|^q)(x)^{1/q}
-       +B\,M(|f|^q)(x)^{1/q}\right]
-\]
-几乎处处成立，其中 \(M\) 为中心 Hardy--Littlewood 极大算子。因此对每个 \(1<p<\infty\)、\(f\in L^p(\mathbb R^d)\)，有
-\[
- \|T_*f\|_p\leq C_{d,\delta,p}B\|f\|_p.
-\]
-这两个估计不要求预先知道 \(T_\epsilon\to T\) 或主值存在。
-\end{proposition}
-\begin{proof}
-先取光滑紧支集 \(f\)，固定 \(x,\epsilon\)，分解
-\(f_1=f\cdot\mathbf1_{B(x,2\epsilon)}\)、\(f_2=f-f_1\)。
-对几乎处处 \(z\in B(x,\epsilon/4)\)，\(Tf_2(z)\) 有支集外核表示。比较它与 \(T_\epsilon f(x)\)，在 \(\epsilon<|x-y|<2\epsilon\) 上，用大小界和球平均得到至多 \(C_dC_0\cdot Mf(x)\)。在 \(|x-y|>2\epsilon\) 上，用输出变量光滑性；分成半径约 \(2^j\epsilon\)、\(j\geq1\) 的环带后，每一带至多为
-\[
- C_dC_1\epsilon^\delta(2^j\epsilon)^{-d-\delta}
-          \int_{B(x,2^{j+1}\epsilon)}|f|
- \leq C_d'C_1 2^{-j\delta}\cdot Mf(x).
-\]
-故以 \(A_{d,\delta}=C_d(C_0+C_1\sum_{j\geq1}2^{-j\delta})\) 记这部分常数，有
-\[
- |T_\epsilon f(x)|\leq |Tf(z)|+|Tf_1(z)|
-                       +A_{d,\delta}\cdot Mf(x)
-\]
-对球内几乎处处 \(z\) 成立。取 \(z\) 上的归一化 \(L^q\) 范数，第一项不超过 \(M(|Tf|^q)(x)^{1/q}\)。第二项由已证的 \(L^q\) 有界性控制为
-\[
- |B(x,\epsilon/4)|^{-1/q}\cdot\|Tf_1\|_q
- \leq C_{d,\delta,q}B\epsilon^{-d/q}
-                   \|f\cdot\mathbf1_{B(x,2\epsilon)}\|_q
- \leq C'_{d,\delta,q}B\,M(|f|^q)(x)^{1/q}.
-\]
-Hölder 还给出 \(Mf\leq M(|f|^q)^{1/q}\)。对 \(\epsilon\) 取上确界，即得点态估计。对指定的 \(p>1\)，选 \(1<q<p\)，极大算子在 \(L^{p/q}\) 上有界，\(T\) 在 \(L^p\) 上有界，所以
-\(\|T_*f\|_p\leq C_{d,\delta,p}B\|f\|_p\)。
-
-最后将这个界用于积分定义的任意 \(f\in L^p\)。取 \(g_n\in C_c^\infty\) 趋于 \(f\) 于 \(L^p\)。对每个固定 \(\epsilon>0\)，Hölder 给出
-\[
- |T_\epsilon(g_n-f)(x)|
- \leq C_{d,p}C_0\epsilon^{-d/p}\|g_n-f\|_p\longrightarrow0.
-\]
-因此 \(T_*f\leq\liminf_nT_*g_n\)；可先对有限个有理半径取最大值，再取其上确界得到这个不等式。Fatou 把 \(L^p\) 界传给 \(f\)。于是 \(T_*f\) 几乎处处有限；再由 \(|T_*f-T_*h|\leq T_*(f-h)\)，这个积分定义与从光滑类取得的连续延拓相同。
-\end{proof}
-
-现在可以证明主值的传递。固定 \(1<p<\infty\)，额外假设对每个 \(g\in C_c^\infty\)，硬截断几乎处处存在全参数有限极限，且这个极限等于给定的 \(Tg\)。一种足够的核验方式，是同时证明光滑类的逐点收敛及 \(T_\epsilon g\to Tg\) 于 \(L^2\)：后者的几乎处处子列识别前者的极限。单独的 \(L^2\) 收敛不保证全参数逐点收敛；单独的逐点收敛也可能得到含乘法差异的另一个算子。
+这给出了具体的幂指数，也交代了从二进半径到任意半径的常数。
 
 \ProseParagraphBreak
 
-对一般 \(f\in L^p\)，取光滑 \(g\)，在光滑类已知极限的满测集上有
-\begin{equation}\label{b2:eq:18-principal-value-transfer}
- \limsup_{\epsilon\downarrow0}|T_\epsilon f-T_pf|
- \leq T_*(f-g)+|T_p(f-g)|.
-\end{equation}
-左侧超过任意 \(a>0\) 的集合 \(E_a\) 因而满足
+还须把“先设有界”去掉，并让各中心的常数一致。设 \(\Omega\subset\mathbb R^d\) 开，\(d\geq2\)，\(A\in L^\infty(\Omega;\mathbb R^{d\times d})\) 满足同一组 \(0<\lambda\leq\Lambda<\infty\) 的椭圆上下界，实函数 \(u\in H^1_{\mathrm{loc}}(\Omega)\) 弱解 \(-\operatorname{div}(A\nabla u)=0\)。固定非空紧集 \(K\Subset\Omega\)，取有界开集 \(V\) 使 \(K\subset V\Subset\Omega\)，再选 \(R_0>0\) 使每个 \(x\in K\) 的 \(\overline{B_{4R_0}(x)}\) 都包含于 \(V\)。局部上界定理用于 \(B_{4R_0}(x)\) 中的 \(u\) 和 \(-u\)，得到与中心无关的界
 \[
- |E_a|\leq\left(\frac2a\right)^p
-        \left(C_*^p+\|T_p\|_{p\to p}^p\right)\cdot\|f-g\|_p^p,
+ \operatorname*{ess\,sup}_{B_{2R_0}(x)}|u|
+ \leq S,\qquad
+ S=C R_0^{-d/2}\|u\|_{L^2(V)}.
 \]
-其中 \(C_*\) 是刚才的极大算子界。集合 \(E_a\) 只由 \(f,a\) 决定，令光滑逼近误差趋零，就得 \(|E_a|=0\)。对 \(a=1/n\) 取可数并，得到 \(T_\epsilon f\to T_pf\) 几乎处处。再由
-\(|T_\epsilon f-T_pf|\leq T_*f+|T_pf|\in L^p\)
-的支配收敛，得到同一截断的 \(L^p\) 收敛。
+于是 \(\omega_x(R_0)\leq2S\)，上面的振荡衰减对所有 \(x\in K\) 同时成立；其中 \(C,\alpha\) 只依赖 \(d,\lambda,\Lambda\)。
+
+最后构造代表元。对每个 \(x\in\Omega\)，在足够小的球上，本性下、上界构成一族嵌套的有限闭区间
+\[
+ \left[\operatorname*{ess\,inf}_{B_r(x)}u,
+       \operatorname*{ess\,sup}_{B_r(x)}u\right].
+\]
+其长度趋于零，故交集恰有一个数，记为 \(\widetilde u(x)\)。球平均值也落在相应区间中，因而
+\[\widetilde u(x)=\lim_{r\downarrow0}
+       \frac1{|B_r(x)|}\int_{B_r(x)}u\]
+在每个点都存在；由第一卷定理~14.4.2 的 Lebesgue 点结论，它与原 \(u\) 几乎处处相等。这里先用振荡估计保证处处极限，再用微分定理确认是同一个等价类，二者不能互相替代。
+
+若 \(x,y\in K\)、\(h=|x-y|\leq R_0/2\) 且 \(h>0\)，则两点的代表值都位于 \(B_{2h}(x)\) 的本性下、上界之间：对 \(y\) 而言，取足够小的球便完全落在该球中。因此
+\[
+ |\widetilde u(x)-\widetilde u(y)|
+ \leq\omega_x(2h)
+ \leq C S\left(\frac{h}{R_0}\right)^\alpha.
+\]
+当 \(h>R_0/2\) 时，\(2S\) 的统一界给出同类估计。综上，对所有 \(x,y\in K\)，
+\[
+ |\widetilde u(x)-\widetilde u(y)|
+ \leq C R_0^{-\alpha-d/2}\|u\|_{L^2(V)}
+       \cdot|x-y|^\alpha.
+\]
+所以得到的是局部 \(C^{0,\alpha}\) 连续代表，且每个固定紧子集上的 Hölder 常数可统一选择。
 
 \ProseParagraphBreak
 
-\cref{b2:thm:18-homogeneous-kernel}已在 Schwartz 输入上把主值与所构造的平方算子识别，因而满足上述光滑类条件；Hilbert 与 Riesz 变换也可这样使用。反例 \(T=M_a\)、\(K=0\) 则有全部截断为零，却未必 \(Tf=0\)，说明识别条件不能从极大范数界中删去。\appref{b2:app:C}将继续讨论这些算子的端点空间。
-
-\ProseParagraphBreak
-
-应区分三个弱端点：\(M\) 的弱 \((1,1)\) 来自覆盖，\(T\) 的弱 \((1,1)\) 来自好坏分解，\(T_*\) 的弱 \((1,1)\) 还需要额外的端点论证。上面的 \(q>1\) 估计不能直接用于一般 \(L^1\) 输入，因为 \(|f|^q\) 未必可积。进一步的结果可参看 Loukas Grafakos 的《Estimates for Maximal Singular Integrals》\cite[Theorem 1]{Grafakos2003Maximal}：该结果在核及转置核的统一环带大小、积分 Hörmander 条件以及关联 \(L^2\) 算子的支集外表示下，给出双截断极大算子的弱 \((1,1)\) 界。当前标准核满足这些条件；对 \(f\in L^1\)，固定内半径后积分绝对收敛，令外半径趋于无穷即可包含这里的单截断。这一弱端点是进一步阅读，本节后面的证明不以它为前提。
-
-\ProseParagraphBreak
-
-平方函数应用还需要同时处理许多输出。若逐坐标把估计相加，常数可能随坐标个数增大；适合无限频带的估计应只依赖核的算子范数和总平方界。
-\Needspace{6\baselineskip}
-\begin{proposition}\label{b2:prop:18-hilbert-valued-cz}
-设整数 \(d\geq1\)，\(\mathcal H_1,\mathcal H_2\) 为同取实数域或同取复数域的有限维 Hilbert 空间。设线性算子
-\(T:L^2(\mathbb R^d;\mathcal H_1)\to L^2(\mathbb R^d;\mathcal H_2)\)
-满足 \(\|T\|_{2\to2}\leq N<\infty\)。设可测核
-\(K(x,y)\in\mathcal B(\mathcal H_1,\mathcal H_2)\)、\(x\ne y\)，存在有限常数 \(C_0,C_1\geq0\)、\(0<\delta\leq1\)，使
-\[
- \|K(x,y)\|\leq C_0|x-y|^{-d},
-\]
-\[
- \begin{aligned}
- &\|K(x,y)-K(x',y)\|+\|K(y,x)-K(y,x')\|\\
- &\quad\leq C_1\frac{|x-x'|^\delta}{|x-y|^{d+\delta}}
- \quad\left(x\ne y,\ |x-x'|\leq\frac{|x-y|}2\right),
- \end{aligned}
-\]
-这里均为算子范数。假设对每个紧支集 \(h\in L^2(\mathbb R^d;\mathcal H_1)\)，在其支集外几乎处处有
-\(Th(x)=\int K(x,y)h(y)\,\mathrm dy\)，积分按有限维向量积分解释。则 \(T\) 有兼容的弱型 \((1,1)\) 延拓及强型 \((p,p)\) 延拓、\(1<p<\infty\)，且
-\[
- \begin{aligned}
- \bigl|\{\,x:\|Tf(x)\|_{\mathcal H_2}>t\,\}\bigr|
- &\leq C_{d,\delta}(N+C_0+C_1)t^{-1}
-                   \|f\|_{L^1(\mathcal H_1)},\\
- \|Tf\|_{L^p(\mathcal H_2)}
- &\leq C_{d,\delta,p}(N+C_0+C_1)\|f\|_{L^p(\mathcal H_1)}.
- \end{aligned}
-\]
-第一式对 \(f\in L^1(\mathbb R^d;\mathcal H_1)\)、\(t>0\) 成立，第二式对 \(f\in L^p(\mathbb R^d;\mathcal H_1)\)、\(1<p<\infty\) 成立。常数与两个 Hilbert 空间的维数无关。
-\end{proposition}
-\begin{proof}
-先取 \(f\in L^1(\mathcal H_1)\cap L^2(\mathcal H_1)\)。对标量函数 \(\|f(x)\|_{\mathcal H_1}\) 在高度 \(\alpha\) 选择二进坏块，再在每块内取向量平均 \(f_Q=|Q|^{-1}\int_Qf\)。三角不等式给出
-\[
- \|g\|_\infty\leq2^d\alpha,
- \quad\|g\|_1\leq\|f\|_1,
- \quad\|g\|_2^2\leq2^d\alpha\|f\|_1.
-\]
-令 \(b_Q=(f-f_Q)\cdot\mathbf1_Q\)。它满足向量等式 \(\int b_Q=0\)，且
-\[
- \sum_Q\|b_Q\|_1\leq2\|f\|_1,
- \quad\sum_Q|Q|\leq\alpha^{-1}\|f\|_1,
- \quad\sum_Q\|b_Q\|_2^2\leq\|f\|_2^2.
-\]
-最后一式仍由平均的平方恒等式得到，因此坏块的向量 \(L^2\) 级数收敛。在 \(Q^*=8\sqrt d\,Q\) 外，
-\[
- \|Tb_Q(x)\|_{\mathcal H_2}
- \leq\int_Q\|K(x,y)-K(x,c_Q)\|
-                       \cdot\|b_Q(y)\|_{\mathcal H_1}\,\mathrm dy.
-\]
-径向尾积分给出 \(\int_{(Q^*)^c}\|Tb_Q\|\leq C_{d,\delta}C_1\|b_Q\|_1\)。有限和、\(L^2\) 子列及 Fatou 因而给出与标量证明相同的坏区域外积分界；取 \(\alpha=t/(N+C_0+C_1)\)，好部分 Chebyshev 与坏部分积分合起来给出所述弱型界。若分母为零，算子为零。
-
-\(L^1\) 延拓也可按前面的可求和差值构造：几乎每点的向量相邻差之范数最终不超过 \(2^{-n}\)，Hilbert 空间的完备性保证点态极限存在。弱界对范数的超水平集合传递，差估计给出连续性和唯一性。
-
-对 \(1<p<2\)，把输入分解为
-\(f\cdot\mathbf1_{\{\|f\|>a\}}+f\cdot\mathbf1_{\{\|f\|\leq a\}}\)。
-第一部分在 \(L^1(\mathcal H_1)\)，第二部分在 \(L^2(\mathcal H_1)\)，其幂次估计与标量证明一致，只需把 \(|f|\) 换成 \(\|f\|_{\mathcal H_1}\)。输出范数满足次可加性，\cref{b2:thm:17-marcinkiewicz}证明中的高度积分因而给出同一中间强型界，不出现坐标求和常数。
-
-对 \(p>2\)，伴随核为 \(K(y,x)^*\)，两个 Hilbert 空间互换，核范数及差分界不变。\(L^2\) 内积关系及
-\[
- |\langle u,v\rangle|\leq\|u\|_{\mathcal H_2}\cdot\|v\|_{\mathcal H_2}
-\]
-给出与前面相同的 \(L^p\)--\(L^{p'}\) 对偶估计。有限测度支集上沿输出向量方向归一化作测试，就能恢复其 \(L^p\) 范数，所用常数仍是一；稠密性与共同截断再识别各个延拓。
-\end{proof}
-
-例如设 \(T_j\) 是一族标量 Calderón--Zygmund 算子，其 \(N,C_0,C_1,\delta\) 对 \(j\) 统一。对有限组输入，取对角算子 \((f_j)\mapsto(T_jf_j)\)。它的核范数为 \(\sup_j|K_j(x,y)|\)，平方界由各坐标平方积分相加得到，范数至多为 \(N\)。故
-\[
- \left\|\left(\sum_j|T_jf_j|^2\right)^{1/2}\right\|_p
- \leq C_{d,\delta,p}(N+C_0+C_1)
-       \left\|\left(\sum_j|f_j|^2\right)^{1/2}\right\|_p.
-\]
-对可数族，先用有限部分和，再在两侧用单调收敛即可。一般矩阵核则必须检查算子范数；逐个矩阵元的统一上界不能代替它。
-
-\ProseParagraphBreak
-
-无穷输入端点适合用平均振荡衡量。对 \(h\in L^1_{\mathrm{loc}}(\mathbb R^d)\)，记
-\[
- \|h\|_{\mathrm{BMO}}\coloneqq
- \sup_Q\frac1{|Q|}\int_Q|h-h_Q|,
- \quad h_Q=\frac1{|Q|}\int_Qh,
-\]
-其中 \(Q\) 遍历轴平行立方体。有限者构成\term[youjie-pingjun-zhendang]{有界平均振荡空间}[bounded mean oscillation]，简称 \(\mathrm{BMO}\)。加上常数不改变这个半范数，故把相差常数的函数视为同一类。下面先对实际属于 \(L^2\) 定义域的有界紧支集输入证明估计，再解释一般有界输入的模常数意义。
-
-\Needspace{6\baselineskip}
-\begin{proposition}\label{b2:prop:18-infinity-bmo}
-设整数 \(d\geq1\)、\(0<\delta\leq1\)，\(C_0,C_1,N\geq0\) 为有限常数。设 \(T:L^2(\mathbb R^d;\mathbb C)\to L^2(\mathbb R^d;\mathbb C)\) 为复线性算子，\(\|T\|_{2\to2}\leq N\)，其离开对角线的可测核 \(K\) 满足
-\[
- |K(x,y)|\leq C_0|x-y|^{-d}\quad(x\ne y),
-\]
-\[
- \begin{aligned}
- &|K(x,y)-K(x',y)|+|K(y,x)-K(y,x')|\\
- &\quad\leq C_1\frac{|x-x'|^\delta}{|x-y|^{d+\delta}}
- \quad\left(x\ne y,\ |x-x'|\leq\frac{|x-y|}2\right).
- \end{aligned}
-\]
-假设对每个紧支集 \(h\in L^2\)，在其支集外几乎处处有
-\(Th(x)=\int K(x,y)\cdot h(y)\,\mathrm dy\)。
-对局部可积函数采用轴平行立方体的半范数
-\(\|h\|_{\mathrm{BMO}}=\sup_Q|Q|^{-1}\int_Q|h-h_Q|\)、\(h_Q=|Q|^{-1}\int_Qh\)。则每个有界紧支集复函数 \(f\) 的原 \(L^2\) 输出满足
-\[
- \|Tf\|_{\mathrm{BMO}}\leq C_{d,\delta}(N+C_1)\|f\|_\infty.
-\]
-常数与输入支集的位置、大小无关。
-\end{proposition}
-\begin{proof}
-固定立方体 \(Q\)，记中心为 \(c_Q\)、边长为 \(\ell\)，取 \(Q^*=8\sqrt d\,Q\)。令
-\(f_1=f\cdot\mathbf1_{Q^*}\)、\(f_2=f-f_1\)。局部部分用平方界：
-\[
- \frac1{|Q|}\int_Q|Tf_1|
- \leq |Q|^{-1/2}\cdot N\cdot\|f_1\|_2
- \leq(8\sqrt d)^{d/2}N\|f\|_\infty.
-\]
-远场在 \(Q\) 内有核表示。取比较常数
-\[
- c_Q(f)=\int_{(Q^*)^c}K(c_Q,y)\cdot f(y)\,\mathrm dy.
-\]
-输入紧支集且积分离开对角线，所以它绝对收敛。对 \(x\in Q\)，输出变量光滑性与距离可比性给出
-\[
- \begin{aligned}
- |Tf_2(x)-c_Q(f)|
- &\leq C_dC_1\|f\|_\infty\ell^\delta
-       \int_{|y-c_Q|\geq4\sqrt d\,\ell}
-             |y-c_Q|^{-d-\delta}\,\mathrm dy\\
- &\leq C_{d,\delta}C_1\|f\|_\infty
- \end{aligned}
-\]
-几乎处处成立。故 \(Q\) 上相对于 \(c_Q(f)\) 的平均偏差受控。再用
-\[
- |(Tf)_Q-c_Q(f)|\leq\frac1{|Q|}\int_Q|Tf-c_Q(f)|
-\]
-把比较常数换成真正平均，至多增加因子二。对全部 \(Q\) 取上确界即得结论。
-\end{proof}
-
-对一般 \(f\in L^\infty\)，\(c_Q(f)\) 的远场积分未必收敛，但下面的局部归一化有意义：在每个 \(Q\) 内置
-\[
- F_Q(x)=T(f\cdot\mathbf1_{Q^*})(x)
-       +\int_{(Q^*)^c}[K(x,y)-K(c_Q,y)]\cdot f(y)\,\mathrm dy.
-\]
-第一项的输入属于 \(L^2\)，第二项由刚才的衰减估计绝对收敛；\(F_Q\in L^1(Q)\)，且相对于零的平均绝对值受 \(C_{d,\delta}(N+C_1)\|f\|_\infty\) 控制。
-
-\ProseParagraphBreak
-
-这些局部输出在重叠处只相差常数。为验证这一点，令 \(f_R=f\cdot\mathbf1_{B(0,R)}\)，并取 \(R\) 足够大使 \(Q^*\subset B(0,R)\)。在 \(Q\) 内有
-\[
- Tf_R-c_{R,Q}=T(f\cdot\mathbf1_{Q^*})
-  +\int_{B(0,R)\setminus Q^*}[K(x,y)-K(c_Q,y)]\cdot f(y)\,\mathrm dy,
-\]
-其中 \(c_{R,Q}=\int_{B(0,R)\setminus Q^*}K(c_Q,y)\cdot f(y)\,\mathrm dy\)。
-右端在 \(L^1(Q)\) 中趋于 \(F_Q\)：尾部的核差积分对 \(x\in Q\) 一致趋零。对两个有正测度重叠的立方体 \(Q,P\)，相减后左端为常数 \(c_{R,P}-c_{R,Q}\)，故其 \(L^1(Q\cap P)\) 极限 \(F_Q-F_P\) 也为常数。
-
-\ProseParagraphBreak
-
-取一列递增并穷竭全空间的同心立方体，逐次给 \(F_Q\) 加常数，使相邻两个在较小立方体上相等，即可拼成全空间局部可积函数。对任意其他立方体，它与相应的 \(F_Q\) 仍只相差常数，因而保留上述平均振荡界。不同拼接归一化给出的结果相差一个全局常数；这便定义了 \(L^\infty\) 输入的模常数 \(\mathrm{BMO}\) 输出，并与紧支集输入的原算子相容。弱积分端点使用输入变量的差分，这里的平均振荡与远场归一化则使用输出变量的差分。
+这套结论的对象是实标量二阶散度方程。一般椭圆系统缺少同样的序结构，不能直接对向量解作正部截断，也不能把标量 Harnack 定理逐分量套用到耦合系统上。系数虽可跳跃，标量解仍可能 Hölder 连续；其梯度却未必连续，甚至不一定有平方可积的二阶导数。低正则理论改善的是解的振荡，与前面依赖系数导数的高阶 Sobolev 理论相互补充。

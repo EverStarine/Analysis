@@ -1,0 +1,324 @@
+% !TeX root = ../../Book1.tex
+\section{投影值谱测度与 Borel 函数演算}
+\label{b1:sec:2904}
+
+在乘法表示中，选取谱的一部分只需乘以该集合的示性函数。
+把这个操作搬回原空间，就得到一个正交投影。
+本节先构造这些投影，再把简单函数的积分推广到有界 Borel 函数。
+所得谱测度是唯一的；上一节为构造它而选择的循环分解将不再出现在最终定义中。
+
+\subsection{投影值测度}
+\label{b1:subsec:290401}
+
+\begin{definition}[投影值测度]
+\label{b1:def:29-pvm}
+设 \(\Omega\) 是度量空间，\(H\) 是复 Hilbert 空间。
+若映射 \(E:\mathcal B(\Omega)\to\mathcal B(H)\) 满足下列条件，
+则称它为\term[touying-zhi-cedu]{投影值测度}[projection-valued measure]：
+\begin{enumerate}
+\item \(E(\varnothing)=0\)、\(E(\Omega)=I\)，且每个 \(E(B)\) 是正交投影；
+\item \(E(B\cap C)=E(B)E(C)\) 对所有 Borel 集 \(B,C\) 成立；
+\item 若 \((B_n)\) 两两不交，则对每个 \(x\in H\)，有
+\[
+ E\left(\bigcup_{n=1}^\infty B_n\right)x
+ =\sum_{n=1}^\infty E(B_n)x,
+\]
+其中右侧在 \(H\) 的范数中收敛。
+\end{enumerate}
+\end{definition}
+
+可数可加性中的收敛是逐向量的强收敛。它通常不成立于算子范数：
+在 \(\ell^2\) 上，投影到前 \(n\) 个坐标的 \(P_n\) 强收敛于 \(I\)，
+但 \(\|I-P_n\|=1\) 对每个 \(n\) 都成立。
+从定义还可看出，不交集合的投影有正交值域。
+
+\begin{proposition}[投影值测度的标量化]
+\label{b1:prop:29-pvm-scalarization}
+设 \(E\) 是度量空间 \(\Omega\) 上、作用于复 Hilbert 空间 \(H\) 的投影值测度。
+对 \(x,y\in H\)，令
+\[
+ \mu_{x,y}(B)=\langle E(B)x,y\rangle,\qquad
+ \mu_x(B)=\mu_{x,x}(B)=\|E(B)x\|^2.
+\]
+则 \(\mu_x\) 是总质量为 \(\|x\|^2\) 的有限正 Borel 测度，
+\(\mu_{x,y}\) 是有限复 Borel 测度，且
+\( |\mu_{x,y}|(\Omega)\leq\|x\|\cdot\|y\|\)。
+\end{proposition}
+\begin{proof}
+正交投影给出 \(\langle E(B)x,x\rangle=\|E(B)x\|^2\)。
+对不交集合，投影后的向量两两正交；由可数可加性和勾股等式，\(\mu_x\) 可数可加。
+取整个空间得其总质量。
+对复值集合函数，可数可加性由内积的连续性得到。
+又因为 \(\langle E(B)x,y\rangle=\langle E(B)x,E(B)y\rangle\)，
+对任意有限 Borel 分割 \((B_j)\)，有
+\[
+ \sum_j|\mu_{x,y}(B_j)|
+ \leq\sum_j\|E(B_j)x\|\cdot\|E(B_j)y\|
+ \leq\|x\|\cdot\|y\|.
+\]
+对分割取上确界，得到全变差估计。
+\end{proof}
+
+\begin{proposition}[从乘法表示构造投影]
+\label{b1:prop:29-pvm-construction}
+设 \(H\ne\{0\}\) 是复 Hilbert 空间，\(T\in\mathcal B(H)\) 且 \(T=T^*\)，
+\(K=\sigma(T)\)。取\cref{b1:thm:29-bounded-spectral-representation}中的酉算子 \(U\)，定义
+\[
+ E(B)=U^{-1}\left(\bigoplus_\alpha M_{\mathbf1_B}\right)U
+ \qquad(B\in\mathcal B(K)).
+\]
+则 \(E\) 是 \(K\) 上的投影值测度。
+\end{proposition}
+\begin{proof}
+乘以示性函数是正交投影，并且
+\(M_{\mathbf1_B}M_{\mathbf1_C}=M_{\mathbf1_{B\cap C}}\)，故前两个条件成立。
+若 \((B_n)\) 不交，记 \(B=\bigcup_n B_n\)。对 \(u=(u_\alpha)\) 属于表示空间，有
+\[
+ \left\|\left(\bigoplus_\alpha M_{\mathbf1_{B\setminus\cup_{n\leq N}B_n}}\right)u\right\|^2
+ =\sum_\alpha\int_{B\setminus\cup_{n\leq N}B_n}|u_\alpha|^2\,\mathrm{d}\mu_\alpha.
+\]
+各项随 \(N\to\infty\) 趋于零，且受 \(\|u_\alpha\|_2^2\) 控制。
+先舍去平方范数和任意小的分量尾部，再对余下有限个分量用积分的控制收敛定理，
+可知整个和趋于零。用 \(U^{-1}\) 搬回原空间，即得强可数可加性。
+\end{proof}
+
+\subsection{谱积分的构造}
+\label{b1:subsec:290402}
+
+对投影值测度 \(E\) 和简单 Borel 函数 \(s=\sum_{j=1}^m a_j\cdot\mathbf1_{B_j}\)，
+其中 \((B_j)\) 是 \(\Omega\) 的有限 Borel 分割，定义
+\[
+ s(E)=\int_\Omega s\,\mathrm{d}E=\sum_{j=1}^m a_jE(B_j).
+\]
+共同细分两个分割，并用投影的有限可加性，可知此定义与表示方式无关。
+这称为\term[pu-jifen]{谱积分}[spectral integral]；后面同一记号也将用于无界函数。
+\symidx{\(\int f\,\mathrm{d}E\)：谱积分}
+
+\ProseParagraphBreak
+
+不交集合的正交性给出
+\[
+ \|s(E)x\|^2=\sum_j|a_j|^2\cdot\|E(B_j)x\|^2
+ =\int_\Omega|s|^2\,\mathrm{d}\mu_x
+ \leq\|s\|_\infty^2\cdot\|x\|^2.
+\]
+因此对任意有界 Borel 函数 \(f\)，可以选择一致逼近它的简单 Borel 函数 \(s_n\)，
+并定义 \(f(E)=\lim_n s_n(E)\)，极限取算子范数。
+复函数的简单逼近可分别把实部和虚部的有界值域划分成长度趋于零的区间。
+估计 \(\|s_n(E)-s_m(E)\|\leq\|s_n-s_m\|_\infty\)
+保证极限存在，也保证定义不依赖逼近序列。
+
+\begin{proposition}[有界 Borel 函数的谱积分]
+\label{b1:prop:29-borel-calculus}
+设 \(E\) 是度量空间 \(\Omega\) 上、作用于非零复 Hilbert 空间 \(H\) 的投影值测度。
+对有界复 Borel 函数 \(f,g\) 和 \(a,b\in\mathbb C\)，有
+\[
+ (af+bg)(E)=af(E)+bg(E),\qquad
+ (fg)(E)=f(E)g(E),\qquad
+ \overline f(E)=f(E)^*.
+\]
+并且对 \(x,y\in H\)，
+\[
+ \langle f(E)x,y\rangle=\int_\Omega f\,\mathrm{d}\mu_{x,y},\qquad
+ \|f(E)x\|^2=\int_\Omega|f|^2\,\mathrm{d}\mu_x.
+\]
+算子范数的精确值为
+\[
+ \|f(E)\|=\inf\{c\geq0:E(\{|f|>c\})=0\}.
+\]
+\end{proposition}
+\begin{proof}
+对简单函数，在共同分割上计算，线性、乘法和伴随等式分别来自有限和、
+\(E(B)E(C)=E(B\cap C)\) 和 \(E(B)^*=E(B)\)。
+内积积分式也由有限和得到，范数平方公式已在上面证明。
+把 \(f,g\) 分别作一致简单逼近，有限测度上的积分、算子乘法与伴随都可取极限，
+因而上述等式对一般有界 Borel 函数成立。
+
+记最后一个下确界为 \(m\)。取一列可行的 \(c_n\downarrow m\)，
+则 \(\{|f|>m\}=\bigcup_n\{|f|>c_n\}\)，所以 \(E(\{|f|>m\})=0\)。
+这里可数个零投影集合的并仍给零投影，因为对每个 \(x\) 相应正测度都为零。
+因此范数平方公式给出 \(\|f(E)\|\leq m\)。
+若 \(0\leq c<m\)，则 \(E(B)\ne0\)，其中 \(B=\{|f|>c\}\)。
+在 \(\operatorname{ran}E(B)\) 中取单位向量 \(x\)，则 \(\mu_x(B)=1\)，从而
+\(\|f(E)x\|^2=\int_B|f|^2\,\mathrm{d}\mu_x\geq c^2\)。
+令 \(c\uparrow m\)，得到反向不等式；\(m=0\) 时反向不等式自动成立。
+\end{proof}
+
+在这个演算中，两个函数给出同一算子，当且仅当它们在某个零投影集合之外相等。
+这是由对 \(f-g\) 应用范数平方公式得到的，不能把“零测集”理解为某个任意选定的参考测度的零集。
+
+\subsection{有界 Borel 函数演算}
+\label{b1:subsec:290403}
+
+\begin{theorem}[有界自伴算子的谱测度]
+\label{b1:thm:29-bounded-pvm}
+设 \(H\ne\{0\}\) 是复 Hilbert 空间，\(T\in\mathcal B(H)\) 且 \(T=T^*\)，
+\(K=\sigma(T)\)。存在唯一的 \(K\) 上投影值测度 \(E\)，使
+\[
+ T=\int_K t\,\mathrm{d}E(t).
+\]
+对 \(f\in C(K)\)，谱积分 \(\int_K f\,\mathrm{d}E\) 与连续函数演算的 \(f(T)\) 相同。
+对每个 \(x\in H\)，测度 \(B\mapsto\langle E(B)x,x\rangle\)
+就是\cref{b1:prop:29-scalar-spectral-measure}的 \(\mu_x\)。
+\end{theorem}
+\begin{proof}
+用\cref{b1:prop:29-pvm-construction}的 \(E\)。简单函数积分在乘法表示中为 \(\bigoplus M_s\)，
+对有界函数作一致简单逼近，得到 \(f(E)=U^{-1}(\bigoplus M_f)U\)。
+当 \(f\) 连续时，上一节的乘法表示已说明此算子等于 \(f(T)\)；取 \(f(t)=t\) 即得存在性。
+
+若 \(F\) 是另一个满足题设积分式的投影值测度，
+其积分由乘法性质先对多项式、再对一致极限给出
+\(\int_K f\,\mathrm{d}F=f(T)\) 对所有 \(f\in C(K)\) 成立。
+因而对每个 \(x\)，\(E\) 与 \(F\) 的标量正测度在所有连续函数上积分相同。
+在紧度量空间上，这保证两个有限 Borel 测度相同：
+对开集 \(O\ne K\)，连续函数
+\(h_n(t)=\min\{1,n\operatorname{dist}(t,K\setminus O)\}\)
+递增趋于 \(\mathbf1_O\)，故单调收敛给出开集测度相同；\(O=K\) 时取常函数 \(1\)。
+开集对有限交封闭且生成 Borel 代数，有限测度的唯一性定理随后给出全部 Borel 集上相同。
+对每个 \(B\)，两个自伴算子 \(E(B),F(B)\) 的二次型于是相同，极化恒等式给出 \(E(B)=F(B)\)。
+相同的标量测度唯一性论证，把 \(E\) 的标量正测度与上一节的 \(\mu_x\) 识别起来。
+\end{proof}
+
+这个唯一的 \(E\) 称为 \(T\) 的\term[pu-cedu]{谱测度}[spectral measure]。
+对有界 Borel 函数 \(f\)，以后统一记
+\[
+ f(T)=\int_K f\,\mathrm{d}E.
+\]
+这就是 \(T\) 的\term[borel-hanshu-yansuan]{Borel 函数演算}[Borel functional calculus]。
+它的范数由 \(E\) 的零集决定，未必等于普通的逐点上确界。
+
+\begin{proposition}[谱投影与特征空间]
+\label{b1:prop:29-eigenprojection}
+设 \(H\ne\{0\}\) 是复 Hilbert 空间，\(T\in\mathcal B(H)\) 且 \(T=T^*\)，
+\(E\) 是它在 \(K=\sigma(T)\) 上的谱测度。
+则 \(E(\{\lambda\}\cap K)\) 的值域等于 \(\ker(T-\lambda I)\)，其中 \(\lambda\in\mathbb R\)。
+此外，\(K\) 的每个非空相对开集 \(O\) 都满足 \(E(O)\ne0\)。
+\end{proposition}
+\begin{proof}
+范数平方公式给出
+\[
+ \|(T-\lambda I)x\|^2=\int_K|t-\lambda|^2\,\mathrm{d}\mu_x(t).
+\]
+它等于零，当且仅当 \(\mu_x\) 集中于 \(\{\lambda\}\cap K\)，
+也就是 \(E(\{\lambda\}\cap K)x=x\)。
+若 \(O\) 非空，取非零连续函数 \(f\) 使 \(\operatorname{supp}f\subset O\)；
+这样的函数由紧空间上的连续截断构造得到。
+若 \(E(O)=0\)，则 \(f(T)=f(T)E(O)=0\)，与连续演算的
+\(\|f(T)\|=\|f\|_{C(K)}>0\) 矛盾。
+\end{proof}
+
+例如，趋零对角算子的 \(E(B)\) 保留所有满足 \(1/n\in B\) 的坐标，
+但 \(E(\{0\})=0\)。点 \(0\) 仍属于谱，因为每个包含它的相对开邻域都有非零谱投影。
+对 \(L^2(0,1)\) 上的坐标乘法算子，则有 \(E(B)f=\mathbf1_B\cdot f\)；
+所有单点投影都为零。
+
+\subsection{谱积分的极限与运算}
+\label{b1:subsec:290404}
+
+\begin{proposition}[有界逐点收敛与谱演算]
+\label{b1:prop:29-borel-dominated}
+设 \(E\) 是度量空间 \(\Omega\) 上、作用于复 Hilbert 空间 \(H\) 的投影值测度。
+设 \(f_n,f\) 是有界复 Borel 函数，\(\sup_n\|f_n\|_\infty<\infty\)，
+且在某个 \(E(N)=0\) 的 Borel 集之外有 \(f_n\to f\)。
+则 \(f_n(E)x\to f(E)x\) 对所有 \(x\in H\) 成立。
+\end{proposition}
+\begin{proof}
+对每个固定 \(x\)，零投影集合也是 \(\mu_x\) 的零测集。
+于是标量控制收敛定理给出
+\[
+ \|(f_n(E)-f(E))x\|^2
+ =\int_\Omega|f_n-f|^2\,\mathrm{d}\mu_x\longrightarrow0.
+\]
+\end{proof}
+
+\begin{proposition}[与谱投影交换的判别]
+\label{b1:prop:29-spectral-commutation}
+设 \(H\ne\{0\}\) 是复 Hilbert 空间，\(T\in\mathcal B(H)\) 且 \(T=T^*\)，
+\(E\) 是它的谱测度，\(S\in\mathcal B(H)\)。
+则 \(ST=TS\) 当且仅当 \(S\) 与每个 \(E(B)\) 交换；
+这也等价于 \(S\) 与所有有界 Borel 演算 \(f(T)\) 交换。
+\end{proposition}
+\begin{proof}
+若 \(S\) 与所有谱投影交换，先对简单函数求和，再取一致极限，
+得到它与所有 \(f(T)\) 交换，特别与 \(T\) 交换。
+反过来，若 \(ST=TS\)，上一节已证明 \(S\) 与每个连续演算交换。
+固定 Borel 集 \(B\subset K=\sigma(T)\) 和 \(x\in H\)。
+有限正 Radon 测度 \(\mu_x+\mu_{Sx}\) 上的连续函数在 \(L^2\) 中稠密，
+所以可取 \(h_n\in C(K)\) 使
+\(h_n\to\mathbf1_B\) 于 \(L^2(\mu_x+\mu_{Sx})\)。
+范数平方公式分别给出
+\[
+ h_n(T)x\to E(B)x,\qquad h_n(T)Sx\to E(B)Sx.
+\]
+在 \(S h_n(T)x=h_n(T)Sx\) 中取极限，得到 \(SE(B)x=E(B)Sx\)。
+这对每个 \(x\) 成立，故算子交换。
+\end{proof}
+
+为下一节的 Cayley 变换作准备，还需要酉算子的谱表示。
+这里可以把它拆成两个相互交换的自伴算子处理，而无需先建立一般正规算子的理论。
+
+\begin{theorem}[酉算子的谱测度]
+\label{b1:thm:29-unitary-spectral}
+设 \(H\ne\{0\}\) 是复 Hilbert 空间，\(U\in\mathcal B(H)\) 是酉算子，
+\(\mathbb T=\{z\in\mathbb C:|z|=1\}\)。
+存在唯一的 \(\mathbb T\) 上投影值测度 \(F\)，使
+\[
+ U=\int_{\mathbb T}z\,\mathrm{d}F(z).
+\]
+记 \(f(U)=\int_{\mathbb T}f\,\mathrm{d}F\)。有界 Borel 函数的代数运算、伴随、
+范数平方公式及强控制收敛均按上面的谱积分结论成立。
+此外，\(\operatorname{ran}F(\{z\})=\ker(U-zI)\) 对 \(z\in\mathbb T\) 成立。
+\end{theorem}
+\begin{proof}
+令
+\[
+ C=\frac{U+U^*}{2},\qquad D=\frac{U-U^*}{2i}.
+\]
+由 \(U^*U=UU^*=I\)，可知 \(C,D\) 自伴、相互交换，且
+\(C^2+D^2=I\)、\(\|C\|\leq1\)、\(\|D\|\leq1\)。
+取 \(D\) 的谱测度 \(E_D\)，令
+\[
+ Q_+=E_D([0,\infty)\cap\sigma(D)),\qquad
+ Q_-=E_D((-\infty,0)\cap\sigma(D)).
+\]
+则 \(Q_++Q_-=I\)，其值域 \(H_+,H_-\) 正交。
+由\cref{b1:prop:29-spectral-commutation}，它们同时约化 \(C,D\)。
+在 \(H_+\) 上，\(D_+=D|_{H_+}\geq0\)；在 \(H_-\) 上，\(-D_-\geq0\)，
+因为相应二次型是正半轴或负半轴上的坐标积分。
+空的子空间直接略去。
+
+令 \(C_\pm=C|_{H_\pm}\)。由于 \(D_\pm^2=I-C_\pm^2\)，
+正平方根的唯一性给出
+\[
+ D_+=(I-C_+^2)^{1/2},\qquad
+ D_-=-(I-C_-^2)^{1/2}.
+\]
+令 \(E_\pm\) 为 \(C_\pm\) 的谱测度，
+\(\phi_\pm(t)=t\pm i\sqrt{1-t^2}\)（\(-1\leq t\leq1\)）。
+连续演算的复合性质说明 \(U|_{H_\pm}=\phi_\pm(C_\pm)\)。
+因此定义
+\[
+ F(B)=E_+(\phi_+^{-1}(B))\oplus E_-(\phi_-^{-1}(B))
+ \qquad(B\in\mathcal B(\mathbb T)),
+\]
+其中逆像分别限制在 \(\sigma(C_\pm)\) 上。
+逆像保持交、并和补集，故 \(F\) 是投影值测度。
+简单函数积分的换元，再经一致逼近，给出
+\(\int z\,\mathrm{d}F=\phi_+(C_+)\oplus\phi_-(C_-)=U\)。
+
+若 \(F_1,F_2\) 都给出这个积分式，则它们对函数 \(z\) 的积分相同，
+由伴随性质，对 \(\overline z\) 的积分也相同。
+所以它们对 \(z,\overline z\) 的所有多项式积分相同。
+这些函数组成含常数、分离点且对共轭封闭的代数，
+由 Stone--Weierstrass 定理在 \(C(\mathbb T)\) 中稠密。
+于是两者对全部连续函数的积分相同，
+再按\cref{b1:thm:29-bounded-pvm}证明中的标量测度唯一性与极化论证，得到 \(F_1=F_2\)。
+最后，范数平方公式给出
+\[
+ \|(U-zI)x\|^2=\int_{\mathbb T}|\zeta-z|^2\,\mathrm{d}\mu_x(\zeta),
+\]
+它为零当且仅当 \(F(\{z\})x=x\)，从而得到特征空间公式。
+\end{proof}
+
+有界自伴谱测度与酉谱测度都由算子唯一确定，但构造所选的循环子空间或正负子空间只是一种证明方法。
+在下一节以后，谱积分还会作用于无界函数；这时函数相乘的代数等式必须连同定义域一起解释。

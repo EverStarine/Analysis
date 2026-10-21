@@ -1,0 +1,140 @@
+% !TeX root = ../../Book2.tex
+\section{函数项级数与逐项运算}
+\label{b2:sec:0206}
+
+一旦 Fourier 级数被用于求解方程，就会遇到逐项积分与逐项微分。积分通常改善系数的衰减，微分则放大高频。两种运算不能用同一收敛假设来保证。
+
+\subsection{逐项积分}
+\label{b2:subsec:020601}
+
+\begin{proposition}\label{b2:prop:02-integrated-series}
+设 \(f\in L^2(\mathbb T)\)，且 \(\widehat f(0)=0\)。函数
+\[
+ A(x)=\int_0^x f(t)\,\mathrm{d}t
+\]
+可周期延拓，且
+\[
+ A(x)=\sum_{k\ne0}\widehat f(k)\cdot\dfrac{e^{2\pi\mathrm{i}kx}-1}{2\pi\mathrm{i}k}
+ \quad(0\leq x\leq1),
+\]
+右侧绝对一致收敛。
+\end{proposition}
+\begin{proof}
+零平均保证 \(A(1)=A(0)\)。对部分和积分，有限运算给出右侧的截断和。另一方面，
+\[
+ \sup_{0\leq x\leq1}\left|\int_0^x(f-S_Nf)(t)\,\mathrm{d}t\right|
+ \leq\|f-S_Nf\|_1\leq\|f-S_Nf\|_2\longrightarrow0.
+\]
+最后，\(\sum_{k\ne0}|\widehat f(k)|/|k|<\infty\) 由序列 Cauchy--Schwarz 与 Parseval 保证，故所写级数还绝对一致收敛。
+\end{proof}
+
+若平均不为零，应先减去 \(\widehat f(0)\)，原函数再加上线性项 \(x\widehat f(0)\)。这个线性项不能周期化；它准确记录了周期原函数存在的相容条件。
+
+\subsection{逐项求导}
+\label{b2:subsec:020602}
+
+\begin{proposition}\label{b2:prop:02-termwise-differentiation}
+设 \((a_k)_{k\in\mathbb Z}\) 为复数列，\(m\geq1\) 为整数。若 \(\sum_{k\in\mathbb Z}|k|^m|a_k|<\infty\)，则级数 \(\sum_ka_ke^{2\pi\mathrm{i}kx}\) 定义一个 \(C^m\) 周期函数，其不超过 \(m\) 阶的导数可逐项计算。
+\end{proposition}
+\begin{proof}
+除 \(k=0\) 的一项外，假设控制每个不超过 \(m\) 阶的导数级数，所以这些级数一致收敛。为识别极限，先看一阶：部分和满足 \(S_N(x)-S_N(0)=\int_0^xS_N'(t)\,\mathrm{d}t\)。在两侧取一致极限，得到极限函数等于其原点值加导数级数极限的积分，故可微且导数就是该极限。对导数级数重复这个论证，直到 \(m\) 阶。
+\end{proof}
+
+例如 \(\sum_{k\geq1}k^{-2}\cos(2\pi kx)\) 绝对一致收敛，但形式导数的系数仅为 \(O(1/k)\)，不能再用绝对一致收敛作保证。原级数收敛良好并不自动许可任意次逐项微分。
+
+\subsection{弱意义下的求导}
+\label{b2:subsec:020603}
+
+这里沿用\subsecref{b2:subsec:010405}的弱导数定义，并将测试函数取为光滑周期函数：若 \(f,g\in L^2(\mathbb T)\) 且对全部 \(\varphi\in C^\infty(\mathbb T)\) 有 \(\int f\varphi'=-\int g\varphi\)，则记 \(f'=g\)。积分配对不加复共轭。
+
+\begin{theorem}\label{b2:thm:02-weak-derivative}
+设 \(f\in L^2(\mathbb T)\)。存在平方可积的周期弱导数，当且仅当
+\[
+ \sum_{k\in\mathbb Z}k^2|\widehat f(k)|^2<\infty.
+\]
+此时 \(\widehat {f'}(k)=2\pi\mathrm{i}k\widehat f(k)\)，且 \((S_Nf)'\to f'\) 于 \(L^2\)。
+\end{theorem}
+\begin{proof}
+若弱导数 \(g\) 存在，将 \(e^{-2\pi\mathrm{i}kx}\) 代入测试恒等式，便得系数关系，Parseval 随即给出必要条件。
+
+反之，由平方可和性和\cref{b2:cor:02-parseval}的满射性，存在 \(g\in L^2\)，系数为 \(2\pi\mathrm{i}k\widehat f(k)\)。有限部分和满足 \((S_Nf)'=S_Ng\)。对光滑周期 \(\varphi\) 分部积分，再利用 \(S_Nf\to f\)、\(S_Ng\to g\) 的平方范数收敛，得到 \(\int f\varphi'=-\int g\varphi\)。导数部分和的收敛也同时成立。
+\end{proof}
+
+这个结论还可以给出函数的具体代表，而不仅是一个带权序列。设 \(g=f'\in L^2(\mathbb T)\)。以常函数测试，得到 \(\int_{\mathbb T}g=0\)。因此 \(A(x)=\int_0^x g(t)\,\mathrm dt\) 的端点值相同，可以连续地周期延拓。积分的绝对连续性和分部积分表明它的周期弱导数为 \(g\)。对 \(f-A\) 的非零 Fourier 系数使用前一定理，全部得到零；再由系数唯一性，存在一个常数 \(c\)，使 \(f=A+c\) 几乎处处。
+
+\ProseParagraphBreak
+
+所得代表在每一段不跨越周期接缝的区间上绝对连续。沿圆周上较短的弧从 \(x\) 积分到 \(y\)，Cauchy--Schwarz 不等式给出
+\[
+ |f(y)-f(x)|\leq\|g\|_2\cdot\mathrm d_{\mathbb T}(x,y)^{1/2}.
+\]
+若该弧经过接缝，就把积分拆成两段；两端值相同，仍得到同一式。因此平方可积的一阶弱导数确实给出连续代表，而含跳跃的锯齿不可能属于这个空间。折角函数 \(v=\mathrm d_{\mathbb T}(\cdot,0)\) 却属于它：斜率为分段常数，属于 \(L^2\)，斜率本身的不连续不妨碍一阶弱导数存在。
+
+\ProseParagraphBreak
+
+从此可把周期一阶 Sobolev 空间写成系数带权平方可和的空间。函数值与弱导数不是逐点对每一项取极限得来的，而是通过测试恒等式和范数收敛共同确定。
+
+\subsection{正则化与逼近}
+\label{b2:subsec:020604}
+
+对实值或复值 \(f\in L^p(\mathbb T)\)、\(1\leq p<\infty\)，Fejér 平均是三角多项式，并在 \(N\to\infty\) 时按 \(L^p\) 范数趋于 \(f\)。Poisson 平均 \(P_r*f\) 对每个 \(0<r<1\) 为光滑函数，也在 \(r\uparrow1\) 时按 \(L^p\) 范数趋于 \(f\)。前者由\cref{b2:thm:02-fejer}给出，后者由\subsecref{b2:subsec:020503}中已核验的正逼近恒等性质给出。
+
+\ProseParagraphBreak
+
+如果还需要逼近导数，就必须使用导数本身的可积性。具有平方可积周期弱导数的实值或复值 \(L^2(\mathbb T)\) 函数组成周期空间 \(H^1(\mathbb T)\)，规定
+\[
+ \|f\|_{H^1(\mathbb T)}
+ \coloneqq\left(\|f\|_2^2+\|f'\|_2^2\right)^{1/2}.
+\]
+这里的弱导数以全部光滑周期函数为测试函数，采用\subsecref{b2:subsec:020603}的不加复共轭配对。
+\symidx{\(H^1(\mathbb T)\)：具有平方可积周期弱导数的空间}
+
+\ProseParagraphBreak
+
+设 \(f\in H^1(\mathbb T)\)、\(g=f'\in L^2(\mathbb T)\)。由\cref{b2:thm:02-weak-derivative}，\(\widehat g(k)=2\pi\mathrm i k\widehat f(k)\)。对 Fejér 平均的有限和求导，得到
+\[
+ \begin{aligned}
+ (\sigma_Nf)'(x)
+ &=\sum_{|k|\leq N}\left(1-\frac{|k|}{N+1}\right)
+      2\pi\mathrm i k\widehat f(k)e^{2\pi\mathrm i kx}\\
+ &=\sigma_Ng(x).
+ \end{aligned}
+\]
+对每个固定 \(0<r<1\)，\(f,g\in L^1(\mathbb T)\)，而 Poisson 权重的指数衰减使下面两个级数绝对一致收敛。按\subsecref{b2:subsec:020503}已证明的逐项求导合法性，有
+\[
+ (P_r*f)'(x)
+ =\sum_{k\in\mathbb Z}r^{|k|}\cdot2\pi\mathrm i k\widehat f(k)e^{2\pi\mathrm i kx}
+ =(P_r*g)(x).
+\]
+这些等式表明正则化与求导相交换；其依据是两种正则化都只给第 \(k\) 个系数乘一个标量权重，而弱求导乘以 \(2\pi\mathrm i k\)。把前面的 \(L^2\) 逼近分别用于 \(f\) 和 \(g\)，便得到
+\[
+ \|\sigma_Nf-f\|_2+\|(\sigma_Nf)'-f'\|_2
+ \longrightarrow0\quad(N\to\infty),
+\]
+以及
+\[
+ \|P_r*f-f\|_2+\|(P_r*f)'-f'\|_2
+ \longrightarrow0\quad(r\uparrow1).
+\]
+因此两种平均都在 \(H^1(\mathbb T)\) 范数中逼近 \(f\)，导数的逼近并不是由函数的 \(L^2\) 收敛单独推出的。
+
+\ProseParagraphBreak
+
+对一般实值或复值 \(f\in L^1(\mathbb T)\)，对称部分和即使不按 \(L^1\) 范数收敛，也仍满足
+\[
+ \int_{\mathbb T}S_Nf\cdot\varphi\,\mathrm{d}x
+ =\int_{\mathbb T}f\cdot S_N\varphi\,\mathrm{d}x
+ \longrightarrow\int_{\mathbb T}f\cdot\varphi\,\mathrm{d}x
+ \quad(\varphi\in C^\infty(\mathbb T)).
+\]
+等式来自有限展开与核的偶性；极限来自光滑 \(\varphi\) 的 Fourier 级数一致收敛。任给整数 \(m\geq0\)，对光滑三角多项式 \(S_Nf\) 分部积分，周期端点项相消，给出
+\[
+ \begin{aligned}
+ \int_{\mathbb T}(S_Nf)^{(m)}\varphi\,\mathrm dx
+ &=(-1)^m\int_{\mathbb T}S_Nf\cdot\varphi^{(m)}\,\mathrm dx\\
+ &=(-1)^m\int_{\mathbb T}f\cdot S_N(\varphi^{(m)})\,\mathrm dx\\
+ &\longrightarrow(-1)^m\int_{\mathbb T}f\cdot\varphi^{(m)}\,\mathrm dx.
+ \end{aligned}
+\]
+最后一步的误差至多为
+\(\|f\|_1\cdot\|S_N(\varphi^{(m)})-\varphi^{(m)}\|_\infty\)，它趋于零，因为 \(\varphi^{(m)}\) 仍是光滑周期函数，具有绝对一致收敛的 Fourier 级数。这就给出形式微分级数在每个光滑周期测试函数上的极限，即 \((S_Nf)^{(m)}\) 趋于 \(f\) 的 \(m\) 阶分布导数。这个结论不要求该分布导数能由局部可积函数表示，也不宣称 \((S_Nf)^{(m)}\) 有逐点极限。测试函数的光滑性吸收了频率增长，这一机制将在\chapref{b2:ch:05}系统化。

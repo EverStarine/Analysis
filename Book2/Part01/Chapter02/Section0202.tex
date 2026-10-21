@@ -1,160 +1,55 @@
 % !TeX root = ../../Book2.tex
-\section{Dirichlet 核与经典收敛}
-\label{b2:sec:0202}
+\section{最大解、延拓与连续依赖}
+\label{b2:sec:ode-continuation}
 
-一个部分和含有许多 Fourier 系数。把各系数的积分合并，可以把“同时截取许多频率”改写成对原函数的一次加权积分。权重的振荡既产生抵消，也决定跳跃附近的行为。
+短时间构造不规定解的最终时间范围。唯一性使不同局部构造能够相互接合；增长估计则用于判断这种接合能否经过任意有限时间。本节先在自治 \(C^1\) 条件下整理这两个步骤。
 
-\subsection{Dirichlet 核}
-\label{b2:subsec:020201}
+\subsection{最大解区间}
+\label{b2:subsec:ode-maximal-interval}
 
-\begin{definition}\label{b2:def:02-dirichlet-kernel}
-对非负整数 \(N\)，函数
+设 \(U\subset\mathbb R^d\) 开，\(b\in C^1(U;\mathbb R^d)\)、\(a\in U\)。考虑所有在含 \(0\) 的开区间上满足 \(X'=b(X)\)、\(X(0)=a\) 的解。它们在重叠区间上由\cref{b2:thm:07-local-ode}的唯一性相等，因此可以拼成一条解。所有这些区间的并仍为含 \(0\) 的开区间，记为 \(I_a\)。每个时刻附近的拼接函数都等于某条局部解，所以它属于 \(C^1\) 并满足方程。这就得到经过 \(a\) 的最大解；任何同初值解都是它的限制。
+
+\subsection{共同短区间上的初始点依赖}
+\label{b2:subsec:ode-initial-dependence}
+
+在\cref{b2:thm:07-local-ode}选定的共同紧球和共同时间 \([-h,h]\) 上，式\eqref{b2:eq:07-flow-lipschitz}给出
 \[
- D_N(t)\coloneqq\sum_{|k|\leq N}e^{2\pi\mathrm{i}kt}
+ \sup_{|t|\leq h}|X(t,a)-X(t,\widetilde a)|
+ \leq e^{Lh}\cdot|a-\widetilde a|.
 \]
-称为\term[dirichlet-he]{Dirichlet 核}[Dirichlet kernel]。
-\end{definition}
-\symidx{\(D_N\)：Dirichlet 核}
+因此解在一致范数下连续地依赖初始点，且此处具有 Lipschitz 控制。这个共同时间来自局部球上的速度界和导数界，不能直接当作所有初始点的共同全局时间。
 
-有限几何级数给出
+\subsection{线性增长与全时间存在}
+\label{b2:subsec:ode-linear-growth}
+
+若速度至多随位置线性增长，Gronwall 估计可以把任意有限时间内的轨道限制在紧球中。
+
+\begin{proposition}\label{b2:prop:ode-linear-growth}
+设 \(d\) 为正整数，\(b\in C^1(\mathbb R^d;\mathbb R^d)\)，且存在 \(C\geq0\) 使对所有 \(x\in\mathbb R^d\) 都有
 \[
- D_N(t)=\dfrac{\sin((2N+1)\pi t)}{\sin(\pi t)}\quad(t\notin\mathbb Z),
- \quad D_N(0)=2N+1.
+ |b(x)|\leq C(1+|x|).
 \]
-它是实值偶函数，积分为 \(1\)，但并不处处非负。峰值随 \(N\) 增高，并不能单独保证卷积趋向原函数；还要控制旁边不断增加的正负振荡。
-
-\subsection{部分和算子}
-\label{b2:subsec:020202}
-
-取 \(\mathbb T=\mathbb R/\mathbb Z\) 的归一化 Lebesgue 测度，\(f,g\in L^1(\mathbb T;\mathbb C)\)。圆周上的\term[zhouqi-juanji]{周期卷积}[periodic convolution]记为
+则对每个 \(a\in\mathbb R^d\)，初值问题 \(X'=b(X)\)、\(X(0)=a\) 的最大解在整个实轴上存在，并满足
 \[
- (f*g)(x)\coloneqq\int_{\mathbb T}f(x-t)\cdot g(t)\,\mathrm{d}t,
+ 1+|X(t,a)|\leq(1+|a|)\cdot e^{C|t|}.
 \]
-在积分绝对收敛的点定义。有限换序直接给出
-\begin{equation}\label{b2:eq:02-dirichlet-convolution}
- S_Nf(x)=(f*D_N)(x)
- =\int_{-1/2}^{1/2}f(x-t)\cdot D_N(t)\,\mathrm{d}t.
-\end{equation}
-由于 \(D_N\) 有界，这个等式对 \(f\in L^1\) 的每个 \(x\) 都有意义，右端的值不随代表的零测修改改变。
-
-\begin{lemma}[振荡积分趋零]\label{b2:lem:02-oscillation}
-若 \(h\in L^1(a,b)\)，其中 \(a<b\) 有限，则
-\[
- \int_a^b h(t)\cdot e^{\mathrm{i}\lambda t}\,\mathrm{d}t\longrightarrow0
- \quad(|\lambda|\to\infty).
-\]
-\end{lemma}
+\end{proposition}
 \begin{proof}
-对区间示性函数，积分等于两个单位复数之差除以 \(\mathrm{i}\lambda\)，模不超过 \(2/|\lambda|\)。有限阶梯函数也满足结论。任意 \(L^1\) 函数可先截断幅值，再用简单函数逼近；有限测度可测集由有限个区间的并在测度上逼近，故阶梯函数在 \(L^1(a,b)\) 中稠密。选阶梯函数 \(q\) 使 \(\|h-q\|_1<\varepsilon\)，两积分之差对所有 \(\lambda\) 都不超过 \(\varepsilon\)，再令 \(|\lambda|\to\infty\) 和 \(\varepsilon\downarrow0\)。
+对正时间，积分方程给出
+\[
+ 1+|X(t,a)|\leq1+|a|+C\int_0^t(1+|X(s,a)|)\,\mathrm ds.
+\]
+在最大解区间内的任意紧时间区间上应用\cref{b2:lem:ode-gronwall}，得到所述估计；负时间对反向速度 \(-b\) 使用同一论证。若最大解区间有有限右端点 \(T\)，此估计使轨道在 \([0,T)\) 落于某个紧球。该球上速度有界，所以 \(|X(t,a)-X(s,a)|\leq M|t-s|\)，从而 \(t\uparrow T\) 时有极限 \(a_T\)。由 \(a_T\) 出发的局部解可与原解拼接；积分方程保证拼接点导数也满足方程，与最大性矛盾。左端点相同。
 \end{proof}
 
-上述区间逼近只用 Lebesgue 测度的正则性：先取开集逼近可测集，再保留开集区间分解的有限项。将引理用于 \(\lambda=2\pi k\) 可知 \(\widehat f(k)\to0\)。这称为周期情形的\term[riemann-lebesgue-yinli]{Riemann--Lebesgue 引理}[Riemann--Lebesgue lemma]。它只说单个系数变小，不说系数绝对可和。
+线性增长条件不能无条件省去。对于 \(b(x)=x^2\)，从 \(a>0\) 出发的轨道为 \(a/(1-at)\)，在 \(t=1/a\) 逃向无穷。局部唯一性仍成立，但这条最大解不能延续到所有正时间。另一方面，若只关心一条有限轨道及其附近，紧集上的局部条件已经足够，不必强求整个空间上的有界导数。
 
-\subsection{Dirichlet--Jordan 定理}
-\label{b2:subsec:020203}
+\subsection{一般延拓准则}
+\label{b2:subsec:ode-general-continuation}
 
-先说明处理有界变差所需的抵消估计。有限闭区间 \([a,b]\)、\(a<b\) 上实值或复值函数的变差是所有有限分割下相邻函数值差的绝对值之和的上确界；上确界有限时称为\term[youjie-biancha-hanshu]{有界变差函数}[function of bounded variation]。开区间上的变差也取全部落在区间内部的有限分割，不要求端点属于函数的定义域。这里使用的是一个指定代表的点值变差，不是在等价类中对代表取下确界。
+待撰写。拟在一般定义域中区分离开每个紧集、到达定义域边界和状态无界等情形，并补充非自治问题的延拓与连续依赖。
 
-所需估计的核心可以先概括如下：Dirichlet 核虽然正负振荡，但它在任意子区间上的积分有同一个常数界。若 \(g\) 是阶梯函数，分部求和就把 \(\int gD_N\) 改写成一个端点值与各次跳变量乘以这些核积分；跳变量的绝对值之和受总变差控制。对于一般有界变差函数，再用阶梯函数逼近即可。最后缩小原点附近的区间：\(g(0+)=0\) 使端点值趋零，有限总变差则使小区间中的变差趋零。下面依次实现这几个步骤。
+\subsection{标量比较}
+\label{b2:subsec:070207}
 
-先说明下文出现的单侧极限确实存在。有界变差的实值函数在一个区间中可固定内点 \(c\)，令 \(V(t)=\operatorname{Var}_{[c,t]}g\) 于 \(t>c\)，\(V(c)=0\)，\(V(t)=-\operatorname{Var}_{[t,c]}g\) 于 \(t<c\)。相邻区间的变差可加，故 \((V+g)/2\) 与 \((V-g)/2\) 都是有界非减函数，其差为 \(g\)。这证明可测性，也保证内部点及区间端点的单侧极限存在。复值函数的实部、虚部各自有界变差，因而有相同性质；不需要预先把函数改成右连续代表。
-
-\begin{lemma}\label{b2:lem:02-bv-oscillation}
-设 \(0<\delta_0<1/2\)，实值或复值函数 \(g:(0,\delta_0)\to\mathbb C\) 满足 \(\operatorname{Var}_{(0,\delta_0)}g<\infty\) 及 \(g(0+)=0\)。存在与 \(g,\delta_0,N,\delta\) 无关的常数 \(C\)，使每个整数 \(N\geq0\) 及 \(0<\delta\leq\delta_0\) 都满足
-\[
- \left|\int_0^\delta g(t)\cdot D_N(t)\,\mathrm{d}t\right|
- \leq C\bigl(|g(\delta-)|+\operatorname{Var}_{(0,\delta)}g\bigr).
-\]
-其中 \(g(\delta-)\) 是从区间内部取得的左极限。对同一个函数 \(g\) 缩小 \(\delta\) 时，右侧趋于零，因而左侧对全部 \(N\) 一致趋零。
-\end{lemma}
-\begin{proof}
-先证明核积分的一致界。记 \(\lambda=(2N+1)\pi\)。在 \(0<t<1/\lambda\) 上，\(|\sin(\lambda t)|\leq\lambda t\)、\(\sin(\pi t)\geq2t\)，所以任何落在这段内的子区间，其 \(|D_N|\) 积分至多 \(1/2\)。若 \(1/\lambda\leq u<v\leq1/2\)，令
-\[
- w(t)=\frac1{\sin(\pi t)},\qquad
- A(t)=\int_u^t\sin(\lambda s)\,\mathrm ds.
-\]
-此时 \(w\) 为正且单调不增，\(|A(t)|\leq2/\lambda\)。普通分部积分给出
-\[
- \begin{aligned}
- \left|\int_u^vD_N(t)\,\mathrm dt\right|
- &=\left|w(v)A(v)-\int_u^vw'(t)A(t)\,\mathrm dt\right|\\
- &\leq\frac2\lambda\left(w(v)+\int_u^v|w'(t)|\,\mathrm dt\right)\\
- &=\frac{2w(u)}\lambda\leq\frac1{\lambda u}\leq1.
- \end{aligned}
-\]
-把一个任意区间在 \(1/\lambda\) 处分开，得到
-\[
- \left|\int_a^bD_N(t)\,\mathrm dt\right|\leq C_0
- \qquad(0\leq a<b\leq1/2),
-\]
-其中可取绝对常数 \(C_0=2\)，与 \(N,a,b\) 均无关。
-
-接着固定 \(0<a<b<\delta\)，只用这个闭区间上的点值，不改换 \(g\) 的代表。把 \([a,b]\) 等分为 \(a=t_0<\cdots<t_m=b\)，令阶梯函数 \(q_m(t)=g(t_{j-1})\) 于 \(t_{j-1}<t<t_j\)，有限个分点处的值不影响积分。由变差定义，
-\[
- \|q_m-g\|_{L^1(a,b)}
- \leq\frac{b-a}{m}\sum_{j=1}^m
-       \operatorname{Var}_{[t_{j-1},t_j]}g
- =\frac{b-a}{m}\operatorname{Var}_{[a,b]}g\longrightarrow0.
-\]
-这里用到变差在相邻闭区间上可加：把分割在公共端点处分开给出一个方向，把两个分割接起来给出另一个方向。这个论证对复数值同样成立，因为只使用模的三角不等式。
-
-令 \(P_N(t)=\int_a^tD_N(s)\,\mathrm ds\)，则 \(P_N(a)=0\)、\(|P_N|\leq C_0\)。有限求和的相消给出精确恒等式
-\[
- \begin{aligned}
- \int_a^b q_m(t)D_N(t)\,\mathrm dt
- &=\sum_{j=1}^m g(t_{j-1})\bigl(P_N(t_j)-P_N(t_{j-1})\bigr)\\
- &=g(t_{m-1})P_N(b)
-   -\sum_{j=1}^{m-1}\bigl(g(t_j)-g(t_{j-1})\bigr)P_N(t_j).
- \end{aligned}
-\]
-把 \(g(t_{m-1})\) 写成 \(g(b)+(g(t_{m-1})-g(b))\)，最后一个增量与求和中的增量一起受总变差控制，故上式的模不超过
-\(C_0(|g(b)|+\operatorname{Var}_{[a,b]}g)\)。对固定 \(N\)，\(D_N\) 有界，上述 \(L^1\) 逼近允许令 \(m\to\infty\)，从而
-\[
- \left|\int_a^b g(t)D_N(t)\,\mathrm dt\right|
- \leq C_0\bigl(|g(b)|+\operatorname{Var}_{[a,b]}g\bigr).
-\]
-再令 \(a\downarrow0\)、\(b\uparrow\delta\)。\(g\) 在 \((0,\delta_0)\) 上有界，因而对固定 \(N\) 积分收敛；\(g(b)\to g(\delta-)\)，且 \(\operatorname{Var}_{[a,b]}g\leq\operatorname{Var}_{(0,\delta)}g\)。这就得到引理所列的、对全部 \(N\) 统一的估计。证明没有使用右连续代表，也没有给未定义的端点 \(0,\delta\) 任意赋值；\(g(0+)\) 和 \(g(\delta-)\) 都是实际的单侧极限。
-
-最后核对小区间变差确实趋零。取固定 \(c\in(0,\delta_0)\)，令
-\(V(t)=\operatorname{Var}_{[t,c]}g\)、\(0<t<c\)。随 \(t\downarrow0\)，\(V(t)\) 单调增加且有上界，故有有限极限 \(L\)。当 \(0<a<b<\delta<c\) 时，相邻区间的可加性给出
-\[
- \operatorname{Var}_{[a,b]}g=V(a)-V(b)
- \leq L-V(\delta).
-\]
-对全部内部有限分割取上确界，得到
-\(\operatorname{Var}_{(0,\delta)}g\leq L-V(\delta)\to0\)。这也控制原代表在孤立点的跳动，不必先删除这些点。另一方面，\(g(0+)=0\) 使 \(g(\delta-)\to0\)，于是右侧随 \(\delta\downarrow0\) 趋零。
-\end{proof}
-
-\begin{theorem}[Dirichlet--Jordan]\label{b2:thm:02-dirichlet-jordan}
-设 \(f\in L^1(\mathbb T;\mathbb C)\)，\(x\in\mathbb T\)，且某一周期代表在点 \(x\) 两侧的一个邻域内有界变差，则
-\[
- S_Nf(x)\longrightarrow\dfrac{f(x+)+f(x-)}2.
-\]
-\end{theorem}
-\begin{proof}
-令 \(A=(f(x+)+f(x-))/2\)，并在 \(0<t<1/2\) 记
-\[
- g(t)=f(x+t)+f(x-t)-2A.
-\]
-利用核的偶性及积分为 \(1\)，\eqref{b2:eq:02-dirichlet-convolution}给出 \(S_Nf(x)-A=\int_0^{1/2}g(t)\cdot D_N(t)\,\mathrm{d}t\)。取固定的 \(0<\delta_0<1/2\)，使所选代表在 \((x-\delta_0,x)\) 与 \((x,x+\delta_0)\) 上的变差有限；圆周坐标在这里按周期延伸理解。则 \(g\) 在 \((0,\delta_0)\) 上的变差不超过这两个变差之和，且 \(g(0+)=f(x+)+f(x-)-2A=0\)。因此前一引理使 \((0,\delta)\) 上的积分在 \(\delta\downarrow0\) 时对全部 \(N\) 一致趋小。在 \([\delta,1/2]\) 上，\(g(t)/\sin(\pi t)\) 可积，\cref{b2:lem:02-oscillation}使其与 \(\sin((2N+1)\pi t)\) 的积分趋零。先固定 \(\delta\) 令 \(N\to\infty\)，再令 \(\delta\downarrow0\)。
-\end{proof}
-
-定理名称\term[dirichlet-jordan]{Dirichlet--Jordan 定理}[Dirichlet--Jordan theorem]对应的是局部有界变差条件。远处只需可积性，点 \(x\) 本身被赋予什么值也不影响结论；跳跃点恢复的是两侧值的平均。
-
-\subsection{分段光滑函数}
-\label{b2:subsec:020204}
-
-若一个周期内有有限分割，函数在每段内部为 \(C^1\)，且函数与一阶导数均可连续延拓到该段端点，则它在每段上的变差不超过导数绝对值的积分，加上有限个跳跃仍为有界变差。于是 Fourier 级数在连续点收敛到函数值，在跳跃点收敛到中点值。这里端点是圆周上的同一个点，检查周期拼接处时必须比较 \(f(0+)\) 与 \(f(1-)\)。
-
-\ProseParagraphBreak
-
-例如取锯齿函数 \(f(x)=x-1/2\) 于 \(0<x<1\)。分部积分给出
-\[
- \widehat f(0)=0,\quad \widehat f(k)=-\dfrac1{2\pi\mathrm{i}k}\quad(k\ne0).
-\]
-因此
-\[
- x-\dfrac12=-\dfrac1\pi\sum_{k=1}^\infty\dfrac{\sin(2\pi kx)}k
- \quad(0<x<1).
-\]
-在整数处，每个对称部分和都为零，正好等于跳跃两侧的平均。连续的部分和不可能在整个圆周上一致趋向这个不连续代表；点态收敛结论与一致收敛之间仍有实质距离。
+待撰写。

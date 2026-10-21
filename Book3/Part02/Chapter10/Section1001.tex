@@ -2,49 +2,164 @@
 \section{指数与绕数}
 \label{b3:sec:1001}
 
-第2章用曲线收缩证明积分不变，本章再把曲线对各个孔的总绕行抽取出来。全局 Cauchy 定理最终只需要这些整数同时为零，而不要求曲线可以收缩。
+前面固定一个被绕过的点，用辐角总变化记录闭路的绕行。现在让这个点在曲线补集中移动：同一条曲线对哪些点绕一次，对哪些点绕负的一次，又对哪些点总贡献为零？这些整数把复杂围道分成带权区域。后面的全局 Cauchy 定理将用区域外各点的指数为零来表达所需条件。
 
 \subsection{指数}
 \label{b3:subsec:100101}
 
-对分段光滑闭曲线 \(\gamma\) 及 \(a\notin\gamma\)，定义\term[quxian-zhishu]{曲线指数}[index of a curve]
+设 \(\gamma:[0,1]\to\mathbb C\) 是分段光滑闭曲线，记其像集为 \(|\gamma|=\gamma([0,1])\)。对 \(a\in\mathbb C\setminus|\gamma|\)，前面定义的绕数也称\term[quxian-zhishu]{曲线指数}[index of a curve]，有积分表达
 \[
- \operatorname{Ind}(\gamma,a)=\frac1{2\pi\mathrm{i}}\int_\gamma\frac{\mathrm{d}z}{z-a}.
+ \operatorname{Ind}(\gamma,a)
+ =\frac1{2\pi\mathrm i}\int_\gamma\frac{\mathrm dz}{z-a}
+ =\frac1{2\pi\mathrm i}\int_0^1
+   \frac{\gamma'(t)}{\gamma(t)-a}\,\mathrm dt.
 \]
-沿曲线可连续提升 \(\arg(\gamma-a)\)，径向模的对数在闭路前后相同，积分只留下辐角总变化。因而指数为整数。它不是曲线某一点的局部属性，也不是闭路欧氏长度的函数。多次走同一圈使指数乘相同整数，反向使其变号。
+最后一个积分按光滑分段求和。指数依赖行走方向和重复次数，不能只由集合 \(|\gamma|\) 决定。若闭路仅连续，仍可按连续辐角的总增量定义绕数；本节涉及通常围道积分时，才需要分段光滑性。
+
+\Needspace{6\baselineskip}
+\begin{proposition}\label{b3:prop:10-index-components}
+设 \(\gamma:[0,1]\to\mathbb C\) 是分段光滑闭曲线。函数 \(a\mapsto\operatorname{Ind}(\gamma,a)\) 在 \(\mathbb C\setminus|\gamma|\) 上取整数值且局部为常数，因而在每个连通分支上恒定；在唯一的无界连通分支上，它恒为零。
+\end{proposition}
+\begin{proof}
+固定 \(a\notin|\gamma|\)。路径 \(\gamma-a\) 连续且不经过零点，由\cref{b3:lem:03-continuous-argument}可写成
+\[
+ \gamma(t)-a=|\gamma(t)-a|\cdot e^{\mathrm i\theta(t)},
+\]
+其中 \(\theta\) 在整个参数区间连续。闭合性使 \(\theta(1)-\theta(0)\in2\pi\mathbb Z\)，该引理的分段光滑积分公式又给
+\[
+ \int_\gamma\frac{\mathrm dz}{z-a}
+ =\mathrm i\bigl(\theta(1)-\theta(0)\bigr).
+\]
+所以指数为整数。这里用的是沿参数区间连续选择的辐角，不要求在曲线包围的区域上有单值对数。
+
+再固定 \(a_0\notin|\gamma|\)，令 \(d=\operatorname{dist}(a_0,|\gamma|)>0\)。当 \(|a-a_0|<d/2\) 时，曲线上有 \(|z-a_0|\ge d\)、\(|z-a|\ge d/2\)。核的差满足
+\[
+ \left|\frac1{z-a}-\frac1{z-a_0}\right|
+ =\frac{|a-a_0|}{|z-a|\cdot|z-a_0|}
+ \le\frac{2|a-a_0|}{d^2}.
+\]
+用\cref{b3:prop:02-ml}的曲线长度估计，得到
+\[
+ |\operatorname{Ind}(\gamma,a)-\operatorname{Ind}(\gamma,a_0)|
+ \le\frac{L(\gamma)}{\pi d^2}\cdot|a-a_0|.
+\]
+故指数关于 \(a\) 连续。充分靠近 \(a_0\) 时，两个整数之差的绝对值小于1，只能相等。这给局部常性；连续整数值函数在连通集上只能取一个值，故在每个连通分支上恒定。
+
+取 \(R>0\)，使 \(|\gamma|\subset\{z:|z|\le R\}\)。当 \(|a|>R\) 时，
+\[
+ |\operatorname{Ind}(\gamma,a)|
+ \le\frac{L(\gamma)}{2\pi(|a|-R)}\longrightarrow0
+ \quad (|a|\to\infty).
+\]
+整数性使其在充分远处等于零。圆盘外部连通，且每个无界补分支都与圆盘外部相交，所以无界补分支只有一个；局部常性把零值传遍这一分支。
+\end{proof}
+因此，非零指数区域只能位于一个有界集合内。这里并未断言有界补分支只有有限多个，也未断言每个有界分支的指数都非零；后者还取决于各部分的方向和重复次数。
 
 \ProseParagraphBreak
-指数作为 \(a\) 的函数在曲线外连续，整数性使它在每个补集连通分支上恒定。无界分支上它为0：当 \(|a|\) 很大时，积分由长度估计趋于0，所以这个整数最终为0。正向 Jordan 圈在内部指数1，外部0，使用的是平面分离和正向辐角变化；自交曲线则可能有多个不同整数区域。
+先计算圆周。设 \(c\in\mathbb C\)、\(r>0\)，\(m\ne0\) 为整数，令
+\[
+ C_{c,r}^{(m)}(t)=c+re^{2\pi\mathrm i mt},\quad 0\le t\le1.
+\]
+在中心 \(c\)，参数积分的被积式恒为 \(2\pi\mathrm i m\)，所以指数为 \(m\)。圆周的补集恰为内部圆盘与外部区域，前一命题给出
+\[
+ \operatorname{Ind}(C_{c,r}^{(m)},a)=
+ \begin{cases}
+ m,&|a-c|<r,\\
+ 0,&|a-c|>r.
+ \end{cases}
+\]
+改变初始角不影响这个计算。取 \(m=1\) 是逆时针走一圈，\(m=-1\) 是顺时针走一圈；圆周上的点不在指数的定义域内。即使半径很大，只要方向和遍历次数不变，圆内指数仍是同一个整数。
 
 \subsection{同伦不变性}
 \label{b3:subsec:100102}
 
+\Needspace{6\baselineskip}
 \begin{proposition}\label{b3:prop:10-index-homotopy}
-在 \(\mathbb C\setminus\{a\}\) 中同伦的闭路具有相同指数。对有限整数线性组合，指数按系数相加。
+设 \(a\in\mathbb C\)，\(H:[0,1]^2\to\mathbb C\setminus\{a\}\) 连续，且 \(H(s,0)=H(s,1)\) 对每个 \(s\in[0,1]\) 成立。则连续闭路 \(H(s,\cdot)\) 关于 \(a\) 的指数与 \(s\) 无关。特别地，在去心平面中自由同伦的两条分段光滑闭路，其指数积分相等。
 \end{proposition}
 \begin{proof}
-可沿同伦的每条闭路连续选局部辐角，起终点差的整数在参数局部不变；紧参数区间由有限小辐角邻域覆盖，所以始终相同。若同伦路径不分段光滑，先以小盘内折线替换；圆盘内的原函数和连续辐角保证不改变指数。线性组合结论由积分线性直接得到。
+对 \(H-a\) 应用\cref{b3:prop:09-winding-homotopy}：它在参数方块上连续、始终非零，每个时刻的路径闭合，因而绕数恒定。该命题允许基点移动，也只要求连续性。对分段光滑的起终闭路，辐角增量等于指数积分，便得到最后的结论。
 \end{proof}
-不经过点 \(a\) 是全部证明的条件。一个圆周连续缩成穿过 \(a\) 的点时，指数不再有定义，故不能以这样的变形宣称绕数已变为0。
+同伦中的中间路径可以不光滑。真正需要控制的是它们始终避开 \(a\)。例如把单位圆沿实轴平移，令 \(H(s,t)=2s+e^{2\pi\mathrm i t}\)。起始圆关于0的指数为1，终止圆的指数为0；在 \(s=1/2\)、\(t=1/2\) 时却有 \(H(s,t)=0\)，所以这不是去心平面中的同伦。
+
+\Needspace{6\baselineskip}
+\begin{proposition}\label{b3:prop:10-index-small-perturbation}
+设 \(\gamma,\eta:[0,1]\to\mathbb C\) 为连续闭路，\(a\notin|\gamma|\)。若
+\[
+ \varepsilon=\max_{0\le t\le1}|\eta(t)-\gamma(t)|
+ <d=\operatorname{dist}(a,|\gamma|),
+\]
+则 \(a\notin|\eta|\)，且 \(\operatorname{Ind}(\eta,a)=\operatorname{Ind}(\gamma,a)\)。
+\end{proposition}
+\begin{proof}
+连接对应点，取 \(H(s,t)=(1-s)\gamma(t)+s\eta(t)\)。两条原路径闭合，所以每条中间路径也闭合；并且
+\[
+ |H(s,t)-a|
+ \ge|\gamma(t)-a|-s|\eta(t)-\gamma(t)|
+ \ge d-\varepsilon>0.
+\]
+因此 \(H\) 是避开 \(a\) 的自由同伦，应用前一命题即可。
+\end{proof}
+这个判据只要求对应点的位置接近，不要求速度或导数接近。它也说明用折线近似一条闭路时，怎样保证指数不变：只要把近似误差控制在所关心的点到原曲线的距离以下即可。
 
 \ProseParagraphBreak
-指数作为补集上的局部常整数，可以在简单几何分解中直接计算。正向 Jordan 圈在内部为1、外部为0；两圈相加，在共同内部为2，在只被一圈围住处为1。若第二圈反向，共同内部为0。把两圈的公共部分画成一次边界并忽略方向，会遗漏这些权重。对自交的八字圈，两个瓣可能分别为1与 \(-1\)，取决于走向；交点本身属于曲线，指数在那里不定义。
-
-\ProseParagraphBreak
-无界补分支的指数为0也可用估计证明。曲线像落在某个有限圆盘中，当 \(|a|\) 大时，\(1/(z-a)=-a^{-1}\sum_{k\ge0}(z/a)^k\) 在曲线上一致收敛，各项全是整函数的导数，闭路积分0。再由局部常性把0传遍无界分支。这个事实保证非零指数区域不会跑到无穷远，是一般留数和只涉及有限紧填充的一个依据。
+例如，对任意正整数 \(N\)，闭路
+\[
+ \eta_N(t)=e^{2\pi\mathrm i t}+\frac13e^{-2\pi\mathrm i Nt}
+\]
+与正向单位圆对应点的距离恒为 \(1/3\)，所以关于0的指数恒为1。第二项的振荡可以任意快，结论都不变。进一步，若 \(|a|<2/3\)，则 \(a\) 到单位圆的距离大于 \(1/3\)，故 \(\operatorname{Ind}(\eta_N,a)=1\)；若 \(|a|>4/3\)，同一判据给指数0。中间环带不能仅由这个误差界决定，须考察实际曲线。
 
 \subsection{指数与围道积分}
 \label{b3:subsec:100103}
 
-闭路积分中 \(1/(z-a)\) 专门测量绕 \(a\) 的次数。更一般有理函数的积分则是有限个这种测量的加权和，权重为留数。例如在避开0和1的区域中，\(1/(z(z-1))=-1/z+1/(z-1)\)，故
+拼接使指数相加，反向使指数变号；这些性质由积分可加性得到，也适用于前述连续闭路的辐角定义。为了看到不同补分支可以带相反权重，取两条都基于0的圆周路径
 \[
- \frac1{2\pi\mathrm{i}}\int_\gamma\frac{\mathrm{d}z}{z(z-1)}
- =-\operatorname{Ind}(\gamma,0)+\operatorname{Ind}(\gamma,1).
+ \alpha(t)=-1+e^{2\pi\mathrm i t},\quad
+ \beta(t)=1-e^{-2\pi\mathrm i t}.
 \]
-绕两个点各一次时两个贡献相消，积分为0，并不说明闭路不绕任何点。选定被积函数可能看不见某些拓扑数据；要判定全纯函数的全部周期，必须考虑整个区域及所有闭路。
+左圆逆时针行走，右圆顺时针行走，它们只在0处相切。对双瓣闭路 \(\gamma=\alpha*\beta\)，逐圈计算给
+\[
+ \operatorname{Ind}(\gamma,a)=
+ \begin{cases}
+ 1,&|a+1|<1,\\
+ -1,&|a-1|<1,\\
+ 0,&|a+1|>1\text{ 且 }|a-1|>1.
+ \end{cases}
+\]
+例如在 \(-1\) 和1的指数分别为1和 \(-1\)，在 \(2\mathrm i\) 为0；相切点0属于路径，不能代入。把整个双瓣图形统一标成“圈内”会丢失定向信息。
 
 \ProseParagraphBreak
-指数为整数的证明可直接用连续辐角。把闭路相对于 \(a\) 归一化为 \(\eta(t)=(\gamma(t)-a)/|\gamma(t)-a|\)，有限小弧上逐段选辐角并在重叠处加 \(2\pi\) 整数以衔接，得连续 \(\theta(t)\)。闭路终点给 \(\theta(1)-\theta(0)=2\pi n\)，分段求导并积分即得 \(\operatorname{Ind}(\gamma,a)=n\)。改变最初辐角只加同一个 \(2\pi\) 整数，不改变差。这个整数解释为何随避开曲线的连续移动只能局部恒定。
+积分核 \(1/(z-a)\) 单独测量绕 \(a\) 的次数。有理函数的部分分式分解则把若干次测量加权组合。例如对避开0和1的任意分段光滑闭路 \(\delta\)，由
+\[
+ \frac1{z(z-1)}=-\frac1z+\frac1{z-1}
+\]
+直接得到
+\[
+ \frac1{2\pi\mathrm i}\int_\delta\frac{\mathrm dz}{z(z-1)}
+ =-\operatorname{Ind}(\delta,0)+\operatorname{Ind}(\delta,1).
+\]
+若 \(\delta(t)=2e^{2\pi\mathrm i t}\)，两个指数都是1，积分为0；若 \(\delta(t)=\tfrac12e^{2\pi\mathrm i t}\)，两个指数依次为1和0，积分为 \(-2\pi\mathrm i\)。第一个零值来自两个贡献相消，并不表示曲线对每个点的指数都为零。
 
 \ProseParagraphBreak
-对圈 \(\Gamma=\sum n_j\gamma_j\)，指数按系数相加。重走一条曲线两次给指数2，反向给负指数，完全可以出现负值。一般围道不是一个“内部”集合的正向边界；即使画出多重自交，也应逐个区域记录整数权重。Cauchy 与留数公式中的指数正是补偿这种几何复杂性的系数。
+同样，若有理函数的部分分式展开为
+\[
+ f(z)=P(z)+\sum_{j=1}^J\sum_{k=1}^{m_j}
+ \frac{c_{j,k}}{(z-b_j)^k},
+\]
+其中 \(P\) 为多项式，\(b_j\) 两两不同，\(m_j\ge1\) 为整数，则对避开全部 \(b_j\) 的分段光滑闭路 \(\delta\)，只有 \(k=1\) 的项贡献积分。事实上，多项式有整函数原函数；\(k\ge2\) 时，\((z-b_j)^{1-k}/(1-k)\) 是去心平面上的单值原函数。因此
+\[
+ \int_\delta f(z)\,\mathrm dz
+ =2\pi\mathrm i\sum_{j=1}^J
+ c_{j,1}\operatorname{Ind}(\delta,b_j).
+\]
+这直接解释了局部的 \(-1\) 次系数与全局绕行次数怎样相乘，无需先把围道改成一条简单边界。
+
+\ProseParagraphBreak
+后文还要同时处理多条闭路。对有限形式组合 \(\Gamma=\sum_{j=1}^N n_j\gamma_j\)，其中 \(n_j\in\mathbb Z\)，\(\gamma_j\) 为分段光滑闭路，先按线性约定
+\[
+ \begin{aligned}
+ \int_\Gamma f\,\mathrm dz&=\sum_{j=1}^N n_j\int_{\gamma_j}f\,\mathrm dz,\\
+ \operatorname{Ind}(\Gamma,a)&=\sum_{j=1}^N n_j\operatorname{Ind}(\gamma_j,a).
+ \end{aligned}
+\]
+这里 \(f\) 在各曲线上连续，\(a\) 避开它们的像集。各条闭路不必有共同基点。整数系数保留重复次数与方向，有限性保证这些求和无需另加收敛条件。在\secref{b3:sec:1003}中，这种组合将作为整数圈进入同调定义；本节建立的局部常性、外部零值及同伦不变性都可逐项相加使用。

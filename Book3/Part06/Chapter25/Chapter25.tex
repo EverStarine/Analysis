@@ -2,87 +2,333 @@
 \chapter{算术函数与 Dirichlet 级数}
 \label{b3:ch:25}
 \BookChapterNumber{b3:ch:25}
-% 本章摘要（不计入编号）
+
 \begin{chapterabstract}
-整数的唯一素分解对应可乘函数，约数求和对应 Dirichlet 卷积，部分和估计对应复参数级数的收敛半平面。本章建立这三种对应，严格说明无穷求和和乘积所需的绝对收敛，并从 Euler 乘积推导带 von Mangoldt 系数的对数导数。
+整数的唯一素分解怎样进入复分析？本章先从有限的约数求和出发，建立可乘函数、Dirichlet 卷积和 Möbius 反演；再用 Abel 求和保留系数部分和的抵消，说明 Dirichlet 级数的收敛半平面、乘法、求导与求逆。在明确的绝对收敛域内，Euler 乘积把整数系数分解为素数幂因子，它的对数与对数导数进一步产生素数权重。除数平均、平方自由密度及互素整数对计数将说明这些转换如何得到可检验的算术结论。
 \end{chapterabstract}
 
-% 本章目标（不计入编号）
 \begin{learninggoals}
-能够用素数幂计算常见算术函数，构造卷积逆元并进行 Möbius 反演；能够通过 Abel 求和估计加权和及收敛横坐标；能区分 Euler 乘积、全纯对数及无零点性的不同证明义务。
+能够从素数幂值计算可乘函数，区别逐点乘法与 Dirichlet 卷积，并用递推逆元和 Möbius 反演恢复系数；能够完整写出部分求和的端点项，依据部分和增长估计加权尾和；能够区分普通收敛、绝对收敛与解析延拓，检查无穷乘法及取商的条件；能够由 Euler 乘积构造全纯对数，解释 von Mangoldt 权重的来源，并估计算术计数中的取整误差。
 \end{learninggoals}
 
-复分析处理的是连续变量，素数却形成离散且不规则的集合。把算术权重 \(a(n)\) 放入 \(n^{-s}\) 的级数，便能用实部调节远端权重，用虚部记录振荡。但这种表示只有在求和顺序和收敛域明确后才可靠。本章不先假设素数的渐近密度；所有算术恒等式从有限分解建立，再进入解析级数。Apostol 的《Introduction to Analytic Number Theory》\cite{Apostol1976Introduction}可供继续练习算术函数和部分求和。
+上一编已经遇到一些由整数决定的系数：Eisenstein 级数的展开含有约数幂和 \(\sigma_3(n),\sigma_5(n)\)，theta 级数的系数则计数平方和表示。它们看起来属于不同问题，却都受到整数乘法结构的制约。比如，把一个整数写成互素因子的乘积，往往可以将它的约数或表示数分成两部分计算。本章把这些共同的操作单独整理出来。
+
+复分析中的变量是连续的，素数却形成离散且不规则的集合。为了连接两者，给每个正整数指定权重 \(a(n)\)，再考虑
+\[
+ \sum_{n\ge1}\frac{a(n)}{n^s},\qquad s=\sigma+\mathrm it.
+\]
+增大 \(\sigma\) 会压低大整数的贡献；改变 \(t\) 则通过 \(e^{-\mathrm it\log n}\) 改变相位。这个构造有很强的表达能力，但不能只把一个形式公式写成级数就认为它已定义解析函数：系数如何增长、是否相消、求和次序能否改变，都需要具体判断。
+
+本章按这些问题出现的顺序展开。前两节只做有限算术运算，约数卷积和反演在这里不需要收敛条件。第三节利用部分和 \(A(x)=\sum_{n\le x}a(n)\) 处理加权和，并通过双曲线计数求出除数函数的平均值。第四节建立级数的半平面理论，说明有限卷积在什么条件下对应函数乘法及倒数。第五节再把可乘性变成 Euler 乘积，用收敛对数排除零点，推导 \(-\zeta'/\zeta\) 的素数幂系数。
+
+算术方面只需要整数唯一素分解、最大公因数和有限计数，使用时会重新说明所需性质。解析方面将用到全纯函数的局部一致极限、逐项求导及第二十章的无穷乘积判据；关键条件会在应用处恢复。本章不预设素数定理，也不从一个已延拓的函数反推原级数必然收敛。Apostol 的《Introduction to Analytic Number Theory》\cite{Apostol1976Introduction}可作为算术函数、部分求和及初等解析数论的进一步读物。
 
 \input{Part06/Chapter25/Section2501}
 \input{Part06/Chapter25/Section2502}
 \input{Part06/Chapter25/Section2503}
 \input{Part06/Chapter25/Section2504}
 \input{Part06/Chapter25/Section2505}
-% 本章小结（不计入编号）
-\begin{chaptersummary}
-Dirichlet 卷积的局部有限性使算术恒等式无需收敛假设；把它变成函数恒等式则要增加绝对收敛。Abel 求和利用部分和的抵消拓宽收敛域，Euler 乘积利用唯一分解说明素数的位置。\(-\zeta'/\zeta\) 的系数为 \(\Lambda\)，将把下一章的解析延拓与最后一章的素数计数联系起来。
-\end{chaptersummary}
 
+\begin{chaptersummary}
+可乘函数由各素数幂处的数据决定；完全可乘函数进一步由各素数处的数据决定。Dirichlet 卷积在每个整数处只有有限项，因而其代数恒等式、逆元和 Möbius 反演都先于解析收敛而成立。进入级数以后，乘法需要双重绝对和，求逆需要足够靠右的收敛域，原来的有限恒等式不能替代这些条件。
+
+Abel 求和把权重的变化与系数部分和分开，既保留抵消，也暴露端点项。它说明为何 \(A(x)=O(x^\alpha)\) 给出 \(\operatorname{Re}s>\alpha\) 的收敛，却不能自动给出边界收敛或绝对收敛。收敛横坐标描述原级数；解析延拓描述与其和函数相接的新表示，两者应始终分清。
+
+Euler 乘积则把唯一素分解用于绝对收敛级数。完全可乘情形的对数可由可和的素数幂级数构造，随后才能安全地取对数导数与商。函数 \(-\zeta'/\zeta\) 的系数 \(\Lambda\) 记录了全部素数幂，下一章将研究 \(\zeta\) 的延拓与零点，第二十七章再把这些解析信息转回素数计数。平方自由整数及互素整数对的密度已经在本章求出，它们只依赖绝对收敛的 Möbius 权重，不需要更深的素数分布估计。
+\end{chaptersummary}
 
 \BookExercises
 
-% 八题自拟：卷积逆、平均计数、系数抵消和局部Euler因子。
+% 题1、3、5、8按本章已证恒等式组织为延伸应用；题2保留原d_3训练并细化误差。
+% 题4、6自拟参数例，题7把正文中的发散性升级为有限截断下界。
+% 公式校准：NIST DLMF 27.2（Liouville/Jordan定义）及27.4.7（Liouville级数）。
+% 未据未取得全文的教材声称具体题号来源；八题均重新组织题面并给完整自证。
+
 \begin{exercise}\label{b3:ex:25-1}
-求完全可乘函数 \(a\) 的 Dirichlet 卷积逆元。
+对正整数 \(n=\prod_p p^{\nu_p(n)}\)，记
+\[
+ \Omega(n)=\sum_p\nu_p(n),\qquad \lambda(n)=(-1)^{\Omega(n)},
+ \qquad \Omega(1)=0.
+\]
+证明 \(\lambda\) 完全可乘，其 Dirichlet 卷积逆元为 \(\mu^2\)，并证明
+\[
+ \sum_{n\ge1}\frac{\lambda(n)}{n^s}
+ =\frac{\zeta(2s)}{\zeta(s)},\qquad \operatorname{Re}s>1.
+\]
+这里 \(\mu^2(n)\) 指 \(\mu(n)^2\)，不是 \((\mu*\mu)(n)\)。
 \end{exercise}
 \begin{solution}
-逆元为 \(\mu a\)。其卷积在 \(n\) 处为 \(a(n)\sum_{d\mid n}\mu(d)\)，对 \(n>1\) 为零，一处为一。即使某些 \(a(p)=0\)，同一有限和证明仍成立。
+每个素数在乘积中的指数相加，故对任意正整数 \(m,n\)，
+\[
+ \Omega(mn)=\Omega(m)+\Omega(n),\qquad
+ \lambda(mn)=\lambda(m)\lambda(n).
+\]
+不需要互素假设。由\cref{b3:prop:25-completely-inverse}，逆元为逐点乘积 \(\mu(n)\lambda(n)\)。若 \(n\) 含平方素因子，\(\mu(n)=0\)；若 \(n\) 为平方自由整数，则 \(\Omega(n)\) 等于不同素因子的个数，\(\lambda(n)=\mu(n)\)。包括 \(n=1\) 在内，均有 \(\mu(n)\lambda(n)=\mu(n)^2\)。
+
+因为 \(|\lambda(n)|=1\)，其级数在 \(\operatorname{Re}s>1\) 绝对收敛。在这个范围内应用 Euler 乘积，并在各素数处使用几何恒等式，得
+\[
+ \sum_{n\ge1}\frac{\lambda(n)}{n^s}
+ =\prod_p(1+p^{-s})^{-1}
+ =\prod_p\frac{1-p^{-s}}{1-p^{-2s}}
+ =\frac{\zeta(2s)}{\zeta(s)}.
+\]
+最后一步可先对有限乘积取商，再取极限；两个 \(\zeta\) 因子的参数实部均大于一，分母非零。此公式没有断言原级数在实部不超过一时如何收敛。
 \end{solution}
+
 \begin{exercise}\label{b3:ex:25-2}
-令 \(d_3(n)\) 为有序三元组 \((a,b,c)\) 满足 \(abc=n\) 的个数。证明
+令 \(d_3(n)\) 为满足 \(abc=n\) 的有序正整数三元组 \((a,b,c)\) 的个数。设 \(\gamma\) 为 Euler 常数，证明当实数 \(x\to\infty\) 时，
 \[
- \sum_{n\le x}d_3(n)=\tfrac12x(\log x)^2+O(x\log x),\qquad x\ge2.
+ \sum_{n\le x}d_3(n)
+ =\frac12x(\log x)^2+(3\gamma-1)x\log x+O(x).
 \]
 \end{exercise}
 \begin{solution}
-记 \(D(y)=\sum_{n\le y}d(n)=y\log y+O(y)\)，此估计可调整常数使其对所有 \(y\ge1\) 成立。固定第一个因子，左侧等于
+记 \(D(y)=\sum_{n\le y}d(n)\)。由\cref{b3:prop:25-divisor-average}，扩大误差常数后可对所有 \(y\ge1\) 写成
 \[
- \sum_{a\le x}D(x/a)
- =x\log x\sum_{a\le x}\frac1a
-   -x\sum_{a\le x}\frac{\log a}{a}+O(x\log x).
+ D(y)=y\log y+(2\gamma-1)y+O(\sqrt y).
 \]
-调和和为 \(\log x+O(1)\)。函数 \(\log t/t\) 在 \(t\ge e\) 递减，积分比较给
-\(\sum_{a\le x}(\log a)/a=\tfrac12(\log x)^2+O(1)\)。代入便得结论。三个因子有序，所以无需再除以排列数。
+固定三元组的第一个因子 \(a\)，其余两个因子的乘积不超过 \(x/a\)，所以
+\[
+ \begin{aligned}
+ \sum_{n\le x}d_3(n)
+ &=\sum_{a\le x}D(x/a)\\
+ &=x\log x\sum_{a\le x}\frac1a
+   -x\sum_{a\le x}\frac{\log a}{a}
+   +(2\gamma-1)x\sum_{a\le x}\frac1a
+   +O\left(\sqrt x\sum_{a\le x}a^{-1/2}\right).
+ \end{aligned}
+\]
+积分比较给 \(\sum_{a\le x}a^{-1/2}=O(\sqrt x)\)，故最后误差为 \(O(x)\)。
+
+令 \(N=\lfloor x\rfloor\)。由调和和估计及 \(\log N=\log x+O(1/x)\)，有
+\[
+ \sum_{a\le x}\frac1a=\log x+\gamma+O(1/x).
+\]
+另一个加权和满足
+\[
+ \sum_{a\le x}\frac{\log a}{a}
+ =\frac12(\log x)^2+O(1).
+\]
+为看清误差，注意 \(f(t)=\log t/t\) 在 \(t\ge e\) 上非负递减；在相邻整数区间比较 \(f\) 的上、下矩形和，离散和与积分之差被一个固定常数控制。开头有限项以及 \(N\) 到 \(x\) 的积分也有界，而 \(\int_1^x(\log t)/t\,\mathrm dt=\tfrac12(\log x)^2\)。
+
+代入后，\(x(\log x)^2\) 的系数为 \(1-\tfrac12=\tfrac12\)；\(x\log x\) 的系数为 \(\gamma+(2\gamma-1)=3\gamma-1\)。其余项均为 \(O(x)\)，结论得证。这里三元组有序，无须除以任何排列数。
 \end{solution}
+
 \begin{exercise}\label{b3:ex:25-3}
-若 \(A(x)=O(1)\)，证明 \(\sum a_n/n\) 收敛，且尾部 \(O(1/N)\)。
+固定整数 \(k\ge2\)，定义
+\[
+ J_k(n)=\#\{(a_1,\ldots,a_k)\in\{1,\ldots,n\}^k:
+                 \gcd(a_1,\ldots,a_k,n)=1\}.
+\]
+证明
+\[
+ J_k(n)=n^k\prod_{p\mid n}(1-p^{-k}),\qquad
+ \sum_{n\ge1}\frac{J_k(n)}{n^s}
+ =\frac{\zeta(s-k)}{\zeta(s)}
+ \quad(\operatorname{Re}s>k+1),
+\]
+并求出平均值
+\[
+ \sum_{n\le x}J_k(n)
+ =\frac{x^{k+1}}{(k+1)\zeta(k+1)}+O_k(x^k)
+ \qquad(x\to\infty).
+\]
 \end{exercise}
 \begin{solution}
-对区间 \((N,M]\) 作部分求和，端点项不超过 \(C/N+C/M\)，积分尾部不超过 \(C\int_N^M t^{-2}\,\mathrm{d}t\)。令 \(M\to\infty\) 即得绝对常数倍 \(N^{-1}\) 的尾界；这不要求 \(\sum|a_n|/n\) 收敛。
+把 Möbius 约数和用于全部坐标与 \(n\) 的最大公因数。若 \(d\mid n\)，每个坐标中可被 \(d\) 整除的数有 \(n/d\) 个，因此
+\[
+ J_k(n)=\sum_{d\mid n}\mu(d)(n/d)^k
+       =n^k\sum_{d\mid n}\frac{\mu(d)}{d^k}
+       =n^k\prod_{p\mid n}(1-p^{-k}).
+\]
+最后一步只展开一个有限乘积，\(n=1\) 时空乘积为一。第一式也说明 \(J_k=\mu*\operatorname{id}_k\)。当 \(\operatorname{Re}s>k+1\) 时，两个因子级数绝对收敛；卷积乘法与\eqref{b3:eq:25-mobius-series}便给出所求商式。直接上界 \(J_k(n)\le n^k\) 也保证左侧绝对收敛。
+
+为求平均值，再交换有限和：
+\[
+ \sum_{n\le x}J_k(n)
+ =\sum_{d\le x}\mu(d)\sum_{m\le x/d}m^k.
+\]
+正函数 \(t^k\) 单调递增，矩形和与积分比较给出，对全部实数 \(Y\ge1\)，
+\[
+ \sum_{m\le Y}m^k=\frac{Y^{k+1}}{k+1}+O_k(Y^k).
+\]
+先在整数上以相邻上下积分夹住该和，再将 \(\lfloor Y\rfloor\) 换成 \(Y\)，所付出的误差仍为 \(O_k(Y^k)\)。于是
+\[
+ \sum_{n\le x}J_k(n)
+ =\frac{x^{k+1}}{k+1}\sum_{d\le x}\frac{\mu(d)}{d^{k+1}}
+  +O_k\left(x^k\sum_{d\le x}d^{-k}\right).
+\]
+由于 \(k\ge2\)，误差中的和一致有界。主项的级数延长到无穷时，误差至多为常数倍
+\(x^{k+1}\sum_{d>x}d^{-k-1}=O_k(x)\)，也被 \(O_k(x^k)\) 包含。无穷和为 \(1/\zeta(k+1)\)，得到结论。若取 \(k=1\)，同一方法中的误差和成为调和和，通常只能给 \(O(x\log x)\)；这说明题目为何单列 \(k\ge2\)。
 \end{solution}
+
 \begin{exercise}\label{b3:ex:25-4}
-证明 \(\sum_{d\mid n}\mu(d)\log d=-\Lambda(n)\)。
+设 \(\alpha\in\mathbb R\)，令 \(a(2^j)=2^{j\alpha}/j\)（\(j\ge1\)），其余正整数处 \(a(n)=0\)。求 Dirichlet 级数 \(D_a(s)=\sum_{n\ge1}a(n)n^{-s}\) 的两个收敛横坐标，并逐点判定边界 \(s=\alpha+\mathrm it\) 上的收敛性。
 \end{exercise}
 \begin{solution}
-由 \(\Lambda=\mu*\log\)，右侧展开为 \(\sum\mu(d)(\log n-\log d)\)。当 \(n>1\) 时第一项为零，得公式；\(n=1\) 时两侧均零。
+按自然顺序求和与按二的正次幂求和给出同一极限，所以
+\[
+ D_a(s)=\sum_{j\ge1}\frac{(2^{\alpha-s})^j}{j}.
+\]
+若 \(\operatorname{Re}s>\alpha\)，括号内的模小于一，级数绝对收敛；若 \(\operatorname{Re}s<\alpha\)，非零项的模为 \(2^{j(\alpha-\operatorname{Re}s)}/j\)，不趋于零。因此 \(\sigma_c=\sigma_a=\alpha\)。
+
+在边界上，记 \(z=e^{-\mathrm it\log2}\)，于是 \(|z|=1\)。若 \(t\log2\in2\pi\mathbb Z\)，则 \(z=1\)，级数成为发散的调和级数。若 \(z\ne1\)，则
+\[
+ \left|\sum_{j=1}^N z^j\right|
+ =\left|\frac{z(1-z^N)}{1-z}\right|
+ \le\frac2{|1-z|}.
+\]
+以 \(1/j\) 为权重作 Abel 求和，或应用\cref{b3:prop:25-partial-sum-convergence}于指标 \(j\)，便知 \(\sum z^j/j\) 收敛。边界上的绝对级数始终为 \(\sum1/j\)，故所有非共振点均为条件收敛点。相同的两个横坐标并不能说明整条边界线的收敛行为一致。
 \end{solution}
+
 \begin{exercise}\label{b3:ex:25-5}
-求平方自由整数的 Dirichlet 级数，并说明最初成立的半平面。
+设 \(d(n)\) 为正整数 \(n\) 的正约数个数。证明
+\[
+ \sum_{n\ge1}\frac{d(n)^2}{n^s}
+ =\frac{\zeta(s)^4}{\zeta(2s)},\qquad\operatorname{Re}s>1.
+\]
+解释为什么左侧不能直接由 \(D_d(s)^2\) 得到。
 \end{exercise}
 \begin{solution}
-其示性函数为 \(\mu(n)^2\)，可乘，局部因子为 \(1+p^{-s}\)。在 \(\sigma>1\) 绝对收敛，故乘积为 \(\prod_p(1-p^{-2s})/(1-p^{-s})=\zeta(s)/\zeta(2s)\)。这个表达式的更大延拓域不等于原级数的绝对收敛域。
+先检查绝对收敛。固定 \(\sigma=\operatorname{Re}s>1\)，在\cref{b3:prop:25-divisor-small-power}中取 \(\epsilon=(\sigma-1)/4\)，有 \(d(n)\le C_\epsilon n^\epsilon\)。故
+\[
+ d(n)^2n^{-\sigma}\le C_\epsilon^2 n^{-(\sigma+1)/2},
+\]
+右边可和。逐点平方 \(d^2\) 仍可乘，而 \(d(p^r)^2=(r+1)^2\)。
+
+在 \(|X|<1\) 内，几何级数可逐项求导。对 \(\sum_{r\ge0}(r+1)X^r=(1-X)^{-2}\) 再施以算子 \(X\,d/dX+1\)，得到
+\[
+ \sum_{r\ge0}(r+1)^2X^r
+ =\frac{2X}{(1-X)^3}+\frac1{(1-X)^2}
+ =\frac{1+X}{(1-X)^3}
+ =\frac{1-X^2}{(1-X)^4}.
+\]
+因此 Euler 乘积给
+\[
+ D_{d^2}(s)=\prod_p\frac{1-p^{-2s}}{(1-p^{-s})^4}
+          =\frac{\zeta(s)^4}{\zeta(2s)}.
+\]
+取商时 \(\operatorname{Re}(2s)>2\)，分母确实非零。
+
+另一方面，\(D_d^2=D_{d*d}=\zeta^4\)，其系数是四重因子计数 \(d_4\)，而非逐点平方。例如在 \(p^2\) 处，\(d(p^2)^2=9\)，但
+\[
+ (d*d)(p^2)=d(1)d(p^2)+d(p)d(p)+d(p^2)d(1)=10.
+\]
+这给出了两种乘法不同的具体检查。
 \end{solution}
+
 \begin{exercise}\label{b3:ex:25-6}
-若 \(a(n)\ge0\) 且 \(A(x)=O(x^\alpha)\)，证明级数在 \(\sigma>\alpha\) 绝对收敛；说明删去非负性后为什么结论改变。
+设整数 \(m\ge2\)，\(\omega=e^{2\pi\mathrm i/m}\)。求 \(\sum_{n\ge1}\omega^n n^{-s}\) 的两个收敛横坐标，并证明
+\[
+ \sum_{n\ge1}\frac{\omega^n}{n}
+ =-\log\bigl(2\sin(\pi/m)\bigr)
+   +\mathrm i\left(\frac\pi2-\frac\pi m\right).
+\]
+右侧的 \(\log\) 是正实数的实对数。
 \end{exercise}
 \begin{solution}
-非负时 \(\sum|a(n)|n^{-\sigma}=\sum a(n)n^{-\sigma}\)，部分求和给收敛。交错系数 \((-1)^{n-1}\) 的部分和有界，却在 \(0<\sigma\le1\) 不绝对收敛，故非负性不能删去。
+有限几何和给
+\[
+ \left|\sum_{n=1}^N\omega^n\right|\le\frac2{|1-\omega|}.
+\]
+部分求和遂保证实部大于零时收敛；实部不大于零时，原级数的各项模不趋于零。所以 \(\sigma_c=0\)。由于 \(|\omega^n|=1\)，绝对级数为 \(\sum n^{-\sigma}\)，故 \(\sigma_a=1\)。
+
+为了计算边界于圆盘的幂级数值，先令 \(0\le r<1\)。在单位圆盘内积分几何级数，得
+\[
+ \sum_{n\ge1}\frac{(r\omega)^n}{n}=-\operatorname{Log}(1-r\omega),
+\]
+其中 \(\operatorname{Log}\) 取右半平面上的全纯分支，并在正实轴上等于实对数；因为
+\(\operatorname{Re}(1-r\omega)>0\)，它沿此路径始终有定义。
+
+还须证明左侧在 \(r\uparrow1\) 时趋于题目中的收敛和。对于任意尾段，\(\omega^n\) 的部分和有统一界 \(C=2/|1-\omega|\)。权重 \(r^n/n\) 对 \(n\) 非负递减，有限 Abel 求和因此给
+\[
+ \left|\sum_{n=N+1}^{M}\frac{r^n\omega^n}{n}\right|
+ \le \frac{C}{N+1}\qquad(0\le r\le1,\ M>N).
+\]
+固定 \(r\) 后令 \(M\to\infty\)，此界仍成立，并且不依赖 \(r\)。先把 \(N\) 选大以控制所有尾部，再在前 \(N\) 项令 \(r\uparrow1\)，就得到所需的极限交换。
+
+最后，
+\[
+ 1-\omega=2\sin(\pi/m)
+       \exp\left(\mathrm i\left(\frac\pi m-\frac\pi2\right)\right).
+\]
+这里 \(\sin(\pi/m)>0\)，辐角 \(\pi/m-\pi/2\) 落在 \((-\pi/2,0]\) 内，和已选分支一致。代入 \(-\operatorname{Log}(1-\omega)\) 即得公式。\(m=2\) 时退化为 \(\sum(-1)^n/n=-\log2\)，也核对了符号。
 \end{solution}
+
 \begin{exercise}\label{b3:ex:25-7}
-证明 \(\sum_p1/p\) 发散。
+证明对每个整数 \(N\ge2\)，有有限截断下界
+\[
+ \sum_{p\le N}\frac1p\ge\log\log(N+1)-1.
+\]
+证明中不得将只在 \(\operatorname{Re}s>1\) 建立的无穷 Euler 乘积直接代入 \(s=1\)。
 \end{exercise}
 \begin{solution}
-若该和有限，则 \(\sum_{p,r\ge1}p^{-r\sigma}/r\) 对所有实 \(\sigma>1\) 有共同上界：一次项由假设控制，\(r\ge2\) 部分由 \(2\sum_{n\ge2}n^{-2}\) 控制。于是 \(\zeta(\sigma)\) 有界。然而 \(\sum n^{-\sigma}\ge\int_1^\infty t^{-\sigma}\,\mathrm{d}t=1/(\sigma-1)\)，矛盾。
+只对有限多个素数取乘积，并把每个几何因子展开：
+\[
+ P_N=\prod_{p\le N}(1-p^{-1})^{-1}
+ =\sum_{\substack{n\ge1\\p\mid n\Rightarrow p\le N}}\frac1n.
+\]
+这是有限多个绝对收敛几何级数的乘法，所以在此处没有无穷素数乘积问题。每个 \(1\le n\le N\) 的素因子都不超过 \(N\)，故
+\[
+ P_N\ge H_N\ge\int_1^{N+1}\frac{dt}{t}=\log(N+1).
+\]
+另一方面，对这个有限乘积取实对数，有
+\[
+ \log P_N
+ =\sum_{p\le N}\frac1p
+  +\sum_{p\le N}\sum_{r\ge2}\frac1{r p^r}.
+\]
+后面的双重和非负，且不超过
+\[
+ \sum_{n\ge2}\sum_{r\ge2}n^{-r}
+ =\sum_{n\ge2}\frac1{n(n-1)}=1.
+\]
+把两边的上下界合并，得到
+\(\log\log(N+1)\le\log P_N\le\sum_{p\le N}p^{-1}+1\)，即为结论。
 \end{solution}
+
 \begin{exercise}\label{b3:ex:25-8}
-设 \(a,b\) 可乘且其局部因子在每个素数处相等。证明 \(a=b\)，并解释是否需要解析收敛。
+对整数 \(n\ge1\)，令
+\[
+ r_j(n)=\#\{(x_1,\ldots,x_j)\in\mathbb Z^j:
+                   x_1^2+\cdots+x_j^2=n\},\qquad j=2,4.
+\]
+令 \(\chi_4(d)\) 在偶数处为零，在模四余一、余三处分别为一、负一，并记 \(L_4(s)=\sum_{n\ge1}\chi_4(n)n^{-s}\)。使用\cref{b3:thm:24-two-squares,b3:thm:24-four-squares}的除数公式，证明
+\begin{align*}
+ \sum_{n\ge1}\frac{r_2(n)}{n^s}
+ &=4\zeta(s)L_4(s),&&\operatorname{Re}s>1,\\
+ \sum_{n\ge1}\frac{r_4(n)}{n^s}
+ &=8(1-4^{1-s})\zeta(s)\zeta(s-1),&&\operatorname{Re}s>2.
+\end{align*}
+再说明第二个和函数可亚纯延拓到 \(s=2\) 的一个邻域，且在那里有留数为 \(\pi^2\) 的单极点。
 \end{exercise}
 \begin{solution}
-将局部因子视为形式幂级数 \(\sum_{r\ge0}a(p^r)X^r\)，相等意味着每个素数幂系数相等。可乘性于是确定全部整数值。这个有限分解论证无需任何解析收敛；若只知道某些复参数处的乘积函数相等，则须另外用级数唯一性及公共收敛域。
+前章中的计数保留坐标次序和正负号，其公式为
+\[
+ r_2(n)=4\sum_{d\mid n}\chi_4(d),\qquad
+ r_4(n)=8\sum_{\substack{d\mid n\\4\nmid d}}d.
+\]
+第一式即 \(r_2=4(\mathbf1*\chi_4)\)。由于 \(|\chi_4(d)|\le1\)，\(\mathbf1\) 和 \(\chi_4\) 的级数都在实部大于一时绝对收敛，卷积乘法给出第一个所求等式，并同时保证左侧绝对收敛。
+
+对第二式，设 \(b(d)=d\) 当 \(4\nmid d\)，而 \(b(d)=0\) 当 \(4\mid d\)。于是 \(r_4=8(\mathbf1*b)\)，且在实部大于二时，
+\[
+ \begin{aligned}
+ D_b(s)
+ &=\sum_{d\ge1}d^{1-s}-\sum_{m\ge1}(4m)^{1-s}\\
+ &=(1-4^{1-s})\zeta(s-1).
+ \end{aligned}
+\]
+这些级数都绝对收敛，因此乘以 \(\zeta(s)\) 给出第二式。原计数还满足 \(r_j(0)=1\)，但题目级数从 \(n=1\) 起，零指标不能放入 \(n^{-s}\)，也没有贡献额外常数项。
+
+由\eqref{b3:eq:25-zeta-integral}，\(\zeta(u)\) 在 \(u=1\) 附近有留数为一的单极点。因此 \(\zeta(s-1)\) 在 \(s=2\) 附近有同样的留数；\(\zeta(s)\) 在二附近则由绝对收敛级数定义为全纯函数。右侧便给出所求延拓，留数为
+\[
+ 8(1-4^{-1})\zeta(2)=6\cdot\frac{\pi^2}{6}=\pi^2.
+\]
+这个数也与\cref{b3:prop:24-four-square-average}中的累计主项
+\(\sum_{n\le x}r_4(n)\sim(\pi^2/2)x^2\) 相呼应：若在部分求和积分中单看主项，所得奇部为
+\[
+ s\int_1^\infty\frac{\pi^2}{2}t^2t^{-s-1}\,\mathrm dt
+ =\frac{\pi^2s}{2(s-2)},
+\]
+其在二的留数正好是 \(\pi^2\)。这一比较解释常数关系；上面证明延拓和留数时，依据的是已得到的精确乘积公式。
 \end{solution}

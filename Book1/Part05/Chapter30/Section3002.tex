@@ -1,0 +1,287 @@
+% !TeX root = ../../Book1.tex
+\section{独立性与可数乘积概率空间}
+\label{b1:sec:3002}
+
+只知道每个变量各自的分布，还不能确定它们的和或乘积如何变化。独立性给出一种精确的联合结构：对不同变量分别提出的条件，其同时成立的概率等于各自概率的乘积。先在事件上写出的乘法关系，必须能够推广到生成的 \(\sigma\)-代数，才能用于变量的函数、分块求和以及极限。
+
+\ProseParagraphBreak
+
+独立性的三种表达可对照 Fremlin 的《Measure Theory》第二卷\cite[Definition 272A, Proposition 272D, Theorem 272G, Proposition 272K]{Fremlin2016Measure}。本节先用\cref{b1:thm:pi-lambda}完成这些推广，再为给定的一列实 Borel 分布构造乘积概率空间；后一步将实际提供后文所需的无限独立序列。
+
+\subsection{事件与子代数的独立性}
+\label{b1:subsec:300201}
+
+\begin{definition}\label{b1:def:30-independent-events}
+设 \((\Omega,\mathcal F,\mathbb P)\) 是概率空间，\((A_i)_{i\in I}\) 是事件族。若对任意互异指标 \(i_1,\ldots,i_r\in I\)、\(r\geq1\)，都有
+\[
+ \mathbb P\left(\bigcap_{j=1}^rA_{i_j}\right)
+ =\prod_{j=1}^r\mathbb P(A_{i_j}),
+\]
+则称这族事件\term[duli-shijian]{相互独立}[mutually independent events]，也简称独立。若只要求这个等式在 \(r=2\) 时成立，则称它们\term[liangliang-duli]{两两独立}[pairwise independent]。
+\end{definition}
+
+定义始终检查有限子族，即使指标集 \(I\) 是无限的也如此。只检查成对关系一般不够。在等概率空间 \(\Omega=\{0,1\}^2\) 上令
+\[
+ A=\{(u,v):u=0\},
+ \quad B=\{(u,v):v=0\},
+ \quad C=\{(u,v):u=v\}.
+\]
+三个事件各有概率 \(1/2\)，任意两个的交有概率 \(1/4\)，但
+\[
+ \mathbb P(A\cap B\cap C)=\frac14\ne\frac18
+ =\mathbb P(A)\cdot\mathbb P(B)\cdot\mathbb P(C).
+\]
+因此两两独立并不等于相互独立。
+
+\begin{definition}\label{b1:def:30-independent-sigma}
+设 \((\Omega,\mathcal F,\mathbb P)\) 是概率空间，\((\mathcal F_i)_{i\in I}\) 是 \(\mathcal F\) 的子 \(\sigma\)-代数族。若对任意互异指标 \(i_1,\ldots,i_r\) 及任意 \(A_j\in\mathcal F_{i_j}\)，均有
+\[
+ \mathbb P\left(\bigcap_{j=1}^rA_j\right)
+ =\prod_{j=1}^r\mathbb P(A_j),
+\]
+则称 \((\mathcal F_i)_{i\in I}\) 是独立的 \(\sigma\)-代数族。
+\end{definition}
+
+每个 \(\mathcal F_i\) 可以看作关于第 \(i\) 个观测所能提出的全部可测条件。实际核验时往往只知道一个生成族上的乘法关系。下面的结论说明，只要生成族对有限交封闭，这些信息已经足够。
+
+\begin{proposition}[独立性的生成族判据]\label{b1:prop:30-independent-pi-lambda}
+设 \((\Omega,\mathcal F,\mathbb P)\) 是概率空间。对每个 \(i\in I\)，设 \(\mathcal P_i\subseteq\mathcal F\) 是包含 \(\Omega\) 的 \(\pi\)-系统，令 \(\mathcal F_i=\sigma(\mathcal P_i)\)。若对任意互异的 \(i_1,\ldots,i_r\) 及 \(A_j\in\mathcal P_{i_j}\)，都有
+\[
+ \mathbb P\left(\bigcap_{j=1}^rA_j\right)
+ =\prod_{j=1}^r\mathbb P(A_j),
+\]
+则 \((\mathcal F_i)_{i\in I}\) 是独立的。
+\end{proposition}
+\begin{proof}
+固定互异指标 \(i_1,\ldots,i_r\)。先固定 \(A_j\in\mathcal P_{i_j}\)、\(2\leq j\leq r\)，并记
+\[
+ H=\bigcap_{j=2}^rA_j,
+ \quad c=\prod_{j=2}^r\mathbb P(A_j),
+ \quad \mathcal D=\{A\in\mathcal F_{i_1}:\mathbb P(A\cap H)=c\cdot\mathbb P(A)\}.
+\]
+空交与空积分别取 \(\Omega\) 与一。原假设给出 \(\mathbb P(H)=c\)，所以 \(\Omega\in\mathcal D\)。若 \(A\subseteq B\) 且 \(A,B\in\mathcal D\)，有限测度的差公式给出
+\[
+ \mathbb P((B\setminus A)\cap H)
+ =c\cdot\bigl(\mathbb P(B)-\mathbb P(A)\bigr)
+ =c\cdot\mathbb P(B\setminus A).
+\]
+对两两不交的 \(A_n\in\mathcal D\)，可数可加性又给出它们的并属于 \(\mathcal D\)。因此 \(\mathcal D\) 是 \(\lambda\)-系统。它包含 \(\mathcal P_{i_1}\)，故由\cref{b1:thm:pi-lambda}包含 \(\mathcal F_{i_1}\)。这就把第一个坐标的集合由生成族推广到了整个 \(\sigma\)-代数。
+
+现在固定任意 \(A_1\in\mathcal F_{i_1}\) 及其余尚未推广的生成族集合，对第二个坐标重复同一论证。检验 \(\Omega\) 属于相应 \(\lambda\)-系统时，只需把第二个集合取为 \(\Omega\)，这是上一步已经成立的乘法等式。依次推广全部 \(r\) 个坐标，便得到任意 \(A_j\in\mathcal F_{i_j}\) 时的等式。有限指标组任意，结论成立。
+\end{proof}
+
+\begin{corollary}\label{b1:cor:30-events-generated-sigma}
+设 \((A_i)_{i\in I}\) 是概率空间 \((\Omega,\mathcal F,\mathbb P)\) 上的事件族。则 \((A_i)_{i\in I}\) 独立，当且仅当 \((\sigma(A_i))_{i\in I}\) 独立。特别地，若 \((A_i)\) 独立，则任意选择 \(B_i=A_i\) 或 \(B_i=\Omega\setminus A_i\) 所得到的事件族也独立。
+\end{corollary}
+\begin{proof}
+取 \(\mathcal P_i=\{\Omega,A_i\}\)。它是包含全集的 \(\pi\)-系统，而对其中集合的乘法等式就是原事件族对相应子族的独立性。因此前一命题适用。逆向只需在独立 \(\sigma\)-代数中选取 \(A_i\)。最后 \(A_i\) 与其补集均属于 \(\sigma(A_i)\)，所以结论也覆盖任意补集选择。
+\end{proof}
+
+\subsection{随机变量及函数族的独立性}
+\label{b1:subsec:300202}
+
+\begin{definition}\label{b1:def:30-independent-variables}
+设 \((X_i)_{i\in I}\) 是概率空间 \((\Omega,\mathcal F,\mathbb P)\) 上的实随机变量族。定义
+\[
+ \sigma(X_i)\coloneqq\{X_i^{-1}(B):B\in\mathcal B(\mathbb R)\}.
+\]
+若 \((\sigma(X_i))_{i\in I}\) 独立，则称 \((X_i)_{i\in I}\) 为\term[duli-suiji-bianliang]{独立随机变量}[independent random variables]。等价地，对任意互异指标 \(i_1,\ldots,i_r\) 及 Borel 集 \(B_1,\ldots,B_r\subseteq\mathbb R\)，有
+\[
+ \mathbb P(X_{i_1}\in B_1,\ldots,X_{i_r}\in B_r)
+ =\prod_{j=1}^r\mathbb P(X_{i_j}\in B_j).
+\]
+对实值或复值可测函数的独立性，也按它们所生成的 \(\sigma\)-代数定义，其中复值域采用 \(\mathcal B(\mathbb C)\)。
+\end{definition}
+
+逆像保持补集与可数并，所以 \(\sigma(X_i)\) 确实是 \(\sigma\)-代数；它也是使 \(X_i\) 可测的最小 \(\sigma\)-代数。定义中的联合概率是相应事件交集的简写。由生成族判据，只需检验每个 \(B_j\) 为半直线 \(({-\infty},t_j]\) 或 \(\mathbb R\) 的情形，就能得到全部 Borel 集的等式。
+
+\begin{proposition}\label{b1:prop:30-independent-functions}
+设 \((X_i)_{i\in I}\) 是概率空间 \((\Omega,\mathcal F,\mathbb P)\) 上的独立实随机变量族。对每个 \(i\)，设 \(h_i:\mathbb R\to\mathbb R\) 或 \(h_i:\mathbb R\to\mathbb C\) 是 Borel 函数。则可测函数族 \((h_i(X_i))_{i\in I}\) 仍独立。
+\end{proposition}
+\begin{proof}
+对相应值域中的 Borel 集 \(B\)，有
+\[
+ \{h_i(X_i)\in B\}=\{X_i\in h_i^{-1}(B)\}\in\sigma(X_i).
+\]
+所以 \(\sigma(h_i(X_i))\subseteq\sigma(X_i)\)。独立 \(\sigma\)-代数族的任意子 \(\sigma\)-代数族仍满足定义中的乘法等式，故结论成立。
+\end{proof}
+
+\begin{proposition}[不交分块保持独立性]\label{b1:prop:30-independent-blocks}
+设 \((\mathcal F_i)_{i\in I}\) 是概率空间 \((\Omega,\mathcal F,\mathbb P)\) 上的独立子 \(\sigma\)-代数族，\((J_s)_{s\in S}\) 是 \(I\) 中两两不交的子集族。令
+\[
+ \mathcal H_s=\sigma\left(\bigcup_{i\in J_s}\mathcal F_i\right),
+ \quad s\in S.
+\]
+则 \((\mathcal H_s)_{s\in S}\) 独立。若可测函数 \(Y_s\) 对 \(\mathcal H_s\) 可测，则 \((Y_s)_{s\in S}\) 也独立。
+\end{proposition}
+\begin{proof}
+对每个 \(s\)，取生成 \(\mathcal H_s\) 的 \(\pi\)-系统
+\[
+ \mathcal P_s=\left\{\bigcap_{i\in F}A_i:
+ F\subseteq J_s\text{ 有限},\ A_i\in\mathcal F_i\right\}.
+\]
+其中 \(F=\varnothing\) 时取全集。它对有限交封闭，因为相同指标的集合可以先在 \(\mathcal F_i\) 内求交。若 \(s_1,\ldots,s_r\) 互异，\(C_j\in\mathcal P_{s_j}\)，各 \(C_j\) 所使用的指标组互不相交。原 \(\sigma\)-代数族的独立性因此同时给出
+\[
+ \mathbb P\left(\bigcap_{j=1}^rC_j\right)
+ =\prod_{j=1}^r\mathbb P(C_j).
+\]
+这里先把左端展开为全部所用指标的有限交，再把相应概率因子按块重新组合。\cref{b1:prop:30-independent-pi-lambda}便给出 \((\mathcal H_s)\) 的独立性。又有 \(\sigma(Y_s)\subseteq\mathcal H_s\)，故最后一个断言成立。
+\end{proof}
+
+例如，若 \(X_1,X_2,\ldots\) 独立，则 \(X_1+\cdots+X_m\) 与 \(X_{m+1}+\cdots+X_n\) 在 \(m<n\) 时独立。更一般地，对不交的有限指标块分别施加任意 Borel 函数，所得到的变量仍独立。这个结论不能只凭“不同项互不影响”的直观代替，因为后文的最大值事件会同时涉及一整块变量。
+
+\begin{proposition}[联合分布与乘积]\label{b1:prop:30-independent-joint-law}
+设 \(X_1,\ldots,X_r\) 是概率空间 \((\Omega,\mathcal F,\mathbb P)\) 上的实随机变量，各自的 Borel 分布为 \(\mu_1,\ldots,\mu_r\)。则 \(X_1,\ldots,X_r\) 独立，当且仅当其联合分布等于有限乘积测度 \(\mu_1\otimes\cdots\otimes\mu_r\)。
+\end{proposition}
+\begin{proof}
+独立性恰好说明联合分布与上述乘积测度在每个 Borel 矩形 \(B_1\times\cdots\times B_r\) 上相等。两者都是 \(\mathbb R^r\) 上的概率测度，Borel 矩形组成包含全集的生成 \(\pi\)-系统，故\cref{b1:thm:pi-lambda}给出两测度相等。反过来，若联合分布为乘积，矩形上的等式给出独立性；将部分 \(B_j\) 取为 \(\mathbb R\)，同时得到所有子族的等式。
+\end{proof}
+
+独立性还把乘积的积分拆成单变量积分。下面给出可积实、复函数都能使用的版本；其中复值情形将在特征函数的计算中出现。Axler 的《Measure, Integration \& Real Analysis》\cite[12.16--12.17, pp.~387--388]{Axler2020Measure}讨论了函数保持独立与平方可积变量的乘积期望；这里利用独立性把可积条件放宽到各个因子分别属于 \(L^1\)。
+
+\begin{proposition}\label{b1:prop:30-independent-expectations}
+设 \(Z_1,\ldots,Z_r\) 是概率空间 \((\Omega,\mathcal F,\mathbb P)\) 上的独立可测函数。
+\begin{enumerate}
+ \item 若各 \(Z_j\) 为非负实值函数，则
+ \[
+  \mathbb E\left(\prod_{j=1}^rZ_j\right)=\prod_{j=1}^r\mathbb E Z_j,
+ \]
+ 其中允许无穷值，右端按 \(0\cdot\infty=0\) 解释。
+ \item 若各 \(Z_j\) 为可积的实值或复值函数，则 \(\prod_{j=1}^rZ_j\) 可积，并且
+ \[
+  \mathbb E\left|\prod_{j=1}^rZ_j\right|=\prod_{j=1}^r\mathbb E|Z_j|,
+  \quad
+  \mathbb E\left(\prod_{j=1}^rZ_j\right)=\prod_{j=1}^r\mathbb E Z_j.
+ \]
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+先设各 \(Z_j\) 是简单函数，写成 \(Z_j=\sum_{k=1}^{N_j}a_{jk}\cdot\mathbf1_{A_{jk}}\)，其中 \(A_{jk}\in\sigma(Z_j)\)。展开有限乘积，并用独立性计算每个交集的概率，得到
+\[
+ \mathbb E\left(\prod_{j=1}^rZ_j\right)
+ =\sum_{k_1,\ldots,k_r}\prod_{j=1}^r
+ \bigl(a_{j k_j}\cdot\mathbb P(A_{j k_j})\bigr)
+ =\prod_{j=1}^r\mathbb E Z_j.
+\]
+这也适用于复简单函数。
+
+对非负 \(Z_j\)，选取对 \(\sigma(Z_j)\) 可测的非负简单函数 \(s_{jn}\uparrow Z_j\)。简单函数情形与单调收敛给出第一项。若某个 \(\mathbb E Z_j=0\)，则该 \(Z_j=0\) 几乎必然，左端也为零；否则各因子期望都严格为正，有限个递增非负数列的乘积收敛到其扩展实数乘积。这同时验证了无穷值的约定。
+
+对可积的实、复函数，\(|Z_j|\) 仍独立，第一项给出
+\[
+ \mathbb E\left(\prod_{j=1}^r|Z_j|\right)
+ =\prod_{j=1}^r\mathbb E|Z_j|<\infty.
+\]
+再选对 \(\sigma(Z_j)\) 可测的有限值简单函数 \(s_{jn}\to Z_j\)，使 \(|s_{jn}|\leq|Z_j|\)。例如实函数分别截断、二进逼近正负部分；复函数分别逼近实虚部并使各分量的绝对值不增。乘积由可积函数 \(\prod_j|Z_j|\) 控制，各因子由 \(|Z_j|\) 控制。简单函数等式两端使用控制收敛，便得到第二项。
+\end{proof}
+
+\subsection{可数乘积概率测度}
+\label{b1:subsec:300203}
+
+有限乘积测度已经由\cref{b1:thm:product-measure-construction}与\cref{b1:prop:finite-product-associativity}建立。但要讨论无限次独立试验，仍须在同一个空间上容纳全部坐标。只给出每个有限维矩形的概率还不够：必须证明这些规定具有可数可加性。
+
+\ProseParagraphBreak
+
+下面只构造后文实际需要的情形：各坐标取值于 \(\mathbb R\)，指定的是 Borel 概率分布。实空间有限维概率测度的紧内正则性，使我们能够用一个对角选取补上可数可加性的关键一步。更一般的概率空间乘积可参看 Fremlin 的《Measure Theory》第二卷\cite[Definition 254C, Theorem 254F]{Fremlin2016Measure}；该书把乘积取为完备测度，本节先在坐标生成的 \(\sigma\)-代数上构造唯一测度。
+
+\begin{theorem}[实 Borel 概率的可数乘积]\label{b1:thm:30-countable-product}
+设 \((\mu_j)_{j\geq1}\) 是 \((\mathbb R,\mathcal B(\mathbb R))\) 上的一列概率测度，令 \(\Omega=\mathbb R^{\mathbb N}\)，\(\xi_j(\omega)=\omega_j\)，并令
+\[
+ \mathcal F=\sigma\{\xi_j^{-1}(B):j\geq1,\ B\in\mathcal B(\mathbb R)\}.
+\]
+则 \(\mathcal F\) 上存在唯一概率测度 \(\mathbb P\)，使对每个 \(n\geq1\) 及 \(B\in\mathcal B(\mathbb R^n)\)，有
+\[
+ \mathbb P\bigl((\xi_1,\ldots,\xi_n)\in B\bigr)
+ =(\mu_1\otimes\cdots\otimes\mu_n)(B).
+\]
+特别地，对互异的有限指标 \(j_1,\ldots,j_r\) 与 Borel 集 \(B_1,\ldots,B_r\)，有
+\[
+ \mathbb P(\xi_{j_1}\in B_1,\ldots,\xi_{j_r}\in B_r)
+ =\prod_{k=1}^r\mu_{j_k}(B_k).
+\]
+此外，\(\mathcal F\) 正是可数乘积拓扑下 \(\mathbb R^{\mathbb N}\) 的 Borel \(\sigma\)-代数。
+\end{theorem}
+\begin{proof}
+记 \(\pi_n=(\xi_1,\ldots,\xi_n)\)，\(q_n=\mu_1\otimes\cdots\otimes\mu_n\)。有限乘积的结合律及每个因子的总质量为一，给出一致性关系
+\[
+ q_m(B\times\mathbb R^{m-n})=q_n(B)
+ \quad(m\geq n,\ B\in\mathcal B(\mathbb R^n)).
+\]
+取柱集族
+\[
+ \mathcal A=\{\pi_n^{-1}(B):n\geq1,\ B\in\mathcal B(\mathbb R^n)\}.
+\]
+把有限多个柱集都提升到共同的前 \(m\) 个坐标后，补集、交集与并集仍为同类柱集，因此 \(\mathcal A\) 是集合代数。它生成 \(\mathcal F\)：一方面坐标条件都属于 \(\mathcal A\)，另一方面 \(\pi_n\) 对 \(\mathcal F/\mathcal B(\mathbb R^n)\) 可测，所以每个柱集都属于 \(\mathcal F\)。
+
+在 \(\mathcal A\) 上规定
+\[
+ p(\pi_n^{-1}(B))=q_n(B).
+\]
+这一定义与柱集的表示无关。事实上，若 \(m\geq n\) 且 \(\pi_n^{-1}(B)=\pi_m^{-1}(D)\)，由于任意 \(\mathbb R^m\) 中的点都能补上零坐标而延长为 \(\Omega\) 中的点，必有 \(D=B\times\mathbb R^{m-n}\)；再用一致性即可。不同表示均可先提升到共同维数，故一般情形也成立。相同办法把有限个不交柱集提升到共同维数，\(q_m\) 的有限可加性便给出 \(p\) 的有限可加性，且 \(p(\Omega)=1\)。
+
+关键是证明：若 \(C_m\in\mathcal A\)、\(C_m\downarrow\varnothing\)，则 \(p(C_m)\to0\)。反设存在 \(\varepsilon>0\)，使全部 \(p(C_m)\geq\varepsilon\)。递归增大表示维数，写成
+\[
+ C_m=\pi_{k_m}^{-1}(B_m),
+ \quad k_1<k_2<\cdots,\quad k_m\geq m,
+ \quad B_m\in\mathcal B(\mathbb R^{k_m}).
+\]
+由\cref{b1:lem:polish-probability-radon}，有限维概率测度 \(q_{k_m}\) 对每个 Borel 集都紧内正则。因此可选紧集 \(K_m\subseteq B_m\)，使
+\[
+ q_{k_m}(B_m\setminus K_m)<\varepsilon2^{-m-2}.
+\]
+令 \(D_m=\pi_{k_m}^{-1}(K_m)\subseteq C_m\)。对每个 \(M\)，有限可加性与次可加估计给出
+\[
+ \begin{aligned}
+ p\left(C_M\setminus\bigcap_{m=1}^MD_m\right)
+ &\leq\sum_{m=1}^Mp(C_m\setminus D_m)\\
+ &<\varepsilon\sum_{m=1}^M2^{-m-2}<\frac\varepsilon2.
+ \end{aligned}
+\]
+因此 \(p(\bigcap_{m=1}^MD_m)>\varepsilon/2\)，特别地这个有限交非空。选取 \(x^{(M)}\in\bigcap_{m=1}^MD_m\)。
+
+固定 \(m\) 时，所有 \(M\geq m\) 的前 \(k_m\) 个坐标都位于紧集 \(K_m\)。先从 \((x^{(M)})\) 中抽取前 \(k_1\) 个坐标收敛的子列，再从中抽取前 \(k_2\) 个坐标收敛的子列，依次继续。取这些嵌套子列的对角子列，可使每个固定前缀都收敛。各前缀极限在重叠坐标上一致；又因 \(k_m\geq m\)，它们共同确定一个 \(x\in\mathbb R^{\mathbb N}\)。每个 \(K_m\) 闭，所以 \(\pi_{k_m}(x)\in K_m\)。于是
+\[
+ x\in\bigcap_{m\geq1}D_m\subseteq\bigcap_{m\geq1}C_m,
+\]
+与交集为空矛盾。所需的空集处上连续性得证。
+
+现设 \(E_j\in\mathcal A\) 两两不交，且 \(E=\bigcup_{j\geq1}E_j\in\mathcal A\)。余集
+\[
+ R_N=E\setminus\bigcup_{j=1}^NE_j
+\]
+属于 \(\mathcal A\)，并递减到空集。由有限可加性和刚证的连续性，
+\[
+ p(E)=\sum_{j=1}^Np(E_j)+p(R_N)
+ \longrightarrow\sum_{j=1}^{\infty}p(E_j).
+\]
+故 \(p\) 是前测度。\cref{b1:thm:caratheodory-extension}将它延拓到 \(\sigma(\mathcal A)=\mathcal F\) 上；总质量仍为一，而\cref{b1:thm:sigma-finite-uniqueness}给出唯一性。有限坐标的矩形值已经包含在构造中；将未出现的坐标条件取为 \(\mathbb R\)，便得到任意有限指标组的乘法公式。
+
+最后，每个坐标映射在乘积拓扑下连续，所以 \(\mathcal F\) 包含于相应 Borel \(\sigma\)-代数。反过来，有限多个坐标落在有理端点开区间内所给出的柱集构成可数拓扑基，而且都属于 \(\mathcal F\)。每个开集是其中某些基元的可数并，故也属于 \(\mathcal F\)。这证明二者相等。
+\end{proof}
+
+证明中有限可加性只用了有限维一致性，可数可加性则另外使用了紧内逼近和对角选取。把柱集上的乘法规定直接称为概率测度，会跳过这一步。若需要完备概率空间，可在构造完成后再对 \(\mathbb P\) 完备化；坐标变量的分布与独立性均不因此改变。
+
+\subsection{独立随机变量列的构造}
+\label{b1:subsec:300204}
+
+\begin{corollary}\label{b1:cor:30-iid-construction}
+设 \((\mu_j)_{j\geq1}\) 是实轴上的一列 Borel 概率测度。则存在概率空间 \((\Omega,\mathcal F,\mathbb P)\) 及独立实随机变量列 \((X_j)_{j\geq1}\)，使每个 \(X_j\) 的分布为 \(\mu_j\)。若全部 \(\mu_j\) 等于同一分布 \(\mu\)，则这些变量独立且同分布，简称\term[duli-tongfenbu]{独立同分布}[independent and identically distributed]，缩写为 i.i.d.。
+\end{corollary}
+\begin{proof}
+取前一定理构造的 \(\Omega=\mathbb R^{\mathbb N}\)、\(\mathcal F\)、\(\mathbb P\)，并令 \(X_j=\xi_j\)。坐标可测性由 \(\mathcal F\) 的定义保证；有限坐标乘法公式同时给出每个边缘分布和全部有限子族的独立性。若各边缘相同，定义即给出独立同分布。
+\end{proof}
+
+例如，取每个 \(\mu_j=(1-p)\delta_0+p\delta_1\)，就得到无限 Bernoulli 试验。各坐标属于 \(\{0,1\}\) 的事件均有概率一，可数交也有概率一；所以可把空间限制在 \(\{0,1\}^{\mathbb N}\) 上。此时对 \(a_j\in\{0,1\}\)，
+\[
+ \mathbb P(X_1=a_1,\ldots,X_n=a_n)
+ =\prod_{j=1}^n\mu_j(\{a_j\}).
+\]
+如果 \(0<p<1\)，右端也可写成 \(p^{\sum_ja_j}(1-p)^{n-\sum_ja_j}\)。这一构造允许讨论无限次抛掷的事件，例如某种结果是否出现无穷多次；它们已经超出单个有限维试验的定义域。
+
+\ProseParagraphBreak
+
+取各 \(\mu_j\) 为 \([0,1]\) 上的均匀分布，则得到独立均匀变量列。对 \(0\leq t_j\leq1\)，有
+\[
+ \mathbb P(X_1\leq t_1,\ldots,X_n\leq t_n)=\prod_{j=1}^nt_j.
+\]
+这里先有完整的概率空间，再由坐标函数读取变量；不需要把“无限次独立抽样”作为新的非数学原始对象。后文的大数定律将研究这些坐标的平均值，中心极限定理则研究其中心化和的分布。

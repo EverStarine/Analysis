@@ -2,67 +2,374 @@
 \section{Jacobi \texorpdfstring{\(\theta\)}{\AnalysisPdfTheta} 函数}
 \label{b3:sec:2401}
 
-高斯函数在 Fourier 变换下保持形状，按格点求和后便产生参数反演的对称。另一方面，平方指数的系数又在计数整数表示；本章将同一个级数的这两个含义联系起来。
+若要用一个函数同时保存所有平方数，最直接的办法是把平方数放到幂指数上，写成 \(\sum_{n\in\mathbb Z}q^{n^2}\)。当 \(|q|<1\) 时，这个级数迅速收敛；乘起若干份后，系数就在计数平方和。它还有一个计数问题本身不容易看出的对称：令 \(q=e^{-\pi t}\)，把 \(t\) 换成 \(1/t\)，级数只改变一个简单因子。这一对称来自高斯函数的 Fourier 变换。下面加入一个记录线性相位的空间变量 \(z\)，把这项事实建立为可以求导、平移和作参数变换的函数恒等式。
 
 \subsection{\texorpdfstring{\(\theta\)}{\AnalysisPdfTheta} 级数}
 \label{b3:subsec:240101}
 
-对 \(\tau\in\mathfrak H\)、\(z\in\mathbb C\)，定义\term[jacobi-theta-hanshu]{Jacobi theta 函数}[Jacobi theta function]
+\begin{definition}\label{b3:def:24-theta-series}
+设 \(\tau\in\mathfrak H=\{\,w\in\mathbb C\mid\operatorname{Im}w>0\,\}\)、\(z\in\mathbb C\)，置 \(q=e^{\pi\mathrm i\tau}\)。四个\term[jacobi-theta-hanshu]{Jacobi theta 函数}[Jacobi theta function]定义为
+\begin{equation}\label{b3:eq:24-theta-series}
+\begin{aligned}
+ \theta_1(z,\tau)&=-\mathrm i\sum_{n\in\mathbb Z}(-1)^n
+                q^{(n+1/2)^2}e^{(2n+1)\mathrm iz},\\
+ \theta_2(z,\tau)&=\sum_{n\in\mathbb Z}
+                q^{(n+1/2)^2}e^{(2n+1)\mathrm iz},\\
+ \theta_3(z,\tau)&=\sum_{n\in\mathbb Z}q^{n^2}e^{2n\mathrm iz},\\
+ \theta_4(z,\tau)&=\sum_{n\in\mathbb Z}(-1)^nq^{n^2}e^{2n\mathrm iz}.
+\end{aligned}
+\end{equation}
+这里对任意实数 \(a\)，记号 \(q^a\) 一律表示 \(e^{\pi\mathrm i a\tau}\)，不另选复数 \(q\) 的幂分支。省略第二个变量时，始终保持同一个 \(\tau\)。
+\end{definition}
+\symidx{\(\theta_j(z,\tau)\)：Jacobi theta 函数，\(1\le j\le4\)}
+
+本章的 \(q\) 与前章的模形式展开变量不同：前章用 \(e^{2\pi\mathrm i\tau}\)，本章用它的平方根 \(e^{\pi\mathrm i\tau}\)。这一选择使 \(\theta_3(0,\tau)\) 的幂指数直接成为整数平方，而不再带二分之一。对 \(\theta_1,\theta_2\)，指数还含四分之一；它们首先是 \(\tau\) 的单值函数，不能未经说明就把它们看成穿孔圆盘中 \(q\) 的单值函数。
+\ProseParagraphBreak
+四个函数不是四种互不相关的构造。由整数格改为半整数格，就从 \(\theta_3\) 得到 \(\theta_2\)；再给相邻格点加上交替符号，就出现 \(\theta_4\) 和 \(\theta_1\)。这些变化在 Fourier 变换下会彼此交换，所以把它们一并引入，可以让后面的变换律保持封闭。先把 \(n\) 与 \(-n\)、或 \(n\) 与 \(-n-1\) 配对，得到可直接计算的实三角形式：
 \[
-\theta_3(z,\tau)\coloneqq\sum_{n\in\mathbb Z}e^{\pi\mathrm{i}n^2\tau+2\mathrm{i}nz}.
+\begin{aligned}
+ \theta_1(z,\tau)&=2\sum_{n\ge0}(-1)^nq^{(n+1/2)^2}
+                                      \sin((2n+1)z),\\
+ \theta_2(z,\tau)&=2\sum_{n\ge0}q^{(n+1/2)^2}
+                                      \cos((2n+1)z),\\
+ \theta_3(z,\tau)&=1+2\sum_{n\ge1}q^{n^2}\cos(2nz),\\
+ \theta_4(z,\tau)&=1+2\sum_{n\ge1}(-1)^nq^{n^2}\cos(2nz).
+\end{aligned}
 \]
-本章固定 \(q=e^{\pi\mathrm{i}\tau}\)，它是前章模形式变量 \(e^{2\pi\mathrm{i}\tau}\) 的平方根。若 \(\operatorname{Im}\tau\ge\eta>0\)、\(|\operatorname{Im}z|\le R\)，项的模不超过 \(e^{-\pi\eta n^2+2R|n|}\)，故级数及任意固定次导数正规收敛。移项得
-\(\theta_3(z+\pi)=\theta_3(z)\)、\(\theta_3(z+\pi\tau)=q^{-1}e^{-2\mathrm{i}z}\theta_3(z)\)。第二式是准周期性，不能称为两个周期。
+因此 \(\theta_1\) 关于 \(z\) 为奇函数，其余三个为偶函数；\(\theta_1(0,\tau)=0\)。这里的配对和随后使用的逐项求导，都由下面的同一估计保证。
+
+\begin{proposition}\label{b3:prop:24-theta-normal}
+对 \(j\in\{1,2,3,4\}\)，\cref{b3:def:24-theta-series}的级数及其任意固定阶混合导数
+\(\partial_z^r\partial_\tau^s\)，其中 \(r,s\) 为非负整数，都在
+\(\mathbb C\times\mathfrak H\) 的每个紧子集上绝对一致收敛。因而 \(\theta_j(z,\tau)\) 对 \(z\) 为整函数，对 \(\tau\in\mathfrak H\) 全纯，所述导数可以逐项计算。
+\end{proposition}
+\begin{proof}
+在一个给定紧子集上，可以选取 \(\eta>0\)、\(R>0\)，使
+\(\operatorname{Im}\tau\ge\eta\)、\(|\operatorname{Im}z|\le R\)。四种级数的指标都是 \(u=n\) 或 \(u=n+1/2\)，除去模为一的系数后，各项及导数的模不超过
+\[
+ C_{r,s}|u|^{r+2s}\exp(-\pi\eta u^2+2R|u|).
+\]
+当 \(|u|\) 足够大时，\(2R|u|\le\pi\eta u^2/2\)，故尾项被
+\(C_{r,s}|u|^{r+2s}e^{-\pi\eta u^2/2}\) 控制。这个数列可求和，因为任意固定次多项式都被高斯衰减吸收。有限个小指标另取上界，Weierstrass 判别法便给出一致收敛；对单个变量应用全纯函数列的逐项求导定理，即得到各阶混合导数。
+\end{proof}
+
+上半平面条件确实参与了论证。若 \(\tau\) 为实数、\(z=0\)，则 \(\theta_3\) 的各项模恒为一，连级数收敛所需的项趋于零都不满足。不能把上面的紧集估计直接延到 \(\operatorname{Im}\tau=0\)。
+\ProseParagraphBreak
+平方指数还带来一个将在四平方和证明中使用的微分关系：对参数求导产生平方，对空间变量求两次导数也产生同一个平方。
+
+\begin{proposition}\label{b3:prop:24-theta-heat}
+对 \(z\in\mathbb C\)、\(\tau\in\mathfrak H\) 和 \(1\le j\le4\)，有
+\begin{equation}\label{b3:eq:24-theta-heat}
+ \frac1{\pi\mathrm i}\partial_\tau\theta_j(z,\tau)
+       =-\frac14\partial_z^2\theta_j(z,\tau).
+\end{equation}
+若以 \(q=e^{\pi\mathrm i\tau}\) 作局部坐标，则左端为
+\(q\partial_q\theta_j\)。特别地，函数 \(u_j(x,t)=\theta_j(x,\mathrm it)\)，
+\(x\in\mathbb R\)、\(t>0\)，满足
+\(\partial_tu_j=(\pi/4)\partial_x^2u_j\)。
+\end{proposition}
+\begin{proof}
+每项都具有常数乘 \(e^{\pi\mathrm i u^2\tau+2\mathrm iuz}\) 的形式，
+其中 \(u=n\) 或 \(n+1/2\)。算子 \((\pi\mathrm i)^{-1}\partial_\tau\)
+乘出 \(u^2\)，而 \(\partial_z^2\) 乘出 \(-4u^2\)。由
+\cref{b3:prop:24-theta-normal}逐项计算并求和，得到恒等式。
+由于 \(\mathrm dq/\mathrm d\tau=\pi\mathrm i q\ne0\)，局部坐标中的链式法则给出 \(q\partial_q=(\pi\mathrm i)^{-1}\partial_\tau\)。
+最后 \(\partial_tu_j=\mathrm i\partial_\tau\theta_j\)，代入即得实时间的热方程。
+\end{proof}
+
+\begin{proposition}\label{b3:prop:24-theta-translations}
+设 \(\tau\in\mathfrak H\)、\(z\in\mathbb C\)，并在下式中简记
+\(\theta_j(z)=\theta_j(z,\tau)\)、\(q^a=e^{\pi\mathrm i a\tau}\)。
+四个 theta 函数满足
+\begin{equation}\label{b3:eq:24-theta-quasiperiods}
+\begin{aligned}
+ \theta_1(z+\pi)&=-\theta_1(z),&
+ \theta_1(z+\pi\tau)&=-q^{-1}e^{-2\mathrm iz}\theta_1(z),\\
+ \theta_2(z+\pi)&=-\theta_2(z),&
+ \theta_2(z+\pi\tau)&=q^{-1}e^{-2\mathrm iz}\theta_2(z),\\
+ \theta_3(z+\pi)&=\theta_3(z),&
+ \theta_3(z+\pi\tau)&=q^{-1}e^{-2\mathrm iz}\theta_3(z),\\
+ \theta_4(z+\pi)&=\theta_4(z),&
+ \theta_4(z+\pi\tau)&=-q^{-1}e^{-2\mathrm iz}\theta_4(z).
+\end{aligned}
+\end{equation}
+半周期平移的结果由\cref{b3:tab:24-half-translations}给出。
+\end{proposition}
+
+\begin{table}[htbp]
+\centering
+\caption[theta 函数的半周期平移]{theta 函数的半周期平移。共同参数为
+\(\tau\in\mathfrak H\)，\(q=e^{\pi\mathrm i\tau}\)，每一行对全部 \(z\in\mathbb C\) 成立。第三列已乘去共同指数因子，因而只留下函数交换及一个常数。}
+\label{b3:tab:24-half-translations}
+\begin{tabular}{ccc}
+\toprule
+ \(j\) & \(\theta_j(z+\pi/2,\tau)\) &
+ \(q^{1/4}e^{\mathrm iz}\theta_j(z+\pi\tau/2,\tau)\)\\
+\midrule
+ \(1\) & \(\theta_2(z,\tau)\) & \(\mathrm i\theta_4(z,\tau)\)\\
+ \(2\) & \(-\theta_1(z,\tau)\) & \(\theta_3(z,\tau)\)\\
+ \(3\) & \(\theta_4(z,\tau)\) & \(\theta_2(z,\tau)\)\\
+ \(4\) & \(\theta_3(z,\tau)\) & \(\mathrm i\theta_1(z,\tau)\)\\
+\bottomrule
+\end{tabular}
+\end{table}
+\begin{proof}
+对 \(z\mapsto z+\pi\)，整数频率的项不变，半整数频率的项乘以 \(-1\)，给出第一列公式。对 \(z\mapsto z+\pi\tau\)，把指数
+\(u^2+2u\) 写成 \((u+1)^2-1\)，再把指标平移一位，提出共同因子 \(q^{-1}e^{-2\mathrm iz}\)。带 \((-1)^n\) 的级数在移指标后另产生一个负号，故得到第二列。
+半周期表的第二列来自
+\(e^{2\mathrm in(\pi/2)}=(-1)^n\) 与
+\(e^{(2n+1)\mathrm i\pi/2}=\mathrm i(-1)^n\)。
+对第三列，整数指标满足
+\(n^2+n=(n+1/2)^2-1/4\)，半整数指标满足
+\((n+1/2)^2+(n+1/2)=(n+1)^2-1/4\)。
+例如对奇函数作这个移项，得到
+\[
+\begin{aligned}
+ \theta_1(z+\pi\tau/2,\tau)
+ &=-\mathrm i q^{-1/4}
+       \sum_{n\in\mathbb Z}(-1)^nq^{(n+1)^2}e^{(2n+1)\mathrm iz}\\
+ &=\mathrm i q^{-1/4}e^{-\mathrm iz}\theta_4(z,\tau).
+\end{aligned}
+\]
+去掉交替符号就得到
+\(\theta_2(z+\pi\tau/2,\tau)=q^{-1/4}e^{-\mathrm iz}\theta_3(z,\tau)\)。
+整数指标的两行直接用第一项配方，分别得到
+\(q^{-1/4}e^{-\mathrm iz}\theta_2(z,\tau)\) 与
+\(\mathrm i q^{-1/4}e^{-\mathrm iz}\theta_1(z,\tau)\)，完成全表。
+所有移项均在绝对收敛级数中进行。
+\end{proof}
+
+第二个方向的平移带有依赖 \(z\) 的乘法因子，这称为准周期性，不能把 \(\pi\tau\) 称作真正周期。与第二十二章的椭圆函数相比，这个差别很必要：非恒定整函数若有两个实线性无关的真正周期，就会在一个紧基本平行四边形上有界，继而在全平面有界，与 Liouville 定理矛盾。theta 函数允许大小在相邻格胞间按指数因子改变，因而能够同时保持整性与非平凡的格对称。取一次对数导数，乘法指数变成加法常数；再求导一次，常数消失，才会产生真正双周期的亚纯函数。
 
 \subsection{与第二卷 Poisson 求和的联系}
 \label{b3:subsec:240102}
 
-先取实数 \(t>0\)。高斯积分给 \(\widehat{e^{-\pi tx^2}}(\xi)=t^{-1/2}e^{-\pi\xi^2/t}\)。将 \(\sum_{n\in\mathbb Z}e^{-\pi t(x+n)^2}\) 看成周期函数，其第 \(m\) 个 Fourier 系数正是该变换在整数 \(m\) 处的值。两边级数及其导数都一致收敛，代入 \(x=0\) 得
+第二卷从 Fourier 理论研究过 Poisson 求和。本章只需要高斯及其平移、调制的情形，下面直接证明这个版本，并把积分换序和 Fourier 展开成立的理由写出。这样，即使读者忘记了一般定理的函数空间条件，也可以沿着当前论证继续学习。
+
+\begin{lemma}\label{b3:lem:24-gaussian-poisson}
+设 \(t>0\)、\(a\in\mathbb R\)、\(b\in\mathbb C\)。则下列两边级数绝对收敛，并且
+\begin{equation}\label{b3:eq:24-gaussian-poisson}
+ \sum_{n\in\mathbb Z}e^{-\pi t(n+a)^2}e^{2\pi\mathrm ib(n+a)}
+ =t^{-1/2}\sum_{m\in\mathbb Z}
+       e^{-\pi(m-b)^2/t}e^{2\pi\mathrm ima}.
+\end{equation}
+特别地，\(a=b=0\) 时有
 \[
-\sum_{n\in\mathbb Z}e^{-\pi tn^2}=t^{-1/2}\sum_{n\in\mathbb Z}e^{-\pi n^2/t}.
+ \sum_{n\in\mathbb Z}e^{-\pi tn^2}
+     =t^{-1/2}\sum_{m\in\mathbb Z}e^{-\pi m^2/t}.
 \]
-这给出本章所需的 Poisson 求和特例。一般 Poisson 求和见第二卷，但此处直接验证了高斯的快速衰减和换序条件，因此后面的主干推导不依赖未说明的分布版本。
+\end{lemma}
+\begin{proof}
+固定 Fourier 变换约定
+\(\widehat f(\xi)=\int_{\mathbb R}f(x)e^{-2\pi\mathrm ix\xi}\,\mathrm dx\)。
+先计算 \(g_t(x)=e^{-\pi tx^2}\) 的变换。高斯积分为
+\(\int_{\mathbb R}e^{-\pi tx^2}\,\mathrm dx=t^{-1/2}\)：在 \(t=1\)
+时将积分平方化成平面上的非负积分，极坐标给出
+\(2\pi\int_0^\infty e^{-\pi r^2}r\,\mathrm dr=1\)，一般情形再缩放。
+令 \(F(\xi)=\widehat g_t(\xi)\)，对实 \(\xi\) 在积分下求导，并用
+\(g_t'(x)=-2\pi txg_t(x)\) 分部积分，得到
+\[
+ F'(\xi)=\frac{\mathrm i}{t}
+       \int_{\mathbb R}g_t'(x)e^{-2\pi\mathrm ix\xi}\,\mathrm dx
+       =-\frac{2\pi\xi}{t}F(\xi).
+\]
+这里 \(g_t\) 与 \(xg_t\) 可积，且 \(g_t(x)\to0\) 保证边界项消失。
+初值 \(F(0)=t^{-1/2}\) 因而给出
+\[
+ \widehat g_t(\xi)=t^{-1/2}e^{-\pi\xi^2/t}.
+\]
+对实数 \(b\)，令 \(f_b(x)=g_t(x)e^{2\pi\mathrm ibx}\)，于是
+\(\widehat f_b(\xi)=t^{-1/2}e^{-\pi(\xi-b)^2/t}\)。
+
+将 \(f_b\) 周期化为
+\(P_b(x)=\sum_{n\in\mathbb Z}f_b(x+n)\)。当 \(x\in[0,1]\) 时，
+\(|x+n|\ge |n|-1\)，而 \(f_b\) 的各阶导数都是多项式乘高斯再乘一个模为一的相位。故级数及其各阶导数一致收敛，\(P_b\) 为光滑的一周期函数。其第 \(m\) 个 Fourier 系数是
+\[
+\begin{aligned}
+ \int_0^1P_b(x)e^{-2\pi\mathrm imx}\,\mathrm dx
+ &=\sum_{n\in\mathbb Z}\int_0^1f_b(x+n)e^{-2\pi\mathrm imx}\,\mathrm dx\\
+ &=\int_{\mathbb R}f_b(u)e^{-2\pi\mathrm imu}\,\mathrm du
+   =t^{-1/2}e^{-\pi(m-b)^2/t}.
+\end{aligned}
+\]
+第一步的绝对积分总和等于 \(\int_{\mathbb R}|f_b(u)|\,\mathrm du<\infty\)，
+第二步用 \(m,n\in\mathbb Z\) 消去因子 \(e^{2\pi\mathrm imn}\)。
+这些系数本身快速衰减，所以相应 Fourier 级数绝对一致收敛，定义一个连续函数 \(Q_b\)，且 \(P_b,Q_b\) 的全部 Fourier 系数相同。
+
+为说明“系数相同”确实推出函数相同，可以对差 \(h=P_b-Q_b\) 用核函数
+\[
+ K_N(x)=\frac1N\left|\sum_{k=0}^{N-1}e^{2\pi\mathrm ikx}\right|^2.
+\]
+它非负、在 \([0,1]\) 上积分为一；离整数点固定距离时，
+等比数列公式给 \(K_N(x)=O(N^{-1})\)。连续周期函数一致连续，把
+\(\int_0^1K_N(u)(h(x-u)-h(x))\,\mathrm du\) 分成整数点附近与其余部分，前者由一致连续性控制，后者由上述界趋于零。因此
+\(K_N*h\to h\) 一致收敛。另一方面，\(K_N\) 为有限三角多项式，而
+\(h\) 的全部 Fourier 系数为零，故 \(K_N*h=0\)，从而 \(h=0\)。
+在 \(P_b=Q_b\) 中代入 \(x=a\)，便得到实 \(b\) 时的求和公式。
+
+最后将 \(b\) 延到复数。若 \(b\) 位于一个给定紧集，两侧项的模分别被
+\(C e^{-\pi t(n+a)^2+C|n+a|}\) 和
+\(C e^{-\pi m^2/t+C|m|}\) 控制。因此两边关于 \(b\) 都整，且在实轴相等。恒等定理给出全部 \(b\in\mathbb C\) 的等式，同时上述估计也证明绝对收敛。
+\end{proof}
+
+公式中的两个操作有清楚的对应：空间平移 \(a\) 变成右端的相位
+\(e^{2\pi\mathrm ima}\)，空间调制 \(b\) 变成右端频率中心从 \(0\)
+移到 \(b\)。取 \(a=1/2,b=0\) 时，左端在半整数格上求和，
+右端出现 \((-1)^m\)；这正是 \(\theta_2\) 与 \(\theta_4\) 会在参数反演中交换的原因。
 
 \subsection{模变换}
 \label{b3:subsec:240103}
 
-两侧关于 \(\tau\in\mathfrak H\) 全纯，且在 \(\tau=\mathrm{i}t\) 上相等，恒等定理给
+第二十三章的模群由 \(T:\tau\mapsto\tau+1\) 与
+\(S:\tau\mapsto-1/\tau\) 生成。对 theta 函数，\(T\) 可以直接在级数中计算，\(S\) 则由刚证明的高斯求和公式产生。空间变量也须随 \(S\) 改为 \(z/\tau\)；只变参数而保持 \(z\) 不动，得不到下面的形式。
+
+\begin{theorem}\label{b3:thm:24-theta-modular}
+设 \(z\in\mathbb C\)、\(\tau\in\mathfrak H\)，并定义
 \[
-\theta_3(0,-1/\tau)=(-\mathrm{i}\tau)^{1/2}\theta_3(0,\tau).
+ A(\tau)=(-\mathrm i\tau)^{1/2}
+   =\exp\left(\tfrac12\operatorname{Log}(-\mathrm i\tau)\right),
+ \quad
+ B(z,\tau)=A(\tau)e^{\mathrm i z^2/(\pi\tau)}.
 \]
-平方根选在 \(\tau=\mathrm{i}t\) 处为正的全纯分支。带线性相位的同一高斯计算给
+这里 \(\operatorname{Log}\) 是右半平面上辐角在
+\((-\pi/2,\pi/2)\) 内的全纯对数，因此 \(A(\mathrm it)=\sqrt t>0\)
+对所有 \(t>0\) 成立。则
+\begin{equation}\label{b3:eq:24-theta-T}
+\begin{aligned}
+ \theta_1(z,\tau+1)&=e^{\pi\mathrm i/4}\theta_1(z,\tau),&
+ \theta_2(z,\tau+1)&=e^{\pi\mathrm i/4}\theta_2(z,\tau),\\
+ \theta_3(z,\tau+1)&=\theta_4(z,\tau),&
+ \theta_4(z,\tau+1)&=\theta_3(z,\tau),
+\end{aligned}
+\end{equation}
+以及
+\begin{equation}\label{b3:eq:24-theta-S}
+\begin{aligned}
+ \theta_1(z/\tau,-1/\tau)&=-\mathrm iB(z,\tau)\theta_1(z,\tau),\\
+ \theta_2(z/\tau,-1/\tau)&=B(z,\tau)\theta_4(z,\tau),\\
+ \theta_3(z/\tau,-1/\tau)&=B(z,\tau)\theta_3(z,\tau),\\
+ \theta_4(z/\tau,-1/\tau)&=B(z,\tau)\theta_2(z,\tau).
+\end{aligned}
+\end{equation}
+\end{theorem}
+\begin{proof}
+对整数指标，\(e^{\pi\mathrm in^2}=(-1)^n\)，所以 \(T\) 交换
+\(\theta_3,\theta_4\)。对半整数指标，
 \[
-\theta_3(z/\tau,-1/\tau)=(-\mathrm{i}\tau)^{1/2}
-e^{-z^2/(\pi\mathrm{i}\tau)}\theta_3(z,\tau).
+ e^{\pi\mathrm i(n+1/2)^2}
+   =e^{\pi\mathrm i/4}e^{\pi\mathrm in(n+1)}
+   =e^{\pi\mathrm i/4},
 \]
-该式的高斯因子可先在实高斯积分中配方，再以整函数恒等定理延拓 \(z\)；不能为复平移未经估计就移动一条无穷积分直线。
+因为 \(n(n+1)\) 为偶数。这给出 \(\theta_1,\theta_2\) 的相位因子。
+
+为同时算清 \(S\) 的下标和符号，暂记
+\[
+ \Phi_{a,b}(z,\tau)=
+ \sum_{n\in\mathbb Z}e^{\pi\mathrm i\tau(n+a)^2+
+                         2\mathrm i(n+a)(z+\pi b)},
+ \quad a,b\in\mathbb R.
+\]
+这只是统一计算的记号；四个函数分别为
+\[
+ \theta_3=\Phi_{0,0},\quad
+ \theta_2=\Phi_{1/2,0},\quad
+ \theta_4=\Phi_{0,1/2},\quad
+ \theta_1=-\Phi_{1/2,1/2}.
+\]
+先令 \(\tau=\mathrm it\)、\(t>0\)，在
+\cref{b3:lem:24-gaussian-poisson}中把 \(t\) 换成 \(1/t\)，把调制参数
+换成 \(b+z/(\pi\mathrm it)\)。该参数可以为复数，引理已经覆盖这种情形。
+于是
+\[
+ \Phi_{a,b}\left(\frac z{\mathrm it},\frac{\mathrm i}t\right)
+ =\sqrt t\sum_{m\in\mathbb Z}
+    e^{-\pi t(m-b+\mathrm iz/(\pi t))^2}e^{2\pi\mathrm ima}.
+\]
+展开平方，提出 \(e^{z^2/(\pi t)}\)，再令 \(n=-m\)，得到
+\[
+ \Phi_{a,b}\left(\frac z{\mathrm it},\frac{\mathrm i}t\right)
+ =\sqrt t\,e^{z^2/(\pi t)}e^{2\pi\mathrm iab}
+                    \Phi_{b,-a}(z,\mathrm it).
+\]
+对每个固定 \(z\in\mathbb C\)，等式两边关于 \(\tau\in\mathfrak H\)
+都全纯；这一点分别来自正规收敛、\(\tau\ne0\) 和已经选定的
+\(A(\tau)\)。在虚轴的全部 \(\tau=\mathrm it\) 上相等，恒等定理便给
+\[
+ \Phi_{a,b}(z/\tau,-1/\tau)
+ =B(z,\tau)e^{2\pi\mathrm iab}\Phi_{b,-a}(z,\tau)
+\]
+在整个上半平面成立。代入四组 \(a,b\)，即可得到反演公式。
+在 \(a=b=1/2\) 的一行还要用
+\(\Phi_{1/2,-1/2}=-\Phi_{1/2,1/2}\)，故总因子为
+\(e^{\pi\mathrm i/2}(-1)=-\mathrm i\)，而不是 \(\mathrm i\)。
+\end{proof}
+
+在 \(\tau=\mathrm it\) 时，反演式中的高斯因子为
+\(e^{z^2/(\pi t)}\)。若把等式反解成 \(\theta_3(z,\mathrm it)\)，才出现
+衰减因子 \(e^{-z^2/(\pi t)}\)。这个方向区别可以防止记错指数的符号。
+整个证明只对实高斯作 Fourier 变换，再作全纯延拓，没有未经估计就平移一条无穷积分直线。
+\ProseParagraphBreak
+平方根的选取也不能在连续两次变换时随意改变。事实上
+\(A(-1/\tau)A(\tau)=1\)：乘积的平方为一，在虚轴取正值，而上半平面连通。
+两次 \(S\) 把空间变量 \(z\) 变为 \(-z\)，高斯因子互相抵消。
+三个偶函数的结果不变，\(\theta_1\) 的两个因子
+\((-\mathrm i)^2=-1\) 则正好恢复它的奇性。这为根分支和相位提供了一个直接核对。
 
 \subsection{\texorpdfstring{\(\theta\)}{\AnalysisPdfTheta} 常数}
 \label{b3:subsec:240104}
 
-再定义
-\[
+\begin{definition}\label{b3:def:24-theta-constants}
+对 \(\tau\in\mathfrak H\)，四个值
+\(\theta_j(0,\tau)\)、\(1\le j\le4\)，称为\term[theta-changshu]{theta 常数}[theta constant]。
+当空间变量已固定为零且参数明确时，简记为
+\(\theta_j(\tau)\) 或 \(\theta_j\)。“常数”只表示不再依赖 \(z\)，并不表示它们不随 \(\tau\) 改变。
+\end{definition}
+
+其中 \(\theta_1(\tau)=0\)。另外三个常数的展开为
+\begin{equation}\label{b3:eq:24-theta-constant-series}
 \begin{aligned}
-\theta_1(z)&=-\mathrm{i}\sum_{n\in\mathbb Z}(-1)^nq^{(n+1/2)^2}e^{(2n+1)\mathrm{i}z},\\
-\theta_2(z)&=\sum_{n\in\mathbb Z}q^{(n+1/2)^2}e^{(2n+1)\mathrm{i}z},\\
-\theta_4(z)&=\sum_{n\in\mathbb Z}(-1)^nq^{n^2}e^{2n\mathrm{i}z}.
+ \theta_2(\tau)&=2q^{1/4}(1+q^2+q^6+q^{12}+\cdots),\\
+ \theta_3(\tau)&=1+2q+2q^4+2q^9+\cdots,\\
+ \theta_4(\tau)&=1-2q+2q^4-2q^9+\cdots,
+ \quad q=e^{\pi\mathrm i\tau}.
 \end{aligned}
-\]
-省略的共同参数为 \(\tau\)。其中 \(\theta_1\) 为奇函数，其余为偶函数。数 \(\theta_j(0,\tau)\) 称为\term[theta-changshu]{theta 常数}[theta constant]，以下简记为 \(\theta_j\)。\(\theta_1(0)=0\)，而其余三个常数将在乘积公式中显示为非零。平移参数使 \(\theta_3(0,\tau+1)=\theta_4(0,\tau)\)，\(\theta_2(0,\tau+1)=e^{\pi\mathrm{i}/4}\theta_2(0,\tau)\)；反演还给 \(\theta_2(0,-1/\tau)=(-\mathrm{i}\tau)^{1/2}\theta_4\)，并交换二、四的角色。
-
+\end{equation}
+第一行括号中的一般指数为 \(n(n+1)\)、\(n\ge0\)，后两行的指数为
+\(n^2\)、\(n\ge1\)。这三者在上半平面都不为零；该事实将在下一节由乘积公式证明，目前尚不凭展开的首项排除其余项的复数抵消。
 \ProseParagraphBreak
-
-带空间变量的反演公式可用实参数的 Fourier 计算把符号完全固定。先令 \(\tau=\mathrm{i}t\)、\(t>0\)，并暂取 \(z\) 为实数。函数 \(x\mapsto e^{-\pi tx^2+2\mathrm{i}xz}\) 的 Fourier 变换为
+在\cref{b3:thm:24-theta-modular}中取 \(z=0\)，得到常数反演
 \[
- t^{-1/2}\exp\left(-\frac\pi t\left(\xi-\frac z\pi\right)^2\right).
+ \theta_2(-1/\tau)=A(\tau)\theta_4(\tau),\quad
+ \theta_3(-1/\tau)=A(\tau)\theta_3(\tau),\quad
+ \theta_4(-1/\tau)=A(\tau)\theta_2(\tau).
 \]
-这是实频率平移，不涉及移动积分路径。在整数频率求和，展开平方，得到
+这解释了为何 theta 常数与模形式有关，却不能直接把每个常数称作
+第二十三章意义下的全模群标量模形式：变换因子出现平方根，而且
+\(T\) 与 \(S\) 会交换不同函数。尤其 \(\theta_3(\tau+1)=\theta_4(\tau)\)，
+二者的首个非恒定系数分别为 \(2q\) 和 \(-2q\)，所以并不相等。
+把函数取幂并作适当组合，才可能消除这些相位和交换；只凭它含有一个
+\((-\mathrm i\tau)^{1/2}\) 因子，不能省去其余变换条件。
+\ProseParagraphBreak
+分数幂的单值性同样可从 \(T\) 看清。虽然 \(\tau\mapsto\tau+2\) 保持
+\(q=e^{\pi\mathrm i\tau}\) 不变，却使
+\(\theta_2(\tau+2)=\mathrm i\theta_2(\tau)\)，因为
+\(q^{1/4}=e^{\pi\mathrm i\tau/4}\) 随参数路径改变。后文的
+\(q\partial_q\) 是已在\cref{b3:prop:24-theta-heat}说明的局部微分算子，
+不会把这个全局分支信息丢掉。
+\ProseParagraphBreak
+参数反演还有一个可计算的用途。设 \(t>0\)，由于
+\(n^2\ge1+3(n-1)\) 对 \(n\ge1\) 成立，
 \[
- \theta_3(z,\mathrm{i}t)=t^{-1/2}e^{-z^2/(\pi t)}
-             \theta_3\left(\frac z{\mathrm{i}t},\frac{\mathrm{i}}t\right).
+ 0<\theta_3(\mathrm it)-1
+       =2\sum_{n\ge1}e^{-\pi tn^2}
+       \le\frac{2e^{-\pi t}}{1-e^{-3\pi t}}.
 \]
-两边关于 \(z\) 都整，故先将实 \(z\) 上的等式推广到全部 \(z\)，再对 \(\tau\) 使用恒等定理。这一顺序给出前面的负号 \(-z^2/(\pi\mathrm{i}\tau)\)。在 \(\tau=\mathrm{i}t\) 时，反解后的因子为 \(e^{z^2/(\pi t)}\)；用正实 \(z\) 检验即可看出它不能误写成衰减因子。
-\ProseParagraphBreak
-含 \(q^{1/4}\) 的常数还须说明参数位置。本章的 \(q^{1/4}\) 一律表示 \(e^{\pi\mathrm{i}\tau/4}\)，它在上半平面单值全纯。若只把 \(q\) 看作穿孔单位圆盘中的独立变量，四分之一次幂不能在整个圆盘绕0后保持同一值。因此 \(\theta_2\) 的变换律中出现八次单位根，并不与它在 \(\tau\) 平面上的单值性矛盾。四次幂等组合会消去部分相位，这也是后面使用 theta 常数四次方的一个原因。
-\ProseParagraphBreak
-与第二十二章的椭圆函数不同，非零 theta 函数关于空间变量是整函数，却只具有准周期。若它同时有两个真正独立的周期，就会因有界基本区域和 Liouville 定理而恒定。准周期中的指数因子让它避开这项刚性，并在相邻格胞中以可控方式改变大小。取对数导数后，乘法指数变成加法常数；再求一次导数，常数消失，才产生真正的双周期函数。这是本章把 theta 联系到 \(\wp\) 的结构原因。
+大 \(t\) 时原级数很快收敛，小 \(t\) 时则用
+\[
+ \theta_3(\mathrm it)=t^{-1/2}\theta_3(\mathrm i/t)
+     =t^{-1/2}\left(1+O(e^{-\pi/t})\right)
+     \quad(t\downarrow0).
+\]
+余项直接由刚给出的界把 \(t\) 换成 \(1/t\) 得到。这不只是一个形式对称：
+它把收敛慢的参数变成收敛快的参数，同时精确给出主要大小
+\(t^{-1/2}\)。从平方和生成函数走向 Mellin 变换时，零端点的这个大小也将决定积分最初的收敛范围。

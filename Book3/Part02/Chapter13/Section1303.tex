@@ -2,67 +2,295 @@
 \section{圆盘与上半平面模型}
 \label{b3:sec:1303}
 
-半平面中的度量元更简单，距离公式也能直接显示到实边界和无穷远的行为。Cayley 变换保证两模型的所有几何结论一致。
+同一双曲平面可以在有界圆盘或无界半平面中表示。圆盘便于围绕一个内点观察，半平面则把边界附近的运动写成平移、伸缩和竖直路径。本节先算清两个坐标中的球与距离，再用 Cayley 变换证明它们完全等距，最后把甲板变换的位移转成商曲面上的闭路长度。
 
 \subsection{圆盘模型}
 \label{b3:subsec:130301}
 
-圆盘模型适于以内点为观察中心，测地线为正交圆弧，伪双曲球仍是欧氏圆盘。0到半径 \(r\) 点的距离是 \(\log((1+r)/(1-r))\)，所以 \(r\uparrow1\) 时对数发散。
+圆盘距离是伪双曲距离的单调变换。给定双曲中心 \(a\in\mathbb D\) 和双曲半径 \(R>0\)，令 \(t=\tanh(R/2)\)，则
+\[
+ B_{\mathbb D}(a,R)=\{\,z:\delta(z,a)<t\,\}.
+\]
+因此\cref{b3:prop:06-pseudohyperbolic-ball}的配方计算直接给出它的欧氏圆心 \(c\) 与欧氏半径 \(\rho\)：
+\[
+ c=\frac{(1-t^2)a}{1-t^2|a|^2},\quad
+ \rho=\frac{t(1-|a|^2)}{1-t^2|a|^2}.
+\]
+这里 \(a\) 是由距离确定的内在中心，\(c\) 是画在复平面上的圆心。除 \(a=0\) 外，两者一般不同；把 \(a\) 当成欧氏圆心，会画错实际的距离球。
 
 \ProseParagraphBreak
-欧氏圆心不是内在球心的欧氏位置，除非内在球心为0。给定内在半径 \(s\)，伪双曲半径为 \(\tanh(s/2)\)，再用第6章的球公式才能画出正确的欧氏圆。
+例如取 \(a=1/2\)、\(R=\log3\)，则 \(t=1/2\)，所得欧氏圆盘是 \(D(2/5,2/5)\)。它在实轴上的两个端点为0和 \(4/5\)，两者到内在中心 \(1/2\) 的双曲距离都为 \(\log3\)，但欧氏距离分别为 \(1/2\) 和 \(3/10\)。靠近单位圆的地方密度较大，所以相同双曲距离对应较短的欧氏路程。
+
+\ProseParagraphBreak
+任一有限半径闭球都与单位圆保有正的欧氏间隔，因为
+\[
+ |c|+\rho=\frac{|a|+t}{1+t|a|}<1.
+\]
+固定中心而令 \(R\to\infty\)，才有 \(t\to1\)，这些球逐渐穷尽整个圆盘。以0为中心时，距离公式尤其直接：
+\[
+ d_{\mathbb D}(0,r)=\log\frac{1+r}{1-r}.
+\]
+因此欧氏半径趋近1时，双曲半径以 \(\log(1/(1-r))\) 的尺度增大；单位圆周并未成为有限距离的球面。
 
 \subsection{半平面模型}
 \label{b3:subsec:130302}
 
-半平面长度元为 \(|\mathrm{d}z|/\operatorname{Im}z\)。距离满足
+在上半平面
 \[
- \cosh\mathrm d_{\mathbb H}(z,w)
+ \mathbb H=\{\,w=x+\mathrm iy:y>0\,\}
+\]
+取长度元与面积元
+\[
+ \mathrm ds_{\mathbb H}=\frac{|\mathrm dw|}{y},\quad
+ \mathrm dA_{\mathbb H}=\frac{\mathrm dx\,\mathrm dy}{y^2},
+\]
+并用分段 \(C^1\) 路径长度的下确界定义 \(d_{\mathbb H}\)。实 Möbius 自同构
+\[
+ T(w)=\frac{aw+b}{cw+d},\quad ad-bc=1,
+\]
+满足\cref{b3:prop:11-halfplane-automorphisms}中的恒等式
+\[
+ \operatorname{Im}T(w)=\frac{y}{|cw+d|^2},\quad
+ |T'(w)|=\frac1{|cw+d|^2}.
+\]
+于是 \(|T'(w)|/\operatorname{Im}T(w)=1/y\)，路径长度、距离与面积都保持不变。这里的等距性由密度直接验证，不需要先知道半平面最短路的形状。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[半平面距离]\label{b3:prop:13-halfplane-distance}
+上半平面 \(\mathbb H\) 取长度元 \(|\mathrm dw|/\operatorname{Im}w\)，并以 \(d_{\mathbb H}\) 表示相应路径距离。对任意 \(z,w\in\mathbb H\)，有
+\[
+ \cosh d_{\mathbb H}(z,w)
  =1+\frac{|z-w|^2}{2\operatorname{Im}z\operatorname{Im}w}.
 \]
-由半平面伪双曲分式 \(\delta=|z-w|/|z-\overline w|\)，代入 \(\cosh(2\operatorname{arctanh}\delta)=(1+\delta^2)/(1-\delta^2)\)，并用两个分母平方之差 \(4\operatorname{Im}z\operatorname{Im}w\) 即得公式。
+等价地，若
+\[
+ \delta_{\mathbb H}(z,w)\coloneqq
+ \frac{|z-w|}{|z-\overline w|},
+\]
+则 \(d_{\mathbb H}(z,w)=2\operatorname{arctanh}\delta_{\mathbb H}(z,w)\)。连接不同两点的最短路径为竖直线段或以实轴上某点为圆心的半圆的一段，忽略停驻及保持方向的重参数化后唯一。
+\end{proposition}
+\begin{proof}
+先考虑同一竖线上的两点 \(x+\mathrm iy_1,x+\mathrm iy_2\)。对任意连接路径 \(\gamma(t)=\xi(t)+\mathrm i\eta(t)\)，有
+\[
+ L(\gamma)
+ =\int\frac{\sqrt{\xi'(t)^2+\eta'(t)^2}}{\eta(t)}\,\mathrm dt
+ \ge\int\frac{|\eta'(t)|}{\eta(t)}\,\mathrm dt
+ \ge\left|\log\frac{y_2}{y_1}\right|.
+\]
+竖直线段达到下界，故距离等于 \(|\log(y_2/y_1)|\)。若长度取等，则 \(\xi'=0\) 几乎处处，且 \(\log\eta\) 单调，所以最短路径只能沿这条竖线无回退地行进。
 
-\ProseParagraphBreak
-同一竖线上 \(\mathrm d(x+\mathrm{i}y_1,x+\mathrm{i}y_2)=|\log(y_2/y_1)|\)。竖线是测地线，其他测地线是以实轴点为圆心的半圆。水平直线通常不是测地线，即使沿它可以方便地计算一条路径长度。
+任意两个不同点若不在同一竖线上，记它们为 \(z=x_1+\mathrm iy_1\)、\(w=x_2+\mathrm iy_2\)，其中 \(x_1\ne x_2\)。方程
+\[
+ |z-p|^2=|w-p|^2
+\]
+有唯一实解 \(p=(|w|^2-|z|^2)/(2(x_2-x_1))\)。令 \(r=|z-p|=|w-p|\)，则两点位于以 \(p\) 为圆心、半径 \(r\) 的半圆上。实 Möbius 变换
+\[
+ M(\zeta)=\frac{\zeta-(p-r)}{(p+r)-\zeta}
+\]
+的行列式为 \(2r>0\)，故保持上半平面。对该半圆上的点，将分子分母乘以分母的共轭，所得实部的分子为 \(r^2-|\zeta-p|^2=0\)，虚部为正。因此 \(M\) 将半圆送到正虚轴。由等距性，竖直最短段的逆像就是原两点间的唯一最短圆弧。
 
-\ProseParagraphBreak
-上半平面中的竖直线段给极简计算。连接 \(\mathrm{i}y_1\) 与 \(\mathrm{i}y_2\) 的长度是 \(|\log(y_2/y_1)|\)，因为 \(\int\mathrm{d}y/y\) 正是长度积分。水平线 \(y=c\) 的一段 Euclid 长度为 \(b-a\)，双曲长度则为 \((b-a)/c\)，但一般不是两端之间的最短路。保持同一高度的长水平段与上方弯起的正交半圆相比，会累积更长的长度；路径长度公式与距离公式分别回答这两个问题。
+最后计算距离。对行列式1的实 Möbius 变换，
+\[
+ T(z)-T(w)=\frac{z-w}{(cz+d)(cw+d)},
+\]
+结合虚部公式可知
+\[
+ Q(z,w)=\frac{|z-w|^2}{2\operatorname{Im}z\operatorname{Im}w}
+\]
+保持不变。将两点送到同一竖线后，
+\[
+ 1+Q
+ =1+\frac{(y_2-y_1)^2}{2y_1y_2}
+ =\frac12\left(\frac{y_2}{y_1}+\frac{y_1}{y_2}\right)
+ =\cosh\left|\log\frac{y_2}{y_1}\right|.
+\]
+距离同样保持，得到所述公式。若两点重合，公式两边都为1。
 
-\ProseParagraphBreak
-在半平面中，平移 \(w\mapsto w+t\) 与正伸缩 \(w\mapsto a w\) 都保持 \(|\mathrm{d}w|/\operatorname{Im}w\)。第十一章的实 Möbius 变换由这些及反演组合，并满足同样不变性。半平面到圆盘的 Cayley 变换把无穷远送到一个圆周点，因此圆盘中看起来特殊的某个边界点，可能只是换坐标后的无穷远；双曲几何没有给它额外的内部地位。
+恒等式
+\[
+ |z-\overline w|^2-|z-w|^2
+ =4\operatorname{Im}z\operatorname{Im}w
+\]
+保证 \(0\le\delta_{\mathbb H}<1\)，并使
+\[
+ 1+Q=\frac{1+\delta_{\mathbb H}^2}{1-\delta_{\mathbb H}^2}
+ =\cosh\bigl(2\operatorname{arctanh}\delta_{\mathbb H}\bigr).
+\]
+由于 \(\cosh\) 在非负实轴上严格递增，距离的第二种写法随即成立。
+\end{proof}
+
+竖直测地线可按 \(w(s)=x+\mathrm i e^s\) 参数化，\(s\in\mathbb R\)。高度乘以一个因子 \(a>0\)，双曲路程改变 \(|\log a|\)，所以几何尺度在这里表现为高度的比值。水平直线 \(y=c\) 上一段欧氏长度为 \(b-a>0\) 的路径，其双曲长度则是 \((b-a)/c\)。这个积分只是指定路径的长度；由最短路的唯一性，水平段的长度严格大于两端距离。
 
 \subsection{Cayley 变换}
 \label{b3:subsec:130303}
 
-对 \(C(z)=(z-\mathrm{i})/(z+\mathrm{i})\)，有 \(|C'|=2/|z+\mathrm{i}|^2\)，以及 \(1-|C|^2=4\operatorname{Im}z/|z+\mathrm{i}|^2\)。所以
+两模型分别完成的计算应当相互一致。把半平面的 \(\mathrm i\) 送到圆盘的0、把扩充实轴送到单位圆的 Cayley 变换，恰好保留上述长度单位。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[Cayley 等距]\label{b3:prop:13-cayley-isometry}
+令 \(\mathbb H=\{w:\operatorname{Im}w>0\}\)、\(\mathbb D=\{\zeta:|\zeta|<1\}\)，分别取长度元 \(|\mathrm dw|/\operatorname{Im}w\) 与 \(2|\mathrm d\zeta|/(1-|\zeta|^2)\)。则
 \[
- \frac{2|C'(z)|}{1-|C(z)|^2}=\frac1{\operatorname{Im}z}.
+ C(w)=\frac{w-\mathrm i}{w+\mathrm i},\quad
+ C^{-1}(\zeta)=\mathrm i\frac{1+\zeta}{1-\zeta}
 \]
-这同时核对密度归一化、距离式和曲率。若圆盘密度误写为 \(1/(1-|z|^2)\)，半平面密度会变成 \(1/(2y)\)，曲率也变为 \(-4\)，后面的 Ahlfors--Schwarz 常数将整体错误。
-
-\subsection{无穷远边界}
-\label{b3:subsec:130304}
-
-圆周或扩充实轴是模型的理想边界，不属于度量空间。两个不同边界点确定一条完整测地线；一个边界点还确定一族与边界相切的欧氏圆，在半平面中为水平线，它们称为等距边界曲线或 horocycle。它们与测地线正交，但自身不最短。
-
-\ProseParagraphBreak
-例如 \(\mathrm{i}y\) 当 \(y\downarrow0\) 或 \(y\uparrow\infty\) 都逃向理想边界，与 \(\mathrm{i}\) 的距离均趋于无穷。欧氏意义的“离原点很近”和“很远”在内在几何中都可表示同一种无限远离。
-
-\ProseParagraphBreak
-圆盘边界是理想边界，不是完备化所增添的 Cauchy 极限。向圆周径向走，距离为 \(\log((1+r)/(1-r))\to\infty\)，不可能是一条趋向有限距离点的 Cauchy 路径。比如 \(r_n=1-e^{-n}\)，相邻点的双曲距离趋近1；虽然 Euclid 差趋于0，它在双曲度量下不是 Cauchy 列。两种拓扑在内部相同，趋向边界的度量行为却不同。
-
-\ProseParagraphBreak
-以半平面无穷远为理想端点的等距平移轨道 \(y=c\) 称为水平等高曲线的模型；其曲线长度随水平参数线性增加。经 Möbius 变换，它们变为与圆盘边界相切的圆。这样的圆与测地线不同：测地圆弧正交于边界，等高曲线相切于边界。两者在图形上都可能是圆弧，判别应看边界接触角和它们承担的几何任务。
-
-\begin{proposition}[平移与伸缩的位移长度]\label{b3:prop:13-deck-displacement}
-在上半平面模型中，双曲变换 \(T(w)=aw\)、\(a>1\) 的最小位移为 \(\log a\)，由虚轴上的点达到。抛物变换 \(P(w)=w+1\) 的位移下确界为0，但没有点达到。
+是双全纯等距映射，并且保持相应的面积元。它将半平面的竖线或正交半圆送到圆盘的直径或正交圆弧。
 \end{proposition}
 \begin{proof}
-令 \(w=x+\mathrm{i}y\)。距离公式给
+上述互逆公式的分母在各自定义域中不为零，且
 \[
- \cosh d(w,aw)=1+\frac{(a-1)^2(x^2+y^2)}{2ay^2}
- \ge\frac{a+a^{-1}}2=\cosh\log a.
+ 1-|C(w)|^2=\frac{4\operatorname{Im}w}{|w+\mathrm i|^2},
+ \quad
+ \operatorname{Im}C^{-1}(\zeta)
+ =\frac{1-|\zeta|^2}{|1-\zeta|^2}>0.
 \]
-等号恰在 \(x=0\)。平移情形则 \(\cosh d(w,w+1)=1+1/(2y^2)\)，对任何有限 \(y\) 大于1，随 \(y\to\infty\) 趋于1。
+所以它们确为两个区域之间的双全纯映射。又有
+\[
+ |C'(w)|=\frac2{|w+\mathrm i|^2},\quad
+ \frac{2|C'(w)|}{1-|C(w)|^2}
+ =\frac1{\operatorname{Im}w}.
+\]
+沿任意路径积分得到长度相同。\(C\) 与 \(C^{-1}\) 给连接路径的一一对应，故取长度下确界后有
+\[
+ d_{\mathbb D}(Cz,Cw)=d_{\mathbb H}(z,w).
+\]
+密度恒等式平方后，再乘以欧氏面积元，给出面积保持。等距性保持局部最短和弧长参数，所以测地线相互对应；它们的几何形状也可由 Möbius 变换保持广义圆及交角直接看出。
 \end{proof}
-循环双曲商中，虚轴下降为一条核心闭测地线，长度 \(\log a\)；第十二章的圆环模量为 \(\pi/\log a\)，与正文核心公式一致。循环抛物商则是去心盘，绕行圈可以任意短但没有最短非平凡圈。这一差别来自甲板变换的位移是否达到正最小值，而不是来自两曲面基本群不同。
+
+因此半平面同样完备，有限半径闭球紧。曲率也可独立核算：对密度 \(\lambda_{\mathbb H}=1/y\)，有
+\[
+ \Delta\log\lambda_{\mathbb H}
+ =\partial_y^2(-\log y)=\frac1{y^2}
+ =\lambda_{\mathbb H}^2,
+\]
+故曲率为 \(-1\)，与\cref{b3:prop:13-curvature-coordinate}的坐标不变性相符。圆盘密度中的因子2正是使 Cayley 变换得到半平面密度 \(1/y\) 的系数。
+
+\ProseParagraphBreak
+在球面意义的边界上，\(C\) 还满足 \(C(\infty)=1\)，并把 \(\mathbb R\cup\{\infty\}\) 一一映到单位圆。半平面中看起来特殊的无穷远点，因此只是圆盘中一个普通的边界点。这个边界对应并未把任何边界点送进度量空间内部。
+
+\subsection{理想边界与甲板位移}
+\label{b3:subsec:130304}
+
+记
+\[
+ \partial_\infty\mathbb D\coloneqq\{|\zeta|=1\},
+ \quad
+ \partial_\infty\mathbb H\coloneqq\mathbb R\cup\{\infty\},
+\]
+称它们为相应模型的\term[lixiang-bianjie]{理想边界}[ideal boundary]。这里采用圆盘闭包或球面中的半平面闭包来谈边界收敛；理想边界不属于双曲度量空间，也不是度量完备化新加的 Cauchy 极限。两模型已经完备，而趋向理想边界的点到任一固定内点的距离趋于无穷：经 Cayley 变换化到圆盘后，这由 \(|\zeta|\to1\) 及0点距离公式得出。例如
+\[
+ d_{\mathbb H}(\mathrm i,\mathrm iy)=|\log y|
+\]
+在 \(y\downarrow0\) 与 \(y\uparrow\infty\) 时都发散。
+
+\ProseParagraphBreak
+两个不同理想边界点确定唯一的完整测地线。在半平面中，若端点为有限实数 \(a<b\)，它就是圆心 \((a+b)/2\)、半径 \((b-a)/2\) 的上半圆；若端点为 \(a,\infty\)，它就是竖线 \(x=a\)。Cayley 变换将这项唯一性传到圆盘。理想端点描述完整测地线的方向，不是它在有限参数处经过的点。
+
+\ProseParagraphBreak
+固定一个理想端点还会得到另一族曲线。以 \(\infty\) 为端点时，取全部水平线
+\[
+ H_{\infty,c}=\{x+\mathrm ic:x\in\mathbb R\},\quad c>0.
+\]
+这些曲线及其在模型等距变换下的像称为\term[jixian-yuan]{极限圆}[horocycle]，所固定的边界点称为它的理想端点。该族不依赖把端点移到 \(\infty\) 时采用哪一个半平面自同构：两个这种坐标之差固定 \(\infty\)，只能为 \(w\mapsto aw+b\)、\(a>0\)、\(b\in\mathbb R\)，它把水平线 \(y=c\) 变为水平线 \(y=ac\)。
+
+\ProseParagraphBreak
+对有限端点 \(p\in\mathbb R\)，用 \(w\mapsto-1/(w-p)\) 将它送到 \(\infty\)。高度等于 \(c\) 的原像满足
+\[
+ \frac{y}{(x-p)^2+y^2}=c,
+ \quad\text{即}\quad
+ (x-p)^2+\left(y-\frac1{2c}\right)^2=\frac1{4c^2}.
+\]
+所以它是与实轴在 \(p\) 相切的圆去掉切点。再经 Cayley 变换，圆盘中的极限圆就是内部与单位圆相切的欧氏圆，切点仍不属于曲线。
+
+\ProseParagraphBreak
+“极限圆”这个名称可由距离圆的一个具体极限理解。以 \(\mathrm iY\) 为中心、双曲半径为 \(R\) 的圆，由半平面距离公式写成
+\[
+ x^2+(y-Y\cosh R)^2=Y^2\sinh^2R.
+\]
+固定 \(c>0\)，令 \(Y=ce^R\)，则这个欧氏圆的最低点始终为 \(\mathrm ic\)。记其欧氏半径为 \(r_R=ce^R\sinh R\)，下半支可以写成
+\[
+ y_R(x)=c+r_R-\sqrt{r_R^2-x^2}
+ =c+\frac{x^2}{r_R+\sqrt{r_R^2-x^2}}.
+\]
+当 \(R\to\infty\) 时，\(r_R\to\infty\)，故在每个有界 \(x\) 区间上 \(y_R(x)\) 一致趋于 \(c\)，上半支则离开所有有界区域。水平极限圆因此来自圆心走向 \(\infty\)、半径同时增大的距离圆。
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[>=stealth,font=\small,scale=1.12]
+ \begin{scope}
+  \draw[->] (-1.5,0)--(1.6,0) node[right] {\(\mathbb R\)};
+  \foreach \x in {-0.9,0,0.9}{\draw[->,thick] (\x,0.1)--(\x,2.2);}
+  \draw[dashed] (-1.4,0.75)--(1.4,0.75);
+  \draw[dashed] (-1.4,1.45)--(1.4,1.45);
+  \draw (0,0.75)--(0.15,0.75)--(0.15,0.9)--(0,0.9);
+  \node[above] at (0,2.2) {共同理想端点 \(\infty\)};
+  \node[below] at (0,-0.15) {虚线 \(y=c\)};
+ \end{scope}
+ \begin{scope}[xshift=5.1cm]
+  \draw[->] (-1.2,0)--(2.5,0) node[right] {\(\mathbb R\)};
+  \draw[->,thick] (0,0.1)--(0,2.2);
+  \draw[thick] (2,0) arc (0:180:1);
+  \draw[dashed] (0,0.75) circle (0.75);
+  \fill (0,0) circle (0.025) node[below] {\(p\)};
+  \node[above right] at (0.7,1.6) {相切圆};
+  \node[below] at (1.6,-0.15) {实线为测地线};
+ \end{scope}
+\end{tikzpicture}
+\caption[测地线与极限圆]{左图指向 \(\infty\) 的竖直测地线与水平极限圆正交。右图指向有限点 \(p\) 的测地线为竖线或正交实轴的半圆，虚线圆则与实轴在 \(p\) 相切；它与这些共享端点的测地线正交。实轴及标出的理想端点均不属于双曲平面。}
+\label{b3:fig:13-geodesics-horocycles}
+\end{figure}
+
+指向 \(\infty\) 的全部测地线都是竖线，所以它们与水平极限圆正交。Möbius 等距变换保角，便得到\cref{b3:fig:13-geodesics-horocycles}右图以及圆盘中的相同结论：极限圆与共享其理想端点的测地线正交。它并不与任意相交测地线都正交。极限圆本身也不是局部最短路径；在水平模型中，它的任一非平凡线段都不同于两端之间的正交半圆。
+
+\ProseParagraphBreak
+平移沿水平极限圆移动，伸缩则沿一条竖直测地线移动。要把这种差别变成可比较的数值，对任一等距变换 \(T\) 定义其位移长度
+\[
+ \ell(T)\coloneqq\inf_{w\in\mathbb H}d_{\mathbb H}(w,Tw).
+\]
+这是允许起点变化后的下确界。若 \(S\) 是等距变换，换元 \(w=Su\) 给
+\(\ell(STS^{-1})=\ell(T)\)，所以它只依赖等距共轭类。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[平移与伸缩的位移长度]\label{b3:prop:13-deck-displacement}
+在上半平面 \(\mathbb H\) 取长度元 \(|\mathrm dw|/\operatorname{Im}w\)，以其路径距离 \(d_{\mathbb H}\) 定义 \(\ell(T)=\inf_{w\in\mathbb H}d_{\mathbb H}(w,Tw)\)。若 \(T(w)=aw\)、\(a>1\)，则 \(\ell(T)=\log a\)，且恰由虚轴上的点达到。若 \(P(w)=w+1\)，则 \(\ell(P)=0\)，但没有点达到此下确界。
+\end{proposition}
+\begin{proof}
+写 \(w=x+\mathrm iy\)。半平面距离公式给
+\[
+ \cosh d_{\mathbb H}(w,aw)
+ =1+\frac{(a-1)^2(x^2+y^2)}{2ay^2}
+ \ge1+\frac{(a-1)^2}{2a}
+ =\frac{a+a^{-1}}2=\cosh(\log a).
+\]
+因为 \(\cosh\) 在非负实轴上严格递增，位移至少为 \(\log a\)，且等号恰在 \(x=0\)。这与虚轴上的竖直距离计算一致。
+
+平移情形则为
+\[
+ \cosh d_{\mathbb H}(w,w+1)=1+\frac1{2y^2}.
+\]
+每个有限 \(y>0\) 都使右边严格大于1，因此每点位移为正；令 \(y\to\infty\)，位移趋于0。下确界为0且不被达到。
+\end{proof}
+
+这项差别可以在循环商上直接看到。先把半平面长度元沿等距甲板作用下降：在一个小覆盖层中定义底曲线长度，换层时过渡映射是等距甲板变换，所以结果相同。任意代表生成元的闭路提升为从 \(w\) 到 \(Tw\) 的路径，长度至少为 \(d_{\mathbb H}(w,Tw)\)，进而至少为 \(\ell(T)\)。这里允许闭路基点变化，讨论的是整个绕行类中的长度下界。
+
+\ProseParagraphBreak
+对伸缩 \(T(w)=aw\)，虚轴上的 \(w(s)=\mathrm i e^s\) 有单位速度，并满足 \(T(w(s))=w(s+\log a)\)。所以它在商上下降为长度 \(\log a\) 的光滑闭测地线，达到一次绕行类的最小长度。若另一闭路也达到，则它的提升起点必须在虚轴上，提升路径又必须是唯一的竖直最短段。因此所得闭曲线就是同一条核心曲线，忽略行进方向和重参数化。
+
+\ProseParagraphBreak
+为把长度与复结构联系起来，恢复\subsecref{b3:subsec:110401}已经验证全部纤维的商坐标。在 \(0<\arg w<\pi\) 的对数分支下，
+\[
+ q(w)=\exp\left(\frac{2\pi\mathrm i\log w}{\log a}\right)
+\]
+把伸缩商识别为
+\[
+ A(r,1),\quad
+ r=\exp\left(-\frac{2\pi^2}{\log a}\right),\quad
+ m=\operatorname{mod}A(r,1)=\frac{\pi}{\log a}.
+\]
+虚轴上 \(\arg w=\pi/2\)，故其像满足 \(|q(w)|=\sqrt r\)，正是圆环的中间圆。于是核心闭测地线长度与环域模量满足
+\[
+ \ell(T)=\frac{\pi}{m}.
+\]
+后面从圆环显式密度出发，还可以独立核验这一系数。
+
+\ProseParagraphBreak
+对平移 \(P(w)=w+1\)，商坐标为 \(q(w)=e^{2\pi\mathrm iw}\)，商是去心盘。高度为 \(y\) 的水平单位线段投影为绕孔一次的闭圈，其长度是 \(1/y\)，随 \(y\to\infty\) 趋于0。所有非恒定闭路的长度仍为正，所以最小值没有实现；这些短圈的像半径 \(e^{-2\pi y}\) 趋于穿孔。与此同时，沿竖线走向 \(y=\infty\) 的距离是无穷。这说明短绕圈与完备的无限远端部能够同时出现，也说明循环商的抽象基本群相同，并不足以决定是否存在最短核心闭曲线。

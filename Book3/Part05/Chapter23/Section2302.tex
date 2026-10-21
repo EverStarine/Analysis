@@ -2,49 +2,259 @@
 \section{Eisenstein 级数}
 \label{b3:sec:2302}
 
-前章的格不变量随基变换产生确定的幂次因子。绝对收敛是把这种格对称性转成函数变换律的条件；权二处会失去它。
+前节说明，同一个复环面可以由许多不同的参数 \(\tau\) 表示。要从格构造随参数变化的函数，一种自然办法是把每个非零格点的贡献加起来：换基只重新排列格点，格的缩放则给每项乘上同一个因子。这样的想法能否成立，取决于无穷和是否允许重排。本节先处理这个收敛问题，再把二维格和改写成可以实际计算的 \(q\) 级数。
 
 \subsection{格和}
 \label{b3:subsec:230201}
 
-对整数 \(k\ge2\)，定义\term[eisenstein-jishu]{Eisenstein 级数}[Eisenstein series]
+对 \(\tau\in\mathfrak H\)，记 \(\Lambda_\tau=\mathbb Z\tau+\mathbb Z\)。它是由 \(1,\tau\) 生成的秩二格；\(\operatorname{Im}\tau>0\) 保证 \(m\tau+n=0\) 只可能发生在 \(m=n=0\)。前章的 \(g_2,g_3\) 分别取非零格点的四次、六次倒数和，这里把指数推广。
+
+\begin{definition}[Eisenstein 级数]\label{b3:def:23-eisenstein}
+设 \(k\ge2\) 为整数，\(\mathfrak H=\{\,\tau\in\mathbb C\mid\operatorname{Im}\tau>0\,\}\)。函数
+\begin{equation}\label{b3:eq:23-eisenstein-lattice}
+ G_{2k}(\tau)\coloneqq
+ \sum_{(m,n)\in\mathbb Z^2\setminus\{(0,0)\}}
+ \frac1{(m\tau+n)^{2k}},\quad \tau\in\mathfrak H,
+\end{equation}
+称为权 \(2k\) 的\term[eisenstein-jishu]{Eisenstein 级数}[Eisenstein series]。求和遍历全部非零整数对，按绝对收敛级数解释。
+\end{definition}
+这个记号就是\cref{b3:prop:22-wp-laurent}中的 \(G_{2k}(\Lambda_\tau)\)，现在突出格对 \(\tau\) 的依赖。下面将证明紧集上的绝对收敛，并说明“权 \(2k\)”指的是换基公式中的幂次。此时不需要选择 \(m,n\) 的求和先后，也不需要给复数幂选对数分支，因为指数是整数。
+
+\ProseParagraphBreak
+
+不同资料中的同名级数常有归一化差别。每个非零整数对可唯一写成 \((m,n)=r(u,v)\)，其中 \(r\ge1\) 为整数，\(\gcd(|u|,|v|)=1\)。绝对收敛建立后，可以据此分组，得到
 \[
-G_{2k}(\tau)\coloneqq\sum_{(m,n)\in\mathbb Z^2\setminus\{(0,0)\}}(m\tau+n)^{-2k}.
+ G_{2k}(\tau)=\zeta(2k)
+ \sum_{\gcd(|u|,|v|)=1}(u\tau+v)^{-2k},
+ \quad \zeta(2k)=\sum_{r=1}^{\infty}r^{-2k}.
 \]
-这就是格 \(\Lambda_\tau\) 的 \(2k\) 次倒数和。它使用全部非零格向量；若只对互素 \((m,n)\) 求和，结果须乘以 \(\sum_{r\ge1}r^{-2k}\)，不能混用两种归一化。
+右边的互素对仍同时包含 \((u,v)\) 与 \((-u,-v)\)。若每一对相反向量只保留一个代表，还要再乘以二。这里的 \(\zeta(2k)\) 只是收敛的正实数级数，尚不涉及 \(\zeta\) 函数的解析延拓。
 
 \subsection{收敛}
 \label{b3:subsec:230202}
 
-在任意紧集 \(K\subset\mathfrak H\) 上，实线性变换 \((m,n)\mapsto m\tau+n\) 的最小奇异值有共同正下界，所以 \(|m\tau+n|\ge c_K\sqrt{m^2+n^2}\)。前章格壳估计给正规绝对收敛，故 \(G_{2k}\) 全纯。求导后的项含因子 \(m\)，但总衰减仍至少为 \((m^2+n^2)^{-k}\)，同一紧集估计允许任意固定次求导。
+对固定的格，\cref{b3:prop:22-lattice-estimates}已证明格点距离与整数坐标长度可比较，倒数幂和恰在指数大于二时收敛。现在 \(\tau\) 也在变动；要得到全纯函数，必须把比较常数选成在 \(\tau\) 的紧集上共同适用的常数。
+
+\begin{lemma}[格坐标的一致比较]\label{b3:lem:23-lattice-uniform-bound}
+设 \(K\) 为上半平面 \(\mathfrak H\) 的非空紧子集。存在常数 \(c_K,C_K>0\)，使对所有 \(\tau\in K\) 及 \((u,v)\in\mathbb R^2\)，都有
+\begin{equation}\label{b3:eq:23-lattice-uniform-bound}
+ c_K\sqrt{u^2+v^2}\le |u\tau+v|
+ \le C_K\sqrt{u^2+v^2}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+紧性给出 \(b=\min_{\tau\in K}\operatorname{Im}\tau>0\) 和 \(M=\max_{\tau\in K}|\tau|<\infty\)。置 \(w=u\tau+v\)。因为 \(u,v\) 为实数，
+\[
+ |u|\le\frac{|w|}{b},\quad
+ |v|\le |w|+|u|\cdot|\tau|
+ \le\left(1+\frac Mb\right)|w|.
+\]
+因此可取
+\[
+ c_K=\left(b^{-2}+\left(1+\frac Mb\right)^2\right)^{-1/2}.
+\]
+另一方面，三角不等式及实二维 Cauchy--Schwarz 不等式给出
+\[
+ |u\tau+v|\le M|u|+|v|
+ \le\sqrt{M^2+1}\sqrt{u^2+v^2},
+\]
+故 \(C_K=\sqrt{M^2+1}\) 满足要求。
+\end{proof}
+
+下界保证参数在紧集内变化时，非零格向量不会突然塌缩；上界则让我们也能从整数坐标估计格点和的下界。两者的用途不同，尤其证明发散时不能只用前一个估计。
+
+\begin{proposition}[Eisenstein 级数的正规收敛]\label{b3:prop:23-eisenstein-convergence}
+设 \(k\ge2\) 为整数，\(G_{2k}(\tau)=\sum_{(m,n)\ne(0,0)}(m\tau+n)^{-2k}\)。该级数在上半平面 \(\mathfrak H\) 的每个非空紧集 \(K\) 上正规绝对收敛，即
+\[
+ \sum_{(m,n)\ne(0,0)}\sup_{\tau\in K}|m\tau+n|^{-2k}<\infty.
+\]
+它在 \(\mathfrak H\) 上全纯，并可任意固定次逐项求导。具体地，对每个整数 \(j\ge1\)，有
+\begin{equation}\label{b3:eq:23-eisenstein-derivative}
+ G_{2k}^{(j)}(\tau)=(-1)^j\frac{(2k+j-1)!}{(2k-1)!}
+ \sum_{(m,n)\ne(0,0)}\frac{m^j}{(m\tau+n)^{2k+j}},
+\end{equation}
+右端仍在每个紧集上正规绝对收敛。
+\end{proposition}
+\begin{proof}
+对非空紧集 \(K\subset\mathfrak H\)，由\eqref{b3:eq:23-lattice-uniform-bound}，
+\[
+ \sup_{\tau\in K}|m\tau+n|^{-2k}
+ \le c_K^{-2k}(m^2+n^2)^{-k}.
+\]
+把非零整数对按 \(\max(|m|,|n|)=h\) 分成方框壳。第 \(h\) 层有 \(8h\) 个点，每个点满足 \(m^2+n^2\ge h^2\)，所以控制级数至多为
+\[
+ 8c_K^{-2k}\sum_{h=1}^{\infty}h^{1-2k}<\infty.
+\]
+每一项在 \(\mathfrak H\) 全纯，紧集上的正规收敛便给出和函数全纯。
+
+对单项求 \(j\) 次导数，得到\eqref{b3:eq:23-eisenstein-derivative}中的系数及分式。若 \(R=\sqrt{m^2+n^2}\)，则
+\[
+ \sup_{\tau\in K}\frac{|m|^j}{|m\tau+n|^{2k+j}}
+ \le c_K^{-(2k+j)}R^{-2k}.
+\]
+分子新出现的 \(j\) 次增长，恰由分母新增加的 \(j\) 次衰减抵消。同一个方框壳估计证明导数级数的正规收敛。局部一致收敛的全纯函数列可以逐项求导，所得导数就是上述级数。
+\end{proof}
+
+临界指数二的失败也应实际检验。固定 \(\tau\in\mathfrak H\)，对单点紧集 \(K=\{\tau\}\) 使用比较上界。在第 \(h\) 个方框壳上，\(|m\tau+n|\le C_K\sqrt2\,h\)，因而
+\[
+ \sum_{\max(|m|,|n|)=h}\frac1{|m\tau+n|^2}
+ \ge\frac{8h}{2C_K^2h^2}=\frac4{C_K^2h}.
+\]
+各层的正项和支配发散的调和级数，所以 \(\sum_{(m,n)\ne(0,0)}|m\tau+n|^{-2}=\infty\)。这才证明了绝对收敛失败；仅仅找到一个发散的上界不能推出发散。若在权二处另行规定求和顺序，必须单独研究所得函数，不能继续使用本节的任意重排论证。
+
+\subsection{Eisenstein 级数的变换律与 Fourier 展开}
+\label{b3:subsec:230203}
+
+格和的优点是换基规律直接，缺点是二维求和不便读出系数。下面先利用它的对称性，再按平行于实轴的格点行求和，将同一对象改写成 \(q=e^{2\pi\mathrm{i}\tau}\) 的幂级数。
+
+\begin{proposition}[Eisenstein 级数的变换律]\label{b3:prop:23-eisenstein-transformation}
+设 \(k\ge2\) 为整数，\(G_{2k}(\tau)=\sum_{(m,n)\ne(0,0)}(m\tau+n)^{-2k}\) 定义在 \(\mathfrak H\) 上。若
+\[
+ \gamma=\begin{pmatrix}a&b\\c&d\end{pmatrix}\in\operatorname{SL}_2(\mathbb Z),
+ \quad \gamma\tau=\frac{a\tau+b}{c\tau+d},
+\]
+则对每个 \(\tau\in\mathfrak H\)，有
+\begin{equation}\label{b3:eq:23-eisenstein-transformation}
+ G_{2k}(\gamma\tau)=(c\tau+d)^{2k}G_{2k}(\tau).
+\end{equation}
+\end{proposition}
+\begin{proof}
+分母 \(c\tau+d\) 非零，且 \(\gamma\tau\in\mathfrak H\)，故等式两侧都有定义。对每个非零整数对，
+\[
+ m\gamma\tau+n
+ =\frac{(ma+nc)\tau+(mb+nd)}{c\tau+d}.
+\]
+映射 \((m,n)\mapsto(u,v)=(ma+nc,mb+nd)\) 是整数对的双射。其逆公式为 \(m=du-cv\)、\(n=-bu+av\)，仍给整数，而且零对只对应零对。于是绝对收敛允许换标，得到
+\[
+ G_{2k}(\gamma\tau)
+ =(c\tau+d)^{2k}\sum_{(u,v)\ne(0,0)}(u\tau+v)^{-2k}.
+\]
+这就是所需变换律。
+\end{proof}
+
+双射的依据是整数矩阵的行列式为 \(\pm1\)，而不仅仅是在实数域上可逆。本命题取行列式 \(1\)，还保证分式线性变换保持上半平面；行列式 \(-1\) 时，单纯的 \((a\tau+b)/(c\tau+d)\) 会进入下半平面。例如两个生成变换分别给
+\[
+ G_{2k}(\tau+1)=G_{2k}(\tau),\quad
+ G_{2k}(-1/\tau)=\tau^{2k}G_{2k}(\tau).
+\]
+第一式提示 Fourier 展开，第二式则限制了周期函数在不同位置的值。
 
 \ProseParagraphBreak
 
-若 \(k=1\)，壳估计只给调和级数 \(\sum j^{-1}\)，绝对收敛失败。规定先对 \(n\) 再对 \(m\) 求和会得到有用函数，但它的变换律多出一项，不能把下面的重排论证照搬过去。
+把一行格点加起来所需的公式来自余切函数。\cref{b3:prop:20-sine-product}已经证明，在避开整数的紧集上，配对部分分式
+\[
+ F(z)=\pi\cot\pi z
+ =\frac1z+\sum_{n=1}^{\infty}\left(\frac1{z-n}+\frac1{z+n}\right)
+\]
+正规收敛。括号内的两项必须作为整体看待；未经配对的倒数一次级数并不绝对收敛。求导后出现倒数高次幂，便可以解除这种配对限制。
 
-\subsection{\texorpdfstring{\(G_{2k}\)}{G2k}}
-\label{b3:subsec:230203}
-
-\begin{proposition}\label{b3:prop:23-eisenstein-transformation}
-若 \(k\ge2\)、\(\gamma=\left(\begin{smallmatrix}a&b\\c&d\end{smallmatrix}\right)\in\mathrm{SL}_2(\mathbb Z)\)，则
-\(G_{2k}(\gamma\tau)=(c\tau+d)^{2k}G_{2k}(\tau)\)。
-\end{proposition}
+\begin{lemma}[一行格点的指数展开]\label{b3:lem:23-eisenstein-row}
+设 \(k\ge1\) 为整数，\(z\in\mathbb C\) 满足 \(\operatorname{Im}z>0\)。则
+\begin{equation}\label{b3:eq:23-eisenstein-row}
+ \sum_{n\in\mathbb Z}\frac1{(z+n)^{2k}}
+ =\frac{(2\pi\mathrm{i})^{2k}}{(2k-1)!}
+ \sum_{r=1}^{\infty}r^{2k-1}e^{2\pi\mathrm{i}rz}.
+\end{equation}
+左端在避开整数的紧集上正规绝对收敛；右端在每个闭半平面 \(\operatorname{Im}z\ge\eta>0\) 上一致绝对收敛。
+\end{lemma}
 \begin{proof}
-每项分母为 \((m(a\tau+b)+n(c\tau+d))/(c\tau+d)\)。变换 \((m,n)\mapsto(ma+nc,mb+nd)\) 是 \(\mathbb Z^2\) 的双射，且保持非零对。绝对收敛允许依此重排，提出公共因子即得结果。
+记 \(w=e^{2\pi\mathrm{i}z}\)，则 \(|w|<1\)。由复正弦、余弦的指数表达，
+\[
+ F(z)=\pi\mathrm{i}\frac{w+1}{w-1}
+ =-\pi\mathrm{i}\left(1+2\sum_{r=1}^{\infty}e^{2\pi\mathrm{i}rz}\right).
+\]
+对任意固定的非负整数 \(j\)，导数级数的绝对值在 \(\operatorname{Im}z\ge\eta\) 上由常数倍的 \(\sum_{r\ge1}r^j e^{-2\pi r\eta}\) 控制，后者由比值判别收敛。因此取 \(2k-1\) 阶导数，得到
+\[
+ F^{(2k-1)}(z)
+ =-(2\pi\mathrm{i})^{2k}\sum_{r=1}^{\infty}r^{2k-1}e^{2\pi\mathrm{i}rz}.
+\]
+另一方面，对余切部分分式逐项求相同阶数的导数，得到
+\[
+ F^{(2k-1)}(z)=-(2k-1)!
+ \sum_{n\in\mathbb Z}(z+n)^{-2k}.
+\]
+这一导数级数在避开整数的紧集上由收敛的一维级数 \(\sum_{n\ge1}n^{-2k}\) 控制。比较两式并约去两个负号，就得到\eqref{b3:eq:23-eisenstein-row}。
 \end{proof}
-令 \(\sigma_r(N)=\sum_{d\mid N}d^r\)。从 \(\pi\cot\pi z=-\pi\mathrm{i}(1+2\sum_{r\ge1}e^{2\pi\mathrm{i}rz})\) 在上半平面的展开出发，求 \(2k-1\) 次导数得到
+
+符号可以用 \(k=1\) 检查：左端等于 \(\pi^2/\sin^2\pi z\)，而在 \(z=\mathrm{i}y\)、\(y>0\) 时它是负实数；右端的因子 \((2\pi\mathrm{i})^2=-4\pi^2\) 也给出负号。这一行求和公式在 \(k=1\) 仍成立，不表示二维权二格和已经绝对收敛。
+
+\begin{proposition}[Eisenstein 级数的 Fourier 展开]\label{b3:prop:23-eisenstein-fourier}
+设 \(k\ge2\) 为整数，\(\tau\in\mathfrak H\)，\(q=e^{2\pi\mathrm{i}\tau}\)。对正整数 \(N\) 与实数 \(s\)，记
 \[
-\sum_{n\in\mathbb Z}(z+n)^{-2k}
-=\frac{(2\pi\mathrm{i})^{2k}}{(2k-1)!}\sum_{r\ge1}r^{2k-1}e^{2\pi\mathrm{i}rz}.
+ \sigma_s(N)\coloneqq\sum_{d\mid N,\ d>0}d^s.
 \]
-先分出 \(m=0\)，将正负 \(m\) 配对，再按 \(N=mr\) 收集系数，得
+则
+\begin{equation}\label{b3:eq:23-eisenstein-fourier}
+ G_{2k}(\tau)=2\zeta(2k)
+ +\frac{2(2\pi\mathrm{i})^{2k}}{(2k-1)!}
+ \sum_{N=1}^{\infty}\sigma_{2k-1}(N)q^N.
+\end{equation}
+右端作为 \(q\) 的幂级数在 \(|q|<1\) 内全纯，并在 \(q=0\) 取非零值 \(2\zeta(2k)\)。对每个 \(Y>0\)，有
 \[
-G_{2k}=2\zeta(2k)+\frac{2(2\pi\mathrm{i})^{2k}}{(2k-1)!}
-\sum_{N\ge1}\sigma_{2k-1}(N)q^N.
+ G_{2k}(x+\mathrm{i}y)=2\zeta(2k)+O_{k,Y}(e^{-2\pi y}),
+ \quad x\in\mathbb R,\ y\ge Y,
 \]
-这里 \(\zeta(2k)\) 只表示收敛实级数。双和的绝对收敛由 \(|q|<1\) 和多项式系数增长保证，因而合并合法。
+其中误差常数与 \(x,y\) 无关。
+\end{proposition}
+\symidx{\(\sigma_s(N)\)：正约数的 \(s\) 次幂和}
+\begin{proof}
+在格和中先分出 \(m=0\) 的项，它们的总和为
+\[
+ \sum_{n\ne0}n^{-2k}=2\zeta(2k).
+\]
+对其余各行，换标 \((m,n)\mapsto(-m,-n)\) 将 \(m<0\) 的部分变成 \(m>0\) 的部分，偶数次幂使两部分相等。于是
+\[
+ G_{2k}(\tau)=2\zeta(2k)
+ +2\sum_{m=1}^{\infty}\sum_{n\in\mathbb Z}(m\tau+n)^{-2k}.
+\]
+绝对收敛保证这些分组合法。此时 \(m\tau\) 都在上半平面，可以应用\cref{b3:lem:23-eisenstein-row}，得
+\[
+ G_{2k}(\tau)=2\zeta(2k)
+ +\frac{2(2\pi\mathrm{i})^{2k}}{(2k-1)!}
+ \sum_{m,r\ge1}r^{2k-1}q^{mr}.
+\]
+两处因子二有不同来源：常数项来自正负整数，外面的另一个因子二来自正负格点行。
+
+现在需再次检查新双和的收敛，而不能只凭原格和收敛就随意合并指数项。对 \(0<t<1\)、\(|q|\le t\)，
+\[
+ \sum_{m,r\ge1}r^{2k-1}|q|^{mr}
+ \le\sum_{r=1}^{\infty}\frac{r^{2k-1}t^r}{1-t^r}
+ \le\frac1{1-t}\sum_{r=1}^{\infty}r^{2k-1}t^r<\infty.
+\]
+最后一个级数仍由比值判别收敛。因而可以按 \(mr=N\) 分组；固定 \(N\) 时，\(r\) 恰好遍历 \(N\) 的正约数，系数就是 \(\sigma_{2k-1}(N)\)。这证明了展开式及其在每个闭子圆盘上的正规收敛。
+
+取 \(t=e^{-2\pi Y}\)。去掉常数项的幂级数除以 \(q\) 后，仍在 \(|q|\le t\) 上有界，所以余项至多为常数倍的 \(|q|=e^{-2\pi y}\)。这给出对整个高半平面一致的误差估计。
+\end{proof}
+
+例如 \(N=6\) 时，产生 \(q^6\) 的整数对 \((m,r)\) 为 \((6,1),(3,2),(2,3),(1,6)\)，总系数为 \(1+2^{2k-1}+3^{2k-1}+6^{2k-1}\)。约数和不是另外加入的算术数据，而是把二维指数和按相同频率整理后出现的系数。
+
+\ProseParagraphBreak
+
+所得 \(q\) 展开没有负次幂，而且常数项非零。按\secref{b3:sec:2303}的定义，前一个性质说明 Eisenstein 级数在无穷远尖点全纯，后一个性质说明它不是尖点模形式。这两个判断分别依赖延拓性质与常数项，不能只由它在 \(\mathfrak H\) 内全纯推出。
 
 \subsection{与 \texorpdfstring{\(\wp\)}{\AnalysisPdfWeierstrassP} 的关系}
 \label{b3:subsec:230204}
 
-前章的记号现在为 \(g_2(\Lambda_\tau)=60G_4(\tau)\)、\(g_3(\Lambda_\tau)=140G_6(\tau)\)。格缩放律已经预示它们的权分别为四、六。相比之下，\(\wp(z;\Lambda_\tau)\) 还带一个曲线上的变量 \(z\)；改变 \(\tau\) 的基时必须同时缩放 \(z\)，不能将它误当成只依赖模参数的模形式。
+现在把格和还原到前章的椭圆函数。对于 \(\Lambda_\tau=\mathbb Z+\mathbb Z\tau\)，定义直接给出
+\begin{equation}\label{b3:eq:23-g-invariants}
+ g_2(\Lambda_\tau)=60G_4(\tau),\quad
+ g_3(\Lambda_\tau)=140G_6(\tau).
+\end{equation}
+因此它们关于 \(\tau\) 全纯，并分别具有四次、六次变换因子。较高的 \(G_{2k}\) 也出现在 \(\wp\) 的局部展开中。对固定的 \(\tau\in\mathfrak H\)，令 \(\delta_\tau=\min_{0\ne\omega\in\Lambda_\tau}|\omega|>0\)。\cref{b3:prop:22-wp-laurent}给出
+\[
+ \wp(z;\Lambda_\tau)=\frac1{z^2}
+ +\sum_{k=2}^{\infty}(2k-1)G_{2k}(\tau)z^{2k-2},
+ \quad 0<|z|<\delta_\tau.
+\]
+这是前章扣除常数项后的格和展开：对每个非零 \(\omega\)，将 \((z-\omega)^{-2}-\omega^{-2}\) 展成 \(z/\omega\) 的幂级数，奇次幂因 \(\omega\) 与 \(-\omega\) 配对而消失；闭子圆盘上的几何级数估计与格和绝对收敛允许交换求和。
+
+\ProseParagraphBreak
+
+但 \(\wp\) 本身还依赖环面上的点 \(z\)。若 \(\gamma=\left(\begin{smallmatrix}a&b\\c&d\end{smallmatrix}\right)\in\operatorname{SL}_2(\mathbb Z)\)，前节的格等式与\cref{b3:prop:22-discriminant-scaling}给出
+\[
+ \Lambda_{\gamma\tau}=(c\tau+d)^{-1}\Lambda_\tau,
+ \quad
+ \wp\left(\frac{z}{c\tau+d};\Lambda_{\gamma\tau}\right)
+ =(c\tau+d)^2\wp(z;\Lambda_\tau),
+\]
+其中 \(z\notin\Lambda_\tau\)。改变格参数时，点坐标必须一同缩放。格和 \(G_{2k}\) 只有模参数 \(\tau\)，而 \(\wp\) 同时包含点变量与模参数；它们的公式相关，所描述的函数类别却不同。

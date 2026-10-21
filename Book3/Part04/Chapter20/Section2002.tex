@@ -2,67 +2,275 @@
 \section{Weierstrass 典范因子}
 \label{b3:sec:2002}
 
-直接相乘 \(1-z/a_n\) 往往失败，因为它的对数从一次项开始。乘上一个指数，把若干低阶项扣掉，尾部就可以变成更高次的可和项。
+若要在 \(a_n\ne0\) 放一个零点，最直接的因子是 \(1-z/a_n\)。但当 \(|z/a_n|<1\) 时，它的对数从 \(-z/a_n\) 开始，\(\sum1/|a_n|\) 不收敛便会使上一节的绝对收敛判据失效。解决办法是保留零因子，同时乘上一个处处非零的指数，抵消对数中不够快衰减的低次项。应当抵消多少项，由零点的疏密决定。
 
 \subsection{初等因子}
 \label{b3:subsec:200201}
 
-定义\term[weierstrass-chudeng-yinzi]{Weierstrass 初等因子}[Weierstrass elementary factor]
+从原点取值为零的对数出发，
 \[
-E_0(w)=1-w,\quad E_p(w)=(1-w)\exp\left(w+\frac{w^2}2+\cdots+\frac{w^p}p\right),\ p\ge1.
+ \log(1-w)=-w-\frac{w^2}{2}-\frac{w^3}{3}-\cdots,\quad |w|<1.
 \]
-它只有一个单零点 \(w=1\)，且 \(E_p(0)=1\)。指数部分不添加零点。
+乘上 \(e^w\) 会消去一次项；乘上 \(e^{w+w^2/2}\) 会进一步消去二次项。指数从不为零，因此这些修正只改变增长与归一化，不改变 \(w=1\) 处的零点。
 
-\subsection{典范因子}
+\Needspace{6\baselineskip}
+\begin{definition}\label{b3:def:20-elementary-factor}
+设 \(p\) 为非负整数。\term[weierstrass-chudeng-yinzi]{Weierstrass 初等因子}[Weierstrass elementary factor]定义为整函数
+\[
+ E_p(w)\coloneqq(1-w)
+ \exp\left(\sum_{k=1}^{p}\frac{w^k}{k}\right),\quad w\in\mathbb C,
+\]
+其中 \(p=0\) 时指数中的和为空，故 \(E_0(w)=1-w\)。
+\end{definition}
+\symidx{\(E_p(w)\)：消去前 \(p\) 个对数项的 Weierstrass 初等因子}
+每个 \(E_p\) 都满足 \(E_p(0)=1\)，唯一零点为 \(w=1\)，且为单零点。例如
+\[
+ E_1(w)=(1-w)e^w,\quad
+ E_2(w)=(1-w)e^{w+w^2/2}.
+\]
+其对数分别从二次、三次项开始。这正是把 \(|a_n|^{-1}\) 的可和要求逐步换成更高次幂和的机制。
+
+\subsection{初等因子的尾项估计}
 \label{b3:subsec:200202}
 
-当 \(|w|<1\)，固定对数分支给
+要对无穷多个因子使用同一个估计，需要明确常数怎样依赖 \(p\)。下面的界不仅适用于固定 \(p\)，也允许后面逐项提高因子的阶数。
+
+\Needspace{6\baselineskip}
+\begin{lemma}[初等因子的对数尾界]\label{b3:lem:20-elementary-tail}
+设 \(p\ge0\) 为整数。\(E_p\) 在 \(|w|<1\) 上有满足 \(L_p(0)=0\) 的全纯对数
 \[
-\log E_p(w)=-\sum_{k=p+1}^{\infty}\frac{w^k}k.
+ L_p(w)=-\sum_{k=p+1}^{\infty}\frac{w^k}{k},\quad
+ e^{L_p(w)}=E_p(w).
 \]
-所以 \(|w|\le1/2\) 时 \(|\log E_p(w)|\le2|w|^{p+1}\)，并可由 \(|e^v-1|\le e^{|v|}|v|\) 控制因子偏离一。若 \(\sum|a_n|^{-p-1}<\infty\)，则 \(\prod E_p(z/a_n)\) 在每个紧集正规收敛。这里 \(p\) 固定，而紧集半径只进入有限常数。
+对 \(|w|<1\)，有
+\[
+ |L_p(w)|\le\frac{|w|^{p+1}}{(p+1)(1-|w|)}.
+\]
+特别地，当 \(|w|\le1/2\) 时，
+\[
+ |L_p(w)|\le\frac{2}{p+1}|w|^{p+1},\quad
+ |E_p(w)-1|\le\frac{2e}{p+1}|w|^{p+1}.
+\]
+对每个固定的 \(p\)，还成立原点渐近式
+\[
+ E_p(w)-1=-\frac{w^{p+1}}{p+1}+O(w^{p+2}),\quad w\to0.
+\]
+\end{lemma}
+\begin{proof}
+将 \(\log(1-w)\) 的幂级数与 \(\sum_{k=1}^p w^k/k\) 相加，恰好消去前 \(p\) 项，得到 \(L_p\)。取指数后恢复初等因子的定义，且 \(L_p(0)=0\)。在圆盘内，这个归一化对数唯一，因为任何两个对数之差是连续取值于 \(2\pi\mathrm{i}\mathbb Z\) 的函数。
+
+对尾级数逐项估计，
+\[
+ |L_p(w)|
+ \le\frac1{p+1}\sum_{k=p+1}^{\infty}|w|^k
+ =\frac{|w|^{p+1}}{(p+1)(1-|w|)}.
+\]
+若 \(|w|\le1/2\)，这个界至多为一。利用
+\[
+ e^v-1=v\int_0^1e^{tv}\,\mathrm{d}t,
+ \quad |e^v-1|\le e^{|v|}|v|,
+\]
+并取 \(v=L_p(w)\)，便得到因子偏离一的估计。最后，\(L_p(w)=-w^{p+1}/(p+1)+O(w^{p+2})\)，而 \(e^{L_p}=1+L_p+O(L_p^2)\)。由于 \(2p+2\ge p+2\)，合并误差即得最后的渐近式。
+\end{proof}
+\symidx{\(L_p(w)\)：初等因子在单位圆盘内归一化的对数}
+这里的 \(L_p\) 只在单位圆盘内定义；不能把它当成 \(E_p\) 在整个平面上的单值全纯对数。应用于零点序列时，固定紧集 \(|z|\le R\) 后只对 \(|a_n|>2R\) 的尾因子使用 \(L_p(z/a_n)\)，有限头部直接保留。
+
+\ProseParagraphBreak
+
+按这些初等因子组成的零点乘积称为\term[dianfan-chengji]{典范乘积}[canonical product]。先研究同一个整数 \(p\) 适用于所有零点的情形。为清楚地计入重数，以下用互异点 \(a_j\) 与正整数 \(m_j\) 表示零点数据；把每个 \(a_j\) 重复 \(m_j\) 次是等价的记法。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[固定阶数的典范乘积]\label{b3:prop:20-fixed-genus-product}
+设 \((a_j)\) 是互异非零复数构成的有限列或无穷列，每个有界圆盘只含有限项，\(m_j\) 是给定的正整数。若非负整数 \(p\) 满足
+\[
+ \sum_j\frac{m_j}{|a_j|^{p+1}}<\infty,
+\]
+则
+\[
+ P_p(z)=\prod_j E_p(z/a_j)^{m_j}
+\]
+在 \(\mathbb C\) 局部一致收敛到整函数，\(P_p(0)=1\)，其零点恰为 \(a_j\)，重数恰为 \(m_j\)。任意重排和有限分组不改变乘积。若点列为空，约定 \(P_p=1\)。在避开所有 \(a_j\) 的地方，
+\[
+ \frac{P_p'(z)}{P_p(z)}
+ =-\sum_j\frac{m_j z^p}{a_j^p(a_j-z)},
+\]
+右侧及其任意固定阶导数均在避开零点的紧集上绝对一致收敛。
+\end{proposition}
+\begin{proof}
+固定 \(R>0\)。只有有限个 \(a_j\) 满足 \(|a_j|\le2R\)，将这些因子列入头部。对余下的因子，由尾界引理，
+\[
+ \sup_{|z|\le R}|E_p(z/a_j)-1|
+ \le\frac{2eR^{p+1}}{p+1}\frac1{|a_j|^{p+1}}.
+\]
+将每个因子重复 \(m_j\) 次后，偏离一的上确界总和有限。\cref{b3:prop:20-normal-product}给出整函数极限与重排不变性，\cref{b3:prop:20-product-zero-orders}给出准确重数。所有因子在原点等于一，所以极限也满足 \(P_p(0)=1\)，特别地不恒零。把相同因子的 \(m_j\) 个副本合并，得到陈述中的表达。
+
+直接对一个因子作对数微分，得到
+\[
+ \frac{\mathrm{d}}{\mathrm{d}z}\log E_p(z/a_j)
+ =-\frac1{a_j-z}+\sum_{k=1}^p\frac{z^{k-1}}{a_j^k}
+ =-\frac{z^p}{a_j^p(a_j-z)}.
+\]
+这里的记号表示因子的导数除以因子，不要求在整个去零点区域选定对数。等式由有限几何和整理而得，\(p=0\) 时中间的和为空。对 \(|z|\le R\)、\(|a_j|>2R\)，尾项有统一界
+\[
+ \left|\frac{m_j z^p}{a_j^p(a_j-z)}\right|
+ \le\frac{2m_jR^p}{|a_j|^{p+1}}.
+\]
+因此其尾和绝对一致收敛。有限头部在避开零点的紧集上全纯，\cref{b3:prop:20-product-log-derivative}给出公式及逐项微分的合法性。
+\end{proof}
+对一个零点 \(a_j\)，对数导数中的相应项有留数 \(m_j\)，其余项在该点附近全纯。指数修正消除了远处的低次尾项，却没有改变局部的零点重数。
+
+\ProseParagraphBreak
+
+同一证明还给出可用的截断估计。若截断位置 \(N\) 之后均有 \(|a_j|>2R\)，则在 \(|z|\le R\) 上，尾积的归一化对数为
+\[
+ V_N(z)=\sum_{j>N}m_jL_p(z/a_j),\quad
+ \sup_{|z|\le R}|V_N(z)|
+ \le\frac{2R^{p+1}}{p+1}
+       \sum_{j>N}\frac{m_j}{|a_j|^{p+1}}.
+\]
+若右端记为 \(A_N(R)\)，尾积满足 \(|e^{V_N(z)}-1|\le e^{A_N(R)}-1\)。这个估计明确保留了半径、截断位置和重数；当某些零点重数很大时，不能只检查不同零点的数目。
+
+\ProseParagraphBreak
+
+对逐个零点的标准因子，上述幂和条件也是绝对收敛所必需的。固定 \(p\) 后，尾界引理的渐近式给出充分小的 \(|w|\) 上
+\[
+ |E_p(w)-1|\ge\frac{|w|^{p+1}}{2(p+1)}.
+\]
+任选 \(z_0\ne0\)，对所有充分大的 \(j\) 令 \(w=z_0/a_j\)，便知
+\[
+ \sum_jm_j|E_p(z_0/a_j)-1|<\infty
+ \quad\Longrightarrow\quad
+ \sum_j\frac{m_j}{|a_j|^{p+1}}<\infty.
+\]
+因此，当每个重数仍按相应个数的单零点因子计入时，幂和可和与这些因子在紧集上的正规收敛等价。经过对称分组后出现的抵消，则是另一种表达方式，须另外分析。
+
+\ProseParagraphBreak
+
+初等因子的原点归一化也能显式计算。设零点数据非空，\(\delta=\inf_j|a_j|>0\)，并保持 \(\sum_jm_j|a_j|^{-p-1}<\infty\)。在 \(|z|<\delta\) 上，选取 \(\log P_p(0)=0\) 的对数，则
+\begin{equation}\label{b3:eq:20-canonical-log-expansion}
+ \log P_p(z)
+ =-\sum_{k=p+1}^{\infty}\frac{z^k}{k}
+       \sum_j\frac{m_j}{a_j^k}.
+\end{equation}
+为证明换序，固定 \(0<r<\delta\)，有
+\[
+ \sum_jm_j\sum_{k=p+1}^{\infty}\frac{r^k}{k|a_j|^k}
+ \le\frac{r^{p+1}}{(p+1)(1-r/\delta)}
+       \sum_j\frac{m_j}{|a_j|^{p+1}}<\infty.
+\]
+所以双重级数在 \(|z|\le r\) 绝对一致收敛，且其指数等于乘积极限。这也表明
+\[
+ P_p^{(k)}(0)=0\quad(1\le k\le p),\quad
+ P_p^{(p+1)}(0)=-p!\sum_j\frac{m_j}{a_j^{p+1}}.
+\]
+\(p=0\) 时第一组等式为空，第二式仍有效。指数修正不仅改善尾部收敛，还固定了原点若干低阶导数。
 
 \subsection{属}
 \label{b3:subsec:200203}
 
-能使上述幂和收敛的最小非负整数 \(p\)，称该典范乘积的\term[dianfan-chengji-shu]{属}[genus]。当收敛指数 \(\lambda\) 不是整数时，\(p=\lfloor\lambda\rfloor\)；整数指数时，还要检查临界幂和是否收敛，不能只根据 \(\lambda\) 的值决定。
+能够使用固定 \(p\) 以后，通常选择满足幂和条件的最小整数，以免加入不必要的低阶指数项。这个最小整数必须根据计入重数的零点数据确定。
 
-例如 \(a_n=n\) 的指数一，\(\sum1/n\) 发散而 \(\sum1/n^2\) 收敛，须用属一因子。若把正负整数成对相乘，一次指数正负抵消，可写成 \(\prod(1-z^2/n^2)\)；这依赖明确的配对，而不是许可随意重排一个条件收敛乘积。
-
-
-初等因子的指数修正还控制对数导数。在避开 \(a_n\) 的地方，直接微分得到
+\Needspace{6\baselineskip}
+\begin{definition}\label{b3:def:20-product-genus}
+设 \((a_j)\) 是互异非零复数构成的有限列或无穷列，每个有界圆盘只含有限项，\(m_j\) 为给定的正整数。使
 \[
-\frac{\mathrm{d}}{\mathrm{d}z}\log E_p(z/a_n)
-=-\frac1{a_n-z}+\sum_{k=1}^{p}\frac{z^{k-1}}{a_n^k}
-=-\frac{z^p}{a_n^p(a_n-z)}.
+ \sum_jm_j|a_j|^{-p-1}<\infty
 \]
-当 \(|z|\le R\)、\(|a_n|>2R\) 时，最后一式的模不超过 \(2R^p/|a_n|^{p+1}\)。所以同一幂和不仅保证乘积存在，也保证尾部对数导数正规收敛。零点附近的留数由有限头部贡献，值为一；这将乘法的零点数据重新转成加法的主要部分数据。
+成立的最小非负整数 \(p\)，称这组零点数据的典范乘积的\term[dianfan-chengji-shu]{属}[genus]。有限列，包括空列，的属为零；若没有任何这样的整数，则称不存在有限属。
+\end{definition}
+这里的属以逐个零点使用标准初等因子的绝对收敛条件为准。即使较小阶数的因子能按某种顺序条件收敛，或者成组后产生抵消，也不改变这个定义。给定整函数还可能带有无零点指数因子；仅凭零点数据的属，不能决定该函数的增长。
 
 \ProseParagraphBreak
 
-对 \(a_n=n\)，属一乘积
+回忆\cref{b3:def:19-convergence-exponent}，这些数据的收敛指数为
 \[
-P(z)=\prod_{n\ge1}(1-z/n)e^{z/n}
+ \lambda=\inf\bigl\{\,s>0\mid
+                  \sum_jm_j|a_j|^{-s}<\infty\,\bigr\},
 \]
-在原点满足 \(P(0)=1\)、\(P'(0)=0\)，且对数展开为
+有限列取 \(\lambda=0\)，集合为空时取无穷。它给出实数阈值，属则要求 \(p+1\) 是一个正整数。两者在临界整数处的差别不能略去。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[属与收敛指数]\label{b3:prop:20-genus-exponent}
+设 \((a_j)\) 是互异非零复数构成的有限列或无穷列，每个有界圆盘只含有限项，\(m_j\) 为正整数。令 \(\lambda\) 为计入重数的收敛指数，并按最小的可和幂 \(p+1\) 定义属 \(p\)。则存在有限属当且仅当 \(\lambda<\infty\)，且有限情形满足：
+\begin{enumerate}
+\item 若 \(\lambda=0\)，则 \(p=0\)，包括有限列和空列。
+\item 若 \(\lambda>0\) 且不是整数，则 \(p=\lfloor\lambda\rfloor\)。
+\item 若 \(\lambda=k\) 是正整数，则
 \[
-\log P(z)=-\sum_{k\ge2}\frac{z^k}{k}\sum_{n\ge1}n^{-k},\quad |z|<1.
+ p=\begin{cases}
+ k-1,&\displaystyle\sum_jm_j|a_j|^{-k}<\infty,\\
+ k,&\displaystyle\sum_jm_j|a_j|^{-k}=\infty.
+ \end{cases}
 \]
-换序由 \(\sum_{n,k}|z|^k/(kn^k)<\infty\) 保证。尤其二阶系数取决于 \(\sum n^{-2}\)，一次系数却因修正消失。这是初等因子“扣除低阶项”的具体可计算效果。
+\end{enumerate}
+特别地，有限属总满足 \(p\le\lambda\le p+1\)。
+\end{proposition}
+\begin{proof}
+模不超过一的点只有有限个，删去它们不改变任何幂和的收敛性。对剩余点，增大指数会减小每一项。因此由下确界定义，所有 \(s>\lambda\) 对应收敛幂和，所有 \(0<s<\lambda\) 对应发散幂和。
+
+若 \(\lambda=\infty\)，没有一个 \(p+1\) 可用；若 \(\lambda<\infty\)，任取整数 \(p+1>\lambda\) 就给出有限属。当 \(\lambda=0\) 时，正整数一已严格大于 \(\lambda\)，所以最小允许值为 \(p=0\)。当 \(\lambda\) 非整数时，满足 \(p+1>\lambda\) 的最小整数 \(p\) 是 \(\lfloor\lambda\rfloor\)，更小的 \(p+1\) 严格落在发散区间。
+
+若 \(\lambda=k\ge1\) 为整数，\(p+1<k\) 不可能，\(p+1>k\) 一定可以。唯一待判定的是 \(p+1=k\)，其是否成立恰由临界幂和决定。三个情形也分别给出 \(p\le\lambda\le p+1\)。
+\end{proof}
+零收敛指数不表示零点有限。例如 \(a_j=2^j\)、\(m_j=1\) 时，\(\sum_j2^{-js}\) 对每个 \(s>0\) 都收敛，所以 \(\lambda=p=0\)，而 \(\prod_j(1-z/2^j)\) 仍有无穷多个零点。有限零点的属也为零，两者共享的是一次幂和已经足够，并非零点个数相同。
 
 \ProseParagraphBreak
 
-属在临界指数处的差别也能构造出来。点列 \(a_n=n\log^2(n+1)\) 的计数指数仍为一，但 \(\sum1/|a_n|\) 收敛，所以属零已够。点列 \(a_n=n\log(n+1)\) 的指数同样为一，而一次幂和发散，须用属一。二者的收敛指数相同，最小可用属不同。积分判别中出现的对数因子因此不能在临界问题中随意忽略。
-
-
-\ProseParagraphBreak
-
-若某个 \(a\) 应有重数 \(m\)，可以将它在点列中重复 \(m\) 次，也可以直接取因子 \(E_p(z/a)^m\)。对正规收敛的检验，后一写法须带上权重 \(m\)：充分条件成为 \(\sum m_n|a_n|^{-p-1}<\infty\)。遗漏重数会改变计数函数和收敛指数。例如在每个正整数 \(n\) 放重数 \(n\) 的零点时，带重数的幂和是 \(\sum n^{1-s}\)，收敛指数为二，属零或属一均不足；属二给 \(\sum n^{-2}\) 的尾和。
-
-\ProseParagraphBreak
-
-关于最小属还有一个容易混淆的区分。绝对收敛判据针对逐个初等因子的乘积；把具有对称性的因子成组后，低次项可能彼此抵消。例如正负整数的属一因子满足
+对正整数零点 \(a_n=n\)、\(m_n=1\)，幂和是 \(\sum n^{-s}\)，收敛当且仅当 \(s>1\)，所以 \(\lambda=1\)。临界一次和发散，最小属为一，得到
 \[
-E_1(z/n)E_1(-z/n)=1-z^2/n^2.
+ P_1(z)=\prod_{n=1}^{\infty}\left(1-\frac zn\right)e^{z/n}.
 \]
-因此成对乘积有一个看似属零的二次因子表达，但它并没有使 \(\sum_{n\ne0}|n|^{-1}\) 收敛。解释“属”时必须说清楚使用单个零点的标准初等因子，还是已经经过配对的表达。后一表达式有利于计算，却不能反推前一幂和判据失效。
+原点归一化为 \(P_1(0)=1\)、\(P_1'(0)=0\)，且\eqref{b3:eq:20-canonical-log-expansion}给出
+\[
+ \log P_1(z)=-\sum_{k=2}^{\infty}\frac{z^k}{k}
+                 \sum_{n=1}^{\infty}n^{-k},\quad |z|<1.
+\]
+特别地，\(P_1''(0)=-\sum_n n^{-2}\)。一次项消失是所选初等因子的归一化结果，不是零点位置本身强迫所有实现都具有的性质；乘上 \(e^{cz}\) 就会保持零点而改变一次导数。
+
+\ProseParagraphBreak
+
+临界幂和的影响可用两组稍稀疏的正实零点比较：
+\[
+ a_n=n\log^2(n+1),\quad b_n=n\log(n+1),\quad n\ge1.
+\]
+两者都满足 \(\log n/\log a_n\to1\)、\(\log n/\log b_n\to1\)，由\eqref{b3:eq:19-exponent-enumeration}，收敛指数均为一。但对尾部作积分比较，代换 \(u=\log t\) 给
+\[
+ \int^{\infty}\frac{\mathrm{d}t}{t(\log t)^\beta}
+ =\int^{\infty}\frac{\mathrm{d}u}{u^\beta},
+\]
+只在 \(\beta>1\) 时收敛。因此 \(\sum1/a_n\) 收敛，\(\sum1/b_n\) 发散，前者属零，后者属一。同一个收敛指数可以对应两个不同的最小属。
+
+\ProseParagraphBreak
+
+重数同样会改变属。在每个正整数 \(n\) 指定重数 \(m_n=n\) 时，相关幂和是
+\[
+ \sum_{n=1}^{\infty}\frac{n}{n^s}
+ =\sum_{n=1}^{\infty}n^{1-s}.
+\]
+它收敛当且仅当 \(s>2\)，所以 \(\lambda=2\)，临界和发散，属为二。相应乘积是 \(\prod_n E_2(z/n)^n\)；判据检查的是 \(\sum_n n/n^3=\sum_n n^{-2}\)。若只看互异零点集合而漏掉重数，就会误把指数与属都算成一。
+
+\ProseParagraphBreak
+
+最后考察正负整数的对称性。将每个 \(n\) 与 \(-n\) 配对，有严格的有限因子恒等式
+\[
+ E_1(z/n)E_1(-z/n)=1-\frac{z^2}{n^2}.
+\]
+因此绝对收敛的属一典范乘积可以写成
+\[
+ C(z)=\prod_{n=1}^{\infty}E_1(z/n)E_1(-z/n)
+     =\prod_{n=1}^{\infty}\left(1-\frac{z^2}{n^2}\right).
+\]
+右边的二次因子在 \(|z|\le R\) 上由 \(\sum R^2/n^2\) 控制，故也正规收敛。\(C\) 是偶整函数，\(C(0)=1\)，零点为所有非零整数，均为单零点。逐个零点的临界和仍是 \(2\sum1/n\)，并不因这个二次因子表达而变成收敛；按定义，零点数据的属仍为一。
+
+\ProseParagraphBreak
+
+配对还说明原始一次因子为何依赖顺序。设 \((a_j)\) 是所有非零整数的某个枚举，记 \(S_N=\sum_{j=1}^N1/a_j\)。有限乘积满足
+\[
+ \prod_{j=1}^N\left(1-\frac z{a_j}\right)
+ =\left(\prod_{j=1}^NE_1(z/a_j)\right)e^{-zS_N}.
+\]
+属一因子组成的乘积不受重排影响，恒趋于 \(C(z)\)。如果当前枚举使 \(S_N\to S\in\mathbb R\)，则指数因子在每个紧集上一致趋于 \(e^{-Sz}\)，故原始一次因子的乘积局部一致趋于
+\[
+ C(z)e^{-Sz}.
+\]
+自然交错的枚举 \(1,-1,2,-2,\ldots\) 给 \(S=0\)；其偶数部分积正是上述配对乘积，奇数部分积只多一个在紧集上一致趋于一的因子。正、负倒数分别形成发散的调和级数，按上一节交替越过目标的办法重排，可使 \(S\) 取任意实数。改变顺序因此可能添入一个指数因子，而已经正规收敛的 \(E_1\) 乘积保持不变。这正是先完成低阶对数修正，再讨论零点乘积的理由。

@@ -2,75 +2,415 @@
 \section{Jacobi 三重积公式}
 \label{b3:sec:2402}
 
-级数表示适合变换与计数，乘积表示适合定位零点和求对数导数。Jacobi 三重积把这两种描述接起来，下面用有限多项式恒等式控制极限。
+级数把不同整数指标的贡献相加，适合研究变换和表示数；乘积把零点逐个列出，适合判断除法是否有意义。这里要把上一节的 theta 级数改写成乘积，并说明为什么无穷多个非零因子不会在极限中另外制造零点。
+
+证明从有限多项式开始。先把有限乘积的系数算清楚，再把指标居中，使指数变成平方，最后在紧集上取极限。这条路线同时给出恒等式中的常数，避免只凭零点相同就猜测两个函数相等。
 
 \subsection{三重积恒等式}
 \label{b3:subsec:240201}
 
-\begin{theorem}[Jacobi 三重积]\label{b3:thm:24-triple-product}
-若 \(0<|q|<1\)、\(w\ne0\)，则
+下面的有限恒等式起着普通二项式公式的作用。记号中的下标 \(Q\) 表示因子按等比数列变化；这里的系数一般是复数，不借用计数或正性来证明公式。
+
+\Needspace{8\baselineskip}
+\begin{lemma}[有限二项式恒等式]\label{b3:lem:24-finite-binomial}
+设 \(Q\in\mathbb C\)、\(0<|Q|<1\)，并令
 \[
-\sum_{n\in\mathbb Z}q^{n^2}w^n
-=\prod_{m\ge1}(1-q^{2m})(1+wq^{2m-1})(1+w^{-1}q^{2m-1}).
+ (Q;Q)_0=1,\qquad (Q;Q)_N=\prod_{j=1}^N(1-Q^j)
+ \quad(N\ge1).
 \]
-两边在 \(\mathbb C\setminus\{0\}\) 上关于 \(w\) 正规收敛。
+对整数 \(N\ge0\) 及 \(0\le r\le N\)，定义
+\[
+ {N\brack r}_Q
+ =\frac{(Q;Q)_N}{(Q;Q)_r(Q;Q)_{N-r}},
+\]
+并在 \(r<0\) 或 \(r>N\) 时规定 \({N\brack r}_Q=0\)。则对任意 \(t\in\mathbb C\)，
+\begin{equation}\label{b3:eq:24-finite-binomial}
+ \prod_{j=0}^{N-1}(1+tQ^j)
+ =\sum_{r=0}^N Q^{r(r-1)/2}{N\brack r}_Q\,t^r.
+\end{equation}
+当 \(N=0\) 时，左边的空乘积和右边都等于一。
+\end{lemma}
+\begin{proof}
+因 \(|Q|<1\)，所有分母因子都不为零。先证明递推关系
+\[
+ {N+1\brack r}_Q
+ ={N\brack r}_Q+Q^{N+1-r}{N\brack r-1}_Q.
+\]
+在 \(1\le r\le N\) 时，把右边通分为分母
+\((Q;Q)_r(Q;Q)_{N+1-r}\)，分子为
+\[
+ (Q;Q)_N\bigl((1-Q^{N+1-r})
+              +Q^{N+1-r}(1-Q^r)\bigr)
+ =(Q;Q)_{N+1}.
+\]
+在 \(r=0,N+1\) 时，越界系数为零的约定直接给出同一递推。
+
+现在对 \(N\) 归纳。把 \(N\) 个因子的展开乘以 \(1+tQ^N\)，所得 \(t^r\) 的系数为
+\[
+ Q^{r(r-1)/2}{N\brack r}_Q
+ +Q^N Q^{(r-1)(r-2)/2}{N\brack r-1}_Q.
+\]
+提出 \(Q^{r(r-1)/2}\) 后，括号中的式子就是上述递推的右边，因此得到 \(N+1\) 的公式。
+\end{proof}
+
+例如 \(N=2\) 时，公式是
+\[
+ (1+t)(1+tQ)=1+(1+Q)t+Qt^2.
+\]
+额外的因子 \(Q^{r(r-1)/2}\) 不能省去：选择两个因子中的 \(t\) 项时，所得系数是 \(Q\)，而不是一。
+
+将有限公式居中后，就得到下面的\term[jacobi-sanchongji]{Jacobi 三重积公式}[Jacobi triple product identity]。
+
+\Needspace{8\baselineskip}
+\begin{theorem}[Jacobi 三重积]\label{b3:thm:24-triple-product}
+设 \(q,w\in\mathbb C\)，且 \(0<|q|<1\)、\(w\ne0\)。则
+\[
+ \sum_{n\in\mathbb Z}q^{n^2}w^n
+ =\prod_{m=1}^{\infty}
+   (1-q^{2m})(1+wq^{2m-1})(1+w^{-1}q^{2m-1}).
+\]
+固定 \(q\) 后，级数绝对正规收敛，乘积正规收敛，二者都在
+\(\mathbb C\setminus\{0\}\) 上定义关于 \(w\) 的全纯函数。
 \end{theorem}
 \begin{proof}
-记 \((Q;Q)_N=\prod_{j=1}^N(1-Q^j)\) 及
-\({N\brack r}_Q=(Q;Q)_N/((Q;Q)_r(Q;Q)_{N-r})\)。由逐个乘上最后因子并比较系数，归纳得到有限二项式恒等式
+在式\eqref{b3:eq:24-finite-binomial}中，把因子个数取为 \(2N\)，再取
 \[
-\prod_{j=0}^{N-1}(1+tQ^j)=\sum_{r=0}^NQ^{r(r-1)/2}{N\brack r}_Qt^r.
+ Q=q^2,\qquad t=wq^{-(2N-1)}.
 \]
-归纳中只需代入 \({N+1\brack r}_Q={N\brack r}_Q+Q^{N+1-r}{N\brack r-1}_Q\)，此关系通分后由 \(1-Q^{N+1}=(1-Q^{N+1-r})+Q^{N+1-r}(1-Q^r)\) 得到。
-取 \(Q=q^2\)，把 \(2N\) 个因子中的后半部分提出适当单项式，便得
+左边各因子中 \(q\) 的指数依次为
+\(-(2N-1),-(2N-3),\ldots,2N-1\)。对负指数的那一半使用
 \[
-\prod_{j=1}^N(1+wq^{2j-1})(1+w^{-1}q^{2j-1})
-=\sum_{r=-N}^Nq^{r^2}w^r{2N\brack N+r}_{q^2}.
+ 1+wq^{-(2j-1)}
+ =wq^{-(2j-1)}(1+w^{-1}q^{2j-1}).
 \]
-对固定 \(r\)，二项式系数趋于 \(1/(q^2;q^2)_\infty\)。它们的模统一有界，因为分子不超过 \(\prod_{j\ge1}(1+|q|^{2j})\)，两个分母各不小于 \(\prod_{j\ge1}(1-|q|^{2j})>0\)。在紧圆环上，\(|q|^{r^2}|w|^r\) 有可和上界，故可将极限移进双边和。乘以 \((q^2;q^2)_\infty\) 即得公式。
+提出的全部单项式相乘为 \(w^Nq^{-N^2}\)，因为前 \(N\) 个正奇数的和为 \(N^2\)。
+
+右边第 \(\ell\) 项含有
+\[
+ q^{\ell(\ell-1)}w^\ell q^{-(2N-1)\ell}
+ =w^\ell q^{\ell^2-2N\ell}.
+\]
+因此两边乘以 \(w^{-N}q^{N^2}\)，并令 \(r=\ell-N\)，就得到
+\begin{equation}\label{b3:eq:24-centered-product}
+ \prod_{j=1}^N(1+wq^{2j-1})(1+w^{-1}q^{2j-1})
+ =\sum_{r=-N}^N q^{r^2}w^r{2N\brack N+r}_{q^2}.
+\end{equation}
+平方指数来自 \(\ell^2-2N\ell+N^2=(\ell-N)^2\)，而双边指标来自把长度为 \(2N\) 的有限区间移到原点两侧。
+
+接着说明极限为什么可以进入右边的和。由
+\(\sum_{j\ge1}|q|^{2j}<\infty\) 和\cref{b3:prop:20-absolute-product}的非零乘积判据，
+\[
+ A=\prod_{j=1}^{\infty}(1-q^{2j})
+\]
+存在且非零。对每个固定整数 \(r\)，当 \(N\to\infty\) 时，商式中的三个有限乘积都趋于 \(A\)，故
+\[
+ {2N\brack N+r}_{q^2}\longrightarrow A^{-1}.
+\]
+这里还需要一个不随 \(N,r\) 变化的界。记
+\[
+ d=\prod_{j=1}^{\infty}(1-|q|^{2j})>0,\qquad
+ M=\prod_{j=1}^{\infty}(1+|q|^{2j})<\infty.
+\]
+任一分母有限乘积的模不小于 \(d\)，分子有限乘积的模不大于 \(M\)，所以
+\[
+ \left|{2N\brack N+r}_{q^2}\right|
+ \le Md^{-2}\qquad(-N\le r\le N).
+\]
+
+固定紧圆环 \(a\le|w|\le b\)，其中 \(0<a\le b<\infty\)，令
+\(B=\max\{b,a^{-1},1\}\)。把区间外的系数补为零后，右边每一项的模都不超过
+\[
+ Md^{-2}|q|^{r^2}B^{|r|},\qquad r\in\mathbb Z.
+\]
+这个双边数列可和，因为平方衰减压过固定的指数增长。于是先把尾和统一压小，再对剩余有限项取极限，得到右边在紧圆环上一致趋于
+\(A^{-1}\sum_{r\in\mathbb Z}q^{r^2}w^r\)。
+
+左边也在紧圆环上一致收敛：两个因子与一的差分别被
+\(b|q|^{2j-1}\) 和 \(a^{-1}|q|^{2j-1}\) 控制，控制数列均可和。
+\cref{b3:prop:20-normal-product}因而适用。对式\eqref{b3:eq:24-centered-product}取极限，再乘以 \(A\)，即得所需公式及收敛结论。
 \end{proof}
-本式称为\term[jacobi-sanchongji]{Jacobi 三重积公式}[Jacobi triple product identity]。证明先处理有限多项式，再用共同控制取极限；纯粹将形式因子排列在一起不足以保证解析恒等式。
+
+固定 \(r\) 的系数极限并不足以独自证明定理，因为求和区间还在扩大。证明中的共同上界专门控制那些随 \(N\) 向两端移动的项。另一方面，三重积的某个因子可以为零；正规收敛所保证的是充分远的尾部非零，并没有排除有限头部给出的零点。
 
 \subsection{乘积展开}
 \label{b3:subsec:240202}
 
-取 \(w=e^{2\mathrm{i}z}\) 并平移变量，三重积给
+现在恢复 \(\tau\in\mathfrak H\)、\(q=e^{\pi\mathrm i\tau}\)。本章的空间变量是 \(z\)，因此周期中出现 \(\pi\)，而不是一。以下所有
+\(q^{1/4}\) 都表示 \(e^{\pi\mathrm i\tau/4}\)；把 \(q\) 单独看成穿孔圆盘中的变量时，不能另选一个全局的四次根来替换它。
+
+\Needspace{8\baselineskip}
+\begin{proposition}[四种 theta 函数的乘积]\label{b3:prop:24-theta-products}
+设 \(\tau\in\mathfrak H\)、\(q=e^{\pi\mathrm i\tau}\)，并以
+\(q^{1/4}=e^{\pi\mathrm i\tau/4}\) 规定分数幂。则上一节定义的四种 theta 函数对每个 \(z\in\mathbb C\) 满足
+\begin{align}
+ \theta_1(z,\tau)
+ &=2q^{1/4}\sin z
+   \prod_{n\ge1}(1-q^{2n})
+   (1-2q^{2n}\cos2z+q^{4n}),
+   \label{b3:eq:24-theta1-product}\\
+ \theta_2(z,\tau)
+ &=2q^{1/4}\cos z
+   \prod_{n\ge1}(1-q^{2n})
+   (1+2q^{2n}\cos2z+q^{4n}),
+   \label{b3:eq:24-theta2-product}\\
+ \theta_3(z,\tau)
+ &=\prod_{n\ge1}(1-q^{2n})
+   (1+2q^{2n-1}\cos2z+q^{4n-2}),
+   \label{b3:eq:24-theta3-product}\\
+ \theta_4(z,\tau)
+ &=\prod_{n\ge1}(1-q^{2n})
+   (1-2q^{2n-1}\cos2z+q^{4n-2}).
+   \label{b3:eq:24-theta4-product}
+\end{align}
+固定 \(\tau\) 后，乘积关于 \(z\) 正规收敛，并可对 \(z\) 作任意固定阶数的逐项微分。其收敛在 \((z,\tau)\) 的紧集上也一致。
+\end{proposition}
+\begin{proof}
+在三重积中分别取 \(w=e^{2\mathrm iz}\) 和 \(w=-e^{2\mathrm iz}\)，得到 \(\theta_3,\theta_4\) 的式子。其中两个含 \(w\) 的因子相乘，分别给出正号和负号的余弦项。
+
+对半整数指标，先在级数中提取共同因子：
 \[
-\begin{aligned}
-\theta_1(z)&=2q^{1/4}\sin z\prod_{n\ge1}(1-q^{2n})(1-2q^{2n}\cos2z+q^{4n}),\\
-\theta_2&=2q^{1/4}\prod_{n\ge1}(1-q^{2n})(1+q^{2n})^2,\\
-\theta_3&=\prod_{n\ge1}(1-q^{2n})(1+q^{2n-1})^2,\\
-\theta_4&=\prod_{n\ge1}(1-q^{2n})(1-q^{2n-1})^2.
-\end{aligned}
+ \begin{aligned}
+ \theta_2(z,\tau)
+ &=q^{1/4}e^{\mathrm iz}
+   \sum_{n\in\mathbb Z}q^{n^2}(qe^{2\mathrm iz})^n,\\
+ \theta_1(z,\tau)
+ &=-\mathrm i q^{1/4}e^{\mathrm iz}
+   \sum_{n\in\mathbb Z}q^{n^2}(-qe^{2\mathrm iz})^n.
+ \end{aligned}
 \]
-首个式子的零点恰为 \(\pi\mathbb Z+\pi\tau\mathbb Z\)，均为单零。将两类指数因子写成 \(1-q^{2n}e^{\pm2\mathrm{i}z}\) 可以逐个定位零点；正规非零尾部保证没有额外零点。
+第一行的两个指数因子成为
+\(1+q^{2m}e^{2\mathrm iz}\) 和
+\(1+q^{2m-2}e^{-2\mathrm iz}\)。
+后一个乘积在 \(m=1\) 时提供 \(1+e^{-2\mathrm iz}\)；将剩余指标减一，便与第一个乘积配对。外面的因子化为
+\[
+ e^{\mathrm iz}(1+e^{-2\mathrm iz})=2\cos z.
+\]
+第二行同样给出负号的两个指数因子，而外面的因子为
+\[
+ -\mathrm i e^{\mathrm iz}(1-e^{-2\mathrm iz})=2\sin z.
+\]
+这就解释了四个公式中不同的首因子及符号。
+
+若 \((z,\tau)\) 限制在一个紧集，则有 \(|q|\le r<1\) 及
+\(|e^{\pm2\mathrm iz}|\le C\)。把每个二次因子拆为
+\(1\pm q^m e^{2\mathrm iz}\) 与 \(1\pm q^m e^{-2\mathrm iz}\)，其偏离一的量被 \(Cr^m\) 控制。故乘积的正规收敛及有限分组均由\cref{b3:prop:20-normal-product}保证。固定 \(\tau\) 后，在稍大的 \(z\) 紧集上使用同一估计及 Cauchy 公式，就得到各阶导数的局部一致收敛。
+\end{proof}
+
+乘积表示给出的不只是一些显然存在的零点，还包括所有零点及其重数。后文把 theta 函数放在分母时，将用到这一完整信息。
+
+\Needspace{8\baselineskip}
+\begin{proposition}[theta 零点及常数非零性]\label{b3:prop:24-theta-zeros}
+设 \(\tau\in\mathfrak H\)，令
+\(\Lambda=\pi\mathbb Z+\pi\tau\mathbb Z\)。四个整函数
+\(z\mapsto\theta_j(z,\tau)\) 的零点集分别为
+\[
+ \begin{aligned}
+ Z(\theta_1)&=\Lambda,
+ &Z(\theta_2)&=\frac{\pi}{2}+\Lambda,\\
+ Z(\theta_3)&=\frac{\pi+\pi\tau}{2}+\Lambda,
+ &Z(\theta_4)&=\frac{\pi\tau}{2}+\Lambda.
+ \end{aligned}
+\]
+其中每一个零点都是单零点。特别地，
+\(\theta_2(0,\tau)\)、\(\theta_3(0,\tau)\)、\(\theta_4(0,\tau)\)
+均不为零，而 \(\theta_1(0,\tau)=0\) 且
+\(\partial_z\theta_1(0,\tau)\ne0\)。
+\end{proposition}
+\begin{proof}
+在 \(\theta_1\) 的乘积中，因子 \(1-q^{2n}\) 从不为零。
+首因子 \(\sin z\) 的零点是 \(\pi\mathbb Z\)，且都单重。另外两个因子为
+\[
+ 1-q^{2n}e^{2\mathrm iz},\qquad
+ 1-q^{2n}e^{-2\mathrm iz}.
+\]
+它们的零点分别是 \(-n\pi\tau+\pi\mathbb Z\) 和
+\(n\pi\tau+\pi\mathbb Z\)。在各自的零点处，导数为
+\(-2\mathrm i\) 或 \(2\mathrm i\)，所以也都是单零点。
+因 \(\operatorname{Im}\tau>0\)，这些水平直线彼此不同，且不与
+\(\sin z\) 的零点重叠。于是每个格点恰好来自一个单零因子。
+
+对 \(\theta_2\)，首因子换成 \(\cos z\)，两个指数因子换成正号，零点的实部相应平移 \(\pi/2\)，得到 \(\pi/2+\Lambda\)。
+对 \(\theta_3,\theta_4\)，指数为 \(2n-1\)，所以虚方向的平移为
+\(\pm(n-\tfrac12)\pi\tau\)。正号因子再增加 \(\pi/2\) 的水平平移，负号因子不增加，分别得到所列的两个集合。各因子的导数仍非零，不同因子的零点仍不重叠。
+
+最后，正规乘积在每个小邻域都可写成有限头部乘一个非零的全纯尾部；这是\cref{b3:prop:20-product-zero-orders}的具体适用情形。因此没有遗漏的额外零点，也没有因无限乘积而增加的重数。原点不属于后三个格的平移：比较虚部先确定 \(\tau\) 的系数，再比较实部即可验证。常数非零性随之成立。
+\end{proof}
+
+四个零点集在一个格胞中分别占据四个半周期位置。准周期平移会改变函数值的非零乘子，但不会改变零点的重数；因此这里描述的是整张平面上的零点排列，而不是只在一个基本区域内的局部结论。
 
 \subsection{特殊值}
 \label{b3:subsec:240203}
 
-在原点求导得 \(\theta_1'(0)=2q^{1/4}\prod_{n\ge1}(1-q^{2n})^3\)。将三个常数乘积相乘并约去奇偶因子，得到
-\begin{equation}\label{b3:eq:24-derivative-identity}
-\theta_1'(0)=\theta_2\theta_3\theta_4.
-\end{equation}
-约去所用的恒等式为
-\(\prod(1+q^{2n})(1-q^{4n-2})=1\)：因为 \(1+q^{2n}=(1-q^{4n})/(1-q^{2n})\)，分子偶倍指数与奇倍指数共同补成全部 \(2n\) 指数。所有乘积在 \(|q|<1\) 绝对正规收敛，故这种分类约分合法。
+令 \(z=0\)。为减轻记号，以下把 \(\theta_j(0,\tau)\) 简写成
+\(\theta_j\)，但撇号始终表示对空间变量 \(z\) 求导。由乘积公式，
+\[
+ \begin{aligned}
+ \theta_2&=2q^{1/4}
+       \prod_{n\ge1}(1-q^{2n})(1+q^{2n})^2,\\
+ \theta_3&=\prod_{n\ge1}(1-q^{2n})(1+q^{2n-1})^2,\\
+ \theta_4&=\prod_{n\ge1}(1-q^{2n})(1-q^{2n-1})^2.
+ \end{aligned}
+\]
+这些是关于参数 \(\tau\) 的函数；“常数”只表示空间变量已经取零。
 
-\subsection{\texorpdfstring{\(q\)}{q}-级数}
+三个非零常数还决定奇函数在原点的导数，这一关系称为\term[jacobi-daoshu-hengdengshi]{Jacobi 导数恒等式}[Jacobi derivative identity]。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[Jacobi 导数恒等式]\label{b3:prop:24-jacobi-derivative}
+设 \(\tau\in\mathfrak H\)，四个 theta 函数采用本章的级数归一化，则
+\begin{equation}\label{b3:eq:24-derivative-identity}
+ \partial_z\theta_1(0,\tau)
+ =\theta_2(0,\tau)\theta_3(0,\tau)\theta_4(0,\tau).
+\end{equation}
+两边均不为零。
+\end{proposition}
+\begin{proof}
+令 \(q=e^{\pi\mathrm i\tau}\)，并规定
+\(q^{1/4}=e^{\pi\mathrm i\tau/4}\)。在式\eqref{b3:eq:24-theta1-product}中除以 \(z\) 并令 \(z\to0\)，由于乘积局部一致收敛及 \(\sin z/z\to1\)，得到
+\[
+ \theta_1'(0,\tau)
+ =2q^{1/4}\prod_{n\ge1}(1-q^{2n})^3.
+\]
+现在将三个 theta 常数的乘积式相乘。共同因子已经给出右边这个式子，剩下的因子是
+\[
+ \left(\prod_{n\ge1}
+    (1+q^{2n})(1-q^{4n-2})\right)^2.
+\]
+记 \(A=\prod_{n\ge1}(1-q^{2n})\ne0\)。由
+\(1+q^{2n}=(1-q^{4n})/(1-q^{2n})\)，括号内的乘积等于
+\[
+ \frac{\displaystyle
+        \prod_{n\ge1}(1-q^{4n})
+        \prod_{n\ge1}(1-q^{4n-2})}
+      {\displaystyle\prod_{n\ge1}(1-q^{2n})}=1.
+\]
+分子两列指数 \(4,8,12,\ldots\) 与 \(2,6,10,\ldots\) 正好分割全部正偶数。这里的分组和约分合法，因为各乘积绝对收敛且非零；并没有把两个发散乘积相除。恒等式随之成立，非零性也从这些乘积直接得到。
+\end{proof}
+
+这个归一化没有额外的 \(\pi\) 因子，因为本章级数含
+\(e^{2\mathrm inz}\)，基本水平准周期为 \(\pi\)。若改用周期为一的空间坐标，空间求导的换元因子也必须随之改变。
+
+当 \(\tau=\mathrm it\)、\(t>0\) 时，\(q=e^{-\pi t}\in(0,1)\)。
+三个常数乘积中的全部因子都是正数，因此
+\(\theta_2,\theta_3,\theta_4>0\)。尤其是交替级数
+\[
+ \theta_4=1-2q+2q^4-2q^9+\cdots
+\]
+始终为正。单看前两项，在 \(q>1/2\) 时容易作出错误判断；乘积同时控制了被截去的无限尾部。对一般复参数，仍有非零性，但不再谈正负。
+
+在 \(q\to0\) 时，级数还给出
+\[
+ \begin{aligned}
+ \theta_2&=2q^{1/4}\bigl(1+q^2+O(q^6)\bigr),\\
+ \theta_3&=1+2q+O(q^4),\qquad
+ \theta_4=1-2q+O(q^4).
+ \end{aligned}
+\]
+因此它们的乘积为 \(2q^{1/4}(1-3q^2+O(q^4))\)，与导数乘积的展开相符。这个检查能辨认归一化和低次系数，却不能代替对所有 \(\tau\in\mathfrak H\) 成立的恒等式证明。
+
+\subsection{三重积的系数、零点与对数导数}
 \label{b3:subsec:240204}
 
-当把 \(q\) 看成单位圆盘中的变量，上述等式也是幂级数恒等式；系数相等来自解析函数的唯一性。靠近 \(|q|=1\) 时，正规收敛常数不再一致，所以不能未经估计令 \(q\) 到单位根并逐项计算。
+三重积允许比较系数，但要先说清楚比较的是哪个变量。固定
+\(w\ne0\) 后，三重积两边关于 \(q\) 在 \(|q|<1\) 全纯，并在
+\(q=0\) 都取值一；局部一致收敛保证可以使用幂级数的唯一性。
+固定 \(q\) 后，关于 \(w\) 则是穿孔平面上的 Laurent 展开。两种比较都依赖解析收敛。靠近 \(|q|=1\) 时，上面的共同控制不再一致，不能未经新的估计就把 \(q\) 代成单位根。
 
-\ProseParagraphBreak
+还有一种需要格外区分的操作：对乘积求对数导数。含有零点的整函数没有全平面上的全纯对数，但在每个不含零点的小圆盘中都有局部对数；不同分支只差常数，所以对数的导数不依赖分支。
 
-三重积也给一个快速的正性例子。实数 \(0<q<1\) 时，三个常数 \(\theta_2,\theta_3,\theta_4\) 都为正，且 \(\theta_4\ne0\)，虽然其级数各项正负交替。零点是否出现，有时从乘积比从级数更容易判断；下一节的除法将依赖这种非零性。
+\Needspace{8\baselineskip}
+\begin{proposition}[theta 的对数导数]\label{b3:prop:24-theta-log-derivative}
+设 \(\tau\in\mathfrak H\)、\(q=e^{\pi\mathrm i\tau}\)，令
+\(\Lambda=\pi\mathbb Z+\pi\tau\mathbb Z\) 及
+\[
+ L(z)=\frac{\partial_z\theta_1(z,\tau)}{\theta_1(z,\tau)}
+ \qquad(z\in\mathbb C\setminus\Lambda).
+\]
+则
+\begin{equation}\label{b3:eq:24-theta-logarithmic-series}
+ L(z)=\cot z+
+ 4\sin(2z)\sum_{n\ge1}
+ \frac{q^{2n}}{1-2q^{2n}\cos(2z)+q^{4n}}.
+\end{equation}
+右边的级数在 \(\mathbb C\setminus\Lambda\) 的紧集上绝对一致收敛，并可作任意固定阶数的逐项微分。在更小的范围
+\(|\operatorname{Im}z|<\pi\operatorname{Im}\tau\)、\(z\notin\pi\mathbb Z\) 内，还有
+\begin{equation}\label{b3:eq:24-theta-log-fourier}
+ L(z)=\cot z+
+ 4\sum_{k\ge1}\frac{q^{2k}}{1-q^{2k}}\sin(2kz).
+\end{equation}
+函数 \(-L'\) 是以 \(\pi,\pi\tau\) 为周期的亚纯函数，其全部极点是
+\(\Lambda\)，在每个 \(\lambda\in\Lambda\) 处的主部都是
+\((z-\lambda)^{-2}\)。
+\end{proposition}
+\begin{proof}
+在避开 \(\Lambda\) 的紧集上，theta 乘积的有限头部非零，尾因子一致接近一。把紧集稍微放大后，尾因子的偏差仍由几何级数控制。因此\cref{b3:prop:20-product-log-derivative}的条件成立：可对局部对数求导，并可继续逐项微分。由
+\[
+ \frac{\mathrm d}{\mathrm dz}
+   \log(1-2q^{2n}\cos2z+q^{4n})
+ =\frac{4q^{2n}\sin2z}
+        {1-2q^{2n}\cos2z+q^{4n}},
+\]
+以及首因子 \(\sin z\) 的对数导数，得到第一式。这里的公式只要求避开零点，不要求 \(z\) 留在一个水平带内。
 
-\ProseParagraphBreak
+第二式需要额外的几何级数展开。若
+\(|\operatorname{Im}z|<-\log|q|=\pi\operatorname{Im}\tau\)，则对每个 \(n\ge1\)，
+\(|q^{2n}e^{\pm2\mathrm iz}|<1\)。将两个指数因子的对数导数分别展开后相加，得到
+\[
+ \frac{-2\mathrm i q^{2n}e^{2\mathrm iz}}
+           {1-q^{2n}e^{2\mathrm iz}}
+ +\frac{2\mathrm i q^{2n}e^{-2\mathrm iz}}
+           {1-q^{2n}e^{-2\mathrm iz}}
+ =4\sum_{k\ge1}q^{2nk}\sin(2kz).
+\]
+在闭子带 \(|\operatorname{Im}z|\le R<-\log|q|\) 上，相应双重级数的绝对值和不超过常数乘以
+\[
+ \sum_{k\ge1}
+   \frac{|q|^{2k}e^{2kR}}{1-|q|^{2k}}<\infty.
+\]
+故可交换 \(n,k\) 的求和顺序，先对 \(n\) 求和，就得到式\eqref{b3:eq:24-theta-log-fourier}。
 
-有限二项式证明中的指标移位也可以完全展开。取 \(Q=q^2\)、\(t=wq^{-(2N-1)}\)，则有限乘积的指数从 \(-(2N-1)\) 到 \(2N-1\)，步长为二。对负指数的 \(N\) 个因子提出 \(wq^{-(2j-1)}\)，其总乘子为 \(w^Nq^{-N^2}\)，剩下恰是前述两个正奇数幂乘积。二项式和的第 \(\ell\) 项指数则为
-\(\ell(\ell-1)-(2N-1)\ell=\ell^2-2N\ell\)。两边乘 \(w^{-N}q^{N^2}\)，再令 \(r=\ell-N\)，就得到 \(q^{r^2}w^r\) 与 \({2N\brack N+r}_{q^2}\)。这里的平方指数不是试算猜出，而是把一段对称的等差指数居中后的结果。
-\ProseParagraphBreak
-零点结构也可以独立由准周期与辐角原理检验。对于 \(\theta_1\)，有
-\(\theta_1(z+\pi)=-\theta_1(z)\) 以及
-\(\theta_1(z+\pi\tau)=-q^{-1}e^{-2\mathrm{i}z}\theta_1(z)\)。因此其对数导数在 \(\pi\) 平移下不变，在 \(\pi\tau\) 平移下减去 \(2\mathrm{i}\)。对不经过零点的正向基本平行四边形积分，左右两边相消，上下两边之差为 \(2\pi\mathrm{i}\)，所以其中恰有一个零点，按重数计。奇性已经给出原点零点，平移后每个格点都是零点；计数一迫使它们单重并排除其他零点。这个论证与三重积的逐因子定位相互核对，也确定了后面 \(\wp\) 比较中的二阶主部。
-\ProseParagraphBreak
-正规乘积的逐项求导要求避开零点。若 \(z\) 取在不碰格点的紧集，有限头部不为零，尾因子一致接近一，其对数及前几阶导数都被几何衰减控制。因此可以对 \(\log\theta_1\) 的局部分支求两次导数，所得量与选择哪一个局部对数无关。在零点处对数本身不存在，但二阶导数具有确定的亚纯主部。把“局部对数的导数单值”与“全域存在一个对数”区别开，可避免在有零点的整函数上错误地选择全局对数。
+由上一节的准周期公式，
+\[
+ \theta_1(z+\pi,\tau)=-\theta_1(z,\tau),\qquad
+ \theta_1(z+\pi\tau,\tau)
+ =-q^{-1}e^{-2\mathrm iz}\theta_1(z,\tau).
+\]
+取对数导数即得 \(L(z+\pi)=L(z)\) 和
+\(L(z+\pi\tau)=L(z)-2\mathrm i\)，再求导便消去加法常数。
+另一方面，\cref{b3:prop:24-theta-zeros}保证每个格点均为单零点。
+在 \(\lambda\) 附近可写
+\(\theta_1(z,\tau)=(z-\lambda)h(z)\)，其中 \(h\) 全纯且非零。于是
+\[
+ L(z)=\frac1{z-\lambda}+\frac{h'(z)}{h(z)},\qquad
+ -L'(z)=\frac1{(z-\lambda)^2}
+          -\left(\frac{h'}h\right)'(z).
+\]
+第二项全纯，从而得到全部极点和主部。
+\end{proof}
+
+例如，在原点附近对式\eqref{b3:eq:24-theta-log-fourier}求导，并使用
+\(\csc^2z=z^{-2}+\tfrac13+O(z^2)\)，得到
+\begin{equation}\label{b3:eq:24-theta-local-part}
+ -L'(z)=\frac1{z^2}+\frac13
+       -8\sum_{k\ge1}\frac{kq^{2k}}{1-q^{2k}}+O(z^2).
+\end{equation}
+这里极点的系数一已经由单零点确定，常数项则由乘积归一化决定。后文与同一格的 \(\wp\) 函数比较时，二者之差只能剩下常数；不能只因二者都双周期就认定它们相等。
+
+参数方向的对数微分也要有共同控制。例如
+\[
+ B(q)=\prod_{n\ge1}(1-q^{2n})\qquad(|q|<1)
+\]
+处处非零且全纯，并满足
+\[
+ q\frac{B'(q)}{B(q)}
+ =-\sum_{n\ge1}\frac{2nq^{2n}}{1-q^{2n}}.
+\]
+在 \(|q|\le r<1\) 上，右边由
+\(\sum_{n\ge1}2nr^{2n}/(1-r^{2n})<\infty\) 控制。
+其他 theta 常数乘积的参数导数有同样的几何衰减。若出现
+\(q^{1/4}\)，则在 \(\tau\) 平面使用
+\[
+ q\partial_q=\frac1{\pi\mathrm i}\partial_\tau,
+ \qquad q\partial_q\log(q^{1/4})=\frac14.
+\]
+后一式是局部对数的导数陈述，不要求在整个穿孔 \(q\) 圆盘选定单值的 \(\log q\)。这些估计将使后文从乘积转到约数和的逐项运算有明确的适用范围。

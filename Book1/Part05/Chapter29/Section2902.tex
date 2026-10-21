@@ -1,0 +1,242 @@
+% !TeX root = ../../Book1.tex
+\section{Stone–Weierstrass 定理与连续函数演算}
+\label{b1:sec:2902}
+
+若 \(T\) 是矩阵，多项式 \(p(T)\) 由有限次加法和乘法定义。
+对于连续函数 \(f\)，要赋予 \(f(T)\) 意义，就需要一种与算子范数相容的逼近。
+本节先证明连续函数的代数逼近定理，再对有界自伴算子建立
+\(\|p(T)\|=\max_{\sigma(T)}|p|\)。这个等式既保证逼近所得的极限存在，
+也保证极限不依赖所选多项式。
+
+\subsection{连续函数代数与分离点条件}
+\label{b1:subsec:290201}
+
+\begin{definition}[函数代数与分离点]
+\label{b1:def:29-function-algebra}
+设 \(K\ne\varnothing\) 是紧 Hausdorff 空间，\(\mathbb K=\mathbb R\) 或 \(\mathbb C\)。
+若 \(\mathcal A\subset C(K;\mathbb K)\) 是线性子空间，且对逐点乘法封闭，
+则称 \(\mathcal A\) 为\term[hanshu-daishu]{函数代数}[function algebra]。
+若对任意不同的 \(x,y\in K\)，都有 \(f\in\mathcal A\) 使 \(f(x)\ne f(y)\)，
+则称 \(\mathcal A\) \term[fenli-dian]{分离点}[separates points]。
+对于复函数代数，若 \(f\in\mathcal A\) 蕴含 \(\overline f\in\mathcal A\)，
+则称它对复共轭封闭。
+\end{definition}
+
+这里的拓扑取一致范数 \(\|f\|_\infty=\max_{x\in K}|f(x)|\) 所给出的拓扑。
+含常数函数的代数可以调整一个函数的常数项和比例；配合分离点条件，
+便能同时指定任意两个不同点处的函数值。
+但仅有逐点取值的自由仍不够，下一步还要把这些两点插值拼成全空间的一致逼近。
+
+\ProseParagraphBreak
+
+例如，实直线紧子集上的多项式限制组成含常数且分离点的代数。
+相反，在 \([-1,1]\) 上只取偶多项式，所得函数在 \(x\) 与 \(-x\) 处总相等；
+它们不能一致逼近函数 \(x\mapsto x\)，因为在两个端点中至少有一处误差不小于 \(1\)。
+分离点条件排除了这种无法区分位置的限制。
+
+\subsection{Stone–Weierstrass 逼近}
+\label{b1:subsec:290202}
+
+证明中需要把两个近似函数取最大值或最小值。
+下面先说明，一致闭代数中的绝对值运算可以从多项式运算得到。
+
+\begin{lemma}[绝对值的多项式逼近]
+\label{b1:lem:29-absolute-polynomial}
+对每个 \(M>0\)，函数 \(s\mapsto|s|\) 在 \([-M,M]\) 上是实多项式的一致极限。
+因此，若 \(K\) 是紧 Hausdorff 空间，\(\mathcal A\subset C(K;\mathbb R)\)
+是含常数函数的一致闭代数，则 \(f\in\mathcal A\) 蕴含 \(|f|\in\mathcal A\)。
+\end{lemma}
+\begin{proof}
+在 \([0,1]\) 上递归定义多项式
+\[
+ p_0(u)=0,\qquad p_{n+1}(u)=p_n(u)+\frac{u-p_n(u)^2}{2}.
+\]
+若 \(0\leq p_n(u)\leq\sqrt u\)，则
+\[
+ \sqrt u-p_{n+1}(u)
+ =\bigl(\sqrt u-p_n(u)\bigr)
+  \left(1-\frac{\sqrt u+p_n(u)}2\right)\geq0,
+\]
+且 \(p_{n+1}(u)\geq p_n(u)\)。由归纳，所有这些不等式成立。
+给定 \(0<\delta<1\)，当 \(u\leq\delta^2\) 时误差不超过 \(\delta\)；
+当 \(u\geq\delta^2\) 时，每步误差至多乘以 \(1-\delta/2\)，故
+\[
+ 0\leq\sqrt u-p_n(u)\leq
+ \max\{\delta,(1-\delta/2)^n\}\qquad(0\leq u\leq1).
+\]
+先令 \(n\to\infty\)，再令 \(\delta\downarrow0\)，得到一致收敛。
+于是 \(Mp_n(s^2/M^2)\) 在 \([-M,M]\) 上一致趋于 \(|s|\)。
+对 \(f\in\mathcal A\)，取 \(M>\|f\|_\infty\)，这些多项式复合 \(f\) 都属于 \(\mathcal A\)，
+再用闭性即得 \(|f|\in\mathcal A\)。
+\end{proof}
+
+因而上述实闭代数也对
+\[
+ \max(f,g)=\frac{f+g+|f-g|}{2},\qquad
+ \min(f,g)=\frac{f+g-|f-g|}{2}
+\]
+封闭。这使有限个局部逼近可以保持单侧误差地合在一起。
+以下结果称为\term[stone-weierstrass-dingli]{Stone--Weierstrass 定理}[Stone--Weierstrass theorem]。
+
+\begin{theorem}[Stone--Weierstrass 定理]
+\label{b1:thm:29-stone-weierstrass}
+设 \(K\ne\varnothing\) 是紧 Hausdorff 空间。
+若实函数代数 \(\mathcal A\subset C(K;\mathbb R)\) 含常数函数并分离点，
+则它在一致范数下稠密。
+若复函数代数 \(\mathcal A\subset C(K;\mathbb C)\) 含常数函数、分离点且对复共轭封闭，
+则它在 \(C(K;\mathbb C)\) 中一致稠密。
+\end{theorem}
+\begin{proof}
+先考虑实情形。代数的闭包仍是代数，因为一致收敛保持加法与乘法；
+所以可把 \(\mathcal A\) 换成闭包，证明这个闭包含任意 \(h\in C(K;\mathbb R)\)。
+固定 \(\varepsilon>0\)。对每对 \(x,y\in K\)，存在 \(f_{x,y}\in\mathcal A\)，使
+\(f_{x,y}(x)=h(x)\)、\(f_{x,y}(y)=h(y)\)：当 \(x\ne y\) 时，
+对一个分离它们的函数作仿射变换；当 \(x=y\) 时取常数 \(h(x)\)。
+
+固定 \(x\)。开集
+\(\{z:f_{x,y}(z)>h(z)-\varepsilon\}\) 随 \(y\) 变化覆盖 \(K\)。
+取有限子覆盖，对对应的 \(f_{x,y}\) 取最大值，得到 \(g_x\in\mathcal A\)，满足
+\[
+ g_x>h-\varepsilon\ \text{于 }K,\qquad g_x(x)=h(x).
+\]
+现在开集 \(\{z:g_x(z)<h(z)+\varepsilon\}\) 随 \(x\) 变化又覆盖 \(K\)。
+取有限子覆盖，对相应 \(g_x\) 取最小值，得到 \(g\in\mathcal A\)，使
+\(h-\varepsilon<g<h+\varepsilon\) 于 \(K\)。因此 \(h\) 属于原代数的闭包。
+
+复情形中，\(\mathcal A\) 内实值函数组成实代数。
+若 \(f(x)\ne f(y)\)，则 \(\operatorname{Re}f\) 或 \(\operatorname{Im}f\) 分离这两点；
+复共轭封闭性保证它们仍属于 \(\mathcal A\)。实情形可分别逼近任意连续复函数的实部和虚部，
+把两个近似相加便得到复情形。
+\end{proof}
+
+紧性在证明中使用了两次：先把固定一点的两点插值合成一个全局下界，
+再把不同固定点所给的上界合在一起。定理不要求空间可度量。
+
+\subsection{多项式函数演算}
+\label{b1:subsec:290203}
+
+以下回到非零复 Hilbert 空间 \(H\) 上的有界自伴算子 \(T\)，
+记 \(K=\sigma(T)\subset\mathbb R\)。
+对复多项式 \(p(t)=\sum_{j=0}^m a_jt^j\)，定义
+\[
+ p(T)=\sum_{j=0}^m a_jT^j.
+\]
+有限和的运算给出 \((pq)(T)=p(T)q(T)\) 和
+\(p(T)^*=\overline p(T)\)，其中 \(\overline p(t)=\sum_j\overline{a_j}t^j\)。
+这种把函数送到算子的对应称为\term[hanshu-yansuan]{函数演算}[functional calculus]。
+下面的谱计算只需要代数基本定理对一元复多项式的因式分解。
+
+\begin{proposition}[多项式谱映射与范数]
+\label{b1:prop:29-polynomial-calculus}
+设 \(H\ne\{0\}\) 是复 Hilbert 空间，\(T\in\mathcal B(H)\) 且 \(T=T^*\)。
+对任意复多项式 \(p\)，有
+\[
+ \sigma(p(T))=p(\sigma(T)),\qquad
+ \|p(T)\|=\max_{t\in\sigma(T)}|p(t)|.
+\]
+\end{proposition}
+\begin{proof}
+先证谱等式。常多项式的情形由标量算子的逆直接得到。
+若 \(p\) 非常数，对每个 \(w\in\mathbb C\)，由代数基本定理可写
+\[
+ p(t)-w=a\prod_{j=1}^m(t-z_j),\qquad a\ne0.
+\]
+于是 \(p(T)-wI=a\prod_j(T-z_jI)\)。这些因子相互交换。
+有限个相互交换的有界算子的乘积可逆，当且仅当每个因子可逆。
+为看清反向，若 \(AB=BA\) 且 \(AB\) 可逆，则 \(A\) 与 \((AB)^{-1}\) 交换，
+故 \(B(AB)^{-1}\) 是 \(A\) 的双侧逆；对有限个因子重复这个论证即可。
+因此 \(w\notin\sigma(p(T))\) 等价于所有 \(z_j\notin\sigma(T)\)，即 \(w\notin p(\sigma(T))\)。
+
+对任意 \(B\in\mathcal B(H)\)，伴随的范数等式与 Cauchy--Schwarz 不等式给出
+\[
+ \|B\|^2=\sup_{\|x\|=1}\langle B^*Bx,x\rangle
+ \leq\|B^*B\|\leq\|B^*\|\cdot\|B\|=\|B\|^2.
+\]
+取 \(B=p(T)\)，令实系数多项式 \(q(t)=\overline p(t)p(t)\)。
+算子 \(q(T)=p(T)^*p(T)\) 自伴，由\cref{b1:thm:29-self-adjoint-spectral-bound}和刚证的谱映射等式，
+\[
+ \|p(T)\|^2=\|q(T)\|
+ =\max_{s\in\sigma(q(T))}|s|
+ =\max_{t\in\sigma(T)}|p(t)|^2.
+\]
+\end{proof}
+
+这说明即使多项式在谱以外变化很大，它作用在 \(T\) 上的范数仍只由谱上的值决定。
+若两个多项式在谱上相同，它们也给出同一个算子。
+
+\subsection{连续函数演算的构造与唯一性}
+\label{b1:subsec:290204}
+
+\begin{theorem}[连续函数演算]
+\label{b1:thm:29-continuous-calculus}
+设 \(H\ne\{0\}\) 是复 Hilbert 空间，\(T\in\mathcal B(H)\) 且 \(T=T^*\)，
+\(K=\sigma(T)\)。存在唯一的连续线性映射
+\[
+ C(K;\mathbb C)\longrightarrow\mathcal B(H),\qquad f\longmapsto f(T),
+\]
+它保持乘法，把常函数 \(1\) 送到 \(I\)，把坐标函数 \(t\mapsto t\) 送到 \(T\)。
+该映射还满足
+\[
+ \overline f(T)=f(T)^*,\qquad
+ \|f(T)\|=\max_K|f|,\qquad
+ \sigma(f(T))=f(K).
+\]
+若 \(f\geq0\) 于 \(K\)，则 \(\langle f(T)x,x\rangle\geq0\) 对所有 \(x\in H\) 成立。
+\end{theorem}
+\begin{proof}
+多项式在实紧集 \(K\) 上分离点、含常数且对共轭封闭，
+故由\cref{b1:thm:29-stone-weierstrass}在 \(C(K;\mathbb C)\) 中稠密。
+给定 \(f\)，选多项式 \(p_n\to f\) 一致收敛。
+\cref{b1:prop:29-polynomial-calculus}说明 \((p_n(T))\) 在算子范数中是 Cauchy 列，
+所以可定义 \(f(T)=\lim_n p_n(T)\)。若换另一列 \(q_n\to f\)，则
+\(\|p_n(T)-q_n(T)\|=\|p_n-q_n\|_{C(K)}\to0\)，故定义与选择无关。
+有限和、乘积和伴随在算子范数下连续，所以多项式的相应性质都传到极限。
+同一范数等式还给出 \(\|f(T)\|=\|f\|_{C(K)}\)。
+任一满足题设的连续映射在多项式上必须取值为 \(p(T)\)，由稠密性知其唯一。
+
+若 \(w\notin f(K)\)，函数 \(g=(f-w)^{-1}\) 在 \(K\) 上连续；
+乘法性质说明 \(g(T)\) 是 \(f(T)-wI\) 的双侧逆。
+反之，取 \(t\in K\) 和单位向量列 \(x_n\)，使 \((T-tI)x_n\to0\)。
+对固定多项式 \(p\)，因 \(p(s)-p(t)=(s-t)q(s)\)，有
+\((p(T)-p(t)I)x_n\to0\)。再选 \(p\) 使 \(\|f-p\|_{C(K)}<\varepsilon\)，得到
+\[
+ \limsup_n\|(f(T)-f(t)I)x_n\|\leq2\varepsilon.
+\]
+令 \(\varepsilon\downarrow0\)，便得近似特征向量列；有界逆不可能存在，
+故 \(f(t)\in\sigma(f(T))\)。最后，若 \(f\geq0\)，令 \(g=\sqrt f\in C(K)\)，则
+\(f(T)=g(T)^*g(T)\)，其二次型非负。
+\end{proof}
+
+\begin{definition}[正算子]
+\label{b1:def:29-positive-operator}
+设 \(H\) 是复 Hilbert 空间，\(B\in\mathcal B(H)\) 且 \(B=B^*\)。
+若 \(\langle Bx,x\rangle\geq0\) 对所有 \(x\in H\) 成立，
+则称 \(B\) 为\term[zheng-suanzi]{正算子}[positive operator]，记作 \(B\geq0\)。
+这里允许 \(B\) 有非零核；正性不表示存在严格正的统一下界。
+\end{definition}
+
+\begin{corollary}[正平方根与复合]
+\label{b1:cor:29-positive-square-root}
+设 \(H\ne\{0\}\) 是复 Hilbert 空间，\(T\in\mathcal B(H)\) 且 \(T=T^*\)。
+若 \(f\in C(\sigma(T);\mathbb R)\)、\(g\in C(f(\sigma(T));\mathbb C)\)，则
+\[
+ g(f(T))=(g\circ f)(T).
+\]
+此外，\(T\geq0\) 当且仅当 \(\sigma(T)\subset[0,\infty)\)；
+每个有界正算子 \(T\) 有唯一的有界正平方根 \(T^{1/2}\)，满足 \((T^{1/2})^2=T\)。
+\end{corollary}
+\begin{proof}
+复合等式对多项式 \(g\) 由乘法性质成立；
+在实紧集 \(f(\sigma(T))=\sigma(f(T))\) 上一致逼近一般 \(g\)，即得所述等式。
+若谱包含在非负半轴，连续演算的正性给出 \(T\geq0\)。
+反之，若 \(T\geq0\)，对任意 \(t\in\sigma(T)\) 取上一节的单位近似特征向量，
+便有 \(0\leq\langle Tx_n,x_n\rangle\to t\)，所以 \(t\geq0\)。
+存在性由 \(t\mapsto\sqrt t\) 的连续演算得到。
+若 \(B\geq0\) 且 \(B^2=T\)，复合等式给出
+\(T^{1/2}=(B^2)^{1/2}=B\)，从而平方根唯一。
+\end{proof}
+
+最后记录一个以后会用到的交换性质。若 \(S\in\mathcal B(H)\) 且 \(ST=TS\)，
+则 \(S\) 与每个多项式 \(p(T)\) 交换；对多项式逼近取算子范数极限，
+可得 \(Sf(T)=f(T)S\) 对所有 \(f\in C(\sigma(T))\) 成立。
+下一节将把这个演算与积分联系起来。

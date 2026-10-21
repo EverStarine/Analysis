@@ -22,7 +22,7 @@
 \label{b1:subsec:120201}
 
 \begin{definition}\label{b1:def:measure-continuity-set}
-设 \(\mu\) 为 \(X\) 上的 Borel 测度，\(A\) 为 Borel 集。
+设 \(X\) 是拓扑空间。设 \(\mu\) 为 \(X\) 上的 Borel 测度，\(A\) 为 Borel 集。
 若 \(\mu(\partial A)=0\)，则称 \(A\) 为 \(\mu\) 的%
 \term[cedu-lianxuji]{连续集}[continuity set]。
 这里 \(\partial A=\overline A\setminus A^\circ\) 是相对于 \(X\) 的边界。
@@ -32,7 +32,7 @@
 极限测度没有质量。连续测试函数对示性函数的逼近误差便可以集中在越来越小的边界邻域中。
 
 \begin{theorem}[Portmanteau]\label{b1:thm:portmanteau}
-设 \(\mu_n,\mu\in\mathcal P(X)\)。下列条件等价：
+设 \(X\) 是度量空间，\(\mathcal P(X)\) 表示 \(X\) 上全部 Borel 概率测度。设 \(\mu_n,\mu\in\mathcal P(X)\)。下列条件等价：
 \begin{equivalences}
 \item\label{b1:item:portmanteau-continuous}
 \(\mu_n\Rightarrow\mu\)，即所有有界连续函数的积分收敛。
@@ -117,7 +117,7 @@
 集合判据还有一个直接的函数版本。
 
 \begin{proposition}\label{b1:prop:weak-lower-semicontinuity}
-若 \(\mu_n\Rightarrow\mu\)，且 \(f:X\to[0,+\infty]\) 下半连续，则
+设 \(X\) 是度量空间，\(\mathcal P(X)\) 表示 \(X\) 上全部 Borel 概率测度。设 \(\mu_n,\mu\in\mathcal P(X)\)。若 \(\mu_n\Rightarrow\mu\)，且 \(f:X\to[0,+\infty]\) 下半连续，则
 \[
  \int_X f\,\mathrm{d}\mu\leq\liminf_{n\to\infty}\int_X f\,\mathrm{d}\mu_n.
 \]
@@ -165,7 +165,7 @@
 相反，“质量恰好落在一个开集内”的条件不一定封闭。
 
 \begin{proposition}\label{b1:prop:weak-closed-support}
-设 \(F\subset X\) 闭。所有满足 \(\nu(F)=1\) 的概率测度构成 \(\mathcal P(X)\) 的弱闭子集。
+设 \(X\) 是度量空间，\(\mathcal P(X)\) 表示 \(X\) 上全部 Borel 概率测度。设 \(F\subset X\) 闭。所有满足 \(\nu(F)=1\) 的概率测度构成 \(\mathcal P(X)\) 的弱闭子集。
 若 \(\mu_n\Rightarrow\mu\)，且 \(\mu_n(F)=1\) 对每个 \(n\) 成立，则 \(\mu(F)=1\)。
 \end{proposition}
 \begin{proof}
@@ -209,14 +209,73 @@
 \(\mu_n\bigl((a,b]\bigr)\to\mu\bigl((a,b]\bigr)\)。
 同样对边界为 \(\{b\}\) 的半直线 \(( -\infty,b]\) 使用判据，
 便得到分布函数在极限分布连续点处的收敛。
-这一条件反过来也能推出弱收敛，具体证明留在\cref{b1:ex:12-distribution-functions}中。
+反向要把半直线质量接回任意有界连续测试：先控制两端尾部，再在中间的紧区间上作有限划分。
+
+\begin{proposition}[实轴上的分布函数判据]\label{b1:prop:cdf-weak-convergence}
+设 \(\mu_n,\mu\) 为 \(\mathbb R\) 上的 Borel 概率测度，记
+\[
+ F_n(t)=\mu_n\bigl((-\infty,t]\bigr),\qquad
+ F(t)=\mu\bigl((-\infty,t]\bigr).
+\]
+则 \(\mu_n\Rightarrow\mu\) 当且仅当 \(F_n(t)\to F(t)\) 对 \(F\) 的每个连续点 \(t\) 成立。
+\end{proposition}
+\begin{proof}
+有限测度对递减集合列的连续性给出 \(F\) 的右连续性；对递增集合列则有
+\[
+ F(t-)=\mu\bigl((-\infty,t)\bigr),\qquad
+ F(t)-F(t-)=\mu(\{t\}).
+\]
+所以 \(F\) 在 \(t\) 连续恰好等价于 \(\mu(\{t\})=0\)。弱收敛成立时，
+对边界为 \(\{t\}\) 的半直线应用\cref{b1:thm:portmanteau}，就得到必要性。
+
+现在假设连续点处的收敛成立。对每个正整数 \(k\)，质量不小于 \(1/k\) 的单点至多有 \(k\) 个；
+所有正质量单点因而至多可数，\(F\) 的连续点稠密。
+又因 \(F(t)\to0\) 于 \(t\to-\infty\)、\(F(t)\to1\) 于 \(t\to+\infty\)，
+给定 \(0<\varepsilon<1\)，可选连续点 \(a<b\)，使
+\(F(a)<\varepsilon\)、\(1-F(b)<\varepsilon\)。有限个端点上的收敛给出，对充分大的 \(n\)，
+\[
+ \mu_n\bigl(\mathbb R\setminus(a,b]\bigr)
+ =F_n(a)+1-F_n(b)<4\varepsilon,\qquad
+ \mu\bigl(\mathbb R\setminus(a,b]\bigr)<2\varepsilon.
+\]
+这一步用总质量为 \(1\) 控制了两端尚未参与划分的质量。
+
+任取实值 \(f\in C_b(\mathbb R)\)。它在 \([a,b]\) 上一致连续，故可选有限划分
+\[
+ a=t_0<t_1<\cdots<t_m=b,
+\]
+使所有分点都是 \(F\) 的连续点，而且 \(f\) 在每个小区间上的振幅小于 \(\varepsilon\)。
+这里先选足够小的网格尺度，再利用连续点的稠密性选择分点即可。
+定义
+\[
+ s=\sum_{j=1}^m f(t_j)\cdot\mathbf1_{(t_{j-1},t_j]}.
+\]
+各小区间的质量满足
+\[
+ \mu_n\bigl((t_{j-1},t_j]\bigr)
+ =F_n(t_j)-F_n(t_{j-1})
+ \longrightarrow F(t_j)-F(t_{j-1}),
+\]
+所以有限和给出 \(\int s\,\mathrm d\mu_n\to\int s\,\mathrm d\mu\)。
+在 \((a,b]\) 内，\(|f-s|<\varepsilon\)；在其外，\(s=0\)。因此
+\[
+ \limsup_{n\to\infty}
+ \left|\int f\,\mathrm d\mu_n-\int f\,\mathrm d\mu\right|
+ \le 2\varepsilon+6\|f\|_\infty\varepsilon.
+\]
+令 \(\varepsilon\downarrow0\)，便得到所有有界连续测试的积分收敛。
+复值测试分别处理实部、虚部即可。
+\end{proof}
+
+半直线的次序结构在证明中提供了两种控制：端点质量估计尾部，有限差分给出网格小区间的质量。
+仅凭半直线生成 Borel \(\sigma\)-代数，不能直接宣布弱收敛；还需要上述对连续测试函数的逼近。
 
 \ProseParagraphBreak
 
-连续集还允许把测试函数适当放宽：函数可以不处处连续，只要不连续点不承载极限质量。
+回到一般度量空间 \(X\)，连续集还允许把测试函数适当放宽：函数可以不处处连续，只要不连续点不承载极限质量。
 
 \begin{proposition}\label{b1:prop:weak-ae-continuous-test}
-设 \(\mu_n\Rightarrow\mu\)，\(f:X\to\mathbb R\) 为有界 Borel 函数，
+设 \(X\) 是度量空间，\(\mathcal P(X)\) 表示 \(X\) 上全部 Borel 概率测度。设 \(\mu_n,\mu\in\mathcal P(X)\)。设 \(\mu_n\Rightarrow\mu\)，\(f:X\to\mathbb R\) 为有界 Borel 函数，
 其不连续点集记为 \(D_f\)。若 \(\mu(D_f)=0\)，则
 \[
  \int_X f\,\mathrm{d}\mu_n\longrightarrow\int_X f\,\mathrm{d}\mu.

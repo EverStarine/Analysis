@@ -1,47 +1,342 @@
 % !TeX root = ../../Book3.tex
 \OptionalSection{二次型的 \texorpdfstring{\(\theta\)}{\AnalysisPdfTheta} 级数}{b3:sec:2405}
 
-把平方和换成一般正定二次型，收敛和生成函数意义仍保留，但参数反演会涉及对偶格，模群也通常缩小。
+前面的平方和采用标准坐标和标准长度。若把坐标方向倾斜、伸缩，所得平方长度就是一般正定二次型；Gaussian 的反演仍然有效，但它通常把原格换成另一个格。这一节说明两个问题：反演中的对偶格与体积因子从哪里来，以及哪些额外条件能把一个计数级数放进前章的全模群模形式空间。本节是选读内容，不参与前面二平方和、四平方和公式的证明；所需代数仅是实对称矩阵的正交对角化、整数基变换与有限指标的计数。
 
 \subsection{正定二次型}
 \label{b3:subsec:240501}
 
-设 \(A\) 为实对称正定矩阵，\(Q(x)=\tfrac12x^TAx\)。正定性给 \(Q(x)\ge c|x|^2\)，因而 \(\sum_{m\in\mathbb Z^d}e^{2\pi\mathrm{i}\tau Q(m)}\) 在上半平面正规收敛。若 \(A\) 为整矩阵且对角线为偶数，则 \(Q(m)\) 为整数，级数对 \(\tau\mapsto\tau+1\) 不变。
+\begin{definition}[正定二次型及其 theta 级数]\label{b3:def:24-quadratic-theta}
+设 \(d\ge1\) 为整数，\(A\) 为实对称 \(d\times d\) 矩阵，并满足
+\(x^{\mathsf T}Ax>0\) 对所有 \(0\ne x\in\mathbb R^d\) 成立。令
+\[
+ Q_A(x)=\frac12x^{\mathsf T}Ax,\qquad
+ \Theta_A(\tau)=\sum_{m\in\mathbb Z^d}e^{2\pi\mathrm{i}\tau Q_A(m)}
+ \quad(\tau\in\mathfrak H).
+\]
+此处 \(Q_A\) 是\term[zhengding-ercixing]{正定二次型}[positive definite quadratic form]，前面的 \(1/2\) 是本节的归一化。
+\end{definition}
+
+为什么特意放入 \(1/2\)？稍后令 \(A=B^{\mathsf T}B\)，则
+\(2Q_A(m)=|Bm|^2\)，指数便成为 Gaussian 中的
+\(\pi\mathrm{i}\tau|Bm|^2\)。当每个格向量的平方长度是偶整数时，
+\(Q_A(m)\) 是整数，恰好对应前章变量 \(e^{2\pi\mathrm{i}\tau}\) 的整数次幂。本章较早使用的变量仍是 \(q=e^{\pi\mathrm{i}\tau}\)；本节需要区分二者，故另记
+\[
+ q_{\mathrm{mod}}=e^{2\pi\mathrm{i}\tau}=q^2.
+\]
+下文不会把 \(q\) 的含义悄悄换掉。
+
+\ProseParagraphBreak
+
+实对称矩阵的正交对角化给
+\(A=U^{\mathsf T}\operatorname{diag}(\lambda_1,\ldots,\lambda_d)U\)，其中
+\(U\) 正交、\(\lambda_j>0\)。若 \(\lambda=\min_j\lambda_j\)，则
+\(m^{\mathsf T}Am\ge\lambda|m|^2\)。于是，在
+\(\operatorname{Im}\tau\ge\eta>0\) 上，
+\[
+ \left|e^{2\pi\mathrm{i}\tau Q_A(m)}\right|
+ \le e^{-\pi\eta\lambda|m|^2},\qquad
+ \sum_{m\in\mathbb Z^d}e^{-\pi\eta\lambda|m|^2}
+ =\left(\sum_{n\in\mathbb Z}e^{-\pi\eta\lambda n^2}\right)^d<\infty.
+\]
+任意固定次 \(\tau\) 导数只增加关于 \(m\) 的多项式因子，仍受较慢衰减的 Gaussian 控制。因此 \(\Theta_A\) 在上半平面全纯，逐项求导合法。正定性也保证每个有界能量区间中只有有限个整数向量，而不只是保证某个形式上的级数收敛。
+
+\begin{proposition}[整数值的矩阵条件]\label{b3:prop:24-even-matrix}
+设 \(A\) 为实对称 \(d\times d\) 矩阵，\(d\ge1\)，并令
+\(Q_A(m)=\tfrac12m^{\mathsf T}Am\)。则 \(Q_A(\mathbb Z^d)\subset\mathbb Z\)
+当且仅当 \(A\) 的每个矩阵元均为整数且对角元均为偶数。若此外 \(A\) 正定，则
+\[
+ \Theta_A(\tau)=\sum_{n\ge0}r_{Q_A}(n)q_{\mathrm{mod}}^n,\qquad
+ r_{Q_A}(n)=\#\{m\in\mathbb Z^d:Q_A(m)=n\},
+\]
+其中 \(q_{\mathrm{mod}}=e^{2\pi\mathrm{i}\tau}\)。级数在 \(\tau\in\mathfrak H\) 绝对收敛，\(r_{Q_A}(0)=1\)，并满足
+\(\Theta_A(\tau+1)=\Theta_A(\tau)\)。
+\end{proposition}
+\begin{proof}
+若 \(Q_A\) 在整数向量上取整数值，则
+\(A_{ii}=2Q_A(e_i)\) 为偶整数；当 \(i\ne j\) 时，
+\[
+ A_{ij}=Q_A(e_i+e_j)-Q_A(e_i)-Q_A(e_j)
+\]
+为整数。反过来，把二次型写成
+\[
+ Q_A(m)=\sum_i\frac{A_{ii}}2m_i^2+\sum_{i<j}A_{ij}m_im_j,
+\]
+右边各项均为整数。正定时，每个固定能量层有限，且所有能量非负、零能量只有零向量。前面的绝对收敛估计允许按能量重新分组；每项的指数为整数，也就得到参数的周期一。
+\end{proof}
+
+例如 \(A=2I_d\) 给 \(Q_A(m)=|m|^2\)，这时
+\(\Theta_A(\tau)=\theta_3(0,2\tau)^d\)。若 \(A=I_d\)，则
+\(\Theta_A(\tau)=\theta_3(0,\tau)^d\)，但 \(Q_A(e_1)=1/2\)，参数平移一通常不再保持它。半正定与不定二次型也不能直接代入以上定义而期待同样结论：\(Q(x,y)=x^2\) 的零能量层含全部 \((0,y)\)，而 \(Q(x,y)=x^2-y^2\) 的零层含全部 \((n,n)\)。两者已经出现无穷系数，后者的负能量项还会随 \(\operatorname{Im}\tau>0\) 指数增长。
 
 \subsection{格 \texorpdfstring{\(\theta\)}{\AnalysisPdfTheta} 级数}
 \label{b3:subsec:240502}
 
-对欧氏格 \(L\)，记 \(L^*=\{y:\langle x,y\rangle\in\mathbb Z\ (x\in L)\}\)，基本区域体积为 \(v(L)\)。格 theta 级数为
-\(\Theta_L(\tau)=\sum_{x\in L}e^{\pi\mathrm{i}\tau|x|^2}\)。把实高斯的 Fourier 变换按基矩阵换元，Poisson 求和给
+\chapref{b3:ch:22}中的复格是实二维平面内两条实线性无关向量的整数张成。这里将同一个概念推广到任意有限维欧氏空间，保留实际的欧氏内积；只有知道内积，才能谈向量长度及对偶格。
+
+\begin{definition}[欧氏格、体积与对偶格]\label{b3:def:24-euclidean-lattice}
+设 \(d\ge1\)，\(B\in\mathrm{GL}_d(\mathbb R)\)。集合
 \[
-\Theta_L(-1/\tau)=\frac{(-\mathrm{i}\tau)^{d/2}}{v(L)}\Theta_{L^*}(\tau).
+ L=B\mathbb Z^d
 \]
-高维求和公式可先对标准整数格逐个坐标作周期 Fourier 展开，再线性换元；高斯的共同快速衰减保证所有换序。
+称为 \(\mathbb R^d\) 中的满秩\term[oushi-ge]{欧氏格}[Euclidean lattice]，\(B\) 的列向量是它的一组基。
+半开平行多面体 \(B[0,1)^d\) 的体积
+\[
+ v(L)=|\det B|
+\]
+称为其\term[jiben-quyu-tiji]{基本区域体积}[covolume]。定义
+\term[duiou-ge]{对偶格}[dual lattice]
+\[
+ L^*=\{y\in\mathbb R^d:\langle x,y\rangle\in\mathbb Z
+                         \text{ 对每个 }x\in L\}.
+\]
+格的 theta 级数定义为
+\[
+ \Theta_L(\tau)=\sum_{x\in L}e^{\pi\mathrm{i}\tau|x|^2},
+ \qquad \tau\in\mathfrak H.
+\]
+\end{definition}
+\symidx{\(L^*\)：欧氏格 \(L\) 的对偶格}
+\symidx{\(v(L)\)：欧氏格 \(L\) 的基本区域体积}
+\symidx{\(\Theta_L\)：欧氏格的 theta 级数}
+
+这些定义不依赖所选整数基。若 \(B'\mathbb Z^d=B\mathbb Z^d\)，则
+\(U=B^{-1}B'\) 及其逆矩阵都具有整数元，所以
+\(\det U\) 与 \(1/\det U\) 都是整数，必有 \(\det U=\pm1\)。
+因此 \(|\det B'|=|\det B|\)。逐坐标取整数部分还说明：每个点都能唯一写成一个格向量加上 \(B[0,1)^d\) 中的点，所以这确实是一个基本区域。
+
+\ProseParagraphBreak
+
+给定 \(B\)，定义中的内积条件等价于
+\(m^{\mathsf T}B^{\mathsf T}y\in\mathbb Z\) 对每个 \(m\in\mathbb Z^d\) 成立；取 \(m=e_j\) 就得到 \(B^{\mathsf T}y\in\mathbb Z^d\)。于是
+\begin{equation}\label{b3:eq:24-dual-lattice}
+ L^*=B^{-\mathsf T}\mathbb Z^d,\qquad
+ (L^*)^*=L,\qquad v(L^*)=v(L)^{-1}.
+\end{equation}
+这里 \(B^{-\mathsf T}\) 表示 \((B^{-1})^{\mathsf T}\)。另一方面，
+\[
+ \Theta_L(\tau)=\sum_{m\in\mathbb Z^d}
+ e^{\pi\mathrm{i}\tau m^{\mathsf T}(B^{\mathsf T}B)m}
+ =\Theta_A(\tau),\qquad A=B^{\mathsf T}B.
+\]
+矩阵 \(A\) 的第 \(i,j\) 个元是基向量的内积，称为\term[gram-juzhen]{Gram 矩阵}[Gram matrix]；它正定，因为 \(B\) 可逆。反过来，任意实对称正定矩阵可由正交对角化构造正定平方根 \(A^{1/2}\)，取 \(B=A^{1/2}\) 即得相应格。所以矩阵形式与格形式记录同一个长度问题，只是前者保留了整数坐标，后者强调几何对象。
+
+\ProseParagraphBreak
+
+下面完整建立本节所用的高维 Gaussian 求和。它沿用\cref{b3:lem:24-gaussian-poisson}的一维变换及周期化方法，补上矩阵换元；不要求先掌握一般分布意义的 Poisson 公式。
+
+\begin{lemma}[格上的 Gaussian Poisson 求和]\label{b3:lem:24-lattice-poisson}
+设 \(d\ge1\)，\(L=B\mathbb Z^d\subset\mathbb R^d\)，其中 \(B\) 为实可逆矩阵，\(L^*\) 为上述欧氏对偶格。对每个实数 \(t>0\)，有
+\[
+ \sum_{x\in L}e^{-\pi t|x|^2}
+ =\frac{t^{-d/2}}{v(L)}
+       \sum_{y\in L^*}e^{-\pi|y|^2/t}.
+\]
+两侧级数均绝对收敛。
+\end{lemma}
+\begin{proof}
+先固定 Fourier 变换约定
+\(\widehat f(\xi)=\int_{\mathbb R^d}f(u)e^{-2\pi\mathrm{i}\langle u,\xi\rangle}\,\mathrm du\)。
+对正定矩阵 \(A=B^{\mathsf T}B\) 及 \(g(u)=e^{-\pi t u^{\mathsf T}Au}\)，取正交坐标将 \(A\) 对角化，并逐坐标应用
+\[
+ \int_{\mathbb R}e^{-\pi s u^2}e^{-2\pi\mathrm{i}u\xi}\,\mathrm du
+ =s^{-1/2}e^{-\pi\xi^2/s}\qquad(s>0).
+\]
+各坐标的 Gaussian 可积，所以 Fubini 定理适用。将结果换回原坐标得到
+\begin{equation}\label{b3:eq:24-matrix-gaussian}
+ \widehat g(\xi)
+ =t^{-d/2}(\det A)^{-1/2}
+       e^{-\pi\xi^{\mathsf T}A^{-1}\xi/t}.
+\end{equation}
+行列式平方根取正数。这一步也解释了为何频率中出现逆矩阵，而常数中出现行列式。
+
+周期化
+\[
+ P(u)=\sum_{m\in\mathbb Z^d}g(u+m).
+\]
+在 \(u\in[0,1]^d\) 上，\(u\) 有界，正定性使每一固定阶导数的绝对值总和受
+\(C\sum_m(1+|m|)^N e^{-c|m|^2}\) 控制，其中 \(C,c>0\)。故 \(P\) 连续且逐坐标周期为一。其第 \(n\in\mathbb Z^d\) 个 Fourier 系数为
+\[
+ \begin{aligned}
+ \int_{[0,1]^d}P(u)e^{-2\pi\mathrm{i}\langle n,u\rangle}\,\mathrm du
+ &=\sum_m\int_{[0,1]^d}g(u+m)e^{-2\pi\mathrm{i}\langle n,u\rangle}\,\mathrm du\\
+ &=\int_{\mathbb R^d}g(u)e^{-2\pi\mathrm{i}\langle n,u\rangle}\,\mathrm du
+ =\widehat g(n).
+ \end{aligned}
+\]
+换序由上述一致控制保证；第二步利用整数相位
+\(e^{2\pi\mathrm{i}\langle n,m\rangle}=1\)，并把单位立方体平移后拼成全空间。
+
+式\eqref{b3:eq:24-matrix-gaussian}显示
+\(\sum_n|\widehat g(n)|<\infty\)，故
+\(F(u)=\sum_n\widehat g(n)e^{2\pi\mathrm{i}\langle n,u\rangle}\)
+一致收敛，且与 \(P\) 有相同的 Fourier 系数。此处的唯一性仍可化为一维：若一个连续周期函数在 \(d\) 维的所有 Fourier 系数均为零，先固定后 \(d-1\) 个频率，对后 \(d-1\) 个坐标积分；所得关于第一个坐标的连续函数具有全零 Fourier 系数，因一维唯一性而为零。再固定第一个坐标，对其余坐标归纳，原函数即为零。因此 \(P=F\)。
+
+令 \(u=0\)，得到 \(\sum_m g(m)=\sum_n\widehat g(n)\)。最后利用
+\[
+ (\det A)^{1/2}=|\det B|=v(L),\qquad
+ n^{\mathsf T}A^{-1}n=|B^{-\mathsf T}n|^2,
+\]
+便将右端重新写成对偶格上的求和。
+\end{proof}
+
+\begin{theorem}[格 theta 级数的反演]\label{b3:thm:24-lattice-inversion}
+设 \(d\ge1\)，\(L\subset\mathbb R^d\) 为满秩欧氏格，\(L^*\) 为其欧氏对偶格，\(v(L)\) 为基本区域体积。对所有 \(\tau\in\mathfrak H\)，
+\begin{equation}\label{b3:eq:24-lattice-inversion}
+ \Theta_L(-1/\tau)
+ =\frac{(-\mathrm{i}\tau)^{d/2}}{v(L)}\Theta_{L^*}(\tau).
+\end{equation}
+其中
+\((-\mathrm{i}\tau)^{d/2}=\exp\bigl(\tfrac d2\operatorname{Log}(-\mathrm{i}\tau)\bigr)\)，
+对数取右半平面上在正实轴为实数的全纯分支。
+\end{theorem}
+\begin{proof}
+先取 \(\tau=\mathrm{i}t\)、\(t>0\)。将上一引理中的实参数替换为 \(1/t\)，就得到
+\[
+ \Theta_L(\mathrm{i}/t)=\frac{t^{d/2}}{v(L)}\Theta_{L^*}(\mathrm{i}t),
+\]
+这正是所需公式在虚轴上的情形。两侧关于 \(\tau\in\mathfrak H\) 都全纯：级数的正规收敛已证，而 \(-\mathrm{i}\tau\) 总在右半平面，指定对数分支存在。虚轴在上半平面内部有聚点，恒等定理遂把等式推广到整个上半平面。
+\end{proof}
+
+体积因子可以用一维伸缩检查。若 \(L=a\mathbb Z\)、\(a>0\)，则
+\(L^*=a^{-1}\mathbb Z\)、\(v(L)=a\)，反演式变为
+\[
+ \theta_3(0,-a^2/\tau)
+ =\frac{(-\mathrm{i}\tau)^{1/2}}{a}\,
+       \theta_3(0,\tau/a^2).
+\]
+不同尺度的格在同一个大球中具有不同的点密度，\(a^{-1}\) 正好记录这一差别。若省略体积，只在 \(a=1\) 的特殊情形中还看不出错误。
 
 \subsection{模性}
 \label{b3:subsec:240503}
 
-若 \(L=L^*\)，并且每个格向量平方长度为偶整数，则 \(v(L)=1\)，平移与反演都封闭在同一个 theta 级数上。若另有 \(d\) 是八的倍数，则 \((-\mathrm{i})^{d/2}=1\)，两个生成元给出权 \(d/2\) 的全模群变换律；尖点常数项一及指数尾部给尖点全纯性。因此 \(\Theta_L\in M_{d/2}\)。这里把维数条件列为假设，并不在本节证明偶自对偶格的维数必为八的倍数。
+反演交换 \(L\) 与 \(L^*\)，参数平移则检查平方长度的奇偶性。因此要让两种操作都留在同一个标量函数上，需要分别对这两件事加条件。
 
-\subsection{表示数}
+\begin{definition}[整性、偶性与自对偶性]\label{b3:def:24-even-self-dual}
+设 \(L\subset\mathbb R^d\) 为满秩欧氏格。若
+\(\langle x,y\rangle\in\mathbb Z\) 对所有 \(x,y\in L\) 成立，则称 \(L\) 为\term[zheng-ge]{整格}[integral lattice]；若
+\(|x|^2\in2\mathbb Z\) 对所有 \(x\in L\) 成立，则称 \(L\) 为\term[ou-ge]{偶格}[even lattice]。若 \(L=L^*\)，则称 \(L\) 为\term[ziduiou-ge]{自对偶格}[self-dual lattice]。同时满足偶性和自对偶性的格称为\term[ou-ziduiou-ge]{偶自对偶格}[even self-dual lattice]。
+\end{definition}
+
+偶性蕴含整性，因为
+\[
+ \langle x,y\rangle=\frac{|x+y|^2-|x|^2-|y|^2}{2}
+\]
+是整数。整性等价于 \(L\subset L^*\)，而自对偶性更强；由式\eqref{b3:eq:24-dual-lattice}，自对偶还推出 \(v(L)=1\)。若 \(A\) 是格基的 Gram 矩阵，则整性等价于 \(A\) 为整矩阵，偶性等价于它的对角元为偶数且全部矩阵元为整数。这与\cref{b3:prop:24-even-matrix}的条件完全对应。
+
+\ProseParagraphBreak
+
+另一个有用的判据是：整格且 \(v(L)=1\) 必为自对偶格。事实上，\(L\subset L^*\) 时，可用 \(L^*\) 的一组基把 \(L\) 的基写成一个整数矩阵 \(C\)，于是
+\(|\det C|=v(L)/v(L^*)\)。若两体积均为一，\(\det C=\pm1\)；其逆矩阵由伴随矩阵公式仍有整数元，故两组基生成同一个格。一般地，有限指标包含 \(L_0\subset L_1\) 满足
+\(v(L_0)=[L_1:L_0]v(L_1)\)：选择有限个陪集代表，\(L_1\) 的基本区域经过这些平移后，除去边界便组成 \(L_0\) 的基本区域。这里“指标”就是不同陪集的个数。
+
+\begin{theorem}[偶自对偶格给出的模形式]\label{b3:thm:24-lattice-modularity}
+设 \(d\) 为正的八的倍数，\(L\subset\mathbb R^d\) 为满秩欧氏格，满足
+\(L=L^*\) 及 \(|x|^2\in2\mathbb Z\) 对所有 \(x\in L\) 成立。则
+\(\Theta_L\) 是全模群 \(\mathrm{SL}_2(\mathbb Z)\) 上权 \(d/2\) 的全纯模形式，即 \(\Theta_L\in M_{d/2}\)。以 \(q_{\mathrm{mod}}=e^{2\pi\mathrm{i}\tau}\) 为变量，其尖点展开为
+\[
+ \Theta_L(\tau)=1+\sum_{n\ge1}R_L(n)q_{\mathrm{mod}}^n,\qquad
+ R_L(n)=\#\{x\in L:|x|^2=2n\}.
+\]
+\end{theorem}
+\begin{proof}
+已知 \(\Theta_L\) 在上半平面全纯。偶性逐项给出
+\(\Theta_L(\tau+1)=\Theta_L(\tau)\)。自对偶性及体积互反给 \(v(L)=1\)，于是反演定理给
+\[
+ \Theta_L(-1/\tau)=(-\mathrm{i}\tau)^{d/2}\Theta_L(\tau)
+                 =\tau^{d/2}\Theta_L(\tau),
+\]
+最后一步使用 \(d\in8\mathbb Z\)，从而
+\((-\mathrm{i})^{d/2}=1\)。这是矩阵
+\(T=\left(\begin{smallmatrix}1&1\\0&1\end{smallmatrix}\right)\) 与
+\(S=\left(\begin{smallmatrix}0&-1\\1&0\end{smallmatrix}\right)\)
+所要求的两条变换律。由\secref{b3:sec:2301}中以 Euclid 算法得到的生成结论，这两个矩阵生成 \(\mathrm{SL}_2(\mathbb Z)\)；前章已经核对的整数权因子在矩阵乘法下满足乘积规则，故两条等式给出整个群的变换律。
+
+只剩尖点处全纯。偶性使每个指数 \(|x|^2/2\) 是非负整数，且等于零时只有 \(x=0\)。按长度分组得到所列展开。对任意 \(0<r<1\)，取 \(y>0\) 使 \(e^{-2\pi y}=r\)，则
+\[
+ \sum_{n\ge0}R_L(n)r^n
+ =\sum_{x\in L}e^{-\pi y|x|^2}<\infty.
+\]
+所以该幂级数在 \(|q_{\mathrm{mod}}|<1\) 全纯，并在原点取值一。这正是前章对尖点全纯性的定义。全模群的所有有理尖点与无穷远等价，故不需要再加入新的独立尖点条件。
+\end{proof}
+
+本定理把维数条件写成假设；本节不证明“偶自对偶格的维数一定被八整除”这一更强结论。即使已经知道某个格是整格，也不能略过本定理的其他条件。例如 \(\mathbb Z^d\) 自对偶，但 \(e_1\) 的平方长度是一，故
+\(\theta_3(0,\tau)^d\) 平移参数一后变为 \(\theta_4(0,\tau)^d\)，通常不是原函数。又如 \(\sqrt2\,\mathbb Z\) 是偶格，却不是自对偶格，反演会得到
+\(2^{-1/2}\mathbb Z\) 的级数。一般整数值正定二次型的 theta 级数可以在适当子群上具有模性，但必须同时处理该子群、权、乘子及其尖点；\appref{b3:app:E}介绍相关语言，当前定理不把这些不同版本混在一起。
+
+\subsection{表示数与偶自对偶格的实例}
 \label{b3:subsec:240504}
 
-若 \(Q\) 在整格上取非负整数值，则 Fourier 系数等于表示数 \(r_Q(n)=\#\{m:Q(m)=n\}\)。正定性保证每层有限。对非自对偶格，反演把它送到对偶格或若干陪集级数的组合，通常得到子群上的模形式或向量值变换律；不能从一个高斯公式直接宣称所有整二次型都给全模群标量模形式。\appref{b3:app:E}将说明有限层级的相应语言。
+若只是列出偶性与自对偶性两个条件，仍不容易看出它们能否同时实现。下面构造一个八维模型；所有条件都从坐标出发核验，再由前章的一维模形式空间一次确定它的所有表示数。这个模型通常称为 \(E_8\) 格，具体坐标及其 theta 级数与 \(E_4\) 的关系可见 Zagier 的《Elliptic Modular Forms and Their Applications》\cite[p. 34]{Zagier2008Elliptic}；这里不要求预先了解根系或 Lie 代数。
+
+\begin{proposition}[八维偶自对偶格]\label{b3:prop:24-e8-lattice}
+在标准欧氏空间 \(\mathbb R^8\) 中，令
+\[
+ D_8=\{x\in\mathbb Z^8:\textstyle\sum_{j=1}^8x_j\in2\mathbb Z\},
+ \qquad v=\left(\tfrac12,\ldots,\tfrac12\right),\qquad
+ L_8=D_8\cup(D_8+v).
+\]
+则 \(L_8\) 是满秩偶自对偶格，\(v(L_8)=1\)。其最短非零向量的平方长度为二，恰有 \(240\) 个。
+\end{proposition}
+\begin{proof}
+首先验证并集构成格，而不只是两组散点。由于 \(2v=(1,\ldots,1)\in D_8\)，两个半整数陪集的元素相加落回 \(D_8\)，取负也留在同一个并集中。因此 \(L_8\) 是加法子群，并包含 \(D_8\)。
+
+为明确给出整数基，设 \(e_j\) 为标准基，取
+\[
+ u_i=e_i-e_{i+1}\quad(1\le i\le6),\qquad
+ u_7=e_6+e_7,\qquad u_8=v.
+\]
+前七个向量生成
+\(\{(x_1,\ldots,x_7,0)\in\mathbb Z^8:\sum_{j=1}^7x_j\in2\mathbb Z\}\)：
+先用相邻坐标之差把前六个坐标移到第七个坐标，再用
+\(2e_7=u_7-u_6\) 处理剩余的偶整数。对任意 \(x\in D_8\)，向量
+\(x-2x_8v\) 的第八坐标为零，前七坐标之和为
+\(\sum_jx_j-8x_8\)，仍为偶数，故由 \(u_1,\ldots,u_7\) 生成。这样 \(D_8\) 及其陪集 \(D_8+v\) 都由这八个向量生成。前七个在前七维实空间中线性无关，而 \(v\) 的第八坐标非零，所以它们是 \(L_8\) 的一组格基。
+
+再核对偶性。对 \(x\in D_8\)，由 \(x_j^2\equiv x_j\pmod2\) 得
+\(|x|^2\in2\mathbb Z\)；对半整数向量 \(x+v\)、\(x\in D_8\)，有
+\[
+ |x+v|^2=|x|^2+\sum_jx_j+2\in2\mathbb Z.
+\]
+因此 \(L_8\) 是偶格，极化恒等式又给出整性。
+映射 \(x\mapsto\sum_jx_j\pmod2\) 将 \(\mathbb Z^8\) 满射到两元素群，核为 \(D_8\)，所以 \(D_8\) 在 \(\mathbb Z^8\) 中的指标为二，\(v(D_8)=2\)。
+定义中两个陪集互不相交，故 \(D_8\) 在 \(L_8\) 中也有指标二，于是
+\(v(L_8)=v(D_8)/2=1\)。整性及体积一的判据遂给 \(L_8=L_8^*\)。
+
+最后计算短向量。平方长度是正的偶整数，所以非零向量的平方长度至少为二。整数部分中，长度平方二恰要求两个坐标为 \(\pm1\)、其余为零；它们的坐标和自动为偶数，共有
+\(\binom82\,2^2=112\) 个。半整数部分中，每个坐标绝对值至少 \(1/2\)；若有一个达到 \(3/2\)，平方长度已至少
+\(9/4+7/4=4\)。所以长度平方二时所有坐标都为 \(\pm1/2\)。
+写成 \(x+v\) 后，\(x_j\) 分别为零或 \(-1\)，属于 \(D_8\) 等价于负号个数为偶数。前七个符号任意选，最后一个由奇偶条件唯一确定，共 \(2^7=128\) 个。合计 \(112+128=240\)，且确实存在这样的向量，所以最短长度平方就是二。
+\end{proof}
+
+\begin{corollary}[八维偶自对偶格的全部表示数]\label{b3:cor:24-e8-eisenstein}
+设 \(L\subset\mathbb R^8\) 为任意满秩偶自对偶欧氏格。则
+\[
+ \Theta_L(\tau)=E_4(\tau)\qquad(\tau\in\mathfrak H),
+\]
+其中 \(E_4\) 是前章常数项归一到一的权四 Eisenstein 级数。因此对每个整数 \(n\ge1\)，
+\[
+ \#\{x\in L:|x|^2=2n\}=240\,\sigma_3(n),
+ \qquad \sigma_3(n)=\sum_{\substack{a\ge1\\a\mid n}}a^3.
+\]
+这一结论特别适用于上面的 \(L_8\)。
+\end{corollary}
+\begin{proof}
+由\cref{b3:thm:24-lattice-modularity}，\(\Theta_L\in M_4\)，常数项为一。
+\cref{b3:thm:23-modular-ring}说明
+\(M_4=\mathbb C E_4\)：权为四的单项式只有 \(E_4\) 本身。
+所以 \(\Theta_L=cE_4\)；比较常数项即得 \(c=1\)。
+再用式\eqref{b3:eq:23-e4-e6-fourier}中的展开
+\[
+ E_4(\tau)=1+240\sum_{n\ge1}\sigma_3(n)q_{\mathrm{mod}}^n,
+\]
+与长度平方 \(2n\) 的计数展开比较，得到公式。
+\end{proof}
+
+这里的逻辑次序很重要：先证明 theta 级数确实属于同一个一维空间，再比较一个系数。因此只计算最短向量的 \(240\) 个并不是推导所有系数的依据，而是一个独立的几何核验。例如公式还给出平方长度四的向量数
+\(240(1+2^3)=2160\)，平方长度六的向量数
+\(240(1+3^3)=6720\)。随着长度增加，逐坐标枚举越来越复杂，而有限维性已经统一控制了这些层。
 
 \ProseParagraphBreak
 
-高维 Gaussian 公式中的体积因子可在矩阵形式下直接看到。若 \(A\) 正定，选正交坐标将它对角化，再逐坐标使用一维 Gaussian 变换，得到
-\[
- \widehat{e^{-\pi t x^TAx}}(\xi)
- =t^{-d/2}(\det A)^{-1/2}e^{-\pi\xi^TA^{-1}\xi/t}.
-\]
-正定性确保特征值全正、Gaussian 可积；逆矩阵出现在频率的二次型中，行列式来自实变量换元。因此反演自然交换原格与对偶格，而不会对任意正定整矩阵保持同一个级数。若二次型只是半正定，例如 \(Q(x,y)=x^2\)，每个固定表示层中 \(y\) 可任意变化，系数已经无穷；若不定，例如 \(x^2-y^2\)，零层也无穷。正定性不仅用于估计，还保证生成函数本身的计数意义。
-\ProseParagraphBreak
-偶自对偶条件有一个具体的八维实例。令
-\[
- D_8=\{x\in\mathbb Z^8:\textstyle\sum_jx_j\text{ 为偶数}\},\qquad
- L=D_8\cup\left(D_8+\left(\tfrac12,\ldots,\tfrac12\right)\right).
-\]
-两次半整数平移回到 \(D_8\)，故并集是加法群。整数部分的平方长度模二等于坐标和，因而偶；半整数部分 \(x+v\) 的平方长度为 \(|x|^2+\sum x_j+2\)，也为偶整数。由极化恒等式，任意两格向量的内积为整数，所以 \(L\subset L^*\)。\(D_8\) 在整数格中指标为二，体积二；\(L\) 又含它为指标二子格，故体积一。对偶格体积为倒数一，包含关系与相同体积迫使 \(L=L^*\)。这给出本节模性结论所需的全部假设。
-\ProseParagraphBreak
-还可独立数出其最短非零向量。整数部分长度平方为二的向量恰有两个坐标为 \(\pm1\)，共 \(\binom82\cdot4=112\) 个。半整数部分若有坐标绝对值至少 \(3/2\)，平方长度已至少四；所以长度平方二时八个坐标全为 \(\pm1/2\)。属于指定陪集要求负号数为偶数，恰有 \(2^7=128\) 个。总数为240，与权四 Eisenstein 级数的一次系数相符。这个几何核算检验了长度平方 \(2n\) 与模变量 \(e^{2\pi\mathrm{i}\tau}\) 中 \(q^n\) 的对应，也给抽象的偶自对偶条件一个可以逐坐标检查的模型。
+这个推论也没有证明八维偶自对偶格在等距意义下只有一种；它只说明任何满足条件的格具有相同的 theta 级数，因而每一长度层的点数相同。一个计数级数只记长度及重数，并未记录不同向量之间所有夹角。区分“所有计数系数相同”与“格本身相同”，正是把生成函数方法推广到更高维时必须保留的边界。

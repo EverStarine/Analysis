@@ -1,0 +1,149 @@
+% !TeX root = ../../Book2.tex
+\section{Hardy–Littlewood 极大算子回顾}
+\label{b2:sec:1701}
+
+固定尺度的平均会平滑函数，却可能漏掉比这个尺度窄得多的尖峰。若要同时讨论许多尺度的逼近，就希望用同一个函数控制所有这些平均。极大算子的做法是：先在每一点计算各个尺度上的绝对平均，再取其中的上确界。这个上确界允许观察尺度随位置改变，因而不能简单视为一个固定核的卷积。本节固定欧氏空间的 Lebesgue 测度，\(d\geq1\) 为整数。
+
+\subsection{第一卷结果回顾}
+\label{b2:subsec:170101}
+
+对实或复函数 \(f\in L^1_{\mathrm{loc}}(\mathbb R^d)\)，约定
+\[
+ Mf(x)\coloneqq\sup_{r>0}\dfrac1{|B(x,r)|}\int_{B(x,r)}|f(y)|\,\mathrm dy.
+\]
+\symidx{\(Mf\)：Hardy--Littlewood 中心极大函数}
+这是本卷的\term[hardy-littlewood-jida-hanshu]{Hardy--Littlewood 极大函数}[Hardy--Littlewood maximal function]，相应映射 \(f\mapsto Mf\) 称为极大算子。先取绝对值，是为了不让输入自身的正负抵消遮住误差大小；再除以球体积，是为了使常函数的平均保持原高度。它一般不是线性算子，但满足
+\[M(f+g)\leq Mf+Mg,\quad M(cf)=|c|\cdot Mf\quad(c\in\mathbb C).\]
+这两条性质分别来自积分三角不等式和绝对齐次性，后面的实插值会利用这种结构。
+
+\ProseParagraphBreak
+
+还须确认无穷多个平均的上确界是可测的。记 \(A_rf(x)=|B(x,r)|^{-1}\int_{B(x,r)}|f|\)。固定 \(r>0\)，当中心从 \(x\) 移到 \(x+h\) 时，两个积分的差不超过
+\[\int_{B(x+h,r)\,\triangle\,B(x,r)}|f|.\]
+这些球位于一个固定有界区域内，对称差的体积随 \(h\to0\) 趋零；局部可积函数的积分对小测度集合绝对连续，故 \(A_rf\) 对中心连续。固定中心时，令半径趋于某个正数，两个球之间的薄环体积也趋零，且分母体积连续，因此 \(r\mapsto A_rf(x)\) 也连续。于是
+\[Mf(x)=\sup_{r\in\mathbb Q,\ r>0}A_rf(x)\]
+是可数个可测函数的上确界。另一方面，\(\{Mf>t\}\) 是各固定半径的开超水平集合之并，因而还是开集。这里没有要求 \(f\) 连续；连续的是积分后的平均。
+
+\ProseParagraphBreak
+
+一个能直接算完的例子是实直线上的
+\[f=\mathbf1_{(0,1)}+\mathbf1_{(2,3)}.\]
+在空隙中点 \(x=3/2\)，半径 \(r\leq1/2\) 的平均为零；若 \(1/2<r<3/2\)，球内与两段支集相交的总长度为 \(2r-1\)，故平均为 \(1-1/(2r)\)，随 \(r\) 增大；若 \(r\geq3/2\)，总质量固定为 \(2\)，平均变为 \(1/r\)，随 \(r\) 减小。因此 \(Mf(3/2)=2/3\)，尽管该点附近 \(f=0\)。极大平均会从较大邻域看见质量，不能把它与函数本身在该点的大小混同。
+
+\ProseParagraphBreak
+
+若某个平均超过高度 \(t\)，它所在的球必须含有至少 \(t\) 乘体积的质量。困难在于这些球会重叠，不能直接把它们的积分相加。下面先选出不交的一部分，再用固定倍数的扩大球补回覆盖。
+
+\Needspace{6\baselineskip}
+\begin{theorem}[Hardy--Littlewood]\label{b2:thm:17-maximal-weak}
+设整数 \(d\geq1\)，\(f\in L^1(\mathbb R^d;\mathbb C)\)，\(t>0\)，并定义 \(Mf(x)=\sup_{r>0}|B(x,r)|^{-1}\int_{B(x,r)}|f|\)，其中球为开球、集合大小取 Lebesgue 测度。则
+\[
+ |\{Mf>t\}|\leq \dfrac{5^d}{t}\|f\|_1.
+\]
+\end{theorem}
+\begin{proof}
+记 \(E=\{Mf>t\}\)，并先固定紧集 \(K\subset E\)。对每个 \(x\in K\)，由上确界严格大于 \(t\)，能选一个以 \(x\) 为中心、平均大于 \(t\) 的球。开球覆盖紧集，所以可取有限子覆盖。
+
+在这有限族中选半径最大的球，将所有与它相交的球删除；在余下的球中重复。得到的不交球记为 \(B_j=B(c_j,r_j)\)。若 \(B(a,s)\) 在选择 \(B_j\) 时被删，则 \(s\leq r_j\)、\(|a-c_j|<s+r_j\)。对其中任意点 \(y\)，有 \(|y-c_j|<s+(s+r_j)\leq3r_j\)。故被删球包含于 \(3B_j\)，所选球的三倍扩大已覆盖原来的有限族，也就覆盖 \(K\)。特别地，可以用 \(5B_j\) 作下列估计：
+\[
+ |K|\leq5^d\sum_j|B_j|\leq\dfrac{5^d}{t}\sum_j\int_{B_j}|f|\leq\dfrac{5^d}{t}\|f\|_1.
+\]
+第二步使用每个所选球的平均大于 \(t\)，最后一步才使用球互不相交。对全部紧 \(K\subset E\) 取上确界，Lebesgue 内正则性给出 \(|E|\) 的同一上界，得到结论。即使最初不知道 \(|E|\) 有限，这种内逼近仍然适用。证明只进行了有限族的选择，不需要预设能从无穷族中选出最大半径球。
+\end{proof}
+注意估计控制的是超水平集合的测度，没有直接断言 \(Mf\) 可积。例如 \(f=\mathbf1_{B(0,1)}\)。在 \(|x|\geq2\) 时，球 \(B(x,|x|+1)\) 包含单位球，故 \(Mf(x)\geq c_d|x|^{-d}\)。反过来，任何碰到单位球的中心球半径至少为 \(|x|-1\)，其所含质量又不超过 \(|B(0,1)|\)，所以 \(Mf(x)\leq C_d|x|^{-d}\)。尾部径向积分于是含有发散的 \(\int_2^\infty r^{-1}\,\mathrm dr\)。这个例子一面满足上述集合估计，一面否定一般的强 \(L^1\) 界，正是下一节引入弱空间的原因。
+
+\subsection{中心/非中心极大函数}
+\label{b2:subsec:170102}
+
+对 \(f\in L^1_{\mathrm{loc}}(\mathbb R^d;\mathbb C)\)，若上确界改取所有包含 \(x\) 的开球，所得函数记为 \(M_u f(x)\)，称为\term[feizhongxin-jida-hanshu]{非中心极大函数}[uncentered maximal function]。这里“包含”不要求 \(x\) 是球心。给定 \(x\in B(a,r)\)，有 \(B(a,r)\subset B(x,2r)\)，故
+\[\frac1{|B(a,r)|}\int_{B(a,r)}|f|
+ \leq2^d\frac1{|B(x,2r)|}\int_{B(x,2r)}|f|.\]
+对这类球取上确界，得到
+\[
+ Mf\leq M_u f\leq2^d Mf.
+\]
+两种平均的数值并不相同，但任何一者的范数或分布估计都可借此传给另一者，只改变维数常数。非中心函数也可测：\(M_uf(x)>t\) 当且仅当 \(x\) 位于某个平均大于 \(t\) 的开球内，所以该超水平集合是开球的并。对实直线上的区间输入，非中心区间可以把观察点放在端点附近，中心区间却要同时向两侧扩张；两者的差别来自允许怎样选择覆盖球。
+
+\ProseParagraphBreak
+
+对 \(R>0\)、\(f\in L^1_{\mathrm{loc}}(\mathbb R^d)\)，局部版本 \(M_Rf(x)\) 定义为 \(\sup_{0<r<R}|B(x,r)|^{-1}\int_{B(x,r)}|f|\)。若只考察紧集 \(K\)，选一个包含 \(K+B(0,R)\) 的有界球 \(U\)，令 \(F=f\cdot\mathbf1_U\)。则 \(F\in L^1\)，且 \(M_Rf(x)=M_RF(x)\leq MF(x)\) 对 \(x\in K\) 成立。这样才把全空间弱估计合法地用于局部函数。
+
+\ProseParagraphBreak
+
+局部可积本身不保证全尺度极大函数有限。例如在实直线上取 \(f(y)=|y|\)，则以原点为中心、半径 \(r\) 的平均为 \(r/2\)，故 \(Mf(0)=\infty\)。问题来自任意大的尺度；截断半径后，每个固定紧集只使用一个有界邻域内的积分。后面的局部微分论证也会按这个方式先截断位置。
+
+\subsection{二进极大函数}
+\label{b2:subsec:170103}
+
+对 \(f\in L^1_{\mathrm{loc}}(\mathbb R^d;\mathbb C)\)，令 \(\mathcal D\) 为半开二进立方体 \(2^{-j}(k+[0,1)^d)\) 的族，其中 \(j\in\mathbb Z\)、\(k\in\mathbb Z^d\)。定义\term[erjin-jida-hanshu]{二进极大函数}[dyadic maximal function]
+\[
+ M_{\mathcal D}f(x)\coloneqq\sup_{Q\in\mathcal D,\,x\in Q}\dfrac1{|Q|}\int_Q|f|.
+\]
+\symidx{\(M_{\mathcal D}f\)：二进极大函数}
+半开约定使每个尺度恰有一个立方体包含 \(x\)，同一格中的两个立方体不交或一者包含另一者。网格可数，故 \(M_{\mathcal D}f\) 可测。与球族相比，这里的尺度选择少了，却多了唯一的父立方体：每个 \(Q\) 都包含于一个边长加倍、体积为 \(2^d|Q|\) 的二进父块。下一章需要的恰是这个父子结构。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[二进超水平集合分解]\label{b2:thm:17-dyadic-level}
+设整数 \(d\geq1\)，\(f\in L^1(\mathbb R^d;\mathbb C)\)、\(t>0\)。固定标准半开二进网格 \(\mathcal D=\{\,2^{-j}(k+[0,1)^d):j\in\mathbb Z,\ k\in\mathbb Z^d\,\}\)，定义
+\[
+ M_{\mathcal D}f(x)=\sup_{Q\in\mathcal D,\,x\in Q}\frac1{|Q|}\int_Q|f|.
+\]
+则 \(\{M_{\mathcal D}f>t\}\) 是一族互不相交的极大二进立方体 \(Q_j\) 的并，且
+\[
+ t<\dfrac1{|Q_j|}\int_{Q_j}|f|\leq2^dt,
+ \quad \sum_j|Q_j|\leq t^{-1}\|f\|_1.
+\]
+\end{proposition}
+\begin{proof}
+对平均大于 \(t\) 的任意二进块 \(Q\)，其第 \(n\) 个祖先 \(Q^{(n)}\) 的平均满足
+\[\frac1{|Q^{(n)}|}\int_{Q^{(n)}}|f|
+ \leq\frac{\|f\|_1}{2^{nd}|Q|}\longrightarrow0.\]
+所以只有有限多个祖先仍可能平均大于 \(t\)；取这些超水平祖先中最大的一个。注意不能仅在第一次遇到平均不超过 \(t\) 的父块时停下，因为更大的祖先可能又包含别处的质量。所有足够大的祖先都不超水平，才保证极大块真正存在。
+
+取全部极大超水平块。二进嵌套性说明两个不同的极大块必不交；网格可数，故它们组成有限或可数族 \(Q_j\)。\(M_{\mathcal D}f(x)>t\) 的每一点都在某个超水平块中，再包含于一个极大块，反向包含也由定义成立。每个 \(Q_j\) 的父块不超水平，因此
+\[\int_{Q_j}|f|\leq\int_{\operatorname{parent}(Q_j)}|f|
+ \leq t\,2^d|Q_j|.\]
+这给出平均上界；下界来自超水平条件。最后由不交性，
+\[t\sum_j|Q_j|\leq\sum_j\int_{Q_j}|f|\leq\|f\|_1,\]
+得到测度估计。
+\end{proof}
+这项分解还记录坏区域的平均上界，是下一章分解函数的依据。仅有球覆盖弱型估计并不能直接提供这样的父子关系。
+
+\ProseParagraphBreak
+
+单个固定网格并不等同于全部球平均。对 \(x\in Q\)，以 \(x\) 为中心、半径 \(\sqrt d\,\ell(Q)\) 的球包含 \(Q\)，所以 \(M_{\mathcal D}f\leq C_dMf\)。反向的逐点比较对一个网格一般失败：在实直线上取 \(f=\mathbf1_{(0,1)}\)、\(x=-1\)，包含 \(-1\) 的标准二进区间都留在负半轴，因而 \(M_{\mathcal D}f(-1)=0\)；中心球却可跨过原点取得正平均。二进算子的弱型估计应由它自身的分解证明，而不能把两个算子直接当作数值等价的函数。
+
+\subsection{极大函数微分法}
+\label{b2:subsec:170104}
+
+平均能恢复函数，并非因为任意可测代表在每一点都连续，而是坏点的测度可由逼近误差控制。
+\Needspace{6\baselineskip}
+\begin{proposition}[Lebesgue 微分的极大函数证明]\label{b2:thm:17-differentiation}
+设整数 \(d\geq1\)，\(f\in L^1_{\mathrm{loc}}(\mathbb R^d;\mathbb C)\)，并选取一个有限值可测代表。则对几乎处处 \(x\in\mathbb R^d\)，有
+\[
+ \lim_{r\downarrow0}\dfrac1{|B(x,r)|}\int_{B(x,r)}|f(y)-f(x)|\,\mathrm dy=0.
+\]
+另令 \(Q_j(x)\) 为标准半开二进网格中唯一包含 \(x\)、边长 \(2^{-j}\) 的立方体，则还对几乎处处 \(x\) 有
+\[\lim_{j\to\infty}\frac1{|Q_j(x)|}\int_{Q_j(x)}|f(y)-f(x)|\,\mathrm dy=0.\]
+\end{proposition}
+\begin{proof}
+先设 \(f\in L^1\)。连续紧支集函数在 \(L^1(\mathbb R^d)\) 中稠密（第一卷命题~10.2.4），故对任意 \(\varepsilon>0\)，可取 \(g\in C_c(\mathbb R^d)\)，使 \(\|f-g\|_1<\varepsilon\)。令 \(Df(x)\) 为球平均绝对偏差的上极限。它是可测函数：固定半径的参数积分可测，半径的连续性又允许在有理半径上取上极限。由
+\[
+ |f(y)-f(x)|\leq |f(y)-g(y)|
+       +|g(y)-g(x)|+|g(x)-f(x)|
+\]
+及 \(g\) 的连续性，得到
+\[Df(x)\leq M(f-g)(x)+|f(x)-g(x)|.\]
+因此对 \(t>0\)，由极大弱型和 Chebyshev 不等式，
+\[
+ |\{Df>2t\}|\leq(5^d+1)\varepsilon/t.
+\]
+左侧集合由 \(f,t\) 固定，不随所选 \(g\) 改变。令 \(\varepsilon\downarrow0\)，可知对每个固定 \(t>0\) 该集合为零测集，再只对 \(t=1/n\) 取可数并，得到 \(Df=0\) 几乎处处。
+
+二进版本令 \(D_{\mathcal D}f\) 为所列平均偏差的上极限。因为 \(\operatorname{diam}Q_j(x)=\sqrt d\,2^{-j}\to0\)，连续函数的平均偏差仍趋零，所以
+\[D_{\mathcal D}f\leq M_{\mathcal D}(f-g)+|f-g|.\]
+二进超水平分解给出常数为一的弱估计，其余误差集合论证相同。
+
+最后设 \(f\) 仅局部可积。对每个整数 \(N\geq1\)，置 \(f_N=f\cdot\mathbf1_{B(0,N+1)}\in L^1\)。在 \(B(0,N)\) 内，各点的足够小球及足够小二进块都落在 \(B(0,N+1)\) 内，其平均偏差与 \(f_N\) 的相同。于是可在 \(B(0,N)\) 上应用已证结论，再合并整数 \(N\) 对应的可数个零测例外集。
+\end{proof}
+因此在二进分解的好区域上可以把“所有小立方体平均不超过 \(t\)”转为“\(|f|\leq t\) 几乎处处”。这一步将在\secref{b2:sec:1802}使用。

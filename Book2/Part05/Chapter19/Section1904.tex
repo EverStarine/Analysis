@@ -1,0 +1,408 @@
+% !TeX root = ../../Book2.tex
+\section{Riesz–Thorin 插值}
+\label{b2:sec:1704}
+
+上一节把输入按大小分开，再对输出的高度积分。若算子本身是线性的，而且两个端点已经给出强范数估计，还可以让输入随一个复参数变化：在条带两侧分别适合两个端点，在条带内部指定的位置回到原输入。输出再与一族测试函数配对，就把算子估计变成一个复函数的边界估计。这样得到的常数是两个端点常数的几何平均。
+
+\ProseParagraphBreak
+
+这条路线需要保留复线性结构。极大算子的绝对值和上确界一般不随复参数全纯，不能直接放入本节的证明；Fourier 变换、固定核卷积等线性算子则可以。先证明实际需要的三线估计，再从竖边的范数要求推导测试函数的选择。
+
+\ProseParagraphBreak
+
+这里所用的最大模原理只涉及有界矩形 \(Q\)：若 \(H\) 在矩形内部全纯并连续到闭矩形，则内部的 \(|H|\) 不超过边界上的最大值。所需的基本复分析事实是全纯函数在内部光滑，且实部、虚部调和；写 \(H=u+\mathrm iv\)，Cauchy--Riemann 方程 \(u_x=v_y\)、\(u_y=-v_x\) 给出 \(\Delta u=v_{yx}-v_{xy}=0\)，虚部同理。因此对每个单位复数 \(c\)，可把本卷\cref{b2:cor:13-boundary-maximum}用于实值调和函数 \(\operatorname{Re}(cH)\)。给定内点 \(z\)，选择 \(c\) 使 \(cH(z)=|H(z)|\)，便得到
+\[
+ |H(z)|=\operatorname{Re}(cH(z))
+ \leq\max_{\partial Q}\operatorname{Re}(cH)
+ \leq\max_{\partial Q}|H|.
+\]
+若 \(H(z)=0\)，最后的模界直接成立。这里全纯指在复开域中处处存在复导数；光滑性与 Cauchy--Riemann 方程是本处使用的局部复分析基础。相同的调和最大值论证也适用于有界扇形等有界区域，只要函数在内部全纯并连续到整个闭域。闭矩形的紧性保证边界最大值存在；下面仍须先控制每个有限矩形的横边，才能令矩形高度趋于无穷，不能直接把这条有界域结论套到无限条带。
+
+\subsection{三线引理与解析族}
+\label{b2:subsec:170401}
+
+下面采用\term[hadamard-sanxian-yinli]{Hadamard 三线引理}[Hadamard three-lines lemma]的下述版本。
+
+\Needspace{6\baselineskip}
+\begin{lemma}[Hadamard 三线估计]\label{b2:thm:17-three-lines}
+设 \(M_0,M_1\geq0\)。复值函数 \(F\) 在开条带 \(0<\operatorname{Re}z<1\) 全纯，在闭条带 \(0\leq\operatorname{Re}z\leq1\) 连续且有界，并对每个 \(t\in\mathbb R\) 满足 \( |F(\mathrm it)|\leq M_0\)、\( |F(1+\mathrm it)|\leq M_1\)。则对每个 \(0<\theta<1\)，有
+\[
+ |F(\theta)|\leq M_0^{1-\theta}M_1^\theta.
+\]
+\end{lemma}
+\begin{proof}
+先设 \(M_0,M_1>0\)，令 \(G(z)=F(z)M_0^{z-1}M_1^{-z}\)，幂以正实数的实对数定义。若 \(z=s+\mathrm it\)，则归一化因子的模为 \(M_0^{s-1}M_1^{-s}\)，与 \(t\) 无关；所以 \(G\) 在闭条带有界，两条竖边的模不超过一。
+
+竖边界尚未控制有限矩形的横边。为此固定 \(\varepsilon>0\)，乘上 \(e^{\varepsilon(z^2-1)}\)。它在 \(s=0,1\) 时的模不超过一，在 \(t=\pm R\)、\(0\leq s\leq1\) 时的模不超过 \(e^{-\varepsilon R^2}\)。若 \(|G|\leq B\)，只须选 \(R\) 足够大使 \(B e^{-\varepsilon R^2}\leq1\)，四条边就都受一控制。矩形最大模原理给出
+\[
+ |G(\theta)|e^{\varepsilon(\theta^2-1)}\leq1,
+ \quad
+ |F(\theta)|\leq M_0^{1-\theta}M_1^\theta
+ e^{\varepsilon(1-\theta^2)}.
+\]
+令 \(\varepsilon\downarrow0\) 得到结论。若某个 \(M_i=0\)，先以正数 \(M_i+\delta\) 作为两侧较大的界，再令 \(\delta\downarrow0\)。这同时处理了一侧或两侧恒为零的情形。
+\end{proof}
+
+三线估计要求的对象是一个在整个条带中有界的标量全纯函数，不只是两条竖边上的范数公式。下面取有限个简单函数的组合，既能逐项核对全纯性，也能直接证明内部有界。
+
+\ProseParagraphBreak
+
+设 \(U\subset\mathbb C\) 开，\(T_z\) 是定义在同一复测试向量空间上、\(z\in U\) 的复线性算子族，并固定可配对的测试输出空间。一个\term[jiexi-zu]{解析族}[analytic family]是复参数下的算子族，其对测试输入、测试输出的矩阵元为全纯函数。使用三线估计时必须检查边界范数和条带内增长；“公式含有 \(z\)”不是解析族的充分条件。下面先用固定算子和变化的测试函数，避免讨论一般算子的定义域变化。
+
+\subsection{Riesz–Thorin 定理}
+\label{b2:subsec:170402}
+
+两个端点必须作用于同一个输入，并在交空间上给出同一输出。例如，一个端点从积分定义算子，另一个从完备化定义算子，就要先核对这两种定义在交空间上一致。此时可令 \(T(f_0+f_1)=T_0f_0+T_1f_1\)：交空间上的一致性保证结果与分解无关。下面直接把这项相容性写成和空间上的一个复线性算子。
+
+\ProseParagraphBreak
+
+本节把\cref{b2:subsec:04-complex-interpolation}中出现的 Riesz--Thorin 方法推广到一般线性算子，允许输入、输出的两个端点指数分别变化。约定 \(1/\infty=0\)，\(r'\) 表示满足 \(1/r+1/r'=1\) 的 Hölder 共轭指数。
+
+\Needspace{6\baselineskip}
+\begin{theorem}[Riesz--Thorin]\label{b2:thm:17-riesz-thorin}
+设 \((X,\mathcal A,\mu)\)、\((Y,\mathcal B,\nu)\) 为 \(\sigma\)-有限测度空间，所有 \(L^r\) 空间均取复值函数的几乎处处等价类。设 \(1\leq p_i,q_i\leq\infty\)、\(A_i\geq0\)、\(i=0,1\)，且 \(T\) 是从 \(L^{p_0}(X,\mu)+L^{p_1}(X,\mu)\) 到 \(Y\) 上几乎处处有限的可测函数等价类空间的复线性算子，满足
+\[
+ \|Tf\|_{L^{q_i}(Y,\nu)}\leq A_i\|f\|_{L^{p_i}(X,\mu)}
+ \quad\bigl(f\in L^{p_i}(X,\mu),\ i=0,1\bigr).
+\]
+给定 \(0<\theta<1\)，以 \(1/\infty=0\) 定义 \(p,q\)：
+\[
+ \dfrac1p=\dfrac{1-\theta}{p_0}+\dfrac\theta{p_1},\quad
+ \dfrac1q=\dfrac{1-\theta}{q_0}+\dfrac\theta{q_1},
+\]
+则每个 \(f\in L^p(X,\mu)\) 都属于上述和空间，且
+\[
+ \|Tf\|_{L^q(Y,\nu)}
+ \leq A_0^{1-\theta}A_1^\theta\|f\|_{L^p(X,\mu)}.
+\]
+\end{theorem}
+\begin{proof}
+先证明有限测度支集上的简单输入的估计。零输入无需处理；将输入 \(f\) 与有限测度支集上的简单测试函数 \(g\) 归一化为
+\(\|f\|_p=\|g\|_{q'}=1\)。先设 \(p,q'<\infty\)。希望构造 \(f_z\)，使它在 \(z=\theta\) 等于 \(f\)，在 \(\operatorname{Re}z=i\)、\(i=0,1\) 时的 \(L^{p_i}\) 范数等于一。保留 \(f\) 的复相位，试取
+\[
+ f_z=\frac f{|f|}\cdot|f|^{\alpha(z)}.
+\]
+若 \(p_i<\infty\)，竖边的归一化要求
+\(p_i\operatorname{Re}\alpha(i+\mathrm it)=p\)，这样积分恰好仍是 \(\int|f|^p=1\)。若 \(p_i=\infty\)，则要求实部为零，使支集上模恒为一。这两种要求统一为 \(\alpha(i)=p/p_i\)。取连接这两个值的仿射函数，就得到
+\[
+ \alpha(z)=p\left(\frac{1-z}{p_0}+\frac z{p_1}\right),
+ \quad \alpha(\theta)=1.
+\]
+输出使用 Hölder 配对，所以应对 \(g\) 插值的是共轭指数。由于
+\[
+ \frac1{q'}=\frac{1-\theta}{q_0'}+\frac\theta{q_1'},
+\]
+相同的选择给出
+\[
+ \beta(z)=q'\left(\frac{1-z}{q_0'}+\frac z{q_1'}\right),
+ \quad
+ g_z=\frac g{|g|}\cdot|g|^{\beta(z)},
+ \quad g_\theta=g.
+\]
+所有复幂都以非零函数值的模的实对数定义；原函数为零的位置统一赋零。即使某侧实部为零，也不把支集外的零改成一。在竖边 \(i=0,1\) 上，以上计算给出
+\[
+ \|f_{i+\mathrm it}\|_{p_i}
+ =\|g_{i+\mathrm it}\|_{q_i'}=1.
+\]
+这里含无穷端点的等式，是相应函数在其非零支集上模恒为一，而非使用任何无穷次幂。
+
+还要补足中间指数本身为无穷的构造。若 \(p=\infty\)，倒数插值式迫使 \(p_0=p_1=\infty\)。此时对任意归一化的 \(f\in L^\infty(X)\) 直接取 \(f_z=f\)，不要求它是简单函数或具有有限测度支集。若 \(q'=\infty\)，则 \(q_0'=q_1'=\infty\)，即两个输出端点均为 \(L^1\)；这时取 \(g_z=g\)，其中 \(g\) 仍为归一化的有限测度支集简单函数。其余一侧仍按上面的有限指数公式构造。这样所有情形都满足竖边范数不超过一，并在 \(\theta\) 处恢复原函数。
+
+定义双线性配对
+\[
+ F(z)=\int_Y (Tf_z)(y)\cdot g_z(y)\,\mathrm d\nu(y).
+\]
+这里不对 \(g_z\) 取复共轭，否则参数一般会变成反全纯。对偶测试所需的共轭相位可以预先放进 \(g\) 中。若 \(f=\sum_j a_j\cdot\mathbf1_{E_j}\)、\(g=\sum_k b_k\cdot\mathbf1_{H_k}\)，则 \(F\) 是有限个整函数系数的乘积与固定数
+\(\int_{H_k}T\mathbf1_{E_j}\,\mathrm d\nu\) 的线性组合。\(E_j,H_k\) 测度有限，端点估计及 Hölder 保证这些积分绝对收敛。若 \(p=\infty\)，只把其中的 \(T\mathbf1_{E_j}\) 换为固定的 \(Tf\)，同样由一个输出端点保证局部可积。因此 \(F\) 全纯并连续到闭条带，无需未经控制地交换求导和积分。
+
+在闭条带上，复幂系数的模只依赖 \(\operatorname{Re}z\in[0,1]\)，因而各自有界；有限和使 \(F\) 在整个闭条带有界。两条竖边则满足
+\[
+ |F(i+\mathrm it)|
+ \leq\|Tf_{i+\mathrm it}\|_{q_i}
+ \cdot\|g_{i+\mathrm it}\|_{q_i'}
+ \leq A_i.
+\]
+由\cref{b2:thm:17-three-lines}，在 \(z=\theta\) 得到
+\[
+ \left|\int_Y (Tf)\cdot g\,\mathrm d\nu\right|
+ \leq A_0^{1-\theta}A_1^\theta.
+\]
+恢复两个归一化因子后，右侧再乘 \(\|f\|_p\cdot\|g\|_{q'}\)。
+
+现在对所有这些 \(g\) 取上确界。对于在每个有限测度集上可积的可测函数 \(h\)，所用的范数刻画是
+\[
+ \|h\|_q
+ =\sup_{\substack{g\text{ 为有限测度支集简单函数}\\\|g\|_{q'}\leq1}}
+ \left|\int_Y h\cdot g\,\mathrm d\nu\right|.
+\]
+这个等式允许两边取无穷。对 \(1<q<\infty\)，先在有限测度集及 \(|h|\) 有界的部分上，取共轭相位 \(\overline h/|h|\) 乘 \(|h|^{q-1}\)，再归一化、简单逼近并穷竭；此过程也检验了原先未知的 \(L^q\) 可积性。对 \(q=1\)，测试函数改为该共轭相位在有限测度集上的截断；对 \(q=\infty\)，在 \(|h|\) 接近本性上确界的有限正测度子集上，使用该共轭相位除以集合测度的测试函数。所有相位在 \(h=0\) 处赋零。\(\sigma\)-有限性保证最后这样的子集能够选出，也允许用有限测度集穷竭 \(Y\)。当前的 \(Tf\) 在两个输出端点中，Hölder 保证它在每个有限测度集上可积，故上述测试适用。由此得到简单输入的估计；\(p=\infty\) 时，前面已经对任意有界输入证明了结论，无需再用稠密性。
+
+最后设 \(p<\infty\)。\(\sigma\)-有限性允许先截取有限测度支集，再截断幅度并作简单逼近，得到 \(f_n\rightarrow f\) 于 \(L^p(X)\)。已证估计使 \(Tf_n\) 在 \(L^q(Y)\) 中 Cauchy，即使 \(q=\infty\) 也可用该空间的完备性，记极限为 \(v\)。这定义了唯一的有界线性延拓，但仍须核对 \(v\) 等于题设和空间中原有的 \(Tf\)。
+
+为此将两个源端点按大小记为 \(r_0\leq p\leq r_1\)。对非零 \(h\in L^p\)，令 \(a=\|h\|_p\)，以 \(|h|>a\) 与 \(|h|\leq a\) 分解为 \(h_0+h_1\)。幂次比较给出
+\[
+ \|h_0\|_{r_0}\leq\|h\|_p,
+ \quad \|h_1\|_{r_1}\leq\|h\|_p;
+\]
+若 \(r_1=\infty\)，第二项直接由 \(|h_1|\leq a\) 得到。于是 \(L^p\) 连续嵌入原来的端点和空间。对 \(h=f_n-f\) 使用这个分解，端点估计使 \(T h_0,T h_1\) 在各自的输出端点范数中趋零。Chebyshev 不等式说明它们在每个有限测度目标集上依测度趋零；无穷输出端点则直接给一致的本性上界趋零。因此 \(Tf_n\rightarrow Tf\) 在这些集合上依测度成立。另一方面 \(Tf_n\rightarrow v\) 的 \(L^q\) 收敛也蕴含同样的依测度收敛。极限唯一性和 \(Y\) 的可数穷竭给出 \(v=Tf\) 几乎处处，从而原算子本身满足所述估计。
+\end{proof}
+
+\begin{table}[htbp]
+\centering
+\caption[解析测试族的指数选择]{解析测试族的指数选择。有限中间指数时，复幂的实部使竖边范数归一，插值点的幂则为一；约定 \(1/\infty=0\)。中间指数 \(p\) 或 \(q'\) 本身为无穷时，相应的两个测试指数 \(p_i\) 或 \(q_i'\) 也均为无穷，应固定原函数，不能计算含 \(\infty\) 的复幂。}
+\label{b2:tab:17-analytic-test-exponents}
+\begin{tabularx}{\linewidth}{@{}p{9.4em}XXX@{}}
+\toprule
+测试族 & 左竖边的实部 & 右竖边的实部 & 插值点的取值\\
+\midrule
+\(p<\infty\) 的 \(f_z\) & \(\operatorname{Re}\alpha=p/p_0\) & \(\operatorname{Re}\alpha=p/p_1\) & \(\alpha(\theta)=1\)\\
+\(q'<\infty\) 的 \(g_z\) & \(\operatorname{Re}\beta=q'/q_0'\) & \(\operatorname{Re}\beta=q'/q_1'\) & \(\beta(\theta)=1\)\\
+\(p=\infty\) 的 \(f_z\) & 固定 \(f\) & 固定 \(f\) & \(f_\theta=f\)\\
+\(q'=\infty\) 的 \(g_z\) & 固定 \(g\) & 固定 \(g\) & \(g_\theta=g\)\\
+\bottomrule
+\end{tabularx}
+\end{table}
+\cref{b2:tab:17-analytic-test-exponents}把两个作用分开：边界实部决定可用的端点范数，虚部只改变相位；插值点的幂等于一，才使最终估计针对原来的输入与测试函数。
+
+\ProseParagraphBreak
+
+解析算子族 \(T_z\) 的使用也应归结为同样的标量检验：对所选的变化测试函数，\(F(z)=\int(T_zf_z)\cdot g_z\) 必须在条带内部全纯、连续到边界。单独知道固定测试函数的矩阵元全纯时，还须说明变化测试族是有限解析组合，或给出相应的积分控制。若 \(F\) 在整个条带至多按 \(C_{f,g}e^{c|\operatorname{Im}z|}\) 增长，而两条竖边仍有常数界 \(A_i\)，对任意 \(\delta>0\) 乘上 \(e^{\delta(z-\theta)^2}\) 后便可用有界版本；其竖边界增加的因子至多是 \(e^{\delta(i-\theta)^2}\)。令 \(\delta\downarrow0\)，仍得精确的几何平均常数。
+
+\ProseParagraphBreak
+
+后文的某些族在竖边上也会增长。若对所有归一化测试函数有共同的 \(c\geq0\)，并且
+\[
+ |F(s+\mathrm it)|\leq C_{f,g}e^{ct^2}
+ \quad(0\leq s\leq1),
+ \quad |F(i+\mathrm it)|\leq A_i e^{ct^2}\quad(i=0,1),
+\]
+则取 \(\delta>c\) 后，同一乘子抑制了内部增长。应用三线估计得到
+\[
+ |F(\theta)|
+ \leq e^{\delta\theta(1-\theta)}A_0^{1-\theta}A_1^\theta.
+\]
+因为 \(c\) 对测试函数一致，附加常数也一致；这里不能再令 \(\delta\) 趋零。曲面限制中的解析族允许这种 Gaussian 型增长。增长条件及其常数依赖必须在具体应用中验证，不能只引用有界版本后略去它们。
+
+\ProseParagraphBreak
+
+先看一个能直接算出尺度的应用。设 \(d\) 为正整数、\(\kappa,t>0\)，取热核
+\[
+ H_{\kappa,t}(x)=(4\pi\kappa t)^{-d/2}
+ e^{-|x|^2/(4\kappa t)},
+ \quad T_t f=H_{\kappa,t}*f.
+\]
+固定 \(1\leq p<\infty\)。核的积分为一，所以 Young 不等式给出 \(L^p\rightarrow L^p\) 的常数一；Hölder 给出 \(L^p\rightarrow L^\infty\) 的常数 \(\|H_{\kappa,t}\|_{p'}\)。这两个端点使用同一个积分卷积，故相容。对 \(p<q<\infty\)，输入指数保持为 \(p\)，目标指数满足 \(1/q=(1-\theta)/p\)，即 \(\theta=1-p/q\)。Gaussian 积分算出
+\[
+ \|H_{\kappa,t}\|_r
+ =r^{-d/(2r)}(4\pi\kappa t)^{-\frac d2(1-1/r)}
+ \quad(1\leq r<\infty),
+ \quad \|H_{\kappa,t}\|_\infty=(4\pi\kappa t)^{-d/2}.
+\]
+因此
+\[
+ \|T_t f\|_q
+ \leq C_{d,p,q}(4\pi\kappa t)^{-\frac d2(1/p-1/q)}\|f\|_p,
+ \quad
+ C_{d,p,q}=(p')^{-\frac{d(1-p/q)}{2p'}}.
+\]
+当 \(p=1\) 时该常数按 \(p'=\infty\) 的极限取一。\(q=p\) 与 \(q=\infty\) 分别由刚才两个端点直接得到；\(p=q=\infty\) 也由核的积分为一得到压缩。譬如 \(p=2,q=4\) 时，
+\[
+ \|T_t f\|_4\leq 2^{-d/8}(4\pi\kappa t)^{-d/8}\|f\|_2.
+\]
+正时间带来更高的可积性，而常数在 \(t\downarrow0\) 时按明确的幂发散。插值没有丢失尺度：两个端点中 \(\kappa t\) 的幂，按同一个 \(\theta\) 组合。这也解释了为什么应先记录尺度依赖，再对许多尺度求和。
+
+\subsection{Hausdorff–Young 再论}
+\label{b2:subsec:170403}
+
+\Needspace{6\baselineskip}
+\begin{corollary}[Hausdorff--Young]\label{b2:thm:17-hausdorff-young}
+设 \(d\) 为正整数，\(1\leq p\leq2\)，\(p'\) 为 Hölder 共轭指数（\(p=1\) 时 \(p'=\infty\)）。对 \(f\in L^p(\mathbb R^d;\mathbb C)\)，令 \(\widehat f\) 为使用核 \(e^{-2\pi\mathrm ix\cdot\xi}\) 的可积 Fourier 变换或其从有限测度支集简单函数延拓所得的变换。则
+\[
+ \|\widehat f\|_{p'}\leq\|f\|_p.
+\]
+\end{corollary}
+\begin{proof}
+可积 Fourier 变换满足 \(L^1\rightarrow L^\infty\) 的范数界一；\cref{b2:thm:04-plancherel-extension}给出 \(L^2\rightarrow L^2\) 的等距延拓，并明确说明它在 \(L^1\cap L^2\) 上与可积变换一致。因此二者给出同一个和空间算子。对 \(1<p<2\)，取
+\[
+ \theta=2-\frac2p,
+ \quad \frac1p=1-\frac\theta2,
+ \quad \frac1{p'}=\frac\theta2.
+\]
+将端点 \((p_0,q_0)=(1,\infty)\)、\((p_1,q_1)=(2,2)\) 及 \(A_0=A_1=1\) 代入\cref{b2:thm:17-riesz-thorin}，即得所需估计。两个端点由原有结论直接处理。对有限测度支集简单函数的 \(L^p\) 逼近产生唯一连续延拓；对一般 \(L^p\) 输入，这个结论不要求普通 Fourier 积分逐点绝对收敛。
+\end{proof}
+插值给出常数一，却没有证明这在中间指数最优。Gaussian 的可计算范数已经提示最优常数问题比有界性更细。逆变换具有相同的两个端点，因而同样得到 \(L^p\) 到 \(L^{p'}\) 的估计。
+
+\ProseParagraphBreak
+
+指数上限也能用本章可完成的有限计算检验。设 \(d\) 为正整数、\(2<p\leq\infty\)，置 \(r=p'\in[1,2)\)。选非负、非零的 \(\psi\in C_c^\infty((0,1/4)^d)\)，并对符号 \(\varepsilon_k\in\{-1,1\}\) 令
+\[
+ f_N(x)=\sum_{k=1}^N\varepsilon_k\cdot\psi(x-ke_1),
+ \quad
+ \widehat f_N(\xi)=\widehat\psi(\xi)\cdot
+ \sum_{k=1}^N\varepsilon_k e^{-2\pi\mathrm ik\xi_1}.
+\]
+平移后的支集不交，所以
+\(\|f_N\|_p=N^{1/p}\|\psi\|_p\)，包括 \(p=\infty\) 时的约定 \(N^{1/p}=1\)。若符号全部为正，只在 \(|\xi_1|\lesssim1/N\) 的窄峰上计算，所得 \(L^r\) 下界是 \(N^{1-1/r}=N^{1/p}\)，与输入同阶，不能据此排除有界性。需要让变换在固定大小的区域上保留约 \(\sqrt N\) 的平均量级。
+
+\ProseParagraphBreak
+
+这里的符号平均只是在全部 \(2^N\) 种选择上取算术平均，记作 \(\mathbb E\)；事件的概率 \(\mathbb P\) 就是相应选择所占的比例。对固定 \(\xi\)，令 \(S_N=\sum_k\varepsilon_k e^{-2\pi\mathrm ik\xi_1}\)。展开乘积时，含有某个符号的奇数次幂的项平均为零；在四次乘积中，留下的下标至多有三种两两配对方式。因此
+\[
+ \mathbb E|S_N|^2=N,
+ \quad \mathbb E|S_N|^4\leq3N^2.
+\]
+设 \(B=\{\,|S_N|^2\geq N/2\,\}\)。其补集上二次量小于 \(N/2\)，故 Cauchy--Schwarz 给出
+\[
+ \frac N2\leq\mathbb E\bigl(|S_N|^2\cdot\mathbf1_B\bigr)
+ \leq\bigl(\mathbb E|S_N|^4\bigr)^{1/2}\cdot\mathbb P(B)^{1/2}.
+\]
+于是 \(\mathbb P(B)\geq1/12\)，并有
+\[
+ \mathbb E|S_N|^r\geq\frac1{12}(N/2)^{r/2}.
+\]
+由于 \(\widehat\psi(0)=\int\psi>0\) 且变换连续，存在固定的有限正测度频率盒 \(J\) 与 \(a>0\)，使 \(|\widehat\psi|\geq a\) 于 \(J\)。对 \(\xi\in J\) 积分并与有限符号平均交换，得到
+\[
+ \mathbb E\int_J|\widehat f_N(\xi)|^r\,\mathrm d\xi
+ \geq\frac{a^r\cdot|J|}{12}(N/2)^{r/2}.
+\]
+至少有一组符号使 \(\|\widehat f_N\|_r\geq c_{\psi,r}\sqrt N\)。因此
+\[
+ \frac{\|\widehat f_N\|_{p'}}{\|f_N\|_p}
+ \geq c_{\psi,p}N^{1/2-1/p}\longrightarrow\infty.
+\]
+这些输入本身光滑且紧支撑，已经排除了 \(p>2\) 时任何与输入无关的 \(L^p\rightarrow L^{p'}\) 常数。符号的作用是让固定频率区域上的平均大小保持为平方根量级，而不是只制造越来越窄的同号峰。
+
+\subsection{插值方法与 \texorpdfstring{\(K\)}{K} 泛函}
+\label{b2:subsec:170404}
+
+Marcinkiewicz 方法使用大小分解和分布函数，能处理极大算子这样的次线性对象；Riesz--Thorin 方法保留复线性结构，从两个强型端点得到几何平均常数。对奇异积分，常见路线是先用弱 \((1,1)\) 与强 \((2,2)\) 得到 \(1<p<2\)，再由伴随算子的估计处理另一半指数。选用哪种方法，取决于已知端点的实际强弱，不能把弱型范数直接当作解析插值中的强型范数。
+
+\ProseParagraphBreak
+
+大小分解也提示另一种问题：不预先规定截断高度，而把一个输入分配给两个空间，能达到的最小总代价是什么？设 \(X_0,X_1\) 是同一实或复标量域上的 Banach 空间，连续嵌入同一个 Hausdorff 线性拓扑空间，使 \(f_0+f_1\) 有共同的意义。对 \(f\in X_0+X_1\) 及 \(t>0\)，定义其 \term[k-fanhan]{\(K\) 泛函}[K-functional]
+\[
+ K(t,f;X_0,X_1)\coloneqq
+ \inf_{\substack{f=f_0+f_1\\f_i\in X_i}}
+ \bigl(\|f_0\|_{X_0}+t\|f_1\|_{X_1}\bigr).
+\]
+参数 \(t\) 调整第二个空间的代价。\(t\) 小时可以把更多部分交给 \(X_1\)，\(t\) 大时则倾向于减少 \(X_1\) 的范数。因此下确界中的分解必须允许随 \(t\) 改变。对 \(L^1,L^\infty\)，有限的 \(L^\infty\) 代价对应削平函数的大值，剩余高度由 \(L^1\) 支付；这个分配可以逐点调整幅度，不要求把某个水平集切成任意指定测度的子集。
+
+\Needspace{6\baselineskip}
+\begin{proposition}\label{b2:prop:17-k-functional}
+设 \((X,\mathcal A,\mu)\) 为 \(\sigma\)-有限测度空间，\(f\in L^1(X,\mu)+L^\infty(X,\mu)\) 为实或复值函数。令 \(d_f(\lambda)=\mu\{|f|>\lambda\}\)、\(\lambda\geq0\)，并定义递减重排 \(f^*(s)=\inf\{\lambda\geq0:d_f(\lambda)\leq s\}\)、\(s>0\)，空集的下确界取无穷。对每个 \(t>0\)，令 \(K(t,f;L^1,L^\infty)=\inf_{f=u+v}(\|u\|_1+t\|v\|_\infty)\)，其中 \(u\in L^1(X,\mu)\)、\(v\in L^\infty(X,\mu)\)。则
+\[
+ K(t,f;L^1,L^\infty)=\int_0^t f^*(s)\,\mathrm ds.
+\]
+另设 \((X_0,X_1)\)、\((Y_0,Y_1)\) 为同一实或复标量域上的相容 Banach 空间对（每对连续嵌入同一个 Hausdorff 线性拓扑空间），\(T:X_0+X_1\rightarrow Y_0+Y_1\) 是线性算子。若 \(T:X_i\rightarrow Y_i\) 的范数分别至多 \(A_i>0\)、\(i=0,1\)，则对每个 \(f\in X_0+X_1\) 和 \(t>0\)，有
+\[
+ K(t,Tf;Y_0,Y_1)\leq A_0\cdot K(tA_1/A_0,f;X_0,X_1).
+\]
+\end{proposition}
+\begin{proof}
+先把重排积分改写为分布函数积分。对 \(s>0\)、\(\lambda\geq0\)，若 \(d_f(\lambda)\leq s\)，则 \(\lambda\) 已属于定义下确界的集合，故 \(f^*(s)\leq\lambda\)。若 \(d_f(\lambda)>s\)，右连续性保证某个 \(\delta>0\) 满足 \(d_f(\lambda+\delta)>s\)，于是 \(f^*(s)\geq\lambda+\delta>\lambda\)。因此 \(f^*(s)>\lambda\) 当且仅当 \(s<d_f(\lambda)\)。对 \(s\in(0,t)\) 使用层蛋糕公式及 Tonelli 定理，得到
+\[
+ J_t\coloneqq\int_0^t f^*(s)\,\mathrm ds
+ =\int_0^\infty\min\{t,d_f(\lambda)\}\,\mathrm d\lambda.
+\]
+这个恒等式暂时允许两边为无穷；当某个 \(d_f(\lambda)=\infty\) 时，被积函数的相应值就是有限数 \(t\)。因此不必假定各个超水平集合都有有限测度。
+
+取任意分解 \(f=u+v\)，其中 \(u\in L^1\)、\(v\in L^\infty\)，并令 \(b=\|v\|_\infty\)。在 \(\lambda>b\) 时，\(|f|\leq|u|+b\) 几乎处处蕴含
+\(d_f(\lambda)\leq d_u(\lambda-b)\)。将高度积分在 \(b\) 处分开，得到
+\[
+ J_t\leq tb+\int_b^\infty d_u(\lambda-b)\,\mathrm d\lambda
+ =t\|v\|_\infty+\|u\|_1.
+\]
+最后一步是 \(u\) 的层蛋糕公式。至少存在一个这样的分解，所以 \(J_t<\infty\)；再对所有分解取下确界，得 \(J_t\leq K(t,f;L^1,L^\infty)\)。这一步只比较高度分布，没有截取任何指定测度的集合。
+
+反向令 \(a=f^*(t)\)。重排单调不增，所以 \(ta\leq J_t<\infty\)，从而 \(a\) 是有限非负数。由广义逆定义及分布函数的右连续性，\(d_f(\lambda)>t\) 对 \(0\leq\lambda<a\) 成立，而 \(d_f(\lambda)\leq t\) 对 \(\lambda\geq a\) 成立。因此
+\[
+ J_t=ta+\int_a^\infty d_f(\lambda)\,\mathrm d\lambda.
+\]
+当 \(a=0\) 时，第一段高度区间为空，等式仍成立。现在以保持相位的截断定义
+\[
+ f_1(x)=
+ \begin{cases}f(x),&|f(x)|\leq a,\\a f(x)/|f(x)|,&|f(x)|>a,\end{cases}
+ \quad f_0=f-f_1.
+\]
+这里 \(f_1\) 满足 \(\|f_1\|_\infty\leq a\)，且 \(|f_0|=(|f|-a)_+\)。再次由层蛋糕公式，
+\[
+ \|f_0\|_1=\int_a^\infty d_f(\lambda)\,\mathrm d\lambda
+ =J_t-ta<\infty.
+\]
+因此这是一个合法的 \(L^1+L^\infty\) 分解，其代价至多为 \(J_t-ta+ta=J_t\)。两边合起来即得所需等式。水平集即使是不可分割的原子，仍可对该原子上的函数值作幅度截断，因而不影响这个分解。
+
+对于算子估计，每个分解产生 \(Tf=Tf_0+Tf_1\)，代价至多 \(A_0\|f_0\|_{X_0}+tA_1\|f_1\|_{X_1}\)。对全部分解取下确界即可。
+\end{proof}
+
+例如，取单点空间 \(X=\{x_0\}\)，令 \(\mu(\{x_0\})=1\)、\(f(x_0)=1\)、\(t=1/2\)。它的递减重排在 \(0<s<1\) 上恒为一，故 \(K(1/2,f;L^1,L^\infty)=1/2\)。直接取 \(f_1=f\)、\(f_0=0\) 就达到这个代价。另一方面，满足 \(\mu(E)\leq1/2\) 的集合只有空集，因此
+\[
+ \sup_{\mu(E)\leq1/2}\int_E|f|\,\mathrm d\mu=0.
+\]
+原子不能切成半个集合，但可以把原子上的函数值截断。这个例子说明，上述集合积分上确界不能在一般测度空间中代替 \(K\) 泛函，重排公式仍然成立则来自幅度截断。
+
+\ProseParagraphBreak
+
+对相容 Banach 空间对 \((X_0,X_1)\)、\(0<\theta<1\)、\(1\leq q\leq\infty\)，将所有尺度的分解代价合起来，可定义实插值量
+\[
+ \|f\|_{\theta,q;K}\coloneqq
+ \left(\int_0^\infty
+ \bigl[t^{-\theta}\cdot K(t,f;X_0,X_1)\bigr]^q
+ \frac{\mathrm dt}{t}\right)^{1/q}
+ \quad(f\in X_0+X_1),
+\]
+当 \(q=\infty\) 时取 \(\sup_{t>0}t^{-\theta}\cdot K(t,f;X_0,X_1)\)。这里暂只讨论这些量的估计。乘法测度 \(\mathrm dt/t\) 使不同数量级的尺度具有同样权重；因子 \(t^{-\theta}\) 则决定在两个端点之间的位置。
+
+\ProseParagraphBreak
+
+对同一 \(\sigma\)-有限测度空间上的 \(L^1,L^\infty\)，令 \(1/p=1-\theta\)，故 \(1<p<\infty\)、\(\theta=1/p'\)。对 \(f\in L^1+L^\infty\)，上一命题给出的公式使实插值量与\secref{b2:sec:1702}中定义的 Lorentz 量满足
+\[
+ \|f\|_{L^{p,q}}\leq\|f\|_{\theta,q;K}
+ \leq p'\|f\|_{L^{p,q}}.
+\]
+先看左侧。由于 \(f^*\) 单调不增，
+\[
+ K(t,f)=\int_0^t f^*(s)\,\mathrm ds
+ \geq t\cdot f^*(t),
+ \quad t^{-1/p'}\cdot K(t,f)\geq t^{1/p}f^*(t).
+\]
+对 \(t\) 取 \(L^q(\mathrm dt/t)\) 范数便得所需下界。反向令 \(h(s)=s^{1/p}f^*(s)\)，换元 \(s=tu\) 得到
+\[
+ t^{-1/p'}\cdot K(t,f)
+ =\int_0^1u^{-1/p}\cdot h(tu)\,\mathrm du.
+\]
+在 \(\mathrm dt/t\) 中，固定 \(u>0\) 的缩放 \(t\mapsto tu\) 保持范数。因此有限 \(q\geq1\) 时，Minkowski 给出
+\[
+ \|f\|_{\theta,q;K}
+ \leq\int_0^1u^{-1/p}\,\mathrm du\cdot
+ \|h\|_{L^q(\mathrm dt/t)}
+ =p'\|f\|_{L^{p,q}}.
+\]
+\(q=\infty\) 时把上确界移入积分得到同一界。这里 \(p>1\) 保证 \(\int_0^1u^{-1/p}\,\mathrm du<\infty\)，\(q\geq1\) 则保证所用 Minkowski 有效。不能只保留形式相同的重排表达而删除这两个条件。
+
+\ProseParagraphBreak
+
+上一命题的算子估计又给出相容 Banach 空间对之间的结论。若复线性或实线性算子 \(T:X_0+X_1\rightarrow Y_0+Y_1\) 的两个端点范数分别至多 \(A_0,A_1>0\)，则
+\[
+ K(t,Tf;Y_0,Y_1)
+ \leq A_0\cdot K(tA_1/A_0,f;X_0,X_1).
+\]
+在实插值量中令 \(u=tA_1/A_0\)，有
+\[
+ t^{-\theta}A_0\cdot K(tA_1/A_0,f)
+ =A_0^{1-\theta}A_1^\theta u^{-\theta}\cdot K(u,f).
+\]
+由于 \(\mathrm dt/t=\mathrm du/u\)，对有限 \(q\) 积分，或在 \(q=\infty\) 时取上确界，得到
+\[
+ \|Tf\|_{\theta,q;K(Y_0,Y_1)}
+ \leq A_0^{1-\theta}A_1^\theta
+ \|f\|_{\theta,q;K(X_0,X_1)}.
+\]
+这里的下标仅说明分别用哪一对空间计算 \(K\) 泛函。端点常数的总次数为一，与算子缩放 \(T\mapsto cT\) 时范数乘 \(|c|\) 相符。这一计算解释了几何平均常数为什么在两种插值方法中都会出现：复方法来自三线估计，实方法来自分解代价的尺度换元。
+
+\ProseParagraphBreak
+
+实方法还记录 Lorentz 的第二指数，但上述 Banach 空间对估计并不自动给出任意两个弱型端点之间的最佳 Lorentz 范围。弱端点首先提供的是分布函数控制，能否使用等价范数、输入如何分解以及目标是否完备，都须按具体指数检查。固定的可积核卷积可以使用强型端点和解析插值；临界弱核常更适合大小分解及集合积分；需要区分整个高度分布时，\(K\) 泛函又提供了相应的量。
+
+\ProseParagraphBreak
+
+这些方法也都不能仅靠开放区间的结论恢复端点。极大函数在每个 \(p>1\) 上有界，但单位球示性函数的像有不可积尾部；当估计常数在 \(p\downarrow1\) 时发散，便没有可用于取极限的统一控制。类似地，Fourier 的两个端点给出中间强型界，并不决定最优常数、核的抵消或主值存在性。使用插值之后，仍应按当前问题分别证明这些额外性质。

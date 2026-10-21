@@ -2,87 +2,450 @@
 \section{椭圆曲线的解析表示}
 \label{b3:sec:2204}
 
-微分方程把一对亚纯函数放在一条代数曲线上。但“满足方程”尚不等于得到曲面的参数化，还需要验证无穷远点、局部坐标、单射和满射。
+微分方程把 \(\wp\) 与 \(\wp'\) 放到同一条三次曲线上。要把这看成曲线的参数表示，还须回答三个问题：参数的极点对应曲线上的什么点，两个参数何时给出同一点，以及方程的每个解是否都能由参数得到。完成这些步骤后，环面加法才可以变成曲线上的群律，椭圆积分也才成为一个真正的局部逆。
 
 \subsection{三次方程}
 \label{b3:subsec:220401}
 
-把仿射方程 \(y^2=4x^3-g_2x-g_3\) 齐次化为
+仿射方程 \(y^2=4x^3-g_2x-g_3\) 中，\(x=\wp(z)\) 与 \(y=\wp'(z)\) 在原点同时趋向无穷，但阶数分别为二与三。单独给平面增加一个没有坐标的“无穷远”并不能说明映射是否全纯。射影坐标允许同时缩放三个坐标，使这些发散量的比值成为有限的局部坐标。
+
+\ProseParagraphBreak
+
+非零三元组 \((X,Y,Z)\in\mathbb C^3\) 在共同乘以任意非零复数后代表同一个点，记为 \([X:Y:Z]\)。这些点组成\term[fu-sheying-pingmian]{复射影平面}[complex projective plane] \(\mathbb{CP}^2\)。例如在 \(Z\ne0\) 的坐标片，唯一地写成 \([x:y:1]\)，其中 \(x=X/Z\)、\(y=Y/Z\)。另外两张坐标片由 \(X\ne0\) 与 \(Y\ne0\) 给出。重叠处的坐标转换是分母非零的有理函数，因而全纯。
+
+\ProseParagraphBreak
+
+射影平面的紧性与分离性也有具体说明。每个点都有长度为一的代表，因此单位球面 \(S^5\subset\mathbb C^3\) 连续满射到它，给出紧性。若 \(v\) 为单位代表，则矩阵 \(vv^*\) 不随相位改变，而且两个这样的矩阵相等当且仅当两个向量代表同一个射影点。因此射影平面可以连续单射到 Hermitian 矩阵空间中；这是从紧空间到 Hausdorff 空间的同胚嵌入，特别地，射影平面是 Hausdorff 的。下面使用闭子集的紧性时，就具备了所需的拓扑条件。
+
+\ProseParagraphBreak
+
+把各项补到同一次数，得到齐次方程
+\begin{equation}\label{b3:eq:22-projective-cubic}
+ E_\Lambda:\quad Y^2Z=4X^3-g_2XZ^2-g_3Z^3.
+\end{equation}
+它在共同缩放下保持不变。在 \(Z=0\) 上，方程要求 \(X=0\)，故恰好加入一点
 \[
-E_\Lambda:\quad Y^2Z=4X^3-g_2XZ^2-g_3Z^3.
+ O=[0:1:0].
 \]
-在 \(Z=0\) 上只有一点 \(O=[0:1:0]\)。有限点的奇点须同时满足 \(y=0\)、\(12x^2-g_2=0\) 及曲线方程，等价于右侧三次多项式有重根。前节已经排除重根；在 \(O\) 处，对 \(Z\) 的偏导为一，也非奇点。因此这是一个光滑紧复曲线。
+为了证明这是一条复曲线，需要在每一点附近从方程中解出一个变量。这里只需多项式方程的局部隐函数结论。
+
+\Needspace{6\baselineskip}
+\begin{lemma}[复多项式的局部隐函数]\label{b3:lem:22-polynomial-implicit}
+设 \(F(\xi,\zeta)\) 为两个复变量的多项式，\(F(\xi_0,\zeta_0)=0\)，且 \(F_\zeta(\xi_0,\zeta_0)\ne0\)。则存在 \(\xi_0,\zeta_0\) 的开邻域 \(U,V\) 及全纯函数 \(\varphi:U\to V\)，使 \(U\times V\) 内的零点集恰为 \(\zeta=\varphi(\xi)\)，且 \(\varphi(\xi_0)=\zeta_0\)。若改为 \(F_\xi\ne0\)，则可交换两个变量。
+\end{lemma}
+\begin{proof}
+把方程看成实部与虚部两个实方程，并把 \(\xi,\zeta\) 各看成两个实变量。多项式为实 \(C^1\) 函数，其对 \(\zeta\) 的两个实分量的 Jacobi 矩阵表示乘以复数 \(F_\zeta\)，行列式为 \(|F_\zeta|^2\)。第二卷定理1.1.7的实隐函数定理因而适用，给出唯一的局部 \(C^1\) 图 \(\zeta=\varphi(\xi)\)。
+% 跨卷：Book2/Part01/Chapter01/Section0101.tex，b2:thm:01-implicit，当前定理1.1.7。
+
+缩小邻域使 \(F_\zeta\) 一直非零。写 \(\xi=u+\mathrm iv\)，对 \(F(\xi,\varphi(\xi))=0\) 分别关于 \(u,v\) 求导，得到
+\[
+ F_\xi+F_\zeta\varphi_u=0,\quad
+ \mathrm iF_\xi+F_\zeta\varphi_v=0.
+\]
+第二式减去第一式的 \(\mathrm i\) 倍，得到 \(\varphi_v=\mathrm i\varphi_u\)。这是实 \(C^1\) 函数的 Cauchy--Riemann 条件，所以 \(\varphi\) 全纯。交换变量给出另一情形。
+\end{proof}
+
+\Needspace{6\baselineskip}
+\begin{proposition}[格所确定的光滑三次曲线]\label{b3:prop:22-smooth-cubic}
+设 \(\Lambda\subset\mathbb C\) 为秩二格，令
+\[
+ g_2=60\sum_{0\ne\omega\in\Lambda}\omega^{-4},\quad
+ g_3=140\sum_{0\ne\omega\in\Lambda}\omega^{-6},\quad
+ p(x)=4x^3-g_2x-g_3.
+\]
+由\eqref{b3:eq:22-projective-cubic}定义的 \(E_\Lambda\) 是紧的一维复流形。其无穷远点只有 \(O=[0:1:0]\)。在有限点 \((x,y)\)，当 \(y\ne0\) 时可用 \(x\) 作局部坐标，当 \(y=0\) 时可用 \(y\) 作局部坐标；在 \(O\) 附近，\(\xi=X/Y\) 是局部坐标。
+\end{proposition}
+\begin{proof}
+上一节已证明 \(p\) 的三个根是三个互异的半周期值，故 \(p\) 无重根。在有限坐标片，方程为 \(y^2-p(x)=0\)。若 \(y\ne0\)，对 \(y\) 的偏导 \(2y\ne0\)，前一引理将 \(y\) 解为 \(x\) 的全纯函数。若 \(y=0\)，则 \(x\) 是 \(p\) 的单根，所以 \(p'(x)\ne0\)，可将 \(x\) 解为 \(y\) 的全纯函数。每个有限点附近都恰好留有一个复参数。
+
+在 \(Y\ne0\) 的坐标片，置 \(\xi=X/Y\)、\(\zeta=Z/Y\)，方程为
+\[
+ F(\xi,\zeta)=\zeta-4\xi^3+g_2\xi\zeta^2+g_3\zeta^3=0.
+\]
+点 \(O\) 对应 \((0,0)\)，且 \(F_\zeta(0,0)=1\)。所以 \(\zeta=\varphi(\xi)\) 为全纯图。由方程本身，\(\varphi(0)=\varphi'(0)=\varphi''(0)=0\)，再比较最低次项，得到
+\begin{equation}\label{b3:eq:22-infinity-chart}
+ \zeta=4\xi^3+O(\xi^7).
+\end{equation}
+这里先得 \(\zeta=O(\xi^3)\)，代回 \(\xi\zeta^2\) 与 \(\zeta^3\) 后，才得到余项阶数七。
+
+各张局部图的坐标转换由射影坐标片的全纯转换限制而来，所以它们相容。齐次方程的零点集是射影平面的闭子集：在任一坐标片中，其补集由连续多项式非零给出开集。因此 \(E_\Lambda\) 紧致，且所有点都已给出光滑复坐标。它的连通性稍后还会由显式参数化直接得到。
+\end{proof}
+
+有限点的两类坐标不能混用。在 \(y=0\) 处，横坐标的投影会发生分歧，\(x\) 不是曲线上的局部坐标，但曲线本身仍然光滑，纵坐标 \(y\) 正好补上这一缺口。映射的临界点与曲线的奇点是不同概念。
 
 \subsection{判别式}
 \label{b3:subsec:220402}
 
-多项式 \(4X^3-g_2X-g_3\) 的无重根条件等价于
-\(D=g_2^3-27g_3^2\ne0\)。这里把 \(D\) 称为该 Weierstrass 方程的\term[tuoyuan-quxian-panbieshi]{判别式}[discriminant]；有的代数规范另带固定常数，使用具体公式时应核对归一化。
+三次多项式的三个根会随格改变，但不能在某个真正的秩二格上碰到一起。把这一性质写成系数条件，便得到可在换格时计算的量。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[判别式与格的缩放]\label{b3:prop:22-discriminant-scaling}
+设 \(\Lambda\subset\mathbb C\) 为秩二格，\(g_2,g_3\) 为其 Weierstrass 格和，\(e_1,e_2,e_3\) 为三个非零半周期的 \(\wp\) 值。定义
+\[
+ D(\Lambda)\coloneqq g_2(\Lambda)^3-27g_3(\Lambda)^2.
+\]
+则
+\[
+ D(\Lambda)=16\prod_{1\le j<k\le3}(e_j-e_k)^2\ne0.
+\]
+对每个 \(a\in\mathbb C\setminus\{0\}\)，有
+\begin{equation}\label{b3:eq:22-scaling}
+ \begin{aligned}
+ \wp(az;a\Lambda)&=a^{-2}\wp(z;\Lambda),\\
+ \wp'(az;a\Lambda)&=a^{-3}\wp'(z;\Lambda),\\
+ g_2(a\Lambda)&=a^{-4}g_2(\Lambda),\quad
+ g_3(a\Lambda)=a^{-6}g_3(\Lambda),\\
+ D(a\Lambda)&=a^{-12}D(\Lambda).
+ \end{aligned}
+\end{equation}
+前两式在 \(z\notin\Lambda\) 成立，也可视为亚纯恒等式。
+\end{proposition}
+\begin{proof}
+写 \(p(x)=4(x-e_1)(x-e_2)(x-e_3)\)，比较系数得
+\[
+ e_1+e_2+e_3=0,\quad
+ g_2=-4(e_1e_2+e_1e_3+e_2e_3),\quad
+ g_3=4e_1e_2e_3.
+\]
+为核对常数，置 \(e_1=r,e_2=s,e_3=-r-s\)。于是
+\[
+ \begin{aligned}
+ g_2^3-27g_3^2
+ &=64(r^2+rs+s^2)^3-432r^2s^2(r+s)^2\\
+ &=16(r-s)^2(2r+s)^2(r+2s)^2.
+ \end{aligned}
+\]
+第二个等号可逐项展开核对，右端正是所述差积。三个半周期值互异，故它非零。
+
+在 \(a\Lambda\) 的格和中令 \(\nu=a\omega\)。扣除后的 \(\wp\) 级数正规收敛，所以可以作为完整的差项作这一双射换标，每项提出 \(a^{-2}\)，得到第一式。关于 \(z\) 求导，左侧多出一个 \(a\)，便得导数公式。\(g_2,g_3\) 的格和绝对收敛，换标直接给出四次与六次缩放。代入 \(D\) 的定义，两项都乘 \(a^{-12}\)，得到最后一式。
+\end{proof}
+\symidx{\(D(\Lambda)=g_2^3-27g_3^2\)：Weierstrass 方程的判别式}
+这里采用的\term[tuoyuan-quxian-panbieshi]{判别式}[discriminant]是 \(D=g_2^3-27g_3^2\)。若把多项式 \(4x^3-g_2x-g_3\) 的判别式定义为首项系数的四次方乘根差平方，则其值为 \(16D\)。不同规范相差固定非零常数，不影响是否有重根，但计算数值与变换律时必须保留自己的约定。
 
 \ProseParagraphBreak
 
-换格为 \(a\Lambda\) 时，由绝对收敛格和可得
+缩放还给出曲线之间的具体对应：
 \[
-\wp(az;a\Lambda)=a^{-2}\wp(z;\Lambda),\quad
-g_2(a\Lambda)=a^{-4}g_2(\Lambda),\quad g_3(a\Lambda)=a^{-6}g_3(\Lambda).
+ E_\Lambda\longrightarrow E_{a\Lambda},\quad
+ [X:Y:Z]\longmapsto[a^{-2}X:a^{-3}Y:Z].
 \]
-因此判别式的缩放次数为十二。这个整数将成为下一章模形式权十二的来源，并不是任意选择的指数。
+这是可逆的射影线性变换，把源方程的每一项共同乘以 \(a^{-6}\)，故确实把一条曲线双全纯地映到另一条。相应参数变化为 \([z]\mapsto[az]\)。因此四、六、十二这些次数分别记录坐标和方程随尺度的变化；\(g_2^3/D\) 则不随尺度改变。下一章会把这种性质写成模形式与模不变量的语言。
+
+\ProseParagraphBreak
+
+也可从一般系数直接检查判别式为零的含义。若 \(p\) 在 \(r\) 有重根，则 \(p'(r)=0\) 给 \(g_2=12r^2\)，再由 \(p(r)=0\) 得 \(g_3=-8r^3\)，所以 \(D=0\)。反之，若 \(D=0\) 且 \(g_2=0\)，便有 \(g_3=0\)，三根均为零；若 \(g_2\ne0\)，取 \(r=-3g_3/(2g_2)\)，代入 \(g_2^3=27g_3^2\) 即得 \(p(r)=p'(r)=0\)。这同时证明，对任意复系数，这个判据确实等价于存在重根。
+
+\ProseParagraphBreak
+
+当 \(r\ne0\) 时，退化方程为 \(y^2=4(x-r)^2(x+2r)\)。在 \((r,0)\) 处令 \(u=x-r\)，最低次方程是 \(y^2=12ru^2\)，出现两条不同切线。若 \(r=0\)，则为 \(y^2=4x^3\)，参数 \((x,y)=(t^2,2t^3)\) 在原点的导数同时为零，产生尖点。这些例子说明判别式非零承担的是光滑性条件；它们不能由本章任一秩二格直接产生。
 
 \subsection{\texorpdfstring{\(\mathbb C/\Lambda\)}{C/\AnalysisPdfCapitalLambda}}
 \label{b3:subsec:220403}
 
-商空间 \(\mathbb C/\Lambda\) 由平行四边形粘合对边得到。每个小于半个最短周期的圆盘都与其非平凡格平移不相交，其投影给出复坐标。坐标变换为平移，因而全纯；闭平行四边形覆盖商空间，故它紧致。
+格的基本区域应被理解为商空间的代表集，平行四边形的边本身并不是曲面的边界。为了在商空间谈全纯函数，先把它的局部坐标写清楚。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[复环面的坐标与覆盖]\label{b3:prop:22-torus-charts}
+设 \(\Lambda\subset\mathbb C\) 为秩二格。商空间 \(T_\Lambda=\mathbb C/\Lambda\) 是紧连通 Riemann 曲面，商映射 \(q:\mathbb C\to T_\Lambda\) 是全纯覆盖。若 \(\ell=\min_{0\ne\lambda\in\Lambda}|\lambda|\)，则 \(\ell>0\)，且每个半径小于 \(\ell/2\) 的圆盘在 \(q\) 下单射，其平面坐标给出商曲面的局部复坐标。
+\end{proposition}
+\begin{proof}
+格的离散性与闭有界集内格点有限性保证最短非零长度 \(\ell>0\) 存在。若同一半径 \(r<\ell/2\) 的圆盘中两点相差非零格元素，二者距离至少为 \(\ell\)，又小于 \(2r\)，矛盾。圆盘的全部格平移因同一理由两两不交；它们正好组成其投影的全部原像。商映射为开映射，因为开集的饱和集是其格平移的开并。因此各个圆盘都同胚映到同一个开片，给出覆盖图。
+
+商空间为 Hausdorff，可直接用距离
+\[
+ d([z],[w])=\min_{\lambda\in\Lambda}|z-w-\lambda|
+\]
+说明。最小值存在，因为在一个有限距离阈值内只可能有有限个候选格点；它等于零当且仅当两点同余。对称性和三角不等式由格的加法性质得到。这一距离在上述小圆盘上给出与商拓扑相同的局部拓扑。平面的一组可数开基投影后仍为开基，所以商空间第二可数。
+
+不同局部提升在连通的重叠小片上相差一个固定格元素，坐标转换为平移，故全纯。\(q\) 在这些坐标中是恒等映射，所以是全纯覆盖。它的像连通，因为平面连通；闭基本平行四边形紧且投影满射，所以商空间紧致。
+\end{proof}
+
+这就是由格得到的\term[fu-huanmian]{复环面}[complex torus]。其群加法为 \([z]+[w]=[z+w]\)，不依赖代表，因为格是加法子群。局部坐标中加法仍是两个参数的相加，取负也是 \(z\mapsto-z\)。紧曲面的拓扑与复结构由这些明确的商坐标同时确定，无须先求出任何椭圆函数。
 
 \ProseParagraphBreak
 
-对 \(z\notin\Lambda\) 定义 \(\Phi(z)=[\wp(z):\wp'(z):1]\)，对格点定义 \(\Phi(z)=O\)。在原点附近除以 \(\wp'\)，坐标为
-\([\wp/\wp':1:1/\wp']=[-z/2+O(z^5):1:-z^3/2+O(z^7)]\)，所以该赋值全纯，且在原点为浸入。它按周期下降为商曲面上的全纯映射。
+现在定义
+\[
+ \Phi([z])=
+ \begin{cases}
+ [\wp(z):\wp'(z):1],&z\notin\Lambda,\\
+ O,&z\in\Lambda.
+ \end{cases}
+\]
+周期性保证它不依赖代表，微分方程保证它落在 \(E_\Lambda\) 上。非格点处的坐标全纯；在格点只需平移回原点检查。利用 Laurent 展开，在 \(Y\ne0\) 的坐标片有
+\begin{equation}\label{b3:eq:22-parametrization-infinity}
+ \xi=\frac{\wp(z)}{\wp'(z)}=-\frac z2+O(z^5),\quad
+ \zeta=\frac1{\wp'(z)}=-\frac{z^3}2+O(z^7).
+\end{equation}
+这两个商在零点可去，且 \(\xi'(0)=-1/2\ne0\)。因此把格点赋值为 \(O\) 后，映射不仅连续，而且全纯并在该点具有全纯局部逆。用无穷远坐标核对这一阶项，比只说“两个函数都趋于无穷”多提供了决定性的局部信息。
 
 \subsection{解析统一化}
 \label{b3:subsec:220404}
 
-\begin{theorem}\label{b3:thm:22-uniformization}
-映射 \(\Phi:\mathbb C/\Lambda\to E_\Lambda\) 是双全纯映射。
+\Needspace{6\baselineskip}
+\begin{theorem}[格三次曲线的解析表示]\label{b3:thm:22-uniformization}
+设 \(\Lambda\subset\mathbb C\) 为秩二格，\(\wp=\wp(\cdot;\Lambda)\)，
+\[
+ g_2=60\sum_{0\ne\omega\in\Lambda}\omega^{-4},\quad
+ g_3=140\sum_{0\ne\omega\in\Lambda}\omega^{-6}.
+\]
+令 \(E_\Lambda\subset\mathbb{CP}^2\) 为射影三次曲线
+\(Y^2Z=4X^3-g_2XZ^2-g_3Z^3\)，\(O=[0:1:0]\)。映射
+\[
+ \Phi:\mathbb C/\Lambda\longrightarrow E_\Lambda,\quad
+ \Phi([z])=[\wp(z):\wp'(z):1]\ (z\notin\Lambda),\quad
+ \Phi([0])=O
+\]
+是双全纯映射。特别地，\(E_\Lambda\) 连通。
 \end{theorem}
 \begin{proof}
-若两个有限点具有同一 \(x\) 坐标，则对应参数为 \(z\) 与 \(-z\)。它们的 \(y\) 坐标相反；若还相等，则 \(\wp'(z)=0\)，于是 \(z\) 为半周期，\(z\equiv-z\pmod\Lambda\)。无穷远点只来自格点，故单射。对任意 \((x,y)\in E_\Lambda\)，次数二保证 \(\wp\) 取到 \(x\)；微分方程给导数值为两个平方根之一，换 \(z\) 为 \(-z\) 即得到指定 \(y\)，所以满射。
-在 \(\wp'\ne0\) 处可用 \(x\) 作局部坐标；在半周期处，\(\wp'\) 的零点为单零点，故 \(y\) 是局部坐标；在 \(O\) 处用上面 \(\wp/\wp'\) 的非零一阶项。逆函数定理在三种情形都给全纯局部逆，故全局逆也全纯。
-\end{proof}
-这里证明的是由格构造的曲线的解析表示。反过来从任意光滑复三次曲线恢复周期格，需要积分全纯微分并核对周期；这一一般方向可结合\appref{b3:app:A}的 Riemann 曲面理论继续学习，不能仅由上述显式代入推出。
+\cref{b3:prop:22-smooth-cubic}给出目标的光滑局部坐标；上一小节已验证映射良定义，并在格点补成全纯映射。下面分别证明单射、满射与逆的全纯性。
 
-\subsection{群律的解释}
+若两个有限像的横坐标相同，上一节的 \(\wp\) 纤维结论给 \(w\equiv z\) 或 \(w\equiv-z\pmod\Lambda\)。后一情形中，奇性给 \(\wp'(w)=-\wp'(z)\)。要使纵坐标也相等，必须 \(\wp'(z)=0\)。它的零点恰为三个非零半周期，故 \(2z\in\Lambda\)，此时 \([z]=[-z]\) 本来就是同一点。无穷远像只来自 \([0]\)，所以 \(\Phi\) 单射。
+
+取任意有限点 \((x,y)\in E_\Lambda\)。椭圆函数 \(\wp-x\) 有一个二阶极点，因此零极点计数保证它有零点。取 \(z\) 使 \(\wp(z)=x\)，微分方程给 \(\wp'(z)^2=y^2\)。若 \(y\ne0\)，则 \(z,-z\) 的导数分别给两个平方根，选其中一个便得到指定的 \(y\)；若 \(y=0\)，导数已等于零。再加上 \(O=\Phi([0])\)，得到满射。连续满射的像连通，也证明了曲线的连通性。
+
+当 \(\wp'(z)\ne0\) 时，目标可用 \(x\) 作局部坐标，参数映射的导数为 \(\wp'(z)\ne0\)。在非零半周期处，\(\wp'\) 有单零点，所以 \(\wp''(z)\ne0\)；目标此时用 \(y\) 作局部坐标，导数恰为 \(\wp''(z)\)。在 \([0]\) 处，目标坐标 \(\xi\) 的导数由\eqref{b3:eq:22-parametrization-infinity}为 \(-1/2\)。三种情形均可应用\cref{b3:thm:01-local-inverse}，因为已经找到导数非零的单复变量全纯坐标表达。所得局部全纯逆与全局单射性相容，拼成 \(\Phi^{-1}\)，故 \(\Phi\) 双全纯。
+\end{proof}
+
+这里完成的是由格构造的三次曲线的解析表示。逆向问题从任意光滑复三次曲线出发，要先构造适当的全纯微分、确定它的周期并证明相应积分给出全局参数，不能只由一次显式代入得到。一般紧曲面的相关工具可在\appref{b3:app:A}继续学习；本章下面将在已经建立的对应上具体计算微分和周期。
+
+\ProseParagraphBreak
+
+\(\wp:T_\Lambda\to\widehat{\mathbb C\kern0pt}\) 的二重性现在可以从曲线投影看清。取一个非零半周期 \(h\)，在 \(z=h+t\) 附近，周期性与偶性给 \(\wp(h+t)=\wp(h-t)\)，所以
+\[
+ \wp(h+t)=\wp(h)+\frac12\wp''(h)t^2+O(t^4),\quad
+ \wp'(h+t)=\wp''(h)t+O(t^3).
+\]
+这里 \(\wp''(h)\ne0\)。在原点，则用目标的无穷远坐标，
+\[
+ \frac1{\wp(z)}=z^2+O(z^6).
+\]
+因此三个有限半周期及原点的局部次数均为二，其他点的局部次数为一。横坐标相同的两点由 \(z\mapsto-z\) 交换，四个固定点恰是这些分歧点。在 \(y^2=4(x-e_1)(x-e_2)(x-e_3)\) 中绕一个单根，平方根的两个符号交换，正对应两个局部逆分支交换。
+
+\subsection{群律、函数域与椭圆积分}
 \label{b3:subsec:220405}
 
-通过 \(\Phi\) 将商群加法搬到曲线上，\(O\) 为单位元，\((x,y)\) 的逆为 \((x,-y)\)。其几何意义可由除数关系读出：一般直线与三次曲线交于三点，按重数记为 \(P,Q,R\)，相应线性函数在环面上只有原点三阶极点，因此三个参数之和模格为零。故 \(P+Q\) 是第三交点关于 \(x\) 轴的对称点。
-
-\ProseParagraphBreak
-
-当两点的横坐标不同时，直线斜率为 \(m=(y_2-y_1)/(x_2-x_1)\)，代入三次方程并比较根的和得
+双全纯对应使曲线获得一个已有的加法：定义
 \[
-x(P+Q)=m^2/4-x_1-x_2.
+ \Phi([u])+\Phi([v])=\Phi([u+v]).
 \]
-对应纵坐标取第三交点的负值。两点合并时斜率改为 \((12x_1^2-g_2)/(2y_1)\)；纵坐标为零的切线情形给 \(2P=O\)。这些公式来自已经存在的群结构，结合律由参数相加自动保证，无需再对繁长有理式作三重展开。
+结合律来自复数加法，\(O\) 是单位元，有限点的逆是 \((x,y)\mapsto(x,-y)\)。下面证明这个加法与通常的弦切作图一致。这样，几何规则的存在性与结合律都有明确依据，不需要先把一组三变量有理恒等式展开来猜测群结构。
 
-\ProseParagraphBreak
-
-还可确定整个椭圆函数域。若 \(f\) 为偶椭圆函数，它在 \(\wp\) 的每条纤维上取同一值，因此下降为球面上的亚纯函数，必为 \(\wp\) 的有理函数。在半周期处，局部参数变换 \(u\mapsto-u\) 使偶 Laurent 展开只含 \(u^{2k}\)，保证下降函数确实亚纯。对一般 \(f\)，偶部 \((f(z)+f(-z))/2\) 为 \(R(\wp)\)，奇部除以 \(\wp'\) 后也为偶函数，故
+\Needspace{6\baselineskip}
+\begin{proposition}[弦切规则]\label{b3:prop:22-chord-tangent}
+设 \(\Lambda\subset\mathbb C\) 为秩二格，\(E_\Lambda\) 为其 Weierstrass 三次曲线，在其上通过 \([z]\mapsto[\wp(z):\wp'(z):1]\)、\([0]\mapsto O\) 的双全纯对应搬入 \(\mathbb C/\Lambda\) 的加法。任一非竖直仿射直线 \(y=mx+b\) 与曲线的三个交点 \(P,Q,R\)，按局部相交重数计数，满足
 \[
-f(z)=R(\wp(z))+\wp'(z)S(\wp(z))
+ P+Q+R=O.
 \]
-其中 \(R,S\) 有理。这说明曲线方程已经包含全部椭圆函数，而不只是两个偶然选择的函数。
-
-\ProseParagraphBreak
-
-三次曲线上的微分也可以通过参数直接理解。在非分歧点，\(x=\wp(z)\)、\(y=\wp'(z)\)，所以
+若有限点 \(P=(x_1,y_1)\)、\(Q=(x_2,y_2)\) 满足 \(x_1\ne x_2\)，置 \(m=(y_2-y_1)/(x_2-x_1)\)，则
+\begin{equation}\label{b3:eq:22-chord-coordinates}
+ \begin{aligned}
+ x(P+Q)&=m^2/4-x_1-x_2,\\
+ y(P+Q)&=-y_1-m\bigl(x(P+Q)-x_1\bigr).
+ \end{aligned}
+\end{equation}
+当 \(P=Q\) 且 \(y_1\ne0\) 时，同一公式取
+\(m=(12x_1^2-g_2)/(2y_1)\)。若 \(Q=(x_1,-y_1)\)，则 \(P+Q=O\)；特别地，\(y_1=0\) 时 \(2P=O\)。
+\end{proposition}
+\begin{proof}
+把非竖直直线拉回平面，得到椭圆函数
 \[
- \frac{\mathrm{d}x}{y}=\mathrm{d}z.
+ L(z)=\wp'(z)-m\wp(z)-b.
 \]
-在半周期处，两边仍全纯：若 \(z=z_0+t\)，则 \(x=e_j+\tfrac12\wp''(z_0)t^2+O(t^3)\)、\(y=\wp''(z_0)t+O(t^2)\)，分子与分母的一阶因子相消，商趋于 \(\mathrm{d}t\)。在无穷远，\(x=z^{-2}+O(z^2)\)、\(y=-2z^{-3}+O(z)\)，又得 \(\mathrm{d}x/y=(1+O(z^4))\mathrm{d}z\)。因此这个看似含分母的微分在整个紧曲线上无极点、无零点。
+它模格只有原点一个三阶极点，因为主部为 \(-2z^{-3}-mz^{-2}\)，最高次项不会抵消。故它恰有三个零点，按重数记为 \(u,v,w\)。这些零点就是曲线与直线的交点；局部相交重数在这里定义为把直线方程代入曲线局部参数后所得零点阶数。由\cref{b3:prop:22-divisor-necessary}，
+\[
+ u+v+w\equiv0\pmod\Lambda.
+\]
+搬到曲线上即为 \(P+Q+R=O\)。非竖直直线不经过 \(O\)，因为其射影方程 \(Y-mX-bZ=0\) 在 \(O\) 不成立，所以没有漏计无穷远交点。
+
+代入 \(y=mx+b\) 后，横坐标满足
+\[
+ 4x^3-m^2x^2-(g_2+2mb)x-(g_3+b^2)=0.
+\]
+三个根的和为 \(m^2/4\)。这里的根重数与前述相交重数一致：在 \(y\ne0\) 处用 \(x\) 作局部坐标，另一个因子 \(y+mx+b\) 在交点非零；在 \(y=0\) 处，\(x\) 为 \(y\) 的全纯函数且 \(\mathrm dx/\mathrm dy=0\)，故 \(y-mx-b\) 对局部坐标 \(y\) 有非零一次项，交点是单交点，消去后的多项式也因 \(p'(x)\ne0\) 有单根。因此第三交点的横坐标为 \(m^2/4-x_1-x_2\)。和 \(P+Q\) 是第三点的逆，所以保留横坐标而把纵坐标变号，得到\eqref{b3:eq:22-chord-coordinates}。
+
+若两点合并且 \(y_1\ne0\)，曲线局部为 \(y=y(x)\)。对 \(y^2=p(x)\) 求导，得切线斜率 \(p'(x_1)/(2y_1)\)；切线方程代入后至少二阶消失，所以交点计数中 \(P\) 出现两次，前面论证仍成立。
+
+竖直线 \(x=x_1\) 则通过 \(O\)，其有限交点由 \(\wp(z)=x_1\) 给出，参数为 \(z,-z\)。二者之和为 \([0]\)。若 \(y_1=0\)，它们合并为非零半周期，仍有 \(2[z]=[0]\)。这些情形应直接由参数处理，不能代入横坐标差为零的斜率分式。
+\end{proof}
+
+这就是\term[xianqie-qunlu]{弦切群律}[chord--tangent group law]。在 \(O\) 处，局部方程\eqref{b3:eq:22-infinity-chart}还表明切线为 \(Z=0\)，它在 \(O\) 三阶相交，与 \(O+O+O=O\) 相容。切线可以有三阶接触；这时“三个交点”是一个点按重数重复三次，并非三个位于不同位置的点。
+
 \ProseParagraphBreak
-环面上的任意全纯微分提升到平面后写成 \(h(z)\mathrm{d}z\)。对格平移不变要求 \(h\) 是整椭圆函数，故常数。因此全纯微分空间恰为一维，由 \(\mathrm{d}z\) 生成。沿两条基本闭曲线积分得到 \(\omega_1,\omega_2\)，周期格遂从微分中恢复出来。这个结论是在已知格环面上直接计算；一般紧 Riemann 曲面的微分空间维数需要附录 A 的进一步理论。
+
+用参数表示弦切规则，便得到可直接计算的加法公式。
+
+\Needspace{6\baselineskip}
+\begin{corollary}[加法与倍点公式]\label{b3:cor:22-addition}
+设 \(\Lambda\subset\mathbb C\) 为秩二格，\(\wp=\wp(\cdot;\Lambda)\)，\(g_2\) 为其 Weierstrass 系数。若 \(u,v\notin\Lambda\) 且 \(\wp(u)\ne\wp(v)\)，则
+\begin{equation}\label{b3:eq:22-addition}
+ \wp(u+v)=-\wp(u)-\wp(v)
+ +\frac14\left(\frac{\wp'(u)-\wp'(v)}{\wp(u)-\wp(v)}\right)^2.
+\end{equation}
+若 \(u\notin\Lambda\) 且 \(\wp'(u)\ne0\)，则
+\begin{equation}\label{b3:eq:22-duplication}
+ \wp(2u)=-2\wp(u)
+ +\frac14\left(\frac{6\wp(u)^2-g_2/2}{\wp'(u)}\right)^2.
+\end{equation}
+这些等式也确定相应的亚纯恒等式；在有极点的参数处不将右端当作有限值。
+\end{corollary}
+\begin{proof}
+把 \(P=\Phi([u])\)、\(Q=\Phi([v])\) 代入\eqref{b3:eq:22-chord-coordinates}的第一式，便得加法公式。其假设还保证 \(u+v\notin\Lambda\)，否则 \(v\equiv-u\) 会使横坐标相同。
+
+在 \(v\to u\) 时，\(\wp'(u)\ne0\) 保证分母的一阶项非零，斜率商趋于 \(\wp''(u)/\wp'(u)\)。使用已证的 \(\wp''=6\wp^2-g_2/2\)，得到倍点公式。同一假设排除了非零半周期，所以 \(2u\notin\Lambda\)。各式在非空开集上成立，清分母后由全纯恒等定理延续，便给出相应的亚纯解释。
+\end{proof}
+
+其中 \(1/4\) 来自方程的 \(4x^3\) 规范化。纵坐标则必须由\eqref{b3:eq:22-chord-coordinates}的第二式取第三交点纵坐标的负值。若只记住横坐标公式，很容易把 \(u+v\) 与 \(-u-v\) 混在一起。
+
 \ProseParagraphBreak
-二重映射 \(\wp\) 的四个分歧点也由局部式看得清楚。三个非零半周期在有限值 \(e_1,e_2,e_3\) 上有局部参数平方；原点的二阶极点在目标无穷远坐标 \(1/\wp\) 下同样是平方。其他点导数非零，局部为双全纯。因而三次曲线写成 \(y^2=4(x-e_1)(x-e_2)(x-e_3)\) 时，选择一个 \(x\) 通常有两种符号的 \(y\)，绕一个单根则交换这两种选择。代数方程的平方根分支与环面上的半周期是同一现象的两种坐标描述。
+
+曲线方程不只记录两个特定函数之间的关系；它实际上生成整个椭圆函数域。为证明这一点，先利用 \(z\mapsto-z\) 把一个函数分成偶部与奇部。关键在于偶部穿过分歧点后仍是横坐标的亚纯函数。
+
+\Needspace{6\baselineskip}
+\begin{theorem}[椭圆函数域]\label{b3:thm:22-function-field}
+设 \(\Lambda\subset\mathbb C\) 为秩二格，\(\wp=\wp(\cdot;\Lambda)\)。每个 \(\Lambda\)-椭圆函数 \(f\) 都有唯一表示
+\[
+ f(z)=R(\wp(z))+\wp'(z)S(\wp(z)),
+\]
+其中 \(R,S\in\mathbb C(X)\) 为有理函数。特别地，偶椭圆函数恰为 \(\wp\) 的有理函数，奇椭圆函数恰为 \(\wp'\) 乘 \(\wp\) 的有理函数。
+\end{theorem}
+\begin{proof}
+先设 \(f\) 为偶函数。\(\wp\) 的每条纤维由 \([z],[-z]\) 组成，故可在球面上定义 \(R(x)=f(z)\)，其中 \(\wp(z)=x\)，并在无穷远使用 \([0]\)。在非分歧值附近选全纯局部逆，就知道 \(R\) 亚纯。必须另检验四个分歧值。
+
+设 \(h\) 为非零半周期，令 \(t=z-h\)。因为 \(2h\in\Lambda\)，周期性和偶性给
+\[
+ f(h+t)=f(h-t).
+\]
+所以 \(f(h+t)\) 的 Laurent 级数只含偶次幂，可以写成 \(t^2\) 的亚纯函数。同时
+\[
+ \wp(h+t)-\wp(h)=t^2 U(t^2),\quad U(0)=\wp''(h)/2\ne0.
+\]
+以 \(v=t^2\) 为变量，映射 \(v\mapsto vU(v)\) 在零点导数非零，有全纯局部逆。因此 \(f(h+t)\) 是 \(x-\wp(h)\) 的亚纯函数，下降在该分歧值仍合法。
+
+在 \([0]\) 处，偶性同样使 \(f(t)\) 是 \(t^2\) 的亚纯函数，而
+\[
+ 1/\wp(t)=t^2V(t^2),\quad V(0)=1.
+\]
+相同论证说明下降函数在球面无穷远也亚纯。于是 \(R\) 在整个球面亚纯，由\cref{b3:thm:03-sphere-rational}为有理函数；该定理所需的有限点与无穷远亚纯性已逐项验证。
+
+对一般 \(f\)，定义
+\[
+ f_e(z)=\frac{f(z)+f(-z)}2,\quad
+ f_o(z)=\frac{f(z)-f(-z)}2.
+\]
+偶部由前半证明为 \(R(\wp)\)。商 \(f_o/\wp'\) 是亚纯函数，在 \(\wp'\) 的零点可以有极点，但这不妨碍亚纯性；分子分母都为奇函数，使该商为偶椭圆函数。所以它等于 \(S(\wp)\)，得到存在性。
+
+若 \(R(\wp)+\wp'S(\wp)=0\)，将 \(z\) 换为 \(-z\) 后相减，得到 \(2\wp'S(\wp)=0\)。在 \(\wp'\ne0\) 的小圆盘内，\(\wp\) 的像含一个开集，故 \(S\) 在开集上为零，作为有理函数必恒零。随后 \(R\) 也恒零，证明唯一性。奇偶的两个特别结论随之成立。
+\end{proof}
+\symidx{\(\mathbb C(\wp,\wp')\)：格的椭圆函数域}
+因此椭圆函数域在 \(\mathbb C(\wp)\) 上有基 \(1,\wp'\)，维数为二；乘法由 \((\wp')^2=4\wp^3-g_2\wp-g_3\) 约化。式中的 \(R,S\) 唯一，但它们各自的分母不能直接当作 \(f\) 的完整极点表，因为乘以 \(\wp'\) 后仍可能出现局部抵消。
+
 \ProseParagraphBreak
-矩形格能进一步给出实图像。设 \(\omega_1>0\)、\(\omega_2\) 纯虚且虚部正，格关于共轭不变，由级数有 \(\overline{\wp(z)}=\wp(\bar z)\)。实轴上 \(\wp\) 实值，从原点附近的正无穷开始下降；在 \((0,\omega_1/2)\) 上导数没有零点，所以直到半周期才达到第一个临界值。它必须是三个实根中的最大者，否则下降途中先遇到别的根就会先有导数零点。沿虚轴，\(\wp(\mathrm{i}t)\sim-t^{-2}\)，从负无穷上升，首次临界值同理是最小根。第三个半周期给中间根。三个值确为实数，因为共轭半周期与原半周期相差格点。由此不用数值画图，就能确定矩形格的三个分歧值顺序及实椭圆曲线的两支。
+
+例如对数导数
+\[
+ \frac{\wp''}{\wp'}
+ =\wp'\,\frac{6\wp^2-g_2/2}{4\wp^3-g_2\wp-g_3}
+\]
+是奇椭圆函数。三个非零半周期处，\(\wp'\) 都有单零点，所以这个商的留数各为一；在原点，\(\wp'\) 有三阶极点，商的主部为 \(-3/z\)。留数总和为 \(1+1+1-3=0\)，与本章的全局限制一致。用有理式计算之前，先看局部零极点的阶数，能够保留这些抵消信息。
+
 \ProseParagraphBreak
-上述顺序依赖矩形格假设。对一般倾斜格，三个分歧值可以全为非实复数，谈“最大根”便没有意义；但无重根、四个二阶分歧点和全纯微分的结论仍成立。几何图像有助于选择积分路径，却不能替代复参数情况下的局部代数检验。
+
+最后看参数的微分。曲面上的全纯微分在每张局部坐标 \(t\) 中写成 \(h(t)\,\mathrm dt\)，其中 \(h\) 全纯，换坐标时按链式法则转换。本章只需这一局部定义及路径积分，不需要一般紧曲面的微分维数公式。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[无零微分与周期]\label{b3:prop:22-differential-periods}
+设 \(\Lambda\subset\mathbb C\) 为秩二格，\(E_\Lambda\) 为其 Weierstrass 三次曲线，\(\Phi:\mathbb C/\Lambda\to E_\Lambda\) 为 \([z]\mapsto[\wp(z):\wp'(z):1]\)、\([0]\mapsto[0:1:0]\) 给出的双全纯映射。有限坐标中定义于 \(y\ne0\) 处的微分
+\[
+ \Omega=\frac{\mathrm dx}{y}
+\]
+唯一延拓为 \(E_\Lambda\) 上处处非零的全纯微分，且 \(\Phi^*\Omega=\mathrm dz\)。曲线上每个全纯微分都是 \(\Omega\) 的常数倍。沿全部闭的分段 \(C^1\) 路径所得的 \(\Omega\) 积分值的集合恰为 \(\Lambda\)。
+\end{proposition}
+\begin{proof}
+在 \(y\ne0\) 处，\(x\) 为局部坐标，系数 \(1/y\) 全纯非零。若 \(y=0\)，对方程 \(y^2=p(x)\) 微分，得到 \(2y\,\mathrm dy=p'(x)\,\mathrm dx\)。这里 \(p'(x)\ne0\)，故
+\[
+ \Omega=\frac{2\,\mathrm dy}{p'(x)}
+\]
+给出在该点全纯非零的延拓，且在交叠的去心邻域与原式相同。
+
+在 \(O\) 附近，\(x=\xi/\zeta\)、\(y=1/\zeta\)，所以在去心邻域有
+\[
+ \Omega=\left(1-\frac{\xi\varphi'(\xi)}{\varphi(\xi)}\right)\mathrm d\xi.
+\]
+由 \(\varphi(\xi)=4\xi^3+O(\xi^7)\)，括号为 \(-2+O(\xi^4)\)，故也延拓为全纯非零系数。局部延拓在重叠处一致，得到全局微分；唯一性由去心邻域上的一致性确定。
+
+在一般点代入 \(x=\wp(z)\)、\(y=\wp'(z)\)，直接得到 \(\Phi^*\Omega=\mathrm dz\)。两边都是全纯微分，故该式在刚补上的点也成立。另取任意全纯微分 \(\Theta\)，经 \(\Phi\) 和覆盖映射提升到平面，写成 \(h(z)\,\mathrm dz\)。平移不改变这个提升，所以 \(h\) 为整椭圆函数，必为常数。因覆盖局部双全纯，提升后的等式也确定原微分，遂有 \(\Theta=c\Omega\)。
+
+取曲线上的闭路径，将它经 \(\Phi^{-1}\) 拉回环面，再从任意起点 \(z_0\) 提升到平面。闭路的终点必为 \(z_0+\lambda\)，其中 \(\lambda\in\Lambda\)。由微分的拉回公式，积分就是
+\[
+ \int\Omega=\int\mathrm dz=\lambda.
+\]
+反之，从零到任意格点 \(\lambda\) 的线段投影到环面，给出闭路，其积分为 \(\lambda\)。因此周期集合恰好为 \(\Lambda\)，没有遗漏，也没有额外周期。
+\end{proof}
+
+这给出参数的积分表达。对 \(P\in E_\Lambda\)，选从 \(O\) 到 \(P\) 的路径，并置
+\begin{equation}\label{b3:eq:22-abel-inverse}
+ A(P)=\left[\int_O^P\Omega\right]\in\mathbb C/\Lambda.
+\end{equation}
+两条路径所得积分之差是闭路周期，所以模格后不依赖路径。若 \(P=\Phi([z])\)，取其从零开始的路径提升，终点是 \(z\) 的一个格代表，故 \(A(P)=[z]\)。因此 \(A=\Phi^{-1}\)。这里的全局单值对象是积分的模格类，通常不是一个在整条曲线上单值的复数。
+
+\ProseParagraphBreak
+
+在单连通小片 \(U\subset E_\Lambda\) 中，固定基点 \(P_0=\Phi([z_0])\) 并选一个参数提升，则
+\[
+ z(P)-z_0=\int_{P_0}^P\frac{\mathrm dx}{y}.
+\]
+若又在避开三个有限分歧值的横坐标小片中选定平方根，右端就写成
+\[
+ \int\frac{\mathrm dx}{\sqrt{4x^3-g_2x-g_3}}.
+\]
+这就是此处的\term[tuoyuan-jifen]{椭圆积分}[elliptic integral]。平方根分支来自选定的曲线片。横坐标中绕一个单根一周会交换两张曲线片，该提升一般尚未闭合；只有真正回到曲线起点的闭路，才适用前面的格周期结论。在有限分歧点，\(\mathrm dx/y\) 的写法虽然含有零分母，改用 \(2\,\mathrm dy/p'(x)\) 就能继续积分。
+
+\ProseParagraphBreak
+
+矩形格提供一个可以准确辨认实图像并算出周期积分的例子。为避免把半周期编号误当作大小次序，这里用位置给三个值命名。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[矩形格的实分支与周期积分]\label{b3:prop:22-rectangular-real-locus}
+设 \(a,b>0\)，\(\Lambda=a\mathbb Z+\mathrm ib\mathbb Z\)，\(\wp=\wp(\cdot;\Lambda)\)，并令
+\[
+ e_R=\wp(a/2),\quad e_I=\wp(\mathrm ib/2),\quad
+ e_D=\wp((a+\mathrm ib)/2),\quad p(x)=4x^3-g_2x-g_3.
+\]
+则 \(g_2,g_3\) 及三个 \(e\) 值均为实数，且
+\[
+ e_I<e_D<e_R.
+\]
+曲线的实点集由两个连通分支组成，分别对应 \(\mathbb C/\Lambda\) 中的两条圆周 \(\operatorname{Im}z=0\) 与 \(\operatorname{Im}z=b/2\)；前者包含 \(O\)。此外，
+\begin{equation}\label{b3:eq:22-rectangular-period-integrals}
+ a=2\int_{e_R}^\infty\frac{\mathrm dx}{\sqrt{p(x)}},\quad
+ \mathrm ib=2\mathrm i\int_{-\infty}^{e_I}\frac{\mathrm dx}{\sqrt{-p(x)}},
+\end{equation}
+积分中的平方根均取相应实区间上的正值。
+\end{proposition}
+\begin{proof}
+矩形格在共轭下不变。对绝对收敛格和取共轭并换标，得到 \(g_2,g_3\in\mathbb R\) 及
+\[
+ \overline{\wp(z)}=\wp(\overline z).
+\]
+三个半周期的共轭各与原点代表相差一个格元素，故三个 \(e\) 值均为实数。它们已经由前节证明互异。
+
+在 \(0<t<a/2\) 上，\(\wp(t)\) 为实函数，且其导数无零点：这段中没有非零半周期。原点展开给 \(\wp'(t)\sim-2t^{-3}<0\)，所以整段严格下降，从正无穷降到 \(e_R\)。若另一个根大于 \(e_R\)，连续下降途中必先取到该根，微分方程便使导数为零，矛盾。因此 \(e_R\) 是最大根。
+
+在虚轴上令 \(v(t)=\wp(\mathrm it)\)，\(0<t<b/2\)。共轭关系与偶性使 \(v\) 为实函数，且 \(v'(t)=\mathrm i\wp'(\mathrm it)\) 无零点。由 \(v(t)=-t^{-2}+O(t^2)\)，有 \(v'(t)>0\) 于原点附近，故整段严格上升，从负无穷到 \(e_I\)。同样的先遇根论证使 \(e_I\) 为最小根，剩下的 \(e_D\) 就是中间根。
+
+因为 \(\Phi\) 与共轭相容，曲线点为实点当且仅当参数类满足 \([z]=[\overline z]\)。写 \(z=u+\mathrm iv\)，此条件为 \(2\mathrm iv\in a\mathbb Z+\mathrm ib\mathbb Z\)，等价于 \(2v\in b\mathbb Z\)。模格后恰有 \(v=0\) 与 \(v=b/2\) 两条互不相交的圆周。每条都连通且紧，\(\Phi\) 为同胚，故给出实点集的两个连通分支。
+
+在实轴那段，\(\wp'(t)=-\sqrt{p(\wp(t))}\)。令 \(x=\wp(t)\)，则
+\[
+ \frac a2=\int_{e_R}^{\infty}\frac{\mathrm dx}{\sqrt{p(x)}}.
+\]
+在虚轴那段，\((v')^2=-p(v)\) 且 \(v'>0\)，相同换元给
+\[
+ \frac b2=\int_{-\infty}^{e_I}\frac{\mathrm dx}{\sqrt{-p(x)}}.
+\]
+这两式先在截断的参数区间成立，再取端点极限。无穷远被积函数为 \(O(|x|^{-3/2})\)，单根附近为常数倍的距离 \(-1/2\) 次幂，都可积。因此所示广义积分存在，得到\eqref{b3:eq:22-rectangular-period-integrals}。
+\end{proof}
+
+从 \(p(x)\) 的符号也可读出这两个实分支：有限实点的横坐标恰落在 \([e_I,e_D]\) 或 \([e_R,\infty)\)。第一个区间的上下两支在端点相接，形成有界闭环；第二个区间的两支通过射影点 \(O\) 相接。这个图景依赖矩形格的共轭对称性。对一般复格，三个分歧值没有实数大小关系，不能沿用“最大根”的叙述；光滑性、四个二阶分歧点以及全纯微分的结论则仍然成立。

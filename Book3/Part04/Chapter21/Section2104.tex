@@ -2,86 +2,432 @@
 \section{经典公式}
 \label{b3:sec:2104}
 
-乘积能把相反参数联系起来；凸性则能把相差有理数的参数联系起来。增长估计另需考察积分质量集中的位置，不能只由函数方程猜测。
+倒数乘积把相反参数联系起来，Beta 积分把两个参数的乘积化成它们的和，
+对数凸性则把相差有理数的参数统一到同一个递推关系中。
+这些办法都能确定准确常数。
+至于大参数的增长，还要回到 Euler 积分，辨认积分质量集中在哪里。
 
 \subsection{反射公式}
 \label{b3:subsec:210401}
 
+\Needspace{6\baselineskip}
 \begin{theorem}[Euler 反射公式]\label{b3:thm:21-reflection}
-对 \(z\notin\mathbb Z\)，有 \(\Gamma(z)\Gamma(1-z)=\pi/\sin\pi z\)。
+设 \(\Gamma\) 为 Euler 积分的亚纯延拓。对 \(z\in\mathbb C\setminus\mathbb Z\)，
+\[
+ \Gamma(z)\Gamma(1-z)=\frac\pi{\sin\pi z}.
+\]
+这也给出全复平面上的亚纯恒等式。
 \end{theorem}
 \begin{proof}
-对 \(1/\Gamma(z)\) 与 \(1/\Gamma(-z)\) 的正规乘积相乘，指数因子相消，得
+对 \(1/\Gamma(z)\) 与 \(1/\Gamma(-z)\) 的有限乘积相乘，
+两个指数因子相消；再由局部一致收敛取极限，得到
 \[
-\frac1{\Gamma(z)\Gamma(-z)}=-z^2\prod_{n\ge1}(1-z^2/n^2)
-=-\frac{z\sin\pi z}{\pi}.
+ \frac1{\Gamma(z)\Gamma(-z)}
+ =-z^2\prod_{n=1}^\infty(1-z^2/n^2).
 \]
-最后一步使用\secref{b3:sec:2005}已证的正弦乘积。由 \(\Gamma(1-z)=-z\Gamma(-z)\) 即得公式。
+这里先把同一下标的一对有限因子相乘，随后取极限，
+没有对条件收敛的无穷乘积任意换序。
+由\cref{b3:prop:20-sine-product}，右端等于
+\(-z\sin(\pi z)/\pi\)。
+当 \(z\notin\mathbb Z\) 时，所用函数都有限且非零，
+结合递推式 \(\Gamma(1-z)=-z\Gamma(-z)\)，便得
+\[
+ \Gamma(z)\Gamma(1-z)
+ =-z\Gamma(z)\Gamma(-z)=\frac\pi{\sin\pi z}.
+\]
+两边均为全平面亚纯函数，因此上述等式也确定其亚纯恒等关系。
 \end{proof}
-这称为\term[euler-fanshe-gongshi]{Euler 反射公式}[Euler reflection formula]。取 \(z=1/2\)，积分的正性确定 \(\Gamma(1/2)=\sqrt\pi\)，排除平方根符号的不确定性。
 
-\subsection{倍增公式}
+这称为\term[euler-fanshe-gongshi]{Euler 反射公式}[Euler reflection formula]。
+取 \(z=1/2\)，得到 \(\Gamma(1/2)^2=\pi\)；
+Euler 积分的正性确定正平方根 \(\Gamma(1/2)=\sqrt\pi\)。
+这与前面从 Gaussian 积分得到的半整数值相符。
+公式在整数处应按亚纯恒等式理解，不能把极点处的无穷大当作普通数相乘。
+
+\subsection{Beta 积分与倍增公式}
 \label{b3:subsec:210402}
 
-\begin{theorem}[Legendre 倍增公式]\label{b3:thm:21-duplication}
-作为亚纯恒等式，有
+乘法关系也有一个积分来源。
+将两个 Euler 积分的变量拆成总量与比例，
+便得到\term[beta-hanshu]{Beta 函数}[beta function]。
+它的两个端点分别受两个参数控制。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[Beta 积分]\label{b3:prop:21-beta-integral}
+设 \(a,b\in\mathbb C\)，\(\operatorname{Re}a>0\)、\(\operatorname{Re}b>0\)，定义
 \[
-\Gamma(z)\Gamma(z+1/2)=2^{1-2z}\sqrt\pi\,\Gamma(2z).
+ B(a,b)=\int_0^1u^{a-1}(1-u)^{b-1}\,\mathrm du,
 \]
+\symidx{\(B(a,b)\)：Beta 函数}
+其中正实数的幂用实对数定义。
+该积分绝对收敛，满足 \(B(a,b)=B(b,a)\)，且
+\[
+ B(a,b)=\frac{\Gamma(a)\Gamma(b)}{\Gamma(a+b)}.
+\]
+\end{proposition}
+\begin{proof}
+记 \(\alpha=\operatorname{Re}a\)、\(\beta=\operatorname{Re}b\)。
+被积函数的绝对值为 \(u^{\alpha-1}(1-u)^{\beta-1}\)。
+在零端第二个因子有界，在一端第一个因子有界；
+\(\alpha,\beta>0\) 分别保证两个端点可积。
+换元 \(u\mapsto1-u\) 给出对称性。
+
+两个 Gamma 积分的乘积为
+\[
+ \Gamma(a)\Gamma(b)
+ =\int_0^\infty\!\int_0^\infty
+ e^{-(v+w)}v^{a-1}w^{b-1}\,\mathrm dv\,\mathrm dw.
+\]
+绝对值的二重积分为 \(\Gamma(\alpha)\Gamma(\beta)<\infty\)，
+所以 Fubini 定理适用。
+作换元
+\[
+ r=v+w,\quad u=\frac{v}{v+w},\quad
+ v=ru,\quad w=r(1-u).
+\]
+换元域为 \(r>0\)、\(0<u<1\)，Jacobi 行列式的绝对值为 \(r\)。
+正数的实对数满足加法法则，故二重积分变为
+\[
+ \int_0^\infty e^{-r}r^{a+b-1}\,\mathrm dr
+ \int_0^1u^{a-1}(1-u)^{b-1}\,\mathrm du
+ =\Gamma(a+b)B(a,b).
+\]
+相同换元对绝对值也成立，每一次分离积分都有绝对可积性支持。
+\cref{b3:thm:21-product}已证明 \(\Gamma\) 无零点，
+因此可以除以 \(\Gamma(a+b)\)。
+\end{proof}
+
+在同一参数范围内，令 \(u=\sin^2\theta\)，得到
+\[
+ \int_0^{\pi/2}\sin^{2a-1}\theta\cos^{2b-1}\theta\,\mathrm d\theta
+ =\frac{\Gamma(a)\Gamma(b)}{2\Gamma(a+b)}.
+\]
+这里三角函数在积分区间内部为正，幂仍用实对数定义。
+因 \(\mathrm du=2\sin\theta\cos\theta\,\mathrm d\theta\)，
+右端才出现因子 \(1/2\)。
+取 \(a=b=1/2\)，两边分别为 \(\pi/2\) 与 \(\Gamma(1/2)^2/2\)，
+可再核对一次规范化常数。
+
+\ProseParagraphBreak
+当两个参数相等时，区间的中点对称性进一步给出倍增公式。
+下面的换元对复参数也适用，因为沿实积分区间的幂已经固定了对数。
+
+\Needspace{6\baselineskip}
+\begin{theorem}[Legendre 倍增公式]\label{b3:thm:21-duplication}
+在全复平面上有亚纯恒等式
+\[
+ \Gamma(z)\Gamma(z+1/2)
+ =2^{1-2z}\sqrt\pi\,\Gamma(2z),
+\]
+其中 \(2^{1-2z}=\exp((1-2z)\log2)\)，\(\sqrt\pi\) 取正实值。
 \end{theorem}
 \begin{proof}
-对 \(x>0\) 定义 \(F(x)=2^{x-1}\Gamma(x/2)\Gamma((x+1)/2)/\sqrt\pi\)。直接递推得 \(F(x+1)=xF(x)\)，且 \(F(1)=1\)。函数 \(\log F\) 为两个凸函数与线性函数之和，因此凸。Bohr--Mollerup 定理给 \(F(x)=\Gamma(x)\)；令 \(x=2z\)，先在正实轴成立，再由亚纯恒等定理扩展。
+先设 \(\operatorname{Re}z>0\)。
+在 \(B(z,z)\) 中令 \(u=(1+v)/2\)，得到
+\[
+ B(z,z)=2^{1-2z}\int_{-1}^1(1-v^2)^{z-1}\,\mathrm dv.
+\]
+被积函数关于 \(v\) 为偶函数。
+将积分写成两倍的 \((0,1)\) 积分，再令 \(w=v^2\)，可得
+\[
+ \int_{-1}^1(1-v^2)^{z-1}\,\mathrm dv
+ =\int_0^1w^{-1/2}(1-w)^{z-1}\,\mathrm dw
+ =B(1/2,z).
+\]
+所有端点积分因 \(\operatorname{Re}z>0\) 绝对收敛。
+代入 Beta--Gamma 关系与 \(\Gamma(1/2)=\sqrt\pi\)，得到
+\[
+ \frac{\Gamma(z)^2}{\Gamma(2z)}
+ =2^{1-2z}\frac{\sqrt\pi\,\Gamma(z)}{\Gamma(z+1/2)}.
+\]
+此半平面内 Gamma 值均有限且非零，约分后即为所需等式。
+两边都是全平面亚纯函数，恒等定理给出全局结论。
 \end{proof}
-该式称为\term[legendre-beizeng-gongshi]{Legendre 倍增公式}[Legendre duplication formula]。例如它把半整数阶乘写成
-\(\Gamma(n+1/2)=(2n)!\sqrt\pi/(4^nn!)\)，便于精确计算高斯积分的偶数矩。
+
+这称为\term[legendre-beizeng-gongshi]{Legendre 倍增公式}[Legendre duplication formula]。
+例如对整数 \(n\ge0\)，它与递推一起给
+\[
+ \Gamma(n+1/2)=\frac{(2n)!}{4^n n!}\sqrt\pi.
+\]
+此处的倍增常数来自区间换元及 \(\Gamma(1/2)\)；
+下面处理任意整数倍数时，则用反射公式确定全部常数。
 
 \subsection{乘法公式}
 \label{b3:subsec:210403}
 
-对整数 \(m\ge1\)，\term[gauss-chengfa-gongshi]{Gauss 乘法公式}[Gauss multiplication formula]为
+\Needspace{6\baselineskip}
+\begin{theorem}[Gauss 乘法公式]\label{b3:thm:21-multiplication}
+设 \(m\ge1\) 为整数，则在全复平面上有亚纯恒等式
 \begin{equation}\label{b3:eq:21-multiplication}
-\prod_{k=0}^{m-1}\Gamma(z+k/m)
-=(2\pi)^{(m-1)/2}m^{1/2-mz}\Gamma(mz).
+ \prod_{k=0}^{m-1}\Gamma(z+k/m)
+ =(2\pi)^{(m-1)/2}m^{1/2-mz}\Gamma(mz),
 \end{equation}
-先用与倍增公式相同的方法，令
-\(F(x)=C m^x\prod_{k=0}^{m-1}\Gamma((x+k)/m)\)。相邻乘积约去后得到 \(F(x+1)=xF(x)\)，且对数凸，选 \(C\) 使 \(F(1)=1\) 即知它等于 \(\Gamma(x)\)。求常数时，将反射公式对 \(k=1,\ldots,m-1\) 相乘，使用
+其中 \(m^{1/2-mz}=\exp((1/2-mz)\log m)\)，
+实常数的平方根取正值。
+当 \(mz\notin\{0,-1,-2,\ldots\}\) 时，等式两边均为有限值。
+\end{theorem}
+\begin{proof}
+\(m=1\) 时公式是恒等式，以下设 \(m\ge2\)。
+先计算正实常数
 \[
-\prod_{k=1}^{m-1}\sin(\pi k/m)=m/2^{m-1}.
+ A_m=\prod_{k=1}^{m-1}\Gamma(k/m)>0.
 \]
-这个有限恒等式来自 \((X^m-1)/(X-1)\) 在 \(X=1\) 的值：各非平凡单位根与一的距离为 \(2\sin(\pi k/m)\)，取模即可。故
-\(\prod_{k=1}^{m-1}\Gamma(k/m)=(2\pi)^{(m-1)/2}/\sqrt m\)，平方根取正值。代回 \(C\)，得到所示常数。
+多项式分解
+\[
+ \frac{X^m-1}{X-1}
+ =\prod_{k=1}^{m-1}\bigl(X-e^{2\pi\mathrm ik/m}\bigr)
+\]
+在 \(X=1\) 处的值为 \(m\)。
+取绝对值，并用
+\(\lvert1-e^{2\pi\mathrm ik/m}\rvert=2\sin(\pi k/m)>0\)，得到
+\[
+ \prod_{k=1}^{m-1}\sin(\pi k/m)=\frac{m}{2^{m-1}}.
+\]
+把反射公式在 \(z=k/m\)、\(1\le k\le m-1\) 处相乘，
+因为 \(k\mapsto m-k\) 只置换这些下标，左边为 \(A_m^2\)。
+所以
+\[
+ A_m^2=\frac{\pi^{m-1}}{\prod_{k=1}^{m-1}\sin(\pi k/m)}
+       =\frac{(2\pi)^{m-1}}m,\quad
+ A_m=\frac{(2\pi)^{(m-1)/2}}{\sqrt m}.
+\]
+最后一步的正号由各个 Gamma 因子的正性确定。
 
-\subsection{Stirling 公式}
+现在对实数 \(x>0\) 定义
+\[
+ F_m(x)=\frac{m^{x-1}}{A_m}
+        \prod_{k=0}^{m-1}\Gamma\bigl((x+k)/m\bigr).
+\]
+在 \(x=1\) 时，乘积由 \(\Gamma(1)=1\) 与 \(A_m\) 组成，
+故 \(F_m(1)=1\)。
+在 \(x\mapsto x+1\) 时，中间 \(m-1\) 个 Gamma 因子约去，留下
+\[
+ \frac{\prod_{k=0}^{m-1}\Gamma((x+1+k)/m)}
+      {\prod_{k=0}^{m-1}\Gamma((x+k)/m)}
+ =\frac{\Gamma(x/m+1)}{\Gamma(x/m)}=\frac xm.
+\]
+前面的 \(m^{x-1}\) 同时多出一个因子 \(m\)，
+因此 \(F_m(x+1)=xF_m(x)\)。
+又
+\[
+ \log F_m(x)=(x-1)\log m-\log A_m
+       +\sum_{k=0}^{m-1}\log\Gamma\bigl((x+k)/m\bigr)
+\]
+是凸函数与仿射函数之和，故仍为凸函数。
+由\cref{b3:thm:21-bohr-mollerup}，\(F_m(x)=\Gamma(x)\)。
+解出乘积得
+\[
+ \prod_{k=0}^{m-1}\Gamma\bigl((x+k)/m\bigr)
+ =A_m m^{1-x}\Gamma(x)
+ =(2\pi)^{(m-1)/2}m^{1/2-x}\Gamma(x).
+\]
+令 \(x=mz\)，先对正实 \(z\) 成立。
+两边在右半平面全纯，正实轴有内部聚点，
+故全纯恒等定理将等式推广到右半平面；
+再由亚纯恒等定理推广到全平面。
+\end{proof}
+
+这称为\term[gauss-chengfa-gongshi]{Gauss 乘法公式}[Gauss multiplication formula]。
+\(m=2\) 时恢复 Legendre 倍增公式；\(m=3\) 时有
+\[
+ \Gamma(z)\Gamma(z+1/3)\Gamma(z+2/3)
+ =2\pi\,3^{1/2-3z}\Gamma(3z).
+\]
+证明中的两个规范化不可省略：
+有限乘积约分给出的因子是 \(x/m\)，而反射公式先确定的是 \(A_m^2\)。
+指数因子与正实轴的正性分别补全这两处信息。
+
+\subsection{Stirling 公式与竖线估计}
 \label{b3:subsec:210404}
 
+\Needspace{6\baselineskip}
 \begin{theorem}[Stirling]\label{b3:thm:21-stirling}
 当实数 \(x\to+\infty\) 时，
 \[
-\Gamma(x)=\sqrt{2\pi}\,x^{x-1/2}e^{-x}(1+o(1)).
+ \Gamma(x)=\sqrt{2\pi}\,x^{x-1/2}e^{-x}(1+o(1)).
+\]
+等价地，
+\[
+ \log\Gamma(x)
+ =(x-1/2)\log x-x+\tfrac12\log(2\pi)+o(1).
 \]
 \end{theorem}
 \begin{proof}
-在 \(\Gamma(x+1)\) 的积分中令 \(t=x+u\sqrt x\)，提出 \(x^xe^{-x}\sqrt x\)。剩余积分为
+在 \(\Gamma(x+1)=\int_0^\infty e^{-t}t^x\,\mathrm dt\) 中，
+被积函数的对数在 \(t=x\) 达到最大值。
+令 \(t=x+u\sqrt x\)，提出峰值与长度因子，得到
 \[
-I_x=\int_{-\sqrt x}^{\infty}\exp\left[x\left(\log(1+u/\sqrt x)-u/\sqrt x\right)\right]\,\mathrm{d}u.
+ \Gamma(x+1)=x^xe^{-x}\sqrt x\,I_x,\quad
+ I_x=\int_{-\sqrt x}^{\infty}e^{-xh(u/\sqrt x)}\,\mathrm du,
 \]
-固定 \(u\) 时指数趋于 \(-u^2/2\)。对 \(|v|\le1/2\)，Taylor 定理及二阶导数给 \(\log(1+v)-v\le-cv^2\)，故中部由 \(e^{-cu^2}\) 控制。设 \(h(v)=v-\log(1+v)\)。对 \(v\ge1/2\)，有 \(h'(v)=v/(1+v)\ge1/3\)，于是右尾积分不超过
-\(3x^{-1/2}e^{-xh(1/2)}\)。对 \(-1<v\le-1/2\)，\(h'(v)\le-1\)，左尾同样不超过 \(x^{-1/2}e^{-xh(-1/2)}\)。先用支配收敛处理扩大的中部，再用这两个指数小界删去尾部，得 \(I_x\to\int_{\mathbb R}e^{-u^2/2}\,\mathrm{d}u=\sqrt{2\pi}\)。最后除以 \(x\) 即得结论。
+其中
+\[
+ h(v)=v-\log(1+v)\quad(v>-1).
+\]
+有 \(h(0)=h'(0)=0\)、\(h''(v)=(1+v)^{-2}\)。
+因此对每个固定 \(u\)，
+\[
+ xh(u/\sqrt x)\longrightarrow\frac{u^2}{2}.
+\]
+但逐点极限尚不足以把积分号移到极限外，
+还需分别控制不断扩大的中部与两侧尾部。
+
+在 \(|v|\le1/2\) 上，\(h''(v)\ge4/9\)，
+由带积分余项的 Taylor 公式有 \(h(v)\ge2v^2/9\)。
+于是把中部被积函数延拓为实轴上的函数
+\[
+ g_x(u)=\mathbf1_{\{|u|\le\sqrt x/2\}}
+         \cdot e^{-xh(u/\sqrt x)},
+\]
+便有 \(0\le g_x(u)\le e^{-2u^2/9}\)。
+对固定 \(u\)，当 \(x\) 足够大时指示函数为一，
+故 \(g_x(u)\to e^{-u^2/2}\)。
+由支配收敛定理，
+\[
+ \int_{-\sqrt x/2}^{\sqrt x/2}e^{-xh(u/\sqrt x)}\,\mathrm du
+ \longrightarrow\int_{\mathbb R}e^{-u^2/2}\,\mathrm du
+ =\sqrt{2\pi}.
+\]
+
+对于右尾，\(v\ge1/2\) 时
+\(h'(v)=v/(1+v)\ge1/3\)，所以
+\[
+ h(v)\ge h(1/2)+(v-1/2)/3.
+\]
+再令 \(v=u/\sqrt x\)，得到
+\[
+ \begin{aligned}
+ \int_{\sqrt x/2}^\infty e^{-xh(u/\sqrt x)}\,\mathrm du
+ &\le\sqrt x\,e^{-xh(1/2)}
+       \int_{1/2}^\infty e^{-x(v-1/2)/3}\,\mathrm dv\\
+ &=\frac3{\sqrt x}e^{-xh(1/2)}.
+ \end{aligned}
+\]
+对于左尾，\(-1<v\le-1/2\) 时 \(h'(v)\le-1\)，从而
+\[
+ h(v)\ge h(-1/2)+(-1/2-v).
+\]
+因此
+\[
+ \begin{aligned}
+ \int_{-\sqrt x}^{-\sqrt x/2}e^{-xh(u/\sqrt x)}\,\mathrm du
+ &\le\sqrt x\,e^{-xh(-1/2)}
+       \int_{-1}^{-1/2}e^{-x(-1/2-v)}\,\mathrm dv\\
+ &\le\frac1{\sqrt x}e^{-xh(-1/2)}.
+ \end{aligned}
+\]
+\(h(1/2)\) 与 \(h(-1/2)\) 都严格为正，故两个尾部均趋于零。
+合并三段可得 \(I_x\to\sqrt{2\pi}\)。
+由 \(\Gamma(x)=\Gamma(x+1)/x\) 得到第一式；
+正实轴上取实对数，再用 \(\log(1+o(1))=o(1)\)，得到第二式。
 \end{proof}
-这给出\term[stirling-gongshi]{Stirling 公式}[Stirling formula]的正实轴版本。证明解释了平方根因子：积分主要来自峰值 \(t=x\) 周围宽度为 \(\sqrt x\) 的区间。它不声称在穿过负实轴的复扇形上一致成立；复参数渐近展开还必须指定对数分支及与负实轴的角距离。NIST 的《Digital Library of Mathematical Functions》\cite[Sections 5.5 and 5.11]{NationalInstituteofStandardsNIST}分别列出上述函数关系和复参数渐近版本，使用时应保留其区域条件。
 
+这给出\term[stirling-gongshi]{Stirling 公式}[Stirling formula]的正实轴版本。
+平方根因子来自峰值 \(t=x\) 附近宽度为 \(\sqrt x\) 的区间，
+常数 \(\sqrt{2\pi}\) 来自该尺度上的 Gaussian 极限。
+特别地，取整数 \(n\to\infty\)，有
+\[
+ n!=\sqrt{2\pi n}\,(n/e)^n(1+o(1)).
+\]
+这里的证明只给出相对误差 \(o(1)\)；若要指定误差阶，
+还须保留 Taylor 余项并使中部与尾部估计配合。
 
 \ProseParagraphBreak
+上述论证使用正实轴上的峰值，并未建立复参数扇形中的渐近展开。
+后者还须指定对数分支及与负实轴的角距离。
+NIST 的《Digital Library of Mathematical Functions》
+\cite[Sections 5.5 and 5.11]{NationalInstituteofStandardsNIST}
+分别列出本节的函数关系与复参数渐近版本，可作进一步阅读；
+本节下面的竖线公式直接由反射与递推得到。
 
-反射公式能给虚方向上的精确模值，而不需要复 Stirling 公式。对实 \(t\ne0\)，利用共轭关系与递推，有
+\Needspace{6\baselineskip}
+\begin{proposition}[三条竖线上的精确模值]\label{b3:prop:21-vertical-modulus}
+对实数 \(t\ne0\)，有
 \[
- |\Gamma(\mathrm{i}t)|^2=\frac{\pi}{t\sinh\pi t},\qquad
- |\Gamma(1+\mathrm{i}t)|^2=\frac{\pi t}{\sinh\pi t}.
+ |\Gamma(\mathrm it)|^2=\frac\pi{t\sinh\pi t}.
 \]
-确实，反射式在 \(z=\mathrm{i}t\) 给分母 \(\sin\pi\mathrm{i}t=\mathrm{i}\sinh\pi t\)，而 \(\Gamma(1-\mathrm{i}t)=-\mathrm{i}t\Gamma(-\mathrm{i}t)\)；移项后得到第一式，第二式再乘 \(t^2\)。当 \(t\to0\)，第二式趋于一，恰与 \(\Gamma(1)=1\) 相符；当 \(|t|\to\infty\)，它给 \(|\Gamma(1+\mathrm{i}t)|\sim\sqrt{2\pi|t|}e^{-\pi|t|/2}\)。这是一条竖线上完整的衰减结论，不被误写为全扇形的统一渐近。
-\ProseParagraphBreak
-在半整数竖线上，同理可直接将 \(z=1/2+\mathrm{i}t\) 代入反射公式，得到
+对所有实数 \(t\)，有
 \[
- |\Gamma(1/2+\mathrm{i}t)|^2=\frac\pi{\cosh\pi t}.
+ |\Gamma(1+\mathrm it)|^2=\frac{\pi t}{\sinh\pi t},\quad
+ |\Gamma(1/2+\mathrm it)|^2=\frac\pi{\cosh\pi t}.
 \]
-再对实部作整数递推，便能得到所有整数或半整数竖线上的精确乘积表达式。这些特殊线已经足以检验很多 Mellin 反演中的绝对收敛。若需要任意实部的统一估计，则必须另作插值或扇形分析，当前几条特殊线的公式并不自动包含这一推广。
+第二行第一个商在 \(t=0\) 处按连续延拓取值一。
+\end{proposition}
+\begin{proof}
+Euler 积分及其递推延拓给
+\(\Gamma(\overline z)=\overline{\Gamma(z)}\)。
+在反射公式中取 \(z=\mathrm it\)、\(t\ne0\)，使用
+\(\sin(\pi\mathrm it)=\mathrm i\sinh(\pi t)\) 及
+\(\Gamma(1-\mathrm it)=-\mathrm it\Gamma(-\mathrm it)\)，得到
+\[
+ -\mathrm it\,|\Gamma(\mathrm it)|^2
+ =\frac\pi{\mathrm i\sinh\pi t}.
+\]
+约去 \(-\mathrm i\) 即得第一式。
+由 \(\Gamma(1+\mathrm it)=\mathrm it\Gamma(\mathrm it)\)，
+模的平方再乘 \(t^2\) 得第二式；
+当 \(t\to0\) 时右端趋于一，与 \(\Gamma(1)=1\) 相符。
+
+在反射公式中取 \(z=1/2+\mathrm it\)，此时 \(1-z=\overline z\)，
+且 \(\sin(\pi/2+\pi\mathrm it)=\cosh(\pi t)\)，
+因而直接得到第三式，包括 \(t=0\) 的情形。
+\end{proof}
+
+在两边 Gamma 值均有限处，递推取模后给
+\[
+ |\Gamma(\sigma+1+\mathrm it)|^2
+ =(\sigma^2+t^2)|\Gamma(\sigma+\mathrm it)|^2
+\]
+因此对整数 \(k\ge1\)、\(m\ge0\)，有
+\[
+ \begin{aligned}
+ |\Gamma(k+\mathrm it)|^2
+ &=\frac{\pi t}{\sinh\pi t}
+        \prod_{j=1}^{k-1}(j^2+t^2),\\
+ |\Gamma(m+1/2+\mathrm it)|^2
+ &=\frac\pi{\cosh\pi t}
+        \prod_{j=0}^{m-1}\bigl((j+1/2)^2+t^2\bigr).
+ \end{aligned}
+\]
+空乘积取一，第一个式子在 \(t=0\) 仍用连续延拓。
+向负方向递推，则对整数 \(m\ge0\) 有
+\[
+ \begin{aligned}
+ |\Gamma(-m+\mathrm it)|^2
+ &=\frac\pi{t\sinh\pi t}
+        \prod_{j=1}^{m}(j^2+t^2)^{-1}\quad(t\ne0),\\
+ |\Gamma(1/2-m+\mathrm it)|^2
+ &=\frac\pi{\cosh\pi t}
+        \prod_{j=1}^{m}\bigl((j-1/2)^2+t^2\bigr)^{-1}
+        \quad(t\in\mathbb R).
+ \end{aligned}
+\]
+整数负竖线在 \(t=0\) 有极点，半整数负竖线在该点没有极点；
+两类公式的参数范围因此不同。
+
+\Needspace{6\baselineskip}
+\begin{corollary}[整数与半整数竖线的渐近]\label{b3:cor:21-half-integer-lines}
+对每个固定 \(\sigma\in\tfrac12\mathbb Z\)，当实数 \(|t|\to\infty\) 时，
+\[
+ |\Gamma(\sigma+\mathrm it)|
+ \sim\sqrt{2\pi}\,|t|^{\sigma-1/2}e^{-\pi|t|/2}.
+\]
+\end{corollary}
+\begin{proof}
+有 \(\cosh\pi t\sim e^{\pi|t|}/2\)，
+且 \(t\sinh\pi t\sim|t|e^{\pi|t|}/2\)。
+前述有限乘积的每一个二次因子均为 \(t^2(1+o(1))\)，
+因子数在固定 \(\sigma\) 时不变。
+故各式都给
+\[
+ |\Gamma(\sigma+\mathrm it)|^2
+ \sim2\pi|t|^{2\sigma-1}e^{-\pi|t|}.
+\]
+两边取正平方根即可。
+\end{proof}
+
+这些精确模值直接显示了整数与半整数竖线上的指数衰减。
+这里的渐近对每个固定实部陈述，不能仅从有限多条特殊线推断任意实部带上的一致性。
+\secref{b3:sec:2105}将从 Euler 积分的对数坐标出发，
+通过分部积分与递推，在任意有限实部带上建立任意阶多项式衰减估计，
+供 Mellin 变换与积分换序使用。

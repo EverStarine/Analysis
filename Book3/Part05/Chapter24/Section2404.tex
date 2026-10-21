@@ -2,93 +2,436 @@
 \section{二平方和与四平方和}
 \label{b3:sec:2404}
 
-二平方和可以从 Gaussian 整数的唯一分解得到；四平方和的精确计数则可利用 theta 乘积的对数导数。后者需要一个半周期差值恒等式，下面将它从前章的椭圆函数推出来。
+生成函数已把表示数放进 theta 级数的系数，但这还没有算出系数。二平方和中，恒等式 \(x^2+y^2=(x+\mathrm{i}y)(x-\mathrm{i}y)\) 提示把整数分解放到复数平面；四平方和中，三重积的对数导数会产生带分母 \(1-q^m\) 的级数，其系数恰能按约数整理。两条路线分别解释素因子障碍与约数求和公式。下面把它们所需的代数步骤和解析步骤逐项建立。
 
 \subsection{二平方和定理}
 \label{b3:subsec:240401}
 
+两个表示相乘仍得到一个表示，因为
+\[
+(a^2+b^2)(c^2+d^2)=(ac-bd)^2+(ad+bc)^2.
+\]
+这是复数模平方的乘法公式。为了不仅构造表示，还能证明没有遗漏，需知道在什么意义下复整数可以唯一分解。
+
+\begin{definition}\label{b3:def:24-gaussian-integers}
+集合
+\[
+\mathbb Z[\mathrm{i}]=\{a+b\mathrm{i}:a,b\in\mathbb Z\},
+\]
+配以通常的复数加法和乘法，称为\term[gaussian-zhengshu]{Gaussian 整数}[Gaussian integers]的环。对 \(\alpha=a+b\mathrm{i}\)，定义范数
+\(N(\alpha)=\alpha\bar\alpha=a^2+b^2\)。
+\end{definition}
+\symidx{\(\mathbb Z[\mathrm{i}]\)：Gaussian 整数环}
+
+范数是非负整数，且 \(N(\alpha\beta)=N(\alpha)N(\beta)\)。
+一个元素若有仍在环内的乘法逆元，就称为单位；取范数可知，单位恰为 \(1,-1,\mathrm{i},-\mathrm{i}\)。两个非零元素相差一个单位因子时称为相伴。非零非单位若不能写成两个非单位的乘积，就称为不可约元。唯一分解中的“唯一”，需要允许因子的次序改变和相伴替换。
+
+\begin{lemma}[Gaussian 整数中的除法与分解]\label{b3:lem:24-gaussian-factorization}
+在环 \(\mathbb Z[\mathrm{i}]\) 中，对任意 \(\alpha,\beta\) 且 \(\beta\ne0\)，存在 \(u,r\in\mathbb Z[\mathrm{i}]\)，使
+\[
+\alpha=u\beta+r,\qquad N(r)\le\tfrac12N(\beta)<N(\beta).
+\]
+每个非零非单位都能分解为不可约元的乘积；除了因子次序和相伴关系外，分解唯一。每个不可约元 \(\pi\) 都具有素元性质：
+\(\pi\mid\alpha\beta\) 蕴含 \(\pi\mid\alpha\) 或 \(\pi\mid\beta\)。
+\end{lemma}
+\begin{proof}
+把 \(\alpha/\beta\) 的实部和虚部分别舍入到最近的整数，得到 \(u\)。
+两个坐标误差均不超过 \(1/2\)，故
+\[
+N(\alpha-u\beta)=N(\beta)\left|\frac{\alpha}{\beta}-u\right|^2
+\le N(\beta)\left(\frac14+\frac14\right).
+\]
+这就是带余除法。它不要求商唯一；落在格胞边界时可以任选最近格点，余数估计都成立。
+
+连续作带余除法，非零余数的范数严格下降，因而有限步后终止。最后一个非零余数 \(\delta\) 整除前面的两个余数，逐步回代可知它整除最初的 \(\alpha,\beta\)；反过来，任何共同因子都整除每一步余数，故整除 \(\delta\)。把除法等式反向代入，还得到
+\(\delta=v\alpha+w\beta\)，其中 \(v,w\in\mathbb Z[\mathrm{i}]\)。
+这便是此环中的最大公因子和 Bézout 表示。
+
+设 \(\pi\) 不可约而 \(\pi\nmid\alpha\)。\(\pi,\alpha\) 的最大公因子整除 \(\pi\)，所以只能是单位或与 \(\pi\) 相伴；后一情形会使 \(\pi\mid\alpha\)，已被排除。将 Bézout 表示除以这个单位，得
+\(v\pi+w\alpha=1\)。若 \(\pi\mid\alpha\beta\)，等式乘以 \(\beta\) 后，两项 \(v\pi\beta,w\alpha\beta\) 都被 \(\pi\) 整除，因而 \(\pi\mid\beta\)。这证明素元性质。
+
+最后对范数归纳。非零非单位若非不可约，则分成两个非单位；它们的范数都至少为二，又相乘等于原范数，所以各自范数都严格较小，归纳给有限分解。比较两份分解时，第一份中的首因子整除第二份的乘积。反复使用素元性质，它整除其中某个不可约因子，故两者相伴。约去以后对剩余因子归纳，即得唯一性。
+\end{proof}
+
+上述论证只使用整数范数的下降和 Bézout 等式。后面的计数需要的正是不可约元具有素元性质；对任意整数扩张环，这项性质未必成立，不能只把“不可再分”当作“整除乘积必整除一项”。
+
+\begin{proposition}[有理素数在 Gaussian 整数中的分解]\label{b3:prop:24-gaussian-primes}
+设 \(p\) 为正的有理素数。
+\begin{enumerate}
+\item \(2=-\mathrm{i}(1+\mathrm{i})^2\)，且 \(1+\mathrm{i}\) 不可约。
+\item 若 \(p\equiv3\pmod4\)，则 \(p\) 在 \(\mathbb Z[\mathrm{i}]\) 中不可约。
+\item 若 \(p\equiv1\pmod4\)，则存在 \(\pi\in\mathbb Z[\mathrm{i}]\)，使
+\(p=\pi\bar\pi\)、\(N(\pi)=p\)，且 \(\pi,\bar\pi\) 是两个不相伴的不可约元。
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+第一式直接计算可得。因为 \(N(1+\mathrm{i})=2\) 是素数，范数乘法不允许它分成两个非单位，故不可约。
+
+若 \(p\equiv3\pmod4\) 而 \(p=\alpha\beta\) 是两个非单位的乘积，则
+\(N(\alpha)N(\beta)=p^2\)，且两个范数都大于一，必有 \(N(\alpha)=N(\beta)=p\)。
+但整数平方模四只能是零或一，两个平方之和不能模四等于三，矛盾。
+
+设 \(p\equiv1\pmod4\)。先在模 \(p\) 的非零剩余类中将每个元素与逆元配对。自逆元满足 \(x^2=1\)，由于 \(p\) 为素数，只可能是 \(1,-1\)；其余每对的乘积为一。因此
+\[
+(p-1)!\equiv-1\pmod p.
+\]
+再把 \(j\) 与 \(p-j\) 配对，得
+\[
+(p-1)!\equiv(-1)^{(p-1)/2}
+  \left(\left(\frac{p-1}{2}\right)!\right)^2\pmod p.
+\]
+此时 \((p-1)/2\) 为偶数，故存在整数 \(u\) 满足 \(u^2\equiv-1\pmod p\)。
+
+于是 \(p\mid(u+\mathrm{i})(u-\mathrm{i})\)。
+如果 \(p\) 在 \(\mathbb Z[\mathrm{i}]\) 中不可约，前一引理的素元性质会迫使它整除某个因子。但 \(p\mid a+b\mathrm{i}\) 等价于整数 \(a,b\) 都被 \(p\) 整除，而这里虚部是 \(\pm1\)，不可能。故 \(p\) 可约，范数论证再次说明其非单位因子 \(\pi\) 有 \(N(\pi)=p\)，从而 \(p=\pi\bar\pi\)。
+范数为素数也使这两个因子都不可约。
+
+还须排除二者相伴。写 \(\pi=a+b\mathrm{i}\)。若 \(\bar\pi=\varepsilon\pi\)，分别代入四个单位 \(\varepsilon\)，便会得到 \(a=0\)、\(b=0\) 或 \(a=\pm b\)。前两种使 \(p\) 为整数平方，后一种使 \(p=2a^2\)，都不可能是模四为一的素数。因此 \(\pi,\bar\pi\) 不相伴。
+\end{proof}
+
+现在有理整数的每个素因子都已分类，可以分别计算它对范数的贡献。
+
 \begin{theorem}[二平方和]\label{b3:thm:24-two-squares}
-正整数 \(n\) 可表示为两个整数平方之和，当且仅当每个 \(p\equiv3\pmod4\) 的素因子在 \(n\) 中的指数为偶数。计数公式为
-\(r_2(n)=4\sum_{d\mid n}\chi_4(d)\)，其中 \(\chi_4(d)=0\) 对偶数，\(\chi_4(d)=(-1)^{(d-1)/2}\) 对奇数。
+设 \(n\ge1\) 为整数，写其有理素因数分解为
+\[
+n=2^a\prod_{p\equiv1\ (4)}p^{a_p}
+       \prod_{\ell\equiv3\ (4)}\ell^{b_\ell}.
+\]
+乘积只遍历实际出现的正素因子。则 \(n\) 可表示为两个整数平方之和，当且仅当所有 \(b_\ell\) 为偶数。令
+\[
+r_2(n)=\#\{(x,y)\in\mathbb Z^2:x^2+y^2=n\},\qquad
+\chi_4(d)=
+\begin{cases}
+0,&2\mid d,\\
+1,&d\equiv1\pmod4,\\
+-1,&d\equiv3\pmod4.
+\end{cases}
+\]
+其中次序与符号分别计数。则
+\[
+r_2(n)=4\sum_{\substack{d\mid n\\d>0}}\chi_4(d)
+=\begin{cases}
+4\displaystyle\prod_{p\equiv1\ (4)}(a_p+1),
+  &\text{所有 }b_\ell\text{ 均偶},\\
+0,&\text{至少一个 }b_\ell\text{ 为奇数}.
+\end{cases}
+\]
+空乘积取一。
 \end{theorem}
 \begin{proof}
-先说明所需代数。Gaussian 整数 \(\mathbb Z[\mathrm{i}]\) 的范数为 \(a^2+b^2\)。对商的实虚部各取最近整数，可使除法余项的范数至多为除数范数的一半，因此存在 Euclid 算法、最大公因子和 Bézout 恒等式。若不可约元整除积，Bézout 恒等式证明它整除某个因子，继而按范数归纳得到唯一分解。
-有理素数 \(p\equiv3\pmod4\) 仍不可约：若分解，其因子范数只能为 \(p\)，但平方模四不可能相加得三。对 \(p\equiv1\pmod4\)，Wilson 配对证明 \((p-1)!\equiv-1\pmod p\)，又有 \((p-1)!\equiv(-1)^{(p-1)/2}(((p-1)/2)!)^2\)，所以存在 \(u^2\equiv-1\pmod p\)。若 \(p\) 在 Gaussian 整数中不可约，它整除 \((u+\mathrm{i})(u-\mathrm{i})\) 就会整除一因子，这在虚部为 \(\pm1\) 时不可能。于是 \(p=\pi\overline\pi\)，其中 \(N\pi=p\)，两因子不相伴。素数二则为 \(-\mathrm{i}(1+\mathrm{i})^2\)。
-设 \(n=2^a\prod_{p\equiv1(4)}p^{a_p}\prod_{q\equiv3(4)}q^{b_q}\)。若 \(N\alpha=n\)，每个惰性素数 \(q\) 在范数中的指数必须偶；反之这些指数偶时，可以给 \(\alpha\) 选 \(q^{b_q/2}\)、\((1+\mathrm{i})^a\)，并对每个分裂素数在 \(\pi\) 与 \(\overline\pi\) 间分配共 \(a_p\) 个因子。因此表示数为 \(4\prod(a_p+1)\)，前面的四为四个单位。约数和 \(\sum_{d\mid n}\chi_4(d)\) 按素数幂相乘：二贡献一，分裂素数贡献 \(a_p+1\)，惰性素数贡献一或零，恰好得到公式。
+把整数对 \((x,y)\) 与 \(\alpha=x+\mathrm{i}y\) 对应，条件就是
+\(\alpha\bar\alpha=n\)。任何不可约因子若出现在 \(\alpha\) 中，就整除 \(n\)，因此它只能与前一命题给出的某个素因子相伴。固定每个 \(p\equiv1\pmod4\) 的一种选择 \(p=\pi_p\bar\pi_p\)，分别比较指数。
+
+对 \(\ell\equiv3\pmod4\)，共轭不改变实整数因子 \(\ell\)。若 \(\alpha\) 含 \(\ell^s\)，则 \(\alpha\bar\alpha\) 含 \(\ell^{2s}\)，故必须 \(b_\ell=2s\)。这既给出偶数障碍，也在障碍消失时唯一确定 \(s\)。
+
+素数二的 Gaussian 因子 \(1+\mathrm{i}\) 与其共轭相伴。\(2^a\) 中它的指数为 \(2a\)，而取范数把 \(\alpha\) 中的指数加倍，所以 \(\alpha\) 必含 \((1+\mathrm{i})^a\)。
+对分裂素数 \(p\)，共轭交换 \(\pi_p,\bar\pi_p\)。若它们在 \(\alpha\) 中的指数为 \(r,s\)，则比较 \(n\) 中两类因子得到
+\(r+s=a_p\)。因而有 \(a_p+1\) 种选择。
+
+所有 \(b_\ell\) 为偶数时，全部可能的 \(\alpha\) 恰为
+\[
+\varepsilon(1+\mathrm{i})^a
+ \prod_{\ell\equiv3\ (4)}\ell^{b_\ell/2}
+ \prod_{p\equiv1\ (4)}
+       \pi_p^{\,r_p}\bar\pi_p^{\,a_p-r_p},
+\quad
+0\le r_p\le a_p,\quad
+\varepsilon\in\{1,-1,\mathrm{i},-\mathrm{i}\}.
+\]
+每个表达式范数为 \(n\)，故确实给出表示；唯一分解又说明不同的指数选择不会相伴，固定指数以后四个单位给四个不同的非零元素。这证明存在性判别及乘积计数。
+
+最后，\(\chi_4(uv)=\chi_4(u)\chi_4(v)\)：有偶数因子时两边都为零，奇数情形只需检查模四的 \(1,3\) 两类。把每个正约数按素数幂唯一写开，有限求和遂分解为各素数幂的和。二的因子给一；\(p\equiv1\pmod4\) 给 \(a_p+1\)；\(\ell\equiv3\pmod4\) 给
+\(1-1+\cdots+(-1)^{b_\ell}\)，在指数偶数时为一、奇数时为零。由此得到约数和表达式。
 \end{proof}
+
+例如 \(65=5\cdot13\)，取
+\(5=(2+\mathrm{i})(2-\mathrm{i})\)、
+\(13=(3+2\mathrm{i})(3-2\mathrm{i})\)。
+选择两个正号因子给 \(4+7\mathrm{i}\)，选择相反号给 \(8-\mathrm{i}\)，另外两种选择为它们的共轭。再乘四个单位，得到绝对值型 \((4,7)\)、\((1,8)\) 的全部十六个有序带符号表示。乘以 \(\mathrm{i}\) 已经交换坐标并改变一个符号，不能再额外乘一个排列数。
+
+对 \(25\)，三种因子分配给 \(3+4\mathrm{i}\)、\(5\)、\(3-4\mathrm{i}\)，四个单位共给十二种表示；零坐标型只有四种。对 \(3\) 没有表示，对 \(9\) 则有 \((\pm3,0),(0,\pm3)\) 四种。障碍是模四为三的素因子的指数为奇数，并非只要出现这样的素因子就无解。\(n=0\) 另有唯一表示 \((0,0)\)，不属于上述素因数公式的范围。
 
 \subsection{Jacobi 四平方和定理}
 \label{b3:subsec:240402}
 
+增加两个变量后，二平方和中的素因子障碍消失，但这需要一个存在性证明。精确计数还会告诉我们：不同整数的表示数怎样随约数改变。所求结果如下，证明将在\subsecref{b3:subsec:240403}建立解析恒等式之后，于\subsecref{b3:subsec:240404}完成。
+
 \begin{theorem}[Jacobi 四平方和]\label{b3:thm:24-four-squares}
-对每个正整数 \(n\)，有
+对每个正整数 \(n\)，令
 \[
-r_4(n)=8\sum_{d\mid n,\ 4\nmid d}d.
+r_4(n)=\#\left\{(x_1,x_2,x_3,x_4)\in\mathbb Z^4:
+                    \sum_{j=1}^4x_j^2=n\right\}.
 \]
-特别地，每个正整数均为四个整数平方之和。
+不同的符号和次序分别计数。则
+\[
+r_4(n)=8\sum_{\substack{d\mid n,\ d>0\\4\nmid d}}d.
+\]
+特别地，每个正整数均为四个整数平方之和，允许部分坐标为零。
 \end{theorem}
-证明将在紧接的两小节完成。这里最后一句来自约数一总在求和范围内，故表示数严格为正；不能把所有项为非负误当成已知总和不为零。该定理称为\term[jacobi-sipingfanghe]{Jacobi 四平方和定理}[Jacobi four-square theorem]。
+这个精确公式称为\term[jacobi-sipingfanghe]{Jacobi 四平方和定理}[Jacobi four-square theorem]。最后一句将由约数 \(1\) 总在求和范围内得到：右侧至少为八。这里无需事先知道四平方和的存在性。
+
+\ProseParagraphBreak
+公式中的约数来自一种很具体的幂级数展开：
+\[
+\frac{dq^d}{1-q^d}=d\sum_{m\ge1}q^{dm},\qquad |q|<1.
+\]
+取 \(q^n\) 系数时，只有 \(d\mid n\) 的项作贡献。因此关键是将
+\(\theta_3^4=\sum_{n\ge0}r_4(n)q^n\) 写成这类级数的和。
+乘积的对数导数会产生分母 \(1-q^m\)，而 \(\theta_3^4\) 本来是四个级数的乘积；连接这两个表达式的关系是
+\[
+4q\frac{\mathrm d}{\mathrm dq}\log(\theta_2/\theta_4)=\theta_3^4.
+\]
+它的比例常数取决于空间周期和 \(q\) 的归一化，下面通过同一格的椭圆函数确定，不能凭首项猜定。
 
 \subsection{\texorpdfstring{\(\theta\)}{\AnalysisPdfTheta} 函数证明}
 \label{b3:subsec:240403}
 
-取格 \(\Lambda=\pi\mathbb Z+\pi\tau\mathbb Z\)，记 \(e_1=\wp(\pi/2)\)、\(e_3=\wp(\pi\tau/2)\)。由准周期性，\(-\mathrm{d}^2\log\theta_1(z)/\mathrm{d}z^2\) 双周期；在格点主部为 \(z^{-2}\)。与 \(\wp\) 相减是整椭圆函数，所以
-\(\wp(z)=-(\log\theta_1(z))''+C\)。平移级数得 \(\theta_1(z+\pi/2)=\theta_2(z)\)，以及
-\(\theta_1(z+\pi\tau/2)=\mathrm{i}q^{-1/4}e^{-\mathrm{i}z}\theta_4(z)\)。三个偶函数在原点导数为零，因此
+固定 \(\tau\in\mathfrak H\)，本小节的空间格一律为
+\(\Lambda=\pi\mathbb Z+\pi\tau\mathbb Z\)。
+它比前章的归一化格 \(\mathbb Z+\tau\mathbb Z\) 多一个尺度 \(\pi\)，所以不能混用两种格的 \(\wp\) 半周期值。空间导数用撇号表示，参数导数另外写出。
+
+\begin{proposition}[theta 对数导数与椭圆函数]\label{b3:prop:24-theta-wp}
+设 \(\tau\in\mathfrak H\)，
+\(\Lambda=\pi\mathbb Z+\pi\tau\mathbb Z\)，
+\(\theta_j(z,\tau)\) 采用\cref{b3:def:24-theta-series}的空间参数归一化，且
+\(\theta_j=\theta_j(0,\tau)\)。
+对 \(z\notin\Lambda\)，有
 \[
-e_1-e_3=\frac{\theta_4''(0)}{\theta_4}-\frac{\theta_2''(0)}{\theta_2}.
+\wp(z;\Lambda)
+=-\frac{\mathrm d^2}{\mathrm dz^2}\log\theta_1(z,\tau)
+ +\frac{\theta_1'''(0,\tau)}{3\theta_1'(0,\tau)}.
 \]
-另一方面，函数
-\(F(z)=(\theta_1'(0)/\theta_2)^2(\theta_2(z)/\theta_1(z))^2\) 双周期，在原点主部为 \(z^{-2}\)，并在 \(\pi/2\) 有二重零点；故 \(F=\wp-e_1\)。再代入 \(z=\pi\tau/2\)，利用
-\(\theta_2(z+\pi\tau/2)=q^{-1/4}e^{-\mathrm{i}z}\theta_3(z)\) 和\eqref{b3:eq:24-derivative-identity}，得到 \(e_3-e_1=-\theta_3^4\)。于是
+若 \(e_1=\wp(\pi/2;\Lambda)\)，则还有
 \[
-\frac{\theta_4''(0)}{\theta_4}-\frac{\theta_2''(0)}{\theta_2}=\theta_3^4.
+\wp(z;\Lambda)-e_1
+=\left(\frac{\theta_1'(0,\tau)}{\theta_2}\right)^2
+ \left(\frac{\theta_2(z,\tau)}{\theta_1(z,\tau)}\right)^2.
 \]
-每个 theta 级数还满足 \(q\partial_q\theta_j=-\tfrac14\partial_z^2\theta_j\)，直接逐项微分即可核对。因此
+这里对数只需在所考察点附近选取，所得二阶导数单值；上述等式也确定两侧在格点的相同亚纯延拓。
+\end{proposition}
+\begin{proof}
+由\cref{b3:prop:24-theta-zeros}，\(\theta_1\) 的零点恰为 \(\Lambda\)，全部单重，且 \(\theta_2\ne0\)。所以式中的除法在所述范围合法。令
+\(W(z)=-(\theta_1'(z)/\theta_1(z))'\)。
+\cref{b3:prop:24-theta-log-derivative}已经证明，\(W\) 是关于 \(\Lambda\) 的椭圆函数：对数导数消去常数准周期因子，再求导消去线性项。它在每个 \(a\in\Lambda\) 的唯一极部为 \((z-a)^{-2}\)。
+因此它与 \(\wp\) 的差在整个平面全纯且双周期，由\cref{b3:prop:22-entire-constant}为常数。
+为了确定该常数，利用 \(\theta_1\) 的奇性写
+\[
+\theta_1(z)=Az+Bz^3+O(z^5),\qquad
+A=\theta_1'(0)\ne0,\quad B=\frac{\theta_1'''(0)}6.
+\]
+除法与求导给出
+\[
+\frac{\theta_1'}{\theta_1}=\frac1z+\frac{2B}{A}z+O(z^3),
+\qquad
+W(z)=\frac1{z^2}-\frac{2B}{A}+O(z^2).
+\]
+而 \(\wp(z)=z^{-2}+O(z^2)\)，故应补上的常数为
+\(2B/A=\theta_1'''(0)/(3\theta_1'(0))\)。
+
+再令右侧平方商为 \(F(z)\)。在 \(\pi\) 平移下分子分母都变号；
+在 \(\pi\tau\) 平移下，\(\theta_2\) 乘 \(q^{-1}e^{-2\mathrm{i}z}\)，
+\(\theta_1\) 乘它的相反数。因此它们的商至多变号，平方以后有两个真正的周期。
+其极点只可能在 \(\Lambda\)。由偶性，
+\(\theta_2(z)=\theta_2+O(z^2)\)，结合前面的奇函数展开可知
+\[
+F(z)=z^{-2}+O(1).
+\]
+归一化前因子使二阶主部系数恰为一，偶性排除一阶极项。
+周期性将这个主部结论搬到所有格点，所以 \(F-\wp\) 又是整椭圆函数，只差常数。
+
+在 \(z=\pi/2\)，平移恒等式给
+\(\theta_2(\pi/2)=\theta_1(\pi)=0\)，
+\(\theta_1(\pi/2)=\theta_2\ne0\)，故 \(F(\pi/2)=0\)。
+常数因而为 \(-e_1\)，得到第二式。
+\end{proof}
+
+第一次比较先消去乘法准周期中的指数，第二次比较则把准周期因子直接在商中约掉。两种构造都利用了“主部相同的椭圆函数相差常数”，但决定常数的资料不同：第一式比较原点的常数项，第二式比较一个半周期的取值。
+
+\begin{lemma}[半周期差与参数导数]\label{b3:lem:24-half-period-derivative}
+设 \(\tau\in\mathfrak H\)、\(q=e^{\pi\mathrm{i}\tau}\)，
+\(\Lambda=\pi\mathbb Z+\pi\tau\mathbb Z\)，令
+\(e_1=\wp(\pi/2;\Lambda)\)、\(e_3=\wp(\pi\tau/2;\Lambda)\)。
+theta 常数为
+\[
+\theta_2=\sum_{n\in\mathbb Z}e^{\pi\mathrm{i}\tau(n+1/2)^2},
+\quad
+\theta_3=\sum_{n\in\mathbb Z}e^{\pi\mathrm{i}\tau n^2},
+\quad
+\theta_4=\sum_{n\in\mathbb Z}(-1)^ne^{\pi\mathrm{i}\tau n^2}.
+\]
+则 \(\theta_2,\theta_4\ne0\)，且
+\[
+e_1-e_3=\theta_3^4,\qquad
+4q\frac{\mathrm d}{\mathrm dq}\log(\theta_2/\theta_4)=\theta_3^4.
+\]
+这里 \(q\,\mathrm d/\mathrm dq=(\pi\mathrm{i})^{-1}\mathrm d/\mathrm d\tau\)，对数导数与局部对数分支无关。
+\end{lemma}
+\begin{proof}
+三个常数的非零性已由乘积证明。先把\cref{b3:prop:24-theta-translations}的半周期公式在 \(z=0\) 取值：
+\[
+\theta_2(\pi\tau/2,\tau)=q^{-1/4}\theta_3,\qquad
+\theta_1(\pi\tau/2,\tau)=\mathrm{i}q^{-1/4}\theta_4.
+\]
+因而前一命题的平方商在 \(z=\pi\tau/2\) 等于
+\[
+e_3-e_1
+=\left(\frac{\theta_1'(0)}{\theta_2}\right)^2
+  \left(\frac{\theta_3}{\mathrm{i}\theta_4}\right)^2
+=-\theta_3^4.
+\]
+最后一步用了 Jacobi 导数恒等式
+\(\theta_1'(0)=\theta_2\theta_3\theta_4\)。
+负号来自 \(\mathrm{i}^2=-1\)，而第四次幂来自两个平方因子的相乘。
+
+还须把这个空间取值关系转成参数导数关系。由平移公式
+\[
+\theta_1(z+\pi/2)=\theta_2(z),\qquad
+\theta_1(z+\pi\tau/2)
+=\mathrm{i}q^{-1/4}e^{-\mathrm{i}z}\theta_4(z),
+\]
+对局部对数求两次空间导数，第二式的指数因子只贡献一个线性项，二阶导数为零。
+\(\theta_2,\theta_4\) 关于空间变量都偶，故其原点一阶导数为零。
+分别在两个半周期使用前一命题，并相减消去共同常数，得到
+\[
+e_1-e_3
+=\frac{\theta_4''(0)}{\theta_4}
+ -\frac{\theta_2''(0)}{\theta_2}.
+\]
+这一步中 \((\log\theta_j)''=\theta_j''/\theta_j-(\theta_j'/\theta_j)^2\)，不能在一般点直接去掉后一项；原点的偶性才使它消失。
+
+最后，\cref{b3:prop:24-theta-heat}给出
+\[
+q\partial_q\theta_j(z,\tau)=-\frac14\partial_z^2\theta_j(z,\tau).
+\]
+比例 \(-1/4\) 来自空间指数 \(2\mathrm{i}nz\)，与本章的 \(\pi\) 周期匹配。
+因此在原点作非零常数之商，
+\[
+q\frac{\mathrm d}{\mathrm dq}\log(\theta_2/\theta_4)
+=-\frac14\left(
+\frac{\theta_2''(0)}{\theta_2}-\frac{\theta_4''(0)}{\theta_4}\right)
+=\frac14(e_1-e_3).
+\]
+代入刚求出的半周期差即得
 \begin{equation}\label{b3:eq:24-log-derivative}
-4q\frac{\mathrm{d}}{\mathrm{d}q}\log(\theta_2/\theta_4)=\theta_3^4.
+4q\frac{\mathrm d}{\mathrm dq}\log(\theta_2/\theta_4)=\theta_3^4.
 \end{equation}
-整个推导中的除法由三重积保证分母非零，椭圆函数的比较则只比较同一格下的主部和一个零点，故不存在未确定的比例常数。
+\end{proof}
+
+这里的 \(q\,\mathrm d/\mathrm dq\) 是参数微分的局部写法。
+\(\theta_2\) 含有 \(q^{1/4}=e^{\pi\mathrm{i}\tau/4}\)，不能把它看成整个穿孔 \(q\) 圆盘上的单值函数。
+但它的对数导数中，这个因子只留下常数 \(1/4\)，其余乘积都是整数次幂；所以上述恒等式可以用单值的 \(q\) 幂级数继续处理。
 
 \subsection{生成函数方法}
 \label{b3:subsec:240404}
 
 \begin{proof}[\cref{b3:thm:24-four-squares}的证明]
-对 \(\theta_2/\theta_4\) 的乘积取对数导数，由\eqref{b3:eq:24-log-derivative}得
+由三重积，公共因子 \(1-q^{2n}\) 在商中相消，得
 \[
-\theta_3^4=1+16\sum_{n\ge1}\frac{nq^{2n}}{1+q^{2n}}
-+8\sum_{m\ge1,\ m\text{ odd}}\frac{mq^m}{1-q^m}.
+\frac{\theta_2}{\theta_4}
+=2q^{1/4}\prod_{n\ge1}
+       \frac{(1+q^{2n})^2}{(1-q^{2n-1})^2}.
 \]
-恒等式 \(x/(1+x)=x/(1-x)-2x^2/(1-x^2)\) 将偶数部分改写为
-\(8\sum_{d\text{ even}}d q^d/(1-q^d)-32\sum_{n\ge1}nq^{4n}/(1-q^{4n})\)。与奇数部分相合，即为
+所有因子在 \(0<|q|<1\) 非零。对 \(q^{1/4}\) 取局部分支，并对乘积作对数导数。
+常数 \(2\) 给零，\(q^{1/4}\) 在 \(4q\,\mathrm d/\mathrm dq\) 下给一；
+其余因子分别给
 \[
-\theta_3^4=1+8\sum_{d\ge1,\ 4\nmid d}\frac{dq^d}{1-q^d}.
+4q\frac{\mathrm d}{\mathrm dq}\log(1+q^{2n})^2
+=\frac{16nq^{2n}}{1+q^{2n}},
 \]
-在 \(|q|\le r<1\) 上所有对数导数级数和几何展开都绝对一致收敛，因为 \(\sum d r^d/(1-r^d)<\infty\)。故可把 \(q^d/(1-q^d)=\sum_{m\ge1}q^{dm}\) 代入并收集系数，得到所述约数和。最后与\secref{b3:sec:2403}中的生成函数比较。
+以及
+\[
+4q\frac{\mathrm d}{\mathrm dq}\log(1-q^{2n-1})^{-2}
+=\frac{8(2n-1)q^{2n-1}}{1-q^{2n-1}}.
+\]
+由\eqref{b3:eq:24-log-derivative}，
+\[
+\theta_3^4
+=1+16\sum_{n\ge1}\frac{nq^{2n}}{1+q^{2n}}
+ +8\sum_{\substack{m\ge1\\m\ {\rm odd}}}\frac{mq^m}{1-q^m}.
+\]
+这些导数级数在每个 \(|q|\le r<1\) 上绝对一致收敛。例如其绝对值之和由常数倍的
+\[
+\sum_{m\ge1}\frac{mr^m}{1-r^m}
+\le\frac1{1-r}\sum_{m\ge1}mr^m<\infty
+\]
+控制。局部对数求导与取极限因此合法。
+
+为了统一分母，使用
+\[
+\frac{x}{1+x}=\frac{x}{1-x}-\frac{2x^2}{1-x^2}.
+\]
+偶数部分变成
+\[
+16\sum_{n\ge1}\frac{nq^{2n}}{1-q^{2n}}
+-32\sum_{n\ge1}\frac{nq^{4n}}{1-q^{4n}}.
+\]
+第一项与原有奇数部分合成 \(8\sum_{d\ge1}dq^d/(1-q^d)\)；
+第二项恰好扣去其中 \(d=4n\) 的全部项。因此
+\begin{equation}\label{b3:eq:24-four-square-lambert}
+\theta_3^4
+=1+8\sum_{\substack{d\ge1\\4\nmid d}}\frac{dq^d}{1-q^d}.
+\end{equation}
+展开每个几何级数，仍由同一个可和上界控制，故可以按 \(dm=n\) 重排：
+\[
+\sum_{\substack{d\ge1\\4\nmid d}}\frac{dq^d}{1-q^d}
+=\sum_{n\ge1}\left(\sum_{\substack{d\mid n\\4\nmid d}}d\right)q^n.
+\]
+与\secref{b3:sec:2403}的表示数生成函数比较幂级数系数，得到所述公式。
+每个 \(0<|q|<1\) 都可写为 \(e^{\pi\mathrm{i}\tau}\)、\(\tau\in\mathfrak H\)，
+两侧又在 \(q=0\) 全纯，所以系数比较是在整个单位圆盘内的解析恒等式上进行的。
 \end{proof}
-例如奇素数 \(p\) 的四平方和表示数为 \(8(p+1)\)；\(n=4\) 时为 \(8(1+2)=24\)，包括八个仅一个坐标为 \(\pm2\) 的表示与十六个四坐标均为 \(\pm1\) 的表示。这个核算检验了符号、顺序及排除四倍约数的三个约定。
+
+上述形如 \(\sum_{d\ge1} a_dq^d/(1-q^d)\) 的展开通常称为\term[lambert-jishu]{Lambert 级数}[Lambert series]，讨论时须另外检查所给系数 \(a_d\) 对应的收敛域。
+本处真正使用的是它可以先按 \(d\) 求和、再按乘积 \(dm\) 分组的绝对收敛性；约数限制 \(4\nmid d\) 来自偶数因子的代数消去，不能从四个变量的个数直接猜出。
 
 \ProseParagraphBreak
+几个小值可以检查计数约定。\(r_4(2)=24\)：选择两个非零位置有六种，各自符号有四种。
+\(r_4(3)=32\)：选择零坐标有四种，其余三个坐标各取 \(\pm1\)。
+\(r_4(4)=8(1+2)=24\)：八个表示只有一个坐标为 \(\pm2\)，另十六个表示的四个坐标全为 \(\pm1\)。
+对 \(n=9\)，\((\pm3,0,0,0)\) 的排列有八个；
+绝对值型 \((2,2,1,0)\) 的表示有 \(4\cdot3\cdot2^3=96\) 个，
+总计 \(104=8(1+3+9)\)。两处绝对值二相同，不能把它们的交换再计一次。
 
-半周期比较中的主部与常数值得再逐点核验。由于 \(\theta_1\) 在0单零，\(\theta_1(z)=\theta_1'(0)z+O(z^3)\)；偶函数 \(\theta_2(z)=\theta_2+O(z^2)\)。因此
-\((\theta_1'(0)/\theta_2)^2(\theta_2(z)/\theta_1(z))^2=z^{-2}+O(1)\)，没有一阶极项。平方后的商在两周期下的符号和指数相消，确为椭圆函数。它与 \(\wp\) 的差因主部相同而整，故为常数；在 \(z=\pi/2\) 时分子为 \(\theta_1(\pi)=0\)，分母为 \(\theta_2\ne0\)，常数恰为 \(-e_1\)。这一步同时用到了零点的位置、单重性及常数非零，三者均由前面的级数或乘积给出。
 \ProseParagraphBreak
-在另一半周期，平移公式逐项给
-\(\theta_2(\pi\tau/2)=q^{-1/4}\theta_3\) 与
-\(\theta_1(\pi\tau/2)=\mathrm{i}q^{-1/4}\theta_4\)。代入平方商，先得到比值平方 \(-\theta_3^2/\theta_4^2\)，再乘
-\((\theta_1'(0)/\theta_2)^2=\theta_3^2\theta_4^2\)，最后才得到 \(-\theta_3^4\)。负号来自 \(\mathrm{i}^2=-1\)，不是法向或周期方向的约定；四次方来自两个平方因子的相乘。明确这些步骤后，热方程的负四分之一因子也与最后的正号一致。
-\ProseParagraphBreak
-从乘积到 Lambert 级数同样可逐类追踪。\(\theta_2/\theta_4\) 中公共的 \(1-q^{2n}\) 全部消去，剩下常数 \(2q^{1/4}\)、偶幂的 \((1+q^{2n})^2\) 和奇幂的 \((1-q^{2n-1})^{-2}\)。乘上 \(4q\mathrm{d}/\mathrm{d}q\) 后，第一项给一，偶幂项给 \(16nq^{2n}/(1+q^{2n})\)，奇幂项给 \(8(2n-1)q^{2n-1}/(1-q^{2n-1})\)。把偶数项改写后，其中全部四的倍数恰被减掉一次。若忘记平方因子或 \(q^{1/4}\)，会分别造成表示数少一倍或漏掉 \(r_4(0)=1\)；前几项计数可以迅速检查这些错误。
-\ProseParagraphBreak
-例如 \(r_4(2)=24\)：选择两个非零位置有六种，各自符号有四种。\(r_4(3)=32\)：选择零坐标有四种，其余三个符号有八种。对 \(n=9\)，一类表示为 \((\pm3,0,0,0)\) 的排列，共八个；另一类是 \((\pm2,\pm2,\pm1,0)\)，零位置四种、绝对值一的位置三种、三个非零符号八种，共九十六个。总数一百零四，正好是 \(8(1+3+9)\)。相同绝对值坐标的置换不能再重复乘一个阶乘，否则会过计。
-\ProseParagraphBreak
-四平方公式还能给比体积法更细的累计误差。设 \(X\ge1\)，交换有限约数和得到
+精确公式还能给累计表示数的误差估计，作为与实几何的对照。
+
+\begin{proposition}[四平方和的累计计数]\label{b3:prop:24-four-square-average}
+对实数 \(X\ge1\)，令
+\(S_4(X)=\sum_{0\le n\le X}r_4(n)\)，其中 \(r_4(0)=1\)，
+\(r_4(n)\) 计有序带符号的四平方和表示。则
 \[
- \sum_{1\le n\le X}r_4(n)=8\sum_{m\le X}\sum_{d\le X/m,\,4\nmid d}d.
+S_4(X)=\frac{\pi^2}{2}X^2+O\bigl(X\log(X+2)\bigr),
+\qquad X\longrightarrow\infty.
 \]
-由 \(\sum_{d\le Y}d=Y^2/2+O(Y)\)，扣去四的倍数后内和为 \(3Y^2/8+O(Y)\)。于是总和为
+误差常数与 \(X\) 无关。
+\end{proposition}
+\begin{proof}
+交换有限约数和得
 \[
- 3X^2\sum_{m\le X}m^{-2}+O\left(X\sum_{m\le X}m^{-1}\right)
- =\frac{\pi^2}{2}X^2+O(X\log(X+2)).
+\sum_{1\le n\le X}r_4(n)
+=8\sum_{m\le X}\sum_{\substack{d\le X/m\\4\nmid d}}d.
 \]
-最后使用正弦乘积比较所得 \(\sum m^{-2}=\pi^2/6\)，尾和为 \(O(1/X)\)。主项正是四维单位球体积 \(\pi^2/2\)，因此复分析推导的精确系数与实几何计数相符。此处取的是累计和；不能把其误差逐项作差就得到每个 \(r_4(n)\) 的同等精度。
+对 \(Y\ge1\)，由 \(\sum_{d\le Y}d=Y^2/2+O(Y)\)，
+\[
+\sum_{\substack{d\le Y\\4\nmid d}}d
+=\sum_{d\le Y}d-4\sum_{a\le Y/4}a
+=\frac{3Y^2}{8}+O(Y).
+\]
+在 \(1\le Y<4\) 时第二个和为空，这个估计仍由统一常数成立。
+代回便得到
+\[
+\sum_{1\le n\le X}r_4(n)
+=3X^2\sum_{m\le X}m^{-2}
+ +O\left(X\sum_{m\le X}m^{-1}\right).
+\]
+\(\sum_{m\le X}m^{-1}=O(\log(X+2))\)，而积分比较给
+\(\sum_{m>X}m^{-2}=O(1/X)\)。
+再用\cref{b3:prop:23-zeta-even-values}已算出的
+\(\zeta(2)=\pi^2/6\)，主项成为 \(\pi^2X^2/2\)，截去尾部的误差只有 \(O(X)\)。
+补回 \(r_4(0)=1\) 不改变所述误差。
+\end{proof}
+
+\(S_4(X)\) 也是半径 \(\sqrt X\) 的四维整数格球中的点数，
+主项系数 \(\pi^2/2\) 正是四维单位球的体积。
+前节的立方体比较给 \(O(X^{3/2})\) 的边界估计，这里利用精确约数公式把它改进为 \(O(X\log(X+2))\)。
+它控制的是累计数量；若将两个累计误差直接相减，误差并不会自动缩小成单个 \(r_4(n)\) 的精确数量级。

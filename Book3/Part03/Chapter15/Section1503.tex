@@ -2,69 +2,190 @@
 \section{次调和函数}
 \label{b3:sec:1503}
 
-全纯函数在零点处的对数模趋于负无穷，不能作为通常的调和函数处理。把平均等式放宽为不等式，并允许这个无穷值，便能保留最大值原理和零点信息。
+全纯函数在零点处的对数模趋于负无穷，不能作为通常的调和函数处理。不过，零点只会把中心值向下拉：对数模仍不超过周围一圈的平均。把平均等式放宽为这个方向的不等式，就能同时容纳调和函数、对数奇性以及取最大值产生的折角。下面先在点态层次建立比较原理，下一节再把这些现象解释成正的 Laplace 测度。
 
 \subsection{次调和函数}
 \label{b3:subsec:150301}
 
+允许负无穷值时，需要先说明怎样读取平均。一个上半连续函数在每个紧集上有有限上界，故圆周积分的正部有限；负部可以有无穷积分，因此圆周平均总能在 \([-\infty,\infty)\) 中解释，不会出现两种无穷相减。
+\Needspace{6\baselineskip}
 \begin{definition}\label{b3:def:15-subharmonic}
-设 \(D\) 为区域，\(u:D\to[-\infty,\infty)\) 上半连续、局部可积且不恒为 \(-\infty\)。若每个内部闭圆盘满足
+设 \(D\subseteq\mathbb C\) 为区域，\(u:D\to[-\infty,\infty)\) 上半连续、局部可积且不恒为 \(-\infty\)。若对每个满足 \(\overline{B(a,r)}\subset D\) 的圆盘都有
 \[
-u(a)\le\frac1{2\pi}\int_0^{2\pi}u(a+r e^{\mathrm{i}t})\,\mathrm{d}t,
+ u(a)\le\frac1{2\pi}\int_0^{2\pi}u(a+re^{\mathrm{i}t})\,\mathrm{d}t,
 \]
-则称 \(u\) 为\term[cidiaohe-hanshu]{次调和函数}[subharmonic function]。圆周积分取扩展意义。函数 \(-u\) 称为\term[chaodiaohe-hanshu]{超调和函数}[superharmonic function]。
+则称 \(u\) 为\term[cidiaohe-hanshu]{次调和函数}[subharmonic function]。圆周积分取扩展意义。若 \(-v\) 次调和，则称 \(v:D\to(-\infty,\infty]\) 为\term[chaodiaohe-hanshu]{超调和函数}[superharmonic function]。
 \end{definition}
-\(C^2\) 函数次调和当且仅当 \(\Delta u\ge0\)：必要性用二阶平均展开，充分性用圆周平均导数的面积公式。因此 \(|z|^2\) 次调和而非调和，\(-|z|^2\) 超调和。局部可积条件保证后面的分布运算有定义，也排除处处无穷的退化情形。
+这里的局部可积按面积测度理解，因而函数几乎处处有限。它不意味着函数在每一条圆周上的限制都事先可积；定义中对圆周积分保留扩展意义，正是为了不把二维的可积性误当作所有一维截面的可积性。局部可积还排除了函数在任意非空开集上恒为负无穷的情形。
+
+\ProseParagraphBreak
+
+对 \(C^2\) 实函数，次调和性有熟悉的微分判据。记以 \(a\) 为中心的圆周平均为 \(m(a,r)\)。二阶 Taylor 展开与散度公式分别给出
+\[
+ m(a,r)=u(a)+\frac{r^2}{4}\Delta u(a)+o(r^2),
+ \quad
+ \partial_r m(a,r)=\frac1{2\pi r}\int_{B(a,r)}\Delta u\,\mathrm{d}A.
+\]
+第一式说明平均不等式蕴含 \(\Delta u(a)\ge0\)；反之，若 \(\Delta u\ge0\)，第二式说明平均随半径非减，其半径趋零时的值为 \(u(a)\)。因此 \(C^2\) 函数次调和当且仅当 \(\Delta u\ge0\)。函数 \(|z|^2\) 的 Laplace 算子等于4，故次调和而非调和；函数 \(-|z|^2\) 则超调和。这个判据目前只用于光滑函数，对数奇点和折角要用平均处理。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[面积平均与点值恢复]\label{b3:prop:15-area-recovery}
+设 \(D\subseteq\mathbb C\) 为区域，\(u\) 在 \(D\) 次调和。对每个内部圆盘都有
+\[
+ u(a)\le\frac1{\pi r^2}\int_{B(a,r)}u\,\mathrm{d}A,
+ \quad
+ u(a)=\lim_{r\downarrow0}\frac1{\pi r^2}\int_{B(a,r)}u\,\mathrm{d}A.
+\]
+第二式允许极限为 \(-\infty\)。特别地，两个在 \(D\) 次调和的函数若几乎处处相等，则处处相等。
+\end{proposition}
+\begin{proof}
+固定闭包在 \(D\) 内的圆盘。局部可积性使极坐标积分合法；对圆周平均不等式乘 \(2s/r^2\)，再从0积到 \(r\)，便得面积平均不等式。在 \(u(a)=-\infty\) 时下界当然成立，在有限值时各半径的下界可直接积分。
+
+若 \(u(a)\) 有限，上半连续性保证给定 \(\varepsilon>0\) 后，充分小圆盘内都有 \(u\le u(a)+\varepsilon\)。面积平均于是夹在 \(u(a)\) 与 \(u(a)+\varepsilon\) 之间。若 \(u(a)=-\infty\)，则对任意实数 \(L\)，充分小邻域中都有 \(u\le L\)，所以平均趋于负无穷。最后，几乎处处相等的函数在每个内部圆盘上积分相等；取半径趋零的极限便恢复相同点值。
+\end{proof}
+次调和函数因而有一个由面积积分确定的点态代表。不能先把它看成 \(L^1_{\mathrm{loc}}\) 的等价类，再在零测集上任意改值。下一节从分布不等式构造代表时，正要使用这一唯一性。
 
 \subsection{平均值不等式}
 \label{b3:subsec:150302}
 
-圆盘上的比较描述同样有用。若 \(h\) 在圆盘调和、连续到边界，且 \(u\le h\) 于边界，则 \(u\le h\) 于内部。证明可先对 \(u-h+\varepsilon|z|^2\) 使用严格平均不等式：它不能有内部最大值，随后令 \(\varepsilon\downarrow0\)。一般上半连续边值用连续上逼近处理。反过来，连续边值的 Poisson 解与 \(u\) 比较，就给中心平均不等式。
-
-\begin{proposition}\label{b3:prop:15-subharmonic-operations}
-有限个次调和函数的最大值次调和；非负线性组合只要不恒为负无穷也次调和。若 \(u_j\downarrow u\) 且极限局部可积，则 \(u\) 次调和。
+定义要求比较任意内部圆周；实际构造却往往只在每点附近成立。两者之间的桥梁是与调和函数比较。圆盘的 Poisson 解把边界上界延拓到内部，因此可以用它把局部信息带到整个圆盘。
+\Needspace{6\baselineskip}
+\begin{proposition}[局部判据与调和比较]\label{b3:prop:15-local-comparison}
+设 \(D\subseteq\mathbb C\) 为区域，\(u:D\to[-\infty,\infty)\) 上半连续且局部可积。下列三个条件等价：\(u\) 在 \(D\) 次调和；在每一点 \(a\)，所有充分小的中心圆周都满足次平均不等式；对每个 \(\overline B\subset D\) 的圆盘，以及每个在 \(B\) 调和、在 \(\overline B\) 连续的实函数 \(h\)，由 \(u\le h\) 于 \(\partial B\) 可推出 \(u\le h\) 于 \(B\)。
 \end{proposition}
 \begin{proof}
-取最大值的函数在中心选出达到最大的一项，将其平均用所有项的最大值控制。和的情形由积分线性性。下降极限上半连续；在固定圆周上减去局部共同上界，再用单调收敛，得到平均不等式。局部可积保证其为允许的对象。
+全域次平均蕴含局部次平均。设局部条件成立，取 \(B=B(b,R)\) 及满足题设的 \(h\)。如果某个内部点有 \(u-h>0\)，可选充分小的 \(\varepsilon>0\)，使
+\[
+ w(z)=u(z)-h(z)+\varepsilon\bigl(|z-b|^2-R^2\bigr)
+\]
+在该点仍为正。此函数在边界非正，上半连续，故在闭圆盘取得有限的正最大值，最大点 \(c\) 位于内部。对以 \(c\) 为中心的充分小圆周，调和函数满足平均等式，而平方模的平均比中心值多 \(r^2\)，于是
+\[
+ w(c)\le\frac1{2\pi}\int_0^{2\pi}w(c+re^{\mathrm{i}t})\,\mathrm{d}t
+          -\varepsilon r^2<w(c),
+\]
+矛盾。这证明比较性质，且没有对负无穷点求导。
+
+反过来，设比较性质成立。固定 \(\overline{B(a,r)}\subset D\)，令 \(q\) 为 \(u\) 在其边界圆周 \(X\) 上的限制。取有限常数 \(M\ge0\) 使 \(q\le M\)，并对正整数 \(n\) 定义
+\[
+ q_n(x)=\sup_{y\in X}\{\max(q(y),-n)-n|x-y|\},
+ \quad x\in X.
+\]
+每个 \(q_n\) 有限且为 Lipschitz 函数，\(q_n\ge q\)，并随 \(n\) 下降。它们点态趋于 \(q\)：给定 \(A>q(x)\)，上半连续性使近处的 \(q(y)<A\)；充分大的 \(n\) 使截断值 \(-n<A\)，同时距离较远的项因 \(-n|x-y|\) 而小于 \(A\)。这也适用于 \(q(x)=-\infty\)，只须让 \(A\) 为任意实数。
+
+令 \(h_n\) 为连续边值 \(q_n\) 的 Poisson 解。比较性质给 \(u(a)\le h_n(a)\)，而中心值就是 \(q_n\) 的圆周平均。对非负函数 \(M-q_n\) 用单调收敛定理，得
+\[
+ u(a)\le\lim_{n\to\infty}h_n(a)
+       =\frac1{2\pi}\int_0^{2\pi}u(a+re^{\mathrm{i}t})\,\mathrm{d}t.
+\]
+这就是所需的全域次平均不等式。
 \end{proof}
-任意上确界一般不保持上半连续；这正是 Perron 法必须处理而不能略去的一点。
+因此，在每点的一个邻域验证次调和性就足够；相邻局部表示无须先选成同一个公式。上面的连续上逼近也说明，比较时不能随意把上半连续边值当作连续边值直接代入经典 Poisson 边界定理。
+
+\Needspace{6\baselineskip}
+\begin{proposition}\label{b3:prop:15-subharmonic-operations}
+设 \(D\subseteq\mathbb C\) 为区域。\(D\) 上有限个次调和函数的最大值次调和；它们的非负线性组合也次调和，其中零系数项直接略去、空和取零。若 \(u_j\) 在 \(D\) 次调和，\(u_j\downarrow u\) 且 \(u\in L^1_{\mathrm{loc}}(D)\)，则 \(u\) 次调和。
+\end{proposition}
+\begin{proof}
+有限最大值上半连续，在紧集上有上界，又大于其中任一局部可积项，故局部可积。在中心选出达到最大值的一项；该项的中心值不超过自身的圆周平均，而它在圆周上不超过所有项的最大值，所需不等式随即成立。若中心最大值为负无穷，不等式直接成立。正系数和的上半连续性、局部可积性和平均不等式由各项性质得到；略去零系数可避免 \(0\cdot(-\infty)\) 的无意义运算。
+
+下降极限上半连续。固定内部圆周，在其上取 \(u_1\) 的有限上界 \(M\)。函数 \(M-u_j\) 非负且递增，单调收敛给圆周平均的下降极限，包括极限为负无穷的情形。对各项平均不等式取极限，得到 \(u\) 的平均不等式；所假定的局部可积性保证极限仍属于定义允许的函数类。
+\end{proof}
+最小值与负系数不具有同样的性质。例如 \(x\) 和 \(-x\) 都调和，但 \(\min(x,-x)=-|x|\) 在原点的值为0，圆周平均却严格为负。下降极限的非退化条件也不能省去，常数列 \(u_j=-j\) 的极限就不是这里定义的次调和函数。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[次调和函数的粘合]\label{b3:prop:15-pasting}
+设 \(D\subseteq\mathbb C\) 为区域，\(G\subset D\) 为开集，\(u\) 在 \(D\) 次调和，\(v\) 在 \(G\) 的每个连通分支次调和。若对每个 \(\xi\in D\cap\partial G\) 都有
+\[
+ \limsup_{z\to\xi,\ z\in G}v(z)\le u(\xi),
+\]
+则在 \(G\) 内取 \(w=\max(u,v)\)、在 \(D\setminus G\) 取 \(w=u\)，得到的函数 \(w\) 在 \(D\) 次调和。
+\end{proposition}
+\begin{proof}
+边界上极限条件与 \(u\) 的上半连续性保证 \(w\) 在粘合边界也上半连续。它处处不小于 \(u\)，又在紧集上有有限上界，所以局部可积。在 \(G\) 内部和 \(D\setminus\overline G\) 内部，局部次调和性已经成立。若 \(a\in D\cap\partial G\)，则 \(w(a)=u(a)\)，而每个充分小的圆周上都有 \(w\ge u\)，故
+\[
+ w(a)=u(a)\le\frac1{2\pi}\int_0^{2\pi}u(a+re^{\mathrm{i}t})\,\mathrm{d}t
+ \le\frac1{2\pi}\int_0^{2\pi}w(a+re^{\mathrm{i}t})\,\mathrm{d}t.
+\]
+由局部判据，\(w\) 在整个 \(D\) 次调和。
+\end{proof}
+特别地，若 \(u\) 连续次调和，在一个内部圆盘用同边值的 Poisson 解 \(h\) 替换它，比较原理给 \(h\ge u\)，粘合命题则保证替换后的函数仍次调和。这种抬高函数而保留边界限制的操作，将用于下一章的 Perron 构造。
 
 \subsection{最大值原理}
 \label{b3:subsec:150303}
 
+次平均不等式只限制中心值不能高于周围平均，所以保留下来的是最大值原理。最小值可以出现在内部，\(|z|^2\) 在原点的严格最小值就是例子。
+\Needspace{6\baselineskip}
 \begin{proposition}[次调和函数的最大值原理]\label{b3:prop:15-subharmonic-maximum}
-次调和函数若在区域内部取得有限最大值，则恒等于该值。若 \(D\) 有界且每个边界点满足 \(\limsup_{z\to\xi}u(z)\le0\)，则 \(u\le0\) 于 \(D\)。
+设 \(D\subseteq\mathbb C\) 为区域，\(u\) 在 \(D\) 次调和。若 \(u\) 在 \(D\) 内部取得有限的全域最大值，则恒等于该值。若 \(D\) 有界且每个 \(\xi\in\partial D\) 满足
+\[
+ \limsup_{z\to\xi,\ z\in D}u(z)\le0,
+\]
+则 \(u\le0\) 于 \(D\)。
 \end{proposition}
 \begin{proof}
-在最大点，圆周平均与中心值相同。若圆周某处小于最大值，上半连续性给一段严格下降的弧，使平均严格下降，矛盾。故最大值集合既开又闭。边界条件加有限覆盖使某个边界邻域中 \(u\le\varepsilon\)；若内部仍有值大于 \(\varepsilon\)，最大值将在余下的紧集取得，第一结论迫使常数，和边界矛盾。令 \(\varepsilon\downarrow0\)。
+设全域最大值为 \(M=u(a)\)。任何内部中心圆周上都有 \(u\le M\)，次平均不等式又使平均不小于 \(M\)，所以平均必须等于 \(M\)。若圆周某点的值小于 \(M\)，上半连续性会给出一段有正长度的弧及一个 \(\delta>0\)，使该弧上 \(u\le M-\delta\)。其余部分仍不超过 \(M\)，平均就严格小于 \(M\)，矛盾。故所有充分小的中心圆周上都恒为 \(M\)。最大值集合由此为开集，由上半连续性又为闭集，连通性使其等于 \(D\)。
+
+对于边界结论，固定 \(\varepsilon>0\)。每个边界点都有一个邻域，使其中的域内点满足 \(u\le\varepsilon\)。边界紧性给有限个这样的邻域，余下的域内部分是紧集。若有内部值大于 \(\varepsilon\)，上半连续性使全域最大值在该紧集取得；前半结论迫使 \(u\) 为大于 \(\varepsilon\) 的常数，与边界条件矛盾。故 \(u\le\varepsilon\)，再令 \(\varepsilon\downarrow0\)。
 \end{proof}
+这里要求取得全域最大值。次调和函数可以在一个小开集恒定，然后在别处增大；例如 \(\max(\operatorname{Re}z,0)\) 在左半平面恒为0，但并非全平面上的常数。它不违反上述命题，因为0不是全域最大值。
+
+\ProseParagraphBreak
+
+由此还得到一般有界域上的比较：若 \(u\) 次调和、\(h\) 调和，并且 \(\limsup_{z\to\xi}(u-h)(z)\le0\) 对每个边界点成立，则 \(u\le h\)。差函数 \(u-h\) 上半连续且局部可积，其圆周平均仍满足同向不等式，因而可直接应用最大值原理。这个版本不要求 \(u\) 连续到边界，也不要求边界光滑。若域无界，必须另控制无穷远；上半平面的 \(u(z)=\operatorname{Im}z\) 在边界为零而内部为正，说明有限边界上的限制不够。
 
 \subsection{\texorpdfstring{\(\log|f|\)}{log|f|}}
 \label{b3:subsec:150304}
 
+为了处理零点，先看单个对数奇性。固定 \(a\in\mathbb C\)，用光滑函数
+\[
+ \ell_\varepsilon(z)=\frac12\log\bigl(|z-a|^2+\varepsilon^2\bigr),
+ \quad
+ \Delta\ell_\varepsilon(z)=\frac{2\varepsilon^2}{(|z-a|^2+\varepsilon^2)^2}\ge0
+\]
+逼近 \(\log|z-a|\)。当 \(\varepsilon\downarrow0\)，函数下降，且极限局部可积，因为
+\[
+ \int_{|z-a|<r}|\log|z-a||\,\mathrm{d}A(z)
+ =2\pi\int_0^r s|\log s|\,\mathrm{d}s<\infty.
+\]
+由下降极限性质，对数函数在 \(a\) 取负无穷后是全平面的次调和函数。
+
+\Needspace{6\baselineskip}
 \begin{proposition}\label{b3:prop:15-log-subharmonic}
-非恒零全纯函数 \(f\) 的 \(\log|f|\) 次调和，零点处取 \(-\infty\)。
+设 \(D\subseteq\mathbb C\) 为区域，\(f\) 在 \(D\) 全纯且非恒零。则 \(\log|f|\) 在 \(D\) 次调和，其中零点处取 \(-\infty\)。
 \end{proposition}
 \begin{proof}
-局部写 \(f(z)=(z-a)^m g(z)\)，\(g\) 无零点。函数 \(\log|g|\) 调和，\(\log|z-a|\) 局部可积。后者以连续函数 \(\tfrac12\log(|z-a|^2+\varepsilon^2)\) 下降逼近；其 Laplace 算子为 \(2\varepsilon^2/(|z-a|^2+\varepsilon^2)^2\ge0\)。于是它次调和；加上调和函数保持不等式。局部性质通过圆盘比较描述给全域性质。
-\end{proof}
-这一证明保留零点重数，后面会把 \(m\) 解释为 Laplace 测度在 \(a\) 的质量。不能在零点任意补一个有限值；那会破坏平均不等式；仅仅保持上半连续性并不足够。
-
-
-严格平均不等式的比较证明可以避免对 \(-\infty\) 点求导。设圆盘 \(B\) 上 \(u\le h\) 于边界，若内部存在 \(u-h>0\)，选充分小 \(\varepsilon>0\)，使 \(u-h+\varepsilon(|z|^2-R^2)\) 仍在某个内部点为正，而边界非正。上半连续性使它在闭圆盘取得有限正最大值。以最大点为中心取一个内部小圆，\(|z|^2\) 的圆周平均比中心多 \(r^2\)，所以中心值严格小于平均，和最大性矛盾。该证明只使用上半连续性、平均不等式及一个严格次调和修正，适用于对数奇性。
-
-\ProseParagraphBreak
-
-在圆盘边界上，上半连续且有上界的数据可由连续函数从上逼近。具体可先将数据截断到 \([-N,M]\)，再用小邻域上确界和平滑分片构造连续上界；截断后的单调逼近回到扩展值。Poisson 核非负且总质量一，使这种上逼近与积分相容。这个过程说明比较描述和圆周平均描述为什么一致，也解释了为什么不能用任意的点态修改代替上半连续代表。
-
-\ProseParagraphBreak
-
-一个常见构造是凸函数作用于调和函数。若 \(u\) 调和、\(\Phi:\mathbb R\to\mathbb R\) 凸且连续，则 Jensen 不等式与平均值性质给
+在无零点的小圆盘上，\(f\) 有全纯对数，故 \(\log|f|\) 调和。若 \(a\) 是 \(m\) 重零点，局部因子分解给
 \[
-\Phi(u(a))\le\frac1{2\pi}\int_0^{2\pi}\Phi(u(a+re^{\mathrm{i}t}))\,\mathrm{d}t.
+ f(z)=(z-a)^m g(z),
+ \quad
+ \log|f(z)|=m\log|z-a|+\log|g(z)|,
 \]
-故 \(\Phi\circ u\) 次调和。取 \(\Phi(t)=|t|\)、\(e^t\) 可得到许多不是调和的函数；在 \(C^2\) 情况，\(\Delta\Phi(u)=\Phi''(u)|\nabla u|^2\) 显示非调和性集中在凸性的二阶项。凸性不能删，例如 \(\Phi(t)=-t^2\) 与 \(u=x\) 给 Laplace 为负。
+其中 \(g\) 无零点。右端为次调和函数与调和函数之和，并在 \(a\) 取负无穷。孤立零点保证每个紧集只需有限个这样的局部表示，故函数上半连续且局部可积。由\cref{b3:prop:15-local-comparison}的局部判据，它在整个 \(D\) 次调和。
+\end{proof}
+重数保留在对数奇性的系数 \(m\) 中。若在零点把负无穷改成某个有限值，上半连续性仍可能成立，次平均不等式却会失败：小圆周上的平均为 \(m\log r+\log|g(a)|\)，随 \(r\downarrow0\) 趋于负无穷，不能支配固定的有限中心值。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[凸复合]\label{b3:prop:15-convex-composition}
+设 \(D\subseteq\mathbb C\) 为区域，\(u\) 在 \(D\) 次调和，\(\Phi:\mathbb R\to\mathbb R\) 为非减凸函数，并令 \(\Phi(-\infty)=\lim_{t\to-\infty}\Phi(t)\)。则 \(\Phi\circ u\) 次调和。若 \(u\) 调和，则任意实值凸函数 \(\Phi\) 的复合 \(\Phi\circ u\) 都次调和，不必要求 \(\Phi\) 非减。
+\end{proposition}
+\begin{proof}
+有限凸函数连续，且有一条支撑直线。对非减的 \(\Phi\)，可选斜率 \(c\ge0\) 和常数 \(d\) 使 \(\Phi(t)\ge ct+d\)。因此在紧集上，\(\Phi(u)\) 有可积下界，也由 \(u\) 的局部上界得到有限上界，故局部可积。连续非减复合保持上半连续，在 \(u=-\infty\) 的点用 \(\Phi\) 的左端极限作同样判断。
+
+若 \(u(a)\) 有限，次平均不等式保证该中心圆周上的 \(u\) 具有有限积分，Jensen 不等式给
+\[
+ \Phi(u(a))\le
+ \Phi\left(\frac1{2\pi}\int_0^{2\pi}u(a+re^{\mathrm{i}t})\,\mathrm{d}t\right)
+ \le\frac1{2\pi}\int_0^{2\pi}\Phi(u(a+re^{\mathrm{i}t}))\,\mathrm{d}t.
+\]
+第一步使用非减性。若 \(u(a)=-\infty\)，其复合值是 \(\Phi\) 的下确界，不等式直接成立。若 \(u\) 调和，它在内部闭圆盘连续且有界，平均等式直接替代上式第一步；凸函数的连续性和 Jensen 不等式便足够。
+\end{proof}
+例如 \(|u|\) 和 \(e^u\) 对调和 \(u\) 都次调和。非减条件对一般次调和 \(u\) 不可删：在单位圆盘取 \(u(z)=|z|^2-1\)、\(\Phi(t)=|t|\)，则复合为 \(1-|z|^2\)，Laplace 算子等于 \(-4\)。对于全纯函数 \(f\)，取 \(\Phi(t)=e^{pt}\) 则说明 \(|f|^p\) 对每个 \(p>0\) 都次调和，非恒零时应用对数模命题，恒零时直接成立。这里并未声称 \(t\mapsto|t|^p\) 在 \(0<p<1\) 时凸。
 
 \ProseParagraphBreak
 
-两个实部组合成复全纯函数时，\(|f|^p\) 对每个 \(p>0\) 次调和。在无零点局部，用调和函数 \(\log|f|\) 与凸函数 \(e^{pt}\) 即得；在零点处，函数连续、中心值零，平均非负，故平均不等式直接成立。这个结论不需要 \(p\ge1\)，因为这里使用的是指数作用于对数模，而不是直接声称 \(t\mapsto|t|^p\) 在所有实数上凸。
+有限最大值与任意上确界还须区别。在单位圆盘定义
+\[
+ u_n(z)=\max\left(\frac1n\log|z|,-1\right),
+ \quad u_n(0)=-1.
+\]
+这些函数次调和、连续、递增，且全都不超过0；其上确界在 \(z\ne0\) 为0，在原点却为 \(-1\)，因而不是上半连续函数。局部有统一上界并不能保证逐点上确界次调和；在这个例子中，按邻域上极限恢复上半连续性才会得到恒零函数。下一章构造 Perron 上包络时，将通过圆盘内的调和替换和 Harnack 收敛直接证明包络调和，不能仅靠上确界这一运算。

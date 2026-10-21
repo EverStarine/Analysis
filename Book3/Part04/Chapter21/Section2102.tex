@@ -2,59 +2,223 @@
 \section{亚纯延拓}
 \label{b3:sec:2102}
 
-递推式既能向右计算，也能向左延拓。后一用法必须检查不同移动次数给出的值相同，并辨明分母的零点是真极点还是可去点。
+递推式既能向右计算，也能把未知的左侧参数移到 Euler 积分的定义域。后一用法必须检查两个问题：移动不同次数是否给出同一函数，分母出现的零点是否真是极点。完成这两步后，还可以从积分本身看出延拓：减去原点处不够可积的 Taylor 项，把它们单独写成有理函数。
 
 \subsection{递推关系}
 \label{b3:subsec:210201}
 
-对任意正整数 \(N\)，在 \(\operatorname{Re}z>-N\) 定义
+在右半平面，重复递推给
 \[
-\Gamma(z)=\frac{\Gamma(z+N)}{z(z+1)\cdots(z+N-1)}.
+ \Gamma(z+N)=z(z+1)\cdots(z+N-1)\Gamma(z),\quad N\ge1.
 \]
-当分母不为零时这是全纯函数，其他点至多为极点。用一次递推消去 \(z+N\) 可知，采用 \(N+1\) 与 \(N\) 的定义在重叠区域一致。因此这些局部表达式粘合成整个复平面上的亚纯函数，并继续满足递推式。以后 \(\Gamma\) 均指这一延拓。
+右边可以反过来定义更左的值，因为只需 \(\operatorname{Re}(z+N)>0\)，分子就已经由收敛积分确定。这里分母是已知的多项式，不需要预先知道 \(\Gamma\) 有无复零点。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[递推公式的相容延拓]\label{b3:prop:21-continuation}
+Euler 积分在 \(\operatorname{Re}z>0\) 定义的 Gamma 函数有唯一的全平面亚纯延拓。对每个正整数 \(N\)，该延拓在半平面 \(\operatorname{Re}z>-N\) 上由亚纯表达式
+\[
+ \Gamma(z)=\frac{\Gamma(z+N)}{z(z+1)\cdots(z+N-1)}
+\]
+给出，其中右端分子的参数位于 Euler 积分的定义域。延拓在全平面上满足亚纯恒等式
+\[
+ \Gamma(z+1)=z\Gamma(z).
+\]
+\end{proposition}
+\begin{proof}
+暂将 Euler 积分定义的函数记为 \(G_0\)，其定义域为 \(H_0=\{\operatorname{Re}z>0\}\)。对 \(N\ge1\)，令
+\[
+ H_N=\{\,z\in\mathbb C\mid\operatorname{Re}z>-N\,\},\quad
+ G_N(z)=\frac{G_0(z+N)}{\prod_{j=0}^{N-1}(z+j)}.
+\]
+分子在 \(H_N\) 全纯，分母是非零多项式，故 \(G_N\) 在 \(H_N\) 亚纯。在 \(H_N\) 上，\(\operatorname{Re}(z+N)>0\)，原有递推给
+\[
+ G_0(z+N+1)=(z+N)G_0(z+N).
+\]
+因此 \(G_{N+1}=G_N\) 在分母非零处成立，也作为亚纯恒等式在整个 \(H_N\) 成立。\(G_1\) 与 \(G_0\) 在 \(H_0\) 的一致性同样来自原递推。
+
+半平面 \(H_N\) 递增且并集为 \(\mathbb C\)。在任意点附近选一个足够大的 \(N\)，采用 \(G_N\) 作为局部表达；相容性保证选择无关，从而粘合成全平面的亚纯函数。它在 \(H_0\) 与 Euler 积分一致。两个亚纯函数若在非空开集相同，其差由恒等定理在连通域上恒为零，所以延拓唯一。最后，\(\Gamma(z+1)\) 与 \(z\Gamma(z)\) 都是全平面亚纯函数，并已在 \(H_0\) 相同，故递推延续为全平面的亚纯恒等式。
+\end{proof}
+以后 \(\Gamma\) 均指这一延拓。亚纯恒等式在极点附近比较的是 Laurent 展开，不能解释为把无穷值直接代入通常的乘除法。例如 \(z\Gamma(z)=\Gamma(z+1)\) 在原点有可去延拓，其值为 \(\Gamma(1)=1\)，尽管 \(\Gamma(z)\) 本身在那里不全纯。
 
 \subsection{极点}
 \label{b3:subsec:210202}
 
-\begin{proposition}\label{b3:prop:21-poles}
-Gamma 函数的极点恰为 \(0,-1,-2,\ldots\)，每个都是一阶极点。
+递推表示的分母只可能在非正整数处为零，但仍须排除分子同时消失而抵消极点的可能。对于每个候选点，恰当选择移动次数便把分子变成已经知道的 \(\Gamma(1)\)。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[Gamma 函数的极点]\label{b3:prop:21-poles}
+Euler 积分的全平面亚纯延拓 \(\Gamma\) 的极点恰为
+\[
+ 0,-1,-2,\ldots,
+\]
+每个都是一阶极点；在其余点 \(\Gamma\) 全纯。
 \end{proposition}
 \begin{proof}
-若 \(z\) 不是非正整数，选足够大的 \(N\) 可使分子处于右半平面，且分母各因子非零，故该点全纯。在 \(z=-m\) 附近取 \(N=m+1\)。分子在该点等于 \(\Gamma(1)=1\)，分母只有因子 \(z+m\) 为零，其余因子都非零，所以是恰好一阶的极点。
-\end{proof}
-延拓并不赋予原积分在 \(\operatorname{Re}z\le0\) 上收敛的含义。例如 \(\Gamma(-1/2)=-2\sqrt\pi\)，而形式积分 \(\int_0^\infty e^{-t}t^{-3/2}\,\mathrm{d}t\) 发散且被积函数为正；两者不能混为一谈。
+若 \(z_0\) 不是非正整数，选择正整数 \(N\) 使 \(\operatorname{Re}z_0>-N\)。在 \(z_0\) 的充分小邻域，\(\Gamma(z+N)\) 由 Euler 积分给出全纯函数，且 \(\prod_{j=0}^{N-1}(z+j)\) 不为零，所以 \(\Gamma\) 在 \(z_0\) 全纯。
 
-\subsection{留数}
+若 \(z_0=-m\)、\(m\ge0\) 为整数，取 \(N=m+1\)。在该点附近，
+\[
+ \Gamma(z)=\frac{\Gamma(z+m+1)}{z(z+1)\cdots(z+m)}.
+\]
+分子在 \(z=-m\) 等于 \(\Gamma(1)=1\)，故在充分小邻域不为零。分母只有一个因子 \(z+m\) 在此为零，其余因子都不为零，因此该点恰为一阶极点。
+\end{proof}
+延拓并不意味着原 Euler 积分在这些新增参数处也开始收敛。例如递推给
+\[
+ \Gamma\left(-\frac12\right)=-2\sqrt\pi,
+ \quad
+ \Gamma\left(-\frac32\right)=\frac43\sqrt\pi.
+\]
+但形式积分 \(\int_0^\infty e^{-t}t^{-3/2}\,\mathrm{d}t\) 在原点发散，且被积函数始终为正。负值来自唯一的亚纯延拓，不是这个发散正积分的通常积分值。
+
+\subsection{留数与局部延拓公式}
 \label{b3:subsec:210203}
 
-上述局部表示直接给出
+极点的一阶性使留数可以直接通过乘上相应线性因子求极限。它不仅给出函数的主部，也决定与一个零因子相乘后可去点的值。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[极点留数]\label{b3:prop:21-residues}
+对每个非负整数 \(m\)，Gamma 函数满足
 \[
-\operatorname{Res}_{z=-m}\Gamma(z)=\frac{(-1)^m}{m!},\quad m=0,1,2,\ldots.
+ \operatorname{Res}_{z=-m}\Gamma(z)=\frac{(-1)^m}{m!}.
 \]
-事实上，提出 \(z+m\) 后，其他因子在 \(-m\) 的乘积为 \((-1)^m m!\)。在反演积分中移动围道时，这串留数将产生幂级数的系数，而极点位置给出相应的幂次。
+若 \(h\) 在 \(-m\) 的邻域全纯且 \(h(-m)=0\)，则 \(h(z)\Gamma(z)\) 在 \(-m\) 可去，其延拓值为
+\[
+ \left.h(z)\Gamma(z)\right|_{z=-m}
+ =\frac{(-1)^m}{m!}h'(-m).
+\]
+\end{proposition}
+\begin{proof}
+在递推的局部表示中提出 \(z+m\)，有
+\[
+ \lim_{z\to-m}(z+m)\Gamma(z)
+ =\frac{\Gamma(1)}{\prod_{j=0}^{m-1}(-m+j)}
+ =\frac1{(-1)^m m!}
+ =\frac{(-1)^m}{m!}.
+\]
+\(m=0\) 时分母为空乘积，值为一。极点为一阶，所以这个极限正是留数。若 \(h(-m)=0\)，则 \(h(z)=(z+m)h_1(z)\)，其中 \(h_1\) 全纯、\(h_1(-m)=h'(-m)\)。乘积 \(h\Gamma=h_1((z+m)\Gamma)\) 因而有可去延拓，并给出所述值。
+\end{proof}
+实参数处的符号也可直接从递推看出，无须知道复平面中的零点情况。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[共轭关系与实轴符号]\label{b3:prop:21-conjugation-sign}
+对 \(z\in\mathbb C\setminus\{0,-1,-2,\ldots\}\)，有
+\[
+ \Gamma(\overline z)=\overline{\Gamma(z)}.
+\]
+在正实轴上 \(\Gamma(x)>0\)；对每个非负整数 \(m\)，在区间 \(-m-1<x<-m\) 上有
+\[
+ (-1)^{m+1}\Gamma(x)>0.
+\]
+因此 Gamma 函数在所有不是极点的实数处均非零。
+\end{proposition}
+\begin{proof}
+在右半平面，Euler 积分中的实对数与实权重使共轭可以移入积分，直接给出共轭关系。对一般的非极点 \(z\)，选择同一个整数 \(N\) 使 \(z+N\) 与 \(\overline z+N\) 都位于右半平面；递推分母的系数均为实数，逐项取共轭便把关系推广到该点。
+
+正实轴的正性已经由积分得到。若 \(-m-1<x<-m\)，则 \(x+m+1\in(0,1)\)，并且
+\[
+ \Gamma(x)=\frac{\Gamma(x+m+1)}{x(x+1)\cdots(x+m)}.
+\]
+分子严格为正，分母恰有 \(m+1\) 个负因子，因此符号为 \((-1)^{m+1}\)，且值不为零。
+\end{proof}
+相邻区间的符号交替是越过一阶极点的结果，并不表示中间经过一个实零点。上述论证只排除了实轴上的零点；复零点的问题尚未由这些实符号资料决定。
 
 \ProseParagraphBreak
 
-复共轭关系 \(\Gamma(\overline z)=\overline{\Gamma(z)}\) 先由右半平面的积分得到，再经恒等定理延拓。负实轴相邻极点之间的符号因此可用递推明确计算：在 \((-m-1,-m)\) 上符号为 \((-1)^{m+1}\)。此符号变化来自越过一阶极点，不意味着存在实零点；事实上下一节将证明复零点也不存在。
+为了计算抵消极点后的导数，还需要 Laurent 展开的常数项。这里把该常数项称为极点处的\term[laurent-youxian-bufen]{有限部分}[finite part]。计算只需用到原点附近已全纯的 \(\Gamma(1+z)\)，其中
+\[
+ \Gamma'(1)=\int_0^\infty e^{-t}\log t\,\mathrm{d}t
+\]
+是上一节参数导数公式给出的收敛积分。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[极点的有限部分]\label{b3:prop:21-finite-part}
+设 \(m\) 为非负整数，令 \(H_0=0\)，\(H_m=\sum_{k=1}^m1/k\) 当 \(m\ge1\)。则当复数 \(\varepsilon\to0\) 时，Gamma 函数有 Laurent 展开
+\[
+ \Gamma(-m+\varepsilon)
+ =\frac{(-1)^m}{m!}
+  \left(\frac1\varepsilon+H_m+\Gamma'(1)+O(\varepsilon)\right).
+\]
+特别地，\((z+m)\Gamma(z)\) 在 \(-m\) 可去，其延拓的导数为
+\[
+ \left.\frac{\mathrm{d}}{\mathrm{d}z}\bigl((z+m)\Gamma(z)\bigr)\right|_{z=-m}
+ =\frac{(-1)^m}{m!}\bigl(H_m+\Gamma'(1)\bigr).
+\]
+\end{proposition}
+\begin{proof}
+递推给
+\[
+ \Gamma(-m+\varepsilon)
+ =\frac{\Gamma(1+\varepsilon)}
+ {\varepsilon\prod_{k=1}^m(\varepsilon-k)}.
+\]
+分子在 \(\varepsilon=0\) 全纯，所以
+\[
+ \Gamma(1+\varepsilon)=1+\Gamma'(1)\varepsilon+O(\varepsilon^2).
+\]
+分母中非零部分是有限乘积，直接展开为
+\[
+ \prod_{k=1}^m(\varepsilon-k)
+ =(-1)^m m!\prod_{k=1}^m\left(1-\frac\varepsilon k\right)
+ =(-1)^m m!\bigl(1-H_m\varepsilon+O(\varepsilon^2)\bigr).
+\]
+取倒数时一次项变号，再与分子相乘并除以 \(\varepsilon\)，得到第一式。\(m=0\) 时有限乘积为空、\(H_0=0\)，计算仍成立。将展开乘以 \(\varepsilon\)，一次系数即是可去延拓的导数，得到第二式。
+\end{proof}
+例如在原点，\(\Gamma(z)=z^{-1}+\Gamma'(1)+O(z)\)；在 \(-1\) 附近，\(\Gamma(-1+\varepsilon)=-\varepsilon^{-1}-1-\Gamma'(1)+O(\varepsilon)\)。有限部分随极点位置改变的量恰是调和数，而所有极点共享同一个由积分确定的常数 \(\Gamma'(1)\)。
 
 \ProseParagraphBreak
 
-极点附近还能得到有限部分，而不仅是留数。先由乘积的首项展开得到 \(\Gamma(z)=z^{-1}-\gamma+O(z)\)。在 \(z=-m+\varepsilon\) 使用递推，分母非零部分为
-\[
- \prod_{j=0}^{m-1}(-m+\varepsilon+j)
- =(-1)^m m!\left(1-H_m\varepsilon+O(\varepsilon^2)\right).
-\]
-分子 \(\Gamma(1+\varepsilon)=1-\gamma\varepsilon+O(\varepsilon^2)\)。因此
-\[
- \Gamma(-m+\varepsilon)=\frac{(-1)^m}{m!}
-       \left(\frac1\varepsilon+H_m-\gamma+O(\varepsilon)\right),
- \qquad H_0=0.
-\]
-当把 Gamma 与另一个含零点的函数相乘时，留数决定可去后的值，有限部分则决定导数。只知道极点阶数不足以完成这些局部计算。
-\ProseParagraphBreak
-参数正则化提供一个与递推不同的延拓图像。在 \(-1<\operatorname{Re}z<0\) 中，积分
+递推把参数移向右方，积分中的 Taylor 扣除则直接改善原点的可积性。先看一次扣除：\(e^{-t}-1=O(t)\)，所以
 \[
  \int_0^1(e^{-t}-1)t^{z-1}\,\mathrm{d}t
- +\int_1^\infty e^{-t}t^{z-1}\,\mathrm{d}t+\frac1z
+ +\int_1^\infty e^{-t}t^{z-1}\,\mathrm{d}t
 \]
-绝对收敛并等于 Gamma 延拓。因为 \(e^{-t}-1=O(t)\)，第一项比原 Euler 积分多出一个可积幂次；最后的 \(1/z\) 恰把减掉的常数项补回。继续减去更多 Taylor 项，就能向更左的半平面推进。所谓解析延拓在这里表现为一项明确的奇部加一个普通收敛积分，并没有把发散积分本身赋予任意的数值。
+在 \(\operatorname{Re}z>-1\) 全纯。被减去的常数在原有定义域中的积分为 \(1/z\)，将它补回便恢复 Gamma 函数。继续扣除更多 Taylor 项可以将同一构造推进到任意左半平面。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[Taylor 扣除的积分延拓]\label{b3:prop:21-taylor-regularization}
+设 \(N\) 为非负整数，并令
+\[
+ R_N(t)=e^{-t}-\sum_{k=0}^{N-1}\frac{(-1)^k t^k}{k!},\quad t>0,
+\]
+其中 \(N=0\) 时和为空。函数
+\[
+ A_N(z)=\int_0^1R_N(t)t^{z-1}\,\mathrm{d}t
+       +\int_1^\infty e^{-t}t^{z-1}\,\mathrm{d}t
+\]
+在半平面 \(\operatorname{Re}z>-N\) 全纯；各个固定阶参数导数均可在积分号下进行，并在紧参数集上绝对一致收敛。在这个半平面上，作为亚纯恒等式有
+\[
+ \Gamma(z)=A_N(z)+\sum_{k=0}^{N-1}\frac{(-1)^k}{k!(z+k)}.
+\]
+\end{proposition}
+\begin{proof}
+实变量 Taylor 余项估计给 \(|R_N(t)|\le t^N/N!\) 当 \(0<t\le1\)；\(N=0\) 时这就是 \(e^{-t}\le1\)。固定 \(\operatorname{Re}z>-N\) 中的紧参数集，选 \(-N<a\le\operatorname{Re}z\le b\)。对任意固定非负整数 \(q\)，原点端有
+\[
+ |R_N(t)t^{z-1}(\log t)^q|
+ \le\frac1{N!}t^{a+N-1}|\log t|^q,
+\]
+其积分为 \(q!/(N!(a+N)^{q+1})\)，有限且与参数无关。无穷远端仍由 \(e^{-t}t^{b-1}|\log t|^q\) 控制，故绝对可积。采用与 Euler 积分相同的截断及局部一致极限论证，得到 \(A_N\) 的全纯性和各阶参数导数。
+
+在 \(\operatorname{Re}z>0\) 上，各个被扣除的多项式项原本都可积分，且
+\[
+ \int_0^1t^{z+k-1}\,\mathrm{d}t=\frac1{z+k}.
+\]
+因此陈述中的公式在原 Euler 积分定义域成立。右端在 \(\operatorname{Re}z>-N\) 亚纯，与已建立的延拓在非空开集上一致，恒等定理遂使它在整个半平面等于 \(\Gamma\)。
+
+还可直接检查不同扣除次数的相容性。由 \(R_{N+1}(t)=R_N(t)-(-1)^Nt^N/N!\)，在 \(\operatorname{Re}z>-N\) 上有
+\[
+ A_{N+1}(z)=A_N(z)-\frac{(-1)^N}{N!(z+N)}.
+\]
+这恰好被新增的有理项抵消，因而增加扣除次数不会改变延拓后的函数。
+\end{proof}
+当 \(N>m\) 时，\(A_N\) 在 \(-m\) 附近全纯，有理和中只有 \(k=m\) 的一项有极点，其留数就是 \((-1)^m/m!\)。原点的 Taylor 项 \((-1)^m t^m/m!\) 因此对应参数平面中的极点 \(-m\)；幂次决定极点位置，系数决定留数。
+
+\ProseParagraphBreak
+
+积分切分点也不是额外的归一化选择。对任意 \(c>0\)，同样的公式可写成
+\[
+ \Gamma(z)=\int_0^cR_N(t)t^{z-1}\,\mathrm{d}t
+ +\int_c^\infty e^{-t}t^{z-1}\,\mathrm{d}t
+ +\sum_{k=0}^{N-1}\frac{(-1)^k c^{z+k}}{k!(z+k)},
+ \quad \operatorname{Re}z>-N,
+\]
+在非极点处按普通函数等式理解，在候选极点处按亚纯恒等式理解。对右端关于 \(c\) 求导，两项积分的端点贡献与有限和的导数恰好抵消，结果为零。这里始终使用实际收敛的积分与显式极点项；延拓值由它们和原定义域的一致性确定。

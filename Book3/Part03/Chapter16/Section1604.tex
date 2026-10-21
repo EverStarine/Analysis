@@ -2,57 +2,233 @@
 \section{调和测度}
 \label{b3:sec:1604}
 
-正则域上的解算子保持线性与正性。测度表示把整个解算子压缩成一族边界概率测度，共形映射再将这些测度从一个区域搬到另一个区域。
+在有界正则域上，每个连续边值都有唯一的连续调和延拓。固定一个内点，解在该点的值如何依赖整个边界数据？圆盘 Poisson 公式把它写成边界的加权平均。本节证明，一般正则域也有这样的平均表示，只是权重首先是一族测度，未必能够写成关于弧长的密度。
 
 \subsection{解的表示}
 \label{b3:subsec:160401}
 
-设 \(D\) 是有界正则域。固定 \(z\in D\)，映射 \(\varphi\mapsto H_\varphi(z)\) 为 \(C(\partial D)\) 上的正线性泛函：两解相加仍给相加边值，唯一性使解算子线性；非负边值由最大值原理给非负解。常数一的解为一。紧空间上的正泛函表示遂给唯一概率测度 \(\omega_D^z\)，满足
+设 \(D\subseteq\mathbb C\) 为有界正则域，即每个边界点对连续 Dirichlet 问题都正则。上一节已证明：对每个 \(\varphi\in C(\partial D;\mathbb R)\)，Perron 解 \(H_\varphi\) 连续延拓到 \(\overline D\)，并在边界等于 \(\varphi\)。若 \(a,b\in\mathbb R\)，函数 \(aH_\varphi+bH_\psi\) 调和，连续取到边值 \(a\varphi+b\psi\)；由经典解唯一性，
 \[
-H_\varphi(z)=\int_{\partial D}\varphi\,\mathrm{d}\omega_D^z.
+ H_{a\varphi+b\psi}=aH_\varphi+bH_\psi.
 \]
-这里使用第一卷定理11.4.1的 Riesz--Markov 表示。对于不同 \(z\)，这些测度通常互不相同；Harnack 估计使其对非负连续测试函数的积分在内部紧集上相互控制。
+因此，在正则域上完整的实线性成立。又由最大值原理，\(\varphi\ge0\) 蕴含 \(H_\varphi\ge0\)，且 \(H_1=1\)。
+
+\Needspace{6\baselineskip}
+\begin{theorem}[调和测度表示]\label{b3:thm:16-harmonic-measure}
+设 \(D\subseteq\mathbb C\) 为有界正则域，\(z\in D\)。存在唯一的 Borel 概率 Radon 测度 \(\omega_D^z\) 定义在 \(\partial D\) 上，使对每个 \(\varphi\in C(\partial D;\mathbb R)\) 都有
+\begin{equation}\label{b3:eq:16-harmonic-measure-representation}
+ H_\varphi(z)=\int_{\partial D}\varphi(\xi)\,\mathrm d\omega_D^z(\xi).
+\end{equation}
+\end{theorem}
+\begin{proof}
+固定 \(z\)，令 \(L_z(\varphi)\coloneqq H_\varphi(z)\)。上面的唯一性论证表明 \(L_z\) 是实线性泛函。正性和常数函数的解给出
+\[
+ |L_z(\varphi)|\le\|\varphi\|_{C(\partial D)},
+ \quad L_z(1)=1,
+\]
+故 \(L_z\) 连续且范数为一。这里 \(\partial D\) 是紧度量空间，因而适用第一卷定理11.4.1的 Riesz--Markov 正泛函表示：紧空间上每个正线性泛函都由唯一有限正 Radon 测度积分表示。所得测度记为 \(\omega_D^z\)，并由测试函数 \(1\) 得到 \(\omega_D^z(\partial D)=1\)。表示的唯一性也给出该测度的唯一性。
+\end{proof}
+
+\(\omega_D^z\) 称为从 \(z\) 观察的调和测度。它的三个参数分别是区域、观察点和边界集合：\(\omega_D^z(E)\) 衡量集合 \(E\subseteq\partial D\) 对内点 \(z\) 的影响。记号中省去区域时，必须已经固定 \(D\)。这里的测度有限，且边界紧；对补集使用紧内正则性，便得到开外正则性，所以下面可以从内、外两侧逼近 Borel 集。
+
+\ProseParagraphBreak
+例如单位圆盘的表示由 Poisson 公式直接给出：
+\begin{equation}\label{b3:eq:16-disk-harmonic-measure}
+ \mathrm d\omega_{\mathbb D}^z(e^{\mathrm it})
+ =\frac{1-|z|^2}{|e^{\mathrm it}-z|^2}\frac{\mathrm dt}{2\pi}.
+\end{equation}
+当 \(z=0\) 时，这是归一化弧长；当 \(z\ne0\) 时，靠近 \(z\) 的边界部分权重较大。圆环 \(A=\{r_0<|z|<R\}\) 的内圆 \(E=\{|z|=r_0\}\) 在整个边界中既开又闭，故其示性函数是连续边值。由上一节的零频率解，
+\[
+ \omega_A^z(E)=\frac{\log(R/|z|)}{\log(R/r_0)}.
+\]
+这不是把圆周长度作比例：同一个内圆的权重会随观察点改变。
+
+\ProseParagraphBreak
+表示公式还立刻给出测度随观察点变化的弱连续性。若 \(z_j\to z\in D\)，则对每个连续测试函数 \(\varphi\)，
+\[
+ \int\varphi\,\mathrm d\omega_D^{z_j}
+ =H_\varphi(z_j)\longrightarrow H_\varphi(z)
+ =\int\varphi\,\mathrm d\omega_D^z.
+\]
+若 \(z_j\to\xi\in\partial D\)，正则性则给
+\[
+ \int\varphi\,\mathrm d\omega_D^{z_j}\longrightarrow\varphi(\xi)
+ =\int\varphi\,\mathrm d\delta_\xi.
+\]
+所以从域内逼近正则边界点时，调和测度弱收敛到该点的单位点质量。这是对连续测试函数的陈述，并不意味着每个含有 \(\xi\) 的 Borel 集合的测度都趋于一；若该集合在 \(\xi\) 处有边界，弱收敛本身不决定其极限。
 
 \subsection{共形不变性}
 \label{b3:subsec:160402}
 
-\begin{proposition}\label{b3:prop:16-harmonic-measure-conformal}
-若 \(F:D\to D'\) 共形双射，且延拓为闭包间同胚，两域均有界正则，则
-\(F_\#\omega_D^z=\omega_{D'}^{F(z)}\)。
+二维调和方程在共形变换下保持不变，但把边界数据搬运过去还需要知道边界点如何对应。因此下面把内部共形性与闭包上的同胚性分别列为条件。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[调和测度的共形不变性]\label{b3:prop:16-harmonic-measure-conformal}
+设 \(D,D'\subseteq\mathbb C\) 均为有界正则域，\(F:D\to D'\) 为共形双射，并且延拓为 \(\overline D\) 到 \(\overline{D'}\) 的同胚，仍记为 \(F\)。则对每个 \(z\in D\)，
+\[
+ F_\#\omega_D^z=\omega_{D'}^{F(z)}.
+\]
+这里推前测度的含义是：对每个 Borel 集 \(E\subseteq\partial D'\)，有
+\[
+ \omega_D^z(F^{-1}(E))=\omega_{D'}^{F(z)}(E).
+\]
 \end{proposition}
 \begin{proof}
-对 \(\varphi\in C(\partial D')\)，\(H_\varphi\circ F\) 调和，因为 \(\Delta(u\circ F)=|F'|^2\cdot(\Delta u)\circ F\)。它连续取边值 \(\varphi\circ F\)，故由唯一性等于 \(H_{\varphi\circ F}\)。两边在 \(z\) 的值给两测度对全部连续测试函数积分相等，表示的唯一性得结论。
+取 \(\varphi\in C(\partial D';\mathbb R)\)，记 \(u\) 为它在 \(D'\) 上的经典调和解。Cauchy--Riemann 方程与链式法则给出
+\[
+ \Delta(u\circ F)=|F'|^2\cdot(\Delta u)\circ F=0.
+\]
+又因 \(F\) 在闭包间连续，\(u\circ F\) 连续取到边值 \(\varphi\circ F\)。唯一性表明它等于 \(D\) 上这一边值的解。因此
+\[
+ \begin{aligned}
+ \int_{\partial D'}\varphi\,\mathrm d\omega_{D'}^{F(z)}
+ &=u(F(z))\\
+ &=\int_{\partial D}\varphi\circ F\,\mathrm d\omega_D^z
+ =\int_{\partial D'}\varphi\,\mathrm d(F_\#\omega_D^z).
+ \end{aligned}
+\]
+两个有限正测度对所有连续测试函数的积分相等，表示定理的唯一性给出结论。
 \end{proof}
-若映射只在内部存在，边界像可能需要素端而不是通常拓扑边界。此时不能无说明地写相同的推前公式。
 
-\subsection{概率解释的预告}
+共形不变性首先是测度的变换规律，不要求边界可微，也不预设边界弧长密度。如果只给内部的共形双射，通常拓扑边界可能没有一一连续的对应，此时上式中的边界推前甚至未必有已定义的映射。有关素端的描述需要另外建立，不能从内部共形性中省略这一步。
+
+\ProseParagraphBreak
+对圆盘可以把这种规律直接化为弧长计算。固定 \(z\in\mathbb D\)，令
+\[
+ T_z(\zeta)\coloneqq\frac{\zeta-z}{1-\overline z\zeta}.
+\]
+它是把 \(z\) 送到原点的圆盘自同构，在闭圆盘上也是同胚。因此对圆周弧 \(I\)，
+\[
+ \omega_{\mathbb D}^z(I)=\omega_{\mathbb D}^0(T_z(I))
+ =\frac{\operatorname{length}(T_z(I))}{2\pi}.
+\]
+若 \(I=\{e^{\mathrm it}:\alpha\le t\le\beta\}\)，其中 \(0<\beta-\alpha<2\pi\)，应沿该参数区间连续选取实辐角 \(\Theta(t)\)，使
+\[
+ T_z(e^{\mathrm it})=e^{\mathrm i\Theta(t)}.
+\]
+求导可得
+\[
+ \Theta'(t)=\frac{1-|z|^2}{|e^{\mathrm it}-z|^2}>0,
+ \quad
+ \omega_{\mathbb D}^z(I)=\frac{\Theta(\beta)-\Theta(\alpha)}{2\pi}.
+\]
+于是核的密度正是圆周映射的角速度。若只取两个端点的主辐角作差，像弧一旦越过辐角切线就可能漏掉 \(2\pi\)；连续选择辐角保留了实际走过的整段弧。
+
+\subsection{调和测度的比较、计算与概率解释}
 \label{b3:subsec:160403}
 
-概率论中，调和测度可解释为平面 Brownian 运动首次退出区域时的位置分布。这个解释需要先构造过程，再证明退出时间、停时和边界到达的性质；它不是概率测度表示定理本身的内容。
+在同一区域内改变观察点，边界集合的权重会变化，但哪些集合的权重为零不会变化。这来自正调和函数的 Harnack 比较。
 
-圆盘中心的退出分布由旋转对称性应当均匀，与 Poisson 核的中心值一致。非中心处则偏向附近边界弧。本章使用的是已构造的解与测度，不以这一直观概率解释代替 Perron 证明。
-
-
-\ProseParagraphBreak
-
-解表示蕴含测度之间的定量关系。取 \(z,w\) 属于同一内部紧集，用有限 Harnack 链得到 \(C^{-1}H_\varphi(w)\le H_\varphi(z)\le C H_\varphi(w)\) 对所有非负连续 \(\varphi\) 成立。正测度的序关系因此给
+\Needspace{6\baselineskip}
+\begin{proposition}[内部观察点的测度比较]\label{b3:prop:16-harmonic-measure-comparison}
+设 \(D\subseteq\mathbb C\) 为有界正则域，\(K\subset D\) 为非空紧集。存在 \(C_K\ge1\)，使对任意 \(z,w\in K\) 和任意 Borel 集 \(E\subseteq\partial D\)，都有
 \[
-C^{-1}\omega_D^w(E)\le\omega_D^z(E)\le C\omega_D^w(E)
+ C_K^{-1}\omega_D^w(E)\le\omega_D^z(E)
+ \le C_K\omega_D^w(E).
 \]
-对每个 Borel 边界集合 \(E\) 成立：先由连续函数积分不等式得到测度支配，再用正则性从紧集、开集推广。尤其是否具有零调和测度与内部观察点无关，虽然具体权重随点而变。这个结论只比较同一区域内的点；跨域比较需要域的关系或共形映射。
-
-\ProseParagraphBreak
-
-对边界弧 \(I=[\alpha,\beta]\) 的圆盘权重，中心值为 \((\beta-\alpha)/(2\pi)\)。非中心处可积分核，或用 Möbius 变换 \(T_z(\zeta)=(\zeta-z)/(1-\overline z\zeta)\) 将 \(z\) 搬到原点，得到 \(\omega^z(I)=|T_z(I)|/(2\pi)\)，这里弧长在像的单位圆上测量。原来的近弧会被展开，远弧会被压缩；这把 Poisson 核分母 \(|e^{\mathrm{i}t}-z|^2\) 中的距离效应转成圆周变换的导数。必须取相应连续像弧，不能只减两个主辐角而忽略跨越分支切线的情形。
-
-\ProseParagraphBreak
-
-例如上半平面的区间 \([a,b]\) 在 \(x+\mathrm{i}y\) 处的权重是
+特别地，对同一连通区域的任意两个内点，调和测度具有相同的零测集。
+\end{proposition}
+\begin{proof}
+对非负连续函数 \(\varphi\)，解 \(H_\varphi\) 非负、调和。\cref{b3:prop:15-harnack-chain} 的有限 Harnack 链给出仅依赖 \(D,K\) 的常数，使
 \[
-\omega^{x+\mathrm{i}y}([a,b])=\frac1\pi\left(\arctan\frac{b-x}{y}-\arctan\frac{a-x}{y}\right).
+ H_\varphi(z)\le C_KH_\varphi(w)\quad(z,w\in K).
 \]
-取 \(y\downarrow0\)，当 \(x\in(a,b)\) 时极限一，区间外极限零，端点径向极限二分之一。这个算式既检验归一化，也显示端点与弧内部的边界行为不同。若同时改变 \(x\) 和 \(y\) 以斜向接近端点，比例 \((a-x)/y\) 可趋于不同实数，因而极限也相应变化。
+如果所引用的形式针对严格正函数，先对 \(H_\varphi+\varepsilon\) 使用，再令 \(\varepsilon\downarrow0\) 即可。因此
+\[
+ \int\varphi\,\mathrm d\omega_D^z
+ \le C_K\int\varphi\,\mathrm d\omega_D^w.
+\]
+须把连续测试函数的不等式落实到集合。记 \(X=\partial D\)，任取紧集 \(A\subset X\) 及包含它的相对开集 \(O\subset X\)。存在连续函数 \(g:X\to[0,1]\)，在 \(A\) 上为一，在 \(X\setminus O\) 上为零；例如两闭集非空时可用到它们的距离之比构造。于是
+\[
+ \omega_D^z(A)\le\int g\,\mathrm d\omega_D^z
+ \le C_K\int g\,\mathrm d\omega_D^w
+ \le C_K\omega_D^w(O).
+\]
+对 \(O\supset A\) 取下确界，Radon 测度的外正则性给
+\(\omega_D^z(A)\le C_K\omega_D^w(A)\)。再对任意 Borel 集 \(E\) 内的紧集取上确界，内正则性给 \(\omega_D^z(E)\le C_K\omega_D^w(E)\)。交换 \(z,w\) 得到反向估计。对任意两个固定内点，可取由这两点组成的紧集，故零测集结论也成立。
+\end{proof}
+
+同样的比较使测度表示能够处理不连续数据。它并不保证经典边界值处处存在，而是先给出一个域内调和函数。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[有界 Borel 数据的调和延拓]\label{b3:prop:16-borel-extension}
+设 \(D\subseteq\mathbb C\) 为有界正则域，\(f:\partial D\to\mathbb R\) 为有界 Borel 函数。则
+\[
+ U_f(z)\coloneqq\int_{\partial D}f\,\mathrm d\omega_D^z
+\]
+在 \(D\) 内调和，且 \(|U_f(z)|\le\sup_{\partial D}|f|\)。如果 \(f\) 在 \(\xi\in\partial D\) 处相对连续，则
+\[
+ \lim_{\substack{z\to\xi\\z\in D}}U_f(z)=f(\xi).
+\]
+\end{proposition}
+\begin{proof}
+固定 \(a\in D\)，记 \(\mu=\omega_D^a\)，并取 \(L\ge\sup|f|\)。有限 Radon 测度的正则性给出连续函数 \(f_n\)，使 \(|f_n|\le L\) 且 \(\int|f_n-f|\,\mathrm d\mu\to0\)。这里所需的逼近可直接得到：对 Borel 集 \(E\)，先取紧集 \(A\subset E\) 和开集 \(O\supset E\)，使 \(\mu(O\setminus A)\) 任意小，再以在 \(A\) 上为一、在 \(X\setminus O\) 上为零的连续函数逼近 \(\mathbf1_E\)。有限线性组合给简单函数的逼近，值域分割给有界 Borel 函数的简单函数逼近，最后截断到 \([-L,L]\) 不会增大误差。
+
+对任意紧集 \(K\Subset D\)，上一命题应用于 \(K\cup\{a\}\)，得到
+\[
+ \begin{aligned}
+ \sup_{z\in K}|H_{f_n}(z)-U_f(z)|
+ &\le\sup_{z\in K}\int|f_n-f|\,\mathrm d\omega_D^z\\
+ &\le C_K\int|f_n-f|\,\mathrm d\mu\longrightarrow0.
+ \end{aligned}
+\]
+因此 \(U_f\) 是调和函数列的局部一致极限，由平均值刻画仍调和。概率测度的总质量为一直接给出所述界。
+
+若 \(f\) 在 \(\xi\) 处连续，给定 \(\varepsilon>0\)，取边界相对邻域 \(V\ni\xi\)，使 \(|f-f(\xi)|<\varepsilon\) 于 \(V\)。选连续函数 \(g:\partial D\to[0,1]\)，在 \(\xi\) 的一个更小邻域为零，在 \(\partial D\setminus V\) 上为一。则
+\[
+ |U_f(z)-f(\xi)|\le\varepsilon+2L\omega_D^z(\partial D\setminus V)
+ \le\varepsilon+2LH_g(z).
+\]
+正则性给 \(H_g(z)\to g(\xi)=0\)，故所求极限成立。
+\end{proof}
+
+对边界集合 \(E\)，取 \(f=\mathbf1_E\)，便知 \(z\mapsto\omega_D^z(E)\) 调和；它在 \(E\) 的相对内部趋于一，在补集的相对内部趋于零。两部分的交界处是另一回事，圆盘阶跃边值已经说明可能出现依赖方向的极限。
 
 \ProseParagraphBreak
+正则性还保证每个非空边界开片都具有正权重。设 \(O\subseteq\partial D\) 相对开且非空，取 \(\xi\in O\)，并选 \(0\le g\le1\) 连续、在 \(\partial D\setminus O\) 为零且 \(g(\xi)=1\)。由于 \(H_g\) 在 \(\xi\) 处趋于一，它不是零函数；强最小值原理给 \(H_g(z)>0\) 于整个连通域。于是
+\[
+ \omega_D^z(O)\ge\int g\,\mathrm d\omega_D^z=H_g(z)>0.
+\]
+所以调和测度的支集是整个边界。这与“某些很小的边界集合可能有零权重”相容，支集只考察每个点的邻域。
 
-调和测度一般不等于普通边界长度；即使圆盘内也只有中心处是均匀的。对有尖角的域，共形变换在边界的伸缩会加强某些位置的权重，正则域这一性质本身没有承诺与弧长的密度存在。下一章光滑边界的 Green 函数法向导数将给具体密度公式，其额外边界光滑性正是微分边界核所需的条件。
+\ProseParagraphBreak
+上半平面虽不是有界域，第 \ref{b3:sec:1601} 节已另行构造了有界连续数据的 Poisson 解，并在有界解类中证明唯一性。因此可直接由该核定义实轴上的概率测度
+\[
+ \mathrm d\omega_{\mathbb H}^{x+\mathrm iy}(t)
+ =\frac1\pi\frac{y}{(t-x)^2+y^2}\,\mathrm dt,
+ \quad y>0.
+\]
+这里使用的是已经证明的半平面公式，未把有界正则域的表示定理直接套到无界区域。对于 \(a<b\)，积分给出
+\begin{equation}\label{b3:eq:16-halfplane-interval}
+ \omega_{\mathbb H}^{x+\mathrm iy}([a,b])
+ =\frac1\pi\left(\arctan\frac{b-x}{y}
+                  -\arctan\frac{a-x}{y}\right).
+\end{equation}
+端点是否纳入区间不影响积分，因为该测度对 Lebesgue 测度有密度。固定 \(x\)，令 \(y\downarrow0\)：区间内部的极限为一，闭区间外为零，端点处为 \(1/2\)。若以 \(x=a+\lambda y\) 接近左端点，则极限变为
+\[
+ \frac12+\frac1\pi\arctan\lambda.
+\]
+同一个端点因趋近方向不同而得到不同数值。
+
+\ProseParagraphBreak
+圆盘上的上半圆也有简短的显式公式。变换
+\[
+ W(z)\coloneqq\frac{1+z}{1-z}
+\]
+把单位圆盘送入右半平面；在其中选取 \(-\pi/2<\operatorname{Arg}W<\pi/2\)，则
+\[
+ \omega_{\mathbb D}^z(\{e^{\mathrm it}:0<t<\pi\})
+ =\frac12+\frac1\pi\operatorname{Arg}\frac{1+z}{1-z}.
+\]
+右端是有界调和函数，在上、下开半圆分别趋于一、零；Poisson 积分也有这些极限。\cref{b3:lem:16-finite-boundary-exceptions}的有限异常边界点唯一性使二者相同，两个端点的权重又由圆盘密度公式知为零。特别地，\(-1<y<1\) 时
+\[
+ \omega_{\mathbb D}^{\mathrm iy}(\{e^{\mathrm it}:0<t<\pi\})
+ =\frac12+\frac{2}{\pi}\arctan y.
+\]
+观察点从圆心向上移，权重由 \(1/2\) 增大并趋于一；这把“靠近边界弧会增加其影响”化为可直接计算的式子。
+
+\ProseParagraphBreak
+概率论中，调和测度还可解释为从 \(z\) 出发的平面 Brownian 运动首次退出区域时的位置分布。要把这一解释证明为定理，须另行构造过程，处理退出时间，并证明停止后的平均关系和边界到达性质。本章只使用已经建立的确定性解与测度，不把概率解释当作 Perron 存在证明中的输入。
+
+\ProseParagraphBreak
+调和测度因而连接了边值问题、正线性泛函和共形映射。它与边界长度并非同一对象；即使在圆盘上，也只有圆心对应均匀弧长。一般正则域未承诺边界可求长，更未承诺测度具有弧长密度。下一章将引入 Green 函数，并在适当光滑性假设下用法向导数写出边界核；那时增加的边界条件正是进行微分所需的条件。

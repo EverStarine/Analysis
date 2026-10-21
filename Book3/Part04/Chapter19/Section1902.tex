@@ -2,100 +2,396 @@
 \section{增长阶与型}
 \label{b3:sec:1902}
 
-以幂函数衡量 \(\log M\) 的增长，可以同时比较指数函数与更快的整函数。阶先确定指数尺度，型再比较相同尺度上的系数。
+多项式的次数可以从 \(\log M(r)/\log r\) 读出，但这个量对每个超越整函数都趋于无穷。若 \(M(r)\) 大致像 \(e^{r^s}\)，应当转而比较 \(\log M(r)\) 与 \(r^s\)。阶用来确定这里的幂指数，型则在同一幂尺度上保留前面的系数。先把这两层比较的量词说清楚，再研究它们怎样由导数、复合和 Taylor 系数决定。
 
 \subsection{阶}
 \label{b3:subsec:190201}
 
-非恒定整函数的\term[zengzhang-jie]{增长阶}[order of growth]为
+\Needspace{6\baselineskip}
+\begin{definition}\label{b3:def:19-order}
+设 \(f\) 为非常值整函数，\(M(r,f)=\max_{|z|=r}|f(z)|\)。其\term[zengzhang-jie]{增长阶}[order of growth]定义为
 \[
-\rho(f)=\limsup_{r\to\infty}\frac{\log\log M(r,f)}{\log r},
+ \rho(f)\coloneqq\limsup_{r\to\infty}
+ \frac{\log\log M(r,f)}{\log r}\in[0,\infty].
 \]
-允许为零和无穷。常数函数约定阶为零。阶有限时，对每个 \(\varepsilon>0\) 在充分大半径有 \(\log M(r)\le r^{\rho+\varepsilon}\)；这个上界不能无说明地把 \(\varepsilon\) 删除。
+常数函数，包括零函数，约定增长阶为零。增长阶有限的整函数称为\term[youxianjie-zhenghanshu]{有限阶整函数}[entire function of finite order]。
+\end{definition}
+\symidx{\(\rho(f)\)：整函数的增长阶}
+非常值时 \(M(r,f)\to\infty\)，所以定义中的双对数只需在充分大半径使用。其上极限不会为负：取某个 \(c_k\ne0\)、\(k\ge1\)，便有 \(M(r,f)\ge|c_k|r^k\)，从而双对数的商的下极限不小于零。采用上极限，是为了容许增长在不同半径上出现变化，不预先假定存在一个精确的渐近式。
+
+\ProseParagraphBreak
+
+阶最常用的含义是可用哪些指数上界。严格大于阶的指数总能给出上界；严格小于阶的指数则无论乘上多大的常数都不够。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[阶与指数增长尺度]\label{b3:prop:19-growth-scales}
+设 \(f\) 为整函数，其增长阶为 \(\rho\in[0,\infty]\)。对每个实数 \(s>\rho\)，存在 \(C_s>0\)，使
+\[
+ M(r,f)\le C_s e^{r^s},\quad r\ge0.
+\]
+对每个 \(0<s<\rho\) 及任意 \(A,C>0\)，存在任意大的半径 \(r\) 使 \(M(r,f)>C e^{Ar^s}\)。因此
+\[
+ \rho=\inf\bigl\{\,s>0\mid
+ \exists A,C>0\ \forall r\ge0,\ M(r,f)\le C e^{Ar^s}\,\bigr\},
+\]
+其中空集的下确界约定为无穷。
+\end{proposition}
+\begin{proof}
+常数函数直接满足结论，以下设 \(f\) 非常值。若 \(s>\rho\)，上极限的定义给充分大半径上的
+\[
+ \log\log M(r,f)\le s\log r,
+ \quad\text{即}\quad \log M(r,f)\le r^s.
+\]
+再用 \(M\) 在有限半径区间的连续性扩大 \(C_s\)，得到全半径的估计。
+
+若 \(0<s<\rho\)，选 \(s'\) 使 \(s<s'<\rho\)；\(\rho=\infty\) 时也可如此选择。存在趋于无穷的半径序列 \(r_j\)，使 \(\log\log M(r_j,f)>s'\log r_j\)。故
+\[
+ \frac{\log M(r_j,f)}{r_j^s}>r_j^{s'-s}\longrightarrow\infty.
+\]
+对给定的 \(A,C\)，充分大的 \(j\) 便满足 \(\log M(r_j,f)>A r_j^s+\log C\)。最后，任何上界 \(M(r,f)\le C e^{Ar^s}\) 都使双对数的上极限不超过 \(s\)；结合已经证明的严格阈值，得到下确界公式。
+\end{proof}
+下确界不一定在 \(s=\rho\) 处取得。知道 \(\rho<\infty\)，只保证每个 \(\varepsilon>0\) 都能给出 \(M(r)\le C_\varepsilon e^{r^{\rho+\varepsilon}}\)。能否在临界指数 \(\rho\) 上取得有限常数，需要再看型。
 
 \subsection{型}
 \label{b3:subsec:190202}
 
-当 \(0<\rho<\infty\)，定义该阶的\term[zengzhang-xing]{型}[type]为 \(\tau=\limsup r^{-\rho}\log M(r)\)。\(\tau=0\)、有限正数、无穷分别对应最小型、正常型和最大型。零阶时这一公式不能给有用的统一型分类；多项式与某些超越整函数都可能是零阶。
+\Needspace{6\baselineskip}
+\begin{definition}\label{b3:def:19-type}
+设整函数 \(f\) 的增长阶为 \(\rho\in(0,\infty)\)，\(M(r,f)=\max_{|z|=r}|f(z)|\)。其在自身增长阶上的\term[zengzhang-xing]{型}[type]定义为
+\[
+ \tau(f)\coloneqq\limsup_{r\to\infty}
+ \frac{\log M(r,f)}{r^\rho}\in[0,\infty].
+\]
+\(\tau=0\)、\(0<\tau<\infty\)、\(\tau=\infty\) 分别称为\term[zuixiaoxing]{最小型}[minimal type]、\term[zhengchangxing]{正常型}[normal type]、\term[zuidaxing]{最大型}[maximal type]。
+\end{definition}
+\symidx{\(\tau(f)\)：整函数在自身有限正阶上的型}
+这里的尺度必须是函数自身的阶。在更大指数上，这个上极限自动为零；在更小的正指数上，它自动为无穷，均不能细分同阶函数。零阶不按上述公式作统一型分类：非常值多项式与超越零阶函数都有 \(\log M(r)\to\infty\)，除以 \(r^0=1\) 后无法区分它们。无穷阶也不属于此定义的范围。
 
-若 \(\tau<\infty\)，则对每个 \(\varepsilon>0\) 有 \(M(r)\le C_\varepsilon e^{(\tau+\varepsilon)r^\rho}\)。常数依赖 \(\varepsilon\)，并不允许据此取同一常数覆盖所有 \(\varepsilon\downarrow0\)。
+\ProseParagraphBreak
+
+与阶的阈值类似，若 \(\tau<\infty\)，则对每个 \(b>\tau\)，存在 \(C_b>0\) 使
+\[
+ M(r,f)\le C_b e^{b r^\rho},\quad r\ge0.
+\]
+若 \(0<b<\tau\)，则 \(M(r,f)e^{-b r^\rho}\) 沿某个趋于无穷的半径序列趋于无穷。前者来自上极限的最终上界，后者可选 \(b'\in(b,\tau)\)，在满足 \(\log M(r)>b'r^\rho\) 的序列上验证。因而 \(\tau\) 是所有能给出上述全半径上界的正数 \(b\) 的下确界；\(\tau=\infty\) 时这一集合为空。
+
+\ProseParagraphBreak
+
+临界常数本身仍未必可用。例如 \(f(z)=(1+z)e^z\) 满足
+\[
+ M(r,f)=(1+r)e^r.
+\]
+上界来自 \(|1+z|\le1+r\)、\(\operatorname{Re}z\le r\)，而在正实点 \(z=r\) 同时取得等号。于是 \(\rho=1\)、\(\tau=1\)，却不存在统一的 \(C\) 使 \(M(r,f)\le C e^r\)。因此从型的定义得到的 \(\tau+\varepsilon\) 通常不能直接换成 \(\tau\)。
+
+\ProseParagraphBreak
+
+前节的最大项也能读出这两个量。比较型时必须让两个半径的比可以任意接近一；只比较 \(r\) 和 \(2r\)，会留下一个无法消去的常数因子。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[最大项给出相同的阶与型]\label{b3:prop:19-maximum-term-growth}
+设 \(f(z)=\sum_{n=0}^{\infty}c_nz^n\) 为非常值整函数，\(\mu(r,f)=\max_{n\ge0}|c_n|r^n\)。则
+\[
+ \rho(f)=\limsup_{r\to\infty}
+ \frac{\log\log\mu(r,f)}{\log r}.
+\]
+若 \(0<\rho(f)<\infty\)，则其型还满足
+\[
+ \tau(f)=\limsup_{r\to\infty}
+ \frac{\log\mu(r,f)}{r^{\rho(f)}}.
+\]
+两个公式均容许其所定义的量为零或无穷。
+\end{proposition}
+\begin{proof}
+某个正次系数非零，所以 \(\mu(r,f)\to\infty\)，两个公式在大半径有意义。固定 \(\kappa>1\)，由\cref{b3:prop:19-maximum-term}，
+\[
+ \mu(r,f)\le M(r,f)
+ \le\frac{\kappa}{\kappa-1}\mu(\kappa r,f).
+\]
+乘以一个正常数只使双对数改变 \(o(1)\)，把半径 \(r\) 换成 \(\kappa r\) 则有 \(\log(\kappa r)/\log r\to1\)。两边取双对数的上极限，便得到阶相同，包括零阶和无穷阶。
+
+设共同的阶为 \(\rho\in(0,\infty)\)，并把最大项公式右端记为 \(\tau_\mu\)。取一次对数并除以 \(r^\rho\)，上述不等式给
+\[
+ \tau_\mu\le\tau(f)\le\kappa^\rho\tau_\mu.
+\]
+若 \(\tau_\mu\) 有限，让 \(\kappa\downarrow1\) 得到相等；若 \(\tau_\mu=\infty\)，左侧已经迫使 \(\tau(f)=\infty\)。
+\end{proof}
 
 \subsection{基本例子}
 \label{b3:subsec:190203}
 
-函数 \(e^{az^m}\)、\(a\ne0\)、整数 \(m\ge1\)，具有 \(M(r)=e^{|a|r^m}\)，故阶 \(m\)、型 \(|a|\)。\(\sin z\) 与 \(\cos z\) 阶一、型一：上界由指数表达式，下界在虚轴由 \(\sinh r\)、\(\cosh r\) 得到。
+先看 \(f(z)=e^{az^m}\)，其中 \(a\ne0\)、\(m\ge1\) 为整数。在 \(|z|=r\) 上有 \(\operatorname{Re}(az^m)\le|a|r^m\)，又能选取一个角度使 \(az^m\) 为正实数，因而
+\[
+ M(r,f)=e^{|a|r^m},\quad \rho(f)=m,\quad \tau(f)=|a|.
+\]
+这里必须选到使实部最大的位置；只看实轴，在 \(a\) 为纯虚数时便会遗漏全部增长。
 
-函数 \(e^{e^z}\) 无穷阶，因为在正实轴 \(\log\log|f(r)|=r\)，除以 \(\log r\) 发散。多项式阶零，因为 \(\log M(r)=d\log r+O(1)\)。这些例子说明阶衡量的是指数增长层次，不是多项式的次数。
+\ProseParagraphBreak
 
-\subsection{导数增长}
-\label{b3:subsec:190204}
+三角函数也属于一阶正常型。由指数表达式，
+\[
+ |\sin z|\le\frac{e^{\operatorname{Im}z}+e^{-\operatorname{Im}z}}2\le e^r,
+ \quad
+ |\cos z|\le e^r,\quad |z|=r.
+\]
+在虚轴上则有 \(|\sin(\mathrm{i}r)|=\sinh r\)、\(|\cos(\mathrm{i}r)|=\cosh r\)。两者均为 \(\tfrac12e^r(1+o(1))\)，所以两种最大模都满足 \(\log M(r)=r+O(1)\)，得到阶一、型一。它们在实轴有界与此并不矛盾。
 
-\begin{proposition}\label{b3:prop:19-derivative-order}
-非常值有限阶整函数的导数具有相同增长阶。
+\ProseParagraphBreak
+
+多项式和迭代指数给出两个端点。若 \(P\) 为 \(d\ge1\) 次多项式，\(\log M(r,P)=d\log r+O(1)\)，从而 \(\rho(P)=0\)，无论次数多大。另一方面，\(f(z)=e^{e^z}\) 满足
+\[
+ |f(z)|=e^{\operatorname{Re}(e^z)}\le e^{e^r},\quad |z|=r,
+\]
+在 \(z=r\) 取得等号。因此 \(\log\log M(r,f)=r\)，阶为无穷。
+
+\ProseParagraphBreak
+
+零阶还包含超越整函数。考虑
+\[
+ F(z)=\sum_{n=0}^{\infty}e^{-n^2}z^n.
+\]
+系数的 \(n\) 次根为 \(e^{-n}\)，趋于零，所以收敛半径无穷。所有系数为正，三角不等式的上界在 \(z=r\) 取得，于是令 \(t=\log r\) 后有
+\[
+ M(r,F)=F(r)
+ =\sum_{n=0}^{\infty}e^{-n^2+nt}
+ =e^{t^2/4}\sum_{n=0}^{\infty}e^{-(n-t/2)^2}.
+\]
+当 \(t\ge1\) 时，选离 \(t/2\) 最近的非负整数 \(n_0\)，其距离不超过 \(1/2\)，便得到最后一和的下界 \(e^{-1/4}\)。对其他指标按 \(|n-n_0|\) 分组，则该和至多为
+\[
+ 1+2\sum_{k=1}^{\infty}e^{-(k-1/2)^2},
+\]
+这是与 \(t\) 无关的有限常数。因此
+\[
+ \log M(r,F)=\frac14(\log r)^2+O(1).
+\]
+它超过每个固定的 \(d\log r\)，却小于每个 \(r^\varepsilon\) 的最终尺度；所以 \(F\) 超越而阶为零。最大模的对数斜率仍趋于无穷，符合前节的凸斜率判别。
+
+\ProseParagraphBreak
+
+一般的代数运算先给上界。若 \(f,g\) 为整函数，则
+\[
+ M(r,f+g)\le M(r,f)+M(r,g),\quad
+ M(r,fg)\le M(r,f)\cdot M(r,g).
+\]
+结合指数尺度判据可得
+\[
+ \rho(f+g)\le\max\{\rho(f),\rho(g)\},\quad
+ \rho(fg)\le\max\{\rho(f),\rho(g)\}.
+\]
+例如当两阶有限时，对每个大于二者的 \(s\)，和、积都满足 \(C e^{A r^s}\) 型上界，再让 \(s\) 下降即可；若最大阶无穷，上界本身自动成立。若两函数阶不同，和的阶必等于较大者，否则把高阶函数写成和减去低阶函数，将与刚才的上界矛盾。同阶相消则可能使阶下降：\(e^z+(-e^z+1)=1\)，而乘积 \(e^ze^{-z}=1\) 也说明乘法一般没有对应的等式。
+
+\ProseParagraphBreak
+
+平移和缩放改变圆心与半径，却不会任意改变增长尺度。用闭圆盘最大值表示 \(M\)，可以把这种变化写成精确的包含关系。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[仿射变量变换]\label{b3:prop:19-affine-growth}
+设 \(f\) 为整函数，\(a,b\in\mathbb C\)、\(a\ne0\)，并令 \(g(z)=f(az+b)\)。则
+\[
+ \rho(g)=\rho(f).
+\]
+若 \(\rho(f)=\rho\in(0,\infty)\)，则
+\[
+ \tau(g)=|a|^\rho\tau(f),
+\]
+其中型容许为零或无穷。
 \end{proposition}
 \begin{proof}
-对 \(|z|\le r\)，在半径 \(r\) 的周围小圆用 Cauchy 估计，得 \(M(r,f')\le M(2r,f)/r\)，所以 \(\rho(f')\le\rho(f)\)。沿线段积分又有 \(M(r,f)\le|f(0)|+rM(r,f')\)，给反向不等式。若导数常数，则原函数线性，两者阶均零。
-\end{proof}
-这只证明阶相同。精确型或某条射线上的指标需要更细的估计，不能从粗略半径倍增直接读取。
-
-
-\ProseParagraphBreak
-
-阶的定义还有等价估计形式：\(\rho\) 是所有满足 \(M(r)\le C e^{Cr^s}\) 的指数 \(s>0\) 的下确界。若有这样的估计，取两次对数得阶不超过 \(s\)；若 \(s>\rho\)，定义本身给大半径的估计，再扩大常数覆盖有限半径。下确界可能不被取得，所以有限阶 \(\rho\) 不保证在 \(s=\rho\) 已有一个有限常数。最大型函数正是临界尺度常数无穷的情形。
-
-\ProseParagraphBreak
-
-Taylor 系数也完整确定增长阶。设超越整函数 \(f(z)=\sum_{n\ge0}c_nz^n\)，忽略 \(c_n=0\) 的项，则
-\[
-\rho(f)=\limsup_{n\to\infty}\frac{n\log n}{\log(1/|c_n|)}.
-\]
-整性使 \(|c_n|^{1/n}\to0\)，故分母最终正。下面把两个方向分别证明，而不从系数快速衰减的直观直接读出阶。
-
-\begin{proof}
-若 \(s>\rho(f)\)，有 \(M(r)\le Ce^{r^s}\)。Cauchy 系数界取 \(r=(n/s)^{1/s}\)，给
-\[
-\log(1/|c_n|)\ge\frac ns\log n-\frac ns(1+\log s)-\log C.
-\]
-故系数右端上极限不超过 \(s\)，再令 \(s\downarrow\rho\)。反过来，若该上极限小于 \(s\)，最终 \(|c_n|\le n^{-n/s}\)。将模级数分为 \(n\le(2r)^s\) 和后面的部分。后面各项不超过 \(2^{-n}\)；前面每项的对数 \(n\log r-(n/s)\log n\) 对正实 \(n\) 的最大值为 \(r^s/(es)\)，所以有限头部总量至多 \((2r)^s e^{r^s/(es)}\)，再加固定多项式与有界尾部。于是 \(\log M(r)=O(r^s)\)，阶不超过 \(s\)。使 \(s\) 趋向系数上极限即得反向结论；零阶和无穷阶按同样的估计解释。
-\end{proof}
-
-\ProseParagraphBreak
-
-对已知 \(0<\rho<\infty\) 的函数，还可读出型：
-\[
-\limsup_n n^{1/\rho}|c_n|^{1/n}=(e\rho\tau)^{1/\rho}.
-\]
-若 \(\tau<\infty\)，取 \(M(r)\le C_\varepsilon e^{(\tau+\varepsilon)r^\rho}\)，在 \(r^\rho=n/(\rho(\tau+\varepsilon))\) 应用 Cauchy 即给左侧不超过右侧。反向令左侧为 \(L<\infty\)，最终 \(|c_n|\le((L+\varepsilon)n^{-1/\rho})^n\)。模级数的每项对数最多 \(((L+\varepsilon)r)^\rho/(e\rho)\)，截断在 \(n>(2(L+\varepsilon)r)^\rho\) 后尾部几何可和，前面只有 \(O(r^\rho)\) 项，其项数对数除以 \(r^\rho\) 趋零。故型不超过 \((L+\varepsilon)^\rho/(e\rho)\)。令 \(\varepsilon\downarrow0\) 即得等式；\(L=0\) 或无穷由同一不等式处理。
-
-\ProseParagraphBreak
-
-这给任意正实数阶的明确例子：
-\[
-F_s(z)=\sum_{n\ge0}\frac{z^n}{(n!)^{1/s}},\qquad s>0.
-\]
-系数根趋零，所以它整。积分比较 \(\int_1^n\log t\,\mathrm{d}t\le\log n!\le\int_1^n\log t\,\mathrm{d}t+\log n\) 给 \(\log n!=n\log n-n+O(\log n)\)，不需要尚未建立的 Stirling 精细公式。代入系数判据得到阶 \(s\)、型 \(1/s\)。非整数阶不是抽象分类中的空位；例如 \(s=1/2\) 给 \(\sum z^n/(n!)^2\)，阶二分之一，型二。
-
-\ProseParagraphBreak
-
-阶和型对加法、乘法有简单上界，但一般没有等式。由 \(M(f+g)\le M(f)+M(g)\)、\(M(fg)\le M(f)M(g)\)，两者的阶至多为较大的输入阶。如果两函数阶不同，和的阶必为较大者：否则由 \(f=(f+g)-g\) 的同一估计产生矛盾。阶相同时可能完全抵消，例如 \(e^z+(-e^z+1)=1\)；乘积也可能从阶一降为零，例如 \(e^ze^{-z}=1\)。不允许把“取最大阶”不加条件当作代数运算规则。
-
-\ProseParagraphBreak
-
-零阶并不只包含多项式。考虑正系数整函数
-\[
- F(z)=\sum_{n=0}^\infty e^{-n^2}z^n.
-\]
-系数根 \(e^{-n}\) 趋零，所以收敛半径无穷。令 \(t=\log r\)，则
-\[
- M(r,F)=F(r)=e^{t^2/4}\sum_{n\ge0}e^{-(n-t/2)^2}.
-\]
-最后的和有与 \(t\ge1\) 无关的上下正常数界：下界选距 \(t/2\) 最近的非负整数，上界按距该数的整数距离用高斯尾和控制。因此 \(\log M(r)=\tfrac14(\log r)^2+O(1)\)。它超过每个固定的 \(d\log r\)，所以不是多项式，却比每个 \(r^\varepsilon\) 慢，因而阶为零。这一例子把零阶定义中两次对数的作用具体显现出来。
-\ProseParagraphBreak
-阶对坐标平移不敏感。令 \(g(z)=f(az+b)\)，\(a\ne0\)。由圆盘包含关系，在大半径有
+仿射映射把 \(|z|\le r\) 送到以 \(b\) 为中心、半径 \(|a|r\) 的闭圆盘。当 \(|a|r>|b|\) 时，这个圆盘包含以原点为中心、半径 \(|a|r-|b|\) 的闭圆盘，并包含于半径 \(|a|r+|b|\) 的闭圆盘。因此
 \[
  M(|a|r-|b|,f)\le M(r,g)\le M(|a|r+|b|,f).
 \]
-外侧半径与 \(|a|r\) 的比趋于一，故 \(g\) 与 \(f\) 阶相同；有限正阶 \(\rho\) 下，型满足 \(\tau(g)=|a|^\rho\tau(f)\)。平移只改变低阶半径误差，缩放则按阶产生确定幂次。这个结论要求使用圆盘最大值而非仅在一条射线上比较，因为平移后的圆心已经改变。
+常数函数的结论直接成立。若 \(f\) 非常值，令 \(s=|a|r\pm|b|\)，则每种代换都遍历一个充分大的半径区间，且 \(\log s/\log r\to1\)。对夹逼取双对数的上极限，得到阶不变，包括零阶和无穷阶。
+
+若共同的阶为 \(\rho\in(0,\infty)\)，则
+\[
+ \frac{\log M(s,f)}{r^\rho}
+ =\left(\frac{s}{r}\right)^\rho
+   \frac{\log M(s,f)}{s^\rho},
+ \quad \frac{s}{r}\longrightarrow|a|.
+\]
+夹逼的两端因此有同一上极限 \(|a|^\rho\tau(f)\)，得到型的公式。
+\end{proof}
+特别地，平移不改变阶与型。缩放的影响则保留在型的因子 \(|a|^\rho\) 中。
+
 \ProseParagraphBreak
-导数的型也可用较细的半径估计控制。若 \(f\) 的阶为 \(0<\rho<\infty\)，对固定 \(\varepsilon>0\)，Cauchy 估计给
-\(M(r,f')\le M((1+\varepsilon)r,f)/(\varepsilon r)\)。取对数、除以 \(r^\rho\) 并取上极限，得 \(\tau(f')\le(1+\varepsilon)^\rho\tau(f)\)，再令 \(\varepsilon\downarrow0\)。反向由 \(M(r,f)\le|f(0)|+rM(r,f')\) 得 \(\tau(f)\le\tau(f')\)。所以同一有限正阶下二者的型也相等，包括零型与无穷型的延伸解释。前面半径倍增只足以给阶；这里让半径比趋于一，才恢复精确型。
+
+把仿射映射换成 \(d\) 次多项式，半径 \(r\) 的主尺度就变为 \(r^d\)。上界只需三角不等式；为了得到反向估计，还要保证多项式的像覆盖一个足够大的圆盘。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[多项式复合的增长]\label{b3:prop:19-polynomial-composition}
+设 \(f\) 为整函数，\(P(z)=a_dz^d+\cdots+a_0\) 为 \(d\ge1\) 次多项式，\(a_d\ne0\)。则
+\[
+ \rho(f\circ P)=d\rho(f),
+\]
+其中零阶和无穷阶按扩展数值解释。若 \(\rho(f)=\rho\in(0,\infty)\)，则在 \(f\circ P\) 自身的阶 \(d\rho\) 上，
+\[
+ \tau(f\circ P)=|a_d|^\rho\tau(f).
+\]
+\end{proposition}
+\begin{proof}
+固定 \(0<q<|a_d|<Q\)。当 \(r\) 充分大时，三角不等式给
+\[
+ |P(z)|\le Qr^d,\quad |z|\le r.
+\]
+另一方面，对任意 \(|w|\le q r^d\)，在 \(|z|=r\) 上都有
+\[
+ |P(z)-w-a_dz^d|
+ \le\sum_{k<d}|a_k|r^k+q r^d
+ <|a_d|r^d.
+\]
+\(P-w\) 与 \(a_dz^d\) 在闭圆盘邻域全纯，且满足严格的边界比较，故\cref{b3:thm:03-rouche}使二者在盘内有相同的零点数 \(d\)。特别地，每个这样的 \(w\) 都是某个 \(|z|<r\) 的像。于是
+\[
+ M(qr^d,f)\le M(r,f\circ P)\le M(Qr^d,f).
+\]
+
+若 \(f\) 为常数，结论直接成立。其余情形将 \(s=q r^d\) 或 \(s=Q r^d\) 代入，有 \(\log s/\log r\to d\)，而 \(s\) 遍历所有充分大的半径。夹逼两端的双对数商都以上极限 \(d\rho(f)\) 为界，故得到阶的等式。
+
+设 \(0<\rho<\infty\)。同一夹逼除以 \(r^{d\rho}\) 后给
+\[
+ q^\rho\tau(f)\le\tau(f\circ P)\le Q^\rho\tau(f).
+\]
+令 \(q\uparrow|a_d|\)、\(Q\downarrow|a_d|\)，即得有限型的公式；若 \(\tau(f)=\infty\)，左边已经迫使复合函数也为无穷型，零型则由右边直接得到。
+\end{proof}
+因此，多项式的次数决定复合后阶的倍数，首项系数决定型的缩放，低次项只影响较小的半径误差。这一论证同时使用了像的上界与覆盖性质，单凭 \(|P(z)|\le C r^d\) 只能得到单向增长估计。
+
+\subsection{导数增长与系数判据}
+\label{b3:subsec:190204}
+
+Cauchy 估计把较大圆周上的函数值转成较小圆周上的导数界；沿线段积分又能从导数恢复函数。二者合起来说明微分不会改变阶，在有限正阶上也不会改变型。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[导数的阶与型]\label{b3:prop:19-derivative-order}
+设 \(f\) 为整函数，常数函数的阶按零计。则
+\[
+ \rho(f')=\rho(f).
+\]
+若 \(\rho(f)=\rho\in(0,\infty)\)，则 \(\tau(f')=\tau(f)\)，包括最小型与最大型。
+\end{proposition}
+\begin{proof}
+常数和一次多项式的结论直接成立，以下设 \(f'\) 非常值。对每个 \(|z|\le r\)，以 \(z\) 为圆心、\(r\) 为半径使用 Cauchy 导数估计，所用圆盘包含于 \(|\zeta|\le2r\)，故
+\[
+ M(r,f')\le\frac{M(2r,f)}r.
+\]
+取 \(r>1\)，双对数与固定半径倍增给 \(\rho(f')\le\rho(f)\)。反过来，沿从 \(0\) 到 \(z\) 的线段积分，得到
+\[
+ |f(z)|\le|f(0)|+|z|M(|z|,f'),
+ \quad
+ M(r,f)\le|f(0)|+rM(r,f').
+\]
+因 \(f'\) 非常值，某个正次 Taylor 系数非零，Cauchy 估计使 \(M(r,f')\ge c r^k\)，其中 \(c>0\)、\(k\ge1\)。于是 \(\log r=O(\log M(r,f'))\)，积分估计便给
+\[
+ \log\log M(r,f)\le\log\log M(r,f')+O(1).
+\]
+除以 \(\log r\) 并取上极限，得反向阶不等式。整个论证同样适用于零阶与无穷阶。
+
+为比较型，固定 \(\varepsilon>0\)，在以 \(z\) 为中心、半径 \(\varepsilon r\) 的圆周上使用 Cauchy 估计，得到
+\[
+ M(r,f')\le\frac{M((1+\varepsilon)r,f)}{\varepsilon r}.
+\]
+取对数、除以 \(r^\rho\) 并取上极限，给出
+\[
+ \tau(f')\le(1+\varepsilon)^\rho\tau(f).
+\]
+积分估计在大半径可写为 \(M(r,f)\le2rM(r,f')\)，故 \(\tau(f)\le\tau(f')\)，因为 \(\log(2r)/r^\rho\to0\)。若 \(\tau(f)\) 有限，让 \(\varepsilon\downarrow0\) 得到相等；若 \(\tau(f)=\infty\)，反向不等式已经迫使 \(\tau(f')=\infty\)。
+\end{proof}
+反复使用命题可知，任何固定阶导数都保留原函数的阶；在有限正阶上还保留型。对整函数的任意全纯原函数应用同一命题，可知原函数的阶也相同，在有限正阶上型也相同。积分常数只改变零次项。
+
+\ProseParagraphBreak
+
+Taylor 系数则给出更直接的判据。Cauchy 估计允许为每个系数选择不同的半径：当最大模近似 \(e^{r^s}\) 时，最有利的半径由指数增长与分母 \(r^n\) 的竞争决定。反过来，从系数估计恢复最大模时，除了控制最大的单项，还必须控制有效项的数量和剩余尾部。
+
+\Needspace{6\baselineskip}
+\begin{theorem}[增长的系数判据]\label{b3:thm:19-coefficient-growth}
+设 \(f(z)=\sum_{n=0}^{\infty}c_nz^n\) 为超越整函数。则
+\[
+ \rho(f)=\limsup_{\substack{n\to\infty\\c_n\ne0}}
+ \frac{n\log n}{\log(1/|c_n|)}.
+\]
+非零系数的分母最终为正，公式容许零阶与无穷阶。若 \(\rho=\rho(f)\in(0,\infty)\)，其型还满足
+\[
+ \limsup_{n\to\infty}n^{1/\rho}|c_n|^{1/n}
+ =(e\rho\tau(f))^{1/\rho},
+\]
+等价地，
+\[
+ e\rho\tau(f)=\limsup_{n\to\infty}n|c_n|^{\rho/n}.
+\]
+型的两个公式中，零系数对应的项取零，等式按零值和无穷值的意义解释。
+\end{theorem}
+\begin{proof}
+先证明阶公式。整性使 \(|c_n|^{1/n}\to0\)，所以非零系数最终满足 \(|c_n|<1\)，分母为正。超越性又保证非零系数有无穷多个，因而指定子序列上的上极限有意义。记这个上极限为 \(a\in[0,\infty]\)。
+
+若 \(\rho(f)<\infty\)，取任意 \(s>\rho(f)\)。指数尺度判据给 \(M(r,f)\le C e^{r^s}\)，Cauchy 系数界于是为
+\[
+ |c_n|\le C e^{r^s}r^{-n},\quad r>0.
+\]
+为了使右边尽量小，对 \(r^s-n\log r\) 求极小值。导数为零时 \(sr^s=n\)，代入 \(r=(n/s)^{1/s}\) 得
+\[
+ \log(1/|c_n|)
+ \ge\frac ns\log n-\frac ns(1+\log s)-\log C.
+\]
+右边的主项为 \((n/s)\log n\)，其余为 \(O(n)\)，故 \(a\le s\)。让 \(s\downarrow\rho(f)\)，得到 \(a\le\rho(f)\)；若 \(\rho(f)=\infty\)，这一不等式自动成立。
+
+反过来，若 \(a<\infty\)，取任意 \(s>a\)。上极限的定义使充分大的非零系数满足
+\[
+ \frac{n\log n}{\log(1/|c_n|)}<s,
+ \quad\text{从而}\quad |c_n|\le n^{-n/s}.
+\]
+零系数也满足最后的界。将不满足此界的有限头部记为多项式 \(P\)，并只考虑 \(r\ge1\)。对尾部的单项，把指标看成正实数 \(x\)，其对数由
+\[
+ \phi(x)=x\log r-\frac{x}{s}\log x
+\]
+控制。\(\phi'(x)=0\) 给 \(x=r^s/e\)，且 \(\phi''(x)=-1/(sx)<0\)，故最大值为 \(r^s/(es)\)。在 \(n\le(2r)^s\) 的部分，项数至多 \(1+(2r)^s\)；在 \(n>(2r)^s\) 的部分，\(r n^{-1/s}<1/2\)，其和至多为 \(\sum_{n\ge1}2^{-n}=1\)。于是
+\[
+ M(r,f)\le M(r,P)+\bigl(1+(2r)^s\bigr)e^{r^s/(es)}+1.
+\]
+取对数后，有限多项式与项数至多贡献 \(O(\log r)\)，故 \(\log M(r,f)=O(r^s)\)，从而 \(\rho(f)\le s\)。让 \(s\downarrow a\) 得 \(\rho(f)\le a\)。当 \(a=0\) 时，此论证对每个 \(s>0\) 成立，给 \(\rho(f)=0\)；当 \(a=\infty\) 时，已证的 \(a\le\rho(f)\) 迫使 \(\rho(f)=\infty\)。阶公式的所有情形至此闭合。
+
+下面固定 \(0<\rho=\rho(f)<\infty\)，并记
+\[
+ L=\limsup_{n\to\infty}n^{1/\rho}|c_n|^{1/n}.
+\]
+若 \(\tau(f)<\infty\)，任取 \(t>\tau(f)\)，有 \(M(r,f)\le C_t e^{t r^\rho}\)。最小化 \(t r^\rho-n\log r\)，应取 \(r^\rho=n/(\rho t)\)，于是
+\[
+ |c_n|\le C_t\left(\frac{e\rho t}{n}\right)^{n/\rho}.
+\]
+取 \(n\) 次根、乘 \(n^{1/\rho}\)，再取上极限，\(C_t^{1/n}\to1\)，所以 \(L\le(e\rho t)^{1/\rho}\)。令 \(t\downarrow\tau(f)\)，得到
+\[
+ L^\rho\le e\rho\tau(f).
+\]
+\(\tau(f)=0\) 时仍可从任意正 \(t\) 向下取极限；\(\tau(f)=\infty\) 时这个方向自动成立。
+
+为证反向，若 \(L<\infty\)，任取 \(l>L\)。除有限项外，
+\[
+ |c_n|\le\bigl(l n^{-1/\rho}\bigr)^n.
+\]
+连续指标函数 \(x\log(lr)-(x/\rho)\log x\) 在 \(x=(lr)^\rho/e\) 取最大值 \((lr)^\rho/(e\rho)\)。将级数分在 \(n\le(2lr)^\rho\) 与 \(n>(2lr)^\rho\) 两部分：前一部分至多有 \(1+(2lr)^\rho\) 项，后一部分仍由几何级数 \(\sum2^{-n}\) 控制。连同有限头部，得到
+\[
+ \log M(r,f)\le\frac{l^\rho}{e\rho}r^\rho+O(\log r).
+\]
+除以 \(r^\rho\) 并取上极限，再令 \(l\downarrow L\)，便有 \(e\rho\tau(f)\le L^\rho\)。这也覆盖 \(L=0\)，因为可对每个 \(l>0\) 使用该估计。若 \(L=\infty\) 而 \(\tau(f)<\infty\)，与前一方向矛盾；若 \(\tau(f)=\infty\) 而 \(L<\infty\)，与后一方向矛盾。故两个端点同样相等。最后，正幂函数保持上极限，得到两种型公式的等价性。
+\end{proof}
+阶公式使用的是系数衰减的主尺度 \(n\log n\)，型则还保留其下一层指数常数。稀疏级数也可应用：零系数在阶公式中略去，在型公式中贡献零；但非零系数的下标必须始终使用它在原 Taylor 级数中的次数。
+
+\ProseParagraphBreak
+
+这些公式给出任意正实数阶的具体函数。设 \(s>0\)，令
+\[
+ F_s(z)=\sum_{n=0}^{\infty}\frac{z^n}{(n!)^{1/s}}.
+\]
+对递增函数 \(\log t\) 作积分比较，有
+\[
+ \int_1^n\log t\,\mathrm{d}t
+ \le\log n!
+ \le\int_1^n\log t\,\mathrm{d}t+\log n,
+\]
+因而 \(\log n!=n\log n-n+O(\log n)\)。特别地，\((n!)^{1/n}\sim n/e\)，系数根趋于零，故 \(F_s\) 为超越整函数。代入阶公式，
+\[
+ \frac{n\log n}{\log\bigl((n!)^{1/s}\bigr)}\longrightarrow s.
+\]
+再用型公式的第二种写法，
+\[
+ e s\tau(F_s)
+ =\lim_{n\to\infty}\frac{n}{(n!)^{1/n}}=e,
+\]
+于是 \(\rho(F_s)=s\)、\(\tau(F_s)=1/s\)。例如 \(\sum z^n/(n!)^2\) 的阶为 \(1/2\)、型为 \(2\)。增长阶可以取非整数值，并不受多项式次数的整数性限制。

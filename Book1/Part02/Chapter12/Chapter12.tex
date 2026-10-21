@@ -181,56 +181,90 @@ Portmanteau 定理给出开集的下极限和闭集的上极限不等式，
 \(\mu_n(A_0)=0\) 而 \(\mu(A_0)=1\)，集合质量并不收敛；这正是边界承载极限质量的情形。
 \end{solution}
 
-\begin{exercise}\label{b1:ex:12-distribution-functions}
-设 \(\mu_n,\mu\) 为 \(\mathbb R\) 上的概率测度，记
-\[
- F_n(t)=\mu_n\bigl((-\infty,t]\bigr),\quad
- F(t)=\mu\bigl((-\infty,t]\bigr).
-\]
+\begin{exercise}[分布函数的一致误差与全变差]\label{b1:ex:12-distribution-functions}
+分布函数记号沿用\cref{b1:prop:cdf-weak-convergence}。
 \begin{enumerate}
 \item\label{b1:item:12-cdf-criterion}
-证明 \(\mu_n\Rightarrow\mu\) 当且仅当 \(F_n(t)\rightarrow F(t)\) 对 \(F\) 的每个连续点 \(t\) 成立。
-\item\label{b1:item:12-cdf-exponential}
-设 \(\mu_n\) 关于 Lebesgue 测度的密度为
+设 \(\mu_n\Rightarrow\mu\)，且极限分布函数 \(F\) 在整个实轴上连续。证明
 \[
- p_n(x)=\begin{cases}(1-x/n)^{n-1},&0<x<n,\\0,&\text{其余情形}.\end{cases}
+ \sup_{t\in\mathbb R}|F_n(t)-F(t)|\longrightarrow0.
 \]
-验证其总质量为 \(1\)，并求 \(\mu_n\) 的弱极限。
+要求同时处理有界区间内的有限网格与区间外的两个尾部。
+\item\label{b1:item:12-cdf-exponential}
+令 \(\mu\) 为 \([0,1]\) 上的均匀概率测度，\(\mu_n\) 关于 Lebesgue 测度的密度为
+\[
+ q_n(x)=\bigl(1+\sin(2\pi nx)\bigr)\cdot\mathbf1_{(0,1)}(x),\quad n\ge1.
+\]
+验证这些密度非负且总质量为 \(1\)，计算
+\[
+ \sup_{t\in\mathbb R}|F_n(t)-F(t)|
+ \quad\text{与}\quad |\mu_n-\mu|(\mathbb R).
+\]
+判断是否弱收敛、是否在全变差范数下收敛，并给出随 \(n\) 改变的 Borel 集 \(A_n\)，
+使 \(|\mu_n(A_n)-\mu(A_n)|\) 不趋于零。
 \end{enumerate}
 \end{exercise}
-% 来源：自拟；把Portmanteau 定理与实轴区间划分结合，并计算一个密度极限。
-% 充分性实际证明有界连续测试的收敛，不把区间生成 Borel 集误作弱收敛判据。
+% 来源：自拟；CDF判据已移入正文，本题增加连续极限下的一致误差及高频密度与全变差的比较。
+% 保留原习题和分问标签作稳定定位，分问标签中的旧名称不限定当前训练内容。
 \begin{solution}
-分布函数 \(F\) 右连续，且 \(F(t)-F(t-)=\mu(\{t\})\)。所以 \(F\) 的连续点恰好是 \(\mu(\{t\})=0\) 的点。若 \(\mu_n\Rightarrow\mu\)，则集合 \((-\infty,t]\) 的边界为 \(\{t\}\)，\cref{b1:thm:portmanteau}的边界零测集判据给出必要性。
+由正文判据，\(F_n(t)\to F(t)\) 对每个实数 \(t\) 成立。给定 \(\varepsilon>0\)，
+取 \(a<b\)，使 \(F(a)<\varepsilon\)、\(1-F(b)<\varepsilon\)。
+连续函数 \(F\) 在 \([a,b]\) 上一致连续，所以存在有限划分
+\[
+ a=t_0<t_1<\cdots<t_m=b,
+ \qquad F(t_j)-F(t_{j-1})<\varepsilon.
+\]
+取 \(n\) 充分大，使所有分点都满足 \(|F_n(t_j)-F(t_j)|<\varepsilon\)。
+若 \(t_{j-1}\le t\le t_j\)，两分布函数的单调性给出
+\[
+ F_n(t)-F(t)
+ \le F_n(t_j)-F(t_{j-1})<2\varepsilon,
+\]
+反向则由左端的单调下界得到
+\[
+ F(t)-F_n(t)
+ \le F(t_j)-F_n(t_{j-1})
+ =F(t_j)-F(t_{j-1})+F(t_{j-1})-F_n(t_{j-1})
+ <2\varepsilon.
+\]
+若 \(t<a\)，则 \(F_n(t)\le F_n(a)<2\varepsilon\)、\(F(t)<\varepsilon\)，
+所以两者之差的绝对值小于 \(2\varepsilon\)。若 \(t>b\)，改对 \(1-F_n(t)\)、\(1-F(t)\) 使用相同估计。
+于是全实轴上的误差上确界不超过 \(2\varepsilon\)，第一问得证。
 
-反过来，设连续点处的收敛成立。正质量的单点至多可数，故这些连续点稠密。给定 \(f\in C_b(\mathbb R)\) 和 \(\varepsilon>0\)，选连续点 \(a<b\)，使 \(F(a)<\varepsilon\)、\(1-F(b)<\varepsilon\)。则对充分大的 \(n\)，
+第二问中，\(0\le q_n\le2\)，且正弦在 \([0,1]\) 内走完 \(n\) 个周期，故 \(\int q_n=1\)。
+直接积分得到
 \[
- \mu_n\bigl(\mathbb R\setminus(a,b]\bigr)<4\varepsilon,
- \quad\mu\bigl(\mathbb R\setminus(a,b]\bigr)<2\varepsilon.
-\]
-由 \(f\) 在 \([a,b]\) 上的一致连续性，可选全部由 \(F\) 连续点组成的划分
-\(a=t_0<t_1<\cdots<t_k=b\)，使每个小区间上的振幅小于 \(\varepsilon\)。在 \((t_{j-1},t_j]\) 上用常数 \(f(t_j)\) 逼近 \(f\)。这些区间的质量满足
-\[
- \mu_n\bigl((t_{j-1},t_j]\bigr)
- =F_n(t_j)-F_n(t_{j-1})
- \longrightarrow F(t_j)-F(t_{j-1}).
-\]
-有限个区间的阶梯函数积分因而收敛；两次区间内逼近与区间外尾部给出
-\[
- \limsup_n\left|\int f\,\mathrm d\mu_n-\int f\,\mathrm d\mu\right|
- \le2\varepsilon+6\|f\|_\infty\varepsilon.
-\]
-令 \(\varepsilon\downarrow0\)，便得到弱收敛。
-
-第二问中，直接积分得 \(\int_0^n(1-x/n)^{n-1}\,\mathrm dx=1\)。分布函数为
-\[
- F_n(t)=\begin{cases}
- 0,&t\le0,\\
- 1-(1-t/n)^n,&0<t<n,\\
- 1,&t\ge n.
+ F_n(t)=
+ \begin{cases}
+  0,&t\le0,\\
+  t+\dfrac{1-\cos(2\pi nt)}{2\pi n},&0<t<1,\\
+  1,&t\ge1.
  \end{cases}
 \]
-固定 \(t>0\)，有 \((1-t/n)^n\rightarrow e^{-t}\)，故极限分布函数为 \(F(t)=0\) 于 \(t\le0\)，\(F(t)=1-e^{-t}\) 于 \(t>0\)。它处处连续，对应密度 \(e^{-x}\cdot\mathbf1_{(0,\infty)}(x)\)。第一问给出所求弱极限。
+而 \(F(t)=t\) 于 \([0,1]\)，两侧分别为 \(0\)、\(1\)。因此
+\[
+ \sup_t|F_n(t)-F(t)|=\frac1{\pi n},
+\]
+最大值例如在 \(t=1/(2n)\) 取得。正文判据给出 \(\mu_n\Rightarrow\mu\)。
+由\cref{b1:prop:real-density-variation}，
+\[
+ |\mu_n-\mu|(\mathbb R)
+ =\int_0^1|\sin(2\pi nx)|\,\mathrm dx
+ =\frac1{2\pi n}\int_0^{2\pi n}|\sin s|\,\mathrm ds
+ =\frac2\pi.
+\]
+所以不在全变差范数下收敛。具体取
+\[
+ A_n=\bigcup_{j=0}^{n-1}
+       \left(\frac jn,\frac{j+1/2}n\right),
+\]
+则每段对应正弦的正半周期，因而
+\[
+ \mu_n(A_n)-\mu(A_n)
+ =\int_{A_n}\sin(2\pi nx)\,\mathrm dx=\frac1\pi.
+\]
+半直线质量的最大误差已趋于零，但这些随 \(n\) 改变的集合仍捕捉到每个正半周期的质量差。
+弱收敛逐个固定连续测试，全变差则同时控制全部可测集，两种要求不同。
 \end{solution}
 
 \begin{exercise}\label{b1:ex:12-unbounded-tests}

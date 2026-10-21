@@ -1,0 +1,129 @@
+% !TeX root = ../../Book2.tex
+\section{Bernstein 构造性逼近}
+\label{b2:sec:approximation-bernstein}
+
+\subsection{一元 Bernstein 多项式}
+\label{b2:subsec:approximation-bernstein-univariate}
+
+下面的\term[bernstein-bijin-dingli]{Bernstein 逼近定理}[Bernstein approximation theorem]用二项式权重构造连续函数的多项式一致逼近。
+
+\begin{theorem}[Bernstein 逼近：一元情形]
+\label{b2:thm:approximation-bernstein-univariate}
+设 \(\mathbb F=\mathbb R\) 或 \(\mathbb C\)，且 \(f\in C([0,1];\mathbb F)\)。对每个正整数 \(n\)，定义
+\[
+ b_{n,k}(x)\coloneqq\binom nk x^k(1-x)^{n-k},
+ \quad
+ B_nf(x)\coloneqq\sum_{k=0}^nf(k/n)\cdot b_{n,k}(x),
+ \quad 0\leq x\leq1.
+\]
+这里零次幂按 \(1\) 计算。\(B_nf\) 是次数不超过 \(n\) 的\term[bernstein-duoxiangshi]{Bernstein 多项式}[Bernstein polynomial]。以 \(\omega_f\) 表示 \(f\) 关于通常距离的连续模，则对 \(0<\delta\leq1\)，
+\[
+ \lVert B_nf-f\rVert_\infty
+ \leq\omega_f(\delta)
+      +\frac{\lVert f\rVert_\infty}{2n\delta^2}.
+\]
+因此 \(B_nf\to f\) 一致成立。此外，若 \(a<b\) 为实数，\(h\in C([a,b];\mathbb F)\)，则存在次数不超过 \(n\) 的多项式 \(q_n\)，使 \(q_n\to h\) 在 \([a,b]\) 上一致成立。
+\end{theorem}
+\begin{proof}
+这些权重非负。二项式公式及其一、二阶导数给出
+\[
+\begin{aligned}
+ &\sum_{k=0}^n b_{n,k}(x)=1,\quad
+   \sum_{k=0}^n k\cdot b_{n,k}(x)=nx,\\
+ &\sum_{k=0}^n k(k-1)\cdot b_{n,k}(x)=n(n-1)x^2.
+\end{aligned}
+\]
+利用 \(k^2=k(k-1)+k\) 展开平方，可得
+\[
+ \sum_{k=0}^n(k/n-x)^2\cdot b_{n,k}(x)
+ =\frac{x(1-x)}n\leq\frac1{4n}.
+\]
+固定 \(0<\delta\leq1\)，将求和分为 \(|k/n-x|\leq\delta\) 与其补集。邻近部分的函数值之差至多为 \(\omega_f(\delta)\)，而远处权重满足
+\[
+ \sum_{|k/n-x|>\delta}b_{n,k}(x)
+ \leq\frac1{\delta^2}
+       \sum_{k=0}^n(k/n-x)^2\cdot b_{n,k}(x)
+ \leq\frac1{4n\delta^2}.
+\]
+由于权重之和为一，
+\[
+\begin{aligned}
+ |B_nf(x)-f(x)|
+ &\leq\sum_{k=0}^n|f(k/n)-f(x)|\cdot b_{n,k}(x)\\
+ &\leq\omega_f(\delta)
+       +2\lVert f\rVert_\infty\cdot\frac1{4n\delta^2}.
+\end{aligned}
+\]
+对 \(x\) 取上确界即得误差估计。取 \(\delta=n^{-1/4}\)，右端成为
+\[
+ \omega_f(n^{-1/4})+\frac{\lVert f\rVert_\infty}{2\sqrt n},
+\]
+由一致连续性趋于零。
+
+对一般区间上的 \(h\)，令 \(H(x)=h(a+(b-a)x)\)，其中 \(0\leq x\leq1\)，再设
+\[
+ q_n(t)\coloneqq B_nH\!\left(\frac{t-a}{b-a}\right),
+ \quad a\leq t\leq b.
+\]
+仿射换元保持次数不超过 \(n\)，而且
+\(\lVert q_n-h\rVert_{C[a,b]}=\lVert B_nH-H\rVert_{C[0,1]}\to0\)，得到所需逼近。
+\end{proof}
+
+\subsection{多元 Bernstein 多项式}
+\label{b2:subsec:approximation-bernstein-multivariate}
+
+\begin{theorem}[Bernstein 逼近：多元情形]
+\label{b2:thm:approximation-bernstein-multivariate}
+设 \(d\) 为正整数，\(\mathbb F=\mathbb R\) 或 \(\mathbb C\)，且 \(f\in C([0,1]^d;\mathbb F)\)。对正整数 \(n\)、\(\mathbf k=(k_1,\ldots,k_d)\in\{0,\ldots,n\}^d\) 与 \(x\in[0,1]^d\)，定义
+\[
+\begin{aligned}
+ w_{n,\mathbf k}(x)
+ &\coloneqq\prod_{j=1}^d\binom n{k_j}x_j^{k_j}(1-x_j)^{n-k_j},\\
+ B_nf(x)
+ &\coloneqq\sum_{\mathbf k\in\{0,\ldots,n\}^d}
+       f(\mathbf k/n)\cdot w_{n,\mathbf k}(x).
+\end{aligned}
+\]
+零次幂仍按 \(1\) 计算。\(B_nf\) 在每个变量上的次数均不超过 \(n\)，总次数不超过 \(dn\)。以 \(\omega_f\) 表示 \(f\) 关于欧氏距离的连续模，则对每个 \(\delta>0\)，
+\[
+ \lVert B_nf-f\rVert_\infty
+ \leq\omega_f(\delta)
+       +\frac{d\lVert f\rVert_\infty}{2n\delta^2}.
+\]
+特别地，\(B_nf\to f\) 在 \([0,1]^d\) 上一致成立。
+\end{theorem}
+\begin{proof}
+乘积权重非负。对每个坐标依次求和，并使用一元二项式恒等式，得到
+\[
+ \sum_{\mathbf k}w_{n,\mathbf k}(x)=1,
+ \quad
+ \sum_{\mathbf k}\frac{k_j}{n}\cdot w_{n,\mathbf k}(x)=x_j,
+ \quad 1\leq j\leq d.
+\]
+同样计算每个坐标的二阶矩，
+\[
+ \sum_{\mathbf k}(k_j/n-x_j)^2\cdot w_{n,\mathbf k}(x)
+ =\frac{x_j(1-x_j)}n.
+\]
+把这些等式相加，便有
+\[
+ \sum_{\mathbf k}|\mathbf k/n-x|^2\cdot w_{n,\mathbf k}(x)
+ =\sum_{j=1}^d\frac{x_j(1-x_j)}n
+ \leq\frac d{4n}.
+\]
+所以对任意 \(\delta>0\)，远处取样点的总权重满足
+\[
+ \sum_{|\mathbf k/n-x|>\delta}w_{n,\mathbf k}(x)
+ \leq\frac d{4n\delta^2}.
+\]
+在 \(|\mathbf k/n-x|\leq\delta\) 的部分，用连续模控制函数值之差；在补集上，用 \(2\lVert f\rVert_\infty\) 控制。由此得到
+\[
+\begin{aligned}
+ |B_nf(x)-f(x)|
+ &\leq\sum_{\mathbf k}|f(\mathbf k/n)-f(x)|\cdot w_{n,\mathbf k}(x)\\
+ &\leq\omega_f(\delta)
+       +2\lVert f\rVert_\infty\cdot\frac d{4n\delta^2}.
+\end{aligned}
+\]
+取上确界即得所述估计。先由一致连续性取足够小的 \(\delta\)，再令 \(n\) 足够大，就得到一致收敛。
+\end{proof}

@@ -2,61 +2,498 @@
 \section{矩形与椭圆积分}
 \label{b3:sec:0704}
 
-矩形只有一个形状参数，即高宽比。它的四个直角使 Schwarz--Christoffel 积分出现三次多项式的平方根；这正是椭圆积分的入口。
+矩形的四个角都相同，形状却仍有一个连续变化的参数。上一节的公式把这个自由度放在第四个预顶点的位置中；要找回矩形的宽高比，就必须实际计算相邻预顶点之间的积分。本节选择一个便于换元的归一化，先从积分构造出矩形映射，再研究边长随参数的变化。平方根在不同实区间的符号、无穷远对应的顶点和内部单叶性，都将在计算中逐一确定。
 
 \subsection{矩形的共形映射}
 \label{b3:subsec:070401}
 
-令 \(0<k<1\)，取上半平面的预顶点 \(0,1,1/k^2,\infty\)。映射可写为
+将四个预顶点按正向次序放在
 \[
- F(z)=\frac12\int_0^z\frac{\mathrm{d}t}{\sqrt{t(1-t)(1-k^2t)}}.
+ 0,\quad 1,\quad a=\frac1{k^2},\quad\infty,
+ \quad 0<k<1.
 \]
-在 \((0,1)\) 上根取正值，再从上半平面继续分支。以0为积分起点表示从内部取极限，端点 \(t^{-1/2}\) 可积。三个有限角点的指数均为 \(-1/2\)；无穷远用 \(1/z\) 坐标同样给直角。因此四段实边分别映为四条互相垂直的边。选择整体相位使第一边向右，像为一个矩形。
+这里用上半平面自同构固定了三个预顶点；写成 \(a=k^{-2}>1\)，是为了使后面的换元出现 \(1-k^2s^2\)。每个直角要求导数有 \(-1/2\) 次幂，因此三个有限顶点给出候选导数
+\[
+ F_k'(z)=\frac12q_k(z),\quad
+ q_k(z)^2=\frac1{z(1-z)(1-k^2z)},\quad z\in\mathbb H.
+\]
+系数 \(1/2\) 只负责整体尺度，选它是因为 \(t=s^2\) 的微分恰有因子2。无穷远现在也是一个角点，不再是上一节公式中选定的边内点；候选导数在无穷远为 \(z^{-3/2}\) 阶，正好与这一变化相符。
 
 \ProseParagraphBreak
-该结论可以从已有矩形 Riemann 映射的公式得到，也可直接核对积分边界的四边闭合，再用辐角原理证明内部映射次数为1。后一种核对的要点是所有四边长度为正，边界按正确顺序走一遍简单矩形；此时内点的绕数为1，故每个内点恰有一个原像。只看导数不为零仍不够。
+
+平方根不能在每段实轴上独立取正值。对 \(z\in\mathbb H\)，分别使用满足
+\[
+ 0<\arg z<\pi,\quad
+ -\pi<\arg(1-z)<0,\quad
+ -\pi<\arg(1-k^2z)<0
+\]
+的全纯对数，并定义
+\[
+ q_k(z)\coloneqq
+ \exp\left[-\frac12\bigl(
+ \operatorname{Log}z+\operatorname{Log}(1-z)
+ +\operatorname{Log}(1-k^2z)\bigr)\right].
+\]
+三个因子在上半平面都不为零，各自的像又避开所选对数的割线，所以这给出一个全纯无零分支。在 \((0,1)\) 的上侧边界，三个辐角都趋于0，故 \(q_k\) 取正实值；这就确定了所需的第一条边向右的归一化。
+
+\ProseParagraphBreak
+
+上半平面单连通，\cref{b3:thm:02-cauchy-simply-connected}保证 \(q_k/2\) 有原函数。以边界点0为基点的写法
+\[
+ F_k(z)=\frac12\int_0^z
+ \frac{\mathrm{d}t}{\sqrt{t(1-t)(1-k^2t)}}
+\]
+表示把这个原函数归一化为 \(F_k(0)=0\)，而不是未经说明地沿边界积分。为核对这个归一化存在，在0附近写
+\[
+ q_k(z)=z^{-1/2}A_k(z),\quad
+ A_k(z)=\sum_{n=0}^{\infty}a_nz^n,\quad a_0=1.
+\]
+其中 \(A_k\) 在一个小圆盘全纯，平方根取上半平面分支。逐项积分得到局部原函数
+\[
+ \sum_{n=0}^{\infty}\frac{a_n}{2n+1}z^{n+1/2}
+ =\sqrt z\bigl(1+O(z)\bigr).
+\]
+它从内部趋向0；任一全局原函数与它在小半圆盘中相差常数，减去该常数便得到唯一的 \(F_k\)。因此从0出发的可积端点和内部路径无关性都已得到说明。
+
+\ProseParagraphBreak
+
+现在观察实轴上侧的边界导数。按从0出发、经无穷远再回到0的循环次序，三个对数辐角的和及导数方向为
+\[
+\begin{array}{c|cccc}
+ t&(0,1)&(1,a)&(a,\infty)&(-\infty,0)\\ \hline
+ \arg t+\arg(1-t)+\arg(1-k^2t)
+   &0&-\pi&-2\pi&\pi\\
+ q_k(t)/|q_k(t)|&1&\mathrm{i}&-1&-\mathrm{i}
+\end{array}
+\]
+例如越过1后，\(1-t\) 从下侧趋向负实轴，其辐角为 \(-\pi\)，倒平方根便给向上的方向。越过 \(a\) 后再出现一个 \(-\pi\)，两次相加为 \(-2\pi\)，对应向左。若先把这次辐角和改成0再取平方根，就会把第三条边误判为向右。负实轴上只有 \(t\) 的辐角为 \(\pi\)，故从 \(-\infty\) 走向0时导数向下。
+
+\ProseParagraphBreak
+
+在有限预顶点 \(x\in\{0,1,a\}\) 附近，其余因子都不为零，所以可写
+\[
+ q_k(z)=(z-x)^{-1/2}B_x(z),\quad B_x(x)\ne0,
+\]
+其中 \(B_x\) 在小圆盘全纯。与0处一样积分其幂级数，得到
+\[
+ F_k(z)=c_x+(z-x)^{1/2}C_x(z),\quad C_x(x)=B_x(x)\ne0.
+\]
+于是定义 \(F_k(x)=c_x\) 后，\(F_k\) 从上半平面的任意方向连续到 \(x\)，差值为 \(O(|z-x|^{1/2})\)。平方根把半圆盘的角度 \(\pi\) 变为 \(\pi/2\)，说明这三个顶点确为直角；导数发散不妨碍函数有有限边界值。
+
+\ProseParagraphBreak
+
+无穷远还需要单独处理，否则正、负实轴得到的两段边界可能尚未接上。当 \(|z|\ge2/k^2\) 时，
+\[
+ |1-z|\ge\frac{|z|}{2},\quad
+ |1-k^2z|\ge\frac{k^2|z|}{2},\quad
+ |F_k'(z)|\le\frac1{k|z|^{3/2}}.
+\]
+正、负实轴上的尾积分因此都收敛。连接 \(R\) 与 \(-R\) 的上半圆弧长为 \(\pi R\)，其上的积分模至多为 \(\pi/(k\sqrt R)\)，故两侧极限相同，记为 \(L_k\)。对任意 \(z\in\mathbb H\)、\(|z|=R\)，先沿同一半圆从 \(R\) 走到 \(z\)，再估计实轴尾积分，得到
+\[
+ |F_k(z)-L_k|\le\frac{\pi+2}{k\sqrt{|z|}}.
+\]
+这个估计证明从内部任何方向趋于无穷远都得到 \(L_k\)，并非只核对两个实轴端点。
+
+\ProseParagraphBreak
+
+第四个角也可以在有限坐标中看清。令 \(\zeta=-1/z\)，它仍把上半平面映到上半平面。由上面的分支在大正实数处为负实值，可将无穷远展开写成
+\[
+ q_k(z)=-\frac1kz^{-3/2}\bigl(1+O(1/z)\bigr).
+\]
+积分并用已确定的 \(L_k\) 归一化，得到
+\[
+ F_k(-1/\zeta)
+ =L_k-\frac{\mathrm{i}}k\sqrt\zeta+O(|\zeta|^{3/2}).
+\]
+这里 \(0<\arg\zeta<\pi\)。非零平方根首项再次给出直角。到此，四段边界的方向与连续接合已经确定；它们的长度和所围区域仍须由积分计算。
 
 \subsection{椭圆积分}
 \label{b3:subsec:070402}
 
-定义第一类完全椭圆积分
+第一条边的积分在 \(t=s^2\) 下成为一个经常出现的标准量。对 \(0\le k<1\)，定义\term[diyilei-wanquan-tuoyuan-jifen]{第一类完全椭圆积分}[complete elliptic integral of the first kind]
 \[
- K(k)=\int_0^1\frac{\mathrm{d}s}{\sqrt{(1-s^2)(1-k^2s^2)}},\qquad
- k'=\sqrt{1-k^2}.
+ K(k)\coloneqq\int_0^1
+ \frac{\mathrm{d}s}{\sqrt{(1-s^2)(1-k^2s^2)}}
+ =\int_0^{\pi/2}\frac{\mathrm{d}\theta}
+ {\sqrt{1-k^2\sin^2\theta}}.
 \]
-在 \(0\le t\le1\) 作 \(t=s^2\)，第一条边长为 \(K(k)\)。下一条边的长度为
+\symidx{\(K(k)\)：第一类完全椭圆积分}
+第二个表达式来自 \(s=\sin\theta\)。对固定 \(k<1\)，被积函数至多为
+\((1-k^2)^{-1/2}(1-s^2)^{-1/2}\)，所以积分有限且为正。还记
 \[
- \int_1^{1/k}\frac{\mathrm{d}s}{\sqrt{(s^2-1)(1-k^2s^2)}}=K(k').
+ k'\coloneqq\sqrt{1-k^2}.
 \]
-这个恒等式可用 \(s=(1-k'^2u^2)^{-1/2}\) 直接换元核对：两个根与微分的共同因子消去，得到 \(((1-u^2)(1-k'^2u^2))^{-1/2}\)。故矩形宽为 \(K(k)\)、高为 \(K(k')\)。积分分支只决定走边方向，不改变正的边长。
+撇号在这里表示与 \(k\) 配对的参数，不是求导；再次进行同一变换会回到 \(k\)。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[椭圆积分与矩形]\label{b3:prop:07-elliptic-rectangle}
+设 \(0<k<1\)、\(k'=\sqrt{1-k^2}\)，并令
+\[
+ F_k(z)=\frac12\int_0^z
+ \frac{\mathrm{d}t}{\sqrt{t(1-t)(1-k^2t)}},\quad z\in\mathbb H,
+\]
+其中倒平方根在上半平面全纯，在 \((0,1)\) 的上侧取正值，原函数归一化为 \(F_k(0)=0\)。则 \(F_k\) 双全纯映到矩形
+\[
+ R_k\coloneqq\{w\in\mathbb C:
+ 0<\operatorname{Re}w<K(k),\quad
+ 0<\operatorname{Im}w<K(k')\}.
+\]
+它连续延到扩充实轴，依次将 \(0,1,k^{-2},\infty\) 映为
+\[
+ 0,\quad K(k),\quad K(k)+\mathrm{i}K(k'),\quad
+ \mathrm{i}K(k'),
+\]
+并给出扩充实轴与矩形边界之间的同胚。
+\end{proposition}
+\begin{proof}
+先计算四条边长。对 \((0,1)\)，导数为正实数；取 \(t=s^2\)、\(\mathrm{d}t=2s\,\mathrm{d}s\)，得到
+\[
+ \ell_1=\frac12\int_0^1
+ \frac{\mathrm{d}t}{\sqrt{t(1-t)(1-k^2t)}}
+ =\int_0^1\frac{\mathrm{d}s}
+ {\sqrt{(1-s^2)(1-k^2s^2)}}=K(k).
+\]
+所以 \(F_k(1)=K(k)\)。
+
+第二条边向上。先仍取 \(t=s^2\)，则其正长度为
+\[
+ \ell_2=\frac12\int_1^{1/k^2}
+ \frac{\mathrm{d}t}{\sqrt{t(t-1)(1-k^2t)}}
+ =\int_1^{1/k}\frac{\mathrm{d}s}
+ {\sqrt{(s^2-1)(1-k^2s^2)}}.
+\]
+为把两个端点变成0和1，令
+\[
+ s=(1-k'^2u^2)^{-1/2},\quad 0\le u\le1.
+\]
+这里 \(s=1\) 对应 \(u=0\)，\(s=1/k\) 对应 \(u=1\)。逐项计算有
+\[
+ \begin{aligned}
+ s^2-1&=\frac{k'^2u^2}{1-k'^2u^2},&
+ 1-k^2s^2&=\frac{k'^2(1-u^2)}{1-k'^2u^2},\\
+ \mathrm{d}s&=\frac{k'^2u}{(1-k'^2u^2)^{3/2}}\,\mathrm{d}u.
+ \end{aligned}
+\]
+在 \(0<u<1\) 上取正平方根并约去 \(k'^2u\)，得到
+\[
+ \frac{\mathrm{d}s}{\sqrt{(s^2-1)(1-k^2s^2)}}
+ =\frac{\mathrm{d}u}{\sqrt{(1-u^2)(1-k'^2u^2)}}.
+\]
+两个端点的可积性由右式一并给出，因此 \(\ell_2=K(k')\)，且
+\(F_k(k^{-2})=K(k)+\mathrm{i}K(k')\)。
+
+第三条边向左，长度是
+\[
+ \ell_3=\frac12\int_{1/k^2}^{\infty}
+ \frac{\mathrm{d}t}{\sqrt{t(t-1)(k^2t-1)}}.
+\]
+令 \(t=1/(k^2s^2)\)，则 \(t\) 从 \(k^{-2}\) 增至无穷时，\(s\) 从1减至0，而且
+\[
+ \begin{aligned}
+ \mathrm{d}t&=-\frac{2}{k^2s^3}\,\mathrm{d}s,\\
+ t-1&=\frac{1-k^2s^2}{k^2s^2},\quad
+ k^2t-1=\frac{1-s^2}{s^2},\\
+ \sqrt{t(t-1)(k^2t-1)}
+ &=\frac{\sqrt{(1-s^2)(1-k^2s^2)}}{k^2s^3}.
+ \end{aligned}
+\]
+故 \(\ell_3=K(k)\)。这一边从 \(K(k)+\mathrm{i}K(k')\) 向左走过 \(K(k)\)，到达前一小节确定的无穷远极限
+\(L_k=\mathrm{i}K(k')\)。
+
+最后，从负无穷走向0的第四条边向下，其长度为
+\[
+ \ell_4=\frac12\int_{-\infty}^0
+ \frac{\mathrm{d}t}{\sqrt{(-t)(1-t)(1-k^2t)}}.
+\]
+取 \(t=-s^2/(1-s^2)\)，原积分的两端依次对应 \(s=1,0\)。有
+\[
+ \begin{aligned}
+ -t&=\frac{s^2}{1-s^2},\quad
+ 1-t=\frac1{1-s^2},\quad
+ 1-k^2t=\frac{1-k'^2s^2}{1-s^2},\\
+ \mathrm{d}t&=-\frac{2s}{(1-s^2)^2}\,\mathrm{d}s,\\
+ \sqrt{(-t)(1-t)(1-k^2t)}
+ &=\frac{s\sqrt{1-k'^2s^2}}{(1-s^2)^{3/2}}.
+ \end{aligned}
+\]
+约分并反转积分限，得到
+\[
+ \ell_4=\int_0^1\frac{\mathrm{d}s}
+ {\sqrt{(1-s^2)(1-k'^2s^2)}}=K(k').
+\]
+所以第四边从 \(\mathrm{i}K(k')\) 回到0。四个实区间上导数的模始终为正，各边被严格单调地走过一次；结合端点连续性，扩充实轴恰好按正向描出这个简单矩形边界。
+
+剩下的是内部单叶性。不能直接在实轴及无穷远组成的边界上套用要求全纯邻域的辐角原理。改用 Cayley 坐标
+\[
+ T(\zeta)=\mathrm{i}\frac{1+\zeta}{1-\zeta},\quad
+ g(\zeta)=F_k(T(\zeta)),\quad \zeta\in\mathbb D.
+\]
+有限角点及无穷远的估计说明 \(g\) 连续到闭圆盘，其中 \(g(1)=L_k\)。当 \(\zeta=e^{\mathrm{i}t}\)、\(0<t<2\pi\) 时，
+\(T(\zeta)=-\cot(t/2)\) 从负无穷严格增加到正无穷。因此
+\(\gamma_1(t)=g(e^{\mathrm{i}t})\)
+按正向描出矩形边界，从左上角出发先向下，再向右、向上、向左。
+
+固定 \(w\notin\partial R_k\)，令 \(d=\operatorname{dist}(w,\partial R_k)>0\)。闭圆盘上的一致连续性给
+\[
+ \sup_{0\le t\le2\pi}
+ |g(re^{\mathrm{i}t})-g(e^{\mathrm{i}t})|\longrightarrow0
+ \quad(r\uparrow1).
+\]
+于是存在 \(r_0<1\)，使对每个 \(r_0<r<1\)，路径
+\(\gamma_r(t)=g(re^{\mathrm{i}t})\)
+与 \(\gamma_1\) 的距离处处小于 \(d/2\)。两条路径之间的直线同伦始终避开 \(w\)，所以连续辐角的总增量不变，绕数相同。\Cref{b3:thm:03-argument-principle}现在可用于 \(|\zeta|<r\)：函数 \(g-w\) 在该闭圆盘的邻域全纯，且边界无零点、内部无极点。因此其内部零点总重数为
+\[
+ N_r(w)=\operatorname{Ind}(\gamma_r,w)
+ =\operatorname{Ind}(\gamma_1,w)
+ =\begin{cases}
+ 1,&w\in R_k,\\
+ 0,&w\notin\overline{R_k}.
+ \end{cases}
+\]
+这里矩形的正向边界对内部点绕一周，对外部点绕零周。
+
+若 \(w\in R_k\)，先取一个 \(r>r_0\)，便得到至少一个原像；若全圆盘中另有原像，或一个零点的重数大于1，取更大的 \(r<1\) 将它们包括在内，就与 \(N_r(w)=1\) 矛盾。若 \(w\notin\overline{R_k}\)，任何可能的原像也会包含在某个这样的紧盘内，与零计数矛盾。最后，内部点不能映到 \(\partial R_k\)：否则开映射定理给出的像邻域必含矩形外部点，违反刚得到的结论。故 \(F_k\) 的像恰为 \(R_k\)，并且一一对应。又因 \(F_k'=q_k/2\ne0\)，局部全纯逆拼成全局全纯逆映射，证明完成。
+\end{proof}
+
+四边长度的换元具有不同任务。第一边给出 \(K(k)\) 的定义，第二边引出 \(k'\)，第三、第四边独立核对闭合条件；最后的绕数则把边界上一圈转化为内部一个原像。导数处处非零只保证局部可逆，不能单独代替这一步全局计数。
 
 \subsection{矩形模量}
 \label{b3:subsec:070403}
 
-以连接左右两条指定边为方向，矩形的形状参数取 \(m=\text{宽}/\text{高}\)，于是这里 \(m=K(k)/K(k')\)。若改指定上下两边，参数变成 \(1/m\)。这个方向约定将在下一章的极值长度中固定；未经说明把模量写成高宽比，会使公式整体倒置。
+对宽为 \(A>0\)、高为 \(B>0\) 的矩形，指定左、右两条边为需要连接的对边时，本节取\term[juxing-moliang]{矩形模量}[modulus of a rectangle]
+\[
+ m\coloneqq\frac AB.
+\]
+这是带有方向约定的形状参数。在上面的映射中，底边宽度为 \(K(k)\)，左边高度为 \(K(k')\)，所以
+\[
+ m(k)=\frac{K(k)}{K(k')}.
+\]
+若改为连接上、下两边，宽高角色交换，所得参数为 \(1/m\)。下一章会用极值长度说明这个比值为何成为一般标记四边形的共形不变量；本节先证明每个正比值都能由积分唯一产生。
 
-\begin{proposition}\label{b3:prop:07-elliptic-aspect}
-\(K(k)/K(k')\) 在 \(0<k<1\) 严格递增，并从0取遍所有正数。因此每个矩形高宽比唯一确定一个 \(k\)。
+\Needspace{6\baselineskip}
+\begin{proposition}[矩形宽高比的参数化]\label{b3:prop:07-elliptic-aspect}
+对 \(0\le t<1\)，令
+\[
+ K(t)=\int_0^1\frac{\mathrm{d}s}
+ {\sqrt{(1-s^2)(1-t^2s^2)}}.
+\]
+则 \(K\) 在 \([0,1)\) 连续且严格递增，\(K(0)=\pi/2\)，并在 \(t\uparrow1\) 时趋于无穷。对 \(0<k<1\) 置 \(k'=\sqrt{1-k^2}\)，则
+\(m(k)=K(k)/K(k')\)
+是从 \((0,1)\) 到 \((0,\infty)\) 的连续严格递增双射，且
+\[
+ m(k')=\frac1{m(k)}.
+\]
+因此每个指定左、右边的矩形宽高比唯一确定一个 \(k\)。
 \end{proposition}
 \begin{proof}
-积分中的被积函数随 \(k\) 严格增大，故 \(K(k)\) 严格增大；\(k'\) 严格减小，故分母严格减小。紧子区间可由控制收敛证明连续性。\(K(0)=\pi/2\)，而 \(K(k)\rightarrow\infty\) 当 \(k\uparrow1\)，因为极限积分含 \(1/(1-s^2)\) 的端点发散；单调收敛给严格的无穷极限。两端交换得到比值范围。
+若 \(0\le t_1<t_2<1\)，则对每个 \(0<s<1\)，第二个根号因子在 \(t_2\) 时严格较小，被积函数严格较大。两者均可积，故 \(K(t_2)>K(t_1)\)。对任意 \(b<1\)，当 \(0\le t\le b\) 时有共同可积控制
+\[
+ \frac1{\sqrt{(1-s^2)(1-t^2s^2)}}
+ \le\frac1{\sqrt{1-b^2}\sqrt{1-s^2}}.
+\]
+所以控制收敛给出 \([0,b]\) 上的连续性，\(b\) 任意便得到 \([0,1)\) 上连续。取 \(t=0\) 后作 \(s=\sin\theta\)，有 \(K(0)=\pi/2\)。
+
+当 \(t\uparrow1\)，被积函数递增趋于 \(1/(1-s^2)\)，而后者在 \(s=1\) 不可积。这个无穷极限也可直接由截断核对：给定 \(M>0\)，先取 \(c<1\)，使
+\(\int_0^c(1-s^2)^{-1}\,\mathrm{d}s>2M\)；在固定区间 \([0,c]\) 上，被积函数一致趋于该极限，故 \(t\) 充分接近1时，\(K(t)\ge\int_0^c((1-s^2)(1-t^2s^2))^{-1/2}\,\mathrm{d}s>M\)。
+
+随 \(k\) 严格增大，\(K(k)\) 严格增大，\(k'\) 严格减小，\(K(k')\) 严格减小。二者为正，故其比严格递增，并由连续性得到连续。两端分别满足
+\[
+ \lim_{k\downarrow0}m(k)=0,\quad
+ \lim_{k\uparrow1}m(k)=\infty.
+\]
+介值定理给满射，严格递增给单射。最后，\(\sqrt{1-(k')^2}=k\)，交换分子与分母即得互反关系。
 \end{proof}
-当 \(k=k'=1/\sqrt2\) 时像为正方形。矩形非常细长时 \(k\) 接近0或1，预顶点的相对距离极端不均，体现了上一节的拥挤。
+
+例如 \(k=1/\sqrt2\) 时有 \(k=k'\)，矩形为正方形；反之，若像为正方形，则 \(K(k)=K(k')\)，严格单调性迫使 \(k=k'\)，所以只有这一参数。给定任意宽 \(A\)、高 \(B\)，先解唯一的方程 \(m(k)=A/B\)，再把 \(F_k\) 乘以
+\[
+ c=\frac{A}{K(k)}=\frac{B}{K(k')},
+\]
+就得到以0为左下角、宽 \(A\)、高 \(B\) 的矩形映射。形状参数与整体尺度在这两个步骤中分别确定。
+
+\ProseParagraphBreak
+
+还可定量解释细长矩形的预顶点为什么难以分辨。直接估计给
+\[
+ \frac\pi2\le K(k)\le\frac\pi{2\sqrt{1-k^2}},
+\]
+但右端在 \(k\uparrow1\) 时是幂次发散，远大于实际增长。为了得到正确的对数尺度，换用 \(u=\tan\theta\)，记 \(\varepsilon=k'\)。因为
+\[
+ \mathrm{d}\theta=\frac{\mathrm{d}u}{1+u^2},\quad
+ 1-k^2\sin^2\theta=\frac{1+\varepsilon^2u^2}{1+u^2},
+\]
+得到
+\[
+ K(k)=\int_0^\infty
+ \frac{\mathrm{d}u}{\sqrt{(1+u^2)(1+\varepsilon^2u^2)}}.
+\]
+在 \(1\le u\le1/\varepsilon\) 上，两个平方根分别接近 \(u\) 与1；因此增长来自近似 \(1/u\) 的一段积分，而两端只贡献有界的量。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[完全椭圆积分的对数界]\label{b3:prop:07-elliptic-log-bounds}
+设 \(0<k<1\)、\(\varepsilon=\sqrt{1-k^2}\)，并令
+\(K(k)=\int_0^1((1-s^2)(1-k^2s^2))^{-1/2}\,\mathrm{d}s\)。则
+\[
+ \log\frac1\varepsilon-\frac12
+ \le K(k)\le\log\frac1\varepsilon+2.
+\]
+特别地，\(K(k)=\log(1/k')+O(1)\) 当 \(k\uparrow1\)，其中误差有与 \(k\) 无关的绝对界。
+\end{proposition}
+\begin{proof}
+将刚得到的 \(u\) 积分分为 \([0,1]\)、\([1,1/\varepsilon]\) 与 \([1/\varepsilon,\infty)\)。第一段的被积函数至多为1，最后一段至多为 \(1/(\varepsilon u^2)\)，因此这两段各不超过1。中间一段可写为
+\[
+ \int_1^{1/\varepsilon}\frac1u
+ \frac{\mathrm{d}u}{\sqrt{(1+u^{-2})(1+\varepsilon^2u^2)}}
+ \le\int_1^{1/\varepsilon}\frac{\mathrm{d}u}{u}
+ =\log\frac1\varepsilon.
+\]
+相加即得上界。
+
+为估计中间一段少于对数的部分，先注意对 \(v\ge0\)，
+\[
+ 0\le1-(1+v)^{-1/2}
+ =\frac{v}{\sqrt{1+v}\,(1+\sqrt{1+v})}
+ \le\frac v2.
+\]
+若 \(a,b\ge0\)，将两个因子的差分开，便有
+\[
+ 0\le1-\frac1{\sqrt{(1+a)(1+b)}}
+ \le\frac{a+b}{2}.
+\]
+代入 \(a=u^{-2}\)、\(b=\varepsilon^2u^2\)，中间一段与 \(\log(1/\varepsilon)\) 之差至多为
+\[
+ \frac12\int_1^{1/\varepsilon}
+ (u^{-3}+\varepsilon^2u)\,\mathrm{d}u
+ =\frac{1-\varepsilon^2}{2}\le\frac12.
+\]
+其余两段非负，所以舍去它们仍得到所述下界。
+\end{proof}
+
+这一估计已经足以证明指数级的拥挤，而无需先求更精细的渐近常数。令 \(k\ge1/\sqrt2\)，则 \(0<\varepsilon\le1/\sqrt2\)、\(m=m(k)\ge1\)。由最初的上下界和
+\[
+ \frac1{\sqrt{1-\varepsilon^2}}-1
+ =\frac{\varepsilon^2}
+ {\sqrt{1-\varepsilon^2}\,(1+\sqrt{1-\varepsilon^2})}
+ \le\varepsilon^2
+\]
+得到
+\[
+ 0\le K(\varepsilon)-\frac\pi2
+ \le\frac\pi2\varepsilon^2.
+\]
+记 \(L=\log(1/\varepsilon)\)。由于
+\[
+ L-\frac\pi2m
+ =L-K(k)+m\left(K(\varepsilon)-\frac\pi2\right),
+\]
+第一项在 \([-2,1/2]\) 内，而第二项满足
+\[
+ 0\le m\left(K(\varepsilon)-\frac\pi2\right)
+ \le\varepsilon^2(L+2)
+ \le\frac1{2e}+1.
+\]
+最后一步用了 \(\varepsilon^2\log(1/\varepsilon)\le1/(2e)\) 及 \(2\varepsilon^2\le1\)。因此有具体的统一误差界
+\[
+ \left|\log\frac1\varepsilon-\frac\pi2m\right|\le2.
+\]
+这里保留了 \(K(\varepsilon)-\pi/2\) 的定量控制；仅知道它趋于0，不足以在乘上不断增大的 \(m\) 后仍声称误差有界。
+
+\ProseParagraphBreak
+
+在固定预顶点 \(0,1,\infty\) 的归一化中，另外两个有限预顶点 \(1\) 与 \(k^{-2}\) 的间隙为
+\[
+ \Delta=\frac1{k^2}-1=\frac{\varepsilon^2}{1-\varepsilon^2}.
+\]
+当 \(k\ge1/\sqrt2\) 时，\(\varepsilon^2\le\Delta\le2\varepsilon^2\)。将前式指数化便得到
+\[
+ e^{-4}e^{-\pi m}\le\Delta\le2e^4e^{-\pi m}.
+\]
+常数并不精细，但结论很明确：宽高比增大时，归一化后的两个预顶点以指数尺度靠近。因而即使矩形的边长输入仍容易辨认，求解预顶点位置也可能需要很多有效数字。对很高而窄的矩形，交换所指定的边，同时将 \(k\) 换成 \(k'\)，就把同一估计用于 \(1/m\)。这项比较针对已经固定三个点的坐标，不把可任意缩放的实轴距离当成共形不变量。
 
 \subsection{特殊函数联系}
 \label{b3:subsec:070404}
 
-不完全积分 \(\int_0^s((1-u^2)(1-k^2u^2))^{-1/2}\,\mathrm{d}u\) 在合适单连通区域上有局部全纯逆，传统上记为 Jacobi 椭圆函数 \(\operatorname{sn}\)。反射矩形边界可继续该逆函数，产生两个独立复周期；这与椭圆积分沿不同闭路的周期相对应。双周期的完整理论需要记录分歧点及解析延拓，本章只建立它来自矩形映射的几何机制。
-
-\ProseParagraphBreak
-当 \(k=0\) 时积分退化为反正弦，\(K(0)=\pi/2\)；另一个方向的边长趋于无穷，有限矩形退化成带。特殊函数的退化与区域的共形退化同时出现，而非单纯一个代数参数取值。后面的椭圆函数章节将给出周期格、亚纯延拓和加法公式，不能从本节的局部逆先行假定这些全局性质。
-
-\ProseParagraphBreak
-矩形参数可以从不需要特殊函数理论的估计开始定位。由积分表达式，对 \(0<k<1\) 有
+完全积分记录一条完整边的长度；若终点也作为变量，就得到相应的不完全积分。在 \(s=0\) 的邻域取平方根值为1，定义
 \[
- \frac\pi2\le K(k)\le\frac\pi{2\sqrt{1-k^2}}.
+ J_k(s)\coloneqq\int_0^s
+ \frac{\mathrm{d}u}{\sqrt{(1-u^2)(1-k^2u^2)}}.
 \]
-下界把分母估为至多1，上界把 \(1-k^2\sin^2\theta\) 估为至少 \(1-k^2\)。当 \(k\to1\)，在 \(\theta\) 接近 \(\pi/2\) 的区间，分母与 \(\sqrt{(1-k^2)+(\pi/2-\theta)^2}\) 可用固定常数比较，积分呈对数发散。具体地，\(\sin t\) 在小固定区间与 \(t\) 比较，所以 \(\int_0^c[(1-k^2)+t^2]^{-1/2}\,\mathrm{d}t\) 给发散下界。这同时解释长矩形为什么容易出现预顶点拥挤。
+例如在 \(|s|<1\) 内，两个因子均无零点，可取从0开始的全纯平方根，积分与路径无关。由于 \(J_k(0)=0\)、\(J_k'(0)=1\)，\cref{b3:thm:01-local-inverse}给出0附近唯一的全纯逆。它记作 \(\operatorname{sn}(w,k)\)，是\term[jacobi-tuoyuan-hanshu]{Jacobi 椭圆函数}[Jacobi elliptic function] \(\operatorname{sn}\) 在0附近的定义，并满足
+\[
+ J_k(\operatorname{sn}(w,k))=w,\quad
+ \operatorname{sn}(0,k)=0,\quad
+ \frac{\partial\operatorname{sn}}{\partial w}(0,k)=1.
+\]
+\symidx{\(\operatorname{sn}(w,k)\)：不完全椭圆积分在0附近的归一化逆函数}
+此时的定义域只是0的一个邻域，尚未赋予它全平面上的值或周期。
 
 \ProseParagraphBreak
-正方形满足 \(K(k)=K(k')\)。严格单调性给 \(k=k'\)，所以 \(k=1/\sqrt2\)。把矩形旋转90度会交换长宽，模量取倒数；参数则由 \(k\) 变为 \(k'\)。在数值求解中，先确认所指定的对边是横向还是纵向，才能判断应解 \(K(k)/K(k')\) 还是其倒数。仅画出同一个未标记矩形，不足以区分这两种四边形资料。
+
+链式法则给这一个局部逆的微分关系。若暂写 \(S(w)=\operatorname{sn}(w,k)\)，则
+\[
+ S'(w)=\sqrt{(1-S(w)^2)(1-k^2S(w)^2)},\quad
+ (S'(w))^2=(1-S(w)^2)(1-k^2S(w)^2).
+\]
+第一式的平方根在0取值1。第二式虽然省去了分支记号，却不能代替这个初值选择：仅有平方后的等式会丢掉导数的符号。又因 \(J_k'\) 为偶函数且 \(J_k(0)=0\)，\(J_k\) 为奇函数，逆函数的唯一性进一步给 \(S(-w)=-S(w)\)。
+
+\ProseParagraphBreak
+
+局部逆与矩形映射之间还隔着一次平方。对充分小且位于第一象限的 \(s\)，有 \(s^2\in\mathbb H\)，换元 \(t=u^2\) 并使用同一分支可得
+\[
+ F_k(s^2)=J_k(s).
+\]
+因此在矩形左下角附近，
+\[
+ F_k^{-1}(w)=\operatorname{sn}(w,k)^2.
+\]
+这里不能把 \(F_k^{-1}\) 直接写成 \(\operatorname{sn}\)。实际上，\(F_k^{-1}\) 在整个 \(R_k\) 内取值于上半平面，故其取值于第一象限的平方根
+\(\sqrt{F_k^{-1}(w)}\)
+把这个局部 \(\operatorname{sn}\) 继续到了矩形内部。接下来可以利用直边反射研究相邻矩形中的延拓，但反复反射时还要跟踪平方根的符号、顶点附近的延拓和可能出现的极点。由此产生周期的机制将在后面的椭圆函数理论中研究；本节不从局部逆先行假定双周期性或全平面亚纯性。
+
+\ProseParagraphBreak
+
+参数为0的退化也先从局部积分理解。令 \(k=0\)，则
+\[
+ J_0(s)=\int_0^s\frac{\mathrm{d}u}{\sqrt{1-u^2}}
+ =\arcsin s
+\]
+是0附近取值为0的反正弦分支，因而 \(\operatorname{sn}(w,0)=\sin w\) 在0附近成立。对上半平面则可直接构造
+\[
+ F_0(z)=\frac12\int_0^z\frac{\mathrm{d}t}{\sqrt{t(1-t)}}
+ =\arcsin\sqrt z,
+\]
+其中右端先在0附近的上半邻域确定，再由左端的原函数延到整个 \(\mathbb H\)。这避免了在远离0时任意选取反正弦的其他分支。
+
+\ProseParagraphBreak
+
+还应说明 \(F_0\) 确实是 \(F_k\) 的极限。对每个 \(E\Subset\mathbb H\)，因子 \((1-k^2z)^{-1/2}\) 在 \(E\) 上一致趋于1，所以 \(F_k'\to F_0'\) 局部一致。在固定路径 \(t=\mathrm{i}u\)、\(0<u\le1\) 上，积分核的模至多为 \(u^{-1/2}\)，它可积，故控制收敛给 \(F_k(\mathrm{i})\to F_0(\mathrm{i})\)。再沿从 \(\mathrm{i}\) 到 \(z\in E\) 的直线段积分：这些线段合在一个仍位于上半平面的紧集中，长度有共同上界，因此导数的局部一致收敛给出
+\[
+ F_k\longrightarrow F_0
+ \quad\text{在 }\mathbb H\text{ 的每个紧集上一致}.
+\]
+这里没有把 \(k=0\) 代入四个仍互异的预顶点资料；实际上 \(k^{-2}\) 已经逃向无穷，原来的两个顶点正在合并。
+
+\ProseParagraphBreak
+
+因为 \(K(k)\to\pi/2\)、\(K(k')\to\infty\)，并且 \(F_k(\mathbb H)=R_k\)，极限的像落在
+\(\{0\le\operatorname{Re}w\le\pi/2,\ \operatorname{Im}w\ge0\}\)
+中。\(F_0'\ne0\)，开映射定理排除等号边界，所以其像包含于半无限条带
+\[
+ S_0\coloneqq\{w\in\mathbb C:
+ 0<\operatorname{Re}w<\pi/2,\quad\operatorname{Im}w>0\}.
+\]
+要确认没有遗漏条带中的点，可以直接使用逆式。在0附近有
+\(\sin^2F_0(z)=z\)，恒等定理将它推广到整个上半平面。而对 \(w=u+\mathrm{i}v\in S_0\)，
+\[
+ \operatorname{Im}(\sin^2w)
+ =\frac12\sin(2u)\sinh(2v)>0,
+\]
+故 \(\sin^2\) 把 \(S_0\) 映入 \(\mathbb H\)。若 \(w_1,w_2\in S_0\) 且 \(\sin^2w_1=\sin^2w_2\)，恒等式
+\[
+ \sin^2w_1-\sin^2w_2
+ =\sin(w_1+w_2)\sin(w_1-w_2)
+\]
+说明 \(w_1+w_2\) 或 \(w_1-w_2\) 为 \(\pi\) 的整数倍。前者因虚部为正不可能；后者的实部在 \((-\pi/2,\pi/2)\)，只能为0。因此 \(\sin^2\) 在 \(S_0\) 单射。给定 \(w\in S_0\)，令 \(z=\sin^2w\)，则 \(F_0(z)\in S_0\) 且与 \(w\) 具有相同的平方正弦，由单射性得 \(F_0(z)=w\)。所以 \(F_0\) 恰好双全纯映到 \(S_0\)，逆映射为 \(\sin^2w\)。
+
+\ProseParagraphBreak
+
+这个极限保留了底边的两个顶点，而把上边推向无穷，因而得到的是半无限条带。对每个固定的 \(k>0\)，像仍为四边有限的矩形。局部积分的收敛、特殊函数的退化和边界预顶点的合并在这里相互吻合；全局周期如何从非退化矩形产生，则需要\chapref{b3:ch:22}建立的格与亚纯函数理论。

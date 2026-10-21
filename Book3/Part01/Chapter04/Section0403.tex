@@ -7,55 +7,182 @@
 \subsection{局部有界族}
 \label{b3:subsec:040301}
 
-设 \(\mathcal F\) 是 \(U\) 上的函数族。若对每个紧集 \(K\subset U\)，存在 \(M_K<\infty\)，使全部 \(f\in\mathcal F\) 都满足 \(\sup_K|f|\le M_K\)，则称它\term[jubu-youjie-zu]{局部有界族}[locally bounded family]。常数可依赖紧集，不能依赖族的成员。
+每个全纯函数在内部紧集上都连续有界，但这些上界可能随函数任意增大。抽取极限所需的是控制整个族的一个共同常数。
+
+\Needspace{6\baselineskip}
+\begin{definition}\label{b3:def:04-locally-bounded-family}
+设 \(U\subseteq\mathbb C\) 为开集，\(\mathcal F\) 是从 \(U\) 到 \(\mathbb C\) 的函数族。若对每个紧集 \(K\subset U\)，存在 \(M_K<\infty\)，使
+\[
+ |f(z)|\le M_K\quad(f\in\mathcal F,\ z\in K),
+\]
+则称 \(\mathcal F\) 为 \(U\) 上的\term[jubu-youjie-zu]{局部有界族}[locally bounded family]。
+\end{definition}
+
+常数可以依赖观察的紧集，不能依赖族的成员。例如 \(\{z^n:n\ge1\}\) 在单位盘上共同有界为 \(1\)，而 \(\{n:n\ge1\}\) 在任意非空集合上都没有共同界。后者每个成员仍是全纯且有界的函数，所以“每个函数有界”与“整个族共同有界”是不同的条件。
+
+\ProseParagraphBreak
+
+定义等价于一个点附近的共同控制：对每个 \(a\in U\)，存在邻域 \(V_a\) 及常数 \(M_a\)，使全部 \(f\in\mathcal F\) 在整个 \(V_a\) 上满足 \(|f|\le M_a\)。从紧集定义推出这一点，只要在 \(a\) 周围选一个内部闭圆盘即可；反过来，用有限个 \(V_a\) 覆盖给定紧集，把对应有限个 \(M_a\) 取最大，就得到紧集版本。这里一个邻域同时控制所有函数及邻域中的所有点，不能简化为只在中心点有共同界。
+
+\ProseParagraphBreak
+
+回忆等度连续的量词：对紧集 \(K\) 上的族，给定 \(\varepsilon>0\)，要选出一个 \(\delta>0\)，使任意成员 \(f\) 和任意 \(z,w\in K\) 在 \(|z-w|<\delta\) 时都满足 \(|f(z)-f(w)|<\varepsilon\)。这个 \(\delta\) 同样不能依赖成员。全纯性通过 Cauchy 导数估计把共同上界转成这样的共同连续模。
+
+\Needspace{6\baselineskip}
 \begin{lemma}\label{b3:lem:04-equicontinuity}
-全纯函数局部有界族在每个紧集上等度连续。
+设 \(U\subseteq\mathbb C\) 为开集，\(\mathcal F\) 是 \(U\) 上的全纯函数族。若对每个紧集 \(L\subset U\) 有
+\[
+ \sup_{f\in\mathcal F}\sup_{z\in L}|f(z)|<\infty,
+\]
+则 \(\mathcal F\) 在每个紧集 \(K\subset U\) 上等度连续。
 \end{lemma}
 \begin{proof}
-固定 \(K\)，取其内部紧邻域 \(K'\subset U\)，使 \(K\) 到 \(K'\) 外的距离为正。Cauchy 估计使所有成员在 \(K\) 的一个共同邻域上导数有界为 \(C_K\)。若 \(z,w\in K\) 足够接近，连接线段仍在这一邻域；端点公式给出 \(|f(z)-f(w)|\le C_K|z-w|\)。同一个常数对整个族成立，即为等度连续。
+空紧集无须讨论。对非空紧集 \(K\subset U\)，取 \(r>0\) 足够小，使
+\[
+ L=\{\zeta\in\mathbb C:\operatorname{dist}(\zeta,K)\le2r\}
+ \subset U.
+\]
+这是可能的，因为 \(K\) 与闭集 \(\mathbb C\setminus U\) 有正距离；当 \(U=\mathbb C\) 时可任取 \(r>0\)。集合 \(L\) 闭且有界，因而紧。局部有界性给出一个 \(M_L\)，控制所有成员在 \(L\) 上的模。
+
+对任意满足 \(\operatorname{dist}(\zeta,K)\le r\) 的点，闭圆盘 \(\overline{D(\zeta,r)}\) 包含于 \(L\)。\Cref{b3:thm:02-cauchy-estimate}给出
+\[
+ |f'(\zeta)|\le M_L/r\quad(f\in\mathcal F).
+\]
+若 \(z,w\in K\) 且 \(|z-w|<r\)，连接线段上的每点与 \(K\) 的距离都小于 \(r\)，所以沿该线段积分可得
+\[
+ |f(z)-f(w)|
+ \le \frac{M_L}{r}\cdot|z-w|.
+\]
+给定 \(\varepsilon>0\)，取
+\(\delta=\min\{r,\varepsilon r/(M_L+1)\}\)，便有统一的等度连续估计。
 \end{proof}
-逐点有界只给每点各自的常数，通常的连续函数族未必局部有界。例如越来越高而越来越窄的连续峰值可避开每个固定点。对全纯族，要得到 Montel 的直接判据，仍应具体验证紧集上的共同上界，而非省略这一条件。
+证明中先把 \(K\) 向外加厚，再估计导数。这样即使 \(K\) 不凸，两个邻近点的连接线段也有一个共同的可用邻域；不能仅知道 \(K\) 上的导数上界，就默认任意连接线段留在 \(K\) 中。对更高阶导数，同一方法还给出
+\[
+ \sup_{f\in\mathcal F}\sup_{z\in K}|f^{(k)}(z)|
+ \le k!r^{-k}M_L\quad(k\ge1).
+\]
+以下抽取只需一阶控制，极限得到以后，每个固定阶导数的收敛由 Weierstrass 定理自动提供。
 
 \subsection{Montel 定理}
 \label{b3:subsec:040302}
 
-\term[montel-dingli]{Montel 定理}[Montel's theorem]的基本版本如下。
+\term[montel-dingli]{Montel 定理}[Montel's theorem]的基本版本把刚才的估计转成一个共同收敛子列。证明不需要先假定函数空间中的紧性定理；我们直接在紧集上完成有限网格论证。
+\Needspace{6\baselineskip}
 \begin{theorem}[Montel，局部有界形式]\label{b3:thm:04-montel}
-区域 \(U\) 上的全纯函数局部有界族，在有限值意义下正规。
+设 \(U\subseteq\mathbb C\) 为区域，\(\mathcal F\) 是 \(U\) 上的局部有界全纯函数族。则任取序列 \(f_n\in\mathcal F\)，都能抽取在 \(U\) 上局部一致收敛至全纯函数的子列，即 \(\mathcal F\) 在有限值意义下正规。
 \end{theorem}
 \begin{proof}
-任取序列 \(f_n\)。固定紧集 \(K\)，等度连续性与共同有界性使它可抽取一致收敛子列：先在 \(K\) 选可数稠密集，对其各点的有界数列逐次抽取并取对角线，得到在稠密集上同时收敛的子列。给定误差 \(\varepsilon\)，由等度连续性选 \(\delta\)，使距离小于 \(\delta\) 时函数值差小于 \(\varepsilon/3\)。用稠密集中的有限个 \(\delta\) 球覆盖 \(K\)，在这些有限中心上使两个充分晚成员差小于 \(\varepsilon/3\)，三角不等式便使全 \(K\) 上差小于 \(\varepsilon\)。故子列在一致范数中为 Cauchy，极限连续。
+任取 \(f_n\in\mathcal F\)。先固定一个非空紧集 \(K\subset U\)，证明在 \(K\) 上可抽取一致收敛子列。对每个正整数 \(m\)，紧性给出 \(K\) 的有限 \(1/m\) 网：可以选有限个 \(K\) 中的点，使相应半径 \(1/m\) 的圆盘覆盖 \(K\)。把所有网点并在一起得到一个至多可数的稠密集 \(D=\{a_1,a_2,\ldots\}\)；若 \(D\) 有限，下面只需有限次抽取。
 
-现在对穷尽紧集 \(K_1,K_2,\ldots\) 重复抽取并取对角线，得到 \(U\) 上局部一致极限。前面的有限中心论证给出每个紧集上的一致性，穷尽抽取给出同一条子列。最后由 Weierstrass 定理，极限全纯。
+由于 \(|f_n(a_1)|\le M_K\)，复平面中的有界数列有收敛子列。再从这个子列中选出在 \(a_2\) 处也收敛的子列，依次进行，并按上一节的办法取对角线。把所得子列记为 \(g_\nu\)。对每个固定的网点 \(a_j\)，数列 \(g_\nu(a_j)\) 都收敛。
+
+接着把稠密点上的收敛提升为整个 \(K\) 上的一致收敛。给定 \(\varepsilon>0\)，由\cref{b3:lem:04-equicontinuity}选 \(\delta>0\)，使任意成员在距离小于 \(\delta\) 的两点之间变化小于 \(\varepsilon/3\)。稠密性和紧性允许选有限个网点 \(a_{j_1},\ldots,a_{j_s}\)，使它们的 \(\delta\) 圆盘覆盖 \(K\)。这些中心上的数列均收敛，所以存在 \(N\)，使 \(\nu,\mu\ge N\) 时
+\[
+ |g_\nu(a_{j_l})-g_\mu(a_{j_l})|<\varepsilon/3
+ \quad(1\le l\le s).
+\]
+对任意 \(z\in K\)，选一个距离小于 \(\delta\) 的中心 \(a_{j_l}\)，于是
+\[
+ \begin{aligned}
+ |g_\nu(z)-g_\mu(z)|
+ &\le |g_\nu(z)-g_\nu(a_{j_l})|\\
+ &\quad+|g_\nu(a_{j_l})-g_\mu(a_{j_l})|
+       +|g_\mu(a_{j_l})-g_\mu(z)|\\
+ &<\varepsilon.
+ \end{aligned}
+\]
+因此 \((g_\nu)\) 在一致范数中是 Cauchy 列。对每个 \(z\)，复数域的完备性给出极限 \(g(z)\)；在最后的不等式中令 \(\mu\to\infty\)，就得到整个 \(K\) 上的一致误差界。极限在 \(K\) 上连续，且有限。
+
+现在取 \(U\) 的递增紧集穷尽 \(K_1,K_2,\ldots\)。对原序列在 \(K_1\) 上作刚才的抽取，再对所取子列在 \(K_2\) 上抽取，依次进行。第二次对角线得到在所有 \(K_j\) 上一致收敛的同一条子列。各极限在重叠处一致，拼成 \(U\) 上的有限函数 \(f\)；每个内部紧集最终包含于某个 \(K_j\)，故收敛局部一致。最后由\cref{b3:thm:04-weierstrass}，\(f\) 全纯。
 \end{proof}
-例如归一化单叶映射 \(f:U\rightarrow\mathbb D\) 的族共同有界为1，因此可以抽取局部一致极限。极限是否仍单叶、是否退化为常数，则由下一节处理，而不是 Montel 定理本身保证。
+两次对角线承担不同的任务：第一次在一个紧集的稠密点上取得共同子列，再用等度连续性控制其余点；第二次把一个紧集扩展到整个开集。稠密点上的逐点收敛本身没有给出函数的一致收敛，有限网点的三角估计补上的正是这一步。
+
+\ProseParagraphBreak
+
+例如所有全纯映射 \(f:U\to\mathbb D\) 都满足共同界 \(1\)，因此是有限值正规族。这里不必事先要求单叶；若极值问题只取其中满足单叶性及某种归一化的子族，仍然正规，因为任意成员序列也是原族中的序列。Montel 只保证极限存在并全纯，极限是否仍在所选子族中，要由下一节的零点稳定性及约束来判断。
+
+\ProseParagraphBreak
+
+共同点值上界也可由平均大小推出。设全纯函数族满足：对每个闭圆盘 \(\overline{D(a,R)}\subset U\)，存在 \(C_{a,R}\)，使
+\[
+ \int_{D(a,R)}|f(z)|^2\,\mathrm{d}A(z)\le C_{a,R}
+ \quad(f\in\mathcal F),
+\]
+其中 \(\mathrm dA\) 为平面面积。固定这样的圆盘，对 \(z\in D(a,R/2)\) 及 \(0<t<R/2\)，圆周 Cauchy 公式和 Cauchy--Schwarz 不等式给出
+\[
+ |f(z)|^2
+ \le\frac1{2\pi}\int_0^{2\pi}|f(z+te^{\mathrm{i}\theta})|^2\,\mathrm d\theta.
+\]
+乘以 \(2\pi t\)，再从 \(0\) 积到 \(R/2\)，极坐标积分给出
+\[
+ \pi(R/2)^2|f(z)|^2
+ \le\int_{D(z,R/2)}|f(\zeta)|^2\,\mathrm dA(\zeta)
+ \le C_{a,R}.
+\]
+所以较小圆盘上的共同界为 \(2\sqrt{C_{a,R}}/(\sqrt\pi R)\)。每点附近都有这种界，有限覆盖便给出紧集共同界，Montel 定理于是适用。这个例子说明可积的平均控制也能通过解析性转化为逐点控制。
 
 \ProseParagraphBreak
 
 有限值正规性也反过来迫使局部有界。
+\Needspace{6\baselineskip}
 \begin{proposition}\label{b3:prop:04-normal-bounded-equivalence}
-区域上的全纯函数族在有限值意义下正规，当且仅当局部有界。
+设 \(U\subseteq\mathbb C\) 为区域，\(\mathcal F\) 是 \(U\) 上的全纯函数族。则 \(\mathcal F\) 在有限值意义下正规，当且仅当它在 \(U\) 上局部有界。
 \end{proposition}
 \begin{proof}
-充分性是 Montel 定理。反之，若某个紧集 \(K\) 上没有共同上界，选择 \(f_n\) 与 \(z_n\in K\)，使 \(|f_n(z_n)|\ge n\)。紧性给 \(z_n\) 的收敛子列，正规性又给相应函数的局部一致子子列有限极限 \(f\)。在 \(K\) 上一致收敛使这条子列最终共同有界为 \(1+\max_K|f|\)，与原来的增长下界矛盾。
+局部有界推出正规是 Montel 定理。反过来，假设 \(\mathcal F\) 正规却不是局部有界，则存在紧集 \(K\subset U\)，使 \(\sup_{f\in\mathcal F}\sup_K|f|=\infty\)。对每个正整数 \(n\)，可选 \(f_n\in\mathcal F\) 和 \(z_n\in K\)，满足 \(|f_n(z_n)|>n\)。
+
+正规性给出局部一致收敛子列 \(f_{n_k}\to f\)，其中 \(f\) 全纯。因 \(f\) 在 \(K\) 上连续有界，充分大的 \(k\) 满足
+\[
+ |f_{n_k}(z_{n_k})|
+ \le \sup_K|f_{n_k}-f|+\max_K|f|
+ \le 1+\max_K|f|.
+\]
+这与左端大于 \(n_k\to\infty\) 矛盾。此处不必再抽取点列：整个 \(K\) 上的一致误差已经直接控制了移动点 \(z_{n_k}\)。
 \end{proof}
 该等价是有限值版本的结论。常值族 \(\{n:n\ge1\}\) 在球面意义正规，却不局部有界，所以不能把“有限值”三个字默默删除。教材采用哪一种定义，决定了可使用的判据强弱。
 
 \ProseParagraphBreak
 
-若一个族只在每点附近都有某个共同上界，则对每个紧集用有限子覆盖把这些上界取最大，得到紧集共同上界。这样的“局部有界”与定义中的紧集版本等价，但与“逐点有界”不同：前者同一个邻域控制全族，后者每点的界没有给邻域信息。实际核对时应辨认量词是“存在邻域，对所有函数与所有邻域点”还是“对每点，存在该点的数值上界”。
+这个等价也解释了局部性。只要每个点附近都能验证族的共同上界，便可在那些邻域抽取极限，再由\cref{b3:prop:04-normal-locality}拼成全域正规性。实际使用时通常先直接估计函数；只有共同上界不易得到而子列结构已知时，才反过来使用必要性。
 
 \subsection{省略值形式}
 \label{b3:subsec:040303}
 
-若全纯函数族的值全部避开一个固定圆盘 \(D(a,\varepsilon)\)，则倒数族 \(1/(f-a)\) 全纯且有界为 \(1/\varepsilon\)，因此有局部一致收敛子列。倒数极限若不恒零，取回后得到球面亚纯极限；若恒零，原函数球面趋于无穷。这说明“省略一个有内部的集合”已经给出球面正规性。
+所谓共同省略一个值，指每个成员在整个定义域都不取到该值。若省略的集合还含一个固定圆盘，就能直接化为已证明的有界情形。
+
+\Needspace{6\baselineskip}
+\begin{proposition}\label{b3:prop:04-omitted-disk}
+设 \(U\subseteq\mathbb C\) 为区域，\(a\in\mathbb C\)、\(\varepsilon>0\)，\(\mathcal F\) 是 \(U\) 上的全纯函数族。若
+\[
+ |f(z)-a|\ge\varepsilon
+ \quad(f\in\mathcal F,\ z\in U),
+\]
+则 \(\mathcal F\) 在球面意义下正规。
+\end{proposition}
+\begin{proof}
+任取 \(f_n\in\mathcal F\)，令 \(q_n=1/(f_n-a)\)。这些函数全纯且共同有界为 \(1/\varepsilon\)，Montel 定理给出一个局部一致收敛子列，仍记为 \(q_n\to q\)，其中 \(q\) 全纯。
+
+定义扩充平面上的映射
+\[
+ T(w)=a+\frac1w,\quad T(0)=\infty,\quad T(\infty)=a.
+\]
+它是球面的连续映射：倒数的连续性已由等距性质得到，平移在有限点连续，在无穷远也因 \(|z+a|\to\infty\) 而连续。紧球面上的连续映射一致连续。因此普通局部一致收敛 \(q_n\to q\) 先给球面局部一致收敛，再在复合 \(T\) 后保持这种收敛，得到
+\[
+ f_n=T\circ q_n\longrightarrow T\circ q
+\]
+球面局部一致。由\cref{b3:prop:04-spherical-limit}，极限是亚纯函数或恒为 \(\infty\)，故原族球面正规；由于成员全纯，\cref{b3:cor:04-holomorphic-spherical-limit}进一步排除了非恒常的带极点极限。
+\end{proof}
+
+若 \(q\equiv0\)，上述极限就是 \(\infty\)；若 \(q\) 不恒零，它的零点原本可能在倒数中形成极点，但全纯成员的球面极限结论排除了这种可能。因而非零的 \(q\) 在整个区域无零，取回得到有限全纯极限。这一分情况说明，倒数坐标既能保留有限极限，也能记录函数整体逃向无穷远。
 
 \ProseParagraphBreak
 
-更强的经典结论是：全纯函数族共同省略两个不同有限值时球面正规；亚纯函数族共同省略球面上三个不同值时球面正规。两个点没有面积，也不提供上述固定圆盘分离，因此不能用同一个倒数有界论证证明。其完整推导放在\secref{b3:sec:1403}，由三穿孔球面的负曲率控制实现；这里的 Riemann 映照极值法只需已经证明的局部有界版本。
+更强的经典结论将在\cref{b3:thm:14-montel-omitted}建立：同一区域上的全纯函数族若共同省略两个固定的不同有限复值，则球面正规；亚纯函数族若共同省略三个固定的不同球面值，也球面正规。全纯函数本来就不取 \(\infty\)，因此这两种表述对应相同的三个球面省略值。
 
 \ProseParagraphBreak
 
-省略值数量是有意义的。整函数族 \(e^{nz}\) 始终省略0，却在包含0且跨越实轴两侧的圆盘上不球面正规：正实点模趋于无穷，负实点趋于0，任何球面一致极限都不连续。共同省略一个有限值不能直接推出全纯族正规。
+省略一个圆盘提供了 \(|f-a|\ge\varepsilon\) 的正距离，省略有限个点只给 \(|f-a|>0\)，其下界可以随成员和自变量一起趋于零，所以刚才的倒数有界证明不够。\secref{b3:sec:1403}将通过球面导数、重缩放及三穿孔球面的覆盖结构建立强版本；这里仅说明其位置，不把它当成本章或下一章的前置。Riemann 映照定理的极值构造使用的是已经完整证明的局部有界 Montel 定理。
 
-正规性是关于整个函数族的子列性质，不是每个成员单独有界。族 \(\{nz:n\ge1\}\) 的每个成员在每个紧盘上有界，但族没有共同界，在任何含0的盘都不有限正规。反之 \(\{z^n:n\ge1\}\) 在单位盘局部共同有界，虽然在闭单位盘并不趋于0。估计中的量词顺序应为“每个紧集存在一个控制全部成员的常数”，而非“每个成员存在自己的常数”。
+\ProseParagraphBreak
+
+省略值的数量不能随意减少。整函数族 \(e^{nz}\) 始终省略 \(0\)，却在含 \(0\) 的圆盘上不球面正规：原点值固定为 \(1\)，正实点沿任意指标趋于无穷的子列都趋于 \(\infty\)，与连续极限矛盾。其在半平面上的行为留作习题。球面正规性容许常数逃向无穷，却仍要求每个内部紧集上有同一个连续极限；共同省略一个有限值本身没有排除这里的失效方式。

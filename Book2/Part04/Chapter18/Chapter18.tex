@@ -1,452 +1,238 @@
 % !TeX root = ../../Book2.tex
-\chapter{奇异积分与 Calderón–Zygmund 理论}
-\label{b2:ch:18}
-\BookChapterNumber{b2:ch:18}
+\chapter{椭圆正则性}
+\label{b2:ch:16}
+\BookChapterNumber{b2:ch:16}
+% 本章摘要（不计入编号）
 \begin{chapterabstract}
-若卷积核在原点附近像距离的负维数次幂那样增长，取绝对值后的积分通常发散，Young 不等式便不能直接使用。然而，核的正负部分可能相互抵消，使对称截断仍有极限。本章从 Hilbert 变换的具体计算出发，说明怎样把这种抵消转化为范数估计：先将输入分成有界的好部与零平均的坏块，再把坏块的零平均移到核的差分上。由此得到弱端点、中间指数的有界性与主值实现，最后用于共轭调和函数和椭圆方程的二阶导数估计。
+本章研究能量弱解何时具有更高正则性。差商方法在不预设二阶导数的前提下，建立 Lipschitz 系数方程的内部 \(H^2\) 估计；逐项控制求导误差后，得到高阶 Sobolev 正则性和光滑数据的内部光滑性。边界部分通过平坦化、切向差商和方程恢复法向导数，证明 \(C^{1,1}\) 区域上的 Dirichlet 二阶估计。最后仅用有界可测系数建立 Caccioppoli 不等式及截断迭代的局部有界性，并说明 Harnack 比较的完整线性证明如何在附录 H 补齐，随后推出 Hölder 连续性。
 \end{chapterabstract}
 
-\begin{learninggoals}\begin{itemize}
-\item\label{b2:item:18-goal-1}计算 Hilbert 变换的主值与 Fourier 符号，区分平方范数有界和点态极限。
-\item\label{b2:item:18-goal-2}构造 Calderón--Zygmund 分解，说明坏块的零平均怎样改善远场衰减。
-\item\label{b2:item:18-goal-3}核对标准核的大小、光滑性及离支集表示，并辨认平方有界性这一独立假设。
-\item\label{b2:item:18-goal-4}完成弱型、插值、伴随与极大截断的论证，把稠密类上的主值传给一般输入。
-\item\label{b2:item:18-goal-5}用 Riesz 变换描述 Poisson 共轭结构、频率投影与椭圆二阶估计。
-\end{itemize}\end{learninggoals}
+% 本章目标（不计入编号）
+\begin{learninggoals}
+\begin{itemize}
+\item\label{b2:item:16-goal-difference}使用离散分部积分和一致差商界构造二阶弱导数，指出系数导数的作用。
+\item\label{b2:item:16-goal-bootstrap}逐步核验微分后右端的空间，结合 Sobolev 嵌入判断经典正则性。
+\item\label{b2:item:16-goal-boundary}理解边界平坦化、切向估计及纯法向恢复，并用凹角反例检验全局结论。
+\item\label{b2:item:16-goal-low}在可测系数下证明局部能量界和有界性，区分本章已证结论与附录 H 补齐的 Harnack 比较证明。
+\end{itemize}
+\end{learninggoals}
 
-对区间示性函数作 Hilbert 变换，答案是一个对数。输入有界且可积，输出却在区间端点无界，并在无穷远只按倒数衰减。另一方面，它的 Fourier 符号模长为一，平方范数完全保持。同一个算子为什么能够同时具有这些性质？要回答这个问题，必须分清两个作用：绝对值估计控制大小，正负抵消则能消去绝对值估计中最危险的部分。
-
-\ProseParagraphBreak
-
-\chapref{b2:ch:17}已经准备了三件工具。二进微分定理让局部平均反映函数值，极大立方体分解把大平均的位置收集起来，Marcinkiewicz 插值则把弱端点与平方有界性接成中间的强型估计。本章调用它们时仍会写出所需版本及输入条件。Fourier 部分沿用\secref{b2:sec:0401}的 Plancherel 延拓，归一化固定为 \(e^{-2\pi\mathrm i x\cdot\xi}\)；涉及分布时，只使用\chapref{b2:ch:05}中的测试函数配对、分布导数和 Fourier 变换。除\subsecref{b2:subsec:180502}的周期比较外，底空间均为带 Lebesgue 测度的 \(\mathbb R^d\)。
+上一章的弱解可以没有经典二阶导数，但方程并非只是一条约束：它还把不同方向和不同尺度的变化联系起来。若系数变化受控，差商误差可以吸收，解便得到新的弱导数；若系数只是可测，导数提升可能失败，标量解的高值集合却仍受能量限制。本章分别建立这两类估计，避免把“椭圆正则性”当作无条件的光滑性口号。
 
 \ProseParagraphBreak
 
-首次阅读可先沿 Hilbert 变换、好坏分解、标准核、弱型证明这一顺序走到\subsecref{b2:subsec:180403}。这样先看清一个具体核怎样进入一般定理。随后读极大截断与主值传递，再到\secref{b2:sec:1805}看 Riesz 变换的实现和应用。向量值估计与 BMO 端点解释的是同一方法怎样服务于后续章节，可以在掌握标量证明后回读；它们不作为本章标量 \(L^p\) 有界性的前提。
-
-\ProseParagraphBreak
-
-进一步阅读可参考 Elias M. Stein 的《Singular Integrals and Differentiability Properties of Functions》\cite{Stein1970Singular}与 Loukas Grafakos 的《Classical Fourier Analysis》\cite{Grafakos2014Classical}。前者适合继续理解核抵消与微分性质的联系，后者可用于扩展奇异积分、乘子与函数空间的背景。本章采用的标准核版本在正文中证明，较弱核条件下的进一步结论另行说明出处和适用范围。
+本章普通主线承接\chapref{b2:ch:15}的测试等式，使用第一卷第二十四章的 Sobolev 与 Poincaré 不等式。系统参考可读 Lawrence C. Evans 的《Partial Differential Equations》\cite{Evans2010Partial}以及 David Gilbarg 与 Neil S. Trudinger 的《Elliptic Partial Differential Equations of Second Order》\cite{Gilbarg2001Elliptic}。下面对差商、边界 \(H^2\) 与局部有界性给出完整证明；末节先给可测系数 Harnack 比较的证明概要，完整的线性比较证明及其所需指数尾见附录 H、C；不把此处略去的步骤隐藏在“标准估计”中。
 
 \input{Part04/Chapter18/Section1801}
 \input{Part04/Chapter18/Section1802}
 \input{Part04/Chapter18/Section1803}
 \input{Part04/Chapter18/Section1804}
 \input{Part04/Chapter18/Section1805}
-
+% 本章小结（不计入编号）
 \begin{chaptersummary}
-Calderón--Zygmund 分解在每个坏立方体上保留平均值，把剩余部分变成零平均函数。远离这个立方体时，核可以减去中心值；核差分比核本身多衰减一个正幂次，于是坏部的远场可以绝对积分。好部由平方估计控制，坏区由体积估计控制，这三项合起来得到弱 \((1,1)\)。再经插值与伴随，标准 Calderón--Zygmund 算子在全部 \(1<p<\infty\) 上有兼容的延拓。
+内部高阶正则性从一个与步长无关的差商估计开始。系数的 Lipschitz 控制保证通量差商的误差有界，而更高系数导数保证自举时产生的右端仍在所需空间。Sobolev 嵌入再把积分意义的导数转成经典代表，其指数门槛依赖维数。边界估计还消耗坐标图的正则性；凹角例子说明内部光滑不自动带来全局 \(H^2\)。
 
 \ProseParagraphBreak
 
-使用这一结论时，还要分别核对核条件、\(L^2\) 有界性和截断实现。离支集核并不决定算子在对角线上的作用，\(L^p\) 范数延拓也不自动等于逐点主值。极大截断提供统一的误差控制，具体核在光滑稠密类上的收敛提供起点，两者结合才把主值传给一般输入。Hilbert 与 Riesz 变换满足这些条件，它们的零阶 Fourier 符号又把共轭调和结构和二阶椭圆估计连接起来。区域问题仍须经过截断和局部化，所得估计中的低阶项不能在没有额外条件时删去。
+仅有界可测系数时，Caccioppoli 不等式仍然成立。截断迭代把高值集合的能量与测度联系起来，完整给出齐次标量弱解的局部有界性。Harnack 比较进一步控制振荡，但需要另行建立超解的正性传播；从比较到 Hölder 衰减的推论则可直接迭代得到。至此，变分存在性、弱型可解性与正则性三项任务已各有明确的假设和证明。
 \end{chaptersummary}
+
+比较本编与后面的估计时，可以固定一个实标量 Dirichlet 问题，再逐项查看增加了什么条件、换来了什么结论。\cref{b2:tab:16-dirichlet-levels}中的各行保留自己的空间和假设，并不是把所有条件一并加到同一个定理上。
+
+\begin{table}[htbp]
+\centering
+\small
+\caption[椭圆 Dirichlet 问题的各层结论]{椭圆 Dirichlet 问题的表示、存在性与正则性}
+\label{b2:tab:16-dirichlet-levels}
+\begin{tabularx}{\textwidth}{@{}p{0.16\textwidth}XX@{}}
+\toprule
+所处阶段 & 已得到什么 & 应保留什么条件或限制 \\
+\midrule
+\chapref{b2:ch:13} & 球、半空间等模型的 Green 表示与 Poisson 公式。 & 表示一个已有解，与证明一般区域上存在解，是不同任务；核、数据及边界取值须满足对应公式的条件。 \\
+\chapref{b2:ch:14} & 在给定仿射边界类中极小化凸能量。 & 二次能量使用 \(H_0^1\)、合法的边界延拓及 \(H^{-1}\) 源项；非二次能量另核增长、自反性及弱下半连续性。 \\
+\chapref{b2:ch:15} & 强制双线性型的弱解存在、唯一及能量估计。 & 系数有界可测且一致椭圆，源项及测试处于相应对偶空间；不要求系数对称，但不能省去强制性或边界类。 \\
+\chapref{b2:ch:16}光滑系数部分 & Lipschitz 系数给内部 \(H^2\)；满足边界条件时进一步给全局 \(H^2\)。 & 内部只考察紧含子域；全局另用有界 \(C^{1,1}\) 区域、\(L^2\) 源项，非齐次边界须有 \(g\in H^2\) 且 \(\operatorname{Tr}u=\operatorname{Tr}g\)。凹角会破坏全局结论。 \\
+\chapref{b2:ch:16}及附录 H.1 & 对相应齐次实标量方程作 Harnack 比较并得局部 Hölder 性。 & 比较用于非负弱解和有界可测的一致椭圆系数；不依赖系数可微性，也不给出同样的二阶导数结论。 \\
+\chapref{b2:ch:18}、\chapref{b2:ch:22} & 全空间常系数二阶导数的 \(L^p\) 控制，以及局部化、冻结系数的步骤。 & \(1<p<\infty\)；齐次导数估计不自动控制整个非齐次 \(W^{2,p}\) 范数。边界、变系数误差及自举起点仍须另核。 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+同一个 \(H^1\) 弱解可以在内部光滑，却因粗糙边界数据或区域凹角而不在全局 \(H^2\)。反过来，对只是可测的系数，Harnack 理论给出的正性与振荡控制，也不是差商高阶理论的简写。\secref{b2:sec:1805}与\secref{b2:sec:2203}将把二阶导数估计放到奇异积分、乘子的框架中；它们增加的是可积指数的分析工具，不撤销已有的边界与系数条件。
+
 
 \BookExercises
 
+各题均为本书自拟。题目分别改变尺度、系数、数据与边界，检验不同正则性结论的边界；有界解的 Liouville 选做题使用本章明示、附录 H 证明的 Harnack 比较。连续边值题综合变分、弱形式与边界数据，说明内部光滑不等于全局二阶正则；最后的选做题训练边界坐标与通量恢复的具体计算。
 
-% 自拟：由区间模型精算分布函数与弱范数，训练端点的定量判断。
+% 自拟：差商平移约定与离散能量恒等式。
 \Needspace{6\baselineskip}
-\begin{exercise}\label{b2:ex:18-new-1}
-在带 Lebesgue 测度的 \(\mathbb R\) 上，令
-\[
- h=H\mathbf1_{(0,1)},\quad
- h(x)=\frac1\pi\log\left|\frac{x}{x-1}\right|\quad(x\ne0,1),
-\]
-并在两个端点任意补有限值。对 \(t>0\)，求出 \(\{|h|>t\}\) 的区间组成，证明其分布函数与弱 \(L^1\) 准范数分别为
-\[
- d_h(t)=\frac2{\sinh(\pi t)},
- \quad \|h\|_{L^{1,\infty}}
-       \coloneqq\sup_{t>0}t\cdot d_h(t)=\frac2\pi.
-\]
-分别解释 \(t\downarrow0\) 和 \(t\uparrow\infty\) 的分布行为，并据此判断 \(h\) 的有限指数可积性。
+\begin{exercise}\label{b2:ex:16-discrete-energy}
+设 \(d\ge1\)、\(1\le k\le d\)，\(u\in H^1(\mathbb R^d;\mathbb R)\)，\(D_h^ku(x)=[u(x+he_k)-u(x)]/h\)。证明当非零实数 \(h\to0\) 时 \(D_h^ku\to\partial_ku\) 于 \(L^2\)，并证明
+\[\int_{\mathbb R^d}u(-D_{-h}^kD_h^ku)=\lVert D_h^ku\rVert_2^2.\]
+说明为何差商测试中使用负的 \(D_{-h}^k\)。
 \end{exercise}
 \begin{solution}
-固定 \(t>0\)，记 \(q=e^{\pi t}>1\)。条件 \(|h(x)|>t\) 等价于
-\[
- \left|\frac{x}{x-1}\right|<q^{-1}
- \quad\text{或}\quad
- \left|\frac{x}{x-1}\right|>q.
-\]
-在 \(x<0\) 上，比值的绝对值为 \(-x/(1-x)<1\)，第一项不等式给出
-\(-1/(q-1)<x<0\)。在 \(0<x<1\) 上，比值为 \(x/(1-x)\)，两项分别给出
-\(0<x<1/(q+1)\) 和 \(q/(q+1)<x<1\)。在 \(x>1\) 上，比值为 \(x/(x-1)>1\)，第二项给出
-\(1<x<q/(q-1)\)。因此，忽略有限多个点后，超水平集就是
-\[
- \left(-\frac1{q-1},\frac1{q+1}\right)
- \ \cup\
- \left(\frac q{q+1},\frac q{q-1}\right).
-\]
-两段长度之和为
-\[
- d_h(t)=2\left(\frac1{q-1}+\frac1{q+1}\right)
-       =\frac{4q}{q^2-1}=\frac2{\sinh(\pi t)}.
-\]
-由 \(\sinh s\geq s\)（\(s>0\)），有 \(t\cdot d_h(t)\leq2/\pi\)；又由
-\(\sinh s/s\to1\)（\(s\downarrow0\)），这个上界在极限中达到。所以弱范数等于 \(2/\pi\)，其上确界无需在某个正高度取到。
-
-更具体地，低高度时 \(d_h(t)\sim2/(\pi t)\)，记录的是远处 \(1/x\) 尾部占据的长区间；高高度时 \(d_h(t)\sim4e^{-\pi t}\)，记录的是两个对数奇点附近迅速缩小的区域。用分布函数恒等式
-\[
- \|h\|_p^p=p\int_0^\infty t^{p-1}\cdot d_h(t)\,\mathrm dt
- \quad(0<p<\infty),
-\]
-无穷端因指数衰减总可积，零端则等价于 \(\int_0^1t^{p-2}\,\mathrm dt\)。故恰在 \(p>1\) 时 \(h\in L^p\)，在 \(0<p\leq1\) 时不属于 \(L^p\)。此外高高度的分布函数始终为正，故 \(h\notin L^\infty\)。
+对光滑紧支集函数，线段积分公式和导数的平移连续性给出强收敛。一般 \(u\) 先取 \(H^1\) 光滑逼近，利用差商统一界 \(\lVert D_h^k(u-v)\rVert_2\le\lVert\partial_k(u-v)\rVert_2\)，三角不等式把结论推广。恒等式由离散分部积分得到：\(\int u(-D_{-h}^kw)=\int(D_h^ku)w\)，取 \(w=D_h^ku\) 即可。若漏掉负号，主项就成为负的平方范数，无法使用椭圆正性吸收误差。
 \end{solution}
 
-% 自拟：将 Hilbert 变换的代数恒等式与正负频率结合，判断可逆性及精确平方范数。
+% 自拟：系数Lipschitz但不具二阶正则性的明确反例。
 \Needspace{6\baselineskip}
-\begin{exercise}\label{b2:ex:18-new-2}
-设 \(1<p<\infty\)，\(a,b\in\mathbb C\)，\(H\) 取本章兼容的 \(L^p(\mathbb R;\mathbb C)\) 延拓。证明 \(A=aI+bH\) 为可逆有界算子，当且仅当 \(a^2+b^2\ne0\)，并在可逆时求其逆。再在 \(L^2\) 上证明
-\[
- \|A\|_{2\to2}=\max\{|a-\mathrm ib|,|a+\mathrm ib|\},
- \quad
- \|A^{-1}\|_{2\to2}
- =\frac1{\min\{|a-\mathrm ib|,|a+\mathrm ib|\}}.
-\]
-必要性与范数下界须给出实际输入，不能只在一个频率点上检验符号。
+\begin{exercise}\label{b2:ex:16-lipschitz-not-h3}
+在 \((-1,1)\) 上令 \(u(x)=\int_0^x(1+|t|)^{-1}\,\mathrm dt\)。证明 \(-((1+|x|)u')'=0\) 弱成立，\(u\in H^2(-1,1)\)，但 \(u\notin H^3(-1,1)\)。
 \end{exercise}
 \begin{solution}
-先将正文的平方恒等式传到所用空间。在 \(L^2\) 中已有 \(H^2=-I\)。对 \(\varphi\in\mathcal S\)，其 \(L^2\) 与 \(L^p\) 实现相容，且 \(H\varphi\in L^2\cap L^p\)，所以该恒等式也在 \(L^p\) 中成立。对一般 \(f\in L^p\)，取 \(\varphi_n\in\mathcal S\) 在 \(L^p\) 中逼近；两次使用 \(H\) 的有界性，就得到 \(H^2f=-f\)。因此
-\[
- (aI+bH)(aI-bH)=(aI-bH)(aI+bH)=(a^2+b^2)I.
-\]
-若 \(a^2+b^2\ne0\)，则
-\[
- A^{-1}=\frac{aI-bH}{a^2+b^2}
-\]
-是所需的有界双侧逆。
-
-由于 \(a^2+b^2=(a-\mathrm ib)(a+\mathrm ib)\)，退化时至少有一个因子为零。取非零 \(\psi_+\in C_c^\infty\bigl((1,2)\bigr)\)，令 \(f_+=\mathcal F^{-1}\psi_+\in\mathcal S\)。其频率全为正，故
-\(Hf_+=-\mathrm if_+\)，从而 \(Af_+=(a-\mathrm ib)f_+\)。同样取非零频率测试函数支撑于 \((-2,-1)\)，得到 \(f_-\in\mathcal S\) 且
-\(Af_-=(a+\mathrm ib)f_-\)。每个 Schwartz 函数都属于当前的 \(L^p\)，所以任一因子为零都使 \(A\) 有非零核，不能可逆。
-
-在 \(L^2\) 中，Plancherel 给出
-\[
- \|Af\|_2^2
- =|a-\mathrm ib|^2\int_{\xi>0}|\widehat f(\xi)|^2\,\mathrm d\xi
-  +|a+\mathrm ib|^2\int_{\xi<0}|\widehat f(\xi)|^2\,\mathrm d\xi.
-\]
-这给出最大值所对应的上界，而选取 \(f_+\) 或 \(f_-\) 就得到相应下界。可逆时，逆算子在两个半轴上的符号分别为
-\((a-\mathrm ib)^{-1}\) 和 \((a+\mathrm ib)^{-1}\)，用同样的输入得到其精确范数。正、负半轴都是正测度集，所以这些范数由真正的 \(L^2\) 函数实现。
+通量恒为 \(1\)，故与任意测试函数导数的积分为零。\(u'=(1+|x|)^{-1}\) 连续且 Lipschitz，其弱导数在两侧分别为 \((1-x)^{-2}\)（\(x<0\)）与 \(-(1+x)^{-2}\)（\(x>0\)），有界，故 \(u\in H^2\)。\(u''\) 从 \(1\) 跳到 \(-1\)，第三分布导数包含 \(-2\delta_0\)，不能属于 \(L^2\)。这说明右端光滑不足以越过系数正则性的限制。
 \end{solution}
 
-% 自拟：区分算子范数最优与非零函数能否取等，训练频率集中构造。
+% 自拟：全空间常系数二阶估计的Fourier核验。
 \Needspace{6\baselineskip}
-\begin{exercise}\label{b2:ex:18-new-3}
-设整数 \(d\geq2\)、\(1\leq j\leq d\)，\(R_j\) 为乘子
-\(-\mathrm i\xi_j/|\xi|\) 定义的 \(L^2(\mathbb R^d;\mathbb C)\) Riesz 变换。证明
-\(\|R_j\|_{2\to2}=1\)，但每个非零 \(f\in L^2\) 都满足
-\(\|R_jf\|_2<\|f\|_2\)。构造范数为一的 Schwartz 函数族，使其输出范数趋于一。
+\begin{exercise}\label{b2:ex:16-fourier-h2}
+设 \(f\in L^2(\mathbb R^d)\)。用本卷的 \(2\pi\) Fourier 约定求 \((I-\Delta)u=f\) 的唯一 \(L^2\) 分布解，并证明 \(u\in H^2\)、\(\lVert u\rVert_{H^2}\le C_d\lVert f\rVert_2\)。
 \end{exercise}
 \begin{solution}
-由 Plancherel，
-\[
- \|f\|_2^2-\|R_jf\|_2^2
- =\int_{\mathbb R^d}
-   \frac{\sum_{k\ne j}\xi_k^2}{|\xi|^2}
-       \cdot|\widehat f(\xi)|^2\,\mathrm d\xi\geq0.
-\]
-权重只在第 \(j\) 条坐标轴上为零，原点处的补值不影响积分。由于 \(d\geq2\)，这条轴的 \(d\) 维 Lebesgue 测度为零。若 \(f\ne0\)，则 \(|\widehat f|>0\) 的集合有正测度，故上式严格为正。特别地，范数等式不能由某个非零输入取到。
-
-为逼近上界，记 \(e_j\) 为第 \(j\) 个单位坐标向量，取非零
-\(\psi\in C_c^\infty\bigl(B(0,1)\bigr)\)。对 \(0<\varepsilon<1/2\)，定义
-\[
- \widehat f_\varepsilon(\xi)
- =\frac{\varepsilon^{-d/2}}{\|\psi\|_2}
-       \cdot\psi\left(\frac{\xi-e_j}{\varepsilon}\right).
-\]
-该函数光滑且紧支撑，所以 \(f_\varepsilon\in\mathcal S\)；换元给出
-\(\|f_\varepsilon\|_2=1\)。在其频率支集上，\(\xi_j\geq1-\varepsilon\)、\(|\xi|\leq1+\varepsilon\)，所以
-\[
- \left(\frac{1-\varepsilon}{1+\varepsilon}\right)^2
- \leq\|R_jf_\varepsilon\|_2^2\leq1.
-\]
-令 \(\varepsilon\downarrow0\)，输出范数便趋于一。这说明最优算子范数可以由集中族逼近，即使没有任何非零取等函数。维数条件也有实质作用：在一维，\(R_1=H\) 在全部 \(L^2\) 上等距。
+定义 \(\widehat u(\xi)=\widehat f(\xi)/(1+4\pi^2|\xi|^2)\)。该函数属于 \(L^2\)，Plancherel 给出 \(u\)，且乘子恒等式验证分布方程。对 \(|\alpha|\le2\)，函数 \((2\pi i\xi)^\alpha/(1+4\pi^2|\xi|^2)\) 有界，故弱导数 \(D^\alpha u\in L^2\)，并有相应范数界；对有限个指标求和得到估计。若另一 \(L^2\) 解存在，差的 Fourier 变换被严格正的 \(1+4\pi^2|\xi|^2\) 乘后为零，故差为零。
 \end{solution}
 
-% 自拟：将坏块零平均推广到有限阶矩消失，并用有限差分构造精确阶数。
+% 自拟：L2右端在高维不足以保证局部有界。
 \Needspace{6\baselineskip}
-\begin{exercise}\label{b2:ex:18-new-4}
-设 \(m\geq0\) 为整数、\(R>0\)，\(b\in L^1(\mathbb R;\mathbb C)\) 在 \([-R,R]\) 外几乎处处为零。定义
-\[
- \mu_\ell\coloneqq\int_{\mathbb R}y^\ell\cdot b(y)\,\mathrm dy
- \quad(0\leq\ell\leq m),
-\]
-并假设 \(\mu_\ell=0\) 对 \(0\leq\ell<m\) 成立。当 \(m=0\) 时这一组消失条件为空。此题只在支集外定义普通绝对积分
-\[
- Hb(x)\coloneqq\frac1\pi\int_{\mathbb R}\frac{b(y)}{x-y}\,\mathrm dy
- \quad(|x|>R),
-\]
-不预设一般 \(L^1\) 输入在支集内的主值。证明当 \(|x|>2R\) 时，
-\[
- \left|Hb(x)-\frac{\mu_m}{\pi x^{m+1}}\right|
- \leq\frac{2R^{m+1}}{\pi|x|^{m+2}}\|b\|_1.
-\]
-再对
-\[
- b_m(y)=\sum_{k=0}^m(-1)^k\binom mk\cdot\mathbf1_{(k,k+1)}(y)
-\]
-证明前 \(m\) 个矩为零，而 \(\mu_m=(-1)^m m!\)，从而该尾部阶数可以实际出现。
+\begin{exercise}\label{b2:ex:16-l2-unbounded}
+在 \(\mathbb R^5\) 中取 \(\chi\in C_c^\infty(B_1)\)，在原点附近为 \(1\)，令 \(u(x)=\chi(x)|x|^{-1/4}\)。证明 \(u\in H_0^1(B_1)\)、\(-\Delta u\in L^2(B_1)\)，但 \(u\) 无界。解释为何这不违反本章局部有界性定理。
 \end{exercise}
 \begin{solution}
-紧支集保证每个所用的矩都绝对收敛。在 \(|x|>2R\)、\(|y|\leq R\) 时，有限几何展开给出恒等式
-\[
- \frac1{x-y}=\sum_{\ell=0}^m\frac{y^\ell}{x^{\ell+1}}
-                  +\frac{y^{m+1}}{x^{m+1}(x-y)}.
-\]
-乘 \(b(y)\) 积分，前 \(m\) 项因矩条件消失。余项中
-\(|x-y|\geq|x|/2\)，故
-\[
- \begin{aligned}
- \left|Hb(x)-\frac{\mu_m}{\pi x^{m+1}}\right|
- &\leq\frac2{\pi|x|^{m+2}}
-             \int|y|^{m+1}\cdot|b(y)|\,\mathrm dy\\
- &\leq\frac{2R^{m+1}}{\pi|x|^{m+2}}\|b\|_1.
- \end{aligned}
-\]
-估计对正、负两侧的 \(x\) 都成立，首项的符号保留在 \(x^{m+1}\) 中。
-
-对给定的 \(b_m\)，它支撑于 \([0,m+1]\)，因而属于 \(L^1\)。将每个区间换元为 \(y=z+k\)，得到
-\[
- \int y^\ell\cdot b_m(y)\,\mathrm dy
- =\int_0^1\sum_{k=0}^m(-1)^k\binom mk(z+k)^\ell\,\mathrm dz.
-\]
-记前向差分为 \(\Delta P(z)=P(z+1)-P(z)\)。反复展开可得
-\[
- \Delta^mP(z)=\sum_{k=0}^m(-1)^{m-k}\binom mk\cdot P(z+k).
-\]
-差分每次将多项式次数降低一，且把最高次系数乘以原来的次数。因此对 \(P(z)=z^\ell\)，\(\ell<m\) 时 \(\Delta^mP=0\)，\(\ell=m\) 时 \(\Delta^mP=m!\)。上面的矩积分于是分别为零和 \((-1)^m m!\)；\(m=0\) 时同样得到 \(\mu_0=1\)。由于第 \(m\) 个矩非零，所得尾部的首项确为 \(x^{-(m+1)}\) 阶，而非仅有一个可能不尖锐的上界。
+原点附近 \(|u|\) 量级为 \(r^{-1/4}\)，梯度量级为 \(r^{-5/4}\)；乘上五维体积因子 \(r^4\) 后，两者平方均可积。截去一个小球并平滑，误差的 \(H^1\) 范数趋零，故紧支集函数 \(u\) 属于 \(H_0^1\)。由 \(\Delta r^\alpha=\alpha(\alpha+3)r^{\alpha-2}\)，主奇性为 \(r^{-9/4}\)，其平方积分近零为 \(\int r^{-1/2}\,\mathrm dr<\infty\)。小球边界通量及测试函数误差趋零，故无额外点质量。于是 \(-\Delta u\in L^2\)，但 \(u\to\infty\)。局部有界性定理讨论齐次方程，此例右端非零；高维中 \(L^2\) 源项不足以支持同一结论。
 \end{solution}
 
-% 自拟：从离支集局部性识别对角线自由度，补足零核乘法例子的结构解释。
+% 自拟：角点指数与Sobolev阈值。
 \Needspace{6\baselineskip}
-\begin{exercise}\label{b2:ex:18-new-5}
-设整数 \(d\geq1\)，\(T_1,T_2\) 是 \(L^2(\mathbb R^d;\mathbb C)\) 上的有界复线性算子。设可测核 \(K\) 在 \(x\ne y\) 上满足
-\(|K(x,y)|\leq A|x-y|^{-d}\)，其中 \(A<\infty\)；并且对每个紧集 \(F\) 与每个在 \(F\) 外几乎处处为零的 \(f\in L^2\)，有
-\[
- T_1f(x)=T_2f(x)=\int_FK(x,y)\cdot f(y)\,\mathrm dy
- \quad\text{对几乎处处的 }x\notin F.
-\]
-证明差算子 \(S=T_1-T_2\) 必为乘法算子：存在唯一的 \(a\in L^\infty(\mathbb R^d)\) 等价类，使
-\[
- Sf=a\cdot f\quad(f\in L^2),
- \quad\|S\|_{2\to2}=\|a\|_\infty.
-\]
-证明中须从紧支集输入出发，解释为什么 \(S\) 对任意可测集合都保持支撑，而不能只对开集作形式判断。
+\begin{exercise}\label{b2:ex:16-corner-threshold}
+设 \(0<\omega<2\pi\)，\(\alpha=\pi/\omega\)，\(v=r^\alpha\sin(\alpha\theta)\) 定义在平面扇形。对 \(\alpha\ne1\)，求它在角点附近属于 \(W^{2,p}\)、\(1\le p<\infty\) 的准确条件，并单独解释 \(\alpha=1\) 的情形。
 \end{exercise}
 \begin{solution}
-若 \(f\) 支撑于紧集 \(F\)，共同核表示相减便知 \(Sf=0\) 在 \(F\) 外几乎处处成立。先把这个局部性推广到任意 Lebesgue 可测集 \(E\)。设 \(f\in L^2\) 在 \(E\) 外几乎处处为零，选定有限值可测代表，并令
-\[
- E_n=E\cap B(0,n)\cap\{|f|\leq n\}.
-\]
-这些集合递增且覆盖 \(f\) 的非零部分，至多相差零测集。由有限测度集合的内正则性，选紧集 \(K_n\subset E_n\)，使
-\(|E_n\setminus K_n|<n^{-4}\)。令 \(f_n=f\cdot\mathbf1_{K_n}\)，则
-\[
- \|f-f_n\|_2^2
- \leq\int_{E\setminus E_n}|f|^2+n^2|E_n\setminus K_n|
- \leq\int_{E\setminus E_n}|f|^2+n^{-2}\longrightarrow0.
-\]
-每个 \(Sf_n\) 都在 \(K_n\subset E\) 外为零，且 \(Sf_n\to Sf\) 于 \(L^2\)。乘以 \(\mathbf1_{E^c}\) 是有界算子，故极限 \(Sf\) 也在 \(E\) 外为零。这里不要求 \(K_n\) 递增。
-
-对任意 \(f\in L^2\)，将它分成 \(\mathbf1_E\cdot f\) 与 \(\mathbf1_{E^c}\cdot f\)，两部分的输出分别留在 \(E\) 与 \(E^c\)。因此
-\[
- S(\mathbf1_E\cdot f)=\mathbf1_E\cdot Sf.
-\]
-现在令 \(D_n=(-n,n)^d\)、\(a_n=S\mathbf1_{D_n}\)。当 \(m<n\) 时，
-\[
- \mathbf1_{D_m}\cdot a_n
- =S(\mathbf1_{D_m}\cdot\mathbf1_{D_n})
- =S\mathbf1_{D_m}=a_m.
-\]
-取去掉可数个零测例外集的共同满测集，这些函数就在各 \(D_n\) 上相容，可以拼成一个可测函数 \(a\)，满足 \(a=a_n\) 于 \(D_n\)。对每个可测 \(E\subset D_n\)，又有
-\[
- S\mathbf1_E=\mathbf1_E\cdot a,
- \quad\|a\cdot\mathbf1_E\|_2
-      \leq\|S\|_{2\to2}\cdot|E|^{1/2}.
-\]
-若 \(\{|a|>\|S\|_{2\to2}+\varepsilon\}\cap D_n\) 有正测度，以上式中的 \(E\) 取为此集合，平方后就与 \(L^2\) 积分下界矛盾。因此对每个 \(n\) 和 \(\varepsilon>0\)，该集合测度为零，得到 \(\|a\|_\infty\leq\|S\|_{2\to2}\)。
-
-由线性，\(Sf=a\cdot f\) 对支撑在某个 \(D_n\) 内的简单函数成立。这样的简单函数在 \(L^2\) 中稠密：先截去空间远尾和过高幅度，再将有界的复值范围作有限网格近似。两边均为有界算子，故等式推广到全部 \(L^2\)。反向不等式
-\(\|S\|_{2\to2}=\|M_a\|_{2\to2}\leq\|a\|_\infty\)
-来自直接积分，于是范数相等。若另一个 \(\widetilde a\) 给出相同乘法算子，作用于各 \(\mathbf1_{D_n}\) 即得 \(a=\widetilde a\) 几乎处处，证明唯一性。可见离支集核所遗漏的，恰好是这样的有界乘法项。
+若 \(\alpha\ne1\)，二阶导数的平方和在角向上有非零有界因子，径向量级为 \(r^{\alpha-2}\)。因此二阶导数的 \(p\) 次积分有限恰当且仅当 \(p(\alpha-2)+1>-1\)，即 \(p(2-\alpha)<2\)。此条件也保证较低阶项可积；等号时对数发散。若 \(\alpha\ge2\)，该严格不等式对一切有限 \(p\) 自动成立。\(\alpha=1\) 时 \(v=r\sin\theta=y\) 是线性函数，二阶导数恒零，不能用只看形式幂次的阈值排除它。
 \end{solution}
 
-% 自拟：组合方向乘子得到向量投影，连接奇异积分与无散条件。
+% 自拟：迭代引理的显式小量阈值。
 \Needspace{6\baselineskip}
-\begin{exercise}\label{b2:ex:18-new-6}
-设整数 \(d\geq2\)、\(1<p<\infty\)，\(R_j\) 取本章兼容的 \(L^p(\mathbb R^d;\mathbb C)\) Riesz 变换。对向量函数 \(F=(F_1,\ldots,F_d)\in L^p(\mathbb R^d;\mathbb C^d)\)，定义
-\[
- (\mathbb PF)_i=F_i+\sum_{j=1}^dR_iR_jF_j
- \quad(1\leq i\leq d),
-\]
-其中向量范数采用逐点欧氏范数。证明 \(\mathbb P\) 在该向量值 \(L^p\) 空间上有界，\(\mathbb P^2=\mathbb P\)，且
-\(\operatorname{div}(\mathbb PF)=0\) 于分布意义；对每个 \(\varphi\in\mathcal S(\mathbb R^d)\)，还有 \(\mathbb P\nabla\varphi=0\)。再证明在 \(p=2\) 时，\(\mathbb P\) 是到闭子空间
-\[
- \mathcal V=\{F\in L^2(\mathbb R^d;\mathbb C^d):
-                         \operatorname{div}F=0\text{ 于分布意义}\}
-\]
-的正交投影，且 \(\|\mathbb P\|_{2\to2}=1\)。
+\begin{exercise}\label{b2:ex:16-iteration-lemma}
+设非负实数列 \((Y_n)_{n\ge0}\) 满足 \(Y_{n+1}\le Ab^nY_n^{1+\delta}\)，其中 \(A>0\)、\(b>1\)、\(\delta>0\)。证明当 \(Y_0\le A^{-1/\delta}b^{-1/\delta^2}\) 时，\(Y_n\le A^{-1/\delta}b^{-n/\delta-1/\delta^2}\)。说明仅知道 \(Y_0<1\) 为何不总够用。
 \end{exercise}
 \begin{solution}
-先看有界性。每个分量的 \(L^p\) 范数不超过 \(\|F\|_{L^p(\mathbb C^d)}\)，且 \(R_i,R_j\) 均为有界 \(L^p\) 算子。有限次使用三角不等式，例如
-\[
- \begin{aligned}
- \|\mathbb PF\|_{L^p(\mathbb C^d)}
- &\leq\sum_{i=1}^d\|(\mathbb PF)_i\|_p\\
- &\leq\sum_i\|F_i\|_p
-   +\sum_{i,j}\|R_i\|_{p\to p}\cdot\|R_j\|_{p\to p}\cdot\|F_j\|_p\\
- &\leq C_{d,p}\|F\|_{L^p(\mathbb C^d)},
- \end{aligned}
-\]
-就给出足够的界，不要求这个常数最优。
-
-在 \(L^2\) 中，\(R_iR_j\) 的符号为 \(-\xi_i\xi_j/|\xi|^2\)，所以 \(\mathbb P\) 的矩阵符号是
-\[
- P(\xi)=I-\frac{\xi\xi^{\mathsf T}}{|\xi|^2}
- \quad(\xi\ne0).
-\]
-它是到 \(\xi^\perp\subset\mathbb C^d\) 的欧氏正交投影，因此
-\(P(\xi)^2=P(\xi)=P(\xi)^*\)、\(\xi^{\mathsf T}P(\xi)=0\)，且矩阵范数不超过一。Plancherel 把这些等式传给 \(\mathbb P\)，得到幂等性、自伴性、平方范数上界及无散性。
-
-还须识别投影的像。对 \(F\in L^2\)，分布恒等式 \(\operatorname{div}F=0\) 等价于
-\(\xi\cdot\widehat F(\xi)=0\) 几乎处处：Fourier 变换将散度化为 \(2\pi\mathrm i\xi\cdot\widehat F\)，后者局部可积，一个局部可积函数给出零分布当且仅当它几乎处处为零。这样的 \(F\) 满足 \(P(\xi)\widehat F=\widehat F\)，即 \(\mathbb PF=F\)。而任意输出已经无散，所以像恰为 \(\mathcal V\)。若一列无散向量在 \(L^2\) 中收敛，与每个紧支集光滑测试函数的梯度配对都收敛，极限仍无散，故 \(\mathcal V\) 闭。结合自伴与幂等，得到所述正交投影。
-
-范数确实为一，而不只是至多一。取 \(\psi\in C_c^\infty(\mathbb R^d)\)，使
-\((\partial_1\psi,\partial_2\psi)\) 不恒为零，并令
-\[
- G=(\partial_2\psi,-\partial_1\psi,0,\ldots,0).
-\]
-混合偏导相等使 \(\operatorname{div}G=0\)，且 \(G\ne0\)，故 \(\mathbb PG=G\) 给出下界一。另一方面，\(\widehat{\nabla\varphi}=2\pi\mathrm i\xi\cdot\widehat\varphi\) 沿 \(\xi\) 方向，矩阵 \(P(\xi)\) 将其消去，所以 \(\mathbb P\nabla\varphi=0\) 在 \(L^2\) 中成立。
-
-最后处理一般 \(p\)。对 Schwartz 向量，上述等式先在 \(L^2\) 成立；它和其中的 \(\mathbb P\) 输出均属于 \(L^2\cap L^p\)，各个 Riesz 变换的相容性使幂等式也在 \(L^p\) 中成立。取 Schwartz 向量在 \(L^p\) 中逼近任意 \(F\)，利用有界性即可传递 \(\mathbb P^2=\mathbb P\)。对每个紧支集光滑测试函数，其梯度属于 \(L^{p'}\)，所以输出的无散分布等式也能在该极限中传递。梯度消去公式同样由相容性成立。这里的正交性与范数一专指 \(p=2\)，未对其他指数作相同断言。
+初始步正是给定条件。若第 \(n\) 步成立，代入递推式得到 \(A\) 的幂为 \(1-(1+\delta)/\delta=-1/\delta\)，\(b\) 的幂为 \(n-(1+\delta)n/\delta-(1+\delta)/\delta^2=-(n+1)/\delta-1/\delta^2\)，故归纳闭合。特别地序列趋零。小量阈值依赖 \(A,b,\delta\)；若 \(A\) 很大，某个接近 \(1\) 的初值即使小于 \(1\)，第一次递推也可能增大，所以必须通过选择截断高度或归一化满足定量阈值。
 \end{solution}
 
-% 自拟：把热核积分、预解方程与二阶 Riesz 乘子连接，并区分有质量与零质量估计。
+% 自拟：全空间平方可积齐次解的消失。
 \Needspace{6\baselineskip}
-\begin{exercise}\label{b2:ex:18-new-7}
-设整数 \(d\geq1\)、\(1<p<\infty\)、\(\lambda>0\)，\(f\in L^p(\mathbb R^d;\mathbb C)\)。令
-\[
- H_t(x)=(4\pi t)^{-d/2}e^{-|x|^2/(4t)},
- \quad u_\lambda=\int_0^\infty e^{-\lambda t}\cdot(H_t*f)\,\mathrm dt,
-\]
-时间积分按 \(L^p\) 范数中的积分理解。证明它收敛，且
-\[
- (\lambda-\Delta)u_\lambda=f\text{ 于分布意义},
- \quad\|u_\lambda\|_p\leq\lambda^{-1}\|f\|_p.
-\]
-先对 \(f\in\mathcal S\) 求出 \(\widehat u_\lambda\) 并证明 \(u_\lambda\in\mathcal S\)，再由
-\[
- \partial_i\partial_ju_\lambda
- =R_iR_j(f-\lambda u_\lambda)
-\]
-证明全部二阶分布导数属于 \(L^p\)，且
-\[
- \sum_{i,j=1}^d\|\partial_i\partial_ju_\lambda\|_p
- \leq C_{d,p}\|f\|_p,
-\]
-其中常数与 \(\lambda>0\) 无关。最后用缩放说明不存在对所有 \(u\in C_c^\infty(\mathbb R^d)\) 都成立的统一估计
-\(\|u\|_p\leq C\|\Delta u\|_p\)。
+\begin{exercise}\label{b2:ex:16-l2-liouville}
+设 \(d\ge2\)，\(A\in L^\infty(\mathbb R^d;\mathbb R^{d\times d})\)，对几乎处处 \(x\) 和全部 \(\xi\in\mathbb R^d\) 有 \(|A(x)\xi|\le\Lambda|\xi|\)、\(\xi^{\mathsf T}A(x)\xi\ge\lambda|\xi|^2\)，其中 \(0<\lambda\le\Lambda<\infty\) 不随 \(x\) 变化。若实函数 \(u\in H_{\mathrm{loc}}^1(\mathbb R^d)\cap L^2(\mathbb R^d)\) 弱解 \(-\operatorname{div}(A\nabla u)=0\)，不用系数可微性，证明 \(u=0\) 几乎处处。
 \end{exercise}
 \begin{solution}
-先核对时间积分的连续性。固定 \(t_0>0\)，当 \(t_0/2\leq t\leq2t_0\) 时，热核的显式公式给出共同可积控制 \(C_{d,t_0}e^{-|x|^2/(8t_0)}\)。支配收敛说明 \(\|H_t-H_{t_0}\|_1\to0\)，Young 不等式因而给出
-\[
- \|H_t*f-H_{t_0}*f\|_p
- \leq\|H_t-H_{t_0}\|_1\cdot\|f\|_p\longrightarrow0.
-\]
-零时的 \(L^p\) 连续性由\cref{b2:thm:12-heat-convolution}给出。热核非负且积分为一，Young 不等式还给出
-\[
- \|H_t*f\|_p\leq\|f\|_p,
- \quad\int_0^\infty e^{-\lambda t}\|H_t*f\|_p\,\mathrm dt
-                  \leq\lambda^{-1}\|f\|_p.
-\]
-因而可先在紧时间区间内积分，再放开两端，得到收敛的 \(L^p\) 值积分及所求零阶界。特别地，\(f\mapsto u_\lambda\) 是范数不超过 \(\lambda^{-1}\) 的线性算子。
-
-若 \(f\in\mathcal S\)，还可在 \(L^1\) 中作同一积分，因为
-\(\int_0^\infty e^{-\lambda t}\|H_t*f\|_1\,\mathrm dt<\infty\)。Fubini 因而允许先取 Fourier 变换，得到
-\[
- \widehat u_\lambda(\xi)
- =\int_0^\infty e^{-t(\lambda+4\pi^2|\xi|^2)}
-                 \cdot\widehat f(\xi)\,\mathrm dt
- =\frac{\widehat f(\xi)}{\lambda+4\pi^2|\xi|^2}.
-\]
-分母严格为正，其倒数是光滑函数，各阶导数至多作多项式增长，所以乘上 Schwartz 函数仍为 Schwartz 函数。Fourier 反变换说明 \(u_\lambda\in\mathcal S\)，并立即给出
-\((\lambda-\Delta)u_\lambda=f\)。
-
-记 \(g=f-\lambda u_\lambda\)。由刚求出的公式，
-\[
- \widehat g(\xi)=\frac{4\pi^2|\xi|^2}{\lambda+4\pi^2|\xi|^2}
-                       \cdot\widehat f(\xi).
-\]
-两个 Riesz 符号相乘为 \(-\xi_i\xi_j/|\xi|^2\)，故
-\[
- \widehat{R_iR_jg}(\xi)
- =-\frac{4\pi^2\xi_i\xi_j}{\lambda+4\pi^2|\xi|^2}
-                       \cdot\widehat f(\xi)
- =\widehat{\partial_i\partial_ju_\lambda}(\xi).
-\]
-零频处任意补值不影响等式。使用 \(R_iR_j\) 的 \(L^p\) 有界性与零阶界，有
-\[
- \begin{aligned}
- \sum_{i,j}\|\partial_i\partial_ju_\lambda\|_p
- &\leq C_{d,p}\|f-\lambda u_\lambda\|_p\\
- &\leq C_{d,p}(\|f\|_p+\lambda\|u_\lambda\|_p)
- \leq2C_{d,p}\|f\|_p.
- \end{aligned}
-\]
-吸收因子二即可得到与 \(\lambda\) 无关的常数。
-
-对一般 \(f\in L^p\)，取 \(f_n\in\mathcal S\) 在 \(L^p\) 中逼近。零阶界使对应的 \(u_{\lambda,n}\to u_\lambda\) 于 \(L^p\)，而
-\(R_iR_j(f_n-\lambda u_{\lambda,n})\)
-也在 \(L^p\) 中收敛到 \(R_iR_j(f-\lambda u_\lambda)\)。对任意 \(\varphi\in C_c^\infty\)，Hölder 不等式保证
-\[
- \int u_{\lambda,n}\cdot\partial_i\partial_j\varphi
- \longrightarrow\int u_\lambda\cdot\partial_i\partial_j\varphi.
-\]
-所以二阶分布导数的极限正是 \(\partial_i\partial_ju_\lambda\)，并由上述 \(L^p\) 极限表示。对方程作同样的测试配对，得到其分布版本；范数估计也随 \(L^p\) 收敛传递。
-
-零质量参数不能提供同样的零阶控制。固定非零 \(\phi\in C_c^\infty\)，使 \(\Delta\phi\ne0\)，令 \(v_R(x)=\phi(x/R)\)、\(R>0\)。换元给出
-\[
- \|v_R\|_p=R^{d/p}\|\phi\|_p,
- \quad\|\Delta v_R\|_p=R^{d/p-2}\|\Delta\phi\|_p.
-\]
-若存在所述统一常数，则 \(R^2\|\phi\|_p\leq C\|\Delta\phi\|_p\) 对所有 \(R\) 成立，与 \(R\uparrow\infty\) 矛盾。二阶估计中相同的缩放因子可以相消，零阶估计却不能，这解释了 \(\lambda>0\) 在前一估计中的作用。
+对任意中心和半径 \(R\)，局部有界性给出 \(\operatorname*{ess\,sup}_{B_{R/2}}|u|\le C_dR^{-d/2}\lVert u\rVert_{L^2(\mathbb R^d)}\)。固定任意有限球并使 \(R\to\infty\)，右端趋零，因此该有限球内 \(u=0\) 几乎处处。用可数个球覆盖全空间即可。这里全局共同的椭圆常数保证估计中的 \(C_d\) 不随半径增长。
 \end{solution}
 
-% 自拟：用光滑乘法系数的差消去对角线奇性，比较差核的逐点极限与平方范数极限。
+% 自拟：深层Harnack输入推出有界解的Liouville性质。
 \Needspace{6\baselineskip}
-\begin{exercise}\label{b2:ex:18-new-8}
-设 \(d\geq1\) 为整数，\(T\) 是 \(\mathbb R^d\) 上\cref{b2:thm:18-cz-operator-definition}的标准 Calder\'on--Zygmund 算子，核为 \(K\)。另设硬截断
+\begin{optionalexercise}\label{b2:ex:16-bounded-liouville}
+设 \(d\ge2\)，\(A\in L^\infty(\mathbb R^d;\mathbb R^{d\times d})\)，对几乎处处 \(x\) 和全部 \(\xi\in\mathbb R^d\) 有 \(|A(x)\xi|\le\Lambda|\xi|\)、\(\xi^{\mathsf T}A(x)\xi\ge\lambda|\xi|^2\)，其中 \(0<\lambda\le\Lambda<\infty\) 为固定常数。若实函数 \(u\in H_{\mathrm{loc}}^1(\mathbb R^d)\cap L^\infty(\mathbb R^d)\) 弱解 \(-\operatorname{div}(A\nabla u)=0\)，使用本章的深层 Harnack 结论证明 \(u\) 为常数。明确指出本题比平方可积解的 Liouville 题多用了哪项输入。
+\end{optionalexercise}
+\begin{solution}
+由正文的振荡收缩，存在与球无关的 \(0<\vartheta<1\)，使 \(\operatorname*{ess\,osc}_{B_R}u\le\vartheta^n\operatorname*{ess\,osc}_{B_{2^nR}}u\le2\vartheta^n\lVert u\rVert_\infty\)。令 \(n\to\infty\)，每个球内本性振荡为零。重叠球的常数相同，故全空间几乎处处为同一常数；取 Hölder 代表即处处为常数。本题使用 Harnack 导出的振荡收缩，上一题只用已经完整证明的局部上界与全局 \(L^2\) 衰减。
+\end{solution}
+
+% 自拟：综合圆周正交展开、凸 Dirichlet 能量、弱形式及内部/边界正则性的区别；光滑域上的障碍来自边界数据。
+\Needspace{6\baselineskip}
+\begin{exercise}[连续边值与二阶正则性的限制]\label{b2:ex:16-rough-trace-energy}
+在单位圆盘 \(D=\{x\in\mathbb R^2:|x|<1\}\) 上取实函数空间。令
 \[
- T_\epsilon g(x)=\int_{|x-y|>\epsilon}K(x,y)\cdot g(y)\,\mathrm dy
+ g(\theta)=\sum_{n=1}^\infty n^{-3/2}\cos(n\theta),\qquad
+ u(r,\theta)=\sum_{n=1}^\infty n^{-3/2}r^n\cos(n\theta),\quad 0\leq r<1.
 \]
-对每个 \(g\in C_c^\infty(\mathbb R^d;\mathbb C)\)，当 \(\epsilon\downarrow0\) 时在 \(L^2\) 中趋于 \(Tg\)。给定 \(a,f\in C_c^\infty(\mathbb R^d;\mathbb C)\)，令 \(C_af=a\cdot Tf-T(a\cdot f)\)。证明
-\[
- C_af(x)=\int_{\mathbb R^d}\bigl(a(x)-a(y)\bigr)\cdot K(x,y)\cdot f(y)\,\mathrm dy
-\]
-几乎处处成立，且右端对每个 \(x\) 都绝对收敛；解释乘法系数的差如何改善对角线附近的奇性。再证明对每个 \(1<p<\infty\)，有
-\[
- \|C_af\|_p\leq2\|a\|_\infty\cdot\|T\|_{L^p\to L^p}\cdot\|f\|_p.
-\]
-这里 \(T\) 的 \(L^p\) 实现取\cref{b2:thm:18-cz-lp}的兼容延拓，不预先假定 \(T_\epsilon f\) 单独几乎处处收敛。
+在原点按上述各调和多项式的值定义 \(u(0)=0\)。
+\begin{enumerate}
+\item\label{b2:item:16-trace-energy-class}证明 \(g\) 连续、\(u\in H^1(D)\cap C(\overline D)\)，且 \(u\) 的 Sobolev 迹等于 \(g\)。计算 \(\int_D|\nabla u|^2\)。
+\item\label{b2:item:16-trace-energy-minimum}证明 \(u\) 是凸能量 \(E(v)=\frac12\int_D|\nabla v|^2\) 在仿射类 \(u+H_0^1(D)\) 中的唯一极小元，并写出对全部 \(H_0^1(D)\) 测试函数成立的弱方程。
+\item\label{b2:item:16-trace-energy-regularity}证明 \(u\) 在圆盘内部光滑，但 \(u\notin H^2(D)\)。解释这为何不与光滑区域上的全局 Dirichlet 二阶正则性矛盾。
+\end{enumerate}
 \end{exercise}
 \begin{solution}
-设核的大小常数为 \(A\)，\(a\) 的全局 Lipschitz 常数为 \(L_a\)。当 \(|x-y|<1\) 时，
+因为 \(\sum_n n^{-3/2}<\infty\)，两级数分别在圆周和闭圆盘上一致绝对收敛；\(r^n\cos(n\theta)\) 是 \(\operatorname{Re}(x_1+\mathrm ix_2)^n\)，故不存在原点的坐标奇性。于是 \(u\) 连续到边界，边界值为 \(g\)。记其前 \(N\) 项为 \(u_N\)。圆周正交性和极坐标积分给出
 \[
- \Bigl|\bigl(a(x)-a(y)\bigr)\cdot K(x,y)\cdot f(y)\Bigr|
- \leq A L_a\|f\|_\infty\cdot|x-y|^{1-d}.
+ \|u_N\|_{L^2(D)}^2
+ =\frac\pi2\sum_{n=1}^N\frac{n^{-3}}{n+1},\qquad
+ \|\nabla u_N\|_{L^2(D)}^2
+ =\pi\sum_{n=1}^N n^{-2}.
 \]
-这在单位球上可积，径向积分为 \(\int_0^1\mathrm dr\)；系数之差提供的 \(|x-y|\) 消去了一阶奇性。在 \(|x-y|\geq1\) 时，绝对积分不超过 \(2A\|a\|_\infty\cdot\|f\|_1\)。因此对每个 \(x\)，差核的全积分绝对收敛，并且
-\[
- a(x)\cdot T_\epsilon f(x)-T_\epsilon(a\cdot f)(x)
- =\int_{|x-y|>\epsilon}\bigl(a(x)-a(y)\bigr)\cdot K(x,y)\cdot f(y)\,\mathrm dy
-\]
-随 \(\epsilon\downarrow0\) 趋于该积分。另一方面，\(f,a\cdot f\in C_c^\infty\)，题设的 \(L^2\) 收敛及乘法算子的有界性使左端在 \(L^2\) 中趋于 \(a\cdot Tf-T(a\cdot f)\)。从任意趋零截断序列中抽取一个 \(L^2\) 收敛的逐点子列，就把后者与已存在的全参数差核极限识别，得到所求几乎处处等式。这一步只比较两项之差，没有预设两项各自的逐点极限。
+将相同计算用于两个部分和的差，得到 \(H^1\) Cauchy 性。其 \(L^2\) 极限与一致极限相同，所以 \(u\in H^1(D)\)，且
+\(\int_D|\nabla u|^2=\pi\sum_{n=1}^\infty n^{-2}\)。圆盘是光滑有界区域，\subsecref{b2:subsec:150103}所用的迹算子在 \(H^1\to L^2(\partial D)\) 间连续；\(u_N\to u\) 于 \(H^1\)，而边界部分和一致趋于 \(g\)，因此 \(\operatorname{Tr}u=g\)。该小节的零迹刻画还说明，\(u+H_0^1(D)\) 恰是全部具有这一 Sobolev 迹的 \(H^1\) 函数。
 
-最后利用 \(T\) 的 \(L^p\) 有界性及 \(L^2\)、\(L^p\) 实现的相容性，
+每个 \(u_N\) 都调和，因而对 \(\varphi\in C_c^\infty(D)\)，有 \(\int_D\nabla u_N\cdot\nabla\varphi=0\)。由 \(H^1\) 收敛取极限，再由 \(C_c^\infty(D)\) 在 \(H_0^1(D)\) 中的稠密性，得到
 \[
- \|a\cdot Tf-T(a\cdot f)\|_p
- \leq\|a\|_\infty\cdot\|Tf\|_p+\|T(a\cdot f)\|_p
- \leq2\|a\|_\infty\cdot\|T\|_{L^p\to L^p}\cdot\|f\|_p.
+ \int_D\nabla u\cdot\nabla w=0\qquad(w\in H_0^1(D)).
 \]
-绝对积分表示使用了 \(a\) 的 Lipschitz 正则性，而这个范数估计只用其有界性，两项结论的假设作用不同。
+所以对每个允许扰动 \(w\)，
+\[
+ E(u+w)=E(u)+\int_D\nabla u\cdot\nabla w
+                 +\frac12\|\nabla w\|_2^2
+ =E(u)+\frac12\|\nabla w\|_2^2.
+\]
+这既证明极小性，也由 \(H_0^1\) 上的 Poincaré 不等式证明唯一性：取等要求 \(\nabla w=0\)，从而 \(w=0\)。弱方程、固定迹的变分问题和凸性在这里分别负责识别候选者、限定允许扰动与判断唯一极小。
+
+在任意 \(r\leq R<1\) 上，固定阶导数的级数由 \(\sum_n n^M R^{n-M}\) 的尾部控制，故 \(u\) 内部光滑且逐点调和。这也符合\cref{b2:cor:16-smooth-interior}：单位系数和零右端都光滑，且 \(u\) 已是能量弱解。可是对 \(0<R<1\)，仍由正交性，
+\[
+ \int_{|x|<R}|\partial_{rr}u|^2\,\mathrm dx
+ =\frac\pi2\sum_{n=2}^\infty\frac{n-1}{n}R^{2n-2}.
+\]
+令 \(R\uparrow1\)，非负级数的极限为无穷。若 \(u\in H^2(D)\)，则几乎处处 \(x\ne0\) 有 \(\partial_{rr}u=e_r^{\mathsf T}D^2u\,e_r\)，其中 \(e_r=x/|x|\)，其平方积分应受 Hessian 的平方积分控制，矛盾。圆盘本身光滑，失败来自边界数据。\cref{b2:thm:16-boundary-h2}要求零 Dirichlet 迹，而此处 \(g\ne0\)；非齐次版本\cref{b2:cor:16-nonhomogeneous-boundary-h2}另要求有 \(H^2\) 的边界提升，不能仅凭边值连续就套用。事实上，若这样的提升存在，该推论就会迫使 \(u\in H^2(D)\)，与上述计算矛盾。
+\end{solution}
+
+% 自拟：二维图像坐标下计算几何系数，以通量恢复纯法向导数；不承担正文证明依赖。
+\Needspace{8\baselineskip}
+\begin{optionalexercise}[边界平坦化与法向通量]\label{b2:ex:16-flattening-flux}
+设实函数 \(\psi\in C^{1,1}([-2,2])\)，记 \(M=\|\psi'\|_\infty\)，并令
+\[
+ Q=(-2,2)\times(0,2),\quad Q_1=(-1,1)\times(0,1),\qquad
+ F(s,t)=(s,t+\psi(s)),\quad \Omega_\psi=F(Q).
+\]
+设 \(f\in L^2(\Omega_\psi;\mathbb R)\)，\(u\in H^1(\Omega_\psi;\mathbb R)\) 弱解 \(-\Delta u=f\)，且在下边界图像 \(F((-2,2)\times\{0\})\) 取零迹。置 \(v=u\circ F\)、\(\widetilde f=f\circ F\)。
+\begin{enumerate}
+\item\label{b2:item:16-flux-coordinate}计算 \(DF\)、\(\det DF\)，从弱形式导出变换系数
+\[
+ \widetilde A=\begin{pmatrix}1&-\psi'\\-\psi'&1+(\psi')^2\end{pmatrix}.
+\]
+证明 \((2+M^2)^{-1}|\xi|^2\le\xi^{\mathsf T}\widetilde A\xi\le(2+M^2)|\xi|^2\)，并说明变换后的测试函数在平坦边界及其余边上的要求。
+\item\label{b2:item:16-flux-recovery}假设切向差商已给出 \(v_{ss},v_{st}\in L^2(Q_1)\)。不预设 \(v_{tt}\) 存在，使用 \(q=(1+(\psi')^2)v_t\) 先证明 \(\partial_tq\in L^2(Q_1)\)，再求出 \(v_{tt}\) 的公式和 \(L^2\) 上界。
+\item\label{b2:item:16-flux-geometry}在以上论证中，\(\psi'\) 有界和 \(\psi''\) 本性有界各用在何处？为何不能只凭边界为 Lipschitz 就沿用同一二阶估计？
+\end{enumerate}
+\end{optionalexercise}
+\begin{solution}
+有
+\[
+ DF=\begin{pmatrix}1&0\\\psi'&1\end{pmatrix},\qquad
+ (DF)^{-1}=\begin{pmatrix}1&0\\-\psi'&1\end{pmatrix},\qquad \det DF=1.
+\]
+对 \(\zeta\in C_c^\infty(Q)\)，令 \(\varphi=\zeta\circ F^{-1}\)。它属于 \(H_0^1(\Omega_\psi)\)，可由密度用于原弱形式。链式法则和换元给出
+\[
+ \int_Q\widetilde A\nabla v\cdot\nabla\zeta
+ =\int_Q\widetilde f\,\zeta,\qquad
+ \widetilde A=(DF)^{-1}(DF)^{-\mathsf T}.
+\]
+计算矩阵乘积便得题中系数。该实对称矩阵行列式为 \(1\)，迹为 \(2+(\psi')^2\)，且二次型为 \((\xi_s-\psi'\xi_t)^2+\xi_t^2\)，故两个特征值为正，上界不超过 \(2+M^2\)，下界由两者乘积为 \(1\) 得到。变换后的 \(v\) 在 \(t=0\) 上取零迹。切向差商所用测试函数可以接触此平坦边界，但必须在那里取零迹，并在左右边和上边附近消失；这样其逆变换仍在原区域的 \(H_0^1\) 中。
+
+记 \(p(s)=\psi'(s)\)。方程的两个通量分量为 \(v_s-pv_t\) 和 \(-pv_s+(1+p^2)v_t\)。已有混合导数的分布交换律给 \(\partial_tv_s=v_{st}\)，所以
+\[
+ \partial_tq
+ =-\widetilde f-\partial_s(v_s-pv_t)+\partial_t(pv_s)
+ =-\widetilde f-v_{ss}+p'v_t+2pv_{st}\in L^2(Q_1).
+\]
+这里只对已有相应方向 \(L^2\) 弱导数的因子使用该方向的乘积法则：\(\partial_sv_t=v_{st}\)、\(\partial_tv_s=v_{st}\) 已知，而 \(v_{tt}\) 尚未得到。因为 \((1+p^2)^{-1}\) 是有界的 \(W^{1,\infty}\) 函数且不依赖 \(t\)，由 \(v_t=(1+p^2)^{-1}q\) 的法向弱微分得到
+\[
+ v_{tt}=\frac{-\widetilde f-v_{ss}+\psi''v_t+2\psi'v_{st}}{1+(\psi')^2},
+\]
+以及
+\[
+ \|v_{tt}\|_{L^2(Q_1)}\le
+ \|\widetilde f\|_{L^2(Q_1)}+\|v_{ss}\|_{L^2(Q_1)}
+ +\|\psi''\|_\infty\cdot\|v_t\|_{L^2(Q_1)}+2M\|v_{st}\|_{L^2(Q_1)}.
+\]
+\(\psi'\) 的上界控制坐标的一阶范数和椭圆常数；\(\psi''\) 的上界控制几何系数的一阶导数，也控制最后的 \(\psi''v_t\)。只有 Lipschitz 图像时，\(\psi'\) 虽本性有界，其弱导数未必为有界函数，切向系数差商和上述乘积界便缺少依据。因此斜率受控与斜率变化受控在二阶正则性中承担不同职责。
 \end{solution}

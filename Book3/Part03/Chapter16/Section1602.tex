@@ -2,82 +2,244 @@
 \section{Perron 方法}
 \label{b3:sec:1602}
 
-一般区域没有可直接写出的核。Perron 方法从所有低于边界数据的次调和函数出发；圆盘上的调和替换迫使它们的上包络满足平均等式。
+圆盘上的 Poisson 核同时给出域内调和性和边界值，但一般区域没有现成的核。Perron 方法先放宽方程，把调和函数换成便于取最大值的次调和函数；随后在每个内部圆盘上把候选函数向上提升。这一局部操作最终产生调和解。至于它是否在每个边界点取到指定值，还要由下一节的边界几何决定。
 
 \subsection{次函数}
 \label{b3:subsec:160201}
 
-称连续次调和函数 \(v:D\to\mathbb R\) 为边值 \(\varphi\) 的\term[perron-cixanshu]{Perron 次函数}[Perron subfunction]，若对每个 \(\xi\in\partial D\) 有 \(\limsup_{z\to\xi}v(z)\le\varphi(\xi)\)。本章只采用连续的次函数；这个族已足以完成连续边值的构造。
+若 \(u\) 是边值 \(\varphi\) 的经典解，而 \(v\) 次调和且在边界不超过 \(\varphi\)，比较原理就会给出 \(v\le u\)。因此，寻找解可以从收集所有这样的下界开始。
 
-常数 \(m=\min\varphi\) 是次函数。每个次函数由次调和最大值原理满足 \(v\le M=\max\varphi\)，所以取上确界不会在内部发散。连续性允许在任何内部闭圆盘上作 Poisson 替换。
+\Needspace{6\baselineskip}
+\begin{definition}[Perron 次函数]
+设 \(D\subseteq\mathbb C\) 为有界区域，\(\varphi\in C(\partial D;\mathbb R)\)。若 \(v:D\to\mathbb R\) 连续、次调和，且对每个 \(\xi\in\partial D\) 都有
+\[
+ \limsup_{\substack{z\to\xi\\z\in D}}v(z)\le\varphi(\xi),
+\]
+则称 \(v\) 为边值 \(\varphi\) 的\term[perron-cixanshu]{Perron 次函数}[Perron subfunction]。所有这些函数组成的集合记为 \(\mathcal P_\varphi\)，称为相应的\term[perron-zu]{Perron 族}[Perron family]。
+\end{definition}
+
+这里的候选函数只在 \(D\) 内连续，不要求已在 \(\overline D\) 上连续延拓。边界条件使用从域内趋近的上极限，允许函数在某个边界点没有极限。本章采用连续次函数族，足以构造连续边值的 Perron 解；不需要先引入更大函数族的上半连续正则化。
+
+\ProseParagraphBreak
+由于 \(\partial D\) 是非空紧集，可令
+\[
+ m\coloneqq\min_{\partial D}\varphi,
+ \quad M\coloneqq\max_{\partial D}\varphi.
+\]
+常数 \(m\) 属于 \(\mathcal P_\varphi\)，所以候选族非空。对任意 \(v\in\mathcal P_\varphi\)，函数 \(v-M\) 在边界的上极限非正。第15章的次调和最大值原理 \cref{b3:prop:15-subharmonic-maximum} 适用于有界开集，因而给出 \(v\le M\) 于 \(D\)。此处不必另假定 \(v\) 在全域有界：给定 \(\varepsilon>0\)，每个边界点附近都有 \(v<M+\varepsilon\)，有限个这样的邻域覆盖紧边界，剩余部分位于域内紧集；这正是最大值原理能够处理逐点边界上限的原因。
+
+\ProseParagraphBreak
+若 \(v_1,\ldots,v_N\in\mathcal P_\varphi\)，则它们的有限最大值仍连续、次调和，而且
+\[
+ \limsup_{z\to\xi}\max_{1\le j\le N}v_j(z)
+ \le\max_{1\le j\le N}\limsup_{z\to\xi}v_j(z)
+ \le\varphi(\xi).
+\]
+所以有限最大值仍属于同一族。这允许把各处较好的候选函数合并起来。不过，无穷上确界未必连续；证明不能把有限最大值的性质直接推广给整个包络。
 
 \subsection{Perron 族}
 \label{b3:subsec:160202}
 
-把全部次函数组成的族记为 \(\mathcal P_\varphi\)，上包络记为 \(H_\varphi(z)=\sup_{v\in\mathcal P_\varphi}v(z)\)。有限最大值仍在族中。
+定义逐点上包络
+\[
+ H_\varphi(z)\coloneqq\sup_{v\in\mathcal P_\varphi}v(z),
+ \quad z\in D.
+\]
+前面的上下界立即给出 \(m\le H_\varphi\le M\)，但尚未给出它的调和性。为此，需要一种既提高候选值、又保持全域边界约束的操作。
 
-若 \(B\Subset D\)，把 \(v\) 在 \(B\) 内换成同边值的 Poisson 解，外部保持 \(v\)，记为 \(v^B\)。比较原理给 \(v^B\ge v\)。该函数在圆周连续，且仍次调和；下文通过先比较原次函数、再比较替换部分给出跨圆周的完整核查。替换只影响内部紧集，所以原边界限制不变。这个封闭性是上包络证明的核心。
+\Needspace{6\baselineskip}
+\begin{lemma}[内部圆盘上的调和提升]\label{b3:lem:16-harmonic-lifting}
+设 \(D\subseteq\mathbb C\) 为有界区域，\(\varphi\in C(\partial D;\mathbb R)\)，\(v\in\mathcal P_\varphi\)，且 \(B=B(a,r)\) 满足 \(\overline B\subset D\)。令 \(p_v\in C(\overline B)\) 为圆周数据 \(v|_{\partial B}\) 的 Poisson 解，并定义
+\[
+ v^B(z)\coloneqq
+ \begin{cases}
+ p_v(z),&z\in B,\\
+ v(z),&z\in D\setminus B.
+ \end{cases}
+\]
+则 \(v^B\in\mathcal P_\varphi\)，且 \(v^B\ge v\)。若 \(v,w\in\mathcal P_\varphi\) 且 \(v\le w\)，则 \(v^B\le w^B\)。
+\end{lemma}
+\begin{proof}
+圆周位于域内，故其上的 \(v\) 连续；\cref{b3:thm:15-poisson-continuous} 给出所需的 \(p_v\)。次调和比较原理用于 \(v-p_v\)，其圆周值为零，得到 \(v\le p_v\) 于 \(B\)。两部分在圆周上取相同值，故拼成的 \(v^B\) 连续。
+
+为核查跨越圆周的次调和性，使用 \cref{b3:prop:15-pasting}：若一个次调和函数定义在全域，另一个定义在子域，且后者在子域边界从内部的上极限不超过前者，就能在子域内取两者的最大值，外部保留原函数。此处全域函数是 \(v\)，子域函数是调和函数 \(p_v\)，在 \(\partial B\) 上二者相等；又因 \(p_v\ge v\)，该拼接恰为 \(v^B\)。所以它次调和。替换仅发生在 \(\overline B\Subset D\)，每个原边界点附近仍是 \(v\)，故 Perron 边界上限不变。
+
+若 \(v\le w\)，两个 Poisson 解的圆周数据有序，调和最大值原理给 \(p_v\le p_w\)。在圆盘外仍有 \(v\le w\)，于是提升操作在全域保序。
+\end{proof}
+
+这称为\term[diaohe-tisheng]{调和提升}[harmonic lifting]，也称调和替换。提升不是任选一个较大的调和函数：它保留所选圆盘的边界值，因此能够与外部的候选函数拼接，并继续满足原区域上的全部边界限制。
 
 \subsection{Perron 解}
 \label{b3:subsec:160203}
 
+现在可以证明包络在内部自动满足方程。证明先在一个点逼近上确界，再利用正调和函数的刚性，把该点上的最优性传播到整个小圆盘。
+
+\Needspace{6\baselineskip}
 \begin{theorem}[Perron]\label{b3:thm:16-perron}
-有界区域 \(D\) 与连续边值 \(\varphi\) 的包络 \(H_\varphi\) 在 \(D\) 调和，并满足 \(m\le H_\varphi\le M\)。
+设 \(D\subseteq\mathbb C\) 为有界区域，\(\varphi\in C(\partial D;\mathbb R)\)，\(\mathcal P_\varphi\) 为其连续 Perron 次函数族。则
+\[
+ H_\varphi(z)=\sup_{v\in\mathcal P_\varphi}v(z)
+\]
+在 \(D\) 上调和，且
+\[
+ \min_{\partial D}\varphi\le H_\varphi(z)
+ \le\max_{\partial D}\varphi\quad(z\in D).
+\]
 \end{theorem}
 \begin{proof}
-固定内部圆盘 \(B\) 及 \(a\in B\)。选 \(v_n\) 使 \(v_n(a)\to H_\varphi(a)\)，逐次取有限最大值，得到递增序列，再在 \(B\) 调和替换。所得 \(h_n\) 递增、有界，在 \(B\) 局部一致收敛到调和函数 \(h\)，且 \(h(a)=H_\varphi(a)\)、\(h\le H_\varphi\)。
-任取另一项 \(v\in\mathcal P_\varphi\)，将 \(\max(v,h_n)\)（在全域使用对应替换后的函数）再提升，得到调和函数 \(k_n\ge h_n,v\)。它们同样递增有界，极限 \(k\) 调和。中心满足 \(h(a)\le k(a)\le H_\varphi(a)=h(a)\)，所以非负调和函数 \(k-h\) 在内部为零，由强最小值原理恒零。于是 \(v\le h\) 于 \(B\)，取全族上确界得 \(H_\varphi\le h\)。因此包络在每个内部圆盘调和。
-\end{proof}
-证明没有先断言任意上包络连续；连续性由局部调和识别产生。这一步避免了把上确界与上半连续正则化混同。
+记边界数据的最小值、最大值为 \(m,M\)。已有的比较给出上下界。固定 \(\overline B\subset D\) 的开圆盘 \(B\)，并在其中固定一点 \(a\)。对每个 \(n\ge1\)，由上确界的定义选取 \(v_n\in\mathcal P_\varphi\)，使
+\[
+ v_n(a)>H_\varphi(a)-\frac1n.
+\]
+令
+\[
+ s_n\coloneqq\max\{m,v_1,\ldots,v_n\},
+ \quad w_n\coloneqq s_n^B,
+ \quad h_n\coloneqq w_n|_B.
+\]
+有限最大值和调和提升都保持 Perron 族，所以 \(s_n,w_n\in\mathcal P_\varphi\)。由保序性，\(w_n\) 在整个 \(D\) 上递增；\(h_n\) 在 \(B\) 上调和，且
+\[
+ m\le h_n\le H_\varphi\le M.
+\]
+对递增的正调和函数 \(h_n-m+1\) 应用 \cref{b3:cor:15-harnack-convergence}。因它们在一点的值有统一上界，发散到无穷的可能被排除，故 \(h_n\) 在 \(B\) 的每个紧集上一致收敛到调和函数 \(h\)。并且
+\[
+ H_\varphi(a)-\frac1n<v_n(a)\le h_n(a)\le H_\varphi(a),
+\]
+所以 \(h(a)=H_\varphi(a)\)，同时 \(h\le H_\varphi\) 于 \(B\)。
 
-\subsection{唯一性}
+还须证明同一 \(h\) 支配全部候选函数，不能仅凭它在 \(a\) 处达到包络就结束。任取 \(v\in\mathcal P_\varphi\)，在全域定义
+\[
+ t_n\coloneqq\max\{v,w_n\},
+ \quad k_n\coloneqq (t_n^B)|_B.
+\]
+这里必须使用定义在 \(D\) 上的 \(w_n\)，而不是只在 \(B\) 中定义的 \(h_n\)。于是 \(t_n^B\) 仍是合法的全域 Perron 次函数，且在 \(B\) 上
+\[
+ k_n\ge h_n,\quad k_n\ge v,\quad m\le k_n\le H_\varphi\le M.
+\]
+序列 \(k_n\) 同样递增，Harnack 收敛定理给出调和极限 \(k\)。上述不等式蕴含 \(k\ge h\) 以及
+\[
+ h(a)\le k(a)\le H_\varphi(a)=h(a).
+\]
+非负调和函数 \(k-h\) 在内部一点取零，由强最小值原理在连通圆盘 \(B\) 上恒零。因此 \(v\le k=h\) 于 \(B\)。对任意 \(v\in\mathcal P_\varphi\) 取上确界，得到 \(H_\varphi\le h\)。结合反向不等式即知 \(H_\varphi=h\) 于 \(B\)。每个内点都有这样的圆盘邻域，故 \(H_\varphi\) 在全域调和。
+\end{proof}
+
+证明中第一次提升把一个递增候选序列变成调和序列，第二次提升则检验它是否遗漏了其他候选函数。上包络的连续性来自最终的局部识别 \(H_\varphi=h\)，并未在取上确界时被提前假定。我们称 \(H_\varphi\) 为边值 \(\varphi\) 的\term[perron-jie]{Perron 解}[Perron solution]；这个名称暂时只承诺域内调和性。
+
+\ProseParagraphBreak
+孤立孔洞能够说明内部调和性与边界取值的区别。先把随后会用到的局部可去性写清楚。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[有界调和孤立奇点可去]\label{b3:prop:16-harmonic-removable}
+设 \(R>0\)，\(u\) 为去心圆盘 \(0<|z|<R\) 上的实值调和函数。若存在 \(r_0\in(0,R)\) 与有限常数 \(C\)，使 \(|u(z)|\le C\) 于 \(0<|z|<r_0\)，则 \(u\) 唯一延拓为整个圆盘上的调和函数。
+\end{proposition}
+\begin{proof}
+取 \(0<S<R\)，令 \(h\in C(\overline{B(0,S)})\) 为圆周数据 \(u|_{|z|=S}\) 的 Poisson 解。函数 \(w=u-h\) 在 \(0<|z|\le S\) 上有界：原点附近由假设和 \(h\) 的有界性得到，其余部分由紧圆环上的连续性得到。记 \(|w|\le C_S\)，并注意 \(w=0\) 于外圆。
+
+对 \(0<\varepsilon<S\)，圆环 \(\varepsilon<|z|<S\) 上的函数
+\[
+ q_\varepsilon(z)\coloneqq
+ C_S\frac{\log(S/|z|)}{\log(S/\varepsilon)}
+\]
+调和，内圆值为 \(C_S\)，外圆值为零。对 \(w-q_\varepsilon\) 和 \(-w-q_\varepsilon\) 使用最大值原理，得
+\[
+ |w(z)|\le C_S\frac{\log(S/|z|)}{\log(S/\varepsilon)}.
+\]
+固定 \(0<|z|<S\)，让 \(\varepsilon\downarrow0\)，右端趋于零，所以 \(u=h\)。以 \(h(0)\) 补上原点值便得到调和延拓；不同 \(S\) 所得延拓在去心交集相同，连续性使它们在原点也相同。唯一性同样由连续性得到。
+\end{proof}
+
+这里控制的是靠近奇点的增长。\(\log|z|\) 在每个闭圆环上有界，却没有可去奇点；它恰好以对数速度增长，使上述比较中的分子常数也可能随内圆缩小而增长。
+
+\subsection{解的唯一性、调和替换与圆环算例}
 \label{b3:subsec:160204}
 
-若一个经典解 \(u\) 已存在，则它本身是次函数，每个次函数又由比较原理不超过 \(u\)，故 \(H_\varphi=u\)。因此 Perron 构造不产生第二种不同的经典解。
-
-没有边界正则性时，\(H_\varphi\) 仍是内部调和函数，却可能忽略某些指定的边界值。去心圆盘上，外圆取零、孤立边界点原点取一，得到 Perron 解恒零：有界调和函数的孤立奇点可去，延拓后外圆边值迫使零函数。该例将在下一节同时说明障碍函数为何必要。
-
-
-\ProseParagraphBreak
-
-调和替换在圆周上的粘合可以作如下严格核查。设 \(w=v^B\)，并在测试圆盘 \(Q\Subset D\) 取调和函数 \(h\)，满足 \(w\le h\) 于 \(\partial Q\)。由于 \(v\le w\)，先由 \(v\) 的次调和比较得到 \(v\le h\) 于 \(Q\)。在 \(Q\cap B\) 中，\(w-h\) 调和；其边界分成 \(\partial Q\cap\overline B\) 与 \(Q\cap\partial B\)，前者由假设非正，后者因 \(w=v\le h\) 非正。最大值原理便给 \(w\le h\) 于交集。其余部分 \(w=v\le h\)，所以整个 \(Q\) 比较成立。这里先比较原次函数，再比较替换部分，避免在交界处循环使用尚未证明的次调和性。
-
-\ProseParagraphBreak
-
-Perron 证明中选择序列只需要在一个点逼近包络，而不要求全域同时选出最优函数。具体可令 \(v_n(a)>H_\varphi(a)-1/n\)，将 \(m,v_1,\ldots,v_n\) 的最大值记为 \(s_n\)，再替换得 \(w_n=s_n^B\)。序列 \(w_n\) 在全域递增，且属于同一 Perron 族；其圆盘限制 \(h_n\) 调和。由于 \(h_n(a)\ge s_n(a)\) 且 \(h_n\le H_\varphi\)，中心极限正是包络。对任意竞争者 \(v\)，使用 \(\max(v,w_n)\) 而非只定义在 \(B\) 中的 \(\max(v,h_n)\)，就得到合法的全域次函数。这些域的区别保证第二轮替换仍保留边界约束。
-
-\ProseParagraphBreak
-
-取上确界并不通常与取极限交换。Perron 证明采用的事实是：对每个固定竞争者 \(v\)，新调和极限 \(k\) 在圆盘上支配它，同时 \(k(a)=h(a)\)；非负调和函数的强最小值原理强迫 \(k=h\)。于是一个最初只在中心被优化的序列，最终在整个圆盘支配全部竞争者。这个步骤使用线性的调和方程和正性，才产生包络的调和性；只看有限最大值的次调和封闭性还不足以完成证明。
-
-\ProseParagraphBreak
-
-去心圆盘例子的包络恒零也能在不预先调用可去奇点定理的情况下证明。对任意次函数 \(v\)，外圆边界上限零，内边界点上限至多一，故 \(v\le1\)。给定 \(\varepsilon>0\)，在足够小的内圆 \(|z|=r\) 上 \(v\le1+\varepsilon\)，环域上的调和函数
+若 \(u\in C(\overline D)\) 是连续边值 \(\varphi\) 的调和解，则 \(u\in\mathcal P_\varphi\)，故 \(u\le H_\varphi\)。另一方面，每个 \(v\in\mathcal P_\varphi\) 都满足
 \[
-q_r(z)=(1+\varepsilon)\frac{\log|z|}{\log r}
+ \limsup_{z\to\xi}(v(z)-u(z))\le0
+ \quad(\xi\in\partial D).
 \]
-外圆值零、内圆值 \(1+\varepsilon\)。比较给 \(v(z)\le q_r(z)\)；固定 \(z\ne0\) 让 \(r\downarrow0\)，得到 \(v(z)\le0\)。常数零又是合法次函数，所以包络恰为零。孤立边值一在内部没有影响，这一计算完全在当前已证明的环域比较范围内进行。
+次调和最大值原理给 \(v\le u\)，所以 \(H_\varphi\le u\)。因而经典解只要存在，就必为 Perron 解。这既给唯一性，也说明 Perron 构造与已有的圆盘 Poisson 解相容。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[孤立边界点的失效]\label{b3:exmp:16-punctured-disk}
+在去心单位圆盘 \(D=\{z:0<|z|<1\}\) 上，令 \(\varphi=0\) 于单位圆，\(\varphi(0)=1\)。则 \(\varphi\in C(\partial D)\)，但 \(H_\varphi\equiv0\)，因而它在原点未取得指定的边值。
+\end{proposition}
+\begin{proof}
+边界是单位圆与孤立点 \(0\) 的不交并，故给定数据在边界的相对拓扑中连续。常数零是 Perron 次函数。任取 \(v\in\mathcal P_\varphi\)，已有上界给 \(v\le1\)。对 \(0<r<1\)，圆环 \(r<|z|<1\) 上的调和函数
+\[
+ q_r(z)\coloneqq\frac{\log|z|}{\log r}
+\]
+在内圆为一、外圆为零。内圆上 \(v\le q_r\)，外圆从内部的上极限也满足该不等式，故次调和比较给 \(v\le q_r\)。固定 \(z\ne0\)，令 \(r\downarrow0\)，得 \(v(z)\le0\)。取上确界，并结合零函数属于族中，得到 \(H_\varphi=0\)。
+\end{proof}
+
+这段比较只使用次函数的边界上限，没有先假定包络在外圆取得边值。因此它也说明，为何 Perron 定理本身不能被直接读成任意有界区域上的经典 Dirichlet 存在定理。
 
 \ProseParagraphBreak
-
-边界数据的单调性不需要域正则：若 \(\varphi\le\psi\)，则 \(\mathcal P_\varphi\subseteq\mathcal P_\psi\)，故 \(H_\varphi\le H_\psi\)。加常数与乘正数也分别对应次函数族的平移与缩放，所以 \(H_{\varphi+c}=H_\varphi+c\)、\(H_{a\varphi}=aH_\varphi\) 对 \(a>0\) 成立。两者推出
+边值变化对包络的影响则无须边界正则性。若 \(\varphi\le\psi\)，就有 \(\mathcal P_\varphi\subseteq\mathcal P_\psi\)，从而 \(H_\varphi\le H_\psi\)。对实常数 \(c\) 和 \(a>0\)，映射 \(v\mapsto v+c\)、\(v\mapsto av\) 分别给相应候选族之间的双射，故
 \[
-\|H_\varphi-H_\psi\|_{L^\infty(D)}\le\|\varphi-\psi\|_{L^\infty(\partial D)}.
+ H_{\varphi+c}=H_\varphi+c,
+ \quad H_{a\varphi}=aH_\varphi.
 \]
-一般加法的线性不能只由族包含轻率推出；本章在正则域用经典解的唯一性证明完整线性，已经足够用于测度表示。
+若 \(\delta=\|\varphi-\psi\|_{C(\partial D)}\)，则 \(\psi-\delta\le\varphi\le\psi+\delta\)，由此得到稳定性估计
+\begin{equation}\label{b3:eq:16-perron-stability}
+ \|H_\varphi-H_\psi\|_{L^\infty(D)}
+ \le\|\varphi-\psi\|_{C(\partial D)}.
+\end{equation}
+两类次函数相加只能直接给出一个方向的包络不等式，不能仅凭这种包含关系断言完整线性。第 \ref{b3:sec:1604} 节将在正则域上由经典解的唯一性得到线性，这已足够建立本章的测度表示。
 
 \ProseParagraphBreak
+圆环是检验边界分量和频率作用的基本算例。设
+\[
+ A=\{z:r_0<|z|<R\},\quad 0<r_0<R,
+ \quad x\coloneqq\log\frac{|z|}{r_0},\quad
+ L\coloneqq\log\frac R{r_0}.
+\]
+写 \(z=r_0e^{x+\mathrm i\theta}\)，则 \(0<x<L\)。极坐标下的 Laplace 方程乘以 \(|z|^2\) 后成为
+\[
+ u_{xx}+u_{\theta\theta}=0.
+\]
+所以角向频率 \(e^{\mathrm in\theta}\) 的系数满足 \(a''-n^2a=0\)。对 \(n\ne0\)，分别在内、外圆周赋予该模式而在另一圆周赋零，得到
+\begin{equation}\label{b3:eq:16-annulus-modes}
+ \begin{aligned}
+ U_n^{\mathrm{in}}(x,\theta)
+ &=\frac{\sinh(|n|(L-x))}{\sinh(|n|L)}e^{\mathrm in\theta},\\
+ U_n^{\mathrm{out}}(x,\theta)
+ &=\frac{\sinh(|n|x)}{\sinh(|n|L)}e^{\mathrm in\theta}.
+ \end{aligned}
+\end{equation}
+零频率满足 \(a''=0\)，相应函数为
+\[
+ U_0^{\mathrm{in}}=1-\frac{x}{L},
+ \quad U_0^{\mathrm{out}}=\frac{x}{L}.
+\]
+这些复值公式表示实部、虚部各自调和；对实值边界数据，正负频率的共轭配对给出实值解。若两条圆周的数据都是三角多项式，有限叠加就构造了经典解，唯一性保证它等于 Perron 解。
 
-圆环提供检验一般存在理论的另一组显式解。设 \(r_0<|z|<R\)，令 \(x=\log(|z|/r_0)\)、\(L=\log(R/r_0)\)，则 \(0<x<L\)。极坐标下 Laplace 方程乘以 \(|z|^2\) 后成为 \(u_{xx}+u_{\theta\theta}=0\)。对内、外边界各一个 Fourier 模式，解分别为
-\[
- \frac{\sinh(n(L-x))}{\sinh(nL)}e^{\mathrm{i}n\theta},\qquad
- \frac{\sinh(nx)}{\sinh(nL)}e^{\mathrm{i}n\theta}\quad(n\ge1).
-\]
-它们在相应边界取一倍模式，在另一边界取零；对负频率取共轭。零频率则为 \(1-x/L\) 与 \(x/L\)。每一式都可直接求导检验，唯一性保证它与 Perron 解相同。
 \ProseParagraphBreak
-若内、外边界为三角多项式，有限叠加便得到解。对一般连续周期数据，可由非负的 Fej\'er 核逼近：
+一般连续数据不必具有一致收敛的原始 Fourier 级数，因而不能直接把上面的有限和改成任意无穷和。可以改用非负的 Fej\'er 平均。对连续的 \(2\pi\)-周期函数 \(f\)，令
 \[
- F_N(t)=\frac1N\left|\sum_{j=0}^{N-1}e^{\mathrm{i}jt}\right|^2,
- \qquad \frac1{2\pi}\int_{-\pi}^{\pi}F_N(t)\,\mathrm{d}t=1.
+ F_N(t)\coloneqq\frac1N\left|\sum_{j=0}^{N-1}e^{\mathrm ijt}\right|^2,
+ \quad
+ f_N(\theta)\coloneqq\frac1{2\pi}\int_{-\pi}^{\pi}
+ F_N(t)f(\theta-t)\,\mathrm dt.
 \]
-在 \(|t|\ge\delta\) 上，有限几何和给 \(F_N(t)\le C_\delta/N\)；在小弧上用数据的一致连续性。因此卷积 \(F_N*\varphi\) 一致趋于 \(\varphi\)，每次卷积都是三角多项式。对这些数据的圆环解，最大值原理使内部一致差不超过两条边界数据的最大差，故在闭圆环上一致收敛。极限在内部调和，因为任意小圆盘上的平均值性质可通过一致极限；边值也正确。这给出圆环上存在性的第二个完整构造，并显示对数项恰来自角向零频率。
+展开有限和并积分，只有对角项留下，所以 \(F_N\ge0\) 且 \((2\pi)^{-1}\int F_N=1\)；展开后也看出 \(f_N\) 是三角多项式。给定 \(0<\delta<\pi\)，有限几何级数公式给
+\[
+ F_N(t)=\frac1N\frac{\sin^2(Nt/2)}{\sin^2(t/2)}
+ \le\frac{1}{N\sin^2(\delta/2)}
+ \quad(\delta\le|t|\le\pi).
+\]
+把 \(f_N-f\) 的积分分成 \(|t|<\delta\) 与其余部分，前者由 \(f\) 的一致连续性控制，后者由该估计趋于零。因此 \(f_N\to f\) 一致。
+
+\ProseParagraphBreak
+分别以这种方法逼近内、外圆周上的连续实值数据，记相应三角多项式解为 \(u_N\)。最大值原理给
+\[
+ \|u_N-u_M\|_{C(\overline A)}
+ \le\max\{\|f_N-f_M\|_\infty,\|g_N-g_M\|_\infty\}.
+\]
+故 \(u_N\) 在闭圆环上一致收敛到连续函数 \(u\)，其边值正是原数据。每个内部圆盘的平均等式可以通过一致极限，\cref{b3:thm:15-mean-value} 再给 \(u\) 在 \(A\) 内调和。圆环的连续 Dirichlet 问题由此完全解决，尚未使用下一节的外锥判据。
+
+\ProseParagraphBreak
+特别地，内圆取一、外圆取零时，解为
+\[
+ u(z)=\frac{\log(R/|z|)}{\log(R/r_0)}.
+\]
+对固定 \(0<|z|<R\)，当内孔半径 \(r_0\downarrow0\) 时它趋于零。每个正半径的内圆都能维持非零影响，但孔缩成孤立点后这种影响消失。这将同时联系下一节的边界正则性和最后一节的边界权重。

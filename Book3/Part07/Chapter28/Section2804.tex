@@ -1,0 +1,217 @@
+% !TeX root = ../../Book3.tex
+\section{\texorpdfstring{\(A^2\)}{A²} 的完备性与正交基}
+\label{b3:sec:2804}
+Hardy 范数限制每一条同心圆周上的平方平均，因而在半径趋于一时仍保留边界控制。若只要求整个圆盘上的平方积分有限，靠近边界的增长就可以更大。这个改动会把 Taylor 系数的普通平方和变成带权平方和，也会改变点值泛函的最佳常数。本节先从面积积分直接建立空间的完备性，再用圆盘的旋转对称性找出它的正交基。
+
+\subsection{面积范数与局部控制}
+\label{b3:subsec:280401}
+
+\begin{definition}[圆盘 Bergman 空间]\label{b3:def:28-bergman-space}
+设 \(\mathbb D=\{\,z\in\mathbb C\mid |z|<1\,\}\)，取归一化面积测度 \(\mathrm{d}A(z)=\mathrm{d}x\,\mathrm{d}y/\pi\)，其中 \(z=x+\mathrm{i}y\)。圆盘上的\term[bergman-kongjian]{Bergman 空间}[Bergman space]定义为
+\[
+ A^2(\mathbb D)\coloneqq
+ \left\{\,f\in\mathcal H(\mathbb D)
+ \;\middle|\;\int_{\mathbb D}|f(z)|^2\,\mathrm{d}A(z)<\infty\,\right\}.
+\]
+在这个空间上定义范数
+\[
+ \|f\|_{A^2}\coloneqq
+ \left(\int_{\mathbb D}|f(z)|^2\,\mathrm{d}A(z)\right)^{1/2}.
+\]
+对 \(f,g\in A^2(\mathbb D)\)，规定
+\[
+ \langle f,g\rangle_{A^2}
+ \coloneqq\int_{\mathbb D}f(z)\cdot\overline{g(z)}\,\mathrm{d}A(z).
+\]
+这个复内积对第一变量线性，对第二变量共轭线性。
+\end{definition}
+\symidx{\(A^2(\mathbb D)\)：圆盘 Bergman 空间}
+
+归一化使 \(A(\mathbb D)=1\)，所以常数函数 \(1\) 的范数等于一。若改用未经归一化的面积 \(\mathrm{d}x\,\mathrm{d}y\)，范数将乘以 \(\sqrt\pi\)，后面的核则须除以 \(\pi\)。同一计算中的这两种约定不能混用。这里的面积范数也不同于 \(H^2\) 的边界范数，尽管它们都带上标二。
+
+\ProseParagraphBreak
+
+一般 \(L^2\) 函数只按几乎处处相等识别，改变单点的值不改变范数。全纯函数之间却没有这个含混：若全纯函数 \(f-g\) 在一个内点不为零，由连续性，它在某个小圆盘上的模便有正下界，因而不可能几乎处处为零。因此每个具有全纯代表的 \(L^2(\mathbb D,\mathrm{d}A)\) 等价类，至多有一个全纯代表；我们以后就使用这个代表。下面的估计进一步说明，其点值确实由面积范数连续控制。
+
+\begin{proposition}[面积平均对点值的控制]\label{b3:prop:28-area-local-control}
+设 \(f\) 在单位圆盘 \(\mathbb D\) 全纯，\(w\in\mathbb D\)，且 \(0<\rho<1-|w|\)。对于归一化面积测度 \(\mathrm{d}A=\mathrm{d}x\,\mathrm{d}y/\pi\)，有
+\begin{equation}\label{b3:eq:28-area-mean-control}
+ |f(w)|^2\le\frac1{\rho^2}
+ \int_{D(w,\rho)}|f(z)|^2\,\mathrm{d}A(z).
+\end{equation}
+特别地，若 \(f\in A^2(\mathbb D)\)，则对每个 \(0\le r<1\)，
+\[
+ \sup_{|w|\le r}|f(w)|\le\frac{\|f\|_{A^2}}{1-r}.
+\]
+\end{proposition}
+\begin{proof}
+当 \(0<t<\rho\) 时，圆周 Cauchy 公式给出
+\[
+ f(w)=\frac1{2\pi}\int_0^{2\pi}
+ f(w+te^{\mathrm{i}\theta})\,\mathrm{d}\theta.
+\]
+在总质量为一的圆周测度上使用 Cauchy--Schwarz 不等式，得到
+\[
+ |f(w)|^2\le\frac1{2\pi}\int_0^{2\pi}
+ |f(w+te^{\mathrm{i}\theta})|^2\,\mathrm{d}\theta.
+\]
+两边乘以 \(2t\)，从 \(0\) 积到 \(\rho\)。左边为 \(\rho^2|f(w)|^2\)，右边由极坐标换元恰好等于归一化面积积分。这证明了\eqref{b3:eq:28-area-mean-control}。
+
+若 \(|w|\le r\)，可以对全部这些 \(w\) 使用同一个 \(0<\rho<1-r\)，并把小圆盘积分放大为整个 \(\mathbb D\) 上的积分。于是 \(\sup_{|w|\le r}|f(w)|\le\|f\|_{A^2}/\rho\)。令 \(\rho\uparrow1-r\) 即得结论；无需假设 \(f\) 连续延拓到单位圆周。
+\end{proof}
+
+这个论证是\subsecref{b3:subsec:040302}所用局部平方平均估计的圆盘版本，这里已经按 \(\mathrm{d}A=\mathrm{d}x\,\mathrm{d}y/\pi\) 重写常数。它说明面积积分虽不单独限制一般可测函数的点值，却能限制全纯函数在每个固定内部紧集上的大小。全纯性通过圆周平均，把一个内点与周围一片正面积区域联系起来。
+
+\ProseParagraphBreak
+
+靠近边界时，上界允许增长。这个允许量有实际内容：\(\sqrt{n+1}\,z^n\) 的面积范数稍后将算出恒为一，但它在接近单位圆周处可以很大。在固定的 \(|z|\le r<1\) 上，\(\sqrt{n+1}\,r^n\to0\)，又与局部控制完全相容。下一节将把当前的粗常数改进到最佳值。
+
+\subsection{Bergman 空间的完备性}
+\label{b3:subsec:280402}
+
+要证明 \(A^2\) 完备，不能只说“\(L^2\) 完备”：一个 \(L^2\) 极限起初只是可测函数类，全纯性是否保留仍需论证。局部估计恰好补上这一步。它将面积范数中的 Cauchy 条件变为每个闭子圆盘上的一致 Cauchy 条件；得到全纯极限以后，再回到面积积分证明范数收敛。
+
+\begin{theorem}[圆盘 Bergman 空间的完备性]\label{b3:thm:28-bergman-complete}
+在单位圆盘 \(\mathbb D\) 上取 \(\mathrm{d}A=\mathrm{d}x\,\mathrm{d}y/\pi\)。空间 \(A^2(\mathbb D)\) 关于内积 \(\langle f,g\rangle_{A^2}=\int_{\mathbb D}f\overline g\,\mathrm{d}A\) 是复 Hilbert 空间。以唯一的全纯代表将它视为 \(L^2(\mathbb D,\mathrm{d}A)\) 的子空间时，这个子空间是闭的。
+\end{theorem}
+\begin{proof}
+线性组合仍全纯且平方可积，内积的各项性质来自积分；正定性由全纯代表的唯一性保证。只需证明完备性与闭性。
+
+设 \((f_j)\) 是 \(A^2\) 中的 Cauchy 列。对固定 \(0<r<1\)，由\cref{b3:prop:28-area-local-control}作用于 \(f_j-f_k\)，有
+\[
+ \sup_{|z|\le r}|f_j(z)-f_k(z)|
+ \le\frac1{1-r}\|f_j-f_k\|_{A^2}\longrightarrow0
+ \quad(j,k\to\infty).
+\]
+所以每个闭子圆盘上都有一致极限。在两个闭子圆盘的重叠处，这些极限等于同一数列的逐点极限，因而彼此相容，给出 \(\mathbb D\) 上的函数 \(f\)。任何内部紧集都包含于某个闭子圆盘，故 \(f_j\to f\) 局部一致。各 \(f_j\) 全纯，\cref{b3:prop:04-holomorphic-limit}于是保证 \(f\) 全纯。
+
+还须确认 \(f\) 具有有限的全盘面积范数，而不仅在每个紧集上良好。Cauchy 列有界，设 \(\|f_j\|_{A^2}\le M\)。对非负函数 \(|f_j|^2\) 使用 Fatou 引理，得到
+\[
+ \int_{\mathbb D}|f|^2\,\mathrm{d}A
+ \le\liminf_{j\to\infty}\int_{\mathbb D}|f_j|^2\,\mathrm{d}A
+ \le M^2,
+\]
+故 \(f\in A^2\)。给定 \(\varepsilon>0\)，选择 \(N\) 使 \(j,k\ge N\) 时 \(\|f_j-f_k\|_{A^2}<\varepsilon\)。固定 \(j\ge N\)，再让 \(k\to\infty\)，对 \(|f_j-f_k|^2\) 使用 Fatou 引理，得
+\[
+ \|f_j-f\|_{A^2}^2
+ \le\liminf_{k\to\infty}\|f_j-f_k\|_{A^2}^2
+ \le\varepsilon^2.
+\]
+因此整列在面积范数中趋于 \(f\)，完备性得证。
+
+最后，若 \(f_j\in A^2\) 在 \(L^2(\mathbb D,\mathrm{d}A)\) 中趋于某个等价类 \(u\)，则它也是上述 Cauchy 列，故存在全纯 \(f\in A^2\) 使 \(\|f_j-f\|_{L^2}\to0\)。三角不等式给出 \(\|u-f\|_{L^2}=0\)，所以 \(u\) 正是这个全纯代表的等价类。这证明了子空间的闭性。
+\end{proof}
+
+这里两次使用 Fatou 引理的目的不同：第一次证明候选极限仍平方可积，第二次把 Cauchy 误差传给最终极限。我们没有从局部一致收敛直接断言全盘积分收敛，因为边界附近仍可能有质量集中。例如 \(\sqrt{n+1}\,z^n\) 局部一致趋于零，面积范数却不趋于零；它不是面积范数中的 Cauchy 列。
+
+\ProseParagraphBreak
+
+范数收敛还控制固定阶导数。若 \(f_j\to f\) 于 \(A^2\)，取 \(0<r<s<1\)，先在 \(|z|\le s\) 上使用局部估计，再在每个 \(|w|\le r\) 周围使用半径 \(s-r\) 的 Cauchy 导数估计，便有
+\[
+ \sup_{|w|\le r}|f_j^{(m)}(w)-f^{(m)}(w)|
+ \le\frac{m!}{(s-r)^m(1-s)}\|f_j-f\|_{A^2}
+ \quad(m=0,1,2,\ldots).
+\]
+这使面积范数中的极限与前文熟悉的全纯函数局部极限相容，但没有把任何结论延伸到移动的边界点上。
+
+\subsection{单项式的正交性}
+\label{b3:subsec:280403}
+
+圆盘与面积测度都在旋转下不变。因此不同角频率应当互相正交；单项式 \(z^n=r^ne^{\mathrm{i}n\theta}\) 正好把角频率与径向幂次分开。直接计算还能看出，为什么面积空间的归一化基与 Hardy 空间不同。
+
+\begin{proposition}[单项式的面积内积]\label{b3:prop:28-monomial-inner-product}
+在 \(A^2(\mathbb D)\) 中取 \(\mathrm{d}A=\mathrm{d}x\,\mathrm{d}y/\pi\)。对任意非负整数 \(n,m\)，有
+\[
+ \langle z^n,z^m\rangle_{A^2}
+ =\begin{cases}
+ 0,&n\ne m,\\
+ \dfrac1{n+1},&n=m.
+ \end{cases}
+\]
+因此函数 \(e_n(z)=\sqrt{n+1}\,z^n\)，\(n=0,1,2,\ldots\)，构成 \(A^2(\mathbb D)\) 的标准正交系。
+\end{proposition}
+\begin{proof}
+记 \(\mathrm{d}m(\theta)=\mathrm{d}\theta/(2\pi)\)。极坐标面积元为 \(\mathrm{d}A=2r\,\mathrm{d}r\,\mathrm{d}m\)，所以
+\[
+ \langle z^n,z^m\rangle_{A^2}
+ =2\int_0^1r^{n+m+1}\,\mathrm{d}r
+ \int_0^{2\pi}e^{\mathrm{i}(n-m)\theta}\,\mathrm{d}m(\theta).
+\]
+当 \(n\ne m\) 时，角积分为零；当 \(n=m\) 时，角积分为一，而径向积分为 \(2/(2n+2)=1/(n+1)\)。乘上 \(\sqrt{n+1}\) 正好把每个单项式的长度变成一。
+\end{proof}
+
+对于多项式 \(p(z)=\sum_{n=0}^Na_nz^n\)，有限和的正交性立即给出
+\[
+ \|p\|_{A^2}^2=\sum_{n=0}^N\frac{|a_n|^2}{n+1}.
+\]
+例如 \(\|1+2z\|_{A^2}^2=1+4/2=3\)，而它的 Hardy 范数平方为 \(1+4=5\)。面积积分对高次项给出的权重较小，是因为 \(r^n\) 只有靠近边界时才不小；把全部半径再积一次，会减轻这一圈的贡献。
+
+\ProseParagraphBreak
+
+目前只得到了一个标准正交系，还没有证明它是基。若直接把任意 \(A^2\) 函数展开为这个系统，就等于预先假设了多项式在面积范数中的稠密性。下面从 Taylor 展开和非负项积分出发，独立证明稠密性。
+
+\subsection{系数表示与正交基的完备性}
+\label{b3:subsec:280404}
+
+\begin{theorem}[Bergman 范数与 Taylor 系数]\label{b3:thm:28-bergman-coefficients}
+设 \(f(z)=\sum_{n=0}^{\infty}a_nz^n\) 在单位圆盘 \(\mathbb D\) 全纯，并取 \(\mathrm{d}A=\mathrm{d}x\,\mathrm{d}y/\pi\)。则
+\begin{equation}\label{b3:eq:28-bergman-coefficient-norm}
+ \int_{\mathbb D}|f(z)|^2\,\mathrm{d}A(z)
+ =\sum_{n=0}^{\infty}\frac{|a_n|^2}{n+1},
+\end{equation}
+允许两边同为 \(+\infty\)。特别地，\(f\in A^2(\mathbb D)\) 当且仅当右端有限；在此情形，Taylor 部分和 \(p_N(z)=\sum_{n=0}^Na_nz^n\) 在 \(A^2\) 范数中趋于 \(f\)，且
+\[
+ \|f-p_N\|_{A^2}^2=\sum_{n>N}\frac{|a_n|^2}{n+1}.
+\]
+\end{theorem}
+\begin{proof}
+固定 \(0<r<1\)。Taylor 级数在圆周 \(|z|=r\) 上一致收敛，因此有限部分和的平方模积分趋于 \(f\) 的平方模积分。先对有限和使用角频率正交性，再取极限，得到
+\[
+ \int_0^{2\pi}|f(re^{\mathrm{i}\theta})|^2\,\mathrm{d}m(\theta)
+ =\sum_{n=0}^{\infty}|a_n|^2r^{2n}.
+\]
+这里没有使用单位圆周上的任何边界函数，所有运算都在严格小于一的半径上完成。
+
+对于 \(0<R<1\)，两边乘以 \(2r\)，从 \(0\) 积到 \(R\)。右端各项非负，Tonelli 定理允许交换求和与径向积分，给出
+\[
+ \int_{|z|<R}|f(z)|^2\,\mathrm{d}A(z)
+ =\sum_{n=0}^{\infty}\frac{|a_n|^2}{n+1}R^{2n+2}.
+\]
+令 \(R\uparrow1\)，左边由区域递增的单调收敛趋于全盘积分；右边也由非负项的单调收敛趋于所述级数。这证明了\eqref{b3:eq:28-bergman-coefficient-norm}，包括无穷值情形。将同一公式用于全纯函数 \(f-p_N\)，便得到精确的尾范数；在级数有限时，这个尾和趋于零。
+\end{proof}
+
+反方向也需要说明：任意满足 \(\sum_{n\ge0}|a_n|^2/(n+1)<\infty\) 的复数列，都确实给出圆盘上的全纯函数。对 \(0\le r<1\)，Cauchy--Schwarz 不等式给出
+\begin{equation}\label{b3:eq:28-weighted-series-control}
+ \begin{aligned}
+ \sum_{n=0}^{\infty}|a_n|r^n
+ &\le\left(\sum_{n=0}^{\infty}\frac{|a_n|^2}{n+1}\right)^{1/2}
+ \left(\sum_{n=0}^{\infty}(n+1)r^{2n}\right)^{1/2}
+ \\
+ &=\frac1{1-r^2}
+ \left(\sum_{n=0}^{\infty}\frac{|a_n|^2}{n+1}\right)^{1/2}.
+ \end{aligned}
+\end{equation}
+最后的求和由几何级数逐项求导得到。对尾级数使用同一估计，可知幂级数在每个闭子圆盘上一致绝对收敛，因而定义全纯函数；再用\cref{b3:thm:28-bergman-coefficients}即可确认它属于 \(A^2\)。
+
+\begin{corollary}[Bergman 标准正交基]\label{b3:cor:28-bergman-basis}
+在单位圆盘的归一化面积 Bergman 空间 \(A^2(\mathbb D)\) 中，函数
+\[
+ e_n(z)=\sqrt{n+1}\,z^n\quad(n=0,1,2,\ldots)
+\]
+构成标准正交基。若 \(f(z)=\sum_{n\ge0}a_nz^n\in A^2(\mathbb D)\)，则
+\[
+ \langle f,e_n\rangle_{A^2}=\frac{a_n}{\sqrt{n+1}},
+ \quad
+ f=\sum_{n=0}^{\infty}\langle f,e_n\rangle_{A^2}e_n,
+\]
+后一个级数同时在面积范数及局部一致意义下收敛。映射
+\[
+ f\longmapsto\left(\frac{a_n}{\sqrt{n+1}}\right)_{n\ge0}
+\]
+是从 \(A^2(\mathbb D)\) 到复序列空间 \(\ell^2(\mathbb N_0)\) 的满等距线性映射。
+\end{corollary}
+\begin{proof}
+Taylor 部分和的面积范数收敛表明，多项式的线性空间在 \(A^2\) 中稠密，故先前的标准正交系是基。对部分和与 \(e_n\) 作内积，有限正交计算给出 \(a_n/\sqrt{n+1}\)；内积连续性允许取部分和的范数极限，得到同一公式。范数恒等式给出等距性；对于任意 \((c_n)\in\ell^2\)，取 \(a_n=\sqrt{n+1}\,c_n\)，前述加权级数构造给出相应的 \(A^2\) 函数，因此映射是满射。局部一致收敛也可由面积范数收敛和\cref{b3:prop:28-area-local-control}直接推出。
+\end{proof}
+
+现在每个全纯平方可积函数都由一组平方可和的正交坐标表示。与 Hardy 空间的差别集中在权重 \(1/(n+1)\)：它既说明面积可积容许较大的 Taylor 系数，也决定下一节的核中为何出现二次分母。

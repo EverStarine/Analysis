@@ -37,6 +37,7 @@
 \end{figure}
 
 \begin{theorem}[半空间偶反射]\label{b1:thm:half-space-sobolev-extension}
+设 \(d\geq1\) 为整数，\(H_+=\{(x^{\prime},t)\in\mathbb R^{d-1}\times\mathbb R:t>0\}\)，函数取实值或复值。
 设 \(1\le p\le\infty\)。对 \(u\in W^{1,p}(H_+)\)，在 \(t\ne0\) 处规定
 \[
  (E_+u)(x',t)=u(x',|t|).
@@ -117,11 +118,46 @@
 \]
 两个盒都关于 \(t=0\) 对称；内盒中的集合反射后仍在内盒中。后面将截断函数放在 \(V\) 内，却在较大的 \(U\) 中完成延拓，内外两层之间的余量用来避免侧面和顶面上的跳跃。
 
-\subsection{延拓算子}
+\cref{b1:fig:extension-inner-outer-boxes}把两种坐标及两种边界并排画出。
+图中的上半部才是原区域；截断后的非零部分可以贴着真实边界，却远离人工侧面和顶面。
+因此侧面、顶面的补零与真实边界上的反射承担不同任务。
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm,>=stealth,every node/.style={font=\small}]
+ \fill[gray!12] (-2,1.7)--(-1,1.325)--(0,1.2)--(1,1.325)--(2,1.7)
+ --(2,.5)--(1,.125)--(0,0)--(-1,.125)--(-2,.5)--cycle;
+ \draw[thick] (-2,1.7)--(-1,1.325)--(0,1.2)--(1,1.325)--(2,1.7)
+ --(2,-.7)--(1,-1.075)--(0,-1.2)--(-1,-1.075)--(-2,-.7)--cycle;
+ \draw[AnalysisBlue,thick] (-1,.725)--(0,.6)--(1,.725)--(1,-.475)--(0,-.6)--(-1,-.475)--cycle;
+ \draw[orange!80!black,thick] (-2,.5)--(-1,.125)--(0,0)--(1,.125)--(2,.5);
+ \node at (0,2.15) {物理坐标 \((z,s)\)};
+ \node at (-1.35,1.1) {\(\Omega\)};
+ \node at (0,-1.6) {\(V=F(D_1)\Subset U=F(D)\)};
+ \node[AnalysisBlue] at (0,.35) {\(V\)};
+ \draw[<-,thick] (2.45,.1)--(4.45,.1) node[midway,above] {\(F\)};
+ \begin{scope}[xshift=7cm]
+ \fill[gray!12] (-2,0) rectangle (2,1.2);
+ \draw[thick] (-2,-1.2) rectangle (2,1.2);
+ \draw[AnalysisBlue,thick] (-1,-.6) rectangle (1,.6);
+ \draw[orange!80!black,thick] (-2.15,0)--(2.15,0) node[right] {\(t=0\)};
+ \draw[->] (0,-1.4)--(0,1.6) node[above] {\(t\)};
+ \draw[<->,AnalysisBlue] (.65,-.4)--(.65,.4);
+ \node at (-.5,.32) {\(D_1^+\)};
+ \node at (0,2.15) {拉平坐标 \((z,t)\)};
+ \node at (0,-1.6) {\(D_1\Subset D\)};
+  \node at (1,.93) {人工顶面};
+ \node[rotate=90] at (-1.75,0.6) {侧面};
+ \end{scope}
+\end{tikzpicture}
+\caption[延拓中的内外图表盒]{内外图表盒的二维示意，不按比例。蓝色内盒放置截断后的支集，黑色外盒保留操作余量；橙色线是实际区域边界。右图只越过人工侧面和顶面补零，再关于 \(t=0\) 反射；左图用 \(F\) 将结果推回。曲线只表示一种 Lipschitz 图形，不要求一般边界具有这样的曲率。}
+\label{b1:fig:extension-inner-outer-boxes}
+\end{figure}
+
+\subsection{延拓算子的局部构造}
 \label{b1:subsec:220303}
 
 \begin{definition}\label{b1:def:sobolev-extension-operator}
-给定开集 \(\Omega\) 及 \(1\le p\le\infty\)，若线性映射
+给定整数 \(d\geq1\)、开集 \(\Omega\subseteq\mathbb R^d\)，函数空间取实值或复值版本 及 \(1\le p\le\infty\)，若线性映射
 \[
  E:W^{1,p}(\Omega)\longrightarrow W^{1,p}(\mathbb R^d)
 \]
@@ -140,7 +176,7 @@
 局部构造分成五步：先在物理空间乘光滑截断，再把边界拉平；随后只越过图表盒的侧面和顶面作零延拓，此时并不跨越代表真实边界的超平面 \(t=0\)；第四步才关于 \(t=0\) 作偶反射；最后把函数推回物理空间，并在一个固定紧集以外补零到全空间。第三步排除的是图表人工边界上的跳跃，第四步处理的才是真实边界，两者不能合并成一次无条件补零。
 
 \begin{lemma}\label{b1:lem:localized-graph-extension}
-固定上一小节满足 \(\overline V\Subset U\) 的内外图表及 \(\eta\in C_c^\infty(V)\)。存在与 \(p\) 无关的线性构造 \(E_\eta\)，使每个 \(u\in W^{1,p}(\Omega)\) 都满足
+设 \(d\geq1\) 为整数，\(\Omega\subseteq\mathbb R^d\) 为开集。在某个刚性坐标中，取 \(\rho,h>0\)、Lipschitz 函数 \(\varphi:(-2\rho,2\rho)^{d-1}\to\mathbb R\)，记 \(D=(-2\rho,2\rho)^{d-1}\times(-2h,2h)\)、\(D_1=(-\rho,\rho)^{d-1}\times(-h,h)\)、\(F(z,t)=(z,\varphi(z)+t)\)、\(U=F(D)\)、\(V=F(D_1)\)。假设 \(\Omega\cap U=F(D\cap\{t>0\})\)，并取 \(\eta\in C_c^\infty(V)\)。则 \(\overline V\Subset U\)。对每个 \(1\leq p\leq\infty\)，存在与 \(p\) 无关的线性构造 \(E_\eta\)，使每个 \(u\in W^{1,p}(\Omega)\) 都满足
 \[
  E_\eta u\in W^{1,p}(\mathbb R^d),\quad
  (E_\eta u)|_\Omega=\eta\cdot u,
@@ -193,6 +229,7 @@
 有界性使边界能够由有限个内图表覆盖，从而把局部延拓合成一个全域算子。
 
 \begin{theorem}[Lipschitz 区域的一阶延拓]\label{b1:thm:lipschitz-domain-extension}
+函数空间取实值或复值版本。
 设 \(\Omega\subset\mathbb R^d\) 为有界 Lipschitz 区域。可以固定同一套线性延拓公式，使它对每个 \(1\le p\le\infty\) 都定义有界算子
 \[
  E:W^{1,p}(\Omega)\longrightarrow W^{1,p}(\mathbb R^d),

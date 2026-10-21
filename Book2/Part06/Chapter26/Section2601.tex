@@ -1,0 +1,342 @@
+% !TeX root = ../../Book2.tex
+\section{Bochner–Riesz 乘子}
+\label{b2:sec:2401}
+
+球形频率截断保留低频、删除高频，是一种自然的 Fourier 求和方法。它的困难集中在球面边界：边界两侧的符号突然跳变，逆变换便产生长距离振荡。Bochner–Riesz 平均在球内加入一个向边界逐渐消失的权，用参数 \(\delta\) 记录消失阶数。需要确定的是，对给定的 \(L^p\) 空间，多少平滑足以同时保证算子有界和半径增大时的逼近。
+
+\subsection{定义}
+\label{b2:subsec:240101}
+
+本章采用
+\(\widehat f(\xi)=\int_{\mathbb R^d}f(x)e^{-2\pi\mathrm i x\cdot\xi}\,dx\)。
+先在有界符号能够直接作用的平方空间上定义算子，再讨论其他指数。
+
+\Needspace{6\baselineskip}
+\begin{definition}[Bochner--Riesz 平均]\label{b2:def:24-bochner-riesz}
+设整数 \(d\geq1\)、\(\delta\geq0\)、\(R>0\)。定义频率符号
+\[
+ m_{\delta,R}(\xi)\coloneqq
+ \begin{cases}
+ (1-|\xi|^2/R^2)^\delta,&|\xi|<R,\\
+ 0,&|\xi|\geq R.
+ \end{cases}
+\]
+相应的\term[bochner-riesz-pingjun]{Bochner--Riesz 平均}[Bochner--Riesz means]是
+\[
+ B_R^\delta f\coloneqq
+       \mathcal F^{-1}(m_{\delta,R}\cdot\widehat f),
+ \quad f\in L^2(\mathbb R^d).
+\]
+单位半径核记为
+\[
+ K_\delta\coloneqq\mathcal F^{-1}m_{\delta,1}.
+\]
+这里 \(\delta=0\) 时的符号是开球示性函数；球面上的取值对这个
+Lebesgue 乘子没有影响。
+\end{definition}
+\symidx{\(B_R^\delta f\)：Bochner--Riesz 平均}
+\symidx{\(K_\delta\)：单位半径 Bochner--Riesz 核}
+
+由于 \(0\leq m_{\delta,R}\leq1\)，该定义在 \(L^2\) 中总有意义。
+对 Schwartz 输入，还有普通积分表达式
+\[
+ B_R^\delta f(x)
+ =\int_{|\xi|<R}e^{2\pi\mathrm i x\cdot\xi}
+           (1-|\xi|^2/R^2)^\delta\widehat f(\xi)\,d\xi.
+\]
+它处处绝对收敛，输出光滑。若要在 \(1\leq p<\infty\) 上定义同一算子，
+则须先证明
+\[
+ \|B_R^\delta f\|_p\leq C\|f\|_p
+       \quad(f\in\mathcal S).
+\]
+Schwartz 类的稠密性随后给出唯一连续延拓，并在 \(L^p\cap L^2\)
+上与平方定义一致。无穷指数采用\chapref{b2:ch:22}的伴随约定：
+从相同实符号的 \(L^1\) 算子取 Banach 伴随；核可积时，这一约定
+就是对有界输入作卷积。不能改用 Schwartz 类在 \(L^\infty\) 中的范数稠密性。
+
+\ProseParagraphBreak
+正参数使符号在球面处连续，但不使它在边界任意光滑。
+非整数 \(\delta\) 的法向导数在超过相应阶数后出现奇性；
+正整数阶也会在更高导数处遇到跨边界的不匹配。
+因此，不能把“边界值连续”直接替换成\chapref{b2:ch:22} Mihlin 判据所需的全部导数控制。
+稍后将用实际核估计确定有界范围。
+
+\ProseParagraphBreak
+这个算子整合球内部的频率，并不是只在球面上积分的延拓算子。
+两者的联系来自逐半径分层。先取
+\(\chi\in C_c^\infty(\mathbb R^d)\)，使 \(\chi=1\) 于原点附近，且支撑
+严格位于单位球内。符号 \(\chi\cdot m_{\delta,1}\) 光滑紧支撑，其逆变换
+为 Schwartz 函数，故相应卷积在所有 \(L^p\) 上有界。剩余部分才包含
+球面边界的困难。这一区分会在核渐近、解析插值和薄壳分解中反复出现。
+
+\subsection{缩放}
+\label{b2:subsec:240102}
+
+半径变化首先是一个准确的共轭关系。为了不混淆正、反缩放，明确规定
+\[
+ D_Rf(x)\coloneqq f(Rx),\quad R>0.
+\]
+它满足
+\(\widehat{D_Rf}(\xi)=R^{-d}\widehat f(\xi/R)\) 和
+\(\|D_Rf\|_p=R^{-d/p}\|f\|_p\)，无穷指数按 \(1/p=0\) 理解。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[半径共轭与一致常数]\label{b2:prop:24-dilation}
+设 \(d\geq1\)、\(\delta\geq0\)，\(B_R^\delta\)、\(K_\delta\)
+如\cref{b2:def:24-bochner-riesz}。则对 Schwartz 函数有
+\[
+ B_R^\delta=D_R B_1^\delta D_{1/R},\quad
+ K_{\delta,R}(x)=R^dK_\delta(Rx).
+\]
+若 \(B_1^\delta\) 在 \(L^p(\mathbb R^d)\)、\(1\leq p<\infty\)
+上有界，则所有 \(R>0\) 的算子都有唯一相容延拓，且
+\[
+ \|B_R^\delta\|_{L^p\to L^p}
+       =\|B_1^\delta\|_{L^p\to L^p}.
+\]
+在 \(L^\infty\) 上使用 \(L^1\) 伴随延拓时，同一等式成立。
+\end{proposition}
+\begin{proof}
+先对 Schwartz 输入作 Fourier 变换：
+\[
+ \begin{aligned}
+ \mathcal F(D_R B_1^\delta D_{1/R}f)(\xi)
+ &=R^{-d}m_{\delta,1}(\xi/R)\,
+             R^d\widehat f(\xi)\\
+ &=m_{\delta,R}(\xi)\widehat f(\xi).
+ \end{aligned}
+\]
+核公式则直接由逆变换中的 \(\xi=R\eta\) 得到。
+两个拉回的范数因子互为倒数，所以共轭给出
+\(\|B_R^\delta\|\leq\|B_1^\delta\|\)。反向用
+\(B_1^\delta=D_{1/R}B_R^\delta D_R\)，得到反向不等式。
+有限指数上的稠密延拓保留恒等式。无穷指数从 \(L^1\) 的共轭恒等式
+取伴随，或在核可积时直接换元，得到相同结论。
+\end{proof}
+
+所以固定 \(\delta,p\) 的问题不是分别控制每个半径，而是证明一个
+单位半径界。这个界一旦成立，就给出整个族的统一常数；缩放本身不能
+证明单位半径有界。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[有界性推出范数逼近]\label{b2:prop:24-strong-approximation}
+设 \(d\geq1\)、\(\delta\geq0\)、\(1\leq p<\infty\)，并假设
+\cref{b2:def:24-bochner-riesz}的 \(B_1^\delta\) 有界于
+\(L^p(\mathbb R^d)\)。则对每个 \(f\in L^p(\mathbb R^d)\)，
+\[
+ \lim_{R\to\infty}\|B_R^\delta f-f\|_p=0.
+\]
+\end{proposition}
+\begin{proof}
+先取 \(\widehat h\in C_c^\infty\)，支撑包含在固定球中。
+当 \(R\) 充分大时，整个支撑远离 \(|\xi|=R\)，在这片固定频率上，
+\[
+ (m_{\delta,R}-1)\widehat h\longrightarrow0
+       \quad\text{于 }C_c^\infty
+\]
+的所有导数半范数中。事实上，正阶时对
+\((1-|\xi|^2/R^2)^\delta\) 求导，分母始终远离零，每个非恒定项
+含有趋零的 \(R^{-2}\) 因子；零阶时误差在这个支撑上最终恒零。
+固定紧支撑上的导数收敛经 Fourier 反演和分部积分给出
+\(B_R^\delta h-h\to0\) 于 Schwartz 拓扑，特别在 \(L^p\) 中收敛。
+
+这样的 \(h\) 在有限指数 \(L^p\) 中稠密。为看清这一点，先以
+\(C_c^\infty\) 函数逼近任意输入，再对这个 Schwartz 函数 \(u\)
+使用频率截断
+\(\widehat h_N=\chi(\xi/N)\widehat u(\xi)\)，其中固定光滑 \(\chi\)
+紧支撑并在原点附近等于一。Schwartz 衰减控制截去的频率尾部及各阶导数，
+故 \(h_N\to u\) 于 Schwartz 拓扑。
+
+记统一算子界为 \(C\)。给定 \(\varepsilon>0\)，选上述 \(h\)
+使 \(\|f-h\|_p<\varepsilon\)。于是
+\[
+ \|B_R^\delta f-f\|_p
+ \leq (C+1)\varepsilon+\|B_R^\delta h-h\|_p.
+\]
+先令 \(R\to\infty\)，再令 \(\varepsilon\downarrow0\)，得到结论。
+\end{proof}
+
+证明中真正把稠密类推广到全部输入的是统一算子界。仅知道光滑输入
+最终逼近良好，并不能反推普通 \(L^p\) 的有界性。
+另一方面，这是逐输入的范数收敛，也不是算子范数收敛：
+在 \(L^2\) 中，\(I-B_R^\delta\) 的符号在球外恒为一、处处模不超过一，
+所以
+\[
+ \|I-B_R^\delta\|_{2\to2}=1\quad\text{对每个 }R>0.
+\]
+把单位输入的频率放到当前球外，总能留下全部误差。
+固定输入的频率尾部会消失，随半径移动的输入却没有这种统一性。
+
+\ProseParagraphBreak
+阶数方向则有另一种结构：较高阶可以写成较低阶按半径的正权平均。
+记 beta 积分
+\[
+ \mathrm B(a,b)=\int_0^1t^{a-1}(1-t)^{b-1}\,dt
+       =\frac{\Gamma(a)\Gamma(b)}{\Gamma(a+b)},\quad a,b>0.
+\]
+
+\Needspace{6\baselineskip}
+\begin{proposition}[阶数的单调传递]\label{b2:prop:24-order-monotonicity}
+设 \(d\geq1\)、\(0\leq\delta_1<\delta_2\)，置
+\(\eta=\delta_2-\delta_1\)。对\cref{b2:def:24-bochner-riesz}
+的平均和任意 Schwartz 输入，有
+\[
+ B_R^{\delta_2}f=
+ \frac1{\mathrm B(\delta_1+1,\eta)}
+ \int_0^1 B_{R\sqrt t}^{\delta_1}f\,
+          t^{\delta_1}(1-t)^{\eta-1}\,dt,\quad R>0.
+\]
+若 \(1\leq p<\infty\) 且
+\(\sup_{R>0}\|B_R^{\delta_1}\|_{p\to p}\leq C\)，则
+\(\sup_{R>0}\|B_R^{\delta_2}\|_{p\to p}\leq C\)。
+在共同的 Schwartz 测试类上还有点态不等式
+\[
+ \sup_{R>0}|B_R^{\delta_2}f(x)|
+       \leq\sup_{R>0}|B_R^{\delta_1}f(x)|.
+\]
+\end{proposition}
+\begin{proof}
+令 \(a=|\xi|^2/R^2\)。在 \(a<1\) 时，右侧的符号为
+\[
+ \begin{aligned}
+ &\frac1{\mathrm B(\delta_1+1,\eta)}
+     \int_a^1(1-a/t)^{\delta_1}t^{\delta_1}
+                         (1-t)^{\eta-1}\,dt\\
+ &\quad=\frac1{\mathrm B(\delta_1+1,\eta)}
+     \int_a^1(t-a)^{\delta_1}(1-t)^{\eta-1}\,dt
+       =(1-a)^{\delta_2}.
+ \end{aligned}
+\]
+最后用 \(t=a+(1-a)u\) 换元。若 \(a\geq1\)，两侧均为零。
+对 Schwartz 输入，可以将半径积分移过逆 Fourier 变换：
+符号的模至多为一，\(\widehat f\) 可积，而归一化 beta 权的总质量为一。
+这证明积分恒等式及其点态意义。
+
+若较低阶的 \(L^p\) 界已知，\(t\mapsto B_{R\sqrt t}^{\delta_1}f\)
+在 \(t>0\) 强连续。由缩放恒等式，这归结为有限指数 \(L^p\)
+上拉回 \(D_r\) 的强连续性，后者先对光滑紧支撑函数验证，再用稠密性。
+因此加权积分也可在 \(L^p\) 中解释，且其范数由
+\(C\|f\|_p\) 控制。Minkowski 与测试函数的稠密延拓给出较高阶的界。
+对点态式取绝对值，再用总质量为一的正权积分，得到最后的不等式。
+\end{proof}
+
+正权只出现在半径平均中，不说明实空间核处处非负。
+例如低阶核本来有正负振荡，按半径作正权平均以后仍可能变号。
+这个公式只能把有界性向更高阶传递，不能从大阶数的可积核反推出
+小阶数的结论。若要把极大不等式从测试类推广到一般输入，也仍须
+使用已建立的极大算子延拓，不能任意选择各半径的代表后取上确界。
+
+\ProseParagraphBreak
+固定阶数时 \(R\to\infty\) 逼近恒等；阶数同时变化，则可能得到热流。
+这个例子提醒我们，两个参数不能只观察其中一个。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[阶数与半径的联合平方极限]\label{b2:prop:24-heat-limit}
+设 \(d\geq1\)、\(R_n\to\infty\)、\(\delta_n\geq0\)，并假设
+\(\delta_n/R_n^2\to a\in[0,\infty]\)。对每个
+\(f\in L^2(\mathbb R^d)\)，\cref{b2:def:24-bochner-riesz}
+中的平均满足
+\[
+ B_{R_n}^{\delta_n}f\longrightarrow
+ \begin{cases}
+ f,&a=0,\\
+ e^{\,a\Delta/(4\pi^2)}f,&0<a<\infty,\\
+ 0,&a=\infty
+ \end{cases}
+ \quad\text{于 }L^2.
+\]
+中间的算子按 Fourier 符号 \(e^{-a|\xi|^2}\) 定义。
+\end{proposition}
+\begin{proof}
+固定 \(\xi\)，当 \(n\) 充分大时 \(|\xi|<R_n\)。
+若 \(a<\infty\)，则
+\[
+ \delta_n\log(1-|\xi|^2/R_n^2)
+ =-\frac{\delta_n}{R_n^2}|\xi|^2
+       +O\!\left(\frac{\delta_n}{R_n^4}|\xi|^4\right)
+       \longrightarrow-a|\xi|^2.
+\]
+误差趋零，因为 \(\delta_n/R_n^2\) 有界而 \(R_n^{-2}\to0\)。
+若 \(a=\infty\) 且 \(\xi\neq0\)，则
+\[
+ 0\leq m_{\delta_n,R_n}(\xi)
+       \leq\exp(-\delta_n|\xi|^2/R_n^2)\longrightarrow0.
+\]
+零频单点不影响 Lebesgue 积分。所有符号均介于零与一之间，
+故平方误差由 \(4|\widehat f|^2\) 控制。Plancherel 和支配收敛
+给出所述三种强极限。热算子时间是 \(a/(4\pi^2)\)，来自本书
+Fourier 变换中 Laplace 算子的符号 \(-4\pi^2|\xi|^2\)。
+\end{proof}
+
+特别地，\(R_n=\sqrt{\delta_n}\to\infty\) 产生符号 \(e^{-|\xi|^2}\)。
+这个平方极限不宣称有限阶核已经非负，也不单独给出其他
+\(L^p\) 上的统一算子界。研究联合参数极限时，极限核的性质与
+每个近似核的性质需要分别证明。
+
+\subsection{核表示}
+\label{b2:subsec:240103}
+
+为了读出边界平滑的作用，现在计算单位半径核。
+核积分可以比普通平均的参数范围更广：只要 \(\delta>-1\)，
+球内幂权仍可积；但负参数的符号在边界无界，不能当作平方有界乘子。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[Bochner--Riesz 核]\label{b2:prop:24-kernel}
+设 \(d\geq1\)、\(\delta>-1\)，在开单位球内令
+\(m_\delta(\xi)=(1-|\xi|^2)^\delta\)，球外取零。
+零阶按球示性函数解释。则
+\[
+ K_\delta(x)\coloneqq\int_{|\xi|<1}
+             e^{2\pi\mathrm i x\cdot\xi}m_\delta(\xi)\,d\xi
+\]
+是连续有界的实值径向函数，对 \(x\neq0\) 满足
+\[
+ K_\delta(x)=\Gamma(\delta+1)\pi^{-\delta}
+       |x|^{-d/2-\delta}J_{d/2+\delta}(2\pi|x|).
+\]
+在原点，
+\[
+ K_\delta(0)=
+       \frac{\pi^{d/2}\Gamma(\delta+1)}
+            {\Gamma(\delta+d/2+1)}.
+\]
+\end{proposition}
+\begin{proof}
+极坐标下，球内符号在边界的可积性恰由
+\(\int_{1/2}^1(1-r)^\delta\,dr<\infty\) 保证。
+因此逆变换连续有界；旋转不变性给出径向性，频率偶对称使正弦部分抵消，
+给出实值性。
+
+Bessel 公式使用\cref{b2:thm:A2-bochner-riesz}，其所需条件正是
+\(d\geq1,\delta>-1\)。回忆该处计算的关键一步：将径向变换中的
+Bessel 级数逐项积分后，出现
+\[
+ \int_0^1(1-s^2)^\delta s^{2k+2\nu+1}\,ds
+ =\frac{\Gamma(k+\nu+1)\Gamma(\delta+1)}
+        {2\Gamma(k+\nu+\delta+2)},\quad \nu=d/2-1.
+\]
+它消去原级数中的一个 Gamma 分母，剩下阶数
+\(\nu+\delta+1=d/2+\delta\) 的 Bessel 级数。固定空间半径时，
+绝对值级数由可积球内权控制，故这次逐项积分合法。
+代回 Fourier 归一化中的 \(2\pi\)，得到所写系数。
+
+原点值也可不借 Bessel 极限直接检查：
+\[
+ \begin{aligned}
+ K_\delta(0)
+ &=\frac{2\pi^{d/2}}{\Gamma(d/2)}
+             \int_0^1(1-r^2)^\delta r^{d-1}\,dr\\
+ &=\frac{\pi^{d/2}}{\Gamma(d/2)}
+             \mathrm B(d/2,\delta+1)
+ =\frac{\pi^{d/2}\Gamma(\delta+1)}
+             {\Gamma(\delta+d/2+1)}.
+ \end{aligned}
+\]
+\end{proof}
+
+例如 \(d=2,\delta=0\) 时
+\(K_0(x)=J_1(2\pi|x|)/|x|\)，原点值为 \(\pi\)，正是单位圆盘面积。
+核的 Bessel 阶数与球面测度不同：球面公式出现 \(d/2-1\)，
+球内加权公式出现 \(d/2+\delta\)。球内部的径向积分及其边界消失阶
+正是这一差别的来源。下一节把公式化为可用于绝对积分和反例的远场渐近。

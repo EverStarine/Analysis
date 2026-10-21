@@ -1,63 +1,316 @@
 % !TeX root = ../../Book3.tex
 \OptionalSection{Newman 的简化解析证明}{b3:sec:2706}
 
-Newman 的方法用一个带端点消去因子的 Cauchy 积分直接证明 Laplace 变换的 Tauber 结论。它可用素数的一次幂权和完成另一个证明，避免一般的正核论证。
+还可以直接从边界上的解析性出发，先证明一个广义积分收敛，再用单调性恢复素数计数函数的逐点渐近。这条路线只需要本章已经独立建立的 Chebyshev 上界、Euler 乘积和直线一上的无零点性。它不调用\secref{b3:sec:2704}的 Tauber 定理，也不把已经得到的素数定理放回证明中。读者可以把本节作为另一条完整证明来读。
+
+Newman 方法的关键是一个带有端点消去因子的 Cauchy 积分。右半平面的尾积分容易估计，左半平面则要把两个函数分开：解析延拓的函数只走一条很窄的左侧路径，截断积分所给的整函数才走完整的左半圆。下面逐项解释这种不对称的安排。
 
 \subsection{解析准备}
 \label{b3:subsec:270601}
 
+设 \(f\) 是 \([0,\infty)\) 上局部可积的有界函数。它的 Laplace 变换
+\[
+ g(z)=\int_0^\infty f(t)e^{-zt}\,\mathrm dt,
+ \qquad \operatorname{Re}z>0,
+\]
+带有指数衰减，即使 \(f\) 本身不趋于零，积分也可能存在。令 \(z\to0\) 会逐渐撤去这个衰减，因而自然要问：若变换在边界上的行为很好，能否据此断定原函数的积分收敛？只知道 \(g\) 在零附近全纯还不够。例如 \(f(t)=\cos t\) 的变换是 \(z/(z^2+1)\)，它在零附近全纯，但 \(\int_0^T\cos t\,\mathrm dt=\sin T\) 没有极限。变换在 \(\pm\mathrm i\) 处的极点记录了这两个振荡频率。因此下面的条件涉及整条虚轴。
+
 \begin{theorem}[Newman 解析引理]\label{b3:thm:27-newman}
-设 \(f:[0,\infty)\to\mathbb C\) 有界且局部可积，\(g(z)=\int_0^\infty f(t)e^{-zt}\,\mathrm{d}t\) 于 \(\operatorname{Re}z>0\) 定义。若 \(g\) 全纯延拓越过整个虚轴，则 \(\int_0^T f(t)\,\mathrm{d}t\to g(0)\)。
+设 \(f:[0,\infty)\to\mathbb C\) 局部 Lebesgue 可积，且存在常数 \(B\ge0\)，使 \(|f(t)|\le B\) 对几乎处处的 \(t\ge0\) 成立。对 \(\operatorname{Re}z>0\)，定义
+\[
+ g(z)=\int_0^\infty f(t)e^{-zt}\,\mathrm dt.
+\]
+若存在包含闭右半平面 \(\{z:\operatorname{Re}z\ge0\}\) 的开集 \(U\)，使 \(g\) 全纯延拓到 \(U\)，则
+\[
+ \lim_{T\to\infty}\int_0^T f(t)\,\mathrm dt=g(0),
+\]
+其中 \(g(0)\) 是延拓函数在零处的值。
 \end{theorem}
-这一结果称为\term[newman-jiexi-yinli]{Newman 解析引理}[Newman's analytic lemma]。这里结论为广义积分收敛，不要求绝对可积。以下围道证明可核对 Zagier 的《Newman's Short Proof of the Prime Number Theorem》\cite[pp. 707--708]{Zagier1997Newman}。
+
+这一结果称为\term[newman-jiexi-yinli]{Newman 解析引理}[Newman's analytic lemma]。结论是广义积分收敛，不是 \(\int_0^\infty|f(t)|\,\mathrm dt<\infty\)。在证明之前，不能把原来只在 \(\operatorname{Re}z>0\) 定义的积分直接代入 \(z=0\)；确认这一代入确实给出收敛积分，正是定理要完成的工作。本节按 Zagier 的《Newman's Short Proof of the Prime Number Theorem》\cite[pp. 706--708]{Zagier1997Newman}展开该路线，特别补出两条左侧路径的区别和极限次序。
+
+有界性首先保证 \(g\) 在右半平面绝对收敛。若 \(\operatorname{Re}z\ge\varepsilon>0\)，则对整数 \(k\ge0\)，
+\[
+ \int_0^\infty t^k|f(t)|e^{-\varepsilon t}\,\mathrm dt
+ \le B\int_0^\infty t^ke^{-\varepsilon t}\,\mathrm dt<\infty.
+\]
+这个共同控制允许在任意紧子集上对积分逐次求导，所以 \(g\) 确实全纯。另一方面，对每个有限的 \(T>0\)，令
+\[
+ g_T(z)=\int_0^T f(t)e^{-zt}\,\mathrm dt.
+\]
+有限区间内的指数函数在任意紧 \(z\)-集上都一致有界，\(t^k f(t)\) 又可积，故同样的逐次求导说明 \(g_T\) 是整函数。我们的目标成为 \(g_T(0)\to g(0)\)。
+
+不过，\(g_T\to g\) 在每个严格位于右半平面的紧集上一致，并不能直接推出它们在零处收敛，因为零恰在原定义域边界上。下面的围道把零处之差表示成三部分：右半圆上一项、完整左半圆上一项，以及窄左路径上的一项。前两项由 \(B/R\) 控制，最后一项在固定 \(R\) 时随 \(T\to\infty\) 消失。
 
 \subsection{围道论证}
 \label{b3:subsec:270602}
 
 \begin{proof}[\cref{b3:thm:27-newman}的证明]
-记 \(|f|\le B\)、\(g_T(z)=\int_0^T f(t)e^{-zt}\,\mathrm{d}t\)。固定 \(R>0\)，由虚轴紧段的延拓可取 \(\delta>0\)，使 \(g\) 在圆盘 \(|z|\le R\) 与 \(\operatorname{Re}z\ge-\delta\) 的交集及边界邻域全纯。沿这一区域正向边界 \(C\)，Cauchy 公式给
+先固定半径 \(R>0\)。紧线段
+\(K_R=\{\mathrm iy:|y|\le R\}\) 包含在开集 \(U\) 中，因此存在 \(\delta\in(0,R)\)，使闭矩形
 \[
-g(0)-g_T(0)=\frac1{2\pi\mathrm{i}}\int_C(g(z)-g_T(z))e^{Tz}
-\left(1+\frac{z^2}{R^2}\right)\frac{\mathrm{d}z}{z}.
+ \{z:-\delta\le\operatorname{Re}z\le0,
+              \ |\operatorname{Im}z|\le R\}
 \]
-在右半圆 \(z=Re^{\mathrm{i}\theta}\) 上，
-\(|g-g_T|\le Be^{-T\operatorname{Re}z}/\operatorname{Re}z\)，而 \(|1+z^2/R^2|=2|\cos\theta|\)，故整个被积函数模不超过 \(2B/R^2\)，积分贡献至多 \(B/R\)。端点处按连续极限理解这一相消后的界。
-在左侧路径，将 \(g\) 与 \(g_T\) 分开。因为 \(g_T\) 整且左侧变形不跨零，含 \(g_T\) 的路径可改成完整左半圆。对 \(\operatorname{Re}z<0\)，有
-\(|g_T(z)e^{Tz}|\le B/|\operatorname{Re}z|\)，相同因子相消再次给至多 \(B/R\)。剩下的 \(g\) 积分沿固定左路径，其上除两个端点外实部严格负，故 \(e^{Tz}\to0\)。路径不经过零，\(g(z)(1+z^2/R^2)/z\) 连续有界，且 \(|e^{Tz}|\le1\)，支配收敛使这一积分趋零。由此
-\(\limsup_{T\to\infty}|g(0)-g_T(0)|\le2B/R\)。任意增大 \(R\) 即得结论；延拓宽度 \(\delta\) 可随 \(R\) 缩小，不影响先取 \(T\) 极限的次序。
+以及它的一个邻域都包含在 \(U\) 中。例如先取 \(K_R\) 到 \(\mathbb C\setminus U\) 的正距离，再选更小的 \(\delta\) 即可；若 \(U=\mathbb C\)，任取足够小的 \(\delta\)。这里 \(\delta\) 可以依赖 \(R\)，并没有假定 \(g\) 在某个固定宽度的整条左侧条带上全纯。
+
+令 \(C_+\) 是由 \(-\mathrm iR\) 沿右半圆走到 \(\mathrm iR\) 的路径，令 \(L\) 是依次连接
+\[
+ \mathrm iR,\quad -\delta+\mathrm iR,\quad
+ -\delta-\mathrm iR,\quad -\mathrm iR
+\]
+的折线路径。\(C=C_++L\) 是正向简单闭曲线，围住零；它的内部由右半圆盘和窄左矩形组成，全部位于 \(U\)。\cref{b3:fig:27-newman-contours}还画出了随后用于 \(g_T\) 的左半圆 \(C_-\)，其方向是从 \(\mathrm iR\) 经 \(-R\) 到 \(-\mathrm iR\)。
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=1.1cm,y=1.1cm]
+ \fill[AnalysisBlue!8] (-0.5,-2.15) rectangle (0,2.15);
+ \draw[->,thin] (-2.65,0)--(2.85,0) node[right] {\(\operatorname{Re}z\)};
+ \draw[->,thin] (0,-2.55)--(0,2.7) node[above] {\(\operatorname{Im}z\)};
+ \draw[thick] (0,-2.15) arc[start angle=-90,end angle=90,radius=2.15];
+ \draw[->,thick] (2.15,0) arc[start angle=0,end angle=25,radius=2.15];
+ \draw[AnalysisBlue,thick] (0,2.15)--(-0.5,2.15)--(-0.5,-2.15)--(0,-2.15);
+ \draw[->,AnalysisBlue,thick] (-0.5,0.7)--(-0.5,0.15);
+ \draw[dashed,thick] (0,2.15) arc[start angle=90,end angle=270,radius=2.15];
+ \draw[->,dashed,thick] (-2.15,0) arc[start angle=180,end angle=205,radius=2.15];
+ \fill (0,0) circle (1.2pt);
+ \node[below right] at (0,0) {\(0\)};
+ \node[below left] at (-0.5,0) {\(-\delta\)};
+ \node[right] at (0,2.15) {\(\mathrm iR\)};
+ \node[right] at (0,-2.15) {\(-\mathrm iR\)};
+ \node[right] at (1.65,1.35) {\(C_+\)};
+ \node[left] at (-1.85,1.15) {\(C_-\)};
+ \node[AnalysisBlue,left] at (-0.5,-1) {\(L\)};
+\end{tikzpicture}
+\caption{Newman 围道的两种左侧路径。实线 \(C_++L\) 围住零，浅色部分表示为固定 \(R\) 选取的窄左矩形。含 \(g\) 的项只沿 \(L\) 积分；只有含整函数 \(g_T\) 的项移至虚线左半圆 \(C_-\)。所有路径方向均由箭头标出，\(\delta/R\) 仅为示意。}
+\label{b3:fig:27-newman-contours}
+\end{figure}
+
+在 Cauchy 积分中插入因子
+\[
+ W_R(z)=1+\frac{z^2}{R^2}.
+\]
+它在零处等于一，因此不改变所要提取的函数值；在 \(\pm\mathrm iR\) 处为零，稍后恰好消去半圆端点附近的估计损失。\cref{b3:thm:02-cauchy-formula}应用于在 \(C\) 及其内部全纯的函数
+\((g-g_T)e^{Tz}W_R(z)\)，得到
+\begin{equation}\label{b3:eq:27-newman-contour}
+ g(0)-g_T(0)
+ =\frac1{2\pi\mathrm i}\int_C
+      (g(z)-g_T(z))e^{Tz}W_R(z)\frac{\mathrm dz}{z}.
+\end{equation}
+
+先估计右半圆。对 \(\sigma=\operatorname{Re}z>0\)，可以减去两个绝对收敛积分，得到
+\[
+ g(z)-g_T(z)=\int_T^\infty f(t)e^{-zt}\,\mathrm dt,
+ \qquad
+ |g(z)-g_T(z)|\le\frac{B e^{-T\sigma}}{\sigma}.
+\]
+写 \(z=Re^{\mathrm i\theta}\)，其中 \(-\pi/2<\theta<\pi/2\)。由于
+\[
+ |W_R(z)|=|1+e^{2\mathrm i\theta}|
+      =2|\cos\theta|=\frac{2\sigma}{R},
+ \qquad |z|=R,
+\]
+有
+\[
+ \left|(g(z)-g_T(z))e^{Tz}\frac{W_R(z)}z\right|
+ \le \frac{B}{\sigma}\cdot\frac{2\sigma}{R^2}
+ =\frac{2B}{R^2}.
+\]
+尾积分的估计只对 \(\sigma>0\) 使用。到端点时，\(g-g_T\) 已有全纯延拓，\(W_R\) 又在那里为零，故被积函数连续；上述界延续到端点，或者把两个端点作为弧长零的集合略去也可以。右半圆弧长是 \(\pi R\)，所以
+\begin{equation}\label{b3:eq:27-newman-right-bound}
+ \left|\frac1{2\pi\mathrm i}\int_{C_+}
+     (g-g_T)e^{Tz}W_R(z)\frac{\mathrm dz}{z}\right|
+ \le\frac BR.
+\end{equation}
+
+现在把 \(L\) 上的 \(g\) 项与 \(g_T\) 项分开。对后者，
+\[
+ z\longmapsto g_T(z)e^{Tz}\frac{W_R(z)}z
+\]
+在 \(\mathbb C\setminus\{0\}\) 全纯。路径 \(L\) 与 \(C_-\) 有相同的起点和终点，除端点外均位于严格左半平面。给两条路径选取相同方向的参数，把对应点作直线插值，就得到端点固定的同伦：内部点的实部始终严格为负，因而不会经过零。由\cref{b3:prop:02-homotopy-invariance}，
+\[
+ \int_L g_T(z)e^{Tz}W_R(z)\frac{\mathrm dz}{z}
+ =\int_{C_-}g_T(z)e^{Tz}W_R(z)\frac{\mathrm dz}{z}.
+\]
+这里并未移动 \(g\) 的积分。\(g\) 可能在较远的左半平面有奇点，而整函数 \(g_T\) 允许这种变形；分开两项之后，\(1/z\) 的极点也由同伦始终避开零而得到照顾。
+
+若 \(\sigma<0\)，把指数因子并入截断积分，可得
+\[
+ \begin{aligned}
+ |g_T(z)e^{Tz}|
+ &\le B\int_0^T e^{(T-t)\sigma}\,\mathrm dt\\
+ &=B\frac{1-e^{T\sigma}}{-\sigma}
+ \le\frac B{|\sigma|}.
+ \end{aligned}
+\]
+在 \(C_-\) 上仍有 \(|W_R(z)|=2|\sigma|/R\)，故相同的端点消去给出
+\begin{equation}\label{b3:eq:27-newman-left-bound}
+ \left|\frac1{2\pi\mathrm i}\int_L
+       g_T(z)e^{Tz}W_R(z)\frac{\mathrm dz}{z}\right|
+ =\left|\frac1{2\pi\mathrm i}\int_{C_-}
+       g_T(z)e^{Tz}W_R(z)\frac{\mathrm dz}{z}\right|
+ \le\frac BR.
+\end{equation}
+这解释了为什么不能直接估计 \(g_T\) 在左半圆上的大小：那里 \(e^{-zt}\) 可能很大，必须与 Cauchy 积分中的 \(e^{Tz}\) 合在一起，才出现 \(e^{(T-t)\sigma}\) 的衰减。
+
+最后保留沿固定路径 \(L\) 的积分
+\[
+ E_{R,T}=\frac1{2\pi\mathrm i}\int_L
+            g(z)e^{Tz}W_R(z)\frac{\mathrm dz}{z}.
+\]
+路径不经过零，\(g(z)W_R(z)/z\) 在这条紧路径上连续有界。\(L\) 上 \(|e^{Tz}|\le1\)，而除两个端点外 \(\operatorname{Re}z<0\)，所以 \(e^{Tz}\to0\)。用弧长参数表示这三个线段上的积分后，连续有界函数给出共同可积控制；支配收敛于是给 \(E_{R,T}\to0\)。无须声称指数因子在含两个端点的整条 \(L\) 上一致趋零。
+
+把三项放回\eqref{b3:eq:27-newman-contour}，得到
+\[
+ |g(0)-g_T(0)|\le\frac{2B}{R}+|E_{R,T}|,
+ \qquad
+ \limsup_{T\to\infty}|g(0)-g_T(0)|\le\frac{2B}{R}.
+\]
+给定 \(\varepsilon>0\)，先选 \(R\) 使 \(2B/R<\varepsilon/2\)，再为这个 \(R\) 固定 \(\delta\) 和路径 \(L\)，最后令 \(T\) 足够大，使 \(|E_{R,T}|<\varepsilon/2\)。这就证明 \(g_T(0)\to g(0)\)。所谓“先取 \(T\) 的极限，再让 \(R\to\infty\)”指的正是上述估计的次序，不需要关于所有半径的统一左延拓宽度。
 \end{proof}
+
+这个证明没有使用 \(f\) 的正性。有界性则用了两次，分别产生右半圆的 \(B/R\) 和左半圆的 \(B/R\)。只有边界延拓而没有对原函数的增长控制，并不能原样保留这两项估计；Tauber 条件的实际作用已经体现在围道上。
 
 \subsection{初等 Tauber 型归约}
 \label{b3:subsec:270603}
 
-若非递减函数 \(A(x)\) 满足 \(\int_1^\infty(A(x)-x)x^{-2}\,\mathrm{d}x\) 收敛，则 \(A(x)/x\to1\)。若存在任意大 \(x\) 使 \(A(x)\ge\lambda x\)、\(\lambda>1\)，则在 \([x,\lambda x]\) 上
-\[
-\int_x^{\lambda x}\frac{A(t)-t}{t^2}\,\mathrm{d}t
-\ge\int_1^\lambda\frac{\lambda-u}{u^2}\,\mathrm{d}u>0,
-\]
-与收敛积分尾段趋零矛盾。若 \(A(x)\le\lambda x\)、\(0<\lambda<1\)，则在 \([\lambda x,x]\) 上用 \(A(t)\le A(x)\)，得到一个固定严格负上界，同样矛盾。这一步只使用单调性，并不要求 \(A\) 连续或可微。
+在算术应用中，Newman 引理将给出一个带符号积分的收敛性。积分收敛一般只约束平均行为，允许被积函数在正负之间抵消。素数计数函数的单调性提供了更强限制：某点相对于直线 \(x\) 偏离太远时，这个偏离会在一个长度与 \(x\) 成比例的区间上留下固定大小的积分，无法只靠一个很窄的尖峰隐藏起来。
 
-\ProseParagraphBreak
+\begin{lemma}[由积分收敛恢复单调函数的渐近]\label{b3:lem:27-monotone-integral}
+设 \(A:[1,\infty)\to\mathbb R\) 是取有限值的非递减函数。若广义积分
+\[
+ \lim_{X\to\infty}\int_1^X\frac{A(x)-x}{x^2}\,\mathrm dx
+\]
+存在且为有限实数，则 \(A(x)/x\to1\)。不要求 \(A\) 连续、可微或非负。
+\end{lemma}
+\begin{proof}
+有限值的单调函数在每个紧区间上有界且可测，所以所有有限区间积分均有意义。广义积分的 Cauchy 条件说明：若 \(a_n\to\infty\)、\(b_n\to\infty\) 且 \(a_n\le b_n\)，则
+\[
+ \int_{a_n}^{b_n}\frac{A(t)-t}{t^2}\,\mathrm dt\longrightarrow0.
+\]
+注意这结论适用于带符号积分，不预设绝对收敛。
 
-两个固定差距可以分别算成
+固定 \(\lambda>1\)。若存在任意大的 \(x\) 使 \(A(x)\ge\lambda x\)，则对 \(x\le t\le\lambda x\)，单调性给 \(A(t)\ge\lambda x\)。作代换 \(t=xu\)，得到
 \[
- \int_1^\lambda\frac{\lambda-u}{u^2}\,\mathrm du
-       =\lambda-1-\log\lambda>0\quad(\lambda>1),
+ \begin{aligned}
+ \int_x^{\lambda x}\frac{A(t)-t}{t^2}\,\mathrm dt
+ &\ge\int_x^{\lambda x}\frac{\lambda x-t}{t^2}\,\mathrm dt\\
+ &=\int_1^\lambda\frac{\lambda-u}{u^2}\,\mathrm du
+   =\lambda-1-\log\lambda>0.
+ \end{aligned}
 \]
-以及
+右端是只依赖 \(\lambda\) 的正常数，与尾段积分趋零矛盾。因此对每个 \(\lambda>1\)，最终都有 \(A(x)<\lambda x\)，从而 \(\limsup A(x)/x\le1\)。
+
+再固定 \(0<\lambda<1\)。若存在任意大的 \(x\) 使 \(A(x)\le\lambda x\)，则对 \(\lambda x\le t\le x\)，有 \(A(t)\le\lambda x\)。在 \(x\) 足够大以保证 \(\lambda x\ge1\) 时，
 \[
- \int_\lambda^1\frac{\lambda-u}{u^2}\,\mathrm du
-       =1-\lambda+\log\lambda<0\quad(0<\lambda<1).
+ \begin{aligned}
+ \int_{\lambda x}^x\frac{A(t)-t}{t^2}\,\mathrm dt
+ &\le\int_{\lambda x}^x\frac{\lambda x-t}{t^2}\,\mathrm dt\\
+ &=\int_\lambda^1\frac{\lambda-u}{u^2}\,\mathrm du
+   =1-\lambda+\log\lambda<0.
+ \end{aligned}
 \]
-严格符号来自 \(\log\lambda<\lambda-1\)。积分收敛意味着任意两个同时趋于无穷的端点之间，带符号积分也趋零；所以只要比值 \(A(x)/x\) 与一保持一个固定距离，单调性就会把这一次偏离延续成一个乘法区间上的固定积分偏差。这是这里由平均恢复逐点渐近的全部实变量内容。
+两端都趋于无穷，而积分有一个固定的严格负上界，又与 Cauchy 条件矛盾。因此对每个 \(0<\lambda<1\)，最终都有 \(A(x)>\lambda x\)，从而 \(\liminf A(x)/x\ge1\)。合并即得结论。两个严格符号都来自 \(\log\lambda<\lambda-1\)（\(\lambda\ne1\)）。
+\end{proof}
+
+这里的上下偏离要使用不同方向的区间：上偏离从 \(x\) 向右传播，下偏离从 \(x\) 向左传播。它们恰好符合“\(A\) 只能增加”的条件。对有跳跃的阶梯函数，这个论证与对连续函数一样有效，因此可以直接用于 \(\vartheta\)，不必先作平滑处理。
 
 \subsection{素数定理的另一种证明}
 \label{b3:subsec:270604}
 
-令 \(P(s)=\sum_p(\log p)p^{-s}\)。高次幂部分
-\(H(s)=\sum_{p,r\ge2}(\log p)p^{-rs}\) 在 \(\operatorname{Re}s>1/2\) 局部一致绝对收敛，故 \(P=F-H\) 在直线一上除一处主部外全纯延拓。Abel 求和给
+为把上述两步用于素数，取一次素数幂的 Dirichlet 级数
 \[
-\frac{P(1+z)}{1+z}-\frac1z
-=\int_0^\infty\bigl(e^{-t}\vartheta(e^t)-1\bigr)e^{-zt}\,\mathrm{d}t.
+ P(s)=\sum_p\frac{\log p}{p^s},\qquad \operatorname{Re}s>1.
 \]
-括号内函数由 Chebyshev 界有界；左侧在虚轴全纯，因为一处的单极点已抵消，其他点由无零点性保证。Newman 引理遂给 \(\int_1^\infty(\vartheta(x)-x)x^{-2}\,\mathrm{d}x\) 收敛。上一小节推出 \(\vartheta(x)\sim x\)，再去掉对数权即得素数定理。此证法同样不能仅凭无零点性给出定量误差，其围道半径是先固定、最后才趋无穷的。
+这里 \(p\) 遍历素数，\(p^{-s}=e^{-s\log p}\) 使用实对数。由于在每个 \(\operatorname{Re}s\ge1+\varepsilon\) 上有共同收敛上界 \(\sum_{n\ge2}(\log n)n^{-1-\varepsilon}\)，该级数在右半平面全纯。它的部分和就是 \(\vartheta(x)\)，因此比包含全部素数幂的 \(-\zeta'/\zeta\) 更直接对应我们要使用的单调函数。
+
+\begin{proposition}[高次素数幂项的延拓范围]\label{b3:prop:27-prime-power-tail}
+设 \(p\) 遍历素数，\(r\) 遍历大于等于二的整数。级数
+\[
+ H(s)=\sum_p\sum_{r\ge2}(\log p)p^{-rs}
+\]
+在半平面 \(\operatorname{Re}s>1/2\) 局部一致绝对收敛，因而定义全纯函数。若 \(\zeta\) 是 Riemann zeta 函数，则在 \(\operatorname{Re}s>1\) 有
+\[
+ P(s)\coloneqq\sum_p(\log p)p^{-s}
+      =-\frac{\zeta'(s)}{\zeta(s)}-H(s).
+\]
+\end{proposition}
+\begin{proof}
+固定 \(\varepsilon>0\)。若 \(\sigma=\operatorname{Re}s\ge1/2+\varepsilon\)，对 \(r\) 先求几何级数，得到
+\[
+ \begin{aligned}
+ \sum_p\sum_{r\ge2}(\log p)|p^{-rs}|
+ &=\sum_p\frac{(\log p)p^{-2\sigma}}{1-p^{-\sigma}}\\
+ &\le\frac1{1-2^{-1/2-\varepsilon}}
+       \sum_{n\ge2}\frac{\log n}{n^{1+2\varepsilon}}
+ <\infty.
+ \end{aligned}
+\]
+这是与虚部和 \(s\) 无关的共同上界，故给出所需的正规收敛。最后的等式来自\secref{b3:sec:2702}中绝对收敛的 Euler 对数导数级数：把 \(r=1\) 与 \(r\ge2\) 分开即可。
+\end{proof}
+
+由\cref{b3:cor:27-regularized-boundary}，\(F(s)-1/(s-1)\) 在闭半平面 \(\operatorname{Re}s\ge1\) 的某个开邻域全纯，其中 \(F=-\zeta'/\zeta\)。与 \(\operatorname{Re}s>1/2\) 取交，便得到同样包含这个闭半平面的开集 \(V\)，使
+\[
+ Q(s)=F(s)-\frac1{s-1}-H(s)
+\]
+全纯。因而 \(P\) 的延拓在 \(V\) 上具有形式
+\[
+ P(s)=\frac1{s-1}+Q(s).
+\]
+这一步只用无零点边界和高次幂的绝对收敛。\(P\) 的单极点留数仍为一，因为减去的 \(H\) 在一处全纯。
+
+下面把 \(P\) 写成 Laplace 变换。对 \(\operatorname{Re}s>1\)，部分求和给
+\[
+ \frac{P(s)}s=\int_1^\infty\vartheta(x)x^{-s-1}\,\mathrm dx.
+\]
+这也可以直接用 \(\vartheta(x)=\sum_{p\le x}\log p\) 逐项积分验证：\(s\int_p^\infty x^{-s-1}\,\mathrm dx=p^{-s}\)，而绝对值积分由 \(\vartheta(x)\le Cx\) 控制为收敛积分。这个线性上界是\cref{b3:lem:27-chebyshev}通过中心二项式系数独立证明的，不使用 \(\vartheta(x)\sim x\)。
+
+令 \(s=1+z\)，再作 \(x=e^t\) 的代换。对 \(\operatorname{Re}z>0\)，得到
+\begin{equation}\label{b3:eq:27-newman-boundary-function}
+ \begin{aligned}
+ g(z)&\coloneqq\frac{P(1+z)}{1+z}-\frac1z\\
+ &=\int_0^\infty\bigl(e^{-t}\vartheta(e^t)-1\bigr)
+                   e^{-zt}\,\mathrm dt.
+ \end{aligned}
+\end{equation}
+取 \(f(t)=e^{-t}\vartheta(e^t)-1\)。它局部可积，且 \(0\le\vartheta(x)\le Cx\) 对 \(x\ge1\) 成立（适当扩大 \(C\) 即可），所以 \(-1\le f(t)\le C-1\)，满足 Newman 引理的有界性条件。
+
+还须核对 \(g\) 在整个闭右半平面附近全纯，而不能只看每项形式。利用 \(P(1+z)=1/z+Q(1+z)\)，有
+\[
+ \begin{aligned}
+ \frac{P(1+z)}{1+z}-\frac1z
+ &=\frac1{z(1+z)}-\frac1z+\frac{Q(1+z)}{1+z}\\
+ &=\frac{Q(1+z)-1}{1+z}.
+ \end{aligned}
+\]
+由于 \(V\subset\{\operatorname{Re}s>1/2\}\)，平移后的开集 \(V-1\) 包含闭右半平面，并不含 \(z=-1\)。最后一个表达式便在此全纯，包括 \(z=0\)。这既消除了零处的两个主部，也验证了非零高度处所需的边界延拓。
+
+\cref{b3:thm:27-newman}于是给出
+\[
+ \lim_{T\to\infty}\int_0^T
+       \bigl(e^{-t}\vartheta(e^t)-1\bigr)\,\mathrm dt=g(0).
+\]
+换回 \(x=e^t\)，恰为
+\begin{equation}\label{b3:eq:27-theta-integral-limit}
+ \int_1^\infty\frac{\vartheta(x)-x}{x^2}\,\mathrm dx=g(0).
+\end{equation}
+函数 \(\vartheta\) 取有限值且非递减，因此\cref{b3:lem:27-monotone-integral}推出 \(\vartheta(x)/x\to1\)。再用\cref{b3:prop:27-equivalences}中已经独立证明的部分求和等价式，得到
+\[
+ \psi(x)\sim x,\qquad \pi(x)\sim\frac{x}{\log x}.
+\]
+这就完成了另一条素数定理的证明：Chebyshev 界保证可用 Newman 引理，边界无零点性保证变换延拓，而 \(\vartheta\) 的单调性负责由积分结论恢复逐点渐近。
+
+还可以读出\eqref{b3:eq:27-theta-integral-limit}的极限值。\secref{b3:sec:2702}中的 Laurent 展开为
+\(F(s)=1/(s-1)-\gamma+O(s-1)\)，故
+\[
+ Q(1)=-\gamma-H(1),\qquad
+ H(1)=\sum_p\frac{\log p}{p(p-1)}.
+\]
+因此
+\[
+ \int_1^\infty\frac{\vartheta(x)-x}{x^2}\,\mathrm dx
+ =-1-\gamma-\sum_p\frac{\log p}{p(p-1)}.
+\]
+右侧的素数级数绝对收敛，左侧在此只证明了带符号的广义收敛。这一等式说明消去极点以后留下的全纯部分确实保留了算术信息。
+
+这条证明没有给出 \(\vartheta(x)-x\) 的定量误差。围道论证只在固定 \(R\) 时令 \(T\to\infty\)，而左延拓宽度及 \(g\) 在左路径上的界都可以随 \(R\) 改变。要把这个极限过程变成明确的误差函数，还需要关于无零区域及其中变换大小的一致估计；本节的边界无零点结论本身没有提供它们。

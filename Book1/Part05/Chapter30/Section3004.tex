@@ -1,0 +1,234 @@
+% !TeX root = ../../Book1.tex
+\section{弱大数定律}
+\label{b1:sec:3004}
+
+把同一个随机试验重复许多次，样本平均应当接近期望。这里有两个不同的问题：
+固定误差以后，偏离均值的概率是否趋于零；以及能否在同一个概率为一的集合上，
+使整条样本平均序列收敛。本节先处理前一个问题。
+有限二阶矩使平均误差可以直接用方差计算；只有一次矩时，则先截去尾部，
+再分别控制有界部分和被舍去部分。
+
+\ProseParagraphBreak
+
+有限方差的论证可对照 Sheldon Axler 的《Measure, Integration \& Real Analysis》%
+\cite[12.37--12.38, pp.~396--397]{Axler2020Measure}。
+一次矩下的截断与平均收敛可与 David H. Fremlin 的《Measure Theory》%
+\cite[273N(a)]{Fremlin2016Measure}比较；下面用固定截断和二阶矩估计直接证明所需结论。
+% 实读：Axler2020Measure 印刷 pp.396--397，12.37--12.38；
+% Fremlin2016Measure 作者公开 chap27 摘本 273N(a)。Bass2024Real 的
+% Section 21.3（印刷 pp.276--278）仅作教学背景，不作为正式引用依据。
+
+\subsection{独立和的期望与方差}
+\label{b1:subsec:300401}
+
+期望的有限可加性不需要独立性。方差还包含不同变量之间的交叉项，
+独立性在这里的作用是使这些项在减去均值以后消失。
+
+\begin{proposition}[期望与方差的有限加法]
+\label{b1:prop:30-variance-sum}
+设 \((\Omega,\mathcal F,\mathbb P)\) 为概率空间，\(N\geq1\)，
+\(X_1,\ldots,X_N\) 为其上两两独立的实值随机变量，且
+\(\mathbb E(X_j^2)<\infty\) 对 \(1\leq j\leq N\) 成立。
+对实数 \(a_1,\ldots,a_N\)，有
+\[
+ \mathbb E\left(\sum_{j=1}^N a_jX_j\right)
+ =\sum_{j=1}^N a_j\cdot\mathbb E X_j,
+ \quad
+ \operatorname{Var}\left(\sum_{j=1}^N a_jX_j\right)
+ =\sum_{j=1}^N a_j^2\cdot\operatorname{Var}(X_j).
+\]
+第一项等式即使没有两两独立的假设也成立。
+\end{proposition}
+\begin{proof}
+概率空间的总质量为 \(1\)，故 Cauchy--Schwarz 不等式给出
+\(\mathbb E|X_j|\leq\bigl(\mathbb E(X_j^2)\bigr)^{1/2}<\infty\)。
+期望的线性性随后给出第一项等式。
+令 \(Z_j=X_j-\mathbb E X_j\)。这些变量仍两两独立，且均值为零。
+对 \(i\ne j\)，由\cref{b1:prop:30-independent-expectations}，有
+\[
+ \mathbb E(Z_iZ_j)=(\mathbb E Z_i)\cdot(\mathbb E Z_j)=0.
+\]
+所用乘积可积；也可直接由
+\[
+ \mathbb E|Z_iZ_j|
+ \leq\bigl(\mathbb E(Z_i^2)\bigr)^{1/2}
+       \cdot\bigl(\mathbb E(Z_j^2)\bigr)^{1/2}<\infty
+\]
+核对。展开有限和的平方，得到
+\[
+ \begin{aligned}
+ \operatorname{Var}\left(\sum_{j=1}^N a_jX_j\right)
+ &=\mathbb E\left(\sum_{j=1}^N a_jZ_j\right)^2\\
+ &=\sum_{j=1}^N a_j^2\cdot\mathbb E(Z_j^2)
+   +2\sum_{1\leq i<j\leq N}a_ia_j\cdot\mathbb E(Z_iZ_j)\\
+ &=\sum_{j=1}^N a_j^2\cdot\operatorname{Var}(X_j).
+ \end{aligned}
+\]
+\end{proof}
+
+取 \(a_j=1/N\)，可见平均的方差不是各项方差的平均，而是它们之和除以 \(N^2\)。
+同分布再使所有单项方差相同，于是样本平均的方差缩小为单项方差的 \(1/N\)。
+后面的极限定理首先来自这个计算。
+
+\subsection{有限方差情形的弱大数律}
+\label{b1:subsec:300402}
+
+样本平均依概率收敛到共同均值的结论称为
+\term[ruo-dashu-dinglv]{弱大数定律}[weak law of large numbers]。
+先在二阶矩有限的条件下同时得到均方收敛和偏差概率的上界。
+
+\begin{theorem}[有限方差的弱大数定律]
+\label{b1:thm:30-finite-variance-weak-law}
+设 \((\Omega,\mathcal F,\mathbb P)\) 为概率空间，\((X_n)_{n\geq1}\)
+为其上的独立同分布实值随机变量列，且 \(\mathbb E(X_1^2)<\infty\)。
+令 \(m=\mathbb E X_1\)、\(\sigma^2=\operatorname{Var}(X_1)\)、
+\(S_n=\sum_{k=1}^nX_k\)。则
+\[
+ \mathbb E\left|\frac{S_n}{n}-m\right|^2=\frac{\sigma^2}{n},
+ \quad
+ \mathbb P\left(\left|\frac{S_n}{n}-m\right|\geq\varepsilon\right)
+ \leq\frac{\sigma^2}{n\varepsilon^2}
+ \quad(n\geq1,\ \varepsilon>0).
+\]
+因此 \(S_n/n\) 在 \(L^2(\mathbb P)\) 中且依概率收敛于 \(m\)。
+\end{theorem}
+\begin{proof}
+同分布保证 \(\mathbb E X_k=m\)、\(\operatorname{Var}(X_k)=\sigma^2\)。
+由\cref{b1:prop:30-variance-sum}，有
+\[
+ \mathbb E\left(\frac{S_n}{n}\right)=m,
+ \quad
+ \mathbb E\left|\frac{S_n}{n}-m\right|^2
+ =\operatorname{Var}\left(\frac{S_n}{n}\right)
+ =\frac1{n^2}\sum_{k=1}^n\operatorname{Var}(X_k)
+ =\frac{\sigma^2}{n}.
+\]
+对实值平方可积变量 \(S_n/n\) 应用\cref{b1:cor:30-chebyshev}，
+得到所述概率上界。即使 \(\sigma=0\)，这个计算也仍然成立。
+\end{proof}
+
+同分布不是上述方差方法的必要条件。只要总方差相对于 \(n^2\) 足够小，
+平均和减去平均期望以后的误差也会消失。
+
+\begin{corollary}[非同分布变量的方差条件]
+\label{b1:cor:30-variance-weak-law}
+设 \((\Omega,\mathcal F,\mathbb P)\) 为概率空间，\((X_n)_{n\geq1}\)
+为其上两两独立的实值随机变量列，且每个 \(X_n\in L^2(\mathbb P)\)。
+若
+\[
+ \lim_{n\to\infty}\frac1{n^2}
+       \sum_{k=1}^n\operatorname{Var}(X_k)=0,
+\]
+则
+\[
+ \frac1n\sum_{k=1}^n(X_k-\mathbb E X_k)\longrightarrow0
+ \quad\text{于 }L^2(\mathbb P)\text{ 且依概率成立}.
+\]
+若另有 \(n^{-1}\sum_{k=1}^n\mathbb E X_k\to m\in\mathbb R\)，
+则 \(n^{-1}\sum_{k=1}^nX_k\) 在这两种意义下收敛于 \(m\)。
+\end{corollary}
+\begin{proof}
+\cref{b1:prop:30-variance-sum}给出
+\[
+ \mathbb E\left|\frac1n\sum_{k=1}^n(X_k-\mathbb E X_k)\right|^2
+ =\frac1{n^2}\sum_{k=1}^n\operatorname{Var}(X_k)\longrightarrow0.
+\]
+再用 Chebyshev 不等式得到依概率收敛。
+若平均期望趋于 \(m\)，在左端随机变量上加上确定性的误差
+\(n^{-1}\sum_{k=1}^n\mathbb E X_k-m\)，并用 \(L^2\) 三角不等式，即得最后的结论。
+\end{proof}
+
+例如，一致有界的单项方差满足这一条件。对独立的 Bernoulli 变量，若
+\(\mathbb P(X_k=1)=p\)、\(\mathbb P(X_k=0)=1-p\)，其中 \(0\leq p\leq1\)，
+则 \(S_n\) 是前 \(n\) 次试验中事件发生的次数，且
+\[
+ \mathbb P\left(\left|\frac{S_n}{n}-p\right|\geq\varepsilon\right)
+ \leq\frac{p(1-p)}{n\varepsilon^2}
+ \leq\frac1{4n\varepsilon^2}.
+\]
+这一上界控制任意固定样本量的偏差概率，但对 \(n\) 求和一般发散。
+因此不能只把它代入第一 Borel--Cantelli 引理，就宣称整条样本平均序列几乎必然收敛。
+下一节将另外控制一段部分和中的最大偏差。
+
+\subsection{可积情形的截断与推广}
+\label{b1:subsec:300403}
+
+有限方差使计算简便，却不是弱大数定律所必需的。设一次矩有限，
+先在一个固定高度截断所有变量。截断后的变量有有限方差，
+而原变量与截断变量的平均差，可以直接用它们的一次矩尾部控制。
+截断高度先固定，样本量趋于无穷以后，再让该高度增大。
+
+\begin{theorem}[可积变量的弱大数定律]
+\label{b1:thm:30-integrable-weak-law}
+设 \((\Omega,\mathcal F,\mathbb P)\) 为概率空间，\((X_n)_{n\geq1}\)
+为其上的独立同分布实值随机变量列，且 \(\mathbb E|X_1|<\infty\)。
+令 \(m=\mathbb E X_1\)、\(S_n=\sum_{k=1}^nX_k\)。则
+\[
+ \lim_{n\to\infty}\mathbb E\left|\frac{S_n}{n}-m\right|=0,
+ \quad
+ \lim_{n\to\infty}
+ \mathbb P\left(\left|\frac{S_n}{n}-m\right|\geq\varepsilon\right)=0
+ \quad(\varepsilon>0).
+\]
+即样本平均在 \(L^1(\mathbb P)\) 中且依概率收敛于共同均值。
+\end{theorem}
+\begin{proof}
+固定实数 \(R\geq1\)，令
+\[
+ Y_k^{(R)}=X_k\cdot\mathbf1_{\{|X_k|\leq R\}},
+ \quad
+ m_R=\mathbb E Y_1^{(R)},
+ \quad
+ \delta_R=\mathbb E\bigl(|X_1|\cdot\mathbf1_{\{|X_1|>R\}}\bigr).
+\]
+同一个 Borel 函数作用在各个 \(X_k\) 上，所得 \(Y_k^{(R)}\) 仍独立同分布。
+它们满足 \(|Y_k^{(R)}|\leq R\)，所以
+\(\operatorname{Var}(Y_1^{(R)})\leq\mathbb E((Y_1^{(R)})^2)\leq R^2\)。
+由有限方差的弱大数定律及 Cauchy--Schwarz 不等式，
+\[
+ \mathbb E\left|\frac1n\sum_{k=1}^nY_k^{(R)}-m_R\right|
+ \leq\left(
+  \mathbb E\left|\frac1n\sum_{k=1}^nY_k^{(R)}-m_R\right|^2
+       \right)^{1/2}
+ \leq\frac R{\sqrt n}.
+\]
+另一方面，同分布给出
+\[
+ \mathbb E|X_k-Y_k^{(R)}|=\delta_R,
+ \quad |m-m_R|\leq\delta_R.
+\]
+把样本平均的误差分成三项，再取期望，得到
+\[
+ \begin{aligned}
+ \mathbb E\left|\frac{S_n}{n}-m\right|
+ &\leq\mathbb E\left|\frac1n\sum_{k=1}^nY_k^{(R)}-m_R\right|
+       +\frac1n\sum_{k=1}^n\mathbb E|X_k-Y_k^{(R)}|+|m_R-m|\\
+ &\leq\frac R{\sqrt n}+2\delta_R.
+ \end{aligned}
+\]
+先令 \(n\to\infty\)，得到左端的上极限至多为 \(2\delta_R\)。
+因为 \(|X_1|\) 可积，且尾部被积函数由 \(|X_1|\) 控制并逐点趋于零，
+控制收敛定理说明 \(\delta_R\to0\)。再令 \(R\to\infty\)，便得 \(L^1\) 收敛。
+最后，由 Markov 不等式，
+\[
+ \mathbb P\left(\left|\frac{S_n}{n}-m\right|\geq\varepsilon\right)
+ \leq\frac1\varepsilon\cdot
+       \mathbb E\left|\frac{S_n}{n}-m\right|\longrightarrow0.
+\]
+\end{proof}
+
+这个证明中，固定截断使二阶矩估计里的 \(R\) 在 \(n\to\infty\) 时保持不变。
+若立即取 \(R=n\)，仅有一次矩时，上面的 \(R/\sqrt n\) 就不再趋于零，
+需要另外的论证才能使用随样本量变化的截断。
+
+\ProseParagraphBreak
+
+可积而不平方可积的分布确实存在。在 \((0,1)\) 上取 Lebesgue 概率测度，并令
+\(X(u)=u^{-2/3}\)，则
+\[
+ \mathbb E X=\int_0^1u^{-2/3}\,\mathrm du=3,
+ \quad
+ \mathbb E(X^2)=\int_0^1u^{-4/3}\,\mathrm du=\infty.
+\]
+取具有这个分布的独立随机变量列，其样本平均仍在 \(L^1\) 中且依概率趋于 \(3\)。
+方差公式不能用于这列变量，而固定截断仍能控制它们的平均误差。

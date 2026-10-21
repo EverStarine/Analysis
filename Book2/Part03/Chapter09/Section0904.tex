@@ -1,0 +1,186 @@
+% !TeX root = ../../Book2.tex
+\OptionalSection{一阶非线性方程}{b2:sec:0704}
+
+在线性输运中，先由已知速度场确定轨道，再沿轨道计算数值。若速度依赖未知函数，这两步便相互耦合。本节只构造局部光滑解，并用一个显式例子说明这种解可能在有限时间失效。后面的波动、热与 Laplace 方程不依赖本节。
+
+\subsection{拟线性方程}
+\label{b2:subsec:070401}
+
+考虑已在\secref{b2:sec:0104}定义的拟线性类型
+\[
+ u_t+b(x,t,u)\cdot\nabla u=f(x,t,u),\quad u(x,0)=g(x).
+\]
+这里 \(d\geq1\) 为整数，未知函数及数据 \(g\) 取实值，速度 \(b\) 取值于 \(\mathbb R^d\)，源项 \(f\) 取实值。设 \(b,f\) 在相关变量的开集上为 \(C^1\)，\(g\in C^1\)。把未知的函数值也看成一个坐标，解联立系统
+\begin{equation}\label{b2:eq:07-quasilinear-system}
+ \begin{aligned}
+ X'&=b(X,t,Z),&X(0,a)&=a,\\
+ Z'&=f(X,t,Z),&Z(0,a)&=g(a).
+ \end{aligned}
+\end{equation}
+将时间也作为坐标，补上 \(t'=1\)，便可对向量 \((X,t,Z)\) 应用\cref{b2:thm:07-flow-derivative}，得到其对 \((t,a)\) 的 \(C^1\) 依赖。时刻零有 \(D_aX=I_d\)，故映射 \((a,t)\mapsto(X(t,a),t)\) 在每个 \((a_0,0)\) 附近的导数可逆。
+
+\begin{proposition}\label{b2:prop:07-quasilinear-local}
+设 \(d\geq1\) 为整数，\(V\subset\mathbb R^d\) 为开集，\(g\in C^1(V;\mathbb R)\)，\(a_0\in V\)，\(b,f\) 在包含 \((a_0,0,g(a_0))\) 的 \(\mathbb R^d\times\mathbb R\times\mathbb R\) 开集上属于 \(C^1\)，值域分别为 \(\mathbb R^d\)、\(\mathbb R\)。则在 \((a_0,0)\) 的某个时空邻域中，初值问题 \(u_t+b(x,t,u)\cdot\nabla u=f(x,t,u)\)、\(u(x,0)=g(x)\) 有实值 \(C^1\) 解，且该解局部唯一；任何满足相同初值的另一实值 \(C^1\) 解，在适当缩小的共同邻域内与它相等。
+\end{proposition}
+\begin{proof}
+由\cref{b2:thm:01-inverse}，缩小邻域后可反解 \(a=A(x,t)\)。令 \(u(x,t)=Z(t,A(x,t))\)，则
+\(u(X(t,a),t)=Z(t,a)\)。对此式求时间导数并代入\eqref{b2:eq:07-quasilinear-system}，得到偏微分方程。初始时 \(A(x,0)=x\)，所以 \(u(x,0)=g(x)\)。若另有经典解 \(v\)，沿满足 \(X'=b(X,t,v(X,t))\) 的曲线令 \(Z=v(X,t)\)，链式法则表明 \((X,Z)\) 满足同一联立系统和同一初值。常微分方程唯一性使二者与构造的 \((X,Z)\) 相同，再由局部反演得到 \(v=u\)。
+\end{proof}
+
+这一结论的邻域可以依赖 \(a_0\)。即使联立系统一直有解，其空间投影 \(a\mapsto X(t,a)\) 也可能先失去可逆性。下面的例子把这种障碍显示为一个分母趋零的计算。
+
+\subsection{特征线交叉}
+\label{b2:subsec:070402}
+
+\term[burgers-fangcheng]{无黏 Burgers 方程}[inviscid Burgers equation]为
+\[
+ u_t+u u_x=0.
+\]
+取初值 \(u(x,0)=g(x)\)，其中 \(g\in C^1(\mathbb R;\mathbb R)\) 有界，考察 \(t\geq0\)。沿特征线 \(Z'=0\)，所以 \(Z(t,a)=g(a)\)、\(X(t,a)=a+tg(a)\)。在满足 \(1+tg'(a)>0\) 对所有 \(a\in\mathbb R\) 成立的时间内，\(X(t,\cdot)\) 严格递增，又因 \(|X(t,a)-a|\leq t\|g\|_\infty\) 而满射。它是全实轴的 \(C^1\) 微分同胚，局部逆随时空变量 \(C^1\) 变化，解由 \(u(X(t,a),t)=g(a)\) 给出，并满足
+\begin{equation}\label{b2:eq:07-burgers-gradient}
+ u_x(X(t,a),t)=\frac{g'(a)}{1+tg'(a)}.
+\end{equation}
+若 \(g'\geq0\)，上述构造对所有正时间有效；若 \(g'\) 的负最小值 \(m\) 在某点取到，则在 \(T_*=-1/m\) 之前有效，而该点轨道上的梯度在 \(t\uparrow T_*\) 时趋于负无穷。
+
+\ProseParagraphBreak
+
+具体取 \(g(a)=-\tanh a\)，有 \(m=-1\)、\(T_*=1\)。在 \(0\leq t<1\) 时，函数值始终处于 \((-1,1)\)，但原点处梯度为 \(-1/(1-t)\)。失效来自投影的导数 \(\partial_aX(t,0)=1-t\) 趋于零，即相邻初始标签之间的无穷小空间间隔被压缩。在 \(t=1\) 时，\(a\mapsto a-\tanh a\) 仍严格递增，但在原点的导数为零，逆映射已不再为 \(C^1\)。因此首次梯度爆破并不要求两条不同标签的投影恰在这一时刻相交。当 \(t>1\) 时，映射 \(a-t\tanh a\) 在原点附近下降，在两端上升，才失去单射性。两条不同初始标签的轨道可以投影到同一个时空点，而所携带的值不同，不可能成为单值经典解。\Cref{b2:fig:07-characteristic-compression}区分了光滑阶段与失效后的轨道投影。
+
+\ProseParagraphBreak
+
+这里交叉的是 \((x,t)\) 平面中的投影。在扩充状态 \((X,Z)\) 中，特征系统为 \(X'=Z\)、\(Z'=0\)，其流是 \((a,z_0)\mapsto(a+tz_0,z_0)\)，逆为 \((x,z)\mapsto(x-tz,z)\)。所以完整状态的流始终单射，常微分方程的唯一性并未失效；失效的是丢去 \(Z\) 坐标后，用位置反解初始标签的步骤。
+\input{Figures/F07-CharacteristicCompression}
+
+\subsection{激波形成的预告}
+\label{b2:subsec:070403}
+
+在经典解存在时，Burgers 方程等价于
+\(u_t+\partial_x(u^2/2)=0\)。对于有跳跃的函数，后一种写法仍可通过分布导数解释。设一般通量 \(F\in C^1(\mathbb R;\mathbb R)\)，\(I\subset\mathbb R\) 为开时间区间，\(s\in C^1(I;\mathbb R)\)。令实值函数在 \(x<s(t)\) 一侧恒为常数 \(u_-\)，在 \(x>s(t)\) 一侧恒为常数 \(u_+\)；曲线上的取值不影响分布。对 \(\varphi\in C_c^\infty(\mathbb R\times I)\)，把分布 \(u_t+\partial_xF(u)\) 的测试积分在曲线两侧分别分部积分，得到界面项
+\[
+ \int \bigl(F(u_+)-F(u_-)-s'(t)(u_+-u_-)\bigr)
+ \varphi(s(t),t)\,\mathrm dt.
+\]
+它对所有紧支集光滑测试函数为零，当且仅当
+\[
+ s'(t)(u_+-u_-)=F(u_+)-F(u_-).
+\]
+这称为\term[rankine-hugoniot]{Rankine--Hugoniot 条件}[Rankine--Hugoniot condition]。对不同的 Burgers 左右状态，速度为 \((u_-+u_+)/2\)；这样的移动跳跃称为\term[jibo]{激波}[shock wave]。
+
+\ProseParagraphBreak
+
+界面恒等式只给出弱方程的相容条件，没有证明某个跳跃是光滑解失效后的唯一延续。物理上允许的压缩跳跃与不允许的展开跳跃，都可能满足同一恒等式。要挑选延续还需附加条件，并建立存在、稳定性与唯一性理论；本节的梯度爆破计算本身不承担这些结论。
+
+\subsection{Hamilton--Jacobi 方程}
+\label{b2:subsec:070404}
+
+另一类重要的一阶非线性方程是\term[hamilton-jacobi-fangcheng]{Hamilton--Jacobi 方程}[Hamilton--Jacobi equation]
+\[
+ u_t+H(x,\nabla u)=0.
+\]
+这里 \(d\geq1\) 为整数，\(H\) 与未知函数 \(u\) 都取实值。设 \(V\subset\mathbb R^d\) 开、\(a_0\in V\)，\(g\in C^3(V;\mathbb R)\)，\(H\) 是包含 \((a_0,\nabla g(a_0))\) 的 \(\mathbb R^d\times\mathbb R^d\) 开邻域上的实值 \(C^3\) 函数，只在初始点附近构造光滑解。取
+\begin{equation}\label{b2:eq:07-hamilton-system}
+ X'=H_p(X,P),\quad P'=-H_x(X,P),\quad
+ Z'=P\cdot H_p(X,P)-H(X,P),
+\end{equation}
+初始值为 \(X(0,a)=a\)、\(P(0,a)=\nabla g(a)\)、\(Z(0,a)=g(a)\)。前两式描述位置和候选梯度的演化，第三式计算函数值。
+
+\begin{proposition}\label{b2:prop:07-hamilton-local}
+设 \(d\geq1\) 为整数，\(V\subset\mathbb R^d\) 为开集，\(g\in C^3(V;\mathbb R)\)，\(a_0\in V\)。设 \(\Omega\subset\mathbb R^d\times\mathbb R^d\) 为包含 \((a_0,\nabla g(a_0))\) 的开集，\(H\in C^3(\Omega;\mathbb R)\)。取 \(X(0,a)=a\)、\(P(0,a)=\nabla g(a)\)、\(Z(0,a)=g(a)\)，系统\eqref{b2:eq:07-hamilton-system}在 \((a_0,0)\) 的某个时空邻域中确定一个实值 \(C^2\) 解 \(u\)，满足 \(u_t+H(x,\nabla u)=0\)、\(u(x,0)=g(x)\) 及 \((x,\nabla u(x,t))\in\Omega\)。该解在实值 \(C^2\) 类中局部唯一：若另一实值 \(C^2\) 解 \(v\) 定义在 \((a_0,0)\) 附近，满足同一方程和初值，且 \((x,\nabla v(x,t))\in\Omega\)，则 \(v\) 在适当缩小的共同邻域内与 \(u\) 相等。
+\end{proposition}
+\begin{proof}
+先核对特征系统的二阶参数依赖。令 \(N=2d+1\)，把独立初始状态写成 \(y_0=(x_0,p_0,z_0)\in\Omega\times\mathbb R\)，并设
+\[
+ B(x,p,z)=\bigl(H_p(x,p),-H_x(x,p),p\cdot H_p(x,p)-H(x,p)\bigr).
+\]
+由 \(H\in C^3\)，向量场 \(B\) 属于 \(C^2\)。记 \(\Phi_t(y_0)\) 为 \(Y'=B(Y)\)、\(Y(0)=y_0\) 的局部流。由\cref{b2:thm:07-flow-derivative}，流为 \(C^1\)，且 \(L(t,y_0)=D_{y_0}\Phi_t(y_0)\) 满足
+\[
+ L'=DB(\Phi_t(y_0))L,\quad L(0,y_0)=I_N.
+\]
+对独立的方向 \(r,s\in\mathbb R^N\)，二阶导数的候选值 \(V_{r,s}\) 由下列连续系数线性积分方程的等价微分形式确定；其存在唯一性用一阶变分方程相同的积分迭代得到：
+\[
+ V_{r,s}'=DB(\Phi_t(y_0))V_{r,s}
+       +D^2B(\Phi_t(y_0))[Lr,Ls],
+ \quad V_{r,s}(0)=0.
+\]
+零初值的原因是 \(\Phi_0(y_0)=y_0\) 对独立变量 \(y_0\) 为恒等映射。
+
+为验证候选值确实是二阶导数，缩小初始邻域与时间区间，使所有流及其连接线段位于同一个紧球 \(K\subset\Omega\times\mathbb R\) 中。记 \(Y_\eta(t)=\Phi_t(y_0+\eta s)\)、\(Y(t)=\Phi_t(y_0)\)，其中 \(\eta\) 为趋于零的非零实数。一阶 \(C^1\) 依赖给出 \((Y_\eta-Y)/\eta\to Ls\)，在该紧时间区间上为一致收敛。对一阶变分方程作差，令
+\[
+ Q_\eta(t)=\frac{L(t,y_0+\eta s)r-L(t,y_0)r}{\eta},
+\]
+则
+\[
+ Q_\eta'=DB(Y_\eta)Q_\eta
+       +\frac{DB(Y_\eta)-DB(Y)}{\eta}Lr,
+ \quad Q_\eta(0)=0.
+\]
+中值积分将这里的算子差商写成
+\[
+ \frac{DB(Y_\eta)-DB(Y)}{\eta}
+ =\int_0^1D^2B\bigl(Y+\theta(Y_\eta-Y)\bigr)
+       \left[\frac{Y_\eta-Y}{\eta},\,\cdot\right]\,\mathrm{d}\theta.
+\]
+\(D^2B\) 在 \(K\) 上一致连续，所以该算子差商一致趋于 \(D^2B(Y)[Ls,\cdot]\)；同时 \(DB(Y_\eta)\to DB(Y)\) 一致。二阶微分的对称性使极限非齐次项 \(D^2B(Y)[Ls,Lr]\) 正是 \(V_{r,s}\) 方程中的那一项。把 \(Q_\eta\) 的积分方程与 \(V_{r,s}\) 的方程相减，所有系数及非齐次项均有共同上界，余项一致趋零，Gronwall 估计遂给出 \(Q_\eta\to V_{r,s}\) 一致。方程中系数与初始状态连续，作差后再用同一估计，得到 \(V_{r,s}\) 对 \((t,y_0,r,s)\) 连续。因此 \(D_{y_0}\Phi_t\) 的各方向偏导数连续，\(\Phi_t\) 对 \(y_0\) 为 \(C^2\)。再由 \(\partial_t\Phi_t=B(\Phi_t)\) 和一阶变分方程，混合二阶导数与二阶时间导数也连续，故在该共同邻域内，流对 \((t,y_0)\) 联合为 \(C^2\)。
+
+现在才代入实际初始映射。先由连续性缩小 \(a_0\) 的邻域，使 \((a,\nabla g(a))\) 均落在 \(\Omega\) 内，并使下面的初始状态落在上述局部流的共同初始邻域中。令
+\[
+ y_0(a)=(a,\nabla g(a),g(a)),\quad
+ Y(t,a)=\Phi_t(y_0(a)).
+\]
+由于 \(g\in C^3\)，映射 \(y_0\) 为 \(C^2\)。二阶链式法则给出
+\[
+ \begin{aligned}
+ D_a^2Y(t,a)[v,w]
+ &=D_{y_0}^2\Phi_t(y_0(a))[Dy_0(a)v,Dy_0(a)w]\\
+ &\quad+D_{y_0}\Phi_t(y_0(a))D^2y_0(a)[v,w],
+ \quad v,w\in\mathbb R^d.
+ \end{aligned}
+\]
+特别地，初始时刻的结果是
+\[
+ D_a^2Y(0,a)[v,w]
+ =\bigl(0,D^3g(a)[v,w],D^2g(a)[v,w]\bigr).
+\]
+这里 \(D^3g(a)[v,w]\) 表示向量 \(D^2(\nabla g)(a)[v,w]\)，其第 \(i\) 个分量为 \(D^2(\partial_i g)(a)[v,w]\)。这个初值一般不为零；为零的是独立状态流的 \(D_{y_0}^2\Phi_0\)。这一复合论证证明了 \(X,P,Z\) 对 \((t,a)\) 为 \(C^2\)。
+
+从 \(D_aX(0,a)=I_d\) 出发，对 \((a,t)\mapsto(X(t,a),t)\) 应用\cref{b2:thm:01-inverse}，得到局部逆 \((x,t)\mapsto(A(x,t),t)\)。原映射为 \(C^2\)，逆微分公式说明逆映射的导数为 \(C^1\)，故逆也为 \(C^2\)。令 \(u(x,t)=Z(t,A(x,t))\)，便有 \(u\in C^2\) 及 \(u(x,0)=g(x)\)。关键是验证 \(P=\nabla u\)，不能把候选梯度直接当成真实梯度。对每个初始坐标 \(a_j\)，记
+\(W_j=\partial_{a_j}Z-P\cdot\partial_{a_j}X\)。对系统求导，利用 \(X'=H_p\)、\(P'=-H_x\)，得到
+\[
+ \begin{aligned}
+ \partial_{a_j}Z'
+ &=P\cdot\partial_{a_j}(H_p)-H_x\cdot\partial_{a_j}X,\\
+ (P\cdot\partial_{a_j}X)'
+ &=-H_x\cdot\partial_{a_j}X+P\cdot\partial_{a_j}(H_p).
+ \end{aligned}
+\]
+故 \(W_j'=0\)，初值又为 \(\partial_jg-\partial_jg=0\)。因此 \(D_aZ=P^{\mathsf T}D_aX\)，由 \(D_aX\) 可逆得到 \(\nabla_xu(X,t)=P\)。最后沿轨道有
+\(u_t+\nabla u\cdot X'=Z'=P\cdot H_p-H\)，约去相同项得 \(u_t+H(x,\nabla u)=0\)。
+
+最后证明局部唯一性。设 \(v\) 是在 \((a_0,0)\) 附近满足同一初值问题的另一实值 \(C^2\) 解，且 \((x,\nabla v(x,t))\in\Omega\)。对它的方程求空间梯度，得到
+\[
+ \partial_t\nabla v+D_x^2v\,H_p(x,\nabla v)+H_x(x,\nabla v)=0.
+\]
+速度 \((x,t)\mapsto H_p(x,\nabla v(x,t))\) 为 \(C^1\)，故从每个邻近标签 \(a\) 出发可以解
+\[
+ \widetilde X'=H_p(\widetilde X,\nabla v(\widetilde X,t)),
+ \quad \widetilde X(0,a)=a.
+\]
+缩小邻域使这些短轨道始终留在 \(v\) 的定义域内，并令 \(\widetilde P(t,a)=\nabla v(\widetilde X(t,a),t)\)、\(\widetilde Z(t,a)=v(\widetilde X(t,a),t)\)。链式法则与梯度方程分别给出
+\[
+ \widetilde P'=-H_x(\widetilde X,\widetilde P),\quad
+ \widetilde Z'=\widetilde P\cdot H_p(\widetilde X,\widetilde P)
+                    -H(\widetilde X,\widetilde P).
+\]
+其初始状态同为 \((a,\nabla g(a),g(a))\)。向量场 \(B\) 的常微分方程唯一性使 \((\widetilde X,\widetilde P,\widetilde Z)=(X,P,Z)\)。因此 \(v(X(t,a),t)=Z(t,a)=u(X(t,a),t)\)，局部投影的逆坐标又覆盖了一个时空邻域，遂得到该邻域内 \(v=u\)。
+\end{proof}
+
+取 \(H(p)=|p|^2/2\) 时，\(P=\nabla g(a)\)、\(X=a+t\nabla g(a)\)、\(Z=g(a)+t|\nabla g(a)|^2/2\)。可逆性要求 \(I+tD^2g(a)\) 不退化。这与 Burgers 方程的分母具有同一几何含义，但高维中须检查整个矩阵。局部光滑构造失效之后的解概念，本章不再展开。
+
+\subsection{守恒律的位置}
+\label{b2:subsec:070405}
+
+设 \(d\geq1\) 为整数，\(F\in C^1(\mathbb R;\mathbb R^d)\)。形如 \(u_t+\operatorname{div}_xF(u)=0\) 的方程称为\term[shouhenglv]{守恒律}[conservation law]。若在时空开集 \(\Omega\subset\mathbb R^d\times\mathbb R\) 上 \(u\) 为实值 \(C^1\) 函数，则由链式法则它等价于拟线性方程 \(u_t+F'(u)\cdot\nabla u=0\)；不光滑时，两种写法的意义不同，后一项中的乘积未必已有定义。守恒形式可直接作用于测试函数，通过积分表达局部通量平衡。
+
+\ProseParagraphBreak
+
+线性连续性方程的速度由外部给定，密度与体积的补偿由 Jacobi 公式控制；非线性守恒律的速度随状态变化，投影交叉会使经典表示失效。两者都使用特征线，却不能把线性流的全局微分同胚结论原样移到非线性问题。本节建立了光滑阶段的局部构造和一个明确的失效机制，为进一步学习守恒律与 Hamilton--Jacobi 方程作准备。

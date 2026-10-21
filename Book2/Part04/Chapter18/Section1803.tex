@@ -1,259 +1,184 @@
 % !TeX root = ../../Book2.tex
-\section{Calderón–Zygmund 核}
-\label{b2:sec:1803}
+\section{边界正则性}
+\label{b2:sec:1603}
 
-Hilbert 核与 Riesz 核都有两种不同的性质：核本身在对角线附近不可积，移开一个变量后得到的核之差却衰减得更快。前一种性质决定积分为什么需要截断，后一种性质使坏块的零平均能够发挥作用。本节把这些条件分开写出，再说明怎样把核与一个已经有平方估计的算子联系起来。
+内部差商可以向任意坐标方向平移，靠近边界时却可能越界。对于零 Dirichlet 条件，平坦边界允许沿切向作差商，而法向二阶导数则由方程补回。曲边界先化成平坦边界；这个坐标变换消耗的正则性，决定了边界应满足的假设。
 
-\subsection{大小条件}
-\label{b2:subsec:180301}
+\subsection{边界平坦化}
+\label{b2:subsec:160301}
 
-设整数 \(d\geq1\)，\(K:(\mathbb R^d\times\mathbb R^d)\setminus\{x=y\}\to\mathbb C\) 可测。若存在有限常数 \(C_0\geq0\)，使对每个 \(x\ne y\) 都有
-\[
- |K(x,y)|\leq C_0|x-y|^{-d},
-\]
-则称 \(K\) 满足标准大小条件。半径为 \(r\) 的环带有 \(r^d\) 量级的体积，所以这个上界在每一倍增环带上只给出常数量级的绝对积分；对角线附近有无穷多个这样的环带，不能直接求和。
+称有界区域为 \(C^{1,1}\) 区域，是指边界在有限个局部正交坐标中可写成 \(x_d=\psi(x')\)，其中 \(\psi\) 一阶可微且梯度 Lipschitz 连续，区域位于图像的一侧。局部使用
+\[x=\Phi(y)=(y',y_d+\psi(y')),\qquad y_d>0\]
+把半球或半盒映到区域内部。映射及其逆一阶导数有界，二阶弱导数也有界；因此它们保留局部 \(H^1\)、\(H^2\) 正则性，并给出相应范数的双向控制。
 
-\ProseParagraphBreak
+\cref{b2:fig:16-boundary-flattening}把这一局部坐标与差商方向放在一起：切向移位留在同一个半盒内，法向移位却可能跨过零边界，所以后面须先估切向导数，再从方程恢复法向导数。
 
-若 \(f\in L^2\) 支撑在紧集 \(F\) 内，则 \(f\in L^1\)。在与 \(F\) 有正距离的点 \(x\) 处，大小条件给出
-\[
- \int_F|K(x,y)|\cdot|f(y)|\,\mathrm dy
- \leq C_0\cdot\operatorname{dist}(x,F)^{-d}\cdot\|f\|_1<\infty.
-\]
-因此支集外的核积分具有普通绝对积分的意义。这里同时用了输入的有限支集和观察点到支集的距离；支集内部的积分尚未由此定义。
-
-\ProseParagraphBreak
-
-卷积型核写成 \(K(x,y)=k(x-y)\)。例如取有界球面函数 \(\Omega\)，令 \(k(z)=\Omega(z/|z|)\cdot|z|^{-d}\)。若光滑输入在 \(x\) 附近恒等于一，则局部截断积分含有
-\[
- \int_{\epsilon<|z|<1}k(z)\,\mathrm dz
- =\left(\int_{S^{d-1}}\Omega\,\mathrm d\sigma\right)\cdot
-    \log\frac1\epsilon.
-\]
-球面平均不为零时，这一项发散。齐次次数 \(-d\) 给出大小条件，却没有提供抵消；球面上的奇函数平均为零，Hilbert 核就是一维的例子。
-
-\subsection{光滑性条件}
-\label{b2:subsec:180302}
-
-坏块的零平均使 \(K(x,y)\) 被替换为 \(K(x,y)-K(x,c_Q)\)。因此需要控制的是移动输入变量 \(y\) 后的变化。对上述离开对角线的核，固定 \(0<\delta\leq1\)。标准光滑条件要求存在有限常数 \(C_1\geq0\)，使
-\[
- \begin{aligned}
- |K(x,y)-K(x,y')|&\leq C_1\frac{|y-y'|^\delta}{|x-y|^{d+\delta}}
- &&\left(|y-y'|\leq\frac{|x-y|}2\right),\\
- |K(x,y)-K(x',y)|&\leq C_1\frac{|x-x'|^\delta}{|x-y|^{d+\delta}}
- &&\left(|x-x'|\leq\frac{|x-y|}2\right).
- \end{aligned}
-\]
-所有出现的原始点均满足 \(x\ne y\)。距离限制使新点仍离开对角线，且新旧距离可互相比较。第一行控制原算子的坏块；取伴随后输入、输出互换，第二行才成为伴随坏块所需的条件。
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm]
+\begin{scope}[shift={(-2.8,0)}]
+\fill[AnalysisBlue!10] (-1.4,.3) .. controls (-.5,-.05) and (.4,.6) .. (1.4,.25)--(1.4,1.7)--(-1.4,1.7)--cycle;
+\draw[AnalysisBlue,thick] (-1.4,.3) .. controls (-.5,-.05) and (.4,.6) .. (1.4,.25);
+\node at (0,1.2){\(x_d>\psi(x')\)};
+\node[below] at (0,-.25){\(x_d=\psi(x')\)};
+\node at (0,-1.25){曲边界坐标块};
+\end{scope}
+\draw[->,thick] (.7,.9)--(-.7,.9) node[midway,above]{\(\Phi\)};
+\begin{scope}[shift={(2.8,0)}]
+\fill[AnalysisBlue!10] (-1.4,0) rectangle(1.4,1.7);
+\draw[AnalysisBlue,thick] (-1.4,0)--(1.4,0);
+\node at (0,1.35){\(y_d>0\)};
+\draw[->,thick] (-.9,.55)--(.1,.55) node[midway,above]{切向};
+\draw[->,dashed] (.7,.35)--(.7,-.25);
+\node[anchor=west,align=left,text width=1.35cm] at (1.05,-.4){法向\\越界};
+\node[below] at (-.55,-.12){\(y_d=0\)};
+\node at (0,-1.25){拉平后的半盒};
+\end{scope}
+\end{tikzpicture}
+\caption[边界平坦化与切向差商]{局部边界坐标示意，不按比例。图中箭头 \(\Phi\) 的公式把右侧的 \(y\) 坐标送到左侧的 \(x\) 坐标；沿切向平移保持 \(y_d\)，负法向平移则可能越界。差商还须配合截断以避开半盒的其他边。图不表示一个覆盖整个区域的坐标。}
+\label{b2:fig:16-boundary-flattening}
+\end{figure}
 
 \ProseParagraphBreak
 
-核的梯度界是一个常用的检查方法。若 \(K\) 在对角线外为 \(C^1\)，且
+若 \(v(y)=u(\Phi(y))\)、\(\zeta(y)=\varphi(\Phi(y))\)，链式法则和换元把型写成
 \[
- |\nabla_xK(x,y)|+|\nabla_yK(x,y)|\leq C|x-y|^{-d-1},
+ \int A(x)\nabla_xu\cdot\nabla_x\varphi\,\mathrm dx
+ =\int\widetilde A(y)\nabla_yv\cdot\nabla_y\zeta\,\mathrm dy,
 \]
-则沿连接新旧点的线段积分导数即可取 \(\delta=1\)。例如 \(|y-y'|\leq|x-y|/2\) 时，线段上每点到 \(x\) 的距离至少为 \(|x-y|/2\)，所以积分中的梯度有同一个上界。
+其中
+\[\widetilde A=|\det D\Phi|\,D\Phi^{-1}(A\circ\Phi)D\Phi^{-\mathsf T},
+ \qquad\widetilde f=(f\circ\Phi)|\det D\Phi|.\]
+图像平移的行列式为 \(1\)，保留一般写法便于检查其他坐标。由于 \(D\Phi^{-\mathsf T}\xi\) 的长度与 \(|\xi|\) 双向可比，\(\widetilde A\) 仍一致椭圆；若 \(A\in W^{1,\infty}\)、\(\Phi\in C^{1,1}\)，则 \(\widetilde A\in W^{1,\infty}\)。右端 \(\widetilde f\) 仍属于 \(L^2\)。这正是下一步差商证明需要的三个条件。
 
 \ProseParagraphBreak
 
-弱型证明实际上只用到了输入变量差的积分控制。设 \(h=|y-y'|>0\)，上述 Hölder 界给出
+只有 Lipschitz 边界时，\(D\Phi\) 一般只有本性有界性，变换后的系数未必具有有界一阶导数。此时切向差商中的系数误差便不再受控。边界光滑性不是为了画图方便，而是通过坐标系数直接进入估计。
+
+这里保留二阶范数的说法可以展开成两个乘积估计。先对光滑函数计算
 \[
- \begin{aligned}
- \int_{|x-y|>2h}|K(x,y)-K(x,y')|\,\mathrm dx
- &\leq C_1|S^{d-1}|h^\delta
-            \int_{2h}^\infty r^{-1-\delta}\,\mathrm dr\\
- &=\frac{C_1|S^{d-1}|}{\delta\,2^\delta}.
- \end{aligned}
+ \partial_{y_i}v=\sum_j(\partial_{x_j}u)\circ\Phi\,\partial_i\Phi_j,
+\quad
+ \partial_{y_i y_k}v=
+ \sum_{j,l}(\partial_{x_jx_l}u)\circ\Phi\,\partial_i\Phi_j\partial_k\Phi_l
+ +\sum_j(\partial_{x_j}u)\circ\Phi\,\partial_{ik}\Phi_j.
 \]
-\(h=0\) 时差为零。因而标准光滑性蕴含积分 Hörmander 条件
-\[
- \sup_{y,y'}\int_{|x-y|>2|y-y'|}
-       |K(x,y)-K(x,y')|\,\mathrm dx<\infty.
-\]
-它直接对应上一节对坏块远场的积分；点态条件还将用于截断比较和平均振荡估计。
+换元中的体积因子在上下界之间，而 \(D\Phi,D^2\Phi\) 有界，故局部有
+\(\|v\|_{H^2}\le C(\|u\|_{H^2}+\|u\|_{H^1})\)。对逆映射作同一计算给出反向不等式。对于尚只有 \(H^1\) 的弱解，只先使用一阶式和测试函数换元；等半空间估计产生 \(H^2\) 后，再用二阶式把正则性带回去，不能在证明开始时就把第二式当作已经存在的导数。弱链式法则通过较小坐标块内的光滑逼近取得：将函数先截断在大块中，使用 Sobolev 磨光，换元后的范数界使两端同时收敛；坐标的二阶导数只需本性有界，不要求逐点连续。
 
-\ProseParagraphBreak
+以二维图像为例，\(D\Phi=\bigl(\begin{smallmatrix}1&0\\\psi'&1\end{smallmatrix}\bigr)\)。即便原系数为单位矩阵，拉平后也变成
+\[\widetilde A=\begin{pmatrix}1&-\psi'\\-\psi'&1+(\psi')^2\end{pmatrix},\qquad
+ \xi^{\mathsf T}\widetilde A\xi=(\xi_1-\psi'\xi_2)^2+\xi_2^2.\]
+这个平方和给出椭圆性，其下界常数依赖 \(\|\psi'\|_\infty\)；而系数的一阶导数又含 \(\psi''\)。故原来的常系数方程在弯曲坐标中已经带上几何系数。这一具体矩阵同时显示，为何控制斜率只解决椭圆性，控制斜率的变化才解决差商误差。
 
-也可以把幂次换成较慢的连续模量。设 \(\omega:[0,1]\to[0,\infty)\) 单调不减、\(\omega(0)=0\)，且
-\[
- |K(x,y)-K(x,y')|\leq C|x-y|^{-d}\cdot
- \omega\!\left(\frac{|y-y'|}{|x-y|}\right)
- \quad\left(|y-y'|\leq\frac{|x-y|}2\right).
-\]
-径向积分换元 \(s=h/r\)，得到
-\[
- \int_{|x-y|>2h}|K(x,y)-K(x,y')|\,\mathrm dx
- \leq C|S^{d-1}|\int_0^{1/2}\omega(s)\frac{\mathrm ds}s.
-\]
-因此 \(\int_0^1\omega(s)\,\mathrm ds/s<\infty\) 也足以控制坏块尾部。若已经给定有界 \(L^2\) 算子及支集外表示，这个积分条件可代替弱型证明中的输入变量 Hölder 条件；伴随也满足对应条件时，再由插值和对偶得到全部有限的中间指数。
+\subsection{Dirichlet 问题}
+\label{b2:subsec:160302}
 
-\ProseParagraphBreak
+先考虑半球 \(B_2^+=B(0,2)\cap\{x_d>0\}\)。设 \(u\in H^1(B_2^+)\) 在平坦部分的迹为零，且弱解 \(-\operatorname{div}(A\nabla u)=f\)。测试函数可以支撑到平坦部分，但须在那里取零迹，并在球面部分附近消失。这样的测试等式由原 Dirichlet 弱形式经局部化得到。
 
-取 \(\omega(s)=s^\delta\) 就回到幂次情形。取 \(\omega(s)=\bigl(\log(e/s)\bigr)^{-2}\) 时，换元 \(v=\log(e/s)\) 得到可积尾部 \(\int^\infty v^{-2}\,\mathrm dv\)；改成 \(\bigl(\log(e/s)\bigr)^{-1}\) 则发散。这里区分的是这一尾积分论证能否成立，并未排除某个具体算子还有别的抵消性质。按二进环带估计，同一个条件写成
-\(\sum_{j\geq1}\omega(2^{-j})<\infty\)：每个环带的体积消去核的 \(|x-y|^{-d}\)，留下的正是模量。单调性给出
-\[
- (\log2)\cdot\omega(2^{-j-1})
- \leq\int_{2^{-j-1}}^{2^{-j}}\omega(s)\frac{\mathrm ds}s
- \leq(\log2)\cdot\omega(2^{-j}),
-\]
-从而级数与积分具有相同的收敛性。
-
-\subsection{奇异积分算子}
-\label{b2:subsec:180303}
-
-核的条件只描述离开对角线的作用。还须指定一个算子，并独立证明其平方有界性。
 \Needspace{6\baselineskip}
-\begin{definition}\label{b2:thm:18-cz-operator-definition}
-设整数 \(d\geq1\)，\(T:L^2(\mathbb R^d;\mathbb C)\to L^2(\mathbb R^d;\mathbb C)\) 为有界复线性算子。设可测核 \(K:(\mathbb R^d\times\mathbb R^d)\setminus\{x=y\}\to\mathbb C\)，并存在有限常数 \(C_0,C_1\geq0\)、\(0<\delta\leq1\)，使
-\[
- |K(x,y)|\leq C_0|x-y|^{-d}
- \quad(x\ne y),
-\]
-\[
- \begin{aligned}
- &|K(x,y)-K(x',y)|+|K(y,x)-K(y,x')|\\
- &\quad\leq C_1\frac{|x-x'|^\delta}{|x-y|^{d+\delta}}
- \quad\left(x\ne y,\ |x-x'|\leq\frac{|x-y|}2\right).
- \end{aligned}
-\]
-若对每个支撑在某个紧集 \(F\) 内的 \(f\in L^2(\mathbb R^d)\)，在 \(\mathbb R^d\setminus F\) 上几乎处处有
-\[
- Tf(x)=\int_FK(x,y)\cdot f(y)\,\mathrm dy,
-\]
-则称 \(T\) 为具有核 \(K\) 的\term[calderon-zygmund-suanzi]{Calderón--Zygmund 算子}[Calderón--Zygmund operator]。上述核条件称为标准核条件；第二个显示式同时包含两个变量的光滑性。
-\end{definition}
-
-平方有界性没有被核条件包含。例如零核既对应零算子，也对应任意有界乘法算子 \(M_af=af\)、\(a\in L^\infty\)：输入支集外两种输出都为零。后面的有界性理论适用于这些算子，但若只知道支集外的核，就不能判定给定算子是否等于硬截断的主值。
-
-\ProseParagraphBreak
-
-伴随所需的核可以直接从内积求出。取紧支集 \(f,g\in L^2\)，并假设两个支集有正距离。它们均可积，且
-\[
- \int\!\int |K(x,y)|\cdot|f(y)|\cdot|g(x)|\,\mathrm dy\,\mathrm dx
- \leq C\|f\|_1\cdot\|g\|_1<\infty.
-\]
-这里 \(C\) 还依赖两个支集的距离。Fubini 与 \(\langle Tf,g\rangle=\langle f,T^*g\rangle\) 给出
-\[
- \int f(y)\cdot\overline{T^*g(y)}\,\mathrm dy
- =\int f(y)\cdot
-       \overline{\int\overline{K(x,y)}\cdot g(x)\,\mathrm dx}\,\mathrm dy.
-\]
-固定 \(g\)，让 \(f\) 遍历任一离开 \(\operatorname{supp}g\) 的有界紧区域上的 \(L^2\) 函数，即可识别两边的局部 \(L^2\) 函数。再以可数个这样的区域穷竭支集外，得到伴随的核
-\[
- K^*(x,y)=\overline{K(y,x)}.
-\]
-它的大小与两个变量光滑常数仍可取 \(C_0,C_1\)，且 \(\|T^*\|_{2\to2}=\|T\|_{2\to2}\)。输入变量的光滑性在伴随后变成输出变量的光滑性，两者不能只保留其中一条。
-
-\ProseParagraphBreak
-
-下面从一个具体核构造算子。这里的目标是先取得独立的 \(L^2\) 界，再使用下一节的一般有界性定理。
-\Needspace{6\baselineskip}
-\begin{theorem}\label{b2:thm:18-homogeneous-kernel}
-设整数 \(d\geq2\)，\(\Omega\in C^1(S^{d-1};\mathbb C)\)，且 \(\int_{S^{d-1}}\Omega\,\mathrm d\sigma=0\)，其中 \(\sigma\) 为球面面积测度。则对每个 \(f\in\mathcal S(\mathbb R^d)\)、每个 \(x\in\mathbb R^d\)，主值
-\[
- T_\Omega f(x)=\lim_{\epsilon\downarrow0}
- \int_{|y|>\epsilon}\frac{\Omega(y/|y|)}{|y|^d}\cdot f(x-y)\,\mathrm dy
-\]
-存在。它给出兼容的有界线性算子 \(T_\Omega:L^p(\mathbb R^d)\to L^p(\mathbb R^d)\)、\(1<p<\infty\)，且
-\[
- \|T_\Omega f\|_p\leq C_{d,p}\|\Omega\|_{C^1(S^{d-1})}\cdot\|f\|_p.
-\]
-其 \(L^2\) Fourier 乘子在 \(\xi\ne0\) 时为
-\[
- m(\xi)=-\int_{S^{d-1}}\Omega(\theta)\cdot
- \left(\log|2\pi\xi\cdot\theta|
-       +\frac{\pi\mathrm i}{2}\cdot\operatorname{sgn}(\xi\cdot\theta)\right)\mathrm d\sigma(\theta).
-\]
-对数奇性按球面上的可积函数解释，\(m\) 为零次齐次；其在 \(\xi=0\) 的取值可任意指定。
-\end{theorem}
+\begin{lemma}[边界切向估计]
+\label{b2:lem:16-tangential-estimate}
+设整数 \(d\geq2\)，\(B_r^+=B(0,r)\cap\{x_d>0\}\)，\(A\in W^{1,\infty}(B_2^+;\mathbb R^{d\times d})\)。设 \(0<\lambda\leq\Lambda<\infty\)，\(\|A\|_\infty\leq\Lambda\)，且 \(\xi^{\mathsf T}A(x)\xi\geq\lambda|\xi|^2\) 对几乎处处 \(x\in B_2^+\)、全部 \(\xi\in\mathbb R^d\) 成立。实函数 \(f\in L^2(B_2^+)\)、\(u\in H^1(B_2^+)\) 满足：\(u\) 在平坦边界的迹为零，且弱解 \(-\operatorname{div}(A\nabla u)=f\)；这里测试函数允许接触平坦边界，取零迹且在球面部分附近消失。则对 \(1\leq k<d\) 及 \(1\leq j\leq d\)，\(\partial_k\partial_j u\in L^2(B_1^+)\)，且
+\[\sum_{k<d,j\le d}\lVert\partial_k\partial_j u\rVert_{L^2(B_1^+)}
+ \le C\bigl(\lVert f\rVert_{L^2(B_2^+)}+\lVert u\rVert_{H^1(B_2^+)}\bigr).\]
+其中 \(C\) 只依赖 \(d,\lambda,\Lambda\) 及 \(\|\nabla A\|_\infty\)。
+\end{lemma}
 \begin{proof}
-先固定 \(f\in\mathcal S\)、\(x\)。在 \(0<|y|<1\) 的积分中减去 \(f(x)\)，球面平均零使常数部分消失。由微积分基本定理，
-\[
- |f(x-y)-f(x)|\leq |y|\sup_{|z-x|\leq1}|\nabla f(z)|,
-\]
-所以近原点的绝对积分由 \(C_x\int_0^1\mathrm dr\) 控制。远处 \(|x-y|\) 随 \(|y|\) 增大，Schwartz 衰减使径向尾部可积。因此主值在每个点存在。
+取在 \(B_1\) 上为 \(1\)、支集在 \(B_{3/2}\) 内的光滑截断 \(\eta\)。对切向方向 \(e_k\)，平移不改变 \(x_d\)，所以 \(D_h^ku\) 的平坦边界迹仍为零。于是 \(-D_{-h}^k(\eta^2D_h^ku)\) 是合法零迹测试函数；它在曲面边界附近为零，没有额外边界项。
 
-为了求平方界，先在径向乘上 \(e^{-\eta r}\)、\(\eta>0\)，得到同样按球面平均零定义的算子 \(T_\eta\)。对 \(\operatorname{Re}z>0\)，有
-\[
- \int_0^\infty\frac{e^{-zr}-e^{-r}}r\,\mathrm dr=-\log z.
-\]
-右半平面取连续对数：在其每个紧子集上，对 \(z\) 求导的积分由一个指数衰减函数控制，导数为 \(-1/z\)；再由 \(z=1\) 的值为零确定常数。减项 \(e^{-r}\) 与角变量无关，乘 \(\Omega\) 后的积分为零。由此得到
-\[
- m_\eta(\xi)=-\int_{S^{d-1}}\Omega(\theta)\cdot
-                  \log(\eta+2\pi\mathrm i\xi\cdot\theta)\,\mathrm d\sigma(\theta).
-\]
-具体地，先在两个有限径向截断之间计算，再与 Schwartz 频率测试函数配对。近 \(r=0\) 时，差
-\(e^{-(\eta+2\pi\mathrm i\xi\cdot\theta)r}-e^{-r}\)
-除以 \(r\) 后由 \(C_\eta(1+|\xi|)\) 控制；乘测试函数后可积。远处则由 \(e^{-\eta r}+e^{-r}\) 控制。因而可以在这些配对中换序并放开截断，得到 \(\widehat{T_\eta f}=m_\eta\cdot\widehat f\) 的温和分布恒等式。
-
-需要的估计是对 \(\eta\) 与频率同时一致的。对 \(\xi\ne0\)，记 \(\omega=\xi/|\xi|\)、\(a=\eta/|\xi|\)。平均零先去掉 \(\log|\xi|\)。若 \(a\geq1\)，再去掉 \(\log a\)，余下的 \(\log(1+2\pi\mathrm i\omega\cdot\theta/a)\) 一致有界。若 \(0<a\leq1\)，对数虚部的绝对值不超过 \(\pi/2\)，实部的正部一致有界，负部则由
-\(C+\bigl|\log|\omega\cdot\theta|\bigr|\) 控制。旋转不变性给出
-\[
- \sup_{\omega\in S^{d-1}}
- \int_{S^{d-1}}\bigl|\log|\omega\cdot\theta|\bigr|\,\mathrm d\sigma(\theta)<\infty:
-\]
-旋转到一个坐标方向后，在赤道附近令 \(s=\omega\cdot\theta\)，面积密度有界，该部分归结为
-\(\int_{-1/2}^{1/2}\bigl|\log|s|\bigr|\,\mathrm ds<\infty\)；其余球面上对数有界。因此
-\[
- \sup_{\eta>0}\|m_\eta\|_\infty\leq C_d\|\Omega\|_\infty.
-\]
-对几乎每个球面点令 \(\eta\downarrow0\)，复对数趋向
-\(\log|2\pi\xi\cdot\theta|+\mathrm i\pi\cdot\operatorname{sgn}(\xi\cdot\theta)/2\)。上述控制给出 \(m_\eta(\xi)\to m(\xi)\)。Plancherel 与频率上的支配收敛于是给出有界 \(L^2\) 乘子算子 \(T\)，且 \(T_\eta f\to Tf\) 于 \(L^2\)。
-
-在物理空间中，减去 \(f(x)\) 后的近原点积分和 Schwartz 远尾，都有与 \(0<\eta\leq1\) 无关的可积控制，所以 \(T_\eta f(x)\to T_\Omega f(x)\) 对每个 \(x\) 成立。取 \(L^2\) 收敛的几乎处处子列，便把这个主值识别为 \(Tf\)。平均零也从乘子公式中消去 \(\log|\xi|\)，给出零次齐次性。
-
-核的大小与梯度常数由 \(C_d\|\Omega\|_{C^1}\) 控制。它对光滑紧支集输入的支集外表示已由主值公式给出；对一般紧支集 \(L^2\) 输入，在任意到其支集有正距离的有界区域上，用共用一个稍大紧支集的光滑 \(L^2\) 逼近。该区域到共同支集有正距离，核积分的差由 \(L^1\) 误差一致控制；\(L^2\) 输出收敛再抽子列，即得所需支集外表示。以可数个这样的区域穷竭支集外，说明 \(T\) 满足标准算子定义。\cref{b2:thm:18-cz-lp}因此给出全部 \(1<p<\infty\) 的界。先将非零的 \(\Omega\) 除以其 \(C^1\) 范数应用该结论，再还原尺度，就得到陈述中的线性范数因子；\(\Omega=0\) 时直接成立。
+在半球上重复内部估计的离散分部积分。所有平移都沿切向，故积分换元不越过平坦边界；截断又避免了球面边界。主项仍有椭圆下界，系数差商仍由 \(\lVert\nabla A\rVert_\infty\) 控制，右端仍由差商的 \(H^1\) 界控制。因此 \(\eta\nabla D_h^ku\) 的 \(L^2\) 范数独立于 \(h\) 有界。差商引理在半球内部测试并取极限，得到所列切向及混合导数及范数界。
 \end{proof}
 
-乘子公式的两部分来自不同的对称性。若 \(\Omega\) 为奇函数，对数项的球面积分为零；若 \(\Omega\) 为偶函数，符号函数项的积分为零。再假设 \(\Omega\) 实值时，前一种乘子为纯虚函数，后一种为实偶函数。二维的 \(\Omega(\theta)=\theta_1\theta_2\) 给出偶核 \(x_1x_2/|x|^4\)，而 \(\Omega(\theta)=\theta_j\) 给出 Riesz 型奇核。相反，\(\Omega=1\) 产生前面的径向对数发散；人为扣除发散常数属于另外一种归一化，不能据此声称原硬截断主值已经存在。
-
-\subsection{截断}
-\label{b2:subsec:180304}
-
-取整数 \(d\geq1\)，设核在对角线外为 Borel 可测，且满足 \(|K(x,y)|\leq C_0|x-y|^{-d}\)。前面的标准核满足这一可测性：在远离对角线的小邻域内，先移动 \(x\) 再移动 \(y\)，两个 Hölder 界共同给出连续性。对 \(\epsilon>0\) 定义硬截断
+现在只缺 \(\partial_{dd}u\)，但尚不能把它当作函数与 \(a_{dd}\) 相乘再相除。改从已经属于 \(L^2(B_1^+)\) 的法向通量
+\[q=a_{dd}\partial_du\]
+出发。原方程在分布意义给出
 \[
- T_\epsilon f(x)=\int_{|x-y|>\epsilon}K(x,y)\cdot f(y)\,\mathrm dy.
+ \partial_dq=-f
+ -\sum_{\substack{i<d\\j\leq d}}\partial_i(a_{ij}\partial_ju)
+ -\sum_{j<d}\partial_d(a_{dj}\partial_ju).
 \]
-若 \(f\in L^p(\mathbb R^d)\)、\(1<p<\infty\)，Hölder 给出
+右端每一项都已能确认为 \(L^2\) 函数：第一组只含切向微分，第二组的二阶导数为 \(\partial_d\partial_ju=\partial_j\partial_du\)，也由切向引理控制。这里使用的是如下有适用对象的乘积法则：若 \(v,\partial_iv\in L^2\)、\(a\in W^{1,\infty}\)，则
+\[\partial_i(av)=(\partial_i a)v+a\partial_iv\in L^2.\]
+其证明是把 \(v\) 的弱导数恒等式由光滑测试函数连续延拓到 \(H_0^1\) 测试函数，再代入 \(a\varphi\) 并展开一阶导数。它只要求这一方向的弱导数已属于 \(L^2\)，没有把任意分布与 Lipschitz 函数相乘。
+
+同一乘积法则还给出 \(q\) 的全部切向导数
+\[\partial_kq=(\partial_ka_{dd})\partial_du+a_{dd}\partial_k\partial_du
+ \in L^2(B_1^+),\qquad k<d.\]
+因此 \(q\in H^1(B_1^+)\)，其范数由 \(\|f\|_{L^2(B_2^+)}+\|u\|_{H^1(B_2^+)}\) 控制。椭圆性给出 \(a_{dd}\geq\lambda\)，故 \(a_{dd}^{-1}\in W^{1,\infty}\)。此时才能对两个已经具有所需正则性的对象使用 Sobolev 乘积法则：
 \[
- \int_{|x-y|>\epsilon}|K(x,y)|\cdot|f(y)|\,\mathrm dy
- \leq C_{d,p}C_0\epsilon^{-d/p}\|f\|_p.
+ \begin{aligned}
+ \partial_du&=a_{dd}^{-1}q\in H^1(B_1^+),\\
+ \partial_{dd}u&=a_{dd}^{-1}\partial_dq
+       -a_{dd}^{-2}(\partial_da_{dd})q\in L^2(B_1^+).
+ \end{aligned}
 \]
-这里径向控制核属于 \(L^{p'}\)，因为 \(dp'>d\)。\(p=1\) 时改用 \(|K|\leq C_0\epsilon^{-d}\)，仍有绝对收敛。故每个固定截断在这些输入上有普通积分的意义；一般有界输入却可能在无穷远处失去可积性。
+这也给出纯法向导数的同类范数界，完成局部边界 \(H^2\) 估计。
 
 \ProseParagraphBreak
 
-把截断半径移向零，还需另外的论证。给定的标准 \(L^2\) 算子可以含有一个支集外核看不见的乘法项，所以截断的极限不必等于它。常见的识别办法，是先对 \(C_c^\infty\) 输入验证截断的逐点极限，再证明这些截断在 \(L^2\) 中趋于给定算子；平方收敛的子列才能把两个极限识别起来。下一节先证明极大截断的有界性，再把这项识别从光滑类传给一般 \(L^p\) 输入。
+这一步没有沿法向把 \(u\) 随意平移，也没有先把 \(u\) 作二阶可微延拓。零迹保证切向测试合法，椭圆性保证通量中的系数可逆，两者承担不同职责。一维时没有切向方向，直接令 \(q=au'\)：由 \(q'=-f\in L^2\) 先得 \(q\in H^1\)，再由 \(u'=a^{-1}q\in H^1\) 恢复二阶导数。
+
+\subsection{边界 \texorpdfstring{\(H^2\)}{H2} 估计}
+\label{b2:subsec:160303}
+
+\Needspace{6\baselineskip}
+\begin{theorem}[全局 Dirichlet 二阶正则性]
+\label{b2:thm:16-boundary-h2}
+设整数 \(d\geq1\)，\(\Omega\subset\mathbb R^d\) 是非空有界 \(C^{1,1}\) 开集，\(A\in W^{1,\infty}(\Omega;\mathbb R^{d\times d})\)。设 \(0<\lambda\leq\Lambda<\infty\)，\(\|A\|_\infty\leq\Lambda\)，且 \(\xi^{\mathsf T}A(x)\xi\geq\lambda|\xi|^2\) 对几乎处处 \(x\in\Omega\)、全部 \(\xi\in\mathbb R^d\) 成立。若实函数 \(f\in L^2(\Omega)\)、\(u\in H_0^1(\Omega)\) 满足
+\[\int_\Omega A\nabla u\cdot\nabla\varphi
+ =\int_\Omega f\varphi\qquad(\varphi\in H_0^1(\Omega;\mathbb R)),\]
+则 \(u\in H^2(\Omega)\)，且
+\[\lVert u\rVert_{H^2(\Omega)}\le C\bigl(\lVert f\rVert_2+\lVert u\rVert_{H^1(\Omega)}\bigr)\le C'\lVert f\rVert_2.\]
+常数依赖区域的有限边界坐标、系数上界与 Lipschitz 范数及椭圆下界。
+\end{theorem}
+\begin{proof}
+当 \(d\geq2\) 时，覆盖 \(\partial\Omega\) 的有限个 \(C^{1,1}\) 坐标把方程变成上一小节的半球模型。坐标变换保留零迹、\(L^2\) 右端及 Lipschitz 椭圆系数；切向估计与恢复纯法向导数给出每个较小边界坐标内的 \(H^2\) 界。余下的紧内部区域由有限个球覆盖，应用\cref{b2:thm:16-interior-h2}。\(d=1\) 时在各区间直接使用 \(q=au'\)、\(q'=-f\) 的通量证明，得到同类估计。将有限个局部积分相加，并使用坐标变换的双向范数控制，得到第一项不等式。上一章的能量估计与 Poincaré 不等式控制 \(\lVert u\rVert_{H^1}\le C\lVert f\rVert_2\)，得到第二项。
+\end{proof}
+
+非齐次边界不能只说“减去一个函数”：减去的函数必须具有与所求二阶正则性相配的延拓性质，且解的迹确实与它相同。
+
+\Needspace{6\baselineskip}
+\begin{corollary}[非齐次 Dirichlet 数据的全局二阶正则性]
+\label{b2:cor:16-nonhomogeneous-boundary-h2}
+设整数 \(d\geq1\)，\(\Omega\subset\mathbb R^d\) 是非空有界 \(C^{1,1}\) 开集，\(A\in W^{1,\infty}(\Omega;\mathbb R^{d\times d})\)。设 \(0<\lambda\leq\Lambda<\infty\)，\(\|A\|_\infty\leq\Lambda\)，且 \(\xi^{\mathsf T}A(x)\xi\geq\lambda|\xi|^2\) 对几乎处处 \(x\in\Omega\)、全部 \(\xi\in\mathbb R^d\) 成立。给定实函数 \(f\in L^2(\Omega)\)、\(g\in H^2(\Omega)\)。若实函数 \(u\in H^1(\Omega)\) 满足 \(\operatorname{Tr}u=\operatorname{Tr}g\) 及
+\[\int_\Omega A\nabla u\cdot\nabla\varphi
+ =\int_\Omega f\varphi\qquad(\varphi\in H_0^1(\Omega;\mathbb R)),\]
+则 \(u\in H^2(\Omega)\)，且
+\[\|u\|_{H^2(\Omega)}
+ \leq C\bigl(\|f\|_{L^2(\Omega)}+\|g\|_{H^2(\Omega)}\bigr).\]
+其中 \(C\) 只依赖区域的有限 \(C^{1,1}\) 边界坐标、\(d,\lambda,\Lambda\) 及 \(\|\nabla A\|_\infty\)。
+\end{corollary}
+\begin{proof}
+\(C^{1,1}\) 开集也是 Lipschitz 开集。由第一卷定理~23.1.6 的零迹刻画，\(w=u-g\) 属于 \(H_0^1(\Omega)\)。一阶 Sobolev 乘积法则给出
+\[
+ \operatorname{div}(A\nabla g)
+ =\sum_{i,j}\bigl((\partial_i a_{ij})\partial_jg
+                  +a_{ij}\partial_{ij}g\bigr)\in L^2(\Omega),
+\]
+且其 \(L^2\) 范数不超过 \(C_d\|A\|_{W^{1,\infty}}\cdot\|g\|_{H^2}\)。因此 \(w\) 是零边界方程
+\[-\operatorname{div}(A\nabla w)
+       =f+\operatorname{div}(A\nabla g)\]
+的弱解。应用\cref{b2:thm:16-boundary-h2}并用 \(u=w+g\) 的三角不等式，即得结论。
+\end{proof}
+
+这里比弱存在性所需的 \(g\in H^1\) 多一阶正则性。若只有粗糙边界数据，内部解仍可能光滑，但上述全局二阶结论不再由本推论保证。
 
 \ProseParagraphBreak
 
-不同截断约定的比较也应写出实际差值。取实函数 \(\chi\in C^\infty([0,\infty))\)，在 \([0,1]\) 为零、在 \([2,\infty)\) 为一，且 \(0\leq\chi\leq1\)，令
-\[
- T^\chi_\epsilon f(x)=\int K(x,y)\cdot
-                 \chi(|x-y|/\epsilon)\cdot f(y)\,\mathrm dy.
-\]
-与硬截断的差仅在 \(\epsilon<|x-y|<2\epsilon\)，所以对有限指数的 \(L^p\) 输入，
-\[
- |T^\chi_\epsilon f(x)-T_\epsilon f(x)|
- \leq C_dC_0\epsilon^{-d}\int_{B(x,2\epsilon)}|f|
- \leq C_d'C_0\cdot Mf(x).
-\]
-此界能传递 \(1<p<\infty\) 的极大范数估计，但右端不随 \(\epsilon\) 消失，不能单凭这一界识别极限。
+对足够光滑的区域和数据，可以在边界坐标中继续切向微分，再用方程恢复高阶法向导数。每次操作都要控制新的系数和坐标导数，因此需要同步提高边界光滑性。全局高阶定理不能仅由内部自举一句带过；本章只完整证明后续最常用的 \(H^2\) 层次。
+
+\subsection{边界光滑性的作用}
+\label{b2:subsec:160304}
+
+取平面扇形 \(0<r<1\)、\(0<\theta<\omega\)，其中 \(\pi<\omega<2\pi\)，令 \(\alpha=\pi/\omega\in(1/2,1)\)。函数
+\[v(r,\theta)=r^\alpha\sin(\alpha\theta)\]
+在扇形内部调和，并在两条直边上为零。它的梯度量级为 \(r^{\alpha-1}\)，故近角点的梯度平方积分由 \(\int_0^\varepsilon r^{2\alpha-1}\,\mathrm dr\) 控制而有限；二阶导数量级为 \(r^{\alpha-2}\)，相应积分 \(\int_0^\varepsilon r^{2\alpha-3}\,\mathrm dr\) 发散。
 
 \ProseParagraphBreak
 
-若硬截断在某点已有有限极限，则两种截断其实有相同极限，而不必再要求核的抵消。由 \(\int_1^2\chi'(s)\,\mathrm ds=1\)，对上述绝对收敛积分换序，得
-\[
- T^\chi_\epsilon f(x)=\int_1^2\chi'(s)\cdot T_{s\epsilon}f(x)\,\mathrm ds.
-\]
-因此它与硬截断极限 \(L\) 的差不超过
-\[
- \left(\int_1^2|\chi'(s)|\,\mathrm ds\right)
- \sup_{\epsilon\leq r\leq2\epsilon}|T_rf(x)-L|\longrightarrow0.
-\]
-对球面平均零的齐次核，还能在光滑输入上直接比较：环带差核的积分为零，减去 \(f(x)\) 后，差不超过
-\(C_d\|\Omega\|_\infty\epsilon\sup_{B(x,2\epsilon)}|\nabla f|\)。这给出共同的光滑类极限；向一般输入推广仍须控制极大算子的逼近误差。这里比较的是两种截断；它们与预先给定的算子 \(T\) 是否相等，仍是前一段所说的识别问题。
+选径向光滑截断 \(\chi\)，使它在角点附近为 \(1\)，在外圆边界附近为零，令 \(u=\chi v\)。则 \(u\in H_0^1\)，但 \(u\notin H^2\)；源项 \(f=-\Delta u\) 只支撑在离开角点的环带内，因而光滑且平方可积。局部化并在内圆 \(r=\varepsilon\) 上积分，边界余项按 \(\varepsilon^\alpha\) 消失，验证 \(-\Delta u=f\) 确实弱成立。于是即便主部是常系数、源项很好，凹角仍可破坏全局 \(H^2\) 正则性。
 
 \ProseParagraphBreak
 
-截断还可以先保留一个有限的外半径，再逐次放开。对 \(L^p\)、\(1\leq p<\infty\)，固定内半径后的远场已有上述绝对积分控制，外半径趋于无穷不会改变结果。对常函数或一般有界输入，远场可能发散或仅有条件收敛，需要另行指定归一化；有限指数上建立的定义不能不加说明地用于这些输入。
+这个区域具有 Lipschitz 边界，却在凹角处不属于 \(C^{1,1}\)。例子不意味着所有非 \(C^{1,1}\) 区域都失败，例如某些凸多边形仍有更好的结论；它说明仅凭任意 Lipschitz 边界不能保证本节的全局二阶估计。内部估计在离角点有正距离的每个子域上仍完全成立，两个结论并不冲突。

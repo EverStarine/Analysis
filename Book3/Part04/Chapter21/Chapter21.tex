@@ -2,102 +2,521 @@
 \chapter{\texorpdfstring{\(\Gamma\)}{\AnalysisPdfGamma} 函数与 Mellin 方法}
 \label{b3:ch:21}
 \BookChapterNumber{b3:ch:21}
-% 本章摘要（不计入编号）
 \begin{chapterabstract}
-阶乘的延拓同时具有积分、递推和整函数乘积三种描述。本章从 Euler 积分建立 Gamma 函数，用对数凸性刻画其正实轴取值，再确定亚纯延拓、零极点与经典恒等式。最后把正半轴上的 Mellin 变换化为对数坐标下的 Fourier 变换，明确反演所需的可积条件。
+Gamma 函数把阶乘递推、参数积分与整函数乘积联系起来。本章从 Euler 积分的两端控制出发，证明全纯性、递推和严格对数凸性，用 Bohr--Mollerup 定理说明正实轴上的唯一性，再通过递推和 Taylor 扣除完成亚纯延拓。Euler 极限确定倒数乘积的规范化，进而给出无零点性、对数导数、反射与乘法公式；正实轴 Stirling 公式则从积分峰值附近的尺度得到增长常数。最后转入 Mellin 变换，借对数坐标明确权重、Fourier 归一化与反演条件，并以 Gamma 的留数展开说明端点渐近如何成为变换的极点。
 \end{chapterabstract}
 
-% 本章目标（不计入编号）
 \begin{learninggoals}
-能够由积分证明全纯性和递推，区分亚纯延拓与原积分收敛；掌握 Gamma 乘积、反射与乘法公式的规范化常数；能够确定 Mellin 收敛带，并在给定权重下验证反演假设。
+\begin{itemize}
+\item 分别控制 Euler 积分在零与无穷远的行为，验证参数微分，并说明递推、正性、规范化与对数凸性各自承担的作用。
+\item 用递推粘合亚纯延拓，计算极点留数及有限部分，区分收敛积分、Taylor 正则化与延拓后的函数值。
+\item 从 Euler 极限得到倒数乘积，先证明非零性再取对数导数，核对 Euler 常数和局部幂和系数的来源。
+\item 保留 Beta 换元的 Jacobi 因子以及反射、倍增、乘法公式的规范化常数，区分正实轴渐近和特殊竖线估计。
+\item 从两端可积性确定 Mellin 收敛带，用对数坐标解释缩放、权重、乘法卷积与 Fourier 变换之间的关系。
+\item 分开验证绝对反演、有限移线和余项极限的条件，追踪幂次、对数因子、极点位置与极点阶数的对应。
+\end{itemize}
 \end{learninggoals}
 
-整数阶乘同时记录乘法递推和积分矩。将参数连续化后，这两种解释为何仍相容，是本章首先解决的问题。后面的 Mellin 方法则让同一积分成为伸缩问题中的变换工具。所需基础是全纯函数的局部一致极限、无穷乘积及实积分的极限交换；\chapref{b3:ch:20}的正弦乘积用于反射公式。Stein、Shakarchi 的《Complex Analysis》\cite{Stein2003Complex}将这些特殊函数与后续的 \(\zeta\) 函数联系起来，可据本章的具体恒等式继续阅读。
+若只要求 \(F(n+1)=n!\) 和 \(F(z+1)=zF(z)\)，阶乘在复平面中的延拓并不唯一：乘上适当的一周期函数，这些条件仍然成立。Euler 积分提供了一个自然候选，但要理解它为何成为通常的 Gamma 函数，还须辨明积分带来的正性、凸性和增长信息。另一方面，同一个积分中的幂 \(t^{z-1}\) 也能用来分析一般函数；把 \(e^{-t}\) 换成 \(f(t)\)，就得到本章后半部的 Mellin 变换。
+
+\ProseParagraphBreak
+\secref{b3:sec:2101}先处理原积分。原点附近由实部的正下界控制，无穷远由指数下降控制；加入对数幂后仍可积，才允许逐次对参数求导。递推来自边界项消失的分部积分，Gaussian 积分确定半整数处的常数。阅读 Bohr--Mollerup 证明时，应注意凸性比较的是哪些割线，以及整数点已知值怎样夹住非整数处的值。固定实平移的 Gamma 比值可以直接从这些凸性估计得到，不必先使用 Stirling 公式。
+
+\ProseParagraphBreak
+\secref{b3:sec:2102}把递推转为向左延拓的工具。不同移动次数必须在重叠区域给出同一个函数；分母零点处则要检查分子是否也消失，才能确认极点阶数。Taylor 扣除提供另一种具体表示：先减去造成发散的低次项，再把它们的积分写成明确的有理奇部。这个过程解释了延拓值从何而来，却不使原先发散的 Euler 积分自动收敛。
+
+\ProseParagraphBreak
+\secref{b3:sec:2103}从有限积分推得 Euler 极限，再整理出 \(1/\Gamma\) 的正规乘积。一次指数修正保证尾项可和，Euler 常数记录有限乘积规范化的极限。这里先比较两个有限表达式及其极限，证明 \(\Gamma\) 无零点，然后才使用对数导数。由此得到的 \(\psi_0\)、高阶导数与局部幂和，也能回到参数积分中解释对数矩和曲率。
+
+\ProseParagraphBreak
+\secref{b3:sec:2104}将这些表示互相连接。相反参数的乘积给反射公式，Beta 积分的二维换元给倍增关系，递推与对数凸性则固定一般乘法公式中的函数自由度。Stirling 证明另从积分的峰值出发：在宽度为 \(\sqrt{x}\) 的中部出现 Gaussian 极限，两侧尾部需要各自估计。该证明只建立正实轴版本；整数和半整数竖线上的模值由反射与递推独立求出，不以未证明的复参数渐近代替。
+
+\ProseParagraphBreak
+\secref{b3:sec:2105}沿每条实部为 \(c\) 的竖线，把 Mellin 变换写成 \(e^{cu}f(e^u)\) 的 Fourier 变换。改变竖线也就改变权重，因此收敛带属于变换资料的一部分。绝对反演要求竖线上的变换可积；围道移动还要控制水平边；若继续让新竖线趋向左方，又需一条随移动次数变化的余项界。指数函数的例子将这三步分别完成，最后再把端点的幂与对数展开解释为亚纯变换的主部。
+
+\ProseParagraphBreak
+本章使用参数积分、支配收敛、全纯函数的局部一致极限与留数定理，以及\chapref{b3:ch:20}的正规乘积和正弦乘积。Mellin 反演所需的 Fourier 归一化会在使用处重新写明。Stein、Shakarchi 的《Complex Analysis》\cite{Stein2003Complex}可供继续阅读特殊函数与后续数论问题的联系；本章所用的 Gamma 恒等式、反演条件和移线估计均在正文中建立。
 
 \input{Part04/Chapter21/Section2101}
 \input{Part04/Chapter21/Section2102}
 \input{Part04/Chapter21/Section2103}
 \input{Part04/Chapter21/Section2104}
 \input{Part04/Chapter21/Section2105}
-% 本章小结（不计入编号）
-\begin{chaptersummary}
-Gamma 函数由正实轴的递推、规范化和对数凸性唯一确定；其全平面延拓有一串已知留数的单极点，而倒数是具有显式乘积的整函数。Mellin 变换将这些极点解释为原点渐近项，并把伸缩转成参数乘子。使用反演与围道移动时，仍须分别核验竖线可积性和横边衰减。
-\end{chaptersummary}
 
+\begin{chaptersummary}
+Euler 积分先在右半平面定义 Gamma 函数，其全纯性、参数导数与递推都来自可以逐项核对的两端控制。正实轴上的严格对数凸性不仅排除非平凡周期因子，还给出固定平移的比值估计。Bohr--Mollerup 的条件共同确定函数，单独的阶乘插值或递推并不足够。
+
+\ProseParagraphBreak
+递推延拓与 Taylor 扣除描述同一个亚纯函数。全部非正整数都是单极点，留数决定奇部，有限部分进一步决定与零点相消后的导数。倒数乘积则说明 Gamma 没有复零点；其线性指数常数、对数导数与局部幂和都由 Euler 极限统一确定。
+
+\ProseParagraphBreak
+反射、Beta、倍增和乘法公式分别利用相反参数、积分换元与递推唯一性，规范化常数必须随这些步骤一起保留。Stirling 公式来自大参数下积分质量的集中；固定平移、增长平移与竖向参数是不同的极限问题，不能把一个区域中的渐近无条件移用到另一个区域。
+
+\ProseParagraphBreak
+Mellin 变换在对数坐标中成为带权 Fourier 变换，缩放成为乘子，乘法卷积成为普通乘积。收敛带记录原函数两端的可积性，亚纯延拓提供更多参数值，却不改变原积分的收敛范围。绝对反演、水平边消失和远处竖线余项趋零分别支持恢复函数、有限移线和最终留数展开；端点幂次决定极点位置，对数幂决定极点阶数。
+\end{chaptersummary}
 
 \BookExercises
 
-% 以下八题均自拟：分别训练参数微分、归一化、极点抵消、乘积展开与Mellin权重；非正文命题复述。
-\begin{exercise}\label{b3:ex:21-1}
-对正整数 \(n\)，以密度 \(t^{n-1}e^{-t}/\Gamma(n)\) 在 \((0,\infty)\) 上取加权平均。求 \(\log t\) 的平均值及方差，并证明方差随 \(n\) 趋于无穷而趋于零。
-\end{exercise}
-\begin{solution}
-参数积分可微两次：在任何紧参数区间，原点由 \(t^{a-1}(1+|\log t|^2)\)、无穷远由指数衰减控制。于是平均为 \(\psi(n)=\Gamma'(n)/\Gamma(n)=H_{n-1}-\gamma\)，其中 \(H_0=0\)；二阶矩为 \(\Gamma''(n)/\Gamma(n)\)。减去平均的平方，方差等于
+% 自拟：由Gamma对数矩进入最优仿射逼近，利用协方差和正核表示求出严格剩余误差及其精确尺度。
+\Needspace{6\baselineskip}
+\begin{exercise}[对数函数的最优仿射逼近]\label{b3:ex:21-1}
+对 \(x>0\)，用
 \[
-\psi'(n)=\sum_{k=0}^{\infty}\frac1{(n+k)^2}.
+ \mathbb E_x[H(T)]=\frac1{\Gamma(x)}
+ \int_0^\infty H(t)t^{x-1}e^{-t}\,\mathrm{d}t
 \]
-当 \(n\ge2\) 时积分比较给该和不超过 \(1/(n-1)\)，故趋于零。这里方差消失描述的是对数变量的集中，而非 \(t\) 本身的方差。
-\end{solution}
-\begin{exercise}\label{b3:ex:21-2}
-设 \(a>0\)、\(b\in\mathbb R\)、\(c>0\)。计算 \(\int_0^\infty x^{c-1}e^{-ax}\cos(bx)\,\mathrm{d}x\)，并写成实三角函数形式。
-\end{exercise}
-\begin{solution}
-对右半平面参数 \(w\)，积分 \(I(w)=\int_0^\infty x^{c-1}e^{-wx}\,\mathrm{d}x\) 在紧集上由 \(x^{c-1}e^{-\delta x}\) 控制而全纯。正实 \(w\) 上换元给 \(I(w)=\Gamma(c)w^{-c}\)；右半平面取实轴为实值的对数，恒等定理使公式处处成立。令 \(w=a-\mathrm{i}b\) 并取实部，得到
+表示该正权重下的平均，并令 \(\psi_0=\Gamma'/\Gamma\)。在所有实常数 \(A,B\) 中，求使
 \[
-\int_0^\infty x^{c-1}e^{-ax}\cos(bx)\,\mathrm{d}x
-=\Gamma(c)(a^2+b^2)^{-c/2}
-\cos\bigl(c\arctan(b/a)\bigr).
+ \mathbb E_x\bigl[(\log T-AT-B)^2\bigr]
 \]
-积分绝对收敛，故取实部与积分可交换。
-\end{solution}
-\begin{exercise}\label{b3:ex:21-3}
-确定 \(\Gamma(z)/\Gamma(z-n)\) 的全部奇点，其中 \(n\) 为正整数。
-\end{exercise}
-\begin{solution}
-先在避开极点处递推得 \(\prod_{k=1}^n(z-k)\)。因此商的全部表观奇点均可去，延拓为首一多项式，零点为 \(1,\ldots,n\)。不能把分子分母同时无穷当成未定义而遗漏可去延拓。
-\end{solution}
-\begin{exercise}\label{b3:ex:21-4}
-求 \(\lim_{z\to0}\bigl(\Gamma(z)\Gamma(-z)+z^{-2}\bigr)\)。为何不能先把两个 Gamma 因子各自取极限？
-\end{exercise}
-\begin{solution}
-递推与反射式给
+最小的唯一一对 \((A,B)\)。证明最小值为
+\(D(x)=\psi_0'(x)-1/x>0\)，并进一步证明
 \[
-\Gamma(z)\Gamma(-z)
-=-\frac{\pi}{z\sin\pi z}
-=-\frac1{z^2}-\frac{\pi^2}{6}+O(z^2).
+ \lim_{x\to\infty}x^2D(x)=\frac12.
 \]
-所求极限为 \(-\pi^2/6\)。两个因子在原点都有极点，各自没有有限极限；先乘出 Laurent 展开，才能辨认题中二阶主部的抵消，不能以无穷值的形式直接代数运算。
-\end{solution}
-\begin{exercise}\label{b3:ex:21-5}
-求 \(f(x)=x^a\mathbf1_{(0,1)}(x)+x^{-b}\mathbf1_{[1,\infty)}(x)\) 的 Mellin 收敛带，其中 \(a,b\) 为实数。
+这里允许使用本章的对数导数级数，但须说明最小值为何严格为正，以及最后一个极限的支配条件。
 \end{exercise}
 \begin{solution}
-原点要求 \(\operatorname{Re}s>-a\)，无穷远要求 \(\operatorname{Re}s<b\)。若 \(-a<b\)，变换为 \(1/(s+a)+1/(b-s)\)；否则绝对收敛带为空。该有理表达式的存在不能补救原积分没有公共收敛带的问题。
-\end{solution}
-\begin{exercise}\label{b3:ex:21-6}
-求 \(e^{-x}-e^{-2x}\) 的 Mellin 变换，并说明原点抵消怎样扩大收敛域。
-\end{exercise}
-\begin{solution}
-差在原点为 \(x+O(x^2)\)，无穷远指数下降，故收敛域为 \(\operatorname{Re}s>-1\)。在 \(\operatorname{Re}s>0\) 上分别积分得 \((1-2^{-s})\Gamma(s)\)。零点因子消去 \(s=0\) 的单极点，恒等定理将公式扩展到整个收敛域，该点值为 \(\log2\)。
-\end{solution}
-\begin{exercise}\label{b3:ex:21-7}
-设 \(h=\mathbf1_{(0,1)}\)。计算 \(h\) 的 \(m\) 次 Mellin 卷积 \(h^{*_M m}\)，并求其 Mellin 变换，其中 \(m\ge1\) 为整数。
-\end{exercise}
-\begin{solution}
-结果为
+Euler 积分的递推与参数微分给
 \[
-h^{*_M m}(x)=\frac{(-\log x)^{m-1}}{(m-1)!}\mathbf1_{(0,1)}(x).
+ \mathbb E_x[T]=x,\quad
+ \mathbb E_x[T^2]=x(x+1),\quad
+ \mathbb E_x[\log T]=\psi_0(x),\quad
+ \operatorname{Var}_x(\log T)=\psi_0'(x).
 \]
-当 \(m=1\) 时即定义。若公式对 \(m\) 成立，对 \(0<x<1\) 再卷积一次，积分区间为 \(x<y<1\)；令 \(v=\log(y/x)\)，积分变为 \(\int_0^{-\log x}v^{m-1}\,\mathrm{d}v/(m-1)!\)，给出归纳式。\(x\ge1\) 时没有满足两因子支集条件的 \(y\)，所以为零。对 \(\operatorname{Re}s>0\)，令 \(u=-\log x\) 得 Mellin 积分为 \(\Gamma(m)/((m-1)!s^m)=s^{-m}\)；若 \(\operatorname{Re}s\le0\)，绝对积分发散。
+这里方差表示 \(\mathbb E_x[(Y-\mathbb E_xY)^2]\)。所需混合矩同样绝对可积；原点附近的幂乘对数可积，无穷远仍有指数下降。于是
+\[
+ \mathbb E_x[T\log T]
+ =\frac{\Gamma'(x+1)}{\Gamma(x)}
+ =x\psi_0(x)+1,
+\]
+最后一步由 \(\Gamma'(x+1)=\Gamma(x)+x\Gamma'(x)\) 得到。因此 \(T\) 的方差为 \(x\)，而 \(T\) 与 \(\log T\) 的协方差为一。
+
+把两变量中心化并配方，得到精确恒等式
+\[
+ \mathbb E_x\bigl[(\log T-AT-B)^2\bigr]
+ =\psi_0'(x)-\frac1x
+   +x\left(A-\frac1x\right)^2
+   +\bigl(B+Ax-\psi_0(x)\bigr)^2.
+\]
+故唯一最优选择为
+\(A=1/x\)、\(B=\psi_0(x)-1\)。若相应最小值为零，连续函数 \(\log t-t/x-B\) 必须在这个处处正的密度下几乎处处为零，继而在全部 \(t>0\) 为零。但其导数 \(1/t-1/x\) 不恒为零，矛盾，所以 \(D(x)>0\)。
+
+为了求精确极限，由正项级数和 Tonelli 定理有
+\[
+ \psi_0'(x)=\sum_{n=0}^\infty\frac1{(x+n)^2}
+ =\int_0^\infty\frac{u e^{-xu}}{1-e^{-u}}\,\mathrm{d}u.
+\]
+减去 \(1/x=\int_0^\infty e^{-xu}\,\mathrm{d}u\)，记
+\(q(u)=u/(1-e^{-u})-1\)。对 \(u>0\)，不等式
+\(1-e^{-u}<u\) 和 \(e^u>1+u\) 分别给 \(0<q(u)<u\)；Taylor 展开还给 \(q(u)=u/2+O(u^2)\)。令 \(v=xu\)，则
+\[
+ x^2D(x)=\int_0^\infty e^{-v}xq(v/x)\,\mathrm{d}v.
+\]
+被积函数逐点趋于 \(ve^{-v}/2\)，并由可积函数 \(ve^{-v}\) 控制。支配收敛遂给极限 \(\Gamma(2)/2=1/2\)。这个剩余误差衡量的是去掉最佳线性部分后的对数波动。
 \end{solution}
-\begin{exercise}\label{b3:ex:21-8}
-证明 \(\Gamma(x+\sqrt{x})/(x^{\sqrt{x}}\Gamma(x))\to e^{1/2}\)，其中 \(x\to+\infty\)。这说明固定平移的 Gamma 比值渐近为什么不能直接用于增长的平移量？
+
+% 自拟：把阻尼Gamma积分的计算与统一振荡尾估计相连，区分去阻尼极限和通常广义积分，并验证条件而非绝对收敛。
+\Needspace{6\baselineskip}
+\begin{exercise}[去阻尼与广义积分]\label{b3:ex:21-2}
+设 \(b,c>0\)、\(\varepsilon>0\)，计算
+\[
+ I_\varepsilon(c,b)=\int_0^\infty
+ x^{c-1}e^{-\varepsilon x}\cos(bx)\,\mathrm{d}x,
+\]
+并求 \(\varepsilon\downarrow0\) 的极限。证明当 \(0<c<1\) 时，通常的广义积分
+\(\int_0^\infty x^{c-1}\cos(bx)\,\mathrm{d}x\) 条件收敛，且等于这一极限。再以 \(c=1\) 说明：去阻尼极限存在并不保证通常广义积分存在。
 \end{exercise}
 \begin{solution}
-令 \(a=\sqrt x\)。正实轴 Stirling 公式应用于 \(x\) 与 \(x+a\)，取比值的对数后得到
+对 \(\operatorname{Re}w>0\)，函数
 \[
-\log\frac{\Gamma(x+a)}{x^a\Gamma(x)}
-=\left(x+a-\frac12\right)\log(1+a/x)-a+o(1).
+ J(w)=\int_0^\infty x^{c-1}e^{-wx}\,\mathrm{d}x
 \]
-因 \(a/x=x^{-1/2}\)，将对数展开至二次，三次余项乘以 \(x+a-1/2\) 后为 \(O(x^{-1/2})\)。上式于是等于 \(a^2/(2x)+O(x^{-1/2})+o(1)\to1/2\)。指数化即得。固定平移时被忽略的 \(a^2/x\) 项此处保持为一，所以固定参数的渐近不是对所有增长平移量一致成立。
+全纯；在每个紧参数集上，积分由 \(x^{c-1}e^{-\delta x}\) 控制，参数导数加入的幂也可积。正实 \(w\) 上换元给 \(J(w)=\Gamma(c)w^{-c}\)。在右半平面取正实轴上为实值的对数分支，恒等定理把该式推广到整个右半平面。令 \(w=\varepsilon-\mathrm{i}b\)，取实部，得
+\[
+ I_\varepsilon(c,b)
+ =\Gamma(c)(\varepsilon^2+b^2)^{-c/2}
+ \cos\left(c\arctan\frac b\varepsilon\right).
+\]
+所以对每个 \(c>0\)，去阻尼极限都为
+\(\Gamma(c)b^{-c}\cos(\pi c/2)\)。
+
+现在设 \(0<c<1\)。对 \(\varepsilon\ge0\)，振幅
+\(a_\varepsilon(x)=x^{c-1}e^{-\varepsilon x}\) 在 \(x>0\) 单调递减并趋于零。分部积分给共同尾界
+\[
+ \left|\int_R^\infty a_\varepsilon(x)e^{\mathrm{i}bx}\,\mathrm{d}x\right|
+ \le\frac{a_\varepsilon(R)+\int_R^\infty|a_\varepsilon'(x)|\,\mathrm{d}x}{b}
+ =\frac{2a_\varepsilon(R)}b
+ \le\frac{2R^{c-1}}b.
+\]
+当 \(\varepsilon=0\) 时，右侧同时证明振荡尾积分存在。在固定区间 \((0,R)\)，以 \(x^{c-1}\) 支配即可令 \(\varepsilon\downarrow0\)；再令 \(R\to\infty\)，上述统一尾界使两个极限相容。因此
+\[
+ \int_0^\infty x^{c-1}\cos(bx)\,\mathrm{d}x
+ =\Gamma(c)b^{-c}\cos\frac{\pi c}2.
+\]
+这不是绝对收敛。围绕 \(2\pi k/b\) 取固定长度的小区间，使其中 \(|\cos(bx)|\ge1/2\)。第 \(k\) 个区间上的绝对积分不小于 \(Ck^{c-1}\)，而该正项级数发散。
+
+最后取 \(c=1\)。已得公式给 \(I_\varepsilon(1,b)=\varepsilon/(\varepsilon^2+b^2)\to0\)，但
+\(\int_0^R\cos(bx)\,\mathrm{d}x=\sin(bR)/b\) 没有极限。前面的统一尾界正是在 \(c=1\) 时失去趋零性质，因而不能把同一论证用到端点。
+\end{solution}
+
+% 自拟：将任意平移Gamma商的零极点分类与共同极点处的有限部分相连，辨明何时真正退化为有理函数。
+\Needspace{6\baselineskip}
+\begin{exercise}[Gamma 商的零极点与相消]\label{b3:ex:21-3}
+设 \(a,b\in\mathbb C\)，把
+\[
+ Q(z)=\frac{\Gamma(z+a)}{\Gamma(z+b)}
+\]
+理解为亚纯函数。确定它的全部零点和极点，并分别判定它何时是有理函数、多项式或某个多项式的倒数。若某点 \(z_0\) 满足
+\(z_0+a=-n\)、\(z_0+b=-r\)，其中 \(n,r\) 为非负整数，求 \(Q\) 在这个共同极点处可去延拓后的值与导数。
+\end{exercise}
+\begin{solution}
+Gamma 没有零点，而其倒数在非正整数有且仅有单零点。因此若 \(b-a\notin\mathbb Z\)，两列点不相交，\(Q\) 的极点恰为 \(-a-n\)，零点恰为 \(-b-n\)，其中 \(n\ge0\)，且均为一阶。没有其他零极点。非零有理函数只有有限多个零极点，所以此时 \(Q\) 不是有理函数。
+
+若 \(b-a=m\) 是正整数，有限次递推给
+\[
+ Q(z)=\frac1{\prod_{k=0}^{m-1}(z+a+k)}.
+\]
+故只剩 \(-a,-a-1,\ldots,-a-m+1\) 这些单极点，没有零点。若 \(a-b=m\) 是正整数，则
+\[
+ Q(z)=\prod_{k=0}^{m-1}(z+b+k),
+\]
+其零点为 \(-b,-b-1,\ldots,-b-m+1\)，均为单零点，没有极点。若 \(a=b\)，则 \(Q=1\)。这些恒等式先在避开极点的开集成立，再作为亚纯恒等式延拓，已经包含所有表观奇点的相消。
+
+所以 \(Q\) 为有理函数当且仅当 \(a-b\in\mathbb Z\)；为多项式当且仅当 \(a-b\) 是非负整数；为非零多项式的倒数当且仅当 \(b-a\) 是非负整数。常函数一同时属于后两类。
+
+最后令 \(w=z-z_0\)。记 \(H_0=0\)、\(H_j=\sum_{k=1}^j1/k\)。本章的极点有限部分给
+\[
+ \Gamma(-n+w)=\frac{(-1)^n}{n!w}
+ \left(1+(H_n-\gamma)w+O(w^2)\right),
+\]
+分母有把 \(n\) 换为 \(r\) 的同类展开。两式相除得
+\[
+ Q(z_0+w)=(-1)^{n-r}\frac{r!}{n!}
+ \left(1+(H_n-H_r)w+O(w^2)\right).
+\]
+因此
+\[
+ Q(z_0)=(-1)^{n-r}\frac{r!}{n!},\quad
+ Q'(z_0)=(-1)^{n-r}\frac{r!}{n!}(H_n-H_r).
+\]
+值由留数之比确定，导数还需要两边有限部分的差；形式上的“两个无穷大相除”不能给出这些资料。
+\end{solution}
+
+% 自拟：构造保持递推、规范化与严格普通凸性的非平凡周期扰动，说明Bohr--Mollerup中的对数凸性不可直接弱化。
+\Needspace{6\baselineskip}
+\begin{exercise}[普通凸性不能代替对数凸性]\label{b3:ex:21-4}
+对实数 \(\varepsilon\)，令
+\[
+ F_\varepsilon(x)=\Gamma(x)e^{\varepsilon\sin2\pi x},\quad x>0.
+\]
+证明存在 \(\varepsilon_0>0\)，使每个 \(0<|\varepsilon|\le\varepsilon_0\) 对应的 \(F_\varepsilon\) 都正且严格凸，满足
+\(F_\varepsilon(1)=1\) 与 \(F_\varepsilon(x+1)=xF_\varepsilon(x)\)，却不等于 \(\Gamma\)。再证明只要 \(\varepsilon\ne0\)，\(\log F_\varepsilon\) 就不是凸函数。无需给出 \(\varepsilon_0\) 的数值，但须证明一个对所有 \(x>0\) 有效的选择确实存在。
+\end{exercise}
+\begin{solution}
+正性、规范化与递推直接来自指数因子的一周期性。若 \(\varepsilon\ne0\)，取 \(x=1/4\) 即知这个因子不等于一，所以 \(F_\varepsilon\ne\Gamma\)。问题在于选择一个足够小而对全半轴适用的扰动。
+
+置 \(\omega=2\pi\)，并在本解中记 \(\psi=\psi_0\)。对数导数级数给 \(\psi'(x)>0\)；原点展开给 \(\psi(x)=-1/x+O(1)\)，而
+\(\psi(n)=H_{n-1}-\gamma\) 与单调性给 \(\psi(x)\to\infty\)。因此 \(|\psi(x)|\) 在 \(x\downarrow0\) 和 \(x\to\infty\) 两端都趋于无穷。
+
+定义连续正函数
+\[
+ q(x)=\psi'(x)+\psi(x)^2,\quad
+ r(x)=2\omega|\psi(x)|+\omega^2.
+\]
+有
+\[
+ \frac{q(x)}{r(x)}
+ \ge\frac{\psi(x)^2}{2\omega|\psi(x)|+\omega^2}
+ \longrightarrow\infty
+\]
+于两端。在中间紧区间上，这个连续正商取得正的最小值，故
+\(\mu=\inf_{x>0}q(x)/r(x)>0\)。取 \(\varepsilon_0=\mu/2\)。逐次求导得
+\[
+ \frac{F_\varepsilon''}{F_\varepsilon}
+ =q+2\varepsilon\omega\psi\cos(\omega x)
+   -\varepsilon\omega^2\sin(\omega x)
+   +\varepsilon^2\omega^2\cos^2(\omega x)
+ \ge q-|\varepsilon|r\ge\frac q2>0.
+\]
+因此所有这样的 \(F_\varepsilon\) 都严格凸。
+
+另一方面，
+\[
+ (\log F_\varepsilon)''(x)
+ =\psi'(x)-\varepsilon\omega^2\sin(\omega x).
+\]
+本章的级数积分比较给 \(\psi'(x)\to0\)。当 \(\varepsilon>0\) 时取 \(x_n=n+1/4\)，当 \(\varepsilon<0\) 时取 \(x_n=n+3/4\)，两种情形都有
+\[
+ (\log F_\varepsilon)''(x_n)
+ =\psi'(x_n)-|\varepsilon|\omega^2<0
+\]
+于充分大的 \(n\)。所以对数不凸。普通凸性可以由一阶对数导数的平方维持，而对数凸性只看二阶对数导数；这正是本例中两个条件出现不同结论的原因。
+\end{solution}
+
+% 自拟：给同一有理亚纯函数选取三个不同反演竖线，求出各自原函数与实际收敛带，显示移线留数的作用。
+\Needspace{6\baselineskip}
+\begin{exercise}[同一表达式的三个反演条带]\label{b3:ex:21-5}
+设 \(\alpha<\beta\) 为实数，令
+\[
+ F(s)=\frac1{(s-\alpha)(\beta-s)}.
+\]
+对 \(x>0\) 及 \(c\in\mathbb R\setminus\{\alpha,\beta\}\)，证明
+\[
+ I_c(x)=\frac1{2\pi\mathrm{i}}
+ \int_{c-\mathrm{i}\infty}^{c+\mathrm{i}\infty}F(s)x^{-s}\,\mathrm{d}s
+\]
+绝对收敛，并分别计算 \(c<\alpha\)、\(\alpha<c<\beta\) 和 \(c>\beta\) 时的函数。求这三个函数各自的最大绝对收敛带，用留数解释相邻两种答案的差，并说明为什么它们不违背 Mellin 变换的唯一性。
+\end{exercise}
+\begin{solution}
+在任意不经过极点的竖线上，\(F(c+\mathrm{i}t)=O((1+|t|)^{-2})\)，而 \(|x^{-c-\mathrm{i}t}|=x^{-c}\)，故所示积分绝对收敛。记 \(d=\beta-\alpha>0\)，考虑三个连续函数
+\[
+ f_0(x)=\frac1d
+ \begin{cases}
+ x^{-\alpha},&0<x\le1,\\
+ x^{-\beta},&x>1,
+ \end{cases}
+\]
+以及
+\[
+ f_-(x)=\frac1d
+ \begin{cases}
+ 0,&0<x\le1,\\
+ x^{-\beta}-x^{-\alpha},&x>1,
+ \end{cases}
+ \quad
+ f_+(x)=\frac1d
+ \begin{cases}
+ x^{-\alpha}-x^{-\beta},&0<x<1,\\
+ 0,&x\ge1.
+ \end{cases}
+\]
+对 \(f_0\)，零端要求 \(\operatorname{Re}s>\alpha\)，无穷远要求 \(\operatorname{Re}s<\beta\)，且
+\[
+ \mathcal Mf_0(s)=\frac1d
+ \left(\frac1{s-\alpha}+\frac1{\beta-s}\right)=F(s).
+\]
+对 \(f_-\)，只有无穷远端需要检查，那里
+\(f_-(x)\sim-x^{-\alpha}/d\)。其最大绝对收敛域为 \(\operatorname{Re}s<\alpha\)，在该域逐项积分给
+\[
+ \mathcal Mf_-(s)=\frac1d
+ \left(\frac1{\beta-s}-\frac1{\alpha-s}\right)=F(s).
+\]
+同样，\(f_+(x)\sim-x^{-\beta}/d\) 于零端，其最大绝对收敛域为 \(\operatorname{Re}s>\beta\)，并且
+\[
+ \mathcal Mf_+(s)=\frac1d
+ \left(\frac1{s-\alpha}-\frac1{s-\beta}\right)=F(s).
+\]
+在各边界实部，绝对积分都含非零常数倍的 \(\int\mathrm{d}x/x\)，所以不能把边界加入。三个函数都在各自竖线的权重下可积，变换沿竖线也可积；Mellin 绝对反演因此处处给
+\[
+ I_c=
+ \begin{cases}
+ f_-,&c<\alpha,\\
+ f_0,&\alpha<c<\beta,\\
+ f_+,&c>\beta.
+ \end{cases}
+\]
+在 \(x=1\) 时，中间答案为 \(1/d\)，两侧答案为零，这些值也由各函数的连续性确定。
+
+反演被积函数在两个极点的留数为
+\[
+ \operatorname{Res}_{s=\alpha}\bigl(F(s)x^{-s}\bigr)=\frac{x^{-\alpha}}d,
+ \quad
+ \operatorname{Res}_{s=\beta}\bigl(F(s)x^{-s}\bigr)=-\frac{x^{-\beta}}d.
+\]
+由下往上的竖线向右移时，右线积分等于左线积分加所越过极点的留数。因此
+\[
+ f_0-f_-=\frac{x^{-\alpha}}d,\quad
+ f_+-f_0=-\frac{x^{-\beta}}d.
+\]
+有限水平区间上 \(F(\sigma+\mathrm{i}T)=O(T^{-2})\)，且 \(x^{-\sigma}\) 一致有界，所以矩形的水平边确实趋于零。唯一性要求两个原函数在同一权重下可积，并在共同竖线上有相同变换；这里三个最大收敛带互不相交，不满足这个前提。只保留亚纯表达式而忘记收敛带，会丢失原函数信息。
+\end{solution}
+
+% 自拟：以高阶有限差分制造原点抵消，计算被消去的Gamma极点处的值，并用正积分证明对应零点确为单零点。
+\Needspace{6\baselineskip}
+\begin{exercise}[高阶抵消与可去值]\label{b3:ex:21-6}
+设 \(a>0\)，\(m\ge1\) 为整数，令
+\[
+ f_m(x)=e^{-ax}(1-e^{-x})^m,\quad
+ A_m(s)=\sum_{k=0}^m(-1)^k\binom mk(a+k)^{-s},
+\]
+其中幂使用正实数的实对数。求 \(f_m\) 的最大 Mellin 绝对收敛域，并证明其中
+\[
+ \mathcal Mf_m(s)=\Gamma(s)A_m(s)
+\]
+按可去延拓解释。计算 \(s=-j\)、\(0\le j<m\) 处的值，证明这些点都是 \(A_m\) 的恰好一重零点；最后求右端在 \(s=-m\) 的留数。
+\end{exercise}
+\begin{solution}
+在原点附近，\(f_m(x)=x^m(1+O(x))\)；无穷远则由 \(e^{-ax}\) 控制。因此最大绝对收敛域为 \(\operatorname{Re}s>-m\)，边界实部已有 \(x^{-1}\) 型发散。在这个半平面上，Mellin 积分定义全纯函数，记为 \(G_m\)。
+
+在较小的半平面 \(\operatorname{Re}s>0\)，有限二项展开后的每项都可以单独积分，所以
+\[
+ G_m(s)=\sum_{k=0}^m(-1)^k\binom mk
+ \int_0^\infty e^{-(a+k)x}x^{s-1}\,\mathrm{d}x
+ =\Gamma(s)A_m(s).
+\]
+\(A_m\) 是整函数。要核对前 \(m\) 个 Gamma 极点的抵消，使用有限恒等式
+\[
+ \sum_{k=0}^m(-1)^k\binom mk e^{(a+k)t}
+ =e^{at}(1-e^t)^m=(-1)^mt^m+O(t^{m+1}).
+\]
+在原点逐次求导便得
+\[
+ \sum_{k=0}^m(-1)^k\binom mk(a+k)^j=0\quad(0\le j<m),
+\]
+而 \(j=m\) 时该和等于 \((-1)^m m!\)。因此
+\(A_m(-j)=0\) 对 \(0\le j<m\) 成立，足以消去这些点的单极点。恒等定理遂把 \(G_m=\Gamma A_m\) 推广到整个 \(\operatorname{Re}s>-m\)。
+
+在 \(s=-j\) 附近，Gamma 的留数为 \((-1)^j/j!\)，故可去值为
+\[
+ G_m(-j)=\frac{(-1)^j}{j!}A_m'(-j)
+ =\frac{(-1)^{j+1}}{j!}
+ \sum_{k=0}^m(-1)^k\binom mk(a+k)^j\log(a+k).
+\]
+这里 \(-j>-m\)，原来的正积分仍收敛，而且 \(f_m(x)>0\)，所以 \(G_m(-j)>0\)。于是 \(A_m'(-j)\ne0\)，证明这些零点恰为一重。零点阶数不能仅从前面的有限差分恒等式直接读出，正积分排除了更高阶相消。
+
+在 \(s=-m\)，已经算得 \(A_m(-m)=(-1)^m m!\ne0\)，因此右端仍有单极点，留数为
+\[
+ \frac{(-1)^m}{m!}A_m(-m)=1.
+\]
+它与原点展开的首项系数一相符。有限差分消除了前 \(m\) 个极点，也恰好把原积分的左收敛边界推进了 \(m\) 个单位。
+\end{solution}
+
+% 自拟：从不同指数截断幂的乘法卷积导出部分分式公式，再通过紧单纯形积分解释参数合并时出现的对数因子。
+\Needspace{6\baselineskip}
+\begin{exercise}[不同指数的卷积与合并极限]\label{b3:ex:21-7}
+设 \(m\ge2\)，\(a_1,\ldots,a_m\) 为实数，并定义
+\[
+ h_a(x)=
+ \begin{cases}
+ x^a,&0<x<1,\\
+ 0,&x\ge1,
+ \end{cases}
+ \quad H=h_{a_1}*_M\cdots*_Mh_{a_m},
+\]
+其中 \((f*_Mg)(x)=\int_0^\infty f(t)g(x/t)\,\mathrm{d}t/t\)。证明当参数两两不同时，
+\[
+ H(x)=
+ \begin{cases}
+ \displaystyle\sum_{j=1}^m
+ \frac{x^{a_j}}{\prod_{k\ne j}(a_k-a_j)},&0<x<1,\\
+ 0,&x\ge1.
+ \end{cases}
+\]
+再证明当所有 \(a_j\to a\) 时，这个表达式在 \((0,\infty)\) 的紧集上一致趋于
+\[
+ \frac{x^a(-\log x)^{m-1}}{(m-1)!}\cdot\mathbf1_{(0,1)}(x).
+\]
+求两种情形的 Mellin 变换与最大绝对收敛域，并说明系数分母趋零为什么不导致卷积发散。
+\end{exercise}
+\begin{solution}
+先用对数坐标写出不含相消的积分。令 \(x=e^{-u}\)。当 \(u>0\) 时，多次卷积和换元给
+\[
+ H(e^{-u})=u^{m-1}\int_{\Delta}
+ \exp\left[-u\left(\sum_{j=1}^{m-1}a_jw_j
+              +a_m\left(1-\sum_{j=1}^{m-1}w_j\right)\right)\right]
+ \,\mathrm{d}w_1\cdots\mathrm{d}w_{m-1},
+\]
+其中
+\[
+ \Delta=\left\{\,(w_1,\ldots,w_{m-1})\in[0,\infty)^{m-1}
+          \ \middle|\ \sum_{j=1}^{m-1}w_j\le1\,\right\}.
+\]
+具体地，两因子卷积在此坐标变成 \(\int_0^u\) 上的加法卷积；归纳后令各积分变量为 \(uw_j\)，就得到上式。所有被积函数非负，Tonelli 定理保证迭代次序合法。若 \(x\ge1\)，支集条件没有正长度的积分区域，故 \(H(x)=0\)。这个紧单纯形表示还证明 \(H\) 连续，且因 \(m\ge2\)，在 \(x=1\) 的值为零。
+
+设 \(a_* =\min_j a_j\)。在 \(\operatorname{Re}s>-a_*\)，各因子都在同一权重下可积，卷积定理给
+\[
+ \mathcal MH(s)=\prod_{j=1}^m\frac1{s+a_j}.
+\]
+当参数两两不同时，部分分式展开为
+\[
+ \prod_{j=1}^m\frac1{s+a_j}
+ =\sum_{j=1}^m\frac{c_j}{s+a_j},\quad
+ c_j=\frac1{\prod_{k\ne j}(a_k-a_j)}.
+\]
+系数由乘以 \(s+a_j\) 后令 \(s=-a_j\) 得到。每项正是 \(c_jh_{a_j}\) 的 Mellin 变换，因此题给候选式与 \(H\) 在共同竖线上有相同变换。该有理函数沿竖线为 \(O(|t|^{-m})\)，属于 \(L^1\)。此外 \(\sum_jc_j=0\)，因为在部分分式两侧令 \(s\to+\infty\) 后比较 \(1/s\) 项即可；故候选式在 \(x=1\) 也连续。对两个连续函数使用绝对反演，便知它们处处相等。
+
+若最小参数为 \(a_*=a_{j_*}\)，其系数
+\(c_{j_*}=\prod_{k\ne j_*}(a_k-a_*)^{-1}>0\)，其余幂次都较大。因此
+\(H(x)\sim c_{j_*}x^{a_*}\) 于零端，最大绝对收敛域确为 \(\operatorname{Re}s>-a_*\)；无穷远没有贡献。
+
+现在让所有 \(a_j\to a\)。紧单纯形上的被积函数在每个有界 \(u\ge0\) 区间上一致趋于 \(e^{-au}\)。单纯形的体积为 \(1/(m-1)!\)，可由逐次积分归纳得到，因而
+\[
+ H(e^{-u})\longrightarrow
+ \frac{e^{-au}u^{m-1}}{(m-1)!}
+\]
+在这些区间上一致成立。任意 \(x>0\) 的紧区间都只对应有界的 \(u\) 区间；\(x\ge1\) 时又恒为零，所以得到题中的局部一致极限。在参数全部等于 \(a\) 时，上式本身就是精确公式，且
+\[
+ \mathcal MH(s)=\frac1{(s+a)^m},\quad
+ \operatorname{Re}s>-a.
+\]
+零端的 \(x^a(-\log x)^{m-1}\) 说明这个收敛域同样最大。分母 \(\prod_{k\ne j}(a_k-a_j)\) 的趋零只是部分分式表达中的相消变得显著；原卷积的紧区域积分始终有界并连续依赖参数。简单极点合并成高阶极点，原函数中相应出现对数幂。
+\end{solution}
+
+% 自拟：把固定平移渐近推广到增长参数的一致区间，计算二次指数修正的有效尺度，并在临界尺度保留三次项。
+\Needspace{6\baselineskip}
+\begin{exercise}[增长平移的有效尺度]\label{b3:ex:21-8}
+对实数 \(x>0\)、\(h\) 满足 \(x+h>0\)，令
+\[
+ R(x,h)=\frac{\Gamma(x+h)}{x^h\Gamma(x)}.
+\]
+设 \(L(x)\ge0\) 且 \(L(x)=o(x^{2/3})\)。证明
+\[
+ \sup_{|h|\le L(x)}
+ \left|\log R(x,h)-\frac{h^2}{2x}\right|
+ \longrightarrow0\quad(x\to\infty).
+\]
+由此分别讨论 \(h=o(\sqrt x)\)、\(h/\sqrt x\to\lambda\in\mathbb R\)，以及
+\(\sqrt x=o(|h|)\)、\(|h|=o(x^{2/3})\) 时的 \(R(x,h)\)。最后固定 \(c\in\mathbb R\setminus\{0\}\)，令 \(h=cx^{2/3}\)，计算
+\[
+ \lim_{x\to\infty}e^{-h^2/(2x)}R(x,h),
+\]
+说明上面的有效范围为什么不能直接扩大为 \(|h|=O(x^{2/3})\)。
+\end{exercise}
+\begin{solution}
+写正实轴 Stirling 公式的对数形式
+\[
+ \log\Gamma(t)=\left(t-\frac12\right)\log t-t
+                 +\frac12\log(2\pi)+r(t),\quad r(t)\to0.
+\]
+对 \(|h|\le L(x)\)，充分大的 \(x\) 满足 \(|h|\le x/2\)，于是 \(x+h\ge x/2>0\)。两次应用此式并约去共同项，得到
+\[
+ \log R(x,h)=\left(x+h-\frac12\right)
+             \log\left(1+\frac hx\right)-h
+             +r(x+h)-r(x).
+\]
+由于
+\(\sup_{t\ge x/2}|r(t)|\to0\)，最后两项之差对整个 \(h\) 区间一致趋于零。这一步仅使用 Stirling 余项趋零，不对余项作未经证明的微分。
+
+在 \(|u|\le1/2\) 上，Taylor 余项统一满足
+\(\log(1+u)=u-u^2/2+O(|u|^3)\)。代入 \(u=h/x\)，整理得到
+\[
+ \left(x+h-\frac12\right)\log\left(1+\frac hx\right)-h
+ =\frac{h^2}{2x}
+   +O\left(\frac{|h|}x+\frac{|h|^3}{x^2}\right),
+\]
+其中常数不依赖于 \(x,h\)。所以所求上确界不超过
+\[
+ C\left(\frac{L(x)}x+\frac{L(x)^3}{x^2}\right)
+ +2\sup_{t\ge x/2}|r(t)|,
+\]
+这在 \(L=o(x^{2/3})\) 时趋于零。
+
+因而若 \(h=o(\sqrt x)\)，则 \(R(x,h)\to1\)；若 \(h/\sqrt x\to\lambda\)，则
+\(R(x,h)\to e^{\lambda^2/2}\)。特别地，\(h=\sqrt x\) 时极限为 \(e^{1/2}\)。若
+\(\sqrt x=o(|h|)\) 且 \(|h|=o(x^{2/3})\)，则 \(h^2/(2x)\to\infty\)，故 \(R(x,h)\to\infty\)。这些结论对正、负平移都适用，只要保持 \(x+h>0\)。
+
+最后取 \(h=cx^{2/3}\)。这时必须把对数保留到三次：
+\[
+ \log(1+u)=u-\frac{u^2}2+\frac{u^3}3+O(u^4).
+\]
+代入同一恒等式，有
+\[
+ \log R(x,h)-\frac{h^2}{2x}
+ =-\frac{h}{2x}-\frac{h^3}{6x^2}
+   +O\left(\frac{h^2}{x^2}+\frac{|h|^4}{x^3}\right)+o(1)
+ \longrightarrow-\frac{c^3}6.
+\]
+于是所求极限为 \(e^{-c^3/6}\ne1\)。在临界尺度，三次项保留了非零贡献；固定平移公式中可以忽略的项，在增长参数下必须重新估计。
 \end{solution}

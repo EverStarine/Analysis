@@ -15,8 +15,9 @@
 \symidx{\(\overline z\)：复数 \(z\) 的共轭}
 \symidx{\(\lvert z\rvert\)：复数 \(z\) 的模}
 
+\Needspace{6\baselineskip}
 \begin{definition}\label{b3:def:01-complex-derivative}
-设 \(f:U\rightarrow\mathbb C\)，且 \(a\in U\)。若有限极限
+设 \(U\subseteq\mathbb C\) 为开集，\(f:U\rightarrow\mathbb C\)，且 \(a\in U\)。若有限极限
 \[
  f'(a)\coloneqq\lim_{\substack{h\to0\\h\ne0}}
  \frac{f(a+h)-f(a)}{h}
@@ -35,8 +36,9 @@
 
 例如 \(f(z)=z^2\) 满足 \(f(a+h)-f(a)=2ah+h^2\)，故处处复可微，且 \(f'(a)=2a\)。共轭函数则完全不同：当 \(h\) 为非零实数时，\(\overline h/h=1\)；当 \(h\) 为非零纯虚数时，\(\overline h/h=-1\)。因此 \(z\mapsto\overline z\) 在任何一点都不复可微，尽管它作为实平面上的映射处处具有连续的各阶偏导数。
 
+\Needspace{6\baselineskip}
 \begin{proposition}\label{b3:prop:01-complex-derivative-rules}
-设 \(f,g\) 在 \(a\) 复可微，\(\alpha,\beta\in\mathbb C\)。则线性组合与乘积在 \(a\) 复可微，且
+设 \(U\subseteq\mathbb C\) 为开集，\(a\in U\)，\(f,g:U\to\mathbb C\) 在 \(a\) 复可微，\(\alpha,\beta\in\mathbb C\)。则线性组合与乘积在 \(a\) 复可微，且
 \[
  (\alpha f+\beta g)'(a)=\alpha\cdot f'(a)+\beta\cdot g'(a),
  \quad
@@ -65,8 +67,9 @@
 
 复合运算的求导由\term[lianshi-faze]{链式法则}[chain rule]控制。直接把两个差商相乘时，可能遇到内层函数在邻近点取相同值的情形；用线性近似可以同时处理这些点。
 
+\Needspace{6\baselineskip}
 \begin{proposition}[链式法则]\label{b3:prop:01-complex-chain-rule}
-若 \(f\) 在 \(a\) 复可微，\(F\) 定义在 \(f(a)\) 的开邻域内，并在 \(f(a)\) 复可微，则复合函数在 \(a\) 的某邻域有定义，且
+设 \(U,V\subseteq\mathbb C\) 为开集，\(a\in U\)，\(f:U\to\mathbb C\) 在 \(a\) 复可微，\(f(a)\in V\)，且 \(F:V\to\mathbb C\) 在 \(f(a)\) 复可微。则复合函数在 \(a\) 的某邻域有定义，且
 \[
  (F\circ f)'(a)=F'\bigl(f(a)\bigr)\cdot f'(a).
 \]
@@ -85,7 +88,7 @@
 \subsection{Cauchy--Riemann 方程}
 \label{b3:subsec:010102}
 
-写 \(f=u+\mathrm{i}v\)，把 \(u,v\) 看作两个实变量的实值函数。作为实映射，\(f\) 在 \(a\) 可微是指存在实线性映射 \(A:\mathbb R^2\rightarrow\mathbb R^2\)，使
+设 \(U\subseteq\mathbb C\) 为开集，\(f:U\to\mathbb C\)，\(a\in U\)。写 \(f=u+\mathrm{i}v\)，把 \(u,v\) 看作两个实变量的实值函数。作为实映射，\(f\) 在 \(a\) 可微是指存在实线性映射 \(A:\mathbb R^2\rightarrow\mathbb R^2\)，使
 \[
  f(a+h)-f(a)=Ah+o(\lvert h\rvert).
 \]
@@ -100,8 +103,56 @@
 下文把这一条件简称为“实可微”。复数乘法还要求此矩阵具有特殊形状。
 \symidx{\(Df(a)\)：复函数作为实映射的 Fréchet 微分}
 
+先把任意实线性映射拆成两部分，就能看清复数乘法究竟排除了什么。
+
+\Needspace{6\baselineskip}
+\begin{proposition}\label{b3:prop:01-real-linear-decomposition}
+每个实线性映射 \(A:\mathbb C\to\mathbb C\) 都唯一表示为
+\begin{equation}\label{b3:eq:01-real-linear-decomposition}
+ Ah=\alpha h+\beta\overline h,
+ \quad
+ \alpha=\frac{A(1)-\mathrm{i}A(\mathrm{i})}{2},
+ \quad
+ \beta=\frac{A(1)+\mathrm{i}A(\mathrm{i})}{2}.
+\end{equation}
+若 \(U\subseteq\mathbb C\) 为开集，\(a\in U\)，\(u,v:U\to\mathbb R\)，且 \(f=u+\mathrm{i}v\) 在 \(a\) 实可微，则其微分 \(A=Df(a)\) 的两个系数为
+\[
+ \begin{aligned}
+ \alpha&=\frac12\bigl(u_x+v_y+\mathrm{i}(v_x-u_y)\bigr)(a),\\
+ \beta&=\frac12\bigl(u_x-v_y+\mathrm{i}(v_x+u_y)\bigr)(a).
+ \end{aligned}
+\]
+在实可微的前提下，\(f\) 在 \(a\) 复可微当且仅当 \(\beta=0\)，此时 \(f'(a)=\alpha\)。
+\end{proposition}
+\begin{proof}
+若有上述表示，代入 \(h=1\) 与 \(h=\mathrm{i}\)，分别得到
+\(A(1)=\alpha+\beta\) 与 \(A(\mathrm{i})=\mathrm{i}(\alpha-\beta)\)，解得唯一的系数。反过来，用所写公式定义 \(\alpha,\beta\)，则两边在实基 \(1,\mathrm{i}\) 上相等，实线性性保证它们处处相等。对 \(Df(a)\) 代入
+\(A(1)=u_x(a)+\mathrm{i}v_x(a)\) 和
+\(A(\mathrm{i})=u_y(a)+\mathrm{i}v_y(a)\)，即得偏导表达式。
+
+实可微展开除以 \(h\ne0\) 后成为
+\[
+ \frac{f(a+h)-f(a)}h
+ =\alpha+\beta\frac{\overline h}{h}+o(1).
+\]
+若 \(\beta=0\)，右端趋于 \(\alpha\)。反之，沿实增量与纯虚增量得到的极限分别为 \(\alpha+\beta\) 与 \(\alpha-\beta\)，若复导数存在，两者必须相同，因而 \(\beta=0\)。
+\end{proof}
+
+这个分解把方向依赖写成了一个可计算的项。若
+\(h=t(\cos\theta+\mathrm{i}\sin\theta)\)、\(t>0\)，则
+\[
+ \frac{\overline h}{h}=\cos(2\theta)-\mathrm{i}\sin(2\theta).
+\]
+当 \(\beta\ne0\) 时，差商随方向 \(\theta\) 改变；当 \(\beta=0\) 时，这种改变完全消失。例如实线性伸缩
+\[
+ A(x+\mathrm{i}y)=2x+\mathrm{i}y
+ =\frac32(x+\mathrm{i}y)+\frac12(x-\mathrm{i}y)
+\]
+具有很好的实微分，却沿实轴给出差商 \(2\)、沿虚轴给出差商 \(1\)。它把单位圆变为半轴长分别为 \(2\) 和 \(1\) 的椭圆，两个坐标方向的伸缩并不相同。复可微所要求的正是消去这种方向差别。
+
+\Needspace{6\baselineskip}
 \begin{theorem}[Cauchy--Riemann]\label{b3:thm:01-cauchy-riemann-criterion}
-函数 \(f=u+\mathrm{i}v\) 在 \(a\) 复可微，当且仅当它在该点实可微，并满足\term[cauchy-riemann-fangcheng]{Cauchy--Riemann 方程}[Cauchy--Riemann equations]
+设 \(U\subseteq\mathbb C\) 为开集，\(a\in U\)，\(u,v:U\to\mathbb R\)，并令 \(f=u+\mathrm{i}v\)。则 \(f\) 在 \(a\) 复可微，当且仅当它在该点实可微，并满足\term[cauchy-riemann-fangcheng]{Cauchy--Riemann 方程}[Cauchy--Riemann equations]
 \begin{equation}\label{b3:eq:01-cauchy-riemann}
  u_x(a)=v_y(a),\quad u_y(a)=-v_x(a).
 \end{equation}
@@ -111,12 +162,11 @@
 \]
 \end{theorem}
 \begin{proof}
-若 \(f'(a)=\alpha+\mathrm{i}\beta\)，由\eqref{b3:eq:01-complex-linear-approximation}得到实微分
+若 \(f\) 复可微，\eqref{b3:eq:01-complex-linear-approximation}已经给出实微分。于是只需在实可微的前提下判别复可微性。由\cref{b3:prop:01-real-linear-decomposition}，它等价于
 \[
- Df(a)=
- \begin{pmatrix}\alpha&-\beta\\ \beta&\alpha\end{pmatrix}.
+ u_x(a)-v_y(a)+\mathrm{i}\bigl(v_x(a)+u_y(a)\bigr)=0,
 \]
-比较矩阵元素即得方程及导数公式。反过来，若实微分存在且满足\eqref{b3:eq:01-cauchy-riemann}，令 \(c=u_x(a)+\mathrm{i}v_x(a)\)，则这个实微分恰好是乘法 \(h\mapsto ch\)。实可微的余项因此给出\eqref{b3:eq:01-complex-linear-approximation}，从而复导数存在。
+实部与虚部分别为零恰好给出所写的两个方程。此时该分解中的 \(\alpha\) 化为 \(u_x(a)+\mathrm{i}v_x(a)\)，另一种导数表达式再由两条方程得到。
 \end{proof}
 
 定理中的实可微不能删去。定义
@@ -134,8 +184,9 @@
 \]
 差商没有极限。这个例子同时具有连续性与满足方程的四个偏导数，仍缺少对任意小增量的统一线性近似。
 
+\Needspace{6\baselineskip}
 \begin{corollary}\label{b3:cor:01-continuous-partial-criterion}
-若 \(u,v\) 的四个一阶偏导数在 \(a\) 的某邻域存在，并在 \(a\) 连续，则 \(f\) 在 \(a\) 复可微当且仅当 Cauchy--Riemann 方程在 \(a\) 成立。
+设 \(U\subseteq\mathbb C\) 为开集，\(a\in U\)，\(u,v:U\to\mathbb R\)，并令 \(f=u+\mathrm{i}v\)。若 \(u,v\) 的四个一阶偏导数在 \(a\) 的某邻域存在，并在 \(a\) 连续，则 \(f\) 在 \(a\) 复可微当且仅当 Cauchy--Riemann 方程在 \(a\) 成立。
 \end{corollary}
 \begin{proof}
 只须证明实可微性。写 \(a=x+\mathrm{i}y\)。对 \(w=u\) 或 \(w=v\)，把增量从 \((x,y)\) 到 \((x+s,y+t)\) 分成先水平后竖直的两段。一元中值定理给出
@@ -151,6 +202,7 @@
 \subsection{全纯函数}
 \label{b3:subsec:010103}
 
+\Needspace{6\baselineskip}
 \begin{definition}\label{b3:def:01-holomorphic}
 设 \(U\subseteq\mathbb C\) 为开集。若 \(f:U\rightarrow\mathbb C\) 在 \(U\) 的每一点复可微，则称它在 \(U\) 上\term[quan-chun]{全纯}[holomorphic]，称其为\term[quan-chun-hanshu]{全纯函数}[holomorphic function]，全体这样的函数记作 \(\mathcal H(U)\)。若 \(f\) 在某个包含 \(a\) 的开邻域上全纯，则称它在 \(a\) 附近全纯。在整个复平面上全纯的函数称为\term[zheng-hanshu]{整函数}[entire function]。
 \end{definition}
@@ -158,19 +210,28 @@
 
 全纯性对一个开集内的所有点提出要求，强于在一个指定点复可微。例如 \(f(z)=\lvert z\rvert^2\) 在原点的差商为 \(\overline h\)，所以 \(f'(0)=0\)。若 \(a=x+\mathrm{i}y\ne0\)，沿实轴与虚轴增量所得的差商极限分别为 \(2x\) 与 \(-2\mathrm{i}y\)，两者相等只可能发生在 \(a=0\)。故该函数在原点复可微，却不在原点的任何邻域上全纯。
 
+这一区别不取决于那个点的导数是否为零。令
+\[
+ g(z)=z+|z|^2.
+\]
+它在原点的差商为 \(1+\overline h\)，所以 \(g'(0)=1\)。若它还在某个非零点复可微，减去整函数 \(z\) 就会使 \(|z|^2\) 在该点复可微，与前面的计算矛盾。因此，即使一点处的微分是可逆的复数乘法，也不能据此把函数称为在该点附近全纯。检验全纯时，需要在一个开邻域的每一点应用差商或 Cauchy--Riemann 判据。
+
 \ProseParagraphBreak
 
 由\cref{b3:prop:01-complex-derivative-rules}，多项式都是整函数，有理函数在分母不为零的开集上全纯；全纯函数的线性组合与乘积仍全纯。\cref{b3:prop:01-complex-chain-rule}还保证定义范围内的复合全纯。商法则只允许在分母不为零处使用。至于某个零点是否能通过重新赋值补上，需要另作极限分析，不能单凭代数表达式下结论。
 
 \ProseParagraphBreak
 
-在本卷中，非空连通开集称为\term[quyu]{区域}[domain]。连通条件尚未出现在全纯函数的定义里，但它让局部结论能够传播。例如，区域上的实值全纯函数只能是常数。
+在本卷中，复平面中的非空连通开集称为\term[quyu]{区域}[domain]。连通条件尚未出现在全纯函数的定义里，但它让局部结论能够传播。例如，区域上的实值全纯函数只能是常数。
 
+\Needspace{6\baselineskip}
 \begin{proposition}\label{b3:prop:01-real-valued-holomorphic}
-若 \(U\) 为区域，\(f\in\mathcal H(U)\)，且 \(f(U)\subseteq\mathbb R\)，则 \(f\) 为常数。
+若 \(U\subseteq\mathbb C\) 为区域，\(f\in\mathcal H(U)\)，且 \(f(U)\subseteq\mathbb R\)，则 \(f\) 为常数。若不要求 \(f\) 为实值，但有 \(f'=0\) 于 \(U\)，则 \(f\) 也为常数。
 \end{proposition}
 \begin{proof}
-写 \(f=u+\mathrm{i}v\)，则 \(v=0\)。由 Cauchy--Riemann 方程，\(u_x=u_y=0\)。对 \(U\) 中任意足够小的开矩形，沿其水平线段及竖直线段分别使用一元中值定理，得到 \(u\) 在该矩形上恒定。因此 \(u\) 局部恒定。固定 \(a\in U\)，集合 \(E=\{\,z\in U\mid u(z)=u(a)\,\}\) 非空，局部恒定性使 \(E\) 与其在 \(U\) 内的补集都为开集。由 \(U\) 连通，\(E=U\)。
+写 \(f=u+\mathrm{i}v\)。实值情形有 \(v=0\)，由 Cauchy--Riemann 方程得 \(u_x=u_y=0\)。若假定 \(f'=0\)，则由导数公式和同一方程得到 \(u_x=u_y=v_x=v_y=0\)。所以在两种情形中，两个分量的偏导都为零。
+
+对 \(U\) 中任意足够小的开矩形，沿其水平线段及竖直线段分别对两个分量使用一元中值定理，得到 \(f\) 在该矩形上恒定。因此 \(f\) 局部恒定。固定 \(a\in U\)，集合 \(E=\{\,z\in U\mid f(z)=f(a)\,\}\) 非空，局部恒定性使 \(E\) 与其在 \(U\) 内的补集都为开集。由 \(U\) 连通，\(E=U\)。
 \end{proof}
 
 全纯函数的定义只含一次复导数。\secref{b3:sec:0102}将证明它还能在每一点附近展开成幂级数，因而具有任意阶导数。这个结论是需要证明的正则性，不能在当前的判别中倒过来充当假设。
@@ -224,14 +285,21 @@
 \label{b3:fig:01-complex-similarity}
 \end{figure}
 
+\Needspace{6\baselineskip}
 \begin{definition}\label{b3:def:01-conformal}
-设 \(f\) 在 \(a\) 实可微。若 \(Df(a)\) 是非零的旋转伸缩，即具有上述 \(\rho>0\) 的形式，则称 \(f\) 在 \(a\) \term[gongxing]{共形}[conformal]。本卷的这一用语约定保持定向；在开集的每一点共形时，称该映射在此开集上共形。
+设 \(f:U\to\mathbb C\)，其中 \(U\subseteq\mathbb C\) 开、\(a\in U\)，且 \(f\) 在 \(a\) 实可微。若存在 \(\rho>0\)、\(\theta\in\mathbb R\)，使实微分满足
+\[
+ Df(a)h=\rho(\cos\theta+\mathrm{i}\sin\theta)h
+ \quad(h\in\mathbb C),
+\]
+则称 \(f\) 在 \(a\) \term[gongxing]{共形}[conformal]。本卷的这一用语约定保持定向；在开集的每一点共形时，称该映射在此开集上共形。
 \end{definition}
 
 对实线性可逆映射，这个定义也等价于保持有向夹角。事实上，标准基 \(1,\mathrm{i}\) 的像必须垂直且定向为正，可写成 \(r e,s\mathrm{i}e\)，其中 \(r,s>0\)、\(\lvert e\rvert=1\)。再考察 \(1\) 与 \(1+\mathrm{i}\) 的夹角 \(\pi/4\)，得到 \(s/r=1\)，故两个伸缩因子相同。反向的角度保持直接由旋转伸缩形式得到。
 
+\Needspace{6\baselineskip}
 \begin{proposition}\label{b3:prop:01-conformal-criterion}
-函数 \(f\) 在 \(a\) 共形，当且仅当它在 \(a\) 复可微且 \(f'(a)\ne0\)。此时
+设 \(U\subseteq\mathbb C\) 为开集，\(a\in U\)，\(f:U\to\mathbb C\)。则 \(f\) 在 \(a\) 共形，当且仅当它在 \(a\) 复可微且 \(f'(a)\ne0\)。此时
 \[
  \det Df(a)=\lvert f'(a)\rvert^2>0.
 \]
@@ -246,5 +314,13 @@
 \]
 两个像向量相除所得的比值为 \(v_2/v_1\)，与原向量的比值相同，因而有向夹角相同。
 \end{proof}
+
+以 \(f(z)=z^2\)、\(a=1+\mathrm{i}\) 为例，\(f'(a)=2+2\mathrm{i}\)，其模为 \(2\sqrt2\)，辐角为 \(\pi/4\)。因此，在这个点附近，水平和竖直方向的像切向量分别为
+\[
+ f'(a)\cdot1=2+2\mathrm{i},
+ \quad
+ f'(a)\cdot\mathrm{i}=-2+2\mathrm{i}.
+\]
+两者仍然垂直，长度都被乘以 \(2\sqrt2\)。近似式的余项是 \(h^2\)，故实际位移与上述旋转伸缩的误差除以 \(|h|\) 后趋于零。共形性描述的是这种一阶行为，不要求有限大小的图形也由一个刚性旋转伸缩精确得到。
 
 共轭映射虽保持夹角的大小，却把有向夹角反号，不满足这里的保向约定。导数为零时也不能沿用上述结论：对 \(f(z)=z^2\)，从原点出发的射线辐角会变为原来的两倍，而在原点可微的实参数曲线的像切向量都被微分压成零向量。最后，共形条件本身是局部的微分条件，并未断言整个定义域上的单射性；例如 \(z^2\) 在 \(\mathbb C\setminus\{0\}\) 处处共形，却把 \(z\) 与 \(-z\) 映到同一点。单射性以及局部逆函数的存在将在\subsecref{b3:subsec:010403}中分别讨论。

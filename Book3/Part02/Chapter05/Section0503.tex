@@ -2,108 +2,364 @@
 \section{Riemann 映照定理}
 \label{b3:sec:0503}
 
-前节的极值构造给出存在性。唯一性则来自两个映射之间的圆盘自同构：把一个映射接在另一个的逆后面，就把区域的形状全部消去，只留下归一化能否固定圆盘坐标的问题。
+前节已经构造出导数最大的圆盘映射，并证明它没有遗漏值。本节把这些结论合成 Riemann 映照定理，再利用圆盘上的 Schwarz 引理讨论唯一性。归一化导数的倒数给出区域在基点处的共形尺度；它既能比较大小不同的区域，也能记录递增区域的映射极限。对于初等区域，分支明确的指数、幂函数和分式变换还会给出可以直接计算的坐标。
 
 \subsection{存在性}
 \label{b3:subsec:050301}
 
-\term[riemann-yingzhao-dingli]{Riemann 映照定理}[Riemann mapping theorem]在本卷采用真平面区域版本。
+\term[riemann-yingzhao-dingli]{Riemann 映照定理}[Riemann mapping theorem]在本卷采用真平面区域版本。这里“真”指区域不是整个复平面；区域可以无界，边界也不必光滑。
+
+\Needspace{6\baselineskip}
 \begin{theorem}[Riemann 映照]\label{b3:thm:05-riemann}
-设 \(U\subsetneq\mathbb C\) 是单连通区域，\(a\in U\)。则存在唯一双全纯映射 \(f:U\rightarrow\mathbb D\)，满足 \(f(a)=0\)、\(f'(a)>0\)。
+设 \(U\subsetneq\mathbb C\) 为单连通区域，\(a\in U\)。则存在唯一双全纯映射 \(f:U\rightarrow\mathbb D\)，满足 \(f(a)=0\) 且 \(f'(a)>0\)，其中导数大于零指它是正实数。
 \end{theorem}
 \begin{proof}
-存在性由归一化族非空、极值可达与满射性三引理得到。单叶函数导数非零，所以局部逆全纯；这些局部逆在重叠处因单射一致，拼成全域全纯逆。唯一性见紧随其后的论证。
-\end{proof}
-存在定理不要求边界光滑，因此即使边界极粗糙，内部共形坐标仍存在；它不自动延拓为欧氏闭包同胚。边界延拓将在\chapref{b3:ch:07}另列条件。
+考虑所有满足 \(h(a)=0\)、\(h'(a)>0\) 的单叶全纯映射 \(h:U\rightarrow\mathbb D\)。\Cref{b3:lem:05-nonempty-normalized}保证这一族非空；\cref{b3:lem:05-extremal-compactness}保证其导数上确界 \(S\) 满足 \(0<S<\infty\)，并由某个族内函数 \(f\) 达到。\Cref{b3:lem:05-extremal-surjective}进一步给出 \(f(U)=\mathbb D\)。因此 \(f\) 已是全纯双射。单叶函数的导数处处非零，局部逆函数定理给出的全纯局部逆在重叠处因原像唯一而一致，拼成 \(\mathbb D\) 上的全纯逆函数。
 
-\begin{proposition}\label{b3:prop:05-exhaustion-maps}
-设 \(U_1\subset U_2\subset\cdots\) 为真单连通区域，\(a\in U_1\)，且 \(U=\bigcup_n U_n\subsetneq\mathbb C\)。令 \(f_n:U_n\rightarrow\mathbb D\) 和 \(f:U\rightarrow\mathbb D\) 在 \(a\) 按本章归一化。则 \(f_n\) 在 \(U\) 的每个紧集上最终有定义并一致趋于 \(f\)，且 \(r_{U_n}(a)\uparrow r_U(a)\)。
-\end{proposition}
-\begin{proof}
-每个紧集包含于某个 \(U_N\)，于是局部有界与对角抽取给 \(f_n\) 的一个全纯极限 \(g\)。导数单调且不小于 \(f'(a)>0\)，故极限不常值，由单叶极限定理仍单叶并映入圆盘。令 \(h_n=f_n^{-1}\)。函数 \(k_n=f\circ h_n\) 是圆盘自映射且固定0，所以 \(|k_n(z)|\le|z|\)。因此对固定紧盘 \(|z|\le r\)，\(h_n(z)\) 落在 \(f^{-1}(\overline{D(0,r)})\) 内，后者是 \(U\) 内的紧集。对 \(k_n\) 用 Montel，再复合 \(f^{-1}\)，得到 \(h_n\) 的紧极限 \(h:\mathbb D\rightarrow U\)。其导数在0不为零，因为 \(f_n'(a)\) 有正的有限上界。沿同一个子列取极限，在固定紧集上由 \(f_n\circ h_n=\mathrm{id}\) 和 \(h_n\circ f_n=\mathrm{id}\) 得 \(g\circ h=\mathrm{id}\)、\(h\circ g=\mathrm{id}\)。所以 \(g\) 是归一化双全纯映射，唯一性给 \(g=f\)。任何子列都有同一个极限，故全列收敛，导数与共形半径也随之收敛。
+若 \(g\) 也是满足相同归一化条件的双全纯映射，令 \(h=g\circ f^{-1}\)。它是固定零点的圆盘自同构，\(h^{-1}\) 也固定零点。由\cref{b3:thm:02-schwarz}，
+\[
+ |h'(0)|\le1,\quad |(h^{-1})'(0)|\le1.
+\]
+链式法则又给出两导数之积为 \(1\)，故二者的模均为 \(1\)。Schwarz 引理的等号情形使 \(h(w)=\lambda w\)，其中 \(|\lambda|=1\)。另一方面，
+\[
+ \lambda=h'(0)=\frac{g'(a)}{f'(a)}>0,
+\]
+所以 \(\lambda=1\)，从而 \(g=f\)。
 \end{proof}
-这个命题在逐步逼近复杂区域时很有用，但它只断言内部紧集上的收敛。区域边界可能在逼近过程中改变，映射的边界值不能由此直接交换极限。连通性和单连通性对每个 \(U_n\) 都有要求；任意截取 \(U\cap D(0,n)\) 可能不连通，因此不能未经检查便作为符合假设的穷竭。
 
-\subsection{唯一性}
+假设 \(U\ne\mathbb C\) 在前节构造中提供了区域外的一点；若删去它，圆盘坐标将成为有界整函数，由 Liouville 定理只能为常值。边界正则性则没有参与存在证明。因而很粗糙的区域也有内部共形坐标，至于坐标能否连续或单射地延到边界，将在\chapref{b3:ch:07}另列条件。
+
+\subsection{归一化唯一性与共形半径}
 \label{b3:subsec:050302}
 
-\begin{proof}[\cref{b3:thm:05-riemann}的唯一性证明]
-若 \(f,g\) 都满足条件，\(h=g\circ f^{-1}\) 为圆盘自同构且 \(h(0)=0\)。对 \(h\) 和 \(h^{-1}\) 分别用 Schwarz 引理，得到 \(|h'(0)|\le1\) 与 \(|(h^{-1})'(0)|\le1\)。两导数相乘为1，故模都等于1，Schwarz 等号情形给 \(h(z)=cz\)、\(|c|=1\)。另一方面 \(h'(0)=g'(a)/f'(a)>0\)，所以 \(c=1\)，得到 \(g=f\)。
-\end{proof}
-若只固定 \(f(a)=0\)，仍有一个单位复数旋转自由度；若连 \(a\) 的像都不固定，则还允许所有圆盘自同构。归一化的每一条件分别消除不同自由度，不能把“唯一”理解为所有共形映射完全相同。
-
-\begin{definition}\label{b3:def:05-conformal-radius}
-设 \(U\subsetneq\mathbb C\) 单连通，\(a\in U\)，\(F:\mathbb D\rightarrow U\) 双全纯且 \(F(0)=a\)。定义 \(U\) 在 \(a\) 的\term[gongxing-ban-jing]{共形半径}[conformal radius]为 \(r_U(a)=|F'(0)|\)。
-\end{definition}
-两个这样的逆映射相差圆盘旋转，所以定义与选择无关。若 \(f\) 是本章归一化映射，则 \(r_U(a)=1/f'(a)\)。对圆盘 \(D(c,R)\)，将 \((z-c)/R\) 与圆盘自同构复合得到
+只规定基点映到零，还留下圆盘旋转的自由度；导数取正实值恰好固定这个相位。已有一个双全纯映射 \(p:U\rightarrow\mathbb D\) 时，不必重新作极值构造。令 \(b=p(a)\)，则归一化映射就是
 \[
- r_{D(c,R)}(a)=\frac{R^2-|a-c|^2}{R}.
+ f(z)=\frac{\overline{p'(a)}}{|p'(a)|}
+ \cdot\frac{p(z)-b}{1-\overline b\cdot p(z)}.
 \]
-对右半平面，归一化坐标可取 \((z-a)/(z+\overline a)\) 再校正相位，故 \(r_U(a)=2\operatorname{Re}a\)。它是一个随点变化的内在尺度，并非到边界的欧氏距离。
+\Cref{b3:prop:05-disk-basepoint-map}中的圆盘分式变换先将 \(b\) 送到零，其在 \(b\) 处的导数为 \(1/(1-|b|^2)>0\)；前面的单位复数再把导数转正。因此 \(f'(a)=|p'(a)|/(1-|b|^2)\)。这一归一化公式也说明，显式坐标中最后的相位可以直接从导数求得。
 
-\begin{proposition}\label{b3:prop:05-radius-monotonicity}
-若 \(U\subset V\subsetneq\mathbb C\) 为单连通区域且 \(a\in U\)，则 \(r_U(a)\le r_V(a)\)，真包含时严格。双全纯 \(T:U\rightarrow W\) 满足 \(r_W(Ta)=|T'(a)|r_U(a)\)。
-\end{proposition}
-\begin{proof}
-取两个归一化映射 \(f_U,f_V\)，则 \(f_V\circ f_U^{-1}\) 把圆盘映入圆盘并固定0。Schwarz 导数估计给 \(f_V'(a)/f_U'(a)\le1\)；取等时该复合是旋转，从而 \(f_V(U)=\mathbb D=f_V(V)\)，单射性迫使 \(U=V\)。共形变换公式由逆映射的链式法则直接得到。
-\end{proof}
-若 \(D(a,\rho)\subset U\subset D(a,R)\)，便有 \(\rho\le r_U(a)\le R\)。这个简单比较可在不求显式映射的情况下估计归一化导数。后面的 Poincaré 密度将等于 \(2/r_U(a)\)；本章先给出的极值解释会使度量的单调性自然出现。
+\Needspace{6\baselineskip}
+\begin{definition}\label{b3:def:05-conformal-radius}
+设 \(U\subsetneq\mathbb C\) 为单连通区域，\(a\in U\)。取双全纯映射 \(F:\mathbb D\rightarrow U\)，使 \(F(0)=a\)，定义
+\[
+ r_U(a)\coloneqq |F'(0)|.
+\]
+这个正数称为 \(U\) 在 \(a\) 处的\term[gongxing-ban-jing]{共形半径}[conformal radius]。
+\symidx{\(r_U(a)\)：区域在基点处的共形半径}
+\end{definition}
 
-共形半径还能度量区域对内点的影响。半径 \(R\) 的圆盘中，中心点共形半径为 \(R\)，靠近边界点时却趋于0；所以它描述的是“以当前点为中心的共形尺度”，并非一个区域全局共有的半径。对右半平面，向右平移一点使共形半径线性增大；沿竖直方向移动则保持不变，因为竖直平移是半平面的自同构。这些变化可由显式式子检验，也可由共形协变公式解释。
+这个定义与 \(F\) 的选择无关。若 \(F_1,F_2\) 都把零点送到 \(a\)，则 \(F_1^{-1}\circ F_2\) 是固定零点的圆盘自同构，由上面的 Schwarz 等号论证为旋转。因此 \(F_2(w)=F_1(\lambda w)\)、\(|\lambda|=1\)，二者在零点的导数模相同。若 \(f\) 是 Riemann 映照定理中的归一化映射，取 \(F=f^{-1}\) 就有
+\[
+ r_U(a)=\frac1{f'(a)}.
+\]
+所以 \(f\) 把区域压到单位圆盘时在基点的伸缩率越大，反向坐标的共形半径越小。
 
 \ProseParagraphBreak
-若区域增加了一条很远的狭窄通道，固定点的共形半径仍可能增加，但仅由集合包含关系只能断言严格单调，不能从图形面积的增加量读出改变量。共形几何的极值量关注全纯函数可以如何变化，而非欧氏面积。在同样面积的两个区域中，共形半径可以不同；在一个无界区域中它也可有限。这正是选取圆盘映射归一化导数作为不变量的意义。
 
-\subsection{圆盘自同构}
-\label{b3:subsec:050303}
-
-\begin{proposition}[圆盘自同构]\label{b3:prop:05-disk-automorphisms}
-每个圆盘自同构都唯一写成
+先计算圆盘 \(U=D(c,R)\)，其中 \(R>0\)。给定 \(a\in U\)，令 \(b=(a-c)/R\)。归一化坐标及其逆为
 \[
- h(z)=e^{\mathrm{i}\theta}\frac{z-a}{1-\overline a z},\qquad a\in\mathbb D,
+ f_a(z)=\frac{(z-c)/R-b}{1-\overline b\,(z-c)/R},
+ \quad F_a(w)=c+R\frac{w+b}{1+\overline b w}.
 \]
-其中 \(e^{\mathrm{i}\theta}\) 是单位复数。反之，这些映射都是圆盘自同构。
+两式分别是仿射映射与圆盘分式自同构的复合，且 \(F_a(0)=a\)。直接求导得
+\[
+ r_{D(c,R)}(a)=F_a'(0)
+ =R(1-|b|^2)=\frac{R^2-|a-c|^2}{R}.
+\]
+若 \(\delta=R-|a-c|\) 是基点到圆周的距离，则共形半径为 \(\delta(1+|a-c|/R)\)。它在中心等于 \(R\)，在靠近圆周时与 \(2\delta\) 的比趋于 \(1\)，并不恒等于到边界的欧氏距离。
+
+\ProseParagraphBreak
+
+对右半平面 \(H_R=\{\,z\in\mathbb C\mid\operatorname{Re}z>0\,\}\)，给定 \(a\in H_R\)，可取
+\[
+ f_a(z)=\frac{z-a}{z+\overline a},
+ \quad F_a(w)=\frac{a+\overline a w}{1-w}.
+\]
+这里
+\[
+ \operatorname{Re}F_a(w)
+ =\operatorname{Re}a\cdot\frac{1-|w|^2}{|1-w|^2}>0
+ \quad(w\in\mathbb D),
+\]
+而解分式方程可核对两式互逆。其导数满足 \(f_a'(a)=1/(2\operatorname{Re}a)>0\)，已经具有所需相位，故
+\[
+ r_{H_R}(a)=2\operatorname{Re}a.
+\]
+相应地，上半平面 \(H=\{\,z\mid\operatorname{Im}z>0\,\}\) 在 \(a\) 处可用 \(\mathrm{i}(z-a)/(z-\overline a)\) 归一化，得到 \(r_H(a)=2\operatorname{Im}a\)。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[共形半径的单调性与协变性]\label{b3:prop:05-radius-monotonicity}
+设 \(U\subseteq V\subsetneq\mathbb C\) 为单连通区域，\(a\in U\)。则
+\[
+ r_U(a)\le r_V(a),
+\]
+且等号成立当且仅当 \(U=V\)。此外，若 \(U,W\subsetneq\mathbb C\) 为单连通区域，\(T:U\rightarrow W\) 双全纯，\(a\in U\)，则
+\[
+ r_W\bigl(T(a)\bigr)=|T'(a)|\cdot r_U(a).
+\]
 \end{proposition}
 \begin{proof}
-取 \(a=h^{-1}(0)\)，则 \(h\circ\phi_a^{-1}\) 是固定0的圆盘自同构，由刚证明的 Schwarz 等号论证为旋转。反向由第一章的圆盘 Möbius 计算。参数 \(a\) 是唯一零点，旋转因子再由任一点或导数确定。
-\end{proof}
-圆盘自同构有三个实参数，而 \(f(a)=0\) 给两个实条件，导数正实给一个相位条件。这个参数解释与唯一性证明相符，但参数计数本身不是存在性或唯一性的证明。
+令 \(f_U,f_V\) 分别为以 \(a\) 为基点的归一化圆盘映射，\(F_U=f_U^{-1}\)。复合 \(f_V\circ F_U\) 将 \(\mathbb D\) 映入自身并固定零点，故 Schwarz 导数估计给出
+\[
+ \frac{r_U(a)}{r_V(a)}
+ =\frac{f_V'(a)}{f_U'(a)}\le1.
+\]
+若取等，Schwarz 等号情形使这个复合为圆盘旋转，所以 \(f_V(U)=\mathbb D=f_V(V)\)。映射 \(f_V\) 单射，因而 \(U=V\)；反方向直接成立。
 
-\begin{theorem}\label{b3:thm:05-entire-univalent}
-整个平面上的单叶整函数恰为 \(f(z)=az+b\)，其中 \(a\ne0\)。
+对于协变公式，取 \(F:\mathbb D\rightarrow U\) 双全纯且 \(F(0)=a\)。复合 \(T\circ F\) 是以 \(T(a)\) 为基点的逆圆盘坐标，故按定义及链式法则，
+\[
+ r_W\bigl(T(a)\bigr)
+ =|(T\circ F)'(0)|
+ =|T'(a)|\cdot|F'(0)|
+ =|T'(a)|\cdot r_U(a).
+\]
+\end{proof}
+
+例如，若单连通区域满足 \(D(a,\rho)\subseteq U\subseteq D(a,R)\)，则 \(\rho\le r_U(a)\le R\)。这在没有显式映射时仍能估计归一化导数。对仿射变换 \(T(z)=\lambda z+b\)、\(\lambda\ne0\)，协变公式给出共形半径乘以 \(|\lambda|\)；对一般双全纯映射，伸缩率则随基点变化。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[共形半径的函数极值]\label{b3:prop:05-radius-extremal}
+设 \(U\subsetneq\mathbb C\) 为单连通区域，\(a\in U\)，\(\mathcal H_a\) 为所有满足 \(h(a)=0\) 的全纯映射 \(h:U\rightarrow\mathbb D\) 组成的族。则
+\[
+ \frac1{r_U(a)}=\max_{h\in\mathcal H_a}|h'(a)|.
+\]
+若 \(f:U\rightarrow\mathbb D\) 是满足 \(f(a)=0\)、\(f'(a)>0\) 的双全纯映射，则达到最大值的函数恰为 \(h=\lambda f\)，其中 \(|\lambda|=1\)。
+\end{proposition}
+\begin{proof}
+令 \(F=f^{-1}\)。对任意 \(h\in\mathcal H_a\)，函数 \(h\circ F\) 是固定零点的圆盘自映射，Schwarz 引理给出
+\[
+ |h'(a)|\cdot|F'(0)|\le1.
+\]
+第二因子为 \(r_U(a)\)，于是得到上界；\(h=f\) 达到它。若另一个 \(h\) 也取等，则 Schwarz 等号情形给出 \(h\circ F(w)=\lambda w\)、\(|\lambda|=1\)，即 \(h=\lambda f\)。这些函数均达到最大值。
+\end{proof}
+
+这里的试探函数无需预先单叶，达到极值以后才由等号情形取得单叶性。这个较大的候选类建立在圆盘坐标已经存在的基础上；前节仍先在单叶类中构造映射，以便平方根改进可以用于证明满射性。
+
+\ProseParagraphBreak
+
+区域逐步增大时，共形半径单调增加。要辨认它的极限，还需同时控制映射和逆映射；仅在每个点选出映射极限，不能保证所得函数仍然满射到整个圆盘。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[递增区域的归一化映射]\label{b3:prop:05-exhaustion-maps}
+设 \(U_1\subseteq U_2\subseteq\cdots\subsetneq\mathbb C\) 为单连通区域，\(a\in U_1\)，且 \(U=\bigcup_{n\ge1}U_n\subsetneq\mathbb C\)。则 \(U\) 仍为单连通区域。分别令 \(f_n:U_n\rightarrow\mathbb D\) 与 \(f:U\rightarrow\mathbb D\) 为满足
+\[
+ f_n(a)=f(a)=0,\quad f_n'(a)>0,\quad f'(a)>0
+\]
+的双全纯映射。对每个紧集 \(K\subseteq U\)，充分大的 \(n\) 使 \(K\subseteq U_n\)，且 \(f_n\) 在 \(K\) 上一致趋于 \(f\)。逆映射 \(f_n^{-1}\) 在 \(\mathbb D\) 上局部一致趋于 \(f^{-1}\)，并有
+\[
+ r_{U_n}(a)\uparrow r_U(a).
+\]
+\end{proposition}
+\begin{proof}
+先证明并集具有所需的拓扑性质。集合 \(U\) 开且非空；任意两点都属于某个共同的 \(U_N\)，因而可在其中用路径连接。又因 \(\{U_n\}\) 是递增开覆盖，任意紧集 \(K\subseteq U\) 都由有限多个 \(U_n\) 覆盖，取其中最大指标便得 \(K\subseteq U_N\)。特别地，\(U\) 内任意闭路径的像是紧集，包含于某个 \(U_N\)。该闭路径可在单连通的 \(U_N\) 内收缩，所以也可在 \(U\) 内收缩。故 \(U\) 是单连通区域，Riemann 映照定理现在才给出 \(f\)。
+
+记 \(F=f^{-1}\)、\(d=f'(a)\)、\(d_n=f_n'(a)\)。共形半径的单调性说明
+\[
+ 0<d\le d_{n+1}\le d_n\le d_1<\infty.
+\]
+下面从任意一条指标趋于无穷的子列开始抽取。对每个固定 \(m\)，舍去有限项后，这些函数都在 \(U_m\) 上有定义且模小于 \(1\)。先在 \(U_1\) 用 Montel 定理抽取局部一致收敛子列，再在其内抽取 \(U_2\) 上的收敛子列，依次进行，最后取对角子列。所得函数在每个 \(U_m\) 上局部一致收敛；相邻区域上的极限在重叠处由点值唯一性一致，拼成 \(U\) 上的全纯函数 \(g\)。每个紧集都包含于某个 \(U_m\)，所以这也是在 \(U\) 的每个紧集上的一致收敛。以下把这条子列仍记为 \(f_n\)。
+
+在 \(a\) 附近取一个固定小闭圆盘，导数收敛给出 \(g'(a)=\lim d_n\ge d>0\)，并有 \(g(a)=0\)。点值极限先给 \(|g|\le1\)，非常值性与最大模原理进一步给 \(|g|<1\)。在每个 \(U_m\) 上，函数列的尾部单叶，\cref{b3:thm:04-univalent-limit}又因 \(g'(a)>0\) 排除常值退化，所以 \(g\) 在 \(U_m\) 上单叶。任意两点落在同一个 \(U_m\) 中，故 \(g\) 在整个 \(U\) 单叶。
+
+现在处理逆映射 \(h_n=f_n^{-1}:\mathbb D\rightarrow U_n\)。复合 \(f\circ h_n\) 是固定零点的圆盘自映射，Schwarz 引理给出
+\[
+ |f(h_n(w))|\le|w|.
+\]
+因此对每个 \(0<r<1\)，均有
+\[
+ h_n\bigl(\overline{D(0,r)}\bigr)
+ \subseteq L_r=F\bigl(\overline{D(0,r)}\bigr).
+\]
+集合 \(L_r\) 是 \(U\) 内的紧集，与 \(n\) 无关。于是 \(h_n\) 在固定定义域 \(\mathbb D\) 上局部有界，Montel 定理允许在当前子列中再次抽取，使 \(h_n\) 局部一致趋于全纯函数 \(h\)。对每个 \(|w|\le r\)，点 \(h_n(w)\) 都在闭集 \(L_r\) 中，故 \(h(w)\in L_r\subseteq U\)。这保证了 \(h\) 的像位于 \(U\) 内部。
+
+取固定 \(r<1\)。集合 \(L_r\) 最终包含于 \(U_n\)，而 \(h_n(w)\)、\(h(w)\) 均在 \(L_r\) 中。由 \(f_n(h_n(w))=w\)，得到
+\[
+ \begin{aligned}
+ \sup_{|w|\le r}|g(h(w))-w|
+ &\le\sup_{L_r}|g-f_n|\\
+ &\quad+\sup_{|w|\le r}|g(h(w))-g(h_n(w))|
+ \longrightarrow0.
+ \end{aligned}
+\]
+第一项来自 \(f_n\) 在共同紧集上的一致收敛；第二项来自 \(h_n\rightarrow h\) 及 \(g\) 在 \(L_r\) 上的一致连续性。因此 \(g\circ h=\mathrm{id}_{\mathbb D}\)。
+
+还须检验反向复合。固定紧集 \(K\subseteq U\)，由于 \(g(K)\) 是开圆盘内的紧集，可取 \(r<1\)，使 \(g(K)\subset D(0,r)\)。一致收敛使充分晚的 \(f_n(K)\) 也包含于 \(\overline{D(0,r)}\)，并且此时 \(K\subseteq U_n\)。由 \(h_n(f_n(z))=z\)，有
+\[
+ \begin{aligned}
+ \sup_{z\in K}|h(g(z))-z|
+ &\le\sup_{|w|\le r}|h-h_n|\\
+ &\quad+\sup_{z\in K}|h(g(z))-h(f_n(z))|
+ \longrightarrow0.
+ \end{aligned}
+\]
+这里用的是 \(h\) 在固定闭圆盘上的一致连续性。故 \(h\circ g=\mathrm{id}_U\)，两映射互为全纯逆。又因 \(g(a)=0\)、\(g'(a)>0\)，归一化唯一性使 \(g=f\)、\(h=F\)。
+
+开始时所选子列任意，因此任意子列都能再抽出使映射与逆映射同时趋于 \(f,F\) 的子子列。若其中任一整列不在某个固定紧集上一致趋于相应极限，就可选取误差始终至少为某个 \(\varepsilon>0\) 的子列；再作上述抽取即得矛盾。故两整列均按所述方式收敛。最后，导数收敛给 \(d_n\rightarrow d\)，结合先前的单调性并取倒数，得到共形半径的递增极限。
+\end{proof}
+
+并集为真区域的假设阻止了常值退化。若取 \(U_n=D(0,n)\)、\(a=0\)，则并集为全平面，归一化映射为 \(f_n(z)=z/n\)，局部一致极限是零；逆映射 \(h_n(w)=nw\) 在任何非零点都逃向无穷，\(r_{U_n}(0)=n\) 也不再有有限极限。命题中的共同紧集控制在这个例子里无法取得。
+
+\ProseParagraphBreak
+
+归一化唯一性还会把区域的对称性传给映射。下面的结论不预先假设区域的实轴截面是一个区间；这个事实也由圆盘坐标推出。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[实轴对称]\label{b3:prop:05-real-symmetry}
+设 \(U\subsetneq\mathbb C\) 为关于实轴对称的单连通区域，\(a\in U\cap\mathbb R\)。若 \(f:U\rightarrow\mathbb D\) 双全纯，且 \(f(a)=0\)、\(f'(a)>0\)，则
+\[
+ f(\overline z)=\overline{f(z)}\quad(z\in U).
+\]
+此外，\(U\cap\mathbb R\) 是一个开区间，\(f\) 将它严格递增地映到整个 \((-1,1)\)。
+\end{proposition}
+\begin{proof}
+定义 \(\widetilde f(z)=\overline{f(\overline z)}\)。将局部幂级数的系数逐一共轭，可知 \(\widetilde f\) 全纯；它与 \(f\) 一样双射到圆盘，其逆为 \(w\mapsto\overline{f^{-1}(\overline w)}\)。由于基点为实数，
+\[
+ \widetilde f(a)=0,\quad
+ \widetilde f'(a)=\overline{f'(a)}=f'(a)>0.
+\]
+唯一性给出 \(\widetilde f=f\)，即所需对称式。
+
+记 \(F=f^{-1}\)。对称式与逆像唯一性也给 \(F(\overline w)=\overline{F(w)}\)。所以实点的像为实，实点的逆像也为实，从而
+\[
+ U\cap\mathbb R=F((-1,1)).
+\]
+右侧是连续函数作用于区间所得的连通实集，左侧又是非空实开集，因此是开区间。在此区间上，\(f\) 的实值限制的导数就是 \(f'\)，故 \(f'\) 为连续非零实值函数。它在 \(a\) 为正，因而在整个区间均为正；实变量中值定理给出严格递增性。上面的像集等式同时保证其值域为整个 \((-1,1)\)。
+\end{proof}
+
+若删去单连通性，关于实轴对称的圆环 \(1<|z|<2\) 的实轴截面就分成 \((-2,-1)\) 与 \((1,2)\) 两段，不能套用这一结论。
+
+\subsection{圆盘自同构与单叶整函数}
+\label{b3:subsec:050303}
+
+归一化坐标唯一，未归一化的坐标则相差一个圆盘自同构。确定这种自由度，只需把一个自同构的零点先移到原点。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[圆盘自同构]\label{b3:prop:05-disk-automorphisms}
+每个双全纯自同构 \(h:\mathbb D\rightarrow\mathbb D\) 都唯一写成
+\[
+ h(z)=\lambda\frac{z-b}{1-\overline b z},
+ \quad b\in\mathbb D,\quad |\lambda|=1.
+\]
+反之，这些映射均为圆盘自同构，其逆为
+\[
+ h^{-1}(w)=\frac{b+\overline\lambda w}
+                  {1+\overline b\,\overline\lambda w}.
+\]
+\end{proposition}
+\begin{proof}
+\Cref{b3:prop:05-disk-basepoint-map}已证明，对 \(b\in\mathbb D\)，映射 \(\phi_b(z)=(z-b)/(1-\overline b z)\) 是圆盘自同构，其逆为 \(\phi_b^{-1}(w)=(w+b)/(1+\overline b w)\)，且 \(\phi_b'(b)=1/(1-|b|^2)\)。
+
+对给定的 \(h\)，取 \(b=h^{-1}(0)\)。函数 \(h\circ\phi_b^{-1}\) 及其逆都固定零点，前面的 Schwarz 等号论证使它为 \(w\mapsto\lambda w\)、\(|\lambda|=1\)，从而得到表示。点 \(b\) 是 \(h\) 的唯一零点，又有 \(h'(b)=\lambda/(1-|b|^2)\)，所以 \(\lambda=h'(b)/|h'(b)|\)，两个参数均唯一。反过来，旋转与 \(\phi_b\) 的复合仍是双全纯自同构，将 \(\overline\lambda w\) 代入 \(\phi_b^{-1}\) 就得到所列逆式。
+\end{proof}
+
+固定一个真单连通区域的圆盘坐标 \(f:U\rightarrow\mathbb D\) 后，\(U\) 的全部双全纯自同构也随之确定：它们恰为 \(f^{-1}\circ h\circ f\)，其中 \(h\) 遍历上面的圆盘自同构。正向与反向复合均有定义，因此这既能构造自同构，也不会遗漏任何一个。
+
+\ProseParagraphBreak
+
+全平面具有不同的单叶函数分类。其限制来自无穷远处的孤立奇点：本性奇点会把很远的点送回某个内点像附近，而单射性不容许这些值再次出现。
+
+\Needspace{6\baselineskip}
+\begin{theorem}[单叶整函数]\label{b3:thm:05-entire-univalent}
+整函数 \(f:\mathbb C\rightarrow\mathbb C\) 单射，当且仅当存在 \(\alpha,\beta\in\mathbb C\)、\(\alpha\ne0\)，使 \(f(z)=\alpha z+\beta\)。
 \end{theorem}
 \begin{proof}
-若无穷远是本性奇点，Casorati--Weierstrass 定理给 \(|z_n|\rightarrow\infty\) 且 \(f(z_n)\rightarrow f(z_0)\)。在 \(z_0\) 附近单叶函数有全纯局部逆，因此充分晚的这些值同时有一个靠近 \(z_0\) 的原像。它与 \(z_n\) 不同，违反单射性。若无穷远可去，Liouville 定理使 \(f\) 常值，亦不可能。故无穷远为极点，\(f\) 是多项式。次数若至少为2，\(f'\) 由代数基本定理有零点，违反单叶函数导数处处非零。反向显然。
-\end{proof}
-于是全平面也不能双全纯映到任何真平面区域，即使目标无界。这比对有界区域使用 Liouville 更强。证明中的决定性限制是单射性；非常值整函数 \(e^z\) 的像是无界真区域 \(\mathbb C\setminus\{0\}\)，而它确实多对一。
+设 \(f\) 为单射整函数。在无穷远处考虑局部坐标 \(\zeta=1/z\)，函数 \(f(1/\zeta)\) 在零点的穿孔邻域全纯，故该点只有可去奇点、极点、本性奇点三种可能。
 
-共形类型的唯一性须把双全纯与覆盖区别开。圆盘可通过某些覆盖映到有孔平面域，但这并不说明两域双全纯。双全纯逆映射把任意路径收缩带回源域，因此保存单连通性；圆盘与去心圆盘不能双全纯。指数从平面覆盖去心平面也是多对一映射，与本章平面单叶函数分类不矛盾。第11章引入覆盖后，这种区分将成为统一化陈述的基本组成部分。
+若它是本性奇点，固定 \(z_0\in\mathbb C\)，由\cref{b3:thm:03-casorati-weierstrass}可对每个足够大的整数 \(n\) 选 \(|z_n|>n\)，使 \(|f(z_n)-f(z_0)|<1/n\)。取一个以 \(z_0\) 为中心的有界小圆盘 \(D_0\)。开映射定理说明 \(f(D_0)\) 是包含 \(f(z_0)\) 的开集，所以充分晚的 \(f(z_n)\) 也属于 \(f(D_0)\)，有一个原像位于 \(D_0\)。但 \(z_n\) 已在此圆盘之外，与单射性矛盾。
+
+若无穷远可去，则 \(f\) 在一个大圆外有界；它在大闭圆盘内也因连续性而有界，故为有界整函数。Liouville 定理迫使 \(f\) 常值，仍与单射矛盾。于是无穷远只能是极点。由\cref{b3:prop:03-entire-at-infinity}，\(f\) 是非常值多项式。若其次数至少为二，导数便是非常值多项式，代数基本定理给出 \(f'\) 的一个零点；但单射全纯函数由\cref{b3:cor:01-local-injectivity}处处导数非零，矛盾。因此次数为一。反过来，\(\alpha\ne0\) 时仿射函数的逆为 \(w\mapsto(w-\beta)/\alpha\)，所以它确为单叶整函数。
+\end{proof}
+
+由此，全平面不能双全纯映到任何真平面区域，即使目标无界。指数函数虽然把全平面映满 \(\mathbb C\setminus\{0\}\)，却因周期 \(2\pi\mathrm{i}\) 而不是单射，故不属于这里的分类。
 
 \subsection{共形分类}
 \label{b3:subsec:050304}
 
-真单连通平面区域因此只有一种共形类型，即圆盘类型。若把全平面也包括进来，平面与圆盘是不同类型，因为 Liouville 排除它们之间的双全纯映射。扩充球面又是第三种，它紧而平面与圆盘不紧；统一化理论将对一般单连通 Riemann 曲面说明这三种模型的穷尽性。
+真单连通平面区域均双全纯等价于圆盘，而全平面与圆盘不等价。因此在单连通平面区域中，只有圆盘与平面这两种共形类型。若把扩充球面也作为 Riemann 曲面考虑，它的紧性又使它区别于前两者；后面的统一化理论将讨论这三个模型对于一般单连通 Riemann 曲面的意义。本章先在初等区域上把坐标与逆坐标算出来。
 
 \ProseParagraphBreak
 
-可计算的例子仍然值得保留。右半平面到圆盘可取 \((z-1)/(z+1)\)；水平带 \(|\operatorname{Im}z|<\pi/2\) 先由 \(e^z\) 单叶映到右半平面，再接前式；角域 \(0<\arg z<\alpha\) 先取明确分支 \(z^{\pi/\alpha}\) 映到上半平面，再用 Cayley 变换映到圆盘。每步都需要核对单射与满射，不能仅由边界线的像猜出整个区域的像。
-
-\ProseParagraphBreak
-
-多连通区域有真正的共形不变量。圆环不能映成圆盘，因为双全纯映射是同胚，保持闭曲线是否可收缩。\chapref{b3:ch:08}将以环域模量区分不同圆环；Riemann 映照定理的单连通条件正是在这一位置限制了分类范围。
-
-裂平面的显式映射可以检验抽象证明中的平方根。对 \(U=\mathbb C\setminus(-\infty,0]\)，取 \(\operatorname{Re}\sqrt z>0\) 的平方根分支，再用右半平面的 Cayley 变换，得到
+对裂平面 \(U=\mathbb C\setminus(-\infty,0]\)，取辐角范围 \(-\pi<\arg z<\pi\) 的主对数，定义
 \[
- f(z)=\frac{\sqrt z-1}{\sqrt z+1}.
+ s(z)=\exp\left(\frac12\operatorname{Log}z\right).
 \]
-它在1取0，导数为 \(1/4\)，所以 \(r_U(1)=4\)。点1到裂缝的欧氏距离为1，两种尺度相差显著。裂缝两侧会映到不同的圆周弧，即使它们在平面边界中对应同一负实点；第7章必须以素端处理这种边界辨识。
+其辐角位于 \((-\pi/2,\pi/2)\)，所以像在右半平面。反过来，右半平面的每个 \(u\) 都有 \(u^2\in U\)，且指定分支满足 \(s(u^2)=u\)；故 \(s\) 双全纯，逆函数为平方。接上右半平面到圆盘的坐标，就得到
+\[
+ f(z)=\frac{s(z)-1}{s(z)+1},
+ \quad F(w)=\left(\frac{1+w}{1-w}\right)^2.
+\]
+对 \(w\in\mathbb D\)，分式 \((1+w)/(1-w)\) 的实部为正，故其平方确实落在指定裂平面内，两式互逆。又 \(f(1)=0\)、\(f'(1)=1/4>0\)，所以 \(r_U(1)=4\)。前节在同一裂平面上构造的初始候选有 \(f_0'(1)=1/15\)，尚未达到这里的极值 \(1/4\)。点 \(1\) 到裂缝的欧氏距离为 \(1\)，这个例子也给出两种尺度的直接比较。
 
 \ProseParagraphBreak
-扇形 \(0<\arg z<\alpha\)、\(0<\alpha\le2\pi\)，可先用 \(z^{\pi/\alpha}=\exp((\pi/\alpha)\log z)\) 映到上半平面，再用分式变换映到圆盘。给定一个明确的辐角区间是必要数据。若忽略分支而直接把幂函数当成全平面函数，所得公式甚至可能不单值。对有理角度，代数式可用于计算；对任意角度，指数定义仍然统一有效。
 
-Riemann 定理给存在性和唯一性，不给一般区域的闭式公式。对于圆盘、半平面、带和扇形，公式来自已知初等函数；对于不规则边界区域，极值构造仍然成立，却可能需要数值逼近才能观察映射。在判断一个候选公式时应逐项核对：在源域单值全纯、导数非零、整体单射、像确为整个目标，以及指定点处的归一化。只画出几个点的像或检查导数，不能替代满射与单射的证明。
+对角域
+\[
+ S_\alpha=\{\,re^{\mathrm{i}\theta}\mid r>0,\ 0<\theta<\alpha\,\},
+ \quad 0<\alpha\le2\pi,
+\]
+固定辐角分支 \(0<\arg z<\alpha\)，写 \(L_\alpha(z)=\log|z|+\mathrm{i}\arg z\)。它在每个小邻域都是通常的全纯对数，因而在整个角域全纯。令 \(p=\pi/\alpha\)，则
+\[
+ T(z)=\exp\bigl(p\cdot L_\alpha(z)\bigr)
+\]
+把模 \(r\) 变为 \(r^p\)，把辐角 \(\theta\) 变为 \(p\theta\in(0,\pi)\)。其像恰为上半平面 \(H\)：若 \(u=\rho e^{\mathrm{i}\varphi}\in H\)、\(0<\varphi<\pi\)，唯一原像是 \(\rho^{1/p}e^{\mathrm{i}\varphi/p}\)。等价地，取上半平面上辐角位于 \((0,\pi)\) 的对数 \(\operatorname{Log}_H\)，就有
+\[
+ T^{-1}(u)=\exp\left(\frac1p\operatorname{Log}_H u\right).
+\]
+
+给定基点 \(a=re^{\mathrm{i}\theta}\in S_\alpha\)，记 \(b=T(a)\)。上半平面的分式坐标 \((u-b)/(u-\overline b)\) 在 \(b\) 的导数为 \(1/(2\mathrm{i}\operatorname{Im}b)\)。因此令
+\[
+ \lambda=\mathrm{i}\frac{\overline{T'(a)}}{|T'(a)|},
+ \quad f_a(z)=\lambda\frac{T(z)-b}{T(z)-\overline b},
+\]
+便有 \(f_a(a)=0\)、\(f_a'(a)=|T'(a)|/(2\operatorname{Im}b)>0\)。逆式也由相同分支给出：对 \(w\in\mathbb D\)，令 \(\eta=\overline\lambda w\)，则
+\[
+ f_a^{-1}(w)
+ =\exp\left(\frac1p\operatorname{Log}_H
+             \frac{b-\overline b\eta}{1-\eta}\right).
+\]
+其中分式的虚部等于 \(\operatorname{Im}b\cdot(1-|\eta|^2)/|1-\eta|^2>0\)，故对数始终取在已指定的上半平面分支中。
 
 \ProseParagraphBreak
-例如 \(z\mapsto z^2\) 在右半平面单叶，像为去掉非正实轴的裂平面；若把源域换成上半平面，像则去掉非负实轴。公式相同而像域不同，是因为辐角区间改变。再把源域放宽到全平面，映射变成二对一并在0分歧。所有这些现象都可由辐角范围和局部零点阶数直接核对，体现了“一个函数公式”与“一张区域之间的共形等价”之间的差别。
 
-所有这些显式映射都应在写出逆函数后再核对满射。带的指数逆取对数分支，扇形的幂逆也取指定辐角范围的根。逆的分支范围与正向映射的辐角范围恰好匹配，才保证每个目标点有且只有一个源点。
+共形半径由同一导数计算得到。因为 \(\operatorname{Im}b=r^p\cdot\sin(p\theta)\)、\(|T'(a)|=p r^{p-1}\)，有
+\[
+ r_{S_\alpha}(a)
+ =\frac{2\operatorname{Im}b}{|T'(a)|}
+ =\frac{2\alpha}{\pi}\,r\cdot\sin\frac{\pi\theta}{\alpha}.
+\]
+例如直角区域的基点 \(a=1+\mathrm{i}\) 对应 \(p=2\)、\(b=2\mathrm{i}\)、\(\lambda=e^{\mathrm{i}\pi/4}\)。归一化映射为
+\[
+ f_a(z)=e^{\mathrm{i}\pi/4}\cdot\frac{z^2-2\mathrm{i}}{z^2+2\mathrm{i}},
+ \quad f_a'(a)=\frac1{\sqrt2},
+\]
+所以共形半径为 \(\sqrt2\)。旋转因子在此确实影响导数的方向，不能在要求正实导数时省略。
+
+\ProseParagraphBreak
+
+最后考虑水平带 \(S_h=\{\,z\in\mathbb C\mid |\operatorname{Im}z|<h\,\}\)、\(h>0\)。记 \(\kappa=\pi/(2h)\)，映射 \(T(z)=e^{\kappa z}\) 的辐角位于 \((-\pi/2,\pi/2)\)，故像在右半平面；模唯一决定 \(\operatorname{Re}z\)，这个辐角区间唯一决定 \(\operatorname{Im}z\)。其全纯逆为
+\[
+ T^{-1}(u)=\frac1\kappa\operatorname{Log}_R u,
+\]
+其中 \(\operatorname{Log}_R\) 的辐角取在 \((-\pi/2,\pi/2)\)。给定 \(a=x+\mathrm{i}y\in S_h\)，令 \(b=e^{\kappa a}\)，则以 \(a\) 为基点的归一化映射及其逆可以写成
+\[
+ \begin{aligned}
+ f_a(z)&=\frac{\overline b}{|b|}\cdot
+        \frac{e^{\kappa z}-b}{e^{\kappa z}+\overline b},\\
+ f_a^{-1}(w)&=\frac1\kappa\operatorname{Log}_R
+                 \frac{b+\overline b\eta}{1-\eta},
+ \quad \eta=\frac b{|b|}w.
+ \end{aligned}
+\]
+逆式中的分式实部为正，故仍在指定对数分支内。前面的相位 \(\overline b/|b|=e^{-\mathrm{i}\kappa y}\) 使
+\[
+ f_a'(a)=\frac{\kappa|b|}{2\operatorname{Re}b}>0,
+ \quad r_{S_h}(x+\mathrm{i}y)
+ =\frac{2\operatorname{Re}b}{\kappa|b|}
+ =\frac{4h}{\pi}\cdot\cos\frac{\pi y}{2h}.
+\]
+因而横向平移不改变共形半径，而基点靠近上下边界时，这个尺度趋于零。
+
+\ProseParagraphBreak
+
+这些公式只在各自指定的区域和分支上表示双全纯等价。对于多连通区域，圆盘坐标一般不再存在：双全纯映射及其逆把闭路径的收缩互相传递，而圆环中绕孔的闭路径不能收缩。\chapref{b3:ch:08}将用环域模量进一步区分不同圆环；映射向边界的延拓和一般曲面的统一化也需要各自的条件，不能从这里的内部分类直接推出。

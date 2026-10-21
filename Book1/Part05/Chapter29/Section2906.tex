@@ -1,0 +1,645 @@
+% !TeX root = ../../Book1.tex
+\section{无界自伴算子的谱表示}
+\label{b1:sec:2906}
+
+有界自伴算子的谱积分在整个 Hilbert 空间上作用；无界情形首先要回答的是哪些向量允许代入。
+本节从自伴算子的 Cayley 变换出发，把单位圆上的酉谱测度移到实轴，
+并由谱测度同时恢复算子作用和定义域。随后把坐标函数换成一般 Borel 函数，
+逐项核对闭性、伴随、乘积以及极限。特别地，两个算子的作用公式相同，
+还不足以断言它们相等，必须同时核对定义域。
+
+以下 \(H\) 为复 Hilbert 空间，内积对第一变量线性。
+对投影值测度 \(E\) 及有界 Borel 函数 \(h\)，暂记
+\[
+ h(E)=\int h\,\mathrm dE.
+\]
+这是\secref{b1:sec:2904}已经构造的有界谱积分；这个记号不预先要求有一个无界算子。
+标量正测度记为
+\[
+ \mu_x(B)=\langle E(B)x,x\rangle=\|E(B)x\|^2.
+\]
+本节的 Cayley 证明路线参见\cite[Theorem 13.30, pp.~368--369]{Rudin1991Functional}；
+一般谱积分的定义域、乘积与伴随参见\cite[Theorem 13.24, pp.~362--364]{Rudin1991Functional}。
+
+\subsection{Cayley 变换}
+\label{b1:subsec:290601}
+
+\cref{b1:thm:29-self-adjoint-criterion}表明，对稠密定义的自伴算子 \(A\)，
+\(A+iI\) 和 \(A-iI\) 都把 \(D(A)\) 双射到 \(H\)。
+因此可以先用 \((A+iI)^{-1}\) 把任意向量送入定义域，再作用 \(A-iI\)。
+
+\begin{proposition}[自伴算子的 Cayley 变换]
+\label{b1:prop:29-cayley}
+设 \(H\) 为复 Hilbert 空间，\(A:D(A)\subseteq H\to H\) 为稠密定义的自伴算子。则
+\[
+ U=(A-iI)(A+iI)^{-1}
+   =I-2i(A+iI)^{-1}
+\]
+是 \(H\) 上的酉算子，称为 \(A\) 的\term[cayley-bianhuan]{Cayley 变换}[Cayley transform]。
+它满足
+\begin{equation}\label{b1:eq:29-cayley-domain}
+ I-U=2i(A+iI)^{-1},\qquad
+ \ker(I-U)=\{0\},\qquad
+ \operatorname{ran}(I-U)=D(A),
+\end{equation}
+并且
+\begin{equation}\label{b1:eq:29-cayley-inverse}
+ A(I-U)y=i(I+U)y\qquad(y\in H).
+\end{equation}
+\end{proposition}
+\begin{proof}
+由对称性，\(\langle Ax,x\rangle\) 为实数，故对 \(x\in D(A)\) 有
+\[
+ \|(A\pm iI)x\|^2=\|Ax\|^2+\|x\|^2.
+\]
+两算子满射，再由这个等式可知它们的逆作为 \(H\to H\) 的映射有界，范数至多为 \(1\)。
+它们的值域都恰为 \(D(A)\)。若 \(y=(A+iI)x\)，则
+\[
+ Uy=(A-iI)x=y-2ix,
+\]
+所以 \(U=I-2i(A+iI)^{-1}\) 在整个 \(H\) 上有界，且
+\(\|Uy\|=\|(A-iI)x\|=\|(A+iI)x\|=\|y\|\)。
+因为 \(A-iI\) 满射，\(U\) 也满射，故为酉算子。
+
+由 \(I-U=2i(A+iI)^{-1}\)，立即得到核与值域的两个结论。
+仍把 \(y\) 写成 \((A+iI)x\)，则
+\[
+ (I-U)y=2ix,\qquad (I+U)y=2Ax.
+\]
+前式保证 \((I-U)y\in D(A)\)，并给出
+\(A(I-U)y=2iAx=i(I+U)y\)。这里每一次作用 \(A\) 的向量都已确定属于定义域。
+\end{proof}
+
+记单位圆为 \(\mathbb T=\{z\in\mathbb C:|z|=1\}\)。两个互逆的连续映射
+\begin{equation}\label{b1:eq:29-cayley-maps}
+ \phi(t)=\frac{t-i}{t+i}\quad(t\in\mathbb R),\qquad
+ \theta(z)=i\frac{1+z}{1-z}\quad(z\in\mathbb T\setminus\{1\})
+\end{equation}
+把实轴与去掉 \(1\) 的单位圆对应起来。
+对 \(|z|=1\)、\(z\ne1\)，利用 \(\overline z=z^{-1}\) 可核对
+\(\overline{\theta(z)}=\theta(z)\)，故 \(\theta\) 确实取实值。
+还将用到
+\begin{equation}\label{b1:eq:29-cayley-weight}
+ \bigl(1+|\theta(z)|^2\bigr)\cdot|1-z|^2
+ =|1-z|^2+|1+z|^2=4.
+\end{equation}
+
+由酉谱定理\cref{b1:thm:29-unitary-spectral}，存在唯一的投影值测度 \(F\)，使
+\[
+ U=\int_{\mathbb T}z\,\mathrm dF(z).
+\]
+有界谱积分的乘法公式给出
+\((I-U)F(\{1\})=0\)。结合\eqref{b1:eq:29-cayley-domain}的单射性，得到
+\begin{equation}\label{b1:eq:29-cayley-no-atom}
+ F(\{1\})=0.
+\end{equation}
+这个结论只排除了 \(1\) 处的谱原子。若 \(D(A)\ne H\)，则 \(I-U\) 的值域是稠密真子空间，
+因而 \(1\) 仍属于 \(U\) 的谱。逆变换 \(\theta\) 在该点附近无界，
+这正是需要引入无界谱积分的地方。
+
+\subsection{无界自伴谱定理}
+\label{b1:subsec:290602}
+
+先把圆上的投影值测度推到实轴：对 Borel 集 \(B\subseteq\mathbb R\)，定义
+\begin{equation}\label{b1:eq:29-real-spectral-measure}
+ E(B)=F\bigl(\theta^{-1}(B)\bigr).
+\end{equation}
+原像保持交与不交并，故 \(E\) 保持投影乘法和强可数可加性。
+由\eqref{b1:eq:29-cayley-no-atom}，又有
+\(E(\mathbb R)=F(\mathbb T\setminus\{1\})=I\)，所以 \(E\) 是投影值测度。
+若 \(h\) 为实轴上的有界 Borel 函数，在 \(z=1\) 处把 \(h\circ\theta\) 任意补成有限值，则
+\begin{equation}\label{b1:eq:29-cayley-pushforward}
+ h(E)=\int_{\mathbb T}h(\theta(z))\,\mathrm dF(z).
+\end{equation}
+对示性函数，这就是定义；对简单函数，利用线性性；对一般有界 Borel 函数，
+用一致有界的简单函数逐点逼近，再用有界谱积分的强收敛结论即可。
+
+对于尚未定义的坐标积分，先取有界截断
+\[
+ \tau_n(t)=t\cdot\mathbf1_{[-n,n]}(t),\qquad A_n=\tau_n(E).
+\]
+若 \(\int t^2\,\mathrm d\mu_x(t)<\infty\)，则对 \(m\ge n\)，
+\[
+ \|(A_m-A_n)x\|^2
+ =\int_{\{n<|t|\le m\}}t^2\,\mathrm d\mu_x(t)\longrightarrow0.
+\]
+因此 \(A_nx\) 在 \(H\) 中有极限。下面证明，这个平方可积条件恰好刻画原来的定义域。
+
+\begin{theorem}[无界自伴谱定理]
+\label{b1:thm:29-unbounded-spectral}
+设 \(H\) 为复 Hilbert 空间，\(A:D(A)\subseteq H\to H\) 为稠密定义的自伴算子。
+则在 \(\mathbb R\) 的 Borel 集上存在唯一的投影值测度 \(E\)，使
+\begin{equation}\label{b1:eq:29-spectral-domain}
+ D(A)=\left\{x\in H:\int_{\mathbb R}t^2\,\mathrm d\mu_x(t)<\infty\right\},
+ \qquad \mu_x(B)=\langle E(B)x,x\rangle,
+\end{equation}
+并且
+\begin{equation}\label{b1:eq:29-spectral-action}
+ Ax=\lim_{n\to\infty}\int_{[-n,n]}t\,\mathrm dE(t)x,
+ \qquad
+ \|Ax\|^2=\int_{\mathbb R}t^2\,\mathrm d\mu_x(t)
+ \quad(x\in D(A)).
+\end{equation}
+对每个 \(w\in\mathbb C\setminus\mathbb R\)，\(A-wI:D(A)\to H\) 为双射，其逆满足
+\begin{equation}\label{b1:eq:29-unbounded-resolvent}
+ (A-wI)^{-1}=\int_{\mathbb R}\frac1{t-w}\,\mathrm dE(t),\qquad
+ \|(A-wI)^{-1}\|\le\frac1{|\operatorname{Im}w|}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+若 \(H=\{0\}\)，则零投影值测度直接给出全部结论。以下设 \(H\ne\{0\}\)。
+取由\eqref{b1:eq:29-real-spectral-measure}构造的 \(E\)。
+先证明 \(D(A)\) 中的向量满足平方可积条件。
+由\eqref{b1:eq:29-cayley-domain}，可把任意 \(x\in D(A)\) 唯一写成
+\(x=(I-U)y\)。记 \(\nu_y(C)=\langle F(C)y,y\rangle\)。
+对 Borel 集 \(C\subseteq\mathbb T\)，有界谱积分的乘法与范数公式给出
+\[
+ \nu_x(C)=\|F(C)(I-U)y\|^2
+ =\int_C|1-z|^2\,\mathrm d\nu_y(z).
+\]
+推前标量测度，再用\eqref{b1:eq:29-cayley-weight}，得到
+\begin{equation}\label{b1:eq:29-cayley-domain-norm}
+ \int_{\mathbb R}(1+t^2)\,\mathrm d\mu_x(t)
+ =\int_{\mathbb T\setminus\{1\}}
+   (1+|\theta(z)|^2)\cdot|1-z|^2\,\mathrm d\nu_y(z)
+ =4\cdot\|y\|^2.
+\end{equation}
+这里无界非负函数的换元可先对简单函数验证，再由单调收敛定理得到。
+特别地，\(x\) 满足所需的平方可积条件。另一方面，
+\[
+ A_nx
+ =i\int_{\{z\ne1:\,|\theta(z)|\le n\}}
+       (1+z)\,\mathrm dF(z)y
+ \longrightarrow i(I+U)y=Ax.
+\]
+收敛来自有界谱积分的支配收敛，因为乘数的绝对值至多为 \(2\)，
+而这些集合递增覆盖 \(\mathbb T\setminus\{1\}\)。
+
+反过来，设 \(x\in H\) 满足 \(\int t^2\,\mathrm d\mu_x<\infty\)，令
+\[
+ y_n=\left(\frac{t+i}{2i}\cdot\mathbf1_{[-n,n]}(t)\right)(E)x.
+\]
+由于 \(|(t+i)/(2i)|^2=(1+t^2)/4\) 对 \(\mu_x\) 可积，
+同样的范数差估计表明 \((y_n)\) 为 Cauchy 列。设其极限为 \(y\)。
+由\eqref{b1:eq:29-cayley-pushforward}和 \(F(\{1\})=0\)，有 \(U=\phi(E)\)，故
+\[
+ (I-U)y_n
+ =\left(\left(1-\frac{t-i}{t+i}\right)
+          \frac{t+i}{2i}\cdot\mathbf1_{[-n,n]}(t)\right)(E)x
+ =E([-n,n])x\longrightarrow x.
+\]
+\(I-U\) 有界，因而 \((I-U)y=x\)。
+由其值域等于 \(D(A)\)，得到 \(x\in D(A)\)。这证明了定义域等式和作用公式。
+最后，\(A_nx\to Ax\) 及单调收敛给出
+\[
+ \|Ax\|^2=\lim_n\|A_nx\|^2
+ =\lim_n\int_{[-n,n]}t^2\,\mathrm d\mu_x
+ =\int_{\mathbb R}t^2\,\mathrm d\mu_x.
+\]
+
+现在取 \(w\notin\mathbb R\)，置 \(r_w(t)=(t-w)^{-1}\)、\(R=r_w(E)\)。
+有
+\[
+ |r_w(t)|\le\frac1{|\operatorname{Im}w|},\qquad
+ |t r_w(t)|\le1+\frac{|w|}{|\operatorname{Im}w|}.
+\]
+对 \(v\in H\)，有界谱积分给出的标量测度关系为
+\[
+ \mu_{Rv}(B)=\int_B|r_w(t)|^2\,\mathrm d\mu_v(t).
+\]
+因此 \(\int t^2\,\mathrm d\mu_{Rv}<\infty\)，即 \(Rv\in D(A)\)。
+再由坐标截断和有界谱积分的强收敛，
+\[
+ ARv=\lim_n(\tau_n r_w)(E)v=(t r_w)(E)v,
+ \qquad (A-wI)Rv=v.
+\]
+对 \(x\in D(A)\)，\(\langle Ax,x\rangle\) 为实数，故
+\[
+ |\operatorname{Im}w|\cdot\|x\|^2
+ =\bigl|\operatorname{Im}\langle(A-wI)x,x\rangle\bigr|
+ \le\|(A-wI)x\|\cdot\|x\|.
+\]
+所以 \(A-wI\) 单射。结合已经证明的右逆，它为双射，且逆的范数满足所述估计。
+
+最后证明谱测度的唯一性。设另一个实轴投影值测度 \(E'\) 也满足
+\eqref{b1:eq:29-spectral-domain}和\eqref{b1:eq:29-spectral-action}。
+上面的预解算子论证只用了这两个性质以及有界谱积分规则，所以同样适用于 \(E'\)。
+在 \(w=-i\) 处得到
+\[
+ (A+iI)^{-1}=\left(\frac1{t+i}\right)(E'),\qquad U=\phi(E').
+\]
+在单位圆上定义 \(F'(C)=E'(\phi^{-1}(C))\)。
+它是投影值测度，满足 \(F'(\{1\})=0\)，而且
+\(U=\int_{\mathbb T}z\,\mathrm dF'(z)\)。
+酉谱定理的唯一性给出 \(F'=F\)。
+对任意 Borel 集 \(B\subseteq\mathbb R\)，\(\theta^{-1}(B)=\phi(B)\)
+是 \(\mathbb T\setminus\{1\}\) 的 Borel 集，故
+\[
+ E'(B)=F'(\theta^{-1}(B))=F(\theta^{-1}(B))=E(B).
+\]
+\end{proof}
+
+这个定理中的唯一性同时包含定义域；只在一个较小的稠密子空间上给出积分公式，
+不能代替\eqref{b1:eq:29-spectral-domain}的等式。
+与有界情形一样，记
+\[
+ \rho(A)=\{w\in\mathbb C:A-wI:D(A)\to H
+       \text{ 为双射且逆在 }H\text{ 上有界}\},\qquad
+ \sigma(A)=\mathbb C\setminus\rho(A).
+\]
+由于 \(A\) 闭，双射时逆的有界性也可由闭图像定理推出。
+\eqref{b1:eq:29-unbounded-resolvent}说明 \(\sigma(A)\subseteq\mathbb R\)。
+谱测度还精确说明哪些实数属于谱。
+
+\begin{proposition}[谱测度的支集与谱]
+\label{b1:prop:29-unbounded-spectral-support}
+设 \(H\ne\{0\}\) 为复 Hilbert 空间，\(A:D(A)\subseteq H\to H\) 为稠密定义的自伴算子，
+\(E\) 为\cref{b1:thm:29-unbounded-spectral}给出的实轴谱测度。则
+\[
+ \sigma(A)=\{s\in\mathbb R:
+ E((s-\varepsilon,s+\varepsilon))\ne0\text{ 对每个 }\varepsilon>0\text{ 成立}\}.
+\]
+这个集合为非空闭集，且 \(E(\sigma(A))=I\)。
+\end{proposition}
+\begin{proof}
+把右端记为 \(K\)。它的补集为开集。
+若 \(s\notin K\)，取 \(\varepsilon>0\) 使 \(E((s-\varepsilon,s+\varepsilon))=0\)，并定义
+\[
+ r(t)=
+ \begin{cases}
+  (t-s)^{-1},&|t-s|\ge\varepsilon,\\
+  0,&|t-s|<\varepsilon.
+ \end{cases}
+\]
+\(r\) 与 \(tr\) 都有界。与预解公式的证明相同，标量测度范数公式先给出
+\(r(E)H\subseteq D(A)\)，坐标截断再给出
+\[
+ (A-sI)r(E)v=((t-s)r)(E)v=v\qquad(v\in H).
+\]
+对 \(x\in D(A)\)，还可在另一侧计算
+\[
+ \begin{aligned}
+ r(E)(A-sI)x
+ &=\lim_n r(E)(A_n-sI)x\\
+ &=\bigl(tr-sr\bigr)(E)x=x.
+ \end{aligned}
+\]
+第二行的极限成立，是因为 \(r\tau_n\) 一致有界并逐点趋于 \(rt\)，
+而 \((t-s)r=1\) 在 \(E\)-几乎处处成立。因此 \(s\in\rho(A)\)。
+
+若 \(s\in K\)，则对每个 \(0<\varepsilon<1\)，可在
+\(E((s-\varepsilon,s+\varepsilon))H\) 中选一个单位向量 \(x_\varepsilon\)。
+它的标量谱测度集中在这个有界区间上，故 \(x_\varepsilon\in D(A)\)，且
+\[
+ \|(A-sI)x_\varepsilon\|^2
+ =\int_{(s-\varepsilon,s+\varepsilon)}|t-s|^2
+          \,\mathrm d\mu_{x_\varepsilon}(t)
+ \le\varepsilon^2.
+\]
+这里在有界区间上，\(A\) 的作用就是有界坐标积分。
+若 \((A-sI)^{-1}\) 存在且有界，就会有
+\(1\le\|(A-sI)^{-1}\|\cdot\varepsilon\)，与 \(\varepsilon\downarrow0\) 矛盾。
+所以 \(s\in\sigma(A)\)，得到 \(K=\sigma(A)\)。
+
+对每个 \(s\notin K\)，可在其一个零投影邻域内选取包含 \(s\) 的有理端点开区间。
+所有这些区间构成可数族，覆盖 \(\mathbb R\setminus K\)，且各自的 \(E\)-投影为零。
+对每个 \(x\in H\)，标量测度的可数次可加性给出
+\(\mu_x(\mathbb R\setminus K)=0\)，所以 \(E(\mathbb R\setminus K)=0\)、\(E(K)=I\)。
+若 \(K\) 为空，这会与 \(E(\mathbb R)=I\ne0\) 矛盾。
+\end{proof}
+
+\subsection{无界函数演算的定义域}
+\label{b1:subsec:290603}
+
+现在固定实轴上的投影值测度 \(E\)。下面的构造只依赖 \(E\)，
+因而也可以用于尚未指定自伴算子的任意这种投影值测度。
+所谓 \(E\)-几乎处处，是指除去一个满足 \(E(N)=0\) 的 Borel 集 \(N\)；
+这样的集合对每个 \(\mu_x\) 都为零测集。
+本节只考虑处处取有限复数值的 Borel 函数，允许函数无界。
+
+\begin{definition}[无界谱积分与最大定义域]
+\label{b1:def:29-unbounded-calculus}
+设 \(H\) 为复 Hilbert 空间，\(E\) 为实轴 Borel 集上的投影值测度，
+\(\mu_x(B)=\langle E(B)x,x\rangle\)。设 \(f:\mathbb R\to\mathbb C\) 为有限值 Borel 函数，记
+\[
+ C_n=\{t:|f(t)|\le n\},\qquad P_n=E(C_n),\qquad
+ f_n=f\cdot\mathbf1_{C_n}.
+\]
+定义谱积分 \(T_f=\int f\,\mathrm dE\) 的\term[zuida-dingyiyu]{最大定义域}[maximal domain]为
+\begin{equation}\label{b1:eq:29-borel-maximal-domain}
+ D_f=D(T_f)=\left\{x\in H:\int_{\mathbb R}|f(t)|^2\,\mathrm d\mu_x(t)<\infty\right\},
+\end{equation}
+并对 \(x\in D_f\) 置
+\begin{equation}\label{b1:eq:29-borel-truncation}
+ T_fx=\lim_{n\to\infty}f_n(E)x.
+\end{equation}
+若 \(E\) 为自伴算子 \(A\) 的谱测度，则记
+\[
+ f(A)=T_f=\int_{\mathbb R}f(t)\,\mathrm dE(t).
+\]
+\symidx{\(D(f(A))\)：无界谱函数演算的最大定义域}
+\end{definition}
+
+先验证定义确实给出稠密定义的线性算子。
+由有界谱积分的范数公式及单调收敛，
+\begin{equation}\label{b1:eq:29-borel-domain-test}
+ \sup_n\|f_n(E)x\|^2=\int|f|^2\,\mathrm d\mu_x.
+\end{equation}
+所以 \(D_f\) 恰为使左侧有限的向量全体，算子范数的三角不等式说明它为线性子空间。
+对 \(x\in D_f\)、\(m\ge n\)，有
+\[
+ \|(f_m(E)-f_n(E))x\|^2
+ =\int_{\{n<|f|\le m\}}|f|^2\,\mathrm d\mu_x\longrightarrow0,
+\]
+故\eqref{b1:eq:29-borel-truncation}中的极限存在。
+各个截断算子的线性性再说明 \(T_f\) 线性，且
+\begin{equation}\label{b1:eq:29-borel-norm}
+ \|T_fx\|^2=\int|f|^2\,\mathrm d\mu_x\qquad(x\in D_f).
+\end{equation}
+对任意 \(y\in H\)，\(P_ny\) 的标量谱测度集中在 \(C_n\) 上，因而
+\(\int|f|^2\,\mathrm d\mu_{P_ny}\le n^2\cdot\|y\|^2\)，即 \(P_nH\subseteq D_f\)。
+\(f\) 处处有限意味着 \(C_n\uparrow\mathbb R\)，从而 \(P_n\to I\) 强收敛，
+\(D_f\) 在 \(H\) 中稠密。
+
+若 \(f\) 有界，则充分大的 \(n\) 满足 \(f_n=f\)，所以此定义与原来的有界谱积分一致。
+若 \(f\) 和 \(g\) 在 \(E\)-几乎处处相等，则各自的平方可积域相同，
+截断函数的有界谱积分也相同，故 \(T_f=T_g\)。
+对于坐标函数 \(f(t)=t\)，\cref{b1:thm:29-unbounded-spectral}说明得到的算子恰为 \(A\)，
+包括定义域的等式。
+
+\begin{proposition}[谱投影与标量谱测度的变换]
+\label{b1:prop:29-unbounded-spectral-commutation}
+设 \(H\) 为复 Hilbert 空间，\(E\) 为实轴 Borel 集上的投影值测度，
+\(f\) 为有限值 Borel 函数，\(T_f=\int f\,\mathrm dE\) 取最大定义域 \(D_f\)。
+设 \(B\subseteq\mathbb R\) 为 Borel 集。
+则对 \(x\in D_f\)，有
+\[
+ E(B)x\in D_f,\qquad T_fE(B)x=E(B)T_fx,
+\]
+且
+\begin{equation}\label{b1:eq:29-unbounded-scalar-transport}
+ \mu_{T_fx}(B)=\int_B|f|^2\,\mathrm d\mu_x.
+\end{equation}
+若 \(f\) 在 \(B\) 上有界，则 \(E(B)H\subseteq D_f\)，并且作为整个 \(H\) 上的有界算子，
+\[
+ T_fE(B)=(f\cdot\mathbf1_B)(E).
+\]
+\end{proposition}
+\begin{proof}
+投影乘法给出
+\(\mu_{E(B)x}(C)=\mu_x(B\cap C)\)。因此
+\[
+ \int|f|^2\,\mathrm d\mu_{E(B)x}=\int_B|f|^2\,\mathrm d\mu_x<\infty.
+\]
+每个有界截断 \(f_n(E)\) 都与 \(E(B)\) 交换，令 \(n\to\infty\) 即得作用公式。
+再用\eqref{b1:eq:29-borel-norm}，
+\[
+ \mu_{T_fx}(B)=\|E(B)T_fx\|^2
+ =\|T_fE(B)x\|^2=\int_B|f|^2\,\mathrm d\mu_x.
+\]
+若 \(|f|\le M\) 于 \(B\)，上述积分对任意 \(x\in H\) 至多为 \(M^2\cdot\|x\|^2\)。
+并且对 \(n\ge M\)，\(f_n\cdot\mathbf1_B=f\cdot\mathbf1_B\)，所以截断定义直接给出最后的等式。
+\end{proof}
+
+\begin{theorem}[无界谱积分的闭性与伴随]
+\label{b1:thm:29-unbounded-calculus-adjoint}
+设 \(H\) 为复 Hilbert 空间，\(E\) 为实轴 Borel 集上的投影值测度，
+\(f\) 为有限值 Borel 函数，\(T_f=\int f\,\mathrm dE\) 取最大定义域 \(D_f\)。
+则 \(T_f\) 是稠密定义的闭算子，且
+\begin{equation}\label{b1:eq:29-unbounded-calculus-adjoint}
+ T_f^*=T_{\overline f},\qquad
+ D(T_f^*)=D(T_{\overline f})=D_f.
+\end{equation}
+特别地，若 \(f\) 在 \(E\)-几乎处处为实值，则 \(T_f\) 自伴。
+\end{theorem}
+\begin{proof}
+稠密定义已经验证。先直接证明闭性。
+设 \(x_k\in D_f\)、\(x_k\to x\)、\(T_fx_k\to y\)。
+固定 \(n\)，由上一命题有
+\[
+ f_n(E)x_k=P_nT_fx_k.
+\]
+两侧有界算子均可通过极限，得到 \(f_n(E)x=P_ny\)。于是
+\(\|f_n(E)x\|\le\|y\|\) 对所有 \(n\) 成立。
+\eqref{b1:eq:29-borel-domain-test}说明 \(x\in D_f\)，再令 \(n\to\infty\)，得到
+\(T_fx=\lim_nP_ny=y\)，证明了闭性。
+
+由于 \(|\overline f|=|f|\)，有 \(D_{\overline f}=D_f\)。
+对 \(x\in D_f\)、\(y\in D_{\overline f}\)，有界谱积分的伴随公式给出
+\[
+ \langle T_fx,y\rangle
+ =\lim_n\langle f_n(E)x,y\rangle
+ =\lim_n\langle x,\overline{f_n}(E)y\rangle
+ =\langle x,T_{\overline f}y\rangle.
+\]
+因此 \(T_{\overline f}\subseteq T_f^*\)。
+
+反过来，设 \(y\in D(T_f^*)\)、\(v=T_f^*y\)。
+对任意 \(u\in H\)，\(P_nu\in D_f\)，所以
+\[
+ \langle f_n(E)u,y\rangle
+ =\langle T_fP_nu,y\rangle
+ =\langle P_nu,v\rangle
+ =\langle u,P_nv\rangle.
+\]
+由有界谱积分的伴随公式及表示向量唯一性，
+\(\overline{f_n}(E)y=P_nv\)。因此
+\[
+ \int_{C_n}|f|^2\,\mathrm d\mu_y
+ =\|\overline{f_n}(E)y\|^2\le\|v\|^2.
+\]
+单调收敛给出 \(y\in D_{\overline f}\)。令 \(n\to\infty\)，再得到
+\(T_{\overline f}y=v\)，从而伴随等式连同定义域等式全部成立。
+最后，若 \(f=\overline f\) 于 \(E\)-几乎处处，两个谱积分相同，故 \(T_f=T_f^*\)。
+\end{proof}
+
+上述闭性说明最大定义域对图像极限封闭。
+若再把 \(T_f\) 限制到一个较小的稠密子空间，所得算子可能不闭，也可能不再自伴。
+因此，谱积分中的平方可积条件是算子本身的一部分。
+
+\subsection{谱演算的乘积与极限}
+\label{b1:subsec:290604}
+
+以下把记号恢复为 \(f(A)\)。所有函数都相对于同一个自伴算子 \(A\) 的谱测度计算。
+算子乘积先作用右侧因子，约定
+\[
+ D(f(A)g(A))
+ =\{x\in D(g(A)):g(A)x\in D(f(A))\}.
+\]
+算子和的定义域则是 \(D(f(A))\cap D(g(A))\)。
+
+\begin{proposition}[乘积和加法的定义域]
+\label{b1:prop:29-unbounded-calculus-products}
+设 \(H\) 为复 Hilbert 空间，\(A:D(A)\subseteq H\to H\) 为稠密定义的自伴算子，
+\(f,g:\mathbb R\to\mathbb C\) 为有限值 Borel 函数，函数演算均取最大定义域。则
+\begin{equation}\label{b1:eq:29-product-domain}
+ D(f(A)g(A))=D(g(A))\cap D((fg)(A)),
+\end{equation}
+并且
+\begin{equation}\label{b1:eq:29-product-restriction}
+ f(A)g(A)x=(fg)(A)x
+ \qquad\bigl(x\in D(f(A)g(A))\bigr).
+\end{equation}
+对于加法，有
+\begin{equation}\label{b1:eq:29-sum-restriction}
+ D(f(A))\cap D(g(A))\subseteq D((f+g)(A)),\qquad
+ (f(A)+g(A))x=(f+g)(A)x
+\end{equation}
+在左端定义域上成立。上述两个算子限制均可闭，且
+\begin{equation}\label{b1:eq:29-product-sum-closures}
+ \overline{f(A)g(A)}=(fg)(A),\qquad
+ \overline{f(A)+g(A)}=(f+g)(A).
+\end{equation}
+\end{proposition}
+\begin{proof}
+对 \(x\in D(g(A))\)，由\eqref{b1:eq:29-unbounded-scalar-transport}，先对简单非负函数，
+再用单调收敛，可得
+\[
+ \int|f|^2\,\mathrm d\mu_{g(A)x}
+ =\int|fg|^2\,\mathrm d\mu_x.
+\]
+所以 \(g(A)x\in D(f(A))\) 当且仅当 \(x\in D((fg)(A))\)，证明了精确的乘积域。
+
+令
+\[
+ B_n=\{|f|\le n,\ |g|\le n\},\qquad Q_n=E(B_n).
+\]
+两函数都取有限值，故 \(B_n\uparrow\mathbb R\)、\(Q_n\to I\) 强收敛。
+在 \(B_n\) 上两个函数有界，可用有界谱积分的乘法公式。
+对乘积域中的 \(x\)，上一小节的谱投影交换关系给出
+\[
+ \begin{aligned}
+ Q_nf(A)g(A)x
+ &=f(A)Q_ng(A)x\\
+ &=(f\cdot\mathbf1_{B_n})(E)(g\cdot\mathbf1_{B_n})(E)x\\
+ &=(fg\cdot\mathbf1_{B_n})(E)x
+ =Q_n(fg)(A)x.
+ \end{aligned}
+\]
+令 \(n\to\infty\) 得\eqref{b1:eq:29-product-restriction}。
+
+若 \(x\in D(f(A))\cap D(g(A))\)，由
+\(|f+g|^2\le2\cdot|f|^2+2\cdot|g|^2\)，首先有 \(x\in D((f+g)(A))\)。
+再在同一 \(B_n\) 上使用有界谱积分的加法公式，得到
+\[
+ Q_n(f(A)x+g(A)x)
+ =((f+g)\cdot\mathbf1_{B_n})(E)x
+ =Q_n(f+g)(A)x.
+\]
+令 \(n\to\infty\)，得到加法的作用公式。
+
+最后，这两个限制都包含 \(\bigcup_nQ_nH\) 于定义域中，故稠密定义；
+又分别包含于闭算子 \((fg)(A)\) 与 \((f+g)(A)\)，因而可闭。
+分别取 \(h=fg\) 或 \(h=f+g\)。对每个 \(x\in D(h(A))\)，置 \(x_n=Q_nx\)。
+则 \(x_n\) 属于相应限制的定义域，并且
+\[
+ \|x-x_n\|^2+\|h(A)x-h(A)x_n\|^2
+ =\int_{B_n^c}(1+|h|^2)\,\mathrm d\mu_x\longrightarrow0.
+\]
+这里被积函数对 \(\mu_x\) 可积，且 \(B_n\uparrow\mathbb R\)。
+所以每个 \((x,h(A)x)\) 都在相应限制的图像闭包中。
+反向包含由 \(h(A)\) 的闭性保证，证明了两个闭包等式。
+\end{proof}
+
+由\eqref{b1:eq:29-product-domain}，当右侧因子 \(g\) 有界时，确有
+\(f(A)g(A)=(fg)(A)\)。仅知道左侧因子 \(f\) 有界，则一般只能得到扩张关系
+\(f(A)g(A)\subseteq(fg)(A)\)。加法中的域包含也可能为严格包含。
+
+在 \(H=\ell^2(\mathbb N)\) 上，可以把这两个现象直接写出。
+定义投影值测度
+\[
+ E(B)(x_1,x_2,\ldots)
+ =(\mathbf1_B(1)\cdot x_1,\mathbf1_B(2)\cdot x_2,\ldots).
+\]
+其强可数可加性由每个向量的平方可和性及标量支配收敛得到，且
+\(\mu_x=\sum_{k\ge1}|x_k|^2\cdot\delta_k\)。
+对坐标函数应用上一小节的谱积分，得到自伴算子
+\[
+ Mx=(kx_k)_{k\ge1},\qquad
+ D(M)=\left\{x\in\ell^2:\sum_{k\ge1}k^2\cdot|x_k|^2<\infty\right\}.
+\]
+由无界自伴谱定理的唯一性，它的谱测度正是这个 \(E\)。
+若 \(g(t)=t\)、\(f(t)=(1+|t|)^{-1}\)，则 \(f(M)\) 与 \((fg)(M)\) 都在整个空间上有界，
+而 \(f(M)g(M)\) 的定义域仍为 \(D(M)\)。
+例如 \(x=(1/k)_{k\ge1}\) 属于 \(\ell^2\) 却不属于 \(D(M)\)，所以这两个算子不相等。
+若改取 \(f(t)=t\)、\(g(t)=-t\)，则 \(f(M)+g(M)\) 是定义在 \(D(M)\) 上的零算子，
+而 \((f+g)(M)\) 是定义在整个 \(\ell^2\) 上的零算子。
+
+\ProseParagraphBreak
+
+函数列的点态极限也要连同可积的控制条件使用。
+
+\begin{proposition}[谱积分的支配收敛]
+\label{b1:prop:29-unbounded-calculus-dominated}
+设 \(H\) 为复 Hilbert 空间，\(A:D(A)\subseteq H\to H\) 为稠密定义的自伴算子，
+\(E\) 为其谱测度。设 \(f_n,f\) 为有限值 Borel 函数，\(h\ge0\) 为有限值 Borel 函数。
+若在一个共同的 \(E\)-零测集之外，
+\[
+ f_n(t)\longrightarrow f(t),\qquad |f_n(t)|\le h(t)\quad(n\ge1),
+\]
+则对每个 \(x\in D(h(A))\)，均有 \(x\in D(f_n(A))\cap D(f(A))\)，且
+\[
+ f_n(A)x\longrightarrow f(A)x\quad\text{于 }H.
+\]
+\end{proposition}
+\begin{proof}
+取极限给出 \(|f|\le h\) 于共同零测集之外，故
+\[
+ \int|f_n|^2\,\mathrm d\mu_x\le\int h^2\,\mathrm d\mu_x<\infty,
+ \qquad
+ \int|f|^2\,\mathrm d\mu_x\le\int h^2\,\mathrm d\mu_x<\infty.
+\]
+由加法公式及范数公式，
+\[
+ \|f_n(A)x-f(A)x\|^2
+ =\int|f_n-f|^2\,\mathrm d\mu_x.
+\]
+被积函数逐点趋于零，且由 \(4h^2\) 控制。
+标量支配收敛定理因此给出右端趋于零。
+\end{proof}
+
+这个结论是对固定向量的范数收敛。
+即使所有函数都一致有界，也不能据此推出算子范数收敛。
+例如，对上面的 \(M\) 取 \(f_n=\mathbf1_{(n,\infty)}\)，有 \(f_n(M)x\to0\) 对每个 \(x\in\ell^2\) 成立，
+但 \(f_n(M)e_{n+1}=e_{n+1}\)，所以 \(\|f_n(M)\|=1\) 对所有 \(n\) 成立。
+
+最后把谱截断表述为定义域中的逼近。
+这里使用图像范数下稠密的定义子空间（英文称 core）：对闭算子 \(T\)，
+它指在 \(D(T)\) 中关于图像范数 \(\|x\|_T=\|x\|+\|Tx\|\) 稠密的线性子空间
+\(\mathcal C\subseteq D(T)\)。
+这等价于 \(T|_{\mathcal C}\) 的图像闭包等于 \(T\) 的图像。
+
+\begin{proposition}[谱截断的图像范数逼近]
+\label{b1:prop:29-spectral-graph-core}
+设 \(H\) 为复 Hilbert 空间，\(A:D(A)\subseteq H\to H\) 为稠密定义的自伴算子，
+\(E\) 为其谱测度，\(f\) 为有限值 Borel 函数，令 \(P_n=E(\{|f|\le n\})\)。
+则 \(\mathcal C_f=\bigcup_{n\ge1}P_nH\) 在 \(D(f(A))\) 中关于图像范数稠密。
+更具体地，对每个 \(x\in D(f(A))\)，有
+\begin{equation}\label{b1:eq:29-spectral-graph-approximation}
+ \|x-P_nx\|^2+
+ \|f(A)x-f(A)P_nx\|^2
+ =\int_{\{|f|>n\}}(1+|f|^2)\,\mathrm d\mu_x\longrightarrow0.
+\end{equation}
+特别地，\(\bigcup_{n\ge1}E([-n,n])H\) 在 \(D(A)\) 中关于图像范数稠密，且
+\[
+ \|x-E([-n,n])x\|^2+
+ \|Ax-AE([-n,n])x\|^2
+ =\int_{\{|t|>n\}}(1+t^2)\,\mathrm d\mu_x(t)\longrightarrow0
+ \quad(x\in D(A)).
+\]
+\end{proposition}
+\begin{proof}
+上一小节已经证明 \(P_nH\subseteq D(f(A))\)。这些子空间递增，故其并为线性子空间。
+由谱投影交换关系，
+\(f(A)x-f(A)P_nx=f(A)(I-P_n)x\)。
+\(I-P_n=E(\{|f|>n\})\)，所以分别对恒等乘数和 \(f\) 使用范数公式，
+得到\eqref{b1:eq:29-spectral-graph-approximation}中的等式。
+因为 \(1+|f|^2\) 对 \(\mu_x\) 可积，尾部积分趋于零。
+平方和收敛等价于图像范数收敛，因而 \(\mathcal C_f\) 在定义域中关于图像范数稠密。
+最后取 \(f(t)=t\)，得到关于 \(A\) 的结论。
+\end{proof}
+
+对一般 Borel 函数，采用 \(\{|f|\le n\}\) 作为截断集，保证每个投影的整个值域都在定义域中。
+函数未必在实轴的有界区间上有界，所以不能无条件把它改为 \([-n,n]\)。
+对于坐标函数，这两种截断恰好一致；所得谱子空间上的算子有界，
+而图像范数逼近保证这些有界部分足以恢复原来的无界自伴算子。

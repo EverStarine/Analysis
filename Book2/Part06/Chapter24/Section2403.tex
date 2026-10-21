@@ -1,0 +1,750 @@
+% !TeX root = ../../Book2.tex
+\section{应用}
+\label{b2:sec:2203}
+
+应用乘子定理时，先判断符号阶数，再选取匹配的函数空间。零阶符号可保持 \(L^p\)，负阶符号在不同频率区间可能改善正则性或改变可积指数，正阶符号则需输入具有相应导数。
+
+\subsection{Riesz 变换}
+\label{b2:subsec:220301}
+
+Riesz 变换把一个方向上的微分除以总微分尺度。沿用\chapref{b2:ch:18}的归一化，令
+\[
+ r_j(\xi)\coloneqq-\mathrm i\frac{\xi_j}{|\xi|},
+ \quad R_j\coloneqq T_{r_j},
+ \quad 1\leq j\leq d,\quad \xi\ne0.
+\]
+先在 \(L^2(\mathbb R^d;\mathbb C)\) 中定义这个算子，零频处的取值不影响它。符号 \(r_j\) 为零次齐次函数，每次微分使齐次次数降低一。因此
+\[
+ (\partial^\alpha r_j)(t\omega)
+ =t^{-|\alpha|}(\partial^\alpha r_j)(\omega),
+ \quad t>0,\quad |\omega|=1.
+\]
+单位球面紧，右侧的角向因子有界，故满足\cref{b2:thm:22-mihlin}要求的 \(d+2\) 阶条件。这给出全部 \(1<p<\infty\) 上的有界延拓，并与\chapref{b2:ch:18}由奇异核得到的算子一致：两者在共同的 \(L^2\cap L^p\) 输入上相同，再由稠密性得到一致性。奇异积分证明直接显示核的零平均与尾部，乘子证明则便于把 Riesz 变换同微分算子组合。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[Riesz 变换与导数]\label{b2:prop:22-riesz-gradient}
+设整数 \(d\geq1\)、\(1<p<\infty\)，\(R_j\) 是符号 \(-\mathrm i\xi_j/|\xi|\) 的 \(L^p(\mathbb R^d;\mathbb C)\) 乘子。则
+\[
+ -\sum_{j=1}^dR_j^2f=f\quad(f\in L^p).
+\]
+对 \(f\in\mathcal S(\mathbb R^d)\)，令 \((-\Delta)^{1/2}f\) 为符号 \(2\pi|\xi|\) 的 Fourier 乘子，并把 \(\|\nabla f\|_p\) 理解为欧氏向量长度的 \(L^p\) 范数。有
+\[
+ \partial_jf=-R_j(-\Delta)^{1/2}f,\quad
+ (-\Delta)^{1/2}f=\sum_{j=1}^dR_j\partial_jf,\quad
+ \|(-\Delta)^{1/2}f\|_p\asymp\|\nabla f\|_p.
+\]
+此外，对每个 \(1\leq j,k\leq d\)，
+\[
+ \partial_j\partial_k f=R_jR_k(-\Delta f),
+ \quad
+ \sum_{j,k=1}^d\|\partial_j\partial_k f\|_p
+ \leq C_{d,p}\|\Delta f\|_p.
+\]
+\end{proposition}
+\begin{proof}
+符号恒等式
+\[
+ -\sum_j\left(-\mathrm i\frac{\xi_j}{|\xi|}\right)^2=1
+ \quad(\xi\ne0)
+\]
+先由 Plancherel 给出 \(L^2\) 上的算子恒等式。有限次复合在 \(L^p\) 有界，因此先限制到 \(L^2\cap L^p\)，再逼近一般 \(L^p\) 输入，得到第一式。
+
+对 Schwartz 输入，\(\sum_jR_j\partial_jf\) 属于 \(L^p\cap L^2\)，其 Fourier 符号为
+\[
+ \sum_j\left(-\mathrm i\frac{\xi_j}{|\xi|}\right)
+                (2\pi\mathrm i\xi_j)=2\pi|\xi|.
+\]
+这同时证明 \((-\Delta)^{1/2}f\in L^p\)，并给出
+\(\|(-\Delta)^{1/2}f\|_p\leq C\sum_j\|\partial_jf\|_p\leq C'\|\nabla f\|_p\)。
+再将 \(r_j\) 与 \(2\pi|\xi|\) 相乘，得到
+\(R_j(-\Delta)^{1/2}f=-\partial_jf\)，所以反向估计也由 Riesz 有界性得到。这里两处负号由本书的负号 Fourier 变换约定决定。
+
+最后，
+\[
+ \left(-\mathrm i\frac{\xi_j}{|\xi|}\right)
+ \left(-\mathrm i\frac{\xi_k}{|\xi|}\right)
+       4\pi^2|\xi|^2=-4\pi^2\xi_j\xi_k.
+\]
+因此二阶导数恒等式成立，对有限个复合算子应用 \(L^p\) 界即可。
+\end{proof}
+在 \(p=2\) 时，Plancherel 进一步给出准确等式
+\(\|(-\Delta)^{1/2}f\|_2^2=\sum_j\|\partial_jf\|_2^2\)；一般 \(p\) 上则是范数可比。这个结果允许从 \(\Delta f\) 恢复每个二阶导数，而不仅是它们的和。对于 \(d=1\)，\(R_1\) 就是 Hilbert 变换，恒等式成为 \(H^2=-I\) 与 \((-\Delta)^{1/2}f=Hf'\)。区间示性函数的 Hilbert 变换有边界对数奇性及不可积的远场尾部，故这里的强型范围不能顺手补上 \(p=1,\infty\)。
+
+\ProseParagraphBreak
+还可处理任意光滑零次齐次符号 \(m\)，因为单位球面上的有限阶导数有界。零次齐次性并不要求球面平均为零；常数符号的核有一个原点质量。只有在提取原点外的奇异核时，才需要辨认其球面抵消，不能把抵消条件错误地加到所有零阶符号上。
+
+\subsection{分数幂}
+\label{b2:subsec:220302}
+
+分数阶导数要同时指定高频的阶数与零频的处理。先对 Schwartz 函数记
+\[
+ J^sf\coloneqq\mathcal F^{-1}
+       \bigl[(1+4\pi^2|\xi|^2)^{s/2}\cdot\widehat f\bigr]
+ \quad(s\in\mathbb R),
+\]
+\[
+ (-\Delta)^{s/2}f\coloneqq
+ \mathcal F^{-1}\bigl[(2\pi|\xi|)^s\cdot\widehat f\bigr]
+ \quad(s>0).
+\]
+前者是不齐次分数阶算子，后者是齐次分数阶算子。前者的符号在全空间光滑，各阶导数至多多项式增长，因而乘法保持 \(\mathcal S\)，并由对偶作用定义在全部 \(\mathcal S'\) 上；\(J^sJ^t=J^{s+t}\)。后者在零频不一定光滑，不能未经说明就与任意温和分布相乘。当前定义的 Schwartz 输入使频率乘积局部可积，已经足以进行下面的计算。
+
+\ProseParagraphBreak
+
+当 \(s>0\)，\(J^{-s}\) 的符号满足 Mihlin 条件，故在 \(1<p<\infty\) 上保持 \(L^p\)。齐次逆 \((-\Delta)^{-s/2}\) 在零频发散，应在适当齐次空间中定义，或在 \(0<s<d\) 时以\chapref{b2:ch:19}的 Riesz 势解释。后者在 \(1<p<d/s\) 时把 \(L^p\) 送入 \(L^q\)、\(1/q=1/p-s/d\)，改变了指数；不能据此声称它在同一个 \(L^p\) 上有界。
+
+\Needspace{6\baselineskip}
+\begin{definition}[Bessel 位势空间]\label{b2:def:22-bessel-space}
+设整数 \(d\geq1\)、\(s\in\mathbb R\)、\(1<p<\infty\)。令 \(J^s\) 为符号
+\((1+4\pi^2|\xi|^2)^{s/2}\) 的温和分布乘子。满足 \(J^sf\) 可由一个 \(L^p(\mathbb R^d;\mathbb C)\) 函数表示的温和分布组成\term[bessel-weishi-kongjian]{Bessel 位势空间}[Bessel potential space]，记作
+\[
+ H^{s,p}(\mathbb R^d)\coloneqq
+ \{\,f\in\mathcal S'(\mathbb R^d):J^sf\in L^p(\mathbb R^d)\,\},
+ \quad
+ \|f\|_{H^{s,p}}\coloneqq\|J^sf\|_p.
+\]
+\end{definition}
+这里把函数与它所定义的温和分布视为同一对象。这个空间完备，而且 \(J^s:H^{s,p}\to L^p\) 是等距双射，逆为 \(J^{-s}\)。事实上，若 \(g_n\to g\) 于 \(L^p\)，则对任意测试函数 \(\psi\in\mathcal S\)，
+\[
+ |\langle J^{-s}(g_n-g),\psi\rangle|
+ \leq\|g_n-g\|_p\cdot\|J^{-s}\psi\|_{p'}
+ \longrightarrow0.
+\]
+测试函数右侧仍为 Schwartz 函数。于是 \(J^{-s}g_n\) 在 \(\mathcal S'\) 中趋于 \(J^{-s}g\)，同时在所定义范数中收敛。取 \(g_n\in\mathcal S\) 逼近 \(g\)，还说明 Schwartz 类在 \(H^{s,p}\) 中稠密。相同的符号恒等式给出
+\[
+ J^t:H^{s,p}\longrightarrow H^{s-t,p},
+ \quad \|J^tf\|_{H^{s-t,p}}=\|f\|_{H^{s,p}}.
+\]
+负阶空间允许分布输入；并不是每个元素都预先具有普通函数的代表。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[Bessel 范数的平方函数描述]\label{b2:prop:22-bessel-square}
+设整数 \(d\geq1\)、\(s\in\mathbb R\)、\(1<p<\infty\)。取实径向
+\(\chi\in C_c^\infty(\mathbb R^d)\)，满足 \(0\leq\chi\leq1\)，在
+\(|\xi|\leq1\) 为一、\(|\xi|\geq2\) 为零，并沿半径单调不增。令
+\[
+ \varphi=\chi-\chi(2\cdot),\quad
+ P_0=\chi(D),\quad P_j=\varphi(2^{-j}D)\quad(j\geq1).
+\]
+这里 \(m(D)f=\mathcal F^{-1}(m\cdot\widehat f)\)，高频块 \(P_j\) 就是齐次块 \(\Delta_j\)，但 \(P_0\neq\Delta_0\)。对每个 \(f\in\mathcal S(\mathbb R^d)\)，有
+\[
+ \|J^sf\|_p\asymp
+ \left\|\left(|P_0f|^2+
+              \sum_{j\geq1}2^{2js}|P_jf|^2\right)^{1/2}\right\|_p.
+\]
+常数只依赖 \(d,p,s,\chi\)。更一般地，温和分布 \(f\) 的右侧有限当且仅当 \(f\in H^{s,p}(\mathbb R^d)\)。因此与\cref{b2:def:19-inhomogeneous-square}采用同一分割时，
+\(F^s_{p,2}(\mathbb R^d)=H^{s,p}(\mathbb R^d)\)，且范数等价。
+\end{proposition}
+\begin{proof}
+记 \(w_s(\xi)=(1+4\pi^2|\xi|^2)^{s/2}\)。先证明分析方向。令 \(g=J^sf\)，则
+\(2^{js}P_jf=U_jg\)，其中
+\[
+ u_j(\xi)=2^{js}\varphi(2^{-j}\xi)w_{-s}(\xi).
+\]
+缩放到固定环带，得到
+\[
+ u_j(2^j\eta)=
+ \varphi(\eta)(2^{-2j}+4\pi^2|\eta|^2)^{-s/2}.
+\]
+在 \(1/2\leq|\eta|\leq2\) 上，括号的值有与 \(j\geq1\) 无关的正下界和有限上界。反复求导只产生括号的实数幂与 \(\eta\) 的多项式，所以所有预先指定阶数的导数一致有界。
+
+令 \(k_j=\check u_j\)。固定环带上的积分分部使归一化逆变换及其一阶导数具有任意阶一致衰减。因此对任意整数 \(M>d+1\)，
+\[
+ |k_j(x)|\leq C_M2^{jd}(1+2^j|x|)^{-M},\quad
+ |\nabla k_j(x)|\leq C_M2^{j(d+1)}(1+2^j|x|)^{-M}.
+\]
+这正是\cref{b2:lem:19-uniform-dyadic-kernels}求和时使用的两种界；该求和只用一致常数，不要求归一化核逐个完全相同。将 \(2^j|x|\leq1\) 与 \(>1\) 分开求几何级数，得到
+\[
+ \sum_{j\geq1}|k_j(x)|\leq C|x|^{-d},\quad
+ \sum_{j\geq1}|\nabla k_j(x)|\leq C|x|^{-d-1}.
+\]
+
+对有限指标集 \(E\subset\{1,2,\ldots\}\)，把 \(U_Eg=(U_jg)_{j\in E}\) 看作从标量到 \(\mathbb C^E\) 的算子。每个频率只落入固定数目的环带，故
+\[
+ \|U_Eg\|_{L^2(\ell^2)}^2
+ =\int\sum_{j\in E}|u_j(\xi)|^2\cdot|\widehat g(\xi)|^2\,\mathrm d\xi
+ \leq C\|g\|_2^2.
+\]
+列向量核的算子范数为 \((\sum_{j\in E}|k_j|^2)^{1/2}\)，不超过上面的绝对和；梯度同理。沿线段积分梯度给出两个变量的标准核差分界。有限个 Schwartz 核又保证支集外的普通卷积表示。因此\cref{b2:prop:18-hilbert-valued-cz}给出与 \(|E|\) 无关的 \(L^p\to L^p(\ell^2)\) 界。让 \(E\) 增加并用单调收敛，得到全部高频分析界。低频 \(P_0J^{-s}\) 的符号光滑紧支撑，单独由 Young 不等式控制；两者合起来给出平方范数不超过 \(C\|J^sf\|_p\)。
+
+反向需要合成，而不能把各块的标量估计相加。取实偶的
+\(\widetilde\varphi\in C_c^\infty(\{\,1/4<|\xi|<4\,\})\)，在
+\(\operatorname{supp}\varphi\) 的邻域等于一；另取实偶
+\(\widetilde\chi\in C_c^\infty\)，在 \(\operatorname{supp}\chi\) 的邻域等于一。令 \(V_0,V_j\) 的符号分别为
+\[
+ v_0=w_s\widetilde\chi,\quad
+ v_j(\xi)=2^{-js}w_s(\xi)\widetilde\varphi(2^{-j}\xi).
+\]
+对高频族，归一化符号为
+\[
+ v_j(2^j\eta)=
+ (2^{-2j}+4\pi^2|\eta|^2)^{s/2}\widetilde\varphi(\eta).
+\]
+与前面完全相同的固定环带导数界、有限重叠与列向量核证明给出
+\[
+ \left\|\left(\sum_{j\in E}|V_jh|^2\right)^{1/2}\right\|_{p'}
+ \leq C\|h\|_{p'}.
+\]
+所有 \(v_j\) 均为实值，故 \(V_j\) 在积分配对下自伴随。对任意有限族 \(b_j\in L^p\)，逐点 Cauchy--Schwarz 与 Hölder 因而给出
+\[
+ \begin{aligned}
+ \left|\int\left(\sum_{j\in E}V_jb_j\right)\cdot\overline h\right|
+ &\leq\int
+       \left(\sum_{j\in E}|b_j|^2\right)^{1/2}
+       \cdot\left(\sum_{j\in E}|V_jh|^2\right)^{1/2}\\
+ &\leq C\left\|\left(\sum_{j\in E}|b_j|^2\right)^{1/2}\right\|_p
+          \cdot\|h\|_{p'}.
+ \end{aligned}
+\]
+先在 Schwartz 输入上核对配对，固定有限族的 \(L^p\) 连续性再推广到一般 \(b_j\)。对偶性得合成界；低频项 \(V_0b_0\) 再用其 Schwartz 核单独估计。于是
+\[
+ \left\|V_0b_0+\sum_{j\in E}V_jb_j\right\|_p
+ \leq C\left\|\left(|b_0|^2+\sum_{j\in E}|b_j|^2\right)^{1/2}\right\|_p.
+\]
+常数仍独立于有限指标集。
+
+由于辅助截断在相应频率支撑上等于一，有限重构 \(f_N=P_0f+\sum_{j=1}^NP_jf\) 满足
+\[
+ J^sf_N=V_0P_0f+\sum_{j=1}^NV_j(2^{js}P_jf).
+\]
+对 Schwartz \(f\)，非齐次重构在 Schwartz 拓扑收敛。用刚才的合成界并取极限，得到所求反向不等式。
+
+最后处理任意温和分布。若 \(g=J^sf\in L^p\)，取 \(g_n\in\mathcal S\) 在 \(L^p\) 中逼近它，令 \(f_n=J^{-s}g_n\)。分析界说明加权块序列在 \(L^p(\ell^2)\) 中收敛；逐个块在 \(\mathcal S'\) 中的极限又是 \(P_0f,2^{js}P_jf\)，故这个向量极限就是所需的频率块，得到右侧有限及上界。
+
+反之，若右侧有限，每个块都是 \(L^p\) 函数。合成界可用于这些块，且对 \(N>M\geq0\)，
+\[
+ \|J^s(f_N-f_M)\|_p
+ \leq C\left\|\left(
+       \sum_{j=M+1}^N2^{2js}|P_jf|^2\right)^{1/2}\right\|_p
+ \longrightarrow0.
+\]
+平方尾逐点趋零，并由题设的 \(L^p\) 平方函数控制。支配收敛说明 \(J^sf_N\) 在 \(L^p\) 中有极限。另一方面，\cref{b2:eq:19-inhomogeneous-reconstruction}给出 \(f_N\to f\) 于 \(\mathcal S'\)，而 \(J^s\) 在该空间连续，所以同一序列的分布极限是 \(J^sf\)。两个极限一致，证明 \(J^sf\in L^p\) 及反向界。
+\end{proof}
+本证明使用的是\chapref{b2:ch:19}主线中的固定环带核估计与非齐次重构，以及\chapref{b2:ch:18}的有限维 Hilbert 值定理；常数独立于维数后才让频带数趋于无穷。没有用尚待识别的一般 Bessel 范数，也不依赖\secref{b2:sec:1905}的选读理论。平方和必须位于空间 \(L^p\) 范数内部；\(\sum_j2^{2js}\|P_jf\|_p^2\) 一般是另一种量。
+
+\ProseParagraphBreak
+
+整数阶时，频率权重应当恢复通常的弱导数。下面给出一个明确的符号恒等式，既处理混合导数，也避免把“椭圆性”留作没有写出的分解。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[整数阶 Bessel 空间与 Sobolev 空间]\label{b2:prop:22-integer-sobolev}
+设整数 \(d,k\geq1\)、\(1<p<\infty\)。令 \(W^{k,p}(\mathbb R^d;\mathbb C)\) 为所有弱导数 \(\partial^\alpha f\)、\(|\alpha|\leq k\)，均属于 \(L^p(\mathbb R^d)\) 的函数空间。则
+\[
+ H^{k,p}(\mathbb R^d)=W^{k,p}(\mathbb R^d),
+\]
+并且
+\[
+ \|J^kf\|_p
+ \asymp\sum_{|\alpha|\leq k}\|\partial^\alpha f\|_p
+ \asymp\|f\|_p+\sum_{j=1}^d\|\partial_j^kf\|_p.
+\]
+最后一项有限的 \(L^p\) 函数，已经自动具有全部至多 \(k\) 阶的 \(L^p\) 弱导数。
+\end{proposition}
+\begin{proof}
+先从 \(H^{k,p}\) 出发。符号
+\[
+ \frac{(2\pi\mathrm i\xi)^\alpha}
+      {(1+4\pi^2|\xi|^2)^{k/2}},
+ \quad |\alpha|\leq k,
+\]
+在零点附近光滑有界；在高频处，\(\beta\) 阶导数为
+\(O(|\xi|^{|\alpha|-k-|\beta|})\)。因而它满足 Mihlin 条件。把它作用于 \(J^kf\) 就是分布导数 \(\partial^\alpha f\)，得到第一方向及所有弱导数的存在。
+
+反向只假定 \(f,\partial_1^kf,\ldots,\partial_d^kf\in L^p\)，其中导数按分布定义。令
+\[
+ q_j(\xi)=(2\pi\mathrm i\xi_j)^k,\quad
+ Q(\xi)=1+\sum_{j=1}^d|q_j(\xi)|^2,\quad
+ w_k(\xi)=(1+4\pi^2|\xi|^2)^{k/2}.
+\]
+有限维范数比较给出 \(Q(\xi)\asymp(1+|\xi|)^{2k}\)。多项式求导及恒等式 \(Q\cdot Q^{-1}=1\) 的反复微分说明
+\[
+ |\partial^\beta Q^{-1}(\xi)|
+ \leq C_\beta(1+|\xi|)^{-2k-|\beta|}.
+\]
+例如一次微分为 \(-Q^{-2}\partial_\ell Q\)；更高阶每项都是 \(Q^{-1}\) 的若干因子乘上若干个 \(Q\) 的导数，总导数阶数仍为 \(|\beta|\)，给出所列幂次。
+
+定义
+\[
+ a_0=\frac{w_k}{Q},\quad
+ a_j=\frac{\overline{q_j}\,w_k}{Q}\quad(1\leq j\leq d).
+\]
+由上述界和 Leibniz 法则，\(a_0\) 的 \(\beta\) 阶导数为
+\(O((1+|\xi|)^{-k-|\beta|})\)，\(a_j\) 的相应导数为
+\(O((1+|\xi|)^{-|\beta|})\)，故全是 Mihlin 符号。精确恒等式
+\[
+ w_k=a_0+\sum_{j=1}^d a_jq_j
+\]
+于是给出分布等式
+\[
+ J^kf=T_{a_0}f+\sum_{j=1}^dT_{a_j}\partial_j^kf.
+\]
+这些光滑符号及其各阶导数至多多项式增长，分布乘法合法；其 \(L^p\) 延拓与该分布作用一致，可对 Schwartz 逼近使用对偶配对验证。右侧属于 \(L^p\)，且范数至多为题中最后一项的常数倍。故 \(f\in H^{k,p}\)，前半段再恢复全部混合弱导数。
+\end{proof}
+例如 \(k=2\) 时，只知道 \(f,\partial_1^2f,\ldots,\partial_d^2f\in L^p\)，就能控制所有 \(\partial_j\partial_kf\)，也能控制一阶导数。低阶项 \(\|f\|_p\) 保留了零频信息。该结论在整个 \(\mathbb R^d\) 上利用 Fourier 乘子建立，不自动给出任意区域或任意边界条件下的同一结论。
+
+\ProseParagraphBreak
+
+分数阶算子还具有一个反映非局部性的实空间公式。对 \(0<s<2\)，设
+\[
+ A_{d,s}=\int_{\mathbb R^d}\frac{1-\cos(2\pi z_1)}{|z|^{d+s}}\,\mathrm dz,
+ \quad c_{d,s}=\frac{(2\pi)^s}{A_{d,s}}.
+\]
+原点处 \(1-\cos(2\pi z_1)\leq C|z|^2\)，无穷处它有界，故 \(0<A_{d,s}<\infty\)；这同时解释范围 \(0<s<2\)。
+\Needspace{6\baselineskip}
+\begin{proposition}[分数阶 Laplace 算子的二阶差公式]\label{b2:prop:22-fractional-kernel}
+设整数 \(d\geq1\)、\(0<s<2\)，
+\(c_{d,s}=(2\pi)^s/\int_{\mathbb R^d}(1-\cos(2\pi z_1))|z|^{-d-s}\,\mathrm dz\)，并以符号 \((2\pi|\xi|)^s\) 定义 \((-\Delta)^{s/2}\)。对复 Schwartz 函数 \(f\in\mathcal S(\mathbb R^d)\)，下面的第一式逐点绝对收敛，且
+\[
+ (-\Delta)^{s/2}f(x)=\frac{c_{d,s}}2
+ \int_{\mathbb R^d}\frac{2f(x)-f(x+y)-f(x-y)}{|y|^{d+s}}\,\mathrm dy.
+\]
+以 \(\langle g,f\rangle=\int g\cdot\overline f\) 记复积分配对，还有
+\[
+ \langle(-\Delta)^{s/2}f,f\rangle
+ =\frac{c_{d,s}}2
+ \iint\frac{|f(x)-f(y)|^2}{|x-y|^{d+s}}\,\mathrm dx\,\mathrm dy.
+\]
+\end{proposition}
+\begin{proof}
+Taylor 积分公式使对称二阶差在原点为 \(O(|y|^2)\)，远场则由 \(f\) 的有界性控制。因为 \(0<s<2\)，这两端都可积，先得到逐点绝对收敛。还需使 Fourier 变换中的换序合法。对二阶差在 \(x\) 上取 \(L^1\) 范数，平移不变性与同一 Taylor 公式给出
+\[
+ \|2f-f(\cdot+y)-f(\cdot-y)\|_1
+ \leq\min\left\{4\|f\|_1,\,
+             |y|^2\sum_{j,k}\|\partial_j\partial_k f\|_1\right\}.
+\]
+该上界乘以 \(|y|^{-d-s}\) 后可积，Fubini 因而允许在全积分中作 Fourier 变换。所得乘子为
+\[
+ c_{d,s}\int_{\mathbb R^d}
+       (1-\cos(2\pi y\cdot\xi))|y|^{-d-s}\,\mathrm dy.
+\]
+在 \(\xi\ne0\) 时先旋转，再作 \(z=|\xi|y\)，它等于
+\(c_{d,s}|\xi|^s A_{d,s}=(2\pi|\xi|)^s\)；在 \(\xi=0\) 两边均为零。这证明第一式与 Fourier 定义相同。
+两边都连续：Fourier 侧的符号乘 \(\widehat f\) 可积，实空间侧用有界二阶导数及有界函数值给出与 \(x\) 无关的可积控制。因此由 Fourier 变换得到的几乎处处等式实际逐点成立。
+
+能量公式可直接用非负积分计算。Plancherel 给出
+\[
+ \|f(\cdot+y)-f\|_2^2
+ =2\int_{\mathbb R^d}
+        (1-\cos(2\pi y\cdot\xi))\cdot|\widehat f(\xi)|^2\,\mathrm d\xi.
+\]
+两边乘以 \(c_{d,s}|y|^{-d-s}/2\) 再积分。Tonelli 和刚算出的乘子把右边变为
+\(\int(2\pi|\xi|)^s\cdot|\widehat f(\xi)|^2\,\mathrm d\xi\)；
+左边令第二个位置变量等于 \(x+y\)，便是题中的双重积分。积分有限性也由
+\(\|f(\cdot+y)-f\|_2^2\leq
+\min\{4\|f\|_2^2,|y|^2\cdot\|\nabla f\|_2^2\}\)
+直接保证。
+\end{proof}
+若 \(f\geq0\) 且紧支集，在支集外有
+\((-\Delta)^{s/2}f(x)=-c_{d,s}\int f(y)|x-y|^{-d-s}\,\mathrm dy<0\)，除非 \(f=0\)。
+因此这个导数一般不保持支集，也不保持非负性；它的二次型却非负。这三个性质并不矛盾：非负的是总能量，而不是每一点的算子输出。与整数 Laplace 算子的局部性相比，这个尾部正是分数阶模型的本质区别。
+
+频率定义中的 Bessel 势也有一个不振荡的实空间核。取整数 \(d\ge1\)、\(s>0\)、\(x\in\mathbb R^d\setminus\{0\}\)，定义（原点值按可积函数的等价类解释）
+\[
+ G_s(x)=\frac1{\Gamma(s/2)}
+ \int_0^\infty t^{s/2-1}e^{-t}
+ (4\pi t)^{-d/2}e^{-|x|^2/(4t)}\,\mathrm dt.
+\]
+这是把热核作正权平均，权的总质量为一。它与齐次 Riesz 势的区别恰在额外因子 \(e^{-t}\)：大时间被截去，因而不会保留齐次核的长距离幂尾。
+\Needspace{6\baselineskip}
+\begin{proposition}[Bessel 位势的正核]\label{b2:prop:22-bessel-kernel}
+设整数 \(d\geq1\)、\(s>0\)，定义
+\[
+ G_s(x)=\frac1{\Gamma(s/2)}
+ \int_0^\infty t^{s/2-1}e^{-t}
+ (4\pi t)^{-d/2}e^{-|x|^2/(4t)}\,\mathrm dt,
+ \quad x\ne0.
+\]
+原点值按可积函数的等价类解释。令 \(J^{-s}\) 为符号 \((1+4\pi^2|\xi|^2)^{-s/2}\) 的乘子。有 \(G_s\geq0\)、\(\int G_s=1\)、\(\widehat G_s(\xi)=(1+4\pi^2|\xi|^2)^{-s/2}\)。故 \(J^{-s}f=G_s*f\)，并对全部 \(1\leq p\leq\infty\)、\(f\in L^p(\mathbb R^d;\mathbb C)\) 满足 \(\|J^{-s}f\|_p\leq\|f\|_p\)。
+当 \(0<s<d\) 时，\(G_s(x)\asymp |x|^{s-d}\) 于 \(0<|x|\leq1\)；当 \(s=d\) 时量级为 \(1+\log(1/|x|)\)；当 \(s>d\) 时在原点附近有界。无穷远处三种情形均有指数衰减。
+\end{proposition}
+\begin{proof}
+非负性与 Tonelli 给出总质量一。热核 Fourier 变换为 \(e^{-4\pi^2t|\xi|^2}\)，对 \(t\) 的 gamma 积分得到所述符号，Young 即给出压缩界。卷积定义对包括 \(p=\infty\) 的所有输入都有意义；其分布 Fourier 变换也满足该乘子公式。若 \(x\) 限制在远离零点的紧集，热核积分在 \(t\to0\) 的指数衰减控制任意次 \(x\) 导数，\(t\to\infty\) 则由 \(e^{-t}\) 控制，所以 \(G_s\) 在原点之外光滑。
+
+记 \(r=|x|\)。在 \(0<r\leq1\) 时，积分的 \(t\geq1\) 部分有统一有限上界。对 \(0<t<1\)，用 \(e^{-1}\leq e^{-t}\leq1\)，再换元 \(u=r^2/(4t)\)，得到与
+\[
+ r^{s-d}\int_{r^2/4}^\infty
+ u^{(d-s)/2-1}e^{-u}\,\mathrm du
+\]
+可比的表达。若 \(s<d\)，积分趋于一个正的 gamma 常数；若 \(s=d\)，零点附近是 \(\int_{r^2/4}^1\mathrm du/u\)；若 \(s>d\)，它的下限奇性恰好抵消外面的 \(r^{s-d}\)，结果有界。下界可以分别在固定 \(u\) 区间或 \(r^2/4<u<1\) 中取出，故这些不仅是上界。
+
+当 \(r\geq1\)，使用 \(t+r^2/(4t)\geq r\)，有
+\[
+ e^{-t-r^2/(4t)}
+ \leq e^{-r/2}e^{-t/2-r^2/(8t)}
+ \leq e^{-r/2}e^{-t/2-1/(8t)}.
+\]
+最后一个因子乘上任意固定实数幂的 \(t\) 后，在零点及无穷远都可积。因此
+\(G_s(x)\leq C_{d,s}e^{-|x|/2}\) 于 \(|x|\geq1\)，给出明确的远场上界。
+\end{proof}
+例如在 \(d=1,s=2\) 时，
+\[
+ G_2(x)=\frac12e^{-|x|}.
+\]
+事实上，右侧的 Fourier 变换为
+\(\int_0^\infty e^{-x}\cos(2\pi x\xi)\,\mathrm dx
+=(1+4\pi^2\xi^2)^{-1}\)，所以由 \(L^1\) Fourier 变换的单射性得到公式。它在原点连续，但一阶导数的右极限减左极限等于 \(-1\)，因而分布恒等式
+\((1-\partial_x^2)G_2=\delta_0\) 成立。可积核与导数中的点质量同时出现，正好解释卷积解为什么满足二阶方程。
+
+\ProseParagraphBreak
+
+对任意 \(s,t>0\)，两个正核的卷积也属于 \(L^1\)，Fourier 变换相乘得到
+\[
+ G_s*G_t=G_{s+t}.
+\]
+因此连续施加两个 Bessel 位势把阶数相加。这与 \(J^{-s}J^{-t}=J^{-(s+t)}\) 一致，但这里还给出实空间的正卷积表示及端点压缩。
+
+\ProseParagraphBreak
+
+这个核解释了非齐次空间的低频项：常数频率附近的符号有界，所以 \(J^{-s}\) 保持同一 \(L^p\)；齐次符号 \(|\xi|^{-s}\) 在零频发散，改善可积性时必须改变目标指数或规定低频归一化。两者在高频上具有相同阶数，却不能在全空间上互相替代。
+
+\ProseParagraphBreak
+
+核估计还给出 Sobolev 嵌入的另一种表述。若 \(1<p<\infty\)、\(0<s<d/p\)，置 \(1/q=1/p-s/d\)。由 \(G_s(x)\leq C|x|^{s-d}\) 和 HLS，
+\[
+ \|f\|_q=\|G_s*(J^sf)\|_q\leq C\|J^sf\|_p.
+\]
+若 \(s>d/p\)，则 \(G_s\in L^{p'}\)：在 \(s<d\) 时，原点幂次条件正是
+\((d-s)p'<d\)；\(s=d\) 时的对数在有限指数下可积，\(s>d\) 时局部有界，远场均由指数衰减处理。因此
+\(\|f\|_\infty\leq\|G_s\|_{p'}\cdot\|J^sf\|_p\)，并得到连续代表。具体地，写 \(g=J^sf\)，则
+\[
+ |f(x+h)-f(x)|
+ \leq\|G_s(\cdot+h)-G_s\|_{p'}\cdot\|g\|_p.
+\]
+有限指数下的核平移连续性使右端趋零，且与 \(x\) 无关。把 \(g\) 用有界紧支撑函数在 \(L^p\) 中逼近，卷积误差就在一致范数中趋零；每个近似卷积由核的远场指数界在无穷远趋零。因此该代表属于 \(C_0(\mathbb R^d)\)。
+
+\ProseParagraphBreak
+
+在临界 \(s=d/p\) 时，核不属于 \(L^{p'}\)，不能原样保留无穷端点。取
+\[
+ h(x)=|x|^{-s}\bigl(\log(e/|x|)\bigr)^{-\beta}
+          \cdot\mathbf1_{\{\,0<|x|<1/2\,\}},
+ \quad \frac1p<\beta\leq1.
+\]
+径向积分给出
+\(\int|h|^p=C_d\int_0^{1/2}r^{-1}(\log(e/r))^{-\beta p}\,\mathrm dr<\infty\)。
+于是 \(f=G_s*h\in H^{s,p}\)，并且 \(f\) 几乎处处有限。另一方面，正核的近原点下界给出
+\[
+ f(0)\geq c\int_0^{1/2}
+         r^{-1}\bigl(\log(e/r)\bigr)^{-\beta}\,\mathrm dr=\infty.
+\]
+核在原点之外连续，所以对任意 \(x_n\to0\)，被积函数
+\(G_s(x_n-y)\cdot h(y)\) 在几乎每个 \(y\) 趋于 \(G_s(-y)\cdot h(y)\)。
+Fatou 因而给出 \(\liminf_n f(x_n)=\infty\)。这说明输出在原点的整个小邻域内可任意大，排除了通过修改一个零测集恢复本性有界性的可能。故临界 \(H^{d/p,p}\) 一般不嵌入 \(L^\infty\)。
+
+\ProseParagraphBreak
+
+最后，椭圆导数估计与这些嵌入处理不同问题。前者从方程右端恢复同指数的最高阶导数，后者把已经拥有的导数换成更高的可积指数或连续性。应用偏微分方程时，常见路线是先证明解处于 \(H^{s,p}\)，再按 \(s\) 与 \(d/p\) 的相对位置使用嵌入。若只看方程的阶数就声称解连续，会遗漏右端的可积指数及维数这两个决定性参数。
+
+\ProseParagraphBreak
+
+齐次导数与非齐次范数之间还有一个常用的精确比较。对 \(s>0\)、\(1<p<\infty\)，在 Schwartz 类上有
+\[
+ \|J^sf\|_p\asymp\|f\|_p+\|(-\Delta)^{s/2}f\|_p.
+\]
+正向用两个乘子：\(J^{-s}\) 以及
+\((2\pi|\xi|)^s(1+4\pi^2|\xi|^2)^{-s/2}\)。
+后者在原点不一定普通光滑，但定义域只要求 \(\xi\ne0\)，其尺度导数依然受控，故满足 Mihlin 条件。反向取低频截断 \(\chi\)，低频 \(J^s\chi\) 的核可积；高频符号
+\[
+ (1-\chi(\xi))\frac{(1+4\pi^2|\xi|^2)^{s/2}}{(2\pi|\xi|)^s}
+\]
+是零阶 Mihlin 符号，把它作用于齐次导数即可恢复高频 \(J^sf\)。两部分合并证明比较；Schwartz 类在 \(H^{s,p}\) 中稠密，因此按
+\(\|f\|_p+\|(-\Delta)^{s/2}f\|_p\) 完备化得到同一个空间。这里的齐次导数是由这个图范数闭包定义的闭算子：若 \(f_n\to0\) 于 \(L^p\) 且齐次导数在 \(L^p\) 中收敛，范数比较使 \(J^sf_n\) 收敛；分布连续性迫使其极限为零，进而齐次导数极限也为零。它没有借此被定义到任意 \(\mathcal S'\) 上。
+
+\ProseParagraphBreak
+
+因此非齐次空间不是拒绝齐次导数，而是在其之外补上低阶 \(L^p\) 大小。高频上的两个定义等价，真正差别留在零频附近。使用能量方法时，可以在已说明的空间范围内自由改写这个图范数；使用全空间齐次逆、缩放不变估计或商掉多项式时，却必须保留齐次定义自己的归一化。一个范数比较不能自动解除所有齐次分布的低频歧义。
+
+\subsection{椭圆型估计}
+\label{b2:subsec:220303}
+
+从方程右端恢复二阶导数时，要除以二阶主符号。若它沿某个方向为零，除法可能失去控制；正定性则给出与方向无关的分母下界。先处理常系数全空间问题，随后说明低频项、边界和系数变化分别增加什么困难。本小节记
+\[
+ \|D^2u\|_p\coloneqq\sum_{j,k=1}^d\|\partial_j\partial_ku\|_p.
+\]
+
+\Needspace{6\baselineskip}
+\begin{proposition}[常系数椭圆导数估计]\label{b2:prop:22-elliptic-estimate}
+设整数 \(d\geq1\)、\(1<p<\infty\)，\(A=(a_{jk})\) 是实对称常矩阵，并且存在 \(0<\nu\leq\Lambda<\infty\)，使
+\[
+ \nu|\xi|^2\leq\xi^{\mathsf T}A\xi\leq\Lambda|\xi|^2
+ \quad(\xi\in\mathbb R^d).
+\]
+令 \(Lu\coloneqq-\sum_{j,k}a_{jk}\partial_j\partial_ku\)。则每个
+\(u\in W^{2,p}(\mathbb R^d;\mathbb C)\) 满足
+\[
+ \|D^2u\|_p\leq C_{d,p,\nu,\Lambda}\|Lu\|_p.
+\]
+所有导数及方程均按分布理解；对光滑函数，它们与通常导数相同。
+\end{proposition}
+\begin{proof}
+先设 \(u\in C_c^\infty\)。记 \(q(\xi)=\xi^{\mathsf T}A\xi\)，则
+\[
+ \widehat{Lu}(\xi)=4\pi^2q(\xi)\cdot\widehat u(\xi),\quad
+ \widehat{\partial_j\partial_ku}(\xi)
+ =-\frac{\xi_j\xi_k}{q(\xi)}\widehat{Lu}(\xi)
+ \quad(\xi\ne0).
+\]
+商 \(m_{jk}=-\xi_j\xi_k/q\) 零次齐次。在单位球面上，\(q\geq\nu\)，而 \(q\) 的至多二阶导数由 \(\Lambda\) 控制，更高阶导数为零。商的反复求导只产生这些导数的有限乘积及 \(q\) 的负幂，故单位球面上的至多 \(d+2\) 阶导数由 \(d,\nu,\Lambda\) 一致控制。齐次性再给出
+\[
+ |\partial^\alpha m_{jk}(\xi)|
+ \leq C_{d,\alpha,\nu,\Lambda}|\xi|^{-|\alpha|}.
+\]
+由\cref{b2:thm:22-mihlin}得到每个二阶导数的界，有限相加即可。
+
+对一般 \(W^{2,p}\) 函数，先以光滑单位积分核磨光，其至多二阶弱导数均在 \(L^p\) 中收敛。再乘以在 \(B_R\) 为一、在 \(B_{2R}\) 外为零的缩放截断。乘积求导产生的附加项由
+\(CR^{-1}\|\nabla u\|_p\)、\(CR^{-2}\|u\|_p\) 控制，原有函数及导数在 \(|x|>R\) 上的尾范数趋零。因此可以取得 \(u_n\in C_c^\infty\)，使 \(u_n\to u\) 于 \(W^{2,p}\)。常系数保证 \(Lu_n\to Lu\) 于 \(L^p\)，将已证估计传给极限即得结论。
+\end{proof}
+这个命题是先验估计：它从已经存在的 \(u\) 及 \(Lu\) 比较范数，没有构造对每个右端 \(f\) 的逆解。即使 \(A=I\)，低频仍阻止同指数的无质量逆。取非零 \(\psi\in C_c^\infty\)、\(u_R(x)=\psi(x/R)\)，则
+\[
+ \|u_R\|_p=R^{d/p}\|\psi\|_p,\quad
+ \|Lu_R\|_p=R^{d/p-2}\|L\psi\|_p.
+\]
+让 \(R\to\infty\)，便排除独立于 \(u\) 的估计 \(\|u\|_p\leq C\|Lu\|_p\)。二阶导数在相同缩放下也带有 \(R^{-2}\)，所以刚证明的最高阶估计没有矛盾。
+
+\ProseParagraphBreak
+
+添加正的零阶项以后，频率原点的除法也成为合法操作。这个变化既给出解的存在唯一性，也产生一个尺度一致的参数族。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[带正参数的椭圆预解算子]\label{b2:prop:22-elliptic-resolvent}
+设整数 \(d\geq1\)、\(1<p<\infty\)，实对称常矩阵 \(A\) 满足
+\(\nu|\xi|^2\leq\xi^{\mathsf T}A\xi\leq\Lambda|\xi|^2\)，其中
+\(0<\nu\leq\Lambda<\infty\)。令
+\(L=-\sum_{j,k}a_{jk}\partial_j\partial_k\)。对每个 \(\lambda>0\) 和
+\(f\in L^p(\mathbb R^d;\mathbb C)\)，分布方程
+\[
+ (\lambda+L)u=f
+\]
+有唯一的温和分布解。该解属于 \(W^{2,p}(\mathbb R^d)\)，记为
+\(u=(\lambda+L)^{-1}f\)，并满足
+\[
+ \lambda\|u\|_p+\sqrt\lambda\|\nabla u\|_p+\|D^2u\|_p
+ \leq C_{d,p,\nu,\Lambda}\|f\|_p.
+\]
+常数与 \(\lambda,f\) 无关。特别地，\((1+L)^{-1}:L^p\to W^{2,p}\) 是有界解算子。
+\end{proposition}
+\begin{proof}
+函数 \(b_\lambda(\xi)=(\lambda+4\pi^2\xi^{\mathsf T}A\xi)^{-1}\) 在全空间光滑，且对固定 \(\lambda>0\)，它及其各阶导数至多多项式增长。因此可在 \(\mathcal S'\) 中定义
+\(\widehat u=b_\lambda\cdot\widehat f\)，并立即得到分布方程。若齐次方程的温和分布解为 \(v\)，把
+\((\lambda+4\pi^2\xi^{\mathsf T}A\xi)\widehat v=0\)
+乘以同一个光滑逆，即得 \(\widehat v=0\)。这证明的是整个温和分布类中的唯一性。
+
+为证明正则性与统一界，考察三个加权符号
+\[
+ \frac{\lambda}{\lambda+4\pi^2\xi^{\mathsf T}A\xi},\quad
+ \frac{\sqrt\lambda\,2\pi\mathrm i\xi_j}
+      {\lambda+4\pi^2\xi^{\mathsf T}A\xi},\quad
+ \frac{-4\pi^2\xi_j\xi_k}
+      {\lambda+4\pi^2\xi^{\mathsf T}A\xi}.
+\]
+令 \(\xi=\sqrt\lambda\,\zeta\)，它们分别变为
+\[
+ \frac1{1+4\pi^2\zeta^{\mathsf T}A\zeta},\quad
+ \frac{2\pi\mathrm i\zeta_j}{1+4\pi^2\zeta^{\mathsf T}A\zeta},\quad
+ \frac{-4\pi^2\zeta_j\zeta_k}{1+4\pi^2\zeta^{\mathsf T}A\zeta}.
+\]
+在 \(|\zeta|\leq1\) 时，分母至少为一，有限阶导数有界。在
+\(|\zeta|\geq1\) 时，分母至少为 \(4\pi^2\nu|\zeta|^2\)；反复求导分别给出阶数 \(-2,-1,0\) 的符号界。因此三者都有只依赖
+\(d,\nu,\Lambda\) 的 Mihlin 常数。尺度导数中的
+\(|\xi|^{|\alpha|}\) 正好抵消缩放微分产生的
+\(\lambda^{-|\alpha|/2}\)，所以原来的参数族有相同常数。
+
+对 Schwartz 右端应用 Mihlin 定理，就得到题中估计。对一般
+\(f\in L^p\)，取 Schwartz 逼近。该估计使对应 \(u_n\) 及一、二阶导数分别在 \(L^p\) 中收敛；分布求导与极限相容，所以极限属于 \(W^{2,p}\) 并满足方程。前面已证的分布唯一性将它与 Fourier 定义的 \(u\) 识别，统一界也传给极限。
+\end{proof}
+取 \(A=I,\lambda=1\)，解就是前面的 \(J^{-2}f=G_2*f\)。在一维还可直接写为
+\[
+ u(x)=\frac12\int_{\mathbb R}e^{-|x-y|}\cdot f(y)\,\mathrm dy.
+\]
+该公式把正核、分布中的导数跳跃与 \(W^{2,p}\) 解连接起来。对于一般对角矩阵
+\(A=\operatorname{diag}(a_1,\ldots,a_d)\)，换元
+\(x_j=\sqrt{a_j}\,y_j\) 将 \(L\) 化为 \(-\Delta_y\)，而
+\(\partial_{x_j}=a_j^{-1/2}\partial_{y_j}\)。在一维，
+\(\|u''\|_p=a_1^{-1}\|Lu\|_p\) 恰为等式，表明椭圆常数趋零时最高阶估计确会退化。一般正定矩阵先作固定正交对角化即可理解同一现象。
+
+\ProseParagraphBreak
+
+当 \(\lambda\downarrow0\)，最高阶导数界仍然统一，但零阶估计只给出
+\(\|u\|_p\leq C\lambda^{-1}\|f\|_p\)。这没有产生同指数的 \(L^{-1}\)。温和分布中的无质量齐次方程还允许满足 \(LP=0\) 的多项式；其中仿射函数的二阶导数为零，而在 \(d\geq2\) 时，更高次的这类多项式可以具有非零二阶导数。这些非零多项式不属于本节有限指数的 \(W^{2,p}(\mathbb R^d)\)，不能代入先验命题。自由度来自所选解空间及低频归一化，不能统称为二阶导数都看不见的项。
+
+\ProseParagraphBreak
+
+全空间与有边界区域也要区别。在 \(\mathbb R^2\) 的单位球上，
+\(u(x)=x_1x_2\) 满足 \(\Delta u=0\)，却有
+\(\partial_1\partial_2u=1\)。所以不加边界条件，不能把全空间结论改写为
+\(\|D^2u\|_{L^p(B_1)}\leq C\|\Delta u\|_{L^p(B_1)}\)。
+若只求内部估计，截断后的低阶项会记录边界之外的信息。
+
+\ProseParagraphBreak
+
+变系数时，空间乘法不与 Fourier 变换交换，不能把 \(a_{jk}(x)\) 当成常数塞进上述商。下面的冻结步骤说明，在一个小球内接近固定矩阵时，哪一部分误差可以吸收。这里选择非散度形式，因而不要求对系数求导。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[冻结系数的先验估计]\label{b2:prop:22-freezing-estimate}
+设整数 \(d\geq1\)、\(1<p<\infty\)、\(r>0\)，以
+\(\|D^2v\|_p=\sum_{j,k=1}^d\|\partial_j\partial_kv\|_p\)
+记二阶导数和范数。令 \(A_0\) 为实对称正定常矩阵，并取常数 \(C_0\) 使
+\[
+ \|D^2v\|_p\leq C_0\|L_{A_0}v\|_p
+ \quad(v\in W^{2,p}(\mathbb R^d)),\quad
+ L_{A_0}v=-\sum_{j,k}a_{jk}^0\partial_j\partial_kv.
+\]
+设实矩阵场 \(A=(a_{jk})\) 在 \(B_r\subset\mathbb R^d\) 上有界可测，满足
+\[
+ \max_{j,k}\|a_{jk}-a_{jk}^0\|_{L^\infty(B_r)}
+ \leq\varepsilon,\quad C_0\varepsilon\leq\frac12.
+\]
+对 \(u\in W^{2,p}(B_r)\)，以可测函数
+\(L_Au=-\sum_{j,k}a_{jk}\partial_j\partial_ku\) 定义非散度算子。
+若 \(u\) 的支撑紧包含于 \(B_r\)，则
+\[
+ \|D^2u\|_{L^p(B_r)}\leq2C_0\|L_Au\|_{L^p(B_r)}.
+\]
+一般 \(u\in W^{2,p}(B_r)\) 则满足
+\[
+ \begin{aligned}
+ \|D^2u\|_{L^p(B_{r/2})}
+ \leq C\bigl(&\|L_Au\|_{L^p(B_r)}
+       +r^{-1}\|\nabla u\|_{L^p(B_r)}\\
+       &+r^{-2}\|u\|_{L^p(B_r)}\bigr),
+ \end{aligned}
+\]
+其中 \(C\) 可依赖 \(d,p,C_0\) 及各系数的 \(L^\infty\) 上界，但与 \(u,r\) 无关。
+\end{proposition}
+\begin{proof}
+先设 \(u\) 紧支于球内。它在球外延零后属于全空间 \(W^{2,p}\)：在边界的一个邻域内原函数已经为零，所以分布求导没有边界项。由系数差的上界及本小节选定的二阶导数和范数，
+\[
+ \|(L_{A_0}-L_A)u\|_p
+ \leq\varepsilon\sum_{j,k}\|\partial_j\partial_ku\|_p
+ =\varepsilon\|D^2u\|_p.
+\]
+常系数命题于是给出
+\[
+ \|D^2u\|_p
+ \leq C_0\|L_Au\|_p+C_0\varepsilon\|D^2u\|_p.
+\]
+移项即得第一式。
+
+对一般 \(u\)，取 \(\eta\in C_c^\infty(B_r)\)，在 \(B_{r/2}\) 上为一，并使
+\(\|\nabla\eta\|_\infty\leq C_dr^{-1}\)、
+\(\|D^2\eta\|_\infty\leq C_dr^{-2}\)。弱导数的乘积公式给出
+\[
+ \begin{aligned}
+ L_A(\eta\cdot u)
+ ={}&\eta\cdot L_Au
+ -\sum_{j,k}a_{jk}
+       \bigl((\partial_j\eta)\cdot\partial_ku
+              +(\partial_k\eta)\cdot\partial_ju\bigr)\\
+ &-\sum_{j,k}a_{jk}(\partial_j\partial_k\eta)\cdot u.
+ \end{aligned}
+\]
+对 \(\eta\cdot u\) 使用第一式，再以系数上界及截断导数界控制右端。在
+\(B_{r/2}\) 内，\(D^2(\eta\cdot u)=D^2u\)，因而得到内部估计。
+\end{proof}
+连续系数在足够小的球上可以满足该小振荡条件；结论的输入仍是已经属于 \(W^{2,p}\) 的函数。若起始解只有 \(H^1\)，尚不能先把
+\(a_{jk}\partial_j\partial_ku\) 当作 \(L^p\) 函数，再以这个估计证明二阶导数存在。存在性或由弱解提升正则性还需要合法的逼近、解的构造及收敛论证。
+
+\ProseParagraphBreak
+
+散度算子是另一个对象。只有系数有足够的弱导数时，才可把
+\(-\sum_{j,k}\partial_j(a_{jk}\partial_ku)\) 展开成非散度部分及
+\(-\sum_{j,k}(\partial_ja_{jk})\partial_ku\)。任意有界可测系数不允许这样把额外项当作普通函数移到右侧。\chapref{b2:ch:16}和\appref{b2:app:H}分别处理相应椭圆正则问题及低正则系数；这里的乘子论证只建立上述全空间常系数结论与明确的小振荡先验步骤。
+
+\subsection{球面乘子 预告}
+\label{b2:subsec:220304}
+
+径向符号只依赖 \(|\xi|\)，仍可能在球面上发生跳跃。
+光滑环带截断 \(\chi(|\xi|)\) 的核属于 \(L^1\)；球特征函数 \(\mathbf1_{\{|\xi|\le1\}}\) 则不满足任何跨边界的 Mihlin 光滑条件。
+把跳跃平滑成宽度 \(\epsilon\) 的过渡层时，第 \(N\) 阶导数通常增长如 \(\epsilon^{-N}\)。对每个固定 \(\epsilon\) 应用定理可得有界性，却得不到 \(\epsilon\downarrow0\) 的统一界。
+
+\ProseParagraphBreak
+Bochner–Riesz 平均以 \((1-|\xi|^2)_+^\delta\) 逐渐消减边界跳跃，其所需光滑阶数与 \(p\)、维数有关。Mihlin 定理给出方便的充分条件，但常不是锐利范围。\chapref{b2:ch:24}用径向核的振荡和曲率研究这一问题；\chapref{b2:ch:23}的限制估计控制频率薄壳上的集中，则说明为什么乘子问题会与曲面延拓相遇。
+
+\ProseParagraphBreak
+因此“径向”“有界”“紧支撑”三项都不能单独替代乘子条件。对核使用 Young 不等式、对符号使用尺度导数、对薄壳使用曲面几何，是三条不同证明路线。应用时应明确正在使用哪一条，以及它在端点或退化极限中会失去哪一个条件。
+
+平滑乘子还有一个时间演化模型，可与频率硬截断比较。对整数 \(d\geq1\)、\(t>0\)，热算子 \(e^{t\Delta}\) 的符号是 \(e^{-4\pi^2t|\xi|^2}\)，核为
+\[
+ H_t(x)=(4\pi t)^{-d/2}e^{-|x|^2/(4t)}.
+\]
+其空间核非负，积分为一，因而在全部 \(L^p\) 上压缩。写
+\(H_t(x)=t^{-d/2}H_1(x/\sqrt t)\)，对多重指标 \(\alpha\) 求导得到
+\[
+ \partial^\alpha H_t(x)
+ =t^{-(d+|\alpha|)/2}
+       (\partial^\alpha H_1)(x/\sqrt t),\quad
+ \|\partial^\alpha H_t\|_1
+ =t^{-|\alpha|/2}\|\partial^\alpha H_1\|_1.
+\]
+固定时间核的每个导数都是多项式乘 Gaussian，故右端常数有限。Young 不等式于是对每个整数 \(k\geq0\) 给出
+\[
+ \|D^ke^{t\Delta}f\|_p\leq C_k t^{-k/2}\|f\|_p,
+ \quad 1\leq p\leq\infty,\quad t>0.
+\]
+这里 \(\|D^k u\|_p\) 可取全部 \(k\) 阶导数范数的有限和。这个证明连两个端点也包括。每个正时间的任意阶导数还可由核的平移连续性得到连续代表，因而产生光滑函数。单纯的开区间 Mihlin 定理已经足以处理 \(1<p<\infty\)，但核方法在这个模型中提供了额外端点。
+
+\ProseParagraphBreak
+
+任意实 \(s\geq0\) 时同样有
+\[
+ \|e^{t\Delta}f\|_{H^{s,p}}\leq C_{s,p}(1+t^{-s/2})\|f\|_p,
+ \quad1<p<\infty.
+\]
+在 \(0<t\leq1\) 中，把 \(t^{s/2}(1+4\pi^2|\xi|^2)^{s/2}e^{-4\pi^2t|\xi|^2}\) 以 \(\zeta=\sqrt t\,\xi\) 重写，成为
+\((t+4\pi^2|\zeta|^2)^{s/2}e^{-4\pi^2|\zeta|^2}\)。
+为看清常数为何统一，先只对幂函数求 \(\alpha\) 阶导数。每一项都由
+\[
+ C_{\alpha,\beta,\ell}\,
+ \zeta^\beta(t+4\pi^2|\zeta|^2)^{s/2-\ell},
+ \quad |\beta|=2\ell-|\alpha|
+\]
+组成。乘上 \(|\zeta|^{|\alpha|}\)，再用
+\(|\zeta|^{2\ell}\leq C_\ell(t+4\pi^2|\zeta|^2)^\ell\)，就控制为
+\(C(t+4\pi^2|\zeta|^2)^{s/2}\)。乘积求导中落到 Gaussian 的部分只增加固定多项式，在无穷处由 Gaussian 衰减吸收；在原点处没有剩下负幂。因此 \(0<t\leq1\) 的 Mihlin 常数统一。若 \(t\geq1\)，则把一次固定时间的平滑与剩余时间的压缩复合；\(t=1\) 时后者是恒等算子。这说明分数阶平滑不必先把 \(s\) 取整。
+
+\ProseParagraphBreak
+
+当 \(t\downarrow0\)，正阶范数常数发散，与一般 \(L^p\) 数据可能没有任何正阶导数完全相容。对每个固定正时间得到光滑函数，不意味着这些函数在更强空间中一致趋向原数据。对 \(1\leq p<\infty\)，热核的近似恒等性保证在原来的 \(L^p\) 中趋于初值，提升正则性则付出时间尺度。一般 \(L^\infty\) 输入没有这种范数强连续性：取半空间示性函数 \(f=\mathbf1_{\{x_1>0\}}\)，热卷积在边界附近连续趋于 \(1/2\)，原函数在两侧分别为零和一，因此每个 \(t>0\) 都有 \(\|e^{t\Delta}f-f\|_\infty\geq1/2\)。
+
+\ProseParagraphBreak
+
+把时间倒过来，固定 \(t>0\) 后符号成为 \(e^{4\pi^2t|\xi|^2}\)，甚至失去 \(L^2\) 乘子所需的本性有界性。取非零 \(g\in\mathcal S\)，使
+\(\widehat g\in C_c^\infty(B(0,1))\)，并令
+\(f_N(x)=e^{2\pi\mathrm iNx_1}\cdot g(x)\)、\(N>1\)。
+其 Fourier 支撑落在 \(B(Ne_1,1)\)，所以对这些频率紧支撑输入，逆热像仍可定义，且 Plancherel 给出
+\[
+ \|f_N\|_2=\|g\|_2,\quad
+ \|e^{-t\Delta}f_N\|_2
+ \geq e^{4\pi^2t(N-1)^2}\|g\|_2.
+\]
+再取 \(h_N=e^{-2\pi^2t(N-1)^2}f_N\)，便有 \(\|h_N\|_2\to0\)，而
+\(\|e^{-t\Delta}h_N\|_2\to\infty\)。正向平滑因此不能通过形式上的指数取反得到稳定逆过程。
+
+\ProseParagraphBreak
+
+与球面乘子相比，热符号没有一条频率边界上的跳跃，所有尺度的导数也具有统一控制；与齐次分数积分相比，它在零频不发散。良好的端点压缩、正时间平滑和低频稳定是这些特殊性质共同产生的，不应当归给任意一个写成 \(m(\xi)\) 的符号。
+
+\ProseParagraphBreak
+
+频率过渡层还可以用一个明确的算子范数检验。取固定 \(\chi\in C_c^\infty\)，令 \(m_R(\xi)=\chi(\xi/R)\)。其核为 \(R^d\check\chi(Rx)\)，所以全部 \(R>0\) 的 \(L^1\) 核范数都等于 \(\|\check\chi\|_1\)，在每个 \(L^p\) 上有同一个界。若 \(\chi(0)=1\)，在 \(R\to\infty\) 时，有限指数下这族算子强趋向恒等：先对 Schwartz 输入用核的近似恒等性，再用一致范数和稠密性推广。将频率支撑推向无穷本身并不造成常数发散；关键是过渡轮廓经过尺度归一化后仍固定。
+
+\ProseParagraphBreak
+
+若改用
+\[
+ m_\epsilon(\xi)=\theta\bigl((|\xi|-1)/\epsilon\bigr),
+ \quad0<\epsilon<\frac12,
+\]
+其中 \(\theta\in C^\infty(\mathbb R)\)、\(0\leq\theta\leq1\)，在
+\((-\infty,-1]\) 为一、在 \([1,\infty)\) 为零，则过渡层紧贴单位球面。符号在原点附近恒为一，故原点处也光滑；但归一化整个频率空间不能同时固定球的半径和层的厚度。在某个固定的过渡参数处 \(\theta'\neq0\)，径向一阶导数就达到
+\(c\epsilon^{-1}\)，而 \(|\xi|\) 仍约为一，尺度导数条件因此真实增长。前一个模型只有整体半径，后一个还带有厚度与半径之比；两者的参数一致性不同。
+
+\ProseParagraphBreak
+
+在 \(L^2\) 中只需符号的本性上确界，故这族越来越薄的过渡层始终满足
+\(\|T_{m_\epsilon}\|_{2\to2}\leq1\)。对 Schwartz 输入，支配收敛还给出
+\[
+ T_{m_\epsilon}f\longrightarrow
+ T_{\mathbf1_{\{|\xi|\leq1\}}}f\quad\text{于 }L^2.
+\]
+若某个 \(1<p<\infty\) 上另外已有与 \(\epsilon\) 无关的算子界，就可用\cref{b2:prop:22-multiplier-calculus}的极限结论，把该界传给球乘子。仅有每个固定 \(\epsilon\) 的 Mihlin 界不能完成这一步；导数常数增长本身也不证明极限算子一定无界。后两章将利用频率边界的几何进一步分析实际有界范围。

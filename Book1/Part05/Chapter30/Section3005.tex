@@ -1,0 +1,438 @@
+% !TeX root = ../../Book1.tex
+\section{可积独立同分布变量的强大数定律}
+\label{b1:sec:3005}
+
+弱大数定律逐个控制样本量 \(n\) 对应的偏差事件。要证明几乎必然收敛，
+则须在同一个概率为一的集合上控制所有充分大的样本量。
+本节先建立独立部分和的极大估计，由此证明方差可和的独立零均值级数几乎必然收敛，
+再以求和变换把级数收敛转为平均收敛。一次矩有限的变量经过随指标增长的截断，
+恰好满足这条级数判据。
+
+\ProseParagraphBreak
+
+独立级数、归一化求和与可积独立同分布大数定律，可对照 Fremlin 的
+《Measure Theory》\cite[273B(b), 273C--273D, 273I]{Fremlin2016Measure}。
+下面用部分和第一次越过阈值的事件直接证明所需的极大不等式，
+再逐项核对截断后的方差、尾概率和均值。
+% 实读：Fremlin2016Measure 作者公开 chap27 摘本 273B(b)、273C、273D、
+% 273I（章摘本物理 pp.23--29），以及 273N(a)。正文改从 n=1 编号，
+% 以 Kolmogorov 极大不等式自证独立级数收敛，不借该书 273B(a) 的 Etemadi 路线。
+% Bass2024Real 的 Section 21.4（印刷 pp.278--282）仅作教学背景；
+% 本节的加权截断矩估计直接对共同分布应用非负级数换序。
+
+\subsection{独立部分和的极大估计}
+\label{b1:subsec:300501}
+
+对某一个 \(S_n\) 使用 Chebyshev 不等式，不能同时控制前面的每个部分和。
+下面的\term[kolmogorov-jida-budengshi]{Kolmogorov 极大不等式}[Kolmogorov's maximal inequality]
+用最后一个和的总方差，控制整段部分和是否越过固定阈值。
+
+\begin{theorem}[Kolmogorov 极大不等式]
+\label{b1:thm:30-kolmogorov-maximal}
+设 \((\Omega,\mathcal F,\mathbb P)\) 为概率空间，\(N\geq1\)，
+\(Z_1,\ldots,Z_N\) 为其上独立的实值随机变量，满足
+\(\mathbb E Z_k=0\)、\(\mathbb E(Z_k^2)<\infty\)。令
+\(S_j=\sum_{k=1}^jZ_k\)。则对每个 \(\lambda>0\)，有
+\[
+ \mathbb P\left(\max_{1\leq j\leq N}|S_j|\geq\lambda\right)
+ \leq\frac1{\lambda^2}\sum_{k=1}^N\mathbb E(Z_k^2).
+\]
+\end{theorem}
+\begin{proof}
+对 \(1\leq j\leq N\)，令
+\[
+ A_j=\{\,|S_i|<\lambda\ (1\leq i<j),\quad |S_j|\geq\lambda\,\}.
+\]
+这些事件两两不交，且它们的并就是最大值至少为 \(\lambda\) 的事件。
+事件 \(A_j\) 以及变量 \(S_j\) 只依赖 \(Z_1,\ldots,Z_j\)，
+而 \(S_N-S_j\) 只依赖余下的变量。
+\cref{b1:prop:30-independent-blocks}保证两个指标块生成的
+\(\sigma\)-代数独立。因此
+\(S_j\cdot\mathbf1_{A_j}\) 与 \(S_N-S_j\) 独立。
+两者均平方可积，后一变量的均值为零，由独立变量的期望乘积公式，
+\[
+ \mathbb E\bigl(S_j\cdot\mathbf1_{A_j}\cdot(S_N-S_j)\bigr)=0.
+\]
+当 \(j=N\) 时，后一变量恒为零，同一等式也成立。
+在 \(A_j\) 上展开 \(S_N=S_j+(S_N-S_j)\) 的平方，得到
+\[
+ \begin{aligned}
+ \mathbb E\bigl(S_N^2\cdot\mathbf1_{A_j}\bigr)
+ &=\mathbb E\bigl(S_j^2\cdot\mathbf1_{A_j}\bigr)
+   +\mathbb E\bigl((S_N-S_j)^2\cdot\mathbf1_{A_j}\bigr)\\
+ &\geq\lambda^2\cdot\mathbb P(A_j).
+ \end{aligned}
+\]
+对不交的 \(A_j\) 求和，并用\cref{b1:prop:30-variance-sum}，有
+\[
+ \begin{aligned}
+ \lambda^2\cdot
+ \mathbb P\left(\max_{1\leq j\leq N}|S_j|\geq\lambda\right)
+ &\leq\sum_{j=1}^N\mathbb E\bigl(S_N^2\cdot\mathbf1_{A_j}\bigr)\\
+ &\leq\mathbb E(S_N^2)
+ =\sum_{k=1}^N\mathbb E(Z_k^2).
+ \end{aligned}
+\]
+除以 \(\lambda^2\) 即得结论。
+\end{proof}
+
+这里按第一次越过阈值的时刻划分事件，使每个样本至多计入一次。
+对各个 \(S_j\) 分别应用 Chebyshev 不等式再相加，会反复计入前面变量的方差，
+不能给出上面的同一总方差界。
+
+\subsection{截断与尾概率控制}
+\label{b1:subsec:300502}
+
+强大数定律将使用截断 \(Y_n=X_n\cdot\mathbf1_{\{|X_n|\leq n\}}\)。
+截断高度随 \(n\) 增长，有两个需要分别证明的后果：原变量最终不再被改变；
+截断后方差除以 \(n^2\) 得到的级数可和。二者都由同一个有限一次矩控制。
+
+\begin{lemma}[一次矩控制的截断估计]
+\label{b1:lem:30-truncation-sums}
+设 \((\Omega,\mathcal F,\mathbb P)\) 为概率空间，\(X\) 为其上的实值随机变量，
+且 \(\mathbb E|X|<\infty\)。则
+\[
+ \sum_{n=1}^\infty\mathbb P(|X|>n)\leq\mathbb E|X|,
+ \quad
+ \sum_{n=1}^\infty\frac1{n^2}\cdot
+       \mathbb E\bigl(|X|^2\cdot\mathbf1_{\{|X|\leq n\}}\bigr)
+ \leq2\mathbb E|X|.
+\]
+\end{lemma}
+\begin{proof}
+对每个实数 \(u\geq0\)，小于 \(u\) 的正整数的个数不超过 \(u\)，故
+\[
+ \sum_{n=1}^\infty\mathbf1_{\{u>n\}}\leq u.
+\]
+取 \(u=|X|\) 并积分，非负级数的 Tonelli 换序给出第一项估计。
+
+再令 \(m\) 为大于等于 \(u\) 的最小正整数。由递减函数的积分比较，
+\[
+ \sum_{n=m}^\infty\frac1{n^2}
+ \leq\frac1{m^2}+\int_m^\infty\frac1{t^2}\,\mathrm dt
+ \leq\frac2m.
+\]
+因为 \(m\geq u\)，对 \(u\geq0\) 有
+\[
+ \sum_{n=1}^\infty\frac{u^2}{n^2}\cdot\mathbf1_{\{u\leq n\}}
+ =u^2\cdot\sum_{n=m}^\infty\frac1{n^2}
+ \leq\frac{2u^2}{m}\leq2u.
+\]
+再次取 \(u=|X|\) 并积分。所有项均非负，故 Tonelli 换序不需要事先假设
+\(X\) 平方可积，得到第二项估计。
+\end{proof}
+
+\begin{proposition}[随指标增长的截断]
+\label{b1:prop:30-moving-truncation}
+设 \((\Omega,\mathcal F,\mathbb P)\) 为概率空间，\((X_n)_{n\geq1}\)
+为其上的独立同分布实值随机变量列，且 \(\mathbb E|X_1|<\infty\)。
+令 \(Y_n=X_n\cdot\mathbf1_{\{|X_n|\leq n\}}\)。则 \((Y_n)\) 独立，
+每个 \(Y_n\) 平方可积，且
+\[
+ \sum_{n=1}^\infty\mathbb P(X_n\ne Y_n)<\infty,
+ \quad
+ \sum_{n=1}^\infty\frac{\operatorname{Var}(Y_n)}{n^2}
+ \leq2\mathbb E|X_1|<\infty.
+\]
+此外，\(\mathbb E Y_n\to\mathbb E X_1\)。
+\end{proposition}
+\begin{proof}
+各个 \(Y_n\) 分别是对应 \(X_n\) 的 Borel 函数，故保持独立性。
+由 \(|Y_n|\leq n\)，它们均平方可积。
+同分布和前一引理给出
+\[
+ \sum_{n=1}^\infty\mathbb P(X_n\ne Y_n)
+ =\sum_{n=1}^\infty\mathbb P(|X_1|>n)<\infty.
+\]
+又因为 \(\operatorname{Var}(Y_n)\leq\mathbb E(Y_n^2)\)，且同分布保证
+\[
+ \mathbb E(Y_n^2)
+ =\mathbb E\bigl(|X_1|^2\cdot\mathbf1_{\{|X_1|\leq n\}}\bigr),
+\]
+第二个级数也由前一引理控制。最后，
+\[
+ \mathbb E Y_n
+ =\mathbb E\bigl(X_1\cdot\mathbf1_{\{|X_1|\leq n\}}\bigr)
+ \longrightarrow\mathbb E X_1,
+\]
+这里的支配函数为可积的 \(|X_1|\)。
+\end{proof}
+
+这些截断变量一般不再同分布，因而不能对它们直接套用独立同分布版本的大数定律。
+下面的收敛工具只要求独立和方差可和，正好适用于这一列变量。
+
+\subsection{归一化和的收敛工具}
+\label{b1:subsec:300503}
+
+先把有限部分和的极大估计用于级数尾部。方差尾和趋于零本身只给概率估计；
+选择一列足够小的尾和，再应用第一 Borel--Cantelli 引理，才能得到逐样本的 Cauchy 性。
+
+\begin{theorem}[独立零均值级数的收敛]
+\label{b1:thm:30-independent-series}
+设 \((\Omega,\mathcal F,\mathbb P)\) 为概率空间，\((Z_n)_{n\geq1}\)
+为其上独立的实值随机变量列，且 \(\mathbb E Z_n=0\)、
+\(\mathbb E(Z_n^2)<\infty\) 对每个 \(n\) 成立。若
+\[
+ \sum_{n=1}^\infty\mathbb E(Z_n^2)<\infty,
+\]
+则级数 \(\sum_{n=1}^\infty Z_n\) 几乎必然收敛到有限实值随机变量 \(S\)，
+并在 \(L^2(\mathbb P)\) 中收敛。取 \(S_n=\sum_{k=1}^nZ_k\)，还有
+\[
+ \mathbb E S=0,
+ \quad
+ \mathbb E|S-S_n|^2=\sum_{k=n+1}^\infty\mathbb E(Z_k^2).
+\]
+\end{theorem}
+\begin{proof}
+令 \(v_m=\sum_{k=m}^\infty\mathbb E(Z_k^2)\)。对有限指标段 \(m,\ldots,N\)
+应用 Kolmogorov 极大不等式，得到
+\[
+ \mathbb P\left(\max_{m\leq n\leq N}
+       \left|\sum_{k=m}^nZ_k\right|>\varepsilon\right)
+ \leq\frac{v_m}{\varepsilon^2}.
+\]
+当 \(N\to\infty\) 时，左侧事件递增，故
+\[
+ \mathbb P\left(\sup_{n\geq m}
+       \left|\sum_{k=m}^nZ_k\right|>\varepsilon\right)
+ \leq\frac{v_m}{\varepsilon^2}.
+\]
+这里的上确界只取可数多个可测函数，因此事件可测。
+由于 \(v_m\to0\)，可选严格递增的正整数 \(m_j\)，使
+\(v_{m_j}\leq2^{-3j}\)。令
+\[
+ H_j=\left\{\sup_{n\geq m_j}
+          \left|\sum_{k=m_j}^nZ_k\right|>2^{-j}\right\}.
+\]
+由上一估计，\(\mathbb P(H_j)\leq2^{-j}\)。
+第一 Borel--Cantelli 引理\cref{b1:lem:30-borel-cantelli-first}说明，
+几乎每个样本只属于有限多个 \(H_j\)。固定这样的样本 \(\omega\)。
+对充分大的 \(j\)，以及任意 \(n\geq p\geq m_j\)，有
+\[
+ \left|\sum_{k=p}^nZ_k(\omega)\right|
+ \leq\left|\sum_{k=m_j}^nZ_k(\omega)\right|
+     +\left|\sum_{k=m_j}^{p-1}Z_k(\omega)\right|
+ \leq2^{1-j},
+\]
+其中空和取零。故 \((S_n(\omega))\) 是实数 Cauchy 列，收敛到有限值。
+在余下的可测零测集上把极限置为零，得到实值随机变量 \(S\)。
+
+还需核对 \(L^2\) 结论。固定 \(n\geq1\)，由几乎必然收敛和 Fatou 引理，
+\[
+ \mathbb E|S-S_n|^2
+ \leq\liminf_{N\to\infty}\mathbb E|S_N-S_n|^2
+ =\sum_{k=n+1}^\infty\mathbb E(Z_k^2).
+\]
+右端有限，故 \(S\in L^2(\mathbb P)\)；它随 \(n\to\infty\) 趋于零，
+说明 \(S_n\to S\) 于 \(L^2\)。因此对固定 \(n\)，
+\(S_N-S_n\to S-S_n\) 于 \(L^2\)，其范数也收敛。
+在有限和的方差等式中令 \(N\to\infty\)，得到所述精确尾和公式。
+又由 Cauchy--Schwarz 不等式，\(L^2\) 收敛蕴含 \(L^1\) 收敛，
+所以 \(\mathbb E S=\lim_n\mathbb E S_n=0\)。
+\end{proof}
+
+接下来需要一个确定性的求和事实。
+\term[kronecker-yinli]{Kronecker 引理}[Kronecker's lemma]
+把除以 \(b_n\) 后形成的级数，转为原部分和除以 \(b_n\) 的极限。
+
+\begin{lemma}[Kronecker]
+\label{b1:lem:30-kronecker}
+设 \(\mathbb K=\mathbb R\) 或 \(\mathbb C\)，\((a_n)_{n\geq1}\subset\mathbb K\)，
+\((b_n)_{n\geq1}\) 为非递减的正实数列，且 \(b_n\to\infty\)。
+若级数 \(\sum_{n=1}^\infty a_n/b_n\) 在 \(\mathbb K\) 中收敛，则
+\[
+ \lim_{n\to\infty}\frac1{b_n}\sum_{k=1}^na_k=0.
+\]
+\end{lemma}
+\begin{proof}
+令 \(s_n=\sum_{k=1}^na_k/b_k\)、\(s_0=0\)，并记 \(s=\lim_ns_n\)。
+由 \(a_k=b_k(s_k-s_{k-1})\)，有限求和变换给出
+\[
+ \sum_{k=1}^na_k
+ =b_ns_n-\sum_{k=1}^{n-1}(b_{k+1}-b_k)s_k.
+\]
+因为 \(\sum_{k=1}^{n-1}(b_{k+1}-b_k)=b_n-b_1\)，所以
+\[
+ \frac1{b_n}\sum_{k=1}^na_k
+ =(s_n-s)+\frac{b_1}{b_n}s
+   -\frac1{b_n}\sum_{k=1}^{n-1}(b_{k+1}-b_k)(s_k-s).
+\]
+前两项趋于零。对任意 \(\varepsilon>0\)，取 \(M\) 使
+\(|s_k-s|\leq\varepsilon\) 对 \(k\geq M\) 成立。
+末项中 \(k<M\) 的有限和除以 \(b_n\) 后趋于零；其余项满足
+\[
+ \frac1{b_n}\sum_{k=M}^{n-1}(b_{k+1}-b_k)\cdot|s_k-s|
+ \leq\varepsilon\cdot\frac{b_n-b_M}{b_n}\leq\varepsilon.
+\]
+这里用了 \(b_{k+1}-b_k\geq0\)。再令 \(\varepsilon\downarrow0\)，即得结论。
+\end{proof}
+
+\begin{corollary}[方差条件下的归一化强大数定律]
+\label{b1:cor:30-variance-strong-law}
+设 \((\Omega,\mathcal F,\mathbb P)\) 为概率空间，\((X_n)_{n\geq1}\)
+为其上独立的实值随机变量列，每个 \(X_n\in L^2(\mathbb P)\)。
+设 \((b_n)_{n\geq1}\) 为非递减的正实数列，\(b_n\to\infty\)，且
+\[
+ \sum_{n=1}^\infty\frac{\operatorname{Var}(X_n)}{b_n^2}<\infty.
+\]
+则
+\[
+ \frac1{b_n}\sum_{k=1}^n(X_k-\mathbb E X_k)
+ \longrightarrow0\quad\text{几乎必然成立}.
+\]
+特别地，若 \(\sum_{n=1}^\infty\operatorname{Var}(X_n)/n^2<\infty\)，
+则可取 \(b_n=n\)。
+\end{corollary}
+\begin{proof}
+令 \(Z_n=(X_n-\mathbb E X_n)/b_n\)。这些变量独立、均值为零，且
+\[
+ \sum_{n=1}^\infty\mathbb E(Z_n^2)
+ =\sum_{n=1}^\infty\frac{\operatorname{Var}(X_n)}{b_n^2}<\infty.
+\]
+由\cref{b1:thm:30-independent-series}，级数 \(\sum_nZ_n\) 在一个概率为一的集合上收敛。
+在这个集合的每一点，对确定性数列 \(a_n=X_n(\omega)-\mathbb E X_n\)
+应用 Kronecker 引理，便得到所述极限。
+\end{proof}
+
+这个结论允许各项的分布不同。例如，独立变量的方差若一致有界，则
+\[
+ \sum_{n=1}^{\infty}\frac{\operatorname{Var}(X_n)}{n^2}<\infty.
+\]
+因此，平均和减去平均期望以后几乎必然趋于零。
+
+\subsection{可积情形的强大数律与边界}
+\label{b1:subsec:300504}
+
+最后还要把逐项均值的收敛传到它们的平均。
+对于数列 \((c_n)\)，\(n^{-1}\sum_{k=1}^nc_k\) 称为它的
+\term[cesaro-pingjun]{Cesàro 平均}[Cesàro mean]。
+
+\begin{lemma}[Cesàro 平均]
+\label{b1:lem:30-cesaro}
+设 \(\mathbb K=\mathbb R\) 或 \(\mathbb C\)，\((c_n)_{n\geq1}\subset\mathbb K\)，
+且 \(c_n\to c\in\mathbb K\)。则
+\[
+ \frac1n\sum_{k=1}^nc_k\longrightarrow c.
+\]
+\end{lemma}
+\begin{proof}
+给定 \(\varepsilon>0\)，取 \(M\) 使 \(|c_k-c|\leq\varepsilon\) 对 \(k\geq M\) 成立。
+对 \(n\geq M\)，有
+\[
+ \left|\frac1n\sum_{k=1}^nc_k-c\right|
+ \leq\frac1n\sum_{k=1}^{M-1}|c_k-c|
+       +\frac{n-M+1}{n}\cdot\varepsilon.
+\]
+第一项是固定有限和除以 \(n\)，趋于零；第二项至多为 \(\varepsilon\)。
+令 \(\varepsilon\downarrow0\) 即得结论。
+\end{proof}
+
+样本平均几乎必然收敛到共同均值的结论称为
+\term[qiang-dashu-dinglv]{强大数定律}[strong law of large numbers]。
+对于独立同分布的实值变量，一个有限一次矩便足够。
+
+\begin{theorem}[可积独立同分布变量的强大数定律]
+\label{b1:thm:30-iid-strong-law}
+设 \((\Omega,\mathcal F,\mathbb P)\) 为概率空间，\((X_n)_{n\geq1}\)
+为其上的独立同分布实值随机变量列，且 \(\mathbb E|X_1|<\infty\)。
+令 \(m=\mathbb E X_1\)、\(S_n=\sum_{k=1}^nX_k\)。则
+\[
+ \mathbb P\left(\left\{\omega\in\Omega:
+       \lim_{n\to\infty}\frac{S_n(\omega)}n=m\right\}\right)=1.
+\]
+\end{theorem}
+\begin{proof}
+取 \(Y_n=X_n\cdot\mathbf1_{\{|X_n|\leq n\}}\)。
+\cref{b1:prop:30-moving-truncation}保证 \((Y_n)\) 独立，每个 \(Y_n\) 平方可积，且
+\[
+ \sum_{n=1}^\infty\frac{\operatorname{Var}(Y_n)}{n^2}<\infty.
+\]
+因此\cref{b1:cor:30-variance-strong-law}在 \(b_n=n\) 时给出
+\[
+ \frac1n\sum_{k=1}^n(Y_k-\mathbb E Y_k)\longrightarrow0
+ \quad\text{几乎必然成立}.
+\]
+同一截断命题还给出 \(\sum_n\mathbb P(X_n\ne Y_n)<\infty\)。
+由第一 Borel--Cantelli 引理，几乎每个 \(\omega\) 都有一个正整数 \(N(\omega)\)，
+使 \(X_n(\omega)=Y_n(\omega)\) 对 \(n\geq N(\omega)\) 成立。
+所以在这个概率为一的集合上，对 \(n\geq N(\omega)\) 有
+\[
+ \frac1n\sum_{k=1}^n(X_k(\omega)-Y_k(\omega))
+ =\frac1n\sum_{k=1}^{N(\omega)-1}(X_k(\omega)-Y_k(\omega))
+ \longrightarrow0.
+\]
+这是一个固定有限的实数和除以 \(n\)，不需要对未截断变量作二阶矩估计。
+
+最后，\(\mathbb E Y_k\to m\) 已由截断命题中的控制收敛证明。
+Cesàro 平均引理于是给出
+\[
+ \frac1n\sum_{k=1}^n\mathbb E Y_k\longrightarrow m.
+\]
+在前两个几乎必然结论的共同概率为一的集合上，分解
+\[
+ \frac{S_n}{n}-m
+ =\frac1n\sum_{k=1}^n(X_k-Y_k)
+  +\frac1n\sum_{k=1}^n(Y_k-\mathbb E Y_k)
+  +\left(\frac1n\sum_{k=1}^n\mathbb E Y_k-m\right),
+\]
+三项分别趋于零，得到所述收敛。
+\end{proof}
+
+这与\cref{b1:thm:30-integrable-weak-law}相合：可积独立同分布样本的平均，
+既几乎必然收敛，也在 \(L^1\) 中收敛。两种结论分别由本节的极大估计和上一节的固定截断证明，
+没有把一般的几乎必然收敛误当成 \(L^1\) 收敛。
+
+\ProseParagraphBreak
+
+一次矩条件对于这里的几乎必然有限极限还是必要的。证明需要反过来观察单项 \(X_n/n\)，
+并使用第二 Borel--Cantelli 引理。
+
+\begin{proposition}[有限极限所需的一次矩]
+\label{b1:prop:30-strong-law-integrability-necessary}
+设 \((\Omega,\mathcal F,\mathbb P)\) 为概率空间，\((X_n)_{n\geq1}\)
+为其上的独立同分布实值随机变量列，\(S_n=\sum_{k=1}^nX_k\)。
+若存在实值随机变量 \(L\)，使 \(S_n/n\to L\) 几乎必然成立，
+则 \(\mathbb E|X_1|<\infty\)，且 \(L=\mathbb E X_1\) 几乎必然成立。
+\end{proposition}
+\begin{proof}
+对 \(n\geq2\)，有
+\[
+ \frac{X_n}{n}
+ =\frac{S_n}{n}-\frac{n-1}{n}\cdot\frac{S_{n-1}}{n-1}
+ \longrightarrow L-L=0\quad\text{几乎必然成立}.
+\]
+因此事件 \(A_n=\{|X_n|>n\}\) 几乎必然只发生有限次。
+这些事件相互独立；若 \(\sum_n\mathbb P(A_n)=\infty\)，
+第二 Borel--Cantelli 引理\cref{b1:lem:30-borel-cantelli-second}会给出它们几乎必然发生无穷多次，矛盾。
+所以
+\[
+ \sum_{n=1}^\infty\mathbb P(|X_1|>n)
+ =\sum_{n=1}^\infty\mathbb P(A_n)<\infty.
+\]
+对每个有限实数 \(u\geq0\)，有
+\(u\leq1+\sum_{n=1}^\infty\mathbf1_{\{u>n\}}\)。
+取 \(u=|X_1|\) 并以 Tonelli 定理换序，得到
+\[
+ \mathbb E|X_1|
+ \leq1+\sum_{n=1}^\infty\mathbb P(|X_1|>n)<\infty.
+\]
+于是可应用已经证明的强大数定律；极限的唯一性给出
+\(L=\mathbb E X_1\) 几乎必然成立。
+\end{proof}
+
+独立性也不能直接删除。在 \(\Omega=\{0,1\}\) 上令两个点的概率均为 \(1/2\)，
+并令所有 \(X_n(\omega)=\omega\)。这些变量有界、同分布且期望均为 \(1/2\)，
+但它们完全相同，故
+\[
+ \frac1n\sum_{k=1}^nX_k=X_1,
+ \quad
+ \mathbb P\left(\left|\frac1n\sum_{k=1}^nX_k-\frac12\right|>\frac14\right)=1.
+\]
+样本平均甚至不依概率收敛到均值。独立的重复观测与同一个观测的重复记录，
+在平均极限中有不同的行为。
+
+\ProseParagraphBreak
+
+大数定律确定了平均的极限，却没有给出围绕均值波动的分布。
+有限方差情形的 \(1/n\) 方差计算提示，平均误差的自然尺度为 \(1/\sqrt n\)。
+后面的特征函数与中心极限定理将研究这一尺度上的分布极限。

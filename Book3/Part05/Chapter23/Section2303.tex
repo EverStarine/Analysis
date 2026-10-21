@@ -2,52 +2,260 @@
 \section{模形式}
 \label{b3:sec:2303}
 
-变换律表达基的改变，尖点条件表达退化端的增长控制。两者合起来才使模形式空间有限维。
+Eisenstein 级数已经给出一种特殊的全纯函数：改变格基时，它不完全不变，而是乘上一个已知的幂次因子。同时，它在 \(\operatorname{Im}\tau\to\infty\) 的退化方向有有限的常数项。本节把这两项性质提炼为定义，并说明每一项的解析含义。尤其要分清三个层次：整数平移给周期性，整个模群给带权变换律，尖点条件则控制周期函数在无穷远的增长。
 
 \subsection{模形式}
 \label{b3:subsec:230301}
 
+由\cref{b3:prop:23-eisenstein-transformation}，\(G_{2r}\) 在变换 \(\tau\mapsto(a\tau+b)/(c\tau+d)\) 下乘以 \((c\tau+d)^{2r}\)。这个因子来自格的尺度变化。若强求每个格和都在换基后数值相同，就会把已经构造出的有用对象排除。因而定义容许一个固定幂次的变化，但要求它对每个群元素都使用同一种规则。
+
+另一方面，变换 \(T\tau=\tau+1\) 的因子为一，故所有这种函数都应当周期一。周期性使 \(f(\tau)\) 能用 \(q=e^{2\pi\mathrm{i}\tau}\) 表示：两个 \(\tau\) 给出同一个 \(q\)，当且仅当它们相差整数。由局部对数构成的函数先定义在穿孔圆盘上；要求它在 \(q=0\) 全纯，是一项额外条件。以下定义将这一要求直接写成一个圆盘全纯函数的存在性，避免把“尖点处全纯”留作未说明的边界用语。
+
+\Needspace{6\baselineskip}
 \begin{definition}\label{b3:def:23-modular-form}
-设 \(k\in\mathbb Z\)。若全纯函数 \(f:\mathfrak H\to\mathbb C\) 满足
-\(f(\gamma\tau)=(c\tau+d)^k f(\tau)\) 对所有模群矩阵成立，且其 \(q\) 表达式在 \(q=0\) 全纯，则称 \(f\) 为全模群上权 \(k\) 的\term[mo-xingshi]{模形式}[modular form]。所有这样的函数组成复向量空间 \(M_k\)。
+设 \(k\in\mathbb Z\)，\(\mathfrak H=\{\tau\in\mathbb C:\operatorname{Im}\tau>0\}\)，\(\mathbb D=\{q\in\mathbb C:|q|<1\}\)。一个全纯函数 \(f:\mathfrak H\to\mathbb C\) 称为全模群 \(\operatorname{SL}_2(\mathbb Z)\) 上权 \(k\) 的\term[mo-xingshi]{模形式}[modular form]，是指它满足：
+\begin{enumerate}
+\item\label{b3:item:23-modular-transformation}对每个 \(\left(\begin{smallmatrix}a&b\\c&d\end{smallmatrix}\right)\in\operatorname{SL}_2(\mathbb Z)\) 和每个 \(\tau\in\mathfrak H\)，都有
+\[
+ f\!\left(\frac{a\tau+b}{c\tau+d}\right)
+ =(c\tau+d)^k f(\tau);
+\]
+\item\label{b3:item:23-modular-cusp}存在全纯函数 \(F:\mathbb D\to\mathbb C\)，使
+\[
+ f(\tau)=F(e^{2\pi\mathrm{i}\tau})
+ \quad(\tau\in\mathfrak H).
+\]
+\end{enumerate}
+第二项称为在尖点 \(\infty\) 全纯。所有这样的函数构成复向量空间，记为 \(M_k\) 或 \(M_k(\operatorname{SL}_2(\mathbb Z))\)。本章不另加特征因子。
 \end{definition}
-\symidx{\(M_k\)：权 \(k\) 的模形式空间}
-若省去尖点条件，可以产生任意阶的尖点极点，空间不再具有本章的有限维结论。只在 \(\mathfrak H\) 全纯与成为模形式是不同条件。
+\symidx{\(M_k\)：全模群上权 \(k\) 的模形式空间}
+
+这里允许任意整数 \(k\) 是为了统一陈述。哪些权实际有非零形式，要由变换律和后面的零点计数判断；不应在定义时就把这些结论暗中假定。由于 \(c\tau+d\ne0\)，负整数幂也有单值的通常意义，没有复幂分支问题。
+
+定义中的 \(F\) 必唯一，因为指数映射的像包含整个穿孔圆盘，两个可能的 \(F\) 在那里相等，故在零点也相等。空间 \(M_k\) 对复数线性组合封闭：变换律是线性的，圆盘上的全纯延拓也可作相同线性组合。前节的 Fourier 展开已经证明，对每个整数 \(r\ge2\)，都有 \(G_{2r}\in M_{2r}\)；它们不是靠定义猜出的例子，而是绝对收敛格和产生的具体成员。
 
 \subsection{权}
 \label{b3:subsec:230302}
 
-整数 \(k\) 称为\term[mo-xingshi-quan]{权}[weight]。将 \(-I\) 代入变换律得 \(f=(-1)^kf\)，所以奇权空间为零。乘积 \(M_k\cdot M_\ell\subset M_{k+\ell}\)，而同权函数的商具有权零；商可能产生极点，通常不再是全纯模形式。
+定义中的整数 \(k\) 称为\term[mo-xingshi-quan]{权}[weight]。要理解它为何能与群乘法相容，记
+\[
+ J(\gamma,\tau)=c\tau+d,
+ \quad \gamma=\begin{pmatrix}a&b\\c&d\end{pmatrix}.
+\]
+直接相乘两个矩阵给出
+\begin{equation}\label{b3:eq:23-factor-cocycle}
+ J(\gamma_1\gamma_2,\tau)
+ =J(\gamma_1,\gamma_2\tau)J(\gamma_2,\tau).
+\end{equation}
+例如，若 \(\gamma_1\) 的底行为 \((c_1,d_1)\)，\(\gamma_2\) 的两行为 \((a_2,b_2)\)、\((c_2,d_2)\)，右边等于
+\[
+ c_1(a_2\tau+b_2)+d_1(c_2\tau+d_2),
+\]
+正是乘积矩阵的底行给出的线性式。因此依次作两次变换所积累的权因子，与一次作复合变换的因子一致。
+
+为了把这个运算写得紧凑，对 \(\mathfrak H\) 上的全纯或亚纯函数 \(f\)、整数 \(k\) 和 \(\gamma\in\operatorname{SL}_2(\mathbb Z)\)，记
+\[
+ (f|_k\gamma)(\tau)
+ =J(\gamma,\tau)^{-k}f(\gamma\tau).
+\]
+这个记号在变换后除去权因子，使带权变换律可以写成不变性条件。公式\eqref{b3:eq:23-factor-cocycle}给
+\[
+ (f|_k\gamma_1)|_k\gamma_2=f|_k(\gamma_1\gamma_2).
+\]
+所以变换律正是 \(f|_k\gamma=f\)。它也解释了为什么只核对生成元就足够：满足对 \(S,T\) 的不变性，便依次满足它们的逆和全部有限乘积的不变性。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[生成元判别与权的运算]\label{b3:prop:23-weight-operations}
+设 \(k\in\mathbb Z\)，\(f\) 为 \(\mathfrak H\) 上全纯函数。它满足全模群的权 \(k\) 变换律，当且仅当
+\begin{equation}\label{b3:eq:23-generators-form-law}
+ f(\tau+1)=f(\tau),\quad
+ f(-1/\tau)=\tau^k f(\tau)
+ \quad(\tau\in\mathfrak H).
+\end{equation}
+奇数权的 \(M_k\) 仅含零函数。若 \(k,\ell\in\mathbb Z\)、\(f\in M_k\)、\(g\in M_\ell\)，则 \(fg\in M_{k+\ell}\)；若 \(g\not\equiv0\)，商 \(f/g\) 在上半平面及尖点亚纯，并满足权 \(k-\ell\) 的变换律。
+\end{proposition}
+\begin{proof}
+必要性是代入 \(S,T\)。充分性由上述带权运算的复合公式及 \(S,T\) 的生成性得到。对矩阵 \(-I\)，变换律给 \(f(\tau)=(-1)^kf(\tau)\)，所以 \(k\) 为奇数时只能 \(f\equiv0\)。
+
+两个变换律相乘便使权相加；圆盘全纯表达式的乘积仍全纯，故乘积在尖点也满足要求。商的变换律同样由相除得到。非恒零全纯函数的零点孤立，局部写成一个整数次幂乘无零全纯函数，所以商在有限点亚纯；在尖点对两个圆盘 Taylor 级数作同样的局部分解，便知商至多有有限阶极点。
+\end{proof}
+
+同权形式可以相加，不同权的乘积则进入新的权空间。例如 \(G_4G_6\) 的权为十。若要同时保留所有权，就要把它们组成带权标记的分次空间；不能把不同权相加后仍称为原来某个固定权的形式。同权商的因子相消，得到不变的亚纯函数，这将在\secref{b3:sec:2306}成为模函数的来源。
 
 \ProseParagraphBreak
+权的另一个解释来自未归一化的格。对格不变量 \(G_{2r}(\Lambda)=\sum_{\omega\in\Lambda\setminus\{0\}}\omega^{-2r}\)，同时把全部格向量乘以 \(\lambda\) 会使它乘以 \(\lambda^{-2r}\)。下述命题说明一般变换律也是这样一种尺度齐次性的坐标表达。
 
-普通导数也不保持模性。求导变换律时，\((c\tau+d)^k\) 的导数产生一项，因此 \(f'\) 不自动成为权 \(k+2\) 的模形式。后面引入高层级形式和微分运算时，这个额外项必须明确补偿。
+\Needspace{6\baselineskip}
+\begin{proposition}[权与格的尺度]\label{b3:prop:23-lattice-weight}
+设 \(k\in\mathbb Z\)，\(f:\mathfrak H\to\mathbb C\) 满足全模群的权 \(k\) 变换律。对复平面中的格 \(\Lambda\)，选取任一正向基 \((\omega_1,\omega_2)\)，定义
+\[
+ \Phi_f(\Lambda)=\omega_1^{-k}
+          f\!\left(\frac{\omega_2}{\omega_1}\right).
+\]
+此值不依赖正向基的选择，且对每个 \(\lambda\in\mathbb C\setminus\{0\}\) 有
+\[
+ \Phi_f(\lambda\Lambda)=\lambda^{-k}\Phi_f(\Lambda).
+\]
+反过来，若一个复值格函数 \(\Phi\) 满足上述尺度律，且 \(f(\tau)=\Phi(\mathbb Z+\mathbb Z\tau)\) 在 \(\mathfrak H\) 全纯，则 \(f\) 满足权 \(k\) 的变换律；它是否是模形式，还须检查尖点全纯性。
+\end{proposition}
+\begin{proof}
+若另一组正向基为 \((\eta_1,\eta_2)\)，由\eqref{b3:eq:23-basis-change}，存在 \(\gamma\in\operatorname{SL}_2(\mathbb Z)\) 使
+\[
+ \eta_1=\omega_1(c\tau+d),\quad
+ \frac{\eta_2}{\eta_1}=\gamma\tau,
+ \quad \tau=\frac{\omega_2}{\omega_1}.
+\]
+因此
+\[
+ \eta_1^{-k}f(\eta_2/\eta_1)
+ =\omega_1^{-k}(c\tau+d)^{-k}f(\gamma\tau)
+ =\omega_1^{-k}f(\tau).
+\]
+乘以非零复数 \(\lambda\) 后，\((\lambda\omega_1,\lambda\omega_2)\) 仍正向，基的比值不变而前因子乘以 \(\lambda^{-k}\)，得到尺度律。
+
+反过来，由\eqref{b3:eq:23-lattice-transformation}及尺度律，
+\[
+ f(\gamma\tau)
+ =\Phi((c\tau+d)^{-1}\Lambda_\tau)
+ =(c\tau+d)^k\Phi(\Lambda_\tau)
+ =(c\tau+d)^kf(\tau).
+\]
+这个计算没有使用 \(\operatorname{Im}\tau\to\infty\) 时的任何估计，所以不会自动给出尖点条件。
+\end{proof}
+
+格的点集满足 \(-\Lambda=\Lambda\)，所以奇数齐次权也会迫使 \(\Phi_f=0\)，与矩阵 \(-I\) 的判别相同。另一方面，权并不表示 \(f\) 作为变量 \(\tau\) 的普通齐次次数。缩放格与把参数 \(\tau\) 乘一个复数是两种不同操作。
+
+普通导数也不会自动把权提高二。设 \(k\in\mathbb Z\)，\(f\) 在 \(\mathfrak H\) 全纯并满足全模群权 \(k\) 的变换律。对这一变换律求导，使用 \((\gamma\tau)'=(c\tau+d)^{-2}\)，得到
+\begin{equation}\label{b3:eq:23-ordinary-derivative-law}
+ f'(\gamma\tau)
+ =(c\tau+d)^{k+2}f'(\tau)
+   +kc(c\tau+d)^{k+1}f(\tau).
+\end{equation}
+额外的一项来自权因子的导数。\subsecref{b3:subsec:230503}将构造修正项使它相消；这里先把普通导数的真实变换律保留下来。
 
 \subsection{尖点模形式}
 \label{b3:subsec:230303}
 
-若模形式在 \(q=0\) 的值为零，就称其为\term[jiandian-mo-xingshi]{尖点模形式}[cusp form]，空间记为 \(S_k\)。对全模群只需检查无穷远一个尖点，因为全部有理尖点等价。对有限指标子群通常有多个不等价尖点，不能沿用“只检查无穷远”的简化。
+若模形式的尖点常数项为零，它在退化端比一般模形式衰减得更快。这个性质对线性组合稳定，因而给出一个自然子空间。
+
+\Needspace{6\baselineskip}
+\begin{definition}\label{b3:def:23-cusp-form}
+设 \(k\in\mathbb Z\)，\(f\in M_k(\operatorname{SL}_2(\mathbb Z))\)，并令 \(F\) 为单位圆盘上的唯一全纯函数，满足 \(f(\tau)=F(e^{2\pi\mathrm{i}\tau})\)。若 \(F(0)=0\)，则称 \(f\) 为全模群上权 \(k\) 的\term[jiandian-mo-xingshi]{尖点模形式}[cusp form]。这类函数构成的复向量空间记为 \(S_k\) 或 \(S_k(\operatorname{SL}_2(\mathbb Z))\)。
+\end{definition}
+\symidx{\(S_k\)：全模群上权 \(k\) 的尖点模形式空间}
+
+常数项映射
+\[
+ a_0:M_k\longrightarrow\mathbb C,\quad f\longmapsto F(0)
+\]
+是线性的，其核恰为 \(S_k\)。因此 \(M_k/S_k\) 的维数至多为一。若已找到常数项非零的权 \(k\) 形式，将它除以常数项就得到 \(a_0=1\) 的形式，从任何同权 \(f\) 减去适当倍数后便进入 \(S_k\)。这一简单操作将成为后面模形式环归纳证明的第一步。
+
+尖点模形式乘以任何全纯模形式仍在尖点消失，所以 \(S_kM_\ell\subset S_{k+\ell}\)。不过，单独的周期性和衰减还不够：\(f(\tau)=e^{2\pi\mathrm{i}\tau}\) 周期一且在高处趋零，但它不是权零模形式。例如
+\[
+ f(2\mathrm{i})=e^{-4\pi},\quad
+ f(S(2\mathrm{i}))=f(\mathrm{i}/2)=e^{-\pi},
+\]
+不满足权零的 \(S\) 不变性。三个条件必须一起核对，不能由某一端的良好行为代替群变换律。
+
+这里检查一个尖点就够，是因为\subsecref{b3:subsec:230105}已证明全模群的有理尖点只有一条轨道。若用某个 \(\gamma\) 把 \(\infty\) 送到另一尖点，应先用 \(f|_k\gamma\) 表示该处函数；全模群的变换律使它仍等于 \(f\)，所以得到同一尖点条件。对有限指标子群可能出现多条尖点轨道，不能把本章的简化照搬过去。
 
 \subsection{Fourier 展开}
 \label{b3:subsec:230304}
 
-由周期一，每个模形式有唯一展开 \(f(\tau)=\sum_{n\ge0}a_nq^n\)。该级数在 \(|q|<1\) 内局部一致收敛。系数可由任意水平线给出
+现在证明前面使用的 \(q\) 表达式，并把尖点条件变成可以直接检查的增长条件。先暂时不要求 \(S\) 变换律，只保留周期性，这样就能看清 Fourier 展开究竟依赖哪一步。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[周期函数的尖点展开]\label{b3:prop:23-q-expansion}
+设 \(f:\mathfrak H\to\mathbb C\) 全纯，且 \(f(\tau+1)=f(\tau)\)。则存在唯一全纯函数
+\(F:\{q:0<|q|<1\}\to\mathbb C\)，满足 \(f(\tau)=F(e^{2\pi\mathrm{i}\tau})\)。其 Laurent 展开给
 \[
-a_n=e^{2\pi ny}\int_0^1 f(x+\mathrm{i}y)e^{-2\pi\mathrm{i}nx}\,\mathrm{d}x,
-\quad y>0.
+ f(\tau)=\sum_{n\in\mathbb Z}a_ne^{2\pi\mathrm{i}n\tau},
 \]
-沿矩形应用 Cauchy 定理，竖边因周期性相消，说明结果不依赖所选 \(y\)。这也把 Fourier 系数与复变量的 Taylor 系数精确联系起来。
+在 \(\mathfrak H\) 的紧集上局部一致收敛，并且对任意整数 \(n\) 和任意 \(y>0\)，
+\begin{equation}\label{b3:eq:23-fourier-coefficients}
+ a_n=e^{2\pi ny}\int_0^1
+        f(x+\mathrm{i}y)e^{-2\pi\mathrm{i}nx}\,\mathrm{d}x.
+\end{equation}
+以下三项等价：\(F\) 在 \(q=0\) 可去；存在 \(Y>0,C<\infty\) 使 \(|f(x+\mathrm{i}y)|\le C\) 对所有 \(x\in\mathbb R,y>Y\) 成立；所有 \(n<0\) 的 \(a_n\) 都为零。条件成立时，级数为 \(\sum_{n\ge0}a_nq^n\)，在整个 \(|q|<1\) 内收敛，且
+\[
+ \sup_{x\in\mathbb R}|f(x+\mathrm{i}y)-a_0|
+ =O(e^{-2\pi y})\quad(y\to\infty).
+\]
+\end{proposition}
+\begin{proof}
+给定 \(0<|q|<1\)，任选一个满足 \(q=e^{2\pi\mathrm{i}\tau}\) 的 \(\tau\in\mathfrak H\)，定义 \(F(q)=f(\tau)\)。另一个选择只会将 \(\tau\) 改变整数，周期性保证值不变。在每个不含零的小圆盘内可选取全纯对数，故 \(F(q)=f((2\pi\mathrm{i})^{-1}\log q)\) 局部全纯。这既证明存在性，也由指数映射的满射性证明唯一性。
+
+Laurent 定理在环域 \(0<|q|<1\) 给唯一展开 \(F(q)=\sum_{n\in\mathbb Z}a_nq^n\)，在每个紧子环域上一致收敛。\(\mathfrak H\) 中紧集的指数像是这种环域中的紧集，所以拉回也局部一致。系数公式为
+\[
+ a_n=\frac1{2\pi\mathrm{i}}
+        \int_{|q|=r}F(q)q^{-n-1}\,\mathrm{d}q,
+ \quad 0<r<1.
+\]
+取 \(r=e^{-2\pi y}\)，按 \(q=e^{2\pi\mathrm{i}(x+\mathrm{i}y)}\)、\(0\le x\le1\) 参数化这条正向圆周，便得到\eqref{b3:eq:23-fourier-coefficients}。这个推导也说明结果与 \(y\) 无关：不同高度只是计算同一个 Laurent 系数的不同积分圆周。
+
+若 \(F\) 在零点可去，它在某个闭小圆盘上有界；因为 \(|q|=e^{-2\pi y}\)，对应地 \(f\) 在整个高半平面有界。反过来，高半平面的一致界转成 \(F\) 在某个穿孔小圆盘上的界，由可去奇点定理得到全纯延拓。Laurent 定理又说明，可去性恰等价于全部负次系数为零。
+
+延拓后，\(F(q)=a_0+qB(q)\)，其中 \(B\) 在单位圆盘全纯。在一个固定闭小圆盘上 \(|B|\) 有界，故 \(|F(q)-a_0|\le C|q|\)。代入 \(q=e^{2\pi\mathrm{i}(x+\mathrm{i}y)}\) 就得到最后的一致估计。
+\end{proof}
+
+因此，对一个已经满足全模群变换律的全纯函数，验证尖点条件可以改为在 \(|\operatorname{Re}\tau|\le1/2\)、\(\operatorname{Im}\tau>Y\) 上取得统一界；周期性会把这个界延伸到整个高半平面。只沿一条竖线检查极限并不具有同样作用。例如
+\[
+ f(\tau)=\exp(-e^{-2\pi\mathrm{i}\tau})
+\]
+全纯且周期一，它对应 \(F(q)=e^{-1/q}\)。沿 \(\tau=\mathrm{i}y\) 有 \(f(\mathrm{i}y)=\exp(-e^{2\pi y})\to0\)，但沿 \(\tau=1/2+\mathrm{i}y\) 则有 \(f(\tau)=\exp(e^{2\pi y})\to\infty\)。一个方向的有限极限不能排除零点处的本性奇点。这个例子只用于检验周期函数的尖点行为，不声称它满足整个模群的变换律。
+
+对模形式，\eqref{b3:eq:23-fourier-coefficients}就是 Fourier 系数的复分析来源。级数在每个固定高度上按 \(x\) 展开成周期函数，又在 \(q\) 圆盘中是一条 Taylor 级数。这里没有调用 \(L^2\) Fourier 级数的完备性：全纯性已经给出比一般实变量周期函数更强的局部一致收敛。特别地，模形式由全部系数唯一确定，而尖点模形式恰是 \(a_0=0\) 的那些形式。
 
 \subsection{在尖点处消失}
 \label{b3:subsec:230305}
 
-非零形式的尖点消失阶 \(v_\infty(f)\) 是首个非零系数的指标。在足够高的半平面，\(f=q^m(a_m+O(q))\)，因此
-\(f'/f=2\pi\mathrm{i}m+O(e^{-2\pi y})\)，对 \(|x|\le1/2\) 一致。这一估计将负责价公式顶部边界的极限，不能仅由逐点趋零代替。
+尖点全纯只说明没有负次幂。若进一步需要计数零点，就应记录第一个非零幂次。设 \(f\in M_k\) 非恒零，写
+\[
+ f(\tau)=\sum_{n\ge0}a_nq^n,
+ \quad q=e^{2\pi\mathrm{i}\tau}.
+\]
+其尖点消失阶定义为
+\[
+ v_\infty(f)=\min\{n\ge0:a_n\ne0\}.
+\]
+非恒零保证这个最小值存在；若所有系数为零，Taylor 唯一性会使 \(f\equiv0\)。可约定零函数的阶数为 \(+\infty\)，但后面涉及对数导数的公式只用于非恒零函数。尖点形式满足 \(v_\infty(f)\ge1\)，而一般非零模形式允许阶数为零。
 
-\ProseParagraphBreak
+价公式还要处理在尖点有极点的函数，所以将同一计算保留到 Laurent 展开具有有限主部的情形。下面的一致估计是围道顶边取极限时的直接依据。
 
-周期性如何变成尖点展开，值得逐步说明。映射 \(q=e^{2\pi\mathrm{i}\tau}\) 将半平面 \(\operatorname{Im}\tau>Y\) 模平移映成穿孔圆盘 \(0<|q|<e^{-2\pi Y}\)。若 \(f(\tau+1)=f(\tau)\)，用任一局部对数把 \(q\) 拉回 \(\tau\) 定义函数；不同对数只差整数，周期性使定义一致。于是 \(f\) 对应一个穿孔圆盘全纯函数，它具有 Laurent 展开。要求尖点全纯，正是要求这个穿孔点可去，因而没有负次幂。
-\ProseParagraphBreak
-此说明同时给一个便于检查的等价条件：周期全纯函数在充分高的半平面有界，当且仅当其 \(q\) 表达在0点可去。若还趋于零，则常数项为零。反向由收敛幂级数在较小闭盘上一致收敛立即得到。仅要求沿一条竖直线有界不够，因为这只控制 \(q\) 平面的一条半径，不能使用孤立奇点的可去定理。
-\ProseParagraphBreak
-权的几何作用则从格尺度可见。若 \(f\) 的权为 \(k\)，在格 \(\omega_1(\mathbb Z+\tau\mathbb Z)\) 上考虑 \(\omega_1^{-k}f(\tau)\)，变换律恰保证换基后这一表达按同一个格对象解释。权不是函数的普通齐次次数，而是选择格基时必须补偿的尺度次数。因此不同权可以相乘、权相加，却不能在不记录分次的情况下随意相加为一个同权形式。
+\Needspace{6\baselineskip}
+\begin{proposition}[尖点阶数与对数导数]\label{b3:prop:23-cusp-order-estimate}
+设 \(Y_0\in\mathbb R\)，\(f\) 是半平面 \(\operatorname{Im}\tau>Y_0\) 上非恒零的周期一亚纯函数，其关于 \(q=e^{2\pi\mathrm{i}\tau}\) 的函数在 \(q=0\) 亚纯。设该 Laurent 展开的首项为 \(a_mq^m\)，其中 \(m\in\mathbb Z\)、\(a_m\ne0\)。则存在 \(Y>Y_0\) 和常数 \(C>0\)，使 \(f\) 在 \(\operatorname{Im}\tau>Y\) 没有零点及极点，而且对所有 \(x\in\mathbb R,y>Y\)，都有
+\begin{align}
+ \left|\frac{f(x+\mathrm{i}y)}{a_m e^{2\pi\mathrm{i}m(x+\mathrm{i}y)}}-1\right|
+ &\le Ce^{-2\pi y},\label{b3:eq:23-cusp-leading-term}\\
+ \left|\frac{f'(x+\mathrm{i}y)}{f(x+\mathrm{i}y)}-2\pi\mathrm{i}m\right|
+ &\le Ce^{-2\pi y}.\label{b3:eq:23-cusp-log-derivative}
+\end{align}
+这里 \(m=v_\infty(f)\)，极点的阶数按负整数计。
+\end{proposition}
+\begin{proof}
+尖点亚纯性给出分解 \(F(q)=q^mA(q)\)，其中 \(A\) 在零点某邻域全纯，且 \(A(0)=a_m\ne0\)。取足够小的 \(r>0\)，使 \(A\) 在 \(|q|\le r\) 无零点；再略缩小圆盘，\(A'\) 与 \(1/A\) 都有统一界。因此
+\[
+ A(q)=a_m+O(|q|),\quad
+ \frac{A'(q)}{A(q)}=O(1)
+\]
+对整个小圆盘一致成立。令 \(e^{-2\pi Y}<r\)，\(q\ne0\) 及 \(A(q)\ne0\) 说明 \(f\) 在所述高半平面无零极点。第一式来自 \(F(q)/(a_mq^m)=A(q)/a_m\)。
+
+对第二式，利用 \(q'(\tau)=2\pi\mathrm{i}q\) 直接计算
+\[
+ \frac{f'(\tau)}{f(\tau)}
+ =2\pi\mathrm{i}\left(m+q\frac{A'(q)}{A(q)}\right).
+\]
+余项绝对值不超过常数乘 \(|q|=e^{-2\pi y}\)，与辐角 \(2\pi x\) 无关，因而估计对全部 \(x\) 一致。
+\end{proof}
+
+这比“每条竖线上趋于某值”更强：它同时控制整条水平线，因此可沿长度为一的顶边积分并让高度趋于无穷。对 \(f\in S_k\setminus\{0\}\)，还得到 \(|f(x+\mathrm{i}y)|\le C e^{-2\pi m y}\)、\(m\ge1\)，说明尖点处的消失在上半平面中表现为指数衰减。
+
+由局部分解立即可得，在各函数均非恒零且在尖点亚纯时，
+\[
+ v_\infty(fg)=v_\infty(f)+v_\infty(g),\quad
+ v_\infty(f/g)=v_\infty(f)-v_\infty(g).
+\]
+若 \(f+g\not\equiv0\)，则 \(v_\infty(f+g)\ge\min(v_\infty(f),v_\infty(g))\)；两阶相等时首项可能相消而使不等式严格。后面从 \(E_4^3\) 与 \(E_6^2\) 相减构造判别式，正是有意制造这样的相消。
+
+最后，\(q=0\) 的阶数是尖点坐标中的阶数，不是把 \(\tau=\infty\) 当作普通有限点后读出的次数。有限的椭圆固定点另有 \(u^2\)、\(u^3\) 商坐标，它们与这里的指数坐标分工不同。\secref{b3:sec:2305}将把这些局部阶数放入同一条零点计数公式，而每一项所用的坐标都会保持明确。

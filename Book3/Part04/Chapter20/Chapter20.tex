@@ -2,88 +2,433 @@
 \chapter{Weierstrass 乘积、Mittag–Leffler 与 Hadamard 分解}
 \label{b3:ch:20}
 \BookChapterNumber{b3:ch:20}
-% 本章摘要（不计入编号）
 \begin{chapterabstract}
-无穷乘积通过扣除对数的低阶项实现指定零点，Mittag--Leffler 加法构造则实现指定主要部分。两种构造分别留下无零点乘法因子与整函数加法项。有限阶增长进一步将乘法因子压成指数多项式，得到 Hadamard 分解及正弦的典范乘积。
+离散零点和极点主要部分都可以用局部数据构造全平面函数，关键是修正远处项，使它们在每个内部紧集上形成可控的尾部。本章先建立正规无穷乘积及精确重数的判据，再以 Weierstrass 初等因子实现给定零点，以 Taylor 扣除实现给定主要部分，并将两种构造结合为整函数有限导数插值。有限阶增长进一步限制乘法自由度：通过典范乘积的选圆下界和 Borel--Carathéodory 估计，证明无零点商的对数为多项式，得到 Hadamard 分解。正弦、余弦乘积及余切展开展示零点、对称性与规范化共同确定具体函数的过程。
 \end{chapterabstract}
 
-% 本章目标（不计入编号）
 \begin{learninggoals}
-能检验正规乘积和零点阶数；能按离散序列选择初等因子；能构造整平面亚纯函数及整插值；能说明 Hadamard 证明中选圆周、乘积下界和实部控制的作用。
+\begin{itemize}
+\item 区分因子趋于一、对数可和与正规乘积收敛，分离有限零因子和非零尾部，核对极限中的准确重数。
+\item 使用初等因子的对数尾界选择固定或变动的属，保留重数权重，并说明对称分组为何不改变逐零点的标准属判据。
+\item 从离散零点构造整函数，描述同零点函数的指数自由度，辨明存在性与增长控制之间的区别。
+\item 用 Taylor 扣除构造指定主要部分，再将局部 Laurent 计算转为有限导数插值，追踪整函数加法自由度。
+\item 完成 Hadamard 证明中的计数估计、选圆下界、实部到模的转换及高阶系数消失，避免直接用分子分母的阶相减。
+\item 结合零点、有限阶、奇偶性和中心规范化推导特殊函数乘积，并在取对数导数、重排或比较系数前核验收敛范围。
+\end{itemize}
 \end{learninggoals}
 
-如果要在正整数处各放一个零点，直接相乘 \(1-z/n\) 会留下发散的一次对数项。把它改成 \((1-z/n)e^{z/n}\)，二次尾项就可以求和。一个看似小的指数修正使零点构造有了稳定的极限；而有限阶函数又反过来限制这些修正能增长多少。
+若要在每个正整数放一个单零点，有限乘积 \(\prod_{n\le N}(1-z/n)\) 看上去已经包含所需资料，但其对数的一次项是 \(-z\sum_{n\le N}1/n\)，不能随 \(N\to\infty\) 保持有限。把每个因子改为 \((1-z/n)e^{z/n}\)，一次项消失，剩余二次尾项便可以在固定紧集上求和。零点没有改变，改变的是无穷远项共同造成的影响。
 
 \ProseParagraphBreak
+\secref{b3:sec:2001}先把这一过程中的收敛问题分开。乘积收敛为零与收敛为非零数有不同含义；函数乘积还要保证同一个紧集上的一致控制。小圆对数把尾乘积变成级数，其指数保证尾部不消失，有限头部则负责零点及重数。逐项对数微分只能在避开零点的区域使用，在包含零点的邻域应先提出相应因子。
 
-本章使用\chapref{b3:ch:19}的零点计数与 Cauchy 估计。进一步阅读为 Conway 的《Functions of One Complex Variable I》\cite{Conway1978Functions}和 Levin 的《Lectures on Entire Functions》\cite{Levin1996Lectures}，可据零点构造与有限阶分解的主题继续阅读。
+\ProseParagraphBreak
+\secref{b3:sec:2002}系统地扣除低阶对数项。初等因子 \(E_p\) 将误差推到 \(p+1\) 次，固定属是否可用由带重数的绝对幂和决定。整数收敛指数需要另查临界幂和；正负或旋转对称的零点可以在分组后抵消低次项，但分组表达与逐零点的标准属是两项需要分别解释的资料。\secref{b3:sec:2003}进一步让修正次数随指标增加，从而只靠离散性实现任意零点及重数。
+
+\ProseParagraphBreak
+\secref{b3:sec:2004}转向加法构造。在远处极点的主要部分中减去足够多的 Taylor 项，就能保持每个局部负幂系数，同时让尾级数收敛。将一个指定零点的整函数与这样的亚纯函数相乘，还可以保留每个离散点的有限导数资料。整个构造不预设增长上界；若另外要求低阶或有界，必须重新检查这些资料是否相容。
+
+\ProseParagraphBreak
+\secref{b3:sec:2005}证明有限阶带来的刚性。已有的 Weierstrass 分解只给 \(f=P e^g\)，估计 \(g\) 需要同时控制分子上界和分母下界。零点附近没有全局下界，因此先在每个大尺度选一条离零点不太近的圆周。调和最大值原理把 \(\operatorname{Re}g\) 的上界传入圆盘，Borel--Carathéodory 估计再控制 \(g-g(0)\)，最后由 Cauchy 估计消去高阶系数。阅读正弦乘积等应用时，还应分别说明对称性消除了哪些指数项、中心值确定了哪个常数。
+
+\ProseParagraphBreak
+本章使用全纯对数、局部一致收敛与 Cauchy 公式，以及\chapref{b3:ch:19}的增长阶、系数估计和零点计数。Conway 的《Functions of One Complex Variable I》\cite{Conway1978Functions}和 Levin 的《Lectures on Entire Functions》\cite{Levin1996Lectures}可分别作为继续阅读整函数构造与有限阶增长问题的参考。正文中的乘积、主要部分构造及有限阶分解均给出所需证明；一般区域上的构造还需要适应该区域补集的逼近工具。
 
 \input{Part04/Chapter20/Section2001}
 \input{Part04/Chapter20/Section2002}
 \input{Part04/Chapter20/Section2003}
 \input{Part04/Chapter20/Section2004}
 \input{Part04/Chapter20/Section2005}
-% 本章小结（不计入编号）
-\begin{chaptersummary}
-对数可和性保证乘积尾部非零；初等因子使任意离散零点都能实现。扣除 Taylor 多项式把同一思想转成主要部分的加法构造。Hadamard 分解的额外责任是估计无零点商的实部，再用 Cauchy 估计证明其对数为多项式。正弦乘积展示了零点、增长与对称性共同确定特殊函数。
-\end{chaptersummary}
 
+\begin{chaptersummary}
+正规无穷乘积的尾部由一致可和的对数级数控制，因此既有全纯极限，也在没有零因子的地方保持非零。有限头部与非零尾部的分离给出准确重数。初等因子通过扣除低阶对数项实现这一控制，属的选择依赖带重数的幂和；对称分组虽能简化表达，仍应保留原来逐因子的收敛依据。
+
+\ProseParagraphBreak
+Weierstrass 构造将离散零点变成整函数，同一零点资料留下整指数的乘法自由度。Mittag--Leffler 构造将离散主要部分变成亚纯函数，同一主要部分资料留下整函数的加法自由度。两者结合得到任意离散有限导数插值，但不自动给出增长控制，也不自动排除插值函数的额外零点。
+
+\ProseParagraphBreak
+Hadamard 分解把一般的整指数自由度缩小为指数多项式。其证明先由计数函数控制典范乘积，再在合适圆周上建立下界；仅有乘积上界不足以估计商。实部比较与中心规范化随后使 Borel--Carathéodory 估计可用，Cauchy 估计才将有限阶条件转成多项式次数限制。有限阶与有限零点是独立条件，零阶整函数也可以保留无穷多个零点。
+
+\ProseParagraphBreak
+正弦、余弦乘积及余切展开同时使用零点、对称性和规范化。降低初等因子的阶数会改变指数修正项，取对数导数会把零点转成主要部分，比较局部系数会把乘积转成幂和恒等式。每一步都应在相应的正规收敛区域先完成，再通过可去奇点或恒等定理延伸到其余位置。
+\end{chaptersummary}
 
 \BookExercises
 
-% 本题组自拟；各题新增训练动作见题意，未复制第三方原题。
-\begin{exercise}\label{b3:ex:20-draft-01}
-说明 \(\prod_{n\ge2}(1-z/n^2)\) 是否正规收敛，列出零点。
+% 自拟：将一次和收敛而平方和发散的标量例子提升为整函数乘积，给出二次指数修正及不同方向的相反行为。
+\Needspace{6\baselineskip}
+\begin{exercise}[二次修正不能省去]\label{b3:ex:20-draft-01}
+令
+\[
+ P_N(z)=\prod_{n=1}^N\left(1+\frac{(-1)^nz}{\sqrt n}\right),\quad
+ S_N=\sum_{n=1}^N\frac{(-1)^n}{\sqrt n},\quad
+ H_N=\sum_{n=1}^N\frac1n.
+\]
+证明因子在每个紧集上一致趋于一，而且相应的一次项级数局部一致收敛，但 \(P_N\) 在原点的任何邻域都没有局部一致的有限极限。具体证明：若 \(0<|x|<1\)、\(x\in\mathbb R\)，则 \(P_N(x)\to0\)；若 \(0<|y|<1\)、\(y\in\mathbb R\)，则 \(|P_N(\mathrm iy)|\to\infty\)。最后证明修正后的
+\[
+ e^{z^2H_N/2}P_N(z)
+\]
+局部一致收敛到非恒零整函数，并确定它的全部零点与重数。
 \end{exercise}
 \begin{solution}
-固定紧集半径 \(R\) 时 \(\sum R/n^2<\infty\)，正规乘积定理给整函数。有限零因子与非零尾部的分离说明零点恰为 \(n^2\)、\(n\ge2\)，均简单。
+在 \(|z|\le R\) 上，因子与一的差至多 \(R/\sqrt n\)，所以一致趋于一。交错级数给 \(S_N\to S\in\mathbb R\)，而一次项部分和正是 \(zS_N\)，因此也在每个紧集上一致收敛。这两条性质尚未控制二次项。
+
+置 \(a_n=(-1)^{n+1}\sqrt n\)。其模趋于无穷，且 \(\sum_n|a_n|^{-3}<\infty\)，故
+\[
+ C_N(z)=\prod_{n=1}^NE_2(z/a_n)
+\]
+局部一致收敛到非恒零整函数 \(C\)，零点恰为互异的 \(a_n\)，均为单零点。有限乘积的定义直接给
+\[
+ C_N(z)=P_N(z)\exp\left(-zS_N+\frac{z^2}2H_N\right).
+\]
+所以
+\[
+ e^{z^2H_N/2}P_N(z)=e^{zS_N}C_N(z)
+ \longrightarrow e^{zS}C(z)
+\]
+局部一致成立。指数因子不增加零点，这就是最后所求的全部零点与重数；极限在原点取值一。
+
+原来的乘积则为
+\[
+ P_N(z)=\exp\left(zS_N-\frac{z^2}2H_N\right)C_N(z).
+\]
+对实数 \(x\)、\(0<|x|<1\)，有 \(C(x)\ne0\)、\(S_N\) 有界及 \(H_N\to\infty\)，故 \(P_N(x)\to0\)。对 \(z=\mathrm iy\)、\(0<|y|<1\)，线性指数项模为一，因而
+\[
+ |P_N(\mathrm iy)|=e^{y^2H_N/2}|C_N(\mathrm iy)|\longrightarrow\infty,
+\]
+因为 \(C(\mathrm iy)\ne0\)。每个原点邻域都包含这样的纯虚点，所以不存在局部一致的有限极限。一次项的相消没有消除发散的二次调和和；补回该二次项后，余下的三次尾项才绝对可和。
 \end{solution}
 
-\begin{exercise}\label{b3:ex:20-draft-02}
-对零点 \(a_n=\sqrt n\) 求收敛指数与最小可用属。
+% 自拟：用三重旋转分组比较标准属与无指数的分组表达，并从正因子最大模的积分极限计算精确型。
+\Needspace{6\baselineskip}
+\begin{exercise}[三重旋转零点的精确增长]\label{b3:ex:20-draft-02}
+令 \(\omega=e^{2\pi\mathrm i/3}\)，考虑
+\[
+ P(z)=\prod_{n=1}^\infty\left(1-\frac{z^3}{n^3}\right).
+\]
+证明该乘积正规收敛，求全部零点、收敛指数及逐零点标准初等因子的最小属。再证明
+\[
+ \prod_{j=0}^2E_1\left(\frac{z}{\omega^jn}\right)
+ =1-\frac{z^3}{n^3},
+\]
+并计算 \(P\) 的精确阶与型。提示：先确定哪个方向同时使每个因子达到三角不等式的上界，再把对数最大模写成一个实积分的 Riemann 和。
 \end{exercise}
 \begin{solution}
-幂和为 \(\sum n^{-s/2}\)，收敛当且仅当 \(s>2\)，所以指数二。\(p+1>2\) 才收敛，最小整数 \(p=2\)。
+在 \(|z|\le R\) 上，因子与一的差由 \(R^3/n^3\) 控制，正规乘积定理可用。每个因子的三个零点为 \(n,\omega n,\omega^2n\)，均简单；不同 \(n\) 的零点模不同，非零尾部又排除额外零点，故这就是全部零点。
+
+相应幂和为 \(3\sum_n n^{-s}\)，收敛指数是一，临界一次幂和发散。因此逐零点使用标准初等因子时，最小属为一。另一方面，\(1+\omega+\omega^2=0\)，所以三个 \(E_1\) 的一次指数修正相消，线性因子的乘积为 \(1-z^3/n^3\)，得到题中的恒等式。无指数的三次分组表达并不使逐零点的一次绝对幂和变成收敛级数。
+
+对 \(|z|=r\)，各因子均满足
+\[
+ \left|1-\frac{z^3}{n^3}\right|\le1+\frac{r^3}{n^3}.
+\]
+取 \(z=re^{\pi\mathrm i/3}\)，便有 \(z^3=-r^3\)，所有因子同时取等号。先对有限乘积应用此式，再取局部一致极限，得到
+\[
+ M(r,P)=\prod_{n=1}^\infty\left(1+\frac{r^3}{n^3}\right).
+\]
+记 \(g(t)=\log(1+t^{-3})\)。这是正的递减函数，在零点附近为 \(-3\log t+O(1)\)，在无穷远为 \(O(t^{-3})\)，因而在 \((0,\infty)\) 可积。单调积分比较给
+\[
+ \int_{1/r}^\infty g(t)\,\mathrm dt
+ \le\frac1r\sum_{n=1}^\infty g(n/r)
+ \le\int_0^\infty g(t)\,\mathrm dt.
+\]
+中间量正是 \(r^{-1}\log M(r,P)\)，所以其极限为右侧积分。
+
+分部积分的两个边界项都为零，故
+\[
+ \int_0^\infty\log(1+t^{-3})\,\mathrm dt
+ =3\int_0^\infty\frac{\mathrm dt}{1+t^3}.
+\]
+利用
+\[
+ \frac1{1+t^3}=\frac1{3(t+1)}+
+ \frac{-t+2}{3(t^2-t+1)},
+\]
+一个原函数为
+\[
+ \frac13\log(t+1)-\frac16\log(t^2-t+1)
+ +\frac1{\sqrt3}\arctan\frac{2t-1}{\sqrt3}.
+\]
+在零与无穷远取差得 \(2\pi/(3\sqrt3)\)。因此
+\[
+ \lim_{r\to\infty}\frac{\log M(r,P)}r=\frac{2\pi}{\sqrt3}.
+\]
+这个正的有限极限说明阶为一，型为 \(2\pi/\sqrt3\)。
 \end{solution}
 
-\begin{exercise}\label{b3:ex:20-draft-03}
-证明具有相同零点和重数的两个非恒零整函数之商为整指数。
+% 自拟：在任意有限jet插值上增加精确零点要求，用局部非零因子的对数插值避免额外零点。
+\Needspace{6\baselineskip}
+\begin{exercise}[保留全部零点的有限导数插值]\label{b3:ex:20-draft-03}
+设 \((a_n)\) 是有限或可数的互异复数列，无有限聚点。对每个 \(n\)，给定整数 \(m_n\ge0\)、\(k_n\ge1\)，以及次数小于 \(k_n\) 的多项式 \(U_n(w)\)，满足 \(U_n(0)\ne0\)。证明存在非恒零整函数 \(f\)，其零点恰为那些 \(m_n>0\) 的 \(a_n\)，重数恰为 \(m_n\)，并且
+\[
+ f(z)=(z-a_n)^{m_n}
+ \left(U_n(z-a_n)+O\bigl((z-a_n)^{k_n}\bigr)\right)
+ \quad(z\to a_n).
+\]
+说明为什么仅使用通常的整函数有限导数插值，还不能直接得到这里的精确零点结论。
 \end{exercise}
 \begin{solution}
-商在共同零点处可去且无零点。对数导数整，在整平面有原函数 \(g\)；商乘 \(e^{-g}\) 导数零为非零常数，再把常数选一复对数并吸收进 \(g\)。
+先用 Weierstrass 定理取一个整函数 \(P\)，其全部零点恰为 \(m_n>0\) 的那些点，重数为 \(m_n\)；若没有零点，取 \(P=1\)。在每个 \(a_n\) 附近写成
+\[
+ P(z)=(z-a_n)^{m_n}p_n(z),\quad p_n(a_n)\ne0.
+\]
+这个表达也包括 \(m_n=0\) 的情形，此时 \(p_n=P\)。函数
+\[
+ V_n(z)=\frac{U_n(z-a_n)}{p_n(z)}
+\]
+在 \(a_n\) 附近全纯且非零。缩小圆盘后，可以取一个全纯对数 \(L_n\)，使 \(e^{L_n}=V_n\)。各点处对数的常数分支可以独立选择，因为只在互不混淆的局部邻域规定有限资料。
+
+由整函数有限导数插值定理，存在整函数 \(h\)，在每个 \(a_n\) 满足
+\[
+ h(z)-L_n(z)=O\bigl((z-a_n)^{k_n}\bigr).
+\]
+令 \(f=P e^h\)。指数在全平面处处非零，所以 \(f\) 的全部零点和重数与 \(P\) 完全相同。另一方面，局部有
+\[
+ e^{h(z)}=e^{L_n(z)}
+ \left(1+O\bigl((z-a_n)^{k_n}\bigr)\right).
+\]
+乘上 \((z-a_n)^{m_n}p_n(z)\)，并用 \(p_n e^{L_n}=U_n(z-a_n)\)，就得到题中的局部展开。因 \(U_n\) 在小邻域有界，乘法不会降低余项的消失阶数。
+
+普通插值只规定选定点附近的有限系数，没有限制其他位置的零点。例如条件 \(F(0)=1\) 既允许无零点的常函数，也允许 \(F(z)=1-z\)。这里把修正放入指数，才确保实现局部资料时不会加入任何额外零点；这个存在性构造仍不许诺统一的增长上界。
 \end{solution}
 
-\begin{exercise}\label{b3:ex:20-draft-04}
-构造在每个整数 \(n\) 留数为一、没有其他极点的亚纯函数。
+% 自拟：将Mittag--Leffler的整函数自由度与周期性、竖向增长结合，借指数坐标和Laurent系数完成分类。
+\Needspace{6\baselineskip}
+\begin{exercise}[周期主要部分与增长自由度]\label{b3:ex:20-draft-04}
+固定整数 \(d\ge0\)。求全部复平面亚纯函数 \(F\)，满足：极点恰为整数，均为留数一的简单极点；\(F(z+1)=F(z)\)；并存在 \(C<\infty\)，使
+\[
+ |F(x+\mathrm iy)|\le Ce^{2\pi d|y|}
+ \quad(0\le x\le1,\ |y|\ge1).
+\]
+增长界只在上述远离极点的区域要求。证明答案为
+\[
+ F(z)=\pi\cot\pi z+\sum_{k=-d}^dc_ke^{2\pi\mathrm i kz},
+ \quad c_k\in\mathbb C.
+\]
+特别说明：单有周期性、主要部分及 \(F(1/2)=0\) 是否保证唯一；若再有 \(d=0\) 的增长界，结论如何改变。
 \end{exercise}
 \begin{solution}
-\(\pi\cot\pi z\) 在整数附近为 \(1/(z-n)+\)全纯项，所以符合。它由正弦、余弦整函数之商定义，其他点正弦非零，故无额外极点。
+函数 \(\pi\cot\pi z\) 有相同的主要部分和周期，因此
+\[
+ g(z)=F(z)-\pi\cot\pi z
+\]
+在各整数处可去，成为周期为一的整函数。由
+\[
+ \cot\pi z=\mathrm i\frac{e^{2\pi\mathrm iz}+1}{e^{2\pi\mathrm iz}-1},
+\]
+可见它在 \(|\operatorname{Im}z|\ge1\) 一致有界。于是 \(g\) 也满足题设的竖向指数界，至多扩大常数。
+
+令 \(w=e^{2\pi\mathrm iz}\)。同一 \(w\ne0\) 的两个原像相差整数，故周期性使
+\(G(w)=g(z)\) 良定义。每个非零 \(w\) 的小邻域都有对数分支，用它选择局部原像便知 \(G\) 在 \(\mathbb C\setminus\{0\}\) 全纯。由于 \(|w|=e^{-2\pi y}\)，增长界变成
+\[
+ |G(w)|\le C_1|w|^{-d}\quad(0<|w|\le e^{-2\pi}),\quad
+ |G(w)|\le C_1|w|^d\quad(|w|\ge e^{2\pi}).
+\]
+\(G\) 的 Laurent 系数可以在任意正半径的圆周上计算。对 \(k>d\)，令积分半径 \(R\to\infty\)，得到
+\[
+ |c_k|\le C_1R^{d-k}\longrightarrow0.
+\]
+对 \(k<-d\)，令半径 \(R\downarrow0\)，则
+\[
+ |c_k|\le C_1R^{-d-k}\longrightarrow0.
+\]
+所以 \(G(w)=\sum_{k=-d}^dc_kw^k\)，还原指数坐标便得所述分类。
+
+反过来，每个这样的有限和都整且周期为一，不会改变余切的极点主要部分。在题设区域，单项的模为 \(e^{-2\pi ky}\le e^{2\pi d|y|}\)，有限求和后满足同一类增长界，故所有给出的函数都可行。
+
+若只有主要部分、周期性及 \(F(1/2)=0\)，函数
+\[
+ \pi\cot\pi z+\lambda\sin2\pi z,\quad\lambda\in\mathbb C,
+\]
+已经给出不同的实现。因此这些条件本身不保证唯一。若有 \(d=0\) 的界，分类只剩 \(F=\pi\cot\pi z+c_0\)，再由 \(F(1/2)=0\) 得 \(c_0=0\)，这时才唯一。
 \end{solution}
 
-\begin{exercise}\label{b3:ex:20-draft-05}
-解释为何任何给定复数列 \(b_n\) 都能作为某整函数在正整数处的值。
+% 自拟：从有限阶分解求移位正弦双乘积，保留半整数处的重数，并用四阶对数系数计算移位幂和。
+\Needspace{6\baselineskip}
+\begin{exercise}[移位乘积与四次幂和]\label{b3:ex:20-draft-05}
+固定 \(a\in\mathbb C\setminus\mathbb Z\)。证明
+\[
+ \frac{\sin\pi(a+z)\sin\pi(a-z)}{\sin^2\pi a}
+ =\prod_{n\in\mathbb Z}\left(1-\frac{z^2}{(n-a)^2}\right),
+\]
+右侧在任意紧集上正规收敛，与整数的枚举顺序无关；当 \(a\) 为半整数时也要保留准确重数。由此证明
+\[
+ \sum_{n\in\mathbb Z}\frac1{(n-a)^4}
+ =\frac{\pi^4\bigl(2+\cos2\pi a\bigr)}{3\sin^4\pi a},
+\]
+并求 \(\sum_{n=0}^\infty(2n+1)^{-4}\)。
 \end{exercise}
 \begin{solution}
-正整数离散。取简单零点恰为正整数的整函数 \(P\)，用 Mittag--Leffler 构造主要部分 \(b_n/(P'(n)(z-n))\) 的 \(G\)。乘积 \(PG\) 的各极点可去，值为 \(b_n\)，没有增长限制。
+因 \(a\notin\mathbb Z\)，所有 \(n-a\ne0\)，且 \(\sum_{n\in\mathbb Z}|n-a|^{-2}<\infty\)。因此右侧乘积在紧集上正规收敛并允许重排，其零点按每个因子列为 \(n-a\) 和 \(-(n-a)\)。若两个列出的点相同，应把相应重数相加。
+
+左侧记为 \(A(z)\)，它是偶整函数，\(A(0)=1\)，阶不超过一，零点恰为上述两列。若 \(a\) 是非整数的半整数，两列重合，对应零点都为二重；其他情形逐项按实际重数记录。对 \(A\) 使用 Hadamard 分解，再将每对相反零点的属一因子相乘，得到
+\[
+ A(z)=e^{\alpha z+\beta}
+ \prod_{n\in\mathbb Z}\left(1-\frac{z^2}{(n-a)^2}\right).
+\]
+这个配对合法，因为逐零点的属一乘积正规收敛。两侧的乘积和 \(A\) 都为偶函数，故 \(e^{\alpha z}=e^{-\alpha z}\)，在原点求导得 \(\alpha=0\)；再由 \(A(0)=1\) 得 \(e^\beta=1\)。乘积恒等式遂成立。
+
+令 \(s=\sin\pi a\ne0\)。三角恒等式给
+\[
+ A(z)=1-\frac{\sin^2\pi z}{s^2}
+ =1-\frac{\pi^2}{s^2}z^2+\frac{\pi^4}{3s^2}z^4+O(z^6).
+\]
+在原点取值为零的对数分支因而满足
+\[
+ \log A(z)=-\frac{\pi^2}{s^2}z^2
+ +\left(\frac{\pi^4}{3s^2}-\frac{\pi^4}{2s^4}\right)z^4+O(z^6).
+\]
+另一方面，取 \(0<r<\operatorname{dist}(a,\mathbb Z)\)。在 \(|z|\le r\) 上，乘积对数的双重级数绝对一致收敛，因为
+\[
+ \sum_{n\in\mathbb Z}\sum_{k\ge1}
+ \frac{|z|^{2k}}{k|n-a|^{2k}}
+ \le\frac{r^2}{1-r^2/\operatorname{dist}(a,\mathbb Z)^2}
+ \sum_{n\in\mathbb Z}|n-a|^{-2}<\infty.
+\]
+所以可交换求和并比较系数，得到
+\[
+ \log A(z)
+ =-z^2\sum_{n\in\mathbb Z}(n-a)^{-2}
+ -\frac{z^4}2\sum_{n\in\mathbb Z}(n-a)^{-4}+O(z^6).
+\]
+四次项给
+\[
+ \sum_{n\in\mathbb Z}(n-a)^{-4}
+ =\pi^4\left(\frac1{s^4}-\frac2{3s^2}\right)
+ =\frac{\pi^4(2+\cos2\pi a)}{3\sin^4\pi a}.
+\]
+取 \(a=1/2\)，右侧为 \(\pi^4/3\)。左侧中每个正奇数分母出现正、负两次，并各带因子 \(2^4\)，故
+\[
+ 32\sum_{n=0}^\infty(2n+1)^{-4}=\frac{\pi^4}3,
+ \quad
+ \sum_{n=0}^\infty(2n+1)^{-4}=\frac{\pi^4}{96}.
+\]
 \end{solution}
 
-\begin{exercise}\label{b3:ex:20-draft-06}
-证明无零点有限阶整函数形为 \(e^Q\)，且阶正数时必为整数。
+% 自拟：结合同零点有限阶分解与两射线上的模数据，按角度的有理性分类剩余指数多项式。
+\Needspace{6\baselineskip}
+\begin{exercise}[两射线模数据的刚性]\label{b3:ex:20-draft-06}
+设非恒零整函数 \(f,g\) 具有完全相同的零点及重数，阶都不超过有限数 \(\rho\)。固定 \(0<\alpha<\pi\)，并假设
+\[
+ |f(r)|=|g(r)|,\quad
+ |f(re^{\mathrm i\alpha})|=|g(re^{\mathrm i\alpha})|
+ \quad(r\ge0).
+\]
+证明：若 \(\alpha/\pi\) 无理，则 \(f/g\) 为模一常数；若 \(\alpha/\pi=p/q\) 为既约分数，则
+\[
+ \frac{f(z)}{g(z)}=\exp\bigl(\mathrm i P(z^q)\bigr),
+\]
+其中 \(P\) 为实系数多项式，次数不超过 \(\lfloor\rho/q\rfloor\)。说明在后一情形，\(\rho<q\) 时，在某点 \(z_0\) 有 \(f(z_0)=g(z_0)\ne0\) 即可保证 \(f=g\)，而在 \(\rho=q\) 这个结论一般失效。
 \end{exercise}
 \begin{solution}
-Hadamard 乘积为空，且无原点零点，故为指数多项式。非恒定 \(Q\) 的次数 \(d\) 给最大模对数 \(|a_d|r^d+O(r^{d-1})\)，阶为整数 \(d\)。常数对应阶零。
+同零点的有限阶分解给出
+\[
+ f/g=e^Q,\quad \deg Q\le\rho,
+\]
+商在共同零点处按可去奇点补值。两条射线上的模相等先在非零点给 \(|e^Q|=1\)，再由连续性扩到共同零点，所以
+\[
+ \operatorname{Re}Q(r)=0,\quad
+ \operatorname{Re}Q(re^{\mathrm i\alpha})=0\quad(r\ge0).
+\]
+写 \(Q(z)=\sum_k c_kz^k\)。第一个实多项式恒等式说明每个 \(\operatorname{Re}c_k=0\)，故可写 \(c_k=\mathrm i b_k\)、\(b_k\in\mathbb R\)。第二个恒等式于是成为
+\[
+ -\sum_k b_k\sin(k\alpha)r^k=0,
+\]
+所以对每个 \(k\ge1\)，有 \(b_k\sin(k\alpha)=0\)。
+
+若 \(\alpha/\pi\) 无理，所有 \(k\ge1\) 都有 \(\sin(k\alpha)\ne0\)，从而 \(Q=\mathrm i b_0\)，商为模一常数。若 \(\alpha/\pi=p/q\) 既约，则 \(\sin(k\alpha)=0\) 当且仅当 \(q\) 整除 \(k\)。因此
+\[
+ Q(z)=\mathrm i\sum_{j=0}^{\lfloor\rho/q\rfloor}b_{qj}z^{qj}
+ =\mathrm iP(z^q),
+\]
+正是所求形式。反过来，这样的指数在两条射线上的模都为一，因此条件也准确描述了剩余自由度。
+
+当 \(\rho<q\) 时，\(P\) 只能是实常数。若另有某点 \(z_0\) 满足 \(f(z_0)=g(z_0)\ne0\)，这个常数指数因子只能等于一，故 \(f=g\)。在 \(\rho=q\) 时，取
+\[
+ f(z)=e^{\mathrm iz^q},\quad g(z)=1.
+\]
+二者都无零点，在两条射线上模一，在原点取值同为一，但并不相等；前者的阶为 \(q\)。所以达到这个增长尺度时，非恒定指数自由度确实可能出现。
 \end{solution}
 
-\begin{exercise}\label{b3:ex:20-draft-07}
-由正弦乘积计算 \(\sum_{n\ge1}n^{-2}\)。
+% 自拟：将无零点有限阶分类与高阶导数多项式递推结合；无穷阶反例仅用于一阶导数并明确说明范围。
+\Needspace{6\baselineskip}
+\begin{exercise}[无零点导数的有限阶限制]\label{b3:ex:20-draft-07}
+设整函数 \(f\) 具有有限阶，并且存在整数 \(k\ge1\)，使 \(f\) 与 \(f^{(k)}\) 在全平面都处处非零。证明
+\[
+ f(z)=Ce^{az},\quad C,a\in\mathbb C\setminus\{0\}.
+\]
+证明可以通过 \(f=e^Q\) 后的导数递推完成，但须说明递推多项式的次数与首项为何不会抵消。最后在 \(k=1\) 时给出一个无穷阶反例，说明有限阶条件不能删去。
 \end{exercise}
 \begin{solution}
-除以 \(\pi z\)，原点二阶系数由正弦级数为 \(-\pi^2/6\)。正规乘积展开的二阶系数为 \(-\sum n^{-2}\)，系数比较得 \(\pi^2/6\)。逐项取系数由局部一致收敛及 Cauchy 公式合法。
+无零点有限阶整函数的分类给 \(f=e^Q\)，其中 \(Q\) 为多项式。若 \(Q\) 为常数，\(f^{(k)}=0\)，违反题设，所以 \(d=\deg Q\ge1\)。定义多项式
+\[
+ R_0=1,\quad R_{j+1}=R_j'+Q'R_j.
+\]
+逐次求导表明 \(f^{(j)}=e^Q R_j\)。
+
+设 \(d\ge2\)，且 \(Q\) 的首项为 \(b_dz^d\)。归纳可得
+\[
+ \deg R_j=j(d-1),\quad
+ R_j\text{ 的首项系数为 }(db_d)^j.
+\]
+起点 \(j=0\) 明显。若结论对 \(j\) 成立，则 \(Q'R_j\) 的次数为 \((j+1)(d-1)\)，首项系数为 \((db_d)^{j+1}\ne0\)；\(R_j'\) 的次数至多为 \(j(d-1)-1\)，不能抵消这个首项。归纳因而成立。
+
+特别地，\(R_k\) 是正次数多项式，必有复零点，该点也是 \(f^{(k)}\) 的零点，矛盾。因此 \(d=1\)，写 \(Q(z)=az+b\)、\(a\ne0\)，得到所求 \(f=Ce^{az}\)、\(C=e^b\ne0\)。反过来，这样的函数及任意阶导数都处处非零。
+
+在 \(k=1\) 时，取 \(f(z)=e^{e^z}\)。它与
+\(f'(z)=e^ze^{e^z}\) 都无零点，但 \(f\) 是无穷阶，不能写成 \(Ce^{az}\)。这个反例只针对一阶导数；例如其二阶导数为 \(e^ze^{e^z}(1+e^z)\)，已经有零点，不能把同一例子无说明地用于每个 \(k\)。
 \end{solution}
 
-\begin{exercise}\label{b3:ex:20-draft-08}
-说明 \(e^{e^z}\) 有无零点，并判断其是否能写成指数多项式。
+% 自拟：将正弦的成对零点分配给两个反射因子，分类全部阶至多一的实现，并检验有限中心规范化仍留下离散自由度。
+\Needspace{6\baselineskip}
+\begin{exercise}[正弦乘积的反射因子]\label{b3:ex:20-draft-08}
+求全部阶不超过一的整函数 \(f\)，满足
+\[
+ f(z)f(-z)=\frac{\sin\pi z}{\pi z},
+\]
+右侧在原点取可去值一。对任意符号列 \(\varepsilon_n\in\{-1,1\}\)，定义
+\[
+ P_{\varepsilon}(z)=\prod_{n=1}^\infty E_1\left(\frac{z}{\varepsilon_n n}\right).
+\]
+证明所有解恰为
+\[
+ f(z)=\eta e^{az}P_{\varepsilon}(z),
+ \quad a\in\mathbb C,\quad\eta\in\{-1,1\},
+\]
+其中符号列可以任意选择。特别说明附加 \(f(0)=1\)、\(f'(0)=0\) 后，解是否唯一。
 \end{exercise}
 \begin{solution}
-指数无零点，但函数无穷阶。若为 \(e^Q\)，其阶将为多项式次数，有限，矛盾。这显示 Hadamard 的有限阶条件不能删。
+先验证构造。任意符号列都满足 \(\sum_n|\varepsilon_n n|^{-2}<\infty\)，故属一乘积正规收敛，零点恰为 \(\varepsilon_n n\)，均简单。其计数函数为 \(\lfloor r\rfloor\)，典范乘积的全半径上界给：对每个 \(\delta>0\)，有
+\[
+ \log M(r,P_{\varepsilon})\le C_\delta r^{1+\delta}
+\]
+于大半径。因此 \(P_{\varepsilon}\) 的阶不超过一；其零点收敛指数为一，也说明阶恰为一。这里使用的是计数假设下的乘积上界，没有预先假定该构造已经具有有限阶。
+
+对有限乘积，逐因子恒等式给
+\[
+ E_1\left(\frac z{\varepsilon_n n}\right)
+ E_1\left(-\frac z{\varepsilon_n n}\right)
+ =1-\frac{z^2}{n^2}.
+\]
+局部一致取极限并使用正弦乘积，得到
+\[
+ P_{\varepsilon}(z)P_{\varepsilon}(-z)
+ =\prod_{n=1}^\infty\left(1-\frac{z^2}{n^2}\right)
+ =\frac{\sin\pi z}{\pi z}.
+\]
+乘上 \(\eta e^{az}\) 不改变反射乘积，因为 \(\eta^2=1\)、\(e^{az}e^{-az}=1\)。该乘法仍保持阶不超过一，故题中每个构造都是解。
+
+反过来，设 \(f\) 为任意这样的解。由原点值知 \(f(0)^2=1\)，原点不是零点。右侧在每个非零整数只有一个单零点，所以在 \(n\) 与 \(-n\) 中，\(f\) 必须恰有一个简单零点：两点的零点重数之和等于反射乘积在 \(n\) 的重数一。其他位置不能有零点，否则反射乘积也会在那里为零。于是存在唯一的符号列 \(\varepsilon_n\)，使 \(f\) 与 \(P_{\varepsilon}\) 的全部零点及重数相同。
+
+两者的阶都不超过一，同零点有限阶分解给
+\[
+ f(z)=e^{az+b}P_{\varepsilon}(z).
+\]
+代入反射恒等式，得到 \(e^{2b}=1\)，所以 \(e^b=\eta\in\{-1,1\}\)。这就证明了分类的完备性。
+
+最后，每个 \(E_1\) 在原点的值为一、导数为零，局部一致收敛允许对有限乘积的中心值和导数取极限，故
+\[
+ P_{\varepsilon}(0)=1,\quad P_{\varepsilon}'(0)=0.
+\]
+附加的两个条件因此只强制 \(\eta=1\)、\(a=0\)，仍允许任意符号列。不同符号列给出不同零点集合，从而给出不同整函数；中心的两个规范化条件没有决定每对相反零点应分配给哪个反射因子。
 \end{solution}

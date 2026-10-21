@@ -2,73 +2,272 @@
 \section{Schwarz–Christoffel 公式}
 \label{b3:sec:0703}
 
-多边形的边界曲率集中在顶点。直边允许 Schwarz 反射，顶点内角决定映射导数的幂次。把这些局部信息合并，就得到可积分的全局公式。
+Riemann 映射定理保证多边形内部有半平面参数，却没有直接给出这个参数的计算公式。多边形的特殊之处是：沿每条边，映射导数的方向保持不变；经过顶点，方向的变化又由内角决定。本节先把这些边界信息写成局部全纯延拓，再考察对数导数 \(f''/f'\)。它在各顶点的奇性都有明确的极部，而在其余边界点没有奇性，因而能够由有限个内角资料完全确定。
 
-\subsection{多边形区域}
+\subsection{多边形区域与直边反射}
 \label{b3:subsec:070301}
 
-设 \(P\) 是有界简单多边形内部，顶点按正向顺序为 \(w_1,\ldots,w_n\)，内角为 \(\alpha_j\pi\)、\(0<\alpha_j<2\)。由 Riemann 映射与 Jordan 边界同胚，可把上半平面双全纯映到 \(P\)，并在扩充实轴上标记预顶点 \(x_j\)。选取上半平面自同构，可令无穷远对应某条边的内部点，故所有 \(x_j\) 都有限。
+设 \(P\) 是有界简单多边形的内部，顶点按正向循环次序记为 \(w_1,\ldots,w_n\)，内角为 \(\alpha_j\pi\)，其中 \(0<\alpha_j<2\)。这里正向是指沿边界行进时区域位于左侧。多边形边界是 Jordan 曲线，所以由 Riemann 映射定理及\cref{b3:thm:07-caratheodory-jordan}，存在双全纯映射 \(f:\mathbb H\rightarrow P\)，并且它在扩充实轴 \(\mathbb R\cup\{\infty\}\) 上延为边界同胚。顶点的原像称为预顶点。预先把一个边内点的原像移到无穷远，再从其后一顶点开始编号，便可使全部预顶点有限，且有
+\[
+ x_1<\cdots<x_n,\quad f(x_j)=w_j.
+\]
+此时无穷远位于 \(x_n\) 到 \(x_1\) 的循环边界弧上，对应边 \([w_n,w_1]\) 的内部点。
 
-\term[schwarz-fanshe-yuanli]{Schwarz 反射原理}[Schwarz reflection principle]先在直边上表述。
+\ProseParagraphBreak
+\term[schwarz-fanshe-yuanli]{Schwarz 反射原理}[Schwarz reflection principle]把直线上的连续边界值变成跨边界的全纯延拓。下面的初等形式足以处理所有直边。
 
+\Needspace{6\baselineskip}
 \begin{proposition}[直边反射]\label{b3:prop:07-schwarz-reflection}
-若 \(g\) 在上半圆盘全纯，连续到直径且直径上取实值，则它按 \(g(\overline z)=\overline{g(z)}\) 全纯延到整个圆盘。
+设 \(a\in\mathbb R\)、\(R>0\)，并记
+\[
+ D=\{\,z\in\mathbb C:|z-a|<R\,\},\quad
+ D^+=D\cap\mathbb H,\quad I=(a-R,a+R).
+\]
+若 \(g\) 在 \(D^+\) 全纯，连续到 \(D^+\cup I\)，且 \(g(I)\subseteq\mathbb R\)，则
+\[
+ \widetilde g(z)=
+ \begin{cases}
+ g(z),&\operatorname{Im}z\ge0,\\
+ \overline{g(\overline z)},&\operatorname{Im}z<0
+ \end{cases}
+ \quad (z\in D)
+\]
+是 \(g\) 到整个圆盘 \(D\) 的唯一全纯延拓。
 \end{proposition}
 \begin{proof}
-定义下半盘上的反射式，直径实值使拼接连续。任何跨直径的小三角形可沿距直径 \(\varepsilon\) 的平行线分割，两侧积分为零；令 \(\varepsilon\downarrow0\)，新增切边相消。Morera 定理给拼接函数全纯。对非水平直边先作仿射旋转即可。
+直径上的值为实数，所以两个表达式在直径处有相同极限，拼接函数在 \(D\) 连续。若上半盘内的一个局部展开为 \(g(z)=\sum_{k\ge0}c_k(z-z_*)^k\)，则下半盘相应位置的展开为 \(\sum_{k\ge0}\overline{c_k}(z-\overline{z_*})^k\)，从而下侧也全纯。\cref{b3:prop:02-line-gluing}说明，跨一条直线连续且在两侧分别全纯的函数，在整邻域全纯；它正好适用于这个拼接函数。唯一性由恒等定理得到。
 \end{proof}
-反射要求直径上确实有连续实值。只知道上半盘全纯、或仅知道几乎处处实边界值，不足以直接套用这项初等版本。
+
+对一般直线，只需明确源、目标两边的仿射坐标。源直线若为 \(a+e^{\mathrm{i}\theta}\mathbb R\)，先写 \(z=a+e^{\mathrm{i}\theta}\zeta\)，将指定的一侧化为 \(\operatorname{Im}\zeta>0\)。目标直线若为 \(L=b+e^{\mathrm{i}\beta}\mathbb R\)，则对 \(e^{-\mathrm{i}\beta}\cdot(g-b)\) 使用命题。返回原坐标时，目标反射为
+\[
+ R_L(w)=b+e^{2\mathrm{i}\beta}\cdot\overline{w-b}.
+\]
+例如源直线已经是实轴时，下侧延拓就是
+\[
+ \widetilde g(z)=b+e^{2\mathrm{i}\beta}\cdot
+ \overline{g(\overline z)-b}.
+\]
+只有连续实边界值或连续的直线边界值才符合这里的假设。几乎处处存在的边界值属于更一般的问题，不能直接用这项粘合论证处理。
+
+\ProseParagraphBreak
+反射使边界点成为内部全纯点，却还没有排除该点的导数为零。多边形映射另有一项信息：内部点位于直边的指定一侧。下面把这一几何条件转成零点阶数的限制，稍后也将用它处理角点。
+
+\Needspace{6\baselineskip}
+\begin{lemma}[半平面边界零点的阶数]\label{b3:lem:07-boundary-simple-zero}
+设 \(a\in\mathbb R\)、\(R>0\)。函数 \(g\) 在上半圆盘 \(D^+=\{\,z:|z-a|<R,\ \operatorname{Im}z>0\,\}\) 全纯，连续到它的开直径 \(I=(a-R,a+R)\)，满足
+\[
+ \operatorname{Im}g(z)>0\quad(z\in D^+),\quad
+ g(I)\subseteq\mathbb R,\quad g(a)=0.
+\]
+则 \(g\) 的直边反射延拓在 \(a\) 有简单零点，而且 \(g'(a)>0\)。
+\end{lemma}
+\begin{proof}
+由\cref{b3:prop:07-schwarz-reflection}，\(g\) 全纯延到整个圆盘。它在上半盘虚部为正，故不恒零；又因在实轴上为实值，其 Taylor 系数均为实数。设首个非零项为
+\[
+ g(a+\xi)=c\xi^m+O(\xi^{m+1}),\quad
+ c\in\mathbb R\setminus\{0\},\quad m\ge1.
+\]
+沿 \(\xi=re^{\mathrm{i}\theta}\)、\(0<\theta<\pi\)，有
+\[
+ \operatorname{Im}g(a+re^{\mathrm{i}\theta})
+ =cr^m\cdot\sin(m\theta)+O(r^{m+1}).
+\]
+若 \(c<0\)，取 \(\theta=\pi/(2m)\)，右侧首项为负。若 \(c>0\) 而 \(m\ge2\)，则取 \(\theta=3\pi/(2m)\in(0,\pi)\)，首项仍为负。两种情形都在充分小的 \(r>0\) 时违反虚部为正。因此只有 \(m=1\)、\(c>0\) 可能，这正是所要的结论。
+\end{proof}
+
+在多边形的一条开边上，先把边界值减去并旋转，使局部内部位于上半平面，便符合这条引理。因此保形映射跨开边反射后，边界导数也不为零。这里的非零性使用了区域位于一侧的条件，不能单凭反射公式或边界连续性断言。
 
 \subsection{内角}
 \label{b3:subsec:070302}
 
-在 \(w_j\) 附近用 \((w-w_j)^{1/\alpha_j}\) 把角域拉直到半平面。分支选在多边形局部内部，连续到两条边。与 \(f\) 复合后，可跨 \(x_j\) 反射。拉直后的映射在 \(x_j\) 有一个简单零点：若阶数大于1，局部标准形将在半邻域中覆盖过大的角度，违反其到半平面的单射性与两侧对应。故有
+在顶点处，两个边段的方向不同，不能同时用一次仿射旋转把它们拉成一条直线。幂函数能改变夹角：如果在角域内固定 \(0<\arg u<\alpha\pi\)，则 \(u^{1/\alpha}\) 的辐角属于 \((0,\pi)\)，恰把这个角域拉直到上半平面。先拉直再反射，便能把顶点附近的映射还原成一个简单零点。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[多边形角点的局部因子]\label{b3:prop:07-corner-factorization}
+设 \(P\subseteq\mathbb C\) 为有界简单多边形的内部，\(f:\mathbb H\rightarrow P\) 双全纯，并连续延为扩充实轴到 \(\partial P\) 的边界同胚。设有限实点 \(x\) 对应顶点 \(w=f(x)\)，该顶点内角为 \(\alpha\pi\)，其中 \(0<\alpha<2\)。则存在 \(x\) 的圆盘邻域 \(D\) 及在 \(D\) 全纯无零的函数 \(h,H\)，使得在 \(D\cap\mathbb H\) 上
 \[
- f(z)-w_j=(z-x_j)^{\alpha_j}h_j(z),\qquad h_j(x_j)\ne0,
+ \begin{aligned}
+ f(z)-w&=(z-x)^\alpha\cdot h(z),\\
+ f'(z)&=(z-x)^{\alpha-1}\cdot H(z),\\
+ \frac{f''(z)}{f'(z)}
+ &=\frac{\alpha-1}{z-x}+\frac{H'(z)}{H(z)}.
+ \end{aligned}
 \]
-其中幂函数在上半邻域取分支，\(h_j\) 在小邻域全纯无零。于是
+这里 \((z-x)^\gamma\) 均由 \(0<\arg(z-x)<\pi\) 的对数分支定义，而且
 \[
- \frac{f''(z)}{f'(z)}=\frac{\alpha_j-1}{z-x_j}+\text{全纯项}.
+ H(z)=\alpha\cdot h(z)+(z-x)\cdot h'(z),\quad
+ H(x)=\alpha\cdot h(x)\ne0.
 \]
-凸角 \(\alpha_j<1\) 使导数发散，凹角 \(\alpha_j>1\) 使导数趋于0。这都不妨碍内部导数非零，因为顶点在边界上。
+\end{proposition}
+\begin{proof}
+选取充分小的 \(\rho>0\)，使 \(P\cap B(w,\rho)\) 只见到与 \(w\) 相邻的两条边。取旋转角 \(\beta\)，使它在坐标 \(u=e^{-\mathrm{i}\beta}(w'-w)\) 中为
+\[
+ 0<|u|<\rho,\quad 0<\arg u<\alpha\pi.
+\]
+辐角在这个角域上连续选定。定义
+\[
+ S(w')=\exp\left(\frac1\alpha
+ \bigl(\log|u|+\mathrm{i}\cdot\arg u\bigr)\right).
+\]
+这在角域内全纯，将内部映入上半平面，连续地把两条边映到正、负实半轴，并在 \(w\) 取值 \(0\)。
+
+由 \(f\) 在 \(x\) 的边界连续性，可取一个小上半圆盘，使其像位于上述局部角域内。函数 \(G=S\circ f\) 在该上半盘全纯，连续到直径，在直径上为实值，且 \(G(x)=0\)、\(\operatorname{Im}G>0\)。\cref{b3:lem:07-boundary-simple-zero}给出全纯反射及 \(G'(x)>0\)。因此，缩小圆盘后可写
+\[
+ G(z)=(z-x)\cdot v(z),\quad v(x)=G'(x)>0,
+\]
+其中 \(v\) 在整个小盘全纯无零。小盘单连通，所以 \(v\) 有全纯对数 \(\ell\)，并可选定 \(\ell(x)=\log v(x)\in\mathbb R\)。
+
+在右侧实区间上，\(v\) 及 \(G\) 均为正数。因而上半盘内 \(G\) 的辐角分支与 \(\operatorname{Log}(z-x)+\ell(z)\) 给出的对数相同：二者之差只能是常数 \(2k\pi\mathrm{i}\)，而靠近该实区间时差为 \(0\)。将拉直映射反解，得到
+\[
+ f(z)-w=e^{\mathrm{i}\beta}\cdot G(z)^\alpha
+ =(z-x)^\alpha\cdot
+ \exp\bigl(\mathrm{i}\beta+\alpha\cdot\ell(z)\bigr).
+\]
+令 \(h(z)=\exp\bigl(\mathrm{i}\beta+\alpha\cdot\ell(z)\bigr)\)，它在整个小盘全纯无零。求导给出陈述中的 \(H\)；由于 \(H(x)=\alpha\cdot h(x)\ne0\)，再缩小圆盘即可使 \(H\) 无零。对 \(f'=(z-x)^{\alpha-1}\cdot H\) 求对数导数，便得到最后一个等式。
+\end{proof}
+
+这项分解把几何角度与坐标修正分开了。内角只出现在幂次 \(\alpha\) 中，其余变化都进入全纯无零的因子；特别是 \(f''/f'\) 的极部恰为 \((\alpha-1)/(z-x)\)。凸角 \(\alpha<1\) 使 \(|f'|\) 趋于无穷，凹角 \(\alpha>1\) 使 \(f'\) 趋于 \(0\)，而 \(\alpha=1\) 恢复开直边上的有限非零导数。导数在边界趋于 \(0\) 或无穷，都不与内部导数非零矛盾。
 
 \ProseParagraphBreak
-角点指数可以直接在扇形中核验。令 \(W_\alpha=\{0<\arg w<\alpha\pi\}\)，在上半平面取 \(w=z^\alpha\)。两条实半轴分别映到扇形两边；正实侧的导数为 \(\alpha x^{\alpha-1}\)。当 \(\alpha=1/2\)，直角的局部映射是平方根，导数发散如 \(x^{-1/2}\)，但函数本身连续且差值为 \(O(x^{1/2})\)。当 \(\alpha=3/2\)，凹角的局部差值为 \(O(x^{3/2})\)，导数趋于0。把角点拉直后，导数又恢复有限非零。这说明坐标必须随几何选择，不能把某个坐标中的导数大小作为不变的边界奇性。
-
-\ProseParagraphBreak
-若角域只在有限邻域内成立，幂次必须在那一邻域的内部选定。不能在环绕顶点的整个穿孔平面上不加分支约定地写 \((w-w_j)^{1/\alpha_j}\)。在实际多边形中，两条邻边夹出的内部角恰提供所需的连续辐角范围，因而局部幂次合法。余下无零因子可在小盘取对数，其 \(\alpha_j\) 次幂吸收到 \(h_j\) 中，得到正文的角点标准形。
+模型 \(w=z^\alpha\) 给出可直接跟算的情形。取 \(0<\arg z<\pi\)，正实半轴映到辐角 \(0\) 的边，负实半轴映到辐角 \(\alpha\pi\) 的边，导数为 \(\alpha z^{\alpha-1}\)。当 \(\alpha=1/2\) 时，直角对应平方根，沿正实侧有 \(w'=\tfrac12x^{-1/2}\)，但 \(w\) 本身仍连续趋于 \(0\)。当 \(\alpha=3/2\) 时，凹角对应 \(w'=\tfrac32x^{1/2}\rightarrow0\)。两者经过 \(w^{1/\alpha}\) 拉直后都还原为恒等映射。幂次只需在局部角域内定义；除整数幂的特殊情形外，不应把它写成整个穿孔邻域上的单值函数。
 
 \subsection{公式}
 \label{b3:subsec:070303}
 
-\term[schwarz-christoffel-gongshi]{Schwarz--Christoffel 公式}[Schwarz--Christoffel formula]把上述角点资料合并成映射导数。
+现在每个角点都给出一个已知极部，开边又允许把对数导数延到下半平面。无穷远处的行为将排除额外的整函数项。由此得到\term[schwarz-christoffel-gongshi]{Schwarz--Christoffel 公式}[Schwarz--Christoffel formula]。
 
+\Needspace{6\baselineskip}
 \begin{theorem}[Schwarz--Christoffel 公式]\label{b3:thm:07-schwarz-christoffel}
-在上述所有预顶点有限的归一化中，存在 \(A\in\mathbb C\)、\(C\ne0\)，使
+设 \(P\subseteq\mathbb C\) 为有界简单 \(n\) 边形的内部，\(n\ge3\)，顶点按正向循环次序为 \(w_1,\ldots,w_n\)，内角为 \(\alpha_j\pi\)，\(0<\alpha_j<2\)。设 \(f:\mathbb H\rightarrow P\) 双全纯，其边界同胚把互异有限实数 \(x_1<\cdots<x_n\) 依次映到 \(w_j\)，并把 \(\infty\) 映到边 \([w_n,w_1]\) 的内部。对每个 \(j\)，以 \(0<\arg(z-x_j)<\pi\) 定义 \(\operatorname{Log}(z-x_j)\) 及相应实幂。固定 \(z_0\in\mathbb H\)。则存在 \(C\in\mathbb C\setminus\{0\}\)，使
 \[
- f(z)=A+C\int_{z_0}^{z}\prod_{j=1}^n(\zeta-x_j)^{\alpha_j-1}\,\mathrm{d}\zeta.
+ f(z)=f(z_0)+C\cdot\int_{z_0}^{z}
+ \prod_{j=1}^n(\zeta-x_j)^{\alpha_j-1}\,\mathrm{d}\zeta.
 \]
-各幂在上半平面连续取分支，积分与内部路径无关。
+积分沿上半平面内任意分段光滑路径进行，与路径选择无关。
 \end{theorem}
 \begin{proof}
-在每个非顶点实区间，\(f'\) 的辐角是所对应边的固定方向，所以 \(f''/f'\) 取实值，并可反射到下半平面。顶点处前一小节给简单极点及留数 \(\alpha_j-1\)。无穷远对应边内点，使用坐标 \(t=1/z\) 的反射与局部单射性得 \(f'(z)=c z^{-2}(1+O(1/z))\)，故 \(f''/f'=-2/z+O(1/z^2)\)。多边形角和给 \(\sum_j(\alpha_j-1)=-2\)。减去 \(\sum_j(\alpha_j-1)/(z-x_j)\) 后，差是球面上无极点、在无穷远趋于0的函数，故由 Liouville 为0。积分对数导数，得到 \(f'=C\prod_j(z-x_j)^{\alpha_j-1}\)。上半平面单连通且乘积全纯，再取原函数得公式。
+记 \(\beta_j=\alpha_j-1\)，并令 \(Q=f''/f'\)。双全纯性保证 \(f'\) 在 \(\mathbb H\) 无零，所以 \(Q\) 在上半平面全纯。先考察不含预顶点的一段实区间。其像位于同一直边上，\cref{b3:prop:07-schwarz-reflection}给出 \(f\) 的局部反射延拓；再把该边附近的内部旋到上半平面，由\cref{b3:lem:07-boundary-simple-zero}可知延拓后的 \(f'\) 在该区间也无零。若边的方向为 \(e^{\mathrm{i}\beta}\)，则 \(e^{-\mathrm{i}\beta}\cdot f'\) 及 \(e^{-\mathrm{i}\beta}\cdot f''\) 在区间上均为实值，故 \(Q\) 为实值。因此 \(Q\) 可按
+\[
+ Q(z)=\overline{Q(\overline z)}\quad(\operatorname{Im}z<0)
+\]
+延到下半平面，并全纯地跨过所有这些开区间。
+
+在每个 \(x_j\)，\cref{b3:prop:07-corner-factorization}给出
+\[
+ Q(z)=\frac{\beta_j}{z-x_j}+\frac{H_j'(z)}{H_j(z)},
+\]
+其中第二项在一个完整圆盘全纯。这一局部亚纯表达式与两侧开区间的延拓相容：它们在上半盘相同，再由恒等定理在相交邻域相同。于是 \(Q\) 在整个复平面亚纯，可能的有限极点只有 \(x_j\)，其极部为 \(\beta_j/(z-x_j)\)；当 \(\beta_j=0\) 时，该点可去。
+
+还须确定无穷远的条件。取保持上半平面的坐标 \(t=-1/z\)，并设 \(F(t)=f(-1/t)\)。由于 \(f(\infty)\) 在开边上，\(F\) 在 \(t=0\) 附近满足前面的直边条件，故反射后全纯，且 \(F'(0)\ne0\)。链式法则给出精确等式
+\[
+ f'(z)=\frac{F'(-1/z)}{z^2},\quad
+ Q(z)=-\frac2z+\frac1{z^2}\cdot
+ \frac{F''(-1/z)}{F'(-1/z)}.
+\]
+因此 \(Q(z)=-2/z+O(z^{-2})\)。反射后的 \(F\) 在 \(0\) 的整邻域全纯且导数无零，故这个估计在无穷远的完整邻域成立。
+
+简单 \(n\) 边形的内角和为 \((n-2)\pi\)：将它分成 \(n-2\) 个三角形并相加内角即可得到。因此 \(\sum_j\beta_j=-2\)，而
+\[
+ \sum_{j=1}^n\frac{\beta_j}{z-x_j}
+ =-\frac2z+O(z^{-2}).
+\]
+函数
+\[
+ E(z)=Q(z)-\sum_{j=1}^n\frac{\beta_j}{z-x_j}
+\]
+在所有有限点的奇性可去，因而延成整函数；又有 \(E(z)=O(z^{-2})\)，所以它在无穷远趋于 \(0\)。整函数在一个大圆盘内由连续性有界，在圆盘外由上述估计有界，Liouville 定理遂给出 \(E\equiv0\)。
+
+最后定义上半平面内全纯无零的函数
+\[
+ B(z)=\prod_{j=1}^n\exp\bigl(\beta_j\cdot\operatorname{Log}(z-x_j)\bigr).
+\]
+逐项求导得 \(B'/B=\sum_j\beta_j/(z-x_j)=Q\)，从而
+\[
+ \left(\frac{f'}B\right)'
+ =\frac{f''B-f'B'}{B^2}=0.
+\]
+上半平面连通，故 \(f'/B=C\) 为常数，而且 \(C\ne0\)。上半平面还单连通，\(B\) 因此有全纯原函数；从 \(z_0\) 积分便得到所述公式及路径无关性。
 \end{proof}
-这项证明从已存在的多边形映射推出公式。任意指定角度和预顶点的积分不自动是给定多边形的单叶映射；边长、循环次序和简单性仍须核对。
+
+证明从一个已经存在的多边形保形映射出发，确定其导数的形式。它没有断言任意预顶点所给的积分都把半平面单叶地映到指定多边形。积分的导数在内部无零只保证局部单射；要识别目标区域，还要确定边向量、边界的循环次序及简单性。
 
 \subsection{参数确定}
 \label{b3:subsec:070304}
 
-公式的常数 \(A\) 负责平移，\(C\) 负责旋转和缩放，预顶点的相对位置负责多边形的形状。上半平面自同构有三个实自由度，可固定三个预顶点；其余 \(n-3\) 个实参数通常须由边长比确定。边长条件写为
+常数 \(A=f(z_0)\) 控制平移，\(C\) 控制旋转和缩放，预顶点的相对位置控制形状。为了看清边长条件，仍记 \(\beta_j=\alpha_j-1\)，并在非预顶点的实数处记
 \[
- |w_{j+1}-w_j|=|C|\left|\int_{x_j}^{x_{j+1}}\prod_\ell(t-x_\ell)^{\alpha_\ell-1}\,\mathrm{d}t\right|.
+ W(t)\coloneqq\prod_{\ell=1}^n|t-x_\ell|^{\beta_\ell}.
 \]
-端点奇性可积，因为 \(\alpha_j-1>-1\)。相邻区间上的常辐角自动给出转角，积分模给边长。
+当 \(x_j<t<x_{j+1}\) 时，\(\ell\le j\) 的因子从正实轴取得辐角 \(0\)，\(\ell>j\) 的因子从负实轴上侧取得辐角 \(\pi\)。所以乘积 \(B\) 的上侧边界值为
+\[
+ B_+(t)=\exp\left(\mathrm{i}\pi\sum_{\ell=j+1}^n\beta_\ell\right)
+ \cdot W(t).
+\]
+沿一条边，变动的只有正数因子 \(W(t)\)，方向保持固定。令
+\[
+ L_j\coloneqq\int_{x_j}^{x_{j+1}}W(t)\,\mathrm{d}t
+ \quad(1\le j<n).
+\]
+这些积分有限且为正，因为每个端点处的唯一奇性指数 \(\beta_j\) 大于 \(-1\)。边向量与边长因而分别是
+\[
+ \begin{aligned}
+ w_{j+1}-w_j
+ &=C\cdot\exp\left(\mathrm{i}\pi\sum_{\ell=j+1}^n\beta_\ell\right)L_j,\\
+ |w_{j+1}-w_j|&=|C|\cdot L_j.
+ \end{aligned}
+\]
+相邻边方向之差为 \(-\pi\beta_j=\pi(1-\alpha_j)\)，正是顶点的有向外角。凹顶点的这个转角为负，因此相位信息在非凸多边形中特别重要。
 
 \ProseParagraphBreak
-预顶点可以很拥挤。长而细的多边形在圆盘或半平面参数中可能对应极靠近的预顶点，这称为数值计算中的拥挤现象。它不违反存在唯一性，但会使直接解边长方程不稳定。检查公式时，尺度自由度应先消除；否则把整体放大产生的等价参数当成多个不同解，会误判非唯一性。
+最后一条边经过参数无穷远，必须由两个实区间合起来计算。在 \((x_n,\infty)\) 上，所有因子的辐角均为 \(0\)；在 \((-\infty,x_1)\) 上，总相位为 \(\exp(\mathrm{i}\pi\sum_\ell\beta_\ell)=1\)。于是
+\[
+ L_n\coloneqq\int_{x_n}^{\infty}W(t)\,\mathrm{d}t
+ +\int_{-\infty}^{x_1}W(t)\,\mathrm{d}t,\quad
+ w_1-w_n=C L_n.
+\]
+这里 \(W(t)=O(|t|^{-2})\)，故无穷端也可积。不能把这一条边漏掉，或把无穷远误当成另一个多边形顶点。
 
 \ProseParagraphBreak
-参数数目也可以按边界资料理解。简单 \(n\) 边形的边方向由角度和整体旋转决定，边长还满足两个实闭合条件。缩放再消去一个自由度，留下 \(n-3\) 个独立的形状参数，恰与固定三个预顶点后的数目一致。这里只是维数计数，不能据此证明非线性边长方程在每一点有唯一解；对特殊对称形状、退化形状和数值分支，仍要检查映射对应的几何条件。
+边向量相加必须为 \(0\)。实际上，只要有序预顶点互异、\(\beta_j>-1\) 且 \(\sum_j\beta_j=-2\)，以上积分给出的向量已经自动闭合。在大上半圆内沿实轴积分，绕每个 \(x_j\) 挖去半径 \(\varepsilon\) 的小半圆，Cauchy 定理给出总边界积分为 \(0\)。小弧的积分为 \(O(\varepsilon^{\beta_j+1})\)，大弧的积分为 \(O(R^{-1})\)；让 \(\varepsilon\rightarrow0\)、\(R\rightarrow\infty\)，便得到所有边向量之和为 \(0\)。不过，闭合的折线仍可能自交，也可能与要求的边长不同。求指定多边形的映射时，应匹配有向边向量，并核对得到的闭合边界确为目标边界；闭合条件本身不能代替全局单叶性。
 
 \ProseParagraphBreak
-对于正三角形，可利用三个相等内角 \(\alpha_j=1/3\) 和半平面自同构把预顶点固定到三个选定实点。公式导数各有 \(-2/3\) 次端点奇性，边积分仍收敛，因为 \(\int_0^\varepsilon t^{-2/3}\,\mathrm{d}t=3\varepsilon^{1/3}\)。对于矩形，各内角为 \(1/2\)，四个预顶点在固定三个之后还剩一个实参数；这就是后一节椭圆积分中的 \(k\)。三角形无需额外形状参数，四边形需要一个，这是公式自由度的具体表现。
+为什么常说还需确定 \(n-3\) 个实参数？上半平面的自同构为实系数 Möbius 变换
+\[
+ z\longmapsto\frac{az+b}{cz+d},\quad
+ a,b,c,d\in\mathbb R,\quad ad-bc>0,
+\]
+其中同时乘以非零实数不改变变换，因而共有三个实自由度。它们可以把三个循环有序的预顶点送到三个指定边界点，剩下 \(n-3\) 个实参数。若采用常见归一化 \(0,1,\infty\)，就把一个顶点放到了无穷远，需要相应改写公式；本节的公式约定所有预顶点有限，可以在保持有限的局部参数范围内固定三个实值使用。
+
+\ProseParagraphBreak
+同一计数也可从多边形一侧得到。内角固定后，边方向只差整体旋转；\(n\) 个正边长满足两个实闭合方程，再除去整体缩放，留下 \(n-3\) 个形状参数。这个计数针对边长非零、边方向张成平面等非退化情形，不能证明每一组边长方程有解或其数值解唯一。若允许 \(\alpha_j=1\)，该点只是直边上的额外标记，计数也把这个标记的位置算在内；若预顶点碰撞或边长趋于 \(0\)，就到了当前参数描述的边界。即使多边形保持简单，细长部分仍可能使几个预顶点极其接近，导致积分与参数求解数值敏感，这便是通常所说的拥挤现象。
+
+\ProseParagraphBreak
+正三角形给出一个不含待定形状参数的算例。取目标顶点
+\[
+ w_1=0,\quad w_2=1,\quad w_3=e^{\mathrm{i}\pi/3},
+\]
+并把三个预顶点归一化为 \(-1,0,1\)。每个内角为 \(\pi/3\)，于是令
+\[
+ B(z)=(z+1)^{-2/3}z^{-2/3}(z-1)^{-2/3},
+\]
+其中三个因子分别使用上半平面的对数分支；不能省略分支说明而将其直接合并为一个多项式的分数次幂。在 \((-1,0)\) 上，它的相位为 \(e^{2\pi\mathrm{i}/3}\)；在 \((0,1)\) 上，相位为 \(e^{-2\pi\mathrm{i}/3}\)。两段正积分由 \(t\mapsto-t\) 相等，公共值为
+\[
+ L=\int_0^1\frac{\mathrm{d}t}{\bigl(t(1-t^2)\bigr)^{2/3}}.
+\]
+被积函数在 \(0\) 与 \(1\) 附近均只有 \(-2/3\) 次奇性，因此 \(0<L<\infty\)。取
+\[
+ C=\frac{e^{-2\pi\mathrm{i}/3}}{L},\quad
+ f(z)=C\cdot\int_{-1}^{z}B(\zeta)\,\mathrm{d}\zeta.
+\]
+积分起点按上半平面内趋向 \(-1\) 的极限理解；局部原函数的增量为 \(O(|z+1|^{1/3})\)，所以这一边界归一化有意义。沿两段实区间计算，得到
+\[
+ f(-1)=0,\quad f(0)-f(-1)=1,\quad
+ f(1)-f(0)=e^{2\pi\mathrm{i}/3}.
+\]
+因此 \(f(1)=1+e^{2\pi\mathrm{i}/3}=e^{\mathrm{i}\pi/3}\)，三个顶点都已匹配。
+
+\ProseParagraphBreak
+这个积分的全局单叶性可由存在定理严格确定。先取 Riemann 映射，并用 Jordan 边界同胚与半平面自同构把三个预顶点送到 \(-1,0,1\)，得到一个已知双全纯的归一化三角形映射。Schwarz--Christoffel 公式说明它的导数必为 \(C_*\cdot B\)；第一条边的增量 \(1\) 迫使 \(C_*=e^{-2\pi\mathrm{i}/3}/L=C\)，而在 \(-1\) 的值迫使加法常数与上式相同。因此写出的积分正是该双全纯映射。闭合条件还给出最后一边的总积分为 \(L\)，两段无穷区间又由对称性各占一半，故 \(f(\infty)=e^{\mathrm{i}\pi/3}/2\)，恰为最后一条边的中点。
+
+\ProseParagraphBreak
+矩形的四个内角均为 \(\pi/2\)，每个端点因子则为 \(-1/2\) 次幂；固定三个预顶点后还剩一个实参数，用来调节长宽比。下一节的椭圆积分将把这个参数与矩形边长具体联系起来。

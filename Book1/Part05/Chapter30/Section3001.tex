@@ -1,0 +1,228 @@
+% !TeX root = ../../Book1.tex
+\section{概率空间、随机变量与分布}
+\label{b1:sec:3001}
+
+测度论把可测集合赋予大小，概率论则把总质量归一为一，并把可测函数解释为一次试验所产生的数值。这样的解释并不改变积分和收敛定理，却提出了新的问题：同一分布能否由不同的随机变量实现，几种收敛分别记录了什么，以及平均值的稳定性需要哪些额外条件。本节先把这些问题放回已经建立的测度论框架。
+
+\ProseParagraphBreak
+
+基本用语可对照 Axler 的《Measure, Integration \& Real Analysis》\cite[Definition 12.1, Definition 12.13, Definition 12.18, Definition 12.27, pp.~381, 385, 388, 392]{Axler2020Measure}。本节用推前分布统一处理离散与连续情形；依分布收敛则直接承接\chapref{b1:ch:12}的测度弱收敛。
+
+\subsection{概率空间与事件}
+\label{b1:subsec:300101}
+
+\begin{definition}\label{b1:def:30-probability-space}
+设 \(\Omega\) 是集合，\(\mathcal F\) 是 \(\Omega\) 上的 \(\sigma\)-代数，\(\mathbb P\) 是 \((\Omega,\mathcal F)\) 上满足 \(\mathbb P(\Omega)=1\) 的正测度。三元组 \((\Omega,\mathcal F,\mathbb P)\) 称为概率空间，\(\Omega\) 称为\term[yangben-kongjian]{样本空间}[sample space]，\(\mathcal F\) 中的集合称为\term[shijian]{事件}[event]。对事件 \(A\)，数 \(\mathbb P(A)\) 称为它的概率。
+\end{definition}
+
+概率测度与概率空间在\secref{b1:sec:0201}已作为有限测度的例子出现。这里改用 \(\Omega,\mathcal F,\mathbb P\) 是为了适应概率论的惯用记号；可数可加性、测度连续性以及积分的含义均保持原来的定义。对可测集 \(A_n\)，例如有
+\[
+ \mathbb P\left(\bigcup_{n\geq1}A_n\right)
+ \leq\sum_{n\geq1}\mathbb P(A_n),
+ \quad
+ A_n\uparrow A\ \Longrightarrow\ \mathbb P(A_n)\uparrow\mathbb P(A).
+\]
+若 \(A_n\downarrow A\)，上连续性也总能使用，因为 \(\mathbb P(A_1)\leq1<\infty\)。
+
+\begin{definition}\label{b1:def:30-almost-surely}
+设 \((\Omega,\mathcal F,\mathbb P)\) 是概率空间。若事件 \(A\in\mathcal F\) 满足 \(\mathbb P(A)=1\)，则称 \(A\) \term[jihu-biran]{几乎必然}[almost surely]发生，常缩写为 a.s.。一个关于 \(\omega\in\Omega\) 的性质几乎必然成立，是指它在某个可测零集之外成立。
+\end{definition}
+
+这正是前文“几乎处处”的概率论说法。可数个几乎必然成立的性质可以同时成立：若各性质的例外零集为 \(N_j\)，则 \(\mathbb P(\bigcup_jN_j)=0\)。这里的可数性不能随意删去。在 \([0,1]\) 上取 Lebesgue 概率测度，每个单点都为零测集，但全部单点的并是整个空间；因而“对每个固定参数，性质几乎必然成立”不自动给出“几乎必然对所有参数同时成立”。
+
+\ProseParagraphBreak
+
+有限样本空间可以取 \(\Omega=\{0,1\}\)、\(\mathcal F=\mathcal P(\Omega)\)，并指定 \(\mathbb P(\{1\})=p\)、\(\mathbb P(\{0\})=1-p\)，其中 \(0\leq p\leq1\)。连续样本空间则可取 \(([0,1],\mathcal B([0,1]),m_1)\)。后一空间中某个固定点的概率为零，点本身仍是样本空间中的可能取值；概率为零与集合为空是不同的断言。需要完备性时，可以按\subsecref{b1:subsec:020204}的办法完备化，但本章的概率空间不预先假设完备。
+
+\subsection{随机变量与推前分布}
+\label{b1:subsec:300102}
+
+试验的结果未必本来就是一个数。把每个结果 \(\omega\) 对应到观测值 \(X(\omega)\)，才得到可用于积分和比较的函数。要求它可测，是为了使“观测值落入指定 Borel 集”确实构成事件。
+
+\begin{definition}\label{b1:def:30-random-variable}
+设 \((\Omega,\mathcal F,\mathbb P)\) 是概率空间。一个 \(\mathcal F/\mathcal B(\mathbb R)\)-可测函数 \(X:\Omega\to\mathbb R\) 称为实\term[suiji-bianliang]{随机变量}[random variable]。规定
+\[
+ \{X\in B\}\coloneqq\{\,\omega\in\Omega\mid X(\omega)\in B\,\},
+ \quad B\in\mathcal B(\mathbb R),
+\]
+并在概率记号中简写为 \(\mathbb P(X\in B)\)。随机变量 \(X\) 的\term[gailv-fenbu]{概率分布}[probability distribution]是 Borel 概率测度
+\[
+ \mu_X\coloneqq X_\#\mathbb P,
+ \quad \mu_X(B)=\mathbb P(X\in B).
+\]
+它的\term[fenbu-hanshu]{分布函数}[distribution function]为
+\[
+ F_X(t)\coloneqq\mathbb P(X\leq t)=\mu_X(({-\infty},t]),
+ \quad t\in\mathbb R.
+\]
+\end{definition}
+\symidx{\(\mu_X\)：随机变量 \(X\) 的概率分布}
+\symidx{\(F_X\)：随机变量 \(X\) 的分布函数}
+
+逆像保持不交并，故 \(\mu_X\) 的可数可加性由 \(\mathbb P\) 的可数可加性直接得到；又有 \(\mu_X(\mathbb R)=1\)。所以这里确实得到了概率测度。以后在本章中说“\(X\) 的分布”，均指这个推前测度，与\chapref{b1:ch:20}中作为测试函数连续线性泛函的分布含义不同。
+
+\ProseParagraphBreak
+
+测度连续性说明 \(F_X\) 单调不减、右连续，并满足
+\[
+ \lim_{t\to-\infty}F_X(t)=0,
+ \quad \lim_{t\to+\infty}F_X(t)=1.
+\]
+右连续性来自 \(({-\infty},t_j]\downarrow({-\infty},t]\) 当 \(t_j\downarrow t\)。区间差给出
+\[
+ \mu_X((a,b])=F_X(b)-F_X(a)\quad(a<b).
+\]
+因此分布函数决定全部分布：半直线 \(({-\infty},t]\) 连同 \(\mathbb R\) 构成生成 \(\mathcal B(\mathbb R)\) 的 \(\pi\)-系统，有限测度唯一性适用。这也解释了分布函数为何足以描述一维概率。
+
+\begin{definition}\label{b1:def:30-equal-laws}
+设 \(X\)、\(Y\) 分别是概率空间 \((\Omega,\mathcal F,\mathbb P)\)、\((\Omega',\mathcal F',\mathbb P')\) 上的实随机变量。若它们的 Borel 分布相等，即 \(\mu_X=\mu_Y\)，则称它们\term[tong-fenbu]{同分布}[identically distributed]。对同一概率空间上的有限个实随机变量 \(X_1,\ldots,X_r\)，可测映射 \((X_1,\ldots,X_r):\Omega\to\mathbb R^r\) 的推前测度称为它们的\term[lianhe-fenbu]{联合分布}[joint distribution]。
+\end{definition}
+
+同分布不要求两个变量在同一个空间上，也不要求它们逐点相等。在 \([0,1]\) 上令 \(X(\omega)=\omega\)、\(Y(\omega)=1-\omega\)，它们的分布都是 \([0,1]\) 上的均匀概率测度，但除 \(\omega=1/2\) 外总有 \(X(\omega)\ne Y(\omega)\)。此外，单个变量的分布不决定联合分布：\((X,X)\) 总在对角线上取值，而两个独立均匀变量的联合分布将在下一节由乘积测度描述。
+
+\ProseParagraphBreak
+
+在前面的两点空间上，坐标变量 \(X(\omega)=\omega\) 的分布为
+\[
+ \mu_X=(1-p)\delta_0+p\delta_1.
+\]
+这个测度称为参数 \(p\) 的\term[bernoulli-fenbu]{Bernoulli 分布}[Bernoulli distribution]。任何事件 \(A\) 的示性函数 \(\mathbf1_A\) 都有这样的分布，其中 \(p=\mathbb P(A)\)。若 \(a<b\)，则密度为 \((b-a)^{-1}\cdot\mathbf1_{[a,b]}\) 的概率测度称为 \([a,b]\) 上的\term[junyun-fenbu]{均匀分布}[uniform distribution]。它们分别给出最基本的离散与连续例子。
+
+\subsection{期望、矩与积分}
+\label{b1:subsec:300103}
+
+积分本来就用于把函数值按集合大小加权。概率测度的总质量为一，因此同一积分现在表示一次观测的平均数。
+
+\begin{definition}\label{b1:def:30-expectation}
+设 \((\Omega,\mathcal F,\mathbb P)\) 是概率空间，\(X\) 是其上的实随机变量。当 \(X\geq0\) 时，定义它的\term[qiwang]{期望}[expectation]为
+\[
+ \mathbb E X\coloneqq\int_\Omega X\,\mathrm d\mathbb P\in[0,\infty].
+\]
+同一非负积分约定也用于非负扩展实值可测函数。对一般实随机变量，若 \(\mathbb E X^+\)、\(\mathbb E X^-\) 至少有一个有限，定义 \(\mathbb E X=\mathbb E X^+-\mathbb E X^-\)；若两者都无穷，期望不定义。称 \(X\) 可积，是指 \(\mathbb E|X|<\infty\)，即 \(X\in L^1(\mathbb P)\)。对可测复值函数 \(Z\) 且 \(\mathbb E|Z|<\infty\)，规定
+\[
+ \mathbb E Z=\mathbb E(\operatorname{Re}Z)
+ +\mathrm i\,\mathbb E(\operatorname{Im}Z).
+\]
+\end{definition}
+\symidx{\(\mathbb E X\)：随机变量的期望}
+
+于是 \(\mathbb E\mathbf1_A=\mathbb P(A)\)，且积分的线性性、单调收敛、Fatou 引理与控制收敛全部可以用 \(\mathbb E\) 改写。可积随机变量通常仍按几乎必然相等取等价类；谈到逐点事件时则选取可测代表。只在零测集上任意改值未必保持非完备空间上的可测性，因此不能省去代表的可测性要求。
+
+\begin{proposition}[按分布计算期望]\label{b1:prop:30-law-integration}
+设 \(X\) 是概率空间 \((\Omega,\mathcal F,\mathbb P)\) 上的实随机变量，分布为 \(\mu_X\)。若 \(h:\mathbb R\to[0,\infty]\) 是 Borel 函数，则
+\[
+ \mathbb E\bigl(h(X)\bigr)=\int_{\mathbb R}h(x)\,\mathrm d\mu_X(x).
+\]
+若 \(h:\mathbb R\to\mathbb C\) 为 Borel 函数，则 \(h(X)\in L^1(\mathbb P)\) 当且仅当 \(h\in L^1(\mu_X)\)，并且可积时同一等式成立。
+\end{proposition}
+\begin{proof}
+当 \(h=\mathbf1_B\)、\(B\in\mathcal B(\mathbb R)\) 时，等式就是 \(\mu_X(B)=\mathbb P(X\in B)\)。有限非负线性组合给出非负简单函数情形，再以非负简单函数递增逼近 \(h\)，使用\cref{b1:thm:monotone-convergence}。对复值函数先把结论用于 \(|h|\)，得到可积性的等价；再拆分实部、虚部的正负部分，即得所需等式。
+\end{proof}
+
+该公式说明，期望和绝对矩只依赖分布。同一证明也适用于 \(\mathbb R^r\) 值可测映射与 Borel 函数 \(h:\mathbb R^r\to\mathbb C\)。若 \(\mu_X\ll m_1\)，则其 Radon--Nikodym 密度 \(f\geq0\) 称为 \(X\) 的\term[gailv-midu]{概率密度}[probability density]，满足 \(\int_{\mathbb R}f\,\mathrm dx=1\)，并且
+\[
+ \mathbb E\bigl(h(X)\bigr)=\int_{\mathbb R}h(x)\cdot f(x)\,\mathrm dx
+\]
+对非负或可积的 \(h\) 成立。分布不一定有密度，例如 Bernoulli 分布集中在两个点上。
+
+\begin{definition}\label{b1:def:30-moments-variance}
+设 \(X\) 是概率空间 \((\Omega,\mathcal F,\mathbb P)\) 上的实随机变量。对 \(p>0\)，\(\mathbb E|X|^p\) 称为 \(p\) 阶\term[jue-dui-ju]{绝对矩}[absolute moment]；当整数 \(k\geq1\) 且 \(\mathbb E|X|^k<\infty\) 时，\(\mathbb E(X^k)\) 称为 \(k\) 阶\term[ju]{矩}[moment]。若 \(X\in L^2(\mathbb P)\)，则定义它的\term[fangcha]{方差}[variance]与\term[biaozhun-cha]{标准差}[standard deviation]为
+\[
+ \operatorname{Var}(X)\coloneqq\mathbb E\left((X-\mathbb E X)^2\right),
+ \quad \sigma_X\coloneqq\sqrt{\operatorname{Var}(X)}.
+\]
+\end{definition}
+\symidx{\(\operatorname{Var}(X)\)：实随机变量的方差}
+
+\begin{proposition}\label{b1:prop:30-variance-formula}
+设 \(X\in L^2(\mathbb P)\) 是概率空间 \((\Omega,\mathcal F,\mathbb P)\) 上的实随机变量。则 \(X\in L^1(\mathbb P)\)，并且
+\[
+ \operatorname{Var}(X)=\mathbb E(X^2)-(\mathbb E X)^2.
+\]
+对每个 \(a\in\mathbb R\)，还有
+\[
+ \mathbb E\left((X-a)^2\right)
+ =\operatorname{Var}(X)+(\mathbb E X-a)^2.
+\]
+特别地，\(\operatorname{Var}(X)=0\) 当且仅当 \(X=\mathbb E X\) 几乎必然。
+\end{proposition}
+\begin{proof}
+由 Cauchy--Schwarz 不等式及 \(\mathbb P(\Omega)=1\)，有 \(\mathbb E|X|\leq\|X\|_2\)。将 \((X-\mathbb E X)^2\) 展开并利用期望的线性性，得到第一式。再写
+\[
+ X-a=(X-\mathbb E X)+(\mathbb E X-a).
+\]
+平方后交叉项的期望为零，因为 \(\mathbb E(X-\mathbb E X)=0\)，故得到第二式。最后由\cref{b1:prop:integral-markov}的非负零积分判别，\(\mathbb E((X-\mathbb E X)^2)=0\) 等价于 \(X=\mathbb E X\) 几乎必然。
+\end{proof}
+
+这表明期望是使均方误差最小的常数，方差则是这个最小误差。对参数 \(p\) 的 Bernoulli 变量，\(X^2=X\)，所以
+\[
+ \mathbb E X=p,
+ \quad \operatorname{Var}(X)=p(1-p).
+\]
+对 \([a,b]\) 上的均匀变量，直接积分得到
+\[
+ \mathbb E X=\frac{a+b}{2},
+ \quad \operatorname{Var}(X)=\frac{(b-a)^2}{12}.
+\]
+这些计算只用到了分布，还没有涉及不同变量之间的依赖关系。
+
+\subsection{随机变量的收敛方式}
+\label{b1:subsec:300104}
+
+随机变量列既可以逐点比较，也可以只比较误差事件的概率，或者只比较各自的分布。几乎必然收敛记录了单个样本的长期行为；依概率收敛只要求每个固定精度下的大误差越来越少；依分布收敛则允许完全不比较同一试验中的取值。
+
+\begin{definition}\label{b1:def:30-convergence-modes}
+设 \(X_n,X\) 是同一概率空间 \((\Omega,\mathcal F,\mathbb P)\) 上的实随机变量。
+\begin{enumerate}
+ \item 若 \(\mathbb P(\{\omega:X_n(\omega)\to X(\omega)\})=1\)，称 \(X_n\) 几乎必然收敛于 \(X\)，记为 \(X_n\xrightarrow{\mathrm{a.s.}}X\)。
+ \item 若对每个 \(\varepsilon>0\)，有 \(\mathbb P(|X_n-X|>\varepsilon)\to0\)，称 \(X_n\) \term[yi-gailv-shoulian]{依概率收敛}[convergence in probability]于 \(X\)，记为 \(X_n\xrightarrow{\mathbb P}X\)。
+ \item 对 \(1\leq p\leq\infty\)，若 \(X_n,X\in L^p(\mathbb P)\)，且 \(\|X_n-X\|_p\to0\)，称 \(X_n\) 在 \(L^p\) 中收敛于 \(X\)。
+ \item 若 Borel 分布满足 \(\mu_{X_n}\Rightarrow\mu_X\)，称 \(X_n\) 依分布收敛于 \(X\)，记为 \(X_n\xrightarrow{\mathrm d}X\)。等价地，对每个 \(h\in C_b(\mathbb R)\)，有 \(\mathbb E(h(X_n))\to\mathbb E(h(X))\)。这一项也适用于分处不同概率空间的随机变量。
+\end{enumerate}
+\end{definition}
+
+依概率收敛就是\cref{b1:def:convergence-in-measure}在总质量为一的情形；依分布收敛已经在\subsecref{b1:subsec:120104}引入。这里明确列出它们，是为了避免把“误差变小”与“分布接近”当作同一件事。
+
+\begin{proposition}\label{b1:prop:30-convergence-implications}
+设 \(X_n,X\) 是概率空间 \((\Omega,\mathcal F,\mathbb P)\) 上的实随机变量。则：
+\begin{enumerate}
+ \item 几乎必然收敛推出依概率收敛；对 \(1\leq p\leq\infty\)，\(L^p\) 收敛也推出依概率收敛。
+ \item \(X_n\xrightarrow{\mathbb P}X\) 当且仅当任意子列都有一个进一步的子列几乎必然收敛于 \(X\)。
+ \item 依概率收敛推出依分布收敛。
+ \item 若 \(c\in\mathbb R\) 为常数，则 \(X_n\xrightarrow{\mathrm d}c\) 当且仅当 \(X_n\xrightarrow{\mathbb P}c\)。
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+第一项的几乎必然部分和第二项的正向结论，均由\cref{b1:lem:measure-convergence-subsequence}得到：它的从几乎处处到依测度的方向要求有限总质量，这里恰有 \(\mathbb P(\Omega)=1\)。对 \(p<\infty\)，\cref{b1:prop:integral-markov}给出
+\[
+ \mathbb P(|X_n-X|>\varepsilon)
+ \leq\varepsilon^{-p}\cdot\mathbb E|X_n-X|^p
+ =\varepsilon^{-p}\cdot\|X_n-X\|_p^p.
+\]
+对 \(p=\infty\)，充分大的 \(n\) 满足 \(\|X_n-X\|_\infty<\varepsilon\)，所需事件为零测集。
+
+若第二项的逆向不成立，则某个 \(\varepsilon>0\)、\(\delta>0\) 与子列 \((X_{n_k})\) 满足 \(\mathbb P(|X_{n_k}-X|>\varepsilon)\geq\delta\) 对每个 \(k\) 成立。该子列不可能有几乎必然收敛于 \(X\) 的进一步子列，否则第一项使这些概率趋零，矛盾。
+
+对第三项，固定 \(h\in C_b(\mathbb R)\)。依概率收敛的任意子列都可再抽出几乎必然收敛于 \(X\) 的子列。在后者上，连续性和控制收敛给出 \(\mathbb E(h(X_{n_{k_j}}))\to\mathbb E(h(X))\)，控制函数为常数 \(\|h\|_\infty\)。于是原数列的测试期望也必收敛到此值；否则可抽出与此值保持正距离的子列。由定义得到依分布收敛。
+
+最后，若 \(\mu_{X_n}\Rightarrow\delta_c\)，对每个 \(\varepsilon>0\)，闭集 \(F_\varepsilon=\{x:|x-c|\geq\varepsilon\}\) 满足 \(\delta_c(F_\varepsilon)=0\)。\cref{b1:thm:portmanteau}的闭集判据给出
+\[
+ \limsup_n\mathbb P(|X_n-c|\geq\varepsilon)\leq0.
+\]
+因此依概率收敛成立，反向则是第三项。
+\end{proof}
+
+这些蕴含一般不能倒转。在 \(([0,1),\mathcal B([0,1)),m_1)\) 上，按每一层二进区间依次定义
+\[
+ X_{2^m+k}=\mathbf1_{[k2^{-m},(k+1)2^{-m})},
+ \quad m\geq0,\quad 0\leq k<2^m.
+\]
+当指标处在第 \(m\) 层时，\(\mathbb P(X_n=1)=2^{-m}\)，所以 \(X_n\) 依概率且在每个有限 \(L^p\)、\(p\geq1\) 中收敛于零。但每个 \(\omega\in[0,1)\) 在每层恰好落入一个区间，故 \(X_n(\omega)=1\) 出现无穷多次；每层的其余区间又使零值出现无穷多次。这个序列在任何样本点都不收敛。
+
+\ProseParagraphBreak
+
+反过来，在 \((0,1)\) 的 Lebesgue 概率空间上取 \(Y_n=n\cdot\mathbf1_{(0,1/n)}\)。每个固定 \(\omega>0\) 最终离开 \((0,1/n)\)，所以 \(Y_n\to0\) 处处成立，但 \(\mathbb E|Y_n|=1\)，没有 \(L^1\) 收敛。小概率事件上的大取值保留了全部积分，这正是\secref{b1:sec:0505}中一致可积条件所控制的现象。
+
+\ProseParagraphBreak
+
+依分布收敛更弱。在等概率两点空间上令 \(X(\omega)=\omega\)，并令 \(Z_{2n}=X\)、\(Z_{2n-1}=1-X\)。全部 \(Z_n\) 都有参数 \(1/2\) 的 Bernoulli 分布，所以它们依分布收敛于 \(X\)；但 \(\mathbb P(|Z_{2n-1}-X|>1/2)=1\)，因而不依概率收敛于 \(X\)。实际上相邻两项处处相差一，所以这个序列也不可能依概率收敛于其他变量。后面的大数定律与中心极限定理将分别使用这些不同的收敛目标。

@@ -1,129 +1,186 @@
 % !TeX root = ../../Book2.tex
-\section{Hilbert 空间方法}
-\label{b2:sec:1502}
+\section{Green 恒等式}
+\label{b2:sec:1302}
 
-上一章的极小化要求能量保留方程的全部信息。对非对称系数，这个要求可能失败；双线性型方法则直接研究等式 \(a(u,v)=\ell(v)\)。其中未知量占第一个位置，测试向量占第二个位置。本节把有界性和强制性分别转成算子的上界和下界，再用正交性证明可解性。
+均值性质适合局部比较，Green 恒等式则把区域内部的微分与边界通量放在同一个式子中。我们沿用\cref{b2:cor:01-vector-green}，把外法向固定为 \(\nu\)，并将 Poisson 方程统一写成 \(-\Delta u=f\)。本节能量与边界积分先对有界 \(C^1\) 区域，以及在其闭包某邻域内为 \(C^2\) 的函数推导；只用最大值原理的结论会另行放宽边界条件。
 
-\subsection{双线性型}
-\label{b2:subsec:150201}
+\subsection{第一 Green 恒等式}
+\label{b2:subsec:130201}
 
-设 \(H\) 是实 Hilbert 空间。\term[shuangxianxing-xing]{双线性型}[bilinear form]是对两个变量分别线性的映射 \(a:H\times H\to\mathbb R\)。对称性 \(a(u,v)=a(v,u)\) 是额外要求，本章的主要存在定理不作这一假设。例如
-\[a(u,v)=\int_\Omega A\nabla u\cdot\nabla v\,\mathrm dx\]
-在 \(H_0^1(\Omega)\) 上是双线性型；若矩阵 \(A(x)\) 对称，则型对称。一个纯反对称矩阵场对 \(a(u,u)\) 没有贡献，却可能改变 \(a(u,v)\)。
+设整数 \(d\geq1\)，\(\Omega\subset\mathbb R^d\) 为非空有界 \(C^1\) 开集，\(U\) 为 \(\overline\Omega\) 的一个开邻域，\(u,v\in C^2(U;\mathbb C)\)，\(\nu\) 为外单位法向。第一 Green 恒等式为
+\begin{equation}\label{b2:eq:13-green-first}
+ \int_\Omega v\cdot(-\Delta u)\,\mathrm{d}x
+ =\int_\Omega\nabla u\cdot\nabla v\,\mathrm{d}x
+  -\int_{\partial\Omega}v\cdot\partial_\nu u\,\mathrm{d}S.
+\end{equation}
+它是\eqref{b2:eq:01-vector-green-first}的移项形式，也是对复值函数成立的双线性公式。若 \(-\Delta u=f\)，实值情形取 \(v=u\)；允许复值时则取 \(v=\overline u\)。统一的能量等式为
+\[
+ \int_\Omega|\nabla u|^2\,\mathrm{d}x
+ =\int_\Omega f\cdot\overline u\,\mathrm{d}x
+  +\int_{\partial\Omega}\overline u\cdot\partial_\nu u\,\mathrm{d}S.
+\]
+实值时共轭可以省略；复值时不能这样做，例如 \(u(x)=ix_1\) 的双线性平方 \(\nabla u\cdot\nabla u=-1\)，而能量密度是 \(|\nabla u|^2=1\)。边界上给定函数值与给定法向导数，控制的是同一边界乘积的不同因子。它们不应被当作可以任意同时指定的两套数据。
 
 \ProseParagraphBreak
 
-复 Hilbert 空间中通常改用对第一个变量线性、对第二个变量共轭线性的半双线性型。相应右端也对测试向量共轭线性，强制性写为 \(\operatorname{Re}a(u,u)\ge\alpha\lVert u\rVert^2\)。这与本书内积对第一变量线性的约定一致。为使证明中的对偶方向透明，下面先给出实空间版本，随后说明复版本的调整；不要把这一约定与分布配对的双线性约定混用。
-
-\subsection{有界性}
-\label{b2:subsec:150202}
-
-对实 Hilbert 空间 \(H\) 上的双线性型 \(a:H\times H\to\mathbb R\)，有界性是存在 \(0\le M<\infty\)，使
-\[|a(u,v)|\le M\lVert u\rVert_H\lVert v\rVert_H\qquad(u,v\in H).\]
-它保证固定任一变量后所得泛函连续，也保证从稠密的测试子空间推广等式时极限合法。若 \(A\) 的矩阵算子范数几乎处处不超过 \(\Lambda\)，则
-\[|a(u,v)|\le\Lambda\lVert\nabla u\rVert_2\lVert\nabla v\rVert_2.\]
-这里有界性只使用系数的本性上界，不涉及其导数，也不要求点点连续。
+例如在球 \(B(0,R)\) 上，函数 \(u(x)=(R^2-|x|^2)/(2d)\) 满足 \(-\Delta u=1\)、\(u|_{\partial B}=0\)。能量等式此时化为 \(\int|\nabla u|^2=\int u\)。左侧由 \(\nabla u=-x/d\) 计算，右侧由极坐标计算，二者都等于 \(\omega_dR^{d+2}/(d(d+2))\)。边界值为零消去了通量乘积，并不意味着法向导数本身为零；事实上 \(\partial_\nu u=-R/d\)。
 
 \Needspace{6\baselineskip}
-\begin{proposition}[有界型的算子表示]
-\label{b2:prop:15-form-operator}
-设 \(a\) 是实 Hilbert 空间 \(H\) 上的有界双线性型。则存在唯一有界线性算子 \(A:H\to H\)，使
-\[a(u,v)=\langle Au,v\rangle_H\qquad(u,v\in H),\]
-且 \(\lVert A\rVert=\sup_{\lVert u\rVert,\lVert v\rVert\le1}|a(u,v)|\)。型对称当且仅当算子自伴。
+\begin{proposition}[Dirichlet 能量极小性]\label{b2:prop:13-dirichlet-energy}
+设整数 \(d\geq1\)，\(\Omega\subset\mathbb R^d\) 为非空有界 \(C^1\) 开集，\(U\) 是 \(\overline\Omega\) 的开邻域，\(u,v\in C^2(U;\mathbb R)\)。若 \(u\) 在 \(\Omega\) 调和，\(u=v\) 于 \(\partial\Omega\)，则
+\[
+ \int_\Omega|\nabla v|^2\,\mathrm{d}x
+ =\int_\Omega|\nabla u|^2\,\mathrm{d}x
+  +\int_\Omega|\nabla(v-u)|^2\,\mathrm{d}x.
+\]
+因此 \(u\) 在同边界值的光滑函数中使梯度能量最小。
 \end{proposition}
 \begin{proof}
-固定 \(u\)，第一卷定理 8.4.7 把连续线性泛函 \(v\mapsto a(u,v)\) 表示为与唯一向量 \(Au\) 的内积。表示的唯一性和第一变量线性性给出 \(A\) 的线性性，且 \(\lVert Au\rVert\le M\lVert u\rVert\)。对单位向量分别取上确界给出范数等式。最后，\(a(u,v)=a(v,u)\) 等价于 \(\langle Au,v\rangle=\langle u,Av\rangle\)，正是自伴条件。
+令 \(w=v-u\)。展开 \(|\nabla(u+w)|^2\) 后，交叉项为 \(2\int\nabla u\cdot\nabla w\)。由第一 Green 恒等式，\(\Delta u=0\) 及 \(w=0\) 于边界，该项为零，得到恒等式。
 \end{proof}
 
-这个 \(A\) 是依赖所选 Hilbert 内积的表示算子，不必等于微分表达式本身。例如在梯度内积的 \(H_0^1\) 中，Poisson 型 \(\int\nabla u\cdot\nabla v\) 的表示算子就是恒等算子；作为分布的 \(-\Delta\) 则把 \(H_0^1\) 映到 \(H^{-1}\)。分清值域有助于避免把有界算子与无界微分算子的谱性质混在一起。
+这只证明已有调和解的极小性，没有仅凭能量非负就证明极小元存在。要从极小化序列构造解，还需选择完备的函数空间并处理紧性与边界约束；这些问题在本卷的变分法与弱解部分继续研究。
 
-\subsection{强制性}
-\label{b2:subsec:150203}
+\subsection{第二 Green 恒等式}
+\label{b2:subsec:130202}
 
-设 \(H\) 是实 Hilbert 空间，\(a:H\times H\to\mathbb R\) 为双线性型。称型 \(a\) 强制，是指存在 \(\alpha>0\)，使
-\[a(u,u)\ge\alpha\lVert u\rVert_H^2\qquad(u\in H).\]
-这里要求统一的 \(\alpha\)，而不只是每个非零向量上取正值。结合算子表示与 Cauchy--Schwarz 不等式，立刻得到
-\[\alpha\lVert u\rVert_H\le\lVert Au\rVert_H.\]
-它同时给出单射性和逆映射在值域上的有界性。不过，单有这种下界并不保证一般算子满射；例如 \(\ell^2\) 上的右移是等距单射却漏掉第一个坐标方向。Lax--Milgram 证明还要利用同一个型在测试向量处的正性，排除值域的正交补。
+对 \(u,v\) 交换第一恒等式中的位置再相减，得到
+\begin{equation}\label{b2:eq:13-green-second}
+ \int_\Omega\bigl(u\cdot\Delta v-v\cdot\Delta u\bigr)\,\mathrm{d}x
+ =\int_{\partial\Omega}
+       \bigl(u\cdot\partial_\nu v-v\cdot\partial_\nu u\bigr)\,\mathrm{d}S.
+\end{equation}
+如果两者都调和，边界上的两种通量配对相等。这个对称性是后面 Green 函数对称性的来源。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[Neumann 数据的相容条件]\label{b2:prop:13-neumann-compatibility}
+设整数 \(d\geq1\)，\(\Omega\subset\mathbb R^d\) 为非空有界 \(C^1\) 开集，\(\nu\) 为外单位法向，\(U\) 为 \(\overline\Omega\) 的开邻域。若 \(u\in C^2(U;\mathbb C)\)、\(f\in C(\overline\Omega;\mathbb C)\)、\(g\in C(\partial\Omega;\mathbb C)\) 满足 \(-\Delta u=f\) 于 \(\Omega\)，且 \(\partial_\nu u=g\) 于 \(\partial\Omega\)，则对 \(\Omega\) 的每个连通分支 \(\Omega_j\)，必有
+\[
+ \int_{\Omega_j}f\,\mathrm{d}x+\int_{\partial\Omega_j}g\,\mathrm{d}S=0.
+\]
+特别地，整个开集上有
+\[
+ \int_\Omega f\,\mathrm{d}x+\int_{\partial\Omega}g\,\mathrm{d}S=0.
+\]
+\end{proposition}
+\begin{proof}
+在 \(C^1\) 边界的局部图中，\(\Omega\) 位于图的一侧，局部这一侧属于同一个连通分支。因此每个分支仍有 \(C^1\) 边界，且其外法向与 \(\nu\) 一致。边界紧，可用有限个这样的图覆盖；每个分支都接触边界，所以分支数有限。对各分支使用散度定理，得到
+\[
+ \int_{\Omega_j}\Delta u\,\mathrm{d}x
+ =\int_{\partial\Omega_j}\partial_\nu u\,\mathrm{d}S.
+\]
+代入方程和边界值即得分支条件，再将它们相加得到整个开集上的等式。复值情形分别对实部、虚部使用散度定理。
+\end{proof}
+
+对上一小节的球内例子，\(f=1\)、\(g=-R/d\)，两个积分为 \(\omega_dR^d\) 和 \(-\sigma_{d-1}R^d/d\)，正好抵消。若同样取 \(f=1\) 却要求整个边界上 \(g=0\)，便不可能有解。相容条件逐个约束连通介质内部的源量与边界通量；即使它成立，本节也不据此直接宣布任意边界上的存在性。
 
 \ProseParagraphBreak
 
-对椭圆型矩阵，条件 \(\xi^{\mathsf T}A(x)\xi\ge\lambda|\xi|^2\) 几乎处处成立时，梯度型在 \(H_0^1\) 的梯度范数下以 \(\alpha=\lambda\) 强制。在整个 \(H^1\) 上却并非如此，因为常函数在型中为零。选空间与选范数是定理假设的一部分，不能在写下“椭圆”之后省略核验。
+只检查整个区域的积分会遗漏分支之间无法交换的热量或电荷。例如取两个闭包不交、半径相同的球，在第一只球上令 \(f=1\)，第二只球上令 \(f=-1\)，并取 \(g=0\)。两只球的总体源量抵消，但各自都不满足相容条件，因而无解。这里的连通分支也不能与边界分支混淆：连通环域虽有内、外两层边界，仍只要求两层通量的总和与同一个内部源量平衡。
 
-\subsection{Lax–Milgram 定理}
-\label{b2:subsec:150204}
+\ProseParagraphBreak
+
+在复值情形，\eqref{b2:eq:13-green-second}仍可作为双线性恒等式使用；讨论自伴或正能量时则应把一个函数换成共轭。比如 \(\int\nabla u\cdot\nabla\overline u=\int|\nabla u|^2\)，而不加共轭的平方和可能不是非负实数。
+
+\subsection{唯一性}
+\label{b2:subsec:130203}
 
 \Needspace{6\baselineskip}
-\begin{theorem}[Lax--Milgram]
-\label{b2:thm:15-lax-milgram}
-设 \(H\) 是实 Hilbert 空间，\(a:H\times H\to\mathbb R\) 是双线性型，且对某些 \(0\le M<\infty\)、\(\alpha>0\) 及全部 \(u,v\in H\) 有
-\[|a(u,v)|\le M\lVert u\rVert_H\lVert v\rVert_H,
- \qquad a(u,u)\ge\alpha\lVert u\rVert_H^2.\]
-则对每个 \(\ell\in H^*\)，存在唯一 \(u\in H\) 满足
-\[a(u,v)=\ell(v)\qquad(v\in H),\]
-且 \(\lVert u\rVert_H\le\alpha^{-1}\lVert\ell\rVert_{H^*}\)。
+\begin{theorem}[三类边界条件下的唯一性]\label{b2:thm:13-boundary-uniqueness}
+设整数 \(d\geq1\)，\(\Omega\subset\mathbb R^d\) 为非空有界连通 \(C^1\) 开集，\(f\in C(\overline\Omega;\mathbb C)\)，\(\nu\) 为外单位法向。对在 \(\overline\Omega\) 某开邻域内为 \(C^2\) 的复值函数，方程 \(-\Delta u=f\) 满足下列结论。
+\begin{enumerate}
+\item\label{b2:item:13-unique-dirichlet}给定 \(u|_{\partial\Omega}\) 时，解至多一个。
+\item\label{b2:item:13-unique-neumann}给定 \(\partial_\nu u\) 时，解在相差常数的意义下至多一个；再给定 \(\int_\Omega u\) 可得到唯一性。
+\item\label{b2:item:13-unique-robin}若 \(\beta\in C(\partial\Omega;\mathbb R)\)、\(\beta\geq0\) 且 \(\int_{\partial\Omega}\beta\,\mathrm{d}S>0\)，给定 \(\partial_\nu u+\beta u\) 时，解至多一个。
+\end{enumerate}
 \end{theorem}
 \begin{proof}
-用 \cref{b2:prop:15-form-operator} 表示 \(a(u,v)=\langle Au,v\rangle\)，并用 Riesz 表示 \(\ell(v)=\langle f,v\rangle\)。所求等式等价于 \(Au=f\)。强制性给出 \(\lVert Au\rVert\ge\alpha\lVert u\rVert\)，所以 \(A\) 单射。
+取两个解之差 \(w\)，则 \(\Delta w=0\)。对第一 Green 恒等式取测试函数 \(\overline w\)。在 Dirichlet 或 Neumann 情形，得到 \(\int|\nabla w|^2=0\)，因为边界乘积分别由 \(w=0\) 或 \(\partial_\nu w=0\) 消去。于是 \(\nabla w=0\)，连通性使 \(w\) 为常数；Dirichlet 数据使该常数为零，Neumann 数据则允许常数自由度。
 
-若 \(Au_n\to y\)，下界说明 \((u_n)\) 是 Cauchy 序列，因而收敛到某个 \(u\in H\)。由 \(A\) 连续，\(Au=y\)，故值域闭。若 \(w\) 与值域正交，则 \(a(v,w)=\langle Av,w\rangle=0\) 对所有 \(v\in H\) 成立。取 \(v=w\)，强制性推出 \(w=0\)。因此值域的正交补为零；闭子空间的正交分解给出值域等于 \(H\)。于是 \(Au=f\) 唯一可解，且算子下界给出 \(\lVert u\rVert\le\alpha^{-1}\lVert f\rVert=\alpha^{-1}\lVert\ell\rVert\)。
+Robin 情形中，\(\partial_\nu w=-\beta w\)，故
+\[
+ \int_\Omega|\nabla w|^2\,\mathrm{d}x
+ +\int_{\partial\Omega}\beta|w|^2\,\mathrm{d}S=0.
+\]
+两项非负，第一项使 \(w=c\)，第二项变为 \(|c|^2\int\beta=0\)，由严格正积分得 \(c=0\)。
 \end{proof}
 
-定理也称 \term[lax-milgram-dingli]{Lax--Milgram 定理}[Lax--Milgram theorem]。复空间版本取复 Hilbert 空间 \(H\)、第一变量线性而第二变量共轭线性的型 \(a:H\times H\to\mathbb C\)，并要求对全部 \(u,v\in H\) 有 \(|a(u,v)|\le M\|u\|\|v\|\)、\(\operatorname{Re}a(u,u)\ge\alpha\|u\|^2\)，其中 \(0\le M<\infty\)、\(\alpha>0\)。对每个连续共轭线性泛函 \(\ell\)，同样存在唯一 \(u\in H\) 使 \(a(u,v)=\ell(v)\) 对全部 \(v\in H\) 成立，且 \(\|u\|\le\alpha^{-1}\|\ell\|\)；算子表示、闭值域和正交补的三步证明保持不变，在取 \(v=w\) 时使用 \(\operatorname{Re}a(w,w)\) 即可。
+Dirichlet 唯一性还可在任意有界开集上由最大值原理取得，只需解属于 \(C^2(\Omega)\cap C(\overline\Omega)\)，无需边界光滑。Neumann 与 Robin 的能量论证则实际使用了边界法向和 Green 恒等式，不能不加说明地移到任意粗糙边界。
 
 \ProseParagraphBreak
 
-还可以用收缩迭代构造解，并以残差控制误差。这里先由 Riesz 表示把 \(\ell\) 写成 \(\ell(v)=\langle f,v\rangle_H\)，于是 \(f\in H\) 是向量，递推式中的减法才有意义。若 \(H=\{0\}\)，解与迭代都只有零向量；下面单列非零 Hilbert 空间中的结论，将步长选择和误差估计放在同一次构造中。
+Robin 系数的符号也不是装饰。在球上取 \(w(x)=x_1\)，则 \(\Delta w=0\)、\(\partial_\nu w=w/R\)。因此 \(\beta=-1/R\) 时，非零函数 \(w\) 满足齐次 Robin 数据，唯一性失败。若区域不连通，Neumann 情形则允许每个连通分支各加一个常数，只固定整个区域的平均值通常不能消除全部自由度。
 
 \Needspace{6\baselineskip}
-\begin{proposition}[收缩迭代与残差估计]
-\label{b2:prop:15-contraction-residual}
-设 \(H\ne\{0\}\) 为实 Hilbert 空间，\(A:H\to H\) 为有界线性算子，\(0<\alpha\leq M<\infty\)，且
-\[
- \|Aw\|_H\leq M\|w\|_H,\qquad
- \langle Aw,w\rangle_H\geq\alpha\|w\|_H^2
- \qquad(w\in H).
-\]
-给定 \(f,u_0\in H\)。对任意 \(0<t<2\alpha/M^2\)，令
-\[
- q_t=(1-2t\alpha+t^2M^2)^{1/2}\in[0,1),\qquad
- u_{n+1}=u_n+t(f-Au_n)\quad(n\geq0).
-\]
-则迭代收敛到 \(Au=f\) 的唯一解 \(u\)，并满足
-\[
- \|u-u_n\|_H\leq q_t^n\|u-u_0\|_H,\qquad
- \|u-u_n\|_H\leq\alpha^{-1}\|f-Au_n\|_H
- \quad(n\geq0).
-\]
-特别取 \(t=\alpha/M^2\)、\(q=(1-\alpha^2/M^2)^{1/2}\)，有
-\[
- \|u-u_n\|_H\leq q^n\|u-u_0\|_H
-               \leq\frac{q^n}{\alpha}\|f-Au_0\|_H.
-\]
-若相应的 \(q_t=0\)，则从任意初值出发一步就得到解；以上按 \(q_t^0=1\) 理解。
+\begin{proposition}\label{b2:prop:13-subharmonic-comparison}
+设整数 \(d\geq1\)，\(\Omega\subset\mathbb R^d\) 为非空有界开集，实值 \(w\in C^2(\Omega)\cap C(\overline\Omega)\)，且 \(\Delta w\geq0\)。则 \(w(x)\leq\max_{\partial\Omega}w\)。因而若实值 \(u,v\in C^2(\Omega)\cap C(\overline\Omega)\) 满足 \(-\Delta u\leq-\Delta v\) 且 \(u\leq v\) 于边界，则内部也有 \(u\leq v\)。
 \end{proposition}
 \begin{proof}
-对任意 \(w\in H\)，上下界给出
+令 \(w_\varepsilon=w+\varepsilon|x|^2\)，则 \(\Delta w_\varepsilon\geq2d\varepsilon>0\)。如果其最大值在内部达到，Hesse 矩阵在该点半负定，会使 Laplace 不大于零，矛盾。因此
 \[
- \|(I-tA)w\|_H^2
- =\|w\|_H^2-2t\langle Aw,w\rangle_H+t^2\|Aw\|_H^2
- \leq(1-2t\alpha+t^2M^2)\|w\|_H^2.
+ w(x)+\varepsilon|x|^2
+ \leq\max_{\partial\Omega}w+\varepsilon\max_{\partial\Omega}|x|^2.
 \]
-因为 \(\alpha\leq M\)，二次式的最小值为 \(1-\alpha^2/M^2\geq0\)；指定的步长区间又使它严格小于一。因此仿射映射
-\(T_t(v)=v+t(f-Av)\) 的 Lipschitz 常数不超过 \(q_t\)。
-
-若 \(q_t=0\)，\(T_t\) 为常值映射；\(u_1=T_t(u_0)\) 因而满足 \(T_t(u_1)=u_1\)，即 \(Au_1=f\)。若 \(0<q_t<1\)，连续应用压缩估计得到
-\[
- \|u_{n+1}-u_n\|_H\leq q_t^n\|u_1-u_0\|_H,\qquad
- \|u_{n+k}-u_n\|_H
- \leq\frac{q_t^n}{1-q_t}\|u_1-u_0\|_H
- \quad(n\geq0,\ k\geq1).
-\]
-于是序列为 Cauchy 列，完备性给出极限 \(u\)；\(T_t\) 连续使 \(T_t(u)=u\)，仍得到 \(Au=f\)。若两个向量都是不动点，压缩估计使其距离不超过自身的 \(q_t\) 倍，只能相同。再把 \(u\) 与 \(u_n\) 反复代入同一估计，得到 \(\|u-u_n\|_H\leq q_t^n\|u-u_0\|_H\)。
-
-最后，强制性与 Cauchy--Schwarz 不等式给出
-\(\alpha\|w\|_H\leq\|Aw\|_H\)；在 \(w=0\) 时也成立。分别取 \(w=u-u_n\) 和 \(w=u-u_0\)，便得到两处残差上界。取 \(t=\alpha/M^2\) 使前面的二次式最小，并将 \(q_t\) 化为所列 \(q\)，证明指定步长的结论。
+让 \(\varepsilon\downarrow0\) 即得第一项；第二项用于 \(w=u-v\)。
 \end{proof}
 
-应用于双线性型时，向量残差 \(f-Au_n\) 所对应的对偶泛函是
-\(v\mapsto\ell(v)-a(u_n,v)\)，二者范数由 Riesz 表示相等。因此最后的误差界也可以完全用弱方程的对偶残差表达，而不用把源项当作普通函数。它允许在不知道精确解时确定误差上界。强制常数越小，逆估计越差；当 \(\alpha/M\) 很小时，上述统一收缩因子也接近一，显示这一简单迭代会变慢。这里的步长最小化的是所证的二次上界，实际计算仍取决于给定算子的结构。
+\Needspace{6\baselineskip}
+\begin{corollary}[边界数据的一致稳定性]\label{b2:cor:13-dirichlet-stability}
+设整数 \(d\geq1\)，\(\Omega\subset\mathbb R^d\) 为非空有界开集，实值或复值 \(u,v\in C^2(\Omega)\cap C(\overline\Omega)\) 满足 \(-\Delta u=-\Delta v\) 于 \(\Omega\)，则
+\[
+ \|u-v\|_{C(\overline\Omega)}\leq\|u-v\|_{C(\partial\Omega)}.
+\]
+\end{corollary}
+\begin{proof}
+差 \(u-v\) 调和，分别对它和负号使用边界最大值原理；复值时使用模的最大值原理。
+\end{proof}
+
+这里稳定性只比较相同的内部源项。如果右端也改变，需要另估计由该差产生的势；不能把一个有源方程的解直接当作调和函数使用。
+
+\subsection{边界积分}
+\label{b2:subsec:130204}
+
+现在将第二 Green 恒等式中的一个函数换成带极点的基本解。沿用\cref{b2:thm:05-laplace-fundamental}的 \(\Phi_d\)，满足 \(-\Delta\Phi_d=\delta_0\)。极点附近的边界项会保留下一个点值，不能把基本解当作整个区域内的普通调和函数。
+
+\Needspace{6\baselineskip}
+
+\begin{theorem}[Green 表示公式]\label{b2:thm:13-green-representation}
+设整数 \(d\geq2\)，\(\Omega\subset\mathbb R^d\) 为非空有界 \(C^1\) 开集，\(\nu\) 为外单位法向，实值或复值 \(u\) 在 \(\overline\Omega\) 的某开邻域内为 \(C^2\)，并记 \(f=-\Delta u\)。取负 Laplace 基本解
+\[
+ \Phi_d(z)=
+ \begin{cases}
+ \dfrac{|z|^{2-d}}{(d-2)\sigma_{d-1}},&d\geq3,\\[3pt]
+ -\dfrac1{2\pi}\log|z|,&d=2,
+ \end{cases}
+ \qquad z\ne0,\quad \sigma_{d-1}=|S^{d-1}|.
+\]
+则对每个 \(x\in\Omega\)，
+\begin{equation}\label{b2:eq:13-green-representation}
+ \begin{aligned}
+ u(x)={}&\int_\Omega\Phi_d(x-y)\cdot f(y)\,\mathrm{d}y\\
+ &+\int_{\partial\Omega}
+ \left(\Phi_d(x-y)\cdot\partial_\nu u(y)
+       -u(y)\cdot\partial_{\nu_y}\Phi_d(x-y)\right)\,\mathrm{d}S_y.
+ \end{aligned}
+\end{equation}
+\end{theorem}
+\begin{proof}
+选 \(\varepsilon>0\) 使闭球 \(\overline{B(x,\varepsilon)}\subset\Omega\)，在挖掉这只球的区域上对 \(u(y)\) 和 \(\Phi_d(x-y)\) 使用第二 Green 恒等式。该区域内基本解调和，故
+\[
+ -\int_{\Omega\setminus\overline{B(x,\varepsilon)}}\Phi_d(x-y)f(y)\,\mathrm{d}y
+ =I_{\partial\Omega}+I_\varepsilon,
+\]
+其中 \(I_{\partial\Omega}\) 是所求公式的边界积分，内球边界项为
+\[
+ I_\varepsilon=\int_{|y-x|=\varepsilon}
+ \left(\Phi_d(x-y)\cdot\partial_\nu u(y)
+ -u(y)\cdot\partial_\nu\Phi_d(x-y)\right)\,\mathrm{d}S_y.
+\]
+内边界相对于挖孔区域的外法向朝向 \(x\)，所以 \(\partial_\nu\Phi_d=1/(\sigma_{d-1}\varepsilon^{d-1})\)。第二项为 \(u\) 的负球面平均，趋于 \(-u(x)\)。第一项的模至多为常数乘 \(\varepsilon\)（\(d\geq3\)）或 \(\varepsilon|\log\varepsilon|\)（\(d=2\)），故趋零。体积分由 \(f\) 有界和 \(\Phi_d\) 局部可积而收敛，令 \(\varepsilon\downarrow0\) 并移项即得。
+\end{proof}
+
+\cref{b2:fig:13-punctured-normal}将两种方向分开画出。小球自身的外法向是 \(e_r\)，但挖孔区域的外法向是 \(-e_r\)；\(\Phi_d\) 的径向导数本来为负，沿后一方向求导便为正。于是内边界项中的负号使球面平均趋于 \(-u(x)\)，移到等式另一侧后才得到表示公式左侧的正 \(u(x)\)。
+
+\input{Figures/F13-PuncturedNormal}
+
+表示公式同时出现边界值与法向导数，所以还不是只用 Dirichlet 数据的求解公式。Green 函数的作用正是修改基本解，使它在边界为零，从而消去不希望出现的法向导数项。下一节先处理体积项及其正则性，随后再作这一边界修正。

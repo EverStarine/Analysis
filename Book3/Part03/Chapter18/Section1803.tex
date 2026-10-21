@@ -2,86 +2,315 @@
 \section{次调和函数观点}
 \label{b3:sec:1803}
 
-Jensen 公式还可以读成一个势论恒等式：圆周平均之差等于圆盘内部 Laplace 测度的对数势。零点只是这一原则的离散实例。
+Jensen 公式把圆周上的平均对数与内部零点联系起来。第十五章的 Riesz 测度使这个关系有了统一的解释：零点在 \(\log|f|\) 中产生对数奇性，Laplace 算子把奇性变成带重数的点质量。一般次调和函数允许这些质量连续分布，圆周平均记录的仍是同一种对数加权。本节还要说明，对数在零点处虽然无界，却能在函数局部一致收敛时保持局部可积意义下的稳定性。
 
 \subsection{\texorpdfstring{\(\log |f|\)}{log|f|}}
 \label{b3:subsec:180301}
 
-函数 \(\log|f|\) 在零点外调和，零点处局部为 \(m\log|z-a|\) 加调和函数。这个分解不依赖对数分支选择，因为只取实部。它也使每个局部可积性与奇性符号都可以直接核验。
+设 \(f\) 在区域 \(D\) 全纯且不恒为零。在无零点的小圆盘上，\(f\) 有全纯对数，因而 \(\log|f|\) 是这个对数的实部，属于调和函数。这里只需要局部对数：即使区域有孔、\(f\) 没有全域单值的对数，\(\log|f|\) 仍是全域单值函数，并在无零点处调和。例如环域中的 \(f(z)=z\) 就有这种情形。
+
+若 \(a\) 是 \(m\) 重零点，局部因子分解给出
+\[
+ f(z)=(z-a)^m h(z),
+ \quad h(a)\ne0,
+ \quad \log|f(z)|=m\log|z-a|+\log|h(z)|.
+\]
+缩小邻域后，\(h\) 无零点，后一项调和且有界。奇性完全落在 \(m\log|z-a|\) 中。对 \(0<r<1\)，有
+\[
+ \int_{|z-a|<r}|\log|z-a||\,\mathrm dA(z)
+ =2\pi\int_0^r-s\log s\,\mathrm ds
+ =\pi r^2\left(\frac12-\log r\right)<\infty.
+\]
+紧集上只有有限个零点，故这些局部计算给出 \(\log|f|\in L^1_{\mathrm{loc}}(D)\)。零点处规定值为 \(-\infty\)；按\cref{b3:prop:15-log-subharmonic}，这给出一个次调和函数。
+
+这里的点值约定不能随意改动。若把 \(a\) 处的值改成有限数，围绕它的小圆周平均仍为
+\[
+ m\log r+\log|h(a)|\longrightarrow-\infty,
+\]
+所以足够小的圆周平均不可能大于那个有限中心值。对面积积分而言，一个点的改动无影响；对次调和函数的平均不等式而言，零点处的负无穷是必须保留的点态资料。
+
+\ProseParagraphBreak
+
+也可以用光滑函数观察这种奇性如何形成。对 \(\varepsilon>0\)，令
+\[
+ u_\varepsilon(z)=\frac12\log\bigl(|f(z)|^2+\varepsilon^2\bigr).
+\]
+由 Cauchy--Riemann 方程求导得到
+\[
+ \Delta u_\varepsilon
+ =\frac{2\varepsilon^2|f'|^2}{(|f|^2+\varepsilon^2)^2}\ge0.
+\]
+当 \(\varepsilon\downarrow0\) 时，\(u_\varepsilon\downarrow\log|f|\)。在固定内部紧集上，\(u_\varepsilon\) 对 \(0<\varepsilon\le1\) 有共同有限上界，而极限已经证明可积；对共同上界减去这些函数使用单调收敛，就得到局部 \(L^1\) 收敛。这个过程既保留次调和性，也允许把 Laplace 算子传到分布极限。
+
+例如 \(f(z)=z\) 时，归一化后的光滑质量密度为
+\[
+ \frac1{2\pi}\Delta u_\varepsilon(z)
+ =\frac{\varepsilon^2}{\pi(|z|^2+\varepsilon^2)^2}.
+\]
+其平面总积分为一，圆盘 \(B(0,r)\) 外的积分为 \(\varepsilon^2/(r^2+\varepsilon^2)\)，随 \(\varepsilon\downarrow0\) 趋于零。一个单零点因此对应一单位集中质量；重数决定的质量将在下一小节写成分布公式。
 
 \subsection{作为 Riesz 测度的零点}
 \label{b3:subsec:180302}
 
-\begin{proposition}\label{b3:prop:18-zero-measure}
-区域上非恒零全纯函数满足
+本书的归一化固定为 \(\mu_u=(2\pi)^{-1}\Delta u\)。它与上一章的正 Green 核相容：\(\log|z-a|\) 的 Laplace 是 \(2\pi\delta_a\)，而正 Green 核的对数主部是 \(-\log|z-a|\)，其负 Laplace 才是 \(2\pi\delta_a\)。下面把第十五章的结果改写为本章的零点计数语言。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[对数模的零点测度]\label{b3:prop:18-zero-measure}
+设 \(D\subseteq\mathbb C\) 为区域，\(f\) 在 \(D\) 全纯且不恒为零。函数 \(\log|f|\) 在零点处取 \(-\infty\)，则它局部可积且次调和，其 Riesz 测度为
+\begin{equation}\label{b3:eq:18-zero-riesz-measure}
+ \frac1{2\pi}\Delta\log|f|
+ =\sum_{a\in Z(f)}m_a\delta_a.
+\end{equation}
+这里 \(Z(f)\) 为零点集，\(m_a\) 为 \(a\) 的重数；右端是局部有限正 Borel 测度。等式在分布意义下成立，即对每个 \(\varphi\in C_c^\infty(D)\)，
 \[
-\frac1{2\pi}\Delta\log|f|=\sum_am_a\,\delta_a,
+ \frac1{2\pi}\int_D\log|f(z)|\,\Delta\varphi(z)\,\mathrm dA(z)
+ =\sum_{a\in Z(f)}m_a\varphi(a).
 \]
-其中右侧记号 \(m_a\) 表示 \(f\) 在 \(a\) 的零点重数。
 \end{proposition}
 \begin{proof}
-在非零点邻域 Laplace 为零；在零点邻域用局部分解与对数基本解，得到重数乘点质量。零点局部有限，因此各局部恒等式通过有限划分拼成分布等式。
+\cref{b3:prop:15-log-subharmonic,b3:cor:15-zero-measure}适用于这里的非恒零全纯函数。具体说，在 \(m_a\) 重零点附近，局部分解使对数模等于 \(m_a\log|z-a|\) 加调和函数；\cref{b3:prop:15-log-fundamental}给出第一项的 Laplace 为 \(2\pi m_a\delta_a\)，第二项的 Laplace 为零。在无零点邻域，对数模调和。测试函数的紧支集只遇到有限个零点，用有限光滑分片拼合这些局部恒等式便得到所述公式，所有求和在该测试下均为有限和。
 \end{proof}
-对亚纯函数，把极点计为负重数，即得相应符号测度。
+
+这项测度能区分重数，却不能恢复全部函数。若 \(q\) 全纯，则 \(f\) 与 \(e^qf\) 的零点测度相同，因为两者的对数模相差调和函数 \(\operatorname{Re}q\)。中心值、边界数据或增长条件提供的是这部分额外信息。
+
+\ProseParagraphBreak
+
+亚纯函数也有相同的局部计算，但测度的符号会改变。其对数模在极点取正无穷，因此不能直接作为前面所定义的次调和函数使用。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[亚纯对数模的零极点测度]\label{b3:prop:18-meromorphic-riesz}
+设 \(D\subseteq\mathbb C\) 为区域，\(f\) 在 \(D\) 亚纯，既不恒为零也不恒为无穷。则 \(\log|f|\) 局部可积，并满足
+\[
+ \frac1{2\pi}\Delta\log|f|
+ =\sum_{a\in Z(f)}m_a\delta_a-\sum_{b\in P(f)}n_b\delta_b
+\]
+这一分布等式，其中 \(Z(f)\)、\(P(f)\) 分别为零点集和极点集，\(m_a,n_b\) 为各自的正重数。右端为局部有限实符号测度。
+\end{proposition}
+\begin{proof}
+在任一点 \(c\) 的小邻域，存在整数 \(k\) 和无零点全纯函数 \(h\)，使 \(f(z)=(z-c)^k h(z)\)。普通点取 \(k=0\)，零点取正整数，极点取负整数。于是
+\[
+ \log|f(z)|=k\log|z-c|+\log|h(z)|.
+\]
+对数核的绝对可积性不受系数符号影响；调和项局部有界，所以左端局部可积。对数基本解给出该邻域中的 Laplace 为 \(2\pi k\delta_c\)。零点和极点在内部紧集上均只有有限个，再用测试函数的有限分片即可拼合。
+\end{proof}
+
+例如 \(a\ne b\) 时，函数
+\[
+ f(z)=e^z\frac{(z-a)^2}{(z-b)^3}
+ \quad\text{满足}\quad
+ \frac1{2\pi}\Delta\log|f|=2\delta_a-3\delta_b.
+\]
+当零点和极点都存在时，Laplace 测度同时有正、负部分，对数模一般既不是次调和函数，也不是超调和函数。局部仍可将它写成两个全纯对数模之差；应用平均公式时应分别处理两项，不把符号测度积分当作非负积分直接换序。
 
 \subsection{势论解释}
 \label{b3:subsec:180303}
 
-若 \(u\in C^2\) 次调和，中心圆周平均 \(m(r)\) 的导数为 \(\mu_u(B(0,r))/r\)，所以
+先看光滑情形。若 \(u\) 在圆盘中属于 \(C^2\) 且次调和，记
 \[
-m(R)-u(0)=\int_0^R\frac{\mu_u(B(0,t))}t\,\mathrm{d}t.
+ m_u(r)=\frac1{2\pi}\int_0^{2\pi}u(re^{\mathrm it})\,\mathrm dt.
 \]
-证明只需积分圆周平均导数，归一化由 \(\mu_u=\Delta u/(2\pi)\) 确定。光滑逼近可把这一公式推广到适当的次调和代表与非奇中心。对 \(u=\log|f|\)，测度离散，右端正是零点对数计数，因而回到 Jensen。
+对半径求导并用散度公式，得到
+\[
+ m_u'(r)=\frac1{2\pi r}\int_{B(0,r)}\Delta u\,\mathrm dA
+ =\frac{\mu_u(B(0,r))}{r}.
+\]
+圆周平均增加的速度由内部的 Laplace 质量决定。积分到原点就得到 Jensen 型公式；对不光滑的次调和函数，局部 Riesz 分解可以完成同一推导，并同时处理圆周上的奇点。
 
-中心为对数奇点时，\(u(0)=-\infty\)，不能直接相减；必须先分离中心点质量。这是原点重数项出现的原因。
+\Needspace{6\baselineskip}
+\begin{theorem}[次调和函数的 Jensen 平均公式]\label{b3:thm:18-subharmonic-jensen}
+设 \(R>0\)，\(u\) 在 \(B(0,R)\) 次调和，且 \(u(0)>-\infty\)。记 \(\mu_u=(2\pi)^{-1}\Delta u\)。对每个 \(0<r<R\)，函数 \(t\mapsto u(re^{\mathrm it})\) 在圆周上绝对可积，且
+\begin{equation}\label{b3:eq:18-subharmonic-jensen}
+ \begin{aligned}
+ m_u(r)-u(0)
+ &=\int_{|w|<r}\log\frac r{|w|}\,\mathrm d\mu_u(w)\\
+ &=\int_0^r\frac{\mu_u(B(0,t))}{t}\,\mathrm dt<\infty.
+ \end{aligned}
+\end{equation}
+圆周上的函数值允许在弧长零测集上为 \(-\infty\)，并不要求 \(\mu_u(\{|w|=r\})=0\)。
+\end{theorem}
+\begin{proof}
+固定 \(r<S<R\)。\cref{b3:thm:15-riesz-decomposition}给出逐点分解
+\[
+ u(z)=\int_{\overline{B(0,S)}}\log|z-w|\,\mathrm d\mu_u(w)+h(z)
+ \quad(|z|<S),
+\]
+其中 \(h\) 调和；势允许取负无穷。记有限测度 \(\mu=\mu_u\llcorner\overline{B(0,S)}\)。
 
-\subsection{与 Nevanlinna 理论的联系}
+先证明在圆周上换序的条件。取 \(C=\log\max\{1,r+S\}\)，则 \(\log|re^{\mathrm it}-w|\le C\)。由\cref{b3:lem:18-circle-log-mean}，每个固定 \(w\) 的圆周对数核绝对可积，平均为 \(\log\max\{r,|w|\}\)。因此
+\[
+ \begin{aligned}
+ \frac1{2\pi}\int_0^{2\pi}|\log|re^{\mathrm it}-w||\,\mathrm dt
+ &=\frac1\pi\int_0^{2\pi}\log^+|re^{\mathrm it}-w|\,\mathrm dt
+   -\log\max\{r,|w|\}\\
+ &\le 2C-\log r.
+ \end{aligned}
+\]
+这里 \(\log^+t=\max\{\log t,0\}\)，右端不随 \(w\) 改变。Tonelli 定理于是给出对数核绝对值在圆周角测度与 \(\mu\) 的积测度下可积。Fubini 定理现在可以用于原来的有符号对数核，得到
+\[
+ m_u(r)=\int\log\max\{r,|w|\}\,\mathrm d\mu(w)+h(0).
+\]
+同时，这一绝对可积控制表明势的圆周限制绝对可积；加上连续的 \(h\) 后，\(u\) 的圆周限制也绝对可积。圆周个别点的负无穷不妨碍这个结论。
+
+中心有限意味着
+\[
+ \int\log|w|\,\mathrm d\mu(w)=u(0)-h(0)>-\infty.
+\]
+被积函数的正部在该紧集上有界，故其负部也可积，特别是 \(\mu(\{0\})=0\)。从两个有限等式相减，便有
+\[
+ m_u(r)-u(0)
+ =\int\log^+\frac r{|w|}\,\mathrm d\mu(w)
+ =\int_{0<|w|<r}\left(\int_{|w|}^r\frac{\mathrm dt}{t}\right)\mathrm d\mu(w).
+\]
+最后的被积函数非负，Tonelli 换序给出 \(\int_0^r\mu_u(B(0,t))\,\mathrm dt/t\)。半径为 \(r\) 的圆周质量对应权重零，因此无需排除它。
+\end{proof}
+
+若 \(u=\log|f|\) 且 \(f(0)\ne0\)，\cref{b3:prop:18-zero-measure}使右端成为 \(\sum_{|a|<r}m_a\log(r/|a|)\)，从而恢复上一节的 Jensen 公式。一般次调和函数的质量可以分散在曲线或面积上，公式不再局限于整数点质量。
+
+\ProseParagraphBreak
+
+以对数半径作变量，平均的变化更直接地显示质量。下面保留开圆盘与闭圆盘的区别，因为质量可以集中在一条圆周上。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[对数半径上的单侧导数]\label{b3:prop:18-mean-slopes}
+设 \(R>0\)，\(u\) 在 \(B(0,R)\) 次调和且 \(u(0)>-\infty\)，\(\mu_u=(2\pi)^{-1}\Delta u\)。对 \(s<\log R\)，令
+\[
+ M(s)=\frac1{2\pi}\int_0^{2\pi}u(e^se^{\mathrm it})\,\mathrm dt.
+\]
+则 \(M\) 有限、非减且凸，其左右导数满足
+\[
+ M'_-(s)=\mu_u(\{|z|<e^s\}),
+ \quad M'_+(s)=\mu_u(\{|z|\le e^s\}).
+\]
+特别地，\(M\) 在 \(s\) 可微当且仅当 \(\mu_u(\{|z|=e^s\})=0\)。
+\end{proposition}
+\begin{proof}
+固定 \(s_0<\log R\)，选 \(S\) 使 \(e^{s_0}<S<R\)。在 \(s_0\) 的一个小区间内，\cref{b3:thm:18-subharmonic-jensen}给出
+\[
+ M(s)-u(0)=\int_{\overline{B(0,S)}}(s-\log|w|)^+\,\mathrm d\mu_u(w).
+\]
+中心有限已经排除 \(w=0\) 的原子。对每个其他 \(w\)，被积函数关于 \(s\) 非减且凸，因此积分也具有这两个性质；任意紧区间都可这样选取 \(S\)，所以结论在整个定义区间成立。
+
+单个被积函数的左右差商均介于零与一。左差商趋于 \(\mathbf1_{\{|w|<e^{s_0}\}}\)，右差商趋于 \(\mathbf1_{\{|w|\le e^{s_0}\}}\)。测度在固定内部闭圆盘上有限，支配收敛因而给出两个导数公式。它们的差恰是圆周上的质量，故也给出可微的充要条件。
+\end{proof}
+
+对全纯对数模，Jensen 公式使 \(M(s)-\log|f(0)|=N_f(e^s)\)，所以这个结论与\cref{b3:prop:18-counting-slopes}的零点计数斜率相合。零点穿过观察圆周时，平均本身连续，斜率的跳跃等于该圆周上的总重数。
+
+圆周对数核平均还给出
+\[
+ \log^+|z|=\frac1{2\pi}\int_0^{2\pi}\log|z-e^{\mathrm it}|\,\mathrm dt.
+\]
+由\cref{b3:prop:15-log-potential}，该函数的 Riesz 测度是单位圆周上的均匀概率测度。其对数半径平均为 \(\max\{0,s\}\)，在 \(s=0\) 的斜率跳跃为一。另一方面，\(u(z)=|z|^2\) 的 Riesz 测度为 \((2/\pi)\,\mathrm dA\)，故 \(\mu_u(B(0,r))=2r^2\)；其平均为 \(r^2\)，对 \(r\) 的导数为 \(2r=\mu_u(B(0,r))/r\)。曲线质量产生跳跃，面积质量则可以使斜率连续变化。
+
+\ProseParagraphBreak
+
+中心有限的条件规定了上面公式的适用范围。若已知
+\[
+ u(z)=m\log|z|+v(z),
+ \quad m\ge0,
+\]
+其中 \(v\) 次调和且 \(v(0)\) 有限，就可以先保留平均中的 \(m\log r\)，再对 \(v\) 使用公式；相应地，测度先去掉 \(m\delta_0\)。全纯函数的中心零点正好有这种局部分解。
+
+一般次调和函数在中心取负无穷，却未必有中心原子。例如在 \(B(0,e^{-1})\) 上，规定
+\[
+ u(z)=-\sqrt{\log(1/|z|)}\quad(z\ne0),
+ \quad u(0)=-\infty.
+\]
+它局部可积，在原点外有
+\[
+ \Delta u(z)=\frac1{4|z|^2(\log(1/|z|))^{3/2}}>0.
+\]
+原点处的次平均不等式因中心值为负无穷而成立，局部判据给出全圆盘上的次调和性。删去半径 \(\varepsilon\) 的小圆作分部积分时，含 \(u\) 的边界项由 \(O(\varepsilon\sqrt{\log(1/\varepsilon)})\) 控制，通量则为 \(2\pi\varepsilon u'(\varepsilon)=\pi/\sqrt{\log(1/\varepsilon)}\)，都趋于零。因此分布 Laplace 没有中心点质量，并且
+\[
+ \mu_u(B(0,r))=\frac1{2\sqrt{\log(1/r)}}\longrightarrow0
+ \quad(r\downarrow0).
+\]
+这个例子说明，去掉中心原子并不自动留下有限的中心值。式\eqref{b3:eq:18-subharmonic-jensen}中的有限差值不能在这样的中心照写。
+
+\subsection{次调和平均、零点稳定性与值分布}
 \label{b3:subsec:180304}
 
-对于亚纯函数，零点与极点可能同时增长。单独看 \(\log|f|\) 的平均会发生抵消，而 \(\log^+|f|\) 的平均与极点积分计数之和能够保留总增长信息。这引向\appref{b3:app:C}的 Nevanlinna 特征。
+平均公式依赖对数的可积性。考察一列全纯函数时，也应在这个层次比较它们的对数模：函数值一致接近，并不保证在移动零点附近的对数值一致接近。先把一个移动零点的影响单独算清。
 
-目前已经得到的是零点的精确势论记录，并没有从 Jensen 一式直接获得第二基本定理。后者还需要对数导数和多个值之间的比较。
-
-
-\ProseParagraphBreak
-
-一般次调和平均公式可借上一章的局部 Riesz 分解在书内推出。取较大内部圆盘，使 \(u=V+h\)，\(V(z)=\int\log|z-w|\,\mathrm{d}\mu(w)\)，\(h\) 调和。对固定圆周的核平均，有
+\Needspace{6\baselineskip}
+\begin{lemma}[移动对数核的局部可积收敛]\label{b3:lem:18-moving-log}
+设 \(a_j,a\in\mathbb C\)，且 \(a_j\to a\)。则对每个有界可测集 \(E\subseteq\mathbb C\)，有
 \[
-\frac1{2\pi}\int_0^{2\pi}\log|re^{\mathrm{i}t}-w|\,\mathrm{d}t=\log\max(r,|w|).
+ \int_E\bigl|\log|z-a_j|-\log|z-a|\bigr|\,\mathrm dA(z)\longrightarrow0.
 \]
-若 \(u(0)>-\infty\)，势在中心亦有限，故减去中心值后，核贡献 \(\log^+(r/|w|)\)，这是非负函数。Tonelli 给
+\end{lemma}
+\begin{proof}
+取 \(0<\delta<1/3\)。当 \(j\) 充分大时，\(|a_j-a|<\delta\)。在 \(E\setminus B(a,2\delta)\) 上，两种距离都有正下界 \(\delta\)，且有共同有限上界，因此对数之差一致趋于零；该集合面积有限，其积分也趋于零。
+
+在 \(E\cap B(a,2\delta)\) 上，\(|z-a_j|<3\delta<1\)，故相应对数的绝对值只涉及负部。平移圆盘并扩大积分范围，得到
 \[
-\frac1{2\pi}\int u(re^{\mathrm{i}t})\,\mathrm{d}t-u(0)
-=\int_{|w|<r}\log(r/|w|)\,\mathrm{d}\mu(w)
-=\int_0^r\frac{\mu(B(0,t))}{t}\,\mathrm{d}t.
+ \int_{E\cap B(a,2\delta)}|\log|z-a_j||\,\mathrm dA(z)
+ \le2\pi\int_0^{3\delta}-t\log t\,\mathrm dt.
 \]
-最后一步将 \(\log(r/|w|)\) 写成 \(\int_{|w|}^r\mathrm{d}t/t\)，再换非负积分次序。圆周上原势的负部可积由此也得到控制；无需未经说明地从分布等式取点值。
+固定中心 \(a\) 的同类积分也受这个量控制。因此小圆盘内两对数之差的积分不超过 \(4\pi\int_0^{3\delta}-t\log t\,\mathrm dt\)。先令 \(j\to\infty\)，再令 \(\delta\downarrow0\)，就得到结论。
+\end{proof}
 
-\ProseParagraphBreak
-
-这个平均差随 \(r\) 非减，因为 Riesz 测度为正。在对数半径 \(s=\log r\) 下，平均函数的导数为 \(\mu(B(0,e^s))\)，它也非减，所以平均关于 \(s\) 凸。对全纯对数模，导数就是零点整数计数；对一般次调和函数，导数可以连续变化。取 \(u(z)=|z|^2\) 时圆周平均为 \(r^2\)，\(\mu(B(0,r))=2r^2\)，导数为 \(2r\)，恰与公式 \(\mu(B(0,r))/r\) 一致。这同时核验面积归一化和 \(2\pi\) 常数。
-
-\ProseParagraphBreak
-
-若中心是零点，\(u(0)=-\infty\)，则两边不能写作有限数相减。对 \(u=m\log|z|+v\)、\(v(0)\) 有限，圆周平均先保留 \(m\log r\)，再对 \(v\) 使用上述公式；测度中先去掉 \(m\delta_0\)。若任意在原点补一个有限值，Riesz 分布不会因单点修改改变，但次调和平均不等式会失败。这说明分布等价类与点态次调和代表应保持区别，零点处的负无穷值具有数学作用。
-
-\ProseParagraphBreak
-
-对于亚纯函数的 \(\log|f|\)，极点给正无穷的对数奇性，函数本身一般既非次调和也非超调和；它的 Laplace 是符号测度。可以局部写成两个次调和函数之差，对零、极点分别应用平均公式，再取差。符号测度下积分换序需要有限性或正负分解，不能继续把整个表达当成非负积分使用 Tonelli。将正测度论证中的每一步直接复制给符号测度，是从全纯版本过渡到亚纯版本时常见的漏洞。
-
-\ProseParagraphBreak
-
-Nevanlinna 特征保留大小的正部及极点总计数。此处先作一个算术检验：令 \(f(z)=1/z\)，对 \(r>1\)，圆周上 \(\log^+|f|=0\)，但中心极点计数贡献 \(\log r\)，所以特征仍增长；对 \(f(z)=z\)，没有极点，正部平均为 \(\log r\)。两函数互为倒数，粗略增长规模相同，单独的平均 \(\log|f|\) 却一正一负。正部与极点项的结合正是为了防止这种符号抵消丢失增长资料。完整定义及中心归一化将在相应附录中给出，这里只解释为何需要新的量。
-
-\ProseParagraphBreak
-
-零点测度的稳定性也可以从对数模的局部可积收敛看出。下面补上这项分析事实。仍设 \(f_j\to f\not\equiv0\) 局部一致，选一个闭圆盘，其边界无极限零点，内部零点有限。由前面的稳定计数，令 \(p_j\) 为盘中全部零点构成的首一多项式，\(p\) 为极限零点多项式，则 \(p_j\to p\) 一致。商 \(h_j=f_j/p_j\) 在盘内全纯无零点，边界上一致趋于 \(h=f/p\)；最大模原理把收敛传到闭盘。\(h\) 无零点且闭盘上有正下界，故 \(\log|h_j|\to\log|h|\) 一致。
-\ProseParagraphBreak
-剩下只需处理移动的对数核。若 \(a_j\to a\)，则 \(\log|z-a_j|\to\log|z-a|\) 在固定紧集上依 \(L^1\) 收敛。证明时先删去 \(a\) 附近半径 \(2\delta\) 的小圆，在其外一致收敛；其内，所有充分大的 \(a_j\) 落在半径 \(\delta\) 内，负部积分由
-\(2\pi\int_0^{3\delta}r|\log r|\,\mathrm{d}r\) 控制，趋于零。正部在固定有界区域统一有界，所删小圆的面积也趋零。两部分合并即得结论。把有限个移动零点项相加，便得到
+\Needspace{6\baselineskip}
+\begin{theorem}[全纯对数模的局部可积稳定性]\label{b3:thm:18-log-modulus-stability}
+设 \(D\subseteq\mathbb C\) 为区域，\(f_j\) 在 \(D\) 全纯，并局部一致收敛于不恒为零的全纯函数 \(f\)。则 \(f_j\) 最终不恒为零，且
 \[
- \log|f_j|\longrightarrow\log|f|\quad\text{于 }L^1_{\mathrm{loc}}(D).
+ \log|f_j|\longrightarrow\log|f|
+ \quad\text{于 }L^1_{\mathrm{loc}}(D).
 \]
-对紧支集光滑测试函数 \(\varphi\)，积分 \(\int\log|f_j|\Delta\varphi\) 遂收敛；由零点的 Riesz 测度公式，正好再次得到零点测度的弱收敛。点态对数在移动零点处可能完全没有共同下界，局部可积性才是传递 Laplace 算子的合适层次。
+这里各函数在零点处的值取负无穷，积分按相应局部可积等价类理解。
+\end{theorem}
+\begin{proof}
+选一点 \(b\in D\) 使 \(f(b)\ne0\)，则 \(f_j(b)\to f(b)\) 保证 \(f_j\) 最终非恒零。以下略去有限个初始指标。
+
+取闭圆盘 \(\overline B=\overline{B(c,R)}\subset D\)，使边界上没有 \(f\) 的零点。盘内零点按重数列为 \(a_1,\ldots,a_N\)，其中 \(N\) 可以为零。\cref{b3:prop:18-zero-stability}保证：当 \(j\) 充分大时，\(f_j\) 在盘内也恰有 \(N\) 个零点，且可以按重数标号为 \(a_{j,1},\ldots,a_{j,N}\)，使 \(a_{j,k}\to a_k\)。这里的标号不要求同一重零点拆出的不同零点彼此有固定次序；只需把每个小分离圆盘中的零点归入相应极限零点的簇。边界上 \(\min|f|>0\) 与一致收敛还保证 \(f_j\) 最终没有边界零点。
+
+令
+\[
+ p_j(z)=\prod_{k=1}^N(z-a_{j,k}),
+ \quad p(z)=\prod_{k=1}^N(z-a_k),
+\]
+空乘积取一。由于只有有限个因子，\(p_j\to p\) 在闭圆盘上一致。商
+\[
+ h_j=f_j/p_j,
+ \quad h=f/p
+\]
+在已除去的零点处可去，故在闭圆盘的邻域全纯，并在闭圆盘无零点。尤其 \(p\) 在边界上有正下界，\(p_j\) 最终也有共同正下界；所以边界上的商由分子、分母的一致收敛得到 \(h_j\to h\)。最大模原理应用于全纯差 \(h_j-h\)，把这项收敛传到整个闭圆盘。
+
+连续无零点函数 \(h\) 在闭圆盘有 \(m=\min_{\overline B}|h|>0\)。当 \(j\) 充分大时，\(|h_j|\ge m/2\)，从而
+\[
+ \sup_{\overline B}|\log|h_j|-\log|h||
+ \le\frac2m\sup_{\overline B}|h_j-h|\longrightarrow0.
+\]
+在几乎每个点分解
+\[
+ \log|f_j(z)|=\sum_{k=1}^N\log|z-a_{j,k}|+\log|h_j(z)|.
+\]
+\cref{b3:lem:18-moving-log}使有限个零点项分别在 \(L^1(B)\) 收敛；最后一项一致收敛，所以 \(\log|f_j|\to\log|f|\) 于 \(L^1(B)\)。
+
+对任意紧集 \(K\Subset D\)，可在其每个点附近选择上述边界无零点的小圆盘，再取有限子覆盖。先把半径限定在闭包留在 \(D\) 的较大圆盘内，再避开其中有限个零点到圆心的距离即可。将有限个圆盘上的积分估计相加，便得到 \(K\) 上的 \(L^1\) 收敛。
+\end{proof}
+
+因此，对每个 \(\varphi\in C_c^\infty(D)\)，有
+\[
+ \frac1{2\pi}\int_D\log|f_j|\,\Delta\varphi\,\mathrm dA
+ \longrightarrow
+ \frac1{2\pi}\int_D\log|f|\,\Delta\varphi\,\mathrm dA.
+\]
+由\cref{b3:prop:18-zero-measure}，这正是零点测度在光滑测试函数下的收敛，给出\secref{b3:sec:1801}零点稳定性的分布解释。Rouch\'e 的局部计数控制零点因子，无零点商的边界收敛控制调和部分，两者共同给出这里的局部可积收敛。
+
 \ProseParagraphBreak
-这项结论也说明为什么在正规族中控制函数本身，经常足以控制零点，但前提是先排除恒零极限。若极限恒零，\(\log|f_j|\) 可能整体趋于负无穷，即使零点数并未增加；例如常数 \(1/j\) 的对数在每个点都趋于负无穷，而其 Laplace 始终为零。对数的加性常数与零点测度是两种独立资料，不能从测度收敛反推对数模已经收敛。
+
+极限非恒零是必要条件。常数函数 \(f_j=1/j\) 局部一致趋于零，但其对数模在每点趋于负无穷，在任何正面积紧集上都不可能收敛到一个有限的 \(L^1\) 函数。与此同时，每个 \(f_j\) 的零点测度都是零。即使极限不为零，点态对数也无需一致收敛：例如 \(f_j(z)=z-1/j\) 的零点不断移动，任何包含原点邻域的紧集都无法给这些对数模一个共同有限下界。局部 \(L^1\) 收敛恰能容纳这种可积奇性的移动。
+
+\ProseParagraphBreak
+
+最后说明值分布为何需要超出零点计数的资料。对非恒定亚纯函数 \(f\) 和有限值 \(a\)，将函数换成 \(f-a\)，前面的符号测度公式便记录 \(a\) 点的重数；极点及其重数保持不变。因此不同的 \(a\) 对应不同的正点质量，而极点给出共同的负部分。逐个应用 Jensen 可以比较它们与边界平均的关系，却不会自动给出多个值同时出现时的总限制。
+
+平均对数也会丢掉没有零点的增长。对 \(f(z)=e^z\)，有
+\[
+ \frac1{2\pi}\int_0^{2\pi}\log|f(re^{\mathrm it})|\,\mathrm dt=0,
+ \quad
+ \frac1{2\pi}\int_0^{2\pi}\log^+|f(re^{\mathrm it})|\,\mathrm dt=\frac r\pi.
+\]
+第一式是 \(r\cos t\) 的平均，第二式只积分其正部。这两个量分别记录有符号的平均对数与大模值的贡献，不能互换。
+
+对亚纯函数还要保留极点信息。取 \(r>1\)，函数 \(z\) 与 \(1/z\) 的平均对数分别是 \(\log r\) 与 \(-\log r\)，正部平均分别是 \(\log r\) 与零。按上一节分离中心整数幂的约定，\(1/z\) 的中心一重极点在积分极点计数中贡献 \(\log r\)。将正部平均与极点积分计数合在一起，才会同时看见这两种增长。这些计算引向\appref{b3:app:C}中的 Nevanlinna 特征；其进一步的值分布结论还需要对数导数估计和多个值之间的比较，不能只由本节的一个径向平均公式推出。

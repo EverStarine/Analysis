@@ -1,329 +1,227 @@
 % !TeX root = ../../Book2.tex
-\section{多维振荡积分}
-\label{b2:sec:2103}
+\section{二进分解}
+\label{b2:sec:1903}
 
-多维积分中，可利用的振荡方向数未必等于变量个数。相位梯度不为零时，只需沿一个合适的向量场积分分部；非退化驻点附近，每个二次方向提供半个幂次的衰减；若某些方向完全平直，它们只贡献普通积分。本节把这些方法用于参数振幅和曲面 Fourier 变换，并说明统一估计需要怎样局部化。
+势的 Fourier 符号同时作用于全部频率。若想看清一个函数的粗轮廓与细节分别有多大，可以先把频率拆成许多环带：第 \(j\) 带的频率大小约为 \(2^j\)，对应的位置尺度约为 \(2^{-j}\)。每带都由同一个模型缩放得到，所以导数、卷积核及范数的尺度可以统一计算。本节先完成这种分块及其重构；下一节再回答各块的大小怎样合成为原函数的范数。
 
-\subsection{相位函数}
-\label{b2:subsec:210301}
+\subsection{频率局部化}
+\label{b2:subsec:190301}
 
-\cref{b2:prop:21-nonstationary-multi}已经建立多维非驻相估计。恢复本处所需条件：相位 \(\phi\) 是开集 \(U\subset\mathbb R^d\) 上的实光滑函数，振幅 \(a\in C_c^\infty(U;\mathbb C)\)，并且 \(|\nabla\phi|\geq c>0\) 在振幅支撑的一个邻域成立。相应的向量场及微分算子为
-\[
- V(x)=\frac{\nabla\phi(x)}{|\nabla\phi(x)|^2},
- \quad
- L=\frac1{2\pi\mathrm i\lambda}V\cdot\nabla,
- \quad
- Le^{2\pi\mathrm i\lambda\phi}
- =e^{2\pi\mathrm i\lambda\phi}.
-\]
-在这里转移的是双线性积分中的微分算子，而不是带复共轭的 Hilbert 伴随。由散度公式，其形式转置作用于振幅为
-\[
- L^{\mathrm t}a
- =-\frac1{2\pi\mathrm i\lambda}\operatorname{div}(Va)
- =-\frac1{2\pi\mathrm i\lambda}
-   \bigl(V\cdot\nabla a+(\operatorname{div}V)a\bigr).
-\]
-因此即使原振幅局部为常数，相位的变化也会通过 \(\operatorname{div}V\) 进入下一次振幅。具体地，
-\[
- \operatorname{div}V
- =\frac{\Delta\phi}{|\nabla\phi|^2}
-  -2\,\frac{(D^2\phi\,\nabla\phi)\cdot\nabla\phi}
-               {|\nabla\phi|^4}.
-\]
-梯度下界控制分母；相位的有限阶导数控制分子。反复转移 \(N\) 次后，得到 \(\lambda^{-N}\) 乘以振幅至多 \(N\) 阶导数的有限线性组合，其系数由相位至多 \(N+1\) 阶导数与梯度倒数控制。
+直接乘环带的示性函数虽然能精确切开频率，却在环带边界产生不光滑的符号，其空间核未必可积。我们改用光滑过渡，并允许相邻频带重叠。取整数 \(d\geq1\)，选择实径向函数 \(\chi\in C_c^\infty(\mathbb R^d)\)，满足 \(0\leq\chi\leq1\)，在 \(|\xi|\leq1\) 时为一，在 \(|\xi|\geq2\) 时为零，且沿半径单调不增。这样的函数可由一维光滑截断作用于 \(|\xi|^2\) 构造。
 
 \ProseParagraphBreak
 
-这个描述也给出使用参数族时的核对方法。若 \(z\) 遍历某个参数集合，\(a_z\) 的支撑都在同一紧集 \(K\Subset U\) 内，所需导数的 \(L^1\) 范数一致有界，\(\phi_z\) 在同一邻域上满足统一梯度下界和相位导数界，那么任意固定次数的非驻相估计就对 \(z\) 一致。参数集合是否紧只是获得这些界的一种途径；实际使用的是这些定量条件。
+\(\chi(\xi)\) 保留半径二以内的低频，\(\chi(2\xi)\) 则只保留更小的低频范围。两者之差
+\[
+ \varphi(\xi)=\chi(\xi)-\chi(2\xi)
+\]
+因此挑出中间的一圈频率。它非负，支撑包含于 \(\{\,\xi:1/2\leq|\xi|\leq2\,\}\)，并在原点的一个邻域内恒为零。对任意非负整数 \(M,N\)，逐项写出相邻两项的差，得到
+\begin{equation}\label{b2:eq:19-dyadic-telescope}
+ \sum_{j=-M}^N\varphi(2^{-j}\xi)
+ =\chi(2^{-N}\xi)-\chi(2^{M+1}\xi).
+\end{equation}
+若 \(\xi\ne0\)，令 \(M,N\to\infty\)，右侧两项分别趋于一与零。因此
+\[
+ \sum_{j\in\mathbb Z}\varphi(2^{-j}\xi)=1
+ \quad(\xi\ne0).
+\]
+每个非零频率只落在固定数目的环带中，所以这里的逐点求和实际上只有有限个非零项。在 \(\xi=0\) 处，每一项却都是零；这个例外将决定齐次重构需要什么函数空间。
 
 \ProseParagraphBreak
 
-紧支撑负责消除积分域边界，不能被“相位在内部没有驻点”替代。对光滑有界区域 \(\Omega\)，一次散度积分分部会出现
-\[
- \begin{aligned}
- \int_\Omega e^{2\pi\mathrm i\lambda\phi}\cdot a\,\mathrm dx
- &=
- \frac1{2\pi\mathrm i\lambda}
- \int_{\partial\Omega}
- e^{2\pi\mathrm i\lambda\phi}\cdot a(V\cdot n)\,\mathrm d\sigma\\
- &\hspace{1em}
- -\frac1{2\pi\mathrm i\lambda}
- \int_\Omega e^{2\pi\mathrm i\lambda\phi}\cdot
-                    \operatorname{div}(Va)\,\mathrm dx,
- \end{aligned}
-\]
-其中 \(n\) 是外单位法向。边界积分是否衰减，取决于相位限制在边界后的切向变化。平直立方体上的线性相位甚至可以在某些面上恒定。例如
-\[
- \int_{[0,1]^d}e^{2\pi\mathrm i\lambda x_1}\,\mathrm dx
- =\frac{e^{2\pi\mathrm i\lambda}-1}{2\pi\mathrm i\lambda}.
-\]
-其余 \(d-1\) 个变量只提供体积一，并没有增加衰减。这与光滑紧支撑振幅的快速衰减没有矛盾。
-
-\subsection{振幅}
-\label{b2:subsec:210302}
-
-振幅的支撑、导数和在驻点处的消失阶都参与估计。尤其当振幅依赖于 \(\lambda\) 时，不能把它当作固定函数代入渐近公式，再把增长中的导数藏在余项常数里。一个完整可算的模型是
-\[
- I_\lambda
- =\int_{\mathbb R^d}e^{\pi\mathrm i\lambda|x|^2}
-                    \cdot a(\lambda^\theta x)\,\mathrm dx,
- \quad
- a\in C_c^\infty(\mathbb R^d;\mathbb C),
- \quad \theta\geq0.
-\]
-这里 \(\lambda\geq1\)，\(\theta\) 固定。换元 \(u=\lambda^\theta x\) 得
-\[
- I_\lambda=\lambda^{-d\theta}
- \int_{\mathbb R^d}e^{\pi\mathrm i\tau|u|^2}
-                       \cdot a(u)\,\mathrm du,
- \quad
- \tau=\lambda^{1-2\theta}.
-\]
-振幅的尺度归一化后，真正需要比较的是 \(\tau\) 与一的大小。
+光滑频率定位的空间核是 \(\check\varphi=\mathcal F^{-1}\varphi\)。它属于 Schwartz 类，因而快速衰减、绝对可积，但一般不具有紧支集。这个代价不能通过另选一个更巧的非零核完全消除：一个平方可积函数若同时具有紧的位置支集和紧的 Fourier 支集，就只能为零。
 
 \ProseParagraphBreak
 
-当 \(0\leq\theta<1/2\) 时，\(\tau\to\infty\)。在原点附近用二次驻相公式，其余部分用非驻相估计，得到
-\[
- I_\lambda
- =e^{\pi\mathrm i d/4}\lambda^{-d/2}
-   \left[a(0)+O\bigl(\lambda^{-(1-2\theta)}\bigr)\right].
-\]
-因子 \(\lambda^{-d\theta}\tau^{-d/2}\) 恰好等于 \(\lambda^{-d/2}\)。此时振幅变化尺度比驻相尺度宽，首项仍只看 \(a(0)\)，但相对于首项的余项是 \(\lambda^{-(1-2\theta)}\)，已不是固定振幅时的 \(\lambda^{-1}\)。若 \(a(0)=0\)，须继续看更高阶项，不能从此式断言首项非零。
+这里用到的解析性可以直接从 Fourier 积分看出。紧频带中的平方可积变换也可积；把一个位置坐标换成复变量 \(z\)，指数的 Taylor 级数在每个紧参数集上一致收敛，故可逐项积分，得到处处收敛的幂级数。若这个函数在一个实区间上为零，则在区间内部的任一点，所有 Taylor 系数均为零，整个幂级数恒为零。高维时，位置紧支集的外部含有一个实开盒；固定其他坐标，先沿第一个坐标使用上述结论，再逐个处理其余坐标，便知函数在全部实空间为零。Fourier 唯一性随后给出原输入为零。这里起作用的是紧频带带来的解析性；普通光滑函数可以在开集上为零而不恒为零。后续波包正是允许位置上的快速衰减，才兼顾了两种局部化。
 
-\ProseParagraphBreak
-
-当 \(\theta=1/2\) 时，\(\tau=1\)，于是有精确等式
-\[
- I_\lambda
- =\lambda^{-d/2}
-   \int_{\mathbb R^d}e^{\pi\mathrm i|u|^2}
-                       \cdot a(u)\,\mathrm du.
-\]
-系数依赖整个振幅，通常不能用 \(e^{\pi\mathrm i d/4}a(0)\) 代替。振幅与驻点邻域在同一尺度变化，归一化后的积分已没有一个趋于无穷的参数。
-
-\ProseParagraphBreak
-
-当 \(\theta>1/2\) 时，\(\tau\to0\)。利用
-\(|e^{\mathrm it}-1|\leq|t|\) 与 \(a\) 的紧支撑，得到
-\[
- I_\lambda
- =\lambda^{-d\theta}
-   \left[
-   \int_{\mathbb R^d}a(u)\,\mathrm du
-   +O\bigl(\lambda^{1-2\theta}\bigr)
-   \right].
-\]
-这里误差由
-\(\pi\tau\int|u|^2\cdot|a(u)|\,\mathrm du\)
-控制。衰减主要来自支撑体积缩小，而不是相位在该支撑上产生越来越多的波动。这三个范围也说明，同一条固定振幅驻相公式不能在支撑尺度穿过 \(\lambda^{-1/2}\) 时原样保持。
-
-\ProseParagraphBreak
-
-非驻相区域也有类似的导数代价。设 \(\delta\geq0\) 固定。若相位固定、梯度在固定紧集附近有正下界，而 \(a_\lambda\) 支撑于该紧集，并满足
-\[
- \|\partial^\gamma a_\lambda\|_1
- \leq A_\gamma\lambda^{\delta|\gamma|},
- \quad \lambda\geq1,
-\]
-则转移 \(N\) 次导数后至多得到
-\[
- |I_\lambda(a_\lambda,\phi)|
- \leq C_N\lambda^{-N(1-\delta)}.
-\]
-当 \(0\leq\delta<1\)，且每个所需阶数都有上述控制时，仍能通过增加 \(N\) 得到任意固定的负幂。若 \(\delta\geq1\)，这套估计本身不再提供衰减；例如振幅中包含 \(e^{-2\pi\mathrm i\lambda\phi}\) 时，原来的振荡可以被完全消去。
-
-\subsection{曲率}
-\label{b2:subsec:210303}
-
-曲面 Fourier 变换把几何曲率转成相位的二阶导数。先在一个图形坐标片中写
-\[
- F(y)=(y,h(y)),
- \quad y\in U\subset\mathbb R^{d-1},
- \quad h\in C^\infty(U;\mathbb R).
-\]
-曲面体积元为
-\[
- \mathrm d\sigma(F(y))
- =J(y)\,\mathrm dy,
- \quad
- J(y)=\sqrt{1+|\nabla h(y)|^2}.
-\]
-这个因子来自切向基向量
-\(\partial_jF=e_j+(\partial_jh)e_d\)
-的 Gram 矩阵 \(G=I+\nabla h(\nabla h)^{\mathsf T}\)：其行列式为 \(1+|\nabla h|^2\)，体积元是行列式的平方根。忽略这个因子会改变曲面测度，也会改变驻相系数。
-
-\ProseParagraphBreak
-
-取上向单位法向
-\(n=(-\nabla h,1)/J\)。
-第二基本形式在此切向基下的矩阵为 \(B=D^2h/J\)，因为
-\(\partial_{ij}F\cdot n=(\partial_{ij}h)/J\)。
-Gaussian 曲率是形算子 \(G^{-1}B\) 的行列式，故
-\[
- \mathcal K(y)
- =\frac{\det D^2h(y)}
-        {\bigl(1+|\nabla h(y)|^2\bigr)^{(d+1)/2}}.
-\]
-法向选择可能改变曲率的符号约定，但是否为零及其绝对值不受影响。下面只用其非零性与绝对值。
+\subsection{Littlewood--Paley 投影}
+\label{b2:subsec:190302}
 
 \Needspace{6\baselineskip}
-\begin{proposition}[非零曲率曲面密度的 Fourier 衰减]\label{b2:prop:21-curved-surface-decay}
-设 \(d\geq2\) 为整数，\(\Sigma\subset\mathbb R^d\) 是光滑嵌入超曲面，\(a\in C_c^\infty(\Sigma;\mathbb C)\)，且 \(\Sigma\) 在 \(\operatorname{supp}a\) 附近没有边界。假设 \(\Sigma\) 的 Gaussian 曲率在 \(\operatorname{supp}a\) 上处处非零。定义有限复测度 \(\mu=a\,\mathrm d\sigma\)，其中 \(\mathrm d\sigma\) 为诱导曲面测度，并取
+\begin{definition}\label{b2:def:19-dyadic-block}
+设 \(d\geq1\) 为整数，\(\chi\in C_c^\infty(\mathbb R^d)\) 为实径向函数，\(0\leq\chi\leq1\)，在 \(|\xi|\leq1\) 时为一、\(|\xi|\geq2\) 时为零，沿半径单调不增。令 \(\varphi(\xi)=\chi(\xi)-\chi(2\xi)\)。对复温和分布 \(f\in\mathcal S'(\mathbb R^d)\) 和整数 \(j\)，定义\term[littlewood-paley-touying]{Littlewood--Paley 投影}[Littlewood--Paley projection]
 \[
- \widehat\mu(\xi)
- =\int_\Sigma e^{-2\pi\mathrm i x\cdot\xi}
-                  \cdot a(x)\,\mathrm d\sigma(x).
+ \Delta_jf\coloneqq\mathcal F^{-1}
+ \bigl(\varphi(2^{-j}\,\cdot)\cdot\widehat f\bigr).
 \]
-则存在仅依赖曲面在该紧支撑附近的几何及振幅的常数 \(C\)，使
+其卷积核为
 \[
- |\widehat\mu(\xi)|
- \leq C(1+|\xi|)^{-(d-1)/2},
- \quad \xi\in\mathbb R^d.
+ \kappa_j(x)=2^{jd}\cdot\check\varphi(2^jx),
+ \quad \Delta_jf=\kappa_j*f,
 \]
+后一等式对温和分布按 Schwartz 核卷积解释；对 \(L^p\) 输入按通常卷积解释。
+\end{definition}
+\symidx{\(\Delta_jf\)：Littlewood--Paley 频率投影}
+
+光滑符号可以乘温和分布，而 \(\kappa_j\in\mathcal S\)。\Cref{b2:prop:05-tempered-convolution}因此保证每个块是一个光滑函数，其导数至多多项式增长。对 \(1\leq p\leq\infty\) 的 \(L^p\) 输入，Young 不等式还给出
+\[
+ \|\Delta_jf\|_p\leq\|\kappa_j\|_1\cdot\|f\|_p
+ =\|\check\varphi\|_1\cdot\|f\|_p.
+\]
+这个单块界与 \(j\) 无关，但把它对无穷多个 \(j\) 直接相加并不能证明重构。\(\Delta_j\) 也不是 Laplace 算子或第一卷的有限差分 \(\Delta_h\)；这里的整数下标表示频率尺度。
+
+\ProseParagraphBreak
+
+所有 \(\kappa_j\) 的积分都为零，因为 \(\varphi(0)=0\)。更一般地，\(\varphi\) 在零频附近恒为零，故 \(\kappa_j\) 的全部多项式矩都为零。将多项式 \(P(x-y)\) 按 \(y\) 展开，就得到 \(\Delta_jP=0\)。尤其常函数一的每个频率块均为零。这说明在任意温和分布上，不能直接写 \(\sum_j\Delta_jf=f\)；至少所有多项式信息都被这一分解消去了。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[有限指数上的齐次重构]\label{b2:thm:19-lp-resolution}
+设 \(d\geq1\) 为整数，\(\chi\in C_c^\infty(\mathbb R^d)\) 为实径向函数，\(0\leq\chi\leq1\)，在 \(|\xi|\leq1\) 时为一、\(|\xi|\geq2\) 时为零，沿半径单调不增。令 \(\varphi=\chi-\chi(2\cdot)\)，并以核 \(2^{jd}\check\varphi(2^j\cdot)\) 定义 \(\Delta_j\)。对 \(1<p<\infty\)、\(f\in L^p(\mathbb R^d;\mathbb C)\)，有
+\[
+ \sum_{j=-M}^N\Delta_jf\longrightarrow f
+ \quad\text{于 }L^p,
+ \quad M,N\longrightarrow\infty.
+\]
+两个截断参数可以独立趋于无穷；特别地可取 \(M=N\)。
 \end{proposition}
 \begin{proof}
-由支撑的紧性，可用有限个经过刚性运动得到的图形坐标片覆盖，并取其上的光滑分割。曲率连续且在支撑上不为零，故可将坐标片略微缩小，使相应紧集附近仍有非零曲率。刚性运动中的平移只给 Fourier 变换乘一个模为一的因子，正交变换只改变方向。因此只需估计每个图形片上的积分
+令 \(\psi=\check\chi\)，则 \(\psi\in\mathcal S\)、\(\int\psi=\chi(0)=1\)。对整数 \(n\)，记
 \[
- \int_U e^{2\pi\mathrm i\rho\phi_\omega(y)}
-                   \cdot b(y)\,\mathrm dy,
- \quad
- \phi_\omega(y)=-\omega'\cdot y-\omega_dh(y),
+ A_nf=2^{nd}\psi(2^n\cdot)*f.
 \]
-其中 \(\rho=|\xi|\)、\(\omega=\xi/|\xi|\in S^{d-1}\)，
+由\eqref{b2:eq:19-dyadic-telescope}，有限和等于 \(A_Nf-A_{-M-1}f\)。因此须分别证明高频截断 \(A_Nf\to f\) 和极低频项 \(A_{-M-1}f\to0\)。
+
+第一步使用 \(L^p\) 平移连续性。换元后，
 \[
- b(y)=\eta(F(y))\cdot a(F(y))\cdot J(y)
+ \|A_Nf-f\|_p
+ \leq\int_{\mathbb R^d}|\psi(z)|\cdot
+       \|f(\cdot-2^{-N}z)-f\|_p\,\mathrm dz.
 \]
-是光滑紧支撑振幅，\(\eta\) 为所选分割函数。记 \(K=\operatorname{supp}b\Subset U\)。
+对每个固定 \(z\)，第二个因子趋于零；它不超过 \(2\|f\|_p\)。控制函数 \(2|\psi(z)|\cdot\|f\|_p\) 可积，故支配收敛证明第一步。核可以变号，所用条件是积分一与绝对可积，并不要求它非负。
 
-先检查任意方向上的驻点。由
+第二步先取 \(f\in L^1\cap L^p\)。Young 不等式与缩放给出
 \[
- \nabla_y\phi_\omega
- =-\omega'-\omega_d\nabla h,
- \quad
- D_y^2\phi_\omega=-\omega_dD^2h,
+ \begin{aligned}
+ \|A_{-M-1}f\|_p
+ &\leq\bigl\|2^{-(M+1)d}\psi(2^{-M-1}\cdot)\bigr\|_p
+                 \cdot\|f\|_1\\
+ &=2^{-(M+1)d(1-1/p)}\|\psi\|_p\cdot\|f\|_1
+ \longrightarrow0.
+ \end{aligned}
 \]
-若 \(\nabla_y\phi_\omega(y)=0\)，则
-\(\omega'=-\omega_d\nabla h(y)\)。
-因为 \(|\omega|=1\)，必有
+这里必须有 \(p>1\)。对一般 \(f\in L^p\)，取 \(h\in L^1\cap L^p\) 逼近它，并利用
 \[
- |\omega_d|=\frac1{J(y)}>0.
+ \|A_{-M-1}(f-h)\|_p
+ \leq\|\psi\|_1\cdot\|f-h\|_p.
 \]
-这正说明 \(\omega\) 平行于曲面法向。非零曲率又使 \(D^2h(y)\) 可逆，所以驻点处 \(D_y^2\phi_\omega\) 可逆。
-
-为了使常数对方向一致，需要同时在位置和方向上局部化。考虑紧集 \(K\times S^{d-1}\)。对其中每一对 \((y_0,\omega_0)\)，分两种情形。若相位梯度不为零，连续性给出一个乘积邻域，在其中
-\(|\nabla_y\phi_\omega|\geq c_0>0\)。
-若它为零，先在方向球面上取局部坐标，再由刚才的 Hesse 矩阵可逆性对方程
-\(\nabla_y\phi_\omega(y)=0\)
-应用含参数的隐函数定理：在足够小的方向邻域内，驻点 \(y_*(\omega)\) 光滑依赖 \(\omega\)，并在一个固定的位置邻域内唯一。进一步缩小邻域，可使其 Hesse 矩阵的最小奇异值有统一正下界，同时保证所有用到的相位导数一致有界。还可在此位置邻域内选一个共同紧集，既包含后面分割振幅的支撑，也包含这些方向下的全部驻点 \(y_*(\omega)\)。
-
-上述乘积邻域覆盖 \(K\times S^{d-1}\)，紧性给出有限子覆盖。可在各片中取位置和方向的光滑截断之积，再除以其总和，构造该紧集附近的有限光滑分割
-\(\sum_\nu\chi_\nu(y,\omega)=1\)。
-有限性及紧支撑保证分割函数所需的 \(y\) 导数一致有界。于是 \(b\chi_\nu\) 仍支撑于固定紧集，而其导数界不随 \(\omega\) 改变。
-
-对第一类片，\cref{b2:prop:21-nonstationary-multi}给出任意固定阶的 \(O(\rho^{-N})\)，常数对方向一致。对第二类片，\cref{b2:prop:21-parametric-stationary}适用于移动驻点 \(y_*(\omega)\)：固定位置邻域、统一可逆的 Hesse 矩阵、相位与振幅的有限阶导数界均已建立。因此这些片的积分一致为 \(O(\rho^{-(d-1)/2})\)。驻点即使落在某个分割振幅的零区，其首项也只会消失，不影响此上界。取 \(N\geq(d-1)/2\)，对有限片相加，得到 \(\rho\geq1\) 时所需结论。
-
-最后，当 \(|\xi|\leq1\)，直接使用
-\[
- |\widehat\mu(\xi)|
- \leq\int_\Sigma|a|\,\mathrm d\sigma<\infty.
-\]
-调整常数便得到整个频率空间上的估计。
+先使逼近误差小，再令 \(M\to\infty\)，便得第二步。两项各有独立的极限，故也证明两个参数可以独立变化。
 \end{proof}
 
-驻相系数还展示了曲面体积元为何必不可少。记 \(n=d-1\)，在图形片的驻点处，
-\[
- |\det D_y^2\phi_\omega|
- =|\omega_d|^n\cdot|\det D^2h|
- =|\mathcal K|\cdot J^2.
-\]
-因此原图形振幅的几何部分满足
-\[
- \frac{\eta(F(y))\cdot a(F(y))\cdot J(y)}
-      {|\det D_y^2\phi_\omega(y)|^{1/2}}
- =\frac{\eta(F(y))\cdot a(F(y))}
-      {|\mathcal K(y)|^{1/2}}.
-\]
-Jacobi 因子与 Hesse 行列式中的坐标因子恰好抵消。这与\secref{b2:sec:2102}中驻相首项的坐标不变性一致，也说明曲率下界趋于零时为何不能指望同一常数继续适用。
+重构的两端承担不同任务：\(N\to\infty\) 恢复越来越细的高频细节，\(M\to\infty\) 消去越来越宽的大尺度平均。\(p=1\) 时，后一项不一定趋零。例如对 \(f\in\mathcal S\)、\(\int f\ne0\)，每个 \(\Delta_jf\) 的积分都是零，有限和若在 \(L^1\) 中趋于 \(f\)，就会迫使 \(\int f=0\)。\(p=\infty\) 时常函数一已经是反例。对于上述有限的开区间指数，非零多项式本来就不属于 \(L^p\)，因而没有这类残余信息。
+
+\subsection{二进环带}
+\label{b2:subsec:190303}
+
+每个 \(\Delta_jf\) 的 Fourier 支撑包含于 \(\{\,\xi:2^{j-1}\leq|\xi|\leq2^{j+1}\,\}\)。当 \(|j-k|>2\) 时，两个符号的支集不交，所以 \(\Delta_j\Delta_k=0\)。相邻块却会重叠，且 \(\varphi^2\) 一般不等于 \(\varphi\)，故这些“投影”既不两两正交，也不必幂等；这个名称表示光滑频率定位。
 
 \ProseParagraphBreak
 
-曲率退化必须按具体模型判断。若曲面是平面，沿法向的相位恒定，非零密度的 Fourier 变换可完全没有衰减。取整数 \(1\leq r<n\)，若局部相位恰为
+频率尺度还决定求导的代价。若 \(g\in\mathcal S\) 的频率集中在一个固定环带，令 \(g_j(x)=2^{jd/p}\cdot g(2^jx)\)、\(1\leq p<\infty\)，则直接换元得到 \(\|g_j\|_p=\|g\|_p\)，而 \(\|\nabla g_j\|_p=2^j\|\nabla g\|_p\)。下面的\term[bernstein-budengshi]{Bernstein 不等式}[Bernstein inequality]把这个缩放计算推广到所有具有相应频率支撑的输入。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[Bernstein 估计]\label{b2:thm:19-bernstein}
+设 \(d\geq1\) 为整数、\(R_0>0\)、\(j\in\mathbb Z\)、\(1\leq p\leq q\leq\infty\)，\(k\geq0\) 为整数。若 \(f\in L^p(\mathbb R^d;\mathbb C)\) 的温和分布 Fourier 支撑包含于 \(\{\,\xi:|\xi|\leq R_0 2^j\,\}\)，则其全部 \(k\) 阶分布导数都有 \(L^q\) 代表，且
 \[
- \phi(u,v)=\frac{|u|^2}{2},
- \quad
- (u,v)\in\mathbb R^r\times\mathbb R^{n-r},
+ \|D^kf\|_q
+ \leq C_{d,k,p,q,R_0}\,2^{j[k+d(1/p-1/q)]}\|f\|_p.
 \]
-且振幅是 \(b(u)c(v)\)，其中
-\(b\in C_c^\infty(\mathbb R^r;\mathbb C)\)、
-\(c\in C_c^\infty(\mathbb R^{n-r};\mathbb C)\)，则积分精确分解成
+这里 \(|D^kf|=(\sum_{|\alpha|=k}|\partial^\alpha f|^2)^{1/2}\)，约定 \(D^0f=f\)、\(1/\infty=0\)。常数与 \(j,f\) 无关。
+\end{proposition}
+\begin{proof}
+取 \(\eta\in C_c^\infty(\mathbb R^d)\)，在闭球 \(\{\,|\xi|\leq R_0\,\}\) 的一个邻域内为一。令 \(\eta_j(\xi)=\eta(2^{-j}\xi)\)。由于 \(\eta_j\) 在 \(\operatorname{supp}\widehat f\) 附近为一，分布乘法给出 \(\eta_j\widehat f=\widehat f\)。因此对 \(|\alpha|=k\)，
 \[
- \left(\int_{\mathbb R^{n-r}}c(v)\,\mathrm dv\right)
- \left(\int_{\mathbb R^r}e^{\pi\mathrm i\lambda|u|^2}
-                    \cdot b(u)\,\mathrm du\right).
+ \partial^\alpha f
+ =\partial^\alpha\bigl(2^{jd}\check\eta(2^j\cdot)\bigr)*f.
 \]
-当 \(b(0)\int c\ne0\)，二次驻相公式给出非零的
-\(\lambda^{-r/2}\) 主项。这个秩模型中，只有 \(r\) 个变量产生二次振荡；其余变量确实完全平直。圆柱曲面沿适当法向的局部模型具有这种性质。
+令 \(1+1/q=1/p+1/r\)，则 \(1\leq r\leq\infty\)。链式法则与换元给出
+\[
+ \bigl\|\partial^\alpha
+       \bigl(2^{jd}\check\eta(2^j\cdot)\bigr)\bigr\|_r
+ =2^{j[k+d(1-1/r)]}\|\partial^\alpha\check\eta\|_r.
+\]
+Young 不等式控制每个导数，再对有限多个多重指标求和，即得所述估计。等式先在分布意义成立，右端卷积属于 \(L^q\)，所以同时证明了导数代表的存在。频带半径 \(R_0\) 决定截断 \(\eta\)，也就进入常数。
+\end{proof}
+
+球形频带仍含有任意小的频率，因而单靠上界不能反过来用导数控制函数。若频率始终离开原点，除法符号就变为一个光滑紧支集乘子，只需可积核的卷积界便能取得反向估计。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[环带上的导数尺度]\label{b2:prop:19-annular-bernstein}
+设 \(d\geq1\)、\(k\geq1\) 为整数，\(0<r_0<R_0<\infty\)、\(1\leq p\leq\infty\)、\(j\in\mathbb Z\)。若 \(f\in L^p(\mathbb R^d;\mathbb C)\) 的温和分布 Fourier 支撑包含于
+\(\{\,\xi:r_0 2^j\leq|\xi|\leq R_0 2^j\,\}\)，则
+\[
+ c_{d,k,p,r_0,R_0}\,2^{jk}\|f\|_p
+ \leq\|D^kf\|_p
+ \leq C_{d,k,p,r_0,R_0}\,2^{jk}\|f\|_p,
+\]
+其中两个常数为正且与 \(j,f\) 无关。
+\end{proposition}
+\begin{proof}
+上界已由 Bernstein 得到。取 \(\eta\in C_c^\infty(\mathbb R^d\setminus\{0\})\)，在闭环带 \(r_0\leq|\zeta|\leq R_0\) 的邻域内为一。先看 \(k=1\)，令
+\[
+ a_\ell(\zeta)=\frac{\eta(\zeta)\zeta_\ell}
+                         {2\pi\mathrm i|\zeta|^2}.
+\]
+这些符号在原点附近补零后都光滑紧支撑，并有
+\[
+ \sum_{\ell=1}^d a_\ell(2^{-j}\xi)
+                       \cdot(2\pi\mathrm i\xi_\ell)
+ =2^j\eta(2^{-j}\xi).
+\]
+这里记 \(m(D)f=\mathcal F^{-1}(m\widehat f)\)，字母 \(D\) 仅是乘子记号。将上式作用于 \(\widehat f\)，得到
+\[
+ f=2^{-j}\sum_{\ell=1}^d a_\ell(2^{-j}D)\partial_\ell f.
+\]
+各 \(a_\ell(2^{-j}D)\) 的核都是同一 Schwartz 核的缩放，\(L^1\) 范数与 \(j\) 无关。Young 因而给出 \(\|f\|_p\leq C2^{-j}\sum_\ell\|\partial_\ell f\|_p\)。
+
+一般 \(k\) 也可直接写出除法。由多项式公式
+\[
+ |\zeta|^{2k}
+ =\sum_{|\alpha|=k}\frac{k!}{\alpha!}\zeta^{2\alpha},
+\]
+令
+\[
+ a_\alpha(\zeta)=\frac{k!}{\alpha!}
+ \frac{\eta(\zeta)\zeta^\alpha}{(2\pi\mathrm i)^k|\zeta|^{2k}}.
+\]
+便有 \(\sum_{|\alpha|=k}a_\alpha(2^{-j}\xi)\cdot(2\pi\mathrm i\xi)^\alpha=2^{jk}\eta(2^{-j}\xi)\)。同一卷积论证得到
+\[
+ \|f\|_p\leq C2^{-jk}\sum_{|\alpha|=k}\|\partial^\alpha f\|_p
+ \leq C'2^{-jk}\|D^kf\|_p.
+\]
+最后一步只使用有限多个分量的范数比较。各导数已由正向 Bernstein 属于 \(L^p\)，所以每一次卷积都有相应定义域。全程没有使用后面的 Mihlin 定理。
+\end{proof}
+
+低频失败也可以在有限 \(p\) 中看清。取非零 \(g\in\mathcal S\)，令其 Fourier 支撑在单位球内。缩放 \(g(\varepsilon x)\) 后，梯度范数与函数范数之比为 \(\varepsilon\|\nabla g\|_p/\|g\|_p\)，趋于零；这些频率仍留在同一个固定球内。因此不能把上一个命题的环带换成球。非齐次 Sobolev 范数中单独保留低频项，正是为了控制导数看不见的大尺度部分。
+
+\subsection{近似正交性}
+\label{b2:subsec:190304}
+
+平方空间中，每个频率的重叠次数已经足够控制全部块。对 \(f\in L^2(\mathbb R^d)\)，Plancherel 与非负求和给出
+\[
+ \sum_j\|\Delta_jf\|_2^2
+ =\int_{\mathbb R^d}
+   \left(\sum_j|\varphi(2^{-j}\xi)|^2\right)
+                       \cdot|\widehat f(\xi)|^2\,\mathrm d\xi.
+\]
+记每个非零频率处的重叠次数上界为 \(L\)。分割非负且和为一，所以 Cauchy--Schwarz 给出
+\[
+ \frac1L\leq\sum_j|\varphi(2^{-j}\xi)|^2
+ \leq\left(\sum_j\varphi(2^{-j}\xi)\right)^2=1
+ \quad(\xi\ne0).
+\]
+零点不影响 \(L^2\) 积分，从而
+\[
+ L^{-1}\|f\|_2^2
+ \leq\sum_j\|\Delta_jf\|_2^2\leq\|f\|_2^2.
+\]
+通常得到的是等价而非等距：在两个光滑块都严格介于零与一的区域，平方和会严格小于它们的和。
 
 \ProseParagraphBreak
 
-不能把上述结论推广为“驻点 Hesse 矩阵的秩总能决定衰减”。例如对 \(m\geq2\)，相位
+更一般地，对有限族 \(u_j\in L^2(\mathbb R^d;\mathbb C)\)，若其 Fourier 本性支集两两不交，则 Plancherel 给出精确的平方范数相加。若这些支集在几乎每个频率处至多重叠 \(N_0\) 次，则逐频率使用 Cauchy--Schwarz，得到
 \[
- \phi(u,v)=\frac{|u|^2}{2}+v^{2m},
- \quad u\in\mathbb R^r,\quad v\in\mathbb R,
+ \left\|\sum_j u_j\right\|_2^2
+ \leq N_0\sum_j\|u_j\|_2^2.
 \]
-在原点的 Hesse 矩阵仍只有秩 \(r\)，但最后一个变量并非平直。对乘积振幅，二次估计和 \(2m\) 阶 van der Corput 引理给出
-\(O(\lambda^{-r/2-1/(2m)})\)。
-同一个点上的二阶秩没有记录这个额外增益。一般退化曲率问题还要研究高阶项、驻点集合形状及频率方向；只有具备明确的法向非退化结构时，才可应用已证明的临界子流形公式。
-
-\subsection{局部化}
-\label{b2:subsec:210304}
-
-局部化的目的不是简单地把积分切小，而是让所需下界和导数界在每一片中同时成立。若 \(\chi_j\) 是振幅支撑附近的有限光滑分割，则
-\[
- I_\lambda(a,\phi)
- =\sum_j I_\lambda(a\chi_j,\phi).
-\]
-在非驻相片中记录梯度下界，在驻相片中记录 Hesse 矩阵的最小奇异值下界；分割函数导数进入新振幅。有限个固定片可以相加，但参数变化时，还必须检查能否保持同一覆盖和这些下界。曲面命题中的 \(K\times S^{d-1}\) 紧性，正是使方向分割和全部估计常数能够统一的原因。
-
-\ProseParagraphBreak
-
-一个方向逐渐变平的二次模型可以把这种依赖完全算清。取
-\[
- J_{\lambda,\varepsilon}
- =\iint_{\mathbb R^2}
- e^{\pi\mathrm i\lambda(x^2+\varepsilon y^2)}
-       \cdot a(x)b(y)\,\mathrm dx\,\mathrm dy,
- \quad \lambda\geq1,\quad\varepsilon\geq0,
-\]
-其中 \(a,b\in C_c^\infty(\mathbb R;\mathbb C)\) 固定。令
-\[
- A(\lambda)=\int_{\mathbb R}e^{\pi\mathrm i\lambda x^2}
-                           \cdot a(x)\,\mathrm dx,
- \quad
- B(\tau)=\int_{\mathbb R}e^{\pi\mathrm i\tau y^2}
-                           \cdot b(y)\,\mathrm dy.
-\]
-Fubini 定理给出 \(J_{\lambda,\varepsilon}=A(\lambda)B(\lambda\varepsilon)\)。
-对 \(A\) 用二阶 van der Corput，对 \(B\) 同时用普通积分界和二阶估计，可得统一上界
-\[
- |J_{\lambda,\varepsilon}|
- \leq C_{a,b}\lambda^{-1/2}
- \begin{cases}
-  1,&0\leq\lambda\varepsilon\leq1,\\
-  (\lambda\varepsilon)^{-1/2},&\lambda\varepsilon\geq1.
- \end{cases}
-\]
-这条估计在 \(\varepsilon=0\) 也有意义。固定 \(\varepsilon>0\) 时，两个二次方向最终都产生衰减，得到
-\(O(\lambda^{-1}\varepsilon^{-1/2})\)；
-若 \(\lambda\varepsilon\) 很小，第二个方向尚未形成有效振荡，只能保留第一方向的 \(\lambda^{-1/2}\)。
-
-\ProseParagraphBreak
-
-若进一步取 \(a(0)\ne0\)、\(\int b\ne0\)，并令 \(\varepsilon=\lambda^{-2}\)，则
-\[
- \lambda^{1/2}J_{\lambda,\lambda^{-2}}
- \longrightarrow
- e^{\pi\mathrm i/4}a(0)\int_{\mathbb R}b(y)\,\mathrm dy\ne0.
-\]
-这里第一因子用二次驻相首项，第二因子用 \(\tau=\lambda^{-1}\to0\) 时的控制收敛。因此即使每个正 \(\varepsilon\) 都给出可逆 Hesse 矩阵，也不存在对这些参数统一的 \(C\lambda^{-1}\) 界。这个例子直接检验了常数的退化，而没有改变驻点数目。后面的振荡积分算子中，混合 Hesse 矩阵的下界也必须按同样原则与有效参数一起追踪。
+这称为\term[ji-hu-zhengjiao]{几乎正交性}[almost orthogonality]的一种基本形式。它记录的是频率支集的重叠，而不是每个位置处函数值正交。在一般 \(L^p\) 中，Plancherel 不再直接适用；下一节将用随机符号的平均和\chapref{b2:ch:18}的统一奇异积分界恢复平方结构。

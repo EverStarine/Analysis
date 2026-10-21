@@ -2,68 +2,326 @@
 \section{正规族与省略值}
 \label{b3:sec:1403}
 
-省略值将像限制在一个带穿孔的球面。正规性可以通过球面导数刻画；若正规性失败，重标度会制造一条整个平面上的非恒常极限曲线，与穿孔球面的圆盘覆盖矛盾。
+省略值把函数的像限制在带穿孔的球面中，但这种限制没有提供普通模长的共同上界。例如省略0和1的函数仍可能很大，极点也不适合用欧氏距离描述。本节先用球面导数刻画正规性；若正规性失败，就选取中心和尺度，构造整个平面上的非恒常亚纯极限。三穿孔球面的圆盘覆盖最终排除这个极限，得到第4章留下的省略值 Montel 定理。
 
-\subsection{省略值}
+\subsection{省略值与球面导数}
 \label{b3:subsec:140301}
 
-亚纯函数省略一个球面值，指它从不取到该值，极点被解释为取无穷远。省略三个不同球面值的族可用同一个 Möbius 变换把这三个值化为0、1、无穷远。全纯函数本已省略无穷远，所以再省略两个不同有限值便属于此情形。
+亚纯函数省略一个球面值，是指它作为到 \(\widehat{\mathbb C\kern0pt}\) 的映射从不取到该值；极点对应取值 \(\infty\)。全纯函数已经省略 \(\infty\)，所以再省略两个不同有限值，就是省略三个球面值。三个互异固定值可以用同一个 Möbius 变换送到 \(0,1,\infty\)：先把第三个值送到 \(\infty\)，再用仿射变换把前两个像送到0和1。这里的坐标变换在整个函数族中固定。
 
 \ProseParagraphBreak
-球面导数定义为 \(f^\#=|f'|/(1+|f|^2)\)，极点处用 \(1/f\) 同式定义，两个表达一致。它测量到球面长度元 \(|\mathrm{d}w|/(1+|w|^2)\) 的导数大小，不是普通导数。\(f_n=n\) 的普通值无界，但球面导数0且球面趋于无穷远。
+沿用\subsecref{b3:subsec:040203}的归一化，球面距离是单位球面弦长的一半：
+\[
+ \chi(z,w)=\frac{|z-w|}
+ {\sqrt{1+|z|^2}\sqrt{1+|w|^2}},\quad
+ \chi(z,\infty)=\frac1{\sqrt{1+|z|^2}}.
+\]
+它不等于沿球面量得的弧长。若 \(\sigma(z,w)\) 表示单位球面上最短大圆弧长的一半，则弦与圆心角的关系给
+\[
+ \sigma(z,w)=\arcsin\chi(z,w),\quad
+ \chi(z,w)\le\sigma(z,w)\le\frac\pi2\chi(z,w).
+\]
+两者给出相同的收敛，但数值并不相同。对有限 \(w\)，有
+\[
+ \chi(w,w+h)=\frac{|h|}{1+|w|^2}+o(|h|).
+\]
+结合第4章的球面表示 \(|S(w+h)-S(w)|=2\chi(w,w+h)\)，这说明单位球面的长度元为 \(2|\mathrm dw|/(1+|w|^2)\)。下面采用它的一半，以与弦距离 \(\chi\) 的微小尺度相配。
 
-\subsection{正规性}
+\Needspace{6\baselineskip}
+\begin{definition}\label{b3:def:14-spherical-derivative}
+设 \(U\subseteq\mathbb C\) 为区域，\(f\) 在 \(U\) 上亚纯。其\term[qiumian-daoshu]{球面导数}[spherical derivative]在有限值点定义为
+\[
+ f^\#(z)\coloneqq\frac{|f'(z)|}{1+|f(z)|^2}.
+\]
+在极点附近令 \(h=1/f\)，并在极点处以 \(|h'|/(1+|h|^2)\) 定义 \(f^\#\)。对常值映射 \(f\equiv\infty\)，约定 \(f^\#\equiv0\)。
+\end{definition}
+\symidx{\(f^\#\)：亚纯函数的球面导数}
+
+在 \(f\ne0,\infty\) 处，
+\[
+ \frac{|(1/f)'|}{1+|1/f|^2}
+ =\frac{|f'|/|f|^2}{1+1/|f|^2}
+ =\frac{|f'|}{1+|f|^2},
+\]
+所以两张坐标中的表达相同，且在极点处连续延拓。例如 \(f(z)=1/z\) 在0处有球面导数1；极点并不意味着球面导数无穷。对连接 \(z_0,z_1\) 的分段 \(C^1\) 路径 \(\gamma\)，像路径的半球面长度为
+\[
+ \int f^\#(\gamma(t))|\gamma'(t)|\,\mathrm dt.
+\]
+如果路径经过极点，就分段改用倒数坐标，积分不变。弦长不超过连接曲线长度，故
+\[
+ \chi(f(z_0),f(z_1))
+ \le\int f^\#(\gamma(t))|\gamma'(t)|\,\mathrm dt.
+\]
+这个不等式将球面导数的共同界转成球面等度连续性。
+
+\ProseParagraphBreak
+更换球面旋转坐标也保持 \(f^\#\)。对有限 \(a\)，把 \(a\) 送到0的旋转可以取
+\[
+ R_a(w)=\frac{w-a}{1+\overline a w}.
+\]
+直接计算得
+\[
+ 1+|R_a(w)|^2
+ =\frac{(1+|a|^2)(1+|w|^2)}{|1+\overline a w|^2},
+ \quad
+ |R_a'(w)|=\frac{1+|a|^2}{|1+\overline a w|^2}.
+\]
+于是 \((R_a\circ f)^\#=f^\#\)。再用
+\[
+ R_a(z)-R_a(w)
+ =\frac{(1+|a|^2)(z-w)}{(1+\overline a z)(1+\overline a w)},
+\]
+分子与弦距离分母中的相同因子相消，得到
+\(\chi(R_a(z),R_a(w))=\chi(z,w)\)。对 \(a=\infty\)，用 \(R_\infty(w)=1/w\) 即可。公式在分母为零的点按球面连续性解释。
+
+\ProseParagraphBreak
+一般 Möbius 变换只保角，并不保持球面距离。例如 \(M(w)=2w\) 在0处把球面微小长度乘以2，就不是球面等距变换。不过任何固定 Möbius 变换及其逆在紧球面上都一致连续，所以复合它们仍保持球面局部一致收敛与正规性。后面归一化三个省略值使用这一拓扑性质；需要精确保持球面导数时，则使用上面的旋转。
+
+\subsection{Marty 正规性判别}
 \label{b3:subsec:140302}
 
-\term[marty-panbie]{Marty 判别}[Marty's criterion]以球面导数表达正规性。
+\cref{b3:def:04-meromorphic-normal}中的球面正规性允许极限为亚纯函数或常值 \(\infty\)。因此仅考察普通导数或有限值局部有界性还不够。先证明球面导数与这种收敛相容，尤其把恒趋于无穷远的情形纳入同一个论证。
 
-\begin{theorem}[Marty 判别]\label{b3:thm:14-marty}
-亚纯函数族球面正规，当且仅当其球面导数在每个紧集有共同上界。
-\end{theorem}
-\begin{proof}
-若导数局部共同有界，球面两点的弦距离不超过连接像路径的球面长度，故在小凸盘上得到共同 Lipschitz 界。球面紧，对可数稠密点对角抽取，再用等度连续性与有限网格得到紧集一致子列。连续极限在每个点可选一个避开无穷远的球面坐标；充分晚成员也在此坐标有界全纯，Weierstrass 定理使极限全纯。所以极限为亚纯或球面常值，得到正规性。
-
-反向若球面导数在紧集无界，取 \(f_n\)、\(z_n\rightarrow a\) 使 \(f_n^\#(z_n)\rightarrow\infty\)。正规性给球面一致子列。在 \(a\) 的极限值附近选一个球面旋转坐标，把该值送到有限点；在小盘中成员普通一致收敛且共同有界，Cauchy 导数估计给共同导数界。球面旋转保持球面导数，产生矛盾。极限恒为无穷远时同样选倒数坐标。
-\end{proof}
-
-\ProseParagraphBreak
-Marty 判别把欧氏导数改成球面导数，能在极点处继续使用。若 \(g=1/f\)，则 \(|g'|/(1+|g|^2)=|f'|/(1+|f|^2)\)，两张球面坐标给相同数值。以 \(f_n(z)=nz\) 为例，0处球面导数为 \(n\)，族在那里不正规；但在任一避开0的紧集上，\(f_n\) 球面趋于无穷，正规性完全可以恢复。正规是局部性质，不能因为某一点失败就忽略其他子域的正常极限。
-
-\ProseParagraphBreak
-另一方面，\(f_n(z)=n\) 是处处球面导数为0的正规族，虽没有有限的 Euclid 局部有界性。第四章有限全纯极限的定义与此处球面正规定义使用不同紧目标，必须分清。把极限 \(\infty\) 加入球面以后，常数逃逸成为紧致现象；却没有因此把任何无界族都变成正规，\(nz\) 已给反例。
-
-\subsection{紧性}
-\label{b3:subsec:140303}
-
-\term[zalcman-chongsuofang-yinli]{Zalcman 重缩放引理}[Zalcman's rescaling lemma]把不正规性转成非常值整平面极限。
-
-\begin{lemma}[Zalcman 重缩放引理]\label{b3:lem:14-zalcman-rescaling}
-若亚纯族在 \(a\) 附近不球面正规，则存在成员 \(f_n\)、\(a_n\rightarrow a\)、\(r_n\downarrow0\)，使 \(f_n(a_n+r_n\zeta)\) 在复平面紧集上球面趋于一个非恒常亚纯函数。
+\Needspace{6\baselineskip}
+\begin{lemma}[球面收敛与导数]\label{b3:lem:14-spherical-derivative-limit}
+设 \(U\subseteq\mathbb C\) 为区域，\(f_n\) 在 \(U\) 上亚纯，并在 \(U\) 上球面局部一致收敛到亚纯函数 \(f\) 或常值 \(\infty\)。则 \(f_n^\#\to f^\#\) 在每个紧集上一致，其中有限值点的球面导数为 \(|f'|/(1+|f|^2)\)，极点用倒数坐标解释，常值 \(\infty\) 的球面导数为0。
 \end{lemma}
 \begin{proof}
-由 Marty，选择缩小圆盘半径 \(s_n\downarrow0\) 及成员，使 \(|z-a|<s_n/2\) 内某点的球面导数超过 \(n^2/s_n\)。在闭盘上最大化 \((s_n-|z-a|)f_n^\#(z)\)，取最大点 \(a_n\)，记 \(d_n=s_n-|a_n-a|\)、\(r_n=1/f_n^\#(a_n)\)。则 \(d_n/r_n\rightarrow\infty\)，且 \(r_n\rightarrow0\)。当 \(|\zeta|\le d_n/(2r_n)\)，最大性给重标度函数球面导数不超过2，而在0恰为1。对越来越大的圆盘用 Marty 与对角抽取，得到全平面亚纯极限。局部有限球面坐标中的 Cauchy 导数收敛使极限在0球面导数为1，故不恒常。
+固定 \(p\in U\)，选球面旋转 \(R\)，使 \(R(f(p))=0\)。连续性允许选闭圆盘 \(\overline{D(p,2r)}\subset U\)，使 \(h=R\circ f\) 在其中有限且 \(|h|\le1\)。由于 \(R\) 保持 \(\chi\)，\(h_n=R\circ f_n\) 在这个闭盘上球面一致收敛到 \(h\)。当误差小于 \(1/(2\sqrt2)\) 时，
+\[
+ \chi(h_n(z),\infty)
+ \ge\chi(h(z),\infty)-\chi(h_n(z),h(z))
+ \ge\frac1{2\sqrt2}.
+\]
+所以这些 \(h_n\) 没有极点，且 \(|h_n|\le\sqrt7\)。
+
+现在函数值落在同一个有限有界集合中。由第4章的弦距离比较，球面一致收敛成为普通一致收敛。Cauchy 积分公式或\cref{b3:thm:04-weierstrass}遂给 \(h_n'\to h'\) 在较小闭盘 \(\overline{D(p,r)}\) 上一致。因此
+\[
+ \frac{|h_n'|}{1+|h_n|^2}
+ \longrightarrow\frac{|h'|}{1+|h|^2}
+\]
+在该闭盘上一致。旋转保持球面导数，故这就是 \(f_n^\#\to f^\#\)。对任意紧集取有限个这样的小盘，便得所需结论。
+
+若 \(f\equiv\infty\)，可以处处选择倒数旋转，得到 \(h\equiv0\) 和 \(h_n'\to0\)，所以结论仍是 \(f_n^\#\to0\)。有限常值极限也同样给球面导数趋于0。
 \end{proof}
-重标度既选中心又选尺度；只令 \(f_n(r_nz)\) 而不寻找导数最大处，极限可能常值，无法反映正规性失败。
+
+\term[marty-panbie]{Marty 判别}[Marty's criterion]现在把球面正规性准确地表达为局部导数控制。
+
+\Needspace{6\baselineskip}
+\begin{theorem}[Marty 判别]\label{b3:thm:14-marty}
+设 \(U\subseteq\mathbb C\) 为区域，\(\mathcal F\) 为 \(U\) 上亚纯函数族，球面导数取 \(f^\#=|f'|/(1+|f|^2)\)，极点处用 \(1/f\) 延拓该表达。则 \(\mathcal F\) 在 \(U\) 上球面正规，当且仅当对每个紧集 \(K\subset U\)，存在常数 \(M_K<\infty\)，使
+\[
+ f^\#(z)\le M_K
+ \quad(f\in\mathcal F,\ z\in K).
+\]
+\end{theorem}
+\begin{proof}
+先假设球面导数在每个紧集有共同界。取任一小闭圆盘 \(\overline{D(p,2r)}\subset U\)，设上面的共同界为 \(M\)。对 \(z,w\in D(p,r)\)，直线段留在该盘内，前面的路径长度不等式给
+\[
+ \chi(f(z),f(w))\le M|z-w|
+ \quad(f\in\mathcal F).
+\]
+所以族在每个点附近等度连续，在任意紧集附近也可用有限个小盘得到统一的连续性控制。
+
+给定序列 \((f_n)\subset\mathcal F\)，在 \(U\) 中取可数稠密集。球面紧，故可逐点抽取收敛子列，再取对角子列，使它在全部稠密点上收敛。固定紧集 \(K\) 和 \(\varepsilon>0\)。刚得到的等度连续性允许从稠密集中选有限个点 \(q_1,\ldots,q_N\)，使每个 \(z\in K\) 都可找到一个 \(q_j\)，满足
+\[
+ \chi(f(z),f(q_j))<\varepsilon/3
+ \quad(f\in\mathcal F).
+\]
+在这有限多个点上，所选子列最终两两相差小于 \(\varepsilon/3\)。三角不等式于是使它在整个 \(K\) 上一致 Cauchy。球面是完备空间，所以子列在每个紧集上一致收敛；这些极限相容，给出 \(U\) 上的连续球面值极限。
+
+\cref{b3:prop:04-spherical-limit}保证该极限是亚纯函数或常值 \(\infty\)。具体地，在极限值有限的点附近，球面收敛转成有限坐标中的普通收敛；在无穷值附近改用倒数坐标，Weierstrass 定理仍给全纯局部表达。这正是球面正规定义允许的极限。
+
+反过来，设 \(\mathcal F\) 球面正规，但某个紧集 \(K\) 上的球面导数没有共同界。可取 \(f_n\in\mathcal F\)、\(z_n\in K\)，使 \(f_n^\#(z_n)\ge n\)。由紧性及正规性，依次抽取子列，使 \(z_n\to p\in K\)，且 \(f_n\) 球面局部一致收敛到亚纯函数或常值 \(\infty\)。\cref{b3:lem:14-spherical-derivative-limit}使球面导数在 \(p\) 附近一个固定小闭盘上一致收敛，因而共同有界。充分晚的 \(z_n\) 都落在此盘，与 \(f_n^\#(z_n)\to\infty\) 矛盾。
+\end{proof}
+
+常数族 \(f_n(z)=n\) 的球面导数为0，且球面一致趋于 \(\infty\)，所以球面正规；它没有有限值的局部共同界。相反，
+\[
+ f_n(z)=nz,\quad f_n^\#(z)=\frac{n}{1+n^2|z|^2}
+\]
+在0处导数无界，故在0的任一邻域都不正规；在避开0的紧集上却球面一致趋于 \(\infty\)。Marty 判别既保留常数逃向无穷远的正常极限，也能定位真正的局部不正规点。
+
+\subsection{Zalcman 重缩放引理}
+\label{b3:subsec:140303}
+
+不正规性给出越来越大的局部球面导数，但直接在这些点附近放大，还可能使新定义域很小。\term[zalcman-chongsuofang-yinli]{Zalcman 重缩放引理}[Zalcman's rescaling lemma]把导数与到边界的距离一起考虑：前者确定放大尺度，后者保证放大后能看到越来越大的圆盘。
+
+\Needspace{6\baselineskip}
+\begin{lemma}[Zalcman 重缩放引理]\label{b3:lem:14-zalcman-rescaling}
+设 \(U\subseteq\mathbb C\) 为区域，\(a\in U\)，\(\mathcal F\) 为 \(U\) 上亚纯函数族。若 \(\mathcal F\) 在 \(a\) 的每个邻域均不球面正规，则存在 \(f_n\in\mathcal F\)、\(a_n\to a\)、正实数 \(r_n\downarrow0\)，以及 \(R_n\to\infty\)，使
+\[
+ g_n(\zeta)\coloneqq f_n(a_n+r_n\zeta)
+\]
+在 \(D(0,R_n)\) 上有定义，并在复平面的每个紧集上最终球面一致收敛到一个非恒常亚纯函数 \(g\)。采用球面导数 \(g^\#=|g'|/(1+|g|^2)\) 及极点处的倒数解释，还可保证
+\[
+ g^\#(0)=1,\quad g^\#(\zeta)\le1
+ \quad(\zeta\in\mathbb C).
+\]
+\end{lemma}
+\begin{proof}
+选 \(s_n\downarrow0\)，使 \(\overline{D(a,s_n)}\subset U\)。由 Marty 判别，\(D(a,s_n/2)\) 上的球面导数没有全族共同界；否则它的内部会是正规邻域。因此可取 \(f_n\in\mathcal F\) 及 \(b_n\in D(a,s_n/2)\)，使
+\[
+ f_n^\#(b_n)>\frac{n^2}{s_n}.
+\]
+在闭盘 \(\overline{D(a,s_n)}\) 上考虑连续函数
+\[
+ H_n(z)=(s_n-|z-a|)f_n^\#(z).
+\]
+它在边界为0，而 \(H_n(b_n)>n^2/2\)，所以正最大值在某个内点 \(a_n\) 达到。令
+\[
+ d_n=s_n-|a_n-a|,\quad
+ r_n=\frac1{f_n^\#(a_n)},\quad
+ M_n=H_n(a_n)=\frac{d_n}{r_n}.
+\]
+由最大性，\(M_n>n^2/2\)。又 \(0<d_n\le s_n\)，故
+\[
+ |a_n-a|<s_n\longrightarrow0,\quad
+ 0<r_n<\frac{2s_n}{n^2}\longrightarrow0.
+\]
+必要时再取子列，使 \(r_n\) 严格递减。
+
+令 \(R_n=d_n/r_n=M_n\)。当 \(|\zeta|<R_n\) 时，点 \(a_n+r_n\zeta\) 仍在 \(D(a,s_n)\)，所以 \(g_n\) 至少定义在 \(D(0,R_n)\)。链式法则及尺度选择给 \(g_n^\#(0)=1\)。另一方面，
+\[
+ s_n-|a_n+r_n\zeta-a|
+ \ge d_n-r_n|\zeta|>0.
+\]
+用 \(H_n\) 的最大性，得到
+\[
+ \begin{aligned}
+ g_n^\#(\zeta)
+ &=r_nf_n^\#(a_n+r_n\zeta)\\
+ &\le\frac{r_nM_n}{d_n-r_n|\zeta|}
+ =\frac1{1-|\zeta|/R_n}.
+ \end{aligned}
+\]
+这说明在任意固定闭圆盘上，充分晚的 \(g_n^\#\) 有共同界；例如 \(R_n\ge2R\) 时，\(|\zeta|\le R\) 上的界为2。
+
+对 \(D(0,1),D(0,2),\ldots\) 依次用 Marty 判别抽取子列，再取对角子列，得到整个平面上的球面局部一致极限 \(g\)。前面有限个尚未定义在某圆盘上的成员可以删去，不影响抽取。球面极限定理保证 \(g\) 为亚纯函数或常值 \(\infty\)。
+
+还须排除所有常值退化。\cref{b3:lem:14-spherical-derivative-limit}应用于0的一个固定邻域，给
+\[
+ g^\#(0)=\lim_n g_n^\#(0)=1.
+\]
+有限常值的球面导数为0；若 \(g\equiv\infty\)，倒数坐标中的导数也趋于0。因此两类常值都被排除，\(g\) 是非恒常亚纯函数。最后对任意固定 \(\zeta\)，由 \(R_n\to\infty\) 及同一导数收敛引理，
+\[
+ g^\#(\zeta)
+ =\lim_n g_n^\#(\zeta)
+ \le\lim_n\frac1{1-|\zeta|/R_n}=1.
+\]
+全部结论成立。
+\end{proof}
+
+移动中心与改变尺度承担不同作用。中心 \(a_n\) 捕获加权导数最大的地方，尺度 \(r_n\) 将该点球面导数归一到1，而比值 \(d_n/r_n\to\infty\) 负责扩大定义域。只固定一个原中心缩放，可能错过真正的大导数位置；只选导数大的点而不考虑到边界的距离，也没有保证可用的放大范围。
 
 \ProseParagraphBreak
-重缩放的目的并非单纯放大图形，而是同时固定一个非零导数和越来越大的定义域。\(f_n(z)=nz\) 在0处取尺度 \(1/n\)，得到 \(g_n(\zeta)=\zeta\)，定义域半径扩大 \(n\) 倍，极限为非常值整函数。\(f_n(z)=e^{nz}\) 在0处球面导数为 \(n/2\)，取尺度 \(2/n\) 得 \(g_n=e^{2\zeta}\)，极限仍非常值，省略0与无穷远而不省略第三个球面值。这个例子也显示三省略值定理中的数目尖锐。
-
-\ProseParagraphBreak
-如果仅固定原点而族的坏行为发生在移动点，那里导数可能不反映最大尺度。Zalcman 选择点距边界乘球面导数的最大值，保证新中心不会太靠近旧边界，并使缩放后的导数在每个固定圆盘受统一界控制。三个任务分别是捕获坏行为、扩大定义域和取得紧极限，缺少任何一个都不能完成矛盾论证。
+两个简单族可以直接显示归一化。对 \(f_n(z)=nz\)，取中心0、尺度 \(1/n\)，得到 \(g_n(\zeta)=\zeta\)，其球面导数 \(1/(1+|\zeta|^2)\) 在0等于1。对 \(f_n(z)=e^{nz}\)，0处球面导数为 \(n/2\)，取尺度 \(2/n\)，得到
+\[
+ g_n(\zeta)=e^{2\zeta},\quad
+ g_n^\#(\zeta)=\frac1{\cosh(2\operatorname{Re}\zeta)}\le1.
+\]
+后一个非恒常极限仍省略0和 \(\infty\)。因此两个球面省略值尚不足以排除重缩放极限。
 
 \subsection{广义 Montel 定理}
 \label{b3:subsec:140304}
 
+用省略值约束重缩放极限时，必须保留一个例外：函数列可以恒趋于一个原本省略的值，例如 \(1/n\to0\)。非恒常极限则没有这种自由，原因来自 Hurwitz 的无零极限结论。
+
+\Needspace{6\baselineskip}
+\begin{lemma}[非恒常极限保留省略值]\label{b3:lem:14-omitted-limit}
+设 \(U\subseteq\mathbb C\) 为区域，\(f_n\) 为 \(U\) 上的亚纯函数，且全部省略同一值 \(a\in\widehat{\mathbb C\kern0pt}\)。若 \(f_n\) 在 \(U\) 上球面局部一致收敛到非恒常亚纯函数 \(f\)，则 \(f\) 仍省略 \(a\)。
+\end{lemma}
+\begin{proof}
+若 \(f(p)=a\)，取将 \(a\) 送到0的球面旋转 \(R\)。在 \(p\) 的充分小闭圆盘上，\(R\circ f\) 有限且有界；球面一致收敛便保证充分晚的 \(R\circ f_n\) 也有限，并普通一致收敛到 \(R\circ f\)。这些函数在小开圆盘上全纯且无零，因为原函数都省略 \(a\)。
+
+由\cref{b3:cor:04-zero-free-limit}，极限 \(R\circ f\) 若在 \(p\) 为零，就必须在该小圆盘恒零。恒等原理使亚纯函数 \(f\) 在连通区域 \(U\) 上恒为 \(a\)，与非恒常性矛盾。因此 \(f\) 不取值 \(a\)。
+\end{proof}
+
+\Needspace{6\baselineskip}
 \begin{theorem}[省略值 Montel 定理]\label{b3:thm:14-montel-omitted}
-省略同三个不同球面值的亚纯函数族球面正规。省略同两个不同有限值的全纯函数族也球面正规，其极限为全纯函数或恒为无穷远。
+设 \(U\subseteq\mathbb C\) 为区域，\(a,b,c\in\widehat{\mathbb C\kern0pt}\) 是三个互异固定值。若 \(U\) 上亚纯函数族的每个成员均省略 \(a,b,c\)，则该族在 \(U\) 上球面正规。同一区域 \(U\) 上省略同两个不同有限复值的全纯函数族也球面正规，其球面局部一致子列极限为全纯函数或常值 \(\infty\)。
 \end{theorem}
 \begin{proof}
-若不正规，重标度给非恒常全平面亚纯极限 \(g\)。对每个省略值选局部球面坐标，Hurwitz 无零定理说明极限要么仍省略该值，要么恒取该值；非恒常排除后者。因此 \(g:\mathbb C\rightarrow\widehat{\mathbb C\kern0pt}\setminus\{a,b,c\}\)。三穿孔球面由第13章覆盖输入有圆盘万有覆盖，单连通平面使 \(g\) 提升为全纯 \(G:\mathbb C\rightarrow\mathbb D\)。Liouville 使 \(G\) 恒常，进而 \(g\) 恒常，矛盾。全纯列的球面极限若非恒为无穷远，不会产生内点极点，已由第4章 Hurwitz 倒数证明。
+若该族不正规，Marty 判别给出某个紧集上的无界球面导数列。取相应点列的一个紧聚点 \(p\)，则 \(p\) 的每个邻域都有无界球面导数，因而都不正规。Zalcman 引理于是给出中心趋于 \(p\)、尺度趋于0的重缩放列 \(g_n\)，以及整个平面上的非恒常亚纯极限 \(g\)。
+
+每个 \(g_n\) 在其定义域中仍省略 \(a,b,c\)。对每个固定小圆盘，充分晚的 \(g_n\) 都在其中有定义，故\cref{b3:lem:14-omitted-limit}分别用于三个值，说明 \(g\) 也全部省略。选择固定 Möbius 变换 \(M\)，把 \(a,b,c\) 送到 \(0,1,\infty\)，便有非恒常全纯映射
+\[
+ h=M\circ g:\mathbb C\longrightarrow\mathbb C\setminus\{0,1\}.
+\]
+目标区域的平面补集含两个点，\cref{b3:thm:13-cover-model-input}给出全纯万有覆盖
+\[
+ q:\mathbb D\longrightarrow\mathbb C\setminus\{0,1\}.
+\]
+源平面单连通，\cref{b3:thm:11-map-lifting}使 \(h\) 提升为 \(H:\mathbb C\to\mathbb D\)，满足 \(q\circ H=h\)。提升在每个小覆盖层中由全纯局部逆表示，所以 \(H\) 全纯。Liouville 定理迫使这个有界整函数恒常，继而 \(h,g\) 都恒常，矛盾。
+
+全纯函数族已省略 \(\infty\)，再加两个不同有限省略值，正满足第一部分。其球面子列极限不会新生内点极点，\cref{b3:cor:04-holomorphic-spherical-limit}保证它只能全纯或全域恒为 \(\infty\)。
 \end{proof}
-这里补全第4章预告的省略值版本，没有在统一化或 Riemann 极值证明中回用它，因而依赖路线无循环。单个有限省略值不足，\(e^{nz}\) 在含0的盘给反例。
+
+这里先用三穿孔球面的覆盖输入与 Liouville 定理排除非恒常整个映射，没有调用后面的 Picard 定理。第4章的局部有界 Montel 定理、Riemann 映照的极值构造与一般覆盖输入都已在此前确定，因此这条依赖路线没有回用正在证明的省略值版本。
 
 \ProseParagraphBreak
-省略值可以随函数变化，但须避免相互碰撞。若每个 \(f_n\) 省略三个球面点 \(a_n,b_n,c_n\)，且它们两两球面距离有统一正下界，则先取子列使三点收敛到三个不同点。将它们送到 \(0,1,\infty\) 的 Möbius 变换及其逆随参数连续，在球面上一致收敛到非退化变换；正规三省略值定理应用于变换后的族，再复合逆变换即可。此论证也给族的任意序列子列判别。
+还可以允许省略值随函数变化。此时每次归一化所用的 Möbius 变换也变化，必须证明这些变换不会退化，才能把正规性传回原族。下面用球面上的统一分离控制这一点。
 
-\ProseParagraphBreak
-若允许碰撞，结论失败。例如 \(f_n(z)=nz\) 在单位盘省略 \(2n,3n,4n\)，三个点球面上都趋向无穷，族仍在0不正规。“每个函数都有三个省略值”若不记录这三个值共同固定或有统一分离，不能当作 Montel 定理的假设。
+\Needspace{6\baselineskip}
+\begin{proposition}[一致分离的变动省略值]\label{b3:prop:14-separated-omitted}
+设 \(U\subseteq\mathbb C\) 为区域，\(\mathcal F\) 是 \(U\) 上的亚纯函数族。假设存在 \(\varepsilon>0\)，使每个 \(f\in\mathcal F\) 都省略三个球面值 \(a_f,b_f,c_f\)，并且它们按弦距离
+\[
+ \chi(z,w)=\frac{|z-w|}
+ {\sqrt{1+|z|^2}\sqrt{1+|w|^2}},
+ \quad \chi(z,\infty)=\frac1{\sqrt{1+|z|^2}}
+\]
+满足
+\[
+ \min\{\chi(a_f,b_f),\chi(b_f,c_f),\chi(c_f,a_f)\}
+ \ge\varepsilon.
+\]
+则 \(\mathcal F\) 在 \(U\) 上球面正规。
+\end{proposition}
+\begin{proof}
+任取 \(f_n\in\mathcal F\)，并选对应的省略值 \(a_n,b_n,c_n\)。球面的紧性允许取同一子列，使三个点分别收敛到 \(a,b,c\)。距离连续且两两至少为 \(\varepsilon\)，所以三个极限仍互异。
+
+选有限点 \(q\) 不属于 \(\{a,b,c\}\)，固定 Möbius 变换 \(Q(w)=1/(w-q)\)。它把这三个极限送到有限互异点。充分晚时，\(Q(a_n),Q(b_n),Q(c_n)\) 也都有限；记它们为 \(\alpha_n,\beta_n,\gamma_n\)，其极限为 \(\alpha,\beta,\gamma\)。归一化分式
+\[
+ N_n(w)=
+ \frac{(w-\alpha_n)(\beta_n-\gamma_n)}
+      {(w-\gamma_n)(\beta_n-\alpha_n)}
+\]
+把 \(\alpha_n,\beta_n,\gamma_n\) 依次送到 \(0,1,\infty\)。对应矩阵可以取
+\[
+ A_n=
+ \begin{pmatrix}
+ \beta_n-\gamma_n&-\alpha_n(\beta_n-\gamma_n)\\
+ \beta_n-\alpha_n&-\gamma_n(\beta_n-\alpha_n)
+ \end{pmatrix}.
+\]
+其系数趋于以极限三点定义的矩阵 \(A\)，且
+\[
+ \det A=(\beta-\gamma)(\beta-\alpha)(\alpha-\gamma)\ne0.
+\]
+因此 \(A\) 非退化，\(A_n^{-1}\to A^{-1}\) 也成立。
+
+这还须转成包含极点在内的球面一致收敛。一对非同时为零的复数 \((u,v)\) 表示球面点 \(u/v\)，\(v=0\) 时表示 \(\infty\)。两对向量 \(x,y\in\mathbb C^2\setminus\{0\}\) 所表示点的弦距离为
+\[
+ \chi([x],[y])=\frac{|\det(x,y)|}{\|x\|\|y\|},
+\]
+这是把弦距离的分母通分后得到的公式。任一球面点都可用单位向量 \(v\) 表示；由于 \(A\) 可逆，存在 \(m>0\)，使所有这样的 \(v\) 满足 \(\|Av\|\ge m\)。充分晚时 \(\|A_nv\|\ge m/2\)，于是
+\[
+ \chi([A_nv],[Av])
+ =\frac{|\det((A_n-A)v,Av)|}{\|A_nv\|\|Av\|}
+ \le\frac{2\|A_n-A\|}{m}\longrightarrow0.
+\]
+这个界对整个球面统一。因此 \(N_n\to N\) 球面一致；对逆矩阵作相同估计，得到 \(N_n^{-1}\to N^{-1}\) 球面一致。令 \(T_n=N_n\circ Q\)、\(T=N\circ Q\)，便同时有 \(T_n\to T\) 和 \(T_n^{-1}\to T^{-1}\) 的球面一致收敛。
+
+函数 \(h_n=T_n\circ f_n\) 共同省略 \(0,1,\infty\)，省略值 Montel 定理给一个球面局部一致收敛子列 \(h_n\to h\)。对任意紧集 \(K\subset U\)，有
+\[
+ \begin{aligned}
+ \sup_K\chi(f_n,T^{-1}\circ h)
+ &\le
+ \sup_{w\in\widehat{\mathbb C\kern0pt}}
+       \chi(T_n^{-1}(w),T^{-1}(w))\\
+ &\quad+\sup_K\chi(T^{-1}\circ h_n,T^{-1}\circ h).
+ \end{aligned}
+\]
+第一项由刚证明的逆变换一致收敛趋于0，第二项由 \(T^{-1}\) 在紧球面上一致连续及 \(h_n\to h\) 趋于0。于是原序列也有球面局部一致收敛子列，证明正规性。
+\end{proof}
+
+统一分离的条件不能删去。在单位盘中，\(f_n(z)=nz\) 省略 \(2n,3n,4n\)，因为其像为 \(D(0,n)\)；但三个省略值都在球面上趋于 \(\infty\)，两两弦距离趋于0。与此同时 \(f_n^\#(0)=n\)，所以族在0附近不正规。这个反例说明，省略值在整个族中的共同固定性或统一分离承担着实质的紧性控制。

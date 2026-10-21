@@ -1,0 +1,202 @@
+% !TeX root = ../../Book2.tex
+\chapter{极大函数、弱型估计与插值}
+\label{b2:ch:17}
+\BookChapterNumber{b2:ch:17}
+\begin{chapterabstract}
+估计一个算子时，我们往往只能先掌握两个指数：一端来自绝对积分，另一端来自平方范数或本性上确界。中间的指数怎样得到？端点的积分发散以后，还能保留什么？本章从局部平均的极大函数出发，用分布函数记录大值出现的范围，再分别通过大小截断与复参数变化建立两种插值方法。弱空间、Lorentz 空间和 \(K\) 泛函说明了这些估计背后的函数空间结构。
+\end{chapterabstract}
+
+\begin{learninggoals}\begin{itemize}
+\item\label{b2:item:17-goal-1}比较中心、非中心与二进平均，并完成弱型估计和微分论证。
+\item\label{b2:item:17-goal-2}由分布函数计算强、弱与 Lorentz 空间的可积条件。
+\item\label{b2:item:17-goal-3}选择大小截断并完成 Marcinkiewicz 的高度积分。
+\item\label{b2:item:17-goal-4}用三线估计证明 Riesz--Thorin，并解释 Fourier 变换的延拓。
+\end{itemize}\end{learninggoals}
+
+单位球的示性函数有有限积分，但其极大平均在远处只按 \(|x|^{-d}\) 衰减。这个简单例子说明：一个自然算子可能在端点失去可积性，同时仍有精确的超水平集合控制。后面的奇异积分也呈现同样现象，只是核的正平均将换成正负抵消。
+
+\ProseParagraphBreak
+
+本章需要 Lebesgue 积分、Hölder 不等式以及 \(L^p\) 收敛的基本知识。遇到无限求和或换序时，我们会指出非负性、可积控制或有限测度截断在哪里使用。极大函数的微分论证还要用连续紧支集函数的 \(L^1\) 稠密性；Fourier 应用则使用\secref{b2:sec:0401}已经建立的 Plancherel 等距性。复插值所需的复分析知识限于全纯函数的局部性质与最大模原理，\secref{b2:sec:1704}先说明其使用方式，再证明条带上的三线引理。
+
+\ProseParagraphBreak
+
+阅读时可先沿“极大函数的弱端点---分布函数的高度积分---中间强型”这一条路线走完\secref{b2:sec:1701}至\secref{b2:sec:1703}，看清为什么保留输入的大值部分能够消除发散。随后学习\secref{b2:sec:1704}，比较线性结构带来的另一种插值。Lorentz 空间的第二指数和最后的 \(K\) 泛函，可以在掌握这两条证明之后再回读；极大函数及同指数插值的证明并不依赖这两个补充视角。\secref{b2:sec:1701}中的二进立方体分解将在\secref{b2:sec:1802}直接用于 Calderón--Zygmund 分解。
+
+\ProseParagraphBreak
+
+继续阅读可选 Elias M. Stein 的《Singular Integrals and Differentiability Properties of Functions》\cite{Stein1970Singular}，把极大函数与后续奇异积分联系起来；Loukas Grafakos 的《Classical Fourier Analysis》\cite{Grafakos2014Classical}则可用于进一步学习弱型、重排和插值。本章所需的具体估计与证明在正文展开。
+
+\input{Part05/Chapter19/Section1901}
+\input{Part05/Chapter19/Section1902}
+\input{Part05/Chapter19/Section1903}
+\input{Part05/Chapter19/Section1904}
+
+\begin{chaptersummary}
+极大函数的弱型估计控制的是“大于某个高度的点有多少”。单独一个弱端点仍可能产生对数发散；Marcinkiewicz 方法让输入截断随输出高度改变，再交换积分次序，才得到严格位于两个端点之间的强型估计。二进分解还提供坏块的平均上下界，为下一章利用零平均抵消准备了空间分块。
+
+\ProseParagraphBreak
+
+Riesz--Thorin 方法则把端点指数编码在解析测试函数中，由三线引理得到范数常数的几何平均。使用时先核实两端是同一个兼容线性算子，并区分有限指数的稠密延拓与无穷端点的直接论证。Lorentz 空间进一步区分临界幂次下的对数可积性，\(K\) 泛函把分解代价写成重排积分。后面选择哪种方法，取决于手中掌握的是弱型还是强型、算子是否线性，以及是否需要保留尺度参数和第二指数。
+\end{chaptersummary}
+
+\BookExercises
+
+% 自拟：围绕本章已经建立的工具，改变条件或组合方法。
+\Needspace{6\baselineskip}
+\begin{exercise}\label{b2:ex:17-new-1}
+在带 Lebesgue 测度的 \(\mathbb R\) 上令 \(f=\mathbf1_{(0,1)}\)。求 \(x>1\) 时的中心和非中心极大函数，并由此说明二者不相等。
+\end{exercise}
+\begin{solution}
+中心区间半径 \(r\leq x-1\) 时积分为零；\(x-1<r<x\) 时平均为 \((r-x+1)/(2r)\)，随 \(r\) 增大；\(r\geq x\) 时平均为 \(1/(2r)\)，随 \(r\) 减小。所以 \(Mf(x)=1/(2x)\)。包含 \(x\) 的非中心区间若左端为 \(a\in[0,1]\)，平均至多 \((1-a)/(x-a)\leq1/x\)；左端小于零或右端超过 \(x\) 只增大分母。端点极限给出 \(M_uf(x)=1/x\)。
+\end{solution}
+
+% 自拟：组合两个分布尾部得到弱型乘积界，并检验强型结论的失败。
+\Needspace{6\baselineskip}
+\begin{exercise}\label{b2:ex:17-new-2}
+设 \((X,\mathcal A,\mu)\) 为测度空间，\(0<p,q<\infty\)，并以 \(1/r=1/p+1/q\) 定义 \(r\)。对 \(f\in L^{p,\infty}(X)\)、\(g\in L^{q,\infty}(X)\)，证明
+\[
+ \|fg\|_{r,\infty}\leq 2^{1/r}\|f\|_{p,\infty}\cdot\|g\|_{q,\infty}.
+\]
+再在 \((0,1)\) 上构造这样的 \(f,g\)，使 \(fg\notin L^r(0,1)\)。不要求求出弱型乘积界的最佳常数。
+\end{exercise}
+\begin{solution}
+记 \(A=\|f\|_{p,\infty}\)、\(B=\|g\|_{q,\infty}\)。若任一常数为零，相应函数几乎处处为零，结论成立。设 \(A,B>0\)。对任意 \(a,t>0\)，有
+\[
+ \{|fg|>t\}\subset\{|f|>a\}\cup\{|g|>t/a\},
+ \quad d_{fg}(t)\leq A^pa^{-p}+B^qa^qt^{-q}.
+\]
+选择 \(a\) 使右边两项相等，即 \(a^{p+q}=A^pt^q/B^q\)。利用 \(r=pq/(p+q)\)，两项都等于 \((AB/t)^r\)，故 \(t\cdot d_{fg}(t)^{1/r}\leq2^{1/r}AB\)。对高度取上确界便得估计。
+
+在 \((0,1)\) 上取 \(f(x)=x^{-1/p}\)、\(g(x)=x^{-1/q}\)。两者的弱拟范数均为一，而 \(|f(x)g(x)|^r=x^{-1}\)，其积分发散。因此两个弱型因子的乘积一般仍只能得到弱型控制。
+\end{solution}
+
+% 自拟：用统一弱型尾部与依测度收敛取得严格低于端点的范数收敛。
+\Needspace{6\baselineskip}
+\begin{exercise}\label{b2:ex:17-new-3}
+设 \((X,\mathcal A,\mu)\) 为有限测度空间，\(0<p<\infty\)，可测函数列 \(f_n\) 满足 \(\sup_n\|f_n\|_{p,\infty}\leq A<\infty\)，且对每个 \(t>0\) 都有 \(\mu\{|f_n|>t\}\to0\)。证明对每个 \(0<r<p\)，都有 \(\|f_n\|_r\to0\)。在 \((0,1)\) 上给出反例，说明一般不能取 \(r=p\)。
+\end{exercise}
+\begin{solution}
+记 \(m=\mu(X)\)，固定 \(R>0\)。层蛋糕公式把范数分成
+\[
+ \|f_n\|_r^r
+ =r\int_0^R t^{r-1}d_{f_n}(t)\,\mathrm dt
+  +r\int_R^\infty t^{r-1}d_{f_n}(t)\,\mathrm dt.
+\]
+第一段的被积函数逐点趋零，由可积函数 \(rm t^{r-1}\) 控制，因而趋零。第二段不超过
+\[
+ rA^p\int_R^\infty t^{r-p-1}\,\mathrm dt
+ =\frac{rA^p}{p-r}R^{r-p}.
+\]
+先令 \(n\to\infty\)，再令 \(R\to\infty\)，得到结论。两种假设各有作用：依测度收敛处理有限高度，统一弱型界处理高值尾部。
+
+反例取 \(f_n=n^{1/p}\cdot\mathbf1_{(0,1/n)}\)。它逐点趋零，弱 \(L^p\) 拟范数与强 \(L^p\) 范数都恒为一，而 \(\|f_n\|_r^r=n^{r/p-1}\to0\)。严格不等式 \(r<p\) 不能删除。
+\end{solution}
+
+% 自拟：精算幅度截断在弱Lp与L1中的不同误差。
+\Needspace{6\baselineskip}
+\begin{exercise}\label{b2:ex:17-new-4}
+在 Lebesgue 测度空间 \((0,1)\) 上，设 \(f(x)=x^{-1/p}\)、\(1<p<\infty\)，并令 \(f_N(x)=\min\{f(x),N\}\)、\(N\geq1\)。求 \(f-f_N\) 的弱 \(L^p\) 拟范数；再求 \(\|f-f_N\|_1\) 并判断其极限。解释为什么这两个结论并不矛盾。
+\end{exercise}
+\begin{solution}
+令 \(h_N=f-f_N=(f-N)_+\)。对 \(t>0\)，
+\[
+ d_{h_N}(t)=(N+t)^{-p},\quad
+ \|h_N\|_{p,\infty}=\sup_{t>0}\frac{t}{N+t}=1.
+\]
+另一方面，层蛋糕公式给出
+\[
+ \|h_N\|_1=\int_0^\infty(N+t)^{-p}\,\mathrm dt
+ =\frac{N^{1-p}}{p-1}\longrightarrow0.
+\]
+幅度截断消除了越来越少的 \(L^1\) 质量，但在任意高的水平上仍留下同一临界幂次尾部。弱拟范数取遍所有高度的上确界，因此不会随截断误差的积分一起趋零。此题也给出了上一题严格降低目标指数时的一个可算模型。
+\end{solution}
+
+% 自拟：将精细的极大函数尾部界用于LlogL输入的局部可积性。
+\Needspace{6\baselineskip}
+\begin{exercise}\label{b2:ex:17-new-5}
+设 \(d\geq1\)，\(f:\mathbb R^d\to\mathbb C\) 可测且
+\(\int_{\mathbb R^d}|f(x)|\log(e+|f(x)|)\,\mathrm dx<\infty\)。对任意有限 Lebesgue 测度集合 \(E\subset\mathbb R^d\)，证明中心极大函数满足
+\[
+ \int_E Mf\leq |E|+C_d\int_{\mathbb R^d}|f|\log(e+|f|).
+\]
+解释这一结论为什么没有推出 \(M:L^1\to L^1\)。
+\end{exercise}
+\begin{solution}
+假设先保证 \(f\in L^1\)。对每个 \(t>0\)，把 \(f\) 分为大于 \(t/2\) 的部分和其余部分。后者的极大函数至多为 \(t/2\)，对前者用\cref{b2:thm:17-maximal-weak}，得
+\[
+ |\{Mf>t\}|\leq\frac{2\cdot5^d}{t}\int_{|f|>t/2}|f|.
+\]
+对 \(Mf\) 在 \(E\) 上用层蛋糕公式，高度 \(0<t<1\) 的积分至多为 \(|E|\)。其余部分用上式及非负积分换序，得到
+\[
+ \begin{aligned}
+ \int_1^\infty |E\cap\{Mf>t\}|\,\mathrm dt
+ &\leq2\cdot5^d\int_{|f|>1/2}|f(x)|
+       \int_1^{2|f(x)|}\frac{\mathrm dt}{t}\,\mathrm dx\\
+ &=2\cdot5^d\int_{|f|>1/2}|f|\log(2|f|).
+ \end{aligned}
+\]
+当 \(s>1/2\) 时，\(\log(2s)\leq2\log(e+s)\)，故取 \(C_d=4\cdot5^d\) 即可。这里一方面对输入增加了对数可积性，另一方面只在有限测度集合上积分输出。即使 \(f\) 是单位球的示性函数，\(Mf\) 的全空间积分仍因远场尾部而发散。
+\end{solution}
+
+% 自拟：围绕本章已经建立的工具，改变条件或组合方法。
+\Needspace{6\baselineskip}
+\begin{exercise}\label{b2:ex:17-new-6}
+设 \(d\geq1\)，\(K\in L^1(\mathbb R^d)\cap L^\infty(\mathbb R^d)\) 是复值核，\(Tf=K*f\)，Fourier 变换采用 \(e^{-2\pi\mathrm ix\cdot\xi}\) 的约定。用两个端点证明，对 \(1\leq p\leq2\) 及 \(f\in L^p(\mathbb R^d)\)，有
+\[
+ \|Tf\|_{p'}\leq\|K\|_\infty^{2/p-1}\cdot
+ \|\widehat K\|_\infty^{2-2/p}\cdot\|f\|_p.
+\]
+其中 \(1/p+1/p'=1\)；\(K=0\) 时单独理解结论。
+\end{exercise}
+\begin{solution}
+绝对积分给出 \(L^1\to L^\infty\) 常数 \(\|K\|_\infty\)。对 \(f\in L^1\cap L^2\)，卷积公式与 Plancherel 等式给出
+\[
+ \|K*f\|_2=\|\widehat K\,\widehat f\|_2
+ \leq\|\widehat K\|_\infty\cdot\|f\|_2.
+\]
+由 \(L^2\) 稠密性得到平方端点；它与积分卷积在交空间上一致。对这两个兼容端点应用\cref{b2:thm:17-riesz-thorin}，源指数要求 \(1/p=1-\theta/2\)，故 \(\theta=2-2/p\)。目标倒数为 \(\theta/2=1/p'\)，恰得所需公式。一般输入的卷积还由 \(K\in L^1\) 的 Young 估计定义，它与上述延拓相同。若 \(\|\widehat K\|_\infty=0\)，Fourier 唯一性给出 \(K=0\)；若 \(\|K\|_\infty=0\)，也有同一结论，因而端点没有零的零次幂问题。
+\end{solution}
+
+% 自拟：围绕本章已经建立的工具，改变条件或组合方法。
+\Needspace{6\baselineskip}
+\begin{exercise}\label{b2:ex:17-new-7}
+在测度空间 \((X,\mathcal A,\mu)\) 中，设 \(N\geq1\)，\(Q_1,\ldots,Q_N\) 是两两不交、有限正测度的可测集合，并记 \(U=\bigcup_jQ_j\)。对 \(f\in L^1(U;\mathbb C)\) 定义
+\[
+ Pf=\sum_{j=1}^N\left(\frac1{\mu(Q_j)}\int_{Q_j}f\,\mathrm d\mu\right)\cdot\mathbf1_{Q_j}.
+\]
+证明 \(P^2=P\)，且 \(P\) 在每个 \(L^p(U)\)、\(1\leq p\leq\infty\) 上的算子范数恰为一。进一步，若 \(f\in L^2(U)\)，证明 \(Pf\) 是所有在各 \(Q_j\) 上分别为常数的函数中唯一的最佳 \(L^2\) 逼近。
+\end{exercise}
+\begin{solution}
+二次平均不改变常数，所以 \(P^2=P\)。积分三角不等式给出 \(\|Pf\|_1\leq\|f\|_1\)，每个平均不超过本性上确界又给出 \(\|Pf\|_\infty\leq\|f\|_\infty\)。在有限测度空间 \(U\) 上应用\cref{b2:thm:17-riesz-thorin}，所有中间指数的范数也至多为一。实函数可先把同一积分公式作用在复函数上，再限制回实函数。取非零函数 \(\mathbf1_U\)，它被 \(P\) 保持，故范数恰为一。
+
+若 \(v\) 在各块上为常数，则每个块上 \(\int_{Q_j}(f-Pf)=0\)，从而
+\(\int_U(f-Pf)\overline{(Pf-v)}\,\mathrm d\mu=0\)。展开平方模的积分便得
+\[
+ \|f-v\|_2^2=\|f-Pf\|_2^2+\|Pf-v\|_2^2.
+\]
+最小值在且仅在 \(v=Pf\) 几乎处处时取得。这同时说明为何平方误差下应取算术平均，而不必另猜每个块上的最优常数。
+\end{solution}
+
+% 自拟：用临界幂函数检验K泛函与Lorentz弱范数等价中的上界常数。
+\Needspace{6\baselineskip}
+\begin{exercise}\label{b2:ex:17-new-8}
+在 Lebesgue 测度空间 \((0,1)\) 上，设 \(1<p<\infty\)、\(p'=p/(p-1)\)、\(f(x)=x^{-1/p}\)。计算 \(K(t,f;L^1,L^\infty)\)、\(t>0\)，并求
+\[
+ \sup_{t>0}t^{-1/p'}K(t,f;L^1,L^\infty).
+\]
+由此判断正文中 \(\|f\|_{1/p',\infty;K}\leq p'\|f\|_{p,\infty}\) 的系数 \(p'\) 能否普遍减小。进一步说明该函数为何不属于任何 \(L^{p,q}(0,1)\)、\(0<q<\infty\)。
+\end{exercise}
+\begin{solution}
+此函数可积，重排在 \(0<s<1\) 时为 \(s^{-1/p}\)，在 \(s\geq1\) 时为零。由\cref{b2:prop:17-k-functional}，
+\[
+ K(t,f;L^1,L^\infty)=
+ \begin{cases}
+ p't^{1/p'},&0<t\leq1,\\
+ p',&t>1.
+ \end{cases}
+\]
+因此所求上确界为 \(p'\)，在每个 \(0<t\leq1\) 处取到，而 \(\|f\|_{p,\infty}=1\)。正文已经对任意输入证明了系数 \(p'\) 的上界，本例又达到该上界，所以这个等价估计的系数确实不能减小。
+
+若 \(q<\infty\)，则 \(s^{1/p}f^*(s)=1\) 在 \((0,1)\) 上成立，Lorentz 量的 \(q\) 次幂包含 \(\int_0^1\mathrm ds/s=\infty\)。\(K\) 量也表现为所有小尺度上同一个常数：它的上确界有限，但对乘法测度 \(\mathrm dt/t\) 积分便发散。
+\end{solution}

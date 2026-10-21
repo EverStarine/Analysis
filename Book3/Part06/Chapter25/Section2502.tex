@@ -2,81 +2,322 @@
 \section{Dirichlet 卷积}
 \label{b3:sec:2502}
 
-“对所有约数求和”是一种线性变换。为了反演它，把一般两个算术函数按因数对求和，便得到与整数乘法适配的卷积。
+上一节的 \(\sum_{d\mid n}\varphi(d)=n\) 和 \(\sum_{d\mid n}\Lambda(d)=\log n\) 都把一个函数变成它的约数和。能否从求和后的结果恢复原函数？普通的逐点除法不能解决这个问题，因为一个整数处的输出已经混合了许多约数处的输入。我们需要一种与因数分解配合的乘法；它也将解释为什么两个 Dirichlet 级数相乘时，系数按约数求和。
 
 \subsection{定义}
 \label{b3:subsec:250201}
 
+普通幂级数相乘时，\(X^uX^v=X^{u+v}\)，所以第 \(n\) 项收集 \(u+v=n\) 的指标。稍后使用的 \(n^{-s}\) 则满足 \(u^{-s}v^{-s}=(uv)^{-s}\)，因而对应的指标条件变成 \(uv=n\)。在引入任何无限级数之前，可以先把这个有限的系数运算定义出来。
+
 \begin{definition}\label{b3:def:25-convolution}
-算术函数 \(a,b\) 的\term[dirichlet-juanji]{Dirichlet 卷积}[Dirichlet convolution]为
-\((a*b)(n)=\sum_{d\mid n}a(d)b(n/d)\)。
+设 \(a,b:\mathbb N_{\ge1}\to\mathbb C\) 为算术函数。它们的\term[dirichlet-juanji]{Dirichlet 卷积}[Dirichlet convolution]是算术函数
+\[
+ (a*b)(n)=\sum_{d\mid n}a(d)b(n/d)
+         =\sum_{uv=n}a(u)b(v),\qquad n\ge1,
+\]
+其中 \(d,u,v\) 均取正整数。
 \end{definition}
-每个系数只有有限和，无需收敛假设。把它写成 \(\sum_{uv=n}a(u)b(v)\)，立即得到交换律。结合律来自两种括号都等于 \(\sum_{uvw=n}a(u)b(v)c(w)\)；对加法的分配律逐项成立。
+
+第二个和对有序因数对求和。例如，对不同的素数 \(p,q\)，有
+\[
+ \begin{aligned}
+ (a*b)(p)&=a(1)b(p)+a(p)b(1),\\
+ (a*b)(p^2)&=a(1)b(p^2)+a(p)b(p)+a(p^2)b(1),\\
+ (a*b)(pq)&=a(1)b(pq)+a(p)b(q)
+             +a(q)b(p)+a(pq)b(1).
+ \end{aligned}
+\]
+这些公式说明卷积确实混合了不同位置的值。即使记号中出现“求和”，每个固定 \(n\) 也只有有限个约数，因此这里对 \(a,b\) 不要求有界、可乘或满足任何收敛条件。
+
+\begin{proposition}[有限卷积的代数性质]
+\label{b3:prop:25-convolution-algebra}
+对任意算术函数 \(a,b,c:\mathbb N_{\ge1}\to\mathbb C\) 与复数 \(\lambda\)，Dirichlet 卷积满足
+\[
+ a*b=b*a,\qquad (a*b)*c=a*(b*c),
+ \qquad a*(b+\lambda c)=a*b+\lambda(a*c),
+\]
+其中加法和复数乘法按函数值逐点定义。
+\end{proposition}
+\begin{proof}
+交换有序因数对的两个分量，将 \((u,v)\) 换成 \((v,u)\)，便得到交换律。结合律则来自两种括号收集同一批有序三元组：对每个正整数 \(n\)，
+\[
+ \begin{aligned}
+ ((a*b)*c)(n)
+ &=\sum_{uv=n}\sum_{rs=u}a(r)b(s)c(v)\\
+ &=\sum_{rsv=n}a(r)b(s)c(v)
+ =(a*(b*c))(n).
+ \end{aligned}
+\]
+所有指标均为 \(n\) 的约数，求和有限，所以更换次序无需额外定理。分配律是在定义中的每一项使用复数的分配律后相加。
+\end{proof}
+
+这里的结合律允许我们省略多重卷积的括号。但它只处理每个 \(n\) 处的有限运算；日后把 \(n\) 从 \(1\) 加到无穷大时，仍须重新检查无限重排的条件。
 
 \subsection{单位元}
 \label{b3:subsec:250202}
 
-函数 \(\varepsilon(1)=1\)、\(\varepsilon(n)=0\ (n>1)\) 为卷积单位元；常函数 \(\mathbf1(n)=1\) 则不是单位，而是约数求和算子：\((\mathbf1*a)(n)=\sum_{d\mid n}a(d)\)。这与数值逐点乘法的单位不同。
+要逆转一个运算，首先要知道什么结果相当于“没有做任何改变”。对卷积，这个角色由集中在整数 \(1\) 处的函数承担。
 
-\ProseParagraphBreak
+\begin{definition}\label{b3:def:25-convolution-unit}
+定义算术函数
+\[
+ \varepsilon(n)=\begin{cases}1,&n=1,\\0,&n>1,\end{cases}
+ \qquad \mathbf1(n)=1\quad(n\ge1).
+\]
+函数 \(\varepsilon\) 称为 Dirichlet 卷积的单位元。
+\end{definition}
 
-两个可乘函数的卷积仍可乘。若 \(m,n\) 互素，每个 \(mn\) 的约数唯一写作 \(d_1d_2\)，\(d_1\mid m,d_2\mid n\)。将两个函数的乘法公式代入有限和，便分成 \((a*b)(m)(a*b)(n)\)。互素假设在约数分离这一步使用。
+确实，对任意算术函数 \(a\)，和 \(\sum_{d\mid n}\varepsilon(d)a(n/d)\) 只剩 \(d=1\) 的一项，故 \(\varepsilon*a=a\)。常函数 \(\mathbf1\) 则保留所有约数：
+\[
+ (\mathbf1*a)(n)=\sum_{d\mid n}a(d).
+\]
+例如 \((\mathbf1*\mathbf1)(12)=6\)，而 \((\varepsilon*\mathbf1)(12)=1\)。两个单位的区别可以并列看清：
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+运算 & 在整数 \(n\) 处的值 & 单位函数 \\
+\midrule
+逐点乘法 \(ab\) & \(a(n)b(n)\) & \(\mathbf1\) \\
+Dirichlet 卷积 \(a*b\) & \(\sum_{d\mid n}a(d)b(n/d)\) & \(\varepsilon\) \\
+\bottomrule
+\end{tabular}
+\end{center}
+所以式子中的星号不能省略；\(ab\) 与 \(a*b\) 是两个不同的算术函数。
+
+令 \(\operatorname{id}_\alpha(n)=n^\alpha\)，其中 \(\alpha\in\mathbb C\)，幂次仍采用实对数。除数函数的定义现在可写成
+\[
+ \sigma_\alpha=\mathbf1*\operatorname{id}_\alpha,
+ \qquad d=\mathbf1*\mathbf1.
+\]
+这些式子并没有加入新的数学内容，却把约数求和转写成了一个可以结合、交换和求逆的乘法。
+
+\begin{proposition}[可乘性在卷积下保持]
+\label{b3:prop:25-convolution-multiplicative}
+若算术函数 \(a,b:\mathbb N_{\ge1}\to\mathbb C\) 都可乘，则 \(a*b\) 也可乘。
+\end{proposition}
+\begin{proof}
+在 \(1\) 处，\((a*b)(1)=a(1)b(1)=1\)。设 \(m,n\) 互素。每个 \(mn\) 的约数唯一写成 \(d_1d_2\)，其中 \(d_1\mid m\)、\(d_2\mid n\)。此时 \(d_1,d_2\) 互素，\(m/d_1,n/d_2\) 也互素，所以两次应用可乘性得到
+\[
+ \begin{aligned}
+ (a*b)(mn)
+ &=\sum_{d_1\mid m}\sum_{d_2\mid n}
+      a(d_1)a(d_2)b(m/d_1)b(n/d_2)\\
+ &=\left(\sum_{d_1\mid m}a(d_1)b(m/d_1)\right)
+   \left(\sum_{d_2\mid n}a(d_2)b(n/d_2)\right)\\
+ &=(a*b)(m)(a*b)(n).
+ \end{aligned}
+\]
+这正是可乘性的定义。
+\end{proof}
+
+互素条件在这个证明中保证约数能够唯一分离，也保证两个函数的乘法公式可以使用。结论不能加强为完全可乘性：\(\mathbf1\) 完全可乘，但 \(\mathbf1*\mathbf1=d\) 不完全可乘。卷积增加了素数幂指数的分配方式，通常会破坏 \(a(p^r)=a(p)^r\) 这种更严格的关系。
 
 \subsection{逆元}
 \label{b3:subsec:250203}
 
+对一个算术函数 \(a\)，若存在算术函数 \(b\) 满足 \(a*b=\varepsilon\)，便称 \(b\) 为 \(a\) 的\term[juanji-niyuan]{卷积逆元}[convolution inverse]。这里所说的逆元并不是逐点取 \(1/a(n)\)。卷积在整数 \(1\) 处给出一个起始方程，在其他整数处给出只依赖较小指标的递推，因此它的可逆性只由 \(a(1)\) 决定。
+
 \begin{proposition}\label{b3:prop:25-inverse}
-算术函数 \(a\) 有卷积逆元，当且仅当 \(a(1)\ne0\)，逆元唯一。
+算术函数 \(a:\mathbb N_{\ge1}\to\mathbb C\) 有 Dirichlet 卷积逆元，当且仅当 \(a(1)\ne0\)。逆元 \(b\) 唯一，并由
+\begin{equation}\label{b3:eq:25-inverse-recursion}
+ \begin{split}
+ b(1)&=\frac1{a(1)},\\
+ b(n)&=-\frac1{a(1)}
+       \sum_{\substack{d\mid n\\d>1}}a(d)b(n/d),\qquad n>1
+ \end{split}
+\end{equation}
+递推确定。
 \end{proposition}
 \begin{proof}
-若 \(a*b=\varepsilon\)，在一处得 \(a(1)b(1)=1\)，故必要。反之置 \(b(1)=1/a(1)\)，对 \(n>1\) 递推定义
+若 \(a*b=\varepsilon\)，在 \(n=1\) 处必有 \(a(1)b(1)=1\)，所以 \(a(1)\ne0\)。当 \(n>1\) 时，将卷积中 \(d=1\) 的项分离出来，就有
 \[
-b(n)=-\frac1{a(1)}\sum_{d\mid n,\ d>1}a(d)b(n/d).
+ a(1)b(n)+\sum_{\substack{d\mid n\\d>1}}a(d)b(n/d)=0,
 \]
-和中 \(n/d<n\)，所以按整数大小递推合法，并逐个满足卷积方程。该公式也强制任何逆元具有相同值，故唯一。
+这强制给出所列递推。
+
+反过来，若 \(a(1)\ne0\)，先定义 \(b(1)\)，再按 \(n=2,3,\ldots\) 的顺序使用递推。和中每个 \(n/d<n\)，所以右侧只涉及已经定义的值，不存在循环依赖。这样得到的函数逐项满足 \(a*b=\varepsilon\)，因而是逆元；递推同时强制任何其他逆元在每个整数处取相同值，所以逆元唯一。
 \end{proof}
-若 \(a\) 可乘，其逆元也可乘。可先分别在每个素数幂上递推得到逆值，再按互素分解乘起来；局部有限卷积乘积显示得到的函数与 \(a\) 卷积为 \(\varepsilon\)，由唯一性即为逆元。这里不必借用解析级数的倒数。
+
+为了避免与数值倒数混淆，必要时把卷积逆元记为 \(a^{*-1}\)。例如，当 \(a(1)=1\) 时，递推给出
+\[
+ b(p)=-a(p),\qquad b(p^2)=a(p)^2-a(p^2).
+\]
+若 \(a(p)=0\)，这些公式仍有意义。特别地，可乘函数总有卷积逆元，即使它在许多整数处等于零。此前的 Möbius 求和恒等式已经给出
+\[
+ \mu*\mathbf1=\varepsilon,
+ \qquad \mathbf1^{*-1}=\mu.
+\]
+
+\begin{proposition}[可乘函数的逆元仍可乘]
+\label{b3:prop:25-inverse-multiplicative}
+若 \(a:\mathbb N_{\ge1}\to\mathbb C\) 可乘，则其 Dirichlet 卷积逆元 \(a^{*-1}\) 也可乘。
+\end{proposition}
+\begin{proof}
+先分别在每个素数 \(p\) 上构造局部数列。令 \(c_{p,0}=1\)，并对 \(r\ge1\) 递推定义
+\[
+ c_{p,r}=-\sum_{j=1}^r a(p^j)c_{p,r-j}.
+\]
+于是对所有 \(r\ge1\)，有 \(\sum_{j=0}^r a(p^j)c_{p,r-j}=0\)。再令
+\[
+ b(1)=1,\qquad b(n)=\prod_{p^r\parallel n}c_{p,r}.
+\]
+由\cref{b3:prop:25-prime-power-data}，这个 \(b\) 可乘。我们证明它正是所求逆元，而不是预先假设逆元可乘。
+
+设 \(n=\prod_{p\mid n}p^{r_p}\)。每个约数 \(d\) 唯一对应一组指数 \(0\le j_p\le r_p\)。利用 \(a,b\) 的可乘性，将有限约数和分解为
+\[
+ (a*b)(n)
+ =\prod_{p\mid n}
+   \left(\sum_{j=0}^{r_p}a(p^j)c_{p,r_p-j}\right).
+\]
+当 \(n>1\) 时，乘积至少有一个因子，每个因子都由递推等于零，所以结果为零；当 \(n=1\) 时，结果为一。因此 \(a*b=\varepsilon\)。由\cref{b3:prop:25-inverse}的唯一性，\(b=a^{*-1}\)，逆元因而可乘。
+\end{proof}
+
+完全可乘时，逆元还有一个更简单的逐点公式。这个结论在某些 \(a(n)=0\) 时同样成立。
+
+\begin{proposition}[完全可乘函数的卷积逆元]
+\label{b3:prop:25-completely-inverse}
+设 \(a:\mathbb N_{\ge1}\to\mathbb C\) 完全可乘，\(\mu\) 为 Möbius 函数。则
+\[
+ a^{*-1}(n)=\mu(n)a(n)\qquad(n\ge1).
+\]
+右侧是 \(\mu\) 与 \(a\) 的逐点乘积，不是 Dirichlet 卷积。
+\end{proposition}
+\begin{proof}
+令 \(b(n)=\mu(n)a(n)\)。对每个正整数 \(n\)，完全可乘性给出 \(a(d)a(n/d)=a(n)\)，无论两因数是否互素都适用。因此
+\[
+ (b*a)(n)
+ =\sum_{d\mid n}\mu(d)a(d)a(n/d)
+ =a(n)\sum_{d\mid n}\mu(d)
+ =\varepsilon(n).
+\]
+最后一步使用\cref{b3:prop:25-mobius-sum}，并在 \(n=1\) 处使用 \(a(1)=1\)。证明没有除以 \(a(n)\)，所以无需排除零值。
+\end{proof}
+
+若 \(a\) 仅可乘，这个逐点公式可能失败。例如 \(a=d\) 时，前面的递推给出 \(d^{*-1}(p^2)=2^2-3=1\)，而 \(\mu(p^2)d(p^2)=0\)。完全可乘性正是在证明中把 \(a(d)a(n/d)\) 合成 \(a(n)\) 的必要依据。
+
+\ProseParagraphBreak
+
+素数幂上的递推还可以用形式幂级数记账。固定素数 \(p\)，对算术函数 \(a,b\) 写
+\[
+ A_p(X)=\sum_{r\ge0}a(p^r)X^r,
+ \qquad B_p(X)=\sum_{r\ge0}b(p^r)X^r.
+\]
+这里暂时把 \(X\) 当作一个符号；乘积中 \(X^r\) 的系数定义为有限和 \(\sum_{j=0}^r a(p^j)b(p^{r-j})\)，恰好是 \((a*b)(p^r)\)。因此当 \(a(1)\ne0\) 时，\(b=a^{*-1}\) 蕴含形式恒等式 \(A_p(X)B_p(X)=1\)。它只是把\eqref{b3:eq:25-inverse-recursion}在素数幂处的方程排在一起，不要求存在一个复数 \(X\) 使这些级数收敛。
+
+例如，\(d(p^r)=r+1\)，所以在形式运算的意义下
+\[
+ A_p(X)=\sum_{r\ge0}(r+1)X^r=(1-X)^{-2},
+ \qquad B_p(X)=(1-X)^2=1-2X+X^2.
+\]
+第一个恒等式可以由 \((\sum_{r\ge0}X^r)^2\) 的系数计算得到：\(X^r\) 恰有 \(r+1\) 种分配。因此 \(d^{*-1}\) 在 \(p,p^2,p^r\ (r\ge3)\) 处的值分别为 \(-2,1,0\)。另一方面，由 \(d=\mathbf1*\mathbf1\)、\(\mathbf1^{*-1}=\mu\) 以及结合律，直接得到
+\[
+ d^{*-1}=\mu*\mu.
+\]
+两条计算给出同一个函数，是逆元唯一性的结果。
+
+应当区分两个使用范围。对于任意算术函数，局部形式乘法都正确；但只有可乘性允许我们由所有素数幂处的系数恢复其他整数处的值。另一方面，即使已经得到形式恒等式，把 \(X\) 换成 \(p^{-s}\) 仍是一个新步骤，必须确认相应级数确实收敛。后面 Euler 乘积的证明将补上这部分分析条件。
 
 \subsection{Möbius 反演}
 \label{b3:subsec:250204}
 
+现在可以回答节首的问题：约数求和是与 \(\mathbf1\) 做卷积，而 \(\mu\) 恰好是 \(\mathbf1\) 的逆元。因此恢复原函数时，需要以 Möbius 符号对已经求和的值再做一次约数求和。
+
 \begin{theorem}[Möbius 反演]\label{b3:thm:25-mobius-inversion}
-对算术函数 \(a,b\)，等式 \(b(n)=\sum_{d\mid n}a(d)\) 等价于
-\(a(n)=\sum_{d\mid n}\mu(d)b(n/d)\)。
+设 \(a,b:\mathbb N_{\ge1}\to\mathbb C\) 为算术函数，\(\mu\) 为 Möbius 函数，所有约数均取正约数。对所有正整数 \(n\) 成立的等式
+\[
+ b(n)=\sum_{d\mid n}a(d)
+\]
+等价于对所有正整数 \(n\) 成立的等式
+\[
+ a(n)=\sum_{d\mid n}\mu(d)b(n/d)
+     =\sum_{d\mid n}\mu(n/d)b(d).
+\]
+不要求 \(a,b\) 可乘，也不要求它们具有任何增长界。
 \end{theorem}
 \begin{proof}
-\cref{b3:prop:25-mobius-sum}给 \(\mu*\mathbf1=\varepsilon\)。因此从 \(b=\mathbf1*a\) 卷积 \(\mu\) 得 \(a=\mu*b\)；反向卷积 \(\mathbf1\) 同样成立。
+用卷积记号，第一式是 \(b=\mathbf1*a\)，第二式是 \(a=\mu*b\)。由于 \(\mu*\mathbf1=\varepsilon\)，对第一式卷积 \(\mu\) 就得到第二式；对第二式卷积 \(\mathbf1\) 就得到第一式。
+
+也可以直接看出消去发生在哪里。假设 \(b(n)=\sum_{d\mid n}a(d)\)，则对每个 \(n\)，
+\[
+ \begin{aligned}
+ \sum_{d\mid n}\mu(d)b(n/d)
+ &=\sum_{d\mid n}\mu(d)\sum_{e\mid n/d}a(e)\\
+ &=\sum_{e\mid n}a(e)\sum_{d\mid n/e}\mu(d)
+ =a(n).
+ \end{aligned}
+\]
+第二步把条件 \(d\mid n,\ e\mid n/d\) 合并为 \(de\mid n\)，再按 \(e\) 分组。内层和由\cref{b3:prop:25-mobius-sum}在 \(n/e>1\) 时为零，在 \(e=n\) 时为一。因此所有较小约数处的贡献都被消去，只剩 \(a(n)\)。这里交换的是有限和。
 \end{proof}
-此结果称为\term[mobius-fanyan]{Möbius 反演}[Möbius inversion]。例如 \(\varphi=\mu*\operatorname{id}\)，其中 \(\operatorname{id}(n)=n\)；由\eqref{b3:eq:25-log-divisors}还得 \(\Lambda=\mu*\log\)。这些恒等式是有限和的精确关系，后面乘进 \(n^{-s}\) 并无限求和时才出现收敛问题。
+
+此结果称为\term[mobius-fanyan]{Möbius 反演}[Möbius inversion]。它并非只适用于已经列出的几个可乘函数；任何约数求和关系都可以用它反演。
+
+记 \(\operatorname{id}(n)=n\)，并以 \(\log\) 表示算术函数 \(n\mapsto\log n\)。\cref{b3:prop:25-totient-identities}和\eqref{b3:eq:25-log-divisors}于是给出
+\[
+ \varphi=\mu*\operatorname{id},\qquad \Lambda=\mu*\log.
+\]
+例如 \(12\) 的平方自由约数只有 \(1,2,3,6\)，所以
+\[
+ \Lambda(12)=\log12-\log6-\log4+\log2=0.
+\]
+这次抵消使一个具有两个不同素因子的整数失去权重。对 \(n=p^r\)，则只剩 \(\log p^r-\log p^{r-1}=\log p\)。同一个反演算子既能恢复互素计数，也能从对数中分离素数幂的贡献。
 
 \ProseParagraphBreak
 
-以 \(n=12\) 为例，只有平方自由约数 \(1,2,3,6\) 对反演公式有贡献。因此
-\[
- \varphi(12)=12-6-4+2=4,
- \qquad
- \Lambda(12)=\log12-\log6-\log4+\log2=0.
-\]
-前式把所有与十二有公共素因子的整数逐次剔除，后式则使含两个不同素因子的对数贡献恰好抵消。对 \(n=p^r\)，后一式只剩 \(\log p^r-\log p^{r-1}=\log p\)。这些小例子显示反演既可用于计数，也可用来制造只集中在素数幂上的权重。
+另一个常用的筛选是判断一个整数是否平方自由。现在要排除的条件是 \(p^2\mid n\)，所以容斥中的乘积也必须平方后再整除 \(n\)。
 
 \begin{proposition}[平方自由筛选恒等式]
 \label{b3:prop:25-squarefree-filter}
-对每个正整数 \(n\)，
+设 \(\mu\) 为 Möbius 函数。对每个正整数 \(n\)，有
 \[
- \mu(n)^2=\sum_{d^2\mid n}\mu(d).
+ \mu(n)^2=\sum_{d^2\mid n}\mu(d),
 \]
+其中 \(d\) 取正整数。两边均在 \(n\) 平方自由时等于 \(1\)，否则等于 \(0\)。
 \end{proposition}
 \begin{proof}
-右侧的非零项对应那些平方仍整除 \(n\) 的不同素数的子集。如果共有 \(r\) 个这样的素数，和为 \((1-1)^r\)。当 \(n\) 平方自由时 \(r=0\)，值为一；否则值为零。这恰好等于左侧。
+右侧的非零项由平方自由的 \(d\) 提供。这样的 \(d\) 满足 \(d^2\mid n\)，当且仅当它所含的每个素数 \(p\) 都满足 \(p^2\mid n\)。设这些素数共有 \(r\) 个，右侧便是相应子集的交替和。当 \(r\ge1\) 时，和为 \((1-1)^r=0\)；当 \(r=0\) 时，只有 \(d=1\) 的一项，值为 \(1\)。这恰好与平方自由性的两种情形吻合，也就是 \(\mu(n)^2\)。
 \end{proof}
 
-这里的条件是 \(d^2\mid n\)，不是通常卷积中的 \(d\mid n\)。平方自由性要求排除素数平方，因此反演中的筛选条件也相应变成平方整除。把这项有限恒等式在 \(n\le x\) 上求和，随后交换两个有限和，便能把平方自由整数的计数转成 \(\lfloor x/d^2\rfloor\) 的估计；最后一节将算出其密度。
+例如 \(n=18\) 时，满足 \(d^2\mid18\) 的正整数为 \(1,3\)，所以右侧为 \(1-1=0\)。这里不能把 \(d^2\mid n\) 改成 \(d\mid n\)：后一种和对每个 \(n>1\) 都为零，无法区分平方自由整数。
+
+把这一有限恒等式在 \(n\le x\) 上求和，对任意实数 \(x\ge1\) 可直接得到
+\[
+ \sum_{n\le x}\mu(n)^2
+ =\sum_{d\le\sqrt{x}}\mu(d)\left\lfloor\frac{x}{d^2}\right\rfloor.
+\]
+左边计数平方自由整数；右边则把每个整除条件对应的整数数目写成取整函数。这里只交换有限和；在最后一节估计密度时，才需要控制取整误差和无穷尾项。
 
 \ProseParagraphBreak
 
-另一个有用的有限模型是多重因子计数。令 \(d_k(n)\) 表示有序正整数 \(k\) 元组 \((n_1,\ldots,n_k)\) 中满足 \(n_1\cdots n_k=n\) 的个数，则
+卷积还提供一个可跟算的多重模型：把一个整数分成若干有序因子的乘积。与平方自由筛选中的消去不同，这里所有贡献都为正，局部系数记录的是指数的分配数。
+
+\begin{proposition}[多重除数函数]
+\label{b3:prop:25-higher-divisor}
+设 \(k\ge1\) 为整数，对每个正整数 \(n\) 定义
+\[
+ d_k(n)=\#\{(n_1,\ldots,n_k)\in\mathbb N_{\ge1}^k:
+                  n_1\cdots n_k=n\}.
+\]
+则 \(d_k\) 可乘，并且
 \[
  d_k=\underbrace{\mathbf1*\cdots*\mathbf1}_{k\text{ 个因子}},
- \qquad d_k(p^r)=\binom{r+k-1}{k-1}.
+ \qquad d_k(p^r)=\binom{r+k-1}{k-1}
+ \quad(p\text{ 为素数},\ r\ge0).
 \]
-第二个公式来自把素数指数 \(r\) 分配到 \(k\) 个非负整数：在 \(r\) 个同类记号之间插入 \(k-1\) 个分隔符，共有所列组合数种分配。不同素数的指数分配独立，故 \(d_k\) 可乘。\(k=2\) 时恢复约数个数 \(r+1\)，而 \(k=1\) 时应理解为恒等于一的函数。
+特别地，\(d_1=\mathbf1\)、\(d_2=d\)，且对所有 \(n\ge1\) 有
+\[
+ d_k(n)=\prod_{p^r\parallel n}\binom{r+k-1}{k-1}.
+\]
+\end{proposition}
+\begin{proof}
+展开 \(k\) 重卷积的有限定义后，每个有序分解 \(n=n_1\cdots n_k\) 恰好贡献一次 \(1\)，这证明第一个公式。由\cref{b3:prop:25-convolution-multiplicative}反复应用可知 \(d_k\) 可乘。
+
+若 \(n=p^r\)，每个因子必须是 \(p^{r_j}\)，于是有序分解等价于
+\[
+ r_1+\cdots+r_k=r,\qquad r_j\in\mathbb Z_{\ge0}.
+\]
+用 \(r\) 个相同记号表示指数，在它们之间以及两端放入 \(k-1\) 个分隔记号，连续的分隔记号允许某个 \(r_j=0\)。全部 \(r+k-1\) 个位置中选择分隔记号的位置，共有 \(\binom{r+k-1}{k-1}\) 种。这个描述也包括 \(r=0\) 或 \(k=1\) 的情形，此时只有一种分配。最后对不同素数分别使用可乘性，即得乘积公式。
+\end{proof}
+
+例如，\(d_3(12)=\binom{4}{2}\binom{3}{2}=18\)：素数 \(2\) 的两个指数单位有六种分配，素数 \(3\) 的一个指数单位有三种分配，二者分别决定每个因子中的素数幂，因而可以任意配对。顺序不能忽略，\((1,2,6)\) 与 \((2,1,6)\) 是不同的分解。
+
+到这里，求逆、反演、筛选和多重分解都建立在有限运算之上。下一节将把这些算术函数变成复变量函数；卷积恒等式只有在相应的无限求和被证明合法后，才能转化为解析函数的乘积恒等式。

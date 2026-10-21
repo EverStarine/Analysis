@@ -1,196 +1,225 @@
 % !TeX root = ../../Book2.tex
-\chapter{二阶偏微分方程的分类}
-\label{b2:ch:08}
-\BookChapterNumber{b2:ch:08}
+\chapter{Poisson 求和公式与 \texorpdfstring{\(\theta\)}{\AnalysisPdfTheta} 函数预备}
+\label{b2:ch:06}
+\BookChapterNumber{b2:ch:06}
+% Hunter2001Applied Section11.11印刷319页实际图像核读：11.45与Example11.46。
+% 本章固定单位周期及2π频率约定，完整展开周期化换序、尺度、格与对偶格。
 \begin{chapterabstract}
-二阶方程的主部在每一点确定一个实二次型。其正负方向与退化方向，把 Laplace、波动与热方程联系到三种不同的几何结构。本章定义主符号与特征余向量，推导坐标变换下的合同关系及低阶项，再以二维判别式和高维惯性说明经典分类的范围。二维常系数方程可完全化为标准型；变系数双曲和秩一方程可在适当邻域中构造特征坐标。椭圆主部的特殊系数变换与极坐标另行讨论，不能与实特征坐标的构造混同。时间导数的阶数、方向和系数符号将单独保留，以免把二阶矩阵的退化误当成完整的热型演化理论。
+Poisson 求和公式通过周期化函数的 Fourier 系数，把格点求和问题化为对偶格上的求和。本章从光滑周期化出发证明公式，先讨论缩放求和与数值求积，再通过 Gauss 函数得到尺度倒置与圆周热核的两种表达。带限采样与频率混叠单列为选读专题，PDE 路线可以跳过。实参数 \(\theta\) 级数随后把这种对称连接到格点计数和整数平方和。高维选读部分讨论格基、对偶格与基本区域体积，为第三卷研究 \(\theta\) 函数及解析数论作准备。
 \end{chapterabstract}
-
 \begin{learninggoals}
 \begin{itemize}
-\item\label{b2:item:08-goal-symbol}能正确提取对称主部矩阵和主符号，区分 Fourier 乘子、特征余向量与曲线切向。
-\item\label{b2:item:08-goal-type}能判断二维类型与高维惯性，区分点态椭圆、一致椭圆、双曲时间方向和热型演化结构。
-\item\label{b2:item:08-goal-coordinate}能逐项计算二阶坐标变换，包括由坐标二阶导数产生的一阶项，并给出合法的二维标准型；区分特征坐标、椭圆主部的特殊坐标以及极坐标各自适用的范围。
-\item\label{b2:item:08-goal-limits}能识别退化线、非可积的候选坐标场及不稳定的数据面，说明分类能够提供什么、还需证明什么。
+\item\label{b2:item:06-goal-periodic}从周期化函数计算 Fourier 系数，逐项核对求和、积分和微分的交换条件。
+\item\label{b2:item:06-goal-scale}写出带平移、调制和尺度的 Poisson 公式，解释格点间距与频率间距的倒数关系，分别控制数值求积的频率误差与空间尾部；选读\subsecref{b2:subsec:060105}进一步研究带限恢复和混叠，PDE 主线不以它为前置。
+\item\label{b2:item:06-goal-theta}由 Gauss 自对偶性推导 \(\theta\) 变换，使用指数尾在大小参数之间转换估计。
+\item\label{b2:item:06-goal-count}区分平滑格点计数与球内硬计数，理解平方和生成函数及 Mellin 积分的作用。
+\item\label{b2:item:06-goal-lattice}在选读部分计算对偶格与基本区域体积，保留高维公式中的行列式因子。
 \end{itemize}
 \end{learninggoals}
 
-在 \(u_{xx}+u_{yy}=0\) 中把一个正号改成负号，就得到 \(u_{xx}-u_{yy}=0\)。二阶导数的阶数与数目没有改变，实特征线却从不存在变成两族直线。若换成 \(u_y-u_{xx}=0\)，又出现只沿一个方向演化的扩散。要判断应该使用边界约束、传播还是时间耗散，首先需要从主部的二次型读出其几何结构，同时保留时间的一阶项。
+怎样用等间距的数值 \(f(nh)\) 估计整条实线上的积分？减小 \(h\) 会改善近似，但它也改变频率中被读出的点。对 Gauss 函数，这个误差能精确改写成另一个快速收敛的级数；对带限信号，离散点值甚至能够完全恢复函数。本章以周期化把这些问题放进同一个计算：空间中的格点求和，对应频率中的倒数格点求和。
 
 \ProseParagraphBreak
 
-本章使用有限维实对称矩阵的谱定理、\chapref{b2:ch:01}的二阶链式法则与逆函数定理，以及\chapref{b2:ch:07}的局部流。\secref{b2:sec:0801}介绍坐标无关的分类概念；\secref{b2:sec:0802}先用\cref{b2:tab:08-planar-classification}集中比较二维判别式与实特征方向，再发展高维类型及时间方向。\secref{b2:sec:0803}从\subsecref{b2:subsec:080301}的标准型和坐标导数可积性出发，构造变系数特征坐标；\subsecref{b2:subsec:08-elliptic-polar-coordinates}单独讨论椭圆主部的特殊坐标与极坐标。初读时可先掌握二维判别式和三种模型，再回看高维惯性与时间法向的区别。
+本章同时使用\chapref{b2:ch:02}的周期系数唯一性与\chapref{b2:ch:05}的 Schwartz 变换不变性。Gauss 变换沿用\chapref{b2:ch:03}已经固定的常数；平方能量观点则帮助解释热核的频率表达。求和公式的证明同时使用离散展开与连续变换。
 
 \ProseParagraphBreak
 
-Walter A. Strauss 的《Partial Differential Equations: An Introduction》\cite[Section 1.6]{Strauss2008Partial}用实二次型讲解二维标准型与高维分类。其按惯性给出的抛物型名称在本章保留，但本章另外写清时间一阶项的作用，避免只凭主部秩就推断初值问题的性质。变系数坐标构造使用前章建立的局部流，不要求先掌握后续波动或热方程的解公式。
-% Strauss 第二版 Wiley 官方样章印刷28--31页已实读；常系数标准型为独立组织的完整推导。
+若以 PDE 为目标，先读\secref{b2:sec:0601}的周期化、Poisson 求和及\subsecref{b2:subsec:060104}的缩放公式，再读\secref{b2:sec:0602}的 Gauss 函数与热核。\subsecref{b2:subsec:060105}的带限采样和混叠可以跳过，后面的热核、\(\theta\) 变换与格点计数都不使用它；Hermite 自对偶补例也可随\chapref{b2:ch:05}专题暂缓。\secref{b2:sec:0603}的平方和计数与 Mellin 算术联系留给需要连接第三卷的读者。\secref{b2:sec:0604}只在需要一般格时阅读，不作为前三节的证明前置。John K. Hunter 与 Bruno Nachtergaele 的《Applied Analysis》\cite[Section 11.11, p. 319]{Hunter2001Applied}以周期化证明求和公式，并给出 theta 级数的例子；Fourier 分析在数论中的应用还见于 Elias M. Stein 与 Rami Shakarchi 的《Fourier Analysis: An Introduction》\cite{Stein2003Fourier}。
 
 \input{Part02/Chapter08/Section0801}
 \input{Part02/Chapter08/Section0802}
 \input{Part02/Chapter08/Section0803}
+\input{Part02/Chapter08/Section0804}
 
 \begin{chaptersummary}
-主符号把最高阶导数的系数组织为法向上的二次型。坐标变换使主矩阵作合同变换，因此秩和惯性保持不变；具体特征值、统一常数和低阶项则需要另行追踪。二维非零实主部的三类由判别式控制，高维还存在多个正负方向以及更高维的退化核。
+周期化把实线上的函数放到圆周上，其 Fourier 系数就是连续变换在整数频率处的值。Poisson 求和从这个事实与系数唯一性得出；尺度变化产生倒数格与体积因子，不能省去对采样点和代表的正则性要求。
 
 \ProseParagraphBreak
 
-双曲特征坐标来自两族不同的实轨道，秩一坐标来自一族轨道；椭圆情形没有同样的实特征构造。某些特殊椭圆系数可以直接换元，极坐标也能适应径向与角模态，但坐标产生的一阶项、角度分支及定义域都必须保留。常系数标准化不能直接解释成任意变系数方程的邻域标准化。尤其在热型问题中，时间方向由一阶项和空间二阶项共同确定。分类整理了方程的结构，存在唯一性、稳定性和传播仍要对各模型分别建立。
+\subsecref{b2:subsec:060104}的数值求积把无穷采样误差与有限窗口的尾部误差分开。\subsecref{b2:subsec:060105}另外利用有限频带上的 \(L^2\) 展开研究精确恢复与混叠；这条选读路线可以略过，不影响周期热核及下一编 PDE 内容的学习。
+
+\ProseParagraphBreak
+
+Gauss 变换把参数取倒数，使 \(\theta\) 级数在大小尺度间交换。相同的对称既解释圆周热核的局部尖峰和低频平衡，也把整数平方和与 Mellin 积分联系起来。第三编将在有限区间上使用特征函数展开，在全空间上使用欧氏变换，并用能量范数和分布方程解释低正则解。
 \end{chaptersummary}
 
 \BookExercises
 
-下面各题把分类与坐标计算、退化、数据稳定性相结合，最后一题从原方程构造两族特征坐标，再把原坐标中的数据转为标准型里的自由函数。题目中的变换均须核对可逆性；需要说明“不可能”时，应给出保持不变的量或一个具体反例。
+题组围绕一维求和、数值求积、周期化的频率采样与平方和计数展开，选做题使用一般格或参数分析。这里的频率采样只需周期化的 Fourier 系数公式，各题都不以选读的带限采样定理为前置；最后的跨章题把周期化与实线、圆周上的 Gauss 平滑联系起来。所有交换极限与求和的步骤均应说明所用的统一控制。
 
-% 改编：Strauss2008Partial Section1.6, Exercise3，官方样章印刷31页；从二维旋转不变推广到n维全部正交变换，并展开低阶系数证明。
+% 自拟：调制Gauss后得到交错theta，避免从复参数模公式直接摘用。
 \Needspace{6\baselineskip}
-\begin{exercise}\label{b2:ex:08-orthogonal-invariance}
-设 \(n\geq2\) 为整数，\(L=\sum_{i,j=1}^na^{ij}\partial_{ij}+\sum_{i=1}^n b^i\partial_i+c\) 为作用在 \(\mathbb R^n\) 上的实常系数算子，其中 \(A=(a^{ij})\in\mathbb R^{n\times n}\) 对称，\(b\in\mathbb R^n\)、\(c\in\mathbb R\)。证明 \(L\) 在所有正交坐标变换下不变，当且仅当 \(L=\alpha\Delta+c\)，其中 \(\alpha\in\mathbb R\)。
+\begin{exercise}\label{b2:ex:06-alternating-theta}
+对 \(t>0\)，证明
+\[
+ \sum_{n\in\mathbb Z}(-1)^ne^{-\pi tn^2}
+ =t^{-1/2}\sum_{k\in\mathbb Z}e^{-\pi(k-1/2)^2/t}>0.
+\]
+求 \(t\downarrow0\) 时的首项，并给出相对误差的指数阶。
 \end{exercise}
 \begin{solution}
-正交变换 \(y=Qz\) 把主矩阵变为 \(QAQ^{\mathsf T}\)，一阶系数变为 \(Qb\)。取 \(Q=-I\)，不变性迫使 \(b=-b\)，故 \(b=0\)。再取只反射一个坐标的对角正交矩阵，所有连接该坐标与其他坐标的非对角元变号，故这些元均为零。最后取交换两个坐标的正交矩阵，各对角元必须相等，得到 \(A=\alpha I\)。反过来，\(Q\alpha I Q^{\mathsf T}=\alpha I\)，零阶项也不变，故这类算子具有所需不变性。
+在带调制的 Poisson 公式\cref{b2:cor:06-scaled-poisson}中取 \(f(x)=e^{-\pi tx^2}\)、\(h=1,a=0,b=1/2\)，得到等式；右侧每项为正，故严格为正。距离 \(1/2\) 最近的整数为 \(0,1\)，贡献 \(2t^{-1/2}e^{-\pi/(4t)}\)。将全部半整数距离成对合并，原和式可写成
+\[
+ 2t^{-1/2}e^{-\pi/(4t)}
+ \left(1+\sum_{j=1}^\infty e^{-\pi j(j+1)/t}\right).
+\]
+因为 \(j(j+1)\geq2+4(j-1)\)、\(j\geq1\)，括号中除 \(1\) 外的尾部介于 \(0\) 与 \(e^{-2\pi/t}/(1-e^{-4\pi/t})\) 之间。因此结果为 \(2t^{-1/2}e^{-\pi/(4t)}(1+O(e^{-2\pi/t}))\)。
 \end{solution}
 
-% 自拟：坐标曲率产生时间导数，而非把低阶项当作无关余项。
+% 自拟：theta的自反尺度给出一个精确的带权求和。
 \Needspace{6\baselineskip}
-\begin{exercise}\label{b2:ex:08-parabolic-curvature}
-对 \(u\in C^2(\mathbb R^2;\mathbb C)\)，证明方程
+\begin{exercise}\label{b2:ex:06-theta-derivative}
+证明
 \[
- u_{xx}+2x u_{xy}+x^2u_{yy}=0
+ \sum_{n\in\mathbb Z}n^2e^{-\pi n^2}
+ =\dfrac1{4\pi}\sum_{n\in\mathbb Z}e^{-\pi n^2}.
 \]
-处处具有秩一主部，并用 \(\xi=x\)、\(\eta=y-x^2/2\) 将其化为向前热方程。解释为何它没有显式一阶项，却能在新坐标中出现时间导数。
 \end{exercise}
 \begin{solution}
-主矩阵为 \((1,x)^{\mathsf T}(1,x)\)，秩恒为一。给定变换的行列式为一，逆为 \(x=\xi\)、\(y=\eta+\xi^2/2\)。令 \(V=\partial_x+x\partial_y\)，则 \(V=\partial_\xi\)，而 \(V^2u=u_{xx}+2x u_{xy}+x^2u_{yy}+u_y\)。故原式化为 \(v_{\xi\xi}-v_\eta=0\)。时间导数来自坐标的二阶导数，等价地来自求导作用于向量场系数 \(x\)；若只作形式平方而漏掉这一项，便会得到错误方程。
+令 \(\vartheta(t)=\sum_{n\in\mathbb Z}e^{-\pi n^2t}\)、\(t>0\)。在 \(t\) 的紧正区间上，导数级数由可和的 Gauss 尾一致控制，故可逐项求导。对\cref{b2:thm:06-theta-transformation}给出的 \(\vartheta(t)=t^{-1/2}\vartheta(1/t)\) 求导并令 \(t=1\)，得 \(\vartheta'(1)=-\vartheta(1)/2-\vartheta'(1)\)，所以 \(\vartheta'(1)=-\vartheta(1)/4\)。再用 \(\vartheta'(1)=-\pi\sum_nn^2e^{-\pi n^2}\) 即得。
 \end{solution}
 
-% 自拟：类型变化与一致常数的定量退化。
+% 自拟：空间截断与频率误差分开控制，可作为实际求积依据。
 \Needspace{6\baselineskip}
-\begin{exercise}\label{b2:ex:08-changing-type}
-对全平面上的实系数算子 \(L=\partial_x^2+2x\partial_x\partial_y+\partial_y^2\) 的主部按位置分类。在条带 \(\{(x,y)\in\mathbb R^2:|x|<1\}\) 上求每一点的单位向量二次型的最小值和最大值，说明它为何在整个条带上不一致椭圆。证明任何包含 \(x=1\) 上某点的开邻域都不能经 \(C^2\) 微分同胚化为固定的非退化标准型。
+\begin{exercise}\label{b2:ex:06-quadrature-error}
+设 \(h\in(0,1]\)、\(M\) 为非负整数，令 \(Q_{h,M}=h\sum_{|n|\leq M}e^{-\pi h^2n^2}\)。证明
+\[
+ |Q_{h,M}-1|
+ \leq\dfrac{2e^{-\pi/h^2}}{1-e^{-3\pi/h^2}}
+ +\dfrac{2h e^{-\pi h^2(M+1)^2}}{1-e^{-\pi h^2(2M+3)}}.
+\]
 \end{exercise}
 \begin{solution}
-矩阵为 \(\left(\begin{smallmatrix}1&x\\x&1\end{smallmatrix}\right)\)，特征向量为 \((1,1)\)、\((1,-1)\)，特征值为 \(1+x,1-x\)。所以 \(|x|<1\) 时椭圆，\(|x|>1\) 时双曲，\(|x|=1\) 时秩一。条带上的单位球最小、最大值分别为 \(1-|x|,1+|x|\)，前者没有统一正下界。任何穿过 \(x=1\) 的邻域既含秩一的点，也含非退化的点；合同变换保持秩，故不可能得到处处非退化的固定标准型。
+无穷求和由 Poisson 公式等于 \(\sum_ke^{-\pi k^2/h^2}\)，减去零频项 \(1\) 后，用 \(k^2\geq1+3(k-1)\)、\(k\geq1\) 得到第一个几何级数界。空间截断误差为 \(2h\sum_{n=M+1}^\infty e^{-\pi h^2n^2}\)。写 \(n=M+1+j\)，有 \(n^2\geq(M+1)^2+(2M+3)j\)，得到第二项。两类误差分别来自离散采样和有限截断，最后用三角不等式合并。
 \end{solution}
 
-% 自拟：在曲线数据上重建混合导数方程的两项自由函数。
+% 改编：Hunter2001Applied, Theorem11.45, p.319 的C1衰减范围；
+% 在单位周期下用于非Schwartz有理核，并推导显式双边求和。
 \Needspace{6\baselineskip}
-\begin{exercise}\label{b2:ex:08-curved-cauchy}
-设 \(I\subset\mathbb R\) 为开区间，\(h\in C^2(I;\mathbb R)\)、\(g\in C^2(I;\mathbb C)\)、\(k\in C^1(I;\mathbb C)\)，且 \(h'(\xi)\ne0\) 对所有 \(\xi\in I\) 成立。对复值方程 \(u_{\xi\eta}=0\)，在曲线 \(\eta=h(\xi)\)、\(\xi\in I\) 上指定
+\begin{exercise}\label{b2:ex:06-rational-sum}
+对 \(a>0\)，以 \(\coth x=(e^x+e^{-x})/(e^x-e^{-x})\)、\(x>0\) 表示本题所需的双曲余切。证明
 \[
- u(\xi,h(\xi))=g(\xi),\quad
- u_\eta(\xi,h(\xi))=k(\xi).
+ \sum_{n\in\mathbb Z}\dfrac1{n^2+a^2}
+ =\dfrac\pi a\coth(\pi a).
 \]
-在曲线上任一点附近构造唯一 \(C^2\) 解，并说明 \(h'\ne0\) 与非特征条件的关系。
+所用函数不属于 Schwartz 空间，须核对正文的有限阶衰减判据再计算。
 \end{exercise}
 \begin{solution}
-在小矩形中积分 \(u_{\xi\eta}=0\)，先得 \(u_\eta\) 只依赖 \(\eta\)，再积分得 \(u=F(\xi)+G(\eta)\)。因为 \(h'\ne0\)，可局部反解 \(\xi=h^{-1}(\eta)\)。取一个原函数满足 \(G'(\eta)=k(h^{-1}(\eta))\)，再令 \(F(\xi)=g(\xi)-G(h(\xi))\)，得到所求 \(C^2\) 解。改变 \(G\) 的积分常数只会使 \(F\) 反向改变同一常数，故 \(u\) 唯一。主符号为 \(p(\nu)=\nu_\xi\nu_\eta\)，曲线法向为 \((-h',1)\)，所以非特征条件恰为 \(h'\ne0\)。
+取 \(f(x)=1/(x^2+a^2)\)，其函数和一阶导数分别为 \(O((1+|x|)^{-2})\)、\(O((1+|x|)^{-3})\)。因此满足\cref{b2:prop:06-finite-decay-poisson}的条件，可以使用求和公式。
+
+\subsecref{b2:subsec:030503}的一维 Poisson 核变换说明，\(P_a(x)=a/(\pi(a^2+x^2))\) 满足 \(\widehat{P_a}(\xi)=e^{-2\pi a|\xi|}\)。由 \(f=(\pi/a)P_a\)，得到 \(\widehat f(k)=\pi a^{-1}e^{-2\pi a|k|}\)。在 \(x=0\) 处使用周期化求和公式，得到
+\[
+ \sum_nf(n)=\dfrac\pi a\left(1+2\sum_{k=1}^\infty e^{-2\pi ak}\right)
+ =\dfrac\pi a\dfrac{1+e^{-2\pi a}}{1-e^{-2\pi a}}
+ =\dfrac\pi a\coth(\pi a).
+\]
 \end{solution}
 
-% 自拟：高维惯性(2,2,0)排除所有实根时间方向。
+% 自拟：整数采样变换不恢复未周期化的函数。
 \Needspace{6\baselineskip}
-\begin{exercise}\label{b2:ex:08-no-time-ultra}
-对 \(\xi\in\mathbb R^4\) 令 \(p(\xi)=\xi_1^2+\xi_2^2-\xi_3^2-\xi_4^2\)。证明不存在满足 \(p(\nu)\ne0\) 的实方向 \(\nu\in\mathbb R^4\)，使对每个 \(\eta\in\mathbb R^4\)，二次多项式 \(p(\eta+s\nu)\) 的两个复根（按重数计）均为实数。
+\begin{exercise}\label{b2:ex:06-periodization-kernel}
+构造非零 \(f\in C_c^\infty(\mathbb R;\mathbb C)\)，使周期化 \((\mathcal Pf)(x)=\sum_{n\in\mathbb Z}f(x+n)\) 恒为零。证明其 Fourier 变换在每个整数处为零，但并非处处为零。这是否与变换唯一性矛盾？
 \end{exercise}
 \begin{solution}
-记对称双线性型为 \(B(v,w)=v_1w_1+v_2w_2-v_3w_3-v_4w_4\)。若 \(p(\nu)>0\)，在正子空间 \(P=\operatorname{span}(e_1,e_2)\) 上，线性条件 \(B(\eta,\nu)=0\) 至少有一个非零解 \(\eta\)。于是 \(p(\eta)>0\)，并且
-\(p(\eta+s\nu)=p(\eta)+s^2p(\nu)>0\)，没有实根。若 \(p(\nu)<0\)，改在负子空间 \(\operatorname{span}(e_3,e_4)\) 中取 \(\eta\)，所得多项式恒负。两种情形都与要求矛盾。
+取非零 \(g\in C_c^\infty((-1/4,1/4);\mathbb C)\)，令 \(f(x)=g(x)-g(x-1)\)。两个支集不交，故 \(f\ne0\)，而周期化时两个整数平移和逐项重排后相同，所以 \(\mathcal Pf=0\)。变换为 \((1-e^{-2\pi\mathrm{i}\xi})\widehat g(\xi)\)，在整数处全为零。若它处处为零，\cref{b2:cor:03-uniqueness}会给出 \(f=0\) 几乎处处，连续性再给出 \(f=0\) 处处，矛盾。因此整数频率的采样只确定周期化函数；唯一性定理要求全部连续频率的数据，二者条件不同。
 \end{solution}
 
-% 自拟：椭圆非特征面不蕴含Cauchy稳定，以精确解构造。
+% 自拟：从平方和生成函数读取有序计数，辨认符号和顺序。
 \Needspace{6\baselineskip}
-\begin{exercise}\label{b2:ex:08-elliptic-cauchy-instability}
-圆周 \(\mathbb T=\mathbb R/\mathbb Z\) 取总质量为 \(1\) 的 Lebesgue 测度。在 \(\mathbb T\times[0,\infty)\) 上，对每个正整数 \(n\) 令
-\[
- u_n(x,y)=\frac{e^{-\sqrt n}}{2\pi n}\sin(2\pi n x)\sinh(2\pi n y).
-\]
-证明这些实值光滑函数满足 \(u_{n,xx}+u_{n,yy}=0\)，且对每个固定的非负整数 \(m\)，
-\[
- \|u_n(\cdot,0)\|_{C^m(\mathbb T)}
- +\|\partial_yu_n(\cdot,0)\|_{C^m(\mathbb T)}\longrightarrow0,
-\]
-但对任意固定 \(y_0>0\)，有 \(\|u_n(\cdot,y_0)\|_{L^2(\mathbb T)}\to\infty\)。这里
-\(\|v\|_{C^m(\mathbb T)}=\max_{0\leq j\leq m}\|\partial_x^jv\|_{L^\infty(\mathbb T)}\)；若用区域 \(y>0\) 的外法向导数替代 \(\partial_y\)，结论不变。
+\begin{exercise}\label{b2:ex:06-squares-count}
+设 \(d,e\) 为正整数，\(m\) 为非负整数；对每个正整数 \(q\) 和非负整数 \(\ell\)，记 \(r_q(\ell)=\#\{n\in\mathbb Z^q:|n|^2=\ell\}\)，其中符号和坐标顺序均计数。证明 \(r_{d+e}(m)=\sum_{j=0}^mr_d(j)r_e(m-j)\)，并直接计算 \(r_2(5)\)、\(r_4(1)\)、\(r_4(2)\)。解释为何不应再除以排列数。
 \end{exercise}
 \begin{solution}
-对 \(x,y\) 各求两次导数，两个 \((2\pi n)^2\) 项符号相反，故 \(u_{n,xx}+u_{n,yy}=0\)。边界值恒为零，正 \(y\) 导数为 \(e^{-\sqrt n}\sin(2\pi n x)\)，外法向导数只相差负号。因为 \(2\pi n\geq1\)，对每个 \(0\leq j\leq m\)，其 \(j\) 阶切向导数一致范数都不超过 \((2\pi n)^m e^{-\sqrt n}\to0\)，这就同时控制了所规定的整个 \(C^m\) 范数。另一方面，
-\[
- \|u_n(\cdot,y_0)\|_{L^2(\mathbb T)}
- =\frac{e^{-\sqrt n}}{2\sqrt2\pi n}\sinh(2\pi n y_0)\longrightarrow\infty.
-\]
-初始法向 \((0,1)\) 是非特征的，因为其主符号值为一。这一代数条件并未阻止高频数据向内部指数放大。
+把一个 \((d+e)\) 元整数向量分成前 \(d\) 个和后 \(e\) 个坐标，前一组平方和为某个 \(j\)，后一组为 \(m-j\)。对各组独立计数再求和即得公式。平方和为 \(5\) 的二维向量是 \((\pm1,\pm2)\) 及其坐标交换，共 \(8\) 个。四维平方和为 \(1\) 时选一个坐标放 \(\pm1\)，共 \(8\) 个；平方和为 \(2\) 时选两个坐标各放 \(\pm1\)，共 \(\binom42 2^2=24\) 个。theta 乘积的每个因子对应一个有序坐标，因此这些排列已代表不同向量，不应再除掉。
 \end{solution}
 
-% 自拟：拟线性方程在给定梯度上的分类，并比较两种等价表达的统一常数。
+% 自拟：非正交格的逆转置与最短向量，调用选读正文。
 \Needspace{6\baselineskip}
-\begin{exercise}\label{b2:ex:08-quasilinear-ellipticity}
-设 \(U\subseteq\mathbb R^2\) 为开集，\(u\in C^2(U;\mathbb R)\)。对方程
-\[
- (1+u_y^2)u_{xx}-2u_xu_yu_{xy}+(1+u_x^2)u_{yy}=0,
-\]
-证明给定梯度 \(\nabla u\) 所确定的主矩阵正定，求其特征值。比较原式与除以 \((1+|\nabla u|^2)^{3/2}\) 后的方程，在 \(U\) 上有 \(|\nabla u|\leq M\)、\(M\geq0\)，以及 \(|\nabla u|\) 在 \(U\) 上无界这两种情形的一致椭圆性。
-\end{exercise}
+\begin{optionalexercise}\label{b2:ex:06-parity-lattice}
+令 \(\Lambda=\{m(2,0)+n(1,1):m,n\in\mathbb Z\}\subset\mathbb R^2\)，并对 \(t>0\) 记 \(\Theta_\Lambda(t)=\sum_{v\in\Lambda}e^{-\pi t|v|^2}\)。求 \(\Lambda^*\)、两格的基本区域体积和最短非零向量长度，写出 \(\theta\) 变换，并求 \(\Theta_\Lambda(t)\) 在 \(t\to\infty\) 时的首个指数修正。
+\end{optionalexercise}
 \begin{solution}
-令 \(q=(u_x,u_y)^{\mathsf T}\)，主矩阵为 \(A=(1+|q|^2)I-qq^{\mathsf T}\)。若 \(q\ne0\)，沿 \(q\) 的特征值为一，垂直方向的特征值为 \(1+|q|^2\)；若 \(q=0\)，两个特征值均为一。因此处处正定。梯度有界时，原矩阵的上下界为 \(1,1+M^2\)；相除后的两个特征值为 \((1+|q|^2)^{-3/2}\) 与 \((1+|q|^2)^{-1/2}\)，也有统一正下界和有限上界。若梯度在区域内无界，原矩阵失去统一上界，相除后的矩阵则失去统一正下界。乘一个处处正的函数保持点态类型，但不无条件保持本章同时包含上下界的一致定义。
+基矩阵为 \(A=\left(\begin{smallmatrix}2&1\\0&1\end{smallmatrix}\right)\)，故对偶格由 \((1/2,-1/2)\)、\((0,1)\) 生成；基本区域体积分别为 \(2\)、\(1/2\)。原格是两个整数坐标同奇偶的向量：若坐标都为偶数，非零向量长度至少为 \(2\)；若都为奇数，长度至少为 \(\sqrt2\)。因此最短非零向量恰为 \((\pm1,\pm1)\)。对偶格向量可以写成 \((p/2,q-p/2)\)、\(p,q\in\mathbb Z\)。当 \(p\) 为偶数时两坐标都是整数，非零向量长度至少为 \(1\)；当 \(p\) 为奇数时两坐标都是半整数，长度至少为 \(1/\sqrt2\)，取等向量恰为 \((\pm1/2,\pm1/2)\)。因此
+\[
+ \Theta_\Lambda(t)=\dfrac1{2t}\Theta_{\Lambda^*}(1/t),
+ \quad\Theta_\Lambda(t)=1+4e^{-2\pi t}+O(e^{-4\pi t}).
+\]
+最后的尾部估计可在 \(t\geq1\) 时提出 \(e^{-4\pi t}\)，其余由格上可和的固定 Gauss 级数控制；最短向量后的平方长度至少为 \(4\)。
 \end{solution}
 
-% 自拟：从非线性剪切逆推出完整椭圆算子，含必需的一阶补偿。
+% 自拟：正权平方矩的方差解释theta的对数凸性。
 \Needspace{6\baselineskip}
-\begin{exercise}\label{b2:ex:08-nonlinear-shear}
-对 \(u\in C^2(\mathbb R^2;\mathbb C)\)，证明全平面方程
-\[
- u_{xx}-6x^2u_{xy}+(1+9x^4)u_{yy}-6x u_y=0
-\]
-经 \(r=x\)、\(s=y+x^3\) 化为 Laplace 方程。核对变换全局可逆，并说明原主矩阵虽然处处椭圆，却在全平面不一致椭圆。
-\end{exercise}
+\begin{optionalexercise}\label{b2:ex:06-log-convexity}
+对 \(t>0\)，令 \(\vartheta(t)=\sum_{n\in\mathbb Z}e^{-\pi n^2t}\)。证明 \(\vartheta\) 在 \((0,\infty)\) 上严格递减，而 \(\log\vartheta\) 在该区间上严格凸。将后一结论解释成以权重 \(w_n(t)=e^{-\pi n^2t}/\vartheta(t)\) 计算的方差为正。
+\end{optionalexercise}
 \begin{solution}
-变换的逆为 \(x=r\)、\(y=s-r^3\)，导数矩阵 \(B=\left(\begin{smallmatrix}1&0\\3x^2&1\end{smallmatrix}\right)\) 行列式为一。原主矩阵为 \(A=B^{-1}B^{-\mathsf T}\)，故 \(BAB^{\mathsf T}=I\)。非线性坐标的二阶导数只有 \(s_{xx}=6x\)，产生一阶项 \(6xv_s\)；原来的 \(-6xu_y=-6xv_s\) 恰好抵消。因此完整方程为 \(v_{rr}+v_{ss}=0\)。原二次型为 \((\xi-3x^2\eta)^2+\eta^2\)，所以正定。其行列式恒为一而迹为 \(2+9x^4\)，最大特征值无界，最小特征值因此趋零。这个坐标变换的导数及逆导数均无全域统一界，与统一常数的失败一致。
+逐项求导得到 \(\vartheta'(t)=-\pi\sum_nn^2e^{-\pi n^2t}<0\)。权重正且总和为 \(1\)，于是
+\[
+ (\log\vartheta)''(t)
+ =\pi^2\left(\sum_n n^4w_n(t)-\left(\sum_n n^2w_n(t)\right)^2\right).
+\]
+括号中为随机取值 \(n^2\) 的方差。值 \(0\) 与 \(1\) 都有正权重，所以它不恒定，方差严格为正。所有一、二阶参数求导都由紧正参数区间上的 Gauss 尾控制。
 \end{solution}
 
-% 自拟：从混合主部求两族特征坐标，再把原坐标的法向数据转换为两自由函数；不以第九章波动表示公式为前置。
+% 自拟：综合周期系数、实线卷积、Schwartz 衰减和 Poisson 周期化；不以热方程理论为前置。
 \Needspace{6\baselineskip}
-\begin{exercise}\label{b2:ex:08-characteristic-cauchy-data}
-设 \(g\in C^2(\mathbb R;\mathbb C)\)、\(h\in C^1(\mathbb R;\mathbb C)\)。对全平面方程
+\begin{exercise}[周期化与 Gauss 平滑的交换]\label{b2:ex:06-periodization-gaussian-commute}
+设 \(f\in\mathcal S(\mathbb R;\mathbb C)\)，\(t>0\)，并令
 \[
- u_{xx}-2u_{xy}-3u_{yy}=0,
+ H_t(x)=(4\pi t)^{-1/2}e^{-x^2/(4t)},\qquad
+ K_t=\mathcal PH_t,\qquad
+ Q_tf=\mathcal P(H_t*f).
 \]
-计算判别式与两族特征直线，构造可逆的实线性坐标 \((\xi,\eta)\)，并化为混合导数标准型。进而求满足
+圆周取 \(\mathbb T=\mathbb R/\mathbb Z\) 及总质量为 \(1\) 的 Lebesgue 测度，周期卷积定义为 \((u*_{\mathbb T}v)(x)=\int_0^1u(x-y)v(y)\,\mathrm dy\)。
+\begin{enumerate}
+\item\label{b2:item:06-gaussian-commute}证明 \(Q_tf=K_t*_{\mathbb T}(\mathcal Pf)\)，并对展开周期化级数后使用的求和、积分交换给出绝对可积控制。
+\item\label{b2:item:06-gaussian-coefficients}求 \(Q_tf\) 的全部 Fourier 系数，并证明 \(\int_0^1Q_tf=\int_{\mathbb R}f\)。
+\item\label{b2:item:06-gaussian-approximation}对每个非负整数 \(m\)，证明存在只依赖 \(f,m\) 的常数 \(C_{f,m}\)，使 \(0<t\leq1\) 时
 \[
- u(0,y)=g(y),\qquad u_x(0,y)=h(y)\quad(y\in\mathbb R)
+ \|Q_tf-\mathcal Pf\|_{C^m(\mathbb T)}\leq C_{f,m}t,
+ \qquad
+ \|Q_tf-\mathcal Pf-t(\mathcal Pf)''\|_{C^m(\mathbb T)}
+ \leq C_{f,m}t^2.
 \]
-的唯一 \(u\in C^2(\mathbb R^2;\mathbb C)\)，说明这些原坐标数据如何确定标准型中的两项自由函数。最后以 \(g(y)=y^2\)、\(h(y)=0\) 核对所得公式。
+这里 \(\|v\|_{C^m}=\max_{0\leq j\leq m}\|v^{(j)}\|_\infty\)。
+\end{enumerate}
 \end{exercise}
 \begin{solution}
-这里 \(a=1,b=-1,c=-3\)，故 \(D=b^2-ac=4>0\)。特征斜率由 \(m^2+2m-3=0\) 给出，即 \(m=1,-3\)。两族直线分别为 \(y-x\) 恒定和 \(y+3x\) 恒定。取
+固定 \(t>0\)。由\cref{b2:prop:05-schwartz-convolution}，\(H_t*f\in\mathcal S\)，故其周期化是光滑函数。又 \(K_t\) 是有界的正周期函数。对每个 \(x\)，展开周期卷积时的绝对值总积分满足
 \[
- \xi=y-x,\quad\eta=y+3x,
- \qquad x=\frac{\eta-\xi}{4},\quad y=\frac{3\xi+\eta}{4}.
+ \begin{aligned}
+ &\int_0^1\sum_{m,n\in\mathbb Z}|f(y+m)|H_t(x-y+n)\,\mathrm dy\\
+ &\quad=\int_{\mathbb R}|f(z)|\sum_{r\in\mathbb Z}H_t(x-z+r)\,\mathrm dz
+ \leq\|f\|_1\|K_t\|_\infty<\infty.
+ \end{aligned}
 \]
-正向变换的行列式为 \(-4\)，因此它是全平面的线性微分同胚。令 \(u(x,y)=v(\xi,\eta)\)，则
+其中令 \(z=y+m\)、\(r=n+m\)，各个区间 \([m,m+1)\) 恰好分割实线；对非负项先用 Tonelli 即可得到这个等式。于是对原来的复值积分也可用 Fubini，得到
 \[
- \partial_x=-\partial_\xi+3\partial_\eta,\qquad
- \partial_y=\partial_\xi+\partial_\eta,
+ \begin{aligned}
+ (K_t*_{\mathbb T}\mathcal Pf)(x)
+ &=\sum_{r\in\mathbb Z}\int_{\mathbb R}H_t(x-z+r)f(z)\,\mathrm dz\\
+ &=\sum_{r\in\mathbb Z}(H_t*f)(x+r)=Q_tf(x).
+ \end{aligned}
 \]
-展开得到
-\[
- \partial_x^2-2\partial_x\partial_y-3\partial_y^2
- =-16\partial_\xi\partial_\eta.
-\]
-故 \(v_{\xi\eta}=0\)。对固定 \(\eta\)，\(v_\eta\) 在整条 \(\xi\) 直线上为常数；再对 \(\eta\) 积分，得到全部 \(C^2\) 解 \(v(\xi,\eta)=F(\xi)+G(\eta)\)。
+这说明先把实线输入平滑再周期化，与先周期化再用周期核平滑，得到同一个函数。
 
-在 \(x=0\) 上有 \(\xi=\eta=y\)。初值和原法向导数因此要求
+\cref{b2:prop:06-periodic-coefficients}和实线卷积定理给出第 \(k\) 个系数
 \[
- F(y)+G(y)=g(y),\qquad -F'(y)+3G'(y)=h(y).
+ \widehat{Q_tf}(k)=\widehat{H_t*f}(k)
+ =e^{-4\pi^2tk^2}\widehat f(k),\qquad k\in\mathbb Z.
 \]
-对第一式求导并联立第二式，得到
+取 \(k=0\) 即得积分恒等式。由于 \(\widehat f\) 仍是 Schwartz 函数，对任意非负整数 \(N\)，级数 \(\sum_k(1+|k|)^N|\widehat f(k)|\) 收敛。因此 Poisson 公式和逐项求导可写为
 \[
- F'=\frac{3g'-h}{4},\qquad G'=\frac{g'+h}{4}.
+ Q_tf(x)=\sum_{k\in\mathbb Z}e^{-4\pi^2tk^2}\widehat f(k)e^{2\pi\mathrm ikx},
+ \qquad
+ \mathcal Pf(x)=\sum_{k\in\mathbb Z}\widehat f(k)e^{2\pi\mathrm ikx}.
 \]
-令 \(H(s)=\int_0^s h(r)\,\mathrm dr\)，可取
-\(F=(3g-H)/4\)、\(G=(g+H)/4\)。由给定正则性，二者均为 \(C^2\)，所以所求解为
+对 \(x\geq0\)，有 \(0\leq1-e^{-x}\leq x\) 及 \(|e^{-x}-1+x|\leq x^2/2\)。将这两个不等式分别用于 \(x=4\pi^2tk^2\)，再对 \(j\leq m\) 阶导数逐项估计，所需上界分别为
 \[
- u(x,y)=\frac{3g(y-x)+g(y+3x)}4
-       +\frac14\int_{y-x}^{y+3x}h(s)\,\mathrm ds.
+ 4\pi^2t\sum_k(2\pi|k|)^j k^2|\widehat f(k)|,
+ \qquad
+ 8\pi^4t^2\sum_k(2\pi|k|)^j k^4|\widehat f(k)|.
 \]
-两自由函数的导数已经确定；其积分常数只能相反地改变，二者之和不变，故 \(u\) 唯一。数据线 \(x=0\) 的法向为 \((1,0)\)，其主符号值为 \(1\ne0\)，与这一可唯一恢复的计算相符。代入 \(g(y)=y^2,h=0\)，得到 \(u(x,y)=y^2+3x^2\)；直接计算有 \(u_{xx}=6\)、\(u_{xy}=0\)、\(u_{yy}=2\)，方程和两项数据均满足。
+在 \(j=0\) 时导数因子按 \(1\) 取值。这些固定级数均收敛，且不依赖 \(t\)，从而得到两个 \(C^m\) 估计；第二式中的一次项正是 \(t(\mathcal Pf)''\)。
 \end{solution}

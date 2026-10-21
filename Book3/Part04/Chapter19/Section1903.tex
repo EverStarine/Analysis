@@ -2,62 +2,355 @@
 \section{零点序列}
 \label{b3:sec:1903}
 
-Jensen 公式限制零点的数量，但还可以把整个零点序列压成一个收敛指数。下一章构造典范乘积时，这个指数决定必须扣掉多少低阶项。
+增长阶衡量最大模的尺度，零点序列则有自己的计数尺度。Jensen 公式把二者联系起来，但在使用它以前，先要分清点列本身的收敛性、计数的幂增长以及临界指数处的行为。原点零点只产生有限的多项式因子，本节始终把它的重数与非零零点的计数分开。
 
 \subsection{收敛指数}
 \label{b3:subsec:190301}
 
-按重数列出趋于无穷的非零零点 \(a_n\)。定义\term[lingdian-shoulian-zhishu]{零点收敛指数}[exponent of convergence]为 \(\lambda=\inf\{s>0:\sum|a_n|^{-s}<\infty\}\)。有限零点序列取零。对于无穷序列，若 \(n(r)\) 为计数，则
+设 \((a_j)\) 是非零复数构成的有限列或无穷列，允许按给定的有限重数重复，并假设每个有界圆盘只含有限项。无穷列因此满足 \(|a_j|\to\infty\)。这些假设正是非恒零整函数的非零零点所具有的性质；下面先研究点列，不预设它已经由某个整函数实现。
+
+\Needspace{6\baselineskip}
+\begin{definition}[零点收敛指数]\label{b3:def:19-convergence-exponent}
+设 \((a_j)\) 是非零复数构成的有限列或无穷列，允许按重数重复，
+且每个有界圆盘只含有限项。其\term[lingdian-shoulian-zhishu]{零点收敛指数}[exponent of convergence]为
 \[
-\lambda=\limsup_{r\to\infty}\frac{\log n(r)}{\log r}.
+ \lambda\coloneqq
+ \inf\left\{\,s>0\ \middle|\ \sum_j|a_j|^{-s}<\infty\,\right\}.
 \]
-证明可用分部求和：\(\sum_{|a_n|>1}|a_n|^{-s}=s\int_1^\infty n(t)t^{-s-1}\,\mathrm{d}t\) 加有限边界项。若计数为 \(O(t^{s-\varepsilon})\) 积分收敛；若序列幂和收敛，则 \(n(r)\le r^s\sum|a_n|^{-s}\)，给反向。
+若集合为空，取 \(\lambda=+\infty\)；有限列，包括空列，取 \(\lambda=0\)。
+其非零点计数记为
+\[
+ n_*(r)\coloneqq\#\{\,j\mid |a_j|\le r\,\},\quad r>0.
+\]
+重复出现的每一项均计入幂和与计数。
+\end{definition}
+
+模不超过一的项只有有限个，删去它们不影响任何正次幂和的收敛性。对剩余项，增大 \(s\) 会减小 \(|a_j|^{-s}\)，所以收敛的指数构成一条向上的区间。由下确界的定义，每个 \(s>\lambda\) 都给收敛幂和，每个 \(0<s<\lambda\) 都给发散幂和；当 \(0<\lambda<\infty\) 时，\(s=\lambda\) 是否收敛还须另作判断。
+
+\ProseParagraphBreak
+把幂和改写为计数积分，可以保留临界指数处的信息。计数函数有跳跃，因而不必把它当作可微函数使用分部积分。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[幂和与计数积分]\label{b3:prop:19-counting-integral}
+设 \((a_j)\) 是非零复数构成的有限列或无穷列，按重数重复，
+且每个有界圆盘只含有限项；令 \(n_*(r)=\#\{\,j\mid |a_j|\le r\,\}\)。
+取 \(R_0\ge1\)，记
+\[
+ N_{R_0}(t)=\#\{\,j\mid R_0<|a_j|\le t\,\},\quad t\ge R_0.
+\]
+对每个 \(s>0\)、\(R>R_0\)，有
+\begin{equation}\label{b3:eq:19-finite-counting-integral}
+ \sum_{R_0<|a_j|\le R}|a_j|^{-s}
+ =R^{-s}\cdot N_{R_0}(R)
+   +s\int_{R_0}^R\frac{N_{R_0}(t)}{t^{s+1}}\,\mathrm dt.
+\end{equation}
+进一步，在非负扩展实数的意义下，
+\begin{equation}\label{b3:eq:19-counting-integral}
+ \sum_{|a_j|>R_0}|a_j|^{-s}
+ =s\int_{R_0}^{\infty}\frac{N_{R_0}(t)}{t^{s+1}}\,\mathrm dt.
+\end{equation}
+因此，全部点的 \(s\) 次幂和收敛，当且仅当
+\[
+ \int_1^\infty\frac{n_*(t)}{t^{s+1}}\,\mathrm dt<\infty.
+\]
+\end{proposition}
+\begin{proof}
+对单个模长 \(b=|a_j|\in(R_0,R]\)，有
+\[
+ b^{-s}=R^{-s}+s\int_b^R t^{-s-1}\,\mathrm dt.
+\]
+在该圆盘内只有有限项，逐项相加即得
+\eqref{b3:eq:19-finite-counting-integral}。位于外圆的项贡献 \(R^{-s}\)，相应积分为零，故边界点也包括在内。
+
+无穷区间上则直接使用
+\[
+ b^{-s}=s\int_b^\infty t^{-s-1}\,\mathrm dt.
+\]
+各项均非负，可由单调收敛交换求和与积分，得到
+\eqref{b3:eq:19-counting-integral}；等式允许两侧同时为无穷。
+最后取 \(R_0=1\)。这时 \(n_*(t)=n_*(1)+N_1(t)\)，而
+\(\int_1^\infty n_*(1)t^{-s-1}\,\mathrm dt=n_*(1)/s<\infty\)。
+补回模不超过一的有限个非零点，便得到最后的等价条件。
+\end{proof}
+
+在有限半径公式中，边界项 \(R^{-s}\cdot N_{R_0}(R)\) 不可直接删去。无穷积分等式来自每个点在整个后续半径区间上的贡献，未预先假设这个边界项趋于零。因此它在临界幂和发散时仍然适用。
+
+\Needspace{6\baselineskip}
+\begin{theorem}[收敛指数的计数公式]\label{b3:thm:19-convergence-exponent}
+设 \((a_j)\) 是非零复数构成的无穷列，按重数重复，
+且每个有界圆盘只含有限项。令 \(\lambda\) 为其收敛指数，
+\(n_*(r)=\#\{\,j\mid |a_j|\le r\,\}\)。则
+\begin{equation}\label{b3:eq:19-exponent-counting}
+ \lambda=\limsup_{r\to\infty}\frac{\log n_*(r)}{\log r}.
+\end{equation}
+若按模非递减排列，重复项仍逐一保留，则还有
+\begin{equation}\label{b3:eq:19-exponent-enumeration}
+ \lambda=\limsup_{j\to\infty}\frac{\log j}{\log|a_j|}.
+\end{equation}
+两个上极限均允许取零或 \(+\infty\)。
+\end{theorem}
+\begin{proof}
+记\eqref{b3:eq:19-exponent-counting}右端为 \(A\)。若 \(A<\infty\)，取
+\(s>A\)，并选 \(A<u<s\)。由上极限定义，在充分大 \(t\) 上有
+\(n_*(t)\le t^u\)。前一命题中的计数积分，其尾部被
+\(\int t^{u-s-1}\,\mathrm dt\) 控制，因而收敛。这证明所有 \(s>A\)
+都是收敛指数，所以 \(\lambda\le A\)。
+
+反过来，若某个 \(s>0\) 的幂和收敛，记其和为 \(C_s\)。半径 \(r\)
+内每项至少为 \(r^{-s}\)，于是
+\[
+ n_*(r)r^{-s}\le C_s.
+\]
+取对数并令 \(r\to\infty\)，得 \(A\le s\)。对所有这样的 \(s\)
+取下确界，得到 \(A\le\lambda\)。若 \(A=+\infty\)，这个不等式还说明
+不可能有任何收敛的正次幂和，故 \(\lambda=+\infty\)。
+第一式连同两个端点均已证明。
+
+现在按模排序，记第二个上极限为 \(B\)。在 \(r=|a_j|\) 处，
+\(n_*(r)\ge j\)，且这些半径趋于无穷，因此 \(B\le A\)。
+反向取充分大的 \(r\)，令 \(k=n_*(r)\)。此时 \(k\to\infty\)，
+\(|a_k|\le r\)，各个对数分母最终为正，故
+\[
+ \frac{\log n_*(r)}{\log r}
+ =\frac{\log k}{\log r}
+ \le\frac{\log k}{\log|a_k|}.
+\]
+取上极限得到 \(A\le B\)，于是第二式成立。即使同一模长出现许多次，
+这里的 \(k\) 也是该圆盘内最后一个下标，不会遗漏重数。
+\end{proof}
+
+有限点列不适用下标趋于无穷的公式，但其收敛指数按定义就是零。
+无穷点列也可以有零收敛指数。例如 \(a_j=e^{j^2}\) 满足
+\[
+ n_*(r)=\left\lfloor\sqrt{\log r}\right\rfloor\quad(r\ge e).
+\]
+此处的计数只随 \(\sqrt{\log r}\) 增长，因而 \(\lambda=0\)。
+每个正次幂和都是 \(\sum_j e^{-sj^2}\)，均收敛；零次幂和却仍是无穷多个一。
+所以零收敛指数表示比任意正幂更稀疏，不能据此判断点列有限。
+
+\Needspace{6\baselineskip}
+\begin{corollary}[幂和收敛与小量计数]\label{b3:cor:19-summable-small-count}
+设 \((a_j)\) 是非零复数构成的有限列或无穷列，按重数重复，
+且每个有界圆盘只含有限项，令 \(n_*(r)=\#\{\,j\mid |a_j|\le r\,\}\)。
+若 \(s>0\) 且 \(\sum_j|a_j|^{-s}<\infty\)，则
+\[
+ n_*(r)=o(r^s)\quad(r\to\infty).
+\]
+\end{corollary}
+\begin{proof}
+给定 \(\varepsilon>0\)，取 \(A>0\)，使
+\(\sum_{|a_j|>A}|a_j|^{-s}<\varepsilon\)。对 \(r>A\)，
+\[
+ \frac{n_*(r)}{r^s}
+ \le\frac{n_*(A)}{r^s}
+       +\sum_{A<|a_j|\le r}|a_j|^{-s}
+ \le\frac{n_*(A)}{r^s}+\varepsilon.
+\]
+先令 \(r\to\infty\)，再令 \(\varepsilon\downarrow0\)，即得结论。
+\end{proof}
+
+小量计数比有界计数比值更强，但还不足以保证临界幂和收敛。
+一族可以逐项核算的例子是
+\[
+ a_j=j^\alpha\bigl(\log(j+1)\bigr)^\beta,
+ \quad \alpha>0,\quad \beta\in\mathbb R.
+\]
+这些正数最终递增，且
+\[
+ \log a_j=\alpha\log j+\beta\log\log(j+1),
+\]
+所以\eqref{b3:eq:19-exponent-enumeration}给出
+\(\lambda=1/\alpha\)。在临界指数处，幂和成为
+\[
+ \sum_j|a_j|^{-1/\alpha}
+ =\sum_j\frac1{j\bigl(\log(j+1)\bigr)^{\beta/\alpha}}.
+\]
+利用 \(\log(j+1)\sim\log j\)，再对尾部使用积分判别；
+变量代换 \(u=\log t\) 把相应积分化为
+\(\int^\infty u^{-\beta/\alpha}\,\mathrm du\)。故临界幂和收敛当且仅当
+\(\beta>\alpha\)。对数因子不改变收敛指数，却能改变端点的收敛性。
+
+\ProseParagraphBreak
+特别取 \(a_j=j\log(j+1)\)。若 \(k=n_*(r)\)，则
+\(r\ge k\log(k+1)\)，因而
+\[
+ \frac{n_*(r)}r\le\frac1{\log(k+1)}\longrightarrow0.
+\]
+它满足 \(n_*(r)=o(r)\)，但临界一次幂和发散。把对数因子改为
+\(\log^2(j+1)\) 后，收敛指数仍为一，临界幂和才变成收敛。
+这也指出计数积分判别所保留的内容：仅知道比值趋于零，没有说明它趋零得足够快。
 
 \subsection{零点密度}
 \label{b3:subsec:190302}
 
-\begin{proposition}\label{b3:prop:19-zero-density}
-有限阶 \(\rho\) 的非恒零整函数具有 \(n(r)=O_\varepsilon(r^{\rho+\varepsilon})\)，零点收敛指数不超过 \(\rho\)。
+现在令 \((a_j)\) 为非恒零整函数 \(f\) 的全部非零零点，按重数列出。
+沿用\secref{b3:sec:1801}的总计数 \(n_f(r)\)，若
+\(m=\operatorname{ord}_0f\)，则
+\[
+ n_f(r)=m+n_*(r)\quad(r>0).
+\]
+收敛指数只由非零零点定义，Jensen 公式中的中心项则另行记录 \(m\)。
+有限个原点零点不改变任一正幂尺度的密度，但不能在使用具体不等式时把它们遗漏。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[增长阶与零点密度]\label{b3:prop:19-zero-density}
+设 \(f\) 是非恒零整函数，增长阶 \(\rho<\infty\)，
+\(n_f(r)\) 为闭盘 \(|z|\le r\) 内按重数计的全部零点数，
+\(\lambda\) 为非零零点的收敛指数。则对每个 \(\varepsilon>0\)，
+\[
+ n_f(r)=O_\varepsilon(r^{\rho+\varepsilon}),\quad
+ \lambda\le\rho.
+\]
+若进一步 \(0<\rho<\infty\)，且在该阶的型为 \(\tau<\infty\)，则
+\[
+ \limsup_{r\to\infty}\frac{n_f(r)}{r^\rho}
+ =\limsup_{r\to\infty}\frac{n_*(r)}{r^\rho}
+ \le e\rho\tau.
+\]
+特别地，最小型时 \(n_f(r)=o(r^\rho)\)。
 \end{proposition}
 \begin{proof}
-先除去原点零点。Jensen 估计取外半径 \(2r\)，得到 \(n(r)\log2\le\log M(2r)-\log|f(0)|\)。阶的定义给计数界；取稍小的 \(\varepsilon\) 后，上一积分判据使每个 \(s>\rho\) 的零点幂和收敛。
+由增长阶的定义，对每个 \(\varepsilon>0\)，充分大的 \(R\) 满足
+\(\log M(R,f)\le R^{\rho+\varepsilon}\)。
+在\cref{b3:prop:18-growth-zero-density}中取正指数
+\(\rho+\varepsilon\)，即得计数估计。
+非零点列若无穷，\eqref{b3:eq:19-exponent-counting}给
+\(\lambda\le\rho+\varepsilon\)，再令 \(\varepsilon\downarrow0\)；
+若点列有限，\(\lambda=0\)，结论同样成立。
+
+为读出型的常数，写 \(f(z)=z^m\cdot g(z)\)，其中 \(g(0)\ne0\)。
+对 \(g\) 使用\cref{b3:cor:18-zero-estimate}，并利用
+\(M(qr,g)=(qr)^{-m}M(qr,f)\)，对每个固定 \(q>1\) 得
+\[
+ n_*(r)\log q
+ \le\log M(qr,f)-m\log(qr)-\log|g(0)|.
+\]
+左边仅含非零零点。除以 \(r^\rho\) 并取上极限，固定的中心项
+与对数项都消失，右边至多为 \(\tau q^\rho\)。
+取 \(q=e^{1/\rho}\)，便得到
+\(\limsup n_*(r)/r^\rho\le e\rho\tau\)。
+最后用 \(n_f(r)=m+n_*(r)\) 补回原点重数。
+当 \(\tau=0\) 时，计数非负，所以归一化计数趋于零。
 \end{proof}
-原点的有限重数只增加常数项，不改变收敛指数。
+
+这个结论把\chapref{b3:ch:18}的增长估计写成了阶与型的语言。
+阶有限时，先得到所有稍大幂次上的上界；在同一个幂次上控制密度，
+还需要型的资料。这里的小量计数也不能单独用来证明临界幂和收敛，
+因为前面的 \(j\log(j+1)\) 已给出计数层面的反例。
+
+\ProseParagraphBreak
+收敛指数本身确实不能控制临界计数的常数。
+例如 \(a_j=j/\log(j+1)\) 最终递增，收敛指数为一；
+但在 \(r=a_j\) 时，
+\[
+ \frac{n_*(r)}r\ge\frac{j}{a_j}=\log(j+1)\longrightarrow\infty.
+\]
+所以同一个收敛指数可以同时容纳临界密度趋零、有界和无界的点列。
+这里仍只是在比较点列；哪一个整函数能够实现给定点列，是另一个构造问题。
 
 \subsection{增长限制}
 \label{b3:subsec:190303}
 
-反向并不唯一：\(e^{z^m}\) 无零点而阶 \(m\)，所以零点只能约束增长的一部分。\(\sin\pi z\) 的零点为整数，收敛指数一，和阶一相同。
-
-若指定 \(a_n=n^\alpha\)，其收敛指数为 \(1/\alpha\)。任何具有这些零点的整函数必须有阶至少 \(1/\alpha\)。下一章将证明离散零点总能实现，但若还要求有限阶，就要检查这个收敛指数。
-
-
-\ProseParagraphBreak
-
-零点计数的幂界可用二进尺度再证明收敛指数判据。若 \(n(r)\le Cr^a\)，在 \(2^j<|a_n|\le2^{j+1}\) 内，\(s>a\) 时幂和至多 \(C2^{(j+1)a-js}\)，对 \(j\) 求和为收敛几何级数。若 \(\sum|a_n|^{-s}<\infty\)，则半径 \(r\) 内每项至少 \(r^{-s}\)，故 \(n(r)r^{-s}\) 有界。这个分组证明不要求计数函数可微，也自然保留重数；分部求和则给更精确的常数与临界积分。
-
-\ProseParagraphBreak
-
-在临界指数上，下确界不决定幂和是否收敛。零点模长为 \(n\) 时收敛指数一，临界一次幂和发散；模长为 \(n\log^2(n+1)\) 时指数仍一，却临界一次幂和收敛。若模长为 \(n\log(n+1)\)，临界再次发散。对数修正不会改变 \(\log n(r)/\log r\) 的上极限，却决定下一章的最小初等因子次数。阶只决定粗尺度，属还要检查临界幂和，二者不可互换。
-
-\ProseParagraphBreak
-
-零点重数也能提高收敛指数。若每个正整数 \(n\) 的重数为 \(n\)，幂和变成 \(\sum n^{1-s}\)，收敛指数为二；计数约为 \(r^2/2\)，因此任何实现函数阶至少二。若仅按不同零点个数，则会得到错误下界一。对整函数增长、典范乘积和 Jensen 的贡献，统一按重数计数是必要条件，并非一个可选的记账方式。
-
-\ProseParagraphBreak
-
-增长下界只来自零点径向分布，角位置可以有进一步作用。例如整数零点在两条相反射线上排列，正弦给出阶一实现；把正整数零点全部放在同一射线，最小属仍是一，但沿某些方向的精确增长会不同。下一章的乘积修正会显式出现一次项，说明方向排列影响低次指数自由度。当前的 \(\lambda\le\rho\) 是普适必要条件，还没有声称它给所有方向的精确渐近。
-
-\ProseParagraphBreak
-
-若不仅知道阶，还知道正常型，Jensen 估计可给更具体的密度常数。假设 \(0<\rho<\infty\)、\(\tau<\infty\)，先去掉原点零点。对任意固定 \(u>1\)，有
+零点的幂增长给出阶的下界，较稳定的密度还给出型的下界。
+记原点重数为 \(m\)，其首个非零 Taylor 系数为
 \[
- n(r)\log u\le\log M(ur)-\log|f(0)|.
+ c_m=\frac{f^{(m)}(0)}{m!}\ne0.
 \]
-除以 \(r^\rho\) 后取上极限，右侧不超过 \(\tau u^\rho\)。函数 \(u^\rho/\log u\) 在 \(\log u=1/\rho\) 处取最小值 \(e\rho\)，因此
+由\cref{b3:thm:18-jensen}和积分计数的定义，对每个 \(r>0\) 都有
+\begin{equation}\label{b3:eq:19-growth-from-counting}
+ \log M(r,f)\ge
+ \log|c_m|+m\log r+\int_0^r\frac{n_*(t)}t\,\mathrm dt.
+\end{equation}
+非零零点与原点有正距离，所以积分在零附近没有奇性。
+与两半径估计不同，这个下界保留了半径 \(r\) 以前全部零点的累积贡献。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[零点下密度与增长下界]\label{b3:prop:19-lower-density}
+设 \(f\) 为非恒零整函数，\(n_*(r)\) 为闭盘 \(|z|\le r\)
+内按重数计的非零零点数。取 \(\sigma>0\)，并令
 \[
- \limsup_{r\to\infty}\frac{n(r)}{r^\rho}\le e\rho\tau.
+ d=\liminf_{r\to\infty}\frac{n_*(r)}{r^\sigma}\in[0,+\infty].
 \]
-这仍是一般上界，不声称常数对每类函数都最优。它至少说明最小型 \(\tau=0\) 时 \(n(r)=o(r^\rho)\)，比只给 \(O(r^{\rho+\varepsilon})\) 更细。有限个原点零点除以 \(r^\rho\) 后消失，不改变结果。
+则
+\[
+ \liminf_{r\to\infty}\frac{\log M(r,f)}{r^\sigma}\ge\frac d\sigma.
+\]
+若 \(n_*(r)=d_0r^\sigma+o(r^\sigma)\)，其中 \(0\le d_0<\infty\)，
+则非零零点的积分计数满足
+\[
+ \widetilde N_f(r)=\int_0^r\frac{n_*(t)}t\,\mathrm dt
+ =\frac{d_0}{\sigma}r^\sigma+o(r^\sigma).
+\]
+特别地，若 \(f\) 的阶恰为 \(0<\rho<\infty\)，型为 \(\tau\)，则
+\begin{equation}\label{b3:eq:19-lower-density-type}
+ \tau\ge\frac1\rho
+       \liminf_{r\to\infty}\frac{n_*(r)}{r^\rho}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+取任意实数 \(a<d\)。由下极限定义，存在 \(R_a\ge1\)，使
+\(n_*(t)\ge at^\sigma\) 对所有 \(t\ge R_a\) 成立。因此
+\[
+ \int_0^r\frac{n_*(t)}t\,\mathrm dt
+ \ge\int_0^{R_a}\frac{n_*(t)}t\,\mathrm dt
+       +\frac a\sigma(r^\sigma-R_a^\sigma)
+ \quad(r\ge R_a).
+\]
+代入\eqref{b3:eq:19-growth-from-counting}，除以 \(r^\sigma\)；
+有限半径内的积分、中心常数与 \(m\log r\) 的贡献均趋于零。
+于是相应下极限至少为 \(a/\sigma\)。令 \(a\uparrow d\) 即得第一式；
+若 \(d=+\infty\)，可令 \(a\) 任意大，结论按扩展实数理解。
+
+若给定计数渐近，则对每个 \(\varepsilon>0\)，充分大 \(t\) 满足
+\[
+ (d_0-\varepsilon)t^\sigma\le n_*(t)
+             \le(d_0+\varepsilon)t^\sigma.
+\]
+在一个固定的大半径之后积分，除以 \(r^\sigma\) 后，
+上下极限分别被 \((d_0-\varepsilon)/\sigma\) 和
+\((d_0+\varepsilon)/\sigma\) 夹住。令 \(\varepsilon\downarrow0\)，
+得到积分计数的渐近。最后取 \(\sigma=\rho\)，增长比值的上极限
+不小于下极限，而上极限正是型，故
+\eqref{b3:eq:19-lower-density-type}成立。
+\end{proof}
+
+重数能同时改变阶的下界与型的下界。若要求正整数 \(k\) 为
+\(k\) 重零点，则相应非零点列满足
+\[
+ n_*(r)=\sum_{1\le k\le r}k
+ =\frac{\lfloor r\rfloor(\lfloor r\rfloor+1)}2
+ =\frac{r^2}2+O(r),
+\]
+而其幂和为 \(\sum_{k\ge1}k^{1-s}\)，收敛指数等于二，
+临界二次幂和发散。任何具有这些零点及重数的非恒零整函数，
+其阶都至少为二；即使还另有零点，计数的下界仍然成立。
+若其阶恰为二，前一命题进一步给出型至少为 \(1/4\)。
+只数不同的零点位置会把计数误降为 \(\lfloor r\rfloor\)，
+同时丢掉这两个增长限制。
+
 \ProseParagraphBreak
-对正弦函数，\(n(r)\) 与 \(r\) 同阶；对指数函数，计数恒为零，二者却有相同的阶与型。这再次说明增长和零点不是互相决定的两组资料。若只给定零点序列，下一章构造的典范乘积会固定其中一部分增长，而允许的无零点因子仍可改变最大模。使用密度估计时，正确方向是“增长上界限制零点”，不能不加额外假设把它倒置为“零点上界限制函数”。
+对 \(\sin(\pi z)\)，非零零点为 \(\pm1,\pm2,\ldots\)，
+所以 \(n_*(r)=2\lfloor r\rfloor\)，收敛指数为一。
+下密度给出一阶型至少为二；另一方面，指数表达式及虚轴取值给
+\[
+ \log\sinh(\pi r)\le\log M(r,\sin(\pi z))\le\pi r,
+\]
+因此其实际阶为一、型为 \(\pi\)。
+Jensen 下界在这里只利用径向计数，所得型下界并不必然等于实际型。
+
+\ProseParagraphBreak
+即使把全部零点、各自重数和角位置都给定，增长仍未确定。
+比较两个整函数
+\[
+ F(z)=\sin(\pi z),\quad G(z)=e^{z^2}\cdot\sin(\pi z).
+\]
+它们的全部零点与重数相同，而
+\[
+ \log M(r,G)\le r^2+\pi r.
+\]
+取 \(r_j=j+1/2\)，有 \(|\sin(\pi r_j)|=1\)，故
+\(\log M(r_j,G)\ge r_j^2\)。上界与这一列下界共同说明
+\(G\) 的阶为二、型为一；\(F\) 则具有刚算出的一阶增长。
+因此零点对增长给出的限制是必要条件，不能把零点计数的上界直接
+反向解释为函数的增长上界。要从指定零点进一步控制最大模，
+还必须约束可以乘入的无零点因子。

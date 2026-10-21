@@ -2,61 +2,259 @@
 \section{素数定理}
 \label{b3:sec:2705}
 
-Tauber 步骤给出带权计数的主项。去掉素数幂和对数权后，才得到通常叙述的素数定理。
+Tauber 步骤给出的是素数幂的对数权和。现在把这个结果代入本章开头已经证明的等价关系，就能得到通常叙述的素数定理。本节还说明它允许怎样改变计数方式，以及哪些看似相近的定量结论仍未由此证明。
 
-\subsection{等价表述}
+\subsection{素数定理及其加权推论}
 \label{b3:subsec:270501}
 
 \begin{theorem}[素数定理]\label{b3:thm:27-pnt}
-当 \(x\to\infty\) 时，\(\psi(x)\sim x\)、\(\vartheta(x)\sim x\)，并且
-\(\pi(x)\sim x/\log x\)。
+对实数 \(x\ge2\)，令 \(\pi(x)=\#\{\,p\le x\mid p\text{ 为素数}\,\}\)、\(\vartheta(x)=\sum_{p\le x}\log p\)、\(\psi(x)=\sum_{p^m\le x,\ m\ge1}\log p\)，其中 \(p\) 遍历素数、\(m\) 为正整数。则当 \(x\to\infty\) 时，
+\[
+ \psi(x)\sim x,
+ \quad \vartheta(x)\sim x,
+ \quad \pi(x)\sim\frac{x}{\log x}.
+\]
 \end{theorem}
 \begin{proof}
-\cref{b3:thm:27-wiener-ikehara}及上一小节给第一个渐近。高次素数幂之差为 \(O(\sqrt x\log x)=o(x)\)，给第二个；\cref{b3:prop:27-equivalences}中的部分求和给第三个。
+在\subsecref{b3:subsec:270403}中，已经核对了 \(A(x)=\psi(x)\) 右连续、非负、非递减，其 Stieltjes 变换在 \(\operatorname{Re}s>1\) 等于 \(-\zeta'(s)/\zeta(s)\)，且减去 \(1/(s-1)\) 后全纯越过整条边界直线。\cref{b3:thm:27-wiener-ikehara}取 \(c=1\)，给出 \(\psi(x)/x\to1\)。再应用\cref{b3:prop:27-equivalences}，就得到其余两个渐近式；其中去掉高次素数幂只损失 \(O(\sqrt x\log x)=o(x)\)，去掉对数权的积分余项也已在该命题中估计。
 \end{proof}
-这个结果称为\term[sushu-dingli]{素数定理}[prime number theorem]。它描述的是初始区间内的相对误差趋零，不保证任意短区间都含接近预期数目的素数，也没有给出误差趋零的数值速率。
 
-\ProseParagraphBreak
+这个结果称为\term[sushu-dingli]{素数定理}[prime number theorem]。它断言相对误差趋零，却没有给出趋零的数值速率。即使知道 \(\pi(x)\) 的整体主项，也不能把两个很接近的端点相减后，仍无条件保留同样的相对精度。
 
-对于每个固定 \(\lambda>1\)，却可以严格相减，得到
+\begin{corollary}[固定比例区间内的素数]
+\label{b3:cor:27-fixed-ratio-interval}
+设 \(\lambda>1\) 为固定实数，\(\pi(x)\) 为不超过实数 \(x\ge1\) 的素数个数。则当 \(x\to\infty\) 时，
 \[
+ \#\{\,p\mid x<p\le\lambda x,\ p\text{ 为素数}\,\}
+ =\pi(\lambda x)-\pi(x)
+ \sim(\lambda-1)\frac{x}{\log x}.
+\]
+特别地，对这个固定的 \(\lambda\)，存在 \(X_\lambda\)，使每个实数 \(x\ge X_\lambda\) 的区间 \((x,\lambda x]\) 都含有素数。
+\end{corollary}
+\begin{proof}
+素数定理给出
+\[
+ \begin{aligned}
  \pi(\lambda x)-\pi(x)
-       \sim(\lambda-1)\frac{x}{\log x}.
+ &=\frac{\lambda x}{\log(\lambda x)}-\frac{x}{\log x}
+      +o\!\left(\frac{x}{\log x}\right)\\
+ &=\frac{x}{\log x}
+    \left(\frac{\lambda\log x}{\log x+\log\lambda}-1+o(1)\right).
+ \end{aligned}
 \]
-理由是 \(\log(\lambda x)/\log x\to1\)，两端误差均为 \(o(x/\log x)\)，而相减后的主项仍是这一尺度的固定正倍数。若让 \(\lambda=\lambda(x)\downarrow1\)，主项会缩小，原有两个误差就未必相对可忽略。这是从整体计数转向短区间问题时出现的新困难。
+因为 \(\lambda\) 固定，括号趋于正数 \(\lambda-1\)，证明了渐近式。右侧趋于无穷，所以区间内的素数个数最终为正。
+\end{proof}
+
+若让 \(\lambda=\lambda(x)\downarrow1\)，预期主项会缩小到 \((\lambda(x)-1)x/\log x\)，而我们目前只有两个端点误差各为 \(o(x/\log x)\)。这不足以保证误差比新的主项小。因此这里的“固定比例”是推论实际使用的条件；任意短区间的计数还需要额外估计。
 
 \ProseParagraphBreak
 
-类似地，对每个固定实数 \(\alpha>-1\)，部分求和给一个加权版本：
+去掉或加入一个平滑权重仍由部分求和完成。下面把主项中的常数也算出，以免把“乘上 \(p^\alpha\)”误解为简单地把 \(\pi(x)\) 乘上 \(x^\alpha\)。
+
+\begin{proposition}[素数的幂权和]
+\label{b3:prop:27-prime-power-weights}
+设 \(\alpha>-1\) 为固定实数。对于实数 \(x\ge2\)，对不超过 \(x\) 的素数求和，则
 \[
  \sum_{p\le x}p^\alpha
-       \sim\frac{x^{\alpha+1}}{(\alpha+1)\log x}.
+ \sim\frac{x^{\alpha+1}}{(\alpha+1)\log x}
+ \quad(x\to\infty).
 \]
-为验证常数，取任意固定 \(X>2\)，把 \(\pi(t)=t/\log t+o(t/\log t)\) 代入
+渐近关系中的参数 \(\alpha\) 保持固定，不主张对趋近于 \(-1\) 的参数一致成立。
+\end{proposition}
+\begin{proof}
+先计算所需的积分尺度。置 \(\beta=\alpha+1>0\)，并令
+\[
+ I_\alpha(x)=\int_2^x\frac{t^\alpha}{\log t}\,\mathrm dt,
+ \quad D_\alpha(x)=\frac{x^\beta}{\beta\log x}.
+\]
+这里 \(D_\alpha(x)\to\infty\)，且
+\[
+ D_\alpha'(x)=\frac{x^\alpha}{\log x}
+       \left(1-\frac1{\beta\log x}\right).
+\]
+给定 \(0<\varepsilon<1\)，当 \(x\ge X\) 且 \(X\) 足够大时，
+\((1-\varepsilon)I_\alpha'(x)\le D_\alpha'(x)\le I_\alpha'(x)\)。从 \(X\) 到 \(x\) 积分，固定下端的常数除以 \(D_\alpha(x)\) 后消失，于是
+\[
+ 1\le\liminf_{x\to\infty}\frac{I_\alpha(x)}{D_\alpha(x)}
+ \le\limsup_{x\to\infty}\frac{I_\alpha(x)}{D_\alpha(x)}
+ \le\frac1{1-\varepsilon}.
+\]
+令 \(\varepsilon\downarrow0\)，得到 \(I_\alpha(x)\sim D_\alpha(x)\)。这个论证同时适用于正的和负的 \(\alpha\)，只使用了 \(\beta>0\)。
+
+记 \(r(t)=\pi(t)-t/\log t=o(t/\log t)\)。由\cref{b3:prop:25-integral-summation}，
 \[
  \sum_{p\le x}p^\alpha
-   =x^\alpha\pi(x)-\alpha\int_2^x t^{\alpha-1}\pi(t)\,\mathrm dt.
+ =x^\alpha\pi(x)-\alpha\int_2^x t^{\alpha-1}\pi(t)\,\mathrm dt.
 \]
-积分主项为 \(\int_2^xt^\alpha/\log t\,\mathrm dt\)，由一次分部积分或比值求导为
-\(x^{\alpha+1}/((\alpha+1)\log x)\) 的等价量。误差在 \([2,X]\) 上为固定常数，在 \([X,x]\) 上至多为任意小常数乘同一主尺度；先令 \(x\to\infty\)，再增大 \(X\)，误差即为低阶项。边界项减去 \(\alpha\) 倍积分，常数正好是 \(1-\alpha/(\alpha+1)=1/(\alpha+1)\)。
+边界项中的误差 \(x^\alpha r(x)\) 为 \(o(x^\beta/\log x)\)。对积分误差，选 \(X\) 使 \(|r(t)|\le\varepsilon t/\log t\) 对所有 \(t\ge X\) 成立，则
+\[
+ \left|\int_2^x t^{\alpha-1}r(t)\,\mathrm dt\right|
+ \le C_{\alpha,X}+\varepsilon I_\alpha(x).
+\]
+除以 \(D_\alpha(x)\)，先令 \(x\to\infty\)，再令 \(\varepsilon\downarrow0\)，可知该误差为 \(o(D_\alpha(x))\)。这里初始区间只给固定常数；\(D_\alpha(x)\to\infty\) 正是它能够被忽略的原因。因此
+\[
+ \begin{aligned}
+ \sum_{p\le x}p^\alpha
+ &=\frac{x^\beta}{\log x}-\alpha I_\alpha(x)
+           +o\!\left(\frac{x^\beta}{\log x}\right)\\
+ &=\left(1-\frac\alpha{\alpha+1}\right)
+      \frac{x^\beta}{\log x}
+           +o\!\left(\frac{x^\beta}{\log x}\right),
+ \end{aligned}
+\]
+即为所求。
+\end{proof}
 
-\ProseParagraphBreak
+例如，取 \(\alpha=1\) 得 \(\sum_{p\le x}p\sim x^2/(2\log x)\)；取 \(\alpha=-1/2\) 得 \(\sum_{p\le x}p^{-1/2}\sim2\sqrt x/\log x\)。第二个例子也说明，权重虽在衰减，累积和仍可增长。临界值 \(\alpha=-1\) 则必须单独处理，不能把它代入分母 \(\alpha+1\)。
 
-临界权重 \(\alpha=-1\) 需要另算，不能代入分母 \(\alpha+1\)。这时部分求和与同样的误差分割给
+\begin{proposition}[素数倒数和的主项]
+\label{b3:prop:27-prime-reciprocal-asymptotic}
+对于实数 \(x\ge2\)，对不超过 \(x\) 的素数求和，则当 \(x\to\infty\) 时，
 \[
  \sum_{p\le x}\frac1p=\log\log x+o(\log\log x).
 \]
-这比单纯发散给出更多平均信息，但仍未证明差值收敛到一个常数。要确定常数及更小余项，还需补充相应的定量估计。
+\end{proposition}
+\begin{proof}
+部分求和给出
+\[
+ \sum_{p\le x}\frac1p
+ =\frac{\pi(x)}x+\int_2^x\frac{\pi(t)}{t^2}\,\mathrm dt.
+\]
+边界项为 \(O(1/\log x)\)。写 \(\pi(t)=t/\log t+r(t)\)，其中 \(r(t)=o(t/\log t)\)，则积分主项为
+\[
+ \int_2^x\frac{\mathrm dt}{t\log t}
+ =\log\log x-\log\log2.
+\]
+给定 \(\varepsilon>0\)，取固定 \(X>2\)，使 \(|r(t)|\le\varepsilon t/\log t\) 对所有 \(t\ge X\) 成立。于是
+\[
+ \left|\int_2^x\frac{r(t)}{t^2}\,\mathrm dt\right|
+ \le C_X+\varepsilon(\log\log x-\log\log X).
+\]
+除以 \(\log\log x\)，先令 \(x\to\infty\)，再令 \(\varepsilon\downarrow0\)，得到所需余项。
+\end{proof}
+
+这个结果比单纯知道素数倒数和发散更精细，但尚未证明 \(\sum_{p\le x}1/p-\log\log x\) 收敛到某个常数。误差 \(o(\log\log x)\) 本身仍可能无界；若要取得常数项，需要进一步控制误差积分，不能把未证的收敛性加入当前结论。
+
+\ProseParagraphBreak
+
+素数定理还有两个常用的表述：给定素数的序号，估计这个素数有多大；或者用对数积分作为比较函数。两者都是主项层面的改写，下面分别说明如何恢复其中的对数和误差尺度。
+
+\begin{corollary}[第 \texorpdfstring{\(n\)}{n} 个素数的渐近]
+\label{b3:cor:27-nth-prime}
+设 \(p_n\) 为按递增顺序排列的第 \(n\) 个素数，\(n\ge1\)。则
+\[
+ p_n\sim n\log n\quad(n\to\infty).
+\]
+\end{corollary}
+\begin{proof}
+素数定理保证 \(\pi(x)\to\infty\)，所以每个 \(p_n\) 均存在，且 \(p_n\to\infty\)。在 \(x=p_n\) 处有精确等式 \(\pi(p_n)=n\)，因而
+\[
+ n=\frac{p_n}{\log p_n}(1+o(1)).
+\]
+这里不能先把 \(\log p_n\) 擅自换成 \(\log n\)，因为这正是尚须证明的一步。对上式取实对数，由 \(\log(1+o(1))=o(1)\)，有
+\[
+ \log n=\log p_n-\log\log p_n+o(1).
+\]
+除以趋于无穷的 \(\log p_n\)，并使用 \(\log\log p_n/\log p_n\to0\)，得到 \(\log n/\log p_n\to1\)。最后把两个已知比值相乘：
+\[
+ \frac{p_n}{n\log n}
+ =\frac{p_n}{n\log p_n}\cdot\frac{\log p_n}{\log n}
+ \longrightarrow1.
+\]
+\end{proof}
+
+这个推导展示了反求渐近量时的一般步骤：先从计数关系取得含未知量的等式，再证明缓慢变化的对数可以替换，最后代回。它没有把“函数近似于某函数”直接当作“反函数近似于随意代换后的表达式”。
+
+\begin{proposition}[对数积分与主项尺度]
+\label{b3:prop:27-logarithmic-integral}
+对实数 \(x\ge2\)，定义
+\[
+ \operatorname{Li}(x)\coloneqq\int_2^x\frac{\mathrm dt}{\log t}.
+\]
+则当 \(x\to\infty\) 时，
+\[
+ \operatorname{Li}(x)=\frac{x}{\log x}
+          +O\!\left(\frac{x}{\log^2x}\right),
+ \quad
+ \pi(x)\sim\operatorname{Li}(x),
+\]
+其中 \(\pi(x)\) 是不超过 \(x\) 的素数个数。
+\end{proposition}
+\begin{proof}
+由 \((t/\log t)'=1/\log t-1/\log^2t\)，分部积分给
+\[
+ \operatorname{Li}(x)
+ =\frac{x}{\log x}-\frac2{\log2}
+             +\int_2^x\frac{\mathrm dt}{\log^2t}.
+\]
+当 \(x\ge4\) 时，把余项分在 \(\sqrt x\)，有
+\[
+ 0\le\int_2^x\frac{\mathrm dt}{\log^2t}
+ \le\frac{\sqrt x}{\log^22}+\frac{4x}{\log^2x}
+ =O\!\left(\frac{x}{\log^2x}\right).
+\]
+最后一步使用 \(\log^2x/\sqrt x\to0\)。于是 \(\operatorname{Li}(x)\sim x/\log x\)；再与素数定理比较，得到 \(\pi(x)/\operatorname{Li}(x)\to1\)。这个比值只在足够大的 \(x\) 上使用，因而 \(\operatorname{Li}(2)=0\) 不造成问题。
+\end{proof}
+
+这里的\term[duishu-jifen]{对数积分}[logarithmic integral]从二开始积分，不涉及一处的奇点；采用其他常用归一化时可能相差一个常数，本章固定使用上面的定义。由当前证明，我们只可断言
+\[
+ \pi(x)-\operatorname{Li}(x)=o\!\left(\frac{x}{\log x}\right).
+\]
+\(\operatorname{Li}(x)\) 与 \(x/\log x\) 之间的差有更小的上界，并不意味着 \(\pi(x)-\operatorname{Li}(x)\) 自动也有这个上界。要证明对数积分提供更精细的误差近似，必须另行估计素数计数的余项。
 
 \subsection{误差项与零点的关系}
 \label{b3:subsec:270502}
 
-可以严格说明一种误差与零点的联系。若对某个 \(0\le\alpha<1\) 有 \(\psi(x)=x+O(x^\alpha)\)，则
+本章仅得到 \(\psi(x)=x+o(x)\)。若误差能够改进为一个严格小于一的固定幂次，变换就会向左多收敛一段；由此可以严格推出一个无零点半平面。下面的方向只需误差积分的绝对收敛，不依赖上一章选读部分的 \(\xi\) 乘积。
+
+\begin{proposition}[幂次误差蕴含无零点半平面]
+\label{b3:prop:27-power-error-zero-free}
+设 \(\zeta\) 为 Riemann zeta 函数的亚纯延拓，且对于实数 \(x\ge1\) 定义 \(\psi(x)=\sum_{p^r\le x,\ r\ge1}\log p\)，其中 \(p\) 遍历素数、\(r\) 为正整数。若存在固定实数 \(0\le\alpha<1\)、\(B\ge0\)，使
 \[
-F(s)-\frac{s}{s-1}=s\int_1^\infty(\psi(x)-x)x^{-s-1}\,\mathrm{d}x
+ \psi(x)=x+O\bigl(x^\alpha(\log x)^B\bigr)
+ \quad(x\to\infty),
 \]
-在 \(\operatorname{Re}s>\alpha\) 全纯。因此这个半平面内除 \(s=1\) 的既定极点外，\(-\zeta'/\zeta\) 没有极点，故 \(\zeta\) 没有零点。若误差带固定对数幂，同一结论在严格半平面仍成立，因为任何正的幂次余量都吸收对数。
+则 \(\zeta(s)\) 在严格半平面 \(\operatorname{Re}s>\alpha\) 内没有零点；\(s=1\) 仍为单极点。
+\end{proposition}
+\begin{proof}
+令 \(E(x)=\psi(x)-x\)。由假设并增大常数，可对所有 \(x\ge2\) 使用 \(|E(x)|\le Cx^\alpha(\log x)^B\)。在 \(\operatorname{Re}s>\alpha\) 定义
+\[
+ H(s)=s\int_1^\infty E(x)x^{-s-1}\,\mathrm dx.
+\]
+积分在 \([1,2]\) 上没有困难，因为 \(E\) 在该紧区间有界。若 \(K\) 是这个半平面内的紧集，令 \(\delta=\min_{s\in K}(\operatorname{Re}s-\alpha)>0\)。则尾部被常数倍的
+\[
+ x^{-1-\delta}(\log x)^B
+\]
+一致控制。对参数求任意固定次数 \(j\) 的导数，只会再出现至多 \((\log x)^j\) 的因子；代换 \(u=\log x\) 后，控制函数的积分化为常数倍的
+\[
+ \int_{\log2}^\infty e^{-\delta u}u^{B+j}\,\mathrm du<\infty.
+\]
+故参数积分在紧集上局部一致收敛，且可逐项求导，\(H\) 在 \(\operatorname{Re}s>\alpha\) 全纯。这也说明固定对数幂不会妨碍严格半平面内的延拓。
+
+在原来的 \(\operatorname{Re}s>1\) 中，由\secref{b3:sec:2702}的部分求和表示，
+\[
+ -\frac{\zeta'(s)}{\zeta(s)}
+ =s\int_1^\infty\psi(x)x^{-s-1}\,\mathrm dx
+ =\frac{s}{s-1}+H(s).
+\]
+注意主项为 \(s/(s-1)\)，因为 \(s\int_1^\infty x^{-s}\,\mathrm dx=s/(s-1)\)。它与 \(1/(s-1)\) 只差全纯常数一，但在精确的积分恒等式中应保留这个因子。
+
+左右两侧都是连通半平面 \(\operatorname{Re}s>\alpha\) 上的亚纯函数，并在其非空开子集 \(\operatorname{Re}s>1\) 相等。亚纯函数的恒等定理于是使等式在整个半平面成立。右侧除 \(s=1\) 外全纯。
+
+若 \(\rho\ne1\) 是该半平面内 \(\zeta\) 的 \(m\ge1\) 阶零点，局部可写成
+\[
+ \zeta(s)=(s-\rho)^m u(s),\quad u(\rho)\ne0,
+\]
+其中 \(u\) 全纯，并在足够小的圆盘内非零。于是
+\[
+ -\frac{\zeta'(s)}{\zeta(s)}
+ =-\frac m{s-\rho}-\frac{u'(s)}{u(s)}.
+\]
+其极点留数为非零整数 \(-m\)，不可能可去，和右侧在 \(\rho\) 全纯矛盾。\(s=1\) 已知是极点，不是零点，命题得证。
+\end{proof}
+
+这里得到的是 \(\operatorname{Re}s>\alpha\)，没有包括边界 \(\operatorname{Re}s=\alpha\)。在边界上，刚才的控制积分失去了因子 \(e^{-\delta u}\)，原误差假设不再保证收敛。特别地，即使误差是 \(O(x^{1/2}(\log x)^B)\)，这个方向也只直接排除实部严格大于二分之一的零点。
 
 \ProseParagraphBreak
 
-反向从无零点区域推出定量误差，还需要控制 \(\zeta'/\zeta\) 的大小、截断高度和围道边；只知道某个区域无零点不自动给出期望的最优误差。本章使用的边界定理只给 \(o(x)\)，没有暗含通常更强的指数型无零区域估计。
+反向从无零点区域推出定量误差，还需要控制 \(\zeta'/\zeta\) 的大小、反演的截断高度和围道边上的积分。仅仅说明某个区域没有零点，还没有完成这些估计。本章的 Tauber 证明按“先固定边界紧段，再取变量趋于无穷”的次序获得 \(o(x)\)；它没有暗含有效的无零区域宽度，也没有自动给出通常更强的误差界。

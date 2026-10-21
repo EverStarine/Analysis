@@ -2,49 +2,117 @@
 \section{留数}
 \label{b3:sec:0303}
 
-Laurent 展开的所有系数记录局部行为，闭曲线积分却只挑出 \(-1\) 次项。将多个孤立奇点围起来时，各个局部贡献相加，这使许多实积分也可以转化为有限次代数计算。
+Laurent 展开的所有系数记录局部行为，绕中心一周的积分却只挑出 \(-1\) 次项。前两节已经说明哪些系数控制奇点的类型；现在把注意力集中到这个决定积分的系数。先在小圆周上计算局部贡献，再把大围道的积分化成这些小圆周积分之和，便能处理一个区域中有多个奇点的情形。
 
-\subsection{留数}
+\subsection{留数的计算与坐标变换}
 \label{b3:subsec:030301}
 
+设 \(f\) 在 \(0<|z-a|<R\) 全纯。在任意中间圆周上，Laurent 级数一致收敛，可以逐项积分。直接参数化给出
+\[
+ \int_{|z-a|=\rho}(z-a)^n\,\mathrm{d}z
+ =
+ \begin{cases}
+  2\pi\mathrm{i},&n=-1,\\
+  0,&n\in\mathbb Z,\ n\ne-1.
+ \end{cases}
+\]
+这里及以下单独写出的圆周均取逆时针方向。所有其他项的积分消失，剩下的量因此称为留数。
+
+\Needspace{6\baselineskip}
 \begin{definition}\label{b3:def:03-residue}
-设 \(a\) 是全纯函数 \(f\) 的孤立奇点。其 Laurent 系数 \(c_{-1}\) 称为 \(f\) 在 \(a\) 的\term[liushu]{留数}[residue]，记为 \(\operatorname{Res}(f,a)\)。
+设 \(a\in\mathbb C\)、\(R>0\)，函数 \(f\) 在 \(0<|z-a|<R\) 全纯。其以 \(a\) 为中心的 Laurent 系数 \(c_{-1}\) 称为 \(f\) 在 \(a\) 的\term[liushu]{留数}[residue]，记为 \(\operatorname{Res}(f,a)\)。等价地，对任意 \(0<\rho<R\)，
+\[
+ \operatorname{Res}(f,a)
+ =\frac1{2\pi\mathrm{i}}\int_{|z-a|=\rho}f(z)\,\mathrm{d}z.
+\]
 \end{definition}
 \symidx{\(\operatorname{Res}(f,a)\)：孤立奇点处的留数}
+若 \(f\) 在 \(a\) 本来就全纯，或该点可去，则这一系数为零。为了求围道积分，通常不必算出全部 Laurent 系数。极点的留数尤其可以化成有限阶导数。
+
+\Needspace{6\baselineskip}
 \begin{proposition}\label{b3:prop:03-residue-formulas}
-若 \(a\) 是 \(m\) 阶极点，则
+设 \(f\) 在 \(a\in\mathbb C\) 的某去心邻域全纯。若 \(a\) 是 \(f\) 的 \(m\) 阶极点，\(m\) 为正整数，则
 \[
- \operatorname{Res}(f,a)=\frac1{(m-1)!}\left.\frac{\mathrm{d}^{m-1}}{\mathrm{d}z^{m-1}}\bigl((z-a)^mf(z)\bigr)\right|_{z=a}.
+ \operatorname{Res}(f,a)=\frac{G^{(m-1)}(a)}{(m-1)!},
+ \quad G(z)\coloneqq(z-a)^mf(z),
 \]
+其中 \(G\) 在 \(a\) 取其全纯延拓值。
 特别地，若 \(f=g/h\)，\(g,h\) 在 \(a\) 附近全纯，\(h(a)=0\)、\(h'(a)\ne0\)，则 \(\operatorname{Res}(f,a)=g(a)/h'(a)\)。
 \end{proposition}
 \begin{proof}
-令 \(G=(z-a)^mf\)。其 Taylor 展开的 \((m-1)\) 次系数，除以 \((z-a)^m\) 后就是 \(-1\) 次系数。单零分母写成 \(h(z)=(z-a)H(z)\)，\(H(a)=h'(a)\)，故 \((z-a)f\) 在中心值为 \(g(a)/h'(a)\)。即使 \(g(a)=0\)，公式仍给留数0，此时奇点可能已经可去。
+极点的分解保证 \(G\) 在 \(a\) 全纯，故在一个小圆盘中
+\[
+ G(z)=\sum_{k=0}^{\infty}\frac{G^{(k)}(a)}{k!}(z-a)^k.
+\]
+除以 \((z-a)^m\)，指标 \(k=m-1\) 恰好产生 \((z-a)^{-1}\)，得到第一个公式。
+
+对第二个公式，由 \(h(a)=0\)、\(h'(a)\ne0\) 可写
+\[
+ h(z)=(z-a)H(z),\quad H(a)=h'(a).
+\]
+缩小邻域后 \(H\) 无零点，因而 \(g/H\) 全纯。商 \(g/h=(z-a)^{-1}g/H\) 的留数就是 \(g/H\) 的常数项 \(g(a)/h'(a)\)。即使 \(g(a)=0\)，这一计算仍成立；此时 \(g/H\) 也在中心为零，奇点可去，留数为零。
 \end{proof}
-对本性奇点仍可用级数提取留数，例如 \(e^{1/z}\) 在0的留数为1；有限阶求导公式却没有可用的整数 \(m\)。留数为零不意味着奇点可去，\(1/z^2\) 就是一例。
+计算中只需知道一个能消去极点的整数 \(m\)，不一定先求出最小的极点阶数：只要 \((z-a)^mf(z)\) 可去，同一系数提取公式就成立。例如
+\[
+ \operatorname{Res}\left(\frac{e^z}{(z-a)^3},a\right)=\frac{e^a}{2}.
+\]
+若分母是一个单零函数，则先用商的公式通常更省事。因为 \(\sin(k\pi)=0\)、\(\cos(k\pi)=(-1)^k\)，有
+\[
+ \operatorname{Res}\left(\frac1{\sin z},k\pi\right)=(-1)^k,
+ \quad k\in\mathbb Z.
+\]
 
 \ProseParagraphBreak
 
-留数在合法的局部换元下属于同一个微分量。
+本性奇点不能乘一个有限次幂就变成可去奇点，但仍可直接提取系数。展开
+\[
+ e^{1/z}=1+\frac1z+\frac1{2!z^2}+\cdots
+\]
+可知其在 \(0\) 的留数为 \(1\)。另一个简单例子是 \(1/z^2\)：它的留数为零，奇点却是二阶极点。因此留数衡量绕点积分，并不单独决定奇点类型。
+
+\ProseParagraphBreak
+
+换变量时，留数怎样变化需要连同积分中的微分一起考虑。先观察一个事实：若 \(F\) 在去心圆盘全纯，则 \(F'\) 在中心的留数为零。Laurent 级数逐项求导时，可能产生 \((z-a)^{-1}\) 的只有原来的常数项，而它的导数为零。这也与原函数沿闭路积分为零相符。
+
+\Needspace{6\baselineskip}
 \begin{proposition}[留数的坐标不变性]\label{b3:prop:03-residue-coordinate}
-设 \(z=\psi(w)\) 是 \(b\) 附近的双全纯坐标，\(\psi(b)=a\)，而 \(f\) 在 \(a\) 有孤立奇点。则
+设 \(a,b\in\mathbb C\)，\(z=\psi(w)\) 是 \(b\) 附近到 \(a\) 附近的双全纯映射，\(\psi(b)=a\)。若 \(f\) 在 \(a\) 的某去心邻域全纯，则
 \[
  \operatorname{Res}(f,a)=\operatorname{Res}\bigl(f(\psi(w))\cdot\psi'(w),b\bigr).
 \]
 \end{proposition}
 \begin{proof}
-取足够小的正向 \(w\) 圆，其像是包围 \(a\) 的正向简单闭曲线；全纯非零导数保持方向。曲线换元使两个微分积分相同。像曲线与一个小 \(z\) 圆在去心邻域之间可变形，Cauchy 定理使积分相同。两边各除以 \(2\pi\mathrm{i}\)，得到留数相等。
+令 \(c=\operatorname{Res}(f,a)\)。函数 \(f(z)-c/(z-a)\) 的 \(-1\) 次系数为零，由\cref{b3:prop:03-annulus-primitive}，它在一个去心圆盘上有单值全纯原函数 \(F\)。于是
+\[
+ f(z)=\frac{c}{z-a}+F'(z).
+\]
+由于 \(\psi'(b)\ne0\)，可写 \(\psi(w)-a=(w-b)u(w)\)，其中 \(u\) 在 \(b\) 附近全纯且 \(u(b)=\psi'(b)\ne0\)。在足够小的邻域上 \(u\) 无零点，因此
+\[
+ \frac{\psi'(w)}{\psi(w)-a}=\frac1{w-b}+\frac{u'(w)}{u(w)}.
+\]
+把分解代入换元后的函数，得到
+\[
+ f(\psi(w))\cdot\psi'(w)
+ =\frac{c}{w-b}+c\frac{u'(w)}{u(w)}
+   +(F\circ\psi)'(w).
+\]
+右端第二项在 \(b\) 全纯，第三项是去心邻域上全纯函数的导数，两项的留数都为零。所求留数因此等于 \(c\)。
 \end{proof}
-因此只把 \(f(\psi(w))\) 拿来算留数通常是错误的，必须乘 \(\psi'(w)\)。例如 \(z=2w\)、\(f(z)=1/z\)，合成函数留数是 \(1/2\)，合成微分乘2后才是1。无穷远留数的 \(-w^{-2}\) 因子就是这一坐标规则的具体实例。
+例如 \(z=2w\)、\(f(z)=1/z\)，合成函数 \(f(2w)=1/(2w)\) 的留数是 \(1/2\)，而
+\[
+ f(z)\,\mathrm{d}z=\frac1{2w}\cdot2\,\mathrm{d}w=\frac{\mathrm{d}w}{w}
+\]
+仍有留数 \(1\)。上面的不变性说的是同一个微分量在两种坐标中的表达；微分因子 \(\psi'\) 是公式的一部分。
 
 \ProseParagraphBreak
 
-一个全纯函数的导数在任意孤立奇点处留数为零。将 Laurent 展开逐项微分，要产生 \(z^{-1}\) 项只能来自原来的 \(z^0\) 项，但它的导数系数为0。反向对同心环域也成立：留数为零时可逐项积分得到原函数。留数检测的是一个微分是否有非零局部周期，而不只是函数值增长快慢。
+双全纯的条件保证坐标没有把中心附近覆盖多次。若改用 \(z=w^k\)、\(k\ge2\)，则 \(\mathrm{d}z/z=k\,\mathrm{d}w/w\)，留数乘以 \(k\)。这并不违反命题，因为此映射在 \(0\) 的导数为零，不是该点附近的双全纯坐标；一个 \(w\) 圆周在 \(z\) 平面绕中心 \(k\) 周。
 
 \subsection{留数定理}
 \label{b3:subsec:030302}
 
-\term[liushu-dingli]{留数定理}[residue theorem]先以简单围道版本建立。
+\term[liushu-dingli]{留数定理}[residue theorem]把局部圆周积分加在一起。其证明只需把奇点各自挖去，再对剩下的区域使用第二章的边界 Cauchy 定理。
+\Needspace{6\baselineskip}
 \begin{theorem}[留数]\label{b3:thm:03-residue}
 设 \(V\) 是有界 Jordan 区域，边界正向且分段光滑。若 \(f\) 在 \(\overline V\) 的邻域内除有限个内部孤立奇点 \(a_1,\ldots,a_N\) 外全纯，则
 \[
@@ -52,62 +120,344 @@ Laurent 展开的所有系数记录局部行为，闭曲线积分却只挑出 \(
 \]
 \end{theorem}
 \begin{proof}
-在每个奇点周围选互不相交、闭包包含于 \(V\) 的小圆盘。将挖去这些圆盘的区域沿有限条连接弧切开，再按有限小片细分；各小片上有局部原函数，其边界积分为零。内部边和切口两侧相消，留下外边界及顺时针小圆。故外边界积分等于各个逆时针小圆积分之和。小圆上 Laurent 展开一致收敛，逐项积分只有 \(-1\) 次项留下 \(2\pi\mathrm{i}\)，即得结论。若连接弧或边界不是多边形，可先在局部原函数圆盘中更换为多边形代表，端点公式保持积分。
+由于奇点只有有限个且都在 \(V\) 内，可取半径 \(\rho_j>0\)，使闭圆盘 \(\overline{D(a_j,\rho_j)}\) 两两不交并包含于 \(V\)。再缩小半径，使每个圆盘内除中心外没有其他奇点。令
+\[
+ W=V\setminus\bigcup_{j=1}^N\overline{D(a_j,\rho_j)}.
+\]
+函数 \(f\) 在 \(\overline W\) 的某开邻域全纯；该闭包与每个 \(a_j\) 有正距离。区域 \(W\) 的边界由原来的外边界及这些小圆组成，均为分段光滑 Jordan 曲线，故可应用\cref{b3:lem:02-cauchy-boundary}。按照使区域在左侧的方向，外边界逆时针，小圆周顺时针，因而
+\[
+ 0=\int_{\partial W}f(z)\,\mathrm{d}z
+ =\int_{\partial V}f(z)\,\mathrm{d}z
+  -\sum_{j=1}^N\int_{|z-a_j|=\rho_j}f(z)\,\mathrm{d}z.
+\]
+每个小圆积分由留数的积分表达等于 \(2\pi\mathrm{i}\operatorname{Res}(f,a_j)\)，移项即得公式。若没有奇点，则直接应用同一边界 Cauchy 定理，右端为空和。
 \end{proof}
-定理的有限性来自奇点与边界分离。若奇点向边界积聚，不能未经收敛核对就把有限和改成无穷和。自交闭曲线则需要把每个奇点的绕数作为权重，精确形式在\chapref{b3:ch:10}建立。
+这个证明中不必让小圆半径趋于零；只要所选圆盘满足条件，每一个等式就已精确成立。它也适用于本性奇点，因为使用的是 Laurent 系数的积分表达，未要求主部有限。若一列奇点向边界积聚，便不满足这里的有限奇点假设，不能直接把右端换成无穷和。
+
+\ProseParagraphBreak
+
+例如 \(f(z)=1/[z(z-1)]\) 在 \(0\) 与 \(1\) 的留数分别为 \(-1\) 与 \(1\)。当 \(0<R<1\) 时，
+\[
+ \int_{|z|=R}f(z)\,\mathrm{d}z=-2\pi\mathrm{i};
+\]
+当 \(R>1\) 时，积分为零。函数虽然有两个一阶极点，它们对外面大圆的积分贡献却恰好抵消。这与第一节在不同环域所得的 \(-1\) 次系数一致。若取 \(R=1\)，围道经过极点，通常的曲线积分便不在定理的适用范围内。
+
+\ProseParagraphBreak
+
+有限个孔洞的区域也可用同一证明处理，但必须把所有边界分量按区域在左侧的方向一起积分。自交闭曲线则需要给每个奇点加上绕数权重，精确形式将在\chapref{b3:ch:10}建立；本章的应用均使用这里已经证明的简单围道版本。
 
 \subsection{实积分}
 \label{b3:subsec:030303}
 
-计算实积分时，先说明所选围道和附加弧积分为何消失。以
+留数定理计算的是闭曲线积分。用它求实积分，需要把原积分嵌入闭围道，并控制补上的那一段。围道的选择通常同时取决于极点的位置、无穷远增长以及是否需要选择分支；只有留数算对，还不足以完成反常积分的计算。
+
+\ProseParagraphBreak
+
+先看有理函数。当有理函数 \(P/Q\) 在实轴没有极点，且分母次数至少比分子大 \(2\) 时，大 \(|z|\) 下有一致估计 \(|P(z)/Q(z)|\le C/|z|^2\)。因此实轴两端的积分绝对收敛，半径 \(R\) 的上半圆弧积分模不超过 \(\pi C/R\)，随 \(R\to\infty\) 消失。这里最高次项支配的估计对所有辐角同时成立，故确实能用于整条圆弧。以
 \[
  I=\int_{-\infty}^{\infty}\frac{\mathrm{d}x}{x^2+1}
 \]
-为例，在上半平面取半径 \(R>2\) 的半圆，内部仅有极点 \(\mathrm{i}\)，留数为 \(1/(2\mathrm{i})\)。半圆上的函数模不超过 \(1/(R^2-1)\)，弧长为 \(\pi R\)，其积分趋于0。实轴截断积分单调趋于反常积分，故 \(I=\pi\)。
+为例，先沿实轴从 \(-R\) 走到 \(R\)，再沿上半圆弧 \(\Gamma_R\) 回到 \(-R\)，其中 \(R>2\)。内部仅有极点 \(\mathrm{i}\)，由单零分母公式，
+\[
+ \operatorname{Res}\left(\frac1{z^2+1},\mathrm{i}\right)
+ =\frac1{2\mathrm{i}}.
+\]
+留数定理给出
+\[
+ \int_{-R}^{R}\frac{\mathrm{d}x}{x^2+1}
+ +\int_{\Gamma_R}\frac{\mathrm{d}z}{z^2+1}=\pi.
+\]
+在弧上 \(|z^2+1|\ge R^2-1\)，因而
+\[
+ \left|\int_{\Gamma_R}\frac{\mathrm{d}z}{z^2+1}\right|
+ \le\frac{\pi R}{R^2-1}\longrightarrow0.
+\]
+实轴积分本已绝对收敛，故令 \(R\to\infty\) 得 \(I=\pi\)。
 
 \ProseParagraphBreak
 
-若再有振荡因子 \(e^{\mathrm{i}tz}\)，\(t>0\)，在上半平面其模为 \(e^{-t\operatorname{Im}z}\le1\)。同一弧估计仍适用，留数变为 \(e^{-t}/(2\mathrm{i})\)，得到
+再给被积函数乘上振荡因子 \(e^{\mathrm{i}tz}\)。当实参数 \(t>0\) 时，
+\[
+ |e^{\mathrm{i}tz}|=e^{-t\operatorname{Im}z}\le1
+ \quad(\operatorname{Im}z\ge0),
+\]
+故同一条上半圆弧仍满足刚才的估计。极点 \(\mathrm{i}\) 的留数变为 \(e^{-t}/(2\mathrm{i})\)，得到
 \[
  \int_{-\infty}^{\infty}\frac{e^{\mathrm{i}tx}}{x^2+1}\,\mathrm{d}x=\pi e^{-t}.
 \]
-负 \(t\) 时选下半平面，或对称换元，得到 \(\pi e^{-|t|}\)。如果分母只衰减如 \(1/z\)，上述弧长估计并不趋于0，须另外证明振荡提供的衰减，不能直接援引“半圆消失”。
+当 \(t<0\) 时应闭向下半平面，此时指数因子才有模不超过 \(1\) 的估计。仍从 \(-R\) 走到 \(R\)，再沿下半圆回去，整个围道为顺时针，因此留数定理带负号。下半平面极点的留数为
+\[
+ \operatorname{Res}\left(\frac{e^{\mathrm{i}tz}}{z^2+1},-\mathrm{i}\right)
+ =-\frac{e^t}{2\mathrm{i}},
+\]
+乘上 \(-2\pi\mathrm{i}\) 后得到 \(\pi e^t\)。结合 \(t=0\) 的计算，对所有实数 \(t\) 都有
+\[
+ \int_{-\infty}^{\infty}\frac{e^{\mathrm{i}tx}}{x^2+1}\,\mathrm{d}x
+ =\pi e^{-|t|}.
+\]
+取实部便得到余弦积分，虚部为零也与奇偶性相符。若在 \(t<0\) 时仍选上半平面，圆弧上的指数会增长，前面的弧估计就不成立。
 
 \ProseParagraphBreak
 
-对 \(\int_0^{2\pi}R(\cos\theta,\sin\theta)\,\mathrm{d}\theta\)，置 \(z=e^{\mathrm{i}\theta}\)，则 \(\cos\theta=(z+z^{-1})/2\)、\(\sin\theta=(z-z^{-1})/(2\mathrm{i})\)、\(\mathrm{d}\theta=\mathrm{d}z/(\mathrm{i}z)\)。最后的微分因子不可遗漏，单位圆上有极点时则不能直接使用通常留数定理。
-
-围道选择须同时控制奇点和大圆弧。对 \(\int_{\mathbb R}e^{\mathrm{i}ax}/(x^2+1)\,\mathrm{d}x\)，当 \(a>0\) 时闭向上半平面，因为 \(|e^{\mathrm{i}az}|=e^{-a\operatorname{Im}z}\le1\)；当 \(a<0\) 时应闭向下半平面，并记下顺时针的负号。若不随 \(a\) 改变半平面，大圆弧上的指数会增长，留数计算虽形式正确却不能代表原积分。最终两种选择都给 \(\pi e^{-|a|}\)，而 \(a=0\) 可以由有理函数估计直接处理。
+三角函数的有理式适合用单位圆。对积分
+\(\int_0^{2\pi}R(\cos\theta,\sin\theta)\,\mathrm{d}\theta\)，置 \(z=e^{\mathrm{i}\theta}\)，便有
+\[
+ \cos\theta=\frac{z+z^{-1}}2,\quad
+ \sin\theta=\frac{z-z^{-1}}{2\mathrm{i}},\quad
+ \mathrm{d}\theta=\frac{\mathrm{d}z}{\mathrm{i}z}.
+\]
+这样参数区间恰好走过一次正向单位圆，无须附加大圆弧；要检查的是变换后有哪些极点位于单位圆内，以及圆周本身是否避开极点。
 
 \ProseParagraphBreak
-实轴上有极点时还须说明积分的意义。通常的广义积分、Cauchy 主值以及绕开奇点的小半圆贡献并不相同。留数定理只计算闭围道积分，不会替读者选择其中一种意义。先标明每段截断积分和小圆弧的方向，再取极限，才能看清哪些项趋于零、哪些项留下半留数贡献。
+
+例如取实数 \(a>|b|\)，计算
+\[
+ K=\int_0^{2\pi}\frac{\mathrm{d}\theta}{a+b\cos\theta}.
+\]
+分母至少为 \(a-|b|>0\)，所以原积分没有奇点。若 \(b=0\)，直接得到 \(2\pi/a\)。以下设 \(b\ne0\)，并记 \(d=\sqrt{a^2-b^2}>0\)。换元后
+\[
+ K=\int_{|z|=1}\frac{2\,\mathrm{d}z}
+          {\mathrm{i}(bz^2+2az+b)}.
+\]
+分母的两个根为
+\[
+ \zeta_+=\frac{-a+d}{b}=-\frac{b}{a+d},\quad
+ \zeta_-=\frac{-a-d}{b},\quad \zeta_+\zeta_-=1.
+\]
+由 \(a+d>|b|\) 得 \(|\zeta_+|<1<|\zeta_-|\)，且两根不同。单位圆内只有 \(\zeta_+\)，其留数为
+\[
+ \frac{2}{\mathrm{i}(2b\zeta_++2a)}
+ =\frac1{\mathrm{i}d}.
+\]
+因此
+\[
+ \int_0^{2\pi}\frac{\mathrm{d}\theta}{a+b\cos\theta}
+ =\frac{2\pi}{\sqrt{a^2-b^2}}.
+\]
+这个结果也包括先前单独计算的 \(b=0\) 情形。若 \(a=|b|>0\)，分母在某个角度为零，变换后的根落到单位圆上，便不能沿用这一计算。
+
+\ProseParagraphBreak
+
+若有理部分只按 \(1/z\) 衰减，直接用“弧长乘最大模”只能给出一个常数，不能证明弧积分消失。下面计算 \(\sin(tx)/x\) 的反常积分，说明如何同时利用指数衰减和绕避实轴极点。取 \(t>0\)，考虑 \(e^{\mathrm{i}tz}/z\)，并把大半圆参数化为 \(z=Re^{\mathrm{i}\theta}\)、\(0\le\theta\le\pi\)。于是
+\[
+ \left|\int_{\text{大半圆}}\frac{e^{\mathrm{i}tz}}z\,\mathrm{d}z\right|
+ \le\int_0^\pi e^{-tR\sin\theta}\,\mathrm{d}\theta.
+\]
+在 \([0,\pi/2]\) 上，正弦的凹性给出 \(\sin\theta\ge2\theta/\pi\)；另一半区间由对称处理。因此右端不超过
+\[
+ 2\int_0^{\pi/2}e^{-2tR\theta/\pi}\,\mathrm{d}\theta
+ \le\frac{\pi}{tR}\longrightarrow0.
+\]
+整个上半圆上的指数并不一致趋于零，因为两个实端点处模仍为1；真正变小的是端点附近没有显著衰减的弧所占的参数长度。这项估计正是这里需要的积分控制。
+
+\ProseParagraphBreak
+
+函数 \(e^{\mathrm{i}tz}/z\) 在实轴上的 \(0\) 有一阶极点，不能把它直接放到半圆围道的边界上。选 \(0<\varepsilon<R\)，用线段 \([-R,-\varepsilon]\)、上方顺时针小半圆 \(C_\varepsilon\)、线段 \([\varepsilon,R]\) 和上方逆时针大半圆 \(\Gamma_R\) 构成围道。原点被挖去，围道内部没有奇点，故
+\[
+ \int_{-R}^{-\varepsilon}\frac{e^{\mathrm{i}tx}}x\,\mathrm{d}x
+ +\int_{\varepsilon}^{R}\frac{e^{\mathrm{i}tx}}x\,\mathrm{d}x
+ =-\int_{C_\varepsilon}\frac{e^{\mathrm{i}tz}}z\,\mathrm{d}z
+  -\int_{\Gamma_R}\frac{e^{\mathrm{i}tz}}z\,\mathrm{d}z.
+\]
+小弧参数 \(z=\varepsilon e^{\mathrm{i}\theta}\)、\(\pi\ge\theta\ge0\) 给出
+\[
+ \int_{\text{小半圆}}\frac{e^{\mathrm{i}tz}}z\,\mathrm{d}z
+ =\mathrm{i}\int_\pi^0 e^{\mathrm{i}t\varepsilon e^{\mathrm{i}\theta}}
+ \,\mathrm{d}\theta\longrightarrow-\pi\mathrm{i}.
+\]
+这里一致误差由 \(|e^u-1|\le |u|e^{|u|}\) 控制为至多 \(\pi t\varepsilon e^{t\varepsilon}\)。大弧误差由前面估计控制为 \(\pi/(tR)\)，因此
+\[
+ \lim_{\varepsilon\downarrow0}\lim_{R\to\infty}
+ \left(
+  \int_{-R}^{-\varepsilon}\frac{e^{\mathrm{i}tx}}x\,\mathrm{d}x
+  +\int_{\varepsilon}^{R}\frac{e^{\mathrm{i}tx}}x\,\mathrm{d}x
+ \right)=\pi\mathrm{i}.
+\]
+等量删去奇点左右的小区间，是这里采用的\term[cauchy-zhuzhi]{Cauchy 主值}[Cauchy principal value]约定。两个误差独立趋于零，也说明此处只要 \(R\to\infty\)、\(\varepsilon\downarrow0\)，结果就相同。取虚部，由 \(\sin(tx)/x\) 在 \(0\) 补值为 \(t\) 后连续，且为偶函数，得到
+\[
+ \int_0^\infty\frac{\sin(tx)}x\,\mathrm{d}x=\frac\pi2
+ \quad(t>0).
+\]
+这确实是通常意义下的单侧反常积分。除了 \(0\) 处已经可去以外，无穷远处可由分部积分核对收敛：对 \(B>A>0\)，
+\[
+ \int_A^B\frac{\sin(tx)}x\,\mathrm{d}x
+ =\left[-\frac{\cos(tx)}{tx}\right]_A^B
+   -\frac1t\int_A^B\frac{\cos(tx)}{x^2}\,\mathrm{d}x,
+\]
+右端的模不超过 \(3/(tA)\)，满足反常积分的 Cauchy 条件。原复积分的实部则不同，\(\cos(tx)/x\) 在 \(0\) 附近含 \(1/x\) 奇性，两侧积分分别发散，只能借对称截断抵消。
+
+\ProseParagraphBreak
+
+小半圆的贡献也可从局部主部看出：若 \(f(z)=c/z+h(z)\)，其中 \(h\) 在 \(0\) 附近全纯，则上方顺时针小半圆上
+\[
+ \int_{C_\varepsilon}f(z)\,\mathrm{d}z
+ =-\pi\mathrm{i}c+\int_{C_\varepsilon}h(z)\,\mathrm{d}z
+ \longrightarrow-\pi\mathrm{i}c,
+\]
+因为后一项的模不超过 \(\pi\varepsilon\max_{|z|\le\varepsilon}|h(z)|\)。这一“半留数”来自一阶主部和小弧方向；高阶极点还可能留下发散项，不能不加判断地套用。
+
+\ProseParagraphBreak
+
+含非整数实数幂的积分还要求先固定分支。计算
+\[
+ J(\alpha)=\int_0^\infty\frac{x^{\alpha-1}}{1+x}\,\mathrm{d}x,
+ \quad 0<\alpha<1.
+\]
+在 \(0\) 附近用 \(x^{\alpha-1}\) 控制，在无穷远用 \(x^{\alpha-2}\) 控制，可知两个端点都可积。为了让闭围道的两段直线都表示这一积分，在割去正实轴的平面选 \(0<\arg z<2\pi\)，令
+\[
+ z^{\alpha-1}
+ =\exp\bigl((\alpha-1)(\log|z|+\mathrm{i}\arg z)\bigr).
+\]
+这是割线平面上的单值全纯分支。其上岸数值就是原积分中的正实幂，下岸数值则与上岸相差一个固定因子；利用这个差别，才能从闭围道积分中解出 \(J(\alpha)\)。
+
+\ProseParagraphBreak
+
+选 \(0<\varepsilon<1<R\)。围道沿割线上侧由 \(\varepsilon\) 向 \(R\)，再逆时针绕外圆到下侧，由 \(R\) 回到 \(\varepsilon\)，最后顺时针绕内圆闭合。严格地说，先取两条辐角为 \(\delta\) 与 \(2\pi-\delta\) 的径向线段，其中 \(0<\delta<\pi/2\)，并用相应圆弧连接。整个围道位于分支的定义域，且包围极点 \(-1\)。在固定 \(\varepsilon,R\) 下令 \(\delta\downarrow0\)，径向线段及圆弧参数化后的被积函数在各自紧参数区间一致趋于相应的单侧边界值，故得到所述两岸积分。
+
+\ProseParagraphBreak
+
+上侧的幂为 \(x^{\alpha-1}\)，下侧为 \(e^{2\pi\mathrm{i}(\alpha-1)}x^{\alpha-1}\)，并且下侧行走方向相反。唯一极点 \(-1\) 的辐角为 \(\pi\)，所以留数为 \(e^{\mathrm{i}\pi(\alpha-1)}\)。外圆与内圆上的积分分别满足
+\[
+ \left|\int_{\text{外圆}}\frac{z^{\alpha-1}}{1+z}\,\mathrm{d}z\right|
+ \le\frac{2\pi R^\alpha}{R-1},\quad
+ \left|\int_{\text{内圆}}\frac{z^{\alpha-1}}{1+z}\,\mathrm{d}z\right|
+ \le\frac{2\pi\varepsilon^\alpha}{1-\varepsilon}.
+\]
+第一个上界在 \(R\to\infty\) 时趋于零，使用 \(\alpha<1\)；第二个在 \(\varepsilon\downarrow0\) 时趋于零，使用 \(\alpha>0\)。这些正是原实积分两个端点可积的条件。留数定理及两岸方向给出
+\[
+ (1-e^{2\pi\mathrm{i}\alpha})J(\alpha)
+ =2\pi\mathrm{i}e^{\mathrm{i}\pi(\alpha-1)}.
+\]
+用 \(1-e^{2\pi\mathrm{i}\alpha}=-2\mathrm{i}e^{\mathrm{i}\pi\alpha}\sin(\pi\alpha)\) 化简，便有 \(J(\alpha)=\pi/\sin(\pi\alpha)\)。当 \(\alpha=1/2\) 时结果为 \(\pi\)，亦可由 \(x=u^2\) 直接核对。分支的两侧跳跃提供了左端系数，不能将下侧数值误当作上侧数值后相消。
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[>=stealth,font=\small,scale=0.92]
+ \begin{scope}
+  \draw[gray,->] (-2,0)--(2.15,0);
+  \draw[thick] (-1.8,0)--(-0.4,0);
+  \draw[thick] (0.4,0)--(1.8,0);
+  \draw[thick] (1.8,0) arc (0:180:1.8);
+  \draw[thick] (-0.4,0) arc (180:0:0.4);
+  \draw[->,thick] (-1.25,0)--(-0.8,0);
+  \draw[->,thick] (0.8,0)--(1.25,0);
+  \draw[->,thick] (55:1.8) arc (55:85:1.8);
+  \draw[->,thick] (130:0.4) arc (130:50:0.4);
+  \node[below] at (-1.8,0) {\(-R\)};
+  \node[below] at (1.8,0) {\(R\)};
+  \node[below] at (0,0) {\(0\)};
+  \node[above] at (0,0.48) {\(\varepsilon\)};
+  \node at (0,2.2) {实轴极点的上方绕避};
+ \end{scope}
+ \begin{scope}[xshift=5.5cm,yshift=0.4cm]
+  \draw[gray,dashed] (0,0)--(2.05,0);
+  \draw[thick] (10:1.5) arc (10:350:1.5);
+  \draw[thick] (350:0.42) arc (350:10:0.42);
+  \draw[thick] (10:0.42)--(10:1.5);
+  \draw[thick] (350:1.5)--(350:0.42);
+  \draw[->,thick] (10:0.7)--(10:1.15);
+  \draw[->,thick] (350:1.15)--(350:0.7);
+  \draw[->,thick] (80:1.5) arc (80:110:1.5);
+  \draw[->,thick] (235:0.42) arc (235:185:0.42);
+  \node at (0,0) {\(0\)};
+  \node[above right] at (10:1.5) {\(\arg z\to0\)};
+  \node[below right] at (350:1.5) {\(\arg z\to2\pi\)};
+  \node[left] at (-1.5,0) {\(R\)};
+  \node[below] at (0,-0.45) {\(\varepsilon\)};
+  \node at (0,1.8) {正实轴割线的两岸};
+ \end{scope}
+\end{tikzpicture}
+\caption[绕避围道与钥匙孔围道]{箭头均使保留的积分区域在左侧。左图小半圆顺时针，参数从 \(\pi\) 降到 \(0\)，所以留下 \(-\pi\mathrm{i}\)。右图为清楚起见把割线两岸张开一个角；下岸反向行走，函数值还须乘 \(e^{2\pi\mathrm{i}(\alpha-1)}\)。图中大小比例不表示取极限的先后。}
+\label{b3:fig:03-contour-directions}
+\end{figure}
+
+\cref{b3:fig:03-contour-directions}中两条围道的内弧都顺时针，但承担的任务不同：左图内弧留下半留数，右图内弧因 \(\alpha>0\) 而消失。弧的几何大小本身不足以决定其积分极限，仍须使用前面的被积函数估计。
 
 \subsection{无穷远点}
 \label{b3:subsec:030304}
 
-无穷远点用坐标 \(w=1/z\) 检查函数奇点：研究 \(f(1/w)\) 在 \(w=0\) 的分类。留数属于微分 \(f(z)\,\mathrm{d}z\)，换元又给出额外的 \(-w^{-2}\)：
+上一节已经用 \(w=1/z\) 分类了函数在无穷远的奇点：若 \(f\) 在 \(|z|>R\) 全纯，就研究 \(f(1/w)\) 在 \(w=0\) 的奇点。例如 \(z^m\)、\(m\ge1\)，在无穷远有 \(m\) 阶极点，而 \(z^{-m}\) 在无穷远可去并延拓为零。
+
+\ProseParagraphBreak
+
+计算留数时，必须对微分整体换元：
+\[
+ f(z)\,\mathrm{d}z=-\frac{f(1/w)}{w^2}\,\mathrm{d}w.
+\]
+因而所提取的是 \(-w^{-2}f(1/w)\) 的 \(-1\) 次系数。这个约定与前面局部坐标不变性的含义相同。
+
+\Needspace{6\baselineskip}
 \begin{definition}\label{b3:def:03-infinity-residue}
-若 \(f\) 在某个大圆之外全纯，定义
+设 \(R>0\)，函数 \(f\) 在 \(\{z\in\mathbb C:|z|>R\}\) 全纯。定义其在无穷远的留数为
 \[
  \operatorname{Res}(f,\infty)\coloneqq-\operatorname{Res}\left(\frac{f(1/w)}{w^2},0\right).
 \]
 \end{definition}
-例如 \(f(z)=1/z\) 在无穷远作为函数可去，中心值为0，但微分的无穷远留数为 \(-1\)。函数的奇点分类和微分的留数不是同一问题。
+例如 \(f(z)=1/z\) 在无穷远作为函数可去，中心值为 \(0\)，但换元后的微分为 \(-\mathrm{d}w/w\)，所以无穷远留数为 \(-1\)。另一方面，\(f(z)=z\) 在无穷远有一阶极点，其微分为 \(-w^{-3}\,\mathrm{d}w\)，留数反而为零。函数的极点阶数与微分的留数分别回答两种问题。
+
+\Needspace{6\baselineskip}
 \begin{proposition}\label{b3:prop:03-global-residue}
 对有理函数 \(f\)，所有有限极点留数与无穷远留数之和为零。
 \end{proposition}
 \begin{proof}
-选大圆包围全部有限极点，有限留数和为大圆积分除以 \(2\pi\mathrm{i}\)。换元 \(w=1/z\) 把逆时针大圆变成顺时针小圆，微分为 \(-w^{-2}\,\mathrm{d}w\)。根据定义，该积分是 \(-2\pi\mathrm{i}\operatorname{Res}(f,\infty)\)，故留数总和为零。
+有理函数只有有限个有限极点。选 \(R\) 大于它们的模，使 \(f\) 在 \(|z|\ge R\) 上全纯。由留数定理，
+\[
+ \frac1{2\pi\mathrm{i}}\int_{|z|=R}f(z)\,\mathrm{d}z
+ =\sum_{a\in\mathbb C}\operatorname{Res}(f,a),
+\]
+其中只需对有限极点求和。换元 \(w=1/z\) 把逆时针大圆变为顺时针小圆，同时 \(\mathrm{d}z=-w^{-2}\,\mathrm{d}w\)。为避免混淆这两个负号，把小圆重新改为逆时针后得到
+\[
+ \begin{aligned}
+ \int_{|z|=R}f(z)\,\mathrm{d}z
+ &=-\int_{|w|=1/R}\left(-\frac{f(1/w)}{w^2}\right)\,\mathrm{d}w\\
+ &=-2\pi\mathrm{i}\operatorname{Res}(f,\infty).
+ \end{aligned}
+\]
+两式相等，便得到所有有限留数与无穷远留数之和为零。
 \end{proof}
-计算无穷远留数时也可直接取 \(f\) 在大圆外 Laurent 展开的 \(z^{-1}\) 系数再加负号。例如 \(z^2/(z^3-1)\) 的这一系数为1，所以无穷远留数为 \(-1\)。
+计算时也可直接看外环域中的展开。若 \(f(z)=\sum_{n\in\mathbb Z}c_nz^n\)，则
+\(-w^{-2}f(1/w)=-\sum_n c_nw^{-n-2}\)；只有 \(n=-1\) 产生 \(w^{-1}\)，所以
+\[
+ \operatorname{Res}(f,\infty)=-c_{-1}.
+\]
+例如在 \(|z|>1\) 上，
+\[
+ \frac{z^2}{z^3-1}
+ =\frac1z\cdot\frac1{1-z^{-3}}
+ =\frac1z+\frac1{z^4}+\frac1{z^7}+\cdots.
+\]
+故无穷远留数为 \(-1\)。在每个三次单位根 \(a\) 处，单零分母公式给出留数 \(a^2/(3a^2)=1/3\)，三个有限留数之和恰为 \(1\)。
 
 \ProseParagraphBreak
 
-扩充平面上的亚纯函数实际上全部是有理函数。
+上面的总和公式的证明实际上只要求有限平面中有有限个孤立奇点，并在其余点全纯；奇点可以是本性的。例如 \(e^{1/z}\) 在有限平面只有 \(0\) 这个奇点，留数为 \(1\)，而
+\[
+ -\frac{e^w}{w^2}=-\frac1{w^2}-\frac1w-\frac1{2!}-\cdots
+\]
+给出无穷远留数 \(-1\)。有理函数是总和公式最常用的一类，因为其有限点与无穷远点都只有可去奇点或极点。
+
+\ProseParagraphBreak
+
+反过来，若在有限平面以及无穷远都不允许本性奇点，就只能得到有理函数。这里“在扩充复平面上亚纯”是指在每个有限点附近亚纯，并且在坐标 \(w=1/z\) 中也在 \(w=0\) 附近亚纯。
+\Needspace{6\baselineskip}
 \begin{theorem}\label{b3:thm:03-sphere-rational}
-若 \(f\) 在扩充复平面上亚纯，则存在多项式 \(P,Q\)，\(Q\) 不恒零，使 \(f=P/Q\)。
+若 \(f\) 在扩充复平面上亚纯且不恒等于 \(\infty\)，则存在多项式 \(P,Q\)，\(Q\) 不恒零，使 \(f=P/Q\)。
 \end{theorem}
 \begin{proof}
-极点在球面上离散，而球面紧，故极点有限；否则无限点列有聚点，与该处亚纯局部模型矛盾。先在每个有限极点减去其有限 Laurent 主部，所得函数 \(g\) 在整个有限平面全纯。在无穷远，原函数与减去的有理主部仍亚纯，故 \(g(1/w)\) 在0可去或有有限阶极点。于是存在整数 \(m\ge0\)，使大 \(|z|\) 时 \(|g(z)|\le C|z|^m\)。由第二章的增长版 Liouville 推论，\(g\) 是多项式。加回有限个有理主部，得到有理函数。
+先证明有限极点只有有限个。在 \(w=0\) 附近，函数 \(f(1/w)\) 可去或有极点，因此在某个去心圆盘 \(0<|w|<\delta\) 中没有极点。这说明 \(f\) 在 \(|z|>1/\delta\) 没有有限极点。若其余极点仍有无穷多个，闭圆盘的紧性使它们在某个有限点聚集；但亚纯函数在每一点附近可写成全纯函数或一个有限阶极点的模型，均不允许其他极点向中心聚集。这是矛盾。
+
+列出全部有限极点 \(a_1,\ldots,a_N\)，其阶数分别为 \(m_j\)，并记相应主部为
+\[
+ S_j(z)=\sum_{k=1}^{m_j}\frac{c_{j,-k}}{(z-a_j)^k}.
+\]
+函数 \(g=f-\sum_{j=1}^N S_j\) 在每个 \(a_j\) 附近恰好消去全部负幂，故可补成整函数。每个 \(S_j\) 是有理函数，并且在无穷远趋于零，所以 \(g(1/w)\) 在 \(w=0\) 仍然可去或有有限阶极点。于是存在整数 \(m\ge0\)，使大 \(|z|\) 时
+\[
+ |g(z)|\le C|z|^m.
+\]
+在剩下的闭圆盘上 \(g\) 连续有界，调大常数便有全平面估计 \(|g(z)|\le C'(1+|z|)^m\)。由\cref{b3:prop:02-polynomial-growth}的增长版 Liouville 结论，\(g\) 是次数不超过 \(m\) 的多项式。因此
+\[
+ f(z)=g(z)+\sum_{j=1}^N S_j(z).
+\]
+右端为多项式和有限个有理主部之和，通分即得 \(f=P/Q\)，例如可取 \(Q(z)=\prod_{j=1}^N(z-a_j)^{m_j}\)；没有有限极点时取 \(Q=1\)。
 \end{proof}
-这一定理利用了无穷远也亚纯的条件。整函数 \(e^z\) 在有限平面无极点，却在无穷远有本性奇点，所以不是反例。它也说明有理函数在球面只需有限多局部数据，整函数的无穷远增长则可能包含无限信息。
+这段证明同时给出了分解的来源：有限点的主部负责全部有限极点，剩下的整函数由无穷远的增长限制为一个多项式。整函数 \(e^z\) 在有限平面无极点，却在无穷远有本性奇点，因而不满足定理的假设。下一节将把留数方法用于 \(f'/f\)：此时零点与极点的阶数成为留数，围道积分便能直接计数。

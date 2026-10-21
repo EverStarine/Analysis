@@ -2,89 +2,261 @@
 \section{局部一致收敛}
 \label{b3:sec:0401}
 
-函数列逐点收敛，未必保留连续性；即使极限全纯，也未必可以逐项求导。Cauchy 积分公式给出的控制恰好说明，复分析应采用紧集上的一致收敛，而不是仅固定每个点观察。
+用全纯函数列构造新函数时，需要回答两个问题：函数值的极限是否仍全纯，求导能否与取极限交换？逐点收敛只在每一点分别给出误差，难以控制一整条积分曲线。本节采用内部紧集上的一致收敛，再利用 Cauchy 积分公式把圆周上的共同误差传入圆盘，并传到各阶导数。
 
 \subsection{紧一致收敛}
 \label{b3:subsec:040101}
 
+\Needspace{6\baselineskip}
 \begin{definition}\label{b3:def:04-compact-convergence}
-设 \(U\) 为开集，\(f_n,f:U\rightarrow\mathbb C\)。若对每个紧集 \(K\subset U\) 都有 \(\sup_K|f_n-f|\rightarrow0\)，则称 \(f_n\) 在 \(U\) 上\term[jubu-yizhi-shoulian]{局部一致收敛}[locally uniform convergence]于 \(f\)，也称紧一致收敛。
+设 \(U\subseteq\mathbb C\) 为开集，\(f_n,f:U\rightarrow\mathbb C\)。若对每个紧集 \(K\subset U\) 都有 \(\sup_K|f_n-f|\rightarrow0\)，则称 \(f_n\) 在 \(U\) 上\term[jubu-yizhi-shoulian]{局部一致收敛}[locally uniform convergence]于 \(f\)，也称紧一致收敛。
 \end{definition}
-开集可由递增紧集穷尽，例如取
+
+这里的极限函数取有限复值。具体地，对每个非空紧集 \(K\subset U\) 和每个 \(\varepsilon>0\)，存在整数 \(N=N(K,\varepsilon)\)，使 \(n\ge N\) 时对所有 \(z\in K\) 同时有 \(|f_n(z)-f(z)|<\varepsilon\)。指标可以依赖紧集，却不能在同一紧集内随点重新选取。每个单点集都是紧集，所以局部一致收敛蕴含逐点收敛。
+
+\ProseParagraphBreak
+
+检验时不必逐一列出全部紧集。若 \(U\ne\mathbb C\)，对正整数 \(j\) 取
 \[
  K_j=\{\,z\in U\mid |z|\le j,\ \operatorname{dist}(z,\mathbb C\setminus U)\ge1/j\,\}.
 \]
-空的早期集合可略去，\(U=\mathbb C\) 时只取闭圆盘。每个 \(K_j\) 闭有界，且任意 \(U\) 内紧集最终包含于其中；因此在这一列紧集上检验一致收敛就足够。
+到闭集 \(\mathbb C\setminus U\) 的距离是连续函数；条件“距离至少为 \(1/j\)”本身已经排除了 \(U\) 外的点。因此 \(K_j\) 是 \(\mathbb C\) 中的闭有界集，从而紧，并且 \(K_j\subseteq K_{j+1}\subset U\)。早期的空集可以略去；当 \(U=\mathbb C\) 时，直接取 \(K_j=\overline{D(0,j)}\)。
 
 \ProseParagraphBreak
 
-函数列 \(z^n\) 在 \(\mathbb D\) 上局部一致趋于0，因为 \(|z|\le r<1\) 时误差不超过 \(r^n\)；却不在整个开圆盘上一致趋于0，其上确界始终是1。局部一致性不对趋近边界的点给共同误差。后续紧性抽取也只在这一拓扑中进行。
+给定非空紧集 \(K\subset U\)，连续函数 \(|z|\) 在 \(K\) 有有限最大值 \(M\)。若 \(U\ne\mathbb C\)，距离函数在 \(K\) 也取得最小值 \(d\)，而 \(d>0\)：若最小值为零，取得最小值的点会同时属于 \(K\) 和闭集 \(\mathbb C\setminus U\)，矛盾。因此，只要 \(j\ge M\) 且 \(1/j\le d\)，便有 \(K\subseteq K_j\)。这说明每个内部紧集都最终包含在这一列中，在各 \(K_j\) 上检验一致收敛就足够。只知道 \(\bigcup_jK_j=U\) 一般还不足以代替这一步；这里使用了紧集与边界的正距离。
 
 \ProseParagraphBreak
 
-紧集穷尽并不是把开集改成一个闭区域。对于有孔且无界的区域，\(K_j\) 同时截断无穷远，并远离每个孔的边界；一个固定小盘最终包含其中，但随着 \(j\) 增大，仍可能出现新的边界附近部分。若某个 \(K_j\) 为空，不需要为它另设特殊函数空间。穷尽所要求的是每个内部紧集最终被包含，而不是每一步都有非空内部。
+这两个截断各有用途。在去心平面 \(U=\mathbb C\setminus\{0\}\) 上，所取紧集就是 \(1/j\le|z|\le j\) 的闭圆环：一个限制无穷远，另一个避开被删去的原点。在单位圆盘 \(\mathbb D\) 内，则只需检验所有 \(\overline{D(0,r)}\)、\(0<r<1\)。例如 \(f_n(z)=z^n\) 在这样的圆盘上误差至多为 \(r^n\)，所以局部一致趋于零；但 \(\sup_{z\in\mathbb D}|z^n|=1\)，整个开圆盘上没有一致收敛。选择内部紧集，保留了对边界附近行为的余地。
 
 \ProseParagraphBreak
 
-局部一致收敛也不会自动控制随指标移动的点。若 \(z_n\) 始终位于同一个紧集且 \(z_n\rightarrow z\)，则
+名称中的“局部”也可按邻域理解。局部一致收敛使每个点附近的小闭圆盘上都有一致收敛；反过来，若每一点都有一个邻域，其上 \(f_n\) 一致趋于同一个 \(f\)，则给定紧集可由有限个这样的邻域覆盖，取有限个误差指标的最大值，便得到整个紧集上的一致收敛。
+
+\ProseParagraphBreak
+
+如果各 \(f_n\) 连续，这种收敛保留连续性。固定 \(a\in U\)，取 \(\overline{D(a,r)}\subset U\)。给定 \(\varepsilon>0\)，先固定一个指标 \(n_0\)，使该闭盘上 \(|f_{n_0}-f|<\varepsilon/3\)；再由 \(f_{n_0}\) 在 \(a\) 连续，选 \(0<\delta<r\)，使 \(|z-a|<\delta\) 时 \(|f_{n_0}(z)-f_{n_0}(a)|<\varepsilon/3\)。于是
+\[
+ |f(z)-f(a)|
+ \le |f(z)-f_{n_0}(z)|
+     +|f_{n_0}(z)-f_{n_0}(a)|
+     +|f_{n_0}(a)-f(a)|<\varepsilon.
+\]
+因而 \(f\) 在 \(a\) 连续。先固定一项近似函数，再使用这一项的连续性，避免了为所有 \(f_n\) 预先寻找共同连续模。
+
+\ProseParagraphBreak
+
+对于这样的连续函数列，若 \(z_n\) 始终位于同一个紧集 \(K\subset U\)，且 \(z_n\to z\)，则 \(z\in K\)，并有
 \[
  |f_n(z_n)-f(z)|\le\sup_K|f_n-f|+|f(z_n)-f(z)|\longrightarrow0.
 \]
-第一项用一致收敛，第二项用极限连续。若 \(z_n\) 逃向边界，这个共同紧集不复存在。取 \(f_n(z)=z^n\)、\(z_n=1-1/n\)，便有 \(f_n(z_n)\rightarrow e^{-1}\)，而固定点处极限为0。两种量词不能交换。
+第一项用一致收敛，第二项用刚证明的极限连续性。若点列逃向边界，共同内部紧集便可能不存在。取 \(f_n(z)=z^n\)、\(z_n=1-1/n\)（\(n\ge2\)），就有 \(f_n(z_n)\to e^{-1}\)，虽然每个固定内点的极限都是零。后面追踪函数列的零点和逆像时，会反复用到共同紧集内的这个估计。
 
 \subsection{全纯极限}
 \label{b3:subsec:040102}
 
+全纯性比连续性强得多。下面不先假定导数列有极限，而是先把函数列的 Cauchy 表示传到极限，再对表示式中的核求导。
+
+\Needspace{6\baselineskip}
 \begin{proposition}\label{b3:prop:04-holomorphic-limit}
-设 \(f_n\) 在开集 \(U\) 上全纯，且局部一致收敛于 \(f\)。则 \(f\) 在 \(U\) 上全纯。
+设 \(U\subseteq\mathbb C\) 为开集，\(f_n:U\to\mathbb C\) 对每个正整数 \(n\) 都全纯，且 \(f_n\) 在 \(U\) 上局部一致收敛于 \(f:U\to\mathbb C\)。则 \(f\) 在 \(U\) 上全纯。
 \end{proposition}
 \begin{proof}
-先在每个小闭圆盘上用连续函数的一致极限得 \(f\) 连续。固定 \(\overline{D(a,r)}\subset U\)，每个 \(f_n\) 的 Cauchy 公式为
-\(f_n(z)=(2\pi\mathrm{i})^{-1}\int_{|\zeta-a|=r}f_n(\zeta)/(\zeta-z)\,\mathrm{d}\zeta\)。圆周上一致收敛使积分在每个较小闭圆盘上一致趋于相同的 \(f\) 核积分。核积分可按 \(z\) 微分，因分母与零保持正距离，所以右端全纯。由 \(z\in D(a,r)\) 时的点值极限，它恰为 \(f(z)\)。小圆盘覆盖 \(U\)，因此处处全纯。
+前面的连续性论证给出 \(f\) 连续。固定 \(a\in U\)，取 \(R>0\) 使 \(\overline{D(a,R)}\subset U\)，并令 \(\Gamma\) 为该圆盘的逆时针边界。由\cref{b3:thm:02-cauchy-formula}，每个 \(f_n\) 在盘内满足 Cauchy 公式。定义
+\[
+ F(z)=\frac1{2\pi\mathrm{i}}\int_\Gamma
+              \frac{f(\zeta)}{\zeta-z}\,\mathrm{d}\zeta
+ \quad(|z-a|<R).
+\]
+取 \(0<r<R\)，记 \(\varepsilon_n=\sup_\Gamma|f_n-f|\to0\)。当 \(|z-a|\le r\) 时，\(|\zeta-z|\ge R-r\) 对整条圆周成立，故长度估计给出
+\[
+ \sup_{|z-a|\le r}|f_n(z)-F(z)|
+ \le\frac{R}{R-r}\,\varepsilon_n\longrightarrow0.
+\]
+再用 \(f_n(z)\to f(z)\)，便得 \(f=F\) 于 \(|z-a|\le r\)。由于 \(r<R\) 任意，等式成立于整个开圆盘。
+
+还须确认这个核积分全纯。令 \(d=R-r>0\)。对 \(|z-a|\le r\)、\(0<|h|<d/2\)，有
+\[
+ \frac1h\left(\frac1{\zeta-z-h}-\frac1{\zeta-z}\right)
+       -\frac1{(\zeta-z)^2}
+ =\frac{h}{(\zeta-z-h)(\zeta-z)^2}.
+\]
+右侧的模至多为 \(2|h|/d^3\)，因为两个分母因子的模分别至少为 \(d/2\) 和 \(d^2\)。设 \(M=\max_\Gamma|f|<\infty\)，积分后得到
+\[
+ \left|\frac{F(z+h)-F(z)}h
+       -\frac1{2\pi\mathrm{i}}\int_\Gamma
+                \frac{f(\zeta)}{(\zeta-z)^2}\,\mathrm{d}\zeta\right|
+ \le\frac{2RM}{d^3}\cdot|h|\longrightarrow0.
+\]
+这个误差对整个较小闭圆盘一致，因而特别证明了每个内点的复导数存在。于是 \(F\)、也就是 \(f\)，在 \(D(a,R)\) 全纯。任意 \(a\in U\) 都有这样的圆盘，结论成立。
 \end{proof}
-这里既没有先求 \(f_n'\) 的逐点极限，也没有从实变量可微函数列的性质类推。连续性与全纯性是通过积分表示先后获得的。
+
+这里出现了两次不同的极限：先让 \(n\to\infty\)，把圆周上的函数误差传入内部；再让 \(h\to0\)，证明极限函数可微。两次都依靠同一个正距离 \(R-r\)，但控制的是不同的差。若把内部点推到积分圆周上，这个距离消失，上述估计便不再适用。
 
 \subsection{导数收敛}
 \label{b3:subsec:040103}
 
+现在极限函数已经全纯，差 \(f_n-f\) 也全纯，便可以对它直接使用 Cauchy 估计。导数误差由稍大紧集上的函数误差控制，这比逐点比较差商更有效。
+
+\Needspace{6\baselineskip}
 \begin{proposition}\label{b3:prop:04-derivative-convergence}
-在上一命题的条件下，对每个固定整数 \(k\ge1\)，\(f_n^{(k)}\) 在 \(U\) 上局部一致趋于 \(f^{(k)}\)。
+设 \(U\subseteq\mathbb C\) 为开集，\(f_n:U\to\mathbb C\) 全纯，并在 \(U\) 上局部一致收敛于有限值函数 \(f:U\to\mathbb C\)。则 \(f\) 全纯，且对每个固定整数 \(k\ge1\)，\(f_n^{(k)}\) 在 \(U\) 上局部一致趋于 \(f^{(k)}\)。
 \end{proposition}
 \begin{proof}
-固定紧集 \(K\subset U\)，选 \(\delta>0\)，使所有以 \(z\in K\) 为中心、半径 \(\delta\) 的闭圆盘都在 \(U\) 中。它们的并闭包含于一个紧集 \(K'\subset U\)。对全纯差 \(f_n-f\) 使用 Cauchy 估计，得到
+前一命题保证 \(f\) 全纯。固定非空紧集 \(K\subset U\)。若 \(U\ne\mathbb C\)，距离 \(d=\operatorname{dist}(K,\mathbb C\setminus U)\) 为正，取 \(0<\delta<d\)；若 \(U=\mathbb C\)，可取 \(\delta=1\)。令
 \[
- \sup_K|f_n^{(k)}-f^{(k)}|\le k!\delta^{-k}\sup_{K'}|f_n-f|\longrightarrow0.
+ K'=\{\,w\in\mathbb C:\operatorname{dist}(w,K)\le\delta\,\}.
 \]
-选取同一个 \(\delta\) 是紧性的用途，因而结论对 \(K\) 上全部点一致成立。
+这个集合闭且有界，因而紧。若存在 \(w\in K'\setminus U\)，则 \(d\le\operatorname{dist}(w,K)\le\delta<d\)，矛盾，所以 \(K'\subset U\)。每个以 \(z\in K\) 为中心、半径 \(\delta\) 的闭圆盘都包含于 \(K'\)，全纯差 \(f_n-f\) 在这些闭盘的开邻域都有定义。由\cref{b3:thm:02-cauchy-estimate}，
+\begin{equation}\label{b3:eq:04-derivative-error}
+ \sup_K|f_n^{(k)}-f^{(k)}|
+ \le \frac{k!}{\delta^k}\sup_{K'}|f_n-f|\longrightarrow0.
+\end{equation}
+右侧的 \(K'\) 和 \(\delta\) 不依赖 \(n\) 或 \(z\)，所以得到整个 \(K\) 上的一致收敛。
 \end{proof}
-导数阶 \(k\) 必须固定；因子 \(k!\delta^{-k}\) 随阶数增长，不能由这一结论让 \(k\) 与 \(n\) 同时趋于无穷。以 \(z^n\) 为例，它在较小圆盘的一阶导数 \(nz^{n-1}\) 仍趋于0，但第 \(n\) 阶导数为 \(n!\)。
+
+为了控制 \(K\) 上的导数，必须留出宽度 \(\delta\) 的邻域，并在这个邻域上掌握函数值。这个邻域可以供所有固定阶数使用，但常数 \(k!\delta^{-k}\) 随阶数增长。因此，结论没有给出阶数与指标同时变化时的统一控制。以 \(f_n(z)=z^n\) 为例，在 \(|z|\le r<1\) 上，一阶导数误差不超过 \(nr^{n-1}\to0\)，而第 \(n\) 阶导数处处等于 \(n!\)。
 
 \ProseParagraphBreak
 
-反向也有一个带归一化的积分判据。若区域中的 \(f_n'\) 局部一致趋于 \(g\)，且某个基点值 \(f_n(a)\) 收敛，则 \(f_n\) 局部一致收敛。证明时在一个紧集的有限圆盘覆盖中，用从基点到各圆盘中心的有限条固定多边形路径，再在盘内接短线段。积分差由路径长度与导数差控制；有限路径保证同一个误差对整紧集有效。极限函数的导数为 \(g\)，由局部差商或原函数端点式即可核对。
+反过来，导数决定函数时会留下一个加法常数。若在一个基点固定这个常数，导数的局部一致收敛就能通过积分恢复为函数的局部一致收敛。困难不在某条路径上的积分极限，而在于怎样同时控制一个紧集内所有终点。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[导数收敛与基点归一化]\label{b3:prop:04-primitive-convergence}
+设 \(U\subseteq\mathbb C\) 是非空连通开集，\(a\in U\)，\(f_n:U\to\mathbb C\) 对每个正整数 \(n\) 都全纯。若 \(f_n'\) 在 \(U\) 上局部一致收敛于 \(g:U\to\mathbb C\)，且 \(f_n(a)\to b\in\mathbb C\)，则存在唯一的全纯函数 \(f:U\to\mathbb C\)，满足
+\[
+ f'=g,\quad f(a)=b.
+\]
+函数列 \(f_n\) 在 \(U\) 上局部一致收敛于 \(f\)。对任意从 \(a\) 到 \(z\in U\) 的分段光滑路径 \(\gamma\subset U\)，还有
+\[
+ f(z)=b+\int_\gamma g(\zeta)\,\mathrm{d}\zeta.
+\]
+\end{proposition}
+\begin{proof}
+首先，\(g\) 是连续函数的局部一致极限，因而连续。区域内任意一点都可由 \(a\) 沿有限折线路径到达；在\cref{b3:prop:02-primitive-criterion}的证明中，这由可达点集合在 \(U\) 中既开又闭得到，开性提供小圆盘内续接的线段，连通性保证没有另一个不可达分支。
+
+对固定的终点 \(z\) 和固定的路径 \(\gamma\)，\cref{b3:prop:02-primitive-endpoints}给出
+\[
+ f_n(z)=f_n(a)+\int_\gamma f_n'(\zeta)\,\mathrm{d}\zeta.
+\]
+路径的像是 \(U\) 内紧集，长度有限，所以积分误差至多为
+\(L(\gamma)\cdot\sup_\gamma|f_n'-g|\to0\)。因此 \(f_n(z)\) 有极限，记为 \(f(z)\)，且满足命题中的积分式。若改用另一条路径，左侧始终是同一列点值，故其极限不变，积分式与路径选择无关。
+
+现在固定非空紧集 \(K\subset U\)。对它取有限圆盘覆盖
+\(K\subset\bigcup_{j=1}^mD(c_j,r_j)\)，其中每个 \(\overline{D(c_j,r_j)}\subset U\)。为每个中心 \(c_j\) 固定一条由 \(a\) 到 \(c_j\) 的折线路径 \(\gamma_j\)。把这些路径的像与有限个闭圆盘的并记为 \(K_*\)，则 \(K_*\) 是 \(U\) 内紧集。对 \(z\in K\cap D(c_j,r_j)\)，使用先沿 \(\gamma_j\)、再沿线段 \([c_j,z]\) 的路径；其总长度不超过
+\[
+ C=\max_{1\le j\le m}\bigl(L(\gamma_j)+r_j\bigr)<\infty.
+\]
+函数列与极限函数的积分表示相减，得到
+\[
+ \sup_K|f_n-f|
+ \le |f_n(a)-b|+C\sup_{K_*}|f_n'-g|\longrightarrow0.
+\]
+有限条固定路径让积分误差由同一个紧集和同一个长度常数控制，所以结论是局部一致收敛。
+
+最后，固定 \(z\in U\)，当 \(h\) 足够小时，可以在到达 \(z\) 后续接盘内线段，故
+\[
+ \frac{f(z+h)-f(z)}h
+ =\int_0^1g(z+th)\,\mathrm{d}t\longrightarrow g(z).
+\]
+这里使用 \(g\) 在 \(z\) 连续。因此 \(f\) 全纯且 \(f'=g\)，而 \(f(a)=b\) 来自基点极限。两个满足条件的函数之差导数恒零，在连通区域上为常数；基点值相同又使该常数为零，唯一性成立。
+\end{proof}
 
 \ProseParagraphBreak
 
-基点值的条件不可省略，常值函数列 \(f_n=n\) 的导数全部为0，却没有有限局部极限。若定义域不连通，应每个分支固定一个值；一个基点不能控制其他分支上的加法常数。这个反向判据把“积分一次多出常数”落实为收敛中的具体条件。
+基点条件不可省略：常值函数列 \(f_n=n\) 的导数全部为零，却没有有限点值极限。连通性也有明确作用；若定义域由两个不相交圆盘组成，可让 \(f_n\) 在第一盘恒为零，在第二盘恒为 \(n\)。即使在第一盘固定基点值，也控制不了另一盘的常数。在不连通开集上使用此判据，应在每个连通分支各给一个基点极限。
 
-\subsection{Weierstrass 定理}
+\ProseParagraphBreak
+
+命题不要求区域单连通。因为每个 \(f_n'\) 都有全局原函数，其闭路积分为零；沿任何固定闭路取积分极限，\(g\) 的积分也必须为零。这是收敛假设本身带来的限制。例如在去心平面上，导数列不可能局部一致趋于 \(1/z\)，因为后者沿单位圆的积分为 \(2\pi\mathrm{i}\)。
+
+\subsection{Weierstrass 收敛定理}
 \label{b3:subsec:040104}
 
-前两项通常合称\term[weierstrass-shoulian-dingli]{Weierstrass 收敛定理}[Weierstrass convergence theorem]。
+全纯极限与固定阶导数收敛的结论通常合称\term[weierstrass-shoulian-dingli]{Weierstrass 收敛定理}[Weierstrass convergence theorem]。它们也适用于全纯函数项级数，不要求每一项都是单项式。
+\Needspace{6\baselineskip}
 \begin{theorem}[Weierstrass]\label{b3:thm:04-weierstrass}
-全纯函数列的局部一致有限极限全纯，且任意固定阶导数局部一致收敛至极限函数的相应导数。若全纯函数项级数在每个紧集上一致收敛，则其和全纯，并可任意固定阶逐项微分。
+设 \(U\subseteq\mathbb C\) 为开集，\(f_n:U\to\mathbb C\) 全纯。若 \(f_n\) 在 \(U\) 上局部一致收敛于 \(f:U\to\mathbb C\)，则 \(f\) 全纯，且对每个固定整数 \(k\ge1\)，\(f_n^{(k)}\) 局部一致收敛于 \(f^{(k)}\)。
+
+若 \(h_n:U\to\mathbb C\) 都全纯，且级数 \(F(z)=\sum_{n=1}^\infty h_n(z)\) 在 \(U\) 的每个紧集上一致收敛，则 \(F\) 全纯，并且对每个固定整数 \(k\ge1\)，有
+\[
+ F^{(k)}(z)=\sum_{n=1}^\infty h_n^{(k)}(z),
+\]
+右侧仍在每个内部紧集上一致收敛。
 \end{theorem}
 \begin{proof}
-函数列结论是前两命题。函数项级数取有限部分和，它们全纯；导数部分和的局部一致极限就是和函数的导数，因此逐项微分合法。
+函数列结论由\cref{b3:prop:04-holomorphic-limit,b3:prop:04-derivative-convergence}得到。对函数项级数，取部分和 \(S_N=\sum_{n=1}^Nh_n\)。每个 \(S_N\) 全纯，假设恰好是 \(S_N\) 局部一致趋于 \(F\)，所以 \(F\) 全纯，且 \(S_N^{(k)}\to F^{(k)}\) 局部一致。有限和可以逐项求导，故 \(S_N^{(k)}=\sum_{n=1}^Nh_n^{(k)}\)，这便是导数级数及其收敛结论。
 \end{proof}
-若 \(\sum_n\sup_K|g_n|<\infty\) 对每个紧集成立，Weierstrass 判别法保证所需的一致收敛。例子 \(\sum_{n\ge1}e^{-n}z^n\) 在 \(|z|<e\) 局部一致收敛；在更大区域则不能借每项整函数声称和仍整。级数收敛域是另外必须核对的数据。
 
-紧集一致收敛还保持局部积分恒等式。若 \(f_n\rightarrow f\) 在紧集上一致，\(\gamma\) 是区域中一条固定分段光滑曲线，则
-\[
- \left|\int_\gamma(f_n-f)\,\mathrm{d}z\right|
- \le L(\gamma)\sup_{\gamma}|f_n-f|\longrightarrow0.
-\]
-曲线的像是紧集，长度又固定，两个条件都在这里被使用。如果曲线随 \(n\) 增长或靠近边界，上式右端未必趋于0。对单位圆盘中的 \(z^n\)，紧集一致趋于0，但在 \(|z|=1\) 上模恒为1，不能把内点极限自动延伸到闭圆盘。
+一个便于检验的充分条件是：对每个紧集 \(K\subset U\)，能找到可求和的非负数列 \(M_n(K)\)，使 \(|h_n(z)|\le M_n(K)\) 对所有 \(z\in K\) 成立。因为任意尾和的模都不超过相应的数项尾和，函数项级数便在 \(K\) 上一致收敛。这就是 Weierstrass 判别法的使用方式；不同紧集可以使用不同的控制数列。
 
 \ProseParagraphBreak
-另一个有用例子是 \(f_n(z)=n\sin(z/n)\)。Taylor 展开在每个固定圆盘上给 \(f_n(z)=z+O(1/n^2)\)，误差常数依赖于圆盘半径。因此 \(f_n\) 紧集一致趋于恒等映射，所有阶导数也有相应极限；但它们在整个平面上的增长与零点分布很不相同。这里的收敛只控制固定的观察窗口，远处的零点可以随 \(n\) 逃向无穷远。
+
+例如考虑
+\[
+ F(z)=\sum_{n=1}^\infty\frac1{n^2+z^2},
+ \quad U=\mathbb C\setminus\{\,\mathrm{i}n,-\mathrm{i}n:n\ge1\,\}.
+\]
+被删去的点在有限平面内没有聚点，所以 \(U\) 是开集，每一项在 \(U\) 全纯。给定非空紧集 \(K\subset U\)，选择 \(R\ge1\) 使 \(K\subset\overline{D(0,R)}\)。当 \(n\ge2R\) 时，
+\[
+ |n^2+z^2|\ge n^2-|z|^2\ge\frac34n^2,
+ \quad \left|\frac1{n^2+z^2}\right|\le\frac4{3n^2}
+ \quad(z\in K).
+\]
+剩下有限个分母在 \(K\) 都不为零，倒数在那里各有有限上界。因此级数在每个这样的 \(K\) 上一致绝对收敛，定理保证 \(F\) 在 \(U\) 全纯。若 \(N\ge2R\) 为整数，积分比较 \(\sum_{n>N}n^{-2}\le1/N\) 还给出可直接用于截断的误差：
+\[
+ \sup_K\left|F-\sum_{n=1}^N\frac1{n^2+z^2}\right|
+ \le\frac4{3N}.
+\]
+定理允许逐项求导，得到
+\[
+ F'(z)=-\sum_{n=1}^\infty\frac{2z}{(n^2+z^2)^2}.
+\]
+对同一个 \(K\) 和 \(n\ge2R\)，导数项的模至多为 \(32R/(9n^4)\)。因此
+\[
+ \sup_K\left|F'+\sum_{n=1}^N\frac{2z}{(n^2+z^2)^2}\right|
+ \le\frac{32R}{27N^3},
+\]
+其中使用 \(\sum_{n>N}n^{-4}\le1/(3N^3)\)。这个例子不是按 \(z\) 的幂组成的级数；全纯性与导数公式来自共同定义域上的紧集控制。定理也保证所有固定阶导数都可逐项计算，一阶的显式估计则进一步给出了近似速度。
+
+\ProseParagraphBreak
+
+局部一致收敛还保持沿固定曲线的积分。设 \(f_n,f:U\to\mathbb C\) 连续，\(f_n\to f\) 局部一致，\(\gamma\) 是 \(U\) 中一条固定分段光滑曲线，则
+\[
+ \left|\int_\gamma(f_n-f)\,\mathrm{d}z\right|
+ \le L(\gamma)\cdot\sup_{\gamma}|f_n-f|\longrightarrow0.
+\]
+曲线的像是内部紧集，长度又固定，两个条件都在这里被使用。若曲线也随指标改变，就要另行寻找包含其全部像的共同内部紧集，并控制长度与误差的乘积；仅有逐点或局部一致收敛的名称，不能替代这两项估计。
+
+\ProseParagraphBreak
+
+再看整函数列 \(f_n(z)=n\sin(z/n)\)。由正弦的幂级数，
+\[
+ f_n(z)-z=\sum_{m=1}^\infty
+       \frac{(-1)^mz^{2m+1}}{(2m+1)!\,n^{2m}}.
+\]
+固定 \(R>0\)。利用 \((2m+1)!\ge6(2m-2)!\)，对 \(|z|\le R\) 有
+\[
+ |f_n(z)-z|
+ \le\frac{R^3}{6n^2}
+       \sum_{m=1}^\infty\frac{(R/n)^{2m-2}}{(2m-2)!}
+ \le\frac{R^3}{6n^2}e^{R/n}.
+\]
+右端趋于零，所以 \(f_n\) 在整个复平面局部一致趋于恒等函数。所有固定阶导数随之局部一致收敛：一阶趋于 \(1\)，二阶及更高阶趋于 \(0\)。这里也能直接核对。由余弦级数，
+\[
+ \sup_{|z|\le R}|f_n'(z)-1|
+ =\sup_{|z|\le R}|\cos(z/n)-1|
+ \le\frac{R^2}{2n^2}e^{R/n}.
+\]
+当 \(k\ge2\) 固定时，
+\[
+ f_n^{(k)}(z)=n^{1-k}\sin\left(\frac zn+\frac{k\pi}2\right),
+ \quad
+ \sup_{|z|\le R}|f_n^{(k)}(z)|\le n^{1-k}e^{R/n}\longrightarrow0,
+\]
+因为括号中的正弦只会化为 \(\pm\sin(z/n)\) 或 \(\pm\cos(z/n)\)，它们的模都不超过 \(e^{R/n}\)。
+
+\ProseParagraphBreak
+
+收敛仍不可能推广为全平面一致收敛：在随 \(n\) 移动的点 \(z_n=\pi n\) 上，\(f_n(z_n)=0\)，而恒等函数的值为 \(\pi n\)。各 \(f_n\) 的非零零点是 \(m\pi n\)（\(m\in\mathbb Z\setminus\{0\}\)），它们离开每个固定紧集，所以不妨碍极限只在原点为零。后面的 Hurwitz 定理将说明，在极限不恒零的条件下，固定小圆盘内的零点总重数怎样随这种收敛保持稳定。

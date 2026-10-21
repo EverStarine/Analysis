@@ -1,0 +1,364 @@
+% !TeX root = ../../Book1.tex
+% 扩充编号：A01、A02、A03。八节正文、章首、小结与八道习题初稿完成；待正式审核。
+% §29.1：沿用第8章的谱定义和内积约定；Neumann级数与一般有界自伴谱界在此直接证明。
+% 二次型证明衔接 b1:lem:compact-self-adjoint-extreme，不使用其紧性结论。
+% 文献实读：Axler2020Measure 印刷 pp.288--296（10.22、10.25、10.32--10.37），
+% 对应几何级数求逆、可逆集开性、谱的基本性质及对角／乘法模型。
+% 谱积分、无界算子与酉群的实读定位另见各节注释及参考文献原文件/来源记录.md。
+\OptionalChapter{一般谱理论}{b1:ch:29}
+\BookChapterNumber{b1:ch:29}
+
+\begin{chapterabstract}
+紧自伴算子可以沿特征方向展开，但乘法算子可能没有任何特征向量。
+本章研究去掉紧性以后，自伴算子的谱怎样描述方程的可解性，
+以及怎样以乘法表示和谱积分代替特征向量求和。
+有界算子的讨论从预解估计开始；转向无界算子时，
+还须把定义域纳入伴随、乘积和极限的每一次运算。
+最后研究自伴算子与强连续酉群的对应。
+\end{chapterabstract}
+
+\begin{learninggoals}
+\begin{itemize}
+\item\label{b1:item:29-goal-resolvent}用预解算子研究线性方程，区分特征值、连续谱与离散谱，并能计算基本模型的谱。
+\item\label{b1:item:29-goal-calculus}理解连续函数演算怎样由多项式逼近得到，以及谱测度怎样把演算扩展到 Borel 函数。
+\item\label{b1:item:29-goal-domain}区分稠密定义算子的对称性与自伴性，能核对谱积分和微分算子的定义域。
+\item\label{b1:item:29-goal-group}掌握自伴算子与强连续酉群之间的对应，明确生成元的符号及定义域条件。
+\end{itemize}
+\end{learninggoals}
+
+本章以\chapref{b1:ch:08}的有界算子、Hilbert 空间投影和伴随为起点。
+其中有界逆定理把双射性转为解的稳定性，正交分解则用来判断值域是否稠密。
+\secref{b1:sec:2901}只需要这些工具与算子空间的完备性；
+读者可以先在对角算子和 \(L^2(0,1)\) 上的乘法算子中理解谱的不同形态。
+
+\ProseParagraphBreak
+
+\secref{b1:sec:2902}先证明本章所需的 Stone--Weierstrass 定理，
+再由多项式的一致逼近建立连续函数演算。
+\secref{b1:sec:2903}使用\chapref{b1:ch:11}的正测度表示定理，
+把循环子空间写成 \(L^2\) 空间；\secref{b1:sec:2904}将这些表示合为唯一的谱测度。
+这条路线先完成有界自伴情形，再补出后面 Cayley 变换所需的酉算子谱表示。
+
+\ProseParagraphBreak
+
+\secref{b1:sec:2905}至\secref{b1:sec:2906}把定义域纳入伴随和函数演算。
+\secref{b1:sec:2907}的微分算子例子还使用一维 Sobolev 函数的绝对连续代表、
+端点迹及分部积分，相关版本在该节开头恢复。
+最后的\secref{b1:sec:2908}由谱指数构造酉群，并从群的差商恢复自伴生成算子。
+阅读这四节时，应把每个算子的定义域与作用法则一起记下。
+
+\ProseParagraphBreak
+
+关于算子几何级数、可逆集的开性和谱的基本模型，
+可对照 Sheldon Axler 的《Measure, Integration \& Real Analysis》\cite[pp.~288--296]{Axler2020Measure}。
+谱积分与无界算子的经典论述可对照 Walter Rudin 的《Functional Analysis》
+\cite[Sections~12.17--12.21, 13.1--13.12, 13.24, 13.30, 13.35, 13.38]{Rudin1991Functional}；
+各节在实际使用处给出更具体的定位。
+本章沿用\secref{b1:sec:0805}的 \(T-zI\) 约定。
+
+\input{Part05/Chapter29/Section2901}
+\input{Part05/Chapter29/Section2902}
+\input{Part05/Chapter29/Section2903}
+\input{Part05/Chapter29/Section2904}
+\input{Part05/Chapter29/Section2905}
+\input{Part05/Chapter29/Section2906}
+\input{Part05/Chapter29/Section2907}
+\input{Part05/Chapter29/Section2908}
+
+\begin{chaptersummary}
+预解算子把谱与方程的可解性联系起来。对有界自伴算子，谱是非空实紧集，
+算子范数等于谱上绝对值的最大值；谱点也可以由近似特征向量识别，
+因而没有特征向量并不意味着没有谱。
+
+连续函数演算由多项式逼近建立，正测度表示把每个循环子空间化为乘法模型。
+各循环部分的正交直和给出整体谱表示，而投影值测度把它写成与分解选择无关的公式
+\[
+ T=\int t\,\mathrm dE(t),\qquad f(T)=\int f(t)\,\mathrm dE(t).
+\]
+谱投影同时描述特征空间、谱区间和有界 Borel 函数的强极限。
+逐点收敛经支配收敛传到每个向量上，一般不能传成算子范数收敛。
+
+无界算子必须连同定义域讨论。稠密性使伴随良定义，图像闭性控制极限，
+非实参数处的满射性区分对称算子与自伴算子。
+Cayley 变换把无界自伴算子转为酉算子，谱积分再恢复原来的最大定义域：
+\[
+ D(f(A))=\left\{x:\int|f|^2\,\mathrm d\mu_x<\infty\right\}.
+\]
+这项平方可积条件决定了乘积、和与闭包的关系。
+实乘法算子及区间上的微分算子表明，同一作用法则配上不同定义域，
+可以得到不同的闭性、伴随和边界条件。
+
+Stone 定理把这些工具用于演化：每个强连续酉群唯一写成 \(U(t)=e^{\mathrm itA}\)，
+其中 \(A\) 自伴，且差商生成元为 \(G=\mathrm iA\)，二者定义域相同。
+谱积分构造演化，轨道平均与两侧 Laplace 积分完成逆向恢复。
+这使连续谱、无界算子与保持范数的时间演化进入同一个表示框架。
+\end{chaptersummary}
+
+\BookExercises
+
+% 自拟：二维非自伴模型，区分算子范数、谱界与预解算子增长。
+\begin{optionalexercise}\label{b1:ex:29-nilpotent-resolvent}
+在带标准内积的 \(\mathbb C^2\) 上，固定 \(a>0\)，令
+\[
+ N_a=\begin{pmatrix}0&a\\0&0\end{pmatrix}.
+\]
+求 \(\sigma(N_a)\) 和 \(\|N_a\|\)，并证明对 \(z\ne0\)，
+\[
+ R_{N_a}(z)=-z^{-1}I-z^{-2}N_a,\qquad
+ \|R_{N_a}(z)\|\geq\frac a{|z|^2}.
+\]
+当 \(a>|z|\) 时，将这个下界与 \(\operatorname{dist}(z,\sigma(N_a))^{-1}\) 比较。
+\end{optionalexercise}
+\begin{solution}
+由 \(N_a(u,v)=(av,0)\)，有 \(\|N_a\|=a\)，且零是特征值。
+又因 \(N_a^2=0\)，对非零 \(z\) 直接相乘可得
+\[
+ (N_a-zI)(-z^{-1}I-z^{-2}N_a)
+ =(-z^{-1}I-z^{-2}N_a)(N_a-zI)=I.
+\]
+所以 \(\sigma(N_a)=\{0\}\)，且题给公式是预解算子。
+令 \(e_2=(0,1)\)，则
+\[
+ R_{N_a}(z)e_2=(-az^{-2},-z^{-1}),\qquad
+ \|R_{N_a}(z)\|\geq\bigl(a^2|z|^{-4}+|z|^{-2}\bigr)^{1/2}
+ \geq a|z|^{-2}.
+\]
+当 \(a>|z|\) 时，这个下界大于 \(|z|^{-1}
+=\operatorname{dist}(z,\sigma(N_a))^{-1}\)。
+本例的谱中最大模为零，而算子范数为 \(a\)；
+因此\cref{b1:thm:29-self-adjoint-spectral-bound}中的自伴性不能去掉。
+\end{solution}
+
+% 自拟：稠密对角系数模型，训练点谱与离散谱的区别及非紧性判断。
+\begin{optionalexercise}\label{b1:ex:29-dense-diagonal-spectrum}
+设 \((r_n)_{n\geq1}\) 是 \(\mathbb Q\cap(0,1)\) 的无重复枚举，
+在复 Hilbert 空间 \(\ell^2\) 上定义 \(Ae_n=r_ne_n\)。证明 \(A\) 有界且自伴，并求其谱、点谱和连续谱。
+证明 \(A\) 没有离散谱点，且不是紧算子。
+\end{optionalexercise}
+\begin{solution}
+对 \(x=(x_n)\in\ell^2\)，有 \(Ax=(r_nx_n)\) 和 \(\|Ax\|_2\leq\|x\|_2\)。
+每个 \(r_n\) 都是实数，故
+\(\langle Ax,y\rangle=\sum_n r_nx_n\overline{y_n}=\langle x,Ay\rangle\)，
+于是 \(A\) 自伴。若 \(z\notin[0,1]\)，
+则 \(y\mapsto(y_n/(r_n-z))\) 给出有界双侧逆。
+若 \(t\in[0,1]\)，由有理数的稠密性可以取指标列 \((n_k)\)，使 \(r_{n_k}\to t\)，从而
+\[
+ \|(A-tI)e_{n_k}\|_2=|r_{n_k}-t|\longrightarrow0.
+\]
+\cref{b1:cor:29-approximate-eigenvectors}给出 \(\sigma(A)=[0,1]\)。
+坐标方程 \((r_n-t)x_n=0\) 表明特征值恰为这些有理数；
+当 \(t\in[0,1]\setminus\mathbb Q\) 或 \(t=0,1\) 时，算子 \(A-tI\) 单射。
+它的值域由自伴性知为稠密，又因 \(t\) 是谱点而不能满射。因此
+\[
+ \sigma_{\mathrm p}(A)=\mathbb Q\cap(0,1),\qquad
+ \sigma_{\mathrm c}(A)=[0,1]\setminus\bigl(\mathbb Q\cap(0,1)\bigr).
+\]
+整个区间没有孤立点，所以离散谱为空，即使点谱在区间内稠密。
+
+区间 \([1/2,1)\) 中有无穷多个 \(r_n\)。对相应的不同指标 \(n,m\)，
+\[
+ \|Ae_n-Ae_m\|_2=(r_n^2+r_m^2)^{1/2}\geq1/\sqrt2.
+\]
+这批单位向量的像没有 Cauchy 子列，因而没有收敛子列，故 \(A\) 不紧。
+\end{solution}
+
+% 自拟：把等距连续函数演算用于最佳预解估计，与第一题的非自伴增长比较。
+\begin{optionalexercise}\label{b1:ex:29-sharp-resolvent}
+设 \(H\ne\{0\}\) 为复 Hilbert 空间，\(T\in\mathcal B(H)\) 自伴。
+证明对每个 \(z\in\rho(T)\)，
+\[
+ \|R_T(z)\|=\frac1{\operatorname{dist}(z,\sigma(T))}.
+\]
+若 \((T-zI)x=b\)、\((T-zI)\widetilde x=\widetilde b\)，
+由此给出 \(\|x-\widetilde x\|\) 的最佳统一估计；
+说明这里的“最佳”不要求存在达到等号的单位向量。
+\end{optionalexercise}
+\begin{solution}
+在紧集 \(K=\sigma(T)\) 上，函数 \(r(t)=(t-z)^{-1}\) 连续。
+连续函数演算的乘法性给出
+\[
+ (T-zI)r(T)=r(T)(T-zI)=I.
+\]
+所以 \(r(T)=R_T(z)\)。等距性又给出
+\[
+ \|R_T(z)\|=\max_{t\in K}|t-z|^{-1}
+ =\operatorname{dist}(z,K)^{-1}.
+\]
+两方程相减，得到
+\[
+ \|x-\widetilde x\|
+ \leq\frac{\|b-\widetilde b\|}{\operatorname{dist}(z,K)}.
+\]
+若一个常数 \(C\) 对所有右端差都满足这项估计，取
+\(\widetilde b=0\)、\(b=y\)，便有 \(\|R_T(z)y\|\leq C\|y\|\)，
+故 \(C\geq\|R_T(z)\|\)。算子范数是单位球上取值的上确界；
+可选单位向量使这些取值任意接近该数，而不必在某个向量上取到它。
+\end{solution}
+
+% 自拟：重复的乘法表示，训练循环向量不存在时的正交向量构造。
+\begin{optionalexercise}\label{b1:ex:29-cyclic-multiplicity}
+在复 Hilbert 空间 \(H=L^2(0,1)\oplus L^2(0,1)\) 上定义
+\[
+ T(f,g)=(tf,tg).
+\]
+证明每个单独分量上的乘法算子 \(M_t\) 都有循环向量，而 \(T\) 没有循环向量。
+\end{optionalexercise}
+\begin{solution}
+常函数 \(1\) 属于 \(L^2(0,1)\)。多项式在 \(C([0,1])\) 中一致稠密，
+连续函数又在 \(L^2(0,1)\) 中稠密，故 \(\{p(M_t)1:p\text{ 为多项式}\}\)
+的线性闭包为整个 \(L^2(0,1)\)。所以 \(1\) 是每个分量的循环向量。
+
+任取非零 \(v=(f,g)\in H\)，令 \(w=(\overline g,-\overline f)\)。
+则 \(w\in H\)、\(\|w\|=\|v\|>0\)，且对每个复多项式 \(p\)，
+\[
+ \langle p(T)v,w\rangle
+ =\int_0^1 p(t)f(t)g(t)\,\mathrm dt
+   -\int_0^1 p(t)g(t)f(t)\,\mathrm dt=0.
+\]
+这些积分存在，因为 \(p\) 在 \([0,1]\) 上有界，\(fg\in L^1(0,1)\)。
+非零向量 \(w\) 与 \(v\) 生成的循环子空间正交，故该子空间不等于 \(H\)。
+零向量也不能循环，因此 \(T\) 没有循环向量。
+\end{solution}
+
+% 自拟：用连续函数逼近单点谱投影，辨析强收敛与算子范数收敛。
+\begin{optionalexercise}\label{b1:ex:29-atom-approximation}
+设 \(H\ne\{0\}\) 为复 Hilbert 空间，\(T\in\mathcal B(H)\) 自伴，\(E\) 为其谱测度。
+固定 \(\lambda\in\mathbb R\)，证明
+\[
+ (I+n(T-\lambda I)^2)^{-1}x\longrightarrow E(\{\lambda\})x
+ \qquad(x\in H).
+\]
+这里把 \(E\) 在谱以外延拓为零。对 \(L^2(0,1)\) 上的 \(T=M_t\)
+及任意 \(\lambda\in[0,1]\)，证明左侧算子强收敛于零，但其范数恒为 \(1\)。
+\end{optionalexercise}
+\begin{solution}
+令 \(f_n(t)=(1+n(t-\lambda)^2)^{-1}\)。在 \(\sigma(T)\) 上，
+\(f_n\) 连续且满足 \(0<f_n\leq1\)。连续函数演算的乘法性说明
+\(f_n(T)=(I+n(T-\lambda I)^2)^{-1}\)。逐点地，
+\(f_n\to\mathbf1_{\{\lambda\}}\)，故有界 Borel 演算的支配收敛给出所需强极限。
+
+对 \(M_t\)，相应谱投影就是乘以 \(\mathbf1_{\{\lambda\}}\)，
+该函数在 Lebesgue 几乎处处为零，所以极限算子为零。
+另一方面，\(\sigma(M_t)=[0,1]\)，由连续函数演算的等距性，
+\[
+ \|f_n(M_t)\|=\max_{t\in[0,1]}\frac1{1+n(t-\lambda)^2}=1.
+\]
+端点 \(\lambda=0,1\) 也满足这个等式；附近小区间仍有正测度，
+因此端点处的最大值并未改变相应乘子的本质上确界。
+\end{solution}
+
+% 自拟：用两侧非实满射判据与Neumann级数证明有界自伴扰动的稳定性。
+\begin{optionalexercise}\label{b1:ex:29-bounded-perturbation}
+设 \(H\) 为复 Hilbert 空间，\(A:D(A)\subseteq H\to H\) 为稠密定义的自伴算子，
+\(K\in\mathcal B(H)\) 自伴。证明 \(B=A+K\) 在定义域 \(D(B)=D(A)\) 上自伴。
+\end{optionalexercise}
+\begin{solution}
+\(B\) 稠密定义，并且对 \(x,y\in D(A)\)，
+\[
+ \langle Bx,y\rangle
+ =\langle Ax,y\rangle+\langle Kx,y\rangle
+ =\langle x,Ay\rangle+\langle x,Ky\rangle
+ =\langle x,By\rangle.
+\]
+所以 \(B\) 对称。取实数 \(r>\|K\|\)，分别令 \(z=\mathrm ir\) 和 \(z=-\mathrm ir\)。
+无界自伴算子的预解估计给出
+\[
+ \|K(A-zI)^{-1}\|\leq\|K\|\cdot\|(A-zI)^{-1}\|
+ \leq\frac{\|K\|}{r}<1.
+\]
+于是 \(I+K(A-zI)^{-1}\) 由 Neumann 级数可逆。对 \(x\in D(A)\)，
+\[
+ (B-zI)x=\bigl(I+K(A-zI)^{-1}\bigr)(A-zI)x.
+\]
+右侧两个因子分别把 \(D(A)\) 双射到 \(H\)、再把 \(H\) 双射到自身，
+故 \(B-\mathrm irI\) 与 \(B+\mathrm irI\) 均满射。
+由\cref{b1:thm:29-self-adjoint-criterion}的共轭非实参数满射判据，\(B\) 自伴。
+这个论证保留了原定义域；并未把两个无界算子的形式相加当成自动自伴的操作。
+\end{solution}
+
+% 自拟：由演化的周期性识别离散的谱支集，并写出无界生成算子的精确域。
+\begin{optionalexercise}\label{b1:ex:29-periodic-group}
+设 \(H\) 为复 Hilbert 空间，\(A:D(A)\subseteq H\to H\) 为稠密定义的自伴算子，
+\(E\) 为其谱测度，\(U(t)=e^{\mathrm itA}\)。固定 \(\tau>0\)，证明
+\[
+ U(\tau)=I
+ \quad\Longleftrightarrow\quad
+ E\bigl(\mathbb R\setminus(2\pi/\tau)\mathbb Z\bigr)=0.
+\]
+在这些等价条件成立时，令 \(P_k=E(\{2\pi k/\tau\})\)，写出 \(I\)、\(A\) 的投影级数及 \(D(A)\)。
+给出一个满足 \(U(2\pi)=I\) 而 \(A\) 无界的例子。
+\end{optionalexercise}
+\begin{solution}
+记 \(S=(2\pi/\tau)\mathbb Z\)。谱积分的范数公式给出
+\[
+ \|(U(\tau)-I)x\|^2
+ =\int_{\mathbb R}|e^{\mathrm i\tau t}-1|^2\,\mathrm d\mu_x(t).
+\]
+若 \(E(\mathbb R\setminus S)=0\)，被积函数对每个 \(\mu_x\) 几乎处处为零，
+故 \(U(\tau)=I\)。反过来，若左侧对每个 \(x\) 为零，置
+\(B_m=\{t:|e^{\mathrm i\tau t}-1|\geq1/m\}\)，则
+\[
+ 0\geq m^{-2}\mu_x(B_m),\qquad \mu_x(B_m)=\|E(B_m)x\|^2.
+\]
+所以 \(E(B_m)=0\)。由于 \(\mathbb R\setminus S=\bigcup_{m\geq1}B_m\)，
+标量测度的可数次可加性给出 \(E(\mathbb R\setminus S)=0\)。
+
+由谱测度的强可数可加性，
+\[
+ x=\sum_{k\in\mathbb Z}P_kx\quad(x\in H),\qquad
+ D(A)=\left\{x\in H:\sum_{k\in\mathbb Z}
+       \left(\frac{2\pi k}{\tau}\right)^2\|P_kx\|^2<\infty\right\},
+\]
+且
+\[
+ Ax=\sum_{k\in\mathbb Z}\frac{2\pi k}{\tau}P_kx\qquad(x\in D(A)).
+\]
+两种级数均在 \(H\) 中按有限部分和收敛；第一种由正交分解成立，
+第二种由所列平方可和条件及谱积分的截断定义成立。
+取 \(H=\ell^2(\mathbb N)\)、\(A(x_n)=(nx_n)\)，
+\(D(A)=\{x:\sum n^2|x_n|^2<\infty\}\)。这是实乘法模型，故自伴；
+\(\|Ae_n\|=n\) 说明它无界，而 \(U(2\pi)(x_n)=(e^{2\pi\mathrm in}x_n)=(x_n)\)。
+\end{solution}
+
+% 自拟：用轨道平均连接算子范数连续性与生成元有界性，补充强连续反例。
+\begin{optionalexercise}\label{b1:ex:29-norm-continuous-group}
+设 \(H\) 为复 Hilbert 空间，\((U(t))_{t\in\mathbb R}\) 为强连续酉群，
+\(A\) 为 Stone 定理给出的自伴算子，满足 \(U(t)=e^{\mathrm itA}\)。证明
+\[
+ \lim_{t\to0}\|U(t)-I\|=0
+ \quad\Longleftrightarrow\quad
+ D(A)=H\text{ 且 }A\in\mathcal B(H).
+\]
+\end{optionalexercise}
+\begin{solution}
+若 \(A\) 处处定义且有界，则连续函数演算和
+\(|e^{\mathrm it\lambda}-1|\leq |t|\cdot|\lambda|\) 给出
+\[
+ \|U(t)-I\|\leq |t|\cdot\|A\|\longrightarrow0.
+\]
+零空间的情形直接成立；以下讨论一般的逆向结论。
+设 \(\|U(t)-I\|\to0\)。群律及酉性给出
+\(\|U(t+h)-U(t)\|=\|U(h)-I\|\)，故轨道在算子范数下连续。
+对 \(h>0\)，可在 Banach 空间 \(\mathcal B(H)\) 中作 Riemann 积分，令
+\[
+ J_h=\frac1h\int_0^h U(s)\,\mathrm ds.
+\]
+有
+\[
+ \|J_h-I\|\leq\sup_{0\leq s\leq h}\|U(s)-I\|\longrightarrow0.
+\]
+取足够小的 \(h\)，使 \(\|J_h-I\|<1\)，则 \(J_h\) 由 Neumann 级数可逆。
+设 \(G\) 为差商生成元。对任意 \(x\in H\) 和非零实数 \(r\)，平移积分得到
+\[
+ \frac{(U(r)-I)J_hx}{r}
+ =\frac1h\left(\frac1r\int_h^{h+r}U(s)x\,\mathrm ds
+       -\frac1r\int_0^rU(s)x\,\mathrm ds\right).
+\]
+由轨道连续性，右侧当 \(r\to0\) 时趋于 \((U(h)x-x)/h\)。
+所以 \(J_hH\subseteq D(G)\)，且 \(GJ_h=(U(h)-I)/h\)。
+但 \(J_hH=H\)，故 \(D(G)=H\)，并且
+\[
+ G=\frac{U(h)-I}{h}J_h^{-1}\in\mathcal B(H).
+\]
+Stone 定理给出 \(A=-\mathrm iG\) 以及 \(D(A)=D(G)\)，因而 \(A\) 处处定义且有界。
+\end{solution}

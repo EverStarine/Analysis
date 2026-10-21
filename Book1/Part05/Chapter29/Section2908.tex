@@ -1,0 +1,496 @@
+% !TeX root = ../../Book1.tex
+% 实读来源：Rudin1991Functional，13.34--13.35，印刷 pp.375--379；
+% 13.38，印刷 pp.382--385。大学公开扫描的零基 PDF 页序为印刷页码加 16。
+% 目视核对 pp.379、382；正文自证酉群情形的平滑平均、两侧 Laplace 公式与唯一性，
+% 不调用该书 13.38 所采用的 Gelfand 正规半群构造。
+\section{强连续酉群与 Stone 定理}
+\label{b1:sec:2908}
+
+谱积分可以把实变量函数 \(e^{\mathrm it\lambda}\) 变成一个酉算子。
+当时间 \(t\) 改变时，这些算子满足群律；反过来，
+一个连续而且保持内积的演化，是否一定来自某个自伴算子？
+Stone 定理给出肯定回答。这里的连续是逐个初值的强连续，
+零时导数则只对一个稠密子空间中的初值存在。
+因此，对应关系必须同时确定算子的作用和定义域。
+
+\ProseParagraphBreak
+
+本节固定
+\[
+ U(t)=e^{\mathrm itA},\qquad
+ Gx=\lim_{h\to0}\frac{U(h)x-x}{h}=\mathrm iAx.
+\]
+其中 \(G\) 是由差商定义的生成元，\(A=-\mathrm iG\) 是要证明自伴的算子。
+关于生成元的基本性质与 Laplace 公式，可对照 Rudin 的
+《Functional Analysis》\cite[Theorem~13.35, pp.~376--379; Theorem~13.38, pp.~382--385]{Rudin1991Functional}。
+下面在酉群的情形逐步完成证明。
+
+\subsection{强连续酉群}
+\label{b1:subsec:290801}
+
+按\cref{b1:def:29-unitary-equivalence}，酉算子是满射线性等距映射。
+在同一个 Hilbert 空间上，这等价于 \(U^*U=UU^*=I\)。
+现在用时间参数把这些保持内积的算子组织起来。
+
+\begin{definition}[强连续酉群]
+\label{b1:def:29-unitary-group}
+设 \(H\) 是复 Hilbert 空间。若一族有界线性算子
+\((U(t))_{t\in\mathbb R}\subset\mathcal B(H)\) 满足
+\[
+ U(0)=I,\qquad U(t+s)=U(t)U(s)\quad(s,t\in\mathbb R),
+\]
+每个 \(U(t)\) 都是酉算子，并且对每个 \(x\in H\)，
+\[
+ \lim_{t\to0}\|U(t)x-x\|=0,
+\]
+则称 \((U(t))_{t\in\mathbb R}\) 为 \(H\) 上的
+\term[qiang-lianxu-you-qun]{强连续酉群}[strongly continuous unitary group]。
+\end{definition}
+
+群律和酉性给出
+\[
+ U(t)^*=U(-t),\qquad \|U(t)x\|=\|x\|.
+\]
+而且
+\[
+ \|U(t+h)x-U(t)x\|=\|U(h)x-x\|,
+\]
+所以零时的强连续自动给出每条轨道 \(t\mapsto U(t)x\) 在全部实轴上的连续性。
+这没有要求算子范数 \(\|U(h)-I\|\) 趋于零。
+
+\ProseParagraphBreak
+
+例如，在复空间 \(\ell^2\) 上令
+\[
+ U(t)(x_n)_{n\geq1}=(e^{\mathrm i n t}x_n)_{n\geq1}.
+\]
+群律和酉性可以逐坐标核对。对固定 \(x=(x_n)\in\ell^2\)，有
+\[
+ \|(U(h)-I)x\|_2^2
+ \leq\sum_{n=1}^N|e^{\mathrm i n h}-1|^2\cdot|x_n|^2
+       +4\sum_{n>N}|x_n|^2.
+\]
+先选 \(N\) 控制尾和，再令 \(h\to0\) 控制有限和，便得强连续。
+但令 \(h_n=\pi/n\)，并以第 \(n\) 个单位向量测试，便有
+\[
+ \|U(h_n)-I\|\geq\|(U(h_n)-I)e_n\|_2=2.
+\]
+另一方面，酉性给出上界 \(2\)，故这些范数恰等于 \(2\)。
+强连续允许高频坐标随时间尺度改变，不能把固定初值的极限改成单位球上的一致极限。
+
+\ProseParagraphBreak
+
+证明生成元的性质需要积分连续的 \(H\) 值轨道。
+这里所需积分可以直接用 Riemann 和建立。
+若 \(v:[a,b]\to H\) 连续，则它一致连续；
+把两个足够细的带标记分割细化到共同分割后，
+相应 Riemann 和之差的范数由各小区间长度乘以 \(v\) 的连续模控制。
+这些和因而构成 Cauchy 族，\(H\) 的完备性给出唯一极限，记为
+\(\int_a^b v(s)\,\mathrm ds\)。从有限和取极限可得
+\begin{equation}\label{b1:eq:29-vector-integral-bound}
+ \left\|\int_a^b v(s)\,\mathrm ds\right\|
+ \leq\int_a^b\|v(s)\|\,\mathrm ds.
+\end{equation}
+有界线性算子可与这个积分交换，内积对任一固定向量的测试也可与积分交换。
+约定 \(\int_b^a=-\int_a^b\)，则对连续 \(v\)，
+\[
+ \left\|\frac1h\int_t^{t+h}v(s)\,\mathrm ds-v(t)\right\|
+ \leq\sup_{|s-t|\leq|h|}\|v(s)-v(t)\|\longrightarrow0.
+\]
+这就是所需的强微积分基本公式。
+若 \(F:[a,b]\to H\) 连续可微，对任一 \(y\in H\) 将标量微积分基本定理
+用于 \(\langle F(s),y\rangle\)，便得
+\(F(b)-F(a)=\int_a^bF'(s)\,\mathrm ds\)。
+以下有限区间积分均取这个意义，无穷区间积分则取有限区间积分的范数极限。
+
+\subsection{生成元、符号与定义域}
+\label{b1:subsec:290802}
+
+\begin{definition}[酉群的生成元]
+\label{b1:def:29-group-generator}
+设 \(H\) 是复 Hilbert 空间，\((U(t))_{t\in\mathbb R}\) 是其上的强连续酉群。
+定义
+\begin{equation}\label{b1:eq:29-generator-domain}
+ \begin{split}
+ D(G)&=\left\{x\in H:
+       \lim_{h\to0}\frac{U(h)x-x}{h}\text{ 在 }H\text{ 中存在}\right\},\\
+ Gx&=\lim_{h\to0}\frac{U(h)x-x}{h}\qquad(x\in D(G)).
+ \end{split}
+\end{equation}
+线性算子 \(G:D(G)\subset H\to H\) 称为该群的
+\term[shengchengyuan]{生成元}[generator]。
+极限取实参数 \(h\) 的双侧极限，收敛均指 \(H\) 的范数收敛。
+\end{definition}
+
+差商的线性表明 \(D(G)\) 是线性子空间，\(G\) 在其中线性。
+对群而言，只要求右侧差商收敛也会得到同一个定义域：若右极限为 \(y\)，
+则对 \(h>0\)，
+\[
+ \frac{U(-h)x-x}{-h}
+ =U(-h)\frac{U(h)x-x}{h}\longrightarrow y.
+\]
+最后一步可把右端与 \(y\) 的差拆成
+\(U(-h)((U(h)x-x)/h-y)+(U(-h)y-y)\)，
+再用酉性和强连续性分别控制两项。
+
+\begin{proposition}[定义域不变与轨道积分式]
+\label{b1:prop:29-group-orbits}
+设 \(H\) 是复 Hilbert 空间，\((U(t))_{t\in\mathbb R}\) 是其上的强连续酉群，
+\(G\) 为其生成元。对每个 \(t\in\mathbb R\)，有
+\[
+ U(t)D(G)=D(G),\qquad GU(t)x=U(t)Gx\quad(x\in D(G)).
+\]
+对每个 \(x\in D(G)\)，轨道是 \(\mathbb R\) 上连续可微的 \(H\) 值函数，且
+\begin{equation}\label{b1:eq:29-group-orbit-derivative}
+ \frac{\mathrm d}{\mathrm dt}U(t)x=U(t)Gx=GU(t)x,
+ \qquad
+ U(t)x-x=\int_0^tU(s)Gx\,\mathrm ds.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+若 \(x\in D(G)\)，群律给出
+\[
+ \frac{U(h)U(t)x-U(t)x}{h}
+ =U(t)\frac{U(h)x-x}{h}\longrightarrow U(t)Gx.
+\]
+故 \(U(t)x\in D(G)\)，并得到交换公式。
+再把时间换成 \(-t\)，可得定义域之间反向的包含，从而是等式。
+同一差商也给出 \(t\) 时刻的轨道导数。
+由于 \(s\mapsto U(s)Gx\) 强连续，导数连续，
+上一小节的微积分基本公式便给出积分恒等式，包括负时间的情形。
+\end{proof}
+
+\begin{proposition}[稠密性、闭性与内积关系]
+\label{b1:prop:29-generator-closed}
+设 \(H\) 是复 Hilbert 空间，\((U(t))_{t\in\mathbb R}\) 是其上的强连续酉群，
+\(G:D(G)\subset H\to H\) 为其生成元。
+则 \(D(G)\) 在 \(H\) 中稠密，\(G\) 是闭算子，并且
+\begin{equation}\label{b1:eq:29-generator-skew-symmetry}
+ \langle Gx,y\rangle+\langle x,Gy\rangle=0
+ \qquad(x,y\in D(G)).
+\end{equation}
+因此 \(A=-\mathrm iG\)、\(D(A)=D(G)\) 是稠密定义的闭对称算子。
+\end{proposition}
+
+\begin{proof}
+先以平滑的时间平均逼近任意 \(x\in H\)。
+取非负 \(\varphi\in C_c^1(\mathbb R)\)，支集包含于 \([-1,1]\)，且
+\(\int_{\mathbb R}\varphi(s)\,\mathrm ds=1\)；
+例如把 \((1-s^2)^2\) 在 \([-1,1]\) 外延为零，再作归一化。
+对 \(\varepsilon>0\)，令
+\[
+ \varphi_\varepsilon(s)=\varepsilon^{-1}\varphi(s/\varepsilon),\qquad
+ x_\varepsilon=\int_{\mathbb R}\varphi_\varepsilon(s)U(s)x\,\mathrm ds.
+\]
+这些积分的被积函数连续且具有紧支集。由积分估计，
+\[
+ \|x_\varepsilon-x\|
+ \leq\int\varphi_\varepsilon(s)\|U(s)x-x\|\,\mathrm ds
+ \leq\sup_{|s|\leq\varepsilon}\|U(s)x-x\|\longrightarrow0.
+\]
+还需证明每个 \(x_\varepsilon\) 确实属于生成元域。
+将有界算子 \(U(h)\) 移入积分，再以 \(s\) 代替原变量加 \(h\)，得到
+\[
+ \frac{U(h)x_\varepsilon-x_\varepsilon}{h}
+ =\int_{\mathbb R}
+   \frac{\varphi_\varepsilon(s-h)-\varphi_\varepsilon(s)}{h}
+   U(s)x\,\mathrm ds.
+\]
+标量差商等于
+\(-\int_0^1\varphi_\varepsilon'(s-\theta h)\,\mathrm d\theta\)。
+由于 \(\varphi_\varepsilon'\) 一致连续，它在 \(h\to0\) 时一致趋于
+\(-\varphi_\varepsilon'(s)\)；当 \(|h|<1\) 时，所有被积函数又有共同的紧支集。
+用 \(\|U(s)x\|=\|x\|\) 及积分估计，可将极限移入积分，得到
+\[
+ x_\varepsilon\in D(G),\qquad
+ Gx_\varepsilon=-\int_{\mathbb R}\varphi_\varepsilon'(s)U(s)x\,\mathrm ds.
+\]
+故 \(D(G)\) 稠密。
+
+为证闭性，设 \(x_n\in D(G)\)、\(x_n\to x\) 且 \(Gx_n\to y\)。
+由\eqref{b1:eq:29-group-orbit-derivative}，
+\[
+ U(t)x_n-x_n=\int_0^tU(s)Gx_n\,\mathrm ds.
+\]
+左端趋于 \(U(t)x-x\)，右端与 \(\int_0^tU(s)y\,\mathrm ds\) 的差的范数
+不超过 \(|t|\cdot\|Gx_n-y\|\)。因此对每个 \(t\in\mathbb R\)，
+\[
+ U(t)x-x=\int_0^tU(s)y\,\mathrm ds.
+\]
+除以非零 \(t\) 后令 \(t\to0\)，积分平均由强连续性趋于 \(y\)。
+于是 \(x\in D(G)\)、\(Gx=y\)，这就证明了闭性。
+
+最后，对 \(x,y\in D(G)\)，酉性给出
+\(\langle U(t)x,U(t)y\rangle=\langle x,y\rangle\)。
+在零时求导，便得\eqref{b1:eq:29-generator-skew-symmetry}。
+本书内积对第一变量线性，所以
+\[
+ \langle-\mathrm iGx,y\rangle
+ =-\mathrm i\langle Gx,y\rangle
+ =\mathrm i\langle x,Gy\rangle
+ =\langle x,-\mathrm iGy\rangle.
+\]
+这证明 \(A=-\mathrm iG\) 对称；其稠密性和闭性由 \(G\) 的相应性质给出。
+\end{proof}
+
+对称性尚未说明 \(A\) 自伴。
+这里仍缺少伴随定义域的辨认，最后一小节将借助两个非实参数处的满射性补齐它。
+
+\subsection{从自伴算子到酉群}
+\label{b1:subsec:290803}
+
+先从自伴算子构造演化。在这个方向，前面建立的谱演算同时给出
+算子、连续性以及准确的可微初值范围。
+
+\begin{proposition}[自伴算子的指数群]
+\label{b1:prop:29-spectral-unitary-group}
+设 \(H\) 是复 Hilbert 空间，\(A:D(A)\subset H\to H\) 是自伴算子，
+\(E\) 是它在 \(\mathbb R\) 上的投影值谱测度。对 \(t\in\mathbb R\)，定义
+\begin{equation}\label{b1:eq:29-unitary-spectral-integral}
+ U_A(t)=e^{\mathrm itA}
+       =\int_{\mathbb R}e^{\mathrm it\lambda}\,\mathrm dE(\lambda).
+\end{equation}
+则 \((U_A(t))_{t\in\mathbb R}\) 是 \(H\) 上的强连续酉群，
+它的生成元恰为
+\[
+ D(G_A)=D(A),\qquad G_Ax=\mathrm iAx\quad(x\in D(A)).
+\]
+对每个 \(t\in\mathbb R\)，有
+\[
+ U_A(t)D(A)=D(A),\qquad AU_A(t)x=U_A(t)Ax\quad(x\in D(A)),
+\]
+且对每个 \(x\in D(A)\)，
+\[
+ \frac{\mathrm d}{\mathrm dt}U_A(t)x
+ =\mathrm iAU_A(t)x=\mathrm iU_A(t)Ax
+\]
+是连续的强导数。
+\end{proposition}
+
+\begin{proof}
+由无界自伴谱定理\cref{b1:thm:29-unbounded-spectral}及相应函数演算，
+\(|e^{\mathrm it\lambda}|=1\) 保证 \(U_A(t)\) 是定义在全部 \(H\) 上的有界算子。
+有界 Borel 演算的乘法与伴随规则给出
+\[
+ U_A(0)=I,\quad U_A(t+s)=U_A(t)U_A(s),\quad
+ U_A(t)^*=U_A(-t)=U_A(t)^{-1}.
+\]
+对 \(x\in H\)，记 \(\mu_x(B)=\langle E(B)x,x\rangle\)。
+谱范数公式给出
+\[
+ \|U_A(h)x-x\|^2
+ =\int_{\mathbb R}|e^{\mathrm ih\lambda}-1|^2\,\mathrm d\mu_x(\lambda).
+\]
+被积函数逐点趋于零，且不超过 \(4\)，而 \(\mu_x(\mathbb R)=\|x\|^2\)。
+支配收敛定理于是给出零时强连续，群律再给出全部时间的强连续。
+
+若 \(x\in D(A)\)，则 \(\int\lambda^2\,\mathrm d\mu_x<\infty\)。
+对实数 \(\lambda\) 及非零实数 \(h\)，标量恒等式
+\[
+ \frac{e^{\mathrm ih\lambda}-1}{h}
+ =\mathrm i\lambda\int_0^1e^{\mathrm i\theta h\lambda}\,\mathrm d\theta
+\]
+给出其模不超过 \(|\lambda|\)，而点态极限为 \(\mathrm i\lambda\)。
+因而
+\[
+ \begin{split}
+ &\left\|\frac{U_A(h)x-x}{h}-\mathrm iAx\right\|^2\\
+ &\qquad=\int_{\mathbb R}
+  \left|\frac{e^{\mathrm ih\lambda}-1}{h}-\mathrm i\lambda\right|^2
+  \,\mathrm d\mu_x(\lambda)\longrightarrow0,
+ \end{split}
+\]
+这里误差平方由可积函数 \(4\lambda^2\) 控制。
+这证明 \(D(A)\subseteq D(G_A)\)，以及在该域上的作用公式。
+
+反过来，设 \(x\in D(G_A)\)。差商收敛使其范数在充分小的时间内有界。
+取 \(h_n=1/n\)，由 Fatou 引理及谱范数公式，
+\[
+ \begin{split}
+ \int_{\mathbb R}\lambda^2\,\mathrm d\mu_x(\lambda)
+ &\leq\liminf_{n\to\infty}
+  \int_{\mathbb R}
+   \left|\frac{e^{\mathrm ih_n\lambda}-1}{h_n}\right|^2
+   \,\mathrm d\mu_x(\lambda)\\
+ &=\liminf_{n\to\infty}
+  \left\|\frac{U_A(h_n)x-x}{h_n}\right\|^2<\infty.
+ \end{split}
+\]
+故 \(x\in D(A)\)。于是定义域相等，而不只是在预先给定的域上导数相同。
+上述必要性论证甚至只需要右侧差商存在。
+
+还可直接从谱测度看出定义域为什么不变。
+投影 \(E(B)\) 与 \(U_A(t)\) 交换，酉性给出
+\[
+ \mu_{U_A(t)x}(B)
+ =\|E(B)U_A(t)x\|^2
+ =\|U_A(t)E(B)x\|^2=\mu_x(B).
+\]
+因此 \(\int\lambda^2\,\mathrm d\mu_{U_A(t)x}
+=\int\lambda^2\,\mathrm d\mu_x\)，这给出双向的域不变性。
+若 \(x\in D(A)\)，令
+\(A_N=\int\lambda\cdot\mathbf1_{[-N,N]}(\lambda)\,\mathrm dE(\lambda)\)。
+有界乘法规则给出 \(A_NU_A(t)x=U_A(t)A_Nx\)；
+两端分别趋于 \(AU_A(t)x\) 和 \(U_A(t)Ax\)，故无界算子的交换公式成立。
+最后应用\cref{b1:prop:29-group-orbits}，便得到全部时间的强导数。
+\end{proof}
+
+把实乘法算子定理\cref{b1:thm:29-real-multiplication}用于 \(\mathbb N\) 上的计数测度，
+开头的对角群便对应于自伴算子 \(Ax=(nx_n)\)，其最大定义域为
+\[
+ D(A)=\left\{x\in\ell^2:\sum_{n=1}^{\infty}n^2|x_n|^2<\infty\right\},
+ \qquad Gx=(\mathrm i n x_n).
+\]
+这也可以由逐坐标差商与平方和的 Fatou 引理直接核对。
+例如 \(x=(1/n)_{n\geq1}\) 属于 \(\ell^2\)，却不属于 \(D(A)\)。
+其轨道处处连续，但在任何时间都没有强导数：
+若某时刻差商收敛，左乘该时刻演化的逆，就会得到零时差商收敛，
+与定义域的判别矛盾。
+
+\subsection{Stone 对应与唯一性}
+\label{b1:subsec:290804}
+
+给定一个强连续酉群，\cref{b1:prop:29-generator-closed}已证明 \(-\mathrm iG\) 闭且对称。
+要应用自伴满射判据，需要证明两个相反方向的非实参数都没有可解性缺口。
+正、负时间轨道的 Laplace 积分恰好提供这两个逆。
+
+\begin{lemma}[两侧 Laplace 公式]
+\label{b1:lem:29-group-laplace}
+设 \(H\) 是复 Hilbert 空间，\((U(t))_{t\in\mathbb R}\) 是其上的强连续酉群，
+\(G\) 是其生成元。对 \(\lambda>0\)，定义
+\[
+ \begin{split}
+ B_\lambda^+x&=\int_0^\infty e^{-\lambda s}U(s)x\,\mathrm ds,\\
+ B_\lambda^-x&=\int_{-\infty}^0e^{\lambda s}U(s)x\,\mathrm ds
+              =\int_0^\infty e^{-\lambda s}U(-s)x\,\mathrm ds
+              \qquad(x\in H).
+ \end{split}
+\]
+则 \(B_\lambda^\pm\in\mathcal B(H)\)、\(\|B_\lambda^\pm\|\leq\lambda^{-1}\)，且
+\[
+ (\lambda I-G)^{-1}=B_\lambda^+,\qquad
+ (\lambda I+G)^{-1}=B_\lambda^-.
+\]
+这里 \(\lambda I\mp G:D(G)\to H\) 均为双射，
+各逆的值域恰为 \(D(G)\)。
+\end{lemma}
+
+\begin{proof}
+先逐个固定 \(x\in H\) 作积分。
+酉性和\eqref{b1:eq:29-vector-integral-bound}给出
+\[
+ \left\|\int_T^R e^{-\lambda s}U(\pm s)x\,\mathrm ds\right\|
+ \leq\|x\|\int_T^R e^{-\lambda s}\,\mathrm ds
+ \leq\frac{e^{-\lambda T}}{\lambda}\|x\|
+ \qquad(0\leq T<R).
+\]
+因此无穷积分按范数收敛；其线性及范数估计说明它们定义了有界算子。
+这个构造没有把 \(s\mapsto U(s)\) 当作按算子范数连续的函数来积分。
+
+令 \(b=B_\lambda^+x\)。将 \(U(h)\) 移入有限区间积分、换元，再取无穷积分极限，得到
+\[
+ U(h)b=e^{\lambda h}
+       \left(b-\int_0^h e^{-\lambda r}U(r)x\,\mathrm dr\right).
+\]
+此式对正、负 \(h\) 均成立，负上限使用有向积分的约定。
+于是
+\[
+ \frac{U(h)b-b}{h}
+ =\frac{e^{\lambda h}-1}{h}b
+  -\frac{e^{\lambda h}}{h}
+   \int_0^h e^{-\lambda r}U(r)x\,\mathrm dr
+ \longrightarrow\lambda b-x.
+\]
+故 \(b\in D(G)\)，且 \((\lambda I-G)B_\lambda^+x=x\)。
+反向时间族 \(V(t)=U(-t)\) 仍为强连续酉群，
+由双侧差商定义，它的生成元是 \(-G\)，定义域仍为 \(D(G)\)。
+把刚才的计算用于 \(V\)，便得
+\((\lambda I+G)B_\lambda^-x=x\)。这已经证明两个算子满射。
+
+为证单射，对 \(y\in D(G)\)，由\eqref{b1:eq:29-generator-skew-symmetry}可知
+\(\operatorname{Re}\langle Gy,y\rangle=0\)，从而
+\[
+ \|(\lambda I\mp G)y\|^2
+ =\lambda^2\|y\|^2+\|Gy\|^2
+ \geq\lambda^2\|y\|^2.
+\]
+所以两者均为单射，已经构造的右逆就是双侧逆。
+具体地，对 \(y\in D(G)\)，将
+\(B_\lambda^\pm(\lambda I\mp G)y-y\) 代入 \(\lambda I\mp G\)，结果为零，
+单射性便迫使原向量为零。这也证明逆的值域恰为整个 \(D(G)\)。
+\end{proof}
+
+下面的\term[stone-dingli]{Stone 定理}[Stone's theorem]把自伴算子与强连续酉群一一对应起来。
+
+\begin{theorem}[Stone]
+\label{b1:thm:29-stone}
+设 \(H\) 是复 Hilbert 空间。对 \(H\) 上的每个强连续酉群
+\((U(t))_{t\in\mathbb R}\)，存在唯一自伴算子
+\(A:D(A)\subset H\to H\)，使
+\[
+ U(t)=e^{\mathrm itA}\qquad(t\in\mathbb R),
+\]
+其中右端按谱演算定义。若 \(G\) 是该群的生成元，则准确地有
+\[
+ D(A)=D(G),\qquad A=-\mathrm iG,\qquad G^*=-G.
+\]
+反过来，每个自伴算子通过 \(e^{\mathrm itA}\) 给出一个强连续酉群，
+其生成元为 \(\mathrm iA\)，定义域为 \(D(A)\)。
+具有相同生成元的两个强连续酉群必然相同；这里相同包括定义域相同。
+\end{theorem}
+
+\begin{proof}
+给定强连续酉群，令 \(A=-\mathrm iG\)、\(D(A)=D(G)\)。
+\cref{b1:prop:29-generator-closed}表明它稠密定义、闭且对称。
+由\cref{b1:lem:29-group-laplace}在 \(\lambda=1\) 时的满射性，
+\[
+ A+\mathrm iI=\mathrm i(I-G),\qquad
+ A-\mathrm iI=-\mathrm i(I+G)
+\]
+都有值域 \(H\)。自伴满射判据\cref{b1:thm:29-self-adjoint-criterion}
+于是给出 \(A=A^*\)。由于 \(G=\mathrm iA\)，伴随定义也给出
+\(D(G^*)=D(A)\)、\(G^*=-\mathrm iA=-G\)。
+
+现在由\cref{b1:prop:29-spectral-unitary-group}构造
+\(V(t)=e^{\mathrm itA}\)。这个群的生成元是 \(\mathrm iA=G\)，
+而且生成元定义域恰为 \(D(G)\)。
+还须证明相同的零时导数确实决定整个群。
+事实上，对任意具有同一生成元 \(G\) 的两个强连续酉群 \(U,V\)，
+固定 \(t\in\mathbb R\)、\(x\in D(G)\)，令
+\[
+ F(s)=U(t-s)V(s)x\qquad(s\in\mathbb R).
+\]
+由定义域不变性，\(V(s)x\in D(G)\)。为核对对移动向量求导的步骤，写出
+\[
+ \begin{split}
+ \frac{F(s+h)-F(s)}{h}
+ &=U(t-s-h)\frac{V(s+h)x-V(s)x}{h}\\
+ &\quad+\frac{U(t-s-h)-U(t-s)}{h}V(s)x.
+ \end{split}
+\]
+第一项趋于 \(U(t-s)GV(s)x\)：
+先用酉性控制差商与其极限的差，再对固定极限向量使用强连续性。
+第二项的输入 \(V(s)x\) 已固定且属于 \(D(G)\)，
+轨道导数公式给出其极限为 \(-U(t-s)GV(s)x\)。
+因此 \(F'(s)=0\)。对任意固定 \(y\in H\)，
+标量函数 \(\langle F(s),y\rangle\) 导数为零，故 \(F\) 是常值。
+比较 \(s=0\) 与 \(s=t\) 得 \(U(t)x=V(t)x\)。
+由于 \(D(G)\) 稠密，且两个算子有界，这个等式延伸到所有 \(x\in H\)。
+应用于已构造的 \(V\)，就得到 \(U(t)=e^{\mathrm itA}\)。
+
+若另一个自伴算子 \(B\) 也满足 \(U(t)=e^{\mathrm itB}\)，
+\cref{b1:prop:29-spectral-unitary-group}的定义域结论给出
+\(D(B)=D(G)\)、\(\mathrm iBx=Gx\)。故 \(B=A\)，包括定义域和作用都相同。
+自伴算子到酉群的反方向已经由该命题完整证明。
+\end{proof}
+
+这个对应把方程
+\[
+ u'(t)=\mathrm iAu(t),\qquad u(0)=x\in D(A)
+\]
+的演化写成 \(u(t)=U(t)x\)，其范数保持为 \(\|x\|\)。
+对任意 \(x\in H\)，连续轨道仍有定义；它具有强导数当且仅当 \(x\in D(A)\)。
+由于 \(U(t)D(A)=D(A)\)，域外的初值在任何固定时间都不会进入该域。
+若把指数约定改为 \(e^{-\mathrm itA}\)，相应的差商生成元便改为
+\(-\mathrm iA\)；符号与定义域都属于对应关系的一部分。

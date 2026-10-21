@@ -1,0 +1,345 @@
+% !TeX root = ../../Book2.tex
+\section{一维振荡积分}
+\label{b2:sec:2101}
+
+正积分的大小由振幅总量决定，振荡积分还受到相位变化的制约。对有限区间 \([\alpha,\beta]\)、实值相位 \(\phi\) 和复值振幅 \(a\)，记
+\[
+ I_\lambda(a,\phi)
+ \coloneqq\int_\alpha^\beta
+ e^{2\pi\mathrm i\lambda\phi(t)}\cdot a(t)\,\mathrm dt,
+ \quad \lambda>0.
+\]
+本章主要考察 \(\lambda\) 很大的情形；本节的一阶和高阶导数估计对任意正 \(\lambda\) 都成立。这一点在把导数下界吸收到参数后尤其有用，因为新的有效参数未必大于一。
+
+\ProseParagraphBreak
+
+直接取绝对值只能得到 \(|I_\lambda|\leq\|a\|_1\)，完全看不到振荡。要获得衰减，须比较邻近位置的相位：导数远离零时，相邻波动可以通过分部积分抵消；导数接近零的区域则不能这样处理。van der Corput 方法把这两个区域分开，并用高阶导数控制后一部分的长度。
+
+\subsection{分部积分}
+\label{b2:subsec:210101}
+
+先在足够光滑的情形中辨认边界项。设 \(\phi\in C^2([\alpha,\beta];\mathbb R)\)、\(|\phi'|\geq c>0\)，并设 \(a:[\alpha,\beta]\to\mathbb C\) 绝对连续。此时 \(a/\phi'\) 也绝对连续，由
+\[
+ e^{2\pi\mathrm i\lambda\phi(t)}
+ =\frac1{2\pi\mathrm i\lambda\phi'(t)}
+   \frac{\mathrm d}{\mathrm dt}e^{2\pi\mathrm i\lambda\phi(t)}
+\]
+得到
+\[
+ \begin{aligned}
+ I_\lambda(a,\phi)
+ &=\left[
+ \frac{e^{2\pi\mathrm i\lambda\phi(t)}\cdot a(t)}
+      {2\pi\mathrm i\lambda\phi'(t)}
+ \right]_\alpha^\beta\\
+ &\hspace{1em}
+ -\frac1{2\pi\mathrm i\lambda}
+ \int_\alpha^\beta e^{2\pi\mathrm i\lambda\phi(t)}
+       \cdot\left(\frac a{\phi'}\right)'(t)\,\mathrm dt.
+ \end{aligned}
+\]
+商的导数是 \(a'/\phi'-a\phi''/(\phi')^2\)，所以
+\[
+ |I_\lambda(a,\phi)|
+ \leq\frac1{2\pi\lambda}
+ \left[
+ \frac{|a(\alpha)|+|a(\beta)|+\|a'\|_1}{c}
+ +\frac1{c^2}\int_\alpha^\beta|a(t)|\cdot|\phi''(t)|\,\mathrm dt
+ \right].
+\]
+这个公式清楚地区分了振幅变化、相位导数变化和两个端点的贡献。相位本身很大并不提供下界；给 \(\phi\) 加上一个任意大的常数，只会改变整体复相位。
+
+\ProseParagraphBreak
+
+振幅在端点消失时，边界项为零；否则不能将其省略。例如
+\[
+ \int_0^1e^{2\pi\mathrm i\lambda t}\,\mathrm dt
+ =\frac{e^{2\pi\mathrm i\lambda}-1}{2\pi\mathrm i\lambda}.
+\]
+沿 \(\lambda=n+1/2\) 的序列，其模为 \(1/(\pi\lambda)\)。这里相位没有驻点，振幅甚至是常数，但仍只有一阶衰减。将一个光滑函数硬截断在闭区间上，与使振幅光滑地消失在端点附近，是两种不同的操作。
+
+\subsection{非驻相}
+\label{b2:subsec:210102}
+
+若振幅有紧支撑，导数转移不会产生边界项，可以反复使用刚才的恒等式。为便于后面处理参数族，下面把估计常数所需的振幅范数也写出来。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[非驻相衰减]\label{b2:prop:21-nonstationary-one}
+设 \(\alpha<\beta\)，\(a\in C_c^\infty((\alpha,\beta);\mathbb C)\)，\(\phi\in C^\infty((\alpha,\beta);\mathbb R)\)。设 \(V\) 是 \(\operatorname{supp}a\) 的一个邻域，在 \(V\) 上有 \(|\phi'|\geq c>0\)。对任意整数 \(N\geq1\)、任意 \(\lambda>0\)，
+\[
+ \left|\int_\alpha^\beta e^{2\pi\mathrm i\lambda\phi(t)}
+                \cdot a(t)\,\mathrm dt\right|
+ \leq C_N\lambda^{-N}\sum_{j=0}^N\|a^{(j)}\|_1.
+\]
+若在 \(V\) 上的 \(\phi',\ldots,\phi^{(N+1)}\) 绝对值不超过 \(M\)，则 \(C_N\) 只依赖 \(N,c^{-1},M\)，不依赖 \(\lambda\) 或振幅。所有 \(L^1\) 范数均在 \((\alpha,\beta)\) 上取。
+\end{proposition}
+\begin{proof}
+令 \(a_0=a\)，并在 \(V\) 上递归定义
+\[
+ a_{j+1}=-\left(\frac{a_j}{\phi'}\right)'.
+\]
+因 \(a_j\) 的支撑始终包含于 \(\operatorname{supp}a\)，可将这些函数在 \(V\) 外延为零，得到光滑紧支撑函数。每次积分分部都没有边界项，因此
+\[
+ I_\lambda(a,\phi)
+ =(2\pi\mathrm i\lambda)^{-N}
+   \int_\alpha^\beta e^{2\pi\mathrm i\lambda\phi(t)}
+          \cdot a_N(t)\,\mathrm dt.
+\]
+递归中的每次求导至多增加一阶振幅导数；系数则由 \(\phi'\) 的倒数与相位的各阶导数相乘、相加得到。归纳可写成
+\[
+ a_N=\sum_{j=0}^N c_{N,j}\cdot a^{(j)},
+\]
+其中每个 \(c_{N,j}\) 只含至多 \(N+1\) 阶的相位导数及 \((\phi')^{-1}\) 的有限次幂。题设给这些系数一致上界，故
+\(\|a_N\|_1\leq C\sum_{j=0}^N\|a^{(j)}\|_1\)。
+取绝对值即得结论。
+\end{proof}
+
+这里“非驻相”指相位一阶导数在振幅支撑附近有正下界。相位在别处可以有驻点，因为那里没有振幅。反之，一个参数族中的驻点即使尚未进入支撑，只要到支撑的距离趋于零，相位导数下界就可能变小，估计常数也会相应增大。
+
+\subsection{van der Corput 引理}
+\label{b2:subsec:210103}
+
+高阶导数下界允许一阶导数消失，因此不能在整个区间上使用倒导数。先建立只需要 \(C^1\) 正则性的一阶估计。单调导数未必经典可微，直接写出 \(\phi''\) 并积分并不合法；改用相位本身作变量，可以避开这一问题。
+
+\Needspace{6\baselineskip}
+\begin{lemma}[一阶导数估计]\label{b2:lem:21-monotone-first-derivative}
+设 \(\alpha<\beta\)，\(\phi\in C^1([\alpha,\beta];\mathbb R)\)，\(|\phi'|\geq c>0\)。若连续函数 \(1/\phi'\) 在该区间的总变差为有限数 \(V\)，则对任意 \(\lambda>0\) 与子区间 \([u,v]\subset[\alpha,\beta]\)，
+\[
+ \left|\int_u^v e^{2\pi\mathrm i\lambda\phi(t)}\,\mathrm dt\right|
+ \leq\frac{2c^{-1}+V}{2\pi\lambda}.
+\]
+这里总变差是所有有限分割上
+\(\sum_j|q(t_j)-q(t_{j-1})|\) 的上确界，其中 \(q=1/\phi'\)。
+特别地，若 \(\phi'\) 单调，则上述积分不超过 \(3/(2\pi\lambda c)\)。
+\end{lemma}
+\begin{proof}
+导数连续且不为零，所以它符号恒定，\(\phi\) 严格单调。相位换元 \(s=\phi(t)\) 将积分写成
+\[
+ \int_{\phi(u)}^{\phi(v)}
+       e^{2\pi\mathrm i\lambda s}\cdot q_*(s)\,\mathrm ds,
+ \quad
+ q_*(s)=\frac1{\phi'(\phi^{-1}(s))}.
+\]
+若上下限倒置，先反转积分方向，绝对值不变。函数 \(q_*\) 连续，\(\|q_*\|_\infty\leq c^{-1}\)，且沿单调换元的总变差不超过 \(V\)。
+
+在相位区间上取网格大小趋于零的分割，用 \(q_*\) 在分割点的值作分段线性插值 \(q_n\)。连续性保证 \(q_n\) 一致收敛到 \(q_*\)；插值不增大上确界范数，而且
+\[
+ \int|q_n'(s)|\,\mathrm ds
+ =\sum_j|q_*(s_j)-q_*(s_{j-1})|\leq V.
+\]
+每个 \(q_n\) 绝对连续，普通积分分部给出
+\[
+ \left|\int e^{2\pi\mathrm i\lambda s}
+                 \cdot q_n(s)\,\mathrm ds\right|
+ \leq\frac{2\|q_n\|_\infty+\|q_n'\|_1}{2\pi\lambda}
+ \leq\frac{2c^{-1}+V}{2\pi\lambda}.
+\]
+在固定的有限相位区间上，积分随一致逼近收敛，得到 \(q_*\) 的结论。若 \(\phi'\) 单调，倒数也单调，并且符号固定、绝对值至多为 \(c^{-1}\)，故其总变差不超过 \(c^{-1}\)。
+\end{proof}
+
+第二个准备事实说明：一个高阶导数始终不小的函数，不可能在很长的集合上保持很小。所控制的是集合的总长度，不要求这个集合本身是一个区间。
+
+\Needspace{6\baselineskip}
+\begin{lemma}[次水平集的长度]\label{b2:lem:21-sublevel-measure}
+设 \(r\geq1\) 为整数，\(\alpha<\beta\)，\(h\in C^r([\alpha,\beta];\mathbb R)\)，且 \(|h^{(r)}|\geq c>0\)。对任意 \(\delta>0\)，有
+\[
+ \left|\{\,t\in[\alpha,\beta]:|h(t)|\leq\delta\,\}\right|
+ \leq 2r\left(\frac{\delta}{c}\right)^{1/r}.
+\]
+\end{lemma}
+\begin{proof}
+记左侧集合为 \(E\)，其测度为 \(L\)。\(L=0\) 时无需证明。设 \(L>0\)，则 \(E\) 是非空紧集。函数
+\[
+ F(t)=|E\cap[\alpha,t]|
+\]
+连续且为 \(1\)-Lipschitz 函数，从 \(0\) 增至 \(L\)。取 \(t_0=\min E\)、\(t_r=\max E\)。对 \(1\leq j\leq r-1\)，令 \(t_j\) 为满足 \(F(t)\geq jL/r\) 的最小点。连续性给出 \(F(t_j)=jL/r\)；该点必在 \(E\) 中，否则其邻域不交 \(E\)，\(F\) 在此邻域为常数，与最小性矛盾。端点也分别满足 \(F(t_0)=0\)、\(F(t_r)=L\)。因此，对 \(0\leq i<j\leq r\)，
+\[
+ t_j-t_i\geq F(t_j)-F(t_i)=\frac{(j-i)L}{r}.
+\]
+这些点既落在 \(E\) 中，又具有可计算的间距。
+
+用这 \(r+1\) 个点作 Lagrange 插值多项式
+\[
+ P(t)=\sum_{j=0}^r h(t_j)
+       \prod_{\substack{0\leq\ell\leq r\\\ell\ne j}}
+       \frac{t-t_\ell}{t_j-t_\ell}.
+\]
+它的 \(t^r\) 系数为
+\[
+ A=\sum_{j=0}^r
+       \frac{h(t_j)}
+       {\prod_{\ell\ne j}(t_j-t_\ell)}.
+\]
+因为 \(|h(t_j)|\leq\delta\)，且
+\[
+ \left|\prod_{\ell\ne j}(t_j-t_\ell)\right|
+ \geq (L/r)^r\,j!(r-j)!,
+\]
+所以
+\[
+ |A|
+ \leq\delta\left(\frac rL\right)^r
+       \sum_{j=0}^r\frac1{j!(r-j)!}
+ =\frac{\delta}{r!}\left(\frac{2r}{L}\right)^r.
+\]
+函数 \(h-P\) 在 \(t_0,\ldots,t_r\) 为零。先在每两个相邻零点之间应用 Rolle 定理，得到至少 \(r\) 个一阶导数零点；如此重复 \(r\) 次，得到某个 \(\theta\in(t_0,t_r)\)，使
+\[
+ 0=(h-P)^{(r)}(\theta)
+   =h^{(r)}(\theta)-r!A.
+\]
+于是 \(c\leq r!|A|\leq\delta(2r/L)^r\)，整理即得所述长度界。
+\end{proof}
+
+现在可以证明\term[van-der-corput-yinli]{van der Corput 引理}[van der Corput lemma]。一阶情形需要控制倒导数的变化；二阶及以上情形则由最高阶导数下界自动限制低阶导数反复转向的次数。
+
+\Needspace{6\baselineskip}
+\begin{theorem}[van der Corput 引理]\label{b2:thm:21-vdc}
+设 \(\alpha<\beta\)，\(k\geq1\) 为整数，\(c>0\)、\(\lambda>0\)，\(\phi\in C^k([\alpha,\beta];\mathbb R)\)，\(a:[\alpha,\beta]\to\mathbb C\) 绝对连续。若 \(k=1\)，假设 \(|\phi'|\geq c\) 且 \(\phi'\) 单调；若 \(k\geq2\)，假设 \(|\phi^{(k)}|\geq c\)。则
+\[
+ \left|\int_\alpha^\beta
+ e^{2\pi\mathrm i\lambda\phi(t)}\cdot a(t)\,\mathrm dt\right|
+ \leq C_k(\lambda c)^{-1/k}
+       \bigl(\|a\|_\infty+\|a'\|_1\bigr),
+\]
+其中 \(C_k\) 只依赖 \(k\)，不依赖区间长度、相位、振幅、\(\lambda\) 或 \(c\)。
+\end{theorem}
+\begin{proof}
+先取振幅恒为一。\(k=1\) 时直接用\cref{b2:lem:21-monotone-first-derivative}。以下设 \(k\geq2\)，取任意阈值 \(\delta>0\)，将区间分为
+\[
+ E_\delta=\{\,t:|\phi'(t)|\leq\delta\,\}
+ \quad\text{和}\quad
+ [\alpha,\beta]\setminus E_\delta.
+\]
+对 \(h=\phi'\)、\(r=k-1\) 应用\cref{b2:lem:21-sublevel-measure}，得到
+\[
+ \left|\int_{E_\delta}e^{2\pi\mathrm i\lambda\phi(t)}
+                         \,\mathrm dt\right|
+ \leq |E_\delta|
+ \leq 2(k-1)\left(\frac{\delta}{c}\right)^{1/(k-1)}.
+\]
+
+补集上的积分使用一阶估计，但须先控制其单调区间数。若 \(k=2\)，\(\phi''\) 连续且不为零，因而符号固定，\(\phi'\) 在整个区间单调。若 \(k>2\)，\(\phi''\) 至多有 \(k-2\) 个互异零点：否则从 \(k-1\) 个零点出发，连续应用 \(k-2\) 次 Rolle 定理，会产生一个 \(\phi^{(k)}\) 的零点，矛盾。因此可将区间分成至多 \(k-1\) 个 \(\phi'\) 单调的区间。在每一片内，\(\phi'>\delta\) 和 \(\phi'<-\delta\) 各至多占一个区间。补集于是由至多 \(2(k-1)\) 个区间组成；端点的开闭不影响积分。在每个这样的区间上，先对内部闭子区间使用一阶引理，再令端点趋向边界，得到
+\[
+ \left|\int_{[\alpha,\beta]\setminus E_\delta}
+             e^{2\pi\mathrm i\lambda\phi(t)}\,\mathrm dt\right|
+ \leq \frac{C_k}{\lambda\delta}.
+\]
+两部分合并为
+\[
+ \left|\int_\alpha^\beta
+          e^{2\pi\mathrm i\lambda\phi(t)}\,\mathrm dt\right|
+ \leq C_k\left[
+       \left(\frac{\delta}{c}\right)^{1/(k-1)}
+       +\frac1{\lambda\delta}\right].
+\]
+选
+\(\delta=c^{1/k}\lambda^{-(k-1)/k}\)，两项都等于
+\((\lambda c)^{-1/k}\) 的常数倍。这个选择对每个 \(\lambda,c>0\) 都合法；整个证明没有使用 \(\lambda c\geq1\)。
+
+最后处理振幅。上述结论在任意子区间上仍成立，因为导数假设在限制后不变。令
+\[
+ F(t)=\int_\alpha^t e^{2\pi\mathrm i\lambda\phi(s)}\,\mathrm ds.
+\]
+则 \(\|F\|_\infty\leq C_k(\lambda c)^{-1/k}\)。函数 \(a\) 绝对连续，积分分部给出
+\[
+ I_\lambda(a,\phi)
+ =a(\beta)F(\beta)-\int_\alpha^\beta a'(t)F(t)\,\mathrm dt,
+\]
+从而得到所述上界。
+\end{proof}
+
+一阶中的单调性可以替换为受控的总变差，但不能仅保留 \(|\phi'|\geq c\)。沿用一阶引理，并作同样的振幅积分分部，可得
+\[
+ |I_\lambda(a,\phi)|
+ \leq \frac{2c^{-1}+\operatorname{Var}(1/\phi')}{2\pi\lambda}
+       \bigl(\|a\|_\infty+\|a'\|_1\bigr).
+\]
+因此关键不是导数是否有零点这一件事，还包括倒导数能否反复变化而积累很大的总变差。
+
+\ProseParagraphBreak
+
+下面的光滑相位族给出真实的失败例子。对正整数 \(N\)，令
+\[
+ q_N(s)=\frac{2+\cos(2\pi Ns)}3,
+ \quad
+ T_N(s)=\int_0^s q_N(v)\,\mathrm dv,
+ \quad 0\leq s\leq1.
+\]
+有 \(1/3\leq q_N\leq1\)、\(T_N(0)=0\)、\(T_N(1)=2/3\)，所以 \(T_N\) 有光滑反函数
+\(\phi_N:[0,2/3]\to[0,1]\)，并且
+\[
+ 1\leq\phi_N'(t)
+ =\frac1{q_N(\phi_N(t))}\leq3.
+\]
+然而在固定区间上取常数振幅、取 \(\lambda=N\)，换元 \(t=T_N(s)\) 给出
+\[
+ \begin{aligned}
+ \int_0^{2/3}e^{2\pi\mathrm iN\phi_N(t)}\,\mathrm dt
+ &=\int_0^1e^{2\pi\mathrm iNs}\cdot
+                  \frac{2+\cos(2\pi Ns)}3\,\mathrm ds\\
+ &=\frac16.
+ \end{aligned}
+\]
+最后一步把余弦写成两个复指数；所有非零整数频率的全周期积分为零，只留下常数项。故不存在只依赖导数下界的统一 \(C/N\) 估计。此例的倒导数总变差恰为 \(4N/3\)，也解释了为什么变差版本没有产生矛盾。
+
+\subsection{衰减估计}
+\label{b2:subsec:210104}
+
+导数下界 \(c\) 与高频参数始终以有效参数 \(\lambda c\) 一起出现。即使 \(\lambda\geq1\)，当相位接近退化时也可能有 \(\lambda c<1\)；上一定理仍然成立，只是此时其右侧可能不如平凡界 \(\|a\|_1\)。实际应用可取两者的较小值。不能先只证明参数大于一的定理，再不加说明地将它用于 \(\lambda c<1\)。
+
+\ProseParagraphBreak
+
+相位 \(t^k\) 展示了幂次的尺度来源。换元 \(t=\lambda^{-1/k}u\) 后，
+\[
+ \int e^{2\pi\mathrm i\lambda t^k}\cdot a(t)\,\mathrm dt
+ =\lambda^{-1/k}
+   \int e^{2\pi\mathrm i u^k}\cdot a(\lambda^{-1/k}u)\,\mathrm du.
+\]
+缩放告诉我们应在多大邻域内观察驻点，却还没有证明右侧积分趋于非零常数。后一个结论需要控制扩张积分区间上的振荡尾部，并排除对称性抵消。二次情形的非零主项将在\secref{b2:sec:2102}中算出；这里的换元只用来解释自然尺度，不单凭它断言一般高阶幂次的锐利性。
+
+\ProseParagraphBreak
+
+有限阶导数条件也可局部使用。若 \(\phi\) 在紧支撑附近光滑，且每一点至少有某个 \(1\leq j\leq k\) 满足 \(|\phi^{(j)}|\geq c>0\)，则连续性给出有限个邻域，使每一片上某个固定阶导数有下界 \(c/2\)。乘上光滑分割后，\(j\geq2\) 的片用 van der Corput 引理；\(j=1\) 的片用紧支撑非驻相估计，无须额外假设该片导数单调。对 \(\lambda\geq1\)，有限项相加得到 \(O(\lambda^{-1/k})\)。覆盖、分割函数导数、相位的有限阶导数与下界都参与常数，不能仅记录一个抽象的“有限型”条件。
+
+\ProseParagraphBreak
+
+这种统一上界在驻点碰撞时比逐点二次展开更稳定。取
+\[
+ I(\lambda,s)=\int_{\mathbb R}
+ e^{2\pi\mathrm i\lambda(t^3-st)}\cdot a(t)\,\mathrm dt,
+ \quad a\in C_c^\infty(\mathbb R;\mathbb C).
+\]
+三阶导数恒为六，因此 van der Corput 引理给出
+\(|I(\lambda,s)|\leq C_a\lambda^{-1/3}\)，其中 \(C_a\) 与 \(s\in\mathbb R\) 无关。若 \(s>0\)，两个驻点是 \(\pm\sqrt{s/3}\)，各点的二阶导数大小为 \(2\sqrt{3s}\)。后面的二次驻相公式因而会出现 \(s^{-1/4}\lambda^{-1/2}\) 的系数，不能在 \(s\downarrow0\) 时保持统一。
+
+\ProseParagraphBreak
+
+换元 \(t=\lambda^{-1/3}u\) 后，指数中的相位成为
+\(u^3-(s\lambda^{2/3})u\)。因此碰撞区域的自然参数是 \(s\lambda^{2/3}\)，相应范围是 \(s\asymp\lambda^{-2/3}\)。在此范围，驻点间距 \(\sqrt{s}\) 与三次振荡尺度 \(\lambda^{-1/3}\) 相当，两个局部二次模型已不能统一分离。对于固定的小正 \(s\)，二次驻点的局部宽度约为 \(\lambda^{-1/2}s^{-1/4}\)；要求它远小于 \(\sqrt{s}\)，也恰好得到 \(s\lambda^{2/3}\gg1\)。
+
+\ProseParagraphBreak
+
+\cref{b2:fig:21-critical-collision}画的是相位导数，而不是原相位；其横轴交点直接显示驻点的数目和碰撞。统一三阶估计无需写出 Airy 函数，尺度比较已经说明了分别使用二次近似的范围。
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=1cm,y=.6cm]
+\foreach \shift/\offset/\paneltitle in {-3.2/.65/{\(s<0\)},0/0/{\(s=0\)},3.2/-.65/{\(s>0\)}}{
+\begin{scope}[shift={(\shift,0)}]
+\draw[->] (-1.25,0)--(1.35,0) node[right]{\(t\)};
+\draw[AnalysisBlue,thick,domain=-1.05:1.05,samples=45] plot(\x,{1.3*\x*\x+\offset});
+\node at (0,2.35){\paneltitle};
+\end{scope}}
+\fill (0,0) circle(1.3pt);
+\fill (2.493,0) circle(1.3pt);
+\fill (3.907,0) circle(1.3pt);
+\node[below,font=\small] at (2.493,-.95){\(-\sqrt{s/3}\)};
+\node[below,font=\small] at (3.907,-.95){\(\sqrt{s/3}\)};
+\node at (0,-2.7){碰撞尺度：\(\sqrt{s}\asymp\lambda^{-1/3}\)，即 \(s\lambda^{2/3}\asymp1\)};
+\end{tikzpicture}
+\caption[三次相位的驻点碰撞]{\(\phi_s'(t)=3t^2-s\) 的三个符号情形，不按比例。横轴交点是驻点；当两个交点的间距降到三次振荡尺度时，不能再把它们作为两个统一非退化的二次模型。}
+\label{b2:fig:21-critical-collision}
+\end{figure}
+
+非驻相区域仍需连同支撑一起判断。若 \(s<0\)，则
+\(\phi_s'(t)=3t^2+|s|\geq|s|\)，固定负参数给出任意阶衰减，但其常数随 \(|s|\downarrow0\) 增长。若振幅支撑满足 \(|t|\geq\varepsilon>0\)，则对足够小的 \(|s|\)，一阶导数仍有统一正下界，可以恢复对这些参数一致的快速衰减。退化的影响由相位、支撑与参数范围共同决定。

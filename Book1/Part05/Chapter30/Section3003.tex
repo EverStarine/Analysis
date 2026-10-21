@@ -1,0 +1,177 @@
+% !TeX root = ../../Book1.tex
+\section{Borel–Cantelli 引理与基本概率估计}
+\label{b1:sec:3003}
+
+积分提供平均大小，概率估计则把平均大小转化为偏差事件的上界。单次估计本身不涉及长期行为；当一列偏差概率可求和时，Borel--Cantelli 引理才把它们组织成几乎必然的最终结论。反向的无穷多次发生准则需要独立性，因而也说明了上一节的结构为何重要。
+
+\ProseParagraphBreak
+
+两条引理可对照 Axler 的《Measure, Integration \& Real Analysis》\cite[Borel--Cantelli Lemma 12.6, relative of Borel--Cantelli Lemma 12.10, pp.~383, 385]{Axler2020Measure}；第一条的一般测度空间版本另见 Fremlin 的《Measure Theory》第二卷\cite[Lemma 273A]{Fremlin2016Measure}。本节保留全部证明，并在最后用具体事件区分可求和、独立和概率趋零这三个条件。
+
+\subsection{Markov 与 Chebyshev 估计}
+\label{b1:subsec:300301}
+
+\term[markov-budengshi]{Markov 不等式}[Markov's inequality]是\cref{b1:prop:integral-markov}的概率写法。它只需要积分的单调性，不要求变量独立，也不要求其分布有密度。
+
+\begin{theorem}[Markov]\label{b1:thm:30-markov}
+设 \((\Omega,\mathcal F,\mathbb P)\) 是概率空间，\(X\geq0\) 是实随机变量。则对每个 \(a>0\)，
+\[
+ \mathbb P(X\geq a)\leq\frac{\mathbb E X}{a}.
+\]
+更一般地，若 \(Z\) 是实值或复值可测函数，\(p>0\)，则对每个 \(a>0\)，
+\[
+ \mathbb P(|Z|\geq a)\leq\frac{\mathbb E|Z|^p}{a^p},
+\]
+其中期望可以为 \(+\infty\)。
+\end{theorem}
+\begin{proof}
+对 \((\Omega,\mathcal F,\mathbb P)\) 上的非负可测函数 \(X\)，\cref{b1:prop:integral-markov}给出 \(a\cdot\mathbb P(X\geq a)\leq\mathbb E X\)。再将它用于 \(|Z|^p\) 与阈值 \(a^p\)，利用 \(\{|Z|\geq a\}=\{|Z|^p\geq a^p\}\)，即得第二式。
+\end{proof}
+
+例如，若 \(X=b\cdot\mathbf1_A\)，其中 \(b>0\)，则在阈值 \(a=b\) 处有 \(\mathbb P(X\geq b)=\mathbb E X/b=\mathbb P(A)\)。所以若只知道非负变量的期望，上述常数不能统一改小。若知道的是围绕均值的平方误差，就得到更适合平均值问题的估计。
+
+\begin{corollary}[Chebyshev]\label{b1:cor:30-chebyshev}
+设 \(X\in L^2(\mathbb P)\) 是概率空间 \((\Omega,\mathcal F,\mathbb P)\) 上的实随机变量。则对每个 \(a>0\)，
+\[
+ \mathbb P(|X-\mathbb E X|\geq a)
+ \leq\frac{\operatorname{Var}(X)}{a^2}.
+\]
+若 \(\sigma_X=\sqrt{\operatorname{Var}(X)}>0\)，则对每个 \(t>0\)，还有
+\[
+ \mathbb P(|X-\mathbb E X|\geq t\sigma_X)\leq t^{-2}.
+\]
+\end{corollary}
+\begin{proof}
+在\cref{b1:thm:30-markov}中取 \(Z=X-\mathbb E X\)、\(p=2\)，并使用方差的定义。若 \(\sigma_X>0\)，再取 \(a=t\sigma_X>0\)，便得第二式。
+\end{proof}
+
+这个估计称为\term[chebyshev-budengshi]{Chebyshev 不等式}[Chebyshev's inequality]，可对照 Axler 的《Measure, Integration \& Real Analysis》\cite[Chebyshev's inequality 12.21, p.~389]{Axler2020Measure}。当 \(\sigma_X=0\) 时，\cref{b1:prop:30-variance-formula}已经给出 \(X=\mathbb E X\) 几乎必然，故任意正阈值的偏差概率为零。将阈值写成 \(t\sigma_X\) 时必须另作这个处理，因为零阈值下的事件 \(\{|X-\mathbb E X|\geq0\}\) 是整个空间。
+
+\subsection{第一 Borel–Cantelli 引理}
+\label{b1:subsec:300302}
+
+设 \((A_n)_{n\geq1}\) 是概率空间 \((\Omega,\mathcal F,\mathbb P)\) 上的事件列。事件
+\[
+ \limsup_{n\to\infty}A_n
+ =\bigcap_{m=1}^{\infty}\bigcup_{n=m}^{\infty}A_n
+\]
+由在无穷多个 \(A_n\) 中出现的样本点组成：无论从哪一项以后开始看，仍能遇到一次 \(A_n\)。其补集为
+\[
+ \bigcup_{m=1}^{\infty}\bigcap_{n=m}^{\infty}A_n^c,
+\]
+即只有有限多个 \(A_n\) 发生的事件。以下用“\(A_n\) 无穷多次发生”表示前一个事件。
+
+\begin{lemma}[第一 Borel--Cantelli]\label{b1:lem:30-borel-cantelli-first}
+设 \((\Omega,\mathcal F,\mathbb P)\) 是概率空间，\((A_n)_{n\geq1}\subseteq\mathcal F\) 是事件列。若
+\[
+ \sum_{n=1}^{\infty}\mathbb P(A_n)<\infty,
+\]
+则
+\[
+ \mathbb P\left(\limsup_{n\to\infty}A_n\right)=0.
+\]
+换言之，几乎必然只有有限多个 \(A_n\) 发生。
+\end{lemma}
+\begin{proof}
+对每个 \(m\geq1\)，有
+\[
+ \limsup_nA_n\subseteq\bigcup_{n=m}^{\infty}A_n,
+ \quad
+ \mathbb P\left(\limsup_nA_n\right)
+ \leq\sum_{n=m}^{\infty}\mathbb P(A_n).
+\]
+收敛级数的尾和趋零，故左端为零。
+\end{proof}
+
+这就是\term[borel-cantelli-yinli]{Borel--Cantelli 引理}[Borel--Cantelli lemma]的第一部分。证明没有使用独立性：可求和性本身已经使全部远期事件的并具有任意小的概率。它把一串数值估计提升为逐个样本的最终性质。
+
+\begin{corollary}[可求和的误差事件]\label{b1:cor:30-summable-errors}
+设 \(X_n,X\) 是概率空间 \((\Omega,\mathcal F,\mathbb P)\) 上的实随机变量。下列任一条件都推出 \(X_n\to X\) 几乎必然：
+\begin{enumerate}
+ \item 存在确定的正数列 \(a_n\to0\)，满足 \(\sum_{n\geq1}\mathbb P(|X_n-X|>a_n)<\infty\)。
+ \item 对每个整数 \(k\geq1\)，都有 \(\sum_{n\geq1}\mathbb P(|X_n-X|>1/k)<\infty\)。
+\end{enumerate}
+\end{corollary}
+\begin{proof}
+在第一种情形，把第一引理用于 \(A_n=\{|X_n-X|>a_n\}\)。除去一个零测集后，存在依赖于样本点的 \(N\)，使 \(n\geq N\) 时 \(|X_n-X|\leq a_n\)。因为 \(a_n\to0\)，便得到逐点收敛。
+
+在第二种情形，对每个 \(k\) 分别应用第一引理，得到零测集 \(N_k\)，使 \(\omega\notin N_k\) 时最终有 \(|X_n(\omega)-X(\omega)|\leq1/k\)。并集 \(N=\bigcup_{k\geq1}N_k\) 仍为零测集。在其补集上，给定 \(\varepsilon>0\)，先选 \(k\) 使 \(1/k<\varepsilon\)，再选上述最终指标，即得 \(X_n(\omega)\to X(\omega)\)。
+\end{proof}
+
+例如，若 \(X_n,X\) 在同一概率空间上，且对某个 \(p>0\) 有
+\[
+ \sum_{n=1}^{\infty}\mathbb E|X_n-X|^p<\infty,
+\]
+则由 Markov 不等式，对每个 \(k\geq1\) 有
+\[
+ \sum_{n=1}^{\infty}\mathbb P(|X_n-X|>1/k)
+ \leq k^p\sum_{n=1}^{\infty}\mathbb E|X_n-X|^p<\infty.
+\]
+因此误差不仅依概率趋零，还几乎必然趋零。这里只要求误差矩的级数收敛，不要求变量间独立。
+
+\subsection{独立性与第二 Borel–Cantelli 引理}
+\label{b1:subsec:300303}
+
+若 \(\sum_n\mathbb P(A_n)=\infty\)，尾并估计不再提供信息。独立性使我们能够改算它的补集：一长串事件全不发生的概率等于一串补概率的乘积，而发散的概率和将使该乘积趋零。
+
+\begin{lemma}[第二 Borel--Cantelli]\label{b1:lem:30-borel-cantelli-second}
+设 \((\Omega,\mathcal F,\mathbb P)\) 是概率空间，\((A_n)_{n\geq1}\subseteq\mathcal F\) 是相互独立的事件列。若
+\[
+ \sum_{n=1}^{\infty}\mathbb P(A_n)=\infty,
+\]
+则
+\[
+ \mathbb P\left(\limsup_{n\to\infty}A_n\right)=1.
+\]
+\end{lemma}
+\begin{proof}
+由\cref{b1:cor:30-events-generated-sigma}，补事件族也独立。对固定 \(m\geq1\) 与任意 \(N\geq m\)，有
+\[
+ \begin{aligned}
+ \mathbb P\left(\bigcap_{n=m}^NA_n^c\right)
+ &=\prod_{n=m}^N\bigl(1-\mathbb P(A_n)\bigr)\\
+ &\leq\exp\left(-\sum_{n=m}^N\mathbb P(A_n)\right).
+ \end{aligned}
+\]
+这里用到了 \(1-u\leq e^{-u}\)、\(0\leq u\leq1\)。当 \(N\to\infty\) 时，发散的尾和使右端趋零。左侧的事件递减，概率测度的上连续性给出
+\[
+ \mathbb P\left(\bigcap_{n=m}^{\infty}A_n^c\right)=0.
+\]
+对 \(m\) 取可数并，便有
+\[
+ \mathbb P\left(\bigcup_{m=1}^{\infty}\bigcap_{n=m}^{\infty}A_n^c\right)=0.
+\]
+括号内是只有有限多个 \(A_n\) 发生的事件，故所需结论成立。
+\end{proof}
+
+合并两条引理可知，对相互独立的事件列，无穷多次发生的概率由概率级数的敛散完全决定，分别为零或一。这里的零一结论只针对这个事件，并不是说独立试验中的每个事件都具有零一概率。
+
+\ProseParagraphBreak
+
+在独立同分布 Bernoulli 试验中，若 \(0<p<1\)，事件 \(\{X_n=1\}\) 的概率和与 \(\{X_n=0\}\) 的概率和都发散。分别应用第二引理，再把两个概率一事件相交，可知零与一几乎必然都出现无穷多次。这个结论只保证反复出现；出现频率是否趋于 \(p\)，是大数定律所回答的更细问题。
+
+\subsection{几乎必然事件与反例}
+\label{b1:subsec:300304}
+
+先看独立性不可省略的例子。在 \(((0,1),\mathcal B((0,1)),m_1)\) 上取
+\[
+ A_n=(0,1/n).
+\]
+虽然 \(\sum_n\mathbb P(A_n)=\sum_n1/n=\infty\)，但这些事件递减，且其交为空，所以 \(\limsup_nA_n=\varnothing\)。每个样本点只属于有限多个 \(A_n\)。例如 \(\mathbb P(A_2\cap A_3)=1/3\)，而 \(\mathbb P(A_2)\cdot\mathbb P(A_3)=1/6\)，明确显示了独立性失败。这个例子也说明，第一引理的可求和条件是充分条件，并非无穷多次发生概率为零的必要条件。
+
+\ProseParagraphBreak
+
+无独立性时，发散概率和甚至不迫使无穷多次发生的概率取零或一。在 \([0,1]\) 的 Lebesgue 概率空间上，固定 \(A=[0,1/2]\)，令全部 \(A_n=A\)。此时概率和发散，但 \(\limsup_nA_n=A\) 的概率为 \(1/2\)。更一般地，重复一个概率为 \(q\in(0,1)\) 的事件，就会得到同样的 \(q\)。
+
+\ProseParagraphBreak
+
+最后，即使事件独立，单独知道 \(\mathbb P(A_n)\to0\) 也不能保证最终不再发生。由\cref{b1:cor:30-iid-construction}取独立 Bernoulli 变量 \(X_n\)，其中
+\[
+ \mathbb P(X_n=1)=\frac1{n+1},
+ \quad \mathbb P(X_n=0)=1-\frac1{n+1}.
+\]
+对 \(A_n=\{X_n=1\}\)，有 \(\mathbb P(A_n)\to0\)，但概率和发散，所以第二引理给出 \(X_n=1\) 几乎必然出现无穷多次。另一方面，对每个有限 \(p\geq1\)，
+\[
+ \mathbb E|X_n|^p=\frac1{n+1}\longrightarrow0.
+\]
+故 \(X_n\) 依概率并在这些 \(L^p\) 中趋零，却不几乎必然趋零。依概率收敛允许小概率误差在无限多个时刻反复出现；可求和估计才把这些误差压缩到几乎必然只有有限次。下一节的大数定律将把这种差别落实到平均值序列上。

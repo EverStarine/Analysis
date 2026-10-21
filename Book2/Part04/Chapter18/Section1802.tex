@@ -1,247 +1,150 @@
 % !TeX root = ../../Book2.tex
-\section{Calderón–Zygmund 分解}
-\label{b2:sec:1802}
+\section{自举法}
+\label{b2:sec:1602}
 
-一个 \(L^1\) 函数的总质量虽有限，高度却可能任意大。若直接用已有的 \(L^2\) 算子界处理它，高尖峰就会造成困难。Calderón--Zygmund 分解的做法是先选出局部平均过大的区域，把其中的函数压到受控高度；被削下来的部分仍保留在原区域内，但总积分被安排为零。这两部分分别适合不同的估计：高度控制使好部分进入 \(L^2\)，零平均使坏部分经过奇异积分后在远处衰减得更快。
+得到二阶弱导数后，方程可以合法地再作分布微分。但每次微分都会同时作用于系数，产生新的右端。自举的关键不是一句“反复求导”，而是证明这些新项具有足够的可积性，使上一节的估计能够再次使用。
 
-\subsection{好/坏分解}
-\label{b2:subsec:180201}
+\subsection{系数正则性}
+\label{b2:subsec:160201}
 
-沿用上一章的标准半开二进立方体网格 \(\mathcal D\)。对局部可积函数 \(f\)，记
+以 \(-\operatorname{div}(A\nabla u)=f\) 为例，形式求 \(x_k\) 导数得到
 \[
- f_Q=\frac1{|Q|}\int_Q f(y)\,\mathrm dy.
+ -\operatorname{div}(A\nabla\partial_ku)
+ =\partial_kf+\operatorname{div}((\partial_kA)\nabla u).
 \]
-选择坏区域时要看 \(|f|\) 的平均，避免正负抵消掩盖尖峰；替换函数值时则取 \(f\) 本身的平均。两种平均的作用不同。下面给出\term[calderon-zygmund-fenjie]{Calderón--Zygmund 分解}[Calderón--Zygmund decomposition]的精确形式。
+若只有 \(A\in W^{1,\infty}\)、\(f\in L^2\)，右端一般只属于 \(H^{-1}\)，不能再次套用要求 \(L^2\) 右端的二阶定理。若进一步 \(A\in W^{2,\infty}\)、\(f\in H^1\)，并且已经知道 \(u\in H^2\)，则 \((\partial_kA)\nabla u\in H^1\)，其散度属于 \(L^2\)，因而可以把 \(\partial_ku\) 提高到 \(H^2\)。
+
+\ProseParagraphBreak
+
+系数的这一级额外导数不可随意省略。例如在一维取正的 Lipschitz 系数 \(a(x)=1+|x|\)，令 \(u'(x)=1/a(x)\)。则 \(-(au')'=0\)，\(u\in H_{\mathrm{loc}}^2\)，但 \(u''\) 在零点有跳跃，故 \(u\notin H_{\mathrm{loc}}^3\)。右端已光滑，解仍受到系数不光滑的限制。这个例子精确对应上一行中对 \(\partial_kA\) 再求导的需要。
+
+\ProseParagraphBreak
+
+本节所列 \(W^{m+1,\infty}\) 条件是便于统一证明的一组充分条件，并非每个具体方程的最弱假设。常系数的导数项全部消失；若某些系数仅沿特定方向变化，也可能先在其他方向取得更高正则性。使用定理时可以利用这些特殊结构，但需要重做相应的乘积估计，不能把一般结论的假设凭经验删除。
+
+\subsection{高阶 Sobolev 正则性}
+\label{b2:subsec:160202}
 
 \Needspace{6\baselineskip}
-\begin{theorem}[Calderón--Zygmund 分解]\label{b2:thm:18-cz-decomposition}
-设 \(d\geq1\) 为整数，\(f\in L^1(\mathbb R^d;\mathbb C)\)，\(\alpha>0\)。存在至多可数个互不相交的半开二进立方体 \(Q_j\)，令 \(E=\bigcup_jQ_j\)，并定义
+\begin{theorem}[内部高阶正则性]
+\label{b2:thm:16-higher-regularity}
+设 \(d\) 为正整数，\(\Omega\subset\mathbb R^d\) 为非空开集，\(m\) 为非负整数。设实矩阵场
 \[
- g(x)=\begin{cases}
- f(x),&x\notin E,\\
- f_{Q_j},&x\in Q_j,
- \end{cases}
- \quad b_j=(f-f_{Q_j})\cdot\mathbf1_{Q_j}.
+ A\in W_{\mathrm{loc}}^{m+1,\infty}(\Omega;\mathbb R^{d\times d})
 \]
-则 \(f=g+\sum_jb_j\) 几乎处处，级数在 \(L^1\) 中收敛，并有
+在每个紧含子域上有椭圆下界：对任意非空开集 \(V\Subset\Omega\)，存在 \(\lambda_V>0\)，使 \(\xi^{\mathsf T}A(x)\xi\geq\lambda_V|\xi|^2\) 对几乎处处 \(x\in V\)、全部 \(\xi\in\mathbb R^d\) 成立。设实值 \(f\in H_{\mathrm{loc}}^m(\Omega;\mathbb R)\)、\(u\in H_{\mathrm{loc}}^1(\Omega;\mathbb R)\) 满足
 \[
- \begin{gathered}
- \alpha<\frac1{|Q_j|}\int_{Q_j}|f|\leq2^d\alpha,
- \quad \sum_j|Q_j|\leq\alpha^{-1}\|f\|_1,\\
- \|g\|_\infty\leq2^d\alpha,
- \quad\|g\|_1\leq\|f\|_1,
- \quad\int b_j=0,
- \quad\sum_j\|b_j\|_1\leq2\|f\|_1.
- \end{gathered}
+ \int_\Omega A\nabla u\cdot\nabla\varphi=\int_\Omega f\varphi
+ \qquad(\varphi\in C_c^\infty(\Omega;\mathbb R)).
 \]
-若另外 \(f\in L^2(\mathbb R^d)\)，则 \(g\in L^2\)，\(\sum_jb_j\) 也在 \(L^2\) 中收敛，并且
-\[
- \|g\|_2^2\leq2^d\alpha\|f\|_1,
- \quad \|f\|_2^2=\|g\|_2^2+\sum_j\|b_j\|_2^2.
-\]
+则 \(u\in H_{\mathrm{loc}}^{m+2}(\Omega)\)。对非空开集 \(U\Subset V\Subset\Omega\)，有
+\[\lVert u\rVert_{H^{m+2}(U)}
+ \le C\bigl(\lVert f\rVert_{H^m(V)}+\lVert u\rVert_{H^1(V)}\bigr),\]
+其中 \(C\) 只依赖 \(d,m\)、\(\operatorname{dist}(U,\partial V)^{-1}\)、椭圆下界 \(\lambda_V\) 和 \(A\) 在 \(V\) 上的 \(W^{m+1,\infty}\) 范数。
 \end{theorem}
 \begin{proof}
-用\cref{b2:thm:17-dyadic-level}选择满足
-\(|Q|^{-1}\int_Q|f|>\alpha\) 的极大二进立方体。回忆该选择的理由：二进立方体相交时必有一个包含另一个；沿祖先向上，平均值不超过 \(\|f\|_1/|Q|\)，所有足够大的祖先都不再超水平。在仍超水平的有限多个祖先中取最大的一个，就得到所需的极大者。这些极大者互不相交，其二进父立方体 \(\widetilde Q_j\) 的平均不超过 \(\alpha\)。因此
-\[
- \int_{Q_j}|f|>\alpha|Q_j|,
- \quad \int_{Q_j}|f|\leq\int_{\widetilde Q_j}|f|
- \leq\alpha|\widetilde Q_j|=2^d\alpha|Q_j|.
-\]
-对第一式求和得到坏区域的测度界。对 \(E\) 外的点，所有二进平均都不超过 \(\alpha\)；由上一章已经证明的二进微分结论，\(|f|\leq\alpha\) 在该处几乎处处成立。
+\(m=0\) 时，\cref{b2:thm:16-interior-h2}及\subsecref{b2:subsec:160103}的有界重叠覆盖已经同时给出正则性和所需估计。下面设 \(m\geq1\)，并假设第 \(m-1\) 阶的正则性与定量估计都已建立。
 
-按陈述定义 \(g\)。在 \(E\) 内，
+固定 \(U\Subset V\Subset\Omega\)，在两者之间选取开集
 \[
- |f_{Q_j}|\leq\frac1{|Q_j|}\int_{Q_j}|f|\leq2^d\alpha,
- \quad \int_{Q_j}|g|=|Q_j|\cdot|f_{Q_j}|
-                          \leq\int_{Q_j}|f|.
+ U\Subset W\Subset V.
 \]
-结合 \(E\) 外的结论，得到 \(g\) 的两个范数界。每个坏块满足
+例如记 \(\delta=\operatorname{dist}(U,\partial V)>0\)，可取
+\(W=\{x:\operatorname{dist}(x,\overline U)<\delta/3\}\)；两层间距均由 \(\delta\) 的固定比例控制。因为现有系数和数据满足第 \(m-1\) 阶的假设，归纳结论先给出 \(u\in H_{\mathrm{loc}}^{m+1}\)，并在 \(W,V\) 上给出
 \[
- \int b_j=\int_{Q_j}f-|Q_j|\cdot f_{Q_j}=0,
- \quad \|b_j\|_1\leq\int_{Q_j}|f|+|Q_j|\cdot|f_{Q_j}|
-                         \leq2\int_{Q_j}|f|.
+ \|u\|_{H^{m+1}(W)}
+ \leq C_{m-1,W,V}
+       \bigl(\|f\|_{H^{m-1}(V)}+\|u\|_{H^1(V)}\bigr).
 \]
-故 \(\sum_j\|b_j\|_1\leq2\|f\|_1\)，级数在 \(L^1\) 中绝对收敛。不交性还说明每个点至多落在一个坏块中，因而逐点表达与 \(L^1\) 极限相同，给出分解等式。这些论证同样适用于复值函数，并未使用 \(f\) 的正负部分。
+现在才对 \(|\beta|=m\) 令 \(w=D^\beta u\)，故 \(w\in H^1(W)\) 已有依据。弱导数的 Leibniz 法则给出
+\[
+ -\operatorname{div}(A\nabla w)
+ =D^\beta f+\sum_{0<\gamma\le\beta}\binom\beta\gamma
+       \operatorname{div}\bigl((D^\gamma A)\nabla D^{\beta-\gamma}u\bigr).
+\]
+关键在于和内每一项都少用至少一个解的导数，却要消耗系数的导数。将其中一个散度明确展开：
+\[
+ \begin{aligned}
+ &\operatorname{div}\bigl((D^\gamma A)\nabla D^{\beta-\gamma}u\bigr)\\
+ &\quad=\sum_{i,j=1}^d
+ \bigl((\partial_iD^\gamma a_{ij})\,\partial_jD^{\beta-\gamma}u
+       +(D^\gamma a_{ij})\,\partial_{ij}D^{\beta-\gamma}u\bigr).
+ \end{aligned}
+\]
+这里 \(1\leq|\gamma|\leq m\)。系数导数的阶数最多为 \(m+1\)，在 \(W\) 上有本性上界；解导数的阶数分别为 \(m-|\gamma|+1\) 和 \(m-|\gamma|+2\)，最多为 \(m+1\)，已由归纳控制。因此 Sobolev 乘积法则使该通量属于 \(H^1(W;\mathbb R^d)\)，并给出具体界
+\[
+ \left\|\operatorname{div}\bigl((D^\gamma A)
+              \nabla D^{\beta-\gamma}u\bigr)\right\|_{L^2(W)}
+ \leq C_{d,m}\|A\|_{W^{m+1,\infty}(W)}
+                    \cdot\|u\|_{H^{m+1}(W)}.
+\]
+右端 \(D^\beta f\) 也在 \(L^2(W)\)，所以方程的整个新右端是 \(L^2(W)\) 数据。上述等式只使用已有 Sobolev 导数的乘积法则，可由内部磨光和相应乘积的 \(L^2\) 极限核验，不涉及任意分布与粗糙系数的乘法。
 
-若 \(f\in L^2\)，则
+将内部 \(H^2\) 估计应用于这个 \(w\)，得到归纳所需的完整接口：
 \[
- \|g\|_2^2\leq\|g\|_\infty\cdot\|g\|_1
-                         \leq2^d\alpha\|f\|_1.
+ \begin{aligned}
+ \|D^\beta u\|_{H^2(U)}
+ \leq C_{U,W,A}\Bigl(&\|D^\beta f\|_{L^2(W)}
+                   +\|D^\beta u\|_{H^1(W)}\\
+ &+\sum_{0<\gamma\leq\beta}\binom\beta\gamma
+ \left\|\operatorname{div}\bigl((D^\gamma A)
+                 \nabla D^{\beta-\gamma}u\bigr)\right\|_{L^2(W)}
+                         \Bigr).
+ \end{aligned}
 \]
-又 \(b=f-g\in L^2\)，且 \(b_j=b\cdot\mathbf1_{Q_j}\)。不交性给出
-\(\sum_j\|b_j\|_2^2=\|b\|_2^2\)，所以坏块级数的尾部 \(L^2\) 范数趋于零。更精确地，在每个 \(Q_j\) 上，常数函数 \(f_{Q_j}\) 与 \(b_j\) 正交，因为
+这里 \(C_{U,W,A}\) 按上一节的二阶估计选取。对有限个 \(|\beta|=m\) 求和，并将较低阶导数纳入 \(\|u\|_{H^{m+1}(W)}\)，便得
 \[
- \int_{Q_j}b_j\overline{f_{Q_j}}
- =\overline{f_{Q_j}}\int_{Q_j}b_j=0.
+ \|u\|_{H^{m+2}(U)}
+ \leq C\Bigl(\|f\|_{H^m(W)}
+       +(1+\|A\|_{W^{m+1,\infty}(W)})
+                    \cdot\|u\|_{H^{m+1}(W)}\Bigr).
 \]
-在各块上使用平方范数的勾股恒等式，再与 \(E\) 外的积分合并，便得到陈述中的精确 \(L^2\) 恒等式。
+最后代入开头在 \(W,V\) 上的第 \(m-1\) 阶估计，再用
+\(\|f\|_{H^{m-1}(V)}\leq\|f\|_{H^m(V)}\)，就得到所列第 \(m\) 阶估计。各层间距可按固定比例预留，只有 \(m\) 次有限归纳；所有系数范数都由 \(V\) 上的 \(W^{m+1,\infty}\) 范数控制，因而常数仅有陈述中列出的依赖。这一步同时证明正则性提升与定量界，没有把前者代替后者。
 \end{proof}
-为什么必须用平均值替换坏块，而不是简单地将它置零？若在 \(Q\) 上用常数 \(a\) 替换，剩余部分的积分为
-\(\int_Qf-a|Q|\)。使其为零的唯一选择正是 \(a=f_Q\)。因此，好部分保留了每块的总质量，坏部分只保留块内相对于平均值的变化。若改用 \((|f|)_Q\)，一般就失去了这一抵消。好函数的名称仅指高度受控，并不表示它连续或光滑。
+
+对常系数 Laplace 方程，上述论证尤其直接：\(-\Delta D^\beta u=D^\beta f\)。一般变系数方程的额外项只含较低阶的解导数，正是归纳能够闭合的原因；若求导后又在右端出现尚未控制的最高阶导数，就必须先把它保留在主部，不能把它当成已知数据。
 
 \ProseParagraphBreak
 
-以一维函数 \(f=4\cdot\mathbf1_{[0,1/4)}\) 和高度 \(\alpha=1\) 为例。区间 \([0,1/2)\) 上的平均为 \(2\)，其二进父区间 \([0,1)\) 上的平均恰为 \(1\)；所有更大的祖先平均更小。因此唯一的极大坏区间是 \(Q=[0,1/2)\)，分解为
+若方程还包含低阶项 \(b\cdot\nabla u+cu\)，第 \(m\) 步可要求实系数
+\(b\in W_{\mathrm{loc}}^{m,\infty}(\Omega;\mathbb R^d)\)、
+\(c\in W_{\mathrm{loc}}^{m,\infty}(\Omega;\mathbb R)\)；\(m=0\) 时只需局部本性有界。将低阶项移到右端后，Leibniz 法则对每个 \(|\beta|\leq m\) 给出
 \[
- g=2\cdot\mathbf1_{[0,1/2)},
- \quad b=2\cdot\mathbf1_{[0,1/4)}
-             -2\cdot\mathbf1_{[1/4,1/2)}.
+ \|D^\beta(b\cdot\nabla u+cu)\|_{L^2(W)}
+ \leq C_{d,m}
+ \bigl(\|b\|_{W^{m,\infty}(W)}+\|c\|_{W^{m,\infty}(W)}\bigr)
+                    \cdot\|u\|_{H^{m+1}(W)}.
 \]
-\Cref{b2:fig:18-cz-step-model}显示，削去的正面积由右半块的负面积抵消。这里
-\(\|f\|_1=\|g\|_1=\|b\|_1=1\)，而平方范数分别为 \(4,2,2\)，可直接验证定理中的恒等式。坏块并没有变得处处小；它获得的是零平均。
+解导数仍不超过归纳中已经控制的 \(m+1\) 阶，因此同一归纳接口可继续使用，常数另依赖这些低阶系数范数。对非线性方程则须额外检查复合函数的 Sobolev 正则性：从 \(u\in H^2\) 不能在所有维数自动推出 \(F(u)\in H^1\) 或 \(H^2\)。例如含高次幂的项，其导数是 \(F'(u)\nabla u\)，必须先用嵌入定理保证乘积可积。自举是一系列空间之间的合法映射，而不是只按形式导数计数。
 
-\begin{figure}[htbp]
- \centering
- \begin{tikzpicture}[x=3.6cm,y=0.38cm,font=\small]
-  \begin{scope}
-   \fill[AnalysisBlueLight] (0,0) rectangle (0.25,4);
-   \draw[AnalysisBlue,thick] (0,0)--(0,4)--(0.25,4)--(0.25,0)--(0.72,0);
-   \draw[->,AnalysisGray] (-0.03,0)--(0.77,0);
-   \draw[->,AnalysisGray] (0,-2.3)--(0,4.7);
-   \node[above] at (0.35,5) {原函数 \(f\)};
-   \node[left] at (0,4) {\(4\)};
-   \foreach \x/\lab in {0/0,0.25/{1/4},0.5/{1/2}} {
-    \draw (\x,0.12)--(\x,-0.12);
-    \node at (\x,-2.8) {\(\lab\)};
-   }
-  \end{scope}
-  \begin{scope}[xshift=3.8cm]
-   \fill[AnalysisBlueLight] (0,0) rectangle (0.5,2);
-   \draw[AnalysisBlue,thick] (0,0)--(0,2)--(0.5,2)--(0.5,0)--(0.72,0);
-   \draw[->,AnalysisGray] (-0.03,0)--(0.77,0);
-   \draw[->,AnalysisGray] (0,-2.3)--(0,4.7);
-   \node[above] at (0.35,5) {好部分 \(g\)};
-   \node[left] at (0,2) {\(2\)};
-   \foreach \x/\lab in {0/0,0.25/{1/4},0.5/{1/2}} {
-    \draw (\x,0.12)--(\x,-0.12);
-    \node at (\x,-2.8) {\(\lab\)};
-   }
-  \end{scope}
-  \begin{scope}[xshift=7.6cm]
-   \fill[AnalysisBlueLight] (0,0) rectangle (0.25,2);
-   \fill[AnalysisGrayLight] (0.25,0) rectangle (0.5,-2);
-   \draw[AnalysisBlue,thick] (0,0)--(0,2)--(0.25,2)--(0.25,-2)--(0.5,-2)--(0.5,0)--(0.72,0);
-   \draw[->,AnalysisGray] (-0.03,0)--(0.77,0);
-   \draw[->,AnalysisGray] (0,-2.3)--(0,4.7);
-   \node[above] at (0.35,5) {坏部分 \(b\)};
-   \node[left] at (0,2) {\(2\)};
-   \node[left] at (0,-2) {\(-2\)};
-   \foreach \x/\lab in {0/0,0.25/{1/4},0.5/{1/2}} {
-    \draw (\x,0.12)--(\x,-0.12);
-    \node at (\x,-2.8) {\(\lab\)};
-   }
-  \end{scope}
- \end{tikzpicture}
- \caption[阶梯函数的好坏分解]{在标准二进网格中，对 \(f=4\cdot\mathbf1_{[0,1/4)}\) 取 \(\alpha=1\)。坏区间为 \([0,1/2)\)，以平均值 \(2\) 替换后得到 \(g\)；剩余的 \(b\) 有等量的正、负面积，故 \(\int b=0\)。图中只画出非零部分附近，三者在所示区间外均为零。}
- \label{b2:fig:18-cz-step-model}
-\end{figure}
+例如设 \(\Omega\subset\mathbb R^3\) 为开集，实值 \(u\in H^1_{\mathrm{loc}}(\Omega)\) 在分布意义下满足 \(-\Delta u=u^3\)，可以作如下具体提升。在紧含区域的球上先用截断和 \(H^1\hookrightarrow L^6\)，得 \(u^3\in L^2\)，内部二阶估计给出 \(u\in H^2\)。在更小的球上，\(H^2\hookrightarrow L^\infty\)，于是
+\[\|3u^2\nabla u\|_2\le3\|u\|_\infty^2\cdot\|\nabla u\|_2,\]
+以截断磨光核验链式法则后得 \(u^3\in H^1\)，再次提升为 \(H^3\)。若要继续到下一步，二阶复合导数为 \(6u\,\partial_i u\,\partial_j u+3u^2\partial_{ij}u\)；在更小球上 \(H^3\) 已使 \(\nabla u\) 有界，两项都属于 \(L^2\)，所以 \(u^3\in H^2\)、\(u\in H^4\)。每一步都在稍小的球上使用上一项估计，有限多步可在给定紧子集与外部球之间预留足够多层。
 
-\subsection{零平均与远场估计}
-\label{b2:subsec:180202}
+同样的起步在五维不能直接照抄：\(H^1\) 只给 \(L^{10/3}\)，其三次幂仅保证 \(L^{10/9}\)，并不保证二阶定理所需的 \(L^2\)。这里没有断言五维方程一定存在奇异解，而是指出该条自举路线的第一处缺口。非线性项的次数、维数与起始空间必须一起核验。
 
-设观察点 \(x\) 离坏块很远。此时 \(K(x,y)\) 随块内变量 \(y\) 的变化较小，可以先把它近似为块中心处的常数 \(K(x,c)\)。这个常数乘上坏块的总积分，恰好为零；真正需要估计的仅是核的变化量。下面的引理把这一思路量化，并保留核差分常数的依赖。
+\subsection{从弱解到经典解}
+\label{b2:subsec:160203}
+
+Sobolev 正则性最终通过嵌入转成经典正则性。第一卷定理 24.4.3 及处理正整数差的命题 24.4.4，在局部截断后给出：设整数 \(d\geq1\)、\(k\geq0\)、\(s\geq0\)，\(\Omega\subset\mathbb R^d\) 为开集。若 \(s>k+d/2\)，则实值或复值的 \(H_{\mathrm{loc}}^s(\Omega)\) 函数有 \(C^k(\Omega)\) 代表元；更精细地，可取得所有满足 \(k+\alpha<s-d/2\)、\(0<\alpha<1\) 的局部 \(C^{k,\alpha}\) 正则性。严格不等号不能随意替成等号。
 
 \Needspace{6\baselineskip}
-\begin{lemma}\label{b2:thm:18-cancellation-tail}
-设 \(d\geq1\) 为整数，\(Q\subset\mathbb R^d\) 是边长 \(\ell>0\)、中心 \(c\) 的轴平行立方体。设 \(b\in L^1(\mathbb R^d;\mathbb C)\) 在 \(Q\) 外几乎处处为零，且 \(\int b=0\)。设复值 Borel 可测核 \(K\) 在 \(x\ne y\) 上取有限值，并存在 \(\delta>0\) 和 \(A_K\geq0\)，使
+\begin{corollary}[光滑数据的内部光滑性]
+\label{b2:cor:16-smooth-interior}
+设整数 \(d\geq1\)，\(\Omega\subset\mathbb R^d\) 为非空开集，\(A\in C^\infty(\Omega;\mathbb R^{d\times d})\)、\(f\in C^\infty(\Omega;\mathbb R)\)。假设对每个非空开集 \(V\Subset\Omega\)，存在 \(\lambda_V>0\)，使 \(\xi^{\mathsf T}A(x)\xi\geq\lambda_V|\xi|^2\) 对全部 \(x\in V\)、\(\xi\in\mathbb R^d\) 成立。若实值 \(u\in H_{\mathrm{loc}}^1(\Omega;\mathbb R)\) 满足
 \[
- |K(x,y)-K(x,c)|
- \leq A_K\frac{|y-c|^\delta}{|x-c|^{d+\delta}}
- \quad\text{当 }x\ne c,\ |x-c|\geq2|y-c|.
+ \int_\Omega A\nabla u\cdot\nabla\varphi=\int_\Omega f\varphi
+ \qquad(\varphi\in C_c^\infty(\Omega;\mathbb R)),
 \]
-令 \(Q^*=8\sqrt d\,Q\) 表示同中心、边长为 \(8\sqrt d\,\ell\) 的立方体。则对 \(x\notin Q^*\)，普通积分 \(\int_QK(x,y)\cdot b(y)\,\mathrm dy\) 绝对收敛，而且
-\[
- \int_{\mathbb R^d\setminus Q^*}
- \left|\int_QK(x,y)\cdot b(y)\,\mathrm dy\right|\,\mathrm dx
- \leq C_{d,\delta}A_K\|b\|_1,
-\]
-其中 \(C_{d,\delta}\) 只依赖 \(d,\delta\)，与 \(Q,b,K\) 无关。
-\end{lemma}
+则 \(u\) 有 \(C^\infty(\Omega;\mathbb R)\) 代表元，并逐点满足方程 \(-\operatorname{div}(A\nabla u)=f\)。
+\end{corollary}
 \begin{proof}
-若 \(x\notin Q^*\)、\(y\in Q\)，则
-\[
- |x-c|\geq4\sqrt d\,\ell,
- \quad |y-c|\leq\frac{\sqrt d\,\ell}{2}.
-\]
-因此差分假设适用。固定这样的 \(x\)，\(K(x,c)\) 有限，核差分在 \(Q\) 上有界，故 \(K(x,\cdot)b\) 绝对可积。零平均给出合法的恒等式
-\[
- \int_QK(x,y)\cdot b(y)\,\mathrm dy
- =\int_Q\bigl(K(x,y)-K(x,c)\bigr)\cdot b(y)\,\mathrm dy.
-\]
-取绝对值，并对非负积分使用 Tonelli，得到所求左端不超过
-\[
- A_K\left(\frac{\sqrt d\,\ell}{2}\right)^\delta\|b\|_1
- \int_{|x-c|\geq4\sqrt d\,\ell}|x-c|^{-d-\delta}\,\mathrm dx.
-\]
-记单位球面的面积为 \(\sigma_{d-1}\)；在 \(d=1\) 时取 \(\sigma_0=2\)。极坐标计算最后一项为
-\[
- \sigma_{d-1}\int_{4\sqrt d\,\ell}^\infty r^{-1-\delta}\,\mathrm dr
- =\frac{\sigma_{d-1}}\delta(4\sqrt d\,\ell)^{-\delta}.
-\]
-这正好消去前面的 \(\ell^\delta\)，给出常数
-\(C_{d,\delta}=\sigma_{d-1}/(\delta8^\delta)\) 的一个可用选择。
+固定 \(U\Subset\Omega\)。光滑系数在稍大紧集上的各阶导数有界，高阶正则性定理给出任意阶的局部 \(H^s\) 正则性。给定 \(k\)，选整数 \(s>k+d/2\)，嵌入得到 \(C^k\) 代表元；各代表元因几乎处处相同且连续而彼此一致，故得到单一 \(C^\infty\) 代表元。该代表元对应的微分表达式连续，与零分布相等，所以处处为零。
 \end{proof}
-这里有两个值得分开的量：坏块的 \(L^1\) 大小决定估计的规模，核变化的快慢决定远场能否积分。若只用大小界 \(|K(x,y)|\lesssim|x-c|^{-d}\)，径向积分会出现 \(\int^\infty\mathrm dr/r\)，无法得到有限上界。减去常数项后，多出的 \(|x-c|^{-\delta}\) 才使它收敛。\(\delta>0\) 正是这一计算所需的条件；尾界对 \(A_K\) 的线性依赖，也使后文能够分别跟踪算子的 \(L^2\) 范数和核的光滑常数。
+
+若只知道 \(f\in L^2\)，在 \(d=2,3\) 时 \(H_{\mathrm{loc}}^2\) 已给出一定 Hölder 连续性，却一般不给出连续一阶导数；在 \(d\ge4\) 时甚至不能单凭这一 Sobolev 结论推出连续性。维数越高，要通过平方可积导数达到同一经典阶数，就需要越多次提升。低正则椭圆理论提供了另一条路：即使没有系数导数，也能对实标量方程控制解的振荡；这将在本章最后说明。
 
 \ProseParagraphBreak
 
-扩大立方体并不改变坏函数，也不使它产生额外抵消。它只将靠近坏块、不能使用核差分的观察点暂时排除。扩大倍数的具体数值并不重要，只要保证观察距离比块的直径大一个固定倍数；相应的测度代价只依赖维数。
-
-\subsection{弱型估计的分解策略}
-\label{b2:subsec:180203}
-
-现在把两个估计合在一起。为清楚看出每项假设的用途，暂设 \(T\) 是 \(L^2(\mathbb R^d)\) 上的有界复线性算子，记 \(B=\|T\|_{2\to2}\)。还假设它在每个紧支集 \(L^2\) 输入的支集外，几乎处处由核 \(K\) 的普通积分表示；核对每个立方体中心都满足上一引理的差分条件，且使用共同的 \(\delta,A_K\)。下一节会把这些条件组织成标准算子定义。
-
-\ProseParagraphBreak
-
-给定 \(f\in L^1\cap L^2\) 和输出阈值 \(t>0\)，在高度 \(\alpha=t\) 分解 \(f=g+b\)。好部分使用 \(L^2\) Chebyshev 不等式：
-\[
- \begin{aligned}
- |\{|Tg|>t/2\}|
- &\leq\frac4{t^2}\|Tg\|_2^2
- \leq\frac{4B^2}{t^2}\|g\|_2^2\\
- &\leq\frac{2^{d+2}B^2}{t}\|f\|_1.
- \end{aligned}
-\]
-这一步不要求 \(f\) 本身有由 \(t\|f\|_1\) 控制的平方积分，只有分解后的 \(g\) 才有这样的估计。
-
-\ProseParagraphBreak
-
-对坏部分，先丢弃扩大坏区域
-\[
- E^*=\bigcup_jQ_j^*,
- \quad |E^*|\leq(8\sqrt d)^d\sum_j|Q_j|
-          \leq\frac{(8\sqrt d)^d}{t}\|f\|_1.
-\]
-原来的 \(Q_j\) 互不相交，扩大的 \(Q_j^*\) 可能重叠；这里用的是并集测度不超过测度之和，不需要扩大后仍然不交。
-
-\ProseParagraphBreak
-
-在 \((E^*)^c\) 上使用坏块的零平均。先取有限和 \(b^{(N)}=\sum_{j=1}^Nb_j\)。每个 \(b_j\) 属于 \(L^2\) 且支撑于一个有界立方体，因而支集外核表示与远场引理给出
-\[
- \begin{aligned}
- \int_{(E^*)^c}|Tb^{(N)}(x)|\,\mathrm dx
- &\leq\sum_{j=1}^N\int_{(Q_j^*)^c}|Tb_j(x)|\,\mathrm dx\\
- &\leq C_{d,\delta}A_K\sum_{j=1}^N\|b_j\|_1
- \leq2C_{d,\delta}A_K\|f\|_1.
- \end{aligned}
-\]
-若坏块有无穷多个，定理保证 \(b^{(N)}\to b\) 于 \(L^2\)，于是 \(Tb^{(N)}\to Tb\) 于 \(L^2\)。抽出几乎处处收敛的子列，再对 \((E^*)^c\) 使用 Fatou 引理，得到
-\[
- \int_{(E^*)^c}|Tb(x)|\,\mathrm dx
- \leq2C_{d,\delta}A_K\|f\|_1.
-\]
-这不要求 \(\sum_jTb_j\) 在全空间的 \(L^1\) 中收敛。我们得到的仅是远离坏区域后的积分控制，正好足够用于 Chebyshev 不等式：
-\[
- |\{x\notin E^*:|Tb(x)|>t/2\}|
- \leq\frac{4C_{d,\delta}A_K}{t}\|f\|_1.
-\]
-
-由 \(Tf=Tg+Tb\)，其 \(t\) 超水平集包含在好部分的 \(t/2\) 超水平集、扩大坏区域，以及坏部分在其外的 \(t/2\) 超水平集三者之并中。合并以上估计即得
-\[
- |\{|Tf|>t\}|
- \leq\frac{C_{d,\delta}(1+B^2+A_K)}t\|f\|_1
- \quad(f\in L^1\cap L^2,\ t>0),
-\]
-其中最后的 \(C_{d,\delta}\) 可以增大以吸收各项维数常数。好部分靠 \(L^2\) 有界性，坏区域靠测度控制，坏部分的远场靠零平均与核差分；三条估计承担着不同任务。由稠密性把算子延拓到全部 \(L^1\)，以及由弱端点推出 \(L^p\) 强型的步骤，将在\secref{b2:sec:1804}完成。
+“弱解变成经典解”还需要明确所指区域。这里所有结论均为内部结论：边界值不光滑、区域有角点时，解可能在每个内部点都光滑，却在靠近边界处出现不可积的二阶导数。下一节将通过边界坐标和一个扇形反例说明这种差别。

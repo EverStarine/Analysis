@@ -2,60 +2,148 @@
 \section{\texorpdfstring{\(\operatorname{Re}s=1\)}{Re(s)=1} 上的无零点性}
 \label{b3:sec:2703}
 
-无零点性只需要一个非负三角多项式和局部 Laurent 展开。这里不会证明一条定量宽度的无零区域；所证内容恰是边界直线上每个有限高度没有零点。
+Euler 乘积保证 \(\operatorname{Re}s>1\) 内无零点，\chapref{b3:ch:26}则已经把 \(\zeta\) 延拓到边界附近。但开半平面的非消失性不会由连续性自动传给边界。此处增加的工具是一个非负三角多项式：它把三个高度处的函数值联系起来，使边界零点与一处极点的阶数发生冲突。整个论证不需要先知道素数有多密，也不需要 \(\xi\) 的乘积分解。
 
 \subsection{Hadamard–de la Vallée Poussin 论证}
 \label{b3:subsec:270301}
 
-以下经典论证称为\term[hadamard-de-la-vallee-poussin]{Hadamard--de la Vallée Poussin 无零点论证}[Hadamard--de la Vallée Poussin zero-free argument]。设 \(t\ne0\)，若 \(1+\mathrm{i}t\) 是 \(\zeta\) 的 \(m\) 阶零点，则
-\(F(s)=-m/(s-1-\mathrm{i}t)+O(1)\) 于该点附近。若 \(1+2\mathrm{i}t\) 也是零点，记阶数为 \(m_2\)，否则记零。
+下面采用\term[hadamard-de-la-vallee-poussin]{Hadamard--de la Vallée Poussin 无零点论证}[Hadamard--de la Vallée Poussin zero-free argument]。先明确要比较的局部资料。记 \(F=-\zeta'/\zeta\)，固定一个实数 \(t\ne0\)，并设
+\[
+ m=\operatorname{ord}_{1+\mathrm it}\zeta,\qquad
+ m_2=\operatorname{ord}_{1+2\mathrm it}\zeta.
+\]
+在这两个位置 \(\zeta\) 都全纯，因为其唯一极点在一。若函数值非零，约定零点阶数为零；若为零，阶数是正整数。这些阶数有限，因为 \(\zeta\) 不恒为零。
+
+若 \(m\ge1\)，写
+\[
+ \zeta(s)=(s-1-\mathrm it)^m b(s),\qquad b(1+\mathrm it)\ne0.
+\]
+在足够小的圆盘中 \(b\) 不为零，故
+\[
+ F(s)=-\frac m{s-1-\mathrm it}-\frac{b'(s)}{b(s)}.
+\]
+当 \(m=0\) 时，直接取 \(b=\zeta\)，同一表达式仍成立，只是主部为零。第二个高度的 \(m_2\) 也作同样解释。与之相比，一处的极点由\eqref{b3:eq:27-log-derivative-pole}贡献正留数一。
+
+因此要排除零点，可以寻找一个恒非负的函数值组合，使假设 \(m\ge1\) 后它的主部系数为负。为了压过实轴位置的正贡献，\(t\) 处的系数须足够大；为保证整体非负，又需要另一个高度补偿余弦的负值。
 
 \subsection{正性技巧}
 \label{b3:subsec:270302}
 
-恒等式 \(3+4\cos u+\cos2u=2(1+\cos u)^2\ge0\) 给
+最简单的合用组合来自一个平方。由 \(\cos2u=2\cos^2u-1\)，有
+\[
+ 3+4\cos u+\cos2u=2(1+\cos u)^2\ge0.
+\]
+这里的系数并非任意选取：平方保证所有实数 \(u\) 上非负，而中间的四大于常数项三，正好为排除一阶零点留下余量。
+
+\begin{lemma}[三个高度的正性]\label{b3:lem:27-three-height-positivity}
+设 \(\zeta\) 为 Riemann zeta 函数，并在 \(\operatorname{Re}s>1\) 置 \(F(s)=-\zeta'(s)/\zeta(s)\)。对任意实数 \(\sigma>1\)、\(t\in\mathbb R\)，有
 \begin{equation}\label{b3:eq:27-positivity}
-3F(\sigma)+4\operatorname{Re}F(\sigma+\mathrm{i}t)
-+\operatorname{Re}F(\sigma+2\mathrm{i}t)\ge0,\quad\sigma>1.
+ 3F(\sigma)+4\operatorname{Re}F(\sigma+\mathrm it)
+       +\operatorname{Re}F(\sigma+2\mathrm it)\ge0.
 \end{equation}
-每个权 \(\Lambda(n)n^{-\sigma}\) 非负，故相乘求和保持不等式。把中间系数改小会丧失排除单零点所需的优势；三个系数的具体数值承担了证明任务。
+此外，
+\begin{equation}\label{b3:eq:27-zeta-product-inequality}
+ \zeta(\sigma)^3\cdot|\zeta(\sigma+\mathrm it)|^4
+                  \cdot|\zeta(\sigma+2\mathrm it)|\ge1.
+\end{equation}
+\end{lemma}
+\begin{proof}
+由\eqref{b3:eq:27-real-log-derivative}，第一式的左端等于
+\[
+ \sum_{n\ge1}\Lambda(n)n^{-\sigma}
+       \bigl(3+4\cos(t\log n)+\cos(2t\log n)\bigr).
+\]
+各项都非负，因为 \(\Lambda(n)\ge0\)。此处只组合了三个绝对收敛级数，有限线性组合与求和的交换合法，得到第一式。
+
+对\eqref{b3:eq:27-log-modulus}采用相同的组合，得到
+\[
+ \begin{aligned}
+ &3\log\zeta(\sigma)+4\log|\zeta(\sigma+\mathrm it)|
+                         +\log|\zeta(\sigma+2\mathrm it)|\\
+ &\quad=\sum_p\sum_{r\ge1}\frac{p^{-r\sigma}}r
+       \bigl(3+4\cos(rt\log p)+\cos(2rt\log p)\bigr)\ge0.
+ \end{aligned}
+\]
+这里 \(\zeta(\sigma)>0\)，所以第一项是普通实对数。对两边取实指数，便得到第二式。
+\end{proof}
+
+两个不等式用的是同一个非负多项式，但比较的对象不同：一个适合读取对数导数的留数，另一个适合直接读取零极点阶数。证明任选其中一条已经足够，下面保留两种读法，帮助检查符号与重数。
 
 \subsection{边界估计}
 \label{b3:subsec:270303}
 
-令 \(\sigma=1+\varepsilon\)。局部展开给
-\(\varepsilon F(1+\varepsilon)\to1\)，
-\(\varepsilon\operatorname{Re}F(1+\varepsilon+\mathrm{i}t)\to-m\)，第三项极限为 \(-m_2\)。固定 \(t\) 使每个展开只在一个固定邻域使用，无需关于所有高度的一致估计。
+固定 \(t\ne0\)，令 \(\sigma=1+\varepsilon\)、\(\varepsilon>0\)。前面给出的局部展开分别说明
+\[
+ \begin{aligned}
+ F(1+\varepsilon)&=\varepsilon^{-1}+O(1),\\
+ \operatorname{Re}F(1+\varepsilon+\mathrm it)
+       &=-m\varepsilon^{-1}+O(1),\\
+ \operatorname{Re}F(1+\varepsilon+2\mathrm it)
+       &=-m_2\varepsilon^{-1}+O(1).
+ \end{aligned}
+\]
+误差在当前固定高度的小邻域中有界。乘以 \(\varepsilon\) 并令其趋零后，有界误差消失，三个极限分别为 \(1,-m,-m_2\)。如果第二个高度不是零点，则 \(m_2=0\)，它的贡献趋零；如果也是零点，它只会增加负贡献。因此无需预先排除这个可能的第二个零点。
+
+这里始终先固定 \(t\)，再令 \(\varepsilon\downarrow0\)。我们没有求出误差对所有 \(t\) 都适用的共同常数，所以本论证并不直接产生随高度变化的定量无零区域。逐点边界结论所需的信息比这种统一估计弱得多。
 
 \subsection{零点排除}
 \label{b3:subsec:270304}
 
-\begin{theorem}\label{b3:thm:27-zero-free-line}
-Riemann zeta 函数在直线 \(\operatorname{Re}s=1\) 上没有零点；\(s=1\) 处仍为单极点。
+\begin{theorem}[实部一上的无零点性]\label{b3:thm:27-zero-free-line}
+设 \(\zeta\) 为 Riemann zeta 函数的亚纯延拓。对每个实数 \(t\ne0\)，有 \(\zeta(1+\mathrm it)\ne0\)。点 \(s=1\) 是留数为一的单极点。因此直线 \(\operatorname{Re}s=1\) 上没有 \(\zeta\) 的零点。
 \end{theorem}
 \begin{proof}
-若 \(t\ne0\) 处有 \(m\ge1\) 阶零点，将\eqref{b3:eq:27-positivity}乘 \(\varepsilon\) 并取极限，得到 \(3-4m-m_2\ge0\)，但右式不超过负一，矛盾。\(t=0\) 处已知为极点。
+若某个固定 \(t\ne0\) 处有 \(m\ge1\) 阶零点，将\eqref{b3:eq:27-positivity}乘 \(\varepsilon=\sigma-1>0\)，再使用上一小节的三个极限，得到
+\[
+ 0\le3-4m-m_2.
+\]
+但 \(m\ge1\)、\(m_2\ge0\)，右端至多为 \(-1\)，矛盾。\(t=0\) 的情形由\cref{b3:thm:26-continuation}的极点结论单独处理。
 \end{proof}
-所以 \(F(s)-1/(s-1)\) 在整条闭半平面 \(\operatorname{Re}s\ge1\) 的一个开邻域中全纯；“一个开邻域”允许向左伸出的宽度随高度改变，不暗含统一条带。下一节使用的正是这种局部延拓。
 
-\ProseParagraphBreak
-
-这里可以逐点说明这个邻域如何获得。在不等于一的边界点，\(\zeta\) 全纯且非零，连续性使它在一个足够小的圆盘内仍非零，因而对数导数全纯。在一处，写
+用乘积不等式也能看见同一个矛盾。在 \(\varepsilon\downarrow0\) 时，\(\zeta(1+\varepsilon)=O(\varepsilon^{-1})\)，另外两个绝对值分别为 \(O(\varepsilon^m)\)、\(O(\varepsilon^{m_2})\)，于是\eqref{b3:eq:27-zeta-product-inequality}的左端为
 \[
- \zeta(s)=\frac{a(s)}{s-1},\qquad a(1)=1,
+ O(\varepsilon^{4m+m_2-3})\longrightarrow0.
 \]
-其中 \(a\) 在小圆盘内全纯非零，则
-\[
- F(s)-\frac1{s-1}=-\frac{a'(s)}{a(s)}
-\]
-在该圆盘全纯。把这些圆盘与原右半平面取并，便得到需要的开邻域。对于每一段有限高度的边界，紧致性还能选出统一的正宽度；当高度增长时，这个宽度却可能缩小。
+它不可能同时至少为一。指数 \(4m+m_2-3\) 正是留数不等式中系数的相反数；这一核对也说明重零点不会逃过论证。
 
-\ProseParagraphBreak
-
-另一个等价的正性检验从 \(\log\zeta\) 出发。在 \(\sigma>1\) 内逐项应用同一三角多项式并取指数，得
+\begin{corollary}[去主部后的边界延拓]\label{b3:cor:27-regularized-boundary}
+设 \(\zeta\) 为 Riemann zeta 函数的亚纯延拓，并在 \(\operatorname{Re}s>1\) 定义
 \[
- \zeta(\sigma)^3|\zeta(\sigma+\mathrm it)|^4
-              |\zeta(\sigma+2\mathrm it)|\ge1.
+ Q(s)=-\frac{\zeta'(s)}{\zeta(s)}-\frac1{s-1}.
 \]
-若 \(1+\mathrm it\) 是 \(m\ge1\) 阶零点，左侧在 \(\sigma\downarrow1\) 时为
-\(O((\sigma-1)^{4m+m_2-3})\to0\)，矛盾。指数 \(4m+m_2-3\) 与前面留数不等式的符号相反，两者实际计算了同一局部阶数。这个版本也再次显示为何需要系数四压过极点贡献三。
+则存在包含整个闭半平面 \(\{s:\operatorname{Re}s\ge1\}\) 的开集 \(U\)，使 \(Q\) 全纯延拓到 \(U\)。对每个固定 \(R>0\)，还存在 \(\delta_R>0\)，使延拓在矩形
+\[
+ 1-\delta_R\le\operatorname{Re}s\le1+\delta_R,
+ \qquad |\operatorname{Im}s|\le R
+\]
+的一个开邻域中全纯。
+\end{corollary}
+\begin{proof}
+在边界点 \(s_0=1+\mathrm it\)、\(t\ne0\) 处，\(\zeta\) 全纯且非零。由连续性可取小圆盘，使其中没有零点也不包含一，故两个商项都全纯。在一附近，写 \(\zeta(s)=a(s)/(s-1)\)，其中 \(a\) 全纯且 \(a(1)=1\)。缩小圆盘使 \(a\) 非零后，
+\[
+ Q(s)=-\frac{a'(s)}{a(s)}
+\]
+全纯。这些局部表达式来自同一个亚纯商，因而在重叠处相同；将各圆盘与原右半平面取并，就得到开集 \(U\)。
+
+固定线段 \(\{1+\mathrm it:|t|\le R\}\) 是 \(U\) 内的紧集。紧集与闭集 \(\mathbb C\setminus U\) 的距离为正；若补集为空，则任取一个正距离。选择小于这个距离的 \(\delta_R\)，便得到所述矩形及其开邻域。
+\end{proof}
+
+“一个开邻域”不等于“固定宽度的竖带”。随着 \(R\) 增大，\(\delta_R\) 可以缩小；当前结论没有给出它的下界。两条 Tauber 路线都会先固定一个有限频率或高度范围，使用相应邻域，最后才扩大范围，因而正好与这个定性结论相匹配。
+
+最后可以补齐上一章留下的零点区域边界。
+\begin{corollary}[非平凡零点位于开临界带]\label{b3:cor:27-open-critical-strip}
+Riemann zeta 函数的每个非平凡零点 \(\rho\) 都满足
+\[
+ 0<\operatorname{Re}\rho<1.
+\]
+此外，对每个非零整数 \(k\)，交错级数的全纯延拓
+\(\eta(s)=(1-2^{1-s})\zeta(s)\) 在
+\(s_k=1+2\pi\mathrm ik/\log2\) 恰有单零点。
+\end{corollary}
+\begin{proof}
+\cref{b3:prop:26-zero-strip}已将非平凡零点限制在闭条带，并由\cref{b3:prop:26-zero-symmetry}证明它们非实、关于 \(s\mapsto1-s\) 对称。刚才的定理排除了实部为一的零点；若实部为零，则对称点实部为一，也不可能。因此两条边界均被排除。点零已知非零，点一为极点，未被遗漏。
+
+当 \(k\ne0\) 时，\(s_k\ne1\) 且实部为一，故 \(\zeta(s_k)\ne0\)。\cref{b3:prop:26-eta-apparent-singularities}已证明因子 \(1-2^{1-s}\) 在 \(s_k\) 恰有单零点；乘上全纯非零因子不改变阶数，得到最后的结论。
+\end{proof}
+
+这个结果仍远弱于 Riemann 猜想：它排除了两条边界，并没有把带内零点限制到中线。素数定理的主项恰好只需要这样的边界信息。现在还差从解析变换返回累积量的步骤；下一节将解释为什么非负性与单调性足以完成这一返回。

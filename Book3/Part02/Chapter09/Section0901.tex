@@ -2,55 +2,212 @@
 \section{曲线与同伦}
 \label{b3:sec:0901}
 
-解析延拓沿路径传递局部函数。两条路径是否可以连续变形、变形时是否经过奇点，将决定它们传递到终点的函数芽是否相同。本节把这些拓扑数据固定下来。
+解析延拓沿路径传递局部函数。两条路径即使起终点相同，绕过奇点的方式也可能不同；要判断它们是否给出同一个终点函数芽，必须保留路径的连续变形信息。本节先把拼接、反向和固定端点的变形写清楚，再把基点闭路组成一个群，并用去心平面说明怎样实际计算这个群。
 
 \subsection{路径}
 \label{b3:subsec:090101}
 
-路径指连续映射 \(\gamma:[0,1]\rightarrow U\)。起终点为 \(\gamma(0),\gamma(1)\)，反向路径记 \(\gamma^{-1}(t)=\gamma(1-t)\)。若 \(\gamma\) 的终点是 \(\eta\) 的起点，拼接 \(\gamma*\eta\) 先走 \(\gamma\) 再走 \(\eta\)，分别在两半区间线性重参数化。
+设 \(U\subseteq\mathbb C\) 为区域。路径是连续映射 \(\gamma:[0,1]\to U\)，其起点、终点分别为 \(\gamma(0)\)、\(\gamma(1)\)。两端相同时称为闭路径或闭路。常路径记为 \(c_a(t)=a\)，反向路径记为 \(\gamma^{-1}(t)=\gamma(1-t)\)；这里的上标表示反向行走，与复数的倒数无关。路径包含参数和方向信息，同一条圆周可以走一遍、走两遍或反向走，不能仅由像集判断路径是否相同。
 
 \ProseParagraphBreak
-沿连续路径作解析延拓不需要曲线可求长，因为传递的是重叠邻域上的函数芽，而不是沿曲线积分。需要积分时，平面区域中的连续路径可以在固定端点下用有限折线路径逼近；把紧路径像覆盖于有限小圆盘中，逐段以线段替换便给出这种逼近及圆盘内同伦。
+若 \(\gamma(1)=\eta(0)\)，定义先走 \(\gamma\)、再走 \(\eta\) 的拼接为
+\[
+ (\gamma*\eta)(t)=
+ \begin{cases}
+  \gamma(2t),&0\le t\le\tfrac12,\\
+  \eta(2t-1),&\tfrac12\le t\le1.
+ \end{cases}
+\]
+两段在 \(t=1/2\) 取相同值，所以拼接仍连续。乘法次序始终按实际行走次序从左向右读取。给各段分配不同的行走时间，会改变参数化，却不改变后面要研究的同伦类。
+
+\ProseParagraphBreak
+这些路径不必可求长。解析延拓沿重叠小邻域传递函数芽，所需的是连续性与参数区间的紧性。区域中的任意两点都能用有限折线连接：固定一点 \(a\)，把能从 \(a\) 经有限内部线段到达的点组成集合 \(S\)。对任一点取一个完全位于 \(U\) 内的小圆盘，只要圆盘中有一点属于 \(S\)，其余各点也都能用一条线段到达。因此 \(S\) 与其补集都在 \(U\) 中开；\(U\) 连通且 \(a\in S\)，故 \(S=U\)。这说明可选择方便的连接路径，并没有要求每一条给定路径都具有有限长度。
 
 \subsection{同伦}
 \label{b3:subsec:090102}
 
-两个同起终点的路径端点固定同伦，指存在连续 \(H:[0,1]^2\rightarrow U\)，使 \(H(0,t)=\gamma(t)\)、\(H(1,t)=\eta(t)\)，且 \(H(s,0),H(s,1)\) 分别是固定端点。反射参数、拼接参数与恒定变形证明同伦是等价关系。
+\Needspace{6\baselineskip}
+\begin{definition}\label{b3:def:09-endpoint-homotopy}
+设 \(U\subseteq\mathbb C\) 为区域，\(\gamma_0,\gamma_1:[0,1]\to U\) 连续，且 \(\gamma_0(0)=\gamma_1(0)=a\)、\(\gamma_0(1)=\gamma_1(1)=b\)。若存在连续映射 \(H:[0,1]^2\to U\)，满足
+\[
+ H(0,t)=\gamma_0(t),\quad H(1,t)=\gamma_1(t),
+ \quad H(s,0)=a,\quad H(s,1)=b,
+\]
+则称两条路径\term[duandian-guding-tonglun]{端点固定同伦}[homotopic relative to endpoints]，记为 \(\gamma_0\simeq\gamma_1\)。
+\end{definition}
+参数 \(s\) 表示变形时刻，\(t\) 表示在该时刻沿路径行走的位置。恒定变形给自反性，\(H(1-s,t)\) 给对称性；把两次变形分别放在 \(0\le s\le1/2\) 与 \(1/2\le s\le1\)，在共同中间路径处粘合，就给传递性。因此，同起终点路径的端点固定同伦是等价关系。
 
 \ProseParagraphBreak
-自由同伦允许闭路基点移动；它与端点固定同伦不同。基本群使用后一种。沿着移动基点的路径传递闭路类时，会出现共轭，而不是原样保留每个群元素。对整数绕数这项差别被交换性遮住，对两个以上孔洞则不能忽略。
+重参数化有一个直接的同伦公式。若 \(\varphi:[0,1]\to[0,1]\) 连续、非递减，且 \(\varphi(0)=0\)、\(\varphi(1)=1\)，则
+\[
+ H(s,t)=\gamma\bigl((1-s)t+s\varphi(t)\bigr)
+\]
+把 \(\gamma\) 变为 \(\gamma\circ\varphi\)，并固定两个端点。允许 \(\varphi\) 在一段区间上恒定，便允许在途中暂停；同样的公式也能比较两种不同的分段行走速度。
 
+\ProseParagraphBreak
+每条连续路径还与一条有限折线路径端点固定同伦。用内部小圆盘覆盖紧路径像，对逆像开覆盖取 Lebesgue 数，可选分割 \(0=t_0<\cdots<t_N=1\)，使每段路径像完整落在一个圆盘 \(D_j\subset U\) 中。令 \(\eta\) 在该参数段内直线连接 \(\gamma(t_{j-1})\) 与 \(\gamma(t_j)\)。由于圆盘凸，\((1-s)\gamma(t)+s\eta(t)\) 始终在同一个 \(D_j\) 中；在分点处两条路径相同，各段变形连续粘合。这给出所需同伦，也说明在需要积分代表时可以改选折线。
+
+\Needspace{6\baselineskip}
 \begin{proposition}\label{b3:prop:09-path-homotopies}
-拼接在同伦类上满足结合律，常路径为单位，\(\gamma*\gamma^{-1}\) 同伦于常路径。
+设 \(U\subseteq\mathbb C\) 为区域，所论路径均为 \([0,1]\to U\) 的连续路径，同伦均固定端点。拼接时前一路径的终点等于后一路径的起点。则拼接与反向保持同伦关系；在同伦类上，拼接满足结合律，常路径为单位，且从 \(a\) 出发的路径 \(\gamma\) 满足 \(\gamma*\gamma^{-1}\simeq c_a\)。
 \end{proposition}
 \begin{proof}
-三个路径的不同括号仅改变各段占用的参数区间，连续移动分割点即给结合律同伦。常路径占用的参数区间可连续缩到长度0，给单位关系。往返路径可先只走 \(\gamma\) 到参数 \(1-s\)，再沿原路返回；当 \(s\) 从0变到1时，往返部分连续缩成起点，给逆元关系。
+若 \(H\) 把 \(\gamma_0\) 变为 \(\gamma_1\)，\(K\) 把 \(\eta_0\) 变为 \(\eta_1\)，就在前半参数段取 \(H(s,2t)\)，后半段取 \(K(s,2t-1)\)。共同接点始终固定，所以这给出两条拼接路径之间的同伦。反向则用 \(H(s,1-t)\)。
+
+路径 \((\gamma*\eta)*\xi\) 在三段上分配的时间是 \(1/4,1/4,1/2\)，而 \(\gamma*(\eta*\xi)\) 分配的是 \(1/2,1/4,1/4\)。二者都由三段等时行走的路径作严格递增的分段线性重参数化得到，故由前面的重参数化公式同伦。参数化本身不严格结合，结合律成立于同伦类。
+
+若 \(\gamma\) 从 \(a\) 到 \(b\)，则 \(\gamma*c_b=\gamma\circ\varphi\)，其中 \(\varphi(t)=\min\{2t,1\}\)；\(c_a*\gamma\) 对应 \(\varphi(t)=\max\{2t-1,0\}\)。这两个重参数化分别消去末端和起端的暂停。最后，令
+\[
+ H(s,t)=\gamma\bigl((1-s)(1-|2t-1|)\bigr).
+\]
+当 \(s=0\) 时先走到 \(\gamma(1)\) 再原路返回；当 \(s=1\) 时恒为 \(a\)。中间时刻只走到 \(\gamma(1-s)\) 就返回，且 \(H(s,0)=H(s,1)=a\)，所以逆元关系成立。将 \(\gamma\) 换成 \(\gamma^{-1}\) 也得到另一方向的往返收缩。
 \end{proof}
+若变形中的每条路径只要求闭合，而共同起终点可以移动，就称为自由同伦。固定端点同伦保留一个确定的基点，自由同伦则还包含基点的移动信息；下面通过连接路径说明两者的关系。
 
 \subsection{基本群}
 \label{b3:subsec:090103}
 
+\Needspace{6\baselineskip}
 \begin{definition}\label{b3:def:09-fundamental-group}
-以 \(a\in U\) 为基点的闭路径端点固定同伦类组成\term[jiben-qun]{基本群}[fundamental group] \(\pi_1(U,a)\)，乘法由路径拼接给出。
+设 \(U\subseteq\mathbb C\) 为区域，\(a\in U\)。以 \(a\) 为基点的连续闭路径在端点固定同伦下的等价类组成\term[jiben-qun]{基本群}[fundamental group] \(\pi_1(U,a)\)，乘法定义为 \([\gamma][\eta]=[\gamma*\eta]\)，单位为 \([c_a]\)，逆元为 \([\gamma]^{-1}=[\gamma^{-1}]\)。
 \end{definition}
-前一命题保证这确为群。区域路径连通，换基点的连接路径给群同构，但同构依赖所选连接路径，两个选择可能相差一个内自同构。单连通等价于任意基点的基本群平凡。
+\symidx{\(\pi_1(U,a)\)：区域在基点 \(a\) 的基本群}
+\Cref{b3:prop:09-path-homotopies}同时保证乘法与代表的选择无关，以及结合律、单位和逆元各项群公理。基点保证任意两个代表都能拼接。改变基点需要先选择一条连接路径。
+
+\Needspace{6\baselineskip}
+\begin{proposition}\label{b3:prop:09-basepoint-change}
+设 \(U\subseteq\mathbb C\) 为区域，\(a,b\in U\)，\(\eta\) 是从 \(a\) 到 \(b\) 的连续路径。则
+\[
+ C_\eta:\pi_1(U,b)\longrightarrow\pi_1(U,a),
+ \quad C_\eta([\gamma])=[\eta*\gamma*\eta^{-1}]
+\]
+是群同构，逆映射为 \(C_{\eta^{-1}}\)。若 \(\eta'\) 是另一条从 \(a\) 到 \(b\) 的路径，令 \(g=[\eta'*\eta^{-1}]\in\pi_1(U,a)\)，则对每个 \(h\in\pi_1(U,b)\)，有
+\[
+ C_{\eta'}(h)=g\,C_\eta(h)\,g^{-1}.
+\]
+\end{proposition}
+\begin{proof}
+把代表之间的同伦接在固定的 \(\eta\)、\(\eta^{-1}\) 之间，得到良定义性。在两个像的拼接中，中间出现 \(\eta^{-1}*\eta\)，可以收缩为 \(c_b\)，故
+\[
+ [\eta*\gamma*\eta^{-1}][\eta*\delta*\eta^{-1}]
+ =[\eta*(\gamma*\delta)*\eta^{-1}].
+\]
+这就是乘法保持。先后应用 \(C_\eta\) 与 \(C_{\eta^{-1}}\)，同样消去两侧的往返段，便回到原类，所以它们互逆。最后把 \(gC_\eta(h)g^{-1}\) 展开，依次消去 \(\eta^{-1}*\eta\)，剩下的路径为 \(\eta'*\gamma*(\eta')^{-1}\)，即所述公式。
+\end{proof}
+固定 \(g\) 后，映射 \(h\mapsto ghg^{-1}\) 称为共轭，也称内自同构。因而区域的基本群具有不依赖基点的抽象同构类型，但具体同构还依赖连接路径。讨论闭路对函数芽的作用时，基点及连接路径都应保留，不能只说“在孔附近绕一圈”而省去到达孔附近和返回的路线。
+
+\Needspace{6\baselineskip}
+\begin{proposition}\label{b3:prop:09-simply-connected-paths}
+设 \(U\subseteq\mathbb C\) 为区域，\(a\in U\)。按\cref{b3:def:02-simply-connected}中任意连续闭路径可自由收缩到一点的定义，\(U\) 单连通当且仅当 \(\pi_1(U,a)\) 只有单位元。这又等价于：对任意 \(x,y\in U\)，从 \(x\) 到 \(y\) 的任意两条连续路径都端点固定同伦。
+\end{proposition}
+\begin{proof}
+先说明自由收缩可以变为固定基点收缩。设闭路 \(\gamma\) 基于 \(a\)，且 \(H(s,t)\) 把它经闭路变为一个常路径；变形中的基点为 \(q(s)=H(s,0)=H(s,1)\)，其中 \(q(0)=a\)。把先沿 \(q\) 走到时刻 \(s\)、再走 \(H(s,\cdot)\)、最后返回的闭路写成
+\[
+ L(s,t)=
+ \begin{cases}
+ q(3st),&0\le t\le\tfrac13,\\
+ H(s,3t-1),&\tfrac13\le t\le\tfrac23,\\
+ q(3s(1-t)),&\tfrac23\le t\le1.
+ \end{cases}
+\]
+三段在接点处均取 \(q(s)\)，所以 \(L\) 连续，且始终基于 \(a\)。\(L(0,\cdot)\) 只是 \(\gamma\) 前后各插入一次暂停，\(L(1,\cdot)\) 则是沿 \(q\) 走到终点、停留后原路返回。前者同伦于 \(\gamma\)，后者可收缩为 \(c_a\)。所以单连通性使 \(\pi_1(U,a)\) 平凡。反过来，若此群平凡，基点变换使其他基点的闭路也都能固定基点收缩，当然也能自由收缩。
+
+再设所有基点的基本群平凡。若 \(\gamma,\eta\) 都从 \(x\) 到 \(y\)，则 \(\gamma*\eta^{-1}\) 是基于 \(x\) 的闭路，同伦于 \(c_x\)。在这个同伦后接 \(\eta\)，并消去 \(\eta^{-1}*\eta\)，便得到 \(\gamma\simeq\eta\)。反之，若所有同起终点路径都同伦，取一条闭路与对应常路径比较，立即得到基本群平凡。
+\end{proof}
+上面的 \(L\) 公式也适用于两个自由同伦闭路之间的任意变形：沿移动基点的轨迹接入和返回后，它们成为固定基点同伦。这解释了为什么自由同伦与基本群中的共轭相联系。
 
 \ProseParagraphBreak
-凸区域中的闭路由直线收缩 \(H(s,t)=(1-s)\gamma(t)+sa\)，故基本群平凡。若区域仅星形，同样使用星形中心，再用基点连接路径换基点。开集连通保证路径连通，可以用“能由有限内部线段到达的点集同时开且闭”证明，不需要假定区域本身凸。
-
-\ProseParagraphBreak
-换基点时，群同构并非完全没有选择。若 \(\eta\) 从 \(a\) 到 \(b\)，把基于 \(b\) 的闭路 \(\gamma\) 送到 \(\eta*\gamma*\eta^{-1}\)，得到基于 \(a\) 的类。换另一条 \(\eta\)，所得同构相差一个内自同构。因而只讨论群的抽象同构类型时可不记基点，讨论具体闭路对芽的作用时却须记录基点及连接路径。两处都写“绕某个孔一圈”，若未说明如何从基点走到孔附近，可能代表不同的共轭类。
-
-\ProseParagraphBreak
-拼接路径的参数变化不会影响其同伦类。把每段路径分配不同的时间长度，线性插值各分段时刻即可构造同伦；插入常路径也可用同样办法消去。逆路径使 \(\gamma*\gamma^{-1}\) 可收缩，具体同伦让去程只走到 \(\gamma(1-s)\) 后立即沿原路返回。群公理因此来自可写出的路径变形，而不是依赖参数拼接严格满足结合律。
+凸区域中的闭路有显式收缩 \(H(s,t)=(1-s)\gamma(t)+sa\)，端点始终为 \(a\)。若区域只关于某个中心 \(p\) 星形，即每个点与 \(p\) 之间的线段都留在区域内，就先对基于 \(p\) 的闭路用同一公式收缩，再用基点变换处理其他基点。星形条件不要求任意两点之间的线段都在区域内。
 
 \subsection{绕行}
 \label{b3:subsec:090104}
 
-\begin{proposition}\label{b3:prop:09-punctured-fundamental}
-\(\pi_1(\mathbb C^*,1)\) 由绕数同构于 \(\mathbb Z\)。
+去心平面的闭路不能一概收缩；其中可保留的量是连续行走时辐角的总增量。先恢复\cref{b3:lem:03-continuous-argument}的构造。对连续路径 \(\gamma:[0,1]\to\mathbb C^*\)，令 \(u(t)=\gamma(t)/|\gamma(t)|\)。给定满足 \(e^{\mathrm i\theta_0}=u(0)\) 的初始角度，目标是连续选择 \(\theta(t)\)，使 \(e^{\mathrm i\theta(t)}=u(t)\)、\(\theta(0)=\theta_0\)。
+
+\ProseParagraphBreak
+右半平面上有单值连续辐角
+\[
+ \operatorname{Arg}_+(x+\mathrm i y)=\arctan(y/x),\quad x>0.
+\]
+由 \(u\) 在紧区间上的一致连续性，可把区间有限细分，使每段 \([t_j,t_{j+1}]\) 上都有 \(|u(t)/u(t_j)-1|<1\)。比值因而位于右半平面。在已经确定 \(\theta(t_j)\) 后，令
+\[
+ \theta(t)=\theta(t_j)+
+ \operatorname{Arg}_+\left(\frac{u(t)}{u(t_j)}\right),
+ \quad t_j\le t\le t_{j+1}.
+\]
+这给出该段正确的辐角，且在左端与前段相接；有限次接合就得到整条路径的连续辐角。两个选择的差除以 \(2\pi\) 是连续整数值函数，所以在区间上为常数。指定初值后差为零，便有唯一性。这一构造只用局部辐角与紧性。
+
+\ProseParagraphBreak
+若 \(\gamma\) 闭合，\(u(1)=u(0)\) 使 \(\theta(1)-\theta(0)\in2\pi\mathbb Z\)。沿用前面的绕数记号，定义
+\[
+ \operatorname{Ind}(\gamma,0)
+ =\frac{\theta(1)-\theta(0)}{2\pi}\in\mathbb Z.
+\]
+改变初始角度只把全部 \(\theta\) 加上同一个整周，因此不影响绕数。对不经过 \(b\) 的闭路径，令 \(\operatorname{Ind}(\gamma,b)=\operatorname{Ind}(\gamma-b,0)\)。这些定义适用于任意连续闭路径，尚未使用可求长性。
+
+\Needspace{6\baselineskip}
+\begin{proposition}\label{b3:prop:09-winding-homotopy}
+设 \(H:[0,1]^2\to\mathbb C^*\) 连续，并对每个 \(s\) 满足 \(H(s,0)=H(s,1)\)。则闭路径 \(H(s,\cdot)\) 的绕数与 \(s\) 无关，允许基点随 \(s\) 移动。若 \(\gamma,\eta:[0,1]\to\mathbb C^*\) 是基于同一点的连续闭路径，则
+\[
+ \begin{aligned}
+ \operatorname{Ind}(\gamma*\eta,0)
+ &=\operatorname{Ind}(\gamma,0)+\operatorname{Ind}(\eta,0),\\
+ \operatorname{Ind}(\gamma^{-1},0)&=-\operatorname{Ind}(\gamma,0).
+ \end{aligned}
+\]
 \end{proposition}
 \begin{proof}
-径向变形 \(z\mapsto ((1-s)|z|+s)z/|z|\) 将去心平面收缩到单位圆并固定单位圆。圆周路径有连续辐角提升 \(\gamma(t)=e^{\mathrm{i}\theta(t)}\)，可沿有限小弧依次选择，指定 \(\theta(0)=0\) 后唯一。闭路给 \(\theta(1)=2\pi n\)。端点固定同伦中的终点整数连续不变；反之具有相同 \(n\) 的两个辐角提升可作线性插值，指数后给端点固定同伦。因此类由整数唯一决定，拼接使整数相加。
+令 \(u_s(t)=H(s,t)/|H(s,t)|\)。它在参数方块上连续。固定 \(s_0\)，由一致连续性，当 \(s\) 足够靠近 \(s_0\) 时，
+\[
+ \sup_{0\le t\le1}|u_s(t)-u_{s_0}(t)|<1.
+\]
+于是 \(u_s(t)/u_{s_0}(t)\) 对所有 \(t\) 都在右半平面，可以令
+\[
+ \alpha_s(t)=\operatorname{Arg}_+
+ \left(\frac{u_s(t)}{u_{s_0}(t)}\right).
+\]
+若 \(\theta_{s_0}\) 是 \(u_{s_0}\) 的一个连续辐角，则 \(\theta_{s_0}+\alpha_s\) 是 \(u_s\) 的连续辐角。两条路径都闭合，所以比值在 \(t=0,1\) 相同，单值的 \(\operatorname{Arg}_+\) 给出 \(\alpha_s(1)=\alpha_s(0)\)。新旧辐角总增量因此相同。绕数关于 \(s\) 局部恒定，而 \([0,1]\) 连通，故它在整段同伦中恒定。
+
+拼接时，先采用 \(\gamma\) 的连续辐角，再把 \(\eta\) 的整个辐角加上适当的 \(2\pi\) 整数倍，使接点处连续。总角度增量就是两段增量之和，给出可加性。反向把辐角的初末值交换，因此使增量变号。
 \end{proof}
-绕两个不同点的区域不再由一个整数分类。绕数只记录每个点的总绕行次数，而不记录绕行顺序；两个孔的基本群中交换子可以非平凡，却对每个外点绕数为零。第10章将区分这类同伦信息与较弱的同调信息。
+这个证明没有预先假定辐角可以在整个参数方块上同时连续选择；它通过相邻路径之间的局部比较，直接保证终点整数不跳变。
+
+\ProseParagraphBreak
+绕数与前文积分定义也一致。沿小圆盘上的局部对数，端点差的实部是 \(\log|\gamma-b|\) 的变化，虚部是连续辐角的变化。把有限段相加，闭路的实部变化为零，故按\cref{b3:lem:02-continuous-path-integral}的连续路径积分约定，有
+\[
+ \operatorname{Ind}(\gamma,b)
+ =\frac1{2\pi\mathrm i}\int_\gamma\frac{\mathrm dz}{z-b}.
+\]
+分段光滑时它就是通常积分；可求长时也可用弧长参数化与绝对连续链式法则得到同式。这与\cref{b3:prop:02-homotopy-invariance}给出的积分不变性相容，而绕数本身的定义并不依赖路径长度。
+
+\Needspace{6\baselineskip}
+\begin{proposition}\label{b3:prop:09-punctured-fundamental}
+对以 \(1\) 为基点的连续闭路径，映射
+\[
+ \pi_1(\mathbb C^*,1)\longrightarrow\mathbb Z,
+ \quad [\gamma]\longmapsto\operatorname{Ind}(\gamma,0)
+\]
+是群同构。每个整数 \(n\) 的类可由 \(\omega_n(t)=e^{2\pi\mathrm i nt}\) 代表。
+\end{proposition}
+\begin{proof}
+同伦不变性保证映射良定义，拼接可加性保证它是群同态，而 \(\omega_n\) 的连续辐角 \(2\pi nt\) 给出绕数 \(n\)，所以映射满射。
+
+设 \(\gamma(t)=R(t)e^{\mathrm i\theta(t)}\)，其中 \(R(t)>0\)，连续辐角取 \(\theta(0)=0\)。因基点为1，\(R(0)=R(1)=1\)，且 \(\theta(1)=2\pi n\)，其中 \(n=\operatorname{Ind}(\gamma,0)\)。定义
+\[
+ H(s,t)=\bigl((1-s)R(t)+s\bigr)\cdot
+ \exp\!\left(\mathrm i\bigl((1-s)\theta(t)+2\pi nst\bigr)\right).
+\]
+径向因子严格为正，故同伦始终避开0；在 \(t=0,1\) 时恒取1，所以固定基点。它在 \(s=0\) 给出 \(\gamma\)，在 \(s=1\) 给出 \(\omega_n\)。因此每个绕数为 \(n\) 的闭路都与同一个 \(\omega_n\) 同伦，映射也单射。
+\end{proof}
+例如，闭路
+\[
+ \gamma(t)=\left(1+\frac12\sin^2(\pi t)\right)\cdot
+ \exp\!\left(\mathrm i\bigl(2\pi t+2\sin(2\pi t)\bigr)\right)
+\]
+的半径并不恒定，辐角还在 \(t=1/2\) 附近反向变化，因为辐角导数在该点为 \(-2\pi\)。但总角度增量仍为 \(2\pi\)，所以它与正向单位圆同属一个类。绕数记录净增量，不是路径行走的总长度或每一段角度变化的绝对值。
+
+\ProseParagraphBreak
+再比较从1到 \(-1\) 的上、下半圆路径 \(\eta_+(t)=e^{\mathrm i\pi t}\)、\(\eta_-(t)=e^{-\mathrm i\pi t}\)。先走 \(\eta_+\)、再反向走 \(\eta_-\)，拼接恰为 \(e^{2\pi\mathrm i t}\)，绕数为1。如果两条半圆路径端点固定同伦，拼接反向路径后就会得到一个可收缩闭路，与绕数不变矛盾。它们同起同终，却在去心平面中不同伦。
+
+\ProseParagraphBreak
+对于有两个孔的区域，分别记录绕每个孔的整数还可能漏掉拼接次序。在\secref{b3:sec:0903}中，将用三次多项式 \(P(w)=w^3-3w\) 的逆芽，计算绕两个临界值的闭路作用，并据此证明次序可以影响结果。这里先完成去心平面的整数分类，后面的例子再显示更丰富的基本群信息。

@@ -1,0 +1,215 @@
+% !TeX root = ../../Book1.tex
+\section{有界自伴算子的谱表示}
+\label{b1:sec:2903}
+
+连续函数演算把谱上的函数变成算子。若再固定一个向量，取算子的二次型，
+就得到连续函数空间上的正泛函；\chapref{b1:ch:11}的表示定理把它化为积分。
+本节沿着这一步构造一个 \(L^2\) 空间，并把原算子在相应子空间上的作用化为乘以坐标函数。
+一般 Hilbert 空间可能不可分，因而最后得到的是一族这样的空间的正交直和。
+
+\subsection{正泛函与标量谱测度}
+\label{b1:subsec:290301}
+
+\begin{proposition}[向量所确定的标量测度]
+\label{b1:prop:29-scalar-spectral-measure}
+设 \(H\ne\{0\}\) 是复 Hilbert 空间，\(T\in\mathcal B(H)\) 且 \(T=T^*\)，
+\(K=\sigma(T)\)。对每个 \(v\in H\)，存在唯一的有限正 Radon 测度 \(\mu_v\)，使
+\[
+ \langle f(T)v,v\rangle=\int_K f(t)\,\mathrm{d}\mu_v(t)
+ \qquad(f\in C(K;\mathbb C)).
+\]
+它满足 \(\mu_v(K)=\|v\|^2\)，并且
+\[
+ \|f(T)v\|^2=\int_K|f|^2\,\mathrm{d}\mu_v.
+\]
+\end{proposition}
+\begin{proof}
+映射 \(f\mapsto\langle f(T)v,v\rangle\) 线性，且在 \(f\geq0\) 时非负，
+因为连续演算保持正性。紧空间上 \(C_c(K)=C(K)\)，
+所以\cref{b1:thm:riesz-markov-positive}给出唯一的正 Radon 表示测度。
+取 \(f=1\) 得总质量有限且等于 \(\|v\|^2\)。又因为
+\(f(T)^*f(T)=|f|^2(T)\)，有
+\[
+ \|f(T)v\|^2=\langle |f|^2(T)v,v\rangle
+ =\int_K|f|^2\,\mathrm{d}\mu_v.
+\]
+\end{proof}
+
+测度 \(\mu_v\) 称为向量 \(v\) 关于 \(T\) 的\term[biaoliang-pu-cedu]{标量谱测度}[scalar spectral measure]。
+\symidx{\(\mu_v\)：向量的标量谱测度}
+它记录连续演算对这个向量的作用强度。
+若 \(v\) 是单位特征向量且 \(Tv=\lambda v\)，则先对多项式、再取一致极限可得
+\(f(T)v=f(\lambda)v\)，所以 \(\mu_v=\delta_\lambda\)。
+非特征向量的测度则可以分布在多个点上，也可以没有原子。
+
+\subsection{循环子空间}
+\label{b1:subsec:290302}
+
+\begin{definition}[循环子空间]
+\label{b1:def:29-cyclic-subspace}
+设 \(H\ne\{0\}\) 是复 Hilbert 空间，\(T\in\mathcal B(H)\) 且 \(T=T^*\)，\(v\in H\)。
+闭子空间
+\[
+ H_v=\overline{\{p(T)v:p\text{ 是复多项式}\}}
+\]
+称为 \(v\) 生成的\term[xunhuan-zikongjian]{循环子空间}[cyclic subspace]。
+若 \(H_v=H\)，则称 \(v\) 为 \(T\) 的\term[xunhuan-xiangliang]{循环向量}[cyclic vector]。
+\end{definition}
+
+多项式的和仍是多项式，所以闭包内的集合确实是线性子空间。
+它在 \(T\) 下不变；由自伴性，\(H_v^\perp\) 也在 \(T\) 下不变。
+一般地，对复 Hilbert 空间上的有界算子，若一个闭子空间及其正交补都在该算子下不变，就称它为该算子的
+\term[yuehua-zikongjian]{约化子空间}[reducing subspace]。
+在这种子空间上限制有界自伴算子，仍得到自伴算子。
+
+\begin{definition}[酉算子与酉等价]
+\label{b1:def:29-unitary-equivalence}
+设 \(H_1,H_2\) 是复 Hilbert 空间。若线性映射 \(U:H_1\to H_2\)
+满射且满足 \(\|Ux\|=\|x\|\)，则称 \(U\) 为\term[you-suanzi]{酉算子}[unitary operator]。
+若 \(T_j\in\mathcal B(H_j)\)，且存在这样的 \(U\) 使 \(UT_1=T_2U\)，
+则称 \(T_1,T_2\) \term[you-dengjia]{酉等价}[unitarily equivalent]。
+\end{definition}
+
+由极化恒等式，酉算子保持内积，因而 \(U^{-1}=U^*\)。
+反过来，\(U^*U=I\) 和 \(UU^*=I\) 分别给出等距性与满射性。
+
+\begin{theorem}[循环子空间上的乘法表示]
+\label{b1:thm:29-cyclic-representation}
+设 \(H\ne\{0\}\) 是复 Hilbert 空间，\(T\in\mathcal B(H)\) 且 \(T=T^*\)，
+\(v\ne0\)，\(K=\sigma(T)\)，\(\mu_v\) 如\cref{b1:prop:29-scalar-spectral-measure}。
+映射 \(f\mapsto f(T)v\) 从 \(C(K)\) 唯一延拓为酉算子
+\[
+ W_v:L^2(K,\mu_v)\longrightarrow H_v.
+\]
+它满足 \(W_v1=v\)，以及
+\[
+ W_v M_t=(T|_{H_v})W_v,
+ \qquad (M_t f)(t)=t\cdot f(t).
+\]
+\end{theorem}
+\begin{proof}
+上一命题说明 \(\|f(T)v\|=\|f\|_{L^2(\mu_v)}\)。
+因此两个连续函数若代表同一 \(L^2\) 等价类，就给出相同的向量。
+由\cref{b1:prop:radon-cc-dense-lp}，\(C(K)\) 在 \(L^2(K,\mu_v)\) 中稠密，
+等距映射因而唯一延拓到全空间；具体地，对 \(f_n\to f\) 于 \(L^2\)，
+定义 \(W_vf=\lim_n f_n(T)v\)，等距性保证极限存在且与逼近无关。
+等距映射的像闭，而其像包含全部 \(p(T)v\)，故像恰为 \(H_v\)。
+对 \(f\in C(K)\)，乘法性质给出
+\[
+ W_v(tf)=(tf)(T)v=T f(T)v=T W_vf.
+\]
+坐标乘法 \(M_t\) 在 \(L^2(K,\mu_v)\) 上有界，故由稠密性，这个等式延伸到所有 \(f\)。
+\end{proof}
+
+这里的 \(L^2\) 范数恰好来自原空间中的范数，测度不是任意添入的。
+例如，对\cref{b1:examp:29-multiplication-spectrum}中的 \(Mf(t)=t\cdot f(t)\)，
+向量 \(1\) 的谱测度就是 \([0,1]\) 上的 Lebesgue 测度。
+多项式在连续函数中一致稠密，连续函数又在 \(L^2\) 中稠密，所以 \(1\) 是循环向量。
+这个模型有循环向量，却没有任何特征向量。
+
+\subsection{正交循环分解}
+\label{b1:subsec:290303}
+
+一个向量生成的子空间未必等于整个空间。为同时容纳多个这样的表示，
+给定一族复 Hilbert 空间 \((H_\alpha)_{\alpha\in J}\)，定义它们的
+\term[hilbert-zhengjiao-zhihe]{Hilbert 正交直和}[Hilbert direct sum] 为
+\[
+ \bigoplus_{\alpha\in J}H_\alpha
+ =\left\{(x_\alpha):x_\alpha\in H_\alpha,
+   \ \sum_{\alpha\in J}\|x_\alpha\|^2<\infty\right\},
+ \qquad
+ \|(x_\alpha)\|^2=\sum_\alpha\|x_\alpha\|^2.
+\]
+非负和按有限部分和的上确界理解。
+对每个这样的向量，非零分量至多可数：对每个正整数 \(n\)，
+满足 \(\|x_\alpha\|\geq1/n\) 的指标只有有限个。
+内积由 \(\sum_\alpha\langle x_\alpha,y_\alpha\rangle\) 给出，
+其绝对收敛由 Cauchy--Schwarz 不等式保证。
+
+\ProseParagraphBreak
+
+这个空间完备。事实上，若 \((x^{(n)})\) 是 Cauchy 列，每个分量都收敛于某个 \(x_\alpha\)。
+对任意有限指标集取平方和并令 \(n\to\infty\)，可知 \(\sum_\alpha\|x_\alpha\|^2<\infty\)。
+固定充分大的 \(n\)，再在
+\(\sum_{\alpha\in F}\|x_\alpha^{(n)}-x_\alpha^{(m)}\|^2\leq\varepsilon^2\)
+中令 \(m\to\infty\)，并对有限集 \(F\) 取上确界，便有 \(\|x^{(n)}-x\|\leq\varepsilon\)。
+
+\begin{theorem}[正交循环分解]
+\label{b1:thm:29-cyclic-decomposition}
+设 \(H\ne\{0\}\) 是复 Hilbert 空间，\(T\in\mathcal B(H)\) 且 \(T=T^*\)。
+存在单位向量族 \((v_\alpha)_{\alpha\in J}\)，使相应循环子空间两两正交，且
+\[
+ H=\bigoplus_{\alpha\in J}H_{v_\alpha}.
+\]
+若 \(H\) 可分，可以取 \(J\) 为有限集或可数集。
+\end{theorem}
+\begin{proof}
+考虑所有生成两两正交循环子空间的单位向量集合，按包含关系排序。
+一条链的并仍有同样性质，故由 Zorn 引理存在极大集合 \(\{v_\alpha\}\)。
+令 \(M\) 为这些子空间的闭线性张成空间。
+每个子空间约化 \(T\)，于是 \(M\) 和 \(M^\perp\) 都在 \(T\) 下不变。
+若 \(M^\perp\ne\{0\}\)，在其中取一个单位向量 \(v\)，
+则整个 \(H_v\subset M^\perp\)，可以把 \(v\) 添入原集合，与极大性矛盾。
+因此 \(M=H\)。
+
+对于 \((x_\alpha)\in\bigoplus H_{v_\alpha}\)，正交性使有限部分和满足 Cauchy 估计，
+其非零项至多可数，故这些和在 \(H\) 中收敛，且平方范数等于各分量平方范数之和。
+所得映射等距，其像闭且含全部有限和，由 \(M=H\) 知它满射。
+这便给出所述直和。若 \(H\) 可分，任何标准正交系至多可数：
+取一个可数稠密集，各单位向量周围半径 \(1/3\) 的球两两不交，每球包含不同的稠密集点。
+应用于 \((v_\alpha)\) 即得结论。
+\end{proof}
+
+\subsection{乘法表示与谱表示的唯一性}
+\label{b1:subsec:290304}
+
+\begin{theorem}[有界自伴算子的乘法表示]
+\label{b1:thm:29-bounded-spectral-representation}
+设 \(H\ne\{0\}\) 是复 Hilbert 空间，\(T\in\mathcal B(H)\) 且 \(T=T^*\)，
+\(K=\sigma(T)\)。存在 \(K\) 上的一族有限正 Radon 测度 \((\mu_\alpha)_{\alpha\in J}\)
+及酉算子
+\[
+ U:H\longrightarrow\bigoplus_{\alpha\in J}L^2(K,\mu_\alpha),
+\]
+使
+\[
+ UTU^{-1}=\bigoplus_{\alpha\in J}M_t,\qquad
+ Uf(T)U^{-1}=\bigoplus_{\alpha\in J}M_f\quad(f\in C(K)).
+\]
+各 \(\mu_\alpha\) 可以取为概率测度。
+\end{theorem}
+\begin{proof}
+取\cref{b1:thm:29-cyclic-decomposition}中的单位循环向量族，令 \(\mu_\alpha=\mu_{v_\alpha}\)，
+并在每个分量上用\cref{b1:thm:29-cyclic-representation}构造 \(W_{v_\alpha}\)。
+这些酉映射的正交直和把 \(\bigoplus_\alpha L^2(K,\mu_\alpha)\) 映到 \(H\)，取其逆为 \(U\)。
+每个分量上的交织关系给出 \(UTU^{-1}=\bigoplus M_t\)。
+这个关系先传到多项式，再利用一致逼近和
+\(\|M_f\|\leq\|f\|_{C(K)}\) 传到一般连续函数。
+由 \(\|v_\alpha\|=1\)，各谱测度的总质量为 \(1\)。
+\end{proof}
+
+这里的循环分解通常不唯一。即使 \(T=\lambda I\)，也可以选取不同的标准正交基，
+把空间分解成不同的一维循环子空间。唯一性应针对由原算子决定的对象来表述。
+
+\begin{proposition}[循环表示的唯一性]
+\label{b1:prop:29-cyclic-uniqueness}
+设 \(H\ne\{0\}\) 是复 Hilbert 空间，\(T\in\mathcal B(H)\) 且 \(T=T^*\)，
+\(v\) 是循环向量，\(K=\sigma(T)\)。若 \(\nu\) 是 \(K\) 上的有限正 Radon 测度，
+\(W:L^2(K,\nu)\to H\) 是酉算子，且 \(W1=v\)、\(WM_t=TW\)，
+则 \(\nu=\mu_v\)，并且 \(W\) 就是\cref{b1:thm:29-cyclic-representation}构造的映射。
+\end{proposition}
+\begin{proof}
+交织关系给出 \(W p=p(T)v\)，先对多项式成立，再由一致逼近对所有 \(f\in C(K)\) 成立。
+于是
+\[
+ \int_K f\,\mathrm{d}\nu
+ =\langle f,1\rangle_{L^2(\nu)}
+ =\langle f(T)v,v\rangle
+ =\int_K f\,\mathrm{d}\mu_v.
+\]
+由表示测度的唯一性，\(\nu=\mu_v\)。连续函数在这个 \(L^2\) 空间中稠密，
+而两个映射在连续函数上相等，所以在整个空间上相等。
+\end{proof}
+
+对于全空间，下一节会把集合的示性函数也纳入演算，得到唯一的投影值谱测度。
+这份测度与选择哪一组循环向量无关。

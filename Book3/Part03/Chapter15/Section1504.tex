@@ -2,85 +2,352 @@
 \section{分布观点}
 \label{b3:sec:1504}
 
-调和与次调和的差别还可以用一个正测度表达。它记录函数偏离平均等式的来源，而不要求函数具有通常的二阶导数。
+函数 \(\log|z|\) 在原点以外调和，却在原点不能取有限值。若只在可微的点计算 Laplace 算子，这个奇性便完全消失了。分布把微分移到光滑测试函数上，使我们能保留原点的贡献；正性再把这个贡献识别为测度。本节要建立的对应是：次调和函数给出正的 Laplace 测度，而这份测度局部决定函数，所剩的自由度恰好是调和函数。
 
 \subsection{分布意义下的 Laplace 算子}
 \label{b3:subsec:150401}
 
-对于 \(u\in L^1_{\mathrm{loc}}(D)\)，定义 \(\langle\Delta u,\varphi\rangle=\int_Du\Delta\varphi\,\mathrm{d}A\)，其中 \(\varphi\in C_c^\infty(D)\)。分布配对不加复共轭，二阶积分分部使符号为正。
+设 \(D\subseteq\mathbb C\) 为开集。空间 \(\mathcal D(D)=C_c^\infty(D)\) 的元素称为\term[ceshi-hanshu]{测试函数}[test function]，也称试验函数\termidx[shiyan-hanshu]{试验函数}：它们光滑，且支集包含于 \(D\) 的某个紧子集。测试函数列 \(\varphi_j\) 趋于零，要求所有支集落在同一个 \(K\Subset D\) 内，并且每个固定阶偏导都一致趋于零。共同紧支集使微分、积分与极限始终发生在同一块内部区域。
+
+\ProseParagraphBreak
+
+\term[fenbu]{分布}[distribution]，也称广义函数\termidx[guangyi-hanshu]{广义函数}，是对上述测试收敛连续的线性泛函 \(T:\mathcal D(D)\rightarrow\mathbb C\)，记作 \(T\in\mathcal D'(D)\)。只讨论实测试函数和实取值时记作 \(\mathcal D'(D;\mathbb R)\)。等价地，对每个 \(K\Subset D\)，存在常数 \(C_K\) 和整数 \(m_K\ge0\)，使
+\[
+ |\langle T,\varphi\rangle|
+ \le C_K\max_{|\alpha|\le m_K}\|\partial^\alpha\varphi\|_\infty,
+ \quad \operatorname{supp}\varphi\subseteq K.
+\]
+这里 \(\alpha=(\alpha_1,\alpha_2)\)、\(|\alpha|=\alpha_1+\alpha_2\)，且 \(\partial^\alpha=\partial_x^{\alpha_1}\partial_y^{\alpha_2}\)。这一有限阶估计与连续性等价：估计直接控制每个共同支集上的收敛；若某个紧集上没有任何有限阶估计，就能归一化选出测试函数，使前 \(j\) 阶导数均小于 \(1/j\)，而泛函取值的绝对值等于一，违反连续性。阶数和常数可以随紧集改变。
+\symidx{\(\mathcal D'(D)\)：开集 \(D\) 上的分布空间}
+
+局部可积函数 \(u\) 定义分布
+\[
+ \langle T_u,\varphi\rangle=\int_Du\varphi\,\mathrm{d}A.
+\]
+固定紧支集时，右端的绝对值不超过 \(\|u\|_{L^1(K)}\cdot\|\varphi\|_\infty\)。因此只要在零测集上修改 \(u\)，分布便不改变。分布配对不加复共轭；定义
+\[
+ \langle\partial_xT,\varphi\rangle=-\langle T,\partial_x\varphi\rangle,
+ \quad
+ \langle\Delta T,\varphi\rangle=\langle T,\Delta\varphi\rangle,
+ \quad \Delta=\partial_x^2+\partial_y^2,
+\]
+就与通常积分分部相容。特别地，\(\langle\Delta u,\varphi\rangle=\int_Du\Delta\varphi\,\mathrm{d}A\)。二阶导数产生两个负号，所以这里没有额外的负号。
+
+\ProseParagraphBreak
+
+点质量 \(\delta_a\) 的作用为 \(\langle\delta_a,\varphi\rangle=\varphi(a)\)。下面的计算说明，对数奇性在 Laplace 算子下恰好成为这样的集中质量。
+
+\Needspace{6\baselineskip}
 \begin{proposition}[对数基本解]\label{b3:prop:15-log-fundamental}
-在复平面分布意义下，\(\Delta\log|z|=2\pi\delta_0\)。
+函数 \(z\mapsto\log|z|\) 在 \(\mathbb C\) 上局部可积，且在分布意义下
+\[
+ \Delta\log|z|=2\pi\delta_0.
+\]
+因此 \(E(z)=(2\pi)^{-1}\log|z|\) 满足 \(\Delta E=\delta_0\)，是正号 Laplace 算子 \(\Delta\) 的基本解。
 \end{proposition}
 \begin{proof}
-删去半径 \(\varepsilon\) 的圆盘，在余域用 Green 公式。小圆的余域外法向朝向原点，边界项为
+原点附近的可积性来自
 \[
-\int_0^{2\pi}\bigl(-\varepsilon\log\varepsilon\,\partial_r\varphi(\varepsilon e^{\mathrm{i}t})+\varphi(\varepsilon e^{\mathrm{i}t})\bigr)\,\mathrm{d}t.
+ \int_{|z|<1}|\log|z||\,\mathrm{d}A
+ =2\pi\int_0^1-r\log r\,\mathrm{d}r=\frac\pi2.
 \]
-第一项趋零，第二项趋 \(2\pi\varphi(0)\)。被删圆盘上 \(\log|z|\) 的可积性保证原积分极限成立。
+取 \(\varphi\in C_c^\infty(\mathbb C)\)，再取 \(R\) 使其支集包含于 \(B(0,R)\)。在圆环 \(\varepsilon<|z|<R\) 上使用第二 Green 公式。外圆附近 \(\varphi\) 及其导数为零，内圆的圆环外法向则是 \(-\partial_r\)，故
+\[
+ \int_{\varepsilon<|z|<R}\log|z|\,\Delta\varphi\,\mathrm{d}A
+ =\int_0^{2\pi}
+ \left(-\varepsilon\log\varepsilon\,
+ \partial_r\varphi(\varepsilon e^{\mathrm{i}t})
+ +\varphi(\varepsilon e^{\mathrm{i}t})\right)\,\mathrm{d}t.
+\]
+第二项的正号来自 \(-\varphi\partial_n\log|z|\)：内边界上 \(\partial_n\log|z|=-1/\varepsilon\)，再乘弧长元 \(\varepsilon\,\mathrm{d}t\)。第一项的绝对值不超过 \(2\pi\varepsilon|\log\varepsilon|\cdot\|\nabla\varphi\|_\infty\)，趋于零；第二项趋于 \(2\pi\varphi(0)\)。删去圆盘上的积分也由对数核的局部可积性趋于零，于是得到所述分布等式。
 \end{proof}
+把 \(z\) 换成 \(z-a\) 便得到 \(\Delta\log|z-a|=2\pi\delta_a\)。若所用算子改为 \(-\Delta\)，基本解也须改为 \(-(2\pi)^{-1}\log|z|\)；后面所有 Riesz 测度都固定采用本节的正号约定。
 
 \subsection{正分布}
 \label{b3:subsec:150402}
 
-实分布 \(T\) 对每个非负测试函数取非负值时，称为\term[zheng-fenbu]{正分布}[positive distribution]。取 \(\chi\in C_c^\infty(D)\)，\(\chi=1\) 于紧集 \(K\) 邻域，则支集在 \(K\) 的实测试函数满足
+设 \(D\subseteq\mathbb C\) 为开集。实分布 \(T\in\mathcal D'(D;\mathbb R)\) 对每个非负实测试函数取非负值时，称为\term[zheng-fenbu]{正分布}[positive distribution]。正性不仅限制取值的符号，还会把上面的有限阶估计降到零阶。这一步使正分布成为测度，而不再需要对测试函数求导。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[正分布的测度表示]\label{b3:prop:15-positive-distribution}
+设 \(D\subseteq\mathbb C\) 为开集，\(T\in\mathcal D'(D;\mathbb R)\) 为正分布。则存在唯一局部有限正 Radon 测度 \(\mu\)，使
 \[
-|T(\varphi)|\le T(\chi)\cdot\|\varphi\|_\infty.
+ \langle T,\varphi\rangle=\int_D\varphi\,\mathrm{d}\mu
+ \quad\left(\varphi\in C_c^\infty(D;\mathbb R)\right).
 \]
-这是由 \(-\|\varphi\|_\infty\chi\le\varphi\le\|\varphi\|_\infty\chi\) 得到的。光滑逼近因此把 \(T\) 唯一延拓到连续紧支集函数，并保持正性。第一卷定理11.4.1（正泛函的 Riesz--Markov 表示）给出局部有限正 Radon 测度。这里调用的是表示定理，不把分布的高阶连续性直接误当作测度性。
-
-\subsection{Riesz 测度}
-\label{b3:subsec:150403}
-
-\begin{proposition}\label{b3:prop:15-riesz-measure}
-次调和函数 \(u\) 的分布 \(\Delta u\) 为正分布。故有唯一局部有限正测度
-\(\mu_u=(2\pi)^{-1}\Delta u\)，称为其\term[riesz-cedu]{Riesz 测度}[Riesz measure]。
+这里不要求 \(\mu(D)<\infty\)。
 \end{proposition}
 \begin{proof}
-径向非负磨光 \(u_\varepsilon\) 在缩小的区域中仍满足平均不等式；它光滑，故 \(\Delta u_\varepsilon\ge0\)。又 \(u_\varepsilon\to u\) 于局部 \(L^1\)，对非负测试函数取极限得到 \(\int u\Delta\varphi\ge0\)。上一小节把该正分布识别为测度，唯一性由测试函数稠密性得到。
-\end{proof}
-例如 \(u=|z|^2\) 的测度为 \((2/\pi)\mathrm{d}A\)，而 \(u=\log|z-a|\) 的测度为 \(\delta_a\)。连续分布与点质量都可以出现，不能把 Riesz 测度只理解为离散零点。
+给定 \(K\Subset D\)，取 \(\chi\in C_c^\infty(D)\)，使 \(0\le\chi\le1\)，并在 \(K\) 的邻域上等于一。对支集包含于 \(K\) 的实测试函数，逐点不等式
+\[
+ -\|\varphi\|_\infty\chi\le\varphi\le\|\varphi\|_\infty\chi
+\]
+及正性给出
+\[
+ |\langle T,\varphi\rangle|
+ \le\langle T,\chi\rangle\cdot\|\varphi\|_\infty.
+\]
+常数可以依赖 \(K\)，但不依赖测试函数的导数。
 
-\subsection{势论解释}
+现在令 \(f\in C_c(D;\mathbb R)\)。将它在 \(D\) 外延为零，再用非负光滑近似单位卷积，得到 \(f_j\in C_c^\infty(D)\)，一致趋于 \(f\)。充分小的卷积半径使这些支集落在同一个 \(K'\Subset D\) 内。零阶估计表明 \(\langle T,f_j\rangle\) 是 Cauchy 列。定义 \(\Lambda(f)\) 为其极限；两种逼近的支集并集仍落在某个内部紧集，故同一估计证明定义与逼近无关。取相同卷积核逼近两个函数，便知 \(\Lambda\) 线性；若 \(f\ge0\)，可以取 \(f_j\ge0\)，所以 \(\Lambda\) 为正泛函。它延拓了 \(T\)，并在每个固定紧支集上关于一致范数连续。
+
+开集 \(D\) 是局部紧 Hausdorff 空间。第一卷定理11.4.1（正泛函的 Riesz--Markov 表示）适用于 \(\Lambda:C_c(D;\mathbb R)\rightarrow\mathbb R\)，给出唯一正 Radon 测度 \(\mu\)。该版本只要求正性，不要求全空间上的一致范数界。取在 \(K\) 上等于一的上述 \(\chi\)，还有
+\[
+ \mu(K)\le\int_D\chi\,\mathrm{d}\mu=\langle T,\chi\rangle<\infty,
+\]
+这明确给出局部有限性。若另一个局部有限 Radon 测度在所有光滑测试函数上有相同积分，固定支集的一致逼近使它在全部 \(C_c(D)\) 上也给出 \(\Lambda\)，表示定理的唯一性遂使两测度相等。
+\end{proof}
+% 跨卷 B3-15-01：b1:thm:riesz-markov-positive；当前编号11.4.1。
+
+一般分布不具有上述零阶控制。取固定光滑截断函数 \(\chi\)，支集紧、在原点附近等于一，且 \(0\le\chi\le1\)。函数 \(\varphi_n(x,y)=\chi(x,y)\sin(nx)\) 的支集落在同一个紧集，最大模不超过一，却有
+\[
+ \langle\partial_x\delta_0,\varphi_n\rangle
+ =-\partial_x\varphi_n(0)=-n.
+\]
+所以 \(\partial_x\delta_0\) 不能由局部有限测度表示。它也不正：非负测试函数 \(\chi(x,y)(1+\sin x)\) 与 \(\chi(x,y)(1-\sin x)\) 分别给出负值和正值。正性承担的作用正是排除这种对导数的依赖。
+
+\subsection{Riesz 测度与分布判据}
+\label{b3:subsec:150403}
+
+把次调和函数与正分布联系起来，先要说明磨光保留哪些性质。以下卷积只在核的支集完全留在定义域内时使用。若 \(\eta\in C_c^\infty(\mathbb C)\) 非负、积分为一，取 \(R_\eta>0\) 使 \(\operatorname{supp}\eta\subseteq\overline{B(0,R_\eta)}\)，并记
+\[
+ \eta_\varepsilon(w)=\varepsilon^{-2}\eta(w/\varepsilon),
+ \quad
+ D_\varepsilon=\{\,z\in D\mid
+ \operatorname{dist}(z,\mathbb C\setminus D)>R_\eta\varepsilon\,\}.
+\]
+当 \(D=\mathbb C\) 时取 \(D_\varepsilon=\mathbb C\)。核的径向性稍后用于比较不同尺度；保留次平均不等式本身只需要非负性。
+
+\Needspace{6\baselineskip}
+\begin{lemma}[次调和函数的磨光]\label{b3:lem:15-subharmonic-smoothing}
+设 \(D\subseteq\mathbb C\) 为区域，\(u\) 在 \(D\) 次调和。取非负 \(\eta\in C_c^\infty(\mathbb C)\)，使 \(\int\eta\,\mathrm{d}A=1\) 且支集包含于 \(\overline{B(0,R_\eta)}\)，其中 \(R_\eta>0\)。则
+\[
+ u_\varepsilon(z)=(u*\eta_\varepsilon)(z)
+ =\int_{\mathbb C}\eta_\varepsilon(w)u(z-w)\,\mathrm{d}A(w)
+\]
+在 \(D_\varepsilon=\{z\in D\mid\operatorname{dist}(z,\mathbb C\setminus D)>R_\eta\varepsilon\}\) 光滑，并在其每个连通分支次调和；若 \(D=\mathbb C\)，取 \(D_\varepsilon=\mathbb C\)。当 \(\varepsilon\downarrow0\) 时，\(u_\varepsilon\to u\) 于 \(L^1_{\mathrm{loc}}(D)\)。
+\end{lemma}
+\begin{proof}
+局部可积性使卷积有限，且可把各阶导数移到光滑核上，故 \(u_\varepsilon\) 光滑。若 \(\overline{B(a,r)}\subset D_\varepsilon\)，所有平移圆盘 \(\overline{B(a-w,r)}\)，其中 \(w\in\operatorname{supp}\eta_\varepsilon\)，都留在 \(D\) 内。对它们使用 \(u\) 的次平均不等式，再以非负权 \(\eta_\varepsilon(w)\) 积分。所需换序不是直接假定圆周上的负部可积：令 \(L\Subset D\) 包含全部平移圆盘，则
+\[
+ \int_0^{2\pi}\int_{\mathbb C}
+ \eta_\varepsilon(w)|u(a+re^{\mathrm{i}t}-w)|\,\mathrm{d}A(w)\,\mathrm{d}t
+ \le2\pi\|\eta_\varepsilon\|_\infty\int_L|u|\,\mathrm{d}A<\infty.
+\]
+这里先对每个 \(t\) 作平移换元，再用同一个 \(L\) 控制。Fubini 因此适用，并给
+\[
+ u_\varepsilon(a)\le\frac1{2\pi}
+ \int_0^{2\pi}u_\varepsilon(a+re^{\mathrm{i}t})\,\mathrm{d}t.
+\]
+
+局部 \(L^1\) 收敛是近似单位的性质。具体地，固定 \(K\Subset D\)，在稍大的内部紧集上把 \(u\) 作 \(L^1\) 连续函数逼近；卷积非负且积分一，使逼近误差在卷积前后都不增大，而连续函数的误差由一致连续性趋于零。等价地，也可用 \(L^1\) 平移连续性估计
+\[
+ \|u_\varepsilon-u\|_{L^1(K)}
+ \le\int\eta(w)\|u(\,\cdot-\varepsilon w)-u\|_{L^1(K)}\,\mathrm{d}A(w).
+\]
+这一收敛步骤对任意局部可积函数成立，不使用次调和性。
+\end{proof}
+
+\Needspace{6\baselineskip}
+\begin{proposition}\label{b3:prop:15-riesz-measure}
+设 \(D\subseteq\mathbb C\) 为区域，\(u\) 为 \(D\) 上的次调和函数。则分布 \(\Delta u\) 为正分布，因而有唯一局部有限正 Radon 测度
+\[
+ \mu_u\coloneqq\frac1{2\pi}\Delta u,
+\]
+称为 \(u\) 的\term[riesz-cedu]{Riesz 测度}[Riesz measure]。
+\end{proposition}
+\begin{proof}
+由\cref{b3:lem:15-subharmonic-smoothing}，内部的 \(u_\varepsilon\) 光滑且次调和，所以 \(\Delta u_\varepsilon\ge0\)。给定非负 \(\varphi\in C_c^\infty(D)\)，充分小的 \(\varepsilon\) 使其支集留在 \(D_\varepsilon\)，于是
+\[
+ \langle\Delta u,\varphi\rangle
+ =\lim_{\varepsilon\downarrow0}\int u_\varepsilon\Delta\varphi\,\mathrm{d}A
+ =\lim_{\varepsilon\downarrow0}\int\varphi\Delta u_\varepsilon\,\mathrm{d}A\ge0.
+\]
+第一步使用局部 \(L^1\) 收敛和 \(\Delta\varphi\) 的有界紧支集，第二步为无边界项的积分分部。再用\cref{b3:prop:15-positive-distribution}表示该正分布，即得所述测度。
+\end{proof}
+\symidx{\(\mu_u=(2\pi)^{-1}\Delta u\)：次调和函数的 Riesz 测度}
+
+例如 \(\Delta|z|^2=4\)，所以 \(\mu_{|z|^2}=(2/\pi)\mathrm{d}A\)；由\cref{b3:prop:15-log-fundamental}，\(\mu_{\log|z-a|}=\delta_a\)。前者在每个有界紧集上有限，却在平面上质量无穷；后者总质量一，对数函数仍在无穷远无界。局部有限性、总质量有限性与函数有界性各是不同的条件。
+
+\ProseParagraphBreak
+
+反向问题必须从几乎处处等价类开始。分布看不见单点的改动，次平均不等式却会检查圆心的值，因而需要一个能够恢复所有点值的构造。
+
+\Needspace{6\baselineskip}
+\begin{theorem}[分布判据与点态代表]\label{b3:thm:15-distribution-subharmonic}
+设 \(D\subseteq\mathbb C\) 为区域，实函数 \(u\in L^1_{\mathrm{loc}}(D)\) 满足分布不等式 \(\Delta u\ge0\)。则其几乎处处等价类有唯一次调和代表 \(u^*\)。取任意非负径向函数 \(\eta\in C_c^\infty(\mathbb C)\)，满足 \(\int\eta\,\mathrm{d}A=1\)，并取 \(R_\eta>0\) 使 \(\operatorname{supp}\eta\subseteq\overline{B(0,R_\eta)}\)。令 \(\eta_\varepsilon(z)=\varepsilon^{-2}\eta(z/\varepsilon)\)，则对每个 \(z\in D\)，在 \(R_\eta\varepsilon<\operatorname{dist}(z,\mathbb C\setminus D)\) 的范围内有
+\[
+ u^*(z)=\lim_{\varepsilon\downarrow0}(u*\eta_\varepsilon)(z),
+ \quad u*\eta_\varepsilon(z)\downarrow u^*(z).
+\]
+平面情形没有这项边界限制。极限允许为 \(-\infty\)，但不在任何非空开集恒为 \(-\infty\)，且不依赖所选径向核。
+\end{theorem}
+\begin{proof}
+记 \(u_\varepsilon=u*\eta_\varepsilon\)。直接对核求导得到
+\[
+ \Delta u_\varepsilon(z)
+ =\langle\Delta u,\eta_\varepsilon(z-\,\cdot)\rangle\ge0.
+\]
+右边的测试函数非负且紧支于 \(D\)，所以 \(u_\varepsilon\) 在 \(D_\varepsilon\) 光滑且次调和。
+
+关键在于尺度单调性。对光滑次调和函数 \(v\)，令
+\[
+ m_v(z,r)=\frac1{2\pi}\int_0^{2\pi}v(z+re^{\mathrm{i}t})\,\mathrm{d}t.
+\]
+平均导数的散度公式给
+\[
+ \frac{\partial}{\partial r}m_v(z,r)
+ =\frac1{2\pi r}\int_{B(z,r)}\Delta v\,\mathrm{d}A\ge0.
+\]
+写 \(\eta(w)=\psi(|w|)\)，极坐标换元得到
+\[
+ (v*\eta_\varepsilon)(z)
+ =\int_0^{R_\eta}2\pi t\psi(t)m_v(z,\varepsilon t)\,\mathrm{d}t,
+ \quad \int_0^{R_\eta}2\pi t\psi(t)\,\mathrm{d}t=1.
+\]
+因此固定 \(z\) 时，\(v*\eta_\varepsilon(z)\) 随 \(\varepsilon\) 非减。这里不要求径向函数 \(\psi\) 自身单调；所用的是权重非负及各个圆周平均的单调性。
+
+要把这一结论用于尚不光滑的 \(u\)，先固定 \(0<\varepsilon_1<\varepsilon_2\)，并在含 \(\overline{B(z,R_\eta\varepsilon_2)}\) 的内部邻域取充分小的 \(\delta\)。对光滑次调和函数 \(u_\delta\) 使用刚才的比较，得
+\[
+ (u_\delta*\eta_{\varepsilon_1})(z)
+ \le(u_\delta*\eta_{\varepsilon_2})(z).
+\]
+令 \(\delta\downarrow0\)。局部 \(L^1\) 收敛使与固定光滑核的卷积收敛，例如在包含卷积支集的 \(L\Subset D\) 上，误差不超过 \(\|\eta_{\varepsilon_j}\|_\infty\cdot\|u_\delta-u\|_{L^1(L)}\)。故 \(u_{\varepsilon_1}(z)\le u_{\varepsilon_2}(z)\)。
+
+于是 \(\varepsilon\downarrow0\) 时存在点态下降极限 \(u^*\)。在任意内部小开集上，取足够小的 \(\varepsilon_n\downarrow0\)，这些光滑次调和函数定义在同一邻域。近似单位给 \(u_{\varepsilon_n}\to u\) 于局部 \(L^1\)；选几乎处处收敛子列可知其点态极限 \(u^*\) 等于 \(u\) 几乎处处。因此 \(u^*\) 局部可积，并不在任何开集恒为负无穷。下降的连续函数列之极限上半连续，由\cref{b3:prop:15-subharmonic-operations}的下降极限结论，它在各个内部邻域次调和；\cref{b3:prop:15-local-comparison}的局部性质使它在 \(D\) 次调和。
+
+最后，\cref{b3:prop:15-area-recovery}说明次调和函数的点值等于缩小圆盘的面积平均之极限。两个次调和代表若几乎处处相等，所有内部圆盘的面积平均就相等，故处处相等。这既证明唯一性，也证明不同径向核构造出的代表相同。
+\end{proof}
+例如把零函数在原点的值改为一，仍得到一个上半连续函数，且作为分布满足 \(\Delta u=0\)，却在原点违反次平均不等式。定理选择的是由平均恢复的特定代表；上半连续性不能单独替代这一要求。
+
+\subsection{对数势与局部 Riesz 分解}
 \label{b3:subsec:150404}
 
-对光滑紧支集非负密度 \(\rho\)，对数势
+对数基本解提示我们，把各点的对数核按测度叠加，就应当恢复给定的 Laplace 测度。若测度有原子，所得函数在原子处为负无穷；所以构造既要证明局部可积，又要确认积分所给的点值本身满足次调和条件。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[紧支集测度的对数势]\label{b3:prop:15-log-potential}
+设 \(\mu\) 是 \(\mathbb C\) 上支集包含于某个紧集 \(K\) 的有限正 Borel 测度。其\term[duishu-shi]{对数势}[logarithmic potential]定义为
 \[
-V(z)=\int_{\mathbb C}\log|z-w|\cdot\rho(w)\,\mathrm{d}A(w)
+ V_\mu(z)=\int_K\log|z-w|\,\mathrm{d}\mu(w),
+ \quad z\in\mathbb C.
 \]
-局部可积，且 \(\Delta V=2\pi\rho\)。换序由紧支集上的对数核局部可积保证。因而若 \(\mu_u=\rho\mathrm{d}A\)，\(u-V\) 的分布 Laplace 算子为零。
-
-分布调和函数的光滑性可以这样恢复：其磨光 \(h_\varepsilon\) 调和；在一个内部圆盘上再用固定径向核 \(\eta\)，平均值性质给 \(h_\varepsilon=h_\varepsilon*\eta\)。局部 \(L^1\) 极限使右端连同每个阶导数一致收敛，得到光滑调和代表 \(h=h*\eta\)。这是 \term[weyl-yinli]{Weyl 引理}[Weyl's lemma]在平面上的证明。
-
-势决定非调和部分，调和函数决定不被测度看见的自由度。在一般 Radon 密度情形，对数势可能在薄集上为负无穷，必须另行选择次调和代表；这里不把局部可积函数的任意零测修改说成同一个点态次调和函数。
-
-
-正分布的零阶估计还说明其局部有限性。取 \(K\Subset D\)，所有 \(0\le\varphi\le1\)、支集在 \(K\) 的测试函数均满足 \(T(\varphi)\le T(\chi)\)。表示测度在 \(K\) 的质量因此不超过同一有限常数。不同紧集选择不同 \(\chi\)；不能从局部有限性推出全域测度有限。
-
-\ProseParagraphBreak
-
-例如 \(u(z)=|z|^2\) 的 Riesz 测度在每个有界紧集有限，却在全平面质量无穷。\(u=\log|z|\) 的测度总质量一，但是函数在无穷远不有界。测度有限性与函数有界性是不同性质，后面 Green 势的边界控制不能只根据其中一项猜出。
-
-\ProseParagraphBreak
-
-正分布一定是测度，任意分布却不一定如此。点质量的导数 \(\partial_x\delta_0\) 对测试函数的作用是 \(-\partial_x\varphi(0)\)。可取支集缩小、最大模不超过一而原点导数任意大的光滑函数，所以它不满足紧集上的零阶最大范数界，不能由局部有限测度表示。它也不正：非负测试函数在原点的一阶导数可有不同符号，只要原点不是极值点。正性在测度识别中承担的正是把所有阶连续性降为零阶控制的作用。
-
-\ProseParagraphBreak
-
-对于无零点全纯函数，\(\mu_{\log|f|}=0\)，但函数的增长可以很大。例如 \(e^{z^3}\) 的对数模为 \(\operatorname{Re}z^3\)，调和且测度零。因此 Laplace 测度只记录势的源，并不记录全部调和自由度。要确定一个函数，还须给边界数据、增长条件或某种归一化；这也是下一章边值问题与再下一章 Green 最小性各自出现的原因。
-
-
-\ProseParagraphBreak
-
-对一般有限正测度也可以局部构造对数势。设 \(\mu\) 支集于紧集 \(K\)，定义 \(V(z)=\int_K\log|z-w|\,\mathrm{d}\mu(w)\)，允许负无穷。对任意有界集 \(L\)，
+该积分取值于 \([-\infty,\infty)\)，给出一个局部可积的次调和函数，并满足
 \[
-\sup_{w\in K}\int_L|\log|z-w||\,\mathrm{d}A(z)<\infty,
+ \Delta V_\mu=2\pi\mu
 \]
-因为单位距离以内的负部由 \(2\pi\int_0^1r|\log r|\,\mathrm{d}r\) 控制，外面的正部由 \(K,L\) 的有界性控制。Tonelli 因而给 \(V\in L^1_{\mathrm{loc}}\)，尤其它不能在整个开集恒为负无穷。分布换序及对数基本解得到 \(\Delta V=2\pi\mu\)。
+这一分布等式。函数 \(V_\mu\) 在 \(\mathbb C\setminus K\) 光滑且调和。
+\end{proposition}
+\begin{proof}
+固定 \(z\) 时，对数核在紧集 \(K\) 上有有限上界，故积分不产生正无穷，负无穷则允许。对有界可测集 \(L\)，取 \(M\ge1\) 使 \(|z-w|\le M\) 对 \(z\in L\)、\(w\in K\) 成立。单位距离以内的负部与外面的正部分别给
+\[
+ \sup_{w\in K}\int_L|\log|z-w||\,\mathrm{d}A(z)
+ \le\frac\pi2+A(L)\log M<\infty.
+\]
+Tonelli 因此表明核的绝对值对 \(\mathrm{d}A(z)\,\mathrm{d}\mu(w)\) 在 \(L\times K\) 可积。特别地，\(V_\mu\) 在每个有界集上几乎处处有限且绝对可积，不能在任何非空开集恒为负无穷。
+
+为验证这些指定点值的次调和性，采用光滑对数核
+\[
+ k_\varepsilon(\zeta)=\frac12\log(|\zeta|^2+\varepsilon^2),
+ \quad
+ \Delta k_\varepsilon(\zeta)
+ =\frac{2\varepsilon^2}{(|\zeta|^2+\varepsilon^2)^2}\ge0.
+\]
+定义 \(V_\varepsilon(z)=\int_K k_\varepsilon(z-w)\,\mathrm{d}\mu(w)\)。对固定 \(\varepsilon>0\)，核的各阶导数在内部有界 \(z\) 集与 \(K\) 的乘积上有界，故可在积分下求导；于是 \(V_\varepsilon\) 光滑，且 \(\Delta V_\varepsilon\ge0\)。当 \(\varepsilon\downarrow0\) 时，\(k_\varepsilon\downarrow\log|\zeta|\)。在固定 \(z\) 的积分中，先从核减去一个共同有限上界，再用单调收敛，即得 \(V_\varepsilon(z)\downarrow V_\mu(z)\)，包括负无穷的情形。已经证明 \(V_\mu\in L^1_{\mathrm{loc}}\)，故\cref{b3:prop:15-subharmonic-operations}给出 \(V_\mu\) 的次调和性。这样不必对原来可能有负无穷的圆周积分直接换序。
+
+给定 \(\varphi\in C_c^\infty(\mathbb C)\)，前述绝对可积估计乘以 \(\|\Delta\varphi\|_\infty\)，保证下式的 Fubini 换序合法：
+\[
+ \begin{aligned}
+ \langle\Delta V_\mu,\varphi\rangle
+ &=\int_K\left(\int_{\mathbb C}\log|z-w|\,\Delta\varphi(z)\,\mathrm{d}A(z)\right)\mathrm{d}\mu(w)\\
+ &=2\pi\int_K\varphi(w)\,\mathrm{d}\mu(w).
+ \end{aligned}
+\]
+第二行使用平移后的\cref{b3:prop:15-log-fundamental}。最后，在 \(\mathbb C\setminus K\) 的任意紧集上，\(|z-w|\) 有统一正下界，可以直接对对数核求各阶导数；核在这些点的 Laplace 算子为零，所以势在该开集光滑且调和。
+\end{proof}
+对于光滑紧支集非负密度 \(\rho\)，上式就是
+\[
+ V(z)=\int_{\mathbb C}\log|z-w|\cdot\rho(w)\,\mathrm{d}A(w),
+ \quad \Delta V=2\pi\rho.
+\]
+而对 \(\mu=\sum_{j=1}^N c_j\delta_{a_j}\)，其中 \(c_j>0\)，势为 \(\sum_{j=1}^N c_j\log|z-a_j|\)，在每个 \(a_j\) 取负无穷。这两个例子分别显示连续质量与集中质量的作用；一般测度的证明同时包含它们。
 
 \ProseParagraphBreak
 
-这个积分本身提供了适当的点态代表。对局部 \(z\) 变量，核有共同有限上界；减去该上界后用 Fatou 引理，得到 \(\limsup V(z_j)\le V(z)\)，故上半连续。每个核的圆周平均不小于中心值，对正测度积分后仍保持该不等式；若负部的换序有疑问，可先以光滑对数核逼近，再用下降极限处理。因此 \(V\) 次调和，而不只是一个 Laplace 正的分布等价类。
+若从一个函数中减去具有相同 Laplace 测度的势，差就只满足分布意义下的调和方程。下面的\term[weyl-yinli]{Weyl 引理}[Weyl's lemma]把它恢复成通常的光滑调和函数。
+
+\Needspace{6\baselineskip}
+\begin{lemma}[Weyl]\label{b3:lem:15-weyl}
+设 \(D\subseteq\mathbb C\) 为开集，实函数 \(h\in L^1_{\mathrm{loc}}(D)\) 满足分布等式 \(\Delta h=0\)。则存在唯一实值光滑调和函数 \(H\) 于 \(D\)，使 \(H=h\) 几乎处处。
+\end{lemma}
+\begin{proof}
+固定 \(\overline{B(a,4r)}\subset D\)。用支集在 \(B(0,\varepsilon)\) 的光滑近似单位得到 \(h_\varepsilon\)，其中 \(0<\varepsilon<r\)。对核求导表明 \(h_\varepsilon\) 在 \(B(a,3r)\) 光滑且调和。另取一个固定的非负径向核 \(\chi\in C_c^\infty(B(0,r))\)，使 \(\int\chi\,\mathrm{d}A=1\)。对 \(z\in B(a,2r)\)，调和平均值性质与极坐标积分给
+\[
+ h_\varepsilon(z)=(h_\varepsilon*\chi)(z).
+\]
+这一步把趋零的磨光尺度换成了固定的内部尺度。
+
+由近似单位的局部 \(L^1\) 收敛，在 \(B(a,2r)\) 上 \(h_\varepsilon\to h\)。令 \(H=h*\chi\)，则对每个多重指标 \(\alpha\)，
+\[
+ \sup_{z\in B(a,r)}
+ \left|\partial^\alpha\bigl((h_\varepsilon-h)*\chi\bigr)(z)\right|
+ \le\|\partial^\alpha\chi\|_\infty
+ \cdot\|h_\varepsilon-h\|_{L^1(B(a,2r))}\longrightarrow0.
+\]
+因此 \(h_\varepsilon\to H\) 连同各阶导数在 \(B(a,r)\) 一致收敛，\(H\) 光滑且 \(\Delta H=0\)。同一序列又在局部 \(L^1\) 趋于 \(h\)，所以 \(H=h\) 几乎处处。
+
+不同圆盘或固定核给出的局部代表在交叠处几乎处处相等。它们的差连续；若在某点非零，就在一个非空开集不为零，与几乎处处相等矛盾。因此这些代表处处相合，拼成 \(D\) 上的调和函数。相同论证也给出唯一性。
+\end{proof}
+
+对数势与 Weyl 引理合起来便得到\term[riesz-fenjie]{Riesz 分解}[Riesz decomposition]。局部化选择一个内部圆盘，只把其中有限的质量放入势；这避免对全域的测度总量或无穷远收敛作额外假设。
+
+\Needspace{6\baselineskip}
+\begin{theorem}[局部 Riesz 分解]\label{b3:thm:15-riesz-decomposition}
+设 \(D\subseteq\mathbb C\) 为区域，\(u\) 在 \(D\) 次调和，\(\mu_u=(2\pi)^{-1}\Delta u\) 为其 Riesz 测度。给定圆盘 \(B=B(a,R)\)，其中 \(R>0\) 且 \(\overline B\subset D\)，存在唯一实值调和函数 \(h\) 于 \(B\)，使
+\[
+ u(z)=\int_{\overline B}\log|z-w|\,\mathrm{d}\mu_u(w)+h(z)
+ \quad(z\in B).
+\]
+等式在每个点成立；势或 \(u\) 取负无穷时，按扩展实数等式理解。
+\end{theorem}
+\begin{proof}
+紧集 \(\overline B\) 上的测度质量有限。把限制测度 \(\mu=\mu_u\llcorner\overline B\) 延为平面上的测度，由\cref{b3:prop:15-log-potential}，其势 \(V_\mu\) 局部可积且次调和，并满足 \(\Delta V_\mu=2\pi\mu\)。在开圆盘 \(B\) 内，\(\mu\) 与 \(\mu_u\) 对所有测试函数的积分相同，故
+\[
+ \Delta(u-V_\mu)=0\quad\text{于 }B.
+\]
+\cref{b3:lem:15-weyl}给出调和函数 \(h\)，使 \(u-V_\mu=h\) 几乎处处；这里减法先在局部可积等价类中进行，不在两个负无穷点值之间相减。
+
+函数 \(u\) 与 \(V_\mu+h\) 都次调和，并且几乎处处相等。由\cref{b3:prop:15-area-recovery}的点值恢复，它们在每个点相等，包括负无穷点。若另有调和函数给出同一分解，由 \(u\) 与势几乎处处有限可知两调和函数几乎处处相等，连续性再给处处相等，故 \(h\) 唯一。
+\end{proof}
+这个分解只承诺内部范围。把圆盘外更多的测度也放进势，会改变调和余项；将全部 \(\mu_u\) 放进平面积分则还需要无穷远的收敛控制。边界上的测度虽被当前积分计入，但它的对数势在圆盘内部调和，因此不改变圆盘内部的 Laplace 测度。
 
 \ProseParagraphBreak
 
-给定次调和 \(u\)，在两个同心内部圆盘 \(B'\Subset B\Subset D\) 上取 \(\mu=\mu_u|_{\overline B}\)，上述势满足 \(\Delta(u-V)=0\) 于 \(B\)，Weyl 引理给调和函数 \(h\)，于是 \(u=V+h\) 几乎处处。要恢复处处等式，可利用次调和函数的面积平均在半径趋零时回到自身：平均不等式给下界，上半连续性给上界，所以平均极限等于点值，包括值为负无穷的情形。双方几乎处处相等使所有面积平均相等，最终得到 \(u=V+h\) 处处成立。这是局部 Riesz 分解；把全部测度放入势时，远处边界与增长还须另外控制，本证明只承诺内部局部范围。
+对于全纯函数，局部因式分解已经给出对数奇性的全部系数，所以本节可以直接辨认其 Riesz 测度，无须先建立后面的零点计数公式。
+
+\Needspace{6\baselineskip}
+\begin{corollary}[对数模的零点测度]\label{b3:cor:15-zero-measure}
+设 \(D\subseteq\mathbb C\) 为区域，\(f\) 在 \(D\) 全纯且不恒为零。记 \(Z(f)\) 为其零点集，\(m_a\ge1\) 为零点 \(a\) 的重数。则
+\[
+ \mu_{\log|f|}=\sum_{a\in Z(f)}m_a\delta_a,
+ \quad
+ \Delta\log|f|=2\pi\sum_{a\in Z(f)}m_a\delta_a.
+\]
+两式均按局部有限测度理解；每个内部紧集只遇到有限多个零点。
+\end{corollary}
+\begin{proof}
+\cref{b3:prop:15-log-subharmonic}已经证明 \(\log|f|\) 次调和。零点孤立，故内部紧集上只有有限多个零点。在零点 \(a\) 的小圆盘中写
+\[
+ f(z)=(z-a)^{m_a}g(z),
+ \quad
+ \log|f(z)|=m_a\log|z-a|+\log|g(z)|,
+\]
+其中 \(g\) 全纯且无零点。由\cref{b3:prop:15-log-modulus}，\(\log|g|\) 调和；对数基本解因此给出该邻域中的 \(\Delta\log|f|=2\pi m_a\delta_a\)。在无零点邻域，Laplace 算子为零。对任意紧支集测试函数，以有限个这样的邻域覆盖其支集，再用光滑分片把测试函数分开，局部分布等式相加便得到全域等式。
+\end{proof}
+例如
+\[
+ f(z)=z^2(z-1)^3e^{z^3}
+ \quad\Longrightarrow\quad
+ \mu_{\log|f|}=2\delta_0+3\delta_1.
+\]
+其中 \(\operatorname{Re}z^3\) 是对数模的调和部分，不产生质量；特别地，无零点函数 \(e^{z^3}\) 可以有很大的增长，而其对数模的 Riesz 测度恒为零。测度记录非调和部分，边界数据、增长条件或归一化才会进一步确定调和余项。

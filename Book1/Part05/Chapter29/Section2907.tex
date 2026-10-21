@@ -1,0 +1,393 @@
+% !TeX root = ../../Book1.tex
+\section{乘法算子与微分算子的定义域模型}
+\label{b1:sec:2907}
+
+% 实读：Rudin1991Functional，13.4（pp.349--350）的区间一阶微分算子、
+% 周期域及两端零值域，并核对其伴随关系。原书使用+i d/dx；本节固定-i d/dx，
+% 用本卷弱导数/一维绝对连续代表重证，再推广到全部相位边界条件。
+% 最大域实乘法模型、截断图像逼近与C_c^infty闭包均在本节直接证明。
+
+乘法与求导提供了两种不同的定义域问题。乘法要求输出仍平方可积；求导除了要求弱导数平方可积，
+还可能带有端点条件。前一种要求直接确定最大允许输入，后一种要求则让同一条微分表达式产生不同算子。
+本节逐个计算这些定义域及其伴随，把\secref{b1:sec:2905}的抽象条件落实到可以检验的模型。
+
+\subsection{无界乘法算子}
+\label{b1:subsec:290701}
+
+\begin{theorem}[实可测函数的最大域乘法算子]
+\label{b1:thm:29-real-multiplication}
+设 \((X,\Sigma,\mu)\) 为测度空间，\(m:X\to\mathbb R\) 为可测函数，
+\(H=L^2(X,\Sigma,\mu;\mathbb C)\)。定义
+\[
+ D(M_m)=\{f\in H:mf\in H\},\qquad M_mf=mf.
+\]
+则 \(M_m\) 稠密定义、闭且自伴。对每个 \(z\in\mathbb C\setminus\mathbb R\)，
+\(M_m-zI:D(M_m)\to H\) 是双射，且
+\begin{equation}\label{b1:eq:29-multiplication-resolvent}
+ (M_m-zI)^{-1}g=\frac{g}{m-z},\qquad
+ \|(M_m-zI)^{-1}\|\leq|\operatorname{Im}z|^{-1}.
+\end{equation}
+这里不要求 \(\mu\) 有限或 \(\sigma\)-有限。
+\symidx{\(D(M_m)=\{f\in L^2:mf\in L^2\}\)：乘法算子的最大定义域}
+\end{theorem}
+\begin{proof}
+乘积的可测性及几乎处处等价保证算子在 \(L^2\) 等价类上良定义，定义域的线性来自乘法的线性。
+记 \(E_n=\{x:|m(x)|\leq n\}\)。对每个 \(f\in H\)，函数
+\(f_n=\mathbf1_{E_n}\cdot f\) 满足 \(\|mf_n\|_2\leq n\cdot\|f\|_2\)，故属于定义域。
+由于 \(m\) 为有限实值函数，\(E_n\uparrow X\)，控制收敛给出 \(f_n\to f\) 于 \(H\)。
+因此 \(D(M_m)\) 稠密。
+
+对 \(f,g\in D(M_m)\)，Cauchy--Schwarz 不等式保证下列积分绝对收敛，且实值性给出
+\[
+ \langle M_mf,g\rangle
+ =\int_Xmf\overline g\,\mathrm d\mu
+ =\int_Xf\overline{mg}\,\mathrm d\mu
+ =\langle f,M_mg\rangle.
+\]
+所以 \(M_m\) 对称。
+
+固定非实 \(z\)，对任意 \(g\in H\) 令 \(f=g/(m-z)\)。逐点估计
+\[
+ \frac1{|m-z|}\leq\frac1{|\operatorname{Im}z|},\qquad
+ \frac{|m|}{|m-z|}\leq1+\frac{|z|}{|\operatorname{Im}z|}
+\]
+说明 \(f\in H\)、\(mf\in H\)，故 \(f\in D(M_m)\)，并且 \((M_m-zI)f=g\)。
+由于 \(m-z\) 处处不为零，解唯一，第一个估计又给出逆算子的范数界。
+特别地，两个参数 \(z=\mathrm i,-\mathrm i\) 下均满射。
+\cref{b1:thm:29-self-adjoint-criterion}说明 \(M_m\) 自伴且闭。
+\end{proof}
+
+定义域包含了所有使乘积仍属于 \(L^2\) 的函数，因而称为乘法表达式的最大定义域。
+若原函数只在几乎处处有限，可先在其取无穷值的可测零集上改成零，所得算子相同。
+这里的“最大”是对固定乘法表达式而言；任意取一个较小的稠密子空间作为定义域，仍会得到它的另一个限制算子。
+
+\ProseParagraphBreak
+
+在 \(L^2(\mathbb R;\mathbb C)\) 上取 \(m(t)=t\)，就得到一个无界自伴算子。
+单位向量 \(f_n=\mathbf1_{[n,n+1]}\) 都在定义域内，却满足 \(\|M_mf_n\|_2\geq n\)。
+它也没有定义在整个 \(L^2\) 上：函数 \(f(t)=(1+|t|)^{-1}\) 平方可积，
+而 \(tf(t)\) 不平方可积。闭性在这里控制同时收敛的输入与输出，没有给出全空间上的有界性。
+
+\subsection{微分算子与边界配对}
+\label{b1:subsec:290702}
+
+以下固定
+\[
+ H=L^2((0,1),\mathrm dx;\mathbb C),\qquad
+ \langle f,g\rangle=\int_0^1f(x)\overline{g(x)}\,\mathrm dx.
+\]
+\cref{b1:prop:sobolev-interval-representative}保证每个 \(H^1(0,1)\) 元素都有唯一的
+\([0,1]\) 上绝对连续代表。下面的 \(f(0),f(1)\) 一律指这个代表的端点值。
+该命题的估计及 Hölder 不等式给出
+\begin{equation}\label{b1:eq:29-endpoint-estimate}
+ \max_{0\leq x\leq1}|f(x)|\leq\|f\|_2+\|f'\|_2
+ \qquad(f\in H^1(0,1)).
+\end{equation}
+所以端点条件对 \(H^1\) 范数连续，不能给任意 \(L^2\) 代表直接附加同样的点值条件。
+
+\begin{proposition}[一阶微分算子的边界配对]
+\label{b1:prop:29-derivative-boundary}
+在复 Hilbert 空间 \(H=L^2(0,1)\) 上，定义
+\[
+ D(P_{\max})=H^1(0,1),\qquad P_{\max}f=-\mathrm if',
+\]
+其中导数为弱导数。则 \(P_{\max}\) 是稠密定义的闭算子，其图像范数为
+\(\|f\|_{P_{\max}}=\|f\|_2+\|f'\|_2\)，与 \(H^1\) 范数等价。
+对所有 \(f,g\in H^1(0,1)\)，有
+\begin{equation}\label{b1:eq:29-derivative-boundary}
+ \langle P_{\max}f,g\rangle-\langle f,P_{\max}g\rangle
+ =-\mathrm i\bigl(f(1)\overline{g(1)}-f(0)\overline{g(0)}\bigr).
+\end{equation}
+\symidx{\(P_{\max}\)：定义域为\(H^1(0,1)\)的\(-\mathrm i\,\mathrm d/\mathrm dx\)}
+\end{proposition}
+\begin{proof}
+先说明 \(C_c^\infty(0,1)\) 在 \(H\) 中稠密。若 \(h\in H\) 与所有这类测试函数正交，
+则 \(\int_0^1\varphi\overline h=0\) 对每个测试函数成立。
+由正则分布的单射性\cref{b1:prop:regular-distribution-injective}，有 \(h=0\) 几乎处处。
+双重正交补公式因此给出稠密性。于是包含这一空间的 \(D(P_{\max})\) 也稠密。
+
+若 \(f_n\to f\)、\(-\mathrm if_n'\to h\) 都在 \(L^2\) 中成立，
+则对任意 \(\varphi\in C_c^\infty(0,1)\)，可以在弱导数公式中取极限，得到
+\[
+ \int_0^1 f\varphi'
+ =-\int_0^1\mathrm ih\varphi.
+\]
+因此 \(f'=\mathrm ih\in L^2\)，即 \(f\in H^1(0,1)\)、\(P_{\max}f=h\)，证明闭性。
+图像范数公式来自 \(\|-\mathrm if'\|_2=\|f'\|_2\)，其与平方和范数的等价性已在
+\secref{b1:sec:2905}说明。
+
+最后，对所选绝对连续代表，乘积 \(f\overline g\) 绝对连续，导数为
+\(f'\overline g+f\overline{g'}\)。这些项可积，因为 \(f,g\) 在闭区间上有界，
+\(f',g'\in L^2(0,1)\subseteq L^1(0,1)\)。积分微积分基本定理给出
+\[
+ \int_0^1\bigl(f'\overline g+f\overline{g'}\bigr)\,\mathrm dx
+ =f(1)\overline{g(1)}-f(0)\overline{g(0)}.
+\]
+乘以 \(-\mathrm i\) 即得边界配对公式，符号使用了内积第一变量线性的约定。
+\end{proof}
+
+把同一表达式先限制在内部测试函数上，伴随就会恢复全部允许的弱导数定义域。
+
+\begin{proposition}[测试函数域的伴随]
+\label{b1:prop:29-minimal-adjoint}
+在 \(H=L^2((0,1),\mathrm dx;\mathbb C)\) 上，令
+\[
+ D(P_c)=C_c^\infty(0,1),\qquad P_cf=-\mathrm if'.
+\]
+则 \(P_c\) 稠密定义且对称，并满足
+\[
+ P_c^*=P_{\max},\qquad
+ D(P_{\max}^*)=H_0^1(0,1),\qquad P_{\max}^*g=-\mathrm ig'.
+\]
+这里 \(P_{\max}\) 的定义域为 \(H^1(0,1)\)，
+\(H_0^1(0,1)=\{g\in H^1(0,1):g(0)=g(1)=0\}\)。
+\symidx{\(P_c\)：定义在\(C_c^\infty(0,1)\)上的\(-\mathrm i\,\mathrm d/\mathrm dx\)}
+\end{proposition}
+\begin{proof}
+稠密性已在前一命题中证明。测试函数的两端值均为零，所以边界配对也给出对称性。
+若 \(g\in H^1(0,1)\)，对 \(f\in C_c^\infty(0,1)\) 使用边界公式，得到
+\(\langle P_cf,g\rangle=\langle f,-\mathrm ig'\rangle\)。
+因此 \(g\in D(P_c^*)\)、\(P_c^*g=-\mathrm ig'\)。
+
+反之，若 \(g\in D(P_c^*)\)、\(P_c^*g=h\in L^2\)，伴随关系写成
+\[
+ -\mathrm i\int_0^1\varphi'\overline g\,\mathrm dx
+ =\int_0^1\varphi\overline h\,\mathrm dx
+ \qquad(\varphi\in C_c^\infty(0,1)).
+\]
+取复共轭，再把 \(\overline\varphi\) 换记为任意测试函数 \(\psi\)，得到
+\[
+ \int_0^1g\psi'\,\mathrm dx=-\mathrm i\int_0^1h\psi\,\mathrm dx.
+\]
+按弱导数的定义，\(g'=\mathrm ih\in L^2\)，故 \(g\in H^1\)、\(-\mathrm ig'=h\)。
+这证明 \(P_c^*=P_{\max}\)，包括定义域的相等。
+
+又因 \(P_c\subseteq P_{\max}\)，扩张反向性给出
+\(P_{\max}^*\subseteq P_c^*=P_{\max}\)。因此 \(P_{\max}^*\) 的定义域向量已属于 \(H^1\)。
+对这样的 \(g\)，属于伴随定义域还要求
+\[
+ f(1)\overline{g(1)}-f(0)\overline{g(0)}=0
+ \qquad(f\in H^1(0,1)).
+\]
+仿射函数可以独立指定 \(f(0)\) 与 \(f(1)\)，故这等价于 \(g(0)=g(1)=0\)。
+反向包含也由同一个边界公式得到。
+最后，\cref{b1:thm:interval-zero-boundary}在 \(p=2\) 时把这一子空间识别为 \(H_0^1(0,1)\)。
+\end{proof}
+
+由此，最大域算子虽然闭，却不对称。例如 \(f(x)=x\) 使
+\(\langle P_{\max}f,f\rangle-\langle f,P_{\max}f\rangle=-\mathrm i\ne0\)。
+要使微分算子自伴，需要选择恰好让边界配对消失、且伴随不再扩大定义域的边界条件。
+
+\subsection{边界条件与自伴性}
+\label{b1:subsec:290703}
+
+\begin{theorem}[相位边界条件的一阶自伴算子]
+\label{b1:thm:29-phase-derivative}
+在复 Hilbert 空间 \(H=L^2((0,1),\mathrm dx;\mathbb C)\) 上，固定 \(\theta\in\mathbb R\)，定义
+\[
+ D(P_\theta)=\{f\in H^1(0,1):f(1)=e^{\mathrm i\theta}f(0)\},
+ \qquad P_\theta f=-\mathrm if'.
+\]
+其中端点值取唯一的绝对连续代表。则 \(P_\theta\) 稠密定义、闭且自伴。
+它的特征值恰为 \(\theta+2\pi k\)（\(k\in\mathbb Z\)），各特征空间为
+\[
+ \operatorname{span}\{x\mapsto e^{\mathrm i(\theta+2\pi k)x}\}.
+\]
+\end{theorem}
+\begin{proof}
+定义域包含 \(C_c^\infty(0,1)\)，所以稠密。
+对 \(f,g\in D(P_\theta)\)，有
+\[
+ f(1)\overline{g(1)}
+ =e^{\mathrm i\theta}f(0)\cdot e^{-\mathrm i\theta}\overline{g(0)}
+ =f(0)\overline{g(0)}.
+\]
+边界公式表明 \(P_\theta\) 对称。
+
+从 \(P_c\subseteq P_\theta\subseteq P_{\max}\) 得到
+\(P_\theta^*\subseteq P_c^*=P_{\max}\)。
+所以对 \(g\in D(P_\theta^*)\)，已知 \(g\in H^1\)、\(P_\theta^*g=-\mathrm ig'\)。
+伴随条件进一步要求
+\[
+ f(0)\bigl(e^{\mathrm i\theta}\overline{g(1)}-\overline{g(0)}\bigr)=0
+ \qquad(f\in D(P_\theta)).
+\]
+对任意 \(c\in\mathbb C\)，仿射函数
+\(f(x)=c(1-x)+e^{\mathrm i\theta}cx\) 属于定义域，且 \(f(0)=c\)。
+因此括号内必须为零，取复共轭后即得 \(g(1)=e^{\mathrm i\theta}g(0)\)。
+故 \(D(P_\theta^*)\subseteq D(P_\theta)\)。
+对称性已给出反向包含，所以 \(P_\theta=P_\theta^*\)，闭性随之成立。
+
+若 \(P_\theta f=\lambda f\)、\(f\ne0\)，自伴性保证 \(\lambda\in\mathbb R\)。
+绝对连续代表满足 \(f'=\mathrm i\lambda f\) 几乎处处，故
+\((e^{-\mathrm i\lambda x}f(x))'=0\) 几乎处处。
+绝对连续性推出 \(f(x)=ce^{\mathrm i\lambda x}\)，其中 \(c\ne0\)。
+端点条件等价于 \(e^{\mathrm i\lambda}=e^{\mathrm i\theta}\)，
+也就是 \(\lambda=\theta+2\pi k\)。反过来，每个所列指数函数都在定义域中，并直接满足特征方程。
+\end{proof}
+
+参数 \(\theta=0\) 给出周期条件，\(\theta=\pi\) 给出 \(f(1)=-f(0)\)。
+两者使用同一个微分表达式，特征值却分别为 \(2\pi k\) 与 \((2k+1)\pi\)。
+因此端点条件确实改变算子及其谱信息。
+
+\begin{corollary}[测试函数算子的全部自伴扩张]
+\label{b1:cor:29-derivative-extensions}
+在 \(H=L^2((0,1),\mathrm dx;\mathbb C)\) 上，令
+\(P_c=-\mathrm i\,\mathrm d/\mathrm dx\)，\(D(P_c)=C_c^\infty(0,1)\)。
+若 \(B\) 是 \(P_c\) 的自伴扩张，则存在 \(\theta\in[0,2\pi)\)，使
+\[
+ D(B)=\{f\in H^1(0,1):f(1)=e^{\mathrm i\theta}f(0)\},
+ \qquad Bf=-\mathrm if'.
+\]
+\end{corollary}
+\begin{proof}
+由 \(P_c\subseteq B=B^*\)，扩张反向性给出 \(B\subseteq P_c^*=P_{\max}\)。
+因此 \(D(B)\subseteq H^1\)，作用为 \(-\mathrm if'\)。
+又因 \(B\) 闭，\(C_c^\infty\) 在 \(H^1\) 中的闭包 \(H_0^1\) 包含于 \(D(B)\)：
+对每个 \(f\in H_0^1\) 选取 \(H^1\) 逼近列，其输入及导数同时收敛，再用 \(B\) 的闭性。
+
+记 \(S=\{(f(0),f(1)):f\in D(B)\}\subseteq\mathbb C^2\)。
+由于两个端点相同的 \(H^1\) 函数之差属于 \(H_0^1\)，有
+\[
+ D(B)=\{f\in H^1(0,1):(f(0),f(1))\in S\}.
+\]
+若 \(S=\{0\}\)，则 \(D(B)=H_0^1\)。边界配对说明每个 \(g\in H^1\) 都属于
+\(D(B^*)\)，特别是常数函数 \(1\)；这与 \(B=B^*\) 矛盾。
+故可取非零 \((a,b)\in S\)。对称性及边界配对给出 \(|b|^2=|a|^2\)，
+于是 \(a\ne0\)，存在唯一 \(\theta\in[0,2\pi)\) 使 \(b=e^{\mathrm i\theta}a\)。
+对任意 \((c,d)\in S\)，同样的配对给出 \(b\overline d-a\overline c=0\)，
+所以 \(d=e^{\mathrm i\theta}c\)。
+因此 \(S\) 正好是一维子空间 \(\{(c,e^{\mathrm i\theta}c):c\in\mathbb C\}\)，结论随之成立。
+\end{proof}
+
+\subsection{闭包、定义域与反例}
+\label{b1:subsec:290704}
+
+闭算子的定义域往往先由一个更便于计算的子空间逼近。这里需要同时逼近函数与算子值。
+对复 Hilbert 空间上的闭算子 \(A:D(A)\subseteq H\to H\)，若线性子空间
+\(\mathcal D\subseteq D(A)\) 关于图像范数稠密，即对每个 \(x\in D(A)\) 都存在
+\(x_n\in\mathcal D\)，使
+\[
+ x_n\to x,\qquad Ax_n\to Ax,
+\]
+则英文文献称 \(\mathcal D\) 为 \(A\) 的 core。\foreignidx{core}
+这里用明确的图像逼近条件描述这一子空间，不把它与零空间 \(\ker A\) 混同。
+
+\begin{proposition}[限制算子的闭包判据]
+\label{b1:prop:29-core-criterion}
+设 \(H\) 为复 Hilbert 空间，\(A:D(A)\subseteq H\to H\) 为闭线性算子，
+\(\mathcal D\subseteq D(A)\) 为线性子空间。
+则限制算子 \(A|_{\mathcal D}\) 可闭，并且
+\[
+ \overline{A|_{\mathcal D}}=A
+ \quad\Longleftrightarrow\quad
+ \mathcal D\text{ 在 }D(A)\text{ 中关于图像范数稠密}.
+\]
+\end{proposition}
+\begin{proof}
+由于 \(G(A|_{\mathcal D})\subseteq G(A)\) 且后者闭，图像闭包仍包含于 \(G(A)\)，
+故没有非零竖直向量，限制算子可闭。
+其图像闭包等于 \(G(A)\)，当且仅当对每个 \(x\in D(A)\)，
+存在 \(x_n\in\mathcal D\) 使 \((x_n,Ax_n)\to(x,Ax)\)。
+乘积中的这一收敛恰好是 \(\|x_n-x\|_A\to0\)。
+\end{proof}
+
+\begin{proposition}[乘法算子的截断定义子空间]
+\label{b1:prop:29-multiplication-core}
+设 \((X,\Sigma,\mu)\) 为测度空间，\(m:X\to\mathbb R\) 为可测函数，
+\(M_m\) 是 \(L^2(X,\mu;\mathbb C)\) 上定义域为 \(\{f:mf\in L^2\}\) 的乘法算子。
+记 \(E_n=\{|m|\leq n\}\)，并令
+\[
+ \mathcal D_m=\bigcup_{n\geq1}
+ \{f\in L^2(X,\mu;\mathbb C):f=0\text{ 几乎处处于 }X\setminus E_n\}.
+\]
+则 \(\mathcal D_m\subseteq D(M_m)\) 为线性子空间，在 \(D(M_m)\) 中关于图像范数稠密，
+从而 \(\overline{M_m|_{\mathcal D_m}}=M_m\)。
+\end{proposition}
+\begin{proof}
+各 \(E_n\) 递增，故上面的并为线性子空间；在 \(E_n\) 上 \(|m|\leq n\)，
+所以每个所列函数都在定义域中。
+对 \(f\in D(M_m)\)，取 \(f_n=\mathbf1_{E_n}\cdot f\in\mathcal D_m\)。有
+\[
+ \|f-f_n\|_2^2+\|M_mf-M_mf_n\|_2^2
+ =\int_{X\setminus E_n}(1+|m|^2)\cdot|f|^2\,\mathrm d\mu
+ \longrightarrow0.
+\]
+被积函数的可积性来自 \(f\in L^2\) 和 \(mf\in L^2\)，而 \(E_n\uparrow X\)。
+控制收敛因此给出图像范数收敛，再用前一命题。
+\end{proof}
+
+这样的截断按照乘子的大小进行。对一般可测乘子，不能直接把 \(C_c^\infty\) 当成定义域的一部分。
+例如在 \((0,1)\) 上令 \(m(x)=|x-1/2|^{-1}\)（在 \(x=1/2\) 处改为零）。
+若 \(\varphi\in C_c^\infty(0,1)\) 且 \(\varphi(1/2)\ne0\)，
+则 \(m\varphi\notin L^2\)。是否可以使用光滑函数作为图像逼近子空间，必须结合乘子的局部可积性另行判断。
+
+\begin{theorem}[测试函数微分算子的闭包]
+\label{b1:thm:29-minimal-derivative}
+在复 Hilbert 空间 \(H=L^2((0,1),\mathrm dx;\mathbb C)\) 上，
+令 \(P_cf=-\mathrm if'\)、\(D(P_c)=C_c^\infty(0,1)\)。
+则 \(P_c\) 可闭，其闭包为
+\[
+ D(P_{\min})=H_0^1(0,1),\qquad P_{\min}f=-\mathrm if'.
+\]
+算子 \(P_{\min}\) 闭且对称，但不自伴；并有
+\[
+ \overline{P_c}=P_{\min},\qquad P_{\min}^*=P_{\max},
+ \qquad D(P_{\max})=H^1(0,1).
+\]
+因此 \(P_c\) 不是本质自伴算子。对于每个 \(\theta\in\mathbb R\)，
+\(C_c^\infty(0,1)\) 在 \(D(P_\theta)\) 中关于 \(P_\theta\) 的图像范数均不稠密。
+\symidx{\(P_{\min}=\overline{P_c}\)：定义域为\(H_0^1(0,1)\)的一阶微分算子}
+\end{theorem}
+\begin{proof}
+由 \(P_c\subseteq P_{\max}\) 及 \(P_{\max}\) 闭，\(P_c\) 可闭。
+它的图像范数为 \(\|f\|_2+\|f'\|_2\)，与 \(H^1\) 范数等价。
+\cref{b1:def:sobolev-zero-boundary}把 \(H_0^1\) 定义为 \(C_c^\infty\) 的 \(H^1\) 闭包，
+因此每个 \(f\in H_0^1\) 都有一列测试函数使输入和导数同时收敛，
+故 \((f,-\mathrm if')\in\overline{G(P_c)}\)。
+
+反过来，若 \((f_n,-\mathrm if_n')\to(f,h)\)，其中 \(f_n\in C_c^\infty\)，
+\(P_{\max}\) 的闭性给出 \(f\in H^1\)、\(h=-\mathrm if'\)。
+于是 \(f_n\to f\) 于 \(H^1\)，故 \(f\in H_0^1\)。这证明闭包的公式，包括其整个定义域。
+
+由闭包不改变伴随，及\cref{b1:prop:29-minimal-adjoint}，有
+\(P_{\min}^*=P_c^*=P_{\max}\)。端点均为零使 \(P_{\min}\) 对称，
+但常数函数 \(1\) 属于 \(H^1\) 而不属于 \(H_0^1\)，故两个定义域不相等，\(P_{\min}\) 不自伴。
+因此 \(P_c\) 的闭包不是自伴算子。
+
+最后，\(P_\theta\) 的图像范数仍等价于 \(H^1\) 范数，
+而测试函数的闭包只有 \(H_0^1\)。函数 \(x\mapsto e^{\mathrm i\theta x}\)
+在 \(D(P_\theta)\) 中，却不在 \(H_0^1\) 中，所以图像稠密性失败。
+\end{proof}
+
+还可以直接看到非实点满射为何失败。解一阶方程得到
+\[
+ \ker(P_{\max}-\mathrm iI)=\operatorname{span}\{e^{-x}\},\qquad
+ \ker(P_{\max}+\mathrm iI)=\operatorname{span}\{e^x\}.
+\]
+由\eqref{b1:eq:29-range-kernel}，\(\operatorname{ran}(P_{\min}+\mathrm iI)\)
+与 \(e^{-x}\) 正交，\(\operatorname{ran}(P_{\min}-\mathrm iI)\) 与 \(e^x\) 正交。
+二者都不是稠密值域；闭性和对称性并没有排除这两个缺失方向。
+
+\begin{table}[htbp]
+\centering
+\small
+\caption[一阶微分算子的定义域比较]{同一表达式 \(-\mathrm i\,\mathrm d/\mathrm dx\) 的不同定义域。
+所有算子都作用于 \(L^2(0,1;\mathbb C)\)，\(\theta\in\mathbb R\)。}
+\label{b1:tab:29-derivative-domains}
+\begin{tabular}{lllll}
+\toprule
+算子 & 定义域 & 闭 & 对称 & 自伴\\
+\midrule
+\(P_c\) & \(C_c^\infty(0,1)\) & 否 & 是 & 否\\
+\(P_{\min}\) & \(H_0^1(0,1)\) & 是 & 是 & 否\\
+\(P_\theta\) & \(\{f\in H^1:f(1)=e^{\mathrm i\theta}f(0)\}\) & 是 & 是 & 是\\
+\(P_{\max}\) & \(H^1(0,1)\) & 是 & 否 & 否\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+表中第一行的非闭性也可从闭包公式读出：\(x(1-x)\in H_0^1(0,1)\)，
+却不是 \((0,1)\) 内的紧支集函数，故 \(P_c\ne\overline{P_c}\)。
+从较小的计算定义域补成闭图像时，保留下来的端点条件由图像范数控制；
+仅在 \(L^2\) 中的稠密性不能决定这些边界信息。

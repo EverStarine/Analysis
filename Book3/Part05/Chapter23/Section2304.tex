@@ -2,39 +2,261 @@
 \section{\texorpdfstring{\(E_4,E_6\)}{E₄, E₆} 与判别式}
 \label{b3:sec:2304}
 
-归一化的 Eisenstein 级数具有常数项一。把两个权十二的乘积相减便消去常数项，得到最基本的尖点模形式。
+已经知道 \(G_4,G_6\) 是模形式，但它们的常数项分别含有 \(\zeta(4),\zeta(6)\)。把常数项规范为一，可以更直接地比较系数。随后，\(E_4^3\) 与 \(E_6^2\) 具有相同的权和常数项，二者相减便产生一个尖点模形式。这个构造还将恢复前章三次曲线的判别式，因而能把尖点处的消失与上半平面内部的非退化性联系起来。
 
 \subsection{归一化 Eisenstein 级数}
 \label{b3:subsec:230401}
 
-设 \(E_{2k}=G_{2k}/(2\zeta(2k))\)。这样其常数项为一。由正弦乘积的对数导数比较 \(z,z^3,z^5\) 项，可得 \(\zeta(2)=\pi^2/6\)、\(\zeta(4)=\pi^4/90\)、\(\zeta(6)=\pi^6/945\)。例如
-\(\pi\cot\pi z=z^{-1}-2\sum_{r\ge1}\zeta(2r)z^{2r-1}\)，而将 \(\cos\pi z\) 除以 \(\sin\pi z\) 的 Taylor 级数即可逐项算出这些系数，不需要尚未建立的 \(\zeta\) 函数方程。
+\begin{definition}[归一化 Eisenstein 级数]\label{b3:def:23-normalized-eisenstein}
+设 \(k\ge2\) 为整数，\(\tau\in\mathfrak H\)，且
+\[
+ G_{2k}(\tau)=\sum_{(m,n)\in\mathbb Z^2\setminus\{(0,0)\}}(m\tau+n)^{-2k},
+ \quad \zeta(2k)=\sum_{n=1}^{\infty}n^{-2k}.
+\]
+定义归一化的 Eisenstein 级数
+\[
+ E_{2k}(\tau)\coloneqq\frac{G_{2k}(\tau)}{2\zeta(2k)}.
+\]
+\end{definition}
+\symidx{\(E_{2k}(\tau)\)：常数项为一的 Eisenstein 级数}
+
+分母是正实数，所以这个定义不会除以零。\cref{b3:prop:23-eisenstein-transformation}与\cref{b3:prop:23-eisenstein-fourier}说明 \(E_{2k}\in M_{2k}\)，并给出
+\begin{equation}\label{b3:eq:23-normalized-eisenstein-fourier}
+ E_{2k}(\tau)=1+
+ \frac{(2\pi\mathrm{i})^{2k}}{(2k-1)!\,\zeta(2k)}
+ \sum_{n=1}^{\infty}\sigma_{2k-1}(n)q^n,
+ \quad q=e^{2\pi\mathrm{i}\tau}.
+\end{equation}
+它的常数项等于一，故不是尖点模形式。要把权四、六的系数写成具体整数，还需要算出相应的偶数幂和。这个计算只用本卷已建立的余切展开。
+
+\begin{proposition}[三个偶数幂和的值]\label{b3:prop:23-zeta-even-values}
+对实数 \(s>1\)，令 \(\zeta(s)=\sum_{n=1}^{\infty}n^{-s}\)。则
+\[
+ \zeta(2)=\frac{\pi^2}{6},\quad
+ \zeta(4)=\frac{\pi^4}{90},\quad
+ \zeta(6)=\frac{\pi^6}{945}.
+\]
+\end{proposition}
+\begin{proof}
+由\cref{b3:prop:20-sine-product}，在 \(0<|z|<1\) 内，
+\[
+ \pi\cot\pi z
+ =\frac1z+\sum_{n=1}^{\infty}\frac{2z}{z^2-n^2}.
+\]
+对每个正整数 \(n\) 展开几何级数，
+\[
+ \frac{2z}{z^2-n^2}
+ =-2\sum_{r=1}^{\infty}\frac{z^{2r-1}}{n^{2r}}.
+\]
+若 \(|z|\le\rho<1\)，右侧双和的绝对值之和至多为
+\[
+ 2\sum_{n=1}^{\infty}\frac{\rho/n^2}{1-\rho^2/n^2}
+ \le\frac{2\rho}{1-\rho^2}\sum_{n=1}^{\infty}n^{-2}<\infty.
+\]
+所以可以交换两次求和，得到
+\begin{equation}\label{b3:eq:23-cotangent-zeta}
+ \pi\cot\pi z=\frac1z-2\sum_{r=1}^{\infty}\zeta(2r)z^{2r-1},
+ \quad 0<|z|<1.
+\end{equation}
+
+现在用正弦、余弦的 Taylor 级数独立计算左端。置 \(t=\pi z\)，并写
+\[
+ t\cot t=1+At^2+Bt^4+Ct^6+O(t^8).
+\]
+因为 \(t\cot t=\cos t/(\sin t/t)\)，所以
+\[
+ \begin{aligned}
+ &\left(1-\frac{t^2}{6}+\frac{t^4}{120}
+              -\frac{t^6}{5040}+O(t^8)\right)
+   \left(1+At^2+Bt^4+Ct^6+O(t^8)\right)\\
+ &\hspace{2em}=1-\frac{t^2}{2}+\frac{t^4}{24}
+                    -\frac{t^6}{720}+O(t^8).
+ \end{aligned}
+\]
+逐次比较二、四、六次项，得到
+\[
+ A-\frac16=-\frac12,\quad
+ B-\frac A6+\frac1{120}=\frac1{24},\quad
+ C-\frac B6+\frac A{120}-\frac1{5040}=-\frac1{720}.
+\]
+第一式给 \(A=-1/3\)；代入第二式得 \(B=-1/45\)，再代入第三式得 \(C=-2/945\)。换回 \(z\)，
+\[
+ \pi\cot\pi z=\frac1z-\frac{\pi^2}{3}z
+                    -\frac{\pi^4}{45}z^3
+                    -\frac{2\pi^6}{945}z^5+O(z^7).
+\]
+与\eqref{b3:eq:23-cotangent-zeta}比较对应系数，就得到三个数值。
+\end{proof}
+
+这里先由正规收敛的部分分式得到幂和系数，再由初等 Taylor 除法算出同一函数的系数。整个证明不需要关于 \(\zeta(s)\) 的函数方程；后面学习解析数论时，可以把这几个数值作为已知的正实轴数据使用。
 
 \subsection{\texorpdfstring{\(E_4,E_6\)}{E4,E6}}
 \label{b3:subsec:230402}
 
-相应地有
+\begin{proposition}[权四与权六的 Eisenstein 级数]\label{b3:prop:23-e4-e6}
+设 \(\tau\in\mathfrak H\)，\(q=e^{2\pi\mathrm{i}\tau}\)，并按\cref{b3:def:23-normalized-eisenstein}定义 \(E_4,E_6\)。则 \(E_4\in M_4\)、\(E_6\in M_6\)，且
+\begin{equation}\label{b3:eq:23-e4-e6-fourier}
+ \begin{aligned}
+ E_4(\tau)&=1+240\sum_{n=1}^{\infty}\sigma_3(n)q^n,\\
+ E_6(\tau)&=1-504\sum_{n=1}^{\infty}\sigma_5(n)q^n.
+ \end{aligned}
+\end{equation}
+这些幂级数在 \(|q|<1\) 内局部正规收敛，并有
+\begin{equation}\label{b3:eq:23-e4-e6-initial}
+ \begin{aligned}
+ E_4&=1+240q+2160q^2+6720q^3+O(q^4),\\
+ E_6&=1-504q-16632q^2-122976q^3+O(q^4).
+ \end{aligned}
+\end{equation}
+特别地，二者都非恒零，且尖点消失阶均为零。
+\end{proposition}
+\begin{proof}
+由\eqref{b3:eq:23-normalized-eisenstein-fourier}，权四的系数因子为
 \[
-E_4=1+240\sum_{n\ge1}\sigma_3(n)q^n,
-\quad E_6=1-504\sum_{n\ge1}\sigma_5(n)q^n.
+ \frac{(2\pi\mathrm{i})^4}{3!\,\zeta(4)}
+ =\frac{16\pi^4}{6\cdot(\pi^4/90)}=240,
 \]
-首几项为 \(E_4=1+240q+2160q^2+O(q^3)\)、\(E_6=1-504q-16632q^2+O(q^3)\)。整数系数在这里来自约数和与特定常数，不能从一般模形式的定义推断任意 Fourier 系数都是整数。
+而权六的系数因子为
+\[
+ \frac{(2\pi\mathrm{i})^6}{5!\,\zeta(6)}
+ =\frac{-64\pi^6}{120\cdot(\pi^6/945)}=-504.
+\]
+负号来自 \(\mathrm{i}^6=-1\)。一般 Fourier 展开已经保证了变换律与尖点全纯性，因此它们确实属于所述模形式空间。
+
+前三个正整数的约数给出
+\[
+ \begin{aligned}
+ &\sigma_3(1)=1,\quad \sigma_3(2)=1+2^3=9,\quad
+   \sigma_3(3)=1+3^3=28,\\
+ &\sigma_5(1)=1,\quad \sigma_5(2)=1+2^5=33,\quad
+   \sigma_5(3)=1+3^5=244.
+ \end{aligned}
+\]
+代入即可得到首项展开。常数项均为一，故二者不是零函数，也不在尖点消失。
+\end{proof}
+
+这些整数系数来自约数和及刚刚计算的常数。一般模形式可以乘任意复常数，所以“是模形式”本身没有强迫系数为整数。\(\tau\) 的函数恒等式也不能仅凭几个初项相同就判定；\secref{b3:sec:2305}的价公式将给出可以比较有限多个系数的精确依据。
 
 \subsection{判别式模形式}
 \label{b3:subsec:230403}
 
-\begin{definition}\label{b3:def:23-delta}
-定义\term[panbieshi-mo-xingshi]{判别式模形式}[discriminant modular form]
-\(\Delta\coloneqq(E_4^3-E_6^2)/1728\)。
+寻找尖点模形式时，可以先让常数项相消。但相减的两个模形式还必须具有相同的权，否则变换因子无法共同提出。权四与权六的最小正公倍数为十二，因此首先比较 \(E_4^3\) 与 \(E_6^2\)。二者常数项都是一，一次项却分别是 \(720q\) 与 \(-1008q\)，所以差的首项为 \(1728q\)。除以 \(1728\) 就使第一个非零系数也规范为一。
+
+\begin{definition}[判别式模形式]\label{b3:def:23-delta}
+设 \(\tau\in\mathfrak H\)，\(E_4,E_6\) 为\cref{b3:def:23-normalized-eisenstein}中常数项为一的权四、权六 Eisenstein 级数。函数
+\[
+ \Delta(\tau)\coloneqq
+ \frac{E_4(\tau)^3-E_6(\tau)^2}{1728}
+\]
+称为\term[panbieshi-mo-xingshi]{判别式模形式}[discriminant modular form]。
 \end{definition}
 \symidx{\(\Delta(\tau)\)：判别式模形式}
-它属于 \(S_{12}\)，且 \(\Delta=q-24q^2+O(q^3)\)。确实，一次系数之差为 \(720-(-1008)=1728\)；二次系数之差除以该数给 \(-24\)。所以它非恒零，并在尖点恰好一阶消失。
 
-\subsection{关系}
+\begin{proposition}[判别式的权与尖点阶数]\label{b3:prop:23-delta-cusp}
+对上半平面上的归一化 Eisenstein 级数 \(E_4,E_6\)，令 \(\Delta=(E_4^3-E_6^2)/1728\)。则 \(\Delta\) 是全模群的非零权十二尖点模形式，并且
+\begin{equation}\label{b3:eq:23-delta-fourier}
+ \Delta(\tau)=q-24q^2+252q^3+O(q^4),
+ \quad q=e^{2\pi\mathrm{i}\tau}.
+\end{equation}
+因此 \(v_\infty(\Delta)=1\)。
+\end{proposition}
+\begin{proof}
+乘积的权相加，所以 \(E_4^3,E_6^2\in M_{12}\)，其差也属于 \(M_{12}\)。两者的常数项相等，故差的常数项为零，得到 \(\Delta\in S_{12}\)。
+
+为确定消失阶，不能停在常数项抵消；还需计算下一项。由\eqref{b3:eq:23-e4-e6-initial}，
+\[
+ \begin{aligned}
+ E_4^3&=1+720q+179280q^2+16954560q^3+O(q^4),\\
+ E_6^2&=1-1008q+220752q^2+16519104q^3+O(q^4).
+ \end{aligned}
+\]
+其中平方、立方的二次项分别来自
+\[
+ 2(-16632)+(-504)^2=220752,\quad
+ 3\cdot2160+3\cdot240^2=179280;
+\]
+三次项分别来自
+\[
+ \begin{aligned}
+ &2(-122976)+2(-504)(-16632)=16519104,\\
+ &3\cdot6720+6\cdot240\cdot2160+240^3=16954560.
+ \end{aligned}
+\]
+相减除以 \(1728\)，就得到\eqref{b3:eq:23-delta-fourier}。一次项系数为一，说明函数非恒零，而且在局部参数 \(q\) 中恰有一阶零点。
+\end{proof}
+
+消失阶是在 \(q=0\) 的局部坐标中计数，不是在变量 \(\tau\) 的某个有限点求 Taylor 阶数。具体地，\(\Delta/q=1-24q+252q^2+O(q^3)\) 在 \(q=0\) 附近全纯且非零，因此
+\[
+ \Delta(x+\mathrm{i}y)
+ =e^{2\pi\mathrm{i}x}e^{-2\pi y}
+   \left(1+O(e^{-2\pi y})\right)
+ \quad(y\longrightarrow\infty),
+\]
+误差对 \(x\in\mathbb R\) 一致。这证明它在足够高的半平面内没有零点；要排除其余内部零点，还需另一个理由。
+
+\subsection{判别式的两种归一化}
 \label{b3:subsec:230404}
 
-用 \(g_2=4\pi^4E_4/3\)、\(g_3=8\pi^6E_6/27\) 得到
+前章使用的是格的判别式 \(D(\Lambda)=g_2(\Lambda)^3-27g_3(\Lambda)^2\)，本节使用的是常数已经规范化的模形式 \(\Delta(\tau)\)。两者都具有十二次尺度关系，但数值并不相同。先把比例算准，前章的非退化结论才可以直接用于这里。
+
+\begin{proposition}[格判别式与模判别式]\label{b3:prop:23-delta-nonvanishing}
+设 \(\tau\in\mathfrak H\)，\(\Lambda_\tau=\mathbb Z+\mathbb Z\tau\)，并定义
 \[
-g_2^3-27g_3^2=(2\pi)^{12}\Delta.
+ g_2(\Lambda_\tau)=60\sum_{0\ne\omega\in\Lambda_\tau}\omega^{-4},
+ \quad
+ g_3(\Lambda_\tau)=140\sum_{0\ne\omega\in\Lambda_\tau}\omega^{-6}.
 \]
-前章已证每个格的三次曲线光滑，因此 \(\Delta\) 在上半平面没有零点。下面的价公式还将从零点总数独立说明这一事实。这里的 \(\Delta\) 是无量纲模参数函数；椭圆方程的判别式多了尺度常数，两者不可不加区分地替换。
+令 \(D(\Lambda_\tau)=g_2(\Lambda_\tau)^3-27g_3(\Lambda_\tau)^2\)，且
+\(\Delta(\tau)=(E_4(\tau)^3-E_6(\tau)^2)/1728\)，其中 \(E_4,E_6\) 为常数项一的 Eisenstein 级数。则
+\begin{equation}\label{b3:eq:23-discriminant-normalization}
+ D(\Lambda_\tau)=(2\pi)^{12}\Delta(\tau)\ne0.
+\end{equation}
+更一般地，对每个 \(a\in\mathbb C\setminus\{0\}\)，有
+\[
+ D(a\Lambda_\tau)=a^{-12}(2\pi)^{12}\Delta(\tau).
+\]
+\end{proposition}
+\begin{proof}
+由\eqref{b3:eq:23-g-invariants}及偶数幂和的值，
+\[
+ g_2(\Lambda_\tau)
+ =120\zeta(4)E_4=\frac{4\pi^4}{3}E_4,\quad
+ g_3(\Lambda_\tau)
+ =280\zeta(6)E_6=\frac{8\pi^6}{27}E_6.
+\]
+因此
+\[
+ \begin{aligned}
+ D(\Lambda_\tau)
+ &=\frac{64\pi^{12}}{27}\left(E_4^3-E_6^2\right)\\
+ &=\frac{64\cdot1728}{27}\pi^{12}\Delta
+  =4096\pi^{12}\Delta=(2\pi)^{12}\Delta.
+ \end{aligned}
+\]
+因为 \(\operatorname{Im}\tau>0\)，\(\Lambda_\tau\) 是真正的秩二格。\cref{b3:prop:22-discriminant-scaling}已证明，对每一个这样的格，三个非零半周期的 \(\wp\) 值 \(e_1,e_2,e_3\) 互异，而且
+\[
+ D(\Lambda_\tau)=16\prod_{1\le j<\ell\le3}(e_j-e_\ell)^2\ne0.
+\]
+于是 \(\Delta(\tau)\ne0\)。同一命题的缩放律 \(D(a\Lambda)=a^{-12}D(\Lambda)\) 给出最后一式。
+\end{proof}
+
+这里的“判别式”沿用前章的 \(D\) 约定。若使用多项式 \(4X^3-g_2X-g_3\) 的通常多项式判别式，数值还要乘以 \(16\)。固定非零因子不影响是否有重根，却影响规范化后的精确等式。
+
+\ProseParagraphBreak
+
+尖点处消失与内部没有零点并不冲突。沿 \(\tau=\mathrm{i}y\)、\(y\to\infty\)，\(q\to0\)，由 Fourier 展开，
+\[
+ g_2\longrightarrow\frac{4\pi^4}{3},\quad
+ g_3\longrightarrow\frac{8\pi^6}{27},\quad D\longrightarrow0.
+\]
+极限的三次多项式为
+\[
+ 4X^3-\frac{4\pi^4}{3}X-\frac{8\pi^6}{27}
+ =4\left(X-\frac{2\pi^2}{3}\right)
+    \left(X+\frac{\pi^2}{3}\right)^2.
+\]
+它确实出现了重根，但这是趋向尖点的极限，不是某个有限 \(\tau\in\mathfrak H\) 所对应的格曲线。
+
+\ProseParagraphBreak
+
+至此，\(\Delta\) 在上半平面内部处处可除，而在尖点恰消去一次 \(q\) 因子。这两个性质将在\secref{b3:sec:2305}一起使用：把尖点模形式除以 \(\Delta\) 时，内部不会产生极点，尖点处能否全纯则由消失阶决定。

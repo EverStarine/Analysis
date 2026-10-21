@@ -2,60 +2,233 @@
 \section{模群}
 \label{b3:sec:2301}
 
-一个格有许多组基，同一个复环面也有许多参数 \(\tau\)。本节确定这些重复描述的变换群，并选择一块区域，使大多数等价类有唯一代表。
+前章把一个格写成 \(\Lambda=\mathbb Z\omega_1+\mathbb Z\omega_2\)，并由它构造复环面与椭圆函数。若选取正向基，再除以 \(\omega_1\)，格就化为
+\[
+ \Lambda_\tau=\mathbb Z+\mathbb Z\tau,
+ \quad \tau=\frac{\omega_2}{\omega_1}\in\mathfrak H,
+ \quad \mathfrak H=\{\tau\in\mathbb C:\operatorname{Im}\tau>0\}.
+\]
+这里的上半平面与前文的 \(\mathbb H\) 是同一个区域；本章用 \(\mathfrak H\) 突出它的模参数角色。参数不是唯一的：改变同一个格的基，就会改变 \(\tau\)。模群先回答哪些参数表示同一比例格，再为后面的函数变换律提供准确的换基因子。
+
+\subsecref{b3:subsec:110404}已从覆盖的角度讨论模群。本节恢复所需的矩阵与基本域事实，并进一步确定固定点和尖点的局部坐标。特别要记住，模群含有固定点，商映射不能直接套用自由群作用的覆盖结论。
 
 \subsection{\texorpdfstring{\(\mathrm{SL}_2(\mathbb Z)\)}{SL2(Z)}}
 \label{b3:subsec:230101}
 
+\Needspace{6\baselineskip}
 \begin{definition}\label{b3:def:23-modular-group}
-行列式为一的二阶整数矩阵组成\term[moqun]{模群}[modular group]
+行列式为一的二阶整数矩阵组成群
 \[
-\mathrm{SL}_2(\mathbb Z)=\left\{\begin{pmatrix}a&b\\c&d\end{pmatrix}:a,b,c,d\in\mathbb Z,\ ad-bc=1\right\}.
+ \operatorname{SL}_2(\mathbb Z)
+ =\left\{\begin{pmatrix}a&b\\c&d\end{pmatrix}:
+       a,b,c,d\in\mathbb Z,\ ad-bc=1\right\},
 \]
+群运算为矩阵乘法。本章在记录带权变换律时使用这个矩阵群；在只讨论其分式线性作用时，模群指它的有效作用群
+\(\operatorname{PSL}_2(\mathbb Z)=\operatorname{SL}_2(\mathbb Z)/\{\pm I\}\)，与\subsecref{b3:subsec:110404}的约定一致。
 \end{definition}
-它由 \(T=\left(\begin{smallmatrix}1&1\\0&1\end{smallmatrix}\right)\) 与 \(S=\left(\begin{smallmatrix}0&-1\\1&0\end{smallmatrix}\right)\) 生成。事实上，左乘 \(T^n\) 将第一行加上第二行的整数倍，左乘 \(S\) 交换两行并加一个符号。Euclid 算法把第一列 \((a,c)\) 化为 \((\pm1,0)\)，因为其最大公因子为一。行列式条件随后使矩阵成为 \(\pm T^b\)，而 \(-I=S^2\)，因此得到生成性。
+\termidx[moqun]{模群}\foreignidx{modular group}
+
+逆矩阵为 \(\left(\begin{smallmatrix}d&-b\\-c&a\end{smallmatrix}\right)\)，所以整数条件在取逆后仍保持。行列式一还给一个将反复使用的事实：底行 \((c,d)\) 的两个整数互素。反过来，若 \(c,d\) 互素，Bézout 恒等式便给整数 \(a,b\) 使 \(ad-bc=1\)，从而把这行补成一个群元素。
+
+记
+\[
+ T=\begin{pmatrix}1&1\\0&1\end{pmatrix},
+ \quad S=\begin{pmatrix}0&-1\\1&0\end{pmatrix}.
+\]
+\cref{b3:prop:11-modular-generators}的 Euclid 算法也适用于这里的矩阵版本。若第一列为 \((a,c)^{\mathsf T}\)、\(c\ne0\)，作带余除法 \(a=qc+r\)、\(|r|<|c|\)，左乘 \(T^{-q}\) 和 \(S\) 将它依次变成
+\[
+ (a,c)^{\mathsf T}\longmapsto(r,c)^{\mathsf T}
+ \longmapsto(-c,r)^{\mathsf T}.
+\]
+下左元素的绝对值严格下降，有限步后为零。所得矩阵的两个对角元素只能同为 \(1\) 或同为 \(-1\)，故为某个 \(\pm T^n\)。由于 \(-I=S^2\)，逆向读取操作就把原矩阵写成 \(S,T\) 及其逆的有限乘积。这个生成结论以后能把“对所有整数矩阵检查变换律”缩成对两个基本变换的检查。
 
 \subsection{\texorpdfstring{\(\mathrm{PSL}_2(\mathbb Z)\)}{PSL2(Z)}}
 \label{b3:subsec:230102}
 
-矩阵 \(\gamma\) 与 \(-\gamma\) 对分式线性变换给出同一映射，故真正忠实作用的群为 \(\mathrm{PSL}_2(\mathbb Z)=\mathrm{SL}_2(\mathbb Z)/\{\pm I\}\)。在参数空间的几何问题中应除去这个恒作用核；在定义带权函数时保留 \(-I\) 却很有用，它会立即约束允许的权。
+矩阵 \(\gamma=\left(\begin{smallmatrix}a&b\\c&d\end{smallmatrix}\right)\) 决定分式线性映射
+\[
+ \gamma\tau=\frac{a\tau+b}{c\tau+d}.
+\]
+同时改变四个系数的符号不改变映射，所以 \(\gamma\) 和 \(-\gamma\) 作用相同。这个重复恰好是全部重复：若 \(\gamma\tau=\tau\) 在上半平面恒成立，则
+\[
+ c\tau^2+(d-a)\tau-b=0
+\]
+是一个恒为零的多项式，故 \(c=b=0\)、\(a=d\)；再由行列式条件得 \(a=d=\pm1\)。两个矩阵作用相同，便可对它们的商使用这个结论，说明它们只差整体负号。
+
+因而 \(\operatorname{PSL}_2(\mathbb Z)\) 的每个元素是一个二元集合 \(\{\gamma,-\gamma\}\)，且它在上半平面上的作用忠实。这里取的是矩阵群的商；稍后还要对上半平面中的点按轨道取商，两种操作的对象不同。
+
+矩阵等式为
+\[
+ S^2=-I,\quad (ST)^3=-I,
+\]
+所以在射影群中，\(S\) 的阶为二，\(ST\) 的阶为三。乘积 \(ST\) 表示先作 \(T\)、后作 \(S\)，其分式为 \(-1/(\tau+1)\)。在带权函数的变换律中仍保留矩阵 \(-I\)：虽然它不移动 \(\tau\)，它的权因子未必是一，这将直接排除本章的奇数权形式。
 
 \subsection{在 \texorpdfstring{\(\mathfrak H\)}{上半平面} 上的作用}
 \label{b3:subsec:230103}
 
-模群作用于上半平面 \(\mathfrak H=\{\operatorname{Im}\tau>0\}\)，作用式为
-\(\gamma\tau=(a\tau+b)/(c\tau+d)\)。直接乘以共轭分母可得
+先核对作用确实留在所需区域内。若 \(c\ne0\)，分母的零点 \(-d/c\) 在实轴上；若 \(c=0\)，则 \(d=\pm1\)。因此分母在 \(\mathfrak H\) 不为零。将分式与其共轭相减，并使用 \(ad-bc=1\)，得到
+\begin{equation}\label{b3:eq:23-imaginary-transformation}
+ \operatorname{Im}(\gamma\tau)
+ =\frac{\operatorname{Im}\tau}{|c\tau+d|^2},
+ \quad \gamma'(\tau)=\frac1{(c\tau+d)^2}.
+\end{equation}
+前一式说明虚部仍为正，后一式说明它处处局部可逆；由整数逆矩阵给出的逆映射保证它是上半平面的全纯自同构。
+
+现在计算换基与参数变换之间的对应。前章\cref{b3:prop:22-lattice-bases}证明，同一格的两组正向基恰由整数行列式一矩阵联系。为与上述分式的系数顺序一致，把新基写成
+\begin{equation}\label{b3:eq:23-basis-change}
+ \eta_1=d\omega_1+c\omega_2,
+ \quad \eta_2=b\omega_1+a\omega_2.
+\end{equation}
+相应换基矩阵是 \(\left(\begin{smallmatrix}d&b\\c&a\end{smallmatrix}\right)\)，其行列式仍为一。于是
 \[
-\operatorname{Im}(\gamma\tau)=\frac{\operatorname{Im}\tau}{|c\tau+d|^2}.
+ \frac{\eta_2}{\eta_1}
+ =\frac{a\tau+b}{c\tau+d},
+ \quad \eta_1=\omega_1(c\tau+d).
 \]
-所以它保持上半平面，而且不在其中产生分母零点。对 \(\Lambda_\tau=\mathbb Z+\mathbb Z\tau\)，整数基变换给
+后一个尺度因子与前一个参数变换同样重要：模形式的权将记录它怎样作用于格上的量。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[参数轨道与比例格]\label{b3:prop:23-lattice-orbits}
+设 \(\tau,\sigma\in\mathfrak H\)，\(\Lambda_\tau=\mathbb Z+\mathbb Z\tau\)、\(\Lambda_\sigma=\mathbb Z+\mathbb Z\sigma\)。存在 \(\lambda\in\mathbb C\setminus\{0\}\) 使 \(\Lambda_\sigma=\lambda\Lambda_\tau\)，当且仅当存在
+\(\gamma=\left(\begin{smallmatrix}a&b\\c&d\end{smallmatrix}\right)\in\operatorname{SL}_2(\mathbb Z)\) 使 \(\sigma=\gamma\tau\)。对每个这样的 \(\gamma\)，都有
+\begin{equation}\label{b3:eq:23-lattice-transformation}
+ \Lambda_{\gamma\tau}=(c\tau+d)^{-1}\Lambda_\tau.
+\end{equation}
+\end{proposition}
+\begin{proof}
+整数对 \((d,c)\)、\((b,a)\) 构成行列式一的矩阵，所以 \(c\tau+d\)、\(a\tau+b\) 是 \(\Lambda_\tau\) 的一组基。将这组基同时除以 \(c\tau+d\)，所得格由 \(1\) 和 \(\gamma\tau\) 生成，证明了公式及充分性。
+
+反过来，若 \(\Lambda_\sigma=\lambda\Lambda_\tau\)，则 \((1,\sigma)\) 与 \((\lambda,\lambda\tau)\) 都是该格的正向基。第二组的有向面积为 \(|\lambda|^2\operatorname{Im}\tau>0\)，所以这里不能出现行列式负一的换基。由\cref{b3:prop:22-lattice-bases}，有整数 \(a,b,c,d\) 满足 \(ad-bc=1\) 及
 \[
-\Lambda_{\gamma\tau}=(c\tau+d)^{-1}\Lambda_\tau.
+ 1=\lambda(d+c\tau),\quad
+ \sigma=\lambda(b+a\tau).
 \]
-故模群等价恰对应格相差非零复比例。反向也成立：任意格比例等价给出两组正向整数基的变换，将其行列式一的系数代回即可恢复分式线性关系。
+相除即得 \(\sigma=\gamma\tau\)。
+\end{proof}
+
+例如 \(T\tau=\tau+1\) 只把第二个生成元改为 \(\tau+1\)，格的点集本身没有改变。\(S\tau=-1/\tau\) 则在交换两条基方向后重新把第一条基归一到一，产生因子 \(\tau^{-1}\)。这里分类的是相差非零复比例的格；它与复环面双全纯分类的关系将在\secref{b3:sec:2306}证明。
 
 \subsection{基本域}
 \label{b3:subsec:230104}
 
+为在每条参数轨道中选代表，先用 \(T\) 把实部限制在宽一的竖条带内。若所得点还在单位圆内，\(S\) 会增大它的虚部。由此得到候选区域
+\[
+ \mathcal F=\{\tau\in\mathfrak H:
+           |\operatorname{Re}\tau|\le\tfrac12,\ |\tau|\ge1\}.
+\]
+它包含边界，因此边界上的代表可以重复。以下陈述把唯一性准确限制在内部。
+
+\Needspace{6\baselineskip}
 \begin{proposition}\label{b3:prop:23-fundamental-domain}
-区域 \(\mathcal F=\{\tau\in\mathfrak H:|\operatorname{Re}\tau|\le1/2,\ |\tau|\ge1\}\) 与每条模群轨道相交。其内部的两个不同点不等价。两条竖边由 \(T\) 配对，单位圆弧两半由 \(S\) 配对。
+设 \(\operatorname{SL}_2(\mathbb Z)\) 以上述分式线性变换作用于 \(\mathfrak H\)，令 \(T(\tau)=\tau+1\)、\(S(\tau)=-1/\tau\)，并令
+\[
+ \mathcal F=\{\tau\in\mathfrak H:
+       |\operatorname{Re}\tau|\le1/2,\ |\tau|\ge1\}.
+\]
+每条轨道与 \(\mathcal F\) 相交；\(\mathcal F\) 内部的不同点不在同一轨道。\(\mathcal F\) 中的边界识别由两类配对生成：两条竖边由 \(T\) 配对，单位圆弧的两半由 \(S\) 配对。
 \end{proposition}
 \begin{proof}
-固定 \(\tau\)。数 \(|c\tau+d|\) 在互素整数对上有正最小值：有界模只允许有限多个格点。将达到最小值的 \((c,d)\) 补成行列式一的矩阵，其像具有轨道中最大虚部。再平移到 \(|\operatorname{Re}\tau|\le1/2\)；若模小于一，施以 \(S\) 会增加虚部，矛盾。
-若 \(\tau\in\mathcal F\)，对任何互素 \((c,d)\) 都有 \(|c\tau+d|\ge1\)。当 \(|c|\ge2\) 时由 \(\operatorname{Im}\tau\ge\sqrt3/2\) 得严格大于一；当 \(|c|=1\) 时只需比较最近整数 \(d=0,\pm1\)，由 \(|\tau|\ge1\) 与实部界得到结论；\(c=0\) 时 \(|d|=1\)。若两个内部点等价，对作用及其逆各比较虚部，必须取等，而内部只能 \(c=0\)。于是它们相差整数，实部都严格位于宽一的开条带中，故相等。边界取等的情形正给所列配对。
-\end{proof}
-特殊点 \(\mathrm{i}\) 与 \(\rho=e^{2\pi\mathrm{i}/3}\) 的稳定子在射影群中分别为二阶、三阶。它们的局部商坐标分别是局部参数的平方和立方；后面的零点计数必须除以这两个稳定子阶数。
+固定 \(\tau\in\mathfrak H\)。在全部互素整数对 \((c,d)\) 上，\(|c\tau+d|\) 有正的最小值。具体说，候选 \((0,1)\) 已给上界一；在 \(|c\tau+d|\le1\) 时，先由 \(|c|\operatorname{Im}\tau\le1\) 限制 \(c\)，再由 \(|c\operatorname{Re}\tau+d|\le1\) 限制 \(d\)，所以只有有限个候选，而且没有一个值为零。把取得最小值的底行补成群矩阵，由\eqref{b3:eq:23-imaginary-transformation}，其像具有整条轨道中的最大虚部。再作整数平移使实部进入 \([-1/2,1/2]\)。若此时模小于一，作用 \(S\) 会严格增大虚部，矛盾。因此所得点属于 \(\mathcal F\)。
 
-\subsection{尖点}
+为比较两个代表，先证明对 \(z\in\mathcal F\) 和任意互素整数对 \((c,d)\)，有
+\[
+ |cz+d|\ge1.
+\]
+若 \(c=0\)，互素性给 \(|d|=1\)。若 \(|c|\ge2\)，由 \(\operatorname{Im}z\ge\sqrt3/2\) 得 \(|cz+d|\ge\sqrt3>1\)。剩下 \(|c|=1\)，改变整体符号后只须看 \(|z+d|\)。当 \(d=0\) 时用 \(|z|\ge1\)；当 \(|d|\ge1\) 时，
+\[
+ |z+d|^2=|z|^2+2d\operatorname{Re}z+d^2
+ \ge1-|d|+d^2\ge1.
+\]
+若 \(z\) 在内部，\(c\ne0\) 的各情形都严格大于一。
+
+若 \(z,w\in\mathcal F\)、\(w=\gamma z\)，分别对 \(\gamma\) 和 \(\gamma^{-1}\) 使用这个估计，得到两点虚部相等及 \(|cz+d|=1\)。在内部只可能 \(c=0\)，此时变换为整数平移；两个实部都在 \((-1/2,1/2)\)，平移量只能为零。
+
+在边界，\(c=0\) 的非零平移只能把一条竖边送到另一条。若 \(|c|=1,d=0\)，取等要求 \(|z|=1\)，相应变换是 \(S\) 后接整数平移；除端点外，这给圆弧两半的配对。\(|c|=|d|=1\) 还能取等的点只有实部为 \(\pm1/2\) 的圆弧端点；它们的识别已由这两类配对生成。其余情形均不取等，所以没有遗漏的边界识别。
+\end{proof}
+
+为把这幅基本域图变成商空间上的局部坐标，还需要说明远处的群元素不会无限次挤入同一个小邻域。这是\cref{b3:prop:11-discrete-halfplane-action}的紧集有限相交性质；在当前整数群中可以直接看到它的原因。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[模群作用的紧集有限性]\label{b3:prop:23-proper-action}
+设 \(\Gamma=\operatorname{PSL}_2(\mathbb Z)\) 作用于 \(\mathfrak H\)。对任意紧集 \(K,L\subset\mathfrak H\)，满足 \(\gamma K\cap L\ne\varnothing\) 的 \(\gamma\in\Gamma\) 只有有限个。特别地，每点的稳定子 \(\Gamma_p=\{\gamma\in\Gamma:\gamma p=p\}\) 都是有限群。
+\end{proposition}
+\begin{proof}
+只须讨论两个紧集均非空的情形。若 \(\tau\in K\)、\(\gamma\tau\in L\)，两点的虚部都有统一正下界和有限上界。虚部变换公式先给 \(|c\tau+d|\) 的上界，随后由 \(\operatorname{Im}\tau\) 的正下界限制整数 \(c\)，再由 \(\operatorname{Re}\tau\) 的有界性限制整数 \(d\)。因此底行只有有限种可能。
+
+固定一个互素底行 \((c,d)\) 和一个上排解 \((a_0,b_0)\) 后，全部上排解恰为 \((a_0+nc,b_0+nd)\)、\(n\in\mathbb Z\)。对应映射是固定映射 \(\gamma_0\) 后接平移 \(n\)。紧集 \(\gamma_0K\) 与 \(L\) 的实部均有界，故能使两者相交的 \(n\) 只有有限个。取 \(K=L=\{p\}\) 即得稳定子有限。
+\end{proof}
+
+令 \(\rho=e^{2\pi\mathrm{i}/3}=(-1+\sqrt3\,\mathrm{i})/2\)。基本域中真正有非平凡稳定子的轨道只有 \(\mathrm{i}\) 与 \(\rho\)。对于前者，固定点方程给 \(a=d\)、\(b=-c\)、\(a^2+c^2=1\)，在射影群中只剩 \(I,S\)。对于后者，利用 \(\rho^2+\rho+1=0\)，固定点方程给
+\[
+ b=-c,\quad d=a+c,\quad a^2+ac+c^2=1.
+\]
+等价地 \((2a+c)^2+3c^2=4\)，故只能有 \(c=0,\pm1\)；逐个代入得六个矩阵，即 \(\pm I,\pm ST,\pm(ST)^2\)。除去正负重复后，稳定子阶为三。基本域中其他点由上一证明的取等分类可排除非恒等稳定子：竖边上的平移不固定点，圆弧上 \(S\) 只有固定点 \(\mathrm{i}\)，额外的端点情形正是 \(\rho\) 的轨道。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[固定点附近的商坐标]\label{b3:prop:23-stabilizer-chart}
+设 \(\Gamma=\operatorname{PSL}_2(\mathbb Z)\)、\(p\in\mathfrak H\)，令 \(e=|\Gamma_p|\)。若 \(p\) 分别等价于 \(\mathrm{i}\)、\(\rho=e^{2\pi\mathrm{i}/3}\)，则 \(e\) 分别为二、三；其余点有 \(e=1\)。取
+\[
+ u_p(\tau)=\frac{\tau-p}{\tau-\overline p}.
+\]
+存在 \(r>0\)，使 \(U=\{\tau:|u_p(\tau)|<r\}\) 中两点模群等价，当且仅当它们由 \(\Gamma_p\) 的元素联系。这个局部商由
+\[
+ w=u_p(\tau)^e
+\]
+同胚到圆盘 \(|w|<r^e\)。在 \(U\) 上对 \(\Gamma_p\) 不变的全纯函数，恰能唯一写成 \(w\) 的全纯函数；亚纯函数有同样的下降性质。
+\end{proposition}
+\begin{proof}
+稳定子阶数已在基本域中算出；其他代表的稳定子由共轭得到，阶数不变。映射 \(u_p\) 把上半平面双全纯映到单位圆盘，并把 \(p\) 送到零。每个稳定子元素在这个坐标中是固定零的圆盘自同构，因而由 Schwarz 引理及其逆向应用成为旋转。一个 \(e\) 阶有限旋转群恰由全部 \(e\) 次单位根组成：取其中最小正转角，反复相减说明所有转角都是它的整数倍，再用群的阶确定该转角为 \(2\pi/e\)。
+
+取 \(p\) 附近一个紧闭小盘。由\cref{b3:prop:23-proper-action}，只有有限多个群元素能使它与自身相交。对于其中不固定 \(p\) 的元素，缩小 \(p\) 的邻域便能使该邻域与它的像不交；有限次缩小后，再取一个更小的 \(u_p\) 坐标圆盘 \(U\)。它被稳定子保持，而所有其他群元素的像均与它不交。因此 \(U\) 内的等价关系正是 \(u\sim\zeta u\)、\(\zeta^e=1\)。
+
+映射 \(u\mapsto u^e\) 的纤维恰是这些旋转轨道，且它是开映射，所以诱导局部商与圆盘之间的同胚。若全纯函数的 Taylor 级数为 \(\sum_{n\ge0}a_nu^n\)，旋转不变性迫使 \(a_n=0\) 除非 \(e\mid n\)。保留的项组成关于 \(w=u^e\) 的收敛幂级数。亚纯情形在零点附近用 Laurent 级数作相同论证；其他位置局部可逆，故同样下降。
+\end{proof}
+
+在 \(p=\mathrm{i}\) 时，直接代入可得 \(u_p(S\tau)=-u_p(\tau)\)；在 \(p=\rho\) 时，\(ST\) 在 \(u_p\) 坐标中的旋转因子为 \(e^{-2\pi\mathrm{i}/3}\)。局部商坐标分别是平方和立方。对于不变亚纯函数，上半平面上的整数零点阶数与商坐标中的阶数因此可能不同；价公式中的 \(1/2\)、\(1/3\) 将准确记录这件事。
+
+\subsection{尖点与基本域约化}
 \label{b3:subsec:230105}
 
-有理边界点及无穷远点称为\term[jiandian]{尖点}[cusp]。对全模群它们同属一条轨道：既约分数 \(a/c\) 可以补成矩阵的第一列，其作用将 \(\infty\) 送到 \(a/c\)。在无穷远附近，平移 \(T\) 使
-\(q=e^{2\pi\mathrm{i}\tau}\) 成为穿孔圆盘的坐标。加入 \(q=0\) 就将这一端补成一个点；“在尖点全纯”具体指用此坐标写出的函数在零点全纯，不是仅在每条竖线上有极限。
+模群除了在内部识别点，还识别一些边界方向。扩充有理轴 \(\mathbb Q\cup\{\infty\}\) 中的点称为\term[jiandian]{尖点}[cusp]。全模群的尖点只有一条轨道：既约分数 \(a/c\) 可以补成行列式一矩阵的第一列，该矩阵把 \(\infty\) 送到 \(a/c\)；反过来，整数分式线性变换把 \(\infty\) 送到有理数或 \(\infty\)。这里说的是有理边界点，不能把整个实轴都加进来当作同一种局部端。
+
+固定 \(\infty\) 的射影群元素恰为整数平移。确实，固定无穷远要求 \(c=0\)，于是 \(a=d=\pm1\)，分式成为 \(\tau\mapsto\tau+n\)。因此自然尝试用
+\[
+ q=e^{2\pi\mathrm{i}\tau}
+\]
+消去这个平移重复。要确认它也是完整模群商的局部坐标，还须排除其他群元素在高处额外识别点。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[尖点附近的穿孔圆盘]\label{b3:prop:23-cusp-chart}
+设 \(\Gamma=\operatorname{PSL}_2(\mathbb Z)\)、\(Y>1\)，令 \(\mathfrak H_Y=\{\tau:\operatorname{Im}\tau>Y\}\)。若 \(\tau,\sigma\in\mathfrak H_Y\) 模群等价，则 \(\sigma-\tau\in\mathbb Z\)。因此 \(\mathfrak H_Y\) 在轨道商 \(\mathfrak H/\Gamma\) 中的像由
+\[
+ q=e^{2\pi\mathrm{i}\tau}
+\]
+同胚到穿孔圆盘 \(0<|q|<e^{-2\pi Y}\)，局部反函数由复对数给出。
+\end{proposition}
+\begin{proof}
+若 \(\sigma=\gamma\tau\) 且 \(c\ne0\)，写 \(y=\operatorname{Im}\tau>Y\)，则
+\[
+ \operatorname{Im}\sigma
+ =\frac{y}{|c\tau+d|^2}
+ \le\frac1{c^2y}<\frac1Y<Y,
+\]
+与 \(\sigma\in\mathfrak H_Y\) 矛盾。所以只能 \(c=0\)，即整数平移。指数映射在 \(\mathfrak H_Y\) 上的像正是所述穿孔圆盘，两个原像的差为整数；它局部双全纯且是开映射，故诱导同胚。选一个小圆盘上的对数分支，\(\tau=(2\pi\mathrm{i})^{-1}\log q\) 就给局部逆；更换分支只会把 \(\tau\) 改变一个整数。
+\end{proof}
+
+在这个穿孔圆盘中加入 \(q=0\)，便把唯一的高端补成一个点。\secref{b3:sec:2306}将把它与刚才的内部坐标拼成紧 Riemann 曲面。“在尖点全纯”所要求的是关于 \(q\) 的函数在整个零点邻域全纯，而不是只沿某一条竖直线有有限极限。
 
 \ProseParagraphBreak
+基本域的证明也给出一个可执行的约化过程：先作整数平移，把实部送进 \([-1/2,1/2]\)；若模小于一，再作 \(S\)；重复这两步。每次真正使用 \(S\) 都严格增大虚部，而且不会无限重复。若初始点为 \(\tau_0\)、虚部为 \(y_0\)，每个途中点 \(\gamma\tau_0\) 的虚部至少为 \(y_0\)，于是
+\[
+ |c\tau_0+d|^2
+ =\frac{y_0}{\operatorname{Im}(\gamma\tau_0)}\le1.
+\]
+这样的整数底行只有有限多个，所以途中可能出现的高度只有有限多个。严格增高的步骤只能有限次，最后便落入 \(\mathcal F\)。
 
-基本域的存在还给一个实际约化过程：先用整数平移把实部放进 \([-1/2,1/2]\)，若模小于一，再用 \(S\) 反演，使虚部增大，重复操作。为何不会无限停留在某个有界高度？对固定初值 \(\tau\)，所有可能像的虚部都是 \(\operatorname{Im}\tau/|c\tau+d|^2\)；在任何正下界之上的有界高度区间，相关整数对 \((c,d)\) 只有有限多个。每次真正反演严格增大高度，因此有限步后达到基本域。处在边界上的点可以有两个代表；边界配对规定说明它们表示同一复环面，不构成分类重复。
-\ProseParagraphBreak
-模群作用在内部还具有适当不连续性。若紧集 \(K\subset\mathbb H\) 满足 \(\gamma K\cap K\ne\varnothing\)，则对某个 \(\tau\in K\)，\(\operatorname{Im}(\gamma\tau)\) 和 \(\operatorname{Im}\tau\) 都有共同上下正界。因此 \(|c\tau+d|\) 有界，由 \(\operatorname{Im}\tau\) 的正下界得 \(c\) 有界，再由实部有界得 \(d\) 有界。固定互素 \(c,d\) 后，所有上排解为 \((a,b)=(a_0,b_0)+n(c,d)\)，它们的像只差整数 \(n\)。要重新落入 \(K\)，\(n\) 也只有有限选择。因此只有有限多个群元可能把 \(K\) 碰回自身。这一事实保证轨道商在普通点可以用小邻域作局部坐标。
-\ProseParagraphBreak
-尖点只有一条轨道也可明确核查。任一有理数 \(a/c\)，把分子分母约为互素，Bézout 恒等式给整数 \(b,d\) 使 \(ad-bc=1\)，于是矩阵把无穷远送到 \(a/c\)。反之，整数 Möbius 变换将无穷远送到有理数或无穷远。因此全模群的所有有理边界端都由同一个尖点模型描述；以后子群的情形可能分裂成多个尖点，不能沿用“只检查无穷远”的结论。
+例如 \(\tau=(1+2\mathrm{i})/10\) 已在竖条带内，却位于单位圆内。计算得
+\[
+ S\tau=-2+4\mathrm{i},\quad T^2S\tau=4\mathrm{i},
+ \quad T^2S=\begin{pmatrix}2&-1\\1&0\end{pmatrix}.
+\]
+因此它与 \(4\mathrm{i}\) 表示同一比例格。换基公式给
+\(\Lambda_{4\mathrm{i}}=\tau^{-1}\Lambda_\tau\)，而 \(\tau^{-1}=2-4\mathrm{i}\)，所以右边由 \(2-4\mathrm{i}\) 和一生成，确实等于 \(\mathbb Z+4\mathrm{i}\mathbb Z\)。约化改变的是格的归一化描述。内部点具有唯一的基本域代表；遇到边界时，按已证明的配对识别即可。

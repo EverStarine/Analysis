@@ -1,31 +1,32 @@
 % !TeX root = ../../Book2.tex
-\chapter{一阶偏微分方程与特征线法}
-\label{b2:ch:07}
-\BookChapterNumber{b2:ch:07}
+\chapter{Schwartz 空间与温和分布}
+\label{b2:ch:05}
+\BookChapterNumber{b2:ch:05}
+% 资料：Hunter2001Applied，作者公开ch11.pdf，实际渲染核读291、294、303--304页。
+% Schwartz半范数、双线性配对、归一化转换与正定Gauss公式分别核对。
+% 本章自足证明Hermite完备性、S'自同构和各维负Laplace基本解。
 \begin{chapterabstract}
-输运方程沿运动轨道记录函数值的变化。常速度给出平移，变速度则要求先构造常微分方程的流。本章从局部迭代出发，证明轨道存在唯一、依初始点可微以及流的可逆性，再建立含源项与零阶项的表示公式。支集传播描述信息从哪里到达，Jacobi 行列式描述体积怎样变化，两者共同给出密度的质量输运。选读部分讨论拟线性方程和 Hamilton--Jacobi 方程的局部光滑解，并以 Burgers 方程说明特征投影失去可逆性时会发生什么。
+Fourier 变换要容纳常函数、点质量和可积函数以外的对象，需要一个在变换下保持不变的测试空间。本章先构造 Schwartz 空间，证明半范数完备性及微分、多项式乘法、卷积和变换的连续性，并在选读专题中以 Hermite 函数展示变换的离散特征结构。随后把变换转移到连续对偶，得到温和分布上的统一理论。最后将常系数微分方程化为频率乘法，构造带正零阶项及各维负 Laplace 算子的基本解。
 \end{chapterabstract}
-
 \begin{learninggoals}
 \begin{itemize}
-\item\label{b2:item:07-goal-lines}能从一阶微分算子找出运动方向，沿特征线求解含源项与吸收项的初值问题。
-\item\label{b2:item:07-goal-flow}能说明局部流构造中的封闭性、唯一性、可微依赖及延拓条件，区分局部存在和全时间存在。
-\item\label{b2:item:07-goal-density}能用回溯轨道判断支集传播，并用 Jacobi 公式区分输运标量与守恒密度。
-\item\label{b2:item:07-goal-nonlinear}选读目标：在\secref{b2:sec:0704}的局部可逆条件下构造拟线性解，辨认梯度爆破与振幅爆破的区别，理解弱守恒关系的有限作用；只学习经典线性方程时可暂缓这一目标。
+\item\label{b2:item:05-goal-schwartz}使用具体半范数检查快速下降、收敛和连续操作，区分 Schwartz 收敛与共同紧支集的测试函数收敛。
+\item\label{b2:item:05-goal-hermite}选读进阶目标：在\subsecref{b2:subsec:050204}中由 Gauss 函数构造 Hermite 系，理解其正交性、完备性和 Fourier 特征值；这不是分布与基本解主线的前置。
+\item\label{b2:item:05-goal-tempered}用连续泛函定义温和分布，保持双线性配对与既有微分符号一致。
+\item\label{b2:item:05-goal-examples}计算 Dirac 测度、多项式、导数与齐次分布的变换，判断普通积分何时不能再用。
+\item\label{b2:item:05-goal-fundamental}将常系数算子转为多项式符号，计算不同维数的基本解，并说明原点奇性和边界定向在证明中的作用。
 \end{itemize}
 \end{learninggoals}
 
-一团染料被介质携带时，它的边界随粒子轨道移动。若介质同时膨胀，染料浓度还会降低；仅把初始图形平移或变形，未必保存总质量。要由瞬时速度计算以后每一点的数值，需要知道轨道怎样返回初值面、相邻轨道是否可区分，以及体积怎样变化。特征线法逐个解决这些问题，并把一阶偏微分方程转为沿轨道的常微分方程。
+一单位质量集中在原点时，普通函数无法同时表示它的总质量和无限集中程度。另一个看似相反的对象是常函数 \(1\)：它均匀铺满空间，却应只含零频率。两者的 Fourier 变换应彼此对应；要把这句话变成计算规则，需要先找到对二者都可测试、又在变换下保持不变的函数空间。本章构造这个空间，然后用点质量的方程 \(-\Delta E=\delta_0\) 说明广义对象怎样产生可用的解。
 
 \ProseParagraphBreak
 
-本章使用\chapref{b2:ch:01}的链式法则、逆函数定理、换元及积分求导规则，不预设完整的常微分方程课程。\secref{b2:sec:0701}从便于计算的直线模型讲起；\secref{b2:sec:0702}构造常微分方程的流；\secref{b2:sec:0703}以特征流求解时变输运方程，并研究质量守恒。只学习经典线性方程的读者可以略过\secref{b2:sec:0704}，后续普通章节不需要该节的非线性结论。
+本章使用\chapref{b2:ch:03}的变换公式与反演、\chapref{b2:ch:04}的平方能量理论，以及\chapref{b2:ch:01}的分部积分和 Green 公式。第一卷定义 20.2.1 的普通分布作为比较对象：其测试函数紧支集，故不要求控制无穷远；温和分布则须连续作用于全部 Schwartz 函数。二者的范围不同，不能只因名称相似就互相替换。
 
 \ProseParagraphBreak
 
-Walter A. Strauss 的《Partial Differential Equations: An Introduction》\cite[Section 1.2]{Strauss2008Partial}由直线上的求解过渡到特征曲线。John K. Hunter 与 Bruno Nachtergaele 的《Applied Analysis》\cite[Section 3.5]{Hunter2001Applied}用积分迭代构造常微分方程的局部解，并讨论局部解与全局解的区别。除存在唯一性外，下面还将证明流对初始点的可微依赖，并计算沿流的体积变化。
-% 实读：Strauss 第二版 Wiley 官方样章印刷6--9页；Hunter--Nachtergaele 作者稿印刷73--76页。
-% 第7--8章来源实读范围与改题出处见参考文献原文件/来源记录.md。
+\secref{b2:sec:0501}和\secref{b2:sec:0502}讨论 Schwartz 函数及其变换；\secref{b2:sec:0503}通过对偶配对定义温和分布上的 Fourier 变换；\secref{b2:sec:0504}用它研究常系数方程。John K. Hunter 与 Bruno Nachtergaele 的《Applied Analysis》\cite[Chapter 11]{Hunter2001Applied}介绍测试函数与温和分布。Lars Hörmander 的《The Analysis of Linear Partial Differential Operators I: Distribution Theory and Fourier Analysis》\cite{Hrmander2003Analysis}详细论述一般分布与常系数方程理论，可在学完本章后按具体问题查阅。
 
 \input{Part02/Chapter07/Section0701}
 \input{Part02/Chapter07/Section0702}
@@ -33,117 +34,198 @@ Walter A. Strauss 的《Partial Differential Equations: An Introduction》\cite[
 \input{Part02/Chapter07/Section0704}
 
 \begin{chaptersummary}
-特征线法将一阶偏微分方程拉回常微分方程。求出轨道只是第一步：还要确认每个点能沿轨道返回数据面，轨道之间由唯一性保证不分叉，流对初始位置的导数又允许把沿线公式还原成经典解。局部迭代给出存在唯一，增长控制排除有限时间逃逸；这两层条件不能混淆。
+Schwartz 空间用所有阶导数和所有多项式权重控制函数。Fourier 变换在其中交换微分与乘法，反演使它成为连续自同构；Hermite 选读专题则以正交基把这一变换的四种特征值具体呈现出来。温和分布通过作用于测试函数定义，双线性配对把已有的变换公式连续延伸到 Dirac 测度、多项式以及全部 \(L^p\) 函数。
 
 \ProseParagraphBreak
 
-输运标量在齐次情形沿轨道保持数值，守恒密度则需乘上流的 Jacobi 行列式才保持不变。源项不断产生新数值，零阶项沿历史轨道累积为指数因子。支集由流携带，统一速度界才给出统一传播圆锥。在选读的\secref{b2:sec:0704}中，非线性方程的空间投影还可能失去可逆性，光滑解的构造因此具有明确的时间边界；略过该节不影响前面的线性流与质量输运结论。
+常系数方程的频率表达是多项式乘法，但零点处不能随意相除。基本解的构造必须兼顾局部可积性、原点质量和无穷远增长。负 Laplace 的幂核、对数核和一维线性核各反映一种维数边界；与紧支集光滑右端卷积可解全空间方程，却不自动决定边值条件。下一章将用同一测试空间把离散格点与连续频率联系起来。
 \end{chaptersummary}
 
 \BookExercises
 
-前两题训练边界数据与变换语言的接合；中间四题分别检验全局条件、体积变化、源项及闭轨道相容性。最后两题使用选读节，比较光滑失效与弱方程的可能延续。各题均在本章已建立的工具内给出解答。
+以下题目把半范数、差商和频率符号用于具体对象。前几题强调收敛与符号，后几题处理奇性、频率特征结构和方程。\Cref{b2:ex:05-hermite-oscillator}对应选读的 Hermite 专题；\cref{b2:ex:05-polynomial-comb}比较离散测度的多项式增长与指数增长，最后的\cref{b2:ex:05-cutoff-laplace-kernel}考察截断基本解后出现的壳层余项。
 
-% 自拟：把全空间常速度问题改为半直线入流问题，检查角点一阶相容。
+% 自拟：所有导数一致趋零仍不控制多项式权重。
+% 预留题头及首个公式所需空间，避免题头换页后超链接锚点仍在前页。
 \Needspace{6\baselineskip}
-\begin{exercise}\label{b2:ex:07-inflow}
-设 \(c>0\)，在 \(x,t\geq0\) 上求解 \(u_t+c u_x=0\)，初值为 \(u(x,0)=g(x)\)，边界值为 \(u(0,t)=h(t)\)，其中 \(g,h\in C^1([0,\infty);\mathbb C)\)。给出分片公式，并证明它为闭象限上的 \(C^1\) 解的充要条件是
-\(g(0)=h(0)\)、\(h'(0)=-c g'(0)\)。
+\begin{exercise}\label{b2:ex:05-schwartz-convergence}
+设非零 \(\rho\in C_c^\infty(\mathbb R;\mathbb C)\)，对正整数 \(n\) 令 \(\varphi_n(x)=n^{-1}\rho(x/n)\)。证明每个固定阶导数都在 \(\mathbb R\) 上一致趋于零，但 \(\varphi_n\) 不在 \(\mathcal S(\mathbb R;\mathbb C)\) 中趋零。它作为温和分布是否逐测试函数配对趋于零？
 \end{exercise}
 \begin{solution}
-回溯直线先遇到 \(t=0\) 或 \(x=0\)，故
-\[
- u(x,t)=\begin{cases}g(x-ct),&x\geq ct,\\h(t-x/c),&x\leq ct.\end{cases}
-\]
-在接合线 \(x=ct\) 上，连续性等价于 \(g(0)=h(0)\)。两侧梯度分别趋于 \((g'(0),-c g'(0))\) 与 \((-h'(0)/c,h'(0))\)，相等恰好是第二条件。满足这两项时，沿接合线的两侧一阶导数连续接合，函数为 \(C^1\)，并逐点满足方程。任何经典解沿轨道恒定，所以分片公式也证明唯一性。
+有 \(\|\varphi_n^{(k)}\|_\infty=n^{-k-1}\|\rho^{(k)}\|_\infty\to0\)。选 \(x_0\ne0\) 使 \(\rho(x_0)\ne0\)，则 \(p_1(\varphi_n)\geq n^{-1}(1+n|x_0|)|\rho(x_0)|\)，下极限为正，故不按 Schwartz 半范数趋零。另一方面，对 \(\psi\in\mathcal S\)，\(|\int\varphi_n\psi|\leq n^{-1}\|\rho\|_\infty\cdot\|\psi\|_1\to0\)，所以在 \(\mathcal S'\) 中趋零。
 \end{solution}
 
-% 自拟：将特征平移与第一编的单位周期 Fourier 归一化连接。
+% 自拟：差分点质量的极限与傅里叶符号同时核对。
 \Needspace{6\baselineskip}
-\begin{exercise}\label{b2:ex:07-fourier-translation}
-设 \(\mathbb T=\mathbb R/\mathbb Z\) 配备总质量为 \(1\) 的 Lebesgue 测度，\(g\in C^1(\mathbb T;\mathbb C)\)，\(c\in\mathbb R\)。证明周期输运解 \(u(x,t)=g(x-ct)\) 对每个 \(k\in\mathbb Z\)、\(t\in\mathbb R\) 的 Fourier 系数为
-\(\widehat u(k,t)=e^{-2\pi\mathrm i kct}\widehat g(k)\)。进而说明对每个非负整数 \(N\)，Fourier 部分和 \(S_Nu\) 的误差在每个时刻具有与初始时刻相同的 \(L^2(\mathbb T)\) 范数。
+\begin{exercise}\label{b2:ex:05-delta-differences}
+对正整数 \(n\)，在 \(\mathcal S'(\mathbb R;\mathbb C)\) 中按逐测试函数配对收敛求下列分布列的极限，并计算极限的 Fourier 变换，其中 \(\delta_a\) 表示位于 \(a\in\mathbb R\) 的 Dirac 测度：
+\[
+ n(\delta_{1/n}-\delta_0),\quad
+ n^2(\delta_{1/n}+\delta_{-1/n}-2\delta_0).
+\]
 \end{exercise}
 \begin{solution}
-在 \(\int_0^1g(x-ct)e^{-2\pi\mathrm i kx}\,\mathrm dx\) 中令 \(y=x-ct\)。由于 \(g(y)e^{-2\pi\mathrm i ky}\) 为单位周期，换元后的任意长度为一的积分都等于 \(\widehat g(k)\)，而剩余相位为 \(e^{-2\pi\mathrm i kct}\)。所以 \(S_Nu(x,t)=S_Ng(x-ct)\)。对二者之差再用圆周平移不变性，得到 \(\|u(\cdot,t)-S_Nu(\cdot,t)\|_2=\|g-S_Ng\|_2\)。这里不需要逐项微分一个无限级数。
+对 \(\varphi\in\mathcal S\) 使用一阶与二阶 Taylor 差商，配对极限分别为 \(\varphi'(0)\) 和 \(\varphi''(0)\)，故极限为 \(-\delta_0'\)、\(\delta_0''\)。它们的变换分别为 \(-2\pi\mathrm{i}\xi\)、\(-4\pi^2\xi^2\)。也可从指数差商核对：\(n(e^{-2\pi\mathrm{i}\xi/n}-1)\to-2\pi\mathrm{i}\xi\)，其模由 \(2\pi|\xi|\) 控制；对称二阶差商的模由 \(4\pi^2\xi^2\) 控制，故两者都可对 Schwartz 测试函数用控制收敛。
 \end{solution}
 
-% 自拟：由有限时间逃逸构造零初值非唯一，展示全局增长假设的真实用途。
+% 自拟：乘以x的核及原点导数项，训练分布除法。
 \Needspace{6\baselineskip}
-\begin{exercise}\label{b2:ex:07-infinity-inflow}
-在 \(\mathbb R\times[0,\infty)\) 上考虑实值方程 \(u_t+(1+x^2)u_x=0\)、\(u(x,0)=0\)。构造非零的 \(u\in C^1(\mathbb R\times[0,\infty);\mathbb R)\)，并解释为何不违反本章的全局唯一性定理。
+\begin{exercise}\label{b2:ex:05-x-times-distribution}
+设 \(T\in\mathcal S'(\mathbb R;\mathbb C)\)。证明 \(xT=0\) 当且仅当存在 \(c\in\mathbb C\) 使 \(T=c\delta_0\)。再求方程 \(xT=\delta_0\) 在同一空间中的全部解。
 \end{exercise}
 \begin{solution}
-取 \(F\in C^\infty(\mathbb R)\)，令 \(F(s)=0\) 当 \(s\leq\pi/2\)，令 \(F(s)=\exp(-(s-\pi/2)^{-2})\) 当 \(s>\pi/2\)。定义 \(u(x,t)=F(t-\arctan x)\)，则 \(u_t=F'\)、\(u_x=-F'/(1+x^2)\)，方程成立。初始时 \(-\arctan x<\pi/2\)，故初值为零；取 \(t>\pi/2\)、\(x=0\) 则非零。速度为二次增长，轨道 \(\arctan X=t+\arctan a\) 在有限时间到达无穷，某些终点不能回溯到初始面。全局唯一性所需的完整回溯轨道因此缺失。
+取 \(\rho\in C_c^\infty\)，在原点附近为 \(1\)。任意 \(\varphi\in\mathcal S\) 可写成 \(\varphi=\varphi(0)\rho+x\psi\)，其中 \(\psi=(\varphi-\varphi(0)\rho)/x\) 在原点用光滑延拓，远处除以 \(x\) 保持快速下降，所以 \(\psi\in\mathcal S\)。若 \(xT=0\)，便有 \(\langle T,\varphi\rangle=\varphi(0)\langle T,\rho\rangle\)，即 \(T=c\delta_0\)。反向直接成立。又因 \(\langle x\delta_0',\varphi\rangle=-(x\varphi)'(0)=-\varphi(0)\)，一个特解为 \(-\delta_0'\)。全部解因而为 \(-\delta_0'+c\delta_0\)。
 \end{solution}
 
-% 自拟：剪切流中守恒质量与非守恒矩相区分。
+% 自拟：主值分布、奇偶性和一阶分布方程组合得到变换常数。
 \Needspace{6\baselineskip}
-\begin{exercise}\label{b2:ex:07-shear-moment}
-设速度场 \(b(x,y)=(y,0)\)，\(\rho_0\in C_c^1(\mathbb R^2;\mathbb R)\)。求 \(\rho_t+\operatorname{div}(b\rho)=0\)、\(\rho(\cdot,0)=\rho_0\) 在 \(t\geq0\) 的经典解，并用换元证明其总积分不变，而第一矩满足
+\begin{optionalexercise}\label{b2:ex:05-principal-value}
+证明对每个 \(\varphi\in\mathcal S(\mathbb R;\mathbb C)\)，公式
 \[
- \int_{\mathbb R^2}x\rho(x,y,t)\,\mathrm dx\,\mathrm dy
- =\int_{\mathbb R^2}(a+tb)\rho_0(a,b)\,\mathrm da\,\mathrm db.
+ \langle T,\varphi\rangle
+ =\lim_{\varepsilon\downarrow0}\int_{|x|>\varepsilon}\dfrac{\varphi(x)}x\,\mathrm{d}x
 \]
-这里积分变量 \(b\) 是实数坐标，非前面的向量场。
-\end{exercise}
-\begin{solution}
-轨道为 \(X(t;0,(a,b))=(a+tb,b)\)，其导数矩阵为 \(\left(\begin{smallmatrix}1&t\\0&1\end{smallmatrix}\right)\)，行列式等于一。故 \(\rho(x,y,t)=\rho_0(x-ty,y)\)。以 \(x=a+tb,y=b\) 换元，质量等于 \(\int\rho_0\)，而把积分中的 \(x\) 同时换为 \(a+tb\) 就得到矩公式。紧支集保证这些积分绝对收敛。散度为零只保证体积和质量不变，并不要求重心静止。
-\end{solution}
-
-% 自拟：含质量源的移动控制体，实质增加源项与Jacobi的组合。
-\Needspace{6\baselineskip}
-\begin{exercise}\label{b2:ex:07-moving-source}
-设 \(d\) 为正整数，\(T>0\)，\(b\in C^2(\mathbb R^d\times[0,T];\mathbb R^d)\)，且对某个 \(C\geq0\) 有 \(|b(x,t)|\leq C(1+|x|)\)。记 \(X(t;0,a)\) 为从 \(a\) 出发的轨道，\(J(t;0,a)=\det D_aX(t;0,a)\)，即\cref{b2:thm:07-mass-transport}中使用的流与体积因子。设 \(\rho,q\in C^1(\mathbb R^d\times[0,T];\mathbb C)\) 满足 \(\rho_t+\operatorname{div}(b\rho)=q\)。对任意有界 Borel 集 \(E\subseteq\mathbb R^d\) 和 \(0\leq t\leq T\)，证明
-\[
- \frac{\mathrm d}{\mathrm dt}\int_{X(t;0,E)}\rho(x,t)\,\mathrm dx
- =\int_{X(t;0,E)}q(x,t)\,\mathrm dx.
-\]
-端点处取相应单侧导数。说明此式无需 \(E\) 的边界光滑。
-\end{exercise}
-\begin{solution}
-在固定集合 \(E\) 上换元，左边积分成为 \(\int_E\rho(X(t;0,a),t)J(t;0,a)\,\mathrm da\)。乘积求导与 Jacobi 方程给出被积函数的时间导数等于 \(q(X(t;0,a),t)J(t;0,a)\)。由于 \(\overline E\) 紧且时间限于紧区间，所有函数与导数在相应轨道集上有界，故积分号下求导合法。再换元得到结论。论证没有使用边界积分，因此 Borel 可测和有界性已足够。
-\end{solution}
-
-% 自拟：闭轨道的全局相容，超出局部特征线公式。
-\Needspace{6\baselineskip}
-\begin{exercise}\label{b2:ex:07-closed-orbits}
-在环域 \(\Omega=\{(x,y)\in\mathbb R^2:1<\sqrt{x^2+y^2}<2\}\) 上给定 \(f\in C^1(\Omega;\mathbb C)\)。证明稳态方程 \(-yu_x+xu_y=f\) 存在单值解 \(u\in C^1(\Omega;\mathbb C)\)，当且仅当对每个 \(1<r<2\)，
-\[
- \int_0^{2\pi}f(r\cos\theta,r\sin\theta)\,\mathrm d\theta=0.
-\]
-在存在时写出全部解。
-\end{exercise}
-\begin{solution}
-极坐标中算子为 \(\partial_\theta\)，单值函数必须以 \(2\pi\) 为周期，故沿一周积分给出必要条件。若条件成立，令
-\[
- U(r,\theta)=A(r)+\int_0^\theta f(r\cos s,r\sin s)\,\mathrm ds,
-\]
-其中 \(A\in C^1((1,2);\mathbb C)\) 任意。零均值保证 \(U\) 周期；对 \(r\) 的导数也周期，因为零均值恒等式可对 \(r\) 求导。故它下降为环域上的 \(C^1\) 函数并满足方程。任意两个解之差在每个圆上恒定，所以全体解恰由 \(A(r)\) 给出。
-\end{solution}
-
-% 自拟选读：同一阶跃初值的两个弱解，展示仅用跳跃关系不保证唯一。
-\Needspace{6\baselineskip}
-\begin{optionalexercise}\label{b2:ex:07-expansion-nonunique}
-取实值 Burgers 初值 \(g(x)=0\) 当 \(x\leq0\)，\(g(x)=1\) 当 \(x>0\)。证明下列两个实值有界函数在 \(\mathbb R\times(0,\infty)\) 上都满足分布方程 \(u_t+\partial_x(u^2/2)=0\)，且当 \(t\downarrow0\) 时在 \(L^1_{\mathrm{loc}}(\mathbb R)\) 中收敛到同一初值：
-\[
- u_1(x,t)=\mathbf1_{\{x>t/2\}},\quad
- u_2(x,t)=\begin{cases}0,&x\leq0,\\x/t,&0<x<t,\\1,&x\geq t.\end{cases}
-\]
+定义 \(T\in\mathcal S'(\mathbb R;\mathbb C)\)，称为 \(\operatorname{pv}(1/x)\)。证明 \(xT=1\)，其中右侧是常函数 \(1\) 给出的分布，并计算 \(\widehat T\)。
 \end{optionalexercise}
 \begin{solution}
-对 \(u_1\)，左右状态为 \(0,1\)，界面速度为 \(1/2=(F(1)-F(0))/(1-0)\)，所以 Rankine--Hugoniot 条件成立；两侧方程恒成立，界面分部积分证明整个分布方程。对 \(u_2\)，扇形内部有 \(u_t=-x/t^2\)、\(uu_x=x/t^2\)，其余区域为常数。两条分界线上函数及通量连续，逐区分部积分时界面项相消，故也是弱解。测试函数的支集在 \(t>0\) 内，与 \(t=0\) 有正距离，所以逐区计算没有端点奇性。两函数与初值的差都只支撑于 \([0,t]\)，绝对值至多一，局部 \(L^1\) 误差不超过 \(t\)。二者在一个非空开集上不同，因此弱方程与该初值尚不能保证唯一。
+在 \(|x|<1\) 内减去 \(\varphi(0)\)，常数项因对称性抵消，剩余绝对值由 \(\|\varphi'\|_\infty\) 控制；在 \(|x|\geq1\) 内用 \(p_2(\varphi)(1+|x|)^{-2}/|x|\) 控制。因此极限存在且满足有限半范数界。代入 \(x\varphi\) 得 \(xT=1\)，并可换元看出 \(T\) 为奇分布。
+
+由变换公式，\(\frac{\mathrm{i}}{2\pi}\partial_\xi\widehat T=\delta_0\)，故 \(\partial_\xi\widehat T=-2\pi\mathrm{i}\delta_0\)。函数 \(-\pi\mathrm{i}\operatorname{sgn}\xi\) 的分布导数正好为右端，所以两者之差的导数为零。导数为零的温和分布是常数：对积分为零的 \(\psi\in\mathcal S\)，其原函数 \(\int_{-\infty}^x\psi\) 属于 \(\mathcal S\)，故该分布在所有零积分测试函数上为零；再减去一个固定单位积分测试函数的倍数即可。于是 \(\widehat T=-\pi\mathrm{i}\operatorname{sgn}\xi+c\)。Fourier 变换保持奇偶性，而 \(T\) 为奇，所以 \(c=0\)。
 \end{solution}
 
-% 自拟选读：矩阵特征值控制Hamilton--Jacobi二次解的最大正时间。
+% 自拟：求Hermite低阶式，并把频率特征关系与谐振子联系。
 \Needspace{6\baselineskip}
-\begin{optionalexercise}\label{b2:ex:07-quadratic-hamilton}
-设 \(d\) 为正整数，\(K\in\mathbb R^{d\times d}\) 为实对称矩阵，\(I\) 为 \(d\) 阶单位矩阵。对 \(x\in\mathbb R^d\) 上的实值方程 \(u_t+|\nabla u|^2/2=0\)、\(u(x,0)=x^{\mathsf T}Kx/2\)，在开集 \(\{t\in\mathbb R:\det(I+tK)\ne0\}\) 中含 \(0\) 的连通分支内求经典解。若 \(K\) 有负特征值，确定首个正退化时间。
+\begin{optionalexercise}\label{b2:ex:05-hermite-oscillator}
+在 \(\mathbb R\) 上令 \(h_0(x)=2^{1/4}e^{-\pi x^2}\)、\(a^*=(4\pi)^{-1/2}(-\partial_x+2\pi x)\)，并对 \(n\in\mathbb N_0\) 令 \(h_n=(a^*)^nh_0/\sqrt{n!}\)，即采用\subsecref{b2:subsec:050204}的归一化。求 \(h_1,h_2\) 的显式公式，证明对每个 \(n\in\mathbb N_0\) 有
+\[
+ \left(-\dfrac{\mathrm{d}^2}{\mathrm{d}x^2}+4\pi^2x^2\right)h_n
+ =(4n+2)\pi h_n,
+\]
+并把 \(x^2h_0\) 展成 Hermite 函数的有限线性组合。
 \end{optionalexercise}
 \begin{solution}
-特征系统给出 \(X=(I+tK)a\)、\(P=Ka\)、\(Z=a^{\mathsf T}Ka/2+t|Ka|^2/2\)。代入 \(a=(I+tK)^{-1}x\)，利用 \(K\) 与 \(I+tK\) 及其逆交换，得到
+从上升算子计算得 \(h_1=\sqrt{4\pi}\,xh_0\)、\(h_2=2^{-1/2}(4\pi x^2-1)h_0\)。记下降算子 \(a=(4\pi)^{-1/2}(\partial_x+2\pi x)\)，展开算子有 \(4\pi a^*a=-\mathrm{d}^2/\mathrm{d}x^2+4\pi^2x^2-2\pi\)。由 \(a^*ah_n=nh_n\) 得到特征方程。第二个显式公式给出 \(x^2h_0=(h_0+\sqrt2h_2)/(4\pi)\)。其变换为 \((h_0-\sqrt2h_2)/(4\pi)\)，也可与两次频率求导公式核对。
+\end{solution}
+
+% 自拟：有界光滑乘子若导数失控，可以破坏S。
+\Needspace{6\baselineskip}
+\begin{exercise}\label{b2:ex:05-fast-multiplier}
+在 \(\mathbb R\) 上令 \(a(x)=e^{\mathrm{i}e^{x^2}}\)、\(\varphi(x)=e^{-x^2}\)。证明 \(a\colon\mathbb R\to\mathbb C\) 光滑且有界，\(\varphi\in\mathcal S(\mathbb R;\mathbb C)\)，但 \(a\varphi\notin\mathcal S(\mathbb R;\mathbb C)\)。再判断乘以 \(b(x)=e^{\mathrm{i}x^3}\) 是否给出 \(\mathcal S(\mathbb R;\mathbb C)\) 的连续自同构，并说明其逆。
+\end{exercise}
+\begin{solution}
+直接求导得 \((a\varphi)'=a(-2xe^{-x^2}+2\mathrm{i}x)\)，其模随 \(|x|\) 无界，故不满足 Schwartz 条件。对 \(b\)，每个导数都是一个多项式乘 \(b\)，因而至多多项式增长。由正文的乘法命题，乘以 \(b\) 连续保持 \(\mathcal S\)；其逆乘子 \(\overline b\) 也有相同性质，所以还给出连续自同构。
+\end{solution}
+
+% 自拟：尺度决定屏蔽算子的基本解与L1质量。
+\Needspace{6\baselineskip}
+\begin{exercise}\label{b2:ex:05-resolvent-scale}
+设 \(d\) 为正整数，\(E\in L^1(\mathbb R^d;\mathbb R)\) 为几乎处处由
 \[
- u(x,t)=\frac12x^{\mathsf T}K(I+tK)^{-1}x.
+ E(x)=\int_0^\infty e^{-t}(4\pi t)^{-d/2}e^{-|x|^2/(4t)}\,\mathrm dt
 \]
-令 \(M=K(I+tK)^{-1}\)，则 \(M\) 对称且 \(M'=-M^2\)。故 \(u_t=-x^{\mathsf T}M^2x/2\)、\(|\nabla u|^2=x^{\mathsf T}M^2x\)，直接验证方程。若最小特征值为 \(\lambda_{\min}<0\)，首个正退化时间为 \(-1/\lambda_{\min}\)，相应方向上的 Hesse 特征值 \(\lambda_{\min}/(1+t\lambda_{\min})\) 趋于负无穷。若 \(K\geq0\)，公式对所有正时间存在。
+给出的非负等价类；允许这个积分在原点取无穷值。对 \(a>0\)，在几乎处处意义下令 \(E_a(x)=a^{d/2-1}E(\sqrt a\,x)\)。证明 \(E_a\) 是 \(a-\Delta\) 的可积基本解，求其变换和 \(L^1(\mathbb R^d)\) 范数。若 \(1\leq p\leq\infty\)、\(f\in L^p(\mathbb R^d;\mathbb C)\)，证明 \(\|E_a*f\|_p\leq a^{-1}\|f\|_p\)。
+\end{exercise}
+\begin{solution}
+\Cref{b2:prop:05-bessel-fundamental}已证明 \(E\) 的质量为 \(1\)，且 \(\widehat E(\xi)=(1+4\pi^2|\xi|^2)^{-1}\)。尺度公式给出
+\[
+ \widehat E_a(\xi)=a^{-1}\widehat E(\xi/\sqrt a)
+ =\dfrac1{a+4\pi^2|\xi|^2}.
+\]
+乘以符号 \(a+4\pi^2|\xi|^2\) 后得到 \(1\)，故为基本解。它非负，换元得 \(\|E_a\|_1=a^{-1}\|E\|_1=a^{-1}\)。最后用 Young 卷积不等式。这个估计允许任意 \(1\leq p\leq\infty\)，但不单凭此范数界宣称解具有任意阶强导数。
+\end{solution}
+
+% 自拟：离散测度的温和性及其不可微函数式解释。
+\Needspace{6\baselineskip}
+\begin{exercise}\label{b2:ex:05-polynomial-comb}
+设 \(d\) 为正整数，\(c_k\in\mathbb C\)（\(k\in\mathbb Z^d\)），并存在与 \(k\) 无关的常数 \(C,M\geq0\)，使 \(|c_k|\leq C(1+|k|)^M\)。证明 \(T=\sum_{k\in\mathbb Z^d}c_k\delta_k\) 由绝对收敛配对定义温和分布，且截断 \(T_N=\sum_{|k|_\infty\leq N}c_k\delta_k\) 在 \(\mathcal S'(\mathbb R^d;\mathbb C)\) 中逐测试函数配对趋向 \(T\)，其中 \(N\) 遍历正整数，\(|k|_\infty=\max_j|k_j|\)。再在 \(d=1\) 时证明正测度
+\[
+ \mu=\sum_{k\in\mathbb Z}e^{|k|}\delta_k
+\]
+虽给出紧支集测试函数上的普通分布，却不能延拓为 \(\mathcal S'(\mathbb R;\mathbb C)\) 中的元素。可选取非负 \(\rho\in C_c^\infty(\mathbb R;\mathbb R)\)，使 \(\operatorname{supp}\rho\subset(-1/2,1/2)\)、\(\rho(0)=1\)，检查 \(\varphi_n(x)=e^{-n/2}\rho(x-n)\) 的全部 Schwartz 半范数与 \(\int\varphi_n\,\mathrm d\mu\)。
+\end{exercise}
+\begin{solution}
+选整数 \(N>M+d\)。则
+\[
+ \sum_k|c_k\varphi(k)|
+ \leq C p_N(\varphi)\sum_k(1+|k|)^{M-N}<\infty.
+\]
+最后的格点级数可按整数半径或二进环带比较体积：半径约 \(2^j\) 的点数至多为 \(C_d2^{jd}\)，所以所得几何级数收敛。这同时给出有限半范数界。对每个固定测试函数，绝对收敛级数的截断尾部趋零，正好是 \(\mathcal S'\) 收敛。
+
+指数权测度在每个紧集上只有有限个格点，故局部有限；对有共同紧支集的测试函数，积分由该紧集上的有限质量乘函数的上确界控制，所以它确实定义普通分布。取题中 \(\rho\) 和正整数 \(n\)。对每个固定非负整数 \(m\)，\(\varphi_n\) 的支集在 \((n-1/2,n+1/2)\) 内，其各阶导数都是 \(e^{-n/2}\) 乘相应平移导数。因此
+\[
+ p_m(\varphi_n)
+ \leq C_{m,\rho}\cdot e^{-n/2}(1+n)^m\longrightarrow0.
+\]
+故 \(\varphi_n\to0\) 于 \(\mathcal S(\mathbb R;\mathbb C)\)。另一方面，支集中只有整数 \(n\)，所以
+\[
+ \int\varphi_n\,\mathrm d\mu
+ =e^n\cdot e^{-n/2}\rho(0)=e^{n/2}\longrightarrow\infty.
+\]
+若存在延拓到 \(\mathcal S\) 的连续泛函，它在这些紧支集测试函数上的值必须保持上述积分值，却又应由连续性趋于零，矛盾。这不只是说明某个增长判别不能套用，而是直接排除了连续延拓。
+\end{solution}
+
+% 自拟：移动Laplace极点并截断空间，求平滑壳层余项及其总质量；不重复正文未截断核的验证题。
+\Needspace{6\baselineskip}
+\begin{exercise}\label{b2:ex:05-cutoff-laplace-kernel}
+设 \(d\in\{2,3\}\)、\(a\in\mathbb R^d\)、\(R>0\)。对 \(x\ne a\)，令
+\[
+ \Phi_{d,a}(x)=
+ \begin{cases}
+ -\dfrac1{2\pi}\log|x-a|,&d=2,\\[4pt]
+ \dfrac1{4\pi|x-a|},&d=3.
+ \end{cases}
+\]
+在 \(x=a\) 处任意赋一个有限值。取实值 \(\chi\in C_c^\infty(\mathbb R^d;\mathbb R)\)，使 \(\chi=1\) 于 \(B(0,1)\)、\(\chi=0\) 于 \(\{|x|\geq2\}\)，并令 \(\chi_R(x)=\chi((x-a)/R)\)、\(K(x)=\chi_R(x)\cdot\Phi_{d,a}(x)\)。
+\begin{enumerate}
+\item\label{b2:item:05-shifted-harmonic-flux} 证明 \(\Phi_{d,a}\) 在 \(\mathbb R^d\setminus\{a\}\) 上调和，且对每个 \(\varepsilon>0\)，
+\[
+ -\int_{\partial B(a,\varepsilon)}\partial_n\Phi_{d,a}\,\mathrm dS=1,
+\]
+其中 \(n\) 是小球的外单位法向。说明删去小球后，剩余区域在内边界处的外法向为何取相反方向。
+\item\label{b2:item:05-cutoff-shell-remainder} 证明 \(K\in L^1(\mathbb R^d;\mathbb R)\) 且紧支集。对 \(x\ne a\) 令
+\[
+ q(x)=-2\nabla\chi_R(x)\cdot\nabla\Phi_{d,a}(x)
+       -(\Delta\chi_R(x))\cdot\Phi_{d,a}(x).
+\]
+证明 \(q\) 在 \(a\) 附近补成零后属于 \(C_c^\infty(\mathbb R^d;\mathbb R)\)，支集包含于 \(\{\,x\mid R\leq|x-a|\leq2R\,\}\)，并通过删球积分和极限证明
+\[
+ -\Delta K=\delta_a+q\quad\text{于 }\mathcal S'(\mathbb R^d;\mathbb C).
+\]
+\item\label{b2:item:05-shell-mass} 证明 \(\int_{\mathbb R^d}q=-1\)。解释为何把基本解截成紧支集后，不能仍只留下一个点质量而没有额外余项。
+\end{enumerate}
+\end{exercise}
+\begin{solution}
+记 \(r=|x-a|\)、\(\sigma_1=2\pi\)、\(\sigma_2=4\pi\)。两种维数下径向导数均为
+\[
+ \Phi_{d,a}'(r)=-\frac1{\sigma_{d-1}r^{d-1}}.
+\]
+再求一次导数，便有 \(\Phi_{d,a}''+(d-1)\Phi_{d,a}'/r=0\)，所以原点移至 \(a\) 后，核仍在极点外调和。在球的外法向 \(n=e_r\) 下，通量为
+\[
+ \int_{\partial B(a,\varepsilon)}\partial_n\Phi_{d,a}\,\mathrm dS
+ =-\frac1{\sigma_{d-1}\varepsilon^{d-1}}
+      \cdot\sigma_{d-1}\varepsilon^{d-1}=-1.
+\]
+因此带负号的通量等于 \(1\)。对删球后的区域，穿过内边界向区域外走是朝向被删去的球心，故它的外法向为 \(-e_r\)，不是 \(e_r\)。
+
+核在极点附近绝对可积：二维只需 \(\int_0^1r|\log r|\,\mathrm dr<\infty\)，三维只需 \(\int_0^1r\,\mathrm dr<\infty\)。乘上 \(\chi_R\) 后支集包含于 \(\overline{B(a,2R)}\)，故 \(K\in L^1\)。\(\chi_R\) 的所有正阶导数在 \(B(a,R)\) 内及 \(B(a,2R)\) 外都为零，因此 \(q\) 只在远离极点的壳层上可能非零，在那里各因子均光滑。补零后 \(q\) 全局光滑且紧支集。极点外使用普通乘积求导公式，得 \(-\Delta K=q\)；点质量则必须另从边界极限中算出。
+
+取任意 \(\varphi\in C_c^\infty(\mathbb R^d;\mathbb C)\)，选足够大的外球包含 \(K\) 和 \(\varphi\) 的支集，再删去 \(\overline{B(a,\varepsilon)}\)，其中 \(0<\varepsilon<\min\{R,1\}\)。外球边界的项全为零。内球附近 \(K=\Phi_{d,a}\)，并且剩余区域的法向为 \(-e_r\)，Green 公式于是给出
+\[
+ \begin{aligned}
+ &\int_{|x-a|>\varepsilon}K(x)(-\Delta\varphi(x))\,\mathrm dx\\
+ &\quad=\int_{\mathbb R^d}q(x)\varphi(x)\,\mathrm dx
+       +\int_{|x-a|=\varepsilon}
+        \left(-\varphi\,\partial_r\Phi_{d,a}
+                     +\Phi_{d,a}\partial_r\varphi\right)\,\mathrm dS.
+ \end{aligned}
+\]
+第一项已可在全空间积分，因为 \(q\) 支撑于 \(|x-a|\geq R\)。边界上含 \(-\partial_r\Phi_{d,a}\) 的项正是 \(\varphi\) 的球面平均，趋于 \(\varphi(a)\)。另一项的模由 \(\|\nabla\varphi\|_\infty\) 乘 \(C\varepsilon|\log\varepsilon|\)（二维）或 \(C\varepsilon\)（三维）控制，故趋零。左侧由 \(K\) 的局部可积性趋于 \(\int K(-\Delta\varphi)\)，得到 \(-\Delta K=\delta_a+q\) 在紧支集测试函数上的等式。\(K\in L^1\)、\(q\in C_c^\infty\) 和 \(\delta_a\) 都定义温和分布，再由 \(C_c^\infty\) 在 \(\mathcal S\) 中稠密，将等式推广到 \(\mathcal S'\)。
+
+最后取 \(\eta\in C_c^\infty(\mathbb R^d;\mathbb R)\)，在 \(\overline{B(a,2R)}\) 的一个邻域内等于 \(1\)。\(\Delta\eta\) 在 \(K\) 的支集上为零，而 \(\eta\) 在 \(q\) 的支集上及 \(a\) 点均为 \(1\)，故
+\[
+ 0=\langle-\Delta K,\eta\rangle
+  =\eta(a)+\int_{\mathbb R^d}q(x)\eta(x)\,\mathrm dx
+  =1+\int_{\mathbb R^d}q.
+\]
+于是余项的总质量为 \(-1\)，恰好抵消点质量的总质量。空间截断保留了极点附近的单位通量，却必须在截断变化的壳层中产生这项补偿。
 \end{solution}

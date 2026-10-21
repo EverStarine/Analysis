@@ -2,83 +2,208 @@
 \section{调和共轭}
 \label{b3:sec:1502}
 
-在二维，寻找调和共轭等价于对一个闭微分形式积分。方程解决局部存在性，沿闭曲线的积分则决定局部对象能否拼成一个全局函数。
+给定一个实值调和函数 \(u\)，寻找虚部 \(v\) 的问题可以分成两步。Cauchy--Riemann 方程规定 \(v\) 应有的两个偏导数，调和方程保证它们局部相容；沿闭曲线积分产生的周期，则决定局部选择能否组成单值函数。若最后只使用 \(e^{u+\mathrm i v}\)，允许的周期又会有所不同。
 
 \subsection{Cauchy–Riemann 方程}
 \label{b3:subsec:150201}
 
-若希望 \(u+\mathrm{i}v\) 全纯，必须满足 \(v_x=-u_y\)、\(v_y=u_x\)。所需的一形式为 \(\omega=-u_y\,\mathrm{d}x+u_x\,\mathrm{d}y\)，其外微分为 \(\Delta u\,\mathrm{d}x\wedge\mathrm{d}y\)。所以调和方程恰好消去局部积分的路径依赖。这里的符号由 Cauchy--Riemann 方程确定，改成 \(u_y\,\mathrm{d}x-u_x\,\mathrm{d}y\) 会得到共轭的负号。
+设 \(D\subseteq\mathbb C\) 为区域，\(u:D\to\mathbb R\) 调和。若实函数 \(v\) 使 \(u+\mathrm i v\) 在 \(D\) 全纯，则称 \(v\) 为 \(u\) 的\term[diaohe-gonge]{调和共轭}[harmonic conjugate]。Cauchy--Riemann 方程要求
+\[
+ v_x=-u_y,
+ \quad v_y=u_x.
+\]
+因此所需的微分应当是
+\[
+ \omega\coloneqq-u_y\,\mathrm dx+u_x\,\mathrm dy.
+\]
+沿分段 \(C^1\) 路径 \(\gamma(t)=x(t)+\mathrm i y(t)\) 的积分定义为
+\[
+ \int_\gamma\omega
+ =\int\bigl[-u_y(\gamma(t))x'(t)
+              +u_x(\gamma(t))y'(t)\bigr]\,\mathrm dt.
+\]
+若写 \(\omega=P\,\mathrm dx+Q\,\mathrm dy\)，则 \(Q_x-P_y=\Delta u=0\)。这就是该微分形式的闭性条件；在本节中，它具体表示两个所求偏导数的混合导数相同。
+
+\ProseParagraphBreak
+也可以把同一数据写成全纯函数
+\[
+ g\coloneqq u_x-\mathrm i u_y.
+\]
+其实际满足 Cauchy--Riemann 方程：\((u_x)_x=(-u_y)_y\) 来自 \(\Delta u=0\)，而 \((u_x)_y=-(-u_y)_x\) 来自混合偏导相等。于是 \(g\) 在整个 \(D\) 全纯，并且
+\[
+ g\,\mathrm dz
+ =(u_x\,\mathrm dx+u_y\,\mathrm dy)
+   +\mathrm i(-u_y\,\mathrm dx+u_x\,\mathrm dy)
+ =\mathrm du+\mathrm i\omega.
+\]
+因此每条闭曲线都满足 \(\int_\gamma g\,\mathrm dz=\mathrm i\int_\gamma\omega\)。调和共轭的全局问题由此可以直接接到第十章的全纯原函数判别。
+
+\ProseParagraphBreak
+在几何上，\(\nabla v=(-u_y,u_x)\) 是将 \(\nabla u\) 旋转直角所得的向量，二者等长且正交。在 \(\nabla u\ne0\) 的点附近，两组水平曲线 \(u=\text{常数}\) 与 \(v=\text{常数}\) 因而正交；梯度为零的点须另作局部分析。上述符号也固定了共轭的方向，不能把 \(\omega\) 换成其负数而仍沿用同一个全纯函数 \(u+\mathrm i v\)。
 
 \subsection{局部调和共轭}
 \label{b3:subsec:150202}
 
+局部积分可以沿一条先水平、后竖直的折线进行。选择圆盘中心为起点时，这条折线始终留在圆盘内，因而无需先解决一般区域中的路径依赖。
+
+\Needspace{6\baselineskip}
 \begin{proposition}\label{b3:prop:15-local-conjugate}
-实值调和函数在每点的某个圆盘邻域具有调和共轭，且共轭只差实常数。
+设 \(D\subseteq\mathbb C\) 为开集，\(u:D\to\mathbb R\) 调和。对每个 \(a\in D\)，在某个以 \(a\) 为中心的圆盘内存在实值调和函数 \(v\)，使 \(u+\mathrm i v\) 全纯。在任意连通邻域上，两个这样的调和共轭之差均为实常数。
 \end{proposition}
 \begin{proof}
-以圆盘中心 \((a,b)\) 为起点，令
+写 \(a=a_1+\mathrm i a_2\)，取 \(\overline{B(a,r)}\subset D\)。对 \(x+\mathrm i y\in B(a,r)\)，令
 \[
-v(x,y)=-\int_a^x u_y(t,b)\,\mathrm{d}t+\int_b^y u_x(x,t)\,\mathrm{d}t.
+ v(x,y)=-\int_{a_1}^x u_y(t,a_2)\,\mathrm dt
+       +\int_{a_2}^y u_x(x,t)\,\mathrm dt.
 \]
-得到 \(v_y=u_x\)，又由 \(u_{xx}=-u_{yy}\) 得 \(v_x=-u_y(x,b)-\int_b^yu_{yy}(x,t)\,\mathrm{d}t=-u_y(x,y)\)。因此 \(u+\mathrm{i}v\) 全纯，\(v\) 也调和。两个共轭的偏导相同，差在连通圆盘上为常数。
+水平段与竖直段上任一点到 \(a\) 的距离均不超过终点到 \(a\) 的距离，所以两段都留在圆盘中。微积分基本定理给出 \(v_y=u_x\)。再对 \(x\) 求导，并使用 \(u_{xx}=-u_{yy}\)，得到
+\[
+ \begin{aligned}
+ v_x(x,y)
+ &=-u_y(x,a_2)+\int_{a_2}^y u_{xx}(x,t)\,\mathrm dt\\
+ &=-u_y(x,a_2)-\int_{a_2}^y u_{yy}(x,t)\,\mathrm dt
+ =-u_y(x,y).
+ \end{aligned}
+\]
+因此 \(u+\mathrm i v\) 满足连续偏导数的 Cauchy--Riemann 判别，故全纯；又有
+\(\Delta v=-u_{yx}+u_{xy}=0\)，所以 \(v\) 调和。若 \(v_1,v_2\) 都是共轭，则它们的两个偏导数相同，差函数的梯度为零，在连通邻域中只能是常数。
 \end{proof}
-例如 \(u=x^2-y^2\) 对应 \(v=2xy\)；\(u=\log|z|\) 的局部共轭为某个辐角分支。后一例在绕原点一周后增加 \(2\pi\)，已显示全局障碍。
+
+例如，\(u=x^2-y^2\) 的共轭为 \(v=2xy+C\)，相应全纯函数为 \(z^2+\mathrm i C\)。再看一个需要同时核对两条偏导方程的计算：令
+\[
+ u=x^3-3xy^2+xy.
+\]
+其 Laplace 算子为零。先由 \(v_y=u_x=3x^2-3y^2+y\) 积分，得到
+\[
+ v=3x^2y-y^3+\frac{y^2}{2}+h(x).
+\]
+代入另一条方程 \(v_x=-u_y=6xy-x\)，便有 \(h'(x)=-x\)，所以
+\[
+ v=3x^2y-y^3+\frac{y^2-x^2}{2}+C,
+ \quad f(z)=z^3-\frac{\mathrm i}{2}z^2+\mathrm i C.
+\]
+只积分一条方程还会留下未知函数 \(h\)，第二条方程才确定它。若给定的是 \(u=x^2+y^2\)，则所需混合偏导会要求 \(-2=2\)，不存在这样的局部共轭。
+
+\ProseParagraphBreak
+对 \(u(z)=\log|z|\)，在右半平面中可以直接取 \(v(x,y)=\arctan(y/x)\)。求导给出 \(v_x=-y/(x^2+y^2)=-u_y\)、\(v_y=x/(x^2+y^2)=u_x\)。在其他不含原点的小圆盘上，也可选择适当的辐角分支。这些局部辐角在交叠处可以相差常数，但绕原点一周后的累积变化未必为零。
+
+\ProseParagraphBreak
+局部共轭还把全纯函数的 Taylor 理论传给调和函数。这里得到的\term[shi-jiexi-xing]{实解析性}[real analyticity]，是指函数在每个点附近都由关于两个实坐标的收敛幂级数表示。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[实解析性与唯一延拓]\label{b3:prop:15-harmonic-analytic-continuation}
+设 \(D\subseteq\mathbb C\) 为区域，\(u:D\to\mathbb R\) 调和。则 \(u\) 实解析。若 \(u\) 在某个非空开子集上为零，则 \(u\equiv0\) 于 \(D\)；若它在某个内点的所有阶实偏导数，包括零阶值，都为零，也有同样结论。
+\end{proposition}
+\begin{proof}
+在 \(a\) 的一个圆盘邻域中，取全纯函数 \(f=u+\mathrm i v\)。其 Taylor 级数在较小闭圆盘上绝对一致收敛。取实部后，\(u\) 成为复单项式实部的收敛级数，而每个这样的实部都是 \(x,y\) 的实多项式；由同一 Taylor 级数的收敛半径可知它给出局部实解析展开。
+
+若 \(u\) 在非空开集上为零，则全域全纯函数 \(g=u_x-\mathrm i u_y\) 在该开集上为零。全纯恒等定理使 \(g\equiv0\) 于连通区域 \(D\)，故 \(\nabla u=0\)，\(u\) 为常数，并由所给零值知它恒为零。若全部实偏导数在一点为零，实解析展开先使 \(u\) 在该点的邻域中为零，再应用前一结论。
+\end{proof}
+
+具体地，若 \(f(a+z)=c_0+\sum_{n\ge1}c_nz^n\)，写 \(c_n=A_n-\mathrm i B_n\)，便有
+\[
+ u(a+re^{\mathrm i\theta})
+ =\operatorname{Re}c_0+
+ \sum_{n\ge1}r^n(A_n\cos n\theta+B_n\sin n\theta).
+\]
+每个非常数项的圆周平均都为零，这与平均值性质相符。上述由开集零值确定全域函数的性质称为\term[weiyi-yantuo]{唯一延拓}[unique continuation]。条件不能只换成在一条曲线上为零：\(u(z)=\operatorname{Re}z\) 在虚轴恒为零，却在任何跨过虚轴的圆盘中都不是零函数。全纯函数对有聚点零集的恒等定理，不能直接用于实值调和函数自身。
 
 \subsection{单连通区域}
 \label{b3:subsec:150203}
 
+局部共轭的差是常数，因此沿闭曲线延续一周后，可能回到一个相差常数的选择。这个差恰好是 \(\omega=-u_y\,\mathrm dx+u_x\,\mathrm dy\) 沿闭曲线的积分，称为该形式在这条闭曲线上的周期。单值共轭要求所有这样的周期消失。
+
+\Needspace{6\baselineskip}
 \begin{theorem}\label{b3:thm:15-global-conjugate}
-区域 \(D\) 上的实值调和函数 \(u\) 有单值调和共轭，当且仅当每条分段光滑闭曲线 \(\gamma\subset D\) 均满足 \(\int_\gamma\omega=0\)。特别地，单连通区域上一定存在共轭。
+设 \(D\subseteq\mathbb C\) 为区域，\(u:D\to\mathbb R\) 调和，令
+\[
+ \omega=-u_y\,\mathrm dx+u_x\,\mathrm dy.
+\]
+则 \(u\) 在 \(D\) 上有单值调和共轭，当且仅当每条分段 \(C^1\) 闭曲线 \(\gamma\subset D\) 都满足 \(\int_\gamma\omega=0\)。共轭存在时只差实常数。特别地，若 \(D\) 单连通，则每个实值调和函数都具有单值调和共轭。
 \end{theorem}
 \begin{proof}
-若 \(\omega=\mathrm{d}v\)，闭曲线积分为零。反之，从固定点到 \(z\) 积分 \(\omega\)；两条路径之差是闭曲线，故积分独立于路径，局部微分得到上一小节的偏导。单连通时，每条闭曲线可缩到一点；把同伦像用有限个局部原函数圆盘覆盖、细分参数方格，相邻边积分相消，故积分在同伦中不变。
-\end{proof}
-去心圆盘上的 \(\log|z|\) 给出 \(\omega=\mathrm{d}\arg z\)，单位圆上积分为 \(2\pi\)，所以单连通条件不能随意删去。
+若共轭 \(v\) 存在，则 \(\omega=\mathrm dv\)，闭路积分为零。反过来，令 \(g=u_x-\mathrm i u_y\)，它在 \(D\) 全纯，并且
+\[
+ \int_\gamma g\,\mathrm dz
+ =\int_\gamma\mathrm du+\mathrm i\int_\gamma\omega=0
+\]
+对每条闭曲线成立。定理\ref{b3:thm:10-primitive-periods}适用于区域上的全纯函数及全部闭路零积分条件，故存在全纯原函数 \(G\)，满足 \(G'=g\)。由
+\(\mathrm d\operatorname{Re}G=\operatorname{Re}(g\,\mathrm dz)=\mathrm du\)，可知 \(\operatorname{Re}G-u\) 在 \(D\) 上为常数；减去这个实常数，便可使 \(\operatorname{Re}G=u\)。取 \(v=\operatorname{Im}G\) 即得共轭。具体地，固定 \(a\in D\) 后，它可以写成
+\[
+ v(z)=c+\int_a^z\omega,
+ \quad c\in\mathbb R,
+\]
+其中闭路零周期保证任意两条去程路径给出相同结果。唯一性由两个共轭的梯度相同得到。
 
-\subsection{全纯函数}
+若 \(D\) 单连通，则全纯函数 \(g\) 的每条闭路积分为零，这是推论\ref{b3:cor:10-null-homotopic-cauchy}的单连通情形。由 \(\int_\gamma g\,\mathrm dz=\mathrm i\int_\gamma\omega\)，全部实周期也为零，故前面的判别适用。
+\end{proof}
+
+在去心单位圆盘 \(D^*=\{0<|z|<1\}\) 中，令 \(u(z)=\log|z|\)。其共轭形式为
+\[
+ \omega=\frac{-y\,\mathrm dx+x\,\mathrm dy}{x^2+y^2}.
+\]
+取任意 \(0<r<1\)，沿真正位于该域内的闭曲线 \(\gamma_r(t)=re^{\mathrm i t}\)、\(0\le t\le2\pi\)，分子变为 \(r^2\,\mathrm dt\)，所以
+\[
+ \int_{\gamma_r}\omega=\int_0^{2\pi}\mathrm dt=2\pi.
+\]
+因此 \(\log|z|\) 在 \(D^*\) 没有单值调和共轭。与之相比，同一去心圆盘上的 \(u(z)=\operatorname{Re}z\) 有全局共轭 \(\operatorname{Im}z\)。单连通性保证所有调和函数都有共轭；对某个给定函数，实际需要检查的是它自己的周期。
+
+\subsection{调和共轭与全纯函数的对数模}
 \label{b3:subsec:150204}
 
-如果只需要全纯函数的模，可以先构造局部共轭。不同共轭的差为常数，故局部函数 \(e^{u+\mathrm{i}v}\) 在交集只差模一常数；它们不一定拼成单值函数。若所有周期落在 \(2\pi\mathbb Z\)，指数却能消除差异，得到全局无零点全纯函数。
+若 \(v\) 沿闭曲线改变 \(2\pi\) 的整数倍，\(v\) 本身不能成为单值函数，但 \(e^{\mathrm i v}\) 不受影响。因此，把 \(u\) 实现为无零全纯函数的对数模，比构造单值共轭允许更多的周期。
 
+\Needspace{6\baselineskip}
 \begin{proposition}\label{b3:prop:15-log-modulus}
-区域上无零点全纯函数 \(f\) 的 \(\log|f|\) 调和。反之，调和函数 \(u\) 能写成 \(\log|f|\)，其中 \(f\) 无零点全纯，当且仅当 \(-u_y\,\mathrm{d}x+u_x\,\mathrm{d}y\) 的所有周期属于 \(2\pi\mathbb Z\)。
+设 \(D\subseteq\mathbb C\) 为区域。若 \(f:D\to\mathbb C\) 全纯且处处无零点，则 \(\log|f|\) 在 \(D\) 调和。反之，给定实值调和函数 \(u:D\to\mathbb R\)，存在无零点全纯函数 \(f\) 满足 \(u=\log|f|\)，当且仅当每条分段 \(C^1\) 闭曲线 \(\gamma\subset D\) 都满足
+\[
+ \int_\gamma(-u_y\,\mathrm dx+u_x\,\mathrm dy)\in2\pi\mathbb Z.
+\]
+这样的 \(f\) 若存在，则任意两个选择只差一个模为 \(1\) 的常数因子。
 \end{proposition}
 \begin{proof}
-局部对数使第一结论成立，并使必要性化为辐角沿闭曲线的总变化。充分性由上面的路径积分定义 \(e^{u+\mathrm{i}\int\omega}\)，不同路径改变整数倍 \(2\pi\)，故指数相同；局部表示保证全纯。
+无零全纯函数在每个点附近都有全纯对数，\(\log|f|\) 是该局部对数的实部，因而调和。若 \(u=\log|f|\)，在每个局部对数邻域内有
+\[
+ \frac{f'}f\,\mathrm dz=\mathrm du+\mathrm i\omega,
+ \quad \omega=-u_y\,\mathrm dx+u_x\,\mathrm dy.
+\]
+两端是全域定义的微分形式，所以可以沿任意闭曲线积分。由无零条件，像曲线 \(f\circ\gamma\) 避开原点，故
+\[
+ \mathrm i\int_\gamma\omega
+ =\int_\gamma\frac{f'}f\,\mathrm dz
+ =2\pi\mathrm i\operatorname{Ind}(f\circ\gamma,0).
+\]
+指数为整数，得到所需周期条件。
+
+反过来，固定基点 \(a\in D\) 与实数 \(c\)，沿从 \(a\) 到 \(z\) 的任意分段 \(C^1\) 路径 \(\sigma_z\)，定义
+\[
+ f(z)=\exp\left(u(z)+\mathrm i c
+                  +\mathrm i\int_{\sigma_z}\omega\right).
+\]
+两条路径的积分之差是某条闭曲线的周期，属于 \(2\pi\mathbb Z\)，所以取指数后所得值相同。函数因此单值，且模为 \(e^{u(z)}>0\)。在任意小圆盘内，将去程路径取成固定去程接一条盘内路径；盘内积分是一个局部调和共轭加常数。因此 \(f\) 局部具有 \(e^{u+\mathrm i v}\) 乘模一常数的形式，是全纯函数。这证明全域的全纯性与所需模关系。
+
+最后，若 \(f_1,f_2\) 给出同一个 \(u\)，则 \(f_1/f_2\) 在 \(D\) 全纯且模恒为 \(1\)。开映射定理说明这个商只能是常数，常数的模也为 \(1\)。
 \end{proof}
 
+例如，在去心单位圆盘上取 \(u=c\log|z|\)，其中 \(c\in\mathbb R\)。绕原点一周的周期为 \(2\pi c\)，所以单值调和共轭存在当且仅当 \(c=0\)，而无零全纯函数的对数模表示存在当且仅当 \(c\in\mathbb Z\)。整数情形可直接取 \(f(z)=z^c\)；负整数次幂的极点位于已去掉的原点，在当前定义域内仍全纯且无零。
 
-可直接从实部计算全纯函数的例子能帮助核对共轭符号。设
-\(u=x^3-3xy^2+xy\)。先算 \(\Delta u=0\)，再由 \(v_y=u_x=3x^2-3y^2+y\) 积分得
-\(v=3x^2y-y^3+y^2/2+h(x)\)。代入 \(v_x=-u_y=6xy-x\)，得到 \(h'(x)=-x\)，故
+\ProseParagraphBreak
+多个独立周期可以在明确的有限去点模型中同时计算。取两两不同的点 \(a_1,\ldots,a_k\)，令
 \[
-v=3x^2y-y^3+\frac{y^2-x^2}{2}+C,
-\quad f(z)=z^3-\frac{\mathrm{i}}2z^2+\mathrm{i}C.
+ D=\mathbb C\setminus\{a_1,\ldots,a_k\},
+ \quad u(z)=C+\sum_{j=1}^k c_j\log|z-a_j|,
+ \quad C,c_j\in\mathbb R.
 \]
-这个计算同时检查了调和条件、共轭的相容性和纯虚常数的唯一自由度。若一开始给出的 \(u\) 不调和，例如 \(x^2+y^2\)，两偏导方程会在混合导数处矛盾；这比形式地积分其中一条方程更能发现问题。
-
-\ProseParagraphBreak
-
-不同边界孔的周期可以各自贡献。在去掉 \(a_1,\ldots,a_k\) 的区域上，函数
-\(u(z)=\sum c_j\log|z-a_j|\) 调和。沿只绕 \(a_j\) 一周的曲线，周期为 \(2\pi c_j\)。因此全局单值共轭存在当且仅当这些基本周期全部零；全局无零点全纯函数的对数模存在则要求 \(c_j\in\mathbb Z\)。后一情况由 \(f=\prod(z-a_j)^{c_j}\) 明确实现，在当前去点区域内负指数不会引入内部极点。两种存在问题的差异来自指数函数的周期，不是来自不同的调和方程。
-
-\ProseParagraphBreak
-
-单连通性是保证所有调和函数都有共轭的条件，却不是某个特定函数有共轭的必要条件。环域上 \(u=\operatorname{Re}z\) 有共轭 \(\operatorname{Im}z\)，而 \(\log|z|\) 没有。对一个给定 \(u\)，应检查它的闭形式周期；不能只看到域有孔就拒绝任何共轭构造。
-
-
-\ProseParagraphBreak
-
-局部共轭还使调和函数具有实解析性。在小圆盘写 \(u=\operatorname{Re}f\)，全纯函数的 Taylor 级数局部一致收敛，因此
+每一项都在 \(D\) 调和。对任意闭曲线 \(\gamma\subset D\)，其周期为
 \[
-u(a+re^{\mathrm{i}\theta})=c_0+\sum_{n\ge1}r^n(A_n\cos n\theta+B_n\sin n\theta).
+ \int_\gamma\omega
+ =2\pi\sum_{j=1}^k c_j\operatorname{Ind}(\gamma,a_j).
 \]
-这里 \(c_0\) 为实数，系数由 \(f\) 的复 Taylor 系数拆成实部、虚部得到。每个非恒定项本身调和，且圆周平均零。若 \(u\) 在某个非空开集恒零，则其局部全纯函数实部恒零，Cauchy--Riemann 方程使它为纯虚常数；沿重叠圆盘传播后，\(u\) 在连通区域恒零。这个唯一延拓结论比最大值原理要求的单侧极值条件不同：前者使用开集上的全部零值，后者使用一点极值。
+对每个 \(a_j\)，可以在 \(D\) 中取一个只围住该点的足够小正向圆周，其周期就是 \(2\pi c_j\)。这些测试分别给出必要条件；上面的任意闭曲线公式同时给出充分性。因此 \(u\) 有单值共轭当且仅当所有 \(c_j=0\)，有无零全纯对数模表示当且仅当所有 \(c_j\in\mathbb Z\)。后一情形由
+\[
+ f(z)=e^C\prod_{j=1}^k(z-a_j)^{c_j}
+\]
+明确实现。
 
 \ProseParagraphBreak
-
-若两个调和函数在一条曲线上相等，唯一延拓却未必适用。\(u=x\) 与零函数在虚轴相等但在两侧不同。若额外给出该直线上的法向导数相等，在具有解析延拓的局部情形，Taylor 系数才能被同时限制。只由曲线上的函数值不能恢复二维的全部局部数据；全纯函数沿有聚点的零集恒等定理不能直接挪给实值调和函数。
-
-\ProseParagraphBreak
-
-Harnack 不等式还把局部正性传遍连通区域。固定紧集 \(K\Subset D\) 和一点 \(z_0\in D\)，用有限条圆盘链把 \(z_0\) 连到覆盖 \(K\) 的小圆盘；每一步比较的常数只依赖圆盘的半径比例。相乘后得到 \(\sup_Ku\le C_{K,z_0}u(z_0)\)，对所有正调和函数使用同一个常数。连通性在这里转化为有限次局部比较，而非直接给一个全域常数。若区域无界或紧集逐渐碰到边界，常数一般随之增大；圆盘 Poisson 核靠近其边界质量所在点时的增长就是一个具体检验。
+这里能够分别检验每个系数，是因为每个穿孔周围的小圆都属于所指定的定义域。若把定义域换成任意子区域，某些绕孔路径可能已不存在，不能仍逐项强加相同条件。例如，在右半平面中对任意实数 \(c\)，函数 \(c\log|z|\) 都有共轭 \(c\arg z\)，而 \(\exp(c\operatorname{Log}z)\) 给出其对数模表示。相同的局部表达式，因允许的闭曲线不同，可以具有不同的全局单值性。

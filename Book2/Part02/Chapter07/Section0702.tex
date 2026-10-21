@@ -1,181 +1,140 @@
 % !TeX root = ../../Book2.tex
-\section{特征曲线}
-\label{b2:sec:0702}
+\section{Schwartz 空间上的 Fourier 变换}
+\label{b2:sec:0502}
 
-变系数速度场已经给出粒子在每一点的瞬时运动方向，却没有直接给出整条轨道。先解常微分方程，再用轨道作坐标，是本节的构造顺序。以下 \(U\subseteq\mathbb R^d\) 为开集，\(b\in C^1(U;\mathbb R^d)\)；本节先处理不显含时间的速度场。
+Schwartz 函数的全部矩和导数都可积，因此\chapref{b2:ch:03}的运算公式可以任意次迭代。空间权重与导数在变换下互换，使这一测试空间保持不变。
 
-\subsection{特征常微分方程}
-\label{b2:subsec:070201}
+\subsection{Schwartz 空间的不变性}
+\label{b2:subsec:050201}
 
-\begin{definition}\label{b2:def:07-characteristic}
-设 \(d\) 为正整数，\(U\subset\mathbb R^d\) 为开集，\(b:U\to\mathbb R^d\) 连续，\(I\subset\mathbb R\) 为区间。若 \(X:I\rightarrow U\) 属于 \(C^1\)，并满足
+\begin{theorem}\label{b2:thm:05-schwartz-invariance}
+Fourier 变换连续地映 \(\mathcal S(\mathbb R^d)\) 到自身。对任意多重指标 \(\alpha,\beta\)，有
 \[
- X'(t)=b\bigl(X(t)\bigr),
+ \mathcal F(\partial^\beta\varphi)=(2\pi\mathrm{i}\xi)^\beta\widehat\varphi,
+ \quad
+ \mathcal F(x^\alpha\varphi)=\left(\dfrac{\mathrm{i}}{2\pi}\right)^{|\alpha|}\partial_\xi^\alpha\widehat\varphi.
 \]
-则称它为速度场 \(b\) 的\term[tezheng-quxian]{特征曲线}[characteristic curve]，也称特征线。其常微分方程称为\term[tezheng-changweifen-fangcheng]{特征常微分方程}[characteristic ordinary differential equation]。
-\end{definition}
-
-沿这样的曲线，复合函数的导数只涉及 \(u_t+b\cdot\nabla u\)。但在应用链式法则之前，要确认对给定初始位置确实有一条且只有一条曲线。下面给出局部构造，并保留稍后需要的定量控制。
-
-\begin{theorem}[Picard--Lindelöf]\label{b2:thm:07-local-ode}
-设 \(d\) 为正整数，\(U\subset\mathbb R^d\) 为开集，\(b\in C^1(U;\mathbb R^d)\)。对每个 \(a_0\in U\)，存在 \(r>0\)、\(h>0\)，使每个 \(a\in B_r(a_0)\) 都有唯一的局部解
-\[
- X'(t)=b\bigl(X(t)\bigr),\quad X(0)=a,
- \quad |t|\leq h.
-\]
-各解取值于同一个紧球。若 \(L\) 是该球上 \(\|Db\|\) 的上界，则
-\begin{equation}\label{b2:eq:07-flow-lipschitz}
- |X(t,a)-X(t,\widetilde a)|\leq e^{L|t|}\cdot|a-\widetilde a|.
-\end{equation}
-局部唯一性指任意两条满足同一初值的解在共同定义区间上相等。
 \end{theorem}
 \begin{proof}
-取闭球 \(\overline B_{2r}(a_0)\subseteq U\)，记其上 \(|b|\)、\(\|Db\|\) 的上界为 \(M,L\)。选 \(h>0\) 满足 \(Mh\leq r\)、\(Lh<1\)；上界为零的条件可略去。对固定 \(a\in B_r(a_0)\)，在连续曲线空间中考虑闭集
+\chapref{b2:ch:03}的矩与导数公式适用于每一阶，所以变换光滑且公式成立。进一步，\(\xi^\beta\partial_\xi^\alpha\widehat\varphi\) 是常数乘 \(\mathcal F(\partial^\beta(x^\alpha\varphi))\)。其上确界由原函数的 \(L^1\) 范数控制。用 Leibniz 展开时，每项均为常数乘 \(x^{\alpha-\gamma}\partial^{\beta-\gamma}\varphi\)，其中 \(\gamma\leq\alpha,\beta\)。取 \(M\geq|\alpha|+|\beta|+d+1\)，则各项的绝对值都由 \(C p_M(\varphi)(1+|x|)^{-d-1}\) 控制；右侧可积。因而得到
 \[
- E_a=\{\,Y\in C([-h,h];\mathbb R^d)\mid
- \sup_{|t|\leq h}|Y(t)-a|\leq r\,\}.
+ \sup_\xi|\xi^\beta\partial_\xi^\alpha\widehat\varphi(\xi)|
+ \leq C_{\alpha,\beta,d}\cdot p_M(\varphi)
 \]
-一致 Cauchy 曲线列逐点有极限，一致极限仍连续且满足闭球约束，所以 \(E_a\) 关于一致范数完备。定义
-\[
- (TY)(t)=a+\int_0^t b\bigl(Y(s)\bigr)\,\mathrm ds.
-\]
-速度界保证 \(T(E_a)\subseteq E_a\)，中值估计保证
-\(\|TY-TZ\|_\infty\leq Lh\cdot\|Y-Z\|_\infty\)。从常曲线 \(Y_0=a\) 迭代，连续两次之差不超过 \((Lh)^n\cdot\|Y_1-Y_0\|_\infty\)。几何级数收敛，故迭代一致收敛到 \(X\in E_a\)。算子连续性给出 \(TX=X\)；积分的被积函数连续，所以 \(X\) 可微并满足方程。两个不动点之间的距离不超过原距离的 \(Lh\) 倍，故相等。
-
-为证明稳定估计，先记录一个积分不等式。设 \(A,L\geq0\)，连续非负函数 \(q\) 在 \([0,h]\) 上满足 \(q(t)\leq A+L\int_0^tq(s)\,\mathrm ds\)。令 \(Q(t)=A+L\int_0^tq(s)\,\mathrm ds\)，则 \(Q'\leq LQ\)，从而 \((e^{-Lt}Q)'\leq0\)，得到 \(q(t)\leq Ae^{Lt}\)。此结论也覆盖 \(A=0\)。对两个解的积分方程作差即可用它得到\eqref{b2:eq:07-flow-lipschitz}；负时间用 \(s=-t\) 处理。任意两个局部解在某个更短区间上都落入同一个球，故先在那里相等。在共同区间内，相等的时刻构成闭集，局部唯一性又使它为开集，因而它充满包含初始时刻的整个区间。
+对某个有限 \(M\) 成立。每个目标半范数因此受某个源半范数控制，这同时证明不变性与连续性。
 \end{proof}
 
-上述结果称为\term[picard-lindelof]{Picard--Lindelöf 定理}[Picard--Lindelöf theorem]，证明中的积分估计是\term[gronwall-budengshi]{Gronwall 不等式}[Gronwall inequality]的一个基本形式。只要求速度连续时，唯一性可能失败。例如 \(X'=2\sqrt{|X|}\)、\(X(0)=0\) 除零解外，对每个 \(a\geq0\) 还允许先在 \([0,a]\) 上停留，之后取 \(X(t)=(t-a)^2\)。本章采用 \(C^1\) 速度，正是为了排除这种轨道分叉。
+\subsection{Fourier 反演}
+\label{b2:subsec:050202}
 
-\subsection{流映射}
-\label{b2:subsec:070202}
+\begin{corollary}\label{b2:cor:05-schwartz-automorphism}
+Fourier 变换是 \(\mathcal S\) 上的连续线性双射，逆映射 \(\mathcal F^{-1}\varphi=\check\varphi\) 也连续。并且 \(\widehat{\widehat\varphi}(x)=\varphi(-x)\)。
+\end{corollary}
+\begin{proof}
+函数与变换都可积，故\chapref{b2:ch:03}的反演适用；两者连续，等式处处成立。反射保持每个径向半范数，而正号变换是反射与负号变换的复合，所以逆映射连续。反演也证明满射性。
+\end{proof}
 
-设 \(U\subset\mathbb R^d\) 开，\(b\in C^1(U;\mathbb R^d)\)、\(a\in U\)，考虑 \(X'=b(X)\)、\(X(0)=a\) 的最大解。把从 \(a\) 出发的解记为 \(\Phi_t(a)\)，称 \(a\mapsto\Phi_t(a)\) 为\term[liu-yingshe]{流映射}[flow map]。局部解借唯一性在重叠区间上拼接，得到经过 \(a\) 的最大解区间 \(I_a\)。记号 \(\Phi_t(a)\) 只在 \(t\in I_a\) 时使用；不能因为给了一个映射名称便假定它对所有时间存在。
-\symidx{\(\Phi_t\)：自治速度场的流映射}
-
-\begin{proposition}\label{b2:prop:07-flow-composition}
-设 \(d\) 为正整数，\(U\subset\mathbb R^d\) 为开集，\(b\in C^1(U;\mathbb R^d)\)，\(\Phi_t(a)\) 是 \(X'=b(X)\)、\(X(0)=a\) 的最大局部流。凡各项有定义，流满足
+\begin{proposition}\label{b2:prop:05-product-transform}
+若 \(\varphi,\psi\in\mathcal S\)，则
 \[
- \Phi_0(a)=a,\quad
- \Phi_{t+s}(a)=\Phi_t\bigl(\Phi_s(a)\bigr),\quad
- \Phi_{-t}\bigl(\Phi_t(a)\bigr)=a.
+ \widehat{\varphi\psi}=\widehat\varphi*\widehat\psi,
+ \quad \widehat{\varphi*\psi}=\widehat\varphi\cdot\widehat\psi.
 \]
-固定 \(t\) 时，\(\Phi_t\) 在其定义域上单射，其逆为相应的 \(\Phi_{-t}\)。
 \end{proposition}
 \begin{proof}
-曲线 \(r\mapsto\Phi_{s+r}(a)\) 与 \(r\mapsto\Phi_r(\Phi_s(a))\) 在 \(r=0\) 具有相同初值，且都满足自治方程。唯一性给出复合关系。令 \(r=-s\) 得逆关系，进而得到单射性。
+第二式已由卷积定理得到。对第一式，在 \(\varphi\psi\) 的变换积分中用反演展开 \(\psi\)。重积分绝对值不超过 \(\|\varphi\|_1\cdot\|\widehat\psi\|_1\)，所以 Fubini 合法；内层积分为 \(\widehat\varphi(\xi-\eta)\)，从而得到频率卷积。
 \end{proof}
 
-\begin{theorem}\label{b2:thm:07-flow-derivative}
-设 \(d\) 为正整数，\(U\subset\mathbb R^d\) 为开集，\(b\in C^1(U;\mathbb R^d)\)，\(\Phi_t(a)\) 是 \(X'=b(X)\)、\(X(0)=a\) 的最大局部流。流 \((t,a)\mapsto\Phi_t(a)\) 在其开定义域上属于 \(C^1\)。对初始点的导数 \(A(t,a)=D_a\Phi_t(a)\) 满足
-\begin{equation}\label{b2:eq:07-variational-ode}
- A'(t,a)=Db\bigl(\Phi_t(a)\bigr)A(t,a),\quad A(0,a)=I.
-\end{equation}
-因此固定时间的流是其定义域到像集的 \(C^1\) 微分同胚。
+\subsection{Gauss 函数}
+\label{b2:subsec:050203}
+
+Gauss 函数 \(e^{-\pi|x|^2}\) 的每个导数都等于多项式乘该函数，因此属于 \(\mathcal S\)。其自对偶性已在\cref{b2:thm:03-gaussian}证明，这里不另换归一化。更一般地，若 \(A\) 是正定实对称矩阵，则
+\[
+ \mathcal F(e^{-\pi x^{\mathsf T}Ax})(\xi)
+ =(\det A)^{-1/2}e^{-\pi\xi^{\mathsf T}A^{-1}\xi}.
+\]
+证明只需将 \(A\) 正交对角化，再分别作一维伸缩；换元因子为各个特征值平方根的倒数之积。空间中的长轴变为频率中的短轴，逆矩阵明确记录了这个互换。
+
+\ProseParagraphBreak
+
+John K. Hunter 与 Bruno Nachtergaele 的《Applied Analysis》\cite[pp. 303--304]{Hunter2001Applied}也用正定二次型说明这组变换。该书将 \((2\pi)^{-d/2}\) 放在积分前并使用不同的指数，比较公式时必须先转换归一化；本书始终沿用\chapref{b2:ch:03}的约定。
+
+\OptionalSubsection{Hermite 函数}{b2:subsec:050204}
+
+本小节是一条可以单独选读的支线：它把 Fourier 变换的四种特征值变成具体的正交展开，不是后面定义温和分布或证明其 Fourier 运算规则的前提。初次沿 PDE 主线阅读时可以暂时跳过；学习\secref{b2:sec:B201}的谐振子时再回到这里。本书把 Hermite 系的正交性、完备性及 Fourier 特征关系的完整证明集中在本小节，附录只作尺度换算并进一步讨论算子定义域。
+
+Gauss 函数不只是一个特例，它可以生成 Fourier 变换的一组完整特征函数。先在一维引入作用于 \(\mathcal S(\mathbb R)\) 的两个算子
+\[
+ a=\dfrac1{\sqrt{4\pi}}\left(\dfrac{\mathrm{d}}{\mathrm{d}x}+2\pi x\right),
+ \quad
+ a^*=\dfrac1{\sqrt{4\pi}}\left(-\dfrac{\mathrm{d}}{\mathrm{d}x}+2\pi x\right).
+\]
+符号 \(a^*\) 在此表示分部积分意义下的伴随表达式；本节不讨论无界算子的最大定义域。直接作用于测试函数可验证 \(aa^*-a^*a=I\)。令
+\[
+ h_0(x)=2^{1/4}e^{-\pi x^2},\quad
+ h_n\coloneqq\dfrac{(a^*)^nh_0}{\sqrt{n!}}\quad(n\geq0),
+\]
+称为本书归一化的\term[hermite-hanshu]{Hermite 函数}[Hermite functions]。
+\symidx{\(h_n\)：归一化 Hermite 函数}
+
+\begin{theorem}\label{b2:thm:05-hermite}
+在 \(\mathbb R\) 上令 \(a=(4\pi)^{-1/2}(\partial_x+2\pi x)\)、\(a^*=(4\pi)^{-1/2}(-\partial_x+2\pi x)\)，\(h_0(x)=2^{1/4}e^{-\pi x^2}\)，\(h_n=(a^*)^nh_0/\sqrt{n!}\)。函数系 \((h_n)_{n\geq0}\) 是 \(L^2(\mathbb R)\) 的标准正交基，且
+\[
+ ah_n=\sqrt n\,h_{n-1}\ (n\geq1),\quad
+ a^*h_n=\sqrt{n+1}\,h_{n+1},\quad
+ \widehat h_n=(-\mathrm{i})^nh_n.
+\]
 \end{theorem}
 \begin{proof}
-先在上一构造的紧球和短时间内工作。式\eqref{b2:eq:07-flow-lipschitz}与 \(|\partial_t\Phi_t|\leq M\) 保证流联合连续。矩阵积分方程
+由 \(ah_0=0\) 和交换关系，归纳得 \(a(a^*)^nh_0=n(a^*)^{n-1}h_0\)，这给出下降公式；上升公式来自定义。因此 \(a^*ah_n=nh_n\)。分部积分说明 \(a^*a\) 在 \(\mathcal S\) 上对称，故不同 \(n\) 的函数正交。又因 \(\|h_0\|_2=1\)，伴随关系给出
 \[
- A(t)=I+\int_0^t Db\bigl(\Phi_s(a)\bigr)A(s)\,\mathrm ds
+ \|a^*h_n\|_2^2=\langle aa^*h_n,h_n\rangle
+ =(n+1)\|h_n\|_2^2,
 \]
-可用同样的迭代构造，且 \(\|A(t)\|\leq e^{L|t|}\)。现取小向量 \(v\)，令 \(\delta_v(t)=\Phi_t(a+v)-\Phi_t(a)\)。中值积分给出
-\[
- b\bigl(\Phi_t(a+v)\bigr)-b\bigl(\Phi_t(a)\bigr)
- =Db\bigl(\Phi_t(a)\bigr)\delta_v(t)+r_v(t).
-\]
-导数 \(Db\) 在紧球上一致连续。记其连续模为 \(\omega(\eta)\)，即距离至多 \(\eta\) 的两点上导数差的上确界；则 \(\omega(\eta)\to0\)。由 \(|\delta_v(t)|\leq e^{Lh}|v|\)，中值积分的余项满足
-\[
- \sup_{|t|\leq h}|r_v(t)|
- \leq e^{Lh}|v|\,\omega(e^{Lh}|v|).
-\]
-令 \(e_v=\delta_v-Av\)，相减后的积分方程给出 \(|e_v(t)|\leq L\int_0^{|t|}|e_v(\pm s)|\,\mathrm{d}s+h\sup|r_v|\)。Gronwall 估计因此给出
-\[
- \sup_{|t|\leq h}|e_v(t)|
- \leq h e^{2Lh}|v|\,\omega(e^{Lh}|v|).
-\]
-除以 \(|v|\) 并令 \(v\to0\)，得到
-\[
- \sup_t\frac{|\Phi_t(a+v)-\Phi_t(a)-A(t,a)v|}{|v|}\longrightarrow0.
-\]
-这证明的是完整 Fréchet 微分，而非只沿坐标求导。若 \(a\) 改为邻近点，矩阵方程的系数一致收敛；作差和 Gronwall 估计又给出 \(A\) 对 \((t,a)\) 连续。因此流为 \(C^1\)。
+从而所有 \(h_n\) 范数为 \(1\)。每个 \(h_n\) 是次数为 \(n\)、首项系数非零的多项式乘 \(h_0\)，这可直接由上升操作归纳。
 
-对一段已存在的轨道，其图像在任意紧时间区间内为紧集。用上述局部构造覆盖它，并取有限子覆盖，连续依赖使邻近初始点的解也能逐段通过这些邻域。故流的定义域为开集，局部可微结论可以沿轨道继续。最后，\cref{b2:prop:07-flow-composition}给出双方均 \(C^1\) 的逆映射，所以导数矩阵可逆，像集也为开集。
+为证完备，设 \(f\in L^2\) 与所有 \(h_n\) 正交。多项式的三角形首项结构说明，对全部 \(n\) 都有
+\[
+ \int f(x)\cdot e^{-\pi x^2}x^n\,\mathrm{d}x=0.
+\]
+对任意 \(z\in\mathbb C\)，Cauchy--Schwarz 保证 \(|f(x)|e^{-\pi x^2}e^{|z|\cdot|x|}\) 可积，所以可把 \(e^{zx}\) 的幂级数逐项积分，得到
+\[
+ \int f(x)\cdot e^{-\pi x^2}e^{zx}\,\mathrm{d}x=0.
+\]
+令 \(z=-2\pi\mathrm{i}\xi\)，可知可积函数 \(fe^{-\pi x^2}\) 的变换恒为零。唯一性使 \(f=0\) 几乎处处，故标准正交系完备。
+
+最后，由变换的微分与乘法公式，\(\mathcal F a^*=-\mathrm{i}a^*\mathcal F\)。从 \(\widehat h_0=h_0\) 出发归纳，即得特征值公式。
 \end{proof}
 
-流的空间可微性比轨道本身可微更强。前者控制相邻粒子之间的距离、角度和体积，后者只说明单个粒子的速度存在。后面 Jacobi 行列式的演化式依赖的是\eqref{b2:eq:07-variational-ode}，不能只从每条轨道 \(C^1\) 便直接写下。
-
-\subsection{沿特征线的表示公式}
-\label{b2:subsec:070203}
-
-对自治输运问题 \(u_t+b(x)\cdot\nabla u=0\)，沿轨道有
-\[
- \frac{\mathrm d}{\mathrm dt}u\bigl(\Phi_t(a),t\bigr)=0.
-\]
-因此只要轨道可从时刻 \(t\) 返回 \(0\)，解就由
-\begin{equation}\label{b2:eq:07-autonomous-representation}
- u(x,t)=g\bigl(\Phi_{-t}(x)\bigr)
-\end{equation}
-给出。这里的“返回”既包括时间存在范围，也包括轨道始终位于系数定义域；若在有界区域中轨道先碰到边界，单靠内部初值不足以继续决定数值。
+多维时取乘积 \(h_\alpha(x)=\prod_{j=1}^dh_{\alpha_j}(x_j)\)，Fubini 给出标准正交性及特征值 \((-\mathrm{i})^{|\alpha|}\)。其完备性可沿上述矩证明逐坐标进行：若与所有乘积正交，乘以多维 Gauss 后的全部混合矩为零，展开 \(e^{z\cdot x}\) 再用多维变换唯一性。Hermite 展开把连续频率变换与离散特征函数联系起来，也为后续谐振子提供了具体模型。
 
 \ProseParagraphBreak
 
-例如平面速度 \(b(x,y)=(-y,x)\) 给出
+上升算子怎样产生多项式，可以直接写出来。若 \(h_n=P_nh_0\)，则
 \[
- \Phi_t(a_1,a_2)=(a_1\cos t-a_2\sin t,\ a_1\sin t+a_2\cos t).
+ P_{n+1}(x)=\frac{4\pi xP_n(x)-P_n'(x)}{\sqrt{4\pi(n+1)}}.
 \]
-解是初始图形的旋转，\(u(x,y,t)=g(x\cos t+y\sin t,-x\sin t+y\cos t)\)。另一例是 \(b(x)=x\)，其流为 \(\Phi_t(a)=e^ta\)，故 \(u(x,t)=g(e^{-t}x)\)。后者虽然函数值不变，体积却按 \(e^{dt}\) 扩张；把 \(u\) 的积分解释成守恒质量就会出错。
-
-\subsection{全局流与非特征初值问题}
-\label{b2:subsec:070204}
-
-\begin{proposition}\label{b2:prop:07-global-flow}
-设 \(d\) 为正整数，\(b\in C^1(\mathbb R^d;\mathbb R^d)\)，且存在 \(C\geq0\) 使对所有 \(x\in\mathbb R^d\) 都有
-\( |b(x)|\leq C(1+|x|)\)。则所有轨道在整个实轴上存在。对 \(g\in C^1(\mathbb R^d;\mathbb C)\)，\(u(x,t)=g(\Phi_{-t}(x))\) 给出 \(u_t+b(x)\cdot\nabla u=0\)、\(u(x,0)=g(x)\) 在 \(\mathbb R^d\times\mathbb R\) 上的唯一复值 \(C^1\) 解。
-\end{proposition}
-\begin{proof}
-对正时间，积分方程与 Gronwall 估计给出
-\(1+|\Phi_t(a)|\leq(1+|a|)e^{Ct}\)。负时间对反向速度 \(-b\) 使用同一估计。若最大解区间有有限右端点 \(T\)，此估计使轨道在 \([0,T)\) 落于某个紧球。该球上速度有界，所以 \(|\Phi_t(a)-\Phi_s(a)|\leq M|t-s|\)，从而 \(t\uparrow T\) 时有极限 \(a_T\)。由 \(a_T\) 出发的局部解可与原解拼接；积分方程保证拼接点导数也满足方程，与最大性矛盾。左端点相同。
-
-全局流的 \(C^1\) 性保证表示公式给出 \(C^1\) 函数。沿特征线该函数等于 \(g(a)\)，故满足方程。任意另一经典解沿同一轨道也恒等于 \(g(a)\)，因此唯一。
-\end{proof}
-
-线性增长条件可以有许多替代，但不能不加条件地省去。对于 \(b(x)=x^2\)，从 \(a>0\) 出发的轨道为 \(a/(1-at)\)，在 \(t=1/a\) 逃向无穷。局部唯一性始终成立，障碍在于不存在覆盖所有初始点的共同正时间流。另一方面，若只关心一条有限轨道及其附近，紧集上的局部条件已经足够，不必强求整个空间上的有界导数。
+乘以 \(x\) 的项提高次数，求导项降低次数，所以 \(P_n\) 的次数确为 \(n\)，首项系数为 \((4\pi)^{n/2}/\sqrt{n!}\)。因此 \(P_0,\ldots,P_N\) 与 \(1,x,\ldots,x^N\) 张成相同的空间，完备性证明中从 Hermite 正交转到全部矩为零的步骤就有了明确的三角变换。
 
 \ProseParagraphBreak
 
-流也给出一般数据曲线的局部求解。把平面上的向量场写成 \(\beta=(\beta_1,\beta_2)\)，给定参数曲线 \(\gamma(s)\) 后，重要的是它是否横穿轨道，而不是曲线能否写成水平直线。
-
-\begin{proposition}[非特征数据曲线]\label{b2:prop:07-noncharacteristic-data}
-设 \(U\subset\mathbb R^2\) 为开集，\(\beta\in C^1(U;\mathbb R^2)\)、\(c,f\in C^1(U;\mathbb R)\)，\(I\subset\mathbb R\) 为开区间，\(\gamma\in C^1(I;U)\)、\(g\in C^1(I;\mathbb R)\)，\(s_0\in I\)，且在 \(s=s_0\) 有
+平移 Gauss 函数给出一个可求出全部系数的展开。固定实数 \(b\)，置 \(g_b(x)=h_0(x-b)\)。由于
 \[
- \det\bigl(\gamma'(s_0),\beta(\gamma(s_0))\bigr)\ne0.
+ ag_b=\sqrt\pi\,b\,g_b,
+ \quad\langle g_b,h_0\rangle
+ =\sqrt2\int e^{-\pi((x-b)^2+x^2)}\,\mathrm{d}x
+ =e^{-\pi b^2/2},
 \]
-则在 \(\gamma(s_0)\) 附近，问题 \(\beta\cdot\nabla u+cu=f\)、\(u(\gamma(s))=g(s)\) 有唯一的局部实值 \(C^1\) 解；这里的曲线数据只对 \(s_0\) 附近的参数规定。局部唯一性指任意两个满足同一曲线数据的局部解，在适当缩小的共同邻域内相等。
-\end{proposition}
-\begin{proof}
-记 \(\Phi_t\) 为 \(\beta\) 的局部流，定义 \(\Psi(s,t)=\Phi_t(\gamma(s))\)。流对时间和初始点为 \(C^1\)，故 \(\Psi\) 也为 \(C^1\)。在 \((s_0,0)\)，它的两列导数正是 \(\gamma'(s_0)\)、\(\beta(\gamma(s_0))\)，故\cref{b2:thm:01-inverse}给出局部 \(C^1\) 逆坐标。缩小到参数矩形 \(J\times(-\tau,\tau)\)，其中 \(J\subset I\) 是含 \(s_0\) 的开区间、\(\tau>0\)，令 \(W=\Psi(J\times(-\tau,\tau))\subset U\)，则 \((s,t)=\Psi^{-1}(x)\) 在 \(W\) 上有定义。沿每个固定 \(s\) 解标量方程
+在 Schwartz 函数间反复分部积分，有
 \[
- \partial_tV(s,t)+c(\Psi(s,t))V(s,t)=f(\Psi(s,t)),
- \quad V(s,0)=g(s).
+ \langle g_b,h_n\rangle
+ =\frac{\langle a^ng_b,h_0\rangle}{\sqrt{n!}}
+ =e^{-\pi b^2/2}\frac{(\sqrt\pi b)^n}{\sqrt{n!}}.
 \]
-具体地，记
+标准正交基的完备性因而给出
 \[
- C(s,t)=\int_0^t c(\Psi(s,r))\,\mathrm dr.
+ h_0(x-b)=e^{-\pi b^2/2}
+ \sum_{n=0}^\infty\frac{(\sqrt\pi b)^n}{\sqrt{n!}}h_n(x)
+ \quad\text{于 }L^2.
 \]
-积分因子公式给出唯一的
-\[
- V(s,t)=e^{-C(s,t)}\left(g(s)+
-       \int_0^t e^{C(s,r)}f(\Psi(s,r))\,\mathrm dr\right).
-\]
-对参数矩形中的每个紧子矩形，被积函数及一阶导数有共同界，\secref{b2:sec:0103}的积分求导规则于是给出 \(V\in C^1\)。令 \(u=V\circ\Psi^{-1}\)。由于 \(\partial_t\Psi=\beta(\Psi)\)，链式法则给出方程；\(t=0\) 给出曲线数据。任何另一经典解沿同一流也满足这个标量方程，所以在缩小后的坐标邻域内相同。
-\end{proof}
-
-设 \(U\subset\mathbb R^2\) 开，\(\beta\in C^1(U;\mathbb R^2)\)，\(\gamma:I\to U\) 为 \(C^1\) 曲线，其中 \(I\) 为开区间。若对每个 \(s\in I\) 都有 \(\det(\gamma'(s),\beta(\gamma(s)))\ne0\)，则称它为\term[fei-tezheng-quxian]{非特征曲线}[noncharacteristic curve]。例如对 \(u_x+u_y=f\) 和 \(\gamma(s)=(s,\kappa s)\)，其中 \(\kappa\in\mathbb R\)，行列式为 \(1-\kappa\)，因此 \(\kappa\ne1\) 时局部数据可独立指定；\(\kappa=1\) 时曲线沿轨道，数据必须满足 \(g'(s)=f(s,s)\)。上述非退化条件使曲线切向和流方向共同组成局部坐标。
-
-\ProseParagraphBreak
-
-\Cref{b2:fig:07-noncharacteristic-data}取同一个常向量场 \(\beta=(1,0)\)，其流为 \(\Phi_t(a_1,a_2)=(a_1+t,a_2)\)。左图取 \(\gamma(s)=(0,s)\)，则 \(\Psi(s,t)=(t,s)\)：数据曲线横穿每条附近的水平轨道，两个参数确实给出二维坐标。右图取 \(\gamma(s)=(s,0)\)，则 \(\Psi(s,t)=(s+t,0)\)：初值参数和流时间都只改变同一条轨道上的位置，不能用它们覆盖二维邻域。
-
-\input{Figures/F07-NoncharacteristicData}
-
-在右图的具体模型中，取方程 \(u_x=0\) 和曲线数据 \(u(s,0)=s\)，沿曲线求导会同时得到 \(u_x(s,0)=1\) 与 \(u_x(s,0)=0\)，所以局部无解。若改取常数数据 \(g\equiv c_0\)，则 \(u(x,y)=c_0+q(y)\) 对任意满足 \(q(0)=0\) 的实值 \(C^1\) 函数 \(q\) 都给出延拓。这个模型说明退化时可能出现的失败方式，并不把一般的行列式为零判作必然无解或必然不唯一；前一命题的局部构造依靠的是逆函数定理的非退化假设。
+系数平方和为 \(e^{-\pi b^2}\sum_n(\pi b^2)^n/n!=1\)，与平移保持范数一致。取 Fourier 变换后，每项系数乘以 \((-\mathrm{i})^n\)，而左侧变为 \(e^{-2\pi\mathrm{i}b\xi}h_0(\xi)\)。这是同一个调制 Gauss 函数的 Hermite 展开；Fourier 酉性允许对平方范数收敛的级数逐项作用，并不需要先证明逐点级数收敛。

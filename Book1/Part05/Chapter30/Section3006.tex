@@ -1,0 +1,467 @@
+% !TeX root = ../../Book1.tex
+% 实读来源：Fremlin, Measure Theory, Vol. 2，作者在线第28章摘本，
+% 285A、285F、285I、285J、285L--M；摘本 PDF 第67、69--73页。
+% 条号作为正式定位，不把持续修订摘本的 PDF 页码当作2016版页码。
+% Bass, Real Analysis for Graduate Students, v5，印刷第297--302、305--307页，
+% 仅作教学背景。以下 Gaussian 平滑唯一性与极限存在性均在正文自证。
+\section{特征函数与概率弱收敛}
+\label{b1:sec:3006}
+
+大数律比较随机变量与一个常数的距离；中心极限定理则要比较整个分布。
+直接对所有有界连续函数计算积分，通常不便于处理独立和。
+复指数函数的优势在于：它始终有界，并且把加法变成乘法。
+本节先用这些特殊的测试函数表示分布，再说明它们为什么足以辨认分布及其弱极限。
+
+\subsection{特征函数与 Gaussian 模型}
+\label{b1:subsec:300601}
+
+对实数 \(u\)，记 \(e^{iu}=\cos u+i\sin u\)。
+这里的复值积分按实部、虚部分别定义；由于 \(|e^{iu}|=1\)，
+对任意概率分布都可以积分，不需要假设一阶矩存在。
+
+\begin{definition}\label{b1:def:30-characteristic-function}
+设 \(\mu\) 是 \(\mathbb R\) 上的 Borel 概率测度。
+函数
+\[
+ \varphi_\mu(t)=\int_{\mathbb R}e^{itx}\,\mathrm d\mu(x),
+ \quad t\in\mathbb R,
+\]
+称为 \(\mu\) 的\term[tezheng-hanshu]{特征函数}[characteristic function]。
+若 \(X\) 是概率空间 \((\Omega,\mathcal F,\mathbb P)\) 上的实随机变量，
+其分布为 \(\mu_X\)，则规定
+\[
+ \varphi_X(t)=\varphi_{\mu_X}(t)=\mathbb E(e^{itX}).
+\]
+\end{definition}
+\symidx{\(\varphi_\mu,\varphi_X\)：概率分布或随机变量的特征函数}
+
+这一约定在指数中取正号，且不加归一化系数。
+特征函数的定义和下面的基本运算可对照
+Fremlin 的《Measure Theory》\cite[285A, 285F, 285I]{Fremlin2016Measure}。
+
+\begin{proposition}\label{b1:prop:30-characteristic-basic}
+设 \(\mu\) 是实轴上的 Borel 概率测度，则
+\[
+ \varphi_\mu(0)=1,\quad
+ |\varphi_\mu(t)|\leq1,\quad
+ \varphi_\mu(-t)=\overline{\varphi_\mu(t)}
+ \quad(t\in\mathbb R),
+\]
+且 \(\varphi_\mu\) 在 \(\mathbb R\) 上一致连续。
+若 \(X\) 是任意概率空间上的实随机变量，\(a,b\in\mathbb R\)，则
+\[
+ \varphi_{aX+b}(t)=e^{itb}\cdot\varphi_X(at).
+\]
+若 \(X_1,\ldots,X_r\) 是同一概率空间上的独立实随机变量，
+其中整数 \(r\geq1\)，则
+\begin{equation}\label{b1:eq:30-independent-characteristic}
+ \varphi_{X_1+\cdots+X_r}(t)
+ =\prod_{j=1}^r\varphi_{X_j}(t)
+ \quad(t\in\mathbb R).
+\end{equation}
+\end{proposition}
+\begin{proof}
+前三式分别由总质量为一、积分三角不等式和共轭与积分交换得到。
+对任意 \(t,h\in\mathbb R\)，有
+\[
+ |\varphi_\mu(t+h)-\varphi_\mu(t)|
+ \leq\int_{\mathbb R}|e^{ihx}-1|\,\mathrm d\mu(x).
+\]
+当 \(h\to0\) 时，被积函数逐点趋于零，并由可积常数 \(2\) 控制。
+控制收敛定理使右端趋于零；右端又与 \(t\) 无关，故得到一致连续性。
+
+仿射变换公式来自
+\(e^{it(aX+b)}=e^{itb}\cdot e^{i(at)X}\)。
+对独立变量，\cref{b1:prop:30-independent-joint-law}给出联合分布
+\(\mu_{X_1}\otimes\cdots\otimes\mu_{X_r}\)。
+被积函数 \(\prod_{j=1}^r e^{itx_j}\) 的模恒为一，
+因此在这个乘积概率空间上绝对可积。
+Fubini 定理遂将其积分拆成各个特征函数的乘积，
+得到\eqref{b1:eq:30-independent-characteristic}。
+\end{proof}
+
+单点分布 \(\delta_a\) 的特征函数是 \(e^{ita}\)；
+参数 \(p\in[0,1]\) 的 Bernoulli 分布的特征函数是
+\(1-p+p e^{it}\)。
+接下来需要一个连续分布模型，它的特征函数仍具有便于取幂的形式。
+所需积分可以直接计算，不必先建立一般的 Fourier 反演理论。
+
+\begin{lemma}\label{b1:lem:30-gaussian-fourier}
+对每个 \(\varepsilon>0\)，定义
+\[
+ g_\varepsilon(x)=\frac{1}{\sqrt{2\pi}\,\varepsilon}
+       \exp\left(-\frac{x^2}{2\varepsilon^2}\right),
+ \quad x\in\mathbb R.
+\]
+则 \(g_\varepsilon\) 是严格正的连续概率密度，并满足
+\[
+ \int_{\mathbb R}x\cdot g_\varepsilon(x)\,\mathrm dx=0,
+ \quad
+ \int_{\mathbb R}x^2\cdot g_\varepsilon(x)\,\mathrm dx=\varepsilon^2.
+\]
+此外，对所有 \(t,x\in\mathbb R\)，有
+\begin{align}
+ \int_{\mathbb R}e^{itx}\cdot g_\varepsilon(x)\,\mathrm dx
+   &=e^{-\varepsilon^2t^2/2},
+       \label{b1:eq:30-gaussian-characteristic}\\
+ g_\varepsilon(x)
+   &=\frac{1}{2\pi}\int_{\mathbb R}
+       e^{-itx}\cdot e^{-\varepsilon^2t^2/2}\,\mathrm dt.
+       \label{b1:eq:30-gaussian-inversion}
+\end{align}
+上述各积分均绝对收敛。
+\end{lemma}
+\begin{proof}
+\secref{b1:sec:0705}已用 Tonelli 定理和极坐标换元证明
+\(\int_{\mathbb R}e^{-u^2}\,\mathrm du=\sqrt\pi\)。
+在此公式中作线性换元 \(x=\sqrt2\,\varepsilon u\)，得到
+\[
+ \int_{\mathbb R}e^{-x^2/(2\varepsilon^2)}\,\mathrm dx
+ =\sqrt2\,\varepsilon\int_{\mathbb R}e^{-u^2}\,\mathrm du
+ =\sqrt{2\pi}\,\varepsilon.
+\]
+这说明 \(g_\varepsilon\) 可积且积分为一；其正性、连续性由公式直接给出。
+
+多项式乘 Gaussian 的绝对可积性来自指数衰减；
+例如在充分大的 \(|x|\) 上，
+\(|x|^k e^{-x^2/2}\leq C_k e^{-|x|/4}\)，其中 \(k=1,2\)。
+奇偶性给出 \(\int x\cdot g_1(x)\,\mathrm dx=0\)。
+又有 \(g_1'(x)=-x\cdot g_1(x)\)，故在 \([-R,R]\) 上分部积分，令 \(R\to\infty\)，得到
+\[
+ \int_{\mathbb R}x^2\cdot g_1(x)\,\mathrm dx
+ =-\bigl[x\cdot g_1(x)\bigr]_{-\infty}^{+\infty}
+     +\int_{\mathbb R}g_1(x)\,\mathrm dx
+ =1.
+\]
+这里边界项趋于零，各积分绝对收敛。
+换元 \(x=\varepsilon u\) 即给出一般 \(\varepsilon\) 的两个矩公式。
+
+令
+\[
+ I(t)=\int_{\mathbb R}e^{itx}\cdot g_1(x)\,\mathrm dx.
+\]
+实参数差商满足
+\[
+ \left|\frac{e^{i(t+h)x}-e^{itx}}{h}\right|\leq|x|
+ \quad(h\ne0).
+\]
+由于 \(|x|g_1(x)\) 可积，控制收敛允许对实部、虚部在积分号下求导：
+\[
+ I'(t)=i\int_{\mathbb R}x\cdot e^{itx}\cdot g_1(x)\,\mathrm dx.
+\]
+再在 \([-R,R]\) 上分部积分，并利用 \(g_1'=-x\cdot g_1\)，得到
+\[
+ \int_{\mathbb R}x\cdot e^{itx}\cdot g_1(x)\,\mathrm dx
+ =-\bigl[e^{itx}\cdot g_1(x)\bigr]_{-\infty}^{+\infty}
+       +it\int_{\mathbb R}e^{itx}\cdot g_1(x)\,\mathrm dx
+ =it\cdot I(t).
+\]
+因而 \(I'(t)=-tI(t)\)，且 \(I(0)=1\)。
+函数 \(e^{t^2/2}\cdot I(t)\) 的导数为零，于是
+\(I(t)=e^{-t^2/2}\)。
+用 \(x=\varepsilon u\) 换元便得到\eqref{b1:eq:30-gaussian-characteristic}。
+
+最后，以 \(s=\varepsilon t\) 换元，再次使用刚求出的 \(I\)，可得
+\[
+ \int_{\mathbb R}e^{-itx}\cdot e^{-\varepsilon^2t^2/2}\,\mathrm dt
+ =\frac{\sqrt{2\pi}}{\varepsilon}\cdot I(-x/\varepsilon)
+ =\frac{\sqrt{2\pi}}{\varepsilon}
+       \exp\left(-\frac{x^2}{2\varepsilon^2}\right).
+\]
+除以 \(2\pi\)，即是\eqref{b1:eq:30-gaussian-inversion}。
+其中指数因子的模为一，剩余 Gaussian 因子可积，
+所以最后的积分同样绝对收敛。
+\end{proof}
+
+\begin{definition}\label{b1:def:30-normal-distribution}
+设 \(m\in\mathbb R\)、\(\sigma\geq0\)。
+当 \(\sigma>0\) 时，把具有密度
+\[
+ x\longmapsto g_\sigma(x-m)
+ =\frac{1}{\sqrt{2\pi}\,\sigma}
+       \exp\left(-\frac{(x-m)^2}{2\sigma^2}\right)
+\]
+的 Borel 概率分布称为均值 \(m\)、方差 \(\sigma^2\) 的
+\term[zhengtai-fenbu]{正态分布}[normal distribution]，
+记为 \(N(m,\sigma^2)\)。
+约定 \(N(m,0)=\delta_m\)。
+其中 \(N(0,1)\) 称为
+\term[biaozhun-zhengtai-fenbu]{标准正态分布}[standard normal distribution]，
+其分布函数记为
+\[
+ \Phi(x)=\frac{1}{\sqrt{2\pi}}\int_{-\infty}^x e^{-u^2/2}\,\mathrm du.
+\]
+\end{definition}
+\symidx{\(N(m,\sigma^2)\)：均值 \(m\)、方差 \(\sigma^2\) 的正态分布}
+\symidx{\(\Phi\)：标准正态分布函数}
+
+若 \(G\) 的分布为 \(N(0,1)\)，则 \(m+\sigma G\) 的分布为
+\(N(m,\sigma^2)\)；当 \(\sigma>0\) 时由密度换元得到，
+当 \(\sigma=0\) 时直接得到单点分布。
+Gaussian 引理同时验证了名称中的均值与方差，并给出
+\begin{equation}\label{b1:eq:30-normal-characteristic}
+ \varphi_{N(m,\sigma^2)}(t)
+ =\exp\left(imt-\frac{\sigma^2t^2}{2}\right).
+\end{equation}
+\(\Phi\) 连续且严格递增，满足
+\(\Phi(-x)=1-\Phi(x)\)，在两端的极限分别为 \(0\)、\(1\)。
+这些性质都来自正密度 \(g_1\) 的连续性、对称性及积分为一。
+
+\subsection{特征函数的唯一性}
+\label{b1:subsec:300602}
+
+两个分布若对所有复指数函数给出相同积分，为什么必定相等？
+我们先给分布加上一层 Gaussian 平滑。
+平滑后的密度可以由特征函数的一个绝对收敛积分写出；
+随后让平滑尺度趋于零，就能恢复原来的分布。
+
+\begin{lemma}\label{b1:lem:30-gaussian-smoothing}
+设 \(\mu\) 是实轴上的 Borel 概率测度，\(\varepsilon>0\)，并令
+\[
+ p_{\mu,\varepsilon}(x)
+   =\int_{\mathbb R}g_\varepsilon(x-y)\,\mathrm d\mu(y),
+ \quad x\in\mathbb R.
+\]
+则 \(p_{\mu,\varepsilon}\) 是连续概率密度，且
+\begin{equation}\label{b1:eq:30-smoothed-density}
+ p_{\mu,\varepsilon}(x)
+ =\frac{1}{2\pi}\int_{\mathbb R}
+       e^{-itx}\cdot\varphi_\mu(t)\cdot e^{-\varepsilon^2t^2/2}\,\mathrm dt.
+\end{equation}
+右端绝对收敛。若
+\(\rho_{\mu,\varepsilon}=p_{\mu,\varepsilon}(x)\,\mathrm dx\)，则
+\(\rho_{\mu,\varepsilon}\Rightarrow\mu\) 当 \(\varepsilon\downarrow0\)。
+\end{lemma}
+\begin{proof}
+被积函数非负，Tonelli 定理与 \(\int g_\varepsilon=1\) 给出
+\[
+ \int_{\mathbb R}p_{\mu,\varepsilon}(x)\,\mathrm dx
+ =\int_{\mathbb R}\left(\int_{\mathbb R}
+       g_\varepsilon(x-y)\,\mathrm dx\right)\mathrm d\mu(y)
+ =1.
+\]
+当 \(x_n\to x\) 时，\(g_\varepsilon(x_n-y)\to g_\varepsilon(x-y)\)，
+而这些函数都由常数 \((\sqrt{2\pi}\,\varepsilon)^{-1}\) 控制。
+该常数对概率测度 \(\mu\) 可积，故控制收敛给出密度的连续性。
+
+将\eqref{b1:eq:30-gaussian-inversion}代入定义，可写成
+\[
+ p_{\mu,\varepsilon}(x)
+ =\frac{1}{2\pi}\int_{\mathbb R}\int_{\mathbb R}
+       e^{-it(x-y)}\cdot e^{-\varepsilon^2t^2/2}
+       \,\mathrm dt\,\mathrm d\mu(y).
+\]
+交换积分所需的绝对积分为
+\[
+ \int_{\mathbb R}\int_{\mathbb R}
+       e^{-\varepsilon^2t^2/2}\,\mathrm dt\,\mathrm d\mu(y)
+ =\int_{\mathbb R}e^{-\varepsilon^2t^2/2}\,\mathrm dt<\infty.
+\]
+因此 Fubini 定理适用，先对 \(y\) 积分便得到
+\eqref{b1:eq:30-smoothed-density}。
+
+为证明弱收敛，任取实值 \(f\in C_b(\mathbb R)\)。
+Fubini 定理及换元 \(x=y+\varepsilon z\) 给出
+\[
+ \int_{\mathbb R}f\,\mathrm d\rho_{\mu,\varepsilon}
+ =\int_{\mathbb R}\int_{\mathbb R}
+       f(y+\varepsilon z)\cdot g_1(z)\,\mathrm dz\,\mathrm d\mu(y).
+\]
+可以把右端看作固定乘积概率测度
+\(\mu(\mathrm dy)\otimes(g_1(z)\,\mathrm dz)\) 上的积分。
+对每个 \(y,z\)，连续性给出 \(f(y+\varepsilon z)\to f(y)\)，
+而其绝对值不超过 \(\|f\|_\infty\)。
+控制收敛遂给出极限 \(\int f\,\mathrm d\mu\)。
+这恰好是第12章的弱收敛定义；这里不要求 \(f\) 在整个实轴上一致连续。
+\end{proof}
+
+\begin{theorem}[特征函数的唯一性]\label{b1:thm:30-characteristic-uniqueness}
+设 \(\mu,\nu\) 是 \(\mathbb R\) 上的 Borel 概率测度。
+若对每个 \(t\in\mathbb R\) 都有 \(\varphi_\mu(t)=\varphi_\nu(t)\)，
+则 \(\mu=\nu\)。
+\end{theorem}
+\begin{proof}
+由\eqref{b1:eq:30-smoothed-density}，对每个 \(\varepsilon>0\)，
+都有 \(p_{\mu,\varepsilon}=p_{\nu,\varepsilon}\)，从而
+\(\rho_{\mu,\varepsilon}=\rho_{\nu,\varepsilon}\)。
+对任意实值 \(f\in C_b(\mathbb R)\)，使用平滑引理令 \(\varepsilon\downarrow0\)，得到
+\[
+ \int_{\mathbb R}f\,\mathrm d\mu
+ =\lim_{\varepsilon\downarrow0}\int_{\mathbb R}f\,\mathrm d\rho_{\mu,\varepsilon}
+ =\lim_{\varepsilon\downarrow0}\int_{\mathbb R}f\,\mathrm d\rho_{\nu,\varepsilon}
+ =\int_{\mathbb R}f\,\mathrm d\nu.
+\]
+实轴是度量空间，\(\mu,\nu\) 都是有限正 Borel 测度，
+所以\cref{b1:prop:weak-mass-uniqueness}给出 \(\mu=\nu\)。
+\end{proof}
+
+因此，特征函数并未丢失分布信息。
+例如，要证明一个独立和仍服从某个正态分布，
+只需计算其特征函数，并与\eqref{b1:eq:30-normal-characteristic}比较。
+但在处理一列分布时，除了辨认候选极限，还必须保证质量没有逃向无穷远。
+
+\subsection{紧性与子列极限的辨认}
+\label{b1:subsec:300603}
+
+第12章的紧性要求同一个紧集控制全族的尾质量。
+特征函数如何提供这样的控制？在原点附近，
+\(1-\operatorname{Re}\varphi_\mu(t)\) 是 \(1-\cos(tx)\) 的平均值。
+再对一个短参数区间求平均，便能避免单个余弦函数不断回到一的困难。
+这一尾概率估计的同类形式见
+Fremlin\cite[285J]{Fremlin2016Measure}；下面给出本节所用的常数和证明。
+
+\begin{lemma}\label{b1:lem:30-characteristic-tail}
+设 \(\mu\) 是实轴上的 Borel 概率测度，\(\delta>0\)。
+则
+\begin{equation}\label{b1:eq:30-characteristic-tail}
+ \mu\bigl(\{x:|x|\geq2/\delta\}\bigr)
+ \leq\frac{1}{\delta}\int_{-\delta}^{\delta}
+       \bigl(1-\operatorname{Re}\varphi_\mu(t)\bigr)\,\mathrm dt.
+\end{equation}
+\end{lemma}
+\begin{proof}
+函数 \(1-\cos(tx)\) 非负且不超过 \(2\)，
+在 \([-\delta,\delta]\times\mathbb R\) 上对相应乘积测度可积。
+交换积分并计算内层积分，得到
+\[
+ \frac{1}{2\delta}\int_{-\delta}^{\delta}
+       \bigl(1-\operatorname{Re}\varphi_\mu(t)\bigr)\,\mathrm dt
+ =\int_{\mathbb R}\left(1-\frac{\sin(\delta x)}{\delta x}\right)\mathrm d\mu(x),
+\]
+其中在 \(x=0\) 处将比值取为连续值 \(1\)。
+右端被积函数处处非负，因为它也是 \(1-\cos(tx)\) 的区间平均。
+当 \(|x|\geq2/\delta\) 时，
+\(\sin(\delta x)/(\delta x)\leq1/2\)，故被积函数至少为 \(1/2\)。
+于是右端至少为
+\(\frac12\cdot\mu(\{x:|x|\geq2/\delta\})\)，这就给出所需不等式。
+\end{proof}
+
+\begin{lemma}\label{b1:lem:30-characteristic-tightness}
+设 \((\mu_n)_{n\geq1}\) 是实轴上的 Borel 概率测度列。
+若对每个 \(t\in\mathbb R\)，
+\(\varphi_{\mu_n}(t)\to\psi(t)\)，且函数 \(\psi:\mathbb R\to\mathbb C\)
+在 \(0\) 处连续，则 \(\{\mu_n:n\geq1\}\) 是紧族。
+\end{lemma}
+\begin{proof}
+因为各 \(\varphi_{\mu_n}(0)=1\)，所以 \(\psi(0)=1\)。
+给定 \(\eta>0\)，由零点处连续性，取 \(\delta>0\)，使
+\[
+ |1-\psi(t)|<\eta/8\quad(|t|\leq\delta).
+\]
+极限函数可测，且 \(|\psi(t)|\leq1\)。
+在有限区间 \([-\delta,\delta]\) 上，
+\(0\leq1-\operatorname{Re}\varphi_{\mu_n}(t)\leq2\)，
+故控制收敛给出
+\[
+ \frac{1}{\delta}\int_{-\delta}^{\delta}
+       \bigl(1-\operatorname{Re}\varphi_{\mu_n}(t)\bigr)\,\mathrm dt
+ \longrightarrow
+ \frac{1}{\delta}\int_{-\delta}^{\delta}
+       \bigl(1-\operatorname{Re}\psi(t)\bigr)\,\mathrm dt
+ \leq\eta/4.
+\]
+因此存在 \(N\)，使所有 \(n\geq N\) 的左端都小于 \(\eta/2\)。
+由尾概率估计，这些 \(\mu_n\) 在
+\(\{|x|\geq2/\delta\}\) 上的质量都小于 \(\eta/2\)。
+
+还须把前面有限个测度纳入同一个控制。
+对每个 \(n<N\)，由
+\([-R,R]\uparrow\mathbb R\) 及测度连续性，可取足够大的 \(R_n\)，
+使 \(\mu_n(\mathbb R\setminus[-R_n,R_n])<\eta\)。
+取 \(R\) 不小于 \(2/\delta\) 及这些有限个 \(R_n\)，便有
+\[
+ \sup_{n\geq1}\mu_n(\mathbb R\setminus[-R,R])<\eta.
+\]
+闭区间 \([-R,R]\) 紧，所以满足\cref{b1:def:tight-family}的要求。
+\end{proof}
+
+\begin{proposition}\label{b1:prop:30-tight-characteristic-limit}
+设 \((\mu_n)_{n\geq1}\) 是实轴上的 Borel 概率测度列，
+\(\mu\) 是实轴上的 Borel 概率测度。
+若 \(\{\mu_n:n\geq1\}\) 为紧族，且
+\(\varphi_{\mu_n}(t)\to\varphi_\mu(t)\) 对每个 \(t\in\mathbb R\) 成立，
+则 \(\mu_n\Rightarrow\mu\)。
+\end{proposition}
+\begin{proof}
+实轴在通常度量下完备且可分，因而是波兰空间。
+由\cref{b1:thm:prokhorov}，任何子列都有一个弱收敛的子子列；
+设其中一个子子列的极限为 Borel 概率测度 \(\nu\)。
+对每个固定 \(t\)，函数 \(\cos(tx)\)、\(\sin(tx)\) 都属于
+\(C_b(\mathbb R)\)，所以弱收敛给出该子子列的特征函数趋于
+\(\varphi_\nu(t)\)。
+原来的点态极限假设又给出 \(\varphi_\nu(t)=\varphi_\mu(t)\)。
+唯一性定理于是说明 \(\nu=\mu\)。
+所有弱收敛子列的极限都被辨认为同一个 \(\mu\)，
+再由\cref{b1:cor:tight-unique-limit}得到整列弱收敛。
+\end{proof}
+
+\subsection{特征函数的连续性定理}
+\label{b1:subsec:300604}
+
+前一命题已经假定候选概率测度 \(\mu\) 存在。
+Fremlin\cite[285L--M]{Fremlin2016Measure}讨论了给定极限测度后的弱收敛判别和唯一性。
+对中心极限定理而言，我们最先算出的却只是一个函数极限。
+下面的\term[levy-lianxuxing-dingli]{Lévy 连续性定理}[Lévy's continuity theorem]
+同时解决极限分布的存在与辨认。
+
+\begin{theorem}[Lévy 连续性定理]\label{b1:thm:30-levy-continuity}
+设 \((\mu_n)_{n\geq1}\) 是 \(\mathbb R\) 上的 Borel 概率测度列。
+若存在函数 \(\psi:\mathbb R\to\mathbb C\)，使
+\[
+ \varphi_{\mu_n}(t)\longrightarrow\psi(t)
+ \quad\text{对每个 }t\in\mathbb R,
+\]
+且 \(\psi\) 在 \(0\) 处连续，则存在唯一的 Borel 概率测度 \(\mu\)，
+满足 \(\varphi_\mu=\psi\)，并且 \(\mu_n\Rightarrow\mu\)。
+反过来，若 \(\mu_n\Rightarrow\mu\)，其中 \(\mu\) 是实轴上的
+Borel 概率测度，则
+\(\varphi_{\mu_n}(t)\to\varphi_\mu(t)\) 对每个实数 \(t\) 成立，
+且极限特征函数在 \(0\) 处连续。
+\end{theorem}
+\begin{proof}
+先证正向结论。\cref{b1:lem:30-characteristic-tightness}说明测度列为紧族。
+由于 \(\mathbb R\) 是波兰空间，Prokhorov 定理给出一个弱收敛子列
+\(\mu_{n_k}\Rightarrow\mu\)，其极限仍是 Borel 概率测度。
+用有界连续测试函数 \(\cos(tx)\)、\(\sin(tx)\) 分别取极限，得到
+\[
+ \varphi_\mu(t)=\lim_{k\to\infty}\varphi_{\mu_{n_k}}(t)=\psi(t)
+ \quad(t\in\mathbb R).
+\]
+这证明了具有所求特征函数的概率测度确实存在。
+唯一性由\cref{b1:thm:30-characteristic-uniqueness}给出；
+再用\cref{b1:prop:30-tight-characteristic-limit}，便得到整列
+\(\mu_n\Rightarrow\mu\)。
+
+反向结论直接用同样的余弦、正弦测试函数。
+所得极限是 \(\varphi_\mu\)，它由
+\cref{b1:prop:30-characteristic-basic}在整个实轴上一致连续，
+特别在 \(0\) 处连续。
+\end{proof}
+
+特别地，当候选概率测度 \(\mu\) 已经给定时，
+\(\mu_n\Rightarrow\mu\) 等价于所有参数 \(t\) 下的特征函数收敛。
+此时无需另行检查紧性，因为极限 \(\varphi_\mu\) 在零点连续，
+已经通过尾概率估计保证紧性。
+
+\ProseParagraphBreak
+
+零点连续性不能删去。
+取 \(\mu_n=N(0,n^2)\)，则
+\[
+ \varphi_{\mu_n}(t)=e^{-n^2t^2/2}
+ \longrightarrow
+ \begin{cases}
+  1,&t=0,\\
+  0,&t\ne0.
+ \end{cases}
+\]
+极限在零点不连续，因而不是任何概率测度的特征函数。
+从密度也能直接看见质量逃逸：对每个固定 \(R>0\)，
+\[
+ \mu_n([-R,R])
+ \leq\frac{2R}{\sqrt{2\pi}\,n}\longrightarrow0.
+\]
+任何固定紧集都装不下这列分布的大部分质量。
+连续性定理中的零点条件正是把这种情形排除的条件。
+下一节将计算标准化独立和的特征函数极限；
+一旦极限被认作标准正态特征函数，本节的定理便把函数极限变成分布极限。

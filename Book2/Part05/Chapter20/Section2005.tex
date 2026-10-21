@@ -1,0 +1,444 @@
+% !TeX root = ../../Book2.tex
+\section{典型算子}
+\label{b2:sec:1805}
+
+Hilbert 变换用符号的正负区分一维频率。在高维中，频率不再只有两个方向；把向量 \(\xi\) 归一化为 \(\xi/|\xi|\)，就得到一组只记录方向、不改变频率大小的零阶算子。这组 Riesz 变换既能组成共轭调和函数，也能把 Poisson 方程的右端转为解的二阶导数。本节逐一说明这些联系中的核、常数和函数空间。
+
+\subsection{Riesz 变换}
+\label{b2:subsec:180501}
+
+\Needspace{6\baselineskip}
+\begin{definition}\label{b2:thm:18-riesz-definition}
+设 \(d\geq1\) 为整数，\(1\leq j\leq d\)。对 \(f\in L^2(\mathbb R^d;\mathbb C)\)，以本卷 \(e^{-2\pi\mathrm ix\cdot\xi}\) 的 Fourier 约定定义\term[riesz-bianhuan]{Riesz 变换}[Riesz transform] \(R_j\)：
+\[
+ \widehat{R_jf}(\xi)\coloneqq
+ -\mathrm i\frac{\xi_j}{|\xi|}\cdot\widehat f(\xi)
+ \quad(\xi\ne0).
+\]
+零频处的乘子可任意补值；变换及输出均按 \(L^2\) 等价类理解。
+\end{definition}
+\symidx{\(R_jf\)：第 \(j\) 个 Riesz 变换}
+
+由\cref{b2:thm:04-plancherel-extension}的等距性得到 \(\|R_jf\|_2\leq\|f\|_2\)，但单个方向通常不保持全部能量。把所有方向合在一起，才有
+\[
+ \sum_{j=1}^d\|R_jf\|_2^2=\|f\|_2^2,
+ \quad \sum_{j=1}^dR_j^2f=-f.
+\]
+第一式来自 \(\sum_j\xi_j^2/|\xi|^2=1\)，第二式还使用两个 \(-\mathrm i\) 相乘得到的负号。若形式上把 \((-\Delta)^{1/2}\) 的乘子记为 \(2\pi|\xi|\)，则 \(R_j=-\partial_j(-\Delta)^{-1/2}\)：负号由本卷约定决定。这个记法只解释方向与微分的关系，实际定义仍是上面的有界乘子，不需先在零频率除法定义负次幂。
+
+\ProseParagraphBreak
+
+为了找到空间核，先保留正高度 \(t\)。Poisson 核在内部没有奇点，其共轭核将随 \(t\downarrow0\) 产生主值；这一过程还能确定核的归一化常数。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[Riesz 核的正则化与主值实现]\label{b2:prop:18-riesz-realization}
+设 \(d\geq1\) 为整数、\(1\leq j\leq d\)，并令
+\[
+ \begin{gathered}
+ c_d=\frac{\Gamma\left(\frac{d+1}{2}\right)}{\pi^{(d+1)/2}},\\
+ P_t(x)=c_d\frac{t}{(t^2+|x|^2)^{(d+1)/2}},
+ \quad Q_{j,t}(x)=c_d\frac{x_j}{(t^2+|x|^2)^{(d+1)/2}}
+ \quad(t>0).
+ \end{gathered}
+\]
+则 \(P_t\) 的积分为一，且
+\[
+ \widehat P_t(\xi)=e^{-2\pi t|\xi|},
+ \quad
+ \widehat Q_{j,t}(\xi)=-\mathrm i\frac{\xi_j}{|\xi|}e^{-2\pi t|\xi|}
+ \quad(\xi\ne0),
+\]
+第二式为温和分布恒等式，右端在原点任意补有限值。定义
+\[
+ k_j(x)=c_d\frac{x_j}{|x|^{d+1}}\quad(x\ne0),
+ \quad
+ R_{j,\varepsilon}f(x)=\int_{|y|>\varepsilon}k_j(y)\cdot f(x-y)\,\mathrm dy.
+\]
+对每个 \(f\in L^2(\mathbb R^d;\mathbb C)\)，硬截断 \(R_{j,\varepsilon}f\) 在 \(\varepsilon\downarrow0\) 时按 \(L^2\) 范数趋于乘子定义的 \(R_jf\)。\(R_j\) 具有兼容的 \(L^p\) 有界延拓，\(1<p<\infty\)，并对这些输入满足几乎处处的主值表示
+\[
+ R_jf(x)=\lim_{\varepsilon\downarrow0}R_{j,\varepsilon}f(x),
+ \quad \|R_jf\|_p\leq C_{d,p}\|f\|_p.
+\]
+\end{proposition}
+\begin{proof}
+先核对常数。记 \(a=(d+1)/2\)，使用正实数上的 Euler 积分
+\(\Gamma(a)=\int_0^\infty s^{a-1}e^{-s}\,\mathrm ds\)。代换给出
+\((1+|x|^2)^{-a}=\Gamma(a)^{-1}\int_0^\infty s^{a-1}e^{-s(1+|x|^2)}\,\mathrm ds\)。Tonelli 与 Gaussian 积分于是给出
+\[
+ \int_{\mathbb R^d}(1+|x|^2)^{-a}\,\mathrm dx
+ =\frac{\pi^{d/2}}{\Gamma(a)}
+   \int_0^\infty s^{-1/2}e^{-s}\,\mathrm ds
+ =\frac{\pi^{(d+1)/2}}{\Gamma(a)}.
+\]
+这里 \(\Gamma(1/2)=\sqrt\pi\) 也是一维 Gaussian 积分的代换形式。由 \(x=tz\) 得 \(\int P_t=1\)，并恢复\subsecref{b2:subsec:030404}的 Poisson 核。
+
+还须在一般维数证明其 Fourier 公式；\chapref{b2:ch:03}已算出的一维公式不能直接当作高维径向公式。对 \(t>0\)，核满足 \((\partial_t^2+\Delta_x)P_t=0\)。例如令 \(D=t^2+|x|^2\)，将两部分导数相加后得到
+\[
+ (\partial_t^2+\Delta_x)\bigl(tD^{-a}\bigr)
+ =2atD^{-a-1}\bigl(2(a+1)-d-3\bigr)=0.
+\]
+各阶核导数在固定的正高度区间上有共同的可积控制，故对固定 \(\xi\)，函数 \(v(t)=\widehat P_t(\xi)\) 满足
+\(v''=4\pi^2|\xi|^2v\)。又有 \(|v(t)|\leq\|P_t\|_1=1\)，以及由缩放和支配收敛得到的 \(v(t)\to1\)（\(t\downarrow0\)）。当 \(\xi\ne0\) 时，有界性排除增长的指数解，初值确定剩余系数，故 \(v(t)=e^{-2\pi t|\xi|}\)；在 \(\xi=0\) 时则由总质量直接得到 \(v(t)=1\)。
+
+共轭核满足 \(\partial_tQ_{j,t}=\partial_jP_t\)。为由这条微分关系确定 \(Q_{j,t}\)，必须同时给出无穷高度的条件。核的缩放给出
+\[
+ \|Q_{j,t}\|_\infty\leq C_dt^{-d},
+ \quad\|\partial_jP_t\|_\infty\leq C_dt^{-d-1}.
+\]
+因此对每个 \(\varphi\in\mathcal S\)，有 \(\langle Q_{j,t},\varphi\rangle\to0\)（\(t\rightarrow\infty\)），并且
+\[
+ Q_{j,t}=-\int_t^\infty\partial_jP_s\,\mathrm ds
+ \quad\text{在 }\mathcal S'\text{ 中}.
+\]
+时间积分对每个测试配对都绝对收敛。取 Fourier 变换后可以继续换序，因为
+\[
+ \int_t^\infty2\pi|\xi_j|e^{-2\pi s|\xi|}\,\mathrm ds
+ =\frac{|\xi_j|}{|\xi|}e^{-2\pi t|\xi|}\leq1
+ \quad(\xi\ne0),
+\]
+再乘任一 Schwartz 测试函数的绝对值即可积分。故整个温和分布正是声明中的有界函数乘子，没有遗漏支撑于 \(\xi=0\) 的项。只在非零频率上解微分关系而不使用无穷高度条件，不能作出这一识别。
+
+对 \(f\in\mathcal S\)，\(Q_{j,t}*f\) 的变换因而为
+\(-\mathrm i\xi_j|\xi|^{-1}e^{-2\pi t|\xi|}\cdot\widehat f\)。这里卷积与变换的分布规则来自\cref{b2:prop:05-tempered-convolution}，其输入一方为 Schwartz 函数，满足该命题条件。Plancherel 与支配收敛给出 \(Q_{j,t}*f\rightarrow R_jf\) 于 \(L^2\)。空间中，在 \(|y|<1\) 内利用奇性减去 \(f(x)\)：
+\[
+ Q_{j,t}*f(x)
+ =\int_{|y|<1}Q_{j,t}(y)\cdot\bigl(f(x-y)-f(x)\bigr)\,\mathrm dy
+  +\int_{|y|\geq1}Q_{j,t}(y)\cdot f(x-y)\,\mathrm dy.
+\]
+近处用 \(|Q_{j,t}(y)|\leq c_d|y|^{-d}\) 与一阶差 \(O_x(|y|)\)，远处用输入的快速衰减，均可支配取极限。所得正是 \(k_j\) 的对称球形主值。这也表明 \(Q_{j,t}\rightarrow\operatorname{pv}k_j\) 在 \(\mathcal S'\) 中成立。
+
+上述平滑极限还不是硬截断的范数收敛。记
+\[
+ \begin{aligned}
+ D_\varepsilon(y)&=k_j(y)\cdot\mathbf1_{\{|y|>\varepsilon\}}-Q_{j,\varepsilon}(y)\\
+ &=\varepsilon^{-d}\cdot D_1(y/\varepsilon).
+ \end{aligned}
+\]
+在 \(|y|<1\) 时，\(D_1=-Q_{j,1}\) 局部可积；在 \(|y|>1\) 时，利用 \((1+s)^{-a}=1+O(s)\) 得
+\(|D_1(y)|\leq C_d|y|^{-d-2}\)。故 \(D_1\in L^1\)，并因奇性有 \(\int D_1=0\)。因此
+\[
+ \|D_\varepsilon*f\|_2
+ \leq\int|D_1(z)|\cdot
+ \|f(\,\cdot-\varepsilon z)-f\|_2\,\mathrm dz
+ \longrightarrow0.
+\]
+平移的 \(L^2\) 连续性及控制量 \(2\|f\|_2\cdot|D_1(z)|\) 证明最后的极限。结合 \(R_{j,\varepsilon}f=Q_{j,\varepsilon}*f+D_\varepsilon*f\)，得到 Schwartz 输入的硬截断 \(L^2\) 收敛。
+
+推广到一般 \(L^2\) 时，需要分清两种卷积界。\(Q_{j,t}\) 的乘子模至多为一，故其卷积在 Schwartz 类上满足平方界，并连续延拓到 \(L^2\)；这里使用 Plancherel，而不要求 \(Q_{j,t}\in L^1\)。对差核则可用 Young 不等式，因为 \(\|D_\varepsilon\|_1=\|D_1\|_1\)。上述分解因此给出与 \(\varepsilon\) 无关的界
+\[
+ \|R_{j,\varepsilon}f\|_2
+ \leq\bigl(1+\|D_1\|_1\bigr)\cdot\|f\|_2.
+\]
+结合 Schwartz 稠密性，就将硬截断的范数收敛传给全部 \(L^2\) 输入。还须识别这些延拓与普通积分。固定 \(t,\varepsilon>0\) 时，\(Q_{j,t}\) 与 \(k_j\cdot\mathbf1_{\{|y|>\varepsilon\}}\) 都属于 \(L^2\)。若 \(f_n\to f\) 于 \(L^2\)，对这两个固定核中的任一个 \(A\)，Hölder 给出
+\[
+ \bigl|A*(f_n-f)(x)\bigr|\leq\|A\|_2\cdot\|f_n-f\|_2\longrightarrow0
+ \quad\text{对每个 }x.
+\]
+取 Schwartz 逼近并与算子延拓的 \(L^2\) 收敛子列比较，便知积分与延拓几乎处处相同。
+
+最后，核满足
+\[
+ |k_j(y)|\leq C_d|y|^{-d},
+ \quad
+ \partial_\ell k_j(y)=c_d\left(
+ \frac{\delta_{j\ell}}{|y|^{d+1}}
+ -(d+1)\frac{y_jy_\ell}{|y|^{d+3}}\right).
+\]
+这给出两个变量的标准差分条件。对紧支集 \(L^2\) 输入，在其支集外硬截断最终就是普通核积分；从已证的 \(L^2\) 收敛取几乎处处子列，便识别了支集外的 \(R_jf\)。故可用\cref{b2:thm:18-cz-lp}得到兼容的 \(L^p\) 有界性，并用\cref{b2:thm:18-maximal-truncation}控制极大截断。对光滑紧支集输入，全参数主值已逐点存在，硬截断的 \(L^2\) 收敛又将它识别为 \(R_jf\)。于是可用\subsecref{b2:subsec:180404}中\eqref{b2:eq:18-principal-value-transfer}的稠密性论证，得到所有 \(1<p<\infty\) 输入的几乎处处主值及与连续延拓的一致性。
+\end{proof}
+
+一维时 \(c_1=1/\pi\)，\(R_1\) 就是\cref{b2:thm:18-hilbert-l2}定义的 Hilbert 变换。高维核也保留同样的奇性抵消；但 \(Q_{j,t}\) 在远处的绝对积分具有 \(\int_1^\infty\mathrm dr/r\) 的发散，因而不属于 \(L^1\)。上面的分布识别与截断比较，分别说明了为何仍能定义它，以及为何得到的正是指定的硬主值。
+
+\subsection{共轭函数}
+\label{b2:subsec:180502}
+
+先在一维取实值 \(f\in\mathcal S(\mathbb R)\)，令 \(u(x,t)=P_t*f(x)\)、\(v(x,t)=Q_{1,t}*f(x)\)。核满足
+\[
+ \partial_tQ_{1,t}=\partial_xP_t,
+ \quad \partial_xQ_{1,t}=-\partial_tP_t,
+\]
+因而 \(v_t=u_x\)、\(v_x=-u_t\)。这正是 \(u+\mathrm iv\) 关于 \(z=x+\mathrm it\) 的 Cauchy--Riemann 方程，此时称 \(v\) 为 \(u\) 的\term[tiaohe-gonge]{调和共轭}[harmonic conjugate]。若改用核 \(-Q_{1,t}\)，则应同时把解析函数改为 \(u-\mathrm iv\)，不能只改其中一个符号。
+
+\ProseParagraphBreak
+
+对实值 \(f\in L^p(\mathbb R)\)、\(1<p<\infty\)，应把第二个分量写为 \(v=P_t*Hf\)。在平方交空间上，其乘子与 \(Q_{1,t}*f\) 一致；再用 \(L^p\) 逼近得到一般情形的一致性。固定 \(t>0\) 时两个核的导数提供充分的可积控制，故上述微分关系仍成立，且 \(u,v\) 分别在边界按 \(L^p\) 范数趋于 \(f,Hf\)。例如取 \(a>0\)、\(f=P_a\)，可以完全算出
+\[
+ \begin{gathered}
+ u(x,t)=\frac{a+t}{\pi\bigl((a+t)^2+x^2\bigr)},
+ \quad v(x,t)=\frac{x}{\pi\bigl((a+t)^2+x^2\bigr)},\\
+ u+\mathrm iv=\frac{\mathrm i}{\pi(z+\mathrm ia)}.
+ \end{gathered}
+\]
+前两式由 Poisson 乘子的乘法和共轭核公式得到。最后一个函数的唯一极点位于下半平面，直接显示上半平面中的全纯性；正的 Poisson 边界数据产生偶的实部与奇的共轭分量。
+
+\ProseParagraphBreak
+
+Hilbert 变换还把任意复边界数据分成正负频率。对 \(f\in L^2(\mathbb R;\mathbb C)\)，令
+\[
+ P_+=\frac{I+\mathrm iH}{2},\quad P_-=\frac{I-\mathrm iH}{2}.
+\]
+它们的乘子分别为 \(\mathbf1_{\{\xi>0\}}\)、\(\mathbf1_{\{\xi<0\}}\)，零频单点不影响这个平方空间定义。因此
+\[
+ P_++P_-=I,\quad P_\pm^2=P_\pm,\quad P_+P_-=P_-P_+=0.
+\]
+在 \(L^p(\mathbb R;\mathbb C)\)、\(1<p<\infty\) 中，同样的公式先由 \(H\) 的有界性定义有界算子，再在 \(L^2\cap L^p\) 上核对这些恒等式，并由其稠密性推广。这里的“投影”指有界线性幂等算子；平方空间中它还正交，其他指数下不使用正交性。
+
+\ProseParagraphBreak
+
+若 \(f\in L^2\) 的变换只支于正半轴，则 \(Hf=-\mathrm if\)，故 \(P_t*Hf=-\mathrm iP_t*f\)。\(P_t*f\) 只由正频率的 \(e^{2\pi\mathrm i\xi(x+\mathrm it)}\) 组成；对 \(t>0\)，Cauchy--Schwarz 和指数衰减使这个积分及其各阶导数绝对收敛，从而给出全纯函数。一般实输入满足 \(f+\mathrm iHf=2P_+f\)，它的 Poisson 延拓才成为上述解析函数。原来的全部数据 \(f\) 一般并非这个解析函数本身的边界值。
+
+\ProseParagraphBreak
+
+同一投影还能移动频率阈值。对实数 \(a\)，调制 \(\mathcal M_a f(x)=e^{2\pi\mathrm iax}\cdot f(x)\) 在每个 \(L^p\) 上等距，而 \(\mathcal M_aP_+\mathcal M_{-a}\) 在 \(L^2\) 上的乘子为 \(\mathbf1_{\{\xi>a\}}\)。因此 \(a<b\) 时两者的差给出区间 \((a,b)\) 的 Fourier 投影，并有与位置、长度无关的 \(L^p\) 界。对 \(\mathbb R^d\) 上的矩形 \(\prod_j(a_j,b_j)\)，逐坐标应用这个算子，Fubini 给出至多 \((2\|P_+\|_{p\rightarrow p})^d\) 的范数界。矩形的频率条件可以逐坐标分离；球面的边界方向随位置变化，不能用同一分解自动得到球频率投影的有界性。
+
+\ProseParagraphBreak
+
+在圆周上，正负整数之间还多一个真正的常数模态，不能照搬实直线的零频处理。为避免 \(2\pi\) 的歧义，以下用角变量 \(\theta\) 表示 \(\mathbb R/(2\pi\mathbb Z)\)，测度取 \(\mathrm d\theta/(2\pi)\)。这只是\chapref{b2:ch:02} \(\mathbb T=\mathbb R/\mathbb Z\) 的变量替换。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[周期共轭算子]\label{b2:prop:18-periodic-hilbert}
+在圆周 \(\mathbb R/(2\pi\mathbb Z)\) 上，令
+\(\widehat f(n)=(2\pi)^{-1}\int_{-\pi}^\pi f(\theta)e^{-\mathrm in\theta}\,\mathrm d\theta\)。以乘子 \(-\mathrm i\operatorname{sgn}n\)（\(n=0\) 时取零）定义 \(L^2\) 算子 \(H_{\mathbb T}\)。它在每个 \(L^p\)、\(1<p<\infty\) 上具有兼容的有界延拓，且对这些输入几乎处处有
+\[
+ H_{\mathbb T}f(\theta)=\lim_{\varepsilon\downarrow0}
+ \frac1{2\pi}\int_{\varepsilon<|\alpha|<\pi}
+ \cot(\alpha/2)\cdot f(\theta-\alpha)\,\mathrm d\alpha.
+\]
+若 \(\Pi_0f=\widehat f(0)\) 是常数投影，则
+\[
+ H_{\mathbb T}^2=-I+\Pi_0,
+ \quad
+ \Pi_+=\frac{I+\mathrm iH_{\mathbb T}-\Pi_0}{2},
+ \quad
+ \Pi_-=\frac{I-\mathrm iH_{\mathbb T}-\Pi_0}{2}
+\]
+给出正、负整数频率投影，并满足 \(\Pi_++\Pi_-+\Pi_0=I\)。
+\end{proposition}
+\begin{proof}
+对 \(0<r<1\)，几何级数给出一对正则核
+\[
+ \begin{aligned}
+ P_r(\alpha)&=1+2\sum_{n\geq1}r^n\cos(n\alpha)
+ =\frac{1-r^2}{1-2r\cos\alpha+r^2},\\
+ Q_r(\alpha)&=2\sum_{n\geq1}r^n\sin(n\alpha)
+ =\frac{2r\sin\alpha}{1-2r\cos\alpha+r^2}.
+ \end{aligned}
+\]
+其级数绝对一致收敛，故卷积的 Fourier 系数分别乘 \(r^{|n|}\) 和 \(-\mathrm i\operatorname{sgn}(n)r^{|n|}\)。Parseval 与支配收敛说明 \(Q_r*f\rightarrow H_{\mathbb T}f\) 于 \(L^2\)。对光滑输入，\(Q_r\) 的奇性允许在积分中减去 \(f(\theta)\)；又有 \(|Q_r(\alpha)|\leq C/|\alpha|\)、\(0<|\alpha|\leq\pi\)，而函数差为 \(O(|\alpha|)\)。于是支配收敛识别极限核为 \(\cot(\alpha/2)\)，并识别为所写的对称主值。
+
+为证明周期 \(L^p\) 界，不需另行假定圆周上的奇异积分定理。核差
+\[
+ b(\alpha)=\frac1{2\pi}\cot(\alpha/2)-\frac1{\pi\alpha}
+ \quad(-\pi<\alpha<\pi, \alpha\ne0)
+\]
+在原点可连续补值，且可积。将 \(f\) 作周期延拓，再在 \((-2\pi,4\pi)\) 之外置零，得到实直线函数 \(g\)。对 \(0<\theta<2\pi\)，\(Hg(\theta)\) 中 \(|\alpha|<\pi\) 的部分恰为周期主值的 \(1/(\pi\alpha)\) 部分。其余积分的 \(|\alpha|\geq\pi\)，核有界，总量受有限个周期上的 \(L^1\) 范数控制。核差 \(b\) 的卷积则由 Minkowski 控制，因为圆周平移保持 \(L^p\) 范数。因此实直线的 \(L^p\) 有界性给出
+\(\|H_{\mathbb T}f\|_p\leq C_p\|f\|_p\)，先对光滑输入成立，再由三角多项式稠密性延拓。对一般 \(L^p\) 输入，同一分解中的实直线主值几乎处处存在，两个余项绝对可积，故周期主值也存在，并与延拓一致。
+
+平方关系和三个投影的公式先逐个整数频率核对，再由稠密性推广。特别地，\(H_{\mathbb T}1=0\)，而对正整数 \(n\)，
+\(H_{\mathbb T}\cos(n\theta)=\sin(n\theta)\)、\(H_{\mathbb T}\sin(n\theta)=-\cos(n\theta)\)。常数模态使平方关系多出 \(\Pi_0\)，并非核符号的错误。
+\end{proof}
+
+若周期数据 \(f\in L^p(\mathbb R/(2\pi\mathbb Z);\mathbb R)\)、\(1<p<\infty\)，则其 Poisson 延拓与共轭延拓满足
+\[
+ (P_r*f)(\theta)+\mathrm i(Q_r*f)(\theta)
+ =\widehat f(0)+2\sum_{n>0}\widehat f(n)r^ne^{\mathrm in\theta}.
+\]
+右侧是圆盘变量 \(w=re^{\mathrm i\theta}\) 的幂级数，在每个较小圆盘绝对收敛，因而全纯。常数保留在解析函数中，但其共轭分量为零；这把核计算、频率投影与圆盘解析函数联系起来。
+
+\ProseParagraphBreak
+
+正频率在乘法下封闭，还产生一个具体的乘积恒等式。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[Hilbert 变换的乘积恒等式]\label{b2:prop:18-hilbert-product}
+设 \(f,g\in L^4(\mathbb R;\mathbb C)\)，\(H\) 为本章在 \(L^4\) 与 \(L^2\) 上兼容的 Hilbert 变换。则各乘积属于 \(L^2\)，并在该空间中有
+\[
+ H(f\cdot Hg+g\cdot Hf)=Hf\cdot Hg-fg.
+\]
+\end{proposition}
+\begin{proof}
+先取实值 Schwartz 输入，且 Fourier 变换光滑、紧支撑并避开零频。此时 \(F=f+\mathrm iHf\)、\(G=g+\mathrm iHg\) 的变换均支于正半轴上的紧集。乘积 \(FG\) 的变换是两者的卷积，仍支于正半轴，故 \(H(FG)=-\mathrm iFG\)。写成
+\[
+ FG=(fg-Hf\cdot Hg)+\mathrm i(f\cdot Hg+g\cdot Hf),
+\]
+并利用 \(H\) 保持实值，比较虚部即得所需等式。
+
+下面证明所用输入确实稠密，不能把低频删除当作任意 \(L^4\) 函数已经有的性质。先用实值 \(h\in\mathcal S\) 逼近实值 \(f\in L^4\)。选实偶函数 \(\chi\in C_c^\infty(\mathbb R)\)，在零点某邻域为一。对 \(R>1\)、\(0<\varepsilon<1\)，定义
+\[
+ \widehat h_{R,\varepsilon}(\xi)
+ =\bigl(\chi(\xi/R)-\chi(\xi/\varepsilon)\bigr)\cdot\widehat h(\xi).
+\]
+它光滑、紧支撑且在零频附近为零，逆变换是实值 Schwartz 函数。高频截断 \(\chi(\xi/R)\) 的逆核为 \(R\check\chi(Rx)\)，积分为一且 \(L^1\) 范数一致有界，故由平移连续性得到其卷积趋于 \(h\) 于 \(L^4\)。低频项的逆核则为 \(\varepsilon\check\chi(\varepsilon x)\)，由 Young 有
+\[
+ \|\varepsilon\check\chi(\varepsilon\,\cdot)*h\|_4
+ \leq\varepsilon^{3/4}\|\check\chi\|_4\cdot\|h\|_1
+ \longrightarrow0.
+\]
+这里先选 \(h\in\mathcal S\subset L^1\)，才可使用这个衰减估计。依次选择初始逼近、足够大的 \(R\) 和足够小的 \(\varepsilon\)，就得到所需的实值逼近列 \(f_n,g_n\)。
+
+Hilbert 的 \(L^4\) 连续性使 \(Hf_n\rightarrow Hf\)、\(Hg_n\rightarrow Hg\) 于 \(L^4\)。例如
+\[
+ \|f_n\cdot Hg_n-f\cdot Hg\|_2
+ \leq\|f_n-f\|_4\cdot\|Hg_n\|_4
+  +\|f\|_4\cdot\|Hg_n-Hg\|_4\longrightarrow0.
+\]
+其余乘积同样在 \(L^2\) 中收敛，外层 \(H\) 再用 \(L^2\) 连续性取极限，完成实输入证明。最后将复输入分成实部、虚部；等式两边关于 \(f,g\) 均为复双线性，逐项应用实输入结论即得复值版本。
+\end{proof}
+
+令 \(f=g\) 得 \(2H(f\cdot Hf)=(Hf)^2-f^2\)。它来自正频率的乘法结构，不是把 \(H\) 当作普通求导来使用 Leibniz 法则。\(L^4\) 条件使乘积落在已有强型界的 \(L^2\) 中；仅有两个 \(L^2\) 输入时，乘积只保证 \(L^1\)，不能直接沿用这个范数极限证明。
+
+\subsection{Poisson 延拓}
+\label{b2:subsec:180503}
+
+一维共轭函数由两个分量组成。高维中，一个标量的各个切向导数需要由一个向量来配合，所以自然取 \(u=P_t*f\) 与 \(v_j=P_t*R_jf\)。Poisson 核负责内部光滑化，Riesz 变换则选择各方向的边界共轭数据。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[高维共轭 Poisson 延拓]\label{b2:prop:18-poisson-conjugacy}
+设整数 \(d\geq1\)、\(1<p<\infty\)，\(f\in L^p(\mathbb R^d;\mathbb C)\)，\(R_j\) 是本节的兼容 \(L^p\) Riesz 变换。对 \(t>0\)，以
+\(P_t(x)=c_dt(t^2+|x|^2)^{-(d+1)/2}\)、\(c_d=\Gamma\bigl((d+1)/2\bigr)/\pi^{(d+1)/2}\) 定义
+\[
+ u(x,t)=P_t*f(x),\quad v_j(x,t)=P_t*R_jf(x)\quad(1\leq j\leq d).
+\]
+这些函数在上半空间光滑、调和，并满足
+\[
+ \partial_tv_j=\partial_ju,\quad
+ \sum_{j=1}^d\partial_jv_j=-\partial_tu,\quad
+ \partial_iv_j=\partial_jv_i\quad(1\leq i,j\leq d).
+\]
+此外 \(\|u(\cdot,t)\|_p\leq\|f\|_p\)、\(\|v_j(\cdot,t)\|_p\leq C_{d,p}\|f\|_p\)，并在 \(t\downarrow0\) 时分别按 \(L^p\) 范数趋于 \(f\)、\(R_jf\)。
+\end{proposition}
+\begin{proof}
+先取 Schwartz 输入。\cref{b2:prop:18-riesz-realization}给出的乘子使三个微分关系分别化为
+\[
+ \begin{aligned}
+ (-2\pi|\xi|)\frac{-\mathrm i\xi_j}{|\xi|}
+ &=2\pi\mathrm i\xi_j,\\
+ \sum_j(2\pi\mathrm i\xi_j)\frac{-\mathrm i\xi_j}{|\xi|}
+ &=2\pi|\xi|,\\
+ (2\pi\mathrm i\xi_i)\frac{-\mathrm i\xi_j}{|\xi|}
+ &=(2\pi\mathrm i\xi_j)\frac{-\mathrm i\xi_i}{|\xi|}.
+ \end{aligned}
+\]
+每项都还乘有 \(e^{-2\pi t|\xi|}\cdot\widehat f\)。第一式是切向与法向导数的配合，第二式把向量散度与标量法向变化配对，第三式表示向量场无旋。核满足的调和方程同时给出所有分量的调和性。
+
+对一般 \(L^p\) 输入，固定 \(0<a\leq t\leq b<\infty\)。Poisson 核的任意时空导数均有共同的 \(L^1\) 及 \(L^{p'}\) 控制，并在这些范数中随参数连续；对卷积用 Hölder 与差商极限，可逐阶求导，得到内部光滑性。用 \(L^p\) 中的 Schwartz 逼近以及 \(R_j\) 的 \(L^p\) 连续性，将刚才的关系传给极限。范数界由 \(\|P_t\|_1=1\) 及 Young 得到。边界范数极限则对 \(f\) 和 \(R_jf\) 分别使用\cref{b2:thm:03-approximate-identity}；两者都属于有限指数 \(L^p\)，满足平移连续性这一关键条件。
+\end{proof}
+
+这些关系没有把 \(R_j\) 本身变成平滑算子。它的乘子只改方向和相位，并不压低高频；正高度的 \(e^{-2\pi t|\xi|}\) 才压低高频，产生内部光滑化。边界共轭数据与内部正则性由不同因素控制，因而不能从 \(R_j\) 有界性单独推断输入具有经典导数。
+
+\subsection{椭圆型偏微分方程应用}
+\label{b2:subsec:180504}
+
+Poisson 方程中的另一个问题是：右端只有 \(L^p\) 大小，解的二阶导数能否仍由同一指数控制？\chapref{b2:ch:13}已用密度的 Hölder 增量消去 Newton 二阶核的奇性；现在使用本章的奇异积分界，得到不要求右端连续的范数估计。首先对光滑紧支集源识别算子，再用磨光处理弱解。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[Newton 势的二阶导数]\label{b2:prop:18-newton-second-derivatives}
+设整数 \(d\geq1\)，\(f\in C_c^\infty(\mathbb R^d;\mathbb C)\)。取\cref{b2:thm:05-laplace-fundamental}的标准径向基本解
+\[
+ \Phi_d(x)=
+ \begin{cases}
+ \dfrac{|x|^{2-d}}{(d-2)\sigma_{d-1}},&d\geq3,\\
+ -(2\pi)^{-1}\log|x|,&d=2,\\
+ -|x|/2,&d=1,
+ \end{cases}
+ \quad \sigma_{d-1}=|S^{d-1}|,
+\]
+并令 \(u=\Phi_d*f\)。则对 \(1\leq i,j\leq d\)，在温和分布以及每个 \(L^p\)、\(1<p<\infty\) 中有
+\[
+ \partial_i\partial_j u=R_iR_jf,
+ \quad \|D^2u\|_p\leq C_{d,p}\|f\|_p.
+\]
+这里 \(|D^2u|=(\sum_{i,j}|\partial_i\partial_ju|^2)^{1/2}\)。在平方指数处还有等式
+\[
+ \|D^2u\|_2^2=\sum_{i,j}\|\partial_i\partial_ju\|_2^2=\|f\|_2^2.
+\]
+特别地，对任意 \(w\in C_c^\infty(\mathbb R^d;\mathbb C)\)，有
+\(\|D^2w\|_p\leq C_{d,p}\|\Delta w\|_p\)。
+\end{proposition}
+\begin{proof}
+\Cref{b2:prop:05-fundamental-convolution}保证 \(u\) 光滑且 \(-\Delta u=f\)，\cref{b2:prop:05-tempered-convolution}的增长估计又保证 \(u\) 温和。不能直接把它的变换写成普通函数 \(\widehat f/(4\pi^2|\xi|^2)\)：二维和一维的 \(|\xi|^{-2}\) 在零点不可积，而分布方程还可能允许支撑于零频率的附加项。
+
+先在空间一侧证明 \(w_{ij}=\partial_i\partial_ju\in L^2\)。在任一有界区域上，由光滑性得到局部有界；选 \(A>0\) 使 \(\operatorname{supp}f\subset B(0,A)\)。当 \(d\geq2\)、\(|x|>2A\) 时可在普通积分中求导，且标准基本解满足 \(|D^2\Phi_d(x-y)|\leq C_d|x|^{-d}\)，所以
+\[
+ |w_{ij}(x)|\leq C_d|x|^{-d}\cdot\|f\|_1.
+\]
+其平方在远处可积。一维则直接由方程得到 \(u''=-f\in L^2\)。因此所有维数下 \(w_{ij}\) 都属于 \(L^2\)，这一步没有使用待证的奇异积分估计。
+
+对 \(-\Delta w_{ij}=\partial_i\partial_jf\) 作温和分布 Fourier 变换，使用\eqref{b2:eq:05-distribution-operations}，得到
+\[
+ 4\pi^2|\xi|^2\widehat w_{ij}
+ =-4\pi^2\xi_i\xi_j\widehat f.
+\]
+只在 \(\xi\ne0\) 的开集上除法，得到
+\(\widehat w_{ij}=-\xi_i\xi_j|\xi|^{-2}\cdot\widehat f\)。两边都已经是 \(L^2\) 函数，所以它们的差即使支撑于零点，也只能为零：一个零测集合不支持非零 \(L^2\) 等价类。由此排除了所有可能的零频分布歧义，得到整个空间中的等式。两个 Riesz 符号相乘正是 \(-\xi_i\xi_j/|\xi|^2\)，故 \(w_{ij}=R_iR_jf\)。
+
+各 \(R_j\) 的兼容 \(L^p\) 有界性给出每个二阶导数的估计，有限求和得到 Hesse 矩阵的范数界。在 \(p=2\) 时直接计算
+\[
+ \sum_{i,j}\|w_{ij}\|_2^2
+ =\int_{\mathbb R^d}
+ \frac{\sum_{i,j}\xi_i^2\xi_j^2}{|\xi|^4}
+ \cdot|\widehat f(\xi)|^2\,\mathrm d\xi
+ =\|f\|_2^2.
+\]
+最后若 \(w\in C_c^\infty\)，取 \(f=-\Delta w\)。紧支集允许把导数在分布卷积中移到基本解上，故
+\(\Phi_d*(-\Delta w)=(-\Delta\Phi_d)*w=\delta_0*w=w\)。对这个 Newton 势使用刚才的估计，得到最后一项，而无需声称全空间 Poisson 方程在所有光滑函数中唯一。
+\end{proof}
+
+这个识别还恢复了空间核中的局部项。对 \(d\geq2\)，\cref{b2:lem:13-hessian-kernel}已经证明
+\[
+ \partial_i\partial_j\Phi_d
+ =\operatorname{pv}K_{ij}-\frac{\delta_{ij}}d\delta_0,
+ \quad
+ K_{ij}(x)=\frac1{\sigma_{d-1}}\left(
+ \frac{d x_ix_j}{|x|^{d+2}}-\frac{\delta_{ij}}{|x|^d}\right).
+\]
+因此对上述光滑输入，\(R_iR_jf=\operatorname{pv}K_{ij}*f-(\delta_{ij}/d)f\)。核 \(K_{ij}\) 的球面平均为零；对 \(i=j\) 求和，主值核的迹消失，留下 \(\Delta u=-f\)。这个空间点质量不能删除，也不是 Fourier 乘子在零频率任意补一个数的问题。它对应算子中真实的局部乘法项。
+
+\ProseParagraphBreak
+
+估计控制的是二阶导数，不是整个非齐次 \(W^{2,p}\) 范数。二维若 \(\int f\ne0\)，\chapref{b2:ch:05}的远场计算给出 \(u(x)=-(\int f)\log|x|/(2\pi)+O(|x|^{-1})\)，所以 \(u\) 本身不在任何有限指数的全空间 \(L^p\) 中。基本解的标准归一化也不能任意替换：加调和多项式虽不改变方程，却可能改变二阶导数及其全空间可积性。
+
+\ProseParagraphBreak
+
+对局部弱解，必须先把全空间估计应用于真正满足其条件的紧支集函数。截断产生的一阶交换项也要保留。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[内部二阶估计]\label{b2:prop:18-interior-w2p}
+设整数 \(d\geq1\)、\(1<p<\infty\)、\(r>0\)、\(x_0\in\mathbb R^d\)，并记 \(B_s=B(x_0,s)\)。若 \(u\in W^{1,p}(B_{2r};\mathbb C)\)、\(f\in L^p(B_{2r};\mathbb C)\)，且 \(-\Delta u=f\) 在 \(B_{2r}\) 中按分布成立，则 \(u\in W^{2,p}(B_r)\)，并有
+\[
+ \|D^2u\|_{L^p(B_r)}
+ \leq C_{d,p}\left(
+ \|f\|_{L^p(B_{2r})}
+ +r^{-1}\|\nabla u\|_{L^p(B_{2r})}
+ +r^{-2}\|u\|_{L^p(B_{2r})}\right).
+\]
+常数不依赖 \(u,f,x_0,r\)。
+\end{proposition}
+\begin{proof}
+取实值 \(\eta\in C_c^\infty(B_{2r})\)，在 \(B_r\) 为一，且 \(|\nabla\eta|\leq C_d/r\)、\(|D^2\eta|\leq C_d/r^2\)。将 \(v=\eta\cdot u\) 在球外延为零，得到紧支集的全空间 \(W^{1,p}\) 函数。分布乘积法则给出
+\[
+ -\Delta v=\eta\cdot f-2\nabla\eta\cdot\nabla u-u\cdot\Delta\eta
+ \eqqcolon F.
+\]
+由于截断的支集紧含于球内，延零不会产生边界分布。右端是紧支集的 \(L^p\) 函数，并满足
+\[
+ \|F\|_p\leq C_d\left(
+ \|f\|_{L^p(B_{2r})}
+ +r^{-1}\|\nabla u\|_{L^p(B_{2r})}
+ +r^{-2}\|u\|_{L^p(B_{2r})}\right).
+\]
+
+此时尚未知道 \(D^2v\in L^p\)，不能直接把 \(v\) 当作前一命题中的光滑输入。取非负 \(\rho\in C_c^\infty\)、\(\int\rho=1\)，令 \(\rho_\varepsilon(x)=\varepsilon^{-d}\rho(x/\varepsilon)\)，并置 \(v_\varepsilon=\rho_\varepsilon*v\)、\(F_\varepsilon=\rho_\varepsilon*F\)。它们均光滑紧支撑，满足 \(-\Delta v_\varepsilon=F_\varepsilon\)。由前一命题，
+\[
+ \|D^2v_\varepsilon\|_p\leq C_{d,p}\|F_\varepsilon\|_p
+ \leq C_{d,p}\|F\|_p.
+\]
+还可以对 \(v_\varepsilon-v_\delta\) 使用同一估计，得到
+\[
+ \|D^2v_\varepsilon-D^2v_\delta\|_p
+ \leq C_{d,p}\|F_\varepsilon-F_\delta\|_p\longrightarrow0.
+\]
+逼近恒等给出 \(F_\varepsilon\rightarrow F\) 于 \(L^p\)，所以 Hesse 矩阵在 \(L^p\) 中有强极限。同时 \(v_\varepsilon\rightarrow v\) 于 \(L^p\)，故对紧支集测试函数分部积分后取极限，该矩阵极限正是 \(D^2v\) 的弱导数。于是 \(v\in W^{2,p}\)，保留同一个范数界；在 \(B_r\) 中 \(v=u\)，得到结论。
+\end{proof}
+
+这一结论的起点是指定的 \(W^{1,p}\) 解。若最初只有 \(u\in H^1\)、\(f\in L^2\)，可以直接取 \(p=2\)；要得到更高指数，仍须先改善右端和一阶导数的可积性。截断公式本身不提供任意 \(p\) 的自举起点。以上也都是恒系数算子的内部估计，边界正则性、变系数及端点 \(p=1,\infty\) 还需各自的条件与论证。

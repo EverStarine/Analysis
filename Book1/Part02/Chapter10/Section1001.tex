@@ -11,7 +11,7 @@
 \label{b1:subsec:100101}
 
 \begin{definition}\label{b1:def:lp-space}
-在全体可测函数 \(X\rightarrow\mathbb K\) 中，规定 \(f\sim g\) 当且仅当 \(f=g\) 几乎处处，并用 \([f]\) 表示 \(f\) 的等价类。对 \(1\leq p<\infty\)，定义
+设 \((X,\mathcal A,\mu)\) 是测度空间，\(\mathbb K=\mathbb R\) 或 \(\mathbb C\)，各 Lebesgue 空间取值于 \(\mathbb K\)。在全体可测函数 \(X\rightarrow\mathbb K\) 中，规定 \(f\sim g\) 当且仅当 \(f=g\) 几乎处处，并用 \([f]\) 表示 \(f\) 的等价类。对 \(1\leq p<\infty\)，定义
 \[
  L^p(\mu)\coloneqq\left\{\,[f]\ \middle|\ \int_X|f|^p\,\mathrm d\mu<\infty\,\right\}.
 \]
@@ -37,7 +37,7 @@
 \label{b1:subsec:100102}
 
 \begin{definition}\label{b1:def:essential-supremum}
-对可测函数 \(f\)，定义其模的\term[benxing-shangquejie]{本性上确界}[essential supremum]为
+设 \((X,\mathcal A,\mu)\) 是测度空间，\(\mathbb K=\mathbb R\) 或 \(\mathbb C\)，各 Lebesgue 空间取值于 \(\mathbb K\)。对可测函数 \(f\)，定义其模的\term[benxing-shangquejie]{本性上确界}[essential supremum]为
 \[
  \operatorname*{ess\,sup}_{X}|f|
  \coloneqq\inf\bigl\{\,M\geq0\mid\mu(\{|f|>M\})=0\,\bigr\},
@@ -101,7 +101,7 @@
 \end{proof}
 
 \begin{theorem}[Hölder]\label{b1:thm:lp-holder}
-若 \(1\leq p\leq\infty\)、\(f\in L^p(\mu)\)、\(g\in L^{p'}(\mu)\)，则 \(fg\in L^1(\mu)\)，并有\term[holder-budengshi]{Hölder 不等式}[Hölder's inequality]
+设 \((X,\mathcal A,\mu)\) 是测度空间，\(\mathbb K=\mathbb R\) 或 \(\mathbb C\)，各 Lebesgue 空间取值于 \(\mathbb K\)。记 \(p'\) 为 \(p\) 的共轭指数。若 \(1\leq p\leq\infty\)、\(f\in L^p(\mu)\)、\(g\in L^{p'}(\mu)\)，则 \(fg\in L^1(\mu)\)，并有\term[holder-budengshi]{Hölder 不等式}[Hölder's inequality]
 \[
  \|fg\|_1\leq\|f\|_p\cdot\|g\|_{p'}.
 \]
@@ -131,11 +131,40 @@ Hölder 不等式也解释了有限测度为何会改变不同 \(L^p\) 空间的
 \]
 当 \(q<\infty\) 时，对 \(|f|^r\) 与常函数 \(1\) 使用共轭指数 \(q/r\) 和 \(q/(q-r)\)，再取 \(r\) 次方根便得到该式；当 \(q=\infty\) 时直接积分 \(|f|^r\leq\|f\|_\infty^r\)。零测度空间中的结论自然退化为零空间。这里常函数 \(1\) 的可积性不可忽略：在 \(\mathbb R\) 上，局部奇性和远处衰减分别约束不同的指数，并不存在统一的同向包含关系。
 
+知道一个函数在两个指数下的大小，也能控制中间指数；这里不需要测度有限。下面的估计以后会把较弱范数中的收敛与较强范数中的一致有界性结合起来。
+
+\begin{proposition}[指数插值]\label{b1:prop:lp-interpolation}
+设 \((X,\mathcal A,\mu)\) 是测度空间，\(\mathbb K=\mathbb R\) 或 \(\mathbb C\)，各 Lebesgue 空间取值于 \(\mathbb K\)。设 \(1\le p<r\le\infty\)、\(0<\theta<1\)，并令
+\[
+ \frac1q=\frac\theta p+\frac{1-\theta}r.
+\]
+对任意测度空间上的 \(f\in L^p(\mu)\cap L^r(\mu)\)，有
+\[
+ \|f\|_q\le\|f\|_p^\theta\cdot\|f\|_r^{1-\theta}.
+\]
+\end{proposition}
+\begin{proof}
+若 \(r<\infty\)，则 \(p<q<r\)，且
+\(a=p/(\theta q)>1\)、\(b=r/((1-\theta)q)>1\) 满足 \(1/a+1/b=1\)。对因子 \(|f|^{\theta q}\) 和 \(|f|^{(1-\theta)q}\) 使用 Hölder 不等式，得到
+\[
+ \int_X|f|^q\,\mathrm d\mu
+ \le\left(\int_X|f|^p\,\mathrm d\mu\right)^{\theta q/p}
+ \left(\int_X|f|^r\,\mathrm d\mu\right)^{(1-\theta)q/r}.
+\]
+取 \(q\) 次方根即得结论，包括某一范数为零的情形。若 \(r=\infty\)，则 \(\theta=p/q\)。利用几乎处处成立的本性界，直接积分
+\[
+ |f|^q\le |f|^p\cdot\|f\|_\infty^{q-p},
+\]
+再取 \(q\) 次方根即可。
+\end{proof}
+
+倒数指数 \(1/q\) 是 \(1/p\) 与 \(1/r\) 的加权平均，这正好使上述两个 Hölder 指数互为共轭。特别地，若 \(\|f_n\|_p\to0\) 而 \(\sup_n\|f_n\|_r<\infty\)，则每个严格位于两端之间的 \(q\) 都满足 \(\|f_n\|_q\to0\)；趋零因子保留的幂次是 \(\theta>0\)，端点 \(q=r\) 则没有这一保证。
+
 \subsection{Minkowski 不等式}
 \label{b1:subsec:100104}
 
 \begin{theorem}[Minkowski]\label{b1:thm:lp-minkowski}
-若 \(1\leq p\leq\infty\)，则对 \(f,g\in L^p(\mu)\)，有\term[minkowski-budengshi]{Minkowski 不等式}[Minkowski's inequality]
+设 \((X,\mathcal A,\mu)\) 是测度空间，\(\mathbb K=\mathbb R\) 或 \(\mathbb C\)，各 Lebesgue 空间取值于 \(\mathbb K\)。若 \(1\leq p\leq\infty\)，则对 \(f,g\in L^p(\mu)\)，有\term[minkowski-budengshi]{Minkowski 不等式}[Minkowski's inequality]
 \[
  \|f+g\|_p\leq\|f\|_p+\|g\|_p.
 \]
@@ -165,7 +194,7 @@ Hölder 不等式也解释了有限测度为何会改变不同 \(L^p\) 空间的
 \term[riesz-fischer-dingli]{Riesz--Fischer 定理}[Riesz--Fischer theorem]说明，上述误差尺度不仅定义了范数，而且不会使范数 Cauchy 列的极限逸出空间。有限指数的证明先把一个子列的增量安排成可和级数，再用积分控制它的逐点总变动。
 
 \begin{theorem}[Riesz--Fischer]\label{b1:thm:lp-complete}
-对任意测度空间和 \(1\leq p\leq\infty\)，\(L^p(\mu)\) 都是 Banach 空间。
+设 \((X,\mathcal A,\mu)\) 是测度空间，\(\mathbb K=\mathbb R\) 或 \(\mathbb C\)，各 Lebesgue 空间取值于 \(\mathbb K\)。对任意测度空间和 \(1\leq p\leq\infty\)，\(L^p(\mu)\) 都是 Banach 空间。
 \end{theorem}
 \begin{proof}
 先设 \(p<\infty\)，取 \(L^p\) 中的 Cauchy 列 \((f_n)\) 并为每项选择可测代表。可递增选取指标 \(n_k\)，使

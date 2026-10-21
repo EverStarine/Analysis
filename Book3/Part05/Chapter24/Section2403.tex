@@ -2,52 +2,220 @@
 \section{\texorpdfstring{\(\theta\)}{\AnalysisPdfTheta} 级数作为生成函数}
 \label{b3:sec:2403}
 
-系数计数必须先约定是否区分顺序和符号。theta 乘法自动区分各坐标，而且正负整数分别出现，因此它计算的是有序带符号表示数。
+前两节把 theta 级数看作全纯函数，研究参数变换、乘积和零点。本节换一个问题：把若干个这样的级数相乘后，每个系数到底数了什么？这个问题必须先说清顺序、符号和零坐标，否则同一个小整数就会有几种不同的“表示数”。随后再用保持平方长度的线性变换，把一个函数恒等式还原为可以逐点核对的计数对应。
 
 \subsection{生成函数}
 \label{b3:subsec:240301}
 
-设 \(r_k(n)=\#\{(a_1,\ldots,a_k)\in\mathbb Z^k:\sum a_j^2=n\}\)。每个坐标绝对值不超过 \(\sqrt n\)，故数目有限。对 \(|q|<1\)，绝对收敛保证
+\begin{definition}[有序带符号的平方和表示数]\label{b3:def:24-square-representations}
+设 \(k\ge1\) 为整数，\(n\ge0\) 为整数。定义
 \[
-\theta_3(0,\tau)^k=\sum_{n\ge0}r_k(n)q^n.
+ r_k(n)\coloneqq
+ \#\left\{(a_1,\ldots,a_k)\in\mathbb Z^k:
+              a_1^2+\cdots+a_k^2=n\right\}.
 \]
-此处 \(r_k(0)=1\)。例如 \(r_2(1)=4\)、\(r_4(1)=8\)，分别选择非零坐标的位置和它的符号，不能把它们解释为不计顺序的分拆数。
+坐标的次序属于所数对象的一部分；非零坐标的两个符号分别计数，零坐标只有一种取值。特别地，\(r_k(0)=1\)。
+\end{definition}
+\symidx{\(r_k(n)\)：整数 \(n\) 的有序带符号 \(k\) 平方和表示数}
+
+由于每个坐标满足 \(|a_j|\le\sqrt n\)，定义中的集合有限。比如 \(r_2(1)=4\)，四个向量是 \((1,0),(-1,0),(0,1),(0,-1)\)；而 \(r_2(2)=4\)，对应 \((\pm1,\pm1)\)。当平方数相同或某些坐标为零时，不能把一种无序表示一概乘以 \(2^k k!\)：这个乘数会重复计算相同坐标的排列，并为零坐标制造并不存在的新符号。
+
+\ProseParagraphBreak
+
+写
+\[
+ A(q)=\sum_{a\in\mathbb Z}q^{a^2}
+     =1+2q+2q^4+2q^9+\cdots,\qquad |q|<1.
+\]
+这里暂时把 \(q\) 视为单位圆盘中的独立复变量，令 \(A(0)=1\)；当 \(q=e^{\pi\mathrm{i}\tau}\)、\(\tau\in\mathfrak H\) 时，\(A(q)=\theta_3(0,\tau)\)。指数 \(a^2\) 是整数，所以这个表示与选取哪一个 \(\tau\) 无关。级数 \(A(q)^k\) 的作用，是同时记录所有 \(r_k(n)\)，而不必逐个重新枚举。
+
+\begin{proposition}[平方和的生成函数]\label{b3:prop:24-square-generating}
+对每个整数 \(k\ge1\) 及每个复数 \(q\) 满足 \(|q|<1\)，有绝对收敛的恒等式
+\[
+ A(q)^k=\sum_{n=0}^{\infty}r_k(n)q^n.
+\]
+两侧在单位圆盘的每个紧子集上一致收敛。因此对 \(\tau\in\mathfrak H\)、\(q=e^{\pi\mathrm{i}\tau}\)，有
+\[
+ \theta_3(0,\tau)^k=\sum_{n=0}^{\infty}r_k(n)q^n.
+\]
+\end{proposition}
+\begin{proof}
+固定 \(0<r<1\)。因为 \(a^2\ge |a|\) 对所有整数 \(a\) 成立，
+\[
+ \sum_{a\in\mathbb Z}r^{a^2}\le 1+2\sum_{a\ge1}r^a<\infty.
+\]
+由非负级数的乘法及逐次求和，
+\[
+ \sum_{(a_1,\ldots,a_k)\in\mathbb Z^k}
+       r^{a_1^2+\cdots+a_k^2}
+ =\left(\sum_{a\in\mathbb Z}r^{a^2}\right)^k<\infty.
+\]
+这同时控制 \(|q|\le r\) 上乘积展开的全部项，故可以按照整数 \(n=\sum a_j^2\) 重新分组。第 \(n\) 组有限，而且其中每一项都等于 \(q^n\)，总和正是 \(r_k(n)q^n\)。同一个控制也给出两种求和方式的绝对一致收敛。
+\end{proof}
+
+例如先不使用任何表示数公式，只把 \(A(q)^k\) 展开到三次项，就得到
+\[
+ r_k(1)=2k,\qquad
+ r_k(2)=4\binom{k}{2},\qquad
+ r_k(3)=8\binom{k}{3},
+\]
+其中 \(k<j\) 时约定 \(\binom{k}{j}=0\)。这些层只能由若干个 \(1^2\) 与零组成；到了 \(n=4\)，还须加入一个 \(2^2\)，于是
+\[
+ r_k(4)=2k+16\binom{k}{4}.
+\]
+特别地，\(r_4(4)=8+16=24\)。这说明系数中可能同时存在几种不同的坐标形状，不能只盯着一种表示。
 
 \subsection{乘积与卷积}
 \label{b3:subsec:240302}
 
-乘法给 \(r_{k+\ell}(n)=\sum_{m=0}^n r_k(m)r_\ell(n-m)\)。这是把前 \(k\) 个坐标与后 \(\ell\) 个坐标分别计数的精确分解。
+把一个向量分成前后两段，就得到表示数之间最直接的运算。它既有集合层面的证明，也有解析生成函数的证明；两种说明相互核对了乘积中的系数。
+
+\begin{proposition}[平方和表示数的卷积]\label{b3:prop:24-square-convolution}
+设 \(k,\ell\ge1\)、\(n\ge0\) 均为整数。则
+\[
+ r_{k+\ell}(n)=\sum_{m=0}^{n}r_k(m)r_\ell(n-m).
+\]
+\end{proposition}
+\begin{proof}
+对一个满足 \(\sum_{j=1}^{k+\ell}a_j^2=n\) 的整数向量，前 \(k\) 个坐标的平方和唯一确定一个整数 \(m\in\{0,\ldots,n\}\)。固定 \(m\) 后，前段有 \(r_k(m)\) 种选择，后段有 \(r_\ell(n-m)\) 种选择，二者独立。不同 \(m\) 对应不交的集合，合并即得公式。也可将
+\(A^{k+\ell}=A^kA^\ell\) 按幂级数的 Cauchy 乘积展开；上一命题已经给出所需的绝对收敛条件。
+\end{proof}
+
+以 \(r_4(2)\) 为例，按两个坐标一组拆开，
+\[
+ r_4(2)=r_2(0)r_2(2)+r_2(1)r_2(1)+r_2(2)r_2(0)
+       =4+16+4=24.
+\]
+中间的十六种对应前后两组各有一个 \(\pm1\)；首尾两项对应两个非零坐标都落在同一组。若漏掉 \(r_2(0)=1\)，便会把这八种表示一起漏掉。
 
 \ProseParagraphBreak
 
-若改用 \(\theta_4\)，每个坐标带符号 \((-1)^{a_j}\)。由于 \(a_j^2\equiv a_j\pmod2\)，同一层 \(\sum a_j^2=n\) 上总符号恒为 \((-1)^n\)。因此 \(\theta_4^k=\sum(-1)^nr_k(n)q^n\)。它筛选奇偶层，却不单独筛选每个坐标的奇偶模式。
+\(\theta_4\) 的系数还携带一个符号。对 \(\tau\in\mathfrak H\)、\(q=e^{\pi\mathrm{i}\tau}\)，绝对收敛允许展开
+\[
+ \theta_4(0,\tau)^k
+ =\sum_{a\in\mathbb Z^k}(-1)^{a_1+\cdots+a_k}q^{|a|^2}
+ =\sum_{n\ge0}(-1)^n r_k(n)q^n,
+\]
+因为每个整数都有 \(a_j^2\equiv a_j\pmod2\)。所以
+\[
+ \frac{\theta_3^k+\theta_4^k}{2}
+   =\sum_{\substack{n\ge0\\n\text{ 偶}}}r_k(n)q^n,\qquad
+ \frac{\theta_3^k-\theta_4^k}{2}
+   =\sum_{\substack{n\ge0\\n\text{ 奇}}}r_k(n)q^n.
+\]
+此处的下标 \(\theta_j\) 表示 \(\theta_j(0,\tau)\)。这个符号筛选的是总平方和的奇偶性；它不要求每个坐标分别为奇数或偶数。例如在总平方和为偶数的层中，既可能所有坐标为偶数，也可能恰有两个坐标为奇数。
 
-\subsection{系数比较}
+\subsection{系数比较、同余筛选与平均计数}
 \label{b3:subsec:240303}
 
-在四个变量中还有一个有用的精确变换。对 \(a=(a_1,a_2,a_3,a_4)\) 用正交矩阵
-\[
-\frac12\begin{pmatrix}1&1&1&1\\1&1&-1&-1\\1&-1&1&-1\\1&-1&-1&1\end{pmatrix}
-\]
-变换为 \(b\)。当 \(\sum a_j\) 为奇数时，所有 \(b_j\in\mathbb Z+1/2\)；反向变换相同。半整数四元组又分为两类：写 \(b_j=m_j+1/2\)，按 \(\sum m_j\) 的奇偶分。只有其中一类在逆变换下给整数向量；将一个 \(b_j\) 改号交换两类且保持平方和。故全部半整数向量的计数恰为奇数平方和整数向量计数的两倍。比较级数得到
+上一小节已经把 \(\theta_3^4-\theta_4^4\) 解释为奇数层表示数的两倍。另一方面，\(\theta_2^4\) 数的是四个半整数的平方和。两者为什么会相等？关键是一个把整数坐标与半整数坐标交换的保长变换。
+
+\begin{proposition}[Jacobi 四次恒等式]\label{b3:prop:24-quartic-identity}
+设 \(\tau\in\mathfrak H\)，\(\theta_j=\theta_j(0,\tau)\) 为本章定义的 Jacobi theta 常数。则
 \begin{equation}\label{b3:eq:24-quartic-identity}
-\theta_3^4=\theta_4^4+\theta_2^4.
+ \theta_3^4=\theta_4^4+\theta_2^4.
 \end{equation}
-这个推导既说明常数二从何而来，也说明为什么四次方出现。它不是把前几项相同当成无穷恒等式，而是给出保持范数的对应。
+\end{proposition}
+\begin{proof}
+记
+\[
+ H=\frac12
+ \begin{pmatrix}
+ 1&1&1&1\\
+ 1&1&-1&-1\\
+ 1&-1&1&-1\\
+ 1&-1&-1&1
+ \end{pmatrix}.
+\]
+各行的平方长度为一，不同行的内积为零，且矩阵对称。因此
+\(H^{\mathsf T}H=H^2=I\)，映射 \(a\mapsto Ha\) 保持平方长度，逆映射也是 \(H\)。
+
+令
+\[
+ \begin{aligned}
+ \mathcal O&=\{a\in\mathbb Z^4:\ \textstyle\sum_j a_j\text{ 为奇数}\},\\
+ \mathcal H_\varepsilon&=
+ \left\{m+\left(\tfrac12,\tfrac12,\tfrac12,\tfrac12\right):
+ m\in\mathbb Z^4,\ \textstyle\sum_jm_j\equiv\varepsilon\pmod2\right\}.
+ \end{aligned}
+\]
+其中 \(\varepsilon\in\{0,1\}\)。这三个集合中的条件都以坐标和书写，便于检查变换；对整数向量，坐标和为奇数等价于平方和为奇数。
+
+若 \(a\in\mathcal O\)，\(Ha\) 的每个坐标都是奇整数的一半，因为四行的分子模二均等于 \(\sum a_j\)。写 \(Ha=m+(1/2,\ldots,1/2)\)，则
+\[
+ \sum_j m_j=\sum_j(Ha)_j-2=2a_1-2
+\]
+为偶数，所以 \(H\mathcal O\subset\mathcal H_0\)。反过来，若 \(b=m+(1/2,\ldots,1/2)\in\mathcal H_0\)，则
+\[
+ (Hb)_1=\frac{m_1+m_2+m_3+m_4+2}{2},\qquad
+ (Hb)_2=\frac{m_1+m_2-m_3-m_4}{2},
+\]
+其余两坐标只是改变减号的位置。所有分子均为偶数，故 \(Hb\in\mathbb Z^4\)；并且
+\[
+ \sum_j(Hb)_j=2b_1=2m_1+1
+\]
+为奇数。结合 \(H^2=I\)，得到 \(\mathcal O\) 与 \(\mathcal H_0\) 之间保持平方长度的双射。
+
+还须解释为什么不是只有一半的 \(\theta_2^4\) 出现。将 \(b\) 的第一坐标改号，相应的 \(m_1\) 变成 \(-m_1-1\)，其余 \(m_j\) 不变。这是 \(\mathcal H_0\) 与 \(\mathcal H_1\) 之间保持平方长度的双射，而且它的逆映射仍是同一次改号。因此
+\[
+ \sum_{b\in(\mathbb Z+1/2)^4}q^{|b|^2}
+ =2\sum_{a\in\mathcal O}q^{|a|^2}
+ =2\sum_{\substack{n\ge0\\n\text{ 奇}}}r_4(n)q^n
+ =\theta_3^4-\theta_4^4.
+\]
+左边正是 \(\theta_2^4\)。所有级数在 \(|q|<1\) 时绝对收敛，且
+\[
+ \left|m+\left(\tfrac12,\ldots,\tfrac12\right)\right|^2
+ =\sum_{j=1}^4m_j(m_j+1)+1
+\]
+总是奇整数，所以此处也没有分数幂的分支歧义。
+\end{proof}
+
+这个证明把系数相等落实为每一层中的明确对应。特别地，系数二来自半整数向量的两类，四次方来自这个四维保长矩阵；只核对有限多个 Taylor 系数看不出这些原因。开头的 \(q\) 项也提供一个简单检查：\(\theta_2^4=16q+\cdots\)，而 \(\theta_3^4-\theta_4^4\) 的 \(q\) 项为 \(2r_4(1)q=16q\)。
 
 \ProseParagraphBreak
 
-生成函数还可以筛选同余条件。若 \(A(q)=\sum a_nq^n\)，\(\zeta_m=e^{2\pi\mathrm{i}/m}\)，则有限 Fourier 正交关系给
+奇偶筛选可以推广到任意模数。其原理只用有限等比数列求和，不需要已经学过一般有限群的 Fourier 分析。
+
+\begin{proposition}[剩余类筛选]\label{b3:prop:24-residue-filter}
+设 \(A(q)=\sum_{n\ge0}a_nq^n\) 在 \(|q|<1\) 内收敛，\(m\ge1\) 为整数，\(b\in\mathbb Z\)，并令 \(\zeta_m=e^{2\pi\mathrm{i}/m}\)。则对所有 \(|q|<1\)，
 \[
  \frac1m\sum_{j=0}^{m-1}\zeta_m^{-bj}A(\zeta_m^j q)
- =\sum_{n\equiv b\ (m)}a_nq^n.
+ =\sum_{\substack{n\ge0\\n\equiv b\ ({\rm mod}\ m)}}a_nq^n.
 \]
-交换有限和与级数不需要新的收敛定理；只要 \(|q|<1\)，每个旋转参数仍在原收敛圆盘内。对平方和而言，这个操作筛选总平方和的剩余类。若要每个坐标分别满足某些同余条件，则须先对每个一维 theta 因子筛选，再相乘。两个程序统计的集合不同，不能仅凭最后都含若干符号因子就互换。
-\ProseParagraphBreak
-四维正交变换中，半整数层的两类也可直接检查。写 \(b_j=m_j+1/2\)，逆变换的第一坐标为 \((\sum m_j+2)/2\)，其余坐标具有同样的整数奇偶条件。因此恰在 \(\sum m_j\) 偶数时，逆像为整数四元组；这时逆像的坐标和为 \(2b_1\)，必为奇数。把一个 \(b_j\) 改号，相应的整数 \(m_j\) 变成 \(-m_j-1\)，总和奇偶翻转，所以两类等势且逐层保范数。这样便把前述系数比较中的二倍关系落实为显式双射，而非只比较总的无穷集合大小。
-\ProseParagraphBreak
-平均表示数可以从几何体积作一个独立的数量级检验。令 \(A_k(R)\) 为 \(\mathbb Z^k\) 中长度不超过 \(R\) 的点数。以每个格点为中心放置边长一的闭立方体，它们内部不交，每个体积一。所取立方体的并包含半径 \(R-\sqrt{k}/2\) 的球，又包含在半径 \(R+\sqrt{k}/2\) 的球内。因此
+\end{proposition}
+\begin{proof}
+有限求和可以与收敛幂级数交换。第 \(n\) 个系数乘上
 \[
- A_k(R)=V_kR^k+O_k(R^{k-1}),
+ \frac1m\sum_{j=0}^{m-1}\zeta_m^{j(n-b)}
+ =\begin{cases}1,&m\mid n-b,\\0,&m\nmid n-b.\end{cases}
 \]
-其中 \(V_k\) 为单位球体积。这个估计不控制单个球壳上的点数，却控制从0累计到 \(R^2\) 的表示数。令 \(X=R^2\)，即为 \(\sum_{n\le X}r_k(n)=V_kX^{k/2}+O_k(X^{(k-1)/2})\)。平方和问题中，逐项精确公式与累计体积估计是不同层次的结果。
+后一种情形用公比不为一的有限等比和公式即可，前一种情形则每项都是一。
+\end{proof}
+
+回到本节的平方和级数 \(A(q)=\sum_{a\in\mathbb Z}q^{a^2}\)，把筛选公式用于 \(A(q)^k\)，筛出的是总平方和 \(n\) 的剩余类。若要求每个坐标都为偶数，应直接把每个一维因子换成
+\(\sum_{a\in2\mathbb Z}q^{a^2}=A(q^4)\)，得到 \(A(q^4)^k\)。这与“总平方和能被四整除”不同：在四维中，向量 \((1,1,1,1)\) 满足后一条件，却不满足前一条件。坐标条件与总能量条件必须在构造生成函数时就区分。
+
+\ProseParagraphBreak
+
+精确表示数通常会受同余条件影响，而把许多相邻层累加以后，最先出现的是球体积。下面的估计提供一个独立于 theta 恒等式的数量级检查。
+
+\begin{proposition}[平方和的累计计数]\label{b3:prop:24-average-counting}
+设 \(k\ge1\) 为固定整数，\(V_k\) 为 \(\mathbb R^k\) 中欧氏单位球的 Lebesgue 体积。则当实数 \(X\to+\infty\) 时，
+\[
+ \sum_{\substack{n\in\mathbb Z\\0\le n\le X}}r_k(n)
+ =V_kX^{k/2}+O_k\!\left(X^{(k-1)/2}\right).
+\]
+下标 \(k\) 表示误差常数可以依赖维数 \(k\)。
+\end{proposition}
+\begin{proof}
+令 \(A_k(R)=\#\{a\in\mathbb Z^k:|a|\le R\}\)。以这些格点为中心放置边长一的闭立方体，它们内部不交，边界的体积为零，因此并集体积为 \(A_k(R)\)。记 \(\delta=\sqrt{k}/2\)。每个立方体中的点距其中心至多 \(\delta\)，故并集包含在半径 \(R+\delta\) 的球内。反过来，若 \(|x|\le R-\delta\)，对每个坐标取最近整数得到 \(a\)，则
+\(|x-a|\le\delta\)、\(|a|\le R\)，所以 \(x\) 落在所取立方体中。对 \(R\ge\delta\)，有
+\[
+ V_k(R-\delta)^k\le A_k(R)\le V_k(R+\delta)^k.
+\]
+固定维数后展开两端，得到 \(A_k(R)=V_kR^k+O_k(R^{k-1})\)。取 \(R=\sqrt X\)，并按平方长度分组，便得结论。
+\end{proof}
+
+例如二维的累计量是 \(\pi X+O(\sqrt X)\)，四维的累计量是
+\(\frac{\pi^2}{2}X^2+O(X^{3/2})\)。这个结论不能通过对 \(X\) 求导来产生逐项公式；甚至将 \(X=n\) 与 \(X=n-1\) 的估计相减，两个误差也可能大于所期待的单层主项。二维中 \(n\equiv3\pmod4\) 时根本没有表示，因为平方模四只能是零或一，而累计量仍有上述平滑主项。下一节的约数和公式将给出单层的精确结果；那比球体积估计包含了更多算术信息。

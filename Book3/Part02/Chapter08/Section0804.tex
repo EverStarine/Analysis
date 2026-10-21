@@ -2,93 +2,376 @@
 \section{四边形与共形模}
 \label{b3:sec:0804}
 
-把边界分成四个标记弧，极值长度还给出四边形的共形模。它同时提供边界分离的估计，并在非共形变换下变成畸变控制。
+圆环用两个边界分支区分连接方向，单连通区域则可以用四个边界标记指定两对相对边。把这样一个区域化为矩形以后，极值长度就是宽高比。本节先证明这个参数如何由曲线族确定，再用密度构造估计变宽通道和相互隔开的并联通道。最后考察非共形的光滑变换：长度沿不同方向伸缩不一，但最大、最小伸长之比仍能控制共形模的变化。
 
 \subsection{四边形}
 \label{b3:subsec:080401}
 
-一个标记四边形是 Jordan 区域加四个循环有序边界点，依次将四条边界弧记为左、上、右、下。更一般可用四个循环有序素端。第7章的边界对应和矩形积分说明，它可唯一地共形映为宽 \(a\)、高 \(b\) 的矩形，保持指定边次序，尺度可以任取。
-
-\ProseParagraphBreak
-四边形不是要求边界由四条直线构成；名称表示四个标记。旋转标记一位会交换所连接的两对边，所以必须把标记作为对象的数据保存。正方形对两种方向恰好相同，一般矩形则不同。
-
-\ProseParagraphBreak
-矩形的连接计算有一项基本的选择。对 \(0<x<a,0<y<b\)，左右连接族的极值长度为 \(a/b\)，上下连接族为 \(b/a\)。常密度给下界；沿所有水平段对任意密度作 Cauchy--Schwarz，再对高度积分给上界。上下方向交换同理。两者乘积1，来自这张矩形的正交结构。一般标记 Jordan 四边形先共形映到对应矩形，才能把互为倒数的两项结果传过去；不能对任意两族未经证明就宣布倒数关系。
-
-\ProseParagraphBreak
-给定四个按循环次序排列的边界标记，哪两个标记间的边作连接边是资料的一部分。将标记循环移动一次会交换矩形长宽；移动两次只是交换同一对边，模量不变。把四个点的顺序打乱可能破坏边界循环次序，不能期待同一个定向保留的共形四边形对应。计算中出现同一个交比的多个变换值，也应先核对标记，而不是把它们当作同一个数的矛盾答案。
-
-\ProseParagraphBreak
-如果通道有多条可选路线，连接族是这些路线族的并集，加入更多曲线使极值长度下降。这个方向与串联求和相反：串联增加每条曲线的必经段，并联增加可供选择的曲线。即使不建立一般的并联精确公式，定义中的曲线族包含已经说明这一比较方向。密度既可以集中在瓶颈，也可以为多条路线分配面积，最优配置依赖实际通道而不只依赖面积总和。
-
-\subsection{对偶曲线族}
-\label{b3:subsec:080402}
-
-记连接左右边的族为 \(\Gamma_{\mathrm h}\)，连接上下边的族为 \(\Gamma_{\mathrm v}\)。在矩形中，常密度给 \(\lambda(\Gamma_{\mathrm h})\ge a/b\)。对任意密度，水平线长度平方不超过 \(a\) 倍该线的平方密度积分；对高度平均，某条水平线的长度平方不超过 \(aA/b\)。故
+本节的标记四边形由一个有界 Jordan 区域 \(Q\) 和四个互异边界点 \(p_0,p_1,p_2,p_3\) 组成，四点按正向，也就是逆时针次序排列。所谓四边形只表示存在四个标记，不要求边界由直线组成。为与\cref{b3:prop:07-elliptic-rectangle}的矩形保持一致，我们规定四点在标准矩形上依次为左下、右下、右上、左上角。于是沿正向边界的四条开弧分别是
 \[
- \lambda(\Gamma_{\mathrm h})=a/b,\qquad
- \lambda(\Gamma_{\mathrm v})=b/a.
+ (p_0,p_1):\text{下边},\quad
+ (p_1,p_2):\text{右边},\quad
+ (p_2,p_3):\text{上边},\quad
+ (p_3,p_0):\text{左边}.
 \]
-这项上下界证明与圆环的径向平均同构，且不需猜测所有曲线的形状。由共形不变性，任意标记四边形的这两个数也互为倒数。
+这里 \((p_i,p_j)\) 表示指定方向的边界弧，端点不计入开弧。如果依次说“左、上、右、下”，那是顺时针的读法，不能同时当作上述顶点的正向编号。在一般区域中，左、右等词只是边界标记的名称，不表示这些弧在原平面的实际方位。
 
-\begin{proposition}[变宽通道的下界]\label{b3:prop:08-variable-channel}
-设 \(Q=\{(x,y):a<x<b,\ 0<y<h(x)\}\)，其中 \(h\) 连续且有正上下界。连接左右两边的曲线族满足
+\ProseParagraphBreak
+记 \(\Gamma_{\mathrm h}\) 为内部局部可求长、两极限端点分别落在左、右开边上的全部曲线；\(\Gamma_{\mathrm v}\) 同样连接下、上开边。参数曲线可以在接近边界时有无限总长度，只要求每条内部紧子弧可求长。四个标记及连接哪一对边都是问题的数据。把标记循环移一位会交换两族，移两位则只交换同一对边的两端。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[保持标记的矩形映射]\label{b3:prop:08-marked-rectangle-existence}
+设 \(Q\subseteq\mathbb C\) 为有界 Jordan 区域，\(p_0,p_1,p_2,p_3\in\partial Q\) 互异并按正向排列。则存在 \(a,b>0\) 及双全纯映射
 \[
- \lambda(\Gamma)\ge\int_a^b\frac{\mathrm{d}x}{h(x)}.
+ F:Q\longrightarrow R_{a,b}
+ \coloneqq\{\,x+\mathrm{i}y:0<x<a,\ 0<y<b\,\},
+\]
+使 \(F\) 延为闭区域间的同胚，且
+\[
+ F(p_0)=0,\quad F(p_1)=a,\quad
+ F(p_2)=a+\mathrm{i}b,\quad F(p_3)=\mathrm{i}b.
 \]
 \end{proposition}
 \begin{proof}
-取 \(\rho(x,y)=1/h(x)\)，面积为 \(I=\int_a^b h(x)/h(x)^2\,\mathrm{d}x\)。对任意连接曲线，\(|\mathrm{d}z|\ge|\mathrm{d}x|\)，其 \(x\) 坐标从 \(a\) 走到 \(b\)。若 \(H'(x)=1/h(x)\)，沿分段光滑曲线有
+Riemann 映射定理先将 \(Q\) 映到圆盘。因为 \(Q\) 为 Jordan 区域，\cref{b3:thm:07-caratheodory-jordan}保证此映射有边界同胚。再用圆盘到上半平面的分式变换和上半平面自同构，将 \(p_0,p_1,p_3\) 的像依次归一化为 \(0,1,\infty\)。这些变换保持边界的循环方向，所得映射 \(\psi:Q\rightarrow\mathbb H\) 必满足
 \[
- \int_\gamma\rho\,|\mathrm{d}z|\ge
- \int_\gamma\frac{|\mathrm{d}x|}{h(x)}\ge|H(b)-H(a)|=I.
+ \psi(p_0)=0,\quad\psi(p_1)=1,\quad
+ \psi(p_2)=\tau>1,\quad\psi(p_3)=\infty.
 \]
-曲线逼近两侧边界时同样取极限。商至少为 \(I^2/I=I\)，故得下界。
+不等式 \(\tau>1\) 来自第四点在 \(1\) 与 \(\infty\) 之间的边界次序，并非对原区域欧氏坐标的要求。
+
+取 \(k=\tau^{-1/2}\in(0,1)\)、\(k'=\sqrt{1-k^2}\)。\cref{b3:prop:07-elliptic-rectangle}已证明，椭圆积分映射 \(F_k\) 把预顶点 \(0,1,k^{-2},\infty\) 依次映到
+\[
+ 0,\quad K(k),\quad K(k)+\mathrm{i}K(k'),\quad
+ \mathrm{i}K(k'),
+\]
+并在闭包上给出边界同胚。因此 \(F=F_k\circ\psi\) 满足结论，其中 \(a=K(k)\)、\(b=K(k')\)。再乘任意正数，可以同时改变两个边长而保持标记。
 \end{proof}
-常宽矩形时等号成立，密度是常数。若通道在一段区间很窄，该区间的 \(1/h\) 很大，给总模量显著贡献。仅用总面积无法看出这个瓶颈：两个面积相同的通道，连接两端的极值长度可以很不同。通道有斜边时上述密度一般不是最优密度，因此这里只有下界，不能由该证明宣布精确公式。
+
+上述构造保证矩形模型存在，还没有说明不同构造是否得到相同宽高比。这个唯一性将由矩形中两族曲线的精确极值长度得到。若边界不是 Jordan 曲线，四个普通边界点未必代表四个不同趋近方向；此时须改用四个循环有序的素端，并使用素端边界上的对应。本节先在 Jordan 情形中完成计算和证明。
+
+\subsection{对偶曲线族与通道比较}
+\label{b3:subsec:080402}
+
+在矩形里，连接左右边必须付出至少一个宽度，连接上下边必须付出至少一个高度。常密度因而给出两个下界。上界不能只挑一条方便的曲线，而要说明对任意密度，总能从水平段或竖直段中找到足够短的曲线；面积积分正好能完成这种平均。
+
+\Needspace{6\baselineskip}
+\begin{theorem}[矩形的两个连接族]\label{b3:thm:08-rectangle-extremal}
+设 \(a,b>0\)，\(R_{a,b}=(0,a)\times(0,b)\subseteq\mathbb C\)。令 \(\Gamma_{\mathrm h}\) 为 \(R_{a,b}\) 内局部可求长、两极限端点分别在左、右开边上的全部曲线，\(\Gamma_{\mathrm v}\) 为同样连接下、上开边的全部曲线。则
+\[
+ \lambda_{R_{a,b}}(\Gamma_{\mathrm h})=\frac ab,\quad
+ \lambda_{R_{a,b}}(\Gamma_{\mathrm v})=\frac ba.
+\]
+常密度 \(\rho\equiv1\) 同时达到两个上确界。
+\end{theorem}
+\begin{proof}
+对常密度，任意左右连接曲线的欧氏长度至少为端点横坐标之差 \(a\)，任意上下连接曲线的长度至少为纵坐标之差 \(b\)。对只在内部局部可求长的曲线，先在紧子弧上使用这个距离下界，再令两端趋近边界即可。水平段、竖直段分别达到这两个长度，故
+\[
+ L_1(\Gamma_{\mathrm h})=a,\quad
+ L_1(\Gamma_{\mathrm v})=b,\quad A_1=ab.
+\]
+定义中的两个商分别为 \(a/b\)、\(b/a\)，这就给出下界。
+
+反过来，给定非负 Borel 密度 \(\rho\)，设 \(0<A=\int_{R_{a,b}}\rho^2\,\mathrm dA<\infty\)。记水平段与竖直段的密度长度为
+\[
+ q_{\mathrm h}(y)=\int_0^a\rho(x,y)\,\mathrm dx,\quad
+ q_{\mathrm v}(x)=\int_0^b\rho(x,y)\,\mathrm dy.
+\]
+沿每条线段使用 Cauchy--Schwarz，再由 Tonelli 定理交换非负积分，得到
+\[
+ \begin{aligned}
+ \int_0^b q_{\mathrm h}(y)^2\,\mathrm dy
+ &\le a\int_0^b\int_0^a\rho(x,y)^2\,\mathrm dx\,\mathrm dy=aA,\\
+ \int_0^a q_{\mathrm v}(x)^2\,\mathrm dx
+ &\le b\int_0^a\int_0^b\rho(x,y)^2\,\mathrm dy\,\mathrm dx=bA.
+ \end{aligned}
+\]
+特别地，两类线段的长度分别对几乎处处的参数有限。每条水平段属于 \(\Gamma_{\mathrm h}\)，每条竖直段属于 \(\Gamma_{\mathrm v}\)，所以
+\[
+ b\cdot L_\rho(\Gamma_{\mathrm h})^2\le aA,\quad
+ a\cdot L_\rho(\Gamma_{\mathrm v})^2\le bA.
+\]
+除以正面积 \(A\)，再对所有密度取上确界，便得到两个匹配的上界。个别线段的长度可能无穷，但它们只出现在一个参数零测集上，不影响上述积分论证，也不需要把密度修改为另一个几乎处处相等的代表。
+\end{proof}
+
+两个极值长度的乘积为 \(1\)，现在是由同一张矩形的两个完整计算得出的事实。对一般标记四边形，保持标记的矩形映射把两族分别送到这两个标准族；\cref{b3:thm:08-extremal-conformal}的共形不变性再把倒数关系传回原区域。其他两族曲线即使都位于同一区域，也不能因此被任意称为这种对偶族。
 
 \ProseParagraphBreak
-还有一个简单的上下夹逼。若 \(h_-\le h(x)\le h_+\)，矩形 \((a,b)\times(0,h_-)\) 内的左右连接曲线是 \(Q\) 族的子族，而 \(Q\) 族又包含在高为 \(h_+\) 的矩形连接族中。将同一曲线族比较放在环境中并把密度在外部置0，不影响它的极值长度，遂有
+无需先求出矩形映射，也常能从通道宽度取得有效估计。变宽通道中，较窄截面会提高连接两端的代价，因此密度应在这些位置更大。取宽度的倒数，长度与面积就会出现同一个积分。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[变宽通道的下界与夹逼]\label{b3:prop:08-variable-channel}
+设 \(a,b\in\mathbb R\)、\(a<b\)，\(h:[a,b]\rightarrow(0,\infty)\) 连续，并令
 \[
- \frac{b-a}{h_+}\le\lambda(\Gamma)\le\frac{b-a}{h_-}.
+ Q=\{\,(x,y):a<x<b,\ 0<y<h(x)\,\},\quad
+ h_-=\min_{[a,b]}h,\quad h_+=\max_{[a,b]}h.
 \]
-变宽通道的积分下界至少和左侧一样强，而且能识别窄段的长度。这些估计是无需求出矩形映射的实用资料。
+令 \(\Gamma\) 为 \(Q\) 内所有局部可求长、两极限端点分别落在左、右开边上的曲线族，其中左边为 \(\{a\}\times(0,h(a))\)，右边为 \(\{b\}\times(0,h(b))\)。则
+\[
+ \frac{b-a}{h_+}
+ \le\int_a^b\frac{\mathrm dx}{h(x)}
+ \le\lambda_Q(\Gamma)
+ \le\frac{b-a}{h_-}.
+\]
+\end{proposition}
+\begin{proof}
+连续性及正性保证 \(0<h_-\le h_+<\infty\)。记 \(I=\int_a^b h(x)^{-1}\,\mathrm dx\)，取 \(\rho(x,y)=1/h(x)\)。它的面积为
+\[
+ A_\rho=\int_a^b\int_0^{h(x)}\frac{\mathrm dy\,\mathrm dx}{h(x)^2}=I.
+\]
+要估计所有连接曲线，令 \(H(x)=\int_a^x h(t)^{-1}\,\mathrm dt\)。在一条内部紧子弧的弧长参数 \(s\) 下，横坐标 \(x(s)\) 绝对连续且 \(|x'(s)|\le1\)。链式法则因此给出
+\[
+ \int_{s_0}^{s_1}\frac{\mathrm ds}{h(x(s))}
+ \ge\int_{s_0}^{s_1}\frac{|x'(s)|}{h(x(s))}\,\mathrm ds
+ \ge\bigl|H(x(s_1))-H(x(s_0))\bigr|.
+\]
+让子弧两端分别趋近左右边界，便有 \(L_\rho(\gamma)\ge I\)。这也允许曲线在横向往返，往返只会增加第一个积分。另一方面，水平线 \(y=h_-/2\) 完全位于 \(Q\)，其密度长度恰为 \(I\)。所以 \(L_\rho(\Gamma)=I\)，得到 \(\lambda_Q(\Gamma)\ge I^2/I=I\)。
+
+再取矩形 \(R_-=(a,b)\times(0,h_-)\)、\(R_+=(a,b)\times(0,h_+)\)，记其左右连接族为 \(\Gamma_-\)、\(\Gamma_+\)。有
+\[
+ R_-\subseteq Q\subseteq R_+,\quad
+ \Gamma_-\subseteq\Gamma\subseteq\Gamma_+.
+\]
+\cref{b3:prop:08-ambient-independence}保证，同一个曲线族放在较大的开集里计算，极值长度不变；在原区域外把密度置零即可实现反向比较。因而可以把三族都看作 \(R_+\) 内的族，再用曲线族包含原则及矩形计算，得到
+\[
+ \frac{b-a}{h_+}\le\lambda_Q(\Gamma)\le\frac{b-a}{h_-}.
+\]
+最后，由 \(h(x)\le h_+\) 直接积分得 \(I\ge(b-a)/h_+\)，合并即得陈述中的全部不等式。
+\end{proof}
+
+常宽时这些界同时成为等式。变宽时，我们已经找出所选密度的最短曲线及其精确商 \(I\)，但尚未证明这个密度使所有竞争者的商最大。因此一般只有积分下界；通道上下边的变化可能让另一种密度给出更大的商。
+
+\ProseParagraphBreak
+如果可以从若干相互隔开的通道中任选一条，允许的曲线族变大，极值长度会下降。对于真正不相交的通道，下降幅度还有一个精确公式。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[不交通道的并联公式]\label{b3:prop:08-parallel-channels}
+设正整数 \(N\ge1\)，\(Q_1,\ldots,Q_N\subseteq\mathbb C\) 为两两不交的非空开集。对每个 \(j\)，\(\Gamma_j\) 是完全位于 \(Q_j\) 内的局部可求长曲线族，满足
+\[
+ 0<\lambda_j\coloneqq\lambda_{Q_j}(\Gamma_j)<\infty.
+\]
+令 \(U=\bigcup_{j=1}^NQ_j\)、\(\Gamma=\bigcup_{j=1}^N\Gamma_j\)。则
+\[
+ \frac1{\lambda_U(\Gamma)}=\sum_{j=1}^N\frac1{\lambda_j}.
+\]
+\end{proposition}
+\begin{proof}
+给定 \(U\) 上密度 \(\rho\)，设 \(0<A_\rho<\infty\)。记它在各通道上的面积和最短长度为
+\[
+ A_j=\int_{Q_j}\rho^2\,\mathrm dA,\quad
+ L_j=\inf_{\gamma\in\Gamma_j}\int_\gamma\rho\,\mathrm ds.
+\]
+不相交性给 \(A_\rho=\sum_jA_j\)，而有限并集的下确界给 \(L_\rho(\Gamma)=\min_jL_j\)。若某个 \(A_j=0\)，由 \(\lambda_j<\infty\) 及\cref{b3:lem:08-zero-area-density}可知 \(L_j=0\)，于是总最短长度为 \(0\)，所需上界成立。若所有 \(A_j>0\)，则定义给出 \(L_j^2\le\lambda_j A_j\)。令 \(L=\min_jL_j\)，便有
+\[
+ L^2\sum_{j=1}^N\frac1{\lambda_j}
+ \le\sum_{j=1}^N\frac{L_j^2}{\lambda_j}
+ \le\sum_{j=1}^NA_j=A_\rho.
+\]
+所以每个竞争商都不超过 \((\sum_j\lambda_j^{-1})^{-1}\)，取上确界得到一个方向。
+
+反向不需要假定各通道存在极值密度。给定 \(\varepsilon>0\)，由 \(0<\lambda_j<\infty\) 的上确界定义，可在每个通道选择密度，其商为正且足够接近 \(\lambda_j\)，使这个商的倒数小于 \(\lambda_j^{-1}+\varepsilon/N\)。此密度的最短长度有限且为正，将它除以自己的最短长度，得到密度 \(\rho_j\)，满足
+\[
+ L_{\rho_j}(\Gamma_j)=1,\quad
+ 0<A_{\rho_j}<\frac1{\lambda_j}+\frac\varepsilon N.
+\]
+在每个 \(Q_j\) 放置 \(\rho_j\)，就得到 \(U\) 上的一个 Borel 密度。整体最短长度为 \(1\)，总面积小于 \(\sum_j\lambda_j^{-1}+\varepsilon\)。因此
+\[
+ \lambda_U(\Gamma)\ge
+ \frac1{\sum_j\lambda_j^{-1}+\varepsilon}.
+\]
+令 \(\varepsilon\downarrow0\)，即得匹配的下界。
+\end{proof}
+
+并联相加的是倒极值长度。各通道的长度被归一化为同一个数 \(1\)，曲线可以选择其中任一条路线；面积却按不相交部分相加，这正是倒数出现的原因。串联比较则要求每条总曲线依次穿过所有子通道，长度贡献也必须相加。若实际允许曲线在不同通道之间穿梭，所研究的族就不再是上述并集，必须先重新辨认全部路线，不能仅凭图形看似并列套用公式。
 
 \subsection{模量}
 \label{b3:subsec:080403}
 
+矩形中的计算使宽高比成为一个不依赖矩形映射选择的量。定义时仍要保留连接方向，否则一个数及其倒数都可能被叫作同一个四边形的模。
+
+\Needspace{6\baselineskip}
 \begin{definition}\label{b3:def:08-quadrilateral-modulus}
-按连接左右两指定边的约定，四边形的\term[sibianxing-moliang]{四边形模量}[modulus of a quadrilateral]为 \(\operatorname{mod}Q=\lambda(\Gamma_{\mathrm h})\)。
+设 \(Q\subseteq\mathbb C\) 为有界 Jordan 区域，四个互异边界点 \(p_0,p_1,p_2,p_3\) 按正向排列。令 \(\Gamma_{\mathrm h}\) 为 \(Q\) 内局部可求长、两极限端点分别落在开弧 \((p_3,p_0)\) 与 \((p_1,p_2)\) 上的全部曲线族，开弧均沿正向边界选取。这两弧分别标记为左、右边。该标记四边形的\term[sibianxing-moliang]{四边形模量}[modulus of a quadrilateral]定义为
+\[
+ \operatorname{mod}(Q;p_0,p_1,p_2,p_3)
+ \coloneqq\lambda_Q(\Gamma_{\mathrm h}).
+\]
+标记已经固定时简记为 \(\operatorname{mod}Q\)。
 \end{definition}
-对宽 \(a\)、高 \(b\) 的矩形，它等于 \(a/b\)。第7章椭圆积分参数因此满足 \(\operatorname{mod}Q=K(k)/K(k')\)。如果交换左右与上下，模量取倒数；如只交换左右两边，曲线族不变，模量不变。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[矩形参数及标记唯一性]\label{b3:prop:08-marked-modulus-uniqueness}
+设 \(Q\subseteq\mathbb C\) 为有界 Jordan 区域，\(p_0,p_1,p_2,p_3\in\partial Q\) 互异并按正向排列。令 \(\Gamma_{\mathrm h}\) 连接开弧 \((p_3,p_0)\) 与 \((p_1,p_2)\)，\(\Gamma_{\mathrm v}\) 连接开弧 \((p_0,p_1)\) 与 \((p_2,p_3)\)，两族均包括所有内部局部可求长且有这些极限端点的曲线。若 \(a,b>0\)，\(R_{a,b}=(0,a)\times(0,b)\)，双全纯映射 \(F:Q\rightarrow R_{a,b}\) 延为闭区域同胚，并将四个顶点依次映到 \(0,a,a+\mathrm{i}b,\mathrm{i}b\)，则
+\[
+ 0<\operatorname{mod}Q=\frac ab<\infty,\quad
+ \lambda_Q(\Gamma_{\mathrm v})=\frac ba
+ =\frac1{\operatorname{mod}Q}.
+\]
+因此所有保持这些标记的矩形映射具有相同宽高比。目标矩形固定时，\(F\) 唯一；允许目标矩形等比例缩放时，映射也只差同一正比例因子。
+\end{proposition}
+\begin{proof}
+边界同胚保证 \(F\) 将两对开边分别送到矩形的两对开边。\(F\) 及其逆在内部紧集上均为光滑映射，所以把局部可求长曲线互相对应；端点极限则由边界连续性保持。因此 \(F\Gamma_{\mathrm h}\)、\(F\Gamma_{\mathrm v}\) 恰为矩形中的全部水平、竖直方向连接族。共形不变性及\cref{b3:thm:08-rectangle-extremal}给出两个等式。若另一矩形映射的边长为 \(a',b'\)，同样的等式给 \(a'/b'=a/b\)，证明宽高比唯一。
+
+设两映射 \(F_1,F_2\) 的目标矩形相同。\(F_2^{-1}\circ F_1\) 是 \(Q\) 的自同构，并在边界固定四个标记。用一个有边界同胚的 Riemann 映射将它共轭到圆盘，便得到固定三个以上边界点的圆盘自同构。圆盘自同构是 Möbius 变换，而非恒等 Möbius 变换至多有两个固定点，所以这个自同构为恒等，\(F_1=F_2\)。最后，若 \(a'/b'=a/b\)，取 \(c=a'/a=b'/b>0\)，则 \(c\cdot F_1\) 与 \(F_2\) 映到同一矩形并保持全部标记，由刚证明的唯一性可知二者相等。
+\end{proof}
+
+因而每个标记四边形都有唯一的归一化矩形 \((0,M)\times(0,1)\)，其中 \(M=\operatorname{mod}Q\)。两个标记 Jordan 四边形共形等价，当且仅当其模量相同：必要性来自共形不变性；充分性则是把两者映到同一个归一化矩形，再复合一个映射与另一个的逆。这里的等价要求逐一保持四个标记。如果把标记循环移一位，左右连接族变成原来的上下连接族，模量就变为 \(1/M\)；移两位只是倒转左右两端，曲线族不变。
 
 \ProseParagraphBreak
-共形模不能由四个边界点的欧氏交比在任意区域中直接计算。先把它们传到圆周或实轴，所得实交比才记录同一个共形参数。原区域上的欧氏坐标在一般全纯变换下不保持交比，只有 Möbius 变换保持。
+\cref{b3:prop:08-marked-rectangle-existence}给出的具体参数满足
+\[
+ \operatorname{mod}Q=\frac{K(k)}{K(k')},\quad k'=\sqrt{1-k^2}.
+\]
+\cref{b3:prop:07-elliptic-aspect}说明这个比值随 \(k\in(0,1)\) 严格递增并遍历全部正数，所以模量也唯一确定归一化后的第四预顶点 \(k^{-2}\)。四点在圆周或实轴上的交比可以记录这一参数；原区域中四个欧氏坐标的交比却不能直接代替它，因为一般共形映射并不保持欧氏交比，只有 Möbius 变换保持。
+
+\ProseParagraphBreak
+矩形极值密度还给出原区域上的一个明确极值密度。若 \(F:Q\rightarrow R_{a,b}\) 保持标记，则将常密度拉回，得到 \(\rho(z)=|F'(z)|\)。共形换元给面积 \(A_\rho=ab\)，曲线长度对应给 \(L_\rho(\Gamma_{\mathrm h})=a\)，所以其商为 \(a/b\)。即使 \(F'\) 在边界附近无界，这仍是合法密度，因为总面积恰为有限的矩形面积。
+
+\ProseParagraphBreak
+一个可显式计算的例子是扇形通道
+\[
+ S=\{\,z:r<|z|<R,\ 0<\arg z<\theta\,\},\quad
+ 0<r<R,\quad0<\theta<2\pi.
+\]
+将两个圆弧标记为左、右边，两条径向边标记为下、上边。选定 \(0<\arg z<\theta\) 的分支后，\(F(z)=\log(z/r)\) 把它映到宽 \(\ell=\log(R/r)\)、高 \(\theta\) 的矩形，因而模量为 \(\ell/\theta\)。对应的极值密度 \(1/|z|\) 也能直接核算：其面积为
+\[
+ \int_0^\theta\int_r^R\frac1{s^2}\,s\,\mathrm ds\,\mathrm d\varphi
+ =\theta\ell,
+\]
+任意两圆弧连接曲线的密度长度至少为 \(|\log R-\log r|=\ell\)，而径向段达到此值。因此其商为 \(\ell^2/(\theta\ell)=\ell/\theta\)。例如 \(r=1\)、\(R=e^3\)、\(\theta=\pi/2\) 时，左右连接模量为 \(6/\pi\)，另一个方向为 \(\pi/6\)。这里的左右边在原图上是内、外圆弧，进一步说明模量依赖指定的连接方向，而非边弧在纸面上的名字。
 
 \subsection{边界估计}
 \label{b3:subsec:080404}
 
-长度面积方法可以在未知精确映射时给界。若连接族的每条曲线都必须穿过一个宽 \(a\)、高 \(b\) 的矩形通道，取密度1在通道、0在其余处，便有 \(L\ge a\)、\(A=ab\)，故 \(\lambda\ge a/b\)。通道越长越窄，模量越大。要使用这个界，必须证明每条允许曲线确实横穿整个通道，而不是从旁边绕过。
+精确矩形映射通常难以求出，但极值长度的定义允许只在必经的狭窄部分布置密度。密度以外的区域不耗费面积；只要每条允许曲线确实横穿这部分，局部长度就能给全族的下界。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[必经矩形的密度下界]\label{b3:prop:08-bottleneck-density}
+设 \(U\subseteq\mathbb C\) 为非空开集，\(\Gamma\) 为其中局部可求长曲线族。设 \(a,b>0\)、\(c,d\in\mathbb R\)，且
+\[
+ R=(c,c+a)\times(d,d+b)\subseteq U.
+\]
+假定每条 \(\gamma\in\Gamma\) 都包含一条子曲线，其内部位于 \(R\)，两极限端点分别在 \(R\) 的左、右开边上。则
+\[
+ \lambda_U(\Gamma)\ge\frac ab.
+\]
+\end{proposition}
+\begin{proof}
+在 \(R\) 上取密度 \(1\)，在 \(U\setminus R\) 上取 \(0\)，所得 Borel 密度的面积为 \(ab\)。每条 \(\gamma\) 的指定子曲线横坐标从 \(c\) 走到 \(c+a\)，其欧氏长度至少为 \(a\)。子曲线内部密度为 \(1\)，总曲线上其余部分的长度贡献非负，故 \(L_\rho(\Gamma)\ge a\)。将这个密度代入定义，即得 \(a^2/(ab)=a/b\) 的下界。
+\end{proof}
+
+这项假设要求每条路线横穿整个矩形。矩形只是包含在 \(U\) 中，或者某些曲线经过其中，都不能给同样的结论：曲线族的下确界还会考虑所有绕过它的路线。将局部几何转成边界估计时，先证明必经性，再选密度，次序不能颠倒。
 
 \ProseParagraphBreak
-圆环中亦可只在某个同心子环上取 \(1/|z|\) 密度，迫使任何两端连接曲线经过该子环，得到相应下界。这个方法把局部障碍转成全局边界分离：若一组横割把一个端与另一个端隔在越来越长的通道两侧，连接族的极值长度就增长。素端证明中的面积估计与这种思想密切相连。
+变宽通道可以更细致地分辨瓶颈的贡献。对 \(\varepsilon>0\)，在 \(-1\le x\le1\) 上令
+\[
+ h_\varepsilon(x)=\frac{\varepsilon+|x|}{1+2\varepsilon},\quad
+ Q_\varepsilon=\{\,(x,y):-1<x<1,\ 0<y<h_\varepsilon(x)\,\}.
+\]
+每个 \(Q_\varepsilon\) 都是 Jordan 区域，且面积完全相同：
+\[
+ |Q_\varepsilon|
+ =\frac1{1+2\varepsilon}\int_{-1}^{1}(\varepsilon+|x|)\,\mathrm dx=1.
+\]
+中部的高度为 \(\varepsilon/(1+2\varepsilon)\)，两端则明显较宽。\cref{b3:prop:08-variable-channel}给左右连接族 \(\Gamma_\varepsilon\) 的下界
+\[
+ \begin{aligned}
+ \lambda(\Gamma_\varepsilon)
+ &\ge\int_{-1}^{1}\frac{\mathrm dx}{h_\varepsilon(x)}\\
+ &=2(1+2\varepsilon)\int_0^1\frac{\mathrm dx}{\varepsilon+x}
+ =2(1+2\varepsilon)\log\frac{1+\varepsilon}{\varepsilon}.
+ \end{aligned}
+\]
+当 \(\varepsilon\downarrow0\) 时，右侧趋于无穷。因此，即使面积始终等于 \(1\)，模量也能任意大。宽为 \(2\)、高为 \(1/2\) 的矩形同样面积为 \(1\)，模量却恒为 \(4\)。例如 \(\varepsilon=1/4\) 时，瓶颈下界已经是 \(3\log5>4\)。我们无需求出 \(Q_\varepsilon\) 的矩形映射，就能严格区分这两个等面积通道。
 
 \ProseParagraphBreak
-光滑拟共形畸变的面积因子也可由椭圆直接理解。若微分的两轴伸缩为 \(M\ge m>0\)，Jacobi 行列式为 \(Mm\)，而 \(M^2\le K\cdot Mm\)、\(m^2\ge (Mm)/K\)。长度控制中出现轴伸缩，面积控制中出现它们的乘积；两者相除只留下 \(K\)，没有平方。这解释了极值长度畸变常数为 \(K\) 而不是 \(K^2\)。若只粗略把全部面积控制为最大伸缩的平方，便会丢失尖锐常数。
-
-\ProseParagraphBreak
-圆环分类和极值长度各有自己的用途。分类告诉我们标准模型存在，极值长度给模型参数的可计算定义及比较法。第十三章将从圆环的条带覆盖计算双曲密度，并把环域模量与核心闭曲线长度联系。附录B再把上述光滑畸变延伸到一般拟共形同胚。这里的密度计算已经完整建立，后面的深层存在理论不会反过来成为本章极值长度公式的前提。
+用于这个下界的密度为 \(\rho_\varepsilon(x,y)=(1+2\varepsilon)/(\varepsilon+|x|)\)。它没有把全部面积预算集中到一条竖线，而是在一个实际宽度的区域内逐渐增大；积分同时计入窄度及其沿通道持续的距离。通道越接近中部夹断，两端之间的连接代价就越大。这样的密度下界是讨论边界退化时可直接使用的工具，单独的欧氏面积或最窄截面尺寸都不能提供同样完整的信息。
 
 \subsection{拟共形观点}
 \label{b3:subsec:080405}
 
-\begin{proposition}\label{b3:prop:08-smooth-quasiconformal-distortion}
-设 \(f:U\rightarrow V\) 为保定向 \(C^1\) 微分同胚，其导数最大、最小伸长 \(s_1\ge s_2>0\) 满足 \(s_1/s_2\le K\)。则
+共形变换在一点的所有方向上具有同一个伸长，长度平方与面积的变化因此精确抵消。一般光滑变换把小圆变成椭圆；长度可能取到长轴伸长，但面积仍由两根轴的乘积控制。如果两轴之比处处不超过 \(K\)，最后留下的畸变因子便是 \(K\)。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[光滑拟共形映射的极值长度畸变]\label{b3:prop:08-smooth-quasiconformal-distortion}
+设 \(U,V\subseteq\mathbb C\) 为区域，\(1\le K<\infty\)，\(\Gamma\) 为 \(U\) 内局部可求长曲线族。设 \(f:U\rightarrow V\) 为保定向 \(C^1\) 微分同胚。将实导数 \(Df(z)\) 的最大、最小奇异值记为 \(s_1(z)\ge s_2(z)>0\)，并假定对每个 \(z\in U\) 有 \(s_1(z)/s_2(z)\le K\)。则
 \[
- K^{-1}\lambda_U(\Gamma)\le\lambda_V(f\Gamma)\le K\lambda_U(\Gamma).
+ K^{-1}\lambda_U(\Gamma)
+ \le\lambda_V(f\Gamma)
+ \le K\lambda_U(\Gamma).
 \]
+这里 \(f\Gamma=\{\,f\circ\gamma:\gamma\in\Gamma\,\}\)，不等式也允许极值长度为 \(0\) 或 \(+\infty\)。
 \end{proposition}
 \begin{proof}
-给目标密度 \(\sigma\)，取源密度 \(\rho=(\sigma\circ f)s_1\)。目标曲线长度不超过源长度，且 \(A_\rho\le K\int_U(\sigma\circ f)^2s_1s_2\,\mathrm{d}A=KA_\sigma\)。所以目标比值不超过 \(K\) 倍某个源比值，取上确界得右侧。逆映射也有伸长比不超过 \(K\)，给左侧。
+实矩阵 \(Df(z)^{\mathsf T}Df(z)\) 对称正定，其两个特征值为 \(s_1(z)^2,s_2(z)^2\)。故对任意实向量 \(v\) 有
+\[
+ s_2(z)\cdot|v|\le|Df(z)v|\le s_1(z)\cdot|v|.
+\]
+又因 \(f\) 保定向，其 Jacobi 行列式满足
+\[
+ J_f(z)=\det Df(z)=s_1(z)\cdot s_2(z)>0,\quad
+ J_f(z)\le s_1(z)^2\le K\cdot J_f(z).
+\]
+后一关系把最大方向的长度伸长与真实面积伸长联系起来。
+
+给定 \(V\) 上的非负 Borel 密度 \(\sigma\)，假设 \(0<A_\sigma<\infty\)。在 \(U\) 上定义
+\[
+ \rho(z)=\sigma(f(z))\cdot s_1(z).
+\]
+对于 \(\gamma\) 的一条紧子弧，其像是 \(U\) 内的紧集，\(f\) 在它的一个相对紧邻域上导数有界，所以复合曲线仍可求长。使用该子弧的弧长参数以及绝对连续链式法则，得到
+\[
+ \int_{f\circ\gamma}\sigma\,\mathrm ds
+ =\int_\gamma\sigma(f(z))\cdot|Df(z)\tau(z)|\,\mathrm ds
+ \le\int_\gamma\sigma(f(z))\cdot s_1(z)\,\mathrm ds,
+\]
+其中 \(\tau\) 是几乎处处存在的单位切向量。先在紧子弧上写此式，再以单调极限穷竭整条曲线，便得到 \(L_\sigma(f\circ\gamma)\le L_\rho(\gamma)\)，包括长度为无穷的情况。对 \(\gamma\in\Gamma\) 取下确界，有
+\[
+ L_\sigma(f\Gamma)\le L_\rho(\Gamma).
+\]
+
+平面换元公式及奇异值关系给出
+\[
+ \begin{aligned}
+ A_\sigma
+ &=\int_U\sigma(f(z))^2\cdot J_f(z)\,\mathrm dA(z)\\
+ &\le A_\rho
+ =\int_U\sigma(f(z))^2\cdot s_1(z)^2\,\mathrm dA(z)\\
+ &\le K\int_U\sigma(f(z))^2\cdot J_f(z)\,\mathrm dA(z)
+ =K A_\sigma.
+ \end{aligned}
+\]
+因而 \(\rho\) 具有有限正面积，确实是源区域的合法竞争密度。如果 \(\lambda_U(\Gamma)=\infty\)，所需上界自动成立；否则 \(L_\rho(\Gamma)\) 有限，并可计算
+\[
+ \frac{L_\sigma(f\Gamma)^2}{A_\sigma}
+ \le\frac{L_\rho(\Gamma)^2}{A_\sigma}
+ \le K\frac{L_\rho(\Gamma)^2}{A_\rho}
+ \le K\lambda_U(\Gamma).
+\]
+对 \(\sigma\) 取上确界，得到右侧不等式。
+
+在 \(w=f(z)\) 处，\(D(f^{-1})(w)=Df(z)^{-1}\) 的两个奇异值为 \(1/s_2(z)\ge1/s_1(z)\)，其比仍不超过 \(K\)。逆映射同样保定向且为 \(C^1\)；它把 \(f\Gamma\) 恢复为 \(\Gamma\)。因此将已证上界用于 \(f^{-1}\)，得到 \(\lambda_U(\Gamma)\le K\lambda_V(f\Gamma)\)，也就是左侧不等式。
 \end{proof}
-这是拟共形观点的光滑版本：共形映射 \(K=1\) 保持模，非共形映射最多把模乘一个控制因子。一般 Sobolev 正则性、几乎处处导数和曲线族零模例外将在附录B说明，不在这里把光滑证明无条件推广。
+
+面积中出现 \(s_1s_2\)，长度平方中出现 \(s_1^2\)，两者相除留下 \(s_1/s_2\)，所以常数是 \(K\) 而非 \(K^2\)。当 \(K=1\) 时，两方向伸长相同，结论恢复共形不变性。若还已知 \(f\) 在两个 Jordan 区域的边界间给出保持四个标记的同胚，那么它把全部指定连接曲线族互相对应，以上不等式就直接成为四边形模量的双边比较。
+
+\ProseParagraphBreak
+这个证明使用了 \(C^1\) 微分同胚的线积分链式法则与面积换元。一般拟共形同胚只具有相应的 Sobolev 正则性，导数及伸长条件通常几乎处处成立，还需要处理曲线族的零模例外。相关推广将在\appref{b3:app:B}中说明；不能仅把本命题的逐点假设改成几乎处处，就视为已经完成一般情形的证明。
+
+\ProseParagraphBreak
+径向伸缩给出取等模型，而且能同时看到两种曲线方向的相反变化。对 \(\alpha>0\)，令
+\[
+ F_\alpha(z)=z|z|^{\alpha-1},\quad z\ne0.
+\]
+它在极坐标中将 \((s,\theta)\) 变成 \((s^\alpha,\theta)\)，逆为 \(F_{1/\alpha}\)。径向、角向单位向量分别被伸长 \(\alpha s^{\alpha-1}\)、\(s^{\alpha-1}\)，且像仍正交，因此
+\[
+ J_{F_\alpha}=\alpha s^{2\alpha-2}>0,\quad
+ K=\max\{\alpha,\alpha^{-1}\}.
+\]
+这证明 \(F_\alpha\) 是去心平面的光滑保向微分同胚，并给出它的确切伸长比。对 \(0<r<R<\infty\)，有
+\[
+ F_\alpha(A(r,R))=A(r^\alpha,R^\alpha),\quad
+ \operatorname{mod}F_\alpha(A(r,R))
+ =\frac{\log(R^\alpha/r^\alpha)}{2\pi}
+ =\alpha\operatorname{mod}A(r,R).
+\]
+模量是两端连接族的极值长度，所以 \(\alpha\ge1\) 时达到上界，\(0<\alpha\le1\) 时达到下界。绕行族的极值长度则乘以 \(1/\alpha\)，达到另一个端点。由此可见，同一个非共形映射对不同方向的曲线族可以产生相反的变化，畸变因子不能整体改善。角坐标保持不变也不表示所有夹角保持不变：除 \(\alpha=1\) 外，径向与角向伸长不同，微分就不是一个复数的乘法。

@@ -1,96 +1,363 @@
 % !TeX root = ../../Book3.tex
 \OptionalSection{\texorpdfstring{\(\xi\)}{\AnalysisPdfXi} 函数与 Hadamard 乘积}{b3:sec:2606}
 
-Gamma 因子消去平凡零点后，只剩两个显式极点。再乘一个二次多项式便得到整函数，因而可以应用整函数增长与典范乘积理论。
+完备函数的函数方程已经具有对称形式，但它还在零与一处有极点。若想应用\chapref{b3:ch:20}的整函数分解，便需要先消去这两个极点。这样得到的整函数把全部非平凡零点保留下来，使“研究零点”成为“用零点重建一个有限阶整函数”的问题。本节使用 Jensen 公式、Hadamard 分解及 Mellin 反演；略过本节不影响下一章的主线。
 
 \subsection{Riemann \texorpdfstring{\(\xi\)}{\AnalysisPdfXi} 函数}
 \label{b3:subsec:260601}
 
-定义\term[riemann-xi-hanshu]{Riemann xi 函数}[Riemann xi function]
+乘上 \(s(s-1)\) 恰好消去两个单极点，而这个二次多项式本身在 \(s\mapsto1-s\) 下不变，因此不会破坏函数方程。额外的 \(1/2\) 是规范化常数，使两个可去点的值都等于 \(1/2\)。
+
+\begin{definition}[Riemann xi 函数]\label{b3:def:26-xi}
+设 \(\zeta\) 为 Riemann zeta 函数的亚纯延拓，\(\Gamma\) 为 Gamma 函数的亚纯延拓。定义\term[riemann-xi-hanshu]{Riemann xi 函数}[Riemann xi function]为
 \[
-\xi(s)\coloneqq\frac12s(s-1)\Lambda_\zeta(s).
+ \xi(s)\coloneqq\frac12s(s-1)\pi^{-s/2}\Gamma(s/2)\zeta(s),
 \]
+其中各因子的乘积先按亚纯函数理解，再在可去点取延拓值；\(\pi^{-s/2}=\exp(-s\log\pi/2)\) 使用正实数 \(\pi\) 的实对数。
+\end{definition}
 \symidx{\(\xi(s)\)：Riemann xi 函数}
-它是整函数，\(\xi(0)=\xi(1)=1/2\)，满足 \(\xi(s)=\xi(1-s)\) 和共轭对称。其零点恰为非平凡零点，重数相同。负偶数处的 Gamma 单极点与 zeta 单零点抵消，并留下非零值，故这些点不在 \(\xi\) 的零点集合内。
+
+\begin{proposition}[整性、对称性与零点]\label{b3:prop:26-xi-properties}
+由\cref{b3:def:26-xi}定义的 \(\xi\) 是整函数，且
+\[
+ \xi(0)=\xi(1)=\frac12,\quad
+ \xi(1-s)=\xi(s),\quad
+ \xi(\overline s)=\overline{\xi(s)}\quad(s\in\mathbb C).
+\]
+它的零点恰为 \(\zeta\) 的非平凡零点，且重数相同。对于实数 \(t\)，函数
+\[
+ \Xi(t)\coloneqq\xi\left(\frac12+\mathrm it\right)
+\]
+是实值偶函数，且 \(\Xi(0)>0\)。
+\end{proposition}
+\begin{proof}
+由\eqref{b3:eq:26-completed-integral}，完备函数在原点附近为 \(-1/s+O(1)\)，在一附近为 \(1/(s-1)+O(1)\)，其余各点全纯。所以在零处
+\[
+ \frac12s(s-1)\left(-\frac1s+O(1)\right)
+ =-\frac{s-1}{2}+O(s),
+\]
+极限是 \(1/2\)；在一处同样得到 \(s/2+O(s-1)\)。这既证明整性，也说明这两个位置没有因乘上多项式而留下新零点。函数方程与共轭关系则分别由完备函数的相应关系继承。
+
+在既不等于零、一，也不是负偶整数的位置，\(\tfrac12s(s-1)\pi^{-s/2}\Gamma(s/2)\) 是全纯非零因子，因此乘它不改变局部零点阶数。若 \(s=-2m\)、\(m\ge1\)，\cref{b3:prop:26-trivial-zeros}已证明 \(\zeta\) 在此有单零点，而 \(\Gamma(s/2)\) 有单极点。具体写成
+\[
+ \zeta(s)=(s+2m)u(s),\quad
+ \Gamma(s/2)=\frac{v(s)}{s+2m},\quad
+ u(-2m)v(-2m)\ne0,
+\]
+便知相乘后的值非零。这排除了全部平凡零点，也核对了所有可能发生相消的位置。
+
+对实数 \(t\)，共轭关系和函数方程给
+\[
+ \overline{\Xi(t)}
+ =\xi\left(\frac12-\mathrm it\right)
+ =\xi\left(\frac12+\mathrm it\right)=\Xi(t),
+ \quad \Xi(-t)=\Xi(t).
+\]
+又因 \(\zeta(1/2)<0\)、\(\Gamma(1/4)>0\)，而 \((1/2)(-1/2)<0\)，定义式给出 \(\Xi(0)>0\)。
+\end{proof}
+\symidx{\(\Xi(t)\)：临界线上的实值 xi 函数}
+
+这说明临界线上的零点可以通过一个实函数来研究。例如，若已证明 \(\Xi(t_1)\Xi(t_2)<0\)，连续性就保证两者之间存在零点。但实值偶函数完全可以始终为正，也可能有不变号的偶重零点；实值性本身不证明变号，更不限制临界线以外的零点。这里的 \(\Xi(t)\) 也不同于把 \(\zeta(1/2+\mathrm it)\) 的实部单独取出：使它成为实数的是整个完备化因子与函数方程的配合。
 
 \subsection{整函数的阶}
 \label{b3:subsec:260602}
 
-\begin{proposition}\label{b3:prop:26-xi-order}
-整函数 \(\xi\) 的增长阶恰为一，且有无穷多个零点。
+Hadamard 分解需要有限阶增长，而“整函数”这一条件本身不够。回忆对非恒定整函数 \(f\)，记 \(M(r,f)=\max_{|s|=r}|f(s)|\)，其增长阶由 \(\limsup_{r\to\infty}\log\log M(r,f)/\log r\) 给出。对于 \(\xi\)，上界和下界来自两种不同的表示：全平面的 theta 积分给上界，正实轴上的 Gamma 因子给下界。
+
+\begin{proposition}[xi 函数的增长阶]\label{b3:prop:26-xi-order}
+由\cref{b3:def:26-xi}定义的整函数 \(\xi\) 满足
+\[
+ \log M(r,\xi)=O\bigl(r\log(r+2)\bigr)\quad(r\to\infty),
+\]
+且沿正实轴有
+\[
+ \log\xi(u)=\frac u2\log u
+       -\frac u2\bigl(1+\log(2\pi)\bigr)+O(\log u)
+       \quad(u\to+\infty).
+\]
+特别地，\(\xi\) 的增长阶恰为一，并且有无穷多个零点。
 \end{proposition}
 \begin{proof}
-在 \(|s|\le r\) 上，延拓积分给
+令 \(h(t)=\sum_{n\ge1}e^{-\pi n^2t}\)。对 \(t\ge1\)，已经有 \(0<h(t)\le Ce^{-\pi t}\)。将\eqref{b3:eq:26-completed-integral}乘以 \(s(s-1)/2\)，两个有理项合起来恰为 \(1/2\)，所以
+\begin{equation}\label{b3:eq:26-xi-integral}
+ \xi(s)=\frac12+\frac{s(s-1)}2
+ \int_1^\infty h(t)
+       \left(t^{s/2-1}+t^{(1-s)/2-1}\right)\,\mathrm dt.
+\end{equation}
+当 \(|s|\le r\)、\(r\ge1\)、\(t\ge1\) 时，两个幂的模均不超过 \(t^{(r+1)/2}\)。于是
 \[
- |\xi(s)|\le C(1+r)^2\left[1+
-    \int_1^\infty e^{-\pi t}\bigl(t^{(r+1)/2}+1\bigr)\,\mathrm{d}t\right].
+ \begin{aligned}
+ |\xi(s)|&\le\frac12+Cr(r+1)
+              \int_1^\infty e^{-\pi t}t^{(r+1)/2}\,\mathrm dt\\
+ &\le\frac12+Cr(r+1)\pi^{-(r+3)/2}
+                           \Gamma\left(\frac{r+3}{2}\right).
+ \end{aligned}
 \]
-右侧由 Gamma 积分控制，其对数为 \(O(r\log(r+2))\)，由正实轴 Stirling 公式得到，所以阶至多一。沿实轴 \(s\to+\infty\)，\(\zeta(s)\to1\)，Stirling 给
+这里只出现正实参数的 Gamma 函数。\cref{b3:thm:21-stirling}使右端的对数为 \(O(r\log(r+2))\)，从而给出所需的最大模上界。再取一次对数并除以 \(\log r\)，得到增长阶至多为一。
+
+下界沿正实轴计算。对 \(u>1\)，\(\xi(u)>0\)，每个因子均可取普通实对数。先注意
 \[
- \log\xi(s)=\frac{s}{2}\log s+O(s),
+ 0\le\zeta(u)-1\le 2^{-u}+\int_2^\infty t^{-u}\,\mathrm dt
+       =2^{-u}+\frac{2^{1-u}}{u-1},
 \]
-故阶至少一。
-若只有有限零点，\cref{b3:thm:20-hadamard}使 \(\xi(s)=P(s)e^{as+b}\)，沿正实轴对数模仅为 \(O(s+\log s)\)，与上一渐近矛盾。因此零点无限多。
+所以 \(\log\zeta(u)=o(1)\)。定义式与正实轴 Stirling 公式依次给出
+\[
+ \begin{aligned}
+ \log\xi(u)
+ &=\log\frac{u(u-1)}2-\frac u2\log\pi
+                       +\log\Gamma(u/2)+\log\zeta(u),\\
+ \log\Gamma(u/2)
+ &=\left(\frac u2-\frac12\right)\log\frac u2
+                  -\frac u2+\frac12\log(2\pi)+o(1).
+ \end{aligned}
+\]
+多项式因子的对数只有 \(O(\log u)\)，而 \(\pi^{-u/2}\) 只贡献线性项。合并后得到命题中的渐近式，特别是 \(\log\xi(u)\sim(u/2)\log u\)。由 \(M(u,\xi)\ge\xi(u)\)，增长阶不可能小于一。上界与下界合在一起才确定它恰为一。
+
+最后，若 \(\xi\) 只有有限个零点，有限阶版本的\cref{b3:cor:20-finite-zeros}给出 \(\xi(s)=P(s)e^{as+b}\)，其中 \(P\) 是非零多项式，\(a,b\in\mathbb C\)。沿充分大的正实数 \(u\)，
+\[
+ \log|P(u)e^{au+b}|=(\operatorname{Re}a)u+O(\log u).
+\]
+将其除以 \(u\log u\)，极限为零；然而刚才求得的极限为 \(1/2\)。矛盾证明了零点无限多。
 \end{proof}
+
+仅有最大模上界不能证明零点无限多：\(e^s\) 也具有阶一增长，却没有零点。本证明中，增长上界使 Hadamard 理论适用，正实轴上更具体的下界才排除了“有限多项式乘线性指数”。由前一命题及实区间上的无零点性，这里证明存在的无穷多个零点全部是非实的非平凡零点。
 
 \subsection{Hadamard 乘积}
 \label{b3:subsec:260603}
 
-增长上界与正实轴下界在这里承担不同作用。上界保证可以使用阶一的典范因子，并控制零点总数；下界排除有限零点乘一个线性指数的可能。仅有上界不能证明零点无限多，例如 \(e^s\) 也是阶一整函数，却没有零点。由于本章已经排除实区间内的零点，而平凡零点又被 Gamma 因子抵消，所得无穷多个零点确实都是非实的非平凡零点。
-
-\ProseParagraphBreak
-
-将零点按重数列为 \(\rho\)，Hadamard 分解给
+若仿照多项式直接写 \(\prod_\rho(1-s/\rho)\)，远处零点的一阶影响可能累积发散。属一因子 \(E_1(w)=(1-w)e^w\) 消去了这一阶项：在 \(|w|<1\) 中，以原点值为零的对数满足
 \[
-\xi(s)=e^{A+Bs}\prod_\rho(1-s/\rho)e^{s/\rho}.
+ \log E_1(w)=\log(1-w)+w=-\sum_{k=2}^\infty\frac{w^k}{k}.
 \]
-零点不存在于原点，故没有额外的 \(s^m\) 因子。收敛意义为属一典范乘积的正规收敛；\(\sum|\rho|^{-2}<\infty\) 由阶一零点估计得到。若要去掉指数修正，必须规定对称配对并另外证明配对和收敛，不应直接删除。
+于是需要控制的对象由零点倒数变成平方倒数。
 
-\subsection{零点分布}
+\begin{proposition}[零点计数的上界]\label{b3:prop:26-zero-count-bound}
+设 \(\rho\) 遍历 Riemann zeta 函数的全部非平凡零点，按重数重复列出。记
+\[
+ n_\xi(r)\coloneqq\#\{\,\rho\mid |\rho|\le r\,\}\quad(r>0).
+\]
+则 \(n_\xi(r)=O(r\log(r+2))\)；特别地，
+\[
+ \sum_\rho\frac1{|\rho|^2}<\infty.
+\]
+这里 \(n_\xi(r)\) 计数整个圆盘内的零点，同时包括上下半平面。
+\end{proposition}
+\begin{proof}
+\(\xi(0)=1/2\ne0\)，故可在原点使用\cref{b3:thm:18-jensen}。对 \(r\ge1\)，选 \(2r<R<3r\)，使圆周 \(|s|=R\) 不经过零点。这样的 \(R\) 存在，因为非恒零整函数的零点离散。Jensen 公式给
+\[
+ \sum_{|\rho|<R}\log\frac R{|\rho|}
+ =\frac1{2\pi}\int_0^{2\pi}\log|\xi(Re^{\mathrm i\theta})|\,\mathrm d\theta
+          -\log|\xi(0)|.
+\]
+每个 \(|\rho|\le r\) 的项至少为 \(\log2\)，其余项非负，因而
+\[
+ n_\xi(r)\log2\le\log M(3r,\xi)-\log(1/2)
+                    \le Cr\log(r+2).
+\]
+为从计数转成可和性，把 \(|\rho|>1\) 按二进环带分组：
+\[
+ \begin{aligned}
+ \sum_{2^j<|\rho|\le2^{j+1}}\frac1{|\rho|^2}
+ &\le 2^{-2j}n_\xi(2^{j+1})\\
+ &\le C(j+1)2^{-j}\quad(j\ge0).
+ \end{aligned}
+\]
+右端对 \(j\) 可和。单位圆盘内只有有限个零点，且没有原点零点，所以这部分也不造成发散。
+\end{proof}
+
+\begin{theorem}[xi 函数的 Hadamard 乘积]\label{b3:thm:26-xi-product}
+设 \(\xi\) 由\cref{b3:def:26-xi}定义，\(\rho\) 按重数遍历其全部零点。存在常数 \(A,B\in\mathbb C\)，使对所有 \(s\in\mathbb C\) 有
+\begin{equation}\label{b3:eq:26-xi-product}
+ \xi(s)=e^{A+Bs}\prod_\rho
+                    \left(1-\frac s\rho\right)e^{s/\rho}.
+\end{equation}
+乘积在复平面的每个紧集上正规收敛，并且不依赖因子的排列。固定这些属一因子后，\(e^A\) 与 \(B\) 唯一确定。
+\end{theorem}
+\begin{proof}
+\(\xi\) 非恒零、增长阶为一、原点不是零点，所以\cref{b3:thm:20-hadamard}适用，指数多项式的次数不超过一。这给出上述表示，且没有额外的原点因子 \(s^m\)。
+
+也可直接检查乘积的收敛为何不依赖排列。固定 \(|s|\le R\)，对 \(|\rho|>2R\) 用刚才的小对数展开，得到
+\[
+ \left|\log E_1(s/\rho)\right|
+ \le\sum_{k=2}^\infty\left|\frac s\rho\right|^k
+ \le\frac{2R^2}{|\rho|^2}.
+\]
+由\cref{b3:prop:26-zero-count-bound}，这些对数尾项在圆盘上一致绝对可和。剩下的只有有限个因子，所以乘积正规收敛且可以重排。两个表示若使用同一批因子，其指数商恒为一；在原点取值和求导便分别固定 \(e^A\) 和 \(B\)。常数 \(A\) 本身仍允许加上 \(2\pi\mathrm i\) 的整数倍。
+\end{proof}
+
+指数修正 \(e^{s/\rho}\) 不是装饰：它使尾部从 \(|\rho|^{-1}\) 降为 \(|\rho|^{-2}\)。这里已证明的是修正后乘积的任意重排，没有证明未经修正的一次因子可以按任意顺序相乘。
+
+\subsection{乘积常数、零点计数与对称配对}
 \label{b3:subsec:260604}
 
-乘积中的两个常数也有局部意义。取 \(s=0\)，每个典范因子等于一，因此可取 \(e^A=1/2\)。由于每个因子的对数导数在零点为零，\(B=\xi'(0)/\xi(0)\)。利用 Gamma 在零处的对数导数
-\(\Gamma'(z)/\Gamma(z)=-1/z-\gamma+O(z)\)，以及上一节求得的 \(\zeta'(0)\)，有
+乘积中的常数可以由一个局部展开确定，无须先知道任何单个零点的位置。在 \(s=0\) 处，各个因子均为一，因此 \(e^A=\xi(0)=1/2\)。再注意 \(E_1'(0)=0\)。乘积局部一致收敛也保证导数局部一致收敛，所以整个乘积在原点的导数为零，从而 \(B=\xi'(0)/\xi(0)\)。
+
+\begin{proposition}[乘积的规范化常数]\label{b3:prop:26-xi-product-constants}
+在\eqref{b3:eq:26-xi-product}的属一乘积表示中，可以取 \(A=-\log2\)，而
 \[
+ B=\frac{\xi'(0)}{\xi(0)}
+   =\log2+\frac12\log\pi-1-\frac\gamma2,
+\]
+其中 \(\gamma\) 是 Euler 常数。
+\end{proposition}
+\begin{proof}
+只须计算对数导数的可去极限。在原点附近的去心小圆盘中，定义式的各个因子均可取对数导数，故
+\begin{equation}\label{b3:eq:26-xi-log-derivative-factors}
  \frac{\xi'(s)}{\xi(s)}
  =\frac1s+\frac1{s-1}-\frac12\log\pi
-   +\frac12\frac{\Gamma'(s/2)}{\Gamma(s/2)}
-   +\frac{\zeta'(s)}{\zeta(s)}.
-\]
-其中 \(1/s\) 与 Gamma 项的主部相消。取极限，得到
+     +\frac12\frac{\Gamma'(s/2)}{\Gamma(s/2)}
+     +\frac{\zeta'(s)}{\zeta(s)}.
+\end{equation}
+由\cref{b3:prop:21-log-derivative}，
 \[
- B=\log2+\frac12\log\pi-1-\frac\gamma2.
+ \frac{\Gamma'(z)}{\Gamma(z)}=-\frac1z-\gamma+O(z)
+                         \quad(z\to0).
 \]
-这一步只确定乘积的指数因子，不提供单个零点的位置。它也是检验 Gamma 因子、\(1/2\) 常数和极点消去是否一致的一种方法。
+而\subsecref{b3:subsec:260404}已经算出 \(\zeta(0)=-1/2\)、\(\zeta'(0)=-\tfrac12\log(2\pi)\)。因此
+\[
+ \begin{aligned}
+ \frac12\frac{\Gamma'(s/2)}{\Gamma(s/2)}
+       &=-\frac1s-\frac\gamma2+O(s),\\
+ \frac{\zeta'(s)}{\zeta(s)}&=\log(2\pi)+O(s).
+ \end{aligned}
+\]
+代回后，\(1/s\) 与 Gamma 项的主部相消，\(1/(s-1)\to-1\)，其余常数合起来正是命题所列的 \(B\)。
+\end{proof}
+
+零点计数的上界回答的是另一种问题。\cref{b3:prop:26-zero-count-bound}只说明半径 \(r\) 内至多有 \(Cr\log(r+2)\) 个零点，并不提供下界或首项常数。精确的 Riemann--von Mangoldt 渐近还需要控制辐角；本节不把 Jensen 上界当成该渐近式的证明。另一方面，这个较粗的计数界已经足够保证典范乘积的收敛，说明“重建函数”和“精确数出零点”需要的资料强度不同。
 
 \ProseParagraphBreak
-
-Jensen 公式结合 \(\log M(r,\xi)=O(r\log(r+2))\) 给 \(N(r)=O(r\log(r+2))\)，其中 \(N(r)\) 为圆盘内零点总数。具体取外半径 \(2r\)，每个 \(|\rho|\le r\) 在 Jensen 和中贡献至少 \(\log2\)，故 \(N(r)\log2\le\log M(2r)-\log|\xi(0)|\)。这只是上界；精确的 Riemann--von Mangoldt 渐近还需要控制辐角，本章不由增长上界宣称该渐近已经成立。
+函数方程提供了另一种简化：把原点移到对称中心 \(1/2\)，使零点成相反数对。这时一对指数修正会准确相消，但必须先把分组方式说清楚。
 
 \begin{proposition}[关于中点配对的乘积]
 \label{b3:prop:26-centered-product}
-置 \(F(z)=\xi(1/2+z)\)。从每一对非零零点 \(\alpha,-\alpha\) 中取一项，并保留重数，则
+设 \(\xi\) 为\cref{b3:def:26-xi}中的整函数，令 \(F(z)=\xi(1/2+z)\)。从 \(F\) 的每一对零点 \(\alpha,-\alpha\) 中取一项，并按零点重数重复计入，则对所有 \(z\in\mathbb C\) 有
 \[
  F(z)=F(0)\prod_{\{\alpha,-\alpha\}}
-           \left(1-\frac{z^2}{\alpha^2}\right).
+                    \left(1-\frac{z^2}{\alpha^2}\right).
 \]
-该乘积在紧集上正规收敛，且不依赖各对之间的排列。
+这里 \(F(0)>0\)，所以零点对中不含 \(\alpha=0\)。该乘积在紧集上正规收敛，不依赖各对之间的排列，也不依赖每对选择哪一个代表。
 \end{proposition}
 \begin{proof}
-函数方程给 \(F(-z)=F(z)\)，故零点按相同重数成对。又 \(\zeta(1/2)<0\)、\(\Gamma(1/4)>0\) 且 \((1/2)(-1/2)<0\)，所以 \(F(0)>0\)，没有中心零点。平移不改变增长阶，对 \(F\) 使用 Hadamard 分解。每一对属一因子的乘积为
+函数方程给 \(F(-z)=F(z)\)，故零点按相同重数成对；\cref{b3:prop:26-xi-properties}给出 \(F(0)>0\)。平移不改变增长阶：例如 \(M(r,F)\le M(r+1/2,\xi)\)，反向比较也成立。因此对 \(F\) 使用阶一 Hadamard 分解，得到 \(F(z)=e^{a+bz}\prod_\alpha E_1(z/\alpha)\)。这里 \(\alpha=\rho-1/2\)，对充分大的 \(|\rho|\) 有 \(|\alpha|\ge|\rho|/2\)，所以 \(\sum_\alpha|\alpha|^{-2}<\infty\)。
+
+每一对因子满足
 \[
  E_1(z/\alpha)E_1(-z/\alpha)=1-z^2/\alpha^2.
 \]
-由零点计数上界，\(\sum|\alpha|^{-2}<\infty\)，所以配对乘积正规收敛，并且可以任意重排各对。于是 \(F(z)=e^{a+bz}P(z)\)，其中 \(P\) 为偶函数且 \(P(0)=1\)。在原点附近 \(P\) 非零，\(F\) 的偶性给 \(e^{bz}=e^{-bz}\)。对此在零点求导得 \(b=0\)，再取值确定 \(e^a=F(0)\)。
+原来的对数尾项绝对可和，因而这种分组合法；而在 \(|z|\le R\) 上，配对后因子与一的差至多为 \(R^2/|\alpha|^2\)，再次保证正规收敛及各对的任意重排。选 \(\alpha\) 或 \(-\alpha\) 不改变 \(\alpha^2\)，所以也不改变因子。
+
+记配对乘积为 \(P(z)\)。它是偶整函数，且 \(P(0)=1\)。在原点附近，\(P\ne0\)，故 \(F(-z)=F(z)\) 给 \(e^{a-bz}=e^{a+bz}\)。在 \(z=0\) 处求导，得到 \(b=0\)；再取 \(z=0\)，得到 \(e^a=F(0)\)。
 \end{proof}
 
-这种配对是在平移后的中点坐标中进行的，不能把它误读成原变量中任意顺序的 \(\prod_\rho(1-s/\rho)\)。配对收敛所依赖的是平方倒数可和，而单个倒数的绝对可和并未建立。乘积看起来更短，实际增加的是明确的对称分组规则。
+这里的配对是平移坐标中的 \(\{\alpha,-\alpha\}\)，对应原变量中的 \(\{\rho,1-\rho\}\)。它不等于在原变量中任意排列 \(\prod_\rho(1-s/\rho)\)。乘积看起来更短，是因为已经利用了特定的对称性，并对整个二次因子证明了绝对可和的尾界。
 
 \subsection{显式公式观点}
 \label{b3:subsec:260605}
 
-对典范乘积在避开零点的紧集取对数导数，有
+\chapref{b3:ch:25}把 \(-\zeta'/\zeta\) 写成素数幂的 Dirichlet 级数；整函数乘积则把同一个对象与零点联系起来。两种表示能够相遇，是因为取对数导数把乘积转成了部分分式。
+
+\begin{proposition}[xi 函数的部分分式]\label{b3:prop:26-xi-log-derivative}
+设 \(\xi\) 为\cref{b3:def:26-xi}中的整函数，\(\rho\) 按重数遍历其零点，\(B=\log2+\tfrac12\log\pi-1-\gamma/2\)。对 \(s\notin\{\rho\}\)，有
+\begin{equation}\label{b3:eq:26-xi-partial-fractions}
+ \frac{\xi'(s)}{\xi(s)}
+ =B+\sum_\rho\left(\frac1{s-\rho}+\frac1\rho\right).
+\end{equation}
+括号内作为一项求和时，级数在避开零点的紧集上正规收敛。
+\end{proposition}
+\begin{proof}
+每个属一因子的对数导数为 \(1/(s-\rho)+1/\rho\)。若 \(K\subset\{|s|\le R\}\) 是不含零点的紧集，则对 \(|\rho|>2R\)，
 \[
-\frac{\xi'(s)}{\xi(s)}=B+\sum_\rho\left(\frac1{s-\rho}+\frac1\rho\right).
+ \left|\frac1{s-\rho}+\frac1\rho\right|
+ =\left|\frac{s}{\rho(s-\rho)}\right|
+ \le\frac{2R}{|\rho|^2}\quad(s\in K).
 \]
-每个括号为 \(O_K(|\rho|^{-2})\)，故正规收敛。另一方面，定义式将它写成 \(\zeta'/\zeta\)、Gamma 对数导数与有理项之和。素数幂级数与零点部分分式由此描述同一个亚纯函数。在反演围道中，跨越零点会取到由其重数决定的留数，这便是显式公式的基本机制；具体无穷零点求和还必须指定截断和误差，不能只把有限留数定理中的省略号延长到无穷。
+尾项因此一致绝对可和；有限头部在 \(K\) 上全纯。对正规乘积使用\cref{b3:prop:20-product-log-derivative}，或在稍大的无零点紧邻域上先对有限乘积求导再取极限，就得到公式。
+\end{proof}
+
+括号不能拆成两个独立的无穷和：目前的收敛依据恰好来自其中一阶项的抵消。将\eqref{b3:eq:26-xi-partial-fractions}与\eqref{b3:eq:26-xi-log-derivative-factors}比较，右端的零点资料与左端的 \(\zeta'/\zeta\)、Gamma 对数导数及有理项便联系起来。若再进行 Mellin 反演，围道跨过零点就会产生相应的留数。下面保留全部边界积分，把这个过程写成一个有限且准确的公式。
+
+\ProseParagraphBreak
+令 \(\Lambda(n)\) 为 von Mangoldt 函数：当 \(n=p^k\)、\(p\) 为素数、\(k\ge1\) 时取 \(\log p\)，其余正整数处取零。对 \(x>0\)，定义指数平滑的素数幂和
+\[
+ S(x)\coloneqq\sum_{n\ge1}\Lambda(n)e^{-n/x}.
+\]
+它对每个 \(x>0\) 绝对收敛，因为 \(0\le\Lambda(n)\le\log n\)，而指数下降压过对数增长。权重 \(e^{-n/x}\) 将 \(n\) 远大于 \(x\) 的项压小，其 Mellin 变换恰好是 Gamma 函数，所以这种平滑适合现有的反演工具。
+
+\begin{proposition}[素数幂和的绝对 Mellin 反演]\label{b3:prop:26-smoothed-prime-inversion}
+对实数 \(x>0\)、\(c>1\)，令 \(S(x)=\sum_{n\ge1}\Lambda(n)e^{-n/x}\)，其中 \(\Lambda\) 是 von Mangoldt 函数。则
+\begin{equation}\label{b3:eq:26-smoothed-prime-inversion}
+ S(x)=\frac1{2\pi\mathrm i}
+       \int_{c-\mathrm i\infty}^{c+\mathrm i\infty}
+       \left(-\frac{\zeta'}{\zeta}(s)\right)\Gamma(s)x^s\,\mathrm ds,
+\end{equation}
+其中 \(x^s=e^{s\log x}\)，竖线积分绝对收敛。
+\end{proposition}
+\begin{proof}
+\eqref{b3:eq:21-exponential-inversion}对任意正实部的反演竖线均成立。把其中的正实变量取为 \(n/x\)，再乘以 \(\Lambda(n)\) 求和。积分与级数换序所需的绝对总量至多为
+\[
+ \frac{x^c}{2\pi}
+ \left(\sum_{n\ge1}\frac{\Lambda(n)}{n^c}\right)
+ \int_{\mathbb R}|\Gamma(c+\mathrm it)|\,\mathrm dt.
+\]
+第一个括号因 \(c>1\) 及 \(\Lambda(n)\le\log n\) 有限；Gamma 积分则由\cref{b3:lem:21-gamma-strip-decay}的任意幂衰减有限。换序后，用\eqref{b3:eq:25-log-derivative}识别 \(\sum\Lambda(n)n^{-s}=-\zeta'(s)/\zeta(s)\)，即得结论。
+\end{proof}
+
+为移动围道，先说明参数怎样选择。固定 \(c>1\)，再选 \(a\in(0,1)\)，使 \(a\) 不等于任何非平凡零点的实部。这样的 \(a\) 存在：零点集是可数的，因而需要避开的实数也只有可数多个。然后取 \(T>0\)，避开所有零点虚部的绝对值。这保证矩形的左边和两条横边均不经过零点；右边由 Euler 乘积的无零点性排除零点。不能先固定任意 \(a\)，再指望只调整 \(T\) 就能排除左竖线上的所有零点。
+
+\begin{proposition}[有限矩形中的平滑显式公式]\label{b3:prop:26-finite-explicit-formula}
+设 \(x>0\)、\(c>1\)、\(0<a<1\)、\(T>0\)，且 Riemann zeta 函数 \(\zeta\) 在矩形 \(a\le\operatorname{Re}s\le c\)、\(|\operatorname{Im}s|\le T\) 的边界上无零点。令 \(S(x)=\sum_{n\ge1}\Lambda(n)e^{-n/x}\)，其中 \(\Lambda\) 是 von Mangoldt 函数，并令
+\[
+ H_x(s)=\left(-\frac{\zeta'}{\zeta}(s)\right)\Gamma(s)x^s,
+ \quad
+ I_{b,T}(x)=\frac1{2\pi\mathrm i}
+              \int_{b-\mathrm iT}^{b+\mathrm iT}H_x(s)\,\mathrm ds
+              \quad(b=a,c).
+\]
+此处 \(x^s=e^{s\log x}\)。定义横边项
+\[
+ E_{a,c,T}(x)=\frac1{2\pi\mathrm i}
+ \left(\int_{a+\mathrm iT}^{c+\mathrm iT}H_x(s)\,\mathrm ds
+       +\int_{c-\mathrm iT}^{a-\mathrm iT}H_x(s)\,\mathrm ds\right)
+\]
+及原竖线的尾项
+\[
+ R_{c,T}(x)=\frac1{2\pi}
+          \int_{|t|>T}H_x(c+\mathrm it)\,\mathrm dt.
+\]
+则有准确等式
+\begin{equation}\label{b3:eq:26-finite-explicit-formula}
+ \begin{aligned}
+ S(x)={}&x-
+ \sum_{\substack{a<\operatorname{Re}\rho<c\\|\operatorname{Im}\rho|<T}}
+          m_\rho\Gamma(\rho)x^\rho\\
+ &+I_{a,T}(x)+E_{a,c,T}(x)+R_{c,T}(x).
+ \end{aligned}
+\end{equation}
+这里有限和中的 \(\rho\) 遍历互不相同的零点，\(m_\rho\) 是其重数；并且对固定 \(x,c\)，有 \(R_{c,T}(x)\to0\) 当 \(T\to\infty\)。
+\end{proposition}
+\begin{proof}
+矩形完全位于正实部半平面内，所以 Gamma 函数没有极点。在 \(s=1\) 附近，\(\zeta(s)=(s-1)^{-1}u(s)\)，\(u\) 全纯且 \(u(1)=1\)，从而
+\[
+ -\frac{\zeta'}{\zeta}(s)=\frac1{s-1}-\frac{u'(s)}{u(s)}.
+\]
+于是 \(H_x\) 在一处的留数是 \(\Gamma(1)x=x\)。在重数为 \(m_\rho\) 的零点 \(\rho\) 附近，写 \(\zeta(s)=(s-\rho)^{m_\rho}v(s)\)、\(v(\rho)\ne0\)，得到
+\[
+ -\frac{\zeta'}{\zeta}(s)
+       =-\frac{m_\rho}{s-\rho}-\frac{v'(s)}{v(s)}.
+\]
+Gamma 函数与 \(x^s\) 在此全纯，故留数为 \(-m_\rho\Gamma(\rho)x^\rho\)。矩形内部只有有限个这样的零点。
+
+沿正向矩形从 \(c-\mathrm iT\) 向上走，再沿上边向左、左边向下、下边向右。留数定理给
+\[
+ I_{c,T}(x)-I_{a,T}(x)-E_{a,c,T}(x)
+ =x-\sum_{\substack{a<\operatorname{Re}\rho<c\\|\operatorname{Im}\rho|<T}}
+            m_\rho\Gamma(\rho)x^\rho.
+\]
+这里 \(E\) 的两条横边方向都与正向矩形相反，这解释了左侧的负号。再由绝对反演公式，\(S(x)=I_{c,T}(x)+R_{c,T}(x)\)，移项即得结论。最后，\(R_{c,T}\to0\) 是原竖线绝对可积函数的尾积分趋零，不需要关于新竖线或零点分布的任何估计。
+\end{proof}
+
+公式中的主项 \(x\) 来自 \(\zeta\) 的极点，零点项带有负号及其重数。若 \(\rho=\beta+\mathrm i\gamma\)，则 \(x^\rho=x^\beta e^{\mathrm i\gamma\log x}\)：实部决定幂尺度，虚部产生对数变量中的振荡。对共轭零点将贡献配成一对，可得 \(-2m_\rho\operatorname{Re}(\Gamma(\rho)x^\rho)\)，与 \(S(x)\) 的实值性相容。当前只纳入矩形内部的有限多个零点，没有省略截断规则。
+
+\ProseParagraphBreak
+进一步令 \(T\to\infty\) 时，已经知道趋零的只有 \(R_{c,T}\)。虽然 Gamma 因子沿有限实部带快速下降，\(\zeta'/\zeta\) 在零点附近却可能很大；“边界不经过零点”对每个固定矩形足够，却不自动给一族矩形上的统一界。因而不能据此删除 \(E_{a,c,T}\)，也不能无估计地令 \(I_{a,T}\) 收敛或消失。本节保留这两项，所得有限公式已完整展示素数幂、极点主项与零点留数之间的联系。无穷零点形式的显式公式还需要额外的选高、边界估计与求和约定。

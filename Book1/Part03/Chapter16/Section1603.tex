@@ -38,7 +38,7 @@ Rademacher 定理对 Lipschitz 映射给出通常意义的微分。
 因此近似微分仍是一张确定的线性映射，而不是随所忽略的集合变化的一族矩阵。
 
 \begin{proposition}\label{b1:prop:approximate-differential-density-set}
-\(f\) 在 \(x\) 处近似可微且近似微分为 \(A\)，当且仅当存在可测集
+设 \(\Omega\subseteq\mathbb R^d\) 为开集，\(f:\Omega\to\mathbb R^m\) 是有限值 Lebesgue 可测映射，\(x\in\Omega\)。给定线性映射 \(A:\mathbb R^d\to\mathbb R^m\)。\(f\) 在 \(x\) 处近似可微且近似微分为 \(A\)，当且仅当存在可测集
 \(E\subseteq\Omega\)，使 \(E\) 在 \(x\) 处的密度为 \(1\)，并且
 \[
  \lim_{\substack{y\to x\\y\in E,\ y\ne x}}
@@ -70,11 +70,39 @@ Rademacher 定理对 Lipschitz 映射给出通常意义的微分。
 通常可微蕴含近似可微，且两种微分相等。
 其逆命题对一般连续函数也不成立：很窄的尖峰可以使差商沿某列点保持较大，
 同时让这些坏点在小球中所占比例趋于零。
-\cref{b1:ex:16-approximate-not-ordinary}给出一个连续的一维例子。
+下面先完整给出这个模型，便于直接比较两种微分。
 但如果函数已有局部 Lipschitz 控制，窄峰就不能任意陡峭，逆命题反而成立。
 
+\begin{proposition}[稀疏的连续尖峰]\label{b1:eg:sparse-peaks-approximate}
+对正整数 \(n\)，取 \(a_n=2^{-n}\)、\(b_n=a_n^2/8\)，定义实值函数 \(f:\mathbb R\to\mathbb R\)
+\[
+ f(x)=\sum_{n\ge1}a_n\max\left\{1-\frac{|x-a_n|}{b_n},0\right\},
+ \qquad J_n=(a_n-b_n,a_n+b_n).
+\]
+中心取几何级数使峰只向原点聚集，峰高取 \(a_n\) 保留非零差商；
+半宽取更小的二次量，则使峰的总支撑比例消失。由于 \(b_n\le a_n/16\)，
+\[
+ J_n\subset(15a_n/16,17a_n/16),
+\]
+这些区间两两分离。每个非零点附近只有有限个峰，故 \(f\) 在那里连续。
+在 \(J_n\) 上有 \(0\le f(x)\le a_n\le16x/15\)，其余点函数为零；
+因此 \(f(0)=0\) 且函数在原点也连续。
+若 \(J_n\) 与 \((-r,r)\) 相交，则 \(a_n<2r\)，从而
+\[
+ m_1\left(\bigcup_nJ_n\cap(-r,r)\right)
+ \le\frac14\sum_{a_n<2r}a_n^2\le\frac43r^2.
+\]
+除以 \(2r\) 后趋于零。对每个 \(\varepsilon>0\)，差商绝对值大于
+\(\varepsilon\) 的点都在这些峰内，故 \(\operatorname{ap}Df(0)=0\)。
+另一方面 \(f(a_n)/a_n=1\)，而 \(f(-a_n)/(-a_n)=0\)，普通导数不存在。
+峰的斜率绝对值为 \(a_n/b_n=8/a_n\to\infty\)，所以它也不在原点的任何邻域内 Lipschitz。
+\end{proposition}
+
+\cref{b1:fig:visual-f11}画的是这个模型；坏点的体积比例与峰点差商
+分别对应近似微分和普通微分的不同检验。
+
 \begin{proposition}\label{b1:prop:lipschitz-approximate-ordinary}
-若 \(f\) 在 \(x\) 的某邻域内 Lipschitz，并在 \(x\) 处近似可微，
+设 \(\Omega\subseteq\mathbb R^d\) 为开集，\(f:\Omega\to\mathbb R^m\) 是有限值 Lebesgue 可测映射，\(x\in\Omega\)。若 \(f\) 在 \(x\) 的某邻域内 Lipschitz，并在 \(x\) 处近似可微，
 则 \(f\) 在 \(x\) 处通常可微，且
 \[
  Df(x)=\operatorname{ap}Df(x).
@@ -140,7 +168,7 @@ Rademacher 定理对 Lipschitz 映射给出通常意义的微分。
 Lebesgue 密度定理说明 \(E\) 中几乎每点都是这样的点。
 特别地，若 \(f\) 本身 Lipschitz，则在该水平集的几乎处处有 \(Df=0\)。
 
-\subsection{可测函数中的精细结构}
+\subsection{近似可微映射的 Lipschitz 分片}
 \label{b1:subsec:160303}
 
 近似可微比 Lipschitz 条件弱得多，却仍能在可数个部分上恢复距离控制。
@@ -239,7 +267,7 @@ Rademacher 定理保证 \(F_j\) 几乎处处可微，Lebesgue 密度定理保证
 没有额外的零测集映射性质时，不能忽略这部分像。
 
 \begin{corollary}\label{b1:cor:approximate-derivative-measurable}
-若 \(f\) 几乎处处近似可微，则其近似微分的矩阵系数有 Borel 可测代表。
+设 \(\Omega\subseteq\mathbb R^d\) 为开集，\(f:\Omega\to\mathbb R^m\) 是有限值 Lebesgue 可测映射。若 \(f\) 几乎处处近似可微，则其近似微分的矩阵系数有 Borel 可测代表。
 \end{corollary}
 \begin{proof}
 沿前一定理取紧集 \(K_j\) 和全空间延拓 \(F_j\)。
@@ -255,5 +283,5 @@ Rademacher 定理保证 \(F_j\) 几乎处处可微，Lebesgue 密度定理保证
 后续面积公式将需要这种联系，但还必须另行处理像的测度与重数；
 本节没有把这些未建立的结论包含进“分片”二字之中。
 
-近似可微与通常可微的区别见\cref{b1:fig:visual-f11}；完整反例及估计见\cref{b1:ex:16-approximate-not-ordinary}。
+\cref{b1:eg:sparse-peaks-approximate}的支撑比例与峰点差商如\cref{b1:fig:visual-f11}所示；两者检验的量不能互换。
 \input{Figures/F11}

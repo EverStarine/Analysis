@@ -2,55 +2,269 @@
 \section{Green 函数}
 \label{b3:sec:1701}
 
-在区域内放置一个单位点源，再让边界保持零势，得到的核同时描述奇性和边界约束。本章采用正 Green 核；因此它的 Laplace 算子带负号。
+在区域内放置一个点源，并让边界保持零势，需要同时安排局部奇性和全边界条件。对数基本解给出点源，Dirichlet 问题则补上一个调和修正。本章采用正 Green 核，奇性为 \(-\log|z-w|\)，因而其 Laplace 算子带负号。先在有界正则域完成这项构造，再说明光滑边界如何用于核的对称性。
 
 \subsection{定义}
 \label{b3:subsec:170101}
 
-在有界光滑区域 \(D\)，极点 \(w\in D\) 的\term[green-hanshu]{Green 函数}[Green function]满足：\(g_D(\cdot,w)>0\) 在 \(D\setminus\{w\}\) 调和，\(g_D(z,w)+\log|z-w|\) 在 \(w\) 邻域调和，且连续取零边值。故分布上 \(-\Delta_zg_D=2\pi\delta_w\)。正号约定与对数势 \(\log|z-w|\) 的约定不同。
+设 \(D\subseteq\mathbb C\) 为有界区域，\(w\in D\)。若实函数 \(g_D(\cdot,w)\) 在 \(D\setminus\{w\}\) 严格为正且调和，在每个 \(\xi\in\partial D\) 满足
+\[
+ \lim_{D\ni z\to\xi}g_D(z,w)=0,
+\]
+并且 \(g_D(z,w)+\log|z-w|\) 可在 \(w\) 附近延拓为调和函数，则称它为以 \(w\) 为极点的经典零边值\term[green-hanshu]{Green 函数}[Green function]。局部奇性中的系数固定为一；只规定趋于正无穷，不能确定点源的大小。
 
-一般区域的 Green 函数由下面的穷竭极限定义，要求它是具有同一奇性的最小正核。无穷远处不指定值时，仅列调和性、正性和奇性不足以唯一确定核；上半平面的正调和函数 \(\operatorname{Im}z\) 可加到任何这样的核上。
+\ProseParagraphBreak
+记调和余项为 \(h_w\)，则在整个 \(D\) 内有
+\[
+ g_D(z,w)=-\log|z-w|+h_w(z),\quad z\ne w.
+\]
+这里 \(h_w\) 在极点外由等式定义，在极点处由假设延拓；因此它在全域调和。由\cref{b3:prop:15-log-fundamental}，对数函数局部可积且
+\(\Delta\log|z-w|=2\pi\delta_w\)，所以
+\[
+ -\Delta_zg_D(\cdot,w)=2\pi\delta_w
+\]
+按分布成立。这个等式记录点源，零边值则记录区域的约束，两项都属于核的定义。
+
+\ProseParagraphBreak
+为了在边界使两项相消，所求修正必须满足
+\(h_w(\xi)=\log|\xi-w|\)。因此使用的是正号的对数边值。因为 \(w\) 在内部，它到边界有正距离，这份边值在紧集 \(\partial D\) 上连续且有界；上一章的连续 Dirichlet 理论正好可以处理它。
+
+\Needspace{6\baselineskip}
+\begin{theorem}[有界正则域上的 Green 核]\label{b3:thm:17-green-regular}
+设 \(D\subseteq\mathbb C\) 为有界正则域，即每个连续实边值的 Perron 解都连续达到全部边界值。对 \(w\in D\)，令
+\[
+ \varphi_w(\xi)=\log|\xi-w|,\quad \xi\in\partial D,
+ \quad h_w=H_{\varphi_w}.
+\]
+则
+\[
+ g_D(z,w)=-\log|z-w|+h_w(z),\quad z\in D\setminus\{w\},
+\]
+是以 \(w\) 为极点的经典零边值 Green 函数。
+\end{theorem}
+\begin{proof}
+极点到边界的正距离保证 \(\varphi_w\in C(\partial D;\mathbb R)\)。
+\cref{b3:thm:16-perron}给出内部调和的 Perron 解，而 \(D\) 的正则性保证
+\(h_w\in C(\overline D)\) 且 \(h_w|_{\partial D}=\varphi_w\)。因此所定义的
+\(g_D\) 在极点外调和，连续取零边值，其对数奇性也符合定义。
+
+还须证明严格正性。先取 \(\rho>0\) 使
+\(\overline{B(w,\rho)}\subset D\)。调和函数 \(h_w\) 在这个闭圆盘上有界，故
+\[
+ \min_{|z-w|=\varepsilon}g_D(z,w)
+ \ge-\log\varepsilon-\sup_{\overline{B(w,\rho)}}|h_w|
+ \longrightarrow+\infty
+ \quad(\varepsilon\downarrow0).
+\]
+取足够小的 \(\varepsilon\)，在
+\(D\setminus\overline{B(w,\varepsilon)}\) 上对 \(-g_D\) 应用边界最大值原理：原边界上它为零，小圆上它为负，所以 \(g_D\ge0\) 于余域；若余域有多个连通分支，就在每个分支分别使用同一原理。任意固定 \(z\ne w\) 都可放进这样的余域，故全域非负。
+
+区域 \(D\setminus\{w\}\) 仍连通：连接两点的内部折线若经过 \(w\)，可在一个内部小圆盘中以圆弧绕开该点。若 \(g_D\) 在某个非极点位置为零，强最小值原理便使它在整个 \(D\setminus\{w\}\) 恒零，与极点附近趋于正无穷矛盾。因此 \(g_D>0\)。
+\end{proof}
+
+构造只用正则性，没有用边界导数。若记
+\[
+ d_w=\min_{\xi\in\partial D}|\xi-w|,\quad
+ L_w=\max_{\xi\in\partial D}|\xi-w|,
+\]
+则 \(0<d_w\le L_w<\infty\)，最大值原理给出
+\[
+ \log d_w\le h_w(z)\le\log L_w,\quad z\in D.
+\]
+因此极点附近有明确的比较
+\[
+ \log\frac{d_w}{|z-w|}
+ \le g_D(z,w)\le\log\frac{L_w}{|z-w|}.
+\]
+左端离极点较远时可以为负，严格正性仍由上面的域内比较证明。在圆盘
+\(B(w,R)\) 中，边值 \(\varphi_w\) 恒等于 \(\log R\)，所以
+\(h_w=\log R\)，得到 \(g_{B(w,R)}(z,w)=\log(R/|z-w|)\)。
 
 \subsection{唯一性}
 \label{b3:subsec:170102}
 
-\begin{proposition}\label{b3:prop:17-green-uniqueness}
-有界光滑区域的零边值 Green 函数唯一。
+同一对数奇性的差不再含点源，因此经典核的唯一性仍归结为调和函数的零边值唯一性。这一步只要求区域有界；正则性是保证存在性的条件。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[经典零边值核的唯一性]\label{b3:prop:17-green-uniqueness}
+设 \(D\subseteq\mathbb C\) 为有界区域，\(w\in D\)。在
+\(D\setminus\{w\}\) 调和、在每个边界点连续取零值，且
+\(g(z)+\log|z-w|\) 在 \(w\) 附近调和可去的实函数 \(g\) 至多一个。
+这里不必预先假定候选函数为正。
 \end{proposition}
 \begin{proof}
-两核的差在极点邻域由两项调和余项之差消去奇性，因此是全域调和函数。它连续取零边界值，最大值与最小值原理使其恒零。
+若 \(g_1,g_2\) 是两个候选，则在极点附近写成
+\(g_j=-\log|z-w|+h_j\)。它们的差等于 \(h_1-h_2\)，故可在 \(w\) 处延拓为调和函数。延拓后的差在全域调和，并在每个边界点趋于零。由有界域的边界上极限原理\cref{b3:cor:15-boundary-limsup}，对差与负差分别比较，得到 \(g_1-g_2=0\)。
 \end{proof}
-零边值对于光滑域指通常的连续极限；后面的一般域定义并不声称在每个不正则边界点取零。
+
+经典核还有一个不要求竞争者满足零边值的性质。它将用于把定义扩展到边界粗糙或无界的区域。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[经典 Green 核的最小性]\label{b3:prop:17-classical-green-minimal}
+设 \(D\subseteq\mathbb C\) 为有界正则域，\(w\in D\)，\(g_D(\cdot,w)\) 为其经典 Green 核。若实函数 \(G\) 在 \(D\setminus\{w\}\) 为正且调和，并且 \(G(z)+\log|z-w|\) 在 \(w\) 附近调和可去，则
+\[
+ g_D(z,w)\le G(z),\quad z\in D\setminus\{w\}.
+\]
+对 \(G\) 不要求边界极限存在，也不要求它在靠近边界时有界。
+\end{proposition}
+\begin{proof}
+函数 \(q=g_D-G\) 的奇性相消，故延拓为 \(D\) 上的调和函数。因为
+\(G>0\)，对每个 \(\xi\in\partial D\) 都有
+\[
+ \limsup_{D\ni z\to\xi}q(z)
+ \le\lim_{D\ni z\to\xi}g_D(z,w)=0.
+\]
+区域有界，\cref{b3:cor:15-boundary-limsup}直接给 \(q\le0\)，即得结论。
+\end{proof}
+
+最小性比较的是同一对数奇性的全部正竞争函数。若向经典核加一个正的调和函数，奇性与正性仍然保留，但一般不再取零边值，也不再是最小者。对无界域，甚至通常边界上的零值也可能保留：上半平面的函数
+\(y\) 为正、调和且在实轴为零，可以加到任何已有的正零边值候选上。因此后面的穷竭构造将以最小性识别一般 Green 核，而不要求它在每个不正则边界点取零。
+
+\ProseParagraphBreak
+以下边界积分限定在有限条实解析 Jordan 曲线围成的有界域。这里曲线的实解析参数要求导数处处非零，因而排除了尖点。这类边界局部是 \(C^1\) 图像，域的补集包含一个外锥，由\cref{b3:prop:16-exterior-cone-regular}可知域正则。零边值的反射还会给出法向导数，不能在证明反射之前先假定这些导数存在。
+
+\Needspace{6\baselineskip}
+\begin{lemma}[常边值调和函数的局部反射]\label{b3:lem:17-harmonic-reflection}
+设 \(D\subseteq\mathbb C\) 为有界区域，其边界由有限条互不相交的正则实解析 Jordan 曲线组成。设 \(I\) 是一段开边界弧，\(V\subseteq\mathbb C\) 是包含 \(I\) 的开集，实函数 \(u\) 在 \(D\cap V\) 调和，并在 \(I\) 上连续取同一常值 \(c\)。则对每个 \(\xi\in I\)，\(u\) 都可调和延拓到包含 \(\xi\) 的一个开邻域。因此 \(u\) 在该弧局部光滑直到边界。
+\end{lemma}
+\begin{proof}
+在 \(\xi\) 附近取实解析参数 \(\gamma(t)\)，使 \(\gamma(0)=\xi\)、
+\(\gamma'(0)\ne0\)。其幂级数在一个复圆盘中给出全纯延拓
+\(\Gamma(\zeta)\)。由复逆函数定理，缩小圆盘后 \(\Gamma\) 双全纯，且将一段实轴映为边界弧。正则 Jordan 边界在局部把邻域分成两侧；调整参数方向后，可使上半圆盘映到 \(D\) 侧。选 \(a>0\) 足够小，使闭上半圆盘
+\(\{|\zeta|\le a,\operatorname{Im}\zeta\ge0\}\) 都落在这张坐标的范围内，且半圆弧除两端外映入 \(D\)。
+
+令 \(v(\zeta)=u(\Gamma(\zeta))-c\)。链式法则给
+\[
+ \Delta v=|\Gamma'|^2\cdot(\Delta u)\circ\Gamma=0
+\]
+于上半圆盘。它连续到闭上半圆盘，并在直径上为零。在完整圆周
+\(|\zeta|=a\) 上定义数据
+\[
+ \psi(\zeta)=
+ \begin{cases}
+ v(\zeta),&\operatorname{Im}\zeta\ge0,\\
+ -v(\overline\zeta),&\operatorname{Im}\zeta<0.
+ \end{cases}
+\]
+两端 \(\zeta=\pm a\) 的值为零，因此 \(\psi\) 是连续圆周数据。由
+\cref{b3:thm:16-poisson}，其 Poisson 解 \(V\) 在整圆盘调和并连续到圆周。
+
+函数 \(-V(\overline\zeta)\) 具有相同边值 \(\psi\)，圆盘解的唯一性给
+\(V(\zeta)=-V(\overline\zeta)\)，所以 \(V\) 在直径上为零。在上半圆盘，
+\(V\) 与 \(v\) 都调和，且在半圆弧与直径上取相同值；有界域最大值原理给
+\(V=v\)。于是
+\[
+ c+V\circ\Gamma^{-1}
+\]
+在 \(\xi\) 的完整邻域中调和，并在域内与原来的 \(u\) 相同。这就是所需延拓。
+\end{proof}
+
+对固定极点 \(w\)，边界小邻域可选得不含 \(w\)，故该引理适用于
+\(g_D(\cdot,w)\)。边界紧且分量有限，取有限个这样的邻域就得到整个边界上的光滑性及法向导数的连续性。它们足以在删去极点小圆后使用 Green 公式；一般粗糙域的对称性将由穷竭传递，不在粗糙边界上写通常法向积分。
 
 \subsection{对称性}
 \label{b3:subsec:170103}
 
+Green 核描述源点与观察点之间的作用。交换二者以后核值不变，需要把两份核放进同一个积分恒等式；两处奇性分别贡献一个函数值。
+
+\Needspace{6\baselineskip}
 \begin{proposition}[Green 核的对称性]\label{b3:prop:17-green-symmetry}
-有界光滑区域满足 \(g_D(z,w)=g_D(w,z)\)。
+设 \(D\subseteq\mathbb C\) 为有界区域，其边界由有限条互不相交的正则实解析 Jordan 曲线组成，\(g_D\) 为对数奇性取 \(-\log|z-w|\) 的经典零边值 Green 核。则对不同的 \(z,w\in D\)，有
+\[
+ g_D(z,w)=g_D(w,z).
+\]
 \end{proposition}
 \begin{proof}
-固定不同的 \(z,w\)，在删去两点半径 \(\varepsilon\) 圆盘的区域，对 \(g_D(\cdot,z)\)、\(g_D(\cdot,w)\) 用 Green 第二公式。外边界两函数均零，所以无贡献。在 \(z\) 的小圆，奇核的法向导数为 \(1/\varepsilon+O(1)\)，平滑核趋 \(g_D(z,w)\)；另一项为 \(O(\varepsilon|\log\varepsilon|)\)。在 \(w\) 的小圆同样得到相反的 \(2\pi g_D(w,z)\)。积分和为零，令 \(\varepsilon\downarrow0\) 即得相等。
+固定 \(z\ne w\)，在变量 \(\zeta\) 中记
+\(u(\zeta)=g_D(\zeta,z)\)、\(v(\zeta)=g_D(\zeta,w)\)。取足够小的
+\(\varepsilon>0\)，使以 \(z,w\) 为中心的两个闭圆盘互不相交且均包含于
+\(D\)。令
+\[
+ \Omega_\varepsilon
+ =D\setminus\bigl(\overline{B(z,\varepsilon)}
+                  \cup\overline{B(w,\varepsilon)}\bigr).
+\]
+两函数在这个域中调和，且由边界反射光滑到原边界。这里使用第二卷推论1.2.3的 Green 公式：区域有界、边界为 \(C^1\)，函数在闭域的邻域中为 \(C^2\)。原边界实解析，新增小圆也光滑；反射与极点外的光滑性给出所需邻域延拓，故这些条件均满足。对恒等式
+\[
+ \operatorname{div}(u\nabla v-v\nabla u)=u\Delta v-v\Delta u
+\]
+使用平面散度公式，得到 Green 第二公式
+\[
+ 0=\int_{\partial\Omega_\varepsilon}
+       (u\,\partial_nv-v\,\partial_nu)\,\mathrm ds,
+\]
+其中 \(n\) 一律指 \(\Omega_\varepsilon\) 的外单位法向。原边界的每个分量上
+\(u=v=0\)，故那里没有贡献。
+
+在 \(z\) 附近写 \(u(\zeta)=-\log|\zeta-z|+a(\zeta)\)，其中 \(a\) 光滑调和；函数 \(v\) 在这里也光滑。小圆上的外法向朝向被删圆盘的中心，故
+\[
+ \begin{aligned}
+ u&=-\log\varepsilon+O(1),&
+ \partial_nu&=\frac1\varepsilon+O(1),\\
+ v&=v(z)+O(\varepsilon),&
+ \partial_nv&=O(1).
+ \end{aligned}
+\]
+所有误差均对圆周方向一致。因此
+\[
+ \int_{\partial B(z,\varepsilon)}
+       (u\,\partial_nv-v\,\partial_nu)\,\mathrm ds
+ =-2\pi v(z)+O(\varepsilon|\log\varepsilon|)+O(\varepsilon).
+\]
+第一项 \(u\,\partial_nv\) 乘上圆周长后趋于零；保留下来的是带负号的
+\(-v\,\partial_nu\)。
+
+在 \(w\) 的小圆上两函数的角色交换：
+\(v=-\log\varepsilon+O(1)\)、\(\partial_nv=1/\varepsilon+O(1)\)，而
+\(u=u(w)+O(\varepsilon)\)、\(\partial_nu=O(1)\)。这里得到
+\[
+ \int_{\partial B(w,\varepsilon)}
+       (u\,\partial_nv-v\,\partial_nu)\,\mathrm ds
+ =2\pi u(w)+O(\varepsilon|\log\varepsilon|)+O(\varepsilon).
+\]
+两小圆积分之和为零，令 \(\varepsilon\downarrow0\)，得
+\(u(w)=v(z)\)，即所述对称性。
 \end{proof}
-这也解释了为何源点与观察点可交换。不能只从 \(-\Delta g=2\pi\delta\) 猜对称性，因为还需要相同的边界约束。
+
+小圆上的法向不是从其中心向外，而是余域的向外方向，即朝向被删掉的圆盘。这个方向使对数奇项的法向导数为 \(+1/\varepsilon\)；两处主项的相反符号则来自
+\(u\,\partial_nv-v\,\partial_nu\) 中两函数的位置。对称性还表明，对固定
+\(z\)，函数 \(w\mapsto g_D(z,w)\) 在 \(D\setminus\{z\}\) 调和，因为它等于已按第一个变量构造的 \(g_D(w,z)\)。
 
 \subsection{共形不变性}
 \label{b3:subsec:170104}
 
-共形双射 \(F:D\to D'\) 给出
+共形变换保持二维调和方程，但对数奇性会多出一个调和项。经典核的边界条件还需要映射在闭包上的对应；先保留这项条件，可以直接使用唯一性。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[经典 Green 核的共形不变性]\label{b3:prop:17-classical-green-conformal}
+设 \(D,D'\subseteq\mathbb C\) 为有界正则域，\(F:D\to D'\) 双全纯，且
+\(F\) 延拓为 \(\overline D\) 到 \(\overline{D'}\) 的同胚。则对不同的
+\(z,w\in D\)，两域的经典 Green 核满足
 \[
-g_D(z,w)=g_{D'}(F(z),F(w)).
+ g_D(z,w)=g_{D'}(F(z),F(w)).
 \]
-在有界光滑且映射适当延拓到边界的情形，右侧调和、取零边值，并因 \(F(z)-F(w)=F'(w)(z-w)+O(|z-w|^2)\) 具有正确的对数奇性，唯一性给相等。一般 Green 域则用最小性：将正核和竞争核双向拉回，奇性中新增的 \(\log|F'|\) 是局部调和余项，双向比较给同一结论。
+\end{proposition}
+\begin{proof}
+固定 \(w\)，令 \(G(z)=g_{D'}(F(z),F(w))\)。它为正，并由调和函数复合公式在
+\(D\setminus\{w\}\) 调和。闭包同胚将 \(\partial D\) 对应到
+\(\partial D'\)，故 \(G\) 在每个边界点趋于零。
 
+在 \(w\) 的小圆盘上写
+\[
+ F(z)-F(w)=(z-w)q(z),\quad q(w)=F'(w)\ne0.
+\]
+缩小圆盘使全纯函数 \(q\) 处处非零，于是 \(\log|q|\) 调和。若
+\(g_{D'}(\eta,F(w))=-\log|\eta-F(w)|+h(\eta)\)，则
+\[
+ G(z)+\log|z-w|=h(F(z))-\log|q(z)|
+\]
+在 \(w\) 附近调和。因而 \(G\) 具有正确的奇性和零边值，由
+\cref{b3:prop:17-green-uniqueness}得到 \(G=g_D(\cdot,w)\)。
+\end{proof}
+
+映射在边界上不必有非零导数；本命题只在那里使用同胚和连续性，导数非零只用在内部极点。相似变换也说明为何核不能只看奇性中的距离：若
+\(F(z)=az+b\)、\(a\ne0\)，则
+\(-\log|F(z)-F(w)|=-\log|z-w|-\log|a|\)，调和修正必须补回这项常数，才能保持整个核值不变。
 
 \ProseParagraphBreak
-
-有界域的构造中，必须先用 \(\log|\xi-w|\) 作边值，而不是用 \(-\log|\xi-w|\)。因为希望 \(-\log|z-w|+h(z)\) 在边界相消，所需 \(h(\xi)\) 的符号已经确定。这个边值在边界连续且有界：内部极点到边界有正距离。小圆 \(|z-w|=\varepsilon\) 上，调和余项有界，而 \(-\log\varepsilon\to+\infty\)，故足够小的圆上核正；删去小圆后用最小值原理得到整个余域非负，再由强最小值原理得到严格正。没有先证明小圆正性，就不能从外边界零直接断言核非负。
-
-\ProseParagraphBreak
-
-对称性公式的边界取向可单独检查。设 \(u(\zeta)=g_D(\zeta,z)\)、\(v(\zeta)=g_D(\zeta,w)\)，Green 第二公式的边界项为 \(u\partial_nv-v\partial_nu\)。在 \(z\) 的被删小圆，余域外法向朝向中心，\(\partial_nu=1/\varepsilon+O(1)\)，因此主项是 \(-2\pi v(z)\)；在 \(w\) 的小圆主项是 \(2\pi u(w)\)。外边界因 \(u=v=0\) 消失。总和零给 \(u(w)=v(z)\)。若把小圆法向仍按圆盘向外取，两项符号都会混乱，并可能错误地得到反对称性。
-
-\ProseParagraphBreak
-
-Green 核不是把欧氏距离简单代入某个函数。单位圆盘中极点 \(w\ne0\) 的核包含 \(1-\overline wz\)，这个边界修正随着极点一起改变。两点即使欧氏距离相同，到边界的位置不同，核值仍可能不同。例如取 \(w=0\) 时 \(g(z,0)=-\log|z|\)，取 \(w\) 接近边界并令 \(z\) 保持固定内部位置时，核趋零。点源越来越接近吸收边界，固定内部点受到的影响减少；这与源点处始终存在同一个对数奇性相容。
+没有通常边界延拓的内部共形双射不满足本命题的边界假设。一般 Green 域仍有同一不变性，但需先建立最小正核，再把正竞争函数双向拉回进行比较；这条不使用边界延拓的证明将在\cref{b3:sec:1703}中给出。

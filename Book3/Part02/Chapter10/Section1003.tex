@@ -2,140 +2,348 @@
 \section{同调形式}
 \label{b3:sec:1003}
 
-同调用可加的圈代替需要顺序的路径类。在平面中，零同调可以用区域外所有点的指数为零来判断。格网分割将这个条件转换成小方形边界的相消，从而给全局积分公式。
+全纯积分在路径拼接时相加，因而不能记录绕孔的先后顺序。要找到比可收缩性更准确的零积分条件，就应把路径看成允许整数系数的圈，再用区域外各点的指数判断哪些圈能够填充。下面先使这种填充成为有限个小方格的边界相消，再由局部原函数推出一般 Cauchy 公式和留数公式。
 
 \subsection{圈}
 \label{b3:subsec:100301}
 
-一个圈 \(\Gamma\) 是有限个分段光滑闭曲线的整数线性组合 \(\sum_j n_j\gamma_j\)。积分、指数均按系数线性定义。若先给有限条有向弧并要求每点的端点系数总和为0，可把这些弧依次拼成闭路，得到等价的圈描述；负系数可用反向弧实现。
+设 \(U\subseteq\mathbb C\) 为区域。\(U\) 内的一个圈写成
+\[
+ \Gamma=\sum_{j=1}^N n_j\gamma_j,\quad n_j\in\mathbb Z,
+\]
+其中各 \(\gamma_j\) 都是 \(U\) 内分段光滑闭路。负系数表示反向计数，重复行走由整数系数记录。积分及指数按线性定义：
+\[
+ \int_\Gamma f(z)\,\mathrm dz
+ =\sum_{j=1}^N n_j\cdot\int_{\gamma_j}f(z)\,\mathrm dz,
+ \quad
+ \operatorname{Ind}(\Gamma,a)
+ =\sum_{j=1}^N n_j\cdot\operatorname{Ind}(\gamma_j,a).
+\]
+这里 \(f\) 至少在各曲线像上连续，\(a\) 不在曲线像上。记 \(|\Gamma|\) 为所用非零系数曲线像的并，称为圈的支集；它是 \(U\) 内紧集。即使其中某些弧的贡献抵消，也不必从这个紧集中删去它们。以
+\[
+ L_\Gamma\coloneqq\sum_{j=1}^N|n_j|\cdot\ell(\gamma_j)
+\]
+记这一表示的带权总长度，便有
+\[
+ \left|\int_\Gamma f(z)\,\mathrm dz\right|
+ \le L_\Gamma\cdot\max_{z\in|\Gamma|}|f(z)|.
+\]
+长度上界可能随表示改变，积分与指数却不受反向、分段和重新拼接的影响。
 
 \ProseParagraphBreak
-圈允许不同部分互相抵消。相同曲线正反各走一次就是零圈；大正圈减小正圈则是圆环的正向完整边界，内边在区域边界方向中为负向。把“每条边界都正向”理解成每条都逆时针，会在多连通区域里把内边符号写错。
+也可以从有限条有向弧出发，要求在每个端点，进入的系数和等于离开的系数和。把负系数改成反向弧，再将正整数系数看成有限份重边，就得到一个有限有向图。沿尚未使用的边前进时，端点平衡保证不能在另一个顶点突然终止；有限条边最终形成闭路。逐条取走这些闭路，便把全部边分解成有限个圈。后面的格网边界恒等式正是在这种逐边计数的意义下成立。
 
 \ProseParagraphBreak
-圈是有限的整数线性组合，而不是一条必须首尾相接的参数路径。两个彼此不相交圆周可以组成一个圈，其积分、长度上界和指数都按系数相加。把它们用一条来回连接线串成单一闭路不会改变积分和指数，因为连接线的两个方向抵消；但这只是为画图或同伦描述方便，不是圈定义的一部分。有限性则保证这些求和与曲线像的紧性可直接使用。
-
-\ProseParagraphBreak
-系数取整数是为了保留指数的拓扑含义。若只做积分恒等式，当然可以考虑复系数线性组合；然而其“指数”不再是整数权重，不能直接解释成面片覆盖次数。一般留数公式可按线性延伸处理复系数，但零同调的拓扑定义与整数圈的几何填充应先建立，再作这样的代数扩展。
+圈不要求各部分相互连接。两个互不相交的圆周可以组成一个圈，也可用一条往返连接线把它们串成闭路；连接线的两次积分与指数贡献抵消。两个同心正向圆周的差 \(C_R-C_r\)、\(0<r<R\)，则是圆环的完整正向边界：外圆逆时针，内圆顺时针。这里的正向统一表示区域位于行进方向左侧，不能把每个边界分量都改成逆时针。
 
 \subsection{同调}
 \label{b3:subsec:100302}
 
+两个圈能否通过区域内的小边界互相替换，首先受到孔洞的限制。小边界没有包住区域外的任何点，所以这类替换不能改变外部指数。这提示下面的定义。
+
+\Needspace{6\baselineskip}
 \begin{definition}\label{b3:def:10-planar-homology}
-区域 \(U\) 中圈 \(\Gamma_1,\Gamma_2\) 称为\term[tongdiao]{同调}[homologous]，若对每个 \(a\notin U\) 有 \(\operatorname{Ind}(\Gamma_1-\Gamma_2,a)=0\)。与零圈同调的圈称为在 \(U\) 中零同调。
+设 \(U\subseteq\mathbb C\) 为区域，\(\Gamma_1,\Gamma_2\) 为 \(U\) 内的整数圈。若对每个 \(a\in\mathbb C\setminus U\) 都有
+\[
+ \operatorname{Ind}(\Gamma_1-\Gamma_2,a)=0,
+\]
+则称 \(\Gamma_1\) 与 \(\Gamma_2\) 在 \(U\) 中\term[tongdiao]{同调}[homologous]。与零圈同调的圈称为在 \(U\) 中零同调。
 \end{definition}
-这是平面中一维整数同调的指数判别形式。下面的格网论证也说明：零同调圈在小路径替换后确可写为有限个包含于 \(U\) 的方形边界之和。因此定义具有边界相消的几何意义，不是把积分结论先作为定义。
+
+指数的加法性质直接给出这个关系的自反性、对称性与传递性，也保证圈的相加和乘整数与同调相容。定义始终带着区域 \(U\)：单位正圆在整个平面零同调，在去心平面却不零同调，因为新出现的外部点 \(0\) 的指数为 \(1\)。后面的格网构造将证明，外部指数为零也足以得到区域内的有限面片填充。
 
 \ProseParagraphBreak
-同伦的闭路必同调，因为区域外点不在同伦像中，指数保持；反向一般不成立。积分只依靠同调的原因是每个局部方形边界积分为零，而方形相消不保留绕各孔的先后顺序。
+端点固定同伦或自由同伦的闭路必同调。事实上，对任意 \(a\notin U\)，同伦始终避开 \(a\)，由\cref{b3:prop:10-index-homotopy}，两条闭路的指数相同。反过来，同调会丢失路径的非交换次序。取 \(U=\mathbb C\setminus\{-2,2\}\)，用实轴往返线段将 \(2,-2\) 附近的小正圆接到基点 \(0\)，分别记所得闭路为 \(\alpha,\beta\)。交换子
+\[
+ \kappa=\alpha*\beta*\alpha^{-1}*\beta^{-1}
+\]
+对每个外部点的指数都是零，各段积分也成对相消。
 
 \ProseParagraphBreak
-同调忘掉闭路的非交换次序。在双孔域中，取基于同一点的绕孔闭路 \(\alpha,\beta\)。交换子 \(\alpha*\beta*\alpha^{-1}*\beta^{-1}\) 对每个外部点的指数为0，因为四段的指数成对抵消。它因此是零同调圈，任意全纯函数积分为0。但它在双孔域中不能收缩：将区域沿割线收缩到两个圈组成的图，基本群的约化词 \(\alpha\beta\alpha^{-1}\beta^{-1}\) 不消失。图的约化词判别是这里使用的标准拓扑事实。这个例子说明同伦形式虽容易表述，仍没有覆盖一般 Cauchy 零积分的全部情况。
+这个零同调闭路却不能收缩。\subsecref{b3:subsec:090304}已经在正文计算了 \(P(w)=w^3-3w\) 的三个逆芽：\(\alpha,\beta\) 分别交换 \((1\,2)\)、\((2\,3)\)。先走左边路径的约定使芽 \(1\) 沿 \(\kappa\) 依次变成 \(2,3,3,2\)，最终没有返回。多项式逆芽可沿避开临界值的全部路径延拓，由\cref{b3:thm:09-homotopy-continuation}，可收缩闭路应保持每个初芽，故得到矛盾。这里直接使用已建立的解析延拓，不需要把交换子习题或自由群的结构定理当前提。
 
 \ProseParagraphBreak
-圈的“填充”也不能只看图中的有界区域。设 \(U=\mathbb C\setminus\{0\}\)，两个同心正向圆周的差圈 \(\Gamma=\gamma_R-\gamma_r\) 对0的指数为0，故在 \(U\) 零同调；尽管每个圆单独都围住缺失点，两者合在一起只填充中间圆环。整数面片的系数恰记录这种相消，细网格证明中的 \(n_Q\) 就是各方格内的指数。负系数是代数定向，没有对应一个“负面积的区域”。
+同调的填充也不是把图中每个有界部分都涂满。对 \(C_R-C_r\)，内盘指数为 \(1-1=0\)，圆环内指数为 \(1\)，外部指数为 \(0\)，所以只需填充圆环。一般圈可能有负指数或大于 \(1\) 的指数，面片因而必须带整数权重。负权重表示定向与重数，不表示负面积。
 
 \subsection{零同调圈}
 \label{b3:subsec:100303}
 
-\begin{lemma}[格网分割]\label{b3:lem:10-grid-cycle}
-若 \(\Gamma\) 在 \(U\) 中零同调，则它可在不改变任何全纯函数积分的条件下替换成一个细格网圈，并写成有限个闭方形 \(Q\subset U\) 的整数倍边界之和。
+为了把局部积分公式相加，必须先确定填充不会碰到定义域边界。曲线支集本身紧含于 \(U\)，并不足以保证它围住的部分也在 \(U\) 内；零同调条件恰好补上这一点。
+
+\Needspace{6\baselineskip}
+\begin{lemma}[非零指数的紧填充]\label{b3:lem:10-compact-filling}
+设 \(U\subseteq\mathbb C\) 为区域，\(\Gamma\) 为 \(U\) 内零同调整数圈。令
+\[
+ S_\Gamma=\{\,a\in\mathbb C\setminus|\Gamma|:
+                 \operatorname{Ind}(\Gamma,a)\ne0\,\},
+ \quad K_\Gamma=|\Gamma|\cup\overline{S_\Gamma}.
+\]
+则 \(K_\Gamma\) 是 \(U\) 的紧子集，记为 \(K_\Gamma\Subset U\)。
 \end{lemma}
 \begin{proof}
-圈的支集紧含于 \(U\)，取小于它到补集距离的格网尺度。把各路径分成位于小圆盘内的段，先以折线再以邻近格边路径替换，接点用相同短连接弧对接。所有替换都在 \(U\) 的局部圆盘内同伦，局部原函数使积分不变，区域外指数也不变。所得格圈记为 \(G\)。
+取一个大圆盘包含 \(|\Gamma|\)。其外部属于曲线补集的无界分支，指数为零，故 \(S_\Gamma\) 有界。\(K_\Gamma\) 是两个有界闭集的并，因此紧。
 
-对每个开格面 \(Q\)，令 \(n_Q\) 为该面上的 \(\operatorname{Ind}(G,\cdot)\)。指数在面内恒定，无界远处为0，因此非零面有限。一条有向格边上的圈系数等于其左面指数减右面指数：在边中点附近横穿一次，连续辐角的总变化正跳过该条边的有向次数；也可对小横向两点的 \(1/(z-a)\) 积分逐边直接核对。因此按格边系数逐项比较，有 \(G=\sum_Q n_Q\partial Q\)。
-
-若某个非零面的闭包含 \(a\notin U\)，则 \(a\) 不在格圈支集上。\(a\) 的小邻域指数恒为0，因为区域外指数为0；从该邻域进入相邻格面，迫使 \(n_Q=0\)，矛盾。故每个非零闭面包含于 \(U\)，完成分割。
+若 \(a\notin U\)，则 \(a\notin|\Gamma|\)，可以取一个避开支集的小圆盘。指数在该盘恒定，由零同调在 \(a\) 处等于零，所以小盘不交 \(S_\Gamma\)，也不交其闭包。于是 \(a\notin K_\Gamma\)，证明 \(K_\Gamma\subseteq U\)。紧集包含于开集还保证存在一个正厚度邻域仍留在 \(U\) 内。
 \end{proof}
-\begin{theorem}[同调形式 Cauchy 定理]\label{b3:thm:10-cauchy-homology}
-若 \(f\) 在 \(U\) 全纯，\(\Gamma\) 在 \(U\) 中零同调，则 \(\int_\Gamma f\,\mathrm{d}z=0\)。对 \(a\in U\setminus\Gamma\)，还有
+
+接下来把填充写成有限组合。不能按原曲线每次穿过格线的时刻分段：一条光滑曲线也可能有无限次逐渐缩小的振荡。应先利用参数区间的紧性，以有限个小盘内的路径替换得到格边圈，然后才逐格计数。
+
+\Needspace{6\baselineskip}
+\begin{lemma}[格网分割]\label{b3:lem:10-grid-cycle}
+设 \(U\subseteq\mathbb C\) 为区域，\(\Gamma\) 为 \(U\) 内零同调整数圈。则存在一个有限格边圈 \(G\)，以及有限个闭方格 \(Q\Subset U\) 和整数 \(n_Q\)，使
 \[
- \frac1{2\pi\mathrm{i}}\int_\Gamma\frac{f(z)}{z-a}\,\mathrm{d}z
- =\operatorname{Ind}(\Gamma,a)f(a).
+ G=\sum_Q n_Q\partial Q,
+ \quad
+ \int_\Gamma f(z)\,\mathrm dz=\int_G f(z)\,\mathrm dz
+ \quad(f\in\mathcal O(U)),
+\]
+其中各 \(\partial Q\) 逆时针定向。此外，\(G\) 与 \(\Gamma\) 对所有 \(a\notin U\) 有相同指数。
+\end{lemma}
+\begin{proof}
+零圈可取空组合，以下设支集非空。先选 \(d>0\)，使 \(|\Gamma|\) 的 \(d\) 邻域仍在 \(U\) 中，并取格网边长 \(0<h<d/10\)。由每条闭路的一致连续性，将参数区间有限细分，使每段像的直径小于 \(h\)。记一段的首尾点为 \(p_j,p_{j+1}\)，各取最近的格顶点 \(v_j,v_{j+1}\)，于是 \(|p_j-v_j|\le h\)。相邻路径段共享同一个接点选择，闭路首尾也选择同一个格顶点。
+
+令 \(s_j\) 为从 \(p_j\) 到 \(v_j\) 的短线段，令 \(\tau_j\) 为先水平、后竖直连接 \(v_j,v_{j+1}\) 的格边路径。原曲段、两条短连接线及 \(\tau_j\) 全在 \(D(p_j,5h)\subseteq U\) 中：两格顶点到 \(p_j\) 的距离分别不超过 \(h,2h\)，格边路径位于它们张成的坐标矩形内。这个盘有局部原函数，故对任意 \(f\in\mathcal O(U)\)，原曲段与
+\[
+ s_j*\tau_j*s_{j+1}^{-1}
+\]
+具有相同积分。对每个 \(a\notin U\)，同样可用盘上全纯函数 \(1/(z-a)\) 作此替换。
+
+将全部有限路径段按原系数相加，短连接线逐一正反相消，得到仅由 \(\tau_j\) 构成的格边圈 \(G\)。每个 \(\tau_j\) 只走有限条格边，接点又保持闭合，所以 \(G\) 是有限圈。上述积分等式同时说明所有全纯积分及外部指数保持不变。此处的有限性来自有限参数分割，与原曲线碰到格线多少次无关。
+
+对每个闭格面 \(Q\)，在其内部任取 \(a_Q\)，令 \(n_Q=\operatorname{Ind}(G,a_Q)\)。格边支集不穿过开格面，指数局部常性使该数与 \(a_Q\) 无关。取边界也沿格线的大矩形包含全部格边；矩形外的面片与无穷远相连，指数为零。矩形内只有有限格面，所以只有有限个 \(n_Q\ne0\)。
+
+还须证明这些数给出正确的边系数。给一条格边选定方向，记它在 \(G\) 中的整数系数为 \(k\)，没有出现的边取 \(k=0\)。在边中点附近截取小段，经平移旋转写成向右的 \([-l,l]\)。两侧测试点 \(a_+=\mathrm i\varepsilon\)、\(a_-=-\mathrm i\varepsilon\) 分别属于左、右格面。这一小段对两指数之差的贡献为
+\[
+ \frac{k}{2\pi\mathrm i}\int_{-l}^{l}
+ \left(\frac1{x-\mathrm i\varepsilon}-\frac1{x+\mathrm i\varepsilon}\right)\mathrm dx
+ =\frac{2k}{\pi}\arctan\frac l\varepsilon
+ \longrightarrow k.
+\]
+其余有限格边及该边余下部分与中点有正距离，故它们的两核积分之差趋于零。左、右两面的指数在各自内部恒定，所以左面指数减右面指数恰等于 \(k\)。另一方面，各 \(\partial Q\) 逆时针定向，左面在该边上贡献 \(n_L\)，右面贡献 \(-n_R\)。因此 \(\sum_Qn_Q\partial Q\) 与 \(G\) 在每条边上的系数相同，得到所述圈恒等式。
+
+最后排除越出 \(U\) 的填充。若 \(n_Q\ne0\) 而闭方格 \(Q\) 含有 \(a\notin U\)，则 \(a\notin|G|\)。外部指数保持不变且 \(\Gamma\) 零同调，故 \(\operatorname{Ind}(G,a)=0\)。该指数在 \(a\) 的一个小圆盘内恒定为零，而小盘与 \(Q\) 的内部相交，迫使 \(n_Q=0\)，矛盾。因此每个非零系数闭方格都包含于 \(U\)，由其紧性得到 \(Q\Subset U\)。
+\end{proof}
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[>=stealth,font=\small,scale=0.9]
+ \begin{scope}
+  \draw (0,0) rectangle (1.3,1.5);
+  \draw (1.3,0) rectangle (2.6,1.5);
+  \node at (0.6,0.75) {\(n_L\)};
+  \node at (2,0.75) {\(n_R\)};
+  \draw[->,thick] (1.22,0.35)--(1.22,1.15);
+  \draw[->] (1.38,1.15)--(1.38,0.35);
+  \node[below] at (1.3,-0.15) {向上系数 \(n_L-n_R\)};
+ \end{scope}
+ \begin{scope}[xshift=4cm,yshift=-0.1cm]
+  \fill[gray!15] (0,0) rectangle (2.1,2.1);
+  \draw[step=0.7,gray] (0,0) grid (2.1,2.1);
+  \fill[white] (0.7,0.7) rectangle (1.4,1.4);
+  \draw[thick] (0,0) rectangle (2.1,2.1);
+  \draw[thick] (0.7,0.7) rectangle (1.4,1.4);
+  \draw[->,thick] (0.4,0)--(1.2,0);
+  \draw[->,thick] (2.1,0.7)--(2.1,1.4);
+  \draw[->,thick] (1.4,1.4)--(1.4,0.8);
+  \draw[->,thick] (1.3,0.7)--(0.8,0.7);
+  \node at (1.05,1.05) {\(0\)};
+  \node at (0.35,1.05) {\(1\)};
+  \node[below] at (1.05,-0.2) {内孔顺时针};
+ \end{scope}
+ \begin{scope}[xshift=8cm,yshift=-0.1cm]
+  \draw[gray,dashed] (1,1) circle (1.3);
+  \draw[thick] (0,0.7)..controls (0.45,1.7) and (1.4,0.8)..(2,1.5);
+  \draw[dashed] (0,0.7)--(0,0.4);
+  \draw[->] (0,0.4)--(1.8,0.4)--(1.8,1.2);
+  \draw[dashed] (1.8,1.2)--(2,1.5);
+  \fill (0,0.7) circle (0.025) node[left] {\(p_j\)};
+  \fill (2,1.5) circle (0.025) node[right] {\(p_{j+1}\)};
+  \node[below] at (0,0.4) {\(v_j\)};
+  \node[right] at (1.8,1.1) {\(v_{j+1}\)};
+  \node[below] at (1,-0.3) {原函数圆盘内替换};
+ \end{scope}
+\end{tikzpicture}
+\caption[带权格面与局部路径替换]{左图给公共边指定向上方向：左格的逆时针边界向上，右格的逆时针边界向下。中图周围格面权重为1、孔内为0，故内边界自然顺时针。右图把原曲段换成短连接线与格边，全部留在一个原函数圆盘内；虚线连接段在相邻替换中反向相消。各图仅示意定向与包含关系。}
+\label{b3:fig:10-weighted-grid}
+\end{figure}
+
+\cref{b3:fig:10-weighted-grid}把证明中的三个环节放在一起：局部盘内替换先保证有限性，左减右的规则确定格边系数，指数为零的孔不参加填充。图中左格边界向上、右格边界向下，因而内孔的顺时针方向也是同一相消规则的结果。
+
+\Needspace{6\baselineskip}
+\begin{theorem}[同调形式 Cauchy 定理]\label{b3:thm:10-cauchy-homology}
+设 \(U\subseteq\mathbb C\) 为区域，\(f\in\mathcal O(U)\)，\(\Gamma\) 为 \(U\) 内零同调整数圈。则
+\[
+ \int_\Gamma f(z)\,\mathrm dz=0.
+\]
+此外，对每个 \(a\in U\setminus|\Gamma|\)，有
+\[
+ \frac1{2\pi\mathrm i}\int_\Gamma\frac{f(z)}{z-a}\,\mathrm dz
+ =\operatorname{Ind}(\Gamma,a)\cdot f(a).
 \]
 \end{theorem}
 \begin{proof}
-格网分割将第一积分变成有限个小方形边界积分。每个闭方形在 \(U\) 内，其凸邻域上有原函数，故积分为0。第二式把被积式写成 \(f(a)/(z-a)+(f(z)-f(a))/(z-a)\)；第二项在 \(a\) 可去且全域全纯，由第一式积分为0，第一项按指数定义给所需值。
+由\cref{b3:lem:10-grid-cycle}，第一项积分等于有限和
+\[
+ \sum_Q n_Q\cdot\int_{\partial Q}f(z)\,\mathrm dz.
+\]
+每个闭方格 \(Q\Subset U\) 都有一个稍大的凸开矩形邻域仍含于 \(U\)。\(f\) 在该邻域有原函数，所以每个边界积分为零，有限求和得到第一式。
+
+固定 \(a\in U\setminus|\Gamma|\)，定义
+\[
+ H_a(z)=
+ \begin{cases}
+ \dfrac{f(z)-f(a)}{z-a},&z\ne a,\\
+ f'(a),&z=a.
+ \end{cases}
+\]
+Taylor 展开说明 \(a\) 为可去奇点，故 \(H_a\in\mathcal O(U)\)。对 \(H_a\) 使用已证的零积分式，便有
+\[
+ \int_\Gamma\frac{f(z)}{z-a}\,\mathrm dz
+ =f(a)\cdot\int_\Gamma\frac{\mathrm dz}{z-a}
+ =2\pi\mathrm i\cdot\operatorname{Ind}(\Gamma,a)\cdot f(a),
+\]
+得到第二式。
 \end{proof}
 
+同调圈之差零同调，因此对每个全纯函数，同调圈有相同积分。这是把一条复杂围道换成几个简单小圈的依据。反过来，若 \(U\) 内圈对所有 \(f\in\mathcal O(U)\) 的积分都为零，则逐个取 \(f(z)=1/(z-a)\)、\(a\notin U\)，立即得到零同调条件。这里必须要求所有全纯函数；某一个函数的零积分不足以判别圈。
+
+\Needspace{6\baselineskip}
 \begin{corollary}[高阶同调积分公式]\label{b3:cor:10-higher-cauchy}
-设 \(\Gamma\) 在 \(U\) 零同调，\(f\) 在 \(U\) 全纯，\(a\in U\setminus|\Gamma|\)，\(n\ge0\)。则
+设 \(U\subseteq\mathbb C\) 为区域，\(f\in\mathcal O(U)\)，\(\Gamma\) 为 \(U\) 内零同调整数圈，\(a\in U\setminus|\Gamma|\)，\(n\ge0\) 为整数。则
 \[
- \frac1{2\pi\mathrm{i}}\int_\Gamma
- \frac{f(z)}{(z-a)^{n+1}}\,\mathrm{d}z
- =\operatorname{Ind}(\Gamma,a)\frac{f^{(n)}(a)}{n!}.
+ \frac1{2\pi\mathrm i}\int_\Gamma
+ \frac{f(z)}{(z-a)^{n+1}}\,\mathrm dz
+ =\operatorname{Ind}(\Gamma,a)\cdot\frac{f^{(n)}(a)}{n!}.
 \]
 \end{corollary}
 \begin{proof}
-\(n=0\) 是同调 Cauchy 公式。在 \(a\) 的一个不碰曲线的圆盘内，指数为常整数。积分核及其对参数的各阶导数在紧曲线与该小盘上连续有界，所以可在积分号下微分。对原公式连续微分 \(n\) 次，核导数为 \(n!/(z-a)^{n+1}\)，遂得结论。
+\(n=0\) 已由同调 Cauchy 公式给出。在 \(a\) 周围取一个闭小盘，包含于 \(U\setminus|\Gamma|\)。指数在该盘恒定，且盘到紧支集的距离有正下界 \(\delta\)。核 \((z-w)^{-1}\) 关于参数 \(w\) 的第 \(n\) 阶导数为 \(n!\cdot(z-w)^{-n-1}\)，在小盘与支集的乘积上由 \(n!\cdot\delta^{-n-1}\) 控制。\(f\) 在支集有界，各路径长度有限，因而可以逐条路径在积分号下微分。对 \(n=0\) 的公式微分 \(n\) 次并除以 \(n!\)，即得结论。
 \end{proof}
-若 \(a\) 位于指数为0的区域，全部这些积分都为0，即使 \(f(a)\) 及其导数不为0。若圈绕 \(a\) 三次，所有结果乘3。局部估计从公式取得时，要同时记录曲线长度、曲线到 \(a\) 的距离及非零指数；不能对指数为0的圈把右边除以0来求 \(f(a)\)。
+
+指数为零时，上式所有积分都为零，无论 \(f(a)\) 或其导数是否非零；指数为 \(3\) 时则全部乘以 \(3\)。只有当 \(m=\operatorname{Ind}(\Gamma,a)\ne0\) 时，才可由公式和带权长度估计解出
+\[
+ |f^{(n)}(a)|
+ \le\frac{n!\cdot L_\Gamma}{2\pi|m|\cdot\delta^{n+1}}
+       \cdot\max_{z\in|\Gamma|}|f(z)|,
+ \quad \delta=\operatorname{dist}(a,|\Gamma|).
+\]
+这也说明使用一般圈作 Cauchy 估计时，长度、距离和非零指数都要记录。
 
 \ProseParagraphBreak
-Cauchy 型积分还可以在曲线外定义一个函数：\(C(w)=(2\pi\mathrm{i})^{-1}\int_\Gamma f(z)/(z-w)\,\mathrm{d}z\)。它在每个补集分支全纯，在 \(U\setminus|\Gamma|\) 等于 \(\operatorname{Ind}(\Gamma,w)f(w)\)。无界分支的指数为0，故在那里为0。跨曲线时两侧整数权重可能不同，不能因此宣称 \(C\) 在整平面全纯；其定义本来就避开曲线。这个观察将积分表示与边界跃迁区分开来。
+同调判别还把有限去心平面的全部周期压缩成有限个数。这里不需要先把任意路径拆成基本群的生成元，只要减去具有相同外部指数的小圆即可。
 
-\ProseParagraphBreak
-网格填充中的两个紧性条件值得分开。曲线像必须与 \(\mathbb C\setminus U\) 有正距离，才能把曲线逐段换成细网格边而不离开定义域；非零指数面片的闭包也必须留在 \(U\)，才能对每个方格使用 Cauchy 定理。后一个条件由圈在 \(U\) 零同调及指数局部常性保证，不是前一个条件的自动后果。例如围绕去心点的圆周与缺失点距离为正，但它的填充含该点，因而不能把整张填充都当成 \(U\) 内面片。
+\Needspace{6\baselineskip}
+\begin{proposition}[有限去心平面的周期判别]\label{b3:prop:10-finite-puncture-periods}
+设 \(r\ge1\) 为整数，\(a_1,\ldots,a_r\in\mathbb C\) 互异，\(U=\mathbb C\setminus\{a_1,\ldots,a_r\}\)，\(f\in\mathcal O(U)\)。以各 \(a_j\) 为中心取互不相交的闭小圆盘，令 \(c_j\) 为相应正向圆周，并记
+\[
+ P_j=\frac1{2\pi\mathrm i}\int_{c_j}f(z)\,\mathrm dz.
+\]
+则 \(U\) 内每个整数圈 \(\Gamma\) 都满足
+\[
+ \int_\Gamma f(z)\,\mathrm dz
+ =2\pi\mathrm i\cdot
+   \sum_{j=1}^r\operatorname{Ind}(\Gamma,a_j)\cdot P_j.
+\]
+特别地，\(f\) 在 \(U\) 有全纯原函数，当且仅当 \(P_1=\cdots=P_r=0\)。
+\end{proposition}
+\begin{proof}
+令 \(m_j=\operatorname{Ind}(\Gamma,a_j)\)。因为 \(c_j\) 对 \(a_j\) 的指数为 \(1\)，对其他去心点的指数为 \(0\)，圈
+\[
+ \widetilde\Gamma=\Gamma-\sum_{j=1}^r m_jc_j
+\]
+对每个 \(a_k\notin U\) 的指数都是 \(m_k-m_k=0\)。它在 \(U\) 零同调，由同调 Cauchy 定理积分为零，移项便得周期公式。
 
-\ProseParagraphBreak
-曲线可以通过分段光滑假设出现无限多次轻微振荡，仍不能简单按每次穿网格的时刻切分，交点可能无限。本章用紧路径的有限小盘链和分段近似替换来取得有限多边形圈，替换误差圈全部落在有局部原函数的小盘内，积分与外部指数都不变。再对有限多边形应用网格分解，面片个数有限。这种顺序避免把无限网格交叉当成有限组合来求和。
+有原函数时各小圆周期必为零。反过来，若全部 \(P_j=0\)，周期公式使每条分段光滑闭路的积分为零，由\cref{b3:thm:10-primitive-periods}得到原函数。
+\end{proof}
+
+这几个周期与所选小圆半径无关，因为同一孔的两个小圆之差零同调。若将命题用于无零全纯函数 \(g\) 的 \(g'/g\)，再结合\cref{b3:prop:10-log-root-periods}，便只需检查这几个小圆：全纯对数要求归一化周期全为 \(0\)，全纯 \(m\) 次根要求它们全属于 \(m\mathbb Z\)。有限性的理由是补集只有这几个点；一般多孔区域不能无依据地挑几个圈就停止检查。
 
 \subsection{拓扑留数定理}
 \label{b3:subsec:100304}
 
+第三章的留数计算决定一个小圈的积分。对一般圈，局部留数仍是同一个数，变化的是圈对各奇点的整数权重。需要先解决的另一件事是：区域内可能有无限多个极点，为什么所求公式仍只有有限项。
+
+\Needspace{6\baselineskip}
 \begin{theorem}[一般留数公式]\label{b3:thm:10-residue-general}
-设 \(f\) 在区域 \(U\) 亚纯，\(\Gamma\) 在 \(U\) 中零同调且不经过 \(f\) 的极点。则
+设 \(U\subseteq\mathbb C\) 为区域，\(f\) 在 \(U\) 亚纯，\(A\) 为其极点集合。设 \(\Gamma\) 为 \(U\) 内零同调整数圈，且 \(|\Gamma|\cap A=\varnothing\)。则
 \[
- \frac1{2\pi\mathrm{i}}\int_\Gamma f(z)\,\mathrm{d}z
- =\sum_{a\in U}\operatorname{Ind}(\Gamma,a)\operatorname{Res}(f,a),
+ \frac1{2\pi\mathrm i}\int_\Gamma f(z)\,\mathrm dz
+ =\sum_{a\in A}\operatorname{Ind}(\Gamma,a)\cdot\operatorname{Res}(f,a),
 \]
-其中只有有限个非零项。
+其中只有有限个极点具有非零指数，因而右侧是有限和。
 \end{theorem}
 \begin{proof}
-指数非零的有界面及其闭包组成 \(U\) 内紧集：若闭包碰到区域外点，该点附近远离圈，指数局部恒为外部的0，矛盾。离散极点集在这个紧集只有有限点 \(a_j\)。各取互不交、避开圈的小正圆 \(c_j\)，令 \(m_j=\operatorname{Ind}(\Gamma,a_j)\)。圈 \(\Gamma-\sum_jm_jc_j\) 对 \(U\) 外点及所有极点的指数都为0，故在删去极点后的区域零同调。Cauchy 定理使其积分为0，每个 \(c_j\) 上的 Laurent 系数公式给 \(\int_{c_j}f=2\pi\mathrm{i}\operatorname{Res}(f,a_j)\)，代回即得结论。
+由\cref{b3:lem:10-compact-filling}，圈的支集和全部非零指数点包含于紧集 \(K_\Gamma\Subset U\)。亚纯函数的极点集在 \(U\) 中闭且离散，所以 \(A\cap K_\Gamma\) 有限：否则紧性给出一个 \(U\) 内聚点，与亚纯性矛盾。列出具有非零指数的极点 \(a_1,\ldots,a_N\)，记 \(m_j=\operatorname{Ind}(\Gamma,a_j)\)。
+
+分别以 \(a_j\) 为中心选闭小圆盘，要求它们互不相交、紧含于 \(U\)、不碰 \(|\Gamma|\)，且每盘只含自身这一个极点。极点的孤立性和有限性保证这些要求可以同时满足。令 \(c_j\) 为各盘的正向边界，并置
+\[
+ \Gamma_0=\Gamma-\sum_{j=1}^N m_jc_j.
+\]
+对 \(b\notin U\)，各小圆的指数为零，原圈指数也为零。对 \(b=a_j\)，相减使指数变成 \(m_j-m_j=0\)。其余极点的原指数为零，又在全部小圆之外。因此 \(\Gamma_0\) 在 \(V=U\setminus A\) 中零同调。
+
+\(V\) 仍为区域：\(V\) 内任意两点可先用 \(U\) 内的有限折线连接；折线的紧邻域只遇有限极点，将相交的部分改成小圆弧即可避开它们。\(f\) 在 \(V\) 全纯，故同调 Cauchy 定理给 \(\int_{\Gamma_0}f\,\mathrm dz=0\)。每个 \(c_j\) 上的 Laurent 级数一致收敛，逐项积分只留下 \(-1\) 次项，于是
+\[
+ \int_{c_j}f(z)\,\mathrm dz
+ =2\pi\mathrm i\cdot\operatorname{Res}(f,a_j).
+\]
+代入 \(\Gamma_0\) 的零积分式便得所求等式。
 \end{proof}
-同一证明允许被积函数在这些孤立点为本性奇点，只需有关非零指数点有限，并在其余区域全纯。公式对极点的限制是常见且足够的亚纯版本。
+
+这个证明允许极点向 \(U\) 的边界聚集，紧填充以外的极点全部具有零权重。若 \(A\subset U\) 是任意闭离散集，\(f\) 在 \(U\setminus A\) 全纯而在 \(A\) 处允许本性奇点，同一证明也成立：紧填充仍只遇有限个孤立奇点，小圆积分仍由 Laurent 展开的 \(-1\) 次系数给出。
 
 \ProseParagraphBreak
-例如圆环 \(r<|z|<R\) 的完整边界在稍大圆环中零同调，内外两圈对中心的指数相消；对全纯函数积分为0。但单独外圈不零同调，\(1/z\) 的积分非零。不能因圈“看起来是边界”便省去检查它是否是当前全纯区域中的边界。
-
-\begin{corollary}[一般围道的辐角原理]\label{b3:cor:10-argument-general}
-设 \(f\) 在 \(U\) 亚纯且不恒为0，\(\Gamma\) 在 \(U\) 零同调并避开 \(f\) 的零点与极点。则
+计算中可先确定指数，再计算留数。例如以 \(C_\rho\) 表示中心为 \(0\)、半径为 \(\rho\) 的逆时针圆周，取
 \[
- \operatorname{Ind}(f\circ\Gamma,0)=
- \sum_a\operatorname{Ind}(\Gamma,a)\operatorname{ord}_a f.
+ \Gamma=3C_3-2C_1,\quad
+ f(z)=\frac{z+1}{z^2(z-2)}.
 \]
-左边对圈逐段按整数系数理解，右边只有有限个非零项。
+在 \(|a|<1\)、\(1<|a|<3\)、\(|a|>3\) 三个部分，圈的指数依次为 \(1,3,0\)。函数在 \(0\) 有二阶极点，在 \(2\) 有一阶极点，且
+\[
+ \operatorname{Res}(f,0)
+ =\left.\left(\frac{z+1}{z-2}\right)'\right|_{z=0}
+ =-\frac34,\quad
+ \operatorname{Res}(f,2)=\frac34.
+\]
+圈在整个平面零同调，故
+\[
+ \int_\Gamma f(z)\,\mathrm dz
+ =2\pi\mathrm i\cdot\left(-\frac34+3\cdot\frac34\right)
+ =3\pi\mathrm i.
+\]
+两个留数本身相消，带上指数后却不相消。把两极点都只记作“圈内”，或者只按外圆重复三次计数，都会丢失内圆的负系数。
+
+\Needspace{6\baselineskip}
+\begin{corollary}[一般围道的辐角原理]\label{b3:cor:10-argument-general}
+设 \(U\subseteq\mathbb C\) 为区域，\(f\) 在 \(U\) 亚纯且不恒为零，\(A\) 为其零点与极点集合。设 \(\Gamma\) 为 \(U\) 内零同调整数圈，且 \(|\Gamma|\cap A=\varnothing\)。则
+\[
+ \operatorname{Ind}(f\circ\Gamma,0)
+ =\sum_{a\in A}\operatorname{Ind}(\Gamma,a)\cdot\operatorname{ord}_a f.
+\]
+其中零点的阶取正，极点的阶取负；像圈按各组成闭路及其整数系数定义，右侧只有有限个非零项。
 \end{corollary}
 \begin{proof}
-\(f'/f\) 在零极点处的留数为 \(\operatorname{ord}_a f\)。一般留数定理给右侧等于 \((2\pi\mathrm{i})^{-1}\int_\Gamma f'/f\,\mathrm{d}z\)；分段链式法则把它变成像圈的指数。零极点在相关的非零指数紧填充中只有有限多个，所以和有限。
+在任意 \(a\in A\) 附近，可写 \(f(z)=(z-a)^m\cdot u(z)\)，其中 \(m=\operatorname{ord}_a f\in\mathbb Z\)，\(u\) 全纯且无零。于是
+\[
+ \frac{f'(z)}{f(z)}=\frac m{z-a}+\frac{u'(z)}{u(z)},
+ \quad\operatorname{Res}\left(\frac{f'}f,a\right)=m.
+\]
+对亚纯函数 \(f'/f\) 使用一般留数公式，得到右侧等于 \((2\pi\mathrm i)^{-1}\int_\Gamma f'/f\,\mathrm dz\)。由于 \(f\) 在圈上有限且非零，每段的链式法则把这个积分化为像圈的 \((2\pi\mathrm i)^{-1}\int\mathrm dw/w\)，正是左侧指数。零极点集在 \(U\) 中闭且离散，故紧填充也保证本式只有有限项。
 \end{proof}
-如果圈含负系数，式子是带权零极点计数。比如两个嵌套圆的差只计数圆环中的零极点，内孔的权重为0。这比只说“圈内的零点数减极点数”精确，因为一般圈没有单一的内部。
+
+对两个嵌套正圆的差，这个公式只计算两圆之间的零点与极点，内盘的权重为零。对负向或重复行走的圈，权重可能为负数或大于 \(1\)；一般圈因此没有一个足以替代指数的单一“内部”。
 
 \ProseParagraphBreak
-还可以在核前乘一个全纯函数 \(h\)，得到加权零极点和
+还可用全纯函数记录零极点的位置。设 \(U\) 为区域，\(f\) 在 \(U\) 亚纯且不恒为零，\(h\in\mathcal O(U)\)，\(\Gamma\) 为 \(U\) 内零同调圈并避开 \(f\) 的零点与极点。若 \(A\) 表示这些零极点，则局部留数变成 \(h(a)\cdot\operatorname{ord}_a f\)，从而
 \[
- \frac1{2\pi\mathrm{i}}\int_\Gamma h(z)\cdot\frac{f'(z)}{f(z)}\,\mathrm{d}z
- =\sum_a\operatorname{Ind}(\Gamma,a)\cdot h(a)\cdot\operatorname{ord}_a f.
+ \frac1{2\pi\mathrm i}\int_\Gamma
+ h(z)\cdot\frac{f'(z)}{f(z)}\,\mathrm dz
+ =\sum_{a\in A}\operatorname{Ind}(\Gamma,a)
+                 \cdot h(a)\cdot\operatorname{ord}_a f.
 \]
-选 \(h(z)=z^k\) 就计算带重数零极点的幂和。若只有一个指数为1的 Jordan 围道且里面无极点，\(k=1\) 给零点总和，\(k=0\) 给零点总数。计算需避开围道零点，不是对含零点的边界积分取未声明的主值。
+取 \(h(z)=z^k\)、\(k\ge0\) 为整数，便得到带重数和指数权重的零极点幂和。对一个正向 Jordan 围道，若内部无极点，\(k=0\) 给零点总数，\(k=1\) 给零点总和。圈仍须避开零点；这里没有对边界零点另取主值。
 
 \ProseParagraphBreak
-割线围道中的两岸方向尤其容易出错。对正实轴割开的平面取 \(0<\arg z<2\pi\)，上岸由内半径走向外半径，下岸由外走向内；两岸的 \(z^{s-1}\) 因子相差 \(e^{2\pi\mathrm{i}(s-1)}\)。因此围道积分中两岸合成为 \((1-e^{2\pi\mathrm{i}s})\int_r^R x^{s-1}/(1+x)\,\mathrm{d}x\)，而不是两项直接相加。小圆弧的估计为 \(O(r^{\operatorname{Re}s})\)，大圆弧为 \(O(R^{\operatorname{Re}s-1})\)，恰需 \(0<\operatorname{Re}s<1\)。位于 \(-1\) 的留数按分支取 \(e^{\pi\mathrm{i}(s-1)}\)。整理得
-\[
- \int_0^\infty\frac{x^{s-1}}{1+x}\,\mathrm{d}x=\frac\pi{\sin\pi s}.
-\]
-这个计算先在两岸略离割线的有限围道使用留数定理，再令岸逼近、半径趋于0和无穷；各项估计说明极限合法。后面特殊函数中会再次出现此积分，届时使用的是已确认的分支与收敛范围。
+\subsecref{b3:subsec:030303}及\cref{b3:fig:03-contour-directions}已经用钥匙孔围道计算了 \(0<\alpha<1\) 时的积分 \(\int_0^\infty x^{\alpha-1}/(1+x)\,\mathrm dx\)。本节的公式补充说明其拓扑条件：在分支域 \(U=\mathbb C\setminus[0,\infty)\) 中，取 \(0<\arg z<2\pi\)，每条两岸略离割线的有限围道对整条割线的指数为零，对极点 \(-1\) 的指数为 \(1\)。因此它在 \(U\) 零同调，可以使用一般留数公式。两岸的函数值有分支因子，不能因几何上靠近同一条射线就将积分抵消。随后岸距、大小半径的极限仍须依靠第三章已给的估计；同调本身不代替极限论证。
 
 \ProseParagraphBreak
-一般留数定理并不要求整个 \(U\) 只有有限个极点。相关圈的非零指数区域被一个紧子集包住，亚纯函数的极点在紧子集中只有有限个；圈外的其他极点权重为0，不出现在和中。若极点向 \(U\) 的边界聚集，仍与局部亚纯性相容。若它们在 \(U\) 内聚集，就不能是通常意义的亚纯函数，公式的假设已失败。
-
-\ProseParagraphBreak
-留数在小圈上的计算与大圈上的拓扑权重分工明确。局部 Laurent 系数决定每个奇点贡献多少，指数决定围道取该贡献几次。先局部计算再乘权重，可处理嵌套圈、负向圈和多重绕圈；如果从图像直接判断一个奇点“在里面”，容易漏掉权重0、负权重或大于1的情形。计算过程还应保留奇点恰落在曲线上的例外，此时通常积分未定义，需要改变围道或另行声明主值问题。
-
-\ProseParagraphBreak
-拓扑条件也不能用“所有奇点都有指数0”在任意函数上替代。对一个特定亚纯函数，某些缺失点未必是它的奇点；即使其已知奇点的加权留数为0，函数也可能在未填入的定义域外没有任何指定延拓。一般 Cauchy 定理的零同调要求针对整个 \(\mathbb C\setminus U\)，保证填充合法；针对某一函数的特殊抵消可以给额外零积分，但应通过该函数的实际延拓或直接计算证明。
-
-\ProseParagraphBreak
-本章从路径同伦走向整数圈同调，没有引入高维同调的全部定义。这里的指数判别与平面面片填充已经足够证明需要的 Cauchy 公式。一般流形上的链、边界算子与同调群会把这个过程抽象化；若在曲面上没有全局平面坐标，就不能继续以“外部点的绕数”直接定义同调，必须改用那套链理论。附录A的曲面留数证明通过局部三角剖分相消，正是保持同一积分思想并换成适合曲面的对象。
+最后看一个假设失效的短例子。在 \(U=\mathbb C^*\) 上，\(f(z)=1/z\) 没有极点，但单位正圆的积分是 \(2\pi\mathrm i\)，不能套用一个空的留数和。原因是该圈对区域外点 \(0\) 的指数为 \(1\)，不在 \(U\) 零同调。一般公式同时需要局部解析数据和当前定义域中的填充条件，只有局部留数表并不足够。

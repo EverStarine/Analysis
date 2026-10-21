@@ -1,130 +1,167 @@
 % !TeX root = ../../Book2.tex
-\section{能量泛函}
-\label{b2:sec:1403}
+\section{热方程的结构}
+\label{b2:sec:1203}
 
-同一个偏微分方程可以通过能量的驻点条件出现，但“能量”一词并不总表示待极小化的非负量。椭圆方程常对应空间能量的极小值；波动方程对应时空作用量的驻点，同时另有随时间守恒的正能量。本节用这两个模型把几种不同作用区分开。
+显式热核已经给出候选解。现在要分别检查正时间的导数、最大值控制和解的唯一性，并把光滑计算延伸到平方可积初值及时间可积的外力。每一种结论所用的解类都会保留在陈述中，尤其是全空间无穷远处的控制。
 
-\subsection{Dirichlet 能量}
-\label{b2:subsec:140301}
+\subsection{光滑化效应}
+\label{b2:subsec:120301}
 
-设 \(\Omega\subset\mathbb R^d\) 是有界开集，记 \(H_0^1(\Omega)=W_0^{1,2}(\Omega)\)。第一卷定义 22.2.1 将它定义为 \(C_c^\infty(\Omega)\) 在 \(H^1\) 中的闭包，这一定义不要求边界光滑。由第一卷定理 24.1.2 的零边界 Poincaré 不等式，\(\lVert v\rVert_2\le C_P\lVert\nabla v\rVert_2\)，所以 \(\lVert\nabla v\rVert_2\) 是这个空间上的等价 Hilbert 范数。
-
-\ProseParagraphBreak
-
-设 \(\Omega\subset\mathbb R^d\) 是有界开集，给定实值 \(f\in L^2(\Omega)\) 和实值 \(g\in H^1(\Omega)\)，把允许函数写为 \(g+H_0^1(\Omega)\)，考虑 \term[dirichlet-nengliang]{Dirichlet 能量}[Dirichlet energy]及线性外力项组成的泛函
-\[
- E(u)=\frac12\int_\Omega|\nabla u|^2\,\mathrm dx-\int_\Omega fu\,\mathrm dx.
-\]
-仿射空间的写法精确表达“\(u\) 与 \(g\) 具有相同边界数据”：即使边界粗糙到尚未定义逐点边界迹，也可以使用它。
+热核的任意阶导数仍是多项式乘 Gauss 函数，因此正时间磨光不仅是定性结论。一次空间求导损失半个时间尺度，一次时间求导损失一个时间尺度；这是 \(x\sim\sqrt t\) 的抛物缩放直接产生的。
 
 \Needspace{6\baselineskip}
-\begin{proposition}[二次能量的驻点与极小点]
-\label{b2:prop:14-dirichlet-minimum}
-设整数 \(d\geq1\)，\(\Omega\subset\mathbb R^d\) 为非空有界开集，\(f\in L^2(\Omega;\mathbb R)\)、\(g\in H^1(\Omega;\mathbb R)\)，\(E(v)=\frac12\int_\Omega|\nabla v|^2-\int_\Omega fv\)。\(u\in g+H_0^1(\Omega;\mathbb R)\) 是 \(E\) 在该仿射空间上的极小点，当且仅当
-\[
- \int_\Omega\nabla u\cdot\nabla h\,\mathrm dx=\int_\Omega fh\,\mathrm dx
- \qquad(h\in H_0^1(\Omega)).
-\]
-这样的极小点至多有一个，且对每个 \(h\in H_0^1(\Omega)\) 都有
-\[E(u+h)-E(u)=\tfrac12\lVert\nabla h\rVert_2^2.\]
-\end{proposition}
+\begin{theorem}[热流的导数估计]\label{b2:thm:12-smoothing}
+设整数 \(d\geq1\)、\(\kappa>0\)，\(H_s(x)=(4\pi s)^{-d/2}e^{-|x|^2/(4s)}\)（\(s>0\)、\(x\in\mathbb R^d\)）。设 \(f\in L^p(\mathbb R^d)\)，\(1\leq p\leq q\leq\infty\)，\(\alpha\) 为多重指标，\(m\geq0\) 为整数。对 \(u(t)=H_{\kappa t}*f\)，有
+\begin{equation}\label{b2:eq:12-smoothing}
+ \|\partial_t^m\partial_x^\alpha u(t)\|_q
+ \leq C t^{-m-|\alpha|/2-\frac d2(1/p-1/q)}\|f\|_p,
+ \quad t>0.
+\end{equation}
+常数只依赖所列指数、维数与 \(\kappa\)，不依赖 \(t,f\)。
+\end{theorem}
 \begin{proof}
-Cauchy--Schwarz 不等式保证所有积分有限。直接展开平方得
+缩放与直接求导给出
 \[
- E(u+h)-E(u)=\int_\Omega\nabla u\cdot\nabla h-\int_\Omega fh
-              +\tfrac12\lVert\nabla h\rVert_2^2.
+ \partial_t^m\partial_x^\alpha H_{\kappa t}(x)
+ =t^{-m-|\alpha|/2-d/2}\Psi_{m,\alpha}(x/\sqrt t),
 \]
-其中前两项构成连续线性泛函，最后一项是二阶余项，故一阶导数正是前两项。极小点的双侧变分为零，得到所列积分等式。反之，积分等式使能量差等于非负的梯度平方，所以 \(u\) 为全局极小点。若另一点 \(u+h\) 也极小，则 \(\nabla h=0\)；Poincaré 不等式推出 \(h=0\)。
+其中 \(\Psi_{m,\alpha}\) 是快速衰减的光滑函数。因此其 \(L^r\) 范数为常数乘 \(t^{-m-|\alpha|/2-\frac d2(1-1/r)}\)。Young 不等式给出 \(p\to p\) 的导数界，逐点 Hölder 不等式给出 \(p\to\infty\) 的界。若 \(p<\infty\)、\(p\leq q<\infty\)，对导数函数 \(v\) 使用
+\[
+ \|v\|_q\leq\|v\|_p^{p/q}\cdot\|v\|_\infty^{1-p/q},
+\]
+由两个端点界即得所述指数。\(p=\infty\) 时只能取 \(q=\infty\)，已含在 Young 估计中。
 \end{proof}
 
-这一命题暂时没有断言极小点存在；它说明一旦构造出驻点，就无须再排查鞍点。二次展开还给出误差的精确解释：任何满足同一边界数据的近似函数，其能量超额恰为梯度误差平方的一半。与一般的第二变分局部判别相比，这是全局恒等式，原因在于能量严格二次且对允许方向一致凸。
-
-\ProseParagraphBreak
-
-在区间 \((0,1)\) 上取 \(f=1\)、\(g=0\)。函数 \(u(x)=x(1-x)/2\) 满足 \(-u''=1\) 和零端点条件；对光滑紧支集扰动分部积分，再用密度推广到 \(H_0^1\)，即可验证积分等式。因此它是唯一极小点，能量为 \(-1/24\)。负能量并不矛盾：梯度项非负，外力项却可以降低总泛函值；强制性要求的是大范数下的增长，而不是每一点的非负性。
-
-\subsection{波动作用量与守恒能量}
-\label{b2:subsec:140302}
-
-设整数 \(d\geq1\)，\(\Omega\subset\mathbb R^d\) 为非空有界 \(C^1\) 开集，\(c,T>0\)，并考虑在 \([0,T]\times\overline\Omega\) 的开邻域内为 \(C^2\)、在侧边界取零值的实函数 \(u(t,x)\)。时空作用量为
+当 \(t\downarrow0\) 时，导数界可以发散，这是粗初值与正时间光滑性共存的方式。若初值已有某个 \(L^p\) 弱导数，可把该导数移到 \(f\) 上，就不必支付相应的时间奇性。取一维跳跃初温 \(f=\mathbf1_{(0,\infty)}\)，解为
 \[
- \mathcal A(u)=\frac12\int_0^T\int_\Omega
-       \bigl(|\partial_tu|^2-c^2|\nabla_xu|^2\bigr)\,\mathrm dx\,\mathrm dt.
+ u(t,x)=\dfrac1{\sqrt\pi}\int_{-\infty}^{x/\sqrt{4\kappa t}}e^{-s^2}\,\mathrm{d}s,
+ \quad u_x(t,x)=H_{\kappa t}(x).
 \]
-对在初、末时刻和空间边界均为零的扰动 \(h\)，时、空分别分部积分，得到
-\[
- D\mathcal A(u)h=\int_0^T\int_\Omega
-       (-\partial_t^2u+c^2\Delta_xu)h\,\mathrm dx\,\mathrm dt.
-\]
-所以驻点满足波动方程 \(\partial_t^2u-c^2\Delta u=0\)。这里固定初末值是推导变分方程时对扰动的限制；实际波动初值问题仍由初位移和初速度确定，不能把两种问题混为一谈。
+跃变被摊开到 \(\sqrt{\kappa t}\) 的过渡层，梯度峰值为 \((4\pi\kappa t)^{-1/2}\)。这同时给出不能在整个 \(L^\infty\) 中要求初值一致收敛的具体例子。\Cref{b2:fig:12-heat-step}将三个正时间的剖面与初温并列：曲线随时间变缓，过渡层随之变宽；在初温为零的一侧，正时间已处处出现非零的细小尾部。
+\input{Figures/F12-heat-step}
 
-\ProseParagraphBreak
+\subsection{最大值原理}
+\label{b2:subsec:120302}
 
-作用量的二次型有正负两部分，一般并不在解处取得极小值。例如取乘积扰动 \(h(t,x)=a(t)b(x)\)，其中两因子均光滑紧支集，则
+最大值原理从微分方程本身控制解，不依赖可显式计算的核。本小节讨论实值函数。若 \(\Omega\subset\mathbb R^d\) 是有界开集、\(T>0\)，记 \(Q_T=(0,T]\times\Omega\)，其\term[paowu-bianjie]{抛物边界}[parabolic boundary]为
 \[
- 2\mathcal A(h)=\lVert a'\rVert_2^2\lVert b\rVert_2^2
-      -c^2\lVert a\rVert_2^2\lVert\nabla b\rVert_2^2.
+ \partial_pQ_T=(\{0\}\times\overline\Omega)
+ \cup([0,T]\times\partial\Omega).
 \]
-固定非零 \(b\) 后，取 \(a_N(t)=\eta(t)\sin(Nt)\)，其中 \(0\ne\eta\in C_c^\infty(0,T)\)。展开正弦平方并用\cref{b2:thm:03-riemann-lebesgue}，有 \(\|a_N\|_2^2\to\|\eta\|_2^2/2\) 及 \(N^{-2}\|a_N'\|_2^2\to\|\eta\|_2^2/2\)，所以作用量为正。反之，固定非零 \(a\)，取 \(b_N(x)=\psi(x)\sin(Nx_1)\)，其中 \(0\ne\psi\in C_c^\infty(\Omega)\)。相同的平方展开给出 \(\|b_N\|_2^2\to\|\psi\|_2^2/2\) 及 \(N^{-2}\|\nabla b_N\|_2^2\to\|\psi\|_2^2/2\)，所以作用量为负。若 \(u\) 为驻点，精确二次展开给出 \(\mathcal A(u+th)-\mathcal A(u)=t^2\mathcal A(h)\)。故可把两类扰动都缩得任意小，在每个驻点附近仍有增加和降低作用量的方向。
+上端面 \(t=T\) 的内部点不属于这条边界：它们仍受到先前时间的数据控制。
 
 \Needspace{6\baselineskip}
-\begin{proposition}[波动能量守恒]
-\label{b2:prop:14-wave-energy}
-设整数 \(d\geq1\)，\(c,T>0\)，\(\Omega\subset\mathbb R^d\) 为非空有界 \(C^1\) 开集，实函数 \(u\) 在 \([0,T]\times\overline\Omega\) 的某开邻域内属于 \(C^2\)，满足 \(u_{tt}-c^2\Delta u=0\) 于 \((0,T)\times\Omega\)，且 \(u(t,y)=0\) 对 \(0\leq t\leq T\)、\(y\in\partial\Omega\) 成立。则
+\begin{theorem}[抛物最大值原理]\label{b2:thm:12-maximum}
+设整数 \(d\geq1\)、\(\kappa,T>0\)，\(\Omega\subset\mathbb R^d\) 为非空有界开集，\(\partial_pQ_T=(\{0\}\times\overline\Omega)\cup([0,T]\times\partial\Omega)\)。设实值 \(u\in C([0,T]\times\overline\Omega)\)，在正时间内有一阶时间导数和二阶空间导数，且 \(u_t-\kappa\Delta u\leq0\)。则
 \[
- \mathcal E(t)=\frac12\int_\Omega
-          \bigl(|u_t(t,x)|^2+c^2|\nabla u(t,x)|^2\bigr)\,\mathrm dx
+ \max_{[0,T]\times\overline\Omega}u
+ \leq\max_{\partial_pQ_T}u.
 \]
-与时间无关。
-\end{proposition}
+导数在 \(t=T\) 取左侧时间导数即可。
+\end{theorem}
 \begin{proof}
-对时间求导并对空间分部积分，得
-\[
- \mathcal E'(t)=\int_\Omega u_t(u_{tt}-c^2\Delta u)\,\mathrm dx
-           +c^2\int_{\partial\Omega}u_t\partial_\nu u\,\mathrm dS=0.
-\]
-内部项由方程为零，边界项由对恒定零边界条件求时间导数所得 \(u_t=0\) 而消失。
+固定 \(\varepsilon>0\)，令 \(v=u-\varepsilon t\)，则 \(v_t-\kappa\Delta v<0\)。若 \(v\) 的最大值严格超过抛物边界的最大值，紧性使它在某个正时间、空间内部的点取得最大值。该点有 \(\nabla_xv=0\)、\(\Delta v\leq0\)，且相对于过去时间有 \(v_t\geq0\)，故 \(v_t-\kappa\Delta v\geq0\)，矛盾。于是 \(u(t,x)\leq\max_{\partial_pQ_T}u+\varepsilon T\)，令 \(\varepsilon\downarrow0\)。
 \end{proof}
 
-守恒能量中空间项带正号，作用量中带负号。前者衡量一个时刻的状态，后者比较整段时空运动。对同样的区域、实值 \(C^2\) 解及恒定零边界，若方程改为 \(u_{tt}-c^2\Delta u+\gamma u_t=f\)，其中 \(\gamma\geq0\)、\(f\) 连续，则同一计算给出
+这称为\term[paowu-zuidazhi-yuanli]{抛物最大值原理}[parabolic maximum principle]。对 \(-u\) 使用它得到最小值控制，对两个解之差使用它得到比较原理。特别是同样的 Dirichlet 边界条件下，初值误差的一致范数不会增长。有非齐次源项时，若 \(|F|\leq M\)，比较函数可加上 \(Mt\)，从而得到初边值最大误差再加 \(MT\) 的估计。
+
+\ProseParagraphBreak
+
+无界空间不能直接援引紧性取得最大值，也不能忽略远处边界。对每个有限时间带上一致有界的经典次解，可以用障碍函数
 \[
- \mathcal E'(t)=\int_\Omega f(t,x)u_t(t,x)\,\mathrm{d}x
-                    -\gamma\|u_t(t)\|_2^2.
+ \Phi(t,x)=1+|x|^2+2d\kappa t,
+ \quad\Phi_t-\kappa\Delta\Phi=0
 \]
-这些等式将外界做功和耗散分开记录。\cref{b2:tab:14-action-energy}集中比较作用量与能量；表中的守恒结论始终包含零边界且无外力、无阻尼的条件。
+补上这一步。若初值 \(u(0,x)\leq0\)，在半径 \(R\) 的球柱中比较 \(u\) 与 \(\varepsilon\Phi\)。有界性使足够大的侧边界满足 \(u\leq\varepsilon\Phi\)，初始面也满足；有界区域最大值原理于是给出任意固定点的同一不等式。先令 \(R\) 足够大，再令 \(\varepsilon\downarrow0\)，得到 \(u\leq0\)。
 
-\begin{table}[htbp]
-\centering
-\caption[波动作用量与守恒能量的区别]{波动作用量与守恒能量的区别。取整数 \(d\geq1\)、\(c,T>0\)、非空有界 \(C^1\) 开集 \(\Omega\subset\mathbb R^d\)，函数实值且光滑到足以完成正文的微分与分部积分，侧边界为恒定零值。作用量列的变分还固定初、末时刻的函数值；能量列讨论满足波动方程的实际演化。}
-\label{b2:tab:14-action-energy}
-\small
-\begin{tabularx}{\textwidth}{@{}p{5.2em}XX@{}}
-\toprule
-比较项目 & 时空作用量 \(\mathcal A\) & 守恒能量 \(\mathcal E(t)\)\\
-\midrule
-积分范围 & 整段 \((0,T)\times\Omega\) & 固定时刻的 \(\Omega\)\\
-空间梯度项 & \(-c^2|\nabla u|^2/2\) & \(+c^2|\nabla u|^2/2\)\\
-数学作用 & 对允许扰动驻定，推出运动方程 & 控制速度与梯度，进而估计解的差\\
-极值或演化 & 驻点一般为鞍点 & 无外力、无阻尼时随时间守恒\\
-\bottomrule
-\end{tabularx}
-\end{table}
+\subsection{唯一性}
+\label{b2:subsec:120303}
 
-\subsection{PDE 与极值问题}
-\label{b2:subsec:140303}
-
-从微分方程寻找泛函时，最容易检验的是对称性。设 \(H\) 是实 Hilbert 空间，\(a:H\times H\to\mathbb R\) 是有界双线性型，\(\ell\in H^*\)。令
-\[J(u)=\tfrac12a(u,u)-\ell(u).\]
-直接展开可得
-\[DJ(u)h=\tfrac12\bigl(a(u,h)+a(h,u)\bigr)-\ell(h).\]
-因此仅当 \(a\) 对称时，驻点条件才是 \(a(u,h)=\ell(h)\)。反对称部分在 \(a(u,u)\) 中完全消失，却可能实质影响方程的解。
+上面的障碍证明给出了全空间有界经典解的唯一性：在每个 \([0,T]\times\mathbb R^d\) 上有共同有限界、连续取得相同初值的两个解必相等。该结论不覆盖任意增长的经典解。空间无穷远的限制参与证明，不能从有界区域的唯一性直接删去。
 
 \ProseParagraphBreak
 
-例如 \(H=\mathbb R^2\)，令 \(Au=(u_1-u_2,u_1+u_2)\)，\(a(u,h)=(Au)\cdot h\)。尽管 \(a(u,u)=|u|^2\) 严格为正，极小化 \(\tfrac12|u|^2-f\cdot u\) 得到的是 \(u=f\)，而原方程是 \(Au=f\)。两者一般不同。下一章的 Lax--Milgram 定理直接求解有界强制双线性型，无须先把它变成能量；这正是从变分极小化过渡到一般弱解方法时必须增加的能力。
+对平方可积初值，另一种自然解类由能量决定。以下版本只要求分布方程与时间上的 \(L^2\) 连续性，因此也覆盖此前构造的粗初值解。
+
+\Needspace{6\baselineskip}
+\begin{theorem}[平方可积解的唯一性]\label{b2:thm:12-l2-uniqueness}
+设整数 \(d\geq1\)、\(\kappa>0\)，\(H_s(x)=(4\pi s)^{-d/2}e^{-|x|^2/(4s)}\)（\(s>0\)、\(x\in\mathbb R^d\)）。设 \(T>0\)、\(f\in L^2(\mathbb R^d;\mathbb C)\)。若 \(u\in C([0,T];L^2(\mathbb R^d))\) 在分布意义下满足 \(u_t=\kappa\Delta u\)，且 \(u(0)=f\)，则 \(u(t)=H_{\kappa t}*f\)。此外，核解满足
+\begin{equation}\label{b2:eq:12-whole-energy}
+ \|u(T)\|_2^2+2\kappa\int_0^T\|\nabla u(t)\|_2^2\,\mathrm{d}t
+ =\|f\|_2^2.
+\end{equation}
+\end{theorem}
+\begin{proof}
+空间 Fourier 变换在 \(L^2\) 上酉。先说明可以对方程使用 Schwartz 空间检验函数：将它乘以趋于一的空间紧支集截断，函数及二阶导数都在 \(L^2\) 中收敛；\(u\) 在紧时间区间上范数有界，所以分布恒等式传到极限。因此空间变换后有 \(\partial_t\widehat u+a\widehat u=0\)，其中 \(a(\xi)=4\pi^2\kappa|\xi|^2\)。
+
+取任意紧支集光滑频率函数 \(\chi\)。在其支集上，\(e^{ta(\xi)}\) 及所需导数有界。乘以这个因子得到
+\[
+ \partial_t\left(e^{ta}\chi\widehat u(t)\right)=0.
+\]
+对每个光滑紧支集的频率测试函数配对，所得标量分布导数为零，故是常数；它又随时间连续，常数由初值确定。因此 \(\chi\widehat u(t)=e^{-ta}\chi\widehat f\)。取覆盖所有频率的截断列，得到 \(\widehat u(t)=e^{-ta}\widehat f\) 于 \(L^2\)，从而唯一。
+
+最后对每个频率有
+\[
+ e^{-2Ta}|\widehat f|^2
+ +2\int_0^Tae^{-2ta}|\widehat f|^2\,\mathrm{d}t
+ =|\widehat f|^2.
+\]
+非负积分可换序；Plancherel 与平方可积弱导数的频率刻画把第二项变为 \(2\kappa\int\|\nabla u\|_2^2\)，得到能量恒等式。
+\end{proof}
+
+有界经典类与 \(C_tL^2_x\) 类各有独立的远处控制：前者允许非零常数初温，后者容许无界但平方可积的初温。二者有交集，却不相互包含。对一个给定初值问题，先明确解类，再谈唯一性。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[粗外力与热能量]\label{b2:prop:12-forced-energy}
+设整数 \(d\geq1\)、\(\kappa>0\)，\(H_s(x)=(4\pi s)^{-d/2}e^{-|x|^2/(4s)}\)（\(s>0\)、\(x\in\mathbb R^d\)）。设 \(T>0\)、\(f\in L^2(\mathbb R^d;\mathbb C)\)、\(F\in L^1((0,T);L^2(\mathbb R^d))\)。式\eqref{b2:eq:12-duhamel}的积分以 \(L^2\) 值积分解释，给出唯一的 \(C([0,T];L^2)\) 分布解，满足 \(u_t-\kappa\Delta u=F\) 及初值 \(f\)。它满足
+\[
+ \|u(t)\|_2\leq\|f\|_2+\int_0^t\|F(s)\|_2\,\mathrm{d}s,
+ \quad \nabla u\in L^2((0,T)\times\mathbb R^d),
+\]
+以及能量恒等式
+\[
+ \|u(t)\|_2^2+2\kappa\int_0^t\|\nabla u(s)\|_2^2\,\mathrm{d}s
+ =\|f\|_2^2+2\operatorname{Re}\int_0^t\langle F(s),u(s)\rangle_{L^2}\,\mathrm{d}s.
+\]
+\end{proposition}
+\begin{proof}
+热卷积在 \(L^2\) 中为收缩，并在零时强趋于恒等。先对简单外力定义积分，再以积分范数逼近，得到公式及第一项估计。时间连续性可先对有限个空间取值的简单函数检验：各段积分由核的强连续性和控制收敛得到连续，端点处新增积分的范数趋于零。一般外力的误差在整个 \([0,T]\) 上不超过其 \(L^1_tL^2_x\) 范数，故同样连续，且积分项在零时趋于零。
+
+选光滑紧支集 \(f_j\to f\) 于 \(L^2\)，并选光滑时空外力 \(F_j\to F\) 于 \(L^1_tL^2_x\)，使每个固定 \(j\) 的 \(F_j\) 在整个时间带上有紧空间支集，紧集允许随 \(j\) 扩大。后者可先由简单函数逼近，再分别磨光有限个空间取值及时间示性函数。对应光滑解 \(u_j\) 在 \(C_tL^2_x\) 中趋于 \(u\)，方程的测试等式随之传到极限。对这些光滑解乘以 \(\overline{u_j}\)、取实部并作空间积分，得到所称能量恒等式。全空间分部积分可先乘标准截断 \(\chi_R^2\)：额外项的模至多为 \(CR^{-1}\|u_j\|_2\cdot\|\nabla u_j\|_2\)。对每个固定 \(j\)，初值与外力的光滑紧支集逼近使 \(\|u_j(t)\|_2\)、\(\|\nabla u_j(t)\|_2\) 在该有限时间带上有界，这也可将一次空间导数移到平滑初值和外力上后用 Young 不等式得到。因此截断通量的时间积分趋于零，再令 \(R\to\infty\) 即得上述恒等式；这里不要求对所有 \(j\) 共用一个空间支集。
+
+还需证明梯度收敛，不能仅由零阶收敛推断。记两近似解之差为 \(v\)，初值差为 \(h\)，外力差为 \(G\)。差解的能量恒等式给出
+\[
+ 2\kappa\int_0^T\|\nabla v(s)\|_2^2\,\mathrm{d}s
+ \leq\|h\|_2^2+2\sup_{s\leq T}\|v(s)\|_2
+                    \int_0^T\|G(s)\|_2\,\mathrm{d}s.
+\]
+第一项估计又控制 \(\sup\|v\|_2\)，所以梯度在时空 \(L^2\) 中为 Cauchy 列。对空间测试函数分部积分取极限，将其极限识别为 \(\nabla u\)。于是能量的耗散积分收敛；外力功由外力的积分范数收敛及 \(u_j\) 的一致 \(L^2\) 收敛传到极限。所得等式对每个 \(t\in[0,T]\) 成立。两个同数据解之差满足齐次方程及零初值，\cref{b2:thm:12-l2-uniqueness}给出唯一性。
+\end{proof}
+
+\subsection{保正性}
+\label{b2:subsec:120304}
+
+设 \(\kappa>0\)、\(1\le p\le\infty\)、\(f\in L^p(\mathbb R^d;\mathbb R)\)。热核严格为正。因此若 \(f\geq0\) 几乎处处，则 \(H_{\kappa t}*f\geq0\)；若 \(f\) 不是零等价类，某个正测度集合上有 \(f>0\)，对每个 \(t>0,x\) 的积分都严格为正。这一性质称为\term[baozheng-xing]{保正性}[positivity preservation]。即使初温支集很小，任何正时间全空间每一点都受到影响；热传播没有波方程的有限传播速度。
 
 \ProseParagraphBreak
 
-另一个区别是驻点与动力学。若 \(E(u)=\tfrac12\int|\nabla u|^2\)，形式上的 \(L^2\) 梯度为 \(-\Delta u\)。沿最陡下降运动 \(u_t=-\operatorname{grad}E(u)\)，得到热方程 \(u_t=\Delta u\)，而平衡点满足 Laplace 方程。对光滑零边界解，分部积分给出
-\[\frac{\mathrm d}{\mathrm dt}E(u(t))=-\int_\Omega|u_t|^2\,\mathrm dx\le0.\]
-这项恒等式说明热演化趋向降低能量，却不在这里自动证明长时间收敛；还需要轨道紧性、极限点的识别等信息。变分结构可以提供估计和候选极限，但不能代替这些额外步骤。
+在有限区间 \((0,\ell)\)、\(\ell,\kappa>0\) 上，纯热方程 \(u_t=\kappa u_{xx}\) 的非负实初温 \(f\in L^2(0,\ell;\mathbb R)\) 也产生非负解。对零 Dirichlet 条件，先用非负光滑紧支集函数逼近初值，最大值原理给出各近似解非负；正时间核的 \(L^2\to L^\infty\) 界让它们一致趋于目标解，故极限非负。零 Neumann 的镜像核 \(K_N\) 本身为正。Robin 非负系数时，可以直接使用负部能量，沿用\secref{b2:sec:1201}的通量约定，边界写为 \(-\kappa u_x(0)+h_0u(0)=\kappa u_x(\ell)+h_\ell u(\ell)=0\)，\(h_0,h_\ell\geq0\)。正时间有 \(u(t)\in D(A)\)、\(u_t(t)\in H\)，因此不需预设初温有经典导数。
+
+\ProseParagraphBreak
+
+令 \(u_-=\max\{-u,0\}\)。绝对连续函数与这个 Lipschitz 函数复合后仍绝对连续，且 \((u_-)'=-u'\cdot\mathbf1_{\{u<0\}}\) 几乎处处；在零水平集上 \(u'=0\) 几乎处处，这可在可微且为该水平集密度点的位置沿零点差商取得。故 \(u_-\in V\)。对标量函数 \(J(z)=z_-^2/2\)，导数为 \(-z_-\)，且导数为 Lipschitz 函数，因此 Taylor 余项被 \(|h|^2/2\) 控制。积分这个余项，再使用 \(H\) 中的时间可微性，得到 \(\dfrac{\mathrm{d}}{\mathrm{d}t}\int J(u)=-\langle u_t,u_-\rangle\)。将方程与 \(u_-\) 配对，并使用 \(\mathfrak a(u,u_-)=-\kappa\|(u_-)'\|_2^2-\sum_s h_s|u_-(s)|^2\)，便有
+\[
+ \dfrac12\dfrac{\mathrm{d}}{\mathrm{d}t}\|u_-\|_2^2
+ =-\kappa\|(u_-)'\|_2^2
+ -\sum_{s\in R}h_s|u_-(s)|^2\leq0.
+\]
+在 \([\varepsilon,t]\) 上积分，得到 \(\|u_-(t)\|_2\leq\|u_-(\varepsilon)\|_2\)。负部映射在 \(L^2\) 中是 Lipschitz 的，而 \(u(\varepsilon)\to f\) 于 \(L^2\)，令 \(\varepsilon\downarrow0\) 得 \(\|u_-(t)\|_2\leq\|f_-\|_2\)。零初始负部于是始终为零。论证只使用一次空间弱导数，不要求负部在零点具有经典二阶导数。
+
+\ProseParagraphBreak
+
+全空间的纯热核解还保持总质量。若 \(f\in L^1\)，由绝对可积换序有 \(\int u(t)=\int f\)。对非负 \(f\)，当 \(0<s<t\) 时，半群关系及热核非负、总质量为一给出 \(\|u(t)\|_\infty\leq\|u(s)\|_\infty\)。降低的是全空间的峰值，不能据此说每一点的温度都随时间下降：初温支集外的零温点在正时间会升温。热量在空间中重新分布，而总量保持不变。若初值还有有限二阶绝对矩，Gauss 核的零一阶矩与每方向二阶矩 \(2\kappa t\) 给出
+\[
+ \int|x|^2u(t,x)\,\mathrm{d}x
+ =\int|y|^2f(y)\,\mathrm{d}y+2d\kappa t\int f(y)\,\mathrm{d}y.
+\]
+当 \(f\geq0\) 时，这是总热量向半径 \(\sqrt t\) 的尺度扩散的定量表达。

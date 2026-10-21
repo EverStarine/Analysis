@@ -51,6 +51,7 @@ Hanche-Olsen 与 Holden 的《The Kolmogorov--Riesz compactness theorem》\cite[
 有限测度上的 Hölder 不等式保证每个平均值有定义。即使 \(u\) 是复值函数，平均值仍按普通复积分定义，不取共轭。
 
 \begin{lemma}\label{b1:lem:lp-cell-average}
+设 \(d\geq1\) 为整数、\(1\leq p<\infty\)、\(\delta>0\)。将 \(\mathbb R^d\) 分成 \(Q_{\delta,j}=\delta(j+[0,1)^d)\)、\(j\in\mathbb Z^d\)，定义 \(P_\delta u=\delta^{-d}\int_{Q_{\delta,j}}u\) 于每格上。对非空 \(\mathcal F\subseteq L^p(\mathbb R^d)\)，记 \(\tau_hu(x)=u(x-h)\)、\(\omega_{\mathcal F}(r)=\sup_{u\in\mathcal F}\sup_{|h|\leq r}\|\tau_hu-u\|_p\)。
 算子 \(P_\delta\) 是 \(L^p(\mathbb R^d)\) 上的线性投影，且
 \(\|P_\delta u\|_p\leq\|u\|_p\)。此外，
 \begin{equation}\label{b1:eq:lp-cell-average-error}
@@ -135,6 +136,7 @@ Hanche-Olsen 与 Holden 的《The Kolmogorov--Riesz compactness theorem》\cite[
 \end{figure}
 
 \begin{theorem}[Fréchet–Kolmogorov]\label{b1:thm:frechet-kolmogorov-lp}
+设 \(d\geq1\) 为整数，\(\mathbb K=\mathbb R\) 或 \(\mathbb C\)，\(\omega_{\mathcal F}(\delta)=\sup_{u\in\mathcal F}\sup_{|h|\leq\delta}\|u(\cdot-h)-u\|_p\)。
 设 \(1\leq p<\infty\)，\(\mathcal F\subseteq L^p(\mathbb R^d;\mathbb K)\) 非空。则 \(\mathcal F\) 相对紧，当且仅当下列条件都成立。
 \begin{enumerate}
 \item\label{b1:item:fk-bounded}
@@ -222,7 +224,17 @@ Hanche-Olsen 与 Holden 的《The Kolmogorov--Riesz compactness theorem》\cite[
 \(\varepsilon\)-网。因此 \(\mathcal F\) 全有界。由\cref{b1:thm:lp-complete}及前一引理，闭包紧。引理证明中的抽选过程同时给出所述子列结论；反过来，若不存在某个尺度的有限网，就可逐个选出彼此距离至少为该尺度的序列，它不可能有收敛子列。
 \end{proof}
 
-证明始终先对原函数作全空间网格平均，然后截去平均函数的远处部分。\eqref{b1:eq:cell-projection-tail}控制了第二步；没有把“先截断函数、再平移”产生的边界差当成零。证明中显式使用范数一致有界来控制保留下来的有限个平均值，尾部与平移条件则决定需要保留多少网格、网格应当多细。为保持与常见表述一致，定理仍把范数有界列为一个条件；不过在当前全空间版本中，它事实上可由尾部与一致平移连续性推出，见\cref{b1:ex:25-fk-redundant-boundedness}。因此这里的三个条件便于分别识别障碍，却不是逻辑上相互独立的三项假设。
+证明始终先对原函数作全空间网格平均，然后截去平均函数的远处部分。\eqref{b1:eq:cell-projection-tail}控制了第二步；没有把“先截断函数、再平移”产生的边界差当成零。证明中显式使用范数一致有界来控制保留下来的有限个平均值，尾部与平移条件则决定需要保留多少网格、网格应当多细。为保持与常见表述一致，定理仍把范数有界列为一个条件；不过在当前全空间版本中，它事实上可由尾部与一致平移连续性推出。为看清这点，先取 \(R\ge1\)，使每个函数在 \(\{|x|>R\}\) 上的 \(L^p\) 范数不超过 \(1\)；再取 \(\delta>0\)，使所有 \(|h|<\delta\) 的平移误差不超过 \(1\)。固定 \(a=3Re_1\)，选整数 \(N\) 使 \(|a|/N<\delta\)，并令 \(h=a/N\)。平移等距性给出
+\[
+ \tau_af-f=\sum_{j=0}^{N-1}\tau_{jh}(\tau_hf-f),\quad
+ \|\tau_af-f\|_p\le N.
+\]
+对 \(x\in B(0,R)\)，有 \(|x-a|>R\)，所以 \(\|\tau_af\|_{L^p(B(0,R))}\le1\)。把范数分成球内与球外两部分，便有
+\[
+ \|f\|_p\le\|f-\tau_af\|_p+\|\tau_af\|_{L^p(B(0,R))}
+       +\|f\|_{L^p(\{|x|>R\})}\le N+2.
+\]
+这里 \(R,\delta,N\) 均与 \(f\) 无关，球面零测度保证开闭球的区别不影响估计。因此三个条件便于分别识别障碍，却不是逻辑上相互独立的三项假设。
 
 \subsection{尾部一致控制与支集}
 \label{b1:subsec:250103}
@@ -263,6 +275,7 @@ Hanche-Olsen 与 Holden 的《The Kolmogorov--Riesz compactness theorem》\cite[
 现在把判据用于一般定义域。这里只需要 Lebesgue 可测性，不要求边界光滑。
 
 \begin{corollary}\label{b1:cor:lp-domain-zero-extension-compactness}
+设 \(1\leq p<\infty\)、\(\mathbb K=\mathbb R\) 或 \(\mathbb C\)，\(\tau_hv(x)=v(x-h)\)。
 设 \(\Omega\subseteq\mathbb R^d\) 为 Lebesgue 可测集，且
 \(\mathcal F\subseteq L^p(\Omega;\mathbb K)\)。把每个 \(u\) 在域外补零，记为 \(E_0u\)。则 \(\mathcal F\) 在 \(L^p(\Omega)\) 中相对紧，当且仅当它范数一致有界，且
 \[

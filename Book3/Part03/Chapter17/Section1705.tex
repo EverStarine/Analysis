@@ -2,58 +2,337 @@
 \section{多连通区域}
 \label{b3:sec:1705}
 
-多连通域的调和函数仍可由边值确定，但共轭的周期多了有限个独立方向。边界分量的调和测度提供了调整这些周期的自然函数。
+多连通域上的调和函数局部都有共轭，沿闭路回到起点时，共轭却可能增加一个常数。有限个孔给出有限个独立周期。边界分量的调和测度既能表示各分量的影响，又能组成一个可逆的周期调整系统，从而把任意调和函数分成全纯函数的实部与有限个固定函数的组合。
 
 \subsection{周期}
 \label{b3:subsec:170501}
 
-调和函数 \(u\) 的周期为 \(\int_\gamma(-u_y\,\mathrm{d}x+u_x\,\mathrm{d}y)\)。闭形式使周期只依赖曲线同调类。若区域由 \(m+1\) 条互不相交实解析 Jordan 曲线围成，则绕 \(m\) 个内孔的曲线构成独立周期方向；任一闭曲线的周期为这些基本周期的整数线性组合。
+设 \(D\subseteq\mathbb C\) 为有界区域，其边界由 \(m+1\) 条互不相交的正则实解析 Jordan 曲线组成，\(m\ge0\)。记外边界为 \(C_0\)，内边界为
+\(C_1,\ldots,C_m\)。Jordan 分离性质使补集有一个无界分量 \(K_0\) 和
+\(m\) 个有界分量 \(K_1,\ldots,K_m\)，其中 \(K_j\) 是 \(C_j\) 围成的闭孔。区域 \(D\) 位于 \(C_0\) 内部、各个闭孔外部。
+
+\ProseParagraphBreak
+对在 \(D\) 调和的实函数 \(u\)，记其共轭一形式为
+\[
+ \beta_u\coloneqq-u_y\,\mathrm dx+u_x\,\mathrm dy.
+\]
+由于 \(u\) 调和，
+\[
+ \mathrm d\beta_u=(u_{xx}+u_{yy})\,\mathrm dx\wedge\mathrm dy=0.
+\]
+闭形式意味着局部积分与路径无关，但沿不能收缩的闭路仍可能有非零积分。
+\cref{b3:thm:15-global-conjugate}已经证明：区域上的实值调和函数有单值调和共轭，当且仅当 \(\int_\gamma\beta_u=0\) 对所有分段光滑闭路成立。现在要把“所有闭路”缩减成 \(m\) 条可选定的内部曲线。
+
+\ProseParagraphBreak
+在每个内边界 \(C_j\) 的域侧取一条很近的简单闭曲线 \(\gamma_j\)，按逆时针方向行进，使它只绕第 \(j\) 个孔一次。这些曲线可以在 \(D\) 内选取：若
+\(\gamma(t)\) 是边界的正则光滑参数，\(\nu(t)\) 指向域侧，则
+\(\gamma(t)+s\nu(t)\) 对足够小的 \(s>0\) 给出域内平行曲线。映射
+\((t,s)\mapsto\gamma(t)+s\nu(t)\) 在 \(s=0\) 的微分可逆；紧性给统一的小宽度，参数相隔一定距离的两点原有正分离距离也可保留，所以窄带内没有新的自交。不同边界分量之间有正距离，故平行曲线不会绕到别的孔。
+
+\ProseParagraphBreak
+选 \(a_j\in\operatorname{int}K_j\)。按上述方向，
+\[
+ \operatorname{Ind}(\gamma_i,a_j)=\delta_{ij},
+ \quad 1\le i,j\le m.
+\]
+定义 \(u\) 的基本周期
+\[
+ p_j(u)\coloneqq\int_{\gamma_j}\beta_u.
+\]
+曲线紧包含于 \(D\)，所以积分存在；这里不要求 \(u\) 连续到边界，更不要求它有边界法向导数。
+
+\Needspace{6\baselineskip}
+\begin{lemma}[有限连通域的基本周期]\label{b3:lem:17-period-basis}
+设 \(D\subseteq\mathbb C\) 为有界区域，边界由外圈 \(C_0\) 和 \(m\) 条内圈
+\(C_1,\ldots,C_m\) 组成，这些曲线均为两两不交的正则实解析 Jordan 曲线。
+在每个闭孔 \(K_j\) 的内部选点 \(a_j\)，并在 \(D\) 中取逆时针基圈
+\(\gamma_j\)，使它关于第 \(j\) 个孔的指数为一、关于其余孔的指数为零。
+若 \(u:D\to\mathbb R\) 调和，则对任意分段光滑闭路 \(\gamma\subset D\)，有
+\[
+ \int_\gamma\beta_u
+ =\sum_{j=1}^m\operatorname{Ind}(\gamma,a_j)\,p_j(u),
+ \quad
+ \beta_u=-u_y\,\mathrm dx+u_x\,\mathrm dy,\quad
+ p_j(u)=\int_{\gamma_j}\beta_u.
+\]
+当 \(m=0\) 时，右端为空和，所有周期均为零。特别地，\(u\) 有单值调和共轭，当且仅当全部基本周期为零。
+\end{lemma}
+\begin{proof}
+调和性保证 \(f=u_x-\mathrm i u_y\) 在 \(D\) 全纯，并且
+\[
+ f(z)\,\mathrm dz=\mathrm du+\mathrm i\beta_u.
+\]
+沿闭路积分时 \(\mathrm du\) 的积分为零，因此可以把 \(\beta_u\) 的周期化成
+\(f\) 的全纯积分。
+
+令 \(n_j=\operatorname{Ind}(\gamma,a_j)\)，考虑整数圈
+\[
+ \Gamma=\gamma-\sum_{j=1}^m n_j\gamma_j.
+\]
+指数在曲线补集的每个连通分量上恒定。每个 \(K_j\) 连通且不交这些曲线，所以
+\(\operatorname{Ind}(\Gamma,\cdot)\) 在 \(K_j\) 上恒等于
+\(n_j-n_j=0\)。在无界补集分量上，所有闭路的指数都为零。于是
+\(\Gamma\) 对 \(D\) 外的每一点指数为零，即满足第十章平面零同调的定义。
+\cref{b3:thm:10-cauchy-homology}适用于全纯函数 \(f\) 和这个支集紧含于
+\(D\) 的零同调整数圈，给出
+\[
+ 0=\int_\Gamma f\,\mathrm dz
+ =\mathrm i\left(\int_\gamma\beta_u
+       -\sum_{j=1}^m n_jp_j(u)\right).
+\]
+这就是周期公式。全体周期消失与单值共轭的等价，随后应用
+\cref{b3:thm:15-global-conjugate}。
+\end{proof}
+
+基本周期不依赖平行曲线的具体宽度，因为两种选择对所有孔有相同指数。各个方向也确实独立：函数
+\[
+ u_j(z)=\log|z-a_j|
+\]
+在 \(D\) 调和，其共轭一形式是辐角的局部微分，所以
+\(p_i(u_j)=2\pi\delta_{ij}\)。因此不能一般地少检查某一个孔。
+
+\ProseParagraphBreak
+割线给出同一结论的几何解释。可以从每个 \(C_j\) 向 \(C_0\) 选取一条简单弧
+\(\alpha_j\)，使端点落在相应边界、开弧留在 \(D\)，且这些闭弧两两不交。一个逐次构造如下：先在域内用有限折线连接两个边界窄带，去掉回路，再在两端接上窄带中的短弧，得到第一条简单连接弧。切去这条弧后区域仍连通，因为任何横穿它的路径都可沿弧的窄带绕到内孔，在该孔的域侧绕过端点，再从弧的另一侧返回；内孔此前没有其他割线，绕行可以完全留在域中。下一步在已切开的连通域内连接另一内孔与外边界，重复这项操作。有限条已选弧及边界互不相交的紧部分之间有正距离，允许把窄带选得互不干扰，并把外边界端点选在不同位置。
+
+\ProseParagraphBreak
+切开后的开集
+\[
+ D^\sharp=D\setminus\bigcup_{j=1}^m\alpha_j
+\]
+仍连通，它的补集则由各个 \(K_j\)、\(K_0\) 和连接它们的割线组成，成为一个连通集。任意闭路在这个补集上的指数恒为零，因为它在那里恒定，并在无界部分为零。故同调 Cauchy 定理使每个全纯函数在
+\(D^\sharp\) 上的闭路积分都为零；尤其 \(\beta_u\) 在切开后有单值原函数。
+这就给出了本处所需的割线依据，无须把任意闭路先写成基本群生成元的一个词。
+
+\ProseParagraphBreak
+沿一条割线的两岸延拓这个原函数，两侧导数都是同一个 \(\beta_u\)，故二者之差为常数。按绕孔基圈的走向确定两岸的先后，这个差就是 \(p_j(u)\)。若它不为零，沿闭路返回会改变共轭的值；若所有差均为零，两岸便能拼接。对一般闭路，可先在有限个内部小圆盘中以折线替换，再小幅扰动，使它与有限割线只有有限个横截交点。各次穿越按方向加上或减去对应周期，于是得到前面已经由同调严格证明的整数线性组合。
 
 \subsection{调和测度}
 \label{b3:subsec:170502}
 
-令 \(\omega_j\) 为第 \(j\) 个内边界取一、其余边界取零的调和解。其边界数据在各分量上连续，各边界弧可拉直并取局部线性障碍，所以 Perron 理论保证存在；减去该分量上的常数后作调和反射，还保证解在边界附近光滑。它们满足 \(0<\omega_j<1\)，连同外边界权重 \(\omega_0\) 有 \(\sum_{j=0}^m\omega_j=1\)。因此常数边界数据 \(c_j\) 的解为 \(\sum c_j\omega_j\)。
+函数 \(\log|z-a_j|\) 能分别检测各个周期，却不在其他边界分量上取零。若希望调整周期的同时保留清楚的边界含义，就改用每个边界分量的调和权重。
 
-环域 \(r<|z|<R\) 的内边界权重是 \(\log(R/|z|)/\log(R/r)\)，其共轭周期为 \(-2\pi/\log(R/r)\)。这给出可计算的周期调整系数。
+\Needspace{6\baselineskip}
+\begin{proposition}[边界分量的调和权重]\label{b3:prop:17-component-weights}
+设 \(D\subseteq\mathbb C\) 为有界区域，其边界由 \(m+1\) 条互不相交的正则实解析 Jordan 曲线 \(C_0,\ldots,C_m\) 组成，\(C_0\) 为外圈。对每个
+\(0\le j\le m\)，存在唯一 \(\omega_j\in C(\overline D;\mathbb R)\)，在
+\(D\) 调和，且满足
+\[
+ \omega_j|_{C_i}=\delta_{ij},\quad 0\le i\le m.
+\]
+各 \(\omega_j\) 在每个边界点的邻域都可调和延拓，并且
+\[
+ \omega_j(z)=\omega_D^z(C_j),\quad
+ \sum_{j=0}^m\omega_j(z)=1,\quad z\in D.
+\]
+当 \(m\ge1\) 时，\(0<\omega_j<1\) 于 \(D\)；当 \(m=0\) 时，
+\(\omega_0=1\)。给定实常数 \(b_0,\ldots,b_m\)，在 \(C_j\) 上取值
+\(b_j\) 的经典调和解为 \(\sum_{j=0}^m b_j\omega_j\)。
+\end{proposition}
+\begin{proof}
+有限条互不相交的紧曲线之间有正距离，所以 \(C_j\) 在整个
+\(\partial D\) 中既开又闭；其示性函数是连续边值。正则实解析边界局部可写成
+\(C^1\) 图像，补集含有一个外锥，由\cref{b3:prop:16-exterior-cone-regular}可知
+\(D\) 是正则域。因此 Perron 解给出 \(\omega_j\)，经典解的最大值原理给出唯一性。
+
+在每段边界弧上，\(\omega_j\) 等于常数零或一，所以
+\cref{b3:lem:17-harmonic-reflection}给出局部调和延拓。调和测度表示
+\cref{b3:thm:16-harmonic-measure}适用于本处有界正则域和连续边值
+\(\mathbf1_{C_j}\)，于是
+\[
+ \omega_j(z)=\int_{\partial D}\mathbf1_{C_j}(\xi)\,\mathrm d\omega_D^z(\xi)
+ =\omega_D^z(C_j).
+\]
+各权重之和在全边界取一，唯一性使其恒等于一。
+
+最大值原理给 \(0\le\omega_j\le1\)。若 \(m\ge1\)，每份数据都在某个分量为一、另一个分量为零，故解不恒定；强最大值与强最小值原理给严格不等式。若 \(m=0\)，数据本身恒为一。最后，线性组合
+\(\sum b_j\omega_j\) 调和并取指定边值，再由唯一性识别为所求解。
+\end{proof}
+
+这里 \(\omega_D^z\) 是定义在整个边界上的测度，\(\omega_j\) 则是其对一个固定分量取值后得到的内部调和函数。每个分量可整体赋予一个权重，是因为边界分量彼此分离；对同一连通边界上的一小段弧，其示性数据通常不连续，不能直接使用这份经典解陈述。
+
+\ProseParagraphBreak
+圆环 \(r<|z|<R\)、\(0<r<R\) 提供一个可算模型。径向函数
+\(v(z)=V(\rho)\)、\(\rho=|z|\) 满足
+\[
+ \Delta v=V''(\rho)+\rho^{-1}V'(\rho)
+ =\rho^{-1}\bigl(\rho V'(\rho)\bigr)'.
+\]
+因此径向调和函数是对数与常数的线性组合。设 \(C_1\) 为内圆，
+\(L=\log(R/r)>0\)，则
+\[
+ \omega_1(z)=\frac{\log(R/|z|)}{L},\quad
+ \omega_0(z)=\frac{\log(|z|/r)}{L}.
+\]
+两式分别在相应圆周取一、另一圆周取零，并且和为一。它们给出的边界权重依赖观察点的半径，不能用两条圆周长度之比代替。
 
 \subsection{调和共轭的障碍}
 \label{b3:subsec:170503}
 
-沿正向边界，\(\omega\) 的积分等于调和函数的外法向通量。令 \(A_{ij}=\int_D\nabla\omega_i\cdot\nabla\omega_j\,\mathrm{d}A\)。Green 第一公式把它等于第 \(i\) 个内边界上的 \(\omega_j\) 通量。
-
-矩阵 \(A\) 对称正定：若 \(\sum c_j\omega_j\) 的梯度能量为零，则该组合恒常；外边界值为零使常数零，再看各内边界值知全部 \(c_j=0\)。因此基本周期可以由 \(\omega_j\) 的线性组合任意调整，拓扑障碍有明确的有限维形式。
-
-\subsection{典范表示}
-\label{b3:subsec:170504}
-
-\begin{proposition}\label{b3:prop:17-period-decomposition}
-在上述有限连通实解析边界有界域中，每个连续到边界的调和函数可写为
+为了知道这些权重能否消除任意周期，需要计算它们的周期矩阵。边界积分与内部基圈的方向先要区分。沿区域的正向边界行进时，区域在左侧：外边界
+\(C_0\) 逆时针，内边界 \(C_j\) 顺时针。若 \(T=(x',y')\) 为单位切向，则域的外单位法向为 \(n=(y',-x')\)，所以对光滑到边界的实函数 \(v\)，
 \[
-u=\operatorname{Re}F+\sum_{j=1}^m c_j\omega_j,
+ \beta_v(T)=-v_yx'+v_xy'=\nabla v\cdot n=\partial_nv.
 \]
-其中 \(F\) 单值全纯，\(c_j\) 唯一；\(F\) 只差纯虚常数。
+因此正向边界上的共轭周期等于向外通量。
+
+\ProseParagraphBreak
+本节基圈 \(\gamma_j\) 却按逆时针绕内孔；它与正向内边界的方向相反。对已经光滑到边界的 \(\omega_j\)，可以把基圈推到内边界，再用连续性取极限，得到
+\[
+ p_i(\omega_j)=-\int_{C_i}\partial_n\omega_j\,\mathrm ds.
+\]
+积分右侧的 \(n\) 指向孔内，即从 \(D\) 向外；负号不能省略。一般调和函数
+\(u\) 的周期仍留在内部曲线上，不通过这一步定义它的边界通量。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[通量矩阵的正定性]\label{b3:prop:17-flux-matrix}
+设 \(D\subseteq\mathbb C\) 为有界区域，其边界由外圈 \(C_0\) 与
+\(m\ge1\) 条内圈 \(C_1,\ldots,C_m\) 组成，且均为两两不交的正则实解析
+Jordan 曲线。对 \(1\le j\le m\)，令 \(\omega_j\) 为在 \(C_j\) 取一、其余分量取零的经典调和解，定义实矩阵
+\[
+ A_{ij}\coloneqq
+ \int_D\nabla\omega_i\cdot\nabla\omega_j\,\mathrm dA,
+ \quad 1\le i,j\le m.
+\]
+则 \(A\) 有限、对称且正定。若 \(n\) 为 \(D\) 的外单位法向，
+\(\gamma_i\) 是域内逆时针绕第 \(i\) 个孔一次而不绕其余孔的基圈，则
+\[
+ A_{ij}=\int_{C_i}\partial_n\omega_j\,\mathrm ds,
+ \quad
+ p_i(\omega_j)
+ =\int_{\gamma_i}(-(\omega_j)_y\,\mathrm dx+(\omega_j)_x\,\mathrm dy)
+ =-A_{ij}.
+\]
 \end{proposition}
 \begin{proof}
-用正定通量矩阵解线性方程，选择 \(c_j\) 消除 \(u\) 在全部基本曲线上的周期。剩余调和函数所有闭曲线周期为零，由\cref{b3:thm:15-global-conjugate}得到单值共轭和 \(F\)。若两组系数都可行，其差的周期向量为零，矩阵可逆使差为零；共轭唯一性给最后结论。
+各 \(\omega_j\) 由边界反射在闭域附近局部光滑，紧性使一阶导数在
+\(\overline D\) 上有界，因此能量积分有限。区域边界光滑，函数有闭域邻域的光滑延拓，满足\cref{b3:prop:17-green-symmetry}证明中恢复的 Green 公式条件。对
+\(\operatorname{div}(\omega_i\nabla\omega_j)\) 使用散度公式，结合
+\(\Delta\omega_j=0\)，得到 Green 第一公式
+\[
+ \int_D\nabla\omega_i\cdot\nabla\omega_j\,\mathrm dA
+ =\int_{\partial D}\omega_i\,\partial_n\omega_j\,\mathrm ds
+ =\int_{C_i}\partial_n\omega_j\,\mathrm ds.
+\]
+最后一步使用 \(\omega_i\) 在 \(C_i\) 为一、在其余边界为零。基圈可在边界窄带中变形为任意更近的逆时针平行曲线；闭形式的积分保持不变。让平行曲线趋于
+\(C_i\)，光滑性给积分收敛，而 \(C_i\) 的正向为顺时针，故周期等于通量的负号。
+
+能量表达直接给出 \(A_{ij}=A_{ji}\)。对实向量
+\(c=(c_1,\ldots,c_m)^{\mathsf T}\)，令 \(v=\sum_{j=1}^m c_j\omega_j\)，则
+\[
+ c^{\mathsf T}Ac=\int_D|\nabla v|^2\,\mathrm dA\ge0.
+\]
+若等于零，连续的非负被积函数必须处处为零，所以 \(\nabla v=0\)。区域连通，故 \(v\) 是常数；它在 \(C_0\) 取零，所以恒为零。再看
+\(C_i\) 上的边值 \(v=c_i\)，得到每个 \(c_i=0\)。因此 \(A\) 正定。
 \end{proof}
 
-
-\ProseParagraphBreak
-
-基本周期的方向须统一。沿区域正向边界行进时，区域在左侧，外边界逆时针、内边界顺时针。若切向为 \((x',y')\)，外法向为 \((y',-x')\)，则
+这个矩阵称为边界分量的\term[tongliang-juzhen]{通量矩阵}[flux matrix]。同一个矩阵一方面记录梯度能量，另一方面记录边界通量；逆时针共轭周期矩阵则是
+\(-A\)。例如在圆环中，
 \[
-(-u_y\,\mathrm{d}x+u_x\,\mathrm{d}y)(\gamma')=\nabla u\cdot n\,\mathrm{d}s.
+ |\nabla\omega_1(z)|=\frac1{L|z|},
+ \quad
+ A_{11}=2\pi\int_r^R\frac1{L^2\rho^2}\rho\,\mathrm d\rho
+ =\frac{2\pi}{L}.
 \]
-所以通量矩阵直接给的是顺时针内边界周期；若基本闭曲线统一选逆时针绕孔，则矩阵前须加负号。环域内边界权重的逆时针周期是 \(-2\pi/\log(R/r)\)，而其沿区域正向内边界通量为 \(2\pi/\log(R/r)\)，正好与正定能量相符。
+沿逆时针圆周 \(\rho e^{\mathrm i t}\) 有
+\[
+ p_1(\omega_1)=2\pi\rho\,\frac{\mathrm d}{\mathrm d\rho}
+                \frac{\log(R/\rho)}{L}
+ =-\frac{2\pi}{L}.
+\]
+正定能量为正、逆时针周期为负，正好检验了取向约定。
 
 \ProseParagraphBreak
-
-有限维拓扑描述可以通过割线实现。从每个内边界取一条互不相交的简单弧连接到外边界，沿这些弧割开区域后得到单连通域。在割开的域中闭形式有原函数。沿第 \(j\) 条割线两侧的原函数差为绕该孔的周期，且因导数相同而为常数；所有这些差均零时，原函数才能连续拼回原区域。任意闭曲线跨越各条割线的有向次数为整数，其积分等于对应周期的整数和。这同时解释基本周期足够、为何有 \(m\) 个独立方向，以及周期清零后共轭的单值性。
+若把外边界权重也纳入矩阵，则
+\(\widetilde A_{ij}=\int_D\nabla\omega_i\cdot\nabla\omega_j\,\mathrm dA\)，
+\(0\le i,j\le m\)，只半正定。因为 \(\sum\omega_j=1\)，每行和为零；
+若 \(b^{\mathsf T}\widetilde A b=0\)，同样的能量论证使
+\(\sum b_j\omega_j\) 为常数，边值遂给 \(b_0=\cdots=b_m\)。所以退化方向恰是所有系数相等的常数方向。去掉外边界后，所有组合在那里为零，正是这一条件消除了退化。
 
 \ProseParagraphBreak
+对一般 \(u\) 记周期列向量
+\(p(u)=(p_1(u),\ldots,p_m(u))^{\mathsf T}\)。若从 \(u\) 中减去
+\(\sum c_j\omega_j\)，剩余周期成为
+\[
+ p\left(u-\sum_{j=1}^m c_j\omega_j\right)=p(u)+Ac.
+\]
+因此消除周期应解 \(Ac=-p(u)\)，而不是 \(Ac=p(u)\)。只有当 \(u\) 本身光滑到边界时，才可另记通量
+\(Q_i=\int_{C_i}\partial_nu\,\mathrm ds=-p_i(u)\)，把方程写成
+\(Ac=Q\)。内部周期版本不需要这项额外边界正则性。
 
-典范表示中的 \(c_j\) 不是边界数据的简单平均。它由整个调和函数的周期决定。环域中取 \(u(z)=\log|z|\)，其周期为 \(2\pi\)，内边界权重周期为 \(-2\pi/\log(R/r)\)，故 \(c=-\log(R/r)\)，余项是常数 \(\log R\)。取 \(u(z)=\operatorname{Re}z\)，周期为零，所以 \(c=0\)，尽管两个边界上的函数值通常不相同。边界权重分解只适合各分量上常数的边值，而周期分解适合一般调和函数；两种线性分解的系数含义不同。
+\subsection{调和函数的周期分解}
+\label{b3:subsec:170504}
+
+通量矩阵的可逆性把多值共轭的问题归结为一个有限线性方程组。所减去的函数只依赖区域；被分解的调和函数可以在边界附近无界。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[调和函数的周期分解]\label{b3:prop:17-period-decomposition}
+设 \(D\subseteq\mathbb C\) 为有界区域，其边界由 \(m+1\) 条互不相交的正则实解析 Jordan 曲线组成，\(m\ge0\)。记外边界为 \(C_0\)，内边界为
+\(C_1,\ldots,C_m\)，令 \(\omega_j\) 为在 \(C_j\) 取一、其余边界取零的经典调和解。则每个在 \(D\) 调和的实函数 \(u\) 都可写为
+\[
+ u=\operatorname{Re}F+\sum_{j=1}^m c_j\omega_j,
+\]
+其中 \(F:D\to\mathbb C\) 单值全纯，实系数 \(c_j\) 唯一，\(F\) 只差一个纯虚常数。对 \(u\) 不要求边界连续性或边界导数。
+
+当 \(m\ge1\) 时，在 \(D\) 内选逆时针基圈 \(\gamma_i\)，每条只绕相应内孔一次，定义
+\[
+ p_i(u)=\int_{\gamma_i}(-u_y\,\mathrm dx+u_x\,\mathrm dy),
+ \quad
+ A_{ij}=\int_D\nabla\omega_i\cdot\nabla\omega_j\,\mathrm dA.
+\]
+系数列向量由
+\[
+ c=-A^{-1}p(u)
+\]
+给出。当 \(m=0\) 时求和为空，结论为 \(u=\operatorname{Re}F\)。
+\end{proposition}
+\begin{proof}
+先设 \(m\ge1\)。\cref{b3:prop:17-flux-matrix}给出 \(A\) 正定可逆，故上述
+\(c\) 存在且唯一。令 \(v=u-\sum c_j\omega_j\)，则 \(v\) 在 \(D\) 调和，且
+\[
+ p_i(v)=p_i(u)+\sum_{j=1}^mA_{ij}c_j=0
+ \quad(1\le i\le m).
+\]
+由\cref{b3:lem:17-period-basis}，\(v\) 的每个闭路周期都为零。固定基点
+\(z_0\in D\)，沿内部路径积分定义
+\[
+ \widetilde v(z)=\int_{z_0}^z(-v_y\,\mathrm dx+v_x\,\mathrm dy).
+\]
+两条路径的差是闭路，零周期使定义与路径无关。在一个小圆盘内直接对终点求导，得到
+\(\widetilde v_x=-v_y\)、\(\widetilde v_y=v_x\)。因此
+\(F=v+\mathrm i\widetilde v\) 满足 Cauchy--Riemann 方程，是所需单值全纯函数。
+
+若另有一组系数 \(d_j\) 和全纯函数 \(G\) 给出同样表示，则
+\(\operatorname{Re}(F-G)\) 有单值共轭 \(\operatorname{Im}(F-G)\)，其所有周期为零。
+两份表示相减后取基本周期，得到 \(A(c-d)=0\)，故 \(c=d\)。
+此时 \(\operatorname{Re}(F-G)=0\)，Cauchy--Riemann 方程使虚部的两个偏导数都为零，区域连通遂给 \(F-G\) 是纯虚常数。
+
+若 \(m=0\)，基本周期引理已经说明任意调和 \(u\) 的全部闭路周期为零，直接执行上述路径积分构造即可；全纯函数的唯一性仍由最后的论证得到。
+\end{proof}
+
+圆环中的分解可以逐项算出。仍记 \(L=\log(R/r)\)，取
+\(u(z)=\log|z|\)。其逆时针周期为 \(2\pi\)，而
+\(A_{11}=2\pi/L\)，所以 \(c=-L\)，从而
+\[
+ \log|z|=\log R-L\omega_1(z).
+\]
+余项是常数 \(\log R\)，可取 \(F=\log R\)。若
+\(u(z)=\operatorname{Re}z\)，则周期为零，系数 \(c=0\)，可取 \(F(z)=z\)，尽管该函数在两条边界上都不是常数。分量常边值的权重展开与一般调和函数的周期分解，因而有不同的系数含义。
 
 \ProseParagraphBreak
+边界附近无界的函数也在本命题范围内。例如在圆环 \(r<|z|<R\) 上，
+\[
+ u(z)=\operatorname{Re}\frac1{z-R}
+\]
+沿实轴趋于外边界点 \(R\) 时无界，却已是单值全纯函数的实部，全部周期为零，故它的权重系数仍为零。周期计算只经过内部紧曲线，不会遇到这处边界奇性。
 
-当边界孔数增加，矩阵的大小也增加；如果有无穷多个孔，当前有限维正定论证并未给出一个自动收敛的无穷级数表示。系数、能量和周期的求和需要额外估计。即使孔数有限，若边界粗糙到通常法向导数不存在，也应改用内部周期和弱能量方法，不能继续逐点积分边界法向导数。本节的实解析边界有界范围正是为了使拓扑方向和通量方向能够用同一个有限矩阵联系起来。
+\ProseParagraphBreak
+在有多个孔时，取第 \(j\) 个孔内的点 \(a_j\) 并令
+\(u(z)=\log|z-a_j|\)，则 \(p(u)=2\pi e_j\)，其中 \(e_j\) 为第 \(j\) 个标准基向量。因此调整系数为
+\[
+ c=-2\pi A^{-1}e_j.
+\]
+一个孔的对数周期通常要用多个边界权重共同消除，因为每个 \(\omega_k\) 的梯度通量会受到全部边界的影响。矩阵正定性保证可解性，并不意味着它为对角矩阵。
+
+\ProseParagraphBreak
+这里的有限维表示依赖孔数有限，以及权重函数能够反射到边界以计算通量。无穷多个孔需要另行控制系数与函数级数的收敛；粗糙边界则不能直接写通常法向导数。本命题对被分解函数 \(u\) 已不施加边界光滑要求，边界正则性只用于固定的权重系统和它的能量矩阵。

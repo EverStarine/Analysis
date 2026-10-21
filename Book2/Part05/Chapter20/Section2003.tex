@@ -1,0 +1,259 @@
+% !TeX root = ../../Book2.tex
+\section{Calderón–Zygmund 核}
+\label{b2:sec:1803}
+
+Hilbert 核与 Riesz 核都有两种不同的性质：核本身在对角线附近不可积，移开一个变量后得到的核之差却衰减得更快。前一种性质决定积分为什么需要截断，后一种性质使坏块的零平均能够发挥作用。本节把这些条件分开写出，再说明怎样把核与一个已经有平方估计的算子联系起来。
+
+\subsection{大小条件}
+\label{b2:subsec:180301}
+
+设整数 \(d\geq1\)，\(K:(\mathbb R^d\times\mathbb R^d)\setminus\{x=y\}\to\mathbb C\) 可测。若存在有限常数 \(C_0\geq0\)，使对每个 \(x\ne y\) 都有
+\[
+ |K(x,y)|\leq C_0|x-y|^{-d},
+\]
+则称 \(K\) 满足标准大小条件。半径为 \(r\) 的环带有 \(r^d\) 量级的体积，所以这个上界在每一倍增环带上只给出常数量级的绝对积分；对角线附近有无穷多个这样的环带，不能直接求和。
+
+\ProseParagraphBreak
+
+若 \(f\in L^2\) 支撑在紧集 \(F\) 内，则 \(f\in L^1\)。在与 \(F\) 有正距离的点 \(x\) 处，大小条件给出
+\[
+ \int_F|K(x,y)|\cdot|f(y)|\,\mathrm dy
+ \leq C_0\cdot\operatorname{dist}(x,F)^{-d}\cdot\|f\|_1<\infty.
+\]
+因此支集外的核积分具有普通绝对积分的意义。这里同时用了输入的有限支集和观察点到支集的距离；支集内部的积分尚未由此定义。
+
+\ProseParagraphBreak
+
+卷积型核写成 \(K(x,y)=k(x-y)\)。例如取有界球面函数 \(\Omega\)，令 \(k(z)=\Omega(z/|z|)\cdot|z|^{-d}\)。若光滑输入在 \(x\) 附近恒等于一，则局部截断积分含有
+\[
+ \int_{\epsilon<|z|<1}k(z)\,\mathrm dz
+ =\left(\int_{S^{d-1}}\Omega\,\mathrm d\sigma\right)\cdot
+    \log\frac1\epsilon.
+\]
+球面平均不为零时，这一项发散。齐次次数 \(-d\) 给出大小条件，却没有提供抵消；球面上的奇函数平均为零，Hilbert 核就是一维的例子。
+
+\subsection{光滑性条件}
+\label{b2:subsec:180302}
+
+坏块的零平均使 \(K(x,y)\) 被替换为 \(K(x,y)-K(x,c_Q)\)。因此需要控制的是移动输入变量 \(y\) 后的变化。对上述离开对角线的核，固定 \(0<\delta\leq1\)。标准光滑条件要求存在有限常数 \(C_1\geq0\)，使
+\[
+ \begin{aligned}
+ |K(x,y)-K(x,y')|&\leq C_1\frac{|y-y'|^\delta}{|x-y|^{d+\delta}}
+ &&\left(|y-y'|\leq\frac{|x-y|}2\right),\\
+ |K(x,y)-K(x',y)|&\leq C_1\frac{|x-x'|^\delta}{|x-y|^{d+\delta}}
+ &&\left(|x-x'|\leq\frac{|x-y|}2\right).
+ \end{aligned}
+\]
+所有出现的原始点均满足 \(x\ne y\)。距离限制使新点仍离开对角线，且新旧距离可互相比较。第一行控制原算子的坏块；取伴随后输入、输出互换，第二行才成为伴随坏块所需的条件。
+
+\ProseParagraphBreak
+
+核的梯度界是一个常用的检查方法。若 \(K\) 在对角线外为 \(C^1\)，且
+\[
+ |\nabla_xK(x,y)|+|\nabla_yK(x,y)|\leq C|x-y|^{-d-1},
+\]
+则沿连接新旧点的线段积分导数即可取 \(\delta=1\)。例如 \(|y-y'|\leq|x-y|/2\) 时，线段上每点到 \(x\) 的距离至少为 \(|x-y|/2\)，所以积分中的梯度有同一个上界。
+
+\ProseParagraphBreak
+
+弱型证明实际上只用到了输入变量差的积分控制。设 \(h=|y-y'|>0\)，上述 Hölder 界给出
+\[
+ \begin{aligned}
+ \int_{|x-y|>2h}|K(x,y)-K(x,y')|\,\mathrm dx
+ &\leq C_1|S^{d-1}|h^\delta
+            \int_{2h}^\infty r^{-1-\delta}\,\mathrm dr\\
+ &=\frac{C_1|S^{d-1}|}{\delta\,2^\delta}.
+ \end{aligned}
+\]
+\(h=0\) 时差为零。因而标准光滑性蕴含积分 Hörmander 条件
+\[
+ \sup_{y,y'}\int_{|x-y|>2|y-y'|}
+       |K(x,y)-K(x,y')|\,\mathrm dx<\infty.
+\]
+它直接对应上一节对坏块远场的积分；点态条件还将用于截断比较和平均振荡估计。
+
+\ProseParagraphBreak
+
+也可以把幂次换成较慢的连续模量。设 \(\omega:[0,1]\to[0,\infty)\) 单调不减、\(\omega(0)=0\)，且
+\[
+ |K(x,y)-K(x,y')|\leq C|x-y|^{-d}\cdot
+ \omega\!\left(\frac{|y-y'|}{|x-y|}\right)
+ \quad\left(|y-y'|\leq\frac{|x-y|}2\right).
+\]
+径向积分换元 \(s=h/r\)，得到
+\[
+ \int_{|x-y|>2h}|K(x,y)-K(x,y')|\,\mathrm dx
+ \leq C|S^{d-1}|\int_0^{1/2}\omega(s)\frac{\mathrm ds}s.
+\]
+因此 \(\int_0^1\omega(s)\,\mathrm ds/s<\infty\) 也足以控制坏块尾部。若已经给定有界 \(L^2\) 算子及支集外表示，这个积分条件可代替弱型证明中的输入变量 Hölder 条件；伴随也满足对应条件时，再由插值和对偶得到全部有限的中间指数。
+
+\ProseParagraphBreak
+
+取 \(\omega(s)=s^\delta\) 就回到幂次情形。取 \(\omega(s)=\bigl(\log(e/s)\bigr)^{-2}\) 时，换元 \(v=\log(e/s)\) 得到可积尾部 \(\int^\infty v^{-2}\,\mathrm dv\)；改成 \(\bigl(\log(e/s)\bigr)^{-1}\) 则发散。这里区分的是这一尾积分论证能否成立，并未排除某个具体算子还有别的抵消性质。按二进环带估计，同一个条件写成
+\(\sum_{j\geq1}\omega(2^{-j})<\infty\)：每个环带的体积消去核的 \(|x-y|^{-d}\)，留下的正是模量。单调性给出
+\[
+ (\log2)\cdot\omega(2^{-j-1})
+ \leq\int_{2^{-j-1}}^{2^{-j}}\omega(s)\frac{\mathrm ds}s
+ \leq(\log2)\cdot\omega(2^{-j}),
+\]
+从而级数与积分具有相同的收敛性。
+
+\subsection{奇异积分算子}
+\label{b2:subsec:180303}
+
+核的条件只描述离开对角线的作用。还须指定一个算子，并独立证明其平方有界性。
+\Needspace{6\baselineskip}
+\begin{definition}\label{b2:thm:18-cz-operator-definition}
+设整数 \(d\geq1\)，\(T:L^2(\mathbb R^d;\mathbb C)\to L^2(\mathbb R^d;\mathbb C)\) 为有界复线性算子。设可测核 \(K:(\mathbb R^d\times\mathbb R^d)\setminus\{x=y\}\to\mathbb C\)，并存在有限常数 \(C_0,C_1\geq0\)、\(0<\delta\leq1\)，使
+\[
+ |K(x,y)|\leq C_0|x-y|^{-d}
+ \quad(x\ne y),
+\]
+\[
+ \begin{aligned}
+ &|K(x,y)-K(x',y)|+|K(y,x)-K(y,x')|\\
+ &\quad\leq C_1\frac{|x-x'|^\delta}{|x-y|^{d+\delta}}
+ \quad\left(x\ne y,\ |x-x'|\leq\frac{|x-y|}2\right).
+ \end{aligned}
+\]
+若对每个支撑在某个紧集 \(F\) 内的 \(f\in L^2(\mathbb R^d)\)，在 \(\mathbb R^d\setminus F\) 上几乎处处有
+\[
+ Tf(x)=\int_FK(x,y)\cdot f(y)\,\mathrm dy,
+\]
+则称 \(T\) 为具有核 \(K\) 的\term[calderon-zygmund-suanzi]{Calderón--Zygmund 算子}[Calderón--Zygmund operator]。上述核条件称为标准核条件；第二个显示式同时包含两个变量的光滑性。
+\end{definition}
+
+平方有界性没有被核条件包含。例如零核既对应零算子，也对应任意有界乘法算子 \(M_af=af\)、\(a\in L^\infty\)：输入支集外两种输出都为零。后面的有界性理论适用于这些算子，但若只知道支集外的核，就不能判定给定算子是否等于硬截断的主值。
+
+\ProseParagraphBreak
+
+伴随所需的核可以直接从内积求出。取紧支集 \(f,g\in L^2\)，并假设两个支集有正距离。它们均可积，且
+\[
+ \int\!\int |K(x,y)|\cdot|f(y)|\cdot|g(x)|\,\mathrm dy\,\mathrm dx
+ \leq C\|f\|_1\cdot\|g\|_1<\infty.
+\]
+这里 \(C\) 还依赖两个支集的距离。Fubini 与 \(\langle Tf,g\rangle=\langle f,T^*g\rangle\) 给出
+\[
+ \int f(y)\cdot\overline{T^*g(y)}\,\mathrm dy
+ =\int f(y)\cdot
+       \overline{\int\overline{K(x,y)}\cdot g(x)\,\mathrm dx}\,\mathrm dy.
+\]
+固定 \(g\)，让 \(f\) 遍历任一离开 \(\operatorname{supp}g\) 的有界紧区域上的 \(L^2\) 函数，即可识别两边的局部 \(L^2\) 函数。再以可数个这样的区域穷竭支集外，得到伴随的核
+\[
+ K^*(x,y)=\overline{K(y,x)}.
+\]
+它的大小与两个变量光滑常数仍可取 \(C_0,C_1\)，且 \(\|T^*\|_{2\to2}=\|T\|_{2\to2}\)。输入变量的光滑性在伴随后变成输出变量的光滑性，两者不能只保留其中一条。
+
+\ProseParagraphBreak
+
+下面从一个具体核构造算子。这里的目标是先取得独立的 \(L^2\) 界，再使用下一节的一般有界性定理。
+\Needspace{6\baselineskip}
+\begin{theorem}\label{b2:thm:18-homogeneous-kernel}
+设整数 \(d\geq2\)，\(\Omega\in C^1(S^{d-1};\mathbb C)\)，且 \(\int_{S^{d-1}}\Omega\,\mathrm d\sigma=0\)，其中 \(\sigma\) 为球面面积测度。则对每个 \(f\in\mathcal S(\mathbb R^d)\)、每个 \(x\in\mathbb R^d\)，主值
+\[
+ T_\Omega f(x)=\lim_{\epsilon\downarrow0}
+ \int_{|y|>\epsilon}\frac{\Omega(y/|y|)}{|y|^d}\cdot f(x-y)\,\mathrm dy
+\]
+存在。它给出兼容的有界线性算子 \(T_\Omega:L^p(\mathbb R^d)\to L^p(\mathbb R^d)\)、\(1<p<\infty\)，且
+\[
+ \|T_\Omega f\|_p\leq C_{d,p}\|\Omega\|_{C^1(S^{d-1})}\cdot\|f\|_p.
+\]
+其 \(L^2\) Fourier 乘子在 \(\xi\ne0\) 时为
+\[
+ m(\xi)=-\int_{S^{d-1}}\Omega(\theta)\cdot
+ \left(\log|2\pi\xi\cdot\theta|
+       +\frac{\pi\mathrm i}{2}\cdot\operatorname{sgn}(\xi\cdot\theta)\right)\mathrm d\sigma(\theta).
+\]
+对数奇性按球面上的可积函数解释，\(m\) 为零次齐次；其在 \(\xi=0\) 的取值可任意指定。
+\end{theorem}
+\begin{proof}
+先固定 \(f\in\mathcal S\)、\(x\)。在 \(0<|y|<1\) 的积分中减去 \(f(x)\)，球面平均零使常数部分消失。由微积分基本定理，
+\[
+ |f(x-y)-f(x)|\leq |y|\sup_{|z-x|\leq1}|\nabla f(z)|,
+\]
+所以近原点的绝对积分由 \(C_x\int_0^1\mathrm dr\) 控制。远处 \(|x-y|\) 随 \(|y|\) 增大，Schwartz 衰减使径向尾部可积。因此主值在每个点存在。
+
+为了求平方界，先在径向乘上 \(e^{-\eta r}\)、\(\eta>0\)，得到同样按球面平均零定义的算子 \(T_\eta\)。对 \(\operatorname{Re}z>0\)，有
+\[
+ \int_0^\infty\frac{e^{-zr}-e^{-r}}r\,\mathrm dr=-\log z.
+\]
+右半平面取连续对数：在其每个紧子集上，对 \(z\) 求导的积分由一个指数衰减函数控制，导数为 \(-1/z\)；再由 \(z=1\) 的值为零确定常数。减项 \(e^{-r}\) 与角变量无关，乘 \(\Omega\) 后的积分为零。由此得到
+\[
+ m_\eta(\xi)=-\int_{S^{d-1}}\Omega(\theta)\cdot
+                  \log(\eta+2\pi\mathrm i\xi\cdot\theta)\,\mathrm d\sigma(\theta).
+\]
+具体地，先在两个有限径向截断之间计算，再与 Schwartz 频率测试函数配对。近 \(r=0\) 时，差
+\(e^{-(\eta+2\pi\mathrm i\xi\cdot\theta)r}-e^{-r}\)
+除以 \(r\) 后由 \(C_\eta(1+|\xi|)\) 控制；乘测试函数后可积。远处则由 \(e^{-\eta r}+e^{-r}\) 控制。因而可以在这些配对中换序并放开截断，得到 \(\widehat{T_\eta f}=m_\eta\cdot\widehat f\) 的温和分布恒等式。
+
+需要的估计是对 \(\eta\) 与频率同时一致的。对 \(\xi\ne0\)，记 \(\omega=\xi/|\xi|\)、\(a=\eta/|\xi|\)。平均零先去掉 \(\log|\xi|\)。若 \(a\geq1\)，再去掉 \(\log a\)，余下的 \(\log(1+2\pi\mathrm i\omega\cdot\theta/a)\) 一致有界。若 \(0<a\leq1\)，对数虚部的绝对值不超过 \(\pi/2\)，实部的正部一致有界，负部则由
+\(C+\bigl|\log|\omega\cdot\theta|\bigr|\) 控制。旋转不变性给出
+\[
+ \sup_{\omega\in S^{d-1}}
+ \int_{S^{d-1}}\bigl|\log|\omega\cdot\theta|\bigr|\,\mathrm d\sigma(\theta)<\infty:
+\]
+旋转到一个坐标方向后，在赤道附近令 \(s=\omega\cdot\theta\)，面积密度有界，该部分归结为
+\(\int_{-1/2}^{1/2}\bigl|\log|s|\bigr|\,\mathrm ds<\infty\)；其余球面上对数有界。因此
+\[
+ \sup_{\eta>0}\|m_\eta\|_\infty\leq C_d\|\Omega\|_\infty.
+\]
+对几乎每个球面点令 \(\eta\downarrow0\)，复对数趋向
+\(\log|2\pi\xi\cdot\theta|+\mathrm i\pi\cdot\operatorname{sgn}(\xi\cdot\theta)/2\)。上述控制给出 \(m_\eta(\xi)\to m(\xi)\)。Plancherel 与频率上的支配收敛于是给出有界 \(L^2\) 乘子算子 \(T\)，且 \(T_\eta f\to Tf\) 于 \(L^2\)。
+
+在物理空间中，减去 \(f(x)\) 后的近原点积分和 Schwartz 远尾，都有与 \(0<\eta\leq1\) 无关的可积控制，所以 \(T_\eta f(x)\to T_\Omega f(x)\) 对每个 \(x\) 成立。取 \(L^2\) 收敛的几乎处处子列，便把这个主值识别为 \(Tf\)。平均零也从乘子公式中消去 \(\log|\xi|\)，给出零次齐次性。
+
+核的大小与梯度常数由 \(C_d\|\Omega\|_{C^1}\) 控制。它对光滑紧支集输入的支集外表示已由主值公式给出；对一般紧支集 \(L^2\) 输入，在任意到其支集有正距离的有界区域上，用共用一个稍大紧支集的光滑 \(L^2\) 逼近。该区域到共同支集有正距离，核积分的差由 \(L^1\) 误差一致控制；\(L^2\) 输出收敛再抽子列，即得所需支集外表示。以可数个这样的区域穷竭支集外，说明 \(T\) 满足标准算子定义。\cref{b2:thm:18-cz-lp}因此给出全部 \(1<p<\infty\) 的界。先将非零的 \(\Omega\) 除以其 \(C^1\) 范数应用该结论，再还原尺度，就得到陈述中的线性范数因子；\(\Omega=0\) 时直接成立。
+\end{proof}
+
+乘子公式的两部分来自不同的对称性。若 \(\Omega\) 为奇函数，对数项的球面积分为零；若 \(\Omega\) 为偶函数，符号函数项的积分为零。再假设 \(\Omega\) 实值时，前一种乘子为纯虚函数，后一种为实偶函数。二维的 \(\Omega(\theta)=\theta_1\theta_2\) 给出偶核 \(x_1x_2/|x|^4\)，而 \(\Omega(\theta)=\theta_j\) 给出 Riesz 型奇核。相反，\(\Omega=1\) 产生前面的径向对数发散；人为扣除发散常数属于另外一种归一化，不能据此声称原硬截断主值已经存在。
+
+\subsection{截断}
+\label{b2:subsec:180304}
+
+取整数 \(d\geq1\)，设核在对角线外为 Borel 可测，且满足 \(|K(x,y)|\leq C_0|x-y|^{-d}\)。前面的标准核满足这一可测性：在远离对角线的小邻域内，先移动 \(x\) 再移动 \(y\)，两个 Hölder 界共同给出连续性。对 \(\epsilon>0\) 定义硬截断
+\[
+ T_\epsilon f(x)=\int_{|x-y|>\epsilon}K(x,y)\cdot f(y)\,\mathrm dy.
+\]
+若 \(f\in L^p(\mathbb R^d)\)、\(1<p<\infty\)，Hölder 给出
+\[
+ \int_{|x-y|>\epsilon}|K(x,y)|\cdot|f(y)|\,\mathrm dy
+ \leq C_{d,p}C_0\epsilon^{-d/p}\|f\|_p.
+\]
+这里径向控制核属于 \(L^{p'}\)，因为 \(dp'>d\)。\(p=1\) 时改用 \(|K|\leq C_0\epsilon^{-d}\)，仍有绝对收敛。故每个固定截断在这些输入上有普通积分的意义；一般有界输入却可能在无穷远处失去可积性。
+
+\ProseParagraphBreak
+
+把截断半径移向零，还需另外的论证。给定的标准 \(L^2\) 算子可以含有一个支集外核看不见的乘法项，所以截断的极限不必等于它。常见的识别办法，是先对 \(C_c^\infty\) 输入验证截断的逐点极限，再证明这些截断在 \(L^2\) 中趋于给定算子；平方收敛的子列才能把两个极限识别起来。下一节先证明极大截断的有界性，再把这项识别从光滑类传给一般 \(L^p\) 输入。
+
+\ProseParagraphBreak
+
+不同截断约定的比较也应写出实际差值。取实函数 \(\chi\in C^\infty([0,\infty))\)，在 \([0,1]\) 为零、在 \([2,\infty)\) 为一，且 \(0\leq\chi\leq1\)，令
+\[
+ T^\chi_\epsilon f(x)=\int K(x,y)\cdot
+                 \chi(|x-y|/\epsilon)\cdot f(y)\,\mathrm dy.
+\]
+与硬截断的差仅在 \(\epsilon<|x-y|<2\epsilon\)，所以对有限指数的 \(L^p\) 输入，
+\[
+ |T^\chi_\epsilon f(x)-T_\epsilon f(x)|
+ \leq C_dC_0\epsilon^{-d}\int_{B(x,2\epsilon)}|f|
+ \leq C_d'C_0\cdot Mf(x).
+\]
+此界能传递 \(1<p<\infty\) 的极大范数估计，但右端不随 \(\epsilon\) 消失，不能单凭这一界识别极限。
+
+\ProseParagraphBreak
+
+若硬截断在某点已有有限极限，则两种截断其实有相同极限，而不必再要求核的抵消。由 \(\int_1^2\chi'(s)\,\mathrm ds=1\)，对上述绝对收敛积分换序，得
+\[
+ T^\chi_\epsilon f(x)=\int_1^2\chi'(s)\cdot T_{s\epsilon}f(x)\,\mathrm ds.
+\]
+因此它与硬截断极限 \(L\) 的差不超过
+\[
+ \left(\int_1^2|\chi'(s)|\,\mathrm ds\right)
+ \sup_{\epsilon\leq r\leq2\epsilon}|T_rf(x)-L|\longrightarrow0.
+\]
+对球面平均零的齐次核，还能在光滑输入上直接比较：环带差核的积分为零，减去 \(f(x)\) 后，差不超过
+\(C_d\|\Omega\|_\infty\epsilon\sup_{B(x,2\epsilon)}|\nabla f|\)。这给出共同的光滑类极限；向一般输入推广仍须控制极大算子的逼近误差。这里比较的是两种截断；它们与预先给定的算子 \(T\) 是否相等，仍是前一段所说的识别问题。
+
+\ProseParagraphBreak
+
+截断还可以先保留一个有限的外半径，再逐次放开。对 \(L^p\)、\(1\leq p<\infty\)，固定内半径后的远场已有上述绝对积分控制，外半径趋于无穷不会改变结果。对常函数或一般有界输入，远场可能发散或仅有条件收敛，需要另行指定归一化；有限指数上建立的定义不能不加说明地用于这些输入。

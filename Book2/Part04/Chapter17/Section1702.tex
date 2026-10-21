@@ -1,280 +1,129 @@
 % !TeX root = ../../Book2.tex
-\section{弱 \texorpdfstring{\(L^p\)}{Lᵖ} 空间}
-\label{b2:sec:1702}
+\section{Hilbert 空间方法}
+\label{b2:sec:1502}
 
-上一节的极大函数可能不可积，却仍满足 \(|\{Mf>t\}|\leq C\|f\|_1/t\)。这不是没有得到任何控制，而是控制的对象变成了“超过某个高度的区域有多大”。本节先把这种信息写成分布函数，再说明它怎样决定强、弱 \(L^p\) 以及 Lorentz 空间。分布和重排的基本恒等式适用于一般测度空间；局部可积性、卷积和简单函数逼近的具体应用会明确回到 Lebesgue 空间。
+上一章的极小化要求能量保留方程的全部信息。对非对称系数，这个要求可能失败；双线性型方法则直接研究等式 \(a(u,v)=\ell(v)\)。其中未知量占第一个位置，测试向量占第二个位置。本节把有界性和强制性分别转成算子的上界和下界，再用正交性证明可解性。
 
-\subsection{分布函数}
-\label{b2:subsec:170201}
+\subsection{双线性型}
+\label{b2:subsec:150201}
 
-设 \((X,\mathcal A,\mu)\) 为测度空间，\(f:X\to\mathbb C\) 可测，其\term[fenbu-hanshu]{分布函数}[distribution function]定义为
-\[d_f(t)\coloneqq\mu\{\,x\in X:|f(x)|>t\,\},\quad t\geq0.\]
-\symidx{\(d_f(t)\)：函数的分布函数}
-它允许取无穷，且只保留超水平集合的测度，不保留集合的位置。它单调不增；对 \(t_n\downarrow t\)，集合 \(\{|f|>t_n\}\) 递增到 \(\{|f|>t\}\)，所以 \(d_f(t_n)\to d_f(t)\)，即右连续。这里使用从下连续性，无须先假设某个超水平集合有限。
+设 \(H\) 是实 Hilbert 空间。\term[shuangxianxing-xing]{双线性型}[bilinear form]是对两个变量分别线性的映射 \(a:H\times H\to\mathbb R\)。对称性 \(a(u,v)=a(v,u)\) 是额外要求，本章的主要存在定理不作这一假设。例如
+\[a(u,v)=\int_\Omega A\nabla u\cdot\nabla v\,\mathrm dx\]
+在 \(H_0^1(\Omega)\) 上是双线性型；若矩阵 \(A(x)\) 对称，则型对称。一个纯反对称矩阵场对 \(a(u,u)\) 没有贡献，却可能改变 \(a(u,v)\)。
 
 \ProseParagraphBreak
 
-把 \(|f(x)|\) 想成竖直线段的长度，就有
-\[|f(x)|=\int_0^\infty\mathbf1_{\{|f(x)|>t\}}\,\mathrm dt.\]
-先累加各点的竖直长度，与先累加每一层的水平测度，得到同一个总量。对幂次作相同分层，产生下面的公式。
+复 Hilbert 空间中通常改用对第一个变量线性、对第二个变量共轭线性的半双线性型。相应右端也对测试向量共轭线性，强制性写为 \(\operatorname{Re}a(u,u)\ge\alpha\lVert u\rVert^2\)。这与本书内积对第一变量线性的约定一致。为使证明中的对偶方向透明，下面先给出实空间版本，随后说明复版本的调整；不要把这一约定与分布配对的双线性约定混用。
+
+\subsection{有界性}
+\label{b2:subsec:150202}
+
+对实 Hilbert 空间 \(H\) 上的双线性型 \(a:H\times H\to\mathbb R\)，有界性是存在 \(0\le M<\infty\)，使
+\[|a(u,v)|\le M\lVert u\rVert_H\lVert v\rVert_H\qquad(u,v\in H).\]
+它保证固定任一变量后所得泛函连续，也保证从稠密的测试子空间推广等式时极限合法。若 \(A\) 的矩阵算子范数几乎处处不超过 \(\Lambda\)，则
+\[|a(u,v)|\le\Lambda\lVert\nabla u\rVert_2\lVert\nabla v\rVert_2.\]
+这里有界性只使用系数的本性上界，不涉及其导数，也不要求点点连续。
 
 \Needspace{6\baselineskip}
-\begin{proposition}[层蛋糕公式]\label{b2:thm:17-layer-cake}
-设 \((X,\mathcal A,\mu)\) 为测度空间，\(h:X\to[0,\infty]\) 可测，\(d_h(t)=\mu\{h>t\}\)，\(0<p<\infty\)。则有允许两端同时为无穷的恒等式
-\[\int_Xh^p\,\mathrm d\mu=p\int_0^\infty t^{p-1}d_h(t)\,\mathrm dt.\]
-特别地，对实或复可测函数 \(f\) 取 \(h=|f|\)，便得到 \(\int_X|f|^p\,\mathrm d\mu=p\int_0^\infty t^{p-1}d_f(t)\,\mathrm dt\)。
+\begin{proposition}[有界型的算子表示]
+\label{b2:prop:15-form-operator}
+设 \(a\) 是实 Hilbert 空间 \(H\) 上的有界双线性型。则存在唯一有界线性算子 \(A:H\to H\)，使
+\[a(u,v)=\langle Au,v\rangle_H\qquad(u,v\in H),\]
+且 \(\lVert A\rVert=\sup_{\lVert u\rVert,\lVert v\rVert\le1}|a(u,v)|\)。型对称当且仅当算子自伴。
 \end{proposition}
 \begin{proof}
-先设 \(h\) 为非负简单函数，将其正值写在有限个不交可测集合 \(E_j\) 上，记这些值为 \(a_j>0\)。两侧都等于 \(\sum_j a_j^p\mu(E_j)\)：右侧只需对有限个阶梯函数分别积分。若某个正值集合测度无穷，则两侧都为无穷，等式仍成立。
-
-一般情形取非负简单函数 \(h_n\uparrow h\)。对每个 \(t\geq0\)，集合 \(\{h_n>t\}\) 递增到 \(\{h>t\}\)，故 \(d_{h_n}(t)\uparrow d_h(t)\)。分别在 \(X\) 和高度轴上用单调收敛，把简单函数等式传到极限即可。这一证明不要求 \(X\) 为 \(\sigma\)-有限；若改用积空间 Tonelli，必须另外检查所采用版本的假设。
+固定 \(u\)，第一卷定理 8.4.7 把连续线性泛函 \(v\mapsto a(u,v)\) 表示为与唯一向量 \(Au\) 的内积。表示的唯一性和第一变量线性性给出 \(A\) 的线性性，且 \(\lVert Au\rVert\le M\lVert u\rVert\)。对单位向量分别取上确界给出范数等式。最后，\(a(u,v)=a(v,u)\) 等价于 \(\langle Au,v\rangle=\langle u,Av\rangle\)，正是自伴条件。
 \end{proof}
-例如 \(f=a\cdot\mathbf1_E\)、\(a>0\)、\(\mu(E)=m<\infty\) 时，\(d_f(t)=m\) 于 \(0\leq t<a\)，其余为零。公式给出 \(p\int_0^a t^{p-1}m\,\mathrm dt=a^pm\)，与直接积分一致。一般函数可以在高水平有尖峰，也可以在低水平有长尾；在无穷测度空间上，这两端都必须检查。
 
-\subsection{弱型 \texorpdfstring{\(L^p\)}{Lp}}
-\label{b2:subsec:170202}
+这个 \(A\) 是依赖所选 Hilbert 内积的表示算子，不必等于微分表达式本身。例如在梯度内积的 \(H_0^1\) 中，Poisson 型 \(\int\nabla u\cdot\nabla v\) 的表示算子就是恒等算子；作为分布的 \(-\Delta\) 则把 \(H_0^1\) 映到 \(H^{-1}\)。分清值域有助于避免把有界算子与无界微分算子的谱性质混在一起。
 
-Chebyshev 不等式说明，强 \(L^p\) 函数满足 \(d_f(t)\leq t^{-p}\|f\|_p^p\)。反向若只知道这个逐高度上界，层蛋糕中的被积函数却被估成 \(Ct^{-1}\)，一般无法积分。因而应把“每个高度的集合都不太大”与“所有高度的总积分有限”区分开来。
+\subsection{强制性}
+\label{b2:subsec:150203}
+
+设 \(H\) 是实 Hilbert 空间，\(a:H\times H\to\mathbb R\) 为双线性型。称型 \(a\) 强制，是指存在 \(\alpha>0\)，使
+\[a(u,u)\ge\alpha\lVert u\rVert_H^2\qquad(u\in H).\]
+这里要求统一的 \(\alpha\)，而不只是每个非零向量上取正值。结合算子表示与 Cauchy--Schwarz 不等式，立刻得到
+\[\alpha\lVert u\rVert_H\le\lVert Au\rVert_H.\]
+它同时给出单射性和逆映射在值域上的有界性。不过，单有这种下界并不保证一般算子满射；例如 \(\ell^2\) 上的右移是等距单射却漏掉第一个坐标方向。Lax--Milgram 证明还要利用同一个型在测试向量处的正性，排除值域的正交补。
 
 \ProseParagraphBreak
 
-设 \((X,\mathcal A,\mu)\) 为测度空间，\(f:X\to\mathbb C\) 可测，\(0<p<\infty\)。若
-\[\|f\|_{p,\infty}\coloneqq\sup_{t>0}t\cdot d_f(t)^{1/p}<\infty,\]
-则称 \(f\) 属于\term[ruo-lp-kongjian]{弱 \(L^p\) 空间}[weak Lp space]，记为 \(L^{p,\infty}(X,\mu)\)。该量等于使 \(d_f(t)\leq(A/t)^p\) 对全部 \(t>0\) 成立的最小 \(A\)。它是拟范数：若 \(A=\|f\|_{p,\infty}\)、\(B=\|g\|_{p,\infty}\)，则超水平集合的包含关系给出
-\[\|f+g\|_{p,\infty}\leq2(A^p+B^p)^{1/p}\leq C_p(A+B).\]
-常数一的三角不等式确实可能失败。在两个互不相交、测度均为一的集合 \(E,F\) 上，取 \(f=2\cdot\mathbf1_E+\mathbf1_F\)、\(g=\mathbf1_E+2\cdot\mathbf1_F\)。二者的弱 \(L^1\) 拟范数都是 \(2\)，而和等于 \(3\cdot\mathbf1_{E\cup F}\)，弱拟范数为 \(6\)。
+对椭圆型矩阵，条件 \(\xi^{\mathsf T}A(x)\xi\ge\lambda|\xi|^2\) 几乎处处成立时，梯度型在 \(H_0^1\) 的梯度范数下以 \(\alpha=\lambda\) 强制。在整个 \(H^1\) 上却并非如此，因为常函数在型中为零。选空间与选范数是定理假设的一部分，不能在写下“椭圆”之后省略核验。
+
+\subsection{Lax–Milgram 定理}
+\label{b2:subsec:150204}
 
 \Needspace{6\baselineskip}
-\begin{proposition}[弱范数与有限集合积分]\label{b2:thm:17-weak-inclusions}
-设 \((X,\mathcal A,\mu)\) 为测度空间，\(f:X\to\mathbb C\) 可测，\(0<p<\infty\)，并令 \(\|f\|_{p,\infty}=\sup_{t>0}t\cdot\mu\{|f|>t\}^{1/p}\)。则 \(\|f\|_{p,\infty}\leq\|f\|_{L^p(X,\mu)}\)。若 \(A=\|f\|_{p,\infty}<\infty\)、\(0<r<p\)，且 \(E\) 可测、\(0<\mu(E)<\infty\)，则
-\[\|f\|_{L^r(E)}\leq
- \left(\frac p{p-r}\right)^{1/r}
- A\,\mu(E)^{1/r-1/p}.\]
-特别地，\(p>1\) 时有
-\[\int_E|f|\,\mathrm d\mu\leq p'\|f\|_{p,\infty}\cdot\mu(E)^{1/p'},
- \quad p'=\frac p{p-1}.\]
-反之，设 \(1<p<\infty\)、\((X,\mathcal A,\mu)\) 半有限；若存在 \(C<\infty\)，使每个有限测度可测集 \(E\) 都满足 \(\int_E|f|\,\mathrm d\mu\leq C\mu(E)^{1/p'}\)，则 \(f\in L^{p,\infty}\) 且 \(\|f\|_{p,\infty}\leq C\)。
-\end{proposition}
+\begin{theorem}[Lax--Milgram]
+\label{b2:thm:15-lax-milgram}
+设 \(H\) 是实 Hilbert 空间，\(a:H\times H\to\mathbb R\) 是双线性型，且对某些 \(0\le M<\infty\)、\(\alpha>0\) 及全部 \(u,v\in H\) 有
+\[|a(u,v)|\le M\lVert u\rVert_H\lVert v\rVert_H,
+ \qquad a(u,u)\ge\alpha\lVert u\rVert_H^2.\]
+则对每个 \(\ell\in H^*\)，存在唯一 \(u\in H\) 满足
+\[a(u,v)=\ell(v)\qquad(v\in H),\]
+且 \(\lVert u\rVert_H\le\alpha^{-1}\lVert\ell\rVert_{H^*}\)。
+\end{theorem}
 \begin{proof}
-第一项由 Chebyshev 得到。记 \(m=\mu(E)>0\)。若 \(A=0\)，则 \(f=0\) 几乎处处，结论直接成立。否则限制在 \(E\) 上的分布函数不超过 \(\min\{m,A^pt^{-p}\}\)。这两项在 \(a=Am^{-1/p}\) 处相等，故应在这个高度分开积分。层蛋糕给出
-\[
- \begin{aligned}
- \int_E|f|^r\,\mathrm d\mu
- &\leq r\int_0^a t^{r-1}m\,\mathrm dt
-       +rA^p\int_a^\infty t^{r-p-1}\,\mathrm dt\\
- &=m a^r+\frac{rA^p}{p-r}a^{r-p}
-  =\frac p{p-r}A^rm^{1-r/p}.
- \end{aligned}
-\]
-这里 \(r<p\) 正好保证第二项在无穷端收敛。取 \(r\) 次方根即得；\(r=1<p\) 给出所列集合积分界。零测度集合的积分另为零。
+用 \cref{b2:prop:15-form-operator} 表示 \(a(u,v)=\langle Au,v\rangle\)，并用 Riesz 表示 \(\ell(v)=\langle f,v\rangle\)。所求等式等价于 \(Au=f\)。强制性给出 \(\lVert Au\rVert\ge\alpha\lVert u\rVert\)，所以 \(A\) 单射。
 
-证明反向，固定 \(t>0\)，取 \(F\subset\{|f|>t\}\) 且 \(0<\mu(F)<\infty\)。假设给出 \(t\mu(F)\leq C\mu(F)^{1/p'}\)，从而 \(\mu(F)\leq(C/t)^p\)。半有限性保证任意可测集合的测度等于其中有限测度子集测度的上确界，故 \(d_f(t)\leq(C/t)^p\)。这也解释了为什么反向需要该测度条件；Lebesgue 测度满足它。
+若 \(Au_n\to y\)，下界说明 \((u_n)\) 是 Cauchy 序列，因而收敛到某个 \(u\in H\)。由 \(A\) 连续，\(Au=y\)，故值域闭。若 \(w\) 与值域正交，则 \(a(v,w)=\langle Av,w\rangle=0\) 对所有 \(v\in H\) 成立。取 \(v=w\)，强制性推出 \(w=0\)。因此值域的正交补为零；闭子空间的正交分解给出值域等于 \(H\)。于是 \(Au=f\) 唯一可解，且算子下界给出 \(\lVert u\rVert\le\alpha^{-1}\lVert f\rVert=\alpha^{-1}\lVert\ell\rVert\)。
 \end{proof}
-在 Lebesgue 空间上，\(p>1\) 的弱 \(L^p\) 函数由此局部可积。\(p=1\) 时不能照搬：例如 \(|x|^{-d}\cdot\mathbf1_{\{0<|x|<1\}}\) 属于弱 \(L^1\)，却在原点附近不可积。另一方面，降低到任意 \(0<r<p\) 的结论仍有效；严格不等号来自上面看得见的高度积分。
+
+定理也称 \term[lax-milgram-dingli]{Lax--Milgram 定理}[Lax--Milgram theorem]。复空间版本取复 Hilbert 空间 \(H\)、第一变量线性而第二变量共轭线性的型 \(a:H\times H\to\mathbb C\)，并要求对全部 \(u,v\in H\) 有 \(|a(u,v)|\le M\|u\|\|v\|\)、\(\operatorname{Re}a(u,u)\ge\alpha\|u\|^2\)，其中 \(0\le M<\infty\)、\(\alpha>0\)。对每个连续共轭线性泛函 \(\ell\)，同样存在唯一 \(u\in H\) 使 \(a(u,v)=\ell(v)\) 对全部 \(v\in H\) 成立，且 \(\|u\|\le\alpha^{-1}\|\ell\|\)；算子表示、闭值域和正交补的三步证明保持不变，在取 \(v=w\) 时使用 \(\operatorname{Re}a(w,w)\) 即可。
 
 \ProseParagraphBreak
 
-设 \((X,\mu),(Y,\nu)\) 为测度空间，\(1\leq p,q\leq\infty\)，\(T\) 把 \(L^p(X,\mu)\) 输入映为 \(Y\) 上的可测函数。若 \(\|Tf\|_{q,\infty}\leq A\|f\|_p\)，称它具有\term[ruoxing-guji]{弱型估计}[weak type estimate] \((p,q)\)，强型则把目标换成 \(L^q\)。当 \(q=\infty\) 时直接使用本性上确界。例如上一节的中心极大算子具有弱型 \((1,1)\)，但单位球输入的远场计算否定了强型 \((1,1)\)。
-
-\ProseParagraphBreak
-
-对整数 \(d\geq1\)、\(1<p<\infty\)，在 \(\mathbb R^d\) 上定义
-\[N_p(f)\coloneqq\sup_{0<|E|<\infty}|E|^{-1/p'}\int_E|f|,\]
-其中 \(E\) 可测。上一命题的两个方向给出
-\[\|f\|_{p,\infty}\leq N_p(f)\leq p'\|f\|_{p,\infty}.\]
-\(N_p\) 的三角不等式直接来自集合积分的三角不等式，零范数也只对应零等价类。因此它提供一个等价的真正范数。上确界可以只取有界集合，因为 \(E\cap B(0,n)\uparrow E\)，积分和测度都按单调收敛逼近。这种集合积分写法还适合卷积：它不要求原输入在全空间可积。
+还可以用收缩迭代构造解，并以残差控制误差。这里先由 Riesz 表示把 \(\ell\) 写成 \(\ell(v)=\langle f,v\rangle_H\)，于是 \(f\in H\) 是向量，递推式中的减法才有意义。若 \(H=\{0\}\)，解与迭代都只有零向量；下面单列非零 Hilbert 空间中的结论，将步长选择和误差估计放在同一次构造中。
 
 \Needspace{6\baselineskip}
-\begin{proposition}[弱空间的完备性与卷积]\label{b2:prop:17-weak-complete}
-设整数 \(d\geq1\)、\(1<p<\infty\)，\(p'=p/(p-1)\)。实或复函数空间 \(L^{p,\infty}(\mathbb R^d)\) 关于范数
-\[N_p(f)=\sup_{\substack{E\subset\mathbb R^d\ \text{可测}\\0<|E|<\infty}}
- |E|^{-1/p'}\int_E|f|\]
-完备。若 \(k\in L^1(\mathbb R^d)\)、\(f\in L^{p,\infty}(\mathbb R^d)\) 均为实或复函数，则 \(k*f\) 由几乎处处绝对收敛的积分定义，且
-\[N_p(k*f)\leq\|k\|_1\cdot N_p(f).\]
+\begin{proposition}[收缩迭代与残差估计]
+\label{b2:prop:15-contraction-residual}
+设 \(H\ne\{0\}\) 为实 Hilbert 空间，\(A:H\to H\) 为有界线性算子，\(0<\alpha\leq M<\infty\)，且
+\[
+ \|Aw\|_H\leq M\|w\|_H,\qquad
+ \langle Aw,w\rangle_H\geq\alpha\|w\|_H^2
+ \qquad(w\in H).
+\]
+给定 \(f,u_0\in H\)。对任意 \(0<t<2\alpha/M^2\)，令
+\[
+ q_t=(1-2t\alpha+t^2M^2)^{1/2}\in[0,1),\qquad
+ u_{n+1}=u_n+t(f-Au_n)\quad(n\geq0).
+\]
+则迭代收敛到 \(Au=f\) 的唯一解 \(u\)，并满足
+\[
+ \|u-u_n\|_H\leq q_t^n\|u-u_0\|_H,\qquad
+ \|u-u_n\|_H\leq\alpha^{-1}\|f-Au_n\|_H
+ \quad(n\geq0).
+\]
+特别取 \(t=\alpha/M^2\)、\(q=(1-\alpha^2/M^2)^{1/2}\)，有
+\[
+ \|u-u_n\|_H\leq q^n\|u-u_0\|_H
+               \leq\frac{q^n}{\alpha}\|f-Au_0\|_H.
+\]
+若相应的 \(q_t=0\)，则从任意初值出发一步就得到解；以上按 \(q_t^0=1\) 理解。
 \end{proposition}
 \begin{proof}
-设 \(f_n\) 在 \(N_p\) 中 Cauchy。对每个有限球 \(B\)，有
-\[\|f_n-f_m\|_{L^1(B)}\leq |B|^{1/p'}\cdot N_p(f_n-f_m).\]
-\(L^1(B)\) 的完备性给出局部极限；不同球上的极限因几乎处处唯一而相容，故拼成局部可积函数 \(f\)。沿整数半径球作对角抽取，可得到一个在全空间几乎处处趋于 \(f\) 的子列。
-
-给定 \(\varepsilon>0\)，先取 \(N\)，使 \(N_p(f_n-f_m)\leq\varepsilon\) 对 \(n,m\geq N\) 成立。固定 \(n\geq N\)，对任意有限测度集合 \(E\) 沿上述子列使用 Fatou，便得
-\[\int_E|f_n-f|\leq\varepsilon|E|^{1/p'}.\]
-此界对全部 \(E\) 使用同一个 \(N\)，所以 \(N_p(f_n-f)\leq\varepsilon\)。再由 \(N_p\) 的三角不等式知 \(N_p(f)<\infty\)，完备性成立。
-
-对卷积，欧氏空间上的 Lebesgue 积测度空间是 \(\sigma\)-有限的。Tonelli 和平移不变性给出
+对任意 \(w\in H\)，上下界给出
 \[
- \begin{aligned}
- \int_E\int |k(y)|\cdot|f(x-y)|\,\mathrm dy\,\mathrm dx
- &=\int |k(y)|\int_{E-y}|f(z)|\,\mathrm dz\,\mathrm dy\\
- &\leq |E|^{1/p'}\|k\|_1\cdot N_p(f).
- \end{aligned}
+ \|(I-tA)w\|_H^2
+ =\|w\|_H^2-2t\langle Aw,w\rangle_H+t^2\|Aw\|_H^2
+ \leq(1-2t\alpha+t^2M^2)\|w\|_H^2.
 \]
-取整数半径球 \(E\)，有限右端说明内积分在全空间几乎处处有限，故定义了绝对收敛的卷积。它控制 \(|k*f|\)，再对全部有限测度 \(E\) 取上确界即得所需范数界。
+因为 \(\alpha\leq M\)，二次式的最小值为 \(1-\alpha^2/M^2\geq0\)；指定的步长区间又使它严格小于一。因此仿射映射
+\(T_t(v)=v+t(f-Av)\) 的 Lipschitz 常数不超过 \(q_t\)。
+
+若 \(q_t=0\)，\(T_t\) 为常值映射；\(u_1=T_t(u_0)\) 因而满足 \(T_t(u_1)=u_1\)，即 \(Au_1=f\)。若 \(0<q_t<1\)，连续应用压缩估计得到
+\[
+ \|u_{n+1}-u_n\|_H\leq q_t^n\|u_1-u_0\|_H,\qquad
+ \|u_{n+k}-u_n\|_H
+ \leq\frac{q_t^n}{1-q_t}\|u_1-u_0\|_H
+ \quad(n\geq0,\ k\geq1).
+\]
+于是序列为 Cauchy 列，完备性给出极限 \(u\)；\(T_t\) 连续使 \(T_t(u)=u\)，仍得到 \(Au=f\)。若两个向量都是不动点，压缩估计使其距离不超过自身的 \(q_t\) 倍，只能相同。再把 \(u\) 与 \(u_n\) 反复代入同一估计，得到 \(\|u-u_n\|_H\leq q_t^n\|u-u_0\|_H\)。
+
+最后，强制性与 Cauchy--Schwarz 不等式给出
+\(\alpha\|w\|_H\leq\|Aw\|_H\)；在 \(w=0\) 时也成立。分别取 \(w=u-u_n\) 和 \(w=u-u_0\)，便得到两处残差上界。取 \(t=\alpha/M^2\) 使前面的二次式最小，并将 \(q_t\) 化为所列 \(q\)，证明指定步长的结论。
 \end{proof}
-完备性不意味着有界或光滑紧支集函数在弱拟范数中稠密。设 \(d\geq1\)、\(0<p<\infty\)，令 \(f(x)=|x|^{-d/p}\cdot\mathbf1_{\{0<|x|<1\}}\)，并记 \(\omega_d=|B(0,1)|\)。当 \(t\geq1\) 时，\(d_f(t)=\omega_dt^{-p}\)，故 \(f\in L^{p,\infty}\)。对任意有界 \(g\)，在 \(t>\max\{1,\|g\|_\infty\}\) 时，\(\{|f|>2t\}\subset\{|f-g|>t\}\)，所以
-\[\|f-g\|_{p,\infty}\geq\frac12\omega_d^{1/p}.\]
-无论有界截断的高度多大，这个误差都不趋零。处理弱空间上的算子延拓时，必须使用已证明的积分定义或另选收敛方式，不能直接套用强 \(L^p\) 的稠密性。
 
-\subsection{Lorentz 空间初步}
-\label{b2:subsec:170203}
-
-弱拟范数只取 \(t\cdot d_f(t)^{1/p}\) 的最高值，没有累加不同高度的贡献。为了区分同样临界的幂次尾部中是否还带有可积的对数改善，可以保留整个分布，而不只取一个上确界。先把函数值按大小排列：设 \((X,\mathcal A,\mu)\) 为测度空间、\(f:X\to\mathbb C\) 可测，定义其\term[dijian-chongpai]{递减重排}[decreasing rearrangement]
-\[f^*(s)\coloneqq\inf\{\,t\geq0:d_f(t)\leq s\,\},\quad s>0,\]
-空集的下确界取无穷。变量 \(s\) 表示测度大小，不是原空间的位置；这里的 \(f^*\) 也不表示微分理论中的点态代表。它是分布函数的广义逆：寻找使超水平集合缩到不超过 \(s\) 的最低高度。
-
-\Needspace{6\baselineskip}
-\begin{proposition}[重排与等分布]\label{b2:prop:17-rearrangement}
-设 \((X,\mathcal A,\mu)\) 为测度空间，\(f:X\to\mathbb C\) 可测，\(d_f(t)=\mu\{|f|>t\}\)、\(t\geq0\)，并令 \(f^*(s)=\inf\{t\geq0:d_f(t)\leq s\}\)、\(s>0\)。则 \(f^*\) 单调不增，且对每个 \(t\geq0\)，
-\[|\{\,s>0:f^*(s)>t\,\}|=d_f(t),\]
-左侧取半直线的 Lebesgue 测度。因而对 \(0<p<\infty\)，
-\[\int_X|f|^p\,\mathrm d\mu=\int_0^\infty f^*(s)^p\,\mathrm ds,\quad
- \|f\|_{p,\infty}=\sup_{s>0}s^{1/p}f^*(s),\]
-各式允许无穷值。
-\end{proposition}
-\begin{proof}
-增大 \(s\) 会扩大取下确界的集合，故 \(f^*\) 单调不增。若 \(d_f(t)\leq s\)，则 \(t\) 已在该集合中，\(f^*(s)\leq t\)。反之，若 \(d_f(t)>s\)，分布函数的右连续性保证存在 \(\delta>0\)，使 \(d_f(t+\delta)>s\)，于是 \(f^*(s)\geq t+\delta>t\)。因此
-\[f^*(s)>t\quad\Longleftrightarrow\quad s<d_f(t).\]
-这给出等分布恒等式；分别对 \(|f|\) 和 \(f^*\) 使用层蛋糕即得积分等式。
-
-对弱拟范数，固定 \(s\)，让 \(0<t<f^*(s)\) 趋向 \(f^*(s)\)，上述等价关系给出 \(s^{1/p}f^*(s)\leq\|f\|_{p,\infty}\)。反向固定 \(t>0\)，让 \(0<s<d_f(t)\) 趋向 \(d_f(t)\)，得到反向上界。无穷值时按任意大的有限 \(s,t\) 解释同一论证。
-\end{proof}
-即使原空间有原子，这个等分布结论也成立；重排是在另一个连续测度坐标上表示原分布，并未要求把原子拆开。它也说明，两函数若分布相同，其强、弱范数相同，但这并不表示两函数在原空间上接近。
-
-\ProseParagraphBreak
-
-例如在 \(\mathbb R^d\) 取两个不交可测集 \(E,F\)，\(|E|=|F|=1\)，令 \(f=2\cdot\mathbf1_E+\mathbf1_F\)。\cref{b2:tab:17-distribution-rearrangement}将先前的两层模型按高度和测度两种坐标写出。原来的形状可以很不规则，重排却只留下两段水平阶梯。
-\begin{table}[htbp]
-\centering
-\caption[两层函数的分布与重排]{两层函数的分布与重排。\(E,F\subset\mathbb R^d\) 不交且测度均为一，\(f=2\cdot\mathbf1_E+\mathbf1_F\)；\(t\) 是高度，\(s\) 是重排后的测度坐标。}
-\label{b2:tab:17-distribution-rearrangement}
-\begin{tabularx}{\textwidth}{@{}*{4}{>{\centering\arraybackslash}X}@{}}
-\toprule
-高度区间 & \(d_f(t)\) & 测度坐标区间 & \(f^*(s)\)\\
-\midrule
-\(0\leq t<1\) & \(2\) & \(0<s<1\) & \(2\)\\
-\(1\leq t<2\) & \(1\) & \(1\leq s<2\) & \(1\)\\
-\(t\geq2\) & \(0\) & \(s\geq2\) & \(0\)\\
-\bottomrule
-\end{tabularx}
-\end{table}
-
-对 \(0<p<\infty\)、\(0<q\leq\infty\)，\term[lorentz-kongjian]{Lorentz 空间}[Lorentz space]由下列拟范数定义：
-\[
- \|f\|_{L^{p,q}}\coloneqq
- \left(\int_0^\infty[s^{1/p}f^*(s)]^q\frac{\mathrm ds}{s}\right)^{1/q}
- \quad(0<q<\infty),
-\]
-\(q=\infty\) 时取 \(\sup_{s>0}s^{1/p}f^*(s)\)。主指数 \(p\) 固定幂次尺度，第二指数 \(q\) 记录各测度尺度的累加方式。\(\mathrm ds/s\) 对伸缩 \(s\mapsto as\) 不变，因此每一倍增尺度受到同样对待。由重排命题，\(L^{p,p}=L^p\) 且范数相等，\(L^{p,\infty}\) 也与前面定义完全一致。
-\symidx{\(f^*(s)\)：递减重排}
-对表中的两层函数，可直接算得
-\[
- \|f\|_{L^{p,q}}^q=\frac pq(2^q+2^{q/p}-1)\quad(q<\infty),\quad
- \|f\|_{p,\infty}=\max\{2,2^{1/p}\}.
-\]
-令 \(q=p\) 便恢复 \(\|f\|_p^p=2^p+1\)。这些等式展示的是同一个输入的不同大小信息，而非几种互不相干的空间定义。
-
-\ProseParagraphBreak
-
-固定 \(0<p<\infty\)，较小的第二指数确实给出较强的条件。对 \(0<q_0<\infty\)，单调性给出
-\[
- \|f\|_{L^{p,q_0}}^{q_0}
- \geq f^*(s)^{q_0}\int_0^s r^{q_0/p-1}\,\mathrm dr
- =\frac p{q_0}[s^{1/p}f^*(s)]^{q_0}.
-\]
-故归一化重排 \(H(s)=s^{1/p}f^*(s)\) 的上确界受该拟范数控制。若 \(q_0<q_1<\infty\)，再用
-\[\int_0^\infty H^{q_1}\frac{\mathrm ds}{s}
- \leq\|H\|_\infty^{q_1-q_0}\int_0^\infty H^{q_0}\frac{\mathrm ds}{s},\]
-便得 \(L^{p,q_0}\subset L^{p,q_1}\)；\(q_1=\infty\) 已由上确界界涵盖。不能仅把它视为无穷测度空间上普通 \(L^q\) 的包含关系，关键额外信息是 \(f^*\) 的单调性。
-
-\ProseParagraphBreak
-
-临界幂次和对数使第二指数的作用更清楚。先设 \(a>0\)、\(0<p<\infty\)。径向积分给出
-\[
- \begin{aligned}
- |x|^{-a}\cdot\mathbf1_{\{0<|x|<1\}}\in L^p
- &\quad\Longleftrightarrow\quad ap<d,\\
- |x|^{-a}\cdot\mathbf1_{\{|x|>1\}}\in L^p
- &\quad\Longleftrightarrow\quad ap>d.
- \end{aligned}
-\]
-在 \(ap=d\) 时，两者都只有临界弱界；相加所得纯幂次 \(|x|^{-a}\) 属于 \(L^{d/a,\infty}\)，却不属于任何全空间强 \(L^p\)。前一种失败来自高水平的原点奇性，后一种来自低水平的远尾。
-
-\ProseParagraphBreak
-
-再固定 \(0<p<\infty\)、\(\beta\in\mathbb R\)，在足够小的 \(0<s<s_0\) 上取
-\[F(s)=s^{-1/p}(\log(e/s))^{-\beta},\]
-并在 \(s\geq s_0\) 置零。选择 \(s_0\) 足够小使此函数在 \((0,s_0)\) 单调不增；例如 \(\log(e/s_0)>p\max\{\beta,0\}+1\) 即可。因此这个半直线上的模型本身就是自己的重排。对 \(q<\infty\)，代入定义并置 \(v=\log(e/s)\)，得到
-\[\|F\|_{L^{p,q}}^q=\int_{\log(e/s_0)}^\infty v^{-\beta q}\,\mathrm dv.\]
-所以 \(F\in L^{p,q}\) 当且仅当 \(\beta q>1\)，而 \(F\in L^{p,\infty}\) 当且仅当 \(\beta\geq0\)。特别地，强 \(L^p\) 要求 \(\beta p>1\)。纯临界幂次对应 \(\beta=0\)，只留下上确界控制；加入足够的对数衰减，才让尺度积分收敛。
-
-\ProseParagraphBreak
-
-这些更细的输入条件能够与弱端点输出配对，恢复原本可能发散的积分。
-\Needspace{6\baselineskip}
-\begin{proposition}[Lorentz 端点配对]\label{b2:prop:17-lorentz-pairing}
-设 \((X,\mathcal A,\mu)\) 为测度空间，\(1<p<\infty\)、\(p'=p/(p-1)\)，实或复可测函数 \(f\in L^{p,1}(X,\mu)\)、\(g\in L^{p',\infty}(X,\mu)\)。Lorentz 拟范数采用递减重排及测度 \(\mathrm ds/s\) 的上述定义。则乘积绝对可积，且
-\[\int_X|fg|\,\mathrm d\mu
- \leq\|f\|_{L^{p,1}}\cdot\|g\|_{p',\infty}.\]
-\end{proposition}
-\begin{proof}
-对可测集 \(E\)，将层蛋糕用于 \(|g|\cdot\mathbf1_E\)，并用等分布恒等式，得
-\[
- \int_E|g|\,\mathrm d\mu
- \leq\int_0^\infty\min\{\mu(E),d_g(u)\}\,\mathrm du
- =\int_0^{\mu(E)}g^*(s)\,\mathrm ds.
-\]
-最后的等式是在两个 Lebesgue 半直线之间使用非负积分换序，允许 \(\mu(E)=\infty\)。接着对测度 \(\nu(E)=\int_E|g|\,\mathrm d\mu\) 应用层蛋糕于 \(|f|\)，得到
-\[
- \begin{aligned}
- \int_X|fg|\,\mathrm d\mu
- &=\int_0^\infty\int_{\{|f|>t\}}|g|\,\mathrm d\mu\,\mathrm dt\\
- &\leq\int_0^\infty\int_0^{d_f(t)}g^*(s)\,\mathrm ds\,\mathrm dt
- =\int_0^\infty f^*(s)g^*(s)\,\mathrm ds.
- \end{aligned}
-\]
-最后一步再用 \(s<d_f(t)\) 当且仅当 \(t<f^*(s)\)，只交换两个非负 Lebesgue 积分。代入 \(g^*(s)\leq\|g\|_{p',\infty}s^{-1/p'}\)，右端即为不超过 \(\|g\|_{p',\infty}\cdot\|f\|_{L^{p,1}}\) 的有限数。
-\end{proof}
-分层时需要注意恢复的对象：一般实、复函数的层蛋糕恢复的是 \(|f|\)，并非带符号或相位的 \(f\)。上述证明先控制绝对乘积，所以没有丢失相位条件。
-
-\ProseParagraphBreak
-
-这里一般不能把 \(L^{p,1}\) 放宽为 \(L^p\)。在 \((0,s_0)\) 上取同位置的两个函数
-\[
- f(s)=s^{-1/p}(\log(e/s))^{-\beta},\quad g(s)=s^{-1/p'},
- \quad 1/p<\beta\leq1.
-\]
-前者是上面的对数模型，属于 \(L^p\)；后者属于弱 \(L^{p'}\)，但
-\[\int_0^{s_0}|fg|\,\mathrm ds
- =\int_0^{s_0}s^{-1}(\log(e/s))^{-\beta}\,\mathrm ds=\infty.\]
-若改为 \(\beta>1\)，则 \(f\in L^{p,1}\)，配对命题保证积分收敛。这一差别正好来自高度尺度上多一次可积求和。
-
-\ProseParagraphBreak
-
-最后考虑一种常见的输入端点：只先对集合示性函数检验算子。这样的\term[xianzhi-ruoxing-guji]{限制弱型估计}[restricted weak type estimate]比全部输入的弱型估计少一层要求，却自然产生 Lorentz 输入。
-\Needspace{6\baselineskip}
-\begin{proposition}[限制弱型与 Lorentz 输入]\label{b2:prop:17-restricted-weak}
-设整数 \(d,n\geq1\)，\(1\leq p<\infty\)、\(1<q<\infty\)、\(q'=q/(q-1)\)。设复线性算子 \(T\) 定义在 \(\mathbb R^d\) 上有限测度支集的简单函数等价类中，输出 \(\mathbb R^n\) 上可测函数等价类。若存在 \(A<\infty\)，使每个有限测度可测集 \(E\subset\mathbb R^d\) 满足
-\[\|T\mathbf1_E\|_{q,\infty}\leq A|E|^{1/p},\]
-则 \(T\) 有唯一连续线性延拓 \(L^{p,1}(\mathbb R^d)\to L^{q,\infty}(\mathbb R^n)\)，且
-\[N_q(Tf)\leq C_{p,q}A\|f\|_{L^{p,1}},\quad
- N_q(h)=\sup_{0<|B|<\infty}|B|^{-1/q'}\int_B|h|.\]
-所有集合和积分取相应维数的 Lebesgue 测度。目标连续性可等价地用 \(N_q\) 范数或弱 \(L^q\) 拟范数表示。
-\end{proposition}
-\begin{proof}
-若 \(f\) 是非负简单函数，\(f=\int_0^\infty\mathbf1_{\{f>t\}}\,\mathrm dt\) 实际只是有限个示性函数的正线性组合。\(N_q\) 的三角不等式与 \(N_q\leq q'\|\cdot\|_{q,\infty}\) 给出
-\[N_q(Tf)\leq q'A\int_0^\infty d_f(t)^{1/p}\,\mathrm dt
- =\frac{q'A}{p}\|f\|_{L^{p,1}}.\]
-最后的等式来自等分布关系和两个非负 Lebesgue 积分的换序。复简单函数分成实部、虚部的正负四部分，每部分的 Lorentz 量不超过原量，所以常数至多增加四倍。
-
-为使用连续延拓，还须证明这类简单函数在输入空间稠密。先记一个拟三角界：超水平集合包含关系给出
-\[(f+g)^*(s)\leq f^*(s/2)+g^*(s/2),\]
-因而换元 \(r=s/2\) 得
-\[\|f+g\|_{L^{p,1}}\leq2^{1/p}
- (\|f\|_{L^{p,1}}+\|g\|_{L^{p,1}}).\]
-这里的重排界可以先取略高于两个广义逆的高度，使两个超水平集合的测度各不超过 \(s/2\)，再令高度下降取得。
-
-给定 \(f\in L^{p,1}(\mathbb R^d)\)，保留 \(|x|\leq N\)、\(1/N\leq|f|\leq N\) 的部分，记为 \(f_N\)，令 \(e_N=|f-f_N|\)。则 \(e_N\downarrow0\) 几乎处处，且 \(e_N^*\leq f^*\)。由前面第二指数的上确界控制，\(d_f(t)<\infty\) 对每个 \(t>0\) 成立。因此 \(d_{e_N}(t)\downarrow0\)，进而 \(e_N^*(s)\to0\) 对每个 \(s>0\) 成立。以可积函数 \(s^{1/p-1}f^*(s)\) 支配，得到 \(\|f-f_N\|_{L^{p,1}}\to0\)。每个 \(f_N\) 有界且支集测度有限，可在该集合上作一致的简单函数逼近；若误差至多 \(\varepsilon\cdot\mathbf1_E\)，其 Lorentz 量至多 \(p\varepsilon|E|^{1/p}\)。结合拟三角界，即得所需稠密性。
-
-最后对简单函数逼近列应用已证估计于两项之差，输出在完备的 \(N_q\) 范数中 Cauchy，因而有极限。差估计保证极限不依赖逼近列，并保留线性和同一上界；稠密性又保证延拓唯一。
-\end{proof}
-这个命题解释了为什么仅检验集合时，输入自然需要 \(L^{p,1}\) 的高度累加，而不是只用 \(L^p\) 的单一幂积分。目标条件 \(q>1\) 用于前面建立的等价 Banach 范数及完备性；在 \(q=1\) 时，这个证明不能原样使用。下一节的插值则从全部输入的两个弱端点出发，利用随输出高度改变的大小分解。
+应用于双线性型时，向量残差 \(f-Au_n\) 所对应的对偶泛函是
+\(v\mapsto\ell(v)-a(u_n,v)\)，二者范数由 Riesz 表示相等。因此最后的误差界也可以完全用弱方程的对偶残差表达，而不用把源项当作普通函数。它允许在不知道精确解时确定误差上界。强制常数越小，逆估计越差；当 \(\alpha/M\) 很小时，上述统一收缩因子也接近一，显示这一简单迭代会变慢。这里的步长最小化的是所证的二次上界，实际计算仍取决于给定算子的结构。

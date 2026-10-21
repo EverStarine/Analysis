@@ -2,213 +2,453 @@
 \section{Schwarz–Pick 引理}
 \label{b3:sec:0603}
 
-对任意 \(w\)，先把 \(w\) 与 \(f(w)\) 分别移到源盘和目标盘的原点。Schwarz 引理应用于归一化复合，撤销坐标后同时得到两点距离和局部导数的约束。
+Schwarz 引理处理固定原点的圆盘映射。要比较任意两点，先把一个源点及其像分别送到原点，再对复合函数使用同一引理。撤销坐标后，普通的模估计就变成伪双曲距离压缩，原点导数估计则变成随位置变化的导数界。这两个结论既能判断插值数据是否相容，也能控制有内部不动点的迭代。
 
-\subsection{微分形式}
+\subsection{Schwarz–Pick 估计与两点插值}
 \label{b3:subsec:060301}
 
-\term[schwarz-pick-yinli]{Schwarz--Pick 引理}[Schwarz--Pick lemma]的微分形式为
+以下仍记 \(\phi_a(z)=(z-a)/(1-\overline a z)\)，其中 \(a\in\mathbb D\)。前节定义的距离为 \(\delta(z,w)=|\phi_w(z)|\)。\term[schwarz-pick-yinli]{Schwarz--Pick 引理}[Schwarz--Pick lemma]说明，全纯圆盘映射虽然未必压缩欧氏距离，却总压缩这个距离。
+
+\Needspace{6\baselineskip}
 \begin{theorem}[Schwarz--Pick]\label{b3:thm:06-schwarz-pick}
-设 \(f:\mathbb D\rightarrow\mathbb D\) 全纯。对每个 \(z,w\in\mathbb D\)，
+设 \(f:\mathbb D\rightarrow\mathbb D\) 全纯。则对所有 \(z,w\in\mathbb D\)，有
 \[
- \frac{|f'(w)|}{1-|f(w)|^2}\le\frac1{1-|w|^2},\qquad
- \delta(f(z),f(w))\le\delta(z,w).
+ \delta(f(z),f(w))\le\delta(z,w),
+ \quad
+ \frac{|f'(w)|}{1-|f(w)|^2}\le\frac1{1-|w|^2}.
 \]
-若某个微分不等式取等，或某一对不同点的距离不等式取等，则 \(f\) 是圆盘自同构。
+若在某一点的导数不等式中取等，或在某一对不同点的距离不等式中取等，则 \(f\) 是圆盘自同构。反过来，圆盘自同构在上述所有不等式中都取等。
 \end{theorem}
 \begin{proof}
-令 \(F=\phi_{f(w)}\circ f\circ\phi_w^{-1}\)，它把圆盘映入自身且固定0。Schwarz 引理给 \(|F(\phi_w(z))|\le|\phi_w(z)|\)，就是距离结论。又有
+固定 \(w\in\mathbb D\)，令
 \[
- |F'(0)|=\frac{|f'(w)|(1-|w|^2)}{1-|f(w)|^2}\le1,
+ F=\phi_{f(w)}\circ f\circ\phi_w^{-1}.
 \]
-给微分结论。若取等，Schwarz 等号情形使 \(F\) 为旋转，撤销两边自同构即使 \(f\) 自同构。距离等号且两点不同，对应归一化后的非零点等号，同样处理。
-\end{proof}
-常函数当然满足压缩且微分为0。结论没有假定单叶性；反而精确等号迫使单叶并且满射。
+两端的分式映射都是圆盘自同构，且 \(\phi_w^{-1}(0)=w\)，故 \(F:\mathbb D\rightarrow\mathbb D\) 全纯并满足 \(F(0)=0\)。Schwarz 引理给出
+\[
+ |F(\phi_w(z))|\le|\phi_w(z)|.
+\]
+左端是 \(|\phi_{f(w)}(f(z))|\)，所以这就是距离不等式。
 
-\begin{proposition}\label{b3:prop:06-value-derivative-bound}
-若 \(f:D(a,R)\rightarrow D(0,M)\) 全纯，\(c=f(a)\)，则
+对导数，圆盘自同构的公式给
+\[
+ \phi_{f(w)}'(f(w))=\frac1{1-|f(w)|^2},
+ \quad (\phi_w^{-1})'(0)=1-|w|^2.
+\]
+于是链式法则与 Schwarz 的原点导数估计给出
+\[
+ |F'(0)|=
+ \frac{|f'(w)|\cdot(1-|w|^2)}{1-|f(w)|^2}\le1.
+\]
+分母均为正，整理即得所需导数式。
+
+若导数式取等，则 \(|F'(0)|=1\)，Schwarz 等号情形使 \(F\) 为旋转。若距离式对 \(z\ne w\) 取等，则 \(\phi_w(z)\ne0\)，同一等号情形仍使 \(F\) 为旋转。撤销两个自同构，\(f\) 便是圆盘自同构。反方向可分别对 \(f\) 和 \(f^{-1}\) 使用已证不等式，两个相反方向的估计迫使距离和导数处处取等。
+\end{proof}
+
+“不同点”的条件使距离等号具有内容；取同一点时，任何函数都会给出 \(0=0\)。常值函数也满足两个压缩式，但不在导数式或不同点的距离式中取等。若起初只有 \(|f|\le1\)，则先用最大模原理区分：\(f\) 要么是模一常值，要么处处落在开圆盘中。模一常值的分母 \(1-|f|^2\) 为零，须直接处理。
+
+\ProseParagraphBreak
+
+固定 \(w\)，把距离式除以 \(|z-w|\)，再令 \(z\rightarrow w\)，也会得到导数式。其分母分别趋于 \(1-|f(w)|^2\) 与 \(1-|w|^2\)。不过，一处导数界本身不会直接给出任意两点的比较；上面的坐标归一化同时控制了整个圆盘中的点值。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[固定函数值的导数界]\label{b3:prop:06-value-derivative-bound}
+设 \(a\in\mathbb C\)、\(R,M>0\)，\(f:D(a,R)\rightarrow D(0,M)\) 全纯，并记 \(c=f(a)\)。则
 \[
  |f'(a)|\le\frac{M^2-|c|^2}{MR}.
 \]
-若 \(|c|<M\)，每个允许的 \(c\) 都有达到上界的映射。
+对每个 \(c\in D(0,M)\)，都存在具有该中心值并达到导数上界的映射。
 \end{proposition}
 \begin{proof}
-对 \(F(\zeta)=f(a+R\zeta)/M\) 用 Schwarz--Pick 的0点导数式。它给 \((R/M)|f'(a)|\le1-|c/M|^2\)。取 \(F=\phi_{c/M}^{-1}(\eta\zeta)\)，\(|\eta|=1\)，便达到上界。
-\end{proof}
-例如 \(M=R=1\)、\(c=1/2\) 时，上界为 \(3/4\)，而单用 Cauchy 只有1。映射 \((z+1/2)/(1+z/2)\) 在0的值为 \(1/2\)、导数为 \(3/4\)。分母无零且确为圆盘自同构，说明改进不是证明方法带来的损失，而是函数值约束所要求的准确界。
-
-\begin{proposition}\label{b3:prop:06-two-point-interpolation}
-给定不同的 \(z_1,z_2\in\mathbb D\) 及 \(w_1,w_2\in\mathbb D\)，存在全纯 \(f:\mathbb D\rightarrow\mathbb D\) 使 \(f(z_j)=w_j\)，当且仅当 \(\delta(w_1,w_2)\le\delta(z_1,z_2)\)。
-\end{proposition}
-\begin{proof}
-必要性就是 Schwarz--Pick。充分性时令 \(p=\phi_{z_1}(z_2)\ne0\)、\(q=\phi_{w_1}(w_2)\)，并设 \(c=q/p\)。假设给 \(|c|\le1\)。映射
+在\eqref{b3:eq:06-center-derivative}中令目标圆心为零、目标半径为 \(M\)，便得所列导数界。为了确定它可以达到，任取 \(|\eta|=1\)，令
 \[
- f=\phi_{w_1}^{-1}\circ(c\,\phi_{z_1})
+ f(z)=M\cdot\phi_{c/M}^{-1}\left(\eta\frac{z-a}{R}\right).
 \]
-满足两项插值并将圆盘映入圆盘。当 \(c=0\) 时它是常值，当 \(|c|=1\) 时它是自同构。
+这个映射双全纯到 \(D(0,M)\)，在 \(a\) 取值 \(c\)，导数为 \(\eta(M^2-|c|^2)/(MR)\)，故达到上界。
 \end{proof}
-若两点距离恰取等，Schwarz 引理的刚性还说明插值函数唯一，且必为自同构。若严格不等，通常有许多解；上式只给一个最简单的解。对三个或更多点，成对的距离约束一般不足以保证共同存在，必须分析各条件的相容性。两点构造不可逐对拼接成一个多点函数。
+
+例如 \(M=R=1\)、\(a=0\)、\(c=1/2\) 时，导数模至多为 \(3/4\)，而不利用中心值的 Cauchy 估计只给 \(1\)。映射 \((z+1/2)/(1+z/2)\) 在原点的值为 \(1/2\)，导数为 \(3/4\)，说明这个改进是准确的。
 
 \ProseParagraphBreak
-以 \(z_1=0,z_2=1/2,w_1=0,w_2=3/4\) 为例，目标距离 \(3/4\) 大于源距离 \(1/2\)，所以不存在满足条件的圆盘映射。若换成 \(w_2=1/4\)，则 \(f(z)=z/2\) 是解。若换成 \(w_2=1/2\)，刚性使唯一解为恒等。一个基本估计同时给出不可能性、具体构造和唯一性三种结论。
 
-距离形式与导数形式并非两条互不相关的估计。固定 \(w\)，令 \(z\rightarrow w\)，将距离不等式除以 \(|z-w|\)，分母趋于 \(1-|w|^2\) 与 \(1-|f(w)|^2\)，便得到导数式。反过来，仅由欧氏导数的某个点态上界通常无法直接重建两点分式；本章用自同构把任意两点问题归到 Schwarz 引理，避免尚未建立的路径度量。第13章建立路径长度后，导数式会通过沿路径积分给距离压缩。
+两点插值把估计的必要条件变成存在性的完整判据。构造时先把第一组插值数据移到零点，余下只需用一个线性映射把第二个源值送到第二个目标值。
 
-\ProseParagraphBreak
-等号也可通过同一个归一化统一处理。若两个不同点之间的距离取等，将第一个源点与像点送到0后，第二个点满足普通 Schwarz 等号，归一化函数必为旋转。若在单个点的导数式取等，也得到旋转。两种看似不同的数据都把映射完全确定为自同构，不只是确定它在被选点附近的行为。
-
-进一步看 \(f(z)=z^2\) 的导数比：
+\Needspace{6\baselineskip}
+\begin{proposition}[两点插值]\label{b3:prop:06-two-point-interpolation}
+给定不同的 \(z_1,z_2\in\mathbb D\) 及 \(w_1,w_2\in\mathbb D\)。存在全纯映射 \(f:\mathbb D\rightarrow\mathbb D\)，使 \(f(z_j)=w_j\)、\(j=1,2\)，当且仅当
 \[
- \frac{|f'(z)|(1-|z|^2)}{1-|f(z)|^2}
+ \delta(w_1,w_2)\le\delta(z_1,z_2).
+\]
+若取等，插值映射唯一，且为圆盘自同构；若严格不等，则有无穷多个不同的插值映射。
+\end{proposition}
+\begin{proof}
+必要性来自 Schwarz--Pick。为证明充分性，令
+\[
+ p=\phi_{z_1}(z_2),\quad q=\phi_{w_1}(w_2),\quad c=q/p.
+\]
+源点互异使 \(p\ne0\)，条件又给 \(|c|\le1\)。于是
+\[
+ f(z)=\phi_{w_1}^{-1}\bigl(c\cdot\phi_{z_1}(z)\bigr)
+\]
+全纯地将圆盘映入自身，并满足两项插值。当 \(|c|=1\) 时，它是自同构。任何其他解的归一化函数 \(F=\phi_{w_1}\circ f\circ\phi_{z_1}^{-1}\) 满足 \(F(0)=0\)、\(F(p)=q\)。若 \(|q|=|p|\)，Schwarz 等号迫使 \(F(\zeta)=c\zeta\)，所以这个解唯一。
+
+若 \(|c|<1\)，对每个满足
+\[
+ |t|<\frac{1-|c|}{1+|p|}
+\]
+的复数 \(t\)，定义 \(H_t(\zeta)=c+t(\zeta-p)\)。对 \(\zeta\in\mathbb D\)，有 \(|H_t(\zeta)|\le|c|+|t|\cdot(1+|p|)<1\)，而 \(H_t(p)=c\)。因此 \(F_t(\zeta)=\zeta\cdot H_t(\zeta)\) 都满足 \(F_t(0)=0\)、\(F_t(p)=q\)。撤销坐标得到插值映射 \(f_t\)。不同的 \(t\) 给出不同的多项式 \(F_t\)，故也给出不同的 \(f_t\)。
+\end{proof}
+
+取 \(z_1=w_1=0\)、\(z_2=1/2\)。若要求 \(w_2=3/4\)，目标距离大于源距离，无解；若改为 \(w_2=1/4\)，则 \(f(z)=z/2\) 是一个解；若取 \(w_2=1/2\)，唯一解是恒等映射。对三个点，原始数据的成对距离条件还不够，下一小节将用一次除零点步骤找出剩余的相容条件。
+
+\ProseParagraphBreak
+
+严格压缩不意味着全圆盘共有一个小于 \(1\) 的压缩系数。对 \(f(z)=z^2\)，其归一化导数比为
+\[
+ \frac{|f'(z)|\cdot(1-|z|^2)}{1-|f(z)|^2}
  =\frac{2|z|}{1+|z|^2}<1.
 \]
-每个内点都严格小于1，但随着 \(|z|\uparrow1\) 趋于1。因此“不是自同构”只给逐点严格压缩，不能给全域共有的一个小于1的压缩系数。若固定 \(|z|\le r<1\)，则可以取 \(2r/(1+r^2)<1\)；紧集限制再次成为从严格性取得定量常数的关键。
+每个内点都严格小于 \(1\)，但沿 \(|z|\uparrow1\) 趋于 \(1\)。只有固定 \(|z|\le r<1\) 后，才能用 \(2r/(1+r^2)<1\) 作共同上界。
 
-\ProseParagraphBreak
-圆盘映射的导数可能为零，此时压缩不等式仍成立，且在该点严格。\(z^2\) 在0就是例子。若映射导数处处非零，却仍可能严格压缩，例如把圆盘映入一个更小的同心盘。导数非零只表示局部可逆，不表示是圆盘自同构；等号条件包含的全局结论比局部逆函数定理强得多。
-
-\ProseParagraphBreak
-另一个检验是常值函数。它把任意两点的目标距离变为0，导数也为0，全部压缩式都成立；当源点不同，距离等号不可能发生。刚性陈述应写“不同两点之间取等”而不能只写“某两点取等”，否则取相同两点时 \(0=0\) 将错误地把每个常值函数认作自同构。类似地，导数刚性要求与正的密度上界相等，而非仅要求导数模为某个已写出的数。
-
-\ProseParagraphBreak
-应用 Schwarz--Pick 前还应核对目标确在开圆盘内。若全纯函数只有 \(|f|\le1\)，最大模原理把它分成两种情形：或者恒为单位常数，或者全部内点满足 \(|f|<1\)。后一种可以使用分式公式，前一种分母 \(1-|f|^2\) 为零，必须直接处理。这个小小的分流避免在边界常值情形除以零。
-
-\subsection{距离压缩}
+\subsection{不动点迭代与插值构造}
 \label{b3:subsec:060302}
 
-距离压缩可以沿迭代使用。若 \(f\) 不是自同构，那么任意两不同点的伪双曲距离都严格缩小，但严格缩小不必有一个对全圆盘统一的常数 \(q<1\)。例如 \(f(z)=z^2\) 在靠近边界时微分比值 \(2|z|/(1+|z|^2)\) 趋于1。
-\begin{proposition}\label{b3:prop:06-two-fixed-points}
-圆盘全纯自映射若固定两个不同内部点，则为恒等映射。若它固定 \(a\)，并且 \(f'(a)=1\)，也为恒等映射。
+圆盘映射若有内部不动点，就可以通过共轭把它移到原点。此时 Schwarz 引理使每条轨道留在一个内部紧盘里，紧盘上的严格性足以证明整条迭代轨道收敛。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[内部不动点的刚性]\label{b3:prop:06-two-fixed-points}
+设 \(f:\mathbb D\rightarrow\mathbb D\) 全纯。若 \(f\) 固定两个不同的内部点，则 \(f\) 为恒等映射。若 \(a\in\mathbb D\)、\(f(a)=a\) 且 \(f'(a)=1\)，则 \(f\) 也为恒等映射。
 \end{proposition}
 \begin{proof}
-两个固定点使距离不等式取等，故函数为自同构。把一个固定点移到0，归一化自同构是旋转；另一非零固定点迫使旋转因子为1。对导数条件，归一化后的导数仍为1，Schwarz 等号使它成为导数为1的旋转，亦为恒等。
-\end{proof}
-非恒等映射仍可能有一个内部固定点，例如 \(z\mapsto z^2\) 固定0。若在这个点导数模小于1，迭代在其附近稳定；把局部稳定推广到全圆盘需要进一步的迭代理论，本章只使用距离压缩。
+若有两个不同不动点 \(a,b\)，距离不等式在该点对取等，故 \(f\) 是自同构。映射 \(g=\phi_a\circ f\circ\phi_a^{-1}\) 固定零点，所以是旋转 \(g(\zeta)=\eta\zeta\)。它还固定非零点 \(\phi_a(b)\)，故 \(\eta=1\)，撤销共轭即得 \(f=\mathrm{id}\)。
 
-\begin{proposition}\label{b3:prop:06-interior-iteration}
-设 \(f:\mathbb D\rightarrow\mathbb D\) 有内点不动点 \(a\)。若它不是与旋转共轭的圆盘自同构，则迭代 \(f^{\circ n}\) 在紧集上一致趋于常值 \(a\)。
+对第二项，同样的共轭满足 \(g(0)=0\)，并由链式法则得到 \(g'(0)=f'(a)=1\)。Schwarz 导数等号给出 \(g(\zeta)=\zeta\)，于是 \(f\) 仍是恒等映射。
+\end{proof}
+
+\Needspace{6\baselineskip}
+\begin{proposition}[内点不动点处的迭代]\label{b3:prop:06-interior-iteration}
+设 \(f:\mathbb D\rightarrow\mathbb D\) 全纯，\(a\in\mathbb D\)，且 \(f(a)=a\)。若 \(f\) 不是圆盘自同构，则迭代 \(f^{\circ n}\) 在 \(\mathbb D\) 上局部一致趋于常值 \(a\)。在已有内部不动点的条件下，\(f\) 不是圆盘自同构等价于 \(|f'(a)|<1\)。
 \end{proposition}
 \begin{proof}
-用 \(\phi_a\) 共轭成固定0的映射 \(g\)。写 \(g(z)=z h(z)\)，其中 \(h\) 全纯且 \(|h|\le1\)。若 \(h\) 在内点取模1，则它是单位常数，\(g\) 为旋转，属于排除情形。否则对每个 \(r<1\) 有 \(q_r=\max_{|z|\le r}|h(z)|<1\)。Schwarz 引理保证迭代点留在该紧盘，逐次得到 \(|g^{\circ n}(z)|\le q_r^n|z|\)。故紧集一致趋于0，再撤销共轭即得结论。
-\end{proof}
-如果共轭后为 \(e^{\mathrm{i}\theta}z\)，非零点迭代的模保持不变；\(\theta\) 为有理倍 \(2\pi\) 时轨道周期，非有理倍时通常不收敛。内点不动点不能单独保证收敛，旋转就是准确例外。没有内点不动点的情形还可能趋近边界，那属于需要另作边界分析的 Denjoy--Wolff 理论，本章的证明不覆盖它。
+令 \(g=\phi_a\circ f\circ\phi_a^{-1}\)。它固定零点，且 \(g'(0)=f'(a)\)。Schwarz 引理给 \(|g'(0)|\le1\)，取等当且仅当 \(g\) 为旋转；这也恰是 \(f\) 为圆盘自同构的情形。因此题设等价于 \(|f'(a)|<1\)。
 
-\ProseParagraphBreak
-导数严格小于1是在不动点的局部迹象，而紧集上的 \(q_r<1\) 才给全部内部轨道的一致估计。比如 \(g(z)=z^2\)，第 \(n\) 次迭代为 \(z^{2^n}\)，每个紧盘上趋于0极快；但靠近单位圆的点没有一个与位置无关的收敛时间。局部压缩、紧集一致收敛和全域一致收敛是三个不同要求。
-
-\begin{proposition}\label{b3:prop:06-schur-step}
-设 \(f:\mathbb D\rightarrow\mathbb D\) 全纯，\(c=f(0)\)。则
+在原点补上导数后，函数 \(h(\zeta)=g(\zeta)/\zeta\) 全纯且 \(|h|\le1\)。若它在某个内点取模 \(1\)，最大模原理使它为单位常数，\(g\) 就成为旋转，与假设矛盾。所以对每个 \(0<r<1\)，都有
 \[
- g(z)=\frac{\phi_c(f(z))}{z}
+ q_r=\max_{|\zeta|\le r}|h(\zeta)|<1.
 \]
-在0可去且 \(|g|\le1\)，并有 \(g(0)=f'(0)/(1-|c|^2)\)。反过来，任意模不超过1的全纯 \(g\) 经 \(f(z)=\phi_c^{-1}(z g(z))\) 产生一个满足 \(f(0)=c\) 的圆盘映射。
-\end{proposition}
-\begin{proof}
-正向是对固定0的 \(\phi_c\circ f\) 应用 Schwarz 引理，0点值由求导确定。反向因 \(|zg(z)|<1\)，可以复合逆自同构；代入0和求导即核对全部条件。
+Schwarz 引理使 \(g\) 把 \(\overline{D(0,r)}\) 映入自身，故可反复使用同一个常数，归纳得到
+\[
+ |g^{\circ n}(\zeta)|\le q_r^n\cdot|\zeta|
+ \quad(|\zeta|\le r).
+\]
+对原圆盘中的固定紧集 \(K\)，选 \(r<1\) 使 \(\phi_a(K)\subseteq\overline{D(0,r)}\)。因为
+\[
+ \phi_a^{-1}(u)-a=\frac{(1-|a|^2)u}{1+\overline a u},
+\]
+共轭关系给出
+\[
+ \sup_{z\in K}|f^{\circ n}(z)-a|
+ \le\frac{1-|a|^2}{1-|a|\cdot r}\,q_r^n r
+ \longrightarrow0.
+\]
+分母为正，且不随 \(n\) 改变，故得到紧集上的一致收敛。
 \end{proof}
-这个步骤把一个取值约束与剩余的全纯自由度分离。若 \(|f'(0)|=1-|c|^2\)，便有 \(|g(0)|=1\)，最大模原理使 \(g\) 为单位常数，于是重新得到导数等号的自同构结论。若不取等，可以对 \(g\) 再作同样步骤，处理二阶和更高阶 Taylor 数据。每一步都要检查当前函数是否已经成为单位常数；到了刚性情形，剩余参数不能再自由指定。
+
+旋转是这一结论的准确例外。若共轭后的映射为 \(g(\zeta)=\eta\zeta\)、\(|\eta|=1\)，则迭代为 \(\eta^n\zeta\)。当 \(\eta\ne1\) 时，任何非零轨道都不收敛：若极限为 \(L\)，其模非零，而相邻项关系又给 \(L=\eta L\)，矛盾。单位根情形的轨道是周期的；\(\eta=1\) 时则每个点固定。没有内部不动点的映射可能有趋近边界的轨道，那属于后续 Denjoy--Wolff 理论，本处不据此作结论。
 
 \ProseParagraphBreak
-例如 \(f(0)=f'(0)=0\) 时第一步给 \(g(0)=0\)，再次 Schwarz 后得到 \(|f(z)|\le|z|^2\)。若 \(f''(0)=2\eta\)、\(|\eta|=1\)，第二次取等使 \(f(z)=\eta z^2\)。这将高阶零点估计与导数数据相连，不需要假定函数能连续延到边界。有限次操作已能解决很多系数极值问题；无穷次参数化的收敛属于进一步理论。
 
-\begin{proposition}\label{b3:prop:06-second-jet}
+例如 \(g(z)=z^2\) 的第 \(n\) 次迭代为 \(z^{2^n}\)，在 \(|z|\le r<1\) 上误差至多 \(r^{2^n}\)，却不在整个开圆盘上一致趋于零，其模的全域上确界始终为 \(1\)。固定紧集使所有迭代点共享一个严格小于 \(1\) 的估计。
+
+\ProseParagraphBreak
+
+把归一化后的零点除去，也能逐步处理插值数据。一次取值条件被消去以后，剩余自由度由另一个模不超过 \(1\) 的全纯函数表示。这称为\term[schur-buzhou]{Schur 步骤}[Schur step]。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[Schur 步骤]\label{b3:prop:06-schur-step}
+给定 \(c\in\mathbb D\)，令 \(\phi_c(w)=(w-c)/(1-\overline c w)\)。若 \(f:\mathbb D\rightarrow\mathbb D\) 全纯且 \(f(0)=c\)，则
+\[
+ g(z)=\frac{\phi_c(f(z))}{z}\quad(z\ne0)
+\]
+在原点可去，补定义后全纯且 \(|g(z)|\le1\)，并有
+\[
+ g(0)=\frac{f'(0)}{1-|c|^2}.
+\]
+反过来，对每个在 \(\mathbb D\) 上全纯且模不超过 \(1\) 的函数 \(g\)，公式
+\[
+ f(z)=\phi_c^{-1}\bigl(z\cdot g(z)\bigr)
+     =\frac{c+z\cdot g(z)}{1+\overline c z\cdot g(z)}
+\]
+定义一个满足 \(f(0)=c\) 的全纯圆盘映射。这两个操作互为逆操作。
+\end{proposition}
+\begin{proof}
+函数 \(\phi_c\circ f\) 固定零点，Schwarz 引理给 \(|\phi_c(f(z))|\le|z|\)。其 Taylor 展开的一次系数为 \(\phi_c'(c)\cdot f'(0)=f'(0)/(1-|c|^2)\)，所以除以 \(z\) 后可去，且原点补值如上。模估计在非零点成立，在原点由连续性成立。
+
+反过来，\(|z\cdot g(z)|\le|z|<1\)，因此即使 \(g\) 是单位常数，乘积也始终落在开圆盘内。分母的模至少为 \(1-|c|\cdot|z|>0\)，复合逆自同构合法，给出全纯圆盘映射及 \(f(0)=c\)。两边施加 \(\phi_c\) 得到 \(\phi_c(f(z))=z\cdot g(z)\)，从而两个操作互逆。
+\end{proof}
+
+如果 \(|f'(0)|=1-|c|^2\)，则 \(|g(0)|=1\)，最大模原理迫使 \(g\) 是单位常数，原函数因而是自同构。若 \(|g(0)|<1\)，则 \(g\) 全部取值于开盘，才可继续作下一步。例如 \(f(0)=f'(0)=0\) 时，连续两次 Schwarz 除零点得到 \(|f(z)|\le|z|^2\)；若再有 \(f''(0)=2\eta\)、\(|\eta|=1\)，第二个商被迫恒为 \(\eta\)，所以 \(f(z)=\eta z^2\)。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[二阶 Taylor 数据的相容性]\label{b3:prop:06-second-jet}
 给定 \(c,d,e\in\mathbb C\)、\(|c|<1\)，记
 \[
- A=1-|c|^2,\qquad p=\frac dA,\qquad
+ A=1-|c|^2,\quad p=\frac dA,\quad
  q=\frac eA+\frac{\overline c d^2}{A^2}.
 \]
-存在圆盘映射 \(f(z)=c+dz+ez^2+O(z^3)\)，当且仅当以下之一成立：\(|p|<1\) 且 \(|q|\le1-|p|^2\)；或 \(|p|=1\) 且 \(q=0\)。
+存在全纯映射 \(f:\mathbb D\rightarrow\mathbb D\)，使其原点展开为
+\[
+ f(z)=c+dz+ez^2+O(z^3),
+\]
+当且仅当以下两种情形之一成立：\(|p|<1\) 且 \(|q|\le1-|p|^2\)；或者 \(|p|=1\) 且 \(q=0\)。这里 \(e=f''(0)/2\)。
 \end{proposition}
 \begin{proof}
-上一个命题的 Schur 步骤给 \(g=\phi_c(f)/z\)。将分母 \(A-\overline c(dz+ez^2+\cdots)\) 在0展开，得到 \(g(0)=p\)、\(g'(0)=q\)。若 \(|p|<1\)，Schwarz--Pick 给 \(|q|\le1-|p|^2\)。若 \(|p|=1\)，最大模原理使 \(g\) 恒为 \(p\)，故 \(q=0\)。反之，在前一情形取 \(g=\phi_p^{-1}(kz)\)、\(k=q/(1-|p|^2)\)，后一情形取 \(g=p\)，再令 \(f=\phi_c^{-1}(zg)\)。展开核对前两个系数即得所需函数。
+先作 Schur 步骤，令 \(g=\phi_c(f)/z\)。为了辨认 \(g\) 的前两项，记 \(t=f-c=dz+ez^2+O(z^3)\)。因为 \(A>0\)，原点附近有
+\[
+ \begin{aligned}
+ \phi_c(f)&=\frac{t}{A-\overline c t}
+   =\frac tA+\frac{\overline c}{A^2}t^2+O(z^3)\\
+ &=\frac dA z+
+   \left(\frac eA+\frac{\overline c d^2}{A^2}\right)z^2+O(z^3).
+ \end{aligned}
+\]
+所以 \(g(z)=p+qz+O(z^2)\)。Schur 步骤给 \(|g|\le1\)，先有 \(|p|\le1\)。若 \(|p|=1\)，最大模原理使 \(g\equiv p\)，故 \(q=0\)。若 \(|p|<1\)，最大模原理排除其他点取模 \(1\)，于是 \(g\) 是开圆盘自映射，Schwarz--Pick 在原点给出 \(|q|\le1-|p|^2\)。这证明了必要性。
+
+为证明充分性，若 \(|p|<1\)，令
+\[
+ k=\frac q{1-|p|^2},\quad
+ g(z)=\phi_p^{-1}(kz)=\frac{p+kz}{1+\overline p kz}.
+\]
+条件保证 \(|k|\le1\)，所以 \(g\) 把开圆盘映入开圆盘，且 \(g(0)=p\)、\(g'(0)=(1-|p|^2)k=q\)。若 \(|p|=1\)、\(q=0\)，则取 \(g\equiv p\)。两种情形都可以令 \(f=\phi_c^{-1}(zg)\)，Schur 逆步骤保证 \(f:\mathbb D\rightarrow\mathbb D\) 全纯。
+
+还须核对恢复的二阶项。逆分式在零点附近展开为
+\[
+ \phi_c^{-1}(u)=c+A u-A\overline c u^2+O(u^3).
+\]
+代入 \(u=z\cdot g(z)=pz+qz^2+O(z^3)\)，得到
+\[
+ f(z)=c+A pz+A(q-\overline c p^2)z^2+O(z^3).
+\]
+定义给出 \(Ap=d\)、\(A(q-\overline c p^2)=e\)，因此所构造函数具有全部指定数据。
 \end{proof}
-比如 \(c=0\) 时条件简化为 \(|d|\le1\)；若 \(|d|<1\)，还必须有 \(|e|\le1-|d|^2\)。指定 \(d=3/4,e=1/2\) 就不可能，因为 \(1/2>7/16\)。单独的 Cauchy 系数界只给 \(|d|,|e|\le1\)，看不出这组数据的冲突。相容性来自同一个函数必须同时满足两个约束。
+
+当 \(c=0\) 时，条件变成 \(|d|\le1\)、\(|e|\le1-|d|^2\)。例如 \(d=3/4\)、\(e=1/2\) 不相容，因为 \(1/2>7/16\)，尽管两个系数单独都满足 Cauchy 的模上界 \(1\)。当 \(c=1/2\)、\(d=3/4\) 时，第一步已经给 \(p=1\)，于是 \(q=0\) 强制 \(e=-3/8\)。这正是 \((z+1/2)/(1+z/2)\) 的二次系数，显示分式归一化中的 \(\overline c d^2\) 项不可丢掉。
 
 \ProseParagraphBreak
-当 \(c\ne0\) 时，二阶约束中的 \(\overline c d^2\) 项记录了目标自同构的曲率效应。不能简单把一次与二次系数都除以 \(1-|c|^2\) 就应用0点公式，因为归一化是分式变换而非仿射平移。这个计算也是链式求导的检查：对 \(f\) 先作自同构再取导数，二阶项会包含导数平方。遇到高阶估计时应先展开变换，明确每个系数的来源。
 
-\subsection{等号情形}
+三点插值也能通过一次 Schur 步骤变成两点问题。除零点后出现的指定值可能位于单位圆上，因此需要先处理这个边界情形，再使用开圆盘中的两点判据。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[三点插值的 Schur 归约]\label{b3:prop:06-three-point-reduction}
+设 \(a_1,a_2,a_3\in\mathbb D\) 两两不同，\(b_1,b_2,b_3\in\mathbb D\)。记 \(\phi_a(z)=(z-a)/(1-\overline a z)\)，并令
+\[
+ p_j=\phi_{a_1}(a_j),\quad
+ q_j=\frac{\phi_{b_1}(b_j)}{p_j}\quad(j=2,3).
+\]
+存在全纯映射 \(f:\mathbb D\rightarrow\mathbb D\)，使 \(f(a_j)=b_j\)、\(j=1,2,3\)，当且仅当以下之一成立：\(q_2,q_3\in\mathbb D\) 且 \(\delta(q_2,q_3)\le\delta(p_2,p_3)\)；或者 \(q_2=q_3\) 且 \(|q_2|=1\)。
+\end{proposition}
+\begin{proof}
+源点互异使 \(p_2,p_3\) 非零且不同，故各商有定义。若插值映射存在，则
+\[
+ G=\phi_{b_1}\circ f\circ\phi_{a_1}^{-1}
+\]
+是固定零点的圆盘映射。Schur 步骤使 \(H(\zeta)=G(\zeta)/\zeta\) 在零点可去，且 \(|H|\le1\)。插值条件等价于 \(H(p_j)=q_j\)、\(j=2,3\)。如果某个 \(|q_j|>1\)，便不可能；如果某个 \(|q_j|=1\)，最大模原理迫使 \(H\) 恒为这个单位数，所以另一个 \(q_j\) 必须相同。剩下 \(q_2,q_3\in\mathbb D\) 的情形，\(H\) 也处处在开盘内，两点插值判据给出所列距离条件。
+
+反过来，若 \(q_2=q_3\) 为单位数，取 \(H\equiv q_2\)。若两值都在开盘且满足距离条件，可以明确取
+\[
+ k=\frac{\phi_{q_2}(q_3)}{\phi_{p_2}(p_3)},
+ \quad H(\zeta)=\phi_{q_2}^{-1}\bigl(k\cdot\phi_{p_2}(\zeta)\bigr).
+\]
+因为 \(p_2\ne p_3\)，分母非零，而条件给 \(|k|\le1\)。这就是两点命题中的构造，满足 \(H(p_j)=q_j\)。两种情形均可定义
+\[
+ f(z)=\phi_{b_1}^{-1}\Bigl(
+       \phi_{a_1}(z)\cdot H\bigl(\phi_{a_1}(z)\bigr)\Bigr).
+\]
+乘积的模严格小于 \(1\)，包括 \(H\) 为单位常数的情形，故所得函数全纯且取值于开盘。在 \(a_1\) 处乘积为零；在另外两点处，它等于 \(p_jq_j=\phi_{b_1}(b_j)\)。代入逆分式就恢复全部三项插值。
+\end{proof}
+
+若约化函数被迫为单位常数，或最后两点的距离不等式取等，约化后的 \(H\) 唯一，原映射也唯一。若最后两点严格不等，前面的构造给出无穷多个不同的 \(H\)，逆步骤也给出不同的原映射。
+
+\ProseParagraphBreak
+
+例如要求 \(f(0)=0\)、\(f(1/2)=f(-1/2)=2/5\)。每一对原始数据都满足 Schwarz--Pick：中心到另外两点的目标距离为 \(2/5<1/2\)，后两个目标之间的距离为零。但除去已知零点后，\(H=f/z\) 必须在 \(1/2,-1/2\) 分别取值 \(4/5,-4/5\)。这不可能，因为
+\[
+ \delta(4/5,-4/5)=\frac{40}{41}
+ >\frac45=\delta(1/2,-1/2).
+\]
+共同的 Schur 归约揭示了各点数据之间的额外约束，不能把不同点对各自存在的解直接拼接。
+
+\subsection{等号刚性与正实部估计}
 \label{b3:subsec:060303}
 
-自同构在每一对点与每一个微分估计中都取等。反向只需要一处等号，所以刚性条件比“处处达到”更强。若只知道 \(f'(a)\) 非零，没有任何刚性：映射 \(z\mapsto z/2\) 在所有点导数非零，却不满射。
+内部的精确等号已经迫使映射成为自同构；若导数只是接近极值，还可以量化函数在紧集上离极端映射有多远。设 \(f:\mathbb D\rightarrow\mathbb D\) 全纯，\(f(0)=0\)，且 \(f'(0)=a\in[0,1]\)。当 \(a<1\) 时，商 \(h=f/z\) 补定义后满足 \(h(0)=a\)、\(|h|<1\)。Schwarz--Pick 给 \(\delta(h(z),a)\le|z|\)。固定 \(0<r<1\)，对 \(|z|\le r\) 有
+\[
+ \begin{aligned}
+ |h(z)-a|&\le r\cdot|1-ah(z)|\\
+ &\le r\bigl(1-a^2+a\cdot|h(z)-a|\bigr).
+ \end{aligned}
+\]
+因为 \(1-ar>0\)，移项给出 \(|h-a|\le r(1-a^2)/(1-ar)\)。再由 \(|f(z)-z|\le|z|\cdot(|h(z)-a|+1-a)\)，得到
+\[
+ \sup_{|z|\le r}|f(z)-z|
+ \le\frac{r(1-a)(1+r)}{1-ar}.
+\]
+若 \(a=1\)，Schwarz 等号直接给 \(f=z\)，同一上界仍成立。因此归一化导数趋于 \(1\) 时，函数在每个固定紧盘上一致趋于恒等。对非零复导数，可先旋转函数使导数正实，再与相应旋转映射比较。
 
 \ProseParagraphBreak
 
-对 \(f(z)=cz\)、\(0<|c|<1\)，微分比值为
-\[
- \frac{|c|(1-|z|^2)}{1-|c|^2|z|^2}<1.
-\]
-取 \(z=0\) 时为 \(|c|\)，趋近边界时反而趋于0。对 \(z^2\)，比值近边界趋于1；这两个例子说明不同映射的边界行为并不由原点导数单独决定。
+把右半平面映到圆盘，还能将正实部条件转成模约束。这个转换保留的信息比一般的模有界条件更强，因为实部的正性同时控制了圆周平均值和各阶系数。
 
-\begin{proposition}\label{b3:prop:06-positive-real-part}
-若 \(p\) 在圆盘全纯，\(\operatorname{Re}p>0\)、\(p(0)=1\)，则对 \(|z|=r<1\)，
+\Needspace{6\baselineskip}
+\begin{proposition}[正实部函数的增长估计]\label{b3:prop:06-positive-real-part}
+设 \(p:\mathbb D\rightarrow\mathbb C\) 全纯，\(\operatorname{Re}p(z)>0\) 对全部 \(z\in\mathbb D\) 成立，且 \(p(0)=1\)。则对每个 \(z\in\mathbb D\)，记 \(r=|z|\)，有
 \[
  \frac{1-r}{1+r}\le\operatorname{Re}p(z)
- \le\frac{1+r}{1-r},\qquad |p(z)|\le\frac{1+r}{1-r}.
+ \le\frac{1+r}{1-r},
+ \quad |p(z)|\le\frac{1+r}{1-r}.
 \]
 \end{proposition}
 \begin{proof}
-令 \(q=(p-1)/(p+1)\)。正实部使分母无零并有 \(|q|<1\)，且 \(q(0)=0\)，所以 \(|q(z)|\le r\)。反解 \(p=(1+q)/(1-q)\)，并用
+正实部使 \(p+1\) 无零，且
 \[
- \operatorname{Re}p=\frac{1-|q|^2}{|1-q|^2}
+ |p+1|^2-|p-1|^2=4\operatorname{Re}p>0.
 \]
-及 \(1-|q|\le|1-q|\le1+|q|\)，就得到全部估计。
+所以 \(q=(p-1)/(p+1)\) 是圆盘映射，\(q(0)=0\)，Schwarz 引理给 \(|q(z)|\le r\)。反解 \(p=(1+q)/(1-q)\)，得到
+\[
+ \operatorname{Re}p(z)=\frac{1-|q(z)|^2}{|1-q(z)|^2}.
+\]
+令 \(s=|q(z)|\le r\)。由 \(1-s\le|1-q(z)|\le1+s\)，有
+\[
+ \frac{1-s}{1+s}\le\operatorname{Re}p(z)\le\frac{1+s}{1-s},
+ \quad |p(z)|\le\frac{1+s}{1-s}.
+\]
+左侧函数随 \(s\) 递减，右侧函数随 \(s\) 递增，代入 \(s\le r\) 即得全部估计。
 \end{proof}
-上界在 \(q(z)=\eta z\) 的适当径向点达到，下界在相反方向达到。这个结论把全纯函数的正实部约束转换成圆盘约束；以后对调和正函数的 Harnack 不等式，会看到相同的分式因子。此处只对全纯实部给证明，未假定任意区域的调和函数已有全局共轭。
+
+函数 \(p_\eta(z)=(1+\eta z)/(1-\eta z)\)、\(|\eta|=1\)，在满足 \(\eta z=r\) 的点达到上界，在满足 \(\eta z=-r\) 的点达到实部下界。因此两个方向的界都可达到。这里的推导只对全纯函数的实部进行，后面的调和函数理论将解释同样的 Harnack 因子。
 
 \ProseParagraphBreak
-对上半平面 \(\mathbb H\)，Cayley 变换将 Schwarz--Pick 写成
-\[
- \left|\frac{F(z)-F(w)}{F(z)-\overline{F(w)}}\right|
- \le\left|\frac{z-w}{z-\overline w}\right|,\qquad
- \frac{|F'(z)|}{\operatorname{Im}F(z)}\le\frac1{\operatorname{Im}z}.
-\]
-当 \(F\) 是实系数、正行列式的分式变换时取等。平移 \(F(z)=z+\mathrm{i}\) 则严格压缩这条密度，虽然它的欧氏导数为1。竖直移动到更高位置，单位欧氏长度所对应的内在长度变短，直观地解释了估计的分母。
 
-\begin{proposition}\label{b3:prop:06-caratheodory-coefficients}
-若 \(p(z)=1+\sum_{n\ge1}c_nz^n\) 在圆盘全纯且 \(\operatorname{Re}p>0\)，则每个 \(n\ge1\) 满足 \(|c_n|\le2\)。
+\term[caratheodory-xishu-budengshi]{Carathéodory 系数不等式}[Carathéodory coefficient inequality]进一步给出与阶数无关的系数界。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[Carathéodory 系数估计]\label{b3:prop:06-caratheodory-coefficients}
+设 \(p:\mathbb D\rightarrow\mathbb C\) 全纯，\(\operatorname{Re}p>0\)、\(p(0)=1\)，且
+\[
+ p(z)=1+\sum_{n=1}^{\infty}c_nz^n.
+\]
+则每个整数 \(n\ge1\) 都满足 \(|c_n|\le2\)。
 \end{proposition}
 \begin{proof}
-固定 \(0<r<1\)，令 \(u(t)=\operatorname{Re}p(re^{\mathrm{i}t})>0\)。Taylor 级数在该圆周一致收敛，逐项积分给
+固定 \(0<r<1\)，记 \(u(t)=\operatorname{Re}p(re^{\mathrm{i}t})>0\)。Taylor 级数在这一固定圆周上一致收敛，故可取实部，写为
 \[
- \frac1{2\pi}\int_0^{2\pi}u(t)\,\mathrm{d}t=1,\qquad
- \frac1{2\pi}\int_0^{2\pi}u(t)e^{-\mathrm{i}nt}\,\mathrm{d}t=\frac12c_nr^n.
+ u(t)=1+\frac12\sum_{m=1}^{\infty}
+ \left(c_mr^me^{\mathrm{i}mt}+\overline{c_m}r^me^{-\mathrm{i}mt}\right).
 \]
-正性使第二个积分的模不超过第一个积分，故 \(|c_n|r^n\le2\)。令 \(r\uparrow1\) 得到结论。
+对这个一致收敛级数逐项积分，利用非零整数频率的指数在一周上的积分为零，得到
+\[
+ \frac1{2\pi}\int_0^{2\pi}u(t)\,\mathrm{d}t=1,
+ \quad
+ \frac1{2\pi}\int_0^{2\pi}u(t)\cdot e^{-\mathrm{i}nt}\,\mathrm{d}t
+ =\frac12c_nr^n\quad(n\ge1).
+\]
+因为 \(u(t)>0\) 且 \(|e^{-\mathrm{i}nt}|=1\)，带振荡因子的积分模不超过 \(u\) 的积分。因此 \(|c_n|\cdot r^n\le2\)。对固定 \(n\) 令 \(r\uparrow1\)，得到 \(|c_n|\le2\)。整个论证只在内部圆周上积分，不需要 \(p\) 在单位圆上具有边界值。
 \end{proof}
-函数 \((1+\eta z)/(1-\eta z)\)、\(|\eta|=1\)，所有系数的模都为2，故常数不能改善。与前面的点值界相比，系数界没有随次数增长的常数。证明的关键是实部的正性允许把带振荡因子的积分模压在平均值之下；仅知道 \(|p(0)|=1\) 不能这样做，例如 \(1+Nz\) 的一次系数可任意大，却不再满足整个圆盘上的正实部。
 
-\ProseParagraphBreak
-若 \(p(0)\) 是任意正实部复数，可先减去它的虚部，再除以 \(\operatorname{Re}p(0)\)。因此一般的系数界为 \(|c_n|\le2\operatorname{Re}p(0)\)。常数项的虚部不参与约束，因为正实部条件在加上纯虚常数后保持不变。这样的归一化先确定哪些数据真正控制估计，也避免把无关相位引入最终公式。
-
-在一般单连通区域上，选择共形坐标之后的 Schwarz--Pick 估计可写为
+上面的极端函数还有展开
 \[
- \frac{|f'(a)|}{r_V(f(a))}\le\frac1{r_U(a)}.
+ \frac{1+\eta z}{1-\eta z}
+ =1+2\sum_{n=1}^{\infty}\eta^nz^n\quad(|\eta|=1),
 \]
-于是区域包含 \(U\subset V\) 对恒等映射给 \(r_U(a)\le r_V(a)\)，与第5章从归一化导数得到的单调性一致。同一结论从极值观点和压缩观点各自出现，说明共形半径不是一个孤立定义，而是内在几何的局部单位。
-
-\ProseParagraphBreak
-若区域不是单连通，就不能直接选择一个全局双全纯圆盘坐标。例如去心圆盘仍具有局部全纯坐标，也存在圆盘覆盖，但覆盖逆并不单值。将上式推广到这样的区域要用万有覆盖来定义密度，并证明选择不同提升后密度一致。第11、13章将承担这些步骤；本章的一般区域版本明确保留单连通条件，避免把尚未建立的覆盖理论隐含在符号 \(r_U\) 中。
+所有非恒定系数的模均为 \(2\)，所以每个阶数都达到同一界。若全纯函数 \(p(z)=c_0+\sum_{n\ge1}c_nz^n\) 仍满足 \(\operatorname{Re}p>0\)，但常数项任意，令 \(\alpha=\operatorname{Re}c_0>0\)、\(\beta=\operatorname{Im}c_0\)。归一化函数 \((p-\mathrm{i}\beta)/\alpha\) 满足前一命题，故一般形式为 \(|c_n|\le2\operatorname{Re}c_0\)、\(n\ge1\)。常数项的虚部不参与这个约束。
 
 \subsection{共形映射下的转移}
 \label{b3:subsec:060304}
 
-设 \(U,V\) 为真单连通区域，选 Riemann 映照 \(\Phi_U:U\rightarrow\mathbb D\)、\(\Phi_V:V\rightarrow\mathbb D\)。定义
+对真单连通区域，Riemann 映照提供全局圆盘坐标。先把距离和局部尺度转回原区域，并证明它们不依赖坐标选择，就能将 Schwarz--Pick 写成区域本身的结论。
+
+\Needspace{6\baselineskip}
+\begin{definition}[区域上的距离与密度]\label{b3:def:06-conformal-transfer}
+设 \(U\subsetneq\mathbb C\) 为单连通区域，\(\Phi:U\rightarrow\mathbb D\) 为双全纯映射。对 \(z,w\in U\)，定义
 \[
- \delta_U(z,w)=\delta(\Phi_U(z),\Phi_U(w)),\qquad
- \lambda_U(z)=\frac{2|\Phi_U'(z)|}{1-|\Phi_U(z)|^2}.
+ \delta_U(z,w)\coloneqq\delta(\Phi(z),\Phi(w)),
+ \quad
+ \lambda_U(z)\coloneqq\frac{2|\Phi'(z)|}{1-|\Phi(z)|^2}.
 \]
-不同 Riemann 映照相差圆盘自同构，而前面的不变性及导数恒等式使两个定义与选择无关。任意全纯 \(f:U\rightarrow V\) 对应圆盘映射 \(\Phi_V\circ f\circ\Phi_U^{-1}\)，故
+分别称为 \(U\) 上的伪双曲距离和\term[poincare-midu]{Poincaré 密度}[Poincaré density]。
+\end{definition}
+\symidx{\(\delta_U(z,w)\)：真单连通区域上的伪双曲距离}
+\symidx{\(\lambda_U(z)\)：Poincaré 密度}
+
+这两个定义与 \(\Phi\) 的选择无关。若另一坐标为 \(\Psi\)，则 \(A=\Psi\circ\Phi^{-1}\) 是圆盘自同构，前节的不变性给出 \(\delta(Au,Av)=\delta(u,v)\)。同时，自同构的导数恒等式为
 \[
- \delta_V(f(z),f(w))\le\delta_U(z,w),\qquad
- \lambda_V(f(z))\cdot|f'(z)|\le\lambda_U(z).
+ \frac{|A'(u)|}{1-|A(u)|^2}=\frac1{1-|u|^2}.
 \]
-源点与目标点的局部尺度同时参与比较。\chapref{b3:ch:13}将把 \(\lambda_U|\mathrm{d}z|\) 的曲线长度下确界发展为 Poincaré 距离。
+代入 \(u=\Phi(z)\) 并使用链式法则，便得用 \(\Psi\) 和用 \(\Phi\) 计算的 \(\lambda_U\) 相同。距离的度量性质由双射 \(\Phi\) 和 \(\delta\) 的性质传回；密度则处处为正，因为双全纯映射的导数不为零。
 
 \ProseParagraphBreak
 
-在右半平面 \(H_R=\{\operatorname{Re}z>0\}\) 上，\(\Phi(z)=(z-1)/(z+1)\)，直接计算得 \(\lambda_{H_R}(z)=1/\operatorname{Re}z\)。因此 \(F:\mathbb D\rightarrow H_R\) 全纯时
+密度与上一章的共形半径可以在基点处直接比较。对固定 \(a\in U\)，选择满足 \(\Phi(a)=0\)、\(\Phi'(a)>0\) 的归一化坐标，得到
+\[
+ \lambda_U(a)=2\Phi'(a)=\frac2{r_U(a)}.
+\]
+坐标无关性保证这个等式对每个基点都成立。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[单连通区域上的 Schwarz--Pick 估计]\label{b3:prop:06-conformal-schwarz-pick}
+设 \(U,V\subsetneq\mathbb C\) 为单连通区域，\(f:U\rightarrow V\) 全纯。则对所有 \(z,w\in U\)，有
+\[
+ \delta_V(f(z),f(w))\le\delta_U(z,w),
+ \quad \lambda_V(f(z))\cdot|f'(z)|\le\lambda_U(z).
+\]
+若在一对不同点的距离式中取等，或在某一点的导数式中取等，则 \(f\) 双全纯映满 \(V\)。反过来，双全纯映射在这些式子中处处取等。
+\end{proposition}
+\begin{proof}
+取圆盘坐标 \(\Phi_U:U\rightarrow\mathbb D\)、\(\Phi_V:V\rightarrow\mathbb D\)，并令 \(G=\Phi_V\circ f\circ\Phi_U^{-1}\)。圆盘的 Schwarz--Pick 距离式直接变成所需的距离式。对 \(a\in U\)，在 \(\zeta=\Phi_U(a)\) 处有
+\[
+ G'(\zeta)=\frac{\Phi_V'(f(a))\cdot f'(a)}{\Phi_U'(a)}.
+\]
+将它代入圆盘导数式，再乘以正数 \(2|\Phi_U'(a)|\)，便得到 \(\lambda_V(f(a))\cdot|f'(a)|\le\lambda_U(a)\)。这里坐标导数均非零，所有分母为正，所以等号也准确对应。圆盘中的等号迫使 \(G\) 为自同构，故 \(f=\Phi_V^{-1}\circ G\circ\Phi_U\) 双全纯映满 \(V\)。反向同样由圆盘自同构的等号性质得到。
+\end{proof}
+
+用共形半径改写导数式，就是
+\[
+ \frac{|f'(a)|}{r_V(f(a))}\le\frac1{r_U(a)}.
+\]
+若 \(U\subseteq V\)，对恒等嵌入应用此式，得到 \(r_U(a)\le r_V(a)\)；一处取等就迫使恒等嵌入满射，所以只能有 \(U=V\)。这也恢复了上一章共形半径的严格单调性。
+
+\ProseParagraphBreak
+
+在右半平面 \(H_R=\{\,z\in\mathbb C\mid\operatorname{Re}z>0\,\}\)，取 \(\Phi(z)=(z-1)/(z+1)\)。由
+\[
+ |\Phi'(z)|=\frac2{|z+1|^2},
+ \quad 1-|\Phi(z)|^2=\frac{4\operatorname{Re}z}{|z+1|^2},
+\]
+可得 \(\lambda_{H_R}(z)=1/\operatorname{Re}z\)。因此每个全纯映射 \(F:\mathbb D\rightarrow H_R\) 满足
 \[
  \frac{|F'(z)|}{\operatorname{Re}F(z)}\le\frac2{1-|z|^2}.
 \]
-这里实部是正的，分母才合法。若 \(F(0)=1\)，圆盘距离压缩还给 \(|(F(z)-1)/(F(z)+1)|\le|z|\)，它同时限制实部和虚部，比单纯的增长上界更具体。
+若 \(F(0)=1\)，距离式还给 \(|(F(z)-1)/(F(z)+1)|\le|z|\)，正是前面正实部估计所使用的圆盘约束。
+
+\ProseParagraphBreak
+
+在上半平面 \(\mathbb H=\{\,z\in\mathbb C\mid\operatorname{Im}z>0\,\}\)，同样用 \((z-\mathrm{i})/(z+\mathrm{i})\) 计算，得到
+\[
+ \delta_{\mathbb H}(z,w)=\left|\frac{z-w}{z-\overline w}\right|,
+ \quad \lambda_{\mathbb H}(z)=\frac1{\operatorname{Im}z}.
+\]
+于是全纯映射 \(F:\mathbb H\rightarrow\mathbb H\) 满足
+\[
+ \left|\frac{F(z)-F(w)}{F(z)-\overline{F(w)}}\right|
+ \le\left|\frac{z-w}{z-\overline w}\right|,
+ \quad \frac{|F'(z)|}{\operatorname{Im}F(z)}\le\frac1{\operatorname{Im}z}.
+\]
+例如 \(F(z)=z+\mathrm{i}\) 的欧氏导数为 \(1\)，但 \(\operatorname{Im}F(z)=\operatorname{Im}z+1\)，所以密度导数式严格压缩。若 \(F(z)=(az+b)/(cz+d)\)，其中 \(a,b,c,d\) 为实数、\(ad-bc>0\)，则
+\[
+ \operatorname{Im}F(z)=\frac{(ad-bc)\operatorname{Im}z}{|cz+d|^2}.
+\]
+它及其分式逆都保持上半平面，故为自同构，在两个估计中均取等。
+
+\ProseParagraphBreak
+
+本小节的全局圆盘坐标依赖真单连通条件。对有孔区域，局部坐标不能直接拼成一个双全纯圆盘映射，推广密度需要后面的覆盖理论。\chapref{b3:ch:13}还将用 \(\lambda_U(z)\cdot|\mathrm{d}z|\) 定义曲线长度，再由长度下确界构造 Poincaré 距离；这里的 \(\delta_U\) 与那个路径距离是不同的数值。

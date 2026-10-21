@@ -1,157 +1,103 @@
 % !TeX root = ../../Book2.tex
-\section{Euler–Lagrange 方程}
-\label{b2:sec:1402}
+\section{Fourier 变换法}
+\label{b2:sec:1202}
 
-第一变分为零是函数空间中的驻点条件。它通常以积分等式出现；把扰动的导数移到系数上，才能读出微分方程。这个步骤也同时产生边界项，因此方程与边界条件不能分开猜测。本节先在光滑函数类中推导，下一章再把积分等式本身作为解的定义。
+在全空间中，空间平移不会改变方程，离散特征级数因而换成连续频率积分。变换负责找出核，卷积与逼近恒等负责证明粗初值确实演化成解。外力也可逐时叠加，但积分公式本身并不自动赋予它任意阶的经典导数。
 
-\subsection{一维问题}
-\label{b2:subsec:140201}
+\subsection{热核}
+\label{b2:subsec:120201}
 
-设 \(a<b\)，考虑端点固定为 \(u(a)=A\)、\(u(b)=B\) 的实函数，及泛函
-\[J(u)=\int_a^b F(x,u(x),u'(x))\,\mathrm dx.\]
-允许扰动满足 \(h(a)=h(b)=0\)。如果 \(u\) 为极小点，\cref{b2:prop:14-gateaux-minimum,b2:prop:14-smooth-integral-variation}给出
-\[\int_a^b\bigl(F_z(x,u,u')h+F_p(x,u,u')h'\bigr)\,\mathrm dx=0.\]
+全空间没有端点，也没有正的最低允许频率。Fourier 变换把每个连续频率单独演化。先对足够光滑且衰减的解形式计算，按照本卷的 \(2\pi\) 约定有
+\[
+ \partial_t\widehat u(t,\xi)
+ =-4\pi^2\kappa|\xi|^2\widehat u(t,\xi),
+ \quad\widehat u(t,\xi)=e^{-4\pi^2\kappa t|\xi|^2}\widehat f(\xi).
+\]
+\cref{b2:thm:03-gaussian}已经计算了这个乘子的逆变换。沿用第二编的热核记号，在 \(\mathbb R^d\) 上写作
+\begin{equation}\label{b2:eq:12-gauss-heat}
+ H_t(x)=(4\pi t)^{-d/2}e^{-|x|^2/(4t)},
+ \quad t>0,
+ \quad\widehat H_t(\xi)=e^{-4\pi^2t|\xi|^2}.
+\end{equation}
+方程扩散系数为 \(\kappa\) 时使用 \(H_{\kappa t}\)，不另换 Fourier 归一化。这个核非负、总积分为一；其空间宽度约为 \(\sqrt t\)，高度约为 \(t^{-d/2}\)。由直接微分有 \(\partial_tH_{\kappa t}=\kappa\Delta H_{\kappa t}\)。
+
+\ProseParagraphBreak
+
+这些计算可以独立验证卷积候选，不要求先假定未知解的变换存在。对于粗初值，求解的逻辑次序是先用核定义 \(u\)，再证明可微性和初值收敛；前面的频率微分只负责找到候选。第二编已经证明 Gauss 核的逼近恒等性质，下面把其参数取为 \(\sqrt{4\pi\kappa t}\)。
+
+\subsection{卷积表示}
+\label{b2:subsec:120202}
 
 \Needspace{6\baselineskip}
-\begin{theorem}[一维 Euler--Lagrange 方程]
-\label{b2:thm:14-euler-lagrange-one}
-设 \(a<b\)，实值 \(F\in C^2([a,b]\times\mathbb R^2)\)，实值 \(u\in C^2([a,b])\) 是 \(J(v)=\int_a^bF(x,v,v')\,\mathrm dx\) 在 \(v(a)=u(a)\)、\(v(b)=u(b)\) 的函数类中在 \(C^1\) 范数下的局部极小点。则
-\[F_z(x,u,u')-\frac{\mathrm d}{\mathrm dx}F_p(x,u,u')=0\quad(a<x<b).\]
-更一般地，对任意 \(u\in C^2([a,b])\)，该方程与所有零端点扰动的第一变分为零等价。
+\begin{theorem}[全空间热核解]\label{b2:thm:12-heat-convolution}
+设整数 \(d\geq1\)、\(\kappa>0\)，\(H_s(x)=(4\pi s)^{-d/2}e^{-|x|^2/(4s)}\)（\(s>0\)、\(x\in\mathbb R^d\)）。设 \(1\leq p\leq\infty\)、\(f\in L^p(\mathbb R^d;\mathbb C)\)。则
+\begin{equation}\label{b2:eq:12-heat-convolution}
+ u(t,x)=\int_{\mathbb R^d}H_{\kappa t}(x-y)\cdot f(y)\,\mathrm{d}y
+\end{equation}
+对 \(t>0\)、\(x\in\mathbb R^d\) 有意义，且在 \((0,\infty)\times\mathbb R^d\) 上光滑，满足 \(u_t=\kappa\Delta u\)。当 \(t\downarrow0\) 且 \(p<\infty\) 时，\(u(t)\to f\) 于 \(L^p\)。若选定的代表 \(\widetilde f\) 有界一致连续，则 \(u(t)\to\widetilde f\) 在一致范数中成立；若选定 \(f\) 的一个有界代表 \(\widetilde f\)，且它在 \(x_0\in\mathbb R^d\) 连续，则 \(u(t,x_0)\to\widetilde f(x_0)\)。
 \end{theorem}
 \begin{proof}
-分部积分把第一变分写成 \(\int_a^b q(x)h(x)\,\mathrm dx\)，其中 \(q=F_z-\frac{\mathrm d}{\mathrm dx}F_p\) 连续。若某点 \(q(x_0)>0\)，连续性保证一个小区间内 \(q>0\)；在其中选非负且不恒零的光滑紧支集扰动，便使积分为正，矛盾。对 \(q(x_0)<0\) 同理。因此 \(q=0\)。反向只须把方程代回分部积分等式，边界项因扰动端点为零而消失。
+热核及其每阶时空导数属于每个 \(L^r\)、\(1\leq r\leq\infty\)。固定 \(t\) 的正紧区间与 \(x\) 的紧集后，每个导数可由一个平移后仍快速衰减的函数统一控制。对 \(f\in L^p\)，Hölder 不等式给出绝对可积性；对差商使用同一控制，可以把每一阶导数移入积分。因此卷积光滑，且核的微分等式传给 \(u\)。这里在 \(p=1\) 用核导数的一致界，在 \(p=\infty\) 用其绝对可积性，两个端点都被覆盖。
+
+有限 \(p\) 与一致连续代表的情形由\cref{b2:thm:03-approximate-identity}得到。卷积不因初值在零测集上的修改而改变。对选定代表的连续点，把 \(\widetilde f(x_0-y)-\widetilde f(x_0)\) 的积分分成 \(|y|<\delta\) 与补集。近处由连续性控制，远处由 \(2\sup_x|\widetilde f(x)|\) 乘热核尾质量控制，先选 \(\delta\) 再令 \(t\downarrow0\) 即得。这样取得的点值是所选连续代表的点值，而不是给 \(L^p\) 等价类额外指定一个任意值。
 \end{proof}
 
-曲线的弧长对应 \(F=\sqrt{1+p^2}\)，于是 \(\frac{\mathrm d}{\mathrm dx}(u'/\sqrt{1+(u')^2})=0\)。由于 \(p\mapsto p/\sqrt{1+p^2}\) 严格单调，\(u'\) 为常数，驻曲线只能是连接两端点的线段。它确为全局极小曲线，可以再由 \(p\mapsto\sqrt{1+p^2}\) 的凸性证明：以线段斜率 \(m\) 处的切线作下界，积分后线性修正项为 \(\frac{m}{\sqrt{1+m^2}}\int_a^b(u'-m)=0\)。这里微分方程找出候选者，凸性才完成极小性的判断。
+初值也可以是一点质量，此时解是 \(H_{\kappa t}(x-y_0)\)，在 \(t\downarrow0\) 时只以测度或分布意义趋于 \(\delta_{y_0}\)。为了区别空间核与时空基本解，令 \(E(t,x)=H_{\kappa t}(x)\) 当 \(t>0\)，在 \(t<0\) 令 \(E=0\)。那么
+\[
+ (\partial_t-\kappa\Delta_x)E=\delta_{(0,0)}
+\]
+在时空分布中成立。确实，对紧支集光滑 \(\varphi(t,x)\)，从 \(t=\varepsilon\) 起分部积分，热方程抵消内部项，留下 \(\int H_{\kappa\varepsilon}(x)\cdot\varphi(\varepsilon,x)\,\mathrm{d}x\)。它由逼近恒等趋于 \(\varphi(0,0)\)。同时 \(E\) 在有限时间带的空间积分为该带长度，所以零时附近的局部可积性也已得到。
 
 \ProseParagraphBreak
 
-若 \(F\) 不显含 \(x\)，沿任何 \(C^2\) 驻曲线有
+对非齐次方程，设整数 \(d\geq1\)、\(\kappa,T>0\)、\(1\leq p<\infty\)，\(f\in L^p(\mathbb R^d;\mathbb C)\)、\(F\in C([0,T];L^p(\mathbb R^d;\mathbb C))\)。由逐时叠加得到
+\begin{equation}\label{b2:eq:12-duhamel}
+ u(t)=H_{\kappa t}*f+
+ \int_0^tH_{\kappa(t-s)}*F(s)\,\mathrm{d}s.
+\end{equation}
+在积分的右端按 \(H_0*F(t)=F(t)\) 理解。被积函数是连续的 \(L^p\) 值函数，积分可作为 Riemann 和的范数极限；Young 不等式给出
 \[
- \frac{\mathrm d}{\mathrm dx}(F-u'F_p)
- =u'\left(F_z-\frac{\mathrm d}{\mathrm dx}F_p\right)=0.
+ \left\|\int_0^tH_{\kappa(t-s)}*F(s)\,\mathrm{d}s\right\|_p
+ \leq\int_0^t\|F(s)\|_p\,\mathrm{d}s.
 \]
-这给出一个一阶守恒量，常比二阶方程更易使用。但若原式包含 \(x\)，右端还要加上 \(F_x\)，不能继续断言守恒。即便有守恒量，也须重新代入端点条件；局部的一阶积分并不保证全局可解。
+这保证源项趋于零初值。先对光滑紧支集的时空源项求导，再以连续 \(L^p\) 范数逼近一般 \(F\)，便在分布中得到 \(u_t-\kappa\Delta u=F\)。逼近可将时间分成有限小段，对有限个空间取值分别磨光，再以时间连续插值连接；上式使解同时收敛，测试函数的积分配对也连续。这个验证不把一般连续源项的积分公式误写成已经证明的经典二阶正则性。
 
-\subsection{多维问题}
-\label{b2:subsec:140202}
+\subsection{高维热方程}
+\label{b2:subsec:120203}
 
-多维区域中，导数向量 \(\nabla h\) 的分部积分产生散度。于是梯度型能量自然对应散度型方程，这也是弱解理论优先采用散度形式的原因。
-
-\Needspace{6\baselineskip}
-\begin{theorem}[多维 Euler--Lagrange 方程]
-\label{b2:thm:14-euler-lagrange-many}
-设整数 \(d\geq1\)，\(\Omega\subset\mathbb R^d\) 是有界开集，实值 \(F\in C^2(\overline\Omega\times\mathbb R\times\mathbb R^d)\)，实值 \(u\in C^2(\Omega)\cap C^1(\overline\Omega)\)。则 \(J(u)=\int_\Omega F(x,u,\nabla u)\,\mathrm dx\) 对每个 \(h\in C_c^\infty(\Omega)\) 的第一变分为零，当且仅当
-\[F_z(x,u,\nabla u)-\operatorname{div}\bigl(F_p(x,u,\nabla u)\bigr)=0\quad\text{于 }\Omega.\]
-特别地，任一允许这些紧支集扰动的光滑局部极小点都满足此方程。
-\end{theorem}
-\begin{proof}
-第一变分公式对紧支集扰动成立。逐坐标分部积分，边界项为零，得到连续函数 \(F_z-\operatorname{div}F_p\) 与任意测试函数的乘积积分为零。若此函数在一点非零，在小球内选同号的非负凸起函数便产生矛盾，故函数处处为零。反向由同一分部积分恒等式立即得到。
-\end{proof}
-
-例如图像面积泛函 \(\int_\Omega\sqrt{1+|\nabla u|^2}\,\mathrm dx\) 的驻点满足
-\[\operatorname{div}\frac{\nabla u}{\sqrt{1+|\nabla u|^2}}=0.\]
-当梯度很小时，分母接近 \(1\)，线性化给出 \(\Delta u=0\)。这解释了调和函数为何可以描述小斜率的平衡曲面，同时也说明二次 Dirichlet 能量只是面积能量在小梯度附近的近似：大梯度下两者的增长速度和紧性要求不同。
+高维热核是各坐标一维核的乘积，但高维扩散的幅度不能从一维直观中省略维数。换元 \(x=\sqrt t\,z\) 给出
+\[
+ \|H_t\|_r=C_{d,r}t^{-\frac d2(1-1/r)},
+ \quad1\leq r\leq\infty.
+\]
+例如有限质量初温满足 \(\|u(t)\|_\infty\leq(4\pi\kappa t)^{-d/2}\|f\|_1\)。没有任何质量损失也能使温度峰值降低，因为同一热量散布到越来越大的区域。
 
 \ProseParagraphBreak
 
-还有一种常见误读：把 \(F_p(x,u,\nabla u)\) 看成只依赖 \(x\) 的显式系数，而漏掉链式法则。以 \(F=\tfrac12a(u)|\nabla u|^2\) 为例，方程是
-\[\tfrac12a'(u)|\nabla u|^2-\operatorname{div}(a(u)\nabla u)=0,\]
-若展开散度，等价于 \(a(u)\Delta u+\tfrac12a'(u)|\nabla u|^2=0\)，绝不是单纯的 \(a(u)\Delta u=0\)。在粗糙系数或弱正则性情形，保留散度形式通常更可靠。
-
-\subsection{自然边界条件}
-\label{b2:subsec:140203}
-
-边界值若预先固定，扰动在边界为零，边界项便不参与驻点条件；边界值若可以自由变化，边界项必须自己消失，由此得到 \term[ziran-bianjie-tiaojian]{自然边界条件}[natural boundary condition]。设整数 \(d\geq1\)，\(\Omega\subset\mathbb R^d\) 为非空有界 \(C^2\) 开集，不要求连通；\(u\) 为实值且在 \(\overline\Omega\) 的邻域内为 \(C^2\)。设实值密度 \(F\) 在 \(\overline\Omega\times\mathbb R\times\mathbb R^d\) 的邻域内为 \(C^2\)，\(B,B_z\) 在 \(\partial\Omega\times\mathbb R\) 上连续。考虑边界能量
+方向上的扩散速率也可以不同。若整数 \(d\geq1\)，\(B\) 是实对称正定的 \(d\times d\) 常矩阵，方程为 \(u_t=\sum_{i,j=1}^dB_{ij}\partial_i\partial_ju\)，则 \(t>0\) 时的相应核是
 \[
- J(u)=\int_\Omega F(x,u,\nabla u)\,\mathrm dx
-       +\int_{\partial\Omega}B(x,u)\,\mathrm dS.
+ H_t^B(x)=\dfrac1{(4\pi t)^{d/2}\sqrt{\det B}}
+ \exp\left(-\dfrac{x^{\mathsf T}B^{-1}x}{4t}\right).
 \]
-对任意实值 \(C^1\) 扰动 \(h\)（定义在闭区域的邻域内），散度公式给出
-\[
- DJ(u)h=\int_\Omega(F_z-\operatorname{div}F_p)h\,\mathrm dx
-       +\int_{\partial\Omega}(F_p\cdot\nu+B_z)h\,\mathrm dS.
-\]
-先取紧支集扰动得到内部方程，再允许任意光滑边界迹。这一边界迹自由度可具体核验。把一小块边界写成 \(x_d=\gamma(x')\)，取支集紧含于坐标块的边界函数 \(\psi(x')\)，在邻域中定义
-\[h(x',x_d)=\psi(x')\eta(x_d-\gamma(x')),\qquad \eta(0)=1,\]
-其中 \(\eta\) 是支集足够小的光滑截断。由于 \(\gamma\in C^2\)，此延拓至少为 \(C^1\)，已足以作第一变分；再乘切向截断并在坐标块外置零，不引入拼接跳跃。有限个坐标块的单位分解可延拓全边界上的允许迹。如果连续边界残差在一点为正，就选择该点附近非负且非零的 \(\psi\)，边界积分为正，与驻定矛盾；为负时同理。因此得到
-\[F_p(x,u,\nabla u)\cdot\nu+B_z(x,u)=0\quad\text{于 }\partial\Omega.\]
-这里 \(\nu\) 始终是外单位法向。
+正交对角化 \(B\) 后，各方向分别使用一维扩散核，换元的行列式给出归一化因子。故核仍非负、质量为一，变换为 \(e^{-4\pi^2t\xi^{\mathsf T}B\xi}\)。正定性使每个方向都发生扩散。若 \(B\) 仅半正定且有零特征值，\(B^{-1}\) 与 \((\det B)^{-1/2}\) 就没有上述意义，不能在函数密度公式中直接把某个特征值置零。
 
 \ProseParagraphBreak
 
-对于二次模型，不必要求密度对 \(x\) 具有上述全部二阶导数。只取实值 \(f\in C(\overline\Omega)\)、\(\beta,g\in C(\partial\Omega)\)，令 \(F=\tfrac12|p|^2-fz\)、\(B=\tfrac12\beta z^2-gz\)。直接展开二次能量并分部积分，就得到光滑驻点的必要条件
-\[-\Delta u=f\quad\text{于 }\Omega,\qquad \partial_\nu u+\beta u=g\quad\text{于 }\partial\Omega.\]
-当 \(\beta=0\) 时，这是 Neumann 条件。特别地，完全自由的纯 Dirichlet 能量给出零法向导数，而不是零边界值。若只在一部分边界固定函数值，则在该部分扰动为零，在其余部分产生自然条件；交界处的正则性是另一问题，形式推导不自动保证解在那里光滑。
-
-在纯 Neumann 情形，还必须核查数据相容性。设 \(\Omega_j\) 为 \(\Omega\) 的各连通分支，\cref{b2:prop:13-neumann-compatibility}给出逐分支的必要条件
+例如在 \(\mathbb R^2\) 上取 \(B=\operatorname{diag}(1,0)\)，方程成为 \(u_t=u_{xx}\)，没有 \(y\) 方向的扩散。此时传播核是乘积测度
 \[
- \int_{\Omega_j}f\,\mathrm{d}x
-       +\int_{\partial\Omega_j}g\,\mathrm{d}S=0.
+ H_t^{(1)}(x)\otimes\delta_0(y),\qquad
+ H_t^{(1)}(x)=(4\pi t)^{-1/2}e^{-x^2/(4t)},\quad t>0,
 \]
-也可以直接从变分看到这个约束：将 \(u\) 在 \(\Omega_j\) 上加一个常数 \(c\)，梯度能量不变，而
+它支撑在直线 \(y=0\) 上，不是相对于二维 Lebesgue 测度的可积函数密度。对 \(f\in L^2(\mathbb R^2;\mathbb C)\)，传播只沿 \(x\) 作卷积：
 \[
- J(u+c\mathbf1_{\Omega_j})-J(u)
- =-c\left(\int_{\Omega_j}f\,\mathrm{d}x
-                 +\int_{\partial\Omega_j}g\,\mathrm{d}S\right).
+ u(t,x,y)=\int_{\mathbb R}H_t^{(1)}(x-z)f(z,y)\,\mathrm{d}z.
 \]
-这些逐分支常数方向在当前 \(C^2\) 边界的光滑变分类中可行，在 \(H^1\) 弱变分类中也可行。因此若有一项不为零，泛函沿该方向就没有驻点，且向一个方向无下界；若全部相容，能量反而对每个分支上的常数平移不变。连通区域须固定一个常数，非连通区域须分别处理各分支的常数自由度。自然边界方程描述的是驻点必须满足的条件，不能代替相容性、极小元存在性和归一化后的唯一性证明。
+Fubini 定理使几乎每个 \(y\) 对应的初值切片属于 \(L^2(\mathbb R_x)\)，故这一维卷积有意义，并在分布意义下满足 \(u_t=u_{xx}\)。但它不提高横向正则性：取非负非零 \(\phi\in C_c^\infty(\mathbb R;\mathbb R)\)，令 \(f(x,y)=\phi(x)\mathbf1_{(0,1)}(y)\)，就有
+\[
+ u(t,x,y)=\bigl(H_t^{(1)}*\phi\bigr)(x)\mathbf1_{(0,1)}(y).
+\]
+前一个因子在 \(t>0\) 时光滑且处处为正，\(y=0,1\) 处的跳跃却仍保留。一般半正定矩阵经正交对角化后也如此：正特征值方向使用 Gaussian 核，零特征值方向保留点质量，不能从正方向的磨光推出全空间光滑化。
 
 \ProseParagraphBreak
 
-一维的符号尤其值得核对。对 \(\int_a^bF(x,u,u')\,\mathrm dx+B_a(u(a))+B_b(u(b))\)，两端自由时条件分别为
-\[-F_p(a,u(a),u'(a))+B_a'(u(a))=0,\qquad F_p(b,u(b),u'(b))+B_b'(u(b))=0.\]
-左端的负号来自外法向朝左。若遗漏它，带弹簧或外力的边界模型就会产生相反的力平衡。
-
-\subsection{向量值问题}
-\label{b2:subsec:140204}
-
-现在固定整数 \(d,m\geq1\)、有界开集 \(\Omega\subset\mathbb R^d\)，令 \(u=(u^1,\ldots,u^m)\in C^2(\Omega;\mathbb R^m)\cap C^1(\overline\Omega;\mathbb R^m)\)，把梯度视为矩阵 \(P=(p_i^\alpha)\)，其中 \(p_i^\alpha=\partial_i u^\alpha\)。对实值密度 \(F\in C^2(\overline\Omega\times\mathbb R^m\times\mathbb R^{m\times d})\)，紧支集光滑向量扰动的第一变分为
-\[
- DJ(u)h=\int_\Omega\sum_{\alpha=1}^m
- \left(F_{z^\alpha}h^\alpha+\sum_{i=1}^dF_{p_i^\alpha}\partial_i h^\alpha\right)\,\mathrm dx.
-\]
-各分量扰动可以独立选择。因此，若 \(u\) 光滑且对所有紧支集向量扰动驻定，则逐分量的基本引理给出系统
-\[
- F_{z^\alpha}(x,u,Du)-\sum_{i=1}^d\partial_iF_{p_i^\alpha}(x,u,Du)=0,
- \qquad \alpha=1,\ldots,m.
-\]
-推导只使用上一证明的逐分量分部积分，无须另加各分量彼此独立的假设；它们的耦合已经包含在密度 \(F\) 中。
-
-\ProseParagraphBreak
-
-例如 \(F=\tfrac12\sum_\alpha|\nabla u^\alpha|^2+W(u)\) 给出 \(-\Delta u^\alpha+\partial_\alpha W(u)=0\)。若 \(W(z)=\tfrac12z^{\mathsf T}Mz\)，其中 \(M\) 为实对称矩阵，则为 \(-\Delta u+Mu=0\)。若写入一个非对称矩阵 \(M\)，二次型 \(z^{\mathsf T}Mz\) 实际只保留对称部分；相应变分绝不产生整个非对称矩阵。这一简单计算已经预示：一般线性椭圆方程虽可用双线性型求解，却未必是某个标量二次能量的极值方程。
-
-\ProseParagraphBreak
-
-还须区别值域约束。例如要求 \(|u|=1\) 时，可行的一阶扰动必须满足 \(u\cdot h=0\)。此时只能推出 Euler--Lagrange 向量与所有切向扰动正交，故它沿法向 \(u\)；不能把每个分量直接置零。对光滑的球面约束，乘子实际上可以算出。设整数 \(d,m\geq1\)，\(\Omega\subset\mathbb R^d\) 为非空有界开集，\(u\in C^2(\Omega;\mathbb R^m)\cap C^1(\overline\Omega;\mathbb R^m)\)、\(|u|=1\)，考虑半 Dirichlet 能量。对任意紧支集 \(h\) 且 \(u\cdot h=0\)，使用真正留在球面上的曲线
-\[u_t=\frac{u+th}{|u+th|}=\frac{u+th}{\sqrt{1+t^2|h|^2}}.\]
-它保持支集外的边界数据，\(\partial_tu_t|_{t=0}=h\)，故驻定给出 \(\int Du:Dh=0\)。对任意紧支集向量 \(\varphi\)，可取 \(h=\varphi-(u\cdot\varphi)u\)。分部积分后说明 \(-\Delta u\) 的切向投影为零，即 \(\Delta u=(u\cdot\Delta u)u\)。另一方面对 \(|u|^2=1\) 微分两次得到
-\[0=\tfrac12\Delta|u|^2=|Du|^2+u\cdot\Delta u,\]
-于是约束方程为 \(\Delta u+|Du|^2u=0\)。在一维，\(u(x)=(\cos kx,\sin kx)\) 满足 \(u''=-k^2u\)、\(|u'|^2=k^2\)，因而是该约束问题的驻曲线；它通常不是无约束 Dirichlet 问题的驻点。这一计算没有证明驻曲线为极小元，也没有处理粗糙球面值弱解的正则性；它只在给定的光滑类中完整辨认允许方向和乘子。
-
-把这些约束并列，便能看清第一变分为何有时等于零、有时只得到一个方向的不等式。\Cref{b2:tab:14-admissible-variations}中的“边界迹自由”保持区域不动，只让函数的边界值变化；它不是移动区域形状的自由边界问题。约束也可叠加：例如固定迹且固定总积分时，须同时要求 \(h\in H_0^1(\Omega)\) 和 \(\int_\Omega h=0\)。
-
-\begin{table}[htbp]
-\centering
-\small
-\setlength{\tabcolsep}{5pt}
-\caption[不同约束下的第一变分方向]{不同约束下的第一变分方向。固定非空有界 Lipschitz 开集 \(\Omega\subset\mathbb R^d\)。除球面行外，均在实空间 \(H^1(\Omega)\) 中讨论，固定迹的参照函数 \(g\in H^1(\Omega)\)，\(M\in\mathbb R\)，\(K\subset H^1(\Omega)\) 为非空闭凸集，泛函 \(J\) 在相应函数的开邻域 Fréchet 可微；经典方程仍按本节光滑积分模型理解。球面行另取 \(C^2\) 向量值积分模型、\(u\in C^2(\Omega;\mathbb R^m)\cap C^1(\overline\Omega;\mathbb R^m)\) 及紧支集 \(C^1\) 扰动，约束在每个空间点成立。各行均列必要条件。}
-\label{b2:tab:14-admissible-variations}
-\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{3.1cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{5.7cm}@{}}
-\toprule
-约束 & 可行的一阶方向 & 第一变分条件 \\
-\midrule
-固定迹：\(u\in g+H_0^1(\Omega)\) & \(h\in H_0^1(\Omega)\)，\(u+th\) 对正负小 \(t\) 均可行 & \(DJ(u)h=0\) 对所有零迹方向成立 \\
-固定积分：\(\int_\Omega u=M\) & \(h\in H^1(\Omega)\)、\(\int_\Omega h=0\)；如另固定迹，还须 \(h\in H_0^1\) & 在零积分子空间上 \(DJ(u)h=0\)，方程可留下常数乘子 \\
-边界迹自由，区域固定 & \(h\in H^1(\Omega)\)，边界迹可变化 & 所有方向的第一变分为零；光滑积分模型产生自然边界条件 \\
-逐点球面值：\(|u(x)|=1\) & \(u(x)\cdot h(x)=0\)；\(h\) 是可行曲线的速度 & Euler--Lagrange 向量的切向分量为零，不要求整个向量为零 \\
-闭凸障碍：\(u\in K\) & \(v-u\)、\(v\in K\)，线段 \(u+t(v-u)\) 在 \(0\leq t\leq1\) 可行 & 极小点满足 \(DJ(u)(v-u)\geq0\)，这是单侧变分不等式 \\
-\bottomrule
-\end{tabularx}
-\end{table}
-
-固定积分行的常数乘子来自一个简单的线性事实。记 \(L(h)=\int_\Omega h\)，在所讨论的线性扰动空间内若 \(L\) 非零，可取 \(h_0\) 使 \(L(h_0)=1\)。当 \(DJ(u)\) 在 \(\ker L\) 上为零时，把 \(h\) 分成 \(h-L(h)h_0\) 与 \(L(h)h_0\)，便有 \(DJ(u)h=\lambda L(h)\)，其中 \(\lambda=DJ(u)h_0\)。
-
-球面行的切向条件只限制曲线的初始速度；一般有 \(|u+th|^2=1+t^2|h|^2\)，所以这条直线不会留在球面上。前面使用的 \((u+th)/|u+th|\) 才是具有该速度的真实可行曲线。闭凸障碍则恰好相反：从 \(u\) 指向每个 \(v\in K\) 的单侧线段由凸性保证可行，除以正参数后得到不等式；只有另加 \(J\) 的凸性时，这组不等式才同时足以保证全局极小。
+这一正定二次型公式可与 John K. Hunter、Bruno Nachtergaele 的《Applied Analysis》\cite[pp. 303--304]{Hunter2001Applied}对照，其变换采用不同的 \(2\pi\) 归一化。本卷已经在\secref{b2:sec:0502}换算过常数，这里直接使用一致的频率约定。

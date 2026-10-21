@@ -1,190 +1,89 @@
 % !TeX root = ../../Book2.tex
-\section{三种基本类型}
-\label{b2:sec:0802}
+\section{Gauss 函数与自对偶性}
+\label{b2:sec:0602}
 
-本节先用二维判别式建立直观，再按实对称主部的惯性给出高维定义，最后说明时间方向及低阶项带来的额外区别。分类针对实系数标量算子，未知函数可以取实值或复值；若主系数本身为复数，或考虑方程组、高阶方程，则需另定分类方法。
+Poisson 求和把一个函数的格点和转成其变换的格点和。Gauss 函数的变换仍为 Gauss 函数，因此可以显式比较大尺度和小尺度，并把这种比较放回热传播。
+
+\subsection{Gauss 函数的 Fourier 变换}
+\label{b2:subsec:060201}
+
+记 \(g_t(x)=e^{-\pi t x^2}\)，其中 \(t>0\)。由\cref{b2:thm:03-gaussian}及伸缩公式，
+\[
+ \widehat {g_t}(\xi)=t^{-1/2}e^{-\pi\xi^2/t}.
+\]
+与保持单位质量的 \(G_\varepsilon\) 相比，\(g_t\) 在原点的高度固定为 \(1\)，总积分为 \(t^{-1/2}\)。将两类参数混用会漏掉平方根因子；这里分别用 \(t\) 和 \(\varepsilon\) 保留区别。
 
 \ProseParagraphBreak
 
-先在一点固定二维主部 \(a u_{xx}+2b u_{xy}+c u_{yy}\)，其中 \(a,b,c\in\mathbb R\)，记
+平移和调制给出更一般的波包公式。对实数 \(a,b\)，
 \[
- A=\begin{pmatrix}a&b\\b&c\end{pmatrix},\quad D=b^2-ac=-\det A.
+ \mathcal F\bigl(e^{-\pi t(x-a)^2}e^{2\pi\mathrm{i}bx}\bigr)(\xi)
+ =t^{-1/2}e^{-2\pi\mathrm{i}a(\xi-b)}e^{-\pi(\xi-b)^2/t}.
 \]
-\Cref{b2:tab:08-planar-classification}中的一个“方向”代表一条过原点的直线，不区分互为非零实倍数的余向量，特别是不区分 \(\nu\) 与 \(-\nu\)。特征余向量满足 \(\nu^{\mathsf T}A\nu=0\)；对应曲线的切方向是它的核直线，两者不能混作同一个向量。
+因此空间中心 \(a\) 产生相位，调制频率 \(b\) 产生频率中心，而宽度参数倒置。每一项都来自\chapref{b2:ch:03}已经证明的运算规则。
 
-\begin{table}[htbp]
-\centering
-\small
-\setlength{\tabcolsep}{4pt}
-\caption[二维主部的代数分类]{二维主部的代数分类。\(A\) 为实对称 \(2\times2\) 矩阵，\(D=b^2-ac\)；只计某一点的非定向实特征方向。常系数时，不同切方向分别给出平行特征直线族。}
-\label{b2:tab:08-planar-classification}
-\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{2.3cm}>{\raggedright\arraybackslash}p{3.8cm}>{\raggedright\arraybackslash}p{3.2cm}>{\raggedright\arraybackslash}X@{}}
-\toprule
-条件 & 惯性及代数类型 & 特征余方向 & 特征曲线切方向 \\
-\midrule
-\(D<0\) & 正定或负定；椭圆型 & 无 & 无 \\
-\(D>0\) & 一正一负；双曲型 & 两个不同方向 & 两个不同方向 \\
-\(D=0,\ A\ne0\) & 秩一；抛物型的代数类型 & 一个方向，即 \(\ker A\) & 一个方向 \\
-\(A=0\) & 秩零；二阶主部全退化 & 所有非零余向量均使主符号为零 & 所有切方向均满足零符号条件 \\
-\bottomrule
-\end{tabularx}
-\end{table}
+\subsection{自对偶结构}
+\label{b2:subsec:060202}
 
-这个表可由实对称矩阵的正交对角化直接核对：正定或负定二次型没有非零实零向量；异号二次型的零集为两条不同直线；秩一半定二次型的零集只有核直线。每个余方向又唯一确定一个垂直的切方向。于是三种类型覆盖所有非零的二维实二次型；\(A=0\) 必须单列，不能仅因 \(D=0\) 就叫作通常的抛物型。表内“抛物型”只说二阶主部，热型初值问题的演化方向与适定性还需要低阶项及数据条件，后文将具体比较。
-
-\subsection{椭圆型}
-\label{b2:subsec:080201}
-
-\begin{definition}\label{b2:def:08-elliptic}
-设 \(n\geq1\) 为整数，\(\Omega\subset\mathbb R^n\) 为开集，\(L=\sum_{i,j=1}^n a^{ij}(z)\partial_{ij}+\sum_{i=1}^n b^i(z)\partial_i+c(z)\)，所有系数为实值连续函数，\(A=(a^{ij})\) 为实对称矩阵场。若 \(A(z)\) 正定或负定，则称二阶算子在 \(z\in\Omega\) 为\term[tuoyuanxing]{椭圆型}[elliptic]。若它在开集每一点均为椭圆型，就称在该开集为椭圆型。选定正定的符号后，若存在常数 \(0<\lambda\leq\Lambda<\infty\)，使
-\[
- \lambda|\xi|^2\leq\xi^{\mathsf T}A(z)\xi\leq\Lambda|\xi|^2
- \quad(z\in\Omega,\ \xi\in\mathbb R^n),
-\]
-则称主部为\term[yizhi-tuoyuan]{一致椭圆}[uniformly elliptic]。
-\end{definition}
-
-对实对称矩阵，椭圆性也等价于对每个 \(\xi\ne0\) 都有 \(p(z,\xi)\ne0\)。若特征值中含零，存在非零零向量；若有正、负特征值，取相应单位特征向量 \(e_+,e_-\)，二次型在 \(e_+\cos\theta+e_-\sin\theta\) 上从正变负，也必取零。反过来，正定或负定直接排除零值。因此椭圆主部没有实特征超曲面。
+对本卷 Fourier 变换已定义的函数或分布 \(f\)，若 \(\widehat f=f\) 在同一空间中成立，称 \(f\) 对当前 Fourier 变换\term[zi-duiou]{自对偶}[self-dual]。Gauss 函数 \(g_1\) 满足这一条件。一般 \(g_t\) 的参数变为 \(1/t\)，并附带 \(t^{-1/2}\)；只有 \(t=1\) 保持同一个归一化函数。
 
 \ProseParagraphBreak
 
-最基本的模型为 \(\Delta u=f\) 或 \(-\Delta u=f\)。对称正定但随位置退化的系数提醒我们，点态椭圆不等于一致椭圆：在半平面 \(x>0\) 上，\(u_{xx}+x^2u_{yy}\) 处处椭圆，但沿 \(x\downarrow0\) 的最小特征值趋零，沿 \(x\to\infty\) 的最大特征值无界。在任意紧子集上，这两种障碍都消失。
+下面是\subsecref{b2:subsec:050204}中 Hermite 专题的补例，暂缓该专题的读者可以跳过本段，后面的热核论证不使用它。自对偶不只出现在正 Gauss 函数上。\cref{b2:thm:05-hermite}给出 \(\widehat h_n=(-\mathrm i)^nh_n\)，故对每个 \(j\in\mathbb N_0\)，\(h_{4j}\) 都自对偶，有限复线性组合仍然自对偶。相反，\(h_{4j+2}\) 变换后变号，奇数指标对应虚特征值。自对偶是一项线性变换关系，不意味着非负性或概率密度性质。
 
-\begin{proposition}\label{b2:prop:08-compact-ellipticity}
-设 \(n\geq1\) 为整数，\(\Omega\subset\mathbb R^n\) 为连通开集，\(A:\Omega\to\mathbb R^{n\times n}\) 连续且取实对称矩阵值，在 \(\Omega\) 中每一点均正定或负定。则它的正、负定符号在整个开集上一致。选为正定后，对每个紧集 \(K\subseteq\Omega\)，都有依赖于 \(K\) 的一致椭圆常数。
+\subsection{热核解释}
+\label{b2:subsec:060203}
+
+\chapref{b2:ch:05}已使用 \(H_t(x)=(4\pi t)^{-1/2}e^{-x^2/(4t)}\)，其变换为 \(e^{-4\pi^2t\xi^2}\)。在实线上周期化，得到
+\begin{equation}\label{b2:eq:06-periodic-heat}
+ K_t(x)\coloneqq\sum_{n\in\mathbb Z}H_t(x+n)
+ =\sum_{k\in\mathbb Z}e^{-4\pi^2tk^2}e^{2\pi\mathrm{i}kx}.
+\end{equation}
+第二个表达由 Poisson 求和得到；对固定 \(t>0\)，两种表达都绝对收敛。函数 \(K_t\) 称为圆周上的\term[rehe]{热核}[heat kernel]。
+\symidx{\(K_t\)：圆周热核}
+
+\begin{proposition}\label{b2:prop:06-heat-kernel}
+对 \(t,s>0\)，令 \(K_t(x)=\sum_{n\in\mathbb Z}(4\pi t)^{-1/2}e^{-(x+n)^2/(4t)}\)，在 \(\mathbb T=\mathbb R/\mathbb Z\) 上取总质量为 \(1\) 的 Lebesgue 测度，\(*\) 表示圆周卷积。圆周热核 \(K_t\) 非负、积分为 \(1\)，满足 \(K_t*K_s=K_{t+s}\) 和 \(\partial_tK_t=\partial_x^2K_t\)。对 \(f\in L^p(\mathbb T;\mathbb C)\)、\(1\leq p<\infty\)，当 \(t\downarrow0\) 时有 \(K_t*f\to f\) 于 \(L^p\)；对 \(f\in C(\mathbb T;\mathbb C)\) 则一致收敛。
 \end{proposition}
 \begin{proof}
-正定矩阵构成开集：若 \(\min_{|\xi|=1}\xi^{\mathsf T}A(z_0)\xi=\lambda_0>0\)，则 \(\|A(z)-A(z_0)\|<\lambda_0/2\) 时仍正定。负定情形相同。两类点各为开集且不交，连通性迫使只出现一类。选好符号后，若 \(K\ne\varnothing\)，连续函数 \((z,\xi)\mapsto\xi^{\mathsf T}A(z)\xi\) 在紧集 \(K\times S^{n-1}\) 上取得正最小值及有限最大值，即为所需常数；空集上的结论直接成立。
+非负性由实线表达给出，非负项的 Tonelli 换序将其圆周积分化为实线 Gauss 积分，故积分为 \(1\)。两个核均可积，圆周卷积的 Fourier 系数等于两核系数之积，即 \(e^{-4\pi^2(t+s)k^2}\)；由\cref{b2:cor:02-uniqueness}的周期系数唯一性及两侧连续性得到半群关系。对 \(t\geq\varepsilon>0\)，任意阶 \(x,t\) 导数只在系数上增加一个固定次幂的 \(k\)，仍被可和的指数尾统一控制，故可逐项求导，并得到热方程。
+
+为证初值逼近，对 \(0<\delta<1/2\)，圆周上离原点至少为 \(\delta\) 的区域在周期化前对应到实线中 \(|y|\geq\delta\) 的子集。因此
+\[
+ \int_{\mathrm{d}_{\mathbb T}(x,0)\geq\delta}K_t(x)\,\mathrm{d}x
+ \leq\int_{|y|\geq\delta}H_t(y)\,\mathrm{d}y\longrightarrow0.
+\]
+所以它满足\cref{b2:prop:02-positive-approximation}中的三项条件：非负、单位质量以及远离原点的质量趋零。该命题对任意趋零的正时间列都适用，因而得到 \(t\downarrow0\) 时的全部收敛结论。
 \end{proof}
 
-\subsection{双曲型}
-\label{b2:subsec:080202}
-
-\begin{definition}\label{b2:def:08-hyperbolic}
-设 \(n\geq2\) 为整数，\(\Omega\subset\mathbb R^n\) 为开集，\(L=\sum_{i,j=1}^n a^{ij}(z)\partial_{ij}+\sum_{i=1}^n b^i(z)\partial_i+c(z)\)，所有系数为实值连续函数，\(A=(a^{ij})\) 为实对称矩阵场。若 \(A(z)\) 非退化，且一个特征值与其余 \(n-1\) 个特征值符号相反，则称算子在 \(z\in\Omega\) 为\term[shuangquxing]{双曲型}[hyperbolic]。在演化问题中，还要选定时间余法向，并核对相对于它的时间多项式，而不只检查法向非特征。
-\end{definition}
-
-设 \(d\geq1\) 为整数、\(c>0\)。波动算子 \(\partial_t^2-c^2\Delta_x\) 作用于 \(d\) 个空间变量和一个时间变量，其矩阵惯性为 \((1,d,0)\)，主符号为
-\[
- p(\tau,\xi)=\tau^2-c^2|\xi|^2.
-\]
-这里 \(\xi\in\mathbb R^d\) 是空间频率，\(\tau\) 是时间频率。若只看空间块 \(-c^2I\)，它是负定的；整个时空主部才是双曲型。称“波动方程的空间部分椭圆”与称“波动方程双曲”并不矛盾。
+小时间时，实线表达用少量邻近格点就能描述局部尖峰；大时间时，频率表达只需保留少量低频，就能看出函数趋向常数 \(1\)。两个公式描述同一个核，却在相反的尺度下各自简洁。下一节的 \(\theta\) 变换正是这种尺度对换在 \(x=0\) 处的表达。
 
 \ProseParagraphBreak
 
-“选择时间”有一个可计算判据。在一点固定符号使惯性为 \((1,n-1,0)\)，选择满足 \(p(\nu)>0\) 的法向 \(\nu\)。补足一组坐标，使 \(\nu\) 对应时间余方向，则矩阵分块为
+这种比较可以给出两端都可核算的误差。对 \(t\geq t_0>0\)，由 \(k^2\geq1+3(k-1)\)、\(k\geq1\)，频率表达给出
 \[
- A=\begin{pmatrix}a&v^{\mathsf T}\\v&C\end{pmatrix},\quad a>0.
+ \|K_t-1\|_\infty
+ \leq2\sum_{k=1}^\infty e^{-4\pi^2tk^2}
+ \leq\frac{2e^{-4\pi^2t}}{1-e^{-12\pi^2t}}.
 \]
-配方给出
-\begin{equation}\label{b2:eq:08-hyperbolic-square}
- p(\tau,\xi)=a\left(\tau+\frac{v\cdot\xi}{a}\right)^2
- +\xi^{\mathsf T}\left(C-\frac{vv^{\mathsf T}}{a}\right)\xi.
-\end{equation}
-右侧的空间矩阵必须负定，因为合同消元后已有一个正方向，全部剩余方向均为负。故每个非零空间频率对应两个不同的实根
+因此向均匀分布趋近的首个指数由 \(k=\pm1\) 决定。对 \(f\in L^2(\mathbb T;\mathbb C)\)，记平均值 \(\overline f=\int_0^1f\)，这里上横线表示平均而非复共轭。\cref{b2:cor:02-parseval}将 \(L^2\) 范数平方写成全部 Fourier 系数模平方之和，给出精确的能量表达
 \[
- \tau=-\frac{v\cdot\xi}{a}
- \pm\sqrt{-\frac1a\xi^{\mathsf T}\left(C-\frac{vv^{\mathsf T}}{a}\right)\xi}.
+ \|K_t*f-\overline f\|_2^2
+ =\sum_{k\ne0}e^{-8\pi^2tk^2}|\widehat f(k)|^2
+ \leq e^{-8\pi^2t}\|f-\overline f\|_2^2.
 \]
-这种相对于时间余法向的实根性质称为\term[yange-shuangqu]{严格双曲}[strictly hyperbolic]。精确地说，固定一个非零余法向 \(\nu\)，把它补足为一组余空间基，后 \(n-1\) 个坐标称为空间余方向；要求 \(p(\nu)\ne0\)，并且对每个非零空间频率 \(\xi\in\mathbb R^{n-1}\)，关于 \(\tau\) 的二次多项式 \(p(\tau,\xi)\) 都有两个不同的实根。改变空间补足坐标只会重标空间频率并平移时间根，不改变这一性质。上面的配方证明 \(p(\nu)>0\) 是所选惯性 \((1,n-1,0)\) 下的充分条件；本章只在二阶标量方程中使用这一判据，不直接扩展到重特征根或方程组。
+取 \(f(x)=e^{2\pi\mathrm{i}x}\) 时达到等号，所以能量范数中的衰减率 \(4\pi^2\) 不能统一增大。常数模态保留平均，其余模态耗散。
 
 \ProseParagraphBreak
 
-在至少两个空间变量的波动模型中，任意非特征余法向未必都能作为这样的时间方向。对三变量模型 \(p(\tau,\xi_1,\xi_2)=\tau^2-\xi_1^2-\xi_2^2\)，若把 \(x_1\) 当时间，那么固定原来的 \(\tau=0\)、\(\xi_2\ne0\) 时，关于 \(\xi_1\) 的方程没有实根。这里原惯性中的唯一正方向与其余负方向有不同地位；相对于选定数据面的实根性质须另行检查。
-
-\ProseParagraphBreak
-
-倾斜的时间面给出一个定量例子。对 \(d\geq2\) 个空间变量的波动算子 \(\partial_t^2-c^2\Delta_x\)，其中 \(c>0\)，取 \(T=t+\kappa x_1\)、\(X_j=x_j\)（\(1\leq j\leq d\)），\(\kappa\in\mathbb R\)。逆变换为 \(t=T-\kappa X_1\)，所以对所有 \(\kappa\) 都可逆。由 \(\partial_t=\partial_T\)、\(\partial_{x_1}=\kappa\partial_T+\partial_{X_1}\)，新主部为
+对于小时间，固定 \(0<a<1/2\) 并取 \(|x|\leq a\)。零格点项为 \(H_t(x)\)，其余项满足 \(|x+n|\geq|n|-a\)。对 \(n\geq1\)，
 \[
- (1-c^2\kappa^2)\partial_T^2
- -2c^2\kappa\partial_T\partial_{X_1}
- -c^2\sum_{j=1}^d\partial_{X_j}^2.
+ (n-a)^2\geq(1-a)^2+(3-2a)(n-1),
 \]
-余法向 \(\mathrm{d}T=\mathrm{d}t+\kappa\,\mathrm{d}x_1\) 的主符号为 \(p(\mathrm{d}T)=1-c^2\kappa^2\)，记此值为 \(a\)。令 \(\eta=(\eta_1,\eta_\perp)\in\mathbb R\times\mathbb R^{d-1}\)，则时间多项式及其判别式分别为
+故
 \[
- p_T(\tau,\eta)=a\tau^2-2c^2\kappa\eta_1\tau-c^2|\eta|^2,
- \quad \Delta_\tau=4c^2\bigl(\eta_1^2+a|\eta_\perp|^2\bigr).
+ 0\leq K_t(x)-H_t(x)
+ \leq\frac{2(4\pi t)^{-1/2}e^{-(1-a)^2/(4t)}}
+              {1-e^{-(3-2a)/(4t)}}.
 \]
-若 \(|\kappa|<1/c\)，则 \(a>0\)，每个 \(\eta\ne0\) 对应的两个时间根为
-\[
- \tau=\frac{c^2\kappa\eta_1\pm c\sqrt{\eta_1^2+a|\eta_\perp|^2}}a,
-\]
-它们均实且互异。若 \(|\kappa|=1/c\)，等 \(T\) 面是特征面，最高时间导数的系数消失。若 \(|\kappa|>1/c\)，它虽非特征，但可取 \(\eta_1=0\)、\(\eta_\perp\ne0\)，此时 \(a\tau^2-c^2|\eta_\perp|^2=0\) 没有实根。因此在 \(d\geq2\) 时，只有 \(|\kappa|<1/c\) 才使这一倾斜时间方向严格双曲。整个矩阵的惯性一直不变，所检查的是数据面相对于特征锥的实根性质。
-
-\ProseParagraphBreak
-
-这里必须保留维数条件。若只有一个空间变量，即惯性为 \((1,1,0)\)，便没有 \(\eta_\perp\)；对任意 \(a\ne0\) 及 \(\eta_1\ne0\)，判别式均为 \(4c^2\eta_1^2>0\)。更一般地，对任意惯性为 \((1,1,0)\) 的实对称矩阵 \(A\)，取非特征余向量 \(\nu\) 及与它线性独立的 \(\zeta\)。多项式 \(p(\tau\nu+\zeta)\) 的判别式为
-\[
- 4\bigl((\nu^{\mathsf T}A\zeta)^2-p(\nu)p(\zeta)\bigr)
- =-4\det A\cdot\det(\nu,\zeta)^2>0.
-\]
-等式来自基矩阵 \((\nu,\zeta)\) 下二次型的行列式公式。因此 \(1+1\) 维中任一非特征法向都给出严格双曲性，包括 \(p(\nu)<0\) 的情形；整体乘以负号后，就能对后者使用时间系数为正的配方。若预先坚持选用包含通常 \(\mathrm{d}t\) 的正号时间锥，则此倾斜族仍取 \(a>0\)，但这项时间锥选择须与“是否满足实根判据”区分。
-
-\Cref{b2:fig:08-tilted-time}用相同的 \((x_1/c,t)\) 尺度画出三种倾斜数据面，并标记余法向主符号的符号。图中的 \(1+1\) 维截面用于辨认角度及特征边界；\(d\geq2\) 时负号法向的失败，还须使用刚才的横向频率 \(\eta_\perp\)，不能只从这张截面图推出。
-\input{Figures/F08-TiltedTime}
-
-\subsection{抛物型}
-\label{b2:subsec:080203}
-
-\begin{definition}\label{b2:def:08-parabolic-algebraic}
-设 \(n\geq2\) 为整数，\(\Omega\subset\mathbb R^n\) 为开集，\(L=\sum_{i,j=1}^n a^{ij}(z)\partial_{ij}+\sum_{i=1}^n b^i(z)\partial_i+c(z)\)，所有系数为实值连续函数，\(A=(a^{ij})\) 为实对称矩阵场。若 \(A(z)\) 的秩为 \(n-1\)，且所有非零特征值同号，则称它的主部在 \(z\in\Omega\) 具有\term[paowuxing]{抛物型}[parabolic]的代数类型。这个条件只描述二阶部分，不单独保证方程是一条随时间演化的热型方程。
-\end{definition}
-
-例如对 \(d\geq1\) 个空间变量，\(\partial_t-\Delta_x\) 对全部 \(d+1\) 个变量的二阶矩阵为 \(\operatorname{diag}(0,-1,\ldots,-1)\)。时间余法向 \((1,0)\) 使二阶主符号为零，所以等时面在刚才的纯二阶定义下是特征的。热方程仍可给初值，因为沿时间方向真正出现的是一阶导数。把所有变量都按同一阶数计算的主符号，不能独自表达这种演化结构。
-
-\ProseParagraphBreak
-
-设 \(d\geq1\) 为整数，\(U\subset\mathbb R^d\times\mathbb R\) 为开集。对 \(U\) 上的实值连续系数及连续右端 \(f\)，本编的热型演化模型特指
-\begin{equation}\label{b2:eq:08-parabolic-evolution}
- u_t-\sum_{i,j=1}^d a^{ij}(x,t)u_{x_ix_j}
- +\sum_i b^i(x,t)u_{x_i}+c(x,t)u=f,
-\end{equation}
-其中空间矩阵 \((a^{ij})\) 对称正定；若存在常数 \(0<\lambda\leq\Lambda<\infty\)，使
-\[
- \lambda|\xi|^2\leq\sum_{i,j=1}^d a^{ij}(x,t)\xi_i\xi_j
- \leq\Lambda|\xi|^2
- \quad((x,t)\in U,\ \xi\in\mathbb R^d),
-\]
-则称这一演化结构为一致抛物。时间一阶系数已规范为 \(1\)，其符号与空间二阶项相反。这项结构同时使用了一阶项和选定的时间方向。若时间导数前有正函数 \(\alpha\)，须先将整个方程除以 \(\alpha\)，再检查空间矩阵的正定性与统一常数。
-
-\ProseParagraphBreak
-
-以下三个算子有相同的二阶矩阵，却代表不同问题：
-\[
- \partial_t-\partial_x^2,\quad
- -\partial_t-\partial_x^2,\quad
- -\partial_x^2.
-\]
-第一个是向前热算子；第二个反转时间后才成为向前热算子；第三个根本没有时间演化，只是每个 \(t\) 上的一维方程。由此不能仅凭“一个特征值为零”就声称存在通常的热方程初值理论。在一般高维变量中，秩还可能低于 \(n-1\)，或者非零特征值有正有负；这些属于其他退化类型，本章不强行归入三类。
-
-\subsection{标准模型}
-\label{b2:subsec:080204}
-
-对二维非零实主部，\cref{b2:tab:08-planar-classification}已经用 \(D=b^2-ac\) 区分三个类型；表中的零矩阵情形则完全失去二阶主部。下面的模型说明，点态代数分类之外还须观察系数变化与演化方向。
-
-\ProseParagraphBreak
-
-分类可以随位置改变。以 \(Lu=y u_{xx}+u_{yy}\) 为例，当 \(y>0\) 时矩阵正定，当 \(y<0\) 时特征值异号，在 \(y=0\) 时秩为一。穿过退化线的一个邻域上不可能存在把主部变成某个固定非退化类型的微分同胚，因为合同变换保持各点的秩与惯性。退化线须作为独立几何对象处理，不能在变换时相除消去。
-
-\ProseParagraphBreak
-
-频率模型说明时间符号为何值得单独保留。在单位圆周 \(\mathbb T=\mathbb R/\mathbb Z\) 上使用总质量为 \(1\) 的 Lebesgue 测度，取 \(c>0\)、空间频率 \(k\in\mathbb Z\)，令 \(u(x,t)=v_k(t)e^{2\pi\mathrm i kx}\)，三种方程分别给出
-\[
- \begin{aligned}
- u_{tt}-c^2u_{xx}=0&\ \Longrightarrow\ v_k''+4\pi^2c^2k^2v_k=0,\\
- u_t-u_{xx}=0&\ \Longrightarrow\ v_k'+4\pi^2k^2v_k=0,\\
- u_t+u_{xx}=0&\ \Longrightarrow\ v_k'-4\pi^2k^2v_k=0.
- \end{aligned}
-\]
-第一行在 \(k\ne0\) 时给出振荡，第二行使频率按 \(e^{-4\pi^2k^2t}\) 衰减，第三行则按 \(e^{4\pi^2k^2t}\) 放大。这些都是直接代入得到的确切解。对第三行取正整数 \(k\to\infty\) 及初值 \(u_k(x,0)=e^{-k}e^{2\pi\mathrm i kx}\)。对每个固定非负整数 \(m\)，令 \(\|h\|_{C^m(\mathbb T)}=\max_{0\leq j\leq m}\|\partial_x^jh\|_\infty\)，则
-\[
- \|u_k(\cdot,0)\|_{C^m(\mathbb T)}
- \leq C_m k^m e^{-k}\longrightarrow0,
- \quad \|u_k(\cdot,t)\|_{L^2(\mathbb T)}
- =e^{4\pi^2k^2t-k}\longrightarrow\infty\quad(t>0).
-\]
-因此即使二阶代数类型相同，对同一时间方向的数据也可能有完全不同的稳定性。
-
-\ProseParagraphBreak
-
-低阶项也会影响唯一性、增长和边界相容性，\chapref{b2:ch:01}的能量例子已经显示这一点。本章的分类只为选择后续工具提供第一层导航：双曲型需要研究传播和能量，热型演化需要研究扩散和单向时间，椭圆型需要研究边界约束与内部性质。具体结论仍须连同区域、边界数据和系数条件逐条证明。
+当 \(0<t\leq1\) 时，分母有依赖 \(a\) 的统一正下界。于是邻近原点的圆周传播，与实线 Gauss 传播之间只有指数小的误差。若接近半周期端点，就可能有两个相邻格点同样重要；单独保留零格点的近似范围必须随之改变。

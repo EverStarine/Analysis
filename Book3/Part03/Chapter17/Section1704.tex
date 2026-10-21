@@ -1,70 +1,394 @@
 % !TeX root = ../../Book3.tex
-\section{势论解释}
+\section{Green 势、能量与容量}
 \label{b3:sec:1704}
 
-把点源叠加就得到分布源的势。核的正性、对称性和边界约束分别对应正源、相互作用能量和边界响应。
+点源的位置由一个参数表示，分布源则由测度表示。把 Green 核按源测度积分，可以同时保留对数奇性、区域几何和零边值约束。本节先说明这种叠加在何种意义下解方程，再从核的边界导数恢复调和测度，最后讨论在一个紧集上怎样分配单位质量才能使相互作用能量最小。
 
 \subsection{Green 势}
 \label{b3:subsec:170401}
 
-对有限正测度 \(\mu\) 定义 \term[green-shi]{Green 势}[Green potential]
-\(G_D\mu(z)=\int_Dg_D(z,w)\,\mathrm{d}\mu(w)\)，允许值为正无穷。若 \(\mu\) 有紧支集光滑密度，则势局部可积，且 \(-\Delta G_D\mu=2\pi\mu\)，这是由对数核局部可积与 Fubini 得到的分布恒等式。
+若有限多个源点 \(w_j\) 的质量为 \(a_j>0\)，叠加势就是 \(\sum_j a_jg_D(z,w_j)\)。将离散质量换成连续或奇异的分布时，有限和自然换成积分。对角上约定 \(g_D(w,w)=+\infty\)，于是原子仍保留点源的无穷奇性。
 
-因此方程 \(-\Delta u=f\) 的零边值候选为 \((2\pi)^{-1}\int g_D(z,w)f(w)\,\mathrm{d}A(w)\)。常数 \(2\pi\) 来自本章对数奇性的归一化，不能直接照抄高维基本解常数。
+\Needspace{6\baselineskip}
+\begin{definition}\label{b3:def:17-green-potential}
+设 \(D\subseteq\mathbb C\) 为 Green 域，\(\mu\) 为 \(D\) 上有限正 Borel 测度。函数
+\[
+ G_D\mu(z)\coloneqq\int_Dg_D(z,w)\,\mathrm d\mu(w),
+ \quad z\in D,
+\]
+称为 \(\mu\) 的\term[green-shi]{Green 势}[Green potential]，积分按非负扩展积分理解，允许值为 \(+\infty\)。
+\end{definition}
+\symidx{\(G_D\mu\)：正测度 \(\mu\) 的 Green 势}
+
+核的联合下半连续性保证可测性，所以定义不需要先假定势有限。要把它看成一个分布，还须证明局部可积；下面先处理质量支集留在域内紧集上的情形。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[紧支测度的 Green 势]\label{b3:prop:17-green-potential-distribution}
+设 \(D\subseteq\mathbb C\) 为 Green 域，有限正 Borel 测度 \(\mu\) 的支集包含于某个 \(K\Subset D\)。则 \(G_D\mu\in L^1_{\mathrm{loc}}(D)\)，并满足分布等式
+\begin{equation}\label{b3:eq:17-green-source}
+ -\Delta G_D\mu=2\pi\mu.
+\end{equation}
+具体而言，对每个 \(\varphi\in C_c^\infty(D)\)，有
+\[
+ \int_DG_D\mu(z)\,(-\Delta\varphi(z))\,\mathrm dA(z)
+ =2\pi\int_D\varphi(w)\,\mathrm d\mu(w).
+\]
+\end{proposition}
+\begin{proof}
+固定观察点紧集 \(L\Subset D\)。由\cref{b3:prop:17-kernel-regularity}，对数余项在内部紧集上有共同界；远离对角线的核又连续。因此存在 \(C\ge0\)，使
+\[
+ 0\le g_D(z,w)\le C+\log^+\frac1{|z-w|}
+ \quad(z\in L,\ w\in K),
+\]
+其中 \(\log^+t=\max\{\log t,0\}\)。这个控制中的常数与源点 \(w\) 无关。由于
+\[
+ \int_L\log^+\frac1{|z-w|}\,\mathrm dA(z)
+ \le2\pi\int_0^1-s\log s\,\mathrm ds=\frac\pi2,
+\]
+Tonelli 定理给出
+\[
+ \int_LG_D\mu\,\mathrm dA
+ \le\mu(K)\left(C\operatorname{area}(L)+\frac\pi2\right)<\infty.
+\]
+
+对测试函数 \(\varphi\)，取 \(L=\operatorname{supp}\varphi\)，上述估计乘以 \(\|\Delta\varphi\|_\infty\) 便给出换序所需的绝对可积性。每个源点的核满足 \(-\Delta_zg_D(z,w)=2\pi\delta_w\)：这是\cref{b3:prop:15-log-fundamental}与核的调和余项给出的分布等式。因此
+\[
+ \begin{aligned}
+ \int_DG_D\mu(z)(-\Delta\varphi(z))\,\mathrm dA(z)
+ &=\int_K\left(\int_Dg_D(z,w)(-\Delta\varphi(z))\,\mathrm dA(z)\right)\mathrm d\mu(w)\\
+ &=2\pi\int_K\varphi(w)\,\mathrm d\mu(w).
+ \end{aligned}
+\]
+\end{proof}
+
+局部可积只保证势几乎处处有限。例如 \(G_D\delta_w=g_D(\cdot,w)\) 在 \(w\) 处为正无穷，仍然满足上面的分布方程。对支集不紧的有限测度，本节保留势的扩展积分定义；有关局部可积性或无穷远收敛的进一步结论需要另外的控制。
+
+\ProseParagraphBreak
+
+光滑密度会把对数奇性平均掉。此时还可把分布解恢复成经典解，并证明它连续取零边值。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[光滑内部源的零边值解]\label{b3:prop:17-green-poisson-source}
+设 \(D\subseteq\mathbb C\) 为有界区域，其边界由有限条互不相交的正则实解析 Jordan 曲线组成，\(f\in C_c^\infty(D;\mathbb R)\)。则
+\[
+ u_f(z)\coloneqq\frac1{2\pi}\int_Dg_D(z,w)f(w)\,\mathrm dA(w)
+\]
+在 \(D\) 内光滑，连续延拓到 \(\overline D\)，并且是
+\[
+ -\Delta u=f\quad\text{于 }D,
+ \quad u=0\quad\text{于 }\partial D
+\]
+在 \(C^2(D)\cap C(\overline D)\) 中的唯一解。函数 \(u_f\) 还在每段边界附近具有光滑调和延拓。
+\end{proposition}
+\begin{proof}
+把 \(f\) 在域外延为零，记 \(K=\operatorname{supp}f\)。核的对数控制保证积分在每个点绝对收敛。写
+\[
+ g_D(z,w)=-\log|z-w|+h(z,w),
+\]
+其中 \(h(\cdot,w)\) 在填补 \(z=w\) 的可去点后于全域调和。于是 \(u_f=N_f+H_f\)，其中
+\[
+ \begin{aligned}
+ N_f(z)&=-\frac1{2\pi}\int_{\mathbb C}\log|z-w|\cdot f(w)\,\mathrm dA(w),\\
+ H_f(z)&=\frac1{2\pi}\int_Kh(z,w)f(w)\,\mathrm dA(w).
+ \end{aligned}
+\]
+对 \(N_f\) 作换元 \(t=z-w\)，可将各阶导数放到 \(f(z-t)\) 上；当 \(z\) 留在固定紧集时，积分只涉及共同有界的 \(t\) 集合，而 \(\log|t|\) 局部可积。因此 \(N_f\) 光滑，且对数基本解给 \(-\Delta N_f=f\)。对 \(H_f\)，\cref{b3:prop:17-kernel-regularity}的共同余项界与\cref{b3:prop:15-interior-derivatives}给出关于 \(z\) 的各阶导数的共同局部界，故可在积分号下求导，得到 \(H_f\) 光滑且调和。这证明了内部方程。
+
+还须控制 \(z\) 接近边界时的源点积分。选定 \(w_0\in D\)，用内部有限条路径及小圆盘把 \(K\) 与 \(w_0\) 连在一个相对紧的连通邻域中。在足够薄的边界邻域内，观察点 \(z\) 不落入这些圆盘。函数 \(w\mapsto g_D(z,w)\) 在这组圆盘上正且调和，所以\cref{b3:prop:15-harnack-chain}的有限链比较给出
+\[
+ \sup_{w\in K}g_D(z,w)\le C_Kg_D(z,w_0).
+\]
+所用圆盘固定，常数不随 \(z\) 改变。右端在 \(z\to\partial D\) 时趋于零，因而
+\[
+ |u_f(z)|\le\frac{C_K}{2\pi}\|f\|_{L^1(D)}g_D(z,w_0)\longrightarrow0.
+\]
+这给出连续零边值。源 \(f\) 的支集与边界有正距离，故 \(u_f\) 在边界内侧已经调和；\cref{b3:sec:1701}的解析边界拉直与奇反射使它光滑延拓到每段边界的另一侧。最后，两解之差调和并连续取零边值，最大值原理给出唯一性。
+\end{proof}
+
+式\eqref{b3:eq:17-green-source}解释了这里的系数：Green 势本身产生 \(2\pi f\)，方程 \(-\Delta u=f\) 的解须除以 \(2\pi\)。后面的边界表示采用同一个归一化。
 
 \subsection{调和测度}
 \label{b3:subsec:170402}
 
-先设区域由有限条互不相交的实解析 Jordan 曲线围成。每段边界可由一个局部双全纯坐标变成实轴：实解析的正则参数曲线在复邻域全纯延拓，导数非零，逆函数定理给所需坐标。Green 函数在远离极点的边界弧上连续取零，拉回半圆后作奇反射便调和延拓到整圆。反射的调和性可由两侧的 Green 公式消去界面项，或由半圆 Poisson 解的唯一性验证。因此核在边界附近光滑，外法向导数存在，Green 表示的边界项给出
+上一章从边界解算子的正性得到调和测度，没有要求边界存在法向量。对于解析边界，Green 核的反射正则性允许把这个抽象测度写成弧长密度。先对具有边界导数的函数证明积分公式，再以一致逼近处理一般连续边值。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[Green 第二表示公式]\label{b3:prop:17-green-representation}
+设 \(D\subseteq\mathbb C\) 为有界区域，其边界由有限条互不相交的正则实解析 Jordan 曲线组成；实函数 \(u\) 在 \(\overline D\) 的一个开邻域上属于 \(C^2\)。则对每个 \(z\in D\)，
+\begin{equation}\label{b3:eq:17-green-representation}
+ u(z)=-\frac1{2\pi}\int_{\partial D}u(\xi)\partial_{n_\xi}g_D(\xi,z)\,\mathrm ds(\xi)
+ -\frac1{2\pi}\int_Dg_D(\xi,z)\Delta u(\xi)\,\mathrm dA(\xi),
+\end{equation}
+其中 \(n_\xi\) 是区域的外单位法向，\(\mathrm ds\) 为未归一化弧长测度。
+\end{proposition}
+\begin{proof}
+固定 \(z\)，记 \(g(\xi)=g_D(\xi,z)\)，并从 \(D\) 删去闭圆盘 \(\overline{B(z,\varepsilon)}\)。核在外边界附近的光滑性由\cref{b3:sec:1701}的反射论证保证；在删圆后的闭域上，\(u\) 与 \(g\) 都有 Green 第二公式所需的正则性。由于 \(\Delta g=0\)，有
 \[
-\mathrm{d}\omega_D^z(\xi)=-\frac1{2\pi}\partial_{n_\xi}g_D(\xi,z)\,\mathrm{d}s(\xi).
+ -\int_{D\setminus\overline{B(z,\varepsilon)}}g\Delta u\,\mathrm dA
+ =\int_{\partial D}u\partial_ng\,\mathrm ds
+ +\int_{|\xi-z|=\varepsilon}
+       (u\partial_ng-g\partial_nu)\,\mathrm ds.
 \]
-法向取向外。由于核从内部正值降到零，外法向导数非正，测度密度非负；测试常数一得到总质量一。圆盘中代入显式核，恢复上一章的 Poisson 权重。对于粗糙边界，法向导数可能无通常意义，调和测度仍由正泛函表示定义。
+外边界上 \(g=0\)。内圆的外法向是删圆余域的外法向，指向圆心，所以
+\[
+ g=-\log\varepsilon+O(1),
+ \quad \partial_ng=\varepsilon^{-1}+O(1),
+ \quad u(\xi)=u(z)+O(\varepsilon).
+\]
+内圆第一项的积分趋于 \(2\pi u(z)\)，第二项的绝对值为 \(O(\varepsilon|\log\varepsilon|)\)，趋于零。面积积分也收敛：极点附近的对数可积，远离极点的闭域部分上核有界。令 \(\varepsilon\downarrow0\) 并移项即得公式。
+\end{proof}
+
+内圆的法向决定公式中的符号。取 \(u\equiv1\)，面积项消失，边界项须给出一；取零边值函数，边界项消失，面积项则与上一小节的源表示相合。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[解析边界上的调和测度密度]\label{b3:prop:17-harmonic-measure-density}
+设 \(D\subseteq\mathbb C\) 为有界区域，其边界由有限条互不相交的正则实解析 Jordan 曲线组成。对 \(z\in D\)，定义
+\[
+ q_z(\xi)\coloneqq-\frac1{2\pi}\partial_{n_\xi}g_D(\xi,z)
+ \quad(\xi\in\partial D).
+\]
+则 \(q_z\) 连续、非负，且 \(\int_{\partial D}q_z\,\mathrm ds=1\)。该域的调和测度满足
+\begin{equation}\label{b3:eq:17-harmonic-measure-density}
+ \mathrm d\omega_D^z(\xi)=q_z(\xi)\,\mathrm ds(\xi).
+\end{equation}
+因此，对任意实值连续边界数据 \(\varphi\)，其经典调和解为
+\[
+ H_\varphi(z)=\int_{\partial D}\varphi(\xi)q_z(\xi)\,\mathrm ds(\xi).
+\]
+\end{proposition}
+\begin{proof}
+反射使固定源点的核在边界附近光滑，故 \(q_z\) 连续。沿边界的内法向进入区域时核非负，而边界值为零，因而
+\[
+ \partial_{n_\xi}g_D(\xi,z)
+ =\lim_{t\downarrow0}\frac{g_D(\xi,z)-g_D(\xi-tn_\xi,z)}{t}\le0.
+\]
+对常数函数使用\cref{b3:prop:17-green-representation}，便得 \(q_z\) 的积分为一。
+
+每个解析边界点都满足局部外锥条件，所以上一章的正则性结果保证连续边值问题可解。为把表示公式用于 \(H_\varphi\)，对每条边界分量选一个实解析的正则周期参数 \(\gamma_j(t)\)，周期取 \(2\pi\)。连续函数 \(\varphi\circ\gamma_j\) 可由实三角多项式 \(p_{j,m}\) 一致逼近；这可用\cref{b3:subsec:160204}中已经证明的 Fej\'er 平均取得。由有限条分量组成的边值 \(\varphi_m(\gamma_j(t))=p_{j,m}(t)\) 因而在整个 \(\partial D\) 一致趋于 \(\varphi\)。记其调和解为 \(u_m\)。
+
+这些特殊边值确实给出边界光滑性。固定一段解析弧，参数 \(\gamma_j\) 的局部全纯逆把它拉直为实轴。三角多项式 \(p_{j,m}(t)\) 是某个全纯函数 \(P_{j,m}(t)\) 在实轴上的实部：将其中的实系数正弦、余弦直接延拓到复参数即可。因此
+\[
+ v(\xi)=\operatorname{Re}P_{j,m}(\gamma_j^{-1}(\xi))
+\]
+在弧的邻域调和，并取到 \(u_m\) 的边值。差 \(u_m-v\) 连续取零弧值，奇反射使它调和延拓。这样 \(u_m\) 在每个边界点附近都有光滑延拓；有限覆盖与光滑分片也给出闭域邻域上的 \(C^2\) 延拓。对 \(u_m\) 使用 Green 表示，面积项因调和性消失，得到
+\[
+ u_m(z)=\int_{\partial D}\varphi_m(\xi)q_z(\xi)\,\mathrm ds(\xi).
+\]
+
+最大值原理给
+\[
+ \|u_m-H_\varphi\|_{C(\overline D)}
+ \le\|\varphi_m-\varphi\|_{C(\partial D)}\longrightarrow0.
+\]
+另一方面，\(q_z\,\mathrm ds\) 是概率测度，故边界积分的误差也不超过同一个一致范数。取极限得到连续数据的表示，再由\cref{b3:thm:16-harmonic-measure}中表示测度的唯一性识别出 \(\omega_D^z\)。
+\end{proof}
+
+一般连续边值的调和解不由此获得边界 \(C^1\) 正则性；证明只在三角多项式逼近的解上使用边界导数，再通过最大值原理取极限。导数落在固定内点的 Green 核上，正是这种表示适用于连续数据的原因。
+
+\ProseParagraphBreak
+
+在圆盘 \(D=B(0,R)\) 中，对显式 Green 核沿 \(\xi=Re^{\mathrm it}\) 的径向求导，得到
+\[
+ q_z(Re^{\mathrm it})
+ =\frac{R^2-|z|^2}{2\pi R\,|Re^{\mathrm it}-z|^2}.
+\]
+乘以弧长元 \(R\,\mathrm dt\)，便恢复圆盘的 Poisson 权重。这里的 \(R\) 因子来自弧长与角参数的区别。
+
+若同时给定 \(f\in C_c^\infty(D;\mathbb R)\) 和 \(\varphi\in C(\partial D;\mathbb R)\)，则唯一的经典解由两项叠加给出：
+\[
+ u(z)=\int_{\partial D}\varphi(\xi)q_z(\xi)\,\mathrm ds(\xi)
+ +\frac1{2\pi}\int_Dg_D(z,w)f(w)\,\mathrm dA(w).
+\]
+它满足 \(-\Delta u=f\) 和 \(u|_{\partial D}=\varphi\)。边界项分配边界数据，面积项叠加内部源。作为常数核验，圆盘上的函数 \(u(z)=(R^2-|z|^2)/4\) 满足 \(-\Delta u=1\) 且边值为零。它在闭域邻域为 \(C^2\)，所以直接由\cref{b3:prop:17-green-representation}得到
+\[
+ \int_{B(0,R)}g_D(z,w)\,\mathrm dA(w)
+ =\frac\pi2(R^2-|z|^2).
+\]
+这次源 \(1\) 不具有内部紧支集，使用的是已经适用的 Green 第二表示。中心点还可直接计算 \(2\pi\int_0^R s\log(R/s)\,\mathrm ds=\pi R^2/2\)。
 
 \subsection{平衡观点}
 \label{b3:subsec:170403}
 
-对紧集 \(K\Subset D\)，把概率测度 \(\mu\) 支持在 \(K\)，考察能量
-\[
-I_D(\mu)=\iint g_D(z,w)\,\mathrm{d}\mu(z)\,\mathrm{d}\mu(w).
-\]
-核正且对称。若存在有限能量竞争测度，紧集上的概率测度弱紧；用连续核下逼近或先截断对数奇性，得到能量下半连续，因而极小值达到。达到者称为 \term[pingheng-cedu]{平衡测度}[equilibrium measure]。
+现在固定一个紧集 \(K\Subset D\)，允许单位质量在 \(K\) 上重新分配。势在每个源点的值再按源测度平均，便得到总相互作用能量。对角上的无穷值使过度集中付出无穷能量；极小问题因而会区分一个集合是否能容纳有限能量的质量分布。
 
-沿 \((1-t)\mu+t\nu\) 微分能量给 \(\int G_D\mu\,\mathrm{d}\nu\ge I_D(\mu)\)，这是平衡势的变分条件。它不是说势在每一个点都恒定；极性例外集的处理需要容量理论。
+\Needspace{6\baselineskip}
+\begin{definition}\label{b3:def:17-green-energy}
+设 \(D\subseteq\mathbb C\) 为 Green 域，\(K\Subset D\) 为非空紧集，\(\mathcal P(K)\) 为支持在 \(K\) 上的 Borel 概率测度全体。对任意支持在 \(K\) 上的有限正 Borel 测度 \(\mu\)，定义其\term[green-nengliang]{Green 能量}[Green energy]，并在概率测度上取下确界：
+\[
+ I_D(\mu)\coloneqq\iint_{K\times K}g_D(z,w)\,\mathrm d\mu(z)\,\mathrm d\mu(w),
+ \quad V_D(K)\coloneqq\inf_{\mu\in\mathcal P(K)}I_D(\mu).
+\]
+积分允许为正无穷。若 \(V_D(K)<\infty\)，且 \(\mu_K\in\mathcal P(K)\) 满足 \(I_D(\mu_K)=V_D(K)\)，则称 \(\mu_K\) 为 \(K\) 相对于 \(D\) 的\term[pingheng-cedu]{平衡测度}[equilibrium measure]。
+\end{definition}
+\symidx{\(I_D(\mu)\)：测度 \(\mu\) 的 Green 能量}
+\symidx{\(V_D(K)\)：紧集 \(K\) 上概率测度的最小 Green 能量}
+
+\Needspace{6\baselineskip}
+\begin{theorem}[平衡测度的存在与变分条件]\label{b3:thm:17-equilibrium-existence}
+设 \(D\subseteq\mathbb C\) 为 Green 域，\(K\Subset D\) 为非空紧集。如果 \(K\) 上存在有限 Green 能量的概率测度，则平衡测度 \(\mu_K\) 存在。对每个有限能量概率测度 \(\nu\in\mathcal P(K)\)，有
+\begin{equation}\label{b3:eq:17-equilibrium-variation}
+ \int_KG_D\mu_K\,\mathrm d\nu\ge I_D(\mu_K)=V_D(K),
+\end{equation}
+左端允许为正无穷。
+\end{theorem}
+\begin{proof}
+先说明概率测度为何能取到弱收敛子列。紧度量空间 \(K\) 上的 \(C(K;\mathbb R)\) 有可数稠密子集：对每个正整数 \(m\)，选一个有限 \(1/m\)-网 \(\{x_i\}\)，以
+\[
+ \psi_i(x)=\frac{(2/m-|x-x_i|)_+}{\sum_j(2/m-|x-x_j|)_+}
+\]
+得到连续分片。分母处处为正，\(\sum_i\psi_i=1\)，且 \(\psi_i(x)>0\) 时 \(|x-x_i|<2/m\)。函数 \(\sum_i f(x_i)\psi_i\) 因一致连续性一致趋于 \(f\)；再将有限个系数换成有理数，所有 \(m\) 的这些组合便给出可数稠密族 \(\{f_\ell\}\)。
+
+给定 \(\mu_n\in\mathcal P(K)\)，各数列 \(\int f_\ell\,\mathrm d\mu_n\) 有界。逐个抽子列并取对角线后，它们都收敛。概率质量为一使一致逼近误差在积分下不增大，故对每个 \(f\in C(K;\mathbb R)\)，积分也收敛。其极限 \(\Lambda(f)\) 是正线性泛函，且 \(\Lambda(1)=1\)。第一卷定理11.4.1的 Riesz--Markov 正泛函表示适用于紧 Hausdorff 空间 \(K\)，给出一个概率测度 \(\mu\)，使 \(\Lambda(f)=\int f\,\mathrm d\mu\)。于是选出的子列弱收敛于 \(\mu\)。
+
+接着处理核的奇性。令 \(g_M=\min\{g_D,M\}\)，其中 \(M>0\)，对角值取 \(M\)。由\cref{b3:prop:17-kernel-regularity}，核在对角外连续，而内部紧集上的共同余项界给出
+\[
+ g_D(z,w)\ge-\log|z-w|-C_K.
+\]
+因此靠近对角线时 \(g_M\) 恒等于 \(M\)，从而 \(g_M\in C(K\times K)\)。
+
+若 \(\mu_n\) 弱收敛于 \(\mu\)，则它们的积测度也对连续测试函数收敛。为看清这里没有遗漏双变量测试，给定 \(F\in C(K\times K)\)，用上面的细分片构造
+\[
+ F_m(z,w)=\sum_{i,j}F(x_i,x_j)\psi_i(z)\psi_j(w).
+\]
+一致连续性给 \(\|F_m-F\|_\infty\to0\)，每项的积分则分解为两个弱收敛积分的乘积。先固定 \(m\) 令 \(n\to\infty\)，再令 \(m\to\infty\)，便得到积测度的收敛。特别地，
+\[
+ \iint g_M\,\mathrm d\mu\,\mathrm d\mu
+ =\lim_n\iint g_M\,\mathrm d\mu_n\,\mathrm d\mu_n
+ \le\liminf_n I_D(\mu_n).
+\]
+再让 \(M\uparrow\infty\)，单调收敛给 \(I_D(\mu)\le\liminf_n I_D(\mu_n)\)。对一列能量趋于 \(V_D(K)\) 的概率测度取上述子列，就得到达到有限极小值的 \(\mu_K\)。
+
+最后记 \(V=I_D(\mu_K)\)、\(J=\int G_D\mu_K\,\mathrm d\nu\)。若 \(J=\infty\)，所需不等式已经成立。若 \(J<\infty\)，对 \(0<t<1\) 取合法概率测度 \(\mu_t=(1-t)\mu_K+t\nu\)。正核的 Tonelli 换序与对称性给
+\[
+ I_D(\mu_t)=(1-t)^2V+2t(1-t)J+t^2I_D(\nu)\ge V.
+\]
+减去 \(V\)、除以 \(2t\)，再令 \(t\downarrow0\)，得到 \(J\ge V\)。各量在这一步均有限，所以没有对无穷能量作形式求导。
+\end{proof}
+
+变分条件比较的是对竞争测度的平均势。它不直接断言势在紧集的每一点都相等；特别是单点质量可能具有无穷能量，不能任取 \(\nu=\delta_z\) 再把有限能量变分公式当作逐点等式。一般集合上的精细平衡势结论还涉及零容量例外集，本节只在下面的圆盘例子中求出处处可核验的势。
 
 \subsection{容量的联系}
 \label{b3:subsec:170404}
 
-以最小能量的倒数定义此归一化下的 Green 容量：\(\operatorname{Cap}_D(K)=1/\inf I_D\)，无穷能量时取零。单点的能量因对角对数奇性为无穷，故容量零。
+能量越小，单位质量越容易分散。因此用最小能量的倒数衡量紧集在给定外域中的容纳能力。这个量保留外域：相同的内部集合，离零势边界的距离不同，其 Green 能量也不同。
 
-在同心圆盘 \(D=B(0,R)\) 中，半径 \(r<R\) 的圆周均匀概率测度产生内侧常势 \(\log(R/r)\)，外侧势 \(\log(R/|z|)\)。用圆周平均或显式核积分核验这两个公式，其能量为 \(\log(R/r)\)。这个例子把容量的对数尺度同径向障碍联系起来。一般平衡势精细等式不在本章作未经证明的推广。
-
-
-\ProseParagraphBreak
-
-Green 表示还同时包含内部源和边界数据。设 \(D\) 具有上述实解析边界，\(u\) 在闭域的一个邻域属于 \(C^2\)。前面的调和反射保证核的边界导数存在，且在远离极点的部分有界。删去观察点 \(z\) 的小圆，对 \(u(\xi)\) 与 \(g_D(\xi,z)\) 用 Green 第二公式，再让小圆缩小，得到
+\Needspace{6\baselineskip}
+\begin{definition}\label{b3:def:17-green-capacity}
+设 \(D\subseteq\mathbb C\) 为 Green 域，\(K\Subset D\) 为非空紧集。其\term[green-rongliang]{Green 容量}[Green capacity]定义为
 \[
-u(z)=-\frac1{2\pi}\int_{\partial D}u(\xi)\partial_{n_\xi}g_D(\xi,z)\,\mathrm{d}s(\xi)
--\frac1{2\pi}\int_D g_D(\xi,z)\Delta u(\xi)\,\mathrm{d}A(\xi).
+ \operatorname{Cap}_D(K)\coloneqq\frac1{V_D(K)},
+ \quad \frac1{+\infty}=0.
 \]
-第一个项恢复调和边值解，第二个项恢复 \(-\Delta u\) 的源。对常数函数第二项为零，第一项应为一；对零边值函数只剩第二项。这两项检查同时确定符号与 \(2\pi\) 常数。
+\end{definition}
+\symidx{\(\operatorname{Cap}_D(K)\)：紧集 \(K\) 相对于 Green 域 \(D\) 的 Green 容量}
+
+这个倒数不会因分母为零而失去意义。正连续函数 \(\min\{g_D,1\}\) 在 \(K\times K\) 上有严格正的最小值 \(a_K\)，故所有概率测度的能量至少为 \(a_K\)。若 \(K\) 只是有限点集，每个概率测度都有原子，对角奇性使其能量为无穷，因而容量为零。集合增大使可选测度增多，所以容量不减；外域增大使核增大，最小能量不减，容量便不增。这两个方向与上一章的相对 Dirichlet 容量一致。
 
 \ProseParagraphBreak
 
-圆盘中取源 \(f\equiv1\)，零边值解为 \(u(z)=(R^2-|z|^2)/4\)，因为 \(-\Delta u=1\)。因此核积分满足
+下面完整计算同心闭圆盘的容量。先建立所需的能量非负性；它不能仅从核逐点为正推出，因为参与比较的是符号测度。
+
+\Needspace{6\baselineskip}
+\begin{lemma}[圆盘上的符号 Green 能量]\label{b3:lem:17-disk-energy-positive}
+设 \(D=B(0,R)\)、\(R>0\)，\(\eta\) 是支持在某个内部紧集上的有限实符号 Borel 测度，并且
 \[
-\int_{B(0,R)}g_D(z,w)\,\mathrm{d}A(w)=\frac\pi2(R^2-|z|^2).
+ \iint g_D(z,w)\,\mathrm d|\eta|(z)\,\mathrm d|\eta|(w)<\infty.
 \]
-在中心可直接计算 \(2\pi\int_0^R r\log(R/r)\,\mathrm{d}r=\pi R^2/2\)。若把核的 \(-\Delta\) 归一化误写成一，这个最简单的面积积分就会出现 \(2\pi\) 倍的错误。势的定义与偏微分方程解之间还差一个归一化常数，不能把两者同名后省掉。
-
-\ProseParagraphBreak
-
-正核对叠加有限测度也有可积控制。若支集 \(K\Subset D\)，在观察点紧集上把 \(g_D(z,w)\) 写成 \(-\log|z-w|\) 加共同有界的调和余项；对角外的连续性与极点附近的圆周控制保证共同界。因此与第十五章对数核的 Tonelli 估计相同，\(G_D\mu\in L^1_{\mathrm{loc}}\)，但在原子位置可以为正无穷。可积性意味着几乎处处有限，并非处处有限；为 \(\mu=\delta_w\) 时势就是核本身，极点提供直接反例。
-
-\ProseParagraphBreak
-
-圆周均匀测度的能量极小性可以在这个例子中完整证明，不必先调用一般平衡势定理。设 \(\sigma\) 是半径 \(r\) 圆周的均匀概率测度，其势在闭圆盘 \(|z|\le r\) 恒为 \(c=\log(R/r)\)。对任意有限能量概率测度 \(\nu\) 支持在该闭圆盘，令符号测度 \(\eta=\nu-\sigma\)。Green 能量的正定性给
+则绝对收敛的符号能量满足
 \[
-I_D(\nu)=I_D(\sigma)+2\int G_D\sigma\,\mathrm{d}\eta+I_D(\eta)\ge c.
+ I_D(\eta)\coloneqq\iint g_D(z,w)\,\mathrm d\eta(z)\,\mathrm d\eta(w)\ge0.
 \]
-交叉项因 \(\eta\) 总质量零而消失。正定性在光滑紧支集密度时由 \(-\Delta G_D\eta=2\pi\eta\) 及零边值分部积分得到 \(I_D(\eta)=(2\pi)^{-1}\int_D|\nabla G_D\eta|^2\ge0\)；一般有限能量测度的逼近可具体核查。其支集在内部，取足够小的非负径向磨光核。Green 核关于每个变量均超调和，故逐变量磨光得到的核 \(g_\varepsilon\) 满足 \(0\le g_\varepsilon\le g\)，且在对角外逐点趋于 \(g\)。有限能量正测度没有原子，所以对角在其积测度中零测，支配收敛给磨光后的自能量回到原自能量。交叉能量同样收敛；这里 \(\nu,\sigma\) 的交叉能量就是有限常数 \(c\)。分别对两个自能量及交叉能量取极限，磨光后的符号测度非负能量遂传给 \(\eta\)。此处只需圆盘上的分部积分，所有磨光测度支集均留在圆盘内部，边界零值与法向正则性已经由显式核保证。由此该圆盘相对 Green 容量为 \(1/\log(R/r)\)，与上一章相对 Dirichlet 能量容量的数值相差 \(2\pi\)。两种定义的归一化应明确区分。
+\end{lemma}
+\begin{proof}
+先设 \(\mathrm d\eta=f\,\mathrm dA\)，其中 \(f\in C_c^\infty(D;\mathbb R)\)。令 \(V=G_D\eta\)。\cref{b3:prop:17-green-poisson-source}给 \(-\Delta V=2\pi f\)、零边值以及闭域上的光滑性。分部积分的边界项因 \(V=0\) 消失，于是
+\[
+ I_D(\eta)=\int_DVf\,\mathrm dA
+ =\frac1{2\pi}\int_DV(-\Delta V)\,\mathrm dA
+ =\frac1{2\pi}\int_D|\nabla V|^2\,\mathrm dA\ge0.
+\]
+
+一般情形下，取非负径向函数 \(\rho\in C_c^\infty(B(0,1))\)，使 \(\int\rho\,\mathrm dA=1\)，并令 \(\rho_\varepsilon(a)=\varepsilon^{-2}\rho(a/\varepsilon)\)。把 \(\eta\) 延为平面上的测度，记其磨光为 \(\eta_\varepsilon\)。当 \(\varepsilon\) 充分小时，磨光支集仍在同一个内部紧集上，因而已知 \(I_D(\eta_\varepsilon)\ge0\)。换序把这个能量写成
+\[
+ I_D(\eta_\varepsilon)=\iint g_\varepsilon(z,w)\,\mathrm d\eta(z)\,\mathrm d\eta(w),
+\]
+其中
+\[
+ g_\varepsilon(z,w)
+ =\iint g_D(z+a,w+b)\rho_\varepsilon(a)\rho_\varepsilon(b)
+            \,\mathrm dA(a)\,\mathrm dA(b).
+\]
+Green 核在每个变量中超调和，包括对角上的正无穷值。径向非负磨光是圆周平均的非负加权平均，因此超平均不等式可逐变量使用，得到
+\[
+ 0\le g_\varepsilon(z,w)\le g_D(z,w).
+\]
+所有平移点都留在 \(D\) 内，故这里不涉及把核延到域外。
+
+由对角外的联合连续性，\(g_\varepsilon(z,w)\to g_D(z,w)\) 当 \(z\ne w\)。有限能量假设还排除了 \(|\eta|\) 的原子：若一点质量为 \(a>0\)，对角贡献就使能量至少为 \(a^2M\)，对任意 \(M>0\) 均成立。于是对角线在 \(|\eta|\otimes|\eta|\) 下零测，因为其测度等于 \(\int|\eta|(\{z\})\,\mathrm d|\eta|(z)=0\)。共同控制 \(g_D\) 对这个积测度可积，支配收敛便给
+\[
+ I_D(\eta)=\lim_{\varepsilon\downarrow0}I_D(\eta_\varepsilon)\ge0.
+\]
+同一可积控制也使前面的换序对符号测度合法。
+\end{proof}
+
+\Needspace{6\baselineskip}
+\begin{proposition}[同心闭圆盘的平衡测度与容量]\label{b3:prop:17-disk-capacity}
+设 \(0<r<R\)，\(D=B(0,R)\)、\(K=\overline{B(0,r)}\)。令 \(\sigma_r\) 为圆周 \(|w|=r\) 上的均匀概率测度，即 \(\mathrm d\sigma_r(re^{\mathrm it})=\mathrm dt/(2\pi)\)。则
+\begin{equation}\label{b3:eq:17-circle-equilibrium-potential}
+ G_D\sigma_r(z)=
+ \begin{cases}
+  \log(R/r),&|z|\le r,\\
+  \log(R/|z|),&r<|z|<R.
+ \end{cases}
+\end{equation}
+测度 \(\sigma_r\) 是 \(K\) 的平衡测度，并且
+\[
+ V_D(K)=\log(R/r),
+ \quad \operatorname{Cap}_D(K)=\frac1{\log(R/r)}.
+\]
+\end{proposition}
+\begin{proof}
+圆盘核可写成
+\[
+ g_D(z,w)=\log R+\log\left|1-\frac{\overline wz}{R^2}\right|-\log|z-w|.
+\]
+若 \(|a|<1\)，由 \(\log(1-ae^{\mathrm it})\) 的幂级数取实部并平均，得到
+\[
+ \frac1{2\pi}\int_0^{2\pi}\log|1-ae^{\mathrm it}|\,\mathrm dt=0.
+\]
+这里级数绝对一致收敛，逐项积分有依据。分子项总满足 \(|a|=r|z|/R^2<1\)，故其平均为零。分母项在 \(|z|<r\) 时提出 \(r\)，在 \(|z|>r\) 时提出 \(|z|\)，同一公式分别给出平均 \(\log r\) 与 \(\log|z|\)。
+
+在 \(|z|=r\) 上还须处理圆周积分的一个对数奇点。对 \(1/2\le s<1\)，有
+\[
+ |1-se^{\mathrm it}|^2=(1-s)^2+4s\sin^2(t/2)
+ \ge2\sin^2(t/2),
+ \quad |1-se^{\mathrm it}|\le2.
+\]
+因此其对数绝对值被 \(C+|\log|\sin(t/2)||\) 控制，后者在圆周可积。令 \(s\uparrow1\)，支配收敛将平均零公式传到 \(|a|=1\)。由此圆周上的分母平均也等于 \(\log r\)，证明了包括界面点在内的势公式。记 \(c=\log(R/r)\)，于是 \(I_D(\sigma_r)=c\)。
+
+取任意 \(\nu\in\mathcal P(K)\)。若其能量无穷，下界 \(I_D(\nu)\ge c\) 已成立；以下设其能量有限。由于 \(G_D\sigma_r=c\) 在整个 \(K\) 成立，交叉能量为
+\[
+ \iint g_D(z,w)\,\mathrm d\nu(z)\,\mathrm d\sigma_r(w)=c.
+\]
+令 \(\eta=\nu-\sigma_r\)。不等式 \(|\eta|\le\nu+\sigma_r\) 与正核给
+\[
+ I_D(|\eta|)\le I_D(\nu)+2c+I_D(\sigma_r)<\infty.
+\]
+因此\cref{b3:lem:17-disk-energy-positive}适用，并给出
+\[
+ 0\le I_D(\eta)
+ =I_D(\nu)-2c+I_D(\sigma_r)=I_D(\nu)-c.
+\]
+下界在 \(\sigma_r\) 处达到，所以它是平衡测度，最小能量及容量公式随之成立。
+\end{proof}
+
+同一势也说明本节与上一章的归一化差异。令 \(v=G_D\sigma_r/\log(R/r)\)，则 \(v\) 在内圆盘恒为一，在圆环中为 \(\log(R/|z|)/\log(R/r)\)，且在外圆周为零。其 Dirichlet 能量为
+\[
+ \int_D|\nabla v|^2\,\mathrm dA
+ =\frac{2\pi}{\log^2(R/r)}\int_r^R\frac{\mathrm ds}{s}
+ =\frac{2\pi}{\log(R/r)}.
+\]
+这个分段函数本身不是光滑紧支试函数，\cref{b3:prop:16-annulus-capacity}已用截断和磨光把它逼近为合法竞争函数，并证明了匹配的下界。因此在这个例子中，
+\[
+ \operatorname{cap}(K,D)=2\pi\operatorname{Cap}_D(K).
+\]
+因子 \(2\pi\) 同时出现在点源方程、势的能量恒等式和两种容量之间，均由 \(-\Delta(-\log|z|)=2\pi\delta_0\) 决定。一般紧集上两种容量的对应还需要进一步的势论，本节的计算已经说明为什么不能只因名称相近就混用数值。

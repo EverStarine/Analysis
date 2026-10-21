@@ -2,82 +2,363 @@
 \section{边界正则性}
 \label{b3:sec:1603}
 
-内部调和性已经解决，剩下的问题是哪些边界点能迫使包络达到指定值。障碍函数把一个局部几何条件变成对所有边值的统一控制。
+Perron 包络已经在内部调和，但这还没有说明它是否取到每一个指定的边界值。本节把问题集中到一个边界点：若能找到在这个点趋零、远离这个点却保持正下界的超调和函数，就能用它同时控制所有连续边值的误差。这样的函数称为障碍；它将局部几何信息转化为边界比较。
 
 \subsection{障碍函数}
 \label{b3:subsec:160301}
 
-设 \(\xi\in\partial D\)。若在 \(D\cap B(\xi,r)\) 有连续正超调和函数 \(b\)，使 \(b(z)\to0\) 当 \(z\to\xi\)，且远离 \(\xi\) 的局部边界上有正下界，则称它为 \(\xi\) 处的\term[zhangai-hanshu]{障碍函数}[barrier]。在较小球的人工边界上取正下界 \(c\)，将 \(\min(b,c)\) 与球外常数 \(c\) 拼接，得到全域障碍；超调和比较原理保证拼接仍超调和。
+在边界点 \(\xi\) 附近，我们希望一个正函数只在趋向 \(\xi\) 时变小。仅要求它在域内逐点为正并不够：沿另一个边界点趋近时，它仍可能趋于零。定义中的环带下界排除这种情形，也为稍后的截断和拼接留出余量。
 
-圆盘边界点 \(\xi\) 可用 \(b(z)=1-\operatorname{Re}(z\overline\xi/R^2)\)。它在圆盘内部正、到 \(\xi\) 趋零，且其他闭边界弧上有正下界。
+\Needspace{6\baselineskip}
+\begin{definition}\label{b3:def:16-barrier}
+设 \(D\subseteq\mathbb C\) 为有界区域，\(\xi\in\partial D\)。若存在 \(r_0>0\) 及连续函数
+\[
+ b:D\cap B(\xi,r_0)\longrightarrow(0,\infty),
+\]
+使 \(b\) 在该开集的每个连通分支超调和，且满足
+\[
+ \lim_{z\to\xi,\ z\in D}b(z)=0,
+ \quad
+ \inf_{\substack{z\in D\\\delta\le|z-\xi|\le r'}}b(z)>0
+ \quad(0<\delta<r'<r_0),
+\]
+则称 \(b\) 为 \(\xi\) 处的连续正超调和\term[zhangai-hanshu]{障碍函数}[barrier]，简称局部障碍。环带与 \(D\) 的交集为空时，下界条件不另加限制。
+\end{definition}
+这里的超调和是指 \(-b\) 次调和。函数 \(b\) 不必连续延拓到整个局部边界；在一个可能不闭的集合 \(D\cap\{|z-\xi|=s\}\) 上逐点为正，也不能单凭连续性推出统一正下界。因而定义直接要求内部环带上的统一下界，而不以人工圆周的紧性代替它。
+
+\Needspace{6\baselineskip}
+\begin{lemma}[局部障碍的全域化]\label{b3:lem:16-global-barrier}
+设 \(D\subseteq\mathbb C\) 为有界区域，\(\xi\in\partial D\)，且 \(\xi\) 有连续正超调和局部障碍 \(b\)。则存在有界、连续、正的超调和函数 \(B\) 于 \(D\)，在 \(\xi\) 的某个域内邻域等于 \(b\)，并满足
+\[
+ \lim_{z\to\xi,\ z\in D}B(z)=0,
+ \quad
+ \inf_{D\setminus B(\xi,\delta)}B>0
+ \quad(\delta>0).
+\]
+最后一式只要求于非空的集合。
+\end{lemma}
+\begin{proof}
+设 \(b\) 定义在 \(D\cap B(\xi,r_0)\)。取 \(0<s<r_0/2\)。由环带条件，可选 \(c>0\)，使
+\[
+ b(z)\ge2c
+ \quad\left(z\in D,\ s\le|z-\xi|\le2s\right).
+\]
+若该环带中没有域内点，任取 \(c>0\) 即可。定义
+\[
+ B(z)=
+ \begin{cases}
+ \min\{b(z),c\},&|z-\xi|<3s/2,\\
+ c,&|z-\xi|\ge3s/2.
+ \end{cases}
+\]
+在整个域内环带 \(s<|z-\xi|<2s\) 上，两种表达都等于 \(c\)。因此拼接处已有一个共同的常值邻域，而不是仅在人工圆周上取值相同。函数 \(B\) 连续且处处为正。有限个超调和函数的最小值仍超调和，这是\cref{b3:prop:15-subharmonic-operations}对其负号取最大值的结论；再用\cref{b3:prop:15-local-comparison}的局部性质，得到全域超调和性。
+
+当 \(z\to\xi\) 时 \(b(z)\to0\)，所以在充分小的邻域有 \(b<c\)，从而 \(B=b\)。对远处的下界，若 \(\delta\ge s\)，则 \(D\setminus B(\xi,\delta)\) 上 \(B=c\)。若 \(0<\delta<s\)，原障碍在 \(\delta\le|z-\xi|\le s\) 上有正下界；将它与 \(c\) 取较小值，便控制了整个 \(D\setminus B(\xi,\delta)\)。
+\end{proof}
+圆盘给出一个可以直接核验的全域障碍。设 \(D=B(a,R)\)、\(|\xi-a|=R\)，令
+\[
+ b(z)=1-\operatorname{Re}\frac{(z-a)\overline{(\xi-a)}}{R^2}.
+\]
+它是调和函数，而且
+\[
+ 2R^2b(z)=R^2-|z-a|^2+|z-\xi|^2\ge|z-\xi|^2.
+\]
+在圆盘内部第一项严格为正，因此 \(b>0\)；趋于 \(\xi\) 时 \(b\to0\)，而 \(|z-\xi|\ge\delta\) 时 \(b(z)\ge\delta^2/(2R^2)\)。这个恒等式把“远离指定边界点”需要的统一下界直接算了出来。
 
 \subsection{正则边界点}
 \label{b3:subsec:160302}
 
-\begin{proposition}\label{b3:prop:16-barrier-regular}
-边界点 \(\xi\) 若有障碍，则对每个 \(\varphi\in C(\partial D)\)，\(H_\varphi(z)\to\varphi(\xi)\)。这样的点称为\term[zhengze-bianjiedian]{正则边界点}[regular boundary point]。
+边界正则性首先是解对数据的性质，不依赖我们是否已经找到某种几何障碍。由\cref{b3:thm:16-perron}，有界区域上每份连续实边值都有一个内部调和的 Perron 包络；定义只问这个包络在一个指定边界点的极限。
+
+\Needspace{6\baselineskip}
+\begin{definition}\label{b3:def:16-regular-point}
+设 \(D\subseteq\mathbb C\) 为有界区域，\(\xi\in\partial D\)。对每个 \(\varphi\in C(\partial D;\mathbb R)\)，令 \(H_\varphi\) 为由连续次调和 Perron 次函数组成的上包络。若
+\[
+ \lim_{z\to\xi,\ z\in D}H_\varphi(z)=\varphi(\xi)
+ \quad\left(\varphi\in C(\partial D;\mathbb R)\right),
+\]
+则称 \(\xi\) 为 \(D\) 的\term[zhengze-bianjiedian]{正则边界点}[regular boundary point]。若 \(\partial D\) 的每个点都正则，称 \(D\) 为\term[zhengze-yu]{正则域}[regular domain]。
+\end{definition}
+量词“每个连续边值”不能省略。常数数据在任何边界点都会取到正确极限，不能用一份常数数据检验正则性。下面的等价命题既给充分条件，也说明局部障碍确实描述了这一性质。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[障碍与边界正则性]\label{b3:prop:16-barrier-regular}
+设 \(D\subseteq\mathbb C\) 为有界区域，\(\xi\in\partial D\)。则 \(\xi\) 为正则边界点，当且仅当它具有连续正超调和局部障碍。若 \(\xi\) 正则，还可以取一个在整个 \(D\) 调和的正障碍，且它在每个 \(D\setminus B(\xi,\delta)\) 上有统一正下界。
 \end{proposition}
 \begin{proof}
-给定 \(\varepsilon>0\)，边值连续性使邻近 \(\xi\) 的边界数据与 \(\varphi(\xi)\) 相差不超过 \(\varepsilon\)。在其余边界，障碍有正下界；选择有限 \(A\) 足够大，函数 \(\varphi(\xi)-\varepsilon-A b\) 在全边界低于 \(\varphi\)，而 \(\varphi(\xi)+\varepsilon+A b\) 高于它。前者是次函数，后者超调和并支配全部次函数。因此包络夹在二者之间。趋于 \(\xi\) 再令 \(\varepsilon\downarrow0\)，得到结论。
+先设局部障碍存在，由\cref{b3:lem:16-global-barrier}取全域障碍 \(B\)。固定 \(\varphi\in C(\partial D;\mathbb R)\) 和 \(\varepsilon>0\)。选 \(\delta>0\)，使
+\[
+ |\varphi(\eta)-\varphi(\xi)|<\varepsilon
+ \quad\left(\eta\in\partial D,\ |\eta-\xi|<\delta\right).
+\]
+设 \(M=\max_{\partial D}|\varphi-\varphi(\xi)|\)。全域障碍在 \(D\setminus B(\xi,\delta/2)\) 上有正下界 \(c_\delta\)，取 \(A\ge0\) 使 \(Ac_\delta\ge M\)。若该集合为空，所有边界点都在上述邻域中，取 \(A=0\) 即可。
+
+函数
+\[
+ L(z)=\varphi(\xi)-\varepsilon-AB(z),
+ \quad U(z)=\varphi(\xi)+\varepsilon+AB(z)
+\]
+分别连续次调和、连续超调和。在距离 \(\xi\) 小于 \(\delta\) 的边界点，正性和数据连续性给 \(\limsup L\le\varphi\)、\(\liminf U\ge\varphi\)。在其余边界点，域内的趋近点最终满足 \(|z-\xi|\ge\delta/2\)，统一下界 \(c_\delta\) 及 \(Ac_\delta\ge M\) 给出相同结论。因此 \(L\) 属于 Perron 次函数族。对任意该族中的 \(v\)，函数 \(v-U\) 次调和，边界上极限非正；\cref{b3:prop:15-subharmonic-maximum}在有界域上给 \(v\le U\)。取上确界得到
+\[
+ \varphi(\xi)-\varepsilon-AB(z)
+ \le H_\varphi(z)\le
+ \varphi(\xi)+\varepsilon+AB(z).
+\]
+先令 \(z\to\xi\)，利用 \(B(z)\to0\)，再令 \(\varepsilon\downarrow0\)，便得正则性。
+
+反过来，只假定 \(\xi\) 正则。取连续边值 \(\psi(\eta)=|\eta-\xi|^2\)，并令 \(B=H_\psi\)。函数 \(v(z)=|z-\xi|^2\) 连续次调和，且在每个边界点取到 \(\psi\)，所以它本身就是合法次函数。因此
+\[
+ 0<|z-\xi|^2\le B(z)\le\max_{\partial D}|\eta-\xi|^2
+ \quad(z\in D).
+\]
+Perron 定理保证 \(B\) 调和；\(\xi\) 的正则性又给 \(B(z)\to\psi(\xi)=0\)。而 \(|z-\xi|\ge\delta\) 时 \(B(z)\ge\delta^2\)，故 \(B\) 是所需全域正调和障碍。这个构造没有使用其他边界点的正则性。
 \end{proof}
-每个边界点正则的有界区域称为正则域，因而连续 Dirichlet 问题在正则域上有唯一解。
+因此只需检验一份与指定点相关的数据：若边值 \(|\eta-\xi|^2\) 的 Perron 包络在 \(\xi\) 趋于零，上面的构造就给出障碍，继而迫使所有连续数据在 \(\xi\) 取到正确极限。正则性也因而是局部的：局部障碍在相同的域内边界几何上可以直接使用，全域部分由截断补齐。
+
+\ProseParagraphBreak
+
+在正则域上，\(H_\varphi\) 在每个边界点取连续数据的值，连同内部的调和性便给 \(H_\varphi\in C(\overline D)\)。经典解的唯一性来自最大值原理。因此，Perron 法的内部存在性与障碍的边界到达性质合在一起，完成了正则域上连续 Dirichlet 问题的存在唯一性。
 
 \subsection{外锥条件}
 \label{b3:subsec:160303}
 
-若补集在 \(\xi\) 附近包含一个顶点为 \(\xi\) 的实心锥，则域附近包含在角宽 \(\beta<2\pi\) 的扇形中。把扇形中轴作为辐角零点，选 \(0<\alpha<\pi/\beta\)，令
+外锥属于补集。具体地，若 \(\mathbb C\setminus D\) 在 \(\xi\) 附近包含一个以 \(\xi\) 为顶点、角宽为正的实心扇形，域的局部部分便落在余下角宽 \(\beta<2\pi\) 的扇形中。\(\beta\) 表示容纳域的角宽；它不是补集外锥的角宽。选定旋转角 \(\theta_0\) 后，把域内点写成
 \[
-b(\xi+r e^{\mathrm{i}\theta})=r^\alpha\cos(\alpha\theta).
+ z=\xi+r e^{\mathrm{i}(\theta_0+\theta)},
+ \quad 0<r<r_0,\quad |\theta|<\beta/2.
 \]
-它在整个允许角范围内正，关于 \(z\) 调和，到顶点趋零，固定半径处有正下界。由上一命题，外锥条件保证正则。光滑边界、Lipschitz 边界以及多边形的有限角点均满足这样的局部条件。角宽接近 \(2\pi\) 时必须相应减小 \(\alpha\)，不能固定使用线性距离函数充当障碍。
+因为 \(\beta<2\pi\)，这里可以选取一个连续辐角分支。域只须包含在这个扇形中，不必等于扇形，也不要求原边界是直线。
 
-\subsection{Wiener 判别准则概览}
+\ProseParagraphBreak
+
+极坐标下的调和方程提示取 \(r^\alpha\cos(\alpha\theta)\)：径向二阶项和角向二阶项恰好相消。但障碍还要求整个允许角范围内保持正下界，所以 \(\alpha\) 的选择不仅由调和方程决定。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[外锥条件与正则性]\label{b3:prop:16-exterior-cone-regular}
+设 \(D\subseteq\mathbb C\) 为有界区域，\(\xi\in\partial D\)。若存在 \(r_0>0\)、\(\theta_0\in\mathbb R\) 及 \(0<\beta<2\pi\)，使
+\[
+ D\cap B(\xi,r_0)
+ \subseteq\{\,\xi+r e^{\mathrm{i}(\theta_0+\theta)}
+       \mid 0<r<r_0,\ |\theta|<\beta/2\,\},
+\]
+则 \(\xi\) 正则。对任意 \(0<\alpha<\pi/\beta\)，函数
+\[
+ b(z)=r^\alpha\cos(\alpha\theta)
+\]
+都是 \(\xi\) 处的连续正调和局部障碍。
+\end{proposition}
+\begin{proof}
+在上述辐角分支上，\(b\) 是 \(\bigl(e^{-\mathrm{i}\theta_0}(z-\xi)\bigr)^\alpha\) 的实部，故调和。令 \(c_\alpha=\cos(\alpha\beta/2)\)。严格不等式 \(\alpha\beta/2<\pi/2\) 给 \(c_\alpha>0\)，并且
+\[
+ c_\alpha r^\alpha\le b(z)\le r^\alpha.
+\]
+上界给 \(z\to\xi\) 时 \(b(z)\to0\)，下界给每个 \(\delta\le r\le r'<r_0\) 上的统一正下界 \(c_\alpha\delta^\alpha\)。因此 \(b\) 满足局部障碍的全部条件，由\cref{b3:prop:16-barrier-regular}得到正则性。
+\end{proof}
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[>=stealth,font=\small,scale=1.12]
+ \fill[gray!30] (0,0)--(120:2) arc (120:240:2)--cycle;
+ \draw[dashed] (0,0) circle (2);
+ \draw (120:2)--(0,0)--(240:2);
+ \draw[dotted,->] (0,0)--(2.35,0) node[right] {\(\theta=0\)};
+ \draw[->] (-120:0.65) arc (-120:120:0.65);
+ \node[right] at (0.68,0.22) {\(\beta\)};
+ \draw[thick] (-0.38,1.6)..controls (-0.4,0.7) and (-0.1,0.35)..(0,0)
+   ..controls (0.3,-0.65) and (0.25,-1.3)..(0.8,-1.8);
+ \node at (1.18,0.8) {\(D\)};
+ \node[align=center] at (-1.3,0) {补集\\外锥};
+ \fill (0,0) circle (0.025) node[below left] {\(\xi\)};
+ \node[above right] at (45:2) {人工圆周 \(r=r_0\)};
+\end{tikzpicture}
+\caption[外锥与正障碍的扇形]{阴影锥包含于补集，域在局部只包含于余下角宽 \(\beta<2\pi\) 的扇形，不要求等于该扇形。粗曲线仅示意可能的域边界。选择 \(\alpha\beta/2<\pi/2\) 后，整个允许角范围内都有 \(\cos(\alpha\theta)\ge\cos(\alpha\beta/2)>0\)，故人工圆周上障碍具有统一正下界。}
+\label{b3:fig:16-exterior-cone-barrier}
+\end{figure}
+
+\cref{b3:fig:16-exterior-cone-barrier}中的粗曲线示意原域边界，虚线圆周则是局部化人为加入的边界。余弦的统一正下界在整个环带有效，因而可以使用\cref{b3:lem:16-global-barrier}；不必假定人工圆周与域的交集是紧的。若取临界值 \(\alpha=\pi/\beta\)，余弦在两条侧边趋于零，环带上的正下界就可能消失。这个临界函数仍然调和，却未必符合当前障碍的定义。
+
+\ProseParagraphBreak
+
+例如局部 Lipschitz 边界可旋转成图像 \(y=g(x)\)，其中 \(g(0)=0\)、\(|g(x)-g(x')|\le L|x-x'|\)，域局部位于 \(y>g(x)\)。由于 \(g(x)\ge-L|x|\)，下方的锥 \(y<-(L+1)|x|\) 包含于补集。于是 Lipschitz 边界点满足外锥条件；光滑边界及角宽小于 \(2\pi\) 的多边形角点也属于这一范围。再入角对应 \(\beta>\pi\)，并不妨碍正则性。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[外锥下的局部 Hölder 估计]\label{b3:prop:16-corner-holder}
+设 \(D\subseteq\mathbb C\) 为有界区域，\(\xi\in\partial D\)。假设某个 \(r_0>0\) 下，\(D\cap B(\xi,r_0)\) 包含于以 \(\xi\) 为顶点、角宽 \(0<\beta<2\pi\) 的扇形。设 \(\varphi\in C(\partial D;\mathbb R)\)，\(H_\varphi\) 为连续次函数 Perron 包络。固定 \(0<\alpha<\pi/\beta\)。若存在 \(H\ge0\) 和 \(0<\gamma\le1\)，使
+\[
+ |\varphi(\eta)-\varphi(\xi)|\le H|\eta-\xi|^\gamma
+ \quad\left(\eta\in\partial D\cap B(\xi,r_0)\right),
+\]
+则存在 \(r_1>0\)、\(C\ge0\)，使
+\[
+ |H_\varphi(z)-\varphi(\xi)|
+ \le C|z-\xi|^{\min(\alpha,\gamma)}
+ \quad\left(z\in D\cap B(\xi,r_1)\right).
+\]
+常数可依赖局部扇形、所选指数、半径及边值数据。
+\end{proposition}
+\begin{proof}
+取 \(b=r^\alpha\cos(\alpha\theta)\)，令
+\[
+ q=\min(1,\gamma/\alpha),\quad p=\alpha q=\min(\alpha,\gamma),
+ \quad c_\alpha=\cos(\alpha\beta/2)>0.
+\]
+在域内部 \(b>0\)、\(\Delta b=0\)，链式法则给
+\[
+ \Delta(b^q)=q(q-1)b^{q-2}|\nabla b|^2\le0,
+ \quad c_\alpha^q r^p\le b^q\le r^p.
+\]
+故 \(b^q\) 是连续正超调和局部障碍。由\cref{b3:lem:16-global-barrier}取其全域化 \(B\)，并选 \(0<\rho<r_0\)，使 \(B=b^q\) 于 \(D\cap B(\xi,\rho)\)。
+
+若边界点 \(\eta\) 满足 \(0<|\eta-\xi|<\rho/2\)，则
+\[
+ \liminf_{z\to\eta,\ z\in D}B(z)
+ \ge c_\alpha^q|\eta-\xi|^p,
+ \quad
+ |\varphi(\eta)-\varphi(\xi)|
+ \le H(\rho/2)^{\gamma-p}|\eta-\xi|^p.
+\]
+因此可用同一个倍数 \(A B\) 支配这部分边界误差。在其余边界点，域内趋近点最终离 \(\xi\) 至少 \(\rho/4\)，而 \(B\) 在这个范围有统一正下界；增大 \(A\) 即可支配其余有界误差。在 \(\xi\) 本身，\(B\to0\)，误差也为零。
+
+于是 \(\varphi(\xi)-AB\) 是 Perron 次函数，\(\varphi(\xi)+AB\) 是支配所有次函数的超调和上界。和障碍正则性证明中的比较相同，得到
+\[
+ |H_\varphi(z)-\varphi(\xi)|\le AB(z)\le A|z-\xi|^p
+ \quad\left(z\in D\cap B(\xi,\rho)\right).
+\]
+取 \(C=A\)、\(r_1=\rho\) 即得结论。
+\end{proof}
+当边值指数 \(\gamma\) 小于障碍指数 \(\alpha\) 时，取 \(q=\gamma/\alpha<1\) 会使障碍在顶点附近下降得慢一些，足以控制较粗糙的边值误差；凹幂产生的超调和性保留了比较方向。仅有某个障碍存在，并不保证它具有这样的幂次上下界，所以定性的边界到达不能自动加强为固定指数的 Hölder 估计。
+
+\ProseParagraphBreak
+
+再入角确实可能降低解的边界光滑性。在截断扇形 \(0<r<1\)、\(|\theta|<\beta/2\) 上，取 \(\pi<\beta<2\pi\)，则
+\[
+ u(r,\theta)=r^{\pi/\beta}\cos(\pi\theta/\beta)
+\]
+调和、连续到闭域，并在两条侧边及顶点取零。在中轴上，\(u(r,0)/r=r^{\pi/\beta-1}\to\infty\)，所以它在顶点不是 Lipschitz 函数，尽管靠近顶点的边界数据恒为零。正则性保证连续到达，并未保证一阶边界正则性。
+
+\subsection{障碍算例与 Wiener 判据概览}
 \label{b3:subsec:160304}
 
-Wiener 判据把障碍存在性转化为补集在逐层缩小尺度上的容量条件。在二维，相对容量可由
+外接圆提供另一种直接可算的障碍，但须限制接触集。若同一个外圆沿一段边界接触，下面的对数会同时在这些点趋于零，不能单独识别指定点。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[唯一接触的外球障碍]\label{b3:prop:16-exterior-ball-barrier}
+设 \(D\subseteq\mathbb C\) 为有界区域，\(\xi\in\partial D\)。若存在 \(a\in\mathbb C\)、\(R>0\)、\(r_0>0\)，使
 \[
-\operatorname{cap}(K,U)=\inf\left\{\int_U|\nabla v|^2\,\mathrm{d}A:
-v\in C_c^\infty(U),\ v\ge1\text{ 在 }K\text{ 的邻域}\right\}
+ \overline{B(a,R)}\subseteq\mathbb C\setminus D,
+ \quad |\xi-a|=R,
+ \quad
+ \overline D\cap\overline{B(\xi,r_0)}\cap\overline{B(a,R)}=\{\xi\},
 \]
-定义。平面判据使用相对圆盘容量，而不是高维中的 \(r^{d-2}\) 权重；定量归一化不改变散度判定。外锥在每个尺度贡献非退化容量，孤立点的容量为零。
-
-本小节仅说明判据的对象和机制。一般闭补集的等价判据需要平衡势、薄性和容量逼近，本章没有展开这些技术，也不把它列为后续存在性证明的前提。相关范围可在 Ransford 的《Potential Theory in the Complex Plane》\cite{Ransford1995Potential}继续学习。
-
-
-\ProseParagraphBreak
-
-障碍的拼接须选择使函数在人工圆周上已经等于外部常数的截断。若 \(b\ge2c>0\) 于该圆周，由连续性，在它的一个邻域仍有 \(b\ge c\)；于是 \(\min(b,c)\) 在邻域恒为 \(c\)，与外部常数平滑地衔接到连续超调和函数。两个超调和函数的最小值超调和，因为其负号是两个次调和函数的最大值。不能仅仅声称圆周上 \(b\) 非负就作常数拼接，那样可能产生界面跳跃并破坏连续性。
-
-\ProseParagraphBreak
-
-外接圆也给一个方便的障碍。若存在闭圆盘 \(\overline{B(a,r)}\subset\mathbb C\setminus D\)，它与 \(\overline D\) 在局部只于 \(\xi\) 相切，则
+则 \(b(z)=\log(|z-a|/R)\) 在 \(D\cap B(\xi,r_0)\) 是连续正调和障碍，因而 \(\xi\) 正则。
+\end{proposition}
+\begin{proof}
+域内有 \(|z-a|>R\)，故 \(b>0\)，且它在不含 \(a\) 的该开集调和。趋于 \(\xi\) 时，由 \(|\xi-a|=R\) 得 \(b\to0\)。固定 \(0<\delta<r'<r_0\)，考虑紧集
 \[
-b(z)=\log(|z-a|/r)
+ F=\overline D\cap\{\,z\mid\delta\le|z-\xi|\le r'\,\}.
 \]
-在域侧非负且调和，到切点趋零，在远离切点的局部闭集上有正下界。若接触集是一段弧，这个函数会在弧上同时趋零，不能作为区分单一边界点的障碍，须另作局部修正。对于 \(C^2\) 边界，局部曲率界允许取足够小的外接圆；对于只有 Lipschitz 正则性的边界，则外锥通常比外球更适用。
-
-\ProseParagraphBreak
-
-圆环 \(r<|z|<R\) 是每一点正则的例子。两条边界圆均满足外锥条件，因此任意连续的两圈数据都有唯一解。若内圈常数一、外圈常数零，径向解为
+若 \(F\) 非空，唯一接触条件使 \(F\) 与 \(\overline{B(a,R)}\) 不交。连续函数 \(|z-a|-R\) 因而在 \(F\) 上有严格正的最小值，所以 \(\log(|z-a|/R)\) 在相应域内环带上有统一正下界。由障碍判据得结论。
+\end{proof}
+对于 \(C^2\) 图像边界，可把接触点移到原点、切线转为水平线，写 \(D\) 局部在 \(y>g(x)\)，其中 \(g(0)=g'(0)=0\)、\(|g(x)|\le Cx^2\)。取下方圆心 \((0,-a)\) 和足够小的半径 \(a>0\)，使整个圆盘留在图像邻域且 \(1/(2a)>C\)。该圆的上半边满足
 \[
-u(z)=\frac{\log(R/|z|)}{\log(R/r)}.
+ -a+\sqrt{a^2-x^2}\le-\frac{x^2}{2a}<-Cx^2\le g(x)
+ \quad(0<|x|<a).
 \]
-在缩小内圈 \(r\downarrow0\) 时，对每个固定内部点这个解趋零。小孔影响消失的速率为 \(1/\log(R/r)\)，是二维对数核的具体表现。将小孔直接替换为单点并继续指定值一，便回到上一节的非正则例子。极限域的边值问题不一定保留近似域上每一点的经典可解性。
+圆盘位于域外，并只在原点接触。这说明光滑边界为何常能使用外球障碍；只有 Lipschitz 正则性时，则直接使用外锥更方便。
 
 \ProseParagraphBreak
 
-障碍也给一个边界连续性的定量版本。若局部 \(b(z)\le C|z-\xi|^\alpha\)，且边界数据在 \(\xi\) 附近以 Hölder 指数 \(\gamma\) 连续，那么先在半径 \(\delta\) 邻域使用数据误差 \(C\delta^\gamma\)，外部使用障碍的正下界，得到
+圆环的两条边界圆均正则。\subsecref{b3:subsec:160204}中的显式解表明，内圈取一、外圈取零时
 \[
-|H_\varphi(z)-\varphi(\xi)|\le C\delta^\gamma+A_\delta b(z).
+ u_r(z)=\frac{\log(R/|z|)}{\log(R/r)}
+ \quad(r<|z|<R).
 \]
-仅有一个障碍的存在未给出 \(A_\delta\) 随 \(\delta\) 的增长率，因而此式不能自动化成固定 Hölder 指数的结论。若外锥模型还给正下界 \(c\delta^\alpha\)，才可取 \(A_\delta\le C\delta^{-\alpha}\) 并优化 \(\delta\)。证明连续边界到达与证明定量边界正则性需要不同程度的几何信息。
+固定非零内点后，\(r\downarrow0\) 时该值按 \(1/\log(R/r)\) 的量级趋于零。若把内圈缩成孤立点并在那里指定值一，\hyperref[b3:exmp:16-punctured-disk]{上一节的穿孔圆盘算例}已经用圆环比较证明 Perron 包络恒零。该点不正则，因而也不存在本节定义的障碍；不必再次借用尚未确认的边界取值来证明这一事实。
 
 \ProseParagraphBreak
 
-容量为零的孤立点可由截断对数试函数验证。对于 \(0<\varepsilon<R\)，取 \(v=1\) 于 \(|z|\le\varepsilon\)，在中间环域取 \(v=\log(R/|z|)/\log(R/\varepsilon)\)，外圆以外取零。其 Dirichlet 能量为 \(2\pi/\log(R/\varepsilon)\)，趋于零；在内外两个接缝做任意小的光滑修正即可得到定义要求的测试函数。这里是相对容量的直接计算，尚不需要一般 Wiener 判据。它说明单点在二维仍可被能量任意小的函数遮盖，不能只凭欧氏距离很近就认为边界有足够影响。
+外锥和孤点的差别还可以用能量度量。下面只建立所需的相对容量及两个直接计算，为理解更一般的边界判据提供参照。
+
+\Needspace{6\baselineskip}
+\begin{definition}\label{b3:def:16-relative-capacity}
+设 \(U\subseteq\mathbb C\) 为有界开集，\(K\Subset U\) 为紧集。定义 \(K\) 相对于 \(U\) 的\term[xiangdui-rongliang]{相对容量}[relative capacity]为
+\[
+ \operatorname{cap}(K,U)\coloneqq
+ \inf\left\{\,\int_U|\nabla v|^2\,\mathrm{d}A
+ \ \middle|\ v\in C_c^\infty(U;\mathbb R),\quad
+ v\ge1\text{ 于 }K\text{ 的某邻域}\,\right\}.
+\]
+\end{definition}
+\symidx{\(\operatorname{cap}(K,U)\)：紧集 \(K\) 相对于开集 \(U\) 的容量}
+
+紧集增大时，试函数限制增加，容量不减；外域增大时，可用试函数增加，容量不增。二维能量还具有尺度不变性：换元 \(z=\xi+s\zeta\) 使梯度的平方乘 \(s^{-2}\)，面积元乘 \(s^2\)，两者抵消。这解释了为什么平面上的比较必须保留内外尺度之比。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[圆盘的相对容量]\label{b3:prop:16-annulus-capacity}
+若 \(0<r<R\)，则
+\[
+ \operatorname{cap}\bigl(\overline{B(0,r)},B(0,R)\bigr)
+ =\frac{2\pi}{\log(R/r)},
+ \quad
+ \operatorname{cap}\bigl(\{0\},B(0,R)\bigr)=0.
+\]
+\end{proposition}
+\begin{proof}
+对任意合法试函数 \(v\)，有 \(v(re^{\mathrm{i}\theta})\ge1\)，而靠近 \(R\) 的圆周值为零。沿每条半径积分，再用带权 Cauchy--Schwarz 不等式，得到
+\[
+ \begin{aligned}
+ 1&\le\left|\int_r^R\partial_s v(se^{\mathrm{i}\theta})\,\mathrm{d}s\right|,\\
+ 1&\le\left(\int_r^R|\partial_s v(se^{\mathrm{i}\theta})|^2s\,\mathrm{d}s\right)
+           \log(R/r).
+ \end{aligned}
+\]
+对 \(\theta\) 积分，并用 \(|\nabla v|^2\ge|\partial_s v|^2\)，得到能量下界 \(2\pi/\log(R/r)\)。
+
+为达到这个下界的极限，先取 \(r<r'<R'<R\)，令
+\[
+ w(z)=
+ \begin{cases}
+ 1,&|z|\le r',\\
+ \dfrac{\log(R'/|z|)}{\log(R'/r')},&r'<|z|<R',\\
+ 0,&|z|\ge R'.
+ \end{cases}
+\]
+这个函数连续、分段光滑；沿两条连接圆周积分分部时函数值项相消，所以其弱梯度就是各片的通常梯度。直接计算得
+\[
+ \int_{\mathbb C}|\nabla w|^2\,\mathrm{d}A
+ =\frac{2\pi}{\log^2(R'/r')}\int_{r'}^{R'}\frac{\mathrm{d}s}{s}
+ =\frac{2\pi}{\log(R'/r')}.
+\]
+取非负光滑单位核 \(\eta_\varepsilon\)，支集半径为 \(\varepsilon\)，其中
+\(\varepsilon<\tfrac12\min(r'-r,R-R')\)。磨光 \(w_\varepsilon=w*\eta_\varepsilon\) 在 \(|z|<r'-\varepsilon\) 等于一，支集包含于 \(\overline{B(0,R'+\varepsilon)}\Subset B(0,R)\)，所以属于容量的试函数类。又由弱梯度卷积公式和 Jensen 不等式，
+\[
+ |\nabla w_\varepsilon|^2
+ \le |\nabla w|^2*\eta_\varepsilon,
+ \quad
+ \int|\nabla w_\varepsilon|^2\,\mathrm{d}A
+ \le\int|\nabla w|^2\,\mathrm{d}A.
+\]
+令 \(r'\downarrow r\)、\(R'\uparrow R\)，便得相反的容量上界。
+
+单点的情形也有明确试函数。取 \(0<\delta<R/8\)，在上述构造中令 \(r'=2\delta\)、\(R'=R/2\)，再用支集半径小于 \(\delta/2\) 的非负单位核磨光。所得函数在 \(|z|<\delta\) 等于一，支集包含于 \(B(0,3R/4)\)，能量不超过
+\[
+ \frac{2\pi}{\log(R/(4\delta))}\longrightarrow0
+ \quad(\delta\downarrow0).
+\]
+容量非负，故单点的相对容量为零。
+\end{proof}
+圆环解 \(u_r\) 正是上述截断对数在过渡环带内的调和部分；其能量的分母与小孔影响的分母相同。容量为零表示可以用能量任意小的光滑函数覆盖这个点，并不表示它与域的欧氏距离较大。
 
 \ProseParagraphBreak
 
-穿孔圆盘说明障碍条件确实有内容。取 \(D=\{0<|z|<1\}\)，在单位圆边界给值零，在孤立边界点0给值一。这是在 \(\partial D\) 的相对拓扑下连续的数据。若存在有界调和解连续达到全部边界值，则它在穿孔处可去：其圆环 Fourier 展开中负幂和 \(\log r\) 项都被有界性排除，或对小圆用平均值与最大值原理得到同一延拓。填补后是单位圆盘上零边值的调和函数，必恒零，与0点边值一矛盾。因此0是不正则边界点。
+外锥则在每个足够小的尺度留下统一的容量下界。设补集在 \(\xi\) 附近包含一个固定角宽的锥。由缩放，可取只依赖角宽的 \(0<\kappa<1/4\)，使每个充分小的 \(s>0\) 都有一个闭圆盘 \(\overline{B(a_s,\kappa s)}\) 位于该锥内，且 \(|a_s-\xi|=s/2\)。于是该圆盘包含于
+\(K_s=(\mathbb C\setminus D)\cap\overline{B(\xi,s)}\)，而 \(B(\xi,2s)\subset B(a_s,3s)\)。由容量的两种单调性及圆盘公式，
+\[
+ \operatorname{cap}\bigl(K_s,B(\xi,2s)\bigr)
+ \ge\operatorname{cap}\bigl(\overline{B(a_s,\kappa s)},B(a_s,3s)\bigr)
+ =\frac{2\pi}{\log(3/\kappa)}>0.
+\]
+下界与 \(s\) 无关。外锥在不断缩小的尺度上保留了能量影响，孤点则没有这种性质。
+
 \ProseParagraphBreak
-还可直接算出 Perron 解。零函数属于次函数族。对任何次函数 \(v\)，边界上界使 \(v\le1\)。在 \(\varepsilon<|z|<1\) 上，以 \(\log|z|/\log\varepsilon\) 作调和上界；若外边界条件只给上极限，可先把上界加一个任意小正数，再缩近外圆。令 \(\varepsilon\downarrow0\)，在固定内部点得到 \(v(z)\le0\)。故族上确界恰为零。孤立边界点的指定值未影响内部解，这与点容量为零的势论图像一致。
+
+\term[wiener-panju]{Wiener 判据}[Wiener criterion]把一般边界点的正则性与补集在逐层尺度上的容量条件联系起来。上述圆盘和外锥计算只是这一思路的可算模型，不是完整判据的证明。对于任意闭补集，要说明容量如何构造势、怎样累积不同尺度的影响，以及相应条件的必要性，还需要进一步的势论。本章不使用这些未展开的结论作为存在性前提；Ransford 的《Potential Theory in the Complex Plane》\cite{Ransford1995Potential}可作为继续学习的资料。

@@ -2,84 +2,422 @@
 \section{Tauber 型方法}
 \label{b3:sec:2704}
 
-从系数渐近推出变换奇性通常较容易，反过来则要防止振荡藏在平均之下。单调性提供所需约束，而频率截断把边界全纯性转成可控制的局部平均。
+现在已经知道，\(-\zeta'/\zeta\) 在 \(s=1\) 的主部为 \(1/(s-1)\)，并且扣除这一项后可以全纯越过整条直线 \(\operatorname{Re}s=1\)。尚未得到的是 \(\psi(x)/x\to1\)：变换把不同位置的质量混合在一起，边界信息不能未经解释就变成每一点的计数渐近。本节把这一步单独证明。我们先说明累积量怎样产生变换，再用一个完整的 Tauber 论证，把解析信息还原为原函数的渐近。
 
 \subsection{Abel 型与 Tauber 型定理}
 \label{b3:subsec:270401}
 
-若非负累积量 \(A(x)\sim cx\)，则部分求和预示 \(\int x^{-s}\,\mathrm{d}A(x)\) 在 \(s=1\) 有主部 \(c/(s-1)\)。这种由原函数推向变换的结果称为 Abel 型；由变换反推原函数渐近称为\term[tauber-xing-dingli]{Tauber 型定理}[Tauberian theorem]。反向结论需要额外假设，例如单调性或受控振荡，不能只由一个极点形式无条件推出。
+素数幂的权重是离散的，但以下方法只使用质量非负和累积量单调，不要求质量集中在整数上。因此先允许一个一般函数 \(A:[1,\infty)\to[0,\infty)\)，假设它右连续且非递减，并约定 \(A(1^-)=0\)。这个约定的意思是：在开始计数以前没有质量，而 \(A(1)\) 可以不为零。若 \(A\) 在一点跳跃，该跳跃就是该点的质量；不能把 \(\mathrm dA\) 一律理解成 \(A'(x)\,\mathrm dx\)。
 
-\subsection{Wiener–Ikehara 定理}
+\begin{proposition}[累积量与 Stieltjes 变换]
+\label{b3:prop:27-stieltjes-transform}
+设 \(A:[1,\infty)\to[0,\infty)\) 右连续且非递减，每个 \(A(x)\) 都有限，并令 \(A(1^-)=0\)。在 \([1,\infty)\) 上存在唯一的局部有限正 Borel 测度 \(\mu_A\)，满足
+\[
+ \mu_A([1,x])=A(x)\qquad(x\ge1).
+\]
+记 \(\mathrm dA=\mathrm d\mu_A\)。对每个实数 \(\sigma>0\)，有允许两边同为无穷大的恒等式
+\begin{equation}
+\label{b3:eq:27-stieltjes-tonelli}
+ \int_{[1,\infty)}x^{-\sigma}\,\mathrm dA(x)
+ =\sigma\int_1^\infty A(x)x^{-\sigma-1}\,\mathrm dx.
+\end{equation}
+若左端对每个 \(\sigma>1\) 有限，则
+\[
+ F(s)=\int_{1^-}^\infty x^{-s}\,\mathrm dA(x)
+ \qquad(\operatorname{Re}s>1)
+\]
+绝对收敛且全纯，并满足
+\begin{equation}
+\label{b3:eq:27-stieltjes-transform}
+ \frac{F(s)}s=\int_1^\infty A(x)x^{-s-1}\,\mathrm dx,
+ \qquad\operatorname{Re}s>1.
+\end{equation}
+其中 \(1^-\) 表示积分包含 \(1\) 处的原子。
+\end{proposition}
+\begin{proof}
+先构造测度，避免把有跳跃的函数误当成连续函数。令
+\(M=\sup_{x\ge1}A(x)\in[0,\infty]\)。若 \(M=0\)，取零测度。若 \(M>0\)，对 \(0<y<M\) 令
+\[
+ q(y)=\inf\{x\ge1:A(x)\ge y\}.
+\]
+因为 \(y<M\)，集合非空而且下确界有限。单调性保证它是一个向右延伸的区间；取其中趋于下确界的点列，右连续性给出 \(A(q(y))\ge y\)。因此下确界实际属于这个集合，且
+\[
+ q(y)\le x\quad\Longleftrightarrow\quad y\le A(x).
+\]
+这也证明 \(q\) 可测。把 \((0,M)\) 上的 Lebesgue 测度经 \(q\) 推前，所得正 Borel 测度满足
+\[
+ \mu_A([1,x])
+ =\bigl|\{y\in(0,M):y\le A(x)\}\bigr|=A(x).
+\]
+当 \(M<\infty\) 且 \(A(x)=M\) 时，右端仍为 \(M\)；排除单个端点 \(M\) 不改变 Lebesgue 测度。每个 \([1,x]\) 的质量有限，故 \(\mu_A\) 局部有限。区间质量给出
+\[
+ \mu_A(\{1\})=A(1),\qquad
+ \mu_A((a,b])=A(b)-A(a)\quad(1\le a<b).
+\]
+这些区间生成 Borel 集，在每个有限区间上用有限测度的唯一性，再取递增并，便得到唯一性。
+
+下面建立积分公式。对 \(y\ge1\) 和实数 \(\sigma>0\)，有
+\[
+ y^{-\sigma}=\sigma\int_y^\infty x^{-\sigma-1}\,\mathrm dx.
+\]
+被积函数非负，Tonelli 定理允许交换积分，即使尚不知道有限性：
+\[
+ \int y^{-\sigma}\,\mathrm d\mu_A(y)
+ =\sigma\int_1^\infty
+    \mu_A([1,x])x^{-\sigma-1}\,\mathrm dx.
+\]
+这就是\eqref{b3:eq:27-stieltjes-tonelli}。\(y=x\) 的端点是否包含不影响外层 Lebesgue 积分，但内层采用 \([1,x]\) 正好与右连续的 \(A(x)\) 一致。
+
+若 \(s=\sigma+\mathrm i\tau\)、\(\sigma>1\)，同样有
+\(y^{-s}=s\int_y^\infty x^{-s-1}\,\mathrm dx\)。相应二重积分的绝对值由
+\[
+ |s|\int_1^\infty A(x)x^{-\sigma-1}\,\mathrm dx
+ =\frac{|s|}{\sigma}F(\sigma)<\infty
+\]
+控制，Fubini 定理遂给出\eqref{b3:eq:27-stieltjes-transform}。最后，在 \(\operatorname{Re}s>1\) 的任一紧集上，取 \(\delta>0\) 使 \(\operatorname{Re}s\ge1+\delta\)。对任意固定整数 \(k\ge0\)，
+\[
+ (\log x)^k x^{-\operatorname{Re}s}
+ \le C_{k,\delta}x^{-1-\delta/2}\qquad(x\ge1).
+\]
+右端对 \(\mu_A\) 可积，故可在积分号下对 \(s\) 求导，证明了全纯性。
+\end{proof}
+
+例如，若 \(A(x)=\sum_{n\le x}a_n\)、\(a_n\ge0\)，则 \(\mu_A=\sum_{n\ge1}a_n\delta_n\)，变换就是 \(\sum a_nn^{-s}\)。若 \(A(x)=cx\)、\(c\ge0\)，测度则是 \(c\delta_1+c\,\mathrm dx\)（连续部分限于 \((1,\infty)\)），所以
+\[
+ F(s)=c+\frac{c}{s-1}=\frac{cs}{s-1}.
+\]
+这一个例子提醒我们：\(A(x)/x\to c\) 对应极点的系数 \(c\)，不要求整个变换恰好等于 \(c/(s-1)\)；\(1\) 处的质量和有限区间上的改动会贡献全纯项。
+
+\begin{proposition}[Abel 型正向极限]
+\label{b3:prop:27-abelian-limit}
+设 \(A:[1,\infty)\to[0,\infty)\) 右连续且非递减，令 \(A(1^-)=0\)。若对某个 \(c\ge0\) 有 \(A(x)/x\to c\)，则其 Stieltjes 变换 \(F(s)=\int_{1^-}^\infty x^{-s}\,\mathrm dA(x)\) 在 \(\operatorname{Re}s>1\) 绝对收敛，并且
+\[
+ \lim_{\sigma\downarrow1}(\sigma-1)F(\sigma)=c,
+ \qquad \sigma\in\mathbb R.
+\]
+\end{proposition}
+\begin{proof}
+假设和有限区间上的单调性给出 \(A(x)\le Cx\)。由\eqref{b3:eq:27-stieltjes-tonelli}，变换在右半平面绝对收敛。令
+\[
+ h(t)=e^{-t}A(e^t)\quad(t\ge0),\qquad
+ \sigma=1+\varepsilon\quad(\varepsilon>0).
+\]
+在\eqref{b3:eq:27-stieltjes-transform}中作 \(x=e^t\) 的代换，得到
+\[
+ \frac{\varepsilon F(1+\varepsilon)}{1+\varepsilon}
+ =\varepsilon\int_0^\infty h(t)e^{-\varepsilon t}\,\mathrm dt.
+\]
+这里 \(h(t)\to c\)，而权函数 \(\varepsilon e^{-\varepsilon t}\) 在正半轴的积分恰为 \(1\)。给定 \(\eta>0\)，选 \(T_0\) 使 \(|h(t)-c|\le\eta\) 于 \(t\ge T_0\)。于是
+\[
+ \left|\varepsilon\int_0^\infty
+       (h(t)-c)e^{-\varepsilon t}\,\mathrm dt\right|
+ \le\varepsilon\int_0^{T_0}|h(t)-c|\,\mathrm dt+\eta.
+\]
+先令 \(\varepsilon\downarrow0\)，再令 \(\eta\downarrow0\)，得到结论。
+\end{proof}
+
+这种由原函数渐近推向变换极限的结果称为 Abel 型结果。反过来，由变换的信息恢复原函数渐近，称为\term[tauber-xing-dingli]{Tauber 型定理}[Tauberian theorem]。正向命题只给出实轴上的极限，甚至没有声称 \(F(s)-c/(s-1)\) 全纯越过 \(s=1\)。下面的反向定理将要求更充分的边界信息，并用非负性防止振荡藏在平均之下。
+
+\ProseParagraphBreak
+
+证明在对数坐标中进行，因为乘法尺度 \(x\mapsto xe^v\) 在 \(t=\log x\) 中变成平移。下表整理随后会同时出现的对象；其中 \(h\) 和 \(r\) 在负半轴补为零。
+\begin{table}[htbp]
+\centering
+\caption{Tauber 证明中的变量和变换}
+\label{b3:tab:27-tauber-objects}
+\begin{tabularx}{\textwidth}{@{}lX@{}}
+\toprule
+对象 & 定义与作用 \\
+\midrule
+\(x,t\) & \(x\ge1\)、\(t=\log x\ge0\)：乘法尺度改为加法尺度。 \\
+\(A(x)\) & 非负、右连续、非递减的累积量；目标为 \(A(x)/x\to c\)。 \\
+\(h(t)\) & \(h(t)=e^{-t}A(e^t)\)：目标改写为 \(h(t)\to c\)。 \\
+\(r(t)\) & \(r(t)=h(t)-c\mathbf1_{[0,\infty)}(t)\)：从原函数中减去主项。 \\
+\(F(s)\) & \(F(s)=\int_{1^-}^{\infty}x^{-s}\,\mathrm dA(x)\)，最初在 \(\operatorname{Re}s>1\) 定义。 \\
+\(G(z)\) & \(G(z)=F(1+z)/(1+z)-c/z\)：\(r\) 的 Laplace 变换，原边界移到虚轴。 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\(A\) 单调而 \(h\) 未必单调，但对 \(t,v\ge0\)，
+\begin{equation}
+\label{b3:eq:27-slow-decrease}
+ h(t+v)=e^{-t-v}A(e^{t+v})\ge e^{-v}h(t).
+\end{equation}
+所以一个高值不能立即向右大幅下降。反向使用同一不等式，当 \(-\delta\le v\le0\)、\(t\ge\delta\) 时，有 \(h(t+v)\le e^\delta h(t)\)：一个低值也会限制左侧一小段的高度。这两条单边约束将把平均值的极限变成点态极限。
+
+\subsection{Wiener–Ikehara 定理的解析边界版本}
 \label{b3:subsec:270402}
 
-\begin{theorem}[Wiener--Ikehara：解析边界版本]\label{b3:thm:27-wiener-ikehara}
-设 \(A:[1,\infty)\to[0,\infty)\) 右连续且非递减，令 \(A(1^-)=0\)。假设
-\(F(s)=\int_{1^-}^\infty x^{-s}\,\mathrm{d}A(x)\) 在 \(\operatorname{Re}s>1\) 收敛，且对某个 \(c\ge0\)，\(F(s)-c/(s-1)\) 全纯延拓到闭半平面 \(\operatorname{Re}s\ge1\) 的一个开邻域。则 \(A(x)\sim cx\) 当 \(c>0\)；一般地 \(A(x)/x\to c\)。
-\end{theorem}
-\begin{proof}
-先估计增长。对 \(T\ge1\)，非负测度给
-\(F(1+1/T)\ge e^{-T-1}A(e^T)\)。极点假设给 \(F(1+1/T)=cT+O(1)\)，故 \(h(T)=e^{-T}A(e^T)=O(T+1)\)。令 \(h(t)=0\) 于负半轴。分部积分表明
+\begin{theorem}[Wiener--Ikehara：解析边界版本]
+\label{b3:thm:27-wiener-ikehara}
+设 \(A:[1,\infty)\to[0,\infty)\) 为有限值、右连续、非递减函数，令 \(A(1^-)=0\)，并以 \(\mu_A([1,x])=A(x)\) 定义其 Stieltjes 测度。假设
 \[
-\int_0^\infty h(t)e^{-st}\,\mathrm{d}t=\frac{F(1+s)}{1+s},\quad\operatorname{Re}s>0.
+ F(s)=\int_{1^-}^\infty x^{-s}\,\mathrm dA(x)
 \]
-因此 \(r(t)=h(t)-c\mathbf1_{[0,\infty)}(t)\) 的 Laplace 变换 \(G(s)=F(1+s)/(1+s)-c/s\) 全纯越过整个虚轴。
-接着构造一个非负、积分为一的 Schwartz 核 \(\phi\)，使它具有紧频率表示。取非零的非负函数 \(\chi\in C_c^\infty(\mathbb R)\)，置
+在 \(\operatorname{Re}s>1\) 绝对收敛。若对某个 \(c\ge0\)，函数 \(F(s)-c/(s-1)\) 全纯延拓到闭半平面 \(\operatorname{Re}s\ge1\) 的一个开邻域，则
+\[
+ \frac{A(x)}x\longrightarrow c\qquad(x\to\infty).
+\]
+当 \(c>0\) 时，这等价于 \(A(x)\sim cx\)；当 \(c=0\) 时，结论写作 \(A(x)=o(x)\)。
+\end{theorem}
+
+这是\term[wiener-ikehara-dingli]{Wiener--Ikehara 定理}[Wiener--Ikehara theorem]的解析边界版本。开邻域可以在不同高度具有不同宽度，不要求一条宽度固定的无零区域。证明也只会一次使用一个有限高度区间上的边界延拓。
+
+\ProseParagraphBreak
+
+直接恢复 \(h(T)\) 需要同时控制无限多频率。为只使用有限段边界，先用一个频率支集紧的平滑核取平均；为保留\eqref{b3:eq:27-slow-decrease}的不等号，核又必须非负。普通的尖锐频率截断不能满足后一要求，其逆变换会改变符号。下面先对光滑截断作逆 Fourier 变换，再取模平方，明确构造出兼具非负性、快速衰减和紧频率支集的核。
+
+\begin{lemma}[非负的紧频率核]
+\label{b3:lem:27-positive-bandlimited-kernel}
+存在 \(\phi\in\mathcal S(\mathbb R)\) 和 \(q\in C_c^\infty(\mathbb R)\)，使
+\[
+ \phi(t)=\int_{\mathbb R}q(\xi)e^{2\pi\mathrm it\xi}\,\mathrm d\xi,
+ \qquad \phi\ge0,\qquad\int_{\mathbb R}\phi(t)\,\mathrm dt=1,
+\]
+且 \(\phi\) 在原点附近严格为正。对每个 \(a>0\)、\(b\in\mathbb R\)，平移缩放核
+\[
+ \phi_{a,b}(v)=a\phi(a(v-b))
+\]
+以及它的反射 \(v\mapsto\phi_{a,b}(-v)\)，仍具有非负性、单位积分和光滑紧支集的频率表示。
+\end{lemma}
+\begin{proof}
+取非零、非负的 \(\chi\in C_c^\infty(\mathbb R)\)，置
 \[
  v(t)=\int_{\mathbb R}\chi(\xi)e^{2\pi\mathrm it\xi}\,\mathrm d\xi,
  \qquad K=\int_{\mathbb R}|v(t)|^2\,\mathrm dt,
  \qquad\phi(t)=|v(t)|^2/K.
 \]
-反复分部积分证明 \(v\) 是 Schwartz 函数；又 \(v(0)=\int\chi>0\)，故 \(0<K<\infty\)。展开平方并在两个紧区间上使用 Fubini，可得
+对 \(v\) 求任意阶导数只在被积函数中增加 \((2\pi\mathrm i\xi)^k\)；再对 \(\xi\) 反复分部积分，紧支集使端点项为零，证明所有这些导数任意阶快速衰减。因此 \(v\in\mathcal S(\mathbb R)\)，\(K<\infty\)。又 \(v(0)=\int\chi>0\)，所以 \(K>0\)，并且 \(\phi\) 在原点附近严格为正。非负性、Schwartz 性及积分为 \(1\) 都由定义得到。
+
+展开平方，对两个有限频率区间使用 Fubini 定理，并作变量替换，得到
 \[
  \phi(t)=\int_{\mathbb R}q(\xi)e^{2\pi\mathrm it\xi}\,\mathrm d\xi,
- \qquad q(\xi)=\frac1K\int_{\mathbb R}\chi(\xi+\eta)\overline{\chi(\eta)}\,\mathrm d\eta.
+ \qquad
+ q(\xi)=\frac1K\int_{\mathbb R}
+       \chi(\xi+\eta)\overline{\chi(\eta)}\,\mathrm d\eta.
 \]
-函数 \(q\) 光滑且紧支集，\(\phi\ge0\)、\(\int\phi=1\)，并且 \(\phi\) 在原点附近严格为正。以上表示直接由有限积分得到，采用全书统一的 \(2\pi\) 归一化。
+若 \(\operatorname{supp}\chi\subset[-R,R]\)，则 \(q\) 支于 \([-2R,2R]\)；积分号下求导给出光滑性。因此这个表示直接由绝对收敛的积分推出，不需要把非可积函数放进 Fourier 反演公式。
 
-对 \(\varepsilon>0\)，\(r(u)e^{-\varepsilon u}\) 在正半轴绝对可积，故再次用 Fubini 得
+换元给出 \(\int\phi_{a,b}=1\)，频率表示中的函数则变为
 \[
-\int_{\mathbb R}r(u)e^{-\varepsilon u}\phi(T-u)\,\mathrm{d}u
-=\int q(\xi)G(\varepsilon+2\pi\mathrm{i}\xi)e^{2\pi\mathrm{i}T\xi}\,\mathrm{d}\xi,
+ q_{a,b}(\xi)=e^{-2\pi\mathrm ib\xi}q(\xi/a).
 \]
-左侧只在 \(u\ge0\) 非零。对固定 \(T\)，\(r(u)=O(u+1)\) 与 Schwartz 衰减允许令 \(\varepsilon\downarrow0\)；右侧在固定紧频率集上由全纯延拓一致趋于边界值。因此
+它仍光滑且紧支集。反射只把 \(q_{a,b}(\xi)\) 换成 \(q_{a,b}(-\xi)\)，其余性质同样保持。
+\end{proof}
+
+这里的归一化与全书 Fourier 变换中的 \(e^{-2\pi\mathrm it\xi}\) 一致。因此下一引理中的 Laplace 边界点是 \(2\pi\mathrm i\xi\)，不是 \(\mathrm i\xi\)。这个因子只改变频率的参数，不改变边界是整条虚轴这一事实。
+
+\begin{lemma}[解析边界给出固定核平均]
+\label{b3:lem:27-boundary-average}
+设可测函数 \(r:\mathbb R\to\mathbb C\) 在负半轴为零，且对某些常数 \(C>0\)、整数 \(m\ge0\) 满足 \(|r(u)|\le C(1+u)^m\) 于 \(u\ge0\)。设其 Laplace 变换
 \[
- (r*\phi)(T)=\int q(\xi)G(2\pi\mathrm i\xi)e^{2\pi\mathrm iT\xi}\,\mathrm d\xi
+ G(z)=\int_0^\infty r(u)e^{-zu}\,\mathrm du,
+ \qquad\operatorname{Re}z>0,
+\]
+全纯延拓到虚轴的一个开邻域。若 \(q\in C_c^\infty(\mathbb R)\)，且
+\(\phi(t)=\int q(\xi)e^{2\pi\mathrm it\xi}\,\mathrm d\xi\)，则
+\[
+ (r*\phi)(T)=\int_{\mathbb R}r(u)\phi(T-u)\,\mathrm du
+ \longrightarrow0\qquad(T\to+\infty).
+\]
+\end{lemma}
+\begin{proof}
+先给正半轴上的积分加上阻尼 \(e^{-\varepsilon u}\)，其中 \(\varepsilon>0\)。由于
+\[
+ \int_0^\infty |r(u)|e^{-\varepsilon u}\,\mathrm du
+ \cdot\int_{\mathbb R}|q(\xi)|\,\mathrm d\xi<\infty,
+\]
+Fubini 定理给出
+\begin{equation}
+\label{b3:eq:27-damped-average}
+ \begin{aligned}
+ &\int_0^\infty r(u)e^{-\varepsilon u}\phi(T-u)\,\mathrm du\\
+ &\qquad=\int_{\mathbb R}q(\xi)G(\varepsilon+2\pi\mathrm i\xi)
+                         e^{2\pi\mathrm iT\xi}\,\mathrm d\xi.
+ \end{aligned}
+\end{equation}
+此时我们先固定 \(T\)，令 \(\varepsilon\downarrow0\)。左端的控制函数可以取 \(C(1+u)^m|\phi(T-u)|\)，它可积，因为 \(\phi\) 是 Schwartz 函数。右端只涉及固定紧集 \(\operatorname{supp}q\)。这个紧集对应的虚轴线段位于延拓域内，紧致性给出一条足够薄的共同邻域；在该邻域中 \(G\) 连续且一致有界。因此右端一致趋于边界积分，得到
+\[
+ (r*\phi)(T)=\int_{\mathbb R}
+       q(\xi)G(2\pi\mathrm i\xi)e^{2\pi\mathrm iT\xi}\,\mathrm d\xi.
+\]
+振幅 \(Q(\xi)=q(\xi)G(2\pi\mathrm i\xi)\) 光滑且紧支集。对 \(T>0\) 分部积分一次，端点项为零，故
+\[
+ |(r*\phi)(T)|
+ \le\frac1{2\pi T}\int_{\mathbb R}|Q'(\xi)|\,\mathrm d\xi
  \longrightarrow0.
 \]
-最后一步也可直接证明：振幅 \(q(\xi)G(2\pi\mathrm i\xi)\) 光滑紧支集，分部积分一次给 \(O(T^{-1})\)，端点项为零。由于
-\((\mathbf1_{[0,\infty)}*\phi)(T)=\int_{-\infty}^T\phi(v)\,\mathrm dv\to1\)，故 \((h*\phi)(T)\to c\)。平移、反射和缩放 \(\phi\) 仍满足同样的非负性、单位质量及紧频率表示，因而对任何这类核都有
-\(\int h(T+v)\phi(v)\,\mathrm dv\to c\)。
-由单调性，对 \(0\le v\le\delta\) 有 \(h(T+v)\ge e^{-\delta}h(T)\)。取一个固定正核在这段上有正质量，平均的有限极限先给 \(h(T)\) 对大 \(T\) 有界；连同紧区间局部有界性得全局界 \(0\le h\le B\)。现在将正核缩放并平移到 \(\delta/2\)，使其在 \((0,\delta)\) 的质量至少 \(1-\eta\)。平均极限给
-\(\limsup h(T)\le ce^\delta/(1-\eta)\)。再把核集中到 \((-\delta,0)\)。在此区间有 \(h(T+v)\le e^\delta h(T)\)，外部质量的贡献不超过 \(B\eta\)，所以
-\(\liminf h(T)\ge e^{-\delta}(c-B\eta)\)。依次令 \(\eta\downarrow0\)、\(\delta\downarrow0\)，两界合为 \(h(T)\to c\)。换回 \(x=e^T\) 即得结论。
+这一步的常数依赖所选核和所用边界线段；它没有给出所有缩放核共同的误差界。
 \end{proof}
-这给出\term[wiener-ikehara-dingli]{Wiener--Ikehara 定理}[Wiener--Ikehara theorem]的解析边界版本。更一般的边界分布假设也有相应定理，本章没有把这些较弱假设混入陈述。证明中正性先给粗增长，再给有界性，最后才把平均极限变成点态极限，三个步骤不能互相替代。
+
+最后还需要一条实变量引理。它解释为什么先证明 \(h\) 有界，再把核集中到单侧小区间：具有紧频率支集的核在空间中仍带有尾部，不能把尾部直接丢掉。
+
+\begin{lemma}[由单调累积量撤去平均]
+\label{b3:lem:27-monotone-unsmoothing}
+设 \(h:\mathbb R\to[0,\infty)\) 可测，在负半轴为零，且对某些常数 \(C>0\)、整数 \(m\ge0\) 满足 \(h(t)\le C(1+t)^m\) 于 \(t\ge0\)。假设
+\[
+ h(t+v)\ge e^{-v}h(t)\qquad(t,v\ge0).
+\]
+设 \(\phi\in\mathcal S(\mathbb R)\) 非负，\(\int_{\mathbb R}\phi=1\)，且 \(\phi\) 在原点附近严格为正，记 \(\phi_{a,b}(v)=a\phi(a(v-b))\)。若对某个 \(c\ge0\)，每个固定的 \(a>0\)、\(b\in\mathbb R\) 都满足
+\begin{equation}
+\label{b3:eq:27-all-fixed-averages}
+ \int_{\mathbb R}h(T+v)\phi_{a,b}(v)\,\mathrm dv
+ \longrightarrow c\qquad(T\to\infty),
+\end{equation}
+则 \(h(T)\to c\)。
+\end{lemma}
+\begin{proof}
+第一步只选一个固定核来取得全局有界性。因 \(\phi\) 在原点附近为正，可取 \(\delta_0>0\) 使
+\(m_0=\int_0^{\delta_0}\phi(v)\,\mathrm dv>0\)。非负性和单边不等式给出
+\[
+ \int_{\mathbb R}h(T+v)\phi(v)\,\mathrm dv
+ \ge\int_0^{\delta_0}e^{-\delta_0}h(T)\phi(v)\,\mathrm dv
+ =m_0e^{-\delta_0}h(T).
+\]
+左端趋于有限数 \(c\)，因此 \(h(T)\) 在充分大的 \(T\) 上有界。多项式增长界还保证它在有限区间有界，所以存在常数 \(B<\infty\)，使 \(0\le h(T)\le B\) 对所有 \(T\in\mathbb R\) 成立。
+
+现在固定 \(\delta>0\) 和 \(0<\eta<1\)。在 \(\phi_{a,b}\) 中取 \(b=\delta/2\)。由换元，
+\[
+ \int_0^\delta\phi_{a,\delta/2}(v)\,\mathrm dv
+ =\int_{-a\delta/2}^{a\delta/2}\phi(w)\,\mathrm dw
+ \longrightarrow1\qquad(a\to\infty).
+\]
+故可以选一个固定的 \(a\)，使该质量至少为 \(1-\eta\)。将核记为 \(\phi_+\)。对所有 \(T\ge0\)，
+\[
+ \int_{\mathbb R}h(T+v)\phi_+(v)\,\mathrm dv
+ \ge(1-\eta)e^{-\delta}h(T).
+\]
+沿使 \(h(T)\) 趋于上极限的子列使用\eqref{b3:eq:27-all-fixed-averages}，得到
+\begin{equation}
+\label{b3:eq:27-tauber-upper}
+ \limsup_{T\to\infty}h(T)
+ \le\frac{ce^\delta}{1-\eta}.
+\end{equation}
+这里丢弃目标区间以外的积分，是因为 \(h\) 和核都非负。
+
+再取 \(b=-\delta/2\)，把另一个固定核 \(\phi_-\) 的质量至少 \(1-\eta\) 集中在 \((-\delta,0)\)。对 \(T\ge\delta\)、\(-\delta\le v\le0\)，单边条件应用于 \(T+v\) 和 \(-v\)，给出
+\[
+ h(T)\ge e^v h(T+v),\qquad
+ h(T+v)\le e^{-v}h(T)\le e^\delta h(T).
+\]
+区间外则用刚取得的全局界 \(B\)。因此
+\[
+ \int_{\mathbb R}h(T+v)\phi_-(v)\,\mathrm dv
+ \le e^\delta h(T)+B\eta.
+\]
+沿实现下极限的子列取极限，得到
+\begin{equation}
+\label{b3:eq:27-tauber-lower}
+ \liminf_{T\to\infty}h(T)\ge e^{-\delta}(c-B\eta).
+\end{equation}
+\(B\) 在选择 \(\delta,\eta\) 以前已经固定。于是先令 \(\eta\downarrow0\)，再令 \(\delta\downarrow0\)，上下界合为 \(h(T)\to c\)。若 \(c=0\)，\eqref{b3:eq:27-tauber-upper}和 \(h\ge0\) 已直接给出结论。
+\end{proof}
+
+\begin{proof}[\cref{b3:thm:27-wiener-ikehara}的证明]
+先由正性取得一个粗增长界，这一步不预先假设 \(A(x)=O(x)\)。对 \(T\ge1\)，在 \([1,e^T]\) 上有 \(x^{-1-1/T}\ge e^{-T-1}\)，所以
+\[
+ F(1+1/T)\ge e^{-T-1}\mu_A([1,e^T])
+ =e^{-T-1}A(e^T).
+\]
+去极点后的函数在 \(s=1\) 附近全纯，故
+\(F(1+1/T)=cT+O(1)\)。因此
+\[
+ h(T)=e^{-T}A(e^T)\le eF(1+1/T)=O(T+1).
+\]
+在有限区间上，\(A\) 的单调性也给出有界性。将 \(h\) 在负半轴补为零，便得到适用于整条正半轴的线性增长界。
+
+由\cref{b3:prop:27-stieltjes-transform}及 \(x=e^t\) 的代换，对于 \(\operatorname{Re}z>0\)，有
+\[
+ \int_0^\infty h(t)e^{-zt}\,\mathrm dt
+ =\int_1^\infty A(x)x^{-z-2}\,\mathrm dx
+ =\frac{F(1+z)}{1+z}.
+\]
+这里的等式已经由绝对可积的 Fubini 论证建立，不需要对有跳跃的 \(A\) 求导。设
+\[
+ r(t)=h(t)-c\mathbf1_{[0,\infty)}(t).
+\]
+它的 Laplace 变换为
+\begin{equation}
+\label{b3:eq:27-laplace-subtraction}
+ \begin{aligned}
+ G(z)&=\frac{F(1+z)}{1+z}-\frac cz\\
+ &=\frac{F(1+z)-c/z-c}{1+z}.
+ \end{aligned}
+\end{equation}
+最后一个表达式说明零点处的主部确实抵消：\(F(1+z)-c/z\) 由假设全纯越过虚轴，而分母 \(1+z\) 在虚轴上处处非零。因此 \(G\) 全纯越过整条虚轴。式中另一个可能的分母零点 \(z=-1\) 不在虚轴上，可以从延拓域中去掉，不影响所需邻域。
+
+任取\cref{b3:lem:27-positive-bandlimited-kernel}给出的 \(\phi\)，并固定 \(a>0\)、\(b\in\mathbb R\)。将\cref{b3:lem:27-boundary-average}用于反射核 \(v\mapsto\phi_{a,b}(-v)\)，可得
+\[
+ \int_{\mathbb R}r(T+v)\phi_{a,b}(v)\,\mathrm dv\longrightarrow0.
+\]
+注意反射正好把卷积中的 \(T-v\) 换成当前需要的 \(T+v\)。常数部分满足
+\[
+ \int_{\mathbb R}\mathbf1_{[0,\infty)}(T+v)
+       \phi_{a,b}(v)\,\mathrm dv
+ =\int_{-T}^\infty\phi_{a,b}(v)\,\mathrm dv\longrightarrow1.
+\]
+相加即得所有固定核的平均极限\eqref{b3:eq:27-all-fixed-averages}。\(A\) 的单调性给出\eqref{b3:eq:27-slow-decrease}，所以\cref{b3:lem:27-monotone-unsmoothing}推出 \(h(T)\to c\)。最后换回 \(x=e^T\)，得到 \(A(x)/x\to c\)。
+\end{proof}
+
+证明中的三个极限有明确次序：对每个固定核和固定 \(T\)，先撤去阻尼 \(\varepsilon\downarrow0\)；核固定以后再令 \(T\to\infty\)；取得全局界以后，才改变核，使其集中在越来越短的单侧区间。核越集中，频率支集越大，而假设没有提供所有高度共同的边界估计。因此这条证明自然给出定性极限，没有自动给出有效误差率。
 
 \ProseParagraphBreak
 
-夹逼过程中使用的核始终具有整个实轴上的尾部，不能直接当作紧支集核。先取得 \(h\le B\) 后，才能用 \(B\eta\) 控制核在目标区间以外的质量。如果只保留先前的 \(h(T)=O(T)\)，即使核的尾质量很小，这部分误差仍可能随 \(T\) 增大。因此证明必须先固定一个正核取得有界性，然后再改变核的集中程度。
-
-\ProseParagraphBreak
-
-同样，核越来越集中时，其紧频率支集会越来越大。证明对每个固定核先令 \(T\to\infty\)，这时只需边界上一个固定紧段的延拓；最后再令 \(\eta\) 和 \(\delta\) 趋零。若交换这些极限，就需要关于所有高度的一致边界估计，而本定理没有提供这种假设。由此也能看出为什么当前证明自然给定性的极限，而没有自动给出有效误差速率。
+正性也承担了三个不同任务：它先把变换的实轴大小变成 \(h(T)=O(T+1)\)，再把一个固定的核平均变成全局有界性，最后允许丢弃或控制区间外的质量。如果跳过有界性而直接缩窄核，尾部估计只能使用随 \(T\) 增长的粗界，固定的微小尾质量仍可能产生不可忽略的误差。更弱边界假设下的 Tauber 定理需要额外理论，本节只证明所陈述的解析边界版本。
 
 \begin{remark}[仅有一个边界点的信息不足]
 \label{b3:rem:27-one-boundary-point}
 取 \(0<\varepsilon<1/\sqrt2\)，令
 \[
  A(x)=x\bigl(1+\varepsilon\sin(\log x)\bigr),\qquad x\ge1,
- \quad A(1^-)=0.
+ \qquad A(1^-)=0.
 \]
-它非负且严格递增，因为
-\(A'(x)=1+\varepsilon\sin\log x+\varepsilon\cos\log x>0\)。不过 \(A(x)/x\) 始终振荡。由部分积分及正弦的 Laplace 积分，
+因为 \(1-\varepsilon>0\)，它非负；又
 \[
- F(s)=\frac{s}{s-1}
-       +\frac{\varepsilon s}{(s-1)^2+1},\qquad\operatorname{Re}s>1.
+ A'(x)=1+\varepsilon\sin\log x+\varepsilon\cos\log x
+ \ge1-\sqrt2\varepsilon>0,
 \]
-因此 \(F(s)-1/(s-1)\) 在一附近全纯，却在 \(1\pm\mathrm i\) 有极点。这个例子同时保留了非负性、单调性和线性增长，只缺少整条边界的延拓，仍无法得到渐近。可见要求整条边界并非证明措辞上的冗余。
+所以它严格递增，但 \(A(x)/x\) 始终振荡。其变换由\eqref{b3:eq:27-stieltjes-transform}给出：
+\[
+ \begin{aligned}
+ F(s)
+ &=s\int_1^\infty x^{-s}\bigl(1+\varepsilon\sin\log x\bigr)\,\mathrm dx\\
+ &=\frac{s}{s-1}+\frac{\varepsilon s}{(s-1)^2+1},
+ \qquad\operatorname{Re}s>1.
+ \end{aligned}
+\]
+第二项的计算只需在 \(x=e^t\) 后使用
+\(\sin t=(e^{\mathrm it}-e^{-\mathrm it})/(2\mathrm i)\)，分别积分两个指数函数。因而
+\[
+ F(s)-\frac1{s-1}
+ =1+\frac{\varepsilon s}{(s-1)^2+1}
+\]
+在 \(s=1\) 附近全纯，却在 \(1\pm\mathrm i\) 有极点。这个例子保留了非负性、单调性和线性增长，只缺少整条边界的延拓，仍不能得到渐近。这里 \(A(1)=1\) 产生的原子已经包含在变换中；若遗漏它，计算还会错误地少掉一个常数项。
 \end{remark}
 
 \subsection{对 \texorpdfstring{\(\psi(x)\)}{\AnalysisPdfPsi(x)} 的应用}
 \label{b3:subsec:270403}
 
-取 \(A(x)=\psi(x)\)，其 Stieltjes 测度为 \(\sum\Lambda(n)\delta_n\)，非负且在有限区间质量有限。变换为 \(F=-\zeta'/\zeta\)，前节已经逐点排除边界零点，并由单极点展开消去一处的主部。故定理中 \(c=1\)，得到 \(\psi(x)/x\to1\)。这一应用的全部假设均来自此前正文，未把素数定理本身当作增长输入。
+现在逐项核对定理对素数幂计数的适用性。取
+\[
+ A(x)=\psi(x)=\sum_{n\le x}\Lambda(n),
+ \qquad \mu_A=\sum_{n\ge1}\Lambda(n)\delta_n.
+\]
+由于 \(\Lambda(n)\ge0\)，\(A\) 非负且非递减。有限区间中只有有限个整数，所以 \(A\) 取有限值；在整数处采用 \(n\le x\) 的约定，使阶梯函数右连续。又 \(\Lambda(1)=0\)，这里 \(A(1)=0\)，因而 \(1\) 处恰好没有原子。
+
+\ProseParagraphBreak
+
+在 \(\operatorname{Re}s>1\) 内，Euler 乘积的对数导数已经给出绝对收敛表示
+\[
+ F(s)=\int_{1^-}^\infty x^{-s}\,\mathrm dA(x)
+ =\sum_{n\ge1}\frac{\Lambda(n)}{n^s}
+ =-\frac{\zeta'(s)}{\zeta(s)}.
+\]
+\cref{b3:thm:27-zero-free-line}排除了边界上除 \(s=1\) 以外的零点；\(s=1\) 处的简单极点则使 \(F(s)-1/(s-1)\) 全纯。\secref{b3:sec:2703}已把这些局部邻域与原右半平面接起来，得到包含整个闭半平面的开延拓域。因此\cref{b3:thm:27-wiener-ikehara}中可以取 \(c=1\)，得到
+\begin{equation}
+\label{b3:eq:27-psi-asymptotic}
+ \psi(x)=x+o(x).
+\end{equation}
+
+这一应用没有把 \(\psi(x)=O(x)\) 当作 Tauber 定理的前提；一般定理在自己的证明中取得所需有界性。我们此前证明的 Chebyshev 界仍有独立用途，末节的 Newman 路线会直接使用它。对当前路线而言，绝对收敛、边界解析性和系数非负已经足够。下一节再通过三种计数函数之间的比较，把\eqref{b3:eq:27-psi-asymptotic}换成通常的素数定理。

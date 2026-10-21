@@ -2,36 +2,162 @@
 \section{Dirichlet 级数与 Euler 乘积}
 \label{b3:sec:2601}
 
-本章把上一章的收敛级数扩展为全平面的亚纯函数。首先保留它与素数的直接关系；随后用高斯的参数反演得到在原级数收敛域之外仍有意义的表达式。
+上一章把算术函数转成复变量函数，得到了一批在右半平面内可靠的级数与乘积等式。本章集中研究其中最基本的系数 \(a(n)=1\)。它的整数权重没有任何抵消，原级数的收敛范围因此很窄；但其和函数能够延拓到几乎整个复平面。首先应分清，哪些性质来自原表示，哪些性质还需要新的表示证明。
 
 \subsection{在 \texorpdfstring{\(\operatorname{Re}s>1\)}{Re(s)>1} 上的收敛性}
 \label{b3:subsec:260101}
 
-\begin{definition}\label{b3:def:26-zeta}
-在 \(\operatorname{Re}s>1\) 上定义\term[riemann-zeta-hanshu]{Riemann zeta 函数}[Riemann zeta function]
-\(\zeta(s)\coloneqq\sum_{n\ge1}n^{-s}\)。
+\begin{definition}[Riemann zeta 函数]\label{b3:def:26-zeta}
+设 \(s\in\mathbb C\)、\(\operatorname{Re}s>1\)。以实对数定义 \(n^{-s}=\exp(-s\log n)\)，令
+\[
+ \zeta(s)=\sum_{n=1}^{\infty}\frac1{n^s}.
+\]
+这称为\term[riemann-zeta-hanshu]{Riemann zeta 函数}[Riemann zeta function]。
 \end{definition}
 \symidx{\(\zeta(s)\)：Riemann zeta 函数}
-对紧集 \(\operatorname{Re}s\ge1+\delta\)，由 \(\sum n^{-1-\delta}<\infty\) 得局部一致绝对收敛，故全纯；任意固定次导数可逐项计算，因为 \((\log n)^k\) 被小幂 \(n^{\delta/2}\) 控制。在正实轴，\(\zeta(\sigma)>1\)，且 \(\zeta(\sigma)\to1\) 当 \(\sigma\to\infty\)。
+
+这里正式命名的函数与\eqref{b3:eq:25-zeta-series-definition}是同一个函数。写 \(s=\sigma+\mathrm it\)，有 \(|n^{-s}|=n^{-\sigma}\)。所以同一竖线上的绝对收敛性完全相同；若 \(\sigma\ge1+\delta\)、\(\delta>0\)，整个级数由 \(\sum n^{-1-\delta}\) 共同控制。这既给出闭半平面上的一致绝对收敛，也给出内部的全纯性。
+
+\begin{proposition}[级数尾界与实轴极限]\label{b3:prop:26-series-estimates}
+以绝对收敛级数定义 \(\zeta(s)\) 于 \(\operatorname{Re}s>1\)。对每个整数 \(N\ge1\)，若 \(\sigma=\operatorname{Re}s>1\)，则
+\[
+ \left|\zeta(s)-\sum_{n=1}^{N}n^{-s}\right|
+ \le\frac{N^{1-\sigma}}{\sigma-1}.
+\]
+对实数 \(\sigma>1\)，还有
+\[
+ \frac1{\sigma-1}\le\zeta(\sigma)\le1+\frac1{\sigma-1},
+ \qquad
+ \lim_{\sigma\downarrow1}(\sigma-1)\zeta(\sigma)=1.
+\]
+当实数 \(\sigma\to+\infty\) 时，
+\[
+ \zeta(\sigma)=1+2^{-\sigma}+O(3^{-\sigma}),
+\]
+其中误差常数可对全部 \(\sigma\ge2\) 统一选取。
+\end{proposition}
+\begin{proof}
+对尾部先取绝对值，再用递减正函数的积分比较：
+\[
+ \sum_{n>N}n^{-\sigma}\le\int_N^\infty u^{-\sigma}\,\mathrm du
+ =\frac{N^{1-\sigma}}{\sigma-1}.
+\]
+这证明第一个估计。分别把从一开始的积分置于级数下方、把从二开始的尾和置于从一开始的积分下方，便得
+\[
+ \int_1^\infty u^{-\sigma}\,\mathrm du
+ \le\sum_{n\ge1}n^{-\sigma}
+ \le1+\int_1^\infty u^{-\sigma}\,\mathrm du.
+\]
+乘以 \(\sigma-1>0\) 后，两端都在 \(\sigma\downarrow1\) 时趋于一。
+
+最后保留前两项。对 \(\sigma\ge2\)，
+\[
+ 0\le\sum_{n\ge3}n^{-\sigma}
+ \le3^{-\sigma}+\int_3^\infty u^{-\sigma}\,\mathrm du
+ =3^{-\sigma}\left(1+\frac3{\sigma-1}\right)
+ \le4\cdot3^{-\sigma}.
+\]
+于是得到向右方的渐近式。
+\end{proof}
+
+这两个极限描述了实轴上的不同尺度：靠近一时，大整数的累积贡献产生发散；向右远离一时，只剩最小几个整数的贡献。例如实数 \(\sigma=2\) 时，前 \(N\) 项近似的误差不超过 \(1/N\)。当 \(\sigma\) 很接近一，同样的 \(N\) 给出的尾界会很差，后面扣除积分主项的表达式正是为改善这种情况而来。
+
+对每个固定整数 \(k\ge1\)，在 \(\operatorname{Re}s>1\) 内还可以逐项求导：
+\begin{equation}\label{b3:eq:26-zeta-derivatives}
+ \zeta^{(k)}(s)=(-1)^k\sum_{n\ge1}\frac{(\log n)^k}{n^s}.
+\end{equation}
+这是\cref{b3:prop:25-series-derivatives}的特例。恢复其绝对控制的方法：在给定内部紧集左边留出距离 \(\delta>0\)，再用 \((\log n)^k\le C_{k,\delta}n^\delta\)，就把新级数控制在另一个收敛的正项级数之下。因而实轴上 \(\zeta'(\sigma)<0\)，但这条求导公式还不能直接代入 \(\sigma=1\)。
+
+前章已经证明原级数的两个收敛横坐标都等于一。因此，在 \(\operatorname{Re}s<1\) 的任何点，原级数都不收敛。稍后出现的 \(\zeta(0)=-1/2\) 或 \(\zeta(-1)=-1/12\)，只能是延拓函数的值；本章始终不把它们解释为原发散级数按通常顺序求和所得的结果。
 
 \subsection{Euler 乘积}
 \label{b3:subsec:260102}
 
-\cref{b3:thm:25-euler-product}给 \(\zeta(s)=\prod_p(1-p^{-s})^{-1}\)。更强的是前章已经建立收敛全纯对数
-\(\log\zeta(s)=\sum_{p,r\ge1}p^{-rs}/r\)，从而在这个半平面无零点。若把乘积形式延伸到 \(\operatorname{Re}s\le1\)，它通常不再收敛；后面的解析延拓不能被称为该无穷乘积在原意义下的值。
+常数系数一是完全可乘的。\cref{b3:thm:25-euler-product,b3:prop:25-euler-log}于是同时给出乘积和已选定分支的对数：
+\begin{equation}\label{b3:eq:26-euler-log}
+ \zeta(s)=\prod_p(1-p^{-s})^{-1}
+ =\exp L(s),\qquad
+ L(s)=\sum_p\sum_{r\ge1}\frac{p^{-rs}}r,
+ \quad\operatorname{Re}s>1.
+\end{equation}
+各级数在每个内部闭半平面上一致绝对收敛；\(L\) 全纯，在正实轴上取实值。由指数表示，\(\zeta\) 在这里没有零点。这个理由包含无穷乘积极限不会变成零的保证，比只说“每个因子非零”多了一步。
 
-\ProseParagraphBreak
+前章的 Möbius 逆级数还给出定量下界。以下估计对虚部没有限制。
 
-绝对收敛还给出不依赖虚部的上下界。由原级数及 Möbius 逆级数，
+\begin{proposition}[绝对收敛半平面中的上下界]\label{b3:prop:26-halfplane-bounds}
+设 \(\sigma>1\)、\(t\in\mathbb R\)，并令 \(\zeta\) 在该半平面由 \(\sum_{n\ge1}n^{-s}\) 定义。则
 \[
- |\zeta(\sigma+\mathrm it)|\le\zeta(\sigma),\qquad
- \left|\frac1{\zeta(\sigma+\mathrm it)}\right|
- \le\sum_{n\ge1}\frac{|\mu(n)|}{n^\sigma}\le\zeta(\sigma),
- \quad\sigma>1.
+ \frac{\zeta(2\sigma)}{\zeta(\sigma)}
+ \le|\zeta(\sigma+\mathrm it)|
+ \le\zeta(\sigma).
 \]
-所以在每条固定的直线 \(\sigma>1\) 上，函数既有上界，也与零保持正距离。不过当 \(\sigma\downarrow1\) 时，这个下界趋于零，因而不能排除边界零点。无零点区域是否能够扩大，必须从新的信息判断。
+特别地，对每个 \(\delta>0\)，\(\zeta\) 在 \(\operatorname{Re}s\ge1+\delta\) 上有统一上界，并与零保持正距离。
+\end{proposition}
+\begin{proof}
+上界直接来自原级数的三角不等式。因为 \(\zeta\ne0\)，\eqref{b3:eq:25-mobius-series}可用于其倒数；又 \(|\mu(n)|=\mu(n)^2\)，所以
+\[
+ \left|\frac1{\zeta(\sigma+\mathrm it)}\right|
+ \le\sum_{n\ge1}\frac{|\mu(n)|}{n^\sigma}
+ =\frac{\zeta(\sigma)}{\zeta(2\sigma)}.
+\]
+最后的等式是\eqref{b3:eq:25-squarefree-series}。取倒数得到下界，所有量均为正。若 \(\sigma\ge1+\delta\)，还可用较粗的统一估计
+\[
+ |\zeta(\sigma+\mathrm it)|\le\zeta(1+\delta),
+ \qquad
+ |\zeta(\sigma+\mathrm it)|\ge\frac1{\zeta(1+\delta)}>0.
+\]
+\end{proof}
+
+例如在 \(\operatorname{Re}s=2\) 上，由\cref{b3:prop:23-zeta-even-values}的两个偶数值，
+\[
+ \frac{\pi^2}{15}\le|\zeta(2+\mathrm it)|\le\frac{\pi^2}{6}.
+\]
+这不只是“某条线上没有零点”，还给出整条线离零的统一距离。但当 \(\sigma\downarrow1\)，命题中的下界趋于零。于是，即使有完整的半平面估计，也不能通过对边界取极限便排除 \(\operatorname{Re}s=1\) 上的零点；下一章必须补充新的论证。
 
 \subsection{素数与 \texorpdfstring{\(\zeta\)}{\AnalysisPdfZeta} 函数}
 \label{b3:subsec:260103}
 
-\(\zeta\) 将所有整数编码，而其对数只在素数幂上有系数。沿实轴 \(\sigma\downarrow1\)，\(\zeta(\sigma)\) 的发散迫使素数无限多，也迫使 \(\sum_p1/p\) 发散。这类结论仍比素数定理弱：它们不能确定 \(\pi(x)\) 的渐近常数，后者需要控制函数在边界直线上的零点。
+原级数逐个计入所有正整数，而 \(L=\log\zeta\) 的系数只分布在素数幂上。实轴上的极点尺度能够先给出一种带衰减权重的素数计数，说明这些局部因子如何感受到整体发散。
+
+\begin{proposition}[素数倒数的参数加权和]\label{b3:prop:26-prime-weight-growth}
+对实数 \(\sigma>1\)，令 \(P(\sigma)=\sum_p p^{-\sigma}\)。则
+\[
+ P(\sigma)=\log\frac1{\sigma-1}+O(1)\qquad(\sigma\downarrow1).
+\]
+更准确地，
+\[
+ \lim_{\sigma\downarrow1}
+ \left(P(\sigma)-\log\frac1{\sigma-1}\right)
+ =-\sum_p\sum_{r\ge2}\frac1{r p^r},
+\]
+右侧双重和绝对收敛。
+\end{proposition}
+\begin{proof}
+由\eqref{b3:eq:26-euler-log}在实轴上的等式，
+\[
+ \log\zeta(\sigma)=P(\sigma)+R(\sigma),\qquad
+ R(\sigma)=\sum_p\sum_{r\ge2}\frac{p^{-r\sigma}}r.
+\]
+高次素数幂的贡献有一个与 \(\sigma>1\) 无关的可和控制：
+\[
+ 0\le R(\sigma)\le
+ \sum_{n\ge2}\sum_{r\ge2}n^{-r}
+ =\sum_{n\ge2}\frac1{n(n-1)}=1.
+\]
+故支配收敛允许令 \(\sigma\downarrow1\)，得到
+\(R(\sigma)\to\sum_{p,r\ge2}1/(r p^r)\)。另一方面，前面的积分比较给
+\[
+ \log\zeta(\sigma)-\log\frac1{\sigma-1}
+ =\log\bigl((\sigma-1)\zeta(\sigma)\bigr)\longrightarrow0.
+\]
+两式相减即得结论。
+\end{proof}
+
+这比只证明 \(\sum_p1/p\) 发散多提供了一个明确的对数尺度。不过 \(P(\sigma)\) 使用的权重是 \(p^{-\sigma}\)，不是在 \(p\le x\) 处截断的示性函数。怎样从这种变换的信息恢复 \(\pi(x)\) 的渐近，需要另一个方向的论证，不能直接把 \(1/(\sigma-1)\) 换成某个整数上界。
+
+与素数定理更直接相关的是前章已经证明的
+\[
+ -\frac{\zeta'(s)}{\zeta(s)}
+ =\sum_{n\ge1}\frac{\Lambda(n)}{n^s},\qquad\operatorname{Re}s>1.
+\]
+它将全部素数幂赋以 von Mangoldt 权重；其在 \(s=1\) 附近的极点及整条边界上的解析性质，将决定能否用 Tauber 方法恢复部分和。本章先解决更基础的问题：原级数在左侧失效后，应当用什么表达式定义同一个函数，又怎样确定新的极点和零点。

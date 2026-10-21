@@ -2,75 +2,222 @@
 \section{双曲测地线}
 \label{b3:sec:1302}
 
-圆盘的最短路是直径的自同构像。完备性来自边界的无限距离，而常负曲率则描述同一局部尺度的微分几何。
+距离公式说明两点相隔多远，但还没有说明怎样走才能达到这个距离。本节先把径向估计的等号条件转成全部最短路径的几何描述，再证明圆盘在这一距离下完备。曲率与等距变换随后分别解释局部尺度怎样变化、哪些坐标变换保持这种几何；这些结论不需要一般曲面的测地线方程。
 
 \subsection{测地线}
 \label{b3:subsec:130201}
 
-\begin{theorem}\label{b3:thm:13-disk-geodesics}
-圆盘中任意不同两点由唯一的测地线段连接，忽略保持方向的重参数化。测地线是与单位圆正交的圆弧或直径。
+一条路径的长度可以在重参数化后保持不变，因此“唯一最短路”首先应理解为路径形状和行进方向的唯一性。对正则分段 \(C^1\) 曲线，把从起点开始积累的长度作为新参数，便得到弧长参数 \(s\)；在光滑段上它满足
+\[
+ \frac{2|\gamma'(s)|}{1-|\gamma(s)|^2}=1.
+\]
+停留在同一点的参数区间不贡献长度，可以先删去。以下用弧长参数区别真正的局部最短性与仅仅选择某种走法。
+
+\Needspace{6\baselineskip}
+\begin{definition}\label{b3:def:13-geodesic}
+在赋予长度元 \(2|\mathrm dz|/(1-|z|^2)\) 的圆盘 \(\mathbb D\) 中，设 \(\gamma:I\to\mathbb D\) 为按弧长参数化的分段 \(C^1\) 曲线，其中 \(I\subseteq\mathbb R\) 是区间。若每个参数点都有一个邻区间 \(J\subseteq I\)，使任意 \(s,t\in J\) 满足
+\[
+ d_{\mathbb D}(\gamma(s),\gamma(t))=|s-t|,
+\]
+则称 \(\gamma\) 为\term[cedixian]{测地线}[geodesic]。它在紧参数区间上的限制称为测地线段；若 \(I=\mathbb R\)，则称为完整测地线。若上述距离等式对整个 \(I\) 中的任意两点成立，则该曲线全局最短。
+\end{definition}
+定义只要求足够短的子段最短。在一般曲面上，局部最短并不自动保证长段仍最短；圆盘中两者相合，是下面要证明的性质。
+
+\Needspace{6\baselineskip}
+\begin{theorem}[圆盘测地线]\label{b3:thm:13-disk-geodesics}
+在单位圆盘 \(\mathbb D\) 上取长度元 \(2|\mathrm dz|/(1-|z|^2)\)，其诱导的路径距离记为 \(d_{\mathbb D}\)。任意两个不同点由唯一的最短测地线段连接，唯一性忽略停驻及保持方向的重参数化。每条测地线都是与单位圆正交的圆弧或直径的一部分，并且全局最短；反过来，这些圆弧或直径按弧长参数化后都是测地线。
 \end{theorem}
 \begin{proof}
-以自同构把一端移到0。距离证明中的两个不等式同时取等，要求路径速度几乎处处径向且半径单调，故只有径向线段能最短。撤销自同构后得到唯一线段。Möbius 变换保持广义圆与夹角，直径与单位圆正交，所以像为正交圆弧。反向每条这样的圆弧可由一个圆盘自同构送成直径，故确为测地线。
+先把起点取为0，终点写成 \(r e^{\mathrm i\theta}\)、\(0<r<1\)。\cref{b3:lem:13-radial-shortest}已经给出最短路径的完整等号条件：它只能写成
+\[
+ \gamma(t)=u(t)e^{\mathrm i\theta},
+\]
+其中 \(u\) 从0单调不减地增加到 \(r\)。这一结论同时限制方向和半径；路径既不能转向，也不能径向回退，允许的停驻不贡献长度。因此删去停驻后，从0出发的最短路径就是唯一径向线段的保持方向重参数化。
+给定一般起点 \(p\)，用圆盘自同构
+\[
+ \phi_p(z)=\frac{z-p}{1-\overline pz}
+\]
+将它送到0。自同构保持路径长度和距离，故径向线段的逆像给出连接 \(p,q\) 的唯一最短路径。Möbius 变换把广义圆映为广义圆，又在单位圆附近保角，所以直径的逆像是正交于单位圆的圆弧或直径。
+
+还须验证所有正交圆弧都能由这种方法得到。取一条正交于单位圆的广义圆 \(\Gamma\)，并选 \(p\in\Gamma\cap\mathbb D\)。像 \(\phi_p(\Gamma)\) 经过0，仍与单位圆正交。若它是半径为 \(\rho\)、圆心为 \(c\) 的普通圆，过0要求 \(|c|^2=\rho^2\)，正交条件却要求 \(|c|^2=1+\rho^2\)，矛盾。因此它只能是过0的直线。原来的圆盘内弧段便被送到一条直径。
+
+在实直径上取
+\[
+ \gamma_0(s)=\tanh(s/2),\quad s\in\mathbb R.
+\]
+它的双曲速度为1；双曲正切的差公式与\cref{b3:thm:13-disk-distance}还给
+\[
+ d_{\mathbb D}(\gamma_0(s),\gamma_0(t))=|s-t|.
+\]
+旋转及圆盘自同构保持这个等式，故每条正交圆弧的任意子段都最短。
+
+最后，定义中的任一局部测地线，在每个足够短的参数区间上都等于刚证明唯一的最短弧。相邻区间重叠于一段非恒定弧，所以它们所在的广义圆相同；沿连通参数区间延续，整条曲线位于同一条正交圆弧或直径上。弧长参数及局部最短性又禁止改变行进方向。将该圆弧送到实直径后，参数因此为 \(s\mapsto\tanh((\varepsilon s+c)/2)\)，其中 \(\varepsilon\in\{1,-1\}\)。距离等式对全部参数成立，得到全局最短性。
 \end{proof}
-沿直径可用弧长参数 \(r=\tanh(s/2)\)，\(-\infty<s<\infty\)，说明完整测地线的两端都在圆周，而不会在有限弧长到达边界。
+
+每条测地线都能继续延长为完整测地线。在实直径模型中，\(s\to\pm\infty\) 时分别趋于 \(\pm1\)，而每个有限 \(s\) 仍给盘内点。因而完整测地线有两个圆周端点，却没有任何有限弧长参数对应这些端点。通常的欧氏线段只有位于同一直径时才是双曲最短路；一般两点之间的正交圆弧须由自同构确定。
 
 \subsection{完备性}
 \label{b3:subsec:130202}
 
-\begin{theorem}\label{b3:thm:13-disk-complete}
-圆盘 Poincaré 度量完备，且闭有界距离球为紧集。
+单条径向路径走不到边界，还不足以排除其他有限长度的逃逸方式。要证明完备性，需要对任意 Cauchy 列控制其位置。距离球的显式形状正好提供这种全局控制。
+
+\Needspace{6\baselineskip}
+\begin{theorem}[圆盘的完备性与紧闭球]\label{b3:thm:13-disk-complete}
+在单位圆盘 \(\mathbb D\) 上取长度元 \(2|\mathrm dz|/(1-|z|^2)\)，其诱导的路径距离记为 \(d_{\mathbb D}\)。则 \((\mathbb D,d_{\mathbb D})\) 完备，且每个有限半径的闭距离球都是紧集。
 \end{theorem}
 \begin{proof}
-0点距离公式使半径 \(M\) 的闭球为欧氏闭盘 \(|z|\le\tanh(M/2)<1\)，故紧；其他中心由自同构传回。Cauchy 列到某个固定点的距离有界，因此落在这样的紧球。密度至少2，故它也是欧氏 Cauchy 列，并有盘内极限；在包含该球的略大紧盘上密度有上界，直线段估计使它在 Poincaré 距离也趋于这个极限。
-\end{proof}
-完备不等于底空间欧氏闭合。开圆盘在欧氏空间不完备，在这个长度单位中却完备。度量改变了 Cauchy 列的条件，使逃向边界的点列不再 Cauchy。
-
-\begin{proposition}[双曲圆的长度与面积]\label{b3:prop:13-ball-area}
-双曲半径 \(R\) 的圆盘面积与边界长度分别为
+\cref{b3:prop:13-disk-path-metric}已经证明，对 \(z,w\in\mathbb D\) 有 \(d_{\mathbb D}(z,w)\ge2|z-w|\)；若进一步有 \(|z|,|w|\le r<1\)，则
 \[
- A(R)=2\pi(\cosh R-1)=4\pi\sinh^2(R/2),\qquad
+ 2|z-w|\le d_{\mathbb D}(z,w)
+ \le\frac{2}{1-r^2}|z-w|.
+\]
+因此在每个盘内欧氏闭圆盘上，两种距离给出相同拓扑，欧氏紧性也就是双曲紧性。
+由0点距离公式，
+\[
+ \overline B_{\mathbb D}(0,R)
+ =\{\,z:|z|\le\tanh(R/2)\,\}.
+\]
+当 \(R<\infty\) 时，右边是严格包含于 \(\mathbb D\) 的欧氏紧盘，故也是双曲紧集。任意中心的闭球可由圆盘自同构等距送到这种闭球，因而同样紧。
+
+设 \((z_n)\) 为双曲 Cauchy 列。Cauchy 性先使它到某个固定点的距离有界，再由三角不等式使 \(d_{\mathbb D}(0,z_n)\) 有界。因此存在 \(r<1\)，使全部 \(z_n\) 满足 \(|z_n|\le r\)。下界 \(2|z_n-z_m|\le d_{\mathbb D}(z_n,z_m)\) 说明它也是欧氏 Cauchy 列，故收敛到该闭盘中的某个 \(z\)。刚证明的局部上界又给
+\[
+ d_{\mathbb D}(z_n,z)\le\frac{2}{1-r^2}|z_n-z|\longrightarrow0.
+\]
+所以极限属于圆盘，且收敛也发生在双曲距离中。
+\end{proof}
+
+这解释了开圆盘为什么可以具有完备度量：欧氏边界仍未加入，但接近边界的列若逃出每个紧子集，其双曲距离必无界，不能是 Cauchy 列。紧闭球还比完备性提供更多信息；后面在离散甲板轨道上寻找距离最小值时，将用它把有界范围中的候选点限制为有限个。
+
+\ProseParagraphBreak
+长度元 \(\lambda(z)|\mathrm dz|\) 在两个正交方向上都把微小长度乘以 \(\lambda(z)\)，相应的面积元便是 \(\lambda(z)^2\,\mathrm dA(z)\)，其中 \(\mathrm dA=\mathrm dx\,\mathrm dy\)。圆盘自同构的密度恒等式平方后，与 Jacobi 因子 \(|T'|^2\) 相配，因此也保持这个面积。下面既可用欧氏极坐标积分，也可直接把径向变量改为双曲距离。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[双曲圆的长度与面积]\label{b3:prop:13-ball-area}
+在 \(\mathbb D\) 上取长度元 \(2|\mathrm dz|/(1-|z|^2)\) 及面积元 \(4\,\mathrm dA/(1-|z|^2)^2\)。对任意中心和 \(R>0\)，双曲半径 \(R\) 的圆盘面积与边界长度分别为
+\[
+ A(R)=2\pi(\cosh R-1)=4\pi\sinh^2(R/2),\quad
  L(R)=2\pi\sinh R.
 \]
 \end{proposition}
 \begin{proof}
-由自同构不变性，只需中心0。双曲半径 \(R\) 对应 Euclid 半径 \(r=\tanh(R/2)\)。共形面积元是 \(\lambda^2\,\mathrm{d}A\)，故
+等距自同构同时保持长度与面积，所以只需中心0。令欧氏半径为 \(r\)，双曲径向变量为 \(s=2\operatorname{arctanh}r\)。则
 \[
- A=\int_0^r\frac{8\pi t}{(1-t^2)^2}\,\mathrm{d}t
-   =\frac{4\pi r^2}{1-r^2}=4\pi\sinh^2(R/2).
+ r=\tanh(s/2),\quad
+ \frac{2\,\mathrm dr}{1-r^2}=\mathrm ds,\quad
+ \frac{2r}{1-r^2}=\sinh s.
 \]
-圆周上密度恒为 \(2/(1-r^2)\)，长度为 \(4\pi r/(1-r^2)=2\pi\sinh R\)。
+因此在极坐标 \(z=re^{\mathrm i\theta}\) 中，面积元化为
+\[
+ \frac{4r}{(1-r^2)^2}\,\mathrm dr\,\mathrm d\theta
+ =\sinh s\,\mathrm ds\,\mathrm d\theta.
+\]
+对 \(0\le s<R\)、\(0\le\theta<2\pi\) 积分，得到
+\[
+ A(R)=2\pi\int_0^R\sinh s\,\mathrm ds
+ =2\pi(\cosh R-1).
+\]
+边界 \(s=R\) 上的长度元为 \(\sinh R\,|\mathrm d\theta|\)，积分给 \(L(R)=2\pi\sinh R\)。最后用 \(\cosh R-1=2\sinh^2(R/2)\) 得面积的另一形式。
 \end{proof}
-小半径时 \(A(R)\sim\pi R^2\)、\(L(R)\sim2\pi R\)，符合局部 Euclid 行为；大半径时两者均指数增长。完整双曲盘的总面积无穷，而每个有限半径闭球紧。这两项性质相容，完备性不意味着总面积有限。
 
-\ProseParagraphBreak
-闭球紧也可从距离公式直接看。以0为中心的闭球是 \(|z|\le\tanh(R/2)<1\) 的 Euclid 闭盘；任意中心由自同构化到0。每条有界距离的序列因此有收敛子列，这比仅有 Cauchy 完备性更强。后面甲板轨道的距离下确界能够达到，正是依赖闭球紧与轨道离散共同作用。
+小半径时，\(A(R)\sim\pi R^2\)、\(L(R)\sim2\pi R\)，恢复局部欧氏行为；大半径时，两者都以 \(e^R\) 的尺度增长。式 \(A'(R)=L(R)\) 也可从薄圆环的面积看出。整张双曲圆盘面积无穷，与每个有限半径闭球紧并不冲突：紧性限制的是有界距离范围，总面积则要把这些范围不断扩大。
 
 \subsection{常负曲率}
 \label{b3:subsec:130203}
 
-对共形长度元 \(\lambda|\mathrm{d}z|\)，Gaussian 曲率计算式为
+曲率描述局部尺度怎样随位置变化。对平面区域中的正 \(C^2\) 密度 \(\lambda\)，本节采用共形长度元 \(\lambda|\mathrm dz|\) 的\term[gauss-qulv]{Gauss 曲率}[Gaussian curvature]公式
 \[
- K=-\lambda^{-2}\Delta\log\lambda.
+ K_\lambda\coloneqq-\lambda^{-2}\Delta\log\lambda,\quad
+ \Delta=\partial_x^2+\partial_y^2.
 \]
-令 \(u=\log\lambda\)，度量张量为 \(e^{2u}(\mathrm{d}x^2+\mathrm{d}y^2)\)。其 Christoffel 系数为 \(\Gamma^1_{11}=u_x,\Gamma^1_{12}=u_y,\Gamma^1_{22}=-u_x\)，另三项由对称交换坐标得到；代入曲率张量后，一次导数的平方项相消，留下 \(-e^{-2u}(u_{xx}+u_{yy})\)。因此上述式子没有使用统一化。
+这一表达与二维内在几何中曲率的联系作为几何输入采用；Ahlfors《Conformal Invariants》第1-5节在这一形式下讨论共形曲率\cite[1-5 Ultrahyperbolic Metrics, p.~12]{Ahlfors2010Conformal}。这里不以未定义的联络或曲率张量代替证明。下面完整验证所需的坐标不变性，再计算本章度量的曲率；后续解析比较只使用这个明确的二阶表达。
 
-\ProseParagraphBreak
-对圆盘 \(u=\log2-\log(1-|z|^2)\)，直接计算 \(\Delta u=4/(1-|z|^2)^2=\lambda^2\)，所以 \(K=-1\)。常数密度的欧氏度量曲率0，不能通过整体缩放变成负曲率；位置变化的密度是决定性因素。
+\Needspace{6\baselineskip}
+\begin{proposition}[共形曲率的坐标不变性]\label{b3:prop:13-curvature-coordinate}
+设 \(U,V\subseteq\mathbb C\) 为区域，\(f:U\to V\) 为双全纯映射，\(\sigma:V\to(0,\infty)\) 为 \(C^2\) 密度，并令 \(\lambda=(\sigma\circ f)|f'|\)。则
+\[
+ -\lambda^{-2}\Delta\log\lambda
+ =\bigl(-\sigma^{-2}\Delta\log\sigma\bigr)\circ f.
+\]
+特别地，这一曲率表达不依赖共形长度元所用的全纯坐标；圆盘密度 \(2/(1-|z|^2)\) 的曲率恒为 \(-1\)。
+\end{proposition}
+\begin{proof}
+因为 \(f'\) 处处非零，\cref{b3:prop:01-elementary-local-log}允许在每个小圆盘内选取它的全纯对数。因此 \(\log|f'|\) 局部为全纯函数的实部，处处满足 \(\Delta\log|f'|=0\)。
+
+写 \(f=a+\mathrm ib\)。Cauchy--Riemann 方程给
+\[
+ \Delta a=\Delta b=0,\quad
+ \nabla a\cdot\nabla b=0,\quad
+ |\nabla a|^2=|\nabla b|^2=|f'|^2.
+\]
+对任意实 \(C^2\) 函数 \(v\)，二阶链式法则中的混合项因梯度正交而消失，一阶项因 \(a,b\) 调和而消失，余下
+\[
+ \Delta(v\circ f)
+ =(v_{xx}\circ f)|\nabla a|^2
+  +(v_{yy}\circ f)|\nabla b|^2
+ =|f'|^2(\Delta v)\circ f.
+\]
+把它用于 \(\log\lambda=(\log\sigma)\circ f+\log|f'|\)，再除以
+\(\lambda^2=(\sigma\circ f)^2|f'|^2\)，得到所述恒等式。若两个坐标描述同一个长度元，它们的密度正有这样的关系，故计算出的曲率是同一个函数。
+
+对圆盘，记 \(q=1-x^2-y^2\)，则 \(\log\lambda=\log2-\log q\)，并且
+\[
+ \partial_x^2\log\lambda=\frac2q+\frac{4x^2}{q^2},
+ \quad
+ \partial_y^2\log\lambda=\frac2q+\frac{4y^2}{q^2}.
+\]
+相加后得到
+\[
+ \Delta\log\lambda
+ =\frac4q+\frac{4(x^2+y^2)}{q^2}
+ =\frac4{q^2}=\lambda^2.
+\]
+所以 \(K_\lambda=-1\)。
+\end{proof}
+
+若把密度整体乘以常数 \(c>0\)，其对数只增加常数，故曲率变成 \(c^{-2}K_\lambda\)。长度和面积分别乘 \(c\)、\(c^2\)，测地线的轨迹却不变。因此密度 \(1/(1-|z|^2)\) 对应曲率 \(-4\)，与本卷使用的归一化须区分。常密度的曲率为0，单纯改变整体长度单位不能把它变成负曲率。
 
 \subsection{等距变换}
 \label{b3:subsec:130204}
 
-\begin{proposition}\label{b3:prop:13-disk-isometries}
-保定向光滑 Poincaré 等距变换恰为圆盘 Möbius 自同构；反定向光滑等距变换是它们与复共轭的复合。
+圆盘自同构已经是等距变换。反向分类需要从两点之间的距离恢复每一点的微小长度，而不能直接把距离等式当成导数等式。圆盘显式距离使这一步可以独立完成。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[圆盘的光滑等距变换]\label{b3:prop:13-disk-isometries}
+在单位圆盘 \(\mathbb D\) 上取长度元 \(2|\mathrm dz|/(1-|z|^2)\)，其路径距离记为 \(d_{\mathbb D}\)。若 \(T:\mathbb D\to\mathbb D\) 是 \(C^1\) 双射，且
+\[
+ d_{\mathbb D}(Tz,Tw)=d_{\mathbb D}(z,w)
+ \quad(z,w\in\mathbb D),
+\]
+则 \(T\) 处处保定向或处处反定向。保定向者恰为圆盘 Möbius 自同构；反定向者恰为这些自同构与复共轭的复合。
 \end{proposition}
 \begin{proof}
-等距条件使导数在每点为欧氏相似变换。保定向时导数满足 Cauchy--Riemann 方程，故变换全纯；它及逆均全纯，因此由圆盘自同构分类为 Möbius。反定向时先复合共轭转成保定向。反向由密度不变性和共轭不变性得到。
+先固定 \(z\)，令 \(h\to0\)。伪双曲分式与 \(\operatorname{arctanh}t=t+o(t)\) 给出
+\[
+ \delta(z,z+h)
+ =\frac{|h|}{|1-|z|^2-\overline h z|}
+ =\frac{|h|}{1-|z|^2}+o(|h|),
+\]
+因而
+\[
+ d_{\mathbb D}(z,z+h)
+ =\lambda_{\mathbb D}(z)|h|+o(|h|).
+\]
+这个展开将距离恢复为切向量的范数。对任意实向量 \(v\in\mathbb R^2\)，把距离等式用于 \(z,z+tv\)，并用
+\(T(z+tv)=T(z)+t\,DT(z)v+o(|t|)\)，得到
+\[
+ \lambda_{\mathbb D}(Tz)|DT(z)v|
+ =\lambda_{\mathbb D}(z)|v|.
+\]
+因此实线性映射 \(DT(z)\) 是非退化的欧氏相似变换。其行列式连续且不为零，圆盘连通，所以符号处处相同。
+
+若行列式为正，写 \(T=u+\mathrm iv\)。导数矩阵的两列垂直、长度相同且保定向，故具有形式
+\[
+ DT=\begin{pmatrix}a&-b\\b&a\end{pmatrix},
+ \quad a^2+b^2>0.
+\]
+也就是 \(u_x=v_y\)、\(u_y=-v_x\)。\(C^1\) 条件与 Cauchy--Riemann 方程保证 \(T\) 全纯。非零导数给全纯局部逆；这些局部逆由全局双射性拼接成全纯逆。因此 \(T\) 是圆盘自同构，由\cref{b3:prop:05-disk-automorphisms}具有 Möbius 形式。
+
+若行列式为负，复合 \(J(z)=\overline z\) 后成为保定向等距双射，便归入上一种情形。反过来，圆盘自同构由密度不变性保持距离，复共轭也保持密度和路径长度，所以列出的全部映射都是等距变换。
 \end{proof}
-这里给出光滑 Riemannian 等距变换的分类，没有把一般度量空间等距映射的自动光滑性作为未证明前提。
 
-\ProseParagraphBreak
-径向线虽都经过0，通常的 Euclid 直线段却不一定是双曲测地线。两点若不在同一直径上，连接它们的最短曲线是与单位圆正交的圆弧。圆弧可以通过将第一点送到0的 Möbius 变换取得，再把径向段拉回。Möbius 变换保持圆及直线的广义圆，也保持交角，所以得到正交性。弧的唯一性来自拉回后径向最短路的唯一性，而不是仅凭图中能画出一条圆弧。
-
-\ProseParagraphBreak
-圆盘自同构可能没有内部不动点，这不妨碍它为等距变换。抛物型和双曲型的不动点在边界，而边界处距离无穷，不属于度量空间。椭圆型有内部不动点，因此不能作为曲面无分歧覆盖的非平凡甲板变换。这把自同构的动力分类与自由覆盖作用联系起来。
+这里仅假定 \(C^1\) 就足以推出结论，未使用一般距离等距映射自动光滑的定理。等距变换还必须把测地线送到测地线，因为它保持局部距离与弧长。保定向等距变换的内部或边界不动点分类因而与\cref{b3:prop:11-mobius-types}相同：椭圆型有内部不动点，抛物型和双曲型的固定点则位于圆周。后两类如何沿测地线或沿边界附近移动，将在半平面坐标中直接算出。

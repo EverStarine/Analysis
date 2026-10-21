@@ -2,72 +2,281 @@
 \section{Phragmén–Lindelöf 原理}
 \label{b3:sec:1904}
 
-最大值原理在无界扇形中不能直接应用。Phragmén--Lindelöf 方法先乘一个衰减指数，在大圆弧压住增长，再把有限区域的最大值原理送到无穷远。
+有界域的最大模原理把内部的模交给边界控制。在无界域上，边界射线之外还有一个需要处理的方向：趋向无穷远。例如 \(e^z\) 在右半平面的虚轴边界上模为一，在正实轴却任意大。将半平面截成半圆盘时，失去控制的正是不断外移的半圆弧。本节先给外弧加上一个衰减因子，再研究外弧自身的影响怎样随半径衰减。
 
 \subsection{扇形域}
 \label{b3:subsec:190401}
 
-扇形 \(S=\{r e^{\mathrm{i}\theta}:r>0,\ |\theta|<\beta/2\}\)，\(0<\beta<2\pi\)，具有可选定的幂分支 \(z^p\)。若 \(p\beta/2<\pi/2\)，则 \(\operatorname{Re}z^p\ge c|z|^p\)，其中 \(c=\cos(p\beta/2)>0\)。这给整个闭扇形同方向的衰减，不能只检查中心射线。
+设 \(0<\beta<2\pi\)，以 \(\theta_0\) 为中轴方向，记
+\[
+ S_{\theta_0,\beta}
+ =\{re^{\mathrm i\theta}:r>0,\ |\theta-\theta_0|<\beta/2\}.
+\]
+这里辐角在指定区间内选取；扇形不包含顶点零，但讨论闭边界时把零加上。旋转变量 \(\zeta=e^{-\mathrm i\theta_0}z\) 后，可在该扇形选择
+\[
+ \zeta^p=\exp\bigl(p(\log|z|+\mathrm i(\theta-\theta_0))\bigr),
+ \quad p>0.
+\]
+它在内部全纯，连续延到两条射线，并在顶点取连续值零。非整数幂不必在零的整个邻域全纯；以下最大模原理都只把零当作边界点。
+
+\ProseParagraphBreak
+
+希望乘以 \(e^{-\varepsilon\zeta^p}\) 来压住外弧，首先要使这个因子在整个扇形都衰减。所需的几何条件是
+\begin{equation}\label{b3:eq:19-sector-decay}
+ \operatorname{Re}\zeta^p
+ =|z|^p\cos\bigl(p(\theta-\theta_0)\bigr)
+ \ge |z|^p\cos(p\beta/2)>0,
+ \quad 0<p<\frac\pi\beta.
+\end{equation}
+只检查中轴会漏掉靠近边界的方向。若 \(p\beta>\pi\)，余弦在某些方向为负，所选因子反会放大函数。角宽 \(\beta\) 因而确定临界指数 \(\kappa=\pi/\beta\)；角越窄，可允许的径向增长越快。
+
+\ProseParagraphBreak
+
+临界幂的作用也很具体。映射
+\[
+ w=(e^{-\mathrm i\theta_0}z)^\kappa,
+ \quad \kappa=\frac\pi\beta,
+\]
+把扇形双全纯地映到右半平面，把两条边界射线送到虚轴的两个半轴。圆弧 \(|z|=r\) 变为半圆 \(|w|=r^\kappa\)。严格小于 \(\kappa\) 的增长会在后面被较高次的衰减压住；恰等于 \(\kappa\) 时，问题转成半平面中是否能允许线性的对数增长。
 
 \subsection{增长条件}
 \label{b3:subsec:190402}
 
-\term[phragmen-lindelof]{Phragmén--Lindelöf 原理}[Phragmén--Lindelöf principle]的一个常用版本如下。
+\term[phragmen-lindelof]{Phragmén--Lindelöf 原理}[Phragmén--Lindelöf principle]给出边界模界向无界域内部延伸的条件。先在中轴为实轴的扇形陈述；旋转只需使用前面定义的 \(\zeta\)。
+
+\Needspace{6\baselineskip}
 \begin{theorem}[Phragmén--Lindelöf：扇形]\label{b3:thm:19-pl}
-设 \(f\) 在上述扇形全纯并连续到有限边界与顶点。若两边界射线上 \(|f|\le1\)，且 \(|f(z)|\le C e^{A|z|^q}\)，其中 \(q<\pi/\beta\)，则 \(|f|\le1\) 于整个扇形。
+设 \(0<\beta<2\pi\)，\(S=S_{0,\beta}\)。设 \(f:S\to\mathbb C\) 全纯，连续延到两条有限边界射线及顶点，且两射线上 \(|f|\le1\)。若存在 \(C,A>0\) 及 \(0\le q<\pi/\beta\)，使
+\[
+ |f(z)|\le C\exp(A|z|^q)\quad(z\in S),
+\]
+则 \(|f(z)|\le1\) 对所有 \(z\in S\) 成立。
 \end{theorem}
 \begin{proof}
-选 \(q<p<\pi/\beta\)，令 \(f_\varepsilon=f e^{-\varepsilon z^p}\)。两射线上模不超过一；大圆弧上模不超过 \(C e^{Ar^q-\varepsilon c r^p}\)，充分大时亦不超过一。顶点值由连续性不超过一。对截断扇形用最大模原理得 \(|f_\varepsilon|\le1\)，再令大半径趋无穷，最后 \(\varepsilon\downarrow0\)。
+在 \(q\) 与 \(\pi/\beta\) 之间选 \(p\)，并记 \(c=\cos(p\beta/2)>0\)。固定 \(\varepsilon>0\)，在所选幂分支上令
+\[
+ f_\varepsilon(z)=f(z)e^{-\varepsilon z^p}.
+\]
+由\eqref{b3:eq:19-sector-decay}，乘入的因子在闭扇形的模不超过一，两条射线上的模界因而仍为一。在外圆弧 \(|z|=R\) 上，
+\[
+ \log|f_\varepsilon(z)|
+ \le\log C+AR^q-\varepsilon cR^p.
+\]
+因为 \(q<p\)，存在 \(R_\varepsilon\)，使右端在所有 \(R\ge R_\varepsilon\) 时非正。这里对辐角的控制是一致的，所以整条外圆弧都已受控。
+
+连续边值还给 \(|f(0)|\le1\)，而 \(e^{-\varepsilon z^p}\to1\) 于顶点。故对每个 \(R\ge R_\varepsilon\)，\(f_\varepsilon\) 连续于截断扇形的闭包，在其全部边界上模不超过一。有限区域的最大模原理给内部同一上界。现在固定任意观察点 \(z\in S\)，取 \(R>\max\{|z|,R_\varepsilon\}\)，便得
+\[
+ |f(z)|\le e^{\varepsilon\operatorname{Re}z^p}.
+\]
+最后固定 \(z\) 而令 \(\varepsilon\downarrow0\)，即得结论。外圆半径依赖 \(\varepsilon\) 并不构成困难；证明从未要求同一个外圆同时适用于全部 \(\varepsilon\)。
 \end{proof}
-临界指数必须另设条件：\(e^{z^{\pi/\beta}}\) 在两边界模一，在中心射线却发散，给出严格不等式的必要性。
+
+边界界为任意 \(M>0\) 时，对 \(f/M\) 使用定理即可。若边界恒零，则对任意 \(M>0\) 都可这样做，再令 \(M\downarrow0\)。这时增长估计中的常数可以随 \(M\) 改变。
+
+\ProseParagraphBreak
+
+在临界尺度上，函数
+\[
+ f(z)=\exp\bigl((e^{-\mathrm i\theta_0}z)^\kappa\bigr)
+\]
+在两条射线上模都为一，在中轴上却等于 \(e^{r^\kappa}\)。所以 \(q<\kappa\) 不能直接换成 \(q\le\kappa\)。不过，若临界尺度的系数趋于零，结论仍成立。为看清这一点，需要估计外半圆对固定内点的影响，而不只是把外弧模强行压到一以下。
+
+\Needspace{6\baselineskip}
+\begin{lemma}[右半圆盘的比较函数]\label{b3:lem:19-halfdisk-barrier}
+令 \(R>0\)、\(D_R^+=\{w:\operatorname{Re}w>0,\ |w|<R\}\)，并定义
+\[
+ H_R(w)=\operatorname{Re}\frac{2Rw}{R^2+w^2}.
+\]
+则 \(H_R\) 在 \(D_R^+\) 上正且调和，在开直径 \(w=\mathrm it\)、\(|t|<R\) 上为零，在开半圆弧上满足 \(H_R\ge1\)。设 \(B\ge0\)，\(u\) 在 \(D_R^+\) 次调和，且在包含两端点的直径上边界上极限不超过零，在开半圆弧上边界上极限不超过 \(B\)。则
+\begin{equation}\label{b3:eq:19-halfdisk-comparison}
+ u(w)\le B H_R(w)\quad(w\in D_R^+).
+\end{equation}
+\end{lemma}
+\begin{proof}
+有理函数的两个极点 \(\pm\mathrm iR\) 位于边界，故其在内部的实部调和。写 \(w=x+\mathrm iy\)，直接计算得
+\[
+ H_R(w)=\frac{2Rx(R^2+|w|^2)}{|R^2+w^2|^2}>0.
+\]
+在开直径上它为零；在 \(w=Re^{\mathrm i\theta}\)、\(|\theta|<\pi/2\) 上，
+\[
+ \frac{2Rw}{R^2+w^2}=\frac1{\cos\theta}\ge1.
+\]
+因此 \(u-BH_R\) 在开直径及开半圆弧的边界上极限均不超过零。在端点 \(\pm\mathrm iR\)，虽然 \(H_R\) 未必有有限极限，但 \(H_R\ge0\)，而题设给 \(\limsup u\le0\)，所以差的边界上极限仍不超过零。在有界半圆盘上应用\cref{b3:prop:15-subharmonic-maximum}的边界最大值原理，得到\eqref{b3:eq:19-halfdisk-comparison}。
+\end{proof}
+
+对固定 \(w\) 而让 \(R\to\infty\)，这个显式函数满足
+\begin{equation}\label{b3:eq:19-barrier-decay}
+ H_R(w)=\frac{2\operatorname{Re}w}{R}+O_w(R^{-3}).
+\end{equation}
+外弧上的正上界即使趋于无穷，只要是 \(o(R)\)，传到固定内点后仍会消失。
+
+\Needspace{6\baselineskip}
+\begin{theorem}[Phragmén--Lindelöf：临界最小型]\label{b3:thm:19-pl-minimal}
+设 \(S=S_{\theta_0,\beta}\)、\(0<\beta<2\pi\)，并令 \(\kappa=\pi/\beta\)。设 \(f\) 在 \(S\) 全纯，连续延到有限边界及顶点，两条射线上 \(|f|\le M\)，其中 \(M>0\)。若
+\begin{equation}\label{b3:eq:19-minimal-sector-growth}
+ \sup_{|\theta-\theta_0|\le\beta/2}
+ \log^+|f(re^{\mathrm i\theta})|=o(r^\kappa)
+ \quad(r\to\infty),
+\end{equation}
+则 \(|f|\le M\) 于整个扇形。这里 \(\log^+t=\max\{\log t,0\}\) 对 \(t>0\) 定义，并约定 \(\log^+0=0\)。
+\end{theorem}
+\begin{proof}
+用 \(w=(e^{-\mathrm i\theta_0}z)^\kappa\) 把扇形变为右半平面，并在该半平面上令
+\[
+ v(w)=\log\frac{|f(e^{\mathrm i\theta_0}w^{1/\kappa})|}{M}.
+\]
+若 \(f\equiv0\)，结论已经成立；否则全纯函数的对数模次调和，所以 \(v\) 在内部次调和，在虚轴每个有限点的边界上极限不超过零。对于半圆 \(|w|=R\)，令
+\[
+ B_R=\max\left\{0,\sup_{\substack{|w|=R\\\operatorname{Re}w\ge0}}v(w)\right\}.
+\]
+这一上界有限，因为连续模值在紧半圆上有界；零点处的对数负无穷不影响上界。半径满足 \(|z|=R^{1/\kappa}\)，故\eqref{b3:eq:19-minimal-sector-growth}给出 \(B_R=o(R)\)。由\cref{b3:lem:19-halfdisk-barrier}可得
+\[
+ v(w)\le B_R H_R(w)\quad(R>|w|).
+\]
+固定 \(w\)，由\eqref{b3:eq:19-barrier-decay}令 \(R\to\infty\)，右端趋于零。因此 \(v\le0\)，还原变量便得 \(|f|\le M\)。
+\end{proof}
+
+条件中的上确界不能省成每条射线各自的 \(o(r^\kappa)\)：外弧上的最大位置可能随半径改变，而证明需要控制整条弧。对于整函数，\(\log M(r,f)=o(r^\kappa)\) 自动给出所需的一致控制。严格次临界阶满足这一条件，临界阶且最小型也满足；临界正常型的反例则已经给出。
+
+\ProseParagraphBreak
+
+顶点的条件也有独立作用。在右半平面，\(e^{1/z}\) 在虚轴除零外的模为一，并在无穷远满足 \(\log^+|e^{1/z}|\le1/|z|\)，却在正实轴趋向零时无界。失效来自有限顶点而非无穷远。若只控制远处的两条射线，截断域的小圆边界会留下额外数据，不能照用上述结论。
 
 \subsection{整函数应用}
 \label{b3:subsec:190403}
 
-整函数若阶 \(\rho<1\)，并在实轴有界，则为常数。选择 \(\rho<q<1\)，阶的定义给 \(Ce^{Ar^q}\) 增长；分别对上、下半平面（角宽 \(\pi\)）应用扇形原理，得到全平面有界，再用 Liouville。
+一条直线把平面分成两个角宽 \(\pi\) 的扇形。因此阶小于一的整函数若在整条实轴有界，就在两个半平面都有界，继而由 Liouville 定理成为常数。临界最小型定理把这个结论推进到 \(\log M(r)=o(r)\) 的情形。控制更多方向时，可以允许更高的阶。
 
-阶一的 \(e^{\mathrm{i}z}\) 在实轴模一而非常值，显示阈值不能只把严格不等号改成不大于。若函数仅在一个半平面全纯，结论只保证内部有界，不会自动成为常数。
+\Needspace{6\baselineskip}
+\begin{corollary}[有限射线上的有界性]\label{b3:cor:19-ray-liouville}
+设 \(f\) 为整函数，\(\theta_1<\cdots<\theta_m<\theta_1+2\pi\)，其中 \(m\ge2\)，并令 \(\theta_{m+1}=\theta_1+2\pi\)、\(\beta=\max_j(\theta_{j+1}-\theta_j)\)。若 \(f\) 在每条射线 \(re^{\mathrm i\theta_j}\)、\(r\ge0\) 上有界，且满足下列条件之一：增长阶 \(\rho(f)<\pi/\beta\)；或增长阶为 \(\pi/\beta\) 且在此阶为最小型，则 \(f\) 为常数。
+\end{corollary}
+\begin{proof}
+射线只有有限条，所以各射线的模界可取共同最大值 \(M>0\)。令 \(\kappa=\pi/\beta\)。两种增长假设都给
+\(\log^+M(r,f)=o(r^\kappa)\)：阶严格较小时，先在两者之间选一个正指数；临界最小型时，这正是型为零的定义。
+相邻射线围成角宽 \(\beta_j=\theta_{j+1}-\theta_j\le\beta\) 的扇形，其临界指数 \(\kappa_j=\pi/\beta_j\ge\kappa\)，故上述增长仍为 \(o(r^{\kappa_j})\)。整性保证有限边界及顶点连续。逐个应用\cref{b3:thm:19-pl-minimal}，得到全部扇形内 \(|f|\le M\)。它们和边界覆盖全平面，Liouville 定理给所求结论。
+\end{proof}
 
-\subsection{唯一性定理}
+例如，实轴与虚轴把平面分成四个直角扇形。因此阶小于二，或阶二且最小型的整函数，若在两轴都有界，就必须为常数。阶二正常型的 \(e^{\mathrm iz^2}\) 在两轴模均为一，却非常值。更一般地，\(e^{\mathrm iz^d}\) 在 \(2d\) 条方向为 \(k\pi/d\) 的射线上模均为一，阶为 \(d\)、型为一，准确显示这些等角射线的临界障碍。
+
+\ProseParagraphBreak
+
+实际应用中，共同界不必预先给定。只要有限条射线各自有一个有限界，就能取最大值；在每条射线只对充分大的 \(r\) 有界也足够，因为有限的线段可由连续性补上。如果给出的是无限条射线，不能直接对无穷多个不同界取最大值；应先选出满足角宽条件的有限子集，或另行证明界的一致性。
+
+\ProseParagraphBreak
+
+以上论证与零点密度估计处理不同的信息。Jensen 估计把全局最大模上界转成零点数上界，扇形原理则把少数方向上的模界扩展到整个平面。函数 \(e^{\mathrm iz}\) 无零点，沿实轴模一，却有阶一正常型的增长；这里阻止 Liouville 结论的是无穷远的增长方向，零点资料无法识别这一障碍。下一章分离零点乘积与无零点因子时，这一区别仍会出现。
+
+\subsection{唯一性与三线不等式}
 \label{b3:subsec:190404}
 
-同一方法给唯一性。若 \(f,g\) 在扇形满足相同的次临界增长，且在两边界相等，则差 \(h\) 的边界零。对每个 \(\varepsilon>0\)，缩放 \(h/\varepsilon\) 满足边界模不超过一，扇形原理给 \(|h|\le\varepsilon\)，故 \(f=g\)。
+无界域的 Dirichlet 问题能直接体现增长假设与唯一性的关系。即使有限边界值恒零，调和函数仍可从无穷远带入非零的解。
 
-这里边界相等不能直接当作恒等定理的内部聚点条件。本证明通过增长界得到全域比较；若边界为可作 Schwarz 反射的直线，还能用反射后的恒等定理得到更强的局部唯一性。临界例子中的零边值实部 \(\operatorname{Re}z^{\pi/\beta}\) 也说明无穷远会引入额外自由度。
-
-
-\ProseParagraphBreak
-
-扇形的旋转不改变临界阈值。若中轴辐角为 \(\theta_0\)，应在衰减因子中使用 \((e^{-\mathrm{i}\theta_0}z)^p\)，使实部在整个扇形有正下界；直接保留 \(z^p\) 可能在旋转后变成增长因子。幂的分支固定在该扇形中，连续延到两边界射线；顶点只有连续值，不必声称非整数幂在顶点全纯。截断扇形应用最大模原理时，顶点属于边界，内域不包含那个可能的分支点。
-
-\ProseParagraphBreak
-
-若 \(f\) 在顶点仅有界而未声明连续，证明可以先删去小圆。小圆上的模上界可能大于一，不能直接丢弃；若顶点为可去奇点，补上后再使用原定理即可。若允许顶点有极点，则边界射线在接近顶点仍受模一控制已经强烈限制它；但对于只控制远处边界的变式，小圆会留下额外常数。定理的有限边界与顶点假设用来控制截断域的全部边界，不能只关注大圆弧的增长。
-
-\ProseParagraphBreak
-
-一个多射线应用可以把阶阈值提高。若整函数阶 \(\rho\) 小于 \(\pi/\beta\)，并在若干从原点发出的射线上有共同模界 \(M\)，且相邻射线最大角宽为 \(\beta\)，则每个夹角扇形都可选增长指数 \(q\) 位于 \(\rho\) 与 \(\pi/\beta\) 之间。分别使用扇形定理，得到全平面 \(|f|\le M\)，故常数。例如四条坐标半轴把平面分成角宽 \(\pi/2\) 的扇形，于是阶小于二且在实轴、虚轴都有界 的整函数为常数。临界阶二的 \(e^{z^2}\) 在虚轴有界，在实轴却无界；\(e^{\mathrm{i}z^2}\) 在两轴均模一而非常值，给出正确的临界反例。
-
-\ProseParagraphBreak
-
-这里有限多个扇形的常数可以统一，因为只取有限次最大值；若射线无限多而各自界不同，不应未经估计就宣称有一个全平面共同界。把每条射线上的界与一个统一界区别开，也是使用 Liouville 结论前必须核查的量词。
-
-\ProseParagraphBreak
-
-边界零的唯一性应用需要同时假设两函数的增长。差函数的界由两者相加获得，常数可能加倍但指数仍是同一个次临界 \(q\)。然后对任意 \(\delta>0\) 使用 \(h/\delta\)，增长常数会随 \(\delta\) 改变；定理允许每次使用不同有限常数，因此最终 \(|h|\le\delta\) 合法。不能要求所有 \(\delta\) 共用一个增长常数，那会把证明中的无害缩放误认为失败。
-
-\ProseParagraphBreak
-
-无界区域比较还有一个常用的条带版本，它让边界模界不同的情形呈现出插值形式。
-\begin{theorem}[有界函数的三线不等式]\label{b3:thm:19-three-lines}
-设 \(f\) 在 \(0<\operatorname{Re}z<1\) 全纯，在闭条带连续有界，并满足 \(|f(\mathrm{i}t)|\le M_0\)、\(|f(1+\mathrm{i}t)|\le M_1\)，其中 \(M_0,M_1>0\)。则
+\Needspace{6\baselineskip}
+\begin{proposition}[扇形调和函数的唯一性]\label{b3:prop:19-harmonic-uniqueness}
+设 \(0<\beta<2\pi\)，\(u\) 为 \(S_{\theta_0,\beta}\) 上的实调和函数，连续延到有限边界及顶点，在两条射线上为零。若
 \[
- |f(x+\mathrm{i}y)|\le M_0^{1-x}M_1^x\qquad(0\le x\le1).
+ \sup_{|\theta-\theta_0|\le\beta/2}|u(re^{\mathrm i\theta})|
+ =o(r^{\pi/\beta}),
 \]
+则 \(u\equiv0\)。
+\end{proposition}
+\begin{proof}
+令 \(\kappa=\pi/\beta\)，把函数变为右半平面上的
+\(v(w)=u(e^{\mathrm i\theta_0}w^{1/\kappa})\)。共形换元保持调和性，虚轴边界值为零，外半圆的绝对值上界 \(B_R\) 为 \(o(R)\)。分别对次调和函数 \(v\) 与 \(-v\) 使用\cref{b3:lem:19-halfdisk-barrier}，得到
+\( |v(w)|\le B_RH_R(w)\)。固定 \(w\) 后令 \(R\to\infty\)，即得 \(v(w)=0\)。
+\end{proof}
+
+临界例子
+\[
+ u(z)=\operatorname{Re}(e^{-\mathrm i\theta_0}z)^{\pi/\beta}
+ =r^{\pi/\beta}\cos\left(\frac\pi\beta(\theta-\theta_0)\right)
+\]
+连续到顶点，边界值为零，内部却为正。因此单凭有限边界值并不能决定无界扇形中的调和函数。
+
+\ProseParagraphBreak
+
+这与全纯函数的复值边界唯一性要分开。若两个全纯函数连续到一段直边，并在该段的\emph{复值}相等，其差的边界值为零。取避开顶点的小圆盘，\cref{b3:prop:07-schwarz-reflection}把这个差反射成跨越直边的全纯函数；原来的一段边界现在成为内部零点集，恒等定理就给局部恒零，再由连通性延到原域。这个结论不需要无穷远增长条件。Phragmén--Lindelöf 原理在这里控制的是模界或调和实部；只给实部的零边值，与给出整个复值的零边值并不相同。
+
+\ProseParagraphBreak
+
+条带中两侧的模界可以不同。先用一个实部线性的全纯指数因子把两侧都归一到一，再处理水平截断边，就得到三线不等式。
+
+\Needspace{6\baselineskip}
+\begin{theorem}[有界函数的三线不等式]\label{b3:thm:19-three-lines}
+设 \(f\) 在 \(0<\operatorname{Re}z<1\) 全纯，连续有界于闭条带。设 \(M_0,M_1>0\)，且对全部 \(t\in\mathbb R\) 有
+\( |f(\mathrm it)|\le M_0\)、\( |f(1+\mathrm it)|\le M_1\)。则
+\begin{equation}\label{b3:eq:19-three-lines}
+ |f(x+\mathrm iy)|\le M_0^{1-x}M_1^x
+ \quad(0\le x\le1,\ y\in\mathbb R).
+\end{equation}
+若某个内点取得等号，则存在 \(|c|=1\)，使
+\(f(z)=c\exp((1-z)\log M_0+z\log M_1)\)。
 \end{theorem}
 \begin{proof}
-令 \(g(z)=f(z)\exp(-(1-z)\log M_0-z\log M_1)\)。实对数无分支问题，\(g\) 在闭条带有界，两竖边模不超过一。对 \(\varepsilon>0\)，令 \(g_\varepsilon(z)=g(z)e^{\varepsilon z^2-\varepsilon}\)。在两竖边有 \(\operatorname{Re}(\varepsilon z^2-\varepsilon)=\varepsilon(x^2-y^2-1)\le0\)。在横边 \(y=\pm T\)，其模不超过 \(\|g\|_\infty e^{-\varepsilon T^2}\)，充分大 \(T\) 时也不超过一。矩形最大模原理给 \(|g_\varepsilon|\le1\)，令 \(T\to\infty\)、\(\varepsilon\downarrow0\) 得 \(|g|\le1\)，还原即得结论。
+令
+\[
+ g(z)=f(z)\exp\bigl(-(1-z)\log M_0-z\log M_1\bigr).
+\]
+这里用正数的实对数，不涉及分支。归一因子的模只依赖 \(x=\operatorname{Re}z\)，且在 \(0\le x\le1\) 上有界；故 \(g\) 在闭条带有界，两竖边上模不超过一。
+
+固定 \(\varepsilon>0\)，构造
+\(g_\varepsilon(z)=g(z)e^{\varepsilon z^2-\varepsilon}\)。在闭条带上
+\(\operatorname{Re}(\varepsilon z^2-\varepsilon)=\varepsilon(x^2-y^2-1)\le0\)，所以两竖边仍受控。在截断矩形的水平边 \(y=\pm T\) 上，
+\[
+ |g_\varepsilon(x\pm\mathrm iT)|\le\|g\|_\infty e^{-\varepsilon T^2}.
+\]
+充分大的 \(T\) 使这个界也不超过一，矩形上的最大模原理于是给 \(|g_\varepsilon|\le1\)。对固定内点取足够大的 \(T\)，再令 \(\varepsilon\downarrow0\)，得到 \(|g|\le1\)，这就是\eqref{b3:eq:19-three-lines}。
+
+若 \(f\) 在某个内点取得等号，归一后的 \(g\) 就在内点取得最大模一，强最大模原理使 \(g\) 恒为某个模一常数。还原因子便得等号形式。
 \end{proof}
-有界性在这条证明中控制横边，指数修正把横边送到无穷远后消去。若希望允许更快的竖向增长，必须选择新的修正并重新估计，不能直接引用当前版本。三线不等式的权重由观察点在两边界之间的相对位置决定，正如三圆定理的权重由对数半径决定；两个公式背后都是求出合适的调和比较函数。
+
+如果某一侧的模界为零，可先用任意小的正数替代这一界，应用定理后取极限，得到 \(f\equiv0\)。这应在不等式建立之后处理，不能把 \(\log0\) 代入归一因子。条带为 \(a<\operatorname{Re}z<b\) 时，作仿射换元得到权重 \((b-x)/(b-a)\) 与 \((x-a)/(b-a)\)。
+
 \ProseParagraphBreak
-如果某一边界模界为零，可先把该 \(M_j\) 替换为任意小正数，应用已经证明的正界版本再取极限；于是整个条带函数为零。这一处理不需要对零取对数，也不会留下未定义的指数因子。一般的边界参数极限应在不等式已经建立之后执行，而不是在构造辅助全纯函数时直接代入奇异参数。
+
+有界性是一个方便的充分条件，却并非三线不等式唯一允许的增长。水平边上的对数增长若小于某个临界指数，仍能选出在整条带内实部为正的衰减因子。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[允许竖向增长的三线不等式]\label{b3:prop:19-three-lines-growth}
+设 \(a<b\)，\(f\) 在条带 \(a<\operatorname{Re}z<b\) 全纯并连续到两条边界线。设 \(M_a,M_b>0\)，两条边界线分别满足 \(|f|\le M_a\)、\(|f|\le M_b\)。若存在 \(C>0\) 与 \(0\le q<\pi/(b-a)\)，使
+\[
+ \log^+|f(x+\mathrm iy)|\le Ce^{q|y|}
+ \quad(a\le x\le b,\ y\in\mathbb R),
+\]
+则
+\[
+ |f(x+\mathrm iy)|\le
+ M_a^{(b-x)/(b-a)}M_b^{(x-a)/(b-a)}
+ \quad(a\le x\le b).
+\]
+\end{proposition}
+\begin{proof}
+记 \(d=b-a\)、\(m=(a+b)/2\)，并令
+\[
+ g(z)=f(z)\exp\left(-\frac{b-z}{d}\log M_a
+                         -\frac{z-a}{d}\log M_b\right).
+\]
+归一后两竖边模不超过一，且存在 \(C_0\ge0\)，使
+\(\log|g(x+\mathrm iy)|\le C_0+Ce^{q|y|}\)。选 \(q<p<\pi/d\)，令 \(c=\cos(pd/2)>0\)。对整个闭条带，
+\[
+ \operatorname{Re}\cos(p(z-m))
+ =\cos(p(x-m))\cosh(py)\ge c\cosh(py).
+\]
+固定 \(\varepsilon>0\)，乘以 \(\exp(-\varepsilon\cos(p(z-m)))\)。所得全纯函数在两竖边模不超过一，在 \(y=\pm T\) 的水平边上对数模不超过
+\[
+ C_0+Ce^{qT}-\varepsilon c\cosh(pT),
+\]
+这在充分大的 \(T\) 时为负，因为 \(q<p\)。矩形最大模原理给每个固定内点的界，最后令 \(\varepsilon\downarrow0\)，得到 \(|g|\le1\)，即所求结论。
+\end{proof}
+
+这里控制的是 \(\log^+|f|\)，所以允许的函数本身可有双指数的竖向增长。临界值仍不能直接包括进来：
+\[
+ f(z)=\exp\left(\sin\frac{\pi(z-a)}{b-a}\right)
+\]
+在两条边界线上模为一，在中线 \(x=(a+b)/2\) 上却有
+\(\log|f(x+\mathrm iy)|=\cosh(\pi y/(b-a))\)。它恰以临界指数增长，违反内部模界。
+
+\ProseParagraphBreak
+
+三圆与三线的插值位置分别是 \(\log r\) 和 \(x\)。在三圆证明中，调和比较函数是 \(A\log|z|+B\)；在三线证明中，它是两侧对数模界之间的仿射函数。两种比较都先确定边界权重，而无界条带还须控制水平边。增长假设的作用由此落实到截断域的一条具体边界，后续使用时也能据此判断何种变式需要重新证明。

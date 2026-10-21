@@ -1,188 +1,235 @@
 % !TeX root = ../../Book2.tex
-\section{Poisson 方程}
-\label{b2:sec:1503}
+\section{基本解与 Newton 势}
+\label{b2:sec:1303}
 
-现在把抽象定理用于最基本的边值问题。区域只需有界，源项只需属于 \(H^{-1}\)；无需显式 Green 函数，也无需预先知道解的二阶导数。存在性、稳定性与边界数据的处理都在同一个能量空间中完成。
+基本解描述集中于一点的单位源。将它与分布在整个区域中的密度叠加，就得到 Poisson 方程的一个特解。奇核的可积性决定叠加是否存在，核的导数及其抵消则决定这个特解有多光滑。
 
-本节使用\subsecref{b2:subsec:150104}的实空间约定：\(H^{-1}(\Omega)\) 是带梯度范数的 \(H_0^1(\Omega;\mathbb R)\) 的连续对偶，\(\langle f,v\rangle\) 表示对偶配对。下面常数为一的估计与这一梯度范数约定相配；换用完整 \(H^1\) 范数时，对偶空间不变，数值常数则须作相应比较。
+\subsection{Laplace 算子的基本解}
+\label{b2:subsec:130301}
 
-\subsection{弱解存在性}
-\label{b2:subsec:150301}
+\Cref{b2:thm:05-laplace-fundamental}已经证明，负 Laplace 算子的基本解可取
+\[
+ \Phi_d(z)=\dfrac{|z|^{2-d}}{(d-2)\sigma_{d-1}}\quad(d\geq3),
+ \quad \Phi_2(z)=-\dfrac1{2\pi}\log|z|,
+\]
+一维则为 \(\Phi_1(z)=-|z|/2\)。它们在分布意义下满足 \(-\Delta\Phi_d=\delta_0\)，在原点外调和。以下涉及奇核积分时固定 \(d\geq2\)。
+
+\ProseParagraphBreak
+
+原点附近的奇性仍局部可积：高维核与体积元相乘后只剩 \(r\,\mathrm{d}r\)，二维对数也可积。但二阶导数的尺度为 \(|z|^{-d}\)，绝对积分已处于临界发散情形。因此“基本解可积”并不能自动许可两次在积分下求导，下面会保留所需的抵消项。
+
+\subsection{Poisson 方程}
+\label{b2:subsec:130302}
+
+对 \(f\in C_c^\infty(\mathbb R^d)\)，\cref{b2:prop:05-fundamental-convolution}给出光滑特解 \(u=\Phi_d*f\)。这个构造把导数移到右端的紧支集光滑函数上，得到 \(-\Delta u=f\)。它先解全空间方程；若目标区域上另给边界值，还需加一个调和修正。
 
 \Needspace{6\baselineskip}
-\begin{theorem}[Dirichlet 问题的弱可解性]
-\label{b2:thm:15-poisson-existence}
-设整数 \(d\geq1\)，\(\Omega\subset\mathbb R^d\) 为非空有界开集，空间取实数域。以梯度范数赋予 \(H_0^1(\Omega)\) 范数，令 \(H^{-1}(\Omega)=(H_0^1(\Omega))^*\)，其对偶范数为 \(\|f\|_{H^{-1}}=\sup_{v\in H_0^1,\,\|\nabla v\|_2\leq1}|\langle f,v\rangle|\)。对每个 \(f\in H^{-1}(\Omega)\)，存在唯一 \(u\in H_0^1(\Omega)\)，使
-\[\int_\Omega\nabla u\cdot\nabla v\,\mathrm dx=\langle f,v\rangle
- \qquad(v\in H_0^1(\Omega)).\]
-并且 \(\lVert\nabla u\rVert_2\le\lVert f\rVert_{H^{-1}}\)。
+\begin{proposition}\label{b2:prop:13-poisson-affine-space}
+设整数 \(d\geq1\)、\(\mathbb K\in\{\mathbb R,\mathbb C\}\)，\(\Omega\subset\mathbb R^d\) 为开集，\(f\in C(\Omega;\mathbb K)\)。若 \(u_0\in C^2(\Omega;\mathbb K)\) 满足 \(-\Delta u_0=f\)，则全部 \(\mathbb K\) 值 \(C^2\) 解恰为 \(u=u_0+h\)，其中 \(h\) 为 \(\Omega\) 上的 \(\mathbb K\) 值调和函数。
+\end{proposition}
+\begin{proof}
+线性性使任意两个解之差满足 \(\Delta h=0\)；反过来，给特解加调和函数不改变方程右端。
+\end{proof}
+
+这说明基本解不负责选择边界条件。例如球上 \(-\Delta u=1\) 的一个多项式特解为 \(-|x|^2/(2d)\)；若要求边界值为零，再加常数 \(R^2/(2d)\)。非球形区域上需要的修正一般不再是常数，不能沿用球上公式只替换一个“半径”。
+
+\Needspace{10\baselineskip}
+\subsection{Newton 势}
+\label{b2:subsec:130303}
+
+\Needspace{6\baselineskip}
+\begin{definition}\label{b2:def:13-newton-potential}
+设整数 \(d\geq2\)，\(f:\mathbb R^d\to\mathbb C\) 是有界紧支集的可测函数，\(\Phi_d\) 是\cref{b2:thm:05-laplace-fundamental}中归一化的标准径向负 Laplace 基本解。定义
+\[
+ (Nf)(x)\coloneqq\int_{\mathbb R^d}\Phi_d(x-y)\cdot f(y)\,\mathrm{d}y,
+\]
+称为密度 \(f\) 的\term[newton-shi]{Newton 势}[Newtonian potential]。二维沿用同一记号，但其核为对数核。
+\end{definition}
+\symidx{\(Nf\)：Newton 势}
+
+\Needspace{6\baselineskip}
+\begin{proposition}\label{b2:prop:13-newton-c1}
+设整数 \(d\geq2\)，\(f:\mathbb R^d\to\mathbb C\) 为有界紧支集可测函数，\(\Phi_d\) 为\cref{b2:thm:05-laplace-fundamental}中归一化的标准径向负 Laplace 基本解，\(Nf(x)=\int\Phi_d(x-y)f(y)\,\mathrm dy\)。该积分在每个 \(x\) 绝对收敛，\(Nf\in C^1(\mathbb R^d)\)，并且
+\[
+ \partial_jNf(x)=\int\partial_j\Phi_d(x-y)\cdot f(y)\,\mathrm{d}y,
+ \quad-\Delta Nf=f
+\]
+后一等式取分布意义。
+\end{proposition}
+\begin{proof}
+固定 \(x\)。在 \(y=x\) 附近用 \(f\) 的本性界和 \(\Phi_d\) 的局部可积性，远处则用 \(f\) 的紧支集，故积分绝对收敛。对 \(z\ne0\)，两种维数下都有
+\[
+ \partial_j\Phi_d(z)=-\dfrac{z_j}{\sigma_{d-1}|z|^d},
+\]
+它也局部可积。该式同时给出分布的一阶导数：在挖去小球后分部积分，球面边界项由 \(|\Phi_d(\varepsilon)|\varepsilon^{d-1}\) 控制，随 \(\varepsilon\downarrow0\) 趋零。
+
+对局部 \(x\) 范围，截断核到一个固定大球即可计算卷积。局部可积核的平移在 \(L^1\) 中连续，因此核与有界 \(f\) 的卷积连续；对一阶导数核同样成立。由分布卷积的求导公式，这些连续函数是 \(Nf\) 的弱一阶导数。可用内部磨光并在坐标线段上取一致极限，说明连续弱导数就是经典导数，所以 \(Nf\in C^1\)。
+
+最后对 \(\varphi\in C_c^\infty\) 换序，
+\[
+ \int Nf(x)\cdot(-\Delta\varphi(x))\,\mathrm{d}x
+ =\int f(y)\left(\int\Phi_d(x-y)\cdot(-\Delta\varphi(x))\,\mathrm{d}x\right)\,\mathrm{d}y
+ =\int f(y)\varphi(y)\,\mathrm{d}y.
+\]
+两个紧区域内的核绝对积分有限，故换序合法；内层等式是基本解的定义。
+\end{proof}
+
+\Needspace{6\baselineskip}
+\begin{proposition}[有界源的梯度连续性]\label{b2:prop:13-newton-gradient-modulus}
+设整数 \(d\geq2\)、\(R_0>0\)，\(f:\mathbb R^d\to\mathbb C\) 可测、有界且支撑在 \(B(0,R_0)\) 内，\(Nf=\Phi_d*f\)，其中 \(\Phi_d\) 为\cref{b2:thm:05-laplace-fundamental}中的标准径向负 Laplace 基本解。对任意紧集 \(K\subset\mathbb R^d\)，存在只依赖 \(d,K,R_0\) 的常数 \(C\)，使 \(x,y\in K\)、\(0<\delta=|x-y|\leq1/2\) 时有
+\[
+ |\nabla Nf(x)-\nabla Nf(y)|
+ \leq C\|f\|_\infty\delta\left(1+\log\dfrac1\delta\right).
+\]
+特别，\(\nabla Nf\) 在每个紧集上满足任意小于 \(1\) 的 Hölder 指数估计。
+\end{proposition}
+\begin{proof}
+一阶核满足 \(|\nabla\Phi_d(z)|\leq C_d|z|^{1-d}\)，在原点外直接求导还给出 \(|D\nabla\Phi_d(z)|\leq C_d|z|^{-d}\)。将两个梯度积分的差分成 \(|x-z|<2\delta\) 与其补集。近处第一项由
+\(C_d\|f\|_\infty\int_0^{2\delta}\mathrm{d}r\) 控制；第二项因 \(|y-z|<3\delta\) 而有同型控制，总量为 \(C_d\|f\|_\infty\delta\)。
+
+在远处，对线段 \(x+\theta(y-x)-z\) 上的一阶核使用中值估计。该线段到原点的距离至少为 \(|x-z|-\delta\geq|x-z|/2\)，故核差不超过 \(C_d\delta|x-z|^{-d}\)。设 \(R_*=1+R_0+\sup_{x\in K}|x|\)，源支集上的 \(|x-z|\) 不超过 \(R_*\)。于是远处积分至多为
+\[
+ C_d\|f\|_\infty\delta\int_{2\delta}^{R_*}\dfrac{\mathrm{d}r}{r}
+ \leq C_{d,K,R_0}\|f\|_\infty\delta\left(1+\log\dfrac1\delta\right).
+\]
+若积分区域为空，直接将其取零。合并两部分即得所示估计。对 \(0<\beta<1\)，函数 \(\delta^{1-\beta}(1+\log(1/\delta))\) 在 \(0<\delta\leq1/2\) 上有界，故推出相应的 \(\beta\) 次幂控制；较大距离则由紧集上的梯度界处理。
+\end{proof}
+
+这个估计只使用源的有界性，却仍带一个对数因子，不能将其直接改写成一致的 Lipschitz 界或二阶导数界。下一小节会看到，源本身的定量连续性如何消除二阶核积分中的发散。
+
+\ProseParagraphBreak
+
+势在源区之外调和。其远处行为主要由总源量 \(M=\int f\) 决定：若支集包含于 \(B(0,R_0)\)，对 \(|x|>2R_0\) 用核的中值估计，可得
+\[
+ Nf(x)=\dfrac{M}{(d-2)\sigma_{d-1}}|x|^{2-d}+O(|x|^{1-d})\quad(d\geq3),
+\]
+而二维有 \(Nf(x)=-(M/(2\pi))\log|x|+O(|x|^{-1})\)。这里常数依赖密度的一阶绝对矩及支集范围；若 \(M=0\)，首项抵消，衰减随之改善。二维非零总源量通常产生对数增长，并非无穷远趋零的势。
+
+\ProseParagraphBreak
+
+一个具体模型是整数 \(d\geq3\)、\(R>0\)、\(f=\mathbf1_{B(0,R)}\)。旋转不变性使势只依赖 \(r=|x|\)。将径向方程 \(-(r^{d-1}u')'=r^{d-1}f(r)\) 分段积分，并要求中心有限、\(u,u'\) 在 \(R\) 处连续、无穷远趋零，得到
+\[
+ Nf(x)=
+ \begin{cases}
+ \dfrac{R^2}{2(d-2)}-\dfrac{r^2}{2d},&r\leq R,\\[4pt]
+ \dfrac{R^d}{d(d-2)}r^{2-d},&r\geq R.
+ \end{cases}
+\]
+这两个表达式的一阶导数在 \(R\) 处均为 \(-R/d\)，所以没有额外的球面源；二阶导数却不连续。它展示了有界密度产生 \(C^1\) 势但未必产生 \(C^2\) 势的边界。要识别此径向构造确为 \(Nf\)，注意它与前一命题的势之差连续、分布调和且无穷远趋零，由\cref{b2:prop:13-converse-mean}和 Liouville 定理，该差只能为零。
+
+\subsection{正则性初步}
+\label{b2:subsec:130304}
+
+为了再求一次导数，先保留 Hesse 矩阵核的角向抵消。对 \(z\ne0\)，令
+\[
+ K_{ij}(z)\coloneqq\dfrac1{\sigma_{d-1}}
+ \left(\dfrac{d z_i z_j}{|z|^{d+2}}-\dfrac{\delta_{ij}}{|z|^d}\right).
+\]
+它满足 \(|K_{ij}(z)|\leq C_d|z|^{-d}\)，但在每个以原点为中心的球面上的平均为零，因为 \(\int\theta_i\theta_j\,\mathrm{d}S=(\sigma_{d-1}/d)\delta_{ij}\)。
+
+\Needspace{6\baselineskip}
+\begin{lemma}\label{b2:lem:13-hessian-kernel}
+设整数 \(d\geq2\)、\(1\leq i,j\leq d\)，\(\sigma_{d-1}=|S^{d-1}|\)，\(\Phi_d(z)=|z|^{2-d}/((d-2)\sigma_{d-1})\)（\(d\geq3\)）、\(\Phi_2(z)=-(2\pi)^{-1}\log|z|\)，\(K_{ij}(z)=\sigma_{d-1}^{-1}(dz_iz_j|z|^{-d-2}-\delta_{ij}|z|^{-d})\)（\(z\ne0\)）。对 \(\varphi\in C_c^\infty(\mathbb R^d;\mathbb C)\)，在分布意义下，
+\[
+ \partial_i\partial_j\Phi_d
+ =\operatorname{pv}K_{ij}-\dfrac{\delta_{ij}}d\delta_0,
+\]
+其中\term[zhu-zhi]{主值}[principal value]在本式中指挖去中心小球后取极限：
+\[
+ \langle\operatorname{pv}K_{ij},\varphi\rangle
+ =\lim_{\varepsilon\downarrow0}\int_{|z|>\varepsilon}K_{ij}(z)\varphi(z)\,\mathrm{d}z.
+\]
+\end{lemma}
+\begin{proof}
+在单位球内减去 \(\varphi(0)\)，球面平均为零使被减项的截断积分为零。其余部分满足 \(|\varphi(z)-\varphi(0)|\leq C|z|\)，与核相乘后绝对可积，所以主值存在。
+
+从 \(\partial_i\Phi_d=-z_i/(\sigma_{d-1}|z|^d)\) 出发，在小球外对 \(-\int\partial_i\Phi_d\partial_j\varphi\) 分部积分。体积项为 \(\int K_{ij}\varphi\)；内球的外法向为 \(-\theta\)，故需要减去的边界项为
+\[
+ \dfrac1{\sigma_{d-1}}\int_{\partial B(0,1)}\theta_i\theta_j\varphi(\varepsilon\theta)\,\mathrm{d}S_\theta
+ \longrightarrow\dfrac{\delta_{ij}}d\varphi(0).
+\]
+这给出原点项及其负号。将 \(i=j\) 后求和，主值核的迹为零，正好恢复 \(\Delta\Phi_d=-\delta_0\)。
+\end{proof}
+
+\Needspace{6\baselineskip}
+\begin{theorem}[Hölder 密度的 Newton 势]\label{b2:thm:13-newton-holder}
+设整数 \(d\geq2\)、\(1\leq i,j\leq d\)，\(\sigma_{d-1}=|S^{d-1}|\)，\(\Phi_d(z)=|z|^{2-d}/((d-2)\sigma_{d-1})\)（\(d\geq3\)）、\(\Phi_2(z)=-(2\pi)^{-1}\log|z|\)，\(K_{ij}(z)=\sigma_{d-1}^{-1}(dz_iz_j|z|^{-d-2}-\delta_{ij}|z|^{-d})\)（\(z\ne0\)）。令 \(Nf=\Phi_d*f\)。若 \(f\in C_c^{0,\alpha}(\mathbb R^d;\mathbb C)\)、\(0<\alpha\leq1\)，则 \(Nf\in C^2(\mathbb R^d)\)，且 \(-\Delta Nf=f\) 逐点成立。其二阶导数可写为
+\begin{equation}\label{b2:eq:13-newton-hessian}
+ \begin{aligned}
+ \partial_i\partial_jNf(x)={}&
+ \int_{|z|<1}K_{ij}(z)\bigl(f(x-z)-f(x)\bigr)\,\mathrm{d}z\\
+ &+\int_{|z|\geq1}K_{ij}(z)f(x-z)\,\mathrm{d}z
+ -\dfrac{\delta_{ij}}d f(x).
+ \end{aligned}
+\end{equation}
 \end{theorem}
 \begin{proof}
-取 \(H=H_0^1(\Omega)\)，内积为 \(\langle u,v\rangle_H=\int\nabla u\cdot\nabla v\)。第一卷定理24.1.2的零边界 Poincaré 不等式适用于任意包含于有限宽条带的开集，故适用于这里的有界 \(\Omega\)，不要求边界正则或连通。它使梯度范数与完整 Sobolev 范数等价，故 \(H\) 完备。型 \(a(u,v)=\langle u,v\rangle_H\) 的有界常数与强制常数均为 \(1\)，右端按 \(H^{-1}\) 定义连续。\cref{b2:thm:15-lax-milgram} 因而给出存在、唯一性及估计。
+将\eqref{b2:eq:13-newton-hessian}的右端记为 \(H_{ij}(x)\)。近处的绝对值由 \(C_d[f]_{C^{0,\alpha}}|z|^{\alpha-d}\) 控制，其径向积分为 \(\int_0^1r^{\alpha-1}\,\mathrm{d}r<\infty\)。远处核没有局部奇性，且对紧的 \(x\) 范围，\(f(x-z)\) 只在一个固定有界 \(z\) 区域内非零。因此两个积分都绝对收敛，并由控制收敛连续依赖 \(x\)。这先给出连续的候选 Hesse 矩阵，还需证明它确实可以由经典求导得到。
+
+取非负的 \(\rho\in C_c^\infty(B(0,1))\)，使 \(\int\rho=1\)，令 \(\rho_\varepsilon(x)=\varepsilon^{-d}\rho(x/\varepsilon)\)、\(f_\varepsilon=\rho_\varepsilon*f\)、\(u_\varepsilon=Nf_\varepsilon\)，以下只用 \(0<\varepsilon\leq1\)。这些密度都是光滑紧支集函数，而且
+\[
+ [f_\varepsilon]_{C^{0,\alpha}}\leq[f]_{C^{0,\alpha}},\qquad
+ \eta_\varepsilon\coloneqq\|f_\varepsilon-f\|_\infty
+ \leq [f]_{C^{0,\alpha}}\varepsilon^\alpha
+             \int\rho(y)|y|^\alpha\,\mathrm{d}y\longrightarrow0.
+\]
+第一个不等式来自将 \(f(x-z)-f(y-z)\) 对非负核平均，第二个来自同样的增量估计。取 \(R_0>0\) 使 \(\operatorname{supp}f\subset\overline{B(0,R_0)}\)，则所有 \(f_\varepsilon\) 都支撑在共同的紧集 \(\overline{B(0,R_0+1)}\) 内。由\cref{b2:prop:05-fundamental-convolution}，\(u_\varepsilon\) 光滑；再由前一引理与球面抵消，其经典二阶导数就是\eqref{b2:eq:13-newton-hessian}中把 \(f\) 换为 \(f_\varepsilon\) 的表达式，记为 \(H_{ij}^\varepsilon\)。
+
+下面把这一 Hessian 的极限加强为局部一致收敛。固定紧集 \(K\subset\mathbb R^d\) 及 \(0<\delta<1\)。在 \(|z|<\delta\) 内，用两份统一的 Hölder 估计，有
+\[
+ \sup_{x\in K}\left|\int_{|z|<\delta}K_{ij}(z)
+ \bigl((f_\varepsilon-f)(x-z)-(f_\varepsilon-f)(x)\bigr)\,\mathrm{d}z\right|
+ \leq C_d[f]_{C^{0,\alpha}}\frac{\delta^\alpha}{\alpha}.
+\]
+在 \(\delta\leq|z|<1\) 内，用 \(2\eta_\varepsilon\) 控制密度增量之差，核的径向绝对积分为 \(C_d\log(1/\delta)\)。在 \(|z|\geq1\) 内，共同紧支集使有贡献的 \(z\) 都落在某个固定球 \(B(0,R_K)\) 中，可取 \(R_K>1\)，故这一部分至多为 \(C_d\eta_\varepsilon\log R_K\)。最后的原点项之差至多为 \(\eta_\varepsilon/d\)。合并得到
+\[
+ \sup_{x\in K}|H_{ij}^\varepsilon(x)-H_{ij}(x)|
+ \leq C_d[f]_{C^{0,\alpha}}\frac{\delta^\alpha}{\alpha}
+       +C_{d,K,R_0}\eta_\varepsilon\bigl(1+\log(1/\delta)\bigr).
+\]
+先选 \(\delta\) 使第一项小，再令 \(\varepsilon\downarrow0\)，便有 \(D^2u_\varepsilon\to H\) 在每个紧集上一致成立。共同 Hölder 控制用来处理原点的小球，共同紧支集则处理剩余积分；只知逐点收敛不足以代替这两个控制。
+
+还须将这些二阶极限接到原来的势上。记 \(u=Nf\)，由\cref{b2:prop:13-newton-c1}，\(u\in C^1\)。对固定 \(K\)，将 \(R_K\) 再取大一些，使 \(x\in K\)、\(y\in\overline{B(0,R_0+1)}\) 时 \(|x-y|<R_K\)。一阶导数的积分公式给出
+\[
+ \sup_{x\in K}\bigl(|u_\varepsilon(x)-u(x)|
+             +|\nabla u_\varepsilon(x)-\nabla u(x)|\bigr)
+ \leq \eta_\varepsilon\int_{|z|<R_K}
+                    \bigl(|\Phi_d(z)|+|\nabla\Phi_d(z)|\bigr)\,\mathrm{d}z
+ \longrightarrow0.
+\]
+右端积分有限。特别在 \(d=2\) 时，只使用固定球内 \(\int|\log|z||\,\mathrm{d}z<\infty\) 及梯度核的局部可积性；对数核在无穷远增长，不在这里被当作全空间 \(L^1\) 函数，也不据此宣称势在全空间一致收敛。
+
+最后取任意闭坐标矩形 \(Q\)，使 \(x\) 与 \(x+he_i\) 都位于其内部，其中 \(h\ne0\) 可正可负。连接这两点的坐标线段留在 \(Q\) 内。对光滑势先用微积分基本定理，积分按有向区间解释：
+\[
+ \partial_ju_\varepsilon(x+he_i)-\partial_ju_\varepsilon(x)
+ =\int_0^h\partial_i\partial_ju_\varepsilon(x+se_i)\,\mathrm{d}s.
+\]
+一阶与二阶的局部一致收敛允许两端取极限，得到
+\[
+ \partial_ju(x+he_i)-\partial_ju(x)
+ =\int_0^h H_{ij}(x+se_i)\,\mathrm{d}s.
+\]
+再除以 \(h\) 并令 \(h\to0\)，\(H_{ij}\) 的连续性给出 \(\partial_i\partial_ju(x)=H_{ij}(x)\)。每个点都可置于这样的内部矩形中，故 \(u\in C^2(\mathbb R^d)\)。最后对 \(i=j\) 求和，两个积分的核迹均为零，得到 \(-\Delta Nf=f\) 逐点成立。
 \end{proof}
 
-本例中 Lax--Milgram 退化为 Riesz 表示；一般系数时，同一个定理才显出更大的作用。该弱解也恰为 \(\tfrac12\lVert\nabla v\rVert_2^2-\langle f,v\rangle\) 的唯一极小元：只要将上一章的二次展开中的 \(L^2\) 配对换成对偶配对，证明逐字成立。两种构造在对称情形相遇，但弱型方法还可以继续处理非对称问题。
-
-\ProseParagraphBreak
-
-对 \(\Omega=(0,1)\)、\(f=\delta_s\)、\(0<s<1\)，解为
+对 \(f:\mathbb R^d\to\mathbb C\)，记其模连续度为
 \[
- u(x)=\begin{cases}(1-s)x,&0\le x\le s,\\s(1-x),&s\le x\le1.\end{cases}
+ \omega_f(r)\coloneqq\sup\{\,|f(x)-f(y)|:x,y\in\mathbb R^d,\ |x-y|\leq r\,\}.
 \]
-它连续、分段仿射，导数在 \(s\) 处向下跳 \(1\)。两段分部积分给出 \(\int_0^1u'v'=v(s)\)，先对光滑 \(v\) 成立，再由点值的连续性推广。因此点源产生一个合法弱解，却不产生经典 \(C^2\) 解；这不是存在性定理的缺陷，而是数据本身的粗糙性。
-
-\subsection{唯一性}
-\label{b2:subsec:150302}
-
-唯一性的能量论证值得单独保留，因为它不依赖解是如何构造的。若 \(u_1,u_2\) 具有同一数据，差 \(w\in H_0^1\) 满足 \(\int\nabla w\cdot\nabla v=0\)。取 \(v=w\)，得到 \(\nabla w=0\)；Poincaré 不等式推出 \(w=0\)。这个结论对不连通区域也成立，因为零边界约束在每个分支上排除了常数自由度。
+Hölder 条件在证明中只用于使 \(\int_0^1\omega_f(r)\,\mathrm{d}r/r\) 有限。因此同一证明也适用于具有这一 Dini 模连续度的紧支集连续密度：非负磨光保持 \(\omega_{f_\varepsilon}(r)\leq\omega_f(r)\)，小球内的误差由 \(C_d\int_0^\delta\omega_f(r)\,\mathrm{d}r/r\) 一致控制，其余部分仍由一致误差 \(\eta_\varepsilon\) 及共同紧支集控制。单纯连续性只保证 \(\omega_f(r)\to0\)，并不保证该积分有限。
 
 \ProseParagraphBreak
 
-内部方程则没有唯一性。例如任一调和函数都可加到 Poisson 方程的一个局部解上，而不改变源项。纯 Neumann 问题即使规定通量，仍允许每个连通分支上的加法常数。因而“取差再测试”最后得出梯度为零之后，还必须指出究竟由哪项边界条件或归一化排除了常数，不能直接省略最后一步。
-
-\Needspace{6\baselineskip}
-\begin{proposition}[弱比较原理]
-\label{b2:prop:15-weak-comparison}
-设整数 \(d\geq1\)，\(\Omega\subset\mathbb R^d\) 为非空有界开集，空间取实数域，\(H^{-1}(\Omega)=(H_0^1(\Omega))^*\)。设 \(f_1,f_2\in H^{-1}(\Omega)\)，\(u_1,u_2\in H_0^1(\Omega)\) 满足
+确实，在二维原点附近令 \(r=|x|\)、\(\ell(r)=\log(e/r)\)，取
 \[
- \int_\Omega\nabla u_i\cdot\nabla v=\langle f_i,v\rangle
- \quad(v\in H_0^1(\Omega),\ i=1,2).
+ u(x)=(x_1^2-x_2^2)\log\ell(r),\quad u(0)=0.
 \]
-若 \(\langle f_1-f_2,v\rangle\le0\) 对每个几乎处处非负的 \(v\in H_0^1(\Omega)\) 成立，则 \(u_1\le u_2\) 几乎处处。
-\end{proposition}
-\begin{proof}
-令 \(w=u_1-u_2\)。第一卷命题22.2.3保证取正部保持实空间 \(H_0^1\)，命题21.3.5给出相应弱梯度公式。因此 \(w_+=\max\{w,0\}\in H_0^1\)，且 \(\nabla w_+=\mathbf1_{\{w>0\}}\nabla w\)。以它测试差方程，得
-\[\lVert\nabla w_+\rVert_2^2=\langle f_1-f_2,w_+\rangle\le0.\]
-零边界 Poincaré 不等式推出 \(w_+=0\)，即所需结论。所引截断结果的关键是先光滑逼近正部函数，在零水平集上用弱梯度为零处理折点，再利用正部在 \(H^1\) 中的强连续性传递零边界逼近；没有要求解逐点可微。
-\end{proof}
-
-这里的非负性还须在数据空间中解释。对非空有界开集 \(\Omega\)，实泛函 \(f\in H^{-1}(\Omega)\) 满足 \(f\geq0\)，是指
+函数及其一阶导数在原点连续，因为它们分别为 \(O(r^2\log\ell(r))\) 和 \(O(r\log\ell(r))\)。对 \(r>0\)，极坐标计算给出
 \[
- \langle f,v\rangle\geq0
- \quad\text{对所有几乎处处非负的 }v\in H_0^1(\Omega;\mathbb R).
+ -\Delta u(x)=\left(\dfrac4{\ell(r)}+\dfrac1{\ell(r)^2}\right)\cos(2\theta),
 \]
-它是对测试函数作用的正性，不是给一般分布指定逐点值。若 \(f\in L^2(\Omega;\mathbb R)\) 且 \(f\geq0\) 几乎处处，已建立的 \(L^2\hookrightarrow H^{-1}\) 将配对写成可积的 \(\int fv\)，因而符合这个定义。不能只写 \(f\in L^1\) 就断言它属于 \(H^{-1}\)，也不能默认 \(fv\) 对全部 \(H_0^1\) 测试函数可积。将弱比较原理用于零源项与非负源项，得到非负数据的零边界弱解非负，与第十三章经典最大值原理的符号一致。比较结论是几乎处处关系；尚未得到连续代表元时，不应改说“每个点都非负”。
-
-\subsection{能量估计与 Galerkin 近似}
-\label{b2:subsec:150303}
-
-取解自身作测试，Cauchy--Schwarz 的对偶形式给出
-\[\lVert\nabla u\rVert_2^2=\langle f,u\rangle
- \le\lVert f\rVert_{H^{-1}}\lVert\nabla u\rVert_2.\]
-若梯度非零可约去一因子；若为零估计显然成立。因此解映射 \(H^{-1}\to H_0^1\) 连续。对于两组数据，同一计算给出
-\[\lVert\nabla(u_1-u_2)\rVert_2\le\lVert f_1-f_2\rVert_{H^{-1}}.\]
-特别地，平滑数据的近似会在能量范数中产生相应解的收敛，这为从光滑近似过渡到粗糙数据提供了稳定性依据。
+右侧在原点补零后连续。但沿 \(x_1\) 轴的二阶对称差商为 \(2\log\ell(|h|)\)，趋于无穷，所以 \(u\) 不属于 \(C^2\)。分部积分时小圆边界项趋零，故原点没有额外的点质量，等式确在分布意义下成立。
 
 \ProseParagraphBreak
 
-若 \(f\in L^2\)，进一步有 \(\lVert\nabla u\rVert_2\le C_P\lVert f\rVert_2\)、\(\lVert u\rVert_2\le C_P^2\lVert f\rVert_2\)。注意区域放大时 \(C_P\) 也会变化：在 \(r\Omega\) 上换元表明 \(C_P\) 按长度尺度增长。这与二阶方程解相对于源项多出两个长度因子的事实一致，估计中的几何依赖不能无故删除。
-
-\Needspace{6\baselineskip}
-\begin{proposition}[有限维近似的最佳误差]
-\label{b2:prop:15-galerkin-poisson}
-设整数 \(d\geq1\)，\(\Omega\subset\mathbb R^d\) 为非空有界开集，空间取实数域，\(H^{-1}(\Omega)=(H_0^1(\Omega))^*\)。给定 \(f\in H^{-1}(\Omega)\) 与有限维线性子空间 \(V\subset H_0^1(\Omega)\)，设 \(u\in H_0^1(\Omega)\) 满足 \(\int_\Omega\nabla u\cdot\nabla v=\langle f,v\rangle\) 对全部 \(v\in H_0^1(\Omega)\) 成立。则存在唯一 \(u_V\in V\) 满足 \(\int_\Omega\nabla u_V\cdot\nabla v=\langle f,v\rangle\) 对所有 \(v\in V\) 成立，而且
-\[\lVert\nabla(u-u_V)\rVert_2=\inf_{v\in V}\lVert\nabla(u-v)\rVert_2.\]
-\end{proposition}
-\begin{proof}
-限制到 \(V\) 后型仍有界、强制，故有限维方程唯一可解。两式相减得 \(\int\nabla(u-u_V)\cdot\nabla v=0\) 对所有 \(v\in V\) 成立。对任意 \(v\in V\)，分解 \(u-v=(u-u_V)+(u_V-v)\)，两项在梯度内积下正交，故误差平方等于两项范数平方之和。最小值恰在 \(v=u_V\) 达到。
-\end{proof}
-
-这个结论不宣称任一有限维空间都给出好的逼近；它说解离该空间有多近，近似解就有多好。若一列子空间递增且其并在 \(H_0^1\) 中稠密，最佳误差便趋零。递增性可改成对每个固定函数都能沿整个序列逼近的条件，但只有并集稠密不够，例如在良好空间之间反复插入零空间便会破坏收敛。存在性、离散方程的可解性与近似空间的逼近能力仍是三个可以分别核验的事实。
-
-\ProseParagraphBreak
-
-Poisson 型中，误差与近似空间真正正交，因而得到常数为一的最佳逼近。一般非对称型仍有从两个弱方程相减得到的 Galerkin 正交性，但它不能随意交换两个变量。下面的\term[cea-yinli]{Céa 引理}[Céa's lemma]用有界性和强制性代替勾股恒等式，给出准最佳逼近。
-
-\Needspace{6\baselineskip}
-\begin{proposition}[Céa 引理]\label{b2:prop:15-cea}
-设 \(H\) 为实 Hilbert 空间，\(a:H\times H\to\mathbb R\) 为双线性型，存在 \(0\leq M<\infty\)、\(\alpha>0\)，使
-\[
- |a(x,y)|\leq M\|x\|_H\cdot\|y\|_H,\qquad
- a(x,x)\geq\alpha\|x\|_H^2\quad(x,y\in H).
-\]
-给定 \(\ell\in H^*\) 及闭线性子空间 \(V\subset H\)，令 \(u\in H\)、\(u_V\in V\) 分别满足
-\[
- a(u,y)=\ell(y)\quad(y\in H),\qquad
- a(u_V,v)=\ell(v)\quad(v\in V).
-\]
-则两解都存在且唯一，并且
-\[
- \|u-u_V\|_H\leq\frac M\alpha\inf_{v\in V}\|u-v\|_H.
-\]
-特别地，每个有限维线性子空间均满足这里的闭性要求。
-\end{proposition}
-\begin{proof}
-闭子空间 \(V\) 以继承的内积仍为 Hilbert 空间，限制后的型保留有界性与同一个强制常数，\(\ell|_V\) 连续。分别在 \(H\) 与 \(V\) 上使用\cref{b2:thm:15-lax-milgram}，得到两解。令 \(e=u-u_V\)，相减得到 \(a(e,v)=0\) 对所有 \(v\in V\) 成立。对任意 \(v\in V\)，因 \(v-u_V\in V\)，有
-\[
- \alpha\|e\|_H^2\leq a(e,e)
- =a(e,u-v)+a(e,v-u_V)=a(e,u-v)
- \leq M\|e\|_H\cdot\|u-v\|_H.
-\]
-若 \(e=0\)，结论成立；否则约去 \(\|e\|_H\)，再对 \(v\in V\) 取下确界。整个证明只用了第二变量为 \(V\) 中向量时的正交性，没有假设 \(a\) 对称。
-\end{proof}
-
-因此，强制型的离散解能否沿一列空间收敛，仍由这些空间能否逼近真解决定；有界性与强制性只增加了准最佳常数 \(M/\alpha\)。下面的分段仿射计算采用 Poisson 对称型，可以继续使用前一命题中常数为一的精确最佳逼近。
-
-\ProseParagraphBreak
-
-在区间 \((0,1)\) 上，这个结论可以算得很具体。取整数 \(N\geq2\)、均匀节点 \(x_j=jh\)（\(0\leq j\leq N\)）、\(h=1/N\)，令 \(V_h\) 为节点间分段仿射、两端为零的连续函数空间。基函数 \(\phi_j\)（\(1\leq j\leq N-1\)）在 \(x_j\) 取值一，在其余节点取值零。每个基函数只有相邻两段上的斜率非零，直接积分得
-\[\int_0^1\phi_j'^2=\frac2h,\qquad
- \int_0^1\phi_j'\phi_{j+1}'=-\frac1h,\qquad
- \int_0^1\phi_j'\phi_k'=0\quad(|j-k|>1).\]
-因此弱解的有限维近似由三对角线性方程组确定。矩阵的正定性并不需要另作行列式计算：任意系数向量对应的二次型就是分段仿射函数的梯度平方积分，零值只可能对应零函数。
-
-\ProseParagraphBreak
-
-例如取 \(f=1\)，精确弱解为 \(u(x)=x(1-x)/2\)。它在各小区间的导数平均等于两端函数值之差除以 \(h\)，而任意 \(v_h\in V_h\) 的导数在该段为常数。故 \(u\) 的节点线性插值 \(I_hu\) 满足 \(\int(u'- (I_hu)')v_h'=0\)，由唯一性即知 \(u_h=I_hu\)。在长度 \(h\) 的一段上，导数误差是以中点为零的线性函数，其平方积分为 \(h^3/12\)；函数误差则为 \((x-x_j)(x_{j+1}-x)/2\)。逐段积分并相加得到
-\[\lVert u'-u_h'\rVert_2=\frac h{\sqrt{12}},\qquad
- \lVert u-u_h\rVert_2=\frac{h^2}{\sqrt{120}}.\]
-这里第二个收敛速度比第一个快，来自二次函数的具体结构，不能仅从抽象存在定理读出。一般数据下的误差阶还需要解的正则性和近似空间的逼近估计；下一章提供其中的正则性工具。
-
-\ProseParagraphBreak
-
-弱解的误差也可以用残差直接测量。设整数 \(d\geq1\)、\(\Omega\subset\mathbb R^d\) 为非空有界开集，实值 \(f\in H^{-1}(\Omega)\)，\(u\in H_0^1(\Omega)\) 满足 \(\int_\Omega\nabla u\cdot\nabla v=\langle f,v\rangle\) 对所有实值 \(v\in H_0^1(\Omega)\) 成立。对任意实值 \(w\in H_0^1(\Omega)\) 定义 \(r=f+\Delta w\in H^{-1}\)，则 \(\langle r,v\rangle=\int\nabla(u-w)\cdot\nabla v\)。以 \(H_0^1\) 的梯度范数取对偶范数，对单位梯度范数的测试函数取上确界，Cauchy--Schwarz 给出上界，而在误差非零时取 \(v=(u-w)/\lVert\nabla(u-w)\rVert_2\) 达到该界。因此 \(\lVert r\rVert_{H^{-1}}=\lVert\nabla(u-w)\rVert_2\)。对分段仿射近似，残差可能含节点通量跳跃，不能只计算每段内为零的二阶导数；负范数恰好保留这些分布贡献。
-
-\subsection{非齐次 Dirichlet 数据与 Neumann 问题}
-\label{b2:subsec:150304}
-
-取整数 \(d\geq1\)、非空有界开集 \(\Omega\subset\mathbb R^d\)、实值 \(f\in H^{-1}(\Omega)\) 与 \(g\in H^1(\Omega;\mathbb R)\)。令 \(u=g+w\)，其中 \(w\in H_0^1(\Omega;\mathbb R)\)。方程等价于
-\[\int_\Omega\nabla w\cdot\nabla v
-  =\langle f,v\rangle-\int_\Omega\nabla g\cdot\nabla v\qquad(v\in H_0^1).\]
-右端属于 \(H^{-1}\)，范数不超过 \(\lVert f\rVert_{H^{-1}}+\lVert\nabla g\rVert_2\)。因此齐次理论给出唯一 \(w\)，从而给出唯一满足 \(u-g\in H_0^1\) 的解；并有
-\[\lVert\nabla w\rVert_2\le\lVert f\rVert_{H^{-1}}+\lVert\nabla g\rVert_2.\]
-完整 \(H^1\) 估计还要加上 \(g\) 的 \(L^2\) 范数。
-
-\ProseParagraphBreak
-
-若另一个延拓 \(\widetilde g\) 与 \(g\) 相差 \(H_0^1\) 函数，两者给出的仿射可行集完全相同；由唯一性得到同一个 \(u\)。所以解依赖边界类，而不依赖人为选择的延拓。若要比较两组边界数据，先选择它们差的一个延拓，再把上面的稳定性估计应用于差方程；优化延拓的范数便自然引出商空间形式的迹范数。
-
-\ProseParagraphBreak
-
-例如在 \(\mathbb R^d\) 的单位球上给定仿射边界数据 \(g(x)=a\cdot x+b\)，其中 \(a\in\mathbb R^d\)、\(b\in\mathbb R\)，且 \(f=0\)。由于 \(\int a\cdot\nabla v=0\) 对 \(v\in H_0^1\) 成立，齐次修正为零，故 \(u=g\)。这里无需使用球的 Poisson 核；而对一般边界数据，弱方法仍给出存在性，之后才可能借第十三章的表示公式识别它。不同构造的解一旦处于同一能量边界类，就由唯一性自动一致。
-
-
-\ProseParagraphBreak
-
-\noindent\textbf{Neumann 问题。}区域保持固定而边界值自由时，应换一个 Hilbert 空间，不能沿用零 Dirichlet 条件排除常数的唯一性论证。
-
-\Needspace{6\baselineskip}
-\begin{proposition}[Neumann 数据与归一化]
-\label{b2:prop:15-neumann-normalized}
-设整数 \(d\geq1\)，\(\Omega\subset\mathbb R^d\) 为非空有界连通 Lipschitz 区域，\(f\in L^2(\Omega;\mathbb R)\)、\(g_N\in L^2(\partial\Omega;\mathbb R)\)，边界积分取 \((d-1)\) 维面积测度（\(d=1\) 时为端点计数测度），\(\operatorname{Tr}\) 为 Sobolev 迹，求解类为 \(u\in H^1(\Omega;\mathbb R)\)。方程
-\[\int_\Omega\nabla u\cdot\nabla v
- =\int_\Omega fv+\int_{\partial\Omega}g_N\operatorname{Tr}v
- \quad(v\in H^1(\Omega))\]
-可解当且仅当 \(\int_\Omega f+\int_{\partial\Omega}g_N=0\)。指定 \(\int_\Omega u=0\) 后解唯一，且
-\[\|u\|_{H^1}\le C_\Omega(\|f\|_2+\|g_N\|_{L^2(\partial\Omega)}).\]
-\end{proposition}
-\begin{proof}
-测试 \(v=1\) 给出必要条件。令 \(H=\{v\in H^1(\Omega;\mathbb R):\int_\Omega v=0\}\)。积分泛函因 \(\Omega\) 测度有限而连续，故 \(H\) 是闭子空间；第一卷定理24.1.3的 Poincaré--Wirtinger 不等式适用于这里的有界连通 Lipschitz 区域，使 \(\|\nabla v\|_2\) 成为 \(H\) 上等价的完备范数。右端有界性来自
-\[
- |\ell(v)|\le\|f\|_2\|v\|_2+
- \|g_N\|_{L^2(\partial\Omega)}\|\operatorname{Tr}v\|_{L^2(\partial\Omega)}
- \le C_\Omega(\|f\|_2+\|g_N\|_2)\|\nabla v\|_2,
-\]
-这里第一卷定理23.1.3给出有界 Lipschitz 区域上的 \(H^1\to L^2(\partial\Omega)\) 迹估计，刚才的零均值不等式再将 \(H^1\) 范数换成梯度范数。Lax--Milgram 在 \(H\) 上给出唯一解及估计。对任意 \(v\in H^1(\Omega)\)，分解 \(v=v_0+v_\Omega\)，其中 \(v_\Omega=|\Omega|^{-1}\int_\Omega v\)、\(v_0\in H\)。左端常数项为零，右端常数项因相容条件为零，所以受限测试解确实解全部测试方程。两解之差测试自身，得到梯度为零；连通性说明差为一个常数，归一化排除它。
-\end{proof}
-
-在 \((0,1)\) 上取 \(f=1\)、左端外向通量 \(g_N(0)=-1\)、右端通量 \(g_N(1)=0\)。总数据为 \(1-1+0=0\)。积分 \(-u''=1\) 得 \(u'=-x+C\)；左端条件 \(-u'(0)=-1\) 给 \(C=1\)，右端也满足。减去均值后 \(u=x-x^2/2-1/3\)。这个例子同时检验了相容条件中的加号和左端外法向的负号。若区域有多个连通分支，必须在每个分支分别相容、分别归一化，单个全局零均值无法排除所有常数自由度。
+取 \(\chi\in C_c^\infty(B(0,1/2))\)，使其在原点附近为 \(1\)，将 \(\chi u\) 在该球外补零，便将此例放到全平面；这个截断支集始终处于上述对数表达式的定义范围。所得右端 \(f=-\Delta(\chi u)\) 仍连续且紧支集。如果 \(Nf\) 是 \(C^2\) 的，那么 \(\chi u-Nf\) 连续且分布调和，由\cref{b2:prop:13-converse-mean}光滑，就会迫使 \(\chi u\) 为 \(C^2\)，矛盾。这个例子说明二阶奇核的抵消需要定量连续性；把“连续”直接当作“可在核下求两次导数”的许可，会遗漏实质条件。

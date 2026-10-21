@@ -2,31 +2,114 @@
 \section{\texorpdfstring{\(\zeta\)}{\AnalysisPdfZeta} 函数与素数}
 \label{b3:sec:2702}
 
-带非负系数的对数导数把 \(\psi\) 转成一个解析函数。极点将提供主项，边界零点则可能产生与主项同量级的振荡，所以二者要分别处理。
+三种计数的渐近已经相互归约，但尚未证明其中任何一个渐近式。下一步要选一个能同时表现解析结构与非负权重的变换。\(\zeta\) 本身的系数都是一，直接累计只得到整数个数；它的对数导数则把权重集中到素数幂上。这个改变使上一节的 \(\psi\) 出现在积分中，也使下一节能够使用正性。
 
 \subsection{对数导数}
 \label{b3:subsec:270201}
 
-前章与本章采用同一个等式
+回顾 von Mangoldt 函数：若 \(n=p^r\)，其中 \(p\) 为素数、\(r\ge1\) 为整数，则 \(\Lambda(n)=\log p\)；其余正整数处取零。特别地，\(\Lambda(1)=0\)，且 \(0\le\Lambda(n)\le\log n\)。对 \(\operatorname{Re}s>1\)，\eqref{b3:eq:25-log-derivative}已经在绝对收敛条件下证明
 \[
-F(s)\coloneqq-\zeta'(s)/\zeta(s)
-=\sum_{n\ge1}\Lambda(n)n^{-s}
-=s\int_1^\infty\psi(x)x^{-s-1}\,\mathrm{d}x,
-\quad\operatorname{Re}s>1.
+ F(s)\coloneqq-\frac{\zeta'(s)}{\zeta(s)}
+ =\sum_{n\ge1}\frac{\Lambda(n)}{n^s}.
 \]
-最后一步是 Abel 求和，端点 \(\psi(x)x^{-s}\to0\) 由 \(\psi(x)=O(x)\) 保证。由于 \(\zeta(s)=1/(s-1)+\gamma+O(s-1)\)，有 \(F(s)=1/(s-1)-\gamma+O(s-1)\)。
+这里 \(\zeta\) 在该半平面非零，所以商全纯。延拓后我们仍以 \(F\) 表示这个亚纯商，而不预先断言右侧级数也收敛到所有新位置。
+
+\begin{proposition}[素数幂计数的积分变换]\label{b3:prop:27-counting-transform}
+设 \(\Lambda\) 为 von Mangoldt 函数，\(\psi(x)=\sum_{n\le x}\Lambda(n)\)，\(x\ge1\)，并设 \(\zeta\) 为 Riemann zeta 函数。对每个 \(s\in\mathbb C\)、\(\operatorname{Re}s>1\)，有
+\begin{equation}\label{b3:eq:27-counting-transform}
+ -\frac{\zeta'(s)}{\zeta(s)}
+ =\sum_{n\ge1}\Lambda(n)n^{-s}
+ =s\int_1^\infty\psi(x)x^{-s-1}\,\mathrm dx.
+\end{equation}
+所有级数和积分均绝对收敛，正实数的复幂使用实对数。它们在该半平面的紧子集上可对参数任意次求导。
+\end{proposition}
+\begin{proof}
+写 \(\sigma=\operatorname{Re}s>1\)。由于 \(\Lambda(n)\le\log n\)，有 \(\sum\Lambda(n)n^{-\sigma}<\infty\)。对每个 \(n\ge1\)，直接积分得到
+\[
+ s\int_n^\infty x^{-s-1}\,\mathrm dx=n^{-s}.
+\]
+将它乘以 \(\Lambda(n)\) 后求和，换序所需的绝对总量为
+\[
+ |s|\sum_{n\ge1}\Lambda(n)\int_n^\infty x^{-\sigma-1}\,\mathrm dx
+ =\frac{|s|}{\sigma}\sum_{n\ge1}\Lambda(n)n^{-\sigma}<\infty.
+\]
+Fubini 定理允许先累计所有 \(n\le x\) 的项，内和正是 \(\psi(x)\)。结合已知的对数导数公式，得到结论。参数紧集与边界 \(\sigma=1\) 之间留有正距离，求导只增加固定次幂的 \(\log n\) 或 \(\log x\)，这些因子可被这段距离对应的小幂次吸收，所以同样有共同可积支配。
+\end{proof}
+
+这个证明直接解释了计数如何变成积分。也可以使用\cref{b3:prop:25-integral-summation}的有限部分求和：对 \(X\ge1\)，
+\[
+ \sum_{n\le X}\Lambda(n)n^{-s}
+ =\psi(X)X^{-s}
+   +s\int_1^X\psi(x)x^{-s-1}\,\mathrm dx.
+\]
+由上一节独立证明的 \(\psi(X)=O(X)\)，边界项为 \(O(X^{1-\sigma})\)，确实趋零。积分下端没有补项，因为 \(\psi(1)=0\)；若权重在一处有质量，这一点就需要重新处理。\secref{b3:sec:2704}将为一般累积函数明确规定这种端点约定。
+
+变换在一附近的常数也能计算。由\cref{b3:prop:26-laurent-at-one}，若 \(w=s-1\)，则
+\[
+ \zeta(1+w)=\frac1w+\gamma+O(w),\qquad
+ a(w)\coloneqq w\zeta(1+w)=1+\gamma w+O(w^2).
+\]
+函数 \(a\) 在原点全纯且非零。因此先分离主部，得到
+\begin{equation}\label{b3:eq:27-log-derivative-pole}
+ F(1+w)=\frac1w-\frac{a'(w)}{a(w)}
+        =\frac1w-\gamma+O(w).
+\end{equation}
+尤其 \(F\) 在一处的留数为正一。原来的 \(\zeta\) 有极点，取负对数导数以后产生正留数；若原函数有零点，符号正好相反。
 
 \subsection{Euler 乘积}
 \label{b3:subsec:270202}
 
-在 \(\sigma>1\)，Euler 乘积给
+把系数展开成素数幂，\(F\) 又可写为
 \[
-\operatorname{Re}F(\sigma+\mathrm{i}t)
-=\sum_{p,r\ge1}(\log p)p^{-r\sigma}\cos(rt\log p).
+ F(s)=\sum_p\sum_{r\ge1}(\log p)p^{-rs},
+ \qquad \operatorname{Re}s>1.
 \]
-单个余弦项会改变符号；把三个高度的值按合适系数组合后，则可使每项非负。绝对收敛允许先在每个素数幂处组合，再求全和。
+这与\eqref{b3:eq:25-zeta-log}的 Euler 对数相配合：
+\[
+ L(s)=\sum_p\sum_{r\ge1}\frac{p^{-rs}}r,
+ \qquad e^{L(s)}=\zeta(s),\qquad -L'(s)=F(s).
+\]
+对参数求导时，\(-r\log p\) 与原来的 \(1/r\) 相消，所以同一个素数的每个正次幂都带权 \(\log p\)。这说明选择对数导数的具体原因。
+
+若 \(s=\sigma+\mathrm it\)、\(\sigma>1\)、\(t\in\mathbb R\)，取实部得到
+\begin{align}
+ \operatorname{Re}F(\sigma+\mathrm it)
+ &=\sum_{n\ge1}\Lambda(n)n^{-\sigma}\cos(t\log n),
+ \label{b3:eq:27-real-log-derivative}\\
+ \log|\zeta(\sigma+\mathrm it)|
+ &=\sum_p\sum_{r\ge1}\frac{p^{-r\sigma}}r
+                                      \cos(rt\log p).
+ \label{b3:eq:27-log-modulus}
+\end{align}
+第二式不需要为复数 \(\zeta(s)\) 另选一个主值对数：\(e^{L(s)}=\zeta(s)\) 已经给出 \(\operatorname{Re}L(s)=\log|\zeta(s)|\)。两式的取实部与重排都依赖绝对收敛。
+
+单个余弦项可以为负，因而不能从 \(\Lambda(n)\ge0\) 推出整个 \(\operatorname{Re}F(\sigma+\mathrm it)\ge0\)。能够保留正性的是若干高度的特定组合。对任意实系数 \(a_0,\ldots,a_m\)，若
+\[
+ Q(u)=\sum_{j=0}^m a_j\cos(ju)\ge0
+ \quad(u\in\mathbb R),
+\]
+那么由\eqref{b3:eq:27-real-log-derivative}可得
+\[
+ \sum_{j=0}^m a_j\operatorname{Re}F(\sigma+\mathrm ijt)
+ =\sum_{n\ge1}\Lambda(n)n^{-\sigma}Q(t\log n)\ge0.
+\]
+这里 \(F(\sigma)\) 为实数，\(j=0\) 项无须额外取实部。下一节选择一个非负二次三角多项式，使潜在零点的负留数无法与这个不等式相容。
 
 \subsection{显式公式观点}
 \label{b3:subsec:270203}
 
-从形式上看，\(F(s)x^s/s\) 在 \(s=1\) 的留数为 \(x\)，而在零点 \(\rho\) 处的留数为 \(-m_\rho x^\rho/\rho\)。这说明零点实部为什么影响误差幂次。本章的证明采用 Tauber 方法，无需先建立一般反演显式公式；这段留数计算只解释单个奇点的局部贡献，不将无穷多留数未经截断相加。
+为什么边界零点会妨碍线性计数？这个问题可以先作局部解释，而不以完整的反演显式公式为前置。若 \(\rho\ne1\) 是 \(\zeta\) 的 \(m\) 阶零点，则在该点附近
+\[
+ \zeta(s)=(s-\rho)^m b(s),\qquad b(\rho)\ne0,
+ \qquad F(s)=-\frac m{s-\rho}-\frac{b'(s)}{b(s)}.
+\]
+于是 \(F\) 在 \(\rho\) 处有留数 \(-m\) 的单极点，即使原零点是重零点也是如此。对固定 \(x>0\)、\(\rho\ne0\)，乘上在 \(\rho\) 附近全纯的 \(x^s/s\)，得到
+\[
+ \operatorname*{Res}_{s=1}\frac{F(s)x^s}{s}=x,
+ \qquad
+ \operatorname*{Res}_{s=\rho}\frac{F(s)x^s}{s}
+ =-\frac{m x^\rho}{\rho}.
+\]
+写 \(\rho=\beta+\mathrm i\tau\)，其中 \(x^\rho=x^\beta e^{\mathrm i\tau\log x}\)。实部 \(\beta\) 决定幂次尺度，虚部 \(\tau\) 则带来关于 \(\log x\) 的振荡。\(\beta=1\) 时，这种尺度与极点产生的主项 \(x\) 相同；这提示我们先排除实部一上的零点。
+
+以上只是准确的局部留数计算，没有声称 \(\psi(x)\) 已等于这些项的无穷和。要通过反演把它们全部加起来，还需要选择截断高度、处理积分端点并估计围道余项。\secref{b3:sec:2606}的选读部分曾用指数平滑给出保留边界积分的有限公式；本章主线不调用它。这里转而研究整个边界上去掉 \(1/(s-1)\) 后的解析性，再由非负系数和单调性得到定性渐近。

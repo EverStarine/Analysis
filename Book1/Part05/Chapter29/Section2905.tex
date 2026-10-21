@@ -1,0 +1,391 @@
+% !TeX root = ../../Book1.tex
+\section{稠密定义算子与伴随}
+\label{b1:sec:2905}
+
+% 实读：Rudin1991Functional，第2版，13.1（pp.347--348）、13.3（p.349）、
+% 13.7--13.12（pp.351--354）与13.16（p.356）。图像正交补和闭算子双伴随
+% 与原书核对；一般可闭性、闭包伴随不变及非实点满射判据在本节直接证明，
+% 不把原书13.12只陈述的闭算子版本冒称为已读到全部可闭版本。
+
+有界算子的连续性使定义域上的极限自动与算子作用相容。求导和无界乘法不再具有这种性质：
+只知道 \(x_n\to x\)，并不能决定 \(Ax_n\) 是否收敛，甚至不能保证 \(x\) 仍在定义域中。
+因此，算子不只是一条作用公式，还包括允许输入的线性子空间。
+本节把\secref{b1:sec:0803}的闭图像与图像范数推广到稠密定义的 Hilbert 空间算子，
+再用伴随把定义域的极限问题化成正交关系。所有内积仍对第一变量线性。
+稠密定义、伴随和图像方法的系统论述可对照 Rudin\cite[13.1, 13.3, 13.7--13.12]{Rudin1991Functional}。
+
+\subsection{定义域、图像与图像范数}
+\label{b1:subsec:290501}
+
+\begin{definition}[稠密定义与算子扩张]
+\label{b1:def:29-densely-defined}
+设 \(H\) 为复 Hilbert 空间，\(D(A)\subseteq H\) 为线性子空间，
+\(A:D(A)\to H\) 为线性映射。若 \(\overline{D(A)}=H\)，则称 \(A\) 为
+\term[choumi-dingyi-suanzi]{稠密定义算子}[densely defined operator]。
+若另一个线性算子 \(B:D(B)\subseteq H\to H\) 满足
+\[
+ D(A)\subseteq D(B),\qquad Bx=Ax\quad(x\in D(A)),
+\]
+则称 \(B\) 为 \(A\) 的扩张，记作 \(A\subseteq B\)。等号 \(A=B\) 同时要求定义域相等、
+作用相同。算子的图像记为
+\[
+ G(A)=\{(x,Ax):x\in D(A)\}\subseteq H\oplus H.
+\]
+\symidx{\(A\subseteq B\)：线性算子的扩张关系}
+\end{definition}
+
+这里的稠密性使用原空间 \(H\) 的范数。它保证连续线性泛函在 \(D(A)\) 上的取值可以唯一决定
+其在 \(H\) 上的延拓，却不保证 \(A\) 自身连续。若 \(D(A)=H\) 且 \(A\) 闭，
+\cref{b1:thm:closed-graph}才给出 \(A\) 有界；无界闭算子的定义域因而必须是真子空间。
+
+\ProseParagraphBreak
+
+沿用\cref{b1:def:closed-operator,b1:def:graph-norm}，图像 \(G(A)\) 闭时称 \(A\) 闭，
+并在 \(D(A)\) 上取图像范数
+\[
+ \|x\|_A=\|x\|+\|Ax\|.
+\]
+有时计算更适合使用平方和范数
+\[
+ \|x\|_{A,2}=\bigl(\|x\|^2+\|Ax\|^2\bigr)^{1/2},\qquad
+ \langle x,y\rangle_A=\langle x,y\rangle+\langle Ax,Ay\rangle.
+\]
+二者满足 \(\|x\|_{A,2}\leq\|x\|_A\leq\sqrt2\cdot\|x\|_{A,2}\)，
+所以给出相同的收敛、闭包和完备性。后面谈图像范数时仍沿用前一种记号。
+
+\begin{proposition}[图像范数与闭性]
+\label{b1:prop:29-graph-complete}
+设 \(H\) 为复 Hilbert 空间，\(A:D(A)\subseteq H\to H\) 为线性算子。
+则 \(A\) 闭，当且仅当 \(D(A)\) 关于 \(\|x\|_A=\|x\|+\|Ax\|\) 完备。
+在这一情形，\(D(A)\) 关于内积
+\(\langle x,y\rangle_A=\langle x,y\rangle+\langle Ax,Ay\rangle\) 是 Hilbert 空间。
+\end{proposition}
+\begin{proof}
+若 \(A\) 闭，图像范数的完备性已由\cref{b1:prop:closed-operator-graph-norm}给出：
+图像范数 Cauchy 列满足 \(x_n\to x\)、\(Ax_n\to y\)，闭性给出 \(x\in D(A)\) 和 \(Ax=y\)。
+平方和范数与它等价，且由所列内积产生，故也完备。
+
+反之，若 \(D(A)\) 关于图像范数完备，取 \(x_n\in D(A)\)，使
+\((x_n,Ax_n)\to(x,y)\) 于 \(H\oplus H\)。两个分量都为 Cauchy 列，故 \((x_n)\)
+在图像范数中为 Cauchy 列，存在 \(u\in D(A)\) 使 \(x_n\to u\)、\(Ax_n\to Au\)。
+由极限唯一性，\(u=x\)、\(Au=y\)，从而 \((x,y)\in G(A)\)。
+\end{proof}
+
+例如，把恒等算子限制到 \(\ell^2\) 中的有限支撑序列空间 \(c_{00}\)，所得算子稠密定义，
+却不是闭算子。有限截断 \(x^{(n)}\) 可以趋于一个不在 \(c_{00}\) 中的向量 \(x\)，
+而 \((x^{(n)},x^{(n)})\to(x,x)\)。稠密定义与图像闭是两项不同的要求。
+
+\subsection{稠密定义算子的伴随}
+\label{b1:subsec:290502}
+
+对有界算子，\cref{b1:prop:hilbert-adjoint}在每个 \(y\in H\) 上构造了伴随值。
+当 \(A\) 无界时，固定 \(y\) 后得到的泛函 \(x\mapsto\langle Ax,y\rangle\)
+未必关于 \(\|x\|\) 连续。伴随的定义域恰好由仍具有这种连续性的测试向量组成。
+
+\begin{definition}[稠密定义算子的伴随]
+\label{b1:def:29-unbounded-adjoint}
+设 \(H\) 为复 Hilbert 空间，\(A:D(A)\subseteq H\to H\) 为稠密定义线性算子。
+定义
+\[
+ D(A^*)=\{y\in H:\text{存在 }C_y<\infty\text{，使 }
+ |\langle Ax,y\rangle|\leq C_y\cdot\|x\|\quad(x\in D(A))\}.
+\]
+对每个 \(y\in D(A^*)\)，以 \(A^*y\) 表示满足
+\begin{equation}\label{b1:eq:29-adjoint-pairing}
+ \langle Ax,y\rangle=\langle x,A^*y\rangle\qquad(x\in D(A))
+\end{equation}
+的唯一向量。所得线性算子 \(A^*:D(A^*)\subseteq H\to H\) 称为 \(A\) 的伴随。
+\end{definition}
+
+定义中的表示向量确实存在。给定 \(y\in D(A^*)\)，相应泛函在稠密子空间 \(D(A)\) 上有界，
+所以可按范数极限唯一延拓到 \(H\)；\cref{b1:thm:hilbert-riesz}再给出唯一表示向量。
+反过来，只要某个向量满足\eqref{b1:eq:29-adjoint-pairing}，Cauchy--Schwarz 不等式便给出定义中的界。
+第二变量的共轭线性说明，对 \(y_1,y_2\in D(A^*)\) 和 \(\alpha,\beta\in\mathbb C\)，
+表示向量为 \(\alpha A^*y_1+\beta A^*y_2\)，故 \(D(A^*)\) 为线性子空间，\(A^*\) 线性。
+此时还不能断言 \(D(A^*)\) 稠密。
+
+\begin{proposition}[伴随的闭性与扩张反向性]
+\label{b1:prop:29-adjoint-closed}
+设 \(H\) 为复 Hilbert 空间，\(A:D(A)\subseteq H\to H\) 为稠密定义线性算子。
+则 \(A^*\) 是闭算子。若 \(B:D(B)\subseteq H\to H\) 也是稠密定义线性算子且
+\(A\subseteq B\)，则 \(B^*\subseteq A^*\)。此外，对任意 \(z\in\mathbb C\)，
+\[
+ D((A-zI)^*)=D(A^*),\qquad (A-zI)^*=A^*-\overline zI.
+\]
+\end{proposition}
+\begin{proof}
+设 \(y_n\in D(A^*)\)、\(y_n\to y\)、\(A^*y_n\to v\)。对每个固定 \(x\in D(A)\)，
+有
+\[
+ \langle Ax,y\rangle=\lim_n\langle Ax,y_n\rangle
+ =\lim_n\langle x,A^*y_n\rangle=\langle x,v\rangle.
+\]
+故 \(y\in D(A^*)\)、\(A^*y=v\)，证明了闭性。
+若 \(y\in D(B^*)\)，把 \(\langle Bx,y\rangle=\langle x,B^*y\rangle\)
+限制到 \(D(A)\)，即得 \(y\in D(A^*)\)、\(A^*y=B^*y\)。
+
+最后，泛函 \(x\mapsto z\langle x,y\rangle\) 对 \(\|x\|\) 有界，
+所以 \(\langle(A-zI)x,y\rangle\) 有界当且仅当 \(\langle Ax,y\rangle\) 有界。
+在共同定义域上，
+\[
+ \langle(A-zI)x,y\rangle
+ =\langle x,A^*y\rangle-z\langle x,y\rangle
+ =\langle x,(A^*-\overline zI)y\rangle,
+\]
+得到所需公式。
+\end{proof}
+
+\begin{proposition}[核、值域与图像的正交关系]
+\label{b1:prop:29-adjoint-range}
+设 \(H\) 为复 Hilbert 空间，\(A:D(A)\subseteq H\to H\) 为稠密定义线性算子。
+对每个 \(z\in\mathbb C\)，有
+\begin{equation}\label{b1:eq:29-range-kernel}
+ \operatorname{ran}(A-zI)^\perp=\ker(A^*-\overline zI),\qquad
+ \overline{\operatorname{ran}(A-zI)}
+ =\ker(A^*-\overline zI)^\perp.
+\end{equation}
+在 \(H\oplus H\) 中取分量内积之和，则
+\begin{equation}\label{b1:eq:29-graph-orthogonal}
+ G(A)^\perp=\{(-A^*y,y):y\in D(A^*)\}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+向量 \(y\) 属于 \(\operatorname{ran}(A-zI)^\perp\)，当且仅当
+\(\langle(A-zI)x,y\rangle=0\) 对每个 \(x\in D(A)\) 成立。
+由伴随定义，这等价于 \(y\in D((A-zI)^*)\)、\((A-zI)^*y=0\)。
+使用前一命题的移位公式即得第一个等式，再由\cref{b1:thm:hilbert-projection}
+中的双重正交补公式得到第二个等式。
+
+同样，\((u,v)\in G(A)^\perp\) 当且仅当
+\[
+ \langle x,u\rangle+\langle Ax,v\rangle=0\qquad(x\in D(A)).
+\]
+这恰好要求 \(v\in D(A^*)\)、\(A^*v=-u\)，从而得到图像公式。
+\end{proof}
+
+这些关系没有把值域的闭性包含在内。核的正交补给出的通常是值域的闭包；
+只有另有闭性依据，才可以去掉上面的闭包符号。
+
+\subsection{对称算子与自伴算子}
+\label{b1:subsec:290503}
+
+\begin{definition}[对称与自伴]
+\label{b1:def:29-symmetric-self-adjoint}
+设 \(H\) 为复 Hilbert 空间，\(A:D(A)\subseteq H\to H\) 为稠密定义线性算子。
+若
+\[
+ \langle Ax,y\rangle=\langle x,Ay\rangle\qquad(x,y\in D(A)),
+\]
+则称 \(A\) 为\term[duichen-suanzi]{对称算子}[symmetric operator]。
+若 \(A=A^*\)，即 \(D(A)=D(A^*)\) 且二者在共同定义域上相等，
+则称 \(A\) 为自伴算子。
+\end{definition}
+
+对称性等价于 \(A\subseteq A^*\)，因为对每个 \(y\in D(A)\)，
+右侧 \(\langle x,Ay\rangle\) 关于 \(\|x\|\) 有界。
+自伴性还要求伴随不带来任何新的定义域向量。
+当 \(D(A)=H\) 且 \(A\) 有界时，伴随也定义在整个 \(H\) 上，
+这就退化为\cref{b1:def:self-adjoint-operator}的定义；对于无界算子，两个要求必须分开检查。
+
+\begin{lemma}[对称算子的非实参数估计]
+\label{b1:lem:29-symmetric-nonreal-bound}
+设 \(H\) 为复 Hilbert 空间，\(A:D(A)\subseteq H\to H\) 为稠密定义对称算子。
+对 \(z=a+\mathrm ib\in\mathbb C\) 和 \(x\in D(A)\)，其中 \(a,b\in\mathbb R\)，有
+\begin{equation}\label{b1:eq:29-symmetric-nonreal-bound}
+ \|(A-zI)x\|^2=\|(A-aI)x\|^2+b^2\cdot\|x\|^2.
+\end{equation}
+因此当 \(b\ne0\) 时，\(A-zI\) 单射，且
+\(\|(A-zI)x\|\geq|b|\cdot\|x\|\)。若 \(b\ne0\) 且 \(A\) 还闭，则 \(\operatorname{ran}(A-zI)\) 闭。
+\end{lemma}
+\begin{proof}
+由对称性，\(\langle Ax,x\rangle=\overline{\langle Ax,x\rangle}\)，故它为实数。
+展开 \(\|(A-aI)x-\mathrm ibx\|^2\) 时，两项交叉项的和为零，得到所列恒等式。
+
+再设 \(A\) 闭、\(b\ne0\)，且 \(y_n=(A-zI)x_n\to y\)。下界给出
+\[
+ \|x_n-x_m\|\leq |b|^{-1}\cdot\|y_n-y_m\|,
+\]
+所以 \(x_n\to x\in H\)。又有 \(Ax_n=y_n+zx_n\to y+zx\)。
+闭性给出 \(x\in D(A)\)、\(Ax=y+zx\)，故 \(y=(A-zI)x\) 属于值域。
+\end{proof}
+
+下界保证解的唯一性和对数据的稳定性。要证明自伴，仍须知道两个共轭非实参数下都能解出每个数据。
+
+\begin{theorem}[自伴性的非实点满射判据]
+\label{b1:thm:29-self-adjoint-criterion}
+设 \(H\) 为复 Hilbert 空间，\(A:D(A)\subseteq H\to H\) 为稠密定义对称算子。
+则 \(A\) 自伴，当且仅当
+\[
+ \operatorname{ran}(A-\mathrm iI)=H,
+ \qquad \operatorname{ran}(A+\mathrm iI)=H.
+\]
+等价地，只需存在某个 \(z\in\mathbb C\setminus\mathbb R\)，使
+\(\operatorname{ran}(A-zI)=\operatorname{ran}(A-\overline zI)=H\)。
+若这些条件成立，则 \(A\) 闭，并且对每个 \(z\in\mathbb C\setminus\mathbb R\)，
+\(A-zI:D(A)\to H\) 是双射，其逆作为 \(H\to H\) 的算子满足
+\begin{equation}\label{b1:eq:29-unbounded-resolvent-bound}
+ \|(A-zI)^{-1}\|\leq |\operatorname{Im}z|^{-1}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+先设 \(A=A^*\)。伴随的闭性保证 \(A\) 闭。
+对非实 \(z\)，前一引理说明 \(A-zI\) 单射且值域闭；
+\cref{b1:prop:29-adjoint-range}又给出
+\[
+ \operatorname{ran}(A-zI)^\perp
+ =\ker(A-\overline zI)=\{0\}.
+\]
+因此值域同时稠密且闭，必为 \(H\)。
+下界 \(\|(A-zI)x\|\geq|\operatorname{Im}z|\cdot\|x\|\)
+随后给出逆算子的范数估计，特别得到 \(z=\mathrm i,-\mathrm i\) 的满射性。
+
+反过来，假设对于某个非实 \(z\)，两个共轭参数下的值域都等于 \(H\)。
+对称性已给出 \(A\subseteq A^*\)。任取 \(y\in D(A^*)\)，
+由 \(A-zI\) 满射，可以取 \(x\in D(A)\)，使
+\[
+ (A-zI)x=(A^*-zI)y.
+\]
+因为 \(A^*x=Ax\)，向量 \(w=y-x\) 满足 \((A^*-zI)w=0\)。
+另一方面，
+\[
+ \ker(A^*-zI)=\operatorname{ran}(A-\overline zI)^\perp=\{0\}.
+\]
+故 \(y=x\in D(A)\)。这证明了 \(D(A^*)\subseteq D(A)\)，
+于是 \(A=A^*\)。闭性和其余非实参数的结论由已经证明的正向论证得到。
+取 \(z=\mathrm i\) 即得所述特例。
+\end{proof}
+
+证明的反向没有预设 \(A\) 闭。两侧满射先排除了伴随的额外定义域，再由伴随的闭性得到闭性。
+而仅有 \(A\subseteq A^*\) 时，这两步都不能省略。
+对于自伴 \(A\) 和实数 \(t\)，\eqref{b1:eq:29-range-kernel}同时给出
+\[
+ \overline{\operatorname{ran}(A-tI)}=\ker(A-tI)^\perp.
+\]
+它和有界自伴算子的核、值域关系具有相同形式，但不能据此断言值域总是闭的。
+
+\subsection{闭性、可闭性与本质自伴}
+\label{b1:subsec:290504}
+
+闭算子要求极限已经留在原图像内。另一个问题是：能否通过补上缺失的图像极限得到一个闭算子，
+而不使同一个输入出现两个输出？
+
+\begin{definition}[可闭算子与闭包]
+\label{b1:def:29-closable}
+设 \(H\) 为复 Hilbert 空间，\(A:D(A)\subseteq H\to H\) 为线性算子。
+若 \(\overline{G(A)}\subseteq H\oplus H\) 仍是某个线性算子的图像，
+则称 \(A\) \term[kebi-suanzi]{可闭}[closable]，并把该算子记为 \(\overline A\)，
+称为 \(A\) 的闭包。它满足 \(G(\overline A)=\overline{G(A)}\)，
+是 \(A\) 的最小闭扩张。
+\symidx{\(\overline A\)：可闭算子的闭包}
+\end{definition}
+
+\begin{lemma}[可闭性的序列判别]
+\label{b1:lem:29-closable-sequence}
+设 \(H\) 为复 Hilbert 空间，\(A:D(A)\subseteq H\to H\) 为线性算子。
+则 \(A\) 可闭，当且仅当对任意 \(x_n\in D(A)\)，
+\[
+ x_n\to0,\quad Ax_n\to y\quad\Longrightarrow\quad y=0.
+\]
+\end{lemma}
+\begin{proof}
+图像的闭包是闭线性子空间。它成为一个单值线性映射的图像，当且仅当其中形如 \((0,y)\)
+的向量只有 \((0,0)\)：必要性来自单值性；充分性来自两个具有相同第一分量的向量之差。
+由于 \(H\oplus H\) 是度量空间，\((0,y)\in\overline{G(A)}\)
+当且仅当存在 \((x_n,Ax_n)\to(0,y)\)，故得到所列判据。
+任一闭扩张的图像包含 \(G(A)\)，从而包含其闭包，这也证明定义中的最小性。
+\end{proof}
+
+\begin{theorem}[可闭性与双伴随]
+\label{b1:thm:29-double-adjoint}
+设 \(H\) 为复 Hilbert 空间，\(A:D(A)\subseteq H\to H\) 为稠密定义线性算子。
+则 \(A\) 可闭，当且仅当 \(D(A^*)\) 在 \(H\) 中稠密。
+在这些等价条件成立时，\(\overline A\) 稠密定义，双伴随 \(A^{**}=(A^*)^*\) 有定义，并满足
+\[
+ A^{**}=\overline A,
+ \qquad (\overline A)^*=A^*.
+\]
+特别地，稠密定义的闭算子满足 \(A^{**}=A\)。
+\end{theorem}
+\begin{proof}
+记 \(E=\overline{G(A)}\)。由\eqref{b1:eq:29-graph-orthogonal}及双重正交补公式，
+\((0,h)\in E\) 当且仅当
+\[
+ \langle(0,h),(-A^*v,v)\rangle=\langle h,v\rangle=0
+ \qquad(v\in D(A^*)).
+\]
+所以 \(E\) 中的竖直向量恰为 \(\{0\}\times D(A^*)^\perp\)。
+前一引理说明，\(E\) 是某个算子的图像当且仅当 \(D(A^*)^\perp=\{0\}\)，
+也就是 \(D(A^*)\) 稠密。
+
+在此条件下，伴随 \(A^{**}\) 可以按稠密定义算子的规则构造。
+对 \(x,y\in H\)，同一正交补公式给出
+\[
+ \begin{split}
+ (x,y)\in E
+ &\iff -\langle x,A^*v\rangle+\langle y,v\rangle=0
+       \quad(v\in D(A^*))\\
+ &\iff \langle A^*v,x\rangle=\langle v,y\rangle
+       \quad(v\in D(A^*))\\
+ &\iff x\in D(A^{**}),\quad A^{**}x=y.
+ \end{split}
+\]
+第二个等价关系取了复共轭。由此 \(G(A^{**})=E\)，故 \(A^{**}=\overline A\)。
+其定义域包含原来的稠密子空间 \(D(A)\)，所以也稠密。
+
+由 \(A\subseteq\overline A\) 和扩张反向性，先有 \((\overline A)^*\subseteq A^*\)。
+任取 \(y\in D(A^*)\)、\(x\in D(\overline A)\)，选取 \(x_n\in D(A)\)，使
+\(x_n\to x\)、\(Ax_n\to\overline Ax\)。在伴随配对中取极限，得
+\[
+ \langle\overline Ax,y\rangle=\langle x,A^*y\rangle.
+\]
+因此 \(y\in D((\overline A)^*)\)，且两伴随值相同，证明了另一个包含关系。
+\end{proof}
+
+稠密定义本身并不足以保证可闭。在复空间 \(\ell^2\) 上，取 \(D(A)=c_{00}\)，令
+\[
+ Ax=\left(\sum_{n\geq1}n x_n\right)e_1.
+\]
+和式对每个输入都是有限和。向量 \(x^{(n)}=e_n/n\) 满足 \(x^{(n)}\to0\)，
+而 \(Ax^{(n)}=e_1\)，故 \(A\) 不可闭。
+这里还可以直接算出
+\[
+ D(A^*)=\{y\in\ell^2:y_1=0\},\qquad A^*y=0.
+\]
+若 \(y_1\ne0\)，把单位向量 \(e_n\) 代入定义中的估计会得到无界的 \(n\cdot|y_1|\)；
+若 \(y_1=0\)，配对恒为零。这一伴随的定义域确实不稠密。
+
+\begin{definition}[本质自伴]
+\label{b1:def:29-essentially-self-adjoint}
+设 \(H\) 为复 Hilbert 空间，\(A:D(A)\subseteq H\to H\) 为稠密定义对称算子。
+若其闭包 \(\overline A\) 自伴，则称 \(A\) \term[benzhi-ziban]{本质自伴}[essentially self-adjoint]。
+\end{definition}
+
+这个定义中的闭包总能构造。事实上，对称性给出 \(D(A)\subseteq D(A^*)\)，
+故 \(D(A^*)\) 稠密；\cref{b1:thm:29-double-adjoint}说明 \(A\) 可闭。
+又因 \(A\subseteq A^*\) 且 \(A^*\) 闭，有
+\(\overline A\subseteq A^*=(\overline A)^*\)，所以闭包仍对称。
+于是本质自伴等价于 \(\overline A=A^*\)，但不要求原来的 \(A\) 已经闭。
+
+\begin{corollary}[本质自伴性的稠密值域判据]
+\label{b1:cor:29-essential-self-adjoint}
+设 \(H\) 为复 Hilbert 空间，\(A:D(A)\subseteq H\to H\) 为稠密定义对称算子。
+则 \(A\) 本质自伴，当且仅当
+\[
+ \overline{\operatorname{ran}(A-\mathrm iI)}=H,
+ \qquad \overline{\operatorname{ran}(A+\mathrm iI)}=H.
+\]
+\end{corollary}
+\begin{proof}
+闭包 \(\overline A\) 闭且对称，故\cref{b1:lem:29-symmetric-nonreal-bound}保证
+\(\operatorname{ran}(\overline A\pm\mathrm iI)\) 闭。
+图像闭包的定义又给出
+\[
+ \operatorname{ran}(\overline A\pm\mathrm iI)
+ =\overline{\operatorname{ran}(A\pm\mathrm iI)}.
+\]
+这里一个包含关系来自闭值域包含原值域；另一个来自对每个
+\(x\in D(\overline A)\) 选取 \(x_n\in D(A)\)，使
+\(x_n\to x\)、\(Ax_n\to\overline Ax\)。
+因此所列稠密性恰好等价于 \(\overline A\pm\mathrm iI\) 都满射。
+对闭包使用\cref{b1:thm:29-self-adjoint-criterion}即得结论。
+\end{proof}

@@ -2,84 +2,384 @@
 \section{圆盘上的 Poincaré 度量}
 \label{b3:sec:1301}
 
-Schwarz--Pick 的分母给出圆盘内的局部长度单位。把这个单位沿曲线积分，再在曲线中取下确界，就得到距离；分式三角不等式则变成测地线上的普通加法。
+Schwarz--Pick 不等式中的因子 \(1-|z|^2\) 随点的位置变化：同样大小的欧氏位移，在靠近圆周时应当计为更长的距离。本节用这个因子规定局部长度单位，再沿路径积分，由路径长度定义两点间的距离。这样得到的距离既保留圆盘原有的拓扑，又使所有全纯自同构成为等距变换。
 
 \subsection{度量元}
 \label{b3:subsec:130101}
 
-圆盘的\term[poincare-duliang]{Poincaré 度量}[Poincaré metric]长度元为
+在单位圆盘 \(\mathbb D=\{z\in\mathbb C:|z|<1\}\) 上，规定\term[poincare-duliang]{Poincaré 度量}[Poincaré metric]的长度元为
 \[
- \mathrm{d}s=\lambda_{\mathbb D}(z)|\mathrm{d}z|,
- \qquad \lambda_{\mathbb D}(z)=\frac2{1-|z|^2}.
+ \mathrm ds=\lambda_{\mathbb D}(z)|\mathrm dz|,
+ \quad
+ \lambda_{\mathbb D}(z)=\frac{2}{1-|z|^2}.
 \]
-分段 \(C^1\) 路径的长度为 \(L(\gamma)=\int\lambda_{\mathbb D}(\gamma(t))|\gamma'(t)|\,\mathrm{d}t\)。本卷固定曲率为 \(-1\) 的归一化，不能删掉因子2而仍沿用下面的曲率和距离式。
+这里的正函数 \(\lambda_{\mathbb D}\) 称为长度密度。它把点 \(z\) 处的欧氏速度 \(|v|\) 换算为速度 \(\lambda_{\mathbb D}(z)\cdot|v|\)。密度在圆盘内部光滑，在原点取最小值 \(2\)，随 \(|z|\) 增大而增大。本章固定分子为 \(2\) 的归一化；下一节将算出相应的曲率为 \(-1\)。若把密度减半，下面所有长度与距离也都减半，不能继续沿用相同的曲率系数。
 
 \ProseParagraphBreak
-密度在内部光滑且正，趋近边界时发散。内部小紧盘上它与欧氏密度有统一双边界，所以给相同局部拓扑；发散则把有限欧氏距离的边界推到无限内在距离。
+设 \(\gamma:[0,1]\to\mathbb D\) 是分段 \(C^1\) 路径，定义其 Poincaré 长度为
+\[
+ \ell_{\mathbb D}(\gamma)
+ =\int_0^1\lambda_{\mathbb D}(\gamma(t))\cdot|\gamma'(t)|\,\mathrm dt
+ =\int_0^1\frac{2|\gamma'(t)|}{1-|\gamma(t)|^2}\,\mathrm dt.
+\]
+路径的像是圆盘内的紧集，因而分母在路径上有正下界，积分有限。普通的积分换元表明，保持方向的分段光滑正则重参数化不改变长度；反向行走也不改变长度。把两条首尾相接的路径分别线性改参数到 \([0,1/2]\) 与 \([1/2,1]\)，所得拼接路径的长度等于两段长度之和。定义允许 \(\gamma'\) 为零，因此停顿也不增加长度。
 
 \ProseParagraphBreak
-度量元不是点之间的距离。它先给分段光滑路径长度 \(\ell(\gamma)=\int\lambda(\gamma)|\gamma'|\,\mathrm{d}t\)，再对连接两点的全部路径取下确界。因为 \(\lambda\) 在每个紧圆盘上有正上下界，局部长度与 Euclid 长度可比较；因此不同点的距离为正，且度量拓扑与原来拓扑相同。对圆盘中远近的比较不能仅把两个端点的密度平均，因为最短路径可能绕开密度大的区域。
+对于 \(z,w\in\mathbb D\)，用 \(\Gamma(z,w)\) 表示从 \(z\) 到 \(w\) 的全部分段 \(C^1\) 路径，定义
+\[
+ \mathrm d_{\mathbb D}(z,w)
+ =\inf_{\gamma\in\Gamma(z,w)}\ell_{\mathbb D}(\gamma).
+\]
+这个定义先对每条连接路径计算长度，再在所有连接路径中取下确界。此时尚未证明存在达到下确界的路径，所以距离的基本性质应当直接从下确界出发。
 
-\ProseParagraphBreak
-本章归一化曲率为 \(-1\)，故密度是 \(2/(1-|z|^2)\)。也有文献使用 \(1/(1-|z|^2)\)，所有长度减半，曲率成为 \(-4\)。换常数并不改变测地线形状，但会改变距离、面积和闭曲线长度中的系数。后面圆环核心长度与模量的乘积为 \(\pi\)，也是这一归一化的结果。
+\Needspace{6\baselineskip}
+\begin{proposition}[路径距离与局部拓扑]\label{b3:prop:13-disk-path-metric}
+在单位圆盘 \(\mathbb D\) 上，以长度元 \(2|\mathrm dz|/(1-|z|^2)\) 定义分段 \(C^1\) 路径的长度，并以连接两点的路径长度下确界定义 \(\mathrm d_{\mathbb D}\)。则 \(\mathrm d_{\mathbb D}\) 是有限值距离。对任意 \(0<r<1\) 及 \(|z|,|w|\le r\)，有
+\[
+ 2|z-w|\le\mathrm d_{\mathbb D}(z,w)
+ \le\frac{2}{1-r^2}|z-w|.
+\]
+特别地，\(\mathrm d_{\mathbb D}\) 诱导的拓扑与欧氏拓扑相同。
+\end{proposition}
+\begin{proof}
+对任何 \(\gamma\in\Gamma(z,w)\)，由 \(\lambda_{\mathbb D}\ge2\) 及微积分基本定理，
+\[
+ \ell_{\mathbb D}(\gamma)
+ \ge2\int_0^1|\gamma'(t)|\,\mathrm dt
+ \ge2\left|\int_0^1\gamma'(t)\,\mathrm dt\right|
+ =2|z-w|.
+\]
+取下确界得到所需下界。若 \(|z|,|w|\le r<1\)，直线段 \(\gamma(t)=(1-t)z+tw\) 留在闭圆盘 \(|\zeta|\le r\) 内，故
+\[
+ \mathrm d_{\mathbb D}(z,w)
+ \le\ell_{\mathbb D}(\gamma)
+ \le\frac{2}{1-r^2}\int_0^1|w-z|\,\mathrm dt
+ =\frac{2}{1-r^2}|z-w|.
+\]
+任意两个圆盘内的点都包含在这样的较小闭圆盘中，所以距离有限。常路径给出 \(\mathrm d_{\mathbb D}(z,z)=0\)，下界保证不同点的距离为正，路径反向则给出对称性。
 
-\subsection{Möbius 不变性}
+为证三角不等式，取 \(z,w,v\in\mathbb D\) 和 \(\varepsilon>0\)。按下确界的定义，可以选取连接 \(z,w\) 与连接 \(w,v\) 的路径 \(\gamma_1,\gamma_2\)，使
+\[
+ \ell_{\mathbb D}(\gamma_1)<\mathrm d_{\mathbb D}(z,w)+\frac\varepsilon2,
+ \quad
+ \ell_{\mathbb D}(\gamma_2)<\mathrm d_{\mathbb D}(w,v)+\frac\varepsilon2.
+\]
+拼接后得到连接 \(z,v\) 的路径，因此
+\[
+ \mathrm d_{\mathbb D}(z,v)
+ \le\ell_{\mathbb D}(\gamma_1)+\ell_{\mathbb D}(\gamma_2)
+ <\mathrm d_{\mathbb D}(z,w)+\mathrm d_{\mathbb D}(w,v)+\varepsilon.
+\]
+令 \(\varepsilon\downarrow0\) 即得三角不等式。
+
+最后固定 \(a\in\mathbb D\)，取 \(|a|<r<1\)。在 \(a\) 的一个欧氏邻域中，上面的双边估计同时成立，所以欧氏距离趋于零时，\(\mathrm d_{\mathbb D}\) 距离也趋于零；反向结论由全圆盘上的下界直接得到。这证明两种距离给出相同的局部拓扑。
+\end{proof}
+
+上述下界适用于所有连接路径，即使路径离开端点所在的小圆盘也仍然成立。上界则只需选取一条留在小圆盘内的直线段。这样的分工使局部比较不依赖于最短路径是否存在，也不要求最短路径预先留在某个指定邻域内。
+
+\subsection{圆盘自同构不变性}
 \label{b3:subsec:130102}
 
-圆盘自同构满足 \(\lambda_{\mathbb D}(Tz)|T'(z)|=\lambda_{\mathbb D}(z)\)，已由第6章的导数恒等式得到。换元使每条路径长度不变，因此也保持路径距离。这个不变性把任意点的计算归到0。
+命题~\ref{b3:prop:05-disk-automorphisms} 已给出单位圆盘的全纯自同构：每个这样的映射均可写成
+\[
+ T(z)=\eta\phi_a(z),
+ \quad
+ \phi_a(z)=\frac{z-a}{1-\overline a z},
+ \quad a\in\mathbb D,
+ \quad |\eta|=1.
+\]
+其中 \(\phi_a(a)=0\)，而乘以 \(\eta\) 只是旋转。下面验证，这些映射引起的欧氏速度变化恰由长度密度的变化抵消。
 
-\ProseParagraphBreak
-对一般全纯圆盘映射只有不等式 \(\lambda_{\mathbb D}(f(z))|f'(z)|\le\lambda_{\mathbb D}(z)\)。于是每条像路径长度不超过原路径长度。若在一点等号且映射非常值，Schwarz--Pick 刚性使它成为自同构；长度不变的全局对称由局部导数等号识别。
+\Needspace{6\baselineskip}
+\begin{proposition}[圆盘自同构的等距性]\label{b3:prop:13-disk-isometry}
+设 \(T:\mathbb D\to\mathbb D\) 是全纯自同构，\(\lambda_{\mathbb D}(z)=2/(1-|z|^2)\)，由该密度定义的路径长度和路径距离分别记为 \(\ell_{\mathbb D}\) 与 \(\mathrm d_{\mathbb D}\)。则
+\[
+ \lambda_{\mathbb D}(T(z))\cdot|T'(z)|
+ =\lambda_{\mathbb D}(z),
+ \quad z\in\mathbb D.
+\]
+每条分段 \(C^1\) 路径 \(\gamma\) 满足
+\[
+ \ell_{\mathbb D}(T\circ\gamma)=\ell_{\mathbb D}(\gamma),
+\]
+且对任意 \(z,w\in\mathbb D\)，有
+\[
+ \mathrm d_{\mathbb D}(T(z),T(w))=\mathrm d_{\mathbb D}(z,w).
+\]
+\end{proposition}
+\begin{proof}
+对 \(\phi_a(z)=(z-a)/(1-\overline a z)\)，直接求导并通分得到
+\[
+ \phi_a'(z)=\frac{1-|a|^2}{(1-\overline a z)^2},
+ \quad
+ 1-|\phi_a(z)|^2
+ =\frac{(1-|a|^2)(1-|z|^2)}{|1-\overline a z|^2}.
+\]
+因而
+\[
+ \frac{2|\phi_a'(z)|}{1-|\phi_a(z)|^2}
+ =\frac{2}{1-|z|^2}.
+\]
+旋转保持 \(|z|\)，导数的模为 \(1\)，故 \(T=\eta\phi_a\) 也满足密度恒等式。沿路径使用链式法则，得到
+\[
+ \begin{aligned}
+ \ell_{\mathbb D}(T\circ\gamma)
+ &=\int_0^1\lambda_{\mathbb D}(T(\gamma(t)))
+   \cdot|T'(\gamma(t))|\cdot|\gamma'(t)|\,\mathrm dt\\
+ &=\int_0^1\lambda_{\mathbb D}(\gamma(t))
+   \cdot|\gamma'(t)|\,\mathrm dt
+ =\ell_{\mathbb D}(\gamma).
+ \end{aligned}
+\]
+映射 \(\gamma\mapsto T\circ\gamma\) 将连接 \(z,w\) 的全部路径一一对应到连接 \(T(z),T(w)\) 的全部路径，逆对应为与 \(T^{-1}\) 复合。在这两族路径中取长度下确界，便得距离不变性。
+\end{proof}
+
+因此，求任意两点的距离时，可以先把其中一点送到原点，再计算另一个像点到原点的距离。这里使用的是所有连接路径之间的对应，尚未指定哪一条路径最短。
 
 \subsection{Poincaré 距离}
 \label{b3:subsec:130103}
 
+从原点走向一个给定点时，径向线段是最短路径。证明这一点要控制任意连接路径的径向变化；进一步追踪等号，还可以排除绕行和向内折返。
+
+\Needspace{6\baselineskip}
+\begin{lemma}[径向最短路径及其等号条件]\label{b3:lem:13-radial-shortest}
+设 \(0<r<1\)、\(\theta\in\mathbb R\)，\(\gamma:[0,1]\to\mathbb D\) 是连接 \(0\) 与 \(re^{\mathrm i\theta}\) 的分段 \(C^1\) 路径。对长度元 \(2|\mathrm dz|/(1-|z|^2)\)，有
+\[
+ \ell_{\mathbb D}(\gamma)\ge2\operatorname{arctanh}r
+ =\log\frac{1+r}{1-r}.
+\]
+等号成立当且仅当存在非递减的分段 \(C^1\) 函数 \(u:[0,1]\to[0,r]\)，满足 \(u(0)=0\)、\(u(1)=r\)，使
+\[
+ \gamma(t)=u(t)e^{\mathrm i\theta},
+ \quad 0\le t\le1.
+\]
+\end{lemma}
+\begin{proof}
+令 \(u(t)=|\gamma(t)|\)。分段 \(C^1\) 路径在紧参数区间上绝对连续，模函数是 Lipschitz 函数，故 \(u\) 也绝对连续，且几乎处处有
+\[
+ |u'(t)|\le|\gamma'(t)|.
+\]
+选取 \(\rho<1\) 使路径像包含在 \(|z|\le\rho\) 中。函数
+\[
+ F(s)=2\operatorname{arctanh}s,
+ \quad F'(s)=\frac{2}{1-s^2}
+\]
+在 \([0,\rho]\) 上有界且连续可微，绝对连续函数的链式法则因此适用。于是
+\[
+ \begin{aligned}
+ \ell_{\mathbb D}(\gamma)
+ &=\int_0^1\frac{2|\gamma'(t)|}{1-u(t)^2}\,\mathrm dt\\
+ &\ge\int_0^1\frac{2|u'(t)|}{1-u(t)^2}\,\mathrm dt\\
+ &\ge\int_0^1\frac{2u'(t)}{1-u(t)^2}\,\mathrm dt
+ =F(u(1))-F(u(0))
+ =2\operatorname{arctanh}r.
+ \end{aligned}
+\]
+径向路径 \(\gamma(t)=tr e^{\mathrm i\theta}\) 达到此下界。
+
+若长度达到下界，上述两个不等式均须取等。由于各自的被积函数之差非负、权重 \(2/(1-u^2)\) 为正，第二个等号给出 \(u'\ge0\) 几乎处处；结合绝对连续性可知 \(u\) 非递减。第一个等号再给出 \(|\gamma'|=u'\) 几乎处处。在 \(u(t)>0\) 的地方，
+\[
+ u'(t)
+ =\frac{\operatorname{Re}(\overline{\gamma(t)}\gamma'(t))}{u(t)}
+ \le|\gamma'(t)|.
+\]
+等号要求速度沿径向向外，即几乎处处有
+\[
+ \gamma'(t)=\frac{u'(t)}{u(t)}\gamma(t).
+\]
+在任意满足 \(u\ge\varepsilon>0\) 的闭子区间上，\(\gamma/u\) 绝对连续，且
+\[
+ \left(\frac{\gamma}{u}\right)'
+ =\frac{\gamma'}{u}-\frac{\gamma u'}{u^2}=0
+\]
+几乎处处成立，因此方向 \(\gamma/u\) 在该子区间上恒定。由于 \(u\) 非递减，集合 \(\{t:u(t)>0\}\) 是一个以 \(1\) 为右端点的区间；任意两个其中的点都可放进上述某个闭子区间。所以方向在整个正半径区间上恒定，由终点可知它等于 \(e^{\mathrm i\theta}\)。当 \(u(t)=0\) 时，\(\gamma(t)=0\)，故所需表示在全区间成立。此时 \(u(t)=e^{-\mathrm i\theta}\gamma(t)\)，也继承了 \(\gamma\) 的分段 \(C^1\) 正则性。
+
+反之，若 \(\gamma(t)=u(t)e^{\mathrm i\theta}\)，其中 \(u\) 非递减且具有所述端点值，则 \(|\gamma'|=u'\) 几乎处处。直接积分便得 \(\ell_{\mathbb D}(\gamma)=F(r)-F(0)\)，等号成立。
+\end{proof}
+
+等号允许沿半径停顿，但不允许向内折返，也不允许在正半径处改变方向。若两个端点都是原点，最小长度为 \(0\)；由 \(\ell_{\mathbb D}(\gamma)\ge2\int_0^1|\gamma'|\,\mathrm dt\)，长度为零的路径只能是常路径。
+
+\Needspace{6\baselineskip}
 \begin{theorem}\label{b3:thm:13-disk-distance}
-Poincaré 路径距离为
+在单位圆盘 \(\mathbb D\) 上取长度元 \(2|\mathrm dz|/(1-|z|^2)\)，其诱导的路径距离记为 \(\mathrm d_{\mathbb D}\)。对任意 \(z,w\in\mathbb D\)，令
+\[
+ \delta(z,w)=\left|\frac{z-w}{1-\overline w z}\right|.
+\]
+则 \(0\le\delta(z,w)<1\)，并且
 \[
  \mathrm d_{\mathbb D}(z,w)=2\operatorname{arctanh}\delta(z,w)
  =\log\frac{1+\delta(z,w)}{1-\delta(z,w)}.
 \]
+任意两点之间都存在达到该距离的分段 \(C^1\) 路径。
 \end{theorem}
 \begin{proof}
-先令一端为0，另一端模为 \(r\)。对任意连接路径，记径向函数 \(u(t)=|\gamma(t)|\)，几乎处处 \(|u'|\le|\gamma'|\)。故其长度至少为 \(\int 2|u'|/(1-u^2)\,\mathrm{d}t\)，又至少为原函数 \(2\operatorname{arctanh}u\) 的端点差 \(2\operatorname{arctanh}r\)。径向线段达到此值。再用自同构把 \(w\) 移到0，像点模为 \(\delta(z,w)\)，不变性给公式。
-\end{proof}
-密度正使不同点距离正；路径拼接给三角不等式，反向给对称。第6章分式三角式经反双曲正切后也直接验证相同结论。
-
-\begin{proposition}[距离的双曲余弦形式]\label{b3:prop:13-cosh-distance}
-对 \(z,w\in\mathbb D\)，有
+取 \(\phi_w(\zeta)=(\zeta-w)/(1-\overline w\zeta)\)。由
 \[
- \cosh d(z,w)=1+\frac{2|z-w|^2}{(1-|z|^2)(1-|w|^2)}.
+ 1-|\phi_w(z)|^2
+ =\frac{(1-|w|^2)(1-|z|^2)}{|1-\overline w z|^2}>0
 \]
-若两条从0出发的径向线夹角为 \(\theta\)，端点到0的距离为 \(a,b\)，端点间距离为 \(c\)，则
+可知 \(|\phi_w(z)|=\delta(z,w)<1\)。自同构的等距性给出
 \[
- \cosh c=\cosh a\cosh b-\sinh a\sinh b\cos\theta.
+ \mathrm d_{\mathbb D}(z,w)
+ =\mathrm d_{\mathbb D}(\phi_w(z),0).
+\]
+由引理~\ref{b3:lem:13-radial-shortest}，右端等于 \(2\operatorname{arctanh}|\phi_w(z)|\)；当 \(z=w\) 时两端同为零。再用反双曲正切的对数表达式，即得距离公式。
+
+径向线段 \(\sigma(t)=t\phi_w(z)\) 连接 \(0\) 与 \(\phi_w(z)\)，达到像端点之间的距离。把它经 \(\phi_w^{-1}\) 拉回，得到
+\[
+ \gamma(t)=\phi_w^{-1}\bigl(t\phi_w(z)\bigr),
+ \quad 0\le t\le1.
+\]
+这是一条连接 \(w\) 与 \(z\) 的光滑路径。长度不变性说明它也达到原端点之间的距离，必要时反向即可。
+\end{proof}
+
+距离公式把第六章的伪双曲量 \(\delta\) 与由路径长度定义的距离联系起来。特别地，
+\[
+ \mathrm d_{\mathbb D}(0,re^{\mathrm i\theta})
+ =\log\frac{1+r}{1-r}\longrightarrow+\infty
+ \quad(r\uparrow1).
+\]
+趋近单位圆周所需的欧氏距离有界，而 Poincaré 距离趋于无穷。这一结论现在来自精确公式；下一节将在此基础上证明完备性。
+
+\ProseParagraphBreak
+例如，正实轴上的两段 \([0,1/3]\) 与 \([1/3,3/5]\) 都有 Poincaré 长度 \(\log2\)。第一段的长度由原点公式直接给出；第二段的两个端点满足
+\[
+ \delta\left(\frac13,\frac35\right)
+ =\frac{\frac35-\frac13}{1-\frac13\cdot\frac35}
+ =\frac13,
+\]
+故距离也为 \(\log2\)。后一段的欧氏长度较小，反映出靠近圆周时密度较大。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[距离的双曲余弦形式]\label{b3:prop:13-cosh-distance}
+在单位圆盘 \(\mathbb D\) 上取长度元 \(2|\mathrm dz|/(1-|z|^2)\)，其诱导的路径距离记为 \(\mathrm d_{\mathbb D}\)。对任意 \(z,w\in\mathbb D\)，有
+\[
+ \cosh\mathrm d_{\mathbb D}(z,w)
+ =1+\frac{2|z-w|^2}{(1-|z|^2)(1-|w|^2)}.
+\]
+若 \(z,w\ne0\)，记
+\[
+ a=\mathrm d_{\mathbb D}(0,z),
+ \quad b=\mathrm d_{\mathbb D}(0,w),
+ \quad c=\mathrm d_{\mathbb D}(z,w),
+\]
+并令 \(\theta\in[0,\pi]\) 为径向线段 \([0,z]\) 与 \([0,w]\) 的夹角，则
+\[
+ \cosh c=\cosh a\cdot\cosh b
+ -\sinh a\cdot\sinh b\cdot\cos\theta.
 \]
 \end{proposition}
 \begin{proof}
-令 \(q=\delta(z,w)\)，\(d=2\operatorname{artanh}q\)，故 \(\cosh d=(1+q^2)/(1-q^2)\)。再用
+令 \(q=\delta(z,w)\)。距离公式和双曲函数恒等式给出
 \[
- |1-\bar wz|^2-|z-w|^2=(1-|z|^2)(1-|w|^2)
+ \cosh\mathrm d_{\mathbb D}(z,w)
+ =\cosh(2\operatorname{arctanh}q)
+ =\frac{1+q^2}{1-q^2}
+ =1+\frac{2q^2}{1-q^2}.
 \]
-化简即得第一式。第二式取 \(z=r\)、\(w=s e^{\mathrm{i}\theta}\)，则分子为 \(r^2+s^2-2rs\cos\theta\)。由 \(r=\tanh(a/2)\)、\(s=\tanh(b/2)\)，\(\cosh a=(1+r^2)/(1-r^2)\)、\(\sinh a=2r/(1-r^2)\)，代入后逐项整理得所写公式。
+利用恒等式
+\[
+ |1-\overline w z|^2-|z-w|^2
+ =(1-|z|^2)(1-|w|^2),
+\]
+可将最后的分式改写为
+\[
+ \frac{2q^2}{1-q^2}
+ =\frac{2|z-w|^2}{(1-|z|^2)(1-|w|^2)},
+\]
+得到第一式。
+
+再记 \(r=|z|\)、\(s=|w|\)，则
+\[
+ |z-w|^2=r^2+s^2-2rs\cos\theta,
+ \quad
+ a=2\operatorname{arctanh}r,
+ \quad b=2\operatorname{arctanh}s.
+\]
+因此
+\[
+ \begin{aligned}
+ \cosh c
+ &=1+\frac{2(r^2+s^2-2rs\cos\theta)}{(1-r^2)(1-s^2)}\\
+ &=\frac{(1+r^2)(1+s^2)-4rs\cos\theta}{(1-r^2)(1-s^2)}.
+ \end{aligned}
+\]
+另一方面，
+\[
+ \cosh a=\frac{1+r^2}{1-r^2},
+ \quad \sinh a=\frac{2r}{1-r^2},
+ \quad
+ \cosh b=\frac{1+s^2}{1-s^2},
+ \quad \sinh b=\frac{2s}{1-s^2}.
+\]
+把这四式代入上面的分式，便得到所述余弦关系。
 \end{proof}
-因共形度量保持夹角，\(\theta\) 也是该三角形在0的内角。把任一顶点用圆盘自同构送到0，便得到一般双曲三角形在该顶点的余弦关系。这个推导只用已经建立的距离公式，无需先接受一般曲面的三角公式。
+
+长度密度在每一点把所有方向的欧氏长度乘以同一个正数，因此不改变夹角，式中的 \(\theta\) 同时也是这个共形度量下的夹角。下一节确定最短路径的几何形状后，把任一顶点用自同构送到原点，就能把同一公式用于一般双曲三角形。
 
 \subsection{Schwarz–Pick 压缩性}
 \label{b3:subsec:130104}
 
-\begin{proposition}\label{b3:prop:13-disk-contraction}
-圆盘全纯自映射压缩 Poincaré 距离。不同两点之间距离取等，或一个点的密度导数取等，都迫使映射是自同构。
-\end{proposition}
-\begin{proof}
-沿任意源路径积分 Schwarz--Pick 导数不等式，得到像长度不大于源长度。目标距离不大于像长度，再对源路径取下确界。等号的两点形式也可直接对严格递增的 \(2\operatorname{arctanh}\) 使用伪双曲等号刚性；导数形式在第6章已证明。
-\end{proof}
-距离压缩比较的是域的内在单位。\(z\mapsto(z+a)/(1+az)\) 可有欧氏导数大于1，但它处处保持这里的长度。
+全纯自同构处处保持长度；一般全纯圆盘映射则使长度缩短或保持不变。第六章的 Schwarz--Pick 定理恰好提供了逐点比较两个长度密度所需的不等式。
 
-\begin{proposition}[固定像值的紧致控制]\label{b3:prop:13-anchored-maps}
-设 \(X\) 为圆盘型曲面，\(K\subset X\) 紧。全纯映射族 \(f:\mathbb D\to X\)、\(f(0)\in K\)，在每个闭子盘的像都包含于 \(X\) 的一个紧集，并且每个序列有局部一致收敛到全纯映射的子列。
+\Needspace{6\baselineskip}
+\begin{proposition}\label{b3:prop:13-disk-contraction}
+设 \(f:\mathbb D\to\mathbb D\) 全纯，令 \(\lambda_{\mathbb D}(z)=2/(1-|z|^2)\)，并以该密度定义路径距离 \(\mathrm d_{\mathbb D}\)。则
+\[
+ \lambda_{\mathbb D}(f(z))\cdot|f'(z)|
+ \le\lambda_{\mathbb D}(z),
+ \quad z\in\mathbb D,
+\]
+以及
+\[
+ \mathrm d_{\mathbb D}(f(z),f(w))
+ \le\mathrm d_{\mathbb D}(z,w),
+ \quad z,w\in\mathbb D.
+\]
+若第一个不等式在某一点取等，或第二个不等式在某一对不同点取等，则 \(f\) 是圆盘的全纯自同构。反之，全纯自同构使两个不等式处处取等。
 \end{proposition}
 \begin{proof}
-第四节的定理\ref{b3:thm:13-hyperbolic-schwarz-pick}给 \(d_X(f(z),f(0))\le d_{\mathbb D}(z,0)\)。固定 \(|z|\le r<1\)，右边有统一上界。用有限个球覆盖 \(K\)，并扩大半径，像落在有限个紧闭球的并中；紧闭球性质由本章后面独立的覆盖距离证明给出。同样的压缩使族在每个子盘等度连续。在每个子盘选可数稠密点，利用紧目标逐点抽取并作对角子列。给定误差，等度连续性提供统一小邻域，再用有限网格覆盖子盘；有限网格点的收敛和三角不等式使子列在整个子盘一致 Cauchy。对可数圆盘穷竭再作对角抽取，得到局部一致极限 \(F\)。在任一点附近，把 \(F\) 的像限制到目标小坐标盘；一致收敛使子列充分晚也落在该盘中，其坐标表达的全纯极限由 Weierstrass 定理全纯。因此 \(F\) 是全纯曲面映射。
+对全纯映射 \(f:\mathbb D\to\mathbb D\)，定理~\ref{b3:thm:06-schwarz-pick} 给出
+\[
+ \frac{|f'(z)|}{1-|f(z)|^2}\le\frac{1}{1-|z|^2}.
+\]
+两端乘以 \(2\)，即为密度不等式。沿任意连接 \(z,w\) 的分段 \(C^1\) 路径 \(\gamma\) 积分，得到
+\[
+ \begin{aligned}
+ \ell_{\mathbb D}(f\circ\gamma)
+ &=\int_0^1\lambda_{\mathbb D}(f(\gamma(t)))
+   \cdot|f'(\gamma(t))|\cdot|\gamma'(t)|\,\mathrm dt\\
+ &\le\int_0^1\lambda_{\mathbb D}(\gamma(t))
+   \cdot|\gamma'(t)|\,\mathrm dt
+ =\ell_{\mathbb D}(\gamma).
+ \end{aligned}
+\]
+像路径连接 \(f(z),f(w)\)，所以
+\[
+ \mathrm d_{\mathbb D}(f(z),f(w))
+ \le\ell_{\mathbb D}(f\circ\gamma)
+ \le\ell_{\mathbb D}(\gamma).
+\]
+对所有源路径取下确界，即得距离不等式。
+
+若密度不等式在一点取等，约去因子 \(2\) 后就是 Schwarz--Pick 导数不等式的等号，定理~\ref{b3:thm:06-schwarz-pick} 的刚性结论使 \(f\) 成为自同构。若不同两点 \(z,w\) 之间的距离取等，由 \(2\operatorname{arctanh}\) 在 \([0,1)\) 上严格递增，距离公式给出
+\[
+ \delta(f(z),f(w))=\delta(z,w).
+\]
+这是同一定理的两点等号情形，也迫使 \(f\) 为自同构。反向结论由命题~\ref{b3:prop:13-disk-isometry} 得到。
 \end{proof}
-固定0的像落在紧集的条件阻止整族向曲面端部逃走。在三穿孔球面上，它给省略值函数的一种紧致控制，但若基点像趋向穿孔，就可能只有球面值的退化极限。第十四章采用球面正规定义，能同时容纳这类退化；本命题则给非退化的曲面值极限。这两种紧致性陈述的目标不同，使用前应当检查需要哪一种极限。
+
+这里要求距离等号发生在不同两点之间；当 \(z=w\) 时，任何映射都满足零距离等号，不能据此推出刚性。常值映射也包含在压缩命题中，其导数为零，不同两点的像距离为零，因而不会满足上述任一刚性条件。
+
+\ProseParagraphBreak
+密度不等式允许欧氏导数大于 \(1\)。例如，圆盘自同构
+\[
+ T(z)=\frac{z+\frac12}{1+\frac12z}
+\]
+满足 \(T(-1/2)=0\) 和 \(|T'(-1/2)|=4/3\)。在这个点，
+\[
+ \lambda_{\mathbb D}(0)\cdot|T'(-1/2)|
+ =2\cdot\frac43=\frac83
+ =\lambda_{\mathbb D}(-1/2).
+\]
+欧氏速度被放大，同时像点处的长度密度变小，两者恰好抵消。因此 Schwarz--Pick 压缩性比较的是随位置变化的内在长度单位。

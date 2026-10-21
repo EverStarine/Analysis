@@ -2,70 +2,266 @@
 \section{最大模}
 \label{b3:sec:1901}
 
-多项式与指数函数都在全平面全纯，却有不同的无穷远尺度。最大模把方向各异的增长压成一个径向量，三圆定理则限制这个量怎样随半径变化。
+多项式与指数函数都在全平面全纯，却有不同的无穷远尺度。沿一条射线观察可能遗漏增长最快的方向：\(e^z\) 沿负实轴趋于零，沿正实轴却指数增长。为了比较整函数的整体大小，先在每个圆周上取最大值。全纯性不仅使这个最大值随半径递增，还限制了不同半径之间可以怎样插值。
 
 \subsection{\texorpdfstring{\(M(r,f)\)}{M(r,f)}}
 \label{b3:subsec:190101}
 
-对整函数 \(f\)，定义最大模 \(M(r,f)=\max_{|z|=r}|f(z)|\)。最大模原理使它等于闭圆盘上的最大模，并随 \(r\) 非减。若 \(f\) 非常值，则 \(M\) 严格递增：两半径相同最大值会在大圆盘内部取得最大模，迫使函数常数。
+设 \(f\) 为整函数。它的\term[zuidamo]{最大模}[maximum modulus]定义为
+\[
+ M(r,f)\coloneqq\max_{|z|=r}|f(z)|,\quad r>0,
+ \quad M(0,f)\coloneqq|f(0)|.
+\]
+圆周的紧性保证最大值能够取得。函数已明确时，将 \(M(r,f)\) 简记为 \(M(r)\)。这里的最大点可以随 \(r\) 改变，不要求始终落在同一条射线上。
+\symidx{\(M(r,f)\)：整函数在半径为 \(r\) 的圆周上的最大模}
 
-多项式 \(a_dz^d+\cdots+a_0\) 有 \(M(r)=|a_d|r^d(1+o(1))\)；\(e^z\) 有 \(M(r)=e^r\)。沿负实轴的指数趋零，与它的最大模指数增长并不矛盾。
-
-\subsection{最大模}
-\label{b3:subsec:190102}
-
-\begin{proposition}\label{b3:prop:19-polynomial-growth}
-若整函数满足 \(M(r,f)\le C(1+r)^N\)，则为次数不超过 \(\lfloor N\rfloor\) 的多项式。
+\Needspace{6\baselineskip}
+\begin{proposition}[最大模的基本性质]\label{b3:prop:19-maximum-modulus}
+设 \(f\) 为整函数，\(M(r,f)=\max_{|z|=r}|f(z)|\)，并置 \(M(0,f)=|f(0)|\)。则 \(M(\,\cdot\,,f)\) 在 \([0,\infty)\) 连续、非减，且
+\[
+ M(r,f)=\max_{|z|\le r}|f(z)|,\quad r\ge0.
+\]
+若 \(f\) 非常值，则 \(M(r,f)\) 严格递增，并且 \(M(r,f)\to\infty\) 当 \(r\to\infty\)。若 \(f\) 非恒零，则每个 \(r>0\) 都有 \(M(r,f)>0\)。
 \end{proposition}
 \begin{proof}
-Cauchy 估计给 \(|f^{(k)}(0)|\le k!C(1+r)^N/r^k\)。当整数 \(k>N\) 时令 \(r\to\infty\)，得到导数零；Taylor 展开因而有限。反向显然由有限项三角不等式成立。
+在闭圆盘上连续、内部全纯的函数，其最大模位于边界，见\cref{b3:thm:02-maximum-modulus}；常值函数同样满足这个等式。闭圆盘随 \(r\) 扩大，立即得到非减性。若 \(0\le r<R\) 且 \(M(r)=M(R)\)，小圆盘上的某个最大点在大圆盘内部，于是强最大模原理使 \(f\) 在大圆盘为常数，再由恒等定理知它在全平面为常数。这证明非常值时的严格递增性。
+
+为证连续性，固定 \(R>0\)。当 \(r,s\in[0,R]\) 时，将两个圆周用同一角度参数化，有
+\[
+ |M(r)-M(s)|
+ \le\max_{0\le\theta\le2\pi}
+ \bigl|f(re^{\mathrm{i}\theta})-f(se^{\mathrm{i}\theta})\bigr|.
+\]
+\(f\) 在闭圆盘上一致连续，所以右端随 \(|r-s|\to0\) 而趋于零；这一论证也覆盖 \(r=0\)。若非常值函数的 \(M(r)\) 不趋于无穷，单调性便使它有统一上界，进而 \(f\) 在全平面有界，与\cref{b3:thm:02-liouville}矛盾。最后，若某个 \(r>0\) 有 \(M(r)=0\)，\(f\) 就在整个圆盘为零，恒等定理使其恒零。
 \end{proof}
-这里控制的是所有方向，而不是一条射线。函数 \(e^{-z}\) 在正实轴有界，却不是多项式。
+因此，对非常值整函数，\(\log\log M(r)\) 在充分大的半径上有意义；在小半径上不能作这个假定。例如 \(f(z)=z/10\) 在 \(0<r<10\) 时有 \(M(r)<1\)。圆周上存在个别零点则不妨碍对 \(M(r)\) 取对数，因为最大模仍严格为正。
+
+\ProseParagraphBreak
+
+设 \(P(z)=a_dz^d+\cdots+a_0\)，其中 \(a_d\ne0\)。在 \(|z|=r\) 上，三角不等式及其反向形式给
+\[
+ |a_d|r^d-\sum_{k<d}|a_k|r^k
+ \le |P(z)|
+ \le |a_d|r^d+\sum_{k<d}|a_k|r^k.
+\]
+当 \(d\ge1\) 时，两端除以 \(r^d\) 都趋于 \(|a_d|\)，故
+\[
+ M(r,P)=|a_d|r^d\bigl(1+O(r^{-1})\bigr).
+\]
+相比之下，\(|e^z|=e^{\operatorname{Re}z}\le e^r\)，在 \(z=r\) 取得等号，所以 \(M(r,e^z)=e^r\)。多项式的最大模按半径的幂增长，指数函数则超出每一个固定的幂尺度。
+
+\subsection{多项式增长判别}
+\label{b3:subsec:190102}
+
+上述多项式估计也有逆命题。其原因在 Cauchy 估计中已经可见：若半径可以任意增大，那么一个过高次的 Taylor 系数无法同时满足所有圆周上的上界。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[多项式增长判别]\label{b3:prop:19-polynomial-growth}
+设 \(f\) 为整函数，\(C>0\)、\(N\ge0\) 为实数，且
+\[
+ M(r,f)\le C(1+r)^N,\quad r\ge0.
+\]
+则 \(f\) 为次数不超过 \(\lfloor N\rfloor\) 的多项式，其中包括零多项式。反之，每个次数不超过 \(\lfloor N\rfloor\) 的多项式都满足某个这样的上界。
+\end{proposition}
+\begin{proof}
+写 \(f(z)=\sum_{k=0}^{\infty}c_kz^k\)。由\cref{b3:thm:02-cauchy-estimate}，整函数在任意闭圆盘的邻域全纯，因而每个 \(r>0\) 都给出
+\[
+ |c_k|\le\frac{M(r,f)}{r^k}
+ \le C r^{N-k}(1+1/r)^N.
+\]
+当整数 \(k>N\) 时，右端随 \(r\to\infty\) 趋于零。左端与 \(r\) 无关，故 \(c_k=0\)。Taylor 级数在全平面代表 \(f\)，剩下的有限项便给出所求多项式。
+
+反之，若 \(P(z)=\sum_{k=0}^d c_kz^k\) 且 \(d\le N\)，则
+\[
+ M(r,P)\le\sum_{k=0}^d|c_k|r^k
+ \le\left(\sum_{k=0}^d|c_k|\right)(1+r)^N.
+\]
+零多项式可取任意正常数 \(C\)。
+\end{proof}
+只在充分大半径成立的同类上界也足够，因为 \(M\) 在有限半径区间连续，可以扩大常数覆盖余下部分。但只在一条射线上有界并不足够：\(e^{-z}\) 在正实轴有界，仍不是多项式。
+
+\ProseParagraphBreak
+
+称不是多项式的整函数为\term[chaoyue-zhenghanshu]{超越整函数}[transcendental entire function]。对这样的函数，增长超过任意固定幂的结论还可以加强为
+\[
+ \frac{M(r,f)}{r^N}\longrightarrow\infty
+ \quad(r\to\infty),\quad N\ge0.
+\]
+事实上，总能选到整数 \(k>N\) 使 \(c_k\ne0\)，Cauchy 系数界于是给 \(M(r,f)/r^N\ge|c_k|r^{k-N}\)。这里得到的是整个尾部的极限，不只是沿某个半径序列无界。
 
 \subsection{Hadamard 三圆定理}
 \label{b3:subsec:190103}
 
-\term[hadamard-sanyuan]{Hadamard 三圆定理}[Hadamard three-circles theorem]可由次调和比较直接得到。
+若知道两个圆周上的最大模，如何控制中间圆周？圆环内的 \(\log|z|\) 是调和函数，恰能将两个常数边界值连接起来。因此适当的插值变量是 \(\log r\)，适当的函数值则是 \(\log M(r)\)。这给出\term[hadamard-sanyuan]{Hadamard 三圆定理}[Hadamard three-circles theorem]。
+
+\Needspace{6\baselineskip}
 \begin{theorem}[Hadamard 三圆]\label{b3:thm:19-three-circles}
-若 \(f\) 在环域 \(r_1\le|z|\le r_3\) 邻域全纯且不恒零，则 \(r_1<r_2<r_3\) 时
+设 \(0<r_1<r_3\)，\(U\subseteq\mathbb C\) 是包含闭环域 \(r_1\le|z|\le r_3\) 的连通开集，\(f\) 在 \(U\) 全纯且非恒零。令 \(M(r)=\max_{|z|=r}|f(z)|\)。则对每个 \(r_1<r_2<r_3\)，
 \[
-\log M(r_2)\le
-\frac{\log(r_3/r_2)}{\log(r_3/r_1)}\log M(r_1)
-+\frac{\log(r_2/r_1)}{\log(r_3/r_1)}\log M(r_3).
+ \log M(r_2)\le
+ \frac{\log(r_3/r_2)}{\log(r_3/r_1)}\log M(r_1)
+ +\frac{\log(r_2/r_1)}{\log(r_3/r_1)}\log M(r_3).
 \]
 \end{theorem}
 \begin{proof}
-选择 \(A,B\) 使调和函数 \(A\log|z|+B\) 在两边界等于相应最大对数。函数 \(\log|f|-A\log|z|-B\) 次调和，两边界均非正，最大值原理给内部非正。在半径 \(r_2\) 取最大值，线性插值就是题式。
+恒等定理保证每个相关圆周的最大模都大于零。记 \(m_j=\log M(r_j)\)，并取
+\[
+ A=\frac{m_3-m_1}{\log r_3-\log r_1},\quad
+ B=\frac{m_1\log r_3-m_3\log r_1}{\log r_3-\log r_1}.
+\]
+于是 \(h(z)=A\log|z|+B\) 在开环域调和，在内外两条边界上分别等于 \(m_1,m_3\)。由\cref{b3:prop:15-log-subharmonic}，\(\log|f|\) 在零点取负无穷后是次调和函数，所以
+\[
+ u(z)=\log|f(z)|-h(z)
+\]
+也次调和。边界上有 \(u\le0\)；在边界零点处，\(\log|f|\) 的上极限是负无穷，仍满足同一条件。\cref{b3:prop:15-subharmonic-maximum}的有界域最大值原理遂给 \(u\le0\) 于整个环域。
+
+在 \(|z|=r_2\) 上取最大值，得到 \(\log M(r_2)\le A\log r_2+B\)。代入 \(A,B\) 并整理，便得到结论中的凸组合。
 \end{proof}
+定理允许环域内有零点；需要正的是圆周最大模，而不是每个函数值。若写成乘法形式，并令
+\[
+ \theta=\frac{\log(r_2/r_1)}{\log(r_3/r_1)},\quad 0<\theta<1,
+\]
+则 \(r_2=r_1^{1-\theta}r_3^\theta\)，而 \(M(r_2)\le M(r_1)^{1-\theta}M(r_3)^\theta\)。半径和最大模都按几何比例插值。
+
+\ProseParagraphBreak
+
+等号不只是一个径向估计碰巧准确。证明中的次调和函数一旦在内点达到最大值，就会在整个环域恒定，因而对原全纯函数产生很强的限制。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[三圆等号的刚性]\label{b3:prop:19-three-circles-equality}
+设 \(0<r_1<r_2<r_3\)，\(f\) 在包含闭环域 \(r_1\le|z|\le r_3\) 的连通开邻域全纯且非恒零。三圆不等式在这三个半径取得等号，当且仅当开环域 \(r_1<|z|<r_3\) 上有
+\[
+ f(z)=cz^k,\quad c\ne0,\quad k\in\mathbb Z.
+\]
+若 \(f\) 为整函数，则等号成立当且仅当 \(f(z)=cz^k\) 在全平面成立，其中 \(k\) 是非负整数。
+\end{proposition}
+\begin{proof}
+采用三圆定理证明中的 \(A,B,u\)。在中间圆周选 \(z_0\) 使 \(|f(z_0)|=M(r_2)\)。等号意味着 \(u(z_0)=0\)，而整个环域有 \(u\le0\)。次调和函数的强最大值原理给 \(u\equiv0\)，所以
+\[
+ |f(z)|=e^B|z|^A,\quad r_1<|z|<r_3.
+\]
+特别地，\(f\) 在环域没有零点。在任意充分小的圆盘内可选 \(f\) 与 \(z\) 的全纯对数；两者的差 \(\log f-A\log z\) 实部恒为 \(B\)。Cauchy--Riemann 方程使这个差为常数，故在整个环域有 \(f'(z)/f(z)=A/z\)。
+
+还须用单值性确定 \(A\)。固定 \(r_0\in(r_1,r_3)\)，令 \(v(\theta)=f(r_0e^{\mathrm{i}\theta})\)。链式法则给 \(v'(\theta)=\mathrm{i}A v(\theta)\)，从而
+\[
+ v(2\pi)=e^{2\pi\mathrm{i}A}v(0).
+\]
+\(v(2\pi)=v(0)\ne0\)，而 \(A\) 为实数，所以 \(A=k\in\mathbb Z\)。现在 \((f(z)z^{-k})'=0\)，环域连通，故 \(f(z)=cz^k\)。反之，这一形式的 \(\log M(r)=\log|c|+k\log r\) 是直线，必取得等号。
+
+若 \(f\) 为整函数，则整函数 \(zf'(z)-kf(z)\) 已在环域为零，故处处为零。比较其 Taylor 系数，得到 \((n-k)c_n=0\) 对每个 \(n\ge0\) 成立。\(f\) 非恒零，必有某个 \(c_n\ne0\)，于是 \(k=n\ge0\)，且只有这一项可以非零。
+\end{proof}
+环域允许负整数幂，是因为原点不在其中。例如 \(z^{-2}\) 在任何避开原点的同心环域都取得三圆等号。要求整函数时，原点的全纯性恰好排除这些负幂。
 
 \subsection{对数凸性}
 \label{b3:subsec:190104}
 
-令 \(t=\log r\)，三圆定理说 \(t\mapsto\log M(e^t)\) 凸。其割线斜率随半径向外不减；这是增长约束，而不是通常变量 \(r\) 下的凸性。
-
-例如单项式 \(z^d\) 给严格直线 \(dt\)；指数给 \(e^t\)。如果某非零整函数在所有大半径的对数斜率都不超过整数 \(d\)，则 \(M(r)\le Cr^d\)，上一命题将它识别为多项式。这使一个径向几何性质决定整个函数的代数结构。
-
-
-\ProseParagraphBreak
-
-三圆定理也能在同一半径上比较几何平均与最大值。Jensen 的圆周平均描述零点总影响，最大模则取最有利增长的方向；前者可能恒定，后者却增长很快。对 \(e^z\)，圆周对数平均零，而 \(\log M(r)=r\)。因此由平均对数的凸性不能直接推出最大模的精确增长，三圆定理另需对边界最大值作调和比较。这两种凸性虽然都以 \(\log r\) 为变量，控制的对象仍不同。
-
-\ProseParagraphBreak
-
-最大模关于半径连续。若 \(r_j\to r>0\)，在共同紧环带上 \(f\) 一致连续，将 \(r_je^{\mathrm{i}t}\) 与 \(re^{\mathrm{i}t}\) 比较，函数值差一致趋零，故两圆周最大值之差趋零。对非恒零整函数 \(M(r)>0\)，对数也连续。三圆不等式因此给一个通常意义的连续凸函数，而非只在排除零点的半径上定义的对象。圆周即使碰到函数零点，最大模仍由其他位置取得，不需要移开半径。
-
-\ProseParagraphBreak
-
-若三圆不等式在一个中间半径取得等号，比较函数 \(\log|f|-A\log|z|-B\) 在环域内部取得最大值零，故恒为零。于是 \(|f(z)|=e^B|z|^A\)，\(f\) 在环域无零点。局部对数微分给 \(f'/f=A/z\)，沿绕原点的圆周积分，辐角原理使 \(A\) 必为整数；继而 \(f(z)=cz^A\) 于环域。若 \(f\) 还在原点全纯，整数 \(A\) 必非负。三圆等号的刚性来自次调和强最大值原理，不能只由一个实凸函数的一次等号就辨认出复函数的形式。
-
-\ProseParagraphBreak
-
-最大模还可与 Taylor 展开的最大单项比较。对 \(f(z)=\sum c_nz^n\)，定义 \(\mu(r)=\max_n|c_n|r^n\)。整性使项随 \(n\to\infty\) 趋零，所以最大值确实达到。Cauchy 系数界给 \(\mu(r)\le M(r)\)；另一方面，对 \(0<r<R\)，
+对非恒零整函数定义
 \[
- M(r)\le\sum_n|c_n|r^n
-       \le\mu(R)\sum_n(r/R)^n
-       =\frac{\mu(R)}{1-r/R}.
+ \Phi(t)\coloneqq\log M(e^t,f),\quad t\in\mathbb R.
 \]
-这两边估计说明，模级数中的相消可能影响某个方向的函数值，却不能使整个圆周上的最大模比所有单项都小。取 \(R=2r\)，两种径向量具有相同的增长阶；当讨论有限正阶的型时，再取 \(R=(1+\varepsilon)r\) 并让 \(\varepsilon\downarrow0\)，它们的型也相同。
+三圆定理恰好说 \(\Phi\) 是凸函数；最大模的单调性又使它非减。单项式给直线 \(\log|c|+kt\)，\(e^z\) 则给 \(e^t\)。由等号刚性，除单项式外，\(\Phi\) 对任意三个不同的实数都满足严格凸不等式。这里的凸性以 \(\log r\) 为变量，不是断言 \(r\mapsto\log M(r)\) 凸。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[对数最大模的斜率]\label{b3:prop:19-convex-slopes}
+设 \(f(z)=\sum_{n=0}^{\infty}c_nz^n\) 为非恒零整函数，\(m\) 是最小的非零系数指标，并令 \(\Phi(t)=\log M(e^t,f)\)。则有限的左右导数
+\[
+ \Phi'_-(t)=\lim_{h\downarrow0}\frac{\Phi(t)-\Phi(t-h)}h,\quad
+ \Phi'_+(t)=\lim_{h\downarrow0}\frac{\Phi(t+h)-\Phi(t)}h
+\]
+在每个 \(t\in\mathbb R\) 存在。它们非负，满足 \(\Phi'_-(t)\le\Phi'_+(t)\)，且对 \(s<t\)，
+\[
+ \Phi'_+(s)\le\frac{\Phi(t)-\Phi(s)}{t-s}\le\Phi'_-(t).
+\]
+两种单侧导数在 \(t\to-\infty\) 时都趋于 \(m\)。若 \(f\) 为 \(d\) 次多项式，则它们在 \(t\to\infty\) 时都趋于 \(d\)；若 \(f\) 超越，则都趋于无穷。特别地，任一单侧导数在右方尾部有统一上界，当且仅当 \(f\) 为多项式。
+\end{proposition}
+\begin{proof}
+凸性给出三个点的割线比较：若 \(a<b<c\)，则
+\[
+ \frac{\Phi(b)-\Phi(a)}{b-a}
+ \le\frac{\Phi(c)-\Phi(a)}{c-a}
+ \le\frac{\Phi(c)-\Phi(b)}{c-b}.
+\]
+这由 \(\Phi(b)\) 不超过端点连线直接移项得到。固定一个端点后，趋向该点的割线斜率因而单调；再用左右各一个固定外点的割线作上下界，得到有限的单侧极限。对上述比较取极限，即得陈述中的导数不等式。\(\Phi\) 非减，所有这些斜率均非负。
+
+在原点，\(f(z)=z^m(c_m+O(z))\)，其中误差在小圆周上一致。因此
+\[
+ \Phi(t)=mt+\log|c_m|+O(e^t),\quad t\to-\infty.
+\]
+单侧导数被单位长度的割线夹住：
+\[
+ \Phi(t)-\Phi(t-1)
+ \le\Phi'_-(t)\le\Phi'_+(t)
+ \le\Phi(t+1)-\Phi(t).
+\]
+左右两端都趋于 \(m\)，给出左端极限。若 \(f\) 为 \(d\) 次多项式，最大模的首项估计同样给 \(\Phi(t)=dt+\log|c_d|+O(e^{-t})\) 当 \(t\to\infty\)，所以右端斜率极限为 \(d\)；常数情形直接成立。
+
+最后，两个单侧导数均非减。若其中一个在右方有界，另一个由不同点的导数比较也有同一有限上界 \(D\)。固定 \(t_0\)，割线不等式便给
+\[
+ \Phi(t)\le\Phi(t_0)+D(t-t_0),\quad t>t_0.
+\]
+换回半径就是大半径上的 \(M(r,f)\le C r^D\)，由多项式增长判别知 \(f\) 为多项式。因此超越情形的两个非减斜率都只能趋于无穷。
+\end{proof}
+\(m\) 记录原点的零点重数，右端斜率则区分有限次数与无限次 Taylor 展开。这个结论没有说 \(\Phi\) 处处可微。即使只用单侧导数，仍能在每个点作支撑线：若 \(p\in[\Phi'_-(t),\Phi'_+(t)]\)，则割线比较给
+\[
+ \Phi(s)\ge\Phi(t)+p(s-t),\quad s\in\mathbb R.
+\]
+在 \(s<t\) 与 \(s>t\) 两侧分别使用左、右割线，便可核对不等号的方向。
+
 \ProseParagraphBreak
-从对数坐标看，\(\log\mu(e^t)=\max_n(\log|c_n|+nt)\)，是斜率为非负整数的一族直线的上包络，因而凸。取得最大值的指标随 \(t\) 非减：若在 \(t_1<t_2\) 分别由 \(n_1,n_2\) 取到最大值，把两次比较不等式相加便得 \((n_2-n_1)(t_2-t_1)\ge0\)。这使 Taylor 展开的主导项随半径逐渐移向高次幂。若主导指标最终有共同上界，则所有足够高次系数都必须为零，否则该项的斜率更大，最终会超过已有的有限条直线。多项式与超越整函数的差别，由此再次表现为无穷远是否不断出现新的主导次数。
+
+最大模还可以与 Taylor 级数中的单项直接比较。对非恒零整函数 \(f(z)=\sum c_nz^n\)，定义\term[zuidaxiang]{最大项}[maximum term]
+\[
+ \mu(r,f)\coloneqq\max_{n\ge0}|c_n|r^n,\quad r>0.
+\]
+各项随 \(n\to\infty\) 趋于零，又至少有一项为正，所以这个最大值确实取得。可能同时有几项并列最大，分别记其最小和最大指标为
+\[
+ \nu_-(r)\coloneqq\min\{\,n\ge0\mid |c_n|r^n=\mu(r,f)\,\},\quad
+ \nu_+(r)\coloneqq\max\{\,n\ge0\mid |c_n|r^n=\mu(r,f)\,\}.
+\]
+通常把最大的指标 \(\nu_+(r)\) 称为\term[zhongxin-zhibiao]{中心指标}[central index]。
+\symidx{\(\mu(r,f)\)：Taylor 级数在半径 \(r\) 上的最大项}
+\symidx{\(\nu_-(r),\nu_+(r)\)：取得最大项的最小、最大指标}
+
+\Needspace{6\baselineskip}
+\begin{proposition}[最大项与主导指标]\label{b3:prop:19-maximum-term}
+设 \(f(z)=\sum_{n=0}^{\infty}c_nz^n\) 为非恒零整函数，\(\mu(r,f)=\max_{n\ge0}|c_n|r^n\)。则对 \(0<r<R\)，
+\[
+ \mu(r,f)\le M(r,f)\le\frac{\mu(R,f)}{1-r/R}.
+\]
+函数 \(\Psi(t)=\log\mu(e^t,f)\) 是凸函数，在每个紧区间上是一族有限条直线的最大值，并且
+\[
+ \Psi'_-(t)=\nu_-(e^t),\quad \Psi'_+(t)=\nu_+(e^t),
+\]
+其中 \(\nu_-\)、\(\nu_+\) 分别是取得最大项的最小、最大指标。若 \(r_1<r_2\)，则 \(\nu_+(r_1)\le\nu_-(r_2)\)。这两个指标在 \(r\to\infty\) 时最终有界，当且仅当 \(f\) 为多项式；超越情形中两者均趋于无穷。
+\end{proposition}
+\begin{proof}
+Cauchy 系数估计给 \(|c_n|r^n\le M(r,f)\)，对 \(n\) 取最大值得到左侧。右侧利用半径 \(R\) 上每个单项均不超过 \(\mu(R,f)\)：
+\[
+ M(r,f)\le\sum_{n=0}^{\infty}|c_n|r^n
+ \le\mu(R,f)\sum_{n=0}^{\infty}(r/R)^n
+ =\frac{\mu(R,f)}{1-r/R}.
+\]
+这些级数在固定半径绝对收敛，因此估计合法。
+
+忽略零系数，有
+\[
+ \Psi(t)=\max_{c_n\ne0}\bigl(\log|c_n|+nt\bigr),
+\]
+所以 \(\Psi\) 凸。为说明这里只会在局部涉及有限条直线，固定 \([a,b]\)，选一个 \(c_j\ne0\)，再取 \(R>e^b\)。对所有 \(t\in[a,b]\)，第 \(j\) 项至少为 \(|c_j|e^{ja}>0\)，而
+\[
+ |c_n|e^{nt}\le M(R,f)(e^b/R)^n\longrightarrow0
+\]
+一致成立。于是充分大的 \(n\) 在整个区间都不能取得最大值。
+
+在给定的 \(t\) 附近，未在 \(t\) 取得最大值的有限条直线与最大值有正间隙，缩小邻域后不影响最大值。已在 \(t\) 并列的直线中，向左移动时最小斜率占优，向右移动时最大斜率占优，故左右导数分别为 \(\nu_-(e^t)\)、\(\nu_+(e^t)\)。也可直接检查指标的单调性：若 \(n_1,n_2\) 分别在 \(t_1<t_2\) 取得最大值，将两次最大值比较相加，便得
+\[
+ (n_2-n_1)(t_2-t_1)\ge0.
+\]
+
+多项式只有有限个非零系数，指标当然有界，而且大半径时由最高次项取得最大值。反之，若大半径的最大指标都不超过 \(N\)，则 \(\mu(r,f)\le\max_{0\le n\le N}|c_n|r^n\)。任意非零的 \(c_k\)、\(k>N\)，都会在充分大半径使 \(|c_k|r^k\) 超过右端，矛盾。故所有高次系数均为零。超越情形下再结合单调性，即得两个指标都趋于无穷。
+\end{proof}
+最大项的对数是一条分段线性的凸曲线，转折处对应主导次数的更换；最大模的对数则由整个函数决定。估计 \(\mu(r)\le M(r)\le2\mu(2r)\) 表明二者在略微改变半径后相互控制。下一节将据此比较它们的阶与型。
+
+\ProseParagraphBreak
+
+这里使用的是圆周最大值。前章的 Jensen 公式涉及圆周平均，两者不能互换：对 \(e^z\)，\(\log|e^{re^{\mathrm{i}\theta}}|=r\cos\theta\) 的圆周平均为零，但最大值等于 \(r\)。三圆定理在两条边界上比较最大值，正是为了保留增长最快方向所提供的信息。

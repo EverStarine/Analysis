@@ -2,55 +2,289 @@
 \section{零点计数}
 \label{b3:sec:1801}
 
-辐角原理用一条闭曲线计算零点总数，但没有直接显示零点到圆心的距离。对数模的圆周平均会把这项几何信息补进计数。
+辐角原理沿一条围道计算零点的总重数。若要把函数增长与零点分布联系起来，还需要知道这些零点离观察圆心有多远。本节先把零点记为带整数质量的离散测度，再引入随半径累积的对数权重。计数随扰动的稳定性也在这个层次建立，下一节才把这些量与对数模的圆周平均相联系。
 
 \subsection{重数}
 \label{b3:subsec:180101}
 
-非恒零全纯函数在零点 \(a\) 可唯一写成 \(f(z)=(z-a)^m g(z)\)，其中 \(g(a)\ne0\)，\(m\) 是零点重数。后面的计数均按重数重复零点。紧子集上只有有限个零点；否则有内部聚点，恒等定理迫使函数恒零。
+设 \(D\subseteq\mathbb C\) 为区域，\(f\) 在 \(D\) 全纯且不恒为零。若 \(f(a)=0\)，由\cref{b3:prop:01-zero-factorization}，在 \(a\) 附近有唯一分解
+\[
+ f(z)=(z-a)^m\cdot g(z),\quad g(a)\ne0,
+\]
+其中 \(m\ge1\) 是整数，\(g\) 全纯。具体地，\(m\) 是 Taylor 展开中第一个非零系数的指标，且 \(g(a)=f^{(m)}(a)/m!\)。这个零点阶数也称\term[lingdian-zhongshu]{零点重数}[multiplicity of a zero]，记为 \(m_a\)。在非零点 \(a\) 处约定 \(\operatorname{ord}_a f=0\)，以便统一记录中心项。
 
-例如 \(f(z)=z^2(z-1)^3\) 在原点和一的质量分别为二、三。零点位置相同而重数不同，会改变对数模的奇性强度；按不同零点个数而不计重数不能恢复解析信息。
+\ProseParagraphBreak
+
+有限重数依赖于函数不恒为零及定义域连通。若在某点全部 Taylor 系数都消失，函数先在该点的邻域为零，再由恒等定理在整个 \(D\) 为零。另一方面，紧集 \(K\subseteq D\) 中只能有有限个不同零点：无穷多个零点会在 \(K\) 中产生聚点，仍与恒等定理矛盾。由一列内部紧集穷尽 \(D\)，全部零点至多可数；它们只能向边界或无穷远积聚。
+
+\ProseParagraphBreak
+
+每个零点应记录多少质量，由局部分解决定。缩小圆盘使 \(g\) 无零，便有
+\[
+ \log|f(z)|=m_a\log|z-a|+\log|g(z)|.
+\]
+圆盘上 \(g\) 有全纯对数，因此第二项调和；对数奇性的系数恰为 \(m_a\)。若只数不同零点的个数，就会丢失这个系数。
+
+\Needspace{6\baselineskip}
+\begin{definition}[零点计数测度]\label{b3:def:18-zero-counting-measure}
+设 \(D\subseteq\mathbb C\) 为区域，\(f:D\to\mathbb C\) 全纯且不恒为零，\(Z(f)\) 为其零点集。对 \(a\in Z(f)\)，记零点重数为 \(m_a\)。定义
+\[
+ \mu_f\coloneqq\sum_{a\in Z(f)}m_a\delta_a,
+\]
+称为 \(f\) 的\term[lingdian-jishu-cedu]{零点计数测度}[zero-counting measure]，也简称零点测度；\(\delta_a\) 表示点 \(a\) 处的单位质量。
+\end{definition}
+\symidx{\(\mu_f\)：全纯函数的零点计数测度}
+
+这个可数正测度在每个内部紧集上的质量有限。对紧支集连续函数 \(\varphi:D\to\mathbb C\)，其积分就是有限和
+\[
+ \int_D\varphi\,\mathrm d\mu_f
+ =\sum_{a\in Z(f)\cap\operatorname{supp}\varphi}m_a\cdot\varphi(a).
+\]
+例如 \(f(z)=z^2(z-1)^3\) 的测度为 \(2\delta_0+3\delta_1\)。乘以一个处处非零的全纯函数不改变这个测度；两个非恒零全纯函数相乘时，局部重数相加，所以 \(\mu_{fg}=\mu_f+\mu_g\)。函数的大小和零点测度是不同资料，乘以任意非零常数也不改变后者。
 
 \subsection{计数函数}
 \label{b3:subsec:180102}
 
-对 \(f(0)\ne0\)，令 \(n(r)\) 为 \(|a|\le r\) 内按重数的零点数，定义积分计数
-\[
-N(r)=\int_0^r\frac{n(t)}t\,\mathrm{d}t
-=\sum_{|a|<r}\log\frac r{|a|}.
-\]
-第二式由有限和换序得到。零点在半径边界时贡献零，故开闭圆盘约定不影响 \(N\)。若原点重数为 \(m\)，先除去 \(z^m\)，再单独保留 \(m\log r\) 项。\(n\) 是阶梯函数，\(N\) 却连续；每个零点从它进入圆盘时开始累计对数权重。
+先以原点为中心。设 \(f\) 在 \(B(0,R)\) 全纯且不恒为零，\(0<r<R\)。闭圆盘 \(\overline{B(0,r)}\) 是定义域的内部紧集，所以其中的零点总重数有限。用闭圆盘计数的好处是半径刚好经过一个零点时，立即把它纳入；在积分计数中，这个新零点的权重从零开始。
 
-\subsection{辐角原理再述}
+\Needspace{6\baselineskip}
+\begin{definition}[整数计数与积分计数]\label{b3:def:18-counting-functions}
+设 \(R>0\)，\(f\) 在 \(B(0,R)\) 全纯且不恒为零，\(m=\operatorname{ord}_0f\)，其中 \(f(0)\ne0\) 时取 \(m=0\)。对 \(0<r<R\)，定义
+\[
+ n_f(r)\coloneqq\mu_f\bigl(\overline{B(0,r)}\bigr),\quad
+ N_f(r)\coloneqq m\log r+\int_0^r\frac{n_f(t)-m}{t}\,\mathrm dt.
+\]
+量 \(n_f(r)\) 是闭圆盘中的零点整数计数，\(N_f(r)\) 称为\term[jifen-jishu-hanshu]{积分计数函数}[integrated counting function]。另记
+\[
+ \widetilde N_f(r)\coloneqq N_f(r)-m\log r,
+\]
+它只记录非中心零点的贡献。
+\end{definition}
+\symidx{\(n_f(r)\)：闭圆盘中的零点总重数}
+\symidx{\(N_f(r)\)：含中心修正的零点积分计数}
+
+定义中的减法先消除了原点处的发散。由局部分解，存在 \(\eta>0\)，使 \(0<|z|\le\eta\) 中没有零点；因而 \(n_f(t)-m=0\) 于 \(0<t\le\eta\)。对固定 \(r<R\)，余下积分的被积函数有界，积分有限。如果直接积分 \(n_f(t)/t\)，当 \(m>0\) 时就会得到正无穷，而无法保留所需的中心对数项。
+
+\ProseParagraphBreak
+
+将 \(\overline{B(0,r)}\) 内不同的非零零点记为 \(a\)，各自仍带重数 \(m_a\)。对 \(0<t\le r\)，有有限和表达
+\[
+ n_f(t)-m
+ =\sum_{0<|a|\le r}m_a\cdot\mathbf1_{[|a|,r]}(t).
+\]
+逐项积分便得
+\begin{equation}\label{b3:eq:18-integrated-counting}
+ \widetilde N_f(r)
+ =\sum_{0<|a|\le r}m_a\log\frac r{|a|}
+ =\sum_{0<|a|<r}m_a\log\frac r{|a|}.
+\end{equation}
+这里每个不同零点只列一次，由 \(m_a\) 记入重数；也可以重复列出零点而省去系数。圆周上的项为 \(\log1=0\)，所以两个求和范围给出相同结果。开闭圆盘的区别会改变 \(n_f(r)\)，却不会改变 \(N_f(r)\)。
+
+\ProseParagraphBreak
+
+当 \(f(0)\ne0\) 时，中心项消失，\(N_f=\widetilde N_f\ge0\)。当 \(m>0\) 时，商 \(g(z)=f(z)/z^m\) 在原点补值后于整个 \(B(0,R)\) 全纯，且 \(g(0)\ne0\)。它满足
+\[
+ n_f(r)=m+n_g(r),\quad N_f(r)=m\log r+N_g(r).
+\]
+因此小半径下 \(N_f(r)\) 可以为负；负值来自中心项 \(m\log r\)，非中心零点的每一份权重仍非负。以后若先除去原点幂，再套用非零中心的公式，只需在最后恢复一次 \(m\log r\)。
+
+\ProseParagraphBreak
+
+对数权重还把阶梯式的计数变成连续函数。在变量 \(s=\log r\) 下，每个零点于 \(s=\log|a|\) 开始贡献一条斜率为其重数的直线；这个描述可以直接由有限和证明。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[积分计数的斜率]\label{b3:prop:18-counting-slopes}
+设 \(R>0\)，\(f\) 在 \(B(0,R)\) 全纯且不恒为零，\(N_f\) 采用\cref{b3:def:18-counting-functions}的含中心修正定义。令
+\[
+ F(s)=N_f(e^s),\quad s<\log R.
+\]
+则 \(F\) 连续、凸且非减，在每个紧区间上分段线性，并且
+\begin{align*}
+ F'_-(s)&=\mu_f\bigl(B(0,e^s)\bigr),\\
+ F'_+(s)&=\mu_f\bigl(\overline{B(0,e^s)}\bigr)=n_f(e^s).
+\end{align*}
+左右导数之差等于圆周 \(|z|=e^s\) 上的零点总重数。对 \(0<r<\rho<R\)，另有
+\begin{equation}\label{b3:eq:18-counting-increments}
+ N_f(\rho)-N_f(r)=\int_r^\rho\frac{n_f(t)}{t}\,\mathrm dt,
+\end{equation}
+因而
+\[
+ n_f(r)\log\frac\rho r
+ \le N_f(\rho)-N_f(r)
+ \le n_f(\rho)\log\frac\rho r.
+\]
+\end{proposition}
+\begin{proof}
+任取紧区间 \([s_0,s_1]\subset(-\infty,\log R)\)，再选 \(q\) 使 \(e^{s_1}<q<R\)。圆盘 \(\overline{B(0,q)}\) 中只有有限个零点。由\eqref{b3:eq:18-integrated-counting}，在所取区间上有
+\[
+ F(s)=ms+\sum_{0<|a|\le q}m_a(s-\log|a|)^+,
+ \quad m=\operatorname{ord}_0f,
+\]
+其中 \(x^+=\max(x,0)\)。未进入半径 \(e^s\) 的零点贡献零，故允许在有限和中加入这些较远零点。
+
+函数 \((s-c)^+\) 连续、凸且非减；在 \(s<c\) 和 \(s>c\) 的斜率分别为零和一，在 \(s=c\) 的左、右导数也是零和一。将这些有限项和线性项 \(ms\) 相加，得到所述连续性、凸性和分段线性。左导数只计 \(|a|<e^s\) 的非零零点，右导数还计圆周零点；两者都带有中心质量 \(m\)，正好分别是开、闭圆盘的质量。
+
+最后，直接相减定义中的两个积分，得到
+\begin{align*}
+ N_f(\rho)-N_f(r)
+ &=m\log\frac\rho r+\int_r^\rho\frac{n_f(t)-m}{t}\,\mathrm dt\\
+ &=\int_r^\rho\frac{n_f(t)}{t}\,\mathrm dt.
+\end{align*}
+当 \(r<t<\rho\) 时，闭圆盘的包含关系给出 \(n_f(r)\le n_f(t)\le n_f(\rho)\)。在积分中分别代入这两个界，即得最后的不等式。
+\end{proof}
+
+积分计数的凸性来自零点的正重数。改回半径变量，\(N_f\) 在 \((0,R)\) 上连续并局部绝对连续；在圆周无零点的半径有 \(N_f'(r)=n_f(r)/r\)。若圆周有零点，则左导数的分子须改为开圆盘计数，右导数的分子仍为闭圆盘计数。
+
+\ProseParagraphBreak
+
+例如，对 \(f(z)=z^2(z-1)^3(z+2)\)，有
+\[
+ n_f(r)=
+ \begin{cases}
+ 2,&0<r<1,\\
+ 5,&1\le r<2,\\
+ 6,&r\ge2,
+ \end{cases}
+ \quad
+ N_f(r)=2\log r+3(\log r)^++\bigl(\log(r/2)\bigr)^+.
+\]
+在对数半径上，初始斜率为二，经过半径一和二时分别增加三和一。积分计数在这两个半径连续，变化的是斜率。中心重数则从所有正半径开始贡献，不对应某个有限对数半径上的跳跃。
+
+\ProseParagraphBreak
+
+要用积分计数控制整数计数，必须留出半径间隔。固定观察半径 \(r\)，令一个 \(M\) 阶零点位于 \(|a|=(1-\varepsilon)r\)，其中 \(0<\varepsilon<1\)。函数 \((z-a)^M\) 给出
+\[
+ n_f(r)=M,\quad N_f(r)=-M\log(1-\varepsilon).
+\]
+当零点向观察圆周靠近时，整数计数不变，积分计数却趋于零。若改在较大半径 \(\rho>r\) 观察，每个已在闭圆盘 \(\overline{B(0,r)}\) 中的零点至少积累 \(\log(\rho/r)\) 的新增权重，\eqref{b3:eq:18-counting-increments}便给出可用的比较。
+
+\ProseParagraphBreak
+
+换一个圆心只需平移变量。若 \(\overline{B(b,r)}\subseteq D\)，对 \(\zeta\mapsto f(b+\zeta)\) 作相同定义；中心重数改为 \(\operatorname{ord}_bf\)。在下一节与圆周平均比较时，还会出现中心的非零系数：若 \(f(b+\zeta)=\zeta^m g(\zeta)\)，则该系数是 \(g(0)\)，不是在 \(m>0\) 时已经为零的 \(f(b)\)。
+
+\subsection{辐角原理与零点稳定性}
 \label{b3:subsec:180103}
 
-边界无零点时，\cref{b3:thm:03-argument-principle}给
+设 \(f\) 在 \(B(0,R)\) 全纯且不恒为零，\(0<r<R\)，并且 \(f\) 在圆周 \(|z|=r\) 上无零点。此时 \(f\) 在闭圆盘的开邻域全纯，圆周为正向光滑 Jordan 曲线，满足\cref{b3:thm:03-argument-principle}的条件。圆周既无零点，开、闭圆盘计数相同，所以
+\begin{equation}\label{b3:eq:18-argument-count}
+ n_f(r)=\frac1{2\pi\mathrm i}\int_{|z|=r}\frac{f'(z)}{f(z)}\,\mathrm dz.
+\end{equation}
+若圆周上有零点，\(f'/f\) 在积分路径有极点，不能使用这个积分。由内部零点局部有限，可在该半径两侧分别选无零点的圆周；从外侧趋近得到闭圆盘计数，从内侧趋近得到开圆盘计数。两者之差正是边界零点的质量。
+
+\ProseParagraphBreak
+
+同一个边界正下界控制全纯扰动。只要 \(h\) 在闭圆盘邻域全纯且
 \[
-n(r)=\frac1{2\pi\mathrm{i}}\int_{|z|=r}\frac{f'(z)}{f(z)}\,\mathrm{d}z.
+ \max_{|z|=r}|h(z)-f(z)|
+ <\min_{|z|=r}|f(z)|,
 \]
-这里要求 \(f\) 在闭圆盘邻域全纯，或者先在稍小半径应用；边界上有零点时积分不定义。辐角原理显示整数计数的拓扑稳定性，积分计数则更适合平均与增长估计。后面不会把 \(n(r)\) 的跳跃误当作对数平均本身的跳跃。
+\cref{b3:thm:03-rouche}就给出 \(h\) 与 \(f\) 在盘内相同的零点总重数。为了进一步追踪位置，要把不同极限零点分别围起来，再把每一簇的围圈缩小。
 
-
-\ProseParagraphBreak
-
-计数函数的两个版本表达不同信息。若半径内有 \(N\) 个零点全位于 \(|a|=r/2\)，它们给 \(n(r)=N\)、\(N(r)=N\log2\)；若相同个数全位于 \(|a|=(1-\varepsilon)r\)，整数计数仍为 \(N\)，积分计数却为 \(-N\log(1-\varepsilon)\)，随 \(\varepsilon\downarrow0\) 趋零。紧贴观察圆周的零点对该半径的平均影响较小，但一旦把半径扩大，它们会继续累积权重。因此从 \(N(r)\) 控制 \(n(r)\) 必须另取更大的半径，不能同半径直接比较而没有额外系数。
-
-\ProseParagraphBreak
-
-换一个圆心可以避开原点零点。对内部点 \(b\) 且 \(f(b)\ne0\)，在 \(B(b,R)\) 使用变量 \(\zeta=z-b\)，得到完全相同的计数和公式。如果要在几个不同圆心比较，应分别保留 \(\log|f(b)|\)；这个中心常数可能很负，会使零点上界较弱。例如函数在 \(b\) 非零但已非常接近一个零点时，\(|f(b)|\) 小，计数估计仍成立却不一定有效。归一化 \(f(b)=1\) 可消除常数项，但乘法归一化并不改变零点本身。
-
-\ProseParagraphBreak
-
-对含原点重数的函数，用修正积分计数
+\Needspace{6\baselineskip}
+\begin{proposition}[零点簇与零点测度的稳定性]\label{b3:prop:18-zero-stability}
+设 \(D\subseteq\mathbb C\) 为区域，\(f_j:D\to\mathbb C\) 全纯，在 \(D\) 内局部一致收敛于非恒零全纯函数 \(f\)。则充分大的 \(j\) 有 \(f_j\not\equiv0\)，并满足以下结论。
+\begin{enumerate}
+\item\label{b3:item:18-local-clusters}设 \(V=B(b,\rho)\)，\(\overline V\subseteq D\)，且 \(f\) 在 \(\partial V\) 无零点。将 \(f\) 在 \(V\) 中的零点按重数重复列为 \(a_1,\ldots,a_M\)。对充分大的 \(j\)，\(f_j\) 在 \(\partial V\) 无零点，在 \(V\) 中恰有 \(M\) 个零点，并可按重数标号为 \(a_{j,1},\ldots,a_{j,M}\)，使
 \[
-N_f(r)=m\log r+\sum_{0<|a|<r}m_a\log(r/|a|)
+ a_{j,k}\longrightarrow a_k\quad(1\le k\le M).
 \]
-十分方便。它在小于一的半径可能为负，因为 \(m\log r<0\)；这不是非原点零点贡献出现负值，而是已单独记录的中心奇性。若只需要非负零点数的估计，先除去原点幂再应用公式更稳妥。所有符号版本必须在中心奇性项上保持同一约定，尤其进入亚纯函数的零点、极点差计数时不能重复加上原点项。
+\item\label{b3:item:18-measure-stability}若 \(\mu_j\) 和 \(\mu_f\) 分别为 \(f_j\) 与 \(f\) 的零点计数测度，则对每个 \(\varphi\in C_c(D)\)，有
+\[
+ \int_D\varphi\,\mathrm d\mu_j
+ \longrightarrow\int_D\varphi\,\mathrm d\mu_f.
+\]
+这里 \(C_c(D)\) 表示 \(D\) 上的紧支集复值连续函数；结论只要求测试函数的支集留在定义域内部。
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+选 \(b_0\in D\) 使 \(f(b_0)\ne0\)。由该点的收敛，充分大的 \(j\) 有 \(|f_j(b_0)|\ge |f(b_0)|/2>0\)，从而 \(f_j\) 不恒为零。
+
+先证第一项。圆周 \(\partial V\) 紧，\(|f|\) 在其上有正下界。局部一致收敛使 \(f_j-f\) 在这条圆周上的最大模最终小于该下界。Rouché 定理给出盘内总重数为 \(M\)，同时边界上 \(f_j\ne0\)。若 \(M=0\)，已经得到所需结论。
+
+若 \(M>0\)，将其中不同的极限零点记为 \(\alpha_1,\ldots,\alpha_q\)，相应重数为 \(m_1,\ldots,m_q\)。在每个 \(\alpha_\ell\) 周围选闭盘包含于 \(V\) 的小圆盘，使这些闭盘两两不交，且每盘没有其他 \(f\) 的零点。逐个在边界应用同一 Rouché 比较，可知充分大的 \(j\) 在第 \(\ell\) 个盘中恰有 \(m_\ell\) 个零点。由于 \(\sum_\ell m_\ell=M\)，\(V\) 中不再有这些小盘之外的零点。
+
+固定上述各簇，对每个充分大的 \(j\)，把第 \(\ell\) 簇的 \(m_\ell\) 个零点任意排序，与极限列表中等于 \(\alpha_\ell\) 的 \(m_\ell\) 个位置对应。这个标号满足所需收敛。事实上，给定任意 \(\varepsilon>0\)，还可在原来的第 \(\ell\) 个盘内选以 \(\alpha_\ell\) 为中心、半径小于 \(\varepsilon\) 的圆盘。再次应用 Rouché，充分大的 \(j\) 在更小盘中仍有全部 \(m_\ell\) 个零点。因此这一簇的每个已标号零点都满足 \(|a_{j,k}-\alpha_\ell|<\varepsilon\)。这里只有有限个簇，故可对它们取共同的指标下界。此处每个 \(\varepsilon\) 有自己的指标下界，不要求一个固定扰动误差控制所有缩小圆周。
+
+再证第二项。若 \(\varphi=0\)，结论成立。以下给定非零的 \(\varphi\in C_c(D)\)，令 \(K=\operatorname{supp}\varphi\)。若 \(f\) 在 \(K\) 无零点，紧性给出 \(\min_K|f|>0\)，从而 \(f_j\) 最终在 \(K\) 也无零点；两个测度积分都为零。
+
+否则，将 \(K\) 中不同的极限零点记为 \(\alpha_1,\ldots,\alpha_q\)，重数为 \(m_\ell\)，并令 \(M_K=\sum_\ell m_\ell\)。给定 \(\varepsilon>0\)，由 \(\varphi\) 在各 \(\alpha_\ell\) 处连续，可选互不相交的小圆盘 \(U_\ell\)，使闭盘包含于 \(D\)，盘内只有该极限零点，且
+\[
+ |\varphi(z)-\varphi(\alpha_\ell)|
+ <\frac{\varepsilon}{M_K+1}\quad(z\in U_\ell).
+\]
+小盘不必包含于 \(K\)：若 \(\alpha_\ell\) 在支集边界，仍使用同一个圆盘和连续性估计。由第一项，\(\mu_j(U_\ell)=m_\ell\) 对充分大的 \(j\) 成立。紧集 \(K\setminus\bigcup_\ell U_\ell\) 没有 \(f\) 的零点，\(|f|\) 的正下界又使其中最终没有 \(f_j\) 的零点。若这个紧集为空，则这一步无需处理。
+
+由于 \(\varphi\) 在 \(K\) 外为零，所有非零贡献都来自这些小盘，故
+\begin{align*}
+ \left|\int_D\varphi\,\mathrm d\mu_j
+       -\int_D\varphi\,\mathrm d\mu_f\right|
+ &=\left|\sum_{\ell=1}^q\int_{U_\ell}
+       \bigl(\varphi(z)-\varphi(\alpha_\ell)\bigr)\,\mathrm d\mu_j(z)\right|\\
+ &\le\frac{\varepsilon}{M_K+1}\sum_{\ell=1}^qm_\ell
+ <\varepsilon.
+\end{align*}
+这就证明了对全部内部紧支集连续测试函数的收敛。
+\end{proof}
+
+第一项不仅保持总数，也允许用有限多项式记录移动零点。对其中的圆盘 \(V\)，令
+\[
+ p_j(z)=\prod_{k=1}^M(z-a_{j,k}),\quad
+ p(z)=\prod_{k=1}^M(z-a_k).
+\]
+每个根的收敛使有限乘积的系数收敛，因而 \(p_j\to p\) 在任意紧集上一致；\(M=0\) 时两个乘积都取一。这里无需给重零点附近的分支选出关于参数连续的标号，只需按已经分开的有限簇配对。\secref{b3:sec:1803}将用这个分解控制移动零点附近的对数模。
 
 \ProseParagraphBreak
 
-零点对全纯扰动的稳定性有一个比总数更精细的表述。设 \(f_j\to f\) 在区域 \(D\) 内局部一致，且 \(f\not\equiv0\)。固定一个内部零点 \(a\)，取小圆盘使闭盘中没有其他极限零点，边界上的 \(|f|\) 有正下界。Rouch\'e 定理说明：充分大的 \(j\) 在盘内恰有 \(m_a\) 个零点，按重数计。把圆盘继续缩小，仍有同样结论，所以这些零点全向 \(a\) 集中。紧集上远离极限零点的部分，由 \(|f|\) 的正下界可知最终没有新的零点。
+整数计数的稳定性仍要避开观察圆周上的极限零点，积分计数则可容许这样的零点，因为它们在该半径的权重为零。不过，中心必须另加条件。
+
+\Needspace{6\baselineskip}
+\begin{corollary}[固定半径下的计数收敛]\label{b3:cor:18-counting-convergence}
+设 \(R>0\)，\(f_j\) 与 \(f\) 在 \(B(0,R)\) 全纯，\(f_j\to f\) 局部一致，且 \(f\not\equiv0\)。对 \(0<r<R\)，若 \(f\) 在 \(|z|=r\) 无零点，则充分大的 \(j\) 有 \(n_{f_j}(r)=n_f(r)\)。若 \(f(0)\ne0\)，则对每个固定 \(0<r<R\) 都有
+\[
+ N_{f_j}(r)\longrightarrow N_f(r),
+\]
+后一结论不要求观察圆周无零点。
+\end{corollary}
+\begin{proof}
+第一项直接对 \(V=B(0,r)\) 应用\cref{b3:prop:18-zero-stability}；其边界也最终没有 \(f_j\) 的零点，所以开、闭盘计数一致。
+
+对于第二项，固定 \(r\)，由 \(f(0)\ne0\) 及连续性，可取 \(0<\eta<r\)，使 \(f\) 在 \(\overline{B(0,\eta)}\) 无零点。局部一致收敛保证 \(f_j\) 最终在这个闭盘也无零点。定义
+\[
+ \psi(z)=\left(\log\frac{r}{\max(|z|,\eta)}\right)^+.
+\]
+这是 \(B(0,R)\) 上的连续函数，支集包含于 \(\overline{B(0,r)}\)。在所有可能贡献的零点处，\(\psi\) 都等于非中心零点的权重 \(\log^+(r/|z|)\)。原点也最终不是零点，因而由\eqref{b3:eq:18-integrated-counting}，有
+\[
+ N_{f_j}(r)=\int\psi\,\mathrm d\mu_{f_j},\quad
+ N_f(r)=\int\psi\,\mathrm d\mu_f.
+\]
+再次应用\cref{b3:prop:18-zero-stability}的连续测试结论，即得收敛。
+\end{proof}
+
+两条限制都能在一次多项式上看清。函数 \(f_j(z)=z-(1+1/j)\) 在全平面局部一致趋于 \(f(z)=z-1\)，但 \(n_{f_j}(1)=0\)、\(n_f(1)=1\)，因为极限零点恰好到达观察圆周。另一方面，若 \(f_j(z)=z-1/j\)、\(f(z)=z\)，则对每个固定 \(r>0\) 及充分大的 \(j\)，有
+\[
+ n_{f_j}(r)=n_f(r)=1,\quad
+ N_{f_j}(r)=\log(jr),\quad N_f(r)=\log r.
+\]
+零点测度仍收敛，但非中心零点移向原点时，对数权重不再是共同有界的连续测试函数，积分计数可以发散。下一节的平均公式会把积分计数与相应的中心系数合在一起，二者不能分开传递这个极限。
+
 \ProseParagraphBreak
-于是离散测度 \(\mu_j=\sum m_{j,a}\delta_a\) 在内部弱收敛到 \(\mu=\sum m_a\delta_a\)：对紧支集连续测试函数，只需用有限个互不相交小圆盘包住相关极限零点，每盘总质量相同，测试函数在盘内的振幅任意小，其余部分最终无质量。这里弱收敛只针对内部紧支集；零点可以逃向边界或无穷远。例如 \(f_j(z)=1-z/j\) 在全平面局部一致趋于一，唯一零点趋向无穷远。极限函数没有零点，与每个近似函数有一个零点并不矛盾。
+
+内部测度收敛也不保持整个定义域的总零点数。例如 \(f_j(z)=1-z/j\) 在全平面局部一致趋于一，唯一零点趋向无穷远。对每个固定紧支集测试函数，这个零点最终位于其支集之外，积分便为零；常函数一在全平面没有紧支集，不能用来测试总质量的收敛。同样，定义域有边界时，零点也可以越过每个固定内部紧集而趋向边界。
+
 \ProseParagraphBreak
-假设极限不恒零是必要的。\(f_j(z)=e^{-j}\sin(jz)\) 在足够窄的固定水平带中局部一致趋于零，但零点间距趋于零，任何固定实区间内的零点数都趋向无穷。恒等为零的函数不再拥有离散的零点测度，不能给它随意指定一个有限重数来延续上面的结论。
+
+最后，极限非恒零的条件不能省去。固定水平带
+\[
+ D=\{z\in\mathbb C:|\operatorname{Im}z|<1\},\quad
+ f_j(z)=e^{-j}\sin(jz).
+\]
+对任意紧集 \(K\subseteq D\)，令 \(\beta=\max_{z\in K}|\operatorname{Im}z|<1\)。由正弦的指数表达，
+\[
+ |\sin(jz)|\le e^{j|\operatorname{Im}z|},\quad
+ \max_K|f_j|\le e^{-j(1-\beta)}\longrightarrow0.
+\]
+所以这些函数在同一个固定区域上局部一致趋于零。但是它们在实区间 \([-1,1]\) 内有
+\[
+ 2\left\lfloor\frac j\pi\right\rfloor+1
+\]
+个单零点，数目趋于无穷。取一个非负的 \(\varphi\in C_c(D)\)，使它在该区间恒等于一，便有 \(\int\varphi\,\mathrm d\mu_{f_j}\to+\infty\)。恒零函数在每一点都为零，不存在上述有限重数的局部分解，也就没有本节意义下的局部有限零点测度。

@@ -1,0 +1,192 @@
+% !TeX root = ../../Book3.tex
+\section{\texorpdfstring{\(H^2\)}{H²} 的系数与范数}
+\label{b3:sec:2801}
+全纯性给出局部 Taylor 展开，却不限制函数接近单位圆周时能增长多快。例如，\(1/(1-z)\) 在单位圆盘内全纯，但在边界点 \(1\) 附近越来越大。若要把全纯函数组成一个适合取极限、作正交投影的空间，便需要一种同时控制所有内部圆周的大小条件。平方平均尤其适合这个目的：幂函数在圆周上正交，积分中的交叉项消失，函数的大小便能够由系数的平方和精确表示。
+
+\subsection{径向平方平均与 Hardy 范数}
+\label{b3:subsec:280101}
+
+以下把单位圆盘及其边界分别记为
+\[
+ \mathbb D\coloneqq\{z\in\mathbb C:|z|<1\},
+ \quad \mathbb T\coloneqq\{\zeta\in\mathbb C:|\zeta|=1\}.
+\]
+圆周采用总质量为一的弧长测度 \(m\)，即当 \(\zeta=e^{\mathrm i\theta}\) 时，\(\mathrm dm(\zeta)=\mathrm d\theta/(2\pi)\)。因此常数函数 \(1\) 的平方积分为一。本章的 \(\mathbb T\) 是复平面中的单位圆；用角变量或模 \(2\pi\) 的实数表示它，积分归一化不变。
+
+\begin{definition}[圆盘上的 Hardy 空间]\label{b3:def:28-hardy-space}
+设 \(f:\mathbb D\to\mathbb C\) 全纯。对 \(0<r<1\)，记
+\[
+ M_2(r,f)^2\coloneqq
+ \int_{\mathbb T}|f(r\zeta)|^2\,\mathrm dm(\zeta).
+\]
+若
+\[
+ \|f\|_{H^2}^2\coloneqq\sup_{0<r<1}M_2(r,f)^2<\infty,
+\]
+则称 \(f\) 属于单位圆盘上的\term[hardy-kongjian]{Hardy 空间}[Hardy space]，记为 \(H^2(\mathbb D)\)。这里的 \(H^2\) 专指这一全纯函数空间，上标 \(2\) 表示平方平均，不是二阶 Sobolev 空间。
+\end{definition}
+\symidx{\(H^2(\mathbb D)\)：圆盘上的 Hardy 空间}
+\symidx{\(M_2(r,f)\)：全纯函数的径向平方平均}
+
+定义先对每个内部半径积分，再要求这些积分有一个共同上界。每个固定 \(r<1\) 上，函数连续于紧圆周，积分本来就是有限的；这并不保证 \(r\uparrow1\) 时仍有界。定义也没有预先写 \(f(\zeta)\)，因为一般的圆盘全纯函数尚未在 \(\mathbb T\) 上定义。边界函数必须由内部函数构造，不能先假定它存在。
+
+\ProseParagraphBreak
+若全纯函数 \(b\) 在 \(\mathbb D\) 上有界，置
+\[
+ \|b\|_\infty\coloneqq\sup_{z\in\mathbb D}|b(z)|.
+\]
+这类函数组成的空间记为 \(H^\infty(\mathbb D)\)。由 \(m(\mathbb T)=1\)，立即得到
+\[
+ M_2(r,b)\le\|b\|_\infty,
+ \quad \|b\|_{H^2}\le\|b\|_\infty.
+\]
+于是有界全纯函数总属于 \(H^2\)。反方向不成立；下面的系数判据将给出一个在边界附近无界、但仍具有有限平方平均的具体例子。
+\symidx{\(H^\infty(\mathbb D)\)：圆盘上的有界全纯函数空间}
+
+\subsection{Taylor 系数与平方可和性}
+\label{b3:subsec:280102}
+
+把 \(f\) 在原点展开为 Taylor 级数。先固定一个严格小于一的半径，再作圆周积分，便能避免直接在收敛圆周上代入幂级数的问题。
+
+\begin{proposition}[径向平均的系数公式]\label{b3:prop:28-radial-coefficients}
+设 \(f\) 全纯于 \(\mathbb D\)，其 Taylor 展开为 \(f(z)=\sum_{n=0}^{\infty}a_nz^n\)。对每个 \(0<r<1\)，有
+\begin{equation}\label{b3:eq:28-radial-coefficients}
+ \int_{\mathbb T}|f(r\zeta)|^2\,\mathrm dm(\zeta)
+ =\sum_{n=0}^{\infty}|a_n|^2r^{2n}.
+\end{equation}
+函数 \(r\mapsto M_2(r,f)^2\) 单调不减，且
+\begin{equation}\label{b3:eq:28-hardy-coefficient-norm}
+ \sup_{0<r<1}M_2(r,f)^2
+ =\lim_{r\uparrow1}M_2(r,f)^2
+ =\sum_{n=0}^{\infty}|a_n|^2,
+\end{equation}
+其中允许两端同时为 \(+\infty\)。
+\end{proposition}
+\begin{proof}
+对整数 \(n,k\ge0\)，直接积分得
+\[
+ \int_{\mathbb T}\zeta^n\overline{\zeta^k}\,\mathrm dm(\zeta)
+ =\frac1{2\pi}\int_0^{2\pi}e^{\mathrm i(n-k)\theta}\,\mathrm d\theta
+ =\begin{cases}1,&n=k,\\0,&n\ne k.\end{cases}
+\]
+因而有限多项式 \(p_N(z)=\sum_{n=0}^Na_nz^n\) 满足
+\[
+ \int_{\mathbb T}|p_N(r\zeta)|^2\,\mathrm dm(\zeta)
+ =\sum_{n=0}^N|a_n|^2r^{2n}.
+\]
+固定 \(r<1\) 时，Taylor 级数在 \(|z|\le r\) 上一致收敛。于是 \(p_N(r\zeta)\) 一致有界，且其模平方一致趋于 \(|f(r\zeta)|^2\)；有限测度上的积分可以取极限。这就证明了\eqref{b3:eq:28-radial-coefficients}。
+
+右边每一项都是 \(r\) 的非负单调函数，因此整个和单调不减。取任意 \(r_j\uparrow1\)，对计数测度使用单调收敛，便有
+\[
+ \lim_{j\to\infty}\sum_{n=0}^{\infty}|a_n|^2r_j^{2n}
+ =\sum_{n=0}^{\infty}|a_n|^2.
+\]
+单调性保证这个极限也等于所有半径的上确界，故得到第二式。这里没有先假设系数平方可和。
+\end{proof}
+
+由此，\(f\in H^2\) 的充要条件恰为 Taylor 系数平方可和。几个可直接计算的例子可以帮助理解这一条件。
+
+\ProseParagraphBreak
+对于多项式 \(p(z)=1+2z-z^3\)，有
+\[
+ M_2(r,p)^2=1+4r^2+r^6,
+ \quad \|p\|_{H^2}^2=6.
+\]
+积分没有保留不同次数之间的交叉项。对于 \(f(z)=1/(1-z)\)，所有系数都为一，所以
+\[
+ M_2(r,f)^2=\frac1{1-r^2}\longrightarrow\infty.
+\]
+这说明圆盘内全纯本身远不足以保证 \(H^2\) 条件。
+
+\ProseParagraphBreak
+另一方面，函数
+\[
+ h(z)=\sum_{n=1}^{\infty}\frac{z^n}{n}=-\log(1-z)
+\]
+属于 \(H^2\)，因为 \(\sum_{n\ge1}n^{-2}<\infty\)。这里的对数分支由在原点取零的幂级数确定；也可注意 \(1-z\) 的实部为正。沿实半径有 \(h(r)=-\log(1-r)\to\infty\)，所以 \(h\notin H^\infty\)。\(H^2\) 控制的是圆周上的总平方平均，容许在逐渐缩小的边界邻域内出现较大值。
+
+\subsection{系数序列的等距表示}
+\label{b3:subsec:280103}
+
+系数判据不仅能检验已有函数，还应能反过来构造函数。给定一个平方可和序列，为什么它的幂级数在整个单位圆盘内全纯？这里需要把序列条件转换成紧圆盘上的一致收敛估计。
+
+\begin{theorem}[Hardy 空间的系数表示]\label{b3:thm:28-hardy-coefficients}
+设 \(\mathbb N_0=\{0,1,2,\ldots\}\)，并给 \(\ell^2(\mathbb N_0;\mathbb C)\) 配备范数 \(\|(a_n)\|_2^2=\sum_{n\ge0}|a_n|^2\)。映射
+\[
+ \mathcal C:H^2(\mathbb D)\longrightarrow\ell^2(\mathbb N_0;\mathbb C),
+ \quad f\longmapsto\left(\frac{f^{(n)}(0)}{n!}\right)_{n\ge0}
+\]
+是满射线性等距映射。其逆映射把序列 \((a_n)\) 送到
+\[
+ f(z)=\sum_{n=0}^{\infty}a_nz^n,
+ \quad z\in\mathbb D.
+\]
+这个级数在每个内部闭圆盘上绝对一致收敛，且所得函数满足 \(\|f\|_{H^2}^2=\sum_{n\ge0}|a_n|^2\)。
+\end{theorem}
+\begin{proof}
+若 \(f\in H^2\)，\cref{b3:prop:28-radial-coefficients}给出等距性。Taylor 系数的唯一性给出单射性，线性则来自逐阶求导的线性。
+
+反之，给定 \((a_n)\in\ell^2\)。对 \(0<R<1\)，序列的 Cauchy--Schwarz 不等式给出
+\[
+ \sum_{n=0}^{\infty}|a_n|R^n
+ \le\left(\sum_{n=0}^{\infty}|a_n|^2\right)^{1/2}
+      \left(\sum_{n=0}^{\infty}R^{2n}\right)^{1/2}
+ =\frac{\|(a_n)\|_2}{\sqrt{1-R^2}}.
+\]
+因此幂级数在 \(|z|\le R\) 上绝对一致收敛。由于 \(R<1\) 任意，它定义一个圆盘全纯函数，Taylor 系数就是原序列。再次应用\eqref{b3:eq:28-hardy-coefficient-norm}，便知其 \(H^2\) 范数有限并等于序列范数。满射性得证。
+\end{proof}
+
+上述估计还说明：\(H^2\) 范数中的收敛必然蕴含内部紧集上的一致收敛。具体地，若 \(f_j,f\in H^2\) 且 \(\|f_j-f\|_{H^2}\to0\)，则对每个 \(R<1\)，
+\begin{equation}\label{b3:eq:28-hardy-compact-control}
+ \sup_{|z|\le R}|f_j(z)-f(z)|
+ \le\frac{\|f_j-f\|_{H^2}}{\sqrt{1-R^2}}
+ \longrightarrow0.
+\end{equation}
+半径必须固定在一以内；当 \(R\uparrow1\) 时，常数会增大，不能据此推出闭圆盘上一致收敛。
+
+\ProseParagraphBreak
+逆命题甚至对多项式列也失败。取 \(f_j(z)=z^j\)，则 \(f_j\to0\) 在每个内部紧集上一致成立，但 \(\|f_j\|_{H^2}=1\)。逐渐靠近边界时仍保留的质量，不能由任何一个固定内部紧集看见。因此局部一致拓扑与 \(H^2\) 范数拓扑需要分别使用。
+
+\subsection{Hilbert 空间结构}
+\label{b3:subsec:280104}
+
+系数表示使范数的代数性质与完备性都变得可核算。约定复内积对第一变量线性、对第二变量共轭线性；这一约定将决定后面的核函数在哪个变量上出现共轭。
+
+\begin{proposition}[内积、完备性与多项式逼近]\label{b3:prop:28-hardy-hilbert}
+设 \(f,g\in H^2(\mathbb D)\)，其 Taylor 展开分别为 \(f(z)=\sum_{n\ge0}a_nz^n\)、\(g(z)=\sum_{n\ge0}b_nz^n\)。定义
+\begin{equation}\label{b3:eq:28-hardy-inner-product}
+ \langle f,g\rangle_{H^2}\coloneqq
+ \sum_{n=0}^{\infty}a_n\overline{b_n}.
+\end{equation}
+这个级数绝对收敛，给 \(H^2(\mathbb D)\) 一个复 Hilbert 空间结构，其范数等于径向平均定义的范数。幂函数系 \((z^n)_{n\ge0}\) 是其标准正交基。若 \(p_N(z)=\sum_{n=0}^Na_nz^n\)，则
+\[
+ \|f-p_N\|_{H^2}^2=\sum_{n>N}|a_n|^2\longrightarrow0.
+\]
+此外，
+\[
+ \langle f,g\rangle_{H^2}
+ =\lim_{r\uparrow1}
+   \int_{\mathbb T}f(r\zeta)\cdot\overline{g(r\zeta)}\,\mathrm dm(\zeta).
+\]
+\end{proposition}
+\begin{proof}
+序列的 Cauchy--Schwarz 不等式给出
+\[
+ \sum_{n=0}^{\infty}|a_n|\cdot|b_n|
+ \le\|(a_n)\|_2\cdot\|(b_n)\|_2<\infty.
+\]
+于是内积良定义，其线性、共轭对称与正定性来自系数运算；若内积平方范数为零，所有系数为零，故全纯函数恒为零。
+
+为看清完备性如何保留全纯性，设 \((f_j)\) 是 \(H^2\) Cauchy 列，系数列记为 \(a^{(j)}\)。等距性使 \((a^{(j)})\) 成为 \(\ell^2\) Cauchy 列，因而收敛到某个 \(a\in\ell^2\)。序列空间完备性也可直接检验：各坐标分别有极限，有限平方和取极限给 \(\sum_{n=0}^N|a_n|^2\le\sup_j\|a^{(j)}\|_2^2\)，再令 \(N\to\infty\) 得到 \(a\in\ell^2\)；对 Cauchy 误差作同样的有限和取极限，得到 \(\|a^{(j)}-a\|_2\to0\)。
+
+由\cref{b3:thm:28-hardy-coefficients}，\(a\) 构造出一个全纯函数 \(f\in H^2\)，并且 \(\|f_j-f\|_{H^2}=\|a^{(j)}-a\|_2\to0\)。所以极限确实仍在原函数空间内。幂函数的正交性、单位范数及部分和余项公式，也直接来自系数表示。
+
+最后，先对有限多项式使用圆周正交性，再由内部圆周上的一致收敛取极限，得到
+\[
+ \int_{\mathbb T}f(r\zeta)\cdot\overline{g(r\zeta)}\,\mathrm dm(\zeta)
+ =\sum_{n=0}^{\infty}a_n\overline{b_n}r^{2n}.
+\]
+右边各项由可和数列 \(|a_n|\cdot|b_n|\) 控制。对计数测度使用支配收敛，就得到所述内积极限。
+\end{proof}
+
+这里的标准正交基由解析多项式组成，只含非负幂。它不同于全部圆周 \(L^2\) 空间的三角基：后者还含负频率。下一节将把这一区别解释为边界数据能够来自圆盘全纯函数的精确条件。

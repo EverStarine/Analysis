@@ -2,93 +2,299 @@
 \section{算术函数}
 \label{b3:sec:2501}
 
-算术函数把整数的分解结构记录为数值。与普通幂级数按加法合并指标不同，本编的级数按乘法合并指标，因此首先要辨明互素乘法和完全乘法的差别。
+前两章出现的 \(\sigma_3(n)\)、\(\sigma_5(n)\) 和平方和表示数，都是以正整数为自变量的函数。它们的数值并非彼此孤立：一个整数怎样分解成素数，往往决定相应系数怎样计算。本章先整理这种有限的分解结构，再把系数放入复变级数。这样安排可以分清两类问题：一个恒等式是否在每个整数处成立，以及把这些恒等式无限相加是否合法。
+
+以下约数均指正约数，素数均指正素数。若 \(p\) 为素数，记 \(p^r\parallel n\) 表示 \(p^r\mid n\) 而 \(p^{r+1}\nmid n\)。在乘积 \(\prod_{p^r\parallel n}\) 中只取 \(r\ge1\)；\(n=1\) 时乘积为空，约定值为 \(1\)。算术基本定理说，每个 \(n>1\) 都唯一写成
+\[
+ n=p_1^{r_1}\cdots p_\ell^{r_\ell},
+ \qquad p_1<\cdots<p_\ell,\quad r_j\ge1.
+\]
+这里每个整数只涉及有限多个素数。即使我们同时给所有素数规定参数，计算一个固定整数处的值仍然只做有限次运算；这一点与后面真正的无穷 Euler 乘积不同。
 
 \subsection{可乘函数}
 \label{b3:subsec:250101}
 
+如果 \(m,n\) 互素，它们的素因子集合没有交叠，因而 \(mn\) 的分解只是把两组素数幂放在一起。这提示我们先研究能够随这种分解而分离的函数。
+
 \begin{definition}\label{b3:def:25-multiplicative}
-从正整数到复数的函数称为\term[suanshu-hanshu]{算术函数}[arithmetic function]。若 \(a(1)=1\)，且 \(a(mn)=a(m)a(n)\) 对 \(\gcd(m,n)=1\) 成立，则称 \(a\) 为\term[kecheng-hanshu]{可乘函数}[multiplicative function]。
+从正整数集合 \(\mathbb N_{\ge1}\) 到 \(\mathbb C\) 的函数称为\term[suanshu-hanshu]{算术函数}[arithmetic function]。若算术函数 \(a\) 满足 \(a(1)=1\)，并且对任意互素的正整数 \(m,n\) 有
+\[
+ a(mn)=a(m)a(n),
+\]
+则称 \(a\) 为\term[kecheng-hanshu]{可乘函数}[multiplicative function]。
 \end{definition}
-算术基本定理立即给 \(a(n)=\prod_{p^r\parallel n}a(p^r)\)。反之，任意指定各素数幂处的值，再用此有限乘积定义，就得到可乘函数。这里可自由指定的是每个 \(a(p^r)\)，不是只有 \(a(p)\)。
+
+定义只对互素输入提出乘法要求，因此不能未经说明便把 \(a(p^2)\) 写成 \(a(p)^2\)。实际上，所有素数幂处的值都是独立的初始数据。
+
+\begin{proposition}[素数幂决定可乘函数]
+\label{b3:prop:25-prime-power-data}
+若 \(a:\mathbb N_{\ge1}\to\mathbb C\) 可乘，则对每个正整数 \(n\) 有
+\[
+ a(n)=\prod_{p^r\parallel n}a(p^r).
+\]
+反之，对每个素数 \(p\) 和整数 \(r\ge1\) 任意指定一个复数 \(c_{p,r}\)，并令
+\[
+ a(1)=1,\qquad
+ a(n)=\prod_{p^r\parallel n}c_{p,r}\quad(n>1),
+\]
+便得到唯一满足 \(a(p^r)=c_{p,r}\) 的可乘函数；不需要对这些复数作有界性或非零性假设。
+\end{proposition}
+\begin{proof}
+同一整数的不同素数幂因子两两互素。反复使用定义，便得到第一个公式。反过来，素因子分解的唯一性保证所给公式没有选择上的歧义；每个乘积有限，保证其值是一个确定的复数。若 \(m,n\) 互素，二者的素因子集合不交，所以定义 \(a(mn)\) 的有限乘积恰能拆成定义 \(a(m)\) 和 \(a(n)\) 的两个乘积。这证明可乘性，也证明了唯一性。
+\end{proof}
+
+例如 \(72=2^3\cdot3^2\)，所以可乘性给出 \(a(72)=a(8)a(9)\)，却没有给出 \(a(8)\) 与 \(a(2)\) 的关系。即使 \(a(2)=0\)，一般的可乘函数仍可以满足 \(a(4)=1\)。在后面的 Euler 因子中，必须把 \(a(p),a(p^2),\ldots\) 全部保留下来，原因就在这里。
+
+定义中的 \(a(1)=1\) 也不是无关紧要的附注。假如只要求互素时的乘法公式，把 \(m=1\) 代入就有 \(a(n)=a(1)a(n)\)。若函数至少在一处非零，这个等式强制 \(a(1)=1\)；否则零函数也会满足该公式。本书把零函数排除在可乘函数之外，使所有可乘函数都具有相同的单位规范化。
 
 \subsection{完全可乘函数}
 \label{b3:subsec:250102}
 
-若对任意 \(m,n\) 都满足乘法公式，就称为\term[wanquan-kecheng-hanshu]{完全可乘函数}[completely multiplicative function]。这等价于可乘并满足 \(a(p^r)=a(p)^r\)。例如 \(n^\alpha=e^{\alpha\log n}\) 完全可乘；约数个数函数则不完全可乘，因为 \(d(p^2)=3\ne4=d(p)^2\)。
+互素的限制一旦去掉，同一个素数的重复出现也必须服从乘法规则。这比上一小节的要求强得多。
 
-\ProseParagraphBreak
+\begin{definition}\label{b3:def:25-completely-multiplicative}
+若算术函数 \(a:\mathbb N_{\ge1}\to\mathbb C\) 满足 \(a(1)=1\)，并且对任意正整数 \(m,n\) 都有 \(a(mn)=a(m)a(n)\)，则称 \(a\) 为\term[wanquan-kecheng-hanshu]{完全可乘函数}[completely multiplicative function]。
+\end{definition}
 
-零函数通常从可乘函数定义中排除，因为 \(a(1)=1\) 是单位规范化。完全可乘函数可以在某些素数上为零，这会使所有含该素因子的整数取值零；模整数的角色函数稍后便有这种现象。
+\begin{proposition}[完全可乘性的素数判据]
+\label{b3:prop:25-completely-prime-data}
+算术函数 \(a:\mathbb N_{\ge1}\to\mathbb C\) 完全可乘，当且仅当它可乘，且对每个素数 \(p\) 与每个整数 \(r\ge1\) 都有 \(a(p^r)=a(p)^r\)。因此，任意指定复数 \(c_p\) 后，公式
+\[
+ a(1)=1,\qquad a(n)=\prod_{p^r\parallel n}c_p^r
+\]
+给出唯一满足 \(a(p)=c_p\) 的完全可乘函数。
+\end{proposition}
+\begin{proof}
+完全可乘时，逐次把 \(p^r\) 分成 \(p^{r-1}p\)，便得所列幂次关系。反过来，设各素数在 \(m,n\) 中的指数分别为 \(u_p,v_p\)，允许其中之一为零。只在 \(mn\) 的有限个素因子上取乘积，就有
+\[
+ a(mn)=\prod_{p\mid mn}a(p)^{u_p+v_p}
+       =\left(\prod_{p\mid mn}a(p)^{u_p}\right)
+        \left(\prod_{p\mid mn}a(p)^{v_p}\right)
+       =a(m)a(n).
+\]
+指数为零的因子按空乘积理解为 \(1\)，所以即使某个 \(a(p)=0\)，该论证也适用。
+\end{proof}
+
+对任意固定的 \(\alpha\in\mathbb C\)，函数 \(n\mapsto n^\alpha\) 完全可乘，其中
+\[
+ n^\alpha=\exp(\alpha\log n)
+\]
+使用正实数的实对数。这里 \(\log(mn)=\log m+\log n\)，没有复对数的分支问题。另一方面，记 \(d(n)\) 为 \(n\) 的正约数个数，则 \(d(p)=2\)、\(d(p^2)=3\)，所以 \(d(p^2)\ne d(p)^2\)。稍后会证明 \(d\) 可乘，但这个简单计算已说明它不完全可乘。
+
+完全可乘函数仍然允许零值。例如，固定素数 \(p_0\)，令 \(a(n)=0\) 当 \(p_0\mid n\)，否则令 \(a(n)=1\)，就得到完全可乘函数。一般地，若 \(a(p_0)=0\)，每个含 \(p_0\) 的整数都必须取值零。这比仅有可乘性时的结论更强；后面模整数的特征标也会出现这种零值。
 
 \subsection{Möbius 函数 \texorpdfstring{\(\mu\)}{\AnalysisPdfMu}}
 \label{b3:subsec:250103}
 
-\term[mobius-hanshu]{Möbius 函数}[Möbius function]定义为 \(\mu(1)=1\)，若 \(n\) 含平方素因子则 \(\mu(n)=0\)，否则 \(n=p_1\cdots p_r\) 时 \(\mu(n)=(-1)^r\)。它可乘但不完全可乘。
+容斥原理用交替的正负号消去重复计数。若需要同时排除若干素数的整除性，选择一个素数子集就相当于选择这些素数的乘积。Möbius 函数把这个子集符号写成一个算术函数。
+
+\begin{definition}\label{b3:def:25-mobius}
+正整数 \(n\) 称为\term[pingfang-ziyou-zhengshu]{平方自由整数}[squarefree integer]，如果没有素数 \(p\) 满足 \(p^2\mid n\)。在正整数上定义\term[mobius-hanshu]{Möbius 函数}[Möbius function]
+\[
+ \mu(n)=
+ \begin{cases}
+  1,&n=1,\\
+  (-1)^r,&n=p_1\cdots p_r,\quad p_1,\ldots,p_r\text{ 为互异素数},\\
+  0,&n\text{ 不是平方自由整数}.
+ \end{cases}
+\]
+\end{definition}
+
+因此 \(\mu(p)=-1\)，而 \(\mu(p^r)=0\) 对 \(r\ge2\) 成立。互素相乘时，如果任一因子含有平方素因子，乘积也含有；如果两因子都平方自由，乘积的不同素因子数就是二者的和。这分别证明了两种情形下的 \(\mu(mn)=\mu(m)\mu(n)\)，故 \(\mu\) 可乘。它不完全可乘，因为 \(\mu(p^2)=0\ne1=\mu(p)^2\)。
+
 \begin{proposition}\label{b3:prop:25-mobius-sum}
-有 \(\sum_{d\mid n}\mu(d)=1\) 当 \(n=1\)，而 \(n>1\) 时和为零。
+设 \(\mu\) 为 Möbius 函数，\(n\ge1\) 为整数。则
+\[
+ \sum_{d\mid n}\mu(d)=
+ \begin{cases}1,&n=1,\\0,&n>1.\end{cases}
+\]
 \end{proposition}
 \begin{proof}
-若 \(n\) 有 \(r\) 个不同素因子，非零项恰对应这些素因子的子集。按子集大小求和为 \(\sum_{j=0}^r\binom rj(-1)^j=(1-1)^r\)。\(r=0\) 时是空乘积一。
+设 \(n\) 的不同素因子为 \(p_1,\ldots,p_r\)。和中的非零项恰好对应这些素数的子集：选取子集 \(J\) 后，相关约数为 \(\prod_{j\in J}p_j\)，符号为 \((-1)^{|J|}\)。所以当 \(n>1\) 时，\(r\ge1\)，并且
+\[
+ \sum_{d\mid n}\mu(d)
+ =\sum_{J\subseteq\{1,\ldots,r\}}(-1)^{|J|}
+ =\sum_{j=0}^r\binom rj(-1)^j=(1-1)^r=0.
+\]
+当 \(n=1\) 时只有约数 \(1\)，和就是 \(\mu(1)=1\)；也可以把它理解为不含任何因子的空乘积。
 \end{proof}
+
+例如 \(12\) 的约数中只有 \(1,2,3,6\) 提供非零项，因而该和为 \(1-1-1+1=0\)。虽然 \(12\) 含有 \(2^2\)，容斥只关心素数 \(2\) 是否被选中；重复选择同一个排除条件不会产生新的交集。下一节正是利用这个消去恒等式，把已经做过的约数求和逆转回来。
 
 \subsection{Euler 函数 \texorpdfstring{\(\varphi\)}{\AnalysisPdfVarPhi}}
 \label{b3:subsec:250104}
 
-\term[euler-hanshu]{Euler 函数}[Euler totient function] \(\varphi(n)\) 计数 \(1\le a\le n\) 中与 \(n\) 互素的整数。对 \(n\) 的不同素因子做容斥，得到
+一个具体的计数问题是：在 \(1,\ldots,n\) 中，有多少整数没有与 \(n\) 共有的素因子？这也就是模 \(n\) 的可逆剩余类的个数，不过当前只需要互素计数这一解释。
+
+\begin{definition}\label{b3:def:25-totient}
+对每个正整数 \(n\)，定义\term[euler-hanshu]{Euler 函数}[Euler totient function]
 \[
-\varphi(n)=n\prod_{p\mid n}(1-1/p).
+ \varphi(n)=\#\{a\in\mathbb Z:1\le a\le n,\ \gcd(a,n)=1\}.
 \]
-各交集中的整数数目恰为 \(n\) 除以相关素数积，因为这些素数都整除 \(n\)；所以这里没有取整误差。公式给出可乘性，以及 \(\varphi(p^r)=p^r-p^{r-1}\)。
+特别地，\(\varphi(1)=1\)。
+\end{definition}
 
-\ProseParagraphBreak
+\begin{proposition}[Euler 函数的两个计数公式]
+\label{b3:prop:25-totient-identities}
+对每个正整数 \(n\)，有
+\[
+ \varphi(n)=n\prod_{p\mid n}\left(1-\frac1p\right),
+ \qquad
+ \sum_{d\mid n}\varphi(d)=n.
+\]
+其中第一式在 \(n=1\) 时采用空乘积约定。函数 \(\varphi\) 可乘，且对素数 \(p\) 和整数 \(r\ge1\) 有 \(\varphi(p^r)=p^r-p^{r-1}\)。
+\end{proposition}
+\begin{proof}
+设 \(p_1,\ldots,p_\ell\) 是 \(n>1\) 的不同素因子。不与 \(n\) 互素的整数，正是至少被一个 \(p_j\) 整除的整数。对这些整除条件应用有限容斥：若选取素数子集 \(J\)，同时被其中所有素数整除的整数共有
+\[
+ \frac{n}{\prod_{j\in J}p_j}
+\]
+个。这里不需要取整，因为分母整除 \(n\)。于是
+\[
+ \varphi(n)
+ =n\sum_{J\subseteq\{1,\ldots,\ell\}}
+     \frac{(-1)^{|J|}}{\prod_{j\in J}p_j}
+ =n\prod_{j=1}^{\ell}\left(1-\frac1{p_j}\right).
+\]
+当 \(n=1\) 时公式由定义成立。互素的 \(m,n\) 具有不相交的素因子集合，第一式因而给出 \(\varphi(mn)=\varphi(m)\varphi(n)\)；代入 \(n=p^r\) 就得到素数幂公式。
 
-另一种计数把 \(1,\ldots,n\) 按 \(\gcd(a,n)=d\) 分组。写 \(a=db\)，对应 \(1\le b\le n/d\) 且 \(\gcd(b,n/d)=1\)，故
-\(\sum_{d\mid n}\varphi(d)=n\)。下一节将把这种约数求和看成可逆的运算。
+为证明第二式，把 \(1,\ldots,n\) 按 \(\gcd(a,n)=d\) 分组。只有 \(d\mid n\) 的组可能非空。写成 \(a=db\) 后，该组与
+\[
+ 1\le b\le n/d,\qquad \gcd(b,n/d)=1
+\]
+的整数一一对应，所以该组有 \(\varphi(n/d)\) 个元素。各组不相交且合起来有 \(n\) 个元素，故 \(n=\sum_{d\mid n}\varphi(n/d)\)。再把约数 \(d\) 换成 \(n/d\)，即得第二式。
+\end{proof}
+
+例如，当 \(n=12\) 时，要从十二个整数中减去六个偶数和四个 \(3\) 的倍数，再加回被减了两次的两个 \(6\) 的倍数，因此 \(\varphi(12)=12-6-4+2=4\)。余下的整数为 \(1,5,7,11\)。这个例子也解释了乘积中的 \(1-1/p\)：它记录排除一个素数整除条件所产生的比例；不同素数之间的交集由容斥精确处理，不能仅凭未经证明的“独立性”猜出乘积。
 
 \subsection{除数函数}
 \label{b3:subsec:250105}
 
-定义\term[chushu-hanshu]{除数函数}[divisor function]
-\(\sigma_\alpha(n)=\sum_{d\mid n}d^\alpha\)，并记 \(d(n)=\sigma_0(n)\)。互素整数的约数唯一分解成两边约数的积，因此 \(\sigma_\alpha\) 可乘，且
+平方和公式和 Eisenstein 级数的 Fourier 展开把许多系数写成约数的幂次和。统一记号之后，约数个数、约数总和以及复参数加权就可以一同处理。
+
+\begin{definition}\label{b3:def:25-divisor-functions}
+设 \(\alpha\in\mathbb C\)。对每个正整数 \(n\)，定义\term[chushu-hanshu]{除数函数}[divisor function]
 \[
-\sigma_\alpha(p^r)=1+p^\alpha+\cdots+p^{r\alpha}.
+ \sigma_\alpha(n)=\sum_{d\mid n}d^\alpha,
+ \qquad d^\alpha=\exp(\alpha\log d),
 \]
-对 \(\alpha=0\) 应取值 \(r+1\)，不能把几何和表达式中的零分母直接代入。前两章的 Fourier 系数 \(\sigma_3,\sigma_5\) 正是这族算术函数。
+其中 \(\log d\) 为实对数。记 \(d(n)=\sigma_0(n)\)，即 \(n\) 的正约数个数；\(\sigma_1(n)\) 是其正约数之和。
+\end{definition}
+
+\begin{proposition}[除数函数的局部公式]
+\label{b3:prop:25-divisor-local}
+对每个固定的 \(\alpha\in\mathbb C\)，函数 \(\sigma_\alpha\) 可乘。对素数 \(p\) 与整数 \(r\ge0\)，有
+\[
+ \sigma_\alpha(p^r)=\sum_{j=0}^r p^{j\alpha}
+ =\begin{cases}
+ \displaystyle\frac{p^{(r+1)\alpha}-1}{p^\alpha-1},&p^\alpha\ne1,\\[6pt]
+ r+1,&p^\alpha=1.
+ \end{cases}
+\]
+特别地，\(d(n)=\prod_{p^r\parallel n}(r+1)\)。
+\end{proposition}
+\begin{proof}
+当 \(m,n\) 互素时，\(mn\) 的每个约数唯一写成 \(uv\)，其中 \(u\mid m\)、\(v\mid n\)：把约数中的素数幂分别分配给 \(m\) 和 \(n\) 即得。利用 \((uv)^\alpha=u^\alpha v^\alpha\)，便有
+\[
+ \sigma_\alpha(mn)
+ =\sum_{u\mid m}\sum_{v\mid n}u^\alpha v^\alpha
+ =\sigma_\alpha(m)\sigma_\alpha(n).
+\]
+素数幂 \(p^r\) 的约数恰为 \(1,p,\ldots,p^r\)，所以局部公式是有限几何和。若公比 \(p^\alpha\ne1\)，将这个和乘以 \(p^\alpha-1\) 得到分式；若公比为 \(1\)，则每一项都是 \(1\)，共有 \(r+1\) 项。令 \(\alpha=0\) 并使用可乘性，得到最后一个公式。
+\end{proof}
+
+复参数时，分母为零的例外不只发生在 \(\alpha=0\)。对固定素数 \(p\)，准确条件是
+\[
+ p^\alpha=1
+ \quad\Longleftrightarrow\quad
+ \alpha\log p\in2\pi i\mathbb Z.
+\]
+例如 \(\alpha=2\pi i/\log2\) 时，\(\sigma_\alpha(2^r)=r+1\)。因此应当先使用有限和定义，再判断某个几何和分式能否代入。每个固定 \(n\) 的 \(\sigma_\alpha(n)\) 本来就是关于 \(\alpha\) 的有限指数和，并没有真正的奇点。
+
+对 \(12=2^2\cdot3\)，局部计算给出
+\[
+ d(12)=(2+1)(1+1)=6,
+ \qquad \sigma_1(12)=(1+2+4)(1+3)=28.
+\]
+这个计算免去了逐个列出约数；前两章的 \(\sigma_3\)、\(\sigma_5\) 也服从同样的素数幂分解。
+
+为了把这些系数放进级数，需要先知道它们不会增长得过快。粗略地说，\(d(n)\le n\) 当然成立，但这个界会把可保证收敛的半平面推得过于靠右。下面的估计利用素数幂结构，把增长压到任意指定的正幂以下。
 
 \begin{proposition}[除数个数的缓慢增长]
 \label{b3:prop:25-divisor-small-power}
-对每个 \(\varepsilon>0\)，存在常数 \(C_\varepsilon\)，使所有正整数满足
+令 \(d(n)\) 为正整数 \(n\) 的正约数个数。对每个实数 \(\varepsilon>0\)，存在只依赖于 \(\varepsilon\) 的常数 \(C_\varepsilon>0\)，使所有正整数满足
 \[
  d(n)\le C_\varepsilon n^\varepsilon.
 \]
 \end{proposition}
 \begin{proof}
-若 \(p^\varepsilon\ge2\)，则对 \(r\ge1\) 有 \(r+1\le2^r\le p^{r\varepsilon}\)。不满足这一条件的素数只有有限个；对其中每个素数，数列 \((r+1)p^{-r\varepsilon}\) 有有限上界 \(C_{p,\varepsilon}\)，因为指数衰减快于线性增长。将这些有限个上界相乘，取
+要估计乘积 \(d(n)=\prod_{p^r\parallel n}(r+1)\)，希望把每个因子 \(r+1\) 吸收到 \(p^{r\varepsilon}\) 中。若 \(p^\varepsilon\ge2\)，则对 \(r\ge1\) 有
 \[
- C_\varepsilon=\prod_{p<2^{1/\varepsilon}}
-       \sup_{r\ge0}(r+1)p^{-r\varepsilon}.
+ r+1\le2^r\le p^{r\varepsilon};
 \]
-再把 \(d(n)=\prod_{p^r\parallel n}(r+1)\) 的每个因子分别估计，便得结论。
+其中第一步可由二项式展开 \(2^r=(1+1)^r\ge1+r\) 得到。这些较大的素数不需要额外常数。
+
+剩下的素数满足 \(p<2^{1/\varepsilon}\)，所以只有有限个。对每个这样的 \(p\)，数列 \((r+1)p^{-r\varepsilon}\) 有有限上界：相邻两项之比为
+\[
+ \frac{r+2}{r+1}p^{-\varepsilon}\longrightarrow p^{-\varepsilon}<1,
+\]
+因而从某一项起几何衰减。令
+\[
+ C_{p,\varepsilon}=\sup_{r\ge0}(r+1)p^{-r\varepsilon},
+ \qquad
+ C_\varepsilon=\prod_{p<2^{1/\varepsilon}}C_{p,\varepsilon}.
+\]
+每个局部常数至少为 \(1\)，总乘积有限。对 \(n\) 的每个素数幂使用上述相应估计，再把没有出现在 \(n\) 中的小素数因子补进常数，就有
+\[
+ d(n)\le C_\varepsilon\prod_{p^r\parallel n}p^{r\varepsilon}
+       =C_\varepsilon n^\varepsilon.
+\]
 \end{proof}
 
-这个估计中的常数允许依赖 \(\varepsilon\)，所以不能令 \(\varepsilon\downarrow0\) 推出除数个数有界。例如 \(n\) 是前 \(k\) 个素数的乘积时，\(d(n)=2^k\)。结论说的是它比任何固定正幂增长得慢。对实数 \(\alpha\)，还可直接得到
+这里必须先固定 \(\varepsilon\)，再选择常数。不能令 \(\varepsilon\downarrow0\) 而保持同一个 \(C_\varepsilon\)，进而宣称 \(d(n)\) 有界。例如，若 \(n\) 是 \(k\) 个不同素数的乘积，则 \(d(n)=2^k\)。该命题比较的是增长阶，并未给出一个与 \(\varepsilon\) 无关的统一上界。
+
+对复参数也能直接使用这个估计。由于 \(|d^\alpha|=d^{\Re\alpha}\)，对任意固定 \(\alpha\in\mathbb C\)、\(\varepsilon>0\) 和正整数 \(n\)，有
 \[
- |\sigma_\alpha(n)|\le d(n)\max(1,n^\alpha)
- \le C_\varepsilon n^{\max(0,\alpha)+\varepsilon}.
+ |\sigma_\alpha(n)|
+ \le\sum_{d\mid n}d^{\Re\alpha}
+ \le d(n)n^{\max(0,\Re\alpha)}
+ \le C_\varepsilon n^{\max(0,\Re\alpha)+\varepsilon}.
 \]
-这类逐项界虽然通常不如平均估计精确，却足以先建立某个右半平面的绝对收敛。之后再利用部分和抵消，才能向左推进。
+这个逐项界足以建立某个右半平面的绝对收敛。若想把结论推进得更远，还要研究许多系数相加后是否抵消，而不能只估计每项绝对值。
 
 \subsection{von Mangoldt 函数 \texorpdfstring{\(\Lambda\)}{\AnalysisPdfCapitalLambda}}
 \label{b3:subsec:250106}
 
-定义\term[von-mangoldt-hanshu]{von Mangoldt 函数}[von Mangoldt function]
+素因子分解还给出 \(\log n=\sum_{p^r\parallel n}r\log p\)。如果希望把它写成一个约数和，就必须让同一素数的每一层幂次都提供一次 \(\log p\)：\(p,p^2,\ldots,p^r\) 一共提供 \(r\) 次。这就是下一个权重同时记录素数和素数幂的原因。
+
+\begin{definition}\label{b3:def:25-von-mangoldt}
+在正整数上定义\term[von-mangoldt-hanshu]{von Mangoldt 函数}[von Mangoldt function]
 \[
-\Lambda(n)=\begin{cases}\log p,&n=p^r,\quad p\text{ prime},\ r\ge1,\\0,&\text{其他情形}.\end{cases}
+ \Lambda(n)=
+ \begin{cases}
+  \log p,&n=p^r,\quad p\text{ 为素数},\ r\ge1,\\
+  0,&\text{其他情形}.
+ \end{cases}
 \]
+这里 \(\log p\) 为实对数，特别地 \(\Lambda(1)=0\)。
+\end{definition}
 \symidx{\(\Lambda(n)\)：von Mangoldt 函数}
-它不具可乘性，而满足更适合对数的恒等式
+
+\begin{proposition}[对数的约数分解]
+\label{b3:prop:25-mangoldt-divisors}
+对每个正整数 \(n\)，von Mangoldt 函数满足
 \begin{equation}\label{b3:eq:25-log-divisors}
-\sum_{d\mid n}\Lambda(d)=\log n.
+ \sum_{d\mid n}\Lambda(d)=\log n.
 \end{equation}
-因为每个素因子 \(p^a\parallel n\) 在左侧贡献 \(a\log p\)。函数 \(\Lambda\) 把素数和素数幂放在一起，正是 Euler 乘积的对数导数自然产生的权重。
+\end{proposition}
+\begin{proof}
+若 \(p^r\parallel n\)，由 \(p\) 构成且整除 \(n\) 的素数幂正好是 \(p,p^2,\ldots,p^r\)。它们总共贡献 \(r\log p\)。其余约数对和没有贡献，故左侧等于 \(\sum_{p^r\parallel n}r\log p=\log n\)。当 \(n=1\) 时，两边都等于零。
+\end{proof}
+
+例如 \(\Lambda(8)=\log2\)，并非 \(\log8\)；在 \(8\) 的全部约数上求和时，\(2,4,8\) 各贡献一次 \(\log2\)，才得到 \(\log8\)。而 \(\Lambda(6)=0\)，因为 \(6\) 不是素数幂。
+
+函数 \(\Lambda\) 不可乘。除了它不满足 \(\Lambda(1)=1\) 外，互素的 \(2,3\) 还直接给出
+\[
+ \Lambda(6)=0\ne(\log2)(\log3)=\Lambda(2)\Lambda(3).
+\]
+这并不妨碍它在乘法结构中起作用：对数把素因子的乘积化成和，\(\Lambda\) 则把这个和分配给各个素数幂。后面 Euler 乘积的对数导数将自然产生同一个权重。
