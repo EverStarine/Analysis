@@ -2,24 +2,243 @@
 \section{von Neumann 平均遍历定理}
 \label{b1:sec:3202}
 
-待撰写。
+在有限循环中，时间平均的极限由“在循环上恒定的部分”决定。若一个观测量可以写成相邻两次观测的差，它的平均就会首尾相消。Hilbert 空间允许把这两种情形组织成一个正交分解：不变部分保留下来，算子差的值域及其闭包中的部分被平均消去。这样可以先证明平方平均意义下的收敛，再在后面另行解决几乎处处的收敛。
 
 \subsection{Koopman 算子与收缩性}
 \label{b1:subsec:320201}
 
-待撰写。
+时间演化作用于点 \(x\)，而分析中的线性工具作用于函数。把这两种观点连接起来，只需把“下一时刻的观测”作为新的函数。
+
+\begin{definition}\label{b1:def:koopman-32}
+设 \((X,\mathcal A,\mu)\) 是概率空间，\(T\colon X\rightarrow X\) 可测且保测。对 \(1\leq p\leq\infty\) 以及 \(\mathbb K=\mathbb R\) 或 \(\mathbb C\)，在 \(L^p(X,\mathcal A,\mu;\mathbb K)\) 上定义
+\[
+ U_Tf=f\circ T.
+\]
+这个复合算子称为 \(T\) 的\term[Koopman-suanzi]{Koopman 算子}[Koopman operator]。没有混淆时记为 \(U\)。
+\end{definition}
+\symidx{\(U_T\)：保测变换的 Koopman 算子}
+
+\begin{proposition}[Koopman 算子的等距性]\label{b1:prop:koopman-32}
+设 \((X,\mathcal A,\mu)\) 是概率空间，\(T\colon X\rightarrow X\) 可测且保测，\(1\leq p\leq\infty\)，\(\mathbb K=\mathbb R\) 或 \(\mathbb C\)。则 \(U_T\) 是 \(L^p(\mu;\mathbb K)\) 上良定义的线性等距算子：
+\[
+ \|U_Tf\|_p=\|f\|_p.
+\]
+它保持常数，并在实值函数上保持非负性。若 \(T\) 还是双射且 \(T^{-1}\) 可测，则 \(U_T\) 满射，其逆算子为 \(U_{T^{-1}}\)。特别地，此时复 \(L^2\) 上的 \(U_T\) 是酉算子。
+\end{proposition}
+\begin{proof}
+若 \(f=g\) 几乎处处，则 \(f\circ T=g\circ T\) 的例外集合包含在原例外零集的原像中，仍为零测集。所以复合不依赖 \(L^p\) 等价类的代表。可测性、线性性、常数保持性及实值正性直接由复合的定义得到。
+
+若 \(p<\infty\)，对非负函数 \(|f|^p\) 应用\cref{b1:prop:preserving-integrals-32}，得到
+\[
+ \|U_Tf\|_p^p=\int_X |f\circ T|^p\,\mathrm d\mu
+ =\int_X |f|^p\,\mathrm d\mu=\|f\|_p^p.
+\]
+若 \(p=\infty\)，对每个 \(c\geq0\) 有
+\[
+ \mu(|f\circ T|>c)=\mu(T^{-1}\{|f|>c\})=\mu(|f|>c).
+\]
+因此两函数的本质上界相同，得到 \(L^\infty\) 等距性。
+
+若 \(T\) 双射且逆映射可测，对任意 \(A\in\mathcal A\)，像集合 \(TA=(T^{-1})^{-1}A\) 可测，且
+\(\mu(TA)=\mu(T^{-1}(TA))=\mu(A)\)。所以逆映射也保测，并且两次复合给出
+\(U_TU_{T^{-1}}=U_{T^{-1}}U_T=I\)。在复 \(L^2\) 中，一个满射线性等距算子保持内积，因而是酉算子；也可直接对 \(f\overline g\) 使用积分不变性验证内积保持。
+\end{proof}
+
+等距性不意味着满射。对上一节的倍增映射 \(D\)，每个形如 \(h=U_Dg\) 的函数都满足
+\[
+ h(x+1/2)=h(x)\quad\text{对几乎每个 }x\in[0,1/2).
+\]
+原因是 \(D(x+1/2)=Dx\)。即使等式 \(h=g\circ D\) 只在几乎处处成立，也可以同时去掉其例外零集及平移半个圆周后的例外零集。函数 \(\mathbf1_{[0,1/2)}\) 不具有上面的性质，因此不在 \(U_D\) 的值域中。这对所有 \(1\leq p\leq\infty\) 都成立。平均算子由正向迭代定义，因此接下来的 Hilbert 空间方法也适用于这种不满射的等距算子。
+
+\ProseParagraphBreak
+
+由 \(U^kf=f\circ T^k\)，时间平均就是
+\[
+ A_Nf=\frac1N\sum_{k=0}^{N-1}U^kf.
+\]
+等距性与三角不等式给出 \(\|A_Nf\|_p\leq\|f\|_p\)。下面的 Hilbert 空间证明其实只需要 \(\|U\|\leq1\)，无须每次都保持范数。这一较弱假设使我们能看清哪些结论来自空间几何，哪些结论才需要保测变换的具体形式。
 
 \subsection{不变子空间与算子差的值域}
 \label{b1:subsec:320202}
 
-待撰写。
+设 \(H\) 是实或复 Hilbert 空间，\(U\colon H\rightarrow H\) 为有界线性算子且 \(\|U\|\leq1\)。这种算子称为收缩算子；这里“收缩”允许范数等于一。记
+\[
+ \operatorname{Fix}U=\{\,h\in H\mid Uh=h\,\}=\ker(I-U),
+\]
+称为 \(U\) 的\term[budong-zikongjian]{不动子空间}[fixed-point subspace]。它由被 \(U\) 逐向量固定的元素组成；仅满足 \(U(M)\subseteq M\) 的一般不变子空间未必具有这个性质。因为 \(I-U\) 连续，其核是闭线性子空间。
+\symidx{\(\operatorname{Fix}U\)：算子 \(U\) 的不动向量空间}
+
+\ProseParagraphBreak
+
+若 \(h\in\operatorname{Fix}U\)，那么 \(A_Nh=h\)，这一部分完全不受平均影响。另一类向量是 \(h=(I-U)g=g-Ug\)。对它求和时，相邻项两两抵消：
+\begin{equation}\label{b1:eq:ergodic-telescope-32}
+ \begin{aligned}
+ A_N(I-U)g
+ &=\frac1N\sum_{k=0}^{N-1}(U^kg-U^{k+1}g)\\
+ &=\frac{g-U^Ng}{N}.
+ \end{aligned}
+\end{equation}
+收缩性给出
+\[
+ \|A_N(I-U)g\|\leq\frac{2\|g\|}{N}\longrightarrow0.
+\]
+这一步无需正交性。真正要解决的问题是：任意 \(h\in H\) 能否分成一个不动向量，加上可以由这种差逼近的向量？
+
+\ProseParagraphBreak
+
+需要回顾\cref{b1:prop:hilbert-adjoint}的有界伴随算子。对有界 \(U\)，伴随 \(U^*\) 由
+\[
+ \langle Ux,y\rangle=\langle x,U^*y\rangle
+\]
+确定，并满足 \(\|U^*\|=\|U\|\)。本书复内积对第一个变量线性、第二个变量共轭线性。一般算子 \(U\) 与 \(U^*\) 的不动向量未必相同；收缩性在下面的引理中发挥作用。
+
+\begin{lemma}[收缩算子及其伴随的不动向量]\label{b1:lem:contraction-fixed-adjoint-32}
+设 \(H\) 是实或复 Hilbert 空间，\(U\colon H\rightarrow H\) 是有界线性算子，且 \(\|U\|\leq1\)。则
+\[
+ \operatorname{Fix}U=\operatorname{Fix}U^*.
+\]
+\end{lemma}
+\begin{proof}
+若 \(Ux=x\)，由 \(\|U^*x\|\leq\|x\|\) 及伴随关系，有
+\[
+ \begin{aligned}
+ \|U^*x-x\|^2
+ &=\|U^*x\|^2+\|x\|^2-2\operatorname{Re}\langle U^*x,x\rangle\\
+ &=\|U^*x\|^2+\|x\|^2-2\operatorname{Re}\langle x,Ux\rangle\\
+ &\leq2\|x\|^2-2\|x\|^2=0.
+ \end{aligned}
+\]
+所以 \(U^*x=x\)。反过来，若 \(U^*x=x\)，则
+\[
+ \begin{aligned}
+ \|Ux-x\|^2
+ &=\|Ux\|^2+\|x\|^2-2\operatorname{Re}\langle Ux,x\rangle\\
+ &=\|Ux\|^2+\|x\|^2-2\operatorname{Re}\langle x,U^*x\rangle
+ \leq0,
+ \end{aligned}
+\]
+故 \(Ux=x\)。实 Hilbert 空间中去掉实部记号即可。
+\end{proof}
+
+若去掉收缩性，结论可以失败。例如在 \(\mathbb R^2\) 的标准内积下取
+\[
+ U=\begin{pmatrix}1&1\\0&0\end{pmatrix}.
+\]
+直接解方程得到 \(\operatorname{Fix}U=\operatorname{span}\{(1,0)\}\)，而 \(\operatorname{Fix}U^*=\operatorname{span}\{(1,1)\}\)。该算子的范数为 \(\sqrt2\)。后面的正交分解不能仅凭 \(U\) 有界就套用。
 
 \subsection{Hilbert 空间的正交分解}
 \label{b1:subsec:320203}
 
-待撰写。
+把向量与所有差 \(g-Ug\) 作内积，会自动产生伴随算子。上一引理使这个伴随条件恰好变回 \(U\) 自身的不变性。
+
+\begin{proposition}[不动空间与差的值域]\label{b1:prop:ergodic-orthogonal-decomposition-32}
+设 \(H\) 是实或复 Hilbert 空间，\(U\colon H\rightarrow H\) 是有界线性算子，且 \(\|U\|\leq1\)。则
+\begin{equation}\label{b1:eq:ergodic-orthogonal-decomposition-32}
+ H=\operatorname{Fix}U\oplus\overline{\operatorname{Ran}(I-U)},
+ \quad
+ \overline{\operatorname{Ran}(I-U)}=(\operatorname{Fix}U)^\perp,
+\end{equation}
+其中横线表示范数闭包，\(\oplus\) 表示正交直和。因此每个 \(h\in H\) 唯一写成 \(h=h_0+h_1\)，其中 \(Uh_0=h_0\)，而 \(h_1\) 可由形如 \(g-Ug\) 的向量在范数下逼近。
+\end{proposition}
+\begin{proof}
+一个向量 \(z\in H\) 与 \(\operatorname{Ran}(I-U)\) 正交，当且仅当对所有 \(g\in H\) 都有
+\[
+ 0=\langle(I-U)g,z\rangle=\langle g,(I-U^*)z\rangle.
+\]
+若最后的等式对所有 \(g\) 成立，取 \(g=(I-U^*)z\)，得到 \((I-U^*)z=0\)；反向直接代入即可。所以
+\[
+ (\operatorname{Ran}(I-U))^\perp
+ =\ker(I-U^*)=\operatorname{Fix}U,
+\]
+最后一步使用\cref{b1:lem:contraction-fixed-adjoint-32}。
+
+内积对范数极限连续，因此一个集合及其闭包有相同的正交补。令 \(M=\overline{\operatorname{Ran}(I-U)}\)，则 \(M\) 为闭线性子空间且 \(M^\perp=\operatorname{Fix}U\)。Hilbert 空间投影定理\cref{b1:thm:hilbert-projection}给出 \(H=M\oplus M^\perp\)，即所需分解。再次取正交补，或直接利用这一个正交分解，便有 \(M=(\operatorname{Fix}U)^\perp\)。
+\end{proof}
+
+分解\eqref{b1:eq:ergodic-orthogonal-decomposition-32}中值域前面的闭包不能普遍删去。一个具体例子定义在 \(H=\ell^2(\mathbb N)\) 上，令
+\[
+ (Ug)_j=\left(1-\frac1j\right)g_j,\quad j\geq1.
+\]
+由于每个系数都在 \([0,1)\) 中，\(U\) 为收缩算子；又因为 \(Ug=g\) 强迫每个 \(g_j=0\)，所以 \(\operatorname{Fix}U=\{0\}\)。向量 \(h=(1/j)_{j\geq1}\) 属于 \(\ell^2\)，但若 \((I-U)g=h\)，逐坐标比较得到 \(g_j=1\)，这不属于 \(\ell^2\)。因此 \(h\notin\operatorname{Ran}(I-U)\)。另一方面，把 \(h\) 在第 \(m\) 项后截成零，所得 \(h^{(m)}\) 等于 \((I-U)g^{(m)}\)，其中 \(g^{(m)}\) 的前 \(m\) 项为一、其余为零，并且 \(h^{(m)}\to h\) 于 \(\ell^2\)。这给出了“属于值域闭包，却不属于值域”的实例。
+
+\ProseParagraphBreak
+
+在这个例子中，逼近 \(h\) 所用的 \(g^{(m)}\) 满足 \(\|g^{(m)}\|=\sqrt m\)，并没有统一界。因此对每个精确差的 \(2\|g\|/N\) 估计，并不能直接变成所有闭包向量共同享有的 \(1/N\) 误差估计。下一步要先选定逼近精度，再让 \(N\) 增大。
 
 \subsection{平方平均收敛与极限投影}
 \label{b1:subsec:320204}
 
-待撰写。
+\term[von-Neumann-pingjun-bianli-dingli]{von Neumann 平均遍历定理}[von Neumann mean ergodic theorem]说明，上面的正交分解恰好决定平均的范数极限。
+
+\begin{theorem}[von Neumann 平均遍历]\label{b1:thm:mean-ergodic-32}
+设 \(H\) 是实或复 Hilbert 空间，\(U\colon H\rightarrow H\) 为有界线性算子且 \(\|U\|\leq1\)。记
+\[
+ A_N=\frac1N\sum_{k=0}^{N-1}U^k,\quad N\geq1,
+\]
+并记 \(P\) 为 \(H\) 到闭子空间 \(\operatorname{Fix}U\) 的正交投影。则对每个 \(h\in H\)，
+\begin{equation}\label{b1:eq:mean-ergodic-32}
+ \|A_Nh-Ph\|\longrightarrow0\quad(N\to\infty).
+\end{equation}
+亦即 \(A_N\) 在强算子意义下收敛于 \(P\)。
+\end{theorem}
+\begin{proof}
+因为 \(\|U^k\|\leq1\)，三角不等式给出 \(\|A_N\|\leq1\)。按\cref{b1:prop:ergodic-orthogonal-decomposition-32}写
+\[
+ h=Ph+h_1,\quad h_1\in\overline{\operatorname{Ran}(I-U)}.
+\]
+不动部分满足 \(A_NPh=Ph\)，所以只需证明 \(A_Nh_1\to0\)。
+
+给定 \(\varepsilon>0\)，由闭包的定义可选 \(g\in H\)，使
+\(\|h_1-(I-U)g\|<\varepsilon\)。先固定这个 \(g\)，再使用\eqref{b1:eq:ergodic-telescope-32}，得到
+\[
+ \begin{aligned}
+ \|A_Nh_1\|
+ &\leq\|A_N(h_1-(I-U)g)\|+\|A_N(I-U)g\|\\
+ &\leq\varepsilon+\frac{2\|g\|}{N}.
+ \end{aligned}
+\]
+让 \(N\to\infty\)，有 \(\limsup_N\|A_Nh_1\|\leq\varepsilon\)。再由 \(\varepsilon\) 任意，得到 \(A_Nh_1\to0\)。因此 \(A_Nh\to Ph\)。
+\end{proof}
+
+式\eqref{b1:eq:mean-ergodic-32}的量词是：对每个固定的 \(h\)，其平均在 \(H\) 的范数中收敛。它没有断言 \(\|A_N-P\|\to0\)，即没有把收敛对单位球中全部向量同时变成一致的。可以在 \(\ell^2(\{0,1,2,\ldots\})\) 上用右移算子
+\[
+ S(x_0,x_1,x_2,\ldots)=(0,x_0,x_1,\ldots)
+\]
+看清差别。该算子等距且没有非零不动向量，所以定理给出 \(A_Nh\to0\) 对每个固定 \(h\) 成立。可是固定 \(N\)，取前 \(m\) 项等于 \(m^{-1/2}\)、以后为零的单位向量 \(h^{(m)}\)，其中 \(m\geq N\)。平均 \(A_Nh^{(m)}\) 在坐标 \(N-1,\ldots,m-1\) 上仍等于 \(m^{-1/2}\)，故
+\[
+ \|A_Nh^{(m)}\|^2\geq\frac{m-N+1}{m}.
+\]
+令 \(m\to\infty\)，并结合 \(\|A_N\|\leq1\)，得到每个 \(N\) 都有 \(\|A_N\|=1\)。因此这里的算子范数根本不趋于零。
+
+\ProseParagraphBreak
+
+回到保测系统，投影的目标不是一个新引进的抽象空间。上一节已经把不动函数识别为只依赖不变信息的函数，\chapref{b1:ch:31}则已证明条件期望就是到这种可测函数空间的正交投影。把两项结果接起来，就能写出平均极限。
+
+\begin{corollary}[平方平均极限与条件期望]\label{b1:cor:mean-ergodic-conditional-32}
+设 \((X,\mathcal A,\mu)\) 是概率空间，\(T\colon X\rightarrow X\) 可测且保测，\(\mathcal I_T=\{\,A\in\mathcal A\mid\mu(T^{-1}A\mathbin{\triangle}A)=0\,\}\)。对 \(\mathbb K=\mathbb R\) 或 \(\mathbb C\) 及每个 \(f\in L^2(\mu;\mathbb K)\)，有
+\begin{equation}\label{b1:eq:mean-ergodic-conditional-32}
+ \left\|\frac1N\sum_{k=0}^{N-1}f\circ T^k
+       -\mathbb E_\mu(f\mid\mathcal I_T)\right\|_2\longrightarrow0.
+\end{equation}
+若 \(T\) 遍历，则极限为常数 \(\int_Xf\,\mathrm d\mu\)。反过来，若对每个实 \(f\in L^2(\mu)\)，其时间平均都在 \(L^2\) 中收敛到这个常数，则 \(T\) 遍历。
+\end{corollary}
+\begin{proof}
+在 \(H=L^2(X,\mathcal A,\mu;\mathbb K)\) 中采用内积
+\(\langle f,g\rangle=\int_X f\overline g\,\mathrm d\mu\)，实值时去掉共轭。\cref{b1:prop:koopman-32}保证 \(U_T\) 是收缩算子，而\cref{b1:prop:invariant-functions-32}给出
+\[
+ \operatorname{Fix}U_T
+ =L^2(\mathcal I_T)
+ =\{\,g\in L^2(\mu;\mathbb K)\mid g\text{ 有 }\mathcal I_T\text{-可测代表}\,\}.
+\]
+由于 \(\mu(X)=1\)，Cauchy--Schwarz 不等式给出 \(\|f\|_1\leq\|f\|_2\)，所以条件期望有定义。\cref{b1:thm:conditional-expectation-projection-31}断言：对概率空间的任意子 \(\sigma\)-代数，到 \(L^2\) 可测子空间的正交投影是条件期望；它同时保证这个子空间闭合。于是\cref{b1:thm:mean-ergodic-32}中的 \(Pf\) 就是 \(\mathbb E_\mu(f\mid\mathcal I_T)\)，得到\eqref{b1:eq:mean-ergodic-conditional-32}。
+
+若 \(T\) 遍历，\cref{b1:prop:ergodicity-criterion-32}说明这个不变函数几乎处处为常数 \(c\)。条件期望保持积分，故 \(c=\int_X f\,\mathrm d\mu\)。反向取任意 \(A\in\mathcal I_T\)，则 \(A_N\mathbf1_A=\mathbf1_A\) 于 \(L^2\)。如果其极限又等于常数 \(\mu(A)\)，则 \(\mathbf1_A=\mu(A)\) 几乎处处，所以 \(\mu(A)\) 只能是零或一。这就证明 \(T\) 遍历。
+\end{proof}
+
+在上一节的五点例子中，\(L^2(\mathcal I_T)\) 由在两个循环内分别恒定的函数组成，是二维子空间。正交投影把 \((0,2,3,6,9)\) 变成 \((1,1,6,6,6)\)。若再将这个结果投影到全空间的常数函数上，才得到总平均 \(4\)。两个投影回答不同的问题：沿轨道平均会忘记循环内部的起始点，却没有机制把初始状态从一个循环送进另一个循环。
+
+\begin{remark}[范数收敛与逐点收敛]\label{b1:rem:norm-not-pointwise-32}
+平方平均收敛没有单独保证几乎每个初始点上的整列收敛。一般来说，\(L^2\) 中越来越小的误差可以在空间中不断移动。例如在 \([0,1)\) 的 Lebesgue 概率空间上，依次把区间分成 \(2^m\) 个等长的半开小区间，在第 \(m\) 组中按顺序列出这些小区间的示性函数，再将各组连接成一个序列。第 \(m\) 组每个函数的 \(L^2\) 范数都是 \(2^{-m/2}\)，所以整列在 \(L^2\) 中趋于零；但每个 \(x\in[0,1)\) 在每一组都恰有一次函数值为一，又有越来越多次为零，因此逐点不收敛。这个例子不是保测系统时间平均的反例，它说明单凭范数收敛还不能获得逐点结论。
+\end{remark}
+
+时间平均另有相邻项和最大函数的结构，下一节将利用这些结构证明 Birkhoff 定理。

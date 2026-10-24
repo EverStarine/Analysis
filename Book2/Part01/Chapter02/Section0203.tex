@@ -2,10 +2,12 @@
 \section{线性系统、矩阵指数与变常数}
 \label{b2:sec:ode-linear-systems}
 
-线性系统的时间系数即使只有连续性，也能由积分迭代构造唯一解。这里的估计含有阶乘，不必把时间区间缩短到使积分算子成为压缩；后文 Sturm--Liouville 问题的通量系统正需要这个版本。矩阵指数与一般变常数公式仍留待撰写。
+线性方程有两个特别有用的性质：齐次解可以相加，给定初值后也能沿整个系数定义区间延伸。前者使我们只需寻找有限个基本解，后者使局部构造成为全区间的表示公式。本节先在只假设时间系数连续的条件下构造解，再说明矩阵指数、基本解矩阵和变常数分别解决什么问题。后文 Sturm--Liouville 问题的通量系统，以及下一节流映射的导数方程，都需要这里的连续系数版本。
 
 \subsection{连续系数线性系统与积分迭代}
 \label{b2:subsec:070205}
+
+对方程 \(Y'=A(t)Y\)，系数 \(A(t)\) 在紧时间区间上有界，但积分算子在较长区间上未必是压缩映射。仍然使用逐次积分时，第 \(k\) 次误差会多出一个 \(k!\) 分母；这个阶乘足以补偿任意固定区间的长度。因此，逐次积分可以在整个固定紧区间上收敛。
 
 \begin{proposition}\label{b2:prop:ode-continuous-linear}
 设 \(n\) 为正整数，\(\mathbb K=\mathbb R\) 或 \(\mathbb C\)，\(\alpha<\beta\)，\(A\in C([\alpha,\beta];\mathbb K^{n\times n})\)。对任意 \(t_0\in[\alpha,\beta]\)、\(y_0\in\mathbb K^n\)，问题
@@ -23,7 +25,12 @@
  Y_{k+1}(t)=y_0+\int_{t_0}^t A(s)Y_k(s)\,\mathrm ds,
  \quad k\geq0.
 \]
-第一次差满足 \(|Y_1(t)-Y_0(t)|\leq M|t-t_0|\cdot|y_0|\)。反复积分并归纳得到
+第一次差满足 \(|Y_1(t)-Y_0(t)|\leq M|t-t_0|\cdot|y_0|\)。如果第 \(k\) 次差已有 \(k!\) 分母，下一步积分使用
+\[
+ \int_{t_0}^{t}\frac{(s-t_0)^k}{k!}\,\mathrm ds
+ =\frac{(t-t_0)^{k+1}}{(k+1)!}\quad(t\geq t_0).
+\]
+归纳得到
 \[
  |Y_{k+1}(t)-Y_k(t)|
  \leq\frac{M^{k+1}|t-t_0|^{k+1}}{(k+1)!}\cdot|y_0|.
@@ -43,7 +50,266 @@
 
 矩阵初值问题可逐列应用本命题。若指定某时刻的初始矩阵，每一列唯一确定，因而整个矩阵解也唯一确定。证明只使用系数连续与紧区间上的有界性，没有对 \(A\) 求导。
 
-\subsection{矩阵指数与变常数公式}
+\ProseParagraphBreak
+
+若系数定义在任意开区间 \(I\subseteq\mathbb R\) 上，就在包含初始时刻的递增紧区间上分别构造解。唯一性使这些解在重叠处相等，因此得到定义在整个 \(I\) 上的解。这并不要求 \(A\) 在整个 \(I\) 上有界：对于每一个有限的闭子区间，只需使用该子区间自己的系数上界。齐次线性系统的解不会在系数仍连续的有限内部时刻爆破。
+
+\subsection{矩阵指数与常系数系统}
 \label{b2:subsec:070206}
 
-待撰写。拟先处理常系数矩阵指数，再建立基本解矩阵及非齐次系统的变常数公式。前一命题目前只给出连续系数齐次系统的初值理论。
+标量方程 \(y'=ay\) 的解由指数函数给出。对常矩阵 \(A\)，相同的幂级数仍有意义；关键是采用满足 \(\|BC\|\leq\|B\|\cdot\|C\|\) 的算子范数，使矩阵级数的收敛归结为数项级数的收敛。这里不要求矩阵能够对角化。
+
+\begin{definition}\label{b2:def:ode-matrix-exponential}
+设 \(n\geq1\)，\(\mathbb K=\mathbb R\) 或 \(\mathbb C\)，\(A\in\mathbb K^{n\times n}\)。矩阵 \(A\) 的\term[juzhen-zhishu]{矩阵指数}[matrix exponential]定义为
+\[
+ e^A\coloneqq\sum_{k=0}^{\infty}\frac{A^k}{k!},\quad A^0=I_n.
+\]
+该级数在由 Euclid 范数诱导的矩阵范数下绝对收敛，因为 \(\|A^k\|\leq\|A\|^k\)。对实参数 \(t\)，记 \(E_A(t)=e^{tA}\)。
+\end{definition}
+
+\begin{proposition}\label{b2:prop:ode-matrix-exponential}
+设 \(n\geq1\)，\(\mathbb K=\mathbb R\) 或 \(\mathbb C\)，\(A\in\mathbb K^{n\times n}\) 为常矩阵。函数 \(t\mapsto e^{tA}\) 在 \(\mathbb R\) 上属于 \(C^\infty\)，并满足
+\[
+ \frac{\mathrm d}{\mathrm dt}e^{tA}=Ae^{tA}=e^{tA}A,
+ \quad e^{0A}=I_n,
+ \quad \|e^{tA}\|\leq e^{|t|\|A\|}.
+\]
+对任意实数 \(s,t\)，有
+\[
+ e^{(t+s)A}=e^{tA}e^{sA},\quad (e^{tA})^{-1}=e^{-tA}.
+\]
+因而初值问题 \(Y'=AY\)、\(Y(t_0)=y_0\) 在整个实轴上的唯一解为 \(Y(t)=e^{(t-t_0)A}y_0\)。
+\end{proposition}
+\begin{proof}
+在任意 \([-T,T]\) 上，原级数由 \(\sum_{k\geq0}T^k\|A\|^k/k!\) 控制，形式导数级数由
+\[
+ \sum_{k=1}^{\infty}\frac{T^{k-1}\|A\|^k}{(k-1)!}
+ =\|A\|e^{T\|A\|}
+\]
+控制。两者都一致收敛。因此可以逐项求导，得到
+\[
+ \frac{\mathrm d}{\mathrm dt}e^{tA}
+ =\sum_{k=1}^{\infty}\frac{t^{k-1}A^k}{(k-1)!}
+ =Ae^{tA}=e^{tA}A.
+\]
+反复应用这个等式给出所有阶导数。逐项取范数便得到范数估计。
+
+固定 \(s\)。矩阵函数 \(t\mapsto e^{(t+s)A}\) 和 \(t\mapsto e^{tA}e^{sA}\) 都满足 \(F'=AF\)，且在 \(t=0\) 处同取 \(e^{sA}\)。逐列应用\cref{b2:prop:ode-continuous-linear}的唯一性，二者相等。取 \(s=-t\) 得逆矩阵公式。最后，直接求导验证 \(e^{(t-t_0)A}y_0\) 满足初值问题，再用同一唯一性结论。
+\end{proof}
+
+若 \(A=SDS^{-1}\)，其中 \(S\) 可逆、\(D=\operatorname{diag}(\lambda_1,\ldots,\lambda_n)\) 为对角矩阵，则 \(A^k=SD^kS^{-1}\)，所以
+\[
+ e^{tA}=S\,\operatorname{diag}(e^{t\lambda_1},\ldots,e^{t\lambda_n})S^{-1}.
+\]
+这是一种计算办法，而不是矩阵指数定义的前提。举例说，取
+\[
+ A=\begin{pmatrix}\lambda&1\\0&\lambda\end{pmatrix}
+ =\lambda I_2+N,\quad
+ N=\begin{pmatrix}0&1\\0&0\end{pmatrix},\quad N^2=0.
+\]
+矩阵 \(A\) 只有一个线性无关的特征向量，不能对角化。由于 \(N\) 与 \(\lambda I_2\) 交换，二项式展开给出 \(A^k=\lambda^kI_2+k\lambda^{k-1}N\)（第二项在 \(k=0\) 时省略）；代入级数得到
+\[
+ e^{tA}=e^{\lambda t}(I_2+tN)
+ =e^{\lambda t}\begin{pmatrix}1&t\\0&1\end{pmatrix}.
+\]
+于是初值 \((a,b)\) 的解为 \(e^{\lambda t}(a+tb,b)\)。多出的因子 \(t\) 记录了第二个分量对第一个分量的持续推动；只列出特征值 \(\lambda\)，还不能读出这项效应。
+
+\ProseParagraphBreak
+
+另一个可直接计算的例子是
+\[
+ J=\begin{pmatrix}0&-1\\1&0\end{pmatrix},\quad J^2=-I_2.
+\]
+把指数级数中的偶次项和奇次项分开，得到
+\[
+ e^{tJ}=\cos t\,I_2+\sin t\,J
+ =\begin{pmatrix}\cos t&-\sin t\\\sin t&\cos t\end{pmatrix}.
+\]
+因此 \(Y'=JY\) 的轨道是匀速旋转的圆。一般估计 \(\|e^{tJ}\|\leq e^{|t|\|J\|}\) 仍然正确，但实际范数恒为一；存在性估计通常不负责给出长期行为的最精确描述。
+
+\subsection{基本解矩阵与演化矩阵}
+\label{b2:subsec:ode-fundamental-matrix}
+
+常系数系统可以把解写成一个矩阵作用于初值。时间系数变化时也能如此，只是这个矩阵不再通常等于某个简单的矩阵指数。设想把标准基向量依次作为初值，记录得到的 \(n\) 条解，再把它们排列成矩阵的列：线性叠加应当恢复任意初值的解。要把这组解作为随时间变化的坐标，还须证明它们在每一时刻都保持线性无关。
+
+\begin{definition}\label{b2:def:ode-fundamental-matrix}
+设 \(n\geq1\)，\(\mathbb K=\mathbb R\) 或 \(\mathbb C\)，\(I\subseteq\mathbb R\) 为非空开区间，\(A\in C(I;\mathbb K^{n\times n})\)。若 \(F\in C^1(I;\mathbb K^{n\times n})\) 满足 \(F'=AF\)，且对每个 \(t\in I\)，矩阵 \(F(t)\) 都可逆，则称 \(F\) 为系统 \(Y'=A(t)Y\) 的\term[jibenjie-juzhen]{基本解矩阵}[fundamental matrix]。
+\end{definition}
+
+\begin{proposition}\label{b2:prop:ode-fundamental-matrix}
+设 \(n\geq1\)，\(\mathbb K=\mathbb R\) 或 \(\mathbb C\)，\(I\subseteq\mathbb R\) 为非空开区间，\(A\in C(I;\mathbb K^{n\times n})\)，\(t_0\in I\)。矩阵初值问题
+\[
+ F'(t)=A(t)F(t),\quad F(t_0)=I_n
+\]
+有定义在整个 \(I\) 上的唯一 \(C^1\) 解，且此解为基本解矩阵。系统 \(Y'=A(t)Y\) 的所有解恰为 \(Y(t)=F(t)c\)，其中 \(c\in\mathbb K^n\) 为常向量。任意另一个基本解矩阵 \(G\) 都唯一写成 \(G(t)=F(t)C\)，其中 \(C\in\mathbb K^{n\times n}\) 为常可逆矩阵。
+\end{proposition}
+\begin{proof}
+由\cref{b2:prop:ode-continuous-linear}及本节开头的紧区间拼接，逐列构造唯一的 \(F\)。若某个 \(\tau\in I\) 处 \(F(\tau)\) 不可逆，则存在非零向量 \(v\) 使 \(F(\tau)v=0\)。向量函数 \(t\mapsto F(t)v\) 满足齐次方程，在 \(\tau\) 处初值为零，因此由唯一性在整个 \(I\) 上等于零。取 \(t=t_0\)，得到 \(v=0\)，矛盾。
+
+对任意齐次解 \(Y\)，取 \(c=Y(t_0)\)。函数 \(F(t)c\) 与 \(Y(t)\) 在 \(t_0\) 处具有相同初值，所以二者相等。将这个结论逐列用于 \(G\)，得到 \(G(t)=F(t)G(t_0)\)。矩阵 \(C=G(t_0)\) 可逆，且代入 \(t_0\) 表明它是唯一可能的选择。
+\end{proof}
+
+基本解矩阵的选择相当于选择一组初始坐标。若关心“把时刻 \(s\) 的数据送到时刻 \(t\)”这一实际操作，应消去这种选择。
+
+\begin{definition}\label{b2:def:ode-evolution-matrix}
+设 \(n\geq1\)，\(\mathbb K=\mathbb R\) 或 \(\mathbb C\)，\(I\subseteq\mathbb R\) 为非空开区间，\(A\in C(I;\mathbb K^{n\times n})\)，\(F\) 是 \(Y'=A(t)Y\) 的任一基本解矩阵。定义该系统的\term[yanhua-juzhen]{演化矩阵}[evolution matrix]为
+\[
+ U(t,s)\coloneqq F(t)F(s)^{-1},\quad (t,s)\in I\times I.
+\]
+\end{definition}
+
+若换用 \(G=FC\)，则 \(G(t)G(s)^{-1}=F(t)F(s)^{-1}\)，所以 \(U\) 与基本解矩阵的选择无关。它满足
+\begin{equation}\label{b2:eq:ode-evolution-composition}
+ U(t,s)U(s,r)=U(t,r),\quad U(s,s)=I_n,
+ \quad U(t,s)^{-1}=U(s,t).
+\end{equation}
+这些等式直接来自中间两个逆矩阵的抵消。初值 \(Y(s)=y_s\) 所确定的解就是 \(Y(t)=U(t,s)y_s\)，所以\eqref{b2:eq:ode-evolution-composition}表达了先从 \(r\) 演化到 \(s\)、再演化到 \(t\)，与直接从 \(r\) 演化到 \(t\) 相同。
+
+\ProseParagraphBreak
+
+演化矩阵的两个时间变量也有不同的导数公式。逆矩阵可由行列式和余子式表示，因而 \(s\mapsto F(s)^{-1}\) 属于 \(C^1\)。对 \(F(s)^{-1}F(s)=I_n\) 求导得到
+\[
+ \frac{\mathrm d}{\mathrm ds}F(s)^{-1}
+ =-F(s)^{-1}F'(s)F(s)^{-1}
+ =-F(s)^{-1}A(s).
+\]
+于是
+\begin{equation}\label{b2:eq:ode-evolution-derivatives}
+ \partial_tU(t,s)=A(t)U(t,s),\quad
+ \partial_sU(t,s)=-U(t,s)A(s).
+\end{equation}
+公式\eqref{b2:eq:ode-evolution-derivatives}的右端连续，因此 \(U\) 在 \(I\times I\) 上联合属于 \(C^1\)，尽管 \(A\) 只有连续性。矩阵相乘的次序不能互换：改变终止时刻和改变起始时刻，分别在不同的一侧产生系数矩阵。
+
+\ProseParagraphBreak
+
+对常系数矩阵 \(A\)，由唯一性有 \(U(t,s)=e^{(t-s)A}\)。标量变系数方程也有 \(U(t,s)=\exp(\int_s^t A(\tau)\,\mathrm d\tau)\)。然而，将标量公式原样搬到任意矩阵系数时会出错。考虑实轴上的连续矩阵
+\[
+ A(t)=\begin{pmatrix}0&1\\0&t\end{pmatrix}.
+\]
+从第二个分量的标量方程开始积分，得到
+\[
+ U(t,0)=\begin{pmatrix}
+ 1&\displaystyle\int_0^t e^{s^2/2}\,\mathrm ds\\[3pt]
+ 0&e^{t^2/2}
+ \end{pmatrix}.
+\]
+另一方面，记 \(B(t)=\int_0^t A(s)\,\mathrm ds\)，则
+\[
+ B(t)=\begin{pmatrix}0&t\\0&t^2/2\end{pmatrix},\quad
+ (B(t)^k)_{12}=t(t^2/2)^{k-1}\quad(k\geq1).
+\]
+因此当 \(t\to0\) 时，指数矩阵右上角与实际演化矩阵右上角分别为
+\[
+ (e^{B(t)})_{12}=t+\frac{t^3}{4}+O(t^5),\quad
+ U(t,0)_{12}=t+\frac{t^3}{6}+O(t^5).
+\]
+两个三次项不同，故两个矩阵在任意充分小的非零时刻都不相等。
+
+\ProseParagraphBreak
+
+障碍在于矩阵的交换次序。对可微矩阵 \(B(t)\)，乘积法则给出
+\[
+ \frac{\mathrm d}{\mathrm dt}B(t)^k
+ =\sum_{j=0}^{k-1}B(t)^jB'(t)B(t)^{k-1-j};
+\]
+只有在 \(B(t)\) 与 \(B'(t)\) 交换时，右端才可合并为 \(kB(t)^{k-1}B'(t)\)。一个足够条件是连续系数 \(A(t)\) 在任意两个时刻都相互交换。此时 \(B(t)=\int_s^t A(\tau)\,\mathrm d\tau\) 与 \(B'(t)=A(t)\) 交换，在每个紧区间逐项求导指数级数便得 \((e^{B(t)})'=A(t)e^{B(t)}\)，再由初值唯一性得到上述指数积分公式。一般变系数系统仍以 \(U(t,s)\) 为正确的演化对象。
+
+\ProseParagraphBreak
+
+虽然整个基本解矩阵未必能由一个积分写出，它的行列式却服从标量方程。这给出\term[liouville-gongshi]{Liouville 公式}[Liouville formula]。
+
+\begin{proposition}[Liouville 公式]\label{b2:prop:ode-liouville}
+设 \(n\geq1\)，\(\mathbb K=\mathbb R\) 或 \(\mathbb C\)，\(I\subseteq\mathbb R\) 为非空开区间，\(A\in C(I;\mathbb K^{n\times n})\)，\(F\) 是 \(Y'=A(t)Y\) 的基本解矩阵。对任意 \(s,t\in I\)，有
+\[
+ \det F(t)=\det F(s)\cdot
+ \exp\left(\int_s^t\operatorname{tr}A(\tau)\,\mathrm d\tau\right),
+\]
+其中 \(\operatorname{tr}A=\sum_{j=1}^n A_{jj}\)。特别地，演化矩阵满足
+\[
+ \det U(t,s)=\exp\left(\int_s^t\operatorname{tr}A(\tau)\,\mathrm d\tau\right).
+\]
+当系数为实矩阵时，\(\det U(t,s)>0\)。
+\end{proposition}
+\begin{proof}
+先回顾行列式的一个一阶展开。由行列式对各列的多重线性，对固定矩阵 \(C\) 有
+\[
+ \det(I_n+hC+o(h))=1+h\operatorname{tr}C+o(h).
+\]
+在展开中，不改变任何列给出常数项 \(1\)；只把第 \(j\) 列替换为 \(hC\) 的第 \(j\) 列给出 \(hC_{jj}\)；替换至少两列的项均为 \(O(h^2)\)。余项矩阵的范数为 \(o(h)\)，含它的各项也都是 \(o(h)\)。
+
+固定 \(t\in I\)。由 \(F'=AF\) 及 \(F(t)\) 可逆，
+\[
+ F(t+h)=F(t)\bigl(I_n+hF(t)^{-1}A(t)F(t)+o(h)\bigr).
+\]
+取行列式并使用上述展开，得到
+\[
+ \frac{\mathrm d}{\mathrm dt}\det F(t)
+ =\det F(t)\cdot\operatorname{tr}\bigl(F(t)^{-1}A(t)F(t)\bigr)
+ =\operatorname{tr}A(t)\cdot\det F(t).
+\]
+最后一个等号使用 \(\operatorname{tr}(BC)=\operatorname{tr}(CB)\)，它由两边同为 \(\sum_{i,j}B_{ij}C_{ji}\) 得到。将这个标量微分方程乘以积分因子 \(\exp(-\int_s^t\operatorname{tr}A)\)，乘积的导数为零，便得到第一式。再用 \(\det U(t,s)=\det F(t)/\det F(s)\) 得第二式；实系数时指数为实数，因而指数函数严格为正。
+\end{proof}
+
+在实空间里，\(|\det U(t,s)|\) 是线性演化对体积的伸缩倍数。迹积分决定这种体积变化，却不决定每个方向的变化：例如 \(A=\operatorname{diag}(1,-1)\) 的迹为零，演化 \(\operatorname{diag}(e^t,e^{-t})\) 保持面积，同时沿两个坐标方向分别拉伸和压缩。后一节的流导数也是一个线性演化，因而同一公式还能描述非线性流的局部体积变化。
+
+\subsection{非齐次系统与变常数}
+\label{b2:subsec:ode-variation-constants}
+
+现在加入连续外力，考虑 \(Y'=A(t)Y+g(t)\)。齐次解写成 \(F(t)c\)，其中 \(c\) 为常向量。外力改变了相对于齐次运动的坐标，因此自然尝试 \(Y(t)=F(t)c(t)\)。求导时 \(F'(t)c(t)=A(t)F(t)c(t)\) 恰好消去齐次项，只剩 \(F(t)c'(t)=g(t)\)。这就是\term[bianchangshu-gongshi]{变常数公式}[variation-of-constants formula]中“常数变成函数”的含义。
+
+\begin{theorem}[变常数公式]\label{b2:thm:ode-variation-constants}
+设 \(n\geq1\)，\(\mathbb K=\mathbb R\) 或 \(\mathbb C\)，\(I\subseteq\mathbb R\) 为非空开区间，\(A\in C(I;\mathbb K^{n\times n})\)，\(g\in C(I;\mathbb K^n)\)，\(s\in I\)，\(y_s\in\mathbb K^n\)。记 \(U(t,\tau)\) 为齐次系统 \(Y'=A(t)Y\) 的演化矩阵。则初值问题 \(Y'=A(t)Y+g(t)\)、\(Y(s)=y_s\) 在整个 \(I\) 上有唯一 \(C^1\) 解，且
+\begin{equation}\label{b2:eq:ode-variation-constants}
+ Y(t)=U(t,s)y_s+\int_s^t U(t,\tau)g(\tau)\,\mathrm d\tau.
+\end{equation}
+对 \(t\geq s\)，若 \([s,t]\subset I\) 且 \(\|A(\tau)\|\leq M\) 于 \([s,t]\)，其中 \(M\geq0\)，则
+\[
+ |Y(t)|\leq e^{M(t-s)}\cdot|y_s|
+ +\int_s^t e^{M(t-\tau)}\cdot|g(\tau)|\,\mathrm d\tau.
+\]
+公式\eqref{b2:eq:ode-variation-constants}也适用于 \(t<s\)，积分按有向积分理解。
+\end{theorem}
+\begin{proof}
+取任一基本解矩阵 \(F\)，定义
+\[
+ c(t)=F(s)^{-1}y_s+\int_s^t F(\tau)^{-1}g(\tau)\,\mathrm d\tau.
+\]
+被积函数连续，所以 \(c\) 属于 \(C^1\)，并有 \(c'=F^{-1}g\)。乘积 \(Y=Fc\) 满足
+\[
+ Y'=F'c+Fc'=AFc+g=AY+g,\quad Y(s)=y_s.
+\]
+把 \(F(t)\) 乘进积分，便得到\eqref{b2:eq:ode-variation-constants}。任意两个同初值非齐次解之差满足齐次方程且初值为零，由\cref{b2:prop:ode-continuous-linear}知二者相等。
+
+为证明估计，对任意 \(v\in\mathbb K^n\) 及 \(s\leq\tau\leq t\)，将\cref{b2:prop:ode-continuous-linear}用于初值为 \(v\) 的齐次解，得到
+\[
+ |U(t,\tau)v|\leq e^{M(t-\tau)}\cdot|v|.
+\]
+对单位向量取上确界即得 \(\|U(t,\tau)\|\leq e^{M(t-\tau)}\)。在\eqref{b2:eq:ode-variation-constants}中取范数并应用积分三角不等式，得到所需估计。
+\end{proof}
+
+公式中的两项有不同来源。第一项把初始数据从 \(s\) 搬到 \(t\)；第二项把每个中间时刻 \(\tau\) 加入的微小外力 \(g(\tau)\,\mathrm d\tau\) 先演化到 \(t\)，再将全部贡献积分。这里必须使用 \(U(t,\tau)\)，因为不同时间加入的外力经历了不同长度、不同系数的后续演化。
+
+\ProseParagraphBreak
+
+例如标量问题 \(y'+ay=f(t)\)、\(y(s)=y_s\)，其中 \(a>0\) 为常数、\(f\) 连续，给出
+\[
+ y(t)=e^{-a(t-s)}y_s+\int_s^t e^{-a(t-\tau)}f(\tau)\,\mathrm d\tau.
+\]
+若对所有 \(t\geq s\) 都有 \(|f(t)|\leq K\)，则
+\[
+ |y(t)|\leq e^{-a(t-s)}|y_s|+\frac{K}{a}\bigl(1-e^{-a(t-s)}\bigr).
+\]
+初始误差会衰减，而持续外力留下至多 \(K/a\) 的幅度。当 \(f(t)\equiv b\) 时，公式化为 \(y(t)=b/a+e^{-a(t-s)}(y_s-b/a)\)，直接显示轨道趋于平衡值 \(b/a\)。
+
+\ProseParagraphBreak
+
+二阶线性方程也属于这套表示。若 \(p,q,f\) 在开区间 \(I\) 上连续，则
+\[
+ u''+p(t)u'+q(t)u=f(t)
+\]
+在设 \(Y=(u,u')^{\mathsf T}\) 后成为
+\[
+ Y'=\begin{pmatrix}0&1\\-q(t)&-p(t)\end{pmatrix}Y
+ +\begin{pmatrix}0\\f(t)\end{pmatrix}.
+\]
+线性系统的 \(C^1\) 解满足第一分量的导数等于第二分量，因此第一分量实际上属于 \(C^2\)，与原二阶方程完全对应。如果原方程写成 \(a(t)u''+b(t)u'+c(t)u=h(t)\)，要先检查 \(a(t)\ne0\)，才能除以最高阶系数作这种改写；在 \(a\) 的零点附近，不能直接引用连续系数线性系统的全区间结论。

@@ -3,16 +3,26 @@
 \label{b2:app:I}
 
 \begin{chapterabstract}
-待撰写。
+直线上的频率连续分布，周期函数的频率排列成整数格，有限序列则只有有限个频率。三种 Fourier 分析的共同结构是平移：Haar 测度提供不随平移改变的积分，字符提供在平移下只改变相位的基本振荡。本附录从这些对象的具体构造出发，建立群上的卷积和逼近恒等，逐一计算有限交换群、环面、整数格及 Euclidean 空间的对偶与反演。一般对偶定理说明这些计算为何相互配合，紧群表示则展示非交换情形中矩阵频率的作用。
 \end{chapterabstract}
 
 \begin{learninggoals}
 \begin{itemize}
-\item\label{b2:item:I2-goal-1}待撰写。
+\item\label{b2:item:I2-goal-1}在具体群上验证 Haar 测度，辨认归一化与左、右平移的差异，并正确使用模函数换元。
+\item\label{b2:item:I2-goal-2}把卷积解释为平移平均，证明范数估计和逼近恒等，分清强收敛与一致控制所有函数的收敛。
+\item\label{b2:item:I2-goal-3}从连续同态计算基本群的字符，辨认频率空间上的拓扑及紧群、离散群的对偶关系。
+\item\label{b2:item:I2-goal-4}核对有限、周期、格点和连续 Fourier 变换的常数，建立混合模型上的反演及 Plancherel 等式。
+\item\label{b2:item:I2-goal-5}理解 Pontryagin 对偶中点与字符的相互辨认，以及非交换紧群为何需要高维酉表示。
 \end{itemize}
 \end{learninggoals}
 
-待撰写。
+为什么周期函数的 Fourier 展开使用整数频率，而直线上的函数使用实数频率？指数函数 \(e^{2\pi i\xi x}\) 在平移 \(x\mapsto x+a\) 下乘上一个常数相位 \(e^{2\pi i\xi a}\)，因此特别适合描述平移。若变量还满足周期 \(1\)，同一个振荡必须在 \(x\) 与 \(x+1\) 处取相同值，这就强迫 \(\xi\in\mathbb Z\)。频率类型由空间中的平移与周期关系决定。
+
+\ProseParagraphBreak
+把这个问题放到群上，指数函数被连续字符代替，长度积分被 Haar 积分代替。有限循环群会重现离散 Fourier 变换，整数格会把频率空间变成环面，正实数乘法群则把普通 Fourier 变换改写成对数尺度上的积分。每个例子都能帮助我们判断一个抽象定义究竟保留了什么。
+
+\ProseParagraphBreak
+从本卷的 Fourier 级数、卷积与 Plancherel 理论进入本附录时，可以先把基本模型逐个计算出来，再比较它们的反演公式。一般群中有两件事需要额外留心：左右平移可能改变不同的测度，而一维相位也可能不足以区分群中的点。这两种现象分别引出模函数和酉表示。一般结构定理的来源与证明思路见\secref{b2:sec:I205}，具体计算中的每一种测度和收敛方式则随公式列明。
 
 \input{Appendices/AppendixI/SectionI201}
 \input{Appendices/AppendixI/SectionI202}
@@ -21,9 +31,380 @@
 \input{Appendices/AppendixI/SectionI205}
 
 \begin{chaptersummary}
-待撰写。
+Haar 测度使群的平移能够进入积分。左 Haar 测度总是保持左平移，右平移与取逆则由模函数控制；在交换群和紧群上，模函数恒为 \(1\)。连续紧支撑函数的逼近把拓扑连续性传给 \(L^p\) 范数，因而卷积正核可以在群上重现熟悉的平滑平均。
+
+\ProseParagraphBreak
+字符把群的乘法变成单位复数的乘法，是平移的标量频率。有限群与其对偶具有相同的点数，环面与整数格互为对偶，Euclidean 空间则通过内积与自身对偶。反演和 Plancherel 公式中的常数由一对 Haar 测度共同确定；有限群上的平均必须配对偶群上的求和，环面上的概率积分则配整数格上的计数。
+
+\ProseParagraphBreak
+Pontryagin 对偶进一步说明，一个局部紧交换群能够由全部连续字符连同其拓扑恢复。非交换紧群中，所有一维字符只看到交换化后的信息，高维酉表示的矩阵系数补回其余频率。Peter--Weyl 展开把熟悉的正交 Fourier 系数推广为矩阵块，维数因子在正交关系和能量恒等式中同时出现。
 \end{chaptersummary}
 
 \BookExercises
 
-待撰写。
+以下八题为本书自拟，分别考察平均投影、逼近方式、对偶拓扑、频率局部化与模型演化。函数和表示均取复值，概率与非负条件在题中另行指定；每题的测度归一化均随群给出。
+
+% 自拟：有限群上的幂等概率，训练非负卷积的支集结构与最大值等号条件。
+\Needspace{6\baselineskip}
+\begin{exercise}[幂等概率与子群上的均匀分布]
+\label{b2:ex:I1-idempotent-probability}
+设 \(F\) 为任意有限群，取计数测度，卷积按
+\[
+ (p*p)(x)=\sum_{y\in F}p(y)p(y^{-1}x)
+\]
+定义。设 \(p:F\rightarrow[0,\infty)\) 满足 \(\sum_{x\in F}p(x)=1\)。证明 \(p*p=p\) 当且仅当存在子群 \(H\le F\)，使
+\[
+ p(x)=\frac1{|H|}\mathbf1_H(x)\quad(x\in F).
+\]
+提示：先研究 \(H=\{x:p(x)>0\}\) 的乘法闭性，再在 \(p\) 达到最大值的点使用卷积等式。
+\end{exercise}
+\begin{solution}
+设 \(p*p=p\)，并令 \(H=\{x\in F:p(x)>0\}\)。总质量为一保证 \(H\ne\varnothing\)。若 \(a,b\in H\)，则卷积中的各项非负，取其中 \(y=a\) 的一项，得到
+\[
+ p(ab)=\sum_{y\in F}p(y)p(y^{-1}ab)
+ \ge p(a)p(b)>0.
+\]
+因此 \(ab\in H\)，即 \(H\) 对乘法封闭。
+
+非空有限群子集若对乘法封闭，就已经是子群。为核实逆元条件，任取 \(a\in H\)。由于 \(F\) 有限，\(a\) 的阶为某个正整数 \(r\)，因而 \(a^r=e\)。乘法闭性给出 \(e\in H\)；若 \(r>1\)，还给出 \(a^{-1}=a^{r-1}\in H\)，若 \(r=1\)，则 \(a=e\)，逆元仍在 \(H\)。故 \(H\le F\)。
+
+令 \(M=\max_{x\in F}p(x)>0\)，取 \(x_0\in H\) 使 \(p(x_0)=M\)。在这个点使用幂等关系：
+\[
+ M=p(x_0)=\sum_{y\in H}p(y)p(y^{-1}x_0)
+ \le M\sum_{y\in H}p(y)=M.
+\]
+每个权重 \(p(y)\) 都严格正。若某个 \(p(y^{-1}x_0)<M\)，整个加权和就会严格小于 \(M\)，与等式矛盾。所以
+\[
+ p(y^{-1}x_0)=M\quad(y\in H).
+\]
+因为 \(H\) 是子群且 \(x_0\in H\)，映射 \(y\mapsto y^{-1}x_0\) 把 \(H\) 双射到自身。这迫使 \(p\) 在整个 \(H\) 上恒等于 \(M\)。再由 \(\sum p=1\) 得 \(M=1/|H|\)。
+
+反过来，若 \(p=|H|^{-1}\mathbf1_H\)，则当 \(x\in H\) 时，恰有 \(|H|\) 个 \(y\in H\) 满足 \(y^{-1}x\in H\)，故 \((p*p)(x)=|H|/|H|^2=p(x)\)；当 \(x\notin H\) 时，\(y\in H\) 与 \(y^{-1}x\in H\) 不可能同时成立，所以卷积为零，也等于 \(p(x)\)。
+
+从概率的角度看，独立选取两个具有分布 \(p\) 的群元素，其乘积的分布仍是 \(p\)，恰好对应某个子群上的均匀分布。证明中没有交换乘积的次序，因此结论也适用于非交换有限群。
+\end{solution}
+
+
+% 自拟：有限子群平均连接群卷积、Hilbert正交投影与正规性，正文不调用本题。
+\Needspace{6\baselineskip}
+\begin{exercise}[有限子群的平均投影]
+\label{b2:ex:I2-subgroup-average}
+设 \(G\) 为可数离散群，取计数测度，\(H\subset G\) 为有限子群。定义
+\[
+ e_H=|H|^{-1}\mathbf1_H,\quad
+ Pf=e_H*f\quad(f\in\ell^2(G)).
+\]
+证明 \(P\) 是 \(\ell^2(G)\) 到闭子空间
+\[
+ M_H=\{\,f\in\ell^2(G):L_hf=f\text{ 对每个 }h\in H\,\}
+\]
+的正交投影。再取 \(G=S_3\)、\(H=\{e,(12)\}\)、\(s=(23)\)，证明 \(e_H*\delta_s\ne\delta_s*e_H\)，并由此说明 \(P\) 未必与全部左平移交换。
+\end{exercise}
+\begin{solution}
+对任意 \(f\in\ell^2(G)\)，有有限和公式
+\[
+ Pf=\frac1{|H|}\sum_{h\in H}L_hf.
+\]
+左平移是 \(\ell^2\) 等距映射，故 \(\|P\|\le1\)。对任意 \(k\in H\)，左乘 \(k\) 把 \(H\) 双射到自身，所以
+\[
+ L_kPf=\frac1{|H|}\sum_{h\in H}L_{kh}f=Pf.
+\]
+因此 \(Pf\in M_H\)。反之，若 \(f\in M_H\)，则每个被平均项都等于 \(f\)，故 \(Pf=f\)。于是 \(P^2=P\)，且像恰为 \(M_H\)。它也是闭子空间，因为它等于有限个闭子空间 \(\ker(L_h-I)\) 的交。
+
+在内积 \(\langle f,g\rangle=\sum_xf(x)\overline{g(x)}\) 中作换元 \(x=hy\)，得到 \(L_h^*=L_{h^{-1}}\)。取逆元也把 \(H\) 双射到自身，因而
+\[
+ P^*=\frac1{|H|}\sum_{h\in H}L_{h^{-1}}=P.
+\]
+对 \(v\in M_H\)，由 \(Pv=v\) 得
+\(\langle f-Pf,v\rangle=\langle f,v\rangle-\langle f,Pv\rangle=0\)，
+所以 \(P\) 正是正交投影。
+
+最后，\(e_H*\delta_s\) 的支集为 \(Hs\)，\(\delta_s*e_H\) 的支集为 \(sH\)。按置换从右向左作用的约定，
+\[
+ Hs=\{(23),(123)\},\quad sH=\{(23),(132)\},
+\]
+故二者不同。又 \(L_sf=\delta_s*f\)，取 \(f=\delta_e\) 即得
+\(PL_sf=e_H*\delta_s\ne\delta_s*e_H=L_sPf\)。子群平均把函数变得对 \(H\) 左不变，但这种不变性未必在任意左平移后仍保留。
+\end{solution}
+
+% 自拟：集中质量检验卷积逼近的算子范数，区分强收敛与一致算子收敛。
+\Needspace{6\baselineskip}
+\begin{exercise}[逼近恒等不作算子范数收敛]
+\label{b2:ex:I2-no-operator-norm}
+设 \(e\in C_c(\mathbb R)\) 非负且 \(\int_{\mathbb R}e=1\)，在 \(L^1(\mathbb R)\) 上定义 \(T_ef=e*f\)。证明
+\[
+ \|T_e-I\|_{L^1\to L^1}=2.
+\]
+由此说明：即使 \((e_n)\) 为\cref{b2:thm:I2-approximate-identity}中 \(G=\mathbb R\) 的核，\(T_{e_n}f\to f\) 对每个固定 \(f\in L^1\) 成立，\(T_{e_n}\) 仍不在算子范数下趋于 \(I\)。
+\end{exercise}
+\begin{solution}
+由 \(\|T_e\|\le\|e\|_1=1\)，有 \(\|T_e-I\|\le2\)。为取得反向估计，令
+\[
+ f_\delta=(2\delta)^{-1}\mathbf1_{[-\delta,\delta]}
+ \quad(\delta>0).
+\]
+它非负且 \(\|f_\delta\|_1=1\)。函数 \(u_\delta=e*f_\delta\) 也非负，由 Tonelli 得 \(\int u_\delta=1\)，并且 \(u_\delta(x)\le\|e\|_\infty\)。对两个非负、积分同为一的函数，有
+\[
+ \|u_\delta-f_\delta\|_1
+ =2-2\int_{\mathbb R}\min\{u_\delta,f_\delta\}\,\mathrm dx.
+\]
+最小值只在 \([-\delta,\delta]\) 内可能非零，故
+\[
+ \int_{\mathbb R}\min\{u_\delta,f_\delta\}\,\mathrm dx
+ \le\int_{-\delta}^{\delta}u_\delta(x)\,\mathrm dx
+ \le2\delta\|e\|_\infty.
+\]
+因此 \(\|(T_e-I)f_\delta\|_1\ge2-4\delta\|e\|_\infty\)。令 \(\delta\downarrow0\)，得 \(\|T_e-I\|\ge2\)，与上界合并即得等号。
+
+对每个 \(e_n\) 都有这个等式。逐函数收敛先固定 \(f\)，再让核的尺度趋零；算子范数则允许对每个核另选一个质量更集中的 \(f_\delta\)。两种极限要求因此不同。
+\end{solution}
+
+
+% 原创练习：零化子的具体计算；无理绕线与字符拉回的拓扑。
+\begin{exercise}[子群的零化子]
+\label{b2:ex:I3-annihilators}
+设 \(G\) 为第二可数局部紧 Hausdorff 交换群，\(H\) 为它的子群。定义
+\[
+ H^\perp=\{\chi\in\widehat G:\chi(h)=1\text{ 对每个 }h\in H\}.
+\]
+\begin{enumerate}
+\item\label{b2:item:I3-annihilators-closed}
+证明 \(H^\perp\) 是 \(\widehat G\) 的闭子群，并且 \(H^\perp=(\overline H)^\perp\)。
+\item\label{b2:item:I3-annihilators-models}
+在正文给出的对偶识别下，分别计算
+\[
+ \begin{array}{c|c}
+ G&H\\\hline
+ \mathbb R&a\mathbb Z\quad(a>0)\\
+ \mathbb Z&N\mathbb Z\quad(N\ge1)\\
+ \mathbb T&\{0,1/N,\ldots,(N-1)/N\}\quad(N\ge1)
+ \end{array}
+\]
+的 \(H^\perp\)。逐一验证：使全部 \(\chi\in H^\perp\) 满足 \(\chi(x)=1\) 的 \(x\in G\)，恰好组成原来的 \(H\)。
+\end{enumerate}
+\end{exercise}
+\begin{solution}
+对固定 \(h\in H\)，求值 \(\chi\mapsto\chi(h)\) 连续，所以
+\[
+ H^\perp=\bigcap_{h\in H}\{\chi:\chi(h)=1\}
+\]
+是闭集。两个在 \(H\) 上等于 \(1\) 的字符，其乘积和逆也在 \(H\) 上等于 \(1\)，故它是子群。若连续字符在 \(H\) 上等于 \(1\)，则在 \(\overline H\) 上也等于 \(1\)，这证明闭包等式。
+
+在 \(G=\mathbb R\) 上，频率 \(\xi\) 属于 \((a\mathbb Z)^\perp\)，当且仅当 \(e^{2\pi\mathrm i a\xi}=1\)，即 \(a\xi\in\mathbb Z\)。因此
+\[
+ (a\mathbb Z)^\perp=a^{-1}\mathbb Z.
+\]
+要求这些频率在 \(x\) 处都取值 \(1\)，只需且必须有 \(e^{2\pi\mathrm ix/a}=1\)，所以 \(x\in a\mathbb Z\)。
+
+在 \(G=\mathbb Z\) 上，频率参数 \(\theta\in\mathbb T\) 必须满足 \(N\theta=0\) 于 \(\mathbb T\)，于是
+\[
+ (N\mathbb Z)^\perp=\{0,1/N,\ldots,(N-1)/N\}\subset\mathbb T.
+\]
+使这些字符全取值 \(1\) 的整数 \(n\)，恰好满足 \(e^{2\pi\mathrm in/N}=1\)，即 \(N\mid n\)。
+
+最后，\(G=\mathbb T\) 上的字符由整数 \(n\) 标记。对题给子群，只需检查生成元 \(1/N\)，条件仍为 \(e^{2\pi\mathrm in/N}=1\)，故
+\[
+ \{0,1/N,\ldots,(N-1)/N\}^\perp=N\mathbb Z.
+\]
+这些频率都在 \(t\in\mathbb T\) 处取值 \(1\)，当且仅当 \(Nt=0\) 于 \(\mathbb T\)，正好得到题给的 \(N\) 个等分点。\(N=1\) 时的平凡子群和整个整数群也包含在这些计算中。
+\end{solution}
+
+\begin{exercise}[无理绕线的字符拉回]
+\label{b2:ex:I3-irrational-winding}
+设 \(\alpha\in\mathbb R\setminus\mathbb Q\)，定义连续同态
+\[
+ \Phi_\alpha:\mathbb R\longrightarrow\mathbb T^2,\qquad
+ \Phi_\alpha(t)=(t+\mathbb Z,\alpha t+\mathbb Z).
+\]
+\begin{enumerate}
+\item\label{b2:item:I3-winding-pullback}
+证明字符拉回 \(\Phi_\alpha^*\chi=\chi\circ\Phi_\alpha\) 在对偶识别
+\(\widehat{\mathbb T^2\kern0pt}=\mathbb Z^2\)、\(\widehat{\mathbb R\kern0pt}=\mathbb R\) 下等于
+\[
+ (n,m)\longmapsto n+\alpha m.
+\]
+说明它是单射。
+\item\label{b2:item:I3-winding-density}
+用抽屉原理证明 \(\mathbb Z+\alpha\mathbb Z\) 在 \(\mathbb R\) 中稠密，进而证明 \(\Phi_\alpha^*\) 虽连续且单射，却不是到其像的拓扑同构。
+\item\label{b2:item:I3-winding-orbit}
+证明 \(\{n\alpha+\mathbb Z:n\in\mathbb Z\}\) 在 \(\mathbb T\) 中稠密，并据此证明 \(\Phi_\alpha(\mathbb R)\) 在 \(\mathbb T^2\) 中稠密。
+\end{enumerate}
+\end{exercise}
+\begin{solution}
+\(\mathbb T^2\) 上标号为 \((n,m)\) 的字符是
+\(\chi_{n,m}(s,t)=e^{2\pi\mathrm i(ns+mt)}\)，因此
+\[
+ (\chi_{n,m}\circ\Phi_\alpha)(t)
+ =e^{2\pi\mathrm i(n+\alpha m)t}.
+\]
+若 \(n+\alpha m=0\) 且 \(m\ne0\)，则 \(\alpha=-n/m\) 为有理数，矛盾；若 \(m=0\)，则 \(n=0\)。所以拉回映射单射。
+
+对任意整数 \(Q\ge2\)，把 \([0,1)\) 分成 \(Q\) 个半开等长区间。\(0,\alpha,\ldots,Q\alpha\) 的 \(Q+1\) 个小数部分中，必有两个落在同一区间。因此存在整数 \(m,n\)，满足
+\[
+ 1\le |m|\le Q,\qquad 0<|n+m\alpha|<1/Q.
+\]
+严格正性来自 \(\alpha\) 的无理性。换号后可使
+\(h=n+m\alpha\in(0,1/Q)\)。给定 \(x\in\mathbb R\)，选整数 \(k\) 使 \(|x-kh|\le h/2\)，则 \(kh\in\mathbb Z+\alpha\mathbb Z\)。令 \(Q\to\infty\)，便得到这个子群的稠密性。
+
+\(\mathbb Z^2\) 是离散空间，所以从它出发的拉回映射连续。其像包含任意小的非零元素，故在 \(\mathbb R\) 的子空间拓扑下，零点不是孤立点；而 \(\mathbb Z^2\) 的零点是孤立的。因此逆映射不连续，拉回并非拓扑嵌入。
+
+再看整数转动轨道。对任意 \(\theta\in[0,1)\) 和上述 \(h\in(0,1/Q)\)，取 \(k=\lfloor\theta/h\rfloor\)。于是
+\[
+ 0\le\theta-kh<h<1/Q,\qquad
+ kh+\mathbb Z=km\alpha+\mathbb Z.
+\]
+所以整数倍 \(\alpha\) 的轨道能逼近圆周上每个点。最后，给定 \((s+\mathbb Z,t+\mathbb Z)\in\mathbb T^2\)，取实数 \(r=s+n\)，其中 \(n\in\mathbb Z\)。\(\Phi_\alpha(r)\) 的第一坐标恰为 \(s+\mathbb Z\)，第二坐标为
+\(\alpha s+n\alpha+\mathbb Z\)，可由刚证明的圆周稠密性任意接近 \(t+\mathbb Z\)。这就证明了绕线像的稠密性。
+\end{solution}
+
+
+% 自拟：把空间支集和频率支集的计数相乘，训练归一化与等号模型。
+\Needspace{6\baselineskip}
+\begin{exercise}[有限群的不确定性估计]\label{b2:ex:I4-finite-uncertainty}
+设 \(F\) 为具有 \(N\) 个元素的有限交换群，采用
+\(\widehat f(\chi)=N^{-1}\sum_{x\in F}f(x)\overline{\chi(x)}\)。对非零函数 \(f:F\rightarrow\mathbb C\)，令
+\[
+ s=|\{x:f(x)\ne0\}|,\qquad
+ t=|\{\chi:\widehat f(\chi)\ne0\}|.
+\]
+证明 \(st\ge N\)。若 \(H\le F\) 是任意子群，定义
+\[
+ H^\perp=\{\,\chi\in\widehat F:\chi(h)=1\text{ 对所有 }h\in H\,\}.
+\]
+求 \(\widehat{\mathbf1_H}\)，并由此证明这个下界可以取到等号。
+\end{exercise}
+\begin{solution}
+以归一化计数测度计算范数。Cauchy--Schwarz 给出
+\[
+ |\widehat f(\chi)|
+ \le\frac1N\sum_{x:f(x)\ne0}|f(x)|
+ \le\sqrt{\frac sN}\,\|f\|_2.
+\]
+再用\cref{b2:thm:I4-finite-fourier}的 Parseval 恒等式，得到
+\[
+ \|f\|_2^2
+ =\sum_{\chi:\widehat f(\chi)\ne0}|\widehat f(\chi)|^2
+ \le t\|\widehat f\|_\infty^2
+ \le\frac{st}{N}\|f\|_2^2.
+\]
+因 \(f\ne0\)，可以约去正数 \(\|f\|_2^2\)，于是 \(st\ge N\)。
+
+若字符在 \(H\) 上恒等于一，\(\widehat{\mathbf1_H}(\chi)=|H|/N\)。否则选 \(h_0\in H\) 使 \(\chi(h_0)\ne1\)，对 \(H\) 上的和作平移，便得该系数为零。因此
+\[
+ \widehat{\mathbf1_H}(\chi)=\frac{|H|}{N}\mathbf1_{H^\perp}(\chi).
+\]
+\Cref{b2:lem:I4-character-extension}说明 \(H\) 上的平凡字符在 \(F\) 上恰有 \(N/|H|\) 个延拓，即 \(|H^\perp|=N/|H|\)。取 \(f=\mathbf1_H\)，便有 \(s=|H|\)、\(t=N/|H|\)，从而 \(st=N\)。特别地，单点质量具有全部频率，常函数只有零频率，两者也都取到等号。
+\end{solution}
+
+% 自拟：有限采样使整数频率按模N合并，联系环面系数与有限群变换。
+\Needspace{6\baselineskip}
+\begin{exercise}[周期采样与频率混叠]\label{b2:ex:I4-sampling-aliasing}
+设 \(h\in C(\mathbb T;\mathbb C)\)，其 Fourier 系数满足
+\(\sum_{k\in\mathbb Z}|\widehat h(k)|<\infty\)。取整数 \(M\ge0\)，令 \(N=2M+1\)，并对 \(-M\le r\le M\) 定义采样系数
+\[
+ c_N(r)=\frac1N\sum_{j=0}^{N-1}h(j/N)e^{-2\pi\mathrm i rj/N},
+ \quad
+ p_N(t)=\sum_{r=-M}^Mc_N(r)e^{2\pi\mathrm i rt}.
+\]
+证明
+\[
+ c_N(r)=\sum_{\ell\in\mathbb Z}\widehat h(r+\ell N),
+ \qquad p_N(j/N)=h(j/N),
+\]
+并证明误差界
+\[
+ \|h-p_N\|_\infty\le2\sum_{|k|>M}|\widehat h(k)|.
+\]
+说明 \(h(t)=e^{2\pi\mathrm i Nt}\) 的采样数据为何与常函数 \(1\) 相同；再对 \(h\in C^2(\mathbb T)\)、\(M\ge1\)，由上述误差界导出一个 \(O(M^{-1})\) 的定量上界。
+\end{exercise}
+\begin{solution}
+绝对一致反演允许将 \(h(j/N)\) 展开后交换求和。有限几何级数给出
+\[
+ \frac1N\sum_{j=0}^{N-1}e^{2\pi\mathrm i(k-r)j/N}
+ =\begin{cases}1,&N\mid(k-r),\\0,&N\nmid(k-r).\end{cases}
+\]
+所以 \(c_N(r)=\sum_\ell\widehat h(r+\ell N)\)。整数区间 \([-M,M]\) 中恰好有 \(N\) 个数，构成模 \(N\) 的全部余数代表；对有限向量 \((h(j/N))_j\) 使用有限群反演，就得到 \(p_N(j/N)=h(j/N)\)。
+
+将 \(h-p_N\) 分成原来被舍弃的高频和折回低频的高频，得到
+\[
+ h(t)-p_N(t)
+ =\sum_{|k|>M}\widehat h(k)e^{2\pi\mathrm i kt}
+ -\sum_{r=-M}^M\sum_{\ell\ne0}
+       \widehat h(r+\ell N)e^{2\pi\mathrm i rt}.
+\]
+每个 \(|k|>M\) 恰好在第二个双重和中出现一次。因此两项的一致范数均不超过 \(\sum_{|k|>M}|\widehat h(k)|\)，得所需误差界。
+
+对 \(h(t)=e^{2\pi\mathrm i Nt}\)，每个采样点上 \(h(j/N)=1\)，故 \(c_N(0)=1\)，其余系数为零，插值函数是常函数 \(p_N=1\)。不同的整数频率在有限采样下合并到同一剩余类，这就是此处的频率混叠。
+
+若 \(h\in C^2(\mathbb T)\)，周期性消去两次分部积分的端点项，对 \(k\ne0\) 有
+\[
+ \widehat h(k)=\frac{\widehat{h''}(k)}{(2\pi\mathrm i k)^2},
+ \qquad |\widehat h(k)|\le\frac{\|h''\|_{L^1(\mathbb T)}}{4\pi^2k^2}.
+\]
+这也保证了题设的绝对可和性。利用 \(\sum_{k>M}k^{-2}\le\int_M^\infty x^{-2}\,\mathrm dx=1/M\)，得到
+\[
+ \|h-p_N\|_\infty
+ \le\frac{\|h''\|_{L^1(\mathbb T)}}{\pi^2 M}.
+\]
+\end{solution}
+
+% 自拟：圆柱上的热演化，训练连续/整数混合频谱与最佳衰减常数。
+\Needspace{6\baselineskip}
+\begin{exercise}[圆柱上周期振荡的消散]\label{b2:ex:I4-cylinder-heat}
+在 \(G=\mathbb R\times\mathbb T\) 上取 Lebesgue 测度与归一化圆周测度的乘积。对 \(f\in L^2(G;\mathbb C)\)、\(\tau\ge0\)，由乘积 Plancherel 变换定义
+\[
+ \widehat{S_\tau f}(\xi,k)
+   =e^{-4\pi^2\tau(\xi^2+k^2)}\widehat f(\xi,k).
+\]
+定义周期方向的平均
+\[
+ (Pf)(x,t)=\int_0^1f(x,s)\,\mathrm ds.
+\]
+证明 \(P\) 是到与 \(t\) 无关的函数所成闭子空间的正交投影，且 \(S_\tau\) 构成 \(L^2(G)\) 上的强连续压缩半群。对 \(\tau>0\) 证明
+\[
+ \|S_\tau f-S_\tau Pf\|_2
+ \le e^{-4\pi^2\tau}\|f-Pf\|_2.
+\]
+再证明每个固定 \(\tau>0\) 下的系数 \(e^{-4\pi^2\tau}\) 最优，并说明 \(S_\tau Pf\) 对应怎样的一维演化。
+\end{exercise}
+\begin{solution}
+由 Fubini，几乎所有 \(x\) 对应的切片属于 \(L^2(\mathbb T)\)。Cauchy--Schwarz 给出
+\[
+ \int_{\mathbb R}\left|\int_0^1f(x,s)\,\mathrm ds\right|^2\mathrm dx
+ \le\|f\|_2^2,
+\]
+所以 \(P\) 定义良好且为压缩映射。它的输出与 \(t\) 无关，重复平均不改变它。对任意 \(g(x,t)=g_0(x)\)、\(g_0\in L^2(\mathbb R)\)，Fubini 与 Cauchy--Schwarz 给出 \(\langle f-Pf,g\rangle=0\)，故 \(P\) 是所述正交投影；该子空间因是连续投影的像而闭。
+
+在分离变量函数上直接计算，\(\widehat{Pf}(\xi,k)=\mathbf1_{\{0\}}(k)\widehat f(\xi,k)\)。两侧算子在 \(L^2\) 中连续，故由稠密性，这个式子对所有 \(f\) 成立。半群乘子在 \(\tau=0\) 为一，两个时间的乘子相乘就是两时间之和的乘子，且模不超过一，因此 \(S_0=I\)、\(S_{\tau+\sigma}=S_\tau S_\sigma\)、\(\|S_\tau\|\le1\)。控制收敛给出
+\[
+ \|S_\tau f-f\|_2^2
+ =\sum_k\int_{\mathbb R}
+   |e^{-4\pi^2\tau(\xi^2+k^2)}-1|^2
+            |\widehat f(\xi,k)|^2\,\mathrm d\xi\longrightarrow0
+\]
+当 \(\tau\downarrow0\)；半群性进一步给出任意非负时间处的强连续性。
+
+由于 \(I-P\) 恰好去掉 \(k=0\) 的频率，Parseval 给出
+\begin{align*}
+ \|S_\tau(f-Pf)\|_2^2
+ &=\sum_{k\ne0}\int_{\mathbb R}
+      e^{-8\pi^2\tau(\xi^2+k^2)}|\widehat f(\xi,k)|^2\,\mathrm d\xi\\
+ &\le e^{-8\pi^2\tau}\|f-Pf\|_2^2.
+\end{align*}
+开平方即得估计。为证明最优性，令 \(\delta>0\)，用满射性选 \(f_\delta\) 满足
+\[
+ \widehat f_\delta(\xi,k)
+  =(2\delta)^{-1/2}\mathbf1_{[-\delta,\delta]}(\xi)
+                         \mathbf1_{\{1\}}(k).
+\]
+则 \(Pf_\delta=0\)、\(\|f_\delta\|_2=1\)，而
+\[
+ \|S_\tau f_\delta\|_2^2
+ =e^{-8\pi^2\tau}\frac1{2\delta}
+                \int_{-\delta}^{\delta}e^{-8\pi^2\tau\xi^2}\,\mathrm d\xi
+ \longrightarrow e^{-8\pi^2\tau}
+\]
+当 \(\delta\downarrow0\)。因此任何更小的统一系数都会在某个 \(f_\delta\) 上失败。
+
+最后，\(Pf(x,t)=g_0(x)\) 的频率只在 \(k=0\)，此时乘子变为 \(e^{-4\pi^2\tau\xi^2}\)。所以 \(S_\tau Pf\) 与 \(t\) 无关，恰好是 \(g_0\) 在实轴上按热方程 \(\partial_\tau u=\partial_x^2u\) 演化的结果。圆柱上的非零周期频率一致指数衰减，剩下的零周期模式继续沿非紧的实轴扩散。
+\end{solution}

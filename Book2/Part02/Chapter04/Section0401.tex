@@ -2,31 +2,186 @@
 \section{逼近空间、误差与连续模}
 \label{b2:sec:approximation-spaces-errors}
 
+把一个连续函数换成多项式，可以把求值、求导和积分转化为有限次运算。但“存在一个足够接近的多项式”仍没有说明三件事：允许使用多少个系数，怎样衡量误差，以及增加系数后误差下降多快。本节先固定这些问题中的对象。后面的 Bernstein 构造给出可直接计算的近似，Chebyshev 理论判断某个近似是否最佳，Jackson 理论则把误差下降的速度与函数的连续性联系起来。
+
 \subsection{逼近空间}
 \label{b2:subsec:approximation-spaces}
 
-待撰写。
+\begin{definition}
+\label{b2:def:approximation-spaces}
+设 \(a<b\) 为实数，\(\mathbb F=\mathbb R\) 或 \(\mathbb C\)，\(n\geq0\) 为整数。区间 \([a,b]\) 上次数不超过 \(n\) 的代数多项式空间记为
+\[
+ \mathcal P_n([a,b];\mathbb F)
+ \coloneqq
+ \left\{x\longmapsto\sum_{j=0}^na_jx^j\,\middle|\,a_j\in\mathbb F\right\}.
+\]
+在圆周 \(\mathbb T=\mathbb R/\mathbb Z\) 上，次数不超过 \(n\) 的复三角多项式空间记为
+\[
+ \mathcal T_n(\mathbb T;\mathbb C)
+ \coloneqq
+ \left\{x\longmapsto\sum_{|k|\leq n}c_ke^{2\pi\mathrm{i}kx}
+       \,\middle|\,c_k\in\mathbb C\right\}.
+\]
+其中的实值函数组成 \(\mathcal T_n(\mathbb T;\mathbb R)\)；等价地，它们可以写成
+\[
+ a_0+\sum_{k=1}^n\bigl(a_k\cos(2\pi kx)+b_k\sin(2\pi kx)\bigr),
+ \quad a_0,a_k,b_k\in\mathbb R.
+\]
+\end{definition}
+\symidx{\(\mathcal P_n\)：次数不超过 \(n\) 的代数多项式空间}
+\symidx{\(\mathcal T_n\)：次数不超过 \(n\) 的三角多项式空间}
+
+代数多项式的“次数”是最高幂次，三角多项式的“次数”是最大频率指标的绝对值。二者都用 \(n\) 表示复杂程度，却不是同一空间：\(\mathcal P_n\) 的维数是 \(n+1\)，实三角多项式空间的实维数是 \(2n+1\)。在周期问题中使用后者，端点相接的条件已经包含在每个基函数里；在普通闭区间上使用前者，则没有要求 \(f(a)=f(b)\)。
+
+\ProseParagraphBreak
+本章主要采用一致范数。对非空紧空间 \(K\) 上的连续实值或复值函数，记
+\[
+ \lVert f\rVert_{C(K)}=\lVert f\rVert_\infty
+ \coloneqq\max_{x\in K}|f(x)|.
+\]
+最大值存在，因为 \(|f|\) 连续且 \(K\) 紧。于是 \(\lVert f-p\rVert_\infty\leq\varepsilon\) 的意思是每一个点的误差都不超过 \(\varepsilon\)，而不只是平均意义下误差小。实值情形中，它等价于图像 \(y=p(x)\) 完全位于 \(y=f(x)\pm\varepsilon\) 之间。
+
+\ProseParagraphBreak
+要注意区间与圆周的拓扑差别。函数 \(f(x)=x\) 在 \([0,1]\) 上连续，且本身属于 \(\mathcal P_1\)；它不能看成连续的周期函数。任意连续的 \(1\)-周期函数 \(q\) 都满足 \(q(0)=q(1)\)，因而
+\[
+ 1=|f(1)-f(0)|
+ \leq|f(1)-q(1)|+|q(0)-f(0)|
+ \leq2\lVert f-q\rVert_{C[0,1]}.
+\]
+所以这里的三角多项式一致逼近误差至少为 \(1/2\)。仅把区间两端画在一起，并不能使一个函数获得周期连续性。
 
 \subsection{连续模与逼近误差}
 \label{b2:subsec:020901}
 
-Bernstein 构造在有限个点上取样，再以非负权重求平均。估计取样误差时，需要同时控制所有相距较近的点上的函数值之差。
+Bernstein 构造在有限个点上取样，再以非负权重求平均；周期卷积也会把附近的函数值混合。要估计这些操作改变函数的程度，需要同时控制所有相距较近的点上的函数值之差。
 
 \begin{definition}
 \label{b2:def:approximation-modulus-continuity}
-设 \(d\) 为正整数，\(K\subset\mathbb R^d\) 为非空紧集，\(\mathbb F=\mathbb R\) 或 \(\mathbb C\)，且 \(f\in C(K;\mathbb F)\)。对 \(\delta\geq0\)，定义
+设 \(\mathbb F=\mathbb R\) 或 \(\mathbb C\)。若 \(d\geq1\) 为整数，\(K\subset\mathbb R^d\) 为非空紧集，且 \(f\in C(K;\mathbb F)\)，则对 \(\delta\geq0\) 定义
 \[
  \omega_f(\delta)
  \coloneqq\sup_{\substack{x,y\in K\\|x-y|\leq\delta}}
              |f(x)-f(y)|.
 \]
 这里 \(|x-y|\) 为欧氏距离。函数 \(\omega_f\) 称为 \(f\) 的\term[lianxu-mo]{连续模}[modulus of continuity]。
+
+\ProseParagraphBreak
+若 \(\mathbb T=\mathbb R/\mathbb Z\)，且 \(f\in C(\mathbb T;\mathbb F)\)，则用圆周距离
+\[
+ d_{\mathbb T}(x,y)\coloneqq\min_{k\in\mathbb Z}|x-y-k|
+\]
+定义周期连续模
+\[
+ \omega_f(\delta)
+ \coloneqq\sup_{d_{\mathbb T}(x,y)\leq\delta}|f(x)-f(y)|
+ =\sup_{|h|\leq\delta}\lVert f(\,\cdot+h)-f\rVert_\infty.
+\]
+最后一式把 \(f\) 视为 \(\mathbb R\) 上的 \(1\)-周期函数。
 \end{definition}
 \symidx{\(\omega_f\)：函数的连续模}
 
-连续模单调不减，且 \(0\leq\omega_f(\delta)\leq2\lVert f\rVert_\infty\)。紧集上的一致连续性给出 \(\omega_f(\delta)\to0\)（\(\delta\downarrow0\)）；这一步把逐对点的连续性变为统一的误差控制。
+周期定义的两个表达式相等：若 \(|h|\leq\delta\)，则圆周距离不超过 \(|h|\)；反过来，距离不超过 \(\delta\) 的两点可以选取相差至多 \(\delta\) 的实数代表。特别地，跨过整数点的两侧在圆周上仍然邻近。下文由定义域区分两种连续模，不能把 \([0,1]\) 上的普通距离与圆周距离无条件互换。
+
+\begin{proposition}
+\label{b2:prop:approximation-modulus-properties}
+设 \(\mathbb F=\mathbb R\) 或 \(\mathbb C\)，\(K\) 为非空欧氏紧集或圆周 \(\mathbb T=\mathbb R/\mathbb Z\)，\(f\in C(K;\mathbb F)\)，连续模按相应距离定义。则 \(\omega_f(0)=0\)，\(\omega_f\) 单调不减，且
+\[
+ 0\leq\omega_f(\delta)\leq2\lVert f\rVert_\infty,
+ \quad \lim_{\delta\downarrow0}\omega_f(\delta)=0.
+\]
+如果 \(K=[a,b]\)，其中 \(a<b\)，或者 \(K=\mathbb T\)，则对 \(s,t\geq0\)、\(\delta>0\)、\(\lambda>0\)，还有
+\[
+ \omega_f(s+t)\leq\omega_f(s)+\omega_f(t),
+ \quad
+ \omega_f(\lambda\delta)\leq(1+\lambda)\cdot\omega_f(\delta).
+\]
+\end{proposition}
+\begin{proof}
+同一点的函数值之差为零，扩大距离限制只会扩大取上确界的集合，而三角不等式给出上界 \(2\lVert f\rVert_\infty\)。紧集上的连续函数一致连续：给定 \(\varepsilon>0\)，存在 \(\delta_0>0\)，使距离小于 \(\delta_0\) 的两点的函数值之差小于 \(\varepsilon\)。取 \(0<\delta<\delta_0\) 后，定义中的全部点对同时满足这一估计，所以 \(\omega_f(\delta)\leq\varepsilon\)。
+
+对区间中距离不超过 \(s+t\) 的两点 \(x,y\)，可在线段上选 \(z\)，使 \(|x-z|\leq s\)、\(|z-y|\leq t\)。例如 \(|x-y|\leq s\) 时取 \(z=y\)，否则从 \(x\) 沿线段走长度 \(s\)。于是
+\[
+ |f(x)-f(y)|\leq|f(x)-f(z)|+|f(z)-f(y)|
+ \leq\omega_f(s)+\omega_f(t).
+\]
+圆周上沿连接两点的一条最短圆弧作同样分割即可，所用圆弧长度正是 \(d_{\mathbb T}(x,y)\)。取上确界得到次可加性。
+
+令 \(m=\lceil\lambda\rceil\)。单调性与次可加性给出
+\[
+ \omega_f(\lambda\delta)\leq\omega_f(m\delta)
+ \leq m\cdot\omega_f(\delta)
+ \leq(1+\lambda)\cdot\omega_f(\delta).
+\]
+这里最后的常数稍宽松，优点是对任意正实数 \(\lambda\) 使用同一表达式。
+\end{proof}
+
+次可加性用到了连接两点的线段或圆弧，不能从一般紧集上的定义自动得出。例如在 \(K=\{0,1\}\) 上取 \(f(0)=0,f(1)=1\)，则 \(\omega_f(1/2)=0\)，但 \(\omega_f(1)=1\)。多元 Bernstein 逼近会在立方体上使用一般欧氏连续模；需要分割距离时，立方体的凸性提供相应线段。
+
+\ProseParagraphBreak
+连续模还把不同程度的连续性化为数量级。若 \(|f(x)-f(y)|\leq L\cdot d(x,y)^\alpha\)，其中 \(0<\alpha\leq1\)，则 \(\omega_f(\delta)\leq L\delta^\alpha\)。反过来，若这一连续模估计对全部 \(\delta>0\) 成立，代入 \(\delta=d(x,y)\) 就恢复逐对点的估计。在 \([0,1]\) 上，\(f(x)=\sqrt x\) 满足
+\[
+ |\sqrt x-\sqrt y|\leq\sqrt{|x-y|},
+ \quad \omega_f(\delta)=\sqrt\delta\quad(0\leq\delta\leq1),
+\]
+因为取 \(x=\delta,y=0\) 达到上界。它在原点没有有界导数，但连续模仍精确描述了局部变化。对于 \(f\in C^1([a,b])\)，微积分基本定理给出 \(\omega_f(\delta)\leq\lVert f'\rVert_\infty\delta\)；周期 \(C^1\) 函数沿最短圆弧积分，也有同一估计。
 
 \subsection{最佳逼近误差}
 \label{b2:subsec:approximation-best-error}
 
-待撰写。
+给出一个具体近似只是提供误差上界。为了比较不同构造，需要先知道在指定空间里能够达到的最小误差。
+
+\begin{definition}
+\label{b2:def:approximation-best-error}
+设 \(K\) 为非空紧空间，\(\mathbb F=\mathbb R\) 或 \(\mathbb C\)，\(V\subset C(K;\mathbb F)\) 为线性子空间，\(f\in C(K;\mathbb F)\)。定义 \(f\) 关于 \(V\) 的\term[zuijia-bijin-wucha]{最佳逼近误差}[best approximation error]为
+\[
+ E_V(f)\coloneqq\inf_{v\in V}\lVert f-v\rVert_\infty.
+\]
+若 \(v_*\in V\) 满足 \(\lVert f-v_*\rVert_\infty=E_V(f)\)，则称 \(v_*\) 为 \(f\) 在 \(V\) 中的\term[zuijia-bijin]{最佳逼近}[best approximation]。对实数 \(a<b\)、\(f\in C([a,b];\mathbb F)\) 和整数 \(n\geq0\)，简记
+\[
+ E_n(f)\coloneqq\inf_{p\in\mathcal P_n([a,b];\mathbb F)}
+                    \lVert f-p\rVert_\infty;
+\]
+对圆周 \(\mathbb T=\mathbb R/\mathbb Z\) 上的 \(f\in C(\mathbb T;\mathbb F)\) 及整数 \(n\geq0\)，则记
+\[
+ \mathcal E_n(f)\coloneqq\inf_{q\in\mathcal T_n(\mathbb T;\mathbb F)}
+                    \lVert f-q\rVert_\infty.
+\]
+\end{definition}
+\symidx{\(E_n(f)\)：代数多项式一致最佳逼近误差}
+\symidx{\(\mathcal E_n(f)\)：三角多项式一致最佳逼近误差}
+
+这里先写下确界，因为一般子空间中未必存在实现它的元素。\secref{b2:sec:approximation-chebyshev}将证明有限维子空间的最佳逼近总存在；即使如此，也还要另外讨论唯一性。对实值 \(f\)，允许复系数不会降低上述两种误差，因为 \(|f-\operatorname{Re}q|\leq|f-q|\)，而实部仍属于相应的实逼近空间。
+
+\begin{proposition}
+\label{b2:prop:approximation-error-properties}
+设 \(K\) 为非空紧空间，\(\mathbb F=\mathbb R\) 或 \(\mathbb C\)，\(V,W\subset C(K;\mathbb F)\) 为线性子空间，\(f,g\in C(K;\mathbb F)\)，\(c\in\mathbb F\)。则
+\[
+\begin{aligned}
+ &0\leq E_V(f)\leq\lVert f\rVert_\infty,
+ &&|E_V(f)-E_V(g)|\leq\lVert f-g\rVert_\infty,\\
+ &E_V(cf)=|c|\cdot E_V(f),
+ &&E_V(f+g)\leq E_V(f)+E_V(g).
+\end{aligned}
+\]
+此外，\(v\in V\) 时 \(E_V(f+v)=E_V(f)\)；若 \(V\subset W\)，则 \(E_W(f)\leq E_V(f)\)。并且 \(E_V(f)=0\) 当且仅当 \(f\) 属于 \(V\) 的一致范数闭包。
+\end{proposition}
+\begin{proof}
+取近似函数为零得到第一条上界。对任意 \(v\in V\)，
+\[
+ \lVert f-v\rVert_\infty
+ \leq\lVert f-g\rVert_\infty+\lVert g-v\rVert_\infty.
+\]
+对 \(v\) 取下确界，再交换 \(f,g\)，得到误差关于输入的 Lipschitz 估计。\(c\neq0\) 时令 \(v=cw\)，利用 \(V\) 为线性空间即可证明齐次性；\(c=0\) 时等式两端均为零。
+
+给定 \(\varepsilon>0\)，选 \(v,w\in V\)，使
+\[
+ \lVert f-v\rVert_\infty<E_V(f)+\varepsilon,
+ \quad \lVert g-w\rVert_\infty<E_V(g)+\varepsilon.
+\]
+用 \(v+w\in V\) 逼近 \(f+g\)，得到次可加性加上 \(2\varepsilon\) 的上界，再令 \(\varepsilon\downarrow0\)。加入 \(v\in V\) 只是把所有候选整体平移，集合 \(v+V\) 仍为 \(V\)，所以误差不变；扩大候选集合则不会增加下确界。最后，\(E_V(f)=0\) 等价于对每个正整数 \(j\) 都存在 \(v_j\in V\) 使 \(\lVert f-v_j\rVert_\infty<1/j\)，这正是属于闭包的条件。
+\end{proof}
+
+由于 \(\mathcal P_n\subset\mathcal P_{n+1}\)、\(\mathcal T_n\subset\mathcal T_{n+1}\)，两种最佳误差都随 \(n\) 单调不增。\cref{b2:thm:approximation-bernstein-univariate}将给出 \(E_n(f)\to0\) 的构造性证明；圆周上的 \(\mathcal E_n(f)\to0\) 已由\cref{b2:lem:02-trigonometric-density}的三角多项式一致稠密性保证。这些收敛结论还没有说明需要多大的 \(n\) 才能达到给定精度，后面的连续模估计正是为此准备。
+
+\ProseParagraphBreak
+最后区分两个常见量。\(E_n(f)\) 是在全部候选中取下确界的结果，\(\lVert f-B_nf\rVert_\infty\) 是某一个构造的误差。前者一定不超过后者，却未必相等；三角情形中也不能把 \(\mathcal E_n(f)\) 自动写成 Fourier 部分和的最大误差。一个构造是否易算、是否保持正性、是否达到最佳量级，是三个需要分别回答的问题。

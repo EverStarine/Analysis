@@ -2,24 +2,317 @@
 \section{Birkhoff 定理与极限的辨认}
 \label{b1:sec:3204}
 
-待撰写。
+上一节已经证明：可积观测沿几乎每条轨道都有一个有限的平均极限。
+不过，收敛本身还没有回答本章开头的问题。
+极限是不是原函数的积分？它会不会随起点改变？能否把极限移进积分号？
+本节先控制积分质量，再找出极限所保留的信息。
+最终的答案是关于不变子代数的条件期望；只有在遍历情形，它才退化成一个数。
 
 \subsection{可积函数的逐点遍历定理}
 \label{b1:subsec:320401}
 
-待撰写。
+\chapref{b1:ch:31}的尖峰鞅提醒我们：几乎处处收敛加上 \(L^1\) 有界，不足以推出积分收敛。
+这里还有一项额外结构。每个 \(f\circ T^k\) 与 \(f\) 同分布，
+而 \(A_Nf\) 是这些同分布函数的平均。
+虽然它们通常不独立，这种结构仍能给出对所有 \(N\) 一致的尾部控制。
+
+\begin{lemma}[轨道平均的一致可积性]
+\label{b1:lem:ergodic-averages-ui-32}
+设 \((X,\mathcal A,\mu)\) 为概率空间，\(T:X\to X\) 为可测保测变换，
+\(f\in L^1(\mu;\mathbb R)\) 或 \(L^1(\mu;\mathbb C)\)，并令
+\[
+ A_Nf=\frac1N\sum_{k=0}^{N-1}f\circ T^k,\quad N\geq1.
+\]
+则函数族 \(\{A_Nf:N\geq1\}\) 一致可积。更精确地，对每个 \(K>0\)，
+\[
+ \sup_{N\geq1}\int_{\{|A_Nf|>K\}}|A_Nf|\,\mathrm d\mu
+ \leq2\int_{\{|f|>K/2\}}|f|\,\mathrm d\mu.
+\]
+\end{lemma}
+\begin{proof}
+记 \(r_K=|f|\cdot\mathbf1_{\{|f|>K/2\}}\)。
+将 \(|f|\) 分成不超过 \(K/2\) 的部分和尾部，得到
+\[
+ |A_Nf|\leq A_N|f|\leq K/2+A_Nr_K.
+\]
+在集合 \(F_{N,K}=\{|A_Nf|>K\}\) 上，右式给出
+\(A_Nr_K>|A_Nf|/2\)。因而
+\[
+ \int_{F_{N,K}}|A_Nf|\,\mathrm d\mu
+ \leq2\int_{F_{N,K}}A_Nr_K\,\mathrm d\mu
+ \leq2\int_XA_Nr_K\,\mathrm d\mu
+ =2\int_Xr_K\,\mathrm d\mu.
+\]
+最后一个等式用到保测性；它使每个 \(r_K\circ T^k\) 的积分等于
+\(\int_Xr_K\,\mathrm d\mu\)。由于 \(f\) 可积，右端随 \(K\to\infty\) 趋零。
+按照\cref{b1:prop:uniform-integrability-criterion}的尾部判据，这就是一致可积性。
+\end{proof}
+
+这与\cref{b1:lem:conditional-expectations-ui-31}中条件期望族的尾估计相似。
+两种平均都不会凭空产生无法控制的积分尾部，但它们并不是同一类对象：
+轨道平均一般不是某个递增滤过下的鞅。
+下面的\term[birkhoff-zhudian-bianli-dingli]{Birkhoff 逐点遍历定理}[Birkhoff's pointwise ergodic theorem]%
+把逐点收敛与这种积分控制结合起来。
+
+\begin{theorem}[Birkhoff 逐点遍历定理]
+\label{b1:thm:birkhoff-32}
+设 \((X,\mathcal A,\mu)\) 为概率空间，\(T:X\to X\) 为可测保测变换，
+不要求 \(T\) 可逆。令
+\[
+ \mathcal I_T=\{\,E\in\mathcal A:\mu(T^{-1}E\mathbin{\triangle}E)=0\,\}.
+\]
+对任意实值或复值函数 \(f\in L^1(\mu)\)，存在 \(f^*\in L^1(\mu)\)，使
+\begin{equation}
+ A_Nf(x)=\frac1N\sum_{k=0}^{N-1}f(T^kx)\longrightarrow f^*(x)
+ \quad\text{几乎处处},\quad
+ \|A_Nf-f^*\|_1\longrightarrow0.
+ \label{b1:eq:birkhoff-limit-32}
+\end{equation}
+这个极限满足
+\begin{equation}
+ f^*\circ T=f^*\quad\text{几乎处处},\quad
+ f^*=\mathbb E_\mu(f\mid\mathcal I_T)\quad\text{几乎处处}.
+ \label{b1:eq:birkhoff-conditional-32}
+\end{equation}
+特别地，\(\int_Xf^*\,\mathrm d\mu=\int_Xf\,\mathrm d\mu\)。
+\end{theorem}
+\begin{proof}
+\cref{b1:thm:ergodic-pointwise-32}给出有限可测的几乎处处极限 \(f^*\)。
+由 Fatou 引理以及保测性，
+\[
+ \int_X|f^*|\,\mathrm d\mu
+ \leq\liminf_{N\to\infty}\int_X|A_Nf|\,\mathrm d\mu
+ \leq\|f\|_1.
+\]
+因此 \(f^*\) 可积。上一引理证明了 \(\{A_Nf\}\) 一致可积；
+有限测度空间上几乎处处收敛蕴含依测度收敛，
+故可用\cref{b1:thm:vitali-convergence}得到 \(L^1\) 收敛。
+
+再证明不变性。若 \(G\) 是平均收敛的可测满测度集合，
+则保测性保证 \(G\cap T^{-1}G\) 仍有满测度。
+在这个集合内，两个起点的极限都存在，而且
+\[
+ A_Nf(Tx)-A_Nf(x)=\frac{f(T^Nx)-f(x)}N.
+\]
+由\cref{b1:lem:orbit-tail-32}，右端几乎处处趋零，故
+\(f^*(Tx)=f^*(x)\) 几乎处处。
+利用\cref{b1:prop:invariant-functions-32}，可以选择一个
+\(\mathcal I_T\)-可测的 \(f^*\) 代表。
+
+最后检查条件期望的积分要求。固定 \(E\in\mathcal I_T\)。
+由 \(\mathbf1_E\circ T=\mathbf1_E\) 几乎处处及保测性，归纳得到
+\(\mathbf1_E\circ T^k=\mathbf1_E\) 几乎处处，对每个 \(k\geq0\) 成立。因此
+\[
+ \begin{aligned}
+ \int_E f\circ T^k\,\mathrm d\mu
+ &=\int_X\mathbf1_E\cdot(f\circ T^k)\,\mathrm d\mu\\
+ &=\int_X(\mathbf1_E\cdot f)\circ T^k\,\mathrm d\mu
+ =\int_E f\,\mathrm d\mu.
+ \end{aligned}
+\]
+取前 \(N\) 项的平均，再利用 \(L^1\) 收敛，有
+\[
+ \int_Ef^*\,\mathrm d\mu
+ =\lim_{N\to\infty}\int_EA_Nf\,\mathrm d\mu
+ =\int_Ef\,\mathrm d\mu.
+\]
+于是 \(f^*\) 既是 \(\mathcal I_T\)-可测可积函数，又在每个 \(E\in\mathcal I_T\) 上
+保留 \(f\) 的积分。\cref{b1:prop:conditional-expectation-uniqueness-31}%
+把它唯一识别为 \(\mathbb E_\mu(f\mid\mathcal I_T)\)。
+取 \(E=X\) 就得到总积分相等；复值情形的积分恒等式按实、虚部理解。
+\end{proof}
+
+式\eqref{b1:eq:birkhoff-limit-32}同时给出逐点与积分意义下的稳定，
+式\eqref{b1:eq:birkhoff-conditional-32}则说明平均最终保留的恰是不变信息。
+定理中的量词是：对每一个固定的可积 \(f\)，存在一个满测度集合，
+在其上相应平均收敛。若同时考虑可数多个函数，可以取这些集合的可数交；
+不能对所有可积函数直接取不可数交，并声称仍得到同一个满测度集合。
+而且，定理没有给出收敛速度，也没有把“几乎处处”改成“每一点”。
 
 \subsection{不变子代数与条件平均}
 \label{b1:subsec:320402}
 
-待撰写。
+为什么条件期望会出现在时间平均的极限中？
+若一个事件 \(E\) 满足 \(T^{-1}E=E\) 模零，
+则沿几乎每条轨道向前走，并不能改变“当前点是否属于 \(E\)”这一信息。
+任意长时间的平均都保留 \(E\) 内的总积分，极限也必须保留。
+另一方面，时间平均的极限在沿轨道移动时不变，因而只依赖不变信息。
+这两点恰好对应\chapref{b1:ch:31}定义条件期望时的可测性与积分恒等式。
+
+\ProseParagraphBreak
+
+这里把“保留信息”理解成关于子 \(\sigma\)-代数的精确陈述即可，
+不需要先把空间划分成可测的单条轨道。
+事实上，轨道本身可能都是零测集，逐轨道条件化既没有由上述证明定义，
+也不能自动用通常的事件条件概率公式完成。
+关于不变子代数的条件期望已经给出了所需的可测极限；
+一般遍历分解和正则条件分布属于进一步的理论。
+
+\begin{proposition}[先取时间平均与先保留不变信息]
+\label{b1:prop:ergodic-conditional-commutation-32}
+设 \((X,\mathcal A,\mu)\) 为概率空间，\(T:X\to X\) 为可测保测变换，
+\(\mathcal I_T=\{E\in\mathcal A:\mu(T^{-1}E\triangle E)=0\}\)。
+对任意实值或复值 \(f\in L^1(\mu)\)，记 \(P_Tf=\mathbb E_\mu(f\mid\mathcal I_T)\)。
+则对每个整数 \(N\geq1\)，
+\[
+ P_T(A_Nf)=P_Tf,\quad A_N(P_Tf)=P_Tf
+ \quad\text{几乎处处}.
+\]
+若 \(f\in L^2(\mu)\)，这个 \(P_T\) 与
+\cref{b1:cor:mean-ergodic-conditional-32}中的正交投影相同。
+\end{proposition}
+\begin{proof}
+对 \(E\in\mathcal I_T\)，Birkhoff 定理证明中的计算表明
+\(\int_EA_Nf\,\mathrm d\mu=\int_Ef\,\mathrm d\mu\)。
+这使 \(A_Nf\) 与 \(f\) 有相同的条件期望，得到第一式。
+函数 \(P_Tf\) 对 \(\mathcal I_T\) 可测，故
+\((P_Tf)\circ T=P_Tf\) 几乎处处；可数次迭代后取平均得到第二式。
+在 \(L^2\) 中，\cref{b1:thm:conditional-expectation-projection-31}%
+说明条件期望是到 \(L^2(\mathcal I_T)\) 的正交投影，
+而这个子空间就是 Koopman 算子的不变子空间。
+\end{proof}
+
+例如，若 \(T\) 是恒等变换，则 \(\mathcal I_T=\mathcal A\)，
+每个 \(A_Nf\) 都等于 \(f\)。即使 \(f\) 的空间积分是一个数，时间平均也没有理由把它变成常数。
+在有多个循环的有限系统里，不变信息记录的是点位于哪个循环，
+因此条件期望是各循环内部的平均。两种例子都表明，
+时间增长本身不会抹去系统中真正不变的差异。
 
 \subsection{遍历情形的时间平均}
 \label{b1:subsec:320403}
 
-待撰写。
+遍历性要求每个不变事件的测度只能是零或一。
+在概率意义下，此时不变子代数没有能把总体分成两块正测度部分的信息，
+其可积可测函数只能是几乎处处的常函数。
+把这一判别代入 Birkhoff 定理，就得到题名中两种平均相等的准确形式。
+
+\begin{corollary}[遍历系统的时间平均]
+\label{b1:cor:ergodic-time-space-32}
+设 \((X,\mathcal A,\mu)\) 为概率空间，\(T:X\to X\) 为可测、保测且遍历的变换。
+对每个实值或复值 \(f\in L^1(\mu)\)，有
+\[
+ \frac1N\sum_{k=0}^{N-1}f(T^kx)
+ \longrightarrow\int_Xf\,\mathrm d\mu
+ \quad\text{几乎处处且于 }L^1(\mu).
+\]
+反过来，若一个可测保测变换对每个可积实函数都满足上述几乎处处结论，
+则它是遍历的。
+\end{corollary}
+\begin{proof}
+若 \(T\) 遍历，由\cref{b1:prop:ergodicity-criterion-32}，
+Birkhoff 极限 \(f^*\) 几乎处处为常数 \(c\)。
+复值情形分别应用于实、虚部。由于 \(\mu(X)=1\) 且积分保持，
+\(c=\int_Xf\,\mathrm d\mu\)，其余结论由\cref{b1:thm:birkhoff-32}得到。
+
+反过来，取任意 \(E\in\mathcal I_T\) 并令 \(f=\mathbf1_E\)。
+其所有轨道平均都几乎处处等于 \(\mathbf1_E\)。
+所假设的极限结论迫使 \(\mathbf1_E=\mu(E)\) 几乎处处，
+故 \(\mu(E)\) 只能为零或一。
+\end{proof}
+
+对 \(f=\mathbf1_E\)，时间平均具有直接的计数意义：
+\begin{equation}
+ A_N\mathbf1_E(x)
+ =\frac{\#\{\,0\leq k<N:T^kx\in E\,\}}N.
+ \label{b1:eq:visit-frequency-32}
+\end{equation}
+式\eqref{b1:eq:visit-frequency-32}把函数平均变成访问次数的比例。
+因而在遍历系统中，一个固定可测区域的长期访问频率对几乎每个起点都等于其测度。
+这不是说轨道在有限时间内已经遍布所有点，
+也不是说相邻两次观测独立。有限循环就是最简单的例子：
+知道现在的位置便知道下一步的位置，长期频率却仍可等于均匀空间平均。
+
+\ProseParagraphBreak
+
+另一项容易混淆的地方是“不变概率测度”的选择。
+对同一个映射 \(T\)，可以有不同的不变概率测度；遍历性必须相对于已经指定的 \(\mu\) 陈述。
+例如，倍增映射 \(T(x)=2x\bmod1\) 同时保持长度测度和固定点 \(0\) 上的点质量。
+在后一个概率空间中，时间平均只观察 \(f(0)\)；
+在前一个概率空间中，下一节将证明几乎处处极限为 \(\int_0^1f(x)\,\mathrm dx\)。
+即使对同一个连续函数，这两个数也可能不同。
 
 \subsection{范数收敛与逐点收敛的比较}
 \label{b1:subsec:320404}
 
-待撰写。
+在概率空间上，所有有限指数的 \(L^p\) 收敛都可以从已经证明的有界情形扩展得到。
+关键不是直接把 \(|f|^p\) 当作每个误差的共同控制函数：
+沿轨道的函数 \(f\circ T^k\) 会随 \(k\) 改变，通常不存在这样的逐点控制。
+应先截断原函数，再使用平均算子和条件期望的范数收缩。
+
+\begin{proposition}[有限指数的范数收敛]
+\label{b1:prop:ergodic-lp-32}
+设 \((X,\mathcal A,\mu)\) 为概率空间，\(T:X\to X\) 为可测保测变换，
+\(\mathcal I_T=\{E\in\mathcal A:\mu(T^{-1}E\triangle E)=0\}\)。
+若 \(1\leq p<\infty\)，且 \(f\in L^p(\mu;\mathbb R)\) 或 \(L^p(\mu;\mathbb C)\)，则
+\[
+ \left\|A_Nf-\mathbb E_\mu(f\mid\mathcal I_T)\right\|_p
+ \longrightarrow0.
+\]
+\end{proposition}
+\begin{proof}
+记 \(P_Tf=\mathbb E_\mu(f\mid\mathcal I_T)\)。
+先设 \(f\) 有界。由 Birkhoff 定理，\(A_Nf\to P_Tf\) 几乎处处。
+而 \(|A_Nf|\leq\|f\|_\infty\) 几乎处处，
+\cref{b1:prop:conditional-expectation-contraction-31}也给出
+\(|P_Tf|\leq\|f\|_\infty\) 几乎处处。因此
+\[
+ |A_Nf-P_Tf|^p\leq(2\|f\|_\infty)^p,
+\]
+右端在概率空间上可积，支配收敛给出 \(L^p\) 收敛。
+
+对于一般 \(f\in L^p\)，令 \(f_R=f\cdot\mathbf1_{\{|f|\leq R\}}\)，
+则 \(\|f-f_R\|_p\to0\)。由三角不等式、保测性以及条件期望的 \(L^p\) 收缩，
+\[
+ \begin{aligned}
+ \|A_Nf-P_Tf\|_p
+ &\leq\|A_N(f-f_R)\|_p
+       +\|A_Nf_R-P_Tf_R\|_p+\|P_T(f_R-f)\|_p\\
+ &\leq2\|f-f_R\|_p+\|A_Nf_R-P_Tf_R\|_p.
+ \end{aligned}
+\]
+固定 \(R\) 后令 \(N\to\infty\)，再令 \(R\to\infty\)，即得结论。
+\end{proof}
+
+这里的 \(p=\infty\) 端点一般不能加入。
+取 \([0,1)\) 上长度测度、倍增映射及 \(f=\mathbf1_{[0,1/2)}\)。
+下一节的\cref{b1:thm:doubling-mixing-32}将证明该映射遍历，
+从而几乎处处极限为 \(1/2\)。但对每个 \(N\)，当 \(0\leq x<2^{-N}\) 时，
+前 \(N\) 个轨道点都在 \([0,1/2)\) 内，所以 \(A_Nf(x)=1\)。
+这批起点的测度 \(2^{-N}\) 虽趋零，每次仍为正，故
+\[
+ \|A_Nf-1/2\|_\infty\geq1/2\quad(N\geq1).
+\]
+极端偏差可以集中到越来越小但非零测度的集合上。
+有限指数的范数会受到集合大小的影响，本质上确界则只问偏差是否还发生在正测度集合上。
+下一节将计算这个映射的混合性，说明二进展开怎样使相隔很久的观测失去相关。
+
+\ProseParagraphBreak
+
+\cref{b1:tab:ergodic-convergence-32}把本章已经建立的范围放在一起。
+Hilbert 空间定理不要求算子来自保测变换；
+逐点定理则确实使用了函数的大小、积分和保测性，不能给任意抽象收缩算子附加“逐点”结论。
+
+\begin{table}[htbp]
+\centering
+\caption{遍历平均的收敛范围}
+\label{b1:tab:ergodic-convergence-32}
+\small
+\begin{tabularx}{\textwidth}{p{8.6em}p{7.4em}X}
+\toprule
+对象与假设 & 收敛意义 & 极限及范围 \\
+\midrule
+实或复 Hilbert 空间中的收缩算子 & 每个向量的范数收敛 &
+到不变子空间的正交投影；一般不于算子范数收敛 \\
+保测概率系统，\(f\in L^1\) & 几乎处处及 \(L^1\) &
+\(\mathbb E_\mu(f\mid\mathcal I_T)\)，不要求遍历或可逆 \\
+保测概率系统，\(f\in L^p,\ 1<p<\infty\) & 几乎处处及 \(L^p\) &
+仍为同一条件期望；遍历时等于空间积分 \\
+保测概率系统，\(f\in L^\infty\) & 几乎处处及每个有限指数的 \(L^p\) &
+一般不保证 \(L^\infty\) 范数收敛 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+本节也说明\chapref{b1:ch:31}的条件期望在概率过程之外的用途：
+它给出一个精确的投影语言，把保测动力系统中保留下来的不变信息写成可积函数。
+下一节进一步考察相隔很久的两次观测是否趋于独立，区分这种要求与仅有时间平均相等的遍历性。

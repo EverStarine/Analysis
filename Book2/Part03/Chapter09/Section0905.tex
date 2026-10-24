@@ -1,24 +1,296 @@
 % !TeX root = ../../Book2.tex
 \OptionalSection{熵解、激波与 Riemann 问题}{b2:sec:0705}
 
-待撰写。
+在\subsecref{b2:subsec:070402}的 Burgers 例子中，函数值仍然有界，空间导数却在有限时间发散。继续追踪所有特征线，会在同一个位置得到几个不同的值。把这些分支改成一个跳跃，似乎可以恢复单值性；但跳跃应该放在哪里，为什么不能选择另一种跳法？守恒关系决定跳跃的速度，熵条件则决定允许的方向。最简单的两常数初值已经能把这两项要求区分开来。
 
 \subsection{守恒律弱解与非唯一性}
 \label{b2:subsec:070501}
 
-待撰写。
+设实值函数 \(u(x,t)\) 表示一维介质中某种量的密度，\(F(u)\) 表示向右通过单位截面的通量。在没有源项时，区间内总量的变化等于左端流入减去右端流出：
+\[
+ \frac{\mathrm d}{\mathrm dt}\int_a^b u(x,t)\,\mathrm dx
+ =F(u(a,t))-F(u(b,t)).
+\]
+若 \(u\) 光滑，便得到 \(u_t+\partial_xF(u)=0\)。这条等式把 \(u\) 与 \(F(u)\) 看作整体求导，因而还适合有跳跃的函数；写成 \(u_t+F'(u)u_x=0\) 后，两个不连续对象的乘积就未必有定义。
+
+\begin{definition}\label{b2:def:07-conservation-weak}
+设 \(T>0\)、\(F\in C^1(\mathbb R;\mathbb R)\)、\(u_0\in L^\infty(\mathbb R;\mathbb R)\)。若实值函数
+\(u\in L^\infty(\mathbb R\times(0,T))\) 对所有实值测试函数
+\(\varphi\in C_c^\infty(\mathbb R\times[0,T))\) 满足
+\begin{equation}\label{b2:eq:07-conservation-weak}
+ \int_0^T\!\int_{\mathbb R}
+ \bigl(u\varphi_t+F(u)\varphi_x\bigr)\,\mathrm dx\,\mathrm dt
+ +\int_{\mathbb R}u_0(x)\varphi(x,0)\,\mathrm dx=0,
+\end{equation}
+则称 \(u\) 是初值为 \(u_0\) 的\term[shouhenglv-ruojie]{守恒律弱解}[weak solution of a conservation law]。这里的测试函数是闭半空间上光滑函数的限制，支集在空间方向有界，并与 \(t=T\) 保持正距离。
+\end{definition}
+
+弱形式中的初值项不可丢掉。只在 \(t>0\) 的开集内测试，无法区分同一方程的不同初值问题。还应区分积分恒等式与强初始迹：后者要求对每个 \(R>0\)，\(\int_{-R}^R|u(x,t)-u_0(x)|\,\mathrm dx\to0\)。下面的显式解满足这个更强的要求。
+
+\begin{proposition}[Rankine--Hugoniot 条件]\label{b2:prop:07-rankine-hugoniot}
+设 \(T>0\)、\(F\in C^1(\mathbb R;\mathbb R)\)、\(a,b,s\in\mathbb R\)，且 \(a\ne b\)。定义
+\[
+ u_0(x)=\begin{cases}a,&x<0,\\b,&x>0,\end{cases}
+ \quad
+ u(x,t)=\begin{cases}a,&x<st,\\b,&x>st.\end{cases}
+\]
+则 \(u\) 为初值 \(u_0\) 的弱解，当且仅当
+\begin{equation}\label{b2:eq:07-rankine-hugoniot-speed}
+ s(b-a)=F(b)-F(a).
+\end{equation}
+此外，\(u(\cdot,t)\to u_0\) 于 \(L^1_{\mathrm{loc}}(\mathbb R)\)。
+\end{proposition}
+\begin{proof}
+用 \([g]=g(b)-g(a)\) 表示左右状态之差，把函数写成
+\(u=a+(b-a)\mathbf1_{\{x>st\}}\)。在 \(t>0\) 内，分布导数满足
+\[
+ \partial_x\mathbf1_{\{x>st\}}=\delta_{x=st},
+ \quad
+ \partial_t\mathbf1_{\{x>st\}}=-s\delta_{x=st}.
+\]
+这里 \(\delta_{x=st}\) 对测试函数的作用是 \(\int_0^T\varphi(st,t)\,\mathrm dt\)；两式也可直接在 \(x>st\) 上积分分部得到。因此
+\[
+ u_t+\partial_xF(u)=\bigl([F]-s[u]\bigr)\delta_{x=st}.
+\]
+测试函数可在直线上任意取非零非负值，故分布为零恰好等价于\eqref{b2:eq:07-rankine-hugoniot-speed}。初始函数与时刻 \(t\) 的函数只在端点为 \(0,st\) 的区间上不同，所以
+\[
+ \int_{-R}^R|u(x,t)-u_0(x)|\,\mathrm dx
+ \leq |a-b|\cdot|s|t.
+\]
+在 \(t=\varepsilon\) 以上作积分分部，再令 \(\varepsilon\downarrow0\)，该估计把下边界项变成\eqref{b2:eq:07-conservation-weak}中的初值项。
+\end{proof}
+
+\term[riemann-wenti]{Riemann 问题}[Riemann problem]是指左右分别为常数的这类初值问题。其初值只在一个点发生跳跃，便于看清局部波形。对 Burgers 通量 \(F(r)=r^2/2\)，跳跃速度为
+\(s=(a+b)/2\)，无论 \(a>b\) 还是 \(a<b\) 都能满足守恒关系。
+
+例如，取 \(a=-1,b=1\)。静止跳跃
+\(u^{\mathrm j}(x,t)=\operatorname{sgn}x\) 是弱解；另一个函数为
+\begin{equation}\label{b2:eq:07-burgers-nonunique-fan}
+ u^{\mathrm r}(x,t)=
+ \begin{cases}
+ -1,&x<-t,\\
+ x/t,&-t\leq x\leq t,\\
+ 1,&x>t.
+ \end{cases}
+\end{equation}
+在中间区域，\(u_t=-x/t^2\)、\(u u_x=x/t^2\)，两者抵消；外侧为常数。在两条接合线上，\(u\) 与 \(F(u)\) 都连续，积分分部没有剩余界面项。函数与初值不同的区域长度为 \(2t\)，差的绝对值至多为 \(2\)，故也具有同一强初始迹。它与静止跳跃在 \(-t<x<t\) 上不同。这给出了同一初值的两个有界弱解，而不是仅仅指出某一种求解方法可能失效。
 
 \subsection{Burgers 方程的 Riemann 问题}
 \label{b2:subsec:070502}
 
-待撰写。
+初值中的间断点没有长度尺度。若把空间和时间同时乘以 \(\lambda>0\)，初值和方程都保持原状，因此自然尝试
+\(u(x,t)=U(\xi)\)、\(\xi=x/t\)。在 \(U\) 可微的区间内，Burgers 方程化为
+\[
+ \bigl(U(\xi)-\xi\bigr)U'(\xi)=0.
+\]
+这意味着一段波形可以保持常数；若它确实变化，就应沿 \(U(\xi)=\xi\) 变化。
+
+当 \(a<b\) 时，左侧速度为 \(a\)，右侧速度为 \(b\)，从原点出发的两条边缘特征线之间留下一个扇形。用速度为 \(r\in[a,b]\) 的特征线 \(x=rt\) 填满该扇形，并在其上取值 \(r\)，得到\term[xishubo]{稀疏波}[rarefaction wave]
+\begin{equation}\label{b2:eq:07-burgers-rarefaction}
+ u(x,t)=
+ \begin{cases}
+ a,&x\leq at,\\
+ x/t,&at<x<bt,\\
+ b,&x\geq bt.
+ \end{cases}
+\end{equation}
+不同取值向外展开，扇形中的斜率为 \(1/t\)。在任意 \(t\geq\tau>0\) 的条带上，该函数是 Lipschitz 的；分片计算及连续接合证明它满足弱方程。若 \(M=\max(|a|,|b|)\)，它与初值只可能在 \([-Mt,Mt]\) 中不同，因而局部 \(L^1\) 初值误差至多为 \(2M|a-b|t\)。当 \(a=b\) 时，解为常数。
+
+当 \(a>b\) 时，左侧特征线跑得更快，若任其继续就会穿过右侧特征线。将相遇的轨道终止在直线
+\(x=st\)、\(s=(a+b)/2\) 上，便得到从 \(a\) 向 \(b\) 的下降跳跃。因为
+\[
+ b<s<a,
+\]
+相对于这条直线，左侧信息向右追上激波，右侧信息向左进入激波。
+\Cref{b2:fig:07-riemann-waves}把压缩与展开两种几何情形并列。
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=1.35cm,y=1.3cm,>=stealth]
+ \begin{scope}
+  \draw[->] (-1.7,0)--(1.7,0) node[right]{\(x\)};
+  \draw[->] (0,0)--(0,1.85) node[above]{\(t\)};
+  \draw[AnalysisBlue,very thick] (0,0)--(0,1.6);
+  \foreach \r in {0.4,0.8,1.2,1.6}{
+   \draw[->,gray] (-\r,0)--(0,\r);
+   \draw[->,gray] (\r,0)--(0,\r);
+  }
+  \node at (-0.95,1.65){\(a=1\)};
+  \node at (0.95,1.65){\(b=-1\)};
+  \node at (0,-0.48){下降跳跃：\(x=0\)};
+ \end{scope}
+ \begin{scope}[xshift=5.5cm]
+  \draw[->] (-1.7,0)--(1.7,0) node[right]{\(x\)};
+  \draw[->] (0,0)--(0,1.85) node[above]{\(t\)};
+  \foreach \r in {-1,-0.75,-0.5,-0.25,0.25,0.5,0.75,1}{
+   \draw[AnalysisBlue,->] (0,0)--({1.5*\r},1.5);
+  }
+  \node at (-1.15,1.75){\(a=-1\)};
+  \node at (1.15,1.75){\(b=1\)};
+  \node at (0,-0.48){稀疏扇：\(-t<x<t\)};
+ \end{scope}
+\end{tikzpicture}
+\caption[Burgers 的两种 Riemann 波形]{Burgers 的两种 Riemann 波形。左图的特征线在激波处终止，右图由原点发出的特征线填满稀疏扇；竖直方向为时间。}
+\label{b2:fig:07-riemann-waves}
+\end{figure}
+
+守恒律允许把 \(a<b\) 的数据也接成一个上升跳跃。它的速度仍在 \(a,b\) 之间，但两边的特征线都离开跳跃线，新的信息仿佛由间断处自行产生。这样的\term[zhankai-jibo]{展开激波}[expansion shock]是弱解非唯一性的直接来源。要把它与下降跳跃区分开，需要一个能够对所有测试区域表达的数学条件。
 
 \subsection{熵条件与激波选择}
 \label{b2:subsec:070503}
 
-待撰写。
+对于光滑解，链式法则可以产生许多新的守恒关系。若 \(\eta\in C^2(\mathbb R)\)，定义 \(q\) 使 \(q'=\eta'F'\)，则
+\[
+ \partial_t\eta(u)+\partial_xq(u)
+ =\eta'(u)\bigl(u_t+F'(u)u_x\bigr)=0.
+\]
+加入小黏性以后，等式变成有方向的不等式。设光滑函数满足
+\(u_t+\partial_xF(u)=\varepsilon u_{xx}\)、\(\varepsilon>0\)，便有
+\begin{equation}\label{b2:eq:07-viscous-entropy}
+ \partial_t\eta(u)+\partial_xq(u)
+ =\varepsilon\partial_{xx}\eta(u)
+   -\varepsilon\eta''(u)|u_x|^2.
+\end{equation}
+当 \(\eta\) 凸时，最后一项非正。它记录过渡层中的耗散，即使过渡层在极限中变成跳跃，这个符号仍应保留下来。数学上把凸函数取为熵，所以这里的熵不等式方向为“\(\leq0\)”；它与物理学中采用相反符号的熵约定须加以区分。
+
+\begin{definition}\label{b2:def:07-entropy-pair}
+设 \(F\in C^1(\mathbb R;\mathbb R)\)，\(\eta\in C^2(\mathbb R;\mathbb R)\) 凸，\(q\in C^1(\mathbb R;\mathbb R)\) 满足 \(q'(r)=\eta'(r)F'(r)\)。则称 \((\eta,q)\) 为通量 \(F\) 的一对\term[tu-shang-shangtongliang]{凸熵与熵通量}[convex entropy and entropy flux]。
+\end{definition}
+
+\begin{definition}\label{b2:def:07-entropy-solution}
+设 \(T>0\)、\(F\in C^1(\mathbb R;\mathbb R)\)、\(u_0\in L^\infty(\mathbb R;\mathbb R)\)。设 \(u\) 是\cref{b2:def:07-conservation-weak}意义下的弱解，且具有代表
+\(u\in C([0,T);L^1_{\mathrm{loc}}(\mathbb R))\)，满足 \(u(0)=u_0\)。若对每一凸熵对 \((\eta,q)\) 及每个非负实值 \(\varphi\in C_c^\infty(\mathbb R\times[0,T))\)，均有
+\begin{equation}\label{b2:eq:07-entropy-integral}
+ \int_0^T\!\int_{\mathbb R}
+ \bigl(\eta(u)\varphi_t+q(u)\varphi_x\bigr)\,\mathrm dx\,\mathrm dt
+ +\int_{\mathbb R}\eta(u_0(x))\varphi(x,0)\,\mathrm dx\geq0,
+\end{equation}
+则称 \(u\) 为该初值问题的\term[shangjie]{熵解}[entropy solution]。时间连续性指对每个有界空间区间的 \(L^1\) 范数连续。
+\end{definition}
+
+不等式中的“\(\geq0\)”来自分布导数的负号，与
+\(\partial_t\eta(u)+\partial_xq(u)\leq0\) 一致。熵通量可以加任意常数：测试函数在空间方向的导数积分为零，故这不改变条件。
+
+\begin{proposition}[Kružkov 熵族]\label{b2:prop:07-kruzkov-entropies}
+设 \(T>0\)、\(F\in C^1(\mathbb R;\mathbb R)\)、\(u_0\in L^\infty(\mathbb R;\mathbb R)\)，\(u\) 为有界弱解，具有 \(C([0,T);L^1_{\mathrm{loc}})\) 代表及初值 \(u_0\)。则 \(u\) 是熵解，当且仅当对每个 \(k\in\mathbb R\)，\eqref{b2:eq:07-entropy-integral}对下列连续函数对成立：
+\begin{equation}\label{b2:eq:07-kruzkov-pairs}
+ \eta_k(r)=|r-k|,
+ \quad q_k(r)=\operatorname{sgn}(r-k)\bigl(F(r)-F(k)\bigr),
+\end{equation}
+其中 \(\operatorname{sgn}0=0\)。
+\end{proposition}
+\begin{proof}
+先假设所有光滑凸熵不等式成立。用
+\(\eta_{k,\delta}(r)=\sqrt{(r-k)^2+\delta^2}\)
+逼近 \(|r-k|\)，并取
+\(q_{k,\delta}(r)=\int_k^r\eta'_{k,\delta}(z)F'(z)\,\mathrm dz\)。在任何有界 \(r\) 区间上，\(\eta_{k,\delta}\to\eta_k\) 一致；又因 \(|\eta'_{k,\delta}|\leq1\)，对积分用支配收敛，得到 \(q_{k,\delta}\to q_k\) 一致。测试支集有限且 \(u,u_0\) 有界，故可以在熵不等式中取极限。
+
+反之，取 \(M>\max(\|u\|_\infty,\|u_0\|_\infty)\)。每个 \(C^2\) 凸函数在 \([-M,M]\) 上都可写成
+\[
+ \eta(r)=A+Br+\frac12\int_{-M}^M\eta''(k)|r-k|\,\mathrm dk.
+\]
+两边的二阶导数相同，差为仿射函数，所以可以选择 \(A,B\) 使等式成立。相应通量在加一个常数后为
+\[
+ q(r)=BF(r)+\frac12\int_{-M}^M\eta''(k)q_k(r)\,\mathrm dk.
+\]
+将每个 \(k\) 的不等式乘非负权 \(\eta''(k)/2\) 后积分，再加上弱方程的 \(B\) 倍。所有被积函数在有限测试支集及 \([-M,M]\) 上有界，Fubini 适用；常数项在时间分部积分中与初值项相消。所得就是一般凸熵不等式。
+\end{proof}
+
+这族以全部实数 \(k\) 为中心的绝对值熵称为\term[kruzkov-shang]{Kružkov 熵}[Kružkov entropy]。每个 \(k\) 都把解与一个常状态比较；同时保留所有 \(k\)，才能在后面比较两个任意解。
+
+\begin{theorem}[Burgers 的熵可容许 Riemann 波形]\label{b2:thm:07-burgers-riemann}
+设 \(a,b\in\mathbb R\)，\(u_0=a\mathbf1_{(-\infty,0)}+b\mathbf1_{(0,\infty)}\)。对于
+\(u_t+\partial_x(u^2/2)=0\)，下列函数在每个有限时间区间上都是初值为 \(u_0\) 的熵解：当 \(a>b\) 时，取速度 \(s=(a+b)/2\) 的下降跳跃；当 \(a<b\) 时，取\eqref{b2:eq:07-burgers-rarefaction}的稀疏波；当 \(a=b\) 时，取常数 \(a\)。当 \(a<b\) 时，速度为 \((a+b)/2\) 的上升跳跃不是熵解。
+\end{theorem}
+\begin{proof}
+各候选函数的弱方程及初始迹已由分片计算得到。它们的局部 \(L^1\) 时间连续性也可直接看出：对任意 \(t>0\)，时刻趋于 \(t\) 时逐点收敛仅可能在有限条边界上失败，而有界性允许在有限区间用支配收敛；在零时刻则用前面的初值误差估计。
+
+对速度为 \(s\) 的跳跃，熵分布为
+\[
+ \partial_t\eta(u)+\partial_xq(u)
+ =D_\eta\delta_{x=st},
+ \quad D_\eta=q(b)-q(a)-s\bigl(\eta(b)-\eta(a)\bigr).
+\]
+当 \(a>b\)、\(s=(a+b)/2\) 时，令
+\(G(r)=(r-a)(r-b)/2\)。有 \(G'=r-s\)，且 \(G(a)=G(b)=0\)，故
+\[
+ D_\eta=\int_a^b\eta'(r)(r-s)\,\mathrm dr
+       =\int_b^a\eta''(r)G(r)\,\mathrm dr\leq0.
+\]
+这里 \(G\leq0\) 于 \([b,a]\)，\(\eta''\geq0\)。在正时间条带内积分，再令下边界趋零，初始迹给出包含初值项的熵不等式。
+
+若 \(a<b\)，取 \(\eta(r)=r^2/2\)、\(q(r)=r^3/3\)，直接整理得
+\begin{equation}\label{b2:eq:07-burgers-quadratic-dissipation}
+ D_\eta=\frac{(b-a)^3}{12}>0.
+\end{equation}
+选择支于正时间、在跳跃线上非零的非负测试函数，便违反熵不等式。
+
+对于稀疏波，每个 \(t\geq\tau>0\) 的条带上，\(\eta(u)\) 与 \(q(u)\) 连续且分片 \(C^1\)。每片内链式法则给出熵等式，接合处没有跳跃项。让 \(\tau\downarrow0\)，由 \(u\) 的有界性、\(\eta\) 在有界区间上的 Lipschitz 性和强初始迹，得到\eqref{b2:eq:07-entropy-integral}，且此时为等号。常数情形同样为等号。
+\end{proof}
+
+对 Burgers 的两常数跳跃，只检查二次熵就足以排除上升跳跃；一般有界弱解的定义仍要求整个凸熵族。上面的计算也解释了\term[lax-shang-tiaojian]{Lax 熵条件}[Lax entropy condition]在严格凸标量通量下的形式
+\[
+ F'(b)<s<F'(a).
+\]
+它说两侧特征速度都指向激波。若 \(F\in C^2\) 且 \(F''>0\)，下降跳跃 \(a>b\) 的弦斜率介于端点导数之间；对其熵耗散作同样的积分分部，用凸函数图像低于弦线的性质，即得 \(D_\eta\leq0\)。
+
+小黏性的计算还给出一种稳定的选择方式。若光滑黏性解 \(u^\varepsilon\) 在每个有限时空条带上一致有界，初值在局部 \(L^1\) 中趋于 \(u_0\)，并且 \(u^\varepsilon\to u\) 于局部时空 \(L^1\)，那么在\eqref{b2:eq:07-viscous-entropy}中测试非负 \(\varphi\)，可将右边控制为
+\[
+ \int\!\!\int
+ \bigl(\eta(u^\varepsilon)\varphi_t+q(u^\varepsilon)\varphi_x\bigr)
+ +\int\eta(u_0^\varepsilon)\varphi(\cdot,0)
+ \geq-\varepsilon\int\!\!\int\eta(u^\varepsilon)\varphi_{xx}.
+\]
+右端趋零；左端各非线性函数在共同有界值域上 Lipschitz，因而也能取极限。所得 \(u\) 满足熵不等式。这称为\term[xiaoshi-nianxing-fa]{消失黏性法}[vanishing viscosity method]。建立极限的紧性、取得强初始迹，是把这段计算变成存在性定理时还要处理的两个实质问题。
 
 \subsection{一般标量守恒律的理论边界}
 \label{b2:subsec:070504}
 
-待撰写。
+Riemann 波形只有很少几个参数，一般初值却可能包含无穷多个振荡和间断。特征线图像无法逐个追踪所有相互作用。熵理论的稳定性估计改用局部 \(L^1\) 距离比较整个解，并把有界可测初值纳入同一个框架。
+
+\begin{theorem}[Kružkov：标量守恒律的深层存在定理]\label{b2:thm:07-kruzkov}
+设 \(F\in C^1(\mathbb R;\mathbb R)\)，\(u_0\in L^\infty(\mathbb R;\mathbb R)\)。在 \(\mathbb R\times(0,\infty)\) 上，初值问题
+\(u_t+\partial_xF(u)=0\)、\(u(0)=u_0\) 有唯一熵解，具有
+\(C([0,\infty);L^1_{\mathrm{loc}}(\mathbb R))\) 代表，并满足
+\(\|u(t)\|_\infty\leq\|u_0\|_\infty\)。更具体地，若 \(u,v\) 分别对应有界实初值 \(u_0,v_0\)，取
+\[
+ M=\max(\|u_0\|_\infty,\|v_0\|_\infty),
+ \quad L=\max_{|r|\leq M}|F'(r)|,
+\]
+则对所有 \(x_0\in\mathbb R\)、\(R>0\)、\(t\geq0\)，有
+\begin{equation}\label{b2:eq:07-entropy-local-contraction}
+ \int_{x_0-R}^{x_0+R}|u(x,t)-v(x,t)|\,\mathrm dx
+ \leq\int_{x_0-R-Lt}^{x_0+R+Lt}|u_0(x)-v_0(x)|\,\mathrm dx.
+\end{equation}
+特别地，当 \(u_0-v_0\in L^1(\mathbb R)\) 时，差的全空间 \(L^1\) 范数随时间不增。
+\end{theorem}
+\begin{proofsketch}
+存在性的主要工作是构造黏性近似的统一局部平移估计，用它取得局部 \(L^1\) 紧性，再把初值与熵不等式传入极限。这个紧性论证及由一般有界初值取得强初始迹的步骤，可见 S. N. Kružkov 的《First order quasilinear equations in several independent variables》\cite[Sections 3--5]{Kruzkov1970FirstOrder}；该文在多维及更一般系数情形中建立结果，\(C^1\) 自治通量的放宽见其 Section 5。下面解释稳定性估计的核心。
+
+对 \(u(x,t)\) 的熵不等式取常数 \(k=v(y,s)\)，再对 \((y,s)\) 积分；对 \(v\) 交换角色作同样处理。以
+\[
+ \Phi(x,t,y,s)=
+ \psi\left(\frac{x+y}{2},\frac{t+s}{2}\right)
+ \rho_\delta(x-y)\rho_\delta(t-s)
+\]
+为共同非负测试函数，其中 \(\psi\) 紧支于正时间，\(\rho_\delta\) 是非负光滑单位积分核。两式相加后，作用于差变量的导数互相抵消。令 \(\delta\downarrow0\)，局部 \(L^1\) 平移连续性以及
+\(\operatorname{sgn}(r-z)(F(r)-F(z))\) 在有界正方形上的 Lipschitz 性给出
+\[
+ \partial_t|u-v|+\partial_x A(u,v)\leq0,
+ \quad A(u,v)=\operatorname{sgn}(u-v)(F(u)-F(v)),
+ \quad |A(u,v)|\leq L|u-v|.
+\]
+这一步称为\term[bianliang-beizeng]{变量倍增}[doubling of variables]，它把与常状态的比较变成两个解的比较。
+
+固定终点时间 \(t\)，用近似于
+\(\mathbf1_{\{|x-x_0|<R+L(t-s)\}}\) 的非负截断函数测试。在边缘过渡层，可取
+\(\psi_s+L|\psi_x|=0\)，故
+\(|u-v|\psi_s+A(u,v)\psi_x\leq0\)。沿 \(0<s<t\) 积分并让截断层收缩，得到\eqref{b2:eq:07-entropy-local-contraction}；初末时间截断由局部 \(L^1\) 连续性处理。相同初值给出唯一性。比较原理还可用 \((u-v)_+\) 作同样推导，与常数 \(\pm\|u_0\|_\infty\) 比较便得到最大值界。最后令 \(R\to\infty\)，单调收敛给出全空间收缩。
+\end{proofsketch}
+
+应用该定理，\cref{b2:thm:07-burgers-riemann}中的显式解就是各自 Riemann 问题的唯一熵解。\eqref{b2:eq:07-entropy-local-contraction}还给出有限传播速度：若两个初值在 \((x_0-R-Lt,x_0+R+Lt)\) 上相同，那么它们在时刻 \(t\) 的 \((x_0-R,x_0+R)\) 上也相同。常数 \(L\) 来自实际值域上的通量导数，不要求 \(F'\) 在整个实轴有界。
+
+对于严格凸 \(C^2\) 通量，\(a<b\) 时的稀疏波将 \(x/t\) 改为
+\((F')^{-1}(x/t)\)，扇形边缘速度改为 \(F'(a),F'(b)\)。若通量非凸，\(F'\) 未必可逆；Riemann 解可能同时含有激波与稀疏波，此时仅比较两个端点速度不足以选择全部间断。绝对值熵族仍然适用，但简单的“两种波形”分类已经改变。
+
+标量与系统也必须区分。在高维空间中，未知量仍取实数、通量为 \(\mathbb R^d\) 值时，Kružkov 理论仍可使用所有常数 \(k\) 作比较。若未知量本身是向量，一般不存在同样的序关系，\(|u-k|\) 也未必能组成相容的熵通量，标量的收缩与全局有界数据理论不能直接搬过去。最后，在有边界的区域上，信息只从入流部分进入，边界条件要用相应熵边界条件表述；任意指定全部边界值，可能与特征传播不相容。

@@ -1,24 +1,276 @@
 % !TeX root = ../../Book2.tex
 \OptionalSection{Schauder 估计}{b2:sec:1605}
 
-待撰写。
+当源项和系数的变化有一个确定的连续速度时，能否用同样的速度控制解的二阶导数？例如，\(-\Delta u=f\) 的右端若满足 \(|f(x)-f(y)|\le M|x-y|^\alpha\)，我们希望二阶导数也满足这样的估计。困难在于 Newton 核的二阶导数像 \(|x|^{-d}\) 一样奇异，绝对积分恰好发散。核的球面平均为零，使常数部分可以抵消；剩下的 \(|x-y|^\alpha\) 则提供了积分所需的余量。这是 Schauder 估计的起点。
 
 \subsection{Hölder 空间与缩放}
 \label{b2:subsec:160501}
 
-待撰写。
+\Needspace{6\baselineskip}
+\begin{definition}[Hölder 空间与尺度范数]
+\label{b2:def:18-holder-scaled}
+设整数 \(d\ge1\)、\(k\ge0\)，\(0<\alpha<1\)，\(\Omega\subset\mathbb R^d\) 为非空开集，标量域 \(\mathbb K\) 为 \(\mathbb R\) 或 \(\mathbb C\)。对函数 \(v:\Omega\to\mathbb K\)，记
+\[
+ [v]_{\alpha;\Omega}\coloneqq
+ \sup_{x\ne y\in\Omega}\frac{|v(x)-v(y)|}{|x-y|^\alpha}.
+\]
+\term[Holder-kongjian]{Hölder 空间}[Hölder space] \(C^{k,\alpha}(\Omega;\mathbb K)\) 由具有连续的 \(k\) 阶以内导数、且下列范数有限的函数组成：
+\[
+ \|u\|_{k,\alpha;\Omega}\coloneqq
+ \sum_{j=0}^k\|D^ju\|_{\infty;\Omega}+[D^ku]_{\alpha;\Omega}.
+\]
+各阶导数按有限个分量取最大值。\(C^{k,\alpha}_{\mathrm{loc}}(\Omega)\) 则要求每个紧含于 \(\Omega\) 的开子集上相应范数有限。在半径为 \(r>0\) 的球上定义尺度范数
+\[
+ \|u\|_{k,\alpha;B_r}^{(r)}\coloneqq
+ \sum_{j=0}^k r^j\|D^ju\|_{\infty;B_r}
+ +r^{k+\alpha}[D^ku]_{\alpha;B_r}.
+\]
+\end{definition}
+
+这些因子来自换元，而非记号上的修饰。若 \(v(y)=u(x_0+ry)\)，则
+\[
+ D^jv(y)=r^jD^ju(x_0+ry),\qquad
+ [D^kv]_{\alpha;B_1}=r^{k+\alpha}[D^ku]_{\alpha;B_r}.
+\]
+所以 \(\|v\|_{k,\alpha;B_1}=\|u\|_{k,\alpha;B_r}^{(r)}\)。对于 \(-\Delta u=f\)，缩放后的右端是 \(r^2f(x_0+ry)\)。因此估计中的 \(r^2\|f\|_\infty\) 和 \(r^{2+\alpha}[f]_\alpha\) 应当成对出现；遗漏后一个因子，就会把不同长度尺度上的估计混在一起。
+
+\ProseParagraphBreak
+Hölder 半范数只测量振荡，常函数的半范数为零，故完整范数还需 \(\|u\|_\infty\)。它具有两个直接而常用的计算规则：
+\[
+ [fg]_\alpha\le\|f\|_\infty[g]_\alpha+\|g\|_\infty[f]_\alpha,
+ \qquad [f\circ\Psi]_\alpha\le[f]_\alpha\operatorname{Lip}(\Psi)^\alpha.
+\]
+第一式由 \(f(x)g(x)-f(y)g(y)=f(x)(g(x)-g(y))+g(y)(f(x)-f(y))\) 得到；第二式直接代入 Lipschitz 增量界。冻结系数时用第一式，改变坐标时用第二式。
 
 \subsection{Poisson 方程的内部估计}
 \label{b2:subsec:160502}
 
-待撰写。
+沿用\cref{b2:lem:13-hessian-kernel}中的负 Laplace 基本解 \(\Phi_d\)。当 \(d\ge2\) 时，其二阶核为
+\[
+ K_{ij}(z)=\frac1{\sigma_{d-1}}
+ \left(\frac{dz_iz_j}{|z|^{d+2}}-\frac{\delta_{ij}}{|z|^d}\right),
+ \quad z\ne0,\qquad \sigma_{d-1}=|S^{d-1}|.
+\]
+它满足 \(|K_{ij}(z)|\le C_d|z|^{-d}\)、\(|\nabla K_{ij}(z)|\le C_d|z|^{-d-1}\)，在每个中心球面上的平均为零。分布二阶导数还有原点项：\(D_{ij}\Phi_d=\operatorname{pv}K_{ij}-\delta_{ij}\delta_0/d\)。这里的主值是挖去中心小球后取极限；原点项的负号保证取迹后得到 \(\Delta\Phi_d=-\delta_0\)。
+
+\Needspace{6\baselineskip}
+\begin{lemma}[Newton 势的 Hölder 估计]
+\label{b2:lem:18-newton-schauder}
+设整数 \(d\ge2\)，\(0<\alpha<1\)，\(g\in C_c^{0,\alpha}(\mathbb R^d;\mathbb K)\)，其中 \(\mathbb K=\mathbb R\) 或 \(\mathbb C\)，且 \(\operatorname{supp}g\subset\overline{B(0,1)}\)。令 \(w=\Phi_d*g\)。则 \(w\in C^{2,\alpha}_{\mathrm{loc}}(\mathbb R^d)\)，并且
+\[
+ \|w\|_{2,\alpha;B_2}\le C_{d,\alpha}\|g\|_{0,\alpha;\mathbb R^d}.
+\]
+更具体地，全空间二阶 Hölder 半范数满足
+\[
+ [D^2w]_{\alpha;\mathbb R^d}\le C_{d,\alpha}[g]_{\alpha;\mathbb R^d}.
+\]
+\end{lemma}
+\begin{proof}
+\Cref{b2:thm:13-newton-holder}已经给出 \(w\in C^2\) 及二阶导数的主值公式。现在估计两点间的差。固定一个分量 \(K=K_{ij}\)，记
+\[
+ Tg(x)=\operatorname{pv}\int_{\mathbb R^d}K(x-z)g(z)\,\mathrm dz,
+ \qquad D_{ij}w=Tg-\frac{\delta_{ij}}d g.
+\]
+取 \(x\ne y\)，令 \(\delta=|x-y|\)、\(A=B(x,2\delta)\)。减去近处的密度常值，再将远处的两项放在一起，得到
+\begin{align*}
+ Tg(x)-Tg(y)={}&
+ \int_AK(x-z)(g(z)-g(x))\,\mathrm dz\\
+ &-\int_AK(y-z)(g(z)-g(y))\,\mathrm dz\\
+ &+\int_{A^c}\bigl(K(x-z)-K(y-z)\bigr)(g(z)-g(x))\,\mathrm dz\\
+ &+(g(x)-g(y))J,\qquad
+ J=\operatorname{pv}\int_AK(y-z)\,\mathrm dz.
+\end{align*}
+说明最后一项的来源也有助于避免丢掉抵消。可先在一个以 \(x\) 为中心的大球内作上述代数分解，再令半径趋于无穷。\(K(x-z)\) 在中心环带的积分为零；\(K(y-z)\) 在偏心大球中的主值积分趋零，因为两个中心大球的差只在厚度至多 \(\delta\) 的远处壳层内，其贡献为 \(O(\delta/R)\)。于是远处常数项的差正好是 \(J\)，得到所列公式。
+
+两个近处积分都绝对收敛。\(A\subset B(y,3\delta)\)，故它们的绝对值之和至多为
+\[
+ C_d[g]_\alpha\int_0^{3\delta}r^{\alpha-1}\,\mathrm dr
+ \le\frac{C_d}{\alpha}[g]_\alpha\delta^\alpha.
+\]
+在 \(A^c\) 上，连接 \(x-z\) 与 \(y-z\) 的线段离原点至少 \(|x-z|/2\)，所以
+\[
+ |K(x-z)-K(y-z)|\le C_d\delta|x-z|^{-d-1}.
+\]
+用 \(|g(z)-g(x)|\le[g]_\alpha|z-x|^\alpha\)，远处积分由
+\[
+ C_d[g]_\alpha\delta\int_{2\delta}^{\infty}r^{\alpha-2}\,\mathrm dr
+ \le\frac{C_d}{1-\alpha}[g]_\alpha\delta^\alpha
+\]
+控制。这也证明刚才重组后的远处积分绝对收敛。
+
+最后，\(B(y,\delta)\subset A\subset B(y,3\delta)\)。最里面的中心球主值积分为零，故
+\[
+ |J|\le C_d\int_\delta^{3\delta}\frac{\mathrm dr}{r}=C_d\log3.
+\]
+乘上 \(|g(x)-g(y)|\) 后仍为 \(C_d[g]_\alpha\delta^\alpha\)。原点项 \(-\delta_{ij}g/d\) 也有同一 Hölder 界，合并即得全空间半范数估计。
+
+还需控制各阶上确界。对 \(x\in B_2\)，密度支集只涉及 \(|x-z|\le3\)，\(\Phi_d\) 与 \(\nabla\Phi_d\) 在该固定球内绝对可积，因此 \(\|w\|_\infty+\|\nabla w\|_\infty\le C_d\|g\|_\infty\)。二阶公式在 \(|x-z|<1\) 内减去 \(g(x)\)，在 \(1\le|x-z|\le3\) 内直接积分，得到 \(\|D^2w\|_{\infty;B_2}\le C_{d,\alpha}(\|g\|_\infty+[g]_\alpha)\)。二维核的对数在这个固定球内仍可积，所以同一局部界也成立。
+\end{proof}
+
+近处积分使用 \(\alpha>0\)，远处差分积分使用 \(\alpha<1\)。这解释了为什么同一个 Hölder 指数能够从源项传到二阶导数，也解释了两个端点为什么需要另外研究。只在原点附近估计 \(\int r^{\alpha-1}\,\mathrm dr\)，能证明二阶导数存在，却还没有控制它在两个不同点之间的差。
+
+\Needspace{6\baselineskip}
+\begin{theorem}[Poisson 方程的内部 Schauder 估计]
+\label{b2:thm:18-poisson-schauder}
+设整数 \(d\ge1\)，\(0<\alpha<1\)，\(r>0\)，\(B_r=B(x_0,r)\subset\mathbb R^d\)，\(\mathbb K=\mathbb R\) 或 \(\mathbb C\)。若 \(u\in L^\infty(B_r;\mathbb K)\)、\(f\in C^{0,\alpha}(B_r;\mathbb K)\)，且 \(-\Delta u=f\) 在分布意义下成立，则 \(u\) 有唯一的 \(C^{2,\alpha}_{\mathrm{loc}}(B_r)\) 代表，并满足
+\begin{equation}
+\label{b2:eq:18-poisson-schauder}
+ \|u\|_{2,\alpha;B_{r/2}}^{(r)}
+ \le C_{d,\alpha}\left(
+ \|u\|_{L^\infty(B_r)}+r^2\|f\|_{\infty;B_r}
+ +r^{2+\alpha}[f]_{\alpha;B_r}\right).
+\end{equation}
+\end{theorem}
+\begin{proof}
+先设 \(d\ge2\)、\(x_0=0\)、\(r=1\)。取光滑截断 \(0\le\chi\le1\)，使其支撑在 \(B_{3/4}\) 内、在 \(B_{2/3}\) 上为一。把 \(g=\chi f\) 在 \(B_1\) 外补零。乘积估计及截断支集到 \(\partial B_1\) 的正距离给出
+\[
+ \|g\|_{0,\alpha;\mathbb R^d}\le C_{d,\alpha}\|f\|_{0,\alpha;B_1}.
+\]
+跨越 \(\partial B_1\) 的两点中，若 \(g\) 有一个值非零，距离至少为 \(1/4\)，故这类 Hölder 商也受 \(4^\alpha\|f\|_\infty\) 控制。
+
+令 \(w=\Phi_d*g\)，则上一引理控制 \(w\) 的 \(C^{2,\alpha}(B_2)\) 范数，并且 \(-\Delta w=f\) 于 \(B_{2/3}\)。因此 \(h=u-w\) 在 \(B_{2/3}\) 分布调和。它局部可积，\cref{b2:prop:13-harmonic-l1-representative}给出光滑调和代表。它的上确界至多为 \(\|u\|_{L^\infty(B_1)}+\|w\|_{\infty;B_2}\)。对 \(B_{1/2}\) 中的点使用\cref{b2:prop:13-interior-derivatives}，其中到外球边界的距离至少 \(1/6\)，得到一至三阶导数的同型上界。
+
+连接 \(B_{1/2}\) 内两点的线段仍在该球中，于是
+\[
+ |D^2h(x)-D^2h(y)|\le C_d\|D^3h\|_{\infty;B_{1/2}}|x-y|.
+\]
+该球直径为一，故 \([D^2h]_{\alpha;B_{1/2}}\) 也受同一界控制。将 \(u=w+h\) 相加即得单位球估计。以任意内部球重复此论证得到整个 \(B_1\) 的局部正则性；各代表在交叠部分几乎处处相同，连续性使它们处处相同，所以拼接成唯一的连续代表。
+
+当 \(d=1\) 时，可直接在区间 \((-1,1)\) 定义 \(w(x)=-\int_0^x(x-t)f(t)\,\mathrm dt\)。它满足 \(-w''=f\)，各阶范数由 \(\|f\|_{0,\alpha}\) 控制；分布二阶导数为零的 \(u-w\) 是仿射函数，其内部范数由上确界控制，结论相同。最后使用 \(v(y)=u(x_0+ry)\) 与右端 \(r^2f(x_0+ry)\)，按尺度范数的换元公式得到一般半径的结论。
+\end{proof}
+
+这种控制二阶导数及其 Hölder 振荡的估计称为\term[Schauder-guji]{Schauder 估计}[Schauder estimate]。右端保留 \(\|u\|_\infty\)，是因为方程允许叠加任意调和函数。例如 \(f=0\)、\(u(x)=Nx_1\) 时，梯度可以随 \(N\) 任意增大。若另有边界条件及最大值估计，才可能再用数据控制这一项。
 
 \subsection{冻结系数与一般内部估计}
 \label{b2:subsec:160503}
 
-待撰写。
+在一点 \(x_0\) 附近，Hölder 连续的系数矩阵 \(A(x)\) 与常矩阵 \(A(x_0)\) 相差至多 \([A]_\alpha|x-x_0|^\alpha\)。把 \(A(x_0)\) 留在左侧、变化部分移到右侧，称为\term[dongjie-xishu]{冻结系数}[freezing coefficients]。真正要控制的是这项变化乘上未知的二阶导数；仅说系数接近常数，还不足以结束估计。
+
+\ProseParagraphBreak
+先看实对称常矩阵 \(A_0\)，并设 \(\lambda I\le A_0\le\Lambda I\)、\(0<\lambda\le\Lambda\)。在换元 \(x=x_0+A_0^{1/2}y\) 后，\(A_0:D_x^2u\) 化为 \(\Delta_yv\)，球变为椭球。椭球包含和包含于半径分别受 \(\lambda,\Lambda\) 控制的球。对内部点放置这样的球，用\cref{b2:thm:18-poisson-schauder}估计；两点距离较小时放在同一个球内，距离较大时用二阶导数上确界除以该距离。因此，对 \(\rho>0\)、\(0<\alpha<1\)、\(u\in C^{2,\alpha}(B_\rho;\mathbb R)\)、\(F\in C^{0,\alpha}(B_\rho;\mathbb R)\)，只要 \(A_0:D^2u=F\)，就有
+\begin{equation}
+\label{b2:eq:18-constant-coefficient}
+ [D^2u]_{\alpha;B_{\rho/2}}
+ \le C\left(\rho^{-2-\alpha}\|u\|_{\infty;B_\rho}
+       +\rho^{-\alpha}\|F\|_{\infty;B_\rho}
+       +[F]_{\alpha;B_\rho}\right)
+\end{equation}
+其中两个球同心，常数只依赖 \(d,\alpha,\lambda,\Lambda\)。这里 \(A:D^2u=\sum_{i,j}a^{ij}\partial_{ij}u\)。
+
+\Needspace{6\baselineskip}
+\begin{theorem}[变系数内部 Schauder 估计]
+\label{b2:thm:18-variable-schauder}
+设整数 \(d\ge1\)，\(0<\alpha<1\)，\(0<\lambda\le\Lambda<\infty\)，\(M<\infty\)。实系数 \(a^{ij},b^i,c\in C^{0,\alpha}(B_1)\) 满足 \(a^{ij}=a^{ji}\)、\(\lambda I\le A(x)\le\Lambda I\)，且各系数的 \(C^{0,\alpha}\) 范数之和不超过 \(M\)。若 \(u\in C^{2,\alpha}(B_1;\mathbb R)\) 满足
+\[
+ Lu\coloneqq\sum_{i,j=1}^d a^{ij}(x)\partial_{ij}u
+      +\sum_{i=1}^d b^i(x)\partial_i u+c(x)u=f(x),
+ \qquad f\in C^{0,\alpha}(B_1;\mathbb R),
+\]
+则
+\[
+ \|u\|_{2,\alpha;B_{1/2}}
+ \le C\left(\|u\|_{\infty;B_1}+\|f\|_{0,\alpha;B_1}\right),
+\]
+其中 \(C\) 只依赖 \(d,\alpha,\lambda,\Lambda,M\)。该先验估计不要求 \(c\) 有固定符号。
+\end{theorem}
+\begin{proof}
+为使每一点都能选择一个留在区域内的小球，记 \(d_x=1-|x|\)、\(d_{xy}=\min(d_x,d_y)\)，并令
+\[
+ U=\|u\|_{\infty;B_1},\quad
+ M_j=\sup_{x\in B_1}d_x^j|D^ju(x)|\quad(j=1,2),
+\]
+\[
+ Q_j=\sup_{x\ne y\in B_1}
+ d_{xy}^{j+\alpha}\frac{|D^ju(x)-D^ju(y)|}{|x-y|^\alpha}
+ \quad(j=0,1),
+\]
+\[
+ S=\sup_{x\ne y\in B_1}
+ d_{xy}^{2+\alpha}\frac{|D^2u(x)-D^2u(y)|}{|x-y|^\alpha}.
+\]
+这些量由假设均有限。先建立插值关系：对每个 \(\varepsilon>0\)，存在 \(C_\varepsilon\)，只依赖 \(d,\alpha,\varepsilon\)，使
+\begin{equation}
+\label{b2:eq:18-weighted-interpolation}
+ M_1+M_2+Q_0+Q_1\le\varepsilon S+C_\varepsilon U.
+\end{equation}
+取 \(0<h<1/8\)。在点 \(x\) 沿单位方向 \(e\) 作步长 \(hd_x\) 的中心二阶差分，线段上到边界的距离与 \(d_x\) 可比。Taylor 公式的二阶余项由 \(C S h^{2+\alpha}\) 控制，于是
+\[
+ d_x^2|\partial_{ee}u(x)|\le C h^{-2}U+C h^\alpha S.
+\]
+取坐标方向及 \((e_i+e_j)/\sqrt2\)，由极化恒等式恢复全部二阶分量，得到 \(M_2\le C h^{-2}U+C h^\alpha S\)。一阶差分再给出 \(M_1\le C h^{-1}U+C hM_2\)。先选 \(h\) 使高阶项的系数足够小，便可将 \(M_1+M_2\) 控制为任意小倍数的 \(S\) 加一个 \(U\) 项。
+
+对 \(Q_1\)，把两点分成 \(|x-y|<h d_{xy}\) 和其补集。近处沿线段积分，用二阶导数界，得到 Hölder 商至多 \(C h^{1-\alpha}M_2\)；远处分别估计两个梯度，得到至多 \(C h^{-\alpha}M_1\)。对 \(Q_0\) 同样得到 \(C h^{1-\alpha}M_1+C h^{-\alpha}U\)。固定一个这样的 \(h\)，再把刚才 \(M_1,M_2\) 中任意小的系数选得足够小，即得\eqref{b2:eq:18-weighted-interpolation}。
+
+现在估计 \(S\)。任取 \(x,y\)，交换二者使 \(d_x=d_{xy}\)。固定一个稍后选取的 \(0<\mu<1/8\)，令 \(\rho=\mu d_x\)。若 \(|x-y|\ge\rho/4\)，则直接用 \(M_2\) 有
+\[
+ d_x^{2+\alpha}\frac{|D^2u(x)-D^2u(y)|}{|x-y|^\alpha}
+ \le C\mu^{-\alpha}M_2.
+\]
+若 \(|x-y|<\rho/4\)，则两点均在 \(B(x,\rho/2)\)，而在 \(B(x,\rho)\) 上冻结系数给出
+\[
+ A(x):D^2u=F,
+ \qquad F=f+(A(x)-A):D^2u-b\cdot Du-cu.
+\]
+该球中所有边界距离都与 \(d_x\) 可比。乘积的 Hölder 估计给出变化部分的两项控制
+\begin{align*}
+ \|(A(x)-A):D^2u\|_\infty
+     &\le C M\rho^\alpha d_x^{-2}M_2,\\
+ [(A(x)-A):D^2u]_\alpha
+     &\le C M\left(\rho^\alpha d_x^{-2-\alpha}S+d_x^{-2}M_2\right).
+\end{align*}
+第一项利用 \(\|A(x)-A\|_\infty\le M\rho^\alpha\)，第二项还保留了 \([A]_\alpha\|D^2u\|_\infty\)。后者并不随 \(\rho\) 自动变小，正是插值关系要处理的项。
+
+将这些估计和低阶项的乘积估计代入\eqref{b2:eq:18-constant-coefficient}，再乘以 \(d_x^{2+\alpha}\)，得到
+\[
+ d_x^{2+\alpha}[D^2u]_{\alpha;B(x,\rho/2)}
+ \le C_\mu\bigl(U+\|f\|_{0,\alpha;B_1}\bigr)
+       +C_0 M\mu^\alpha S
+       +C_\mu(M_1+M_2+Q_0+Q_1).
+\]
+这里 \(C_0\) 不依赖 \(\mu\)，\(C_\mu\) 可以依赖 \(\mu\) 和定理中的结构常数。例如 \([b\cdot Du]_\alpha\le\|b\|_\infty[Du]_\alpha+[b]_\alpha\|Du\|_\infty\)，乘上边界距离后分别由 \(C M Q_1\) 与 \(C M M_1\) 控制；零阶项由 \(Q_0,U\) 控制。所有低阶项因 \(d_x\le1\) 而不会产生额外的大尺度因子。
+
+综合近、远两种情况并对点对取上确界，先选 \(\mu\) 使 \(C_0M\mu^\alpha\le1/4\)，再在\eqref{b2:eq:18-weighted-interpolation}中选 \(\varepsilon\) 使 \(C_\mu\varepsilon\le1/4\)。移项得到 \(S\le C(U+\|f\|_{0,\alpha})\)。插值关系同时控制 \(M_1,M_2\)。在 \(B_{1/2}\) 上 \(d_x\ge1/2\)，这些带权量直接控制普通 \(C^{2,\alpha}\) 范数，证明完成。
+\end{proof}
+
+在一般半径 \(r\) 的球上，坐标变化将系数变成
+\[
+ \begin{aligned}
+ A_r(y)&=A(x_0+ry),& b_r(y)&=r b(x_0+ry),\\
+ c_r(y)&=r^2c(x_0+ry),& f_r(y)&=r^2f(x_0+ry).
+ \end{aligned}
+\]
+因而常数依赖应通过 \(\|A\|_\infty+r^\alpha[A]_\alpha\)、\(r\|b\|_\infty+r^{1+\alpha}[b]_\alpha\)、\(r^2\|c\|_\infty+r^{2+\alpha}[c]_\alpha\) 读取。低阶项在小尺度上随额外的 \(r\) 次幂减弱，主部系数则靠 Hölder 振荡变小。
+
+\ProseParagraphBreak
+这里的非散度形式也影响系数条件。若原式为 \(-\operatorname{div}(A\nabla u)=f\)，展开后除 \(-a^{ij}\partial_{ij}u\) 外还含 \(-\partial_i a^{ij}\partial_j u\)。要直接使用上述估计，\(A\in C^{1,\alpha}\) 足以使这些一阶系数属于 \(C^{0,\alpha}\)。只知 \(A\in C^{0,\alpha}\) 的散度方程，通常对应一阶 Hölder 正则性，不能把矩阵的同一个名称当作二阶 Schauder 条件。
 
 \subsection{边界估计的条件与理论边界}
 \label{b2:subsec:160504}
 
-待撰写。
+内部球能沿所有方向缩小；靠近边界时，一部分方向落到区域外，必须把边界数据和边界几何一起带入估计。最简单的平直模型是半球上的齐次 Dirichlet 问题。若在平面边界把解作奇反射，零边界值有利于连接两侧，但右端的奇反射只有在它于该平面为零时才保持连续。因此任意 Hölder 源项不能只用一句“奇反射后套内部估计”来处理；通常先构造满足边界数据的修正，或直接估计半空间 Green 核。
+
+\ProseParagraphBreak
+一般曲面边界可在坐标图中写成 \(x_d=\psi(x')\)，区域位于一侧。令 \(y'=x'\)、\(y_d=x_d-\psi(x')\)，就把它拉平。二阶链式法则同时产生 \(D\psi\) 控制的主部系数和 \(D^2\psi\) 控制的一阶项。要使变换后的各项仍为 \(C^{0,\alpha}\)，自然要求 \(\psi\in C^{2,\alpha}\)。同样，非齐次边界值应先减去一个 \(C^{2,\alpha}\) 延拓；这个减法会改变方程右端。
+
+\Needspace{6\baselineskip}
+\begin{claim}[全局 Dirichlet Schauder 估计]
+\label{b2:claim:18-boundary-schauder}
+设整数 \(d\ge2\)，\(0<\alpha<1\)，\(\Omega\subset\mathbb R^d\) 为非空有界 \(C^{2,\alpha}\) 区域。实系数 \(a^{ij},b^i,c\in C^{0,\alpha}(\overline\Omega)\)，\(a^{ij}=a^{ji}\)，且存在 \(0<\lambda\le\Lambda<\infty\) 使 \(\lambda I\le A(x)\le\Lambda I\) 于 \(\overline\Omega\)。令
+\(Lu=\sum a^{ij}\partial_{ij}u+\sum b^i\partial_i u+cu\)。对 \(f\in C^{0,\alpha}(\overline\Omega)\)、\(g\in C^{2,\alpha}(\overline\Omega)\)，每个满足 \(Lu=f\) 于 \(\Omega\)、\(u=g\) 于 \(\partial\Omega\) 的实函数 \(u\in C^{2,\alpha}(\overline\Omega)\) 都有估计
+\[
+ \|u\|_{2,\alpha;\overline\Omega}
+ \le C\left(\|u\|_{\infty;\Omega}
+ +\|f\|_{0,\alpha;\overline\Omega}
+ +\|g\|_{2,\alpha;\overline\Omega}\right).
+\]
+常数依赖 \(d,\alpha,\lambda,\Lambda\)、系数范数的共同上界及区域有限个边界图的 \(C^{2,\alpha}\) 几何控制。
+\end{claim}
+
+这一边界估计还需要半球模型的二阶核估计、边界插值和有限坐标图拼接。Gilbarg 与 Trudinger 的《Elliptic Partial Differential Equations of Second Order》\cite[Chapter 6]{Gilbarg2001Elliptic}系统讨论这一扩展。这里保留 \(\|u\|_\infty\)，使先验估计与齐次问题有无非零解分开。若再要求 \(c\le0\)，最大值原理及屏障可用数据控制 \(\|u\|_\infty\)，并配合连续性方法构造经典 Dirichlet 解；从先验界走到存在性，还须检验这条算子路径的可解性与闭性。
+
+\ProseParagraphBreak
+边界的正则性不是只影响常数。二维扇形 \(0<r<1\)、\(0<\theta<\omega\)，若 \(\pi<\omega<2\pi\)，函数
+\[
+ u(r,\theta)=r^{\pi/\omega}\sin(\pi\theta/\omega)
+\]
+在扇形内调和，在两条直边上为零，但 \(|\nabla u|\) 像 \(r^{\pi/\omega-1}\) 一样在凹角处发散。右端 \(f=0\) 已经光滑，障碍来自边界的角点。另一方面，\cref{b2:thm:13-newton-holder}后的连续源反例表明，即使远离边界，仅把 Hölder 条件降为连续性也未必得到连续二阶导数。源、主部系数和几何三方面的条件，分别控制了不同的困难。

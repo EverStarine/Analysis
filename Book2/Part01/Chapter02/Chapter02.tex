@@ -3,15 +3,17 @@
 \label{b2:ch:ode}
 \BookChapterNumber{b2:ch:ode}
 \begin{chapterabstract}
-常微分方程把瞬时变化率与整条运动轨道联系起来。本章已写部分从自治 \(C^1\) 方程的积分迭代出发，证明局部存在唯一与初始点的 Lipschitz 依赖，通过最大解拼接及线性增长估计讨论全时间存在，并建立连续系数线性系统的初值理论、流的复合关系和一阶变分方程。一般非自治局部 Lipschitz 理论、矩阵指数与变常数公式尚待撰写；连续场的 Peano 存在和平衡点的 Lyapunov 稳定性保留为选读待写内容。
+常微分方程用当前位置和时刻决定瞬时变化率，再由初始数据确定整条轨道。本章从积分方程与逐次逼近建立局部存在唯一性，解释局部 Lipschitz 条件的作用，并以 Gronwall 估计连接唯一性、连续依赖与全局控制。最大解和延拓准则区分有限时间爆破与碰到定义域边界；线性系统部分建立矩阵指数、基本解矩阵与变常数公式；流及变分方程说明轨道怎样随初值和参数变化。最后两节选读分别用 Euler 折线证明连续场的 Peano 存在定理，并用 Lyapunov 函数研究平衡点的稳定性。
 \end{chapterabstract}
 
 \begin{learninggoals}
 \begin{itemize}
-\item\label{b2:item:ode-goal-local}能在自治 \(C^1\) 条件下构造共同短时间的局部解，用 Gronwall 估计说明唯一性与初始点依赖。
-\item\label{b2:item:ode-goal-continuation}能说明唯一性如何使局部解拼成最大解，辨认局部存在与全时间存在的区别，并用线性增长条件排除有限时间逃逸。
-\item\label{b2:item:ode-goal-linear}能用带阶乘界的积分迭代证明连续系数线性系统的存在唯一性，说明这里不需要系数可微。
-\item\label{b2:item:ode-goal-flow}能证明自治流的复合与逆关系，利用一阶变分方程说明流对初始点的 \(C^1\) 依赖。
+\item\label{b2:item:ode-goal-local}能说明非自治方程对时间连续、对状态局部一致 Lipschitz 的具体含义，构造共同短时间的解，并用 Gronwall 估计证明唯一性。
+\item\label{b2:item:ode-goal-continuation}能拼接最大解，使用紧集延拓、连续依赖与标量比较，区别局部存在、正向存在和全时间存在。
+\item\label{b2:item:ode-goal-linear}能构造连续系数系统的基本解矩阵，计算简单矩阵指数，用变常数公式分析外力，并辨认非交换系数造成的障碍。
+\item\label{b2:item:ode-goal-flow}能证明流的复合关系和光滑依赖，写出初值与参数的变分方程，区分自治流与非自治的两参数演化。
+\item\label{b2:item:ode-goal-peano}选读后能从 Euler 折线的紧性得到 Peano 存在定理，并解释连续性为何不能保证唯一性。
+\item\label{b2:item:ode-goal-stability}选读后能准确区分稳定、渐近稳定与指数稳定，构造简单 Lyapunov 函数，并核验其正定性与沿轨道导数的符号。
 \end{itemize}
 \end{learninggoals}
 
@@ -19,13 +21,22 @@
 
 \ProseParagraphBreak
 
-本章使用\chapref{b2:ch:01}的有限维微分与积分求导规则。\secref{b2:sec:ode-local-existence}先处理自治 \(C^1\) 初值问题，并把基本 Gronwall 不等式置于依赖估计之前；\secref{b2:sec:ode-continuation}讨论最大解与线性增长下的延拓。\secref{b2:sec:ode-linear-systems}给出后文边值问题和变分方程所需的连续系数线性系统定理；\secref{b2:sec:ode-smooth-flow}建立一阶光滑依赖。前四节仍保留未完成部分的待写标记，不能把它们视为一般常微分方程理论已经齐备。
+\secref{b2:sec:ode-local-existence}从积分方程入手，先建立 Gronwall 估计，再以逐次逼近构造一般非自治局部解；自治 \(C^1\) 情形是后文特征线法最常调用的版本。\secref{b2:sec:ode-continuation}解释为什么短时间结论能够沿轨道继续，以及延拓失败会发生什么。
 
 \ProseParagraphBreak
 
-选读的\secref{b2:sec:ode-peano}与\secref{b2:sec:ode-lyapunov}目前均待撰写，分别安排连续场的存在性与平衡点稳定性。它们不作为后续特征线法的证明前提。John K. Hunter 与 Bruno Nachtergaele 的《Applied Analysis》\cite[Section 3.5]{Hunter2001Applied}用积分迭代构造常微分方程的局部解，并说明局部存在与全局存在的区别，可与本章相应论证对照。
+\secref{b2:sec:ode-linear-systems}既提供显式计算的模型，也为\secref{b2:sec:ode-smooth-flow}的变分方程准备线性工具。矩阵指数由幂级数构造，使标量指数解能够推广到相互耦合的线性系统。初次阅读时应把“解关于时间可微”与“解关于初值可微”分开理解：前者是满足方程的要求，后者需要另做余项估计。
+
+\ProseParagraphBreak
+
+选读的\secref{b2:sec:ode-peano}撤去 Lipschitz 条件，展示“以紧性换取存在”的另一条路线；\secref{b2:sec:ode-lyapunov}把目光从有限时间的构造移到长时间行为。章末前六题覆盖前四节，后两题分别连接 Peano 选解与渐近稳定的模型。
+
+\ProseParagraphBreak
+
+John K. Hunter 与 Bruno Nachtergaele 的《Applied Analysis》\cite[Section 3.5]{Hunter2001Applied}用积分迭代构造局部解，并说明局部存在与全局存在的区别。Gerald Teschl 的《Ordinary Differential Equations and Dynamical Systems》\cite[Section 2.7; Sections 6.5--6.6]{Teschl2012ODE}分别讨论 Euler 近似与 Peano 存在，以及平衡点和 Lyapunov 方法；阅读时可对照紧性证明与唯一性证明各自使用了哪些条件。
 % 实读：Hunter--Nachtergaele 作者稿 Section 3.5，印刷73--76页。
-% 本章从原特征线节与 Sturm--Liouville 节搬入已有证明；其余规划内容保留待写状态。
+% 实读：Teschl 经AMS许可的作者稿 Section 2.7, pp.54--56;
+% Sections 6.5--6.6, pp.198, 200--202；引文著录2012正式出版版。
 
 \input{Part01/Chapter02/Section0201}
 \input{Part01/Chapter02/Section0202}
@@ -35,17 +46,202 @@
 \input{Part01/Chapter02/Section0206}
 
 \begin{chaptersummary}
-在自治 \(C^1\) 条件下，短时间积分迭代给出局部解，Gronwall 估计给出唯一性与初始点的定量依赖。唯一性允许局部解在重叠区间上拼接；线性增长估计进一步使有限时间内的轨道保持有界，从而排除有限端点。
+局部存在唯一性把一个微分关系转化为初始数据决定的轨道。积分迭代中的共同时间保证所有候选曲线留在同一个受控区域，Lipschitz 常数则使误差收缩。Gronwall 估计在构造完成后继续发挥作用：它控制相邻初值和相近方程的解，使短时间结论能够覆盖已经存在的有限轨道段。
 
 \ProseParagraphBreak
 
-连续系数线性系统可以直接用阶乘界控制积分迭代，无需对时间系数求导。这个结论既用于一阶变分方程，也用于后文 Sturm--Liouville 方程的端点初值构造。自治流的复合与逆关系来自唯一性，对初始点的可微性则由变分方程和余项估计建立。
+最大解只是不能再延长的解，并不自动在整个实轴存在。有限端点意味着时空轨道最终离开方程定义域中的每个紧集；在整个状态空间上，这才具体化为状态的无界增长。线性增长、比较或其他先验界能够排除相应的逃逸，使用时要核对所控制的是正向还是双向时间。
 
 \ProseParagraphBreak
 
-本章尚未写成一般非自治局部 Lipschitz 理论、一般延拓与比较、矩阵指数、变常数公式和高阶光滑依赖。Peano 存在、Lyapunov 稳定性及章末习题也仍待撰写；这些标题不承担后文的证明义务。
+连续系数线性系统的积分迭代具有阶乘界，因此不必在每一小段重新压缩时间。基本解矩阵把任意初值的解组织为一个线性映射，变常数公式再累计各时刻外力的影响。常系数时矩阵指数给出这一演化；变系数矩阵不交换时，指数积分公式一般失效。
+
+\ProseParagraphBreak
+
+自治流的复合与逆关系来自唯一性，空间可微性来自变分方程及余项估计。把轨道与其导数放进增广系统，可以继续证明高阶光滑性；再把时间和常参数作为状态变量，便得到非自治演化的联合光滑性。每一步都保留了正则性条件，不能从轨道自身可微直接跨到任意阶参数可微。
+
+\ProseParagraphBreak
+
+选读部分展示两种不同的问题。Peano 定理只要求连续场，但以子列紧性构造的解可能不唯一；Lyapunov 方法则在唯一性框架下，用一个沿轨道下降的函数控制全部正向时间。非正导数通常只给稳定，严格负导数给出渐近稳定，而指数速率还需要定量的二次型控制。
 \end{chaptersummary}
 
 \BookExercises
 
-待撰写。
+% 目标：通过显式解辨认最大区间、前后时间和定义域内的爆破。
+% 来源：自拟；logistic模型的分类计算，正文不依赖本题。
+\begin{exercise}[同一方程的不同最大区间]\label{b2:ex:ode-logistic}
+对每个 \(a\in\mathbb R\)，求初值问题 \(x'=x(1-x)\)、\(x(0)=a\) 的最大解及其最大时间区间。分别讨论 \(a<0\)、\(a=0\)、\(0<a<1\)、\(a=1\)、\(a>1\)。哪些初值的解对全部正向时间存在？它们是否都在全部反向时间存在？
+\end{exercise}
+\begin{solution}
+\(a=0\) 与 \(a=1\) 分别给出恒等于 \(0\) 与 \(1\) 的全时间解。对其余初值，在不碰到这两个平衡值的区间上分离变量，得到
+\[
+ \log\left|\frac{x}{1-x}\right|=t+\text{常数},\quad
+ x(t)=\frac{ae^t}{1-a+ae^t}.
+\]
+也可以直接代入验证右式，随后用局部唯一性确定它就是初值解。因此不必先假定分离变量过程已覆盖全部轨道；最大区间由分母的零点决定。
+
+若 \(0<a<1\)，分母对所有实数 \(t\) 都正，故最大区间为 \(\mathbb R\)。若 \(a<0\)，分母唯一零点为 \(T=\log(1-1/a)>0\)，含 \(0\) 的最大区间是 \((-\infty,T)\)，且 \(t\uparrow T\) 时 \(x(t)\to-\infty\)。若 \(a>1\)，相同零点满足 \(T<0\)，最大区间是 \((T,\infty)\)，且 \(t\downarrow T\) 时 \(x(t)\to+\infty\)。无穷极限阻止了穿过该时刻的实值连续延拓。
+
+因此恰好 \(a\geq0\) 的解在全部正向时间存在；其中 \(a>1\) 的解不能在全部反向时间存在。对任意 \(a>0\)，\(t\to+\infty\) 时 \(x(t)\to1\)。多项式速度场在整个实轴光滑，只保证局部存在唯一；它既不能排除其他初值的正向爆破，也不能从正向有界推出双向全局存在。
+\end{solution}
+
+% 目标：以比较获得非线性先验界，不把超线性增长误判为必然爆破。
+% 来源：自拟；有界外力与耗散项的标量组合。
+\begin{exercise}[超线性速度与正向控制]\label{b2:ex:ode-forced-dissipation}
+设 \(g\in C(\mathbb R;\mathbb R)\)，\(|g(t)|\leq M\)，其中 \(M\geq0\)。证明 \(x'=-x^3+g(t)\)、\(x(0)=a\in\mathbb R\) 的解在所有 \(t\geq0\) 存在，且
+\[
+ |x(t)|\leq R\coloneqq\max\{|a|,M^{1/3}\}\quad(t\geq0).
+\]
+用 \(g=0\)、\(a=1\) 说明这一结论不能直接改成全时间存在。
+\end{exercise}
+\begin{solution}
+速度场连续，状态导数 \(-3x^2\) 在每个紧区间有界，因此局部存在唯一。常函数 \(R\) 满足 \(0\geq-R^3+g(t)\)，是上解；常函数 \(-R\) 满足 \(0\leq R^3+g(t)\)，是下解。标量比较分别用于解与这两个常函数，在解已有的全部正向时间上得到 \(-R\leq x(t)\leq R\)。当 \(R=0\) 时也可直接由唯一性得到零解。
+
+若最大右端点 \(T\) 有限，轨道的时空图像位于紧集 \([0,T]\times[-R,R]\subset\mathbb R^2\)。一般延拓准则排除这一情形，故解存在于所有正向时间。这里三次项指向原点，其绝对值的超线性增长并不引起正向爆破。
+
+当 \(g=0\)、\(a=1\) 时，解为 \(x(t)=(1+2t)^{-1/2}\)，最大区间 \((-1/2,\infty)\)。它在正向时间衰减，却在反向有限时刻爆破。这也说明使用先验界时必须保留时间方向。
+\end{solution}
+
+% 目标：从系统变常数计算共振，辨认固定时间连续依赖与长期一致控制。
+% 来源：自拟；经典受迫振子模型重新组织。
+\begin{exercise}[受迫振子与共振极限]\label{b2:ex:ode-resonance}
+设 \(\omega>0\)、\(\nu\geq0\)。把
+\[
+ y''+\omega^2y=\cos(\nu t),\quad y(0)=y'(0)=0
+\]
+写成二维一阶系统，并用变常数公式求解。分别给出 \(\nu\ne\omega\) 与 \(\nu=\omega\) 的表达式，说明 \(\nu\to\omega\) 时解在每个紧时间区间一致收敛，却不能由此得到对全部 \(t\geq0\) 通用的有界响应估计。
+\end{exercise}
+\begin{solution}
+取 \(Y=(y,y')^{\mathsf T}\)，则
+\[
+ Y'=AY+\binom{0}{\cos(\nu t)},\quad
+ A=\begin{pmatrix}0&1\\-\omega^2&0\end{pmatrix},\quad A^2=-\omega^2I.
+\]
+指数级数的偶奇分解给出
+\[
+ e^{tA}=\begin{pmatrix}
+ \cos(\omega t)&\sin(\omega t)/\omega\\
+ -\omega\sin(\omega t)&\cos(\omega t)
+ \end{pmatrix}.
+\]
+因此变常数公式的第一分量为
+\[
+ y_\nu(t)=\frac1\omega\int_0^t\sin(\omega(t-s))\cos(\nu s)\,\mathrm ds.
+\]
+积分，或验证方程及初值后使用唯一性，得到
+\[
+ y_\nu(t)=
+ \begin{cases}
+ \dfrac{\cos(\nu t)-\cos(\omega t)}{\omega^2-\nu^2},&\nu\ne\omega,\\[5pt]
+ \dfrac{t}{2\omega}\sin(\omega t),&\nu=\omega.
+ \end{cases}
+\]
+对任意 \(T>0\)，积分表达式和 \(|\cos(\nu s)-\cos(\omega s)|\leq|\nu-\omega|\cdot|s|\) 给出
+\[
+ \sup_{|t|\leq T}|y_\nu(t)-y_\omega(t)|
+ \leq\frac{T^2}{2\omega}|\nu-\omega|.
+\]
+固定 \(\nu\ne\omega\) 时响应有界，但所得界 \(2/|\omega^2-\nu^2|\) 随 \(\nu\to\omega\) 增大。共振解则在 \(t=(\pi/2+2k\pi)/\omega\) 上线性增大，因而无界。紧时间连续依赖没有提供无穷时间的一致界。
+\end{solution}
+
+% 目标：用一个周期的演化寻找周期解，并证明吸引性与唯一性。
+% 来源：自拟；不需要尚未建立的一般不动点或Floquet理论。
+\begin{exercise}[周期外力的唯一周期响应]\label{b2:ex:ode-periodic-forcing}
+设 \(\lambda,T>0\)，\(g\in C(\mathbb R;\mathbb R)\) 且 \(g(t+T)=g(t)\)。证明方程 \(x'=-\lambda x+g(t)\) 有且仅有一个 \(T\)-周期解 \(p\)，求出 \(p(0)\)，并证明任意其他解 \(x\) 满足
+\[
+ |x(t)-p(t)|=e^{-\lambda t}|x(0)-p(0)|\quad(t\geq0).
+\]
+\end{exercise}
+\begin{solution}
+由变常数公式，从 \(x(0)=a\) 出发的全时间解满足
+\[
+ x(T)=e^{-\lambda T}a+\int_0^T e^{-\lambda(T-s)}g(s)\,\mathrm ds.
+\]
+周期解必须满足 \(x(T)=a\)。由于 \(1-e^{-\lambda T}>0\)，唯一可能的初值是
+\[
+ a_* =\frac{\displaystyle\int_0^T e^{-\lambda(T-s)}g(s)\,\mathrm ds}
+ {1-e^{-\lambda T}}.
+\]
+令 \(p\) 为这个初值的解。函数 \(t\mapsto p(t+T)\) 由外力的周期性满足同一个方程，且在 \(t=0\) 处取值 \(p(T)=a_*=p(0)\)。唯一性保证 \(p(t+T)=p(t)\) 对所有实数 \(t\) 成立，故必要条件也足够。任意两个解之差满足 \(z'=-\lambda z\)，从而得到题设的衰减恒等式。
+\end{solution}
+
+% 目标：检验流可微定理的C¹假设，区分Lipschitz连续依赖与可微依赖。
+% 来源：自拟；正文没有以该流为证明前提。
+\begin{exercise}[唯一的流未必可微]\label{b2:ex:ode-lipschitz-nonsmooth-flow}
+求 \(x'=|x|\)、\(x(0)=a\in\mathbb R\) 的全时间流 \(\Phi_t(a)\)。证明对每个固定 \(t\)，该流关于 \(a\) 是 Lipschitz 映射；但当 \(t\ne0\) 时，它在 \(a=0\) 处不可微。说明这与本章哪些结论相容。
+\end{exercise}
+\begin{solution}
+速度场全局 Lipschitz，且至多线性增长，因此解在整个实轴上唯一存在。分别解正、负半轴上的方程并核对初值，得到
+\[
+ \Phi_t(a)=
+ \begin{cases}
+ ae^t,&a\geq0,\\
+ ae^{-t},&a<0.
+ \end{cases}
+\]
+在每个半轴斜率的绝对值至多 \(e^{|t|}\)；跨过原点时把差分拆为两段，也得到 \(|\Phi_t(a)-\Phi_t(b)|\leq e^{|t|}|a-b|\)。然而原点的右导数为 \(e^t\)，左导数为 \(e^{-t}\)，二者恰在 \(t=0\) 时相等。局部 Lipschitz 条件保证唯一性和 Lipschitz 连续依赖，\cref{b2:thm:07-flow-derivative}还要求速度场属于 \(C^1\)；本例在原点不满足后一个条件。
+\end{solution}
+
+% 目标：计算参数变分，区分固定轨道段光滑依赖与最大生存时间变化。
+% 来源：自拟；三种参数符号给出不同的最大区间。
+\begin{exercise}[参数导数与存在时间]\label{b2:ex:ode-parameter-lifetime}
+对实参数 \(\lambda\)，考虑 \(x'=x^2+\lambda\)、\(x(0)=0\)。分别求 \(\lambda>0\)、\(\lambda=0\)、\(\lambda<0\) 的最大解与最大时间区间。用参数变分方程求 \(\left.\partial_\lambda x(t,\lambda)\right|_{\lambda=0}\)，并解释为何 \(\lambda>0\) 时的有限时间爆破不违背 \(\lambda=0\) 附近的光滑依赖。
+\end{exercise}
+\begin{solution}
+直接积分或代入验证可得
+\[
+ x(t,\lambda)=
+ \begin{cases}
+ \sqrt\lambda\tan(\sqrt\lambda\,t),&\lambda>0,\\
+ 0,&\lambda=0,\\
+ -\sqrt{-\lambda}\tanh(\sqrt{-\lambda}\,t),&\lambda<0.
+ \end{cases}
+\]
+当 \(\lambda>0\) 时最大区间为 \((-\pi/(2\sqrt\lambda),\pi/(2\sqrt\lambda))\)；另外两种情形的最大区间均为 \(\mathbb R\)。对于负参数，\(\tanh\) 形式也可写成指数的商，其分母处处为正。
+
+由\cref{b2:prop:ode-parameter-variation}，固定任意紧时间区间，都可在 \(\lambda=0\) 的某邻域对解求参数导数。记 \(B(t)=\left.\partial_\lambda x(t,\lambda)\right|_{\lambda=0}\)，则参考解为零，变分方程为 \(B'=2\cdot0\cdot B+1\)、\(B(0)=0\)，故 \(B(t)=t\)。
+
+给定 \(T>0\)，只要正参数满足 \(\lambda<\pi^2/(4T^2)\)，其解就存在于 \([-T,T]\)。因此任意固定紧时间段都保留了共同存在的参数邻域；当要求覆盖越来越长的时间段时，该邻域可以缩小。光滑依赖在最大解的开定义域上成立，不保证所有邻近参数共享同一个无限时间区间。
+\end{solution}
+
+% 目标：理解紧性构造的子列与近似方法的选解现象。
+% 来源：自拟；在Peano正文非唯一模型上增加离散近似比较。
+\begin{optionalexercise}[Euler 折线选择了哪一条解]\label{b2:ex:ode-peano-selection}
+在 \([0,T]\)、\(T>0\) 上考虑 \(x'=2\sqrt{|x|}\)、\(x(0)=0\)。证明任意网格上从精确零初值出发的显式 Euler 折线都恒为零。另一方面，对 \(\varepsilon>0\)，求初值 \(x(0)=\varepsilon\) 的正向解，并证明它们当 \(\varepsilon\downarrow0\) 时一致趋于另一条零初值解。说明为何这不与 Peano 定理冲突。
+\end{optionalexercise}
+\begin{solution}
+显式 Euler 节点递推为 \(x_{j+1}=x_j+2h_j\sqrt{|x_j|}\)。从 \(x_0=0\) 出发，归纳得到每个节点都为零，各段斜率也为零，所以整条折线恒为零，任意细化网格的极限仍为零解。
+
+从正初值出发，解在正向时间保持正，由 \((\sqrt{x})'=1\) 得 \(x_\varepsilon(t)=(\sqrt\varepsilon+t)^2\)。在 \([0,T]\) 上，
+\[
+ \sup_{0\leq t\leq T}|x_\varepsilon(t)-t^2|
+ \leq2T\sqrt\varepsilon+\varepsilon\longrightarrow0.
+\]
+极限 \(t^2\) 也满足零初值问题，却与零解不同。Peano 定理保证某条解可以由近似的紧性得到，没有断言所有近似过程都会选出同一条解，也没有给出初值唯一地确定的连续解映射。缺少唯一性时，不能把某个近似方案的极限当作全部解的描述。
+\end{solution}
+
+% 目标：结合旋转与径向衰减，区分渐近稳定和指数稳定。
+% 来源：自拟；二维多项式耗散系统，避免重复正文一维模型。
+\begin{optionalexercise}[旋转中的缓慢衰减]\label{b2:ex:ode-spiral-decay}
+在 \(\mathbb R^2\) 上考虑
+\[
+ x'=-y-x(x^2+y^2),\quad y'=x-y(x^2+y^2).
+\]
+证明每条轨道在所有正向时间存在，原点渐近稳定，而且所有初值的解都趋于原点。求非零初值的半径与转角随时间的变化，并证明原点不满足局部指数稳定估计。
+\end{optionalexercise}
+\begin{solution}
+取 \(V(x,y)=x^2+y^2\)。直接求导得 \(\dot V=-2(x^2+y^2)^2=-2V^2\)。因此轨道的半径不增加，在任意有限正向时间内留在固定闭球中，由延拓准则得到全正向存在。\(V\) 正定，\(\dot V\) 在原点外严格为负，故 Lyapunov 判据给出局部渐近稳定；下面的显式计算进一步给出所有初值的吸引性。
+
+对非零初值，唯一性保证轨道在有限时刻不会碰到原点。令 \(r_0=\sqrt{x(0)^2+y(0)^2}>0\)。解 \(V'=-2V^2\) 得
+\[
+ r(t)=\frac{r_0}{\sqrt{1+2r_0^2t}},\quad t\geq0.
+\]
+沿轨道取连续的转角 \(\theta\)，则
+\[
+ \theta' =\frac{xy'-yx'}{x^2+y^2}=1,
+ \quad\theta(t)=\theta(0)+t.
+\]
+轨道一边匀速转动，一边以代数速度靠近原点。半径不增加给出稳定性，任意 \(r_0\) 都有 \(r(t)\to0\)，故原点渐近稳定，且吸引范围是整个平面。
+
+若存在 \(C,\gamma,\delta>0\) 使 \(r(t)\leq Ce^{-\gamma t}r_0\) 对所有 \(0<r_0<\delta\)、\(t\geq0\) 成立，固定其中一个 \(r_0\) 就会得到 \(e^{\gamma t}/\sqrt{1+2r_0^2t}\leq C\)。左侧趋于无穷，矛盾。因此渐近稳定没有自动带来指数速率。
+\end{solution}

@@ -1,20 +1,53 @@
 % !TeX root = ../../Book1.tex
-% 扩充编号：A07、A08。结构占位，待撰写。
+% 扩充编号：A07、A08。条件平均、离散鞅、最大估计与收敛。
+% 初稿与必要自检不计正式审核；章末八题均为自拟训练题。
 \OptionalChapter{条件期望与离散鞅}{b1:ch:31}
 \BookChapterNumber{b1:ch:31}
 
 \begin{chapterabstract}
-待撰写。
+观察者掌握的信息不同，对同一个随机量所作的平均也会不同。
+条件期望把这种依赖于信息的平均写成可测函数：它只使用已经知道的事件，
+却在这些事件上保留原随机变量的积分。
+当信息逐步增加时，条件平均组成鞅；鞅也能描述不具有独立增量的公平演化。
+本章从 Radon--Nikodym 定理构造条件期望，继而用最大估计控制整段轨道，
+用上穿次数排除无休止的振荡，最后以一致可积性判断极限是否仍保留期望和终值信息。
 \end{chapterabstract}
 
 \begin{learninggoals}
-\begin{enumerate}
-\item 待撰写。
-\end{enumerate}
+\begin{itemize}
+\item\label{b1:item:31-goal-construction}由子 \(\sigma\)-代数理解可用信息，用积分恒等式构造并识别条件期望，区分它与逐点条件分布。
+\item\label{b1:item:31-goal-calculus}正确使用塔性质、可测因子提出、条件 Jensen 不等式及 \(L^p\) 收缩，解释 \(L^2\) 中的正交投影意义。
+\item\label{b1:item:31-goal-models}辨认滤过、适应性与鞅的条件平均关系，并建立独立和、条件平均及平方补偿等具体模型。
+\item\label{b1:item:31-goal-maximal}证明有限时段的 Doob 弱型与强型最大估计，说明指数 \(p>1\) 在积分论证中的作用。
+\item\label{b1:item:31-goal-convergence}用上穿不等式建立几乎必然收敛，并分清极限可积、\(L^1\) 收敛与期望保持这三个结论。
+\item\label{b1:item:31-goal-terminal}掌握一致可积鞅的终值表示及递增信息下条件平均的收敛，识别缺少一致可积性时的失效机制。
+\end{itemize}
 \end{learninggoals}
 
-% 章导读待撰写。
-待撰写。
+\chapref{b1:ch:30}研究随机变量的整体平均；这里允许观察者先知道部分事件，再重新计算平均。例如，只知道一个数落在哪个区间，与已经知道它的精确取值，会产生不同的条件期望。随着信息增加，预测不断更新；我们将研究这些更新是否稳定，以及极限能否保留原来的平均值。
+
+\ProseParagraphBreak
+
+\secref{b1:sec:3101}先从有限分割上的平均出发，再把“对每个已知事件积分不变”作为一般构造的要求。
+\secref{b1:sec:3102}建立条件平均的运算法则；其中塔性质要求信息之间存在包含关系，
+因子提出则要求所提出的因子已经可测，二者都不能仅凭公式的外形使用。
+\secref{b1:sec:3103}把单次平均变成随离散时间变化的过程，
+并将条件均值为零的增量与独立增量区别开来。
+
+\ProseParagraphBreak
+
+\secref{b1:sec:3104}至\secref{b1:sec:3105}先解决轨道是否收敛：
+最大估计控制越过大水平的概率，上穿估计控制两个固定水平之间的反复往返。
+\secref{b1:sec:3106}再解决积分是否收敛，说明为何只有 \(L^1\) 有界还不够。
+读者可把最后的二进条件平均与尖峰鞅并排阅读：
+两者都有鞅结构，但能否由同一个可积终值产生，决定了积分质量能否在极限中保留。
+
+\ProseParagraphBreak
+
+最大估计、上穿方法与终值表示可对照 David H. Fremlin 的
+《Measure Theory》\cite[275D--275I]{Fremlin2016Measure}。
+本章把一般实下鞅的单侧积分界、可料增量的选择以及积分极限的识别分别展开，
+使读者能够辨认每一步使用的是条件平均关系、路径计数还是一致可积性。
 
 \input{Part05/Chapter31/Section3101}
 \input{Part05/Chapter31/Section3102}
@@ -24,9 +57,448 @@
 \input{Part05/Chapter31/Section3106}
 
 \begin{chaptersummary}
-待撰写。
+条件期望由两项要求确定：对较少的信息可测，并在这些信息所能描述的每个事件上保留积分。
+Radon--Nikodym 定理给出存在性，积分恒等式给出几乎必然意义下的唯一性。
+塔性质表达先后删减信息的相容性；条件 Jensen 不等式给出范数收缩，
+而平方可积情形把这种平均识别为正交投影。
+
+\ProseParagraphBreak
+
+鞅的定义把“给定过去，下一步的条件均值等于当前值”作为基本关系。
+独立和是其中一类模型，条件平均列则说明鞅也来自逐渐增加的信息。
+下鞅和上鞅用不等式容纳有方向的条件漂移；
+使用凸函数或可料系数时，必须分别核对凸性的单调条件、系数的符号和可积性。
+
+\ProseParagraphBreak
+
+最大不等式与上穿不等式控制不同的问题。
+前者估计一段时间内出现大值的概率及最大值的矩，后者排除在两个水平间无限振荡。
+实下鞅的正部期望一致有界足以得到一个有限且可积的几乎必然极限，
+却不能据此断言 \(L^1\) 收敛。
+非负尖峰鞅可以在几乎每条轨道上趋于零，同时在每个有限时刻保持相同的期望。
+
+\ProseParagraphBreak
+
+一致可积性补足了最后一个缺口：
+对离散鞅，它等价于 \(L^1\) 收敛，也等价于由某个可积随机变量的条件平均所闭合。
+递增子 \(\sigma\)-代数下的条件平均最终恢复的是相对于全部极限信息的条件期望；
+当原变量具有相对于这些信息的可测代表时，极限便恢复原变量本身。
+这使测度论中的逼近、Hilbert 空间中的投影和概率中的随时间学习处在同一条论证线上。
 \end{chaptersummary}
 
 \BookExercises
 
-待撰写。
+% 自拟：用正交投影刻画有限信息下条件平均何时交换，比正文反例多出一个判据。
+\begin{exercise}\label{b1:ex:31-noncommuting-conditionals}
+设 \(\Omega\) 为有限非空集，\(\mathcal F=2^\Omega\)，概率测度 \(\mathbb P\) 给每个单点严格正的概率。
+取子 \(\sigma\)-代数 \(\mathcal G,\mathcal H\subset\mathcal F\)，
+在实 Hilbert 空间 \(L^2(\mathbb P)\) 上记
+\(P_{\mathcal A}X=\mathbb E(X\mid\mathcal A)\)。证明
+\[
+ P_{\mathcal G}P_{\mathcal H}=P_{\mathcal H}P_{\mathcal G}
+ \quad\Longleftrightarrow\quad
+ P_{\mathcal G}P_{\mathcal H}=P_{\mathcal G\cap\mathcal H}.
+\]
+进一步，若 \(\mathcal G\) 与 \(\mathcal H\) 独立，即
+\(\mathbb P(A\cap B)=\mathbb P(A)\cdot\mathbb P(B)\) 对所有
+\(A\in\mathcal G\)、\(B\in\mathcal H\) 成立，证明
+\(P_{\mathcal G}P_{\mathcal H}X=P_{\mathcal H}P_{\mathcal G}X=\mathbb EX\)。
+\end{exercise}
+\begin{solution}
+由\cref{b1:thm:conditional-expectation-projection-31}，\(P_{\mathcal A}\) 是到
+\(L^2(\mathcal A)\) 上的正交投影。
+单点概率严格正，使几乎必然相等就是处处相等；因此一个函数同时对 \(\mathcal G\) 与 \(\mathcal H\) 可测，
+当且仅当对 \(\mathcal G\cap\mathcal H\) 可测。
+也就是说，\(L^2(\mathcal G)\cap L^2(\mathcal H)=L^2(\mathcal G\cap\mathcal H)\)。
+
+先设两个投影交换。对任意 \(X\)，令 \(Y=P_{\mathcal G}P_{\mathcal H}X\)。
+由投影的值域及交换关系，\(Y\) 同时属于 \(L^2(\mathcal G)\) 与 \(L^2(\mathcal H)\)。
+对任意 \(Z\in L^2(\mathcal G\cap\mathcal H)\)，正交性给出
+\[
+ \begin{aligned}
+ \langle X-Y,Z\rangle
+ &=\langle X-P_{\mathcal H}X,Z\rangle
+  +\langle P_{\mathcal H}X-P_{\mathcal G}P_{\mathcal H}X,Z\rangle=0.
+ \end{aligned}
+\]
+故 \(Y\) 正是 \(X\) 在交子空间上的正交投影，即
+\(P_{\mathcal G}P_{\mathcal H}X=P_{\mathcal G\cap\mathcal H}X\)。
+
+反过来，记 \(Q=P_{\mathcal G\cap\mathcal H}\)，并设 \(P_{\mathcal G}P_{\mathcal H}=Q\)。
+正交投影满足 \(\langle PU,V\rangle=\langle U,PV\rangle\)：
+把两个变量分别分成值域部分和正交部分即可核对。
+所以对任意 \(X,Z\)，
+\[
+ \begin{aligned}
+ \langle X,P_{\mathcal H}P_{\mathcal G}Z\rangle
+ &=\langle P_{\mathcal G}P_{\mathcal H}X,Z\rangle\\
+ &=\langle QX,Z\rangle=\langle X,QZ\rangle.
+ \end{aligned}
+\]
+取 \(X=P_{\mathcal H}P_{\mathcal G}Z-QZ\)，得到该差的平方范数为零，
+故 \(P_{\mathcal H}P_{\mathcal G}=Q=P_{\mathcal G}P_{\mathcal H}\)。
+
+最后设两子 \(\sigma\)-代数独立。
+任意 \(\mathcal H\)-可测函数 \(Y\) 是有限个 \(\mathcal H\)-事件示性函数的线性组合。
+独立性说明，对每个 \(A\in\mathcal G\)，有
+\(\mathbb E(Y\cdot\mathbf1_A)=\mathbb EY\cdot\mathbb P(A)\)。
+所以 \(P_{\mathcal G}Y\) 等于常数 \(\mathbb EY\)。取 \(Y=P_{\mathcal H}X\)，由期望保持得到
+\(P_{\mathcal G}P_{\mathcal H}X=\mathbb EX\)。交换两者的角色即得另一个次序。
+这说明嵌套是交换的一个充分条件，独立则提供另一种充分条件；一般情形仍需检验交换关系。
+\end{solution}
+
+% 自拟：把条件投影连接到两层信息下的误差分解，不重复最佳逼近本身。
+\begin{exercise}\label{b1:ex:31-total-conditional-variance}
+设 \((\Omega,\mathcal F,\mathbb P)\) 为概率空间，
+\(\mathcal G\subset\mathcal H\subset\mathcal F\) 为子 \(\sigma\)-代数，\(X\in L^2(\mathbb P;\mathbb R)\)。
+对任一子 \(\sigma\)-代数 \(\mathcal A\subset\mathcal F\)，定义
+\(X\) 关于 \(\mathcal A\) 的\term[tiaojian-fangcha]{条件方差}[conditional variance]为
+\[
+ \operatorname{Var}(X\mid\mathcal A)
+ \coloneqq\mathbb E\bigl((X-\mathbb E(X\mid\mathcal A))^2\mid\mathcal A\bigr).
+\]
+证明下列等式几乎必然成立：
+\[
+ \begin{aligned}
+ \operatorname{Var}(X\mid\mathcal G)
+ &=\mathbb E\bigl(\operatorname{Var}(X\mid\mathcal H)\mid\mathcal G\bigr)\\
+ &\quad+\operatorname{Var}\bigl(\mathbb E(X\mid\mathcal H)\mid\mathcal G\bigr).
+ \end{aligned}
+\]
+由此推出
+\[
+ \operatorname{Var}(X)
+ =\mathbb E\operatorname{Var}(X\mid\mathcal H)
+   +\operatorname{Var}\bigl(\mathbb E(X\mid\mathcal H)\bigr).
+\]
+解释这两个非负项分别衡量什么误差。
+\end{exercise}
+\begin{solution}
+记 \(m_{\mathcal G}=\mathbb E(X\mid\mathcal G)\)、
+\(m_{\mathcal H}=\mathbb E(X\mid\mathcal H)\)。
+条件期望的 \(L^2\) 收缩保证这两个变量均平方可积。
+因此下面展开中的平方项和乘积项都可积；乘积项的可积性也可直接由 Cauchy--Schwarz 不等式得到。
+由塔性质，\(\mathbb E(m_{\mathcal H}\mid\mathcal G)=m_{\mathcal G}\)。展开
+\[
+ \begin{aligned}
+ (X-m_{\mathcal G})^2
+ &=(X-m_{\mathcal H})^2
+  +2(X-m_{\mathcal H})(m_{\mathcal H}-m_{\mathcal G})\\
+ &\quad+(m_{\mathcal H}-m_{\mathcal G})^2.
+ \end{aligned}
+\]
+中间项相对于 \(\mathcal H\) 的条件期望为零，因为
+\(m_{\mathcal H}-m_{\mathcal G}\) 是 \(\mathcal H\)-可测的，并且
+\(\mathbb E(X-m_{\mathcal H}\mid\mathcal H)=0\)。
+这里使用\cref{b1:prop:conditional-expectation-pullout-31}的可积乘积版本；
+再用塔性质，中间项相对于 \(\mathcal G\) 的条件期望也为零。
+第一项先在 \(\mathcal H\) 上取条件平均，再在 \(\mathcal G\) 上取平均，
+得到 \(\mathbb E(\operatorname{Var}(X\mid\mathcal H)\mid\mathcal G)\)；
+最后一项给出 \(\operatorname{Var}(m_{\mathcal H}\mid\mathcal G)\)。这证明第一式。
+
+取 \(\mathcal G=\{\varnothing,\Omega\}\)，条件平均即无条件期望，便得第二式。
+第一项是已经知道 \(\mathcal H\) 后仍未消除的平均平方误差；
+第二项是各类 \(\mathcal H\)-信息所给预测值之间的波动。
+两项相加恢复原来的总方差，并不意味着每个样本点上的条件方差都随信息增加而减小。
+\end{solution}
+
+% 自拟：从条件漂移构造并唯一识别可料补偿项；正文无需调用此分解。
+\begin{exercise}\label{b1:ex:31-doob-decomposition}
+设 \((\Omega,\mathcal F,\mathbb P)\) 为概率空间，\((\mathcal F_n)_{n\geq0}\) 为滤过，
+\((X_n)_{n\geq0}\) 为相对于该滤过的实下鞅。
+证明存在实鞅 \((M_n)\) 与可积实过程 \((A_n)\)，满足
+\[
+ \begin{gathered}
+ X_n=M_n+A_n,\quad A_0=0,\quad A_n\geq A_{n-1}\text{ 几乎必然},\\
+ A_n\text{ 为 }\mathcal F_{n-1}\text{-可测}\quad(n\geq1).
+ \end{gathered}
+\]
+证明这种分解在逐项几乎必然相等的意义下唯一。
+此分解称为\term[doob-fenjie]{Doob 分解}[Doob decomposition]。
+\end{exercise}
+\begin{solution}
+把每一步的条件漂移记为
+\[
+ a_k=\mathbb E(X_k\mid\mathcal F_{k-1})-X_{k-1},\quad k\geq1.
+\]
+每个 \(a_k\) 可积、\(\mathcal F_{k-1}\)-可测，而且由下鞅性质非负。
+令 \(A_0=0\)、\(A_n=\sum_{k=1}^na_k\)、\(M_n=X_n-A_n\)。
+有限和保证各项可积；滤过递增保证 \(A_n\) 是 \(\mathcal F_{n-1}\)-可测的，
+而 \(M_n\) 是 \(\mathcal F_n\)-可测的。
+由于 \(A_n=A_{n-1}+a_n\)，有
+\[
+ \mathbb E(M_n\mid\mathcal F_{n-1})
+ =\mathbb E(X_n\mid\mathcal F_{n-1})-A_{n-1}-a_n
+ =M_{n-1}.
+\]
+故 \((M_n)\) 为鞅，且 \(A_n-A_{n-1}=a_n\geq0\)。
+
+反过来，设另一分解为 \(X_n=\widetilde M_n+\widetilde A_n\)，满足题设全部条件。
+因为 \(\widetilde A_n\) 与 \(\widetilde A_{n-1}\) 均为 \(\mathcal F_{n-1}\)-可测，
+在 \(X_n-X_{n-1}\) 上取相对于 \(\mathcal F_{n-1}\) 的条件期望，得到
+\[
+ a_n=\widetilde A_n-\widetilde A_{n-1}.
+\]
+由 \(\widetilde A_0=0\) 逐项相加，得 \(\widetilde A_n=A_n\)，继而 \(\widetilde M_n=M_n\)。
+可数个时刻的零测例外集取并，便可使这些等式在同一个概率为一的集合上同时成立。
+可料条件使漂移在下一次增量出现之前已经确定；若只要求 \(A_n\) 适应，而不要求这种较早的可测性，以上唯一性论证就不能成立。
+\end{solution}
+
+% 自拟：完整建立有界离散取样，用事件展开而不引用未证的停时定理。
+\begin{exercise}\label{b1:ex:31-bounded-optional-sampling}
+设 \((\Omega,\mathcal F,\mathbb P)\) 为概率空间，\((\mathcal F_n)_{n\geq0}\) 为滤过。
+若 \(T:\Omega\to\mathbb N_0\cup\{\infty\}\) 满足
+\(\{T\leq n\}\in\mathcal F_n\) 对所有 \(n\geq0\) 成立，
+则称 \(T\) 为\term[tingshi]{停时}[stopping time]。
+定义
+\[
+ \mathcal F_T\coloneqq
+ \{\,A\in\mathcal F\mid A\cap\{T\leq n\}\in\mathcal F_n
+                  \text{ 对每个 }n\geq0\,\}.
+\]
+证明 \(\mathcal F_T\) 是子 \(\sigma\)-代数。
+设 \(S,T\) 为停时，且存在确定的整数 \(N\) 使
+\(0\leq S\leq T\leq N\) 处处成立；
+设 \((M_n)_{n\geq0}\) 为相对于 \((\mathcal F_n)\) 的实鞅。
+证明 \(M_T\in L^1\) 且为 \(\mathcal F_T\)-可测，并证明
+\[
+ \mathbb E(M_T\mid\mathcal F_S)=M_S.
+\]
+\end{exercise}
+\begin{solution}
+\(\Omega\in\mathcal F_T\) 来自停时的定义。
+对 \(A\in\mathcal F_T\)，
+\(A^{\mathrm c}\cap\{T\leq n\}=\{T\leq n\}\setminus(A\cap\{T\leq n\})\in\mathcal F_n\)；
+可数并与固定集合求交可交换，故 \(\mathcal F_T\) 对补集及可数并封闭。
+这也说明它确实是 \(\mathcal F\) 的子 \(\sigma\)-代数。
+
+有界的 \(T\) 满足
+\[
+ M_T=\sum_{k=0}^N M_k\cdot\mathbf1_{\{T=k\}},\quad
+ |M_T|\leq\sum_{k=0}^N|M_k|,
+\]
+所以 \(M_T\) 可积。
+对任意 Borel 集 \(B\subset\mathbb R\)，
+\[
+ \{M_T\in B\}\cap\{T\leq n\}
+ =\bigcup_{k=0}^{\min(n,N)}\bigl(\{M_k\in B\}\cap\{T=k\}\bigr)\in\mathcal F_n.
+\]
+这里 \(\{T=k\}\in\mathcal F_k\)，故右侧每项均属于 \(\mathcal F_n\)。
+这证明 \(M_T\) 是 \(\mathcal F_T\)-可测；同样适用于 \(S\)。
+还可核对 \(\mathcal F_S\subset\mathcal F_T\)：对 \(A\in\mathcal F_S\)，由 \(S\leq T\)，
+\(A\cap\{T\leq n\}=(A\cap\{S\leq n\})\cap\{T\leq n\}\in\mathcal F_n\)。
+
+只需验证对每个 \(A\in\mathcal F_S\)，有
+\(\mathbb E(M_T\cdot\mathbf1_A)=\mathbb E(M_S\cdot\mathbf1_A)\)。
+逐点有限求和给出
+\[
+ (M_T-M_S)\cdot\mathbf1_A
+ =\sum_{k=0}^{N-1}(M_{k+1}-M_k)\cdot
+       \mathbf1_{A\cap\{S\leq k\}\cap\{T>k\}}.
+\]
+每个示性函数的事件属于 \(\mathcal F_k\)：
+第一部分 \(A\cap\{S\leq k\}\) 用 \(A\in\mathcal F_S\)，
+第二部分用 \(T\) 是停时。
+鞅增量相对于 \(\mathcal F_k\) 的条件期望为零，故右侧每项期望为零。
+取有限和即得积分恒等式，条件期望的唯一性完成证明。
+确定的上界 \(N\) 同时保证可积控制与有限求和；去掉它以后必须另行处理极限。
+\end{solution}
+
+% 自拟：正交增量给出能量恒等式，并把上穿所得轨道极限识别为Hilbert范数极限。
+\begin{exercise}\label{b1:ex:31-l2-increments}
+设 \((\Omega,\mathcal F,\mathbb P)\) 为概率空间，\((\mathcal F_n)_{n\geq0}\) 为滤过，
+\((M_n)_{n\geq0}\) 为实鞅且每个 \(M_n\in L^2(\mathbb P)\)。
+令 \(D_k=M_k-M_{k-1}\)（\(k\geq1\)）。证明
+\[
+ \mathbb E(M_n^2)=\mathbb E(M_0^2)+\sum_{k=1}^n\mathbb E(D_k^2),
+\]
+并证明下列两条件等价：\(\sup_n\|M_n\|_2<\infty\)；
+\(\sum_{k=1}^\infty\mathbb E(D_k^2)<\infty\)。
+在这两个等价条件下，证明存在 \(M_\infty\in L^2(\mathbb P)\)，使
+\(M_n\to M_\infty\) 几乎必然且在 \(L^2\) 中成立，并满足
+\[
+ M_n=\mathbb E(M_\infty\mid\mathcal F_n),\quad
+ \|M_\infty-M_n\|_2^2=\sum_{k=n+1}^{\infty}\mathbb E(D_k^2).
+\]
+\end{exercise}
+\begin{solution}
+若 \(j<k\)，则 \(D_j\) 为 \(\mathcal F_{k-1}\)-可测，
+而 \(\mathbb E(D_k\mid\mathcal F_{k-1})=0\)。
+Cauchy--Schwarz 不等式保证 \(D_jD_k\) 可积，因而可测因子提出给出
+\[
+ \mathbb E(D_jD_k)=0.
+\]
+同样，\(M_0\) 为 \(\mathcal F_{k-1}\)-可测且平方可积，故 \(\mathbb E(M_0D_k)=0\)。
+展开 \(M_n=M_0+\sum_{k=1}^nD_k\) 的平方并取期望，交叉项全部消失，得到所需恒等式。
+由于右侧非负项的部分和递增，两个有界条件等价。
+
+对 \(m>n\)，相同的正交性给出
+\[
+ \|M_m-M_n\|_2^2=\sum_{k=n+1}^m\mathbb E(D_k^2).
+\]
+级数可和表明 \((M_n)\) 为 \(L^2\)-Cauchy 列。
+由\cref{b1:thm:l2-hilbert}的完备性，有 \(M_\infty\in L^2\) 使 \(M_n\to M_\infty\) 于 \(L^2\)。
+另一方面，\(\mathbb E(M_n^+)\leq\|M_n\|_2\) 一致有界，
+所以\cref{b1:thm:submartingale-convergence-31}给出几乎必然极限。
+这个极限等于 \(M_\infty\)：\(L^2\) 收敛由 Chebyshev 估计推出依概率收敛，
+几乎必然收敛也推出依概率收敛，二者极限几乎必然相等。
+
+固定 \(n\)，对 \(m\geq n\)，多步鞅性质给出 \(\mathbb E(M_m\mid\mathcal F_n)=M_n\)。
+由 \(L^2\) 收缩，左侧在 \(m\to\infty\) 时收敛于
+\(\mathbb E(M_\infty\mid\mathcal F_n)\)，得到终值表示。
+最后在上述有限尾和恒等式中令 \(m\to\infty\)，
+范数收敛与非负级数的部分和极限给出误差公式。
+\end{solution}
+
+% 自拟：改变Bernoulli参数所得密度比鞅，用强大数律显示非一致可积性。
+\begin{exercise}\label{b1:ex:31-bernoulli-density-martingale}
+设 \((\Omega,\mathcal F,\mathbb P)\) 为概率空间，\((X_k)_{k\geq1}\) 独立同分布，
+\(\mathbb P(X_k=1)=p\)、\(\mathbb P(X_k=0)=1-p\)，其中 \(0<p<1\)。
+取 \(q\in(0,1)\setminus\{p\}\)，令 \(\mathcal F_0=\{\varnothing,\Omega\}\)、
+\(\mathcal F_n=\sigma(X_1,\ldots,X_n)\)，并定义
+\[
+ S_n=\sum_{k=1}^nX_k,\quad R_0=1,\quad
+ R_n=\left(\frac qp\right)^{S_n}
+       \left(\frac{1-q}{1-p}\right)^{n-S_n}.
+\]
+证明 \((R_n)\) 为非负鞅，\(\mathbb ER_n=1\)，但 \(R_n\to0\) 几乎必然。
+据此证明它不一致可积，也不存在 \(Y\in L^1(\mathbb P)\) 使
+\(R_n=\mathbb E(Y\mid\mathcal F_n)\) 对所有 \(n\) 成立。
+最后，对 \(a_1,\ldots,a_n\in\{0,1\}\)，计算
+\(\mathbb E(R_n\cdot\mathbf1_{\{X_1=a_1,\ldots,X_n=a_n\}})\)，解释 \(R_n\) 的作用。
+\end{exercise}
+\begin{solution}
+令 \(Z_k=(q/p)^{X_k}((1-q)/(1-p))^{1-X_k}\)，则 \(R_n=\prod_{k=1}^nZ_k\)。
+\(Z_{n+1}\) 独立于 \(\mathcal F_n\)，而且
+\[
+ \mathbb EZ_{n+1}=p\cdot\frac qp+(1-p)\cdot\frac{1-q}{1-p}=1.
+\]
+每个有限乘积 \(R_n\) 有界且 \(\mathcal F_n\)-可测。
+由独立性与可测因子提出，\(\mathbb E(R_{n+1}\mid\mathcal F_n)=R_n\)。
+取期望并从 \(R_0=1\) 递推，得到 \(\mathbb ER_n=1\)。
+
+Bernoulli 变量可积，\cref{b1:thm:30-iid-strong-law}给出 \(S_n/n\to p\) 几乎必然。
+因此
+\[
+ \frac{\log R_n}{n}
+ \longrightarrow
+ p\log\frac qp+(1-p)\log\frac{1-q}{1-p}.
+\]
+对 \(t>0\)，\(\log t\leq t-1\)，且只有 \(t=1\) 时取等号。
+由于 \(q\ne p\)，把这个不等式分别用于 \(q/p\) 与 \((1-q)/(1-p)\)，得
+\[
+ \begin{aligned}
+ p\log\frac qp+(1-p)\log\frac{1-q}{1-p}
+ &<p\left(\frac qp-1\right)
+ +(1-p)\left(\frac{1-q}{1-p}-1\right)\\
+ &=0.
+ \end{aligned}
+\]
+故 \(R_n\) 在概率为一的集合上最终以某个严格负的指数速率趋于零。
+若它一致可积，则几乎必然收敛与 Vitali 收敛判据会给出 \(\mathbb ER_n\to0\)，
+与 \(\mathbb ER_n=1\) 矛盾。
+若存在所述可积 \(Y\)，则\cref{b1:thm:closed-martingale-31}又会保证一致可积，仍然矛盾。
+
+记 \(r=\sum_{k=1}^na_k\)。在给定的圆柱事件上，\(R_n\) 为常数，因而
+\[
+ \begin{aligned}
+ &\mathbb E\bigl(R_n\cdot\mathbf1_{\{X_1=a_1,\ldots,X_n=a_n\}}\bigr)\\
+ &\quad=\left(\frac qp\right)^r\left(\frac{1-q}{1-p}\right)^{n-r}
+      p^r(1-p)^{n-r}
+ =q^r(1-q)^{n-r}.
+ \end{aligned}
+\]
+所以对有限的前 \(n\) 次观测，用 \(R_n\) 加权会把参数 \(p\) 改成 \(q\)。
+各有限阶段的改权都成立，却不能在原概率空间上由同一个可积密度的条件平均实现全部阶段。
+\end{solution}
+
+% 自拟：有界取样后才放开终止时间，同时计算离开概率与期望时间。
+\begin{optionalexercise}\label{b1:ex:31-gamblers-ruin}
+设 \((\Omega,\mathcal F,\mathbb P)\) 上的 \((\xi_k)_{k\geq1}\) 独立同分布，
+\(\mathbb P(\xi_k=1)=\mathbb P(\xi_k=-1)=1/2\)。
+固定整数 \(m\geq2\) 与 \(i\in\{1,\ldots,m-1\}\)，令
+\[
+ S_0=i,\quad S_n=i+\sum_{k=1}^n\xi_k,\quad
+ T=\inf\{\,n\geq0\mid S_n\in\{0,m\}\,\},
+\]
+其中空集的下确界为 \(\infty\)。
+相对于 \(\mathcal F_n=\sigma(\xi_1,\ldots,\xi_n)\)（\(\mathcal F_0\) 取平凡 \(\sigma\)-代数），
+证明 \(T\) 是停时，\(T<\infty\) 几乎必然，且
+\[
+ \mathbb P(S_T=m)=\frac im,\quad \mathbb ET=i(m-i).
+\]
+在尚未证明 \(T\) 有限且可积之前，只能对 \(T\wedge N\) 使用有界取样结论。
+\end{optionalexercise}
+\begin{solution}
+事件 \(\{T\leq n\}=\bigcup_{k=0}^n\{S_k\in\{0,m\}\}\) 属于 \(\mathcal F_n\)，故 \(T\) 是停时。
+独立增量的均值为零、平方均值为一，所以 \((S_n)\) 和 \((S_n^2-n)\) 都是实鞅。
+具体地，\(\mathbb E(\xi_{n+1}\mid\mathcal F_n)=0\)，
+\(\mathbb E(\xi_{n+1}^2\mid\mathcal F_n)=1\)，展开
+\(S_{n+1}^2=S_n^2+2S_n\xi_{n+1}+\xi_{n+1}^2\) 即得后一结论；各变量在有限时刻有界，故可积。
+
+令 \(T_N=T\wedge N\)。它是取值至多为 \(N\) 的停时。
+用\cref{b1:ex:31-bounded-optional-sampling}，得到
+\[
+ \mathbb ES_{T_N}=i,\quad
+ \mathbb E(S_{T_N}^2)-\mathbb ET_N=i^2.
+\]
+在所有增量均取 \(\pm1\) 的概率为一的集合上，每次只移动一个整数单位，
+故到达端点之前不能跳出区间，因而几乎必然有
+\(0\leq S_{T_N}\leq m\)。由第二式，
+\(\mathbb ET_N\leq m^2\)。
+又 \(T_N\uparrow T\)，单调收敛定理给出 \(\mathbb ET\leq m^2<\infty\)，
+从而 \(T<\infty\) 几乎必然。
+在此概率为一的集合上，充分大的 \(N\) 满足 \(S_{T_N}=S_T\)；
+共同界 \(m\) 与 \(m^2\) 分别允许对一次方和平方使用控制收敛。
+
+令 \(N\to\infty\)，得到
+\[
+ \mathbb ES_T=i,\quad \mathbb E(S_T^2)-\mathbb ET=i^2.
+\]
+此时 \(S_T\in\{0,m\}\) 几乎必然。
+若 \(r=\mathbb P(S_T=m)\)，第一式为 \(mr=i\)，故 \(r=i/m\)。
+代入第二式，得 \(\mathbb ET=m^2r-i^2=i(m-i)\)。
+若愿意把 \(S_T\) 定义在全部样本点上，可在零概率事件 \(\{T=\infty\}\) 上置零。
+\end{solution}
+
+% 自拟：以加权鞅增量替代独立级数，推导有条件均值零的强大数律。
+\begin{optionalexercise}\label{b1:ex:31-martingale-strong-law}
+设 \((\Omega,\mathcal F,\mathbb P)\) 为概率空间，\((\mathcal F_n)_{n\geq0}\) 为滤过，
+实随机变量 \(D_n\in L^2(\mathbb P)\) 为 \(\mathcal F_n\)-可测，并满足
+\(\mathbb E(D_n\mid\mathcal F_{n-1})=0\)（\(n\geq1\)）。
+设 \((b_n)_{n\geq1}\) 为确定的非递减正实数列，\(b_n\to\infty\)，且
+\[
+ \sum_{n=1}^{\infty}\frac{\mathbb E(D_n^2)}{b_n^2}<\infty.
+\]
+证明
+\[
+ \frac1{b_n}\sum_{k=1}^nD_k\longrightarrow0\quad\text{几乎必然}.
+\]
+特别地，若 \(\sup_n\mathbb E(D_n^2)<\infty\)，则可取 \(b_n=n\)。
+给出一个满足这些条件、但 \(D_n\) 不相互独立的具体例子。
+\end{optionalexercise}
+\begin{solution}
+令 \(Y_0=0\)、\(Y_n=\sum_{k=1}^nD_k/b_k\)。
+由于系数确定且增量的条件均值为零，\((Y_n)\) 为平方可积鞅。
+其增量平方期望之和正是题设中的可和级数。
+由\cref{b1:ex:31-l2-increments}，\(Y_n\) 几乎必然收敛于有限极限。
+在这个概率为一的集合上，数值级数 \(\sum_kD_k(\omega)/b_k\) 收敛。
+\cref{b1:lem:30-kronecker}适用于任意这样的数值级数，
+其假设正是 \(b_n>0\)、非递减且趋于无穷，因此逐点给出所求极限。
+这一步不要求 \(D_k\) 独立：随机性只参与了加权级数的收敛证明。
+若二阶矩一致有界，\(\sum_n\mathbb E(D_n^2)/n^2<\infty\)，特别情形随之成立。
+
+为给出具有依赖性的例子，取独立变量 \((\varepsilon_n)_{n\geq1}\)，
+满足 \(\mathbb P(\varepsilon_n=1)=\mathbb P(\varepsilon_n=-1)=1/2\)，
+令 \(\mathcal F_n=\sigma(\varepsilon_1,\ldots,\varepsilon_n)\)、\(\mathcal F_0\) 平凡，
+并令
+\[
+ D_1=\varepsilon_1,\quad
+ D_n=\varepsilon_n\cdot\mathbf1_{\{\varepsilon_{n-1}=1\}},\quad n\geq2.
+\]
+示性因子为 \(\mathcal F_{n-1}\)-可测，新符号独立于 \(\mathcal F_{n-1}\) 且均值为零，
+故每步条件均值均为零，并且 \(|D_n|\leq1\)。
+但是 \(\{D_2\ne0\}=\{D_1=1\}\)，这两个相同事件的概率为 \(1/2\)，
+其交集概率为 \(1/2\)，不等于两个概率之积 \(1/4\)。
+因此 \(D_1,D_2\) 已不独立，而它们所在的整列仍满足上述强大数结论。
+\end{solution}

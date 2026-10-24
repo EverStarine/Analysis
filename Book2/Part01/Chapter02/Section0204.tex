@@ -2,26 +2,32 @@
 \section{光滑依赖与流}
 \label{b2:sec:ode-smooth-flow}
 
-唯一性使从不同时间出发的轨道能够相互接合，光滑依赖则允许把轨道用于坐标变换。本节在自治 \(C^1\) 条件下建立这两项性质；高阶光滑依赖尚待撰写。
+唯一性使从不同时间出发的轨道能够相互接合，光滑依赖则允许把轨道用于坐标变换。例如，把一片初始曲线上的点沿速度场搬运以后，能否得到一组新坐标，取决于整族轨道对初始点的依赖。单独知道每条轨道都有速度，还不能对这族轨道求空间导数。本节先从自治方程建立流，再用增加时间变量的方法处理非自治方程和参数。
 
 \subsection{流映射与复合关系}
 \label{b2:subsec:070202}
 
-设 \(U\subset\mathbb R^d\) 开，\(b\in C^1(U;\mathbb R^d)\)、\(a\in U\)。按\secref{b2:sec:ode-continuation}的拼接构造，初值问题 \(X'=b(X)\)、\(X(0)=a\) 有最大解区间 \(I_a\)。把从 \(a\) 出发的最大解记为 \(\Phi_t(a)\)，称 \(a\mapsto\Phi_t(a)\) 为\term[liu-yingshe]{流映射}[flow map]。记号 \(\Phi_t(a)\) 只在 \(t\in I_a\) 时使用；给映射命名并不意味着它对所有时间存在。
+设 \(d\geq1\)，\(U\subset\mathbb R^d\) 开，\(b\in C^1(U;\mathbb R^d)\)、\(a\in U\)。按\secref{b2:sec:ode-continuation}的拼接构造，初值问题 \(X'=b(X)\)、\(X(0)=a\) 有最大解区间 \(I_a\)。把从 \(a\) 出发的最大解记为 \(\Phi_t(a)\)，称 \(a\mapsto\Phi_t(a)\) 为\term[liu-yingshe]{流映射}[flow map]。它的整个定义域是
+\[
+ \mathcal D\coloneqq\{(t,a)\in\mathbb R\times U:t\in I_a\}.
+\]
+记号 \(\Phi_t(a)\) 的时间范围由最大解区间 \(I_a\) 决定。
 \symidx{\(\Phi_t\)：自治速度场的流映射}
 
 \begin{proposition}\label{b2:prop:07-flow-composition}
-设 \(d\) 为正整数，\(U\subset\mathbb R^d\) 为开集，\(b\in C^1(U;\mathbb R^d)\)，\(\Phi_t(a)\) 是 \(X'=b(X)\)、\(X(0)=a\) 的最大局部流。凡各项有定义，流满足
+设 \(d\) 为正整数，\(U\subset\mathbb R^d\) 为开集，\(b\in C^1(U;\mathbb R^d)\)，\(\Phi_t(a)\) 是 \(X'=b(X)\)、\(X(0)=a\) 的最大局部流，\(I_a\) 是它的最大时间区间。若 \(s\in I_a\)，则 \(I_{\Phi_s(a)}=I_a-s\)。流满足
 \[
  \Phi_0(a)=a,\quad
  \Phi_{t+s}(a)=\Phi_t\bigl(\Phi_s(a)\bigr),\quad
  \Phi_{-t}\bigl(\Phi_t(a)\bigr)=a.
 \]
-固定 \(t\) 时，\(\Phi_t\) 在其定义域上单射，其逆为相应的 \(\Phi_{-t}\)。
+其中第二式对所有 \(s,t+s\in I_a\) 成立，第三式对所有 \(t\in I_a\) 成立。固定 \(t\) 时，\(\Phi_t\) 将 \(U_t\coloneqq\{a\in U:t\in I_a\}\) 一一映到 \(U_{-t}\)，其逆为 \(\Phi_{-t}\)。
 \end{proposition}
 \begin{proof}
-曲线 \(r\mapsto\Phi_{s+r}(a)\) 与 \(r\mapsto\Phi_r(\Phi_s(a))\) 在 \(r=0\) 具有相同初值，且都满足自治方程。唯一性给出复合关系。令 \(r=-s\) 得逆关系，进而得到单射性。
+曲线 \(r\mapsto\Phi_{s+r}(a)\) 在 \(I_a-s\) 上满足自治方程，且在 \(r=0\) 取值 \(\Phi_s(a)\)。它与从这一点出发的最大解在共同区间上由唯一性相等。若后一条解还能延长到 \(I_a-s\) 之外，把时间平移回来便会延长原来的最大解。因此两区间相等，也得到复合关系。令 \(r=-s\) 得逆关系。这个关系既给出单射性，也说明 \(U_{-t}\) 中的每一点都是 \(U_t\) 中某点的像。
 \end{proof}
+
+自治性在这里有明确作用：从轨道中途重新计时，所遇到的速度规律没有改变。局部流只在允许的时间和初始点上满足复合律。以 \(x'=x^2\) 为例，从 \(a>0\) 出发的轨道在 \(t=1/a\) 爆破，因此不能把 \(\Phi_t\) 当作对任意 \(t\) 都作用于整个实轴的映射。
 
 \subsection{一阶变分方程}
 \label{b2:subsec:ode-first-variation}
@@ -65,12 +71,104 @@
 \]
 这证明的是完整 Fréchet 微分，而非只沿坐标求导。若 \(a\) 改为邻近点，矩阵方程的系数一致收敛；作差和 Gronwall 估计又给出 \(A\) 对 \((t,a)\) 连续。时间导数 \(\partial_t\Phi_t(a)=b(\Phi_t(a))\) 也连续，因此流为 \(C^1\)。
 
-对一段已存在的轨道，其图像在任意紧时间区间内为紧集。用上述局部构造覆盖它，并沿轨道取有限分段，连续依赖使邻近初始点的解也能逐段通过这些邻域。故流的定义域为开集，局部可微结论可以沿轨道继续。最后，\cref{b2:prop:07-flow-composition}给出双方均 \(C^1\) 的逆映射，所以导数矩阵可逆，像集也为开集。
+现说明为何短时间的证明覆盖整个最大定义域。给定 \((t_*,a_*)\in\mathcal D\)，在 \(I_{a_*}\) 内取一个紧区间 \(J\)，使 \(0\) 与 \(t_*\) 都在 \(J\) 的内部。\cref{b2:thm:ode-continuous-dependence}用于同一个场 \(b\)，保证所有充分靠近 \(a_*\) 的初值都有定义于整个 \(J\) 的解，且这些解一致靠近参考轨道。因此 \(\mathcal D\) 包含 \((t_*,a_*)\) 的一个乘积邻域，确为开集。
+
+参考轨道的像是紧集，可以选取有限个上述短时间构造的邻域，并把从 \(0\) 到 \(t_*\) 的时间段细分，使每一步都落在一个构造内。邻近初始点的轨道也能通过这些邻域。在 \(t_*\) 附近，\(\Phi_t\) 因而是有限个已知 \(C^1\) 的短时间流的复合，最后一步的时间允许随 \(t\) 变化。链式法则证明该处的联合 \(C^1\) 性。局部变分方程随复合继续成立，或直接对流的积分方程求初值导数，即得整个定义域上的\eqref{b2:eq:07-variational-ode}。最后，\cref{b2:prop:07-flow-composition}给出 \(U_t\) 与 \(U_{-t}\) 之间双方均 \(C^1\) 的逆映射；这两个集合由 \(\mathcal D\) 的开放性都是开集。
 \end{proof}
 
 流的空间可微性比轨道本身可微更强。前者控制相邻粒子之间的距离、角度和体积，后者只说明单个粒子的速度存在。后面特征线法中 Jacobi 行列式的演化式依赖的是\eqref{b2:eq:07-variational-ode}，不能只从每条轨道 \(C^1\) 便直接写下。
 
+\ProseParagraphBreak
+
+还可以把线性系统的\cref{b2:prop:ode-liouville}用于变分方程。记 \(\operatorname{div}b=\sum_{j=1}^d\partial_j b_j\)，则
+\[
+ \det D_a\Phi_t(a)
+ =\exp\left(\int_0^t\operatorname{div}b(\Phi_s(a))\,\mathrm ds\right)>0.
+\]
+这里初始矩阵为 \(I\)，所以初始行列式是 \(1\)。公式同时说明流保持定向，以及散度如何累计成局部体积变化。若 \(\operatorname{div}b=0\)，行列式恒为 \(1\)；一般情况下，轨道不相交并不意味着体积不变。
+
 \subsection{高阶光滑依赖}
 \label{b2:subsec:ode-higher-dependence}
 
-待撰写。本节目前只证明自治 \(C^1\) 速度场的一阶光滑依赖。
+初值的一阶导数不是凭空出现的新对象：它与原轨道一起满足另一个常微分方程。把这个观察反复使用，就不必每提高一阶都重新展开一长串差商。
+
+\begin{theorem}[流的高阶光滑性]\label{b2:thm:ode-smooth-dependence}
+设 \(d,k\geq1\) 为整数，\(U\subset\mathbb R^d\) 为开集，\(b\in C^k(U;\mathbb R^d)\)。则方程 \(X'=b(X)\) 的最大局部流 \((t,a)\mapsto\Phi_t(a)\) 在其开定义域 \(\mathcal D\) 上属于 \(C^k\)。若 \(b\in C^\infty\)，则流也属于 \(C^\infty\)。
+\end{theorem}
+\begin{proof}
+\(k=1\) 已由\cref{b2:thm:07-flow-derivative}证明。设结论对于 \(k-1\geq1\) 已成立，现取 \(b\in C^k\)。在 \(U\times\mathbb R^{d\times d}\) 上考虑增广系统
+\[
+ x'=b(x),\quad A'=Db(x)A.
+\]
+其速度场 \((x,A)\mapsto(b(x),Db(x)A)\) 属于 \(C^{k-1}\)。归纳假设说明这一系统的流对于时间和初值属于 \(C^{k-1}\)。把矩阵初值固定为 \(I\)，其解的第二个分量由一阶变分方程的唯一性等于 \(D_a\Phi_t(a)\)，故 \(D_a\Phi\) 属于 \(C^{k-1}\)。这一步可在任意紧轨道段上实施，因为其上的连续系数矩阵方程总有解。
+
+另一方面，归纳假设已保证 \(\Phi\in C^{k-1}\)，因而时间导数 \(\partial_t\Phi=b\circ\Phi\) 也属于 \(C^{k-1}\)。所有一阶偏导数都属于 \(C^{k-1}\)，正是 \(\Phi\in C^k\)。对任意有限 \(k\) 使用这个结论，得到光滑情形。
+\end{proof}
+
+二阶情形可以写得更具体。若 \(b\in C^2\)，令 \(A=D_a\Phi_t(a)\)，并对固定向量 \(u,v\in\mathbb R^d\) 记 \(H(t)=D_a^2\Phi_t(a)[u,v]\)。对一阶变分方程再微分得到
+\[
+ H'=Db(\Phi_t(a))H+D^2b(\Phi_t(a))[Au,Av],\quad H(0)=0.
+\]
+初值的一阶影响满足齐次线性方程，二阶影响则由速度场的曲率作为非齐次项驱动。刚证明的 \(C^2\) 性保证了这次求导的合法性。
+
+\subsection{非自治演化与参数的导数}
+\label{b2:subsec:ode-evolution-parameters}
+
+对于 \(x'=f(t,x)\)，从什么时刻出发会影响此后的速度。相应地，需要同时记住出发时刻 \(s\) 和到达时刻 \(t\)。在存在唯一性条件下，把从 \(x(s)=a\) 出发的解记为 \(E(t,s,a)\)，称其为\term[yanhua-yingshe]{演化映射}[evolution map]。唯一性给出
+\[
+ E(s,s,a)=a,\quad
+ E(t,r,E(r,s,a))=E(t,s,a),
+\]
+其中各时刻应位于相应的最大解区间。这是两参数的复合关系。若 \(f(t,x)=tx\)，则 \(E(t,s,a)=\exp((t^2-s^2)/2)a\)，显然不能只用 \(t-s\) 表示；把固定从 \(0\) 出发的映射误当作自治流，会得到错误的复合公式。
+
+\ProseParagraphBreak
+
+为了讨论演化对时间、初值与参数的联合光滑性，下面明确采用比局部存在理论更强的条件。参数记为 \(\lambda\)，在每一条轨道上保持不变。
+
+\begin{proposition}[带参数的非自治演化]\label{b2:prop:ode-parameter-variation}
+设 \(d,m,k\geq1\) 为整数，\(J\subset\mathbb R\) 为开区间，\(U\subset\mathbb R^d\)、\(\Lambda\subset\mathbb R^m\) 为开集，\(f\in C^k(J\times U\times\Lambda;\mathbb R^d)\)。对 \(s\in J\)、\(a\in U\)、\(\lambda\in\Lambda\)，记 \(E(t,s,a,\lambda)\) 为
+\[
+ x'=f(t,x,\lambda),\quad x(s)=a
+\]
+的最大解。该演化在其开定义域上关于 \((t,s,a,\lambda)\) 属于 \(C^k\)。固定 \(s,a,\lambda\)，令 \(x(t)=E(t,s,a,\lambda)\)，则
+\begin{align*}
+ \partial_tE(t,s,a,\lambda)&=f(t,x(t),\lambda),\\
+ \partial_sE(t,s,a,\lambda)&=-D_aE(t,s,a,\lambda)f(s,a,\lambda).
+\end{align*}
+矩阵 \(A(t)=D_aE(t,s,a,\lambda)\) 与 \(B(t)=D_\lambda E(t,s,a,\lambda)\) 分别满足
+\begin{align*}
+ A'&=D_xf(t,x(t),\lambda)A,& A(s)&=I,\\
+ B'&=D_xf(t,x(t),\lambda)B+D_\lambda f(t,x(t),\lambda),& B(s)&=0.
+\end{align*}
+这里 \(B\) 的零初值以 \(a\) 不随 \(\lambda\) 改变为前提。
+\end{proposition}
+\begin{proof}
+引入内部时间 \(\tau\)，考虑 \(J\times U\times\Lambda\) 上的自治系统
+\[
+ \frac{\mathrm d\theta}{\mathrm d\tau}=1,\quad
+ \frac{\mathrm dx}{\mathrm d\tau}=f(\theta,x,\lambda),\quad
+ \frac{\mathrm d\lambda}{\mathrm d\tau}=0,
+ \quad (\theta,x,\lambda)|_{\tau=0}=(s,a,\lambda).
+\]
+它的速度场属于 \(C^k\)。由\cref{b2:thm:ode-smooth-dependence}，其局部流 \(\Psi_\tau\) 在开定义域上属于 \(C^k\)。第一和第三分量分别为 \(s+\tau\) 与 \(\lambda\)，故
+\[
+ E(t,s,a,\lambda)=\pi_x\Psi_{t-s}(s,a,\lambda),
+\]
+其中 \(\pi_x\) 取状态分量。右侧是 \(C^k\) 映射的复合；它的定义域是流定义域在连续映射 \((t,s,a,\lambda)\mapsto(t-s,s,a,\lambda)\) 下的原像，因此是开集。
+
+时间导数就是原方程。对于出发时刻的导数，在 \(h=0\) 附近由唯一性有
+\[
+ E(t,s+h,E(s+h,s,a,\lambda),\lambda)=E(t,s,a,\lambda).
+\]
+对 \(h\) 求导并取 \(h=0\)，左侧的两项为 \(\partial_sE\) 与 \(D_aE f(s,a,\lambda)\)，右侧导数为零，得到所述公式。最后，对积分方程
+\[
+ E(t,s,a,\lambda)=a+\int_s^t f(r,E(r,s,a,\lambda),\lambda)\,\mathrm dr
+\]
+分别求 \(a\)、\(\lambda\) 的导数。已知的一阶联合连续可微性保证在任何紧时间段上可将微分移入积分号。所得矩阵积分方程再对 \(t\) 求导，恰为陈述中的两个初值问题。
+\end{proof}
+
+参数导数的非齐次项有直观含义：改变初值只改变出发位置，改变参数还会持续改变沿途的速度。例如 \(x'=\lambda x\)、\(x(s)=a\) 给出 \(E=e^{\lambda(t-s)}a\)，因此 \(D_\lambda E=(t-s)e^{\lambda(t-s)}a\)。它满足 \(B'=\lambda B+x\)、\(B(s)=0\)。如果初值本身是 \(a=a(\lambda)\)，链式法则还要加上 \(D_aE\,a'(\lambda)\)，相应参数变分方程的初值便是 \(a'(\lambda)\)。
+
+\ProseParagraphBreak
+
+本节的联合 \(C^k\) 结论不能套用到仅关于时间连续的速度场上。例如 \(x'=|t|\) 的解对时间属于 \(C^1\)，却在 \(t=0\) 一般不属于 \(C^2\)。这不妨碍\secref{b2:sec:ode-local-existence}的存在唯一性定理适用；它只说明存在、唯一、连续依赖与高阶光滑依赖是强度不同的结论，各自需要相应条件。

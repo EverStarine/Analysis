@@ -2,24 +2,326 @@
 \section{Doob 最大不等式}
 \label{b1:sec:3104}
 
-待撰写。
+期望和范数通常控制一个确定时刻的大小。
+若关心过程在观察期间是否曾经越过某个阈值，就必须控制整段路径的最大值。
+把每个时刻的 Markov 不等式相加会得到随观察次数增长的上界；
+鞅的条件平均关系能够把各个越界时刻重新联系到同一个终点。
+本节的关键是按第一次越界的时刻拆分事件，随后仍只在确定时刻之间使用塔性质。
 
 \subsection{有限时段的最大过程}
 \label{b1:subsec:310401}
 
-待撰写。
+设 \((\Omega,\mathcal F,\mathbb P)\) 为概率空间，
+\((\mathcal F_n)_{0\leq n\leq N}\) 为其上的滤过，
+\((X_n)_{0\leq n\leq N}\) 为关于该滤过的非负实值适应过程。
+它在时刻 \(n\) 以前的\term[zuida-guocheng]{最大过程}[maximal process]记为
+\[
+ X_n^*\coloneqq\max_{0\leq k\leq n}X_k.
+\]
+对于带符号的实过程 \((M_n)\)，通常关心的是
+\(\max_{0\leq k\leq n}|M_k|\)，这就是非负过程 \((|M_k|)\) 的最大过程。
+有限最大值对 \(\mathcal F_n\) 可测，因为每个 \(X_k\)、\(k\leq n\)
+都对 \(\mathcal F_n\) 可测。若各项可积且非负，则
+\(X_n^*\leq\sum_{k=0}^nX_k\)，所以有限时段的最大值也可积。
+\symidx{\(X_n^*\)：非负过程在时段 \(0,\ldots,n\) 上的最大值}
+
+\ProseParagraphBreak
+
+最大值可能出现得很早，终点值却已经回落。
+因此没有逐点不等式 \(X_N^*\leq C X_N\) 可供直接积分。
+例如一个非负公平资本过程可能先翻倍，随后输掉全部资本。
+最大不等式比较的是这些变量的概率或范数，而非每一条路径上的终点和最高点。
+
+\ProseParagraphBreak
+
+为了看出所需的组织方式，固定 \(\lambda>0\)，写出
+\[
+ A_k=\{X_0<\lambda,\ldots,X_{k-1}<\lambda,\ X_k\geq\lambda\},
+ \quad 0\leq k\leq N.
+\]
+当 \(k=0\) 时，前面的条件为空，故 \(A_0=\{X_0\geq\lambda\}\)。
+这些事件两两不交，且
+\[
+ \{X_N^*\geq\lambda\}=\bigcup_{k=0}^N A_k.
+\]
+每个 \(A_k\) 属于 \(\mathcal F_k\)：它只问到时刻 \(k\) 为止的取值，
+而其中每个 \(X_j\)、\(j\leq k\) 都对 \(\mathcal F_k\) 可测。
+这个可测性使我们可以在 \(A_k\) 上比较 \(X_k\) 与 \(X_N\) 的积分。
+若按“全程最大值在哪个时刻取得”拆分，事件却可能依赖未来取值，
+便不能直接作同样的条件期望计算。
 
 \subsection{弱型最大估计}
 \label{b1:subsec:310402}
 
-待撰写。
+下面的\term[doob-zuida-budengshi]{Doob 最大不等式}[Doob maximal inequality]%
+先给出一次矩控制下的越界概率。
+保留终值在越界事件上的积分，比直接用 \(\mathbb E X_N\) 代替它更精确；
+后面强型估计需要的正是这项局部化信息。
+
+\begin{theorem}[Doob 弱型最大不等式]
+\label{b1:thm:doob-weak-31}
+设 \(N\geq0\) 为整数，\((\Omega,\mathcal F,\mathbb P)\) 为概率空间，
+\((\mathcal F_n)_{0\leq n\leq N}\) 为滤过，
+\((X_n)_{0\leq n\leq N}\) 为关于该滤过的非负实值下鞅。
+令 \(X_N^*=\max_{0\leq k\leq N}X_k\)。则对每个 \(\lambda>0\)，有
+\begin{equation}
+ \lambda\cdot\mathbb P(X_N^*\geq\lambda)
+ \leq\mathbb E\bigl(X_N\cdot\mathbf1_{\{X_N^*\geq\lambda\}}\bigr)
+ \leq\mathbb E X_N.
+ \label{b1:eq:doob-local-tail-31}
+\end{equation}
+将两个事件中的 \(\geq\lambda\) 同时换成 \(>\lambda\)，结论也成立。
+\end{theorem}
+\begin{proof}
+按上一小节的公式定义首次达到阈值的事件 \(A_k\)。
+在 \(A_k\) 上有 \(X_k\geq\lambda\)，所以
+\[
+ \lambda\cdot\mathbb P(A_k)
+ \leq\mathbb E\bigl(X_k\cdot\mathbf1_{A_k}\bigr).
+\]
+由\cref{b1:prop:martingale-multistep-31}，
+\(X_k\leq\mathbb E(X_N\mid\mathcal F_k)\)。
+又因 \(A_k\in\mathcal F_k\)，条件期望的定义给出
+\[
+ \begin{aligned}
+ \mathbb E\bigl(X_k\cdot\mathbf1_{A_k}\bigr)
+ &\leq\mathbb E\bigl(\mathbb E(X_N\mid\mathcal F_k)
+                         \cdot\mathbf1_{A_k}\bigr)\\
+ &=\mathbb E\bigl(X_N\cdot\mathbf1_{A_k}\bigr).
+ \end{aligned}
+\]
+对 \(k=0,\ldots,N\) 求和。事件两两不交，且其并为
+\(\{X_N^*\geq\lambda\}\)，故得第一个不等式。
+第二个不等式用到 \(X_N\geq0\)。
+若把首次越界事件改成
+\(\{X_0\leq\lambda,\ldots,X_{k-1}\leq\lambda,X_k>\lambda\}\)，
+完全相同的计算给出严格越界版本。
+\end{proof}
+
+证明没有把随机选择的时刻直接代入下鞅定义。
+它对每个确定的 \(k\) 分别作条件平均，然后利用可测事件分块相加。
+这一点使首次越界方法只依赖前面已经建立的条件期望性质。
+
+\begin{corollary}[鞅的最大概率估计]
+\label{b1:cor:martingale-maximal-31}
+设 \(N\geq0\) 为整数，\((M_n)_{0\leq n\leq N}\) 为概率空间 \((\Omega,\mathcal F,\mathbb P)\)
+上关于滤过 \((\mathcal F_n)\) 的实值或复值鞅。
+则对每个 \(\lambda>0\)，有
+\[
+ \mathbb P\left(\max_{0\leq k\leq N}|M_k|\geq\lambda\right)
+ \leq\frac{\mathbb E|M_N|}{\lambda}.
+\]
+若另有 \(M_N\in L^r(\mathbb P)\)、\(1<r<\infty\)，则
+\[
+ \mathbb P\left(\max_{0\leq k\leq N}|M_k|\geq\lambda\right)
+ \leq\frac{\mathbb E|M_N|^r}{\lambda^r}.
+\]
+\end{corollary}
+\begin{proof}
+由\cref{b1:prop:martingale-convex-31}，\((|M_n|)\) 是非负下鞅，
+故第一式由弱型最大不等式得到。
+对于第二式，先用 \(M_k=\mathbb E(M_N\mid\mathcal F_k)\)
+和条件期望的 \(L^r\) 收缩性，确认每个 \(M_k\in L^r\)。
+非负下鞅 \((|M_k|)\) 经非减凸函数 \(t\mapsto(t^+)^r\) 作用后，
+仍是非负下鞅 \((|M_k|^r)\)。把弱型最大不等式用于此过程及阈值 \(\lambda^r\)，
+得到第二式。
+\end{proof}
+
+单独在终点应用 Markov 不等式只控制 \(\{|M_N|\geq\lambda\}\)，
+上述推论同时控制先前任意时刻发生的越界。
+例如，若 \(Z\in L^1(\mathbb P)\)，并对任意滤过取
+\(M_n=\mathbb E(Z\mid\mathcal F_n)\)，则
+\[
+ \mathbb P\left(\max_{0\leq k\leq N}
+       |\mathbb E(Z\mid\mathcal F_k)|\geq\lambda\right)
+ \leq\frac{\mathbb E|Z|}{\lambda}.
+\]
+右端不随信息更新的次数 \(N\) 增长。
 
 \subsection{强型最大估计}
 \label{b1:subsec:310403}
 
-待撰写。
+弱型估计说明阈值越高，越界概率越小；强型估计则把所有阈值的贡献合在一起，
+控制最大过程的 \(L^p\) 范数。
+直接积分粗略上界 \(\mathbb P(X_N^*\geq\lambda)\leq\mathbb E X_N/\lambda\)
+不会得到所需结果。必须先保留\eqref{b1:eq:doob-local-tail-31}中
+随阈值变化的事件，再交换非负积分。
+
+\begin{theorem}[Doob 强型最大不等式]
+\label{b1:thm:doob-strong-31}
+设 \(N\geq0\) 为整数，\((\Omega,\mathcal F,\mathbb P)\) 为概率空间，
+\((\mathcal F_n)_{0\leq n\leq N}\) 为滤过，
+\((X_n)_{0\leq n\leq N}\) 为关于该滤过的非负实值下鞅。
+若 \(1<p<\infty\) 且 \(X_N\in L^p(\mathbb P)\)，则
+\[
+ \left\|\max_{0\leq k\leq N}X_k\right\|_p
+ \leq\frac p{p-1}\cdot\|X_N\|_p.
+\]
+若 \(X_N\in L^\infty(\mathbb P)\)，则
+\[
+ \left\|\max_{0\leq k\leq N}X_k\right\|_\infty
+ \leq\|X_N\|_\infty.
+\]
+特别地，若 \((M_n)_{0\leq n\leq N}\) 是关于该滤过的实值或复值鞅，
+\(1<p<\infty\) 且 \(M_N\in L^p(\mathbb P)\)，则
+\[
+ \left\|\max_{0\leq k\leq N}|M_k|\right\|_p
+ \leq\frac p{p-1}\cdot\|M_N\|_p
+ \quad(1<p<\infty),
+\]
+若 \(M_N\in L^\infty(\mathbb P)\)，则
+\(\|\max_{k\leq N}|M_k|\|_\infty\leq\|M_N\|_\infty\)。
+\end{theorem}
+\begin{proof}
+记 \(Y=X_N^*\)。先确认所需的范数有限，以免在最后消去一个无穷量。
+对每个 \(k\leq N\)，下鞅的多步比较给出
+\[
+ 0\leq X_k\leq\mathbb E(X_N\mid\mathcal F_k).
+\]
+条件期望的 \(L^p\) 收缩性说明 \(X_k\in L^p\)，
+而 \(Y^p\leq\sum_{k=0}^N X_k^p\) 说明 \(Y\in L^p\)。
+
+对任意非负有限实数 \(y\)，有
+\(y^p=\int_0^y p\lambda^{p-1}\,\mathrm d\lambda\)。
+在 \(\Omega\times(0,\infty)\) 上，\(\mathbb P\) 与 Lebesgue 测度都为
+\(\sigma\)-有限测度，且下列被积函数非负并联合可测。
+用\cref{b1:thm:tonelli}交换积分，再用局部尾部估计，得到
+\[
+ \begin{aligned}
+ \mathbb E Y^p
+ &=\int_0^\infty p\lambda^{p-1}\cdot
+                    \mathbb P(Y\geq\lambda)\,\mathrm d\lambda\\
+ &\leq p\int_0^\infty\lambda^{p-2}\cdot
+        \mathbb E\bigl(X_N\cdot\mathbf1_{\{Y\geq\lambda\}}\bigr)
+                          \,\mathrm d\lambda\\
+ &=p\cdot\mathbb E\left(X_N\int_0^Y\lambda^{p-2}\,\mathrm d\lambda\right)
+ =\frac p{p-1}\cdot\mathbb E(X_NY^{p-1}).
+ \end{aligned}
+\]
+在零点附近积分 \(\lambda^{p-2}\) 有限，正好需要 \(p>1\)。
+令 \(q=p/(p-1)\)。Hölder 不等式给出
+\[
+ \mathbb E(X_NY^{p-1})
+ \leq\|X_N\|_p\cdot\|Y^{p-1}\|_q
+ =\|X_N\|_p\cdot\|Y\|_p^{p-1}.
+\]
+若 \(\|Y\|_p=0\)，结论已经成立；否则两边除以有限正数
+\(\|Y\|_p^{p-1}\)，即得所需估计。
+
+若 \(X_N\in L^\infty\)，仍用
+\(0\leq X_k\leq\mathbb E(X_N\mid\mathcal F_k)\leq\|X_N\|_\infty\)。
+有限多个时刻的异常零测集合并后，最大值也几乎必然不超过该常数。
+最后将已经证明的结论应用于非负下鞅 \((|M_n|)\)。
+\end{proof}
+
+强型估计的常数与时段长度无关，因此可以让 \(N\) 趋于无穷。
+这一过程只需要最大值随 \(N\) 单调增加，尚不需要鞅本身已经收敛。
+
+\begin{corollary}[无穷时段的最大估计]
+\label{b1:cor:doob-infinite-horizon-31}
+设 \((M_n)_{n\geq0}\) 是概率空间 \((\Omega,\mathcal F,\mathbb P)\)
+上关于滤过 \((\mathcal F_n)\) 的实值或复值鞅，令
+\(M^*=\sup_{n\geq0}|M_n|\)。
+若 \(C_1=\sup_n\mathbb E|M_n|<\infty\)，则
+\[
+ \mathbb P(M^*>\lambda)\leq\frac{C_1}{\lambda}
+ \quad(\lambda>0),
+\]
+并且 \(M^*<\infty\) 几乎必然。
+若 \(1<p<\infty\) 且 \(C_p=\sup_n\|M_n\|_p<\infty\)，则
+\[
+ \|M^*\|_p\leq\frac p{p-1}\,C_p.
+\]
+\end{corollary}
+\begin{proof}
+事件 \(\{\max_{k\leq N}|M_k|>\lambda\}\) 随 \(N\) 增加，
+其并为 \(\{M^*>\lambda\}\)。由测度的下连续性和有限时段弱型估计，得到第一式。
+再令整数阈值趋于无穷，测度的上连续性给出
+\(\mathbb P(M^*=\infty)=0\)。
+对强型估计，\((\max_{k\leq N}|M_k|)^p\) 单调增加到 \((M^*)^p\)，
+故单调收敛定理和有限时段估计给出
+\[
+ \mathbb E(M^*)^p
+ =\lim_{N\to\infty}\mathbb E\left(\max_{k\leq N}|M_k|\right)^p
+ \leq\left(\frac p{p-1}\right)^p C_p^p.
+\]
+\end{proof}
+
+一次矩一致有界的鞅因此几乎每条路径都有有限上界。
+有界数列仍可能反复振荡，所以上述结论还不能代替收敛定理。
+下一节将专门估计路径穿过固定区间的次数。
 
 \subsection{最大估计的应用与边界}
 \label{b1:subsec:310404}
 
-待撰写。
+先看二阶矩估计的具体意义。
+设 \(\xi_1,\ldots,\xi_N\) 为独立、平方可积、均值为零、方差分别为
+\(\sigma_1^2,\ldots,\sigma_N^2\) 的实随机变量，令
+\(S_n=\sum_{j=1}^n\xi_j\)、\(S_0=0\)。
+独立和构成鞅，而\cref{b1:prop:30-variance-sum}给出
+\(\mathbb E|S_N|^2=\sum_{j=1}^N\sigma_j^2\)。于是
+\[
+ \begin{aligned}
+ \mathbb E\left(\max_{0\leq k\leq N}|S_k|\right)^2
+ &\leq4\sum_{j=1}^N\sigma_j^2,\\
+ \mathbb P\left(\max_{0\leq k\leq N}|S_k|\geq\lambda\right)
+ &\leq\frac1{\lambda^2}\sum_{j=1}^N\sigma_j^2.
+ \end{aligned}
+\]
+第一项来自强型估计，第二项直接把弱型估计用于 \((S_k^2)\)。
+若先对第一项应用 Markov 不等式，概率上界会多出常数 \(4\)；
+这个比较提醒我们，控制同一对象时也应选择合适的版本。
+
+\ProseParagraphBreak
+
+最大估计还把终值的逼近转化为整列条件平均的同步逼近。
+设 \(Z,W\in L^p(\mathbb P)\)、\(1<p<\infty\)，
+对任意固定滤过取 \(M_n=\mathbb E(Z\mid\mathcal F_n)\)、
+\(L_n=\mathbb E(W\mid\mathcal F_n)\)。差过程也是鞅，且
+\(\|M_n-L_n\|_p\leq\|Z-W\|_p\)，所以
+\[
+ \left\|\sup_{n\geq0}|M_n-L_n|\right\|_p
+ \leq\frac p{p-1}\cdot\|Z-W\|_p.
+\]
+当 \(p=1\) 时仍有相应的概率控制
+\[
+ \mathbb P\left(\sup_{n\geq0}|M_n-L_n|>\lambda\right)
+ \leq\frac{\|Z-W\|_1}{\lambda}.
+\]
+这两式都控制全部时刻的误差，而不只是固定 \(n\) 的误差。
+
+\ProseParagraphBreak
+
+强型估计中的 \(p>1\) 不能改成 \(p\geq1\)。
+下面给出完全有限的计算，说明不存在与时段长度无关的常数 \(C\)，
+使所有非负鞅都满足 \(\mathbb E M_N^*\leq C\mathbb E M_N\)。
+取独立公平符号列 \((\xi_k)\)，令
+\[
+ M_0=1,\quad
+ M_n=2^n\cdot\mathbf1_{\{\xi_1=\cdots=\xi_n=1\}},
+ \quad\mathcal F_n=\sigma(\xi_1,\ldots,\xi_n).
+\]
+在连续得到 \(1\) 时资本每步翻倍，第一次得到 \(-1\) 后则永远为零。
+每个 \(M_n\) 有界，因此可积；由独立性，
+\[
+ \mathbb E(M_{n+1}\mid\mathcal F_n)
+ =2^{n+1}\cdot\mathbf1_{\{\xi_1=\cdots=\xi_n=1\}}\cdot\frac12=M_n.
+\]
+所以这是非负鞅，且 \(\mathbb E M_N=1\)。
+在前 \(N\) 次中，恰有开头 \(r\) 次为 \(1\)、随后一次为 \(-1\)
+的事件概率为 \(2^{-(r+1)}\)，其中 \(0\leq r<N\)；该事件上的最大值为 \(2^r\)。
+若前 \(N\) 次全为 \(1\)，概率为 \(2^{-N}\)，最大值为 \(2^N\)。
+因此
+\begin{equation}
+ \mathbb E\left(\max_{0\leq k\leq N}M_k\right)
+ =\sum_{r=0}^{N-1}2^r\cdot2^{-(r+1)}+2^N\cdot2^{-N}
+ =1+\frac N2.
+ \label{b1:eq:doob-endpoint-counterexample-31}
+\end{equation}
+终点的一次矩恒为 \(1\)，全程最大值的一次矩却随 \(N\) 无界增长。
+这与弱型估计并不冲突：对整数 \(1\leq j\leq N\)，还有精确等式
+\[
+ \mathbb P\left(\max_{0\leq k\leq N}M_k\geq2^j\right)=2^{-j}.
+\]
+越界概率具有一次幂衰减，却不能给出统一的一次矩最大上界。%
+\secref{b1:sec:3106}会从一致可积性的角度继续解释同一类资本集中现象。

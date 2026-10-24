@@ -2,24 +2,283 @@
 \section{上穿估计与几乎必然收敛}
 \label{b1:sec:3105}
 
-待撰写。
+最大不等式控制一条路径能达到多大，却还没有排除它在两个有限高度之间来回振荡。
+例如，数列 \((-1)^n\) 始终有界，仍然没有极限。
+要得到收敛，必须控制振荡本身。本节把反复从低处走到高处的行为计为上穿，
+再把上穿次数与一个只使用过去信息的增量和联系起来。
+有限期望使这个增量和受到控制，因而无限次固定幅度的振荡只能发生在零概率集合上。
+
+\ProseParagraphBreak
+
+Fremlin 的《Measure Theory》\cite[275E--275G]{Fremlin2016Measure}
+以截断路径计数上穿，并由此证明鞅收敛。
+下面把截断与可料乘子之间的关系展开，同时证明实下鞅所需的单侧积分有界版本。
+% 实读：作者公开 chap27 摘本物理 pp.50--52 的275E--275G。
+% 此处采用(X-a)^+与补持仓展开一般下鞅的估计，原文275F陈述为鞅。
 
 \subsection{上穿次数与路径振荡}
 \label{b1:subsec:310501}
 
-待撰写。
+固定两个实数 \(a<b\)。从一列实数 \(x_0,x_1,\ldots\) 中，
+先寻找第一次不高于 \(a\) 的时刻，再寻找此后第一次不低于 \(b\) 的时刻。
+这样才完成一次上穿；随后必须重新回到低处，才能开始下一次。
+只在高处连续停留，不增加上穿次数。
+
+\begin{definition}[上穿次数]
+\label{b1:def:upcrossing-31}
+设 \((x_n)_{n\geq0}\) 为实数列，\(a,b\in\mathbb R\)、\(a<b\)。递归令
+\[
+ \begin{aligned}
+ r_1&=\inf\{\,n\geq0:x_n\leq a\,\},&
+ s_1&=\inf\{\,n>r_1:x_n\geq b\,\},\\
+ r_{j+1}&=\inf\{\,n>s_j:x_n\leq a\,\},&
+ s_{j+1}&=\inf\{\,n>r_{j+1}:x_n\geq b\,\}.
+ \end{aligned}
+\]
+空集的下确界取 \(+\infty\)，某一步为 \(+\infty\) 时后面也取此值。
+截至整数时刻 \(N\geq0\) 的\term[shangchuan-cishu]{上穿次数}[number of upcrossings]记为
+\[
+ U_N(a,b;x)\coloneqq\#\{\,j\geq1:s_j\leq N\,\}.
+\]
+对概率空间上实值随机变量列 \((X_n)\)，逐样本应用此定义，记作
+\(U_N(a,b)\)。
+\end{definition}
+\symidx{\(U_N(a,b)\)：截至时刻 \(N\) 的上穿次数}
+
+这个递归总取最早可以选择的时刻。因此它也给出满足
+\(0\leq i_1<j_1<i_2<j_2<\cdots\leq N\)、
+\(x_{i_\ell}\leq a\)、\(x_{j_\ell}\geq b\) 的最多配对数：
+递归得到的第一对不会晚于任何可行第一对，逐对比较即可继续选择。
+尤其 \(0\leq U_N(a,b)\leq N\)，并且它随 \(N\) 不减。
+对适应于 \((\mathcal F_n)\) 的过程，判断 \(U_N\geq j\) 只涉及前 \(N+1\) 个变量的有限次大小比较，
+所以 \(U_N\) 是 \(\mathcal F_N\)-可测的。
+
+\ProseParagraphBreak
+
+\cref{b1:fig:upcrossing-31}中的两次完整上穿分别从时刻 \(1\) 到 \(3\)、从 \(5\) 到 \(7\)。
+时刻 \(8\) 开始的第三次尝试尚未到达上水平线，因此 \(U_9=2\)。
+连接相邻点的线段只用于辨认路径；过程仍是离散时间的，不在中间时刻插入观测。
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=0.68cm,y=0.77cm]
+ \draw[->] (-0.3,0)--(9.8,0) node[right]{\(n\)};
+ \draw[->] (0,-0.2)--(0,4.2) node[above]{\(x_n\)};
+ \draw[dashed] (0,1)--(9.4,1) node[right]{\(a\)};
+ \draw[dashed] (0,3)--(9.4,3) node[right]{\(b\)};
+ \draw[thick] plot coordinates {(0,2)(1,0.6)(2,1.9)(3,3.4)(4,2.5)(5,0.7)(6,2.4)(7,3.2)(8,0.4)(9,1.8)};
+ \foreach \x/\y in {0/2,1/0.6,2/1.9,3/3.4,4/2.5,5/0.7,6/2.4,7/3.2,8/0.4,9/1.8}
+   \fill (\x,\y) circle (1.6pt);
+ \foreach \x in {1,3,5,7,8,9} \node[below] at (\x,0){\(\x\)};
+ \node[below right] at (1,0.6){\(r_1\)};
+ \node[above] at (3,3.4){\(s_1\)};
+ \node[below right] at (5,0.7){\(r_2\)};
+ \node[above] at (7,3.2){\(s_2\)};
+ \node[right] at (8,0.4){\(r_3\)};
+\end{tikzpicture}
+\caption{两次完整上穿与一次尚未完成的尝试}
+\label{b1:fig:upcrossing-31}
+\end{figure}
+
+\begin{lemma}[上穿与极限]
+\label{b1:lem:upcrossing-path-31}
+设 \((x_n)_{n\geq0}\) 为实数列。若对每对有理数 \(a<b\)，都有
+\(\sup_N U_N(a,b;x)<\infty\)，则 \((x_n)\) 在扩充实数系
+\([-\infty,+\infty]\) 中有极限。
+\end{lemma}
+\begin{proof}
+若 \(\liminf_n x_n<\limsup_n x_n\)，可在两者之间选有理数
+\(a<b\)。任意晚的时刻以后，仍有某项小于 \(a\)，其后仍有某项大于 \(b\)。
+反复选择便得到任意多次完整上穿，与假设矛盾。
+因此上下极限相等，但这个共同值暂时仍可能为无穷。
+\end{proof}
+
+这里仅使用有理端点，是为了稍后能够把每对端点对应的零概率例外取可数并。
+若对所有实端点直接取并，即使每个例外集概率为零，也不能保证并集仍为零。
 
 \subsection{上穿不等式}
 \label{b1:subsec:310502}
 
-待撰写。
+上穿时从低处到高处的净变化至少为 \(b-a\)，这使人想到在低处开始累计增量，在高处停止。
+直接累计 \(X\) 有一个问题：最后一次尝试可能尚未完成，而且其损失可能很大。
+将路径先改为 \(Z_n=(X_n-a)^+\)，开始累计时的值便恰为零；
+最后一段尚未完成的累计值也非负。截断消除了需要额外处理的负余项。
+
+\begin{theorem}[Doob 上穿不等式]
+\label{b1:thm:upcrossing-31}
+设 \((\Omega,\mathcal F,\mathbb P)\) 为概率空间，\((\mathcal F_n)_{n\geq0}\)
+为其中递增的子 \(\sigma\)-代数列，\((X_n)_{n\geq0}\) 为适应于该滤过的实下鞅。
+对每个 \(a<b\) 及整数 \(N\geq0\)，有
+\begin{equation}
+ (b-a)\cdot\mathbb E U_N(a,b)
+ \leq\mathbb E(X_N-a)^+-\mathbb E(X_0-a)^+.
+ \label{b1:eq:upcrossing-31}
+\end{equation}
+特别地，右侧不超过 \(\mathbb E X_N^++|a|\)。
+\end{theorem}
+\begin{proof}
+映射 \(t\mapsto(t-a)^+\) 凸且单调不减，\((X_n-a)^+\leq|X_n|+|a|\) 又保证可积。
+由\cref{b1:prop:martingale-convex-31}，\(Z_n=(X_n-a)^+\) 为非负下鞅。
+对 \(1\leq k\leq N\)，令 \(H_k\) 在某次尝试已经开始但尚未完成时等于 \(1\)，其余时刻等于 \(0\)。
+精确地说，
+\[
+ \{H_k=1\}
+ =\bigcup_{j=0}^{k-1}
+   \left(\{X_j\leq a\}\cap\bigcap_{i=j}^{k-1}\{X_i<b\}\right).
+\]
+右侧只使用截至时刻 \(k-1\) 的信息，所以 \(H_k\) 是 \(\mathcal F_{k-1}\)-可测的。
+它表示是否累计从 \(k-1\) 到 \(k\) 的增量，不能用是否已经看见 \(X_k\) 越界来决定。
+
+令
+\[
+ G_N=\sum_{k=1}^N H_k(Z_k-Z_{k-1}).
+\]
+在一次完整上穿 \(r_j\) 到 \(s_j\) 中，所累计的项相消为
+\(Z_{s_j}-Z_{r_j}\geq b-a\)，因为 \(Z_{r_j}=0\)。
+完整上穿之外，至多还有最后一段 \(r_j\) 到 \(N\)，其贡献为
+\(Z_N-Z_{r_j}=Z_N\geq0\)。没有开始尝试的区间贡献为零。因此逐路径有
+\[
+ (b-a)\cdot U_N(a,b)\leq G_N.
+\]
+但是 \(G_N\) 是下鞅变换，只知道 \(\mathbb E G_N\geq0\) 还不能给它上界。
+为此考察未累计的那些增量：由\cref{b1:prop:martingale-transform-31}，
+有界非负可料乘子 \(1-H_k\) 给出
+\[
+ \mathbb E\sum_{k=1}^N(1-H_k)(Z_k-Z_{k-1})\geq0.
+\]
+两个和相加等于 \(Z_N-Z_0\)，于是
+\[
+ \mathbb E G_N\leq\mathbb E(Z_N-Z_0).
+\]
+所有和只有有限项，各项可积，取期望和逐项相加均合法。
+结合路径估计即得\eqref{b1:eq:upcrossing-31}。
+最后用 \((X_N-a)^+\leq X_N^++|a|\) 并丢去非负的初值项。
+\end{proof}
+
+上述\term[doob-shangchuan-budengshi]{Doob 上穿不等式}[Doob's upcrossing inequality]
+把振荡次数变成末时刻正部的积分。
+它允许路径偶尔出现很大的变化；排除的是在积分预算有限时，仍以正概率无休止地跨过同一固定区间。
 
 \subsection{离散鞅的基本收敛版本}
 \label{b1:subsec:310503}
 
-待撰写。
+上穿估计需要一个对所有终止时刻共同有效的积分界。
+这里应区分“每个 \(X_n\) 可积”与“\(\mathbb E X_n^+\) 一致有界”：
+前者是下鞅定义的一部分，后者才使上穿估计在 \(N\to\infty\) 时保留信息。
+
+\begin{theorem}[Doob 下鞅收敛]
+\label{b1:thm:submartingale-convergence-31}
+设 \((\Omega,\mathcal F,\mathbb P)\) 为概率空间，\((\mathcal F_n)_{n\geq0}\)
+为递增子 \(\sigma\)-代数列，\((X_n)\) 为适应于该滤过的实下鞅。若
+\[
+ C=\sup_{n\geq0}\mathbb E X_n^+<\infty,
+\]
+则存在有限实值 \(X_\infty\in L^1(\mathbb P)\)，使
+\(X_n\to X_\infty\) 几乎必然。还可取 \(X_\infty\) 对
+\(\mathcal F_\infty=\sigma(\bigcup_{n\geq0}\mathcal F_n)\) 可测，并且
+\[
+ \mathbb E|X_\infty|
+ \leq\liminf_{n\to\infty}\mathbb E|X_n|
+ \leq 2C-\mathbb E X_0.
+\]
+此结论不包含 \(L^1\) 收敛。
+\end{theorem}
+\begin{proof}
+先把单侧界改成绝对值积分界。
+下鞅的期望不减，所以 \(\mathbb E X_n\geq\mathbb E X_0\)。由
+\(|X_n|=2X_n^+-X_n\)，得到
+\[
+ \sup_n\mathbb E|X_n|\leq 2C-\mathbb E X_0<\infty.
+\]
+固定有理数 \(a<b\)，上穿不等式给出
+\(\sup_N\mathbb E U_N(a,b)\leq(C+|a|)/(b-a)\)。
+由于 \(U_N\) 非负且随 \(N\) 递增，\cref{b1:thm:monotone-convergence}
+允许对这一列取极限，故
+\[
+ \mathbb E\left[\sup_N U_N(a,b)\right]
+ \leq\frac{C+|a|}{b-a}<\infty.
+\]
+非负随机变量若以正概率为无穷，其积分必为无穷，因此该上穿次数几乎必然有限。
+
+有理数对只有可数多个。将所有对应的零概率例外集合并，
+在其补集上，每个有理区间的上穿次数都有限。
+由\cref{b1:lem:upcrossing-path-31}，路径在扩充实数系中有极限。
+再对非负随机变量 \(|X_n|\) 应用\cref{b1:thm:fatou}，得到
+\[
+ \mathbb E\bigl[\liminf_n|X_n|\bigr]
+ \leq\liminf_n\mathbb E|X_n|<\infty.
+\]
+这排除了极限为 \(+\infty\) 或 \(-\infty\) 的正概率事件。
+
+每个 \(X_n\) 都是 \(\mathcal F_\infty\)-可测的。
+它们收敛于有限实数的集合也属于 \(\mathcal F_\infty\)：
+可以用实数列的 Cauchy 条件写成可数并交。
+在该集合上取极限，其余点取零，就得到所需的 \(\mathcal F_\infty\)-可测代表。
+前述 Fatou 估计同时说明此代表属于 \(L^1\)，并给出结论中的积分界。
+\end{proof}
+
+这个\term[doob-xiayang-shoulian-dingli]{Doob 下鞅收敛定理}[Doob's submartingale convergence theorem]
+的证明分成两项不同任务：上穿排除持续振荡，Fatou 估计排除无穷极限。
+只有第二项使用了绝对值积分界；将两步混在一起，容易误以为“路径有界”本身已经保证收敛。
+
+\begin{corollary}[鞅与非负上鞅的收敛]
+\label{b1:cor:martingale-as-convergence-31}
+设 \((\Omega,\mathcal F,\mathbb P)\) 为概率空间，\((\mathcal F_n)_{n\geq0}\)
+为递增子 \(\sigma\)-代数列。
+若实鞅或复鞅 \((M_n)\) 适应于该滤过且
+\(\sup_n\mathbb E|M_n|<\infty\)，则它几乎必然收敛于某个可积的有限随机变量。
+若 \((Y_n)\) 是适应于该滤过的非负实上鞅，则它也几乎必然收敛，
+其非负极限满足 \(\mathbb E Y_\infty\leq\mathbb E Y_0\)。
+\end{corollary}
+\begin{proof}
+实鞅是下鞅，\(M_n^+\leq|M_n|\)，故可用前一定理。
+复鞅分别取实部和虚部，得到两个实鞅；二者的一阶矩均被 \(\mathbb E|M_n|\) 控制，
+取两个概率为一集合的交集便可同时收敛，Fatou 估计保证复极限可积。
+非负上鞅取负后为下鞅，且 \((-Y_n)^+=0\)，仍可用前一定理。
+其极限非负，再由 Fatou 引理及上鞅的期望不增性得最后的不等式。
+\end{proof}
+
+例如，若一个实鞅满足 \(\sup_n\mathbb E|M_n|^p<\infty\)，其中 \(p>1\)，
+则概率空间上的 Hölder 不等式给出所需的一阶矩界。
+这样已经得到几乎必然收敛；更强的积分收敛将在下一节由尾部控制推出。
 
 \subsection{积分控制不足的反例}
 \label{b1:subsec:310504}
 
-待撰写。
+下面把\secref{b1:sec:3104}的公平抛币资本写成区间上的确定公式，
+同时看清路径与积分发生了什么。取
+\(\Omega=[0,1)\)，\(\mathcal F\) 为 Borel \(\sigma\)-代数，\(\mathbb P\) 为长度测度，
+令 \(\mathcal D_n\) 由二进分割
+\[
+ I_{n,j}=[j2^{-n},(j+1)2^{-n}),\quad 0\leq j<2^n,
+\]
+生成，其中 \(\mathcal D_0=\{\varnothing,\Omega\}\)。定义
+\begin{equation}
+ M_n(x)=2^n\cdot\mathbf1_{[0,2^{-n})}(x),\quad n\geq0.
+ \label{b1:eq:dyadic-spike-martingale-31}
+\end{equation}
+每个 \(M_n\) 非负、\(\mathcal D_n\)-可测，且 \(\mathbb E M_n=1\)。
+在第一个 \(n\) 级区间上，\(M_{n+1}\) 在前半取 \(2^{n+1}\)，在后半取零，
+平均值为 \(2^n=M_n\)；其余区间上的平均值和 \(M_n\) 都为零。
+对分割原子的积分恒等式延伸到它们的有限并，条件期望的唯一性便给出
+\(\mathbb E[M_{n+1}\mid\mathcal D_n]=M_n\)。这确实是一列鞅。
+
+\ProseParagraphBreak
+
+对每个 \(x>0\)，充分大时 \(2^{-n}<x\)，所以 \(M_n(x)=0\)。
+唯一例外 \(x=0\) 的概率为零，因而 \(M_n\to0\) 几乎必然。
+但是
+\[
+ \|M_n-0\|_1=1\quad\hbox{对每个 }n\geq0.
+\]
+一阶矩一致有界并没有保住极限中的积分：全部质量不断集中到更短的区间，
+固定的几乎每个样本点最终都离开这个区间，积分却始终看见那里越来越高的值。
+
+\ProseParagraphBreak
+
+因此不能把有限时刻的鞅恒等式直接写成
+\(M_n=\mathbb E[M_\infty\mid\mathcal D_n]\)。右侧在此例中恒为零，左侧却不恒为零。
+同样不能在 \(\mathbb E M_n=1\) 中无条件交换极限与积分。
+下一节将说明，排除这种集中所需的条件恰是一致可积性。
+另一个方向也要分清：常数随机变量列 \(X_n=(-1)^n\) 甚至一致有界，却不收敛；
+它不满足鞅或下鞅的条件平均关系。因此积分控制和过程结构都各有作用。

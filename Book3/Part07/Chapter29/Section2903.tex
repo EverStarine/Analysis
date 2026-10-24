@@ -1,28 +1,365 @@
 % !TeX root = ../../Book3.tex
 \section{多重次调和函数}
 \label{b3:sec:2903}
-% 规划课题：A28。
-% 范围说明：中文主称在正式撰写时对照术语规范核定；本节对应 plurisubharmonic，不引入一般全局等价定理。
 
-待撰写。
+在一元理论中，全纯函数的对数模由次平均不等式控制。
+多变量时仍可沿复直线使用这个事实，但只控制实 Laplace 算子的总和不够：
+一个复方向的负曲率可能被另一个方向的正曲率抵消。
+本节要求每个复方向都满足次平均，并说明这个要求如何在极限与全纯换元下保留。
 
 \subsection{复直线限制与次平均性质}
 \label{b3:subsec:290301}
 
-待撰写。
+\Needspace{6\baselineskip}
+\begin{definition}\label{b3:def:29-psh}
+设 \(\Omega\subseteq\mathbb C^n\) 为开集，\(n\ge1\)，
+\(u:\Omega\to[-\infty,\infty)\) 上半连续。
+若对任意 \(a\in\mathbb C^n\)、\(v\in\mathbb C^n\setminus\{0\}\)，
+函数 \(\zeta\mapsto u(a+\zeta v)\) 在
+\(\{\zeta\in\mathbb C:a+\zeta v\in\Omega\}\) 的每个连通分支上
+或者次调和，或者恒为 \(-\infty\)，则称 \(u\) 为
+\term[duochong-cidiaohe-hanshu]{多重次调和函数}[plurisubharmonic function]。
+全体这样的函数记为 \(\operatorname{PSH}(\Omega)\)。
+本章允许 \(u\equiv-\infty\)。
+\end{definition}
+\symidx{\(\operatorname{PSH}(\Omega)\)：开集上的多重次调和函数}
+
+允许某些直线上的限制恒为负无穷是必要的。
+例如在 \(\mathbb C^n\) 上，\(u(z)=\log|z_1|\) 在超平面 \(z_1=0\)
+上的每条复直线都恒为 \(-\infty\)，但在其他方向仍有次平均性质。
+这里只允许负无穷，不允许正无穷。
+上半连续性因而保证每个紧集上有有限上界，所有圆周平均都可按扩展积分解释。
+
+\ProseParagraphBreak
+前文的一元定义另含局部可积性。
+为了在取极限时直接使用平均不等式，先补足二者之间的关系。
+
+\Needspace{6\baselineskip}
+\begin{lemma}[扩展次平均判据]\label{b3:lem:29-extended-submean}
+设 \(D\subseteq\mathbb C\) 为区域，\(v:D\to[-\infty,\infty)\)
+上半连续，并对每个 \(\overline{B(a,r)}\subset D\) 满足
+\[
+ v(a)\le\frac1{2\pi}\int_0^{2\pi}v(a+re^{\mathrm it})\,\mathrm dt.
+\]
+则 \(v\equiv-\infty\)，或者 \(v\in L^1_{\mathrm{loc}}(D)\)
+且为\cref{b3:def:15-subharmonic}意义下的次调和函数。
+\end{lemma}
+\begin{proof}
+若 \(v\) 不恒为负无穷，取 \(a\) 使 \(v(a)>-\infty\)。
+固定 \(\overline{B(a,R)}\subset D\)，令 \(M\) 为该闭圆盘上 \(v\) 的有限上界。
+对每个 \(0<r<R\)，次平均给
+\[
+ \int_0^{2\pi}\bigl(M-v(a+re^{\mathrm it})\bigr)\,\mathrm dt
+ \le2\pi(M-v(a)).
+\]
+被积函数非负，故可以用 Tonelli 定理先乘 \(r\) 再从零积分到 \(R\)，得
+\[
+ \int_{B(a,R)}(M-v)\,\mathrm d\lambda\le\pi R^2(M-v(a))<\infty.
+\]
+于是 \(v\) 在这个圆盘上可积。
+
+令 \(G\) 为拥有可积邻域的点组成的集合。
+它非空且开。若 \(p\in\overline G\cap D\)，取 \(B(p,2r)\Subset D\)。
+集合 \(G\cap B(p,r/2)\) 非空且开，而 \(v\) 在其中局部可积，
+可以选 \(a\) 属于此交集且 \(v(a)\) 有限。
+前面的积分论证适用于 \(B(a,r)\)，该圆盘包含 \(B(p,r/2)\)。
+所以 \(p\in G\)，说明 \(G\) 在 \(D\) 中也闭。
+由连通性，\(G=D\)。现在上半连续性、局部可积性和次平均都成立，
+正是前文的定义。
+\end{proof}
+
+因此，\(u\) 多重次调和当且仅当它上半连续，且对所有满足
+\(a+\{\zeta v:|\zeta|\le r\}\subset\Omega\) 的复圆盘都有
+\begin{equation}\label{b3:eq:29-complex-submean}
+ u(a)\le\frac1{2\pi}\int_0^{2\pi}u(a+re^{\mathrm it}v)\,\mathrm dt.
+\end{equation}
+等价性的反向是在每条直线的每个连通分支应用上述引理。
+多重次调和性也是局部性质。事实上，若它在每点附近成立，
+则在任一复直线的连通分支上，每点有一个圆盘邻域，
+使限制函数或次调和，或恒为负无穷。
+两类点各成开集；它们不能相交，因为次调和函数局部可积，
+不可能在非空开集上恒为负无穷。
+由连通性，该分支或者整体恒为负无穷，或者处处局部可积。
+后一情形再用\cref{b3:prop:15-local-comparison}，即得整个分支上的次调和性。
 
 \subsection{上半连续性与基本运算}
 \label{b3:subsec:290302}
 
-待撰写。
+平均不等式在极限下能否保留，取决于积分的方向和共同上界。
+这里的函数可能没有共同下界，直接援引有界收敛并不合适。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[基本运算与极限]\label{b3:prop:29-psh-operations}
+设 \(\Omega\subseteq\mathbb C^n\) 为开集。
+有限个 \(\operatorname{PSH}(\Omega)\) 函数的最大值与非负线性组合仍在
+\(\operatorname{PSH}(\Omega)\) 中；零系数项略去，空和取零。
+若 \(u_j\in\operatorname{PSH}(\Omega)\) 局部一致上有界，
+\(u_j\to u\) 逐点成立，且 \(u:\Omega\to[-\infty,\infty)\) 上半连续，
+则 \(u\in\operatorname{PSH}(\Omega)\)。
+特别地，递减列 \(u_j\downarrow u\) 的极限仍多重次调和，允许恒为负无穷。
+\ProseParagraphBreak
+若 \(u\in\operatorname{PSH}(\Omega)\)，\(\chi:\mathbb R\to\mathbb R\)
+连续、凸且非减，则按
+\(\chi(-\infty)=\lim_{t\to-\infty}\chi(t)\) 解释时，\(\chi\circ u\) 多重次调和。
+若 \(u\) 连续且实值，\(u(\Omega)\subset I\)，
+则同一结论也适用于仅在开区间 \(I\) 上连续、凸且非减的 \(\chi\)。
+\end{proposition}
+\begin{proof}
+有限最大值与非负和上半连续。
+在中心选择取得最大值的一项，先对它用次平均，再以各项最大值放大圆周值，
+即得最大值的次平均；中心值为负无穷时不等式直接成立。
+非负和则把各项的平均不等式相加。
+
+对极限结论，固定一个内部复圆周，并取整族在该圆周上的有限共同上界 \(M\)。
+对非负函数 \(M-u_j\) 使用 Fatou 引理，得到
+\[
+ \limsup_{j\to\infty}\frac1{2\pi}\int_0^{2\pi}
+ u_j(a+re^{\mathrm it}v)\,\mathrm dt
+ \le\frac1{2\pi}\int_0^{2\pi}u(a+re^{\mathrm it}v)\,\mathrm dt.
+\]
+与中心点的逐点收敛合并，就得到 \(u\) 的次平均。
+上半连续性和\cref{b3:lem:29-extended-submean}补足直线限制所需的可积性。
+递减极限上半连续，又由第一项给出局部共同上界，故为特例。
+
+对于凸复合，先令 \(u_N=\max(u,-N)\)。
+它在紧集上上下有界，Jensen 不等式与 \(\chi\) 非减给
+\[
+ \chi(u_N(a))
+ \le\chi\left(\frac1{2\pi}\int_0^{2\pi}u_N(a+re^{\mathrm it}v)\,\mathrm dt\right)
+ \le\frac1{2\pi}\int_0^{2\pi}\chi(u_N(a+re^{\mathrm it}v))\,\mathrm dt.
+\]
+连续非减复合保留上半连续性，故 \(\chi(u_N)\) 多重次调和。
+令 \(N\to\infty\)，这些函数递减到 \(\chi(u)\)，应用递减极限结论即可。
+对仅在 \(I\) 上定义的 \(\chi\)，连续实值的 \(u\)
+在所用闭圆盘上取值于 \(I\) 内的一个紧区间，直接应用同一 Jensen 论证。
+\end{proof}
+
+例如 \(\max(\log|z_1|,\log|z_2|)\)、\(e^u\) 都保留多重次调和性。
+取负号通常不保留：\(|z_1|^2\) 有次平均，而 \(-|z_1|^2\) 在第一坐标线上没有。
+逐点上确界也未必上半连续，须区别它与下面的正规化。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[上包络的上半连续正规化]\label{b3:prop:29-psh-envelope}
+设 \(\Omega\subseteq\mathbb C^n\) 为开集，
+\(\{u_\alpha\}_{\alpha\in A}\subseteq\operatorname{PSH}(\Omega)\) 为非空族。
+假设对每个紧集 \(K\Subset\Omega\)，
+\(\sup_\alpha\sup_Ku_\alpha<\infty\)。令
+\[
+ v(z)=\sup_{\alpha\in A}u_\alpha(z),\quad
+ v^*(z)=\lim_{r\downarrow0}\sup_{w\in B(z,r)}v(w).
+\]
+则 \(v^*\in\operatorname{PSH}(\Omega)\)。
+特别地，如果 \(v\) 本身上半连续，则 \(v=v^*\) 多重次调和。
+\end{proposition}
+\begin{proof}
+局部共同上界保证 \(v^*\) 不取正无穷，定义直接给其上半连续性。
+固定一个内部复圆盘，中心为 \(a\)，方向为 \(v_0\)，半径为 \(r\)。
+若 \(v^*(a)=-\infty\)，次平均自动成立。
+否则选 \(a_j\to a\)，再选指标 \(\alpha_j\)，使
+\[
+ u_{\alpha_j}(a_j)\longrightarrow v^*(a).
+\]
+这可先用上确界选取 \(v(a_j)\)，再把误差控制在 \(1/j\) 内。
+充分大的 \(j\) 对应的平行复圆盘仍在 \(\Omega\) 内，故
+\[
+ u_{\alpha_j}(a_j)
+ \le\frac1{2\pi}\int_0^{2\pi}
+             u_{\alpha_j}(a_j+re^{\mathrm it}v_0)\,\mathrm dt.
+\]
+所有这些圆周位于同一个内部紧集上，因而有共同有限上界。
+对每个 \(t\)，由正规化的定义有
+\[
+ \limsup_{j\to\infty}u_{\alpha_j}(a_j+re^{\mathrm it}v_0)
+ \le v^*(a+re^{\mathrm it}v_0).
+\]
+对共同上界减去各项应用 Fatou 引理，就得到 \(v^*\) 的次平均。
+这里只对可测的单个 \(u_{\alpha_j}\) 积分，
+不需要预先断言任意指标集的原始上确界 \(v\) 可测。
+\end{proof}
+
+局部共同上界是条件的一部分，不能把可能等于正无穷的上包络纳入结论。
+同样，递增极限应先核对上半连续性，或使用刚证明的上半连续正规化。
 
 \subsection{全纯函数对数的模型}
 \label{b3:subsec:290303}
 
-待撰写。
+\Needspace{6\baselineskip}
+\begin{proposition}[全纯函数及向量的对数模]\label{b3:prop:29-log-holomorphic-psh}
+设 \(\Omega\subseteq\mathbb C^n\) 为开集，\(f_1,\ldots,f_m\in\mathcal O(\Omega)\)，
+\(m\ge1\)。把零处的对数取为 \(-\infty\)，则
+\[
+ \log|f_1|\in\operatorname{PSH}(\Omega),\quad
+ \log\left(\sum_{j=1}^m|f_j|^2\right)^{1/2}
+       \in\operatorname{PSH}(\Omega).
+\]
+允许某个函数或整个向量恒为零。
+对 \(\varepsilon>0\)，函数
+\(\log(\varepsilon+\sum_j|f_j|^2)\) 也是光滑的多重次调和函数。
+\end{proposition}
+\begin{proof}
+沿任意复直线，\(\zeta\mapsto f_1(a+\zeta v)\) 是一元全纯函数。
+在每个连通分支上，它或者恒为零，或者由
+\cref{b3:prop:15-log-subharmonic}知其对数模次调和。
+\(\log|f_1|\) 在非零处连续；在零点处，连续性使模趋于零，
+故对数趋于负无穷，仍满足上半连续性。
+这证明第一个结论，也说明直线上恒为负无穷的情形不能排除。
+
+记 \(F=(f_1,\ldots,f_m)\)。由 Cauchy--Schwarz 不等式，逐点有
+\[
+ \log\|F(z)\|
+ =\sup_{\sum_j|a_j|^2=1}\log\left|\sum_{j=1}^m a_j f_j(z)\right|.
+\]
+在 \(F(z)\ne0\) 时取 \(a_j=\overline{f_j(z)}/\|F(z)\|\) 达到上确界；
+在 \(F(z)=0\) 时两边均为负无穷。
+右侧每项多重次调和，且在每个紧集上由 \(\log\|F\|\) 给出共同上界。
+左侧上半连续，因此\cref{b3:prop:29-psh-envelope}适用。
+最后将 \(\sqrt\varepsilon\) 作为额外的常值全纯分量，
+再把所得对数范数乘以二，就得最后的结论；括号内严格为正，故光滑。
+\end{proof}
+
+例如 \(\log\|z\|\) 在 \(\mathbb C^n\) 上多重次调和，
+只在原点取负无穷，而 \(\log|z_1|\) 的负无穷集合是整个坐标超平面。
+若 \(f\) 在某点不为零，可缩小邻域使其值落在一个不含零的小圆盘内，
+在那里选择全纯对数，\(\log|f|\) 就是该对数的实部。
+这说明零点以外沿复方向的平均是等式，零点才造成对数奇性。
 
 \subsection{光滑情形与 Levi 形式}
 \label{b3:subsec:290304}
 
-待撰写。
+写 \(z_j=x_j+\mathrm i y_j\)，采用
+\(\partial_{z_j}=\tfrac12(\partial_{x_j}-\mathrm i\partial_{y_j})\)、
+\(\partial_{\bar z_j}=\tfrac12(\partial_{x_j}+\mathrm i\partial_{y_j})\)。
+对于 \(C^2\) 实函数，沿复直线取 Laplace 算子可以读出一个 Hermitian 形式。
 
+\Needspace{6\baselineskip}
+\begin{definition}\label{b3:def:29-levi-form}
+设 \(\Omega\subseteq\mathbb C^n\) 为开集，\(u\in C^2(\Omega;\mathbb R)\)。
+在 \(z\in\Omega\) 与方向 \(\xi\in\mathbb C^n\) 上，定义
+\[
+ \mathcal L_u(z;\xi)\coloneqq
+ \sum_{j,k=1}^n
+ \frac{\partial^2u}{\partial z_j\partial\bar z_k}(z)
+       \xi_j\overline{\xi_k}.
+\]
+这称为 \(u\) 的\term[levi-xingshi]{Levi 形式}[Levi form]。
+若在每一点对所有 \(\xi\ne0\) 都有 \(\mathcal L_u(z;\xi)>0\)，
+则称这个 \(C^2\) 函数为
+\term[yange-duochong-cidiaohe]{严格多重次调和的}[strictly plurisubharmonic]。
+\end{definition}
+\symidx{\(\mathcal L_u(z;\xi)\)：实函数的 Levi 形式}
+
+\Needspace{6\baselineskip}
+\begin{proposition}[光滑判据与链式法则]\label{b3:prop:29-levi-criterion}
+设 \(\Omega\subseteq\mathbb C^n\) 为开集，\(u\in C^2(\Omega;\mathbb R)\)。
+则 \(u\in\operatorname{PSH}(\Omega)\) 当且仅当
+\(\mathcal L_u(z;\xi)\ge0\) 对所有 \(z\in\Omega\)、\(\xi\in\mathbb C^n\) 成立。
+若 \(V\subseteq\mathbb C^m\) 为开集、\(F:V\to\Omega\) 全纯，则
+\[
+ \mathcal L_{u\circ F}(w;\eta)
+ =\mathcal L_u\bigl(F(w);DF(w)\eta\bigr).
+\]
+特别地，光滑多重次调和函数的全纯拉回仍多重次调和。
+\end{proposition}
+\begin{proof}
+对 \(g(\zeta)=u(z+\zeta\xi)\) 使用链式法则，得
+\[
+ \Delta_\zeta g(0)
+ =4\frac{\partial^2g}{\partial\zeta\partial\bar\zeta}(0)
+ =4\mathcal L_u(z;\xi).
+\]
+沿每条直线在每一点使用一元 \(C^2\) 次调和判据，便得等价关系。
+对于全纯 \(F\)，有 \(\partial_{\bar w}F=0\) 与
+\(\partial_w\overline F=0\)。
+对 \(u\circ F\) 先作一个 \(w\) 导数，再作一个 \(\bar w\) 导数，
+全纯分量的混合导数为零，留下
+\[
+ \frac{\partial^2(u\circ F)}{\partial w_a\partial\bar w_b}
+ =\sum_{j,k}u_{z_j\bar z_k}(F)
+             \frac{\partial F_j}{\partial w_a}
+             \overline{\frac{\partial F_k}{\partial w_b}}.
+\]
+乘以 \(\eta_a\overline{\eta_b}\) 并求和，就是所述形式恒等式。
+\end{proof}
+
+函数 \(\|z\|^2\) 的 Levi 形式为 \(\|\xi\|^2\)，因此严格多重次调和。
+另一方面，在 \(\mathbb C^2\) 上，
+\[
+ h(z_1,z_2)=|z_1|^2-|z_2|^2
+\]
+满足实 Laplace 方程 \(\Delta_{\mathbb R^4}h=0\)，
+但在直线 \(z_1=0\) 上等于 \(-|z_2|^2\)，不是多重次调和函数。
+一般的光滑多重次调和函数满足
+\(\Delta_{\mathbb R^{2n}}u=4\sum_j u_{z_j\bar z_j}\ge0\)；
+实次调和性只要求这个迹非负，Levi 判据则要求所有复方向非负。
+
+\ProseParagraphBreak
+要把链式法则用于不光滑函数，不能只说沿全纯曲线限制仍次调和：
+这已超出定义中直线限制的范围。
+下面用截断与磨光把它归约到刚证明的光滑情形。
+
+\Needspace{6\baselineskip}
+\begin{lemma}[有下界函数的局部磨光]\label{b3:lem:29-psh-smoothing}
+设 \(\Omega\subseteq\mathbb C^n\) 为开集，\(u\in\operatorname{PSH}(\Omega)\)
+局部有有限下界。
+取非负、径向、支集在单位圆盘内的 \(\chi\in C_c^\infty(\mathbb C)\)，
+使 \(\int_{\mathbb C}\chi\,\mathrm d\lambda=1\)，并令
+\[
+ \rho_\varepsilon(w)
+ =\prod_{j=1}^n\varepsilon^{-2}\chi(w_j/\varepsilon),\quad
+ u_\varepsilon(z)=\int_{\mathbb C^n}u(z-w)\rho_\varepsilon(w)\,\mathrm dV(w).
+\]
+在距 \(\partial\Omega\) 大于 \(\sqrt n\,\varepsilon\) 的点定义卷积。
+则 \(u_\varepsilon\) 光滑且多重次调和，并且在每个固定内部点，
+\[
+ u(z)\le u_\varepsilon(z),\quad
+ \lim_{\varepsilon\downarrow0}u_\varepsilon(z)=u(z).
+\]
+在固定内部紧集上，充分小的 \(\varepsilon\) 对应的函数有共同有限上界。
+\end{lemma}
+\begin{proof}
+函数 \(u\) 在紧集上上下有界，因而局部可积。
+卷积可通过对光滑紧支集核求导得到各阶导数，所以 \(u_\varepsilon\) 光滑。
+固定卷积定义域内的一个复圆盘，对每个平移参数 \(w\) 用 \(u\) 的次平均，
+再乘非负核并用 Fubini 换序，得 \(u_\varepsilon\) 的次平均。
+有关点位于一个内部紧集，局部上下界保证这次换序绝对可积。
+
+为了比较点值，先沿第一坐标积分。
+径向核的积分是各半径圆周平均的非负加权平均，
+一元次平均保证它不小于 \(u(z)\)。
+再依次沿第二至第 \(n\) 个坐标做同样的操作，得到
+\(u(z)\le u_\varepsilon(z)\)。
+另一方面，核的质量为一且支集缩向零，上半连续性给
+\[
+ \limsup_{\varepsilon\downarrow0}u_\varepsilon(z)\le u(z).
+\]
+两个方向合并即得点态收敛。
+在一个紧集的固定小邻域上取 \(u\) 的有限上界，也就得到所有小尺度卷积的共同上界。
+\end{proof}
+
+\Needspace{6\baselineskip}
+\begin{proposition}[全纯拉回]\label{b3:prop:29-psh-pullback}
+设 \(\Omega\subseteq\mathbb C^n\)、\(V\subseteq\mathbb C^m\) 为开集，
+\(F:V\to\Omega\) 全纯，\(u\in\operatorname{PSH}(\Omega)\)。
+则 \(u\circ F\in\operatorname{PSH}(V)\)，允许它在某个连通分支上恒为负无穷。
+特别地，全纯曲线上的拉回为一元次调和函数或恒为负无穷。
+\end{proposition}
+\begin{proof}
+先固定 \(N\)，令 \(u_N=\max(u,-N)\)。
+它有有限下界，前一引理给局部光滑近似 \((u_N)_\varepsilon\)。
+任取 \(w_0\in V\)，选择 \(w_0\) 的相对紧小邻域，
+使其闭包的像位于 \(\Omega\) 的一个内部紧集。
+充分小的 \(\varepsilon\) 对应的近似都在该像附近定义。
+由\cref{b3:prop:29-levi-criterion}，
+\((u_N)_\varepsilon\circ F\) 多重次调和。
+它们点态趋于 \(u_N\circ F\)，在该小邻域局部一致上有界，
+极限又因 \(F\) 连续而上半连续。
+沿任意趋于零的尺度列用\cref{b3:prop:29-psh-operations}，
+得到 \(u_N\circ F\) 多重次调和。
+最后令 \(N\to\infty\)，这些函数递减到 \(u\circ F\)，
+再次应用递减极限结论即可。
+整个过程先截断再卷积，没有预先把可能为负无穷的函数当作可积函数积分。
+\end{proof}
+
+因而多重次调和性在双全纯换元下保持。
+下一节将用连续、实值的多重次调和函数控制区域边界；
+解析圆盘的中心值受其边界平均控制，是这一几何应用所需的具体性质。

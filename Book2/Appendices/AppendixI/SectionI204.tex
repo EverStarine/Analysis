@@ -2,19 +2,312 @@
 \section{模型群上的反演与 Plancherel 定理}
 \label{b2:sec:I204}
 
-待撰写。
+同一个反演公式，在有限群上是有限求和，在环面上是 Fourier 级数，在欧氏空间上则是积分。决定形式的正是对偶群：频率是有限、离散还是连续，以及频率侧采用什么测度。下面把这些模型中的常数与收敛意义逐一算清，再把它们组合起来，处理同时含有周期变量、非周期变量和离散变量的函数。
 
 \subsection{有限交换群上的 Fourier 分析}
 \label{b2:subsec:I20401}
 
-待撰写。
+设 \(F\) 为有限交换群，群运算写成加法，单位元记为 \(0\)。赋予 \(F\) 离散拓扑，每个函数都连续。记 \(N=|F|\)，空间侧取归一化计数测度
+\[
+ \int_F f\,\mathrm d\mu_F=\frac1N\sum_{x\in F}f(x).
+\]
+一个字符 \(\chi:F\rightarrow\{z\in\mathbb C:|z|=1\}\) 满足 \(\chi(x+y)=\chi(x)\chi(y)\)。它就是一个与群加法相容的振荡模式。先解决一个代数问题：这样的模式是否足够多，能够区分每个点并展开任意函数？
+
+\begin{lemma}[有限交换群上的字符延拓]\label{b2:lem:I4-character-extension}
+设 \(F\) 为有限交换群，\(H\) 为其子群，\(\psi\) 为 \(H\) 上的字符。则 \(\psi\) 可以延拓为 \(F\) 上的字符，并且恰有 \(|F|/|H|\) 个延拓。特别地，\(|\widehat F|=|F|\)；对每个 \(x\in F\setminus\{0\}\)，存在字符 \(\chi\) 满足 \(\chi(x)\ne1\)。
+\end{lemma}
+\begin{proof}
+若 \(H\ne F\)，取 \(x\in F\setminus H\)，令 \(m\) 为使 \(mx\in H\) 的最小正整数。子群 \(K=H+\mathbb Zx\) 由互不相交的 \(m\) 个陪集 \(H,H+x,\ldots,H+(m-1)x\) 组成。延拓的值 \(z=\chi(x)\) 必须满足
+\[
+ z^m=\psi(mx).
+\]
+右侧模为一，恰有 \(m\) 个不同的单位复数根。选定一个根，定义
+\[
+ \chi(h+jx)=\psi(h)z^j\qquad(h\in H,\ j\in\mathbb Z).
+\]
+若 \(h+jx=h'+j'x\)，则 \(j-j'=qm\)、\(h'-h=qmx\)，其中 \(q\in\mathbb Z\)。于是 \(\psi(h')=\psi(h)\psi(mx)^q\)、\(z^j=z^{j'}\psi(mx)^q\)，两种表示给出的值相同。公式还直接保持加法，故确实定义一个字符。字符在 \(H\) 上的值与 \(x\) 上的值决定整个 \(K\) 上的值，因此延拓恰有 \(m=[K:H]\) 个。
+
+反复扩大子群，有限步后得到 \(F\)。各步的延拓数相乘等于各指数的乘积，即 \(|F|/|H|\)。从 \(H=\{0\}\) 的唯一字符出发，便得 \(|\widehat F|=|F|\)。最后，若非零元素 \(x\) 的阶为 \(r\ge2\)，在循环子群 \(\langle x\rangle\) 上定义 \(\psi(jx)=e^{2\pi\mathrm i j/r}\)，再延拓到 \(F\)，就得到 \(\chi(x)\ne1\)。
+\end{proof}
+
+这里的延拓只须选单位复数的有限次方根。特别地，建立有限群 Fourier 分析时，可以直接从字符的定义得到所需的全部模式。
+
+\begin{theorem}[有限交换群的 Fourier 反演与 Parseval]\label{b2:thm:I4-finite-fourier}
+设 \(F\) 为具有 \(N\) 个元素的有限交换群，空间侧取测度 \(\mu_F(\{x\})=1/N\)，对偶群 \(\widehat F\) 取计数测度。对任意函数 \(f:F\rightarrow\mathbb C\)，令
+\[
+ \widehat f(\chi)=\frac1N\sum_{x\in F}f(x)\overline{\chi(x)}.
+\]
+则字符构成 \(L^2(F,\mu_F)\) 的标准正交基，且
+\begin{align*}
+ f(x)&=\sum_{\chi\in\widehat F}\widehat f(\chi)\chi(x)
+       \qquad(x\in F),\\
+ \frac1N\sum_{x\in F}|f(x)|^2
+      &=\sum_{\chi\in\widehat F}|\widehat f(\chi)|^2.
+\end{align*}
+因此 \(f\mapsto\widehat f\) 是这两个带指定测度的复 Hilbert 空间之间的酉映射。
+\end{theorem}
+\begin{proof}
+若 \(\rho\) 是非平凡字符，选 \(a\in F\) 使 \(\rho(a)\ne1\)。平移只是重排有限和，所以
+\[
+ S\coloneqq\sum_{x\in F}\rho(x)
+ =\sum_{x\in F}\rho(x+a)=\rho(a)S,
+\]
+从而 \(S=0\)。对于两个不同字符 \(\chi,\psi\)，商 \(\chi\overline\psi\) 是非平凡字符，故
+\[
+ \frac1N\sum_{x\in F}\chi(x)\overline{\psi(x)}
+ =\begin{cases}1,&\chi=\psi,\\0,&\chi\ne\psi.\end{cases}
+\]
+引理给出恰有 \(N\) 个字符，而所有复值函数组成 \(N\) 维空间。这组正交向量因而是基。有限维正交展开给出反演，展开式的平方范数给出 Parseval；任意 \(N\) 个复系数又都能在展开式中自由指定，故变换满射。
+\end{proof}
+
+取 \(F=\mathbb Z/N\mathbb Z\)。每个字符由它在 \(1\) 上的值决定，而该值的 \(N\) 次方为 \(1\)，所以字符正好是
+\[
+ \chi_k(j)=e^{2\pi\mathrm i jk/N},\qquad 0\le j,k<N.
+\]
+由此得到\term[lisan-fourier-bianhuan]{离散 Fourier 变换}[discrete Fourier transform]的一个常用归一化：正变换带 \(1/N\)，反变换不带系数。例如在 \(\mathbb Z/4\mathbb Z\) 上，按 \(j=0,1,2,3\) 排列的函数 \(f=(1,1,0,0)\) 满足
+\[
+ \widehat f=\left(\frac12,\frac{1-\mathrm i}{4},0,
+                         \frac{1+\mathrm i}{4}\right).
+\]
+四个系数的模平方和为 \(1/4+1/8+0+1/8=1/2\)，正好等于 \((1^2+1^2)/4\)。这些常数也能从卷积核对。采用上述归一化测度时，
+\[
+ (f*g)(j)=\frac1N\sum_{r=0}^{N-1}f(j-r)g(r),
+ \quad \widehat{f*g}(k)=\widehat f(k)\widehat g(k),
+\]
+下标按模 \(N\) 计算。于是例中的 \(f*f=(1,2,1,0)/4\)。若采用数值计算中常见的不带 \(1/N\) 的循环卷积，则所得向量为 \((1,2,1,0)\)，它的变换也相应多出一个 \(N\)。归一化必须同时贯穿积分、卷积和反演。
+
+字符分离还有一个便于计算的形式：
+\begin{equation}\label{b2:eq:I4-dual-orthogonality}
+ \sum_{\chi\in\widehat F}\chi(x)
+ =N\mathbf1_{\{0\}}(x).
+\end{equation}
+在 \(x=0\) 处每项为一；若 \(x\ne0\)，选 \(\psi(x)\ne1\)，将求和指标 \(\chi\) 改为 \(\chi\psi\)，总和就乘以 \(\psi(x)\)，因此总和为零。这个式子说明：把全部振荡模式叠加起来，正好在群的单位元集中成一个点质量。
 
 \subsection{环面与整数格上的对偶}
 \label{b2:subsec:I20402}
 
-待撰写。
+环面与整数格组成一对相互交换的空间：\(\mathbb T^d\) 上的函数产生整数频率，\(\mathbb Z^d\) 上的序列产生周期频率。两侧都使用 \(2\pi\) 相位，可以直接看见这种互换。
+
+\begin{theorem}[环面上的反演与 Plancherel]\label{b2:thm:I4-torus-fourier}
+设 \(d\ge1\) 为整数，\(\mathbb T^d=(\mathbb R/\mathbb Z)^d\) 取总质量为一的 Lebesgue 测度 \(\mathrm dt\)，其对偶 \(\mathbb Z^d\) 取计数测度。对 \(f\in L^1(\mathbb T^d;\mathbb C)\) 定义
+\[
+ \widehat f(k)=\int_{[0,1]^d}f(t)e^{-2\pi\mathrm i k\cdot t}\,\mathrm dt
+ \qquad(k\in\mathbb Z^d).
+\]
+若 \(f\in L^2(\mathbb T^d)\)，则
+\[
+ \|f\|_2^2=\sum_{k\in\mathbb Z^d}|\widehat f(k)|^2,
+ \quad
+ f=\lim_{M\to\infty}\sum_{|k|_\infty\le M}
+             \widehat f(k)e^{2\pi\mathrm i k\cdot t}
+             \quad\text{于 }L^2(\mathbb T^d),
+\]
+且系数映射是到 \(\ell^2(\mathbb Z^d)\) 的酉映射。若 \(f\in L^1(\mathbb T^d)\) 且 \(\sum_k|\widehat f(k)|<\infty\)，则反演级数绝对一致收敛到 \(f\) 的唯一连续代表。
+\end{theorem}
+\begin{proof}
+一维情形的正交基与平方范数收敛由\cref{b2:thm:02-l2-convergence}和\cref{b2:cor:02-parseval}给出；那里也采用长度为一的周期和归一化 Lebesgue 测度。多维指数函数是各坐标指数函数的乘积，Fubini 立即给出正交性。
+
+说明完备性时，先用可测矩形的示性函数的有限线性组合逼近 \(L^2(\mathbb T^d)\) 函数。这种稠密性来自矩形生成乘积 \(\sigma\) 代数：能在测度上由有限矩形组合逼近的集合，对补集及可数不交并封闭，其中可数并先截为有限并。该集合族包含全部矩形，而矩形对有限交封闭，故 \(\pi\)-\(\lambda\) 定理把逼近性质推广到全部乘积可测集；完成测度后的零测集改动也不影响逼近。再由简单函数逼近得到 \(L^2\) 稠密性。一个矩形的示性函数是 \(d\) 个一维示性函数的乘积。分别用一维三角多项式逼近这些因子，乘积之差按坐标逐项展开，并用 Fubini 计算每项的平方范数，就得到有限多维三角多项式的逼近。故多维指数系完备。\Cref{b2:thm:02-abstract-parseval}给出范数恒等式和展开；给任意平方可和系数，有限部分和在 \(L^2\) 中为 Cauchy 列，其极限具有指定系数，故满射。
+
+再设系数绝对可和。其级数由 Weierstrass 判别法一致收敛到连续函数 \(g\)，逐项积分给出 \(\widehat g(k)=\widehat f(k)\)。为识别两个 \(L^1\) 函数，使用乘积 Fejér 核
+\[
+ \Phi_M(t)=\prod_{j=1}^d F_M(t_j).
+\]
+\Cref{b2:thm:02-fejer}给出每个坐标方向的 Fejér 平均在 \(L^1\) 中收敛：先对几乎所有固定的其余坐标使用一维结论，再由 Fubini 和误差上界 \(2\|f(\cdot,t')\|_{L^1(\mathbb T)}\) 使用控制收敛。各方向平均都是 \(L^1\) 压缩映射，把乘积算子与恒等算子的差写为 \(d\) 项，就得 \(\Phi_M*f\to f\) 于 \(L^1\)。由于 \(f-g\) 的全部系数为零，\(\Phi_M*(f-g)=0\)，令 \(M\to\infty\) 即得 \(f=g\) 几乎处处。两个连续代表之差若在一点非零，就在某个正测度开集上非零，故连续代表唯一。
+\end{proof}
+
+这里 \(|k|_\infty=\max_j|k_j|\)，矩形截断的误差恰为
+\[
+ \left\|f-\sum_{|k|_\infty\le M}\widehat f(k)e^{2\pi\mathrm i k\cdot t}\right\|_2^2
+ =\sum_{|k|_\infty>M}|\widehat f(k)|^2.
+\]
+它刻画的是整个函数的平方误差。绝对一致收敛则由额外的系数可和条件保证，两者在应用中各有不同用途。
+
+\begin{theorem}[整数格上的反演与 Plancherel]\label{b2:thm:I4-lattice-fourier}
+设 \(d\ge1\)，\(\mathbb Z^d\) 取计数测度，\(\mathbb T^d\) 取总质量为一的 Lebesgue 测度。对 \(a\in\ell^1(\mathbb Z^d;\mathbb C)\)，令
+\[
+ \widehat a(\theta)=\sum_{n\in\mathbb Z^d}a(n)e^{-2\pi\mathrm i n\cdot\theta}.
+\]
+此级数绝对一致收敛，且对每个 \(n\in\mathbb Z^d\)，
+\[
+ a(n)=\int_{[0,1]^d}\widehat a(\theta)
+                    e^{2\pi\mathrm i n\cdot\theta}\,\mathrm d\theta.
+\]
+上述变换唯一延拓为 \(\ell^2(\mathbb Z^d)\) 到 \(L^2(\mathbb T^d)\) 的酉映射。对于 \(a\in\ell^2\)，正变换由有限和的 \(L^2\) 极限定义，仍有
+\[
+ \sum_n|a(n)|^2=\int_{\mathbb T^d}|\widehat a(\theta)|^2\,\mathrm d\theta,
+ \quad
+ a(n)=\int_{\mathbb T^d}\widehat a(\theta)e^{2\pi\mathrm i n\cdot\theta}\,\mathrm d\theta.
+\]
+\end{theorem}
+\begin{proof}
+绝对一致收敛由 \(\sum_n|a(n)|<\infty\) 保证；逐项积分并用指数函数的正交性，立即得到 \(\ell^1\) 反演。对有限支集的序列，正交性还给出平方范数恒等式。有限支集序列在 \(\ell^2\) 中稠密，因此该等距映射唯一连续延拓到 \(\ell^2\)；其像包含全部三角多项式，后者由上一定理在 \(L^2(\mathbb T^d)\) 中稠密。等距映射的像又闭，故延拓满射。
+
+对于一般 \(a\in\ell^2\)，每个固定坐标 \(a\mapsto a(n)\) 都是连续线性泛函，而 \(h\mapsto\int h(\theta)e^{2\pi\mathrm i n\cdot\theta}\,\mathrm d\theta\) 在 \(L^2(\mathbb T^d)\) 中也连续，范数为一。因此有限支集序列上的反演经极限给出逐个坐标的反演。该积分还绝对收敛，因为圆周测度为一，\(\|h\|_1\le\|h\|_2\)。若 \(a\in\ell^1\)，它同时属于 \(\ell^2\)，原级数的统一极限与此 \(L^2\) 极限一致。
+\end{proof}
+
+例如 \(a(n)=(1+|n|)^{-3/4}\) 属于 \(\ell^2(\mathbb Z)\)，却不属于 \(\ell^1(\mathbb Z)\)。它的变换是一个确定的 \(L^2(\mathbb T)\) 等价类；在 \(\theta=0\) 处，形式上的正项级数发散。每个坐标 \(a(n)\) 仍能由定理中的积分恢复，因为点态发散不影响平方可积函数的积分。这个例子把两种方向的收敛差别具体表现出来。
 
 \subsection{Euclidean 空间与乘积群}
 \label{b2:subsec:I20403}
 
-待撰写。
+在 \(\mathbb R^d\) 上取字符 \(\chi_\xi(x)=e^{2\pi\mathrm i x\cdot\xi}\)。空间侧与频率侧都取通常的 Lebesgue 测度，\cref{b2:thm:03-inversion}给出的反演是
+\[
+ f(x)=\int_{\mathbb R^d}\widehat f(\xi)e^{2\pi\mathrm i x\cdot\xi}\,\mathrm d\xi.
+\]
+其条件为 \(f\in L^1(\mathbb R^d)\)、\(\widehat f\in L^1(\mathbb R^d)\)，右侧给出唯一的连续代表；\cref{b2:thm:04-unitary}则将同一积分变换在 \(L^1\cap L^2\) 上的作用延拓为 \(L^2\) 酉映射。对于一般平方可积函数，\cref{b2:cor:04-l2-inversion}用有界频率区域上的积分及其 \(L^2\) 极限实现反演。
+
+\Cref{b2:tab:I4-normalization}把这些模型中的测度集中列出。有限群和环面在空间侧取总质量为一，对偶侧因而取通常的计数测度；在整数格上交换这两个角色，便恢复同一套公式。
+\begin{table}[htbp]
+\centering
+\caption[模型群的 Fourier 测度归一化]{模型群的 Fourier 测度归一化。各行均采用负号正变换与正号反变换；\(F\) 为有限交换群，\(N=|F|\)，\(d\ge1\)。}
+\label{b2:tab:I4-normalization}
+\begin{tabularx}{\linewidth}{@{}l>{\raggedright\arraybackslash}Xl>{\raggedright\arraybackslash}X@{}}
+\toprule
+空间群 & 空间测度 & 对偶群 & 对偶测度\\
+\midrule
+\(F\) & \(N^{-1}\) 倍计数测度 & \(\widehat F\) & 计数测度\\
+\(\mathbb T^d\) & 总质量为一的 Lebesgue 测度 & \(\mathbb Z^d\) & 计数测度\\
+\(\mathbb Z^d\) & 计数测度 & \(\mathbb T^d\) & 总质量为一的 Lebesgue 测度\\
+\(\mathbb R^d\) & Lebesgue 测度 & \(\mathbb R^d\) & Lebesgue 测度\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+混合变量中会同时出现求和与积分。设 \(a,b,c\) 为非负整数，\(F\) 为有限交换群，考虑
+\[
+ G=\mathbb R^a\times\mathbb T^b\times\mathbb Z^c\times F,
+ \quad
+ \widehat G=\mathbb R^a\times\mathbb Z^b\times\mathbb T^c\times\widehat F.
+\]
+零次乘积解释为只有一个元素的群，测度取一。每个因子取表中的测度，再取乘积测度 \(\mu,\widehat\mu\)。字符在乘积群上的分解来自
+\( (x,t,n,y)=(x,0,0,0)+(0,t,0,0)+(0,0,n,0)+(0,0,0,y)\)：字符的乘法性决定它等于各坐标限制的乘积。因此自然配对为
+\[
+ \chi_{\xi,k,\theta,\eta}(x,t,n,y)
+ =e^{2\pi\mathrm i(x\cdot\xi+t\cdot k+n\cdot\theta)}\eta(y).
+\]
+对 \(f\in L^1(G,\mu)\)，变换写成
+\begin{align*}
+ \widehat f(\xi,k,\theta,\eta)
+ &=\frac1{|F|}\sum_{y\in F}\sum_{n\in\mathbb Z^c}
+       \int_{\mathbb R^a}\int_{\mathbb T^b}
+       f(x,t,n,y)\\[-2pt]
+ &\hspace{2em}\cdot e^{-2\pi\mathrm i(x\cdot\xi+t\cdot k+n\cdot\theta)}
+          \overline{\eta(y)}\,\mathrm dt\,\mathrm dx.
+\end{align*}
+绝对可积性使求和与积分可以换序，四种变量的角色在此各自清楚。
+
+\begin{proposition}[乘积模型上的 Plancherel]\label{b2:prop:I4-product-plancherel}
+设 \(G=\mathbb R^a\times\mathbb T^b\times\mathbb Z^c\times F\)，其中 \(a,b,c\ge0\) 为整数，\(F\) 为有限交换群。空间及对偶均取\cref{b2:tab:I4-normalization}各因子的乘积测度 \(\mu,\widehat\mu\)，零次乘积为测度一的单点群，字符为
+\[
+ \chi_{\xi,k,\theta,\eta}(x,t,n,y)
+ =e^{2\pi\mathrm i(x\cdot\xi+t\cdot k+n\cdot\theta)}\eta(y).
+\]
+可积变换 \(\widehat f(\chi)=\int_G f\overline\chi\,\mathrm d\mu\) 在 \(L^1(G,\mu)\cap L^2(G,\mu)\) 上唯一延拓为酉映射
+\[
+ \mathcal F_2:L^2(G,\mu)\longrightarrow L^2(\widehat G,\widehat\mu),
+ \quad \|\mathcal F_2f\|_{L^2(\widehat\mu)}=\|f\|_{L^2(\mu)}.
+\]
+各因子的变换可以按任意次序在 \(L^2\) 意义下实施，结果相同。
+\end{proposition}
+\begin{proof}
+先取有限个分离变量函数的和，即每项为各坐标 \(L^2\) 函数的乘积。在每个因子上应用已经证明的酉变换。两个乘积函数的内积，由 Fubini 等于各因子内积的乘积；各因子变换保持内积，所以有限和的内积与范数都保持。特别地，若同一个函数有两种有限和表示，两者之差范数为零，它们的变换之差也为零，故这个定义与表示无关。
+
+这些有限和在乘积 \(L^2\) 中稠密。具体地，先把 \(\mathbb R^a\) 与 \(\mathbb Z^c\) 截在有限测度区域，再截断函数幅度；用简单函数逼近后，在有限测度乘积空间中用矩形组合逼近每个可测集。每个矩形的示性函数就是各因子示性函数的乘积。于是上述等距变换唯一延拓到全部 \(L^2\)。频率侧同样有稠密的乘积函数有限和，而每个因子变换都满射，故延拓的像包含这一稠密子空间。等距映射的像闭，因而满射。
+
+对 \(f\in L^1\cap L^2\)，同样的支集截断、幅度截断和矩形逼近可以同时使 \(L^1\)、\(L^2\) 误差趋零。所得近似函数 \(f_j\) 的每个因子均属于 \(L^1\cap L^2\)，Fubini 保证乘积变换就是可积积分变换。于是 \(\widehat f_j\) 一致趋于积分定义的 \(\widehat f\)，并在 \(L^2\) 中趋于 \(\mathcal F_2f\)。在频率侧任意有限测度区域上，两者都是依测度极限，所以几乎处处相等；用可数个这样的区域穷尽 \(\widehat G\)，得到整体一致性。最后，在分离变量函数上，各因子变换的次序无关；由稠密性及各步的连续性，该结论推广到全部 \(L^2\)。
+\end{proof}
+
+乘积空间中的 Parseval 恒等式可以压缩为 \(\int_G|f|^2\,\mathrm d\mu=\int_{\widehat G}|\widehat f|^2\,\mathrm d\widehat\mu\)。展开时，空间侧的有限群求和带 \(1/|F|\)，频率侧的有限群求和不带这个因子。
+
+对任意 \(f\in L^2(G,\mu)\)，取有限测度频率区域
+\[
+ E_R=\{\, (\xi,k,\theta,\eta):|\xi|\le R,\ |k|_\infty\le R\,\},
+ \qquad R\ge1.
+\]
+若相应维数为零，则省去该坐标的限制。Cauchy--Schwarz 使 \(\mathbf1_{E_R}\widehat f\in L^1\cap L^2\)。各因子的逆变换都是正号积分；用上面同时在 \(L^1\)、\(L^2\) 中逼近的论证，其乘积逆变换也在交空间上等于正号积分。因此
+\[
+ f_R(z)=\int_{E_R}\widehat f(\chi)\chi(z)\,\mathrm d\widehat\mu(\chi)
+\]
+是 \(\mathcal F_2^{-1}(\mathbf1_{E_R}\widehat f)\) 的连续代表，且
+\[
+ \|f_R-f\|_2^2
+ =\int_{\widehat G\setminus E_R}|\widehat f|^2\,\mathrm d\widehat\mu
+ \longrightarrow0.
+\]
+这给出混合模型的 \(L^2\) 反演。若再有频率侧绝对可积性，便能直接取消截断，并取得连续代表。
+
+\begin{theorem}[乘积模型上的绝对反演]\label{b2:thm:I4-model-inversion}
+设 \(G=\mathbb R^a\times\mathbb T^b\times\mathbb Z^c\times F\)，其中 \(a,b,c\ge0\) 为整数，\(F\) 为有限交换群；空间和对偶取\cref{b2:tab:I4-normalization}中的乘积测度，零次乘积为测度一的单点群。对偶元素 \((\xi,k,\theta,\eta)\) 的字符为
+\(\chi(x,t,n,y)=e^{2\pi\mathrm i(x\cdot\xi+t\cdot k+n\cdot\theta)}\eta(y)\)，变换取 \(\widehat f(\chi)=\int_G f\overline\chi\,\mathrm d\mu\)。若 \(f\in L^1(G,\mu)\) 且 \(\widehat f\in L^1(\widehat G,\widehat\mu)\)，则绝对收敛积分
+\[
+ g(z)=\int_{\widehat G}\widehat f(\chi)\chi(z)\,\mathrm d\widehat\mu(\chi)
+\]
+定义 \(f\) 的唯一连续代表。按坐标写出，就是
+\begin{align*}
+ g(x,t,n,y)
+ &=\sum_{\eta\in\widehat F}\sum_{k\in\mathbb Z^b}
+       \int_{\mathbb R^a}\int_{\mathbb T^c}
+       \widehat f(\xi,k,\theta,\eta)\\[-2pt]
+ &\hspace{2em}\cdot e^{2\pi\mathrm i(x\cdot\xi+t\cdot k+n\cdot\theta)}
+       \eta(y)\,\mathrm d\theta\,\mathrm d\xi.
+\end{align*}
+\end{theorem}
+\begin{proof}
+绝对可积性与控制收敛先给出 \(g\) 连续且有界。识别它与原函数时，将连续频率用 Gauss 因子压低，将整数频率用 Fejér 权重压低。取 \(\varepsilon>0\)、整数 \(M\ge0\)，置
+\[
+ m_{\varepsilon,M}(\xi,k,\theta,\eta)
+ =e^{-\pi\varepsilon^2|\xi|^2}
+     \prod_{j=1}^b\left(1-\frac{|k_j|}{M+1}\right)_+,
+\]
+其中 \(s_+=\max(s,0)\)。它在 \(\widehat G\) 上可积，且 \(0\le m_{\varepsilon,M}\le1\)。由 Gauss 变换公式、Fejér 核的有限展开、环面指数正交性和\eqref{b2:eq:I4-dual-orthogonality}，它的正号反演积分为
+\[
+ K_{\varepsilon,M}(x,t,n,y)
+ =\varepsilon^{-a}e^{-\pi|x|^2/\varepsilon^2}
+      \prod_{j=1}^bF_M(t_j)
+      \mathbf1_{\{0\}}(n)\,|F|\mathbf1_{\{0\}}(y).
+\]
+这个核非负，积分为一。对单位元的任意邻域，离开该邻域的质量随 \(\varepsilon\downarrow0\)、\(M\to\infty\) 趋零：离散坐标的质量全在零点；其余坐标分别使用 Gauss 尾积分与 Fejér 核在原点外的质量估计。乘积邻域外是有限个坐标尾部的并，故总尾部也趋零。
+
+对于 \(f\in L^1(G)\)，\cref{b2:prop:I2-translation}给出平移在 \(L^1\) 范数中的连续性；本处的模型群均为第二可数局部紧群，且所用乘积测度为 Haar 测度。因此
+\[
+ \|f*K_{\varepsilon,M}-f\|_1
+ \le\int_GK_{\varepsilon,M}(w)\|f(\,\cdot-w)-f\|_1\,\mathrm d\mu(w)
+ \longrightarrow0.
+\]
+具体地，在单位元附近令范数差小于任意给定的 \(\delta>0\)，在其余部分用 \(2\|f\|_1\) 乘以核的尾部质量，就得到上述极限。
+
+将 \(K_{\varepsilon,M}\) 的反演积分代入卷积，由
+\(\|f\|_1\|m_{\varepsilon,M}\|_1<\infty\) 使用 Fubini，得到
+\[
+ (f*K_{\varepsilon,M})(z)
+ =\int_{\widehat G}\widehat f(\chi)m_{\varepsilon,M}(\chi)
+                         \chi(z)\,\mathrm d\widehat\mu(\chi).
+\]
+右侧一致趋于 \(g\)，因为一致误差至多为
+\(\int|\widehat f|\,|m_{\varepsilon,M}-1|\,\mathrm d\widehat\mu\to0\)。
+在任意有限测度区域 \(E\) 上，
+\[
+ \int_E|f-g|\,\mathrm d\mu
+ \le\|f-f*K_{\varepsilon,M}\|_1
+       +\mu(E)\|f*K_{\varepsilon,M}-g\|_\infty\longrightarrow0.
+\]
+用可数个有限测度区域穷尽 \(G\)，便得 \(f=g\) 几乎处处。由于非空开集的乘积 Haar 测度为正，两个连续代表若在一点不同，就会在一个正测度开集上不同，故唯一。
+\end{proof}
+
+例如在圆柱群 \(G=\mathbb R\times\mathbb T\) 上取
+\[
+ f(x,t)=e^{-\pi x^2}\bigl(1+\cos(2\pi t)\bigr).
+\]
+它的变换为
+\[
+ \widehat f(\xi,k)=e^{-\pi\xi^2}
+ \left(\mathbf1_{\{0\}}(k)+\frac12\mathbf1_{\{1\}}(k)
+                         +\frac12\mathbf1_{\{-1\}}(k)\right).
+\]
+非周期方向留下连续的 Gauss 频谱，周期方向只含三个整数频率。平方范数的两侧均为
+\[
+ \left(\int_{\mathbb R}e^{-2\pi x^2}\,\mathrm dx\right)
+ \left(1+\frac14+\frac14\right)=\frac{3}{2\sqrt2}.
+\]
+分离变量函数可以直接逐因子计算，而一般函数则由乘积 Plancherel 定理按平方范数逼近。这个区别使同一套公式既便于具体计算，也能处理缺少点值或普通积分表示的函数。

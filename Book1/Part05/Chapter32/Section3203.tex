@@ -2,24 +2,371 @@
 \section{极大遍历引理与逐点收敛}
 \label{b1:sec:3203}
 
-待撰写。
+平方平均收敛说明平均误差的平方积分趋于零，却还不能保证整个平均序列沿几乎每条轨道收敛。
+从 \(L^2\) 收敛中抽出一个几乎处处收敛子列，也没有解决原序列在子列之间是否反复偏离的问题。
+本节用一个对所有平均长度同时有效的估计补上这一点：先控制轨道部分和何时越过零，
+再控制小的 \(L^1\) 误差在整条平均序列中造成的大偏差。
+
+\ProseParagraphBreak
+
+证明分两步。对于“不变函数加一个相邻轨道差”，平均中的大部分项会直接相消，逐点收敛可以计算。
+上一节的正交分解保证这种函数足够稠密；极大估计则把稠密类上的收敛传给一般可积函数。
+这里不要求变换可逆，也不要求轨道上各次观测独立。
 
 \subsection{部分和与极大函数}
 \label{b1:subsec:320301}
 
-待撰写。
+在概率空间 \((X,\mathcal A,\mu)\) 上固定可测保测变换 \(T:X\to X\)。
+对可积函数 \(f\)，沿一条轨道依次读出
+\[
+ f(x),\quad f(Tx),\quad f(T^2x),\quad\ldots.
+\]
+长度为 \(n\) 的部分和及其平均分别为
+\[
+ S_n f(x)=\sum_{k=0}^{n-1}f(T^kx),
+ \quad A_n f(x)=\frac{S_n f(x)}n,\quad n\geq1,
+\]
+并约定 \(S_0f=0\)。若想知道某个平均是否高于给定水平 \(\lambda\)，则
+\[
+ A_n f(x)>\lambda
+ \quad\Longleftrightarrow\quad
+ S_n(f-\lambda)(x)>0
+\]
+对实值 \(f\) 成立。除去分母后，关于平均的越界问题就变成部分和是否为正的问题。
+
+\ProseParagraphBreak
+
+这里的逐点公式需要选择可测代表。可积函数在零测集外有限，可以在非有限的可测零测集上改为零，
+从而使用处处有限的代表。若两个代表仅在可测零测集 \(N\) 上不同，它们沿轨道的任何一次观测
+只可能在
+\[
+ N^{\mathrm{orb}}=\bigcup_{k=0}^{\infty}T^{-k}N
+\]
+上不同。保测性给出 \(\mu(T^{-k}N)=0\)，故 \(\mu(N^{\mathrm{orb}})=0\)。
+因此平均、极大函数及后面建立的几乎处处结论都不依赖可积等价类的代表。
+这一处理只取可测零测集的逆像和可数并，不需要概率空间完备。
+
+\begin{definition}[遍历平均的极大函数]
+\label{b1:def:ergodic-maximal-32}
+设 \((X,\mathcal A,\mu)\) 为概率空间，\(T:X\to X\) 为可测保测变换，
+\(f\in L^1(\mu;\mathbb R)\) 或 \(L^1(\mu;\mathbb C)\)。定义
+与遍历平均对应的极大函数（ergodic maximal function）\foreignidx{ergodic maximal function}为
+\[
+ \mathcal M_Tf(x)
+ =\sup_{n\geq1}A_n|f|(x)
+ =\sup_{n\geq1}\frac1n\sum_{k=0}^{n-1}|f(T^kx)|.
+\]
+它暂时允许取值 \(+\infty\)。对实值 \(f\) 及整数 \(N\geq1\)，另记
+\[
+ m_N(x)=\max\{0,S_1f(x),\ldots,S_Nf(x)\},
+ \quad E_N=\{x:m_N(x)>0\},
+\]
+并令 \(m_0=0\)。
+\end{definition}
+\symidx{\(\mathcal M_Tf\)：遍历平均的极大函数}
+
+这些对象的职责不同：\(m_N\) 记录带符号部分和的正向越界，适合证明积分不等式；
+\(\mathcal M_Tf\) 记录绝对值平均的最大大小，适合控制误差。
+取上确界的指标是可数集，故 \(\mathcal M_Tf\) 可测；三角不等式给出
+\[
+ \sup_{n\geq1}|A_nf(x)|\leq\mathcal M_Tf(x).
+\]
+对每个固定 \(N\)，还有
+\[
+ 0\leq m_N\leq\sum_{k=0}^{N-1}|f|\circ T^k,
+ \quad \int_Xm_N\,\mathrm d\mu\leq N\|f\|_1.
+\]
+因此有限截断 \(m_N\) 总是可积，而无限上确界是否有限仍须证明。
+
+\ProseParagraphBreak
+
+保测性在这里不能被任意轨道的形式代替。它保证每个 \(|f|\circ T^k\) 的积分仍为 \(\|f\|_1\)，
+却不保证各项独立。例如，在三点等概率空间 \(X=\{a,b,c\}\) 上，令
+\(Ta=b\)、\(Tb=c\)、\(Tc=a\)，并令 \(f\) 依次取值 \(2,-1,-1\)。
+从 \(a\) 出发的前三个部分和是 \(2,1,0\)，从 \(b\) 出发是 \(-1,-2,0\)，
+从 \(c\) 出发是 \(-1,1,0\)。因此 \(E_1=\{a\}\)，而 \(E_2=\{a,c\}\)。
+越界集合会随观察长度增大；下一小节将说明，虽然集合内也可能包含 \(f<0\) 的点，
+这些点上的 \(f\) 的积分总和仍然非负。
 
 \subsection{极大遍历引理}
 \label{b1:subsec:320302}
 
-待撰写。
+证明的关键是把从 \(x\) 出发的部分和，与从下一点 \(Tx\) 出发的部分和联系起来。
+去掉第一项后，所有剩余的和恰好从 \(Tx\) 开始，而且允许的最大长度减去一。
+因此对于实值 \(f\)，逐点有
+\begin{equation}
+ m_N=(f+m_{N-1}\circ T)^+,
+ \quad m_N\geq m_{N-1},\quad N\geq1.
+ \label{b1:eq:ergodic-max-recursion-32}
+\end{equation}
+第一式中的正部来自把空和 \(0\) 也放进最大值；第二式来自允许的部分和数目增多。
+这两个简单事实将分别提供逐点不等式和积分的非负性。
+
+\begin{lemma}[Hopf 极大遍历引理]
+\label{b1:lem:maximal-ergodic-32}
+设 \((X,\mathcal A,\mu)\) 为概率空间，\(T:X\to X\) 为可测保测变换，
+\(f\in L^1(\mu;\mathbb R)\)。对整数 \(N\geq1\)，令
+\[
+ E_N=\left\{x:\max_{1\leq n\leq N}
+                  \sum_{k=0}^{n-1}f(T^kx)>0\right\},
+ \quad E=\bigcup_{N\geq1}E_N.
+\]
+则
+\[
+ \int_{E_N}f\,\mathrm d\mu\geq0\quad(N\geq1),
+ \quad \int_Ef\,\mathrm d\mu\geq0.
+\]
+\end{lemma}
+\begin{proof}
+取 \(m_N=\max(0,S_1f,\ldots,S_Nf)\)、\(m_0=0\)。
+在 \(E_N\) 上，\(m_N>0\)，递推式\eqref{b1:eq:ergodic-max-recursion-32}给出
+\(m_N=f+m_{N-1}\circ T\)。在 \(E_N\) 外，\(m_N=0\)，而 \(m_{N-1}\circ T\geq0\)。
+把两部分合在一起便得到
+\[
+ f\cdot\mathbf1_{E_N}\geq m_N-m_{N-1}\circ T.
+\]
+这里没有断言 \(f\) 在 \(E_N\) 上非负；不等式比较的是首项与全部可能部分和的增量。
+有限截断 \(m_N,m_{N-1}\) 可积。积分后利用保测性以及 \(m_N\geq m_{N-1}\)，有
+\[
+ \int_{E_N}f\,\mathrm d\mu
+ \geq\int_Xm_N\,\mathrm d\mu
+      -\int_Xm_{N-1}\circ T\,\mathrm d\mu
+ =\int_X(m_N-m_{N-1})\,\mathrm d\mu\geq0.
+\]
+
+集合 \(E_N\) 递增于 \(E\)，故 \(f\cdot\mathbf1_{E_N}\to f\cdot\mathbf1_E\) 逐点。
+因 \(|f\cdot\mathbf1_{E_N}|\leq|f|\in L^1\)，支配收敛允许令 \(N\to\infty\)，
+得到第二个不等式。这里对被截取的 \(f\) 使用支配收敛，
+并没有假定无限上确界 \(\sup_Nm_N\) 可积。
+\end{proof}
+
+这个\term[hopf-jida-bianli-yinli]{Hopf 极大遍历引理}[Hopf's maximal ergodic lemma]
+使用的是保测变换把轨道整体向前移动后的积分相等。
+\chapref{b1:ch:31}的 Doob 最大不等式使用条件期望与滤过；两者都控制越界事件，所依靠的结构却不同。
+本引理的证明没有引入停时，也没有把 \(f,f\circ T,\ldots\) 当作鞅。
+
+\begin{proposition}[遍历平均的极大函数的弱型估计]
+\label{b1:prop:ergodic-maximal-weak-32}
+设 \((X,\mathcal A,\mu)\) 为概率空间，\(T:X\to X\) 为可测保测变换，
+\(f\in L^1(\mu;\mathbb R)\) 或 \(L^1(\mu;\mathbb C)\)。
+对每个 \(\lambda>0\)，若 \(F_\lambda=\{\mathcal M_Tf>\lambda\}\)，则
+\begin{equation}
+ \lambda\cdot\mu(F_\lambda)
+ \leq\int_{F_\lambda}|f|\,\mathrm d\mu
+ \leq\|f\|_1.
+ \label{b1:eq:ergodic-maximal-weak-32}
+\end{equation}
+特别地，
+\[
+ \mu\left\{\sup_{n\geq1}|A_nf|>\lambda\right\}
+ \leq\frac{\|f\|_1}{\lambda},
+ \quad \mathcal M_Tf<\infty\quad\text{几乎处处}.
+\]
+\end{proposition}
+\begin{proof}
+实函数 \(|f|-\lambda\) 可积，因为 \(\mu(X)=1\)。其部分和为
+\[
+ S_n(|f|-\lambda)=n\bigl(A_n|f|-\lambda\bigr).
+\]
+因而某个部分和为正的集合恰是 \(F_\lambda\)。将极大遍历引理用于 \(|f|-\lambda\)，得到
+\[
+ 0\leq\int_{F_\lambda}(|f|-\lambda)\,\mathrm d\mu
+   =\int_{F_\lambda}|f|\,\mathrm d\mu-\lambda\cdot\mu(F_\lambda).
+\]
+这给出\eqref{b1:eq:ergodic-maximal-weak-32}。
+由 \(|A_nf|\leq A_n|f|\) 得到绝对值平均的估计，对复值 \(f\) 也成立。
+最后令整数 \(j\to\infty\)，由 \(\{\mathcal M_Tf>j\}\) 递减及测度从上连续性，
+\[
+ \mu\{\mathcal M_Tf=\infty\}
+ =\lim_{j\to\infty}\mu\{\mathcal M_Tf>j\}
+ \leq\lim_{j\to\infty}\frac{\|f\|_1}{j}=0.
+\]
+\end{proof}
+
+估计的力量在于上确界已经包括所有 \(n\)。分别对每个 \(A_n|f|\) 使用 Markov 不等式，
+只能得到每个越界集合的测度至多为 \(\|f\|_1/\lambda\)；再把无穷多个这样的界相加，便没有信息。
+极大引理直接控制所有越界集合的并，避免了这个损失。
+不过，它目前只保证平均序列几乎处处有界，还须另行排除有限幅度的反复振荡。
 
 \subsection{稠密类上的遍历平均}
 \label{b1:subsec:320303}
 
-待撰写。
+先选一种可以直接求出极限的函数。若 \(h\circ T=h\)，则平均不改变 \(h\)；
+若函数是 \(g-g\circ T\)，则
+\[
+ \begin{aligned}
+ \sum_{k=0}^{n-1}(g-g\circ T)\circ T^k
+ &=\sum_{k=0}^{n-1}\bigl(g\circ T^k-g\circ T^{k+1}\bigr)\\
+ &=g-g\circ T^n.
+ \end{aligned}
+\]
+首尾之间的项全部相消。若 \(g\) 有界，除以 \(n\) 后的剩余项至多为 \(2\|g\|_\infty/n\)。
+由此得到的函数类既有易算的轨道平均，又与上一节算子差 \(I-U\) 的值域相呼应。
+
+\begin{lemma}[可直接求平均的稠密类]
+\label{b1:lem:ergodic-dense-class-32}
+设 \((X,\mathcal A,\mu)\) 为概率空间，\(T:X\to X\) 为可测保测变换。
+实函数类
+\[
+ \mathcal D_T=
+ \{\,h+g-g\circ T:
+      h,g\in L^\infty(\mu;\mathbb R),\ h\circ T=h\text{ 几乎处处}\,\}
+\]
+在 \(L^1(\mu;\mathbb R)\) 中稠密。对每个表示为 \(d=h+g-g\circ T\) 的 \(d\in\mathcal D_T\)，
+存在可测零测集 \(N_d\)，使 \(x\notin N_d\) 时，对所有 \(n\geq1\) 都有
+\[
+ A_nd(x)=h(x)+\frac{g(x)-g(T^nx)}n.
+\]
+特别地，\(A_nd\to h\) 几乎处处。
+\end{lemma}
+\begin{proof}
+先在实 Hilbert 空间 \(L^2(\mu;\mathbb R)\) 中工作。
+Koopman 算子 \(Ug=g\circ T\) 是等距算子，因而是收缩算子。
+上一节平均遍历定理的正交分解给出
+\[
+ L^2(\mu;\mathbb R)=\operatorname{Fix}(U)
+       \mathbin{\oplus}\overline{\operatorname{Ran}(I-U)}.
+\]
+这里 \(\operatorname{Fix}(U)\) 是满足 \(Uh=h\) 的函数组成的闭子空间，
+闭包按 \(L^2\) 范数取。因此给定 \(v\in L^2\) 和 \(\varepsilon>0\)，可以选
+\(h\in\operatorname{Fix}(U)\)、\(g\in L^2\)，使
+\[
+ \|v-h-(g-Ug)\|_2<\varepsilon.
+\]
+这里\cref{b1:prop:ergodic-orthogonal-decomposition-32}中的正交分解给出了所需的 \(L^2\) 逼近。
+
+令 \(q_R(t)=\max(-R,\min(t,R))\)，并取 \(h_R=q_R\circ h\)、\(g_R=q_R\circ g\)。
+由于 \(h\circ T=h\) 几乎处处，截断后仍有 \(h_R\circ T=h_R\) 几乎处处。
+又有 \(h_R\to h\)、\(g_R\to g\) 于 \(L^2\)：例如
+\(|h_R-h|^2\leq|h|^2\)，并且该差逐点趋于零，可以使用支配收敛。
+利用 \(U\) 的收缩性，得到
+\[
+ \|(h+g-Ug)-(h_R+g_R-Ug_R)\|_2
+ \leq\|h-h_R\|_2+2\|g-g_R\|_2\longrightarrow0.
+\]
+函数 \(h_R+g_R-Ug_R\) 属于 \(\mathcal D_T\)，故 \(\mathcal D_T\) 在实 \(L^2\) 中稠密。
+
+再设 \(f\in L^1(\mu;\mathbb R)\)。截断 \(q_R\circ f\) 有界，且概率空间的测度有限，
+所以它属于 \(L^2\)，并在 \(L^1\) 中趋于 \(f\)。
+概率空间上的 Cauchy--Schwarz 不等式给出 \(\|u\|_1\leq\|u\|_2\)。
+先用有界截断逼近 \(f\)，再用 \(\mathcal D_T\) 在 \(L^2\) 中逼近这个截断，
+三角不等式便证明 \(\mathcal D_T\) 在实 \(L^1\) 中稠密。
+
+最后核对逐点公式。选择有界可测代表 \(h,g\)，把表示式
+\(d=h+g-g\circ T\)、不变式 \(h\circ T=h\) 以及有界性可能失效的可测零测集合为 \(N\)，
+再令 \(N_d=\bigcup_{k\geq0}T^{-k}N\)。保测性保证 \(\mu(N_d)=0\)。
+若 \(x\notin N_d\)，则这些关系在整条正向轨道上同时成立。
+逐项相消后就得到陈述中的公式，且余项的绝对值不超过 \(2\|g\|_\infty/n\)，故趋于零。
+\end{proof}
+
+这里必须同时截断 \(h\) 和 \(g\)，并核对截断保留 \(h\) 的不变性。
+仅说“有界函数稠密”还不够，因为任取一个有界逼近，通常不会保持
+\(h+g-g\circ T\) 的特殊形式。
+概率空间的有限性也用在明确的地方：有界截断属于 \(L^2\)，并且 \(L^2\) 误差能够控制 \(L^1\) 误差。
 
 \subsection{逐点收敛的推广}
 \label{b1:subsec:320304}
 
-待撰写。
+设 \(d\in\mathcal D_T\) 已经逼近 \(f\)。对每个 \(n\)，有
+\[
+ |A_nf-A_nd|\leq A_n|f-d|\leq\mathcal M_T(f-d).
+\]
+因此只要 \(\mathcal M_T(f-d)(x)\) 很小，\(f\) 的所有平均就同时靠近 \(d\) 的平均。
+这比只知道每一个固定 \(n\) 的误差积分很小更强：它允许在同一个点上比较整条序列的上下极限。
+
+\begin{theorem}[遍历平均的逐点收敛]
+\label{b1:thm:ergodic-pointwise-32}
+设 \((X,\mathcal A,\mu)\) 为概率空间，\(T:X\to X\) 为可测保测变换，
+\(f\in L^1(\mu;\mathbb R)\) 或 \(L^1(\mu;\mathbb C)\)。则存在有限值可测函数 \(f^*\)，使
+\[
+ A_nf(x)=\frac1n\sum_{k=0}^{n-1}f(T^kx)\longrightarrow f^*(x)
+ \quad\text{对几乎每个 }x\in X.
+\]
+\end{theorem}
+\begin{proof}
+先设 \(f\) 为实值函数。由\cref{b1:prop:ergodic-maximal-weak-32}，
+存在可测零测集 \(N_0\)，使 \(x\notin N_0\) 时
+\(\sup_n|A_nf(x)|\leq\mathcal M_Tf(x)<\infty\)。
+在其补集上定义有限非负的振幅
+\[
+ \omega_f(x)=\limsup_{n\to\infty}A_nf(x)
+                 -\liminf_{n\to\infty}A_nf(x),
+\]
+并在 \(N_0\) 上令 \(\omega_f=0\)。它是可测函数。
+平均序列在 \(N_0\) 外有有限极限，当且仅当 \(\omega_f=0\)。
+
+由稠密类引理，选 \(d_j\in\mathcal D_T\)，使 \(\|f-d_j\|_1\to0\)。
+对每个 \(j\)，\(A_nd_j\) 在某个可测零测集 \(N_j\) 外收敛。
+去掉可数并 \(\bigcup_{j\geq0}N_j\)，再去掉使某个 \(\mathcal M_T(f-d_j)\) 为无穷的零测集，
+便可同时对所有 \(j\) 比较上下极限。具体地，若 \(A_nd_j(x)\to\ell_j(x)\)，则
+\[
+ \begin{aligned}
+ \limsup_n A_nf(x)&\leq\ell_j(x)+\mathcal M_T(f-d_j)(x),\\
+ \liminf_n A_nf(x)&\geq\ell_j(x)-\mathcal M_T(f-d_j)(x).
+ \end{aligned}
+\]
+两式相减，得到
+\[
+ \omega_f(x)\leq2\mathcal M_T(f-d_j)(x).
+\]
+于是对每个 \(\delta>0\) 和每个 \(j\)，弱型估计给出
+\[
+ \mu\{\omega_f>2\delta\}
+ \leq\mu\{\mathcal M_T(f-d_j)>\delta\}
+ \leq\frac{\|f-d_j\|_1}{\delta}.
+\]
+左侧不依赖 \(j\)，令 \(j\to\infty\) 即得 \(\mu\{\omega_f>2\delta\}=0\)。
+再取 \(\delta=1,1/2,1/3,\ldots\)，得到 \(\omega_f=0\) 几乎处处。
+这同时排除了所有正幅度的持续振荡；先前的极大函数有限性已经排除了无穷极限。
+
+平均序列收敛于有限数的集合可由 Cauchy 条件写成可数并交，因而属于 \(\mathcal A\)。
+在该集合上令 \(f^*\) 为极限，其余点令 \(f^*=0\)，得到有限实值可测函数。
+若 \(f\) 为复值，则 \(\operatorname{Re}f\)、\(\operatorname{Im}f\) 都可积；
+分别应用实值结论，在两个满测度集合的交集上把极限合为一个复数，即得所需结论。
+\end{proof}
+
+证明没有要求逼近函数的极限 \(\ell_j\) 先收敛。
+它只用这些极限使相应平均序列的振幅为零，再让误差的极大函数把这一性质传给 \(f\)。
+这也是极大不等式在逐点收敛证明中的常见用途：先在可计算的稠密类上证明收敛，
+再用一个与平均长度无关的误差估计完成推广。
+
+\ProseParagraphBreak
+
+还要为下一节辨认极限准备一个末项估计。
+把一条轨道的起点从 \(x\) 移到 \(Tx\) 后，平均删去首项、添入末项，故
+\[
+ A_nf(Tx)-A_nf(x)=\frac{f(T^nx)-f(x)}n.
+\]
+若 \(f\) 有界，右侧趋于零很直接；对一般可积 \(f\)，末项 \(f(T^nx)\) 随 \(n\) 变化，
+不能只凭“除以 \(n\)”就断言它消失。以下引理补上所需理由。
+
+\begin{lemma}[可积观测的末项估计]
+\label{b1:lem:orbit-tail-32}
+设 \((X,\mathcal A,\mu)\) 为概率空间，\(T:X\to X\) 为可测保测变换，
+\(f\in L^1(\mu;\mathbb R)\) 或 \(L^1(\mu;\mathbb C)\)。则
+\[
+ \frac{f(T^nx)}n\longrightarrow0
+ \quad\text{对几乎每个 }x\in X.
+\]
+\end{lemma}
+\begin{proof}
+固定 \(\varepsilon>0\)。对每个 \(y\geq0\)，满足 \(\varepsilon n<y\) 的正整数个数不超过
+\(y/\varepsilon\)，故由非负级数与积分的交换，
+\[
+ \sum_{n=1}^{\infty}\mu\{|f|>\varepsilon n\}
+ =\int_X\sum_{n=1}^{\infty}
+        \mathbf1_{\{|f|>\varepsilon n\}}\,\mathrm d\mu
+ \leq\frac{\|f\|_1}{\varepsilon}<\infty.
+\]
+保测性给出
+\(\mu\{|f\circ T^n|>\varepsilon n\}=\mu\{|f|>\varepsilon n\}\)。
+由第一 Borel--Cantelli 引理\cref{b1:lem:30-borel-cantelli-first}，
+几乎每个 \(x\) 只属于有限多个集合 \(\{|f\circ T^n|>\varepsilon n\}\)。
+这条引理只要求概率和有限，不要求这些集合独立。
+对 \(\varepsilon=1/j\)、\(j\geq1\) 分别应用，再去掉可数个零测集的并，便得结论。
+\end{proof}
+
+若在最后一个证明中仅用 Markov 不等式，把第 \(n\) 项估成
+\(\|f\|_1/(\varepsilon n)\)，所得调和级数发散，无法应用 Borel--Cantelli 引理。
+对同一分布的所有尾部一起计数，才把可积性转化成真正可求和的界。
+下一节将利用这一末项估计证明极限的不变性，再确定它所保留的条件平均信息。

@@ -3,25 +3,282 @@
 \label{b3:sec:2902}
 % 规划课题：A27。
 
-待撰写。
+一元 Cauchy 公式在多圆盘上能够迭代，但前节使用了函数的联合连续性。若起初只知道每条坐标截面全纯，连一个小多圆盘上的共同上界都尚未得到，直接交换积分便会遗漏关键条件。Hartogs 理论首先补上这个缺口，随后说明新增复方向还会限制奇点：一个紧的内部孔洞，在适当连通性条件下根本不能阻止标量全纯函数延拓。
 
 \subsection{分别全纯与联合全纯}
 \label{b3:subsec:290201}
 
-待撰写。
+\Needspace{6\baselineskip}
+\begin{definition}\label{b3:def:29-separate-holomorphic}
+设 \(U\subseteq\mathbb C^n\) 为开集。若固定除第 \(j\) 个坐标外的全部坐标后，函数 \(f:U\to\mathbb C\) 在相应的一维开截面上全纯，且这对每个 \(1\le j\le n\) 成立，就称 \(f\)\term[fenbie-quanchun]{分别全纯}[separately holomorphic]。为强调所有变量可以同时变化，\(f\in\mathcal O(U)\) 也称 \(f\)\term[lianhe-quanchun]{联合全纯}[jointly holomorphic]。
+\end{definition}
+
+定义没有附加联合连续性、可微性或局部有界性。下面先证明一旦取得局部有界性，困难就已解决；再说明这个有界性不必作为最终定理的假设。
+
+\Needspace{6\baselineskip}
+\begin{lemma}\label{b3:lem:29-bounded-separate}
+设 \(U\subseteq\mathbb C^n\) 为开集，\(f:U\to\mathbb C\) 分别全纯且局部有界。则 \(f\) 联合全纯。
+\end{lemma}
+\begin{proof}
+在任意点附近取多圆盘 \(P(a,r)\Subset U\)，使 \(|f|\le M\) 于其中。固定其余坐标，在较小多圆盘 \(P(a,r/2)\) 的第 \(j\) 个坐标方向，一元 Cauchy 估计给
+\[
+ |\partial_{z_j}f|\le\frac{2M}{r_j}.
+\]
+对 \(z,w\in P(a,r/2)\)，沿依次改变一个坐标的折线路径比较函数值。每段上的一元微积分及上述统一估计给出
+\[
+ |f(z)-f(w)|\le\sum_{j=1}^n\frac{2M}{r_j}|z_j-w_j|.
+\]
+因此 \(f\) 联合连续。现在可在更小的闭多圆盘上使用\cref{b3:thm:29-polydisc-cauchy}的连续且分别全纯版本，得到联合全纯性。
+\end{proof}
+
+真正需要处理的是：不同截面给出的界可能随参数变化。我们将先用 Baire 定理得到一小块共同有界区域，再借 Taylor 系数把它扩展到指定点。为此需要下面的\term[hartogs-gusuan]{Hartogs 估计}[Hartogs' lemma]。
+
+\Needspace{6\baselineskip}
+\begin{lemma}[Hartogs 系数估计]\label{b3:lem:29-hartogs-estimate}
+设 \(V\subseteq\mathbb C^m\) 为开集，\(g_k\in\mathcal O(V)\)、\(k\ge1\)，并记
+\[
+ u_k(w)=\frac1k\log|g_k(w)|,
+\]
+其中 \(\log0=-\infty\)。假定 \((u_k)\) 在每个紧集上有共同的有限上界，且存在实数 \(A\)，使 \(\limsup_{k\to\infty}u_k(w)\le A\) 对每个 \(w\in V\) 成立。则对每个 \(K\Subset V\) 及 \(\varepsilon>0\)，存在 \(k_0\)，使
+\[
+ \sup_{w\in K}u_k(w)\le A+\varepsilon\quad(k\ge k_0).
+\]
+\end{lemma}
+\begin{proof}
+令 \(v_k=\max(u_k,A-1)\)。它在 \(V\) 连续，包括 \(g_k\) 的零点附近，因为在那里截断值最终固定为 \(A-1\)。固定其余变量后，若相应全纯函数不恒零，则\cref{b3:prop:15-log-subharmonic}和\cref{b3:prop:15-subharmonic-operations}说明 \(v_k\) 关于该变量次调和；若该截面恒零，\(v_k\) 就是常数。逐个变量使用\cref{b3:prop:15-area-recovery}的面积次平均，得到对每个内部多圆盘
+\[
+ v_k(w)\le\frac1{(\pi t^2)^m}\int_{P(w,t)}v_k(\eta)\,\mathrm{d}V(\eta),
+\]
+这里 \(\mathrm{d}V\) 是未经归一化的 \(2m\) 维 Lebesgue 体积。截断后的函数连续且在紧集上双侧有界，所以迭代积分和 Fubini 定理均适用。
+
+若结论失败，存在趋于无穷的指标 \(k_\ell\) 和点 \(w_\ell\in K\)，使 \(u_{k_\ell}(w_\ell)>A+\varepsilon\)。取子列使 \(w_\ell\to w_0\in K\)，再取 \(t>0\)，使 \(\overline{P(w_0,2t)}\subset V\)。对充分大的 \(\ell\)，各 \(P(w_\ell,t)\) 都包含在这个固定紧邻域中，且所有 \(v_{k_\ell}\) 在那里有共同上下界。平移多圆盘与原多圆盘的对称差体积趋于零，所以
+\[
+ \int_{P(w_\ell,t)}v_{k_\ell}\,\mathrm{d}V
+ -\int_{P(w_0,t)}v_{k_\ell}\,\mathrm{d}V\longrightarrow0.
+\]
+另一方面，\(\limsup v_k\le A\) 逐点成立。对共同上界减去 \(v_{k_\ell}\) 后使用 Fatou 引理，得到反向估计
+\[
+ \limsup_{\ell\to\infty}\frac1{(\pi t^2)^m}
+ \int_{P(w_0,t)}v_{k_\ell}\,\mathrm{d}V\le A.
+\]
+结合次平均不等式，就有 \(\limsup_\ell v_{k_\ell}(w_\ell)\le A\)，与所选点的下界矛盾。
+\end{proof}
+
+截断是这个证明中的实质步骤。它保留次平均性质，又给负方向一个共同下界，因而可以比较中心略微移动的积分；没有这个下界，不能只凭积分区域相近就断言误差小。估计的结论则把每个参数点上的指数增长率控制，变成紧参数集上的一致控制。
+
+\Needspace{6\baselineskip}
+\begin{theorem}[Hartogs，分别全纯定理]\label{b3:thm:29-hartogs-separate}
+设 \(U\subseteq\mathbb C^n\) 为开集。每个分别全纯函数 \(f:U\to\mathbb C\) 都联合全纯，无须另加连续性或局部有界性假设。
+\end{theorem}
+\begin{proof}
+按变量个数归纳。\(n=1\) 时结论就是假设。设已对 \(n-1\) 个变量证明，考虑任意给定点。平移并分别缩放坐标后，只需处理定义在单位多圆盘 \(\mathbb D^n\) 上的函数，并证明它在原点附近联合全纯。写变量为 \((z,w)\in\mathbb D\times\mathbb D^{n-1}\)。对每个固定 \(z\)，归纳假设使 \(w\mapsto f(z,w)\) 联合全纯。
+
+令 \(Z=\overline{D(0,1/4)}\)、\(K=\overline{P(0,3/4)}\subset\mathbb C^{n-1}\)，并对正整数 \(M\) 定义
+\[
+ E_M=\{\,z\in Z\mid \forall w\in K,\ |f(z,w)|\le M\,\}.
+\]
+对固定 \(w\)，函数 \(z\mapsto f(z,w)\) 连续，所以 \(E_M\) 是闭集。对固定 \(z\)，函数 \(w\mapsto f(z,w)\) 在紧集 \(K\) 上连续有界，所以 \(\bigcup_{M\ge1}E_M=Z\)。闭圆盘 \(Z\) 完备，第一卷定理8.3.2（Baire 纲定理）保证某个 \(E_M\) 在 \(Z\) 中有非空相对内部。由于圆盘内部在闭圆盘中稠密，可以取 \(|a|<1/4\) 和 \(\delta>0\)，使
+\[
+ \overline{D(a,\delta)}\subset E_M\cap D(0,1/4).
+\]
+于是 \(f\) 在 \(D(a,\delta)\times P(0,3/4)\) 有共同上界 \(M\)，由\cref{b3:lem:29-bounded-separate}在那里联合全纯。
+
+取 \(0<t<\delta\)，在第一个变量的中心 \(a\) 展开。其 Taylor 系数为
+\[
+ c_k(w)=\frac1{2\pi\mathrm{i}}
+ \int_{|\zeta-a|=t}\frac{f(\zeta,w)}{(\zeta-a)^{k+1}}\,\mathrm{d}\zeta,
+ \quad |c_k(w)|\le Mt^{-k}.
+\]
+联合全纯性使每个 \(c_k\) 在 \(W=P(0,3/4)\) 全纯：在任意参数紧邻域中可对积分作参数微分。对每个固定 \(w\in W\)，原来的 \(z\) 截面在整个 \(\mathbb D\) 全纯，因此它关于 \(a\) 的 Taylor 级数至少在半径
+\[
+ R_a=1-|a|>\frac34
+\]
+内收敛。一元 Cauchy 估计取半径趋于 \(R_a\)，给出
+\[
+ \limsup_{k\to\infty}\frac1k\log|c_k(w)|\le-\log R_a.
+\]
+前面的界 \(Mt^{-k}\) 又提供这些对数在参数紧集上的共同上界。由\cref{b3:lem:29-hartogs-estimate}，对任意 \(K'\Subset W\)、\(\varepsilon>0\)，充分大的 \(k\) 都有
+\[
+ \sup_{w\in K'}|c_k(w)|\le R_a^{-k}e^{\varepsilon k}.
+\]
+因此，只要 \(s<R_a\)，选择 \(\varepsilon>0\) 使 \(se^\varepsilon<R_a\)，就知级数
+\[
+ \sum_{k=0}^\infty c_k(w)(z-a)^k
+\]
+在 \(\overline{D(a,s)}\times K'\) 上一致绝对收敛。各项联合全纯，\cref{b3:prop:29-holomorphic-limit}使和在 \(D(a,R_a)\times W\) 联合全纯。对每个固定 \(w\)，它又恰是原函数的 Taylor 展开，所以和就是 \(f\)。
+
+最后，Baire 定理是在预先限制的小圆盘 \(Z\) 上使用的，故 \(|a|<1/4<R_a\)，原点确实位于 \(D(a,R_a)\times W\) 内。这样就证明了任意给定点附近的联合全纯性，归纳完成。
+\end{proof}
+
+Baire 定理先提供一个能够形成全纯 Taylor 系数的小区域；逐点收敛半径和 Hartogs 估计再扩大联合全纯的范围。预先限制中心的位置，使扩大的区域包含目标点。因此目标点附近的联合全纯性来自这一传播过程，局部有界性也随之得到。
 
 \subsection{Hartogs 延拓的模型区域}
 \label{b3:subsec:290202}
 
-待撰写。
+分别全纯说明各坐标方向的解析性会互相约束。延拓问题中，这种约束更直观：在一个参数范围内已经填满的圆盘，会迫使其他参数截面的 Laurent 负幂系数也消失。
+
+\Needspace{6\baselineskip}
+\begin{definition}\label{b3:def:29-hartogs-figure}
+设 \(n\ge2\)、\(0<r,s<1\)，记 \(\mathbb D_s=D(0,s)\)。集合
+\[
+ H_{r,s}\coloneqq
+ \left(\mathbb D^{n-1}\times\{\,w\in\mathbb C\mid r<|w|<1\,\}\right)
+ \cup\left(\mathbb D_s^{n-1}\times\mathbb D\right)
+\]
+称为一个\term[hartogs-tuxing]{Hartogs 图形}[Hartogs figure]。第一部分是对全部参数 \(z'\in\mathbb D^{n-1}\) 都存在的外环，第二部分是在较小参数多圆盘上填满的圆盘柱。
+\end{definition}
+
+固定 \(z'\) 看最后一个变量：小参数区内没有孔，其他参数下暂时只给出环带。两部分交于非空开集，所以图形连通。待填补的区域位于 \(\mathbb D^n\) 内部，延拓的目标是整块单位多圆盘。
+
+\Needspace{6\baselineskip}
+\begin{theorem}[Hartogs 图形上的延拓]\label{b3:thm:29-hartogs-figure}
+设 \(n\ge2\)、\(0<r,s<1\)，\(H_{r,s}\subset\mathbb C^n\) 为上述参数确定的 Hartogs 图形。每个 \(f\in\mathcal O(H_{r,s})\) 都有唯一的全纯延拓 \(F\in\mathcal O(\mathbb D^n)\)。
+\end{theorem}
+\begin{proof}
+对 \(r<\rho<1\)，定义
+\[
+ F_\rho(z',w)=\frac1{2\pi\mathrm{i}}
+ \int_{|\zeta|=\rho}\frac{f(z',\zeta)}{\zeta-w}\,\mathrm{d}\zeta,
+ \quad z'\in\mathbb D^{n-1},\quad |w|<\rho.
+\]
+积分路径对全部参数都在原定义域中。在每个参数紧邻域及严格较小的 \(w\) 圆盘上，核与函数的各阶导数有共同界，可以在积分号内求导。因此 \(F_\rho\) 联合全纯。
+
+当 \(z'\in\mathbb D_s^{n-1}\) 时，原函数关于 \(w\) 在整盘全纯，一元 Cauchy 公式给 \(F_\rho=f\)。现固定 \(r<|w|<\rho\)。函数 \(z'\mapsto F_\rho(z',w)-f(z',w)\) 在连通的 \(\mathbb D^{n-1}\) 上全纯，并在非空开集 \(\mathbb D_s^{n-1}\) 为零。由\cref{b3:thm:29-identity}，它处处为零。因此 \(F_\rho\) 在其定义域与 \(H_{r,s}\) 的交集上确实延拓了 \(f\)。
+
+若选取两个不同的 \(\rho\)，所得函数在共同的小参数圆盘柱上都等于 \(f\)，恒等原理使它们在共同定义域上相等。令 \(\rho\uparrow1\)，这些函数便相容地拼成 \(\mathbb D^n\) 上的全纯函数。两个候选延拓的差在非空开集 \(H_{r,s}\) 为零，恒等原理也给出唯一性。
+\end{proof}
+
+用 Laurent 系数读这个证明，消失的障碍更清楚。对 \(m\ge1\)，负幂系数
+\[
+ c_{-m}(z')=\frac1{2\pi\mathrm{i}}
+ \int_{|\zeta|=\rho}f(z',\zeta)\zeta^{m-1}\,\mathrm{d}\zeta
+\]
+关于 \(z'\) 全纯，在小参数区内为零，因而在全部参数区内为零。一个纯环带上的函数 \(1/w\) 有非零负幂系数，却不能定义在图形中包含 \(w=0\) 的小圆盘柱上，所以不是这个定理的反例。新增参数把局部已知的可去性传播给整个族。
 
 \subsection{Hartogs 延拓的一个标准版本}
 \label{b3:subsec:290203}
 
-待撰写。
+图形模型解释了延拓机制，但一般紧孔洞未必能用一个固定圆盘柱描述。下面用一个全局于 \(\mathbb C^n\) 的紧支撑辅助构造，证明任意形状紧孔洞的标准版本。构造所用的微分只是坐标导数 \(\partial_{\bar z_j}\)；微分形式语言将在\secref{b3:sec:2905}统一组织。
+
+\Needspace{6\baselineskip}
+\begin{lemma}[一元 Cauchy 变换]\label{b3:lem:29-cauchy-transform}
+设 \(g\in C_c^\infty(\mathbb C)\)，\(\mathrm{d}\lambda=\mathrm{d}x\,\mathrm{d}y\)，定义
+\[
+ Tg(z)\coloneqq\frac1\pi\int_{\mathbb C}
+ \frac{g(\zeta)}{z-\zeta}\,\mathrm{d}\lambda(\zeta).
+\]
+则积分绝对存在，\(Tg\in C^\infty(\mathbb C)\)，并有
+\[
+ \partial_{\bar z}Tg=g,
+ \quad T(\partial_{\bar z}g)=g.
+\]
+若 \(g\) 还光滑依赖其他实参数，并在参数的每个紧邻域上关于 \(\zeta\) 有共同紧支撑，则可把这些参数导数移入 \(T\) 的积分。
+\end{lemma}
+\begin{proof}
+核 \(1/|z-\zeta|\) 在二维局部可积，因为 \(\int_{|\eta|<t}|\eta|^{-1}\,\mathrm{d}\lambda(\eta)=2\pi t\)，而 \(g\) 有紧支撑。因此积分绝对存在。作变量替换 \(\eta=z-\zeta\)，得到
+\[
+ Tg(z)=\frac1\pi\int_{\mathbb C}\frac{g(z-\eta)}{\eta}\,\mathrm{d}\lambda(\eta).
+\]
+当 \(z\) 局限在一个紧集内时，被积函数的非零部分位于固定的有界 \(\eta\) 集；任意阶导数都作用在光滑函数 \(g\) 上，由常数倍的局部可积核 \(|\eta|^{-1}\) 控制。于是可任意阶求导，且
+\[
+ \partial_{\bar z}Tg=T(\partial_{\bar z}g).
+\]
+相同论证也允许其他参数导数通过积分。
+
+为计算后一个表达，先对任意 \(h\in C_c^\infty(\mathbb C)\) 使用带一个小孔的 Green 公式。选大圆盘包含 \(z\) 和 \(\operatorname{supp}h\)，删去 \(\overline{D(z,\varepsilon)}\)。在余下区域中，
+\[
+ \int_{\partial D}\frac{h(\zeta)}{\zeta-z}\,\mathrm{d}\zeta
+ =2\mathrm{i}\int_D\frac{\partial_{\bar\zeta}h(\zeta)}{\zeta-z}
+ \,\mathrm{d}\lambda(\zeta).
+\]
+外圆周积分为零，内圆周取顺时针方向，令 \(\varepsilon\downarrow0\) 后其积分趋于 \(-2\pi\mathrm{i}h(z)\)。面积积分中的核可积，故极限给出
+\[
+ h(z)=\frac1\pi\int_{\mathbb C}
+ \frac{\partial_{\bar\zeta}h(\zeta)}{z-\zeta}\,\mathrm{d}\lambda(\zeta).
+\]
+这就是紧支撑情形的\term[cauchy-pompeiu-gongshi]{Cauchy--Pompeiu 公式}[Cauchy--Pompeiu formula]。取 \(h=g\)，便有 \(T(\partial_{\bar z}g)=g\)，再结合前面的可微性得到 \(\partial_{\bar z}Tg=g\)。
+\end{proof}
+
+这个一元解一般不具有紧支撑。例如当 \(\int g\,\mathrm{d}\lambda\ne0\) 时，在支撑外展开分母可得
+\[
+ Tg(z)=\frac1{\pi z}\int g\,\mathrm{d}\lambda+O(|z|^{-2})
+ \quad(|z|\to\infty),
+\]
+因而解带有非零的远处尾项。两个以上复变量中的相容条件会迫使这些尾项消失。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[紧支撑相容方程组]\label{b3:prop:29-compact-support-dbar}
+设 \(n\ge2\)，\(a_1,\ldots,a_n\in C_c^\infty(\mathbb C^n)\) 满足
+\[
+ \partial_{\bar z_k}a_j=\partial_{\bar z_j}a_k
+ \quad(1\le j,k\le n).
+\]
+则存在唯一的 \(u\in C_c^\infty(\mathbb C^n)\)，使 \(\partial_{\bar z_j}u=a_j\) 对每个 \(j\) 成立。具体可取
+\[
+ u(z_1,z')=\frac1\pi\int_{\mathbb C}
+ \frac{a_1(\zeta,z')}{z_1-\zeta}\,\mathrm{d}\lambda(\zeta).
+\]
+若所有 \(a_j\) 的支撑都包含于闭多圆盘 \(\{\,|z_j|\le R_j,\ 1\le j\le n\,\}\)，其中各 \(R_j>0\)，则 \(u\) 的支撑也包含于同一闭多圆盘。
+\end{proposition}
+\begin{proof}
+记上述算子为 \(T_1\)。由\cref{b3:lem:29-cauchy-transform}及其参数结论，\(u=T_1a_1\) 光滑，且 \(\partial_{\bar z_1}u=a_1\)。对 \(j\ge2\)，相容性使
+\[
+ \partial_{\bar z_j}u
+ =T_1(\partial_{\bar z_j}a_1)
+ =T_1(\partial_{\bar z_1}a_j)=a_j.
+\]
+最后一步对每个固定 \(z'\) 应用紧支撑的一元公式。
+
+现证明支撑断言。若某个 \(j\ge2\) 满足 \(|z_j|>R_j\)，积分中的 \(a_1(\zeta,z')\) 恒为零，所以 \(u(z)=0\)。若 \(|z_1|>R_1\)，固定 \(z_1,z_3,\ldots,z_n\)，则 \(a_2\) 对全部 \(z_2\) 都为零，已证的方程说明 \(z_2\mapsto u(z_1,z_2,z_3,\ldots,z_n)\) 是整函数。它又在 \(|z_2|>R_2\) 时为零，由一元恒等定理处处为零。因此在任一坐标超出相应半径时，\(u\) 都为零，确有紧支撑。
+
+若有两个紧支撑解，它们的差处处满足 Cauchy--Riemann 方程，故为整个 \(\mathbb C^n\) 上的全纯函数，并在某个非空外部开集恒零。恒等原理使差处处为零。
+\end{proof}
+
+维数条件用在证明支撑的第二段：必须还有一个变量，可以用整性和外部恒零性消除第一变量中的尾项。这个步骤不能在 \(n=1\) 重复，也正对应一元紧孔洞可能携带不可去奇点的事实。
+
+\Needspace{6\baselineskip}
+\begin{theorem}[Hartogs 紧洞延拓]\label{b3:thm:29-hartogs-compact}
+设 \(n\ge2\)，\(\Omega\subseteq\mathbb C^n\) 为非空连通开集，\(K\subset\Omega\) 为紧集，且 \(\Omega\setminus K\) 连通。则每个 \(f\in\mathcal O(\Omega\setminus K)\) 都有唯一的全纯延拓 \(F\in\mathcal O(\Omega)\)。这里不要求 \(f\) 有界，也不要求 \(K\) 或 \(\Omega\) 的边界光滑。
+\end{theorem}
+\begin{proof}
+若 \(K=\varnothing\)，无需延拓。设 \(K\ne\varnothing\)。取 \(\chi\in C_c^\infty(\Omega)\)，使 \(\chi=1\) 于 \(K\) 的一个邻域；这样的截断可由有限个包含于 \(\Omega\) 的小球及光滑凸起函数构造。令
+\[
+ g(z)=(1-\chi(z))f(z)\quad(z\in\Omega\setminus K),
+\]
+并在 \(K\) 附近补成零。由于 \(1-\chi\) 在该邻域恒零，\(g\in C^\infty(\Omega)\)。对每个 \(j\)，令
+\[
+ a_j=-f\,\partial_{\bar z_j}\chi
+\]
+于 \(\Omega\setminus K\)，并在其余 \(\mathbb C^n\) 上补成零。每个 \(a_j\) 的支撑都包含于远离 \(K\) 与 \(\partial\Omega\) 的同一个紧集，故 \(a_j\in C_c^\infty(\mathbb C^n)\)。在 \(\Omega\) 内有 \(a_j=\partial_{\bar z_j}g\)，所以混合导数可交换；在 \(\Omega\) 外各系数局部恒零。因此它们在全空间满足相容条件。
+
+由\cref{b3:prop:29-compact-support-dbar}，存在紧支撑光滑解 \(u\)，满足 \(\partial_{\bar z_j}u=a_j\)。令 \(F=g-u\) 于 \(\Omega\)，则全部 \(\partial_{\bar z_j}F=0\)，故 \(F\) 全纯。剩下必须证明它确实等于原函数，而不是只构造了某个全纯函数。
+
+令 \(R_j=\max_{z\in\operatorname{supp}\chi}|z_j|\)；由于 \(\chi\) 在一个非空开集为一，各 \(R_j>0\)。系数 \(a_j\) 的支撑在这个闭多圆盘内，上一命题保证 \(u\) 也如此。因此当 \(|z_1|>R_1\) 时，\(\chi(z)=u(z)=0\)。开集
+\[
+ V=\Omega\cap\{\,|z_1|>R_1\,\}
+\]
+非空：在 \(\operatorname{supp}\chi\) 中选取达到最大值 \(R_1\) 的点，利用 \(\Omega\) 的开放性，将其第一坐标向模增大的方向移动少许即可。这个 \(V\) 与 \(K\) 不交，并且在 \(V\) 上有 \(F=g=f\)。由于 \(\Omega\setminus K\) 连通，恒等原理使 \(F=f\) 于整个 \(\Omega\setminus K\)。两个延拓的差在该非空开集为零，再由 \(\Omega\) 的连通性得到唯一性。
+\end{proof}
+
+截断负责把原函数的困难限制到一个紧集，辅助方程负责消除截断产生的共轭导数，连通性则负责确认修正后的函数仍是原函数的延拓。证明在 \(\Omega\) 无界或有界时都适用；确认等式的开集来自紧支撑的坐标界，不是要求 \(\Omega\) 包含无穷远附近。
 
 \subsection{多变量奇点与一元直觉}
 \label{b3:subsec:290204}
 
-待撰写。
+最直接的应用是球环壳。设 \(n\ge2\)、\(0<r<R\)，则每个在
+\[
+ \{\,z\in\mathbb C^n\mid r<|z|<R\,\}
+\]
+全纯的函数都唯一延拓到 \(B(0,R)\)。只需在紧洞定理中取 \(\Omega=B(0,R)\)、\(K=\overline{B(0,r)}\)；球环壳连通。取 \(K=\{a\}\) 又说明，\(n\ge2\) 时球内的孤立奇点总可去，既不需要事先验证有界性，也没有一元 Laurent 理论中的孤立极点或孤立本性奇点两类。
 
+\ProseParagraphBreak
+这并不是说多变量全纯函数没有不可去的奇点。函数 \(1/z_1\) 在 \(z_1\ne0\) 的区域全纯，却不能跨越超平面 \(z_1=0\)。若有延拓 \(G\)，等式 \(z_1G=1\) 会由恒等原理一直成立，到超平面上便矛盾。这个奇点集合不是域内一个紧的孤立孔洞；特别地，\(1/z_1\) 在 \(\mathbb C^n\setminus\{0\}\) 上并没有处处定义，不能把它当作孤立奇点的反例。
+
+\ProseParagraphBreak
+零点也受到相同机制的限制。若一个标量全纯函数 \(f\) 在 \(a\) 有孤立零点，取小球使其中没有其他零点，则 \(1/f\) 在去心球全纯，故可由 Hartogs 定理延拓为 \(G\)。乘积 \(fG\) 在去心球等于一，连续到中心后仍应为一，却因 \(f(a)=0\) 而为零，矛盾。因此 \(n\ge2\) 时标量全纯函数不能有孤立零点。向量映射不受这个结论约束：\((z_1,\ldots,z_n)\) 的共同零点就只有原点，不能把多个方程的共同零集与单个标量方程混同。
+
+\ProseParagraphBreak
+紧洞定理中的连通性也有实际内容。取 \(\Omega=B(0,2)\)、\(K=\{\,|z|=1\,\}\)。此时 \(K\) 紧且位于 \(\Omega\) 内部，但补集有内球与外环壳两个分支。在内球令 \(f=0\)，外环壳令 \(f=1\)，就得到补集上的全纯函数。若它能延拓到连通的 \(\Omega\)，内球上的零值将由恒等原理迫使延拓处处为零，与外环壳的值矛盾。条件 \(\Omega\setminus K\) 连通排除的正是这种不相容的独立数据。
+
+\ProseParagraphBreak
+一元中，环带可独立携带 Laurent 主部；多个复变量中，其他方向的解析性会对这些主部施加延拓约束。因此，一个给定区域的所有全纯函数，可能共同延拓到一个更大区域。\secref{b3:sec:2904}将以这种现象为出发点讨论全纯域与伪凸性；这里已经证明的范围是明确的 Hartogs 图形，以及补集连通的域内紧孔洞。

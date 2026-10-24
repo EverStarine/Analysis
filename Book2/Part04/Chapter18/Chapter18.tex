@@ -4,7 +4,7 @@
 \BookChapterNumber{b2:ch:16}
 % 本章摘要（不计入编号）
 \begin{chapterabstract}
-本章研究能量弱解何时具有更高正则性。差商方法在不预设二阶导数的前提下，建立 Lipschitz 系数方程的内部 \(H^2\) 估计；逐项控制求导误差后，得到高阶 Sobolev 正则性和光滑数据的内部光滑性。边界部分通过平坦化、切向差商和方程恢复法向导数，证明 \(C^{1,1}\) 区域上的 Dirichlet 二阶估计。最后仅用有界可测系数建立 Caccioppoli 不等式及截断迭代的局部有界性，并说明 Harnack 比较的完整线性证明如何在附录 H 补齐，随后推出 Hölder 连续性。
+本章研究能量弱解何时具有更高正则性。差商方法建立 Lipschitz 系数方程的内部 \(H^2\) 估计，逐项控制求导误差后又得到高阶 Sobolev 正则性。边界平坦化、切向差商与方程中的法向项共同给出 \(C^{1,1}\) 区域上的 Dirichlet 二阶估计。系数仅有界可测时，能量与迭代仍能控制解的局部振幅，Harnack 比较进一步导出 Hölder 连续性。选读部分转向二阶导数的 Hölder 估计：先用 Newton 核的抵消证明 Poisson 内部正则性，再以冻结系数和吸收误差建立变系数方程的内部 Schauder 先验估计。
 \end{chapterabstract}
 
 % 本章目标（不计入编号）
@@ -13,15 +13,16 @@
 \item\label{b2:item:16-goal-difference}使用离散分部积分和一致差商界构造二阶弱导数，指出系数导数的作用。
 \item\label{b2:item:16-goal-bootstrap}逐步核验微分后右端的空间，结合 Sobolev 嵌入判断经典正则性。
 \item\label{b2:item:16-goal-boundary}理解边界平坦化、切向估计及纯法向恢复，并用凹角反例检验全局结论。
-\item\label{b2:item:16-goal-low}在可测系数下证明局部能量界和有界性，区分本章已证结论与附录 H 补齐的 Harnack 比较证明。
+\item\label{b2:item:16-goal-low}在可测系数下使用局部能量界和截断迭代，比较非负解的上下界，并由振荡衰减得到 Hölder 连续代表。
+\item\label{b2:item:16-goal-schauder}跟踪 Hölder 范数的缩放，利用 Newton 核的抵消控制二阶导数，并说明冻结系数时小球半径与误差吸收的关系。
 \end{itemize}
 \end{learninggoals}
 
-上一章的弱解可以没有经典二阶导数，但方程并非只是一条约束：它还把不同方向和不同尺度的变化联系起来。若系数变化受控，差商误差可以吸收，解便得到新的弱导数；若系数只是可测，导数提升可能失败，标量解的高值集合却仍受能量限制。本章分别建立这两类估计，避免把“椭圆正则性”当作无条件的光滑性口号。
+上一章得到的弱解是否具有更高阶导数，取决于方程怎样控制各方向、各尺度上的变化。若系数变化受控，差商误差可以吸收，解便得到新的弱导数；若系数只是可测，导数提升可能失败，标量解的高值集合却仍受能量限制。对于连续性更好的数据，还可以直接估计二阶导数在相邻两点间的变化。积分范数、振幅与 Hölder 半范数由此刻画了正则性的不同侧面。
 
 \ProseParagraphBreak
 
-本章普通主线承接\chapref{b2:ch:15}的测试等式，使用第一卷第二十四章的 Sobolev 与 Poincaré 不等式。系统参考可读 Lawrence C. Evans 的《Partial Differential Equations》\cite{Evans2010Partial}以及 David Gilbarg 与 Neil S. Trudinger 的《Elliptic Partial Differential Equations of Second Order》\cite{Gilbarg2001Elliptic}。下面对差商、边界 \(H^2\) 与局部有界性给出完整证明；末节先给可测系数 Harnack 比较的证明概要，完整的线性比较证明及其所需指数尾见附录 H、C；不把此处略去的步骤隐藏在“标准估计”中。
+\chapref{b2:ch:15}的测试等式与第一卷第二十四章的 Sobolev、Poincaré 不等式把方程转为能量控制。差商估计从中提取新导数，边界展平把局部方法带到边界附近；对可测系数，\secref{b2:sec:1604}与附录 H.1 则通过截断、幂函数和对数估计研究振幅。\secref{b2:sec:1605}从基本解出发，计算 Hölder 数据如何控制二阶导数的连续性。系统参考可读 Lawrence C. Evans 的《Partial Differential Equations》\cite{Evans2010Partial}以及 David Gilbarg 与 Neil S. Trudinger 的《Elliptic Partial Differential Equations of Second Order》\cite{Gilbarg2001Elliptic}。
 
 \input{Part04/Chapter18/Section1801}
 \input{Part04/Chapter18/Section1802}
@@ -34,7 +35,11 @@
 
 \ProseParagraphBreak
 
-仅有界可测系数时，Caccioppoli 不等式仍然成立。截断迭代把高值集合的能量与测度联系起来，完整给出齐次标量弱解的局部有界性。Harnack 比较进一步控制振荡，但需要另行建立超解的正性传播；从比较到 Hölder 衰减的推论则可直接迭代得到。至此，变分存在性、弱型可解性与正则性三项任务已各有明确的假设和证明。
+系数仅有界可测时，Caccioppoli 不等式仍然成立。截断迭代把高值集合的能量与测度联系起来，给出齐次标量弱解的局部有界性。Harnack 比较把非负解的上、下界联系起来，对解及其补差反复应用比较，就使振荡逐级缩小，得到 Hölder 连续性。
+
+\ProseParagraphBreak
+
+Schauder 估计控制的是二阶导数的 Hölder 变化。Newton 核的球面平均为零，使近场积分能够减去数据的点值；远场的核差则提供额外的距离因子。对变系数方程，先在小球中固定主系数，再把系数变化乘以二阶导数看作误差；尺度权重与插值不等式使这些误差可以吸收。边界估计还要求边界坐标和边值具备相应的 Hölder 正则性。
 \end{chaptersummary}
 
 比较本编与后面的估计时，可以固定一个实标量 Dirichlet 问题，再逐项查看增加了什么条件、换来了什么结论。\cref{b2:tab:16-dirichlet-levels}中的各行保留自己的空间和假设，并不是把所有条件一并加到同一个定理上。
@@ -52,7 +57,8 @@
 \chapref{b2:ch:14} & 在给定仿射边界类中极小化凸能量。 & 二次能量使用 \(H_0^1\)、合法的边界延拓及 \(H^{-1}\) 源项；非二次能量另核增长、自反性及弱下半连续性。 \\
 \chapref{b2:ch:15} & 强制双线性型的弱解存在、唯一及能量估计。 & 系数有界可测且一致椭圆，源项及测试处于相应对偶空间；不要求系数对称，但不能省去强制性或边界类。 \\
 \chapref{b2:ch:16}光滑系数部分 & Lipschitz 系数给内部 \(H^2\)；满足边界条件时进一步给全局 \(H^2\)。 & 内部只考察紧含子域；全局另用有界 \(C^{1,1}\) 区域、\(L^2\) 源项，非齐次边界须有 \(g\in H^2\) 且 \(\operatorname{Tr}u=\operatorname{Tr}g\)。凹角会破坏全局结论。 \\
-\chapref{b2:ch:16}及附录 H.1 & 对相应齐次实标量方程作 Harnack 比较并得局部 Hölder 性。 & 比较用于非负弱解和有界可测的一致椭圆系数；不依赖系数可微性，也不给出同样的二阶导数结论。 \\
+\chapref{b2:ch:16}及附录 H.1 & 对相应齐次实标量方程作 Harnack 比较并得局部 Hölder 性。 & 比较用于非负弱解，系数可为有界可测的一致椭圆系数；结论控制振幅及其衰减。 \\
+\secref{b2:sec:1605} & Poisson 方程的内部 \(C^{2,\alpha}\) 正则性；非散度型变系数方程的内部 Schauder 先验估计。 & \(0<\alpha<1\)，右端和主系数具备相应 \(C^{0,\alpha}\) 控制；一般变系数先验估计对已有 \(C^{2,\alpha}\) 解成立。全局 Dirichlet 版另需 \(C^{2,\alpha}\) 边界及边值延拓。 \\
 \chapref{b2:ch:18}、\chapref{b2:ch:22} & 全空间常系数二阶导数的 \(L^p\) 控制，以及局部化、冻结系数的步骤。 & \(1<p<\infty\)；齐次导数估计不自动控制整个非齐次 \(W^{2,p}\) 范数。边界、变系数误差及自举起点仍须另核。 \\
 \bottomrule
 \end{tabularx}
@@ -63,7 +69,7 @@
 
 \BookExercises
 
-各题均为本书自拟。题目分别改变尺度、系数、数据与边界，检验不同正则性结论的边界；有界解的 Liouville 选做题使用本章明示、附录 H 证明的 Harnack 比较。连续边值题综合变分、弱形式与边界数据，说明内部光滑不等于全局二阶正则；最后的选做题训练边界坐标与通量恢复的具体计算。
+各题均为本书自拟。题目分别改变尺度、系数、数据与边界，检验不同正则性结论的适用范围；有界解的 Liouville 选做题应用 Harnack 比较。连续边值题综合变分、弱形式与边界数据，边界坐标题训练通量恢复的具体计算；最后两题用明确函数检验 Schauder 估计的 Lipschitz 端点与 Hölder 指数范围。
 
 % 自拟：差商平移约定与离散能量恒等式。
 \Needspace{6\baselineskip}
@@ -136,7 +142,7 @@
 设 \(d\ge2\)，\(A\in L^\infty(\mathbb R^d;\mathbb R^{d\times d})\)，对几乎处处 \(x\) 和全部 \(\xi\in\mathbb R^d\) 有 \(|A(x)\xi|\le\Lambda|\xi|\)、\(\xi^{\mathsf T}A(x)\xi\ge\lambda|\xi|^2\)，其中 \(0<\lambda\le\Lambda<\infty\) 为固定常数。若实函数 \(u\in H_{\mathrm{loc}}^1(\mathbb R^d)\cap L^\infty(\mathbb R^d)\) 弱解 \(-\operatorname{div}(A\nabla u)=0\)，使用本章的深层 Harnack 结论证明 \(u\) 为常数。明确指出本题比平方可积解的 Liouville 题多用了哪项输入。
 \end{optionalexercise}
 \begin{solution}
-由正文的振荡收缩，存在与球无关的 \(0<\vartheta<1\)，使 \(\operatorname*{ess\,osc}_{B_R}u\le\vartheta^n\operatorname*{ess\,osc}_{B_{2^nR}}u\le2\vartheta^n\lVert u\rVert_\infty\)。令 \(n\to\infty\)，每个球内本性振荡为零。重叠球的常数相同，故全空间几乎处处为同一常数；取 Hölder 代表即处处为常数。本题使用 Harnack 导出的振荡收缩，上一题只用已经完整证明的局部上界与全局 \(L^2\) 衰减。
+由正文的振荡收缩，存在与球无关的 \(0<\vartheta<1\)，使 \(\operatorname*{ess\,osc}_{B_R}u\le\vartheta^n\operatorname*{ess\,osc}_{B_{2^nR}}u\le2\vartheta^n\lVert u\rVert_\infty\)。令 \(n\to\infty\)，每个球内本性振荡为零。重叠球的常数相同，故全空间几乎处处为同一常数；取 Hölder 代表即处处为常数。本题使用 Harnack 导出的振荡收缩，上一题则将局部上界与全局 \(L^2\) 衰减结合起来。
 \end{solution}
 
 % 自拟：综合圆周正交展开、凸 Dirichlet 能量、弱形式及内部/边界正则性的区别；光滑域上的障碍来自边界数据。
@@ -235,4 +241,64 @@
  +\|\psi''\|_\infty\cdot\|v_t\|_{L^2(Q_1)}+2M\|v_{st}\|_{L^2(Q_1)}.
 \]
 \(\psi'\) 的上界控制坐标的一阶范数和椭圆常数；\(\psi''\) 的上界控制几何系数的一阶导数，也控制最后的 \(\psi''v_t\)。只有 Lipschitz 图像时，\(\psi'\) 虽本性有界，其弱导数未必为有界函数，切向系数差商和上述乘积界便缺少依据。因此斜率受控与斜率变化受控在二阶正则性中承担不同职责。
+\end{solution}
+
+% 自拟：三次齐次调和多项式乘对数，检验 Schauder 估计的 Lipschitz 端点。
+\Needspace{6\baselineskip}
+\begin{optionalexercise}[Lipschitz 端点]
+\label{b2:ex:18-schauder-lipschitz-endpoint}
+在二维单位圆盘中令
+\[
+ u(r,\theta)=r^3\log r\cos(3\theta)\quad(r>0),\qquad u(0)=0.
+\]
+证明 \(u\in C^2(B_1)\)，并计算 \(f=-\Delta u\)。证明 \(f\) 在原点补零后为 Lipschitz 函数，但 \(D^2u\) 在任何原点邻域内都不是 Lipschitz 的。这对\cref{b2:thm:18-poisson-schauder}的指数范围说明了什么？
+\end{optionalexercise}
+\begin{solution}
+记 \(P(x)=x_1^3-3x_1x_2^2=r^3\cos(3\theta)\)。在原点外，\(u=P\log r\)，各阶导数满足
+\[
+ |u|\le Cr^3|\log r|,\quad |Du|\le Cr^2(1+|\log r|),\quad
+ |D^2u|\le Cr(1+|\log r|).
+\]
+第一项除以 \(r\) 趋零，给出原点的一阶导数为零；第二项除以 \(r\) 趋零，给出梯度在原点可微且其导数为零；第三项保证二阶导数连续。因此 \(u\in C^2\)。
+
+极坐标公式 \(\Delta=\partial_{rr}+r^{-1}\partial_r+r^{-2}\partial_{\theta\theta}\) 给出
+\[
+ \Delta(r^3\log r\cos3\theta)=6r\cos3\theta,
+ \qquad f=-6r\cos3\theta.
+\]
+在原点外，\(f\) 的径向导数与 \(r^{-1}\) 倍角向导数都一致有界，故 \(|\nabla f|\le C\)。若两点间线段避开原点，沿线段积分即有 Lipschitz 界；若经过原点，将线段在该点分成两段，并用 \(|f(x)|\le6|x|\)，仍得同一类型的界。故 \(f\) 为 Lipschitz 函数。
+
+沿正 \(x_1\) 轴，\(u(t,0)=t^3\log t\)，且
+\[
+ \partial_{11}u(t,0)=6t\log t+5t,\qquad\partial_{11}u(0)=0.
+\]
+两者之差除以 \(t\) 后无界，所以该二阶导数不为 Lipschitz。因而把定理中的 \(0<\alpha<1\) 直接改为 \(\alpha=1\)，一般会得到错误结论。
+\end{solution}
+
+% 自拟：振荡尺度检验固定 Hölder 指数的最优性，区别源幅度与其连续模。
+\Needspace{6\baselineskip}
+\begin{optionalexercise}[振荡源与指数的最优性]
+\label{b2:ex:18-schauder-frequency}
+固定 \(0<\alpha<\beta\le1\)，在 \((-1,1)\) 上令
+\[
+ f_n(x)=n^{-\alpha}\cos(nx),\qquad
+ u_n(x)=n^{-2-\alpha}\cos(nx)\quad(n\ge4).
+\]
+证明 \(-u_n''=f_n\)、\(\sup_n\|f_n\|_{0,\alpha;(-1,1)}<\infty\)，但
+\([u_n'']_{\beta;(-1/2,1/2)}\to\infty\)。说明这一族与内部 Schauder 估计相容，却排除了把右端的 \(\alpha\) 无条件提高为左端的 \(\beta\)。
+\end{optionalexercise}
+\begin{solution}
+求两次导数即得方程。对 \(\delta=|x-y|\)，余弦的差同时不超过 \(2\) 与 \(n\delta\)，所以
+\[
+ |f_n(x)-f_n(y)|\le n^{-\alpha}\min(2,n\delta)
+ \le2\delta^\alpha.
+\]
+最后一个不等式在 \(n\delta\le1\) 时使用 \((n\delta)^{1-\alpha}\le1\)，在 \(n\delta\ge1\) 时直接使用幅度界。加上 \(\|f_n\|_\infty\le1\)，得到统一范数界。
+
+当 \(n>2\pi\) 时，\(0\) 和 \(\pi/n\) 均在 \((-1/2,1/2)\)。在这两点，\(u_n''=-n^{-\alpha}\cos(nx)\) 相差 \(2n^{-\alpha}\)，故
+\[
+ [u_n'']_{\beta;(-1/2,1/2)}
+ \ge2\pi^{-\beta}n^{\beta-\alpha}\longrightarrow\infty.
+\]
+与此同时 \(\|u_n\|_\infty\to0\)，且二阶导数的 \(\alpha\) 半范数保持有界。源项的幅度虽小，其振荡尺度也同时变小，正好保留了指定的 Hölder 指数。
 \end{solution}

@@ -2,19 +2,184 @@
 \section{紧流形上的函数空间}
 \label{b2:sec:2601}
 
-待撰写。
+在一块平面区域上，函数的可积性由 Lebesgue 测度衡量，弱导数则借助坐标方向定义。把区域换成球面后，函数仍然有大小和变化率，但一个坐标系只能描述球面的一部分。我们需要把各坐标片上的积分与导数组织起来，使换一组坐标之后得到同一个函数空间。紧性在这里有一个具体用途：有限个坐标片就足以覆盖整个空间，局部估计因而可以相加。
 
 \subsection{坐标图与单位分解}
 \label{b2:subsec:260101}
 
-待撰写。
+本章研究非空、紧致、无边界的光滑 Riemann 流形 \((M,g)\)，维数为整数 \(n\geq1\)。流形按第一卷附录 E 的约定是 Hausdorff、第二可数的；一张坐标图 \(x:U\to x(U)\subset\mathbb R^n\) 把开集 \(U\) 与欧氏开集光滑地识别，交叠处的坐标转换是光滑微分同胚。无边界表示所有点都有这样的欧氏开邻域，而不是半空间邻域。紧致无边界流形也常称为\term[bi-liuxing]{闭流形}[closed manifold]；这里的“闭”包含紧致这一要求。
+
+度量 \(g\) 给每个切空间 \(T_pM\) 一个随 \(p\) 光滑变化的正定内积。在坐标基下，它由对称正定矩阵 \((g_{ij})\) 表示。第一卷定义 E.2.7 和定理 E.2.8 给出了这个概念及其由单位分解拼接的构造。球面采用欧氏内积在切空间上的限制，平坦环面采用从欧氏空间传下来的内积；同一个光滑流形也可以配上不同度量。
+
+先记录一个与相容条件有关的事实。流形局部道路连通，所以每个连通分支都是开集：连通坐标小球中任意两点可以沿线段的逆像连接，故它包含在一个分支内。所有分支组成开覆盖，紧性使分支只有有限个，记为 \(M_1,\ldots,M_q\)。它们也都是闭集，因而各自紧致。函数 \(\mathbf1_{M_j}\) 局部恒定，特别是光滑函数。以后说“常数函数”时，需要辨认是整个 \(M\) 上同一个常数，还是每个分支各取一个常数。
+
+\begin{lemma}[有限坐标局部化]\label{b2:lem:28-finite-localization}
+设 \(M\) 为非空、紧致、无边界的 \(n\geq1\) 维光滑流形。存在有限个坐标图 \(x_a:U_a\to x_a(U_a)\)、开集 \(V_a\Subset U_a\) 及函数 \(\chi_a\in C^\infty(M;\mathbb R)\)，使
+\[
+ M=\bigcup_{a=1}^N V_a,\qquad
+ 0\leq\chi_a\leq1,\qquad
+ \operatorname{supp}\chi_a\Subset U_a,\qquad
+ \sum_{a=1}^N\chi_a=1.
+\]
+每个 \(U_a\) 还可以选成较大坐标图中的相对紧开集。对每个 \(a\)，存在 \(\eta_a\in C_c^\infty(U_a)\)，在 \(\operatorname{supp}\chi_a\) 的一个邻域上等于 \(1\)。
+\end{lemma}
+\begin{proof}
+在任一点附近，先在一张图中选两个同心小球，其闭包都留在图内，把小球的逆像记为 \(V\)，较大球的逆像记为 \(U\)。所有这样的 \(V\) 覆盖 \(M\)，取有限子覆盖 \(V_a\)。第一卷定理 E.2.5 的光滑单位分解可用于这个有限坐标覆盖；也可以直接作如下构造。取 \(b_a\in C_c^\infty(U_a)\)，满足 \(0\leq b_a\leq1\)、\(b_a=1\) 于 \(\overline V_a\) 附近。在图外补零仍光滑，因为支集留在图内。总和 \(s=\sum_a b_a\) 处处至少为 \(1\)，故取 \(\chi_a=b_a/s\) 即可。最后，在图内对紧集 \(\operatorname{supp}\chi_a\) 再取一次光滑截断，得到 \(\eta_a\)。
+\end{proof}
+
+较大的坐标片为磨光和求导留出空间。直接把一个只在坐标域内定义的函数补零，通常会在域的边缘产生跳跃；先乘 \(\chi_a\)，则它在接近边缘时已经为零。图\ref{b2:fig:28-chart-localization}表示这个安排。
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=.8]
+\draw[thick] (0,0) ellipse (3 and 1.65);
+\draw[dashed] (0,0) ellipse (2.35 and 1.18);
+\fill[blue!12] (0,0) ellipse (1.6 and .72);
+\draw[blue!65!black] (0,0) ellipse (1.6 and .72);
+\node at (0,0) {\(\operatorname{supp}\chi_a\)};
+\node at (0,1.0) {\(\eta_a=1\)};
+\node at (2.65,.6) {\(U_a\)};
+\draw[->,thick] (3.35,0)--(5,0) node[midway,above] {\(x_a\)};
+\draw[thick] (5.5,-1.65) rectangle (10.5,1.65);
+\fill[blue!12] (8,0) ellipse (1.4 and .72);
+\draw[blue!65!black] (8,0) ellipse (1.4 and .72);
+\node at (8,0) {\((\chi_a u)\circ x_a^{-1}\)};
+\node at (8,-1.2) {边缘附近恒为零};
+\node at (8,1.95) {\(x_a(U_a)\subset\mathbb R^n\)};
+\end{tikzpicture}
+\caption{坐标局部化的支集安排。图形仅示意嵌套关系；右侧函数可补零到整个欧氏空间，再作磨光。}
+\label{b2:fig:28-chart-localization}
+\end{figure}
 
 \subsection{积分与 Sobolev 空间}
 \label{b2:subsec:260102}
 
-待撰写。
+度量首先给出积分所需的体积。若 \(x=(x^1,\ldots,x^n)\) 是局部坐标，记
+\[
+ \rho_x(x)=\sqrt{\det(g_{ij}(x))}>0.
+\]
+换成坐标 \(y\)，令 \(J=\partial x/\partial y\)，内积矩阵的变换公式为 \(g_y=J^{\mathsf T}g_xJ\)。取行列式及正平方根，得到
+\begin{equation}\label{b2:eq:28-volume-change}
+ \rho_y(y)=\rho_x(x(y))\,|\det J(y)|.
+\end{equation}
+这个绝对值与多重积分换元中的 Jacobi 因子完全相配。因此，局部表达式 \(\rho_x\,\mathrm dx\) 能够定义一个全局正测度。
+
+\begin{definition}[Riemann 体积测度]\label{b2:def:28-volume}
+设 \((M,g)\) 为非空、紧致、无边界的 \(n\geq1\) 维光滑 Riemann 流形。取\cref{b2:lem:28-finite-localization}中的有限坐标图和单位分解。对非负可测函数 \(f\)，规定
+\begin{equation}\label{b2:eq:28-volume-integral}
+ \int_M f\,\mathrm dV_g
+ =\sum_{a=1}^N\int_{x_a(U_a)}
+ (\chi_a f)\circ x_a^{-1}(x)\,\rho_{x_a}(x)\,\mathrm dx.
+\end{equation}
+由此得到的正测度称为 \(g\) 的\term[riemann-tiji-cedu]{Riemann 体积测度}[Riemannian volume measure]，记作 \(V_g\)。可测集 \(E\) 的体积也记为 \(\operatorname{Vol}_g(E)=V_g(E)\)。可测性按坐标中的 Lebesgue 可测性理解，零测集取相应完备化。
+\end{definition}
+
+\begin{proposition}[体积积分的选择无关性]\label{b2:prop:28-volume-invariant}
+对非空、紧致、无边界的光滑 Riemann 流形 \((M,g)\)，定义\eqref{b2:eq:28-volume-integral}与有限坐标图、单位分解的选择无关。在任一坐标域 \(U\) 内，测度的表达式为 \(\mathrm dV_g=\rho_x\,\mathrm dx\)。它满足 \(0<V_g(M)<\infty\)，每个非空开集有正测度；在每个相对紧坐标子域上，它与 Lebesgue 测度互相具有有界的正密度。
+\end{proposition}
+\begin{proof}
+若另选 \((W_b,y_b,\theta_b)\)，在原来的每一项中插入 \(\sum_b\theta_b=1\)。双重和的每项具有紧支集，留在 \(U_a\cap W_b\) 内；\eqref{b2:eq:28-volume-change}及欧氏换元公式使它等于用 \(y_b\) 坐标计算的同一项。再对 \(a\) 求和，\(\sum_a\chi_a=1\) 给出另一套定义。非负函数允许积分为无穷，有限求和和换元仍成立。
+
+对集合的示性函数应用公式，欧氏测度的可数可加性及单调收敛给出一个测度。对支集位于某图中的函数，在上述比较中始终使用该图，便得到局部密度公式。光滑正函数 \(\rho_x\) 在坐标紧集上有正下界和有限上界；有限个这样的紧集覆盖 \(M\)，所以总体积有限。任一非空开集包含一个坐标小球，球上密度有正下界，故其体积正。
+\end{proof}
+
+对函数积分使用正体积密度，不需要选择定向。第一卷附录 E 中顶次微分形式的积分带有定向符号；这里的绝对值把体积当作非负大小。若 \(M\) 可定向并已选定向，\(\mathrm dV_g\) 也可写成与该定向相容的体积形式；改变定向不会改变当前的正测度。以后在局部作积分分部时，我们直接使用正密度公式。
+
+对实值可测函数，按 \(V_g\) 定义 \(L^p(M)\)，\(1\leq p\leq\infty\)；函数仍按几乎处处相等识别。特别地，
+\[
+ (u,v)_{L^2(M)}=\int_M uv\,\mathrm dV_g.
+\]
+局部正密度保证坐标中的零测集与 \(V_g\)-零测集相同，光滑坐标转换也保持这类零测集。这使弱导数作用于函数等价类成为可能。
+
+\begin{definition}[整数阶 Sobolev 空间]\label{b2:def:28-sobolev}
+设 \((M,g)\) 为非空、紧致、无边界的 \(n\geq1\) 维光滑 Riemann 流形，\(k\in\mathbb N_0\)。固定\cref{b2:lem:28-finite-localization}中的有限局部化。对实值 \(u\in L^2(M)\)，把
+\[
+ u_a=(\chi_a u)\circ x_a^{-1}
+\]
+在 \(x_a(U_a)\) 外补零。若每个 \(u_a\) 属于 \(H^k(\mathbb R^n)=W^{k,2}(\mathbb R^n)\)，则称 \(u\in H^k(M)\)，并定义
+\begin{equation}\label{b2:eq:28-chart-sobolev-norm}
+ \|u\|_{H^k(M)}^2
+ =\sum_{a=1}^N\sum_{|\alpha|\leq k}
+ \|\partial^\alpha u_a\|_{L^2(\mathbb R^n)}^2.
+\end{equation}
+导数均为欧氏分布意义下的弱导数。复值版本对实部和虚部分别定义。
+\end{definition}
+
+这个范数包含零阶项。仅测量导数会漏掉每个连通分支上的常数，不能得到整个函数空间的范数。\(H^0(M)\) 与 \(L^2(M)\) 的范数等价，但通常不逐项相等：一方面密度在各支集上有界，另一方面
+\[
+ \frac1N\leq\sum_a\chi_a(p)^2\leq1
+\]
+来自 \(\sum_a\chi_a=1\) 和 Cauchy--Schwarz 不等式。
+
+换坐标时要用一个具体估计。设 \(\Phi:O\to O'\) 是欧氏开集间的光滑微分同胚，\(b\in C_c^\infty(O)\)，\(h\in H^k_{\mathrm{loc}}(O')\)。在包含 \(\Phi(\operatorname{supp}b)\) 的一个紧邻域 \(K'\Subset O'\) 上，存在常数 \(C\) 使
+\begin{equation}\label{b2:eq:28-coordinate-transfer}
+ \|b\cdot(h\circ\Phi)\|_{H^k(O)}
+ \leq C\sum_{|\beta|\leq k}\|\partial^\beta h\|_{L^2(K')}.
+\end{equation}
+这里可将左侧补零。对光滑 \(h\)，反复使用乘积和链式法则，左侧每个导数都是 \((\partial^\beta h)\circ\Phi\) 与光滑系数的有限和，且 \(|\beta|\leq k\)。系数在固定紧集上有界；换元公式中的 \(|\det D\Phi^{-1}|\) 也有界，因此每项满足所写估计。对一般 \(h\)，先在 \(K'\) 附近乘一个等于 \(1\) 的截断，再磨光。第一卷命题22.1.2保证全部不超过 \(k\) 阶的弱导数在 \(L^2\) 中收敛；将光滑估计用于差，再利用弱导数的闭性即可取极限。这也是第一卷定理21.3.7之后高阶坐标变换论证在紧支集上的形式。
+
+\begin{theorem}[Sobolev 空间的基本性质]\label{b2:thm:28-sobolev-basic}
+设 \((M,g)\) 为非空、紧致、无边界的 \(n\geq1\) 维光滑 Riemann 流形，\(k\in\mathbb N_0\)，函数取实值或复值。空间 \(H^k(M)\) 不依赖有限坐标局部化的选择，不同选择给出等价范数。它是 Hilbert 空间，\(C^\infty(M)\) 在其中稠密。一个 \(u\in L^2(M)\) 属于 \(H^k(M)\)，当且仅当它在每张坐标图内局部属于 \(H^k\)。
+\end{theorem}
+\begin{proof}
+先说明局部性质。若所有 \(u_a\in H^k\)，则在任意坐标紧子域内用 \(u=\sum_a\chi_a u\) 分解。每一项通过坐标转换表达；在交叠部分取有限个较小坐标邻域和截断，\eqref{b2:eq:28-coordinate-transfer}保证其 \(H^k\) 性质。所需邻域只有有限个，因为被考察的支集紧含于交叠区域。反之，若 \(u\) 在各图内局部属于 \(H^k\)，则乘 \(\chi_a\) 后的支集留在内部，乘积法则和补零给出 \(u_a\in H^k(\mathbb R^n)\)。
+
+换成另一套 \((W_b,y_b,\theta_b)\)，将每个 \(\theta_bu\) 写成 \(\sum_a\theta_b\chi_au\)。每个交叠项的支集包含于 \(\operatorname{supp}\theta_b\cap\operatorname{supp}\chi_a\Subset W_b\cap U_a\)。取在该支集附近等于 \(1\) 的截断并用\eqref{b2:eq:28-coordinate-transfer}，得到新范数不超过原范数的常数倍。交换两套局部化就得到反向估计。
+
+范数\eqref{b2:eq:28-chart-sobolev-norm}来自各弱导数的 \(L^2\) 内积之和。设 \((u_j)\) 是此范数下的 Cauchy 列。零阶控制使它在 \(L^2(M)\) 中趋于某个 \(u\)，而对每个 \(a\)，\((\chi_au_j)\circ x_a^{-1}\) 在 \(H^k(\mathbb R^n)\) 中趋于某个 \(v_a\)。在 \(L^2\) 中辨认极限，得到 \(v_a=(\chi_au)\circ x_a^{-1}\)，在图外为零。因此 \(u\in H^k(M)\)，所有有限个坐标分量同时收敛，故 \(u_j\to u\) 于 \(H^k(M)\)。
+
+最后证明稠密性。每个 \(u_a\) 有固定内部紧支集。用紧支撑磨光核取 \(u_{a,\varepsilon}=\varrho_\varepsilon*u_a\)；当 \(\varepsilon\) 足够小时，所有支集仍留在同一个紧子集 \(K_a\Subset x_a(U_a)\)，且 \(u_{a,\varepsilon}\to u_a\) 于 \(H^k(\mathbb R^n)\)。将各 \(u_{a,\varepsilon}\circ x_a\) 补零并相加，得到光滑全局函数 \(v_\varepsilon\)。对其与 \(u\) 的差再乘任意 \(\chi_b\)，使用有限个坐标转换估计，便有
+\[
+ \|v_\varepsilon-u\|_{H^k(M)}
+ \leq C\sum_a\|u_{a,\varepsilon}-u_a\|_{H^k(\mathbb R^n)}\longrightarrow0.
+\]
+这同时说明各局部磨光结果在交叠处不必相等：相加的是全局补零后的光滑函数，极限由 \(\sum_a\chi_a u=u\) 辨认。
+\end{proof}
+
+例如，圆 \(\mathbb R/(2\pi\mathbb Z)\) 上的函数可看作 \(2\pi\)-周期函数。通过跨过角度 \(0\) 的另一张图，\(H^1\) 的定义要求两端相接；仅在区间 \((0,2\pi)\) 内有平方可积导数还不够。角度函数 \(u(\theta)=\theta\) 在这个区间内光滑，但作为圆上的函数在接缝处跳跃，因而不属于圆上的 \(H^1\)。局部坐标要覆盖接缝，正是空间定义能够识别这类现象的原因。
 
 \subsection{稠密性与紧嵌入}
 \label{b2:subsec:260103}
 
-待撰写。
+有了局部化，欧氏空间中的紧性可以搬到 \(M\) 上。关键是各局部函数拥有共同的有界支集：有界列不能把质量无限移到远处。
+
+\begin{theorem}[紧流形上的 Rellich 紧嵌入]\label{b2:thm:28-manifold-rellich}
+设 \((M,g)\) 为非空、紧致、无边界的 \(n\geq1\) 维光滑 Riemann 流形，\(k\in\mathbb N_0\)，函数取实值或复值。嵌入
+\[
+ H^{k+1}(M)\hookrightarrow H^k(M)
+\]
+连续且紧。特别地，每个 \(H^1(M)\) 有界列都有在 \(L^2(M)\) 中强收敛的子列。
+\end{theorem}
+\begin{proof}
+连续性由定义中的导数项直接得到。设 \((u_j)\) 在 \(H^{k+1}(M)\) 中有界。对每个 \(a\) 和 \(|\alpha|\leq k\)，局部函数
+\[
+ \partial^\alpha\bigl((\chi_a u_j)\circ x_a^{-1}\bigr)
+\]
+在 \(H^1(\mathbb R^n)\) 中有界，并且都支撑在同一个坐标紧集。选一个包含该紧集的大球，它们的限制属于 \(H_0^1\)；这可由内部磨光逼近直接看出。第一卷推论25.2.6给出该有界球上 \(H_0^1\hookrightarrow L^2\) 的紧性。依次抽取子列，使有限个 \((a,\alpha)\) 的分量全部在 \(L^2\) 中收敛。于是所选子列在\eqref{b2:eq:28-chart-sobolev-norm}中为 Cauchy 列，\cref{b2:thm:28-sobolev-basic}的完备性给出所求极限。
+\end{proof}
+
+正则性提高到一定阶数后，函数还会具有经典导数。取有限图册中的紧子域，定义 \(C^r\) 范数为这些子域上不超过 \(r\) 阶坐标导数的上确界之和；不同图册的范数等价。
+
+\begin{proposition}[连续可微代表]\label{b2:prop:28-sobolev-continuous}
+设 \((M,g)\) 为非空、紧致、无边界的 \(n\geq1\) 维光滑 Riemann 流形，\(k,r\in\mathbb N_0\) 且 \(k>r+n/2\)。每个实值或复值 \(u\in H^k(M)\) 有唯一的 \(C^r(M)\) 代表，并有
+\[
+ \|u\|_{C^r(M)}\leq C\|u\|_{H^k(M)}.
+\]
+因而一个属于所有整数阶 \(H^k(M)\) 的函数等价类具有唯一光滑代表。
+\end{proposition}
+\begin{proof}
+每个局部补零函数有固定有限测度支集。可选 \(1<p<2\) 足够接近 \(2\)，使 \(k-n/p>r\) 且 \(k-n/p\) 不是整数。Hölder 不等式给出局部 \(W^{k,p}\) 范数受 \(H^k\) 范数控制。第一卷定理24.4.3对全空间函数给出 \(W^{k,p}\) 的连续可微代表，其可微阶数为 \(\lfloor k-n/p\rfloor\geq r\)，并控制对应范数。这里通过稍减 \(p\) 保留了严格的指数余量，因此也覆盖 \(k-n/2\) 为整数的情形。
+
+将这些局部代表拉回并相加，得到 \(u\) 的全局 \(C^r\) 代表和所写估计。若两个连续代表几乎处处相同而在一点不同，连续性将使它们在一个非空开集上不同，违反该开集有正体积。故代表唯一。让 \(r\) 任意增大，所有代表因唯一性相同，得到光滑性。
+\end{proof}
+
+在弱解的唯一性证明中，还会出现“导数为零意味着常数”这个结论。对弱导数需要给出与经典微积分衔接的步骤。
+
+\begin{lemma}[弱导数为零的函数]\label{b2:lem:28-zero-gradient}
+设 \(M\) 为非空、紧致、无边界的光滑流形，配有光滑 Riemann 度量，\(u\in H^1(M;\mathbb R)\)。若 \(u\) 在各坐标图中的全部一阶弱导数为零，则它在每个连通分支上几乎处处等于一个常数。反之，分支常数函数属于 \(C^\infty(M)\)，且所有这些弱导数均为零。
+\end{lemma}
+\begin{proof}
+在任一坐标球的紧内部小球上磨光 \(u\)。弱导数与磨光交换，故磨光函数的梯度恒为零。沿小球内线段积分，它是常数。磨光函数在 \(L^2\) 中趋于 \(u\)，而常数函数构成 \(L^2\) 中的闭子空间，所以 \(u\) 在小球上几乎处处为常数。两个这样的球若相交，交叠开集有正体积，两个常数必须相等。每个连通分支道路连通，一条连接路径的紧像可以用有限条交叠小球链覆盖，故常数在整个分支一致。分支数量有限且各分支开闭，反向结论随即成立。
+\end{proof}
+
+以后用 \(H^{-1}(M)\) 表示实 Hilbert 空间 \(H^1(M)\) 的连续对偶，配对记作 \(\langle F,v\rangle\)。任何 \(f\in L^2(M)\) 通过 \(\langle f,v\rangle=\int_Mfv\,\mathrm dV_g\) 给出其中一个元素。这样的数据可以直接作用在弱解的测试函数上；它比要求右端逐点有定义更适合能量方法。下一节将用度量把一阶弱导数写成全局梯度，并将当前坐标范数与能量积分联系起来。

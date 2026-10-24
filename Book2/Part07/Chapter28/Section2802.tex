@@ -2,19 +2,228 @@
 \section{Laplace–Beltrami 算子与弱形式}
 \label{b2:sec:2602}
 
-待撰写。
+在平面上，扩散沿着函数变化最快的方向输运，其通量由梯度描述；在曲面上，“最快”取决于怎样测量长度。度量负责把函数的微分变成一个方向，体积密度负责计算通量在小区域内的积累。把这两步接起来，就得到流形上的 Laplace 算子。我们将从这两个几何要求推出坐标公式，再把二阶方程写成只含一阶导数的能量恒等式。
 
 \subsection{度量、梯度与散度}
 \label{b2:subsec:260201}
 
-待撰写。
+设 \(M\) 为 \(n\geq1\) 维光滑流形，\(g\) 为光滑 Riemann 度量。对 \(p\in M\)，\(g_p\) 是切空间 \(T_pM\) 上的正定内积；它使每个线性泛函都能唯一写成与某个向量的内积。于是，对实值 \(u\in C^1(M)\)，定义 \(\nabla_g u(p)\in T_pM\) 为满足
+\[
+ g_p(\nabla_g u(p),X)=\mathrm du_p(X)
+ \quad(X\in T_pM)
+\]
+的唯一向量。这是相对于度量 \(g\) 的梯度。微分 \(\mathrm du\) 记录各方向的变化率，梯度则用度量把这些变化率组织成一个向量场。换了度量，同一个函数的微分保持不变，梯度一般会改变。
+
+在坐标 \(x=(x^1,\ldots,x^n)\) 中，记
+\[
+ g_{ij}=g(\partial_{x^i},\partial_{x^j}),
+ \quad (g^{ij})=(g_{ij})^{-1},
+ \quad \rho=\sqrt{\det(g_{ij})}.
+\]
+将 \(\nabla_g u=\sum_i V^i\partial_{x^i}\) 代入定义，并依次取 \(X=\partial_{x^j}\)，得到
+\(\sum_i g_{ij}V^i=\partial_j u\)。解这个线性方程组便有
+\begin{equation}
+\label{b2:eq:26-gradient-coordinate}
+ \nabla_g u=\sum_{i,j=1}^n g^{ij}\partial_j u\,\partial_{x^i},
+ \quad
+ |\nabla_g u|_g^2=\sum_{i,j=1}^n g^{ij}\partial_i u\,\partial_j u.
+\end{equation}
+第二个公式也说明，梯度长度比较的是协向量 \(\mathrm du\) 与逆度量，因而出现 \(g^{ij}\)，而不是 \(g_{ij}\)。
+
+散度要与体积的选择相配。在上述坐标内，\(\mathrm dV_g=\rho\,\mathrm dx\)。若 \(X=\sum_i X^i\partial_{x^i}\) 是 \(C^1\) 向量场，局部通量密度的第 \(i\) 个分量为 \(\rho X^i\)。对它求欧氏散度，再除回单位体积的权重，就得到
+\begin{equation}
+\label{b2:eq:26-divergence-coordinate}
+ \operatorname{div}_g X
+ =\rho^{-1}\sum_{i=1}^n\partial_i(\rho X^i).
+\end{equation}
+下面的核验保证这确实定义了一个全局函数。
+
+\begin{proposition}[散度的坐标无关性]
+\label{b2:prop:26-divergence-invariant}
+设 \((M,g)\) 为 \(n\geq1\) 维光滑 Riemann 流形，\(X\) 为 \(C^1\) 实向量场。在每个坐标图内按\eqref{b2:eq:26-divergence-coordinate}定义的连续函数在图的交叠处相同，因而给出连续函数 \(\operatorname{div}_gX\)。对任一坐标域 \(U\subset M\) 及任一实值 \(\varphi\in C_c^1(U)\)，有
+\[
+ \int_U\varphi\operatorname{div}_gX\,\mathrm dV_g
+ =-\int_U\mathrm d\varphi(X)\,\mathrm dV_g.
+\]
+此外，对 \(h\in C^1(M;\mathbb R)\)，有乘积公式
+\[
+ \operatorname{div}_g(hX)
+ =\mathrm dh(X)+h\operatorname{div}_gX.
+\]
+\end{proposition}
+\begin{proof}
+在一个坐标图中，欧氏积分分部给出
+\[
+ \int \varphi\,\rho^{-1}\partial_i(\rho X^i)\,\rho\,\mathrm dx
+ =-\int (\partial_i\varphi)X^i\rho\,\mathrm dx,
+\]
+这里及后面的局部计算对重复的指标 \(i\) 从 \(1\) 到 \(n\) 求和。右端正是 \(-\int\mathrm d\varphi(X)\,\mathrm dV_g\)：\(\mathrm d\varphi(X)\) 是函数，\(\mathrm dV_g\) 的换元使用 Jacobi 行列式的绝对值，所以这个积分与坐标无关。对支集包含在两个坐标域交叠中的 \(\varphi\)，两种局部定义与每个这样的测试函数的积分相同。它们之差是连续函数；若在某点非零，便在一个小邻域内同号，用支集在该邻域的非负光滑函数测试就会得到非零积分。因此两种定义相同。最后，在任一坐标图内展开 \(\partial_i(\rho hX^i)\)，直接得到乘积公式。
+\end{proof}
+
+这一刻画也解释了密度 \(\rho\) 的作用。仅写 \(\sum_i\partial_iX^i\)，会把坐标中相同大小的小方块当成具有相同的几何体积；在度量随位置变化时，这样得到的量随坐标而变。式\eqref{b2:eq:26-divergence-coordinate}恰好校正了这个体积变化。
+
+\begin{proposition}[无边界紧流形上的散度积分]
+\label{b2:prop:26-divergence-integral}
+设 \((M,g)\) 为非空、紧致、无边界的 \(n\geq1\) 维光滑 Riemann 流形，\(X\) 为 \(C^1\) 实向量场。则
+\[
+ \int_M\operatorname{div}_gX\,\mathrm dV_g=0.
+\]
+\end{proposition}
+\begin{proof}
+取有限个坐标域及从属于它们的光滑单位分解 \(\chi_\alpha\)，使 \(\operatorname{supp}\chi_\alpha\) 紧含于相应坐标域。每个 \(\chi_\alpha X\) 的坐标系数都有紧支集，因此
+\[
+ \int_M\operatorname{div}_g(\chi_\alpha X)\,\mathrm dV_g
+ =\int_{\mathbb R^n}\partial_i(\rho\chi_\alpha X^i)\,\mathrm dx=0.
+\]
+最后一个等式可对每个方向先用一维微积分基本定理，再用 Fubini 定理；被积函数有紧支集，全部积分有限。另一方面，乘积公式及 \(\sum_\alpha\chi_\alpha=1\) 给出
+\[
+ \sum_\alpha\operatorname{div}_g(\chi_\alpha X)
+ =\operatorname{div}_gX
+   +\mathrm d\Bigl(\sum_\alpha\chi_\alpha\Bigr)(X)
+ =\operatorname{div}_gX.
+\]
+把有限个零积分相加即得结论。
+\end{proof}
+
+这里的“没有边界”使局部化后只留下坐标内部的紧支集积分。证明全程使用正密度，因此 \(M\) 可定向与否都适用。例如在实射影平面上，体积与这个散度积分仍有同样的意义。
 
 \subsection{Laplace–Beltrami 算子的局部表达}
 \label{b2:subsec:260202}
 
-待撰写。
+\begin{definition}[Laplace--Beltrami 算子]
+\label{b2:def:26-laplace-beltrami}
+设 \((M,g)\) 为 \(n\geq1\) 维光滑 Riemann 流形。对实值 \(u\in C^2(M)\)，定义其 \term[laplace-beltrami-suanzi]{Laplace--Beltrami 算子}[Laplace--Beltrami operator]为
+\[
+ \Delta_g u=\operatorname{div}_g(\nabla_g u).
+\]
+在坐标图中，其表达式为
+\begin{equation}
+\label{b2:eq:26-laplace-beltrami-coordinate}
+ \Delta_g u
+ =\frac1\rho\sum_{i,j=1}^n
+   \partial_i\bigl(\rho g^{ij}\partial_j u\bigr),
+ \quad \rho=\sqrt{\det(g_{ij})}.
+\end{equation}
+\end{definition}
+
+这个算子既测量二阶变化，也包含度量变化引起的一阶项。把公式展开便是
+\[
+ \Delta_g u
+ =\sum_{i,j}g^{ij}\partial_{ij}u
+  +\sum_j\left(\rho^{-1}\sum_i\partial_i(\rho g^{ij})\right)
+      \partial_j u.
+\]
+因此在曲线坐标中，即使函数看起来只依赖一个变量，也必须连同体积权重一起计算。主部矩阵 \((g^{ij})\) 正定；在一个紧含于坐标域的子集上，连续性给出统一正下界。这正是后面调用局部椭圆估计所需的一致椭圆性。
+
+半径为 \(R>0\) 的圆 \(S_R^1\) 可以用局部角坐标 \(\theta\) 表示，度量为 \(g=R^2\mathrm d\theta^2\)，因而
+\[
+ \mathrm dV_g=R\,\mathrm d\theta,
+ \quad \nabla_g u=R^{-2}u'(\theta)\partial_\theta,
+ \quad \Delta_g u=R^{-2}u''(\theta).
+\]
+角度变化相同，较大的圆上实际距离更长，所以二阶变化率带有 \(R^{-2}\)。对 \(\cos(k\theta)\)，得到
+\(\Delta_g\cos(k\theta)=-k^2R^{-2}\cos(k\theta)\)。这已显示本书约定中的 \(\Delta_g\) 具有非正的符号。
+
+在单位球面 \(S^2\) 的去极点坐标中，令 \(0<\theta<\pi\) 为余纬度，\(\varphi\) 为经度，则
+\[
+ g=\mathrm d\theta^2+\sin^2\theta\,\mathrm d\varphi^2,
+ \quad \rho=\sin\theta,
+\]
+从而
+\[
+ \Delta_g u
+ =\frac1{\sin\theta}\partial_\theta
+      (\sin\theta\,\partial_\theta u)
+    +\frac1{\sin^2\theta}\partial_\varphi^2u.
+\]
+例如高度函数 \(u(\theta,\varphi)=\cos\theta\) 满足 \(\Delta_g u=-2u\)。表达式在两极出现分母为零，是这组坐标在那里失效；高度函数和算子本身在整个球面都光滑。
+
+\begin{proposition}[Green 公式]
+\label{b2:prop:26-green}
+设 \((M,g)\) 为非空、紧致、无边界的 \(n\geq1\) 维光滑 Riemann 流形。对 \(u\in C^2(M;\mathbb R)\)、\(v\in C^1(M;\mathbb R)\)，有
+\begin{equation}
+\label{b2:eq:26-green-first}
+ \int_Mv\Delta_g u\,\mathrm dV_g
+ =-\int_Mg(\nabla_g u,\nabla_g v)\,\mathrm dV_g.
+\end{equation}
+若再有 \(v\in C^2(M;\mathbb R)\)，则
+\[
+ \int_Mv\Delta_g u\,\mathrm dV_g
+ =\int_Mu\Delta_g v\,\mathrm dV_g.
+\]
+特别地，
+\[
+ \int_Mu\Delta_g u\,\mathrm dV_g
+ =-\int_M|\nabla_g u|_g^2\,\mathrm dV_g\leq0,
+ \quad \int_M\Delta_g u\,\mathrm dV_g=0.
+\]
+\end{proposition}
+\begin{proof}
+乘积公式与梯度定义给出
+\[
+ \operatorname{div}_g(v\nabla_g u)
+ =g(\nabla_g v,\nabla_g u)+v\Delta_g u.
+\]
+向量场 \(v\nabla_g u\) 为 \(C^1\)，其散度的积分由
+\cref{b2:prop:26-divergence-integral}等于零，故得到第一式。若 \(u,v\) 都为 \(C^2\)，交换两者，再用 \(g\) 的对称性，得到第二式。分别在第一式中取 \(v=u\) 与 \(v=1\)，就得到最后两个结论。
+\end{proof}
+
+Green 公式把符号约定与能量联系起来：\(-\Delta_g\) 对应非负的梯度能量，而热方程写成 \(\partial_tu=\Delta_g u\) 时能量随时间减少。后面的特征值记为 \(-\Delta_g\) 的特征值，所以它们为非负数。
 
 \subsection{能量型与弱方程}
 \label{b2:subsec:260203}
 
-待撰写。
+弱解允许 \(u\) 只有平方可积的一阶弱导数。式\eqref{b2:eq:26-gradient-coordinate}仍能在每个图内给出 \(L^2\) 向量场；各图的表示相容，可以由\cref{b2:thm:28-sobolev-basic}的光滑稠密性看出：取 \(u_k\in C^\infty(M)\) 在坐标 Sobolev 范数中趋于 \(u\)，则每个紧坐标片上的 \(\nabla_g u_k\) 在 \(L^2\) 中收敛；光滑梯度在交叠处一致，极限也一致。有限个坐标片拼出 \(\nabla_g u\)。
+
+\begin{proposition}[一阶 Sobolev 空间的能量范数]
+\label{b2:prop:26-energy-norm}
+设 \((M,g)\) 为非空、紧致、无边界的 \(n\geq1\) 维光滑 Riemann 流形，\(H^1(M;\mathbb R)\) 按有限光滑坐标图与单位分解定义。则
+\[
+ \|u\|_{H_g^1}^2
+ :=\int_M\bigl(u^2+|\nabla_g u|_g^2\bigr)\,\mathrm dV_g
+\]
+是与坐标定义等价的 Hilbert 范数，其内积为
+\[
+ (u,v)_{H_g^1}
+ =\int_Muv\,\mathrm dV_g
+   +\int_Mg(\nabla_g u,\nabla_g v)\,\mathrm dV_g.
+\]
+对实值 \(u\in C^2(M)\) 和任意 \(v\in H^1(M)\)，式
+\eqref{b2:eq:26-green-first}仍成立。
+\end{proposition}
+\begin{proof}
+在每个单位分解函数 \(\chi_\alpha\) 的紧支集上，\(\rho\) 有正的上下界，矩阵 \((g^{ij})\) 的特征值也有正的统一上下界。因此局部的 \(L^2\) 范数、梯度范数分别与欧氏坐标中的相应范数等价。对 \(\chi_\alpha u\) 使用乘积法则，\(\chi_\alpha\) 及其一阶导数有界，得到坐标范数被 \(C\|u\|_{H_g^1}\) 控制。反向使用
+\(u=\sum_\alpha\chi_\alpha u\) 及
+\(\nabla_g u=\sum_\alpha\nabla_g(\chi_\alpha u)\)，由有限和的平方估计得到 \(\|u\|_{H_g^1}\) 被坐标范数控制。先对光滑函数计算，再由其稠密性通过极限，即得一般 \(H^1\) 函数的等价性。坐标空间已完备，故等价范数也完备；列出的内积产生这一范数。
+
+最后取 \(v_k\in C^\infty(M)\) 在 \(H^1\) 中趋于 \(v\)。第一式左边因 \(\Delta_g u\in L^2(M)\) 与 \(v_k\to v\) 于 \(L^2\) 而收敛；右边由梯度的 \(L^2\) 收敛及 Cauchy--Schwarz 不等式收敛。对光滑 \(v_k\) 的 Green 公式因而传到 \(v\)。
+\end{proof}
+
+以下把这个内在能量范数简记为 \(\|u\|_{H^1}\)，并把 \(L^2(M,\mathrm dV_g)\) 的范数简记为 \(\|u\|_2\)。对偶空间记为
+\[
+ H^{-1}(M):=(H^1(M;\mathbb R))^*.
+\]
+其元素是作用在 \(H^1\) 上的连续实线性泛函。特别地，\(f\in L^2(M)\) 通过
+\(F_f(v)=\int_Mfv\,\mathrm dV_g\) 给出一个这样的泛函，因为
+\(|F_f(v)|\leq\|f\|_2\|v\|_{H^1}\)。
+
+\begin{definition}[流形上 Poisson 方程的弱解]
+\label{b2:def:26-weak-poisson}
+设 \((M,g)\) 为非空、紧致、无边界的 \(n\geq1\) 维光滑 Riemann 流形，\(F\in H^{-1}(M)\)。称实值 \(u\in H^1(M)\) 为 \(-\Delta_gu=F\) 的弱解，是指
+\begin{equation}
+\label{b2:eq:26-weak-poisson}
+ \int_Mg(\nabla_g u,\nabla_g v)\,\mathrm dV_g=F(v)
+ \quad(v\in H^1(M)).
+\end{equation}
+\end{definition}
+
+对 \(F=F_f\)、\(f\in L^2(M)\)，右端就是源项与测试函数的积分。若 \(u\in C^2(M)\)，Green 公式说明弱等式等价于经典表达式满足 \(-\Delta_gu=f\) 几乎处处；当 \(f\) 连续时，这个等式在每一点成立。只对光滑测试函数检验也足够，因为弱等式的两边都连续地依赖 \(v\in H^1\)，而光滑函数在该空间稠密。
+
+弱形式还揭示了能量的几何意义。令
+\[
+ J(u)=\frac12\int_M|\nabla_g u|_g^2\,\mathrm dV_g-F(u).
+\]
+沿任意 \(v\in H^1(M)\) 展开 \(J(u+tv)\)，一次项是
+\(t[\int g(\nabla_g u,\nabla_g v)\,\mathrm dV_g-F(v)]\)。因此弱方程恰好要求能量对所有扰动的一次变化为零。梯度能量对加常数保持不变，源项却未必如此：取 \(v=1\)，弱方程立即要求 \(F(1)=0\)。若流形有几个连通分支，每个分支都能单独加常数，于是每个分支各自带来一个相容条件。下一节将把这些条件转化为精确的可解性结论。
+
+复值情形使用 \(\int g(\nabla_g u,\overline{\nabla_g v})\,\mathrm dV_g\)，右端取对 \(v\) 共轭线性的连续泛函；内积对第一变量线性。这时 \(-\Delta_g\) 的能量仍为 \(\int|\nabla_g u|_g^2\)，实部与虚部的方程也可以分别求解。

@@ -1,24 +1,287 @@
 % !TeX root = ../../Book2.tex
 \OptionalSection{山路定理与 Palais–Smale 条件}{b2:sec:1405}
 
-待撰写。
+直接方法寻找能量最低的状态。然而，一项能量可能沿某些方向趋于负无穷，同时在零点附近先升高；这时全局极小元不存在，方程却仍可能有非零解。一个一维图像是
+\[
+ J(t)=\frac12t^2-\frac14t^4.
+\]
+零点是局部极小点，\(J(2)<0\)，从 \(0\) 连续走到 \(2\) 必须经过 \(t=1\)，在那里能量达到 \(1/4\)，导数又恰好为零。\cref{b2:fig:14-mountain-profile}画出了曲线先上升、再下降到零以下的一段。函数空间中可以沿很多不同路径绕行；我们希望把各条路径的最高能量尽量压低，找到仍然无法绕开的临界高度。
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=4cm,y=4.2cm,font=\small]
+ \draw[->] (-0.08,0)--(1.76,0) node[right]{\(t\)};
+ \draw[->] (0,-0.42)--(0,0.40) node[above]{\(J(t)\)};
+ \draw[AnalysisBlue,thick,domain=0:1.61,samples=90]
+   plot (\x,{0.5*\x*\x-0.25*\x*\x*\x*\x});
+ \draw[densely dashed,gray] (0,0.25)--(1,0.25)--(1,0);
+ \fill[AnalysisBlue] (1,0.25) circle (1.5pt);
+ \node[left] at (0,0.25) {\(\frac14\)};
+ \node[below] at (1,0) {\(1\)};
+ \node[below left] at (0,0) {\(0\)};
+ \node[above right] at (1,0.25) {必经的高度};
+ \node[above] at (1.4142,0) {\(\sqrt2\)};
+\end{tikzpicture}
+\caption[一维能量的山口图像]{一维能量 \(J(t)=t^2/2-t^4/4\) 的一段曲线。从 \(0\) 到大于 \(\sqrt2\) 的正数，任何连续路径都经过 \(t=1\)，因而不能始终低于能量 \(1/4\)。}
+\label{b2:fig:14-mountain-profile}
+\end{figure}
+
+这个想法有两个困难。首先，越来越接近最优高度的路径未必收敛；其次，路径上的高点也未必有收敛子列。Palais–Smale 条件解决第二个困难，下降流则把“不是临界点”转化为“还能继续降低路径”。以下采用实 Hilbert 空间中梯度局部 Lipschitz 的版本，并在一个次临界幂非线性模型上逐项验证这些条件。
 
 \subsection{Palais–Smale 条件与紧性}
 \label{b2:subsec:140501}
 
-待撰写。
+设 \(H\) 为实 Hilbert 空间，内积记为 \((\cdot,\cdot)_H\)。对 \(J\in C^1(H;\mathbb R)\)，第一卷定理8.4.7的 Riesz 表示把连续线性泛函 \(DJ(u)\) 写成
+\[
+ DJ(u)h=(\nabla J(u),h)_H,
+ \quad \|DJ(u)\|_{H^*}=\|\nabla J(u)\|_H.
+\]
+这里的梯度由所选 Hilbert 内积确定。例如，能量空间 \(H_0^1\) 的梯度通常不是逐点计算的偏微分表达式 \(-\Delta u-g(u)\)；后者首先是对偶空间中的对象，要经过 Riesz 对应才成为 \(H_0^1\) 中的向量。\(DJ(u)=0\) 的点仍称为驻点，也称临界点；其函数值称为临界值。
+
+\begin{definition}[Palais–Smale 条件]\label{b2:def:14-palais-smale}
+设 \(H\) 为实 Hilbert 空间，\(J\in C^1(H;\mathbb R)\)，\(c\in\mathbb R\)。若每个满足
+\[
+ J(u_n)\longrightarrow c,
+ \quad \|DJ(u_n)\|_{H^*}\longrightarrow0
+\]
+的序列都具有在 \(H\) 范数中收敛的子列，就称 \(J\) 在高度 \(c\) 满足\term[palais-smale-tiaojian]{Palais–Smale 条件}[Palais--Smale condition]，记为 \((\mathrm{PS})_c\)。若只要求 \((J(u_n))\) 有界、\(\|DJ(u_n)\|_{H^*}\to0\) 就能得到范数收敛子列，则称 \(J\) 满足 Palais–Smale 条件，简称 \((\mathrm{PS})\)。满足前面两个极限的序列称为高度 \(c\) 的 Palais–Smale 序列。
+\end{definition}
+
+条件同时记录“高度有限”和“各方向斜率趋零”。它并不要求每个能量有界序列都收敛，也不把弱收敛当成结论。若 \(u_{n_k}\to u\) 于 \(H\)，连续性给出 \(J(u)=c\)、\(DJ(u)=0\)，所以这个紧性条件确实把近似驻点变为驻点。全局 \((\mathrm{PS})\) 等价于每个有限 \(c\) 上的 \((\mathrm{PS})_c\)：一方面直接包含，另一方面先从有界实数列 \(J(u_n)\) 抽出一个收敛子列，再在所得高度应用条件。
+
+\ProseParagraphBreak
+
+无限维中，“序列有界”还不足以验证 \((\mathrm{PS})\)。在实空间 \(\ell^2\) 上令
+\[
+ J(x)=\frac12\sum_{j=1}^{\infty}\frac{x_j^2}{j}.
+\]
+标准单位向量 \(e_n\) 满足 \(J(e_n)=1/(2n)\to0\)、\(\|\nabla J(e_n)\|=1/n\to0\)，但不同两项距离为 \(\sqrt2\)。因此 \((\mathrm{PS})_0\) 失败，尽管这组近似驻点始终位于单位球上。后面的椭圆模型将先取得有界性，再借紧嵌入和方程残差得到能量范数中的强收敛。
+
+\begin{lemma}[非临界高度附近的梯度下界]\label{b2:lem:14-ps-gradient-gap}
+设 \(H\) 为实 Hilbert 空间，\(J\in C^1(H;\mathbb R)\)，\(c\in\mathbb R\)。假定 \(J\) 满足 \((\mathrm{PS})_c\)，且不存在同时满足 \(J(u)=c\)、\(DJ(u)=0\) 的 \(u\in H\)。则存在 \(a>0\)、\(\delta>0\)，使
+\[
+ |J(u)-c|\le a\quad\Longrightarrow\quad
+ \|\nabla J(u)\|_H\ge\delta.
+\]
+\end{lemma}
+\begin{proof}
+若不存在这样的 \(a,\delta\)，则对每个正整数 \(n\) 可以找到 \(u_n\)，使 \(|J(u_n)-c|\le1/n\)、\(\|DJ(u_n)\|_{H^*}<1/n\)。由 \((\mathrm{PS})_c\) 抽出范数收敛子列，极限 \(u\) 满足 \(J(u)=c\)、\(DJ(u)=0\)，与假设矛盾。
+\end{proof}
+
+在有限维紧集上，连续且处处为正的梯度长度有正下界；这里的能量带通常不紧。Palais–Smale 条件提供了另一种办法：假如统一下界失效，就会产生一组近似驻点，而它们的极限正是被排除的临界点。
 
 \subsection{变形引理}
 \label{b2:subsec:140502}
 
-待撰写。
+当 \(\nabla J(u)\ne0\) 时，方向 \(-\nabla J(u)\) 降低能量。为了把所有点在同一段时间内降低相近的高度，我们改用
+\[
+ -\frac{\nabla J(u)}{\|\nabla J(u)\|_H^2}.
+\]
+沿这个向量场，能量的时间导数恰为 \(-1\)。分母也说明了为什么需要上一引理：若梯度过小，下降速度在空间中可能失去控制。我们还要在目标高度之外关掉运动，使路径的低能量端点保持原位。
+
+\begin{lemma}[有界局部 Lipschitz 向量场的流]\label{b2:lem:14-hilbert-flow}
+设 \(H\) 为实 Hilbert 空间，\(F:H\to H\) 局部 Lipschitz，且存在 \(M<\infty\) 使 \(\|F(u)\|_H\le M\) 对全部 \(u\in H\) 成立。对每个 \(u\in H\)，初值问题
+\[
+ \dot z(t)=F(z(t)),\quad z(0)=u
+\]
+在全部 \(t\ge0\) 上有唯一 \(C^1\) 解。记解为 \(\eta(t,u)\)，则 \(\eta:[0,\infty)\times H\to H\) 连续，且 \(\|\eta(t,u)-u\|_H\le Mt\)。若 \(F(u)=0\)，则 \(\eta(t,u)=u\)。
+\end{lemma}
+\begin{proof}
+在初值附近选取半径 \(r>0\) 的闭球，使 \(F\) 在稍大的邻域内有 Lipschitz 常数 \(L\)。对足够小的 \(T>0\)，令 \(MT<r\)、\(LT<1\)。完备空间 \(C([0,T];H)\) 中取闭集
+\(\{z:\sup_t\|z(t)-u\|_H\le r\}\)，映射
+\[
+ (\mathcal Tz)(t)=u+\int_0^tF(z(s))\,\mathrm ds
+\]
+保持该集，并且 Lipschitz 常数不超过 \(q=LT<1\)。这里连续的 \(H\) 值函数的积分可由 Riemann 和在完备空间中取极限定义。从常值曲线 \(z_0(t)=u\) 开始迭代 \(z_{k+1}=\mathcal Tz_k\)，则
+\[
+ \|z_{k+1}-z_k\|_\infty\le q^k\|z_1-z_0\|_\infty.
+\]
+几何级数估计使 \((z_k)\) 成为 Cauchy 列；其极限 \(z\) 由 \(\mathcal T\) 连续性满足 \(z=\mathcal Tz\)。两个不动点的距离不超过自身的 \(q\) 倍，故只能相同。积分基本定理再给出 \(C^1\) 解。两个局部解在共同存在区间相同，因而可以逐段拼接。
+
+若最大正向存在时间为有限的 \(T_*\)，由 \(\|\dot z\|_H\le M\) 有
+\(\|z(t)-z(s)\|_H\le M|t-s|\)。于是当 \(t\uparrow T_*\) 时，\(z(t)\) 在 \(H\) 中有极限。从该极限重新解局部初值问题，就把原解延长到 \(T_*\) 以后，矛盾。因此解全局存在，积分同一估计即得位移界。
+
+连续依赖也来自局部 Lipschitz 估计。在一个共同的 Lipschitz 邻域内，两条轨道满足
+\[
+ \|z(t)-\widetilde z(t)\|_H
+ \le \|z(0)-\widetilde z(0)\|_H
+      +L\int_0^t\|z(s)-\widetilde z(s)\|_H\,\mathrm ds,
+\]
+故由\cref{b2:lem:ode-gronwall}不超过 \(e^{Lt}\|z(0)-\widetilde z(0)\|_H\)。该引理用于此处连续非负的距离函数，其积分常数正是 \(L\)。固定轨道在有限时间区间上的像是紧集，可用有限个这样的邻域覆盖，再把时间分成有限段依次使用该估计。初值足够接近时，各段轨道仍停留在所选邻域内，于是得到初值的连续依赖；与 \(\|\dot z\|_H\le M\) 合并，得到时间与初值的联合连续性。最后，若 \(F(u)=0\)，常值轨道已经满足初值问题，唯一性给出结论。
+\end{proof}
+
+\begin{lemma}[变形引理]\label{b2:lem:14-deformation}
+设 \(H\) 为实 Hilbert 空间，\(J\in C^1(H;\mathbb R)\)，且 \(\nabla J:H\to H\) 局部 Lipschitz。设 \(c\in\mathbb R\)、\(\varepsilon>0\)、\(\delta>0\)，并且
+\[
+ |J(u)-c|\le3\varepsilon
+ \quad\Longrightarrow\quad\|\nabla J(u)\|_H\ge\delta.
+\]
+则存在连续映射 \(\Phi:H\to H\)，满足
+\begin{enumerate}
+\item\label{b2:item:14-deform-fixed}
+若 \(|J(u)-c|\ge2\varepsilon\)，则 \(\Phi(u)=u\)；
+\item\label{b2:item:14-deform-decrease}
+对全部 \(u\in H\)，有 \(J(\Phi(u))\le J(u)\)；
+\item\label{b2:item:14-deform-band}
+若 \(J(u)\le c+\varepsilon\)，则 \(J(\Phi(u))\le c-\varepsilon\)。
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+取 Lipschitz 函数 \(\chi:\mathbb R\to[0,1]\)，在 \([c-\varepsilon,c+\varepsilon]\) 上为一，在 \(( -\infty,c-2\varepsilon]\cup[c+2\varepsilon,\infty)\) 上为零，中间两段线性连接。在开带 \(|J(u)-c|<3\varepsilon\) 上令
+\[
+ F(u)=-\chi(J(u))\frac{\nabla J(u)}{\|\nabla J(u)\|_H^2},
+\]
+在其余点令 \(F(u)=0\)。开带内分母有正下界，所以 \(F\) 局部 Lipschitz。开带边缘附近的 \(\chi(J(u))\) 恒为零，两种定义相容，故 \(F\) 在整个 \(H\) 上局部 Lipschitz，并有 \(\|F\|_H\le1/\delta\)。
+
+由\cref{b2:lem:14-hilbert-flow}得到流 \(\eta(t,u)\)。链式法则给出
+\[
+ \frac{\mathrm d}{\mathrm dt}J(\eta(t,u))
+ =-\chi(J(\eta(t,u)))\le0.
+\]
+定义 \(\Phi(u)=\eta(2\varepsilon,u)\)。连续性以及能量不增已经成立；在 \(|J(u)-c|\ge2\varepsilon\) 的点，\(F(u)=0\)，所以这些点固定。
+
+最后设 \(J(u)\le c+\varepsilon\)。若起点已经不高于 \(c-\varepsilon\)，能量不增即可。否则，只要轨道能量还高于 \(c-\varepsilon\)，它就处于 \((c-\varepsilon,c+\varepsilon]\)，在那里导数恒为 \(-1\)。它因此在不超过 \(2\varepsilon\) 的时间内降到 \(c-\varepsilon\)，以后仍不增加。这证明最后一项。
+\end{proof}
+
+上述结论称为\term[bianxing-yinli]{变形引理}[deformation lemma]。它改变的是整条路径，而不是只挑出路径的一个最大点；这使变形后的对象仍是一条连续路径。局部 Lipschitz 梯度保证了流的唯一性和对初值的连续依赖。一般 \(C^1\) 泛函的梯度只保证连续，不能直接套用这个流引理；更一般的山路理论用局部 Lipschitz 的伪梯度向量场替代原梯度。Antonio Ambrosetti 的《Critical points and nonlinear variational problems》\cite[Sections 2--3]{Ambrosetti1992Critical}讨论了相应的紧性、变形和极小极大方法。
 
 \subsection{山路定理}
 \label{b2:subsec:140503}
 
-待撰写。
+设零点周围有一圈能量至少为 \(\alpha>0\) 的球面，而球面外的某个点 \(e\) 能量不高于零。每条连接 \(0\) 与 \(e\) 的路径都必须穿过这圈球面；我们能够改变穿越位置，却不能让整条路径都处在 \(\alpha\) 以下。\term[shanlu-dingli]{山路定理}[mountain pass theorem]把这一几何障碍转化为临界点。
+
+\begin{theorem}[山路定理，局部 Lipschitz 梯度版本]\label{b2:thm:14-mountain-pass}
+设 \(H\) 为实 Hilbert 空间，\(J\in C^1(H;\mathbb R)\)，\(\nabla J:H\to H\) 局部 Lipschitz，且 \(J(0)=0\)。假定存在 \(\rho>0\)、\(\alpha>0\)、\(e\in H\)，满足
+\[
+ J(u)\ge\alpha\quad(\|u\|_H=\rho),
+ \quad \|e\|_H>\rho,
+ \quad J(e)\le0.
+\]
+令
+\[
+ \Gamma=\{\gamma\in C([0,1];H):\gamma(0)=0,\ \gamma(1)=e\},
+ \quad c=\inf_{\gamma\in\Gamma}\max_{0\le t\le1}J(\gamma(t)).
+\]
+若 \(J\) 在这个 \(c\) 上满足 \((\mathrm{PS})_c\)，则存在 \(u_*\in H\) 使
+\[
+ DJ(u_*)=0,\quad J(u_*)=c\ge\alpha>0.
+\]
+特别地，\(u_*\ne0\)，且 \(u_*\ne e\)。
+\end{theorem}
+\begin{proof}
+线段 \(\gamma(t)=te\) 属于 \(\Gamma\)，而 \(J\circ\gamma\) 在紧区间上有有限最大值，因此 \(c<\infty\)。任意 \(\gamma\in\Gamma\) 的范数从 \(0\) 连续变到大于 \(\rho\)，介值定理给出某个 \(t\) 使 \(\|\gamma(t)\|_H=\rho\)。故每条路径的最大能量至少为 \(\alpha\)，从而 \(c\ge\alpha>0\)。
+
+反设高度 \(c\) 上没有临界点。\cref{b2:lem:14-ps-gradient-gap}给出能量带宽 \(a>0\) 与梯度下界 \(\delta>0\)。取 \(\varepsilon>0\) 使 \(3\varepsilon<a\)、\(2\varepsilon<c\)，应用\cref{b2:lem:14-deformation}得到 \(\Phi\)。两个端点的能量都不高于零，因而小于 \(c-2\varepsilon\)，所以 \(\Phi(0)=0\)、\(\Phi(e)=e\)。
+
+按下确界的定义，可取 \(\gamma\in\Gamma\) 满足 \(\max_tJ(\gamma(t))<c+\varepsilon\)。复合路径 \(\widetilde\gamma=\Phi\circ\gamma\) 连续且端点不变，因此仍属于 \(\Gamma\)。但变形引理给出
+\[
+ \max_{0\le t\le1}J(\widetilde\gamma(t))\le c-\varepsilon<c,
+\]
+与 \(c\) 是全部此类路径最大值的下确界矛盾。于是高度 \(c\) 上有临界点。其能量严格高于两个端点，故与它们不同。
+\end{proof}
+
+证明没有要求存在一条“最佳路径”。我们只取最大能量小于 \(c+\varepsilon\) 的近似路径；若高度 \(c\) 处没有驻点，就把整条近似路径向下推，造成矛盾。在开头的一维例子中，取 \(e=2\)，每条路径都经过 \(1\)，线段路径又实现最大值 \(1/4\)，故 \(c=1/4\)。无限维的结论保留这种过山口的含义，但通常不能据此断言所得临界点唯一，也不能只凭名称判定它的二阶导数有几个负方向。
 
 \subsection{次临界半线性椭圆模型}
 \label{b2:subsec:140504}
 
-待撰写。
+现在考虑
+\[
+ -\Delta u=|u|^{p-2}u\quad\text{于 }\Omega,
+ \quad u\in H_0^1(\Omega;\mathbb R).
+\]
+这里的右端与线性 Poisson 方程相反，来自能量中的负项：
+\[
+ J(u)=\frac12\int_\Omega|\nabla u|^2\,\mathrm dx
+          -\frac1p\int_\Omega|u|^p\,\mathrm dx.
+\]
+当 \(p>2\) 时，小振幅的二次梯度能量占优势，大振幅的负 \(p\) 次项占优势。这给出山路几何；严格低于 Sobolev 临界指数则提供紧性。
+
+\begin{theorem}[次临界幂方程的非零弱解]\label{b2:thm:14-subcritical-mountain-model}
+设整数 \(d\ge1\)，\(\Omega\subset\mathbb R^d\) 为非空有界开集，并令
+\[
+ 2^*=\begin{cases}2d/(d-2),&d\ge3,\\+\infty,&d=1,2.\end{cases}
+\]
+若 \(2<p<2^*\)，则存在非零的实函数 \(u\in H_0^1(\Omega)\)，使
+\[
+ \int_\Omega\nabla u\cdot\nabla v\,\mathrm dx
+   =\int_\Omega|u|^{p-2}uv\,\mathrm dx
+ \quad(v\in H_0^1(\Omega;\mathbb R)).
+\]
+零边界条件按 \(H_0^1\) 的闭包定义理解。该解可取为能量
+\(J(u)=\tfrac12\|\nabla u\|_2^2-\tfrac1p\|u\|_p^p\)
+的一个正能量山路临界点。
+\end{theorem}
+\begin{proof}
+在 \(H=H_0^1(\Omega;\mathbb R)\) 上取
+\((u,v)_H=\int_\Omega\nabla u\cdot\nabla v\)。第一卷定理24.1.2的零边界 Poincaré 不等式说明梯度范数与完整 \(H^1\) 范数等价，所以这是 Hilbert 空间。第一卷推论25.2.6还说明：在任意有界开集上，零边界嵌入 \(H\to L^p(\Omega)\) 在当前严格次临界指数下是紧的。特别有
+\[
+ \|u\|_p\le C\|u\|_H.
+\]
+这个零边界版本适用于这里的有界开集，无需定义逐点边界值。
+
+先验证泛函及其导数。记 \(N(s)=|s|^{p-2}s\)。由一维微积分，
+\[
+ |N(a)-N(b)|\le(p-1)(|a|+|b|)^{p-2}|a-b|
+ \quad(a,b\in\mathbb R).
+\]
+对函数使用 Hölder 不等式，得到
+\begin{equation}\label{b2:eq:14-power-lipschitz}
+ \|N(u)-N(w)\|_{p'}
+ \le(p-1)(\|u\|_p+\|w\|_p)^{p-2}\|u-w\|_p,
+ \quad p'=\frac p{p-1}.
+\end{equation}
+例如其中的三个指数满足 \((p-2)/p+1/p=1/p'\)。沿 \(u+th\) 积分一阶导数，\eqref{b2:eq:14-power-lipschitz}使余项在有界球内不超过常数乘 \(\|h\|_p^2\)。因此 \(J\) Fréchet 可微，且
+\[
+ DJ(u)v=(u,v)_H-\int_\Omega N(u)v,
+ \quad
+ \|DJ(u)-DJ(w)\|_{H^*}\le C_R\|u-w\|_H
+\]
+在 \(\|u\|_H,\|w\|_H\le R\) 时成立。Riesz 对应等距，故梯度在每个有界球上 Lipschitz。
+
+其次验证山路几何。嵌入估计给出
+\[
+ J(u)\ge\frac12\|u\|_H^2-\frac{C^p}{p}\|u\|_H^p.
+\]
+因 \(p>2\)，可选小的 \(\rho>0\)，使右端在 \(\|u\|_H=\rho\) 时至少为 \(\alpha=\rho^2/4>0\)。再选非零 \(\varphi\in C_c^\infty(\Omega;\mathbb R)\)。沿射线有
+\[
+ J(t\varphi)=\frac{t^2}2\|\varphi\|_H^2
+                  -\frac{t^p}p\|\varphi\|_p^p\longrightarrow-\infty
+ \quad(t\to+\infty).
+\]
+故可取足够大的 \(T\)，使 \(e=T\varphi\) 满足 \(\|e\|_H>\rho\)、\(J(e)<0\)。
+
+最后证明 \((\mathrm{PS})\)。设 \((J(u_n))\) 有界、\(\|DJ(u_n)\|_{H^*}\to0\)。消去非线性项得到关键恒等式
+\[
+ J(u_n)-\frac1pDJ(u_n)u_n
+       =\left(\frac12-\frac1p\right)\|u_n\|_H^2.
+\]
+因此存在 \(C<\infty\) 与 \(\varepsilon_n\to0\)，使
+\[
+ \left(\frac12-\frac1p\right)\|u_n\|_H^2
+       \le C+\varepsilon_n\|u_n\|_H.
+\]
+左边的系数为正，二次式估计说明 \((u_n)\) 有界。由第一卷定理9.4.7的自反空间弱子列结论，抽取 \(u_n\rightharpoonup u\) 于 \(H\)；再由上述紧嵌入，沿进一步子列有 \(u_n\to u\) 于 \(L^p\)。强极限与弱极限相同，因为连续嵌入保留弱收敛。
+
+现在以 \(u_n-u\) 代入近似方程。其 \(H\) 范数有界，所以
+\(DJ(u_n)(u_n-u)\to0\)。另外，Hölder 不等式给出
+\[
+ \left|\int_\Omega N(u_n)(u_n-u)\right|
+ \le\|u_n\|_p^{p-1}\|u_n-u\|_p\longrightarrow0.
+\]
+于是 \((u_n,u_n-u)_H\to0\)。弱收敛又给出 \((u,u_n-u)_H\to0\)，两式相减便是
+\(\|u_n-u\|_H^2\to0\)。这证明了所需的范数紧性。
+
+应用\cref{b2:thm:14-mountain-pass}得到 \(DJ(u)=0\)、\(J(u)>0\)。前面的导数公式给出全部 \(H_0^1\) 测试的弱等式，正能量排除了 \(u=0\)。
+\end{proof}
+
+次临界性在证明中有一个精确的使用位置：把有界弱收敛序列变成 \(L^p\) 强收敛序列，从而控制非线性项。当 \(d\ge3\)、\(p=2^*\) 时，连续嵌入仍然成立，紧嵌入却不成立。取内部点 \(x_0\) 和固定非零 \(\varphi\in C_c^\infty(\mathbb R^d)\)，对足够小的 \(\varepsilon\) 令
+\[
+ u_\varepsilon(x)=\varepsilon^{-(d-2)/2}
+               \varphi\left(\frac{x-x_0}{\varepsilon}\right).
+\]
+其支集落在 \(\Omega\)，而 \(\|\nabla u_\varepsilon\|_2\)、\(\|u_\varepsilon\|_{2^*}\) 都保持不变，函数却在 \(x\ne x_0\) 处最终为零。这组集中函数没有 \(L^{2^*}\) 强收敛子列。它解释了紧性步骤的障碍；要判断临界方程的存在性，还须结合能量高度、区域几何或另外的紧性机制。
+
+\ProseParagraphBreak
+
+所得结论是自然能量空间中的非零弱解。它没有自动给出符号、唯一性或经典二阶正则性；这些问题分别需要正部截断、比较原理或椭圆估计等进一步分析。对 \(p>2\) 而言，直接极小化当前能量会沿射线降到负无穷，山路方法却从零点附近的正能垒中找到了另一种驻点。这是极小极大方法与极小化方法在这个模型中的实际分工。

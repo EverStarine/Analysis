@@ -2,19 +2,317 @@
 \section{群上的可积函数与卷积}
 \label{b2:sec:I202}
 
-待撰写。
+在欧氏空间中，卷积把一个函数的许多平移叠加起来：核给出权重，平移给出被平均的对象。群上仍可这样做，只需用 \(y^{-1}x\) 代替差 \(x-y\)。这个替换保留了平均与逼近的思想，也带来一个具体问题：左乘与右乘可能有不同的测度效应，计算时必须辨认平移发生在哪一侧。
 
 \subsection{可积函数空间与平移}
 \label{b2:subsec:I20201}
 
-待撰写。
+\begin{definition}[群上的函数空间与平移]
+\label{b2:def:I2-lp-translation}
+设 \(G\) 为第二可数局部紧 Hausdorff 群，\(\mu\) 为其非零左 Haar 测度，\(1\le p\le\infty\)。\(L^p(G)\) 由下列对应范数有限的复值可测函数组成，并将关于 \(\mu\) 几乎处处相等的函数视为同一个元素：
+\[
+ \|f\|_p=\left(\int_G|f(x)|^p\,\mathrm d\mu(x)\right)^{1/p}
+ \quad(p<\infty),
+ \quad \|f\|_\infty=\operatorname*{ess\,sup}_{x\in G}|f(x)|.
+\]
+对 \(a\in G\)，定义\term[zuopingyi]{左平移}[left translation]与\term[youpingyi]{右平移}[right translation]为
+\[
+ (L_af)(x)=f(a^{-1}x),\quad (R_af)(x)=f(xa).
+\]
+\end{definition}
+\symidx{\(L_a,R_a\)：群上的左、右平移}
+
+逆元在 \(L_a\) 的定义中使得 \(L_aL_b=L_{ab}\)：先计算
+\(f(b^{-1}a^{-1}x)=f((ab)^{-1}x)\)，就能认出乘法的原来次序。右平移也有 \(R_aR_b=R_{ab}\)，而左、右平移彼此交换。欧氏加法群中，\(L_af(x)=f(x-a)\) 恰是前面使用的平移。
+
+\cref{b2:prop:I1-modular}中的模函数约定与右换元公式为
+\[
+ \mu(Ea)=\Delta(a)\mu(E),\quad
+ \int_G F(xa)\,\mathrm d\mu(x)
+ =\Delta(a)^{-1}\int_G F(x)\,\mathrm d\mu(x).
+\]
+因此，对 \(p<\infty\)，
+\begin{equation}
+\label{b2:eq:I2-translation-norm}
+ \|L_af\|_p=\|f\|_p,\quad
+ \|R_af\|_p=\Delta(a)^{-1/p}\|f\|_p.
+\end{equation}
+两种平移都保持零测集，所以它们在等价类上良定义；在 \(L^\infty\) 上二者均为等距映射。\(L^p(G)\) 的完备性来自一般测度空间上的 \(L^p\) 完备性，与群是否交换无关。
+
+平移连续性的意思是：一个固定函数受到很小的平移后，整体误差在 \(L^p\) 范数下很小。即使这个函数自身不连续，这种结论仍可能成立，因为积分范数容许小测度集合上的变化。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[平移的强连续性]
+\label{b2:prop:I2-translation}
+设 \(G\) 为第二可数局部紧 Hausdorff 群，\(\mu\) 为左 Haar 测度，\(1\le p<\infty\)。对每个 \(f\in L^p(G)\)，映射
+\[
+ a\longmapsto L_af,\quad a\longmapsto R_af
+\]
+均从 \(G\) 连续地映入 \(L^p(G)\)。此外，对 \(f\in C_c(G)\)，当 \(a\to e\) 时，上述两种平移都在一致范数下趋于 \(f\)。
+\end{proposition}
+\begin{proof}
+先设 \(f\in C_c(G)\)，记 \(K=\operatorname{supp}f\)。取单位元的一个紧邻域 \(V\)，并令 \(a\) 限于其内部。\(L_af\) 与 \(f\) 的支集都包含在紧集 \(VK\cup K\) 中，\(R_af\) 与 \(f\) 的支集都包含在 \(KV^{-1}\cup K\) 中。把这些紧集的并记为 \(K_0\)。
+
+函数 \((a,x)\mapsto f(a^{-1}x)-f(x)\) 在 \(\{e\}\times K_0\) 上等于零且连续。给定 \(\varepsilon>0\)，对每个 \(x\in K_0\) 可找单位元邻域 \(U_x\) 和 \(x\) 的邻域 \(W_x\)，使该差在 \(U_x\times W_x\) 上小于 \(\varepsilon\)。用有限个 \(W_x\) 覆盖 \(K_0\)，再取相应 \(U_x\) 的交，就得到对全部 \(x\) 同时成立的估计。因此 \(\|L_af-f\|_\infty\to0\)。对 \((a,x)\mapsto f(xa)-f(x)\) 作同样的有限覆盖，得到右平移的结论。紧集 \(K_0\) 的测度有限，于是
+\[
+ \|L_af-f\|_p\le\mu(K_0)^{1/p}\|L_af-f\|_\infty\longrightarrow0,
+\]
+右平移也成立。
+
+对一般 \(f\in L^p(G)\)，利用\cref{b2:prop:I1-haar-basic}中在 \(p<\infty\) 时成立的 \(C_c(G)\) 稠密性，选 \(h\in C_c(G)\) 使 \(\|f-h\|_p<\varepsilon\)。由等距性，
+\[
+ \|L_af-f\|_p\le2\varepsilon+\|L_ah-h\|_p.
+\]
+右平移的相应估计为
+\[
+ \|R_af-f\|_p
+ \le\bigl(\Delta(a)^{-1/p}+1\bigr)\varepsilon+\|R_ah-h\|_p.
+\]
+模函数连续且 \(\Delta(e)=1\)，故 \(a\) 在单位元附近时括号中的量有界。先令 \(a\to e\)，再令 \(\varepsilon\downarrow0\)，便得两种强连续性。最后用平移复合公式，把任意 \(a_0\) 处的连续性归结到单位元处。
+\end{proof}
+
+\(p=\infty\) 的情形有一个直接反例。在 \(G=\mathbb R\) 上取 \(f=\mathbf1_{[0,\infty)}\)。对每个 \(a\ne0\)，两个半直线之间有一段正测度区间，其上 \(|L_af-f|=1\)，所以
+\[
+ \|L_af-f\|_\infty=1.
+\]
+相同的跳跃在有限 \(p\) 范数中只贡献长度的 \(1/p\) 次幂，在本性上确界范数中却始终贡献整个跳跃高度。这解释了强连续性定理中指数范围的作用。
 
 \subsection{卷积、反演与群代数}
 \label{b2:subsec:I20202}
 
-待撰写。
+\begin{definition}[群卷积]
+\label{b2:def:I2-convolution}
+设 \(G\) 为第二可数局部紧 Hausdorff 群，\(\mu\) 为左 Haar 测度。对复值可测函数 \(f,g\) 及 \(x\in G\)，若下列积分绝对收敛，定义
+\[
+ (f*g)(x)\coloneqq
+ \int_G f(y)\cdot g(y^{-1}x)\,\mathrm d\mu(y).
+\]
+这是关于左 Haar 测度的\term[qunshangjuanji]{群卷积}[convolution on a group]。
+\end{definition}
+\symidx{\(f*g\)：关于左 Haar 测度的群卷积}
+
+固定 \(y\) 时，第二个因子就是 \(L_yg(x)\)。因此 \(f*g\) 是以 \(f(y)\) 为权重的左平移平均。交换群用加法记号时，公式变为熟悉的 \(\int f(y)\cdot g(x-y)\,\mathrm d\mu(y)\)。在离散群的计数测度下，它则成为
+\[
+ (f*g)(x)=\sum_{y\in G}f(y)\cdot g(y^{-1}x).
+\]
+连续积分与离散求和由同一个公式组织起来。
+
+\Needspace{6\baselineskip}
+\begin{theorem}[群卷积的基本估计与结合律]
+\label{b2:thm:I2-convolution}
+设 \(G\) 为第二可数局部紧 Hausdorff 群，\(\mu\) 为左 Haar 测度。
+若 \(1\le p\le\infty\)、\(f\in L^1(G)\)、\(g\in L^p(G)\)，则卷积几乎处处绝对收敛，在等价类上良定义，且
+\begin{equation}
+\label{b2:eq:I2-left-young}
+ \|f*g\|_p\le\|f\|_1\cdot\|g\|_p.
+\end{equation}
+特别地，\(L^1(G)\) 关于卷积封闭，卷积双线性且满足结合律。若 \(G\) 交换，则卷积还满足交换律。
+\end{theorem}
+\begin{proof}
+可测等价类选取 Borel 代表。由于群的乘法与反演连续，\((x,y)\mapsto f(y)\cdot g(y^{-1}x)\) 联合可测；Haar 测度的 \(\sigma\) 有限性使 Tonelli 与 Fubini 定理适用。
+
+先设 \(1\le p<\infty\)，并排除 \(\|f\|_1=0\) 的平凡情形。对概率测度 \(|f(y)|\,\mathrm d\mu(y)/\|f\|_1\) 使用 Hölder 不等式，得到
+\[
+ \left(\int_G|f(y)|\cdot|g(y^{-1}x)|\,\mathrm d\mu(y)\right)^p
+ \le\|f\|_1^{p-1}
+ \int_G|f(y)|\cdot|g(y^{-1}x)|^p\,\mathrm d\mu(y).
+\]
+对 \(x\) 积分，并在内积分中作左平移 \(x=yz\)，右端等于 \(\|f\|_1^p\|g\|_p^p\)。其有限性同时给出几乎处处绝对收敛与所需估计。若 \(p=\infty\)，可以把 \(g\) 的零测集上的值改为零，使 \(|g|\le\|g\|_\infty\) 处处成立，于是直接积分得到同一结论。取逆元与左右平移都保持零测集，所以对固定 \(x\)，在零测集上改变 \(f\) 或 \(g\)，只会在 \(y\) 的零测集上改变被积函数。故卷积的等价类与代表选择无关。
+
+取 \(f,g,h\in L^1(G)\)。结合律所涉及的绝对值三重积分为
+\[
+ \int_G\!\int_G\!\int_G
+ |f(y)|\cdot|g(z)|\cdot|h(z^{-1}y^{-1}x)|
+ \,\mathrm d\mu(x)\,\mathrm d\mu(z)\,\mathrm d\mu(y)
+ =\|f\|_1\|g\|_1\|h\|_1.
+\]
+因而可以用 Fubini 交换积分。把 \((f*g)*h\) 中内层变量写成 \(w=yz\)，利用左不变性，得
+\[
+ \begin{aligned}
+ ((f*g)*h)(x)
+ &=\int_G\!\int_G
+ f(y)\cdot g(z)\cdot h(z^{-1}y^{-1}x)\,\mathrm d\mu(z)\,\mathrm d\mu(y)
+ \\
+ &=(f*(g*h))(x).
+ \end{aligned}
+\]
+上述等式几乎处处成立。双线性来自积分。
+
+若 \(G\) 交换，则 \(\Delta\equiv1\)，反演保持 Haar 测度。作换元 \(z=y^{-1}x\)，得到
+\[
+ \begin{aligned}
+ (f*g)(x)&=\int_G f(xz^{-1})\cdot g(z)\,\mathrm d\mu(z)\\
+ &=\int_G g(z)\cdot f(z^{-1}x)\,\mathrm d\mu(z)=(g*f)(x).
+ \end{aligned}
+\]
+\end{proof}
+
+\(L^1(G)\) 已是 Banach 空间，而乘法估计表明卷积与范数相容，因此称它为 \(G\) 的\term[qundaishu]{群代数}[group algebra]。非交换群上的次序确实能够在函数中体现出来。在离散群上，记 \(\delta_a\) 为只在 \(a\) 处取 \(1\) 的函数，则
+\[
+ \delta_a*\delta_b=\delta_{ab}.
+\]
+例如置换群 \(S_3\) 中 \((12)(23)\ne(23)(12)\)，相应两个卷积不同。此处 \(\delta_a\) 是关于计数测度的可积函数；在 \(\mathbb R\) 上，单点示性函数的 \(L^1\) 等价类为零，不能承担同样的作用。
+
+欧氏卷积常用“取共轭再反射”得到伴随核。一般群中，反射由取逆元代替，同时需要补偿反演改变的测度。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[群代数的对合]
+\label{b2:prop:I2-involution}
+设 \(G\) 为第二可数局部紧 Hausdorff 群，\(\mu\) 为左 Haar 测度，模函数按 \(\mu(Ea)=\Delta(a)\mu(E)\) 定义。对 \(f\in L^1(G)\)，令
+\[
+ f^*(x)=\Delta(x)^{-1}\overline{f(x^{-1})}.
+\]
+则 \(f^*\in L^1(G)\)，且对 \(f,g\in L^1(G)\)、\(\alpha,\beta\in\mathbb C\)，
+\[
+ \begin{aligned}
+ \|f^*\|_1&=\|f\|_1,&(f^*)^*&=f,\\
+ (\alpha f+\beta g)^*&=\overline\alpha f^*+\overline\beta g^*,&
+ (f*g)^*&=g^**f^*.
+ \end{aligned}
+\]
+\end{proposition}
+\begin{proof}
+\cref{b2:prop:I1-modular}给出的反演换元公式为
+\[
+ \int_G F(x^{-1})\,\mathrm d\mu(x)
+ =\int_G F(x)\Delta(x)^{-1}\,\mathrm d\mu(x).
+\]
+结合 \(\Delta(x^{-1})=\Delta(x)^{-1}\)，它给出
+\[
+ \int_G\Delta(x)^{-1}|f(x^{-1})|\,\mathrm d\mu(x)
+ =\int_G|f(y)|\,\mathrm d\mu(y).
+\]
+共轭线性与两次对合还原 \(f\) 都由定义得到。为检查乘法次序，先使用 \(\Delta(y^{-1}x)=\Delta(y)^{-1}\Delta(x)\)，再作左平移 \(y=xz\)：
+\[
+ \begin{aligned}
+ (g^**f^*)(x)
+ &=\Delta(x)^{-1}\int_G
+     \overline{g(y^{-1})}\cdot\overline{f(x^{-1}y)}\,\mathrm d\mu(y)\\
+ &=\Delta(x)^{-1}\int_G
+     \overline{g(z^{-1}x^{-1})}\cdot\overline{f(z)}\,\mathrm d\mu(z)
+ =(f*g)^*(x).
+ \end{aligned}
+\]
+这些卷积几乎处处存在，等式因而在 \(L^1(G)\) 中成立。
+\end{proof}
+
+这种共轭线性、平方为恒等、反转乘法次序的运算称为\term[duihe]{对合}[involution]，由此 \(L^1(G)\) 成为 Banach \(*\) 代数。符号 \(g^**f^*\) 中，中间的星号是卷积，两侧的上标星号是对合。在交换或紧群上 \(\Delta\equiv1\)，公式简化为 \(f^*(x)=\overline{f(x^{-1})}\)。
 
 \subsection{逼近恒等与基本估计}
 \label{b2:subsec:I20203}
 
-待撰写。
+\eqref{b2:eq:I2-left-young}把 \(L^1\) 因子放在左边。若想把它放在右边，需要先把卷积写成右平移的平均。令 \(z=y^{-1}x\)，即 \(y=xz^{-1}\)，利用左不变性与反演公式，得到
+\begin{equation}
+\label{b2:eq:I2-right-convolution}
+ (f*g)(x)=\int_G g(z)\Delta(z)^{-1}\cdot f(xz^{-1})\,\mathrm d\mu(z).
+\end{equation}
+其中 \(f(xz^{-1})=R_{z^{-1}}f(x)\)。取其 \(L^p\) 范数时，右平移又贡献 \(\Delta(z)^{1/p}\)，于是总权重为 \(\Delta(z)^{1/p-1}\)。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[右卷积的加权估计]
+\label{b2:prop:I2-right-young}
+设 \(G\) 为第二可数局部紧 Hausdorff 群，\(\mu\) 为左 Haar 测度，\(\mu(Ea)=\Delta(a)\mu(E)\)。设 \(1\le p\le\infty\)，约定 \(1/\infty=0\)。若 \(f\in L^p(G)\)，\(g\) 为可测函数，且
+\[
+ A_p(g)\coloneqq\int_G|g(z)|\Delta(z)^{1/p-1}\,\mathrm d\mu(z)<\infty,
+\]
+则群卷积 \(f*g\) 几乎处处绝对收敛，并满足
+\[
+ \|f*g\|_p\le\|f\|_p A_p(g).
+\]
+特别地，若 \(G\) 为单模群，则 \(f\in L^p(G)\)、\(g\in L^1(G)\) 蕴含 \(\|f*g\|_p\le\|f\|_p\|g\|_1\)。
+\end{proposition}
+\begin{proof}
+设 \(p<\infty\)，记
+\[
+ S_zf\coloneqq\Delta(z)^{-1/p}R_{z^{-1}}f.
+\]
+由\eqref{b2:eq:I2-translation-norm}，\(\|S_zf\|_p=\|f\|_p\)。\eqref{b2:eq:I2-right-convolution}中的绝对值积分为
+\[
+ \int_G |g(z)|\Delta(z)^{1/p-1}\cdot |S_zf(x)|\,\mathrm d\mu(z).
+\]
+当 \(A_p(g)>0\) 时，对归一化权重 \(|g|\Delta^{1/p-1}/A_p(g)\) 用 Hölder 不等式，再对 \(x\) 用 Tonelli 定理，所得 \(p\) 次幂积分至多为 \(A_p(g)^p\|f\|_p^p\)。这同时证明绝对收敛与估计；\(A_p(g)=0\) 时结论直接成立。\(p=\infty\) 时，取 \(|f|\le\|f\|_\infty\) 的代表，直接在\eqref{b2:eq:I2-right-convolution}中积分即可。
+\end{proof}
+
+权重有可见的作用。取仿射群 \(G=\{(a,b):a>0,\ b\in\mathbb R\}\)，群乘法为
+\[
+ (a,b)(a',b')=(aa',b+ab'),\quad
+ \mathrm d\mu(a,b)=a^{-2}\,\mathrm da\,\mathrm db.
+\]
+其模函数为 \(\Delta(a,b)=a^{-1}\)。取 \(f=1\in L^\infty(G)\)，以及一个非负、非零且支集包含在 \(2<a<3\) 内的连续紧支集函数 \(g\)。由右卷积公式，
+\[
+ (1*g)(x)=\int_G a\cdot g(a,b)\,\mathrm d\mu(a,b)
+ >2\|g\|_1.
+\]
+所以不带权重的 \(\|f*g\|_\infty\le\|f\|_\infty\|g\|_1\) 在这个群上失败。左边的估计 \(\|g*f\|_\infty\le\|g\|_1\|f\|_\infty\) 仍成立；它的证明只使用左平移。
+
+现在让平均核集中到单位元附近。由\cref{b2:prop:I1-sigma-compact}并把每个邻域与其逆集相交，可选一列对称的相对紧开邻域 \(U_n\) 作为单位元的邻域基，并使 \(U_{n+1}\subset U_n\)。\Cref{b2:prop:I1-haar-basic}中使用的连续截断函数给出
+\[
+ 0\le\psi_n\in C_c(G),\quad
+ \psi_n(e)>0,\quad \operatorname{supp}\psi_n\subset U_n.
+\]
+非空开集有正 Haar 测度，所以 \(0<\int_G\psi_n\,\mathrm d\mu<\infty\)。将其除以积分，得到满足
+\begin{equation}
+\label{b2:eq:I2-positive-kernels}
+ e_n\in C_c(G),\quad e_n\ge0,\quad
+ \int_G e_n\,\mathrm d\mu=1,\quad
+ \operatorname{supp}e_n\subset U_n
+\end{equation}
+的核。它们每次只平均单位元附近的平移，并且总权重始终为一。
+
+\Needspace{6\baselineskip}
+\begin{theorem}[群上的逼近恒等]
+\label{b2:thm:I2-approximate-identity}
+设 \(G\) 为第二可数局部紧 Hausdorff 群，\(\mu\) 为左 Haar 测度。设 \((U_n)\) 为单位元的递减相对紧开邻域基，\(e_n\in C_c(G)\) 非负、积分为 \(1\)，且 \(\operatorname{supp}e_n\subset U_n\)。则对每个 \(1\le p<\infty\) 及每个 \(f\in L^p(G)\)，
+\[
+ \|e_n*f-f\|_p\longrightarrow0,\quad
+ \|f*e_n-f\|_p\longrightarrow0.
+\]
+对 \(f\in C_c(G)\)，两种收敛还在一致范数下成立。特别地，\((e_n)\) 是 \(L^1(G)\) 中范数恒为 \(1\) 的双侧\term[bijin-hengdeng]{逼近恒等}[approximate identity]。
+\end{theorem}
+\begin{proof}
+左卷积直接写成
+\[
+ (e_n*f-f)(x)=\int_G e_n(y)\cdot(L_yf(x)-f(x))\,\mathrm d\mu(y).
+\]
+对归一化权重 \(e_n\) 应用 Hölder 与 Tonelli，得到
+\[
+ \|e_n*f-f\|_p^p
+ \le\int_G e_n(y)\cdot\|L_yf-f\|_p^p\,\mathrm d\mu(y)
+ \le\sup_{y\in U_n}\|L_yf-f\|_p^p.
+\]
+由平移的强连续性，末项趋零。
+
+右卷积需要保留模函数。定义
+\[
+ Q_zf\coloneqq\Delta(z)^{-1}R_{z^{-1}}f.
+\]
+利用\eqref{b2:eq:I2-right-convolution}及 \(\int e_n=1\)，有
+\[
+ f*e_n-f=\int_G e_n(z)\cdot(Q_zf-f)\,\mathrm d\mu(z).
+\]
+这里 \(Q_zf\to f\) 在 \(L^p\) 中成立，因为
+\[
+ \|Q_zf-f\|_p
+ \le\Delta(z)^{-1}\|R_{z^{-1}}f-f\|_p
+       +|\Delta(z)^{-1}-1|\cdot\|f\|_p
+ \longrightarrow0.
+\]
+每个 \(e_n\) 的支集紧，模函数在其上有正下界，故右卷积的加权可积条件成立。再次用归一化权重下的 Hölder 与 Tonelli，得到
+\[
+ \|f*e_n-f\|_p^p\le\sup_{z\in U_n}\|Q_zf-f\|_p^p\longrightarrow0.
+\]
+当 \(f\in C_c(G)\) 时，用\cref{b2:prop:I2-translation}的一致平移连续性，在相同的两式中直接取上确界，便得到一致收敛。最后取 \(p=1\)，并注意 \(\|e_n\|_1=1\)，即得群代数中的双侧逼近恒等。
+\end{proof}
+
+在 \(\mathbb R^d\) 上，可取一个非负 \(\phi\in C_c(\mathbb R^d)\)、\(\int\phi=1\)，并令 \(e_\varepsilon(x)=\varepsilon^{-d}\phi(x/\varepsilon)\)。在乘法群 \((0,\infty)\) 上，Haar 测度为 \(\mathrm dx/x\)，相应的核为
+\[
+ e_\varepsilon(x)=\varepsilon^{-1}\phi(\varepsilon^{-1}\log x),
+ \quad \phi\in C_c(\mathbb R),\quad \phi\ge0,\quad\int_{\mathbb R}\phi=1.
+\]
+换元 \(t=\log x\) 立即验证积分为一；它的支集收缩到乘法单位元 \(1\)。这两个例子中的“小尺度”分别由 \(|x|\) 与 \(|\log x|\) 描述，而归一化与平移连续性的证明相同。
+
+近单位平均也保留了 \(L^\infty\) 端点的障碍。例如在 \(\mathbb R\) 上取偶的非负连续核 \(e_\varepsilon\)，以及半直线示性函数 \(f=\mathbf1_{[0,\infty)}\)，则
+\[
+ (e_\varepsilon*f)(x)=\int_{-\infty}^{x}e_\varepsilon(y)\,\mathrm dy.
+\]
+该函数连续，并在 \(x=0\) 处取 \(1/2\)；从正侧趋近零时，\(f\) 恒等于 \(1\)。因而 \(\|e_\varepsilon*f-f\|_\infty\ge1/2\)，无论核多窄，都不能消去本性上确界意义下的跳跃误差。卷积逼近的强度取决于所选择的函数空间。

@@ -2,24 +2,257 @@
 \section{保测变换与遍历性}
 \label{b1:sec:3201}
 
-待撰写。
+设一个系统每过一个单位时间就由状态 \(x\) 变成 \(Tx\)。若 \(f(x)\) 表示在状态 \(x\) 观测到的温度、位置函数或某个事件的示性函数，那么沿一条轨道得到的数据是
+\[
+ f(x),\ f(Tx),\ f(T^2x),\ldots.
+\]
+把前 \(N\) 次观测相加后除以 \(N\)，得到时间平均。另一方面，若状态空间上给定概率测度 \(\mu\)，则 \(\int_X f\,\mathrm d\mu\) 描述按这一分布抽取状态时的空间平均。两种平均的取样方式不同；即使每个时刻的状态都服从同一分布，也不能直接断言一条轨道会代表整个空间。
+
+\ProseParagraphBreak
+
+本节先精确说明“分布不随时间改变”，再找出一条轨道始终无法离开的可测区域。如果空间可以分成几个互不交流、各有正测度的部分，长期平均就可能依赖初始状态落在哪一部分。后面出现的条件期望，正是相对于这部分不会被时间演化消除的信息取平均。
 
 \subsection{保测变换与不变概率测度}
 \label{b1:subsec:320101}
 
-待撰写。
+\begin{definition}\label{b1:def:measure-preserving-32}
+设 \((X,\mathcal A,\mu)\) 是概率空间，\(T\colon X\rightarrow X\) 是 \(\mathcal A/\mathcal A\)-可测映射。如果对每个 \(A\in\mathcal A\) 都有
+\begin{equation}\label{b1:eq:measure-preserving-32}
+ \mu(T^{-1}A)=\mu(A),
+\end{equation}
+则称 \(T\) 是关于 \(\mu\) 的\term[baoce-bianhuan]{保测变换}[measure-preserving transformation]，也称 \(\mu\) 是 \(T\) 的\term[bubian-gailv-cedu]{不变概率测度}[invariant probability measure]。由概率空间和这个变换组成的 \((X,\mathcal A,\mu,T)\) 称为\term[baoce-dongli-xitong]{保测动力系统}[measure-preserving dynamical system]。
+\end{definition}
+
+这里 \(T^{-1}A\) 是集合的原像，不要求 \(T\) 有逆映射。式\eqref{b1:eq:measure-preserving-32}说的是：若初始状态按 \(\mu\) 分布，下一时刻落入 \(A\) 的概率，仍等于 \(\mu(A)\)。用推前测度的记号，这就是 \(T_\#\mu=\mu\)。不要把它改写成 \(\mu(TA)=\mu(A)\)：一般可测映射的像未必可测，即使像可测，后一个等式也未必成立。
+
+\ProseParagraphBreak
+
+保测性是 \(T\) 与 \(\mu\) 共同满足的条件。即使状态空间和变换已经固定，换一个概率测度也可能失去保测性。例如在两点集 \(X=\{a,b\}\) 上令 \(T\) 交换两点，则单点的概率必须相等；\(\mu(\{a\})=3/4\)、\(\mu(\{b\})=1/4\) 时，这个交换不保测。反过来，恒等映射关于每个概率测度都保测。因此保测还远不足以保证时间平均等于空间平均。
+
+\ProseParagraphBreak
+
+不变概率测度也可以是需要构造的对象。\cref{b1:prop:compact-invariant-probability}已经证明：
+若 \(X\) 是非空紧致度量空间、\(T:X\to X\) 连续，
+则轨道点质量的平均有弱收敛子列，其极限是一个不变 Borel 概率测度。
+那一结论解决的是测度的存在，并不保证唯一性或遍历性。
+本章从已经选定的保测概率系统出发，不要求一般可测空间具有紧性或拓扑。
+
+\begin{proposition}[保测性的积分刻画]\label{b1:prop:preserving-integrals-32}
+设 \((X,\mathcal A,\mu)\) 是概率空间，\(T\colon X\rightarrow X\) 可测。则 \(T\) 保测，当且仅当对每个非负 \(\mathcal A\)-可测函数 \(h\) 都有
+\begin{equation}\label{b1:eq:preserving-integrals-32}
+ \int_X h\circ T\,\mathrm d\mu=\int_X h\,\mathrm d\mu,
+\end{equation}
+其中允许两边同为 \(+\infty\)。若 \(T\) 保测，则对每个实或复可积函数 \(f\)，\(f\circ T\) 也可积，且同一积分等式成立。此外，每个迭代 \(T^k\)、\(k\geq0\)，都保测。
+\end{proposition}
+\begin{proof}
+若 \(T\) 保测，取 \(h=\mathbf1_A\)，由于 \(\mathbf1_A\circ T=\mathbf1_{T^{-1}A}\)，所需积分等式就是保测性的定义。有限线性组合给出非负简单函数的情形。对一般非负可测 \(h\)，取简单函数 \(0\leq h_j\uparrow h\)。复合后仍有 \(h_j\circ T\uparrow h\circ T\)，对两边使用\cref{b1:thm:monotone-convergence}的非负递增版本，得到\eqref{b1:eq:preserving-integrals-32}。
+
+若 \(f\) 可积，对 \(|f|\) 使用刚得到的等式，有
+\[
+ \int_X |f\circ T|\,\mathrm d\mu
+ =\int_X |f|\,\mathrm d\mu<\infty.
+\]
+再将实部与虚部分别拆成正部、负部，便得到有符号或复值的积分等式。逆向只需在所给非负函数等式中取 \(h=\mathbf1_A\)。最后，\(T^0\) 是恒等映射，而
+\(\mu((T^{k+1})^{-1}A)=\mu(T^{-1}((T^k)^{-1}A))=\mu((T^k)^{-1}A)\)，归纳即可证明迭代保测。
+\end{proof}
+
+下面固定轨道平均的起点约定。对保测动力系统 \((X,\mathcal A,\mu,T)\) 及实或复可积函数 \(f\)，记
+\begin{equation}\label{b1:eq:ergodic-averages-32}
+ A_Nf(x)\coloneqq\frac1N\sum_{k=0}^{N-1}f(T^kx),\quad N\geq1.
+\end{equation}
+式\eqref{b1:eq:ergodic-averages-32}称为 \(f\) 的\term[shijian-pingjun]{时间平均}[time average]，也称\term[bianli-pingjun]{遍历平均}[ergodic average]；对应的\term[kongjian-pingjun]{空间平均}[space average]是 \(\int_Xf\,\mathrm d\mu\)。从 \(k=0\) 开始使 \(A_1f=f\)，并便于后面作望远镜求和。由积分不变性，每个有限平均都满足
+\[
+ \int_X A_Nf\,\mathrm d\mu=\int_X f\,\mathrm d\mu.
+\]
+这只是整个空间上积分的相等，还没有说明 \(A_Nf(x)\) 对固定 \(x\) 是否收敛。
+\symidx{\(A_Nf\)：保测变换下的前 \(N\) 项时间平均}
+
+\ProseParagraphBreak
+
+在 \(L^p\) 空间中，函数按几乎处处相等辨认。若两个代表 \(f,g\) 只在零测集 \(N_0\in\mathcal A\) 上不同，保测性保证每个 \(T^{-k}N_0\) 仍是零测集。除去
+\[
+ N_*\coloneqq\bigcup_{k=0}^{\infty}T^{-k}N_0,
+\]
+就有 \(f(T^kx)=g(T^kx)\) 对所有 \(k\geq0\) 同时成立，因而所有 \(A_Nf(x)\) 与 \(A_Ng(x)\) 同时相等。若 \(f\) 最初只在几乎处处有限，可先在其无穷值集合上改成零，再作相同处理。这样讨论几乎处处的轨道极限时，结论不依赖选了哪个可测代表。
 
 \subsection{不变集合与不变子代数}
 \label{b1:subsec:320102}
 
-待撰写。
+假设 \(X\) 被分成两个可测区域，变换的每一步都在各自区域内部进行。初始状态属于哪一区域的信息不会随时间消失。我们希望收集所有具有这种性质的事件。由于积分和 \(L^p\) 函数只关心零测集以外的情况，集合的不变性也应允许一个零测的误差。
+
+\begin{definition}\label{b1:def:invariant-sigma-32}
+设 \((X,\mathcal A,\mu)\) 是概率空间，\(T\colon X\rightarrow X\) 可测且保测。若 \(A\in\mathcal A\) 满足
+\[
+ \mu(T^{-1}A\mathbin{\triangle}A)=0,
+\]
+则称 \(A\) 是 \(T\) 的模零\term[bubian-jihe]{不变集合}[invariant set]。所有这种集合组成的集合族记为
+\begin{equation}\label{b1:eq:invariant-sigma-32}
+ \mathcal I_T\coloneqq
+ \{\,A\in\mathcal A\mid\mu(T^{-1}A\mathbin{\triangle}A)=0\,\},
+\end{equation}
+称为 \(T\) 的\term[bubian-sigma-daishu]{不变 \(\sigma\)-代数}[invariant sigma-algebra]。
+\end{definition}
+\symidx{\(\mathcal I_T\)：保测变换的模零不变 \(\sigma\)-代数}
+
+式\eqref{b1:eq:invariant-sigma-32}中的 \(A\mathbin{\triangle}B=(A\setminus B)\cup(B\setminus A)\) 表示对称差。它度量两个事件在何处给出不同答案。不变性的等价写法是 \(\mathbf1_A\circ T=\mathbf1_A\) 几乎处处，所以它记录的是沿时间演化保持不变的事件信息。
+
+\begin{proposition}[不变事件构成子代数]\label{b1:prop:invariant-sigma-32}
+设 \((X,\mathcal A,\mu)\) 是概率空间，\(T\colon X\rightarrow X\) 可测且保测，并令
+\(\mathcal I_T=\{\,A\in\mathcal A\mid\mu(T^{-1}A\mathbin{\triangle}A)=0\,\}\)。则 \(\mathcal I_T\) 是 \(\mathcal A\) 的子 \(\sigma\)-代数，包含 \(\mathcal A\) 中每个零测集。若 \(A,B\in\mathcal A\)、\(\mu(A\mathbin{\triangle}B)=0\) 且 \(A\in\mathcal I_T\)，则 \(B\in\mathcal I_T\)。
+\end{proposition}
+\begin{proof}
+全集属于 \(\mathcal I_T\)。由原像与补集运算相容，
+\[
+ T^{-1}(X\setminus A)\mathbin{\triangle}(X\setminus A)
+ =T^{-1}A\mathbin{\triangle}A,
+\]
+所以 \(\mathcal I_T\) 对补集封闭。若 \(A_j\in\mathcal I_T\)，则
+\[
+ T^{-1}\Bigl(\bigcup_j A_j\Bigr)\mathbin{\triangle}\bigcup_j A_j
+ \subseteq\bigcup_j(T^{-1}A_j\mathbin{\triangle}A_j).
+\]
+右端是零测集的可数并，说明 \(\mathcal I_T\) 对可数并也封闭。
+
+若 \(N\in\mathcal A\)、\(\mu(N)=0\)，保测性给出 \(\mu(T^{-1}N)=0\)，从而 \(N\in\mathcal I_T\)。最后利用
+\[
+ T^{-1}B\mathbin{\triangle}B
+ \subseteq T^{-1}(B\mathbin{\triangle}A)
+ \cup(T^{-1}A\mathbin{\triangle}A)\cup(A\mathbin{\triangle}B),
+\]
+右端三个集合都零测，得到最后一项。
+\end{proof}
+
+“包含每个零测集”在这里只指原 \(\sigma\)-代数 \(\mathcal A\) 中的零测集及其中已经可测的子集。我们没有假定 \((X,\mathcal A,\mu)\) 完备，也没有把原来不可测的集合加进来；对 \(\mathcal I_T\) 作条件期望，所需的只是它为一个子 \(\sigma\)-代数。
+
+\ProseParagraphBreak
+
+与不变事件对应的是不变函数。一个观测量若在每一步都保持原值，就只能依赖这种不变信息。下面把这一说法落实为可测性，后面据此识别平均的极限。
+
+\begin{proposition}[不变函数的可测性刻画]\label{b1:prop:invariant-functions-32}
+设 \((X,\mathcal A,\mu)\) 是概率空间，\(T\colon X\rightarrow X\) 可测且保测，\(\mathcal I_T\) 是模零不变 \(\sigma\)-代数。若 \(f\) 是几乎处处有限的 \(\mathcal A\)-可测实函数或复函数，则
+\[
+ f\circ T=f\quad\mu\text{-a.e.}
+\]
+当且仅当 \(f\) 有一个 \(\mathcal I_T\)-可测代表。满足这个等式的函数称为 \(T\) 的\term[bubian-hanshu]{不变函数}[invariant function]。
+\end{proposition}
+\begin{proof}
+先将函数在无穷值的可测零集上改成零；保测性说明这不会改变复合函数的几乎处处等价类。因此可用处处有限的代表证明。
+
+先设 \(f\) 为实值且 \(f\circ T=f\) 几乎处处。对每个 Borel 集 \(B\subseteq\mathbb R\)，令 \(A=f^{-1}(B)\)。若 \(f(Tx)=f(x)\)，则 \(x\) 是否属于 \(T^{-1}A\) 与是否属于 \(A\) 的答案相同。因此 \(T^{-1}A\mathbin{\triangle}A\) 包含在 \(f\circ T\ne f\) 的零测集中，故 \(A\in\mathcal I_T\)。这就是 \(f\) 的 \(\mathcal I_T\)-可测性。
+
+反过来，设实值代表 \(g\) 对 \(\mathcal I_T\) 可测。对每个有理数 \(r\)，集合 \(\{g>r\}\) 属于 \(\mathcal I_T\)，因而
+\[
+ \mathbf1_{\{g>r\}}(Tx)=\mathbf1_{\{g>r\}}(x)
+ \quad\mu\text{-a.e.}
+\]
+去掉与全部有理 \(r\) 对应的例外零集后，这些等式同时成立。如果此时 \(g(Tx)\ne g(x)\)，可在两个不同实数之间选一个有理数，得到矛盾。所以 \(g\circ T=g\) 几乎处处。又因为 \(f=g\) 几乎处处，保测性保证 \(f\circ T=g\circ T\) 几乎处处，于是 \(f\circ T=f\)。复值情形对实部、虚部分别应用刚才的论证。
+\end{proof}
+
+模零不变是一个关于等价类的陈述，不一定对选定代表的每个点成立。不过，如果 \(f\circ T=f\) 仅在零集 \(N_0\) 上例外，除去 \(\bigcup_{k\geq0}T^{-k}N_0\) 后，沿剩下的每条前向轨道都有 \(f(T^kx)=f(x)\) 对所有 \(k\geq0\) 同时成立。这说明模零表述仍准确捕捉了几乎每条轨道上的守恒信息。
 
 \subsection{遍历性的定义与判别}
 \label{b1:subsec:320103}
 
-待撰写。
+如果存在一个测度严格介于零与一之间的不变集合，把初始状态选在它内部或外部，就得到两个不同的可测部分。遍历性排除这种分割。这里排除的是正概率的可测分割，不能据此断言每一条轨道都遍历了每个点，更不能预先把它理解成轨道稠密性。
+
+\begin{definition}\label{b1:def:ergodic-32}
+设 \((X,\mathcal A,\mu)\) 是概率空间，\(T\colon X\rightarrow X\) 可测且保测。如果每个 \(A\in\mathcal I_T\) 都满足
+\[
+ \mu(A)\in\{0,1\},
+\]
+则称 \(T\) 关于 \(\mu\) 是\term[bianli]{遍历的}[ergodic]，或称保测动力系统 \((X,\mathcal A,\mu,T)\) 具有\term[bianlixing]{遍历性}[ergodicity]。这里 \(\mathcal I_T\) 指 \(\mu(T^{-1}A\mathbin{\triangle}A)=0\) 的所有 \(A\in\mathcal A\) 所成的子 \(\sigma\)-代数。
+\end{definition}
+
+遍历时 \(\mathcal I_T\) 仍可能包含很多零测集及其补集；“只有平凡的不变事件”指测度只有零和一，并不要求 \(\mathcal I_T\) 作为集合族真的只有 \(\varnothing,X\) 两项。
+
+\begin{proposition}[遍历性的函数判别]\label{b1:prop:ergodicity-criterion-32}
+设 \((X,\mathcal A,\mu)\) 是概率空间，\(T\colon X\rightarrow X\) 可测且保测。下列条件等价：
+\begin{enumerate}[label=\Roman*.]
+ \item\label{b1:item:ergodic-events-32}\(T\) 关于 \(\mu\) 遍历。
+ \item\label{b1:item:ergodic-functions-32}每个几乎处处有限的实可测函数 \(f\)，只要 \(f\circ T=f\) 几乎处处，就几乎处处等于一个实常数。
+ \item\label{b1:item:ergodic-l2-32}每个满足 \(f\circ T=f\) 的 \(f\in L^2(\mu;\mathbb R)\)，都几乎处处为常数。
+\end{enumerate}
+在这些条件成立时，复值不变可测函数若几乎处处有限，也几乎处处为一个复常数。
+\end{proposition}
+\begin{proof}
+设条件\itemref{b1:item:ergodic-events-32}成立，且 \(f\) 满足第二项的假设。由\cref{b1:prop:invariant-functions-32}，每个集合 \(\{f>r\}\)、\(r\in\mathbb Q\)，都是模零不变的，故其测度只能为零或一。由于 \(f\) 几乎处处有限，集合 \(\{f>n\}\) 随 \(n\to\infty\) 递减到一个零测集，而 \(\{f>-n\}\) 递增到余零集。因此对某些足够大的整数 \(n\)，前者测度为零，后者测度为一。
+
+于是数
+\[
+ c=\sup\{\,r\in\mathbb Q\mid\mu(f>r)=1\,\}
+\]
+有限且有定义。若有理数 \(r<c\)，根据上确界定义可找到 \(s>r\) 且 \(\mu(f>s)=1\)，所以 \(\mu(f>r)=1\)。若 \(r>c\)，则 \(\mu(f>r)=0\)。对全部有理数的这两类结论去掉一个可数并零集，便同时得到 \(f\geq c\) 与 \(f\leq c\)，所以 \(f=c\) 几乎处处。
+
+第二项蕴含第三项，因为 \(L^2\) 函数几乎处处有限。最后，若第三项成立，对任意 \(A\in\mathcal I_T\)，函数 \(\mathbf1_A\) 平方可积且不变，因而几乎处处为常数。它只取零和一，所以这个常数只能为零或一，得到遍历性。复值结论分别用于实部、虚部即可。
+\end{proof}
+
+这一判别解释了为什么“不变函数”是比单条轨道更方便的对象：只要构造出一个非恒定的不变可测量，就能证明系统不遍历。反过来，要证明遍历性，可以证明所有不变观测量只能为常数。后文的圆周模型将采用后一条路线。
 
 \subsection{有限系统与圆周模型}
 \label{b1:subsec:320104}
 
-待撰写。
+先看每个点都有正概率的有限空间 \(X=\{1,\ldots,m\}\)，其 \(\sigma\)-代数为幂集。如果 \(T\) 保测，则每个点 \(j\) 都有原像；否则 \(\mu(T^{-1}\{j\})=0\ne\mu(\{j\})\)。有限集上的满射是双射，因此 \(T\) 是一个置换。每个点只有一个原像，保测等式进一步说明同一个循环中的点有相等概率。相反，一个置换若在每个循环上给各点相等权重，就保测；不同循环之间的总权重可以不同。
+
+\ProseParagraphBreak
+
+有限置换的不变集合恰好是若干完整循环的并。因为所有点概率都正，模零相等在这里就是逐点相等。若一个不变集合包含循环中的一点，利用 \(\mathbf1_A\circ T=\mathbf1_A\) 沿循环前进，就必须包含整个循环。因此有限系统遍历当且仅当整个空间只有一个循环；此时保测概率必为均匀概率。
+
+\ProseParagraphBreak
+
+例如令五点空间 \(X=\{a,b,c,d,e\}\) 等概率，并取两个循环
+\[
+ a\longmapsto b\longmapsto a,\quad
+ c\longmapsto d\longmapsto e\longmapsto c.
+\]
+给定观测量 \(f\)，按 \(a,b,c,d,e\) 的次序指定
+\[
+ f=(0,2,3,6,9).
+\]
+从 \(a\) 或 \(b\) 出发，观测值交替为 \(0,2\)；从其余三点出发，则周期性地读到 \(3,6,9\) 的一个循环移位。把 \(N\) 写成周期长度的整数倍加余数，整周期部分提供相同平均，剩下至多两个观测值除以 \(N\) 后趋于零。因此
+\[
+ \lim_{N\to\infty}A_Nf=(1,1,6,6,6),\quad
+ \int_X f\,\mathrm d\mu=4.
+\]
+这里时间平均处处存在，却没有一点等于总空间平均。极限保留了“落在哪一个循环”的信息。它在每个循环内取平均值，正是 \(\mathbb E_\mu(f\mid\mathcal I_T)\)；例如在第一循环上的积分为 \((1/5)\cdot0+(1/5)\cdot2=2/5\)，而常值 \(1\) 在这个概率为 \(2/5\) 的循环上的积分同样为 \(2/5\)。第二循环的计算相同。
+
+\ProseParagraphBreak
+
+连续状态空间的两个基本模型都定义在圆周 \(\mathbb T=\mathbb R/\mathbb Z\) 上。可用区间 \([0,1)\) 代表圆周上的点，端点按模一计算，取 Borel \(\sigma\)-代数和长度为一的 Lebesgue 概率测度 \(m\)。给定 \(\alpha\in\mathbb R\)，\term[yuanzhou-zhuandong]{圆周转动}[circle rotation]定义为
+\[
+ R_\alpha x=x+\alpha\pmod1.
+\]
+只需考虑 \(0\leq\alpha<1\)。对任意非负 Borel 可测函数 \(h\)，把跨过端点的部分单独换元，可得
+\[
+ \begin{aligned}
+ \int_0^1 h(R_\alpha x)\,\mathrm dx
+ &=\int_0^{1-\alpha}h(x+\alpha)\,\mathrm dx
+   +\int_{1-\alpha}^1h(x+\alpha-1)\,\mathrm dx\\
+ &=\int_\alpha^1h(y)\,\mathrm dy+\int_0^\alpha h(y)\,\mathrm dy
+ =\int_0^1h(y)\,\mathrm dy.
+ \end{aligned}
+\]
+所以 \(R_\alpha\) 保测。这一结论对有理和无理 \(\alpha\) 都成立，尚未区分它们的遍历性。
+
+\ProseParagraphBreak
+
+另一个模型是\term[beizeng-yingshe]{倍增映射}[doubling map]
+\[
+ D x=2x\pmod1
+ =\begin{cases}2x,&0\leq x<1/2,\\2x-1,&1/2\leq x<1.\end{cases}
+\]
+两段都铺满整个圆周，因而 \(D\) 没有单值逆映射。它仍然保测，因为
+\[
+ \begin{aligned}
+ \int_0^1 h(Dx)\,\mathrm dx
+ &=\int_0^{1/2}h(2x)\,\mathrm dx
+   +\int_{1/2}^1h(2x-1)\,\mathrm dx\\
+ &=\frac12\int_0^1h(y)\,\mathrm dy
+   +\frac12\int_0^1h(y)\,\mathrm dy
+ =\int_0^1h(y)\,\mathrm dy.
+ \end{aligned}
+\]
+特别地，\(D^{-1}A\) 由 \(A\) 的两个缩小一半的副本组成，两份长度相加仍为 \(m(A)\)。如果改用像集合，取 \(A=[0,1/2)\)，则 \(DA=[0,1)\)，其长度由 \(1/2\) 变成 \(1\)，再次说明保测定义必须写原像。
+
+\ProseParagraphBreak
+
+这两个模型都保持均匀分布，却有不同的长期行为。转动可逆，而倍增会把某些不同初始状态合并。我们将在\secref{b1:sec:3205}证明无理转动的遍历性以及倍增映射更强的混合性质；现在已经证明的保测性足以在下一节将它们放入同一个算子框架。

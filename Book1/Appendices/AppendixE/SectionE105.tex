@@ -2,24 +2,437 @@
 \section{闭形式、Poincaré 引理与整体障碍}
 \label{b1:sec:E105}
 
-待撰写。
+求一个函数的原函数，或从向量场恢复势函数，都可以写成求解
+\(\mathrm d\eta=\omega\)。外微分满足 \(\mathrm d^2=0\)，
+所以给定的 \(\omega\) 至少必须满足 \(\mathrm d\omega=0\)。
+这一必要条件在足够小的坐标邻域内也充分，
+但把局部原函数接成一个全局对象时，绕行闭路可能产生无法消除的差。
+本节先用一个显式积分公式解决局部问题，再在圆周上把整体障碍算出来。
 
 \subsection{闭形式与恰当形式}
 \label{b1:subsec:E10501}
 
-待撰写。
+在一维区间上，每个连续函数都有原函数。
+到了二维，给定 \(\omega=P\,\mathrm dx+Q\,\mathrm dy\)，
+要求 \(\omega=\mathrm df\)，就同时要求
+\(\partial_xf=P\) 与 \(\partial_yf=Q\)。
+若这些函数光滑，混合偏导相等迫使 \(\partial_yP=\partial_xQ\)。
+外微分把这种相容条件写成了与坐标无关的等式。
+
+\begin{definition}\label{b1:def:E-closed-exact}
+设 \(M\) 为实光滑 \(n\) 维流形，可带边界，
+\(0\leq k\leq n\)，\(\omega\in\Omega^k(M)\) 为实光滑微分形式。
+若 \(\mathrm d\omega=0\)，则称 \(\omega\) 为
+\term[bi-xingshi]{闭形式}[closed form]。
+若存在 \(\eta\in\Omega^{k-1}(M)\)，使 \(\omega=\mathrm d\eta\)，
+则称 \(\omega\) 为\term[qiadang-xingshi]{恰当形式}[exact form]，
+称 \(\eta\) 为 \(\omega\) 的一个\term[yuan-xingshi]{原形式}[primitive]。
+这里规定 \(\Omega^{-1}(M)=\{0\}\)，故零次恰当形式只有零函数。
+\end{definition}
+
+恰当形式一定闭，因为 \(\mathrm d(\mathrm d\eta)=0\)。
+这一步在每个坐标邻域内归结为混合偏导的抵消，
+与\cref{b1:prop:app-d-exterior-derivative}中的欧氏计算相同。
+对于 \(k=0\)，闭性是 \(\mathrm df=0\)，即函数在每个足够小的坐标球上为常数；
+对于 \(k=n\)，每个最高次形式自动闭，因为 \(n+1\) 次交错型恒为零。
+两个端点都应与求原形式的问题分开：非零常函数闭而不恰当，
+最高次形式的闭性本身也没有保证存在全局原形式。
+
+\ProseParagraphBreak
+
+局部与整体的差别已经能在穿孔平面中看到。令
+\(U=\mathbb R^2\setminus\{0\}\)，并考虑实光滑一次形式
+\begin{equation}\label{b1:eq:E-angular-form}
+ \eta=\frac{-y\,\mathrm dx+x\,\mathrm dy}{x^2+y^2}.
+\end{equation}
+写 \(P=-y/(x^2+y^2)\)、\(Q=x/(x^2+y^2)\)，直接计算得
+\[
+ \partial_xQ=\frac{y^2-x^2}{(x^2+y^2)^2}
+             =\partial_yP,
+ \quad \mathrm d\eta=0.
+\]
+沿逆时针单位圆 \(\gamma(t)=(\cos t,\sin t)\)、\(0\leq t\leq2\pi\)，有
+\[
+ \gamma^*\eta=\mathrm dt,
+ \quad \int_\gamma\eta=2\pi.
+\]
+若存在 \(U\) 上的单值光滑函数 \(f\) 使 \(\eta=\mathrm df\)，
+则拉回与外微分交换，故
+\[
+ \int_\gamma\eta
+ =\int_0^{2\pi}\frac{\mathrm d}{\mathrm dt}f(\gamma(t))\,\mathrm dt
+ =f(\gamma(2\pi))-f(\gamma(0))=0,
+\]
+产生矛盾。因此闭性不能在任意开集上推出恰当性。
+局部角度函数的微分确实等于 \(\eta\)，但角度沿圆走一周增加 \(2\pi\)，
+无法成为穿孔平面上的单值实函数。
+
+\ProseParagraphBreak
+
+这个反例中，闭性通过每一点附近的偏导数检验；
+不恰当性却由一条绕过原点的整条闭路检验。
+接下来要说明：在可以沿直线缩到一个点的区域里，
+沿这些线段积分能统一构造原形式，因而不存在上述绕行障碍。
 
 \subsection{星形域上的同伦算子}
 \label{b1:subsec:E10502}
 
-待撰写。
+设开集 \(U\subset\mathbb R^n\) 包含原点。
+若 \(tx\in U\) 对所有 \(x\in U\) 和 \(0\leq t\leq1\) 成立，
+则称 \(U\) 关于原点\term[xingxing-yu]{星形}[star-shaped]。
+它不必凸：所要求的只是原点到每个点的线段留在 \(U\)，
+并不要求任意两点之间的线段都留在 \(U\)。
+关于一般点 \(a\) 的星形开集可先平移到这个情形。
+
+\ProseParagraphBreak
+
+对一次形式 \(\omega\)，从原点到 \(x\) 的线段积分为
+\(\int_0^1\omega_{tx}(x)\,\mathrm dt\)。
+这里 \(x\) 是线段在时间方向上的速度。
+对 \(k\) 次形式，还须保留 \(k-1\) 个测试方向；
+缩放映射把每个方向 \(v_j\) 变成 \(tv_j\)，
+所以额外出现 \(t^{k-1}\)。这个因子来自微分形式的多线性，
+不能在高次形式中沿用一次形式的公式而省去它。
+
+\begin{definition}\label{b1:def:E-homotopy-operator}
+设 \(U\subset\mathbb R^n\) 是关于原点星形的开集，
+\(1\leq k\leq n\)。对实光滑 \(k\) 次形式 \(\omega\)，定义
+\(K\omega\in\Omega^{k-1}(U)\) 为
+\begin{equation}\label{b1:eq:E-radial-K}
+ (K\omega)_x(v_1,\ldots,v_{k-1})
+ =\int_0^1t^{k-1}\omega_{tx}(x,v_1,\ldots,v_{k-1})\,\mathrm dt.
+\end{equation}
+这里 \(x\in U\)，\(v_j\in\mathbb R^n\) 视为 \(x\) 处的切向量。
+在零次形式上规定 \(Kf=0\)；超过 \(n\) 次的形式空间取零，\(K\) 在其上也取零。
+这些按次数定义的线性映射统称为本节的
+\term[tonglun-suanzi]{同伦算子}[homotopy operator]。
+\symidx{\(K\)：星形域上的同伦算子}
+\end{definition}
+
+先核对积分确实给出光滑形式。
+固定 \(x_0\in U\)，取一个含 \(x_0\) 的相对紧小邻域 \(V\)，使
+\(\overline V\subset U\)。集合
+\[
+ \{\,tx:0\leq t\leq1,\ x\in\overline V\,\}
+\]
+是 \(U\) 中的紧集：星形性保证包含关系，紧性来自连续映射的紧像。
+形式系数在这个集合附近的每个固定阶导数均有界。
+对 \(x\) 求导只会产生这些导数、坐标因子和 \(t\) 的非负整数幂，
+因而可以在 \([0,1]\) 上逐次交换积分与微分。
+这里没有 \(t=0\) 处的奇异积分：\(k\geq1\) 时 \(k-1\geq0\)，
+而系数在原点光滑；\(k=0\) 则已经另行定义，未代入 \(t^{-1}\)。
+
+\begin{proposition}[径向同伦公式]\label{b1:prop:E-radial-homotopy}
+设 \(U\subset\mathbb R^n\) 是关于原点星形的开集，
+\(c:U\rightarrow U\) 为常值映射 \(c(x)=0\)，
+\(K\) 由\eqref{b1:eq:E-radial-K}定义并在零次形式上取零。
+对每个实光滑形式 \(\omega\in\Omega^k(U)\)、\(0\leq k\leq n\)，有
+\begin{equation}\label{b1:eq:E-homotopy-identity}
+ \mathrm dK\omega+K\mathrm d\omega=\omega-c^*\omega.
+\end{equation}
+当 \(k\geq1\) 时，\(c^*\omega=0\)；当 \(k=0\)、\(\omega=f\) 时，
+\(c^*f\) 为常函数 \(f(0)\)，故 \(K\mathrm df=f-f(0)\)。
+\end{proposition}
+\begin{proof}
+令 \(H(t,x)=tx\)。由于 \(U\) 开，\(H\) 在包含 \([0,1]\times U\) 的开集
+\(\{\,(t,x)\in\mathbb R\times U:tx\in U\,\}\) 上有定义且光滑。
+因此可以对 \(H^*\omega\) 使用\cref{b1:prop:E-pullback-d}。
+先设 \(k\geq1\)。将含 \(\mathrm dt\) 的项与不含它的项分开，唯一写成
+\[
+ H^*\omega=\mathrm dt\wedge\alpha_t+\beta_t,
+\]
+其中 \(\alpha_t\) 为 \(U\) 上随 \(t\) 光滑变化的 \(k-1\) 次形式，
+\(\beta_t\) 为相应的 \(k\) 次形式。
+将左侧作用于 \((\partial_t,v_1,\ldots,v_{k-1})\)，得到
+\[
+ (\alpha_t)_x(v_1,\ldots,v_{k-1})
+ =\omega_{tx}(x,tv_1,\ldots,tv_{k-1}),
+\]
+故 \(K\omega=\int_0^1\alpha_t\,\mathrm dt\)。
+记 \(H_t(x)=tx\)，则 \(\beta_t=H_t^*\omega\)。
+
+为分清两个方向的微分，暂把只对 \(x\) 变量取外微分写成 \(\mathrm d_x\)。
+乘积法则和 \(\mathrm dt\wedge\mathrm dt=0\) 给出
+\[
+ \mathrm d(H^*\omega)
+ =\mathrm dt\wedge(\partial_t\beta_t-\mathrm d_x\alpha_t)
+   +\mathrm d_x\beta_t.
+\]
+负号来自 \(\mathrm d(\mathrm dt\wedge\alpha_t)
+=-\mathrm dt\wedge\mathrm d\alpha_t\)。
+另一方面，若把 \(H^*(\mathrm d\omega)\) 分解成
+\(\mathrm dt\wedge\gamma_t+\delta_t\)，
+同样的求值公式表明 \(K\mathrm d\omega=\int_0^1\gamma_t\,\mathrm dt\)。
+拉回与外微分交换，所以比较含 \(\mathrm dt\) 的系数得
+\[
+ \gamma_t=\partial_t\beta_t-\mathrm d_x\alpha_t.
+\]
+在 \(t\) 上积分，并用前述紧集上的导数界交换 \(\mathrm d_x\) 与积分，得
+\[
+ K\mathrm d\omega=\beta_1-\beta_0-\mathrm dK\omega
+                 =\omega-c^*\omega-\mathrm dK\omega.
+\]
+常值映射的微分为零，所以它拉回每个正次形式都得到零。
+最高次形式的 \(\mathrm d\omega\) 为零，上述系数比较仍然适用。
+
+当 \(\omega=f\) 为零次形式时，直接由一维微积分基本定理得
+\[
+ K\mathrm df(x)
+ =\int_0^1\mathrm df_{tx}(x)\,\mathrm dt
+ =\int_0^1\frac{\mathrm d}{\mathrm dt}f(tx)\,\mathrm dt
+ =f(x)-f(0).
+\]
+由于 \(Kf=0\)，这就是零次情形的同伦公式。
+\end{proof}
+
+公式\eqref{b1:eq:E-homotopy-identity}还说明：
+对不闭的形式，\(K\omega\) 一般不是原形式，误差由 \(K\mathrm d\omega\) 给出。
+例如在 \(\mathbb R^2\) 上取 \(\omega=x\,\mathrm dy\)，则
+\[
+ K\omega=\frac{xy}{2},
+ \quad K\mathrm d\omega
+ =K(\mathrm dx\wedge\mathrm dy)
+ =\frac{x\,\mathrm dy-y\,\mathrm dx}{2}.
+\]
+因而 \(\mathrm d(xy/2)+K\mathrm d\omega=x\,\mathrm dy\)。
+若忽略第二项，就会误把一个非梯度场当成梯度场。
+相反，\(\mathrm dx\wedge\mathrm dy\) 本身闭，
+上式确实给出它的原形式，并且
+\[
+ \mathrm d\!\left(\frac{x\,\mathrm dy-y\,\mathrm dx}{2}\right)
+ =\mathrm dx\wedge\mathrm dy.
+\]
+分母中的 \(2\) 来自\eqref{b1:eq:E-radial-K}里的 \(\int_0^1t\,\mathrm dt\)，
+与\appref{b1:app:B}规定的外积归一化相容。
 
 \subsection{Poincaré 引理与局部可解性}
 \label{b1:subsec:E10503}
 
-待撰写。
+同伦公式最直接的结论是
+\term[poincare-yinli]{Poincaré 引理}[Poincaré lemma]。
+它给出的不仅是一个存在性陈述，还给出原形式的实际构造。
+
+\begin{theorem}[Poincaré 引理]\label{b1:thm:E-poincare}
+设 \(U\subset\mathbb R^n\) 是关于某点 \(a\in U\) 星形的开集，
+\(1\leq k\leq n\)。每个满足 \(\mathrm d\omega=0\) 的实光滑
+\(k\) 次形式 \(\omega\in\Omega^k(U)\) 都恰当。
+当 \(a=0\) 时，可取原形式 \(K\omega\)。
+更一般地，设 \(M\) 为实光滑流形，可带边界，
+\(k\geq1\)，\(\omega\in\Omega^k(M)\) 且 \(\mathrm d\omega=0\)。
+则每个 \(p\in M\) 都有开邻域 \(V\)，使
+\(\omega|_V=\mathrm d\eta\) 对某个 \(\eta\in\Omega^{k-1}(V)\) 成立。
+\end{theorem}
+\begin{proof}
+星形中心为原点时，\cref{b1:prop:E-radial-homotopy}给出
+\(\omega=\mathrm dK\omega+K\mathrm d\omega=\mathrm dK\omega\)。
+一般中心先作平移，将形式拉回到关于原点星形的开集，
+求出原形式后再拉回原坐标；外微分与拉回交换保证等式保持。
+
+对流形内点 \(p\)，取坐标映射 \(x:V\rightarrow B\)，
+使 \(B\subset\mathbb R^n\) 是以 \(x(p)\) 为中心的开球。
+形式 \(\widetilde\omega=(x^{-1})^*(\omega|_V)\) 闭，
+而开球星形，故存在 \(\widetilde\eta\) 使
+\(\widetilde\omega=\mathrm d\widetilde\eta\)。
+取 \(\eta=x^*\widetilde\eta\)，便有 \(\omega|_V=\mathrm d\eta\)。
+
+若 \(p\) 是边界点，先取 \(x(p)=0\) 的半空间坐标。
+各坐标系数在原点附近都有欧氏光滑延拓；系数只有有限多个，
+故可把邻域同时缩小到 \(B(0,r)\cap\{x_n\geq0\}\)，
+使这些延拓在整个 \(B(0,r)\) 上组成一个光滑形式 \(\widehat\omega\)。
+对球上的 \(\widehat\omega\) 使用同伦公式，再限制到相对半球。
+虽然 \(\widehat\omega\) 在半空间外未必闭，但半球中的径向线段始终留在半球内，
+而那里 \(\mathrm d\widehat\omega=0\)，所以
+\((K\mathrm d\widehat\omega)|_{\mathbb H^n}=0\)。
+于是 \(\widetilde\eta=(K\widehat\omega)|_{\mathbb H^n}\) 满足
+\(\mathrm d\widetilde\eta=\widetilde\omega\)。
+它本身是球上光滑形式的限制，因而确实符合本附录的边界光滑性定义。
+最后将 \(\widetilde\eta\) 拉回相应的 \(V\)，得到边界点的结论。
+\end{proof}
+
+这里的“局部”含有明确量词：对每一点可以选一个邻域，并在该邻域内求原形式。
+它没有说任意指定的大邻域都可这样做，更没有说这些局部原形式自动拼合。
+对于一次形式，若 \(\mathrm df_i=\omega=\mathrm df_j\)，则
+\(f_i-f_j\) 在重叠区域的每个连通分支上为常数。
+不同重叠区域的这些常数是否能够同时消去，是另外的问题。
+穿孔平面的角度函数沿一圈积累 \(2\pi\)，就是无法同时消去的情形。
+
+\ProseParagraphBreak
+
+单位分解也不能直接消去这个困难。
+即使 \((\rho_i)\) 是从属于局部原形式定义域的光滑单位分解，
+对局部有限和 \(\eta=\sum_i\rho_i\eta_i\) 仍有
+\[
+ \mathrm d\eta
+ =\sum_i\mathrm d\rho_i\wedge\eta_i+\sum_i\rho_i\mathrm d\eta_i
+ =\sum_i\mathrm d\rho_i\wedge\eta_i+\omega.
+\]
+虽然 \(\sum_i\mathrm d\rho_i=0\)，各项乘着不同的 \(\eta_i\)，
+第一项一般并不为零。单位分解擅长拼合不含微分条件的对象，
+求解微分方程时还必须处理它引入的导数误差。
+
+\ProseParagraphBreak
+
+星形假设也解释了\appref{b1:app:D}中的一个条件。
+\cref{b1:prop:app-d-closed-form-minimality}要求在全空间上
+\(\omega=\mathrm d\eta\)，以保证同边界竞争流的积分相同。
+现在，对于 \(\mathbb R^n\) 上任意光滑闭正次形式，
+Poincaré 引理确实提供了这种 \(\eta\)。
+所得原形式不保证有紧支集；该命题用流的紧支集附近的截断定义配对，
+所以并不需要这一额外性质。
+若改在带孔的区域中工作，就不能仅从闭性删去恰当性条件。
 
 \subsection{de Rham 复形与圆周上的周期}
 \label{b1:subsec:E10504}
 
-待撰写。
+把所有次数的形式排在一起，可以统一记录“恰当必闭”和二者之间的差别。
+这里需要的线性代数只有核、像及商空间。
+
+\begin{definition}\label{b1:def:E-de-rham}
+设 \(M\) 为实光滑 \(n\) 维流形，可带边界，形式取实系数。
+由外微分组成的序列
+\[
+ 0\longrightarrow\Omega^0(M)
+ \xrightarrow{\mathrm d}\Omega^1(M)
+ \xrightarrow{\mathrm d}\cdots
+ \xrightarrow{\mathrm d}\Omega^n(M)
+ \longrightarrow0
+\]
+称为 \(M\) 的\term[de-rham-fuxing]{de Rham 复形}[de Rham complex]。
+这里“复形”表示相邻两次映射的复合为零。
+记
+\[
+ Z^k(M)=\{\,\omega\in\Omega^k(M):\mathrm d\omega=0\,\},
+ \quad B^k(M)=\mathrm d\Omega^{k-1}(M),
+\]
+其中 \(\Omega^{-1}(M)=\{0\}\)。商向量空间
+\begin{equation}\label{b1:eq:E-de-rham-quotient}
+ H_{\mathrm{dR}}^k(M)=Z^k(M)/B^k(M)
+\end{equation}
+称为 \(M\) 的 \(k\) 次
+\term[de-rham-shangtongdiao]{de Rham 上同调}[de Rham cohomology]。
+\symidx{\(H_{\mathrm{dR}}^k(M)\)：de Rham 上同调空间}
+\end{definition}
+
+由于 \(\mathrm d^2=0\)，分母 \(B^k(M)\) 确实是分子 \(Z^k(M)\) 的线性子空间，
+所以\eqref{b1:eq:E-de-rham-quotient}有意义。
+两个闭形式代表同一类，当且仅当它们相差一个恰当形式。
+零类包含的恰是全局能求出原形式的闭形式。
+“复形”本身不表示每一步的核都等于前一步的像；
+若两者总相等，所有正次上同调就都为零，圆周的例子马上会否定这一点。
+
+\begin{proposition}[零次上同调]\label{b1:prop:E-de-rham-zero}
+设 \(M\) 为实光滑流形，可带边界。
+则 \(H_{\mathrm{dR}}^0(M)\) 是全部局部常值实函数组成的向量空间。
+特别地，若 \(M\) 非空且连通，则 \(H_{\mathrm{dR}}^0(M)\cong\mathbb R\)，
+同构由常函数的值给出。
+\end{proposition}
+\begin{proof}
+零次恰当形式只有零，故 \(H_{\mathrm{dR}}^0(M)=\ker\mathrm d\)。
+若 \(\mathrm df=0\)，在一个坐标球或相对半球内，
+沿任意线段积分其方向导数可得两个端点的函数值相等，
+所以 \(f\) 局部常值。反过来，局部常值函数的各个坐标偏导都为零。
+当 \(M\) 连通时，固定 \(p\in M\)，
+集合 \(\{q:f(q)=f(p)\}\) 及其补集都因局部常值而开。
+前者非空，连通性迫使它等于 \(M\)。
+\end{proof}
+
+若流形不连通，其每个连通分支是开集：
+每一点的连通坐标小邻域完全落在它所在的分支内。
+因此可以独立地在每个分支上选择一个常数，得到一个光滑闭零次形式。
+分支无限多个时，这些常数不必只有有限多个非零；
+零次上同调对应所有分支上的实数赋值，而不是只取有限支撑的赋值。
+
+\ProseParagraphBreak
+
+圆周的一次情形由沿整圈的积分控制。
+设 \(S^1=\{(x,y):x^2+y^2=1\}\) 取逆时针定向，
+\(\iota:S^1\hookrightarrow\mathbb R^2\setminus\{0\}\) 为包含映射，记
+\[
+ \vartheta=\iota^*\eta,
+ \quad \eta=\frac{-y\,\mathrm dx+x\,\mathrm dy}{x^2+y^2}.
+\]
+形式 \(\vartheta\) 在整个圆周上光滑，
+尽管不存在整个圆周上的单值实角度函数。
+对 \(p(t)=(\cos t,\sin t)\)、\(t\in\mathbb R\)，有
+\(p^*\vartheta=\mathrm dt\)。
+我们把 \(\int_{S^1}\omega\) 称为一次形式 \(\omega\) 沿这个定向圆周的
+\term[weifen-xingshi-zhouqi]{周期}[period]。
+
+\begin{proposition}[圆周上的周期判据]\label{b1:prop:E-circle-period}
+设 \(S^1\) 为取逆时针定向的单位圆周，
+\(\omega\in\Omega^1(S^1)\) 为实光滑一次形式。
+则存在 \(f\in C^\infty(S^1;\mathbb R)\) 使 \(\omega=\mathrm df\)，
+当且仅当 \(\int_{S^1}\omega=0\)。
+\end{proposition}
+\begin{proof}
+用 \(p(t)=(\cos t,\sin t)\) 将形式拉回 \(\mathbb R\)，写成
+\(p^*\omega=a(t)\,\mathrm dt\)。
+因为 \(p(t+2\pi)=p(t)\)、\(p'(t+2\pi)=p'(t)\)，
+系数 \(a\) 是光滑 \(2\pi\) 周期函数，并且
+\[
+ \int_{S^1}\omega=\int_0^{2\pi}a(t)\,\mathrm dt.
+\]
+若 \(\omega=\mathrm df\)，令 \(F=f\circ p\)，
+则 \(F\) 也为 \(2\pi\) 周期函数，且 \(a=F'\)，故上述积分为零。
+
+反过来，若上述积分为零，定义
+\(A(t)=\int_0^t a(s)\,\mathrm ds\)。
+由于 \(a\) 周期，函数 \(\int_t^{t+2\pi}a(s)\,\mathrm ds\)
+的导数为 \(a(t+2\pi)-a(t)=0\)，
+它恒等于 \(\int_0^{2\pi}a=0\)。因此
+\[
+ A(t+2\pi)-A(t)=0.
+\]
+映射 \(p\) 的两个参数值给出同一点，恰好当它们相差 \(2\pi\) 的整数倍，
+故规定 \(f(p(t))=A(t)\) 得到单值函数。
+在任何长度小于 \(2\pi\) 的参数小区间上，\(p\) 是到一段圆弧的局部坐标参数化，
+所以该定义给出光滑函数，并在这段圆弧上满足 \(\mathrm df=\omega\)。
+这些圆弧覆盖圆周，所需等式在整个 \(S^1\) 上成立。
+\end{proof}
+
+\begin{proposition}[圆周的一次 de Rham 上同调]\label{b1:prop:E-de-rham-circle}
+设 \(S^1\) 取逆时针定向，形式取实系数。
+则映射
+\[
+ \mathcal P:H_{\mathrm{dR}}^1(S^1)\longrightarrow\mathbb R,
+ \quad [\omega]\longmapsto\frac{1}{2\pi}\int_{S^1}\omega
+\]
+是线性同构。若
+\(\iota:S^1\hookrightarrow\mathbb R^2\setminus\{0\}\) 为包含映射，
+\(\vartheta=\iota^*((-y\,\mathrm dx+x\,\mathrm dy)/(x^2+y^2))\)，
+则 \([\vartheta]\) 映到 \(1\)，并且每个光滑一次形式都可写成
+\(\omega=c\vartheta+\mathrm df\)，其中 \(c=\mathcal P([\omega])\) 唯一，
+\(f\) 在加一个常数的意义下唯一。
+\end{proposition}
+\begin{proof}
+圆周上一切二次形式为零，故一切光滑一次形式都闭。
+圆周周期判据说明，两个一次形式相差恰当形式时其积分相同，
+所以 \(\mathcal P\) 良定义；同一判据还说明它的核为零。
+由于 \(\int_{S^1}\vartheta=2\pi\)，任意实数 \(c\) 是
+\(\mathcal P([c\vartheta])\)，所以映射满射。
+最后，\(\omega-c\vartheta\) 的周期为零，周期判据给出所需的 \(f\)。
+若两个函数都满足这个等式，其差的微分为零；
+圆周连通，\cref{b1:prop:E-de-rham-zero}说明其差为常数。
+\end{proof}
+
+这次计算把局部可解性与整体可解性的差别变成了一个实数。
+在每条小圆弧上，一次形式都有原函数；在整个圆周上，则还需它的周期为零。
+这也解释了为什么不能把 Stokes 公式误用于穿孔平面中的整个单位圆盘：
+圆盘包含原点，而\eqref{b1:eq:E-angular-form}在原点没有定义。
+若 \(\vartheta\) 能延拓为闭圆盘上光滑且闭的一次形式 \(\zeta\)，
+\cref{b1:thm:E-stokes}将给出
+\[
+ 2\pi=\int_{S^1}\vartheta
+      =\int_{\partial\overline{B(0,1)}}\zeta
+      =\int_{\overline{B(0,1)}}\mathrm d\zeta=0,
+\]
+所以这样的闭延拓不存在。障碍来自能否在圆盘上定义形式，
+而不是 Stokes 公式失效。
+
+\ProseParagraphBreak
+
+Poincaré 引理给出星形域的所有正次 de Rham 上同调为零；
+圆周则已有一维的一次上同调。
+这两个模型显示，局部原形式能否拼成全局原形式，取决于周期所记录的整体障碍。
+一般流形上的这种联系由 de Rham 比较定理刻画；引入度量后，Hodge 理论还研究上同调类的调和代表。
+在具体计算中，闭性、局部恰当性和全局恰当性须按所处区域分别判定。

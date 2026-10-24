@@ -1,27 +1,248 @@
 % !TeX root = ../../Book3.tex
 \section{型分解与局部 \texorpdfstring{\(\bar\partial\)}{dbar} 方程}
 \label{b3:sec:2905}
-% 规划课题：A29。
 
-待撰写。
+对一个光滑函数，方程 \(\bar\partial u=0\) 表达全纯性；把右端改成给定数据，就得到寻找全纯修正项的问题。例如，若光滑函数 \(v\) 尚不全纯，而能解出 \(\bar\partial u=\bar\partial v\)，则 \(v-u\) 全纯。前面的 Hartogs 延拓已经使用过这种修正。多变量中有多个偏导方程，它们不能任意指定；微分形式把相容条件及求解时的符号统一记录下来。
 
 \subsection{复微分形式的型分解}
 \label{b3:subsec:290501}
 
-待撰写。
+在开集 \(\Omega\subset\mathbb C^n\) 上，微分形式可以直接用坐标表示。一个复系数的一次微分形式，是把每个实切向量线性地送到复数的函数，系数随基点光滑变化。实坐标 \(z_j=x_j+iy_j\) 给出基 \(\mathrm dx_j,\mathrm dy_j\)；复系数下也可以使用
+\[
+ \mathrm dz_j=\mathrm dx_j+i\,\mathrm dy_j,\quad
+ \mathrm d\overline z_j=\mathrm dx_j-i\,\mathrm dy_j.
+\]
+这是可逆换基，因为
+\[
+ \mathrm dx_j=\tfrac12(\mathrm dz_j+\mathrm d\overline z_j),\quad
+ \mathrm dy_j=\tfrac1{2i}(\mathrm dz_j-\mathrm d\overline z_j).
+\]
+高次形式用交替乘积构成。若 \(\theta_1,\ldots,\theta_k\) 为一次形式，我们约定
+\[
+ (\theta_1\wedge\cdots\wedge\theta_k)(v_1,\ldots,v_k)
+ =\det\bigl(\theta_a(v_b)\bigr)_{a,b=1}^k.
+\]
+交换相邻的一次因子改变符号，重复因子的外积为零。这里不再除以 \(k!\)。特别地，
+\[
+ \mathrm dz_j\wedge\mathrm d\overline z_j
+ =-2i\,\mathrm dx_j\wedge\mathrm dy_j.
+\]
+因此面积积分与复形式积分互换时，必须保留系数及次序。
+
+\Needspace{6\baselineskip}
+\begin{definition}\label{b3:def:29-form-type}
+设 \(\Omega\subset\mathbb C^n\) 开，\(0\le p,q\le n\)。若光滑复微分形式 \(\alpha\) 可写为
+\[
+ \alpha=\sum_{|I|=p,\,|J|=q}\alpha_{I,J}(z)\,
+       \mathrm dz_I\wedge\mathrm d\overline z_J,
+ \quad \alpha_{I,J}\in C^\infty(\Omega),
+\]
+其中 \(I=(i_1<\cdots<i_p)\)、\(J=(j_1<\cdots<j_q)\) 为严格递增指标，且
+\(\mathrm dz_I=\mathrm dz_{i_1}\wedge\cdots\wedge\mathrm dz_{i_p}\)，则称 \(\alpha\) 为 \term[29-pq-xing]{\((p,q)\) 型微分形式}[differential form of type (p,q)]。这类形式的空间记为 \(\mathcal A^{p,q}(\Omega)\)，空指标对应因子一。每个次数为 \(k\) 的光滑复形式具有唯一分解
+\[
+ \alpha=\sum_{p+q=k}\alpha^{p,q},\quad
+ \alpha^{p,q}\in\mathcal A^{p,q}(\Omega),
+\]
+称为其\term[29-xing-fenjie]{型分解}[type decomposition]。
+\end{definition}
+\symidx{\(\mathcal A^{p,q}(\Omega)\)：光滑的 \((p,q)\) 型微分形式}
+
+唯一性只是有限维线性代数：上述可逆换基诱导外积空间的可逆换基，具有不同的 \(\mathrm dz\)、\(\mathrm d\overline z\) 因子数的基向量属于不同组。共轭把 \((p,q)\) 型变成 \((q,p)\) 型。例如，\(z_1\,\mathrm d\overline z_2\) 为 \((0,1)\) 型，而
+\(\mathrm dz_1\wedge\mathrm d\overline z_2\) 为 \((1,1)\) 型；形式的次数与系数函数是否全纯是不同的问题。
 
 \subsection{\texorpdfstring{\(\partial\)}{∂} 与 \texorpdfstring{\(\bar\partial\)}{dbar} 算子}
 \label{b3:subsec:290502}
 
-待撰写。
+对光滑函数 \(f\)，定义
+\[
+ \partial f=\sum_{j=1}^n\frac{\partial f}{\partial z_j}\,\mathrm dz_j,
+ \quad
+ \bar\partial f=\sum_{j=1}^n\frac{\partial f}{\partial\overline z_j}\,
+      \mathrm d\overline z_j.
+\]
+两者之和正是通常的全微分 \(\mathrm df\)。对一般形式先对系数求导，再把产生的一次微分放在最左边：
+\begin{align*}
+ \partial\alpha
+ &=\sum_{I,J}\sum_{j=1}^n
+   \frac{\partial\alpha_{I,J}}{\partial z_j}\,
+   \mathrm dz_j\wedge\mathrm dz_I\wedge\mathrm d\overline z_J,\\
+ \bar\partial\alpha
+ &=\sum_{I,J}\sum_{j=1}^n
+   \frac{\partial\alpha_{I,J}}{\partial\overline z_j}\,
+   \mathrm d\overline z_j\wedge\mathrm dz_I\wedge\mathrm d\overline z_J.
+\end{align*}
+后一个式子若要重新排列为所有 \(\mathrm dz\) 在前，必须把 \(\mathrm d\overline z_j\) 移过 \(p\) 个因子，产生 \((-1)^p\)。本节称这两个算子为 \term[29-partial-suanzhi]{\(\partial\) 算子}[partial operator] 和 \term[29-dbar-suanzhi]{\(\bar\partial\) 算子}[d-bar operator]。
+
+\Needspace{6\baselineskip}
+\begin{proposition}\label{b3:prop:29-differential-splitting}
+设 \(\Omega\subset\mathbb C^n\) 开，\(\alpha\in\mathcal A^{p,q}(\Omega)\)。则
+\[
+ \partial\alpha\in\mathcal A^{p+1,q}(\Omega),\quad
+ \bar\partial\alpha\in\mathcal A^{p,q+1}(\Omega),\quad
+ \mathrm d=\partial+\bar\partial,
+\]
+超过维数的型空间理解为零。并且
+\begin{equation}\label{b3:eq:29-differential-identities}
+ \partial^2=0,\quad \bar\partial^2=0,\quad
+ \partial\bar\partial+\bar\partial\partial=0.
+\end{equation}
+若 \(\alpha\) 的总次数为 \(k\)，\(\beta\) 为任意光滑复形式，则
+\[
+ \bar\partial(\alpha\wedge\beta)
+ =\bar\partial\alpha\wedge\beta+(-1)^k\alpha\wedge\bar\partial\beta;
+\]
+\(\partial\) 满足相同的带符号乘法法则。
+\end{proposition}
+\begin{proof}
+把 \(\mathrm dx_j,\mathrm dy_j\) 及实偏导数换成复坐标表达式，即得 \(\mathrm d=\partial+\bar\partial\) 和型的变化。二次作用时，同一系数的二阶偏导数可以交换，而对应的一次微分外积反交换。例如 \(j\ne k\) 时，\(\bar\partial^2\) 中的两项系数相同，分别乘以 \(\mathrm d\overline z_j\wedge\mathrm d\overline z_k\) 与相反次序的外积，恰好抵消；\(j=k\) 时外积自身为零。混合的 \(\partial\bar\partial\) 与 \(\bar\partial\partial\) 同样相消，得到\eqref{b3:eq:29-differential-identities}。
+
+对乘积的系数应用通常的 Leibniz 法则。导数作用在第二个系数时，新产生的一次微分需移过 \(\alpha\) 的 \(k\) 个一次因子，故出现 \((-1)^k\)。这证明外积的乘法法则。
+\end{proof}
+
+对于实值 \(C^2\) 函数 \(u\)，Levi 矩阵还可写成
+\[
+ i\partial\bar\partial u
+ =i\sum_{j,k=1}^n u_{z_j\overline z_k}\,
+   \mathrm dz_j\wedge\mathrm d\overline z_k.
+\]
+它是一个实的 \((1,1)\) 型形式：对整个式子共轭，再交换两个一次因子的次序，就回到原式。这里说“实”，是说共轭后不变；系数并不都必须是实数。在一维，\(i\partial\bar\partial u=\tfrac12\Delta u\,\mathrm dx\wedge\mathrm dy\)，与次调和函数的 Laplace 判据相符。
 
 \subsection{\texorpdfstring{\(\bar\partial\)}{dbar} 闭性与相容条件}
 \label{b3:subsec:290503}
 
-待撰写。
+给定 \((0,1)\) 型形式 \(\alpha=\sum_j a_j\,\mathrm d\overline z_j\)，寻找函数 \(u\) 使 \(\bar\partial u=\alpha\)，就是同时解 \(n\) 个方程
+\[
+ \frac{\partial u}{\partial\overline z_j}=a_j,\quad 1\le j\le n.
+\]
+右端只有满足混合偏导相容性，才可能来自同一个函数。
+
+\Needspace{6\baselineskip}
+\begin{proposition}\label{b3:prop:29-dbar-compatibility}
+设 \(\Omega\subset\mathbb C^n\) 开，\(a_j\in C^1(\Omega)\)，并令
+\(\alpha=\sum_j a_j\,\mathrm d\overline z_j\)。则 \(\bar\partial\alpha=0\) 当且仅当
+\begin{equation}\label{b3:eq:29-dbar-compatibility}
+ \frac{\partial a_k}{\partial\overline z_j}
+ =\frac{\partial a_j}{\partial\overline z_k},\quad 1\le j,k\le n.
+\end{equation}
+若存在 \(u\in C^2(\Omega)\) 满足 \(\bar\partial u=\alpha\)，这些等式必成立。若 \(u,v\in C^1(\Omega)\) 都解此方程，则 \(u-v\) 全纯。
+\end{proposition}
+\begin{proof}
+把二次外积按 \(j<k\) 排列，直接得到
+\[
+ \bar\partial\alpha
+ =\sum_{j<k}\left(
+   \frac{\partial a_k}{\partial\overline z_j}
+  -\frac{\partial a_j}{\partial\overline z_k}\right)
+   \mathrm d\overline z_j\wedge\mathrm d\overline z_k.
+\]
+这些外积线性无关，故闭性等价于\eqref{b3:eq:29-dbar-compatibility}。若 \(a_j=u_{\overline z_j}\)，等式来自混合偏导可交换。两个解之差的全部反全纯偏导数为零，由\secref{b3:sec:2901}的多变量 Cauchy--Riemann 判据全纯。
+\end{proof}
+
+相应地，满足 \(\bar\partial\alpha=0\) 的形式称为 \term[29-dbar-bixing]{\(\bar\partial\) 闭形式}[d-bar closed form]；能写成 \(\bar\partial u\) 的形式称为 \term[29-dbar-quezhi]{\(\bar\partial\) 恰当形式}[d-bar exact form]。算子平方为零说明恰当必闭，反向是否成立取决于范围。
+
+在 \(\mathbb C^2\) 中，形式
+\[
+ \alpha=z_2\,\mathrm d\overline z_1+z_1\,\mathrm d\overline z_2
+\]
+满足相容条件，并可直接取 \(u=z_2\overline z_1+z_1\overline z_2\)。反之，\(\beta=\overline z_2\,\mathrm d\overline z_1\) 满足
+\(\bar\partial\beta=-\mathrm d\overline z_1\wedge\mathrm d\overline z_2\ne0\)，因而在任何开集上都没有 \(C^2\) 函数原像。一变量中不存在非零的 \((0,2)\) 型形式，相容条件自动满足；这说明为何一元求解看不见上述障碍。
+
+\ProseParagraphBreak
+
+“闭”针对的是指定算子，不能与通常的 \(\mathrm d\) 闭性混同。例如 \(z_1\,\mathrm d\overline z_1\) 是 \(\bar\partial\) 闭的，但其全微分为 \(\mathrm dz_1\wedge\mathrm d\overline z_1\ne0\)。下一小节证明，缩小多圆盘后，\(\bar\partial\) 闭性就是光滑数据的充分条件。
 
 \subsection{缩小多圆盘上的局部解}
 \label{b3:subsec:290504}
 
-待撰写。
+回顾\cref{b3:lem:29-cauchy-transform}的一元积分算子。对 \(g\in C_c^\infty(\mathbb C)\)，采用未归一化面积 \(\mathrm d\lambda=\mathrm dx\,\mathrm dy\)，令
+\[
+ Tg(z)=\frac1\pi\int_{\mathbb C}\frac{g(\zeta)}{z-\zeta}\,
+             \mathrm d\lambda(\zeta).
+\]
+该引理已证明 \(Tg\in C^\infty\)、\(\partial_{\overline z}Tg=g\) 及 \(T(\partial_{\overline z}g)=g\)。核 \(1/(z-\zeta)\) 在二维局部可积，光滑性可在换元 \(\xi=z-\zeta\) 后把导数移到 \(g(z-\xi)\) 上得到。这个说明同样适用于光滑参数：只要 \(g\) 关于积分变量的支集落在同一紧集内，就可在参数的每个紧集上逐阶求导。
 
+局部数据并不紧支，因此先截断再积分。固定中心 \(a\in\mathbb C^n\) 及半径 \(0<r_j<R_j\)，写
+\[
+ P_R=\{z:|z_j-a_j|<R_j\ (1\le j\le n)\},\quad
+ P_r=\{z:|z_j-a_j|<r_j\ (1\le j\le n)\}.
+\]
+对每个 \(j\) 选 \(\chi_j\in C_c^\infty(\{|\zeta-a_j|<R_j\})\)，使 \(\chi_j=1\) 于闭圆盘 \(|\zeta-a_j|\le r_j\) 的邻域。在第 \(j\) 个变量定义
+\begin{equation}\label{b3:eq:29-local-cauchy-operator}
+ T_j b(z)=\frac1\pi\int_{\mathbb C}
+ \frac{\chi_j(\zeta)b(z_1,\ldots,z_{j-1},\zeta,z_{j+1},\ldots,z_n)}{z_j-\zeta},
+ \mathrm d\lambda(\zeta).
+\end{equation}
+积分中的乘积在圆盘外延拓为零。对光滑 \(b\)，所得函数光滑，并在 \(|z_j-a_j|<r_j\) 时满足
+\[
+ \partial_{\overline z_j}T_jb=b,\quad
+ \partial_{\overline z_k}T_jb=T_j(\partial_{\overline z_k}b)quad(k\ne j).
+\]
+第二个等式使用截断函数不依赖其他变量；它将使已经消去的分量不会重新出现。
+
+\Needspace{6\baselineskip}
+\begin{theorem}[局部 \(\bar\partial\) 引理]\label{b3:thm:29-local-dbar}
+设 \(P_R\subset\mathbb C^n\) 为上述中心 \(a\)、半径 \(R_j>0\) 的多圆盘，\(0<r_j<R_j\)，\(1\le q\le n\)。若 \(\alpha\in\mathcal A^{0,q}(P_R)\) 且 \(\bar\partial\alpha=0\)，则存在 \(u\in\mathcal A^{0,q-1}(P_r)\)，使
+\[
+ \bar\partial u=\alpha|_{P_r}.
+\]
+特别地，每个光滑的闭 \((0,1)\) 型形式在较小多圆盘上都有光滑函数原像；所有函数解恰好相差一个全纯函数。
+\end{theorem}
+\begin{proof}
+按坐标依次消去含有相应 \(\mathrm d\overline z_j\) 的项。记
+\[
+ Q_j=\prod_{k\le j}\{|z_k-a_k|<r_k\}
+       \times\prod_{k>j}\{|z_k-a_k|<R_k\},
+ \quad Q_0=P_R.
+\]
+初始残余形式为 \(\alpha_0=\alpha\)。归纳地，假定 \(\alpha_{j-1}\) 定义于 \(Q_{j-1}\)，是闭 \((0,q)\) 型形式，不含 \(\mathrm d\overline z_1,\ldots,\mathrm d\overline z_{j-1}\)，且各系数对这些前面的变量全纯。将它唯一写成
+\[
+ \alpha_{j-1}=\mathrm d\overline z_j\wedge\beta_j+\gamma_j,
+\]
+其中 \(\beta_j,\gamma_j\) 都只含编号大于 \(j\) 的一次微分。记 \(\bar\partial_{>j}\) 为仅在这些后面变量求导的算子。闭性逐项给出
+\[
+ \partial_{\overline z_j}\gamma_j=\bar\partial_{>j}\beta_j,
+ \quad \bar\partial_{>j}\gamma_j=0.
+\]
+第一个等式的符号来自
+\(\bar\partial(\mathrm d\overline z_j\wedge\beta_j)
+=-\mathrm d\overline z_j\wedge\bar\partial_{>j}\beta_j\)。
+
+把\eqref{b3:eq:29-local-cauchy-operator}中的 \(T_j\) 逐系数作用于 \(\beta_j\)，令 \(v_j=T_j\beta_j\)。参数求导性质表明，\(v_j\) 对前面 \(j-1\) 个变量仍全纯；在 \(Q_j\) 上，
+\[
+ \bar\partial v_j
+ =\mathrm d\overline z_j\wedge\beta_j+
+   \bar\partial_{>j}T_j\beta_j.
+\]
+因此新的残余为
+\[
+ \alpha_j=\alpha_{j-1}-\bar\partial v_j
+ =\gamma_j-\bar\partial_{>j}T_j\beta_j.
+\]
+它不含编号小于等于 \(j\) 的反全纯微分，仍闭；并且
+\[
+ \partial_{\overline z_j}\alpha_j
+ =\bar\partial_{>j}\beta_j-
+   \bar\partial_{>j}\partial_{\overline z_j}T_j\beta_j=0.
+\]
+其他已经取得的全纯参数性质也由求导交换保留，归纳得以继续。
+
+进行到 \(j=n\) 时，残余 \(\alpha_n\) 不含任何反全纯一次微分，而它的反全纯次数仍为 \(q\ge1\)，所以必为零。将各 \(v_j\) 限制到 \(P_r=Q_n\)，并令 \(u=\sum_{j=1}^n v_j\)，便由残余的望远镜相消得到 \(\bar\partial u=\alpha\)。光滑性已在每一步积分中保证。函数解之间的差由\cref{b3:prop:29-dbar-compatibility}全纯。
+\end{proof}
+
+在二维、\(q=1\) 时，上述构造可以完整写为两步。若
+\(\alpha=a_1\,\mathrm d\overline z_1+a_2\,\mathrm d\overline z_2\) 且
+\(\partial_{\overline z_1}a_2=\partial_{\overline z_2}a_1\)，先取
+\[
+ v_1=T_1a_1,\quad
+ b_2=a_2-\partial_{\overline z_2}v_1.
+\]
+在第一变量缩小后，\(\partial_{\overline z_1}b_2=0\)。再取 \(v_2=T_2b_2\)，则它对 \(z_1\) 全纯，故
+\[
+ \partial_{\overline z_1}(v_1+v_2)=a_1,\quad
+ \partial_{\overline z_2}(v_1+v_2)=a_2
+\]
+在两变量都缩小的多圆盘成立。直接把 \(T_1a_1+T_2a_2\) 相加一般没有这样的性质；第二步积分的应是第一步留下的残余。
+
+\ProseParagraphBreak
+
+缩小区域使截断可以在原区域内部完成，既不需要数据延拓到边界，也不施加边界条件。所得解依赖截断选择；\(q=1\) 时这种差异只产生一个全纯函数。将各小多圆盘上的局部解拼到一般区域，仍要处理交集上的差异，本节没有给出这种全局拼合定理。局部引理的内容，是把“相容性使方程有解”落实为可以逐变量执行的积分构造。

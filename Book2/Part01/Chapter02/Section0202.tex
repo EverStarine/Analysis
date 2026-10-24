@@ -2,54 +2,213 @@
 \section{最大解、延拓与连续依赖}
 \label{b2:sec:ode-continuation}
 
-短时间构造不规定解的最终时间范围。唯一性使不同局部构造能够相互接合；增长估计则用于判断这种接合能否经过任意有限时间。本节先在自治 \(C^1\) 条件下整理这两个步骤。
+局部存在定理只保证一个短时间窗口，而实际问题往往指定一个较长的观察区间。要把短时间解接起来，必须知道重叠处是否一致，以及接续为什么可能在某一时刻停止。唯一性解决第一个问题，轨道相对于方程定义域的位置决定第二个问题；在此基础上，才可以讨论邻近初值能否共用一个较长区间。
 
 \subsection{最大解区间}
 \label{b2:subsec:ode-maximal-interval}
 
-设 \(U\subset\mathbb R^d\) 开，\(b\in C^1(U;\mathbb R^d)\)、\(a\in U\)。考虑所有在含 \(0\) 的开区间上满足 \(X'=b(X)\)、\(X(0)=a\) 的解。它们在重叠区间上由\cref{b2:thm:07-local-ode}的唯一性相等，因此可以拼成一条解。所有这些区间的并仍为含 \(0\) 的开区间，记为 \(I_a\)。每个时刻附近的拼接函数都等于某条局部解，所以它属于 \(C^1\) 并满足方程。这就得到经过 \(a\) 的最大解；任何同初值解都是它的限制。
+\begin{definition}\label{b2:def:ode-maximal-solution}
+设 \(d\geq1\)，\(\Omega\subset\mathbb R\times\mathbb R^d\) 开，\(f\colon\Omega\to\mathbb R^d\) 连续，\((t_0,a)\in\Omega\)。初值问题 \(X'=f(t,X)\)、\(X(t_0)=a\) 的一个解 \(X\colon I\to\mathbb R^d\)，若不能作为同一问题在任何严格更大区间上的解的限制，就称为\term[zuida-jie]{最大解}[maximal solution]；其定义区间称为最大解区间。若 \(I=\mathbb R\)，则称为\term[quanju-jie]{全局解}[global solution]。
+\end{definition}
 
-\subsection{共同短区间上的初始点依赖}
+“最大”说的是时间区间，和解的函数值大小无关。局部定理中的 \(h\) 由一种方便的估计选出，通常远小于真正的存在时间；最大区间则由方程和初值本身决定。
+
+\begin{proposition}\label{b2:prop:ode-maximal-solution}
+设 \(d\geq1\)，\(\Omega\subset\mathbb R\times\mathbb R^d\) 开，\(f\colon\Omega\to\mathbb R^d\) 连续且对状态变量满足局部一致 Lipschitz 条件。对每个 \((t_0,a)\in\Omega\)，初值问题 \(X'=f(t,X)\)、\(X(t_0)=a\) 都有唯一最大解，其区间是包含 \(t_0\) 的开区间 \(I=(\alpha,\beta)\)，允许 \(\alpha=-\infty\) 或 \(\beta=+\infty\)。任何同初值解都是这个最大解的限制。
+\end{proposition}
+\begin{proof}
+考虑所有在包含 \(t_0\) 的开区间上定义的同初值解。局部存在定理保证这族解非空；共同区间上的唯一性保证任意两条解在重叠处相等。所有这些区间的并仍是包含 \(t_0\) 的开区间 \(I\)。对 \(t\in I\)，从任意一个包含 \(t\) 的解读取其值，所得函数 \(X(t)\) 与选择无关。每个时刻附近，\(X\) 都与一条已有的 \(C^1\) 解一致，所以 \(X\) 本身是解，并包含这族解的全部成员。
+
+若一个解的区间含有有限端点 \(s\)，则 \((s,X(s))\in\Omega\)，从这一点重新应用局部存在定理，即可把它延伸到端点外；重叠处由唯一性接合。因此最大解不可能包含有限端点。任意同初值解，即使原来写在闭区间或半开区间上，也可在其所含端点处作上述延伸，故仍是 \(X\) 的限制。这同时给出最大解的唯一性。
+\end{proof}
+
+例如 \(X'=X^2\)、\(X(0)=a>0\) 有显式解
+\[
+ X(t)=\frac{a}{1-at},\quad -\infty<t<1/a.
+\]
+这个表达式在 \(t>1/a\) 也有意义，但那一支与初始时刻 \(0\) 不属于同一个连通时间区间，不能越过奇点把两支称为同一条解。若 \(a=0\)，最大解却是全时间的零解：同一光滑方程的不同初值，可以有不同的最大存在时间。
+
+\subsection{一般延拓准则}
+\label{b2:subsec:ode-general-continuation}
+
+延拓问题要同时看时间和状态，所以自然对象是 \(\Omega\) 内的轨道图像 \((t,X(t))\)。只说“状态有界”并不充分：有界轨道也可能碰到速度场没有定义的边界。
+
+\begin{theorem}[最大解的延拓准则]\label{b2:thm:ode-continuation}
+设 \(d\geq1\)，\(\Omega\subset\mathbb R\times\mathbb R^d\) 开，\(f\colon\Omega\to\mathbb R^d\) 连续且对状态变量满足局部一致 Lipschitz 条件，\(X\colon(\alpha,\beta)\to\mathbb R^d\) 是方程 \(X'=f(t,X)\) 的一个最大解。若 \(\beta<+\infty\)，则对每个紧集 \(K\subseteq\Omega\)，存在 \(s\in(\alpha,\beta)\)，使
+\[
+ (t,X(t))\notin K\quad(s<t<\beta).
+\]
+有限左端点有相应结论。因此，若在一个有限端点之前的整段尾部，轨道图像都留在 \(\Omega\) 的某个紧子集中，则解必能越过该端点延拓。
+\end{theorem}
+\begin{proof}
+假设右端结论不成立，就有紧集 \(K\subseteq\Omega\) 和一列 \(t_n\uparrow\beta\)，使 \((t_n,X(t_n))\in K\)。取子列后可设
+\[
+ (t_n,X(t_n))\longrightarrow(\beta,a_*)\in K\subseteq\Omega.
+\]
+在 \((\beta,a_*)\) 附近使用\cref{b2:thm:ode-nonautonomous-picard}的共同时间版本：存在 \(h>0\)，使从所有足够接近该点的初值出发，都有长度至少为 \(h\) 的正向和反向局部解。对充分大的 \(n\)，从 \((t_n,X(t_n))\) 出发的解因而存在至 \(t_n+h>\beta\)。它与原解在重叠区间相等，故两者可以拼成越过 \(\beta\) 的解，违反最大性。
+
+把时间改为 \(-t\) 即得左端结论。最后一句是前面结论的逆否形式。
+\end{proof}
+
+结论要求的是最终离开每一个紧集，比“整个轨道不包含在一个紧集里”更强。证明使用了一列回到同一紧集的时刻：只要这种回访发生在越来越接近有限终点的地方，统一的局部存在时间就能跨过终点。
+
+\ProseParagraphBreak
+这一准则区分了三种看似相同的“停止”。在 \(\Omega=\mathbb R\times\mathbb R\) 上，\(X'=X^2\) 的正初值解在有限时间满足 \(|X(t)|\to\infty\)，称为有限时间\term[baopo]{爆破}[blow-up]。在 \(\Omega=\mathbb R\times(-1,1)\) 上，\(X'=1\)、\(X(0)=0\) 的最大区间也是 \((-1,1)\)，但状态保持有界，只是趋近空间定义域的边界。最后，在 \(\Omega=(-1,1)\times\mathbb R\) 上，即使 \(X'=0\)，也不能把这个给定问题的解写到时间 \(1\) 以外。后两个例子的公式本身可以扩充到更大定义域，但那是先扩充方程数据之后的另一个问题。
+
+\begin{corollary}[全空间中的爆破判据]\label{b2:cor:ode-blowup-alternative}
+设 \(d\geq1\)，\(J\subseteq\mathbb R\) 是开区间，\(f\colon J\times\mathbb R^d\to\mathbb R^d\) 连续且对状态变量满足局部一致 Lipschitz 条件。若方程 \(X'=f(t,X)\) 的一个最大解 \(X\) 的有限右端点 \(\beta\) 属于 \(J\)，则
+\[
+ \lim_{t\uparrow\beta}|X(t)|=+\infty.
+\]
+在 \(J\) 内的有限左端点有相应结论。
+\end{corollary}
+\begin{proof}
+若极限不是 \(+\infty\)，就有 \(t_n\uparrow\beta\) 和 \(R<\infty\)，使 \(|X(t_n)|\leq R\)。取 \(\varepsilon>0\) 使 \([\beta-\varepsilon,\beta+\varepsilon]\subseteq J\)，则这些点最终都属于紧集 \([\beta-\varepsilon,\beta+\varepsilon]\times\overline B_R(0)\)，与延拓准则矛盾。左端同理。
+\end{proof}
+
+\subsection{紧时间区间上的初值与方程依赖}
 \label{b2:subsec:ode-initial-dependence}
 
-在\cref{b2:thm:07-local-ode}选定的共同紧球和共同时间 \([-h,h]\) 上，式\eqref{b2:eq:07-flow-lipschitz}给出
+在局部共同球内，式\eqref{b2:eq:07-flow-lipschitz}已经控制了不同初始点的解。现在固定一条可能走过多个局部邻域的轨道，并取其最大区间内部的一段闭区间。要证明附近的轨道仍存在于这一整段，不能先假设它们已经在那里存在再使用 Gronwall；必须把估计与延拓准则结合。
+
+\ProseParagraphBreak
+围绕参考曲线取一个细的轨道管。只要新解尚未离开这个管，就可以估计两解之差；如果估计始终小于管的半径，就排除了首次离开。管的闭包是方程定义域内的紧集，因而也排除了在管内提前终止。
+
+\begin{theorem}[紧时间区间上的连续依赖]\label{b2:thm:ode-continuous-dependence}
+设 \(d\geq1\)，\(\Omega\subset\mathbb R\times\mathbb R^d\) 开，\(f\colon\Omega\to\mathbb R^d\) 连续且对状态变量满足局部一致 Lipschitz 条件。设 \(X\) 是 \(X'=f(t,X)\) 的一个解，\([a,b]\) 包含于其定义区间，\(a<b\)，\(t_0\in[a,b]\)。存在 \(\rho>0\)、\(L\geq0\)，使闭轨道管
 \[
- \sup_{|t|\leq h}|X(t,a)-X(t,\widetilde a)|
- \leq e^{Lh}\cdot|a-\widetilde a|.
+ K_\rho=\{(t,x):a\leq t\leq b,\ |x-X(t)|\leq\rho\}
 \]
-因此解在一致范数下连续地依赖初始点，且此处具有 Lipschitz 控制。这个共同时间来自局部球上的速度界和导数界，不能直接当作所有初始点的共同全局时间。
+是 \(\Omega\) 的紧子集，并且 \(f\) 在每个截面 \(\overline B_\rho(X(t))\) 上满足常数为 \(L\) 的 Lipschitz 估计。若 \(g\colon\Omega\to\mathbb R^d\) 也连续且对状态变量满足局部一致 Lipschitz 条件，记
+\[
+ \eta=\sup_{K_\rho}|g-f|,\quad \varepsilon=|y_0-X(t_0)|,
+ \quad T=b-a,
+\]
+并假设 \((\varepsilon+\eta T)e^{LT}<\rho\)，则初值问题 \(Y'=g(t,Y)\)、\(Y(t_0)=y_0\) 的最大解包含整个 \([a,b]\)，而且
+\begin{equation}\label{b2:eq:ode-continuous-dependence}
+ |Y(t)-X(t)|
+ \leq\bigl(\varepsilon+\eta|t-t_0|\bigr)e^{L|t-t_0|}
+ \quad(a\leq t\leq b).
+\end{equation}
+特别地，\(g=f\) 时，初始点在一个固定邻域内变化所得的解，都存在于 \([a,b]\)，且在该区间的一致范数下局部 Lipschitz 地依赖初始点。
+\end{theorem}
+\begin{proof}
+参考图像 \(\Gamma=\{(t,X(t)):a\leq t\leq b\}\) 是 \(\Omega\) 的紧子集。对其每一点取一个满足局部一致 Lipschitz 条件的开柱体，再取时间宽度和空间半径都减半的内柱体，使内柱体仍覆盖 \(\Gamma\)。有限个内柱体已经足够。取 \(L\) 为相应外柱体的 Lipschitz 常数的最大值，取 \(\rho>0\) 小于这些空间半径的一半。于是每个 \((t,X(t))\) 所在的内柱体，都保证整个截面 \(\{t\}\times\overline B_\rho(X(t))\) 留在对应外柱体内。必要时再缩小 \(\rho\)，便有 \(K_\rho\subseteq\Omega\)；它由连续曲线上的闭距离约束定义，是闭且有界的，故紧。
+
+先向右考察 \(Y\)。初始误差小于 \(\rho\)，所以 \(Y\) 在 \(t_0\) 右侧的一小段内处于管中。只要尚未离开管，就有
+\[
+ \begin{aligned}
+ |g(t,Y(t))-f(t,X(t))|
+ &\leq |g(t,Y(t))-f(t,Y(t))|\\
+ &\quad+|f(t,Y(t))-f(t,X(t))|\\
+ &\leq\eta+L|Y(t)-X(t)|.
+ \end{aligned}
+\]
+两个积分方程作差，使用\cref{b2:cor:ode-gronwall-forcing}，得到\eqref{b2:eq:ode-continuous-dependence}。由假设，右端在整个候选区间中都不超过一个严格小于 \(\rho\) 的常数。
+
+若在到达 \(b\) 以前发生首次出管，连续性使出管时距离等于 \(\rho\)，与上述严格上界矛盾。若 \(Y\) 的最大解在到达 \(b\) 以前，或恰在 \(b\)，有有限右端点，则此前的轨道留在紧集 \(K_\rho\) 内，由\cref{b2:thm:ode-continuation}仍可延拓，也产生矛盾。因此 \(Y\) 存在至 \(b\)，并满足估计。向左用变量 \(s=t_0-t\) 和同一管中的相同常数重复上述论证，得到直至 \(a\) 的结论。
+
+最后令 \(g=f\)。所有充分靠近参考初值的解均留在同一个管中，所以任取其中两条解 \(Y,Z\)，在每个时刻都有 \(|f(t,Y)-f(t,Z)|\leq L|Y-Z|\)。再次用 Gronwall，得到 \(\sup_{[a,b]}|Y-Z|\leq e^{LT}|Y(t_0)-Z(t_0)|\)，这就是同一邻域内的 Lipschitz 控制。
+\end{proof}
+
+这个定理说明了两种误差如何累积：初始误差直接出现，速度场误差先对时间积分，再由动力系统放大。若 \(f_n\) 在同一个闭轨道管上一致收敛到 \(f\)，各 \(f_n\) 都满足自身的局部一致 Lipschitz 条件，且初值收敛，则相应解最终都存在于所选闭区间，并一致收敛到 \(X\)。这里不要求 \(f_n\) 的 Lipschitz 常数统一有界；比较式使用的是固定参考场 \(f\) 的常数 \(L\)，而 \(f_n\) 的局部条件负责各自解的存在唯一性。
+
+\ProseParagraphBreak
+初始时刻也可以变化。仍固定上述 \(f,X,t_0\)，对充分接近 \((t_0,X(t_0))\) 的初值 \((\tau,z)\)，局部定理给出从 \(\tau\) 到 \(t_0\) 的共同短时间解，且其速度有共同上界 \(M\)。把它在 \(t_0\) 的值记为 \(y_0\)，则
+\[
+ |y_0-X(t_0)|\leq |z-X(t_0)|+M|\tau-t_0|.
+\]
+右端足够小时，再应用刚证明的定理，解便能延伸到整段 \([a,b]\)，并一致接近 \(X\)。在任意一组可用初值处重复这个论证，再结合解对时间的连续性，就得到解值关于观察时间、初始时刻和初始位置的联合连续性。
+
+\ProseParagraphBreak
+必须把观察区间放在参考解的最大区间内部。对 \(X'=X^2\)，正初值 \(a\) 的爆破时刻是 \(1/a\)。靠近这个时刻时，公式 \(a/(1-at)\) 对初值极其敏感；有限时间内的连续依赖没有断言可以一直控制到爆破点。
 
 \subsection{线性增长与全时间存在}
 \label{b2:subsec:ode-linear-growth}
 
-若速度至多随位置线性增长，Gronwall 估计可以把任意有限时间内的轨道限制在紧球中。
+延拓准则把全局存在问题归结为一个先验估计：只要能证明轨道在任何有限时间内不逃向无穷，就能反复延拓。速度至多随状态线性增长时，Gronwall 不等式直接给出这种估计。
 
 \begin{proposition}\label{b2:prop:ode-linear-growth}
-设 \(d\) 为正整数，\(b\in C^1(\mathbb R^d;\mathbb R^d)\)，且存在 \(C\geq0\) 使对所有 \(x\in\mathbb R^d\) 都有
+设 \(d\geq1\)，\(b\in C^1(\mathbb R^d;\mathbb R^d)\)，且存在 \(C\geq0\) 使对所有 \(x\in\mathbb R^d\) 都有
 \[
  |b(x)|\leq C(1+|x|).
 \]
 则对每个 \(a\in\mathbb R^d\)，初值问题 \(X'=b(X)\)、\(X(0)=a\) 的最大解在整个实轴上存在，并满足
 \[
- 1+|X(t,a)|\leq(1+|a|)\cdot e^{C|t|}.
+ 1+|X(t,a)|\leq(1+|a|)e^{C|t|}.
 \]
 \end{proposition}
 \begin{proof}
-对正时间，积分方程给出
+对最大区间内的正时间，积分方程给出
 \[
  1+|X(t,a)|\leq1+|a|+C\int_0^t(1+|X(s,a)|)\,\mathrm ds.
 \]
-在最大解区间内的任意紧时间区间上应用\cref{b2:lem:ode-gronwall}，得到所述估计；负时间对反向速度 \(-b\) 使用同一论证。若最大解区间有有限右端点 \(T\)，此估计使轨道在 \([0,T)\) 落于某个紧球。该球上速度有界，所以 \(|X(t,a)-X(s,a)|\leq M|t-s|\)，从而 \(t\uparrow T\) 时有极限 \(a_T\)。由 \(a_T\) 出发的局部解可与原解拼接；积分方程保证拼接点导数也满足方程，与最大性矛盾。左端点相同。
+在任意紧时间区间上使用\cref{b2:lem:ode-gronwall}，即得所述估计。负时间对速度场 \(-b\) 使用同一论证。若最大区间有有限右端点 \(\beta\)，则 \(|X(t,a)|\) 在 \(0\leq t<\beta\) 一致有界，与\cref{b2:cor:ode-blowup-alternative}矛盾。左端同理。
 \end{proof}
 
-线性增长条件不能无条件省去。对于 \(b(x)=x^2\)，从 \(a>0\) 出发的轨道为 \(a/(1-at)\)，在 \(t=1/a\) 逃向无穷。局部唯一性仍成立，但这条最大解不能延续到所有正时间。另一方面，若只关心一条有限轨道及其附近，紧集上的局部条件已经足够，不必强求整个空间上的有界导数。
+这个结论不要求 \(Db\) 在整个空间有界。例如 \(b(x)=\sin(x^2)\) 的导数 \(2x\cos(x^2)\) 无界，但速度本身有界，所有解仍全时间存在。局部唯一性只使用每个紧邻域上的 Lipschitz 界，全局存在则使用状态增长界，两者的职责不同。
 
-\subsection{一般延拓准则}
-\label{b2:subsec:ode-general-continuation}
+\begin{corollary}\label{b2:cor:ode-nonautonomous-growth}
+设 \(d\geq1\)，\(J\subseteq\mathbb R\) 为开区间，\(f\colon J\times\mathbb R^d\to\mathbb R^d\) 连续且对状态变量满足局部一致 Lipschitz 条件。若存在连续函数 \(c\colon J\to[0,\infty)\)，使
+\[
+ |f(t,x)|\leq c(t)(1+|x|)\quad(t\in J,\ x\in\mathbb R^d),
+\]
+则对每个 \(t_0\in J\)、\(a\in\mathbb R^d\)，初值问题 \(X'=f(t,X)\)、\(X(t_0)=a\) 的最大解都存在于整个 \(J\)，并满足
+\[
+ 1+|X(t)|\leq(1+|a|)
+ \exp\!\left(\int_{\min(t,t_0)}^{\max(t,t_0)}c(s)\,\mathrm ds\right).
+\]
+\end{corollary}
+\begin{proof}
+对 \(t\geq t_0\)，把积分方程所得不等式中的 \(q\) 取为 \(1+|X|\)，在\cref{b2:cor:ode-gronwall-forcing}中取 \(k=c\)、\(r=0\)，得到估计；向左反向时间后得到同一表达式。若最大区间的一个有限端点仍在 \(J\) 内，则 \(c\) 在包含该端点与初始时刻的闭区间上可积，因而估计使状态有界，与爆破判据矛盾。最大区间因此只能在 \(J\) 的端点结束。
+\end{proof}
 
-待撰写。拟在一般定义域中区分离开每个紧集、到达定义域边界和状态无界等情形，并补充非自治问题的延拓与连续依赖。
+线性增长是充分条件，并非全局存在的必要条件。判断具体方程时，也可以寻找沿轨道不增的能量，把状态限制在紧集内；\secref{b2:sec:ode-lyapunov}将系统使用这一办法。
 
 \subsection{标量比较}
 \label{b2:subsec:070207}
 
-待撰写。
+标量方程还有数值大小的次序，可以用较容易计算的函数夹住未知解。比较原理的要点是：一条下方曲线若上升得不比方程规定的速度更快，就不能穿过真正的解。但只凭两条曲线在首次接触处的导数作比较，非严格不等式未必立即产生矛盾；下面用一个微小的严格扰动完成论证。
+
+\begin{definition}\label{b2:def:ode-sub-supersolution}
+设 \(a<b\)，\(J\subseteq\mathbb R\) 是包含 \([a,b]\) 的开区间，\(I\subseteq\mathbb R\) 是开区间，\(f\colon J\times I\to\mathbb R\) 连续。函数 \(u\in C^1([a,b];I)\) 若满足 \(u'(t)\leq f(t,u(t))\)，称为方程 \(x'=f(t,x)\) 的\term[xiajie]{下解}[subsolution]；若满足反向不等式，则称为\term[shangjie]{上解}[supersolution]。这些名称说的是微分不等式；是否位于一条真解的下方或上方，还须核对初始值的次序。
+\end{definition}
+
+\begin{theorem}[标量比较]\label{b2:thm:ode-scalar-comparison}
+设 \(a<b\)，\(J\subseteq\mathbb R\) 是包含 \([a,b]\) 的开区间，\(I\subseteq\mathbb R\) 是开区间，\(f\colon J\times I\to\mathbb R\) 连续且对状态变量满足局部一致 Lipschitz 条件。设 \(u,v\in C^1([a,b];I)\)，并满足
+\[
+ u(a)\leq v(a),\quad
+ u'(t)\leq f(t,u(t)),\quad v'(t)\geq f(t,v(t))
+ \quad(a\leq t\leq b).
+\]
+则 \(u(t)\leq v(t)\) 对所有 \(t\in[a,b]\) 成立。特别地，\(u,v\) 可以分别取为下解与真解，或真解与上解。
+\end{theorem}
+\begin{proof}
+两条曲线的值域为 \(I\) 的紧子集。由 \(I\) 是区间，可取一个闭区间 \([m,M]\subset I\)，使两条曲线的值都在其内部。函数 \(f\) 在紧矩形 \([a,b]\times[m,M]\) 上有统一的状态 Lipschitz 常数 \(L\)。为说明这一点，取有限个局部 Lipschitz 柱体覆盖矩形，并取其常数的最大值为 \(L\)。足够短的水平线段必落在其中一个柱体内：否则可取长度趋零的反例线段，其中点有收敛子列，而包含极限点的一个开柱体最终会包含整条线段，矛盾。把任意水平线段细分为这样的短段，逐段使用估计再累加，便得到同一个常数 \(L\)。
+
+取足够小的 \(\varepsilon>0\)，使
+\[
+ v_\varepsilon(t)=v(t)+\varepsilon e^{(L+1)(t-a)}
+\]
+仍在 \([m,M]\) 内。由 Lipschitz 估计，
+\[
+ \begin{aligned}
+ v_\varepsilon'(t)
+ &\geq f(t,v(t))+(L+1)\varepsilon e^{(L+1)(t-a)}\\
+ &\geq f(t,v_\varepsilon(t))
+       +\varepsilon e^{(L+1)(t-a)}
+ >f(t,v_\varepsilon(t)).
+ \end{aligned}
+\]
+初始时刻有 \(u(a)<v_\varepsilon(a)\)。若两者以后首次相遇于 \(s\in(a,b]\)，则 \(u-v_\varepsilon\) 在 \(s\) 之前为负，在 \(s\) 等于零，所以其左导数满足 \((u-v_\varepsilon)'(s)\geq0\)。但微分不等式与相遇条件给出
+\[
+ (u-v_\varepsilon)'(s)
+ <f(s,u(s))-f(s,v_\varepsilon(s))=0,
+\]
+矛盾。因此 \(u<v_\varepsilon\) 在整个区间成立。令 \(\varepsilon\downarrow0\) 即得 \(u\leq v\)。
+\end{proof}
+
+一维曲线要改变先后次序，必须先相遇；局部唯一性所对应的 Lipschitz 控制阻止了穿越，这便是比较性质的来源。对真正的两条解，若初值严格有序，则在共同区间内始终严格有序：一旦某时刻相等，就可从该时刻向前、向后应用唯一性，推出原初值也相等。
+
+\ProseParagraphBreak
+以 \(x'=x(1-x)\) 为例，常函数 \(0\) 与 \(1\) 都是真解。若 \(0\leq x(0)\leq1\)，比较原理使 \(0\leq x(t)\leq1\) 在所有已经存在的正时间成立；这个有界区间再结合延拓准则，便保证解存在于全部 \(t\geq0\)。若 \(0<x(0)<1\)，严格比较给出 \(0<x(t)<1\)，从而 \(x'(t)>0\)。递增有界使 \(x(t)\) 有极限 \(\ell\in(0,1]\)。若 \(\ell<1\)，则速度 \(x(t)(1-x(t))\) 最终有一个正下界，迫使 \(x(t)\) 无界，矛盾。因此 \(x(t)\to1\)。这段分析没有先求显式解，而是依次使用比较、有界性、延拓和单调性，得到全正时间的存在与长期行为。

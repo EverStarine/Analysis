@@ -2,266 +2,1004 @@
 \chapter{Nevanlinna 理论}
 \label{b3:app:C}
 \begin{chapterabstract}
-Jensen 公式把一个值的原像数与圆周上的对数平均联系起来。Nevanlinna 理论将这一关系同时用于多个值，用同一个特征函数衡量亚纯函数的总体增长。本附录完整证明第一基本定理，并在明确接受对数导数引理这一深层输入后，推导第二基本定理及亏值关系。计数是否包含重数、异常半径集合和有理函数情形均单独说明。
+Jensen 公式把一个值的原像数与圆周上的对数平均联系起来。Nevanlinna 理论将这种联系同时用于多个值，以同一个特征函数衡量亚纯函数的增长。本附录从原点重数和圆周对数奇性开始，由 Jensen 公式得到第一基本定理及球面面积解释；再借对数导数引理控制额外的平均项，导出带分歧项和约化计数的第二基本定理。最后区分省略、亏值与完全分歧，说明例外半径、上极限和有理函数情形怎样进入结论。
 \end{chapterabstract}
 \begin{learninggoals}
 \begin{itemize}
-\item\label{b3:item:C-goal-1}从零极点计算计数函数、接近函数与特征函数。
-\item\label{b3:item:C-goal-2}用 Jensen 公式证明第一基本定理。
-\item\label{b3:item:C-goal-3}辨认第二基本定理中导数和重数的作用。
-\item\label{b3:item:C-goal-4}由有限值集的不等式推出亏值总和的限制。
+\item\label{b3:item:C-goal-1}从零极点及其重数计算计数函数、接近函数与特征函数，辨认原点归一化。
+\item\label{b3:item:C-goal-2}从 Jensen 公式建立第一基本定理，并用球面面积解释特征增长。
+\item\label{b3:item:C-goal-3}跟踪对数导数估计、导数零点及极点阶数在第二基本定理中的作用。
+\item\label{b3:item:C-goal-4}在固定有限值集和例外半径之外正确取极限，推出亏值关系并核验模型。
 \end{itemize}
 \end{learninggoals}
-前置内容为第十八章的 Poisson--Jensen 公式与第十九章的增长比较。这里的函数总在整个复平面上亚纯；圆盘上的局部版本需要把半径趋于无穷改成趋于边界，误差也随之改变。本附录不作这种替换。
+
+一个亚纯函数可能少取某个值，也可能经常接近这个值却很少真正取到它。\chapref{b3:ch:18}的 Jensen 公式提示，这两种现象可以通过圆周平均相互补偿。本附录考察定义在整个复平面上的函数，让观察圆的半径趋于无穷，研究这种补偿如何同时限制多个值的分布。
+
+\ProseParagraphBreak
+
+第一基本定理逐值成立，尚不能限制多个短缺值共存。第二基本定理增加的工具是导数：不同值的原像互不相交，而重原像会留下导数零点。对数导数引理控制这一步额外产生的圆周平均；该引理的完整证明见相应位置所列文献。
 
 \section{三个增长量}
 \label{b3:sec:C01}
 
-设 \(f\) 为全复平面上的非常数亚纯函数，\(a\in\widehat{\mathbb C\kern0pt}\)、\(r>0\)。以 \(n(r,a;f)\) 表示 \(|z|\le r\) 中 \(a\)-点的数目，按重数计；\(a=\infty\) 时数极点。\term[jishu-hanshu]{计数函数}[counting function]为
+\subsection{带重数的对数计数}
+\label{b3:subsec:C0101}
+
+若只问圆盘中有多少个 \(a\)-点，答案随半径跳跃；Jensen 公式却给每个非零原像一个 \(\log(r/|z|)\) 权重。较早进入圆盘的原像贡献较大，刚进入的原像贡献为零。因此需要先对原像数作对数积分。以下 \(a=\infty\) 表示数极点，有限 \(a\) 表示数 \(f-a\) 的零点。
+
+\Needspace{6\baselineskip}
+\begin{definition}[计数函数与约化计数]\label{b3:def:C-counting}
+设 \(f\) 为 \(\mathbb C\) 上非常数亚纯函数，\(a\in\widehat{\mathbb C\kern0pt}\)。以 \(n(r,a;f)\) 表示闭圆盘 \(|z|\le r\) 内按重数计算的 \(a\)-点数，\(n(0,a;f)\) 表示原点的相应重数，原点不是 \(a\)-点时取零。对 \(r>0\)，定义\term[jishu-hanshu]{计数函数}[counting function]
+\begin{equation}\label{b3:eq:C-counting}
+ N(r,a;f)\coloneqq n(0,a;f)\log r+
+ \int_0^r\frac{n(t,a;f)-n(0,a;f)}t\,\mathrm{d}t.
+\end{equation}
+把每个原像的重数改为一，得到 \(\overline n(r,a;f)\) 和\term[yuehua-jishu-hanshu]{约化计数函数}[reduced counting function] \(\overline N(r,a;f)\)。
+\end{definition}
+\symidx{\(n(r,a;f),N(r,a;f)\)：带重数的原像数及对数积分计数}
+\symidx{\(\overline N(r,a;f)\)：每个原像只计一次的对数积分计数}
+
+原点附近没有其他 \(a\)-点，故\eqref{b3:eq:C-counting}的积分在零附近实际为零。若非零 \(a\)-点为 \(z_j\)，重数为 \(m_j\)，则有限求和与积分交换给出
 \[
  N(r,a;f)=n(0,a;f)\log r+
- \int_0^r\frac{n(t,a;f)-n(0,a;f)}t\,\mathrm{d}t.
+ \sum_{0<|z_j|\le r}m_j\log\frac r{|z_j|}.
 \]
-等价地，每个非零 \(a\)-点 \(z_j\) 贡献 \(m_j\log(r/|z_j|)\)，只对 \(|z_j|\le r\) 求和。这样定义消除了原点可能带来的发散。半径恰经过原像点时，新项的贡献为零，所以 \(N\) 仍连续。把每个点的重数改为一，得到约化计数函数 \(\overline N(r,a;f)\)。
+圆周上的原像贡献为零，所以在此使用闭圆盘或开圆盘并不改变 \(N\)。直接的原像数会跳跃，积分计数却在 \(r>0\) 连续，并在除去原像模长的半径上满足
+\[
+ \frac{\mathrm d}{\mathrm d\log r}N(r,a;f)=n(r,a;f).
+\]
+因此 \(N\) 非减，且作为 \(\log r\) 的函数为凸函数。
+
 \ProseParagraphBreak
-设 \(f\) 为全复平面上的非常数亚纯函数、\(r>0\)。对 \(x>0\) 记 \(\log^+x=\max(\log x,0)\)，并约定 \(\log^+0=0\)；下式中的有限值 \(a\) 属于 \(\mathbb C\)。\term[jiejin-hanshu]{接近函数}[proximity function]与\term[tezheng-hanshu]{特征函数}[characteristic function]定义为
+
+归一化中的 \(n(0,a;f)\log r\) 不可删除。一个 \(m\) 重原点贡献 \(m\log r\)，一个非零 \(m\) 重原像 \(b\) 在大半径下贡献 \(m\log r-m\log|b|\)，二者只有常数差。当 \(r\ge1\) 时，全部计数权都非负，于是 \(0\le\overline N\le N\)。在 \(r<1\) 时，原点项可以为负；下面涉及非负性及重数比较的增长不等式均在 \(r\ge1\) 使用。
+
+\subsection{圆周接近程度与代数运算}
+\label{b3:subsec:C0102}
+
+没有原像不等于函数从不接近这个值。例如 \(e^z\) 从不为零，却在左半平面趋向零。为了让这种接近也进入计量，我们对倒数取正对数平均。记
+\(\log^+x=\max(\log x,0)\) 对 \(x>0\) 成立，并规定 \(\log^+0=0\)。
+
+\Needspace{6\baselineskip}
+\begin{definition}[接近函数与特征函数]\label{b3:def:C-characteristic}
+设 \(f\) 为 \(\mathbb C\) 上非常数亚纯函数，\(r>0\)，\(a\in\mathbb C\)。定义\term[jiejin-hanshu]{接近函数}[proximity function]
 \[
  \begin{aligned}
- m(r,\infty;f)&=\frac1{2\pi}\int_0^{2\pi}\log^+|f(re^{\mathrm{i}t})|\,\mathrm{d}t,\\
- m(r,a;f)&=m\left(r,\infty;\frac1{f-a}\right),\\
- T(r,f)&=m(r,\infty;f)+N(r,\infty;f).
+ m(r,\infty;f)&\coloneqq\frac1{2\pi}\int_0^{2\pi}
+                  \log^+|f(re^{\mathrm{i}t})|\,\mathrm{d}t,\\
+ m(r,a;f)&\coloneqq m\left(r,\infty;\frac1{f-a}\right),
  \end{aligned}
 \]
-圆周上的有限多个零极点只产生可积的对数奇性，不必排除这些半径。\(N\) 记录已经取到该值的次数；\(m\) 记录边界上接近该值的程度。两者的总和才具有对值的近似对称性。
+以及\term[tezheng-hanshu]{特征函数}[characteristic function]
+\[
+ T(r,f)\coloneqq m(r,\infty;f)+N(r,\infty;f).
+\]
+圆周积分按 Lebesgue 积分理解；函数的有限个圆周零极点不要求删去相应半径。
+\end{definition}
+\symidx{\(m(r,a;f),T(r,f)\)：接近函数与 Nevanlinna 特征函数}
+
+说明最后一句所需的可积性。若圆周点 \(z_0\) 是 \(m\) 重零点或极点，局部写成 \(f(z)=(z-z_0)^k u(z)\)，其中 \(k\in\mathbb Z\)、\(u\) 全纯且不为零。沿圆周，\(|re^{\mathrm{i}t}-z_0|\) 与 \(|t-t_0|\) 可比较，故唯一的奇性来自 \(k\log|t-t_0|\)，而
+\(\int_0^\varepsilon|\log t|\,\mathrm{d}t<\infty\)。同一理由适用于 \(1/(f-a)\)。这些奇性是积分的一部分，不是后面“例外半径”的来源。
 
 \ProseParagraphBreak
-先在一个有零点又有极点的函数上核验这套定义。取 \(f(z)=(z-1)/z^2\)，对 \(r>1\)，无穷值在原点有二重点，所以 \(N(r,\infty;f)=2\log r\)；零值只有一处简单原像一，故 \(N(r,0;f)=\log r\)。在圆周上 \(|f|\le(r+1)/r^2<1\) 当 \(r\) 充分大，因而 \(m(r,\infty;f)=0\)、\(T(r,f)=2\log r\)。另一方面
-\[
- \log\left|\frac1{f(re^{\mathrm{i}t})}\right|
- =2\log r-\log|re^{\mathrm{i}t}-1|,
-\]
-此处正对数就是普通对数，Jensen 公式给最后一项的圆周平均为 \(\log r\)，所以
-\[
- m(r,0;f)=\log r.
-\]
-于是一份零点计数加一份接近程度，恰补成两份特征增长。只比较 \(n(r,0)\) 与极点数，会遗漏这半数贡献。
-\ProseParagraphBreak
-计数中的积分也有必要性。直接的 \(n(r,a)\) 是跳跃函数，随零点是否刚被圆周包含而改变；\(N\) 则给较早出现的原像更大的对数权，刚落入的原像贡献为零。一个位于原点的 \(m\) 重原像与一个位于非零 \(b\) 的同重原像，对大半径分别贡献 \(m\log r\) 与 \(m\log r-m\log|b|\)，主项相同，常数不同。这正适合 Jensen 公式里的圆周平均，而不是另加一项无关的平滑修正。
 
+当计算乘积或和的增长时，接近项由正对数的不等式控制，计数项由局部极点阶数控制。这两部分必须分别核对。
 
+\Needspace{6\baselineskip}
 \begin{proposition}[基本运算]\label{b3:prop:C-operations}
-对整个复平面上的亚纯函数 \(f,g\)（均非恒等于 \(\infty\)）及实数 \(r\ge1\)，有
+设 \(f,g\) 为整个复平面上的亚纯函数，均不恒等于 \(\infty\)，并对有限常数函数沿用无极点的特征函数定义。对 \(r\ge1\)，
 \[
- T(r,fg)\le T(r,f)+T(r,g),\qquad
- T(r,f+g)\le T(r,f)+T(r,g)+\log2.
+ T(r,fg)\le T(r,f)+T(r,g),
+ \quad T(r,f+g)\le T(r,f)+T(r,g)+\log2.
 \]
-对固定 \(a\in\mathbb C\)，有 \(T(r,f-a)=T(r,f)+O(1)\)。
+若 \(a\in\mathbb C\)、\(c\ne0\) 固定，则
+\[
+ T(r,f-a)=T(r,f)+O(1),
+ \quad T(r,cf)=T(r,f)+O(1),
+\]
+其中常数可依赖于 \(a,c\)，不依赖于 \(r\)。
 \end{proposition}
 \begin{proof}
-乘积的正对数不超过正对数之和，极点重数也不超过两函数极点重数之和。由于 \(r\ge1\)，原点极点的权 \(\log r\) 非负，故重数比较也给出积分计数的比较。加法使用 \(|f+g|\le2\max(|f|,|g|)\)，其极点重数至多为两者中较大的一个。平移不改变极点，在圆周上应用 \(|f-a|\le(1+|a|)\max(1,|f|)\) 以及交换 \(f,f-a\) 后的不等式即得双向界。
-\end{proof}
-对于多项式 \(P\) 次数 \(d\ge1\)，大圆周上一致有 \(\log|P(z)|=d\log r+O(1)\)，故 \(T(r,P)=d\log r+O(1)\)。若 \(R=P/Q\) 且分子分母互素，次数分别为 \(p,q\)，则极点计数为 \(q\log r+O(1)\)，接近函数为 \(\max(p-q,0)\log r+O(1)\)，所以
+正对数满足 \(\log^+|fg|\le\log^+|f|+\log^+|g|\)。乘积的极点重数至多为两函数极点重数之和，且 \(r\ge1\) 时各计数权非负，故得到乘积不等式。对和使用
 \[
- T(r,R)=\max(p,q)\log r+O(1).
+ \log^+|f+g|\le\log2+\log^+|f|+\log^+|g|,
 \]
-对 \(e^z\)，没有极点，直接积分正半圆的 \(r\cos t\) 得 \(T(r,e^z)=r/\pi\)。这两个例子分别代表对数增长和正幂增长。
+而 \(f+g\) 在每一点的极点阶数至多为两者中较大的一项，由此得到第二式。
+
+平移不改变极点，并且
+\[
+ |f-a|\le(1+|a|)\max(1,|f|),
+ \quad |f|\le(1+|a|)\max(1,|f-a|).
+\]
+积分后得到双向有界差。对于非零倍数，函数 \(x\mapsto\max(x,0)\) 为 \(1\)-Lipschitz，故接近项的差的绝对值不超过 \(|\log|c||\)；极点计数不变。
+\end{proof}
+
+\subsection{有理函数与指数函数的尺度}
+\label{b3:subsec:C0103}
+
+取 \(f(z)=(z-1)/z^2\)。当 \(r\) 充分大时，圆周上 \(|f|<1\)，因而
+\[
+ N(r,\infty;f)=2\log r,
+ \quad N(r,0;f)=\log r,
+ \quad T(r,f)=2\log r.
+\]
+另一方面，\(1/f\) 在该圆周上模大于一，Jensen 公式给出
+\[
+ m(r,0;f)=\frac1{2\pi}\int_0^{2\pi}
+ \left(2\log r-\log|re^{\mathrm{i}t}-1|\right)\mathrm{d}t
+ =\log r.
+\]
+零值的计数与接近程度各贡献一份 \(\log r\)，恰好补成 \(T\)。只比较零点数与极点数就看不出这个补偿。
+
+\ProseParagraphBreak
+
+一般地，设 \(R=P/Q\) 是非常数有理函数，\(P,Q\) 互素，次数分别为 \(p,q\)。超过所有有限零极点以后，极点计数为 \(q\log r+O(1)\)，且圆周上一致有
+\[
+ \log|R(re^{\mathrm{i}t})|=(p-q)\log r+O(1).
+\]
+对正部取平均，得到
+\begin{equation}\label{b3:eq:C-rational-growth}
+ T(r,R)=d\log r+O(1),\quad d=\max(p,q).
+\end{equation}
+即使 \(p=q\)，圆周函数也只是趋向一个非零常数，接近项仍为 \(O(1)\)；主项由极点计数提供。
+
+\ProseParagraphBreak
+
+\(e^z\) 没有极点，其圆周对数模为 \(r\cos t\)，所以
+\[
+ T(r,e^z)=\frac r{2\pi}\int_0^{2\pi}\max(\cos t,0)\,\mathrm{d}t
+ =\frac r\pi.
+\]
+有理函数的对数增长与这个线性增长不同。通常用
+\[
+ \rho_T(f)\coloneqq\limsup_{r\to\infty}
+                  \frac{\log^+T(r,f)}{\log r}
+\]
+衡量特征函数的增长阶；有理函数的阶为零，\(e^z\) 的阶为一。阶只记录增长尺度，尚未说明哪些值出现得少。
 
 \section{第一基本定理与球面解释}
 \label{b3:sec:C02}
 
-Jensen 公式中的边界项可以写成两个接近函数之差。这样做使零点与极点在同一等式中出现。
+\subsection{从 Jensen 等式到逐值平衡}
+\label{b3:subsec:C0201}
 
+设 \(f\not\equiv0,\infty\) 亚纯，在原点写成
+\(f(z)=z^k u(z)\)，其中 \(k\in\mathbb Z\)、\(u(0)\ne0,\infty\)。\chapref{b3:ch:18}的亚纯 Jensen 公式在当前计数约定下为
+\begin{equation}\label{b3:eq:C-jensen-balance}
+ \frac1{2\pi}\int_0^{2\pi}\log|f(re^{\mathrm{i}t})|\,\mathrm{d}t
+ =\log|u(0)|+N(r,0;f)-N(r,\infty;f).
+\end{equation}
+原点的 \(k\log r\) 已经包含在两个计数之差中。若圆周通过零极点，可从邻近半径取极限：有限个局部因子的对数奇性有共同的 \(C+C|\log|t-t_0||\) 积分控制，其余部分连续。因此等式仍成立，并非只在避开零极点的半径上成立。
+
+\Needspace{6\baselineskip}
 \begin{theorem}[第一基本定理]\label{b3:thm:C-first-main}
-设 \(f\) 是整个复平面上的非常值亚纯函数，\(T\)、\(m\)、\(N\) 分别为本附录定义的特征函数、接近函数与计数函数。对固定 \(a\in\widehat{\mathbb C\kern0pt}\)，当 \(r\ge1\) 时，
-\[
- m(r,a;f)+N(r,a;f)=T(r,f)+O(1).
-\]
-常数可以依赖 \(f,a\)，不依赖 \(r\)。
+设 \(f\) 是 \(\mathbb C\) 上非常数亚纯函数，\(a\in\widehat{\mathbb C\kern0pt}\) 固定，以 \(T,m,N\) 表示前述特征函数、接近函数及带重数计数。则对 \(r\ge1\)，
+\begin{equation}\label{b3:eq:C-first-main}
+ m(r,a;f)+N(r,a;f)=T(r,f)+O(1),
+\end{equation}
+其中常数可依赖于 \(f,a\)，不依赖于 \(r\)。
 \end{theorem}
 \begin{proof}
-先设 \(f(z)=z^ku(z)\)，其中 \(u(0)\ne0,\infty\)，\(k\in\mathbb Z\)。亚纯 Jensen 公式给
-\[
- \frac1{2\pi}\int\log|f(re^{\mathrm{i}t})|\,\mathrm{d}t
- =\log|u(0)|+N(r,0;f)-N(r,\infty;f).
-\]
-原点贡献 \(k\log r\) 已包括在两个 \(N\) 之差中。由 \(\log x=\log^+x-\log^+(1/x)\)，移项得
-\[
+恒等式 \(\log x=\log^+x-\log^+(1/x)\) 将\eqref{b3:eq:C-jensen-balance}的左侧写成两个接近项之差。又因 \(1/f\) 的极点恰为 \(f\) 的零点，整理得到精确关系
+\begin{equation}\label{b3:eq:C-inversion}
  T(r,1/f)=T(r,f)-\log|u(0)|.
+\end{equation}
+这对非零常数函数也成立。若 \(a\) 有限，对 \(f-a\) 应用同一等式，便有
+\[
+ m(r,a;f)+N(r,a;f)=T(r,f-a)-\log|u_a(0)|,
 \]
-对 \(f-a\) 应用此式，再用命题~\ref{b3:prop:C-operations}的平移估计即得有限 \(a\) 的结论。\(a=\infty\) 是定义中的恒等式。
+其中 \(f-a=z^{k_a}u_a\) 为原点局部分解。\cref{b3:prop:C-operations}给出 \(T(r,f-a)=T(r,f)+O(1)\)，证明有限值情形。\(a=\infty\) 的等式就是 \(T\) 的定义。
 \end{proof}
-因此任一固定 Möbius 变换 \(M\) 都满足 \(T(r,M\circ f)=T(r,f)+O(1)\)：平移、非零常数倍与取倒数生成全部这类变换。特征函数的主量不依赖在目标球面上选哪一点作为无穷远。
-\ProseParagraphBreak
-为严格处理增长与亏值，可把这种近似不变性写成一个精确的面积量。取本卷第十四章的球面导数 \(f^\#=|f'|/(1+|f|^2)\)，置
+
+这就是\term[nevanlinna-diyi-jiben-dingli]{Nevanlinna 第一基本定理}[Nevanlinna first main theorem]。它说的是固定一个值后的平衡，常数未必对全部 \(a\) 一致。因 \(m\ge0\)，它给出 \(N(r,a;f)\le T(r,f)+O(1)\)；但接近项可能占去全部主量，故不能由此反推每个值都有同样多的原像。
+
+\subsection{目标坐标的改变}
+\label{b3:subsec:C0202}
+
+将某个有限值移到无穷远，只改变目标球面的坐标，不改变函数真正的取值行为。这一思想在计算中体现为特征函数的有界差。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[Möbius 换元]\label{b3:prop:C-mobius}
+设 \(f\) 是 \(\mathbb C\) 上非常数亚纯函数，\(M\) 为目标球面的固定 Möbius 变换，\(a\in\widehat{\mathbb C\kern0pt}\)。则对 \(r\ge1\)，
 \[
- A_f(t)=\frac1\pi\int_{|z|<t}(f^\#)^2\,\mathrm{d}A,
- \qquad T_0(r,f)=\int_0^r A_f(t)\frac{\mathrm{d}t}{t}.
+ T(r,M\circ f)=T(r,f)+O(1),
+ \quad N(r,M(a);M\circ f)=N(r,a;f),
 \]
-这个面积量与前面定义的对应需要包括极点，不能只在 \(f\) 全纯的区域求导。
-\begin{proposition}[面积特征与对数特征]\label{b3:prop:C-area-characteristic}
-设 \(f\) 在整个复平面亚纯，球面导数取 \(f^\#=|f^{\prime}|/(1+|f|^2)\)，极点处用 \(1/f\) 解释。令 \(A_f(t)=\pi^{-1}\int_{|z|<t}(f^\#)^2\,\mathrm dA\)、\(T_0(r,f)=\int_0^r A_f(t)\,\mathrm dt/t\)。则对每个 \(r>0\)，存在只依赖 \(f\) 的常数 \(C_f\)，使
-\[
- T_0(r,f)=\frac1{2\pi}\int_0^{2\pi}\log\sqrt{1+|f(re^{\mathrm{i}t})|^2}\,\mathrm{d}t
-       +N(r,\infty;f)-C_f.
-\]
-特别地，\(T_0=T+O(1)\)，\(T_0\) 非减且对 \(\log r\) 凸。
+约化计数也满足相同的精确换元等式。
 \end{proposition}
 \begin{proof}
-用 Weierstrass 定理取整函数 \(h\)，其零点正是 \(f\) 的极点，阶数相同。则 \(g=fh\) 在各极点处可去并为非零值，成为整函数，且 \(g,h\) 没有共同零点。因而
-\(w=\log\sqrt{|g|^2+|h|^2}\) 在全平面光滑。直接用 \(\Delta=4\partial_z\partial_{\bar z}\) 微分，得
+非零倍乘、平移和取倒数生成全部 Möbius 变换。前两种操作由\cref{b3:prop:C-operations}控制，取倒数由\eqref{b3:eq:C-inversion}控制，因此复合后只产生有界差。另一方面，Möbius 变换在每个球面点的局部坐标中都是导数非零的全纯映射，所以 \(f\) 的局部映射重数不变。对应原像集合相同，给出两种计数的精确等式。
+\end{proof}
+
+这个命题允许在第二基本定理中把一个目标值移到无穷远。它没有说所有 Möbius 变换都保持球面距离或球面面积；一般变换会改变面积密度，只有特征函数的增长主量保持不变。
+
+\subsection{球面面积与特征函数}
+\label{b3:subsec:C0203}
+
+现在给出一个精确非负的面积量。以下平面面积明确取 \(\mathrm{d}\lambda=\mathrm{d}x\,\mathrm{d}y\)，目标球面取总面积为一的测度
+\[
+ \mathrm{d}\sigma(w)=\frac1\pi\frac{\mathrm{d}\lambda(w)}{(1+|w|^2)^2}.
+\]
+极坐标积分给 \(\int\mathrm{d}\sigma=1\)，而无穷远单点面积为零。采用球面导数 \(f^\#=|f'|/(1+|f|^2)\)，在极点处用 \(1/f\) 计算，定义
+\[
+ A_f(t)\coloneqq\frac1\pi\int_{|z|<t}(f^\#)^2\,\mathrm{d}\lambda(z),
+ \quad T_0(r,f)\coloneqq\int_0^r A_f(t)\frac{\mathrm{d}t}{t}.
+\]
+\(f^\#\) 在极点处连续且局部有界，因而零附近 \(A_f(t)=O(t^2)\)，最后的积分有限。这里的 \(A_f\) 计算的是带覆盖次数的球面面积。
+\symidx{\(A_f(r),T_0(r,f)\)：带重数球面面积及其对数积分}
+
+\Needspace{6\baselineskip}
+\begin{proposition}[面积特征与对数特征]\label{b3:prop:C-area-characteristic}
+设 \(f\) 为 \(\mathbb C\) 上亚纯函数，不恒等于 \(\infty\)。以未归一化平面面积定义 \(A_f(t)=\pi^{-1}\int_{|z|<t}(f^\#)^2\,\mathrm{d}\lambda\)，并令 \(T_0(r,f)=\int_0^r A_f(t)\,\mathrm{d}t/t\)。存在只依赖于 \(f\) 的有限常数 \(C_f\)，使对每个 \(r>0\)，
+\begin{equation}\label{b3:eq:C-area-characteristic}
+ T_0(r,f)=\frac1{2\pi}\int_0^{2\pi}
+       \log\sqrt{1+|f(re^{\mathrm{i}t})|^2}\,\mathrm{d}t
+       +N(r,\infty;f)-C_f.
+\end{equation}
+因此 \(T_0(r,f)=T(r,f)+O(1)\)，\(T_0\) 非减且对 \(\log r\) 凸。
+\end{proposition}
+\begin{proof}
+由\chapref{b3:ch:20}的指定零点构造，取整函数 \(h\)，其零点恰为 \(f\) 的极点且阶数相同；无极点时可取 \(h=1\)。于是 \(g=fh\) 在各极点处可去，成为整函数。极点处相消后的值非零，所以 \(g,h\) 没有共同零点。函数
+\[
+ w(z)=\tfrac12\log\bigl(|g(z)|^2+|h(z)|^2\bigr)
+\]
+在全平面光滑。用 \(\Delta=4\partial_z\partial_{\overline z}\) 微分，得
 \[
  \Delta w=\frac{2|g'h-gh'|^2}{(|g|^2+|h|^2)^2}=2(f^\#)^2.
 \]
-在极点处最后一式按球面图解释，第一式已给平滑延伸。对 \(w\) 的圆周平均 \(W(r)\)，Green 公式给
-\(W'(r)= (2\pi r)^{-1}\int_{|z|<r}\Delta w\,\mathrm{d}A=A_f(r)/r\)。积分得 \(W(r)-w(0)=T_0(r,f)\)。
-设 \(h(z)=z^m h_m(z)\)、\(h_m(0)\ne0\)。Jensen 公式包含原点重数，给
-\( (2\pi)^{-1}\int\log|h(re^{\mathrm{i}t})|\,\mathrm{d}t=\log|h_m(0)|+N(r,\infty;f)\)。除去有限个圆周零点时，\(w=\log\sqrt{1+|f|^2}+\log|h|\)；对数奇性可积，故该关系可以积分。两式相减，得到所述公式，\(C_f=w(0)-\log|h_m(0)|\)。即使原点为极点，这两个数仍有限，所以没有遗漏原点项。
-最后对任意 \(x>0\)，
-\(0\le\log\sqrt{1+x^2}-\log^+x\le\tfrac12\log2\)，积分后得到有界差。\(A_f\ge0\) 且非递减，故令 \(r=e^t\) 时，\(\mathrm{d}T_0(e^t)/\mathrm{d}t=A_f(e^t)\) 非负且非递减，给出单调性和凸性。
-\end{proof}
-非恒定 \(f\) 的球面导数不恒零，故在某个圆盘内有正面积积分；其后 \(A_f(r)\) 保持一个正下界，\(T_0\) 至少按正倍数 \(\log r\) 增长。这才说明 \(T(r,f)\to\infty\)，使后面的亏值比例有意义。
+在 \(h=0\) 的点，第一式仍光滑，第二式按球面坐标解释。令 \(W(r)\) 为 \(w\) 的圆周平均，圆盘上的 Green 公式给出
+\[
+ W'(r)=\frac1{2\pi r}\int_{|z|<r}\Delta w\,\mathrm{d}\lambda
+       =\frac{A_f(r)}r.
+\]
+积分并使用 \(W(r)\to w(0)\)，得到 \(W(r)-w(0)=T_0(r,f)\)。
 
-\begin{lemma}[超越增长]\label{b3:lem:C-transcendental-growth}
-若 \(f\) 为整个复平面上的超越亚纯函数，\(T(r,f)\) 为其 Nevanlinna 特征函数，则 \(T(r,f)/\log r\to\infty\)。
+写 \(h(z)=z^m h_m(z)\)，\(h_m(0)\ne0\)。Jensen 公式给出
+\[
+ \frac1{2\pi}\int_0^{2\pi}\log|h(re^{\mathrm{i}t})|\,\mathrm{d}t
+ =\log|h_m(0)|+N(r,\infty;f).
+\]
+在有限个圆周极点之外，\(w=\log\sqrt{1+|f|^2}+\log|h|\)。对数奇性可积，故可以对该等式积分。与前式合并便得\eqref{b3:eq:C-area-characteristic}，其中
+\(C_f=w(0)-\log|h_m(0)|\)。原点不是极点时，\(C_f=\tfrac12\log(1+|f(0)|^2)\)；原点为极点且 \(f(z)=c z^{-m}(1+O(z))\) 时，\(C_f=\log|c|\)。这也说明极点在原点时没有遗漏归一化常数。
+
+对每个 \(x\ge0\)，有
+\[
+ 0\le\log\sqrt{1+x^2}-\log^+x\le\tfrac12\log2.
+\]
+积分得到 \(T_0-T\) 有界。最后 \(A_f\ge0\) 且非减；令 \(r=e^s\)，则 \(\mathrm dT_0(e^s,f)/\mathrm ds=A_f(e^s)\) 非负且非减，证明单调性和凸性。
+\end{proof}
+
+非恒定 \(f\) 的球面导数不恒为零，所以存在 \(t_0\) 与 \(c>0\)，使 \(A_f(t)\ge c\) 当 \(t\ge t_0\)。于是 \(T_0(r,f)\ge c\log(r/t_0)\)，从而 \(T(r,f)\to\infty\)。后面除以 \(T\) 的渐近比例因此定义良好。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[球面上的平均计数]\label{b3:prop:C-spherical-counting}
+设 \(f\) 是 \(\mathbb C\) 上非常数亚纯函数，\(\sigma\) 为上述总面积一的球面测度。则对 \(r>0\)，
+\[
+ A_f(r)=\int_{\widehat{\mathbb C\kern0pt}}n(r,a;f)\,\mathrm{d}\sigma(a).
+\]
+对 \(r\ge1\)，还有
+\[
+ T_0(r,f)=\int_{\widehat{\mathbb C\kern0pt}}N(r,a;f)\,\mathrm{d}\sigma(a).
+\]
+\end{proposition}
+\begin{proof}
+避开离散的临界点后，\(f\) 在足够小的坐标邻域内单叶。将这些邻域取成可数覆盖，再按次序去掉此前已覆盖的部分，可把正则点集分成可测的单叶块。在每块上作实变量换元，复导数的实 Jacobian 为 \(|f'|^2\)，因此拉回 \(\mathrm{d}\sigma\) 正好得到 \(\pi^{-1}(f^\#)^2\mathrm{d}\lambda\)。极点附近改用倒数坐标给出同一密度。对这些块求和，每个正则原像贡献一次；临界点及其像为零面积集，不改变积分。圆周像是一条分段光滑球面曲线，也为零面积集，所以使用闭圆盘计数仍给出第一式。
+
+对几乎每个 \(a\)，原点不是 \(a\)-点，故 \(N(r,a;f)=\int_0^r n(t,a;f)\,\mathrm{d}t/t\)。唯一可能的例外值 \(f(0)\) 的球面测度为零。非负积分的 Tonelli 换序将第一式对 \(\mathrm{d}t/t\) 积分，得到第二式。
+\end{proof}
+
+所以 \(T_0\) 是对全部目标值的积分计数所取的球面平均，\(T\) 与这个平均只差有界量。第一基本定理比较一个固定值与总体增长；面积公式则直接展示了总体增长来自哪里。
+
+\subsection{超越函数的增长下界}
+\label{b3:subsec:C0204}
+
+有理函数的特征只有 \(\log r\) 量级。为了把第二基本定理的误差除以主量，需要知道超越亚纯函数必定超过这一尺度。整函数的圆周平均和极点计数将分别控制这两类增长。
+
+\Needspace{6\baselineskip}
+\begin{lemma}[整函数的内部最大值控制]\label{b3:lem:C-entire-mean}
+设 \(F\) 为整函数，\(M(r,F)=\max_{|z|\le r}|F(z)|\)。对 \(r>0\)，
+\[
+ \log^+M(r,F)\le3T(2r,F).
+\]
 \end{lemma}
 \begin{proof}
-若 \(A_f(t)\to\infty\)，对任意 \(B\) 取 \(t_B\) 使 \(A_f(t)\ge B\) 当 \(t\ge t_B\)，则 \(T_0(r)\ge B\log(r/t_B)\)，结论成立。反之，若 \(A_f\) 有界，则上式给 \(T(r)=O(\log r)\)。第一基本定理于是说明每个有限值的原像数一致有界：任取其中 \(m\) 个固定原像，\(N(r,a)\ge m\log r-O(1)\)，而右侧的 \(T\) 上界系数与 \(a\) 无关。因此 \(f\) 不能在无穷远有本性奇点，因为第十四章的大 Picard 定理保证除至多两个球面值外均有无穷多个原像。故 \(f\) 在球面上亚纯，是有理函数，与假设矛盾。
+将 \(|z|=2r\) 上连续非负的边界函数 \(\log^+|F|\) 作 Poisson 延拓。次调和函数 \(\log|F|\) 在边界不超过它，由比较原理，在圆盘内也不超过这一调和延拓。对于 \(|z|\le r\)，Poisson 核不超过 \((2r+r)/(2r-r)=3\)，故 \(\log|F(z)|\le3m(2r,\infty;F)\)。右侧非负，取最大值和正部即可。整函数无极点，故其 \(m\) 就是 \(T\)。
 \end{proof}
-这段增长判据使用了已经独立证明的 Picard 定理。下文再由值分布推回 Picard 结论，是说明另一条理论解释；它不被用作第十四章原证明的前提。
+
+\Needspace{6\baselineskip}
+\begin{lemma}[超越增长]\label{b3:lem:C-transcendental-growth}
+若 \(f\) 为整个复平面上的超越亚纯函数，即不是有理函数，则
+\[
+ \frac{T(r,f)}{\log r}\longrightarrow\infty
+ \quad(r\to\infty).
+\]
+\end{lemma}
+\begin{proof}
+若 \(f\) 有无穷多个极点，任取总重数至少为 \(M\) 的有限个极点。超过这些极点的模以后，它们的计数贡献至少为 \(M\log r-C_M\)。因此 \(T(r,f)\ge M\log r-C_M\)。\(M\) 任意，得到结论。
+
+若极点只有有限个，取多项式 \(Q\) 恰好消去全部极点，则 \(F=Qf\) 是超越整函数；否则 \(f=F/Q\) 为有理函数。设 \(F(z)=\sum_{k\ge0}a_kz^k\)。有任意高阶的非零系数；对于每个 \(a_k\ne0\)，Cauchy 估计给出
+\[
+ k\log r+\log|a_k|\le\log M(r,F)\le3T(2r,F).
+\]
+令 \(r\to\infty\)，再让可选的 \(k\) 任意大，可知 \(T(r,F)/\log r\to\infty\)。最后，\cref{b3:prop:C-operations}和多项式的特征增长给出
+\[
+ T(r,F)\le T(r,f)+\deg(Q)\log r+O(1),
+\]
+所以 \(T(r,f)/\log r\) 也趋于无穷。
+\end{proof}
+
+结合\eqref{b3:eq:C-rational-growth}，得到一个完整的分界：非常数有理函数有 \(T=d\log r+O(1)\)，超越亚纯函数则满足 \(\log r=o(T)\)。这里没有断言超越函数必有正的增长阶；比 \(\log r\) 快而比任何 \(r^\varepsilon\) 慢的增长仍未被排除。
 
 \section{对数导数与第二基本定理}
 \label{b3:sec:C03}
 
-多个值之间的限制来自导数：一个重 \(m\) 的有限值点至少消耗 \(f'\) 的 \(m-1\) 个零点。先把本附录唯一未完整展开的分析估计单列。
+\subsection{对数导数估计的内容}
+\label{b3:subsec:C0301}
 
+若 \(f-a=(z-z_0)^m u\)，\(u(z_0)\ne0\)，则
+\[
+ \frac{f'}{f-a}=\frac m{z-z_0}+\frac{u'}u.
+\]
+重数被转成一个一阶极点的系数。商在这个点附近可以任意大，因此所需估计不是逐点上界，而是它的圆周正对数平均。这种圆周平均由\term[duishu-daoshu-yinli]{对数导数引理}[logarithmic derivative lemma]控制。
+
+\Needspace{6\baselineskip}
 \begin{lemma}[对数导数引理，深层输入]\label{b3:lem:C-logarithmic-derivative}
-设 \(f\) 在整个复平面亚纯且不恒为零，\(T\)、\(m\) 为本附录定义的特征函数与接近函数。存在 \(E\subset[1,\infty)\)，\(\int_E\mathrm{d}r<\infty\)，使
+设 \(f\) 在整个复平面亚纯，不恒等于零或无穷远，以 \(T\) 和 \(m\) 表示本附录的特征函数与接近函数。存在可测集 \(E\subset[1,\infty)\)，\(\int_E\mathrm{d}r<\infty\)，使当 \(r\to\infty\)、\(r\notin E\) 时，
 \[
  m\left(r,\infty;\frac{f'}f\right)
- =O\bigl(\log^+T(r,f)+\log r\bigr),\qquad r\notin E.
+ =O\bigl(\log^+T(r,f)+\log r\bigr).
 \]
+常数与例外集允许依赖于 \(f\)。
 \end{lemma}
 \begin{proofsketch}
-对 Poisson--Jensen 公式求导，把导数分为边界核与零极点核；对后者先取小于一的幂再作圆周积分。所得估计含外半径的特征函数及两半径之差。增长引理允许在有限长度的例外集之外选择邻近外半径，最终得到所示对数误差。这里不补写增长引理和核的统一积分估计，因而该引理是明确的外部输入。可核对 Goldberg--Ostrovskii《Value Distribution of Meromorphic Functions》第三章第1节、定理1.3及其证明\cite[pp.~91--93]{GoldbergOstrovskii2008Value}。
+对 Poisson--Jensen 公式求导，得到外圆周上的积分核以及零点、极点的核之和。内部半径为 \(r\)、外半径为 \(R>r\) 时，边界核的分母受 \(R-r\) 控制，零极点核则需要先取小于一的幂，再在圆周上积分。这样得到的中间估计还含 \(T(R,f)\) 和两半径之差。最后用增长引理，在有限长度的例外集之外选取邻近外半径，将它们改写成所述 \(T(r,f)\) 的对数误差。
+
+两半径估计及增长引理的细节在此省略，完整证明见 Goldberg、Ostrovskii 的《Value Distribution of Meromorphic Functions》\cite[pp.~91--93]{GoldbergOstrovskii2008Value}。
 \end{proofsketch}
-下文把有限次这种误差的和记作 \(S(r,f)\)。每次固定有限个目标值后才合并例外集；不把无穷多个例外集直接相加。
 
-\ProseParagraphBreak
-对数导数引理估计的是接近函数，而非每一点的大小。一个 \(m\) 重零点使 \(f'/f\) 有留数 \(m\) 的一阶极点，附近可以很大；引理说这些局部尖峰的圆周正对数平均仍只产生对数级误差。例如 \(f(z)=z^m\) 时，\(f'/f=m/z\)，所以 \(m(r,\infty;f'/f)=\max\{\log(m/r),0\}\)，对 \(r\ge m\) 甚至为零。\(f=e^z\) 时这个接近函数也为零，因为商恒为一。一般函数需要深层估计来处理零点密集的情况，不能从这两个简单例子推断商本身处处有界。
-\ProseParagraphBreak
-有限长度的例外集也必须保留在结论里。它不妨碍选择趋于无穷的正常半径，但没有断言每个足够大的半径都正常。第二基本定理对一个固定有限值集调用有限次引理，例外集的有限并仍有有限长度；随后取亏值上极限时，则用定义在所有大半径成立的上界，在正常半径上代入不等式。这个次序避免把“在部分半径成立”错误地升级成没有例外的逐半径估计。
+核为什么先取小于一的幂，可以用一个独立的初等估计看清。
 
-
-\begin{theorem}[约化形式的第二基本定理]\label{b3:thm:C-second-main}
-设 \(f\) 是整个复平面上的非常值亚纯函数，\(q\ge3\) 为整数，\(a_1,\ldots,a_q\in\widehat{\mathbb C\kern0pt}\) 为互异固定值，\(\overline N(r,a_j;f)\) 为每个原像只计一次的约化积分计数函数。则存在有限 Lebesgue 长度的集合 \(E\subset[1,\infty)\)，使当 \(r\to\infty\)、\(r\notin E\) 时，
+\Needspace{6\baselineskip}
+\begin{lemma}[圆周上的弱奇性]\label{b3:lem:C-circle-singularity}
+设 \(0<\alpha<1\)。存在只依赖于 \(\alpha\) 的常数 \(C_\alpha\)，使对所有 \(r>0\)、\(a\in\mathbb C\)，
 \[
- (q-2)T(r,f)\le\sum_{j=1}^q\overline N(r,a_j;f)
-       +O\bigl(\log^+T(r,f)+\log r\bigr).
+ \frac1{2\pi}\int_0^{2\pi}|re^{\mathrm{i}t}-a|^{-\alpha}\,\mathrm{d}t
+ \le C_\alpha r^{-\alpha}.
 \]
+\end{lemma}
+\begin{proof}
+缩放并旋转以后，只需估计 \(|e^{\mathrm{i}t}-s|^{-\alpha}\)，其中 \(s\ge0\)。若 \(s\notin[1/2,2]\)，距离有统一正下界。若 \(1/2\le s\le2\)，则对 \(-\pi\le t\le\pi\)，
+\[
+ |e^{\mathrm{i}t}-s|^2=(1-s)^2+4s\sin^2(t/2)
+ \ge2\sin^2(t/2).
+\]
+而 \(|\sin(t/2)|\ge |t|/\pi\)，所以被积函数至多为常数乘 \(|t|^{-\alpha}\)。它的积分有限，且与 \(s\) 无关，得到所需统一界。
+\end{proof}
+
+当 \(\alpha=1\)、\(|a|=r\) 时，圆周积分发散。因此“小于一”承担了真实的可积性任务。这个局部估计解释了深层引理的一步，却尚未完成对所有零极点求和以及外半径选择。对 \(z^m\)，对数导数为 \(m/z\)，接近项等于 \(\log^+(m/r)\)；对 \(e^z\)，对数导数恒为一，接近项为零。
+
+\subsection{例外半径与误差的尺度}
+\label{b3:subsec:C0302}
+
+本附录采用的引理给出有限长度的例外集。另一种常见表述要求例外集具有有限\term[duishu-cedu]{对数测度}[logarithmic measure]，即
+\[
+ \int_E\frac{\mathrm{d}r}{r}<\infty.
+\]
+在 \([1,\infty)\) 上，有限长度蕴含有限对数测度，反向不成立。例如 \(\bigcup_{k\ge1}[2^k,2^k+1]\) 的总长度无穷，而其对数测度不超过 \(\sum_k2^{-k}\)。引用估计时必须保留实际采用的例外集类型。
+
+\ProseParagraphBreak
+
+两种有限性都保证存在任意大的正常半径。更具体地，若 \(E\) 的对数测度有限，固定 \(\eta>0\)，则对充分大的 \(R\)，区间 \([R,(1+\eta)R]\) 不可能全含于 \(E\)：其对数测度为固定正数 \(\log(1+\eta)\)，而 \(E\) 在大半径处的尾测度趋于零。这个结论允许选择正常半径，不能自动把其中成立的估计推广到每个半径；增长很快时，相邻半径的特征函数仍可能相差很大。
+
+\ProseParagraphBreak
+
+下文用 \(S(r,f)\) 表示满足
+\[
+ |S(r,f)|\le C\bigl(\log^+T(r,f)+\log r\bigr)
+ \quad(r\notin E)
+\]
+的误差，常数与有限长度例外集可依赖于已经固定的有限目标值集。对每个 \(f-a_j\) 使用对数导数引理时，\cref{b3:prop:C-operations}保证它的特征与 \(T(r,f)\) 仅差有界量；有限次应用的例外集取有限并，长度仍有限。无穷多个目标值不在这一步同时处理。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[误差相对于主量的大小]\label{b3:prop:C-small-error}
+设 \(f\) 是整个复平面上的超越亚纯函数，且 \(S(r,f)=O(\log^+T(r,f)+\log r)\) 在某个有限长度例外集之外成立。则
+\[
+ S(r,f)=o(T(r,f))\quad(r\to\infty,\ r\notin E).
+\]
+若 \(f\) 具有有限特征增长阶，则同一误差还满足 \(S(r,f)=O(\log r)\) 于例外集之外。
+\end{proposition}
+\begin{proof}
+\(T(r,f)\to\infty\)，所以 \(\log^+T/T\to0\)；\cref{b3:lem:C-transcendental-growth}给出 \(\log r/T\to0\)。两项相加便得第一结论。有限阶意味着对某个有限的 \(B\)，充分大时 \(T(r,f)\le r^B\)，从而 \(\log^+T(r,f)=O(\log r)\)。
+\end{proof}
+
+对于次数 \(d\) 的有理函数，\(T\sim d\log r\)，不能从一般的 \(O(\log r)\) 误差推出 \(o(T)\)。不过有理函数的对数导数有更好的直接估计：非零有理函数在无穷远可写成 \(h(z)=c z^k(1+O(1/z))\)，因而
+\[
+ \frac{h'}h=\frac kz+O(1/z^2).
+\]
+它在所有充分大的圆周上一致趋于零，接近函数最终为零。后面的第二基本定理因此在有理函数情形可将误差改为 \(O(1)\)，并去掉充分大半径处的例外集。
+
+\subsection{分歧计数与第二基本定理的推导}
+\label{b3:subsec:C0303}
+
+把 \(f\) 看成到球面的全纯映射，在点 \(z\) 的局部重数记为 \(e_z(f)\)：若 \(f(z)\) 有限，它是 \(f-f(z)\) 的零点阶数；若 \(z\) 为极点，它是极点阶数。由这些点赋予权 \(e_z(f)-1\)，按\eqref{b3:eq:C-counting}同样的对数积分方式定义分歧计数 \(N_{\mathrm{ram}}(r,f)\)。普通点权为零，重原像才产生贡献。
+\symidx{\(N_{\mathrm{ram}}(r,f)\)：局部映射重数减一的积分分歧计数}
+
+\Needspace{6\baselineskip}
+\begin{proposition}[导数所记录的分歧]\label{b3:prop:C-ramification-count}
+设 \(f\) 为 \(\mathbb C\) 上非常数亚纯函数。对 \(r\ge1\)，
+\begin{equation}\label{b3:eq:C-ramification}
+ N_{\mathrm{ram}}(r,f)
+ =N(r,0;f')+N(r,\infty;f)-\overline N(r,\infty;f).
+\end{equation}
+若 \(a_1,\ldots,a_q\) 是互异球面值，则
+\[
+ N_{\mathrm{ram}}(r,f)\ge
+ \sum_{j=1}^q\bigl(N(r,a_j;f)-\overline N(r,a_j;f)\bigr).
+\]
+\end{proposition}
+\begin{proof}
+在有限 \(m\) 重原像处，\(f'\) 的零点阶数恰为 \(m-1\)。在 \(m\) 阶极点处，\(f'\) 为 \(m+1\) 阶极点，所以该点不计入 \(N(r,0;f')\)，而 \(N(r,\infty;f)-\overline N(r,\infty;f)\) 恰好留下权 \(m-1\)。逐点比较给出等式。不同目标值的原像不相交，右侧只选取全部分歧中的一部分；计数权在 \(r\ge1\) 非负，故得到不等式。
+\end{proof}
+
+第二基本定理的关键是先保留这份完整分歧，再丢去未列入目标值集的部分。
+
+\Needspace{6\baselineskip}
+\begin{theorem}[约化形式的第二基本定理]\label{b3:thm:C-second-main}
+设 \(f\) 为整个复平面上的非常数亚纯函数，\(q\ge3\) 为整数，\(a_1,\ldots,a_q\in\widehat{\mathbb C\kern0pt}\) 为互异固定值。以 \(N_{\mathrm{ram}}\) 表示局部重数减一的积分计数，\(\overline N\) 表示每个原像只计一次的约化计数。存在有限 Lebesgue 长度的 \(E\subset[1,\infty)\)，使当 \(r\to\infty\)、\(r\notin E\) 时，
+\begin{align}
+ (q-2)T(r,f)&\le\sum_{j=1}^qN(r,a_j;f)-N_{\mathrm{ram}}(r,f)
+       +O\bigl(\log^+T(r,f)+\log r\bigr),\label{b3:eq:C-second-ramified}\\
+ (q-2)T(r,f)&\le\sum_{j=1}^q\overline N(r,a_j;f)
+       +O\bigl(\log^+T(r,f)+\log r\bigr).\label{b3:eq:C-second-reduced}
+\end{align}
+若 \(f\) 为有理函数，两式误差均可改为 \(O(1)\)，且对所有充分大的半径成立。
 \end{theorem}
 \begin{proof}
-先设值集包含 \(\infty\)，其余为 \(a_1,\ldots,a_{q-1}\)。取小于这些有限值两两距离一半的 \(d>0\)。每一点至多有一个 \(|f-a_j|<d\)。对这个可能的指标使用
-\(1/|f-a_j|=|f'/(f-a_j)|/|f'|\)，其余正对数统一有界，便得
+先设 \(a_q=\infty\)。取 \(0<d<1\)，并使 \(2d\) 小于有限值 \(a_1,\ldots,a_{q-1}\) 的任意两点距离。在一点至多有一个 \(|f-a_j|<d\)，其余正对数均受 \(\log(1/d)\) 控制。对可能的那个指标，使用
+\[
+ \frac1{|f-a_j|}=\left|\frac{f'}{f-a_j}\right|\cdot\frac1{|f'|}.
+\]
+于是除去离散的零极点后，逐点有
+\[
+ \sum_{j<q}\log^+\frac1{|f-a_j|}
+ \le\log^+\frac1{|f'|}
+    +\sum_{j<q}\log^+\left|\frac{f'}{f-a_j}\right|+C.
+\]
+即使圆周经过这些离散点，对数奇性也可积，不等式仍可在几乎处处意义下积分。将对数导数引理分别用于 \(f-a_j\)，合并有限个例外集，得到
+\begin{equation}\label{b3:eq:C-proximity-derivative}
+ \sum_{j<q}m(r,a_j;f)
+ \le m(r,\infty;1/f')+S(r,f).
+\end{equation}
+
+因为 \(f\) 非常数，\(f'\not\equiv0\)。对 \(f'\) 使用\eqref{b3:eq:C-inversion}，也包括 \(f'\) 为非零常数的情形，得到
+\[
+ m(r,\infty;1/f')=m(r,\infty;f')
+        +N(r,\infty;f')-N(r,0;f')+O(1).
+\]
+恒等式 \(f'=f\cdot(f'/f)\) 给出
+\(m(r,\infty;f')\le m(r,\infty;f)+S(r,f)\)。同时，每个 \(m\) 阶极点在导数中成为 \(m+1\) 阶，故精确地有
+\[
+ N(r,\infty;f')=N(r,\infty;f)+\overline N(r,\infty;f).
+\]
+将这些式子代入\eqref{b3:eq:C-proximity-derivative}，再加上第 \(q\) 项 \(m(r,\infty;f)\)，得
 \[
  \begin{aligned}
- \sum_{j<q}m(r,a_j;f)
- &\le m(r,\infty;1/f')+\sum_{j<q}m\left(r,\infty;\frac{f'}{f-a_j}\right)+O(1)\\
- &\le m(r,\infty;1/f')+S(r,f).
+ \sum_{j=1}^q m(r,a_j;f)
+ &\le 2T(r,f)-N(r,\infty;f)+\overline N(r,\infty;f)
+                   -N(r,0;f')+S(r,f)\\
+ &=2T(r,f)-N_{\mathrm{ram}}(r,f)+S(r,f).
  \end{aligned}
 \]
-零点 \(f'=0\) 造成的逐点无穷只位于离散集；不等式以几乎处处的积分意义成立。Jensen 公式给
-\[
- m(r,\infty;1/f')=m(r,\infty;f')+N(r,\infty;f')-N(r,0;f')+O(1).
-\]
-又有 \(m(r,f')\le m(r,f)+m(r,f'/f)\)，而每个 \(m\) 阶极点在导数中变为 \(m+1\) 阶，故
-\(N(r,\infty;f')=N(r,\infty;f)+\overline N(r,\infty;f)\)。加入 \(m(r,\infty;f)\) 后得到
-\[
- \sum_{j=1}^q m(r,a_j;f)
- \le 2T(r,f)-N(r,\infty;f)+\overline N(r,\infty;f)
-                -N(r,0;f')+S(r,f).
-\]
-用第一基本定理替换左侧，并利用
-\[
- N(r,0;f')\ge\sum_{j<q}\bigl(N(r,a_j;f)-\overline N(r,a_j;f)\bigr),
-\]
-即得结论。若原值集不含无穷远，取 Möbius 变换把其中一个值送到无穷远。各原像的重数不变，特征函数只差有界项，于是归约到已证情形。
+第一基本定理将左侧改写为 \(qT(r,f)-\sum_jN(r,a_j;f)+O(1)\)，由此得到\eqref{b3:eq:C-second-ramified}。再用\cref{b3:prop:C-ramification-count}扣除选定值的重数损失，即得\eqref{b3:eq:C-second-reduced}。
+
+若原目标值不含无穷远，取 Möbius 变换 \(M\)，使 \(M(a_q)=\infty\)，对 \(M\circ f\) 应用已证情形。\cref{b3:prop:C-mobius}保持全部原像计数和局部重数，只给特征函数增加有界量，因此两式均能变回 \(f\)。
+
+若 \(f\) 有理，证明中出现的有限多个 \(f\)、\(f-a_j\) 的对数导数在大圆周上都一致趋于零，接近项最终为零。因此只剩各次 Jensen 和固定目标值比较产生的 \(O(1)\) 项；换用 \(M\circ f\) 后仍为有理函数，结论相同。
 \end{proof}
-不计重数的 \(\overline N\) 比 \(N\) 更小，故这一定理也衡量分歧的代价。若某个值的所有原像重数至少为 \(m\)，就有 \(\overline N\le N/m\)；多个高度分歧的值因此不能任意共存。
+
+这就是\term[nevanlinna-dier-jiben-dingli]{Nevanlinna 第二基本定理}[Nevanlinna second main theorem]的约化计数形式。这里的 \(q-2\) 来自接近项总和至多消耗两份 \(T\)；约化计数则来自扣除导数所记录的重数损失。两件事的来源不同，不宜把它们压成一句“由导数估计即得”。
+
+\subsection{完全分歧值的限制}
+\label{b3:subsec:C0304}
+
+若一个目标值的每个原像都至少二重，通常称它为\term[wanquan-fenqi-zhi]{完全分歧值}[totally ramified value]；省略值可按无限重的约定一并处理。第二基本定理的约化计数能看见这种现象，而第一基本定理的带重数计数未必能看见。
+
+\Needspace{6\baselineskip}
+\begin{corollary}[重数所占的份额]\label{b3:cor:C-ramified-values}
+设 \(f\) 是 \(\mathbb C\) 上非常数亚纯函数，\(a_1,\ldots,a_q\) 为互异球面值。设 \(m_j\in\{2,3,\ldots\}\cup\{\infty\}\)，当 \(m_j<\infty\) 时，每个 \(a_j\)-点的重数至少为 \(m_j\)；当 \(m_j=\infty\) 时，该值被省略。则
+\[
+ \sum_{j=1}^q\left(1-\frac1{m_j}\right)\le2,
+ \quad \frac1\infty\coloneqq0.
+\]
+特别地，完全分歧值连同省略值在内至多有四个。
+\end{corollary}
+\begin{proof}
+当 \(q\le2\) 时结论由每项不超过一得到。若 \(q\ge3\)，则 \(r\ge1\) 时
+\[
+ \overline N(r,a_j;f)\le\frac1{m_j}N(r,a_j;f)
+ \le\frac1{m_j}\bigl(T(r,f)+O(1)\bigr).
+\]
+省略值两种计数均为零。代入第二基本定理，除以 \(T\)，在例外集之外趋向无穷。超越情形由\cref{b3:prop:C-small-error}消去误差；有理情形使用已经证明的 \(O(1)\) 误差。得到 \(q-2\le\sum_j1/m_j\)。每个完全分歧值至少占去 \(1/2\)，故总数至多为四。
+\end{proof}
+
+这个界允许四个二重值，却不允许五个。稍后的 \(\wp\) 模型会达到四个值的界。若其中一些值被完全省略，它们各占去一整份，留给其他分歧值的份额就更少。
 
 \section{亏值与例子}
 \label{b3:sec:C04}
 
-设 \(f\) 为全复平面上的非常数亚纯函数、\(a\in\widehat{\mathbb C\kern0pt}\)，以 \(T(r,f)\) 和 \(N(r,a;f)\) 表示上述归一化的特征函数及计数函数。定义值 \(a\) 的\term[kuizhi]{亏值}[deficiency]为
+\subsection{亏值中的上极限}
+\label{b3:subsec:C0401}
+
+对于一个固定值，第一基本定理允许计数项占据 \(T\) 的全部主量，也允许大部分主量留在接近项。亏值记录前一种比例的永久不足。定义必须使用所有充分大半径的上极限，不能只在临时选取的一条半径列上计算。
+
+\Needspace{6\baselineskip}
+\begin{definition}[亏值]\label{b3:def:C-deficiency}
+设 \(f\) 为 \(\mathbb C\) 上非常数亚纯函数，\(a\in\widehat{\mathbb C\kern0pt}\)。定义 \(a\) 的\term[kuizhi]{亏值}[deficiency]
 \[
- \delta(a,f)=1-\limsup_{r\to\infty}\frac{N(r,a;f)}{T(r,f)}.
+ \delta(a,f)\coloneqq1-\limsup_{r\to\infty}\frac{N(r,a;f)}{T(r,f)}.
 \]
-第一基本定理给 \(0\le\delta\le1\)。被省略的值亏值为一；逆命题一般不成立，因为亏值只比较渐近频率，并不要求完全没有原像。
+\end{definition}
+\symidx{\(\delta(a,f)\)：球面值 \(a\) 的 Nevanlinna 亏值}
 
-一个直接的反例是 \(f(z)=ze^z\)。它取到零值，且只在原点取到一次，所以 \(N(r,0;f)=\log r\)。基本运算给上界 \(T(r,f)\le r/\pi+\log r\)；从 \(e^z=f(z)/z\) 又得下界 \(T(r,f)\ge r/\pi-\log r\)。故 \(N(r,0;f)/T(r,f)\to0\)，零值亏值仍为一。无穷远也省略而有亏值一。这说明两个总亏值达到上限，仍可有一个亏值为一的有限值实际上已经取到；“完全省略”比“渐近比例为零”更强。
+\(T(r,f)\to\infty\)，所以分母在大半径处为正。由 \(N\ge0\) 和第一基本定理，\(N/T\le1+O(1/T)\)，因此 \(0\le\delta\le1\)。同一个等式还给出
+\begin{equation}\label{b3:eq:C-defect-proximity}
+ \delta(a,f)=\liminf_{r\to\infty}\frac{m(r,a;f)}{T(r,f)}.
+\end{equation}
+右侧是下极限：只有在所有充分大半径上都持续占据的接近份额，才构成亏值。某一列半径上的偶然短缺不足以确定它。
 
+\ProseParagraphBreak
 
+被省略的值有 \(N\equiv0\)，亏值为一。逆命题不成立。例如 \(f(z)=ze^z\) 在原点取到一次零值，\(N(r,0;f)=\log r\)。由基本运算和 \(e^z=f/z\)，
+\[
+ \frac r\pi-\log r\le T(r,f)\le\frac r\pi+\log r
+ \quad(r\ge1).
+\]
+故 \(\delta(0,f)=1\)，尽管零值已经出现。它作为整函数还省略无穷远，因此 \(\delta(\infty,f)=1\)。更一般地，超越亚纯函数若对某个值只有有限个原像，计数为 \(O(\log r)=o(T)\)，该值的亏值也为一。
+
+\subsection{从有限值集推出亏值关系}
+\label{b3:subsec:C0402}
+
+第二基本定理只对固定有限值集给出一份例外集。亏值关系也先对有限集证明，最后对有限集之和取上确界。这样不需要为所有目标值制造一个共同的正常半径集合。
+
+\Needspace{6\baselineskip}
 \begin{theorem}[亏值关系]\label{b3:thm:C-defect-relation}
-设 \(f\) 是整个复平面上的非常值亚纯函数，对球面值 \(a\) 定义亏值 \(\delta(a,f)=1-\limsup_{r\to\infty}N(r,a;f)/T(r,f)\)。则\(\sum_{a\in\widehat{\mathbb C\kern0pt}}\delta(a,f)\le2\)，其中不可数和指所有有限子集之和的上确界。特别地，正亏值只有至多可数多个。
+设 \(f\) 为整个复平面上的非常数亚纯函数，\(\delta(a,f)=1-\limsup_{r\to\infty}N(r,a;f)/T(r,f)\)。则
+\[
+ \sum_{a\in\widehat{\mathbb C\kern0pt}}\delta(a,f)\le2,
+\]
+其中不可数和定义为所有有限子集之和的上确界。特别地，正亏值至多有可数多个。
 \end{theorem}
 \begin{proof}
-若 \(f\) 超越，对固定有限值集使用第二基本定理，并以 \(\overline N\le N\) 放宽右侧。由引理~\ref{b3:lem:C-transcendental-growth}，误差除以 \(T\) 后沿例外集之外趋零。对任意 \(\varepsilon>0\)，由各项上极限的定义，在所有充分大半径上都有
-\(N(r,a_j)/T(r)\le1-\delta(a_j,f)+\varepsilon\)。于是
-\(q-2\le q-\sum_j\delta(a_j,f)+q\varepsilon\)，令 \(\varepsilon\downarrow0\)。若 \(f\) 是次数 \(d\) 的有理函数，球面上每个值恰有 \(d\) 个原像；仅 \(a=f(\infty)\) 在有限平面中少去无穷远局部重数 \(e\)。因此该值的亏值为 \(e/d\le1\)，其余均为零。最后，亏值至少 \(1/n\) 的值至多 \(2n\) 个；对 \(n\) 取可数并即得可数性。
-\end{proof}
-一个亚纯函数若省略三个球面值，亏值和至少为三，故必为常数；整函数已省略无穷远，因此非常数整函数至多再省略一个有限值。这正是 Picard 小定理的值分布形式。
-\ProseParagraphBreak
-对 \(e^z\)，\(0\) 与 \(\infty\) 均省略，所以两个亏值都为一。对任意 \(a\ne0\)，方程 \(e^z=a\) 的解为 \(\log a+2\pi\mathrm{i}k\)，计数 \(n(r,a)=r/\pi+O(1)\)，积分给 \(N(r,a)=r/\pi+O(\log r)\)，与 \(T=r/\pi\) 同主项；其余亏值全为零。对多项式，只有无穷远亏值为一。可见“增长快慢”和“哪些值短缺”是不同资料：\(e^{z^m}\) 的增长阶随 \(m\) 改变，却仍有同样两个省略值。
-
-\ProseParagraphBreak
-椭圆函数则给另一种极端。固定格 \(\Lambda\)，\(\wp\) 的每个球面值在一个基本区域内按重数有两个原像。以固定大小的格胞覆盖半径 \(r\) 的圆盘，只有 \(O(r)\) 个胞与边界相交，所以对每个固定值 \(a\)，
+固定互异值 \(a_1,\ldots,a_q\)。\(q\le2\) 时结论已由 \(\delta\le1\) 得到；设 \(q\ge3\)。在第二基本定理中以 \(\overline N\le N\) 放宽右侧。超越情形的误差除以 \(T\) 后在例外集之外趋零，有理情形则使用 \(O(1)/T\to0\)。所以在某个无界的正常半径集合上，
 \[
- n(r,a;\wp)=\frac{2\pi}{v(\Lambda)}r^2+O(r),\qquad
- N(r,a;\wp)=\frac{\pi}{v(\Lambda)}r^2+O(r+\log r),
+ q-2\le\sum_{j=1}^q\frac{N(r,a_j;f)}{T(r,f)}+o(1).
 \]
-其中 \(v(\Lambda)\) 为基本平行四边形面积，初始有限半径只贡献常数或 \(O(\log r)\)。球面面积的换元在一个格胞内给
-\(\pi^{-1}\int_{\mathrm{cell}}(\wp^\#)^2\,\mathrm{d}A=2\)：避开有限分歧值后，每个值有两个逆分支，球面密度 \((1+|w|^2)^{-2}\) 在平面上的总积分为 \(\pi\)。球面导数平滑且周期，边界胞的面积误差为 \(O(r)\)，所以同样得到
-\(T(r,\wp)=\pi r^2/v(\Lambda)+O(r+\log r)\)。于是每个亏值都为零。
-\ProseParagraphBreak
-不过 \(\wp\) 有四个完全二重的值：三个有限半周期值和无穷远。对这些值，约化计数只有带重数计数的一半，第二基本定理的四值不等式在主项上正好成为 \(2T\le4\cdot T/2+o(T)\)。所以没有亏值不等于没有分歧；第一基本定理看带重数的频率，第二基本定理还能看到重数被折叠后的损失。
+给定 \(\varepsilon>0\)，由每个上极限的定义，存在 \(R_j\)，使对所有 \(r\ge R_j\)，
+\[
+ \frac{N(r,a_j;f)}{T(r,f)}
+ \le1-\delta(a_j,f)+\varepsilon.
+\]
+取有限个 \(R_j\) 的最大值后，这些上界在全部更大半径上同时成立，当然也在正常半径上成立。于是
+\[
+ q-2\le q-\sum_{j=1}^q\delta(a_j,f)+q\varepsilon+o(1).
+\]
+先沿正常半径趋于无穷，再令 \(\varepsilon\downarrow0\)，得到有限集亏值和不超过二。对有限集取上确界，得到所述总和。
 
+对每个正整数 \(n\)，亏值至少 \(1/n\) 的值至多有 \(2n\) 个，否则其中一个有限子集就会使总和超过二。所有正亏值属于这些有限集合的可数并，故至多可数。
+\end{proof}
+
+证明使用了两种量词：上极限给出的上界对所有充分大半径成立，第二基本定理则只在正常半径成立。把全半径上的上界限制到正常半径，再取极限即可。每次固定的值集有限，因此所需排除的也只是有限个例外集的并。
+
+\ProseParagraphBreak
+
+三个省略球面值会贡献至少三份亏值，故非恒定亚纯函数不能省略三个值。整函数已经省略无穷远，因此至多再省略一个有限值。这给出 Picard 小定理的值分布证明。对超越亚纯函数，只有有限个原像的值也各贡献一份，故这样的球面值至多有两个。
+
+\subsection{有理函数与指数函数的亏值}
+\label{b3:subsec:C0403}
+
+有理函数的亏值来自没有计入有限平面的源点 \(\infty\)。这与超越函数中原像频率趋零的机制不同。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[有理函数的亏值]\label{b3:prop:C-rational-defects}
+设 \(R\) 为次数 \(d\ge1\) 的有理函数，\(a_\infty=R(\infty)\)，并设它在源点 \(\infty\) 的局部映射重数为 \(e\)。则
+\[
+ \delta(a_\infty,R)=\frac ed,
+ \quad \delta(a,R)=0\quad(a\ne a_\infty).
+\]
+这里原像计数只取有限复平面中的点。
+\end{proposition}
+\begin{proof}
+将 \(R=P/Q\) 的分子、分母齐次化到次数 \(d\)，由互素性知它们没有共同射影零点。对每个目标值，纤维方程为一个次数 \(d\) 的齐次方程，按重数在球面上恰有 \(d\) 个解。只有值 \(a_\infty\) 的纤维含源点 \(\infty\)，其重数为 \(e\)；因此它的有限原像总重数为 \(d-e\)，其他值则为 \(d\)。超过这些有限原像的模后，
+\[
+ N(r,a_\infty;R)=(d-e)\log r+O(1),
+ \quad N(r,a;R)=d\log r+O(1)\quad(a\ne a_\infty).
+\]
+用 \(T(r,R)=d\log r+O(1)\) 相除即得。
+\end{proof}
+
+多项式的 \(a_\infty=\infty\)、\(e=d\)，所以只有无穷远亏值为一。有理函数 \((z^2+1)/z^2\) 在无穷远取值一，且 \(R(1/w)-1=w^2\)，故一的亏值为一，其他值没有亏值。有限源点中的省略值在这里恰是唯一只由无穷远提供的纤维。
+
+\ProseParagraphBreak
+
+对于 \(e^z\)，零与无穷远都省略，亏值各为一。若 \(a\ne0\)，选一支 \(\log a=u+\mathrm{i}v\)，全部原像为
+\[
+ z_k=u+\mathrm{i}(v+2\pi k),\quad k\in\mathbb Z.
+\]
+它们是简单原像。圆盘条件等价于 \(|v+2\pi k|\le\sqrt{r^2-u^2}\)，由整数区间计数得
+\[
+ n(r,a;e^z)=\frac r\pi+O(1),
+ \quad N(r,a;e^z)=\frac r\pi+O(\log r).
+\]
+与 \(T(r,e^z)=r/\pi\) 比较，得到所有非零有限值的亏值为零。更换 \(\log a\) 的分支只平移整数指标，不改变计数。
+
+\subsection{椭圆函数中的频率与分歧}
+\label{b3:subsec:C0404}
+
+固定满格 \(\Lambda\subset\mathbb C\)，以 \(v(\Lambda)\) 表示一个基本平行四边形的欧氏面积。\cref{b3:prop:22-wp-fibers}说明，\(\wp\) 在复环面上是二重映射，每个球面值在一个基本格胞中按重数恰有两个原像。可选半开格胞避免边界重复计数；边界通过原像时也只会影响下面的边界误差。
+
+\ProseParagraphBreak
+
+一个固定格胞的直径有界。覆盖圆盘 \(|z|\le r\) 时，完全包含的格胞数为 \(\pi r^2/v(\Lambda)+O(r+1)\)，与圆周相交的格胞只有 \(O(r+1)\) 个：这些胞都落在宽度有界的圆周环带内，胞内又各含固定半径的不交小盘，所以数量受环带面积控制。每胞中每个值的总原像重数为二，因此对每个固定 \(a\)，
+\[
+ n(r,a;\wp)=\frac{2\pi}{v(\Lambda)}r^2+O(r+1),
+ \quad N(r,a;\wp)=\frac\pi{v(\Lambda)}r^2+O(r+\log r).
+\]
+第二式由对 \(\mathrm{d}t/t\) 积分得到；固定初始圆盘及原点项只增加 \(O(\log r)\)。
+
+\ProseParagraphBreak
+
+还须计算 \(T\)，不能只凭所有原像计数有同一主项就假定接近项很小。球面面积换元在一个基本格胞内给出
+\[
+ \frac1\pi\int_{\mathrm{cell}}(\wp^\#)^2\,\mathrm{d}\lambda=2.
+\]
+理由是除去有限个分歧值后，每个目标值有两个逆分支，而球面测度的总质量为一。\((\wp^\#)^2\) 光滑且周期，因此其在边界胞上的积分也有统一上界。相同的格胞估计给出
+\[
+ A_\wp(r)=\frac{2\pi}{v(\Lambda)}r^2+O(r+1),
+ \quad T(r,\wp)=\frac\pi{v(\Lambda)}r^2+O(r+\log r).
+\]
+这里最后一步使用了 \(T=T_0+O(1)\)。于是每个球面值都满足 \(N/T\to1\)，全部亏值为零。
+
+\ProseParagraphBreak
+
+然而 \(\wp\) 有四个完全二重的值：三个有限半周期值和无穷远。对这些值，约化计数只有带重数计数的一半，所以四值的第二基本定理在主项上成为
+\[
+ 2T\le4\cdot\frac T2+o(T).
+\]
+这既达到四个完全分歧值的界，又说明“没有亏值”并不等于“没有分歧”。带重数的频率、接近程度与丢掉重数后的原像频率，分别记录不同的信息。
 
 \begin{chaptersummary}
-第一基本定理说明单个值的计数与接近程度可以相互补偿。第二基本定理把多个值同时放进不等式，导数的零点消去重数，形成约化计数。亏值关系只控制渐近比例；它既推广省略值现象，也保留了比 Picard 定理更细的频率信息。
+Jensen 等式把零极点计数和圆周对数平均放在同一个平衡式中，第一基本定理由此给出逐值的共同主量。球面面积提供非负、对数凸的特征，极点计数与整函数估计又将有理增长和超越增长分开。对数导数引理控制额外的平均项，使第二基本定理能够同时比较多个值；导数产生分歧计数，扣除目标值上的重数损失便得到约化形式。亏值关系先处理固定有限值集，再在正常半径上使用全部半径的上极限上界；省略、亏值为一和完全分歧因而能被清楚地区分。
 \end{chaptersummary}
 \BookExercises
+
+以下练习从具体函数的特征计算出发，逐步考察源变量换元与多个共享值问题。
+
+% 自拟：用原点零极点检验计数归一化与球面面积特征。
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b3:ex:C-1}
-计算 \(T(r,z^m)\)、\(T(r,z^{-m})\) 在 \(r\ge1\) 时的精确值。
+设 \(m\ge1\) 为整数、\(c\ne0\)，令 \(f_+(z)=cz^m\)、\(f_-(z)=cz^{-m}\)。按本附录的归一化，对每个 \(r>0\) 分别计算 \(N(r,\infty;f_\pm)\)、\(m(r,\infty;f_\pm)\)、\(T(r,f_\pm)\) 和 \(T_0(r,f_\pm)\)。说明为何带原点项的计数比较通常限定在 \(r\ge1\)，并给出小半径下 \(T\) 为负而 \(T_0\) 非负的例子。
 \end{exercise}
 \begin{solution}
-前者无极点且圆周正对数为 \(m\log r\)；后者的接近函数为零，原点极点贡献 \(m\log r\)。故两者同为 \(m\log r\)。
+\(f_+\) 没有极点，\(f_-\) 在原点有一个 \(m\) 阶极点。圆周上两函数的模分别恒为 \(|c|r^m\) 和 \(|c|r^{-m}\)，所以
+\[
+ \begin{aligned}
+ N(r,\infty;f_+)&=0,
+ &m(r,\infty;f_+)&=\log^+(|c|r^m),\\
+ N(r,\infty;f_-)&=m\log r,
+ &m(r,\infty;f_-)&=\log^+(|c|r^{-m}).
+ \end{aligned}
+\]
+两项相加得到
+\[
+ T(r,f_+)=\log^+(|c|r^m),
+ \quad T(r,f_-)=\max\{\log|c|,m\log r\}.
+\]
+计算面积特征时，分别用无公共零点的整函数对 \((cz^m,1)\) 和 \((c,z^m)\)。由 \cref{b3:prop:C-area-characteristic} 的圆周平均表示，
+\[
+ \begin{aligned}
+ T_0(r,f_+)&=\frac12\log(1+|c|^2r^{2m}),\\
+ T_0(r,f_-)&=\frac12\log(|c|^2+r^{2m})-\log|c|
+            =\frac12\log\left(1+\frac{r^{2m}}{|c|^2}\right).
+ \end{aligned}
+\]
+它们对每个正半径都非负。后一式中的 \(-\log|c|\) 正是圆周平均减去原点值所产生的常数；不能因为原点是极点而把它遗漏。
+
+当 \(r<1\) 时，原点极点的贡献 \(m\log r\) 为负。故从原像重数的大小直接比较两种积分计数时，需要留意这一项；取 \(r\ge1\) 后各点的权重都非负。例如 \(c=1/2\)、\(m=1\)、\(r=1/4\) 时，
+\[
+ T(r,f_-)=-\log2,
+ \quad T_0(r,f_-)=\frac12\log\frac54>0.
+\]
+这不影响 \(T=T_0+O(1)\)，也不影响只涉及 \(r\to\infty\) 的增长阶和亏值。两种特征的有界差并不要求它们在每个半径有相同符号。
 \end{solution}
+
+% 自拟：由正部估计计算主项，再加入有限零极点。
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b3:ex:C-2}
-求 \(f(z)=e^{z^m}\) 的特征函数，并判断其阶。
+设 \(P(z)=az^d+\cdots\) 为次数 \(d\ge1\)、首项系数 \(a\ne0\) 的多项式，\(R\) 为不恒零的有理函数，令 \(f=Re^P\)。证明
+\[
+ T(r,f)=\frac{|a|}{\pi}r^d+O(r^{d-1}+\log r),\quad r\to\infty.
+\]
+求 \(f\) 的特征增长阶和所有亏值。取 \(R(z)=(z-1)/(z+1)\)，说明两个亏值为一的球面值可以同时都被取到。
 \end{exercise}
 \begin{solution}
-圆周正对数为 \(r^m\max(\cos mt,0)\)。一个周期正部分积分为2，平均为 \(1/\pi\)，故 \(T=r^m/\pi\)，特征增长阶为 \(m\)。
+先计算整函数 \(e^P\)。写 \(a=|a|e^{\mathrm{i}\theta}\)，当 \(r\ge1\) 时，余项在圆周上一致满足
+\[
+ \operatorname{Re}P(re^{\mathrm{i}t})
+ =|a|r^d\cos(dt+\theta)+O(r^{d-1}).
+\]
+实函数 \(x\mapsto\max\{x,0\}\) 为 \(1\)-Lipschitz，故取正部并积分之后，误差仍为 \(O(r^{d-1})\)。余弦正部在一个周期内的积分是二；由于 \(d\) 为正整数，角变量替换恰好走过 \(d\) 个周期。因此
+\[
+ \begin{aligned}
+ T(r,e^P)
+ &=\frac1{2\pi}\int_0^{2\pi}
+      \max\{\operatorname{Re}P(re^{\mathrm{i}t}),0\}\,\mathrm{d}t\\
+ &=\frac{|a|r^d}{2\pi}\int_0^{2\pi}
+      \max\{\cos(dt+\theta),0\}\,\mathrm{d}t+O(r^{d-1})\\
+ &=\frac{|a|}{\pi}r^d+O(r^{d-1}).
+ \end{aligned}
+\]
+\(R\) 与 \(1/R\) 的特征都是 \(O(\log r)\)。先对 \(f=Re^P\)，再对 \(e^P=f/R\) 使用乘积不等式，得到
+\[
+ T(r,e^P)-T(r,1/R)\le T(r,f)
+ \le T(r,e^P)+T(r,R).
+\]
+这就给出所求渐近式，进而 \(\rho_T(f)=d\)。
+
+指数因子处处有限非零，所以 \(f\) 的有限零点、极点正好来自 \(R\)，总数按重数有限。故
+\[
+ N(r,0;f)=O(\log r),
+ \quad N(r,\infty;f)=O(\log r).
+\]
+将它们除以上面的正主项，得到 \(\delta(0,f)=\delta(\infty,f)=1\)。亏值关系及各亏值非负又说明，每个 \(a\in\mathbb C\setminus\{0\}\) 都满足 \(\delta(a,f)=0\)。
+
+最后取题中的 \(R\)，则 \(z=1\) 为 \(f\) 的简单零点，\(z=-1\) 为简单极点，指数因子不改变这两个重数。于是零和无穷远都被取到，却各有亏值一。这里亏值衡量的是相对于 \(r^d\) 的原像频率，而这两个有限原像只贡献对数增长。
 \end{solution}
+
+% 自拟：将省略值与约化计数结合，排除只剩重原像的情形。
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b3:ex:C-3}
-设 \(f\) 超越且有 \(q\) 个值，其每个原像均至少二重。证明 \(q\le4\)。
+设 \(f\) 为全复平面上的超越亚纯函数，省略两个互异球面值 \(a,b\)。证明：对每个 \(c\in\widehat{\mathbb C\kern0pt}\setminus\{a,b\}\)，\(f\) 都有无穷多个简单 \(c\)-点。这里简单无穷远点指一阶极点。
 \end{exercise}
 \begin{solution}
-第二基本定理及 \(\overline N\le N/2\) 给 \((q-2)T\le qT/2+o(T)\)，故 \(q-2\le q/2\)。若某值省略，约化计数为零，仍可纳入同一估计。
+固定 \(c\)，反设简单 \(c\)-点只有有限个。用 \(N_s(r)\) 表示只计这些简单点的积分计数，则 \(N_s(r)=O(\log r)\)。其余 \(c\)-点的重数至少为二，因而对 \(r\ge1\)，逐点比较非负权重可得
+\[
+ \overline N(r,c;f)
+ \le\frac12N(r,c;f)+\frac12N_s(r).
+\]
+在简单点上右侧给出一次权重；在 \(\nu\ge2\) 重的点上右侧给出 \(\nu/2\) 次权重，至少为一次。这个比较同样适用于极点。
+
+对固定的三个值 \(a,b,c\) 应用第二基本定理，前两个值的计数为零。由超越增长引理，沿相应有限长度例外集之外的半径，
+\[
+ T(r,f)\le\overline N(r,c;f)+o(T(r,f))
+ \le\frac12N(r,c;f)+O(\log r)+o(T(r,f)).
+\]
+第一基本定理给 \(N(r,c;f)\le T(r,f)+O(1)\)，而 \(\log r=o(T(r,f))\)。相除并让正常半径趋于无穷，得到 \(1\le1/2\)，矛盾。故简单 \(c\)-点必有无穷多个。
 \end{solution}
+
+% 自拟：同一有理函数中分别辨认源点无穷远的缺失与有限分歧。
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b3:ex:C-4}
-求有理函数 \(f(z)=(z^2+1)/z^2\) 的所有正亏值。
+令 \(f(z)=z+1/z\)。求它的所有亏值，并计算
+\[
+ \lim_{r\to\infty}\frac{\overline N(r,a;f)}{T(r,f)}
+\]
+在 \(a=2,-2,\infty\) 以及其他球面值处的结果。用这个例子说明，亏值为零并不能排除该值完全分歧。
 \end{exercise}
 \begin{solution}
-次数为2，无穷远映为1，且 \(f-1=z^{-2}\) 在无穷远有二阶零。值1没有有限原像，亏值为1；其他球面值的有限原像按重数均为2，亏值为零。
+\(f\) 的有理次数为二，所以 \(T(r,f)=2\log r+O(1)\)。在源点无穷远的坐标 \(w=1/z\) 中，
+\[
+ \frac1{f(1/w)}=\frac{w}{1+w^2}
+\]
+于原点有一阶零点。因此 \(f(\infty)=\infty\)，其局部重数为一。由有理函数亏值公式，
+\[
+ \delta(\infty,f)=\frac12,
+ \quad\delta(a,f)=0\quad(a\in\mathbb C).
+\]
+有限平面中唯一的极点是原点，且为一阶，所以
+\[
+ N(r,\infty;f)=\overline N(r,\infty;f)=\log r.
+\]
+再由
+\[
+ f(z)-2=\frac{(z-1)^2}{z},
+ \quad f(z)+2=\frac{(z+1)^2}{z},
+\]
+可知两个有限值各只有一个二重原像。对 \(r\ge1\)，
+\[
+ N(r,2;f)=N(r,-2;f)=2\log r,
+ \quad \overline N(r,2;f)=\overline N(r,-2;f)=\log r.
+\]
+若 \(a\ne2,-2\) 为有限值，则方程 \(z^2-az+1=0\) 有两个不同的非零根；它们都是简单 \(a\)-点。超过两个根的模后，约化计数与带重数计数相等，均为 \(2\log r+O(1)\)。综上，所求极限为
+\[
+ \begin{cases}
+  \frac12,&a\in\{2,-2,\infty\},\\
+  1,&a\in\mathbb C\setminus\{2,-2\}.
+ \end{cases}
+\]
+值 \(2,-2\) 的全部有限原像都为二重，但重数补足了总次数，故亏值仍为零。无穷远则因源点无穷远未列入有限平面计数而有正亏值。这两种损失在约化比例中恰好同为一半，却有不同来源。
 \end{solution}
+
+% 自拟：用连续尖峰检验例外集与全半径上极限的量词。
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b3:ex:C-5}
-若超越亚纯函数的互异值 \(a_j\) 的原像重数均至少 \(m_j\ge2\)，证明 \(\sum_j(1-1/m_j)\le2\)，先讨论有限值集。
+构造开集 \(E\subset[1,\infty)\) 和连续函数 \(h:[1,\infty)\to[0,1]\)，使 \(E\) 的 Lebesgue 长度有限、\(h\) 在 \(E\) 外恒为零，但
+\[
+ \limsup_{r\to\infty}h(r)=1.
+\]
+再证明有限对数测度不蕴含有限长度，并说明为什么不能把可数多个有限长度的例外集直接合并为一个有限长度集。这些例子对亏值关系中取上极限的次序有什么启示？
 \end{exercise}
 \begin{solution}
-对超越函数，第二基本定理右侧至多 \(\sum_jN(r,a_j)/m_j\)，再由第一基本定理估计并除以 \(T\) 得结论。再对有限子集取上确界，即得无限值集的解释。
+对整数 \(n\ge2\)，令 \(\varepsilon_n=2^{-n-2}\)，并取
+\[
+ E=\bigcup_{n=2}^\infty
+      (n-2\varepsilon_n,n+2\varepsilon_n),
+ \quad h(r)=\sum_{n=2}^\infty
+      \max\left\{1-\frac{|r-n|}{\varepsilon_n},0\right\}.
+\]
+这些开区间两两不交，总长度为 \(4\sum_{n\ge2}\varepsilon_n<\infty\)。和式在任意紧区间内只有有限个非零项，且任一点至多有一项非零，所以 \(h\) 连续且取值在 \([0,1]\) 内。每个三角尖峰的支集都包含在相应开区间中，因而 \(h=0\) 于 \(E\) 外；另一方面 \(h(n)=1\)，故全半径上极限为一。\(E\) 的补集无界，在补集上取的上极限却为零。
+
+对第二问，令
+\[
+ E_0=\bigcup_{k=1}^\infty[2^k,2^k+1].
+\]
+各区间长度为一且两两不交，所以 \(E_0\) 的长度无限；但
+\[
+ \int_{E_0}\frac{\mathrm{d}r}{r}
+ =\sum_{k=1}^\infty\log(1+2^{-k})
+ \le\sum_{k=1}^\infty2^{-k}<\infty.
+\]
+相反，在 \([1,\infty)\) 上 \(1/r\le1\)，所以有限长度确实蕴含有限对数测度。对第三问，每个 \([n,n+1]\) 都有有限长度，而它们的可数并覆盖整个 \([1,\infty)\)。没有可求和的长度控制，可数并不能保留有限长度，甚至可能不剩正常半径。
+
+因此，第二基本定理只保证正常半径上的估计时，不能据此把任意全半径上极限改成正常半径上极限。亏值关系的证明先由全半径上极限取得对所有充分大半径有效的上界，再将此上界用于正常半径；它也始终先固定有限个目标值，仅合并有限个例外集。上面的连续尖峰说明，这两处量词不能互换。
 \end{solution}
+
+% 自拟：将目标 Möbius 变换推广为一般有理映射，使用面积特征证明。
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b3:ex:C-6}
-证明对非零常数 \(c\)，\(m(r,\infty;cf)-m(r,\infty;f)\) 的绝对值不超过 \(|\log|c||\)，并解释为何亏值不依赖目标坐标的 Möbius 选择。
+设 \(f\) 为全复平面上的非恒定亚纯函数，\(R=P/Q\) 为次数 \(d\ge1\) 的有理函数，其中 \(P,Q\) 互素。证明
+\[
+ T(r,R\circ f)=dT(r,f)+O(1),\quad r\to\infty.
+\]
+提示：把 \(P,Q\) 齐次化到次数 \(d\)，并使用无公共零点的整函数表示 \(f=g/h\)。再证明对每个整数 \(m\ge1\)，
+\[
+ \delta(0,f^m)=\delta(0,f),
+ \quad\delta(\infty,f^m)=\delta(\infty,f).
+\]
 \end{exercise}
 \begin{solution}
-函数 \(u\mapsto\max(u,0)\) 为1-Lipschitz，对 \(u=\log|f|\) 加常数 \(\log|c|\) 后积分即可。Möbius 变换由平移、倍乘、取倒数组成，\(T\) 仅差有界项且原像计数原封不动；因 \(T\to\infty\)，定义中的上极限不变。
+记齐次多项式为
+\[
+ P_d(X,Y)=Y^dP(X/Y),
+ \quad Q_d(X,Y)=Y^dQ(X/Y),
+\]
+右侧按多项式展开解释。它们在 \(\mathbb C^2\setminus\{(0,0)\}\) 没有共同零点：若 \(Y\ne0\)，共同零点违反 \(P,Q\) 互素；若 \(Y=0\)、\(X\ne0\)，则 \(P,Q\) 中至少一个次数等于 \(d\)，相应首项在该点非零。
+
+在紧集 \(|X|^2+|Y|^2=1\) 上，连续函数
+\(\sqrt{|P_d(X,Y)|^2+|Q_d(X,Y)|^2}\)
+因此有正的最小值和有限的最大值。再用齐次性，存在常数 \(0<c_-\le c_+<\infty\)，使
+\[
+ c_-(|X|^2+|Y|^2)^{d/2}
+ \le\sqrt{|P_d(X,Y)|^2+|Q_d(X,Y)|^2}
+ \le c_+(|X|^2+|Y|^2)^{d/2}.
+\]
+由正文的整函数表示，取没有共同零点的整函数 \(g,h\)，使 \(f=g/h\)。令
+\[
+ G=P_d(g,h),\quad H=Q_d(g,h).
+\]
+则 \(G,H\) 也是没有共同零点的整函数，并表示 \(R\circ f\)。写
+\[
+ w_f=\frac12\log(|g|^2+|h|^2),
+ \quad w_{R\circ f}=\frac12\log(|G|^2+|H|^2).
+\]
+前面的齐次估计给出全平面上的一致界
+\[
+ \log c_-\le w_{R\circ f}-dw_f\le\log c_+.
+\]
+分别取圆周平均并减去原点值，由面积特征的表示式得
+\[
+ T_0(r,R\circ f)-dT_0(r,f)=O(1).
+\]
+再对两个函数各用 \(T=T_0+O(1)\)，即得第一问。此处有界项可以依赖 \(R,f\)，但不依赖半径。
+
+取 \(R(w)=w^m\)，得到 \(T(r,f^m)=mT(r,f)+O(1)\)。每个零点和极点的重数都恰好乘以 \(m\)，故对 \(a=0,\infty\)，有精确等式
+\[
+ N(r,a;f^m)=mN(r,a;f).
+\]
+又因 \(T(r,f)\to\infty\)，且第一基本定理保证 \(N(r,a;f)/T(r,f)\) 在大半径有界，所以两函数相应计数与特征的比值之差趋于零。取上极限后，即得这两个亏值不变。
+\end{solution}
+
+% 自拟：源变量幂次换元的计数、增长阶及例外测度。
+\Needspace{6\baselineskip}
+\begin{optionalexercise}\label{b3:ex:C-7}
+设 \(f\) 为全复平面上的非恒定亚纯函数，\(k\ge2\) 为整数，令 \(F(z)=f(z^k)\)。证明对任意球面值 \(a\) 和任意 \(r>0\)，
+\[
+ N(r,a;F)=N(r^k,a;f),
+ \quad T(r,F)=T(r^k,f).
+\]
+由此求 \(F\) 的亏值及特征增长阶。若可测集 \(E\subset[1,\infty)\) 有有限对数测度，求集合 \(E_k=\{r\ge1:r^k\in E\}\) 的对数测度。
+\end{optionalexercise}
+\begin{solution}
+设 \(b\ne0\) 为 \(f\) 的一个 \(\nu\) 重 \(a\)-点。方程 \(z^k=b\) 有 \(k\) 个不同的根，它们的模均为 \(|b|^{1/k}\)，且源变量映射在这些根处的导数非零。因此每个根都是 \(F\) 的 \(\nu\) 重 \(a\)-点。它们在半径 \(r\) 内出现，当且仅当 \(|b|\le r^k\)，其总积分权重为
+\[
+ k\nu\log\frac r{|b|^{1/k}}
+ =\nu\log\frac{r^k}{|b|}.
+\]
+这正是 \(b\) 对 \(N(r^k,a;f)\) 的贡献。边界点在两侧都贡献零。若原点是 \(\nu\) 重 \(a\)-点，则复合后重数为 \(k\nu\)，对应原点项
+\(k\nu\log r=\nu\log(r^k)\)
+也完全相同。对圆盘内的所有点求和，得到第一式；有限值与极点均按同一局部重数计算。
+
+圆周平均方面，由角变量的周期性，
+\[
+ \begin{aligned}
+ m(r,\infty;F)
+ &=\frac1{2\pi}\int_0^{2\pi}
+       \log^+|f(r^ke^{\mathrm{i}kt})|\,\mathrm{d}t\\
+ &=\frac1{2\pi}\int_0^{2\pi}
+       \log^+|f(r^ke^{\mathrm{i}s})|\,\mathrm{d}s
+ =m(r^k,\infty;f).
+ \end{aligned}
+\]
+即使圆周上有极点，对数奇性仍可积，换元有效。加入极点计数便得特征函数的精确等式。
+
+变量 \(s=r^k\) 单调遍历所有充分大的正数，故
+\[
+ \delta(a,F)=\delta(a,f)
+ \quad\text{对每个球面值 }a,
+\]
+而
+\[
+ \rho_T(F)
+ =\limsup_{s\to\infty}\frac{\log^+T(s,f)}{(\log s)/k}
+ =k\rho_T(f).
+\]
+这也包括增长阶为无穷的情形。最后，同一实变量替换给
+\[
+ \int_{E_k}\frac{\mathrm{d}r}{r}
+ =\frac1k\int_E\frac{\mathrm{d}s}{s}<\infty.
+\]
+源变量换元改变增长尺度，却保留每个值的相对亏缺，并将对数测度按固定比例缩放。
+\end{solution}
+
+% 自拟重组经典五值论证；只使用本附录已证的第二基本定理。
+\Needspace{6\baselineskip}
+\begin{optionalexercise}[五值唯一性]\label{b3:ex:C-8}
+设 \(f,g\) 为全复平面上的非恒定亚纯函数。若存在五个互异球面值 \(a_1,\ldots,a_5\)，使
+\[
+ \{z\in\mathbb C:f(z)=a_j\}
+ =\{z\in\mathbb C:g(z)=a_j\},\quad 1\le j\le5,
+\]
+其中只要求原像集合相同，不要求重数相同，证明 \(f=g\)。再验证 \(e^z\) 与 \(e^{-z}\) 共享四个球面值，说明不能把“五个”无条件改成“四个”。
+\end{optionalexercise}
+\begin{solution}
+反设 \(f\ne g\)。选一个不属于五个目标值的球面点，将它作为 Möbius 变换 \(M\) 的极点。于是 \(F=M\circ f\)、\(G=M\circ g\) 仍为不同的非恒定亚纯函数，并共享五个互异的有限值 \(b_j=M(a_j)\)。令 \(H=F-G\)，则 \(H\) 不恒为零。
+
+每个共同的 \(b_j\)-点都是 \(H\) 的零点，因为 \(F,G\) 在该点均全纯且取同一有限值。不同 \(b_j\) 的原像集合又互不相交。故对 \(r\ge1\)，
+\[
+ A(r)\coloneqq\sum_{j=1}^5\overline N(r,b_j;F)
+ =\sum_{j=1}^5\overline N(r,b_j;G)
+ \le N(r,0;H).
+\]
+两组约化计数相等只使用共享集合的假设；计入重数时未必相等。
+
+对 \(F,G\) 各应用五值的第二基本定理，并取两个有限长度例外集的并。沿并集之外的半径，
+\[
+ 3\bigl(T(r,F)+T(r,G)\bigr)
+ \le2A(r)+S(r,F)+S(r,G).
+\]
+如果 \(H\) 非恒定，第一基本定理给 \(N(r,0;H)\le T(r,H)+O(1)\)；如果 \(H\) 为非零常数，其零点计数为零，同一上界也成立。和的不等式进一步给
+\[
+ N(r,0;H)\le T(r,F)+T(r,G)+O(1).
+\]
+代入并移项，得到
+\[
+ U(r)\coloneqq T(r,F)+T(r,G)
+ \le S(r,F)+S(r,G)+O(1).
+\]
+若至少一个函数超越，则超越增长引理说明 \(U(r)/\log r\to\infty\)。同时 \(T(r,F),T(r,G)\le U(r)\) 对 \(r\ge1\) 成立，故两个对数导数误差之和为
+\[
+ O(\log^+U(r)+\log r)=o(U(r))
+\]
+于正常半径成立。上式因而矛盾。若两函数均为有理函数，则正文已证第二基本定理的误差可改为所有充分大半径上的 \(O(1)\)，而 \(U(r)\to\infty\)，仍然矛盾。于是只能有 \(F=G\)，由 \(M\) 的可逆性得到 \(f=g\)。
+
+最后，\(e^z\) 与 \(e^{-z}\) 都省略 \(0,\infty\)，因而共享这两个空原像集合。它们的 \(1\)-点集同为 \(2\pi\mathrm{i}\mathbb Z\)，\(-1\)-点集同为 \(\{(2n+1)\pi\mathrm{i}:n\in\mathbb Z\}\)。这两个函数不相同，却共享 \(0,\infty,1,-1\) 四值，完成所需反例。
 \end{solution}

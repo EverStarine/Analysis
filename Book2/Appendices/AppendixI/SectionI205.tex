@@ -1,20 +1,254 @@
 % !TeX root = ../../Book2.tex
-\section{一般理论的输入与边界}
+\section{一般对偶定理与紧群表示}
 \label{b2:sec:I205}
 
-待撰写。
+在实直线、环面和有限群上，测度与频率都可以直接写出。换成一个由拓扑和群运算给定的空间时，两个问题随之出现：平移不变的积分从哪里来，连续字符是否足以恢复全部信息？Haar 测度定理与 Pontryagin 对偶回答这两个问题。对于非交换紧群，平移之间也不再交换，频率需要由标量相位扩充为酉矩阵。
 
-\subsection{一般 Haar 测度定理的使用边界}
+\subsection{Haar 测度定理与局部紧性}
 \label{b2:subsec:I20501}
 
-待撰写。
+\begin{claim}[Haar 测度的存在唯一性：一般结构定理]
+\label{b2:claim:I5-haar}
+设 \(G\) 为局部紧 Hausdorff 群。则存在非零正 Borel 测度 \(\mu\)，满足：紧集测度有限；非空开集测度为正；在开集上关于紧集内正则、在 Borel 集上关于开集外正则；并且
+\[
+ \mu(aE)=\mu(E)\qquad(a\in G,\ E\subset G\text{ 为 Borel 集}).
+\]
+满足这些条件的任意两个测度 \(\mu,\nu\) 之间存在常数 \(c>0\)，使 \(\nu=c\mu\)。若 \(G\) 还第二可数，则 \(\mu\) 为 \(\sigma\) 有限测度，并在每个 Borel 集上关于紧集内正则，因而是本书采用的正 Radon 测度。
+\end{claim}
+\begin{proofsketch}
+存在性从连续紧支集函数的积分出发。固定非零非负函数 \(f_0\in C_c(G)\)，对非零非负 \(\phi\in C_c(G)\)，用 \(\phi\) 的有限个左平移覆盖一个非负 \(f\in C_c(G)\)，并计算最小总权重
+\[
+ p_\phi(f)=\inf\left\{\sum_{j=1}^m c_j:
+ f\le\sum_{j=1}^m c_jL_{a_j}\phi,\quad c_j\ge0\right\}.
+\]
+紧支集保证这种有限覆盖存在。把它除以 \(p_\phi(f_0)\) 作归一化，再让 \(\phi\) 的支集向单位元收缩，便得到一族平移不变、正齐次且次可加的泛函。对于每个固定的 \(f\)，这些泛函的值被控制在一个紧区间内；乘积紧性给出一个共同极限。关键的覆盖估计说明，支集收缩时次可加性中的误差趋于零，极限遂成为正线性泛函。Riesz 表示把它转化为测度。唯一性则通过连续紧支集测试函数的双重积分，证明两种积分的比例为常数。
+
+覆盖估计、共同极限及唯一性的换序论证，见 Folland 的《A Course in Abstract Harmonic Analysis》\cite[Section 2.2]{Folland2016Abstract}。第二可数局部紧群具有可数紧覆盖，故紧集有限性给出 \(\sigma\) 有限性；正则性于是扩展到全部 Borel 集。
+\end{proofsketch}
+
+这一定理把“选择平移不变积分”化为一个归一化常数的选择。紧群通常取 \(\mu(G)=1\)，离散群通常取每个点的质量为一；欧氏空间上的 Lebesgue 测度则由单位立方体的体积固定。左、右平移之间的区别仍由\secref{b2:sec:I201}中的模函数记录：本附录的约定是 \(\mu(Ea)=\Delta(a)\mu(E)\)。交换群有 \(\Delta=1\)；紧群也有 \(\Delta=1\)，因为连续同态 \(\Delta:G\to(0,\infty)\) 的像是紧子群，而取对数后，\(\mathbb R\) 的唯一紧加法子群是 \(\{0\}\)。
+
+第二可数性在积分论中有具体作用。例如，一个不可数离散群仍是局部紧 Hausdorff 群，计数测度仍是 Haar 测度；但每个有限测度集合都是有限集，可数个这样的集合不能覆盖整个群，因此该测度不是 \(\sigma\) 有限的。对这样的一般空间使用乘积积分时，需要相应的非 \(\sigma\) 有限测度理论。本附录前四节中的可数紧覆盖使 Tonelli、Fubini 和 \(L^p\) 逼近可以使用通常的 \(\sigma\) 有限版本。
+
+局部紧性则直接关系到测度是否存在。以下反例说明，把有限维 Lebesgue 测度的全部平移不变性搬到无穷维 Hilbert 空间会遇到什么困难。
+
+\begin{proposition}[无穷维 Hilbert 空间的平移不变测度障碍]
+\label{b2:prop:I5-infinite-dimensional-measure}
+设 \(H\) 为实的无穷维可分 Hilbert 空间，赋予范数拓扑。不存在非零、局部有限且平移不变的正 Borel 测度 \(\mu\)。这里局部有限是指每个点都有测度有限的开邻域。
+\end{proposition}
+\begin{proof}
+假设这样的 \(\mu\) 存在。局部有限性给出 \(R>0\)，使 \(\mu(B(0,R))<\infty\)。对任意 \(r>0\)，可分性保证 \(H\) 能由可数个半径为 \(r\) 的开球覆盖。如果 \(\mu(B(0,r))=0\)，平移不变性就使这个覆盖中的每个球都为零测集，从而 \(\mu(H)=0\)，与非零性矛盾。因此所有正半径球的测度均为正。
+
+取标准正交序列 \((e_j)\)，令 \(x_j=(R/2)e_j\)、\(r=R/8\)。不同中心的距离为 \(R/\sqrt2>2r\)，所以 \(B(x_j,r)\) 两两不交；它们又都包含在 \(B(0,R)\) 中。因此对每个正整数 \(N\)，
+\[
+ \mu(B(0,R))\ge\sum_{j=1}^N\mu(B(x_j,r))
+ =N\mu(B(0,r)).
+\]
+右端随 \(N\to\infty\) 发散，左端却有限，矛盾。
+\end{proof}
+
+这个论证抓住了几何差别：无穷维有界球能容纳无穷多个固定大小、彼此分离的小球。局部有限性限制总质量，平移不变性又要求所有小球具有相同的正质量，两者由此发生冲突。
 
 \subsection{Pontryagin 对偶与一般 Plancherel 定理}
 \label{b2:subsec:I20502}
 
-待撰写。
+\begin{claim}[Pontryagin 对偶：一般结构定理]
+\label{b2:claim:I5-pontryagin}
+设 \(G\) 为第二可数局部紧 Hausdorff 交换群，\(\widehat G\) 是其连续字符群，赋予紧开拓扑。则 \(\widehat G\) 仍为第二可数局部紧 Hausdorff 交换群，而且自然映射
+\[
+ \iota_G:G\longrightarrow\widehat{\widehat G},\qquad
+ \iota_G(x)(\chi)=\chi(x),
+\]
+是拓扑群同构。特别地，连续字符分离 \(G\) 的点。
+\end{claim}
 
-\subsection{紧群表示与 Peter–Weyl 的后续方向}
+此处的同构保持群运算和拓扑，而且由求值直接定义，没有基或坐标的选择。固定 \(x\) 时，\(\chi\mapsto\chi(x)\) 在对偶群上连续并保持乘法，所以确实是双重对偶的一个元素；定理的实质在于，这些求值字符恰好给出双重对偶的全部元素，并恢复原来的拓扑。比如 \(\mathbb T\) 的字符是整数频率，而整数群的字符又由圆周上的一个点决定，正好走回原来的空间。
+
+一般证明把 \(\widehat G\) 与交换卷积代数 \(L^1(G)\) 的非零乘法泛函联系起来，再借助正定函数及 Fourier 反演建立字符分离、求值映射的满射性与拓扑相容性。有关对偶的局部紧性和双重对偶同构，见 Folland 的《A Course in Abstract Harmonic Analysis》\cite[Sections 4.1 and 4.3]{Folland2016Abstract}。
+
+由这一结构定理还能精确概括前面看到的紧性与离散性互换。
+
+\begin{corollary}[紧群与离散群的互换]
+\label{b2:cor:I5-compact-discrete}
+设 \(G\) 为第二可数局部紧 Hausdorff 交换群，则
+\[
+ G\text{ 紧}\ \Longleftrightarrow\ \widehat G\text{ 离散},\qquad
+ G\text{ 离散}\ \Longleftrightarrow\ \widehat G\text{ 紧}.
+\]
+\end{corollary}
+\begin{proof}
+若 \(G\) 离散，则其紧集有限，紧开拓扑就是逐点收敛拓扑。\(\widehat G\) 在紧乘积空间 \((\mathbb S^1)^G\) 中由闭条件
+\(\chi(0)=1\)、\(\chi(x+y)=\chi(x)\chi(y)\) 刻画，所以是紧空间。
+
+若 \(G\) 紧，则 \(U(\mathbf1;G,1)\) 只含平凡字符。为此，只需证明 \(\mathbb S^1\) 中落在 \(\{|z-1|<1\}\) 内的子群是平凡的。若其中有非单位元 \(z\)，换成逆元后可写 \(z=e^{\mathrm i\theta}\)，其中 \(0<\theta\le\pi\)。当 \(\theta\ge\pi/3\) 时已有 \(|z-1|\ge1\)；当 \(\theta<\pi/3\) 时，取 \(n=\lceil\pi/(3\theta)\rceil\)，便有 \(\pi/3\le n\theta<2\pi/3\)，从而 \(|z^n-1|\ge1\)，同样矛盾。因此平凡字符是孤立点，平移后每个字符都是孤立点。
+
+最后，将已经证明的两个方向用于 \(\widehat G\)，再由\cref{b2:claim:I5-pontryagin}把双重对偶识别为 \(G\)，便得到两个逆方向。
+\end{proof}
+
+一般局部紧交换群包含有限乘积模型以外的自然例子。取
+\[
+ K=\prod_{j=1}^{\infty}\mathbb Z/2\mathbb Z
+\]
+及乘积拓扑，即每个元素是一列 \(0,1\)，加法逐坐标模 \(2\) 进行。这是紧的第二可数群；距离
+\(d(x,y)=\sum_{j\ge1}2^{-j}|x_j-y_j|\) 给出其拓扑。每个字符的值只能为 \(\pm1\)，因为 \(2x=0\)。连续性使某个单位元邻域的字符值全部等于 \(1\)，而这样的邻域包含“前 \(N\) 个坐标为零、其余任意”的子群。因此字符只依赖有限个坐标，恰有形式
+\[
+ \chi_a(x)=(-1)^{\sum_j a_jx_j},\qquad
+ a_j\in\{0,1\},\quad a_j\ne0\text{ 的指标只有有限个}.
+\]
+反过来，这些有限坐标表达式都是连续字符。故 \(\widehat K\) 是所有有限支集二进序列组成的离散群，即 \(\bigoplus_{j\ge1}\mathbb Z/2\mathbb Z\)。这里位置容许无穷多个坐标同时非零，频率却只使用有限个坐标。
+
+\begin{claim}[一般交换群上的反演与 Plancherel：深层 Fourier 定理]
+\label{b2:claim:I5-plancherel}
+设 \(G\) 为第二可数局部紧 Hausdorff 交换群，固定非零 Haar 测度 \(\mu\)，并定义
+\[
+ \widehat f(\chi)=\int_Gf(x)\overline{\chi(x)}\,\mathrm d\mu(x)
+ \qquad(f\in L^1(G,\mu)).
+\]
+则有以下结论。
+\begin{enumerate}
+\item\label{b2:item:I5-riemann-lebesgue}
+对 \(f\in L^1(G,\mu)\)，\(\widehat f\in C_0(\widehat G)\)。也就是说，它连续，且对每个 \(\varepsilon>0\)，集合 \(\{\chi:|\widehat f(\chi)|\ge\varepsilon\}\) 紧。
+\item\label{b2:item:I5-plancherel-measure}
+存在唯一的 Haar 测度 \(\widehat\mu\)，使上述变换在 \(L^1(G,\mu)\cap L^2(G,\mu)\) 上唯一延拓为酉映射
+\[
+ \mathcal F_2:L^2(G,\mu)\longrightarrow L^2(\widehat G,\widehat\mu).
+\]
+特别地，\(\|\mathcal F_2f\|_2=\|f\|_2\)，且该映射满射。
+\item\label{b2:item:I5-inversion}
+若 \(f\in L^1(G,\mu)\) 且 \(\widehat f\in L^1(\widehat G,\widehat\mu)\)，则
+\[
+ g(x)=\int_{\widehat G}\widehat f(\chi)\chi(x)\,\mathrm d\widehat\mu(\chi)
+\]
+是 \(f\) 的唯一连续代表。对一般 \(f\in L^2(G,\mu)\)，反演则由 \(\mathcal F_2^{-1}\) 在平方范数意义下给出。
+\end{enumerate}
+\end{claim}
+\begin{proofsketch}
+抽象理论首先把字符上的积分变换识别为交换 Banach 代数的 Gelfand 变换，由其谱性质得到无穷远消失性。对偶测度的构造使用连续正定函数的积分表示；正定性要求每个有限和
+\(\sum_{j,k}c_j\overline{c_k}p(x_j-x_k)\) 非负，它使频率侧出现正测度。
+
+平方范数恒等式的核心仍与经典 Fourier 理论相同。对 \(f\in L^1\cap L^2\)，置 \(f^*(x)=\overline{f(-x)}\)，则
+\[
+ (f*f^*)(0)=\|f\|_2^2,\qquad
+ \widehat{f*f^*}=|\widehat f|^2.
+\]
+先在这些正定函数及其线性组合上建立反演，就得到
+\(\|f\|_2^2=\int|\widehat f|^2\,\mathrm d\widehat\mu\)。稠密性给出等距延拓；Fourier 唯一性及平移公式进一步证明它的像稠密，因而满射。一般绝对反演再由双重对偶识别和可积逼近得到。正定函数的表示、对偶测度构造与上述推广，见 Folland 的《A Course in Abstract Harmonic Analysis》\cite[Sections 4.2 and 4.3]{Folland2016Abstract}。
+\end{proofsketch}
+
+对偶测度的归一化可以直接核对。若空间侧改用 \(c\mu\)，新变换为 \(c\widehat f\)，要保持反演就应把频率侧改成 \(c^{-1}\widehat\mu\)；Plancherel 两边也同时乘以 \(c\)。紧交换群取总质量一时，对偶侧是计数测度；离散交换群取计数测度时，对偶侧的总质量为一。这与\cref{b2:tab:I4-normalization}中的每一行一致。
+
+\(C_0\) 条件也随频率空间而改变。当 \(\widehat G\) 离散时，它意味着 Fourier 系数离开任意有限集后趋于零；当 \(\widehat G\) 紧时，所有连续函数都属于 \(C_0(\widehat G)\)，所以这项条件就是连续性。一般 \(L^2\) 变换保留平方范数而给出等价类；点值公式则由可积性条件另行保证。
+
+\subsection{紧群表示与 Peter–Weyl 展开}
 \label{b2:subsec:I20503}
 
-待撰写。
+若群运算不交换，标量字符会丢掉一部分信息。对任意字符 \(\chi:G\to\mathbb S^1\)，交换子 \(xyx^{-1}y^{-1}\) 的字符值都等于 \(1\)。因此，想区分这些方向上的变化，需要让频率在一个多维空间上作用。
+
+\begin{definition}[有限维酉表示与矩阵系数]
+\label{b2:def:I5-unitary-representation}
+设 \(K\) 为第二可数紧 Hausdorff 群，\(d\ge1\)。一个连续同态
+\[
+ \pi:K\longrightarrow U(d),\qquad
+ \pi(xy)=\pi(x)\pi(y),
+\]
+称为 \(K\) 的 \(d\) 维\term[youbiaoshi]{酉表示}[unitary representation]，其中 \(U(d)\) 是满足 \(A^*A=I\) 的复矩阵群。矩阵元素函数 \(x\mapsto\pi_{ij}(x)\) 称为\term[juzhenxishu]{矩阵系数}[matrix coefficient]。若 \(\mathbb C^d\) 中只有 \(\{0\}\) 和整个空间被所有 \(\pi(x)\) 保持，则称表示\term[bukeyuebiaoshi]{不可约}[irreducible]。两个酉表示等价，是指它们可以通过同一个固定的酉基变换互相得到。
+\end{definition}
+
+一维酉表示正是字符。一般的矩阵系数满足
+\[
+ \pi_{ij}(xy)=\sum_{k=1}^d\pi_{ik}(x)\pi_{kj}(y),
+\]
+所以一个系数的平移会与同一表示的其他系数混合。一个不可约表示记录一组不能继续分开的振荡模式。
+
+紧性使平均成为处理表示的有效方法。例如，一个连续有限维复表示 \(\rho\) 起初可能没有保持给定内积；取总质量为一的 Haar 测度，定义
+\[
+ [v,w]_K=\int_K\langle\rho(x)v,\rho(x)w\rangle\,\mathrm d\mu(x),
+\]
+便得到正定内积。正定性来自 \(v\ne0\) 时被积函数在单位元附近严格为正，而右不变性保证 \([\rho(y)v,\rho(y)w]_K=[v,w]_K\)。因此可在这个内积下选标准正交基，把表示写成酉矩阵。
+
+\begin{lemma}[Schur 正交关系]
+\label{b2:lem:I5-schur-orthogonality}
+设 \(K\) 为第二可数紧 Hausdorff 群，\(\mu(K)=1\)。从每个有限维不可约酉表示的等价类中选一个代表 \(\pi\)，记其维数为 \(d_\pi\)，并各选标准正交基。则
+\[
+ \int_K\pi_{ij}(x)\overline{\sigma_{k\ell}(x)}\,\mathrm d\mu(x)
+ =\begin{cases}
+ d_\pi^{-1}\delta_{ik}\delta_{j\ell},&\pi=\sigma,\\
+ 0,&\pi,\sigma\text{ 不等价}.
+ \end{cases}
+\]
+\end{lemma}
+\begin{proof}
+先回顾有限维复空间中的 Schur 引理。若线性映射 \(T\) 满足 \(T\sigma(x)=\pi(x)T\)，则其核和像分别是不变子空间；不可约性使非零 \(T\) 必为同构。若两边为同一个表示，\(T\) 有复特征值 \(\lambda\)，\(T-\lambda I\) 的核非零且不变，因此 \(T=\lambda I\)。对酉表示，一个可逆交织映射还给出酉等价：\(T^*T\) 与 \(\sigma\) 交换，故为正常数乘以 \(I\)，将 \(T\) 除以该常数的平方根即可。
+
+对任意 \(d_\pi\times d_\sigma\) 矩阵 \(A\)，作平均
+\[
+ T_A=\int_K\pi(x)A\sigma(x)^*\,\mathrm d\mu(x).
+\]
+由左不变性，\(\pi(y)T_A\sigma(y)^*=T_A\)，所以这是一个交织映射。表示不等价时它为零；当 \(\pi=\sigma\) 时，它为标量矩阵，而取迹给出
+\(T_A=(\operatorname{tr}A/d_\pi)I\)。取 \(A\) 只有第 \((j,\ell)\) 个元素为一，其余为零，再读出 \(T_A\) 的第 \((i,k)\) 个元素，就得到所需正交关系。
+\end{proof}
+
+正交关系说明这些模式互不重复；它们能否逼近任意函数，则由 Peter--Weyl 定理回答。
+
+\begin{claim}[Peter--Weyl：紧群的深层分解定理]
+\label{b2:claim:I5-peter-weyl}
+设 \(K\) 为第二可数紧 Hausdorff 群，\(\mu\) 为总质量一的 Haar 测度。从每个有限维不可约连续酉表示的等价类中选取一个代表，所得集合记为 \(\operatorname{Irr}(K)\)。选定各表示空间中的标准正交基后，函数族
+\[
+ \left\{\sqrt{d_\pi}\,\pi_{ij}:
+ \pi\in\operatorname{Irr}(K),\ 1\le i,j\le d_\pi\right\}
+\]
+构成 \(L^2(K,\mu)\) 的标准正交基。所有矩阵系数的有限线性组合还在 \(C(K)\) 中按一致范数稠密。特别地，\(\operatorname{Irr}(K)\) 至多可数。
+\end{claim}
+\begin{proofsketch}
+正交性已由前一引理给出。完备性的关键是把紧群上的卷积与紧算子联系起来。连续卷积核在紧的 \(K\times K\) 上给出平方可积核，因而产生紧算子；对称化后可以使用紧自伴算子的谱分解。卷积算子与一侧平移交换，所以它的非零特征空间是有限维平移不变空间，能够分解成不可约酉表示。再让卷积核形成逼近恒等，就把这些有限维空间的逼近能力扩展到 \(L^2(K)\) 及 \(C(K)\)。这一步的紧算子构造与一致逼近论证见 Folland 的《A Course in Abstract Harmonic Analysis》\cite[Section 5.2]{Folland2016Abstract}。第二可数性使 \(L^2(K)\) 可分，故其标准正交族至多可数。
+\end{proofsketch}
+
+将正交展开整理成矩阵形式，便得到紧群 Fourier 分析。对 \(f\in L^1(K,\mu)\)，定义矩阵
+\[
+ \widehat f(\pi)=\int_Kf(x)\pi(x)^*\,\mathrm d\mu(x).
+\]
+矩阵积分逐元素进行；酉矩阵的算子范数为一，故每个元素均绝对可积。若 \(f\in L^2(K)\)，由于 \(\mu(K)=1\)，仍有 \(f\in L^1(K)\)。Peter--Weyl 正交展开于是给出
+\begin{align*}
+ f(x)&=\sum_{\pi\in\operatorname{Irr}(K)}
+       d_\pi\operatorname{tr}\bigl(\widehat f(\pi)\pi(x)\bigr)
+       \qquad\text{于 }L^2(K),\\
+ \|f\|_2^2&=\sum_{\pi\in\operatorname{Irr}(K)}
+       d_\pi\|\widehat f(\pi)\|_{\mathrm{HS}}^2,
+ \qquad \|A\|_{\mathrm{HS}}^2=\sum_{i,j}|A_{ij}|^2.
+\end{align*}
+这里 \(\widehat f(\pi)_{ji}=\int f\overline{\pi_{ij}}\,\mathrm d\mu\)，而 \(\pi_{ij}\) 的平方范数为 \(1/d_\pi\)；这两个事实分别解释迹中的指标次序和外面的维数因子。相应矩阵表述见 Folland 的《A Course in Abstract Harmonic Analysis》\cite[Section 5.3]{Folland2016Abstract}。
+
+卷积公式还保留了乘法次序的信息。对 \(f,g\in L^1(K)\)，在 \(x=yz\) 中换元并用绝对可积性换序，可得
+\[
+ \widehat{f*g}(\pi)
+ =\int_K\int_K f(y)g(z)\pi(z)^*\pi(y)^*
+      \,\mathrm d\mu(z)\,\mathrm d\mu(y)
+ =\widehat g(\pi)\widehat f(\pi).
+\]
+这里出现逆序，正是因为定义使用 \(\pi(x)^*\)，且 \(\pi(yz)^*=\pi(z)^*\pi(y)^*\)。当 \(K\) 交换时，Schur 引理使每个不可约表示中的全部 \(\pi(x)\) 都是标量矩阵，不可约性遂迫使 \(d_\pi=1\)；矩阵展开便退化为字符展开。
+
+一个六元素的例子已经能看出二维模式的必要性。令 \(S_3\) 为三点置换群，取生成元 \(r=(123)\)、\(s=(12)\)，它们满足 \(r^3=s^2=e\)、\(srs=r^{-1}\)。任意标量字符满足 \(\chi(r)^3=1\) 及 \(\chi(r)=\chi(r)^{-1}\)，所以 \(\chi(r)=1\)；又有 \(\chi(s)=\pm1\)。因此只有平凡字符和符号字符，它们都不能区分 \(e,r,r^2\)。
+
+平面等边三角形的旋转与反射给出二维酉表示：
+\[
+ \pi(r)=\begin{pmatrix}
+ -\frac12&-\frac{\sqrt3}{2}\\[2pt]
+ \frac{\sqrt3}{2}&-\frac12
+ \end{pmatrix},\qquad
+ \pi(s)=\begin{pmatrix}1&0\\0&-1\end{pmatrix}.
+\]
+两矩阵满足同样的生成关系，故定义了 \(S_3\) 的表示。\(\pi(r)\) 在复数域上有两个不同特征值 \(e^{\pm2\pi\mathrm i/3}\)，而 \(\pi(s)\) 交换其特征直线，所以不存在共同不变复直线，表示不可约。它的四个矩阵系数连同两个一维字符，由 Schur 正交关系给出六个线性无关函数，恰好张成 \(S_3\) 上全部函数的六维空间。
+
+取归一化计数测度 \(\mu(\{x\})=1/6\) 以及 \(f=\mathbf1_{\{e\}}\)。三个不可约表示上的 Fourier 系数分别为 \(1/6\)、\(1/6\)、\(I_2/6\)，反演具体成为
+\[
+ \mathbf1_{\{e\}}(x)
+ =\frac16\left(1+\operatorname{sgn}(x)+2\operatorname{tr}\pi(x)\right).
+\]
+在单位元、三循环和换位上，\(\operatorname{tr}\pi(x)\) 分别为 \(2,-1,0\)，于是公式逐类给出 \(1,0,0\)。范数等式同样可直接核对：
+\[
+ \|f\|_2^2=\frac16
+ =\frac1{36}+\frac1{36}+2\left\|\frac{I_2}{6}\right\|_{\mathrm{HS}}^2.
+\]
+二维矩阵同时恢复了标量字符遗漏的位置差别和相应的平方范数。
+
+紧性在这里保证了有限维不可约模式及离散求和。对非紧的非交换群，正规表示的分解还可能出现连续参数和无限维表示，相应的积分分解涉及表示类的可测结构。由此，群上的 Fourier 分析从标量频率发展到算子值频率；Haar 测度、平移、卷积与谱分解仍然组织着这些公式。

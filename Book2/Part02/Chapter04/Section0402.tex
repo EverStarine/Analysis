@@ -2,6 +2,15 @@
 \section{Bernstein 构造性逼近}
 \label{b2:sec:approximation-bernstein}
 
+要实际计算一个逼近多项式，可以先从等距网格取得函数值
+\(f(0),f(1/n),\ldots,f(1)\)，把它们组合成一个明确的多项式。
+构造的关键是使各个权重非负、总和为一，而且对固定的 \(x\)，主要权重落在
+\(k/n\) 接近 \(x\) 的取样点上。这样，连续性便能把取样点的接近转化为函数值的接近。
+
+\ProseParagraphBreak
+这一办法不要求多项式经过所有取样点。插值规定每个节点上的值都完全正确，
+这里则允许在节点上有误差，以换取容易控制的加权平均。
+
 \subsection{一元 Bernstein 多项式}
 \label{b2:subsec:approximation-bernstein-univariate}
 
@@ -16,7 +25,13 @@
  B_nf(x)\coloneqq\sum_{k=0}^nf(k/n)\cdot b_{n,k}(x),
  \quad 0\leq x\leq1.
 \]
-这里零次幂按 \(1\) 计算。\(B_nf\) 是次数不超过 \(n\) 的\term[bernstein-duoxiangshi]{Bernstein 多项式}[Bernstein polynomial]。以 \(\omega_f\) 表示 \(f\) 关于通常距离的连续模，则对 \(0<\delta\leq1\)，
+这里零次幂按 \(1\) 计算。\(B_nf\) 是次数不超过 \(n\) 的\term[bernstein-duoxiangshi]{Bernstein 多项式}[Bernstein polynomial]。以
+\[
+ \omega_f(\delta)\coloneqq
+ \sup\{|f(s)-f(t)|:s,t\in[0,1],\ |s-t|\leq\delta\}
+ \quad(\delta>0)
+\]
+表示 \(f\) 关于通常距离的连续模，则对 \(0<\delta\leq1\)，
 \[
  \lVert B_nf-f\rVert_\infty
  \leq\omega_f(\delta)
@@ -25,7 +40,11 @@
 因此 \(B_nf\to f\) 一致成立。此外，若 \(a<b\) 为实数，\(h\in C([a,b];\mathbb F)\)，则存在次数不超过 \(n\) 的多项式 \(q_n\)，使 \(q_n\to h\) 在 \([a,b]\) 上一致成立。
 \end{theorem}
 \begin{proof}
-这些权重非负。二项式公式及其一、二阶导数给出
+这些权重非负。对固定的 \(x\in[0,1]\)，引入辅助变量 \(z\)，由二项式公式，
+\[
+ \sum_{k=0}^n b_{n,k}(x)z^k=(1-x+xz)^n.
+\]
+分别令 \(z=1\)，以及对 \(z\) 求一、二阶导数后令 \(z=1\)，得到
 \[
 \begin{aligned}
  &\sum_{k=0}^n b_{n,k}(x)=1,\quad
@@ -33,11 +52,14 @@
  &\sum_{k=0}^n k(k-1)\cdot b_{n,k}(x)=n(n-1)x^2.
 \end{aligned}
 \]
-利用 \(k^2=k(k-1)+k\) 展开平方，可得
-\[
+当 \(n=1\) 时，第三个等式两边均为零。这些都是关于 \(x\) 的多项式恒等式，
+所以端点 \(x=0,1\) 同样适用。利用 \(k^2=k(k-1)+k\) 展开平方，可得
+\begin{equation}
+ \label{b2:eq:approximation-bernstein-variance}
  \sum_{k=0}^n(k/n-x)^2\cdot b_{n,k}(x)
  =\frac{x(1-x)}n\leq\frac1{4n}.
-\]
+\end{equation}
+这说明按这些权重平均，取样点与 \(x\) 的平方距离很小。
 固定 \(0<\delta\leq1\)，将求和分为 \(|k/n-x|\leq\delta\) 与其补集。邻近部分的函数值之差至多为 \(\omega_f(\delta)\)，而远处权重满足
 \[
  \sum_{|k/n-x|>\delta}b_{n,k}(x)
@@ -69,8 +91,176 @@
 \(\lVert q_n-h\rVert_{C[a,b]}=\lVert B_nH-H\rVert_{C[0,1]}\to0\)，得到所需逼近。
 \end{proof}
 
+三个权重恒等式还给出可以直接核验的例子。若 \(\iota(x)=x\)，则
+\[
+ B_n1=1,\quad B_n\iota=\iota,\quad
+ B_n(\iota^2)(x)=x^2+\frac{x(1-x)}n.
+\]
+因此常数和仿射函数被完全保持；对 \(x^2\)，误差在两端为零，在中点达到
+\(1/(4n)\)。这也说明 \(B_n\) 一般不是投影到次数不超过 \(n\) 的多项式空间：
+即使 \(n\geq2\)，它仍会改变已在该空间中的 \(x^2\)。对所有连续 \(f\)，
+端点处只有一个权重非零，所以 \(B_nf(0)=f(0)\)、\(B_nf(1)=f(1)\)；
+内部取样点通常没有这种精确相等。
+
+\subsection{连续模与有效取样尺度}
+\label{b2:subsec:approximation-bernstein-rate}
+
+前面的远近拆分便于证明收敛，但取 \(\delta=n^{-1/4}\) 并没有反映构造本身的尺度。
+由\eqref{b2:eq:approximation-bernstein-variance}，平方距离的平均是 \(O(n^{-1})\)，
+所以距离的典型大小应为 \(n^{-1/2}\)。要把这个信息用于误差，
+可以将较远的两点之间的变化拆成若干段短距离上的变化。
+
+\begin{lemma}[区间连续模的分段估计]
+\label{b2:lem:approximation-modulus-subdivision}
+设 \(a<b\) 为实数，\(\mathbb F=\mathbb R\) 或 \(\mathbb C\)，
+\(f\in C([a,b];\mathbb F)\)，并令
+\(\omega_f(\delta)=\sup_{s,t\in[a,b],\,|s-t|\leq\delta}|f(s)-f(t)|\)。
+则对每个 \(\delta>0\) 和 \(s,t\in[a,b]\)，
+\[
+ |f(s)-f(t)|\leq\left(1+\frac{|s-t|}{\delta}\right)\omega_f(\delta).
+\]
+\end{lemma}
+\begin{proof}
+当 \(s=t\) 时左端为零。否则取
+\(m=\lceil|s-t|/\delta\rceil\)，把从 \(s\) 到 \(t\) 的线段分成 \(m\) 个等长小段。
+每段长不超过 \(\delta\)，所有分点仍在 \([a,b]\) 中。
+沿分点逐次使用三角不等式，得到
+\(|f(s)-f(t)|\leq m\omega_f(\delta)\)。最后使用
+\(m\leq1+|s-t|/\delta\) 即可。
+\end{proof}
+
+\begin{proposition}[Bernstein 多项式的连续模估计]
+\label{b2:prop:approximation-bernstein-modulus}
+设 \(\mathbb F=\mathbb R\) 或 \(\mathbb C\)，\(f\in C([0,1];\mathbb F)\)，
+\(n\geq1\) 为整数，且
+\[
+ B_nf(x)=\sum_{k=0}^nf(k/n)\binom nk x^k(1-x)^{n-k},
+\]
+端点的零次幂按 \(1\) 计算。以 \(\omega_f\) 表示关于通常距离的连续模。
+对每个 \(\delta>0\) 和 \(x\in[0,1]\)，有
+\[
+ |B_nf(x)-f(x)|
+ \leq\left(1+\frac{\sqrt{x(1-x)}}{\sqrt n\,\delta}\right)\omega_f(\delta).
+\]
+特别地，
+\[
+ \lVert B_nf-f\rVert_\infty\leq\frac32\omega_f(n^{-1/2}).
+\]
+若还存在 \(0<\alpha\leq1\) 和 \(L\geq0\)，使
+\(|f(s)-f(t)|\leq L|s-t|^\alpha\) 对所有 \(s,t\in[0,1]\) 成立，则
+\[
+ |B_nf(x)-f(x)|\leq L\left(\frac{x(1-x)}n\right)^{\alpha/2},\quad
+ \lVert B_nf-f\rVert_\infty\leq\frac{L}{2^\alpha n^{\alpha/2}}.
+\]
+\end{proposition}
+\begin{proof}
+先将\cref{b2:lem:approximation-modulus-subdivision}应用于 \(s=k/n,t=x\)，再按权重求和：
+\[
+ |B_nf(x)-f(x)|
+ \leq\omega_f(\delta)\left(1+\frac1\delta
+       \sum_{k=0}^n|k/n-x|\cdot b_{n,k}(x)\right).
+\]
+由 Cauchy--Schwarz 不等式、权重和为一及\eqref{b2:eq:approximation-bernstein-variance}，
+\[
+ \begin{aligned}
+ \sum_{k=0}^n|k/n-x|\cdot b_{n,k}(x)
+ &\leq\left(\sum_{k=0}^n(k/n-x)^2\cdot b_{n,k}(x)\right)^{1/2}
+       \left(\sum_{k=0}^nb_{n,k}(x)\right)^{1/2}\\
+ &=\sqrt{\frac{x(1-x)}n}.
+ \end{aligned}
+\]
+代回即得第一式。令 \(\delta=n^{-1/2}\)，并使用 \(x(1-x)\leq1/4\)，得到一致范数的估计。
+
+在 Hölder 条件下，直接由有限和的 Hölder 不等式，以共轭指数
+\(2/\alpha\) 与 \(2/(2-\alpha)\) 估计，得到
+\[
+ \begin{aligned}
+ |B_nf(x)-f(x)|
+ &\leq L\sum_{k=0}^n|k/n-x|^\alpha\cdot b_{n,k}(x)\\
+ &\leq L\left(\sum_{k=0}^n(k/n-x)^2\cdot b_{n,k}(x)\right)^{\alpha/2}
+       \left(\sum_{k=0}^nb_{n,k}(x)\right)^{1-\alpha/2}.
+ \end{aligned}
+\]
+再用权重恒等式即可。
+\end{proof}
+
+这个估计把近似的精度与函数的连续性联系起来：Hölder 指数为 \(\alpha\) 时，
+它给出 \(n^{-\alpha/2}\) 的误差上界。它只是这一具体构造的保证，
+不是最佳逼近误差的下界，也不能据此断言所有函数的实际误差都恰好有这个量级。
+前面的 \(x^2\) 就有更快的 \(n^{-1}\) 误差。\secref{b2:sec:approximation-jackson}将用更集中的核，
+把一般 Hölder 函数的逼近上界改进到 \(n^{-\alpha}\)。
+
+\subsection{正性、稳定性与形状保持}
+\label{b2:subsec:approximation-bernstein-shape}
+
+非负权重除了简化误差估计，还使构造具有直接的稳定性。
+如果每个取样值都有至多 \(\varepsilon\) 的误差，加权平均后的误差仍不超过
+\(\varepsilon\)，不会因节点数增加而放大。对于实值函数，
+这些权重还保留单调性与凸性。
+
+\begin{proposition}[Bernstein 算子的稳定性与保形性]
+\label{b2:prop:approximation-bernstein-shape}
+设 \(\mathbb F=\mathbb R\) 或 \(\mathbb C\)，\(n\geq1\) 为整数，并对
+\(f\in C([0,1];\mathbb F)\) 定义
+\[
+ B_nf(x)=\sum_{k=0}^nf(k/n)\binom nk x^k(1-x)^{n-k},\quad 0\leq x\leq1,
+\]
+端点的零次幂按 \(1\) 计算。则 \(B_n\) 是线性映射，且对所有
+\(f,g\in C([0,1];\mathbb F)\)，
+\[
+ \lVert B_nf-B_ng\rVert_\infty\leq\lVert f-g\rVert_\infty.
+\]
+当 \(\mathbb F=\mathbb R\) 时，\(f\geq0\) 蕴含 \(B_nf\geq0\)；
+若 \(f\) 单调不减，则 \(B_nf\) 单调不减；若 \(f\) 为凸函数，则 \(B_nf\) 为凸函数，
+并且 \(B_nf(x)\geq f(x)\) 对全部 \(x\in[0,1]\) 成立。
+\end{proposition}
+\begin{proof}
+线性由有限求和直接给出。由非负权重之和为一，
+\[
+ |B_nf(x)-B_ng(x)|
+ \leq\sum_{k=0}^n|f(k/n)-g(k/n)|\cdot b_{n,k}(x)
+ \leq\lVert f-g\rVert_\infty.
+\]
+对 \(x\) 取上确界即得稳定性；正性同样由各项非负得到。
+
+为考察形状，暂将越界的 \(b_{m,k}\) 定义为零，并令 \(b_{0,0}=1\)。
+对权重求导并利用二项式系数的关系，有
+\[
+ b'_{n,k}=n(b_{n-1,k-1}-b_{n-1,k}).
+\]
+两部分分别换指标，端点的越界项为零，便得到
+\[
+ (B_nf)'(x)=n\sum_{k=0}^{n-1}
+       \bigl(f((k+1)/n)-f(k/n)\bigr)b_{n-1,k}(x).
+\]
+当 \(f\) 单调不减时，每个差均非负，所以导数非负。
+当 \(n\geq2\) 时，记
+\(d_k=f((k+2)/n)-2f((k+1)/n)+f(k/n)\)。再次求导，得到
+\[
+ (B_nf)''(x)=n(n-1)\sum_{k=0}^{n-2}d_k\cdot b_{n-2,k}(x).
+\]
+对凸函数，中点处的值不超过两端值的平均，所以二阶差 \(d_k\) 非负，
+从而二阶导数非负。\(n=1\) 时 \(B_1f\) 为仿射函数，也为凸函数。
+最后，由有限凸组合的凸性不等式及 \(\sum_k(k/n)b_{n,k}(x)=x\)，有
+\[
+ f(x)=f\!\left(\sum_{k=0}^n(k/n)\cdot b_{n,k}(x)\right)
+ \leq\sum_{k=0}^nf(k/n)\cdot b_{n,k}(x)=B_nf(x).
+\]
+有限凸组合的这一不等式由凸函数定义中的两点不等式逐次合并得到，
+零权重项直接略去即可。
+\end{proof}
+
+取 \(f(x)=|x-1/2|\)，原函数在中点不可微，而 \(B_nf\) 是处处光滑的凸多项式，
+并始终位于 \(f\) 的上方。这里不需要对 \(f\) 求导：多项式的导数来自离散取样值的差。
+因此连续函数的某些几何性质，可以在它尚无导数时就传给光滑近似。
+
 \subsection{多元 Bernstein 多项式}
 \label{b2:subsec:approximation-bernstein-multivariate}
+
+在立方体上，可沿每个坐标分别使用同样的二项式权重，再取乘积。
+所得网格共有 \((n+1)^d\) 个取样点，每个坐标的集中程度仍由一元计算控制。
+这里要区分每个变量的次数与总次数：乘积可能同时含有各坐标的 \(n\) 次幂，
+所以总次数上界是 \(dn\)，而不是 \(n\)。
 
 \begin{theorem}[Bernstein 逼近：多元情形]
 \label{b2:thm:approximation-bernstein-multivariate}
@@ -84,13 +274,21 @@
        f(\mathbf k/n)\cdot w_{n,\mathbf k}(x).
 \end{aligned}
 \]
-零次幂仍按 \(1\) 计算。\(B_nf\) 在每个变量上的次数均不超过 \(n\)，总次数不超过 \(dn\)。以 \(\omega_f\) 表示 \(f\) 关于欧氏距离的连续模，则对每个 \(\delta>0\)，
+零次幂按 \(1\) 计算。\(B_nf\) 在每个变量上的次数均不超过 \(n\)，总次数不超过 \(dn\)。以
+\[
+ \omega_f(\delta)\coloneqq
+ \sup\{|f(s)-f(t)|:s,t\in[0,1]^d,\ |s-t|\leq\delta\}
+\]
+表示 \(f\) 关于欧氏距离的连续模，则对每个 \(\delta>0\)，
 \[
  \lVert B_nf-f\rVert_\infty
  \leq\omega_f(\delta)
        +\frac{d\lVert f\rVert_\infty}{2n\delta^2}.
 \]
-特别地，\(B_nf\to f\) 在 \([0,1]^d\) 上一致成立。
+特别地，\(B_nf\to f\) 在 \([0,1]^d\) 上一致成立；还有较细的估计
+\[
+ \lVert B_nf-f\rVert_\infty\leq\frac32\omega_f(\sqrt{d/n}).
+\]
 \end{theorem}
 \begin{proof}
 乘积权重非负。对每个坐标依次求和，并使用一元二项式恒等式，得到
@@ -126,4 +324,40 @@
 \end{aligned}
 \]
 取上确界即得所述估计。先由一致连续性取足够小的 \(\delta\)，再令 \(n\) 足够大，就得到一致收敛。
+
+较细的估计使用与一元情形相同的分段办法。立方体是凸集，
+连接其中两点的线段仍留在立方体内，故按长度至多 \(\delta\) 分段可以得到
+\[
+ |f(s)-f(t)|\leq\left(1+\frac{|s-t|}{\delta}\right)\omega_f(\delta).
+\]
+代入加权和，再用 Cauchy--Schwarz 不等式及上述平方距离估计，得到
+\[
+ \begin{aligned}
+ |B_nf(x)-f(x)|
+ &\leq\left(1+\frac1\delta
+ \sqrt{\sum_{\mathbf k}|\mathbf k/n-x|^2\cdot w_{n,\mathbf k}(x)}\right)
+ \omega_f(\delta)\\
+ &\leq\left(1+\frac{\sqrt d}{2\sqrt n\,\delta}\right)\omega_f(\delta).
+ \end{aligned}
+\]
+取 \(\delta=\sqrt{d/n}\) 并对 \(x\) 取上确界，便得第二个估计。
 \end{proof}
+
+对于任意非退化闭矩形 \(Q=\prod_{j=1}^d[a_j,b_j]\)，逐坐标作仿射换元
+\(x_j=(t_j-a_j)/(b_j-a_j)\)，便把任意 \(C(Q)\) 函数转成单位立方体上的连续函数。
+把所得 Bernstein 多项式换回原变量，仍是多项式，且一致误差完全相同。
+所以多项式在 \(C(Q)\) 中一致稠密。这个推论正是后文证明某些正交展开完备性时所需的具体工具。
+
+\ProseParagraphBreak
+若函数最初只定义在球面 \(S^{d-1}\) 上，则还不能直接对它取立方体网格上的值。
+对 \(d\geq2\) 和 \(f\in C(S^{d-1};\mathbb F)\)，其中 \(\mathbb F=\mathbb R\) 或 \(\mathbb C\)，
+可取连续函数 \(\chi:[0,\infty)\to[0,1]\)，使
+\(\chi(1)=1\)、\(\chi(r)=0\) 于 \(r\leq1/2\)，并令
+\[
+ F(x)=\chi(|x|)\cdot f(x/|x|)\quad(x\ne0),\quad F(0)=0.
+\]
+这个函数在原点附近恒为零，在其余位置由连续函数复合而成，因而在包住球面的立方体上连续，
+且限制到球面恰好等于 \(f\)。对 \(F\) 作多项式一致逼近，再限制到球面，误差只会减小。
+\secref{b2:sec:B203}的球谐展开将实际使用这条路径：先作连续延拓，
+再作多项式逼近，最后处理多项式的调和分解。这样既说明多元定理的用途，
+也交代了从矩形到球面所需的额外一步。

@@ -3,7 +3,7 @@
 \label{b2:ch:07}
 \BookChapterNumber{b2:ch:07}
 \begin{chapterabstract}
-输运方程沿运动轨道记录函数值的变化。常速度给出平移，变速度则由常微分方程的流确定运动。本章使用\chapref{b2:ch:ode}已经证明的存在唯一性与一阶光滑依赖，建立含源项与零阶项的表示公式。支集传播描述信息从哪里到达，Jacobi 行列式描述体积怎样变化，两者共同给出密度的质量输运。选读部分讨论拟线性方程和 Hamilton--Jacobi 方程的局部光滑解，并以 Burgers 方程说明特征投影失去可逆性时会发生什么。
+输运方程沿运动轨道记录函数值的变化。常速度给出平移，变速度则由常微分方程的流确定运动。沿轨道积累源项与吸收项，就得到函数值的表示公式；追踪支集与 Jacobi 行列式，又能描述信息传播和质量输运。当速度取决于未知函数时，特征线可能相遇，光滑解因而失效。选读部分从拟线性方程和 Hamilton--Jacobi 方程的局部光滑解走向守恒律弱解，以 Burgers 方程的激波和稀疏波说明熵条件如何选择演化。
 \end{chapterabstract}
 
 \begin{learninggoals}
@@ -11,7 +11,8 @@
 \item\label{b2:item:07-goal-lines}能从一阶微分算子找出运动方向，沿特征线求解含源项与吸收项的初值问题。
 \item\label{b2:item:07-goal-flow}能为特征轨道核对局部流的适用条件，利用唯一性与可微依赖构造非特征坐标，并区分局部回溯和全时间回溯。
 \item\label{b2:item:07-goal-density}能用回溯轨道判断支集传播，并用 Jacobi 公式区分输运标量与守恒密度。
-\item\label{b2:item:07-goal-nonlinear}选读目标：在\secref{b2:sec:0704}的局部可逆条件下构造拟线性解，辨认梯度爆破与振幅爆破的区别，理解弱守恒关系的有限作用；只学习经典线性方程时可暂缓这一目标。
+\item\label{b2:item:07-goal-nonlinear}在特征投影局部可逆时构造拟线性解，辨认梯度爆破与振幅爆破的区别。
+\item\label{b2:item:07-goal-entropy}由弱守恒关系推导激波速度，求解 Burgers 方程的 Riemann 问题，并用熵不等式区别可接受的激波与膨胀跳跃。
 \end{itemize}
 \end{learninggoals}
 
@@ -19,7 +20,7 @@
 
 \ProseParagraphBreak
 
-本章使用\chapref{b2:ch:01}的链式法则、逆函数定理、换元及积分求导规则，以及\chapref{b2:ch:ode}已写部分的局部存在唯一性、线性增长延拓和一阶光滑依赖。\secref{b2:sec:0701}从便于计算的直线模型讲起；\secref{b2:sec:0702}沿特征轨道建立表示公式，并用非特征数据曲线构造局部坐标；\secref{b2:sec:0703}以特征流求解时变输运方程，并研究质量守恒。只学习经典线性方程的读者可以略过\secref{b2:sec:0704}，后续普通章节不需要该节的非线性结论。
+\chapref{b2:ch:ode}的流把瞬时速度连接成运动轨道；沿轨道应用链式法则，就能把输运方程化成一元积分。\secref{b2:sec:0701}从便于计算的直线模型讲起；\secref{b2:sec:0702}沿特征轨道建立表示公式，并用非特征数据曲线构造局部坐标；\secref{b2:sec:0703}以特征流求解时变输运方程，并研究质量守恒。选读的\secref{b2:sec:0704}研究速度随未知函数变化时，轨道与函数值怎样相互影响。若特征线已经相遇，怎样继续描述守恒量的运动？\secref{b2:sec:0705}通过间断界面的积分关系与熵条件回答这个问题。
 
 \ProseParagraphBreak
 
@@ -38,12 +39,16 @@ Walter A. Strauss 的《Partial Differential Equations: An Introduction》\cite[
 
 \ProseParagraphBreak
 
-输运标量在齐次情形沿轨道保持数值，守恒密度则需乘上流的 Jacobi 行列式才保持不变。源项不断产生新数值，零阶项沿历史轨道累积为指数因子。支集由流携带，统一速度界才给出统一传播圆锥。在选读的\secref{b2:sec:0704}中，非线性方程的空间投影还可能失去可逆性，光滑解的构造因此具有明确的时间边界；略过该节不影响前面的线性流与质量输运结论。
+输运标量在齐次情形沿轨道保持数值，守恒密度则需乘上流的 Jacobi 行列式才保持不变。源项不断产生新数值，零阶项沿历史轨道累积为指数因子。支集由流携带，统一速度界才给出统一传播圆锥。非线性方程的特征投影还可能失去可逆性，光滑解的构造因此具有明确的时间边界。
+
+\ProseParagraphBreak
+
+光滑性失效以后，积分守恒关系允许解跨越运动界面跳跃，并确定 Rankine--Hugoniot 速度；它本身却不能排除多个弱解。Burgers 方程中，熵条件选择压缩激波，把膨胀跳跃替换为连续的稀疏扇。Riemann 问题因此成为理解一般演化的基本模型，波相遇后又须用新的界面状态重新计算速度。一般标量守恒律的存在与唯一性则由 Kružkov 理论统一描述。
 \end{chaptersummary}
 
 \BookExercises
 
-前两题训练边界数据与变换语言的接合；中间四题分别检验全局条件、体积变化、源项及闭轨道相容性。最后两题使用选读节，比较光滑失效与弱方程的可能延续。各题均在本章已建立的工具内给出解答。
+前两题训练边界数据与变换语言的接合；中间四题分别检验全局条件、体积变化、源项及闭轨道相容性。最后两题使用选读节，分别计算稀疏波与激波相遇后的演化，以及 Hamilton--Jacobi 方程的经典解失效。
 
 % 自拟：把全空间常速度问题改为半直线入流问题，检查角点一阶相容。
 \Needspace{6\baselineskip}
@@ -66,7 +71,7 @@ Walter A. Strauss 的《Partial Differential Equations: An Introduction》\cite[
 \(\widehat u(k,t)=e^{-2\pi\mathrm i kct}\widehat g(k)\)。进而说明对每个非负整数 \(N\)，Fourier 部分和 \(S_Nu\) 的误差在每个时刻具有与初始时刻相同的 \(L^2(\mathbb T)\) 范数。
 \end{exercise}
 \begin{solution}
-在 \(\int_0^1g(x-ct)e^{-2\pi\mathrm i kx}\,\mathrm dx\) 中令 \(y=x-ct\)。由于 \(g(y)e^{-2\pi\mathrm i ky}\) 为单位周期，换元后的任意长度为一的积分都等于 \(\widehat g(k)\)，而剩余相位为 \(e^{-2\pi\mathrm i kct}\)。所以 \(S_Nu(x,t)=S_Ng(x-ct)\)。对二者之差再用圆周平移不变性，得到 \(\|u(\cdot,t)-S_Nu(\cdot,t)\|_2=\|g-S_Ng\|_2\)。这里不需要逐项微分一个无限级数。
+在 \(\int_0^1g(x-ct)e^{-2\pi\mathrm i kx}\,\mathrm dx\) 中令 \(y=x-ct\)。由于 \(g(y)e^{-2\pi\mathrm i ky}\) 为单位周期，换元后的任意长度为一的积分都等于 \(\widehat g(k)\)，而剩余相位为 \(e^{-2\pi\mathrm i kct}\)。所以 \(S_Nu(x,t)=S_Ng(x-ct)\)。对二者之差再用圆周平移不变性，得到 \(\|u(\cdot,t)-S_Nu(\cdot,t)\|_2=\|g-S_Ng\|_2\)。
 \end{solution}
 
 % 自拟：由有限时间逃逸构造零初值非唯一，展示全局增长假设的真实用途。
@@ -103,7 +108,7 @@ Walter A. Strauss 的《Partial Differential Equations: An Introduction》\cite[
 端点处取相应单侧导数。说明此式无需 \(E\) 的边界光滑。
 \end{exercise}
 \begin{solution}
-在固定集合 \(E\) 上换元，左边积分成为 \(\int_E\rho(X(t;0,a),t)J(t;0,a)\,\mathrm da\)。乘积求导与 Jacobi 方程给出被积函数的时间导数等于 \(q(X(t;0,a),t)J(t;0,a)\)。由于 \(\overline E\) 紧且时间限于紧区间，所有函数与导数在相应轨道集上有界，故积分号下求导合法。再换元得到结论。论证没有使用边界积分，因此 Borel 可测和有界性已足够。
+在固定集合 \(E\) 上换元，左边积分成为 \(\int_E\rho(X(t;0,a),t)J(t;0,a)\,\mathrm da\)。乘积求导与 Jacobi 方程给出被积函数的时间导数等于 \(q(X(t;0,a),t)J(t;0,a)\)。由于 \(\overline E\) 紧且时间限于紧区间，所有函数与导数在相应轨道集上有界，故积分号下求导合法。再换元得到结论。积分域的有界 Borel 可测性足以完成轨道换元与积分求导。
 \end{solution}
 
 % 自拟：闭轨道的全局相容，超出局部特征线公式。
@@ -123,17 +128,43 @@ Walter A. Strauss 的《Partial Differential Equations: An Introduction》\cite[
 其中 \(A\in C^1((1,2);\mathbb C)\) 任意。零均值保证 \(U\) 周期；对 \(r\) 的导数也周期，因为零均值恒等式可对 \(r\) 求导。故它下降为环域上的 \(C^1\) 函数并满足方程。任意两个解之差在每个圆上恒定，所以全体解恰由 \(A(r)\) 给出。
 \end{solution}
 
-% 自拟选读：同一阶跃初值的两个弱解，展示仅用跳跃关系不保证唯一。
+% 自拟：以稀疏波追上激波连接局部 Riemann 解、运动界面与质量计算。
 \Needspace{6\baselineskip}
 \begin{optionalexercise}\label{b2:ex:07-expansion-nonunique}
-取实值 Burgers 初值 \(g(x)=0\) 当 \(x\leq0\)，\(g(x)=1\) 当 \(x>0\)。证明下列两个实值有界函数在 \(\mathbb R\times(0,\infty)\) 上都满足分布方程 \(u_t+\partial_x(u^2/2)=0\)，且当 \(t\downarrow0\) 时在 \(L^1_{\mathrm{loc}}(\mathbb R)\) 中收敛到同一初值：
-\[
- u_1(x,t)=\mathbf1_{\{x>t/2\}},\quad
- u_2(x,t)=\begin{cases}0,&x\leq0,\\x/t,&0<x<t,\\1,&x\geq t.\end{cases}
-\]
+对实值 Burgers 方程 \(u_t+\partial_x(u^2/2)=0\)，取初值
+\(u_0=\mathbf1_{(0,1)}\)。求出 \(t>0\) 时的熵解，确定稀疏波与激波相遇的时间，解释相遇后激波为何不再以常速运动，并验证
+\(\int_{\mathbb R}u(x,t)\,\mathrm dx=1\)。
 \end{optionalexercise}
 \begin{solution}
-对 \(u_1\)，左右状态为 \(0,1\)，界面速度为 \(1/2=(F(1)-F(0))/(1-0)\)，所以 Rankine--Hugoniot 条件成立；两侧方程恒成立，界面分部积分证明整个分布方程。对 \(u_2\)，扇形内部有 \(u_t=-x/t^2\)、\(uu_x=x/t^2\)，其余区域为常数。两条分界线上函数及通量连续，逐区分部积分时界面项相消，故也是弱解。测试函数的支集在 \(t>0\) 内，与 \(t=0\) 有正距离，所以逐区计算没有端点奇性。两函数与初值的差都只支撑于 \([0,t]\)，绝对值至多一，局部 \(L^1\) 误差不超过 \(t\)。二者在一个非空开集上不同，因此弱方程与该初值尚不能保证唯一。
+原点的左右状态为 \(0,1\)，产生稀疏波；点 \(1\) 处的状态为 \(1,0\)，产生速度为 \(1/2\) 的激波。稀疏波右边缘为 \(x=t\)，激波为 \(x=1+t/2\)，相遇条件为 \(t=1+t/2\)，故相遇时刻为 \(t=2\)，位置为 \(x=2\)。在 \(0<t\leq2\) 时，解为
+\[
+ u(x,t)=
+ \begin{cases}
+ 0,&x\leq0,\\
+ x/t,&0<x<t,\\
+ 1,&t\leq x<1+t/2,\\
+ 0,&x>1+t/2.
+ \end{cases}
+\]
+在 \(t=2\) 时，常值为一的中间区间长度为零。
+
+相遇后，设激波位置为 \(X(t)\)。其左状态来自稀疏扇，为 \(X(t)/t\)，右状态为零。Rankine--Hugoniot 条件因而变成
+\[
+ X'(t)=\frac{X(t)}{2t},\quad X(2)=2,
+ \quad X(t)=\sqrt{2t}\quad(t\geq2).
+\]
+故此后
+\[
+ u(x,t)=\begin{cases}x/t,&0<x<\sqrt{2t},\\0,&\text{其余位置}.\end{cases}
+\]
+各光滑片上满足方程；沿 \(x=0\) 连续接合，沿激波满足跳跃关系，且两段激波均从正状态降到零，满足全部凸熵不等式。两条公式在 \(t=2\) 的局部 \(L^1\) 迹相同，因此分别在 \(t<2\)、\(t>2\) 作熵积分并相加时，时间接合项相消。初始误差只位于长度趋零的区间，故具有初值 \(u_0\)。由\cref{b2:thm:07-kruzkov}的唯一性，这就是熵解。
+
+最后，当 \(0<t\leq2\) 时，稀疏部分的积分为 \(t/2\)，平台部分的积分为 \(1-t/2\)，总和为一；当 \(t\geq2\) 时，
+\[
+ \int_0^{X(t)}\frac{x}{t}\,\mathrm dx
+ =\frac{X(t)^2}{2t}=1.
+\]
+激波减速来自其左侧输入状态随时间下降，而不是守恒关系发生了改变。
 \end{solution}
 
 % 自拟选读：矩阵特征值控制Hamilton--Jacobi二次解的最大正时间。

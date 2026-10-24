@@ -1,19 +1,199 @@
 % !TeX root = ../../Book2.tex
 \OptionalSection{高阶逼近与端点问题}{b2:sec:approximation-higher-order}
 
-待撰写。
+一阶连续模只测量函数值的变化。即使函数无限次可微，只要不是常数，它的一阶连续模通常也只有一阶小量；因而仅用它不能分辨二阶、三阶光滑性。上节在 \(0<\alpha<1\) 时把逼近速度与 Hölder 连续性联系起来；光滑阶达到整数时，二者的关系还会出现新的现象。本节先说明高阶差分怎样消去低阶变化，再分别处理光滑指数的整数端点和空间区间的几何端点。这两种“端点”是不同的问题。
 
 \subsection{高阶连续模}
 \label{b2:subsec:approximation-higher-moduli}
 
-待撰写。
+从二阶开始看最直接。若 \(f\) 在一小段上近似为仿射函数，则 \(f(x+2h)-2f(x+h)+f(x)\) 比 \(f(x+h)-f(x)\) 更小：常数项和一次项恰好抵消。高阶差分把这一消去过程重复进行，而不要求预先知道导数存在。
+
+\begin{definition}\label{b2:def:approximation-higher-modulus}
+设 \(\mathbb F=\mathbb R\) 或 \(\mathbb C\)，\(f\in C(\mathbb T;\mathbb F)\)，其中 \(\mathbb T=\mathbb R/\mathbb Z\)，且 \(r\geq1\) 为整数。对 \(h\in\mathbb R\)，定义 \(r\) 阶差分及相应的\term[gaojie-lianxu-mo]{高阶连续模}[higher order modulus of smoothness]为
+\[
+ \Delta_h^r f(x)=\sum_{j=0}^r(-1)^{r-j}\binom rj f(x-jh),
+ \quad
+ \omega_r(f,\delta)=\sup_{|h|\leq\delta}\|\Delta_h^r f\|_\infty
+ \quad(\delta\geq0).
+\]
+自变量均按模 \(1\) 理解。特别地，\(\omega_1(f,\delta)=\omega_f(\delta)\) 是圆周上的一阶连续模。
+\end{definition}
+\symidx{\(\omega_r(f,\delta)\)：周期函数的高阶连续模}
+
+这里允许负步长，且 \(\delta\) 可以大于半个周期；这使伸缩估计无需另外分段。\(\Delta_h^r=(\tau_h-I)^r\)，其中 \(\tau_hf(x)=f(x-h)\)，所以差分是平移的有限组合。连续性与紧性保证上式范数有限，且 \(\omega_r(f,\delta)\to0\) 当 \(\delta\downarrow0\)。
+
+\begin{proposition}\label{b2:prop:approximation-difference-estimates}
+设 \(r\geq1\) 为整数，\(\mathbb F=\mathbb R\) 或 \(\mathbb C\)，且 \(f\in C(\mathbb T;\mathbb F)\)。对 \(\delta>0\)、\(\lambda>0\)，有
+\[
+ \omega_r(f,\lambda\delta)\leq(1+\lambda)^r\omega_r(f,\delta),
+ \quad
+ \omega_r(f,\delta)\leq2^{r-1}\omega_1(f,\delta).
+\]
+若进一步 \(f\in C^r(\mathbb T;\mathbb F)\)，则
+\[
+ \omega_r(f,\delta)\leq\delta^r\|f^{(r)}\|_\infty.
+\]
+\end{proposition}
+\begin{proof}
+对任意整数 \(m\geq1\)，平移算子相互交换，并且
+\[
+ \tau_{mh}-I=(I+\tau_h+\cdots+\tau_{(m-1)h})(\tau_h-I).
+\]
+取 \(r\) 次幂。每个平移在一致范数下都是等距算子，括号中有 \(m\) 项，故 \(\|\Delta_{mh}^r f\|_\infty\leq m^r\|\Delta_h^r f\|_\infty\)。对 \(|u|\leq\lambda\delta\)，取 \(m=\max\{1,\lceil\lambda\rceil\}\)、\(h=u/m\)，得到第一式。第二式来自 \(\Delta_h^r=(\tau_h-I)^{r-1}\Delta_h\) 和 \(\|\tau_h-I\|\leq2\)。
+
+对 \(C^r\) 函数，反复使用微积分基本定理得到
+\[
+ \Delta_h^r f(x)=\int_0^h\cdots\int_0^h
+ (-1)^rf^{(r)}(x-t_1-\cdots-t_r)\,\mathrm dt_1\cdots\mathrm dt_r.
+\]
+负的 \(h\) 按有向积分解释。取绝对值后，积分区域的体积是 \(|h|^r\)，于是得到最后的估计。
+\end{proof}
+
+高阶差分消去了低阶变化，也改变了误差的估计方式。为了利用这种抵消，需要让核的尾部衰减得更快，再用它平均高阶差分。将 Fejér 核取更高的整数次幂，就能得到所需的衰减。
+
+\begin{theorem}[Jackson：高阶周期形式]\label{b2:thm:approximation-jackson-higher}
+对每个整数 \(r\geq1\)，存在只依赖 \(r\) 的常数 \(C_r>0\)，使任意 \(\mathbb F=\mathbb R\) 或 \(\mathbb C\)、\(f\in C(\mathbb T;\mathbb F)\) 及整数 \(n\geq1\) 均满足
+\[
+ \mathcal E_n(f)\leq C_r\omega_r(f,1/n).
+\]
+这里 \(\mathcal E_n(f)\) 是用次数不超过 \(n\) 的三角多项式作一致逼近的最佳误差。因此，若 \(f\in C^r(\mathbb T;\mathbb F)\)，则 \(\mathcal E_n(f)\leq C_r n^{-r}\|f^{(r)}\|_\infty\)。
+\end{theorem}
+\begin{proof}
+固定整数 \(s\geq2\)，使 \(2s>r+1\)。沿用\cref{b2:def:02-fejer-kernel}的编号，\(F_{m-1}\) 的次数为 \(m-1\)。对 \(m\geq1\)，定义
+\[
+ a_{m,s}=\int_{-1/2}^{1/2}F_{m-1}(t)^s\,\mathrm dt,
+ \quad K_{m,s}(t)=\frac{F_{m-1}(t)^s}{a_{m,s}}.
+\]
+这是非负、积分为 \(1\)、次数为 \(s(m-1)\) 的三角多项式。
+
+先核对所需估计。由正弦商公式，在 \(|t|\leq1/2\) 上
+\[
+ F_{m-1}(t)\leq\min\left\{m,\frac1{4mt^2}\right\}
+ \leq\frac{C m}{(1+m|t|)^2}.
+\]
+在 \(|t|\leq1/(2m)\) 上，用 \(|\sin(m\pi t)|\geq2m|t|\)、\(|\sin(\pi t)|\leq\pi|t|\)，可得 \(F_{m-1}(t)\geq4m/\pi^2\)，零点处按连续性理解。因而下界通过在这段长 \(1/m\) 的区间积分取得，上界通过代换 \(u=mt\) 取得：
+\[
+ c_s m^{s-1}\leq a_{m,s}\leq C_s m^{s-1},
+ \quad K_{m,s}(t)\leq\frac{C_s m}{(1+m|t|)^{2s}}.
+\]
+这些估计也包含 \(m=1\)。由 \(2s>r+1\)，进一步有
+\[
+ \int_{-1/2}^{1/2}(1+m|t|)^rK_{m,s}(t)\,\mathrm dt\leq C_r.
+\]
+这里及以下选定的 \(s\) 只依赖 \(r\)，常数可统一记为 \(C_r\)。
+
+现在取 \(m=\lfloor n/s\rfloor+1\)，使 \(s(m-1)\leq n\) 且 \(n/m\leq s\)，并令
+\[
+ Q_n(x)=f(x)-(-1)^r\int_{-1/2}^{1/2}\Delta_t^r f(x)K_{m,s}(t)\,\mathrm dt.
+\]
+为什么这个表达式是三角多项式，而不是仍含未知频率的 \(f\)？差分中 \(j=0\) 的项是 \((-1)^rf(x)\)，积分后恰好与前面的 \(f(x)\) 抵消。因此 \(Q_n\) 是下列 \(r\) 个函数的有限线性组合：
+\[
+ G_j(x)=\int_{\mathbb T}f(x-jt)K_{m,s}(t)\,\mathrm dt,
+ \quad 1\leq j\leq r.
+\]
+连续函数在紧圆周上有界，故 Fubini 可用于计算其 Fourier 系数。换元 \(y=x-jt\) 给出
+\[
+ \widehat G_j(k)=\widehat f(k)\widehat K_{m,s}(jk).
+\]
+当 \(|jk|>s(m-1)\) 时右端为零。取由其有限个非零系数组成的三角多项式，它与 \(G_j\) 的全部 Fourier 系数一致；\cref{b2:cor:02-uniqueness}给出几乎处处相等，而二者连续，故处处相等。这样 \(G_j\) 的次数不超过 \(\lfloor s(m-1)/j\rfloor\)，\(Q_n\) 的次数不超过 \(n\)。实值输入也给出实值 \(Q_n\)。
+
+最后直接从构造估计误差。由连续模的伸缩估计和核的非负性，
+\[
+ \begin{aligned}
+ \|f-Q_n\|_\infty
+ &\leq\int_{-1/2}^{1/2}\omega_r(f,|t|)K_{m,s}(t)\,\mathrm dt\\
+ &\leq\omega_r(f,1/n)
+       \int_{-1/2}^{1/2}(1+n|t|)^rK_{m,s}(t)\,\mathrm dt
+ \leq C_r\omega_r(f,1/n).
+ \end{aligned}
+\]
+最后一步使用 \(n/m\leq s\) 及刚建立的矩估计。取最佳误差即得结论，再用\cref{b2:prop:approximation-difference-estimates}得到 \(C^r\) 情形。
+\end{proof}
+
+这里 \(Q_n\) 在 \(r\geq2\) 时一般不是正平均；正的是用来估计差分的核。正性负责误差控制，差分的系数负责消去低阶变化，二者承担不同任务。差分估计还适用于没有经典导数的连续函数；下一小节的例子将显示这种描述的用处。
 
 \subsection{逆定理与高阶逼近的边界}
 \label{b2:subsec:020904}
 
-待撰写。
+先回顾\secref{b2:sec:approximation-inverse}中二进尺度求和的关键位置。误差 \(2^{-j\alpha}\) 乘上导数所需的次数因子 \(2^j\)，得到 \(2^{j(1-\alpha)}\)。当 \(0<\alpha<1\) 时，这个几何级数由最后一项控制；在 \(\alpha=1\) 时，每一项同阶，累积项数变成对数。这说明旧证明只给出 \(h\log(1/h)\) 量级。下面的函数表明这项损失确实可能出现。
+
+\begin{proposition}\label{b2:prop:approximation-integer-counterexample}
+函数
+\[
+ f(x)=\sum_{j=1}^{\infty}2^{-j}\sin(2\pi 2^j x),\quad x\in\mathbb T,
+\]
+是实值连续周期函数，满足 \(\mathcal E_n(f)\leq2/n\)（整数 \(n\geq1\)），但不是 Lipschitz 连续的。它的二阶连续模却满足 \(\omega_2(f,\delta)\leq C\delta\)（\(0<\delta\leq1/2\)），其中 \(C\) 为绝对常数。
+\end{proposition}
+\begin{proof}
+各项一致范数之和为 \(\sum_{j\geq1}2^{-j}=1\)，故级数一致收敛，和函数连续。若 \(2^N\leq n<2^{N+1}\)，取前 \(N\) 项作为次数不超过 \(n\) 的逼近，尾项范数至多 \(2^{-N}\leq2/n\)；\(n=1\) 时取零多项式。
+
+为检查 Lipschitz 性，取 \(h_N=2^{-N-2}\)。当 \(1\leq j\leq N\) 时，\(2\pi2^jh_N\in[0,\pi/2]\)，由 \(\sin u\geq2u/\pi\) 得
+\[
+ 2^{-j}\sin(2\pi2^jh_N)\geq4h_N.
+\]
+当 \(j=N+1\) 时正弦自变量为 \(\pi\)，随后为 \(\pi\) 的整数倍，所有尾项恰好为零。于是 \(f(0)=0\) 且
+\[
+ \frac{|f(h_N)-f(0)|}{h_N}\geq4N\longrightarrow\infty.
+\]
+不存在统一的 Lipschitz 常数。
+
+另一方面，指数函数的二阶差分乘子是 \((e^{-2\pi\mathrm i 2^jh}-1)^2\)，所以每项的二阶差分范数至多
+\[
+ 2^{-j}\min\{4,(2\pi2^j h)^2\}.
+\]
+对 \(0<|h|\leq1/2\)，选 \(N\geq1\) 使 \(2^{-N-1}<|h|\leq2^{-N}\)。低频之和至多 \(C h^2\sum_{j\leq N}2^j\leq C|h|\)，高频之和至多 \(4\sum_{j>N}2^{-j}\leq C|h|\)。对 \(|h|\leq\delta\) 取上确界即得结论。
+\end{proof}
+
+\(\omega_2(f,\delta)=O(\delta)\) 常用于描述整数光滑阶附近比 Lipschitz 更宽的函数类。这个例子已经足够说明：把上节 Hölder 等价中的 \(\alpha<1\) 改成 \(\alpha\leq1\)，并保持右侧为一阶 Hölder 条件，会得到错误命题。若研究更高整数阶，也必须先选合适的高阶差分尺度，而不是继续使用一阶连续模。
+
+\ProseParagraphBreak
+
+还有一个更基础的限制：若区间上的函数满足 \(|f(x)-f(y)|\leq C|x-y|^\alpha\) 且 \(\alpha>1\)，把任意线段分成 \(m\) 等份可得
+\[
+ |f(x)-f(y)|\leq C|x-y|^\alpha m^{1-\alpha}\longrightarrow0.
+\]
+它只能是常数。光滑函数的一阶变化通常仍是线性的，所以高阶光滑性不可能用“一阶差小于距离的高次幂”来定义。高阶差分和导数的 Hölder 条件正是为避免这一矛盾而引入的。
 
 \subsection{端点情形}
 \label{b2:subsec:approximation-endpoints}
 
-待撰写。
+区间上的代数多项式可以写成 \(p(\cos\theta)\)，再使用三角多项式工具；但 \(x=\cos\theta\) 不是处处保持距离尺度的变换。区间内部 \(\sin\theta\) 不为零，角度变化与位置变化成比例；在 \(x=1\) 附近则有 \(1-\cos\theta\sim\theta^2/2\)。因此同一个角度小量，在端点变成二次的位置小量。
+
+\begin{proposition}\label{b2:prop:approximation-algebraic-derivative}
+设 \(p\) 为实或复系数代数多项式，次数不超过整数 \(n\geq1\)，范数取在 \([-1,1]\) 上。则
+\[
+ \sqrt{1-x^2}\,|p'(x)|\leq n\|p\|_\infty\quad(-1<x<1),
+ \quad \|p'\|_\infty\leq\frac\pi2 n^2\|p\|_\infty.
+\]
+此外，Chebyshev 多项式满足 \(\|T_n\|_\infty=1\) 和 \(T_n'(1)=n^2\)，故全区间导数估计中的 \(n^2\) 不能统一换成 \(n\)。第二个不等式在此只说明次数的正确尺度，不主张常数 \(\pi/2\) 最优。
+\end{proposition}
+\begin{proof}
+令 \(v(\theta)=p(\cos\theta)\)。这是角度周期 \(2\pi\)、次数不超过 \(n\) 的三角多项式。把\cref{b2:thm:approximation-bernstein-trigonometric}中的自变量按 \(\theta=2\pi t\) 换元，得到 \(\|v'\|_\infty\leq n\|p\|_\infty\) 及 \(\|v''\|_\infty\leq n^2\|p\|_\infty\)。链式法则给出
+\[
+ v'(\theta)=-\sin\theta\,p'(\cos\theta),
+\]
+因而得到第一个估计。
+
+由于 \(v'(0)=v'(\pi)=0\)，微积分基本定理同时给出
+\[
+ |v'(\theta)|\leq n^2\|p\|_\infty\min\{\theta,\pi-\theta\}
+ \quad(0\leq\theta\leq\pi).
+\]
+使用 \(\sin\theta\geq(2/\pi)\min\{\theta,\pi-\theta\}\)，相除后得到第二个估计，端点由 \(p'\) 连续性补上。最后，\(T_n(\cos\theta)=\cos(n\theta)\) 给出
+\[
+ T_n'(1)=\lim_{\theta\to0}\frac{\cos(n\theta)-1}{\cos\theta-1}=n^2,
+\]
+而 \(|\cos(n\theta)|\leq1\) 并在端点取等号，所以其一致范数为 \(1\)。
+\end{proof}
+
+这也影响逆定理的表述。令 \(f(x)=\sqrt{1-x^2}\)（\(-1\leq x\leq1\)）。对应的周期函数 \(g(t)=f(\cos(2\pi t))=|\sin(2\pi t)|\) 是 Lipschitz 函数，常数可取 \(2\pi\)。对 \(g\) 使用周期 Jackson 逼近，再取偶部并把余弦换成 Chebyshev 多项式，就像\secref{b2:sec:approximation-jackson}中的代数转移证明一样，得到 \(E_n(f)\leq C/n\)。然而
+\[
+ \frac{|f(1-h)-f(1)|}{h^\alpha}
+ =h^{1/2-\alpha}\sqrt{2-h}\longrightarrow\infty
+ \quad(\alpha>1/2).
+\]
+因此即使固定 \(1/2<\alpha<1\)，代数最佳误差 \(E_n(f)=O(n^{-\alpha})\) 也不能推出闭区间通常距离下的 \(\alpha\)-Hölder 连续性。周期逆定理没有错；错误发生在忽略了余弦变换的端点退化。
+
+\ProseParagraphBreak
+
+在闭子区间 \([-1+\varepsilon,1-\varepsilon]\) 上，\(\sqrt{1-x^2}\) 有正下界，可以恢复与角度相当的局部尺度。若希望在整个闭区间获得精确的高阶正逆理论，则需要与端点相适应的加权连续模：差分步长也要随位置调整，才能同时反映内部与端点附近的变化。

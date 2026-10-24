@@ -2,24 +2,186 @@
 \section{条件期望的测度论构造}
 \label{b1:sec:3101}
 
-待撰写。
+知道一次试验的部分信息以后，平均值应当随已知信息改变。例如，只知道一枚骰子掷出了偶数，和已经知道它掷出了六点，对点数所作的预测不同。前一种预测仍需平均，后一种已经没有待平均的部分。困难在于，一般信息未必由有限个正概率事件组成；连续观测的每个精确取值甚至可能都有零概率。本节用子 \(\sigma\)-代数描述信息，再用积分恒等式定义平均，从而不需要除以某个可能为零的概率。
 
 \subsection{子 \texorpdfstring{\(\sigma\)}{sigma}-代数与可测信息}
 \label{b1:subsec:310101}
 
-待撰写。
+在概率空间 \((\Omega,\mathcal F,\mathbb P)\) 中，\(\mathcal F\) 给出全部允许讨论的事件。一个子 \(\sigma\)-代数 \(\mathcal G\subseteq\mathcal F\) 则只保留其中一部分：若 \(A\in\mathcal G\)，便把“结果是否落在 \(A\) 中”理解为当前能够判定的信息。要求它仍是 \(\sigma\)-代数，是因为否定一个可判定事件，或把可数个可判定事件作“至少一个发生”的组合，不应超出同一信息范围。
+
+\ProseParagraphBreak
+
+给定实随机变量 \(Z\)，观测其数值所产生的信息为
+\[
+ \sigma(Z)\coloneqq\{\,Z^{-1}(B)\mid B\in\mathcal B(\mathbb R)\,\}.
+\]
+这是使 \(Z\) 可测的最小 \(\sigma\)-代数，已经在\cref{b1:def:30-independent-variables}中出现。若只观察 \(Z\) 是否大于零，信息便缩小为 \(\sigma(\{Z>0\})\)。信息的包含关系与 \(\sigma\)-代数的包含关系一致；它并不比较两个随机变量数值的大小。
+
+\begin{definition}\label{b1:def:conditional-expectation-31}
+设 \((\Omega,\mathcal F,\mathbb P)\) 是概率空间，\(\mathcal G\subseteq\mathcal F\) 是子 \(\sigma\)-代数，\(X\in L^1(\Omega,\mathcal F,\mathbb P;\mathbb R)\)。若实函数 \(Y\) 满足
+\begin{enumerate}
+ \item\label{b1:item:ce-measurable-31}\(Y\) 对 \(\mathcal G\) 可测，且 \(\mathbb E|Y|<\infty\)；
+ \item\label{b1:item:ce-integral-31}对每个 \(A\in\mathcal G\)，都有
+ \begin{equation}\label{b1:eq:conditional-expectation-test-31}
+  \int_A Y\,\mathrm d\mathbb P=\int_A X\,\mathrm d\mathbb P,
+ \end{equation}
+\end{enumerate}
+则称 \(Y\) 是 \(X\) 关于 \(\mathcal G\) 的一个\term[tiaojian-qiwang]{条件期望}[conditional expectation]。其几乎必然等价类记作 \(\mathbb E(X\mid\mathcal G)\)；选定的 \(\mathcal G\)-可测代表称为它的一个\term[tiaojian-qiwang-banben]{版本}[version]。
+\end{definition}
+\symidx{\(\mathbb E(X\mid\mathcal G)\)：关于子 \(\sigma\)-代数的条件期望}
+
+第一项说预测只能使用现有信息；第二项说在每个当前可辨认的事件上，预测保留原变量的总积分。特别地，取 \(A=\Omega\) 可知 \(\mathbb E Y=\mathbb E X\)，但只保留这一个等式远远不够：同一均值的随机变量有很多，必须同时用全部 \(A\in\mathcal G\) 测试。
+
+\ProseParagraphBreak
+
+先看一个能够直接计算的模型。设 \(A_1,\ldots,A_r\) 是 \(\Omega\) 的可测分割，\(\mathcal G=\sigma(A_1,\ldots,A_r)\)。一个实 \(\mathcal G\)-可测函数在每个非空分块上必须是常数：若同一块上有两个不同函数值，就能用一个有理数把它们分开，而相应的次水平集将把该分块再切开，与 \(\mathcal G\) 的形式矛盾。于是条件期望若在 \(A_j\) 上等于 \(c_j\)，积分条件就迫使
+\[
+ c_j\cdot\mathbb P(A_j)=\int_{A_j}X\,\mathrm d\mathbb P.
+\]
+正概率分块上的预测正是该块内的加权平均；零概率分块上的取值则不受这个等式约束。一般 \(\sigma\)-代数没有可用的有限分块，下一步需要把这项平均要求重新写成测度的密度问题。
 
 \subsection{Radon–Nikodym 构造}
 \label{b1:subsec:310102}
 
-待撰写。
+\cref{b1:thm:radon-nikodym-finite}说明：同一可测空间上的两个有限正测度，只要后者绝对连续于前者，就有可积密度。这里应改变的是可测空间中的事件族：把概率测度限制到 \(\mathcal G\)，再用 \(X\) 的积分在 \(\mathcal G\) 上定义另一个测度。由此取得的密度自动只依赖 \(\mathcal G\) 中的信息。
+
+\begin{theorem}[条件期望的存在性]\label{b1:thm:conditional-expectation-existence-31}
+设 \((\Omega,\mathcal F,\mathbb P)\) 是任意概率空间，\(\mathcal G\subseteq\mathcal F\) 是子 \(\sigma\)-代数。每个实可积随机变量 \(X\) 都有关于 \(\mathcal G\) 的条件期望。对复可积随机变量 \(X\)，也存在复值 \(\mathcal G\)-可测可积函数 \(Y\)，使对所有 \(A\in\mathcal G\) 都有 \(\int_A Y\,\mathrm d\mathbb P=\int_A X\,\mathrm d\mathbb P\)，即同样满足\eqref{b1:eq:conditional-expectation-test-31}。
+\end{theorem}
+\begin{proof}
+先设 \(X\geq0\)。在可测空间 \((\Omega,\mathcal G)\) 上定义
+\[
+ \mu(A)=\mathbb P(A),\quad
+ \nu(A)=\int_A X\,\mathrm d\mathbb P
+ \quad(A\in\mathcal G).
+\]
+\(\mu\) 是有限正测度。若 \(A_j\in\mathcal G\) 两两不交，则
+\(X\cdot\mathbf1_{\bigcup_{j=1}^nA_j}\uparrow
+X\cdot\mathbf1_{\bigcup_{j\geq1}A_j}\)，单调收敛给出 \(\nu\) 的可数可加性；又有 \(\nu(\Omega)=\mathbb E X<\infty\)。如果 \(\mu(A)=0\)，则可积函数在零测集上的积分为零，所以 \(\nu\ll\mu\)。
+
+有限正测度的 Radon--Nikodym 定理现在给出非负、\(\mathcal G\)-可测的密度 \(Y\)，满足
+\[
+ \int_A Y\,\mathrm d\mu=\nu(A)
+ \quad(A\in\mathcal G),\quad
+ \int_\Omega Y\,\mathrm d\mu=\mathbb E X<\infty.
+\]
+这里 \(Y\) 关于限制测度 \(\mu\) 的积分，等于它关于 \(\mathbb P\) 的积分：两者对 \(\mathcal G\)-简单函数相同，再用非负简单函数递增逼近即可。故 \(Y\) 满足条件期望的两项要求。密度若在某个 \(\mathcal G\)-零集上取无穷值，就在该集上改成零，以取得处处有限的代表。
+
+对一般实可积 \(X\)，写成 \(X=X^+-X^-\)。两部分都有有限积分，前一步分别给出非负可积密度 \(Y_+,Y_-\)。令 \(Y=Y_+-Y_-\)，则
+\[
+ \mathbb E|Y|\leq\mathbb E Y_++\mathbb E Y_-
+ =\mathbb E|X|<\infty.
+\]
+两条积分等式相减，得到所需表示。对复可积 \(X\)，分别处理其实部、虚部，并取
+\[
+ Y=\mathbb E(\operatorname{Re}X\mid\mathcal G)
+ +\mathrm i\,\mathbb E(\operatorname{Im}X\mid\mathcal G).
+\]
+实部、虚部都可积，故 \(Y\) 也可积；复积分的定义给出同一测试等式。
+\end{proof}
+
+构造中没有拓扑、坐标或正则性要求，也没有要求 \(\mathcal F\) 或 \(\mathcal G\) 完备。特别是，条件期望不需要 \(X\in L^2\)。平方可积时的几何解释将在下一节给出；本节的 \(L^1\) 构造才是后面处理一般可积鞅的起点。
 
 \subsection{几乎处处唯一性}
 \label{b1:subsec:310103}
 
-待撰写。
+存在性提供一个符合信息限制的平均，唯一性则保证它不会依赖构造中的选择。这里必须保留“几乎必然”这一限定，因为积分看不见零测集上的差异。
+
+\begin{proposition}[条件期望的唯一性]\label{b1:prop:conditional-expectation-uniqueness-31}
+设 \((\Omega,\mathcal F,\mathbb P)\) 是概率空间，\(\mathcal G\subseteq\mathcal F\) 是子 \(\sigma\)-代数，\(X\in L^1(\mathbb P;\mathbb K)\)，其中 \(\mathbb K=\mathbb R\) 或 \(\mathbb C\)。若 \(Y,Z\) 都是 \(X\) 关于 \(\mathcal G\) 的条件期望，则 \(Y=Z\) 几乎必然。若 \(X,X'\) 可积且几乎必然相等，它们的条件期望也几乎必然相等。
+\end{proposition}
+\begin{proof}
+先设变量为实值。对每个正整数 \(k\)，集合
+\(A_k=\{Y-Z\geq1/k\}\) 属于 \(\mathcal G\)，所以
+\[
+ 0=\int_{A_k}(Y-Z)\,\mathrm d\mathbb P
+ \geq\frac1k\cdot\mathbb P(A_k).
+\]
+于是各 \(A_k\) 都为零测集。它们的并恰为 \(\{Y>Z\}\)，故 \(Y\leq Z\) 几乎必然；交换 \(Y,Z\) 得到相等。复值情形分别对实部、虚部使用这一论证。若 \(X=X'\) 几乎必然，则它们在每个 \(A\in\mathcal G\) 上的积分相同，任一变量的条件期望也是另一变量的条件期望，因而仍由唯一性得到结论。
+\end{proof}
+
+这也是\cref{b1:prop:radon-nikodym-uniqueness}在当前概率空间上的具体表现。证明中特别关键的是 \(\{Y-Z\geq1/k\}\in\mathcal G\)：如果候选函数不对 \(\mathcal G\) 可测，就不能拿它的正负区域作为允许的测试事件。因此可测性条件不是积分等式之外的装饰。
+
+\begin{proposition}[可数分割上的条件期望]\label{b1:prop:conditional-expectation-partition-31}
+设 \((\Omega,\mathcal F,\mathbb P)\) 是概率空间，\((A_j)_{j\geq1}\) 是 \(\Omega\) 的两两不交可测分割，\(\mathcal G=\sigma(A_j:j\geq1)\)。若 \(X\in L^1(\mathbb P;\mathbb K)\)，其中 \(\mathbb K=\mathbb R\) 或 \(\mathbb C\)，则
+\[
+ \mathbb E(X\mid\mathcal G)
+ =\sum_{\{j:\,\mathbb P(A_j)>0\}}
+ \frac{\displaystyle\int_{A_j}X\,\mathrm d\mathbb P}
+      {\mathbb P(A_j)}\cdot\mathbf1_{A_j}
+ \quad\text{a.s.}
+\]
+右端在零概率分块上规定为零；有限分割也适用同一公式。
+\end{proposition}
+\begin{proof}
+记右端为 \(Y\)。每一点至多有一项非零，故求和没有条件收敛问题；部分和都是 \(\mathcal G\)-可测的，极限也可测。并且
+\[
+ \mathbb E|Y|
+ =\sum_{\{j:\,\mathbb P(A_j)>0\}}
+   \left|\int_{A_j}X\,\mathrm d\mathbb P\right|
+ \leq\sum_j\int_{A_j}|X|\,\mathrm d\mathbb P
+ =\mathbb E|X|.
+\]
+\(\mathcal G\) 中每个事件都是若干分块的并，而 \(X\) 与 \(Y\) 在每个分块上的积分相同。由可积函数积分的可数可加性，它们在这些并集上的积分也相同。定义和唯一性完成证明。
+\end{proof}
+
+例如，取 \(\Omega=\{1,2,3,4\}\)，四个点的概率依次为
+\(1/8,3/8,1/4,1/4\)，令 \(X\) 的取值依次为 \(0,2,4,8\)。若只能辨认 \(A_1=\{1,2\}\) 与 \(A_2=\{3,4\}\)，则
+\[
+ \mathbb E(X\mid\mathcal G)
+ =\frac32\cdot\mathbf1_{A_1}+6\cdot\mathbf1_{A_2}.
+\]
+第一块的平均不是 \((0+2)/2\)，因为块内两个点并非等概率。再对这两个预测取平均，得到
+\(\frac12\cdot\frac32+\frac12\cdot6=15/4=\mathbb E X\)。这个计算把“在每个可辨认分块中保留平均”与“全空间平均保持不变”同时展示出来。
+
+\ProseParagraphBreak
+
+以后等式 \(\mathbb E(X\mid\mathcal G)=Y\) 默认按几乎必然意义理解。若要讨论逐点值，必须选取 \(\mathcal G\)-可测代表；在非完备的 \(\mathcal G\) 上，对零测集的任意子集随意改值可能破坏可测性。对一个可数随机变量族，可以把所有相关例外集并成同一个零集；对不可数族则不能直接这样做。
 
 \subsection{条件期望与正则条件分布的区别}
 \label{b1:subsec:310104}
 
-待撰写。
+条件期望是一个随机变量。即使它的名称包含“条件”，它也不是在定义中给每个可能观测值指定一整份概率分布。把这两种对象区分开，能避免把“给定零概率事件”误当成普通分式。
+
+\begin{definition}\label{b1:def:conditional-probability-31}
+设 \((\Omega,\mathcal F,\mathbb P)\) 是概率空间，\(\mathcal G\subseteq\mathcal F\) 是子 \(\sigma\)-代数，\(A\in\mathcal F\)。事件 \(A\) 关于 \(\mathcal G\) 的\term[tiaojian-gailv]{条件概率}[conditional probability]定义为
+\[
+ \mathbb P(A\mid\mathcal G)\coloneqq
+ \mathbb E(\mathbf1_A\mid\mathcal G).
+\]
+若 \(Z\) 是实随机变量，则记
+\(\mathbb E(X\mid Z)\coloneqq\mathbb E(X\mid\sigma(Z))\)，其中 \(X\) 为可积实或复随机变量。
+\end{definition}
+
+若 \(B\in\mathcal F\) 且 \(\mathbb P(B)>0\)，在分割 \(B,B^c\) 中，\(\mathbb P(A\mid\sigma(B))\) 在 \(B\) 上的值为
+\(\mathbb P(A\cap B)/\mathbb P(B)\)，这就恢复了初等概率中的条件概率。但当 \(\mathbb P(B)=0\) 时，积分条件不决定该块上的值，分式也没有定义。一般条件期望通过所有可测信息的积分来规定一个等价类，并没有为任意零概率事件提供除法公式。
+
+\begin{definition}\label{b1:def:regular-conditional-distribution-31}
+设 \((\Omega,\mathcal F,\mathbb P)\) 是概率空间，\(\mathcal G\subseteq\mathcal F\) 是子 \(\sigma\)-代数，\((S,\mathcal S)\) 是非空可测空间，\(X:\Omega\rightarrow S\) 是 \(\mathcal F/\mathcal S\)-可测映射。若映射
+\(K:\Omega\times\mathcal S\rightarrow[0,1]\) 满足
+\begin{enumerate}
+ \item\label{b1:item:rcd-measure-31}对每个 \(\omega\in\Omega\)，\(B\mapsto K(\omega,B)\) 是 \((S,\mathcal S)\) 上的概率测度；
+ \item\label{b1:item:rcd-measurability-31}对每个 \(B\in\mathcal S\)，\(\omega\mapsto K(\omega,B)\) 对 \(\mathcal G\) 可测，并且对所有 \(A\in\mathcal G\) 有
+ \[
+  \int_A K(\omega,B)\,\mathrm d\mathbb P(\omega)
+  =\mathbb P(A\cap\{X\in B\}),
+ \]
+\end{enumerate}
+则称 \(K\) 是 \(X\) 关于 \(\mathcal G\) 的一个\term[zhengze-tiaojian-fenbu]{正则条件分布}[regular conditional distribution]。
+\end{definition}
+
+对每个固定 \(B\)，第二项只说 \(K(\cdot,B)\) 是一个条件概率版本；第一项却要求这些版本同时拼成概率测度。分别构造每个 \(\mathbb E(\mathbf1_{\{X\in B\}}\mid\mathcal G)\)，还没有自动完成这种协调：每个等式可能带有自己的例外零集，不能对不可数个 \(B\) 直接取并。因而条件期望的存在性证明，不能被读成任意目标可测空间上正则条件分布的存在性证明。
+
+\ProseParagraphBreak
+
+二者一旦能够联系，仍要说明联系的方式。若实随机变量 \(X\) 已有上述核 \(K\)，则对每个有界 Borel 函数 \(h:\mathbb R\rightarrow\mathbb R\)，
+\[
+ \mathbb E(h(X)\mid\mathcal G)(\omega)
+ =\int_{\mathbb R}h(t)\,K(\omega,\mathrm dt)
+ \quad\text{a.s.}
+\]
+对示性函数，这就是核的定义；有限线性组合给出简单函数情形；对非负有界 \(h\) 取简单函数递增逼近，两次使用单调收敛，分别得到右端的可测性与积分测试等式；最后分解正负部分。这里是已给定一个协调好的核后，由它计算条件期望，而非以核的存在来定义条件期望。
+
+\ProseParagraphBreak
+
+最后看点值的歧义。在 \([0,1]\) 上取 Lebesgue 概率测度，令 \(Z(\omega)=\omega\)、\(X=Z^2\)。函数 \(Z^2\) 本身对 \(\sigma(Z)\) 可测，且满足全部积分测试，所以 \(\mathbb E(X\mid Z)=Z^2\)。通常可以把它写成 \(h(Z)\)，其中 \(h(z)=z^2\)；若只把 \(h(0)\) 改成 \(7\)，所得函数仍给出同一个条件期望版本。故写下“\(\mathbb E(X\mid Z=0)\)”时，还必须说明选用了什么逐点版本。可数分割上的平均、一般条件期望和逐点条件分布之间的区别，都集中体现在这里。

@@ -3,25 +3,222 @@
 \label{b3:sec:2901}
 % 规划课题：A27。
 
-待撰写。
+把一个复变量换成 \(n\) 个复变量，首先需要决定“可微”对所有变量同时变化意味着什么。只沿坐标轴求导，尚未直接控制斜向趋近；另一方面，一元 Cauchy 公式可以逐个变量使用，从而把这种同时变化写成一个明确的积分。本节沿这条路线建立微分、积分与幂级数三种描述。它们将为分别全纯、延拓和多变量函数空间提供共同基础。
 
 \subsection{复坐标与全纯映射}
 \label{b3:subsec:290101}
 
-待撰写。
+写 \(z=(z_1,\ldots,z_n)\in\mathbb C^n\)，其中 \(z_j=x_j+\mathrm{i}y_j\)。作为实向量空间，\(\mathbb C^n\) 就是 \(\mathbb R^{2n}\)，使用欧氏范数 \(|z|=(\sum_j|z_j|^2)^{1/2}\)。复结构额外规定了乘以 \(\mathrm{i}\) 的运算，因此一个实线性微分还须与这个运算相容，才是复线性的微分。
+
+\Needspace{6\baselineskip}
+\begin{definition}\label{b3:def:29-holomorphic}
+设 \(U\subseteq\mathbb C^n\) 为开集，\(a\in U\)。若函数 \(f:U\to\mathbb C\) 存在复线性映射 \(L:\mathbb C^n\to\mathbb C\)，满足
+\[
+ f(a+h)=f(a)+Lh+o(|h|)\quad(h\to0),
+\]
+就称 \(f\) 在 \(a\) 复可微。若它在 \(U\) 每一点复可微，则称它为\term[duobianliang-quanchun-hanshu]{多变量全纯函数}[holomorphic function of several complex variables]，并以 \(\mathcal O(U)\) 表示这些函数的集合。映射 \(F:U\to\mathbb C^m\) 若各分量全纯，就称为\term[quanchun-yingshe]{全纯映射}[holomorphic map]。
+\end{definition}
+
+这里的余项要求在任意方向 \(h\to0\) 时都为 \(o(|h|)\)，不是分别固定其他坐标后的一组一元极限。复可微立即蕴含连续；限制到任何仿射复直线时，也得到一元全纯函数。全纯映射的复合由微分的链式法则仍全纯；其微分是复线性映射，矩阵记为 \((\partial F_j/\partial z_k)\)。后面将证明这些偏导数本身也全纯。
+
+\ProseParagraphBreak
+对于已经具有连续实偏导数的函数，可以直接检验复线性。约定
+\[
+ \partial_{z_j}\coloneqq\frac12\left(\partial_{x_j}-\mathrm{i}\partial_{y_j}\right),
+ \quad
+ \partial_{\bar z_j}\coloneqq\frac12\left(\partial_{x_j}+\mathrm{i}\partial_{y_j}\right).
+\]
+这些称为\term[wirtinger-daoshu]{Wirtinger 导数}[Wirtinger derivatives]。其中 \(z_j\) 与 \(\bar z_j\) 并不是独立的几何坐标；记号表达的是把实微分分成复线性与共轭线性两部分。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[Cauchy--Riemann 判据]\label{b3:prop:29-cauchy-riemann}
+设 \(U\subseteq\mathbb C^n\) 为开集，\(f\in C^1(U;\mathbb C)\)。则 \(f\in\mathcal O(U)\) 当且仅当
+\[
+ \partial_{\bar z_j}f=0\quad(1\le j\le n).
+\]
+此时其复微分为 \(h\mapsto\sum_{j=1}^n(\partial_{z_j}f)h_j\)。同一判据逐分量适用于 \(C^1\) 映射 \(U\to\mathbb C^m\)。
+\end{proposition}
+\begin{proof}
+实可微性给出统一的线性近似。把 \(h_j=\xi_j+\mathrm{i}\eta_j\) 代入，可以把实微分准确改写为
+\[
+ D_{\mathbb R}f(a)h
+ =\sum_{j=1}^n\left(\partial_{z_j}f(a)h_j
+                  +\partial_{\bar z_j}f(a)\overline{h_j}\right).
+\]
+若所有共轭导数为零，右端复线性，实可微余项原本就是 \(o(|h|)\)，故满足复可微定义。反过来，若微分复线性，则对仅第 \(j\) 个分量非零的向量分别代入 \(1\) 和 \(\mathrm{i}\)，由 \(D_{\mathbb R}f(a)(\mathrm{i}h)=\mathrm{i}D_{\mathbb R}f(a)h\) 得到 \(\partial_{\bar z_j}f(a)=0\)。
+\end{proof}
+
+例如 \(f(z_1,z_2)=z_1z_2\) 的微分为 \(h\mapsto z_2h_1+z_1h_2\)，而 \(f(z)=|z_1|^2\) 满足 \(\partial_{\bar z_1}f=z_1\)，并不在任何非空开集上全纯。判据中的 \(C^1\) 条件负责提供同时变化的实微分；只有沿坐标截面的全纯性时，还不能直接套用这个证明。取消正则性假设后的结论由\secref{b3:sec:2902}处理。
 
 \subsection{多圆盘上的 Cauchy 公式}
 \label{b3:subsec:290102}
 
-待撰写。
+球在几何上自然，多圆盘则适合把一元公式逐次使用。对 \(a\in\mathbb C^n\)、\(r=(r_1,\ldots,r_n)\) 且每个 \(r_j>0\)，记
+\[
+ P(a,r)\coloneqq\prod_{j=1}^nD(a_j,r_j),
+ \quad
+ T(a,r)\coloneqq\prod_{j=1}^n\partial D(a_j,r_j).
+\]
+前者称为\term[duoyuanpan]{多圆盘}[polydisc]。以下用 \(P(a,r)\) 讨论任意各向半径；若所有半径相等，也把共同半径写成一个数。\(T(a,r)\) 是各圆周的乘积，实维数为 \(n\)；它只是多圆盘边界的一部分，不是实维数 \(2n-1\) 的整个边界。积分时每个圆周都取逆时针方向。
+
+\Needspace{6\baselineskip}
+\begin{theorem}[多圆盘上的 Cauchy 公式]\label{b3:thm:29-polydisc-cauchy}
+设 \(a\in\mathbb C^n\)，各 \(r_j>0\)，函数 \(f\) 在闭多圆盘 \(\overline{P(a,r)}\) 的某个开邻域上全纯。则对 \(z\in P(a,r)\)，有
+\[
+ f(z)=\frac1{(2\pi\mathrm{i})^n}
+ \int_{|\zeta_1-a_1|=r_1}\!\cdots\!
+ \int_{|\zeta_n-a_n|=r_n}
+ \frac{f(\zeta_1,\ldots,\zeta_n)}
+      {\prod_{j=1}^n(\zeta_j-z_j)}
+ \,\mathrm{d}\zeta_n\cdots\mathrm{d}\zeta_1.
+\]
+同一公式也适用于在该邻域上连续、且固定其余坐标后关于每个坐标分别全纯的函数；在这种情形下，公式还证明 \(f\) 在 \(P(a,r)\) 联合全纯。
+\end{theorem}
+\begin{proof}
+固定 \(z_2,\ldots,z_n\)，对第一变量使用\cref{b3:thm:02-cauchy-formula}。圆周及其内部均位于相应截面的定义域中，得到
+\[
+ f(z)=\frac1{2\pi\mathrm{i}}\int_{|\zeta_1-a_1|=r_1}
+ \frac{f(\zeta_1,z_2,\ldots,z_n)}{\zeta_1-z_1}\,\mathrm{d}\zeta_1.
+\]
+对被积函数的第二变量再次使用一元公式，依次进行到第 \(n\) 个变量，即得到所述迭代积分。连续性保证紧的圆周乘积上的被积函数有界，所有积分存在，并可按 Fubini 定理换序。
+
+在任意紧子多圆盘上，各分母离零有统一正距离。因而对右侧作任意阶实微分，都可以在积分号内进行；每个核因子关于对应的 \(z_j\) 全纯，所以得到一个 \(C^\infty\) 函数，且所有 \(\partial_{\bar z_j}\) 均为零。由\cref{b3:prop:29-cauchy-riemann}，它联合全纯。这一论证只使用连续性和分别全纯性，故同时证明最后一个断言。
+\end{proof}
+
+公式的两个作用应当分开看。迭代一元公式恢复函数值，而对核求导给出新的正则性。后者说明全纯函数自动具有任意阶连续偏导数，不需要在全纯定义中预先加入 \(C^1\) 或 \(C^\infty\) 假设。
+
+\ProseParagraphBreak
+为书写导数，采用\term[duochong-zhibiao]{多重指标}[multi-index]记号。对 \(\alpha=(\alpha_1,\ldots,\alpha_n)\in\mathbb N_0^n\)，令
+\[
+ |\alpha|=\sum_j\alpha_j,\quad
+ \alpha!=\prod_j\alpha_j!,\quad
+ z^\alpha=\prod_jz_j^{\alpha_j},\quad
+ r^\alpha=\prod_jr_j^{\alpha_j},\quad
+ \partial^\alpha=\partial_{z_1}^{\alpha_1}\cdots\partial_{z_n}^{\alpha_n}.
+\]
+这里 \(\mathbb N_0=\{0,1,2,\ldots\}\)。各阶导数的连续性保证求导次序可交换。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[Cauchy 导数估计]\label{b3:prop:29-cauchy-estimates}
+设 \(f\) 在 \(\overline{P(a,r)}\subset\mathbb C^n\) 的一个开邻域全纯，\(\alpha\in\mathbb N_0^n\)，\(M=\max_{T(a,r)}|f|\)。则对 \(z\in P(a,r)\)，
+\[
+ \partial^\alpha f(z)=\frac{\alpha!}{(2\pi\mathrm{i})^n}
+ \int_{|\zeta_1-a_1|=r_1}\!\cdots\!
+ \int_{|\zeta_n-a_n|=r_n}
+ \frac{f(\zeta)}{\prod_{j=1}^n(\zeta_j-z_j)^{\alpha_j+1}}
+ \,\mathrm{d}\zeta_n\cdots\mathrm{d}\zeta_1,
+\]
+特别地，
+\[
+ |\partial^\alpha f(a)|\le\frac{\alpha!M}{r^\alpha}.
+\]
+若 \(f\) 在开多圆盘 \(P(a,r)\) 全纯且 \(|f|\le M\)，并且 \(0<\rho_j<r_j\)，则
+\[
+ \sup_{z\in P(a,\rho)}|\partial^\alpha f(z)|
+ \le\frac{\alpha!M}{\prod_j(r_j-\rho_j)^{\alpha_j}}.
+\]
+\end{proposition}
+\begin{proof}
+对 Cauchy 公式中的各核因子求导，\(\alpha_j\) 次求导产生 \(\alpha_j!\)，给出积分表达。取 \(z=a\)，第 \(j\) 条圆周的长度为 \(2\pi r_j\)，分母模为 \(r_j^{\alpha_j+1}\)，逐项相消后得到中心估计。
+
+最后，对每个 \(z\in P(a,\rho)\)，以 \(z\) 为中心取半径 \(s_j<r_j-\rho_j\) 的闭多圆盘，它包含于原开多圆盘中。应用中心估计，再令各 \(s_j\uparrow r_j-\rho_j\)，即得统一的内部估计。
+\end{proof}
+
+例如，在 \(P(0,1)\subset\mathbb C^2\) 中有界于 \(M\) 的全纯函数满足 \(|\partial_{z_1}^2\partial_{z_2}f(0)|\le2M\)。这里出现的是 \(2!1!\)，不是把总阶数三代入得到的 \(3!\)。对于全纯函数，\(\partial_{x_j}f=\partial_{z_j}f\)、\(\partial_{y_j}f=\mathrm{i}\partial_{z_j}f\)，所以这些估计也控制实方向的各阶导数。
 
 \subsection{幂级数表示与局部收敛}
 \label{b3:subsec:290103}
 
-待撰写。
+多变量幂级数的指标不再排成一条自然数序列。为了使交换求和、分组和逐项求导都有确定意义，先在严格缩小的多圆盘上建立绝对一致收敛。
+
+\Needspace{6\baselineskip}
+\begin{theorem}[局部幂级数表示]\label{b3:thm:29-power-series}
+设 \(f\) 在 \(\overline{P(a,r)}\) 的一个开邻域全纯。则
+\[
+ f(z)=\sum_{\alpha\in\mathbb N_0^n}c_\alpha(z-a)^\alpha,
+ \quad c_\alpha=\frac{\partial^\alpha f(a)}{\alpha!},
+\]
+在每个满足 \(0<\rho_j<r_j\) 的 \(\overline{P(a,\rho)}\) 上绝对一致收敛，并可任意阶逐项求导。反过来，若一个幂级数 \(\sum_\alpha c_\alpha(z-a)^\alpha\) 在某个开多圆盘内处处绝对收敛，则其和在该多圆盘全纯，且在每个紧子多圆盘上，级数及各阶逐项导数都绝对一致收敛。
+\end{theorem}
+\begin{proof}
+在 Cauchy 积分中，把每个分母展开为
+\[
+ \frac1{\zeta_j-z_j}
+ =\sum_{k=0}^\infty\frac{(z_j-a_j)^k}{(\zeta_j-a_j)^{k+1}}.
+\]
+当 \(|z_j-a_j|\le\rho_j<r_j=|\zeta_j-a_j|\) 时，几何级数一致绝对收敛。有限个这样的级数相乘后，其绝对值总和受各几何级数之积控制，因此可以与圆周乘积上的积分换序。所得系数为
+\[
+ c_\alpha=\frac1{(2\pi\mathrm{i})^n}
+ \int_{|\zeta_1-a_1|=r_1}\!\cdots\!
+ \int_{|\zeta_n-a_n|=r_n}
+ \frac{f(\zeta)}{\prod_j(\zeta_j-a_j)^{\alpha_j+1}}
+ \,\mathrm{d}\zeta_n\cdots\mathrm{d}\zeta_1
+ =\frac{\partial^\alpha f(a)}{\alpha!}.
+\]
+由 \(|c_\alpha|\le M/r^\alpha\)，有明确的控制
+\[
+ \sum_\alpha |c_\alpha|\rho^\alpha
+ \le M\prod_{j=1}^n\frac1{1-\rho_j/r_j}.
+\]
+求导只会给每项乘上关于各指标的固定次数多项式，并降低相应幂次；把 \(\rho\) 与 \(r\) 之间再插入一组半径，几何衰减就仍能控制这些因子。因此所有固定阶数的逐项导数在紧子多圆盘上一致绝对收敛。
+
+反过来，给定紧子多圆盘的半径 \(\rho\)，在它与原半径之间选取 \(\sigma\)。假设在点 \(z-a=(\sigma_1,\ldots,\sigma_n)\) 的绝对收敛给出 \(\sum_\alpha|c_\alpha|\sigma^\alpha<\infty\)。它控制较小多圆盘上的级数；固定阶数求导所产生的指标因子又由 \(\prod_j(\rho_j/\sigma_j)^{\alpha_j}\) 的衰减吸收。于是可以逐项作实微分，得到 \(C^1\) 函数，并且全部共轭导数为零。\cref{b3:prop:29-cauchy-riemann}遂给出全纯性。
+\end{proof}
+
+因此，复可微、局部幂级数可展，以及 \(C^1\) 条件下的 Cauchy--Riemann 方程，给出同一类函数。绝对收敛还允许把级数按总次数 \(|\alpha|\) 分组，而不会改变和。不同方向的收敛尺度却可能耦合：例如
+\[
+ \sum_{k=0}^\infty z_1^kz_2^k=\frac1{1-z_1z_2}
+ \quad(|z_1z_2|<1).
+\]
+它的收敛域不是由一个欧氏半径决定的球，也不是固定半径的多圆盘。多圆盘提供局部工作区域，不意味着所有全纯函数天然拥有同一种全局收敛域。
+
+\ProseParagraphBreak
+Cauchy 公式同样控制极限。这里“局部一致”仍指在每个域内紧集上一致，而不是只在每条坐标截面上一致。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[全纯函数的局部一致极限]\label{b3:prop:29-holomorphic-limit}
+设 \(U\subseteq\mathbb C^n\) 为开集，\(f_\nu\in\mathcal O(U)\)，且 \(f_\nu\to f\) 在 \(U\) 局部一致。则 \(f\in\mathcal O(U)\)，并且对每个 \(\alpha\in\mathbb N_0^n\)，\(\partial^\alpha f_\nu\to\partial^\alpha f\) 也局部一致。特别地，若全纯函数级数满足对每个 \(K\Subset U\) 都有 \(\sum_\nu\sup_K|f_\nu|<\infty\)，则其和全纯，且可以任意阶逐项求导。
+\end{proposition}
+\begin{proof}
+在任意闭包包含于 \(U\) 的多圆盘上，圆周乘积是域内紧集。因此可在 Cauchy 公式中把 \(f_\nu\) 一致替换为 \(f\)，得到 \(f\) 自身的积分表达。对这个表达求导，说明 \(f\) 光滑且共轭导数为零。对导数积分使用相同的一致收敛，分母在严格缩小的多圆盘上有统一下界，故各阶导数也一致收敛。用有限多个这样的多圆盘覆盖任意给定紧集，就得到局部一致结论。级数的结论应用于其部分和即可。
+\end{proof}
+
+后一种级数称为\term[zhenggui-shoulian-jishu]{正规收敛级数}[normally convergent series]。它包含一个共同的紧集绝对值控制，因而足以交换极限与微分；仅逐点收敛不提供这个控制。
+
+\Needspace{6\baselineskip}
+\begin{theorem}[Montel，局部有界情形]\label{b3:thm:29-montel}
+设 \(U\subseteq\mathbb C^n\) 为开集，\(\mathcal F\subseteq\mathcal O(U)\) 局部一致有界，即对每个 \(K\Subset U\)，有 \(\sup_{f\in\mathcal F}\sup_K|f|<\infty\)。则 \(\mathcal F\) 中任意序列都有一个子列，在 \(U\) 局部一致收敛到一个全纯函数。
+\end{theorem}
+\begin{proof}
+在任意紧集的一个较大紧邻域内使用共同上界，Cauchy 一阶导数估计便给出小多圆盘上的统一 Lipschitz 控制。有限覆盖于是使族在原紧集上等度连续，且函数值一致有界。
+
+取紧集耗尽 \(K_1\subset K_2\subset\cdots\)，使每个 \(U\) 的紧集包含于某个 \(K_j\)。在固定 \(K_j\) 的一个可数稠密点集上，逐点使用有界复数列的子列紧性，再取对角子列，得到所有稠密点上的收敛。等度连续性与有限的细网使这个子列在整个 \(K_j\) 上一致 Cauchy，因此一致收敛。对 \(j\) 再作一次逐次抽取和对角选择，得到在所有紧集上的一致收敛。极限的全纯性由\cref{b3:prop:29-holomorphic-limit}给出。
+\end{proof}
 
 \subsection{恒等原理与一元结论的边界}
 \label{b3:subsec:290104}
 
-待撰写。
+幂级数使一部分一元结论原样保留，另一些则必须改变假设。首先，函数在一个非空开集上的值仍决定它在整个连通域上的值。
 
+\Needspace{6\baselineskip}
+\begin{theorem}[恒等原理]\label{b3:thm:29-identity}
+设 \(U\subseteq\mathbb C^n\) 为连通开集，\(f,g\in\mathcal O(U)\)。若 \(f=g\) 在某个非空开子集上成立，则 \(f=g\) 于整个 \(U\)。若在某个 \(a\in U\) 有 \(\partial^\alpha(f-g)(a)=0\) 对所有 \(\alpha\in\mathbb N_0^n\) 成立，也有同样结论。
+\end{theorem}
+\begin{proof}
+令 \(h=f-g\)，并把 \(h\) 在某个邻域恒零的点组成集合 \(E\)。它按定义为开集。若 \(a_\nu\in E\) 且 \(a_\nu\to a\in U\)，所有阶导数在 \(a_\nu\) 都为零；导数连续性使它们在 \(a\) 也全部为零。\cref{b3:thm:29-power-series}于是使 \(h\) 在 \(a\) 的一个邻域恒零，所以 \(E\) 在 \(U\) 中也闭。第一种假设保证 \(E\ne\varnothing\)，连通性给 \(E=U\)。第二种假设先由 Taylor 展开产生一个非空恒零邻域，再用相同论证。
+\end{proof}
+
+只把“一元的零点有内聚点”照搬过来则不成立。在 \(\mathbb C^2\) 中，函数 \(f(z_1,z_2)=z_1\) 在整个平面片 \(z_1=0\) 上为零，却不恒零。反过来，某些没有复内部的集合仍能决定函数：若一个全纯函数在一个实坐标开长方体上为零，固定其余实坐标，对第一个复变量用一元恒等定理，再逐个放开其余复变量，就得到一个复多圆盘上的恒零性。决定唯一性的不是简单的点数，而是这些数据在复方向上的组织方式。
+
+\Needspace{6\baselineskip}
+\begin{theorem}[最大模原理]\label{b3:thm:29-maximum-modulus}
+设 \(U\subseteq\mathbb C^n\) 为连通开集，\(f\in\mathcal O(U)\)。若 \(|f|\) 在某个 \(a\in U\) 取得局部最大值，则 \(f\) 在 \(U\) 为常数。若 \(U\) 还有界，且 \(f\in C(\overline U)\)，则 \(\max_{\overline U}|f|=\max_{\partial U}|f|\)。
+\end{theorem}
+\begin{proof}
+取以 \(a\) 为中心的小球，使其中都有 \(|f(z)|\le|f(a)|\)。对每条经过 \(a\) 的复直线，把 \(f\) 限制到这条直线与小球的交圆盘上。限制函数一元全纯，并在中心取得最大模，故由\cref{b3:thm:02-maximum-modulus}恒等于 \(f(a)\)。每个球内点都落在这样一条复直线上，所以 \(f\) 在整个小球为常数。恒等原理将常数值传到 \(U\)。有界情形下，连续函数在紧闭包上取得最大模；若最大点在内部，刚证的结论使函数为常数，否则最大值已在边界取得。
+\end{proof}
+
+例如，整个 \(\mathbb C^n\) 上有界的全纯函数仍为常数：在任意点取半径 \(R\) 的多圆盘，一阶 Cauchy 估计给 \(|\partial_{z_j}f|\le M/R\)，令 \(R\to\infty\) 得到全部导数为零。另一方面，非恒定的全纯映射未必把开集映成目标中的开集，映射 \((z_1,z_2)\mapsto(z_1,0)\) 的像就没有 \(\mathbb C^2\) 内部；这里的目标维数与微分秩不能忽略。
+
+\ProseParagraphBreak
+这些例子提示了接下来的分界：积分估计、局部幂级数和最大模仍由一元理论逐方向支撑；零点、奇点以及区域的可延拓性却受到新增复方向的制约。\secref{b3:sec:2902}将看到，正是多出的一个变量，使分别全纯自动变成联合全纯，并使某些看似存在的内部奇点消失。

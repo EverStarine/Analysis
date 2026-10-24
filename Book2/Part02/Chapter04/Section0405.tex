@@ -2,14 +2,179 @@
 \section{Bernstein 估计与逆定理}
 \label{b2:sec:approximation-inverse}
 
-待撰写。
+Jackson 定理从连续模出发制造近似函数。若只给出一列很好的近似多项式，怎样恢复原函数的连续模？困难在于：一致误差小，并不直接说明近似多项式的导数小。一个幅度很低、频率很高的振动，可以具有很大的导数。因此必须把幅度与次数一起放进估计。
+
+\ProseParagraphBreak
+
+本节先证明次数为 \(n\) 的三角多项式求导以后，其一致范数至多放大 \(2\pi n\) 倍。再按 \(1,2,4,8,\ldots\) 分组比较不同次数的最佳近似，把每一组新添的振动单独估计。这样得到的\term[nixiang-bijin-dingli]{逆逼近定理}[inverse approximation theorem]从最佳误差的下降速度推出函数的正则性。
 
 \subsection{三角多项式的 Bernstein 估计}
 \label{b2:subsec:020903}
 
-待撰写。
+单个频率 \(e^{2\pi\mathrm i nx}\) 的导数范数恰为 \(2\pi n\)。一般多项式包含许多频率，逐项取绝对值却会丢掉它们之间的抵消，通常只能得到较差的次数幂。下面的证明不逐项估计系数，而是利用一个有限次数多项式不能有过多零点。
+
+\begin{lemma}
+\label{b2:lem:approximation-trigonometric-zeros}
+设 \(n\geq0\) 为整数，\(T(x)=\sum_{|k|\leq n}c_ke^{2\pi\mathrm i kx}\) 是不恒为零的复三角多项式。在单位圆周 \(\mathbb T=\mathbb R/\mathbb Z\) 上，\(T\) 至多有 \(2n\) 个互异零点。
+\end{lemma}
+\begin{proof}
+令 \(z=e^{2\pi\mathrm i x}\)，则
+\[
+ e^{2\pi\mathrm i nx}T(x)=P(z),
+ \quad P(z)=\sum_{|k|\leq n}c_kz^{k+n}.
+\]
+右侧是次数至多为 \(2n\) 的非零代数多项式。不同圆周点对应不同的 \(z\)，而非零多项式的互异根数不超过其次数：每发现一个根 \(z_0\)，因式定理便允许提出因子 \(z-z_0\)，次数随之降低一。因子 \(e^{2\pi\mathrm i nx}\) 不为零，所以 \(T\) 的零点也满足这个上界。
+\end{proof}
+
+下面的\term[bernstein-budengshi]{Bernstein 不等式}[Bernstein inequality]与\secref{b2:sec:approximation-bernstein}的 Bernstein 逼近定理承担不同任务：前者限制有限次数函数的导数，后者构造逼近连续函数的多项式。
+
+\begin{theorem}[Bernstein：三角多项式]
+\label{b2:thm:approximation-bernstein-trigonometric}
+设 \(n\geq1\) 为整数，\(T\) 是单位周期圆周 \(\mathbb T=\mathbb R/\mathbb Z\) 上次数不超过 \(n\) 的实值或复值三角多项式。对每个整数 \(r\geq1\)，都有
+\[
+ \lVert T^{(r)}\rVert_\infty
+ \leq(2\pi n)^r\lVert T\rVert_\infty.
+\]
+此处导数是周期函数关于实变量的通常导数。常数 \((2\pi n)^r\) 不能减小。
+\end{theorem}
+\begin{proof}
+先设 \(T\) 实值，证明一阶估计。记 \(M=\lVert T\rVert_\infty\)。当 \(M=0\) 时结论成立；以下设 \(M>0\)。若估计不成立，可将 \(T\) 换成 \(-T\)，从而找到一点 \(x_0\) 使
+\[
+ T'(x_0)>2\pi nM.
+\]
+选 \(M'\) 满足 \(M<M'<T'(x_0)/(2\pi n)\)。由于 \(|T(x_0)|<M'\)，可以选一个正弦函数
+\[
+ S(x)=M'\sin(2\pi n(x-x_0)+\theta)
+\]
+使 \(S(x_0)=T(x_0)\) 且 \(S'(x_0)>0\)：具体取 \(\theta\in(-\pi/2,\pi/2)\) 满足 \(M'\sin\theta=T(x_0)\)。此外，
+\[
+ S'(x_0)=2\pi n\sqrt{(M')^2-T(x_0)^2}
+ \leq2\pi nM'<T'(x_0).
+\]
+设 \(H=T-S\)。在 \(S\) 取得 \(M'\) 的每个点，\(H<0\)；在 \(S\) 取得 \(-M'\) 的每个点，\(H>0\)。一个周期内共有 \(2n\) 个这样的交替极值点，相邻极值点之间的每个开弧上至少有一个 \(H\) 的零点。
+
+现在单独看包含 \(x_0\) 的那段弧。由于 \(S'(x_0)>0\)，它的左端是 \(S\) 的极小点，右端是极大点，所以 \(H\) 在左端为正、右端为负。然而 \(H(x_0)=0\) 且 \(H'(x_0)>0\)，故在 \(x_0\) 足够近的左侧 \(H<0\)，右侧 \(H>0\)。由介值定理，左端到 \(x_0\) 之间另有一个零点，\(x_0\) 到右端之间也另有一个零点。这段弧至少贡献三个互异零点，其余 \(2n-1\) 段各贡献至少一个，总数至少为 \(2n+2\)。
+
+三角多项式 \(H\) 次数不超过 \(n\)，并且在上述极值点不为零，所以它不恒为零。这与\cref{b2:lem:approximation-trigonometric-zeros}矛盾，实值一阶估计得证。
+
+若 \(T\) 取复值，固定任意 \(x_0\)。当 \(T'(x_0)\neq0\) 时，选复数 \(\lambda\) 使 \(|\lambda|=1\)、\(\lambda T'(x_0)=|T'(x_0)|\)。实三角多项式 \(U(x)=\operatorname{Re}(\lambda T(x))\) 满足
+\[
+ U'(x_0)=|T'(x_0)|,
+ \quad \lVert U\rVert_\infty\leq\lVert T\rVert_\infty.
+\]
+对 \(U\) 应用实值估计，即得 \(|T'(x_0)|\leq2\pi n\lVert T\rVert_\infty\)。导数在该点为零时同样成立。对任意 \(x_0\) 取上确界，就得到复值一阶估计。
+
+每次求导仍得到次数不超过 \(n\) 的三角多项式，逐次应用一阶估计即可得到任意 \(r\)。函数 \(T(x)=\cos(2\pi nx)\) 的各阶导数范数均为 \((2\pi n)^r\)，故常数最优。
+\end{proof}
+
+正弦比较中的较大幅度 \(M'\) 有一个具体作用：它使极值点处的符号严格交替，避免把接触零点与变号零点混为一谈。次数限制再把这种符号信息转为导数上界。对周期为 \(L>0\) 的三角多项式，令 \(x=Lt\) 即得一阶常数 \(2\pi n/L\)；因此 \(2\pi\) 来自本书采用单位周期的归一化。
 
 \subsection{逼近速度与光滑性的逆向关系}
 \label{b2:subsec:approximation-inverse-smoothness}
 
-待撰写。
+先看为什么只选一个近似还不够。若 \(P_n\) 是次数为 \(n\) 的良好近似，直接写
+\[
+ \omega_f(h)\leq2\lVert f-P_n\rVert_\infty
+      +h\lVert P_n'\rVert_\infty
+\]
+虽然正确，但再用 Bernstein 不等式会出现 \(hn\lVert P_n\rVert_\infty\)，其中包含函数的整个幅度。我们真正需要估计的是从低次数增加到高次数时新添的部分；相邻近似之差的幅度由两项逼近误差控制。
+
+\begin{theorem}[逼近误差的有限逆估计]
+\label{b2:thm:approximation-inverse-estimate}
+设 \(\mathbb F=\mathbb R\) 或 \(\mathbb C\)，\(f\in C(\mathbb T;\mathbb F)\)，其中 \(\mathbb T=\mathbb R/\mathbb Z\)。令 \(\omega_f\) 为最短弧距下的连续模，并令
+\[
+ \mathcal E_k(f)=\inf_{T\in\mathcal T_k(\mathbb T;\mathbb F)}
+                    \lVert f-T\rVert_\infty
+ \quad(k\geq0)
+\]
+为一致最佳三角逼近误差；\(\mathcal T_0\) 是常数空间。存在绝对常数 \(C>0\)，使每个整数 \(n\geq1\) 都满足
+\[
+ \omega_f(1/n)\leq\frac Cn\sum_{k=0}^n\mathcal E_k(f).
+\]
+\end{theorem}
+\begin{proof}
+为简化记号，写 \(e_k=\mathcal E_k(f)\)。这些数非负，且随 \(k\) 单调不增，因为允许的多项式空间随次数扩大。圆周紧，\(\mathcal T_k\) 有限维，故\cref{b2:thm:approximation-best-existence}保证每个次数都有最佳近似。
+
+给定 \(n\)，取整数 \(J\geq0\) 使 \(N=2^J\leq n<2^{J+1}\)。设 \(c\) 为一个最佳常数近似，\(q_j\) 为次数不超过 \(2^j\) 的最佳三角近似，\(0\leq j\leq J\)。于是
+\[
+ q_J=c+(q_0-c)+\sum_{j=1}^J(q_j-q_{j-1}),
+\]
+其中
+\[
+ \lVert q_0-c\rVert_\infty\leq e_1+e_0\leq2e_0,
+ \quad
+ \lVert q_j-q_{j-1}\rVert_\infty
+ \leq e_{2^j}+e_{2^{j-1}}\leq2e_{2^{j-1}}.
+\]
+对每一项按它自己的次数应用 Bernstein 不等式，而常数项的导数为零，得到
+\[
+ \lVert q_J'\rVert_\infty
+ \leq4\pi e_0+8\pi\sum_{l=0}^{J-1}2^le_{2^l}.
+\]
+当 \(J=0\) 时，最后的和理解为空和。对 \(l\geq1\)，单调性给出
+\[
+ 2^le_{2^l}\leq2\sum_{k=2^{l-1}}^{2^l-1}e_k,
+\]
+而 \(e_1\leq e_0\)。这些整数区间互不重叠，故可以把二进次数上的加权和估计为普通部分和：
+\[
+ \lVert q_J'\rVert_\infty
+ \leq C_0\sum_{k=0}^{N-1}e_k
+\]
+其中 \(C_0\) 为绝对常数。
+
+若两点的圆周距离不超过 \(1/n\)，沿最短弧应用微积分基本定理，再加上两端的逼近误差，得到
+\[
+ \omega_f(1/n)\leq2e_N+\frac1n\lVert q_J'\rVert_\infty.
+\]
+由于 \(e_N\leq N^{-1}\sum_{k=0}^{N-1}e_k\) 且 \(N>n/2\)，右侧不超过
+\[
+ \frac{4+C_0}{n}\sum_{k=0}^{N-1}e_k
+ \leq\frac{4+C_0}{n}\sum_{k=0}^ne_k.
+\]
+这就证明了所述估计，包括 \(n=1\) 的情形。
+\end{proof}
+
+有限逆估计没有要求预先知道误差按某个幂次衰减；它把前 \(n\) 个尺度的误差合在一起，控制距离 \(1/n\) 上的振幅。右端出现 \(\mathcal E_0(f)\) 也有必要：若 \(f(x)=\sin(2\pi x)\)，则 \(\mathcal E_k(f)=0\) 对所有 \(k\geq1\) 成立，但函数仍会变化。常数近似误差保留了这种最低非零频率的信息，同时不受给 \(f\) 加任意常数的影响。
+
+\begin{corollary}[Hölder 连续性与最佳三角逼近]
+\label{b2:cor:approximation-holder-characterization}
+设 \(0<\alpha<1\)，\(\mathbb F=\mathbb R\) 或 \(\mathbb C\)，\(f\in C(\mathbb T;\mathbb F)\)，其中 \(\mathbb T=\mathbb R/\mathbb Z\) 带最短弧距 \(\mathrm d_{\mathbb T}\)。记
+\[
+ [f]_\alpha\coloneqq
+  \sup_{x\neq y}\frac{|f(x)-f(y)|}{\mathrm d_{\mathbb T}(x,y)^\alpha},
+ \quad
+ A_\alpha(f)\coloneqq\sup_{n\geq1}n^\alpha\mathcal E_n(f).
+\]
+则 \(f\) 为 \(\alpha\)-Hölder 连续函数，即 \([f]_\alpha<\infty\)，当且仅当 \(A_\alpha(f)<\infty\)。更精确地，存在只依赖 \(\alpha\) 的常数 \(C_\alpha\)，使
+\[
+ A_\alpha(f)\leq C[f]_\alpha,
+ \quad
+ [f]_\alpha\leq C_\alpha\bigl(\mathcal E_0(f)+A_\alpha(f)\bigr).
+\]
+\end{corollary}
+\begin{proof}
+若 \([f]_\alpha<\infty\)，则 \(\omega_f(\delta)\leq[f]_\alpha\delta^\alpha\)。周期 Jackson 定理立即给出 \(\mathcal E_n(f)\leq C[f]_\alpha n^{-\alpha}\)。
+
+反之，设 \(A=A_\alpha(f)<\infty\)。有限逆估计与 \(0<\alpha<1\) 给出
+\[
+ \begin{aligned}
+ \omega_f(1/n)
+ &\leq\frac Cn\left(\mathcal E_0(f)+A\sum_{k=1}^nk^{-\alpha}\right)\\
+ &\leq C_\alpha\bigl(\mathcal E_0(f)+A\bigr)n^{-\alpha}.
+ \end{aligned}
+\]
+第二步可由 \(\sum_{k=1}^nk^{-\alpha}\leq1+\int_1^nt^{-\alpha}\,\mathrm dt\leq n^{1-\alpha}/(1-\alpha)\) 看出；这里正用到了 \(\alpha<1\)。
+
+任给 \(0<h\leq1/2\)，令 \(n=\lfloor1/h\rfloor\)。于是 \(h\leq1/n\leq2h\)，由连续模的单调性得到
+\[
+ \omega_f(h)\leq\omega_f(1/n)
+ \leq 2^\alpha C_\alpha\bigl(\mathcal E_0(f)+A\bigr)h^\alpha.
+\]
+圆周中任意两点的距离都不超过 \(1/2\)，故这一估计给出了所需的全部点对控制。
+\end{proof}
+
+这个等价关系针对最佳一致误差。一种具体构造的收敛速度还受算法影响：前一节的距离函数是 Lipschitz 的，它的 Fejér 逼近却损失一个对数。当 \(0<\alpha<1\) 时，逆定理得到的 Hölder 条件描述的是函数值之差；导数的存在需要进一步研究更高的光滑阶。
+
+\ProseParagraphBreak
+
+当 \(\alpha=1\) 时，上面的有限和变为 \(\sum_{k=1}^n1/k\)，只能由同一路线推出 \(\omega_f(h)\leq Ch\log(\mathrm e/h)\)。这个对数提示端点需要不同的连续性刻画。闭区间还会出现另一种问题：余弦参数化在端点的导数为零，周期距离与区间距离不再处处等价。下一节分别讨论这两个边界，并用高阶差分表达更精细的光滑性。

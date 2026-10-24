@@ -2,7 +2,7 @@
 \chapter{自守形式与 \texorpdfstring{\(L\)}{L}-函数}
 \label{b3:app:E}
 \begin{chapterabstract}
-模形式的 Fourier 系数同时满足解析约束与乘法关系。前者来自变换律和尖点衰减，后者来自 Hecke 算子。以全模群为可完整计算的模型，本附录建立 Hecke 系数公式、特征形式的 Euler 乘积以及 Mellin 函数方程；高层结构则用同余子群和 Fricke 对合说明。自守表示与 Langlands 纲领只介绍其对象及对应问题，不把尚未建立的一般理论当作已证工具。
+模形式的 Fourier 系数同时满足解析约束与乘法关系。前者来自变换律和尖点衰减，后者来自 Hecke 算子。以全模群为可完整计算的模型，本附录建立 Hecke 系数公式、特征形式的 Euler 乘积以及 Mellin 函数方程；高层结构则用同余子群和 Fricke 对合说明。末尾介绍自守表示与 Langlands 纲领所研究的对象及对应问题。
 \end{chapterabstract}
 \begin{learninggoals}
 \begin{itemize}
@@ -12,264 +12,1176 @@
 \item\label{b3:item:E-goal-4}从虚轴 Mellin 积分推导解析延拓与函数方程。
 \end{itemize}
 \end{learninggoals}
-前置为第二十三章的模形式与第二十一章的 Mellin 变换。附录 D 的 Dirichlet 特征用于描述高层的变换因子，但全模群的主要证明不依赖附录 D 的素数结论。
+\chapref{b3:ch:23}用权与尖点条件限制了模形式的 Fourier 系数，但还没有解释这些系数何时具有乘法规律。Hecke 算子通过比较不同尺度上的函数，把这个问题转成特征向量问题；\secref{b3:sec:2105}的 Mellin 变换随后将所得系数装入 \(L\)-函数。研究更高层时，\appref{b3:app:D}的 Dirichlet 特征还会出现在变换因子中。
 
 \section{层与尖点}
 \label{b3:sec:E01}
 
-对正整数 \(N\)，定义\term[tongyu-ziqun]{同余子群}[congruence subgroup]的三个基本例子
-\[
- \Gamma_0(N)=\left\{\begin{pmatrix}a&b\\c&d\end{pmatrix}\in\mathrm{SL}_2(\mathbb Z):c\equiv0\pmod N\right\},
-\]
-\[
- \Gamma_1(N)=\{\gamma\in\Gamma_0(N):a\equiv d\equiv1\pmod N\},
-\]
-\[
- \Gamma(N)=\{\gamma\in\mathrm{SL}_2(\mathbb Z):\gamma\equiv I\pmod N\}.
-\]
-它们的指标有限，因为约化到有限矩阵群后的核包含 \(\Gamma(N)\)。设 \(k\in\mathbb Z\)、\(f:\mathfrak H\to\mathbb C\)，\(\gamma=\bigl(\begin{smallmatrix}a&b\\c&d\end{smallmatrix}\bigr)\in\mathrm{GL}_2(\mathbb R)\) 且 \(\det\gamma>0\)。对 \(z\in\mathfrak H\) 采用
-\[
- (f|_k\gamma)(z)=(\det\gamma)^{k/2}(cz+d)^{-k}f(\gamma z).
-\]
-这个复合律可以在分母上逐项核对。记 \(j(\gamma,z)=cz+d\)，矩阵乘法给
-\[
-j(\alpha\beta,z)=j(\alpha,\beta z)j(\beta,z),\qquad
-\det(\alpha\beta)=\det\alpha\det\beta.
-\]
-因权为整数，两个分母的 \(-k\) 次幂可以直接相乘；正行列式的实数幂也相乘。因此
-\((f|_k\alpha)|_k\beta=f|_k(\alpha\beta)\)。在全模群和整数偶权 \(k\) 上，这就是第二十三章的变换律。
-\ProseParagraphBreak
-模 \(N\) 特征 \(\chi\) 的模形式满足 \(f|_k\gamma=\chi(d)f\)，\(\gamma\in\Gamma_0(N)\)，并在所有尖点全纯。矩阵 \(-I\) 给必要的奇偶条件 \(\chi(-1)=(-1)^k\)。尖点为 \(\mathbb Q\cup\{\infty\}\) 在子群下的轨道；若 \(\sigma\in\mathrm{SL}_2(\mathbb Z)\) 把无穷远送到所考察尖点，某个正整数 \(w\) 使 \(f|_k\sigma\) 在足够的平移周期下不变。它在局部参数 \(e^{2\pi\mathrm{i}z/w}\) 中无负次幂，就是该尖点的全纯性；常数项为零称在那里消失。带非平凡特征时可先增大周期使相位因子消失，再作此检验。
-\ProseParagraphBreak
-以 \(M_k(\Gamma_0(N),\chi)\)、\(S_k(\Gamma_0(N),\chi)\) 分别表示模形式与尖点形式空间。无穷远的展开不够保证其他尖点也全纯。例如 \(f(z)=j(z)\) 虽在上半平面全纯，却在无穷远有极点，因此不是权0模形式。这一例子在高层同样提醒我们：域内全纯与尖点条件是两项独立要求。
+全模群把上半平面中的格基改变全部纳入同一种变换律。
+若还要保留模 \(N\) 的某些基资料，就只允许特定的整数换基。
+这产生同余子群，也使原来唯一的尖点轨道分裂为多个轨道。
+因此升高层以后，既要改变变换律，也要重新检查每个尖点。
 
-一个能区分两个尖点的例子更能说明检验的必要性。设 \(N>1\)，取
-\[
-R_N(z)=\frac{\Delta(Nz)}{\Delta(z)}.
-\]
-第二十三章已证明 \(\Delta\) 在上半平面无零点，因此 \(R_N\) 在域内全纯。若 \(\gamma\in\Gamma_0(N)\)，则
-\(N\gamma z=\begin{psmallmatrix}a&Nb\\c/N&d\end{psmallmatrix}(Nz)\)，右边的矩阵属于全模群。分子、分母均乘以 \((cz+d)^{12}\)，故 \(R_N\) 是权0的不变函数。在无穷远，\(R_N=q^{N-1}(1+O(q))\)，没有极点；但在尖点0，取 \(\sigma=S\)，有
-\[
-(R_N|_0S)(z)=N^{-12}\frac{\Delta(z/N)}{\Delta(z)}
-=N^{-12}q_0^{1-N}(1+O(q_0)),\qquad q_0=e^{2\pi\mathrm{i}z/N}.
-\]
-这里周期取 \(N\) 是因为 \(ST^NS^{-1}\) 的左下角为 \(-N\)，属于 \(\Gamma_0(N)\)。负指数 \(1-N\) 显示0处有极点。可见无穷远的良好展开确实不足以保证模形式的尖点条件。
+\subsection{同余子群与带行列式的作用}
+\label{b3:subsec:E0101}
 
+对正整数 \(N\)，\term[tongyu-ziqun]{同余子群}[congruence subgroup]的三个基本例子是
+\[
+ \Gamma_0(N)=\left\{\,\begin{pmatrix}a&b\\c&d\end{pmatrix}
+ \in\mathrm{SL}_2(\mathbb Z)\ \middle|\ c\equiv0\pmod N\,\right\},
+\]
+\[
+ \begin{aligned}
+ \Gamma_1(N)&=\{\,\gamma\in\Gamma_0(N):a\equiv d\equiv1\pmod N\,\},\\
+ \Gamma(N)&=\{\,\gamma\in\mathrm{SL}_2(\mathbb Z):\gamma\equiv I\pmod N\,\}.
+ \end{aligned}
+\]
+这里同余子群一般指包含某个 \(\Gamma(N)\) 的子群。
+约化模 \(N\) 的矩阵只有有限多种，\(\Gamma(N)\) 是约化映射的核，
+所以这些群在全模群中的指标有限。
+这项有限性稍后用于把增长估计化成有限个尖点附近的估计。
+
+\ProseParagraphBreak
+
+令 \(\mathfrak H=\{\,z\in\mathbb C:\operatorname{Im}z>0\,\}\)。
+对整数权 \(k\)、函数 \(f:\mathfrak H\rightarrow\mathbb C\) 和实矩阵
+\(\gamma=\left(\begin{smallmatrix}a&b\\c&d\end{smallmatrix}\right)\)、\(\det\gamma>0\)，约定
+\[
+ (f|_k\gamma)(z)\coloneqq
+       (\det\gamma)^{k/2}(cz+d)^{-k}f(\gamma z),
+ \quad \gamma z=\frac{az+b}{cz+d}.
+\]
+正行列式保证 \(\gamma\) 把上半平面映到自身，也使行列式的实数幂没有分支问题。
+记 \(j(\gamma,z)=cz+d\)，矩阵乘法给
+\[
+ j(\alpha\beta,z)=j(\alpha,\beta z)j(\beta,z),\quad
+ \det(\alpha\beta)=\det\alpha\det\beta.
+\]
+因 \(k\) 为整数，代入后得
+\((f|_k\alpha)|_k\beta=f|_k(\alpha\beta)\)。
+正标量矩阵 \(rI\)、\(r>0\) 的作用为恒等，\(-I\) 的作用为 \((-1)^k\)。
+保留行列式因子，是为了后面行列式为 \(n\) 的矩阵和 Fricke 矩阵使用同一套记号。
+
+\subsection{特征、尖点与局部参数}
+\label{b3:subsec:E0102}
+
+设 \(\chi\) 为模 \(N\) 的 Dirichlet 特征。
+在 \(\Gamma_0(N)\) 中，右下角 \(d\) 与 \(N\) 互素，且矩阵乘法使
+\(d(\gamma_1\gamma_2)\equiv d(\gamma_1)d(\gamma_2)\pmod N\)。
+所以 \(\chi(d)\) 确实是这个群的乘法因子。
+它的模为一，正好允许在取绝对值后的增长估计中消去。
+
+\ProseParagraphBreak
+
+尖点是 \(\mathbb Q\cup\{\infty\}\) 在所考察子群下的轨道。
+每个既约分数 \(a/c\) 都可以作为某个 \(\sigma\in\mathrm{SL}_2(\mathbb Z)\)
+的 \(\sigma\infty\)：用 Bézout 等式补出矩阵的第二列即可。
+全模群因此只有一个尖点轨道；有限指标子群只有有限多个这样的轨道。
+若 \(f|_k\gamma=\chi(d)f\)，并令 \(g=f|_k\sigma\)，
+某个正整数 \(w\) 使 \(\sigma T^w\sigma^{-1}\in\Gamma_0(N)\)，
+其中 \(T=\left(\begin{smallmatrix}1&1\\0&1\end{smallmatrix}\right)\)。于是
+\[
+ g(z+w)=\chi\bigl(d(\sigma T^w\sigma^{-1})\bigr)g(z).
+\]
+特征值是单位根，故再将 \(w\) 乘以其阶，可得到真正的正周期 \(h\)。
+周期函数 \(g\) 就能写成穿孔圆盘上的全纯函数，局部参数为
+\(q_h=e^{2\pi\mathrm i z/h}\)。
+
+\Needspace{6\baselineskip}
+\begin{definition}[层、特征与尖点条件]\label{b3:def:E-level-form}
+设 \(N\ge1\)、\(k\in\mathbb Z\)，\(\chi\) 为模 \(N\) 的 Dirichlet 特征。
+上半平面上的全纯函数 \(f\) 若满足
+\(f|_k\gamma=\chi(d)f\) 对每个 \(\gamma\in\Gamma_0(N)\) 成立，
+并且在每个尖点处，\(f|_k\sigma\) 的上述 \(q_h\) 表达式可全纯延拓到 \(q_h=0\)，
+则称为权 \(k\)、层 \(N\)、特征 \(\chi\) 的模形式，
+其空间记为 \(M_k(\Gamma_0(N),\chi)\)。
+若每个尖点的常数项均为零，则称为尖点形式，空间记为
+\(S_k(\Gamma_0(N),\chi)\)。平凡特征时省略 \(\chi\)。
+\end{definition}
+\symidx{\(M_k(\Gamma_0(N),\chi)\)：给定层、权与特征的模形式空间}
+\symidx{\(S_k(\Gamma_0(N),\chi)\)：给定层、权与特征的尖点形式空间}
+这个定义与所用周期无关。若将 \(h\) 换为 \(mh\)，
+原参数是新参数的 \(m\) 次幂；反过来，周期为 \(h\) 会迫使新展开只出现 \(m\) 的倍数次幂。
+改变同一尖点轨道的矩阵代表，只会多出群变换、整数平移及常数相位，
+不改变全纯性和常数项是否为零。
+若 \(f\ne0\)，代入 \(-I\) 还给必要的奇偶条件
+\(\chi(-1)=(-1)^k\)。
+
+\subsection{为什么不能只检查无穷远}
+\label{b3:subsec:E0103}
+
+在无穷远，\(T\in\Gamma_0(N)\) 且 \(\chi(1)=1\)，所以可用周期一和参数
+\(q=e^{2\pi\mathrm i z}\)。但另一尖点可能给出不同的局部展开。
+先看域内条件：\(j\) 在上半平面全纯，却有展开 \(q^{-1}+744+\cdots\)，
+所以不是权零的全纯模形式。
+下面的例子进一步把“无穷远合格”与“所有尖点合格”区分开。
+
+\ProseParagraphBreak
+
+设 \(N>1\)，令 \(R_N(z)=\Delta(Nz)/\Delta(z)\)。
+\cref{b3:prop:23-delta-nonvanishing}保证分母在上半平面无零，故比值全纯。
+若 \(\gamma=\left(\begin{smallmatrix}a&b\\c&d\end{smallmatrix}\right)\in\Gamma_0(N)\)，则
+\[
+ N\gamma z=
+ \begin{pmatrix}a&Nb\\c/N&d\end{pmatrix}(Nz).
+\]
+右侧矩阵属于全模群，分子和分母都乘以 \((cz+d)^{12}\)，
+所以 \(R_N\) 为权零的 \(\Gamma_0(N)\)-不变函数。
+它在无穷远为 \(q^{N-1}(1+O(q))\)，没有极点。
+
+\ProseParagraphBreak
+
+尖点零由 \(S=\left(\begin{smallmatrix}0&-1\\1&0\end{smallmatrix}\right)\) 代表。
+利用 \(\Delta(-1/z)=z^{12}\Delta(z)\)，得到
+\[
+ (R_N|_0S)(z)=N^{-12}\frac{\Delta(z/N)}{\Delta(z)}
+       =N^{-12}q_0^{1-N}(1+O(q_0)),
+ \quad q_0=e^{2\pi\mathrm i z/N}.
+\]
+周期 \(N\) 合法，因为 \(ST^NS^{-1}\) 的左下角为 \(-N\)。
+负指数 \(1-N\) 说明零尖点有极点，故 \(R_N\) 仍不属于
+\(M_0(\Gamma_0(N))\)。域内、无穷远及其他尖点是不同的检验位置。
+
+\subsection{尖点衰减与 Fourier 系数的初等界}
+\label{b3:subsec:E0104}
+
+稍后要将 Fourier 展开逐项作 Mellin 积分，必须先有系数的共同控制。
+所需的粗界只使用模变换律和尖点条件，不使用 Hecke 特征关系或更深的系数估计。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[尖点形式的增长界]\label{b3:prop:E-coefficient-growth}
+设 \(N\ge1\)、整数 \(k\ge2\)，\(\chi\) 为模 \(N\) 的 Dirichlet 特征，
+\(f\in S_k(\Gamma_0(N),\chi)\)，并写
+\(f(z)=\sum_{n\ge1}a_ne^{2\pi\mathrm i nz}\)。
+则存在常数 \(C_f\)，使所有 \(x\in\mathbb R\)、\(y>0\)、\(n\ge1\) 满足
+\[
+ |f(x+\mathrm i y)|\le C_f y^{-k/2},\quad |a_n|\le C_f n^{k/2}.
+\]
+常数可吸收固定数值因子，并允许依赖所选形式 \(f\)。
+\end{proposition}
+\begin{proof}
+函数 \(y^{k/2}|f(z)|\) 对 \(\Gamma_0(N)\) 不变。
+这是因为 \(\operatorname{Im}(\gamma z)=y/|cz+d|^2\)，
+而变换因子的绝对值为 \(|cz+d|^k\)。
+取有限个左陪集代表 \(\gamma_j\) 使
+\(\mathrm{SL}_2(\mathbb Z)=\bigcup_j\Gamma_0(N)\gamma_j\)。
+\cref{b3:prop:23-fundamental-domain}给全模群的标准闭基本域
+\(\mathcal F=\{\,|x|\le1/2,\ |z|\ge1\,\}\)。
+任意点可写成 \(z=\delta\gamma_j w\)，其中 \(w\in\mathcal F\)、\(\delta\in\Gamma_0(N)\)。
+于是待估量等于
+\((\operatorname{Im}w)^{k/2}|(f|_k\gamma_j)(w)|\)。
+
+令 \(g_j=f|_k\gamma_j\)。尖点条件保证它在某个周期 \(h_j\) 的参数中
+从正次幂开始，故充分高处有一致于实部的估计
+\(|g_j(x+\mathrm i y)|\le C_j e^{-2\pi y/h_j}\)。
+基本域截去高尾部后是上半平面中的紧集，\(g_j\) 在其上连续有界。
+因此 \(y^{k/2}|g_j(w)|\) 在整个 \(\mathcal F\) 有界。
+代表只有有限多个，取最大值便得对所有 \(z\) 的统一界。
+
+固定 \(y>0\)，周期一的 Fourier 系数公式为
+\[
+ a_n=e^{2\pi ny}\int_0^1 f(x+\mathrm i y)e^{-2\pi\mathrm i nx}\,\mathrm dx.
+\]
+在 \(y=1/n\) 处使用前一估计，得 \(|a_n|\le e^{2\pi}C_f n^{k/2}\)。
+把固定因子并入常数即可。
+\end{proof}
+因此对任意这样的尖点形式，级数 \(\sum_{n\ge1}a_nn^{-s}\)
+至少在 \(\operatorname{Re}s>k/2+1\) 绝对且局部一致收敛。
+这个半平面足以启动后面的积分与乘积证明；它不是最优收敛界的断言。
 
 \section{全模群上的 Hecke 算子}
 \label{b3:sec:E02}
 
-先取偶数 \(k\ge2\) 与全模群 \(\Gamma=\mathrm{SL}_2(\mathbb Z)\)。我们希望把不同伸缩和平移下的 \(f\) 组合起来，仍得到满足同一模变换律的函数。最简单的素数情形是
+不同的 Fourier 系数为什么会满足乘法关系，并不能只从模变换律的外形看出。
+Hecke 算子用整数矩阵的有限分类构造保留同一模形式空间的线性变换，
+然后把这些变换之间的乘法关系传给共同特征向量。
+以下对全模群、偶数整数权 \(k\ge2\) 进行这套计算。
+
+\subsection{有限求和及其归一化}
+\label{b3:subsec:E0201}
+
+对素数 \(p\)，最简单的组合是
 \[
  p^{k-1}f(pz)+\frac1p\sum_{b=0}^{p-1}f\left(\frac{z+b}p\right).
 \]
-第一项沿 \(z\mapsto pz\) 伸缩，后一组沿 \(z\mapsto(z+b)/p\) 伸缩并求遍平移代表。权因子补偿伸缩，求遍代表使换基只置换求和项。下面的整数矩阵证明将核验这些选择，而不把模性视为公式形式上自动成立。
-
-设 \(k\ge2\) 为偶整数，\(f\in M_k(\mathrm{SL}_2(\mathbb Z))\)。对正整数 \(n\)，将 \(n\) 的不同分解 \(ad=n\) 一并纳入，定义\term[hecke-suanzi]{Hecke 算子}[Hecke operator]
+一项缩小所用格的一个方向，另一组遍历相应的平移代表。
+各项单独未必具有原来的模变换律，但求遍完整代表后，换基只会置换这些项。
+对一般正整数 \(n\)，定义\term[hecke-suanzi]{Hecke 算子}[Hecke operator]为
 \begin{equation}\label{b3:eq:E-hecke-definition}
  (T_nf)(z)=n^{k-1}\sum_{ad=n\atop a,d>0}d^{-k}
-                      \sum_{b=0}^{d-1}f\left(\frac{az+b}{d}\right).
+                  \sum_{b=0}^{d-1}f\left(\frac{az+b}{d}\right),
+ \quad f\in M_k(\mathrm{SL}_2(\mathbb Z)).
 \end{equation}
-\(T_1\) 是恒等算子。这里的正规化使第一 Fourier 系数直接等于原函数的第 \(n\) 个系数。
+其中 \(T_1=I\)。前因子是归一化的一部分，不能在比较文献公式时省去。
+这套归一化将使 \(T_nf\) 的第一 Fourier 系数等于 \(f\) 的第 \(n\) 个系数。
 
+\subsection{整数矩阵代表与空间保持}
+\label{b3:subsec:E0202}
+
+\Needspace{6\baselineskip}
 \begin{proposition}[保持模性与系数公式]\label{b3:prop:E-hecke-coefficients}
-设 \(k\ge2\) 为偶整数，\(\Gamma=\mathrm{SL}_2(\mathbb Z)\)，\(T_n\) 为按\eqref{b3:eq:E-hecke-definition}定义的权 \(k\) Hecke 算子，其前因子为 \(n^{k-1}\)。对每个正整数 \(n\)，\(T_n\) 保持 \(M_k(\Gamma)\) 与 \(S_k(\Gamma)\)。若 \(f\in M_k(\Gamma)\)、\(q=e^{2\pi\mathrm iz}\)，且 \(f=\sum_{m\ge0}a_mq^m\)，则 \(T_nf=\sum b_mq^m\)，其中
+设 \(k\ge2\) 为偶整数，\(\Gamma=\mathrm{SL}_2(\mathbb Z)\)，
+\(T_n\) 按\eqref{b3:eq:E-hecke-definition}定义，前因子为 \(n^{k-1}\)。
+对每个正整数 \(n\)，它保持 \(M_k(\Gamma)\) 与 \(S_k(\Gamma)\)。
+若 \(f=\sum_{m\ge0}a_mq^m\in M_k(\Gamma)\)、\(q=e^{2\pi\mathrm i z}\)，
+写 \(T_nf=\sum_{m\ge0}b_mq^m\)，则
 \[
  b_m=\sum_{d\mid(m,n)}d^{k-1}a_{mn/d^2}\quad(m\ge1),
- \qquad b_0=\sigma_{k-1}(n)a_0.
+ \quad b_0=\sigma_{k-1}(n)a_0,
+ \quad \sigma_{k-1}(n)=\sum_{d\mid n}d^{k-1}.
 \]
 \end{proposition}
 \begin{proof}
-行列式为 \(n\) 的整矩阵按左乘 \(\Gamma\) 分类。用整数行变换把第一列化为 \((a,0)^t\)，使 \(a>0\)，再把右上角模 \(d=n/a\) 化到 \(0\le b<d\)，得到唯一代表 \(\begin{psmallmatrix}a&b\\0&d\end{psmallmatrix}\)。因此式~\eqref{b3:eq:E-hecke-definition}等于 \(n^{k/2-1}\) 乘所有左陪集代表的 \(f|_k\alpha\) 之和。右乘任一 \(\gamma\in\Gamma\) 只置换这些陪集，故和满足模变换律；各项在上半平面全纯。
-将 Fourier 级数代入，对 \(b\) 求和时，\(\sum_{b=0}^{d-1}e^{2\pi\mathrm{i}rb/d}\) 仅在 \(d\mid r\) 时等于 \(d\)，其余为零。剩余项为
+考虑行列式为 \(n\) 的全部整数矩阵，按左乘 \(\Gamma\) 分类。
+第一列是非零整数向量，Bézout 等式给行列式一的整数行变换，
+把它化成 \((a,0)^{\mathsf T}\)，其中 \(a>0\) 是两元素的最大公因子。
+行列式条件迫使右下角为 \(d=n/a>0\)。
+再将第一行加上第二行的整数倍，使右上角满足 \(0\le b<d\)。
+这样得到代表
 \[
- \sum_{ad=n}a^{k-1}\sum_{\ell\ge0}a_{d\ell}q^{a\ell}.
+ \alpha_{a,b,d}=\begin{pmatrix}a&b\\0&d\end{pmatrix},
+ \quad ad=n,\quad a,d>0,\quad0\le b<d.
 \]
-提取 \(q^m\)，即有 \(a\mid m\) 且系数为 \(a^{k-1}a_{nm/a^2}\)，得到公式。没有负次幂，故尖点全纯；若 \(a_0=0\)，常数项也为零。全模群仅有一个尖点轨道，因此无需再检验其他轨道。
-\end{proof}
-矩阵分类在几何上是有限指标子格的分类；Hecke 算子把一条椭圆曲线上所有相应次数的同源关系合并求和。这里的证明只使用整数矩阵，不需要先建立一般同源理论。
+代表唯一：若某个 \(U\in\Gamma\) 将一个这样的上三角代表左乘成另一个，
+比较第一列知 \(U\) 的左下角为零；正对角和行列式一再使两个对角元素均为一。
+于是只可能把 \(b\) 改为 \(b+td\)，而两个 \(b\) 已在同一个代表区间，故相等。
 
+按 slash 作用定义，\eqref{b3:eq:E-hecke-definition}等于
+\(n^{k/2-1}\sum_{\alpha}f|_k\alpha\)。
+右乘任意 \(\gamma\in\Gamma\) 是行列式 \(n\) 整矩阵集合的双射，
+并置换其左陪集。若 \(\alpha\gamma=\delta\alpha'\)、\(\delta\in\Gamma\)，
+则 \(f|_k\alpha\gamma=(f|_k\delta)|_k\alpha'=f|_k\alpha'\)。
+故整个和满足全模群变换律，且各项在上半平面全纯。
+
+为检验尖点及系数，将 Fourier 展开代入有限和。
+级数在每个正高度以上局部一致绝对收敛，所以可以与有限求和交换。
+求和 \(\sum_{b=0}^{d-1}e^{2\pi\mathrm i rb/d}\) 在 \(d\mid r\) 时等于 \(d\)，
+否则由等比级数公式为零。因此剩下
+\[
+ T_nf=\sum_{ad=n}a^{k-1}\sum_{\ell\ge0}a_{d\ell}q^{a\ell}.
+\]
+这里 \(n^{k-1}d^{1-k}=a^{k-1}\)，正是归一化因子产生的权。
+提取 \(q^m\) 要求 \(a\mid m\)，随后 \(d\ell=nm/a^2\)，得所述正次系数。
+常数项为 \(a_0\sum_{a\mid n}a^{k-1}\)。
+展开无负次幂，故无穷远全纯；原常数项为零时，新常数项仍为零。
+全模群只有一个尖点轨道，因此已经检查全部尖点，空间保持得证。
+\end{proof}
+整数矩阵的分类也可以解释为有限指标子格的分类；这个几何观点将把 Hecke 算子与椭圆曲线之间的同源联系起来。
+
+\subsection{互素乘法与素数幂递推}
+\label{b3:subsec:E0203}
+
+\Needspace{6\baselineskip}
 \begin{proposition}[乘法关系]\label{b3:prop:E-hecke-relations}
-设 \(k\ge2\) 为偶整数，\(\Gamma=\mathrm{SL}_2(\mathbb Z)\)，\(T_n\) 为按\eqref{b3:eq:E-hecke-definition}定义的权 \(k\) Hecke 算子，其前因子为 \(n^{k-1}\)。在 \(M_k(\Gamma)\) 及其子空间 \(S_k(\Gamma)\) 上，对正整数 \(m,n\)，若 \((m,n)=1\)，则 \(T_mT_n=T_{mn}\)。对素数 \(p\) 与整数 \(r\ge1\)，
+设 \(k\ge2\) 为偶整数，\(\Gamma=\mathrm{SL}_2(\mathbb Z)\)，
+\(T_n\) 按\eqref{b3:eq:E-hecke-definition}归一化。
+在 \(M_k(\Gamma)\) 和 \(S_k(\Gamma)\) 上，正整数 \(m,n\) 互素时有
+\(T_mT_n=T_{mn}\)。对素数 \(p\) 及整数 \(r\ge1\)，有
 \[
  T_pT_{p^r}=T_{p^{r+1}}+p^{k-1}T_{p^{r-1}}.
 \]
-所有 \(T_n\) 彼此交换。
+全部 \(T_n\) 彼此交换。
 \end{proposition}
 \begin{proof}
-互素时，在两次系数公式中出现的公因子分别来自 \(m\) 与 \(n\)，彼此互素，乘积唯一对应 \(mn\) 的公因子；两次指标变化也相乘为 \(mn/d^2\)。对素数，写 \(a_x=0\) 当 \(x\) 不是非负整数，则
-\((T_pa)_j=a_{pj}+p^{k-1}a_{j/p}\)。而
-\((T_{p^r}a)_j=\sum_{h=0}^{\min(r,v_p(j))}p^{h(k-1)}a_{p^rj/p^{2h}}\)。
-为核对截断处也没有遗漏，令 \(\nu=v_p(j)\)、\(C=p^{k-1}\)、
-\(A=\min(r,\nu+1)\)、\(B=\min(r+1,\nu)\)。两次运算的第 \(j\) 个系数是
+先设 \((m,n)=1\)，记输入系数为 \(a_j\)。
+对 \(j\ge1\)，两次作用的系数为
 \[
-\sum_{h=0}^{A}C^h a_{p^{r+1}j/p^{2h}}
-+\sum_{h=1}^{B}C^h a_{p^{r+1}j/p^{2h}}.
+ \sum_{d\mid(m,j)}\ \sum_{e\mid(n,mj/d^2)}
+                (de)^{k-1}a_{mnj/(de)^2}.
 \]
-第二个和来自 \(C(T_{p^r}a)_{j/p}\)，把其旧指标加一即可；当 \(\nu=0\) 时它为空和。右侧算子 \(T_{p^{r+1}}+CT_{p^{r-1}}\) 给出同样两组项，只是两上界交换：第一组从0到 \(B\)，第二组从1到 \(A\)。零号项各出现一次，其他项的重数相同，故相等。对常数项，记 \(s_r=1+C+\cdots+C^r\)，则
-\((1+C)s_r=s_{r+1}+Cs_{r-1}\)，这也验证了常数系数。故每个 \(T_{p^r}\) 为 \(T_p\) 的多项式，互素关系说明不同素数的算子交换，再分解 \(n\) 即得一般交换性。
+由于 \(n\) 与 \(m,d\) 均互素，第二个整除条件等价于 \(e\mid(n,j)\)。
+每个 \(t\mid(mn,j)\) 唯一分解为这样的 \(t=de\)，
+故这个和就是 \(T_{mn}\) 的系数公式。
+常数项的等式则来自同一个互素除数分解
+\(\sigma_{k-1}(m)\sigma_{k-1}(n)=\sigma_{k-1}(mn)\)。
+
+对素数 \(p\)，置 \(C=p^{k-1}\)，并在指标不是非负整数时令 \(a_x=0\)。
+正整数 \(j\) 的系数公式为
+\[
+ (T_pa)_j=a_{pj}+Ca_{j/p},\quad
+ (T_{p^r}a)_j=
+ \sum_{h=0}^{\min(r,v_p(j))}C^h a_{p^rj/p^{2h}}.
+\]
+记 \(\nu=v_p(j)\)、\(A=\min(r,\nu+1)\)、\(B=\min(r+1,\nu)\)。
+作用 \(T_pT_{p^r}\) 得
+\[
+ \sum_{h=0}^{A}C^h a_{p^{r+1}j/p^{2h}}
+ +\sum_{h=1}^{B}C^h a_{p^{r+1}j/p^{2h}}.
+\]
+第二个和来自指标 \(j/p\) 那一项，原求和指标加一即可；\(\nu=0\) 时为空和。
+而 \(T_{p^{r+1}}+CT_{p^{r-1}}\) 给同样两组项，
+只是两上界分别变为 \(B,A\)。零号项各出现一次，其他项的重数相同，故相等。
+对于常数项，令 \(s_r=1+C+\cdots+C^r\)，直接展开可得
+\((1+C)s_r=s_{r+1}+Cs_{r-1}\)，因此常数项也满足递推。
+
+这个递推及 \(T_1=I\) 使每个 \(T_{p^r}\) 成为 \(T_p\) 的多项式。
+不同素数的 \(T_p,T_q\) 由互素关系交换，故它们的多项式也交换。
+将任意 \(n\) 分解为互素的素数幂，再用互素关系，就得到全部算子的交换性。
 \end{proof}
-
-例如 \(T_2f\) 的展开不是把所有下标乘二，而是
+例如
 \[
-T_2f=\sigma_{k-1}(2)a_0+a_2q+
-(a_4+2^{k-1}a_1)q^2+a_6q^3+
-(a_8+2^{k-1}a_2)q^4+\cdots.
+ T_2f=(1+2^{k-1})a_0+a_2q
+ +(a_4+2^{k-1}a_1)q^2+a_6q^3
+ +(a_8+2^{k-1}a_2)q^4+\cdots.
 \]
-偶数下标多出的第二项正是素数平方关系中的修正来源。取 \(r=1\) 得 \(T_4=T_2^2-2^{k-1}I\)，而不是 \(T_4=T_2^2\)。对 \(\Delta\)，因 \(T_2\Delta=-24\Delta\)，这个关系直接给 \(T_4\Delta=-1472\Delta\)。
-
+偶数下标多出的项是素数平方递推的来源。
+特别地，\(T_4=T_2^2-2^{k-1}I\)，不能把同一个素数的幂当作互素情形处理。
+这些都是算子恒等式，尚未给任何特定 \(f\) 的系数乘法性；
+下一节需要额外假定 \(f\) 是共同特征向量。
 
 \section{特征形式与 Euler 乘积}
 \label{b3:sec:E03}
 
-设 \(k\ge2\) 为偶整数，\(f\in S_k(\mathrm{SL}_2(\mathbb Z))\setminus\{0\}\)，并采用\eqref{b3:eq:E-hecke-definition}的归一化。若 \(f\) 对所有正整数 \(n\) 的 \(T_n\) 同时为特征向量，称为\term[hecke-tezheng-xingshi]{Hecke 特征形式}[Hecke eigenform]。若 \(T_nf=\lambda_nf\)，比较第一系数得 \(a_n=\lambda_na_1\)。所以 \(a_1=0\) 会迫使全部系数为零，与非零性矛盾。可以唯一把它正规化为 \(a_1=1\)，此时 \(\lambda_n=a_n\)。
-\ProseParagraphBreak
-本附录不以算子交换性直接断言一定存在完备的共同特征基；交换算子未必都可对角化。一般存在性还用 Petersson 内积下的自伴性等结构。当前已有一个明确例子：第二十三章证明 \(S_{12}\) 一维，由 \(\Delta=q-24q^2+252q^3-\cdots\) 张成，故每个 \(T_n\) 必在其中作用为标量，\(\Delta\) 是正规化特征形式。
+Mellin 积分可以对任意尖点形式使用，Euler 乘积却需要更强的系数组织。
+Hecke 特征关系恰好把上一节的算子乘法变成一个函数系数之间的乘法。
+因而这里研究同时为各个 Hecke 算子特征向量的尖点形式，先确定其系数与特征值的对应。
 
+\subsection{第一系数与特征值的归一化}
+\label{b3:subsec:E0301}
+
+\Needspace{6\baselineskip}
+\begin{definition}[Hecke 特征形式]\label{b3:def:E-eigenform}
+设 \(k\ge2\) 为偶整数，\(f\in S_k(\mathrm{SL}_2(\mathbb Z))\setminus\{0\}\)。
+若对每个正整数 \(n\)，存在复数 \(\lambda_n\) 使 \(T_nf=\lambda_nf\)，
+其中 \(T_n\) 按\eqref{b3:eq:E-hecke-definition}定义，
+则称 \(f\) 为\term[hecke-tezheng-xingshi]{Hecke 特征形式}[Hecke eigenform]。
+若它的 Fourier 展开第一系数为一，则称已归一化。
+\end{definition}
+由系数公式，\(a_1(T_nf)=a_n(f)\)，所以 \(a_n=\lambda_n a_1\)。
+若 \(a_1=0\)，则所有正次系数均为零；尖点形式的常数项也为零，
+于是 \(f=0\)，矛盾。
+每条这样的特征直线因此有唯一的第一系数为一的代表，此时 \(\lambda_n=a_n\)。
+
+\ProseParagraphBreak
+
+交换性不足以保证一组共同特征基，因为交换算子未必都可对角化。
+一般共同特征基理论还需 Petersson 内积下的自伴性等结构，可在后面的进一步阅读中继续学习。
+对于一维尖点形式空间，共同特征向量可以直接确定：由\cref{b3:prop:23-cusp-division}和
+\cref{b3:thm:23-modular-ring}，\(S_{12}=\Delta M_0=\mathbb C\Delta\)。
+Hecke 算子保持这个一维空间，所以 \(\Delta\) 是共同特征形式。
+\(\Delta=q-24q^2+252q^3+\cdots\) 的第一系数为一，因而
+\(T_2\Delta=-24\Delta\)，再由递推得
+\(T_4\Delta=((-24)^2-2^{11})\Delta=-1472\Delta\)。
+
+\subsection{局部递推与绝对收敛的乘积}
+\label{b3:subsec:E0302}
+
+\Needspace{6\baselineskip}
 \begin{theorem}[特征形式的乘积]\label{b3:thm:E-euler-product}
-设 \(k\ge2\) 为偶整数，\(f\in S_k(\mathrm{SL}_2(\mathbb Z))\)，\(q=e^{2\pi\mathrm iz}\)，\(f(z)=\sum_{n\ge1}a_nq^n\)，\(a_1=1\)，且 \(f\) 为按\eqref{b3:eq:E-hecke-definition}归一的全部 \(T_n\) 的共同特征函数。则在 \(\operatorname{Re}s>k/2+1\) 内，级数与乘积绝对收敛，并有
+设 \(k\ge2\) 为偶整数，\(f\in S_k(\mathrm{SL}_2(\mathbb Z))\) 为按
+\eqref{b3:eq:E-hecke-definition}归一的全部 \(T_n\) 的共同特征形式。
+写 \(f(z)=\sum_{n\ge1}a_nq^n\)、\(q=e^{2\pi\mathrm i z}\)，并设 \(a_1=1\)。
+则在 \(\operatorname{Re}s>k/2+1\) 内，级数及 Euler 乘积绝对收敛，且
 \[
- L(s,f)=\sum_{n\ge1}a_nn^{-s}
+ L(s,f)\coloneqq\sum_{n\ge1}a_nn^{-s}
        =\prod_p(1-a_pp^{-s}+p^{k-1-2s})^{-1}.
 \]
 \end{theorem}
 \begin{proof}
-Hecke 关系给 \(a_ma_n=a_{mn}\) 当 \((m,n)=1\)，以及
-\(a_{p^{r+1}}=a_pa_{p^r}-p^{k-1}a_{p^{r-1}}\)。乘以 \(X^{r+1}\) 求和即得
-\(\sum_{r\ge0}a_{p^r}X^r=(1-a_pX+p^{k-1}X^2)^{-1}\)。还需保证解析收敛。函数 \(y^{k/2}|f(z)|\) 对全模群不变，因为
-\(\operatorname{Im}(\gamma z)=y/|cz+d|^2\)，恰好抵消 \(|f(\gamma z)|=|cz+d|^k|f(z)|\) 的因子。在基本域截去 \(y>Y\) 的部分后得到紧集，函数在那里有界；在尾部，\(f=qg(q)\)，其中 \(g\) 在足够小的闭圆盘有界，所以
-\(y^{k/2}|f(z)|\le Cy^{k/2}e^{-2\pi y}\)，其界与 \(x\) 无关。每个点可移入基本域，故有统一的 \(|f(x+\mathrm{i}y)|\le Cy^{-k/2}\)。由
+特征值等于 Fourier 系数。把\cref{b3:prop:E-hecke-relations}作用于 \(f\)，得
 \[
- a_n=e^{2\pi ny}\int_0^1 f(x+\mathrm{i}y)e^{-2\pi\mathrm{i}nx}\,\mathrm{d}x
+ a_ma_n=a_{mn}\quad((m,n)=1),\quad
+ a_{p^{r+1}}=a_pa_{p^r}-p^{k-1}a_{p^{r-1}}\quad(r\ge1).
 \]
-取 \(y=1/n\)，得 \(|a_n|\le Cn^{k/2}\)。因此级数在 \(\operatorname{Re}s>k/2+1\) 绝对收敛，有限素数乘积可展开并按绝对收敛取极限，得到所示乘积。
+这里 \(a_{p^0}=a_1=1\)。作为形式幂级数，令
+\(A_p(X)=\sum_{r\ge0}a_{p^r}X^r\)，逐次系数比较给
+\[
+ (1-a_pX+p^{k-1}X^2)A_p(X)=1.
+\]
+常数项为一，一次项相消，高次项由递推相消。
+这一步本身尚未断言无穷乘积解析收敛。
+
+由\cref{b3:prop:E-coefficient-growth}，\(|a_n|\le C_f n^{k/2}\)。
+故当 \(\sigma=\operatorname{Re}s>k/2+1\) 时，
+\(\sum_n|a_n|n^{-\sigma}<\infty\)，各个局部级数在 \(X=p^{-s}\) 也绝对收敛。
+于是局部恒等式可按普通乘法使用，其值为所写二次因子的倒数。
+对有限素数集合 \(P\)，乘开各局部绝对收敛级数，
+再用互素乘法性，得到
+\[
+ \prod_{p\in P}A_p(p^{-s})
+ =\sum_{\substack{n\ge1\\p\mid n\Rightarrow p\in P}}a_nn^{-s}.
+\]
+当 \(P\) 递增穷尽全部素数时，每个整数最终出现，
+总绝对和有限允许取极限，右侧趋于 \(L(s,f)\)。
+而且
+\(\sum_p\sum_{r\ge1}|a_{p^r}|p^{-r\sigma}\le\sum_{n\ge2}|a_n|n^{-\sigma}<\infty\)，
+所以局部因子与一之差绝对可和，乘积确实按绝对收敛意义成立。
+相同估计在每个更小闭半平面上一致，也给局部一致收敛。
 \end{proof}
-若把局部二次多项式分解为 \((1-\alpha_pX)(1-\beta_pX)\)，则 \(\alpha_p+\beta_p=a_p\)、\(\alpha_p\beta_p=p^{k-1}\)。本附录只证明这些代数关系，不假设 \(|\alpha_p|=|\beta_p|=p^{(k-1)/2}\)。后一个等模结论属于更深的理论，不能由乘积本身推出。
-
-递推已经能给出许多可检查的局部计算。置 \(A=a_p\)、\(C=p^{k-1}\)，则
+系数是互素乘法的，不是完全乘法的。
+若置 \(A=a_p\)、\(C=p^{k-1}\)，则
 \[
-a_{p^2}=A^2-C,\quad a_{p^3}=A^3-2CA,\quad
-a_{p^4}=A^4-3CA^2+C^2.
+ a_{p^2}=A^2-C,\quad a_{p^3}=A^3-2CA,\quad
+ a_{p^4}=A^4-3CA^2+C^2.
 \]
-若两根不同，局部展开还给
-\(a_{p^r}=(\alpha_p^{r+1}-\beta_p^{r+1})/(\alpha_p-\beta_p)\)；若重根为 \(\alpha_p\)，则为 \((r+1)\alpha_p^r\)。后一公式来自 \((1-\alpha_pX)^{-2}\)，所以不能把前一式的零分母直接代入。
+修正项来自同一个素数的反复作用，不能用 \(a_{p^r}=a_p^r\) 替代。
 
+\Needspace{6\baselineskip}
 \begin{proposition}[初始半平面的无零性]\label{b3:prop:E-initial-zero-free}
-设 \(k\ge2\) 为偶整数，\(f\in S_k(\mathrm{SL}_2(\mathbb Z))\)，\(q=e^{2\pi\mathrm iz}\)，\(f(z)=\sum_{n\ge1}a_nq^n\)，\(a_1=1\)，且 \(f\) 为按\eqref{b3:eq:E-hecke-definition}归一的全部 \(T_n\) 的共同特征函数。则 \(L(s,f)=\sum_{n\ge1}a_nn^{-s}\) 在 \(\operatorname{Re}s>k/2+1\) 无零点。
+设 \(k\ge2\) 为偶整数，\(f=\sum_{n\ge1}a_nq^n\in S_k(\mathrm{SL}_2(\mathbb Z))\)，
+\(a_1=1\)，且 \(f\) 是按\eqref{b3:eq:E-hecke-definition}归一的全部 Hecke 算子的共同特征形式。
+则 \(L(s,f)=\sum_{n\ge1}a_nn^{-s}\) 在 \(\operatorname{Re}s>k/2+1\) 无零点。
 \end{proposition}
 \begin{proof}
-固定该半平面内的 \(s\)。绝对收敛给
-\(\sum_p\sum_{r\ge1}|a_{p^r}|p^{-r\operatorname{Re}s}<\infty\)。设局部和为 \(1+u_p\)，则 \(\sum_p|u_p|<\infty\)。局部递推与绝对收敛允许乘上二次多项式，给
+固定此半平面内的 \(s\)，令
+\(u_p=\sum_{r\ge1}a_{p^r}p^{-rs}\)。前一证明给 \(\sum_p|u_p|<\infty\)，
+局部递推给
 \[
-(1-a_pp^{-s}+p^{k-1-2s})(1+u_p)=1.
+ (1-a_pp^{-s}+p^{k-1-2s})(1+u_p)=1.
 \]
-所以各局部和都非零。除去有限个素数后 \(|u_p|<1/2\)，且 \(\sum_p\log(1+u_p)\) 绝对收敛，因此尾乘积是某个有限复数的指数，不为零；有限个头部因子也不为零。这就证明了整体无零性，而不仅是写出了一个形式乘积。
+故每个局部因子 \(1+u_p\) 均非零。
+除去有限个素数后，\(|u_p|<1/2\)，在原点值为零的对数分支上有
+\(|\log(1+u_p)|\le2|u_p|\)。
+所以尾乘积是绝对收敛对数和的指数，不能为零；有限个头部因子也都非零。
 \end{proof}
+单个因子不为零不足以保证无穷乘积不为零；
+这里的可和性排除了乘积因不断缩小而趋零的可能。
+结论只涉及初始绝对收敛半平面，未限制延拓后临界区域中的零点。
 
+\subsection{局部根与权的平移}
+\label{b3:subsec:E0303}
+
+将局部多项式分解为
+\(1-a_pX+p^{k-1}X^2=(1-\alpha_pX)(1-\beta_pX)\)，则
+\[
+ \alpha_p+\beta_p=a_p,\quad \alpha_p\beta_p=p^{k-1}.
+\]
+若两根不同，部分分式或两个几何级数相乘给
+\[
+ a_{p^r}=\frac{\alpha_p^{r+1}-\beta_p^{r+1}}{\alpha_p-\beta_p}.
+\]
+若重根为 \(\alpha_p\)，则由 \((1-\alpha_pX)^{-2}\) 的展开得到
+\(a_{p^r}=(r+1)\alpha_p^r\)。重根情形须单独解释，不能向零分母直接代入。
+
+\ProseParagraphBreak
+
+另一种常见归一化令
+\(\lambda_n=a_n n^{-(k-1)/2}\)，并置
+\[
+ L_{\mathrm u}(s,f)=L\left(s+\frac{k-1}2,f\right)
+ =\sum_{n\ge1}\lambda_n n^{-s}
+ =\prod_p(1-\lambda_pp^{-s}+p^{-2s})^{-1}.
+\]
+相应算子为 \(n^{-(k-1)/2}T_n\)，其特征值才是这里的 \(\lambda_n\)。
+局部根也除以 \(p^{(k-1)/2}\)，乘积变为一。
+本附录的粗系数界只给 \(|\lambda_n|=O(n^{1/2})\)，
+所以以上表达式至少在 \(\operatorname{Re}s>3/2\) 绝对收敛。
+不能仅因局部根乘积为一，就断言两根都在单位圆上；
+相应的精细模长结论属于更深的理论，不是 Euler 乘积的代数后果。
 
 \section{Mellin 变换与函数方程}
 \label{b3:sec:E04}
 
-对尖点形式，虚轴的两端都因变换律而指数衰减。这使 Mellin 积分比初始 Dirichlet 级数有更大的定义域。
+Dirichlet 级数把 Fourier 系数作为输入，但其最初只在一个半平面收敛。
+Mellin 积分直接使用上半平面上的函数值，并借助模变换把虚轴的低端换成高端。
+尖点的指数衰减因此同时控制两个端点，使积分在整个参数平面上有意义。
+这个步骤不要求 Hecke 特征关系。
 
+\subsection{全模群的两个端点与整延拓}
+\label{b3:subsec:E0401}
+
+\Needspace{6\baselineskip}
 \begin{theorem}[完成函数的方程]\label{b3:thm:E-functional-equation}
-设 \(k\ge2\) 为偶整数，\(f\in S_k(\mathrm{SL}_2(\mathbb Z))\)，\(f(z)=\sum_{n\ge1}a_ne^{2\pi\mathrm inz}\)，最初在 \(\operatorname{Re}s>k/2+1\) 定义 \(L(s,f)=\sum_{n\ge1}a_nn^{-s}\)。不要求 \(f\) 是特征形式。则
+设 \(k\ge2\) 为偶整数，\(f\in S_k(\mathrm{SL}_2(\mathbb Z))\)，
+\(f(z)=\sum_{n\ge1}a_ne^{2\pi\mathrm i nz}\)。
+最初在 \(\operatorname{Re}s>k/2+1\) 定义 \(L(s,f)=\sum_{n\ge1}a_nn^{-s}\)。
+则
 \[
- \Lambda(s,f)=(2\pi)^{-s}\Gamma(s)L(s,f)
+ \Lambda(s,f)\coloneqq(2\pi)^{-s}\Gamma(s)L(s,f)
 \]
-延拓为整函数，且 \(\Lambda(s,f)=\mathrm{i}^k\Lambda(k-s,f)\)。
+延拓为整函数，并满足
+\(\Lambda(s,f)=\mathrm i^k\Lambda(k-s,f)\)。
+函数 \(L(s,f)\) 也有整延拓；不要求 \(f\) 是特征形式。
 \end{theorem}
 \begin{proof}
-在绝对收敛区逐项积分得
-\(\Lambda(s,f)=\int_0^\infty f(\mathrm{i}t)t^{s-1}\,\mathrm{d}t\)。当 \(t\to\infty\)，尖点条件给 \(f(\mathrm{i}t)=O(e^{-2\pi t})\)。矩阵 \(S\) 的变换律为 \(f(\mathrm{i}/t)=(\mathrm{i}t)^kf(\mathrm{i}t)\)，故当 \(t\downarrow0\)，\(f(\mathrm{i}t)=\mathrm{i}^{-k}t^{-k}O(e^{-2\pi/t})\)。积分及任意参数导数因此在全平面局部一致收敛，定义整函数。代换 \(t=1/u\) 后用变换律，得到
+先在 \(\sigma=\operatorname{Re}s>k/2+1\) 中使用 Fourier 展开。
+\cref{b3:prop:E-coefficient-growth}及 Gamma 积分给
 \[
- \Lambda(s,f)=\int_0^\infty f(\mathrm{i}/u)u^{-s-1}\,\mathrm{d}u
- =\mathrm{i}^k\int_0^\infty f(\mathrm{i}u)u^{k-s-1}\,\mathrm{d}u.
+ \sum_{n\ge1}|a_n|\int_0^\infty e^{-2\pi nt}t^{\sigma-1}\,\mathrm dt
+ =\Gamma(\sigma)(2\pi)^{-\sigma}
+                    \sum_{n\ge1}|a_n|n^{-\sigma}<\infty.
 \]
-这就是函数方程。再乘整函数 \(1/\Gamma(s)\) 得 \(L(s,f)\) 的整延拓。
-\end{proof}
-将 \(s\) 平移为 \(s+(k-1)/2\)，对称中心便从 \(k/2\) 移到 \(1/2\)。这解释了为何不同文献中的 \(L\)-函数虽然来自同一模形式，其 Gamma 因子和局部指数可能写得不同。
+因此逐项积分合法，且
+\[
+ \Lambda(s,f)=\int_0^\infty f(\mathrm i t)t^{s-1}\,\mathrm dt.
+\]
+其中 \(t^{s-1}\) 取实对数定义，没有分支选择。
 
-实际计算时，把积分在1处分割可得到不含小 \(t\) 端点的表达式：
+尖点条件使 \(f(\mathrm i t)=O(e^{-2\pi t})\) 当 \(t\to\infty\)。
+矩阵 \(S\) 的变换律给
+\(f(\mathrm i/t)=(\mathrm i t)^kf(\mathrm i t)\)，
+所以在 \(t\downarrow0\) 时
+\[
+ f(\mathrm i t)=\mathrm i^{-k}t^{-k}O(e^{-2\pi/t}).
+\]
+对任意参数紧集，取实数 \(a\le\operatorname{Re}s\le b\)。
+积分核的第 \(m\) 个参数导数在 \(t\ge1\) 处由
+\(C e^{-2\pi t}t^{b-1}(\log t)^m\) 控制，
+在 \(0<t\le1\) 处由
+\(C t^{a-k-1}e^{-2\pi/t}|\log t|^m\) 控制。
+两个控制函数都可积，不论 \(a,b\) 取何有限值。
+因此积分在整个 \(s\) 平面局部一致收敛，并可逐次求导，定义整函数。
+
+代换 \(t=1/u\)，再使用变换律，得到
+\[
+ \begin{aligned}
+ \Lambda(s,f)
+ &=\int_0^\infty f(\mathrm i/u)u^{-s-1}\,\mathrm du\\
+ &=\mathrm i^k\int_0^\infty f(\mathrm i u)u^{k-s-1}\,\mathrm du
+ =\mathrm i^k\Lambda(k-s,f).
+ \end{aligned}
+\]
+两端积分已在全平面收敛，故换元不再只限于初始半平面。
+最后，\cref{b3:thm:21-product}给 \(1/\Gamma(s)\) 为整函数，
+于是 \((2\pi)^s\Lambda(s,f)/\Gamma(s)\) 给 \(L(s,f)\) 的整延拓。
+\end{proof}
+这里使用尖点条件的地方很具体：它去掉了高端常数项，
+而变换律把同样的衰减带到低端。
+若改用常数项非零的 Eisenstein 级数，未经扣除常数的同一个积分不会在两端都收敛，
+需要另作正则化及极点分析，不能直接沿用这个整函数结论。
+
+\subsection{分割积分与对称中心}
+\label{b3:subsec:E0402}
+
+把积分在一处分割，只对 \((0,1)\) 部分作倒数换元，可得
 \begin{equation}\label{b3:eq:E-split-mellin}
-\Lambda(s,f)=\int_1^\infty f(\mathrm{i}t)
-\bigl(t^{s-1}+\mathrm{i}^k t^{k-s-1}\bigr)\,\mathrm{d}t.
+ \Lambda(s,f)=\int_1^\infty f(\mathrm i t)
+          \bigl(t^{s-1}+\mathrm i^k t^{k-s-1}\bigr)\,\mathrm dt.
 \end{equation}
-第二项是对低端代换 \(t=1/u\) 后得到的。任意紧 \(s\) 集上，括号及各阶参数导数只增加固定幂和对数幂，均被 \(e^{-2\pi t}\) 控制；于是此式同时提供整延拓的直接计算式与逐次求导的依据。当 \(k\equiv0\pmod4\) 时，\(\Lambda(k/2+w,f)\) 是 \(w\) 的偶函数；当 \(k\equiv2\pmod4\) 时则为奇函数。相应地，前者中心的所有奇阶导数消失，后者所有偶阶导数消失，但函数方程本身并不强迫中心的一阶导数非零。
+它避免了计算时处理小 \(t\) 的大幂因子；
+指数衰减还使所有参数导数都可在这个半轴积分中求出。
+令 \(H(w)=\Lambda(k/2+w,f)\)，函数方程成为
+\(H(w)=\mathrm i^kH(-w)\)。
+若 \(k\equiv0\pmod4\)，\(H\) 为偶函数，中心的奇阶导数消失；
+若 \(k\equiv2\pmod4\)，\(H\) 为奇函数，中心的偶阶导数消失。
+后者给一个中心零点，但不单独保证一阶导数非零。
 
 \ProseParagraphBreak
-高层的类似计算需要明确一个附加对称。设 \(N\ge1\) 为整数、\(k\ge2\) 为偶整数，\(f\in S_k(\Gamma_0(N))\setminus\{0\}\)，并有 \(w\in\mathbb C\) 使 \(f|_kW_N=w f\)，其中 \(W_N=\begin{psmallmatrix}0&-1\\N&0\end{psmallmatrix}\)。因 \(W_N^2=-NI\)，偶权下 \(w^2=1\)。由定义
-\(f(\mathrm{i}/(Nt))=wN^{k/2}(\mathrm{i}t)^kf(\mathrm{i}t)\)。为保留所有正规化因子，置 \(F_N(t)=f(\mathrm{i}t/\sqrt N)\)。上述变换律给
+
+用前节的平移变量 \(s+(k-1)/2\)，对称中心从 \(k/2\) 变成 \(1/2\)。
+这不是更换了模形式，而是同时更换 Dirichlet 系数、Gamma 因子和局部根的归一化。
+例如全模群的平移完成函数为
 \[
-F_N(1/t)=w\mathrm{i}^k t^k F_N(t).
+ \Lambda_{\mathrm u}(s,f)
+ =(2\pi)^{-s-(k-1)/2}\Gamma\left(s+\frac{k-1}2\right)L_{\mathrm u}(s,f),
 \]
-无穷远的尖点条件控制 \(t\to\infty\)，这一等式再控制 \(t\downarrow0\)。在初始收敛区逐项积分有
+它满足 \(\Lambda_{\mathrm u}(s,f)=\mathrm i^k\Lambda_{\mathrm u}(1-s,f)\)。
+若只平移级数而不改 Gamma 因子，就会得到不相容的公式。
+
+\subsection{Fricke 对合与高层函数方程}
+\label{b3:subsec:E0403}
+
+高层的尖点零未必与无穷远在群内等价。
+要让虚轴倒数换元仍有明确的目标形式，引入矩阵
 \[
-\int_0^\infty F_N(t)t^{s-1}\,\mathrm{d}t
-=\Gamma(s)\sum_{n\ge1}a_n\left(\frac{2\pi n}{\sqrt N}\right)^{-s}.
+ W_N=\begin{pmatrix}0&-1\\N&0\end{pmatrix},\quad \det W_N=N.
 \]
-然后代换 \(t=1/u\)，就得到
+相应作用称为\term[fricke-duihe]{Fricke 对合}[Fricke involution]。
+本小节固定偶权及平凡特征，先证明它确实作用在所用空间上。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[Fricke 算子的空间保持]\label{b3:prop:E-fricke-space}
+设 \(N\ge1\)，\(k\ge2\) 为偶整数，\(f\in S_k(\Gamma_0(N))\)。
+则 \(f|_kW_N\in S_k(\Gamma_0(N))\)，且
+\((f|_kW_N)|_kW_N=f\)。
+\end{proposition}
+\begin{proof}
+若 \(\gamma=\left(\begin{smallmatrix}a&b\\c&d\end{smallmatrix}\right)\in\Gamma_0(N)\)，则
 \[
- \Lambda_N(s,f)=\left(\frac{\sqrt N}{2\pi}\right)^s\Gamma(s)L(s,f),
- \qquad \Lambda_N(s,f)=w\mathrm{i}^k\Lambda_N(k-s,f).
+ W_N\gamma W_N^{-1}=\begin{pmatrix}d&-c/N\\-Nb&a\end{pmatrix}\in\Gamma_0(N).
 \]
-这是对已经满足 Fricke 特征关系的形式的条件性结论；没有该关系时，对称式会把 \(f\) 联系到另一尖点形式。
+所以 \((f|_kW_N)|_k\gamma=f|_kW_N\)，而域内全纯性由分式线性换元保持。
+
+还须检查全部尖点。对任意 \(\sigma\in\mathrm{SL}_2(\mathbb Z)\)，
+整数矩阵 \(W_N\sigma\) 行列式为 \(N\)。
+前节的整数矩阵分类给 \(W_N\sigma=\delta A\)，
+其中 \(\delta\in\mathrm{SL}_2(\mathbb Z)\)、
+\(A=\left(\begin{smallmatrix}a&b\\0&d\end{smallmatrix}\right)\)、\(a,d>0\)、\(ad=N\)。
+于是
+\[
+ (f|_kW_N)|_k\sigma
+ =N^{k/2}d^{-k}(f|_k\delta)\left(\frac{az+b}{d}\right).
+\]
+因 \(f\) 在尖点 \(\delta\infty\) 消失，\(f|_k\delta\) 在高半平面按某个正周期
+指数衰减；\(a/d>0\) 保留这个衰减。
+所用变换律已保证尖点处存在一个整数周期，故相应穿孔圆盘表达式有界并趋于零。
+可去奇点定理给其全纯延拓且常数项为零，所有尖点均已检查。
+
+最后 \(W_N^2=-NI\)。正标量矩阵作用为恒等，而偶权下 \(-I\) 也作用为恒等，
+所以二次作用恢复 \(f\)。
+\end{proof}
+这个证明解释了平凡特征假设的作用。
+若原变换律带 \(\chi(d)\)，共轭后出现的是另一角元素的特征值，
+不能不作核算便声称仍在同一个带特征空间中。
+
+\Needspace{6\baselineskip}
+\begin{theorem}[高层的 Fricke 对偶方程]\label{b3:thm:E-fricke-functional}
+设 \(N\ge1\)，\(k\ge2\) 为偶整数，\(f\in S_k(\Gamma_0(N))\)，
+令 \(g=f|_kW_N\)。对 \(f\) 及 \(g\) 的周期一 Fourier 系数，
+最初在 \(\operatorname{Re}s>k/2+1\) 定义各自的 Dirichlet 级数，并置
+\[
+ \Lambda_N(s,f)=\left(\frac{\sqrt N}{2\pi}\right)^s\Gamma(s)L(s,f).
+\]
+则 \(\Lambda_N(s,f)\)、\(L(s,f)\) 均有整延拓，且
+\[
+ \Lambda_N(s,f)=\mathrm i^k\Lambda_N(k-s,g).
+\]
+若另有 \(f\ne0\)、\(g=w f\)，则 \(w=\pm1\)，
+方程成为 \(\Lambda_N(s,f)=w\mathrm i^k\Lambda_N(k-s,f)\)。
+\end{theorem}
+\begin{proof}
+\cref{b3:prop:E-fricke-space}使 \(g\) 仍为同层尖点形式，
+\cref{b3:prop:E-coefficient-growth}因此同时保证两条 Dirichlet 级数的初始绝对收敛。
+写 \(F_f(t)=f(\mathrm i t/\sqrt N)\)、\(F_g(t)=g(\mathrm i t/\sqrt N)\)。
+由 slash 定义，
+\[
+ g(z)=N^{-k/2}z^{-k}f\left(-\frac1{Nz}\right),
+ \quad F_f(1/t)=\mathrm i^k t^k F_g(t).
+\]
+高端的尖点条件给 \(F_f(t),F_g(t)=O(e^{-2\pi t/\sqrt N})\)。
+换元关系又给 \(F_f(t)=O(t^{-k}e^{-2\pi/(\sqrt N t)})\) 当 \(t\downarrow0\)。
+因此与全模群情形相同，积分及其各阶参数导数在全平面局部一致收敛。
+
+在初始半平面，逐项积分合法并得到
+\[
+ \int_0^\infty F_f(t)t^{s-1}\,\mathrm dt
+ =\Gamma(s)\sum_{n\ge1}a_n
+                 \left(\frac{2\pi n}{\sqrt N}\right)^{-s}
+ =\Lambda_N(s,f).
+\]
+再作 \(t=1/u\) 的代换，就得到所述与 \(g\) 相联系的函数方程。
+乘以 \((2\pi/\sqrt N)^s/\Gamma(s)\) 给 \(L(s,f)\) 的整延拓。
+若 \(g=w f\) 且 \(f\ne0\)，二次 Fricke 作用给 \(w^2f=f\)，故 \(w^2=1\)，
+代回对偶方程即得标量形式。
+\end{proof}
+所以高层积分的低端由 \(g\) 的无穷远尖点控制。
+一般情形得到两个完成函数之间的方程；
+当原形式还是 Fricke 特征向量时，才得到带标量因子的函数方程。
+在此归一化中切分点仍是缩放变量 \(t=1\)，对应原虚轴高度 \(1/\sqrt N\)。
+
+\subsection{升层形式与特征关系的限度}
+\label{b3:subsec:E0404}
+
+下列构造给可直接检查的高层对象，也说明 Fricke 特征关系与 Hecke 特征关系承担不同任务。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[升层与交换的一对形式]\label{b3:prop:E-oldforms}
+设 \(N>1\)，\(k\ge2\) 为偶整数，
+\(0\ne f\in S_k(\mathrm{SL}_2(\mathbb Z))\)，令
+\(g(z)=N^{k/2}f(Nz)\)。
+则 \(f,g\in S_k(\Gamma_0(N))\) 线性独立，并满足
+\[
+ f|_kW_N=g,\quad g|_kW_N=f.
+\]
+故 \(f+g\)、\(f-g\) 分别是非零的 Fricke 特征形式，特征值为 \(+1,-1\)。
+\end{proposition}
+\begin{proof}
+令 \(A_N=\left(\begin{smallmatrix}N&0\\0&1\end{smallmatrix}\right)\)，则 \(g=f|_kA_N\)。
+对 \(\gamma\in\Gamma_0(N)\)，矩阵
+\(A_N\gamma A_N^{-1}=\left(\begin{smallmatrix}a&Nb\\c/N&d\end{smallmatrix}\right)\)
+属于全模群，故 \(g|_k\gamma=g\)。
+在任一尖点矩阵 \(\sigma\) 后，行列式 \(N\) 的整数矩阵
+\(A_N\sigma\) 可分解为全模群矩阵与正对角上三角矩阵的乘积。
+前一个因子对 \(f\) 无作用，后一个因子只将高半平面按正比例缩放和平移，
+因而保持尖点处的指数衰减。由此 \(g\) 在所有尖点消失。
+形式 \(f\) 本身在每个全模群矩阵后不变，故作为较小群的形式也在所有尖点消失。
+
+全模群反演公式给
+\[
+ (f|_kW_N)(z)=N^{k/2}(Nz)^{-k}f(-1/(Nz))
+            =N^{k/2}f(Nz)=g(z).
+\]
+再用 Fricke 平方为恒等，得到 \(g|_kW_N=f\)。
+若 \(f\) 的首个非零 Fourier 项是 \(a_mq^m\)，则 \(g\) 从
+\(N^{k/2}a_mq^{Nm}\) 开始。因为 \(N>1\)，两者首项阶数不同，故线性独立。
+\end{proof}
+这些由较低层产生的形式是旧形式的基本例子。
+即使它们的线性组合已经对角化 Fricke 作用，也还没有证明该组合对全部高层 Hecke 算子为特征向量。
+尤其在 \(p\mid N\) 的素数处，算子及局部因子需要重新定义。
+新形式理论进一步区分旧空间与真正来自该层的部分，
+并给出与层数相容的局部因子；这项分解属于进一步的理论。
 
 \section{自守表示与 Langlands 纲领概览}
 \label{b3:sec:E05}
 
-模形式的变换律可理解为某个离散群作用下的等变性。把函数转移到矩阵群上，再把平移生成的函数空间组织为表示，就进入\term[zishou-biaoshi]{自守表示}[automorphic representation]的语言。对 \(\mathrm{GL}_2\) 而言，经典模形式提供了许多这类表示的来源；无穷处记录权和解析类型，有限素数处记录局部 Hecke 特征值。
+\subsection{把上半平面上的函数提升到矩阵群}
+\label{b3:subsec:E0501}
+
+到目前为止，群通过改变变量作用在函数上。
+表示论的第一步是把这种作用写成矩阵群上的平移，
+并把权记录为某个紧子群的变换类型。
+经典例子中的具体计算如下。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[权的群上表达]\label{b3:prop:E-group-lift}
+设 \(k\ge2\) 为偶整数，\(f\in M_k(\mathrm{SL}_2(\mathbb Z))\)，
+\(G=\mathrm{SL}_2(\mathbb R)\)，令
+\[
+ \Phi_f(g)=j(g,\mathrm i)^{-k}f(g\mathrm i),
+ \quad
+ r_\theta=\begin{pmatrix}\cos\theta&\sin\theta\\-\sin\theta&\cos\theta\end{pmatrix}.
+\]
+则 \(\Phi_f\) 在 \(G\) 光滑，满足
+\[
+ \Phi_f(\gamma g)=\Phi_f(g)\quad(\gamma\in\mathrm{SL}_2(\mathbb Z)),
+ \quad \Phi_f(gr_\theta)=e^{\mathrm i k\theta}\Phi_f(g).
+\]
+\end{proposition}
+\begin{proof}
+矩阵 \(g\) 把 \(\mathrm i\) 送到上半平面，且 \(j(g,\mathrm i)\ne0\)，
+所以全纯函数与光滑矩阵变量的复合给光滑性。
+对左作用，使用 \(j(\gamma g,\mathrm i)=j(\gamma,g\mathrm i)j(g,\mathrm i)\)
+和 \(f(\gamma z)=j(\gamma,z)^kf(z)\)，两个含 \(\gamma\) 的因子抵消。
+对右作用，\(r_\theta\mathrm i=\mathrm i\)、\(j(r_\theta,\mathrm i)=e^{-\mathrm i\theta}\)，
+代入相同的分母乘法恒等式，就得到 \(e^{\mathrm i k\theta}\)。
+\end{proof}
+因此 \(\Phi_f\) 可以看成商 \(\mathrm{SL}_2(\mathbb Z)\backslash G\) 上的函数，
+权 \(k\) 由右旋转的字符记录。
+若写
+\(g=\left(\begin{smallmatrix}1&x\\0&1\end{smallmatrix}\right)
+\left(\begin{smallmatrix}\sqrt y&0\\0&1/\sqrt y\end{smallmatrix}\right)r_\theta\)，则
+\[
+ \Phi_f(g)=y^{k/2}e^{\mathrm i k\theta}f(x+\mathrm i y).
+\]
+前面增长估计中的 \(y^{k/2}|f|\)，因而就是这个群上函数的模。
+
 \ProseParagraphBreak
-这种重组的实际意义在于把全局函数方程、Euler 因子与局部对称放在同一体系内。以本附录的例子看，一项 Fourier 展开的系数并非孤立数字：\(a_p\) 决定该素数的二阶递推，而所有素数的资料与 Mellin 积分必须相容。推广到更一般的群时，局部因子可能有更高次数，也可能需要不同的积分表示。
+
+对尖点形式，相关平方积分是
+\[
+ \int_{\mathrm{SL}_2(\mathbb Z)\backslash\mathfrak H}
+       |f(z)|^2y^k\frac{\mathrm dx\,\mathrm dy}{y^2}.
+\]
+被积量在换基下不变；基本域紧部分有界，尾部由
+\(C y^{k-2}e^{-4\pi y}\) 控制，所以积分有限。
+将两个形式分别放入两个因子，得到通常的 Petersson 内积。
+这个内积为研究 Hecke 算子的伴随及共同特征基提供了 Hilbert 空间结构。
+
+\subsection{局部算子资料与自守表示}
+\label{b3:subsec:E0502}
+
+在群上可以作右平移 \((R(h)\Phi)(g)=\Phi(gh)\)。
+它保留左侧的离散群不变性，并满足
+\(R(h_1)R(h_2)=R(h_1h_2)\)，从而给函数空间上的群表示。
+把适当的自守函数空间在这种作用下分解，得到
+\term[zishou-biaoshi]{自守表示}[automorphic representation]的语言。
+严格的一般定义还须规定所用群、函数空间、中心字符、增长条件和表示类别；
+这里的经典提升给出了由模形式产生群上函数的具体例子；函数空间的不可约分解属于一般表示理论。
+
 \ProseParagraphBreak
-\term[langlands-gangling]{Langlands 纲领}[Langlands program]研究这些自守对象与 Galois 表示等算术对象之间的对应，以及不同群之间由对偶群映射所预期的传递。这里的“纲领”包含许多不同命题，不是一个已经在全部情形证明的总定理。椭圆曲线的模性、局部对应和高维的各种猜想需要各自的对象、假设与已知范围。本附录只建立理解这些问题所需的经典入口。进一步学习可参看 Bump《Automorphic Forms and Representations》\cite{Bump1997Automorphic}和 Iwaniec《Topics in Classical Automorphic Forms》\cite{Iwaniec1997Topics}。
+
+对于与 \(\mathrm{GL}_2\) 有关的经典形式，有限素数处的 Hecke 特征值
+和无穷处的权属于不同的局部资料。
+本附录已经算出的内容是：每个 \(a_p\) 确定该素数的二阶递推，
+而无穷处的积分给一个 Gamma 因子以及 \(s\leftrightarrow k-s\) 的对称。
+表示论把这些资料组织在同一个全局对象中；
+构造各个局部表示、证明它们的分解性质，并不由写出一个 Euler 因子自动完成。
+
+\ProseParagraphBreak
+
+升层例子也说明为什么还要区分新旧部分。
+同一个低层形式在较高层可以产生多个线性独立函数，
+它们不是由同一段 Fourier 展开的不同书写方式造成的。
+若没有先说明所用层、特征、归一化及坏素数算子，
+仅比较两个局部多项式的外形可能把不同的表示资料混在一起。
+这些限制也是进一步学习新形式理论时首先需要恢复的条件。
+
+\subsection{算术对应的对象与已证范围}
+\label{b3:subsec:E0503}
+
+\term[langlands-gangling]{Langlands 纲领}[Langlands program]
+研究自守对象与 Galois 表示等算术对象之间的对应，
+以及不同群之间由对偶群映射所预期的传递。
+在经典问题中，一侧有 Hecke 特征值和 Euler 因子，
+另一侧有算术群在有限维向量空间上的作用，
+在没有分歧的素数处可比较相应 Frobenius 作用的特征多项式。
+共同使用一个局部多项式，是对应要解释的数学内容，不是凭记号相似已经得到的对应。
+
+\ProseParagraphBreak
+
+这个纲领包含许多需要分别陈述的命题。
+椭圆曲线的模性、局部对应、更高维的猜想及不同群间的传递，
+各有自己的对象、假设和已知范围。
+本附录没有建立一般对应，也没有从经典函数方程推出它。
+已经完成的两条解析路线是：给定 Hecke 共同特征形式得到 Euler 乘积，
+给定尖点形式及模变换得到 Mellin 延拓和对偶函数方程。
+前者的特征条件与后者的尖点条件不可互相替代。
+
+\ProseParagraphBreak
+
+进一步的表示论读物可看 Daniel Bump 的《Automorphic Forms and Representations》%
+\cite{Bump1997Automorphic}；经典自守形式方向可看 Henryk Iwaniec 的
+《Topics in Classical Automorphic Forms》\cite{Iwaniec1997Topics}。
+继续阅读时应同时核对作者采用的 Hecke 归一化和完成函数的变量，
+再比较特征值、局部根和对称中心。
 
 \begin{chaptersummary}
-Mellin 变换利用变换律产生延拓和函数方程；Hecke 特征关系利用有限求和产生乘法性和 Euler 乘积。这两种结构对同一组系数提出不同约束，其同时存在才形成模 \(L\)-函数的特殊性质。
+同余子群使尖点分成多个轨道，全尖点衰减与有限指标一起给出系数的初等增长界。
+整数矩阵分类证明 Hecke 算子保持模形式空间，系数公式再给互素乘法与素数幂递推。
+共同特征关系将这些算子恒等式变成 Euler 乘积；Mellin 积分则对任意尖点形式提供整延拓。
+高层的倒数换元先联系 Fricke 对偶形式，只有特征关系才使它成为一个函数的标量方程。
+群上提升说明权和局部算子怎样进入表示论；共同特征基、新形式分解及一般 Langlands 对应仍需额外理论。
 \end{chaptersummary}
 \BookExercises
+
+以下各题由本附录与前章已经建立的结果自拟或重新组织，均附完整解答。题组分别训练算子乘法、零点阶数、局部根、升层和尖点周期；具体共同特征形式的构造只使用有限维线性代数。
+
+% 自拟：将互素乘法和素数幂递推组合为一般 Hecke 乘积。
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b3:ex:E-1}
-若 \(f\in S_k\) 的第一系数为1且 \(T_pf=a_pf\)，证明 \(a_{p^2}=a_p^2-p^{k-1}\)。用于 \(\Delta\) 计算 \(a_4\)。
+设 \(k\ge2\) 为偶整数，\(T_n\) 为本附录在 \(M_k(\mathrm{SL}_2(\mathbb Z))\) 上采用的 Hecke 算子。证明对任意正整数 \(m,n\)，
+\[
+ T_mT_n=\sum_{d\mid(m,n)}d^{k-1}T_{mn/d^2}.
+\]
+再设 \(f=\sum_{r\ge1}a_rq^r\) 为全模群的共同 Hecke 特征尖点形式，且 \(a_1=1\)。写出 \(a_ma_n\) 的相应公式，并说明完全乘法性为什么一般不成立。
 \end{exercise}
 \begin{solution}
-比较 \(T_pf\) 的第 \(p\) 个系数，左侧为 \(a_{p^2}+p^{k-1}a_1\)，右侧为 \(a_p^2\)。对 \(k=12,p=2,a_2=-24\)，得 \(a_4=576-2048=-1472\)。
+先固定素数 \(p\)，记 \(U_r=T_{p^r}\)、\(C=p^{k-1}\)。正文给出 \(U_0=I\) 及
+\[
+ U_1U_r=U_{r+1}+CU_{r-1}\quad(r\ge1).
+\]
+我们证明
+\[
+ U_rU_s=\sum_{j=0}^{\min(r,s)}C^jU_{r+s-2j}.
+\]
+算子已经交换，故只需讨论 \(r\ge s\)。当 \(s=0\) 时为恒等式，\(s=1\) 时为上述递推。设公式对第二指标 \(s,s-1\) 成立，其中 \(s\ge1\)，并取 \(r\ge s+1\)。由 \(U_{s+1}=U_1U_s-CU_{s-1}\)，
+\[
+ \begin{aligned}
+ U_rU_{s+1}
+ &=\sum_{j=0}^s C^jU_{r+s+1-2j}
+   +\sum_{j=0}^s C^{j+1}U_{r+s-1-2j}\\
+ &\phantom{={}}-\sum_{j=0}^{s-1}C^{j+1}U_{r+s-1-2j}\\
+ &=\sum_{j=0}^{s+1}C^jU_{r+s+1-2j}.
+ \end{aligned}
+\]
+第一行应用素数递推的指标最低为 \(r-s\ge1\)，所以没有调用未定义的 \(U_{-1}\)。两组第二类项相消后，剩下 \(j=s\) 的一项，正好补成最后一个和。这完成归纳。
+
+现在分别分解 \(m=\prod_pp^{r_p}\)、\(n=\prod_pp^{s_p}\)。互素乘法关系把 \(T_m,T_n\) 写成相应素数幂算子的乘积；不同素数的算子交换，可以逐素数使用刚证的公式。每组选择 \(0\le j_p\le\min(r_p,s_p)\) 唯一对应公因子 \(d=\prod_pp^{j_p}\)，其系数为 \(d^{k-1}\)，剩余指标为 \(mn/d^2\)，便得到一般公式。
+
+对正规化共同特征形式，\(T_rf=a_rf\)。将算子恒等式作用于非零的 \(f\)，有
+\[
+ a_ma_n=\sum_{d\mid(m,n)}d^{k-1}a_{mn/d^2}.
+\]
+互素时只剩 \(d=1\)，恢复通常的乘法性。但取 \(m=n=p\)，得到
+\(a_p^2=a_{p^2}+p^{k-1}\)，附加项不为零，故不能把该数列视为完全乘法函数。
 \end{solution}
+
+% 自拟：利用虚轴符号证明一个中心零点确为单零，超出函数方程的奇偶限制。
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b3:ex:E-2}
-若 \(k\equiv2\pmod4\)，证明全模群尖点形式的 \(L(k/2,f)=0\)。
+令 \(f=\Delta E_6\in S_{18}(\mathrm{SL}_2(\mathbb Z))\)，其中 \(\Delta\) 与 \(E_6\) 均取前章的归一化。证明 \(L(s,f)\) 在中心 \(s=9\) 恰有一个单零点。解答须说明 Mellin 积分导数不为零的原因，不能只引用函数方程的负号。
 \end{exercise}
 \begin{solution}
-函数方程在中心给 \(\Lambda(k/2,f)=-\Lambda(k/2,f)\)，故为零。Gamma 因子在正数 \(k/2\) 有限非零，所以 \(L\) 同样为零。这里假定 \(k>0\)，如无非零该权尖点形式，结论自然仍成立。
+先确定虚轴上的符号。\cref{b3:prop:23-e4-e6} 的 Fourier 系数均为实数，所以 \(E_4(\mathrm{i}t),E_6(\mathrm{i}t)\) 和 \(\Delta(\mathrm{i}t)\) 都为实数。由 \cref{b3:prop:23-delta-nonvanishing}，最后一个量对 \(t>0\) 非零；它在 \(t\to\infty\) 时等于 \(e^{-2\pi t}(1+o(1))\)，因而为正。连续性以及区间 \((0,\infty)\) 的连通性给
+\[
+ \Delta(\mathrm{i}t)>0\quad(t>0).
+\]
+另一方面，权六的变换律在固定点 \(\mathrm{i}\) 给
+\(E_6(\mathrm{i})=\mathrm{i}^6E_6(\mathrm{i})=-E_6(\mathrm{i})\)，所以 \(E_6(\mathrm{i})=0\)。由已证展开，
+\[
+ E_6(\mathrm{i}t)=1-504\sum_{n\ge1}\sigma_5(n)e^{-2\pi nt}.
+\]
+所有 \(\sigma_5(n)\) 为正。若 \(t>1\)，和式的每一项均严格小于 \(t=1\) 时的对应项，两和都绝对收敛，故 \(E_6(\mathrm{i}t)>E_6(\mathrm{i})=0\)。于是 \(f(\mathrm{i}t)>0\) 对 \(t>1\) 成立。
+
+\(f\) 的权为十八，尖点阶数至少为一，且首系数为一，因而非零。由于 \(\mathrm{i}^{18}=-1\)，分割 Mellin 公式给
+\[
+ \Lambda(s,f)=\int_1^\infty f(\mathrm{i}t)
+       \bigl(t^{s-1}-t^{17-s}\bigr)\,\mathrm{d}t.
+\]
+尖点的指数衰减允许在任意紧参数集上逐次求导。因此
+\[
+ \Lambda(9,f)=0,
+ \quad \Lambda'(9,f)
+ =2\int_1^\infty f(\mathrm{i}t)t^8\log t\,\mathrm{d}t>0.
+\]
+积分严格为正，是因为被积函数在整个 \((1,\infty)\) 上严格为正。\((2\pi)^{-s}\Gamma(s)\) 在 \(s=9\) 附近全纯且非零，所以 \(\Lambda\) 与 \(L\) 在此有相同零点阶数。特别地，
+\[
+ L'(9,f)=\frac{(2\pi)^9}{\Gamma(9)}\Lambda'(9,f)>0,
+\]
+从而该中心零点恰为单零。这一步用到了虚轴上的具体符号，函数方程的负号本身只给奇数阶的限制。
 \end{solution}
+
+% 自拟：通过实二次多项式区分根的乘积条件与等模估计。
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b3:ex:E-3}
-验证正规化的局部根 \(\alpha_p p^{-(k-1)/2}\)、\(\beta_p p^{-(k-1)/2}\) 的乘积为一，但仅凭此不能推出它们都在单位圆上。
+设 \(f=\sum_{n\ge1}a_nq^n\) 为全模群权 \(k\ge2\) 的正规化共同 Hecke 特征尖点形式。固定素数 \(p\)，设 \(a_p\) 为实数，并将局部因子写成
+\[
+ 1-a_pX+p^{k-1}X^2=(1-\alpha_pX)(1-\beta_pX).
+\]
+证明正规化根 \(u=\alpha_pp^{-(k-1)/2}\)、\(v=\beta_pp^{-(k-1)/2}\) 都位于单位圆，当且仅当 \(|a_p|\le2p^{(k-1)/2}\)，并分别讨论等号与严格不等号。对 \(f=\Delta,p=2\) 明确求出两个未正规化的根。为什么一次这样的计算不能证明所有素数的根都满足等模条件？
 \end{exercise}
 \begin{solution}
-乘积公式直接给一。数对 \((2,1/2)\) 已是反例，说明乘积为一允许模长互为倒数；还需要独立的根的估计。
+记 \(A=a_pp^{-(k-1)/2}\in\mathbb R\)，则 \(u+v=A\)、\(uv=1\)，所以它们是
+\[
+ x^2-Ax+1=0
+\]
+的两个根。若 \(|A|<2\)，求根公式给
+\[
+ u,v=\frac A2\pm\frac{\mathrm{i}}2\sqrt{4-A^2},
+\]
+二者互为共轭且模均为一。若 \(A=2\) 或 \(-2\)，则分别是二重根 \(1\) 或 \(-1\)。若 \(|A|>2\)，两根为不同的实数且乘积为一；它们不等于 \(\pm1\)，故一个模大于一、另一个模小于一。
+
+也可以直接看必要性：若 \(|u|=|v|=1\) 且 \(uv=1\)，则 \(v=\overline u\)，从而 \(A=2\operatorname{Re}u\in[-2,2]\)。这证明所述充要条件，包括边界重根。
+
+对 \(\Delta\)，\(k=12\)、\(a_2=-24\)，两个根满足
+\[
+ x^2+24x+2^{11}=0,
+ \quad \alpha_2=-12+4\mathrm{i}\sqrt{119},
+ \quad \beta_2=-12-4\mathrm{i}\sqrt{119}.
+\]
+它们的模平方都是 \(144+16\cdot119=2048=2^{11}\)，确实达到等模条件。但这只检验了素数二；正文的递推把每个素数的高次系数联系到该素数的一次系数，并不为所有 \(a_p\) 提供上述统一上界。仅有 \(uv=1\) 也不够，例如实数对 \((2,1/2)\) 的乘积为一，却都不在单位圆上。这组数说明乘积条件本身不足以推出等模条件。
 \end{solution}
+
+% 自拟：从已证升层构造计算 L 函数及额外零点，并检验坏素数处的边界。
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b3:ex:E-4}
-令 \(f(z)=\Delta(z)\)、\(g(z)=2^6\Delta(2z)\)，并取 \(W_2=\begin{psmallmatrix}0&-1\\2&0\end{psmallmatrix}\)。计算 \(f|_{12}W_2\)、\(g|_{12}W_2\)，并给出这两个函数张成空间中的两个 Fricke 特征向量。
+令 \(f(z)=\Delta(z)\)、\(g(z)=2^6\Delta(2z)\)，并令 \(F_\pm=f\pm g\)。正文的升层构造已给出 \(F_\pm\in S_{12}(\Gamma_0(2))\)，且 \(F_\pm|_{12}W_2=\pm F_\pm\)。求 \(L(s,F_\pm)\) 与 \(\Lambda_2(s,F_\pm)\) 用 \(L(s,\Delta)\)、\(\Lambda(s,\Delta)\) 表示的公式，列出新增显式因子产生的全部零点。
+
+证明 \(L(s,F_-)\) 在中心 \(s=6\) 恰有单零，而 \(L(6,F_+)\ne0\)。最后计算 \(F_\pm\) 的第 \(2,4\) 个 Fourier 系数，说明不能在层的素因子 \(p=2\) 处直接套用全模群的素数平方关系。
 \end{exercise}
 \begin{solution}
-定义与 \(\Delta(-1/z)=z^{12}\Delta(z)\) 给
+记 \(\Delta=\sum_{n\ge1}\tau(n)q^n\)，并约定当 \(x\) 不是正整数时令 \(\tau(x)=0\)。\(g\) 的第 \(n\) 个系数为 \(64\tau(n/2)\)。在初始绝对收敛半平面，换指标得
 \[
-(f|_{12}W_2)(z)=2^6(2z)^{-12}\Delta(-1/(2z))
-=2^6\Delta(2z)=g(z).
+ \begin{aligned}
+ L(s,g)&=64\sum_{m\ge1}\tau(m)(2m)^{-s}
+        =2^{6-s}L(s,\Delta),\\
+ L(s,F_\pm)&=(1\pm2^{6-s})L(s,\Delta).
+ \end{aligned}
 \]
-同样，\((g|_{12}W_2)(z)=2^{12}(2z)^{-12}\Delta(-1/z)=f(z)\)。所以 \(f+g\)、\(f-g\) 分别具有特征值 \(+1\)、\(-1\)。它们都非零且线性独立，因为 \(f=q+O(q^2)\)、\(g=2^6q^2+O(q^4)\)。这给出了从交换的一对函数组成特征向量的具体计算。
+两侧均有整延拓，因此最后一式在全平面成立。按层二的完成因子归一化，
+\[
+ \Lambda_2(s,F_\pm)
+ =\bigl(2^{s/2}\pm2^{(12-s)/2}\bigr)\Lambda(s,\Delta).
+\]
+两个括号在 \(s\leftrightarrow12-s\) 下分别保持不变和改变符号，与两个 Fricke 特征值一致。
+
+因子 \(1-2^{6-s}\) 的零点集为
+\[
+ \left\{6+\frac{2\pi\mathrm{i}m}{\log2}:m\in\mathbb Z\right\},
+\]
+因子 \(1+2^{6-s}\) 的零点集为
+\[
+ \left\{6+\frac{(2m+1)\pi\mathrm{i}}{\log2}:m\in\mathbb Z\right\}.
+\]
+在各自零点处，因子的导数都等于 \(\log2\)，所以这些显式因子只有单零。它们给相应 \(L(s,F_\pm)\) 带来至少一阶的零点；如果 \(L(s,\Delta)\) 也在那里消失，零点阶数还会增加，不能把全部这些零点一律宣称为单零。
+
+在中心可以排除额外消失。由 \(\Delta\) 的实系数、上半平面无零性及正的尖点首项，\(\Delta(\mathrm{i}t)>0\) 对所有 \(t>0\) 成立。因此
+\[
+ \Lambda(6,\Delta)
+ =\int_0^\infty\Delta(\mathrm{i}t)t^5\,\mathrm{d}t>0,
+ \quad L(6,\Delta)>0.
+\]
+这里两端的可积性来自已证的 Mellin 估计。于是
+\[
+ L'(6,F_-)=(\log2)L(6,\Delta)>0,
+ \quad L(6,F_+)=2L(6,\Delta)>0.
+\]
+所以负号组合在中心恰有单零，正号组合在中心非零。
+
+用 \(\tau(2)=-24\)、\(\tau(4)=(-24)^2-2^{11}=-1472\)，得到
+\[
+ \begin{aligned}
+ [q^2]F_+&=40,&[q^4]F_+&=-3008,\\
+ [q^2]F_-&=-88,&[q^4]F_-&=64.
+ \end{aligned}
+\]
+若套用全模群权十二的平方关系，右侧应分别为
+\(40^2-2^{11}=-448\) 和 \((-88)^2-2^{11}=5696\)，均与实际系数不同。这里的 \(F_\pm\) 是层二的 Fricke 特征形式；这一对称条件没有赋予它们全模群在素数二处的 Hecke 关系。
 \end{solution}
+
+% 自拟：用初始无零区与函数方程确定非正整数零点的精确阶数。
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b3:ex:E-5}
-设 \(f\in S_k\)、\(k\equiv2\pmod4\)。把 \(\Lambda'(k/2,f)\) 写成从1到无穷远的积分，并证明 \(\Lambda''(k/2,f)=0\)。这些结论能否保证中心零点恰为单零点？
+设 \(k\ge4\) 为偶整数，\(f\in S_k(\mathrm{SL}_2(\mathbb Z))\) 为首系数 \(a_1=1\) 的共同 Hecke 特征形式。证明 \(L(s,f)\) 在每个非正整数 \(s=-m\)、\(m\ge0\)，都恰有一个单零点，并求 \(L'(-m,f)\) 用 \(L(k+m,f)\) 表示的公式。指出若只知道 \(\Lambda(s,f)\) 为整函数，能够推出的结论为何较弱。
 \end{exercise}
 \begin{solution}
-对式~\eqref{b3:eq:E-split-mellin} 求导，因 \(\mathrm{i}^k=-1\)，得
+Gamma 函数的递推在 \(s=-m\) 附近给
 \[
-\Lambda'(k/2,f)=2\int_1^\infty f(\mathrm{i}t)t^{k/2-1}\log t\,\mathrm{d}t.
+ \Gamma(s)=\frac{\Gamma(s+m+1)}{s(s+1)\cdots(s+m)}
+ =\frac{(-1)^m}{m!(s+m)}+O(1).
 \]
-指数衰减保证求导合法。关于中心的奇性给二阶导数为零。上式积分仍可能为零，所以这些条件只限制零点阶数为奇数，并不能排除三阶或更高奇数阶；若 \(f=0\)，更不能谈有限零点阶数。
+因而
+\[
+ \frac1{\Gamma(s)}=(-1)^m m!(s+m)+O((s+m)^2).
+\]
+由整延拓公式
+\(L(s,f)=(2\pi)^s\Lambda(s,f)/\Gamma(s)\)，已可知 \(L(-m,f)=0\)。要确定它恰为单零，还必须证明 \(\Lambda(-m,f)\ne0\)。
+
+函数方程将这个值联系到
+\[
+ \Lambda(-m,f)=\mathrm{i}^k\Lambda(k+m,f).
+\]
+由于 \(k\ge4\)，有 \(k+m>k/2+1\)。\cref{b3:prop:E-initial-zero-free} 保证 \(L(k+m,f)\ne0\)，而该处 Gamma 因子有限非零，所以 \(\Lambda(k+m,f)\ne0\)，进而 \(\Lambda(-m,f)\ne0\)。因此 Gamma 倒数的单零没有被额外零点加重。
+
+比较 \(s=-m\) 附近的一次项，得到
+\[
+ \begin{aligned}
+ L'(-m,f)
+ &=(-1)^m m!(2\pi)^{-m}\Lambda(-m,f)\\
+ &=\frac{(-1)^m\mathrm{i}^k m!\,\Gamma(k+m)}
+         {(2\pi)^{k+2m}}L(k+m,f)\ne0.
+ \end{aligned}
+\]
+若只知道 \(\Lambda\) 整，则只能得到这些点至少为 \(L\) 的零点；\(\Lambda\) 本身可能在相同位置消失。精确的单零结论还用了特征形式 Euler 乘积所给的初始无零性。
 \end{solution}
+
+% 自拟：在一个明确的二维空间中构造共同特征形式，不调用一般共同特征基定理。
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b3:ex:E-6}
-利用 \(\Delta=q-24q^2+252q^3+\cdots\) 的 Hecke 特征关系，计算其第6、12个 Fourier 系数，不直接展开无穷乘积。
+在全模群的权二十四尖点形式空间中，令
+\[
+ A=E_4^3\Delta,\quad B=\Delta^2.
+\]
+证明 \((A,B)\) 为 \(S_{24}(\mathrm{SL}_2(\mathbb Z))\) 的一组基，计算 Hecke 算子 \(T_2\) 在这组基下的矩阵，并找出全部首系数为一的 \(T_2\) 特征形式。利用正文已证的交换性，说明所得两条特征线同时被每个 \(T_n\) 保持，从而在这一具体空间中得到两个正规化共同特征形式。
 \end{exercise}
 \begin{solution}
-记 \(a_n\) 为 \(\Delta\) 的系数。互素关系给 \(a_6=a_2a_3=-24\cdot252=-6048\)。素数平方关系先给 \(a_4=(-24)^2-2^{11}=-1472\)，再因 \((3,4)=1\) 得 \(a_{12}=a_3a_4=-370944\)。若错误地使用完全乘法性，就会写出 \(a_{12}=a_3a_2^2\)，遗漏局部因子中的 \(2^{11}\) 项。
+由 \cref{b3:prop:23-cusp-division,b3:thm:23-modular-ring}，
+\[
+ S_{24}=\Delta M_{12},
+ \quad M_{12}=\operatorname{span}\{E_4^3,E_6^2\}.
+\]
+再用 \(E_6^2=E_4^3-1728\Delta\)，可知 \(A,B\) 张成 \(S_{24}\)。二者的初项分别为 \(q\) 与 \(q^2\)，因此线性无关，确为一组基。
+
+为计算 \(T_2\)，需要原函数直到 \(q^4\) 的系数。由 Eisenstein 展开和 \(\Delta\) 的素数平方关系，
+\[
+ \begin{aligned}
+ E_4^3&=1+720q+179280q^2+16954560q^3+O(q^4),\\
+ \Delta&=q-24q^2+252q^3-1472q^4+O(q^5).
+ \end{aligned}
+\]
+相乘得到
+\[
+ \begin{aligned}
+ A&=q+696q^2+162252q^3+12831808q^4+O(q^5),\\
+ B&=q^2-48q^3+1080q^4+O(q^5).
+ \end{aligned}
+\]
+例如 \(A\) 的四次项为
+\(16954560-24\cdot179280+252\cdot720-1472=12831808\)，而 \(B\) 的四次项为 \((-24)^2+2\cdot252=1080\)。
+
+对权二十四的形式 \(h=\sum h_nq^n\)，系数公式给
+\[
+ [q]T_2h=h_2,
+ \quad [q^2]T_2h=h_4+2^{23}h_1.
+\]
+因为 \(T_2\) 保持 \(S_{24}\)，且该空间的任意元素在基 \((A,B)\) 下都由前两个系数唯一确定，比较这两个系数便得到
+\[
+ T_2A=696A+20736000B,
+ \quad T_2B=A+384B.
+\]
+例如第一式中 \(B\) 的系数是
+\(12831808+2^{23}-696^2=20736000\)。按列记录基向量的像，矩阵为
+\[
+ [T_2]_{(A,B)}=
+ \begin{pmatrix}
+  696&1\\
+  20736000&384
+ \end{pmatrix}.
+\]
+任一首系数为一的形式可写成 \(A+tB\)。若它为特征向量，比较 \(A\) 的系数先得特征值 \(696+t\)，再比较 \(B\) 的系数，得
+\[
+ 20736000+384t=(696+t)t,
+ \quad t^2+312t-20736000=0.
+\]
+因此恰有两个解
+\[
+ t_\pm=-156\pm12\sqrt{144169},
+ \quad f_\pm=A+t_\pm B,
+\]
+对应的 \(T_2\) 特征值为
+\[
+ \lambda_\pm=540\pm12\sqrt{144169}.
+\]
+两特征值不同，所以相应特征空间各为一维，\(f_+,f_-\) 也线性无关。
+
+对任意 \(n\ge1\)，正文的交换性给
+\[
+ T_2(T_nf_\pm)=T_n(T_2f_\pm)=\lambda_\pm T_nf_\pm.
+\]
+故 \(T_nf_\pm\) 属于同一个一维特征空间，必为 \(f_\pm\) 的标量倍数；这个标量也可以为零。于是两者都是全部 Hecke 算子的共同特征形式，且已由首系数一正规化。这一构造依赖于此处明确算出的简单谱，并没有从一般交换性直接推断任意权空间都存在共同特征基。
+\end{solution}
+
+% 自拟：显式矩阵计算给出尖点宽度，并区分带特征的实际周期。
+\Needspace{6\baselineskip}
+\begin{exercise}\label{b3:ex:E-7}
+设 \(N\ge1\)，\(a,c\in\mathbb Z\) 互素，并选
+\(\sigma=\left(\begin{smallmatrix}a&b\\c&d\end{smallmatrix}\right)\in\mathrm{SL}_2(\mathbb Z)\)。当 \(c=0\) 时，尖点 \(a/c\) 按无穷远解释。令 \(T=\left(\begin{smallmatrix}1&1\\0&1\end{smallmatrix}\right)\)。证明满足 \(\sigma T^w\sigma^{-1}\in\Gamma_0(N)\) 的最小正整数为
+\[
+ w=\frac{N}{\gcd(N,c^2)}.
+\]
+求尖点 \(\infty\) 与 \(0\) 的宽度，并在 \(N>1\) 时证明它们不属于同一 \(\Gamma_0(N)\) 轨道。
+
+若 \(f\in M_k(\Gamma_0(N),\chi)\)，证明 \(g=f|_k\sigma\) 满足
+\[
+ g(z+w)=\chi(1+acw)g(z).
+\]
+据此给出一个能保证 \(g\) 真正周期性的正整数周期，并解释为什么群的尖点宽度未必就是带特征函数的周期。
+\end{exercise}
+\begin{solution}
+利用 \(ad-bc=1\) 直接相乘得
+\[
+ \sigma T^w\sigma^{-1}
+ =\begin{pmatrix}
+   1-acw&a^2w\\
+   -c^2w&1+acw
+  \end{pmatrix}.
+\]
+该矩阵属于 \(\Gamma_0(N)\) 当且仅当 \(N\mid c^2w\)。设 \(D=\gcd(N,c^2)\)，则 \(N/D\) 与 \(c^2/D\) 互素，故这个整除条件等价于 \(N/D\mid w\)，最小正解正是题中公式。取 \(c=0\)，宽度为一；对尖点零取 \(a=0,c=1\)，宽度为 \(N\)。
+
+若某个 \(\gamma=\left(\begin{smallmatrix}u&v\\r&s\end{smallmatrix}\right)\in\Gamma_0(N)\) 将 \(\infty\) 送到零，则 \(r\ne0\) 且 \(u=0\)。行列式条件成为 \(-vr=1\)，所以 \(r=\pm1\)。这与 \(N\mid r\)、\(N>1\) 矛盾，故两尖点不等价。
+
+令 \(\gamma_w=\sigma T^w\sigma^{-1}\)。斜杠作用的复合律以及 \(f\) 的变换律给
+\[
+ g(z+w)=(f|_k\sigma)|_kT^w(z)
+       =(f|_k\gamma_w)|_k\sigma(z)
+       =\chi(1+acw)g(z).
+\]
+这里 \(1+acw\) 与 \(N\) 互素，因为 \(\gamma_w\) 的行列式为一且左下元可被 \(N\) 整除；所以特征值不是零。记 \(\zeta=\chi(1+acw)\)，它属于有限单位群的像，因而为有限阶单位根。若其阶为 \(\ell\)，反复平移得到
+\[
+ g(z+\ell w)=\zeta^\ell g(z)=g(z).
+\]
+故 \(\ell w\) 是一个可采用的周期。若 \(g\ne0\)，在 \(w\) 的正整数倍之中，最小可行倍数恰由 \(\zeta\) 的阶给出。群的宽度只保证对应共轭矩阵属于子群；带特征的函数还可能获得非平凡相位，需先消去相位再选择尖点展开参数。
+\end{solution}
+
+% 自拟：构造具有完整 Mellin 函数方程而没有正规化 Hecke Euler 乘积的尖点形式。
+\Needspace{6\baselineskip}
+\begin{exercise}\label{b3:ex:E-8}
+令 \(h=\Delta^2\in S_{24}(\mathrm{SL}_2(\mathbb Z))\)。证明它的完成函数整且满足
+\[
+ \Lambda(s,h)=\Lambda(24-s,h),
+ \quad\Lambda(12,h)>0,
+\]
+但 \(h\) 不是共同 Hecke 特征形式，任意非零常数倍也不能把它正规化成首系数为一的形式。进一步证明，当实数 \(\sigma\to+\infty\) 时，
+\[
+ L(\sigma,h)\sim2^{-\sigma}.
+\]
+说明这些事实为何阻止它具有正文中首个 Dirichlet 系数为一的标准 Euler 乘积。
+\end{exercise}
+\begin{solution}
+\(h\) 是权二十四尖点形式，因此不需要任何特征向量假设，Mellin 定理就保证其完成函数整，并给
+\[
+ \Lambda(s,h)=\mathrm{i}^{24}\Lambda(24-s,h)
+             =\Lambda(24-s,h).
+\]
+\(\Delta(\mathrm{i}t)\) 为实数且在 \(t>0\) 时非零，故
+\[
+ \Lambda(12,h)=\int_0^\infty\Delta(\mathrm{i}t)^2t^{11}\,\mathrm{d}t>0.
+\]
+两端均由尖点衰减和变换律控制，因而这是收敛的正积分。
+
+另一方面，\(h=q^2+O(q^3)\)，所以首系数 \(a_1=0\)、次系数 \(a_2=1\)。\(T_2h\) 的一次项系数等于 \(a_2=1\)，而 \(h\) 的任意标量倍数一次项均为零。因此 \(h\) 甚至不是 \(T_2\) 的特征向量，更不可能是共同特征形式；乘非零常数也无法改变其首系数为零的事实。
+
+由尖点形式的系数界，存在 \(C>0\) 使 \(|a_n|\le Cn^{12}\)。于是对充分大的实数 \(\sigma\)，
+\[
+ 2^\sigma L(\sigma,h)
+ =1+\sum_{n\ge3}a_n\left(\frac2n\right)^\sigma.
+\]
+当 \(\sigma\ge14\) 时，尾项的绝对值由
+\[
+ Cn^{12}\left(\frac2n\right)^{14}
+ =C2^{14}n^{-2}
+\]
+控制，这是与 \(\sigma\) 无关的可求和上界；每个固定 \(n\ge3\) 的项又趋于零。由控制收敛，尾和趋于零，得到所求渐近式。
+
+标准 Hecke Euler 乘积的每个局部因子都从常数一开始，绝对收敛展开后的首个 Dirichlet 系数必为一；相应正规化 \(L\)-函数在 \(\sigma\to+\infty\) 时趋于一。这里首系数为零，且 \(L(\sigma,h)\to0\)，因此不可能具有这种标准乘积。这个例子把两类结论分开：尖点条件和模变换律已经足以产生 Mellin 函数方程，而 Euler 乘积还需要特定的 Hecke 特征关系。
 \end{solution}

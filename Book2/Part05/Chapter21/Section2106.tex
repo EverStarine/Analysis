@@ -1,24 +1,329 @@
 % !TeX root = ../../Book2.tex
 \OptionalSection{Haar 小波与尺度分解}{b2:sec:1906}
 
-待撰写。
+把一段声音或一个函数逐次放大，粗看时记录的是平均轮廓，细看时才出现局部变化。Fourier 分块按频率分辨这些尺度，Haar 构造则直接在空间里做一件更简单的事：把一个区间分成两半，分别求平均，再记录两个平均的差。重复二分，就得到由“粗平均＋各层差值”组成的展开。它的每个基函数都有紧支集，系数也只需计算一个小区间内的积分。
 
 \subsection{二进区间与 Haar 函数}
 \label{b2:subsec:190601}
 
-待撰写。
+先在全实线上工作。对 \(j,k\in\mathbb Z\)，令
+\[
+ I_{j,k}=[2^{-j}k,2^{-j}(k+1)),
+ \quad \mathcal D_j=\{I_{j,k}:k\in\mathbb Z\}.
+\]
+这些区间称为\term[erjin-qujian]{二进区间}[dyadic interval]。指标 \(j\) 表示尺度，\(k\) 表示位置；\(j\) 越大，区间越短。半开约定使同层区间严格不交并覆盖实轴，端点取法不影响 \(L^2\) 等价类。每个区间 \(I=I_{j,k}\) 有左、右两半
+\(I_-=I_{j+1,2k}\)、\(I_+=I_{j+1,2k+1}\)。两条二进区间若相交，就必有一个包含另一个；较小者还落在较大者的一半中。
+
+\begin{definition}\label{b2:def:19-haar-functions}
+设 \(j,k\in\mathbb Z\)，\(I=I_{j,k}\subset\mathbb R\)，\(|I|=2^{-j}\)。定义
+\begin{equation}\label{b2:eq:19-haar-functions}
+ \phi_{j,k}=|I|^{-1/2}\mathbf1_I,
+ \quad
+ h_{j,k}=h_I=|I|^{-1/2}
+   \bigl(\mathbf1_{I_-}-\mathbf1_{I_+}\bigr).
+\end{equation}
+函数 \(h_I\) 称为与 \(I\) 对应的\term[haar-xiaobo]{Haar 小波}[Haar wavelet]。若取
+\(\phi=\mathbf1_{[0,1)}\)、\(h=\mathbf1_{[0,1/2)}-\mathbf1_{[1/2,1)}\)，则
+\(\phi_{j,k}(x)=2^{j/2}\phi(2^jx-k)\)、
+\(h_{j,k}(x)=2^{j/2}h(2^jx-k)\)。函数 \(\phi\) 称为这里的\term[chidu-hanshu]{尺度函数}[scaling function]，\(h\) 称为\term[mu-xiaobo]{母小波}[mother wavelet]。
+\end{definition}
+\symidx{\(I_{j,k}\)：尺度为 \(2^{-j}\) 的二进区间}
+\symidx{\(h_{j,k}\)：标准化 Haar 小波}
+
+标准化因子使 \(\|h_I\|_2=1\)，而左右两半长度相同给出 \(\int h_I=0\)。这项零平均性有明确用途：若 \(f\) 在 \(I\) 上是常数，则它与 \(h_I\) 的配对为零，小波只记录该尺度上左右不一致的部分。
+
+内积仍取对第一变量线性的约定。对 \(f\in L^2(\mathbb R;\mathbb C)\)，记
+\(f_I=|I|^{-1}\int_I f\)，则其\term[haar-xishu]{Haar 系数}[Haar coefficient]为
+\begin{equation}\label{b2:eq:19-haar-coefficients}
+ c_I=\langle f,h_I\rangle
+ =\frac{|I|^{1/2}}2\bigl(f_{I_-}-f_{I_+}\bigr).
+\end{equation}
+由于 \(h_I\) 实值，配对中的复共轭没有改变它。与之对应的平均系数为
+\(a_I=\langle f,\phi_I\rangle=|I|^{1/2}f_I\)。父区间的平均与差值可以直接从两个子区间系数取得：
+\begin{equation}\label{b2:eq:19-haar-two-scale}
+ a_I=\frac{a_{I_-}+a_{I_+}}{\sqrt2},
+ \quad c_I=\frac{a_{I_-}-a_{I_+}}{\sqrt2}.
+\end{equation}
+反过来，\(a_{I_-}=(a_I+c_I)/\sqrt2\)、\(a_{I_+}=(a_I-c_I)/\sqrt2\)。因此从两个细平均改为一个粗平均和一个差值，并没有丢失信息；这只是二维空间中的一次正交坐标变换。
+
+\Cref{b2:fig:19-haar-average-detail}以左平均为 \(3\)、右平均为 \(1\) 为例。粗平均为 \(2\)，剩下的局部变化在左半为 \(1\)、右半为 \(-1\)。
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=1.25cm,y=0.62cm,>=stealth]
+ \begin{scope}
+  \draw[->] (-0.15,0)--(2.3,0);
+  \draw[->] (0,-0.25)--(0,3.6);
+  \draw[AnalysisBlue,very thick] (0,3)--(1,3) (1,1)--(2,1);
+  \draw[dotted] (1,0)--(1,3);
+  \node[left] at (0,3){\(3\)};
+  \node[left] at (0,1){\(1\)};
+  \node at (1,-0.65){两个细平均};
+ \end{scope}
+ \node at (2.7,1.6){\(=\)};
+ \begin{scope}[xshift=4.1cm]
+  \draw[->] (-0.15,0)--(2.3,0);
+  \draw[->] (0,-0.25)--(0,3.6);
+  \draw[AnalysisBlue,very thick] (0,2)--(2,2);
+  \node[left] at (0,2){\(2\)};
+  \node at (1,-0.65){粗平均};
+ \end{scope}
+ \node at (6,1.6){\(+\)};
+ \begin{scope}[xshift=8.2cm]
+  \draw[->] (-0.15,0)--(2.3,0);
+  \draw[->] (0,-1.5)--(0,2);
+  \draw[AnalysisBlue,very thick] (0,1)--(1,1) (1,-1)--(2,-1);
+  \draw[dotted] (1,-1)--(1,1);
+  \node[left] at (0,1){\(1\)};
+  \node[left] at (0,-1){\(-1\)};
+  \node at (1,-2.1){平均差形成的细节};
+ \end{scope}
+\end{tikzpicture}
+\caption[局部平均与 Haar 细节]{局部平均与 Haar 细节。图中区间左右等分，细节在整个父区间上的积分为零；纵轴为函数值。}
+\label{b2:fig:19-haar-average-detail}
+\end{figure}
 
 \subsection{正交性、完备性与展开}
 \label{b2:subsec:190602}
 
-待撰写。
+\begin{proposition}[Haar 系的正交性]\label{b2:prop:19-haar-orthogonality}
+在 Lebesgue 测度的复 Hilbert 空间 \(L^2(\mathbb R;\mathbb C)\) 中，
+\(\{h_{j,k}:j,k\in\mathbb Z\}\) 是标准正交系。固定 \(j\) 时，
+\(\{\phi_{j,k}:k\in\mathbb Z\}\) 也是标准正交系。
+\end{proposition}
+\begin{proof}
+所有函数的平方积分均为一。同层不同区间互不相交，故内积为零。不同层的两个小波若支集不交，也互相正交；若支集相交，设较小区间为 \(J\subsetneq I\)。函数 \(h_I\) 在 \(J\) 上为一个常数，而 \(\int_Jh_J=0\)，所以 \(\langle h_I,h_J\rangle=0\)。尺度函数在固定一层的结论同样来自不交支集。
+\end{proof}
+
+正交性保证系数平方和有界，但尚未保证它们记录了全部函数。要证明完备性，可以直接检查“逐层细化平均”是否逼近原函数。
+
+\begin{definition}\label{b2:def:19-haar-averaging}
+对整数 \(j\) 及 \(f\in L^2(\mathbb R;\mathbb C)\)，定义二进平均
+\begin{equation}\label{b2:eq:19-haar-averaging}
+ E_jf=\sum_{k\in\mathbb Z}f_{I_{j,k}}\mathbf1_{I_{j,k}}.
+\end{equation}
+令 \(V_j\) 为 \(L^2(\mathbb R;\mathbb C)\) 中在每个 \(I\in\mathcal D_j\) 上几乎处处为常数的函数所成的子空间。
+\end{definition}
+\symidx{\(E_j\)：尺度 \(2^{-j}\) 上的二进平均投影}
+\symidx{\(V_j\)：尺度 \(2^{-j}\) 上的分段常数空间}
+
+\begin{lemma}[平均投影的两个极限]\label{b2:lem:19-haar-averaging-limits}
+设 \(j\in\mathbb Z\)、\(f\in L^2(\mathbb R;\mathbb C)\)。空间 \(V_j\) 闭，\(E_j\) 为到 \(V_j\) 的正交投影，且 \(\|E_jf\|_2\leq\|f\|_2\)。此外，
+\begin{equation}\label{b2:eq:19-haar-two-limits}
+ E_jf\longrightarrow f\quad(j\to+\infty),
+ \quad E_jf\longrightarrow0\quad(j\to-\infty)
+\end{equation}
+均为 \(L^2(\mathbb R)\) 收敛。
+\end{lemma}
+\begin{proof}
+在每个区间上，Cauchy--Schwarz 给出
+\[
+ |I|\cdot|f_I|^2
+ =\frac1{|I|}\left|\int_If\right|^2
+ \leq\int_I|f|^2.
+\]
+对同层区间求和，得到 \(E_jf\in L^2\) 及收缩估计。函数 \(E_jf\) 在每块上为常数，再取一次平均不改变它，故 \(E_j^2=E_j\)，其像恰为 \(V_j\)。有界投影的像闭：若 \(v_n=E_jv_n\to v\)，连续性给出 \(E_jv=v\)。对每个 \(I\in\mathcal D_j\) 有 \(\int_I(f-E_jf)=0\)，所以 \(f-E_jf\) 与所有有限个区间上的分段常数正交。任意 \(v\in V_j\) 可用有限个块截断在 \(L^2\) 中逼近，内积的连续性给出 \(f-E_jf\perp V_j\)。
+
+证明细尺度极限时，先取 \(g\in C_c(\mathbb R)\)。它在全实线上一致连续；令
+\(\omega_g(r)=\sup_{|x-y|\leq r}|g(x)-g(y)|\)，则
+\[
+ |E_jg(x)-g(x)|\leq\omega_g(2^{-j}).
+\]
+当 \(j\geq0\) 时，\(g\) 与 \(E_jg\) 的支集都落在同一个有界区间，故这项一致误差也趋于零于 \(L^2\)。第一卷命题 10.2.4 说明 \(C_c(\mathbb R)\) 在有限指数的 \(L^p\) 中稠密，特别适用于 \(p=2\)。给定 \(f\)，先选 \(g\) 使 \(\|f-g\|_2<\varepsilon\)，便有
+\[
+ \|E_jf-f\|_2\leq2\varepsilon+\|E_jg-g\|_2,
+\]
+由此得到第一个极限。
+% 跨卷：b1:prop:lp-continuous-dense，Book1/Part02/Chapter10/Section1002.tex，命题10.2.4。
+
+粗尺度的极限不能仅由平均值逐点趋零推出，因为区间支集正在增长。对 \(g\in L^1\cap L^2\)，直接估计总平方积分：
+\[
+ \|E_jg\|_2^2
+ =2^j\sum_{I\in\mathcal D_j}\left|\int_Ig\right|^2
+ \leq2^j\left(\sum_{I\in\mathcal D_j}\int_I|g|\right)^2
+ =2^j\|g\|_1^2\longrightarrow0.
+\]
+连续紧支集函数属于 \(L^1\cap L^2\)，故再用稠密性与 \(\|E_j\|\leq1\)，即得第二个极限。
+\end{proof}
+
+两次相邻平均的差可以逐区间计算。在 \(I\in\mathcal D_j\) 上，粗平均为 \((f_{I_-}+f_{I_+})/2\)，细平均分别为 \(f_{I_-},f_{I_+}\)。因此
+\begin{equation}\label{b2:eq:19-haar-detail-expansion}
+ (E_{j+1}-E_j)f
+ =\sum_{k\in\mathbb Z}c_{j,k}h_{j,k},
+ \quad c_{j,k}=\langle f,h_{j,k}\rangle.
+\end{equation}
+这个等式在每一块上都是“两个数的平均和差”的恒等式；同层区间不交、左边属于 \(L^2\)，又保证右边按任意有限块逐渐穷尽时在 \(L^2\) 中收敛。
+
+\begin{theorem}[Haar 展开]\label{b2:thm:19-haar-basis}
+Haar 系 \(\{h_{j,k}:j,k\in\mathbb Z\}\) 是
+\(L^2(\mathbb R;\mathbb C)\) 的标准正交基。对每个 \(f\in L^2(\mathbb R;\mathbb C)\)，有
+\begin{equation}\label{b2:eq:19-haar-parseval}
+ f=\sum_{j,k\in\mathbb Z}c_{j,k}h_{j,k},
+ \quad \|f\|_2^2=\sum_{j,k\in\mathbb Z}|c_{j,k}|^2,
+ \quad c_{j,k}=\langle f,h_{j,k}\rangle.
+\end{equation}
+级数在 \(L^2\) 中无条件收敛，即按任意顺序枚举全部指标所得部分和都趋于 \(f\)。
+\end{theorem}
+\begin{proof}
+对整数 \(m<n\)，由\eqref{b2:eq:19-haar-detail-expansion}求和可得
+\[
+ \sum_{j=m}^{n-1}\sum_kc_{j,k}h_{j,k}=E_nf-E_mf.
+\]
+由\cref{b2:lem:19-haar-averaging-limits}，让 \(n\to+\infty\)、\(m\to-\infty\)，右边趋于 \(f\)。因此所有 Haar 函数的闭线性张成包含每个 \(f\in L^2\)，得到了完备性。
+
+每个有限指标集 \(A\subset\mathbb Z^2\) 的正交性给出
+\[
+ \left\|\sum_{(j,k)\in A}c_{j,k}h_{j,k}\right\|_2^2
+ =\sum_{(j,k)\in A}|c_{j,k}|^2\leq\|f\|_2^2.
+\]
+因而系数平方可和。任取枚举，两个足够晚的部分和之差的范数平方等于对应系数尾和，故它们为 Cauchy 列。其极限 \(g\) 与 \(f\) 有相同的全部 Haar 系数，所以 \(f-g\) 与稠密的线性张成正交，必为零。取范数极限即得 Parseval 恒等式。
+\end{proof}
+
+若研究的是单位区间 \([0,1)\)，尺度指标应改为 \(j\geq0\)、位置指标为 \(0\leq k<2^j\)，还必须加入常数函数 \(\mathbf1_{[0,1)}\)。每个小波的平均为零，缺少这个常数就无法表示非零平均的函数。具体地，对 \(f\in L^2(0,1)\)，有
+\begin{equation}\label{b2:eq:19-haar-unit-interval}
+ f=\left(\int_0^1f\right)\mathbf1_{[0,1)}
+   +\sum_{j=0}^\infty\sum_{k=0}^{2^j-1}c_{j,k}h_{j,k}
+ \quad\text{于 }L^2(0,1).
+\end{equation}
+证明仍是对 \(E_nf-E_0f\) 作望远镜求和，并用细尺度平均趋于 \(f\)。此处连续函数的 \(L^2\) 稠密性可由将 \(f\) 零延拓到实线后应用前述连续紧支集逼近得到。全实线的粗尺度空间趋于零，单位区间的最粗空间却由常数张成，这解释了两个展开公式的差别。
 
 \subsection{尺度分解与局部化}
 \label{b2:subsec:190603}
 
-待撰写。
+令 \(W_j\) 为同层 Haar 函数 \(\{h_{j,k}:k\in\mathbb Z\}\) 的闭线性张成，记
+\(D_j=E_{j+1}-E_j\)。由平均投影的定义可知
+\(V_j\subset V_{j+1}\)，且在每个父区间上，“两个子区间常数”恰好分解成“父区间常数＋左右差值”，所以
+\begin{equation}\label{b2:eq:19-haar-multiresolution}
+ V_{j+1}=V_j\mathbin{\oplus^\perp}W_j,
+ \quad D_j\text{ 是到 }W_j\text{ 的正交投影}.
+\end{equation}
+其中 \(\oplus^\perp\) 表示正交直和。进一步，\(\overline{\bigcup_jV_j}=L^2(\mathbb R)\)，而 \(\bigcap_jV_j=\{0\}\)：前者由细尺度极限给出，后者由 \(f=E_jf\) 及粗尺度极限给出。这组嵌套的近似空间及其逐层细节，称为 Haar 的\term[duofenbian-fenxi]{多分辨分析}[multiresolution analysis]。
+\symidx{\(W_j\)：第 \(j\) 层 Haar 细节空间}
+\symidx{\(D_j=E_{j+1}-E_j\)：Haar 细节投影}
+
+在指定粗尺度 \(J\) 后，展开可以写成
+\begin{equation}\label{b2:eq:19-haar-inhomogeneous}
+ f=E_Jf+\sum_{j=J}^\infty D_jf,
+ \quad
+ \|f-E_Jf\|_2^2=\sum_{j\geq J}\sum_k|c_{j,k}|^2.
+\end{equation}
+右边准确计量被丢弃的细节。由于 \(E_J\) 为正交投影，对任意 \(g\in V_J\)，
+\[
+ \|f-g\|_2^2=\|f-E_Jf\|_2^2+\|E_Jf-g\|_2^2.
+\]
+所以逐块取平均，正是给定这张网格以后最小化平方误差的选择。
+
+一个可以逐项核算的例子是 \([0,1)\) 上的 \(f(x)=x\)。在长度为 \(\ell=2^{-j}\) 的区间 \(I_{j,k}\) 上，左右平均之差为 \(-\ell/2\)，因此
+\[
+ c_{j,k}=-\frac14\,2^{-3j/2},
+ \quad E_jf\big|_{I_{j,k}}=2^{-j}\left(k+\frac12\right).
+\]
+每一层有 \(2^j\) 个系数，故
+\[
+ \|f-E_Jf\|_{L^2(0,1)}^2
+ =\frac1{16}\sum_{j=J}^\infty2^{-2j}
+ =\frac{2^{-2J}}{12}.
+\]
+也可在每个区间上积分 \((x-\text{中点})^2\)，得到同一个误差。这里每细化一层，误差范数减半。
+
+局部性不仅是基函数有紧支集，还体现在系数只受所在区间影响。修改 \(I\) 之外的函数值，不改变 \(c_I\)。若函数在某个父区间上已经为常数，其所有更小子区间的系数都为零；若函数有孤立跳跃，细尺度非零系数集中在与跳跃相遇的少数区间中。这使 Haar 展开适合辨认局部不均匀，而 Fourier 系数的一个积分通常会同时读取整个空间。
+
+\begin{proposition}[局部 Hölder 性与 Haar 系数]\label{b2:prop:19-haar-holder}
+设 \(0<\alpha\leq1\)，\(I\subset\mathbb R\) 为二进区间，复值函数 \(f\) 在 \(I\) 上满足
+\(|f(x)-f(y)|\leq H|x-y|^\alpha\)。则
+\begin{equation}\label{b2:eq:19-haar-holder-bound}
+ |\langle f,h_I\rangle|
+ \leq 2^{-\alpha-1}H|I|^{\alpha+1/2}.
+\end{equation}
+若这一 Hölder 条件在 \([0,1]\) 上成立，则单位区间的平均近似满足
+\(\|f-E_jf\|_{L^\infty(0,1)}\leq H2^{-j\alpha}\)。
+\end{proposition}
+\begin{proof}
+记 \(\ell=|I|\)。将右半区间平移到左半，得到
+\[
+ \langle f,h_I\rangle
+ =\ell^{-1/2}\int_{I_-}
+ \bigl(f(x)-f(x+\ell/2)\bigr)\,\mathrm dx.
+\]
+被积差的绝对值至多为 \(H(\ell/2)^\alpha\)，积分区间长度为 \(\ell/2\)，即得第一式。对 \(x\in I\in\mathcal D_j\)，再估计
+\[
+ |f(x)-f_I|
+ \leq\frac1{|I|}\int_I|f(x)-f(y)|\,\mathrm dy
+ \leq H2^{-j\alpha},
+\]
+便得一致误差界。
+\end{proof}
+
+在固定网格下，这个系数衰减结论的简单逆命题不成立。例如单位区间上的 \(f=\mathbf1_{[0,1/2)}\) 有跳跃，却满足
+\[
+ f=\tfrac12\mathbf1_{[0,1)}+\tfrac12h_{0,0};
+\]
+所有更细尺度系数都为零。原因是跳跃恰好沿着网格边界，细区间都落在跳跃的某一侧。判定连续性或高阶光滑性时，网格位置与基函数自身的光滑程度都必须考虑。
+
+还有一种平均的解释。在概率空间 \(([0,1),\mathcal B,\mathrm dx)\) 上，让 \(\mathcal F_j\) 由第 \(j\) 层有限二进分割生成。第一卷定义 31.1.1 中的条件期望要求在每个已知事件上保留积分；\(E_jf\) 在每个分块上可测并保留该块积分，因此恰好是 \(\mathbb E(f\mid\mathcal F_j)\)。于是 \(D_jf\) 是增加一级信息后得到的平均修正，其条件平均在上一层为零。这里概率测度的总质量为一；全实线上的 \(L^2\) 平均构造已经由积分和正交投影给出。
+% 跨卷：b1:def:conditional-expectation-31，Book1/Part05/Chapter31/Section3101.tex，定义31.1.1。
 
 \subsection{与 Littlewood–Paley 理论的联系}
 \label{b2:subsec:190604}
 
-待撰写。
+Haar 分解与\secref{b2:sec:1903}的频率分解都按二进尺度展开函数，但“同一尺度”所描述的对象不同。前者把空间区间二分，后者把频率空间切成环带。两者都有零平均的细节块，也都需要说明最粗尺度上留下什么。
+
+\begin{proposition}[Haar 平方函数的平方可积恒等式]\label{b2:prop:19-haar-square}
+设 \(f\in L^2(\mathbb R;\mathbb C)\)，并令
+\[
+ S_{\!H}f(x)=\left(\sum_{j\in\mathbb Z}|D_jf(x)|^2\right)^{1/2}.
+\]
+则 \(S_{\!H}f\in L^2(\mathbb R)\)，且
+\begin{equation}\label{b2:eq:19-haar-square}
+ \|S_{\!H}f\|_2^2=\|f\|_2^2,
+ \quad
+ (S_{\!H}f(x))^2
+ =\sum_{I\in\bigcup_j\mathcal D_j}
+   \frac{|c_I|^2}{|I|}\mathbf1_I(x)
+ \quad\text{几乎处处}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+同层每个位置至多落在一个二进区间中，且 \(|h_I|^2=|I|^{-1}\mathbf1_I\)，因此\eqref{b2:eq:19-haar-detail-expansion}给出第二式。对非负和用 Tonelli，再用\cref{b2:thm:19-haar-basis}的 Parseval 等式，得到
+\[
+ \int\sum_j|D_jf|^2=\sum_j\|D_jf\|_2^2
+ =\sum_{j,k}|c_{j,k}|^2=\|f\|_2^2.
+\]
+积分有限也说明平方函数几乎处处有限。
+\end{proof}
+
+这与\cref{b2:thm:19-square-function}的 Littlewood--Paley 平方函数估计十分相近。Haar 的不同细节空间严格正交，所以在 \(L^2\) 中得到范数相等；光滑频率块只有有限重叠，通常得到范数等价。Haar 系数还可各自乘一个模为一的常数而保持 \(L^2\) 范数，这由系数平方和立即看出；在一般 \(L^p\) 中，相应的无条件展开与平方函数估计需要鞅变换不等式，不能只交换一个平方和与积分得到。
+
+从 Fourier 变换还能看清 Haar 小波的频率性质。采用本卷的 \(e^{-2\pi\mathrm i x\xi}\) 约定，直接积分给出
+\begin{equation}\label{b2:eq:19-haar-fourier}
+ \widehat h(\xi)
+ =\frac{(1-e^{-\pi\mathrm i\xi})^2}{2\pi\mathrm i\xi}
+ \quad(\xi\ne0),
+ \quad \widehat h(0)=0.
+\end{equation}
+因此 \(|\widehat h(\xi)|\leq C\min(|\xi|,|\xi|^{-1})\)。在零频附近的一阶消失来自 \(\int h=0\)，高频端只有一阶衰减则来自它的跳跃。缩放和平移给出
+\[
+ \widehat h_{j,k}(\xi)
+ =2^{-j/2}e^{-2\pi\mathrm i k2^{-j}\xi}
+     \widehat h(2^{-j}\xi).
+\]
+所以第 \(j\) 层主要回应大小约为 \(2^j\) 的振荡，但它的 Fourier 变换并不支于一个环带。空间中的严格局部支集，与频率中的严格截断，在这两个具体构造中分别占据突出位置。
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{p{0.18\textwidth}p{0.35\textwidth}p{0.35\textwidth}}
+\toprule
+比较对象&Haar 细节 \(D_jf\)&光滑 Fourier 环带块\\
+\midrule
+尺度由何处划分&空间区间长度 \(2^{-j}\)&频率大小 \(2^j\)\\
+局部化&系数只读取所在区间&卷积核快速衰减，通常遍及空间\\
+块间关系&不同层严格正交，\(D_j^2=D_j\)&相邻频带有限重叠，通常不是投影\\
+基函数正则性&分段常数，有跳跃&频率截断光滑，卷积核为 Schwartz 函数\\
+平方范数&\(L^2\) 中有精确恒等式&\(L^2\) 中通常是等价估计\\
+\bottomrule
+\end{tabular}
+\caption[Haar 分解与光滑频率分解]{Haar 分解与光滑频率分解的不同局部化方式。}
+\label{b2:tab:19-haar-fourier-comparison}
+\end{table}
+
+\Cref{b2:tab:19-haar-fourier-comparison}说明了为什么不能把上一节所有带光滑权重的空间定义直接改成 Haar 系数公式。Haar 函数自身有跳跃；例如 \(h_{0,0}\) 只有一个非零 Haar 系数，但它不属于 \(H^1(\mathbb R)\)，因为它的分布导数含有点质量，不能由 \(L^2\) 函数表示。若某个任意正阶的系数加权规则把有限 Haar 和全都判为光滑，就已与这一事实冲突。更光滑的小波通过增加正则性与消失矩扩大可描述的光滑阶数范围；Haar 构造则把平均、抵消、局部支集和正交尺度分解这几项机制显示得最直接。

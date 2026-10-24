@@ -2,19 +2,153 @@
 \section{局部紧群与 Haar 测度}
 \label{b2:sec:I201}
 
-待撰写。
+直线上的 Fourier 积分、圆周上的 Fourier 级数和有限数据的离散 Fourier 变换，都与平移有关。直线上是加一个实数，圆周上是转过一个角度，有限循环序列上则是把下标循环移动。我们先把这些平移看成群运算，再寻找一种不随平移改变的积分。频率将从这种共同的结构中出现。
 
 \subsection{拓扑群与局部紧性}
 \label{b2:subsec:I20101}
 
-待撰写。
+\begin{definition}[拓扑群与局部紧群]
+\label{b2:def:I1-topological-group}
+一个群 \(G\) 连同其上的拓扑，称为\term[tuopuqun]{拓扑群}[topological group]，如果乘法 \((x,y)\mapsto xy\) 从 \(G\times G\) 到 \(G\) 连续，且逆映射 \(x\mapsto x^{-1}\) 连续。本附录的拓扑群均要求 Hausdorff。若每一点都有紧邻域，则称 \(G\) 为\term[jubujinqun]{局部紧群}[locally compact group]。若拓扑有一个可数基，则称它第二可数。
+\end{definition}
+
+邻域是包含一个开邻域的集合，因而紧邻域不必本身开。群的单位元记为 \(e\)。固定 \(a\) 时，映射 \(x\mapsto ax\) 的逆是 \(x\mapsto a^{-1}x\)，二者连续，所以左平移是同胚；右平移和取逆也都是同胚。因此只需检查单位元有没有紧邻域，就能判定一个 Hausdorff 拓扑群是否局部紧。交换群常改用加法记号，把 \(e,x^{-1},xy\) 分别写成 \(0,-x,x+y\)。
+
+以下例子同时说明群结构与拓扑结构各自提供什么信息。
+\begin{itemize}
+\item \(\mathbb R^d\) 配加法和通常拓扑，是第二可数局部紧交换群；闭球给出紧邻域。
+\item \(\mathbb T^d=(\mathbb R/\mathbb Z)^d\) 配加法和商拓扑，是紧交换群。相差整数的坐标视为同一点，正是周期函数的定义域。
+\item 任意群配离散拓扑都是局部紧群，因为单点集既开又紧。它第二可数当且仅当群至多可数。\(\mathbb Z^d\) 与有限群均属此例。
+\item 正实数乘法群 \((0,\infty)\) 的对数映射是到加法群 \(\mathbb R\) 的拓扑群同构。相同的群分析可以用不同坐标书写。
+\end{itemize}
+
+\begin{proposition}[可数紧覆盖]
+\label{b2:prop:I1-sigma-compact}
+设 \(G\) 为第二可数局部紧 Hausdorff 群。存在紧集列 \((K_n)\)，使 \(G=\bigcup_{n\ge1}K_n\)。单位元还有一列递减的相对紧开邻域 \((U_n)\)，使任意单位元邻域最终包含全部 \(U_n\)。
+\end{proposition}
+\begin{proof}
+取一个相对紧的开单位元邻域 \(V\)。集合族 \(\{xV:x\in G\}\) 覆盖 \(G\)。第二可数空间的每个开覆盖都有可数子覆盖：从可数基中选出包含于某个覆盖成员的基元，再为每个被选基元取一个覆盖成员即可。因此有 \(G=\bigcup_jx_jV\)，可令 \(K_n=\bigcup_{j\le n}x_j\overline V\)。
+
+再把包含 \(e\) 的基元列为 \(B_1,B_2,\ldots\)，令 \(U_n=V\cap\bigcap_{j\le n}B_j\)。它们开、相对紧，且构成所需的递减邻域基。
+\end{proof}
+
+紧性在积分中有两个实际用途：紧支撑函数只占据有限大小的区域，局部变化在这个区域上可以统一控制。第一卷引理 11.1.3 的紧支集 Urysohn 引理适用于局部紧 Hausdorff 空间，因而在这里给出如下截断：若 \(K\subset U\)，\(K\) 紧、\(U\) 开，则存在 \(h\in C_c(G;\mathbb R)\)，满足
+\[
+ 0\le h\le1,\quad h|_K=1,\quad \operatorname{supp}h\subset U.
+\]
+这里 \(C_c(G)\) 表示复值连续紧支撑函数。回想连续截断的构造：用局部紧性和有限覆盖选开集 \(V,W\)，使
+\[
+ K\subset V\subset\overline V\subset W\subset\overline W\subset U,
+ \quad \overline W\text{ 紧}.
+\]
+在紧 Hausdorff 空间 \(\overline W\) 中分离闭集 \(K\) 与 \(\overline W\setminus V\)，得到在前者为一、后者为零的连续函数，向外补零。因为它的支集包含于 \(\overline V\subset W\)，补零在边界处仍连续。这个构造让开集内的连续测试能够取代示性函数。
 
 \subsection{Haar 测度与归一化}
 \label{b2:subsec:I20102}
 
-待撰写。
+\begin{definition}[左、右 Haar 测度]
+\label{b2:def:I1-haar}
+设 \(G\) 为第二可数局部紧 Hausdorff 群。\(G\) 上一个非零正 Radon 测度 \(\mu\)，若满足
+\[
+ \mu(aE)=\mu(E)\quad(a\in G,\ E\subset G\text{ 为 Borel 集}),
+\]
+则称为\term[zuo-haar-cedu]{左 Haar 测度}[left Haar measure]。把左平移改为右平移，就得到右 Haar 测度。此处 Radon 测度要求在紧集上有限、在 Borel 集上紧内正则。
+\end{definition}
+
+在局部紧空间中，紧集上的有限性还保证每个点有一个有限测度邻域。由\cref{b2:prop:I1-sigma-compact}，这里的空间是 \(\sigma\) 紧的，故第一卷命题 11.2.5 还给出每个 Borel 集的开外正则性：其测度等于包含它的开集测度的下确界。这一性质将在连续逼近中控制截断函数的过渡区域。
+
+Haar 定理保证左 Haar 测度存在，并且任意两个只相差一个严格正的常数；其精确一般形式见\cref{b2:claim:I5-haar}。这一常数会进入 Fourier 变换和反演公式。比如圆周的总长可以取 \(1\) 或 \(2\pi\)，有限群也可以让每个点重 \(1\)，或让整个群重 \(1\)。后面将为每个模型固定一种选择。
+
+\begin{proposition}[开集、紧集与连续逼近]
+\label{b2:prop:I1-haar-basic}
+设 \(G\) 为第二可数局部紧 Hausdorff 群，\(\mu\) 为左 Haar 测度。每个非空开集都有正测度，\(\mu\) 是 \(\sigma\) 有限测度。若 \(1\le p<\infty\)，则 \(C_c(G)\) 在 \(L^p(G,\mu)\) 中稠密；在任意单位元邻域内，都存在非负的 \(C_c(G)\) 函数，其积分为 \(1\)。
+\end{proposition}
+\begin{proof}
+由于 \(\mu\ne0\) 且紧内正则，存在紧集 \(K\) 满足 \(\mu(K)>0\)。若非空开集 \(U\) 测度为零，其所有左平移也都测度为零，而这些平移覆盖 \(G\)。取有限个覆盖 \(K\)，便与 \(\mu(K)>0\) 矛盾。由\cref{b2:prop:I1-sigma-compact}，\(G\) 是可数个有限测度紧集的并，故 \(\mu\) 为 \(\sigma\) 有限。
+
+稠密性可直接看出误差来自哪里。先用简单函数逼近，把问题归结为有限测度 Borel 集 \(E\) 的示性函数。给定 \(\eta>0\)，取紧集 \(K\subset E\) 使 \(\mu(E\setminus K)<\eta\)，再取开集 \(U\supset K\) 使 \(\mu(U\setminus K)<\eta\)。用前面的截断取 \(0\le h\le1\)、\(h=1\) 于 \(K\)、\(\operatorname{supp}h\subset U\)，则
+\[
+ \|\mathbf1_E-h\|_p^p\le\mu(E\setminus K)+\mu(U\setminus K)<2\eta.
+\]
+对简单函数的有限个集合分别处理，即得结论。使用测度完备化时，每个可测函数有几乎处处相等的 Borel 代表，因而结论相同。
+
+最后，在给定单位元邻域内取开邻域 \(U\)，以 \(K=\{e\}\) 作连续截断。所得非负函数在 \(e\) 附近严格正，积分严格正且有限；除以这个积分即得归一化函数。
+\end{proof}
+
+在交换群上，左平移与右平移相同。一般群则可能不同，积分换元会带来一个因子。
+
+\begin{proposition}[模函数与换元]
+\label{b2:prop:I1-modular}
+设 \(G\) 为第二可数局部紧 Hausdorff 群，\(\mu\) 为左 Haar 测度。存在唯一连续群同态 \(\Delta:G\to(0,\infty)\)，使
+\begin{equation}
+\label{b2:eq:I1-modular-convention}
+ \mu(Ea)=\Delta(a)\mu(E)
+\end{equation}
+对所有 Borel 集 \(E\) 成立。对非负 Borel 函数 \(F\)，或对以下积分绝对收敛的复值函数，有
+\begin{align}
+ \int_G F(ax)\,\mathrm d\mu(x)&=\int_G F(x)\,\mathrm d\mu(x),\label{b2:eq:I1-left-change}\\
+ \int_G F(xa)\,\mathrm d\mu(x)&=\Delta(a)^{-1}\int_G F(x)\,\mathrm d\mu(x),\label{b2:eq:I1-right-change}\\
+ \int_G F(x^{-1})\,\mathrm d\mu(x)&=\int_G F(x)\Delta(x)^{-1}\,\mathrm d\mu(x).\label{b2:eq:I1-inverse-change}
+\end{align}
+\end{proposition}
+\begin{proof}
+固定 \(a\)，\(E\mapsto\mu(Ea)\) 仍是左 Haar 测度，因左乘与右乘交换。Haar 唯一性给出常数 \(\Delta(a)>0\)。选一个正且有限测度的集合，由 \(\mu(Eab)=\Delta(b)\Delta(a)\mu(E)\) 得到乘法性，特别地 \(\Delta(e)=1\)、\(\Delta(a^{-1})=\Delta(a)^{-1}\)。前两条积分公式先对示性函数成立，再由简单函数逼近推广。
+
+取 \(h\in C_c(G)\)、\(h\ge0\)、\(\int h\,\mathrm d\mu=1\)，则 \(\Delta(a)^{-1}=\int h(xa)\,\mathrm d\mu(x)\)。当 \(a\) 限于 \(e\) 的一个紧邻域 \(V\) 时，所有被积函数的支集都包含于紧集 \((\operatorname{supp}h)V^{-1}\)。乘法连续性和紧集的有限覆盖说明 \(h(xa)\to h(x)\) 对 \(x\) 一致成立，因此积分趋于 \(1\)。乘法性把单位元处的连续性移到任意点。
+
+设 \(\nu(E)=\mu(E^{-1})\)，它是右 Haar 测度。测度 \(\lambda(E)=\int_E\Delta(x)^{-1}\,\mathrm d\mu(x)\) 也右不变，因为 \(x=ya\) 时，测度的因子 \(\Delta(a)\) 与权重的因子 \(\Delta(a)^{-1}\) 抵消；正连续权重还保持 Radon 性。把右不变测度通过取逆推回便得到左不变测度，所以左 Haar 唯一性也给出右 Haar 唯一性。因此 \(\nu=c\lambda\)、\(c>0\)，即
+\[
+ \int F(x^{-1})\,\mathrm d\mu(x)
+ =c\int F(x)\Delta(x)^{-1}\,\mathrm d\mu(x).
+\]
+将这一关系再用于 \(x\mapsto F(x^{-1})\)，得到 \(\int F\,\mathrm d\mu=c\int F(x^{-1})\Delta(x)^{-1}\,\mathrm d\mu(x)\)。对后一个积分使用原关系（将测试函数取为 \(x\mapsto F(x)\Delta(x)\)），便得 \(\int F\,\mathrm d\mu=c^2\int F\,\mathrm d\mu\)。取正积分的紧支撑函数即有 \(c=1\)，证明取逆公式。
+\end{proof}
+
+函数 \(\Delta\) 称为\term[mohanshu]{模函数}[modular function]。若 \(\Delta\equiv1\)，则称 \(G\) 为\term[danmoqun]{单模群}[unimodular group]。此时同一个 Haar 测度同时左右不变，且取逆也保持积分。交换群和离散群都是单模群；紧群也单模，因为 \(\Delta(G)\) 是乘法群 \((0,\infty)\) 的紧子群，而一个不等于 \(1\) 的正数的正、负整数幂不可能保持在紧集内。
+\symidx{\(\Delta\)：由 \(\mu(Ea)=\Delta(a)\mu(E)\) 规定的模函数}
+
+仿射群给出左右测度不同的具体例子。设 \(G=\{(a,b):a>0,\ b\in\mathbb R\}\)，把 \((a,b)\) 看成仿射变换 \(t\mapsto at+b\)。复合给出
+\[
+ (a,b)(c,d)=(ac,b+ad),\quad e=(1,0),\quad
+ (a,b)^{-1}=(a^{-1},-b/a).
+\]
+取通常拓扑。这是第二可数局部紧群。左乘 \((a_0,b_0)\) 的坐标换元为 \((a,b)\mapsto(a_0a,b_0+a_0b)\)，Jacobian 为 \(a_0^2\)，所以
+\[
+ \mathrm d\mu(a,b)=a^{-2}\,\mathrm da\,\mathrm db
+\]
+左不变。右乘 \((a_0,b_0)\) 则把 \((a,b)\) 变为 \((aa_0,b+ab_0)\)，Jacobian 为 \(a_0\)，权重变为 \((aa_0)^{-2}\)。因此
+\[
+ \Delta(a_0,b_0)=a_0^{-1},\quad
+ \mathrm d\nu(a,b)=a^{-1}\,\mathrm da\,\mathrm db
+\]
+分别是模函数和右 Haar 测度。缩放和平移的复合次序不同，积分时这种差异就表现为一个尺度因子。
 
 \subsection{Euclidean 空间、环面与离散群}
 \label{b2:subsec:I20103}
 
-待撰写。
+在 \(\mathbb R^d\) 上，Lebesgue 测度满足左 Haar 测度的全部条件。我们固定 \(\mathrm d\mu(x)=\mathrm dx\)，单位立方体的测度为 \(1\)。在 \(\mathbb Z^d\) 上固定计数测度，积分就是对格点求和。任意离散群上的计数测度也左右不变，因为左右乘法都是点集的排列；离散空间的紧集有限，所以它确实是 Radon 测度。
+
+对有限群 \(F\)，我们通常采用概率 Haar 测度
+\[
+ \int_F f\,\mathrm d\mu=\frac1{|F|}\sum_{x\in F}f(x).
+\]
+它与无限离散群的计数归一化不同。若把有限群也当作计数测度空间，定理仍成立，但 Fourier 变换的因子应相应调整。
+
+环面上采用概率 Haar 测度。对非负或在单位立方体上绝对可积的 \(\mathbb Z^d\) 周期 Borel 函数 \(f\)，规定
+\[
+ \int_{\mathbb T^d}f(t)\,\mathrm dt
+ =\int_{[0,1)^d}f(t)\,\mathrm dt.
+\]
+说明平移不变性只需先看一维。将平移量按整数取余后设为 \(s\in[0,1)\)，则
+\[
+ \int_0^1f(t+s)\,\mathrm dt
+ =\int_s^1f(u)\,\mathrm du+\int_1^{1+s}f(u)\,\mathrm du
+ =\int_s^1f(u)\,\mathrm du+\int_0^sf(u)\,\mathrm du.
+\]
+最后一步使用周期性；高维逐坐标应用这一等式和 Fubini 定理即可。也可以把该测度理解成闭立方体上 Lebesgue 测度在商映射下的推前；立方体边界为零测集，故得到同一个概率 Radon 测度。
+
+紧群 \(G\) 的 Haar 测度总质量正且有限，所以总能且只能用一种倍数归一化为 \(\mu(G)=1\)。对非紧群，这个办法通常失效。以 \(\mathbb R\) 为例，若 \([0,1)\) 有质量 \(c>0\)，它的整数平移彼此不交，总质量便为无穷。这也解释了为什么不能同时要求实线积分平移不变、非零而且总质量为 \(1\)。
+
+在 \((0,\infty)\) 的乘法群上，取 \(\mathrm d\mu(t)=\mathrm dt/t\)。换元 \(u=at\) 给出 \(\mathrm du/u=\mathrm dt/t\)，所以该测度不随乘法平移改变。对数坐标 \(x=\log t\) 恰把它变成 \(\mathrm dx\)。区间 \([1,2]\) 与 \([10,20]\) 的 Haar 测度均为 \(\log2\)：这种积分衡量相对尺度，而不是通常的长度。后面它的基本振荡将是 \(t^{2\pi\mathrm i\xi}\)，即对数坐标中的普通指数函数。
+
+若 \(G_1,G_2\) 为第二可数局部紧群，配左 Haar 测度 \(\mu_1,\mu_2\)，则乘积群上的 \(\mu_1\otimes\mu_2\) 也是左 Haar 测度。平移不变性先在矩形集上验证，再由测度唯一性推广；局部有限性与正则性来自乘积测度的相应性质。于是 \(\mathbb R^a\times\mathbb T^b\times\mathbb Z^c\times F\) 上的积分，可按连续变量积分、周期变量平均、格点求和和有限群平均逐项进行。只要写明这些因子，后续的 Fourier 常数便能逐项核对。

@@ -4,22 +4,28 @@
 \BookChapterNumber{b2:ch:approximation}
 
 \begin{chapterabstract}
-用多项式逼近连续函数，既要判断误差能否趋于零，也要研究给定次数下能达到多小的误差。本章按构造性逼近、一致最佳逼近与定量逼近组织内容。目前已给出连续模的定义，以及一元和多元 Bernstein 逼近的陈述与证明；逼近空间、Chebyshev 理论、Jackson 定理、逆定理与高阶逼近部分尚待撰写，本章尚未完成。
+用多项式逼近连续函数，既要判断误差能否趋于零，也要研究给定次数下能达到多小的误差。本章先以 Bernstein 多项式给出可计算的一致逼近，再用 Chebyshev 交错定理刻画实区间上的最佳多项式。周期卷积的正核构造导出 Jackson 直接定理；三角多项式的导数估计则反过来从逼近速度辨认函数的光滑性。最后讨论高阶差分、整数光滑阶的限制和区间端点的特殊尺度，说明几种看似相近的逼近结论为何不能混用。
 \end{chapterabstract}
 
 \begin{learninggoals}
 \begin{itemize}
 \item\label{b2:item:approximation-goal-modulus}用连续模统一控制紧集上连续函数的局部变化。
 \item\label{b2:item:approximation-goal-bernstein}掌握一元与多元 Bernstein 多项式的构造，以非负权重和二阶矩估计证明一致逼近。
-\item\label{b2:item:approximation-goal-planned}待后续各节写成后，比较一致最佳逼近与正交最佳逼近，并研究光滑性与逼近速度的关系。
+\item\label{b2:item:approximation-goal-planned}证明实区间最佳多项式的存在唯一性，用交错极值检验最佳性，并区别一致范数与平方范数的优化目标。
+\item\label{b2:item:approximation-goal-jackson}从正核的次数、归一化和一阶矩推出 Jackson 估计，解释构造性逼近与最佳逼近速度的区别。
+\item\label{b2:item:approximation-goal-inverse}用 Bernstein 导数估计和二进尺度分解证明周期 Hölder 刻画，辨认整数阶与区间端点的限制。
 \end{itemize}
 \end{learninggoals}
 
-现有正文只需紧集上一致连续性和二项式公式。\secref{b2:sec:approximation-spaces-errors}先定义连续模，\secref{b2:sec:approximation-bernstein}随后给出可直接计算的逼近多项式。附录 B 的 Legendre 正交基与球谐展开将调用这里的一致逼近结论。
+用有限个数描述一个连续函数，最直接的办法是在一些点上取样。怎样把这些取样值组合成一个多项式，使它在取样点之间也接近原函数？Bernstein 构造把附近的取样值赋予较大权重，提供了一种直观的做法。得到近似之后，还可以继续追问：同样的次数，是否能把最大误差降得更低？这一问题把注意力引向误差最大的那些点，最终产生 Chebyshev 的交错判据。
 
 \ProseParagraphBreak
 
-一般 Stone--Weierstrass 定理已在第一卷第29.2节证明，可按需回读，作为构造性逼近之外的拓展阅读。\secref{b2:sec:approximation-chebyshev}至\secref{b2:sec:approximation-higher-order}目前保留写作骨架，其中高阶与端点部分列为选读。
+增加多项式的次数，通常会使近似更精确；但误差究竟下降多快，还取决于原函数怎样变化。平滑的曲线是否比带尖点的曲线更容易逼近？如果已经知道误差下降很快，又能从中读出函数的哪些性质？Jackson 定理与逆定理分别回答这两个方向的问题。章末再考察高阶变化，以及闭区间端点附近与内部不同的逼近尺度。
+
+\ProseParagraphBreak
+
+Elias M. Stein 与 Rami Shakarchi 的《Fourier Analysis: An Introduction》\cite{Stein2003Fourier}可用于回顾前章的周期分析背景；Antoni Zygmund 的《Trigonometric Series》\cite{Zygmund2002Trigonometric}可作为继续研究三角级数与函数光滑性的进阶读物。若想了解区间之外的连续函数逼近，可另读第一卷第29.2节的一般 Stone--Weierstrass 定理。
 
 \input{Part02/Chapter04/Section0401}
 \input{Part02/Chapter04/Section0402}
@@ -29,5 +35,178 @@
 \input{Part02/Chapter04/Section0406}
 
 \begin{chaptersummary}
-目前建立的逼近工具是连续模与 Bernstein 多项式。非负权重的总和为一，二阶矩又随次数增大而趋于零，因此可把误差分成邻近取样点的振幅与远处权重两部分，得到一元和多元连续函数的多项式一致逼近。其余各节仍待撰写；本章尚未形成完整的最佳逼近与定量逼近理论。
+Bernstein 多项式通过离散正权重把连续函数变为可计算的多项式，二阶矩控制一致误差；Chebyshev 交错定理则通过误差的等幅换号判定实区间上的最佳性，并给出唯一性。两者分别解决“怎样构造”和“怎样判断最优”，不能把一个具体算子的误差自动视为最佳误差。
+
+周期问题中，平方 Fejér 核同时保留有限次数、非负性与单位质量，又改善尾部衰减，给出 Jackson 估计。反向推导用 Bernstein 导数估计控制每个频率尺度的变化，得到 \(0<\alpha<1\) 时 \(\mathcal E_n(f)=O(n^{-\alpha})\) 与 \(\alpha\)-Hölder 连续性的等价。高阶差分继续消去低阶变化，但整数光滑阶须另作判断；余弦换元又在区间端点改变距离尺度。这些限制都是结论的一部分，应当与定理一起记住。
 \end{chaptersummary}
+
+\BookExercises
+
+% 来源：自拟。目标：以子空间反例区别有限维最佳存在与多项式空间的唯一性。
+\begin{exercise}[子空间中的非唯一性]\label{b2:ex:approximation-nonunique}
+在 \(C([-1,1];\mathbb R)\) 中取 \(V=\{ax^2:a\in\mathbb R\}\)。求常函数 \(1\) 到 \(V\) 的一致最佳误差及全部最佳逼近。解释这为什么不与 Chebyshev 交错定理及其唯一性推论矛盾。
+\end{exercise}
+\begin{solution}
+所有 \(ax^2\) 都在 \(x=0\) 取零，所以误差至少为 \(1\)。令 \(t=x^2\in[0,1]\)，仿射函数 \(1-at\) 的绝对值在端点达到最大，因而
+\[
+ \|1-ax^2\|_\infty=\max\{1,|1-a|\}.
+\]
+最小值为 \(1\)，且恰好 \(a\in[0,2]\) 时取到。\(V\) 虽然有限维，却不是全部次数不超过某个整数的多项式空间。这里的非零基函数 \(x^2\) 在区间中有零点，不能用“一维空间中非零函数无零点”的性质完成交错唯一性论证。有限维紧性给出最优者存在，唯一性还需要空间的额外结构。
+\end{solution}
+
+% 来源：自拟。目标：同一目标函数的二次一致逼近与正交逼近比较。
+\begin{exercise}[绝对值函数的两种二次逼近]\label{b2:ex:approximation-absolute-value}
+求 \(f(x)=|x|\) 在 \([-1,1]\) 上的最佳一致二次逼近，以及对 Lebesgue 测度的最佳 \(L^2\) 二次逼近。分别计算两者的一致误差。
+\end{exercise}
+\begin{solution}
+先取 \(p(x)=x^2+1/8\)。在 \(0\leq x\leq1\) 上，误差为 \(x-x^2-1/8\)，最小值 \(-1/8\) 在 \(0,1\) 取到，最大值 \(1/8\) 在 \(1/2\) 取到。误差是偶函数，于是它在
+\[
+ -1,-1/2,0,1/2,1
+\]
+依次取 \(-1/8,1/8,-1/8,1/8,-1/8\)。任取其中连续的四点即满足二次交错判据。因此 \(p\) 是唯一的最佳一致逼近，误差为 \(1/8\)。
+
+对 \(L^2\) 问题，奇偶正交性使最佳逼近的一次项系数为零。写成 \(q(x)=a x^2+c\)，误差与 \(1,x^2\) 正交给出
+\[
+ 2c+\frac23a=1,\quad \frac23c+\frac25a=\frac12.
+\]
+解得 \(a=15/16,c=3/16\)。它的 \(L^2\) 最佳性由正交投影定理保证。\(0\leq x\leq1\) 上误差 \(x-15x^2/16-3/16\) 的内部最大值在 \(x=8/15\) 取到，为 \(19/240\)；两个端点的值分别为 \(-3/16,-1/8\)。故 \(\|f-q\|_\infty=3/16>1/8\)。减小平方平均误差会允许某些点的误差更大。
+\end{solution}
+
+% 来源：自拟。目标：固定次数反复应用正算子，与次数趋于无穷的逼近相区分。
+\begin{exercise}[反复应用 Bernstein 算子]\label{b2:ex:approximation-bernstein-iterates}
+固定整数 \(n\geq2\)，以 \(B_n^k\) 表示将 \([0,1]\) 上的 Bernstein 算子复合 \(k\) 次。对任意 \(f\in C([0,1];\mathbb R)\)，证明
+\[
+ B_n^k f\longrightarrow (1-x)f(0)+xf(1)
+\]
+一致成立。提示：利用 \(u(x)=x(1-x)\) 及 \(B_nu=(1-1/n)u\)。
+\end{exercise}
+\begin{solution}
+令 \(\ell(x)=(1-x)f(0)+xf(1)\)、\(g=f-\ell\)，则 \(g(0)=g(1)=0\)，且 \(B_n\ell=\ell\)。给定 \(\varepsilon>0\)，由端点连续性，在两端各一小段上 \(|g|\leq\varepsilon\)；剩下的紧区间上 \(u\) 有正下界。因而存在有限的 \(C_\varepsilon\geq0\)，使整个区间上
+\[
+ |g(x)|\leq\varepsilon+C_\varepsilon u(x).
+\]
+二阶矩计算给出 \(B_n(x^2)=x^2+x(1-x)/n\)，所以提示中的特征关系成立。正性、保常数及逐次应用产生
+\[
+ |B_n^k g|\leq B_n^k|g|
+ \leq\varepsilon+C_\varepsilon(1-1/n)^ku.
+\]
+先令 \(k\to\infty\)，再令 \(\varepsilon\downarrow0\)，便得一致收敛。固定采样次数反复平均会逐渐抹去内部形状，只留下端点仿射插值；这与 \(n\to\infty\) 时 \(B_nf\to f\) 是两个不同的极限。
+\end{solution}
+
+% 来源：自拟。目标：Fourier系数作逼近下界，构造任意幂次的实际最佳误差。
+\begin{exercise}[可精确判断量级的逼近率]\label{b2:ex:approximation-lacunary-rate}
+证明：对 \(f\in C(\mathbb T;\mathbb C)\) 及 \(|k|>n\)，有 \(\mathcal E_n(f)\geq|\widehat f(k)|\)。再对任意 \(\alpha>0\)，定义
+\[
+ f_\alpha(x)=\sum_{j=1}^\infty2^{-j\alpha}\cos(2\pi2^jx).
+\]
+证明它连续，且存在只依赖 \(\alpha\) 的 \(c_\alpha,C_\alpha>0\)，使 \(c_\alpha n^{-\alpha}\leq\mathcal E_n(f_\alpha)\leq C_\alpha n^{-\alpha}\) 对整数 \(n\geq1\) 成立。
+\end{exercise}
+\begin{solution}
+对任意 \(p\in\mathcal T_n\)，高于次数的系数为零，所以
+\[
+ |\widehat f(k)|=|\widehat{f-p}(k)|
+ \leq\int_{\mathbb T}|f-p|\leq\|f-p\|_\infty.
+\]
+取下确界得到下界工具。定义 \(f_\alpha\) 的级数由收敛的正项几何级数控制，因而一致收敛，且可以逐项计算 Fourier 系数。
+
+取 \(N\geq0\) 使 \(2^N\leq n<2^{N+1}\)。前 \(N\) 项是可容许的逼近，尾和至多
+\[
+ \frac{2^{-(N+1)\alpha}}{1-2^{-\alpha}}\leq C_\alpha n^{-\alpha}.
+\]
+另一方面，在频率 \(2^{N+1}>n\) 处，系数恰好为 \(2^{-1-(N+1)\alpha}\)。由于 \(n\geq2^N\)，它至少为 \(2^{-1-\alpha}n^{-\alpha}\)，给出下界。\(N=0\) 时前零项理解为零函数，论证也成立。这里下界检查了任何次数不超过 \(n\) 的候选者，而不只检查某一种截断算法。
+\end{solution}
+
+% 来源：自拟。目标：从Lagrange插值构造最佳误差的有限节点证书。
+\begin{exercise}[节点值给出的误差下界]\label{b2:ex:approximation-dual-certificate}
+设 \(a\leq x_0<\cdots<x_{n+1}\leq b\)、\(a<b\)，其中 \(n\geq0\) 为整数。令
+\[
+ w_j=\frac1{\prod_{\ell\ne j}|x_j-x_\ell|},\quad
+ \lambda_j=\frac{w_j}{\sum_{\ell=0}^{n+1}w_\ell},\quad
+ L(f)=\sum_{j=0}^{n+1}(-1)^{n+1-j}\lambda_j f(x_j).
+\]
+证明对任意 \(f\in C([a,b];\mathbb R)\)，有 \(E_n(f)\geq|L(f)|\)。说明当这些点是某个最佳误差的交错极值点时，为什么下界取等。
+\end{exercise}
+\begin{solution}
+对 \(p\in\mathcal P_n\)，用 \(n+2\) 个节点写 Lagrange 插值：
+\[
+ p(x)=\sum_{j=0}^{n+1}p(x_j)
+ \frac{\prod_{\ell\ne j}(x-x_\ell)}{\prod_{\ell\ne j}(x_j-x_\ell)}.
+\]
+右侧与左侧之差次数至多为 \(n+1\)，又在全部 \(n+2\) 个节点为零，故恒为零。比较 \(x^{n+1}\) 的系数得到
+\[
+ \sum_{j=0}^{n+1}\frac{p(x_j)}{\prod_{\ell\ne j}(x_j-x_\ell)}=0.
+\]
+分母的符号为 \((-1)^{n+1-j}\)，所以 \(L(p)=0\)。又因 \(\lambda_j>0\)、\(\sum_j\lambda_j=1\)，
+\[
+ |L(f)|=|L(f-p)|\leq\sum_j\lambda_j|f(x_j)-p(x_j)|
+ \leq\|f-p\|_\infty.
+\]
+取下确界即可。若 \(f(x_j)-p_*(x_j)=\varepsilon(-1)^jE_n(f)\)，则所有带符号的求和项都具有同一符号，得 \(L(f)=\varepsilon(-1)^{n+1}E_n(f)\)。因此有限个取样值便能证明任何候选都不可能优于该误差。
+\end{solution}
+
+% 来源：自拟。目标：最佳一致误差经Parseval与分块Cauchy--Schwarz控制Fourier绝对收敛。
+\begin{exercise}[逼近率与 Fourier 绝对收敛]\label{b2:ex:approximation-fourier-absolute}
+设 \(f\in C(\mathbb T;\mathbb C)\)，且
+\[
+ \sum_{j=0}^\infty 2^{j/2}\mathcal E_{2^j}(f)<\infty.
+\]
+证明 \(\sum_{k\in\mathbb Z}|\widehat f(k)|<\infty\)，并证明 Fourier 级数一致收敛到 \(f\)。由此推出：若 \(f\) 是 \(\alpha\)-Hölder 连续函数，\(1/2<\alpha<1\)，则其 Fourier 级数绝对且一致收敛。
+\end{exercise}
+\begin{solution}
+选 \(p_j\in\mathcal T_{2^j}\) 为一致最佳逼近。对块 \(A_j=\{k:2^j<|k|\leq2^{j+1}\}\)，\(p_j\) 的相应系数为零。Bessel 不等式与圆周测度为一给出
+\[
+ \sum_{k\in A_j}|\widehat f(k)|^2
+ \leq\|f-p_j\|_2^2\leq\mathcal E_{2^j}(f)^2.
+\]
+该块有 \(2^{j+1}\) 个整数，因此 Cauchy--Schwarz 给出
+\[
+ \sum_{k\in A_j}|\widehat f(k)|\leq2^{(j+1)/2}\mathcal E_{2^j}(f).
+\]
+对块求和，再加上三个低频 \(k=0,\pm1\)，即得绝对收敛。所得级数一致收敛到某个连续函数 \(g\)，逐项积分说明其 Fourier 系数与 \(f\) 相同。\cref{b2:cor:02-uniqueness}给出几乎处处相等，再由连续性得到处处相等。
+
+若 \(f\) 是所述 Hölder 函数，周期 Jackson 定理给出 \(\mathcal E_{2^j}(f)\leq C2^{-j\alpha}\)，所需级数由 \(\sum_j2^{-j(\alpha-1/2)}\) 控制。该论证在 \(\alpha=1/2\) 时不再给出收敛，因而不能把本题的严格不等号直接删去。
+\end{solution}
+
+% 来源：自拟。目标：可求和的导数增量恢复经典可微性，不依赖形式逐项微分。
+\begin{optionalexercise}[由更快逼近恢复导数]\label{b2:ex:approximation-derivative-recovery}
+设 \(f\in C(\mathbb T;\mathbb C)\)，且 \(\sum_{j=0}^\infty2^j\mathcal E_{2^j}(f)<\infty\)。令 \(p_j\) 为次数不超过 \(2^j\) 的一致最佳逼近。证明 \(f\in C^1(\mathbb T;\mathbb C)\)，且 \(p_j'\to f'\) 一致成立。若进一步 \(\mathcal E_n(f)\leq A n^{-\alpha}\)、\(1<\alpha<2\)，证明 \(f'\) 为 \((\alpha-1)\)-Hölder 连续。
+\end{optionalexercise}
+\begin{solution}
+最佳误差随次数下降，故
+\[
+ \|p_{j+1}-p_j\|_\infty\leq2\mathcal E_{2^j}(f).
+\]
+Bernstein 导数估计给出 \(\|p_{j+1}'-p_j'\|_\infty\leq C2^j\mathcal E_{2^j}(f)\)。假设使这些导数增量可求和，所以 \(p_j'\) 一致趋于一个连续周期函数 \(g\)。另一方面，Fejér 一致逼近说明 \(\mathcal E_n(f)\to0\)，从而 \(p_j\to f\) 一致。对 \(x\in[0,1]\)，在
+\[
+ p_j(x)-p_j(0)=\int_0^xp_j'(t)\,\mathrm dt
+\]
+中取极限，得到 \(f(x)-f(0)=\int_0^xg(t)\,\mathrm dt\)。因此 \(f'=g\)，端点也按周期延拓相容。这个积分论证才使极限可以求导。
+
+在幂次假设下，对导数增量尾和估计得
+\[
+ \|f'-p_J'\|_\infty\leq C_\alpha A2^{-J(\alpha-1)}.
+\]
+若 \(2^J\leq n<2^{J+1}\)，则 \(p_J'\in\mathcal T_n\)，故 \(\mathcal E_n(f')\leq C_\alpha A n^{-(\alpha-1)}\)。由于 \(0<\alpha-1<1\)，对连续函数 \(f'\) 使用主线的周期逆定理，得到所需 Hölder 性。这里先建立导数存在，随后才把逆定理应用于导数。
+\end{solution}
+
+% 来源：自拟。目标：把端点导数n²与可见的极值点距离和缩放极限联系起来。
+\begin{optionalexercise}[端点附近的振荡尺度]\label{b2:ex:approximation-endpoint-scale}
+对 Chebyshev 多项式 \(T_n\)，证明从 \(x=1\) 到相邻极值点的距离为 \(1-\cos(\pi/n)\sim\pi^2/(2n^2)\)。再证明：对任意固定 \(S>0\)，当 \(n\) 足够大时，
+\[
+ T_n(1-s/n^2)\longrightarrow\cos\sqrt{2s}
+\]
+在 \(0\leq s\leq S\) 上一致成立，并解释为何端点的自然尺度是 \(n^{-2}\)。
+\end{optionalexercise}
+\begin{solution}
+恒等式 \(T_n(\cos\theta)=\cos(n\theta)\) 给出相邻极值点 \(1\) 和 \(\cos(\pi/n)\)，两点函数值从 \(1\) 变到 \(-1\)。利用 \(1-\cos u=2\sin^2(u/2)\) 即得距离渐近式。
+
+在 \(0\leq s\leq S\) 且 \(n\) 足够大时，令 \(u=\sqrt{s/2}/n\leq1/2\)。由半角公式，
+\[
+ n\arccos(1-s/n^2)=2n\arcsin u.
+\]
+由 \(\arcsin u-u=\int_0^u((1-t^2)^{-1/2}-1)\,\mathrm dt\)，且括号在 \([0,1/2]\) 上至多为 \(Ct^2\)，可得
+\[
+ \bigl|2n\arcsin u-\sqrt{2s}\bigr|\leq C S^{3/2}/n^2.
+\]
+余弦函数是 Lipschitz 的，于是得到一致收敛。次数虽只有 \(n\)，靠近端点时却能在长为 \(n^{-2}\) 的区间内产生固定大小的变化；这与 \(T_n'(1)=n^2\) 一致，也解释了为何不能把内部的 \(n^{-1}\) 尺度直接移到端点。
+\end{solution}

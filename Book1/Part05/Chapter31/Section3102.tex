@@ -2,24 +2,346 @@
 \section{条件期望的基本性质}
 \label{b1:sec:3102}
 
-待撰写。
+条件期望的定义看似只是一族积分等式，却足以推出后面鞅论所需的大部分运算规则。证明的共同方法很明确：先检查候选表达式对所给信息可测并且可积，再在每个允许的事件上比较积分，最后使用唯一性。这个方法比把条件符号当作形式上的分母可靠，也会提醒我们哪些可积性与信息包含条件不能省略。
 
 \subsection{线性、正性与积分恒等式}
 \label{b1:subsec:310201}
 
-待撰写。
+先把允许的测试函数从示性函数扩大到所有有界可测函数。这样做的意义是：一个可测权重代表只利用现有信息作出的加权，条件期望仍应保留这种加权后的总平均。
+
+\begin{proposition}[有界测试函数刻画]\label{b1:prop:conditional-expectation-tests-31}
+设 \((\Omega,\mathcal F,\mathbb P)\) 是概率空间，\(\mathcal G\subseteq\mathcal F\) 是子 \(\sigma\)-代数，\(X\in L^1(\mathbb P;\mathbb K)\)，其中 \(\mathbb K=\mathbb R\) 或 \(\mathbb C\)。一个 \(\mathcal G\)-可测可积函数 \(Y\) 是 \(\mathbb E(X\mid\mathcal G)\) 的版本，当且仅当对每个有界 \(\mathcal G\)-可测 \(\mathbb K\) 值函数 \(H\)，都有
+\begin{equation}\label{b1:eq:conditional-expectation-bounded-test-31}
+ \mathbb E(HY)=\mathbb E(HX).
+\end{equation}
+特别地，\(\mathbb E\bigl(\mathbb E(X\mid\mathcal G)\bigr)=\mathbb E X\)。
+\end{proposition}
+\begin{proof}
+必要性先对 \(H=\mathbf1_A\)、\(A\in\mathcal G\) 由定义得到，再由线性性得到简单函数情形。若 \(H\) 有界，对其实部、虚部分别作有限网格逼近，可取 \(\mathcal G\)-简单函数 \(H_n\) 一致收敛到 \(H\)。于是
+\[
+ \bigl|\mathbb E((H_n-H)X)\bigr|
+ \leq\|H_n-H\|_\infty\cdot\mathbb E|X|\longrightarrow0,
+\]
+对 \(Y\) 也有同样估计，故简单函数的积分等式传到极限。充分性取 \(H=\mathbf1_A\) 即得定义中的测试；最后取 \(H=1\)。
+\end{proof}
+
+\begin{proposition}[线性、正性与已知信息]\label{b1:prop:conditional-expectation-properties-31}
+设 \((\Omega,\mathcal F,\mathbb P)\) 是概率空间，\(\mathcal G\subseteq\mathcal F\) 是子 \(\sigma\)-代数。取 \(\mathbb K=\mathbb R\) 或 \(\mathbb C\)，所有等式与不等式均按几乎必然意义理解。
+\begin{enumerate}
+ \item\label{b1:item:ce-linearity-31}若 \(X,Y\in L^1(\mathbb P;\mathbb K)\)、\(a,b\in\mathbb K\)，则
+ \[
+  \mathbb E(aX+bY\mid\mathcal G)
+  =a\mathbb E(X\mid\mathcal G)+b\mathbb E(Y\mid\mathcal G).
+ \]
+ \item\label{b1:item:ce-order-31}若实可积随机变量 \(X,Y\) 满足 \(X\leq Y\) 几乎必然，则
+ \(\mathbb E(X\mid\mathcal G)\leq\mathbb E(Y\mid\mathcal G)\)。特别地，\(X\geq0\) 时其条件期望非负。
+ \item\label{b1:item:ce-known-31}若 \(X\in L^1(\mathbb P;\mathbb K)\) 有 \(\mathcal G\)-可测代表，则 \(\mathbb E(X\mid\mathcal G)=X\)。因此常数保持不变，且
+ \[
+  \mathbb E(X\mid\mathcal F)=X,\quad
+  \mathbb E(X\mid\{\varnothing,\Omega\})=\mathbb E X.
+ \]
+ \item\label{b1:item:ce-modulus-31}若 \(X\in L^1(\mathbb P;\mathbb K)\)，则
+ \begin{equation}\label{b1:eq:conditional-expectation-modulus-31}
+  |\mathbb E(X\mid\mathcal G)|
+  \leq\mathbb E(|X|\mid\mathcal G).
+ \end{equation}
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+第一项中右端对 \(\mathcal G\) 可测且可积；对每个 \(A\in\mathcal G\)，其积分等于 \(\int_A(aX+bY)\,\mathrm d\mathbb P\)，故由唯一性等于左端。
+
+证明第二项只需处理 \(X\geq0\)。设 \(U=\mathbb E(X\mid\mathcal G)\)，对 \(A_k=\{U\leq-1/k\}\in\mathcal G\) 有
+\[
+ 0\leq\int_{A_k}X\,\mathrm d\mathbb P
+ =\int_{A_k}U\,\mathrm d\mathbb P
+ \leq-\frac1k\cdot\mathbb P(A_k).
+\]
+所以 \(\mathbb P(A_k)=0\)，对 \(k\) 取可数并可知 \(U\geq0\) 几乎必然。再对 \(Y-X\) 应用此结论并使用线性性。
+
+第三项中 \(X\) 自身符合定义，常数的情形包含在内。对平凡 \(\sigma\)-代数，常数 \(\mathbb E X\) 对全集与空集的积分测试均成立，因而得到所写公式。
+
+实值的第四项来自 \(-|X|\leq X\leq|X|\) 及正性。复值情形不能对复数使用大小次序。取 \([0,2\pi]\) 中的一个可数稠密集 \(D\)，记 \(U=\mathbb E(X\mid\mathcal G)\)、\(V=\mathbb E(|X|\mid\mathcal G)\)。由实部的定义、线性性与正性，对每个 \(\theta\in D\)，
+\[
+ \operatorname{Re}(e^{-\mathrm i\theta}U)
+ =\mathbb E\bigl(\operatorname{Re}(e^{-\mathrm i\theta}X)\mid\mathcal G\bigr)
+ \leq V
+ \quad\text{a.s.}
+\]
+去掉这些不等式的可数个例外零集后，对 \(\theta\in D\) 取上确界。对任意复数 \(z\)，连续性给出
+\(\sup_{\theta\in D}\operatorname{Re}(e^{-\mathrm i\theta}z)=|z|\)，从而得到 \(|U|\leq V\)。
+\end{proof}
+
+这里已经可以看到一次平均不会增加绝对误差的总量：对\eqref{b1:eq:conditional-expectation-modulus-31}取期望，得到
+\[
+ \mathbb E|\mathbb E(X\mid\mathcal G)|\leq\mathbb E|X|.
+\]
+对两个变量之差使用同一估计，便有
+\(\|\mathbb E(X\mid\mathcal G)-\mathbb E(Y\mid\mathcal G)\|_1\leq\|X-Y\|_1\)。因此 \(L^1\) 逼近可以通过条件期望。后面推广有界因子的公式时，还会具体找出控制乘积的可积函数，以验证相应的极限步骤。
 
 \subsection{塔性质与可测因子的提出}
 \label{b1:subsec:310202}
 
-待撰写。
+如果先获得较多信息，再退回到较少信息，最终预测只应取决于留下的那部分信息。下面的\term[ta-xingzhi]{塔性质}[tower property]准确表达了这一点。
+
+\begin{proposition}[塔性质]\label{b1:prop:conditional-expectation-tower-31}
+设 \((\Omega,\mathcal F,\mathbb P)\) 是概率空间，\(\mathcal H\subseteq\mathcal G\subseteq\mathcal F\) 是子 \(\sigma\)-代数，\(X\in L^1(\mathbb P;\mathbb K)\)，其中 \(\mathbb K=\mathbb R\) 或 \(\mathbb C\)。则
+\[
+ \begin{aligned}
+  \mathbb E\bigl(\mathbb E(X\mid\mathcal G)\mid\mathcal H\bigr)
+    &=\mathbb E(X\mid\mathcal H),\\
+  \mathbb E\bigl(\mathbb E(X\mid\mathcal H)\mid\mathcal G\bigr)
+    &=\mathbb E(X\mid\mathcal H)
+ \end{aligned}
+ \quad\text{a.s.}
+\]
+\end{proposition}
+\begin{proof}
+令 \(U=\mathbb E(X\mid\mathcal G)\)、\(V=\mathbb E(U\mid\mathcal H)\)。对每个 \(A\in\mathcal H\)，由于它也属于 \(\mathcal G\)，有
+\[
+ \int_A V\,\mathrm d\mathbb P
+ =\int_A U\,\mathrm d\mathbb P
+ =\int_A X\,\mathrm d\mathbb P.
+\]
+\(V\) 对 \(\mathcal H\) 可测且可积，所以它是 \(X\) 关于 \(\mathcal H\) 的条件期望。第二个等式则因为 \(\mathbb E(X\mid\mathcal H)\) 已对 \(\mathcal H\) 可测，因而对更大的 \(\mathcal G\) 可测，再作条件期望保持不变。
+\end{proof}
+
+两个等式的理由不同：第一个重新平均，第二个是一个已经可测的量不再改变。两者都要求信息嵌套。若 \(\Omega=\{1,2,3\}\) 等概率，\(\mathcal G\) 由分割 \(\{1,2\},\{3\}\) 生成，\(\mathcal H\) 由 \(\{1\},\{2,3\}\) 生成，令 \(X=\mathbf1_{\{1\}}\)，则依次按三点列出函数值有
+\[
+ \begin{aligned}
+  \mathbb E(X\mid\mathcal G)&=(1/2,1/2,0),\\
+  \mathbb E\bigl(\mathbb E(X\mid\mathcal G)\mid\mathcal H\bigr)
+  &=(1/2,1/4,1/4),
+ \end{aligned}
+\]
+而 \(\mathbb E(X\mid\mathcal H)=X=(1,0,0)\)。不相包含的信息不能套用塔性质。
+
+\ProseParagraphBreak
+
+另一个常用规则是把已经知道的因子提出平均号。可测性保证因子属于已知信息，可积性保证乘积的平均确有定义；这两类要求承担不同职责。
+
+\begin{proposition}[可测因子的提出]\label{b1:prop:conditional-expectation-pullout-31}
+设 \((\Omega,\mathcal F,\mathbb P)\) 是概率空间，\(\mathcal G\subseteq\mathcal F\) 是子 \(\sigma\)-代数，\(\mathbb K=\mathbb R\) 或 \(\mathbb C\)。设 \(X\in L^1(\mathbb P;\mathbb K)\)，\(H\) 是有限值 \(\mathcal G\)-可测 \(\mathbb K\) 值函数。如果 \(HX\in L^1(\mathbb P)\)，则 \(H\mathbb E(X\mid\mathcal G)\) 可积，并且
+\begin{equation}\label{b1:eq:conditional-expectation-pullout-31}
+ \mathbb E(HX\mid\mathcal G)=H\mathbb E(X\mid\mathcal G)
+ \quad\text{a.s.}
+\end{equation}
+特别地，\(H\) 有界时，乘积可积性自动满足。
+\end{proposition}
+\begin{proof}
+先设 \(H\) 有界，记 \(U=\mathbb E(X\mid\mathcal G)\)。\(HU\) 可测可积，对 \(A\in\mathcal G\) 应用有界测试函数刻画，测试函数取 \(H\cdot\mathbf1_A\)，得到
+\[
+ \int_A HU\,\mathrm d\mathbb P
+ =\mathbb E\bigl((H\cdot\mathbf1_A)X\bigr)
+ =\int_A HX\,\mathrm d\mathbb P.
+\]
+唯一性给出有界情形。
+
+现设 \(H\) 不一定有界。先证明目标乘积可积，避免在尚无定义的积分上取极限。令 \(V=\mathbb E(|X|\mid\mathcal G)\geq0\)，对有界的非负因子 \(|H|\wedge n\)，前一步及期望保持性质给出
+\[
+ \mathbb E\bigl((|H|\wedge n)V\bigr)
+ =\mathbb E\bigl((|H|\wedge n)|X|\bigr).
+\]
+两边非负并随 \(n\) 递增，单调收敛说明
+\[
+ \mathbb E(|H|\cdot V)=\mathbb E(|H|\cdot|X|)
+ =\mathbb E|HX|<\infty.
+\]
+由于 \(|U|\leq V\)，得到 \(HU\) 可积。再取
+\(H_n=H\cdot\mathbf1_{\{|H|\leq n\}}\)。有界情形给出
+\(\int_A H_nU\,\mathrm d\mathbb P=\int_A H_nX\,\mathrm d\mathbb P\)。两边的被积函数分别由可积函数 \(|H|\cdot V\)、\(|HX|\) 控制，且逐点趋于相应乘积。由\cref{b1:thm:dominated-convergence}对每个 \(A\) 取极限，得到 \(HU\) 的积分测试，故公式成立。
+\end{proof}
+
+这个版本允许两个 \(L^2\) 变量相乘，只要其中被提出的一个对 \(\mathcal G\) 可测：Hölder 不等式保证乘积属于 \(L^1\)。但“两个因子都属于 \(L^1\)”本身不够。在 \((0,1)\) 的 Lebesgue 概率空间上，\(X(t)=H(t)=t^{-1/2}\) 都可积，乘积 \(t^{-1}\) 却不可积。此时不能把本命题当作 \(L^1\) 条件期望的运算公式使用。
+
+\begin{proposition}[独立信息的条件期望]\label{b1:prop:conditional-expectation-independence-31}
+设 \((\Omega,\mathcal F,\mathbb P)\) 是概率空间，\(\mathcal G\subseteq\mathcal F\) 是子 \(\sigma\)-代数，\(X\in L^1(\mathbb P;\mathbb K)\)，其中 \(\mathbb K=\mathbb R\) 或 \(\mathbb C\)。若 \(\sigma(X)\) 与 \(\mathcal G\) 独立，即
+\[
+ \mathbb P(A\cap B)=\mathbb P(A)\cdot\mathbb P(B)
+ \quad(A\in\sigma(X),\ B\in\mathcal G),
+\]
+则 \(\mathbb E(X\mid\mathcal G)=\mathbb E X\) 几乎必然。
+\end{proposition}
+\begin{proof}
+固定 \(B\in\mathcal G\)，\(X\) 与 \(\mathbf1_B\) 独立且各自可积。\cref{b1:prop:30-independent-expectations}给出
+\[
+ \int_B X\,\mathrm d\mathbb P
+ =\mathbb E(X\cdot\mathbf1_B)
+ =\mathbb E X\cdot\mathbb P(B)
+ =\int_B\mathbb E X\,\mathrm d\mathbb P.
+\]
+常数 \(\mathbb E X\) 对 \(\mathcal G\) 可测且可积，因而由唯一性得到结论。
+\end{proof}
+
+只知道条件均值为常数，不能反推出独立。取 \(X\) 等概率地取 \(-1,0,1\)，并令 \(\mathcal G=\sigma(|X|)\)。在 \(|X|=0\) 与 \(|X|=1\) 两块上，\(X\) 的条件平均都为零，故 \(\mathbb E(X\mid\mathcal G)=0=\mathbb E X\)。但 \(\mathcal G\) 已经知道 \(X\) 是否等于零；事件 \(\{X=0\}\) 同时属于 \(\sigma(X)\) 与 \(\mathcal G\)，概率为 \(1/3\)，不满足独立所需的 \(1/3=(1/3)^2\)。条件期望只保存给定变量的平均，不能用一个平均代替整个条件分布。
 
 \subsection{条件 Jensen 不等式}
 \label{b1:subsec:310203}
 
-待撰写。
+平方误差、绝对值与一般 \(p\) 次误差都由凸函数刻画。平均应当降低这类误差，这正是\term[tiaojian-jensen-budengshi]{条件 Jensen 不等式}[conditional Jensen inequality]的内容。其证明有一个需要特别处理的细节：对每条支撑直线得到的不等式各自只几乎必然成立，因此必须把凸函数表示为可数条直线的上确界。
+
+\begin{lemma}[凸函数的可数支撑表示]\label{b1:lem:convex-countable-support-31}
+设 \(\varphi:\mathbb R\rightarrow\mathbb R\) 是处处有限的凸函数。则 \(\varphi\) 连续，且存在实数列 \((a_j)\)、\((b_j)\)，使
+\[
+ \begin{aligned}
+  \varphi(t)&=\sup_{j\geq1}(a_jt+b_j)
+    &&(t\in\mathbb R),\\
+  a_jt+b_j&\leq\varphi(t)
+    &&(j\geq1,\ t\in\mathbb R).
+ \end{aligned}
+\]
+\end{lemma}
+\begin{proof}
+凸性使割线斜率具有次序：若 \(u<v<w\)，则
+\[
+ \frac{\varphi(v)-\varphi(u)}{v-u}
+ \leq\frac{\varphi(w)-\varphi(u)}{w-u}
+ \leq\frac{\varphi(w)-\varphi(v)}{w-v}.
+\]
+固定 \(q\in\mathbb R\)，所有左割线斜率的上确界不超过所有右割线斜率的下确界。它们都是有限数：左侧上确界被从 \(q\) 到 \(q+1\) 的斜率控制，并且至少为从 \(q-1\) 到 \(q\) 的斜率；右侧下确界由同样两条割线夹住。因此可以选实数 \(s_q\) 位于这两个数之间。把左右两类斜率分别重排，得到
+\[
+ \ell_q(t)=\varphi(q)+s_q(t-q)\leq\varphi(t)
+ \quad(t\in\mathbb R).
+\]
+这就构造了经过 \((q,\varphi(q))\) 的支撑直线。
+
+还需说明在稠密点作支撑就够了。固定紧区间 \([a,b]\)，再选 \(A<a<b<B\)。凸性给出 \(\varphi\) 在 \([A,B]\) 上不超过端点连线；上一段在任意一个点的支撑直线给出下界。因此 \(\varphi\) 在 \([A,B]\) 上有界。对 \(a\leq x<y\leq b\)，割线斜率比较又给出
+\[
+ \frac{\varphi(x)-\varphi(A)}{x-A}
+ \leq\frac{\varphi(y)-\varphi(x)}{y-x}
+ \leq\frac{\varphi(B)-\varphi(y)}{B-y}.
+\]
+两侧的分母分别至少为 \(a-A\)、\(B-b\)，分子有界，故中间的斜率一致有界。于是 \(\varphi\) 在 \([a,b]\) 上 Lipschitz，特别是连续。相同的比较说明 \(q\in[a,b]\) 时可以选得的支撑斜率 \(s_q\) 一致有界。
+
+现在只在有理数 \(q\) 处选一条 \(\ell_q\)。给定实数 \(t\)，取有理数列 \(q_j\to t\)。在包含这些点的固定紧区间上，\(s_{q_j}\) 有界，且 \(\varphi(q_j)\to\varphi(t)\)，所以
+\(\ell_{q_j}(t)=\varphi(q_j)+s_{q_j}(t-q_j)\to\varphi(t)\)。所有 \(\ell_q\) 又都不超过 \(\varphi\)，因此 \(\varphi=\sup_{q\in\mathbb Q}\ell_q\)。枚举有理数便得所需表示。
+\end{proof}
+
+\begin{theorem}[条件 Jensen]\label{b1:thm:conditional-jensen-31}
+设 \((\Omega,\mathcal F,\mathbb P)\) 是概率空间，\(\mathcal G\subseteq\mathcal F\) 是子 \(\sigma\)-代数。设 \(X\in L^1(\mathbb P;\mathbb R)\)，\(\varphi:\mathbb R\rightarrow\mathbb R\) 是处处有限的凸函数，且 \(\varphi(X)\in L^1(\mathbb P)\)。则 \(\varphi\bigl(\mathbb E(X\mid\mathcal G)\bigr)\) 可积，并且
+\begin{equation}\label{b1:eq:conditional-jensen-31}
+ \varphi\bigl(\mathbb E(X\mid\mathcal G)\bigr)
+ \leq\mathbb E(\varphi(X)\mid\mathcal G)
+ \quad\text{a.s.}
+\end{equation}
+\end{theorem}
+\begin{proof}
+取前一引理的可数支撑表示，记 \(Y=\mathbb E(X\mid\mathcal G)\)、\(Z=\mathbb E(\varphi(X)\mid\mathcal G)\)。对每个 \(j\)，变量 \(a_jX+b_j\) 可积且不超过 \(\varphi(X)\)。线性性与正性给出
+\[
+ a_jY+b_j
+ =\mathbb E(a_jX+b_j\mid\mathcal G)\leq Z
+ \quad\text{a.s.}
+\]
+去掉可数个例外零集，在其余点对 \(j\) 取上确界，得到 \(\varphi(Y)\leq Z\)。由于 \(\varphi\) 连续，\(\varphi(Y)\) 对 \(\mathcal G\) 可测。它还满足 \(a_1Y+b_1\leq\varphi(Y)\leq Z\)，两端均可积，从而
+\[
+ |\varphi(Y)|\leq|a_1Y+b_1|+|Z|
+ \quad\text{a.s.}
+\]
+这同时证明了目标函数的可积性。
+\end{proof}
+
+取 \(\mathcal G=\{\varnothing,\Omega\}\)，就恢复普通 Jensen 不等式
+\(\varphi(\mathbb E X)\leq\mathbb E\varphi(X)\)。取 \(\varphi(t)=t^2\)，在 \(X\in L^2\) 时得到
+\[
+ \bigl(\mathbb E(X\mid\mathcal G)\bigr)^2
+ \leq\mathbb E(X^2\mid\mathcal G).
+\]
+上面的版本明确要求 \(\varphi\) 在整个实轴上有限并且 \(\varphi(X)\) 可积；若用 \(-\log t\) 等只在半轴上定义的函数，或允许右端取无穷，就还要处理定义域边界与扩展条件期望，不能省去这些检查而直接套用本定理。取幂函数便得到后面的 \(p\) 次估计。
 
 \subsection{范数估计与正交投影}
 \label{b1:subsec:310204}
 
-待撰写。
+\begin{proposition}[条件期望的 \(L^p\) 收缩性]\label{b1:prop:conditional-expectation-contraction-31}
+设 \((\Omega,\mathcal F,\mathbb P)\) 是概率空间，\(\mathcal G\subseteq\mathcal F\) 是子 \(\sigma\)-代数，\(\mathbb K=\mathbb R\) 或 \(\mathbb C\)，\(1\leq p\leq\infty\)。若 \(X\in L^p(\mathbb P;\mathbb K)\)，则 \(X\in L^1\)、\(\mathbb E(X\mid\mathcal G)\in L^p\)，且
+\begin{equation}\label{b1:eq:conditional-expectation-lp-contraction-31}
+ \|\mathbb E(X\mid\mathcal G)\|_p\leq\|X\|_p.
+\end{equation}
+因此对 \(X,Y\in L^p(\mathbb P;\mathbb K)\)，有
+\[
+ \|\mathbb E(X\mid\mathcal G)-\mathbb E(Y\mid\mathcal G)\|_p
+ \leq\|X-Y\|_p.
+\]
+\end{proposition}
+\begin{proof}
+概率测度总质量为一，故 \(1<p<\infty\) 时由\cref{b1:thm:lp-holder}，
+\(\mathbb E|X|\leq\|X\|_p\cdot\|1\|_{p'}=\|X\|_p\)；\(p=\infty\) 时直接由本质上界得到可积性，\(p=1\) 时没有额外要求。
+
+\(p=1\) 的结论已经由模不等式取期望得到。对 \(1<p<\infty\)，先用模不等式，再对非负实变量 \(|X|\) 和凸函数 \(t\mapsto|t|^p\) 使用条件 Jensen，得到
+\[
+ |\mathbb E(X\mid\mathcal G)|^p
+ \leq\bigl(\mathbb E(|X|\mid\mathcal G)\bigr)^p
+ \leq\mathbb E(|X|^p\mid\mathcal G).
+\]
+右端可积，对两边取期望并开 \(p\) 次方即得结论。这一论证同时覆盖复值变量，不需要对复平面另建凸函数理论。若 \(p=\infty\)，由 \(|X|\leq\|X\|_\infty\) 几乎必然、正性及常数保持性，有
+\[
+ |\mathbb E(X\mid\mathcal G)|
+ \leq\mathbb E(|X|\mid\mathcal G)\leq\|X\|_\infty.
+\]
+最后对 \(X-Y\) 应用所证估计，并使用线性性。
+\end{proof}
+
+\(p=2\) 的收缩还有更具体的几何含义。\cref{b1:thm:hilbert-projection}中的正交投影要求目标是闭线性子空间，因此必须先核对“只依赖 \(\mathcal G\) 的平方可积变量”确实构成这样的空间，不能仅凭“平均”这一名称认定它是投影。
+
+\begin{theorem}[条件期望的正交投影刻画]\label{b1:thm:conditional-expectation-projection-31}
+设 \((\Omega,\mathcal F,\mathbb P)\) 是概率空间，\(\mathcal G\subseteq\mathcal F\) 是子 \(\sigma\)-代数，\(\mathbb K=\mathbb R\) 或 \(\mathbb C\)。在 Hilbert 空间
+\(L^2(\Omega,\mathcal F,\mathbb P;\mathbb K)\) 中采用内积
+\(\langle X,Z\rangle=\mathbb E(X\overline Z)\)，实值时去掉共轭。记
+\[
+ L^2(\mathcal G)\coloneqq
+ \{\,Z\in L^2(\mathbb P;\mathbb K)
+       \mid Z\text{ 有 }\mathcal G\text{-可测代表}\,\}.
+\]
+则 \(L^2(\mathcal G)\) 是闭线性子空间，且 \(P_{\mathcal G}X\coloneqq\mathbb E(X\mid\mathcal G)\) 是到它的正交投影。具体地，对每个 \(X\in L^2\) 及 \(Z\in L^2(\mathcal G)\)，有
+\[
+ \mathbb E\bigl((X-P_{\mathcal G}X)\overline Z\bigr)=0
+\]
+和
+\begin{equation}\label{b1:eq:conditional-expectation-pythagoras-31}
+ \|X-Z\|_2^2
+ =\|X-P_{\mathcal G}X\|_2^2+\|P_{\mathcal G}X-Z\|_2^2.
+\end{equation}
+因此 \(P_{\mathcal G}X\) 是所有 \(\mathcal G\)-可测平方可积预测中唯一的均方误差最小者，唯一性按几乎必然意义理解。
+\end{theorem}
+\symidx{\(L^2(\mathcal G)\)：有 \(\mathcal G\)-可测代表的平方可积随机变量空间}
+\symidx{\(P_{\mathcal G}\)：条件期望正交投影}
+\begin{proof}
+\cref{b1:thm:l2-hilbert}保证环境空间是 Hilbert 空间。由线性性、\(L^2\) 收缩及已知信息保持性，\(P_{\mathcal G}\) 是有界线性算子，并且
+\[
+ P_{\mathcal G}^2=P_{\mathcal G},\quad
+ \operatorname{im}P_{\mathcal G}=L^2(\mathcal G).
+\]
+线性性直接说明像空间是线性子空间。若 \(Z_n\in L^2(\mathcal G)\) 且 \(Z_n\to Z\) 于 \(L^2\)，则连续性给出
+\(P_{\mathcal G}Z=\lim_nP_{\mathcal G}Z_n=\lim_nZ_n=Z\)，故 \(Z\) 仍有 \(\mathcal G\)-可测代表。这样证明了闭性，也避免假定非完备的 \(\mathcal G\) 自动包含每个等价代表。
+
+记 \(Y=P_{\mathcal G}X\)。若 \(Z\) 有界且 \(\mathcal G\)-可测，用 \(\overline Z\) 作有界测试，得到 \(\mathbb E((X-Y)\overline Z)=0\)。对任意 \(Z\in L^2(\mathcal G)\)，选一个 \(\mathcal G\)-可测代表并取
+\(Z_n=Z\cdot\mathbf1_{\{|Z|\leq n\}}\)。由于
+\(|Z-Z_n|^2\leq|Z|^2\) 且逐点趋零，控制收敛给出 \(Z_n\to Z\) 于 \(L^2\)。Cauchy--Schwarz 不等式说明
+\[
+ \left|\mathbb E\bigl((X-Y)\overline{(Z-Z_n)}\bigr)\right|
+ \leq\|X-Y\|_2\cdot\|Z-Z_n\|_2\longrightarrow0.
+\]
+所以 \(X-Y\) 与整个 \(L^2(\mathcal G)\) 正交。这正是 Hilbert 空间投影的刻画。
+
+最后在分解 \(X-Z=(X-Y)+(Y-Z)\) 中，后一项属于 \(L^2(\mathcal G)\)，两项正交。展开内积便得\eqref{b1:eq:conditional-expectation-pythagoras-31}。第二项非负，且只在 \(Z=Y\) 的 \(L^2\) 等价类上为零，故得到最佳预测与唯一性。
+\end{proof}
+
+这一几何解释还说明增加信息为什么能改善均方预测。设概率空间 \((\Omega,\mathcal F,\mathbb P)\) 的两个子 \(\sigma\)-代数满足 \(\mathcal H\subseteq\mathcal G\)，且 \(X\in L^2(\mathbb P;\mathbb K)\)，其中 \(\mathbb K=\mathbb R\) 或 \(\mathbb C\)。把 \(Z=P_{\mathcal H}X\in L^2(\mathcal G)\) 代入上式，可得
+\[
+ \|X-P_{\mathcal H}X\|_2^2
+ =\|X-P_{\mathcal G}X\|_2^2
+  +\|P_{\mathcal G}X-P_{\mathcal H}X\|_2^2.
+\]
+增加的信息所带来的误差下降，恰好是两种预测之差的平方范数。未来各时刻的信息逐步增加时，这些投影之间的相容性就是鞅的一个基本来源。
+
+\ProseParagraphBreak
+
+仍用上一节的四点概率空间与两块信息。原变量及其条件期望依次为
+\[
+ X=(0,2,4,8),\quad Y=(3/2,3/2,6,6).
+\]
+逐项计算平方误差，得到
+\[
+ \mathbb E\bigl((X-Y)^2\bigr)=\frac{19}{8},\quad
+ \mathbb E\left[\left(Y-\frac{15}{4}\right)^2\right]=\frac{81}{16},\quad
+ \operatorname{Var}(X)=\frac{119}{16}.
+\]
+前两数之和正好是第三个数。只用常数 \(\mathbb E X=15/4\) 预测时，均方误差为 \(119/16\)；加入分块信息后，误差下降到 \(19/8\)。这里的最佳性允许所有 \(\mathcal G\)-可测预测，并未把预测事先限制成某个观测值的线性函数。

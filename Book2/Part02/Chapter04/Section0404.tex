@@ -3,14 +3,198 @@
 \label{b2:sec:approximation-jackson}
 \label{b2:sec:0209}
 
-待撰写。
+Bernstein 多项式给出了逐点取样的显式算法。一致收敛以后，还有一个更细的问题：若已知函数在距离 \(\delta\) 内的振幅不超过 \(\omega_f(\delta)\)，次数为 \(n\) 的多项式能否把误差降到 \(\omega_f(1/n)\) 的量级？本节先在圆周上用卷积构造这种逼近，再通过余弦变换处理闭区间。
+
+\ProseParagraphBreak
+
+这里的\term[zhijie-bijin-dingli]{直接逼近定理}[direct approximation theorem]是指由函数的连续性或光滑性推出逼近误差的上界。证明要同时保住两个条件：卷积核的质量足够集中，所得函数的次数也不能超过预算。只让核越来越窄，而不计算它的次数，并不能回答给定 \(n\) 时的问题。
 
 \subsection{Jackson 核与直接定理}
 \label{b2:subsec:020902}
 
-待撰写。
+回顾\subsecref{b2:subsec:020401}的约定：圆周为 \(\mathbb T=\mathbb R/\mathbb Z\)，积分采用总质量为 \(1\) 的 Lebesgue 测度，而 Fejér 核 \(F_N\) 的次数为 \(N\)。因此，若用正整数 \(m\) 表示集中尺度，应该写
+\[
+ F_{m-1}(t)=\frac1m
+  \left(\frac{\sin(m\pi t)}{\sin(\pi t)}\right)^2,
+ \quad F_{m-1}(0)=m.
+\]
+Fejér 核已经非负且积分为 \(1\)，但它离开原点以后只按 \(|t|^{-2}\) 衰减。要估计连续模，需要控制核的第一矩；这个衰减速度会带来一个对数。把核平方，再恢复总质量为 \(1\)，可以改善尾部而不失去非负性。
+
+\begin{definition}
+\label{b2:def:approximation-jackson-kernel}
+设 \(m\geq1\) 为整数，\(F_{m-1}\) 是单位周期圆周 \(\mathbb T=\mathbb R/\mathbb Z\) 上的 Fejér 核。记
+\[
+ A_m\coloneqq\int_{\mathbb T}F_{m-1}(t)^2\,\mathrm dt,
+ \quad
+ J_m(t)\coloneqq\frac{F_{m-1}(t)^2}{A_m}.
+\]
+函数 \(J_m\) 称为本节使用的\term[jackson-he]{Jackson 核}[Jackson kernel]。
+\end{definition}
+\symidx{\(J_m\)：Jackson 核}
+
+\begin{lemma}
+\label{b2:lem:approximation-jackson-kernel}
+设 \(m\geq1\) 为整数，\(F_{m-1}\) 是 \(\mathbb T=\mathbb R/\mathbb Z\) 上的 Fejér 核，积分取归一化 Lebesgue 测度，\(A_m=\int_{\mathbb T}F_{m-1}^2\)、\(J_m=F_{m-1}^2/A_m\)。则 \(J_m\) 是实值、偶、非负的三角多项式，次数不超过 \(2(m-1)\)，且
+\[
+ \int_{\mathbb T}J_m(t)\,\mathrm dt=1,
+ \quad A_m=\frac{2m^2+1}{3m}.
+\]
+存在与 \(m\) 无关的常数 \(C>0\)，使
+\[
+ \begin{aligned}
+ J_m(t)&\leq\frac{Cm}{(1+m|t|)^4}
+ \quad(-1/2\leq t\leq1/2),\\
+ \int_{-1/2}^{1/2}|t|J_m(t)\,\mathrm dt&\leq\frac Cm.
+ \end{aligned}
+\]
+这里 \(|t|\) 就是所选代表到圆周原点的最短弧距。
+\end{lemma}
+\begin{proof}
+Fejér 核的有限展开为
+\[
+ F_{m-1}(t)=\sum_{|k|<m}\left(1-\frac{|k|}{m}\right)e^{2\pi\mathrm i kt}.
+\]
+两个次数不超过 \(m-1\) 的三角多项式相乘，频率相加，所以平方的次数不超过 \(2(m-1)\)。实值、偶性和非负性直接保留。利用有限指数函数的正交性，有
+\[
+ A_m=1+2\sum_{k=1}^{m-1}\left(1-\frac{k}{m}\right)^2
+ =1+\frac{2}{m^2}\cdot\frac{(m-1)m(2m-1)}6
+ =\frac{2m^2+1}{3m}.
+\]
+因而 \(2m/3\leq A_m\leq m\)，特别地，归一化分母严格为正。
+
+从有限指数和的平方模表达得到 \(F_{m-1}\leq m\)。另一方面，在 \(0<|t|\leq1/2\) 上，\(|\sin(\pi t)|\geq2|t|\) 且 \(|\sin(m\pi t)|\leq1\)，所以
+\[
+ 0\leq F_{m-1}(t)\leq
+ \min\left\{m,\frac1{4mt^2}\right\}.
+\]
+平方后除以 \(A_m\geq2m/3\)，便有
+\[
+ J_m(t)\leq C m\min\{1,(m|t|)^{-4}\}
+ \leq\frac{C' m}{(1+m|t|)^4}.
+\]
+最后令 \(u=m|t|\)，把正半轴上的积分上界延长到无穷，得到
+\[
+ \int_{-1/2}^{1/2}|t|J_m(t)\,\mathrm dt
+ \leq\frac{2C'}m\int_0^\infty\frac{u}{(1+u)^4}\,\mathrm du
+ \leq\frac{C''}m.
+\]
+积分有限，因为被积函数在无穷远按 \(u^{-3}\) 衰减。质量为 \(1\) 则来自 \(A_m\) 的定义。
+\end{proof}
+
+核的平方把次数增加一倍，也把远处衰减从二次提高到四次；归一化以后，它的高度仍为 \(m\) 的量级，主要质量仍落在宽度约 \(1/m\) 的区间内。第一矩估计量化了这个宽度，下面的误差证明只需要质量与第一矩这两项信息。
+
+\begin{theorem}[Jackson：周期情形]
+\label{b2:thm:approximation-jackson-periodic}
+设 \(\mathbb F=\mathbb R\) 或 \(\mathbb C\)，\(f\in C(\mathbb T;\mathbb F)\)，其中 \(\mathbb T=\mathbb R/\mathbb Z\) 取归一化 Lebesgue 测度。以 \(\omega_f\) 表示关于最短弧距的连续模，以 \(\mathcal E_n(f)\) 表示次数不超过 \(n\) 的三角多项式的一致最佳逼近误差。存在绝对常数 \(C>0\)，使对每个整数 \(n\geq1\)，都有
+\[
+ \mathcal E_n(f)\leq C\omega_f(1/n).
+\]
+具体地，取 \(m=\lfloor n/2\rfloor+1\)，则
+\[
+ Q_nf\coloneqq f*J_m
+\]
+是次数不超过 \(n\) 的三角多项式，并满足
+\[
+ \lVert f-Q_nf\rVert_\infty\leq C\omega_f(1/n),
+ \quad \lVert Q_nf\rVert_\infty\leq\lVert f\rVert_\infty.
+\]
+算子 \(Q_n\) 保持常数；对实值函数还保持非负性。
+\end{theorem}
+\begin{proof}
+把 \(J_m\) 展为有限 Fourier 和，逐项积分即可写出
+\[
+ (f*J_m)(x)=\sum_{|k|\leq2(m-1)}
+     \widehat f(k)\widehat J_m(k)e^{2\pi\mathrm i kx}.
+\]
+这里不需要 \(f\) 本身的 Fourier 级数收敛，因为被展开的是一个有限多项式。由 \(2(m-1)\leq n\)，所得近似函数符合次数限制。
+
+利用 \(J_m\geq0\) 和 \(\int J_m=1\)，有
+\[
+ |f(x)-(f*J_m)(x)|
+ \leq\int_{-1/2}^{1/2}|f(x)-f(x-t)|J_m(t)\,\mathrm dt.
+\]
+沿圆周最短弧把长度 \(|t|\) 分成至多 \(1+m|t|\) 段，每段长度不超过 \(1/m\)，由三角不等式得到
+\[
+ |f(x)-f(x-t)|\leq(1+m|t|)\omega_f(1/m).
+\]
+代回后，\cref{b2:lem:approximation-jackson-kernel}给出
+\[
+ \lVert f-f*J_m\rVert_\infty
+ \leq\omega_f(1/m)\left(1+m\int_{-1/2}^{1/2}|t|J_m(t)\,\mathrm dt\right)
+ \leq C\omega_f(1/m).
+\]
+由于 \(m\geq n/2\)，再把长度不超过 \(2/n\) 的短弧分为两段，便有 \(\omega_f(1/m)\leq2\omega_f(1/n)\)。这些估计也包括 \(n=1\)：此时 \(m=1\)、\(J_1=1\)，输出就是 \(f\) 的平均值。收缩性、保持常数和保持非负性都由非负核的单位质量直接得到。
+\end{proof}
+
+这一结果称为\term[jackson-dingli]{Jackson 定理}[Jackson's theorem]。构造出的 \(Q_nf\) 给出了最佳误差的一个上界；具体函数的最佳误差还可能更小。下面将它与前章的 Fejér 平均比较，看看核的选择怎样影响收敛速度。
+
+\ProseParagraphBreak
+
+与 Fejér 平均的差别可以在一个具体函数上看清。取 \(f(t)=\mathrm d_{\mathbb T}(t,0)\)，它是 Lipschitz 常数为 \(1\) 的连续周期函数。在原点，Fejér 逼近的误差恰为
+\[
+ (f*F_{m-1})(0)-f(0)
+ =\int_{-1/2}^{1/2}|t|F_{m-1}(t)\,\mathrm dt.
+\]
+将积分分为 \(|t|\leq1/m\) 与其余部分，上述核估计给出上界 \(C\log(m+1)/m\)。这个对数不是估计方法造成的假象：对 \(m\geq4\)，在
+\[
+ I_k=\left[\frac{k+1/4}{m},\frac{k+3/4}{m}\right],
+ \quad 1\leq k\leq\lfloor m/2\rfloor-1,
+\]
+有 \(\sin^2(m\pi t)\geq1/2\)，而 \(\sin^2(\pi t)\leq\pi^2t^2\)。因而每个 \(I_k\) 对第一矩的贡献至少为 \(c/(m(k+1))\)；对 \(k\) 求和得到 \(c'\log(m+1)/m\) 的下界。相比之下，Jackson 构造对同一函数的误差至多为 \(C/n\)。Fejér 平均很好地解决了收敛问题，若还要得到一般 Lipschitz 函数的最佳次数量级，就需要更集中的核。
 
 \subsection{代数多项式的直接逼近}
 \label{b2:subsec:approximation-jackson-algebraic}
 
-待撰写。
+闭区间上的函数一般不满足端点值相等，直接作周期延拓可能产生跳跃。余弦变换提供另一条路线：它让圆周先沿区间走一遍，再沿原路返回，因而两端都自动接上。
+
+\begin{theorem}[Jackson：闭区间情形]
+\label{b2:thm:approximation-jackson-algebraic}
+设 \(a<b\) 为实数，\(\mathbb F=\mathbb R\) 或 \(\mathbb C\)，且 \(f\in C([a,b];\mathbb F)\)。令 \(E_n(f)\) 为次数不超过 \(n\) 的代数多项式在 \([a,b]\) 上的一致最佳逼近误差，\(\omega_f\) 为通常距离下的连续模。存在绝对常数 \(C>0\)，使对所有整数 \(n\geq1\)，
+\[
+ E_n(f)\leq C\omega_f\left(\frac{b-a}{n}\right).
+\]
+特别地，若 \(0<\alpha\leq1\)、\(H\geq0\)，且 \(|f(x)-f(y)|\leq H|x-y|^\alpha\) 对所有 \(x,y\in[a,b]\) 成立，则
+\[
+ E_n(f)\leq CH\left(\frac{b-a}{n}\right)^\alpha.
+\]
+\end{theorem}
+\begin{proof}
+设 \(c=(a+b)/2\)、\(r=(b-a)/2\)，并在单位圆周上定义
+\[
+ g(t)=f(c+r\cos(2\pi t)).
+\]
+这是连续、偶的周期函数。余弦的导数绝对值不超过 \(1\)，所以沿最短圆弧取代表后，有
+\[
+ |(c+r\cos(2\pi t))-(c+r\cos(2\pi s))|
+ \leq2\pi r\mathrm d_{\mathbb T}(t,s).
+\]
+从而 \(\omega_g(\delta)\leq\omega_f(\pi(b-a)\delta)\)。这里连续模的参数允许超过区间长度；超过以后，它仅仅等于函数在整个区间上的最大振幅。
+
+对 \(g\) 使用周期 Jackson 构造，得到 \(q_n=g*J_m\)，其中 \(m=\lfloor n/2\rfloor+1\)。核与 \(g\) 都是偶函数，换元 \(t\mapsto-t\) 便知 \(q_n\) 也偶，因此它的有限三角展开只有余弦项：
+\[
+ q_n(t)=a_0+\sum_{k=1}^na_k\cos(2\pi kt).
+\]
+余弦递推式
+\[
+ \cos((k+1)\theta)=2\cos\theta\cos(k\theta)-\cos((k-1)\theta)
+\]
+表明 \(\cos(k\theta)=T_k(\cos\theta)\)，其中 \(T_0=1\)、\(T_1(u)=u\)、\(T_{k+1}(u)=2uT_k(u)-T_{k-1}(u)\)。因此
+\[
+ p_n(x)=a_0+\sum_{k=1}^na_kT_k\left(\frac{x-c}{r}\right)
+\]
+是次数不超过 \(n\) 的代数多项式，而且 \(p_n(c+r\cos(2\pi t))=q_n(t)\)。由于这个余弦参数化覆盖整个 \([a,b]\)，两种一致误差恰好相同。于是
+\[
+ \lVert f-p_n\rVert_{\infty,[a,b]}
+ =\lVert g-q_n\rVert_{\infty,\mathbb T}
+ \leq C\omega_g(1/n)
+ \leq C\omega_f\left(\frac{\pi(b-a)}n\right).
+\]
+在区间中把任意一段分为四段，连续模的次可加性给出
+\(\omega_f(\pi\delta)\leq4\omega_f(\delta)\)。把 \(4\) 吸收入绝对常数，就得到第一式；代入 Hölder 条件即得第二式。
+\end{proof}
+
+例如 \(f(x)=|x|\) 在 \([-1,1]\) 上的连续模满足 \(\omega_f(\delta)\leq\delta\)，所以存在次数为 \(n\) 的代数多项式使一致误差不超过 \(C/n\)，尽管 \(f\) 在原点不可微。这里的构造先把尖点变为 \(|\cos(2\pi t)|\) 的周期尖点，用 Jackson 核平滑，再把偶三角多项式还原为代数多项式。
+
+\ProseParagraphBreak
+
+Bernstein 取样构造与 Jackson 构造的用途有所不同：前者直接使用网格上的函数值，并有清楚的非负权重；后者通过卷积得到更好的通用次数估计。下一节把问题反过来：如果最佳误差本来就衰减得快，函数本身是否必须有相应的连续模？回答这个问题需要先限制有限次数多项式的变化速度。

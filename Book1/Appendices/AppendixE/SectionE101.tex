@@ -2,24 +2,224 @@
 \section{光滑流形与坐标转换}
 \label{b1:sec:E101}
 
-待撰写。
+在\chapref{b1:ch:17}中，一张参数片由欧氏开集出发，描述曲面上的一小块；在\chapref{b1:ch:18}中，满秩水平集又被写成局部图像。若要在整个球面上求导或积分，一张参数片通常不够。接下来的问题是：在几张参数片重叠的地方，怎样确认它们描述的是同一个微分对象？流形的定义把这种坐标之间的协调直接列为结构的一部分。
+
+\ProseParagraphBreak
+
+本节先讨论有限维实光滑流形，再把带边界的情形纳入同一坐标语言。这里“光滑”始终表示 \(C^\infty\)；流形由坐标图及其光滑转换来描述。\appref{b1:app:A}中的拓扑与紧性负责组织坐标，\appref{b1:app:B}中的外代数随后负责组织不同次数的微分形式。
 
 \subsection{图册、相容性与光滑结构}
 \label{b1:subsec:E10101}
 
-待撰写。
+球面可以在北半球用前两个坐标描述，也可以在东半球换用另一组坐标。重叠处的点并没有改变，改变的只是给这个点填写的坐标数值。因此坐标不是流形本身，而是通向欧氏计算的一种局部表示。
+
+\begin{definition}[光滑流形]\label{b1:def:E-smooth-manifold}
+设 \(n\geq0\) 为整数，\(M\) 为 Hausdorff 且第二可数的拓扑空间。一个 \(n\) 维\term[zuobiaotu]{坐标图}[coordinate chart]是同胚
+\[
+ x:U\longrightarrow x(U)\subseteq\mathbb R^n,
+\]
+其中 \(U\) 在 \(M\) 中开，\(x(U)\) 在 \(\mathbb R^n\) 中开。若 \(M\) 被一族坐标图 \((U_\alpha,x_\alpha)\) 覆盖，并且每个非空交叠上的坐标转换
+\[
+ x_\beta\circ x_\alpha^{-1}:
+ x_\alpha(U_\alpha\cap U_\beta)
+ \longrightarrow x_\beta(U_\alpha\cap U_\beta)
+\]
+都是 \(C^\infty\) 映射，则这族图称为光滑\term[tuce]{图册}[atlas]。把所有与该图册中的每张图均光滑相容的图加入，得到极大光滑图册，称为 \(M\) 的\term[guanghua-jiegou]{光滑结构}[smooth structure]。带有这一结构的 \(M\) 称为 \(n\) 维\term[guanghua-liuxing]{光滑流形}[smooth manifold]。
+\end{definition}
+
+转换映射的逆就是反向的坐标转换，因而也光滑。极大图册不要求额外选择：若两张新图都与原图册相容，在它们的交叠点附近插入一张原图，二者的转换就是两个已知光滑转换的复合。这样的邻域覆盖全部交叠，所以新图彼此相容。实际计算只需使用足够覆盖 \(M\) 的若干张图，不必逐一列出极大图册。
+
+\ProseParagraphBreak
+
+一个具体例子是圆周 \(S^1=\{\,(a,b)\in\mathbb R^2:a^2+b^2=1\,\}\)。在删去 \((1,0)\) 与删去 \((-1,0)\) 的两个开集上，分别使用
+\[
+ t=\frac{b}{1-a},\quad s=\frac{b}{1+a}.
+\]
+第一张图的逆为
+\[
+ t\longmapsto
+ \left(\frac{t^2-1}{1+t^2},\frac{2t}{1+t^2}\right),
+\]
+第二张图也有同样形式的有理逆函数。交叠上 \(st=1\)，故转换为 \(s=1/t\)，定义在 \(\mathbb R\setminus\{0\}\) 上，确实光滑。两个坐标数值可以很不相同，却由明确的变换描述同一圆周。整个圆周不能有一张取值于欧氏开集的全局坐标图：圆周紧，而非空的 \(\mathbb R\) 开集不紧。
+
+\ProseParagraphBreak
+
+积分公式还需要容许区间端点与曲面边缘。为此记
+\[
+ \mathbb H^n\coloneqq\{\,u\in\mathbb R^n:u^n\geq0\,\}
+ \quad(n\geq1).
+\]
+若 \(W\subseteq\mathbb H^n\) 相对开，映射 \(F:W\rightarrow\mathbb R^m\) 在一点光滑，是指它在该点附近等于某个定义在 \(\mathbb R^n\) 开邻域上的 \(C^\infty\) 映射的限制。延拓不必全局存在，也不要求延拓的像仍在目标半空间内。两种局部延拓在 \(W\) 的内部相同，所有阶导数在那里相同，再由连续性在边界相同，所以在 \(W\) 上取导数没有歧义。
+
+\begin{definition}[带边界流形]\label{b1:def:E-manifold-boundary}
+设 \(n\geq1\) 为整数，\(M\) 为 Hausdorff 且第二可数的拓扑空间。若 \(M\) 有覆盖它的图册，各图将开集 \(U\subseteq M\) 同胚地映到 \(\mathbb H^n\) 的相对开集，全部坐标转换及其逆均按局部延拓意义光滑，则称 \(M\) 为 \(n\) 维光滑\term[daibianjie-liuxing]{带边界流形}[manifold with boundary]。在图中满足 \(x^n(p)=0\) 的点称为边界点，其全体记为 \(\partial M\)；其余点组成内部 \(M^\circ\)。边界允许为空。零维流形按惯例没有边界。
+\end{definition}
+\symidx{\(\partial M\)：流形的边界}
+
+无边界坐标图可以平移、缩小后放入 \(\{u^n>0\}\)，因而这个定义包含无边界情形。这里有一个需要核对的几何问题：一个坐标系中的边界点，换到另一张图后是否仍落在半空间的边界上？
+
+\begin{proposition}[边界的坐标不变性]\label{b1:prop:E-boundary-invariance}
+设 \(M\) 为 \(n\geq1\) 维光滑带边界流形。任何坐标转换都将半空间边界上的点送到半空间边界上的点，将内部点送到内部点。因此 \(\partial M\) 在 \(M\) 中闭，且由边界图限制并删去最后一个坐标，得到一个 \((n-1)\) 维无边界光滑流形。边界点处坐标转换的微分可逆，并将 \(\mathbb R^{n-1}\times\{0\}\) 映到自身；其最后一行形如 \((0,\ldots,0,c)\)，其中 \(c>0\)。
+\end{proposition}
+\begin{proof}
+记一个坐标转换为 \(F:W\rightarrow W'\)，其逆为 \(G\)。假如 \(a\in W\) 满足 \(a^n=0\)，而 \(b=F(a)\) 满足 \(b^n>0\)，则 \(G\) 在 \(b\) 的一个欧氏开邻域上光滑，且 \(G^n\geq0\)、\(G^n(b)=0\)。极小值的一阶必要条件给出 \(DG^n(b)=0\)，所以 \(DG(b)\) 的最后一行是零。另一方面，取 \(F\) 在 \(a\) 附近的光滑延拓，对恒等式 \(F\circ G=\operatorname{id}\) 在 \(b\) 处用链式法则，得到 \(DF(a)DG(b)=I_n\)，矛盾。将 \(F,G\) 互换便排除了内部点映到边界点的情形。
+
+在边界点处，\(G\circ F=\operatorname{id}\) 虽先定义于半空间，但其光滑延拓的导数仍为恒等矩阵：可先在内部求导，再趋于该边界点。因此 \(DG(b)DF(a)=I_n\)。又因 \(F^n(u',0)=0\)，沿前 \(n-1\) 个坐标求导得到 \(DF(a)\) 保持边界超平面；反向转换给出其在该超平面上的逆。最后一行遂为 \((0,\ldots,0,c)\)。沿半空间内的 \(a+te_n\)、\(t\geq0\) 取右导数，\(F^n(a+te_n)\geq0=F^n(a)\) 给出 \(c\geq0\)；矩阵可逆又排除 \(c=0\)，故 \(c>0\)。
+
+边界转换的前 \(n-1\) 个分量为欧氏开集间的光滑微分同胚。\(\partial M\) 作为子空间继承 Hausdorff 性和第二可数性，这些图构成所需图册。内部在每张图中对应开集 \(\{u^n>0\}\)，所以 \(M^\circ\) 开，\(\partial M\) 闭。
+\end{proof}
+
+\(c>0\) 还说明最后一个坐标速度的正负在换图时不变：朝向 \(u^n>0\) 的方向仍朝内，朝向 \(u^n<0\) 的方向仍朝外。这不表示整个坐标转换的行列式为正；边界的内外方向与流形的定向是不同的条件。
+
+\ProseParagraphBreak
+
+这里的边界是流形自身的边界。例如圆周作为 \(\mathbb R^2\) 的子集，其欧氏拓扑边界是整个圆周，但作为一维流形却没有边界；闭圆盘作为二维带边界流形，其边界才是圆周。矩形的四个角不能用本附录要求的光滑半空间图保留原有欧氏光滑结构，因此本附录不将带角区域混入光滑带边界情形。
 
 \subsection{光滑映射与切空间}
 \label{b1:subsec:E10102}
 
-待撰写。
+在流形上说一个函数可微，不能先假设点能够相减。应先选坐标，把问题变成欧氏映射的可微性，再核验换坐标不会改变答案。
+
+\begin{definition}[光滑映射]\label{b1:def:E-smooth-map}
+设 \(M,N\) 为有限维实光滑流形，允许有边界。连续映射 \(F:M\rightarrow N\) 称为\term[guanghua-yingshe]{光滑映射}[smooth map]，若对每个 \(p\in M\)，选择源图 \(x:U\rightarrow x(U)\) 和包含 \(F(p)\) 的目标图 \(y:V\rightarrow y(V)\)，缩小 \(U\) 使 \(F(U)\subseteq V\) 后，\(y\circ F\circ x^{-1}\) 光滑；在边界按局部欧氏延拓理解。若 \(F\) 双射，且 \(F,F^{-1}\) 都光滑，则称 \(F\) 为光滑微分同胚。实值光滑函数的全体记为 \(C^\infty(M)\)。
+\end{definition}
+
+换用其他图时，新坐标表达是在旧表达前后复合光滑坐标转换，所以只须在一组覆盖用的图中验证。光滑映射不必保持边界，例如常值映射可以把整个流形送到目标的内部或边界；边界不变性针对的是维数相同的微分同胚。
+
+\ProseParagraphBreak
+
+现在考虑点 \(p\) 处的速度。在坐标 \(x\) 中，一个速度写成 \(v\in\mathbb R^n\)；换到坐标 \(y\) 后，链式法则要求它写成 \(D(y\circ x^{-1})(x(p))v\)。切向量就是遵守这一转换规律的坐标速度，而不是某一张图中的固定数列。
+
+\begin{definition}[切空间的坐标构造]\label{b1:def:E-tangent-space}
+设 \(M\) 为 \(n\) 维实光滑流形，允许有边界，\(p\in M\)。考虑所有二元组 \((x,v)\)，其中 \(x\) 是 \(p\) 附近的坐标图，\(v\in\mathbb R^n\)。规定
+\[
+ (x,v)\sim(y,w)
+ \quad\Longleftrightarrow\quad
+ w=D(y\circ x^{-1})(x(p))v.
+\]
+这些等价类组成 \(p\) 处的切空间 \(T_pM\)。在任一固定图中，向量加法和实数乘法由 \(\mathbb R^n\) 传递；标准基向量 \(e_i\) 所对应的类记为
+\[
+ \left.\frac{\partial}{\partial x^i}\right|_p
+ \quad(1\leq i\leq n).
+\]
+\end{definition}
+\symidx{\(T_pM\)：流形在一点的切空间}
+
+这是等价关系，因为恒等转换的导数为恒等，反向转换的导数为逆矩阵，而三张图之间的转换满足链式法则。各转换导数均为线性同构，所以从一张图传递的加法与数乘在其他图中仍相同。于是 \(T_pM\) 是一个 \(n\) 维实向量空间，坐标基的转换公式为
+\[
+ \left.\frac{\partial}{\partial x^i}\right|_p
+ =\sum_{a=1}^n
+ \frac{\partial(y^a\circ x^{-1})}{\partial u^i}(x(p))
+ \left.\frac{\partial}{\partial y^a}\right|_p.
+\]
+这里 \(u\) 是 \(x\) 图的欧氏变量；写出复合函数，是为了不把流形上的函数 \(y^a\) 与它在 \(x\) 坐标中的表达混为一谈。
+
+\begin{proposition}[曲线给出的切向量]\label{b1:prop:E-tangent-curves}
+设 \(M\) 为有限维实光滑流形，允许有边界，\(p\in M^\circ\)。两条满足 \(\gamma(0)=\widetilde\gamma(0)=p\) 的 \(C^1\) 曲线，在一张坐标图中于 \(0\) 的导数相同，当且仅当在任意图中导数相同。这种等价类与 \(T_pM\) 一一对应。若 \(p\in\partial M\)，定义在 \((-\varepsilon,\varepsilon)\) 内、以 \(p\) 为中点的 \(C^1\) 曲线所能产生的速度恰为 \(T_p\partial M\)，它是 \(T_pM\) 中的一个余维一子空间。
+\end{proposition}
+\begin{proof}
+坐标导数的转换由通常的链式法则给出，与切空间定义一致。若 \(p\) 是内部点，给定坐标速度 \(v\)，在充分小的 \(|t|\) 下取 \(\gamma(t)=x^{-1}(x(p)+tv)\)，便实现该速度，故得到一一对应。
+
+若 \(p\) 是边界点，则 \(x^n(\gamma(t))\geq0\)，且在 \(0\) 处为零，所以它在 \(0\) 的导数为零。反过来，每个最后一分量为零的坐标向量可由边界中的直线参数曲线实现。\cref{b1:prop:E-boundary-invariance}保证不同边界图给出同一子空间，并把它识别为 \(\partial M\) 自身的切空间。
+\end{proof}
+
+这一区别不能省去。在半直线 \([0,\infty)\) 的端点，完整切空间仍是 \(\mathbb R\)，但留在半直线内的双侧曲线于端点的速度只能为零。单侧曲线的速度可以向内，却不能向外；它们构成半空间而非向量空间。后文使用“外向向量”时，所指因此是完整的 \(T_pM\)，不要求它由留在 \(M\) 内的双侧曲线产生。
+
+\begin{proposition}[微分与链式法则]\label{b1:prop:E-differential-chain}
+设 \(M,N,P\) 为有限维实光滑流形，允许有边界，\(F:M\rightarrow N\)、\(G:N\rightarrow P\) 光滑。对 \(p\in M\)，公式
+\[
+ \mathrm{d}F_p:[x,v]\longmapsto
+ \bigl[y,D(y\circ F\circ x^{-1})(x(p))v\bigr]
+\]
+定义了与坐标无关的线性映射 \(\mathrm{d}F_p:T_pM\rightarrow T_{F(p)}N\)，称为 \(F\) 在 \(p\) 处的微分，并且
+\[
+ \mathrm{d}(G\circ F)_p
+ =\mathrm{d}G_{F(p)}\circ\mathrm{d}F_p,
+ \quad \mathrm{d}(\operatorname{id}_M)_p=\operatorname{id}_{T_pM}.
+\]
+若 \(F\) 为微分同胚，则 \(\mathrm{d}F_p\) 为线性同构。
+\end{proposition}
+\begin{proof}
+换源图会在矩阵右侧乘源坐标转换的导数，而输入向量按其逆转换，二者相消。换目标图则在左侧乘目标转换的导数，恰好符合目标切向量的等价关系。这证明定义不依赖选择。对复合映射写出坐标表达，欧氏链式法则给出所述恒等式；在边界取局部延拓求导，所得导数的唯一性已经说明。最后把 \(G\) 取为 \(F^{-1}\)，两个复合恒等式给出逆线性映射。
+\end{proof}
+\symidx{\(\mathrm{d}F_p\)：光滑映射在一点的微分}
+
+对 \(f\in C^\infty(M)\)，切向量 \(v\in T_pM\) 可作用于函数，定义
+\[
+ v(f)\coloneqq\mathrm{d}f_p(v)
+ =\sum_{i=1}^n v^i
+ \frac{\partial(f\circ x^{-1})}{\partial u^i}(x(p)).
+\]
+因此坐标基的符号确实像偏导数一样作用，且 \(v(fh)=f(p)v(h)+h(p)v(f)\)。这一公式把切向量的坐标等价类解释为在一点对函数求方向导数的运算。
 
 \subsection{嵌入子流形与抽象流形}
 \label{b1:subsec:E10103}
 
-待撰写。
+前面的定义没有指定环境空间。若研究的对象本来就是 \(\mathbb R^m\) 中的曲面，则应解释这套抽象切空间怎样与熟悉的切平面相接。
+
+\begin{definition}[嵌入子流形]\label{b1:def:E-embedded-submanifold}
+设 \(O\subseteq\mathbb R^m\) 为开集，\(0\leq n\leq m\)。子集 \(S\subseteq O\) 称为 \(n\) 维光滑\term[qianru-ziliuxing]{嵌入子流形}[embedded submanifold]，若对每个 \(p\in S\)，存在 \(O\) 中的开邻域 \(W\ni p\) 与光滑微分同胚 \(\Phi:W\rightarrow\Phi(W)\subseteq\mathbb R^m\)，使
+\[
+ \Phi(S\cap W)=\Phi(W)\cap
+ \bigl(\mathbb R^n\times\{0\}\bigr).
+\]
+\(S\) 取从 \(\mathbb R^m\) 继承的子空间拓扑。本定义讨论无边界子流形；带边界的局部模型须把右侧的 \(\mathbb R^n\) 改为 \(\mathbb H^n\)，并明确边界位置。
+\end{definition}
+
+限制 \(\Phi\) 并取前 \(n\) 个分量，就得到 \(S\) 上的坐标图。两个这样的图之间的转换由环境微分同胚复合再限制而来，因此光滑；子空间拓扑继承 Hausdorff 性与第二可数性。所以嵌入子流形确实产生一个抽象光滑流形，而不只是带有一个方便参数的点集。
+
+\begin{proposition}[光滑水平集与其切空间]\label{b1:prop:E-regular-level}
+设 \(O\subseteq\mathbb R^m\) 为开集，\(1\leq r\leq m\)，\(F:O\rightarrow\mathbb R^r\) 光滑，\(c\in\mathbb R^r\)。若 \(DF(p)\) 在每个 \(p\in S=F^{-1}(\{c\})\) 处均有秩 \(r\)，则 \(S\) 为 \((m-r)\) 维无边界光滑嵌入子流形。在包含映射 \(\iota:S\rightarrow O\) 的微分下，\(T_pS\) 被一一识别为
+\[
+ \mathrm{d}\iota_p(T_pS)=\ker DF(p)\subseteq\mathbb R^m.
+\]
+空水平集也允许在结论中。
+\end{proposition}
+\begin{proof}
+固定 \(p\in S\)。\cref{b1:prop:regular-level-set}在 \(C^1\) 和满秩条件下，使用重排坐标后的映射 \((z,w)\mapsto(z,F(z,w))\)，将水平集变成 \(\{(z,c)\}\)。此处映射是 \(C^\infty\)。其局部逆不仅 \(C^1\)，而且光滑：由\cref{b1:lem:level-set-local-inverse}的公式
+\[
+ D\Phi^{-1}=(D\Phi\circ\Phi^{-1})^{-1},
+\]
+若已知 \(\Phi^{-1}\) 为 \(C^k\)，右侧便为 \(C^k\)，所以 \(\Phi^{-1}\) 为 \(C^{k+1}\)；从 \(k=1\) 归纳即可。矩阵求逆在可逆矩阵集上光滑，可由伴随矩阵除以非零行列式的公式看出。再平移最后 \(r\) 个坐标，把 \(c\) 变为零，就得嵌入子流形定义中的局部模型。
+
+局部参数化 \(z\mapsto(z,h(z,c))\) 的导数是单射。\cref{b1:prop:regular-level-set}还已证明它的像恰为 \(\ker DF(p)\)，或直接对 \(F(z,h(z,c))=c\) 求导并比较维数。这个导数正是包含映射在上述坐标中的微分，所以给出所述识别。
+\end{proof}
+
+例如 \(F(x)=|x|^2\) 的水平集 \(F^{-1}(\{1\})=S^{m-1}\) 满足 \(DF(x)v=2\langle x,v\rangle\)，从而切空间是 \(x^\perp\)。反之，零水平集虽然只是一个点，却不满足该命题的满秩条件；此时不能把 \(\ker DF(0)=\mathbb R^m\) 误认成这个零维流形的切空间。条件失败意味着这条计算公式不可直接使用，并不意味着该集合一定不是流形。
+
+\ProseParagraphBreak
+
+还应区别一个映射的微分性质与其像的拓扑。对无边界光滑流形间的光滑映射 \(F:M\rightarrow N\)，若所有 \(\mathrm{d}F_p\) 单射，称 \(F\) 为\term[jinru]{浸入}[immersion]；若它还一一对应到其像，并且作为 \(M\rightarrow F(M)\) 是同胚，其中像取子空间拓扑，则称为\term[qianru]{嵌入}[embedding]。微分单射保证每个小参数片没有一阶折叠，却不能排除两块不同参数片在像中相交。例如
+\[
+ F:S^1\longrightarrow\mathbb R^2,
+ \quad F(\cos t,\sin t)=(\sin t,\sin 2t)
+\]
+是浸入，因为 \((\cos t,2\cos2t)\) 不会同时为零；但 \(t=0\) 和 \(t=\pi\) 映到同一点，所以不是嵌入。其像在原点附近有四条分支，不能把交点当作普通的一维坐标邻域。
+
+\ProseParagraphBreak
+
+抽象流形的语言允许我们先规定点与坐标转换，再建立求导和积分，而无须先寻找一个全局欧氏嵌入。已有的欧氏子流形则提供具体模型，\chapref{b1:ch:17}的面积公式也仍负责计算这些模型上的无向面积；后文的定向形式积分将说明两套语言怎样一致。
 
 \subsection{Hausdorff 性与第二可数性}
 \label{b1:subsec:E10104}
 
-待撰写。
+流形的拓扑条件使局部坐标能够组成全局结构。Hausdorff 性让紧集成为闭集，也让点能够被不同邻域分开；第二可数性把可能非常大的坐标族压缩成可数族。后者将用于构造紧集穷竭和局部有限覆盖，前者则保证缩小坐标邻域后得到的闭包能留在原图内。
+
+\ProseParagraphBreak
+
+Hausdorff 条件并非局部欧氏性的后果。把两份实直线中所有非零且数值相同的点相认，保留两个不同的原点，并取商拓扑。每个原点都有同胚于实开区间的邻域，所有坐标转换都可以是恒等映射；但两个原点的任意邻域都含有共同的非零点，无法用不交开集分开。这个“双原点直线”因此不属于本书的流形。
+
+\ProseParagraphBreak
+
+第二可数性也有实际限制。不可数多个彼此分离的实直线的并仍 Hausdorff 且局部欧氏，却不可能第二可数：任一拓扑基必须为每个连通分支提供一个非空且包含于该分支的基开集，而这些基开集彼此不同。流形可以不连通；第二可数性使这种全局复杂性能够由可数数据组织。
+
+\begin{proposition}[可数相对紧坐标覆盖]\label{b1:prop:E-countable-charts}
+设 \(M\) 为有限维实光滑流形，允许有边界。对任意开覆盖 \(\mathcal U\)，存在至多可数个坐标邻域 \(V_j\)，覆盖 \(M\)，使每个 \(\overline V_j\) 在 \(M\) 中紧，而且包含在某一张坐标图的定义域以及某个 \(U_j\in\mathcal U\) 内。特别地，\(M\) 是局部紧空间，且是可数个紧集的并。
+\end{proposition}
+\begin{proof}
+给定 \(p\in M\)，先选包含它的 \(U\in\mathcal U\) 与坐标图 \((W,x)\)。在坐标像中取中心为 \(x(p)\) 的充分小开球；边界图则取该球与 \(\mathbb H^n\) 的交。要求其闭球或闭半球仍包含于 \(x(W\cap U)\)。闭球或闭半球紧，连续逆图将其送到 \(M\) 中的紧集；Hausdorff 性使这个像闭，所以小邻域在 \(M\) 中的闭包仍包含于这个紧集，并且落在 \(W\cap U\) 内。
+
+这样构造的邻域覆盖 \(M\)。由\cref{b1:thm:app-separable-base}，第二可数空间的每个开覆盖都有可数子覆盖：其理由是从一个可数拓扑基中，为每个包含于某个覆盖成员的基开集选择一个这样的成员。这些选择覆盖所有点。因此可选出所需的 \((V_j)\)。若 \(n=0\)，每点本身是开且紧的坐标邻域，同一论证给出至多可数个点。
+\end{proof}
+
+不要把结论中的“可数”直接换成“局部有限”。在实线上，开区间 \((-1/j,1/j)\) 的可数族在原点附近仍有无穷重叠；可数个光滑函数的和也可能不连续。下一节会在紧集穷竭的相邻层之间重新选择坐标片，得到真正允许局部有限求和的覆盖。

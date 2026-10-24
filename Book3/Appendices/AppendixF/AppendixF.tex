@@ -2,7 +2,7 @@
 \chapter{超几何函数与椭圆积分}
 \label{b3:app:F}
 \begin{chapterabstract}
-Gamma 函数、椭圆积分和超几何方程并非互不相干的公式集合。Beta 积分把积分参数化为 Gamma 商，二阶微分方程控制解析延拓，而 theta 常数把椭圆积分的周期比变成模参数。本附录沿这三种表示之间的转换展开，始终保留参数范围和平方根分支。
+Gamma 函数、椭圆积分和超几何方程通过参数积分联系起来。Beta 积分把积分参数化为 Gamma 商，二阶微分方程控制解析延拓，而 theta 常数把椭圆积分的周期比变成模参数。本附录沿这三种表示之间的转换展开，始终保留参数范围和平方根分支。
 \end{chapterabstract}
 \begin{learninggoals}
 \begin{itemize}
@@ -10,12 +10,20 @@ Gamma 函数、椭圆积分和超几何方程并非互不相干的公式集合�
 \item\label{b3:item:F-goal-2}从系数递推推导超几何微分方程。
 \item\label{b3:item:F-goal-3}把完全椭圆积分识别为超几何函数。
 \item\label{b3:item:F-goal-4}用 theta 常数与半周期差定义模 lambda 函数。
+\item\label{b3:item:F-goal-5}用算术几何平均计算椭圆积分并给出误差区间。
 \end{itemize}
 \end{learninggoals}
-前置为第二十一章、第二十二章与第二十四章。以下用 \(m\) 表示椭圆积分的参数；有些文献用模数 \(k\)，此时 \(m=k^2\)。把两种约定混用会把补参数 \(1-m\) 错写成 \(1-k\)。
+同一个椭圆积分既能写成幂级数，也能由微分方程延拓，还能通过算术几何平均快速计算。这些表示擅长解决不同的问题：级数给出局部系数，微分方程连接不同参数区域，迭代则给出数值及误差区间。最后一节再用\chapref{b3:ch:24}的 theta 常数解释周期，并与\chapref{b3:ch:23}的模函数相联系。
+
+以下用 \(m\) 表示椭圆积分的参数；有些文献用模数 \(k\)，此时 \(m=k^2\)。把两种约定混用会把补参数 \(1-m\) 错写成 \(1-k\)。
 
 \section{Beta 积分}
 \label{b3:sec:F01}
+
+\subsection{端点可积性与尺度分离}
+\label{b3:subsec:F0101}
+
+超几何积分含有两个固定端点和一个随参数移动的因子。先把固定端点的幂权单独算清，随后每一项幂级数积分才能化成显式系数。Beta 函数正是这种端点信息的组织方式。
 
 当 \(\operatorname{Re}a,\operatorname{Re}b>0\) 时，沿用第二十一章的 Beta 函数
 \[
@@ -23,6 +31,7 @@ Gamma 函数、椭圆积分和超几何方程并非互不相干的公式集合�
 \]
 幂沿正实轴取实对数。两个端点的可积性恰由实部为正保证，在这一双半平面内还可对参数逐次求导；紧参数集上附加的任意对数幂都由稍小正实部控制。
 
+\Needspace{6\baselineskip}
 \begin{theorem}[Beta--Gamma 关系]\label{b3:thm:F-beta-gamma}
 设 \(a,b\in\mathbb C\)、\(\operatorname{Re}a>0\)、\(\operatorname{Re}b>0\)，\(B(a,b)=\int_0^1t^{a-1}(1-t)^{b-1}\,\mathrm dt\)，幂以实对数定义。则
 \[
@@ -30,7 +39,7 @@ Gamma 函数、椭圆积分和超几何方程并非互不相干的公式集合�
 \]
 \end{theorem}
 \begin{proof}
-这就是命题~\ref{b3:prop:21-beta-integral}。其中的换元 \(x=ru,y=r(1-u)\) 把总尺度 \(r=x+y\) 与相对比例 \(u=x/(x+y)\) 分开，所得两个积分分别是 \(\Gamma(a+b)\) 与 \(B(a,b)\)；该命题已核对绝对收敛与 Jacobi 因子，故此处可直接使用。
+这是\cref{b3:prop:21-beta-integral}的同一版本。其中的换元 \(x=ru,y=r(1-u)\) 把总尺度 \(r=x+y\) 与相对比例 \(u=x/(x+y)\) 分开，所得两个积分分别是 \(\Gamma(a+b)\) 与 \(B(a,b)\)；该命题已核对绝对收敛与 Jacobi 因子，故此处可直接使用。
 \end{proof}
 代换 \(t=u/(1+u)\) 给另一种形式
 \[
@@ -39,7 +48,10 @@ Gamma 函数、椭圆积分和超几何方程并非互不相干的公式集合�
 特别地，\(0<\operatorname{Re}a<1\) 时，反射公式给
 \(\int_0^\infty u^{a-1}/(1+u)\,\mathrm{d}u=\pi/\sin\pi a\)。当 \(a,b\) 越过初始半平面，Gamma 商仍给亚纯延拓，但原实积分通常已经发散；不能把延拓值直接称为原积分的普通收敛值。
 \ProseParagraphBreak
-正实参数时，把 \(t^{a-1}(1-t)^{b-1}\) 除以 \(B(a,b)\) 便得概率密度，其 \(r\) 阶矩是 \(B(a+r,b)/B(a,b)\)。由 Gamma 递推可得均值 \(a/(a+b)\)、方差 \(ab/((a+b)^2(a+b+1))\)。这只是积分恒等式的一个解释，无需先引入独立的概率理论。
+\subsection{矩与对数权的参数微分}
+\label{b3:subsec:F0102}
+
+正实参数时，把 \(t^{a-1}(1-t)^{b-1}\) 除以 \(B(a,b)\) 便得概率密度，其 \(r\) 阶矩是 \(B(a+r,b)/B(a,b)\)。由 Gamma 递推可得均值 \(a/(a+b)\)、方差 \(ab/((a+b)^2(a+b+1))\)。
 
 参数积分的计算还可以保留对数权。令 \(\psi_0=\Gamma'/\Gamma\)，由 Gamma 商对 \(a\) 求导，再求导一次，得到
 \[
@@ -50,8 +62,18 @@ Gamma 函数、椭圆积分和超几何方程并非互不相干的公式集合�
 对于正实参数，除以 \(B(a,b)\) 后减去均值的平方，得到 \(\log t\) 的方差为 \(\psi_0'(a)-\psi_0'(a+b)\)，必非负。这里的二阶导数并非形式代入：若参数实部下界为 \(\eta>0\)，则 \(t^{\eta-1}|\log t|^2\) 在0附近可积，另一端也有同样的控制。因而对任意紧参数集可以先求导再积分。例如 \(a=b=1\) 时原积分为 \(\int_0^1(\log t)^2\,\mathrm{d}t=2\)，与 \(\psi_0(2)-\psi_0(1)=1\)、\(\psi_0'(1)-\psi_0'(2)=1\) 一致。
 
 
+\subsection{延拓值与原积分的区别}
+\label{b3:subsec:F0103}
+
+例如 \(b=1\) 时，初始区域内 \(B(a,1)=1/a\)。右侧在 \(a=-1/2\) 有有限值 \(-2\)，而 \(\int_0^1t^{-3/2}\,\mathrm{d}t\) 作为非负实积分发散到正无穷。负的延拓值并不与正被积函数矛盾，因为它不再代表原积分。若确需端点正则化，必须另行规定减去哪些发散项；本附录始终把普通积分与亚纯延拓分别称呼。
+
+同样，Gamma 商中的某个分子、分母同时出现极点时，不能逐个替换为“无穷”再相除。应先在参数的共同正则区域约去可消因子，再取极限。后面的超几何参数 \(c\) 遇到非正整数时，也必须执行这一原则。
+
 \section{超几何级数与方程}
 \label{b3:sec:F02}
+
+\subsection{系数、终止与参数范围}
+\label{b3:subsec:F0201}
 
 对 \(a\in\mathbb C\) 和非负整数 \(n\)，记\term[sheng-jiecheng]{升阶乘}[rising factorial] \((a)_0=1\)、\((a)_n=a(a+1)\cdots(a+n-1)\)。对 \(a,b,c\in\mathbb C\)、\(c\notin\{0,-1,-2,\ldots\}\) 和 \(|z|<1\)，定义\term[gauss-chaojihe-hanshu]{Gauss 超几何函数}[Gauss hypergeometric function]
 \[
@@ -59,6 +81,22 @@ Gamma 函数、椭圆积分和超几何方程并非互不相干的公式集合�
 \]
 相邻系数比趋于一，故非终止情形的收敛半径为一。若 \(a\) 或 \(b\) 是非正整数，级数终止。以下公式遇到分母参数的禁值时，必须先检查是否有可去消去，而不能机械代入。
 
+\(c\) 的禁值条件对定义确有作用。例如形式上约去 \((b)_n/(b)_n\)，会得到 \({}_2F_1(a,b;b;z)=(1-z)^{-a}\)；这个恒等式先要求 \(b\) 不在禁值中。若先把 \(b=0\) 代进原定义，系数包含 \(0/0\)，原式并未定义。经参数极限得到的特殊函数需要明确说明限法，不能把分母为零当成级数自动终止。
+
+在允许的参数紧集和 \(|z|\le r<1\) 上，级数局部一致收敛。一个直接估计是把相邻系数的绝对值比控制为 \(1+C/n\)，于是系数至多按固定幂次增长，而 \(r^n\) 吸收任何这样的增长。因此可逐项对 \(z\) 求导，并对参数使用全纯函数的恒等原理；后面从积分参数域扩大变换恒等式，依据就是这种正规收敛。
+
+逐项求导并重新编号还给出
+\[
+ \frac{\mathrm{d}^j}{\mathrm{d}z^j}{}_2F_1(a,b;c;z)
+ =\frac{(a)_j(b)_j}{(c)_j}{}_2F_1(a+j,b+j;c+j;z)
+ \quad(j\ge0).
+\]
+其中 \((a)_{n+j}=(a)_j(a+j)_n\) 使每个系数完全相同；在终止情形两边也按有限多项式理解。这些恒等式随后沿共同路径延拓，不能给两边分别选择不相容的分支。
+
+\subsection{系数递推与奇点之外的延拓}
+\label{b3:subsec:F0202}
+
+\Needspace{6\baselineskip}
 \begin{proposition}[微分方程]\label{b3:prop:F-hypergeometric-equation}
 设 \(a,b,c\in\mathbb C\)、\(c\notin\{0,-1,-2,\ldots\}\)，\(y(z)={}_2F_1(a,b;c;z)=\sum_{n\ge0}(a)_n(b)_n z^n/((c)_n n!)\)，其中 \((a)_n\) 为升阶乘。则该函数在 \(|z|<1\) 全纯，并满足
 \begin{equation}\label{b3:eq:F-hypergeometric}
@@ -75,12 +113,16 @@ Gamma 函数、椭圆积分和超几何方程并非互不相干的公式集合�
 \end{proof}
 在去掉 \(0,1\) 的平面上，二阶方程的系数全纯，局部解可以沿任意避开奇点的路径延拓。其基本理由是将方程写成一阶系统并在小圆盘中用积分方程逐次逼近：若矩阵系数界为 \(M\)，第 \(n\) 次差由 \((M|z-z_0|)^n/n!\) 控制，级数正规收敛；唯一性由同一估计令 \(n\to\infty\) 得到。沿紧路径取有限个小圆盘即可延拓。绕奇点后初值可能改变，这正是第九章的单值化问题在微分方程中的表现。
 \ProseParagraphBreak
+\subsection{局部指数与两维解空间}
+\label{b3:subsec:F0203}
+
 在0点试探 \(y=z^\rho\)，最低次系数为 \(\rho(\rho+c-1)\)，指数为0与 \(1-c\)。在1点令 \(w=1-z\)，得到指数0与 \(c-a-b\)；在无穷远令 \(w=1/z\)，指数为 \(a,b\)。若指数差为整数，第二解可能含对数项。不能仅写两个相同幂形式就断言已有两个独立解。相关局部基解与 Wronski 行列式可核对 NIST DLMF §15.10\cite{NationalInstituteofStandardsNIST}。
 
+\Needspace{6\baselineskip}
 \begin{proposition}[非整数指数差时的局部基]\label{b3:prop:F-local-basis}
 设 \(a,b,c\in\mathbb C\)、\(c\notin\mathbb Z\)。在 \(0<|z|<1\) 的一个单连通子域上固定 \(\log z\) 分支，则方程 \(z(1-z)y^{\prime\prime}+[c-(a+b+1)z]y^{\prime}-aby=0\) 有两个线性无关的解
 \[
-y_1={}_2F_1(a,b;c;z),\qquad
+y_1={}_2F_1(a,b;c;z),\quad
 y_2=z^{1-c}{}_2F_1(a-c+1,b-c+1;2-c;z).
 \]
 取 \(W=y_1y_2'-y_1'y_2\)，则在同一分支内
@@ -103,6 +145,12 @@ z(1-z)v''+[2-c-(a+b-2c+3)z]v'
 绕0一周，第二个解乘以 \(e^{2\pi\mathrm{i}(1-c)}\)，第一个解保持不变；这个局部基把幂函数的分支与解空间上的变换直接对应起来。若 \(c\) 为整数，上述两个公式可能不再定义或相互退化，此时应重新求第二解。例如椭圆积分方程的 \(c=1\) 对应重指数，后面会看到实际出现的对数解。
 
 
+\subsection{Euler 积分与端点求和}
+\label{b3:subsec:F0204}
+
+局部幂级数的半径不能直接跨过一，但在积分表示中，只要移动因子不碰到积分路径，就可沿更大的域延拓。下面的割线约定把这一点写进函数的定义。
+
+\Needspace{6\baselineskip}
 \begin{theorem}[Euler 积分表示]\label{b3:thm:F-euler-integral}
 设 \(a,b,c\in\mathbb C\)。若 \(\operatorname{Re}c>\operatorname{Re}b>0\)，且 \(z\in\mathbb C\setminus[1,\infty)\)，则
 \[
@@ -114,7 +162,7 @@ z(1-z)v''+[2-c-(a+b-2c+3)z]v'
 \begin{proof}
 先取 \(|z|<1\)，将 \((1-zt)^{-a}=\sum(a)_n(zt)^n/n!\) 展开。在 \(|z|\le r<1\) 上一致收敛，乘以可积端点权后可交换积分与求和。第 \(n\) 项积分为 \(B(b+n,c-b)\)，由 Beta--Gamma 关系约去常数即得 \((b)_n/(c)_n\)。在割平面上，\(1-zt\) 不穿过非正实轴，对任意紧参数集远离零；端点仍由原来的幂控制，积分定义全纯函数。因此它给出所选单值分支的延拓。
 \end{proof}
-若再有 \(\operatorname{Re}(c-a-b)>0\)，令 \(z\to1\) 可由可积端点控制取极限，得到 Gauss 求和值
+若再有 \(\operatorname{Re}(c-a-b)>0\)，沿实轴令 \(z=r\uparrow1\)，可由可积端点控制取极限，得到 Gauss 求和值
 \[
  {}_2F_1(a,b;c;1)=\frac{\Gamma(c)\Gamma(c-a-b)}{\Gamma(c-a)\Gamma(c-b)}.
 \]
@@ -126,8 +174,12 @@ z(1-z)v''+[2-c-(a+b-2c+3)z]v'
 \section{超几何函数的变换与分支}
 \label{b3:sec:F03}
 
+\subsection{变量替换与相容分支}
+\label{b3:subsec:F0301}
+
 同一个微分方程常因变量替换呈现不同参数。一个方便的检验办法是先在0附近证明，再沿指定路径延拓。
 
+\Needspace{6\baselineskip}
 \begin{proposition}[Pfaff 与 Euler 变换]\label{b3:prop:F-transformations}
 设 \(a,b,c\in\mathbb C\)、\(c\notin\{0,-1,-2,\ldots\}\)。在0点附近，采用值为一的幂函数分支，有
 \[
@@ -148,21 +200,62 @@ z(1-z)v''+[2-c-(a+b-2c+3)z]v'
 \]
 在0附近所有幂的对数取零点值零，因此没有额外常数；再用解析延拓的唯一性即可。
 \end{proof}
+\subsection{初等函数与实际分支}
+\label{b3:subsec:F0302}
+
 取 \(a=b=1,c=2\)，系数化为 \(1/(n+1)\)，故 \({}_2F_1(1,1;2;z)=-\log(1-z)/z\)，在0点填值一。这个例子直接展示绕1点的单值性障碍。另一方面，\({}_2F_1(-n,b;c;z)\) 是多项式，不具有同样的分支；奇点是方程的潜在奇点，不一定是每个特定解的实际奇点。
+
+另一个可跟算的例子是
+\[
+ {}_2F_1\left(\frac12,\frac12;\frac32;z\right)
+   =\frac{\arcsin\sqrt z}{\sqrt z}.
+\]
+先对 \(0<z<1\)，从 \(\arcsin w=\int_0^w(1-u^2)^{-1/2}\,\mathrm{d}u\) 的二项展开逐项积分。其 \(w^{2n+1}\) 系数为 \((1/2)_n/(n!(2n+1))\)，而 \((1/2)_n/(3/2)_n=1/(2n+1)\)，所以除以 \(w\) 并令 \(z=w^2\) 即得等式。右侧的商在零点是偶解析函数，因此零点附近并不依赖 \(\sqrt z\) 的符号，仍取值一；但绕一继续延拓后，反正弦本身的分支不能忽略。
+
+\subsection{重指数时的对数解}
+\label{b3:subsec:F0303}
+
+\(c=1\) 时，两个局部指数都为零。仅有指数方程还不能判定对数项的系数；可以直接降阶构造第二解。令
+\(y_1(z)={}_2F_1(a,b;1;z)\)，在充分小的圆盘内 \(y_1\ne0\)。在去掉一条射线的穿孔圆盘上取 \(\log z\)，置
+\[
+ H(z)=\frac{(1-z)^{-a-b}}{y_1(z)^2},
+ \quad
+ J(z)=\int_0^z\frac{H(\zeta)-1}{\zeta}\,\mathrm{d}\zeta.
+\]
+因为 \(H(0)=1\)，后一被积函数在零点可去，故 \(J\) 是单值全纯函数且 \(J(0)=0\)。再置
+\[
+ y_2(z)=y_1(z)(\log z+J(z)).
+\]
+把原方程写成 \(y''+P y'+Qy=0\)，其中
+\(P=1/z-(a+b)/(1-z)\)。令 \(y=y_1v\)，利用 \(y_1\) 自身的方程，余式为
+\(v''+(2y_1'/y_1+P)v'=0\)。上面的选择正满足
+\(v'=z^{-1}(1-z)^{-a-b}/y_1^2\)，故 \(y_2\) 确为第二解，且
+\[
+ y_1y_2'-y_1'y_2=z^{-1}(1-z)^{-a-b}\ne0.
+\]
+绕零点逆时针一周，\(y_2\) 变为 \(y_2+2\pi\mathrm{i}y_1\)。这个计算同时说明：重复指数不等于只剩一个解，第二个解的对数不能通过重新选两个同样的幂级数消去。对于 \(a=b=1/2\)，它将解释椭圆积分互补周期的单值性变换。
 
 \section{完全椭圆积分与周期}
 \label{b3:sec:F04}
 
+\subsection{参数约定与超几何表示}
+\label{b3:subsec:F0401}
+
+本节研究的两个完全椭圆积分具有固定端点，随参数移动的是二次因子。它们一方面满足超几何方程，另一方面将成为亏格一曲面的周期。
+
 对于 \(m\in\mathbb C\setminus[1,\infty)\)，定义\term[wanquan-tuoyuan-jifen]{完全椭圆积分}[complete elliptic integral]
 \[
  K(m)=\int_0^{\pi/2}(1-m\sin^2t)^{-1/2}\,\mathrm{d}t,
- \qquad E(m)=\int_0^{\pi/2}(1-m\sin^2t)^{1/2}\,\mathrm{d}t.
+ \quad E(m)=\int_0^{\pi/2}(1-m\sin^2t)^{1/2}\,\mathrm{d}t.
 \]
 平方根在 \(m=0\) 取正值，并沿割平面延拓。令 \(u=\sin^2t\)，利用 Euler 积分，得
 \[
- K(m)=\frac\pi2{}_2F_1\left(\frac12,\frac12;1;m\right),\qquad
+ K(m)=\frac\pi2{}_2F_1\left(\frac12,\frac12;1;m\right),\quad
  E(m)=\frac\pi2{}_2F_1\left(-\frac12,\frac12;1;m\right).
 \]
+\subsection{正则端点与对数端点}
+\label{b3:subsec:F0402}
+
 因此 \(K\) 满足
 \(m(1-m)K''+(1-2m)K'-K/4=0\)。它在 \(m=0\) 正则。为看清 \(m=1\) 的边界行为，设 \(m=1-\delta\)、\(\delta\downarrow0\)，在积分端点作 \(u=\pi/2-t\)。固定一个小的 \(u_0>0\)，端点附近有
 \[
@@ -172,10 +265,14 @@ z(1-z)v''+[2-c-(a+b-2c+3)z]v'
 \(\int_0^{u_0}(\delta+u^2)^{-1/2}\,\mathrm{d}u=\tfrac12\log(1/\delta)+O(1)\)。因此
 \(K(1-\delta)=\tfrac12\log(1/\delta)+O(1)\)，确有对数发散；指数差为零在这个解上产生了实际奇性。
 
+\subsection{微分关系与 Legendre 常数}
+\label{b3:subsec:F0403}
+
+\Needspace{6\baselineskip}
 \begin{proposition}[微分关系]\label{b3:prop:F-elliptic-derivatives}
 令 \(K(m)=\int_0^{\pi/2}(1-m\sin^2t)^{-1/2}\,\mathrm dt\)、\(E(m)=\int_0^{\pi/2}(1-m\sin^2t)^{1/2}\,\mathrm dt\)，平方根在 \(m=0\) 取1并沿 \(\mathbb C\setminus[1,\infty)\) 延拓。在 \(m\in\mathbb C\setminus[1,\infty)\) 内，按可去值解释 \(m=0\)，有
 \[
- E'(m)=\frac{E(m)-K(m)}{2m},\qquad
+ E'(m)=\frac{E(m)-K(m)}{2m},\quad
  K'(m)=\frac{E(m)}{2m(1-m)}-\frac{K(m)}{2m}.
 \]
 \end{proposition}
@@ -190,7 +287,7 @@ z(1-z)v''+[2-c-(a+b-2c+3)z]v'
 
 在 \(m=0\)，右侧式子中的 \(m\) 分母只是可去奇点。由积分展开
 \[
-K(m)=\frac\pi2\left(1+\frac m4+\frac{9m^2}{64}+O(m^3)\right),\qquad
+K(m)=\frac\pi2\left(1+\frac m4+\frac{9m^2}{64}+O(m^3)\right),\quad
 E(m)=\frac\pi2\left(1-\frac m4-\frac{3m^2}{64}+O(m^3)\right),
 \]
 可读出 \(K'(0)=\pi/8\)、\(E'(0)=-\pi/8\)。对实 \(0<m<1\)，还可从原积分看出 \(K\) 严格递增、\(E\) 严格递减，并有 \(E(m)\to1\) 当 \(m\uparrow1\)：后一极限由支配收敛化为 \(\int_0^{\pi/2}\cos t\,\mathrm{d}t=1\)。这些信息与 \(K\) 的对数发散配合，可以确定一个看似与参数有关的表达式其实为常数。
@@ -198,6 +295,7 @@ E(m)=\frac\pi2\left(1-\frac m4-\frac{3m^2}{64}+O(m^3)\right),
 下面的恒等式称为\term[legendre-guanxi]{Legendre 关系}[Legendre relation]，它同时控制两条互补周期的导数。
 
 
+\Needspace{6\baselineskip}
 \begin{proposition}[Legendre 关系与周期比]\label{b3:prop:F-legendre-relation}
 令 \(K(m)=\int_0^{\pi/2}(1-m\sin^2t)^{-1/2}\,\mathrm dt\)、\(E(m)=\int_0^{\pi/2}(1-m\sin^2t)^{1/2}\,\mathrm dt\)，平方根在 \(m=0\) 取1并沿 \(\mathbb C\setminus[1,\infty)\) 延拓。对实 \(0<m<1\)，有
 \[
@@ -232,16 +330,72 @@ K_c'K-K_cK'=-\frac{KE_c+EK_c-KK_c}{2m(1-m)}
 \end{proof}
 这也把周期参数的确定变成一个有唯一解的实问题：给定 \(t>0\)，方程 \(K(1-m)=tK(m)\) 恰有一个 \(m\in(0,1)\)。后面的 theta 公式将说明这个 \(m\) 就是 \(\lambda(\mathrm{i}t)\)，并给出不必求积分逆函数的表达式。
 
+\subsection{二次变换与算术几何平均}
+\label{b3:subsec:F0404}
+
+幂级数在 \(m\) 接近一时收敛很慢。一个二次变量替换能把积分参数迅速带回零附近，并在实变量中给出带上下界的计算过程。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[Landen 变换与算术几何平均]\label{b3:prop:F-landen-agm}
+对实 \(0<r<1\)，完全椭圆积分满足
+\[
+ K\left(\frac{4r}{(1+r)^2}\right)=(1+r)K(r^2).
+\]
+对实 \(a\ge b>0\)，令 \(a_0=a,b_0=b\)，并递推
+\[
+ a_{n+1}=\frac{a_n+b_n}{2},\quad b_{n+1}=\sqrt{a_nb_n}.
+\]
+两列收敛于同一个正数 \(M(a,b)\)，称为\term[suanshu-jihe-pingjun]{算术几何平均}[arithmetic--geometric mean]，并且对 \(0<m<1\)，
+\[
+ K(m)=\frac{\pi}{2M(1,\sqrt{1-m})}.
+\]
+\end{proposition}
+\begin{proof}
+先把 \(K(m)\) 写成 \(\int_0^1[(1-x^2)(1-mx^2)]^{-1/2}\,\mathrm{d}x\)。取
+\(m=4r/(1+r)^2\)，令 \(x=(1+r)u/(1+ru^2)\)。此变换从 \([0,1]\) 严格递增地映到自身，且
+\[
+ 1-x^2=\frac{(1-u^2)(1-r^2u^2)}{(1+ru^2)^2},
+ \quad
+ 1-mx^2=\frac{(1-ru^2)^2}{(1+ru^2)^2}.
+\]
+导数为 \((1+r)(1-ru^2)/(1+ru^2)^2\)。所有因子在内部取正根，代入后 \(1-ru^2\) 与分母恰好消去，便得第一式。
+
+再令
+\[
+ I(a,b)=\int_0^{\pi/2}\frac{\mathrm{d}t}{\sqrt{a^2\cos^2t+b^2\sin^2t}}
+       =\frac1a K(1-b^2/a^2).
+\]
+当 \(a>b\) 时，取 \(r=(a-b)/(a+b)\)，则
+\(1-b^2/a^2=4r/(1+r)^2\)，而
+\(1-ab/((a+b)/2)^2=r^2\)。第一式遂给
+\(I(a,b)=I((a+b)/2,\sqrt{ab})\)；\(a=b\) 时等式直接成立。
+
+算术平均不小于几何平均，故
+\(b_n\le b_{n+1}\le a_{n+1}\le a_n\)。两列有正极限 \(B,A\)，把极限代入第一条递推得 \(A=(A+B)/2\)，即 \(A=B=M\)。积分的分母始终至少为 \(b>0\)，可用常数 \(1/b\) 支配；于是 \(I(a_n,b_n)\to\pi/(2M)\)。积分逐步不变，故 \(I(a,b)=\pi/(2M)\)。最后取 \(a=1,b=\sqrt{1-m}\)。
+\end{proof}
+这里的快速收敛有具体原因。差值满足
+\[
+ a_{n+1}-b_{n+1}
+ =\frac{(a_n-b_n)^2}{2(\sqrt{a_n}+\sqrt{b_n})^2}.
+\]
+一旦两端接近，下一步的差大致是前一步差的平方。又因 \(b_n\le M\le a_n\)，每一步都给 \(\pi/(2a_n)\le K(m)\le\pi/(2b_n)\)；这比仅列小数值更能说明近似的可靠程度。
+
+\subsection{曲线上的积分与周期基}
+\label{b3:subsec:F0405}
+
 现在设 \(0<m<1\)。曲线 \(y^2=x(1-x)(1-mx)\) 的分支点为 \(0,1,1/m,\infty\)。积分 \(\int\mathrm{d}x/(2y)\) 在两条标准基本环路上的周期分别为 \(2K(m)\) 与 \(2\mathrm{i}K(1-m)\)，故相应周期比为
 \[
  \tau=\mathrm{i}\frac{K(1-m)}{K(m)}\in\mathbb H.
 \]
-下一节从已经构造的 Weierstrass 函数重新推导这个关系，既固定倍数，也固定补参数。
+实周期中的倍数二来自闭路在两层上的往返。在 \(0<x<1\) 取 \(y>0\)，从零到一的积分 \(\int\mathrm{d}x/(2y)\) 经 \(x=\sin^2t\) 化为 \(K(m)\)；回程在另一层有 \(y<0\)，路径方向也反转，所以再贡献同一个值。虚周期同样要指定闭路与平方根，而不能只把一个端点积分称为整个周期。下一节从已经构造的 Weierstrass 函数重新推导这两个值，既固定倍数，也固定补参数。
 
 \section{模 lambda 函数与 theta 常数}
 \label{b3:sec:F05}
 
-设 \(\tau\in\mathfrak H\)、\(q=e^{\pi\mathrm{i}\tau}\)，\(\theta_2(\tau)=\sum_{n\in\mathbb Z}e^{\pi\mathrm{i}\tau(n+1/2)^2}\)、\(\theta_3(\tau)=\sum_{n\in\mathbb Z}e^{\pi\mathrm{i}\tau n^2}\)。定义\term[mo-lambda-hanshu]{模 lambda 函数}[modular lambda function]
+\subsection{theta 商与分支点交比}
+\label{b3:subsec:F0501}
+
+设 \(\tau\in\mathfrak H\)、\(q=e^{\pi\mathrm{i}\tau}\)，\(\theta_2(\tau)=\sum_{n\in\mathbb Z}e^{\pi\mathrm{i}\tau(n+1/2)^2}\)、\(\theta_3(\tau)=\sum_{n\in\mathbb Z}e^{\pi\mathrm{i}\tau n^2}\)，并记 \(\theta_4(\tau)=\sum_{n\in\mathbb Z}(-1)^n e^{\pi\mathrm{i}\tau n^2}\)。定义\term[mo-lambda-hanshu]{模 lambda 函数}[modular lambda function]
 \[
  \lambda(\tau)=\frac{\theta_2(\tau)^4}{\theta_3(\tau)^4}.
 \]
@@ -255,15 +409,21 @@ K_c'K-K_cK'=-\frac{KE_c+EK_c-KK_c}{2m(1-m)}
 \]
 在 \(z=\pi(1+\tau)/2\) 处代入两次半周期移位，给 \(e_2-e_1=-\theta_4^4\)：分子移位后的常数为 \(q^{-1/4}e^{-\mathrm{i}\pi/2}\theta_4\)，分母为 \(\mathrm{i}q^{-1/4}e^{-\mathrm{i}\pi/2}\theta_3\)，其比值平方为 \(-\theta_4^2/\theta_3^2\)，再乘 \((\theta_1'(0)/\theta_2)^2=\theta_3^2\theta_4^2\)。所以
 \[
- e_2-e_3=\theta_2^4,\qquad
+ e_2-e_3=\theta_2^4,\quad
  \lambda=\frac{e_2-e_3}{e_1-e_3}.
 \]
 最后一个表达式把 lambda 解释为四个分支点的交比，而不是仅有一项形式上的 theta 商。
 
+\subsection{虚轴上的周期反演}
+\label{b3:subsec:F0502}
+
+半周期差的公式先把 theta 商解释成代数参数，下面再比较积分，确定尺度。为了避免平方根相位干扰，先在 \(\tau=\mathrm{i}t\) 的实一维族上完成这一步；该族中的两个周期分别是实方向和纯虚方向。
+
+\Needspace{6\baselineskip}
 \begin{proposition}[周期积分与 theta 值]\label{b3:prop:F-period-theta}
 令 \(K(m)=\int_0^{\pi/2}(1-m\sin^2t)^{-1/2}\,\mathrm dt\)、\(E(m)=\int_0^{\pi/2}(1-m\sin^2t)^{1/2}\,\mathrm dt\)，平方根在 \(m=0\) 取1并沿 \(\mathbb C\setminus[1,\infty)\) 延拓。设 \(\tau=\mathrm it\)、\(t>0\)，\(\theta_2(\tau)=\sum_{n\in\mathbb Z}e^{\pi\mathrm i\tau(n+1/2)^2}\)、\(\theta_3(\tau)=\sum_{n\in\mathbb Z}e^{\pi\mathrm i\tau n^2}\)，令 \(m=\lambda(\tau)=\theta_2(\tau)^4/\theta_3(\tau)^4\)。则 \(0<m<1\)，且
 \[
- K(m)=\frac\pi2\theta_3(\tau)^2,\qquad
+ K(m)=\frac\pi2\theta_3(\tau)^2,\quad
  \frac{K(1-m)}{K(m)}=t.
 \]
 \end{proposition}
@@ -271,7 +431,7 @@ K_c'K-K_cK'=-\frac{KE_c+EK_c-KK_c}{2m(1-m)}
 此时乘积中各因子为正，三个 theta 常数均正，四次恒等式给 \(0<m<1\)。记 \(A=e_1-e_3=\theta_3^4>0\)，令
 \(x(z)=A/(\wp(z)-e_3)\)。由 \(\wp'^2=4(\wp-e_1)(\wp-e_2)(\wp-e_3)\) 直接计算得
 \[
- (x')^2=4A x(1-x)(1-mx),\qquad x(z)=Az^2+O(z^4).
+ (x')^2=4A x(1-x)(1-mx),\quad x(z)=Az^2+O(z^4).
 \]
 沿 \(0<z<\pi/2\)，\(x\) 从0到1且无中间临界点，因为 \(\wp'\) 的零点只有半周期。取近0的正平方根，则
 \(\sqrt A\,z=\int_0^{\sqrt{x(z)}}\mathrm{d}u/\sqrt{(1-u^2)(1-mu^2)}\)。令 \(z\uparrow\pi/2\)，得第一式。
@@ -286,9 +446,12 @@ K_c'K-K_cK'=-\frac{KE_c+EK_c-KK_c}{2m(1-m)}
 \end{proof}
 这些等式先在虚轴上固定了平方根；若向复杂参数延拓，必须同时连续选择周期基与平方根。跨越割线后简单照抄实参数的正根约定会产生错误。
 \ProseParagraphBreak
+\subsection{重新编号与尖点参数}
+\label{b3:subsec:F0503}
+
 theta 变换公式还给
 \[
- \lambda(-1/\tau)=1-\lambda(\tau),\qquad
+ \lambda(-1/\tau)=1-\lambda(\tau),\quad
  \lambda(\tau+1)=\frac{\lambda(\tau)}{\lambda(\tau)-1}.
 \]
 第一式来自 \(S\) 交换 \(\theta_2,\theta_4\)，公共的 \((-\mathrm{i}\tau)^{1/2}\) 因子相消；第二式来自 \(\theta_2(\tau+1)=e^{\pi\mathrm{i}/4}\theta_2(\tau)\)、\(\theta_3(\tau+1)=\theta_4(\tau)\)。两种变换生成交比的六种表达式，对应三非零半周期的重新编号。因此保留半周期标记时用 \(\lambda\)，忘掉标记时用第二十三章的 \(j\)。具体地，记 \(A=e_1-e_3\)、\(m=\lambda\)，则
@@ -297,7 +460,7 @@ theta 变换公式还给
 \]
 展开 \(4\prod(x-e_j)=4x^3-g_2x-g_3\)，得到
 \[
-g_2=\frac{4A^2}{3}(1-m+m^2),\qquad
+g_2=\frac{4A^2}{3}(1-m+m^2),\quad
 g_2^3-27g_3^2=16A^6m^2(1-m)^2.
 \]
 代入 \(j=1728g_2^3/(g_2^3-27g_3^2)\)，便得
@@ -308,7 +471,7 @@ g_2^3-27g_3^2=16A^6m^2(1-m)^2.
 
 在尖点附近，还能直接比较周期参数与积分参数。注意此处仍是 \(q=e^{\pi\mathrm{i}\tau}\)，不是模形式章节的 \(e^{2\pi\mathrm{i}\tau}\)。由级数
 \[
-\theta_2=2q^{1/4}(1+q^2+O(q^6)),\qquad
+\theta_2=2q^{1/4}(1+q^2+O(q^6)),\quad
 \theta_3=1+2q+O(q^4)
 \]
 得到 \(\theta_3^{-4}=1-8q+40q^2+O(q^3)\)，因而
@@ -326,50 +489,138 @@ e^{-\pi K(1-m)/K(m)}=\frac m{16}+\frac{m^2}{32}
 本附录的实积分、局部级数和周期描述各有自己的自然定义域。它们相互转换时，分析上的关键是正规收敛与分支，几何上的关键是周期基的选择。更广的公式表及参数约定见 NIST DLMF §§15.6、15.8、19.2、19.7\cite{NationalInstituteofStandardsNIST}。
 
 \begin{chaptersummary}
-Beta 积分把两端的幂奇性统一为 Gamma 商；超几何方程用三个正则奇点控制延拓；椭圆积分的两条周期则由 theta 常数连接到模参数。公式中的分支与正规化是对象定义的一部分。
+Beta 积分把两端的幂奇性统一为 Gamma 商，参数微分又产生对数权。超几何系数递推给局部唯一解，降阶法解释共振时的对数解，Euler 积分与变量变换提供较大区域上的表示。椭圆积分的微分关系确定 Legendre 常数，二次变换给算术几何平均的可靠计算；两条周期最后由 theta 常数连接到模参数。分支、周期基以及 \(m=k^2\) 的归一化决定了各表示之间的准确换算。
 \end{chaptersummary}
 \BookExercises
+% 题源：自拟，或对本附录原自拟题的实质改写；完整解答不承担正文前置。
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b3:ex:F-1}
-设实 \(a,b,c>0\)。计算三角形 \(D=\{(x,y):x>0,y>0,x+y<1\}\) 上的积分
-\(\int_Dx^{a-1}y^{b-1}(1-x-y)^{c-1}\,\mathrm{d}x\mathrm{d}y\)。
+设实 \(a,b,c>0\)，\(D=\{(x,y):x>0,y>0,x+y<1\}\)。计算
+\(Z=\int_Dx^{a-1}y^{b-1}(1-x-y)^{c-1}\,\mathrm{d}x\mathrm{d}y\)。再用此权除以 \(Z\) 定义平均 \(\mathbb E\)，求 \(\mathbb E x\)、\(\mathbb E y\) 和 \(\mathbb E(xy)-\mathbb E x\,\mathbb E y\)。
 \end{exercise}
 \begin{solution}
-先固定 \(x\)，令 \(y=(1-x)u\)。内层积分为
-\((1-x)^{b+c-1}B(b,c)\)，所以总积分为
+先固定 \(x\)，令 \(y=(1-x)u\)，包括微元因子在内，内积分为 \((1-x)^{b+c-1}B(b,c)\)。因被积函数非负，Tonelli 允许换序，而参数正性保证结果有限。因此
 \[
-B(b,c)B(a,b+c)=\frac{\Gamma(a)\Gamma(b)\Gamma(c)}{\Gamma(a+b+c)}.
+ Z=B(b,c)B(a,b+c)=\frac{\Gamma(a)\Gamma(b)\Gamma(c)}{\Gamma(a+b+c)}.
 \]
-因为被积函数非负，可先由 Tonelli 换序，再由参数正性确认两个 Beta 积分有限。换元中 \(\mathrm{d}y=(1-x)\,\mathrm{d}u\) 的因子不可漏掉，否则外层参数会差一。
+置 \(s=a+b+c\)。在上式中分别把 \(a\)、\(b\) 增加一，再除以 \(Z\)，给 \(\mathbb E x=a/s\)、\(\mathbb E y=b/s\)；同时把二者增加一，给 \(\mathbb E(xy)=ab/(s(s+1))\)。所以协方差为 \(-ab/(s^2(s+1))<0\)。这也反映了 \(x+y<1\) 的共同尺度限制；两个坐标在此权下不能视为独立变量。
 \end{solution}
+
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b3:ex:F-2}
-证明 \(\frac{\mathrm{d}}{\mathrm{d}z}{}_2F_1(a,b;c;z)=\frac{ab}{c}{}_2F_1(a+1,b+1;c+1;z)\)。
+设实 \(a>0\)、\(0<b<c\)、\(0<z<1\)。利用 Euler 积分证明
+\[
+ (1-bz/c)^{-a}<{}_2F_1(a,b;c;z)
+   <1-\frac bc+\frac bc(1-z)^{-a}.
+\]
 \end{exercise}
 \begin{solution}
-在 \(|z|<1\) 逐项求导并把指标减一，用 \((a)_{n+1}=a(a+1)_n\) 等恒等式即可。允许参数下再沿共同路径延拓，等式仍成立。
+以 \(w(t)=t^{b-1}(1-t)^{c-b-1}/B(b,c-b)\) 作归一化权，其积分为一，且 \(\int tw(t)\,\mathrm{d}t=b/c\)。函数 \(\phi(t)=(1-zt)^{-a}\) 在 \([0,1]\) 严格凸，因为
+\(\phi''=a(a+1)z^2(1-zt)^{-a-2}>0\)。其在 \(t=b/c\) 的切线严格位于图形之下，除切点以外不等；乘以正权积分，切线的线性项均值为零，得到左侧严格下界。其端点弦严格位于内部图形上方，即
+\(\phi(t)<(1-t)\phi(0)+t\phi(1)\) 对 \(0<t<1\) 成立；积分给右侧严格上界。两个不等式都使用了非退化的正权和 \(z>0\)。
 \end{solution}
+
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b3:ex:F-3}
-令 \(P_N(m)=\frac\pi2\sum_{n=0}^N((1/2)_n/n!)^2m^n\)。证明对 \(|m|\le r<1\)，有
-\(|K(m)-P_N(m)|\le\frac\pi2r^{N+1}/(1-r)\)，并给出在 \(r=1/2\) 上使误差小于 \(10^{-4}\) 的一个 \(N\)。
+令 \(P_N(m)=\frac\pi2\sum_{n=0}^N((1/2)_n/n!)^2m^n\)。证明对 \(|m|\le r<1\)，
+\[
+ |K(m)-P_N(m)|\le\frac\pi2\frac{r^{N+1}}{(N+2)(1-r)}.
+\]
+给出在 \(r=1/2\) 上使误差小于 \(10^{-4}\) 的一个 \(N\)。
 \end{exercise}
 \begin{solution}
-\((1/2)_n/n!=\prod_{j=1}^n(1-1/(2j))\) 介于0与1之间，所以绝对值余项不超过 \(\frac\pi2\sum_{n>N}r^n\)，求几何和即得估计。在 \(r=1/2\) 时上界为 \(\pi2^{-(N+1)}\)，取 \(N=14\) 得 \(\pi/32768<10^{-4}\)。这是一致误差界，因此同时控制整个闭圆盘上的近似，而不只是实轴某一点。
+置 \(c_n=((1/2)_n/n!)^2\)。我们先证明 \(c_n\le1/(n+1)\)。初值成立，且
+\[
+ \frac{c_{n+1}}{c_n}=\frac{(2n+1)^2}{4(n+1)^2}
+ \le\frac{n+1}{n+2},
+\]
+最后的不等式交叉相乘后差为 \(3n+2>0\)，故归纳成立。因此对 \(n\ge N+1\)，\(c_n\le1/(N+2)\)，绝对收敛尾和由几何级数给出所示界。在 \(r=1/2\) 时，取 \(N=11\)，界为 \(\pi/(13\cdot4096)<10^{-4}\)。这个估计控制整个复闭圆盘；它不依赖实参数时各项同号。
 \end{solution}
+
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b3:ex:F-4}
-证明 \(0<m<1\) 时有
-\(\sqrt{1-m}K(m)<\pi/2<K(m)\)。再对相应微分方程证明 \(K(m)\) 与 \(K(1-m)\) 线性无关，并求其 Wronski 行列式 \(K(m)\frac{\mathrm d}{\mathrm dm}K(1-m)-K'(m)K(1-m)\)。
+把实区间 \(0<m<1\) 上的 \(K(m)\)、\(K(1-m)\) 延拓到零点附近的割开穿孔圆盘，令 \(\log m\) 在正实轴为实数。证明存在零点附近单值全纯函数 \(h\)，使
+\[
+ K(1-m)=-\frac1\pi K(m)\log m+h(m).
+\]
+求逆时针绕零点一周后这两个解及 \(\tau=\mathrm{i}K(1-m)/K(m)\) 的变化。
 \end{exercise}
 \begin{solution}
-在 \(0<t<\pi/2\)，\(1<(1-m\sin^2t)^{-1/2}<(1-m)^{-1/2}\)，积分给两侧严格不等式。将 \(m\) 换为 \(1-m\) 并用链式法则可验 \(K(1-m)\) 满足同一方程。Legendre 关系的证明已经算出其 Wronski 行列式为 \(-\pi/(4m(1-m))\)，无零点，故两解线性无关。亦可从0处一个有限、一个对数发散看出二者不能成常数倍。
+方程的参数为 \(a=b=1/2,c=1\)。\subsecref{b3:subsec:F0303}的降阶构造给局部基 \(y_1=2K/\pi\)、\(y_2=y_1\log m+v(m)\)，其中 \(v\) 单值全纯。\(K(1-m)\) 满足同一方程，故可写成 \(A y_1+B y_2\)；这是常数线性组合，因为在任一点用两个初值解出 \(A,B\)，再由初值唯一性延拓。沿正实轴趋零时，\(K(1-m)=-(1/2)\log m+O(1)\)、\(y_1\to1\)，所以 \(B=-1/2\)。这就得到所求表示。
+
+一周后 \(K(m)\) 不变，\(\log m\) 增加 \(2\pi\mathrm{i}\)，故 \(K(1-m)\) 变为 \(K(1-m)-2\mathrm{i}K(m)\)。相应地 \(\tau\) 变为 \(\tau+2\)。这一周期基变化与 theta 公式中的 \(\lambda(\tau+2)=\lambda(\tau)\) 相容，但并不表示两条周期本身都保持不变。
 \end{solution}
+
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b3:ex:F-5}
-由 \(\lambda(\mathrm{i})=1/2\) 求 \(\lambda(1+\mathrm{i})\)，并解释它为何不在 \((0,1)\)。
+对 \(m\notin\{0,1\}\)，由变换 \(m\mapsto1-m\)、\(m\mapsto m/(m-1)\) 写出至多六个可能的交比值。分别在 \(m=1/2\) 与 \(m^2-m+1=0\) 时求不同值的个数，并计算对应的 \(j\) 值。
 \end{exercise}
 \begin{solution}
-平移公式给 \((1/2)/(1/2-1)=-1\)。实区间 \((0,1)\) 的结论只针对纯虚参数且采用指定半周期编号；平移重新编号了分支点，不必保持该区间。
+反复复合得到集合
+\[
+ \left\{m,\ 1-m,\ \frac1m,\ \frac1{1-m},\
+ \frac m{m-1},\ \frac{m-1}m\right\}.
+\]
+分别将两生成变换施加到这六式，仍落在该集合内，故已包含全部可能值。在 \(m=1/2\) 时，不同值为 \(1/2,2,-1\)，共三个；代入
+\(j=256(1-m+m^2)^3/(m^2(1-m)^2)\) 得 \(1728\)。若 \(m^2-m+1=0\)，则 \(m(1-m)=1\)，六式只剩 \(m\) 与 \(1-m\) 两个不同值，分子为零、分母非零，故 \(j=0\)。特殊参数处的轨道变小，与半周期重新编号后的对称性增加相符。
 \end{solution}
+
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b3:ex:F-6}
-证明 \(B(a,b+1)=\frac b{a+b}B(a,b)\)，并利用它计算 \(\int_0^1t^{a-1}(1-t)^{b-1}\log t\,\mathrm{d}t\)。
+设实 \(a,b>0\)，以 Beta 权归一化定义 \(\mathbb E\)，并令 \(\psi_0=\Gamma'/\Gamma\)。证明
+\[
+ \mathbb E(\log t\log(1-t))
+ -\mathbb E(\log t)\mathbb E(\log(1-t))=-\psi_0'(a+b)<0.
+\]
+对严格负号给出一个直接积分解释。
 \end{exercise}
 \begin{solution}
-第一式由 Gamma 递推直接得到。对参数 \(a\) 求导，第二积分为 \(B(a,b)(\psi_0(a)-\psi_0(a+b))\)，其中 \(\psi_0=\Gamma'/\Gamma\) 为第二十一章使用的 Gamma 对数导数。实部为正时参数微分合法，较小实部的幂权控制额外的 \(|\log t|\)。
+实部的正下界使两个端点的对数乘积仍可积，因此可对 \(B(a,b)\) 先后求 \(a,b\) 的偏导。商的求导给左侧等于 \(\partial_a\partial_b\log B(a,b)\)，而 Gamma 商给此混合导数为 \(-\psi_0'(a+b)\)。
+
+记 \(w\) 为归一化正权，\(f(t)=\log t\)、\(g(t)=\log(1-t)\)。展开并用 Fubini，协方差也等于
+\[
+ \frac12\int_0^1\int_0^1
+ (f(t)-f(u))(g(t)-g(u))w(t)w(u)\,\mathrm{d}t\mathrm{d}u.
+\]
+绝对可积性由两个对数的平方矩有限保证。\(f\) 严格递增，\(g\) 严格递减，所以除对角线外乘积严格负；正权使积分严格负。这同时从 Beta 积分推出正实轴上的 \(\psi_0'>0\)。
+\end{solution}
+
+\Needspace{6\baselineskip}
+\begin{exercise}\label{b3:ex:F-7}
+用 Pfaff 变换、Beta 积分及 Legendre 关系证明
+\[
+ K(1/2)=\frac{\Gamma(1/4)^2}{4\sqrt\pi},
+ \quad
+ E(1/2)=\frac{\Gamma(1/4)^2}{8\sqrt\pi}
+          +\frac{\pi^{3/2}}{\Gamma(1/4)^2}.
+\]
+\end{exercise}
+\begin{solution}
+Pfaff 变换在实负参数处采用与零点相接的正平方根，给 \(K(-1)=2^{-1/2}K(1/2)\)。另一方面，令 \(u=\sin t\)，
+\[
+ K(-1)=\int_0^1\frac{\mathrm{d}u}{\sqrt{1-u^4}}
+       =\frac14 B(1/4,1/2).
+\]
+后一步用 \(v=u^4\)，两个端点均可积。Beta--Gamma 关系及
+\(\Gamma(1/4)\Gamma(3/4)=\pi\sqrt2\)、\(\Gamma(1/2)=\sqrt\pi\) 遂给第一式。在 \(m=1/2\) 的 Legendre 关系中，两组互补积分相等，故 \(2KE-K^2=\pi/2\)，即 \(E=K/2+\pi/(4K)\)。代入第一式得到第二式。
+\end{solution}
+
+\Needspace{6\baselineskip}
+\begin{exercise}\label{b3:ex:F-8}
+用\cref{b3:prop:F-landen-agm}的递推计算 \(K(1/2)\)，初值为 \(a_0=1\)、\(b_0=1/\sqrt2\)。不用引用未证明的小数值，证明第三步给出的区间
+\([\pi/(2a_3),\pi/(2b_3)]\) 长度小于 \(10^{-8}\)。
+\end{exercise}
+\begin{solution}
+令 \(d_n=a_n-b_n\)。由正文差值恒等式与 \(b_n\ge b_0\)，
+\[
+ d_{n+1}\le\frac{d_n^2}{8b_0}.
+\]
+使用严格有理界 \(b_0>0.7\)、\(d_0<0.3\)，逐步得到
+\(d_1<0.017\)、\(d_2<0.000052\)、\(d_3<4.9\cdot10^{-10}\)；每一步只是将前一个上界平方再除以 \(5.6\)。所给区间确实包含 \(K(1/2)\)，其长度为
+\[
+ \frac{\pi d_3}{2a_3b_3}
+ \le\frac{\pi d_3}{2b_0^2}
+ <\frac{\pi}{0.98}\,4.9\cdot10^{-10}<10^{-8}.
+\]
+这里的端点可用三次算术平均与开平方直接写出；区间宽度的证明与显示多少位小数无关。
 \end{solution}

@@ -3,25 +3,329 @@
 \label{b3:sec:2906}
 % 规划课题：A30。
 
-待撰写。
+\chapref{b3:ch:28}在圆盘上把面积平方可积的全纯函数组织成 Hilbert 空间，并用核表示点值。多变量情形仍可沿这条路线前进：先把积分范数转为内部点值的控制，再证明全纯子空间闭，最后构造再生核。一般有界域未必允许写出显式核；多圆盘的乘积结构则使每一步都能落实到系数和具体公式上。
 
 \subsection{有界域上的面积范数}
 \label{b3:subsec:290601}
 
-待撰写。
+在 \(\mathbb C^n\) 中，面积积分相应地成为实 \(2n\) 维体积积分。以下使用未归一化的 Lebesgue 体积
+\[
+ \mathrm{d}V(z)=\mathrm{d}x_1\,\mathrm{d}y_1\cdots
+ \mathrm{d}x_n\,\mathrm{d}y_n,
+ \quad z_j=x_j+\mathrm{i}y_j.
+\]
+因此单位多圆盘 \(\mathbb D^n\) 的体积为 \(\pi^n\)。这与\chapref{b3:ch:28}所用的圆盘归一化面积不同；当 \(n=1\) 时，本节的范数平方比该章大 \(\pi\) 倍，再生核相应小 \(\pi\) 倍。后面的常数都按当前体积约定计算。
+
+\Needspace{6\baselineskip}
+\begin{definition}[有界域上的 Bergman 空间]\label{b3:def:29-bergman-space}
+设 \(n\ge1\) 为整数，\(\Omega\subset\mathbb C^n\) 为非空有界域，\(\mathcal O(\Omega)\) 表示其上全纯函数的集合。定义
+\[
+ A^2(\Omega)=\left\{f\in\mathcal O(\Omega):
+       \int_\Omega |f(z)|^2\,\mathrm{d}V(z)<\infty\right\},
+ \quad
+ \langle f,g\rangle_{A^2}=\int_\Omega f\overline g\,\mathrm{d}V.
+\]
+它称为 \(\Omega\) 的\term[bergman-kongjian]{Bergman 空间}[Bergman space]，范数记为 \(\|f\|_{A^2}\) 或 \(\|f\|_2\)。内积对第一变量线性，对第二变量共轭线性。
+\end{definition}
+\symidx{\(A^2(\Omega)\)：有界域上以未归一化体积定义的 Bergman 空间}
+
+通常 \(L^2(\Omega)\) 的元素是几乎处处相等的函数类，而这里还要谈论某个点的函数值。两种看法可以兼容：若两个全纯函数几乎处处相等，它们的差连续；只要在一点非零，就在一个正体积的小球上非零，产生矛盾。因此，每个含全纯代表的 \(L^2\) 类至多含一个全纯代表。我们据此把 \(A^2(\Omega)\) 看成 \(L^2(\Omega,\mathrm{d}V)\) 的线性子空间，同时保留其逐点取值。
+
+\ProseParagraphBreak
+
+域的有界性保证常数和所有多项式都属于 \(A^2(\Omega)\)。定义不要求边界光滑，也不要求每个全纯函数都能连续延拓到边界。事实上，后面用于构造核的估计全部发生在域的内部。
 
 \subsection{局部点值估计与完备性}
 \label{b3:subsec:290602}
 
-待撰写。
+一般平方可积函数的范数不能控制某个点的值；即使限制为连续函数，也可以造出支集很小而峰值很高的函数。全纯函数的点值却受周围各方向的平均约束。迭代 Cauchy 公式把这种约束同时施加在所有复坐标上。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[多圆盘上的局部平方估计]\label{b3:prop:29-bergman-local}
+设 \(\Omega\subset\mathbb C^n\) 为域，\(f\in\mathcal O(\Omega)\)，且
+\[
+ P(a,r)=\{z:|z_j-a_j|<r_j,\ 1\le j\le n\},
+ \quad \overline{P(a,r)}\subset\Omega,
+ \quad r_j>0.
+\]
+对每个多重指标 \(\alpha\in\mathbb N_0^n\)，以 \(\partial^\alpha\) 表示复坐标导数，有
+\begin{equation}\label{b3:eq:29-bergman-local}
+ |\partial^\alpha f(a)|^2
+ \le
+ \frac{(\alpha!)^2\prod_{j=1}^n(\alpha_j+1)}
+      {\pi^n\prod_{j=1}^n r_j^{2\alpha_j+2}}
+ \int_{P(a,r)}|f|^2\,\mathrm{d}V.
+\end{equation}
+特别地，对 \(K\Subset\Omega\)，存在只依赖于 \(K,\Omega,\alpha\) 的有限常数 \(C_{K,\alpha}\)，使每个 \(f\in A^2(\Omega)\) 满足
+\[
+ \sup_{a\in K}|\partial^\alpha f(a)|
+ \le C_{K,\alpha}\|f\|_2.
+\]
+\end{proposition}
+\Needspace{6\baselineskip}
+\begin{proof}
+取 \(0<t_j<r_j\)，并记 \(a+t e^{\mathrm{i}\theta}\) 的第 \(j\) 个坐标为 \(a_j+t_je^{\mathrm{i}\theta_j}\)。\cref{b3:thm:29-polydisc-cauchy}的导数公式给出
+\[
+ \frac{\partial^\alpha f(a)}{\alpha!}\prod_jt_j^{\alpha_j}
+ =\frac1{(2\pi)^n}\int_{[0,2\pi]^n}
+ f(a+t e^{\mathrm{i}\theta})e^{-\mathrm{i}\alpha\cdot\theta}
+ \,\mathrm{d}\theta.
+\]
+对归一化角测度使用 Cauchy--Schwarz 不等式，得
+\[
+ \frac{|\partial^\alpha f(a)|^2}{(\alpha!)^2}
+       \prod_jt_j^{2\alpha_j}
+ \le\frac1{(2\pi)^n}\int_{[0,2\pi]^n}
+       |f(a+t e^{\mathrm{i}\theta})|^2\,\mathrm{d}\theta.
+\]
+两边乘以 \((2\pi)^n\prod_jt_j\,\mathrm{d}t_j\)，再分别在 \((0,r_j)\) 积分。极坐标换元把右侧变成多圆盘上的体积积分，左侧等于
+\[
+ \frac{|\partial^\alpha f(a)|^2}{(\alpha!)^2}
+ \pi^n\prod_j\frac{r_j^{2\alpha_j+2}}{\alpha_j+1}.
+\]
+整理即得\eqref{b3:eq:29-bergman-local}。对内部紧集 \(K\)，可以选取统一的 \(\rho>0\)，使所有 \(a\in K\) 的闭多圆盘 \(\overline{P(a,(\rho,\ldots,\rho))}\) 都包含于 \(\Omega\)。应用同一个估计并将积分放大到 \(\Omega\)，便得到最后的结论。
+\end{proof}
+
+取 \(\alpha=0\)，中心点的模平方不超过多圆盘上的模平方平均。这使点值泛函 \(L_a:f\mapsto f(a)\) 连续；取其他多重指标，还能控制任意固定阶导数。特别是，积分范数中的 Cauchy 列自动在每个内部紧集上一致 Cauchy。
+
+\Needspace{6\baselineskip}
+\begin{theorem}[Bergman 空间的闭性]\label{b3:thm:29-bergman-closed}
+设 \(\Omega\subset\mathbb C^n\) 为非空有界域，以未归一化 Lebesgue 体积定义范数。则 \(A^2(\Omega)\) 是 \(L^2(\Omega)\) 的闭子空间，因而是 Hilbert 空间。若 \(f_m\to f\) 于 \(A^2(\Omega)\)，则对每个 \(\alpha\in\mathbb N_0^n\)，\(\partial^\alpha f_m\to\partial^\alpha f\) 在 \(\Omega\) 内局部一致成立。
+\end{theorem}
+\Needspace{6\baselineskip}
+\begin{proof}
+设 \((f_m)\subset A^2(\Omega)\) 在 \(L^2\) 中为 Cauchy 列。\(L^2\) 的完备性给出某个极限类 \(u\in L^2(\Omega)\)。另一方面，局部点值估计说明 \((f_m)\) 在每个内部紧集上一致 Cauchy，故有局部一致极限 \(f\)。由\cref{b3:prop:29-holomorphic-limit}，\(f\) 全纯。
+
+取可数紧集穷竭 \(K_j\Subset\Omega\)，使 \(\bigcup_jK_j=\Omega\)。在每个 \(K_j\) 上，一致收敛也给出 \(L^2(K_j)\) 收敛，所以 \(f=u\) 在 \(K_j\) 上几乎处处成立。可数并表明它们在 \(\Omega\) 上几乎处处相等。因此 \(f\in A^2(\Omega)\)，且 \(\|f_m-f\|_2\to0\)，证明了闭性。最后把\cref{b3:prop:29-bergman-local}用于 \(f_m-f\)，即可得到各阶导数的局部一致收敛。
+\end{proof}
 
 \subsection{再生核的存在性}
 \label{b3:subsec:290603}
 
-待撰写。
+现在可以用一个全纯函数表示一次点值运算。需要注意内积的次序：若 \(f(w)=\langle f,K_w\rangle\)，则表示向量 \(K_w\) 出现在内积的第二变量，正交展开中的系数必须带共轭。下面直接从标准正交基构造它；这也是 Hilbert 空间 Riesz 表示在点值泛函上的具体形式。
+
+\Needspace{6\baselineskip}
+\begin{theorem}[有界域的 Bergman 核]\label{b3:thm:29-bergman-kernel}
+设 \(\Omega\subset\mathbb C^n\) 为非空有界域，\(A^2(\Omega)\) 取未归一化体积内积，并对第一变量线性。存在唯一的函数 \(K_\Omega(z,w)\)，使每个 \(w\in\Omega\) 的函数 \(K_w=K_\Omega(\cdot,w)\) 属于 \(A^2(\Omega)\)，且
+\begin{equation}\label{b3:eq:29-bergman-reproduction}
+ f(w)=\langle f,K_w\rangle
+ \quad(f\in A^2(\Omega)).
+\end{equation}
+它称为 \(\Omega\) 的\term[bergman-he]{Bergman 核}[Bergman kernel]，并满足
+\[
+ K_\Omega(z,w)=\overline{K_\Omega(w,z)},
+ \quad
+ K_\Omega(w,w)=\|K_w\|_2^2=\|L_w\|^2
+ \ge\frac1{\operatorname{Vol}(\Omega)}>0.
+\]
+若 \((e_\nu)_{\nu\ge1}\) 是 \(A^2(\Omega)\) 的任一标准正交基，则
+\begin{equation}\label{b3:eq:29-bergman-basis-kernel}
+ K_\Omega(z,w)=\sum_{\nu=1}^\infty
+ e_\nu(z)\overline{e_\nu(w)}.
+\end{equation}
+该级数在 \(\Omega\times\Omega\) 的每个紧子集上绝对一致收敛。将 \(\overline w\) 看作独立的复变量时，核对 \((z,\overline w)\) 联合全纯；特别地，它对 \(z\) 全纯、对 \(w\) 反全纯。
+\end{theorem}
+\symidx{\(K_\Omega(z,w)\)：域 \(\Omega\) 上的体积 Bergman 再生核}
+\Needspace{6\baselineskip}
+\begin{proof}
+\(L^2(\Omega)\) 可分，例如可由有理矩形上的阶梯函数取得可数稠密族。因此其闭子空间 \(A^2(\Omega)\) 也可分，取一列标准正交基 \((e_\nu)\)。固定 \(w\)，令
+\[
+ h_N=\sum_{\nu=1}^N\overline{e_\nu(w)}e_\nu,
+ \quad S_N=\sum_{\nu=1}^N|e_\nu(w)|^2.
+\]
+有 \(h_N(w)=S_N\)、\(\|h_N\|_2=S_N^{1/2}\)。点值连续性给出 \(S_N\le\|L_w\|S_N^{1/2}\)，从而 \(S_N\le\|L_w\|^2\)。所以 \((e_\nu(w))\) 平方可和，\(h_N\) 在 \(A^2\) 中趋向某个 \(K_w\)。对 \(f=\sum_\nu c_\nu e_\nu\)，内积连续性与点值连续性分别给出
+\[
+ \langle f,K_w\rangle=\sum_\nu c_\nu e_\nu(w)=f(w).
+\]
+若另一个向量也表示同一泛函，则它与 \(K_w\) 的差正交于整个空间，取差本身作测试就知差为零。
+
+再生公式给出
+\[
+ K_\Omega(z,w)=\langle K_w,K_z\rangle,
+ \quad K_\Omega(w,w)=\|K_w\|_2^2.
+\]
+第一式证明共轭对称性。Cauchy--Schwarz 不等式给出 \(\|L_w\|\le\|K_w\|_2\)，取 \(K_w/\|K_w\|_2\) 得到反向不等式；而测试常数 \(1\) 给出 \(\|L_w\|\ge1/\sqrt{\operatorname{Vol}(\Omega)}\)，也保证 \(K_w\ne0\)。范数收敛蕴含点值收敛，因而 \(h_N(z)\to K_\Omega(z,w)\)，得到核展开。Parseval 等式还给出
+\[
+ \sum_\nu|e_\nu(z)|^2=K_\Omega(z,z).
+\]
+
+为证明双变量局部一致收敛，不能只用逐点的 Cauchy--Schwarz 不等式。取 \(E\Subset V\Subset\Omega\)，其中 \(E\) 紧而 \(V\) 开，并令
+\[
+ T_N(z)=\sum_{\nu>N}|e_\nu(z)|^2.
+\]
+点值估计使 \(K_\Omega(z,z)\) 在 \(\overline V\) 上有统一上界。因此 \(T_N\downarrow0\)，且被一个常数控制，控制收敛定理给出 \(\int_VT_N\,\mathrm{d}V\to0\)。选取统一的小多圆盘 \(P(z,(\rho,\ldots,\rho))\subset V\)，\(z\in E\)。对各个 \(e_\nu\) 使用局部平方估计，再由非负项交换求和与积分，得到
+\[
+ \sup_{z\in E}T_N(z)
+ \le\frac1{\pi^n\rho^{2n}}\int_VT_N\,\mathrm{d}V\longrightarrow0.
+\]
+故对任意两个内部紧集 \(E,F\)，
+\[
+ \sup_{z\in E,\,w\in F}\sum_{\nu>N}
+ |e_\nu(z)\overline{e_\nu(w)}|
+ \le\bigl(\sup_E T_N\bigr)^{1/2}
+      \bigl(\sup_F T_N\bigr)^{1/2}\longrightarrow0.
+\]
+在共轭域 \(\Omega^\#\coloneqq\{\overline w:w\in\Omega\}\) 上，把 \(\eta=\overline w\) 作为变量，则 \(\overline{e_\nu(\overline\eta)}\) 为全纯函数。上述局部一致收敛说明 \(K_\Omega(z,\overline\eta)\) 在 \(\Omega\times\Omega^\#\) 上全纯。这也证明所述正则性。
+\end{proof}
+
+核的对角值是点值估计的最优常数。它不仅给出一个上界，还给出达到上界所需的函数形状。
+
+\Needspace{6\baselineskip}
+\begin{corollary}[点值约束下的最小范数]\label{b3:cor:29-bergman-extremal}
+设 \(\Omega\subset\mathbb C^n\) 为非空有界域，\(w\in\Omega\)，\(c\in\mathbb C\)。在未归一化体积范数下，对每个 \(f\in A^2(\Omega)\)，
+\[
+ |f(w)|^2\le K_\Omega(w,w)\|f\|_2^2,
+\]
+且等号成立当且仅当 \(f\) 为 \(K_w\) 的常数倍。在全部满足 \(f(w)=c\) 的函数中，唯一的最小范数函数为
+\[
+ f_c(z)=\frac{cK_\Omega(z,w)}{K_\Omega(w,w)},
+ \quad
+ \|f_c\|_2^2=\frac{|c|^2}{K_\Omega(w,w)}.
+\]
+\end{corollary}
+\Needspace{6\baselineskip}
+\begin{proof}
+再生公式与 Cauchy--Schwarz 不等式给出点值界，等号条件是 \(f\) 与 \(K_w\) 线性相关。对任意满足 \(f(w)=c\) 的函数，\(h=f-f_c\) 满足 \(h(w)=0\)，故 \(\langle h,K_w\rangle=0\)。于是
+\[
+ \|f\|_2^2=\|f_c\|_2^2+\|h\|_2^2,
+\]
+证明最小性和唯一性。
+\end{proof}
+
+同一个核还将一般 \(L^2\) 数据送入全纯子空间。正交投影将给出相应的积分表示。
+
+\Needspace{6\baselineskip}
+\begin{theorem}[Bergman 投影]\label{b3:thm:29-bergman-projection}
+设 \(\Omega\subset\mathbb C^n\) 为非空有界域。以未归一化体积定义 \(L^2(\Omega)\) 及其内积，则到 \(A^2(\Omega)\) 的正交投影 \(P_\Omega\) 满足
+\begin{equation}\label{b3:eq:29-bergman-projection}
+ (P_\Omega u)(z)=\int_\Omega K_\Omega(z,w)u(w)\,\mathrm{d}V(w)
+ \quad(u\in L^2(\Omega),\ z\in\Omega).
+\end{equation}
+该积分绝对收敛。若 \((e_\nu)\) 为 \(A^2(\Omega)\) 的标准正交基，则
+\[
+ P_\Omega u=\sum_{\nu=1}^\infty\langle u,e_\nu\rangle e_\nu
+\]
+在 \(L^2\) 中收敛，且在域内连同各阶导数局部一致收敛。此外，\(P_\Omega^2=P_\Omega=P_\Omega^*\)、\(\|P_\Omega\|=1\)，对每个 \(g\in A^2(\Omega)\) 有
+\[
+ \|u-g\|_2^2=\|u-P_\Omega u\|_2^2+\|P_\Omega u-g\|_2^2.
+\]
+\end{theorem}
+\symidx{\(P_\Omega\)：体积 \(L^2(\Omega)\) 上的 Bergman 正交投影}
+\Needspace{6\baselineskip}
+\begin{proof}
+Bessel 不等式使 \((\langle u,e_\nu\rangle)_\nu\) 平方可和，故所列级数在闭子空间 \(A^2(\Omega)\) 中收敛。其和记为 \(P_\Omega u\)。余项 \(u-P_\Omega u\) 与每个 \(e_\nu\) 正交，因而与整个 \(A^2(\Omega)\) 正交。这证明它就是正交投影，且给出幂等性、自伴性和 Pythagoras 等式。投影为压缩，常数函数又被固定，所以算子范数为一。导数的局部一致收敛来自\cref{b3:thm:29-bergman-closed}。
+
+对固定 \(z\in\Omega\)，由于 \(K_z\in A^2(\Omega)\)，有
+\[
+ (P_\Omega u)(z)=\langle P_\Omega u,K_z\rangle
+ =\langle u,K_z\rangle
+ =\int_\Omega u(w)K_\Omega(z,w)\,\mathrm{d}V(w).
+\]
+这里使用了核的共轭对称性。积分绝对收敛，因为
+\[
+ \int_\Omega|u(w)K_\Omega(z,w)|\,\mathrm{d}V(w)
+ \le\|u\|_2\|K_z\|_2
+ =\|u\|_2\sqrt{K_\Omega(z,z)}.
+\]
+\end{proof}
 
 \subsection{多圆盘上的核与正交展开}
 \label{b3:subsec:290604}
 
-待撰写。
+对于中心在原点的多圆盘，角变量的正交性使核能够具体算出。每个复坐标贡献一个一变量因子，体积积分与核也相应分解成乘积。
 
+\Needspace{6\baselineskip}
+\begin{theorem}[多圆盘的系数范数与 Bergman 核]\label{b3:thm:29-polydisc-bergman}
+设 \(R_j>0\)，\(P_R=\{z\in\mathbb C^n:|z_j|<R_j,\ 1\le j\le n\}\)，并使用未归一化体积。对 \(\alpha\in\mathbb N_0^n\)，记
+\[
+ c_\alpha=\pi^n\prod_{j=1}^n\frac{R_j^{2\alpha_j+2}}{\alpha_j+1}.
+\]
+若 \(f(z)=\sum_\alpha a_\alpha z^\alpha\) 在 \(P_R\) 上全纯，则
+\begin{equation}\label{b3:eq:29-polydisc-norm}
+ \int_{P_R}|f|^2\,\mathrm{d}V
+ =\sum_{\alpha\in\mathbb N_0^n}|a_\alpha|^2c_\alpha,
+\end{equation}
+等式允许两边同时为无穷。反之，每个满足右侧有限的系数族都给出唯一的 \(A^2(P_R)\) 函数。函数族
+\[
+ e_\alpha(z)=\frac{z^\alpha}{\sqrt{c_\alpha}}
+\]
+组成 \(A^2(P_R)\) 的标准正交基，其再生核为
+\begin{equation}\label{b3:eq:29-polydisc-kernel}
+ K_{P_R}(z,w)=\frac1{\pi^n\prod_{j=1}^nR_j^2}
+ \prod_{j=1}^n\left(1-\frac{z_j\overline w_j}{R_j^2}\right)^{-2}.
+\end{equation}
+\end{theorem}
+\Needspace{6\baselineskip}
+\begin{proof}
+对不同多重指标 \(\alpha,\beta\)，至少有一个坐标的角积分 \(\int_0^{2\pi}e^{\mathrm{i}(\alpha_j-\beta_j)\theta}\,\mathrm{d}\theta\) 为零，故单项式互相正交。径向积分给出
+\[
+ \|z^\alpha\|_2^2
+ =\prod_{j=1}^n\left(2\pi\int_0^{R_j}r^{2\alpha_j+1}\,\mathrm{d}r\right)
+ =c_\alpha.
+\]
+由\cref{b3:thm:29-power-series}，Taylor 级数在每个较小闭多圆盘上绝对一致收敛。于是先对较小多圆盘积分，再对 Taylor 多项式取极限，正交性给出对应的系数范数等式。让各个半径递增到 \(R_j\)，对积分和非负级数分别用单调收敛，得到\eqref{b3:eq:29-polydisc-norm}。
+
+反过来，设 \(\sum_\alpha|a_\alpha|^2c_\alpha<\infty\)。对 \(z\in P_R\)，Cauchy--Schwarz 不等式给出
+\[
+ \sum_\alpha|a_\alpha z^\alpha|
+ \le\left(\sum_\alpha|a_\alpha|^2c_\alpha\right)^{1/2}
+      \left(\sum_\alpha\frac{|z^\alpha|^2}{c_\alpha}\right)^{1/2}.
+\]
+第二个级数可以按坐标求和：
+\[
+ \sum_\alpha\frac{|z^\alpha|^2}{c_\alpha}
+ =\frac1{\pi^n\prod_jR_j^2}
+   \prod_j\left(1-\frac{|z_j|^2}{R_j^2}\right)^{-2}.
+\]
+它在每个内部紧集上有统一上界。把同一估计用于系数尾部，便得到 Taylor 级数的局部绝对一致收敛，故其和全纯；已经证明的范数等式说明该和属于 \(A^2(P_R)\)。同一等式还说明有限 Taylor 和在范数中逼近每个 \(A^2\) 函数，证明标准正交基的完备性。
+
+最后在\eqref{b3:eq:29-bergman-basis-kernel}中代入 \(e_\alpha\)，逐个使用
+\(\sum_{k\ge0}(k+1)t^k=(1-t)^{-2}\)，得到\eqref{b3:eq:29-polydisc-kernel}。求和条件为 \(|z_j\overline w_j|<R_j^2\)，在当前域内成立。
+\end{proof}
+
+例如在单位多圆盘上，最优点值界是
+\[
+ |f(w)|\le\frac{\|f\|_2}{\pi^{n/2}}
+             \prod_{j=1}^n\frac1{1-|w_j|^2}.
+\]
+在中心，\(K_{P_R}(0,0)=1/\operatorname{Vol}(P_R)\)，常数函数达到中心点值界。取 \(n=1\)、\(R_1=1\)，核成为 \(\pi^{-1}(1-z\overline w)^{-2}\)；将面积改为 \(\mathrm{d}V/\pi\)，就回到\cref{b3:thm:28-bergman-kernel}的归一化公式。
+
+\ProseParagraphBreak
+
+有些域虽然不是多圆盘，却可由多圆盘作双全纯坐标变换得到。体积在换元时会改变，因而直接复合函数并不保持面积范数；补上复 Jacobian 行列式，才得到相应的等距映射。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[双全纯变换下的 Bergman 核]\label{b3:prop:29-bergman-biholomorphic}
+设 \(\Omega,\Omega'\subset\mathbb C^n\) 为非空有界域，\(\Phi:\Omega\to\Omega'\) 双全纯，并记
+\[
+ J_\Phi(z)=\det_{\mathbb C}\left(\frac{\partial\Phi_j}{\partial z_k}(z)\right).
+\]
+两域均取未归一化体积。映射
+\[
+ U_\Phi:A^2(\Omega')\longrightarrow A^2(\Omega),
+ \quad U_\Phi f=J_\Phi\,(f\circ\Phi)
+\]
+为酉映射，且
+\begin{equation}\label{b3:eq:29-bergman-change}
+ K_\Omega(z,w)=J_\Phi(z)
+ K_{\Omega'}(\Phi(z),\Phi(w))\overline{J_\Phi(w)}.
+\end{equation}
+\end{proposition}
+\Needspace{6\baselineskip}
+\begin{proof}
+链式法则应用于 \(\Phi^{-1}\circ\Phi\) 表明复导数可逆，故 \(J_\Phi\ne0\)。若一个复线性映射的矩阵为 \(A+\mathrm{i}B\)，它的实矩阵为
+\[
+ \begin{pmatrix}A&-B\\ B&A\end{pmatrix}.
+\]
+将其实坐标复化并改用 \(z,\overline z\) 坐标后，该矩阵化为对角块 \(A+\mathrm{i}B\)、\(A-\mathrm{i}B\)。因此其实行列式为复行列式的模平方。特别地，\(\Phi\) 的实 Jacobian 为 \(|J_\Phi|^2\)。实变量换元公式于是给出
+\[
+ \|U_\Phi f\|_{A^2(\Omega)}^2
+ =\int_\Omega|J_\Phi(z)|^2|f(\Phi(z))|^2\,\mathrm{d}V(z)
+ =\|f\|_{A^2(\Omega')}^2.
+\]
+复合的 Jacobian 链式法则又给出 \(U_{\Phi^{-1}}U_\Phi=I\) 和反向恒等式，所以该等距映射为满射。
+
+若 \((e_\nu)\) 是 \(A^2(\Omega')\) 的标准正交基，则 \((U_\Phi e_\nu)\) 是 \(A^2(\Omega)\) 的标准正交基。将后者代入核展开，提取与求和指标无关的两个 Jacobian 因子，便得\eqref{b3:eq:29-bergman-change}。
+\end{proof}
+
+至此，平方可积性、内部全纯性和坐标变换之间的关系都已明确。局部估计确保范数极限仍全纯，核记录各点的连续求值，Jacobian 因子说明这个积分几何如何随复坐标改变。这些事实只使用域内分析，并未对边界的形状附加正则性条件。

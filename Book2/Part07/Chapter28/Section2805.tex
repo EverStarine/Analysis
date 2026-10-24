@@ -2,19 +2,226 @@
 \section{紧预解式与离散谱}
 \label{b2:sec:2605}
 
-待撰写。
+在圆周上，三角函数把求二阶导数化为乘以频率的平方。一般紧流形没有统一的直线坐标，因而也没有现成的指数函数。我们可以反过来从方程寻找它自己的频率：先把源项送到解，再研究这个解算子的特征向量。椭圆方程提供的导数控制与流形的紧性，会使这些向量组成整个平方可积空间的正交基。
 
 \subsection{移位逆算子的构造与紧性}
 \label{b2:subsec:260501}
 
-待撰写。
+设 \((M,g)\) 为非空紧致无边界光滑 Riemann 流形，维数 \(n\geq1\)。本节先取实值函数，记
+\[
+ H=L^2(M,\mathrm dV_g;\mathbb R),\qquad V=H^1(M;\mathbb R),
+\]
+并在 \(V\) 上取\cref{b2:prop:26-energy-norm}的内积
+\[
+ q(u,v)=\int_M\bigl(uv+g(\nabla_g u,\nabla_g v)\bigr)\,\mathrm dV_g.
+\]
+梯度项对常数为零，加上的 \(uv\) 项使全部方向都受到控制。由\cref{b2:thm:26-shifted-weak}，对每个 \(f\in H\) 恰有一个 \(Tf\in V\)，满足
+\begin{equation}\label{b2:eq:26-resolvent-weak}
+ q(Tf,v)=(f,v)_H\qquad(v\in V).
+\end{equation}
+这里取的是扩散系数 \(A=I\)、势 \(c=0\)、移位参数 \(\mu=1\)。把 \(Tf\) 再看成 \(H\) 的元素，就得到一个在同一空间上作用的算子。
+
+\begin{proposition}[正移位解算子的紧性]\label{b2:prop:26-compact-resolvent}
+设 \((M,g)\) 为非空紧致无边界光滑 Riemann 流形，\(\dim M\geq1\)。对实值 \(f\in L^2(M,\mathrm dV_g)\)，令 \(Tf\in H^1(M)\) 为 \((-\Delta_g+I)Tf=f\) 的弱解。则 \(T:L^2(M)\rightarrow L^2(M)\) 线性、紧、自伴、单射，且
+\[
+ \|Tf\|_{H^1}\leq\|f\|_2,\qquad
+ (Tf,f)_{L^2}=\|Tf\|_{H^1}^2>0\quad(f\ne0).
+\]
+此处 \(H^1\) 范数为 \(\bigl(\|u\|_2^2+\|\nabla_g u\|_2^2\bigr)^{1/2}\)。
+\end{proposition}
+\begin{proof}
+弱方程的线性与解的唯一性给出 \(T\) 的线性。以 \(v=Tf\) 测试，得到
+\[
+ \|Tf\|_{H^1}^2=(f,Tf)_H
+ \leq\|f\|_2\cdot\|Tf\|_2
+ \leq\|f\|_2\cdot\|Tf\|_{H^1},
+\]
+从而得到所列范数界。\secref{b2:sec:2601}的 Rellich 紧嵌入说明，\(H^1\) 有界列在 \(L^2\) 中有收敛子列；于是 \(L^2\) 中任意有界列经 \(T\) 映射后都有 \(L^2\) 收敛子列，\(T\) 为紧算子。
+
+对 \(f,h\in H\)，分别在两条弱方程中取 \(v=Th\)、\(v=Tf\)，得到
+\[
+ (f,Th)_H=q(Tf,Th)=q(Th,Tf)=(h,Tf)_H.
+\]
+这是实 Hilbert 空间中的自伴关系。如果 \(Tf=0\)，则\eqref{b2:eq:26-resolvent-weak}给出 \((f,v)_H=0\) 对所有 \(v\in H^1(M)\) 成立。光滑函数包含在 \(H^1\) 中且在 \(L^2\) 中稠密，因此 \(f=0\)。最后，能量恒等式与单射性使 \(f\ne0\) 时的二次型严格为正。
+\end{proof}
+
+紧性在这里有一个具体含义：源项有界时，解的梯度也有界；在紧流形上，这种控制阻止解在位置或频率上任意逃逸。这个性质属于逆算子。二阶微分算子本身会放大高频振荡，通常是无界算子。
 
 \subsection{特征值与正交完备性}
 \label{b2:subsec:260502}
 
-待撰写。
+第一卷定理 8.5.5 的紧自伴谱定理适用于实或复 Hilbert 空间：非零特征空间有限维，它们的正交闭包等于算子核的正交补；若有无穷多个正交特征向量，相应特征值趋于零。对上面的 \(T\)，核为零，且二次型严格为正，所以全部特征值为正，其特征向量足以展开整个 \(L^2(M)\)。
+% 跨卷定位：b1:thm:compact-self-adjoint-spectral，第一卷定理8.5.5。
+
+\begin{theorem}[紧流形的 Laplace 特征函数展开]\label{b2:thm:26-laplace-spectrum}
+设 \((M,g)\) 为非空紧致无边界光滑 Riemann 流形，\(\dim M=n\geq1\)，其连通分支为 \(M_1,\ldots,M_r\)。存在实光滑函数组成的 \(L^2(M,\mathrm dV_g;\mathbb R)\) 正交归一基 \((e_j)_{j\geq1}\)，以及按重数排列的数列
+\[
+ 0=\lambda_1=\cdots=\lambda_r<\lambda_{r+1}\leq\lambda_{r+2}\leq\cdots,
+ \qquad \lambda_j\longrightarrow\infty,
+\]
+使
+\[
+ -\Delta_g e_j=\lambda_j e_j.
+\]
+每个特征值的重数有限，零特征空间恰由各分支上的常数组成；可以取
+\[
+ e_a=\operatorname{Vol}_g(M_a)^{-1/2}\cdot\mathbf1_{M_a}
+ \qquad(1\leq a\leq r).
+\]
+对每个 \(f\in L^2(M;\mathbb R)\)，令 \(f_j=(f,e_j)_{L^2}\)，则
+\[
+ f=\sum_{j=1}^\infty f_je_j\quad\text{于 }L^2(M),\qquad
+ \|f\|_2^2=\sum_{j=1}^\infty|f_j|^2.
+\]
+\end{theorem}
+\begin{proof}
+紧流形的连通分支都是开集，由紧性它们只有有限个。由前一命题及紧自伴谱定理，\(T\) 有正交归一特征基，特征值记为 \(\mu_j>0\)。空间 \(L^2(M)\) 是无限维的：在一个非空坐标球内选取无穷多个两两不交的小球，在每个小球中各取一个非零光滑紧支集函数，再各自归一化，就得到无穷正交系。因此特征基有无穷个元素，按重数排列后可以取 \(\mu_j\downarrow0\)。
+
+由 \(Te_j=\mu_je_j\) 可知 \(e_j\in H^1(M)\)。在弱方程中代入，得到
+\[
+ \int_Mg(\nabla_g e_j,\nabla_g v)\,\mathrm dV_g
+   =(\mu_j^{-1}-1)(e_j,v)_{L^2}\qquad(v\in H^1(M)).
+\]
+令 \(\lambda_j=\mu_j^{-1}-1\)，再取 \(v=e_j\)，就有
+\(\lambda_j=\|\nabla_g e_j\|_2^2\geq0\)。由于 \(\mu_j\to0\)，得到 \(\lambda_j\to\infty\)，且有限重数由 \(\mu_j\) 的有限重数传来。
+
+弱方程的右端 \(\lambda_je_j\) 起初属于 \(L^2\)，\cref{b2:thm:28-global-h2}先给出 \(e_j\in H^2(M)\)。此时右端又属于 \(H^2\)，\cref{b2:thm:28-global-higher}给出 \(e_j\in H^4\)；重复得到所有整数阶 Sobolev 正则性。局部 Sobolev 嵌入表明，当阶数大于 \(k+n/2\) 时有 \(C^k\) 代表。对每个 \(k\) 这样做，各代表因连续且几乎处处相等而一致，故 \(e_j\) 有光滑代表，弱特征方程成为逐点等式。
+
+若 \(\lambda_j=0\)，能量等式给出 \(\nabla_g e_j=0\)，于是它在各连通分支上为常数。反之，每个 \(\mathbf1_{M_a}\) 都是光滑的局部常数，满足 \(-\Delta_g\mathbf1_{M_a}=0\)，也满足 \(T\mathbf1_{M_a}=\mathbf1_{M_a}\)。因此零特征空间恰为这些分支常数的 \(r\) 维空间，可用所列归一化函数作为前 \(r\) 个基向量。其余结论由正交完备性和 Parseval 等式得到。
+\end{proof}
+
+零特征值记录分支上可以自由改变的整体高度，正特征值记录函数发生空间变化时的能量。流形不连通时，只令全流形平均值为零，仍然可以保留非零的分支常数；要消去整个零空间，须分别固定每个分支的平均值。
+
+\ProseParagraphBreak
+
+正交展开首先在 \(L^2\) 中收敛。求导会给第 \(j\) 个系数增加与 \(\lambda_j\) 有关的权重，所以使用特征函数求解方程以前，还需要辨认哪些展开具有所需导数。
+
+\begin{proposition}[一阶能量的谱表示]\label{b2:prop:26-spectral-form}
+设 \((M,g)\) 为非空紧致无边界光滑 Riemann 流形，\(\dim M\geq1\)，并取 \(-\Delta_g\) 在实 \(L^2(M,\mathrm dV_g)\) 中的光滑正交归一特征基 \((e_j)\)，相应特征值为 \(\lambda_j\geq0\)。实函数 \(u\in L^2(M)\) 属于 \(H^1(M)\)，当且仅当其系数 \(u_j=(u,e_j)_{L^2}\) 满足
+\[
+ \sum_{j=1}^\infty(1+\lambda_j)|u_j|^2<\infty.
+\]
+此时部分和在 \(H^1(M)\) 中收敛，且
+\begin{equation}\label{b2:eq:26-spectral-energy}
+ \|u\|_2^2+\|\nabla_g u\|_2^2
+       =\sum_{j=1}^\infty(1+\lambda_j)|u_j|^2,
+ \qquad
+ \|\nabla_g u\|_2^2=\sum_{j=1}^\infty\lambda_j|u_j|^2.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Green 公式及光滑函数在 \(H^1\) 中的稠密性给出
+\[
+ q(u,e_j)=(1+\lambda_j)(u,e_j)_{L^2}\qquad(u\in H^1(M)).
+\]
+故 \(e_j/\sqrt{1+\lambda_j}\) 在 Hilbert 空间 \((H^1,q)\) 中正交归一。如果 \(u\in H^1\) 与这些向量全都 \(q\)-正交，上式说明它的所有 \(L^2\) 系数为零，因此 \(u=0\)。这组向量在 \(H^1\) 中也完备。对其应用 Hilbert 空间的 Parseval 等式，便得到第一条恒等式和部分和的 \(H^1\) 收敛；减去 \(L^2\) 的 Parseval 等式得到梯度公式。
+
+反之，若给定 \(u\in L^2\) 的加权平方和有限，则有限和 \(u^{(N)}=\sum_{j\leq N}u_je_j\) 由同一公式在 \(H^1\) 中为 Cauchy 列。它们有一个 \(H^1\) 极限，而在 \(L^2\) 中的极限已经是 \(u\)，所以两者相等，\(u\in H^1\)。
+\end{proof}
+
+若 \(u\) 在每个分支上的平均值为零，就有 \(u_1=\cdots=u_r=0\)，从而
+\[
+ \|u\|_2^2\leq\lambda_{r+1}^{-1}\|\nabla_g u\|_2^2.
+\]
+取 \(u=e_{r+1}\) 达到等号。因此最小正特征值同时给出了分支归一化 Poincaré 不等式的最佳常数。
 
 \subsection{谱展开与椭圆方程}
 \label{b2:subsec:260503}
 
-待撰写。
+二阶微分不能作用在任意 \(L^2\) 函数上而仍产生 \(L^2\) 函数。把它视为 Hilbert 空间中的算子时，应把可用的函数一并写出：令
+\[
+ \mathcal A u=-\Delta_g u,\qquad D(\mathcal A)=H^2(M;\mathbb R)\subset L^2(M;\mathbb R).
+\]
+这里 \(D(\mathcal A)\) 称为算子的定义域；对 \(H^2\) 函数，坐标表达式中的至多二阶弱导数都平方可积，因而 \(\mathcal A u\in L^2\)。下一个命题说明这个定义域也可以由谱系数准确识别。
+
+\begin{proposition}[Laplace 算子的自伴定义域]\label{b2:prop:26-selfadjoint-domain}
+设 \((M,g)\) 为非空紧致无边界光滑 Riemann 流形，\(\dim M\geq1\)，并取实正交归一特征基 \((e_j)\) 及非负特征值 \((\lambda_j)\)。则
+\[
+ H^2(M)=\left\{\,u\in L^2(M)\ \middle|
+       \sum_{j=1}^\infty\lambda_j^2|(u,e_j)_{L^2}|^2<\infty\,\right\},
+\]
+且
+\[
+ \mathcal A u=\sum_{j=1}^\infty\lambda_j u_je_j\quad\text{于 }L^2(M),
+ \qquad
+ \|u\|_{H^2(M)}^2\asymp\sum_{j=1}^\infty(1+\lambda_j^2)|u_j|^2.
+\]
+等价常数依赖 \((M,g)\) 及所选的坐标 Sobolev 范数。算子 \(\mathcal A:H^2(M)\subset L^2(M)\rightarrow L^2(M)\) 稠密定义、非负且自伴，其 \((\mathcal A+I)^{-1}\) 就是前面构造的紧算子 \(T\)。
+\end{proposition}
+\begin{proof}
+先设 \(u\in H^2(M)\)。由光滑逼近和 Green 公式，
+\[
+ (\mathcal A u,e_j)_{L^2}=(u,\mathcal A e_j)_{L^2}=\lambda_ju_j.
+\]
+对 \(\mathcal A u\) 应用 Parseval 等式，得到 \(\sum_j\lambda_j^2|u_j|^2=\|\mathcal A u\|_2^2<\infty\)。坐标微分表达式给出 \(\|\mathcal A u\|_2\leq C\|u\|_{H^2}\)，而\cref{b2:thm:28-global-h2}给出反向估计
+\[
+ \|u\|_{H^2}\leq C\bigl(\|\mathcal A u\|_2+\|u\|_2\bigr).
+\]
+这就证明了范数等价。
+
+若 \(u\in L^2\) 的所列加权平方和有限，令 \(u^{(N)}=\sum_{j\leq N}u_je_j\)。对两个有限和之差应用二阶估计，得到
+\[
+ \|u^{(N)}-u^{(K)}\|_{H^2}^2
+ \leq C\sum_{K<j\leq N}(1+\lambda_j^2)|u_j|^2
+ \longrightarrow0\qquad(N>K\longrightarrow\infty).
+\]
+所以这些有限和在 \(H^2\) 中有极限；它又等于已知的 \(L^2\) 极限 \(u\)。因此 \(u\in H^2\)，且连续映射 \(\mathcal A:H^2\rightarrow L^2\) 把部分和极限送到所列级数。
+
+定义域包含光滑函数，因而在 \(L^2\) 中稠密。谱表示给出
+\((\mathcal Au,u)=\sum_j\lambda_j|u_j|^2\geq0\)，并给出对称性。要验证自伴性，还须核对伴随定义域。若 \(z\in D(\mathcal A^*)\)，按定义存在 \(h\in L^2\)，使
+\[
+ (\mathcal Au,z)_{L^2}=(u,h)_{L^2}\qquad(u\in H^2(M)).
+\]
+逐个取 \(u=e_j\)，得到 \(h_j=\lambda_jz_j\)。由 \(h\in L^2\) 可知 \(\sum_j\lambda_j^2|z_j|^2<\infty\)，故刚才的定义域刻画给出 \(z\in H^2\) 且 \(\mathcal A^*z=\mathcal Az\)。反之，对任意 \(z\in H^2\)，级数的 Cauchy--Schwarz 不等式保证上述配对恒等式成立，取 \(h=\mathcal Az\) 即得 \(z\in D(\mathcal A^*)\)。两个定义域相同，\(\mathcal A\) 自伴。
+
+最后，\((\mathcal A+I)u=f\) 的系数关系是 \((1+\lambda_j)u_j=f_j\)。所给级数属于 \(H^2\) 并满足弱方程，弱解唯一性表明它就是 \(Tf\)。
+\end{proof}
+
+若 \(zI-\mathcal A\) 有定义在全部 \(L^2\) 上的有界逆，就把 \(R_z=(zI-\mathcal A)^{-1}\) 称为该参数处的\term[yujie-shi]{预解式}[resolvent]。这里 \(R_{-1}=-T\)，它把 \(L^2\) 有界集送入 \(H^2\) 有界集，作为 \(L^2\) 算子是紧的；这种性质称为具有\term[jin-yujie-shi]{紧预解式}[compact resolvent]。系数中 \(1+\lambda_j\) 的倒数趋于零，显示了紧性对高频的抑制。
+
+\ProseParagraphBreak
+
+现在考虑任意实参数 \(\sigma\) 的方程 \((-\Delta_g+\sigma)u=f\)。当 \(\sigma>0\) 时，每个频率上的系数都为正；当 \(\sigma\leq0\) 时，某些系数可能变为零。这个现象就是椭圆方程的共振。
+
+\begin{theorem}[谱解与共振相容性]\label{b2:thm:26-spectral-solvability}
+设 \((M,g)\) 为非空紧致无边界光滑 Riemann 流形，\(\dim M\geq1\)，\((e_j,\lambda_j)\) 为实 \(L^2(M,\mathrm dV_g)\) 中 \(-\Delta_g\) 的光滑正交归一特征基及非负特征值。给定 \(\sigma\in\mathbb R\)、\(f\in L^2(M;\mathbb R)\)，记
+\[
+ J_\sigma=\{\,j\geq1\mid\lambda_j+\sigma=0\,\},\qquad f_j=(f,e_j)_{L^2}.
+\]
+方程 \((-\Delta_g+\sigma)u=f\) 有 \(H^1(M)\) 弱解，当且仅当 \(f_j=0\) 对所有 \(j\in J_\sigma\) 成立。条件满足时，全部解均属于 \(H^2(M)\)，并且恰为
+\begin{equation}\label{b2:eq:26-spectral-solution}
+ u=\sum_{j\notin J_\sigma}\frac{f_j}{\lambda_j+\sigma}e_j
+       +\sum_{j\in J_\sigma}a_je_j,\qquad a_j\in\mathbb R.
+\end{equation}
+第一项在 \(H^2(M)\) 中收敛，第二项是有限和。令第二项为零就得到与共振特征空间正交的唯一解 \(u_*\)。设
+\[
+ \delta_\sigma=\inf_{j\notin J_\sigma}|\lambda_j+\sigma|>0,
+\]
+则
+\[
+ \|u_*\|_2\leq\delta_\sigma^{-1}\|f\|_2,\qquad
+ \|u_*\|_{H^2}\leq C\left(1+\frac{1+|\sigma|}{\delta_\sigma}\right)\|f\|_2,
+\]
+其中 \(C\) 可取为 \(-\Delta_g\) 的全局二阶估计常数。
+\end{theorem}
+\begin{proof}
+若 \(u\in H^1\) 是弱解，以 \(e_j\) 测试，便有
+\((\lambda_j+\sigma)u_j=f_j\)。于是共振指标必须满足 \(f_j=0\)，其他指标上的系数已经唯一确定。同时，\(-\Delta_g u=f-\sigma u\in L^2\)，由\cref{b2:thm:28-global-h2}知 \(u\in H^2\)。
+
+因为 \(\lambda_j\to\infty\)，给定 \(\sigma\) 只有有限个共振指标，且充分大的指标满足 \(|\lambda_j+\sigma|\geq1\)。剩下的有限个非零分母有正的最小绝对值，故 \(\delta_\sigma>0\)。此外
+\[
+ \frac{\lambda_j}{|\lambda_j+\sigma|}
+ \leq1+\frac{|\sigma|}{\delta_\sigma}\qquad(j\notin J_\sigma).
+\]
+所以\eqref{b2:eq:26-spectral-solution}第一项的系数乘以 \(\lambda_j\) 后仍平方可和，由\cref{b2:prop:26-selfadjoint-domain}得到 \(H^2\) 收敛及方程成立。任意解与这个解的差只能含共振系数，得到全部解的描述。Parseval 给出 \(L^2\) 估计，再把 \(\mathcal Au_*=f-\sigma u_*\) 代入全局二阶估计，就得到最后一式。
+\end{proof}
+
+取 \(\sigma=0\)，相容条件正是每个分支上的 \(\int_{M_a}f\,\mathrm dV_g=0\)，与\cref{b2:cor:26-poisson-solvability}的变分结论一致。若参数 \(\sigma\) 靠近某个 \(-\lambda_k\)，对应分量被除以很小的 \(\lambda_k+\sigma\)，解就可能很大。例如 \(f=e_k\) 时，非共振解恰为 \((\lambda_k+\sigma)^{-1}e_k\)；到共振点则无解。正交于该特征空间的数据能在共振点求解，但解增加了任意该特征空间分量。
+
+\ProseParagraphBreak
+
+复值函数可写为两个实值函数之和 \(u+\mathrm iv\)，将算子分别作用在实部与虚部，即得到同一定义域的复化。上面的实特征基仍是复 \(L^2\) 的正交归一基，所有范数公式保留，内积取 \(\int u\overline v\,\mathrm dV_g\)。对 \(z\in\mathbb C\) 且 \(z\ne\lambda_j\) 的每个 \(j\)，
+\[
+ R_zf=(zI-\mathcal A)^{-1}f=\sum_j\frac{f_j}{z-\lambda_j}e_j
+\]
+是从 \(L^2\) 到 \(H^2\) 的有界逆，因为这些分母远离零且其绝对值趋于无穷。截取有限项后，作为 \(L^2\) 算子的余项范数是 \(\sup_{j>N}|\lambda_j-z|^{-1}\to0\)。因此全部谱点都是上述有限重数特征值，且每个预解式都是紧算子；这就是这里的离散谱结构。

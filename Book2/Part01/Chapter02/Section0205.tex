@@ -1,4 +1,187 @@
 % !TeX root = ../../Book2.tex
 \OptionalSection{连续场与 Peano 存在}{b2:sec:ode-peano}
 
-待撰写。拟在有限维中用 Euler 折线与紧性建立连续右端的局部存在性，说明存在不保证唯一。这里规划的结果不代替前面依赖唯一性的流理论，也不作为后续特征线法的证明前提。
+局部 Lipschitz 条件在前面的证明中承担了两项工作：它使积分迭代能够收敛，也使两个具有相同初值的解不能分开。第二项工作不能只靠连续性完成；第一项却有另一条道路。我们先作出一列容易计算的近似轨道，再从中取出一致收敛的子列，最后证明极限满足积分方程。这里产生收敛的原因是有限维紧性。
+
+\subsection{冻结速度与共同存在区间}
+\label{b2:subsec:ode-euler-polygons}
+
+设 \(\Omega\subset\mathbb R\times\mathbb R^d\) 开，\(f:\Omega\to\mathbb R^d\) 连续，\((t_0,a)\in\Omega\)。若真解已经存在，则在很短的时间内有
+\[
+ x(t_0+\Delta)=a+\Delta f(t_0,a)+o(\Delta).
+\]
+忽略余项，就得到一步近似：先按当前时刻和当前位置的速度走一小段，再在新位置重新计算速度。取 \(T,r>0\)，使紧柱体
+\[
+ K=[t_0-T,t_0+T]\times\overline{B_r(a)}\subset\Omega,
+ \quad M=\max_K|f|.
+\]
+先设 \(M>0\)，选 \(0<h\leq\min\{T,r/M\}\)。把 \([t_0,t_0+h]\) 等分成 \(N\) 段，记 \(\Delta_N=h/N\)、\(t_j=t_0+j\Delta_N\)。令 \(x_N(t_0)=a\)，逐段规定
+\begin{equation}\label{b2:eq:ode-euler-polygon}
+ x_N(t)=x_N(t_j)+(t-t_j)f(t_j,x_N(t_j)),
+ \quad t_j\leq t\leq t_{j+1}.
+\end{equation}
+所得连续分段仿射曲线称为\term[euler-zhexian]{Euler 折线}[Euler polygonal approximation]；节点上的递推就是\term[euler-fangfa]{Euler 方法}[Euler method]。节点处不要求左右导数相等，因此折线本身通常还不是微分方程的解。
+
+\ProseParagraphBreak
+
+对于 \(x'=x\)、\(x(0)=1\)，取步长 \(\Delta=0.3\)，依次得到节点值 \(1,1.3,1.69,2.197\)。\Cref{b2:fig:ode-euler-polygon}画出这三步：每一段采用该段左端点处的速度。图中的折线低于真解，是这个具体算例的性质；一般证明只使用共同有界性和余差趋零。
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=7.2cm,y=1.05cm,font=\small]
+ \draw[->] (-0.03,0)--(1.03,0) node[right] {\(t\)};
+ \draw[->] (0,-0.1)--(0,2.75) node[above] {\(x\)};
+ \draw[AnalysisBlue,thick,domain=0:0.94,samples=60]
+   plot (\x,{exp(\x)});
+ \node[AnalysisBlue,right] at (0.94,2.57) {\(e^t\)};
+ \draw[thick] (0,1)--(0.3,1.3)--(0.6,1.69)--(0.9,2.197);
+ \node[right] at (0.9,2.12) {Euler 折线};
+ \foreach \t/\z in {0/1,0.3/1.3,0.6/1.69,0.9/2.197} {
+   \fill (\t,\z) circle (1.5pt);
+ }
+ \foreach \t in {0.3,0.6,0.9} {
+   \draw (\t,0.04)--(\t,-0.04) node[below] {\(\t\)};
+ }
+ \node[below left] at (0,0) {\(0\)};
+ \node[left] at (0,1) {\(1\)};
+ \draw[densely dashed,gray] (0.3,0)--(0.3,1.3);
+ \draw[densely dashed,gray] (0.6,0)--(0.6,1.69);
+ \draw[densely dashed,gray] (0.9,0)--(0.9,2.197);
+\end{tikzpicture}
+\caption{\(x'=x\) 的 Euler 折线：在每个网格段冻结左端点速度}
+\label{b2:fig:ode-euler-polygon}
+\end{figure}
+
+先验证每一段上的求值位置始终留在速度场受控的区域内。第一段的起点在 \(K\) 内，故斜率的模不超过 \(M\)。若已经构造到 \(t_j\)，则下一段每个点满足
+\[
+ |x_N(t)-a|\leq M(t-t_0)\leq Mh\leq r.
+\]
+归纳可知，每一步求值的位置都在 \(K\) 内，整条折线都可以构造出来。这里的共同时间 \(h\) 与网格数 \(N\) 无关。把任意两个时刻之间的折线段长度相加，还得到
+\begin{equation}\label{b2:eq:ode-euler-uniform-bounds}
+ |x_N(t)-a|\leq r,
+ \quad |x_N(t)-x_N(s)|\leq M|t-s|.
+\end{equation}
+第一条估计限制轨道的位置，第二条阻止轨道在越来越短的时间内发生固定大小的跳动。两条合起来才足以产生下面的一致收敛子列。
+
+\subsection{从有限维有界性取得一致收敛}
+\label{b2:subsec:ode-euler-compactness}
+
+一致有界本身并不保证函数列有一致收敛子列。例如 \(t\mapsto\sin Nt\) 的振荡随 \(N\) 增快。Euler 折线还满足同一个连续性估计，这个额外条件排除了这种现象。下面证明\term[arzela-ascoli-dingli]{Arzel\`a--Ascoli 定理}[Arzel\`a--Ascoli theorem]在有限维值连续函数上的一个版本。
+
+\begin{lemma}[Arzel\`a--Ascoli 的区间版本]\label{b2:lem:ode-arzela-ascoli}
+设 \(I=[\alpha,\beta]\subset\mathbb R\) 为非空紧区间，\(d\geq1\)，\(u_n\in C(I;\mathbb R^d)\)。假设存在 \(C<\infty\) 使 \(|u_n(t)|\leq C\) 对所有 \(n,t\) 成立；又假设对每个 \(\varepsilon>0\)，存在与 \(n\) 无关的 \(\delta>0\)，使
+\[
+ |t-s|<\delta\ \Longrightarrow\ |u_n(t)-u_n(s)|<\varepsilon
+ \quad(n\geq1).
+\]
+则 \((u_n)\) 有在 \(I\) 上一致收敛的子列，其极限连续。
+\end{lemma}
+\begin{proof}
+选 \(I\) 中的可数稠密集 \(D=\{s_1,s_2,\ldots\}\)。在 \(s_1\) 处，序列 \((u_n(s_1))\) 是 \(\mathbb R^d\) 中的有界列，因而有收敛子列。在这个子列中再抽取在 \(s_2\) 处收敛的子列，如此继续。取第 \(j\) 次所选子列的第 \(j\) 项，得到一列 \((v_j)\)：对每个固定的 \(s_k\)，从第 \(k\) 项以后都属于第 \(k\) 次的子列，故 \((v_j(s_k))\) 收敛。
+
+还需要把稠密集上的逐点收敛变成整个区间上的一致收敛。给定 \(\varepsilon>0\)，按共同连续性条件选 \(\delta>0\)，使时间距离小于 \(\delta\) 时函数值之差小于 \(\varepsilon/3\)。利用稠密性与 \(I\) 的紧性，可选有限多个点 \(s_{k_1},\ldots,s_{k_m}\)，使每个 \(t\in I\) 都距其中某点小于 \(\delta\)。这有限多个点上的收敛给出 \(J\)，使 \(j,l\geq J\) 时有
+\[
+ |v_j(s_{k_i})-v_l(s_{k_i})|<\varepsilon/3
+ \quad(1\leq i\leq m).
+\]
+对于任意 \(t\in I\)，选相应的 \(s_{k_i}\)，得到
+\[
+ \begin{aligned}
+ |v_j(t)-v_l(t)|
+ &\leq |v_j(t)-v_j(s_{k_i})|
+       +|v_j(s_{k_i})-v_l(s_{k_i})|\\
+ &\quad+|v_l(s_{k_i})-v_l(t)|<\varepsilon.
+ \end{aligned}
+\]
+因此 \((v_j)\) 是一致 Cauchy 列。在每个 \(t\) 处取 \(\mathbb R^d\) 中的极限，以上估计说明收敛是一致的。给定一点，把极限函数与某个 \(v_j\) 的两项一致误差、以及 \(v_j\) 在该点的连续性误差分别控制，就证明极限连续。
+\end{proof}
+
+引理中的共同连续性条件称为\term[dengdu-lianxu]{等度连续性}[equicontinuity]。证明清楚显示了有限维假设的使用位置：固定时刻的有界向量列必须能取出收敛子列。一般无限维 Banach 空间的有界集未必具有这种性质，不能只把 \(\mathbb R^d\) 换成任意 Banach 空间就照搬本节的存在性证明。
+
+\subsection{Peano 存在定理与非唯一性}
+\label{b2:subsec:ode-peano-proof}
+
+现在有了收敛子列，但一致收敛并不自动保持导数。我们不会尝试让折线的导数逐点收敛，而是估计它偏离积分方程的大小。所得的局部存在性结论称为\term[peano-cunzai-dingli]{Peano 存在定理}[Peano existence theorem]。
+
+% 实读核对：Teschl, Ordinary Differential Equations and Dynamical Systems,
+% AMS 2012 作者授权副本 Section 2.7, pp.54--56, Theorems 2.18--2.19。
+% 正文采用独立展开的有限维紧性和积分余差证明；书目由章首统一引入。
+\begin{theorem}[Peano]\label{b2:thm:ode-peano}
+设 \(d\geq1\)，\(\Omega\subset\mathbb R\times\mathbb R^d\) 开，\(f:\Omega\to\mathbb R^d\) 连续，\((t_0,a)\in\Omega\)。取 \(T,r>0\)，使
+\[
+ K=[t_0-T,t_0+T]\times\overline{B_r(a)}\subset\Omega,
+ \quad M=\max_K|f|.
+\]
+若 \(M>0\)，令 \(h=\min\{T,r/M\}\)；若 \(M=0\)，令 \(h=T\)。则初值问题
+\[
+ x'(t)=f(t,x(t)),\quad x(t_0)=a
+\]
+至少有一个 \(C^1\) 解定义在 \([t_0-h,t_0+h]\) 上，且 \(|x(t)-a|\leq r\)。区间端点的导数按单侧导数理解。
+\end{theorem}
+\begin{proof}
+当 \(M=0\) 时，\(f\) 在 \(K\) 上恒为零，常值函数 \(x(t)=a\) 就是所需的解。以下设 \(M>0\)。在 \([t_0,t_0+h]\) 上按式\eqref{b2:eq:ode-euler-polygon}构造折线 \(x_N\)。式\eqref{b2:eq:ode-euler-uniform-bounds}给出一致有界性和等度连续性。由\cref{b2:lem:ode-arzela-ascoli}，有子列 \(x_{N_k}\) 一致收敛到连续函数 \(x\)；极限仍满足 \(x(t_0)=a\) 以及 \(|x(t)-a|\leq r\)。
+
+对于每个 \(N\)，令 \(\tau_N(s)\) 为包含 \(s\) 的网格段的左端点；在最终端点处如何赋值不影响积分。逐段积分可得
+\[
+ x_N(t)=a+\int_{t_0}^t
+       f(\tau_N(s),x_N(\tau_N(s)))\,\mathrm ds.
+\]
+由于 \(f\) 在紧集 \(K\) 上一致连续，可以定义其连续模
+\[
+ \omega(\rho)=\sup\bigl\{|f(t,y)-f(s,z)|:
+ (t,y),(s,z)\in K,\ |t-s|+|y-z|\leq\rho\bigr\},
+\]
+并有 \(\omega(\rho)\to0\) 当 \(\rho\downarrow0\)。这里的上确界有限，因为 \(f\) 在 \(K\) 上有界。对每个 \(s\)，网格宽度和速度界给出
+\[
+ |s-\tau_N(s)|\leq\Delta_N,\quad
+ |x_N(s)-x_N(\tau_N(s))|\leq M\Delta_N.
+\]
+因此积分方程的余差满足
+\[
+ \sup_{t_0\leq t\leq t_0+h}
+ \left|x_N(t)-a-\int_{t_0}^t f(s,x_N(s))\,\mathrm ds\right|
+ \leq h\omega((1+M)\Delta_N)\longrightarrow0.
+\]
+又因 \(x_{N_k}\to x\) 一致，\(f\) 的同一个一致连续性保证
+\[
+ \sup_{s\in[t_0,t_0+h]}|f(s,x_{N_k}(s))-f(s,x(s))|
+ \leq\omega(\|x_{N_k}-x\|_\infty)\longrightarrow0.
+\]
+后一误差的积分至多再乘区间长度 \(h\)。在积分方程余差中取极限，得到
+\[
+ x(t)=a+\int_{t_0}^t f(s,x(s))\,\mathrm ds.
+\]
+被积函数连续，故微积分基本定理给出 \(x\in C^1\) 以及所需微分方程。
+
+为构造负向解，对 \(0\leq s\leq h\) 考虑
+\[
+ y'(s)=-f(t_0-s,y(s)),\quad y(0)=a.
+\]
+它具有相同的紧柱体速度界，故上面的构造适用。令 \(x(t)=y(t_0-t)\) 便得到 \([t_0-h,t_0]\) 上的解。两侧在 \(t_0\) 取值均为 \(a\)，左右导数均为 \(f(t_0,a)\)，所以可以拼成整个闭区间上的 \(C^1\) 解。
+\end{proof}
+
+Peano 存在定理所保证的是至少一条轨道。它没有给出压缩映射中的几何误差估计，也没有说明不同抽取方式会得到同一极限。若另外已有局部 Lipschitz 条件，唯一性便会使每个收敛子列的极限相同；若整个折线列还不一致收敛，就能选出始终与唯一解相距至少某个正数的子列，再由紧性从中抽出收敛子列，产生矛盾。因此在有唯一性的情形，紧性论证还可以升级为整个折线列的收敛。
+
+\ProseParagraphBreak
+
+回看\secref{b2:sec:ode-local-existence}已经验证的初值问题 \(x'=2\sqrt{|x|}\)、\(x(0)=0\)。除了始终停在零点的解，还有等待到任意 \(c\geq0\) 再沿 \((t-c)^2\) 运动的解。Peano 定理适用于这个连续场，保证存在，却没有提供决定何时离开的额外条件。
+
+\ProseParagraphBreak
+
+唯一性的缺失也妨碍把这些轨道自然组织成前一节的可微流。近似算法或初值扰动可能选出不同轨道，\cref{b2:ex:ode-peano-selection}给出一个具体计算。后续特征线法所需的可逆流仍应使用前四节的存在唯一与光滑依赖结果，不能仅以连续场存在性替换。\Cref{b2:tab:ode-regularity}集中比较本章已经证明的三种局部结论；任何一行都不能单凭所列正则性推出全时间存在。
+
+\begin{table}[htbp]
+\centering
+\small
+\caption[速度场条件与局部解的性质]{速度场条件与局部解的性质。状态空间有限维，方程定义于开集；Lipschitz 条件关于时间局部一致，光滑性指全部变量。}
+\label{b2:tab:ode-regularity}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{2.8cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\toprule
+速度场条件 & 得到的局部性质 & 仍需另外核验的性质 \\
+\midrule
+仅连续 & Peano 保证至少一个 \(C^1\) 解。 & 唯一性、单值的初值依赖。 \\
+连续且对状态局部 Lipschitz & 解唯一，有限轨道段上连续依赖初值。 & 对初值的可微性，见\cref{b2:ex:ode-lipschitz-nonsmooth-flow}。 \\
+属于 \(C^k\)，\(k\geq1\) & 解的演化关于时间、初值及光滑参数属于 \(C^k\)。 & 最大存在区间及长期稳定性。 \\
+\bottomrule
+\end{tabularx}
+\end{table}

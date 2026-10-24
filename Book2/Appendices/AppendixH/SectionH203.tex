@@ -2,24 +2,200 @@
 \section{Brouwer 与 Schauder 不动点}
 \label{b2:sec:H203}
 
-待撰写。
+把方程写成 \(u=T(u)\)，可以把求解问题变成寻找一个经 \(T\) 作用后不动的点。收缩映射原理要求两个输入的距离在映射后严格缩小，然而非线性椭圆方程的解算子未必有这样的定量性质。另一条路线是利用紧性：先用有限个点描述像集，在有限维凸集中找近似不动点，再取极限。有限维步骤所需要的几何事实，就是 Brouwer 定理。
 
 \subsection{Brouwer 不动点定理的有限维输入}
 \label{b2:subsec:H20301}
 
-待撰写。
+先看闭区间。若连续函数 \(T:[0,1]\to[0,1]\)，则 \(T(0)-0\ge0\)、\(T(1)-1\le0\)，介值定理给出不动点。高维中没有把向量统一排成大小的次序，但可以记录某个坐标在哪个方向发生变化。\term[Sperner-yinli]{Sperner 引理}[Sperner lemma]把这种记录变成一个有限计数问题。
+
+\ProseParagraphBreak
+对整数 \(n\ge1\)，标准 \(n\) 维单纯形是
+\[
+ \Delta^n\coloneqq\{x=(x_0,\ldots,x_n)\in\mathbb R^{n+1}:x_i\ge0,\ \sum_{i=0}^n x_i=1\}.
+\]
+它的顶点为 \(e_0,\ldots,e_n\)；坐标 \(x_i\) 是点关于这些顶点的重心坐标。对非空指标集 \(I\subset\{0,\ldots,n\}\)，由 \(e_i\)、\(i\in I\) 张成的面恰由 \(x_j=0\)、\(j\notin I\) 描述。单纯形的\term[dan-chun-poufen]{单纯剖分}[simplicial subdivision]是有限个小单纯形及其所有面的集合，它们覆盖原单纯形，任意两个的交集为空或为双方共有的面。特别，内部的每个 \((n-1)\) 维小面由两个 \(n\) 维小单纯形共享，边界上的则只属于一个：从该面的相对内部沿短法线段看，两侧各有一块，边界时只有内侧有一块。
+
+\Needspace{6\baselineskip}
+\begin{lemma}[Sperner]
+\label{b2:lem:H3-sperner}
+设整数 \(n\ge1\)，\(\mathcal T\) 为标准单纯形 \(\Delta^n\) 的有限单纯剖分。给每个剖分顶点 \(v\) 一个标号 \(\ell(v)\in\{0,\ldots,n\}\)，并要求 \(v_i=0\) 时 \(\ell(v)\ne i\)。则顶点标号恰为 \(0,\ldots,n\) 的 \(n\) 维小单纯形有奇数个，因而至少有一个。
+\end{lemma}
+\begin{proof}
+对维数归纳。\(n=1\) 时，从左端的标号 \(0\) 走到右端的标号 \(1\)，每遇到一个两端异号的小区间，标号就改变一次；起终标号不同，所以改变次数为奇数。
+
+设结论对 \(n-1\) 成立。称一个 \((n-1)\) 维小面为特殊面，若它的 \(n\) 个顶点标号恰为 \(0,\ldots,n-1\)。计数所有配对 \((S,F)\)，其中 \(S\) 为 \(n\) 维小单纯形，\(F\) 是它的特殊面。内部特殊面贡献两次，边界特殊面贡献一次，所以配对数与边界特殊面数有相同奇偶性。
+
+边界特殊面只能位于大单纯形的面 \(x_n=0\) 上。若位于 \(x_j=0\)、\(j<n\)，边界标号规则会禁止所需的标号 \(j\)。在 \(x_n=0\) 上，诱导的剖分及标号正满足 \((n-1)\) 维假设；由归纳，特殊面数为奇数。
+
+再按 \(S\) 计数。若 \(S\) 含全部 \(n+1\) 种标号，恰有一个特殊面，即删去标号 \(n\) 的顶点所得的面。若 \(S\) 不含标号 \(n\)，却含全部 \(0,\ldots,n-1\)，则 \(n+1\) 个顶点中恰有一种标号重复，删去这两个同号顶点中的任一个都得到特殊面，故贡献两次。其余情形贡献零次。因此配对数的奇偶性等于全标号小单纯形数的奇偶性，后者为奇数。
+\end{proof}
+
+上述边界规则称为\term[Sperner-biaohao]{Sperner 标号}[Sperner labeling]。\cref{b2:fig:H3-sperner}给出二维例子：边上的点只能用该边端点的两种标号，但内部的小三角形仍被迫出现三种标号。
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm,line width=.7pt,every node/.style={font=\small}]
+\coordinate (A) at (0,0); \coordinate (B) at (4,0); \coordinate (C) at (2,3.1);
+\coordinate (D) at (2,0); \coordinate (E) at (3,1.55); \coordinate (F) at (1,1.55);
+\fill[AnalysisBlue!14] (D)--(E)--(F)--cycle;
+\draw (A)--(B)--(C)--cycle; \draw (D)--(E)--(F)--cycle;
+\fill (A) circle (1.6pt) node[below left]{\(0\)};
+\fill (B) circle (1.6pt) node[below right]{\(1\)};
+\fill (C) circle (1.6pt) node[above]{\(2\)};
+\fill (D) circle (1.6pt) node[below]{\(0\)};
+\fill (E) circle (1.6pt) node[right]{\(1\)};
+\fill (F) circle (1.6pt) node[left]{\(2\)};
+\node at (2,1.02){全标号};
+\end{tikzpicture}
+\caption[Sperner 标号的二维例子]{Sperner 标号的二维例子。三个中点把大三角形分成四块，阴影中的一块具有三个不同标号；其余三块各缺一种标号。}
+\label{b2:fig:H3-sperner}
+\end{figure}
+
+从离散计数得到连续映射的结论，还需让剖分越来越细。\term[zhongxin-xifen]{重心细分}[barycentric subdivision]给出一个具体办法：对单纯形的每个非空面取顶点的平均值作为重心，把一条严格包含的面链的重心连成一个新单纯形。这个构造确实覆盖原单纯形。为看清这一点，将一点的重心坐标重排为 \(\lambda_{i_0}\ge\cdots\ge\lambda_{i_n}\ge0\)，并令 \(\lambda_{i_{n+1}}=0\)。它可以写成
+\[
+ x=\sum_{k=0}^n(k+1)(\lambda_{i_k}-\lambda_{i_{k+1}})
+ b_{\{i_0,\ldots,i_k\}},
+\]
+其中 \(b_I\) 是对应面的重心。系数非负且总和为一，故 \(x\) 落在这条面链给出的新单纯形内；坐标相等时发生的不同排序只在共有面上相接。因此该细分在相邻原单纯形的共有面上也一致。
+
+\ProseParagraphBreak
+设原单纯形直径为 \(D\)。若面 \(F\subset G\) 分别有 \(p<q\le n+1\) 个顶点，则
+\[
+ b_G=\frac pq b_F+\frac{q-p}{q}b_{G\setminus F},\qquad
+ |b_G-b_F|\le\frac{q-p}{q}D\le\frac n{n+1}D.
+\]
+每个新单纯形的顶点来自一条面链，所以其直径至多为原来的 \(n/(n+1)\)。反复细分就得到最大直径趋零的有限剖分。
+
+\Needspace{6\baselineskip}
+\begin{theorem}[Brouwer]
+\label{b2:thm:H3-brouwer}
+设整数 \(m\ge1\)，\(K\subset\mathbb R^m\) 为非空紧凸集。每个连续映射 \(T:K\to K\) 都有不动点，即存在 \(x\in K\) 使 \(T(x)=x\)。
+\end{theorem}
+\begin{proof}
+先证明 \(K=\Delta^n\) 的情形。若某个剖分顶点已经是不动点，结论成立。否则，对每个顶点 \(v\)，选择一个满足 \(v_i>T_i(v)\) 的坐标作为标号。这样的坐标存在，因为两个向量的坐标和同为一，而它们不相等；若 \(v_i=0\)，则 \(T_i(v)\ge0\)，故不会选择标号 \(i\)。于是这是 Sperner 标号。
+
+对第 \(j\) 次重心细分，取一个全标号小单纯形，记它的标号 \(i\) 顶点为 \(v_i^{(j)}\)。紧性给出子列，使 \(v_0^{(j)}\to x\in\Delta^n\)。由于单纯形直径趋零，同一子列上每个 \(v_i^{(j)}\) 都趋于 \(x\)。由 \(v_{i,i}^{(j)}>T_i(v_i^{(j)})\) 及连续性，得到 \(x_i\ge T_i(x)\) 对每个 \(i\) 成立。两边坐标和相同，这些不等式必全为等式，所以 \(T(x)=x\)。仿射变换把结论移到任意非退化单纯形。
+
+现在处理一般 \(K\)。对 \(z\in\mathbb R^m\)，距离 \(|z-y|\)、\(y\in K\) 在紧集上达到最小值；若有两个不同极小点，平方距离的严格凸性会使其中点的距离更小，故最近点唯一，记为 \(P_Kz\)。对 \(y\in K\)，将 \(P_Kz+t(y-P_Kz)\)、\(0\le t\le1\)，代入极小性质并取右导数，得
+\[
+ (z-P_Kz)\cdot(y-P_Kz)\le0.
+\]
+分别令 \(y=P_Kw\)，并在 \(w\) 的不等式中令 \(y=P_Kz\)，相加得到
+\[
+ |P_Kz-P_Kw|^2\le(z-w)\cdot(P_Kz-P_Kw).
+\]
+所以 \(|P_Kz-P_Kw|\le|z-w|\)，特别 \(P_K\) 连续，并在 \(K\) 上等于恒等映射。
+
+取一个包含 \(K\) 的大单纯形 \(S\subset\mathbb R^m\)。映射 \(T\circ P_K:S\to K\subset S\) 连续，故存在 \(z=T(P_Kz)\)。等式右侧属于 \(K\)，所以 \(z\in K\)、\(P_Kz=z\)，最终 \(Tz=z\)。这也包括 \(K\) 只有一个点或位于较低维仿射子空间的情形。
+\end{proof}
+
+上述结果称为\term[Brouwer-budongdian-dingli]{Brouwer 不动点定理}[Brouwer fixed point theorem]。闭球当然满足其条件。凸性则有实际作用：圆周上的旋转 \(z\mapsto-z\) 连续且没有不动点；圆周虽紧，却不是凸集。紧性也不能删除，例如 \(T(x)=(x+1)/2\) 把开区间 \((0,1)\) 映入自身，却只在缺失的端点 \(1\) 处有不动点。
 
 \subsection{有限维逼近与紧映射}
 \label{b2:subsec:H20302}
 
-待撰写。
+在无限维 Banach 空间中，闭有界集通常不紧，不能从一列近似不动点直接抽取收敛子列。可以要求映射本身产生紧性：它的像比整个定义域更容易被有限个点描述。
+
+\Needspace{6\baselineskip}
+\begin{definition}[紧映射]
+\label{b2:def:H3-compact-map}
+设 \(X,Y\) 为实 Banach 空间，\(C\subset X\)。连续映射 \(T:C\to Y\) 称为\term[jin-yingshe]{紧映射}[compact map]，若 \(C\) 的每个有界子集的像在 \(Y\) 中相对紧，即其闭包紧。这里不要求 \(T\) 线性。
+\end{definition}
+
+有限 \(\varepsilon\) 网通常只保证每个点附近有一个网点，最近网点的选择却可能不连续。解决办法是同时使用所有近邻，并用连续权重取凸组合。
+
+\Needspace{6\baselineskip}
+\begin{lemma}[紧集的连续有限维逼近]
+\label{b2:lem:H3-finite-approximation}
+设 \(X\) 为实 Banach 空间，\(K\subset X\) 为非空紧集，\(\varepsilon>0\)。存在有限个点 \(y_1,\ldots,y_N\in K\) 及连续映射
+\[
+ P_\varepsilon:K\longrightarrow\operatorname{conv}\{y_1,\ldots,y_N\},
+ \qquad\|P_\varepsilon y-y\|<\varepsilon\quad(y\in K).
+\]
+右侧凸包是有限维空间中的紧凸集。
+\end{lemma}
+\begin{proof}
+紧性给出 \(K\) 的有限 \(\varepsilon/2\) 网 \(y_1,\ldots,y_N\)。令
+\[
+ a_i(y)=\max\{0,\varepsilon-\|y-y_i\|\},\quad
+ \theta_i(y)=\frac{a_i(y)}{\sum_{k=1}^N a_k(y)},\quad
+ P_\varepsilon y=\sum_{i=1}^N\theta_i(y)y_i.
+\]
+每个 \(y\in K\) 离某个网点小于 \(\varepsilon/2\)，因此分母大于零，各权重连续、非负且和为一。有正权重的指标都满足 \(\|y-y_i\|<\varepsilon\)，故
+\[
+ \|P_\varepsilon y-y\|\le\sum_i\theta_i(y)\|y_i-y\|<\varepsilon.
+\]
+有限凸包是紧单纯形 \(\{t\in\mathbb R^N:t_i\ge0,\ \sum t_i=1\}\) 在线性映射 \(t\mapsto\sum t_i y_i\) 下的像，因而紧。
+\end{proof}
+
+这一逼近只要求像集有有限网，网点可以随着精度改变。它既不要求 Banach 空间有预先给定的基，也不要求存在收敛到恒等算子的有限秩线性投影；连续凸组合已经足够。
 
 \subsection{Schauder 不动点定理}
 \label{b2:subsec:H20303}
 
-待撰写。
+\Needspace{6\baselineskip}
+\begin{theorem}[Schauder]
+\label{b2:thm:H3-schauder}
+设 \(X\) 为实 Banach 空间，\(C\subset X\) 为非空闭有界凸集，\(T:C\to C\) 为紧映射。则存在 \(u\in C\) 使 \(T(u)=u\)。
+\end{theorem}
+\begin{proof}
+由于 \(C\) 有界，\(K=\overline{T(C)}\) 紧；由于 \(C\) 闭，\(K\subset C\)。对每个 \(\varepsilon>0\)，用\cref{b2:lem:H3-finite-approximation}取网点 \(y_i\in K\) 及映射 \(P_\varepsilon\)。凸性保证 \(C_\varepsilon=\operatorname{conv}\{y_1,\ldots,y_N\}\subset C\)。因此
+\[
+ P_\varepsilon\circ T:C_\varepsilon\longrightarrow C_\varepsilon
+\]
+是非空有限维紧凸集的连续自映射。若该凸集只有一点，它本身就是不动点；否则其有限维仿射包可用一组基识别为欧氏空间，所有范数诱导相同拓扑，\cref{b2:thm:H3-brouwer}给出 \(u_\varepsilon=P_\varepsilon(Tu_\varepsilon)\)。于是 \(\|u_\varepsilon-Tu_\varepsilon\|<\varepsilon\)。
+
+取 \(\varepsilon_j\downarrow0\)。紧性使 \(Tu_{\varepsilon_j}\) 有收敛子列，记极限为 \(u\in K\)。上式说明相同子列的 \(u_{\varepsilon_j}\) 也趋于 \(u\)。由 \(T\) 的连续性，\(Tu_{\varepsilon_j}\to Tu\)，而其极限已为 \(u\)，故 \(Tu=u\)。
+\end{proof}
+
+\term[Schauder-budongdian-dingli]{Schauder 不动点定理}[Schauder fixed point theorem]给出存在性，但没有一般的唯一性或逐次迭代收敛结论。例如 \(T(x)=1-x\) 在 \([0,1]\) 上只有不动点 \(1/2\)，从其他点开始迭代却在两个值之间往返。应用时真正要找的是一个不变凸集 \(C\)：其中的函数应有统一的先验界，而方程的求解操作要把这一界保持下去。
 
 \subsection{半线性椭圆方程的应用}
 \label{b2:subsec:H20304}
 
-待撰写。
+考虑非线性源项问题
+\[
+ -\Delta u=g(x)+F(x,u),\qquad u\in H_0^1(\Omega).
+\]
+给定一个暂定函数 \(v\)，先求解线性方程 \(-\Delta w=g+F(x,v)\)，得到 \(w=T(v)\)。若最终找到 \(v=T(v)\)，就得到原方程的解。这里选择 \(L^2\) 作为不动点空间：线性求解把 \(L^2\) 数据送入 \(H_0^1\)，而嵌回 \(L^2\) 时恰好产生紧性。
+
+\Needspace{6\baselineskip}
+\begin{theorem}[有界非线性源的弱解]
+\label{b2:thm:H3-semilinear-bounded}
+设整数 \(d\ge1\)，\(\Omega\subset\mathbb R^d\) 为非空有界开集，\(g\in L^2(\Omega;\mathbb R)\)。设 \(F:\overline\Omega\times\mathbb R\to\mathbb R\) 连续，且存在 \(M\ge0\)，使 \(|F(x,s)|\le M\) 对所有 \((x,s)\in\overline\Omega\times\mathbb R\) 成立。则存在实值 \(u\in H_0^1(\Omega)\)，满足
+\[
+ \int_\Omega\nabla u\cdot\nabla\varphi\,\mathrm dx
+ =\int_\Omega\bigl(g(x)+F(x,u(x))\bigr)\varphi(x)\,\mathrm dx
+ \quad(\varphi\in H_0^1(\Omega)).
+\]
+若 \(C_P\) 满足零边界 Poincaré 不等式 \(\|v\|_2\le C_P\|\nabla v\|_2\)，则可取解满足
+\[
+ \|\nabla u\|_2\le C_P(\|g\|_2+M|\Omega|^{1/2}),\qquad
+ \|u\|_2\le C_P^2(\|g\|_2+M|\Omega|^{1/2}).
+\]
+\end{theorem}
+\begin{proof}
+由\cref{b2:thm:15-poisson-existence}，每个 \(h\in L^2(\Omega)\) 确定唯一的零边界弱解 \(Sh\)，并有
+\[
+ \|\nabla Sh\|_2\le C_P\|h\|_2,
+ \qquad \|Sh\|_2\le C_P^2\|h\|_2.
+\]
+定义 \(N(v)(x)=F(x,v(x))\)。连续性保证复合可测，统一有界性保证 \(N(v)\in L^2\)，且 \(\|N(v)\|_2\le M|\Omega|^{1/2}\)。零测集上的改值只改变复合在同一零测集上的值，故它在 \(L^2\) 等价类上良定义。
+
+映射 \(N:L^2\to L^2\) 连续。事实上，若 \(v_j\to v\) 于 \(L^2\)，每个子列都可再抽取几乎处处收敛的子列；此时连续性给出 \(F(x,v_j(x))\to F(x,v(x))\) 几乎处处，平方差由可积常数 \(4M^2\) 控制，因此在 \(L^2\) 中收敛。如果原序列的像不收敛，就能抽出与极限相距至少某个正数的子列，与刚才的结论矛盾。
+
+令 \(T(v)=S(g+N(v))\)。它连续，且所有像在 \(H_0^1\) 中有统一界。第一卷推论25.2.6给出任意有界开集上的零边界紧嵌入 \(H_0^1(\Omega)\hookrightarrow L^2(\Omega)\)：零延拓具有共同有界支集，梯度界控制平移差，再用积分紧性判据抽取子列。因此 \(T\) 在 \(L^2\) 中为紧映射。
+
+取
+\[
+ R=1+C_P^2(\|g\|_2+M|\Omega|^{1/2}),\qquad
+ C=\{v\in L^2(\Omega;\mathbb R):\|v\|_2\le R\}.
+\]
+这是非空闭有界凸集，而估计保证 \(T(C)\subset C\)。\cref{b2:thm:H3-schauder}给出 \(u=T(u)\)。等式右侧属于 \(H_0^1\)，所以不动点不仅是 \(L^2\) 函数，还满足所列弱形式与两项估计。
+\end{proof}
+
+例如 \(F(x,s)=a(x)\sin s\)，其中 \(a\in C(\overline\Omega;\mathbb R)\)，无论 \(\|a\|_\infty\) 多大，定理都给出弱解。收缩法则要求额外的小量条件，例如 \(C_P^2\|a\|_\infty<1\)。当这一条件不满足时，紧性方法仍能给出存在性，但并不排除多个解。
+
+\ProseParagraphBreak
+若源项随 \(s\) 增长，就应重新检查不变球是否存在。例如 \(|F(x,s)|\le a(x)+b|s|\)、\(a\in L^2\)，给出 \(\|T(v)\|_2\le C_P^2(\|g\|_2+\|a\|_2+b\|v\|_2)\)；当 \(C_P^2b<1\) 时可据此选取半径。超线性增长一般不能靠扩大球半径解决，因为右侧增长反而更快；这时需要序区间、能量约束或其他先验估计。

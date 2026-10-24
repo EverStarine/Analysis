@@ -2,24 +2,400 @@
 \section{微分形式、拉回与外微分}
 \label{b1:sec:E103}
 
-待撰写。
+坐标给出了一组可供计算的数字，但同一个切向量换坐标后会有不同的分量。
+如果想对一条曲线或一块曲面积分，被积对象就必须随坐标一起变换，
+使最后得到的数不依赖最初选了哪张图。
+微分形式正是作用于有序切向量组的交错型；它的变换规律由这个作用本身决定。
+
+\ProseParagraphBreak
+
+\appref{b1:app:B}已经构造有限维实空间上的外代数，
+\secref{b1:sec:D102}已经在欧氏开集上定义微分形式和外微分。
+把每一点的交错型组织成光滑场，就得到流形上的微分形式；
+拉回与外微分的相容性将保证换坐标后的计算一致。
+全节的形式取实值；复值形式可按实、虚部复化，各线性恒等式逐分量仍成立。
 
 \subsection{余切空间与微分形式}
 \label{b1:subsec:E10301}
 
-待撰写。
+先看一次微分。若 \(f:M\to\mathbb R\) 光滑，点 \(p\) 处的切向量 \(v\)
+给出一个方向变化率 \(\mathrm df_p(v)\)。
+这里 \(\mathrm df_p\) 接收一个切向量，输出一个实数；它不是切向量本身。
+
+\begin{definition}\label{b1:def:E-cotangent}
+设 \(M\) 是实光滑 \(n\) 维流形，允许有边界，\(p\in M\)。
+切空间的实线性对偶
+\[
+ T_p^*M=\operatorname{Hom}_{\mathbb R}(T_pM,\mathbb R)
+\]
+称为 \(M\) 在 \(p\) 处的\term[yuqie-kongjian]{余切空间}[cotangent space]。
+其元素称为\term[yuqie-xiangliang]{余切向量}[cotangent vector]。
+对光滑实函数 \(f\)，规定
+\[
+ \mathrm df_p(v)=v(f)\in\mathbb R,
+\]
+其中 \(v(f)\) 是\cref{b1:prop:E-differential-chain}之后定义的方向导数。
+这也就是将映射微分 \(\mathrm d f_p:T_pM\to T_{f(p)}\mathbb R\)
+的值域与 \(\mathbb R\) 自然辨认。
+\end{definition}
+\symidx{\(T_p^*M\)：流形的余切空间}
+
+在坐标图 \(x=(x^1,\ldots,x^n)\) 中，切空间的基与对偶基分别为
+\[
+ \left.\frac{\partial}{\partial x^i}\right|_p,\quad
+ \mathrm dx^i_p,\quad 1\leq i\leq n.
+\]
+其中 \(\mathrm dx^i_p(\partial/\partial x^j|_p)=\delta^i_j\)，所以
+\[
+ \mathrm df=\sum_{i=1}^n
+ \frac{\partial(f\circ x^{-1})}{\partial x^i}\,\mathrm dx^i.
+\]
+在边界点，这些仍是完整 \(n\) 维切空间及其对偶；
+求导由半空间坐标中的局部光滑延拓解释，不把法向分量删掉。
+
+\ProseParagraphBreak
+
+一个容易造成混淆的写法，是把 \(\mathrm df\) 与梯度视为同一个对象。
+微分只需要光滑结构，梯度却需要内积 \(g\)：它由
+\(g_p(\nabla_g f,v)=\mathrm df_p(v)\) 定义。
+若坐标中的度量矩阵是 \((g_{ij})\)，其逆为 \((g^{ij})\)，则
+\[
+ \nabla_g f=\sum_{i,j}g^{ij}\,\partial_j f\,
+                   \frac{\partial}{\partial x^i}.
+\]
+这个公式来自解线性方程
+\(\sum_i g_{ij}(\nabla_g f)^i=\partial_jf\)。
+只有在欧氏正交坐标下，梯度的分量才恰好等于各偏导数。
+
+\begin{definition}\label{b1:def:E-differential-form}
+设 \(M\) 为实光滑 \(n\) 维流形，允许有边界，\(k\) 为非负整数。
+给每个 \(p\in M\) 指定一个交错 \(k\) 次实多线性型
+\(\omega_p\in\bigwedge^kT_p^*M\)。
+若在每个坐标图中都能写成
+\[
+ \omega=\sum_{i_1<\cdots<i_k}
+       a_{i_1\cdots i_k}\,
+       \mathrm dx^{i_1}\wedge\cdots\wedge\mathrm dx^{i_k},
+\]
+且各系数是光滑函数，则称 \(\omega\) 为 \(M\) 上的光滑 \(k\) 次微分形式。
+全体记为 \(\Omega^k(M)\)，并规定
+\(\Omega^0(M)=C^\infty(M;\mathbb R)\)，
+\(\Omega^k(M)=\{0\}\) 当 \(k<0\) 或 \(k>n\)。
+支集紧的形式组成 \(\Omega_c^k(M)\)。
+\end{definition}
+\symidx{\(\Omega^k(M)\)：流形上的实光滑 \(k\) 次形式}
+\symidx{\(\Omega_c^k(M)\)：流形上的紧支撑实光滑 \(k\) 次形式}
+
+这里沿用\cref{b1:def:app-d-differential-form}的“微分形式”主称。
+\(\bigwedge^kT_p^*M\) 与交错型的辨认采用
+\cref{b1:prop:app-b-form-pairing}的行列式归一化；
+上式只对严格递增指标求和，不额外乘 \(1/k!\)。
+系数可由
+\(a_I(p)=\omega_p(\partial_{x^{i_1}},\ldots,\partial_{x^{i_k}})\)
+恢复，所以这个展开唯一。
+
+\ProseParagraphBreak
+
+换成另一组坐标 \(y\)，链式法则给出
+\[
+ \mathrm dx^i=\sum_j\frac{\partial x^i}{\partial y^j}\,\mathrm dy^j.
+\]
+例如一次形式 \(\omega=\sum_i a_i\,\mathrm dx^i\) 的新系数是
+\(\widetilde a_j=\sum_i a_i\,\partial x^i/\partial y^j\)。
+高次形式的系数则由这些导数矩阵的子式线性组合得到。
+转移映射光滑，故在一组相容坐标中的光滑性会传给另一组坐标。
+因此定义中“每个坐标图”可以用任意覆盖图册检验；
+并不是在不同图中另行指定互不相干的系数。
+
+\begin{proposition}[形式的外积与局部拼接]\label{b1:prop:E-form-algebra}
+设 \(M\) 为实光滑流形，允许有边界，\(p,q\geq0\) 为整数。
+逐点外积使
+\(\Omega^p(M)\times\Omega^q(M)\) 映到 \(\Omega^{p+q}(M)\)，
+且
+\[
+ \alpha\wedge\beta=(-1)^{pq}\beta\wedge\alpha.
+\]
+若开覆盖 \(\{U_a\}\) 上的光滑 \(k\) 次形式 \(\omega_a\)
+在每个 \(U_a\cap U_b\) 上相等，则存在唯一的
+\(\omega\in\Omega^k(M)\) 使 \(\omega|_{U_a}=\omega_a\)。
+\end{proposition}
+\begin{proof}
+逐点外积是外代数中已定义的运算。其局部系数是有限个光滑系数乘积的和，
+故仍光滑；交换两个指标块移动 \(pq\) 对因子，给出所列符号。
+对于拼接，在 \(x\in U_a\) 处令 \(\omega_x=(\omega_a)_x\)。
+重叠处相等保证选择无关，每一点附近又等于一个光滑形式，
+所以得到全局光滑形式。任一符合限制要求的形式逐点都只能取这些值，故唯一。
+\end{proof}
+
+相容局部对象可以直接拼接；不相容对象的加权平均则需要单位分解。
+例如在某张图内给定形式 \(\alpha\)，若光滑函数 \(\rho\)
+满足 \(\operatorname{supp}\rho\subset U\)，则 \(\rho\alpha\)
+可在 \(U\) 外补零成为全局光滑形式。
+原因是 \(U\) 外的每一点都有邻域与闭集 \(\operatorname{supp}\rho\) 不交，
+补零在这个邻域恒为零。仅有“\(\rho\) 在 \(U\) 外为零”的逐点陈述，
+却不控制支集是否碰到图的边缘，不能代替这一步。
 
 \subsection{拉回与坐标转换}
 \label{b1:subsec:E10302}
 
-待撰写。
+设 \(F:M\to N\) 光滑。一个在 \(N\) 上测量切向量的对象，
+可以先让 \(F\) 推送切向量，再在 \(N\) 上测量。
+这个次序说明形式的自然方向与映射相反。
+
+\begin{definition}\label{b1:def:E-pullback}
+设 \(M,N\) 为实光滑流形，均允许有边界，
+\(F:M\to N\) 光滑，\(\omega\in\Omega^k(N)\)，\(k\geq1\)。
+对 \(p\in M\) 与 \(v_1,\ldots,v_k\in T_pM\)，规定
+\[
+ (F^*\omega)_p(v_1,\ldots,v_k)
+ =\omega_{F(p)}(\mathrm dF_pv_1,\ldots,\mathrm dF_pv_k).
+\]
+所得形式称为 \(\omega\) 沿 \(F\) 的拉回，沿用\appref{b1:app:B}中线性映射的拉回名称。
+对零次形式规定 \(F^*f=f\circ F\)。
+\end{definition}
+
+这个定义不要求 \(F\) 单射、满射或微分可逆。
+在源坐标 \(x\) 和目标坐标 \(y\) 中，若
+\(\omega=\sum_I a_I(y)\,\mathrm dy^I\)，令 \(F^j=y^j\circ F\)，则
+\begin{equation}
+ F^*\omega=\sum_I(a_I\circ F)\,
+       \mathrm dF^{i_1}\wedge\cdots\wedge\mathrm dF^{i_k}.
+ \label{b1:eq:E-pullback-coordinates}
+\end{equation}
+这是把定义逐一作用于坐标切向量得到的公式，
+也证明拉回的系数光滑。对边界坐标，链式法则仍由局部延拓成立。
+
+\begin{proposition}[拉回的运算]\label{b1:prop:E-pullback-algebra}
+设 \(M,N,P\) 是实光滑流形，均允许有边界，
+\(F:M\to N\)、\(G:N\to P\) 光滑。
+拉回是各次形式空间之间的实线性映射，并且
+\[
+ (G\circ F)^*=F^*\circ G^*,\quad
+ \operatorname{id}_M^*=\operatorname{id},\quad
+ F^*(\alpha\wedge\beta)=F^*\alpha\wedge F^*\beta
+\]
+对 \(N\) 上任意光滑形式 \(\alpha,\beta\) 成立。
+若 \(F\) 为微分同胚，则 \(F^*\) 的逆是 \((F^{-1})^*\)。
+\end{proposition}
+\begin{proof}
+线性与恒等式直接来自对每组切向量求值。
+复合公式使用
+\(\mathrm d(G\circ F)_p=\mathrm dG_{F(p)}\circ\mathrm dF_p\)：
+先把所有输入向量送入 \(T_{F(p)}N\)，再送入 \(T_{G(F(p))}P\)，
+正好与先后两次拉回一致。
+对外积，把各输入按定义中的交错求和展开；
+线性映射对每个输入分别作用，不改变求和的排列与符号，
+所以结果等于分别拉回后的外积。
+对逆映射应用复合公式，两个次序都得到恒等映射。
+\end{proof}
+
+式\eqref{b1:eq:E-pullback-coordinates}解释了熟悉的换元因子。
+若源、靶都是 \(n\) 维，则
+\[
+ F^*(a(y)\,\mathrm dy^1\wedge\cdots\wedge\mathrm dy^n)
+ =(a\circ F)\det DF\,
+                  \mathrm dx^1\wedge\cdots\wedge\mathrm dx^n.
+\]
+这里保留行列式的符号；非负 Lebesgue 测度的换元公式则含
+\(|\det DF|\)。下一节的定向将协调这两种不同职责。
+
+\ProseParagraphBreak
+
+以极坐标映射 \(F(r,\theta)=(r\cos\theta,r\sin\theta)\) 为例，
+在 \(r>0\) 的任意坐标小矩形上，
+\[
+ \begin{aligned}
+ F^*\mathrm dx&=\cos\theta\,\mathrm dr-r\sin\theta\,\mathrm d\theta,\\
+ F^*\mathrm dy&=\sin\theta\,\mathrm dr+r\cos\theta\,\mathrm d\theta,\\
+ F^*(\mathrm dx\wedge\mathrm dy)&=r\,\mathrm dr\wedge\mathrm d\theta.
+ \end{aligned}
+\]
+面积因子 \(r\) 来自两个一次形式的外积，并非额外附上的规则。
+对于穿孔平面上的一次形式
+\[
+ \eta=\frac{-y\,\mathrm dx+x\,\mathrm dy}{x^2+y^2},
+\]
+同样的代入给出 \(F^*\eta=\mathrm d\theta\)。
+这还不能推出 \(\eta\) 在整个穿孔平面上是某个单值角函数的微分；
+角坐标只能局部选取，\secref{b1:sec:E105}将用圆周积分检验整体障碍。
+
+\ProseParagraphBreak
+
+还有两个简单的边界检查。常值映射的微分为零，所以它把所有正次形式拉回为零，
+但把函数拉回为常函数。若 \(i:S\hookrightarrow M\) 是嵌入子流形的包含，
+\(i^*\omega\) 只测试切向于 \(S\) 的向量。
+例如在 \(\mathbb R^2\) 的横轴上，
+\(i^*(\mathrm dx)=\mathrm dx\)，而 \(i^*(\mathrm dy)=0\)。
+因此“限制到子流形”不是把原形式的全部坐标系数原封不动保留下来。
 
 \subsection{外微分与复形关系}
 \label{b1:subsec:E10303}
 
-待撰写。
+现在要把欧氏公式
+\[
+ \mathrm d\!\left(\sum_Ia_I\,\mathrm dx^I\right)
+   =\sum_{I,j}\partial_j a_I\,\mathrm dx^j\wedge\mathrm dx^I
+\]
+搬到每张坐标图中。困难在于，同一个形式换坐标后，
+系数和基形式都会变化；只对系数求导为什么仍给出同一个对象？
+拉回与欧氏外微分的交换公式说明：先换坐标再求外微分，与先求外微分再换坐标，得到相同结果。
 
-\subsection{欧氏测试形式及流的接口}
+\begin{lemma}[欧氏拉回与外微分]\label{b1:lem:E-euclidean-pullback-d}
+设 \(U\subset\mathbb R^m\)、\(V\subset\mathbb R^n\) 为开集，
+\(F:U\to V\) 光滑，\(\omega\) 为 \(V\) 上的实光滑 \(k\) 次形式。
+欧氏坐标公式定义的外微分满足
+\[
+ \mathrm d(F^*\omega)=F^*(\mathrm d\omega).
+\]
+相同恒等式在半空间相对开集上的局部光滑延拓意义下成立。
+\end{lemma}
+\begin{proof}
+当 \(k=0\) 时就是函数的链式法则。
+对一般次数，只需处理一项 \(a\,\mathrm dy^{i_1}\wedge\cdots\wedge\mathrm dy^{i_k}\)。
+\cref{b1:prop:app-d-exterior-derivative}的计算证明了欧氏
+\(\mathrm d^2=0\) 和分次乘法法则；该计算是逐点局部的，不需要紧支集。
+于是
+\[
+ \begin{aligned}
+ \mathrm d\bigl((a\circ F)\,
+          \mathrm dF^{i_1}\wedge\cdots\wedge\mathrm dF^{i_k}\bigr)
+ &=\mathrm d(a\circ F)\wedge
+          \mathrm dF^{i_1}\wedge\cdots\wedge\mathrm dF^{i_k}\\
+ &=\sum_j(\partial_j a\circ F)\,
+       \mathrm dF^j\wedge
+          \mathrm dF^{i_1}\wedge\cdots\wedge\mathrm dF^{i_k}.
+ \end{aligned}
+\]
+其他各项含 \(\mathrm d^2F^{i_\ell}=0\)，因而消失；
+最后一行就是 \(F^*(\mathrm d\omega)\) 的坐标展开。
+
+对于半空间局部图，可在每个点附近选择映射分量和形式系数的光滑延拓。
+相同计算在延拓上成立，限制回半空间便得结论。
+导数的限制不依赖延拓选择：两种延拓在半空间内部相等，
+各阶导数在内部相等，再由连续性延到边界。
+\end{proof}
+
+\begin{proposition}[全局外微分及自然性]\label{b1:prop:E-pullback-d}
+设 \(M,N\) 为实光滑流形，均允许有边界，\(k,p,q\geq0\) 为整数。
+在每张坐标图中使用欧氏外微分公式，
+唯一确定线性算子
+\(\mathrm d:\Omega^k(M)\to\Omega^{k+1}(M)\)。
+它在零次形式上是函数的微分，并满足
+\[
+ \mathrm d^2\omega=0,\quad
+ \mathrm d(\alpha\wedge\beta)
+ =\mathrm d\alpha\wedge\beta+(-1)^p\alpha\wedge\mathrm d\beta
+\]
+对 \(\omega\in\Omega^k(M)\)、\(\alpha\in\Omega^p(M)\)、
+\(\beta\in\Omega^q(M)\) 成立。
+此外，对光滑 \(F:M\to N\) 及 \(\eta\in\Omega^k(N)\)，
+\begin{equation}
+ \mathrm d(F^*\eta)=F^*(\mathrm d\eta).
+ \label{b1:eq:E-pullback-d}
+\end{equation}
+\end{proposition}
+\begin{proof}
+在一张图 \(x:U\to V\) 中，把形式写成
+\(\omega=x^*\widetilde\omega\)，并规定
+\((\mathrm d\omega)|_U=x^*(\mathrm d\widetilde\omega)\)。
+若换成图 \(y\)，局部表达间的关系是沿转移映射拉回。
+上一引理保证先拉回再外微分与先外微分再拉回一致，
+所以两种规定在重叠处相等。
+由\cref{b1:prop:E-form-algebra}拼接为全局形式，且规定已逐图决定其值，故唯一。
+零次公式、平方为零和乘法法则都可在每张图内检验，
+由欧氏恒等式得到。对一般光滑映射也在源、靶图内使用上一引理，
+便得到式\eqref{b1:eq:E-pullback-d}。
+\end{proof}
+
+局部定义外微分不需要选择联络或 Riemann 度量。
+虽然一般张量场的逐系数求导未必坐标相容，
+这里交错性恰好消去了坐标变换产生的对称二阶导数。
+例如在 \(\mathbb R^2\) 上，
+\[
+ \omega=P\,\mathrm dx+Q\,\mathrm dy
+ \quad\Longrightarrow\quad
+ \mathrm d\omega=(\partial_xQ-\partial_yP)\,
+                        \mathrm dx\wedge\mathrm dy.
+\]
+负号来自 \(\mathrm dy\wedge\mathrm dx=-\mathrm dx\wedge\mathrm dy\)，
+不是对偏导数另作约定。
+
+\ProseParagraphBreak
+
+这些算子把形式空间排成
+\[
+ 0\longrightarrow\Omega^0(M)
+ \xrightarrow{\mathrm d}\Omega^1(M)
+ \xrightarrow{\mathrm d}\cdots
+ \xrightarrow{\mathrm d}\Omega^n(M)
+ \longrightarrow0,
+\]
+相邻两个箭头的复合为零；下一节将把这个序列正式称为 de Rham 复形。
+它只说明每个外微分的结果都落在下一算子的核里，
+还没有说明核中的每个元素都来自前一项。
+后一问题正是 Poincaré 引理和 de Rham 上同调要研究的内容。
+
+\subsection{欧氏测试形式与流}
 \label{b1:subsec:E10304}
 
-待撰写。
+若 \(U\subset\mathbb R^n\) 是开集，
+本节的 \(\Omega_c^k(U)\) 就是\secref{b1:sec:D102}使用的
+\(\mathcal D^k(U)\)。代数对象相同，后一个记号还强调作为测试空间的收敛：
+共同紧支集上的全部系数及各阶导数一致收敛。
+这个额外的拓扑条件使线性泛函能够表达分布与流。
+
+\begin{proposition}[紧支撑与坐标中的测试收敛]\label{b1:prop:E-test-forms}
+设 \(M,N\) 是实光滑无边界流形。
+对 \(\omega_j,\omega\in\Omega_c^k(M)\)，要求其支集包含同一个紧集 \(K\)，
+并要求在覆盖 \(K\) 的有限组坐标图中，
+每个紧坐标片上的全部阶系数导数一致收敛。
+这一条件不依赖所用图册。外微分保持紧支集，并把这种收敛传给下一次形式。
+若 \(F:M\to N\) 光滑且为真映射，即每个紧集的逆像紧，
+则 \(F^*\) 把 \(N\) 上的紧支撑形式送入 \(M\) 上的紧支撑形式，
+并保持上述收敛。
+\end{proposition}
+\begin{proof}
+坐标变化将新系数写成旧系数与转移映射子式的有限和。
+在重叠区域内的紧子集上，子式以及每个给定阶的导数都有界。
+乘法与链式法则因而把新坐标中的每个固定阶导数
+控制为旧坐标中有限个阶数不超过它的导数之和。
+利用紧性取有限个这样的重叠子片，再交换两组图的角色，
+就证明收敛条件等价。
+
+外微分只使用系数的一阶导数，所以输出的固定阶导数由输入的下一阶导数控制。
+若原形式在某邻域为零，其外微分也在该邻域为零，故支集不扩大。
+最后
+\[
+ \operatorname{supp}(F^*\eta)\subset F^{-1}(\operatorname{supp}\eta).
+\]
+真映射条件把右侧限制在共同紧集中。
+在源、靶的有限组相关坐标片上，
+式\eqref{b1:eq:E-pullback-coordinates}及链式法则给出全部所需导数估计。
+\end{proof}
+
+真映射条件不能从“光滑”推出来。
+例如投影 \(F:\mathbb R^2\to\mathbb R\)、\(F(x,y)=x\)，
+把非零紧支集函数 \(\varphi\) 拉回为 \(\varphi(x)\)，
+其支集沿 \(y\) 方向无界。
+不过，对某个特定的流，只需检查逆像与该流支撑相交后是否紧；
+\cref{b1:prop:app-d-pushforward}采用的正是这个较弱条件。
+
+\ProseParagraphBreak
+
+沿用\cref{b1:def:app-d-current}，
+欧氏开集上的 \(k\) 维流是 \(k\) 次测试形式上的连续线性泛函。
+其边界满足
+\[
+ (\partial T)(\eta)=T(\mathrm d\eta),\quad \partial^2T=0.
+\]
+因此一次外微分与一次边界运算互为测试意义下的对应。
+若将有向子流形上的积分写成泛函 \([S]\)，
+下一节的 Stokes 公式将说明 \(\partial[S]=[\partial S]\)
+在光滑、定向及相应支撑条件下为何成立。
+对一般流，边界由它在外微分上的作用定义，即使流没有光滑曲面表示，这项运算仍然成立。
+
+\ProseParagraphBreak
+
+本节已经把坐标表达、拉回、外微分和测试拓扑逐一对齐。
+接下来需要额外指定的只有积分所用的方向；
+定向不是某张图自带的唯一选择，而是不同图之间符号相容的全局数据。

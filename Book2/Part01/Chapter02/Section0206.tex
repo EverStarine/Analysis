@@ -1,4 +1,212 @@
 % !TeX root = ../../Book2.tex
 \OptionalSection{平衡点与 Lyapunov 稳定性}{b2:sec:ode-lyapunov}
 
-待撰写。拟引入平衡点、稳定性与渐近稳定性，并用 Lyapunov 函数给出基本判据。本节范围限于这些基本概念与方法。
+连续依赖控制的是一个给定的有限时间区间：初值足够接近，解在这段时间内也接近。稳定性提出更强的问题：能否只选一次初值容许误差，就保证以后的所有时间都不偏离指定范围？Gronwall 估计中的 \(e^{Lt}\) 会随 \(t\) 增大，通常不能直接回答这个问题。我们将寻找沿轨道不增加的标量函数，用它的等值面限制整条运动。
+
+\subsection{平衡点与稳定性的量词}
+\label{b2:subsec:ode-equilibrium-stability}
+
+\begin{definition}\label{b2:def:ode-equilibrium}
+设 \(d\geq1\)，\(U\subset\mathbb R^d\) 开，\(b:U\to\mathbb R^d\) 局部 Lipschitz 连续。若 \(p\in U\) 满足 \(b(p)=0\)，则称 \(p\) 为自治方程 \(x'=b(x)\) 的\term[pinghengdian]{平衡点}[equilibrium point]。此时常值函数 \(x(t)=p\) 是经过 \(p\) 的唯一最大解，并对所有 \(t\in\mathbb R\) 存在。
+\end{definition}
+
+为了判断平衡点的稳定性，应扰动初始位置，而不是只观察平衡解本身。记 \(X(t,a)\) 为初值 \(X(0,a)=a\) 的最大解；以下只考察正时间。若研究非零平衡点，可令 \(y=x-p\)，把它移到原点。
+
+\begin{definition}\label{b2:def:ode-stability}
+设 \(d\geq1\)，\(U\subset\mathbb R^d\) 开，\(b:U\to\mathbb R^d\) 局部 Lipschitz 连续，\(p\in U\)、\(b(p)=0\)，\(X(t,a)\) 表示 \(x'=b(x)\)、\(x(0)=a\) 的最大解。
+\begin{enumerate}
+\item\label{b2:item:ode-stable}若对每个 \(\varepsilon>0\)，存在 \(\delta>0\)，使每个 \(a\in U\) 满足 \(|a-p|<\delta\) 时，\(X(t,a)\) 对所有 \(t\geq0\) 存在且
+\[
+ |X(t,a)-p|<\varepsilon\quad(t\geq0),
+\]
+则称 \(p\) 是\term[lyapunov-wending]{Lyapunov 稳定}[Lyapunov stable]的，简称稳定的；否则称它不稳定。
+\item\label{b2:item:ode-asymptotically-stable}若 \(p\) 稳定，且存在 \(\rho>0\)，使每个 \(a\in U\) 满足 \(|a-p|<\rho\) 时，解对所有 \(t\geq0\) 存在并且 \(X(t,a)\to p\)，则称 \(p\) 是\term[jianjin-wending]{渐近稳定}[asymptotically stable]的。
+\item\label{b2:item:ode-exponentially-stable}若存在 \(\rho>0\)、\(C\geq1\)、\(\gamma>0\)，使每个 \(a\in U\) 满足 \(|a-p|<\rho\) 时，解对所有 \(t\geq0\) 存在并满足
+\[
+ |X(t,a)-p|\leq C e^{-\gamma t}\cdot|a-p|\quad(t\geq0),
+\]
+则称 \(p\) 是\term[zhishu-wending]{指数稳定}[exponentially stable]的。
+\end{enumerate}
+\end{definition}
+
+第一项中的 \(\delta\) 可以依赖 \(\varepsilon\)，却不能依赖最终观测时间。第二项同时要求始终不远离和最终趋近；第三项进一步要求同一邻域内所有初值都有共同的指数速率。指数稳定蕴含渐近稳定：在给定的 \(\rho\) 内再取 \(\delta\leq\varepsilon/C\)，就得到稳定性，而指数因子趋零给出吸引性。
+
+\ProseParagraphBreak
+
+标量方程 \(x'=\lambda x\)、\(\lambda\in\mathbb R\) 说明了这些区别。其解为 \(e^{\lambda t}a\)。当 \(\lambda<0\) 时，原点指数稳定；当 \(\lambda=0\) 时，所有解保持初值，原点稳定但不渐近稳定；当 \(\lambda>0\) 时，任意非零的微小初值最终都会离开预先指定的小区间，原点不稳定。最后一种情形在每个有限时间区间内仍然连续依赖初值。
+
+\subsection{Lyapunov 函数与稳定判据}
+\label{b2:subsec:ode-lyapunov-stability}
+
+只看欧氏距离 \(|x-p|\) 不一定方便。轨道可能暂时沿某个方向远离原点，同时另一种加权距离仍在减小。我们因而允许选择一个标量函数 \(V\)，只要求它在平衡点取零、在附近其他点取正值，并沿解不增加。
+
+\begin{definition}\label{b2:def:ode-lyapunov-function}
+设 \(d\geq1\)，\(U\subset\mathbb R^d\) 开，\(b:U\to\mathbb R^d\) 局部 Lipschitz 连续，\(p\in U\)、\(b(p)=0\)。设 \(W\subset U\) 是包含 \(p\) 的开集，\(V\in C^1(W;\mathbb R)\)。若
+\[
+ V(p)=0,\quad V(x)>0\ (x\in W\setminus\{p\}),
+\]
+则称 \(V\) 在 \(W\) 上关于 \(p\) \term[zhengding-hanshu]{正定}[positive definite]。记
+\[
+ \dot V(x)=DV(x)b(x)=\nabla V(x)\cdot b(x).
+\]
+若 \(V\) 关于 \(p\) 正定且 \(\dot V(x)\leq0\) 对所有 \(x\in W\) 成立，则称 \(V\) 为平衡点 \(p\) 的一个\term[lyapunov-hanshu]{Lyapunov 函数}[Lyapunov function]。若进一步有 \(\dot V(x)<0\) 对所有 \(x\in W\setminus\{p\}\) 成立，则称其为\term[yange-lyapunov-hanshu]{严格 Lyapunov 函数}[strict Lyapunov function]。
+\end{definition}
+
+符号 \(\dot V\) 指沿给定向量场的方向导数，并不是说 \(V\) 本身带有一个时间变量。对于轨道仍在 \(W\) 内的时刻，链式法则给出
+\[
+ \frac{\mathrm d}{\mathrm dt}V(X(t,a))=\dot V(X(t,a)).
+\]
+所以检查一个在空间中成立的不等式，就能同时控制所有相关轨道。定义中的正定也不要求 \(V\) 是二次型；只要求它在平衡点处有严格的零极小值。
+
+% 实读核对：Teschl, AMS 2012 作者授权副本 Section 6.5, p.198,
+% Section 6.6, pp.200--202, Theorem 6.13；下述证明直接使用紧球和延拓。
+\begin{theorem}[Lyapunov 稳定判据]\label{b2:thm:ode-lyapunov-stable}
+设 \(d\geq1\)，\(U\subset\mathbb R^d\) 开，\(b:U\to\mathbb R^d\) 局部 Lipschitz 连续，\(p\in U\)、\(b(p)=0\)。若存在包含 \(p\) 的开集 \(W\subset U\) 以及 \(V\in C^1(W;\mathbb R)\)，满足
+\[
+ V(p)=0,\quad V(x)>0\ (x\ne p),\quad
+ DV(x)b(x)\leq0\ (x\in W),
+\]
+其中正性要求对所有 \(x\in W\setminus\{p\}\) 成立，则 \(p\) 是 Lyapunov 稳定的。
+\end{theorem}
+\begin{proof}
+给定 \(\varepsilon>0\)，选 \(0<R<\varepsilon\)，使 \(\overline{B_R(p)}\subset W\)。球面 \(|x-p|=R\) 是紧集，\(V\) 在其上连续且处处为正，因而
+\[
+ m_R=\min_{|x-p|=R}V(x)>0.
+\]
+由 \(V(p)=0\) 及连续性，存在 \(0<\delta<R\)，使 \(|a-p|<\delta\) 时有 \(V(a)<m_R/2\)。固定这样的 \(a\)，考察其最大解。在轨道尚未离开 \(B_R(p)\) 的时间内，链式法则给出
+\[
+ V(X(t,a))\leq V(a)<m_R/2.
+\]
+如果轨道在其存在区间内第一次到达球面，则该时刻的 \(V\) 值至少为 \(m_R\)，与上式矛盾。因此轨道始终留在球内，且实际上落在固定紧集
+\[
+ K=\{x\in\overline{B_R(p)}:V(x)\leq m_R/2\}\subset B_R(p).
+\]
+这里 \(K\) 与球面不交，所以确实是 \(U\) 的紧子集。由\cref{b2:thm:ode-continuation}，自治解若留在定义域内一个固定紧集，就不能在有限正时间终止；否则有限端点前的图像将留在一个时空紧集内，与该准则矛盾。故解对所有 \(t\geq0\) 存在，且 \(|X(t,a)-p|<R<\varepsilon\)。
+\end{proof}
+
+证明中有两个不同的紧性用途。球面上的严格正最小值建立了轨道不能越过的界限；球内的紧子水平集则排除了有限时间终止。仅写“\(V\) 不增加，所以解稳定”，会遗漏这两步，也会把局部定义的解误当成已经对所有正时间存在。
+
+\subsection{严格耗散与渐近稳定}
+\label{b2:subsec:ode-lyapunov-asymptotic}
+
+导数非正只保证 \(V\) 不增加，不能保证它趋于零。例如对于平面系统
+\[
+ x'=y,\quad y'=-x,
+\]
+函数 \(V(x,y)=x^2+y^2\) 满足 \(\dot V=2xy-2xy=0\)。原点稳定，然而从非零点出发的轨道始终保持相同半径，因而不趋于原点。要从 Lyapunov 函数直接推出趋近，还需要额外的耗散条件。
+
+\begin{theorem}[Lyapunov 渐近稳定判据]\label{b2:thm:ode-lyapunov-asymptotic}
+设 \(d\geq1\)，\(U\subset\mathbb R^d\) 开，\(b:U\to\mathbb R^d\) 局部 Lipschitz 连续，\(p\in U\)、\(b(p)=0\)。若存在包含 \(p\) 的开集 \(W\subset U\) 以及 \(V\in C^1(W;\mathbb R)\)，满足
+\[
+ V(p)=0,\quad V(x)>0,\quad DV(x)b(x)<0
+ \quad(x\in W\setminus\{p\}),
+\]
+则 \(p\) 渐近稳定。
+\end{theorem}
+\begin{proof}
+在 \(p\) 处有 \(DV(p)b(p)=0\)，故\cref{b2:thm:ode-lyapunov-stable}给出稳定性。固定足够小的 \(R\)，使 \(\overline{B_R(p)}\subset W\)。按该定理的证明，所有充分靠近 \(p\) 的初值都产生正向全局解，并且轨道留在一个固定紧集 \(K\subset B_R(p)\) 内。
+
+沿其中一条轨道，\(v(t)=V(X(t,a))\) 非负且不增，故存在极限 \(\ell\geq0\)。若 \(\ell>0\)，则轨道一直落在
+\[
+ K_\ell=\{x\in K:V(x)\geq\ell\}.
+\]
+这个集合是非空紧集，并且不含 \(p\)。连续函数 \(-DV(x)b(x)\) 在其上严格为正，因而有正的最小值 \(c_\ell\)。于是 \(v'(t)\leq-c_\ell\) 对所有正时间成立，积分得到 \(v(t)\leq v(0)-c_\ell t\)，最终为负，矛盾。因此 \(v(t)\to0\)。
+
+最后还要从函数值趋零推出位置趋近。给定 \(\eta>0\)，若紧集 \(K\cap\{|x-p|\geq\eta\}\) 非空，则 \(V\) 在其上有正的最小值 \(m_\eta\)。当 \(v(t)<m_\eta\) 时，轨道不可能在这个集合中，所以 \(|X(t,a)-p|<\eta\)。若该集合为空，这个距离估计一开始就成立。故 \(X(t,a)\to p\)。
+\end{proof}
+
+严格负导数不必给出指数速率。对于 \(x'=-x^3\)，取 \(V(x)=x^2\)，便有 \(\dot V=-2x^4<0\) 当 \(x\ne0\)。原点渐近稳定；实际解为
+\[
+ X(t,a)=\frac{a}{\sqrt{1+2a^2t}}\quad(t\geq0).
+\]
+它保持符号且直接代入即可验证方程。固定 \(a\ne0\) 时，衰减为 \(t^{-1/2}\) 的量级，不能由某个固定的 \(C e^{-\gamma t}\cdot|a|\) 控制全部正时间。因此渐近稳定严格弱于指数稳定。反过来，若某个试选函数没有满足严格负导数条件，也只能说这个充分判据尚不能应用，不能据此断言平衡点不渐近稳定。
+
+\subsection{二次型与指数衰减}
+\label{b2:subsec:ode-quadratic-lyapunov}
+
+若能把耗散量与 \(V\) 本身比较，就可以得到速率。下面把这一想法写成一个方便使用的局部版本。
+
+\begin{proposition}\label{b2:prop:ode-lyapunov-exponential}
+设 \(d\geq1\)，\(U\subset\mathbb R^d\) 开且含原点，\(b:U\to\mathbb R^d\) 局部 Lipschitz 连续、\(b(0)=0\)。假设存在 \(r>0\)，使 \(\overline{B_r(0)}\subset U\)，并存在 \(V\in C^1(U;\mathbb R)\) 以及常数 \(c_1,c_2,c_3>0\)，使对每个 \(|x|\leq r\) 有
+\[
+ c_1|x|^2\leq V(x)\leq c_2|x|^2,
+ \quad DV(x)b(x)\leq-c_3|x|^2.
+\]
+则原点指数稳定。具体地，存在 \(\rho>0\)，使 \(|a|<\rho\) 时解正向全局存在，且
+\[
+ |X(t,a)|\leq\sqrt{c_2/c_1}\,e^{-c_3t/(2c_2)}\cdot|a|
+ \quad(t\geq0).
+\]
+\end{proposition}
+\begin{proof}
+在 \(B_r(0)\) 内，假设给出正定 Lyapunov 函数。由\cref{b2:thm:ode-lyapunov-stable}，可选 \(\rho>0\)，使这些初值的解正向全局存在且始终留在 \(B_r(0)\) 内。沿轨道有
+\[
+ \frac{\mathrm d}{\mathrm dt}V(X(t,a))
+ \leq-c_3|X(t,a)|^2
+ \leq-\frac{c_3}{c_2}V(X(t,a)).
+\]
+乘以积分因子 \(e^{c_3t/c_2}\) 后求导，得到
+\[
+ c_1|X(t,a)|^2
+ \leq V(X(t,a))
+ \leq e^{-c_3t/c_2}V(a)
+ \leq c_2e^{-c_3t/c_2}|a|^2.
+\]
+取平方根即得结论。
+\end{proof}
+
+对于实线性系统 \(x'=Ax\)，可尝试 \(V(x)=x^{\mathsf T}Px\)，其中 \(P\) 是实对称正定矩阵。这里正定指 \(x^{\mathsf T}Px>0\) 对所有非零实向量成立。单位球面的紧性给出两个正常数 \(m,M\)，使
+\[
+ m|x|^2\leq x^{\mathsf T}Px\leq M|x|^2.
+\]
+直接求导则有
+\[
+ \dot V(x)=x^{\mathsf T}(A^{\mathsf T}P+PA)x.
+\]
+所以若 \(A^{\mathsf T}P+PA\) 负定，便得到指数稳定。寻找合适的 \(P\)，就是寻找一种随运动衰减的二次型。
+
+\ProseParagraphBreak
+
+例如阻尼振子
+\[
+ x'=y,\quad y'=-x-y
+\]
+的朴素能量 \(x^2+y^2\) 满足导数 \(-2y^2\)，在 \(y=0\) 的整条直线上为零，不能直接套用严格判据。不过当位置偏离原点而速度暂时为零时，方程仍会产生把位置拉回的加速度。加入交叉项可以把这种联系计入函数：取
+\[
+ V(x,y)=x^2+xy+y^2.
+\]
+由 \(|xy|\leq(x^2+y^2)/2\)，有
+\[
+ \tfrac12(x^2+y^2)\leq V(x,y)\leq\tfrac32(x^2+y^2).
+\]
+沿方程计算，得到
+\[
+ \begin{aligned}
+ \dot V
+ &=(2x+y)y+(x+2y)(-x-y)\\
+ &=-x^2-xy-y^2=-V.
+ \end{aligned}
+\]
+因此 \(V(X(t,a))=e^{-t}V(a)\)，并有
+\[
+ |X(t,a)|\leq\sqrt3\,e^{-t/2}\cdot|a|.
+\]
+线性系统对全部时间存在，这里估计又对全部初值成立。这个例子也说明，半负定的试选函数未能证明渐近稳定时，改变函数本身可能比直接求解方程更方便。
+
+\ProseParagraphBreak
+
+同一个二次型还可以吸收足够小的非线性误差。设在原点的某个开邻域内，\(b(x)=Ax+R(x)\) 局部 Lipschitz 连续，\(R(0)=0\) 且 \(|R(x)|/|x|\to0\)。若实对称正定矩阵 \(P\) 满足
+\[
+ x^{\mathsf T}(A^{\mathsf T}P+PA)x\leq-q|x|^2
+ \quad(x\in\mathbb R^d)
+\]
+其中 \(q>0\)，则取足够小的 \(r\)，可使 \(|R(x)|\leq q|x|/(4\|P\|)\) 当 \(|x|\leq r\)。用欧氏算子范数估计可得
+\[
+ \begin{aligned}
+ DV(x)b(x)
+ &=x^{\mathsf T}(A^{\mathsf T}P+PA)x+2x^{\mathsf T}PR(x)\\
+ &\leq-q|x|^2+2\|P\|\cdot|x|\cdot|R(x)|
+ \leq-\tfrac q2|x|^2.
+ \end{aligned}
+\]
+\Cref{b2:prop:ode-lyapunov-exponential}于是证明原点仍指数稳定，但现在保证的初值范围通常只是一个小邻域。所用条件是二次型的严格耗散和余项 \(o(|x|)\)；当线性部分没有这种严格耗散时，不能忽略高阶项。例如 \(x'=-x^3\) 与 \(x'=x^3\) 在原点的线性化同为零，前者渐近稳定，后者从任意正初值出发都会增大并离开固定小区间，因而不稳定。

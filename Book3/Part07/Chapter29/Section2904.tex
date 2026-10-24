@@ -1,27 +1,388 @@
 % !TeX root = ../../Book3.tex
 \section{全纯域与伪凸性}
 \label{b3:sec:2904}
-% 规划课题：A28。
 
-待撰写。
+Hartogs 延拓说明，一个几何边界未必能阻止全纯函数越过它。
+另一方面，多重次调和函数的次平均可以阻止一族解析圆盘在边界受控时
+把中心推向区域之外。
+本节分别定义这两种性质，证明所需的局部边界条件，并在球、多圆盘和有孔模型上计算。
 
 \subsection{全纯延拓与全纯域}
 \label{b3:subsec:290401}
 
-待撰写。
+\Needspace{6\baselineskip}
+\begin{definition}\label{b3:def:29-domain-holomorphy}
+设 \(\Omega\subseteq\mathbb C^n\) 为区域，\(n\ge1\)。
+若不存在区域 \(V\subseteq\mathbb C^n\) 及非空连通开集 \(U\subseteq\Omega\cap V\)，
+满足 \(V\not\subseteq\Omega\) 且每个 \(f\in\mathcal O(\Omega)\)
+都有 \(F_f\in\mathcal O(V)\) 使 \(F_f|_U=f|_U\)，
+则称 \(\Omega\) 为\term[quan-chun-yu]{全纯域}[domain of holomorphy]。
+\end{definition}
+
+这个定义允许延拓只先在交集的一个连通部分与原函数一致，
+因此比要求直接在 \(\Omega\cup V\) 上拼接更准确。
+每个延拓邻域必须至少遇到一个阻碍延拓的函数；
+它并不要求每个函数都在所有边界点发生奇性，常数函数当然可以延拓。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[共同延拓的局部形式]\label{b3:prop:29-local-domain-holomorphy}
+设 \(\Omega\subseteq\mathbb C^n\) 为区域。
+它不是全纯域，当且仅当存在 \(p\in\partial\Omega\)、\(r>0\)
+及 \(\Omega\cap B(p,r)\) 的一个连通分支 \(W\)，使
+\(p\in\overline W\)，并且每个 \(f\in\mathcal O(\Omega)\)
+都能在整个 \(B(p,r)\) 上全纯延拓，与 \(f\) 在 \(W\) 上一致。
+\end{proposition}
+\begin{proof}
+若有这样的球与分支，取定义中的 \(V=B(p,r)\)、\(U=W\) 即可。
+球包含 \(p\notin\Omega\)，所以不包含于 \(\Omega\)。
+
+反之，设定义中的 \(V,U\) 存在。
+在 \(V\) 内取一条连续分段线性路径，从 \(a\in U\) 走向某个
+\(b\in V\setminus\Omega\)，并令 \(p\) 为它第一次离开 \(\Omega\) 的点。
+因为整条路径在 \(V\) 内，\(p\in\partial\Omega\cap V\)。
+选 \(B(p,r)\Subset V\)。路径到达 \(p\) 前的最后一小段
+位于 \(\Omega\cap B(p,r)\) 的某个连通分支 \(W\)，且 \(p\in\overline W\)。
+它又属于 \(\Omega\cap V\) 中包含 \(U\) 的连通分支 \(C\)。
+由连通性，\(W\subseteq C\)。
+对每个 \(f\)，原延拓 \(F_f\) 与 \(f\) 在 \(U\) 相等，
+多变量恒等原理使它们在 \(C\) 相等；
+将 \(F_f\) 限制到 \(B(p,r)\)，便得到所需共同延拓。
+\end{proof}
+
+这里的“共同”只固定延拓区域，各个 \(f\) 的延拓函数可以不同。
+下面给出一种可以直接检验的阻碍。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[边界零点给出的延拓障碍]\label{b3:prop:29-holomorphic-boundary-obstruction}
+设 \(\Omega\subseteq\mathbb C^n\) 为区域。
+若对每个 \(p\in\partial\Omega\)，存在整函数 \(h_p\in\mathcal O(\mathbb C^n)\)，
+使 \(h_p\) 在 \(\Omega\) 无零点而 \(h_p(p)=0\)，则 \(\Omega\) 为全纯域。
+\end{proposition}
+\begin{proof}
+函数 \(f_p=1/h_p\) 在 \(\Omega\) 全纯。
+若它能在某个 \(B(p,r)\) 上延拓为 \(F\)，并在一个非空开集
+\(W\subseteq\Omega\cap B(p,r)\) 上与原函数一致，
+则 \(h_pF=1\) 在 \(W\) 成立。
+由恒等原理，这个等式在整个球内成立；在 \(p\) 处却给 \(0=1\)，矛盾。
+因而每个边界球都不能成为全体函数的共同延拓区域，应用前一命题即可。
+\end{proof}
+
+当 \(n=1\) 时，可以对任意边界点取 \(h_p(z)=z-p\)。
+因此每个一元区域都是全纯域。
+在 \(n\ge2\) 时，一个线性全纯函数的零集通常是一整个复超平面，
+未必能够避开 \(\Omega\)；有孔区域也可能因 Hartogs 现象失去延拓障碍。
 
 \subsection{伪凸性与穷竭函数}
 \label{b3:subsec:290402}
 
-待撰写。
+要把次平均转成边界控制，需要一个在离开所有内部紧集时变大的函数。
+这一要求同时处理趋向有限边界和走向无穷远两种情况。
+
+\Needspace{6\baselineskip}
+\begin{definition}\label{b3:def:29-pseudoconvex}
+设 \(\Omega\subseteq\mathbb C^n\) 为区域。
+若连续实函数 \(\rho:\Omega\to\mathbb R\) 满足
+\[
+ \{\,z\in\Omega:\rho(z)<c\,\}\Subset\Omega
+ \quad(c\in\mathbb R),
+\]
+则称 \(\rho\) 为\term[qiong-jie-hanshu]{穷竭函数}[exhaustion function]。
+若 \(\Omega\) 存在连续、实值的多重次调和穷竭函数，
+则称 \(\Omega\) 为\term[weitu-yu]{伪凸域}[pseudoconvex domain]。
+本节以这一穷竭条件作为伪凸性的定义。
+\end{definition}
+
+由连续性，\(\{\rho\le c\}\) 是 \(\Omega\) 中的闭集，
+又包含于相对紧的 \(\{\rho<c+1\}\)，因此它本身是 \(\Omega\) 内的紧集。
+反过来，若所有闭次水平集都紧，则上述开次水平集条件也成立。
+对于有界域，穷竭意味着沿任何趋向边界的序列，函数值都趋于正无穷；
+对无界域还必须控制逃向无穷远的序列。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[换元与乘积]\label{b3:prop:29-pseudoconvex-products}
+伪凸性在双全纯映射下保持。
+若 \(\Omega_j\subseteq\mathbb C^{n_j}\)、\(1\le j\le m\)，均为伪凸域，
+则乘积域 \(\prod_{j=1}^m\Omega_j\) 伪凸。
+\end{proposition}
+\begin{proof}
+设 \(F:V\to\Omega\) 双全纯，\(\rho\) 为 \(\Omega\) 的连续多重次调和穷竭。
+由\cref{b3:prop:29-psh-pullback}，\(\rho\circ F\) 连续且多重次调和。
+其闭次水平集是 \(\{\rho\le c\}\) 经连续逆映射 \(F^{-1}\) 的像，故紧。
+反方向对 \(F^{-1}\) 同样处理。
+
+对于乘积，取各域的穷竭 \(\rho_j\)，定义
+\[
+ \rho(z_1,\ldots,z_m)=\max_{1\le j\le m}\rho_j(z_j).
+\]
+各项经全纯投影拉回仍多重次调和，有限最大值保持此性质及连续性。
+闭次水平集为 \(\prod_j\{\rho_j\le c\}\)，是有限个内部紧集的乘积，故紧。
+\end{proof}
+
+\Needspace{6\baselineskip}
+\begin{proposition}[解析圆盘的边界控制]\label{b3:prop:29-analytic-disc-control}
+设 \(\Omega\subseteq\mathbb C^n\) 为伪凸域，\(K\subseteq\Omega\) 为非空紧集。
+存在紧集 \(L\subseteq\Omega\)，使任意在 \(\overline{\mathbb D}\) 的邻域全纯的映射
+\(A\)，只要 \(A(\overline{\mathbb D})\subseteq\Omega\) 且
+\(A(\partial\mathbb D)\subseteq K\)，就有 \(A(\overline{\mathbb D})\subseteq L\)。
+\end{proposition}
+\begin{proof}
+取连续多重次调和穷竭 \(\rho\)，并令 \(M=\max_K\rho\)。
+函数 \(\rho\circ A\) 连续且次调和，因而由一元最大值原理，
+在闭圆盘上不超过其边界最大值，也就不超过 \(M\)。
+取 \(L=\{z\in\Omega:\rho(z)\le M\}\)，这是所需的内部紧集。
+\end{proof}
+
+因此，如果一族解析圆盘的边界始终落在固定内部紧集，
+而其中心趋向 \(\partial\Omega\)，区域就不可能伪凸。
+
 
 \subsection{边界 Levi 条件}
 \label{b3:subsec:290403}
 
-待撰写。
+\Needspace{6\baselineskip}
+\begin{definition}\label{b3:def:29-boundary-levi}
+设 \(\Omega\subseteq\mathbb C^n\) 为区域，\(p\in\partial\Omega\)。
+若在 \(p\) 的某邻域 \(U\) 存在 \(r\in C^2(U;\mathbb R)\)，使
+\(\Omega\cap U=\{r<0\}\)、\(\partial\Omega\cap U=\{r=0\}\)，
+且 \(\mathrm dr\ne0\) 于 \(\{r=0\}\)，则称 \(r\) 为该边界片的
+\term[dingyi-hanshu]{定义函数}[defining function]。
+在 \(p\) 的\term[fu-qie-kongjian]{复切空间}[complex tangent space]定义为
+\[
+ T_p^{\mathbb C}\partial\Omega
+ =\left\{\,\xi\in\mathbb C^n:
+       \sum_{j=1}^n r_{z_j}(p)\xi_j=0\,\right\}.
+\]
+若 \(\mathcal L_r(p;\xi)\ge0\) 对所有复切向量成立，
+称该点满足 Levi 非负条件；若对所有非零复切向量严格为正，
+称 \(p\) 为\term[qiang-weitu-bianjie-dian]{强伪凸边界点}[strongly pseudoconvex boundary point]。
+\end{definition}
+\symidx{\(T_p^{\mathbb C}\partial\Omega\)：实超曲面在一点的复切空间}
+
+复切条件是一个复方程，即两个实方程。
+它等价于实向量 \(X\) 及旋转九十度的向量 \(JX\) 都切于边界；
+一般实切向量只须满足其中一个实条件。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[定义函数的独立性]\label{b3:prop:29-levi-defining-independent}
+设 \(r,\widetilde r\) 是同一区域在同一 \(C^2\) 边界点 \(p\)
+附近的定义函数，均以负侧表示区域内部。
+则它们给出相同的复切空间，并存在 \(a>0\)，使
+\[
+ \mathcal L_{\widetilde r}(p;\xi)=a\mathcal L_r(p;\xi)
+ \quad(\xi\in T_p^{\mathbb C}\partial\Omega).
+\]
+所以切向 Levi 非负性与严格正性不依赖定义函数的选择。
+\end{proposition}
+\begin{proof}
+两个非零实微分有同一个核，即实切超平面，故
+\(\mathrm d\widetilde r(p)=a\,\mathrm dr(p)\)。
+它们在同一侧为负，沿一个向内的横截方向求导可知 \(a>0\)。
+复切条件也因这一比例而相同。
+
+任取实切向量 \(X\)，用边界的局部 \(C^2\) 图表示，
+可选边界内的 \(C^2\) 曲线 \(\gamma\)，使 \(\gamma(0)=p\)、\(\gamma'(0)=X\)。
+对 \(r(\gamma(t))=\widetilde r(\gamma(t))=0\) 求两次导数，得到
+\[
+ D^2\widetilde r(p)[X,X]=aD^2r(p)[X,X].
+\]
+若 \(\xi\) 为复切向量，其对应的 \(X,JX\) 都是实切向量。
+分别应用上一式，再用
+\[
+ \mathcal L_r(p;\xi)
+ =\tfrac14\bigl(D^2r(p)[X,X]+D^2r(p)[JX,JX]\bigr),
+\]
+就得到所需比例。
+\end{proof}
+
+\Needspace{6\baselineskip}
+\begin{theorem}[伪凸域的边界必要条件]\label{b3:thm:29-pseudoconvex-levi}
+设 \(\Omega\subseteq\mathbb C^n\) 存在连续多重次调和穷竭，
+并在 \(p\in\partial\Omega\) 附近有 \(C^2\) 定义函数 \(r\)。
+则对每个 \(\xi\in T_p^{\mathbb C}\partial\Omega\)，
+\[
+ \mathcal L_r(p;\xi)\ge0.
+\]
+只要求该边界片 \(C^2\)，不要求整个边界光滑。
+\end{theorem}
+\begin{proof}
+若存在负的复切方向，则 \(n\ge2\)。
+通过平移、复线性换元及将 \(r\) 乘以正数，可以设
+\(p=0\)、\(\mathrm dr(0)=\mathrm d\operatorname{Re}z_n\)，
+负方向为第一坐标，记 \(b=r_{z_1\bar z_1}(0)<0\)。
+在只保留 \(z_1,z_n\) 的复二维平面内，Taylor 展开为
+\[
+ r(z_1,0,\ldots,0,z_n)
+ =\operatorname{Re}z_n+\operatorname{Re}(qz_1^2)+b|z_1|^2+E(z_1,z_n)
+\]
+其中 \(q\in\mathbb C\)。
+对任意 \(\varepsilon>0\)，缩小邻域后可使
+\[
+ |E(z_1,z_n)|
+ \le\varepsilon|z_1|^2+C\bigl(|z_1|\cdot|z_n|+|z_n|^2\bigr).
+\]
+这是将含法向变量的二次项放入右端，再用 \(C^2\) Taylor 余项所得的界。
+
+固定小的 \(\delta>0\)，对 \(t>0\) 定义多项式解析圆盘
+\[
+ A_t(\zeta)=
+ \bigl(\delta\zeta,0,\ldots,0,-t-q\delta^2\zeta^2\bigr).
+\]
+法向的二次校正恰好消去纯全纯二次项的实部。
+对 \(|\zeta|\le1\)，代入余项界得到
+\[
+ \begin{aligned}
+ r(A_t(\zeta))&=-t+b\delta^2|\zeta|^2+E(A_t(\zeta)),\\
+ |E(A_t(\zeta))|
+ &\le\varepsilon\delta^2|\zeta|^2
+       +C_1\delta t+C_1t^2
+       +C_2(\delta^3+\delta^4)|\zeta|^2.
+ \end{aligned}
+\]
+先取 \(\varepsilon<-b/4\)，再使 \(\delta\) 足够小，
+让 \(C_2(\delta+\delta^2)\le-b/4\)、\(C_1\delta\le1/4\)；
+最后选 \(t_0>0\)，使 \(C_1t_0\le1/4\)，并保证所有圆盘都在定义函数的邻域内。
+于是对 \(0<t\le t_0\)，
+\[
+ r(A_t(\zeta))\le-\frac t2+\frac b2\delta^2|\zeta|^2<0.
+\]
+所以整个闭圆盘都在 \(\Omega\) 内。
+在 \(|\zeta|=1\) 时，同一估计连 \(t=0\) 也给严格负界。
+因此
+\[
+ K=\{\,A_t(e^{\mathrm i\theta}):0\le t\le t_0,\ 0\le\theta\le2\pi\,\}
+\]
+是 \(\Omega\) 内的紧集。
+可是中心 \(A_t(0)=(0,\ldots,0,-t)\) 趋向边界点零，
+与\cref{b3:prop:29-analytic-disc-control}矛盾。
+故负切向方向不可能存在。
+\end{proof}
+
+严格的切向正性还能给一个局部反向构造。
+通过补强定义函数在法向上的曲率，可以在这个边界点附近得到严格多重次调和的定义函数。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[强伪凸点的局部定义函数]\label{b3:prop:29-strict-levi-local}
+设 \(r\in C^2(U;\mathbb R)\) 是区域 \(\Omega\subseteq\mathbb C^n\)
+在 \(p\in\partial\Omega\) 附近的定义函数。
+若 \(\mathcal L_r(p;\xi)>0\) 对每个非零复切向量成立，
+则存在 \(A>0\) 及 \(p\) 的邻域 \(U_0\subseteq U\)，
+使 \(\psi=r+Ar^2\) 在 \(U_0\) 严格多重次调和，且仍以 \(\psi<0\) 定义区域。
+函数 \(-\log(-\psi)\) 在 \(\Omega\cap U_0\) 严格多重次调和，
+并在趋向 \(\partial\Omega\cap U_0\) 时趋于正无穷。
+\end{proposition}
+\begin{proof}
+取复法向量 \(\nu\)，使 \(\sum_j r_{z_j}(p)\nu_j=1\)。
+任意 \(\xi\) 可唯一写为 \(\xi=\tau+a\nu\)，其中 \(\tau\) 复切，
+\(a=\sum_jr_{z_j}(p)\xi_j\)。
+由切空间单位球的紧性及交叉项的二次估计，存在 \(c>0,C>0\)，使
+\[
+ \mathcal L_r(p;\xi)\ge\frac c2\|\tau\|^2-C|a|^2.
+\]
+具体地，切向项先有 \(c\|\tau\|^2\) 的下界，
+交叉项用 \(2K|a|\|\tau\|\le(c/2)\|\tau\|^2+(2K^2/c)|a|^2\) 吸收，
+法向项再并入 \(-C|a|^2\)。切空间为零时同一估计只保留法向项。
+
+在 \(r(p)=0\) 处，
+\[
+ \mathcal L_{r+Ar^2}(p;\xi)
+ =\mathcal L_r(p;\xi)+2A|a|^2.
+\]
+选 \(2A>C+1\)，右端对所有非零 \(\xi\) 严格为正。
+由二阶导数连续，缩小邻域后仍正定。
+再使 \(|Ar|<1/2\)，则 \(r+Ar^2=r(1+Ar)\) 与 \(r\) 同号，
+在零集的微分也相同，故仍是定义函数。
+最后直接求导得
+\[
+ \mathcal L_{-\log(-\psi)}(z;\xi)
+ =-\frac1{\psi(z)}\mathcal L_\psi(z;\xi)
+  +\frac1{\psi(z)^2}\left|\sum_j\psi_{z_j}(z)\xi_j\right|^2.
+\]
+在内部 \(\psi<0\)，第一项已经严格为正。
+真实边界上 \(\psi\to0^-\)，也就得到所述发散。
+\end{proof}
+
+这个函数只控制 \(\psi=0\) 的边界片，
+在人为截出的 \(\partial U_0\) 上未必趋于无穷。
+因此局部定义函数与整个区域的穷竭仍是不同对象。
+仅有切向半正定时，上述吸收交叉项的论证也不能原样使用。
 
 \subsection{模型区域与全局问题的界线}
 \label{b3:subsec:290404}
 
-待撰写。
+对球 \(B(a,R)\subset\mathbb C^n\)，函数
+\[
+ \rho_B(z)=-\log\left(1-\frac{\|z-a\|^2}{R^2}\right)
+\]
+连续、光滑，并趋向边界时发散。
+直接求导，记 \(w=z-a\)，得到
+\[
+ \mathcal L_{\rho_B}(z;\xi)
+ =\frac{\|\xi\|^2}{R^2-\|w\|^2}
+  +\frac{\left|\sum_j\overline{w_j}\xi_j\right|^2}
+         {(R^2-\|w\|^2)^2}>0\quad(\xi\ne0).
+\]
+所以球伪凸。
+若 \(p\in\partial B(a,R)\)，取
+\[
+ h_p(z)=R^2-\sum_{j=1}^n(z_j-a_j)\overline{(p_j-a_j)}.
+\]
+Cauchy--Schwarz 不等式保证它在球内不为零，在 \(p\) 处则为零。
+由\cref{b3:prop:29-holomorphic-boundary-obstruction}，球也是全纯域。
+这两个结论分别由显式函数证明。
 
+\ProseParagraphBreak
+对于多圆盘 \(P=\{z:|z_j-a_j|<R_j, 1\le j\le n\}\)，取
+\[
+ \rho_P(z)=\sum_{j=1}^n
+      -\log\left(1-\frac{|z_j-a_j|^2}{R_j^2}\right).
+\]
+每项是一元次调和函数经坐标投影的拉回，和式多重次调和。
+各项非负，趋向边界时至少一项趋于无穷，所以这是穷竭。
+对每个边界点 \(p\)，选一个满足 \(|p_j-a_j|=R_j\) 的坐标，
+令 \(h_p(z)=z_j-p_j\)，同样得到全纯域的延拓障碍。
+多圆盘在棱角处没有 \(C^2\) 边界定义函数，
+但它的伪凸性并不需要处处使用边界 Levi 判据。
+
+\ProseParagraphBreak
+现在设 \(n\ge2\)、\(0<r<R\)，考察球环壳
+\[
+ A_{r,R}=\{\,z\in\mathbb C^n:r<\|z\|<R\,\}.
+\]
+\cref{b3:thm:29-hartogs-compact}应用于 \(B(0,R)\) 与紧集
+\(\overline{B(0,r)}\)，说明每个 \(A_{r,R}\) 上的全纯函数都延拓到大球。
+球环壳因而不是全纯域。
+在内边界上，定义函数可取 \(r^2-\|z\|^2\)，其 Levi 形式为
+\(-\|\xi\|^2\)。
+因为复切空间维数为 \(n-1\ge1\)，存在负的非零复切方向。
+由\cref{b3:thm:29-pseudoconvex-levi}，球环壳也不伪凸。
+外边界的定义函数 \(\|z\|^2-R^2\) 却具有正 Levi 形式，
+所以只检查外侧边界不能判断整个区域。
+
+\ProseParagraphBreak
+最后采用\secref{b3:sec:2902}的 Hartogs 图。对 \(n\ge2\)、\(0<r,s<1\)，令
+\[
+ H_{r,s}
+ =\bigl(\mathbb D^{n-1}\times\{r<|w|<1\}\bigr)
+  \cup\bigl(\mathbb D_s^{n-1}\times\mathbb D\bigr),
+ \quad \mathbb D_s=\{\zeta:|\zeta|<s\}.
+\]
+由\cref{b3:thm:29-hartogs-figure}，其全部全纯函数共同延拓到 \(\mathbb D^n\)，
+故它不是全纯域。
+这里还可以不用光滑边界，直接排除多重次调和穷竭。
+选 \(r<b<1\)，对 \(0<t<s/2\) 定义
+\[
+ A_t(\zeta)=(s-t,0,\ldots,0,b\zeta).
+\]
+整个闭圆盘位于内柱 \(\mathbb D_s^{n-1}\times\mathbb D\)。
+当 \(|\zeta|=1\) 时，\(|w|=b>r\)，因此所有这些边界连同 \(t=0\) 的极限，
+构成外环柱内部的固定紧集。
+中心却趋向不属于 \(H_{r,s}\) 的边界点 \((s,0,\ldots,0)\)。
+\cref{b3:prop:29-analytic-disc-control}于是排除伪凸性。
+
+\ProseParagraphBreak
+从任意域的伪凸穷竭条件推出全纯域，是
+\term[levi-wenti]{Levi 问题}[Levi problem]的一般方向。
+上述解析圆盘、光滑边界与具体模型揭示了这一问题的局部几何。
+要从这些局部性质得到任意伪凸域的全局延拓结论，还须解决局部解在交叠区域上的相容问题。
+一般 Levi 定理的证明超出本章范围；下一节先研究多圆盘内的局部 \(\bar\partial\) 方程，
+说明求解如何修正非全纯数据。

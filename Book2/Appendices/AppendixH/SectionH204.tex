@@ -2,24 +2,331 @@
 \section{单调算子与 Browder–Minty 方法}
 \label{b2:sec:H204}
 
-待撰写。
+在凸能量问题中，极小元给出方程的解；但一个非线性通量未必是某个势函数对梯度变量的导数。此时仍可能保留一项重要性质：两个输入相差越多，通量差沿输入差方向所作的功不会变成负数。这就是单调性。它既能比较两个候选解，也能在弱收敛中辨认非线性通量的极限。
+
+\ProseParagraphBreak
+
+以下把弱方程写成 \(Au=f\)，其中 \(A\) 从能量空间映到其连续对偶。先在有限维空间里解近似方程，再用统一能量界抽取弱极限。困难集中在最后一步：弱收敛 \(u_n\rightharpoonup u\) 通常不能推出 \(Au_n\rightharpoonup Au\)。Minty 的办法是在取极限之前先使用单调性，把这个未必连续的非线性表达式转成一族能够通过弱极限的不等式。
 
 \subsection{单调性、半连续性与强制性}
 \label{b2:subsec:H20401}
 
-待撰写。
+令 \(X\) 为实 Banach 空间，\(X^*\) 为其连续对偶，记
+\(\langle f,v\rangle=f(v)\)。写作 \(A:X\to X^*\) 意味着每个 \(Au\) 都是关于测试向量 \(v\) 的连续线性泛函；映射 \(u\mapsto Au\) 本身可以是非线性的。例如，在 \(X=W_0^{1,p}(\Omega)\) 上，
+\[
+ \langle Au,v\rangle=\int_\Omega a(x,\nabla u)\cdot\nabla v
+\]
+关于 \(v\) 线性，却不一定关于 \(u\) 线性。
+
+\begin{definition}[单调算子的结构条件]\label{b2:def:H4-monotone-conditions}
+设 \(X\) 为实 Banach 空间，\(A:X\to X^*\)。
+\begin{enumerate}
+\item\label{b2:item:H4-monotone}
+若对全部 \(u,v\in X\) 有
+\[
+ \langle Au-Av,u-v\rangle\ge0,
+\]
+称 \(A\) 为\term[dandiao-suanzi]{单调算子}[monotone operator]。若 \(u\ne v\) 时不等号严格，则称为\term[yange-dandiao-suanzi]{严格单调算子}[strictly monotone operator]。
+\item\label{b2:item:H4-hemi}
+若对每个 \(u,v\in X\)，实函数
+\[
+ t\longmapsto\langle A(u+tv),v\rangle
+\]
+在 \(\mathbb R\) 上连续，则称 \(A\) 为\term[banlianxu-suanzi]{半连续算子}[hemicontinuous operator]。
+\item\label{b2:item:H4-bounded}
+若对每个 \(R<\infty\)，有
+\[
+ \sup_{\|u\|_X\le R}\|Au\|_{X^*}<\infty,
+\]
+称 \(A\) 把有界集映为有界集，简称有界。
+\item\label{b2:item:H4-coercive}
+若
+\[
+ \frac{\langle Au,u\rangle}{\|u\|_X}
+       \longrightarrow+\infty\quad(\|u\|_X\to\infty),
+\]
+称 \(A\) 具有\term[suanzi-qiangzhixing]{强制性}[coercivity]。
+\end{enumerate}
+\end{definition}
+
+这里的半连续性是沿直线测试所得的连续性，与实函数的上半连续、下半连续不是同一概念。有些资料要求 \(t\mapsto\langle A(u+tv),w\rangle\) 对任意 \(w\in X\) 连续；这显然包含上述条件，后面的通量应用也满足这一较强形式。算子的有界性则是“有界集的像有界”：每个输入球有自己的输出上界，这一要求不同于线性增长界 \(\|Au\|\le C\|u\|\) 或整个值域有界。
+
+\ProseParagraphBreak
+
+强制性给出 \(Au=f\) 的先验界。固定 \(f\in X^*\)，当 \(\|u\|_X\) 足够大时，
+\[
+ \langle Au-f,u\rangle
+ \ge\left(\frac{\langle Au,u\rangle}{\|u\|_X}
+                    -\|f\|_{X^*}\right)\|u\|_X>0.
+\]
+因此解不可能落在足够大的球外。这个界只使用算子沿 \(u\) 方向的配对；它不要求 \(A\) 来自能量。
+
+\ProseParagraphBreak
+
+凸能量的导数是单调性的一个来源。若实 Banach 空间上的可微泛函 \(E\) 为凸函数，沿线段的凸性给出
+\[
+ E(v)\ge E(u)+DE(u)(v-u),
+ \quad E(u)\ge E(v)+DE(v)(u-v).
+\]
+相加即得 \(\langle DE(u)-DE(v),u-v\rangle\ge0\)。反方向并不总能成立。例如在 \(\mathbb R^2\) 中，令
+\[
+ R=\begin{pmatrix}0&-1\\1&0\end{pmatrix},
+ \quad A\xi=\xi+R\xi.
+\]
+由于 \((R\zeta)\cdot\zeta=0\)，有
+\((A\xi-A\eta)\cdot(\xi-\eta)=|\xi-\eta|^2\)。然而 \(A\) 的导数矩阵 \(I+R\) 不对称，所以它不是任何 \(C^2\) 标量势函数的梯度。单调性允许这样的反对称部分存在。
 
 \subsection{Galerkin 逼近与 Minty 极限}
 \label{b2:subsec:H20402}
 
-待撰写。
+在 \(m\) 维空间中，方程由 \(m\) 个测试方向组成。为了使用不动点定理，先要知道这些方程的左端对有限维未知量连续。半连续性只控制沿一个方向的一种配对；单调性把这种较弱的信息补成所需的连续性。
+
+\begin{lemma}[有限维限制的连续性]\label{b2:lem:H4-finite-continuity}
+设 \(X\) 为实 Banach 空间，\(A:X\to X^*\) 单调、半连续，并把有界集映为有界集。若 \(E\subset X\) 为有限维线性子空间，定义 \(A_E:E\to E^*\) 为
+\[
+ \langle A_Eu,v\rangle=\langle Au,v\rangle
+ \quad(u,v\in E).
+\]
+则 \(A_E\) 关于 \(E\) 与 \(E^*\) 的范数连续。
+\end{lemma}
+\begin{proof}
+设 \(u_n\to u\) 于 \(E\)。由有界性，\((A_Eu_n)\) 在有限维空间 \(E^*\) 中有界。取任意收敛子列，仍记为 \(A_Eu_n\to b\)。对固定 \(v\in E\)，单调性给出
+\[
+ \langle A_Eu_n-A_Ev,u_n-v\rangle\ge0.
+\]
+两部分都在有限维范数下通过极限，得到
+\(\langle b-A_Ev,u-v\rangle\ge0\)。取 \(v=u-th\)，其中 \(h\in E\)、\(t>0\)，约去 \(t\)，再由半连续性令 \(t\downarrow0\)，可得
+\(\langle b-A_Eu,h\rangle\ge0\)。以 \(-h\) 代替 \(h\)，得到相反的不等式，故 \(b=A_Eu\)。
+
+这说明每个收敛子列的极限都相同。若原列不趋于 \(A_Eu\)，便有一条与它保持某个正距离的子列；有限维有界性又为该子列提供收敛子列，与刚得到的极限唯一性矛盾。因此原列收敛，\(A_E\) 连续。
+\end{proof}
+
+下面是有限维存在性中实际使用的几何事实。边界上向量场与外向位置向量的内积为正，意味着它不能在整个球内避开零点。
+
+\begin{lemma}[有限维外向条件给出零点]\label{b2:lem:H4-outward-zero}
+设整数 \(m\ge1\)、\(r>0\)，\(F:\overline B_r(0)\subset\mathbb R^m\to\mathbb R^m\) 连续。若
+\[
+ F(x)\cdot x>0\quad(|x|=r),
+\]
+则 \(F\) 在开球 \(B_r(0)\) 中有零点。
+\end{lemma}
+\begin{proof}
+若 \(F\) 在闭球上没有零点，则
+\(T(x)=-rF(x)/|F(x)|\)
+是闭球到自身的连续映射。\cref{b2:thm:H3-brouwer}给出不动点 \(x=T(x)\)。于是 \(|x|=r\)，而 \(F(x)\cdot x=-r|F(x)|<0\)，与边界条件矛盾。零点也不能位于边界，故位于开球中。
+\end{proof}
+
+有了有限维解，下一步才是非线性极限。先把 Minty 的辨认方法单独写出，使所需的条件清楚可查。
+
+\begin{lemma}[Minty 辨认]\label{b2:lem:H4-minty}
+设 \(X\) 为实 Banach 空间，\(A:X\to X^*\) 单调且半连续，\(f\in X^*\)、\(u\in X\)。则 \(Au=f\) 当且仅当
+\begin{equation}\label{b2:eq:H4-minty-test}
+ \langle f-Av,u-v\rangle\ge0
+ \quad(v\in X).
+\end{equation}
+进一步，若 \(u_n\rightharpoonup u\) 于 \(X\)，
+\(\langle Au_n,v\rangle\to\langle f,v\rangle\) 对每个 \(v\in X\) 成立，且
+\[
+ \limsup_{n\to\infty}\langle Au_n,u_n\rangle
+             \le\langle f,u\rangle,
+\]
+则 \(Au=f\)。
+\end{lemma}
+\begin{proof}
+若 \(Au=f\)，则\eqref{b2:eq:H4-minty-test}就是单调性。反过来，对任意 \(h\in X\)、\(t>0\)，令 \(v=u-th\)，由该不等式得
+\[
+ \langle f-A(u-th),h\rangle\ge0.
+\]
+半连续性允许 \(t\downarrow0\)，得到 \(\langle f-Au,h\rangle\ge0\)。再对 \(-h\) 使用同一结论，得到 \(\langle f-Au,h\rangle=0\)。由于测试方向任意，\(Au=f\)。
+
+对第二部分，固定 \(v\in X\)，展开单调性：
+\[
+ 0\le\langle Au_n-Av,u_n-v\rangle
+ =\langle Au_n,u_n\rangle-\langle Au_n,v\rangle
+       -\langle Av,u_n\rangle+\langle Av,v\rangle.
+\]
+第二项按假设收敛，第三项由 \(u_n\) 弱收敛而收敛，第一项则取上极限。于是
+\[
+ 0\le\limsup_n\langle Au_n-Av,u_n-v\rangle
+   \le\langle f-Av,u-v\rangle.
+\]
+得到\eqref{b2:eq:H4-minty-test}，第一部分完成辨认。
+\end{proof}
+
+这里固定的是比较向量 \(v\)，所以 \(Av\) 也是固定的测试泛函，能够与 \(u_n\) 的弱收敛配对。直到极限不等式建立以后，才把 \(v\) 向未知的极限 \(u\) 靠近。这一先后次序是\term[minty-fangfa]{Minty 方法}[Minty's method]的关键。关于非线性配对 \(\langle Au_n,u_n\rangle\) 的上极限条件也不可遗漏；两个弱收敛量的配对一般不能直接取极限。
 
 \subsection{Browder–Minty 存在定理}
 \label{b2:subsec:H20403}
 
-待撰写。
+可分性使我们能够选取可数个测试方向；自反性使统一有界的近似解具有弱收敛子列。近似问题的解不需要随着维数增加而彼此接近，Minty 方法负责识别其弱极限。
+
+\begin{theorem}[Browder–Minty，可分自反空间版本]\label{b2:thm:H4-browder-minty}
+设 \(X\) 为实可分自反 Banach 空间，\(A:X\to X^*\) 单调、半连续、把有界集映为有界集，并满足
+\[
+ \frac{\langle Au,u\rangle}{\|u\|_X}
+       \longrightarrow+\infty\quad(\|u\|_X\to\infty).
+\]
+则对每个 \(f\in X^*\)，存在 \(u\in X\) 使 \(Au=f\)。若 \(A\) 还严格单调，则该解唯一。
+\end{theorem}
+\begin{proof}
+若 \(X=\{0\}\)，结论直接成立。先设 \(X\) 无限维。由可分性选取可数稠密集，逐次保留不在此前线性包中的向量，得到线性无关的 \(w_1,w_2,\ldots\)，使
+\[
+ X_n=\operatorname{span}\{w_1,\ldots,w_n\},
+ \quad X_n\subset X_{n+1},
+ \quad\overline{\bigcup_nX_n}=X.
+\]
+这里不要求 \((w_j)\) 是 Schauder 基；只使用有限维空间的嵌套和并集的稠密性。
+
+固定 \(f\)。强制性给出 \(R>0\)，使
+\begin{equation}\label{b2:eq:H4-uniform-outward}
+ \langle Au-f,u\rangle>0\quad(\|u\|_X\ge R).
+\end{equation}
+在 \(X_n\) 中寻找
+\begin{equation}\label{b2:eq:H4-galerkin}
+ u_n\in X_n,\quad
+ \langle Au_n,v\rangle=\langle f,v\rangle
+ \quad(v\in X_n).
+\end{equation}
+写 \(u=\sum_{j=1}^nx_jw_j\)，定义坐标向量场
+\[
+ F_n(x)_j=\langle Au-f,w_j\rangle\quad(1\le j\le n).
+\]
+由\cref{b2:lem:H4-finite-continuity}，\(F_n\) 连续。有限维范数等价给出 \(a_n>0\)，使 \(\|\sum x_jw_j\|_X\ge a_n|x|\)。选取 \(r_n>R/a_n\)，则当 \(|x|=r_n\) 时，
+\[
+ F_n(x)\cdot x=\langle Au-f,u\rangle>0.
+\]
+\cref{b2:lem:H4-outward-zero}给出 \(F_n\) 的零点，即一个满足\eqref{b2:eq:H4-galerkin}的 \(u_n\)。以 \(u_n\) 自身测试，得到
+\begin{equation}\label{b2:eq:H4-energy-equality}
+ \langle Au_n,u_n\rangle=\langle f,u_n\rangle.
+\end{equation}
+这与\eqref{b2:eq:H4-uniform-outward}一起说明 \(\|u_n\|_X<R\)。坐标中的半径 \(r_n\) 可以随维数改变，而真正用于取极限的 \(X\) 范数界是同一个 \(R\)。
+
+由自反性，第一卷定理9.4.7保证可抽出子列使 \(u_n\rightharpoonup u\) 于 \(X\)。算子的有界性又给出 \(\|Au_n\|_{X^*}\le M\)。若 \(v\in\bigcup_mX_m\)，则从足够大的 \(n\) 开始，\eqref{b2:eq:H4-galerkin}给出 \(\langle Au_n,v\rangle=\langle f,v\rangle\)。若 \(v\in X\) 任意，先选 \(v_m\in\bigcup_nX_n\) 使 \(v_m\to v\)，则
+\[
+ |\langle Au_n-f,v\rangle|
+ \le(M+\|f\|_{X^*})\|v-v_m\|_X
+        +|\langle Au_n-f,v_m\rangle|.
+\]
+先令 \(n\to\infty\)，再令 \(m\to\infty\)，得到
+\(\langle Au_n,v\rangle\to\langle f,v\rangle\) 对全部 \(v\in X\) 成立。同时由\eqref{b2:eq:H4-energy-equality}及弱收敛，
+\[
+ \langle Au_n,u_n\rangle=\langle f,u_n\rangle
+              \longrightarrow\langle f,u\rangle.
+\]
+\cref{b2:lem:H4-minty}现在给出 \(Au=f\)。若 \(X\) 为非零有限维空间，直接对 \(E=X\) 实施上面的坐标零点论证即可，无需抽列。
+
+最后，若 \(Au=Av=f\)，则
+\(\langle Au-Av,u-v\rangle=0\)。严格单调性排除 \(u\ne v\)，所以解唯一。
+\end{proof}
+
+上述满射结论称为\term[browder-minty-dingli]{Browder–Minty 定理}[Browder--Minty theorem]。证明中的三种结构作用不同：强制性控制近似解的大小，有限维连续性给出每一级近似解，单调性与半连续性辨认弱极限。R. E. Showalter 的《Monotone Operators in Banach Space and Nonlinear Partial Differential Equations》\cite[Chapter II, Section 2, pp. 37--39]{Showalter1997Monotone}沿这一方向组织存在性理论，并讨论较一般的算子条件。
+
+\ProseParagraphBreak
+
+严格单调性不包含统一的稳定性常数。若还有某个 \(c>0\)、\(q>1\) 使
+\[
+ \langle Au-Av,u-v\rangle\ge c\|u-v\|_X^q
+ \quad(u,v\in X),
+\]
+则对 \(Au=f\)、\(Av=g\) 作差，并用对偶范数估计，可得
+\[
+ \|u-v\|_X\le c^{-1/(q-1)}\|f-g\|_{X^*}^{1/(q-1)}.
+\]
+若两解相同，此式直接成立；否则约去一次 \(\|u-v\|_X\) 即得。因而定量的单调性还给出解对源项的连续依赖，而不只是唯一性。
 
 \subsection{无势非线性通量的应用与边界}
 \label{b2:subsec:H20404}
 
-待撰写。
+把抽象条件翻译成通量条件时，增长界负责使积分有意义，强制性负责能量界，单调性负责两个梯度之间的比较。三者应分别核对。
+
+\begin{theorem}[单调通量的零边界弱解]\label{b2:thm:H4-monotone-flux}
+设整数 \(d\ge1\)，\(\Omega\subset\mathbb R^d\) 为非空有界开集，\(1<p<\infty\)，\(p'=p/(p-1)\)，并令
+\(X=W_0^{1,p}(\Omega;\mathbb R)\)，取范数 \(\|u\|_X=\|\nabla u\|_{L^p}\)。设通量 \(a:\Omega\times\mathbb R^d\to\mathbb R^d\) 满足 Carathéodory 条件，且存在 \(\lambda>0\)、\(\Lambda<\infty\)、非负 \(b\in L^{p'}(\Omega)\)、非负 \(h\in L^1(\Omega)\)，使对几乎处处的 \(x\) 及全部 \(\xi,\eta\in\mathbb R^d\)，
+\[
+ \begin{aligned}
+ |a(x,\xi)|&\le b(x)+\Lambda|\xi|^{p-1},\\
+ a(x,\xi)\cdot\xi&\ge\lambda|\xi|^p-h(x),\\
+ (a(x,\xi)-a(x,\eta))\cdot(\xi-\eta)&\ge0.
+ \end{aligned}
+\]
+这些条件在同一个关于 \(x\) 的零测集之外成立。则对每个 \(f\in X^*\)，存在 \(u\in X\)，满足
+\[
+ \int_\Omega a(x,\nabla u)\cdot\nabla v\,\mathrm dx
+         =\langle f,v\rangle\quad(v\in X).
+\]
+若关于 \(\xi,\eta\) 的最后一个不等式在 \(\xi\ne\eta\) 时严格，则弱解唯一。
+\end{theorem}
+\begin{proof}
+第一卷定理24.1.2的零边界 Poincaré 不等式说明梯度范数与 \(W^{1,p}\) 范数等价。\(W_0^{1,p}\) 是有限个实 \(L^p\) 空间乘积的闭子空间，所以它自反；\(1<p<\infty\) 时这些 \(L^p\) 空间可分，故它也可分。这里使用的是 \(W_0^{1,p}\) 的闭包结构，不要求边界光滑。
+
+定义 \(A:X\to X^*\) 为
+\(\langle Au,v\rangle=\int_\Omega a(x,\nabla u)\cdot\nabla v\)。Carathéodory 条件保证复合通量可测，增长界给出
+\[
+ \|a(x,\nabla u)\|_{p'}
+ \le\|b\|_{p'}+\Lambda\|\nabla u\|_p^{p-1}.
+\]
+由 Hölder 不等式，\(Au\) 是连续线性泛函，并有
+\(\|Au\|_{X^*}\le\|b\|_{p'}+\Lambda\|u\|_X^{p-1}\)。所以 \(A\) 把有界集映为有界集。逐点单调不等式积分后给出算子单调性，而强制下界给出
+\[
+ \langle Au,u\rangle\ge\lambda\|u\|_X^p-\|h\|_1.
+\]
+除以 \(\|u\|_X\) 并令其趋于无穷，因 \(p>1\) 而得到强制性。
+
+还要验证半连续性。固定 \(u,v,w\in X\)，让 \(t\) 在任意有界区间 \([-T,T]\) 内变化。几乎处处的 \(x\) 上，\(a(x,\nabla u+t\nabla v)\cdot\nabla w\) 关于 \(t\) 连续；其绝对值由
+\[
+ \bigl(b(x)+C_{p,T,\Lambda}(|\nabla u|^{p-1}
+                                  +|\nabla v|^{p-1})\bigr)|\nabla w|
+\]
+控制。该函数由 Hölder 不等式可积，故控制收敛给出 \(t\mapsto\langle A(u+tv),w\rangle\) 连续，特别得到所需的半连续性。应用\cref{b2:thm:H4-browder-minty}即得存在性。
+
+若逐点单调性严格，而 \(u_1,u_2\) 是两个解，以 \(u_1-u_2\) 测试两式之差，得到
+\[
+ \int_\Omega
+ \bigl(a(x,\nabla u_1)-a(x,\nabla u_2)\bigr)
+             \cdot(\nabla u_1-\nabla u_2)=0.
+\]
+被积函数非负且只在两梯度相同时为零，所以梯度几乎处处相同。零边界 Poincaré 不等式消去差的常数自由度，得到 \(u_1=u_2\)。
+\end{proof}
+
+下面给出一个具有实际非线性、又没有梯度势的例子。在 \(\Omega=(0,1)^2\) 上令
+\[
+ R=\begin{pmatrix}0&-1\\1&0\end{pmatrix},
+ \quad a(x,\xi)=|\xi|^2\xi+x_1R\xi.
+\]
+取 \(p=4\)。增长界为 \(|a(x,\xi)|\le2(1+|\xi|^3)\)，而
+\[
+ a(x,\xi)\cdot\xi=|\xi|^4.
+\]
+对两个梯度作差时，反对称部分的配对仍为零。因此
+\[
+ (a(x,\xi)-a(x,\eta))\cdot(\xi-\eta)
+  =(|\xi|^2\xi-|\eta|^2\eta)\cdot(\xi-\eta)>0
+ \quad(\xi\ne\eta),
+\]
+其中严格性也可由 \(|\xi|^4/4\) 的严格凸性得到。\cref{b2:thm:H4-monotone-flux}给出：对每个 \(f\in(W_0^{1,4}(\Omega))^*\)，相应零边界方程有唯一能量解。
+
+\ProseParagraphBreak
+
+这个反对称部分不是可从方程中删去的装饰。对光滑函数直接计算，
+\[
+ \operatorname{div}(x_1R\nabla u)
+   =\partial_1(-x_1\partial_2u)+\partial_2(x_1\partial_1u)
+   =-\partial_2u.
+\]
+因此该例的方程是
+\[
+ -\operatorname{div}(|\nabla u|^2\nabla u)+\partial_2u=f.
+\]
+另一方面，关于 \(\xi\) 的导数矩阵为
+\[
+ D_\xi a(x,\xi)=|\xi|^2I+2\xi\xi^{\mathsf T}+x_1R.
+\]
+其反对称部分非零，故没有满足 \(\nabla_\xi F(x,\xi)=a(x,\xi)\) 的标量势。若仍然只极小化 \(\int|\nabla u|^4/4-\langle f,u\rangle\)，得到的方程会漏掉 \(\partial_2u\)。单调算子法直接保留完整通量，因而能够处理这个问题。
+
+\ProseParagraphBreak
+
+这里的存在性首先要求 \(f\) 属于自然对偶空间。普通 \(f\in L^{p'}(\Omega)\) 可通过 \(v\mapsto\int fv\) 定义这样的泛函，\(G\in L^{p'}(\Omega;\mathbb R^d)\) 也可通过 \(v\mapsto\int G\cdot\nabla v\) 给出散度型源项；一般测度是否属于该空间，需要单独检查。\secref{b2:sec:H202}的点源阈值已经展示这种区别。
+
+\ProseParagraphBreak
+
+若通量另依赖 \(u\) 本身，或者加入符号不定的低阶项，关于梯度的单调性未必仍使整个算子单调；必须重新比较两个函数的完整弱形式。类似地，可测系数下取得能量解，并不自动取得梯度连续性或经典解。单调性解决的是非线性弱极限的辨认和边值存在性，正则性仍由方程的其他结构决定。

@@ -2,24 +2,371 @@
 \section{滤过与离散时间鞅}
 \label{b1:sec:3103}
 
-待撰写。
+前两节是在一份固定信息下求条件平均。本节让信息随时间增加：
+第一次观察后知道一部分事件，第二次观察后知道更多事件，
+但不能把尚未发生的结果提前放入已知信息。
+鞅要求每一步新增变化的条件平均为零。
+它允许不同时间的变量彼此依赖，因而比独立中心化和适用得更广。
 
 \subsection{滤过与适应过程}
 \label{b1:subsec:310301}
 
-待撰写。
+先考虑连续抛掷两次公平硬币的四个等概率结果：
+\[
+ \Omega=\{\,(+,+),(+,-),(-,+),(-,-)\,\}.
+\]
+抛掷前只能判定 \(\varnothing\) 和 \(\Omega\)；第一次抛掷后，
+能判定第一项是 \(+\) 还是 \(-\)，却不能区分 \((+,+)\) 与 \((+,-)\)；
+两次抛掷后则能判定所有事件。
+这里增加的是可以判定的事件，而不是样本空间本身。
+
+\begin{definition}[滤过与适应过程]
+\label{b1:def:filtration-31}
+设 \((\Omega,\mathcal F,\mathbb P)\) 为概率空间。
+若 \((\mathcal F_n)_{n\geq0}\) 是 \(\mathcal F\) 的子 \(\sigma\)-代数列，且
+\[
+ \mathcal F_0\subseteq\mathcal F_1\subseteq\cdots\subseteq\mathcal F,
+\]
+则称它为一个离散时间\term[lvguo]{滤过}[filtration]。
+概率空间连同这个滤过称为\term[daolvguo-gailv-kongjian]{带滤过概率空间}[filtered probability space]。
+同一概率空间上的实值可测函数列 \((X_n)_{n\geq0}\)
+称为实值离散时间\term[suiji-guocheng]{随机过程}[stochastic process]。
+若每个 \(X_n\) 都对 \(\mathcal F_n\) 可测，则称 \((X_n)\)
+为关于 \((\mathcal F_n)\) 的\term[shiying-guocheng]{适应过程}[adapted process]。
+有限时段 \(0\leq n\leq N\) 的定义相同，只把指标限制在该时段。
+\end{definition}
+\symidx{\(\mathcal F_n\)：离散时间滤过在时刻 \(n\) 的信息}
+
+适应性表示在时刻 \(n\) 已有的信息足以确定 \(X_n\) 的值。
+精确地说，对每个实数 \(t\)，事件 \(\{X_n\leq t\}\) 属于 \(\mathcal F_n\)。
+它不要求 \(X_n\) 只由 \(X_{n-1}\) 决定，也不要求各个 \(X_n\) 独立。
+任意过程都有一个使它适应的最小滤过，称为它的%
+\term[ziran-lvguo]{自然滤过}[natural filtration]：
+\[
+ \mathcal F_n^X\coloneqq\sigma(X_0,\ldots,X_n).
+\]
+若另一个滤过使 \((X_n)\) 适应，则每个 \(X_j\)、\(j\leq n\)
+都对 \(\mathcal F_n\) 可测，从而 \(\mathcal F_n^X\subseteq\mathcal F_n\)。
+
+\ProseParagraphBreak
+
+本章的离散时间结论不要求 \(\mathcal F_0\) 平凡，
+也不要求各个 \(\mathcal F_n\) 包含 \(\mathcal F\) 的全部零测集。
+每次选取条件期望时使用对指定子 \(\sigma\)-代数可测的版本。
+不同时间的等式都按几乎必然意义理解；由于时间指标可数，
+把相关零测异常集取可数并，仍能在同一个概率为一的集合上同时使用这些等式。
+
+\ProseParagraphBreak
+
+另一个重要区分是在第 \(k\) 步结束后知道一个量，还是在该步开始前已经选定它。
+例如，若 \(\xi_k\) 是第 \(k\) 次抛掷的符号，\(\xi_k\) 对 \(\mathcal F_k\) 可测，
+但不能据此让一次事先作出的选择依赖 \(\xi_k\)。
+
+\begin{definition}[离散时间可料过程]
+\label{b1:def:predictable-process-31}
+设 \((\Omega,\mathcal F,\mathbb P)\) 为概率空间，
+\((\mathcal F_n)_{n\geq0}\) 为其上的滤过。
+若实随机变量列 \((H_k)_{k\geq1}\) 满足 \(H_k\) 对 \(\mathcal F_{k-1}\) 可测，
+则称它为关于该滤过的\term[keliao-guocheng]{可料过程}[predictable process]。
+\end{definition}
+
+这里把指标从 \(1\) 开始，是因为 \(H_k\) 将乘在第 \(k\) 次增量
+\(X_k-X_{k-1}\) 上。可料性要求乘子由上一步的信息选定。
+它在后面的上穿证明中会变成一条具体规则：是否计入下一次增量，
+只根据已经观察到的路径决定。
 
 \subsection{鞅、下鞅与上鞅}
 \label{b1:subsec:310302}
 
-待撰写。
+所谓条件公平，是观察了过去以后，下一步的平均变化仍然为零。
+只检查无条件期望不变，会把有些能够从过去完全预知的涨落也算进去。
+
+\begin{definition}[离散时间鞅、下鞅与上鞅]
+\label{b1:def:martingale-31}
+设 \((\Omega,\mathcal F,\mathbb P)\) 为概率空间，
+\((\mathcal F_n)_{n\geq0}\) 为其上的滤过，
+\((X_n)_{n\geq0}\) 为适应的实值过程，且
+\(\mathbb E|X_n|<\infty\) 对每个 \(n\) 成立。
+\begin{enumerate}
+ \item\label{b1:item:martingale-definition-31}
+ 若 \(\mathbb E(X_{n+1}\mid\mathcal F_n)=X_n\) 几乎必然对每个 \(n\geq0\) 成立，
+ 则称 \((X_n)\) 为关于该滤过的\term[yang]{鞅}[martingale]。
+ \item\label{b1:item:submartingale-definition-31}
+ 若 \(\mathbb E(X_{n+1}\mid\mathcal F_n)\geq X_n\) 几乎必然对每个 \(n\geq0\) 成立，
+ 则称 \((X_n)\) 为关于该滤过的\term[xiayang]{下鞅}[submartingale]。
+ \item\label{b1:item:supermartingale-definition-31}
+ 若 \(\mathbb E(X_{n+1}\mid\mathcal F_n)\leq X_n\) 几乎必然对每个 \(n\geq0\) 成立，
+ 则称 \((X_n)\) 为关于该滤过的\term[shangyang]{上鞅}[supermartingale]。
+\end{enumerate}
+有限时段的鞅、下鞅、上鞅只要求上述条件对 \(0\leq n<N\) 成立。
+\end{definition}
+
+记忆不等号时，可以看当前值的位置：下鞅的当前值不超过下一步的条件平均，
+上鞅的当前值则不低于下一步的条件平均。
+下鞅允许某些样本路径下降；它限制的是给定过去后的平均变化，
+并非逐条路径的单调性。
+取负号会交换下鞅与上鞅；一个过程同时是下鞅和上鞅，当且仅当它是鞅。
+复值鞅可按实部与虚部均为实值鞅来定义，
+但上鞅、下鞅依赖实数的序，本章相关论证均使用实值过程。
+
+\begin{proposition}[从一步比较到任意确定时刻]
+\label{b1:prop:martingale-multistep-31}
+设 \((X_n)\) 是概率空间 \((\Omega,\mathcal F,\mathbb P)\)
+上关于滤过 \((\mathcal F_n)\) 的实值下鞅。
+则对任意确定的整数 \(0\leq m\leq n\)，有
+\[
+ X_m\leq\mathbb E(X_n\mid\mathcal F_m)
+ \quad\text{几乎必然},
+ \quad
+ \mathbb E X_m\leq\mathbb E X_n.
+\]
+若 \((X_n)\) 为鞅，则两式均为等式；若为上鞅，则两式的不等号均反向。
+若 \((M_n)\) 为该概率空间上关于该滤过的复值鞅，则
+\(\mathbb E(M_n\mid\mathcal F_m)=M_m\) 与 \(\mathbb E M_n=\mathbb E M_m\)
+也对每个 \(0\leq m\leq n\) 成立。
+\end{proposition}
+\begin{proof}
+当 \(n=m\) 时，适应性使 \(\mathbb E(X_m\mid\mathcal F_m)=X_m\)。
+若已经证明从 \(m\) 到 \(n\) 的比较，则下鞅的一步条件、条件期望的正性和%
+\cref{b1:prop:conditional-expectation-tower-31}给出
+\[
+ \begin{aligned}
+ \mathbb E(X_{n+1}\mid\mathcal F_m)
+ &=\mathbb E\bigl(\mathbb E(X_{n+1}\mid\mathcal F_n)
+                        \mid\mathcal F_m\bigr)\\
+ &\geq\mathbb E(X_n\mid\mathcal F_m)\geq X_m.
+ \end{aligned}
+\]
+这里塔性质要求 \(\mathcal F_m\subseteq\mathcal F_n\)，由滤过定义满足；
+所用变量均可积，由下鞅定义满足。归纳得到任意 \(m\leq n\) 的结论。
+取期望并用条件期望保持总积分，得到期望的单调性。
+对鞅把每一步不等式改成等式；对上鞅把结论用于 \((-X_n)\)。
+复值鞅的实部、虚部都是实值鞅，分别应用等式情形，再由条件期望的线性性合并。
+\end{proof}
+
+鞅因而有恒定的期望，但恒定期望远不足以判定鞅。
+在等概率两点空间上令 \(\varepsilon\) 取值 \(1,-1\)，取
+\(X_0=0\)、\(X_1=\varepsilon\)、\(X_2=-\varepsilon\)，
+并取 \(\mathcal F_0=\{\varnothing,\Omega\}\)、
+\(\mathcal F_1=\mathcal F_2=\sigma(\varepsilon)\)。
+三个期望都等于零，但
+\[
+ \mathbb E(X_2\mid\mathcal F_1)=-\varepsilon\ne\varepsilon=X_1.
+\]
+在第一次观察后，第二步的变化已经完全知道；无条件平均为零掩盖了这一点。
+
+\begin{proposition}[凸函数作用下的鞅]
+\label{b1:prop:martingale-convex-31}
+设 \((\Omega,\mathcal F,\mathbb P)\) 为概率空间，
+\((\mathcal F_n)\) 为其上的滤过，\(\varphi:\mathbb R\to\mathbb R\) 为有限值凸函数。
+\begin{enumerate}
+ \item\label{b1:item:martingale-convex-31}
+ 若 \((M_n)\) 是关于该滤过的实值鞅，且每个 \(\varphi(M_n)\) 可积，
+ 则 \((\varphi(M_n))\) 是下鞅。
+ \item\label{b1:item:submartingale-convex-31}
+ 若 \((X_n)\) 是关于该滤过的实值下鞅，\(\varphi\) 还非减，
+ 且每个 \(\varphi(X_n)\) 可积，则 \((\varphi(X_n))\) 是下鞅。
+\end{enumerate}
+特别地，实值或复值鞅的绝对值为实值非负下鞅；实值下鞅的正部为非负下鞅。
+\end{proposition}
+\begin{proof}
+有限值凸函数连续，故复合过程适应。所需可积性已在假设中给出。
+由\cref{b1:thm:conditional-jensen-31}，
+\[
+ \mathbb E\bigl(\varphi(M_{n+1})\mid\mathcal F_n\bigr)
+ \geq\varphi\bigl(\mathbb E(M_{n+1}\mid\mathcal F_n)\bigr)
+ =\varphi(M_n).
+\]
+若 \(X_n\) 只是下鞅，则最后的等式改为
+\(\varphi(\mathbb E(X_{n+1}\mid\mathcal F_n))\geq\varphi(X_n)\)，
+这里用到 \(\varphi\) 非减。
+最后分别取 \(\varphi(t)=|t|\) 与 \(\varphi(t)=t^+=\max(t,0)\)。
+这两种复合的可积性都由原变量可积保证。
+对复值鞅 \((M_n)\)，\((|M_n|)\) 仍为实值适应可积过程，且%
+\cref{b1:prop:conditional-expectation-properties-31}的条件模不等式给出
+\[
+ |M_n|=\bigl|\mathbb E(M_{n+1}\mid\mathcal F_n)\bigr|
+ \leq\mathbb E(|M_{n+1}|\mid\mathcal F_n).
+\]
+所以复值鞅的模也为非负下鞅；这一步并未给复数引入大小次序。
+\end{proof}
+
+平方也会把平方可积鞅变成下鞅，但“平方可积”必须另外检查。
+一个鞅每项只有一次绝对矩时，平方的期望可以为无穷，
+不能直接把平方过程称为本章定义下的下鞅。
+同样，绝对值并不把任意下鞅变成下鞅，因为 \(|t|\) 在整个实轴上不是非减函数。
+例如确定性过程 \(X_0=-1\)、\(X_1=0\) 是下鞅，
+但 \(|X_0|=1>|X_1|=0\)。
 
 \subsection{条件平均与独立增量的模型}
 \label{b1:subsec:310303}
 
-待撰写。
+构造鞅有两种基本途径。一种从一个固定的可积变量出发，
+随着信息增加反复求它的条件平均；另一种不断加入条件平均为零的新变化。
+
+\begin{proposition}[条件平均与中心化独立和]
+\label{b1:prop:martingale-models-31}
+设 \((\Omega,\mathcal F,\mathbb P)\) 为概率空间。
+\begin{enumerate}
+ \item\label{b1:item:conditional-average-martingale-31}
+ 若 \((\mathcal F_n)\) 为滤过且 \(Z\in L^1(\mathbb P)\) 为实值或复值，
+ 则选择 \(\mathcal F_n\) 可测版本得到的
+ \(M_n=\mathbb E(Z\mid\mathcal F_n)\) 构成鞅。
+ 对 \(1\leq p\leq\infty\)，若 \(Z\in L^p(\mathbb P)\)，
+ 则 \(\sup_n\|M_n\|_p\leq\|Z\|_p\)。
+ \item\label{b1:item:independent-sum-martingale-31}
+ 若 \((Z_j)_{j\geq1}\) 为相互独立的实值可积随机变量，令
+ \[
+  \mathcal F_0=\{\varnothing,\Omega\},\quad
+  \mathcal F_n=\sigma(Z_1,\ldots,Z_n),\quad
+  S_0=0,\quad S_n=\sum_{j=1}^n(Z_j-\mathbb E Z_j),
+ \]
+ 则 \((S_n)\) 是关于 \((\mathcal F_n)\) 的鞅。
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+第一项的适应性由版本的选取保证，可积性及范数估计由%
+\cref{b1:prop:conditional-expectation-contraction-31}得到。
+又因为 \(\mathcal F_n\subseteq\mathcal F_{n+1}\)，塔性质给出
+\[
+ \mathbb E(M_{n+1}\mid\mathcal F_n)
+ =\mathbb E\bigl(\mathbb E(Z\mid\mathcal F_{n+1})\mid\mathcal F_n\bigr)
+ =\mathbb E(Z\mid\mathcal F_n)=M_n.
+\]
+
+第二项中的有限和可积且适应。
+由\cref{b1:prop:30-independent-blocks}，\(Z_{n+1}\) 与整个
+\(\mathcal F_n\) 独立，而不只是分别与过去每一项独立。
+对任意 \(A\in\mathcal F_n\)，\cref{b1:prop:30-independent-expectations}给出
+\[
+ \mathbb E\bigl(Z_{n+1}\cdot\mathbf1_A\bigr)
+ =\mathbb E Z_{n+1}\cdot\mathbb P(A).
+\]
+因此常数 \(\mathbb E Z_{n+1}\) 满足条件期望的积分刻画，
+由唯一性可知 \(\mathbb E(Z_{n+1}\mid\mathcal F_n)=\mathbb E Z_{n+1}\)。
+于是
+\[
+ \mathbb E(S_{n+1}\mid\mathcal F_n)
+ =S_n+\mathbb E(Z_{n+1}-\mathbb E Z_{n+1}\mid\mathcal F_n)=S_n.
+\]
+\end{proof}
+
+在本节开头的两次公平抛掷中，令 \(\xi_1,\xi_2\) 分别取符号值 \(1,-1\)，
+并令 \(Z=\xi_1+\xi_2\)。对逐次揭示结果的滤过，有
+\[
+ M_0=0,\quad M_1=\xi_1,\quad M_2=\xi_1+\xi_2.
+\]
+第一次看到 \(\xi_1=1\) 时，余下的两个可能终值为 \(2,0\)，其平均为 \(1\)；
+看到 \(\xi_1=-1\) 时，两个可能终值为 \(0,-2\)，其平均为 \(-1\)。
+条件平均模型在这个有限时段内恰好也是独立和模型。
+一般实值鞅在有限时段 \(0\leq n\leq N\) 也满足
+\(M_n=\mathbb E(M_N\mid\mathcal F_n)\)，
+这是\cref{b1:prop:martingale-multistep-31}的等式情形。
+无限时段是否存在同一个可积终值，则是\secref{b1:sec:3106}要解决的问题。
+
+\ProseParagraphBreak
+
+独立性是产生零条件均值的一种办法，并非鞅的必要条件。
+例如取独立公平符号列 \((\xi_n)\)，自然滤过记为 \((\mathcal F_n)\)，并令
+\[
+ d_1=\xi_1,\quad d_2=(1+\xi_1)\xi_2.
+\]
+第二个增量在 \(\xi_1=-1\) 时恒为零，在 \(\xi_1=1\) 时取值 \(2,-2\)，
+所以它与第一个增量不独立。但对已知的 \(\xi_1\)，
+\(\mathbb E(d_2\mid\mathcal F_1)=(1+\xi_1)\mathbb E\xi_2=0\)，
+故 \(M_0=0\)、\(M_1=d_1\)、\(M_2=d_1+d_2\) 仍为鞅。
+
+\begin{proposition}[有界可料乘子与鞅变换]
+\label{b1:prop:martingale-transform-31}
+设 \((\Omega,\mathcal F,\mathbb P)\) 为概率空间，
+\((\mathcal F_n)\) 为其上的滤过，\((X_n)\) 是关于该滤过的实值下鞅。
+设 \((H_k)_{k\geq1}\) 是实值可料过程，且对每个 \(k\)，
+存在有限常数 \(C_k\) 使 \(0\leq H_k\leq C_k\) 几乎必然。
+令
+\[
+ G_0=0,\quad G_n=\sum_{k=1}^nH_k(X_k-X_{k-1}).
+\]
+则 \((G_n)\) 为下鞅，且 \(\mathbb E G_n\geq0\)。
+若 \((X_n)\) 为鞅，则只要求 \(|H_k|\leq C_k\)，便有 \((G_n)\) 为鞅。
+此时称 \((G_n)\) 为 \((X_n)\) 的一个\term[yang-bianhuan]{鞅变换}[martingale transform]。
+\end{proposition}
+\begin{proof}
+因为 \(H_k\) 对 \(\mathcal F_{k-1}\) 可测，而
+\(\mathcal F_{k-1}\subseteq\mathcal F_k\)，每个乘积对 \(\mathcal F_k\) 可测。
+有限求和后 \(G_n\) 对 \(\mathcal F_n\) 可测。
+又有
+\[
+ \mathbb E\bigl|H_k(X_k-X_{k-1})\bigr|
+ \leq C_k\bigl(\mathbb E|X_k|+\mathbb E|X_{k-1}|\bigr)<\infty,
+\]
+所以每个 \(G_n\) 可积。用\cref{b1:prop:conditional-expectation-pullout-31}中
+有界可测因子的提出性质，得到
+\[
+ \begin{aligned}
+ \mathbb E(G_n-G_{n-1}\mid\mathcal F_{n-1})
+ &=H_n\bigl(\mathbb E(X_n\mid\mathcal F_{n-1})-X_{n-1}\bigr)\geq0.
+ \end{aligned}
+\]
+非负乘子保证不等号方向，因而 \((G_n)\) 是下鞅。
+其期望不小于 \(\mathbb E G_0=0\)。
+若 \((X_n)\) 是鞅，括号内等于零，乘子的符号不再影响结论。
+\end{proof}
+
+这个命题只讨论每个有限时刻的和，不要求 \(\sup_k C_k<\infty\)。
+若想让 \(n\to\infty\)，仍须另外控制所得过程的积分和收敛性。
+而“事先选择”不能删去：对独立公平符号 \(\xi_k\)，若看过第 \(k\) 次结果后
+才取 \(H_k=\xi_k\)，就有 \(H_k\xi_k=1\)，
+从而每一步都增加一。此时 \(H_k\) 对 \(\mathcal F_k\) 可测，
+却不对 \(\mathcal F_{k-1}\) 可测，不能应用鞅变换命题。
 
 \subsection{可积性条件与基本反例}
 \label{b1:subsec:310304}
 
-待撰写。
+鞅的定义需要同时核对适应性、每一时刻的可积性和条件平均等式。
+它们分别回答“当前是否已知”“平均是否有意义”“新变化是否条件公平”。
+三个条件不能用 \(\mathbb E X_n\) 不随 \(n\) 变化来代替。
+
+\ProseParagraphBreak
+
+首先，放大信息可能破坏鞅性。设 \((\xi_n)_{n\geq1}\) 是独立公平符号列，
+\(S_n=\xi_1+\cdots+\xi_n\)、\(S_0=0\)。
+关于自然滤过 \(\mathcal F_n=\sigma(\xi_1,\ldots,\xi_n)\)，它是鞅。
+若把信息提前一步，改用 \(\mathcal G_n=\sigma(\xi_1,\ldots,\xi_{n+1})\)，
+过程仍适应，但
+\[
+ \mathbb E(S_{n+1}\mid\mathcal G_n)=S_{n+1}
+ =S_n+\xi_{n+1}\ne S_n.
+\]
+同一个过程是否为鞅，必须连同滤过一起判断。
+
+\ProseParagraphBreak
+
+其次，形式对称不保证期望存在。
+在 \((-1,1)\setminus\{0\}\) 上取概率测度 \(\tfrac12\,\mathrm dx\)，令
+\(Y(x)=1/x\)。正部、负部的积分都为无穷，故 \(\mathbb E Y\) 未定义。
+虽然对称截断的积分 \(\int_{-1}^{-\varepsilon}Y\,\mathrm dx+
+\int_\varepsilon^1Y\,\mathrm dx\) 等于零，
+这不能把 \(Y\) 变成均值为零的可积变量。
+即使取 \(\mathcal F_n=\mathcal F\)、\(X_n=Y\) 使路径恒定，
+也不能称其为本章意义下的鞅，因为 \(\mathbb E|Y|=\infty\)。
+
+\ProseParagraphBreak
+
+另一方面，一次绝对矩足够定义鞅，不需要二次矩。
+在 \((0,1)\) 的 Lebesgue 概率空间上令 \(Z(u)=u^{-2/3}\)，则
+\[
+ \mathbb E Z=3,\quad\mathbb E(Z^2)=\infty.
+\]
+取 \(\mathcal F_0=\{\varnothing,\Omega\}\)、\(\mathcal F_n=\mathcal F\) 对 \(n\geq1\)，
+并令 \(M_0=3\)、\(M_n=Z\) 对 \(n\geq1\)。
+这是一个可积鞅，却不是平方可积鞅。
+下面的一次矩最大概率估计仍可使用；二次矩的最大估计则不适用。
+
+\ProseParagraphBreak
+
+最后，每个 \(X_n\) 可积并不意味着
+\(\sup_n\mathbb E|X_n|<\infty\)，更不意味着整族一致可积。
+例如 \(X_n=n\) 是下鞅，但其一次矩不断增长。
+后两节会分别说明：适当的一次矩一致上界能够控制路径振荡，
+一致可积性则进一步保证极限仍保留积分。
+在讨论这些无穷时段结论以前，先从任意一个有限时段的最大值估计开始。

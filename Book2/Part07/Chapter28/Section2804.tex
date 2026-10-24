@@ -2,19 +2,275 @@
 \section{局部估计与全局正则性}
 \label{b2:sec:2604}
 
-待撰写。
+变分方法给出的解属于 \(H^1(M)\)：它有平方可积的一阶弱导数，方程通过积分恒等式成立。若源项和度量都很光滑，解是否也会光滑？这个问题可以在坐标图内回答。椭圆方程在每张图中仍是熟悉的欧氏散度型方程；坐标图之间的衔接，则由切断函数和有限覆盖处理。
+
+这里有两个不同的步骤。局部估计产生新的弱导数，单位分解把这些导数组合成全局的 Sobolev 范数。全局估计还将说明常数怎样依赖度量、系数和坐标图，以及常数函数为何需要由低阶范数控制。
 
 \subsection{坐标局部化与估计拼接}
 \label{b2:subsec:260401}
 
-待撰写。
+先把方程连同积分测度一起搬入坐标。设 \((M,g)\) 为非空紧致无边界光滑 Riemann 流形，维数为整数 \(n\geq1\)。取光滑的实束自同态 \(A:TM\to TM\)，假设它关于 \(g\) 对称，且存在 \(0<\lambda\leq\Lambda<\infty\)，使
+\[
+ \lambda |X|_g^2\leq g(AX,X)\leq\Lambda |X|_g^2
+ \qquad(p\in M,\ X\in T_pM).
+\]
+再取实函数 \(c\in C^\infty(M)\)、\(c\geq0\)，写
+\[
+ Lu=-\operatorname{div}_g(A\nabla_g u)+cu.
+\]
+\(A=I\)、\(c=0\) 时，\(L=-\Delta_g\)。以下各处 \(L^2\) 范数均用 Riemann 体积测度 \(\mathrm dV_g\)，Sobolev 范数采用\cref{b2:def:28-sobolev}的坐标定义。
+
+在图 \(x:W\to\Omega\subset\mathbb R^n\) 内，令
+\[
+ \rho=\sqrt{\det(g_{ij})},\qquad
+ a^{ij}=\sum_{k=1}^n A^i_k g^{kj},\qquad B^{ij}=\rho a^{ij}.
+\]
+为便于逐项核对，本小节在坐标中仍用 \(u,f,c\) 表示它们与 \(x^{-1}\) 的复合。由\secref{b2:sec:2602}的梯度、散度公式，\(Lu=f\) 的局部弱形式是
+\begin{equation}\label{b2:eq:28-coordinate-weak-regularity}
+ \int_\Omega\sum_{i,j=1}^n B^{ij}\partial_j u\,\partial_i\varphi\,\mathrm dx
+ =\int_\Omega \rho(f-cu)\varphi\,\mathrm dx
+ \qquad(\varphi\in C_c^\infty(\Omega;\mathbb R)).
+\end{equation}
+因此应用欧氏内部估计时，主系数是矩阵 \(B=\rho a\)，右端是 \(\rho(f-cu)\)。体积密度已经进入这两个位置；若把左端误写成 \(a^{ij}\) 而仍用 \(\mathrm dx\)，便改变了方程。
+
+这一矩阵在紧含坐标块上满足一致椭圆条件。确切地，给定 \(V\Subset\Omega\)，度量的逆矩阵在 \(\overline V\) 上有一致的正下界：存在 \(\mu_V>0\)，使
+\(\sum g^{ij}(x)\xi_i\xi_j\geq\mu_V|\xi|^2\)。这是因为该二次型在紧集 \(\overline V\times\{\xi:|\xi|=1\}\) 上连续且处处为正。再记 \(\rho_V=\min_{\overline V}\rho>0\)。把协向量 \(\xi\) 用度量变成切向量 \(\xi^\sharp\)，得到
+\[
+ \sum_{i,j=1}^n B^{ij}\xi_i\xi_j
+ =\rho\,g(A\xi^\sharp,\xi^\sharp)
+ \geq\rho_V\lambda\mu_V|\xi|^2.
+\]
+光滑性又保证 \(B\) 在 \(\overline V\) 上的每个有限阶导数有界。于是\cref{b2:thm:16-interior-h2,b2:thm:16-higher-regularity}要求的椭圆下界与系数导数界都有了具体来源。这些估计使用正密度及坐标换元的 Jacobi 行列式的绝对值，也适用于不可定向的 \(M\)。
+
+\ProseParagraphBreak
+
+现在把解限制在一张图内。若 \(\chi\) 是光滑切断函数，则 \(\chi u\) 的方程会多出哪些项？乘积求导中只有落在 \(u\) 上的二阶导数留在主部；落在 \(\chi\) 上的导数将形成较低阶项。
+
+\begin{lemma}[切断乘子的交换公式]\label{b2:lem:28-cutoff-commutator}
+设 \((M,g)\) 为非空紧致无边界光滑 Riemann 流形，\(\dim M=n\geq1\)。设 \(A:TM\to TM\) 为光滑实束自同态且关于 \(g\) 对称，\(c,\chi\in C^\infty(M;\mathbb R)\)，并定义 \(L=-\operatorname{div}_g(A\nabla_g)+c\)。则每个实值 \(u\in H^1(M)\) 都满足分布恒等式
+\begin{equation}\label{b2:eq:28-cutoff-commutator}
+ \begin{aligned}
+ L(\chi u)&=\chi Lu+[L,\chi]u,\\
+ [L,\chi]u&=-2g(A\nabla_g\chi,\nabla_g u)
+              -u\operatorname{div}_g(A\nabla_g\chi).
+ \end{aligned}
+\end{equation}
+这里 \([L,\chi]u\) 表示 \(L(\chi u)-\chi Lu\)。对每个非负整数 \(m\)，存在与 \(u\) 无关的常数 \(C_m\)，使实值 \(u\in H^{m+1}(M)\) 满足
+\begin{equation}\label{b2:eq:28-commutator-bound}
+ \|[L,\chi]u\|_{H^m(M)}\leq C_m\|u\|_{H^{m+1}(M)}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+对光滑 \(u\)，先用 \(\nabla_g(\chi u)=\chi\nabla_g u+u\nabla_g\chi\)，再分别展开两个散度：
+\[
+ \begin{aligned}
+ \operatorname{div}_g(\chi A\nabla_g u)
+ &=\chi\operatorname{div}_g(A\nabla_g u)
+       +g(\nabla_g\chi,A\nabla_g u),\\
+ \operatorname{div}_g(uA\nabla_g\chi)
+ &=u\operatorname{div}_g(A\nabla_g\chi)
+       +g(\nabla_g u,A\nabla_g\chi).
+ \end{aligned}
+\]
+对称性使两个交叉项相等，势项则满足 \(c\chi u=\chi cu\)，于是得到\eqref{b2:eq:28-cutoff-commutator}。对 \(H^1\) 函数，取\cref{b2:thm:28-sobolev-basic}给出的光滑逼近。左右两边分别在分布空间及 \(L^2\) 中收敛，恒等式随之成立。
+
+在固定的有限坐标图中，交换项具有
+\(\sum_j q^j\partial_j u+ru\) 的形式，\(q^j,r\) 光滑。对 \(|\alpha|\leq m\)，Leibniz 法则将
+\(D^\alpha(q^j\partial_j u)\) 写成
+\[
+ \sum_{\beta\leq\alpha}\binom\alpha\beta
+       (D^\beta q^j)D^{\alpha-\beta}\partial_j u.
+\]
+系数导数在所用紧子图上有界，解的导数最多为 \(m+1\) 阶；\(D^\alpha(ru)\) 同样处理。坐标 Sobolev 范数的等价性和有限求和便给出\eqref{b2:eq:28-commutator-bound}。
+\end{proof}
+
+若 \(\chi=1\) 于一个小坐标块、在较大坐标块外为零，则交换项只出现在 \(\chi\) 变化的过渡区域。因而小块上的新导数受两种数据控制：原方程的源项，以及过渡区域中已经掌握的一阶导数。这正是内部估计需要在小区域外多留一圈空间的原因。
+
+有限拼接可以具体安排如下。取\cref{b2:lem:28-finite-localization}给出的有限图 \(x_a:W_a\to\Omega_a\)，以及从属于它们的光滑单位分解 \(\chi_a\)，其中
+\(\operatorname{supp}\chi_a\Subset W_a\)、\(\sum_a\chi_a=1\)。对每个 \(a\)，选取
+\begin{equation}\label{b2:eq:28-nested-coordinate-sets}
+ x_a(\operatorname{supp}\chi_a)\Subset U_a\Subset V_a\Subset\Omega_a.
+\end{equation}
+在这些集合上，\(\rho_a\)、\(\rho_a^{-1}\) 和所需有限阶系数导数都有统一上界；这里只有有限个 \(a\)，故可取各局部常数的最大值。记
+\(v_a=(\chi_a u)\circ x_a^{-1}\)，并在图外作零延拓。由于它的支集紧含于 \(U_a\)，若已知 \(v_a\in H^k(U_a)\)，在 \(U_a\) 内再乘一个等于 \(1\) 于该支集附近的切断函数，便得到 \(v_a\in H^k(\mathbb R^n)\) 及
+\[
+ \|v_a\|_{H^k(\mathbb R^n)}\leq C_{a,k}\|v_a\|_{H^k(U_a)}.
+\]
+这里的零延拓没有边界跳跃，因为延拓前函数已在 \(\partial U_a\) 的一个邻域内为零。最后按\eqref{b2:eq:28-chart-sobolev-norm}将有限个 \(\|v_a\|_{H^k(\mathbb R^n)}^2\) 相加，就恢复了全局 \(H^k(M)\) 范数；\cref{b2:thm:28-sobolev-basic}保证换成另一套有限图只改变等价常数。
 
 \subsection{二阶 Sobolev 估计}
 \label{b2:subsec:260402}
 
-待撰写。
+局部化的第一步只需要 \(f\in L^2\)。此时交换项已经属于 \(L^2\)，二阶内部估计就能开始工作。
+
+\begin{theorem}[紧流形上的二阶估计]\label{b2:thm:28-global-h2}
+设 \((M,g)\) 为非空紧致无边界光滑 Riemann 流形，\(\dim M=n\geq1\)。设光滑实束自同态 \(A:TM\to TM\) 关于 \(g\) 对称，并存在常数 \(0<\lambda\leq\Lambda<\infty\)，使
+\[
+ \lambda |X|_g^2\leq g(AX,X)\leq\Lambda |X|_g^2
+ \qquad(p\in M,\ X\in T_pM).
+\]
+设 \(c\in C^\infty(M;\mathbb R)\)、\(c\geq0\)，\(f\in L^2(M;\mathbb R)\)。若 \(u\in H^1(M;\mathbb R)\) 满足
+\begin{equation}\label{b2:eq:28-global-weak-regularity}
+ \int_M\bigl(g(A\nabla_g u,\nabla_g\varphi)+cu\varphi\bigr)\,\mathrm dV_g
+ =\int_M f\varphi\,\mathrm dV_g
+ \qquad(\varphi\in H^1(M;\mathbb R)),
+\end{equation}
+则 \(u\in H^2(M)\)，且存在与 \(u,f\) 无关的常数 \(C\)，使
+\begin{equation}\label{b2:eq:28-global-h2}
+ \|u\|_{H^2(M)}\leq C\bigl(\|f\|_{L^2(M)}+\|u\|_{L^2(M)}\bigr).
+\end{equation}
+常数可依赖 \((M,g)\)、\(A,c\)、椭圆下界及所选的等价 Sobolev 范数。
+\end{theorem}
+\begin{proof}
+先保留右端的 \(H^1\) 余项，取得二阶正则性。使用\eqref{b2:eq:28-nested-coordinate-sets}中的有限局部化。由交换公式，\(v_a=(\chi_a u)\circ x_a^{-1}\) 在 \(\Omega_a\) 内满足
+\begin{equation}\label{b2:eq:28-localized-equation}
+ \begin{aligned}
+ -\sum_{i,j=1}^n\partial_i(B_a^{ij}\partial_jv_a)&=F_a,\\
+ F_a&=\rho_a\bigl[(\chi_a f+[L,\chi_a]u-c\chi_a u)\circ x_a^{-1}\bigr].
+ \end{aligned}
+\end{equation}
+其中乘积与复合按坐标理解，\(\rho_a\) 本身就是坐标函数。在 \(V_a\) 上，体积密度与其倒数有界，坐标的一阶 Sobolev 范数与几何范数可比。由\cref{b2:lem:28-cutoff-commutator}，
+\[
+ \|F_a\|_{L^2(V_a)}+\|v_a\|_{H^1(V_a)}
+ \leq C_a\bigl(\|f\|_{L^2(M)}+\|u\|_{H^1(M)}\bigr).
+\]
+\(B_a\) 的一阶导数有界且它一致椭圆，所以\cref{b2:thm:16-interior-h2}及\subsecref{b2:subsec:160103}中的内部覆盖估计给出
+\[
+ \|v_a\|_{H^2(U_a)}
+ \leq C_a'\bigl(\|F_a\|_{L^2(V_a)}+\|v_a\|_{H^1(V_a)}\bigr).
+\]
+按上一小节说明将 \(v_a\) 零延拓，并对有限个图求和，得到
+\begin{equation}\label{b2:eq:28-global-h2-preliminary}
+ u\in H^2(M),\qquad
+ \|u\|_{H^2(M)}\leq C_0\bigl(\|f\|_{L^2(M)}+\|u\|_{H^1(M)}\bigr).
+\end{equation}
+
+再用方程把一阶余项降到零阶。在\eqref{b2:eq:28-global-weak-regularity}中取 \(\varphi=u\)，利用 \(c\geq0\) 得
+\[
+ \lambda\|\nabla_g u\|_{L^2(M)}^2
+ \leq\int_Mfu\,\mathrm dV_g
+ \leq\|f\|_{L^2(M)}\|u\|_{L^2(M)}.
+\]
+由 \(ab\leq(a^2+b^2)/2\) 以及\cref{b2:prop:26-energy-norm}中 \(H^1\) 范数与
+\((\|u\|_2^2+\|\nabla_g u\|_2^2)^{1/2}\) 的等价性，得到
+\[
+ \|u\|_{H^1(M)}\leq C_1\bigl(\|f\|_{L^2(M)}+\|u\|_{L^2(M)}\bigr).
+\]
+代入\eqref{b2:eq:28-global-h2-preliminary}即得所需估计。
+\end{proof}
+
+\(L=-\Delta_g\) 时，\(u\equiv1\) 满足 \(Lu=0\)，但 \(\|u\|_{H^2(M)}>0\)。这直接解释了\eqref{b2:eq:28-global-h2}中的 \(\|u\|_2\) 项。若已经在各个连通分支上把平均值固定为零，\secref{b2:sec:2603}的 Poincaré 不等式与能量估计给出 \(\|u\|_{H^1}\leq C\|f\|_2\)，于是二阶估计可以改写成
+\[
+ \|u\|_{H^2(M)}\leq C\|f\|_{L^2(M)}
+ \qquad\left(-\Delta_g u=f,\quad \int_{M_j}u\,\mathrm dV_g=0\text{ 对每个分支 }M_j\right).
+\]
+同样，对 \(L+\mu\)（\(\mu>0\)），零阶正项在能量恒等式中直接控制 \(\|u\|_2\)，便得到相应的无余项估计。归一化和正的零阶项，分别处理了常数方向上的不确定性。
 
 \subsection{高阶正则性与光滑性}
 \label{b2:subsec:260403}
 
-待撰写。
+有了 \(H^2\) 正则性，局部化公式可以继续使用。若已知 \(u\in H^{m+1}\)，交换项的 \(m\) 阶导数只含 \(u\) 的至多 \(m+1\) 阶导数，所以仍是已知数据；内部估计再提供一阶新的正则性。这种逐阶提升把源项的每一级正则性转化为解的相应正则性。
+
+\begin{theorem}[紧流形上的高阶椭圆估计]\label{b2:thm:28-global-higher}
+设 \((M,g)\) 为非空紧致无边界光滑 Riemann 流形，\(\dim M=n\geq1\)，\(m\geq0\) 为整数。设光滑实束自同态 \(A:TM\to TM\) 关于 \(g\) 对称，并满足
+\[
+ \lambda |X|_g^2\leq g(AX,X)\leq\Lambda |X|_g^2
+ \qquad(p\in M,\ X\in T_pM)
+\]
+对某些常数 \(0<\lambda\leq\Lambda<\infty\) 成立。设 \(c\in C^\infty(M;\mathbb R)\)、\(c\geq0\)，并令 \(L=-\operatorname{div}_g(A\nabla_g)+c\)。若实函数 \(u\in H^1(M)\)、\(f\in H^m(M)\) 满足
+\[
+ \int_M\bigl(g(A\nabla_g u,\nabla_g\varphi)+cu\varphi\bigr)\,\mathrm dV_g
+ =\int_Mf\varphi\,\mathrm dV_g
+ \qquad(\varphi\in H^1(M;\mathbb R)),
+\]
+则 \(u\in H^{m+2}(M)\)，且
+\begin{equation}\label{b2:eq:28-global-higher}
+ \|u\|_{H^{m+2}(M)}
+ \leq C_m\bigl(\|f\|_{H^m(M)}+\|u\|_{L^2(M)}\bigr).
+\end{equation}
+常数 \(C_m\) 与 \(u,f\) 无关，可依赖 \(m\)、\((M,g)\)、\(A,c\)、椭圆下界及所选的等价 Sobolev 范数。特别地，对每个实值 \(u\in H^{m+2}(M)\)，有
+\begin{equation}\label{b2:eq:28-global-apriori}
+ \|u\|_{H^{m+2}(M)}
+ \leq C_m\bigl(\|Lu\|_{H^m(M)}+\|u\|_{L^2(M)}\bigr).
+\end{equation}
+\end{theorem}
+\begin{proof}
+对整数 \(m\) 归纳。\(m=0\) 已由\cref{b2:thm:28-global-h2}证明。设 \(m\geq1\)，并且前一级的正则性与估计均已建立。由于 \(H^m(M)\subset H^{m-1}(M)\)，先得
+\begin{equation}\label{b2:eq:28-higher-induction-input}
+ \|u\|_{H^{m+1}(M)}
+ \leq C_{m-1}\bigl(\|f\|_{H^{m-1}(M)}+\|u\|_{L^2(M)}\bigr).
+\end{equation}
+因此\eqref{b2:eq:28-localized-equation}中的每一项都可以在 \(H^m\) 中估计。光滑函数乘法及\eqref{b2:eq:28-commutator-bound}给出
+\[
+ \|F_a\|_{H^m(V_a)}+\|v_a\|_{H^1(V_a)}
+ \leq C_{a,m}\bigl(\|f\|_{H^m(M)}+\|u\|_{H^{m+1}(M)}\bigr).
+\]
+例如最费导数的项是 \(D^\alpha(q^j\partial_j u)\)，\(|\alpha|=m\)，它包含 \(q^jD^\alpha\partial_j u\)，恰好由归纳已经取得的 \(H^{m+1}\) 控制；势项 \(cu\) 只需要到 \(m\) 阶解导数。
+
+现在对坐标方程使用\cref{b2:thm:16-higher-regularity}。该定理要求 \(B_a\in W^{m+1,\infty}(V_a)\)、一致椭圆下界及 \(F_a\in H^m(V_a)\)，这些条件分别来自光滑系数的紧子图限制和上一式。它给出
+\[
+ \|v_a\|_{H^{m+2}(U_a)}
+ \leq C_{a,m}'\bigl(\|F_a\|_{H^m(V_a)}+\|v_a\|_{H^1(V_a)}\bigr).
+\]
+零延拓后对有限个图求和，便得到
+\[
+ \|u\|_{H^{m+2}(M)}
+ \leq C_m'\bigl(\|f\|_{H^m(M)}+\|u\|_{H^{m+1}(M)}\bigr).
+\]
+最后代入\eqref{b2:eq:28-higher-induction-input}，并用较高阶 Sobolev 范数控制较低阶范数，即得\eqref{b2:eq:28-global-higher}。
+
+若一开始给定 \(u\in H^{m+2}(M)\)，光滑系数的乘积法则保证 \(f=Lu\in H^m(M)\)。对光滑测试函数分部积分，再利用其在 \(H^1\) 中的稠密性，得到定理所需的弱形式，故\eqref{b2:eq:28-global-apriori}也成立。
+\end{proof}
+
+这个证明还说明了有限阶版本中的系数要求：内部第 \(m\) 级估计使用坐标主系数 \(B\) 的 \(m+1\) 阶有界弱导数。切断交换项中的 \(\operatorname{div}_g(A\nabla_g\chi)\) 已经对系数求过一次导数，再取 \(m\) 阶导数，正好达到同一级。光滑系数允许逐级重复这一过程；若系数只有有限阶正则性，提升便在相应阶数处停止。
+
+\ProseParagraphBreak
+
+在单位圆 \(S^1=\mathbb R/(2\pi\mathbb Z)\) 上取弧长度量，\(-\Delta_g=-\partial_\theta^2\)。对正整数 \(r\)，
+\[
+ f_r(\theta)=\cos(r\theta),\qquad
+ u_r(\theta)=r^{-2}\cos(r\theta)
+\]
+满足 \(-\Delta_g u_r=f_r\)。按周期坐标的整数阶 Sobolev 范数计算，
+\[
+ \|f_r\|_{H^m(S^1)}\asymp r^m,\qquad
+ \|u_r\|_{H^{m+2}(S^1)}\asymp r^m
+ \qquad(r\geq1).
+\]
+符号 \(\asymp\) 表示两边之比有与 \(r\) 无关的正上下界。源项的高频振荡在求解时被除以 \(r^2\)，这就是“获得两阶导数”的一个直接图景。若把左端提高到 \(H^{m+2+\ell}\)、其中 \(\ell\geq1\) 为整数，而右端仍只用 \(H^m\)，该族函数就会额外产生 \(r^\ell\)，故无法保持统一常数。
+
+\begin{corollary}[光滑数据的光滑解]\label{b2:cor:28-smooth-elliptic}
+设 \((M,g)\) 为非空紧致无边界光滑 Riemann 流形，\(\dim M=n\geq1\)。设 \(A:TM\to TM\) 为光滑实束自同态，关于 \(g\) 对称，且存在 \(\lambda>0\) 使
+\(g(AX,X)\geq\lambda|X|_g^2\) 对所有 \(p\in M\)、\(X\in T_pM\) 成立。设 \(c,f\in C^\infty(M;\mathbb R)\)、\(c\geq0\)。若 \(u\in H^1(M;\mathbb R)\) 弱满足
+\[
+ -\operatorname{div}_g(A\nabla_g u)+cu=f,
+\]
+则 \(u\) 有唯一的 \(C^\infty(M;\mathbb R)\) 代表元，该代表元在每一点满足这个微分方程。
+\end{corollary}
+\begin{proof}
+紧性与 \(A\) 的连续性给出统一上界 \(g(AX,X)\leq\Lambda|X|_g^2\)。光滑 \(f\) 属于每个整数阶 \(H^m(M)\)，故\cref{b2:thm:28-global-higher}给出 \(u\in H^s(M)\) 对所有非负整数 \(s\) 成立。
+
+给定整数 \(k\geq0\)，取整数 \(s>k+n/2\)。\cref{b2:prop:28-sobolev-continuous}给出 \(u\) 的 \(C^k(M)\) 代表元；其条件正是导数阶数超过 \(k+n/2\)。不同 \(k\) 所得代表元几乎处处相同，且都连续，因而由该命题的唯一性处处相同，得到一个光滑代表元。
+
+该代表元的 \(Lu-f\) 光滑，作为分布为零。若它在某点非零，则在该点的一个小邻域内保持同号，取支撑于此的非负光滑测试函数就会得到非零积分，矛盾。因此 \(Lu=f\) 逐点成立。两个连续代表元若几乎处处相等，也必须处处相等，给出代表元的唯一性。
+\end{proof}
+
+\ProseParagraphBreak
+
+源项光滑时，系数的粗糙仍可能留在解中。下面把\secref{b2:sec:1602}的一维局部现象放到紧流形上。仍取 \(S^1\) 的角坐标 \(-\pi<\theta<\pi\)，选光滑切断 \(0\leq\eta\leq1\)，使 \(\eta=1\) 于 \(|\theta|<1/2\)、\(\eta=0\) 于 \(|\theta|\geq1\)，并令
+\[
+ a(\theta)=1+\eta(\theta)|\theta|.
+\]
+它在端点附近恒为 \(1\)，故定义了圆上的正 Lipschitz 系数；它唯一的不光滑处是 \(\theta=0\)。再选光滑 \(\chi\)，使 \(\chi=1\) 于 \(|\theta|<1/4\)、\(\operatorname{supp}\chi\subset(-1/2,1/2)\)，定义
+\[
+ u(\theta)=\chi(\theta)\operatorname{sgn}(\theta)\log(1+|\theta|),
+ \qquad u(0)=0.
+\]
+在 \(|\theta|<1/4\) 内，\(u'=1/(1+|\theta|)\)，从而 \(au'=1\)。离开零点后，\(a,u\) 都光滑；因此通量 \(au'\) 在整个圆上光滑，\(f=-(au')'\) 也是光滑函数，且 \(u\) 弱满足 \(-(au')'=f\)。但是
+\[
+ u''(\theta)=-\frac{\operatorname{sgn}(\theta)}{(1+|\theta|)^2}
+ \qquad(0<|\theta|<1/4)
+\]
+在零点有跳跃。它的分布导数含非零点质量，所以 \(u\in H^2(S^1)\) 而 \(u\notin H^3(S^1)\)。椭圆下界在这个例子中仍保持为 \(1\)；阻止继续提升的是系数缺少更高阶导数。
+
+全局估计至此把变分解与经典解联系起来。光滑源项给出光滑解，有限阶源项则给出精确的 Sobolev 控制。下一步研究算子的谱时，这种控制还会把抽象的特征向量恢复为光滑函数，并把紧性转化为离散的谱结构。

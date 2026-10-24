@@ -2,7 +2,7 @@
 \chapter{Dirichlet \texorpdfstring{\(L\)}{L}-函数与算术级数}
 \label{b3:app:D}
 \begin{chapterabstract}
-按剩余类筛选整数，需要把乘法结构与有限 Fourier 分解结合起来。Dirichlet 特征完成筛选，带特征的 Euler 乘积则把素数的剩余类信息编码为全纯函数。这里从正交关系走到 \(s=1\) 非消失，再证明每个互素算术级数含有无穷多个素数；原始特征的函数方程另由 Gauss 和与 theta 变换推导。
+按剩余类筛选整数，需要把乘法结构与有限 Fourier 分解结合起来。Dirichlet 特征完成筛选，带特征的 Euler 乘积则把素数的剩余类信息编码为全纯函数。这里从正交关系走到 \(s=1\) 非消失，再证明每个互素算术级数含有无穷多个素数并计算其 Dirichlet 密度；原始特征的函数方程另由 Gauss 和与 theta 变换推导。
 \end{chapterabstract}
 \begin{learninggoals}
 \begin{itemize}
@@ -10,15 +10,29 @@
 \item\label{b3:item:D-goal-2}区分主特征、原始特征与诱导特征。
 \item\label{b3:item:D-goal-3}证明非主特征在1点的非消失。
 \item\label{b3:item:D-goal-4}追踪函数方程中的奇偶性、模数与 Gauss 和。
+\item\label{b3:item:D-goal-5}区分素数无穷性、Dirichlet 密度与普通计数渐近。
 \end{itemize}
 \end{learninggoals}
-前置为第二十五至二十七章。除有限维复线性代数外，不要求一般代数数论。本文中的算术级数定理指素数的无穷性；其带主项的计数渐近还需要整条边界上的非消失分析，这里不把两种结论混称。
+把整数按模 \(q\) 的剩余类分开以后，素数是否仍能出现在每个与 \(q\) 互素的类中？Dirichlet 特征给整数赋予周期性的复数权重，使不同剩余类能够相消或被保留。由这些权重形成的级数在实部大于一时有 Euler 乘积，周期抵消又使非主特征的级数在一处收敛；关键问题是，这个边界值是否可能等于零。
+
+一处非消失将用于证明指定剩余类中有无穷多个素数，并计算它们的 Dirichlet 密度。原始 Gauss 和与带奇偶性的 theta 级数则引出函数方程，解释左右半平面的联系。Dirichlet 密度与通常的计数渐近是不同的结论：要确定 \(\pi(x;q,a)\) 的渐近，还须研究整条边界上的解析性质。
 
 \section{有限乘法群的 Fourier 分解}
 \label{b3:sec:D01}
 
+要挑出整数的一个剩余类，可以先用加法指数 \(e^{2\pi\mathrm{i}rn/q}\)。然而它对整数乘积通常不满足 \(a(mn)=a(m)a(n)\)，因而不能直接生成本附录需要的 Euler 乘积。我们改在有限乘法群上选频率：既保留精确筛选，也保留乘法性。这解释了为什么只对与模数互素的剩余类建立统一主线。
+
+\subsection{乘法频率与 Dirichlet 特征}
+\label{b3:subsec:D0101}
+
 设 \(q\ge2\) 为整数，\(G=(\mathbb Z/q\mathbb Z)^\times\)。从 \(G\) 到单位圆的群同态称为群的特征；将它周期延拓到整数，并在 \((n,q)>1\) 时置零，就得到模 \(q\) 的\term[dirichlet-tezheng]{Dirichlet 特征}[Dirichlet character] \(\chi\)。在 \(G\) 上恒等于一的称为主特征 \(\chi_0\)。所有特征都完全乘法，非零值是有限阶单位根。
 
+\subsection{正交关系与剩余类筛选}
+\label{b3:subsec:D0102}
+
+在有限集合 \(G\) 上，内积取 \(\langle u,v\rangle=\sum_{a\in G}u(a)\overline{v(a)}\)。剩余类筛选要把一个点的示性函数展开成特征的线性组合，因此既要验证正交性，也要证明这些特征张成全部函数空间。
+
+\Needspace{6\baselineskip}
 \begin{proposition}[正交关系]\label{b3:prop:D-orthogonality}
 设 \(q\ge1\) 为整数，\(G=(\mathbb Z/q\mathbb Z)^\times\)，特征指 \(G\) 的复单位圆值群同态，在与 \(q\) 不互素的整数上延为0。则模 \(q\) 恰有 \(\varphi(q)\) 个特征。若整数 \(a\) 满足 \((a,q)=1\)，则对每个整数 \(n\)，
 \[
@@ -32,9 +46,31 @@
 \end{proof}
 模4有两个特征，非主特征 \(\chi_4\) 在1、3上分别取1、\(-1\)。模5的单位群由2生成，可分别令 \(\chi(2)=1,\mathrm{i},-1,-\mathrm{i}\)；两个非实特征互为共轭。这些共轭对会在非消失证明中发挥作用。
 \ProseParagraphBreak
+例如任意 \(v:G\to\mathbb C\) 都有有限展开
+\[
+ v(a)=\sum_{\chi\bmod q}\widehat v(\chi)\chi(a),
+ \quad
+ \widehat v(\chi)=\frac1{\varphi(q)}\sum_{b\in G}v(b)\overline{\chi(b)}.
+\]
+将 \(v\) 取为单点示性函数，就得到按剩余类筛选的系数；取为一个子集的示性函数，则可同时筛选若干类。这里没有无穷级数的收敛问题，困难将在把这种有限分解施加到素数的无穷和时出现。
+
+\subsection{诱导、导子与有限 Euler 因子}
+\label{b3:subsec:D0103}
+
 设 \(q\ge2\) 为整数、\(d\) 为 \(q\) 的正因子；模一的特征在所有整数上恒取一。模 \(d\) 特征可沿单位群的约化映射拉回，再在非单位上置零，称为诱导。不能由真因子模数诱导的特征称为\term[yuanshi-tezheng]{原始特征}[primitive character]。最小诱导模数称导子。例如模8上仅由奇数模4的余数决定的特征，其导子为4；它在模8意义下非原始。原始性负责下面的有限 Fourier 变换不丢失频率。
 
 \ProseParagraphBreak
+导子不只是从若干模数中任意选一个最小者。写 \(q=\prod_p p^{a_p}\)，中国剩余定理把单位群写成各 \((\mathbb Z/p^{a_p}\mathbb Z)^\times\) 的直积；证明是同时解有限组互素模数同余，乘法也逐坐标进行。群上的特征相应唯一分解为各局部特征的乘积。对每个 \(p\)，取最小的 \(0\le f_p\le a_p\)，使该局部特征能经模 \(p^{f_p}\) 的约化映射下降，其中指数零表示平凡群。于是
+\[
+ d=\prod_p p^{f_p}
+\]
+诱导出原特征。若另一个 \(d'\mid q\) 也能诱导它，则每个局部指数都满足 \(f_p\le v_p(d')\)，故 \(d\mid d'\)。这既证明导子的唯一性，也证明导子上的诱导源 \(\chi^*\) 是原始的。约化映射满射，所以源特征的值也唯一。
+
+两个整数函数 \(\chi\) 与 \(\chi^*\) 不必处处相同：在与 \(q\) 互素的数上相同，而一个只被新增素因子整除的数，可能有 \(\chi(n)=0\)、\(\chi^*(n)\ne0\)。例如把模四的非主特征诱导到模十二，就删去了原来含素因子三的项；后面的有限 Euler 因子正记录这种删项。
+
+\subsection{周期抵消与条件收敛}
+\label{b3:subsec:D0104}
+
 筛选公式是有限乘法群上的 Fourier 反演，不能换成整数加法群上的同一个求和。以模五为例，取生成元二并令 \(\chi_j(2)=\mathrm{i}^j\)、\(0\le j<4\)。在目标剩余类二处，若 \(n\equiv2^l\pmod5\)，筛选和为
 \[
  \frac14\sum_{j=0}^3\overline{\chi_j(2)}\chi_j(n)
@@ -45,25 +81,48 @@
 一个非主特征的周期和为零也可以不用完整正交矩阵来证明。选单位 \(b\) 使 \(\chi(b)\ne1\)，乘法 \(a\mapsto ba\) 置换整个周期的单位类，故 \(\sum_a\chi(a)=\chi(b)\sum_a\chi(a)\)，只能为零。把 \(\lfloor x/q\rfloor\) 个整周期消去后，\(\sum_{n\le x}\chi(n)\) 只剩不足 \(q\) 个模长至多一的项，所以绝对值不超过 \(q\)。于是部分求和尾界具体为
 \[
  \left|\sum_{n>N}\frac{\chi(n)}{n^s}\right|
- \le Cq N^{-\sigma}\left(1+\frac{|s|}{\sigma}\right),\qquad\sigma=\operatorname{Re}s>0.
+ \le q N^{-\sigma}\left(1+\frac{|s|}{\sigma}\right),\quad\sigma=\operatorname{Re}s>0.
 \]
+其具体来源是令 \(A(x)=\sum_{n\le x}\chi(n)\)，对整数 \(M>N\) 作有限部分求和：
+\[
+ \sum_{N<n\le M}\chi(n)n^{-s}
+ =A(M)M^{-s}-A(N)N^{-s}
+   +s\int_N^M A(t)t^{-s-1}\,\mathrm{d}t.
+\]
+当 \(\sigma>0\) 时首项趋零，积分的绝对值不超过 \(q|s|N^{-\sigma}/\sigma\)。这个尾界使原级数在右半平面的紧子集上一致收敛。
+
 在实部为正的紧集上，这个界一致趋零；它既说明全纯性，也允许在 \(s=1\) 把 \(L\) 看作通常收敛的级数。
 
 
 \section{解析延拓与函数方程}
 \label{b3:sec:D02}
 
+\subsection{绝对收敛区与主特征的极点}
+\label{b3:subsec:D0201}
+
+同一个函数将有级数、乘积和积分三种表示。每种表示的有效区域要分别保留；一个表达式不能仅因表示同一函数，就自动在另一个表达式的全部区域收敛。
+
 对 \(\operatorname{Re}s>1\)，定义
 \[
  L(s,\chi)=\sum_{n\ge1}\frac{\chi(n)}{n^s}
      =\prod_p(1-\chi(p)p^{-s})^{-1}.
 \]
-第二十五章的绝对收敛乘法证明逐字适用。若 \(\chi\ne\chi_0\)，一个周期内的和为零，故 \(\sum_{n\le x}\chi(n)=O_q(1)\)，部分求和已把级数全纯延拓到 \(\operatorname{Re}s>0\)。主特征则满足
+这里的乘积可直接核验。有限个素数的几何级数乘积，展开后给只含这些素因子的整数之和；当有限素数集增大时，遗漏项的绝对值由 \(\sum n^{-\sigma}\) 的尾部控制。在任一 \(\sigma\ge1+\delta\) 的紧区域，Euler 对数
+\[
+ \mathcal L_\chi(s)=\sum_p\sum_{r\ge1}\frac{\chi(p)^r}{r p^{rs}}
+\]
+绝对且局部一致收敛，满足 \(L(s,\chi)=\exp\mathcal L_\chi(s)\)。因此该半平面内 \(L\) 没有零点；记号 \(\log L\) 在这里专指这一选定分支，尚不是把主值对数逐点套上去。若 \(\chi\ne\chi_0\)，一个周期内的和为零，故 \(\sum_{n\le x}\chi(n)=O_q(1)\)，部分求和已把级数全纯延拓到 \(\operatorname{Re}s>0\)。主特征则满足
 \[
  L(s,\chi_0)=\zeta(s)\prod_{p\mid q}(1-p^{-s}),
 \]
 在1点有留数 \(\varphi(q)/q\) 的单极点。
 
+\subsection{Mellin 表示与整延拓}
+\label{b3:subsec:D0202}
+
+周期抵消仅给出右半平面的通常收敛。若把周期系数先压成一个有理型生成函数，就能在积分端点减去 Taylor 项，继续越过实部为零的直线。这与 Gamma 函数及 \(\zeta\) 延拓的做法相同，但这里恰好没有保留下来的单极点。
+
+\Needspace{6\baselineskip}
 \begin{proposition}[非主特征的整延拓]\label{b3:prop:D-entire-continuation}
 设 \(q\ge1\) 为整数，\(\chi\) 为模 \(q\) 的 Dirichlet 特征，\(\chi_0\) 为主特征，\(L(s,\chi)=\sum_{n\ge1}\chi(n)n^{-s}\) 最初定义于 \(\operatorname{Re}s>1\)。若 \(\chi\ne\chi_0\)，则 \(L(s,\chi)\) 延拓为整函数。
 \end{proposition}
@@ -76,19 +135,32 @@
 分子在0点消失，分母有单零点，故 \(H_\chi\) 在0点全纯。对 \(\operatorname{Re}s>1\)，逐项积分给
 \(\Gamma(s)L(s,\chi)=\int_0^\infty H_\chi(t)t^{s-1}\,\mathrm{d}t\)。在 \([0,1]\) 中减去任意多项 Taylor 多项式，积分余项延拓到任意左半平面，而减去的第 \(j\) 项只产生 \(c_j/(s+j)\)。故右侧至多在非正整数有单极点。\(1/\Gamma(s)\) 恰在这些点有单零点，乘后全部可去。在无穷远的积分因 \(H_\chi(t)=O(e^{-t})\) 对一切参数局部一致收敛，因此没有其他奇点。
 \end{proof}
+上述论证还说明整延拓的相容性：扣除 \(M\) 项与扣除 \(M+1\) 项所得公式，在共同的右半平面都等于原积分，故由恒等定理在交集上相等。\(1/\Gamma\) 的零点只消去可能的极点，不要求每一个 Taylor 系数非零。尤其不能据此断言 \(L\) 在所有非正整数都为零；奇偶性会给出不同答案。
+
 若 \(\chi\) 由原始 \(\chi^*\) 诱导，则
 \(L(s,\chi)=L(s,\chi^*)\prod_{p\mid q}(1-\chi^*(p)p^{-s})\)。导子中已出现的素数其因子等于一。这些额外因子是讨论零点时必须保留的资料。
 
+\subsection{Gauss 和与原始性的作用}
+\label{b3:subsec:D0203}
+
+乘法特征在有限加法 Fourier 变换下会变成共轭特征。这个整齐结论需要原始性，特别是在非单位频率上：频率为零或与模数有公因子时，不能通过乘一个逆元来完成换元。
+
+\Needspace{6\baselineskip}
 \begin{lemma}[原始 Gauss 和]\label{b3:lem:D-gauss-sum}
 设 \(q\ge1\) 为整数，\(\chi\) 为模 \(q\) 的原始 Dirichlet 特征，\(n\in\mathbb Z\)，\(\tau(\chi)=\sum_{a=1}^q\chi(a)e^{2\pi\mathrm{i}a/q}\)。则
 \[
  \sum_{a=1}^q\chi(a)e^{2\pi\mathrm{i}na/q}=\overline{\chi(n)}\tau(\chi),
- \qquad |\tau(\chi)|=\sqrt q.
+ \quad |\tau(\chi)|=\sqrt q.
 \]
 \end{lemma}
 \begin{proof}
 若 \((n,q)=1\)，将 \(a\) 换为 \(n^{-1}a\) 即得第一式。若 \(d=(n,q)>1\)，指数项只依赖 \(a\bmod q/d\)。单位群向模 \(q/d\) 单位群的映射满射：给定与 \(q/d\) 互素的剩余类，逐个避开其余素因子，再用中国剩余定理即可取到与 \(q\) 互素的代表。原始性说明 \(\chi\) 在该映射的核上不恒等于一，否则会下降到真因子模数。选核中 \(b\) 使 \(\chi(b)\ne1\)，把 \(a\) 换为 \(ba\)，指数不变而总和乘以 \(\chi(b)\)，故和为零。最后对 \(n\bmod q\) 作有限 Fourier 的 Parseval 等式，左侧平方和为 \(q\sum_a|\chi(a)|^2=q\varphi(q)\)，右侧为 \(\varphi(q)|\tau(\chi)|^2\)，得到模长。
 \end{proof}
+非原始特征确实会破坏这个公式。例如模四主特征只有在奇数处取一，其 Gauss 和为 \(\mathrm{i}-\mathrm{i}=0\)；但在频率二处的和为 \(-2\)。因此不可能仍把所有频率写成 \(\overline{\chi(n)}\tau(\chi)\)。在函数方程中把原始模数随意换成一个更大的周期，将同时弄错 Gauss 和与 Gamma 因子的尺度。
+
+\subsection{奇偶 theta 级数与完成函数}
+\label{b3:subsec:D0204}
+
 令 \(\chi(-1)=(-1)^\varepsilon\)，\(\varepsilon\in\{0,1\}\)，并设 \(\chi\) 原始非主。置
 \[
  \theta_\chi(t)=\sum_{n\in\mathbb Z}n^\varepsilon\chi(n)e^{-\pi n^2t/q},
@@ -132,8 +204,12 @@ Gaussian 及其导数快速衰减，每一个展开都绝对收敛，有限剩�
 \section{\texorpdfstring{\(s=1\)}{s=1} 处的非消失}
 \label{b3:sec:D03}
 
+\subsection{正系数迫使实边界出现奇点}
+\label{b3:subsec:D0301}
+
 实特征的非消失需要正系数级数的一个原则。下面给出证明，以免把核心算术困难藏在“Euler 乘积非零”中：乘积的初始区域并不包含1点。
 
+\Needspace{6\baselineskip}
 \begin{lemma}[Landau 的正系数原则]\label{b3:lem:D-landau}
 设 \(a_n\in[0,\infty)\ (n\ge1)\)，Dirichlet 级数 \(F(s)=\sum_{n\ge1}a_n n^{-s}\) 的收敛横坐标 \(\sigma_c\in\mathbb R\) 有限，其中 \(s\in\mathbb C\)、\(n^{-s}=e^{-s\log n}\) 用实对数，则 \(F\) 不可能在实点 \(\sigma_c\) 的邻域全纯。
 \end{lemma}
@@ -146,6 +222,12 @@ Gaussian 及其导数快速衰减，每一个展开都绝对收敛，有限剩�
 各项非负，交换双和由单调收敛成立。选 \(s_0-\sigma_c<t<R\)，右侧说明级数在 \(s_0-t<\sigma_c\) 收敛，矛盾。
 \end{proof}
 
+这里的非负性用在最后一次换序，而不只是用来给某个函数下界。一般有符号系数可能相互抵消，越过收敛边界后仍有解析延拓；\(\sum(-1)^{n-1}n^{-s}\) 就提醒我们，级数的收敛边界与函数的奇点边界本来不同。Landau 原则只在正系数的实边界把二者联系起来。
+
+\subsection{实特征与共轭特征的两种论证}
+\label{b3:subsec:D0302}
+
+\Needspace{6\baselineskip}
 \begin{theorem}[Dirichlet 非消失]\label{b3:thm:D-nonvanishing}
 设 \(q\ge2\) 为整数，\(\chi\) 为模 \(q\) 的非主 Dirichlet 特征，以 \(L(s,\chi)=\sum_{n\ge1}\chi(n)n^{-s}\)（\(\operatorname{Re}s>0\)）定义其全纯 \(L\)-函数。则 \(L(1,\chi)\ne0\)。
 \end{theorem}
@@ -161,8 +243,13 @@ Gaussian 及其导数快速衰减，每一个展开都绝对收敛，有限剩�
 实特征与非实特征采用不同机制：前者靠整数平方保证收敛边界确实位于正半平面，后者靠共轭成对的零点压倒唯一极点。若漏掉实情形，乘积论证无法排除一个简单零点恰好抵消主特征的极点。
 
 \ProseParagraphBreak
-实情形中起作用的正系数还可以逐素数核验。若 \(a=\mathbf1*\chi\)，则 \(a\) 可乘；\(\chi(p)=-1\) 时 \(a(p^r)=1-1+\cdots+(-1)^r\)，偶指数为一、奇指数为零。因此对平方 \(m^2\)，每一个局部因子都至少一，\(a(m^2)\ge1\)。实 \(\sigma\le1/2\) 时，仅平方项的和便不小于 \(\sum_m m^{-2\sigma}\)，所以发散；而 \(\sigma>1\) 时原双级数绝对收敛，故 \(1/2\le\sigma_c\le1\)。若在一处零点消去了唯一极点，\(\zeta L\) 已在整个正半平面全纯，特别在这个实 \(\sigma_c\) 点全纯，与正系数原则正面矛盾。证明没有要求先知道任何素数在剩余类中的密度。
+实情形中起作用的正系数还可以逐素数核验。若 \(a=\mathbf1*\chi\)，则 \(a\) 可乘；\(\chi(p)=-1\) 时 \(a(p^r)=1-1+\cdots+(-1)^r\)，偶指数为一、奇指数为零。因此对平方 \(m^2\)，每一个局部因子都至少一，\(a(m^2)\ge1\)。实 \(\sigma\le1/2\) 时，仅平方项的和便不小于 \(\sum_m m^{-2\sigma}\)，所以发散；而 \(\sigma>1\) 时原双级数绝对收敛，故 \(1/2\le\sigma_c\le1\)。若在一处零点消去了唯一极点，\(\zeta L\) 已在整个正半平面全纯，特别在这个实 \(\sigma_c\) 点全纯，与正系数原则正面矛盾。
 \ProseParagraphBreak
+乘积证明中的对数也有明确含义。对实 \(\sigma>1\)，每个实特征的 Euler 因子为正，共轭特征的两个因子相乘为模平方；所有特征的乘积因而是正实数。把绝对收敛的 \(\mathcal L_\chi\) 求和后，所得为实数，且其指数就是该正乘积。正交关系进一步使每个局部幂次的系数非负，这才得到乘积至少为一。它不是从任意选择的复对数分支推出的实不等式。
+
+\subsection{可计算的边界值与平凡零点}
+\label{b3:subsec:D0303}
+
 还可在模三的非主特征上直接看见 \(L(1)\) 的正值。令 \(\chi_3(1)=1,\chi_3(2)=-1\)，则
 \[
  L(1,\chi_3)=\sum_{n\ge0}\left(\frac1{3n+1}-\frac1{3n+2}\right)
@@ -177,6 +264,12 @@ Gaussian 及其导数快速衰减，每一个展开都绝对收敛，有限剩�
 \section{算术级数中的素数}
 \label{b3:sec:D04}
 
+\subsection{Euler 对数筛出素数}
+\label{b3:subsec:D0401}
+
+若直接对 \(L(s,\chi)\) 作正交求和，会筛出所有整数；为了筛出素数，要先取 Euler 对数。对数还带有素数幂，所以必须证明二次及更高幂只贡献有界余项。
+
+\Needspace{6\baselineskip}
 \begin{theorem}[Dirichlet 算术级数定理]\label{b3:thm:D-dirichlet}
 设 \(q\ge1\)、\(a\) 为整数。若 \((a,q)=1\)，则有无穷多个素数 \(p\equiv a\pmod q\)。更精确地，当实 \(\sigma\downarrow1\) 时，
 \[
@@ -189,6 +282,48 @@ Gaussian 及其导数快速衰减，每一个展开都绝对收敛，有限剩�
 \(\log L(\sigma,\chi)=\sum_p\chi(p)p^{-\sigma}+O(1)\)，误差由所有 \(r\ge2\) 的和控制，对 \(\sigma\ge1\) 一致有界。非主特征在1点全纯非零，在其小邻域可取全纯对数；沿实区间与 Euler 对数相差一个固定的 \(2\pi\mathrm{i}\) 整数倍，故有界。主特征则有
 \(\log L(\sigma,\chi_0)=\log(1/(\sigma-1))+O_q(1)\)。乘以 \(\overline{\chi(a)}\) 后求和，正交关系选出指定剩余类，得到公式。右侧趋于无穷，左侧不可能只是有限多个素数的和。
 \end{proof}
+上述余项可用一个与特征无关的界控制。对实 \(\sigma\ge1\)，
+\[
+ \sum_p\sum_{r\ge2}\frac{|\chi(p)|^r}{r p^{r\sigma}}
+ \le \sum_{n\ge2}\sum_{r\ge2}n^{-r}
+ =\sum_{n\ge2}\frac1{n(n-1)}=1.
+\]
+非主特征的局部全纯对数与 Euler 对数在实区间上都是连续函数，两者之差属于离散集合 \(2\pi\mathrm{i}\mathbb Z\)，因此差为常数。正是这个连接步骤保证筛选式中的有界项真正在 \(\sigma\downarrow1\) 时有界。主特征的留数为正，故其正实对数有 \(\log(1/(\sigma-1))+O_q(1)\) 的展开。
+
+\subsection{Dirichlet 密度与素数倒数和}
+\label{b3:subsec:D0402}
+
+对素数的子集 \(\mathcal P\)，若极限
+\[
+ \delta_D(\mathcal P)=\lim_{\sigma\downarrow1}
+ \frac{\sum_{p\in\mathcal P}p^{-\sigma}}{\log(1/(\sigma-1))}
+\]
+存在，就称它为该素数集合的 \term[dirichlet-midu]{Dirichlet 密度}[Dirichlet density]。从 \(\zeta\) 的单极点和同一余项估计可知，全部素数的分子等于分母加 \(O(1)\)，所以也可以用 \(\sum_p p^{-\sigma}\) 作分母。\cref{b3:thm:D-dirichlet}给每一个互素剩余类密度 \(1/\varphi(q)\)；有限个不同类的并，其密度等于这些数相加。被模数整除的有限个素数不影响极限。
+
+\Needspace{6\baselineskip}
+\begin{corollary}[互素剩余类中的倒数发散]\label{b3:cor:D-reciprocal-divergence}
+设整数 \(q\ge1\)、\(a\) 满足 \((a,q)=1\)。则
+\[
+ \sum_{p\equiv a\ (q)}\frac1p=+\infty.
+\]
+\end{corollary}
+\begin{proof}
+若该正项和有限，则 \(p^{-\sigma}\le p^{-1}\) 使相应和在全部 \(\sigma>1\) 上有同一个有限上界，与\cref{b3:thm:D-dirichlet}的对数发散矛盾。
+\end{proof}
+这比仅有无穷多个素数更强：一个无限素数子列仍可能有收敛的倒数和。例如递归选择 \(p_j>2^j\)，就有 \(\sum_j1/p_j<1\)；因此无穷性本身不包含上述结论。
+
+\subsection{加权密度与计数渐近的界线}
+\label{b3:subsec:D0403}
+
+若一个素数子集已经具有相对自然密度，即 \(\pi_{\mathcal P}(x)/\pi(x)\to\delta\)，则它也具有上述 Dirichlet 密度 \(\delta\)。这个单方向结论可直接证明：部分求和给
+\[
+ \sum_{p\in\mathcal P}p^{-\sigma}
+   =\sigma\int_1^\infty\pi_{\mathcal P}(x)x^{-\sigma-1}\,\mathrm{d}x
+ \quad(\sigma>1).
+\]
+给定 \(\eta>0\)，在充分大 \(X\) 之后有
+\(|\pi_{\mathcal P}(x)-\delta\pi(x)|\le\eta\pi(x)\)。积分在 \([1,X]\) 上的贡献对 \(1<\sigma\le2\) 有界，尾部之差则至多为 \(\eta\sum_pp^{-\sigma}\)。除以发散的全体素数和，先令 \(\sigma\downarrow1\)，再令 \(\eta\downarrow0\)，便得到所说的密度。这个论证的方向不能倒过来：加权平均没有直接给出每个截断区间里的点数误差。
+
 公式描述的是带权和在 \(\sigma=1\) 附近的发散。要推出 \(\pi(x;q,a)\sim x/(\varphi(q)\log x)\)，需要沿整条 \(\operatorname{Re}s=1\) 排除相应奇点，再应用第二十七章的 Tauber 方法。仅凭本节在单点的估计，不能完成这一步。模数不互素的剩余类则完全不同：若 \(d=(a,q)>1\)，该类的任何素数必须整除 \(d\)，因而至多有限个。
 \ProseParagraphBreak
 继续阅读可从 Apostol《Introduction to Analytic Number Theory》的特征与 \(L\)-级数章节\cite{Apostol1976Introduction}入手；统一的零点估计和算术级数中的素数定理见 Davenport《Multiplicative Number Theory》\cite{Davenport1980Multiplicative}。
@@ -197,39 +332,156 @@ Gaussian 及其导数快速衰减，每一个展开都绝对收敛，有限剩�
 特征把剩余类指标分解为乘法函数，Euler 乘积把乘法结构交给复分析。1点非消失是从表示公式走向素数无穷性的关键，而函数方程进一步把右半平面的信息传到左半平面；二者承担不同任务。
 \end{chaptersummary}
 \BookExercises
+% 题源：自拟，或对本附录原自拟题的实质改写；正文不依赖题解。
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b3:ex:D-1}
-写出模5的四个特征在1、2、3、4上的值。
+模八的单位可唯一写成 \((-1)^u5^v\)，其中 \(u,v\in\{0,1\}\)。写出全部四个特征在 \(1,3,5,7\) 上的值，求各自导子，并辨认两个原始特征的奇偶性。
 \end{exercise}
 \begin{solution}
-按 \(1,2,4,3\) 排列，它们依次为 \((1,1,1,1)\)、\((1,\mathrm{i},-1,-\mathrm{i})\)、\((1,-1,1,-1)\)、\((1,-\mathrm{i},-1,\mathrm{i})\)。换回题目顺序即可。非单位余数0上均为零。
+两个生成元都为二阶，故可分别指定 \(\chi(-1)=\alpha\)、\(\chi(5)=\beta\)，其中 \(\alpha,\beta\in\{1,-1\}\)。因 \(3=-5\)、\(7=-1\pmod8\)，所求向量为 \((1,\alpha\beta,\beta,\alpha)\)。四种选择得到
+\[
+ (1,1,1,1),\quad(1,-1,1,-1),\quad
+ (1,-1,-1,1),\quad(1,1,-1,-1).
+\]
+依次对应 \((\alpha,\beta)=(1,1),(-1,1),(1,-1),(-1,-1)\)。第一种由模一主特征诱导，导子一；第二种只取决于奇数模四的余数，导子四。后两种在模四约化核 \(\{1,5\}\) 上不恒为一，不能由模四诱导，更不能由模二或模一诱导，故导子八。第三种偶，第四种奇。模八中每个非单位处仍须补零，不能把这四个向量当成整个整数轴上的完整定义。
 \end{solution}
+
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b3:ex:D-2}
-计算 \(L(1,\chi_4)\)。
+设 \(\chi_4\) 为模四非主特征。证明 \(L(1,\chi_4)=\pi/4\)，并对每个整数 \(N\ge1\) 证明
+\[
+ 0<(-1)^N\left(\frac\pi4-\sum_{j=0}^{N-1}\frac{(-1)^j}{2j+1}\right)
+ <\frac1{2N+1}.
+\]
 \end{exercise}
 \begin{solution}
-在 \(0\le r<1\) 上积分几何级数 \(1/(1+x^2)=\sum(-1)^nx^{2n}\)，得 \(\arctan r=\sum(-1)^nr^{2n+1}/(2n+1)\)。令 \(r\uparrow1\)，交错级数的尾项一致受首个未取项控制，故极限为 \(1-1/3+1/5-\cdots=\pi/4\)。
+在 \([0,1]\) 上使用有限恒等式
+\[
+ \frac1{1+x^2}=\sum_{j=0}^{N-1}(-1)^jx^{2j}
+                 +(-1)^N\frac{x^{2N}}{1+x^2}.
+\]
+积分后余项为 \((-1)^N\int_0^1x^{2N}/(1+x^2)\,\mathrm{d}x\)，其带符号值严格介于零和 \(1/(2N+1)\) 之间。左侧积分是 \(\arctan1=\pi/4\)，令 \(N\to\infty\) 即识别通常收敛的 \(L(1,\chi_4)\)。有限恒等式同时给出极限和误差，不需要在收敛圆边界直接交换无穷和与积分。
 \end{solution}
+
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b3:ex:D-3}
-模8上由 \(\chi_4\) 诱导的特征是否与 \(\chi_4\) 有不同的 \(L\)-函数？
+将 \(\chi_4\) 诱导为模十二的特征 \(\widetilde\chi\)。求 \(L(s,\widetilde\chi)\) 与 \(L(s,\chi_4)\) 的关系以及 \(L(1,\widetilde\chi)\)，并确定新增有限 Euler 因子的全部零点与重数。
 \end{exercise}
 \begin{solution}
-没有。两个函数在奇数上相同，在偶数上都为零，Dirichlet 级数完全相同。附加模数只增加素因子2，而 \(\chi_4(2)=0\)，所补 Euler 因子为一。
+唯一新增的素因子是三，且 \(\chi_4(3)=-1\)，所以
+\[
+ L(s,\widetilde\chi)=(1+3^{-s})L(s,\chi_4),
+ \quad L(1,\widetilde\chi)=\frac43\frac\pi4=\frac\pi3.
+\]
+恒等式先在绝对收敛区由删去三的 Euler 因子得到，再由整延拓成立于全平面。因子 \(1+e^{-s\log3}\) 的零点是
+\(s=(2k+1)\pi\mathrm{i}/\log3\)，\(k\in\mathbb Z\)；其导数在这些点等于 \(\log3\ne0\)，所以都为单零点。若原始 \(L\) 在同一点也为零，乘积的阶数应相加；这里没有断言这些点是整个诱导 \(L\) 的全部零点，也没有断言乘积中的零点仍恰为一阶。
 \end{solution}
+
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b3:ex:D-4}
-证明 \(\sum_{p\equiv a\ (q)}1/p\) 发散。
+对实 \(\sigma>1\) 置
+\[
+ P_\pm(\sigma)=\prod_{p\equiv\pm1\ (4)}(1-p^{-\sigma})^{-1}.
+\]
+证明两个乘积都在 \(\sigma\downarrow1\) 时趋于无穷，而比值存在有限非零极限，并求这个极限的绝对收敛乘积表示。
 \end{exercise}
 \begin{solution}
-若该正项级数收敛，则对所有 \(\sigma>1\)，\(p^{-\sigma}\le p^{-1}\)，其和一致有界；这与定理~\ref{b3:thm:D-dirichlet}的对数发散矛盾。
+由正项 Euler 对数，\(\log P_\pm(\sigma)\ge\sum_{p\equiv\pm1\ (4)}p^{-\sigma}\)，故两个乘积都发散。对 \(p\equiv3\pmod4\)，使用
+\((1+p^{-\sigma})^{-1}=(1-p^{-\sigma})/(1-p^{-2\sigma})\)，得到
+\[
+ L(\sigma,\chi_4)=\frac{P_+(\sigma)}{P_-(\sigma)}
+                  \prod_{p\equiv3\ (4)}(1-p^{-2\sigma})^{-1}.
+\]
+由于 \(\sum_pp^{-2}<\infty\)，最后乘积及其倒数在 \(\sigma\ge1\) 连续且不为零。结合 \(L(1,\chi_4)=\pi/4\)，可得
+\[
+ \lim_{\sigma\downarrow1}\frac{P_+(\sigma)}{P_-(\sigma)}
+   =\frac\pi4\prod_{p\equiv3\ (4)}(1-p^{-2}).
+\]
+分别发散的两个乘积不能在 \(\sigma=1\) 先各自赋值再相除；此式说明的是带同一参数的比值极限。
 \end{solution}
+
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b3:ex:D-5}
-求 \(\tau(\chi_4)\) 并确定其函数方程的根数。
+设互素整数 \(q_1,q_2\ge2\) 上的特征 \(\chi_1,\chi_2\) 都原始。证明乘积特征 \(\chi=\chi_1\chi_2\) 模 \(q_1q_2\) 原始，并证明
+\[
+ \tau(\chi)=\chi_1(q_2)\chi_2(q_1)\tau(\chi_1)\tau(\chi_2).
+\]
 \end{exercise}
 \begin{solution}
-\(\tau(\chi_4)=e^{\pi\mathrm{i}/2}-e^{3\pi\mathrm{i}/2}=2\mathrm{i}\)。它是奇特征，\(\varepsilon=1,q=4\)，故根数 \(\tau/(\mathrm{i}\sqrt q)=1\)。于是完成函数满足 \(\Lambda(s,\chi_4)=\Lambda(1-s,\chi_4)\)。
+中国剩余定理将模 \(q_1q_2\) 单位群写成两单位群的直积，\(\chi\) 在两因子上的限制分别是 \(\chi_1,\chi_2\)。若 \(\chi\) 经某个真因子模数下降，那么至少一个素数的局部指数下降；限制到包含该素数的因子上，会使对应 \(\chi_j\) 非原始，矛盾。
+
+取 \(u q_2\equiv1\pmod{q_1}\)、\(v q_1\equiv1\pmod{q_2}\)。每个剩余类可唯一写成
+\(a=a_1q_2u+a_2q_1v\pmod{q_1q_2}\)，其加法指数分解为
+\(e^{2\pi\mathrm{i}a_1u/q_1}e^{2\pi\mathrm{i}a_2v/q_2}\)。Gauss 和因而分解为两个和；分别使用原始 Gauss 恒等式，得
+\(\overline{\chi_1(u)}\tau(\chi_1)\overline{\chi_2(v)}\tau(\chi_2)\)。由于 \(u\equiv q_2^{-1}\)、\(v\equiv q_1^{-1}\)，两个共轭值分别等于 \(\chi_1(q_2)\)、\(\chi_2(q_1)\)，得到所求公式。
 \end{solution}
+
+\Needspace{6\baselineskip}
 \begin{exercise}\label{b3:ex:D-6}
-证明非主特征的 \(L(0,\chi)=-q^{-1}\sum_{a=1}^q a\chi(a)\)。
+设 \(\chi\) 为模 \(q\ge2\) 的非主特征，用局部生成函数定义 Bernoulli 多项式
+\[
+ \frac{t e^{xt}}{e^t-1}=\sum_{j\ge0}B_j(x)\frac{t^j}{j!}.
+\]
+证明对每个整数 \(m\ge0\)，
+\[
+ L(-m,\chi)=-\frac{q^m}{m+1}\sum_{a=1}^q\chi(a)B_{m+1}(a/q).
+\]
+特别推出 \(L(0,\chi)=-q^{-1}\sum_a a\chi(a)\)。
 \end{exercise}
 \begin{solution}
-前述生成函数在0点的常数项为 \(H_\chi(0)=-q^{-1}\sum a\chi(a)\)。其 Mellin 变换在 \(s=0\) 的留数等于该常数，而 \(\Gamma(s)\) 在0点留数为一；比较 \(\Gamma(s)L(s,\chi)\) 的留数即得公式。
+生成函数在零点可去，故确有收敛的 Taylor 展开；以 \(-t\) 代入可得 \(B_j(1-x)=(-1)^jB_j(x)\)。正文中的生成函数可改写为
+\[
+ H_\chi(t)=\sum_{a=1}^q\chi(a)\frac{e^{(q-a)t}}{e^{qt}-1}.
+\]
+每项先展开为 Laurent 级数，其 \(t^{-1}\) 系数在求和后因 \(\sum_a\chi(a)=0\) 消失。\(t^m\) 的系数为
+\[
+ c_m=\frac{q^m}{(m+1)!}\sum_a\chi(a)B_{m+1}(1-a/q)
+ =\frac{(-1)^{m+1}q^m}{(m+1)!}\sum_a\chi(a)B_{m+1}(a/q).
+\]
+Taylor 扣除的 Mellin 表示说明 \(\Gamma(s)L(s,\chi)\) 在 \(s=-m\) 的留数为 \(c_m\)，允许此留数为零。Gamma 在该点的留数为 \((-1)^m/m!\)，故 \(L(-m,\chi)=(-1)^mm!c_m\)，即所求式。由生成函数前两项得到 \(B_1(x)=x-1/2\)，再用周期和为零，便得零点处的值。
+\end{solution}
+
+\Needspace{6\baselineskip}
+\begin{exercise}\label{b3:ex:D-7}
+设 \(\chi\) 为模 \(q\ge2\) 的非主特征，\(a(n)=\sum_{d\mid n}\chi(d)\)。证明对实 \(x\ge2\)，
+\[
+ \sum_{n\le x}a(n)=L(1,\chi)x+O_q(\sqrt x).
+\]
+若 \(\chi\) 为实特征，说明这一式与正文非消失定理如何共同推出 \(L(1,\chi)>0\)。
+\end{exercise}
+\begin{solution}
+令 \(y=\lfloor\sqrt x\rfloor\)，\(A(t)=\sum_{d\le t}\chi(d)\)，则 \(|A(t)|\le q\)。把双曲线 \(dm\le x\) 按 \(d\le y\) 或 \(m\le y\) 分割，减去重复的正方形，得到有限恒等式
+\[
+ \sum_{n\le x}a(n)=\sum_{d\le y}\chi(d)\left\lfloor\frac xd\right\rfloor
+                   +\sum_{m\le y}A(x/m)-yA(y).
+\]
+每个满足 \(dm\le x\) 的整数对至少有一个坐标不超过 \(y\)，因为 \((y+1)^2>x\)。后两项为 \(O_q(y)\)，第一项为 \(x\sum_{d\le y}\chi(d)/d+O(y)\)。正文尾界给
+\(\sum_{d>y}\chi(d)/d=O_q(y^{-1})\)，遂得总误差 \(O_q(y+x/y)=O_q(\sqrt x)\)。
+
+实特征时正文已证所有 \(a(n)\ge0\)，除以 \(x\) 并取极限得 \(L(1,\chi)\ge0\)。单凭这一平均式仍允许零；再用\cref{b3:thm:D-nonvanishing}排除零，才得到严格正值。
+\end{solution}
+
+\Needspace{6\baselineskip}
+\begin{exercise}\label{b3:ex:D-8}
+设整数 \(q\ge1\)、\(a\) 满足 \((a,q)=1\)。用 \(\mu\) 表示 Möbius 函数，证明平方自由整数在该剩余类中的计数为
+\[
+ \sum_{\substack{n\le x\\ n\equiv a\ (q)}}\mu(n)^2
+ =\frac{x}{q\zeta(2)}\prod_{p\mid q}(1-p^{-2})^{-1}+O_q(\sqrt x).
+\]
+指出这一计数为何不需要算术级数中的素数定理。
+\end{exercise}
+\begin{solution}
+用\cref{b3:prop:25-squarefree-filter}的有限筛选式
+\(\mu(n)^2=\sum_{d^2\mid n}\mu(d)\)。若 \(n\equiv a\pmod q\)，则 \((n,q)=1\)，所以出现的 \(d\) 必与 \(q\) 互素。交换有限和，内层条件成为
+\(m\equiv a d^{-2}\pmod q\)，于是
+\[
+ \sum_{\substack{n\le x\\n\equiv a\ (q)}}\mu(n)^2
+ =\sum_{\substack{d\le\sqrt x\\(d,q)=1}}\mu(d)
+       \left(\frac{x}{q d^2}+O(1)\right).
+\]
+余项和为 \(O(\sqrt x)\)，补足绝对收敛的 \(d^{-2}\) 级数再产生 \(O_q(\sqrt x)\)。Euler 乘积给
+\[
+\sum_{(d,q)=1}\mu(d)d^{-2}=\prod_{p\nmid q}(1-p^{-2}),
+\]
+即题设常数。内层数的是所有整数中的一个剩余类，误差直接由取整至多一得到；没有在内层数素数，故不需要素数计数渐近。训练中的模数 \(q\) 固定，未声称误差对增长的模数一致。
 \end{solution}

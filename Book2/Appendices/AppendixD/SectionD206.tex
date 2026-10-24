@@ -2,29 +2,437 @@
 \section{一般线性抛物问题}
 \label{b2:sec:D206}
 
-待撰写。
+介质的导热能力可能随时间和位置改变，外力也可能只具有平方可积的强度。这时，逐点求二阶空间导数和一阶时间导数不再是合适的起点。一个更稳定的要求是：解在整个时间区间内具有有限的空间能量，而它的时间变化能够作用在空间测试函数上。这样既能表达扩散方程，也能保留初值、能量平衡和解的唯一性。
+
+以零边界问题为例，空间测试函数属于 \(H_0^1(\Omega)\)，方程的右端自然属于其对偶 \(H^{-1}(\Omega)\)。最先要解决的问题是：时间导数只在这个较弱空间中存在时，能否仍然说清楚“零时等于给定初值”？答案来自一个能量恒等式，它将空间的一阶控制与时间的弱控制合在一起，给出 \(L^2\) 意义下的连续轨道。
 
 \subsection{能量空间与时间弱导数}
 \label{b2:subsec:D20601}
 
-待撰写。
+设整数 \(d\geq1\)，\(\Omega\subset\mathbb R^d\) 为非空有界开集，\(0<T<\infty\)。取实 Hilbert 空间
+\[
+ V=H_0^1(\Omega;\mathbb R),\qquad H=L^2(\Omega;\mathbb R),
+ \qquad V^*=H^{-1}(\Omega;\mathbb R).
+\]
+在 \(V\) 上使用梯度内积与范数
+\[
+ (v,w)_V=\int_\Omega\nabla v\cdot\nabla w,
+ \qquad \|v\|_V=\|\nabla v\|_2.
+\]
+第一卷定理 24.1.2 的零边界 Poincaré 不等式给出有限常数 \(C_P\)，使 \(\|v\|_H\leq C_P\|v\|_V\)。该结果适用于任意有界开集，不要求边界光滑。它使梯度范数与通常的 \(H^1\) 范数等价，因而 \(V\) 完备。每个 \(h\in H\) 通过 \(v\mapsto(h,v)_H\) 定义 \(V^*\) 的元素，且
+\[
+ \|h\|_{V^*}\leq C_P\|h\|_H.
+\]
+这样得到连续稠密嵌入 \(V\subset H\subset V^*\)。记号 \(\langle g,v\rangle\) 表示 \(V^*\) 与 \(V\) 的配对；当 \(g\in H\) 时，它就是 \((g,v)_H\)。
+% 跨卷定位：b1:thm:zero-boundary-poincare，24.1.2。
+
+\ProseParagraphBreak
+
+这里的时间积分是向量值积分。对实可分 Hilbert 空间 \(X\)，若 \(z:(0,T)\to X\) 几乎处处是可测简单函数列的范数极限，就称它是强可测的。\term[bochner-pingfang-keji-kongjian]{Bochner 平方可积空间}[Bochner space of square-integrable functions] \(L^2(0,T;X)\) 由强可测且满足
+\[
+ \|z\|_{L^2(0,T;X)}^2=\int_0^T\|z(t)\|_X^2\,\mathrm dt<\infty
+\]
+的函数组成，按几乎处处相等取商。先对简单函数积分，再按这个范数逼近，就得到相应的强积分；特别地，
+\[
+ \left\|\int_s^tz(r)\,\mathrm dr\right\|_X
+ \leq |t-s|^{1/2}\|z\|_{L^2(s,t;X)}.
+\]
+内积对时间积分使 \(L^2(0,T;X)\) 成为 Hilbert 空间。其完备性可以从 Cauchy 列中选相邻差的 \(L^2\) 范数可求和的子列，逐点求和得到强可测极限，再用积分范数控制尾项来证明。下面的 \(V,H,V^*\) 都是可分 Hilbert 空间，所以这些时间空间适用。
+
+\Needspace{6\baselineskip}
+\begin{definition}[时间弱导数与能量空间]\label{b2:def:D6-energy-space}
+设整数 \(d\geq1\)，\(\Omega\subset\mathbb R^d\) 为非空有界开集，\(0<T<\infty\)，令实空间 \(V=H_0^1(\Omega)\)、\(H=L^2(\Omega)\)、\(V^*=H^{-1}(\Omega)\)，其中 \(V\) 取梯度范数。若 \(u\in L^2(0,T;V)\)、\(g\in L^2(0,T;V^*)\)，且对每个 \(v\in V\) 与 \(\eta\in C_c^\infty(0,T)\) 有
+\[
+ -\int_0^T(u(t),v)_H\eta'(t)\,\mathrm dt
+ =\int_0^T\langle g(t),v\rangle\eta(t)\,\mathrm dt,
+\]
+就称 \(g\) 为 \(u\) 的\term[shijian-ruo-daoshu]{时间弱导数}[weak time derivative]，记作 \(u'\) 或 \(\partial_tu\)。定义\term[paowu-nengliang-kongjian]{抛物能量空间}[parabolic energy space]
+\[
+ W(0,T)=\{u\in L^2(0,T;V):u'\in L^2(0,T;V^*)\},
+ \quad
+ \|u\|_W^2=\|u\|_{L^2V}^2+\|u'\|_{L^2V^*}^2.
+\]
+这里 \(L^2V\) 与 \(L^2V^*\) 分别简写相应的时间空间。
+\end{definition}
+时间弱导数由测试恒等式唯一确定：先对 \(V\) 的一个可数稠密子集同时排除零测集，再用配对的连续性推广到全部 \(v\)。同样，若 \(u_n\to u\) 于 \(L^2V\)、\(u_n'\to g\) 于 \(L^2V^*\)，测试恒等式可直接取极限，得到 \(u'=g\)。因此 \(W(0,T)\) 是两个 Hilbert 空间乘积中的闭图像，也是 Hilbert 空间。
+
+\ProseParagraphBreak
+
+为了从时间分布导数恢复连续轨道，先选一组同时适应三个空间的坐标。任取一个 \(H\) 正交基虽然便于计算 \(L^2\) 范数，其有限维投影却未必控制梯度。下面的坐标由 Dirichlet 能量产生，能同时控制函数、梯度和对偶范数。
+
+\Needspace{6\baselineskip}
+\begin{lemma}[能量空间的稳定谱投影]\label{b2:lem:D6-stable-projections}
+设整数 \(d\geq1\)，\(\Omega\subset\mathbb R^d\) 为非空有界开集，\(V=H_0^1(\Omega;\mathbb R)\) 取梯度范数，\(H=L^2(\Omega;\mathbb R)\)，\(V^*=H^{-1}(\Omega;\mathbb R)\)。存在 \(H\) 的正交归一基 \((e_k)_{k\geq1}\subset V\) 及正数 \(\lambda_k\to\infty\)，使
+\[
+ (e_k,v)_V=\lambda_k(e_k,v)_H\quad(v\in V).
+\]
+若 \(v_k=(v,e_k)_H\)，则
+\[
+ \|v\|_V^2=\sum_{k=1}^\infty\lambda_k|v_k|^2,
+ \qquad
+ \|g\|_{V^*}^2=\sum_{k=1}^\infty
+       \frac{|\langle g,e_k\rangle|^2}{\lambda_k}.
+\]
+有限和投影 \(P_m\) 在三个空间上一致定义为
+\[
+ P_mh=\sum_{k=1}^m(h,e_k)_He_k,\qquad
+ P_mg=\sum_{k=1}^m\langle g,e_k\rangle e_k.
+\]
+它在各自范数下均为收缩，并对每个元素强收敛到恒等映射；还满足
+\(\langle P_mg,v\rangle=\langle g,P_mv\rangle\)。
+\end{lemma}
+\begin{proof}
+对 \(f\in H\)，第一卷定理 8.4.7 的 Hilbert 空间 Riesz 表示定理给出唯一 \(Kf\in V\)，使
+\[
+ (Kf,v)_V=(f,v)_H\quad(v\in V).
+\]
+测试 \(v=Kf\) 并使用 Poincaré 不等式，得到 \(\|Kf\|_V\leq C_P\|f\|_H\)。第一卷推论 25.2.6 的零边界 Rellich 紧嵌入说明，\(V\) 中的有界集在 \(H\) 中相对紧，所以 \(K:H\to H\) 紧。交换两个输入可得
+\[
+ (Kf,g)_H=(Kf,Kg)_V=(f,Kg)_H,
+ \qquad (Kf,f)_H=\|Kf\|_V^2\geq0.
+\]
+若 \(Kf=0\)，则 \((f,v)_H=0\) 对所有 \(v\in V\) 成立；\(C_c^\infty(\Omega)\) 在 \(H\) 中稠密，因而 \(f=0\)。第一卷定理 8.5.5 的紧自伴谱定理于是给出 \(H\) 的正交归一基 \(e_k\)，其特征值 \(\mu_k>0\) 趋于零。由 \(Ke_k=\mu_ke_k\) 可知 \(e_k\in V\)；取 \(\lambda_k=\mu_k^{-1}\) 即得弱特征方程。
+
+向量 \(e_k/\sqrt{\lambda_k}\) 在 \(V\) 中正交归一。若 \(v\in V\) 与它们全部 \(V\)-正交，弱特征方程说明 \((v,e_k)_H=0\) 对全部 \(k\) 成立，因此 \(v=0\)。它们也是 \(V\) 的完备正交系，Parseval 等式给出第一个范数公式。再对 \(g\in V^*\) 应用 Riesz 表示，并在这组 \(V\) 正交基上使用 Parseval 等式，得到第二个公式。
+
+三个范数都化为非负级数，截取前 \(m\) 项会减小范数，尾项则趋于零。这证明三个空间中的收缩性与强收敛；有限和直接给出最后的配对恒等式。
+\end{proof}
+% 跨卷定位：b1:thm:hilbert-riesz，8.4.7；b1:cor:rellich-zero-boundary，25.2.6；b1:thm:compact-self-adjoint-spectral，8.5.5。
+
+\Needspace{6\baselineskip}
+\begin{theorem}[能量空间的时间迹与分部积分]\label{b2:thm:D6-time-trace}
+设整数 \(d\geq1\)，\(\Omega\subset\mathbb R^d\) 为非空有界开集，\(0<T<\infty\)，\(V=H_0^1(\Omega;\mathbb R)\) 取梯度范数，\(H=L^2(\Omega;\mathbb R)\)，\(V^*=H^{-1}(\Omega;\mathbb R)\)。每个 \(u\in L^2(0,T;V)\) 且 \(u'\in L^2(0,T;V^*)\) 的元素都有唯一的 \(C([0,T];H)\) 代表，并且
+\[
+ \sup_{0\leq t\leq T}\|u(t)\|_H^2
+ \leq \frac{C_P^2}{T}\|u\|_{L^2V}^2
+       +2\|u\|_{L^2V}\|u'\|_{L^2V^*}.
+\]
+对全部 \(0\leq s\leq t\leq T\)，有
+\begin{equation}\label{b2:eq:D6-energy-identity}
+ \|u(t)\|_H^2-\|u(s)\|_H^2
+ =2\int_s^t\langle u'(r),u(r)\rangle\,\mathrm dr.
+\end{equation}
+若 \(u,v\) 均属于上述能量空间，则
+\[
+ (u(t),v(t))_H-(u(s),v(s))_H
+ =\int_s^t\bigl(\langle u',v\rangle+\langle v',u\rangle\bigr)\,\mathrm dr.
+\]
+\end{theorem}
+\begin{proof}
+取\cref{b2:lem:D6-stable-projections}的坐标。对每个 \(k\)，标量函数 \(u_k(t)=(u(t),e_k)_H\) 的弱导数为 \(\langle u'(t),e_k\rangle\)，两者都属于 \(L^2(0,T)\)。第一卷定理 20.4.6 给出它的绝对连续代表，且其经典导数几乎处处等于该弱导数。因此 \(P_mu\) 是有限维绝对连续路径，满足通常的平方范数求导式。
+
+若 \(w\) 是两个这样的有限和之差，连续性使某个 \(r\in[0,T]\) 满足
+\(\|w(r)\|_H^2\leq T^{-1}\|w\|_{L^2H}^2\)。从 \(r\) 到任意 \(t\) 积分，并对配对使用 Cauchy--Schwarz 不等式，得到
+\[
+ \sup_t\|w(t)\|_H^2
+ \leq T^{-1}\|w\|_{L^2H}^2
+       +2\|w\|_{L^2V}\|w'\|_{L^2V^*}.
+\]
+稳定投影的范数公式与积分的支配收敛说明
+\[
+ P_mu\to u\text{ 于 }L^2V,\qquad
+ P_mu'= (P_mu)'\to u'\text{ 于 }L^2V^*.
+\]
+故将 \(w=P_mu-P_nu\) 代入上式，右端趋于零。于是 \(P_mu\) 在 \(C([0,T];H)\) 中一致收敛到某个连续路径，该路径又在 \(L^2H\) 中等于 \(u\)。两个连续路径若几乎处处相同，就处处相同，因此代表唯一。对单个 \(P_mu\) 使用相同的估计，再取极限，给出陈述中的范数界。
+
+有限和的能量恒等式左端由一致收敛取极限。其右端也收敛，因为
+\[
+ \begin{aligned}
+ &\|\langle(P_mu)',P_mu\rangle-\langle u',u\rangle\|_{L^1}\\
+ &\quad\leq\|(P_mu)'-u'\|_{L^2V^*}\|P_mu\|_{L^2V}
+       +\|u'\|_{L^2V^*}\|P_mu-u\|_{L^2V}\longrightarrow0.
+ \end{aligned}
+\]
+这就证明\eqref{b2:eq:D6-energy-identity}，并说明平方范数是绝对连续函数。分别对 \(u+v\) 与 \(u-v\) 应用它，再相减除以四，得到分部积分公式。
+\end{proof}
+% 跨卷定位：b1:thm:one-dimensional-weak-ac，20.4.6。
+
+这个结果允许给能量解指定 \(u(0)\in L^2(\Omega)\)。它并没有要求每一时刻都具有有限梯度范数：空间能量只在时间上可积，初值也可以属于 \(L^2\) 而不属于 \(H_0^1\)。这恰好适合热扩散从粗糙初始温度出发的情形。
 
 \subsection{变系数抛物方程的弱形式}
 \label{b2:subsec:D20602}
 
-待撰写。
+考虑
+\begin{equation}\label{b2:eq:D6-parabolic-model}
+ \partial_tu-\operatorname{div}(A(t,x)\nabla u)
+       +b(t,x)\cdot\nabla u+c(t,x)u=f,
+ \quad u|_{\partial\Omega}=0,\quad u(0)=u_0.
+\end{equation}
+当 \(A\) 只可测时，散度应当通过空间分部积分理解：先把 \(A\nabla u\) 与测试函数的梯度配对，而不对系数作逐点求导。边界条件用 \(u(t)\in H_0^1(\Omega)\) 表示；一般开集上这是光滑紧支函数的 \(H^1\) 闭包条件。
+
+\Needspace{6\baselineskip}
+\begin{definition}[线性抛物方程的能量弱解]\label{b2:def:D6-weak-solution}
+设整数 \(d\geq1\)，\(\Omega\subset\mathbb R^d\) 为非空有界开集，\(0<T<\infty\)，\(Q=(0,T)\times\Omega\)。设实系数
+\[
+ A\in L^\infty(Q;\mathbb R^{d\times d}),\quad
+ b\in L^\infty(Q;\mathbb R^d),\quad c\in L^\infty(Q;\mathbb R)
+\]
+满足 \(\|A\|_{L^\infty}\leq\Lambda<\infty\)，以及对几乎处处 \((t,x)\in Q\) 和全部 \(\xi\in\mathbb R^d\)，
+\[
+ \xi^{\mathsf T}A(t,x)\xi\geq\lambda|\xi|^2,\qquad\lambda>0.
+\]
+令 \(V=H_0^1(\Omega;\mathbb R)\)、\(H=L^2(\Omega;\mathbb R)\)、\(V^*=H^{-1}(\Omega;\mathbb R)\)，\(V\) 取梯度范数，并定义
+\[
+ a_t(v,w)=\int_\Omega\bigl(A(t,x)\nabla v\cdot\nabla w
+                  +(b(t,x)\cdot\nabla v)w+c(t,x)vw\bigr)\,\mathrm dx.
+\]
+给定 \(f\in L^2(0,T;V^*)\) 与 \(u_0\in H\)，若 \(u\in L^2(0,T;V)\)、\(u'\in L^2(0,T;V^*)\)，其连续 \(H\) 代表满足 \(u(0)=u_0\)，并且在某个共同的时间满测集上有
+\[
+ \langle u'(t),v\rangle+a_t(u(t),v)=\langle f(t),v\rangle
+ \quad\text{对全部 }v\in V,
+\]
+就称 \(u\) 为\eqref{b2:eq:D6-parabolic-model}的能量弱解。
+\end{definition}
+
+矩阵 \(A\) 可以不对称；它的对称部分控制能量，下式中的双线性型则保留整个矩阵。令 \(B=\|b\|_\infty\)、\(C_0=\|c\|_\infty\)，利用 Poincaré 与 Cauchy--Schwarz 不等式，有
+\begin{equation}\label{b2:eq:D6-form-bounds}
+ \begin{aligned}
+ |a_t(v,w)|&\leq M\|v\|_V\|w\|_V,
+       &M&=\Lambda+BC_P+C_0C_P^2,\\
+ a_t(v,v)&\geq\frac\lambda2\|v\|_V^2-\gamma\|v\|_H^2,
+       &\gamma&=C_0+\frac{B^2}{2\lambda}.
+ \end{aligned}
+\end{equation}
+第二式的关键是
+\[
+ B\|v\|_V\|v\|_H
+ \leq\frac\lambda2\|v\|_V^2+\frac{B^2}{2\lambda}\|v\|_H^2.
+\]
+于是漂移项和可能为负的零阶项只损失一个较低阶的 \(L^2\) 控制。与\cref{b2:prop:15-garding}的椭圆估计一样，这个损失可以用时间上的指数权补偿。
+
+\ProseParagraphBreak
+
+把 \(a_t(v,w)\) 写成 \(\langle\mathcal A(t)v,w\rangle\)，得到有界算子 \(\mathcal A(t):V\to V^*\)。这些算子作用后的向量具有所需的可测性。对固定 \(v,w\)，系数可测性与 Fubini 定理使 \(t\mapsto a_t(v,w)\) 可测；取稳定投影的有限坐标便得到 \(P_m\mathcal A(t)v\) 强可测，而它们逐点在 \(V^*\) 中趋于 \(\mathcal A(t)v\)。再以简单函数逼近一般强可测的 \(u(t)\)，用 \(\|\mathcal A(t)\|_{V\to V^*}\leq M\) 控制误差，可知 \(\mathcal A(\cdot)u\in L^2(0,T;V^*)\)。方程因此可以写成这个空间中的等式
+\[
+ u'+\mathcal A(\cdot)u=f.
+\]
+对 \(V\) 的可数稠密集验证时间测试恒等式后，去掉同一个零测集，再利用型的连续性，就能得到定义中“几乎每时刻对全部 \(v\)”的表述。
 
 \subsection{能量估计与唯一性}
 \label{b2:subsec:D20603}
 
-待撰写。
+经典解的能量计算是把方程乘以 \(u\) 再积分。能量弱解没有足够的逐点导数，但\cref{b2:thm:D6-time-trace}给出完全相同的平方范数求导式，从而使这个计算仍有意义。
+
+\Needspace{6\baselineskip}
+\begin{proposition}[能量估计与数据稳定性]\label{b2:prop:D6-energy-estimate}
+设整数 \(d\geq1\)，\(\Omega\subset\mathbb R^d\) 为非空有界开集，\(0<T<\infty\)，\(Q=(0,T)\times\Omega\)。令实空间 \(V=H_0^1(\Omega)\) 取梯度范数，\(H=L^2(\Omega)\)，\(V^*=H^{-1}(\Omega)\)。设实可测系数 \(A,b,c\) 分别为 \(Q\) 上的矩阵场、向量场与标量场，满足
+\[
+ \|A\|_\infty\leq\Lambda,\quad\|b\|_\infty\leq B,
+ \quad\|c\|_\infty\leq C_0,
+ \quad\xi^{\mathsf T}A(t,x)\xi\geq\lambda|\xi|^2
+\]
+对几乎处处 \((t,x)\) 与全部 \(\xi\in\mathbb R^d\) 成立，其中 \(0<\lambda\leq\Lambda<\infty\)、\(B,C_0\geq0\)。给定 \(u_0\in H\)、\(f\in L^2(0,T;V^*)\)，设 \(u\in L^2V\)、\(u'\in L^2V^*\) 是零边界方程
+\(u'-\operatorname{div}(A\nabla u)+b\cdot\nabla u+cu=f\)
+的能量弱解，且 \(u(0)=u_0\)。记
+\[
+ \gamma=C_0+\frac{B^2}{2\lambda},\quad
+ M=\Lambda+BC_P+C_0C_P^2,\quad
+ R=\|u_0\|_H^2+\frac2\lambda\|f\|_{L^2V^*}^2.
+\]
+则
+\begin{equation}\label{b2:eq:D6-energy-bounds}
+ \begin{aligned}
+ \sup_{0\leq t\leq T}\|u(t)\|_H^2&\leq e^{2\gamma T}R,\\
+ \frac\lambda2\|u\|_{L^2V}^2
+     &\leq(1+2\gamma T e^{2\gamma T})R,\\
+ \|u'\|_{L^2V^*}^2
+     &\leq2\|f\|_{L^2V^*}^2+2M^2\|u\|_{L^2V}^2.
+ \end{aligned}
+\end{equation}
+对相同系数、两组数据 \((u_0,f)\) 与 \((\widetilde u_0,\widetilde f)\) 的两解，以上估计也适用于它们之差，把 \(R\) 换成数据差对应的表达式。因此能量弱解至多一个。
+\end{proposition}
+\begin{proof}
+在定义的共同满测集上取测试向量 \(v=u(t)\)。由时间能量恒等式和\eqref{b2:eq:D6-form-bounds}，函数 \(y(t)=\|u(t)\|_H^2\) 绝对连续，且几乎处处满足
+\[
+ \frac12y'(t)+\frac\lambda2\|u(t)\|_V^2
+ \leq\gamma y(t)+\|f(t)\|_{V^*}\|u(t)\|_V.
+\]
+对最后的乘积使用 Young 不等式，得到
+\[
+ y'(t)+\frac\lambda2\|u(t)\|_V^2
+ \leq2\gamma y(t)+\frac2\lambda\|f(t)\|_{V^*}^2.
+\]
+先丢去左边非负的梯度项，再乘以 \(e^{-2\gamma t}\) 积分，得
+\[
+ y(t)\leq e^{2\gamma t}
+ \left(y(0)+\frac2\lambda\int_0^t e^{-2\gamma s}\|f(s)\|_{V^*}^2\,\mathrm ds\right)
+ \leq e^{2\gamma T}R.
+\]
+返回含梯度项的不等式，从零到 \(T\) 积分，并丢去非负的 \(y(T)\)，就得到第二行。由方程 \(u'=f-\mathcal A(t)u\) 和型的有界性，第三行成立。
+
+两解之差满足同一系数的线性方程，初值与右端分别为数据差，因此同一估计适用。数据相同时 \(R=0\)，从而两条连续 \(H\) 轨道处处相同。
+\end{proof}
+
+如果 \(b=0\)、\(c\geq0\)，则型的下界可直接取 \(a_t(v,v)\geq\lambda\|v\|_V^2\)。零外力下，能量单调下降；而允许负的 \(c\) 时，方程包含反应增长，估计中的指数因子反映这种实际可能发生的行为。存在性不要求每个时刻都严格耗散。
 
 \subsection{Galerkin 逼近与存在性}
 \label{b2:subsec:D20604}
 
-待撰写。
+现在把未知函数限制在前 \(m\) 个空间模态中，只留下有限个随时间变化的系数。关键是让有限维近似的能量界与 \(m\) 无关，才能在模态数增加时取极限。
+
+\Needspace{6\baselineskip}
+\begin{theorem}[一般线性抛物问题的能量可解性]\label{b2:thm:D6-parabolic-existence}
+设整数 \(d\geq1\)，\(\Omega\subset\mathbb R^d\) 为非空有界开集，\(0<T<\infty\)，\(Q=(0,T)\times\Omega\)。设 \(A\in L^\infty(Q;\mathbb R^{d\times d})\)、\(b\in L^\infty(Q;\mathbb R^d)\)、\(c\in L^\infty(Q;\mathbb R)\)，并存在 \(\lambda>0\)，使
+\[
+ \xi^{\mathsf T}A(t,x)\xi\geq\lambda|\xi|^2
+ \quad\text{对几乎处处 }(t,x)\in Q\text{ 和全部 }\xi\in\mathbb R^d.
+\]
+对每个实值初始数据 \(u_0\in L^2(\Omega)\) 与
+\(f\in L^2(0,T;H^{-1}(\Omega))\)，存在唯一的零边界能量弱解
+\[
+ u\in L^2(0,T;H_0^1(\Omega))\cap C([0,T];L^2(\Omega)),
+ \qquad u'\in L^2(0,T;H^{-1}(\Omega))
+\]
+满足 \(u'-\operatorname{div}(A\nabla u)+b\cdot\nabla u+cu=f\)、\(u(0)=u_0\)。它满足\cref{b2:prop:D6-energy-estimate}的估计。
+\end{theorem}
+\begin{proof}
+令 \(V=H_0^1(\Omega)\)、\(H=L^2(\Omega)\)、\(V^*=H^{-1}(\Omega)\)，取\cref{b2:lem:D6-stable-projections}的 \(e_k\) 与 \(P_m\)。寻找
+\[
+ u_m(t)=\sum_{j=1}^m d_j(t)e_j,
+ \quad u_m(0)=P_mu_0,
+\]
+使对 \(i=1,\ldots,m\) 有
+\begin{equation}\label{b2:eq:D6-galerkin-system}
+ d_i'(t)+\sum_{j=1}^m a_t(e_j,e_i)d_j(t)
+       =\langle f(t),e_i\rangle.
+\end{equation}
+这里 \(H\) 正交归一性使时间导数项的矩阵恰为单位矩阵。
+
+先说明可测时间系数下这组常微分方程如何求解。写成 \(d'+B_m(t)d=F_m(t)\)，其中 \(B_m\in L^\infty(0,T;\mathbb R^{m\times m})\)、\(F_m\in L^2(0,T;\mathbb R^m)\)。从时间 \(s\) 的给定值出发，在长度 \(h\) 的区间上考虑
+\[
+ (\Phi z)(t)=d(s)+\int_s^t\bigl(F_m(r)-B_m(r)z(r)\bigr)\,\mathrm dr.
+\]
+这个映射把连续路径送到连续路径，且上确界范数的 Lipschitz 常数至多为 \(h\|B_m\|_\infty\)。取它小于一，压缩映射定理给出唯一不动点；有限次接续覆盖 \([0,T]\)。积分表达说明 \(d\) 绝对连续，而 \(F_m\in L^2\)、\(B_m\) 有界及 \(d\) 连续有界进一步给出 \(d'\in L^2\)。
+
+将第 \(i\) 个方程乘以 \(d_i(t)\) 并求和，得到
+\[
+ \frac12\frac{\mathrm d}{\mathrm dt}\|u_m(t)\|_H^2
+       +a_t(u_m(t),u_m(t))=\langle f(t),u_m(t)\rangle.
+\]
+前一命题的能量计算逐项适用，且 \(\|P_mu_0\|_H\leq\|u_0\|_H\)，故 \(u_m\) 在 \(L^2V\) 和 \(L^\infty H\) 中一致有界。为了控制时间导数，对任意 \(v\in V\) 使用有限维方程与投影配对关系，得
+\[
+ \langle u_m',v\rangle
+ =\langle f,P_mv\rangle-a_t(u_m,P_mv).
+\]
+因 \(\|P_mv\|_V\leq\|v\|_V\)，有
+\[
+ \|u_m'(t)\|_{V^*}\leq\|f(t)\|_{V^*}+M\|u_m(t)\|_V.
+\]
+因此 \((u_m)\) 在 Hilbert 空间 \(W(0,T)\) 中一致有界。
+
+第一卷定理 9.4.7 给出的自反空间有界序列的弱收敛子列性质，可用于这个 Hilbert 空间。取子列，使 \(u_m\rightharpoonup u\) 于 \(W(0,T)\)；于是 \(u_m\rightharpoonup u\) 于 \(L^2V\)，并且 \(u_m'\rightharpoonup u'\) 于 \(L^2V^*\)。固定 \(i\)，当 \(m\geq i\) 时，\eqref{b2:eq:D6-galerkin-system}对测试向量 \(e_i\) 成立。乘以任意 \(\eta\in C_c^\infty(0,T)\) 并积分，便可取弱极限。具体地，
+\[
+ w\longmapsto\int_0^T\eta(t)a_t(w(t),e_i)\,\mathrm dt
+\]
+是 \(L^2V\) 上的有界线性泛函，范数至多为 \(M\|e_i\|_V\|\eta\|_2\)；时间导数项的配对同样是有界线性泛函。因而极限满足
+\[
+ \int_0^T\eta(t)\bigl(\langle u'(t),e_i\rangle
+       +a_t(u(t),e_i)-\langle f(t),e_i\rangle\bigr)\,\mathrm dt=0.
+\]
+对可数个 \(i\) 同时去掉零测集，先扩展到它们的有限线性组合，再利用这组向量在 \(V\) 中稠密及型的有界性，就得到全部空间测试函数的弱方程。
+
+最后核对初值。\cref{b2:thm:D6-time-trace}说明取值映射 \(w\mapsto w(0)\) 从 \(W(0,T)\) 到 \(H\) 有界且线性，因而保持弱收敛。故 \(u_m(0)\rightharpoonup u(0)\) 于 \(H\)。另一方面 \(u_m(0)=P_mu_0\to u_0\) 强收敛于 \(H\)，所以 \(u(0)=u_0\)。存在性得证，能量估计和唯一性由前一命题给出。
+\end{proof}
+% 跨卷定位：b1:thm:reflexive-weak-subsequence，9.4.7。
+
+有限维方程始终按空间能量选取测试向量。它们既控制梯度，又控制时间弱导数；后者再通过时间迹定理保留初值。取极限时，系数虽然仅可测，却是预先给定的，因而与未知函数的配对仍是连续线性的。这是线性变系数问题中 Galerkin 方法特别直接的原因。
 
 \subsection{内部、边界正则性与半群表示的边界}
 \label{b2:subsec:D20605}
 
-待撰写。
+能量可解性与经典正则性回答不同的问题。前者保证从给定初值出发存在唯一的有限能量轨道；后者要进一步追问空间导数是否连续、时间导数能否逐点求得，以及边界附近是否仍有同样的控制。
+
+\ProseParagraphBreak
+
+有界可测系数已经可能使梯度跳跃。取 \(\Omega=(0,1)\)，令
+\[
+ a(x)=\begin{cases}1,&0<x<1/2,\\2,&1/2<x<1,\end{cases}
+ \qquad
+ w(x)=\int_0^x\frac{5/12-s}{a(s)}\,\mathrm ds.
+\]
+直接积分得 \(w(0)=w(1)=0\)，且 \(w\in H_0^1(0,1)\)。通量 \(a(x)w'(x)=5/12-x\) 连续，所以对每个紧支光滑测试函数分部积分，有 \(-(aw')'=1\) 的分布恒等式。但界面两侧的导数分别为
+\[
+ w'(1/2-)=-\frac1{12},\qquad w'(1/2+)=-\frac1{24}.
+\]
+故 \(u(t,x)=w(x)\) 是初值 \(w\)、外力 \(1\) 的定常抛物能量解，却不是空间 \(C^1\) 函数。时间演化在这个例子中没有消除由介质界面造成的导数跳跃。
+
+\ProseParagraphBreak
+
+即使系数恒定，零时正则性也受初值限制。对 Dirichlet 热方程，使用\cref{b2:lem:D6-stable-projections}的弱特征基可写
+\[
+ u(t)=\sum_{k=1}^\infty e^{-\lambda_kt}(u_0,e_k)_H e_k.
+\]
+当 \(t>0\) 时，\(\sup_{r\geq0}r e^{-2rt}<\infty\)，所以 \(u(t)\in V\)；但若 \(u_0\in H\setminus V\)，单调收敛给出
+\[
+ \|u(t)\|_V^2
+ =\sum_{k=1}^\infty\lambda_ke^{-2\lambda_kt}|(u_0,e_k)_H|^2
+ \longrightarrow\infty\quad(t\downarrow0).
+\]
+与此同时，\(u(t)\to u_0\) 仍在 \(H\) 中成立，且 \(\int_0^T\|u(t)\|_V^2\,\mathrm dt\leq\frac12\|u_0\|_H^2\)。有限的时间积分与零时梯度范数发散可以同时发生。
+
+\ProseParagraphBreak
+
+局部正则估计通常在抛物柱
+\[
+ Q_r(t_0,x_0)=(t_0-r^2,t_0)\times B_r(x_0)
+\]
+上比较内外两个尺度。空间半径缩小为 \(r\) 时，时间长度应缩小为 \(r^2\)，因为 \(\partial_t\) 与二阶空间导数在这种缩放下具有相同阶数。若要取得经典空间二阶导数或相应 Hölder 控制，还须对系数和外力施加与估计类型匹配的正则条件；边界估计还涉及边界的光滑性与边界数据。在零时与空间边界相交的位置，初值和边界值的相容性也会影响连续导数能否延伸到角点。一般能量定理只要求有界开集与可测系数，故其结论恰当地落在上述积分空间中。
+
+\ProseParagraphBreak
+
+系数不随时间变化时，可以把能量解与半群联系起来。为看清公式，取非空有界开集 \(\Omega\subset\mathbb R^d\)、实对称矩阵场 \(A\in L^\infty(\Omega;\mathbb R^{d\times d})\)，假设 \(\xi^{\mathsf T}A(x)\xi\geq\lambda|\xi|^2\)、\(\lambda>0\)，并取 \(c\in L^\infty(\Omega;\mathbb R)\)、\(c\geq0\)、\(b=0\)。在 \(V=H_0^1(\Omega;\mathbb R)\) 上令
+\[
+ a(v,w)=\int_\Omega(A\nabla v\cdot\nabla w+cvw).
+\]
+其 \(H=L^2(\Omega;\mathbb R)\) 实现定义为
+\[
+ \begin{aligned}
+ D(L)&=\{v\in V:\text{存在 }h\in H\text{ 使 }a(v,w)=(h,w)_H
+                         \text{ 对全部 }w\in V\},\\
+ Lv&=h.
+ \end{aligned}
+\]
+因 \(V\) 在 \(H\) 中稠密，\(h\) 唯一。这一定义同时保留了微分表达式和零边界条件。
+
+\ProseParagraphBreak
+
+以 \(a\) 代替梯度内积，\cref{b2:lem:D6-stable-projections}的 Riesz 与紧嵌入构造给出 \(H\) 正交归一基 \(\phi_k\) 及 \(\nu_k>0\)、\(\nu_k\to\infty\)，使
+\[
+ a(\phi_k,v)=\nu_k(\phi_k,v)_H,\qquad
+ a(v,v)=\sum_k\nu_k|(v,\phi_k)_H|^2.
+\]
+这里 \(a\) 是与梯度内积等价的 Hilbert 内积，所以相同构造的条件均成立。由定义还可直接识别
+\[
+ D(L)=\left\{v\in H:\sum_k\nu_k^2|(v,\phi_k)_H|^2<\infty\right\},
+ \quad Lv=\sum_k\nu_k(v,\phi_k)_H\phi_k.
+\]
+充分性来自按 \(a\) 范数收敛的展开与配对；必要性来自 \((Lv,\phi_k)_H=\nu_k(v,\phi_k)_H\) 及 Parseval 等式。因此
+\[
+ S(t)h=\sum_k e^{-t\nu_k}(h,\phi_k)_H\phi_k
+\]
+给出 \(H\) 上的压缩强连续半群，生成元为 \(-L\)：半群律逐项成立，强连续性由可求和的 \(|(h,\phi_k)_H|^2\) 支配，差商的极限及其必要条件则由上述定义域级数判断。
+
+\ProseParagraphBreak
+
+若 \(u_0\in H\)、\(f\in L^2(0,T;H)\)，其温和公式为
+\[
+ u(t)=S(t)u_0+\int_0^t S(t-s)f(s)\,\mathrm ds.
+\]
+取 \(\phi_k\) 坐标，得到
+\[
+ u_k(t)=e^{-\nu_kt}u_{0,k}
+       +\int_0^t e^{-\nu_k(t-s)}f_k(s)\,\mathrm ds,
+ \qquad u_k'+\nu_ku_k=f_k.
+\]
+这些有限坐标和满足前述能量估计。对任意两个截断之差应用同一估计，右端仅含初值和外力的尾项，故它们在 \(W(0,T)\) 与 \(C([0,T];H)\) 中为 Cauchy 列；这里 \(H\subset V^*\) 连续。其极限满足弱方程，而逐坐标积分又给出温和公式，所以两个解法产生同一个解。当外力只有 \(V^*\) 正则性时，能量定理仍然适用，但上述强积分中的 \(S(t-s)f(s)\) 需要另行定义到对偶空间的延拓，不能直接按 \(H\) 上的算子作用解释。
+
+\ProseParagraphBreak
+
+如果系数随时间变化，演化一般要记住起始时刻。最简单的例子是 \(A(t,x)=\alpha(t)I\)、\(b=c=0\)，其中 \(\alpha\) 可测且 \(0<a_0\leq\alpha(t)\leq a_1<\infty\)。对 Dirichlet Laplace 的弱特征基，
+\[
+ U(t,s)e_k=\exp\left(-\lambda_k\int_s^t\alpha(r)\,\mathrm dr\right)e_k,
+ \qquad 0\leq s\leq t\leq T.
+\]
+它满足 \(U(t,r)U(r,s)=U(t,s)\)，但扩散量是区间 \([s,t]\) 上 \(\alpha\) 的积分，通常不只取决于长度 \(t-s\)。这种带两个时间参数的\term[yanhua-zu]{演化族}[evolution family]更适合非自治方程。能量方法直接处理时变双线性型，因此也容纳这种演化。
+
+进一步的抽象演化问题、单调性方法和抛物能量空间，可参阅 Showalter 的《Monotone Operators in Banach Space and Nonlinear Partial Differential Equations》\cite{Showalter1997Monotone}。

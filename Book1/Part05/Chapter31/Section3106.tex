@@ -2,24 +2,350 @@
 \section{一致可积性与积分收敛}
 \label{b1:sec:3106}
 
-待撰写。
+上一节得到的极限仍留下两个问题：何时能让极限进入积分，
+又何时能把每个有限时刻的鞅值解释为对最终值的条件平均？
+这两件事由同一个条件控制。
+\secref{b1:sec:0505}的一致可积性排除积分质量在小概率的大值事件上集中，
+而鞅结构把 \(L^1\) 收敛进一步转成终值表示。
+本节先证明这个联系，再用它识别随信息增加而形成的条件平均列的极限。
 
 \subsection{一致可积鞅}
 \label{b1:subsec:310601}
 
-待撰写。
+在概率空间 \((\Omega,\mathcal F,\mathbb P)\) 上，实值或复值可积随机变量族
+\(\mathcal K\) 一致可积，指
+\[
+ \lim_{R\to\infty}\sup_{X\in\mathcal K}
+       \mathbb E\bigl[|X|\cdot\mathbf1_{\{|X|>R\}}\bigr]=0.
+\]
+这就是\cref{b1:def:uniform-integrability}在总质量为一的空间上的定义。
+称一列鞅一致可积，是要求它的全体有限时刻值构成这样一个族。
+阈值 \(R\) 必须对所有时刻同时有效；对每个固定时刻分别取一个阈值，只是通常的可积性。
+
+\ProseParagraphBreak
+
+因为全空间概率有限，\cref{b1:prop:uniform-integrability-criterion}说明，
+一致可积性等价于一阶矩一致有界，加上积分对小概率事件的一致绝对连续性。
+具体说，后一条件要求：给定 \(\varepsilon>0\)，存在 \(\delta>0\)，
+使 \(\mathbb P(A)<\delta\) 时，\(\sup_{X\in\mathcal K}\mathbb E[|X|\cdot\mathbf1_A]<\varepsilon\)。
+因此，\eqref{b1:eq:dyadic-spike-martingale-31}的失败正好落在这个缺失的条件上。
+
+\begin{lemma}[条件平均的一致可积性]
+\label{b1:lem:conditional-expectations-ui-31}
+设 \((\Omega,\mathcal F,\mathbb P)\) 为概率空间，\(Y\in L^1(\mathbb P)\)
+为实值或复值随机变量。让 \(\mathcal G\) 遍历 \(\mathcal F\) 的任意一族子
+\(\sigma\)-代数，则所有 \(\mathbb E[Y\mid\mathcal G]\) 构成一致可积族。
+更精确地，对每个 \(K>0\)，令 \(Y_{\mathcal G}=\mathbb E[Y\mid\mathcal G]\)，则
+\begin{equation}
+ \mathbb E\bigl[|Y_{\mathcal G}|\cdot
+                 \mathbf1_{\{|Y_{\mathcal G}|>K\}}\bigr]
+ \leq2\mathbb E\bigl[|Y|\cdot\mathbf1_{\{|Y|>K/2\}}\bigr].
+ \label{b1:eq:conditional-ui-tail-31}
+\end{equation}
+\end{lemma}
+\begin{proof}
+由条件期望的绝对值估计和正性，
+\[
+ |Y_{\mathcal G}|
+ \leq\mathbb E[|Y|\mid\mathcal G]
+ \leq K/2+\mathbb E\bigl[|Y|\cdot\mathbf1_{\{|Y|>K/2\}}\mid\mathcal G\bigr].
+\]
+集合 \(A=\{|Y_{\mathcal G}|>K\}\) 属于 \(\mathcal G\)。在这个集合上，
+\(K/2<|Y_{\mathcal G}|/2\)，故
+\[
+ |Y_{\mathcal G}|\cdot\mathbf1_A
+ \leq2\mathbf1_A\cdot
+ \mathbb E\bigl[|Y|\cdot\mathbf1_{\{|Y|>K/2\}}\mid\mathcal G\bigr].
+\]
+对 \(A\) 使用条件期望的积分恒等式，再把非负被积函数的积分扩大到全空间，
+就得到\eqref{b1:eq:conditional-ui-tail-31}。
+右侧与 \(\mathcal G\) 无关，并由 \(Y\in L^1\) 在 \(K\to\infty\) 时趋零。
+\end{proof}
+
+这个结论不要求子 \(\sigma\)-代数之间相互包含。
+对固定的一个可积变量取任何信息下的平均，都不会产生无法统一控制的积分尖峰。
+注意这里固定的是 \(Y\)；若把 \(Y\) 也任意改变，只有 \(L^1\) 有界性就不足以得到结论。
+
+\begin{proposition}[较高阶矩给出一致可积性]
+\label{b1:prop:lp-ui-31}
+设 \((\Omega,\mathcal F,\mathbb P)\) 为概率空间，\(\mathcal K\) 为其中实值或复值随机变量族。
+若某个 \(1<p<\infty\) 满足 \(\sup_{X\in\mathcal K}\mathbb E|X|^p=C<\infty\)，
+则 \(\mathcal K\subset L^1\) 且一致可积，并有
+\[
+ \sup_{X\in\mathcal K}\mathbb E\bigl[|X|\cdot\mathbf1_{\{|X|>R\}}\bigr]
+ \leq C R^{1-p},\quad R>0.
+\]
+若全族的 \(L^\infty\) 范数有共同有限上界，也一致可积。
+\end{proposition}
+\begin{proof}
+由概率空间上的 Hölder 不等式，\(\|X\|_1\leq\|X\|_p\)。
+在 \(\{|X|>R\}\) 上，\(|X|\leq R^{1-p}|X|^p\)，积分即得估计，
+且 \(1-p<0\)。本质有界的情形在 \(R\) 超过共同上界时，所有尾部积分均为零。
+\end{proof}
 
 \subsection{闭鞅与终值表示}
 \label{b1:subsec:310602}
 
-待撰写。
+有限时间区间上的鞅总满足 \(M_n=\mathbb E[M_N\mid\mathcal F_n]\)，\(n\leq N\)。
+在无限时间区间上，是否仍能找到一个可积的共同终值？
+\eqref{b1:eq:dyadic-spike-martingale-31}已经说明答案并非总是肯定的。
+下面给出准确判据。
+
+\begin{definition}[闭鞅]
+\label{b1:def:closed-martingale-31}
+设 \((\Omega,\mathcal F,\mathbb P)\) 为概率空间，\((\mathcal F_n)_{n\geq0}\)
+为递增子 \(\sigma\)-代数列，\((M_n)\) 为适应于该滤过的实鞅或复鞅。
+若存在 \(Y\in L^1(\Omega,\mathcal F,\mathbb P)\)，使每个 \(n\geq0\) 都满足
+\[
+ M_n=\mathbb E[Y\mid\mathcal F_n]\quad\text{几乎必然},
+\]
+就称 \((M_n)\) 是\term[biyang]{闭鞅}[closed martingale]，或称它由 \(Y\) 闭合。
+\end{definition}
+
+闭合变量 \(Y\) 不要求已经对 \(\mathcal F_\infty=\sigma(\bigcup_n\mathcal F_n)\) 可测。
+例如滤过始终只有平凡信息，则 \(M_n=\mathbb E Y\) 对所有 \(n\) 成立，
+而 \(Y\) 可以是任何具有该均值的可积变量。因此共同终值表示中的 \(Y\) 未必唯一。
+真正由这一滤过看见的终值将在下一小节识别。
+
+\begin{theorem}[一致可积鞅与终值表示]
+\label{b1:thm:closed-martingale-31}
+设 \((\Omega,\mathcal F,\mathbb P)\) 为概率空间，\((\mathcal F_n)_{n\geq0}\)
+为递增子 \(\sigma\)-代数列，\((M_n)\) 为适应于该滤过的实鞅或复鞅。
+下列三项等价：
+\begin{equivalences}
+ \item\label{b1:item:closed-ui-31}\(\{M_n:n\geq0\}\) 一致可积。
+ \item\label{b1:item:closed-l1-31}存在 \(M_\infty\in L^1(\mathbb P)\)，使 \(M_n\to M_\infty\) 于 \(L^1\)。
+ \item\label{b1:item:closed-representation-31}\((M_n)\) 是闭鞅。
+\end{equivalences}
+这些条件成立时，\(M_n\) 还几乎必然收敛于 \(M_\infty\)，
+可取 \(M_\infty\) 对 \(\mathcal F_\infty=\sigma(\bigcup_n\mathcal F_n)\) 可测，且
+\begin{equation}
+ M_n=\mathbb E[M_\infty\mid\mathcal F_n],\quad n\geq0.
+ \label{b1:eq:martingale-terminal-representation-31}
+\end{equation}
+特别地，\(\mathbb E M_\infty=\mathbb E M_0\)。
+\end{theorem}
+\begin{proof}
+先设\itemref{b1:item:closed-ui-31}成立。概率空间上的一致可积性给出
+\(\sup_n\mathbb E|M_n|<\infty\)，由\cref{b1:cor:martingale-as-convergence-31}，
+存在可积的几乎必然极限 \(M_\infty\)。按有限极限存在的集合取代表，
+可以使它 \(\mathcal F_\infty\)-可测。
+有限测度空间上几乎处处收敛推出依测度收敛，因而\cref{b1:thm:vitali-convergence}
+适用：全列一致可积，且依概率趋于 \(M_\infty\)，所以 \(\|M_n-M_\infty\|_1\to0\)。
+这证明\itemref{b1:item:closed-l1-31}。
+
+现设\itemref{b1:item:closed-l1-31}成立。固定 \(n\) 及 \(A\in\mathcal F_n\)。
+对每个 \(m\geq n\)，鞅的多步条件平均关系给出
+\[
+ \mathbb E[M_m\cdot\mathbf1_A]=\mathbb E[M_n\cdot\mathbf1_A].
+\]
+左侧与 \(\mathbb E[M_\infty\cdot\mathbf1_A]\) 的差的绝对值不超过
+\(\|M_m-M_\infty\|_1\)，因此可以令 \(m\to\infty\)。
+又因 \(M_n\) 是 \(\mathcal F_n\)-可测的可积变量，条件期望的定义和唯一性便给出
+\eqref{b1:eq:martingale-terminal-representation-31}。于是鞅由 \(M_\infty\) 闭合，得到\itemref{b1:item:closed-representation-31}。
+
+最后，若\itemref{b1:item:closed-representation-31}成立，写
+\(M_n=\mathbb E[Y\mid\mathcal F_n]\)，其中 \(Y\in L^1\)。
+\cref{b1:lem:conditional-expectations-ui-31}直接给出\itemref{b1:item:closed-ui-31}。
+于是也得到前面证明的几乎必然极限；它与原有 \(L^1\) 极限相等几乎必然，
+因为 \(L^1\) 收敛推出依概率收敛，而依概率极限唯一。
+取 \(A=\Omega\)，或直接在 \(L^1\) 极限中取期望，即得期望保持。
+\end{proof}
+
+Fremlin 的《Measure Theory》\cite[275H]{Fremlin2016Measure}
+还把终值的绝对值积分与有限时刻积分的极限相等列作等价条件。
+本书采用 \(L^1\) 收敛表述，因为它直接给出上面逐事件传递积分恒等式所需的误差估计。
+% 实读：chap27 摘本物理 pp.52--53，275H陈述及证明。
+
+\begin{corollary}[一致高阶矩下的积分收敛]
+\label{b1:cor:lp-martingale-convergence-31}
+设 \((M_n)_{n\geq0}\) 为概率空间 \((\Omega,\mathcal F,\mathbb P)\) 上
+适应于递增滤过 \((\mathcal F_n)\) 的实鞅或复鞅。
+若 \(1<p<\infty\) 且 \(\sup_n\|M_n\|_p<\infty\)，则有
+\(M_\infty\in L^p\)，使 \(M_n\to M_\infty\) 几乎必然且于 \(L^p\)。
+若 \(\sup_n\|M_n\|_\infty<\infty\)，则上述结论对每个有限 \(p\geq1\) 成立，
+但不保证 \(L^\infty\) 收敛。
+\end{corollary}
+\begin{proof}
+由\cref{b1:prop:lp-ui-31}及上一条定理，先得到几乎必然和 \(L^1\) 收敛。
+Fatou 引理给出 \(M_\infty\in L^p\)。为了提升到 \(L^p\)，
+还需要对 \(|M_n|^p\) 的积分控制，不能仅用其积分有界代替一致可积性。
+对非负下鞅 \(|M_n|\) 使用\cref{b1:thm:doob-strong-31}，得
+\[
+ \mathbb E\max_{0\leq k\leq N}|M_k|^p
+ \leq\left(\frac p{p-1}\right)^p\sup_n\mathbb E|M_n|^p.
+\]
+由单调收敛，\(M^*=\sup_{n\geq0}|M_n|\) 属于 \(L^p\)。
+几乎处处又有 \(|M_\infty|\leq M^*\)，所以
+\[
+ |M_n-M_\infty|^p\leq 2^p(M^*)^p.
+\]
+右侧为与 \(n\) 无关的可积控制，控制收敛定理给出 \(L^p\) 收敛。
+本质一致有界时，先取全部时刻例外零集的可数并；
+在其补集上全列及极限都被同一个常数控制。
+再对任意有限 \(p\) 应用控制收敛即可。
+\end{proof}
 
 \subsection{条件平均列的收敛}
 \label{b1:subsec:310603}
 
-待撰写。
+设对同一个可积变量 \(Y\) 的信息逐步增加。
+塔性质保证 \(\mathbb E[Y\mid\mathcal F_n]\) 构成鞅，上一条定理保证它有积分极限。
+还须证明这个极限究竟是什么。
+所有有限时刻能看见的事件的并一般不是 \(\sigma\)-代数；
+因此从每个 \(\mathcal F_n\) 上的积分恒等式走到生成的 \(\mathcal F_\infty\)，需要一次明确的测度论延伸。
+
+\begin{theorem}[Lévy 向上收敛]
+\label{b1:thm:levy-upward-31}
+设 \((\Omega,\mathcal F,\mathbb P)\) 为概率空间，\((\mathcal F_n)_{n\geq0}\)
+为递增子 \(\sigma\)-代数列，并令
+\(\mathcal F_\infty=\sigma(\bigcup_{n\geq0}\mathcal F_n)\)。
+对每个实值或复值 \(Y\in L^1(\mathbb P)\)，都有
+\[
+ \mathbb E[Y\mid\mathcal F_n]
+ \longrightarrow\mathbb E[Y\mid\mathcal F_\infty]
+ \quad\text{几乎必然且于 }L^1.
+\]
+若 \(Y\) 有 \(\mathcal F_\infty\)-可测代表，极限就是 \(Y\)。
+\end{theorem}
+\begin{proof}
+令 \(M_n=\mathbb E[Y\mid\mathcal F_n]\)。塔性质给出鞅关系，
+而\cref{b1:lem:conditional-expectations-ui-31}给出一致可积性。
+由\cref{b1:thm:closed-martingale-31}，存在
+\(\mathcal F_\infty\)-可测的 \(M_\infty\in L^1\)，且 \(M_n\to M_\infty\) 几乎必然及于 \(L^1\)。
+对 \(A\in\bigcup_n\mathcal F_n\)，可以选 \(j\) 使 \(A\in\mathcal F_j\)。
+于是对所有 \(n\geq j\)，\(\mathbb E[M_n\cdot\mathbf1_A]=\mathbb E[Y\cdot\mathbf1_A]\)，
+令 \(n\to\infty\) 得到相同的 \(M_\infty\) 积分恒等式。
+
+记 \(\mathcal A_0=\bigcup_n\mathcal F_n\)。由于子代数递增，
+任意有限多个 \(\mathcal A_0\) 中的集合同时属于某个 \(\mathcal F_j\)，
+所以 \(\mathcal A_0\) 含 \(\Omega\) 且对有限交封闭。
+再令
+\[
+ \mathcal L=\{\,A\in\mathcal F_\infty:
+       \mathbb E[M_\infty\cdot\mathbf1_A]=\mathbb E[Y\cdot\mathbf1_A]\,\}.
+\]
+全空间属于 \(\mathcal L\)；从全空间积分减去 \(A\) 上的积分，说明它对取补封闭。
+若 \(A_k\in\mathcal L\) 两两不交，则对前 \(m\) 个集合相加后令 \(m\to\infty\)。
+被积函数受 \(|M_\infty|+|Y|\) 控制，故控制收敛保证并集也属于 \(\mathcal L\)。
+因此 \(\mathcal L\) 是包含 \(\mathcal A_0\) 的 Dynkin \(\lambda\)-系统。
+\cref{b1:thm:pi-lambda}给出 \(\mathcal L=\mathcal F_\infty\)。
+
+此时 \(M_\infty\) 对 \(\mathcal F_\infty\) 可测、可积，
+并在该子代数的每个事件上保持 \(Y\) 的积分，故由条件期望的唯一性，
+\(M_\infty=\mathbb E[Y\mid\mathcal F_\infty]\)。
+若 \(Y\) 有此子代数的可测代表，条件期望就是 \(Y\) 本身。
+\end{proof}
+
+这一\term[levy-xiangshang-shoulian-dingli]{Lévy 向上收敛定理}[Lévy's upward convergence theorem]
+把“信息最终达到什么程度”精确表示为生成的 \(\sigma\)-代数。
+这里的“向上”指信息递增，不指条件平均的数值单调。
+对应的极限识别可对照 Fremlin 的《Measure Theory》\cite[275I]{Fremlin2016Measure}。
+% 实读：chap27 摘本物理 p.53 的275I；不把后继275K反向鞅纳入本节已证范围。
+
+\ProseParagraphBreak
+
+再看区间上的二进信息。仍令 \(\mathcal D_n\) 由长度 \(2^{-n}\) 的半开区间
+\(I_{n,j}\subset[0,1)\) 生成。对任意 Borel 可测的 \(f\in L^1([0,1))\)，令
+\[
+ A_nf(x)=2^n\int_{I_{n,j}}f(t)\,\mathrm dt\quad(x\in I_{n,j}).
+\]
+在每个分割原子上的积分保持，说明 \(A_nf=\mathbb E[f\mid\mathcal D_n]\)。
+所有二进区间生成 Borel \(\sigma\)-代数：它们是 Borel 集；
+反过来，每个相对开集都可写成包含于其中的二进区间的并，
+因为包含某点的区间直径趋零，而且全部这样的区间只有可数多个。
+故上一条定理给出
+\[
+ A_nf\longrightarrow f\quad\text{几乎处处且于 }L^1([0,1)).
+\]
+若 \(f\) 只是 Lebesgue 可测，由\cref{b1:thm:lebesgue-borel-representative}
+先取一个与它几乎处处相等的 Borel 代表，
+所得积分和结论不变。这里使用的是越来越细的平均，并不要求 \(f\) 处处连续。
+
+\ProseParagraphBreak
+
+例如 \(f(x)=x\) 时，\(A_nf\) 在每个区间上等于其中点，
+所以 \(|A_nf(x)-x|\leq2^{-n-1}\)，甚至一致收敛。
+对 \(f=\mathbf1_{[0,1/3)}\)，只有跨过 \(1/3\) 的那个区间需要取非平凡平均，
+其余区间上已经准确恢复 \(f\)。跨界区间内的平均值在 \(1/3\) 与 \(2/3\) 之间交替，
+因此 \(\|A_nf-f\|_\infty=2/3\) 对每个 \(n\geq0\) 成立，
+尽管它仍几乎处处及于每个有限 \(L^p\) 空间收敛。
+这是上一条推论中 \(L^\infty\) 结论不能补上的具体原因。
 
 \subsection{非一致可积模型与失效现象}
 \label{b1:subsec:310604}
 
-待撰写。
+一致可积性并非一个仅在证明中使用的技术补充，它决定能否在极限中保留条件平均关系。
+对\eqref{b1:eq:dyadic-spike-martingale-31}，固定任意 \(K>0\)，再选 \(n\) 使 \(2^n>K\)，则
+\[
+ \mathbb E\bigl[M_n\cdot\mathbf1_{\{M_n>K\}}\bigr]=1.
+\]
+所以尾部积分的上确界始终为 \(1\)，并不趋零。
+对每个有限时刻 \(N\)，前 \(N\) 项都由 \(M_N\) 闭合；
+但随着 \(N\) 改变，这些闭合变量没有一个共同的可积终值可以替代。
+若有这样的终值，\cref{b1:thm:closed-martingale-31}就会迫使全列一致可积，与上面的计算矛盾。
+
+\ProseParagraphBreak
+
+对非负鞅，还能用期望是否在极限中损失来判断。
+
+\begin{proposition}[非负鞅的期望保持判据]
+\label{b1:prop:nonnegative-martingale-ui-31}
+设 \((\Omega,\mathcal F,\mathbb P)\) 为概率空间，\((M_n)_{n\geq0}\)
+为其中适应于递增滤过的非负实鞅，\(M_\infty\) 为其几乎必然极限。
+则 \(M_\infty\in L^1\)、\(\mathbb E M_\infty\leq\mathbb E M_0\)，并且
+\[
+ \{M_n:n\geq0\}\text{ 一致可积}
+ \quad\Longleftrightarrow\quad
+ \mathbb E M_\infty=\mathbb E M_0.
+\]
+\end{proposition}
+\begin{proof}
+非负鞅的一阶矩恒等于 \(\mathbb E M_0\)，故\cref{b1:cor:martingale-as-convergence-31}
+保证存在可积的几乎必然极限，Fatou 引理给出期望不等式。
+一致可积性推出 \(L^1\) 收敛，因而推出期望相等。
+反过来，若期望相等，由非负性，
+\[
+ |M_n-M_\infty|=M_n+M_\infty-2\min(M_n,M_\infty).
+\]
+最后一项几乎必然趋于 \(M_\infty\)，并受可积变量 \(M_\infty\) 控制，
+所以控制收敛给出
+\[
+ \mathbb E|M_n-M_\infty|
+ \longrightarrow\mathbb E M_0-\mathbb E M_\infty=0.
+\]
+再用\cref{b1:thm:closed-martingale-31}即得一致可积性。
+\end{proof}
+
+这条判据的非负性不能删去。
+将\eqref{b1:eq:dyadic-spike-martingale-31}的概率空间扩成
+\([0,1)\times\{-1,1\}\)，配备乘积 Borel \(\sigma\)-代数和
+长度测度与等概率符号分布的乘积测度。
+取滤过 \(\mathcal D_n\otimes2^{\{-1,1\}}\)，即从时刻零就揭示符号坐标
+\(\varepsilon\)，而第一个坐标仍只揭示 \(n\) 级二进信息。
+过程 \(N_n(x,\varepsilon)=\varepsilon M_n(x)\) 仍是鞅：
+在每个符号纤维的二进分块上，条件平均关系与原来相同。
+它几乎必然趋于零，且每个 \(\mathbb E N_n=0=\mathbb E N_\infty\)，
+但 \(\mathbb E|N_n|=1\)，所以不于 \(L^1\) 收敛，也不一致可积。
+有符号的期望可能因正负部分抵消而保持，必须控制绝对值的积分质量。
+
+\ProseParagraphBreak
+
+本章中三种常用条件的后果列在\cref{b1:tab:martingale-convergence-31}。
+表中假定过程始终为同一概率空间、同一递增滤过下的离散鞅；
+孤立地把某个积分条件加在任意函数列上，并不能得到相同结论。
+
+\begin{table}[htbp]
+\centering
+\caption{离散鞅的积分条件与收敛结论}
+\label{b1:tab:martingale-convergence-31}
+\begin{tabular}{p{0.34\textwidth}p{0.56\textwidth}}
+\toprule
+条件 & 保证的结论 \\
+\midrule
+\(\sup_n\mathbb E|M_n|<\infty\) & 几乎必然收敛，可积极限；不保证 \(L^1\) 收敛或终值表示。 \\
+\(\{M_n\}\) 一致可积 & 几乎必然及 \(L^1\) 收敛，并有 \(M_n=\mathbb E[M_\infty\mid\mathcal F_n]\)。 \\
+\(\sup_n\mathbb E|M_n|^p<\infty\)，\(1<p<\infty\) & 几乎必然及 \(L^p\) 收敛；最大变量 \(\sup_n|M_n|\) 属于 \(L^p\)。 \\
+\bottomrule
+\end{tabular}
+\end{table}

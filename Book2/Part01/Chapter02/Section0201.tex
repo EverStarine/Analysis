@@ -2,16 +2,30 @@
 \section{初值问题与局部存在唯一}
 \label{b2:sec:ode-local-existence}
 
-先考虑不显含时间的方程 \(X'=b(X)\)。指定 \(X(0)=a\) 后，问题是寻找经过 \(a\) 的轨道，并判断该轨道在什么范围内唯一。本节已写的存在唯一性定理要求 \(b\in C^1\)；一般非自治、对状态局部一致 Lipschitz 的版本留在节末待写。
+微分方程规定的是瞬时速度，而我们要寻找的是一整条运动轨道。即使每一点的速度已经给定，也还要回答三个不同的问题：经过指定点的轨道是否存在，是否只有一条，以及它至少能走多长时间。本节用积分方程构造短时间解，并把保证存在的速度界与保证唯一的 Lipschitz 界区分开来。
 
 \subsection{积分方程与 Gronwall 估计}
 \label{b2:subsec:ode-integral-gronwall}
 
-对连续的 \(b\)，一个 \(C^1\) 函数满足 \(X'=b(X)\)、\(X(0)=a\)，等价于满足
+\begin{definition}\label{b2:def:ode-initial-value}
+设 \(d\geq1\)，\(\Omega\subset\mathbb R\times\mathbb R^d\) 为开集，\(f\colon\Omega\to\mathbb R^d\) 连续，\((t_0,a)\in\Omega\)。寻找满足
 \[
- X(t)=a+\int_0^t b\bigl(X(s)\bigr)\,\mathrm ds.
+ X'(t)=f(t,X(t)),\quad X(t_0)=a
 \]
-积分方程使逐次逼近成为可能。比较两条曲线时，还会出现被积函数含未知差值的不等式，下面的\term[gronwall-budengshi]{Gronwall 不等式}[Gronwall inequality]给出所需的基本控制。
+的函数，称为一个初值问题。它在含 \(t_0\) 的非退化区间 \(I\) 上的解，是一个 \(C^1\) 映射 \(X\colon I\to\mathbb R^d\)，要求 \((t,X(t))\in\Omega\)，并逐点满足上述方程；若 \(I\) 含有端点，在端点采用单侧导数。若 \(f(t,x)=b(x)\) 不显含 \(t\)，则方程称为\term[zizhi-fangcheng]{自治方程}[autonomous equation]；其余情形称为\term[feizizhi-fangcheng]{非自治方程}[nonautonomous equation]。
+\end{definition}
+
+这里的一个未知函数可以同时有 \(d\) 个分量。二阶标量方程也属于这种框架：令 \(x_1=u\)、\(x_2=u'\)，则 \(u''=F(t,u,u')\) 化为 \(x_1'=x_2\)、\(x_2'=F(t,x_1,x_2)\)。初始位置与初始速度一起组成状态 \((x_1,x_2)\)，不能只给其中一个。
+
+\ProseParagraphBreak
+微积分基本定理把初值问题等价地写成
+\[
+ X(t)=a+\int_{t_0}^t f(s,X(s))\,\mathrm ds.
+\]
+从微分方程到积分方程只需积分；反过来，只要 \(X\) 连续且满足这个等式，连续的被积函数就使右端属于 \(C^1\)，从而恢复微分方程。这一等价性很有用：构造解时只需在连续函数空间中取极限，无须事先证明近似解的导数收敛。
+
+\ProseParagraphBreak
+如果两条曲线代入同一个积分方程，曲线的差会再次出现在积分号内。\term[gronwall-budengshi]{Gronwall 不等式}[Gronwall inequality]把这种含有未知量自身的积分估计变成显式上界。
 
 \begin{lemma}[Gronwall]\label{b2:lem:ode-gronwall}
 设 \(h>0\)、\(A,L\geq0\)，连续非负函数 \(q\) 在 \([0,h]\) 上满足
@@ -21,50 +35,131 @@
 则 \(q(t)\leq A e^{Lt}\) 对每个 \(t\in[0,h]\) 成立，包括 \(A=0\) 的情形。
 \end{lemma}
 \begin{proof}
-令 \(Q(t)=A+L\int_0^t q(s)\,\mathrm ds\)。由 \(q\leq Q\) 得 \(Q'\leq LQ\)，从而 \((e^{-Lt}Q)'\leq0\)。因此 \(q(t)\leq Q(t)\leq A e^{Lt}\)。
+令 \(Q(t)=A+L\int_0^t q(s)\,\mathrm ds\)。由 \(q\leq Q\) 得 \(Q'\leq LQ\)，从而 \((e^{-Lt}Q)'\leq0\)。因此 \(q(t)\leq Q(t)\leq A e^{Lt}\)。当 \(A=0\) 时，同一微分不等式给出 \(q=0\)，正好对应零初始误差。
 \end{proof}
 
-\subsection{自治 \texorpdfstring{\(C^1\)}{C¹} 方程的局部构造}
-\label{b2:subsec:ode-autonomous-picard}
+初始误差为零时，结论给出 \(q=0\)，这将证明唯一性；初始误差很小时，指数因子刻画误差在有限时间内可能放大的程度。后一种用途还需要容许方程本身有误差。
 
-下面的结果称为\term[picard-lindelof]{Picard--Lindelöf 定理}[Picard--Lindelöf theorem]。导数在紧球上的界既用于构造，也用于比较不同初始点的解。
-
-\begin{theorem}[Picard--Lindelöf]\label{b2:thm:07-local-ode}
-设 \(d\) 为正整数，\(U\subset\mathbb R^d\) 为开集，\(b\in C^1(U;\mathbb R^d)\)。对每个 \(a_0\in U\)，存在 \(r>0\)、\(h>0\)，使每个 \(a\in B_r(a_0)\) 都有唯一的局部解
+\begin{corollary}[带误差项的 Gronwall 估计]\label{b2:cor:ode-gronwall-forcing}
+设 \(\alpha<\beta\)，\(A\geq0\)，\(q,k,r\colon[\alpha,\beta]\to[0,\infty)\) 连续，并且
 \[
- X'(t)=b\bigl(X(t)\bigr),\quad X(0)=a,
- \quad |t|\leq h.
+ q(t)\leq A+\int_\alpha^t \bigl(k(s)q(s)+r(s)\bigr)\,\mathrm ds.
 \]
-各解取值于同一个紧球。若 \(L\) 是该球上 \(\|Db\|\) 的上界，则
-\begin{equation}\label{b2:eq:07-flow-lipschitz}
- |X(t,a)-X(t,\widetilde a)|\leq e^{L|t|}\cdot|a-\widetilde a|.
-\end{equation}
-局部唯一性指任意两条满足同一初值的解在共同定义区间上相等。
-\end{theorem}
+则对 \(\alpha\leq t\leq\beta\)，
+\[
+ q(t)\leq A\exp\!\left(\int_\alpha^t k(s)\,\mathrm ds\right)
+ +\int_\alpha^t \exp\!\left(\int_s^t k(\tau)\,\mathrm d\tau\right)r(s)\,\mathrm ds.
+\]
+特别地，若 \(k\leq L\)、\(r\leq\eta\)，则 \(q(t)\leq\bigl(A+\eta(t-\alpha)\bigr)e^{L(t-\alpha)}\)。
+\end{corollary}
 \begin{proof}
-取闭球 \(\overline B_{2r}(a_0)\subseteq U\)，记其上 \(|b|\)、\(\|Db\|\) 的上界为 \(M,L\)。选 \(h>0\) 满足 \(Mh\leq r\)、\(Lh<1\)；上界为零的条件可略去。对固定 \(a\in B_r(a_0)\)，在连续曲线空间中考虑闭集
-\[
- E_a=\{\,Y\in C([-h,h];\mathbb R^d)\mid
- \sup_{|t|\leq h}|Y(t)-a|\leq r\,\}.
-\]
-一致 Cauchy 曲线列逐点有极限，一致极限仍连续且满足闭球约束，所以 \(E_a\) 关于一致范数完备。定义
-\[
- (TY)(t)=a+\int_0^t b\bigl(Y(s)\bigr)\,\mathrm ds.
-\]
-速度界保证 \(T(E_a)\subseteq E_a\)，中值估计保证
-\(\|TY-TZ\|_\infty\leq Lh\cdot\|Y-Z\|_\infty\)。从常曲线 \(Y_0=a\) 迭代，连续两次之差不超过 \((Lh)^n\cdot\|Y_1-Y_0\|_\infty\)。几何级数收敛，故迭代一致收敛到 \(X\in E_a\)。算子连续性给出 \(TX=X\)；积分的被积函数连续，所以 \(X\) 可微并满足方程。两个不动点之间的距离不超过原距离的 \(Lh\) 倍，故相等。
-
-对两个解的积分方程作差，在正时间得到
-\[
- |X(t,a)-X(t,\widetilde a)|
- \leq |a-\widetilde a|+L\int_0^t|X(s,a)-X(s,\widetilde a)|\,\mathrm ds.
-\]
-应用\cref{b2:lem:ode-gronwall}得到\eqref{b2:eq:07-flow-lipschitz}；负时间用 \(s=-t\) 处理。任意两个同初值局部解在某个更短区间上都落入同一个球，故先在那里相等。在共同区间内，相等的时刻构成闭集，局部唯一性又使它为开集，因而它充满包含初始时刻的整个区间。
+把假设右端记为 \(Q(t)\)，则 \(q\leq Q\)、\(Q(\alpha)=A\)，且 \(Q'\leq kQ+r\)。乘以积分因子 \(\exp(-\int_\alpha^t k)\) 后积分，得到所述不等式。最后一条估计把两个指数因子都用 \(e^{L(t-\alpha)}\) 控制即可。
 \end{proof}
 
-只要求速度连续时，唯一性可能失败。例如 \(X'=2\sqrt{|X|}\)、\(X(0)=0\) 除零解外，对每个 \(a\geq0\) 还允许先在 \([0,a]\) 上停留，之后取 \(X(t)=(t-a)^2\)。本节采用 \(C^1\) 条件，排除了这种轨道分叉。
+这些估计同样能向初始时刻的左侧使用，但要先改用正向变量 \(s=t_0-t\)。直接把上限小于下限的积分当成非负量，会改变不等号的意义；反向时间的变换避免了这个错误。
 
 \subsection{非自治方程的局部 Lipschitz 条件}
 \label{b2:subsec:ode-nonautonomous-lipschitz}
 
-待撰写。拟处理 \(X'=f(t,X)\)，其中 \(f\) 连续且对状态变量局部一致 Lipschitz，写明共同时间与共同邻域的条件。前面的自治 \(C^1\) 定理尚未给出这一一般版本。
+为了比较 \(f(t,x)\) 与 \(f(t,y)\)，需要控制的是状态变量的变化。时间只起参数作用，构造中不要求 \(f\) 对时间可微。不过，控制常数必须在一小段时间内统一，否则无法估计整个积分。
+
+\begin{definition}\label{b2:def:ode-local-lipschitz}
+设 \(d\geq1\)，\(\Omega\subset\mathbb R\times\mathbb R^d\) 为开集。称映射 \(f\colon\Omega\to\mathbb R^d\) 对状态变量满足\term[jubu-yizhi-lipschitz]{局部一致 Lipschitz 条件}[locally uniform Lipschitz condition]，是指对每个 \((t_*,x_*)\in\Omega\)，存在包含该点的开柱体 \(J\times B\subseteq\Omega\)，其中 \(J\) 为时间区间、\(B\) 为空间球，以及常数 \(L\geq0\)，使
+\[
+ |f(t,x)-f(t,y)|\leq L|x-y|
+ \quad(t\in J,\ x,y\in B).
+\]
+“一致”指同一个 \(L\) 适用于这个 \(J\) 中的全部时间。
+\end{definition}
+
+若 \(f\) 连续，且对 \(x\) 的偏导数组成的矩阵 \(D_xf\) 存在并关于 \((t,x)\) 连续，就满足这个条件：在一个闭柱体上取 \(\|D_xf\|\) 的上界，再沿连接 \(x,y\) 的线段积分。这里要把状态邻域取成球，保证线段留在求导区域内。反过来，局部一致 Lipschitz 不要求可微，例如实标量函数 \(f(t,x)=|x|+\sin t\) 在 \(x=0\) 不可微，却对 \(x\) 满足常数为 \(1\) 的 Lipschitz 估计。
+
+\ProseParagraphBreak
+下面证明\term[picard-lindelof]{Picard--Lindelöf 定理}[Picard--Lindelöf theorem]。定理特意同时允许初始时刻和初始位置在一个小邻域内变化；这种共同存在时间将在拼接解和研究连续依赖时使用。
+
+\begin{theorem}[Picard--Lindelöf]\label{b2:thm:ode-nonautonomous-picard}
+设 \(d\geq1\)，\(\Omega\subset\mathbb R\times\mathbb R^d\) 开，\(f\colon\Omega\to\mathbb R^d\) 连续且对状态变量满足局部一致 Lipschitz 条件。给定 \((t_0,a_0)\in\Omega\)，可取 \(\delta,R>0\)，使闭柱体
+\[
+ Q=[t_0-\delta,t_0+\delta]\times\overline B_R(a_0)
+ \subseteq\Omega
+\]
+上有 \(|f|\leq M\)，并且对同一时刻的任意 \(x,y\in\overline B_R(a_0)\) 有 \(|f(t,x)-f(t,y)|\leq L|x-y|\)。取 \(h>0\) 满足
+\[
+ h\leq\delta/2,\quad Mh\leq R/2,\quad Lh<1.
+\]
+则每个满足 \(|\tau-t_0|\leq\delta/2\)、\(|a-a_0|<R/2\) 的初值 \(X(\tau)=a\)，都有一个定义于 \([\tau-h,\tau+h]\) 的解，且解取值于 \(\overline B_R(a_0)\)。任何两个同初值的解在其共同定义区间上相等。
+\end{theorem}
+\begin{proof}
+由局部一致 Lipschitz 条件取一个开柱体，再缩小为包含 \((t_0,a_0)\) 的闭柱体 \(Q\)。连续性和紧性给出有限的速度界 \(M\)。当 \(M\) 或 \(L\) 为零时，相应的时间限制自动成立，所以总能选择正的 \(h\)。
+
+固定 \(\tau,a\)，令 \(E_a\) 为所有满足
+\[
+ Y\in C([\tau-h,\tau+h];\mathbb R^d),
+ \quad \sup_{|t-\tau|\leq h}|Y(t)-a|\leq R/2
+\]
+的曲线所成的集合。它在一致范数下完备：一致 Cauchy 列逐点有极限，且一致收敛；极限连续，并仍满足闭球约束。对 \(Y\in E_a\) 定义
+\[
+ (TY)(t)=a+\int_\tau^t f(s,Y(s))\,\mathrm ds.
+\]
+所有积分都在 \(Q\) 内进行。由 \(|TY(t)-a|\leq Mh\leq R/2\) 知 \(T(E_a)\subseteq E_a\)，而 Lipschitz 条件给出
+\[
+ \|TY-TZ\|_\infty\leq Lh\,\|Y-Z\|_\infty.
+\]
+从常曲线 \(Y_0=a\) 开始，依次令 \(Y_{n+1}=TY_n\)。记 \(\theta=Lh<1\)，则
+\[
+ \|Y_{n+1}-Y_n\|_\infty
+ \leq\theta^n\|Y_1-Y_0\|_\infty.
+\]
+把相邻差求和，得到对 \(m>n\) 的一致估计
+\[
+ \|Y_m-Y_n\|_\infty
+ \leq\frac{\theta^n}{1-\theta}\|Y_1-Y_0\|_\infty.
+\]
+因此 \(Y_n\) 在 \(E_a\) 中收敛到某个 \(X\)。算子 \(T\) 的 Lipschitz 连续性使 \(TX=X\)，积分方程随即给出 \(X\in C^1\) 及所需初值问题。若 \(X,Z\) 都是不动点，则 \(\|X-Z\|_\infty\leq\theta\|X-Z\|_\infty\)，故它们相等。
+
+还须说明，这种唯一性不局限于所选的曲线集合。任意两条同初值解，由连续性先在一个足够短的区间上留在同一 Lipschitz 柱体内。积分方程作差并使用 \(A=0\) 的 Gronwall 不等式，得它们在该短区间上相等，负时间经反向变量处理。在共同定义区间中，两解相等的时刻集合是非空闭集；在每个相等时刻重新使用刚才的局部论证，又知该集合是相对开集。区间的连通性使它充满整个共同区间。
+\end{proof}
+
+证明中两种时间限制承担不同任务：\(Mh\leq R/2\) 防止曲线跑出已知方程的区域，\(Lh<1\) 使一次积分缩小两条曲线的距离。逐次逼近的第 \(n+1\) 条曲线使用第 \(n\) 条曲线上的速度，它不是把未知解代入右端后的循环定义。
+
+\ProseParagraphBreak
+可以直接跟算 \(X'=X\)、\(X(0)=a\) 的迭代：从 \(Y_0=a\) 得到 \(Y_1=a(1+t)\)、\(Y_2=a(1+t+t^2/2)\)，一般有 \(Y_n=a\sum_{j=0}^n t^j/j!\)。极限是熟悉的 \(ae^t\)。一般方程未必有闭式表达式，但一致收敛和积分方程仍给出确切的解；存在性并不以能写出初等函数公式为前提。
+
+\subsection{自治 \texorpdfstring{\(C^1\)}{C¹} 方程与共同存在时间}
+\label{b2:subsec:ode-autonomous-picard}
+
+后文的特征线和流通常由一个 \(C^1\) 向量场产生。把一般定理专门写成这一形式，可以直接看见邻近初始点共用哪些常数。
+
+\begin{theorem}[Picard--Lindelöf，自治情形]\label{b2:thm:07-local-ode}
+设 \(d\geq1\)，\(U\subset\mathbb R^d\) 为开集，\(b\in C^1(U;\mathbb R^d)\)。对每个 \(a_0\in U\)，存在 \(r,h>0\)，使每个 \(a\in B_r(a_0)\) 都有唯一的局部解
+\[
+ X'(t)=b(X(t)),\quad X(0)=a,\quad |t|\leq h.
+\]
+各解取值于同一个紧球 \(\overline B_{2r}(a_0)\subseteq U\)。若 \(L\) 是该球上 \(\|Db\|\) 的上界，则对任意 \(a,\widetilde a\in B_r(a_0)\) 及 \(|t|\leq h\)，
+\begin{equation}\label{b2:eq:07-flow-lipschitz}
+ |X(t,a)-X(t,\widetilde a)|
+ \leq e^{L|t|}|a-\widetilde a|.
+\end{equation}
+局部唯一性指任意两条满足同一初值的解在共同定义区间上相等。
+\end{theorem}
+\begin{proof}
+取闭球 \(\overline B_{2r}(a_0)\subseteq U\)，在其上用 \(M,L\) 分别控制 \(|b|\)、\(\|Db\|\)。沿球内线段积分，得 \(|b(x)-b(y)|\leq L|x-y|\)。对 \(f(t,x)=b(x)\) 使用\cref{b2:thm:ode-nonautonomous-picard}，取 \(Mh\leq r\)、\(Lh<1\)，便得到全部初始点共用的时间 \([-h,h]\)。
+
+两个解的积分方程作差，在正时间得到
+\[
+ |X(t,a)-X(t,\widetilde a)|
+ \leq |a-\widetilde a|
+ +L\int_0^t|X(s,a)-X(s,\widetilde a)|\,\mathrm ds.
+\]
+\cref{b2:lem:ode-gronwall}给出所需估计。负时间的曲线 \(s\mapsto X(-s,a)\) 满足速度场为 \(-b\) 的方程，其 Lipschitz 常数仍为 \(L\)，故得到带 \(|t|\) 的统一表达式。共同区间上的唯一性已包含在一般定理中。
+\end{proof}
+
+这里的 \(C^1\) 条件是一个容易核验的充分条件，其作用是提供局部 Lipschitz 常数；一般定理并不要求状态变量处处可微。也不能把连续性误当作唯一性的充分条件。实方程 \(X'=2\sqrt{|X|}\)、\(X(0)=0\) 的零解与下列每条曲线都满足同一初值问题：对任意 \(c\geq0\)，令
+\[
+ X_c(t)=
+ \begin{cases}
+ 0,&t\leq c,\\
+ (t-c)^2,&t\geq c.
+ \end{cases}
+\]
+两段在 \(t=c\) 的导数均为零，因此它确实是 \(C^1\) 解。轨道可以在原点等待任意时间，再开始运动；\(2\sqrt{|x|}\) 在原点附近的差商无界，恰好不满足局部 Lipschitz 条件。仅有连续性时如何保留存在性，将在\secref{b2:sec:ode-peano}中另行证明。

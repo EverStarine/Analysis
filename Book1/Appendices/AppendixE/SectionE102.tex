@@ -2,24 +2,225 @@
 \section{单位分解与局部拼接}
 \label{b1:sec:E102}
 
-待撰写。
+局部坐标能把一个问题改写成欧氏空间中的问题，但一张图中作出的构造未必能直接搬到整个流形。即使各处都能选出某种内积，在重叠处随意换用另一张图中的内积也可能产生不连续。单位分解用光滑权重将局部对象相加；为使这一步可靠，需要先解决两个问题：每个点附近只能有有限项参与，每项在离开自己的坐标图以前就必须平滑地变成零。
+
+\ProseParagraphBreak
+
+\secref{b1:sec:2001}已经在欧氏开集上完成过这个构造。在流形上，紧集穷竭将组织起局部有限的坐标覆盖；坐标中的截断与补零则把局部光滑函数拼成全局函数。以下流形均为有限维、实、Hausdorff、第二可数的光滑流形，允许带边界。
 
 \subsection{坐标邻域与局部有限覆盖}
 \label{b1:subsec:E10201}
 
-待撰写。
+对流形 \(M\) 中的集合 \(V\)，写 \(V\Subset M\) 表示它的闭包在 \(M\) 中紧。若还写 \(V\Subset U\)，则要求这个紧闭包包含于开集 \(U\)。这里的闭包始终在 \(M\) 中取，不能只在某张图中取一个相对闭包而忽略它是否越过了图的边缘。
+
+\begin{proposition}[流形的紧集穷竭]\label{b1:prop:E-compact-exhaustion}
+设 \(M\) 为有限维实光滑流形，允许有边界。存在紧集列 \((K_j)_{j\geq1}\)，满足
+\[
+ K_j\subseteq\operatorname{int}_M K_{j+1},
+ \quad \bigcup_{j\geq1}\operatorname{int}_M K_j=M.
+\]
+对每个紧集 \(K\subseteq M\)，存在 \(j\) 使 \(K\subseteq\operatorname{int}_M K_j\)。
+\end{proposition}
+\begin{proof}
+由\cref{b1:prop:E-countable-charts}选可数相对紧开覆盖 \((V_j)\)。若覆盖有限，可重复成员把它排为序列；若 \(M\) 为空，取所有 \(K_j=\varnothing\)。对非空情形，先将紧集 \(\overline V_1\) 用有限个相对紧坐标邻域覆盖，取它们的并为 \(W_1\)。这样 \(W_1\) 开且相对紧，并包含 \(\overline V_1\)。
+
+已构造 \(W_j\) 后，紧集 \(\overline W_j\cup\overline V_{j+1}\) 也能被有限个相对紧坐标邻域覆盖，取它们的并为 \(W_{j+1}\)。于是
+\[
+ \overline W_j\cup\overline V_{j+1}\subseteq W_{j+1},
+ \quad\overline W_{j+1}\text{ 紧}.
+\]
+令 \(K_j=\overline W_j\)，就有 \(K_j\subseteq W_{j+1}\subseteq\operatorname{int}_M K_{j+1}\)，且所有内部覆盖 \(M\)。最后，紧集 \(K\) 被有限个这样的内部覆盖；由于它们递增，取最大的指标便得到最后的结论。这也恢复了\cref{b1:prop:app-compact-exhaustion}在当前流形上的全部假设与构造。
+\end{proof}
+
+紧集穷竭的作用，是让构造在“第几层”进行。远处新加入的坐标片必须避开已经固定的内层，这样某个点附近就不会不断出现新的项。
+
+\begin{lemma}[局部有限的坐标细化]\label{b1:lem:E-locally-finite-refinement}
+设 \(M\) 为有限维实光滑流形，允许有边界，\((U_\alpha)_{\alpha\in A}\) 是任意开覆盖。存在至多可数个开集对 \((V_i,W_i)\) 和指标 \(\alpha(i)\)，使
+\[
+ M=\bigcup_iV_i,\quad
+ \overline V_i\subseteq W_i,\quad
+ \overline W_i\text{ 紧},\quad
+ \overline W_i\subseteq U_{\alpha(i)},
+\]
+每个 \(W_i\) 包含在一张坐标图的定义域中，且 \((W_i)\) 局部有限，即每个点都有只与有限个 \(W_i\) 相交的邻域。每个紧集因而也只与有限个 \(W_i\) 相交。
+\end{lemma}
+\begin{proof}
+取上一命题的 \((K_j)\)，并令 \(K_0=K_{-1}=\varnothing\)。记
+\[
+ A_j=K_j\setminus\operatorname{int}_M K_{j-1},
+ \quad O_j=\operatorname{int}_M K_{j+1}\setminus K_{j-2}.
+\]
+\(A_j\) 紧且包含于开集 \(O_j\)：外侧包含关系来自 \(K_j\subseteq\operatorname{int}_M K_{j+1}\)，内侧分离来自 \(K_{j-2}\subseteq\operatorname{int}_M K_{j-1}\)。所有 \(A_j\) 覆盖 \(M\)，因为任一点进入紧集穷竭时有一个最小的正整数指标。
+
+对 \(p\in A_j\)，选包含它的 \(U_\alpha\) 与一张图。在 \(U_\alpha\cap O_j\) 与图的定义域的交内，按\cref{b1:prop:E-countable-charts}证明中的小球或小半球构造，选两个嵌套邻域 \(V\ni p\)、\(W\)，使
+\[
+ \overline V\subseteq W,\quad
+ \overline W\subseteq U_\alpha\cap O_j,
+ \quad\overline W\text{ 紧}.
+\]
+每个 \(A_j\) 只需有限个 \(V\) 覆盖，记为 \(V_{j,1},\ldots,V_{j,r_j}\)，保留相应的 \(W_{j,l}\)。这些有限族的可数并覆盖 \(M\)。
+
+固定 \(p\in M\)，选 \(N\) 使 \(p\in\operatorname{int}_M K_N\)。当 \(j\geq N+2\) 时，\(K_N\subseteq K_{j-2}\)，而 \(W_{j,l}\subseteq O_j\) 避开 \(K_{j-2}\)，所以这些 \(W_{j,l}\) 全不交邻域 \(\operatorname{int}_M K_N\)。剩余有限层中每层又只有有限项，因此局部有限。将双指标枚举为一个指标即可。最后，以这种有限相交邻域覆盖一个紧集，再取有限子覆盖，得到它只与有限个 \(W_i\) 相交。
+\end{proof}
+
+层 \(A_j\) 用闭的内外边缘容纳所有点，承载坐标片的 \(O_j\) 则向两侧留出余量。这个余量使 \(\overline V_i\subseteq W_i\) 和支集缩小能够同时实现。局部有限性来自远层避开固定内层，而不是来自坐标片“看起来很小”。
 
 \subsection{光滑截断函数}
 \label{b1:subsec:E10202}
 
-待撰写。
+在图的定义域内写出一个光滑函数，还不能直接在图外令它为零。例如 \(1\) 在 \((0,1)\) 上光滑，补零到实线后却不连续。补零之所以能成为一个正确步骤，是因为我们将函数的闭支集留在图的内部。
+
+\begin{lemma}[坐标图中的光滑截断]\label{b1:lem:E-chart-cutoff}
+设 \(M\) 为有限维实光滑流形，允许有边界，\(W\subseteq M\) 为包含在一张坐标图中的开集，\(K\subseteq W\) 紧。存在 \(\chi\in C^\infty(M)\)，满足
+\[
+ 0\leq\chi\leq1,\quad
+ \chi=1\text{ 于 }K\text{ 的一个开邻域},\quad
+ \operatorname{supp}_M\chi\Subset W.
+\]
+这里 \(\operatorname{supp}_M\chi\) 为 \(\{p:\chi(p)\ne0\}\) 在 \(M\) 中的闭包。空紧集允许取 \(\chi=0\)。
+\end{lemma}
+\begin{proof}
+设图为 \(x:U\rightarrow x(U)\)，\(W\subseteq U\)。若是无边界图，\(x(K)\) 是欧氏开集 \(x(W)\) 中的紧集。\cref{b1:lem:smooth-cutoff}提供 \(b\in C_c^\infty(x(W))\)，满足 \(0\leq b\leq1\)，且在 \(x(K)\) 的邻域内恒为 \(1\)。在 \(W\) 中令 \(\chi=b\circ x\)，在 \(M\setminus W\) 中补零。
+
+若是边界图，\(x(W)\) 在 \(\mathbb H^n\) 中相对开。选欧氏开集 \(G\subseteq\mathbb R^n\)，使 \(G\cap\mathbb H^n=x(W)\)。紧集 \(x(K)\) 同样包含在 \(G\) 中，故可由同一欧氏截断引理选 \(b\in C_c^\infty(G)\)，在 \(x(K)\) 附近为 \(1\)。只把它在 \(\mathbb H^n\) 上的限制拉回，就得到光滑至边界的函数。集合 \(\operatorname{supp}b\cap\mathbb H^n\) 紧且包含于 \(x(W)\)，其逆图像是 \(W\) 中的紧集，包含 \(\operatorname{supp}_M\chi\)。
+
+两种情形中，\(M\) 的 Hausdorff 性都保证这一紧集闭。任何不在这个紧集内的点有邻域与它不交，\(\chi\) 在该邻域恒为零，因而补零处也光滑；在图内则由复合光滑性得到。零维情形下紧集是有限点集，每一点开闭，直接取其示性函数即可。
+\end{proof}
+
+边界处的截断无需沿边界消失。例如在 \([0,\infty)\) 上可以选 \(\chi=1\) 于 \([0,1]\)，在 \([2,\infty)\) 上为零。\(0\) 是流形的一部分，光滑性由跨过 \(0\) 的局部延拓判定；若强行要求函数在边界也为零，就无法构造覆盖边界点的单位分解，也会排除 Stokes 公式所需的边界测试。
+
+\ProseParagraphBreak
+
+回顾欧氏截断的构造：\cref{b1:lem:smooth-cutoff}从一维光滑阶跃构造球上的函数，再以 \(1-\prod_l(1-b_l)\) 组合有限个小球；紧性让有限组合足够。通过坐标把支集带回流形，再在图外补零，就得到所需的流形截断。
 
 \subsection{从局部构造单位分解}
 \label{b1:subsec:E10203}
 
-待撰写。
+现在可以构造真正的权重。先在每个小邻域上放置一个等于 \(1\) 的截断，使其总和处处为正；再除以这个总和，让权重加起来恰好等于 \(1\)。除法只是最后一步，前面证明的局部有限性才保证总和是光滑函数。
+
+\begin{definition}[流形上的光滑单位分解]\label{b1:def:E-partition-unity}
+设 \(M\) 为有限维实光滑流形，允许有边界，\((U_\alpha)_{\alpha\in A}\) 为其开覆盖。一族 \(\rho_i\in C^\infty(M)\) 称为从属于该覆盖的光滑单位分解，若 \(\rho_i\geq0\)，支集族 \((\operatorname{supp}_M\rho_i)\) 局部有限，每个支集包含于某个 \(U_{\alpha(i)}\)，并且
+\[
+ \sum_i\rho_i(p)=1\quad(p\in M).
+\]
+这推广了\cref{b1:def:smooth-partition-unity}的欧氏定义；求和的含义是每个点的某个邻域中只含有限个非零项。
+\end{definition}
+
+\begin{theorem}[光滑单位分解]\label{b1:thm:E-partition-unity}
+设 \(M\) 为有限维实光滑流形，允许有边界，\((U_\alpha)_{\alpha\in A}\) 为任意开覆盖。存在至多可数的从属光滑单位分解 \((\rho_i)\)，以及局部有限的坐标邻域 \((W_i)\)，使
+\[
+ \operatorname{supp}_M\rho_i\Subset W_i,
+ \quad\overline W_i\text{ 紧},\quad
+ \overline W_i\subseteq U_{\alpha(i)}.
+\]
+若只要求支集包含于原覆盖成员，也可按原指标合并，得到 \((\widehat\rho_\alpha)_{\alpha\in A}\)，满足 \(\operatorname{supp}_M\widehat\rho_\alpha\subseteq U_\alpha\)，且支集族仍局部有限。
+\end{theorem}
+\begin{proof}
+取\cref{b1:lem:E-locally-finite-refinement}中的 \((V_i,W_i)\)。由\cref{b1:lem:E-chart-cutoff}，存在 \(0\leq\chi_i\leq1\)，在 \(\overline V_i\) 的一个邻域上为 \(1\)，且 \(\operatorname{supp}_M\chi_i\Subset W_i\)。\((W_i)\) 局部有限，因此
+\[
+ s(p)=\sum_i\chi_i(p)
+\]
+在每点附近只是有限个光滑函数之和。\((V_i)\) 覆盖 \(M\)，所以至少一个 \(\chi_i(p)=1\)，因而 \(s(p)\geq1\)。令 \(\rho_i=\chi_i/s\)，便有非负性、光滑性与总和为 \(1\)。除以处处正的函数不改变非零点集，故不扩大支集，也不破坏局部有限性。
+
+若按原覆盖指标合并，令
+\[
+ \widehat\rho_\alpha=\sum_{\alpha(i)=\alpha}\rho_i,
+\]
+没有对应项的指标取零。局部有限性仍使该和在各点附近有限，故光滑。为核验支集而不只核验非零点，注意局部有限闭集族的任意子族之并仍闭：在并外一点附近，只有有限个闭集可能出现，再同时避开这有限个闭集即可。因此
+\[
+ \operatorname{supp}_M\widehat\rho_\alpha
+ \subseteq\bigcup_{\alpha(i)=\alpha}\operatorname{supp}_M\rho_i
+ \subseteq U_\alpha.
+\]
+在任一点附近，原来的有限个支集只涉及有限个 \(\alpha\)，所以合并后的支集族仍局部有限。总和为 \(1\) 的结论在有限局部和中重排即可。
+\end{proof}
+
+合并后的单个函数不一定有紧支集；前半部分的细化形式才同时保证每项紧支集。二者适合不同用途。定义积分时，保留每项所附的坐标图很方便；把一组已经给定的局部构造按原覆盖成员组织起来时，则可以使用合并后的形式。
+
+\begin{corollary}[任意紧集的光滑截断]\label{b1:cor:E-compact-cutoff}
+设 \(M\) 为有限维实光滑流形，允许有边界，\(K\subseteq M\) 紧，\(O\subseteq M\) 开且包含 \(K\)。存在 \(\chi\in C^\infty(M)\)，满足 \(0\leq\chi\leq1\)，在 \(K\) 的邻域内为 \(1\)，且 \(\operatorname{supp}_M\chi\Subset O\)。
+\end{corollary}
+\begin{proof}
+给每个 \(p\in K\) 选坐标邻域 \(W_p\Subset O\)，再选较小邻域 \(V_p\ni p\)，使 \(\overline V_p\subseteq W_p\)。紧性给出有限子族 \(V_{p_1},\ldots,V_{p_l}\) 覆盖 \(K\)。由\cref{b1:lem:E-chart-cutoff}取 \(\chi_j\)，其支集紧含于 \(W_{p_j}\)，且在 \(\overline V_{p_j}\) 附近为 \(1\)。函数
+\[
+ \chi=1-\prod_{j=1}^l(1-\chi_j)
+\]
+具有要求的值域，在 \(\bigcup_jV_{p_j}\) 上为 \(1\)，而支集包含于有限个紧支集之并，故紧含于 \(O\)。若 \(K\) 为空，直接取零。
+\end{proof}
+
+还可以选出一列 \(0\leq\chi_j\leq1\) 的紧支集光滑函数，使每个固定紧集最终落在 \(\chi_j=1\) 的区域内：对\cref{b1:prop:E-compact-exhaustion}的 \(K_j\)，在 \(\operatorname{int}_M K_{j+1}\) 中应用该推论即可。这一结论只控制支集与函数值，并没有给出所有 \(\chi_j\) 导数的一致上界；需要导数估计时，必须另行说明所用坐标、度量和尺度。
 
 \subsection{局部对象的整体拼接}
 \label{b1:subsec:E10204}
 
-待撰写。
+对实值函数，局部拼接可以直接看见。若 \(f_i\in C^\infty(W_i)\)，且 \(\operatorname{supp}\rho_i\Subset W_i\)，在 \(W_i\) 上取 \(\rho_i\cdot f_i\)，再在图外补零，则每一项光滑，局部有限和
+\[
+ f=\sum_i\rho_i\cdot f_i
+\]
+也光滑。若各 \(f_i\) 本来在交叠处相等，这个和恢复同一个全局函数；若它们不同，得到的是按权重平均的新函数，不会自动保留局部方程的全部性质。例如
+\[
+ \mathrm{d}f=\sum_i\rho_i\cdot\mathrm{d}f_i
+             +\sum_i f_i\cdot\mathrm{d}\rho_i,
+\]
+截断的导数会产生附加项。这正是用单位分解局部化微分方程时必须逐项追踪的内容。
+
+\ProseParagraphBreak
+
+切向量也可以逐点相加，但应先确认各项位于同一个切空间。一个\term[guanghua-xiangliangchang]{光滑向量场}[smooth vector field]是选择 \(X(p)\in T_pM\)，使每张图中的坐标分量都是光滑函数；坐标变换矩阵光滑，保证这个要求不依赖图。若 \(X_i\) 只定义在 \(W_i\)，则 \(\rho_i X_i\) 可补零并求局部有限和。对于向量、双线性型或后面的微分形式，能够相加的是同一点上的几何对象；来自不同坐标系的数列或矩阵不能不经转换就直接相加。
+
+\begin{definition}[Riemann 度量]\label{b1:def:E-riemannian-metric}
+设 \(M\) 为有限维实光滑流形，允许有边界。在每个 \(p\in M\) 的切空间上选择一个正定对称实双线性型 \(g_p\)。若每张图中的矩阵系数
+\[
+ g_{ij}(p)=g_p\left(
+ \left.\frac{\partial}{\partial x^i}\right|_p,
+ \left.\frac{\partial}{\partial x^j}\right|_p\right)
+\]
+都是光滑函数，就称 \(g\) 为 \(M\) 上的\term[riemann-duliang]{Riemann 度量}[Riemannian metric]。它给切向量规定长度 \(|v|_g\coloneqq\sqrt{g_p(v,v)}\)。
+\end{definition}
+
+这里的“度量”首先指切空间上的内积族，不是已经给出的两点间距离函数。它决定曲线速度的长度，从而可定义分段 \(C^1\) 曲线的长度
+\[
+ L_g(\gamma)=\int_a^b|\gamma'(t)|_g\,\mathrm{d}t.
+\]
+对于 \(n=0\)，唯一的零维双线性型按惯例也视为正定；所有非零向量的要求为空。
+
+\begin{theorem}[Riemann 度量的存在]\label{b1:thm:E-riemannian-metric}
+每个有限维实光滑流形 \(M\)，允许有边界，都存在光滑 Riemann 度量。
+\end{theorem}
+\begin{proof}
+在一张图 \(x_i:W_i\rightarrow x_i(W_i)\) 上，定义
+\[
+ g^{(i)}_p(v,w)
+ =\langle\mathrm{d}(x_i)_p(v),\mathrm{d}(x_i)_p(w)\rangle_{\mathbb R^n}.
+\]
+坐标微分是同构，所以该双线性型正定；它在本图中为单位矩阵，在其他图中为坐标转换导数的 Gram 矩阵，故光滑。这里也可把 \(x_i\) 当作取值于 \(\mathbb R^n\) 的光滑映射，边界点处微分仍由局部延拓定义。
+
+取从属于坐标覆盖的单位分解 \((\rho_i)\)，满足 \(\operatorname{supp}\rho_i\Subset W_i\)。在 \(W_i\) 外将 \(\rho_i g^{(i)}\) 补零，并定义
+\[
+ g_p(v,w)=\sum_i\rho_i(p)g^{(i)}_p(v,w).
+\]
+支集条件保证补零处在邻域内恒零，局部有限性保证在每张图中只对有限个光滑矩阵求和。因此 \(g\) 光滑、实双线性且对称。对非零 \(v\in T_pM\)，至少一个权重 \(\rho_i(p)>0\)，而该项 \(g^{(i)}_p(v,v)>0\)；其他项非负，所以 \(g_p(v,v)>0\)。这证明正定性。零维情形取唯一的零维双线性型即可。
+\end{proof}
+
+为什么正定性可以拼接，而某个微分方程的解不能直接拼接？前者是同一个向量上若干正数的非负加权和，只要总权重为 \(1\) 就保留正性；后者在求导时出现了 \(\mathrm{d}\rho_i\) 项。单位分解适用于哪些结构，取决于它们在加权求和下怎样变化。
+
+\begin{proposition}[紧集上 Riemann 度量的等价性]\label{b1:prop:E-metric-equivalence}
+设 \(M\) 为有限维实光滑流形，允许有边界，\(g,h\) 为其两个光滑 Riemann 度量。对每个非空紧集 \(K\subseteq M\)，存在常数 \(0<c\leq C<\infty\)，使
+\[
+ c\,g_p(v,v)\leq h_p(v,v)\leq C\,g_p(v,v)
+ \quad(p\in K,\ v\in T_pM).
+\]
+特别地，若 \(M\) 紧，这些常数可同时适用于全部点与全部切向量。
+\end{proposition}
+\begin{proof}
+设维数 \(n\geq1\)。用有限个较小坐标邻域 \(V_i\) 覆盖 \(K\)，使其闭包 \(L_i=\overline V_i\) 紧含于相应大图 \(W_i\)。固定一张图，以该图的坐标分量 \(a\in\mathbb R^n\) 表示切向量，考虑
+\[
+ R_i(p,a)=\frac{h_p(v_a,v_a)}{g_p(v_a,v_a)}
+ \quad(p\in L_i,\ |a|=1),
+ \quad
+ v_a=\sum_{j=1}^na^j\left.\frac{\partial}{\partial x_i^j}\right|_p.
+\]
+分母正且所有系数连续，所以 \(R_i\) 是紧空间 \(L_i\times S^{n-1}\) 上的正连续函数。由\cref{b1:prop:app-heine-cantor}中的极值结论，它具有正的最小值 \(c_i\) 与有限的最大值 \(C_i\)。齐次性使同一界适用于任意非零坐标向量；零向量时不等式也成立。取有限个 \(c_i\) 的最小值与 \(C_i\) 的最大值即可。维数为零时所有切向量均为零，可取 \(c=C=1\)。
+\end{proof}
+
+常数与紧集有关，不能删除紧性。例如在实线上，\(g_x(v,v)=v^2\)、\(h_x(v,v)=e^{2x}v^2\) 都是光滑 Riemann 度量，但比例 \(e^{2x}\) 既无正的全局下界，也无有限的全局上界。在紧流形上使用坐标建立积分或函数空间时，上述命题能提供统一的有限比较常数；在非紧流形上则必须另外检查所需的一致控制。

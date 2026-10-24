@@ -2,19 +2,204 @@
 \section{典型模型与理论边界}
 \label{b2:sec:2606}
 
-待撰写。
+特征函数展开把紧流形上的方程化成一列标量方程。若流形具有较多对称性，还能把这些特征函数具体写出来：平坦环面的平移对称性产生 Fourier 指数，球面的旋转对称性产生球谐函数。比较两个模型，可以看见频率、重数、体积归一化与几何尺度怎样进入同一个解公式。
 
 \subsection{平坦环面上的 Fourier 模型}
 \label{b2:subsec:260601}
 
-待撰写。
+固定整数 \(n\geq1\)，取
+\[
+ \mathbb T_{2\pi}^n\coloneqq\mathbb R^n/(2\pi\mathbb Z)^n.
+\]
+它把每个坐标相差 \(2\pi\) 的点识别起来；其光滑函数等同于在每个变量上都以 \(2\pi\) 为周期的光滑函数。欧氏度量在平移下不变，因而给出商空间上的平坦度量。相应的体积积分是在基本区域 \([0,2\pi]^n\) 上的 Lebesgue 积分，体积为 \((2\pi)^n\)，并且
+\[
+ \Delta_g=\sum_{a=1}^n\partial_{x_a}^2.
+\]
+基本区域的相对面已经识别，环面没有边界；对周期函数分部积分时，相对面的边界项相消。
+
+\begin{proposition}[平坦环面的 Fourier 谱]\label{b2:prop:26-torus-spectrum}
+设整数 \(n\geq1\)，\(\mathbb T_{2\pi}^n\) 取欧氏平坦度量和未归一化体积测度 \(\mathrm dx\)。则
+\[
+ E_k(x)=(2\pi)^{-n/2}e^{\mathrm i k\cdot x}\qquad(k\in\mathbb Z^n)
+\]
+组成复 \(L^2(\mathbb T_{2\pi}^n,\mathrm dx)\) 的正交归一基，满足
+\[
+ -\Delta_gE_k=|k|^2E_k.
+\]
+若对 \(f\in L^2(\mathbb T_{2\pi}^n;\mathbb C)\) 定义
+\[
+ \widehat f(k)=(2\pi)^{-n}\int_{[0,2\pi]^n}f(x)e^{-\mathrm ik\cdot x}\,\mathrm dx,
+\]
+则
+\[
+ f=\sum_{k\in\mathbb Z^n}\widehat f(k)e^{\mathrm ik\cdot x}\quad\text{于 }L^2,
+ \qquad
+ \|f\|_2^2=(2\pi)^n\sum_{k\in\mathbb Z^n}|\widehat f(k)|^2.
+\]
+特征值 \(\lambda\) 的重数是满足 \(|k|^2=\lambda\) 的整数向量个数，零特征空间为常数空间。
+\end{proposition}
+\begin{proof}
+逐变量积分给出
+\[
+ \int_{[0,2\pi]^n}E_k\overline{E_\ell}\,\mathrm dx
+   =\prod_{a=1}^n\left(\frac1{2\pi}\int_0^{2\pi}e^{\mathrm i(k_a-\ell_a)x_a}\,\mathrm dx_a\right)
+   =\mathbf1_{\{k=\ell\}}.
+\]
+特征方程直接由二阶求导得到。
+
+完备性的一维情形由\cref{b2:thm:02-l2-convergence}经换元 \(x=2\pi t\) 得到；其中原先的圆周为 \(\mathbb R/\mathbb Z\)，测度总质量为一，这里归一化因子正是换元后的调整。现按维数归纳。设 \(n\geq2\)，且 \(f\in L^2([0,2\pi]^n)\) 与全部 \(E_k\) 正交。将变量写成 \((x',t)\)。对每个 \(m\in\mathbb Z\)，令
+\[
+ g_m(x')=\int_0^{2\pi}f(x',t)e^{-\mathrm imt}\,\mathrm dt.
+\]
+Fubini 与 Cauchy--Schwarz 给出 \(g_m\in L^2([0,2\pi]^{n-1})\)。它的全部 \((n-1)\) 维 Fourier 系数为零，故归纳假设说明 \(g_m=0\) 几乎处处。整数 \(m\) 只有可数多个，可同时除去这些例外集。对剩下的几乎每个 \(x'\)，切片 \(f(x',\cdot)\in L^2(0,2\pi)\) 的所有一维系数为零，一维完备性给出该切片为零。因此 \(f=0\) 几乎处处，完备性成立。
+
+正交基的系数为 \((f,E_k)=(2\pi)^{n/2}\widehat f(k)\)，代入 Parseval 就得到展开及范数等式。若 \(-\Delta_gf=\lambda f\)、\(f\in H^2\)，逐个取系数得到 \((|k|^2-\lambda)\widehat f(k)=0\)，所以整个特征空间恰由满足所列条件的指数函数张成。这样的整数向量处在有界球内，只有有限多个。
+\end{proof}
+
+实值函数满足 \(\widehat f(-k)=\overline{\widehat f(k)}\)，把 \(k\) 与 \(-k\) 配成一对，就得到实正弦、余弦基。正交归一基与通常 Fourier 系数之间的常数差值得保留：使用 \(E_k\) 时系数直接满足无额外因子的 Parseval，使用 \(e^{\mathrm ik\cdot x}\) 时则出现体积因子 \((2\pi)^n\)。
+
+\ProseParagraphBreak
+
+对平均值为零的 \(f\in L^2(\mathbb T_{2\pi}^n)\)，唯一平均值为零的 Poisson 解是
+\[
+ u=\sum_{k\ne0}\frac{\widehat f(k)}{|k|^2}e^{\mathrm ik\cdot x},
+\]
+级数在 \(H^2\) 中收敛。零频对应整体平均值，所以要单独去掉；其余每个频率都被除以长度的平方。例如在二维环面上，取
+\[
+ f(x_1,x_2)=\cos(2x_1-x_2)+2\sin x_2.
+\]
+两个频率分别为 \((2,-1)\) 与 \((0,1)\)，故解为
+\[
+ u(x_1,x_2)=\frac15\cos(2x_1-x_2)+2\sin x_2.
+\]
+第一项沿 \((2,-1)\) 方向振荡，频率平方为 \(5\)；第二项的频率平方为 \(1\)。逐项求导可以核验 \(-\Delta_g u=f\)。再用三角函数正交性，得到
+\[
+ \int_{\mathbb T_{2\pi}^2}|\nabla_g u|^2\,\mathrm dx
+ =\int_{\mathbb T_{2\pi}^2}fu\,\mathrm dx
+ =(2\pi)^2\left(\frac1{10}+2\right).
+\]
+这个计算同时检查了频率分母、体积因子与能量符号。
 
 \subsection{球面上的球谐模型}
 \label{b2:subsec:260602}
 
-待撰写。
+单位球面 \(S^n\subset\mathbb R^{n+1}\) 取欧氏空间诱导的度量，体积测度就是通常面积测度 \(\mathrm d\sigma\)。球面上的频率用多项式的齐次次数来组织。令 \(\mathcal H_\ell\) 为 \(\mathbb R^{n+1}\) 上 \(\ell\) 次齐次调和复多项式空间，即
+\[
+ P(tx)=t^\ell P(x),\qquad \Delta_{\mathbb R^{n+1}}P=0.
+\]
+将这些多项式限制在 \(S^n\) 上，得到 \(\ell\) 阶球谐空间 \(\mathcal Y_\ell\)。齐次性使限制映射单射：若 \(P\) 在单位球面上为零，则 \(P(r\omega)=r^\ell P(\omega)=0\)，于是它在整个空间为零。
+
+\begin{proposition}[单位球面的球谐谱]\label{b2:prop:26-sphere-spectrum}
+设整数 \(n\geq1\)，\(S^n\) 取单位球面的标准度量和面积测度。在每个 \(\ell\geq0\) 的球谐空间 \(\mathcal Y_\ell\) 中选取正交归一基 \((Y_{\ell,a})_{1\leq a\leq N_\ell}\)。则这些基向量合起来是复 \(L^2(S^n,\mathrm d\sigma)\) 的正交归一基，并满足
+\[
+ -\Delta_{S^n}Y_{\ell,a}=\ell(\ell+n-1)Y_{\ell,a},
+\]
+其中
+\begin{equation}\label{b2:eq:26-spherical-multiplicity}
+ N_\ell=\binom{\ell+n}{n}-\binom{\ell+n-2}{n}.
+\end{equation}
+当 \(\ell=0,1\) 时第二项按零处理。这些数 \(\ell(\ell+n-1)\) 是全部特征值，重数为 \(N_\ell\)。特别地，\(N_0=1\)、\(N_1=n+1\)，最小正特征值为 \(n\)。
+\end{proposition}
+\begin{proof}
+在\cref{b2:prop:B2-polar-laplacian}中取环境维数 \(d=n+1\)，得到
+\[
+ \Delta_{\mathbb R^{n+1}}=\partial_r^2+\frac nr\partial_r+\frac1{r^2}\Delta_{S^n}.
+\]
+其中切向梯度来自诱导度量，角向散度与本章定义一致。代入 \(P(r\omega)=r^\ell Y(\omega)\)，得到
+\[
+ 0=\Delta P=r^{\ell-2}\bigl(\ell(\ell+n-1)Y+\Delta_{S^n}Y\bigr),
+\]
+因而有特征关系。\cref{b2:prop:B2-harmonic-decomposition}给出齐次多项式的直和分解
+\[
+ \mathcal P_\ell=\mathcal H_\ell\oplus|x|^2\mathcal P_{\ell-2}.
+\]
+空间 \(\mathcal P_\ell\) 的单项式基由 \(n+1\) 个非负整数指数之和等于 \(\ell\) 来计数，维数为 \(\binom{\ell+n}{n}\)；维数相减便得到\eqref{b2:eq:26-spherical-multiplicity}。
+
+相邻特征值之差为 \(2\ell+n>0\)，不同阶球谐因 Green 公式而正交。\cref{b2:thm:B2-spherical-expansion}已在面积测度下证明这些球谐的完备性：调和分解把球面多项式变成有限球谐和，多项式一致逼近连续函数，再由连续函数的 \(L^2\) 稠密性得到全部平方可积函数的展开。若 \(u\in H^2(S^n)\) 是任意特征函数，把方程与每个 \(Y_{\ell,a}\) 配对，就有
+\[
+ \bigl(\ell(\ell+n-1)-\lambda\bigr)(u,Y_{\ell,a})_{L^2}=0.
+\]
+完备性说明 \(\lambda\) 必等于某一个所列特征值，且 \(u\) 恰在对应的球谐空间中。因此列出的重数也就是整个特征空间的维数。
+\end{proof}
+
+当 \(n=1\) 时，球面就是单位圆，\(\lambda_\ell=\ell^2\)，且 \(N_0=1\)、\(N_\ell=2\)（\(\ell\geq1\)），对应同一频率下的正弦、余弦。当 \(n=2\) 时，\(\lambda_\ell=\ell(\ell+1)\)、\(N_\ell=2\ell+1\)。同一个阶数通常含多个独立方向，不能只用轴对称的 Legendre 多项式展开全部球面函数。
+
+\ProseParagraphBreak
+
+低阶源项可以直接计算。记 \(\omega=(\omega_1,\ldots,\omega_{n+1})\in S^n\)。一次函数 \(x_1\) 调和，故 \(\omega_1\) 的特征值为 \(n\)。二次多项式
+\[
+ x_1^2-\frac{|x|^2}{n+1}
+\]
+的欧氏 Laplace 为 \(2-2(n+1)/(n+1)=0\)，故其球面限制 \(\omega_1^2-1/(n+1)\) 的特征值为 \(2(n+1)\)。两者的平均值都为零：第一项由反射对称性得到，第二项由各坐标平方的积分相等及 \(\sum_a\omega_a^2=1\) 得到。因此
+\[
+ f(\omega)=\omega_1+3\left(\omega_1^2-\frac1{n+1}\right)
+\]
+的唯一零均值 Poisson 解为
+\[
+ u(\omega)=\frac{\omega_1}{n}
+       +\frac{3}{2(n+1)}\left(\omega_1^2-\frac1{n+1}\right).
+\]
+一般平方可积零均值数据的解则是
+\[
+ u=\sum_{\ell\geq1}\sum_{a=1}^{N_\ell}
+       \frac{(f,Y_{\ell,a})_{L^2}}{\ell(\ell+n-1)}Y_{\ell,a},
+\]
+由\cref{b2:thm:26-spectral-solvability}在 \(H^2(S^n)\) 中收敛。
+
+\ProseParagraphBreak
+
+几何尺度也能直接读出。对任意紧流形 \((M,g)\) 及常数 \(R>0\)，把度量换成 \(g_R=R^2g\)。坐标矩阵的逆乘以 \(R^{-2}\)，体积密度乘以 \(R^n\)，故
+\[
+ \mathrm dV_{g_R}=R^n\,\mathrm dV_g,\qquad
+ \Delta_{g_R}=R^{-2}\Delta_g.
+\]
+若 \(e_j\) 对原度量正交归一，则对新度量相应的归一化特征函数为 \(R^{-n/2}e_j\)，特征值为 \(R^{-2}\lambda_j\)。半径为 \(R\) 的圆球面因此有特征值 \(R^{-2}\ell(\ell+n-1)\)。空间尺度越大，同一种形状的振荡变化越慢，相应的梯度能量也越小。
 
 \subsection{标量理论与进一步推广的边界}
 \label{b2:subsec:260603}
 
-待撰写。
+带边界的紧流形还需要规定边界上的行为。以区间 \([0,\pi]\) 为例，同一个微分表达式 \(-u''\)，配上 \(u(0)=u(\pi)=0\) 后，特征函数为 \(\sin(kx)\)、特征值 \(k^2\)（\(k\geq1\)）；配上 \(u'(0)=u'(\pi)=0\) 后，出现常数模态及 \(\cos(kx)\)、特征值 \(k^2\)（\(k\geq0\)）。这两个算子的定义域分别为
+\[
+ \{\,u\in H^2(0,\pi)\mid u(0)=u(\pi)=0\,\},\qquad
+ \{\,u\in H^2(0,\pi)\mid u'(0)=u'(\pi)=0\,\}.
+\]
+端点条件使分部积分的边界项消失，却产生不同的零空间与 Poisson 相容条件。一般带边界流形上，除边界条件以外，还要检查边界的光滑性和相应的边界正则性估计，才能确定算子域与解的导数。
+
+\ProseParagraphBreak
+
+非紧流形则可能失去紧预解式。最直接的模型是 \(\mathbb R^n\)，\(n\geq1\)，及复 \(L^2(\mathbb R^n)\) 上定义域为 \(H^2(\mathbb R^n)\) 的算子 \(-\Delta\)。按本卷 Fourier 变换的 \(e^{-2\pi\mathrm ix\cdot\xi}\) 约定，\cref{b2:thm:04-plancherel-extension}与\cref{b2:thm:04-weak-derivative}把它变成乘法算子
+\[
+ \widehat{-\Delta u}(\xi)=4\pi^2|\xi|^2\widehat u(\xi).
+\]
+若 \(-\Delta u=\lambda u\) 且 \(u\in H^2\)，则 \(\widehat u\) 只能支撑在 \(4\pi^2|\xi|^2=\lambda\) 上。这是零测集（或空集），故平方可积的 \(\widehat u\) 只能为零。因此这个算子没有非零 \(L^2\) 特征函数。
+
+\ProseParagraphBreak
+
+尽管如此，每个 \(\lambda\geq0\) 都是谱点。取满足 \(4\pi^2|\xi_0|^2=\lambda\) 的 \(\xi_0\)，再取支撑在 \(\xi_0\) 的足够小邻域内、\(L^2\) 范数为一的光滑函数 \(h_\varepsilon\)，使其支集上
+\(\bigl|4\pi^2|\xi|^2-\lambda\bigr|<\varepsilon\)。令 \(u_\varepsilon=\mathcal F^{-1}h_\varepsilon\)，则 \(u_\varepsilon\in H^2\)，且
+\[
+ \|u_\varepsilon\|_2=1,\qquad
+ \|(-\Delta-\lambda)u_\varepsilon\|_2\leq\varepsilon.
+\]
+若存在有界逆，就会得到 \(1\leq C\varepsilon\)，矛盾。另一方面，对 \(z\notin[0,\infty)\)，乘子 \((4\pi^2|\xi|^2-z)^{-1}\) 定义从 \(L^2\) 到 \(H^2\) 的有界逆。故这里的谱是整个 \([0,\infty)\)。
+
+\ProseParagraphBreak
+
+这些谱点具有\term[lianxu-pu]{连续谱}[continuous spectrum]的特征：算子 \(-\Delta-\lambda\) 单射，值域稠密，却不是满射。单射性已由零测集论证得到。对任意频率数据，截去 \(|\xi|>N\) 和 \(\bigl|4\pi^2|\xi|^2-\lambda\bigr|<1/N\) 的区域，所余数据可以除以乘子得到 \(H^2\) 原像，而且这些截断在 \(L^2\) 中趋于原数据，所以值域稠密。非满射性也可直接构造：令
+\[
+ B_k=\{\,\xi\in\mathbb R^n\mid 2^{-k-1}<4\pi^2|\xi|^2-\lambda<2^{-k}\,\},
+ \qquad h_k=|B_k|^{-1/2}\cdot\mathbf1_{B_k}\quad(k\geq1).
+\]
+各 \(B_k\) 有限正测度且两两不交，故 \(h=\sum_{k\geq1}2^{-k}h_k\) 属于 \(L^2\)。但 \(h/(4\pi^2|\xi|^2-\lambda)\) 在每个 \(B_k\) 上的平方积分至少为一，因此不属于 \(L^2\)。源项 \(\mathcal F^{-1}h\) 没有 \(H^2\) 解，这就核实了非满射性。
+
+\ProseParagraphBreak
+
+紧性失效也可在位置空间看见。取一个非零紧支集光滑函数 \(\phi\)，沿彼此越来越远的位置作平移 \(\phi_j\)，使支集两两不交。它们的 \(H^1\) 范数相同，而 \(\|\phi_j-\phi_k\|_2^2=2\|\phi\|_2^2\)（\(j\ne k\)），所以没有 \(L^2\) 收敛子列。紧流形上的 Rellich 结论因这种向无穷远平移而失效。更直接地，令 \(f_j=(-\Delta+1)\phi_j\)，则 \((f_j)\) 在 \(L^2\) 中有界，但 \((-\Delta+1)^{-1}f_j=\phi_j\) 没有收敛子列；这个预解式确实不紧。
+
+\ProseParagraphBreak
+
+标量函数还可以推广为向量场或微分形式。对 \(k\) 次微分形式，外微分 \(\mathrm d\) 将次数升一。在紧致无边界 Riemann 流形上，以度量和体积密度定义形式的 \(L^2\) 内积，局部分部积分得到将次数降一的形式伴随 \(\delta\)，其含义是 \((\mathrm d\alpha,\beta)_{L^2}=(\alpha,\delta\beta)_{L^2}\)。相应的\term[hodge-laplace-suanzi]{Hodge Laplace 算子}[Hodge Laplacian]为
+\[
+ \Delta_{\mathrm H}=\mathrm d\delta+\delta\mathrm d.
+\]
+在零次形式上，它与本章的非负算子 \(-\Delta_g\) 一致；在高次形式上，各个分量随坐标变换相互联系，零空间也要由 \(\mathrm d\omega=0\)、\(\delta\omega=0\) 两个条件共同描述。由此继续研究，需要建立形式上的 Sobolev 空间、椭圆系统估计以及闭形式的全局结构。标量情形中已经看到的分支常数、局部正则性与紧逆算子，是这些问题最具体的起点。

@@ -2,19 +2,292 @@
 \section{标量椭圆问题的存在性与唯一性}
 \label{b2:sec:2603}
 
-待撰写。
+在无边界紧流形上，扩散只能重新分配源项，不能把总量送出空间。因而 \(-\Delta_gu=f\) 的可解性首先受到各连通分支总源量的限制；即使可解，解加上分支常数仍是解。一个非负的零阶项会约束这些常数方向。本节同时处理这两种情形，说明何时须归一化平均值，以及这种归一化怎样恢复唯一性和稳定估计。
 
 \subsection{强制性与 Lax–Milgram 方法}
 \label{b2:subsec:260301}
 
-待撰写。
+先引入能量中允许各方向扩散强度不同的情形。对每个 \(p\in M\)，令
+\(A_p:T_pM\to T_pM\) 为线性映射，且其坐标系数光滑地依赖 \(p\)。这样的对象称为切丛的光滑自同态。我们要求 \(A_p\) 相对于 \(g_p\) 自伴且正定，即
+\[
+ g_p(A_pX,Y)=g_p(X,A_pY),
+ \quad g_p(A_pX,X)>0\quad(X\ne0).
+\]
+它把梯度变成通量 \(A\nabla_g u\)。由于 \(M\) 紧，正定性有统一上下界：存在 \(0<\lambda\leq\Lambda<\infty\)，使
+\begin{equation}
+\label{b2:eq:26-A-ellipticity}
+ \lambda|X|_g^2\leq g(AX,X)\leq\Lambda|X|_g^2
+ \quad(p\in M,\ X\in T_pM).
+\end{equation}
+确实，在有限个紧坐标片上，度量与欧氏内积等价，单位切向量组成紧集；连续函数 \(g(AX,X)\) 在这些单位向量上取得正的最小值与有限最大值。自伴性还给出 \(|AX|_g\leq\Lambda|X|_g\)。
+
+\begin{definition}[标量椭圆算子及其能量型]
+\label{b2:def:26-elliptic-form}
+设 \((M,g)\) 为非空、紧致、无边界的 \(n\geq1\) 维光滑 Riemann 流形，\(A:TM\to TM\) 为光滑、\(g\)-自伴、正定的束自同态，\(c\in C^\infty(M;\mathbb R)\) 且 \(c\geq0\)。定义
+\[
+ Lu=-\operatorname{div}_g(A\nabla_g u)+cu
+ \quad(u\in C^2(M;\mathbb R)),
+\]
+以及 \(H^1(M;\mathbb R)\) 上的实对称双线性型
+\begin{equation}
+\label{b2:eq:26-elliptic-form}
+ a(u,v)=\int_M g(A\nabla_g u,\nabla_g v)\,\mathrm dV_g
+        +\int_Mcuv\,\mathrm dV_g.
+\end{equation}
+对 \(F\in H^{-1}(M)\)，称 \(u\in H^1(M;\mathbb R)\) 为 \(Lu=F\) 的弱解，是指
+\(a(u,v)=F(v)\) 对每个 \(v\in H^1(M;\mathbb R)\) 成立。
+\end{definition}
+
+对光滑 \(u\) 与 \(v\)，把 \(A\nabla_g u\) 代入散度乘积公式，就有
+\(\int_M(Lu)v\,\mathrm dV_g=a(u,v)\)。光滑测试函数的稠密性再把这一等式推广到任意 \(v\in H^1\)。这核对了微分表达式与弱形式的符号。
+
+在局部坐标中写 \(A(\partial_{x^k})=A^i{}_k\partial_{x^i}\)，并令
+\[
+ a^{ij}=\sum_kA^i{}_kg^{kj}.
+\]
+矩阵 \((a^{ij})\) 对称且正定。对协向量的坐标 \(\xi=(\xi_j)\)，令 \(X^i=g^{ij}\xi_j\)，则
+\(\sum_{i,j}a^{ij}\xi_i\xi_j=g(AX,X)>0\)；自伴性给出它的对称性。于是
+\begin{equation}
+\label{b2:eq:26-elliptic-coordinate}
+ Lu=-\rho^{-1}\partial_i(\rho a^{ij}\partial_ju)+cu.
+\end{equation}
+特别地，对坐标图中紧支集的光滑测试函数 \(\varphi\)，\(Lu=f\) 的局部弱式为
+\[
+ \int\rho a^{ij}\partial_ju\,\partial_i\varphi\,\mathrm dx
+ +\int\rho cu\varphi\,\mathrm dx
+ =\int\rho f\varphi\,\mathrm dx.
+\]
+几何数据进入了矩阵 \(\rho a^{ij}\) 与低阶系数；这把流形方程接到了前面讨论过的欧氏散度型方程上。
+
+由 Cauchy--Schwarz 不等式和\eqref{b2:eq:26-A-ellipticity}，型 \(a\) 有界：
+\[
+ |a(u,v)|
+ \leq\Lambda\|\nabla_g u\|_2\|\nabla_g v\|_2
+       +\|c\|_\infty\|u\|_2\|v\|_2
+ \leq(\Lambda+\|c\|_\infty)\|u\|_{H^1}\|v\|_{H^1}.
+\]
+而 \(a(u,u)\geq\lambda\|\nabla_g u\|_2^2\)。梯度下界已控制了函数的变化，却还没有控制每个分支上的整体高度。先加上一个正的零阶项，便可以同时控制两者。
+
+\begin{theorem}[正移位方程的弱可解性]
+\label{b2:thm:26-shifted-weak}
+设 \((M,g)\) 为非空、紧致、无边界的 \(n\geq1\) 维光滑 Riemann 流形，\(A:TM\to TM\) 光滑、\(g\)-自伴、正定，\(c\in C^\infty(M;\mathbb R)\)、\(c\geq0\)。令 \(L=-\operatorname{div}_g(A\nabla_g)+c\)，令 \(\lambda>0\) 满足\eqref{b2:eq:26-A-ellipticity}的下界。对任意 \(\mu>0\) 和 \(F\in H^{-1}(M)\)，存在唯一实值 \(u\in H^1(M)\)，使
+\[
+ a(u,v)+\mu\int_Muv\,\mathrm dV_g=F(v)
+ \quad(v\in H^1(M)),
+\]
+其中 \(a\) 由\eqref{b2:eq:26-elliptic-form}给出。并且
+\[
+ \|u\|_{H^1}
+ \leq\min\{\lambda,\mu\}^{-1}\|F\|_{H^{-1}}.
+\]
+\end{theorem}
+\begin{proof}
+\cref{b2:prop:26-energy-norm}给出实 Hilbert 空间 \(H^1(M)\)。型
+\(a_\mu(u,v)=a(u,v)+\mu(u,v)_{L^2}\) 有界，并满足
+\[
+ a_\mu(u,u)\geq\lambda\|\nabla_g u\|_2^2+\mu\|u\|_2^2
+ \geq\min\{\lambda,\mu\}\|u\|_{H^1}^2.
+\]
+因此\cref{b2:thm:15-lax-milgram}的有界性、强制性以及右端属于连续对偶三项条件全部成立。该定理给出唯一解与所列估计。
+\end{proof}
+
+例如 \(A=I\)、\(c=0\)、\(\mu=1\) 时，每个 \(f\in L^2(M)\) 都唯一确定
+\((-\Delta_g+1)u=f\)。这里的 \(1\) 作用在函数的取值上，能控制常数方向。若 \(\mu\) 趋于零，这个控制也会减弱：当 \(f=1\) 时，\((-\Delta_g+\mu)u=1\) 的唯一解为 \(u=\mu^{-1}\)。所以不能在任意源项下直接令 \(\mu\downarrow0\) 来解 Poisson 方程。
 
 \subsection{零空间与相容条件}
 \label{b2:subsec:260302}
 
-待撰写。
+紧流形的连通分支是有限个开闭子集，记为 \(M_1,\ldots,M_r\)。分支的示性函数 \(\mathbf1_{M_j}\) 在流形上光滑：它在每个点的一个邻域内都是常数。对非负势 \(c\)，记
+\[
+ Z=\{\,j\in\{1,\ldots,r\}:c|_{M_j}\equiv0\,\},
+ \quad
+ K=\operatorname{span}\{\,\mathbf1_{M_j}:j\in Z\,\}.
+\]
+若 \(Z\) 为空，约定 \(K=\{0\}\)。这些函数正是势项仍未约束的常数方向。
+
+\begin{proposition}[零空间与相容条件]
+\label{b2:prop:26-kernel-compatibility}
+设 \((M,g)\) 为非空、紧致、无边界的 \(n\geq1\) 维光滑 Riemann 流形，连通分支为 \(M_1,\ldots,M_r\)。设 \(A:TM\to TM\) 光滑、\(g\)-自伴、正定，\(c\in C^\infty(M;\mathbb R)\)、\(c\geq0\)，并按\eqref{b2:eq:26-elliptic-form}定义型 \(a\)。令
+\(Z=\{j:c|_{M_j}\equiv0\}\)、\(K=\operatorname{span}\{\mathbf1_{M_j}:j\in Z\}\)。则
+\[
+ \{\,u\in H^1(M):a(u,v)=0\ (\forall v\in H^1(M))\,\}=K.
+\]
+若 \(F\in H^{-1}(M)\) 且 \(a(u,v)=F(v)\) 存在 \(H^1(M)\) 中的弱解，则
+\begin{equation}
+\label{b2:eq:26-compatibility}
+ F(\mathbf1_{M_j})=0\quad(j\in Z).
+\end{equation}
+当 \(F(v)=\int_Mfv\,\mathrm dV_g\)、\(f\in L^2(M)\) 时，这些条件等价于
+\(\int_{M_j}f\,\mathrm dV_g=0\) 对每个 \(j\in Z\) 成立。
+\end{proposition}
+\begin{proof}
+设 \(a(u,v)=0\) 对所有 \(v\) 成立。取 \(v=u\)，得到
+\[
+ 0=a(u,u)
+ \geq\lambda\|\nabla_g u\|_2^2+\int_Mcu^2\,\mathrm dV_g.
+\]
+两项均非负，所以梯度为零。\cref{b2:lem:28-zero-gradient}的局部常数判别说明，\(u\) 在每个连通分支 \(M_j\) 上几乎处处等于一个常数 \(d_j\)。于是
+\[
+ 0=\int_Mcu^2\,\mathrm dV_g
+   =\sum_{j=1}^r d_j^2\int_{M_j}c\,\mathrm dV_g.
+\]
+若 \(c|_{M_j}\not\equiv0\)，连续性及非负性保证 \(c\) 在一个非空开集上严格为正，故 \(\int_{M_j}c\,\mathrm dV_g>0\)，从而 \(d_j=0\)。因此 \(u\in K\)。反过来，每个 \(k\in K\) 都满足 \(\nabla_g k=0\) 及 \(ck=0\)，所以 \(a(k,v)=0\) 对所有 \(v\) 成立。
+
+若 \(u\) 为右端 \(F\) 的弱解，取 \(v=\mathbf1_{M_j}\)、\(j\in Z\)，则梯度项和势项都为零，得到\eqref{b2:eq:26-compatibility}。函数型右端的结论只需把示性函数代入积分。
+\end{proof}
+
+在连通流形上，\(-\Delta_g u=f\) 因而要求 \(\int_Mf=0\)，所有可能的非唯一性都是一个常数。在不连通流形上，只有全局积分为零还不够。例如令 \(M\) 是两个同样大小的圆的不交并，\(f\) 在第一个圆上恒为 \(1\)、第二个圆上恒为 \(-1\)。它的全局积分为零，但对第一个分支的示性函数测试会得到 \(0=\operatorname{Vol}_g(M_1)\)，所以不存在弱解。扩散不能把一个连通分支上的源量输送到另一个分支。
+
+势项也按分支起作用。若 \(M\) 连通且 \(c\geq0\) 在某个非空开集上为正，则 \(K=\{0\}\)；\(c\) 无须在每一点都有统一正下界。若 \(M\) 不连通，即使 \(c\) 在整个 \(M\) 上不恒为零，其他满足 \(c\equiv0\) 的分支仍各保留一个常数方向。
 
 \subsection{平均值归一化与唯一性}
 \label{b2:subsec:260303}
 
-待撰写。
+对 \(u\in H^1(M)\)，定义其在分支 \(M_j\) 上的平均值为
+\[
+ m_j(u)=\frac1{\operatorname{Vol}_g(M_j)}
+             \int_{M_j}u\,\mathrm dV_g.
+\]
+体积严格为正且有限，因此这是连续线性泛函。把平均值固定下来，就能用梯度控制整个函数。下面的证明把紧嵌入转化为这样的定量估计。
+
+\begin{lemma}[分支平均值归一化的 Poincaré 不等式]
+\label{b2:lemma:26-component-poincare}
+设 \((M,g)\) 为非空、紧致、无边界的 \(n\geq1\) 维光滑 Riemann 流形，连通分支为 \(M_1,\ldots,M_r\)。存在常数 \(C_P=C_P(M,g)>0\)，使每个实值 \(u\in H^1(M)\) 满足
+\begin{equation}
+\label{b2:eq:26-component-poincare}
+ \left\|u-\sum_{j=1}^rm_j(u)\mathbf1_{M_j}\right\|_2
+ \leq C_P\|\nabla_g u\|_2,
+ \quad
+ m_j(u)=\operatorname{Vol}_g(M_j)^{-1}\int_{M_j}u\,\mathrm dV_g.
+\end{equation}
+\end{lemma}
+\begin{proof}
+只需证明所有分支平均值都为零的函数满足
+\(\|w\|_2\leq C_P\|\nabla_gw\|_2\)，因为减去分支常数不改变梯度。若不存在这样的常数，则存在 \(w_k\in H^1(M)\)，使
+\[
+ m_j(w_k)=0\ (1\leq j\leq r),
+ \quad \|w_k\|_2=1,
+ \quad \|\nabla_gw_k\|_2<k^{-1}.
+\]
+这列函数的 \(H^1\) 范数有界。由\cref{b2:thm:28-manifold-rellich}中的 \(H^1(M)\hookrightarrow L^2(M)\) 紧嵌入，取子列后有 \(w_k\to w\) 于 \(L^2(M)\)，且 \(\|w\|_2=1\)、\(m_j(w)=0\)。在每个紧坐标片上，欧氏一阶导数由 \(\nabla_gw_k\) 控制，因而趋于零。对其中的任意光滑紧支集测试函数 \(\varphi\)，通过
+\(\int w_k\partial_i\varphi=-\int(\partial_iw_k)\varphi\)
+取极限，得到 \(\partial_iw=0\) 的分布恒等式。\cref{b2:lem:28-zero-gradient}使 \(w\) 在各连通分支上为常数；零平均值又使这些常数全为零。这与 \(\|w\|_2=1\) 矛盾。
+\end{proof}
+
+对一般非负势，只须在势完全消失的分支上固定平均值。令
+\[
+ X=\{\,u\in H^1(M;\mathbb R):m_j(u)=0\ (j\in Z)\,\}.
+\]
+它是 Hilbert 空间 \(H^1(M)\) 的闭子空间。我们接下来证明，型 \(a\) 在 \(X\) 上强制；势为正的部分负责补足其余分支上的平均值控制。
+
+\begin{theorem}[非负势的相容性与唯一归一化解]
+\label{b2:thm:26-weak-solvability}
+设 \((M,g)\) 为非空、紧致、无边界的 \(n\geq1\) 维光滑 Riemann 流形，连通分支为 \(M_1,\ldots,M_r\)。设 \(A:TM\to TM\) 光滑、\(g\)-自伴、正定，\(c\in C^\infty(M;\mathbb R)\)、\(c\geq0\)，令
+\[
+ \begin{gathered}
+ Lu=-\operatorname{div}_g(A\nabla_g u)+cu,\\
+ Z=\{\,j:c|_{M_j}\equiv0\,\},
+ \quad K=\operatorname{span}\{\,\mathbf1_{M_j}:j\in Z\,\},\\
+ X=\left\{\,u\in H^1(M;\mathbb R):
+              \int_{M_j}u\,\mathrm dV_g=0\ (j\in Z)\,\right\}.
+ \end{gathered}
+\]
+对每个 \(F\in H^{-1}(M)\)，方程 \(Lu=F\) 存在 \(H^1\) 弱解当且仅当
+\(F(\mathbf1_{M_j})=0\) 对所有 \(j\in Z\) 成立。满足相容条件时，存在唯一 \(u_0\in X\) 满足弱方程，且全部解为 \(u_0+K\)。存在仅依赖于 \(M,g,A,c\) 的常数 \(C>0\)，使
+\[
+ \|u_0\|_{H^1}\leq C\|F\|_{H^{-1}}.
+\]
+特别地，若 \(c\) 在每个连通分支上都不恒为零，则每个 \(F\in H^{-1}(M)\) 都有唯一弱解。
+\end{theorem}
+\begin{proof}
+必要性及零空间已由\cref{b2:prop:26-kernel-compatibility}给出。为证充分性，先核对 \(a\) 在 \(X\) 上的强制性。对 \(u\in X\)，在每个分支写
+\(u=m_j+w_j\)，其中 \(m_j=m_j(u)\)、\(\int_{M_j}w_j=0\)。
+\cref{b2:lemma:26-component-poincare}给出
+\[
+ \sum_j\|w_j\|_{L^2(M_j)}^2
+ \leq C_P^2\|\nabla_g u\|_2^2.
+\]
+若 \(j\in Z\)，归一化条件已使 \(m_j=0\)。若 \(j\notin Z\)，记
+\(C_j=\int_{M_j}c\,\mathrm dV_g>0\)。由
+\(m_jC_j=\int_{M_j}cu-\int_{M_j}cw_j\) 及两次 Cauchy--Schwarz 不等式，
+\[
+ |m_j|C_j
+ \leq C_j^{1/2}\left(\int_{M_j}cu^2\,\mathrm dV_g\right)^{1/2}
+      +\|c\|_{L^2(M_j)}\|w_j\|_{L^2(M_j)}.
+\]
+将两边平方并用 \((s+t)^2\leq2s^2+2t^2\)，得到
+\[
+ |m_j|^2
+ \leq\frac2{C_j}\int_{M_j}cu^2\,\mathrm dV_g
+    +\frac{2\|c\|_{L^2(M_j)}^2}{C_j^2}
+          \|w_j\|_{L^2(M_j)}^2.
+\]
+常数与零平均值部分在 \(L^2(M_j)\) 中正交，所以
+\[
+ \|u\|_2^2
+ =\sum_j\bigl(\|w_j\|_{L^2(M_j)}^2
+              +\operatorname{Vol}_g(M_j)|m_j|^2\bigr)
+ \leq C_1\left(\|\nabla_g u\|_2^2+\int_Mcu^2\,\mathrm dV_g\right),
+\]
+其中有限个分支的体积、\(C_j\) 和 \(C_P\) 已包含在 \(C_1\) 中。再用主部的下界
+\(a(u,u)\geq\lambda\|\nabla_g u\|_2^2+\int_Mcu^2\)，得到某个 \(\alpha>0\) 使
+\[
+ a(u,u)\geq\alpha\|u\|_{H^1}^2\quad(u\in X).
+\]
+
+型在 \(X\) 上有界，\(F|_X\) 连续，故\cref{b2:thm:15-lax-milgram}给出唯一 \(u_0\in X\)，满足
+\(a(u_0,v)=F(v)\) 对所有 \(v\in X\) 成立，且
+\(\|u_0\|_{H^1}\leq\alpha^{-1}\|F\|_{H^{-1}}\)。
+为了把测试函数扩展到整个 \(H^1(M)\)，对任意 \(v\in H^1(M)\) 写
+\[
+ v=v_0+k,
+ \quad k=\sum_{j\in Z}m_j(v)\mathbf1_{M_j}\in K,
+ \quad v_0\in X.
+\]
+由于 \(a(u_0,k)=0\)、\(F(k)=0\)，得
+\(a(u_0,v)=a(u_0,v_0)=F(v_0)=F(v)\)。因此 \(u_0\) 满足完整弱方程。
+两个解之差属于已确定的零空间 \(K\)；而 \(X\cap K=\{0\}\)，故归一化解唯一，全部解恰为 \(u_0+K\)。若 \(Z\) 为空，则 \(X=H^1(M)\)、\(K=\{0\}\)，得到最后的结论。
+\end{proof}
+
+\begin{corollary}[紧流形上 Poisson 方程的可解性]
+\label{b2:cor:26-poisson-solvability}
+设 \((M,g)\) 为非空、紧致、无边界的 \(n\geq1\) 维光滑 Riemann 流形，连通分支为 \(M_1,\ldots,M_r\)，且 \(F\in H^{-1}(M)\)。方程 \(-\Delta_gu=F\) 存在实值 \(H^1(M)\) 弱解，当且仅当
+\(F(\mathbf1_{M_j})=0\) 对每个 \(1\leq j\leq r\) 成立。此时每个分支平均值为零的解唯一，其他解由它加任意分支常数得到。归一化解满足
+\[
+ \|u\|_{H^1}\leq(1+C_P^2)\|F\|_{H^{-1}},
+\]
+其中 \(C_P\) 是\eqref{b2:eq:26-component-poincare}的常数。
+若 \(F(v)=\int_Mfv\,\mathrm dV_g\)、\(f\in L^2(M)\)，则还可取估计
+\[
+ \|\nabla_g u\|_2\leq C_P\|f\|_2,
+ \quad \|u\|_2\leq C_P^2\|f\|_2.
+\]
+\end{corollary}
+\begin{proof}
+在前一定理中取 \(A=I\)、\(c=0\)，则 \(Z=\{1,\ldots,r\}\)，即得可解性与唯一性。在归一化空间上，Poincaré 不等式给出
+\(\|u\|_{H^1}^2\leq(1+C_P^2)\|\nabla_g u\|_2^2\)，所以强制常数可取 \((1+C_P^2)^{-1}\)，得到对偶估计。对 \(L^2\) 源项，在弱方程中取 \(v=u\)，有
+\[
+ \|\nabla_g u\|_2^2
+ =\int_Mfu\,\mathrm dV_g
+ \leq\|f\|_2\|u\|_2
+ \leq C_P\|f\|_2\|\nabla_g u\|_2.
+\]
+若梯度范数为零，则归一化给出 \(u=0\)，两项估计成立；否则除以梯度范数，再用一次 Poincaré 不等式，得到所列上界。
+\end{proof}
+
+在半径为 \(R\) 的圆上，令 \(f(\theta)=\cos\theta\)，其平均值为零，归一化解是
+\(u(\theta)=R^2\cos\theta\)。这个公式既满足
+\(-R^{-2}u''=f\)，又显示解的大小会受到空间尺度的影响。
+当 \(f=1\) 时，相容条件失效；当 \(f=0\) 时，所有常函数都是解，而平均值归零恰好选出零解。三个例子分别对应存在性、相容性与归一化的作用。
+
+对一般对称型，归一化解还有极小化刻画。在前一定理的空间 \(X\) 上令
+\(J(v)=\tfrac12a(v,v)-F(v)\)。若 \(u_0\) 满足弱方程，则对任意 \(h\in X\)，直接展开得
+\[
+ J(u_0+h)-J(u_0)=\frac12a(h,h)\geq\frac\alpha2\|h\|_{H^1}^2.
+\]
+故 \(u_0\) 是 \(J\) 在 \(X\) 上的唯一极小点。若两个相容右端为 \(F_1,F_2\)，相应归一化解为 \(u_1,u_2\)，对差方程使用同一估计得到
+\[
+ \|u_1-u_2\|_{H^1}
+ \leq\alpha^{-1}\|F_1-F_2\|_{H^{-1}}.
+\]
+这使弱解不仅存在，而且随源项连续变化。下一节将利用坐标中的局部估计，把这种能量解的正则性提升到与源项和系数相称的阶数。

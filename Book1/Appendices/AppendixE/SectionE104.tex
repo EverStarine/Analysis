@@ -2,24 +2,423 @@
 \section{定向、积分与 Stokes 公式}
 \label{b1:sec:E104}
 
-待撰写。
+一张坐标图把最高次形式写成一个函数乘以坐标体积形式，看起来已经可以积分。但还须解决两个问题：换坐标时出现的行列式可能为负，而一般流形也未必能由一张图覆盖。定向协调第一个问题，单位分解处理第二个问题。把这两个构造建立以后，Stokes 公式的证明可以回到一维微积分基本定理。
+
+\ProseParagraphBreak
+
+\appref{b1:app:B}已经解释了向量空间的定向、外法向优先约定及嵌入曲面的有向积分。本节用抽象光滑流形自身的坐标和切空间来构造有向积分。这里的流形均为有限维实 Hausdorff、第二可数光滑流形，可以有边界而没有角点；边界附近的光滑性按半空间上的局部光滑延拓理解。以下形式均取实系数，复系数版本只须分别处理实部、虚部。
 
 \subsection{流形与边界的定向}
 \label{b1:subsec:E10401}
 
-待撰写。
+在每个切空间单独选择一个方向并不困难。真正需要检查的是：沿流形移动时，这些选择能否连续衔接。\cref{b1:def:app-b-orientation}已经把一个正维实向量空间的定向定义为有序基的两个同向类之一；这里要求各点的选择在坐标中不发生突然翻转。
+
+\begin{definition}\label{b1:def:E-orientation}
+设 \(M\) 为维数 \(n\geq1\) 的实光滑流形，可以有边界。\(M\) 的一个定向是在每个 \(T_pM\) 中选择一个定向，使每点都有连通坐标邻域 \((U,x)\)，其中坐标基
+\[
+ \left(\frac{\partial}{\partial x^1},\ldots,
+              \frac{\partial}{\partial x^n}\right)
+\]
+在 \(U\) 中处处为正向，或处处为负向。存在这种选择时称 \(M\) 可定向；连同一个指定定向的 \(M\) 称为定向流形。把坐标基相对于指定定向的符号记为
+\[
+ \varepsilon_x\in\{1,-1\}.
+\]
+边界坐标的值域取半空间
+\(\mathbb H^n=\{\,x\in\mathbb R^n:x^n\geq0\,\}\)
+中的相对开集，坐标基仍包含全部 \(n\) 个方向。
+\end{definition}
+
+若 \(x,y\) 是两个连通坐标图，在重叠部分有
+\[
+ \frac{\partial}{\partial y^j}
+   =\sum_i\frac{\partial x^i}{\partial y^j}
+                        \frac{\partial}{\partial x^i}.
+\]
+由基变换的行列式规则，定向符号满足
+\begin{equation}\label{b1:eq:E-orientation-sign}
+ \varepsilon_y
+  =\varepsilon_x\,
+     \operatorname{sgn}\det D(x\circ y^{-1}).
+\end{equation}
+因此定向是在重叠处兼容的一组符号，不是在每张图上任意写一个正号。若 \(M\) 连通且已有一个定向，任何另一种定向相对于它的符号都是局部常值的 \(\{\pm1\}\) 值函数，因而为常数；这时恰有两个定向。不连通时，各连通分支可以独立选择。
+
+\ProseParagraphBreak
+
+保留 \(\varepsilon_x\) 而不只使用正向坐标，有一个实际好处。在标准定向区间 \([a,b]\) 的右端，边界坐标必须把内部送入 \([0,\infty)\)，例如 \(x=b-t\)。它相对于 \(t\) 的正方向是负向坐标；在一维，没有另一个切向坐标可供反转以修正符号。因此一般带边界流形的积分定义应允许使用带符号的坐标图。
+
+\begin{proposition}\label{b1:prop:E-orientation-volume}
+设 \(M\) 为维数 \(n\geq1\) 的实光滑流形，可以有边界。\(M\) 可定向，当且仅当它存在一个处处不为零的光滑 \(n\) 次形式。给定定向后，可以选取这样的形式 \(\Omega\)，使它在每个正向有序基上的值都为正；反过来，这种正性规定唯一确定一个定向。
+\end{proposition}
+\begin{proof}
+若 \(\Omega\) 处处不为零，它在每点的顶次外空间上是一个非零线性泛函，所以有序基按 \(\Omega\) 取值为正或为负分为两类。在局部坐标中写
+\(\Omega=a(x)\,\mathrm dx^1\wedge\cdots\wedge\mathrm dx^n\)。
+连续非零函数 \(a\) 的符号在充分小的连通邻域固定，因此得到定义所要求的定向。
+
+反过来，取连通坐标图册 \((U_i,x_i)\)，记其定向符号为 \(\varepsilon_i\)。在 \(U_i\) 上，形式
+\[
+ \Omega_i=\varepsilon_i\,
+      \mathrm dx_i^1\wedge\cdots\wedge\mathrm dx_i^n
+\]
+在每个正向基上为正。由\cref{b1:thm:E-partition-unity}，取从属于此图册的非负光滑单位分解 \((\rho_i)\)，其支集包含于相应的 \(U_i\)。将 \(\rho_i\Omega_i\) 在图外补零，得到全域光滑形式；支集条件保证图的人工边缘附近没有跳跃。局部有限和
+\[
+ \Omega=\sum_i\rho_i\Omega_i
+\]
+光滑。在每个点至少有一个 \(\rho_i>0\)，所有非零项在正向基上的值又都为正，因此 \(\Omega\) 处处不为零。
+\end{proof}
+
+这里使用的 \(\Omega\) 是一种体积形式，但尚未指定长度或 Riemann 度量。只要乘以任意正光滑函数，它就给出同一个定向。因此定向决定符号，不决定“单位体积”的大小；形式的积分也不必预先依赖一个度量。
+
+\ProseParagraphBreak
+
+局部可定向不等于整体可定向。例如在带状区域
+\(\mathbb R\times[-1,1]\) 上作识别
+\((s+2\pi,t)\sim(s,-t)\)，得到 Möbius 带。若它有处处非零的二次形式，拉回到展开的带状坐标后可写成
+\(a(s,t)\,\mathrm ds\wedge\mathrm dt\)，兼容条件要求
+\[
+ a(s+2\pi,-t)=-a(s,t).
+\]
+在中线上便有 \(a(s+2\pi,0)=-a(s,0)\)。连续函数从一个非零值变到其相反数必须经过零，与处处不为零矛盾。障碍来自绕一圈后的符号反转，而不是某一点没有坐标。
+
+\ProseParagraphBreak
+
+接下来固定边界方向。边界点处的切空间 \(T_pM\) 仍为 \(n\) 维，\(T_p\partial M\) 只是其中的一个超平面。在边界坐标 \(x^n\geq0\) 下，称满足
+\(\mathrm dx^n(v)<0\) 的 \(v\in T_pM\) 为外向横截向量。这个说法无需度量，也不要求 \(v\) 与边界正交。
+
+\begin{definition}\label{b1:def:E-boundary-orientation}
+设 \(M\) 为维数 \(n\geq1\) 的定向实光滑带边界流形，\(p\in\partial M\)。当 \(n\geq2\) 时，规定 \(T_p\partial M\) 的基 \((v_1,\ldots,v_{n-1})\) 为正向，当且仅当
+\((\nu,v_1,\ldots,v_{n-1})\) 为 \(T_pM\) 的正向基，其中 \(\nu\) 是任意外向横截向量。这称为边界的诱导定向，采用外法向在前的约定。
+
+\ProseParagraphBreak
+
+当 \(n=1\) 时，边界是零维流形。沿用\subsecref{b1:subsec:B10501}的约定，给每个边界点赋予符号 \(+1\) 或 \(-1\)：外向向量相对于 \(T_pM\) 的定向为正时赋 \(+1\)，为负时赋 \(-1\)。零维定向不能通过唯一的空基区分，因而必须保留这项符号约定。
+\end{definition}
+
+\begin{proposition}\label{b1:prop:E-boundary-orientation}
+设 \(M\) 为维数 \(n\geq1\) 的定向实光滑带边界流形。上述边界定向不依赖边界坐标或外向横截向量的选择，并在 \(\partial M\) 上连续。若边界坐标 \(x\) 的定向符号为 \(\varepsilon_x\)，则边界坐标
+\((x^1,\ldots,x^{n-1})\) 相对于诱导定向的符号为
+\begin{equation}\label{b1:eq:E-boundary-sign}
+ \varepsilon_{\partial,x}=\varepsilon_x(-1)^n.
+\end{equation}
+当 \(n=1\) 时，右端直接表示这个边界点的符号。
+\end{proposition}
+\begin{proof}
+先证明外向性与图无关。\cref{b1:prop:E-boundary-invariance}已经说明，两个边界图的过渡映射 \(y=F(x)\) 在边界处的导数末行为
+\((0,\ldots,0,c)\)，其中 \(c>0\)：边界上的最后坐标恒为零，而内部一侧仍被送到内部一侧。因此
+\[
+ \mathrm dy^n(v)=c\,\mathrm dx^n(v)
+\]
+保持符号。
+
+若 \(\nu,\widetilde\nu\) 都外向，则可写
+\(\widetilde\nu=c\nu+w\)，其中 \(c>0\)、\(w\in T_p\partial M\)。对任意边界基，把第一列中的 \(w\) 减去不改变行列式，再把第一列乘以正数 \(c\) 也不改变其符号。因此用两种外向向量得到同一边界定向。局部取 \(-\partial/\partial x^n\) 作为外向向量场，便看出这个定向连续。
+
+最后，从
+\((\partial/\partial x^1,\ldots,\partial/\partial x^n)\)
+改为
+\[
+ \left(-\frac{\partial}{\partial x^n},
+       \frac{\partial}{\partial x^1},\ldots,
+       \frac{\partial}{\partial x^{n-1}}\right)
+\]
+需要 \(n-1\) 次交换及一次取负，总符号为 \((-1)^n\)。乘以原坐标符号 \(\varepsilon_x\)，即得\eqref{b1:eq:E-boundary-sign}。在 \(n=1\) 时，同一计算给出外向向量的符号 \(-\varepsilon_x\)，与零维约定相符。
+\end{proof}
+
+如果流形带有 Riemann 度量，可以选单位外法向作为 \(\nu\)，这就回到\cref{b1:prop:app-b-boundary-orientation}的写法。使用度量只是选出一个方便的代表，并不改变边界定向。平面上的几何关系可回看\cref{b1:fig:visual-f21}：外法向与正向切向量依次组成正向基，区域沿正向边界行进时位于左侧。
 
 \subsection{形式积分与坐标无关性}
 \label{b1:subsec:E10402}
 
-待撰写。
+积分的是最高次形式，而不是“坐标系数这个函数”本身。若换了坐标，系数会带上一个有符号行列式；普通 Lebesgue 换元又带上行列式的绝对值，定向符号正好协调这两种变化。
+
+\begin{proposition}\label{b1:prop:E-chart-integral}
+设 \(M\) 为维数 \(n\geq1\) 的定向实光滑流形，可以有边界，\(\omega\) 为光滑 \(n\) 次形式，且 \(\operatorname{supp}\omega\) 是包含于连通坐标邻域 \(U\) 的紧集。若 \(x:U\longrightarrow V\) 是该坐标图，定向符号为 \(\varepsilon_x\)，写
+\[
+ (x^{-1})^*\omega
+   =a_x(x)\,\mathrm dx^1\wedge\cdots\wedge\mathrm dx^n,
+\]
+则数
+\[
+ I_x(\omega)\coloneqq\varepsilon_x\int_Va_x(x)\,\mathrm dx
+\]
+有限。若另一连通坐标邻域也包含 \(\operatorname{supp}\omega\)，用它计算得到同一个数。
+\end{proposition}
+\begin{proof}
+系数 \(a_x\) 的支集是 \(V\) 内的紧集，所以有界并具有有限 Lebesgue 测度，积分绝对收敛。设另一坐标为 \(y\)，令 \(\Phi=x\circ y^{-1}\)。在重叠部分，拉回公式给出
+\[
+ a_y(y)=a_x(\Phi(y))\det D\Phi(y).
+\]
+由\eqref{b1:eq:E-orientation-sign}，
+\[
+ \varepsilon_y a_y(y)
+  =\varepsilon_x a_x(\Phi(y))|\det D\Phi(y)|.
+\]
+对内点应用\cref{b1:thm:c1-change-of-variables}：过渡映射是开集间的光滑微分同胚，因此满足该 \(C^1\) 换元定理的条件。坐标边界包含在超平面中，\(n\) 维 Lebesgue 测度为零，删去它们不改变任何一端的积分。两图重叠部分以外的系数为零，因为形式的支集包含于重叠部分；故两端正是各自的全部坐标积分。重叠部分不连通也没有问题，上述符号恒等式逐点成立。
+\end{proof}
+
+这个命题只处理支集落在一张图中的形式。为了定义任意紧支集形式的积分，取坐标图册及从属于它的单位分解，把形式拆成这样的小块。
+
+\begin{definition}\label{b1:def:E-integral}
+设 \(M\) 为维数 \(n\geq1\) 的定向实光滑流形，可以有边界，\(\omega\in\Omega_c^n(M)\) 为实光滑紧支集 \(n\) 次形式。取连通坐标图册 \((U_i,x_i)\) 及从属于它的非负光滑单位分解 \((\rho_i)\)，定义
+\begin{equation}\label{b1:eq:E-manifold-integral}
+ \int_M\omega\coloneqq\sum_i I_{x_i}(\rho_i\omega).
+\end{equation}
+若 \(M\) 是零维流形，每个点 \(p\) 带有指定符号 \(\varepsilon(p)\in\{\pm1\}\)，则对紧支集函数 \(f\) 定义
+\[
+ \int_Mf\coloneqq\sum_{p\in M}\varepsilon(p)f(p).
+\]
+零维流形离散，紧集只能含有限个点，所以上式是有限和。
+\end{definition}
+
+在\eqref{b1:eq:E-manifold-integral}中同样只有有限个非零项。理由不仅是“单位分解局部有限”：令 \(K=\operatorname{supp}\omega\)，每点有只遇到有限个 \(\operatorname{supp}\rho_i\) 的邻域，再用有限多个这样的邻域覆盖紧集 \(K\)，就得到只有限多个 \(\rho_i\omega\) 可能非零。此外，
+\(\operatorname{supp}(\rho_i\omega)\subseteq K\cap\operatorname{supp}\rho_i\subseteq U_i\)，
+是 \(U_i\) 中的紧集，因此每一项都已由上一命题定义。
+
+\begin{proposition}\label{b1:prop:E-integral-independent}
+设 \(M\) 为维数 \(n\geq0\) 的定向实光滑流形，可以有边界。紧支集光滑最高次形式的积分与所选坐标图册及单位分解无关，是形式的线性函数。把全部分支的定向反转，积分取负；若一个最高次形式在所有正向基上的值非负，则其积分非负。零维时，最后一个条件解释为 \(\varepsilon(p)f(p)\geq0\)。
+\end{proposition}
+\begin{proof}
+零维情形直接由有限和得到。设 \(n\geq1\)，取两组图与单位分解 \((U_i,x_i,\rho_i)\)、\((W_j,y_j,\sigma_j)\)。在 \(\operatorname{supp}\omega\) 附近，实际只有有限多个指标起作用。因此可以使用有限和的线性性，得到
+\[
+ \begin{aligned}
+ \sum_i I_{x_i}(\rho_i\omega)
+ &=\sum_{i,j}I_{x_i}(\rho_i\sigma_j\omega)\\
+ &=\sum_{i,j}I_{y_j}(\rho_i\sigma_j\omega)\\
+ &=\sum_jI_{y_j}(\sigma_j\omega).
+ \end{aligned}
+\]
+中间一步应用\cref{b1:prop:E-chart-integral}，因为
+\(\rho_i\sigma_j\omega\) 的支集是 \(U_i\cap W_j\) 中的紧集。这证明所有选择无关。对两个形式可选同一组图和单位分解，逐项线性即得整体线性。
+
+反转定向使每个 \(\varepsilon_i\) 取负，所以积分也取负。若 \(\omega\) 在正向基上非负，在坐标中就有 \(\varepsilon_i a_i\geq0\)。再用 \(\rho_i\geq0\)，每一项均为非负积分，故其和非负。
+\end{proof}
+
+因此单位分解是计算的辅助工具，不是积分额外携带的数据。特别地，若 \(M\) 紧，则所有光滑最高次形式都有紧支集，定义适用于整个 \(\Omega^n(M)\)。
+
+\begin{proposition}\label{b1:prop:E-integral-diffeomorphism}
+设 \(F:M\longrightarrow N\) 是两个 \(n\) 维定向实光滑流形之间的微分同胚，允许有边界，\(n\geq1\)。若 \(F\) 处处保持定向，记 \(\sigma=1\)；若处处反转定向，记 \(\sigma=-1\)。则对每个 \(\omega\in\Omega_c^n(N)\)，
+\[
+ \int_MF^*\omega=\sigma\int_N\omega.
+\]
+\end{proposition}
+\begin{proof}
+微分同胚的逆映射连续，所以紧集 \(\operatorname{supp}\omega\) 的逆像仍紧，\(F^*\omega\) 可积。取 \(N\) 的连通坐标图 \(y_i\) 及从属单位分解 \(\rho_i\)，则 \(x_i=y_i\circ F\) 是 \(M\) 上的坐标图，\(\rho_i\circ F\) 是从属单位分解。在这两个坐标中，\((\rho_i\circ F)F^*\omega\) 与 \(\rho_i\omega\) 的系数相同，而定向符号满足 \(\varepsilon_{x_i}=\sigma\varepsilon_{y_i}\)。逐片积分再求和即得。
+\end{proof}
+
+对于嵌入子流形，上述定义与已有的曲面积分相容。若 \(M\subseteq\mathbb R^N\) 是光滑定向嵌入子流形，且 \(\omega\) 是其上的紧支集最高次形式，则\subsecref{b1:subsec:B10504}的参数积分公式在每张图中给出
+\[
+ \int_M\omega
+   =\int_M\langle\omega,\tau_M\rangle\,\mathrm d\mathcal H^n,
+\]
+其中 \(\tau_M\) 是诱导欧氏度量下的正向单位顶次切向量。局部面积公式中的非负 Jacobi 因子被单位切向量的分母抵消，余下的恰是本节的坐标系数；再用单位分解即可拼合。这说明无向面积与有向形式积分的关系，也说明后者并不等于任意一个坐标系数直接对面积测度积分。
 
 \subsection{Stokes 公式的局部到整体证明}
 \label{b1:subsec:E10403}
 
-待撰写。
+现在要证明，外微分把“内部的变化”与“边界上的积累”联系起来。局部计算归结为一维微积分基本定理，定向符号与单位分解则使不同坐标片中的结果相容。先来看欧氏空间和半空间中的计算。
 
-\subsection{取向符号与具体积分模型}
+\begin{lemma}\label{b1:lem:E-stokes-half-space}
+设 \(n\geq1\)，给 \(\mathbb R^n\) 或 \(\mathbb H^n=\{\,x^n\geq0\,\}\) 赋予标准定向。若 \(\eta\) 是该空间上的实光滑紧支集 \((n-1)\) 次形式，则
+\[
+ \int_{\mathbb R^n}\mathrm d\eta=0
+ \quad\text{或}\quad
+ \int_{\mathbb H^n}\mathrm d\eta
+       =\int_{\partial \mathbb H^n}\iota^*\eta,
+\]
+其中第二式的 \(\iota:\partial \mathbb H^n\hookrightarrow \mathbb H^n\) 为包含映射，边界使用外向在前的诱导定向；当 \(n=1\) 时，\(\partial \mathbb H^1=\{0\}\) 带负号。
+\end{lemma}
+\begin{proof}
+把形式唯一地写为
+\[
+ \eta=\sum_{j=1}^n(-1)^{j-1}a_j(x)\,
+   \mathrm dx^1\wedge\cdots\wedge
+   \widehat{\mathrm dx^j}\wedge\cdots\wedge\mathrm dx^n.
+\]
+帽子表示删去该因子。外微分时，只有对 \(x^j\) 求导的项不含重复外积；把新出现的 \(\mathrm dx^j\) 移到第 \(j\) 位又产生 \((-1)^{j-1}\)，两次符号相消，故
+\[
+ \mathrm d\eta=
+   \left(\sum_{j=1}^n\partial_ja_j\right)
+                     \mathrm dx^1\wedge\cdots\wedge\mathrm dx^n.
+\]
+各系数及其导数都紧支集，故绝对可积，可以使用 Fubini 定理。在全空间，沿每个 \(x^j\) 方向使用微积分基本定理，两端系数均为零，因此各项积分都为零。
+
+在半空间中，前 \(n-1\) 个切向方向仍在整条实线上积分，贡献为零。最后一个方向在 \([0,\infty)\) 上积分，给出
+\[
+ \int_{\mathbb H^n}\mathrm d\eta
+ =\int_{\mathbb R^{n-1}}\int_0^\infty
+         \partial_na_n(x',t)\,\mathrm dt\,\mathrm dx'
+ =-\int_{\mathbb R^{n-1}}a_n(x',0)\,\mathrm dx'.
+\]
+另一方面，包含映射的拉回使 \(\mathrm dx^n\) 变为零，因而
+\[
+ \iota^*\eta=(-1)^{n-1}a_n(x',0)\,
+                   \mathrm dx^1\wedge\cdots\wedge\mathrm dx^{n-1}.
+\]
+由\eqref{b1:eq:E-boundary-sign}，标准边界坐标相对于诱导定向还有符号 \((-1)^n\)。
+所以边界积分为
+\[
+ (-1)^n(-1)^{n-1}\int_{\mathbb R^{n-1}}a_n(x',0)\,\mathrm dx'
+ =-\int_{\mathbb R^{n-1}}a_n(x',0)\,\mathrm dx',
+\]
+与内部积分相同。
+
+当 \(n=1\) 时，\(\eta=a_1\) 是函数，不存在前面的切向项。\(\mathbb R^0\) 上的积分就是取值，半直线上的基本定理给出
+\(\int_0^\infty a_1'(t)\,\mathrm dt=-a_1(0)\)；
+负向边界点上的零次形式积分也为 \(-a_1(0)\)。因此上述证明包括一维情形。
+\end{proof}
+
+紧支集可以接触 \(\mathbb H^n\) 的真实边界 \(x^n=0\)，那里留下的项正是边界积分。它必须避开的是坐标图的人工边缘：若一个形式的支集是相对开集 \(V\subseteq \mathbb H^n\) 内的紧集，把其坐标系数在 \(\mathbb H^n\setminus V\) 补零后仍光滑。理由是支集外存在系数恒为零的邻域；跨过人工边缘时接合的是两个零函数。内部坐标图也可在 \(\mathbb R^n\) 中作同样的补零。因此上一引理可用于任何一张坐标图中紧支集的形式，而不要求该图覆盖整个半空间。
+
+\begin{theorem}[Stokes]\label{b1:thm:E-stokes}
+设 \(M\) 为维数 \(n\geq1\) 的定向实光滑流形，可以有边界而没有角点，\(\eta\in\Omega_c^{n-1}(M)\)。给 \(\partial M\) 赋予外向在前的诱导定向，并记包含映射为 \(\iota:\partial M\hookrightarrow M\)。则
+\begin{equation}\label{b1:eq:E-stokes}
+ \int_M\mathrm d\eta=\int_{\partial M}\iota^*\eta.
+\end{equation}
+若 \(\partial M=\varnothing\)，右端规定为零；若 \(M\) 紧，则不必另加 \(\eta\) 的紧支集条件。
+\end{theorem}
+
+这里的\term[stokes-gongshi]{Stokes 公式}[Stokes' theorem]同时包括微积分基本定理、平面 Green 公式及三维的旋度、散度积分公式。\eqref{b1:eq:E-stokes}中的边界被积形式是拉回 \(\iota^*\eta\)：它只测试边界切向量，不是把环境中所有系数原封不动地保留下来。
+
+\begin{proof}
+先设 \(\eta\) 的支集包含于一张连通坐标图 \((U,x)\)，其定向符号为 \(\varepsilon_x\)。把坐标形式 \(\alpha=(x^{-1})^*\eta\) 在图外补零。由\cref{b1:prop:E-pullback-d}，有
+\[
+ (x^{-1})^*(\mathrm d\eta)=\mathrm d\alpha.
+\]
+若这是内部坐标图，上一引理给出
+\(\int_M\mathrm d\eta=\varepsilon_x\int_{\mathbb R^n}\mathrm d\alpha=0\)，
+而 \(\iota^*\eta=0\)，两端相等。
+
+若这是边界图，设 \(j:\partial \mathbb H^n\hookrightarrow \mathbb H^n\) 为包含映射，\(x_\partial\) 为边界坐标。复合映射的拉回规则给出
+\[
+ (x_\partial^{-1})^*(\iota^*\eta)=j^*\alpha.
+\]
+由\eqref{b1:eq:E-boundary-sign}，边界图的符号是 \(\varepsilon_x(-1)^n\)，所以局部引理两端都须乘以同一个 \(\varepsilon_x\)。于是
+\[
+ \int_M\mathrm d\eta
+  =\varepsilon_x\int_{\mathbb H^n}\mathrm d\alpha
+  =\varepsilon_x\int_{\partial \mathbb H^n}j^*\alpha
+  =\int_{\partial M}\iota^*\eta.
+\]
+这也涵盖负向边界图，并由零维符号约定涵盖 \(n=1\)。
+
+一般情形，取连通坐标图册及从属单位分解 \((\rho_i)\)。由于 \(\eta\) 紧支集，只有有限多个 \(\rho_i\eta\) 非零，且每一项的支集都是相应图内的紧集。对这些形式逐一应用已证局部公式，再相加，得到
+\[
+ \sum_i\int_M\mathrm d(\rho_i\eta)
+       =\sum_i\int_{\partial M}\iota^*(\rho_i\eta).
+\]
+左端所积形式满足
+\[
+ \sum_i\mathrm d(\rho_i\eta)
+  =\left(\sum_i\mathrm d\rho_i\right)\wedge\eta
+       +\left(\sum_i\rho_i\right)\mathrm d\eta
+  =\mathrm d\eta.
+\]
+最后一步来自局部有限性允许逐项微分，以及
+\(\sum_i\rho_i=1\)、\(\sum_i\mathrm d\rho_i=\mathrm d1=0\)。
+这正是各片截断所引入的额外项相消的原因。右端由拉回的线性性及
+\(\iota^*(\rho_i\eta)=(\rho_i|_{\partial M})\iota^*\eta\)
+相加为 \(\int_{\partial M}\iota^*\eta\)。
+
+最后，\(\operatorname{supp}\mathrm d\eta\subseteq\operatorname{supp}\eta\)，
+\(\operatorname{supp}\iota^*\eta\subseteq\operatorname{supp}\eta\cap\partial M\)。
+由\cref{b1:prop:E-boundary-invariance}，边界是 \(M\) 的闭子集，后一集合紧，所以证明中两端的积分均已定义。
+\end{proof}
+
+紧支集补零消除了坐标片人工边缘上的项，单位分解的导数又在相加时精确抵消。这样，最终保留下来的只有流形的真实边界。
+
+\ProseParagraphBreak
+
+紧支集条件在非紧流形上不能仅改成“\(\mathrm d\eta\) 可积”。例如标准定向的 \(M=\mathbb R\) 没有边界，取零次形式 \(\eta(x)=\arctan x\)，则
+\[
+ \int_{\mathbb R}\mathrm d\eta
+   =\int_{\mathbb R}\frac{\mathrm dx}{1+x^2}=\pi,
+\]
+却没有边界点可以给出这个数。遗漏的是无穷远两端的值差。额外的衰减条件可以导出非紧支集版本，但须另行证明无穷远的贡献消失，不能从本定理直接删去假设。
+
+\subsection{定向符号与具体积分模型}
 \label{b1:subsec:E10404}
 
-待撰写。
+先在区间上核对所有约定。给 \(M=[a,b]\)（\(a<b\)）指定递增方向，取在闭区间上光滑的函数 \(f\)。左端的外向量为 \(-\partial_t\)，所以端点符号为负；右端为 \(\partial_t\)，所以符号为正。因此
+\[
+ \int_{\partial[a,b]}f=f(b)-f(a),\quad
+ \int_{[a,b]}\mathrm df=\int_a^bf'(t)\,\mathrm dt.
+\]
+Stokes 公式在这里恰是微积分基本定理。若把区间定向反转，两端符号与内部积分一起取负。两个端点的符号因此与区间的积分方向一致。
+
+\ProseParagraphBreak
+
+再看平面半空间 \(y\geq0\)。外向量为 \(-\partial_y\)，而
+\((-\partial_y,\partial_x)\) 相对于 \((\partial_x,\partial_y)\) 的行列式为 \(1\)，故下方边界的正向是向右。这与“沿正向走时区域在左侧”一致。在三维半空间 \(z\geq0\) 中，
+\((-\partial_z,\partial_x,\partial_y)\) 的行列式为 \(-1\)，所以标准 \((x,y)\) 定向恰与诱导边界定向相反。两个结论都来自同一个因子 \((-1)^n\)，无需分别记忆口诀。
+
+\begin{corollary}[圆盘上的 Green 公式]\label{b1:cor:E-green-disk}
+设 \(D=\{\,(x,y)\in\mathbb R^2:x^2+y^2\leq1\,\}\) 取标准定向，\(P,Q\) 是 \(D\) 的某个开邻域上的实光滑函数。令
+\(\gamma(\theta)=(\cos\theta,\sin\theta)\)，\(0\leq\theta\leq2\pi\)。则
+\[
+ \int_D(\partial_xQ-\partial_yP)\,\mathrm dx\,\mathrm dy
+ =\int_0^{2\pi}
+       \bigl(-P(\gamma(\theta))\sin\theta
+                 +Q(\gamma(\theta))\cos\theta\bigr)\,\mathrm d\theta.
+\]
+\end{corollary}
+\begin{proof}
+圆周上的单位外法向是 \(\nu=(\cos\theta,\sin\theta)\)，切向量为
+\(\gamma'(\theta)=(-\sin\theta,\cos\theta)\)，且
+\(\det(\nu,\gamma')=1\)。所以 \(\gamma\) 按诱导边界方向逆时针行进。对一次形式
+\(\eta=P\,\mathrm dx+Q\,\mathrm dy\)，逐项计算得到
+\[
+ \mathrm d\eta=(\partial_xQ-\partial_yP)\,
+                       \mathrm dx\wedge\mathrm dy,\quad
+ \gamma^*\eta=(-P(\gamma)\sin\theta+Q(\gamma)\cos\theta)
+                                                    \,\mathrm d\theta.
+\]
+应用\cref{b1:thm:E-stokes}即可。严格地说，\(\gamma\) 的整个参数区间不是一张圆周坐标图；将圆周用短弧覆盖并插入单位分解，各弧上的一维参数积分相加，就得到所写的 \([0,2\pi]\) 积分。端点重复只涉及一个零测集，不改变积分。
+\end{proof}
+
+例如取 \(\eta=\frac12(x\,\mathrm dy-y\,\mathrm dx)\)，便有
+\(\mathrm d\eta=\mathrm dx\wedge\mathrm dy\)，而
+\(\gamma^*\eta=\frac12\,\mathrm d\theta\)，两端均为 \(\pi\)。沿顺时针积分会得到 \(-\pi\)，此时必须同时把圆盘的定向反转，或在边界积分前补上负号。
+
+\ProseParagraphBreak
+
+有多个边界分支时，所有方向仍由同一个规则确定。取标准定向圆环
+\[
+ A=\{\,(x,y):r_0^2\leq x^2+y^2\leq r_1^2\,\},
+ \quad 0<r_0<r_1,
+\]
+并在其邻域定义
+\[
+ \alpha=\frac{-y\,\mathrm dx+x\,\mathrm dy}{x^2+y^2}.
+\]
+直接求导有 \(\mathrm d\alpha=0\)。外圆的外法向沿径向向外，正向为逆时针；内圆的区域外法向指向圆心，正向为顺时针。在半径 \(r\) 的逆时针参数
+\((r\cos\theta,r\sin\theta)\) 下，\(\alpha\) 的拉回为 \(\mathrm d\theta\)，故
+\[
+ \int_{\partial A}\alpha=2\pi-2\pi=0=\int_A\mathrm d\alpha.
+\]
+若把两条圆周都按逆时针计算，便没有使用诱导边界定向。另一方面，不能用闭圆盘代替圆环来断言外圆积分也为零，因为 \(\alpha\) 在圆心没有定义。这里失败的是光滑形式必须定义在整个填充区域上的条件。
+
+\ProseParagraphBreak
+
+三维散度公式也可从同一个计算读出。设闭单位球 \(B\subseteq\mathbb R^3\) 取标准定向，\(F=(F_1,F_2,F_3)\) 在球的邻域光滑，定义
+\[
+ \eta=F_1\,\mathrm dy\wedge\mathrm dz
+        -F_2\,\mathrm dx\wedge\mathrm dz
+        +F_3\,\mathrm dx\wedge\mathrm dy.
+\]
+则
+\[
+ \mathrm d\eta=(\partial_xF_1+\partial_yF_2+\partial_zF_3)
+                        \,\mathrm dx\wedge\mathrm dy\wedge\mathrm dz.
+\]
+在球面上取正向标准正交切向基 \((v_1,v_2)\) 及单位外法向 \(\nu\)，有
+\(\det(\nu,v_1,v_2)=1\)。把 \(F\) 分解为法向和切向部分，交错性使切向部分在
+\(\eta(v_1,v_2)=\det(F,v_1,v_2)\) 中消失，故
+\(\eta(v_1,v_2)=F\cdot\nu\)。结合本节积分与面积积分的相容性，Stokes 公式成为
+\[
+ \int_B\operatorname{div}F\,\mathrm dx
+     =\int_{\partial B}F\cdot\nu\,\mathrm d\mathcal H^2.
+\]
+取 \(F(x)=x\)，左端为球体积的三倍 \(4\pi\)，右端因 \(F\cdot\nu=1\) 而为单位球面的面积 \(4\pi\)。这个例子同时核对了外向约定和面积归一化。
+
+\ProseParagraphBreak
+
+这些模型提示两种不同的检查：局部计算要看拉回及外积的符号，整体应用要看形式是否定义在全部区域上，以及边界各分支是否使用诱导方向。下一节将进一步讨论闭形式能否写成外微分；圆环上的 \(\alpha\) 已表明，局部满足 \(\mathrm d\alpha=0\) 并不消除绕洞一周的积分。
